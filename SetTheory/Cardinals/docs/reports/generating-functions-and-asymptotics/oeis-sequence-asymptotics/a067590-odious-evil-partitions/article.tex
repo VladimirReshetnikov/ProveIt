@@ -27,6 +27,13 @@
 \newcommand{\dd}{\,\mathrm d}
 \newcommand{\OO}{\mathcal O}
 \DeclareMathOperator{\Li}{Li}
+% Added by the ProveIt write phase (batch 107, 6 October 2026): dated notes
+% marked [write] and a macro for file, label and declaration names.
+\newcommand{\file}[1]{\nolinkurl{#1}}
+\expandafter\def\expandafter\UrlBreaks\expandafter{\UrlBreaks\do\-\do\_\do\.}
+\newenvironment{writenote}[1][]{\par\smallskip\begingroup\small
+ \noindent\textbf{[write]}\if\relax\detokenize{#1}\relax\else~\textbf{#1.}\fi\ }%
+ {\par\endgroup\smallskip}
 \title{Odious and evil integer partitions\\[5pt]\large Fixed order asymptotics, fixed multiplicity caps, and inverses}
 \author{Research Report 165}
 \date{3 October 2026}
@@ -35,6 +42,36 @@
 \begin{abstract}
 Positive integers are odious or evil according as their binary digit sum is odd or even. We prove the leading equivalents recorded as July 2025 conjectures in OEIS A067590 and A116492, derive the evil counterparts A067591 and A116491, and give expansions to every fixed algebraic order. A sectorial Mellin argument makes the signed part of the Euler product flat beyond its logarithm and constant. Uniform Fourier estimates exclude every competing arc, and a completed Hankel contour supplies a relative comparison with an explicit modified Bessel function. For every fixed multiplicity cap $m$, the odious-to-evil ratio is $m+1$ up to every inverse power of the size. A specified smooth comparison has an all-order Lambert--$W$ inverse; ordinary integer thresholds require rounding-aware enclosures. Established constant evaluations and analytic continuation are credited. No growing-cap uniformity, leading beyond-all-orders correction, numerical onset certificate, or historical-priority claim is made.
 \end{abstract}
+
+\begin{writenote}[Status and trust boundary, added 6 October 2026, batch~107]
+This is bundle Report~165 of an external AI-assisted research session,
+filed in ProveIt as the single-source research report
+\file{a067590-odious-evil-partitions} (provenance, the sources as the write
+read them, relation to the repository, reading conventions and the collected
+non-claims in Section~\ref{oep:sec:provenance}). It is unrefereed and not
+formalized; its author line reads ``Research Report 165'' and its PDF author
+field is empty. \emph{What rests on what.} Theorems~\ref{oep:thm:unrestricted},
+\ref{oep:thm:capped} and~\ref{oep:thm:inverse} and
+Proposition~\ref{oep:prop:threshold} are proved by hand in
+Sections~\ref{oep:sec:mellin}--\ref{oep:sec:inverse} from the Euler
+products, with classical inputs cited there (the Dedekind eta transformation,
+polynomial bounds for $\zeta$ in vertical strips, Hankel's reciprocal-gamma
+integral and the modified Bessel series and expansions). The theorems are
+stated with $d=D'(0)$; Allouche's evaluation~\eqref{oep:eq:Q} only rewrites
+the constants. No proof uses a computation or a decimal; the decimals of $d$,
+$Q$ and $K_\pm$ are uncertified. In particular the two OEIS conjectures of
+V\'aclav Kot\v e\v sovec (6~July 2025) are proved in their asymptotic form,
+with exact constants (Remark~\ref{oep:rem:kotesovec}, which quotes them). The
+write adds three remarks with proofs: Remark~\ref{oep:rem:kotesovec},
+Remark~\ref{oep:rem:atlas} (an identity linking $D(s)$ to the Thue--Morse
+atlas's shifted series $D(s,\tfrac12)$, a second route to $D(0)=-1$ and
+$D(-k)=0$ through statements that are formal in Lean there, and exactly what
+is and is not formal) and Remark~\ref{oep:rem:transseries} (which parts of
+Section~\ref{oep:sec:inverse} are instances of the transseries volume's
+theorems); and Section~\ref{oep:sec:further}, the open questions, with a proof
+that the cap ratio~\eqref{oep:eq:ratiotheorem} cannot hold uniformly in
+$1\le m\le n$.
+\end{writenote}
 \tableofcontents
 
 \section{Definitions and the principal results}
@@ -48,40 +85,40 @@ The sign $-1$ denotes odious parts and $+1$ denotes evil parts. Only positive in
 For $\Re w>0$ their convergent Euler products are
 \begin{align}
  F_\sigma(w)&=\sum_{n\geq0}p_\sigma(n)e^{-nw}
-   =\prod_{k\in E_\sigma}(1-e^{-kw})^{-1},\label{eq:products}\\
+   =\prod_{k\in E_\sigma}(1-e^{-kw})^{-1},\label{oep:eq:products}\\
  F_{\sigma,m}(w)&=\sum_{n\geq0}p_{\sigma,m}(n)e^{-nw}
    =\prod_{k\in E_\sigma}\sum_{j=0}^{m}e^{-jkw}
-   =\frac{F_\sigma(w)}{F_\sigma((m+1)w)}.\label{eq:capproduct}
+   =\frac{F_\sigma(w)}{F_\sigma((m+1)w)}.\label{oep:eq:capproduct}
 \end{align}
 All complex powers below use the branch positive on the positive real axis.
 Define
 \begin{gather}
  A=\frac{\pi^2}{12},\qquad \beta_\sigma=\frac14+\frac\sigma2,
- \qquad D(s)=\sum_{k\geq1}\frac{\eps(k)}{k^s}\quad(\Re s>1),\label{eq:constants1}\\
+ \qquad D(s)=\sum_{k\geq1}\frac{\eps(k)}{k^s}\quad(\Re s>1),\label{oep:eq:constants1}\\
  d=D'(0),\qquad C_\sigma=(2\pi)^{-1/4}e^{\sigma d/2},\qquad
- K_\sigma=\frac{C_\sigma A^{\beta_\sigma/2+1/4}}{2\sqrt\pi}.\label{eq:constants2}
+ K_\sigma=\frac{C_\sigma A^{\beta_\sigma/2+1/4}}{2\sqrt\pi}.\label{oep:eq:constants2}
 \end{gather}
-The entire continuation defining $D'(0)$ is established work of Allouche--Cohen \cite{allouchecohen}, discussed and used explicitly by Allouche; the estimates needed here are reproved in Section~\ref{sec:mellin}. With $\gamma$ the Euler--Mascheroni constant and $\varphi$ the Flajolet--Martin constant \cite{flajoletmartin}, the established evaluation is
-\begin{equation}\label{eq:Q}
+The entire continuation defining $D'(0)$ is established work of Allouche--Cohen \cite{allouchecohen}, discussed and used explicitly by Allouche; the estimates needed here are reproved in Section~\ref{oep:sec:mellin}. With $\gamma$ the Euler--Mascheroni constant and $\varphi$ the Flajolet--Martin constant \cite{flajoletmartin}, the established evaluation is
+\begin{equation}\label{oep:eq:Q}
  d=-\log Q,\qquad Q=\prod_{k\geq1}\left(\frac{2k}{2k+1}\right)^{\eps(k)}
    =\frac{e^\gamma}{\sqrt2\,\varphi}.
 \end{equation}
 These identities appear in the proof of Allouche's Theorem 3.1 \cite{allouche2019}; they are not new constants of this report. Define, for fixed real $\beta$, $a>0$, and integer $j\geq0$,
-\begin{equation}\label{eq:Bj}
+\begin{equation}\label{oep:eq:Bj}
  B_0(\beta,a)=1,\qquad
  B_j(\beta,a)=\frac{(-1)^j\prod_{r=1}^{j}\bigl(4(\beta+1)^2-(2r-1)^2\bigr)}
  {j!\,(16\sqrt a)^j}.
 \end{equation}
 
-\begin{theorem}[Unrestricted partitions]\label{thm:unrestricted}
+\begin{theorem}[Unrestricted partitions]\label{oep:thm:unrestricted}
 For either sign, set $N=n-1/48$. For each fixed integer $J\geq1$,
-\begin{equation}\label{eq:unrestricted}
+\begin{equation}\label{oep:eq:unrestricted}
  p_\sigma(n)=K_\sigma N^{-\beta_\sigma/2-3/4}e^{2\sqrt{AN}}
  \left\{\sum_{j=0}^{J-1}B_j(\beta_\sigma,A)N^{-j/2}
           +\OO_J(N^{-J/2})\right\}.
 \end{equation}
 More strongly, for every fixed real $R>0$,
-\begin{equation}\label{eq:unrestrictedflat}
+\begin{equation}\label{oep:eq:unrestrictedflat}
  p_\sigma(n)=C_\sigma\left(\frac A N\right)^{(\beta_\sigma+1)/2}
  I_{-\beta_\sigma-1}(2\sqrt{AN})\{1+\OO_R(n^{-R})\}.
 \end{equation}
@@ -89,8 +126,8 @@ Here $I_\nu$ is the modified Bessel function of the first kind.
 \end{theorem}
 In particular, the leading equivalents are
 \begin{align}
- p_-(n)&\sim K_-n^{-5/8}\exp\!\left(\pi\sqrt{n/3}\right),\label{eq:odiouslead}\\
- p_+(n)&\sim K_+n^{-9/8}\exp\!\left(\pi\sqrt{n/3}\right).\label{eq:evillead}
+ p_-(n)&\sim K_-n^{-5/8}\exp\!\left(\pi\sqrt{n/3}\right),\label{oep:eq:odiouslead}\\
+ p_+(n)&\sim K_+n^{-9/8}\exp\!\left(\pi\sqrt{n/3}\right).\label{oep:eq:evillead}
 \end{align}
 The first is the equivalent conjectured by V\'aclav Kot\v e\v sovec on 6 July 2025 in A067590 \cite{oeis067590}; the second concerns A067591 \cite{oeis067591}. For orientation only, non-interval-certified numerical evaluations give
 \[
@@ -100,32 +137,32 @@ The first is the equivalent conjectured by V\'aclav Kot\v e\v sovec on 6 July 20
  \end{aligned}
 \]
 Keeping $n$ unshifted, the first relative corrections are respectively
-\begin{equation}\label{eq:firstcorrections}
+\begin{equation}\label{oep:eq:firstcorrections}
  -\left(\frac{5\sqrt3}{32\pi}+\frac{\pi}{96\sqrt3}\right)n^{-1/2},
  \qquad
  -\left(\frac{45\sqrt3}{32\pi}+\frac{\pi}{96\sqrt3}\right)n^{-1/2}.
 \end{equation}
 The exponential shift produces the second summand in each bracket; shifting the algebraic prefactor first contributes at order $n^{-1}$.
 
-\begin{theorem}[Every fixed multiplicity cap]\label{thm:capped}
+\begin{theorem}[Every fixed multiplicity cap]\label{oep:thm:capped}
 Fix $m\geq1$, and put
 \[
  r=m+1,\qquad a_m=A\frac{m}{m+1},\qquad N=n+\frac m{48},
  \qquad K_{\sigma,m}=\frac{r^{-\beta_\sigma}a_m^{1/4}}{2\sqrt\pi}.
 \]
 For each fixed $J\geq1$,
-\begin{equation}\label{eq:capped}
+\begin{equation}\label{oep:eq:capped}
  p_{\sigma,m}(n)=K_{\sigma,m}N^{-3/4}e^{2\sqrt{a_mN}}
  \left\{\sum_{j=0}^{J-1}B_j(0,a_m)N^{-j/2}
               +\OO_{m,J}(N^{-J/2})\right\}.
 \end{equation}
 For every fixed $R>0$ there is the relative comparison
-\begin{equation}\label{eq:cappedflat}
+\begin{equation}\label{oep:eq:cappedflat}
  p_{\sigma,m}(n)=r^{-\beta_\sigma}\left(\frac{a_m}{N}\right)^{1/2}
  I_{-1}(2\sqrt{a_mN})\{1+\OO_{m,R}(n^{-R})\}.
 \end{equation}
 Consequently,
-\begin{equation}\label{eq:ratiotheorem}
+\begin{equation}\label{oep:eq:ratiotheorem}
  \frac{p_{-,m}(n)}{p_{+,m}(n)}=m+1+\OO_{m,R}(n^{-R})
  \qquad\text{for every fixed }R>0.
 \end{equation}
@@ -133,20 +170,211 @@ No estimate here is asserted to be uniform when $m$ grows with $n$.
 \end{theorem}
 At $m=1$, these results give the distinct-part equivalents
 \begin{align}
- p_{-,1}(n)&\sim \frac{1}{2\,12^{1/4}}n^{-3/4}e^{\pi\sqrt{n/6}},\label{eq:distinctodious}\\
- p_{+,1}(n)&\sim \frac{1}{4\,12^{1/4}}n^{-3/4}e^{\pi\sqrt{n/6}},\label{eq:distinctevil}
+ p_{-,1}(n)&\sim \frac{1}{2\,12^{1/4}}n^{-3/4}e^{\pi\sqrt{n/6}},\label{oep:eq:distinctodious}\\
+ p_{+,1}(n)&\sim \frac{1}{4\,12^{1/4}}n^{-3/4}e^{\pi\sqrt{n/6}},\label{oep:eq:distinctevil}
 \end{align}
-The ratio is $2+\OO_R(n^{-R})$ for every fixed $R$. The odious leading constant is approximately $0.2686424829558855$; this identifies the decimal in the July 2025 conjecture in A116492 \cite{oeis116492}; the evil count is A116491 \cite{oeis116491}. Equation~\eqref{eq:ratiotheorem} is a relative statement. It does not assert that the absolute difference $p_{-,m}-(m+1)p_{+,m}$ is polynomially small. We do not determine the leading residual beyond all algebraic orders.
+The ratio is $2+\OO_R(n^{-R})$ for every fixed $R$. The odious leading constant is approximately $0.2686424829558855$; this identifies the decimal in the July 2025 conjecture in A116492 \cite{oeis116492}; the evil count is A116491 \cite{oeis116491}. Equation~\eqref{oep:eq:ratiotheorem} is a relative statement. It does not assert that the absolute difference $p_{-,m}-(m+1)p_{+,m}$ is polynomially small. We do not determine the leading residual beyond all algebraic orders.
 
-\section{Sector flatness and the signed Mellin transform}\label{sec:mellin}
+\begin{remark}[{[write]} Kot\v e\v sovec's two conjectures, 6~October 2026]\label{oep:rem:kotesovec}
+The live OEIS entries, read on 6~October 2026, are A067590 at
+revision~\#17 (July~6, 2025) and A116492 at revision~\#18 (July~6, 2025),
+the revisions the source inspected (Section~\ref{oep:sec:sources}). Their
+names are ``Number of partitions of n into odious numbers (A000069).''\ and
+``Number of partitions of n into distinct odious numbers.'', so their terms
+are $p_-(n)$ and $p_{-,1}(n)$. Each carries one conjectural formula line:
+\begin{center}\small
+\texttt{Conjecture: a(n) \char`\~{} c * exp(Pi*sqrt(n/3)) / n\char`\^{}(5/8), where c = 0.221864833... - \_Vaclav Kotesovec\_, Jul 06 2025}
+\end{center}
+in A067590, and
+\begin{center}\small
+\texttt{Conjecture: a(n) \char`\~{} c * exp(Pi*sqrt(n/6)) / n\char`\^{}(3/4), where c = 0.26864248.... - \_Vaclav Kotesovec\_, Jul 06 2025}
+\end{center}
+in A116492 (both quoted verbatim, including the four dots of the second).
+Equation~\eqref{oep:eq:odiouslead} is the first with the exact constant
+\[
+ c=K_-=\frac{(2\pi)^{-1/4}\,Q^{1/2}\,(\pi^2/12)^{1/8}}{2\sqrt\pi},
+ \qquad Q=\frac{e^\gamma}{\sqrt2\,\varphi},
+\]
+and~\eqref{oep:eq:distinctodious} is the second with
+$c=1/(2\cdot12^{1/4})$; the exponents and exponentials agree, since
+$2\sqrt{A n}=\pi\sqrt{n/3}$ and $2\sqrt{a_1n}=\pi\sqrt{n/6}$. So both
+conjectures are proved as asymptotic equivalents. For the decimals:
+$1/(2\cdot12^{1/4})=0.2686424829558855\ldots$ is an elementary closed form,
+and its first eight digits are those printed. The decimal
+$K_-\approx0.2218648339570363$ comes from a floating-point evaluation of~$d$;
+the intake recomputed $d$ independently from~\eqref{oep:eq:dquadrature}
+(mpmath quadrature, $-0.487450622521547$) and obtained
+$K_-=0.221864833957$, which begins with the nine printed digits. Neither
+evaluation is an interval enclosure, so that the digits of $c$ printed in
+A067590 are right is supported by two concordant computations, not proved.
+The evil counterparts A067591 (revision~\#6) and A116491 (revision~\#14)
+carry no asymptotic formula. Both conjecture lines are still labelled
+conjectures in the OEIS; this is recorded here only, and nothing was
+submitted to the OEIS.
+\end{remark}
+
+\subsection{Provenance, sources and reading conventions}\label{oep:sec:provenance}
+\begin{writenote}[Added 6 October 2026, batch~107]
+\emph{Provenance.} This report is Report~165 of the session bundle that
+ProveIt's \file{docs/incoming} intake processed as batch~107: the archive
+\file{Odious_and_Evil_Partitions_All_Orders_and_Inverses_Source.zip}
+(669{,}797 bytes, SHA-256 \file{a0a70cc31baf...14b91ca}, 21 files at the
+archive root, no wrapper directory), arrival commit \file{60f54ea06}, placed
+in \file{3988bf5c4}. The text is the delivered \file{Report165.tex} (574
+lines, dated 3~October 2026), shipped as \file{article.tex}. The delivered
+15-page PDF and the two checksum manifests (\file{SHA256SUMS}, 20 entries,
+and \file{companion/reference_run/SHA256SUMS}, 2 entries; both verified at
+placement) are not shipped; the delivered README is replaced by the report
+README; all are retrievable from the arrival commit. The source's pin is
+ProveIt commit \file{5dacd76e2} (3~October 2026), at which it inspected three
+archived Thue--Morse atlas files (Section~\ref{oep:sec:sources}); their blobs
+\file{c927e43a}, \file{7fee5be7} and \file{66c8012a} are unchanged at the
+commit of this write, so what the source says about them concerns their
+current text. The package carries no ``prepared for private review'' line
+and no personal data; it names Vladimir Reshetnikov only as the author of
+the cited atlas. It is a single-source report, so no merge choice was made.
+The write prefixed the 78 delivered labels with \file{oep:} and updated the
+38 references to them; it added this subsection, the notes marked [write],
+Remarks~\ref{oep:rem:kotesovec}, \ref{oep:rem:atlas}
+and~\ref{oep:rem:transseries}, Section~\ref{oep:sec:further} and a note in
+one bibliography entry. No statement, proof or number of the source was
+changed: the added remarks are the last statements of their sections, the
+added section comes after the last one, and the added displays are
+unnumbered, so every theorem, section and equation keeps its delivered
+number.
+
+\emph{The sources, as the write read them} (6~October 2026).
+\begin{itemize}\raggedright
+\item OEIS A067590, A067591, A116492, A116491~\cite{oeis067590,oeis067591,oeis116492,oeis116491},
+ live entries at revisions \#17, \#6, \#18 and \#14, the revisions the
+ source recorded. Their data sections (54, 63, 69 and 74 terms) agree term
+ by term with the counts recomputed by the write from the definitions. The
+ two conjecture lines are quoted in Remark~\ref{oep:rem:kotesovec}.
+\item The current Thue--Morse atlas,
+ \path{Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/}
+ \path{drafts/thue-morse/Thue_Morse_Atlas_and_Frontiers/Thue_Morse_Atlas_and_Frontiers.tex}
+ (Part~I: \file{p1:thm:evil-odious}, \file{p1:thm:boundary-flatness},
+ \file{p1:thm:Dirichlet-dyadic}, \file{p1:thm:Mellin-integral},
+ \file{p1:cor:Dirichlet-trivial-zeros}, \file{p1:thm:G-functional},
+ \file{p1:cor:G-Dirichlet}, \file{p1:thm:Woods-Robbins}, with their
+ ``Formal versions'' paragraphs), and the Lean modules
+ \path{Analysis/FabiusFunction/Lean/FabiusFunction/ThueMorseBoundaryFlatness.lean},
+ \file{ThueMorseEntireContinuation.lean}, \file{ThueMorseGDirichlet.lean},
+ \file{ThueMorseWoodsRobbins.lean} and \file{ThueMorseEnumerators.lean}
+ (declaration statements read; nothing was built). The archived atlas
+ passages cited in Section~\ref{oep:sec:sources} were spot-checked at their
+ line numbers.
+\item The transseries volume
+ \path{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex}:
+ \file{p0:def:core}, \file{p0:def:model}, \file{p0:thm:lambert-core},
+ \file{p0:thm:lambert-centered}, \file{p0:thm:core-reversion},
+ \file{p0:thm:backward-error}, \file{p0:def:three-inverses} and
+ \file{p0:thm:staircase}, read for Remark~\ref{oep:rem:transseries}.
+\item Not read by the write: Allouche~\cite{allouche2019,allouche2015},
+ T\'oth~\cite{toth}, Golafshan and Rigo~\cite{golafshan},
+ Merca~\cite{merca}, Allouche and Cohen~\cite{allouchecohen}, Flajolet and
+ Martin~\cite{flajoletmartin}, and the DLMF sections. The statements made
+ about them in Section~\ref{oep:sec:sources} are the source's;
+ \file{data/SOURCE_PROVENANCE.json} records what the source inspected, with
+ SHA-256 fingerprints.
+\end{itemize}
+
+\emph{What was checked at intake.} The batch-107 dossier read the manuscript
+in full and found no error; it rechecked by hand the pair
+bound~\eqref{oep:eq:pairbound} (maximum at $u=1/\sqrt3$), the first
+corrections~\eqref{oep:eq:firstcorrections}, the inverse constants
+of~\eqref{oep:eq:inverseodious}--\eqref{oep:eq:inversecapped} and the model
+ratio $r^{-\beta_-}/r^{-\beta_+}=r$. Independently of the delivered code
+(own exact counts, mpmath at 25--40 digits) it found $d=-0.487450622521547$
+from~\eqref{oep:eq:dquadrature}, $K_-=0.221864833957$,
+$K_+=0.123580687007$, and $p_\sigma(n)/\calM(n)-1=3.33\cdot10^{-8}$ and
+$8.49\cdot10^{-10}$ at $n=1000$ and $3000$ for odious parts,
+$-4.40\cdot10^{-8}$ and $-7.77\cdot10^{-10}$ for evil parts (the Bessel
+model of~\eqref{oep:eq:unrestrictedflat}); the capped ratios at $n=1500$
+are $1.99999972$ ($m=1$) and $2.99999760$ ($m=2$); the four thresholds of
+Section~\ref{oep:sec:companion} for the target $100000$ were reproduced. The
+write rechecked the derivations of
+Sections~\ref{oep:sec:mellin}--\ref{oep:sec:inverse} line by line and found
+no error, recomputed the live OEIS data, and reran the
+companion on copies (note at the end of Section~\ref{oep:sec:companion}).
+These numerical agreements are observations, not certificates.
+
+\emph{Relation to the repository.} Before batch~107 no file of the
+repository mentioned A067590, A067591, A116492 or A116491, or partitions into
+odious or evil parts. The Thue--Morse atlas in
+\path{Analysis/FabiusFunction/} overlaps in method and inputs only: the
+real-axis flatness of~$S$ and the continuation and zeros of the
+\emph{shifted} series are there, formal in Lean, and
+Remark~\ref{oep:rem:atlas} says exactly which statements correspond, what
+is formal, and how the unshifted series used here relates to them. The
+atlas poses no question about partition counts with Thue--Morse-restricted
+parts, so this report does not continue it. The inverse construction of
+Section~\ref{oep:sec:inverse} and the transseries volume are compared in
+Remark~\ref{oep:rem:transseries}. \emph{Formal status:} no statement of this
+report is formalized in Lean or Rocq, and its place in the collection, or
+beside the formal Fabius development, confers no formal status.
+\end{writenote}
+\begin{writenote}[What is not claimed, collected from the source]
+Every order of expansion, every acute sector and every cap $m$ is fixed:
+no estimate is uniform as $m$ grows with $n$ (Section~\ref{oep:sec:further}
+shows that full uniformity fails). The leading residual beyond all algebraic
+orders is not determined, and the relative statement~\eqref{oep:eq:ratiotheorem}
+does not say that $p_{-,m}-(m+1)p_{+,m}$ is polynomially small. No constant
+($d$, $Q$, $K_\pm$), error constant, onset of eventual monotonicity or
+threshold constant ($C$, $y_0$ of Proposition~\ref{oep:prop:threshold}) is
+interval-certified or evaluated; numerical quadrature supplies no enclosure
+for~$d$. A bare ceiling of an asymptotic inverse is not a threshold. No
+historical priority is claimed: the continuation of $D$ and the evaluation
+of~$d$ are credited to Allouche--Cohen and Allouche; the literature search
+is bounded (Merca's article read at abstract level only; the Allouche--Cohen
+and Flajolet--Martin originals not obtained; Golafshan--Rigo concern a
+different object), and its negative result is ``not an exhaustive literature
+exclusion, a repository-wide originality certificate, or a historical-first
+claim''. The companion's finite checks and the byte-identical rebuilds prove
+no asymptotic statement. No OEIS entry was edited. The write adds: the
+residual values quoted in Section~\ref{oep:sec:further} are floating-point
+observations and determine no rate.
+\end{writenote}
+\medskip\noindent\begin{minipage}{\textwidth}
+\emph{Reading conventions} (letters the manuscript reuses, and the
+neighbouring atlas's, with the tempting false readings; no symbol was renamed).\par
+\smallskip
+\begingroup\small\renewcommand{\arraystretch}{1.1}
+\noindent\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.95in}>{\raggedright\arraybackslash}p{3.1in}>{\raggedright\arraybackslash}p{2.05in}@{}}
+\toprule
+Symbol & Meaning here (where) & Not to be read as\\
+\midrule
+$\sigma$ & the sign $\pm1$ ($-1$ odious, $+1$ evil) & the atlas's $\sigma=\Re s$ in $D(\sigma,a)$\\
+$E_\sigma$ & allowed parts, positive integers only (zero, an evil number, is excluded) & the atlas's enumerators $\mathcal E_n$, $\mathcal O_n$ (from $\mathcal E_0=0$) or its product $\mathcal E(t)$\\
+$S(w)$ & $\sum_{k\ge0}\eps(k)e^{-kw}=\prod_j(1-e^{-2^jw})$ & (same function as the atlas's $\mathcal E(t)$ at real $w=t$)\\
+$D(s)$, $d$ & $\sum_{k\ge1}\eps(k)k^{-s}$, unshifted; $d=D'(0)$; $D(0)=-1$ & the atlas's shifted $D(s,a)=\sum_{n\ge0}\eps_n(n+a)^{-s}$, $a>0$, with $D(0,a)=0$ (Remark~\ref{oep:rem:atlas})\\
+$G(s)$, $J(s)$ & $\Gamma(s)D(s)$; the Mellin integral~\eqref{oep:eq:GJ} & the atlas's master product $G(a,b)$; the order $J$; the block length $2^J$ (Section~\ref{oep:sec:arcs})\\
+$H(w)$ & the signed logarithm~\eqref{oep:eq:H} & \\
+$Q$, $\varphi$ & $e^\gamma/(\sqrt2\varphi)$, $\varphi$ the Flajolet--Martin constant & the decay power $Q$ and the angle $\phi$ of Lemma~\ref{oep:lem:vertical}\\
+$\theta$, $t$ & a sector angle (Sections~2--3); a Fourier angle and $t=\Re w$ (Sections~\ref{oep:sec:arcs}--\ref{oep:sec:bessel}) & the Mellin variable $t$ (Section~\ref{oep:sec:mellin}); the formal variable $t$ of~\eqref{oep:eq:inverserecurrence}\\
+$N$ & $n-\frac1{48}$ (Theorem~\ref{oep:thm:unrestricted}); $n+\frac m{48}$ (Theorem~\ref{oep:thm:capped}); $n+\lambda$ (Section~\ref{oep:sec:bessel}) & the prefix length in~\eqref{oep:eq:fourierprefix}\\
+$A$, $a$, $a_m$ & $\pi^2/12$; the general exponent of~\eqref{oep:eq:generalmodel}; $Am/(m+1)$ & \\
+$B$, $B_j$, $b$ & the pair bound $16/(3\sqrt3)$; Bessel coefficients~\eqref{oep:eq:Bj}; $2\sqrt a$ & the $b$ of \file{p0:thm:lambert-core}, which is $-2p$ here (Remark~\ref{oep:rem:transseries})\\
+$p$, $p_\sigma$, $p_j$ & the exponent $\beta/2+3/4$; the counts; probabilities in Section~\ref{oep:sec:arcs} & each other\\
+$C_\sigma$, $K_\sigma$, $K$, $C$ & model constants; $C$, $y_0$ of Proposition~\ref{oep:prop:threshold} are unrelated error constants & Kot\v e\v sovec's $c$ is $K_-$ resp.\ $K_{-,1}$\\
+$r$, $m$ & $m+1$; the cap & $r$ as radius (proof of Lemma~\ref{oep:lem:vertical}) or product index in~\eqref{oep:eq:Bj}\\
+$L$, $R$, $q$ & flatness orders; a fixed power; a derivative order (Lemma~\ref{oep:lem:flatness}) & $q=e^{-t}$ in~\eqref{oep:eq:Uall}, the exponent $q$ of Proposition~\ref{oep:prop:threshold}; the target $L$ of the transseries volume\\
+$\delta$, $\ell$ & the arc exponent; the summation index in~\eqref{oep:eq:H} & $\delta_{<m}$, $\delta_J$ and $\ell_j$ of Theorem~\ref{oep:thm:inverse}\\
+$\calM$, $T(y)$ & the Bessel model; the first threshold~\eqref{oep:eq:threshold} & $T(y)$ is the staircase $N_\ast(y)$ of \file{p0:def:three-inverses} only on the monotone tail\\
+\bottomrule
+\end{tabular}
+\endgroup
+\end{minipage}
+
+\section{Sector flatness and the signed Mellin transform}\label{oep:sec:mellin}
 The Thue--Morse recurrences $\eps(2k)=\eps(k)$ and $\eps(2k+1)=-\eps(k)$ give, by finite products and then normal convergence,
-\begin{equation}\label{eq:S}
+\begin{equation}\label{oep:eq:S}
  S(w)=\sum_{k\geq0}\eps(k)e^{-kw}
      =\prod_{j\geq0}(1-e^{-2^jw}),\qquad \Re w>0.
 \end{equation}
 The finite product with $j<J$ is the Fourier--Laplace polynomial of the first $2^J$ signs. The infinite product and all its derivatives are holomorphic in the right half-plane.
 
-\begin{lemma}[Flatness with derivatives]\label{lem:flatness}
+\begin{lemma}[Flatness with derivatives]\label{oep:lem:flatness}
 Fix $\theta<\pi/2$. For each real $L\geq0$ and each fixed integer $q\geq0$,
 \[
  S^{(q)}(w)=\OO_{L,q,\theta}(|w|^L)
@@ -169,42 +397,42 @@ It is eventually below $L\log\rho$ up to a constant, for every prescribed $L$. T
 \end{proof}
 
 Set
-\begin{equation}\label{eq:GJ}
+\begin{equation}\label{oep:eq:GJ}
  G(s)=\Gamma(s)D(s),\qquad J(s)=\int_0^\infty t^s S'(t)\dd t.
 \end{equation}
-Lemma~\ref{lem:flatness} shows that $J$ is entire, locally uniformly in $s$. Initially for $\Re s>1$, Mellin integration and integration by parts give
-\begin{equation}\label{eq:G}
+Lemma~\ref{oep:lem:flatness} shows that $J$ is entire, locally uniformly in $s$. Initially for $\Re s>1$, Mellin integration and integration by parts give
+\begin{equation}\label{oep:eq:G}
  G(s)=\int_0^\infty t^{s-1}(S(t)-1)\dd t=-\frac{J(s)}s.
 \end{equation}
 The first integral itself converges for $\Re s>0$. The integration-by-parts boundary terms vanish there. Since $J(0)=S(\infty)-S(0)=1$, $G$ has its only pole at zero, with residue $-1$. Dividing by $\Gamma(s)$, whose reciprocal is entire with simple zeros at the nonpositive integers, proves the continuation and the values
-\begin{equation}\label{eq:Dvalues}
+\begin{equation}\label{oep:eq:Dvalues}
  D(0)=-1,\qquad D(-k)=0\quad(k=1,2,\ldots).
 \end{equation}
 This is a proof of an established continuation in the form needed here, not a priority claim. The shifted series $\sum_{k\geq0}\eps(k)/(k+1)^s$ appearing in several sources is different; its value at zero is $0$, not $-1$.
 
-\begin{lemma}[Vertical estimates]\label{lem:vertical}
+\begin{lemma}[Vertical estimates]\label{oep:lem:vertical}
 For a fixed strip $u\leq\Re s\leq v$, angle $0<\phi<\pi/2$, and every fixed $Q>0$,
-\begin{equation}\label{eq:vertical}
+\begin{equation}\label{oep:eq:vertical}
  |J(c+i\tau)|\leq C_{u,v,\phi,Q}e^{-\phi|\tau|}(1+|\tau|)^{-Q}.
 \end{equation}
 An estimate of the same form, after changing the polynomial power, holds for $G(s)$ away from its pole.
 \end{lemma}
 \begin{proof}
-For $\tau\ne0$ let $\eta=\operatorname{sgn}\tau$. Rotate the integration ray in~\eqref{eq:GJ} to angle $\eta\phi$. Flatness removes the small joining arc, and the exponential decay of $S'$ removes the large one. With continuous powers in the right half-plane this gives
+For $\tau\ne0$ let $\eta=\operatorname{sgn}\tau$. Rotate the integration ray in~\eqref{oep:eq:GJ} to angle $\eta\phi$. Flatness removes the small joining arc, and the exponential decay of $S'$ removes the large one. With continuous powers in the right half-plane this gives
 \[
  J(s)=e^{i\eta\phi(s+1)}\int_0^\infty r^sS'(re^{i\eta\phi})\dd r.
 \]
 After $r=e^x$, the integral is the Fourier transform in $\tau$ of
-$e^{(c+1)x}S'(e^{x+i\eta\phi})$. This function and each fixed number of its $x$-derivatives are integrable uniformly for $u\leq c\leq v$. At $-\infty$ use arbitrary-order derivative flatness; at $+\infty$ use faster-than-exponential decay in $x$. Repeated integration by parts gives arbitrary inverse powers of $1+|\tau|$, while the prefactor has modulus $e^{-\phi|\tau|}$. Bounded $\tau$ follows directly from the convergent integral. Finally use~\eqref{eq:G}.
+$e^{(c+1)x}S'(e^{x+i\eta\phi})$. This function and each fixed number of its $x$-derivatives are integrable uniformly for $u\leq c\leq v$. At $-\infty$ use arbitrary-order derivative flatness; at $+\infty$ use faster-than-exponential decay in $x$. Repeated integration by parts gives arbitrary inverse powers of $1+|\tau|$, while the prefactor has modulus $e^{-\phi|\tau|}$. Bounded $\tau$ follows directly from the convergent integral. Finally use~\eqref{oep:eq:G}.
 \end{proof}
 
 The signed logarithm of the Euler product, specified by its absolutely convergent logarithmic series, is
-\begin{equation}\label{eq:H}
+\begin{equation}\label{oep:eq:H}
  H(w)=\sum_{k\geq1}\eps(k)\log(1-e^{-kw})^{-1}
      =\sum_{\ell\geq1}\frac{S(\ell w)-1}{\ell}.
 \end{equation}
 Mellin inversion, initially on a vertical line $\Re s=c>1$, yields
-\begin{equation}\label{eq:Hinversion}
+\begin{equation}\label{oep:eq:Hinversion}
  H(w)=\frac1{2\pi i}\int_{c-i\infty}^{c+i\infty}
             G(s)\zeta(s+1)w^{-s}\dd s.
 \end{equation}
@@ -215,20 +443,116 @@ Absolute convergence justifies the initial interchange. By $D(0)=-1$, $D'(0)=d$,
 \]
 The residue after multiplication by $w^{-s}$ is $\log w+d$. There are no other poles. Indeed $G$ is holomorphic away from zero and $\zeta(s+1)$ has no other pole.
 
-Fix $|\arg w|\leq\theta<\phi<\pi/2$. Classical polynomial bounds for $\zeta$ in fixed vertical strips, together with Lemma~\ref{lem:vertical}, bound the integrand on the horizontal edges by a polynomial times $e^{-(\phi-\theta)|\Im s|}$. The horizontal integrals vanish as their heights tend to infinity. Moving the contour to $\Re s=-L$ therefore proves, for every fixed $L>0$,
-\begin{equation}\label{eq:Hflat}
+Fix $|\arg w|\leq\theta<\phi<\pi/2$. Classical polynomial bounds for $\zeta$ in fixed vertical strips, together with Lemma~\ref{oep:lem:vertical}, bound the integrand on the horizontal edges by a polynomial times $e^{-(\phi-\theta)|\Im s|}$. The horizontal integrals vanish as their heights tend to infinity. Moving the contour to $\Re s=-L$ therefore proves, for every fixed $L>0$,
+\begin{equation}\label{oep:eq:Hflat}
  H(w)=\log w+d+\OO_{L,\theta}(|w|^L).
 \end{equation}
-In particular, no negative-integer residues were omitted. Taking the constant term at $s=0$ in the real integral~\eqref{eq:G} also gives the convergent formula
-\begin{equation}\label{eq:dquadrature}
+In particular, no negative-integer residues were omitted. Taking the constant term at $s=0$ in the real integral~\eqref{oep:eq:G} also gives the convergent formula
+\begin{equation}\label{oep:eq:dquadrature}
  d=-\gamma+\int_0^1\frac{S(t)}t\dd t
                  +\int_1^\infty\frac{S(t)-1}t\dd t.
 \end{equation}
 This identity explains a convenient numerical evaluation, but numerical quadrature by itself supplies no certified enclosure for $d$.
 
+\begin{remark}[{[write]} Relation to the Thue--Morse atlas, 6~October 2026]\label{oep:rem:atlas}
+The current atlas (path in Section~\ref{oep:sec:provenance}) writes
+$\mathcal E(t)=\prod_{j\ge0}(1-e^{-2^jt})$, which is $S(t)$ at real $t>0$,
+and, for $a>0$, $D(s,a)=\sum_{n\ge0}\eps_n(n+a)^{-s}$, a \emph{shifted}
+series ($\eps_n=\eps(n)$).
+
+\emph{(a) What corresponds.} At real $w$, Lemma~\ref{oep:lem:flatness} with
+$q=0$ is the flatness \file{p1:eq:superpolynomial-flatness} of
+\file{p1:thm:boundary-flatness}; the atlas proves it, with the two-sided
+logarithmic asymptotic, for real $t$ only, and the bound
+$|S(w)|\le C_\theta\rho^k2^{k(k-1)/2}$ above is the sector form of the upper
+half of its proof. The atlas continues $D(s,a)$ for $a>0$ by the Mellin kernel
+$e^{-at}\mathcal E(t)$ (\file{p1:thm:Mellin-integral}) and proves
+$D(-r,a)=0$ for all integers $r\ge0$
+(\file{p1:cor:Dirichlet-trivial-zeros}). The unshifted $D(s)$ of this report
+is not a member of that family: its kernel is $S(t)-1$ in~\eqref{oep:eq:G},
+and its value at $s=0$ is $-1$, not $0$. The sector form of
+Lemma~\ref{oep:lem:flatness}, its derivative bounds,
+Lemma~\ref{oep:lem:vertical} and~\eqref{oep:eq:Hflat} have no counterpart
+in the atlas.
+
+\emph{(b) A bridge.} For every $s\in\mathbb C$,
+\[
+ D\bigl(s,\tfrac12\bigr)=(1-2^s)\,D(s).
+\]
+\emph{Proof.} For $\Re s>1$ all series converge absolutely. Split $k\ge1$ by
+parity: the even $k=2j$, $j\ge1$, contribute $\sum_{j\ge1}\eps(j)(2j)^{-s}
+=2^{-s}D(s)$, since $\eps(2j)=\eps(j)$; the odd $k=2j+1$, $j\ge0$,
+contribute $-\sum_{j\ge0}\eps(j)(2j+1)^{-s}=-2^{-s}D(s,\tfrac12)$, since
+$\eps(2j+1)=-\eps(j)$. Hence $(1-2^{-s})D(s)=-2^{-s}D(s,\tfrac12)$, and
+multiplying by $-2^s$ gives the identity for $\Re s>1$. Both sides are
+entire, the left by \file{p1:thm:Mellin-integral} and the right
+by~\eqref{oep:eq:G}--\eqref{oep:eq:Dvalues}, so the identity holds on
+$\mathbb C$. \qed
+
+Consequences: differentiating once and twice at $s=0$ and using
+$D(0)=-1$, $D'(0)=d$,
+\[
+ D\bigl(0,\tfrac12\bigr)=0,\qquad
+ \partial_sD\bigl(s,\tfrac12\bigr)\big|_{s=0}=\log2,\qquad
+ \partial_s^2D\bigl(s,\tfrac12\bigr)\big|_{s=0}=\log^22-2d\log2 ;
+\]
+the first agrees with the atlas, and the third expresses the constant $d$ of
+this report through the atlas's continuation. Moreover
+$D(2\pi ik/\log2,\tfrac12)=0$ for every integer~$k$, because $D$ is entire.
+(Numerically, at the write: the Mellin value
+$\int_0^\infty e^{-t/2}S(t)\,\dd t/t$, which is the first derivative
+because $1/\Gamma(s)=s+\OO(s^2)$, equals $\log2$ to 20 digits, and the
+second derivative, computed from the Mellin integral, agrees with
+$\log^22-2d\log2=1.156203063244203$ to 16 digits; mpmath, uncertified.)
+
+\emph{(c) A second route to~\eqref{oep:eq:Dvalues}.} Three atlas statements,
+with its zeros at $s=0$, give the value $D'(0,\tfrac12)=\log2$ without this
+report. The dyadic
+equation $D(s,1)=2^{-s}\bigl(D(s,\tfrac12)-D(s,1)\bigr)$
+(\file{p1:thm:Dirichlet-dyadic} at $a=1$), differentiated at $s=0$ with
+$D(0,\tfrac12)=D(0,1)=0$, gives $D'(0,1)=D'(0,\tfrac12)-D'(0,1)$. The
+derivative bridge $\log G(a,b)=D'(0,b)-D'(0,a)$ (\file{p1:cor:G-Dirichlet})
+at $(a,b)=(\tfrac12,1)$, with the Woods--Robbins product
+$G(\tfrac12,1)=\prod_{n\ge0}\bigl((2n+1)/(2n+2)\bigr)^{\eps_n}=1/\sqrt2$
+(\file{p1:thm:Woods-Robbins}), gives $D'(0,1)-D'(0,\tfrac12)=-\tfrac12\log2$.
+Hence $D'(0,1)=\tfrac12\log2$ and $D'(0,\tfrac12)=\log2$. By the identity~(b) on
+$\Re s>1$ alone, $D(s,\tfrac12)/(1-2^s)$ is the meromorphic continuation of
+$D$; letting $s\to0$ gives
+$D(0)=D'(0,\tfrac12)/(-\log2)=-1$. Likewise $D(-k)=D(-k,\tfrac12)/(1-2^{-k})=0$
+for $k\ge1$ by \file{p1:cor:Dirichlet-trivial-zeros}. This reproves both
+values of~\eqref{oep:eq:Dvalues} from the atlas and the elementary
+identity~(b); it does not touch~$d$, which (b) only relates to the second
+derivative above. The write did not find~(b) or the value
+$D'(0,\tfrac12)=\log2$ stated in the atlas; both are elementary, and no
+novelty is claimed.
+
+{\raggedright\emph{(d) Formal status.} Formal in Lean (statements read at the commit of
+this write): the effective real-axis bounds
+$2^{\binom m2}(t/2)^m\mathcal E(\tfrac12)\le\mathcal E(t)\le2^{\binom m2}t^m$
+(\file{Fabius.le_lacunaryExpProduct}, \file{Fabius.lacunaryExpProduct_le},
+for $\mathcal E=$ \file{Fabius.lacunaryExpProduct}); the entire continuation
+of $D(s,a)$, $a>0$ (\file{Fabius.dirichletMellinContinuation},
+\file{Fabius.dirichletMellinContinuation_differentiable}, agreement for real
+$s>1$ by \file{Fabius.dirichletMellinContinuation_eq}); its zeros, in the
+form \file{Fabius.tendsto_dirichletMellinContinuation_neg_natCast} (the
+evaluations \file{Fabius.dirichletMellinContinuation_neg_natCast} and
+\file{_zero} hold by Mathlib's conventions $\Gamma(-r)=0$, $0^{-1}=0$ alone,
+as their docstrings warn); the dyadic equation at every complex~$s$
+(\file{Fabius.dirichletMellinContinuation_dyadic}); the derivative bridge
+(\file{Fabius.mpLimit_eq_deriv_sub}); $\log G(\tfrac12,1)=-\tfrac12\log2$
+(\file{Fabius.mpLimit_one_half_one}); and the evil and odious enumerators of
+\file{p1:thm:evil-odious} (\file{Fabius.evilEnum}, \file{Fabius.odiousEnum}).
+Not formal: the combination in~(c), which has not been written in Lean; the
+identity~(b); the unshifted $D(s)$, its continuation, values and
+derivative~$d$; the evaluation~\eqref{oep:eq:Q}; the sector and derivative
+forms of flatness; and everything in
+Sections~3--\ref{oep:sec:inverse}. This report gains no formal status from
+the atlas.\par}
+\end{remark}
+
 \section{Local product models}
 Let $P(w)=\prod_{k\geq1}(1-e^{-kw})^{-1}$ be the ordinary partition product. The classical Dedekind eta transformation \cite{eta} gives the exact identity
-\begin{equation}\label{eq:eta}
+\begin{equation}\label{oep:eq:eta}
  P(w)=\sqrt{\frac w{2\pi}}\exp\!\left(\frac{\pi^2}{6w}-\frac w{24}\right)
                        P(4\pi^2/w),\qquad\Re w>0.
 \end{equation}
@@ -236,23 +560,23 @@ Since $\Re(1/w)\geq\cos\theta/|w|$ in a fixed acute sector, the last factor is $
 \[
  \log F_\sigma(w)=\tfrac12\log P(w)+\tfrac\sigma2 H(w).
 \]
-Combining~\eqref{eq:Hflat} and~\eqref{eq:eta}, and exponentiating a flat remainder, proves
-\begin{equation}\label{eq:localunrestricted}
+Combining~\eqref{oep:eq:Hflat} and~\eqref{oep:eq:eta}, and exponentiating a flat remainder, proves
+\begin{equation}\label{oep:eq:localunrestricted}
  F_\sigma(w)=C_\sigma w^{\beta_\sigma}
                \exp(A/w-w/48)\{1+\OO_{L,\theta}(|w|^L)\}
 \end{equation}
 for every fixed $L$. In particular $C_-=(2\pi)^{-1/4}\sqrt Q$ and $C_+=(2\pi)^{-1/4}/\sqrt Q$, consistent with the signs in the part indicator.
 
-For fixed $r=m+1$, both $w$ and $rw$ lie in the same acute sector and tend to zero. Divide their expansions in~\eqref{eq:capproduct}; the denominator's relative factor tends to one. This gives
-\begin{equation}\label{eq:localcapped}
+For fixed $r=m+1$, both $w$ and $rw$ lie in the same acute sector and tend to zero. Divide their expansions in~\eqref{oep:eq:capproduct}; the denominator's relative factor tends to one. This gives
+\begin{equation}\label{oep:eq:localcapped}
  F_{\sigma,m}(w)=r^{-\beta_\sigma}
        \exp(a_m/w+mw/48)\{1+\OO_{m,L,\theta}(|w|^L)\}.
 \end{equation}
 Both $d$ and the power of $w$ have canceled. These local identities alone would not prove coefficient asymptotics: uniform bounds on the rest of the Cauchy contour are essential.
 
-\section{Control of every Fourier arc}\label{sec:arcs}
+\section{Control of every Fourier arc}\label{oep:sec:arcs}
 We use a deliberately nonoptimal but uniform estimate. For $|z|=1$,
-\begin{equation}\label{eq:pairbound}
+\begin{equation}\label{oep:eq:pairbound}
  |(1-z)(1-z^2)|\leq\frac{16}{3\sqrt3}=:B<4.
 \end{equation}
 Indeed, the left side is $8u(1-u^2)$ for $u=|\cos(\arg(z)/2)|\in[0,1]$; its maximum occurs at $u=1/\sqrt3$. Pair adjacent factors in the length-$2^J$ Thue--Morse polynomial. An unpaired factor costs at most two. With
@@ -260,11 +584,11 @@ Indeed, the left side is $8u(1-u^2)$ for $u=|\cos(\arg(z)/2)|\in[0,1]$; its maxi
  \alpha=\frac{\log B}{\log4}<1,
 \]
 its supremum on the unit circle is $\OO(2^{\alpha J})$. On each aligned dyadic block of length $2^J$, the signs are those of the initial block multiplied by one sign; the Fourier phase adds only a unimodular factor. The binary decomposition of any prefix into such aligned blocks, with at most one of each length, gives
-\begin{equation}\label{eq:fourierprefix}
+\begin{equation}\label{oep:eq:fourierprefix}
  \sup_\theta\left|\sum_{0\leq k<N}\eps(k)e^{ik\theta}\right|=\OO(N^\alpha).
 \end{equation}
 Abel summation then implies, uniformly for real $\theta$ and $0<t\leq1$,
-\begin{equation}\label{eq:fourierabel}
+\begin{equation}\label{oep:eq:fourierabel}
  \sum_{k\geq1}\eps(k)e^{-kt}e^{ik\theta}=\OO(t^{-\alpha}).
 \end{equation}
 The removal of $k=0$ costs only one. No optimal Gelfond exponent is needed.
@@ -274,29 +598,29 @@ For the allowed set write
  U_\sigma(t,\theta)=\sum_{k\in E_\sigma}e^{-kt}(1-\cos(k\theta)).
 \]
 The all-integer counterpart, with $q=e^{-t}$, has the exact expression
-\begin{equation}\label{eq:Uall}
+\begin{equation}\label{oep:eq:Uall}
  U_{\rm all}(t,\theta)=
  \frac{q(1+q)(1-\cos\theta)}
  {(1-q)\bigl((1-q)^2+2q(1-\cos\theta)\bigr)}.
 \end{equation}
-For $0\leq|\theta|\leq\pi$ it increases with $|\theta|$, and at $|\theta|=t$ it is asymptotic to $1/(2t)$. By~\eqref{eq:fourierabel},
+For $0\leq|\theta|\leq\pi$ it increases with $|\theta|$, and at $|\theta|=t$ it is asymptotic to $1/(2t)$. By~\eqref{oep:eq:fourierabel},
 \[
  U_\sigma(t,\theta)=\tfrac12U_{\rm all}(t,\theta)+\OO(t^{-\alpha}).
 \]
 Since $\alpha<1$, for all sufficiently small $t$ this proves
-\begin{equation}\label{eq:Uouter}
+\begin{equation}\label{oep:eq:Uouter}
  U_\sigma(t,\theta)\geq c/t\qquad(t\leq|\theta|\leq\pi).
 \end{equation}
 This range includes every rational angle and every competing root of unity.
 
 For $|\theta|\leq t$, restrict the sum to $1/(4t)\leq k\leq1/(2t)$. This interval contains at least $c/t$ complete aligned pairs $\{2j,2j+1\}$ for small $t$, each containing exactly one allowed integer. For those selected terms, $e^{-kt}\geq e^{-1/2}$, $k\geq1/(4t)$, and $|k\theta|\leq1/2$. The elementary inequality $1-\cos x\geq c x^2$ on this compact interval yields
-\begin{equation}\label{eq:Uinner}
+\begin{equation}\label{oep:eq:Uinner}
  U_\sigma(t,\theta)\geq c\theta^2/t^3\qquad(|\theta|\leq t).
 \end{equation}
 The constants can be chosen positive for either sign.
 
 For unrestricted products, the absolutely convergent logarithmic series gives
-\begin{align}\label{eq:unresloss}
+\begin{align}\label{oep:eq:unresloss}
  \log\left|\frac{F_\sigma(t-i\theta)}{F_\sigma(t)}\right|
  &=-\sum_{k\in E_\sigma}\sum_{\ell\geq1}
        \frac{e^{-\ell kt}(1-\cos(\ell k\theta))}{\ell}
@@ -309,39 +633,39 @@ For a capped factor, put $Z=\sum_{j=0}^me^{-jkt}$ and $p_j=e^{-jkt}/Z$. Its norm
  &\leq1-2p_0p_1(1-\cos(k\theta)).
 \end{align*}
 Here $p_0p_1\geq e^{-kt}/(m+1)^2$, because $Z\leq m+1$. The right side is nonnegative and $\sqrt{1-2u}\leq e^{-u}$ on $0\leq2u\leq1$. Multiplication over the allowed parts proves
-\begin{equation}\label{eq:caploss}
+\begin{equation}\label{oep:eq:caploss}
  \left|\frac{F_{\sigma,m}(t-i\theta)}{F_{\sigma,m}(t)}\right|
  \leq\exp\!\left(-\frac{U_\sigma(t,\theta)}{(m+1)^2}\right).
 \end{equation}
 In particular this argument never divides by a potentially small numerator factor near a root of unity.
 
-Fix $0<\delta<1/2$ and set $h=t^{3/2-\delta}=o(t)$. Equations~\eqref{eq:Uouter}--\eqref{eq:caploss} imply that the entire region $h\leq|\theta|\leq\pi$ is suppressed by $\exp(-c_m t^{-2\delta})$ relative to the positive radial value. The saddle integral has scale that radial value times $t^{3/2}$, so the relative contribution of these arcs is at most
-\begin{equation}\label{eq:minorrelative}
+Fix $0<\delta<1/2$ and set $h=t^{3/2-\delta}=o(t)$. Equations~\eqref{oep:eq:Uouter}--\eqref{oep:eq:caploss} imply that the entire region $h\leq|\theta|\leq\pi$ is suppressed by $\exp(-c_m t^{-2\delta})$ relative to the positive radial value. The saddle integral has scale that radial value times $t^{3/2}$, so the relative contribution of these arcs is at most
+\begin{equation}\label{oep:eq:minorrelative}
  \OO\!\left(t^{-3/2}e^{-c_m t^{-2\delta}}\right).
 \end{equation}
 This remains smaller than every power of $t$. For unrestricted products the constant need not depend on $m$. This proves the required global arc control rather than only a local saddle approximation.
 
-\section{The completed Hankel and Bessel comparison}\label{sec:bessel}
+\section{The completed Hankel and Bessel comparison}\label{oep:sec:bessel}
 We now isolate a coefficient argument that applies to both products. Suppose $F(w)=\sum_{n\geq0}f(n)e^{-nw}$ is one of the products above and, for every fixed $L$, has the local model
-\begin{equation}\label{eq:generalmodel}
+\begin{equation}\label{oep:eq:generalmodel}
  F(w)=Cw^\beta e^{a/w+\lambda w}\{1+\OO_L(|w|^L)\},
  \qquad C>0,\ a>0,\ \beta,\lambda\in\Reals.
 \end{equation}
 Assume the arc bound just proved. Put $N=n+\lambda$ and $t=\sqrt{a/N}$ for sufficiently large $n$. In the Cauchy integral under $q=e^{-w}$, the central segment is modeled by
-\begin{equation}\label{eq:segment}
+\begin{equation}\label{oep:eq:segment}
  \frac{C}{2\pi i}\int_{t-ih}^{t+ih}w^\beta e^{a/w+Nw}\dd w,
  \qquad h=t^{3/2-\delta}.
 \end{equation}
 For $w=t+i\theta$,
-\begin{equation}\label{eq:gaussian}
+\begin{equation}\label{oep:eq:gaussian}
  \Re(a/w+Nw)=\frac{2a}t-\frac{a\theta^2}{t(t^2+\theta^2)}.
 \end{equation}
 Since $h=o(t)$, the modulus is bounded by $e^{2a/t-c\theta^2/t^3}$ on this segment, while $|w^\beta|=\OO(t^\beta)$. Its absolute integral is therefore
-\begin{equation}\label{eq:absolutegaussian}
+\begin{equation}\label{oep:eq:absolutegaussian}
  \OO\!\left(e^{2a/t}t^{\beta+3/2}\right).
 \end{equation}
-Uniform flatness of the relative error in~\eqref{eq:generalmodel} gives an error
-\begin{equation}\label{eq:localerror}
+Uniform flatness of the relative error in~\eqref{oep:eq:generalmodel} gives an error
+\begin{equation}\label{oep:eq:localerror}
  \OO_L\!\left(e^{2a/t}t^{\beta+3/2+L}\right).
 \end{equation}
 This is an absolute Gaussian majorant: no cancellation of an oscillatory integral is being used to estimate the error.
@@ -349,31 +673,31 @@ This is an absolute Gaussian majorant: no cancellation of an oscillatory integra
 Let $\Gamma_t$ be the Hankel contour coming from negative infinity just below the negative real axis to $-t$, traveling counterclockwise once around the circle $|w|=t$ from argument $-\pi$ to $\pi$, and returning above the cut to negative infinity. Expand $e^{a/w}$ along this contour, on which $|w|\geq t$. Termwise integration is justified by uniform domination of this exponential series and by the decay of $e^{Nw}$ at negative infinity. The reciprocal-gamma Hankel formula \cite{dlmfgamma} gives
 \begin{align}
  \frac{C}{2\pi i}\int_{\Gamma_t}w^\beta e^{a/w+Nw}\dd w
- &=C\sum_{k\geq0}\frac{a^kN^{k-\beta-1}}{k!\,\Gamma(k-\beta)}\label{eq:hankelser}\\
+ &=C\sum_{k\geq0}\frac{a^kN^{k-\beta-1}}{k!\,\Gamma(k-\beta)}\label{oep:eq:hankelser}\\
  &=C\left(\frac aN\right)^{(\beta+1)/2}
-        I_{-\beta-1}(2\sqrt{aN})=:\calM(n).\label{eq:Mn}
+        I_{-\beta-1}(2\sqrt{aN})=:\calM(n).\label{oep:eq:Mn}
 \end{align}
 The second equality is the defining power series \cite{dlmfbessel}. The identity is valid for every fixed real $\beta$; zeros of $1/\Gamma(k-\beta)$ cause no problem, including at $\beta=0$.
 
-Here are explicit bounds completing the contour, so that~\eqref{eq:Mn} does not rely on a formal identification of saddle coefficients. Deform the vertical segment to the positive circular arc with the same endpoint imaginary parts, together with two horizontal connectors. Put $\rho=h/t$ and $v=\Re(w)/t$ on either connector. Then
+Here are explicit bounds completing the contour, so that~\eqref{oep:eq:Mn} does not rely on a formal identification of saddle coefficients. Deform the vertical segment to the positive circular arc with the same endpoint imaginary parts, together with two horizontal connectors. Put $\rho=h/t$ and $v=\Re(w)/t$ on either connector. Then
 \[
  \sqrt{1-\rho^2}\leq v\leq1,
 \]
 and the exact loss in the real exponent satisfies
-\begin{equation}\label{eq:connector}
+\begin{equation}\label{oep:eq:connector}
  2-\left(\frac{v}{v^2+\rho^2}+v\right)
  =\frac{(2-v)\rho^2-v(1-v)^2}{v^2+\rho^2}\geq\rho^2/3
 \end{equation}
 for sufficiently small $\rho$. Hence the connectors have exponent at most $2a/t-ch^2/t^3$. On the circle $w=te^{i\psi}$ the real exponent is exactly $2a\cos\psi/t$. Outside the central circular arc it has the same lower bound on its loss. The circle and connectors have only polynomial lengths and power factors in $t$, so their omitted contributions are relatively smaller than every power of $t$, since $h^2/t^3=t^{-2\delta}$.
 
-On the negative rays $w=-x\pm i0$, $x\geq t$, the absolute exponential is $e^{-a/x-Nx}\leq e^{-Nx}$. Its integral against $x^\beta$ is bounded by a polynomial in $t$ times $e^{-a/t}$, for example by scaling $x=tu$ and estimating the tail $u\geq1$. These contributions too are smaller than every power relative to~\eqref{eq:absolutegaussian}. All contour deformations avoid zero and the cut; the model is holomorphic in the intervening region.
+On the negative rays $w=-x\pm i0$, $x\geq t$, the absolute exponential is $e^{-a/x-Nx}\leq e^{-Nx}$. Its integral against $x^\beta$ is bounded by a polynomial in $t$ times $e^{-a/t}$, for example by scaling $x=tu$ and estimating the tail $u\geq1$. These contributions too are smaller than every power relative to~\eqref{oep:eq:absolutegaussian}. All contour deformations avoid zero and the cut; the model is holomorphic in the intervening region.
 
-Combining~\eqref{eq:minorrelative}, \eqref{eq:localerror}, and this contour completion shows that for each fixed $L>0$,
+Combining~\eqref{oep:eq:minorrelative}, \eqref{oep:eq:localerror}, and this contour completion shows that for each fixed $L>0$,
 \[
  f(n)-\calM(n)=\OO_L\!\left(e^{2a/t}t^{\beta+3/2+L}\right).
 \]
 The usual positive-argument Bessel expansion \cite{dlmfasymptotic} gives a positive nonzero leading term of order $e^{2a/t}t^{\beta+3/2}$. Dividing by it proves the relative flat comparison
-\begin{equation}\label{eq:generalflat}
+\begin{equation}\label{oep:eq:generalflat}
  f(n)=\calM(n)\{1+\OO_R(n^{-R})\}
  \qquad\text{for each fixed }R>0.
 \end{equation}
@@ -386,108 +710,108 @@ For completeness, the fixed-order Bessel expansion is
  \frac{(-1)^j\prod_{r=1}^{j}(4\nu^2-(2r-1)^2)}{j!(8z)^j}
           +\OO_J(z^{-J})\right\}\quad(z\to+\infty).
 \]
-Its coefficients are also recorded in \cite{dlmfcoeff}. Substitution in~\eqref{eq:Mn} yields
-\begin{equation}\label{eq:generalseries}
+Its coefficients are also recorded in \cite{dlmfcoeff}. Substitution in~\eqref{oep:eq:Mn} yields
+\begin{equation}\label{oep:eq:generalseries}
  f(n)=K N^{-p}e^{b\sqrt N}
  \left\{\sum_{j=0}^{J-1}B_j(\beta,a)N^{-j/2}+\OO_J(N^{-J/2})\right\},
 \end{equation}
 where
-\begin{equation}\label{eq:pkb}
+\begin{equation}\label{oep:eq:pkb}
  p=\frac\beta2+\frac34,\qquad b=2\sqrt a,\qquad
  K=\frac{Ca^{\beta/2+1/4}}{2\sqrt\pi}.
 \end{equation}
 The prefactor follows directly from $\sqrt{2\pi(2\sqrt{aN})}=2\sqrt\pi(aN)^{1/4}$.
 
-Take $(a,\beta,\lambda,C)=(A,\beta_\sigma,-1/48,C_\sigma)$ to prove Theorem~\ref{thm:unrestricted}. Take $(a_m,0,m/48,r^{-\beta_\sigma})$ to prove the two coefficient statements of Theorem~\ref{thm:capped}. Their Bessel models differ only by the factor
+Take $(a,\beta,\lambda,C)=(A,\beta_\sigma,-1/48,C_\sigma)$ to prove Theorem~\ref{oep:thm:unrestricted}. Take $(a_m,0,m/48,r^{-\beta_\sigma})$ to prove the two coefficient statements of Theorem~\ref{oep:thm:capped}. Their Bessel models differ only by the factor
 \[
  \frac{r^{-\beta_-}}{r^{-\beta_+}}=r.
 \]
-The denominator is positive eventually by its leading equivalent; dividing the relative flat comparisons proves~\eqref{eq:ratiotheorem}. This completes the proofs of the principal results.
+The denominator is positive eventually by its leading equivalent; dividing the relative flat comparisons proves~\eqref{oep:eq:ratiotheorem}. This completes the proofs of the principal results.
 
-\section{Smooth inverses and ordinary integer thresholds}\label{sec:inverse}
+\section{Smooth inverses and ordinary integer thresholds}\label{oep:sec:inverse}
 Use $(a,\beta,\lambda,C)$ from either specialization above and define for sufficiently large real $x$
-\begin{equation}\label{eq:smoothmodel}
+\begin{equation}\label{oep:eq:smoothmodel}
  \calM(x)=C\left(\frac{a}{x+\lambda}\right)^{(\beta+1)/2}
                  I_{-\beta-1}(2\sqrt{a(x+\lambda)}).
 \end{equation}
 This is a specified real function, not a proposed interpolation of all initial partition counts. It is eventually positive, and the Bessel derivative identity or differentiated fixed-order asymptotics give
-\begin{equation}\label{eq:modelderivative}
+\begin{equation}\label{oep:eq:modelderivative}
  \frac{\calM'(x)}{\calM(x)}
  =\frac{\sqrt a}{\sqrt{x+\lambda}}+\OO(x^{-1})>0
 \end{equation}
 eventually. Choose a fixed tail on which positivity and strict increase hold. For large $y$, let $x_*(y)$ be the unique inverse of $\calM$ on that tail. Every such choice has the same inverse once $y$ is large enough.
 
-With $p,b,K$ as in~\eqref{eq:pkb}, define
-\begin{equation}\label{eq:v0}
+With $p,b,K$ as in~\eqref{oep:eq:pkb}, define
+\begin{equation}\label{oep:eq:v0}
  v_0=-\frac{2p}{b}\,
  W_{-1}\!\left(-\frac{b}{2p}\left(\frac Ky\right)^{1/(2p)}\right).
 \end{equation}
 All our families have $p>0$. For sufficiently large $y$, this is the large positive solution of
-\begin{equation}\label{eq:v0equation}
+\begin{equation}\label{oep:eq:v0equation}
  bv_0-2p\log v_0+\log K=\log y.
 \end{equation}
 The lower real Lambert branch $W_{-1}$, rather than $W_0$, selects this solution \cite{lambert}. In particular $v_0\sim(\log y)/b$.
 
-\begin{theorem}[Fixed-order inverse expansions]\label{thm:inverse}
+\begin{theorem}[Fixed-order inverse expansions]\label{oep:thm:inverse}
 Let $\ell_j$ be the formal coefficients determined by
-\begin{equation}\label{eq:logseries}
+\begin{equation}\label{oep:eq:logseries}
  \log\!\left(\sum_{j\geq0}B_j(\beta,a)z^j\right)
        =\sum_{j\geq1}\ell_jz^j.
 \end{equation}
 This is a formal identity used only to finite order. Substitution of
 $v=\sqrt{x_*(y)+\lambda}=v_0+\sum_{j\geq1}c_jv_0^{-j}$ in
-\begin{equation}\label{eq:inverseformal}
+\begin{equation}\label{oep:eq:inverseformal}
  bv-2p\log v+\log K+\sum_{j\geq1}\ell_jv^{-j}=\log y
 \end{equation}
 uniquely determines each $c_j$ recursively. More explicitly, with a formal variable $t$ and
 $\delta_{<m}(t)=\sum_{j=1}^{m-1}c_jt^j$, the recurrence is
-\begin{equation}\label{eq:inverserecurrence}
+\begin{equation}\label{oep:eq:inverserecurrence}
  c_m=-\frac1b[t^m]\left\{-2p\log(1+t\delta_{<m}(t))
  +\sum_{j=1}^{m}\ell_jt^j(1+t\delta_{<m}(t))^{-j}\right\}.
 \end{equation}
 For every fixed $J\geq1$, put $\delta_J(v_0)=\sum_{j=1}^{J}c_jv_0^{-j}$. Then
 \begin{align}
- v&=v_0+\delta_J(v_0)+\OO(v_0^{-J-1}),\label{eq:inversevJ}\\
- x_*(y)&=(v_0+\delta_J(v_0))^2-\lambda+\OO(v_0^{-J}).\label{eq:inversexJ}
+ v&=v_0+\delta_J(v_0)+\OO(v_0^{-J-1}),\label{oep:eq:inversevJ}\\
+ x_*(y)&=(v_0+\delta_J(v_0))^2-\lambda+\OO(v_0^{-J}).\label{oep:eq:inversexJ}
 \end{align}
 In particular, with $\ell_1=B_1(\beta,a)$,
 \begin{align}
- v&=v_0-\frac{\ell_1}{bv_0-2p}+\OO(v_0^{-2}),\label{eq:vinverse}\\
- x_*(y)&=v_0^2-\lambda-\frac{2\ell_1}{b}+\OO(v_0^{-1}).\label{eq:xinverse}
+ v&=v_0-\frac{\ell_1}{bv_0-2p}+\OO(v_0^{-2}),\label{oep:eq:vinverse}\\
+ x_*(y)&=v_0^2-\lambda-\frac{2\ell_1}{b}+\OO(v_0^{-1}).\label{oep:eq:xinverse}
 \end{align}
 \end{theorem}
 \begin{proof}
-The logarithm of the fixed-order Bessel expansion, evaluated at $v=\sqrt{x+\lambda}$, gives~\eqref{eq:inverseformal} to any prescribed finite order with a remainder of that order. One may initially bracket $v$ around $v_0$ using the $\OO(v_0^{-1})$ correction and the derivative $b-2p/v$, which is bounded away from zero on the large branch; hence $v-v_0=\OO(v_0^{-1})$. Formal substitution is now legitimate to every fixed order. At each stage the next unknown coefficient occurs linearly with nonzero multiplier $b$, determining it uniquely. The residual of a fixed truncation, together with the derivative $b+\OO(v_0^{-1})$ of the exact logarithmic Bessel model, bounds its error by the mean-value theorem. Cancellation through $v_0^{-J}$ leaves a residual $\OO(v_0^{-J-1})$, giving~\eqref{eq:inversevJ}; squaring multiplies the error by $\OO(v_0)$ and gives~\eqref{eq:inversexJ}. The first correction solves $(b-2p/v_0)(v-v_0)+\ell_1/v_0=\OO(v_0^{-2})$, proving~\eqref{eq:vinverse}; squaring gives~\eqref{eq:xinverse}. This argument never assumes convergence of the full formal series.
+The logarithm of the fixed-order Bessel expansion, evaluated at $v=\sqrt{x+\lambda}$, gives~\eqref{oep:eq:inverseformal} to any prescribed finite order with a remainder of that order. One may initially bracket $v$ around $v_0$ using the $\OO(v_0^{-1})$ correction and the derivative $b-2p/v$, which is bounded away from zero on the large branch; hence $v-v_0=\OO(v_0^{-1})$. Formal substitution is now legitimate to every fixed order. At each stage the next unknown coefficient occurs linearly with nonzero multiplier $b$, determining it uniquely. The residual of a fixed truncation, together with the derivative $b+\OO(v_0^{-1})$ of the exact logarithmic Bessel model, bounds its error by the mean-value theorem. Cancellation through $v_0^{-J}$ leaves a residual $\OO(v_0^{-J-1})$, giving~\eqref{oep:eq:inversevJ}; squaring multiplies the error by $\OO(v_0)$ and gives~\eqref{oep:eq:inversexJ}. The first correction solves $(b-2p/v_0)(v-v_0)+\ell_1/v_0=\OO(v_0^{-2})$, proving~\eqref{oep:eq:vinverse}; squaring gives~\eqref{oep:eq:xinverse}. This argument never assumes convergence of the full formal series.
 \end{proof}
-For the unrestricted families, equation~\eqref{eq:xinverse} becomes
+For the unrestricted families, equation~\eqref{oep:eq:xinverse} becomes
 \begin{align}
- x_{*,-}(y)&=v_0^2+\frac1{48}+\frac{15}{16\pi^2}+\OO(v_0^{-1}),\label{eq:inverseodious}\\
- x_{*,+}(y)&=v_0^2+\frac1{48}+\frac{135}{16\pi^2}+\OO(v_0^{-1}),\label{eq:inverseevil}
+ x_{*,-}(y)&=v_0^2+\frac1{48}+\frac{15}{16\pi^2}+\OO(v_0^{-1}),\label{oep:eq:inverseodious}\\
+ x_{*,+}(y)&=v_0^2+\frac1{48}+\frac{135}{16\pi^2}+\OO(v_0^{-1}),\label{oep:eq:inverseevil}
 \end{align}
 with the corresponding $p$ and $K$ in each $v_0$. For a fixed cap,
-\begin{equation}\label{eq:inversecapped}
+\begin{equation}\label{oep:eq:inversecapped}
  x_{*,\sigma,m}(y)=v_0^2-\frac m{48}+\frac{3}{16a_m}+\OO(v_0^{-1}).
 \end{equation}
 The sign affects $K$ and hence $v_0$, even though the displayed constant correction for a fixed cap is shared.
 
 For any one of the exact counting sequences $f(n)$ define the ordinary first threshold
-\begin{equation}\label{eq:threshold}
+\begin{equation}\label{oep:eq:threshold}
  T(y)=\min\{n\geq0:f(n)\geq y\}.
 \end{equation}
 Since $f(n)\to\infty$, this minimum exists for every real $y>0$. For $0<y\leq1$, it is $0$. Small values of $f$ need not be monotone, notably for evil parts and for capped counts, so a finite computation must scan all indices in its stated range.
 
-\begin{proposition}[Eventual increase and rounding-aware enclosure]\label{prop:threshold}
+\begin{proposition}[Eventual increase and rounding-aware enclosure]\label{oep:prop:threshold}
 Every unrestricted or fixed-cap sequence in this report is strictly increasing for sufficiently large $n$. If $X_J(y)$ is a finite inverse expansion with
 $x_*(y)-X_J(y)=\OO((\log y)^{-q})$ for a prescribed fixed $q>0$, there are constants $C>0$ and $y_0$ such that, for $y\geq y_0$,
-\begin{equation}\label{eq:ceilenclosure}
+\begin{equation}\label{oep:eq:ceilenclosure}
  \left\lceil X_J(y)-\frac{C}{(\log y)^q}\right\rceil
  \leq T(y)\leq
  \left\lceil X_J(y)+\frac{C}{(\log y)^q}\right\rceil.
 \end{equation}
-The constant-order formulas~\eqref{eq:inverseodious}--\eqref{eq:inversecapped} permit $q=1$. More inverse terms permit every prescribed fixed $q$. Neither $C$ nor $y_0$ is numerically certified here.
+The constant-order formulas~\eqref{oep:eq:inverseodious}--\eqref{oep:eq:inversecapped} permit $q=1$. More inverse terms permit every prescribed fixed $q$. Neither $C$ nor $y_0$ is numerically certified here.
 \end{proposition}
 \begin{proof}
-The relative flat comparison with $R=1$, together with~\eqref{eq:modelderivative}, implies
+The relative flat comparison with $R=1$, together with~\eqref{oep:eq:modelderivative}, implies
 \[
  \frac{f(n+1)}{f(n)}
  =\frac{\calM(n+1)}{\calM(n)}\{1+\OO(n^{-1})\}
@@ -495,20 +819,86 @@ The relative flat comparison with $R=1$, together with~\eqref{eq:modelderivative
 \]
 for large $n$. Equivalently, three fixed coefficient terms with relative $\OO(n^{-3/2})$ remainder suffice; neither argument differentiates an uncontrolled discrete error.
 
-Choose $n_0$ past eventual increase and the required estimates. For $y>\max_{0\leq n<n_0}f(n)$, all initial indices are excluded, so the ordinary threshold agrees with the threshold on the monotone tail. Let $x=x_*(y)$. At integers near $x$,~\eqref{eq:generalflat} gives
-$\log f(n)-\log\calM(n)=\OO_R(x^{-R})$, while~\eqref{eq:modelderivative} is bounded above and below by positive multiples of $x^{-1/2}$. Choose a sufficiently large multiple of $x^{1/2-R}$ as a positive margin. At every relevant integer below $x$ by at least that margin, $f(n)<y$; at every integer above $x$ by at least the margin, $f(n)\geq y$. Monotonicity extends the conclusions to all earlier and later tail indices. Thus
+Choose $n_0$ past eventual increase and the required estimates. For $y>\max_{0\leq n<n_0}f(n)$, all initial indices are excluded, so the ordinary threshold agrees with the threshold on the monotone tail. Let $x=x_*(y)$. At integers near $x$,~\eqref{oep:eq:generalflat} gives
+$\log f(n)-\log\calM(n)=\OO_R(x^{-R})$, while~\eqref{oep:eq:modelderivative} is bounded above and below by positive multiples of $x^{-1/2}$. Choose a sufficiently large multiple of $x^{1/2-R}$ as a positive margin. At every relevant integer below $x$ by at least that margin, $f(n)<y$; at every integer above $x$ by at least the margin, $f(n)\geq y$. Monotonicity extends the conclusions to all earlier and later tail indices. Thus
 \[
  \lceil x-C_Rx^{1/2-R}\rceil\leq T(y)
      \leq\lceil x+C_Rx^{1/2-R}\rceil.
 \]
-Since $x\asymp(\log y)^2$, take $R$ large enough that this margin is bounded by the desired inverse-expansion uncertainty, and enlarge $C$ to include the latter. This proves~\eqref{eq:ceilenclosure}.
+Since $x\asymp(\log y)^2$, take $R$ large enough that this margin is bounded by the desired inverse-expansion uncertainty, and enlarge $C$ to include the latter. This proves~\eqref{oep:eq:ceilenclosure}.
 \end{proof}
 A bare ceiling of an asymptotic approximation is not justified when the approximation is close to an integer. Even an error tending to zero can change that ceiling. The exact bounded threshold routine in the companion uses integer counts and integer targets; it does not silently round a floating-point inverse. Its failure to find a threshold within the checked range means only that no index in that range attains the target.
 
-\section{Attribution and the scope of the source check}\label{sec:sources}
+\begin{remark}[{[write]} The inverse against the transseries volume, 6~October 2026]\label{oep:rem:transseries}
+The volume is
+\path{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/}.
+Put $v=\sqrt{x+\lambda}$, $\nu=-\beta-1$ and
+$\mathcal G(v)=\calM(v^2-\lambda)=Ca^{-\nu/2}v^{\nu}I_\nu(2\sqrt a\,v)$,
+so that $x_\ast(y)=\mathcal G^{-1}(y)^2-\lambda$.
+\begin{enumerate}
+\item[(a)] \emph{The core is an instance} of \file{p0:thm:lambert-core}
+ after the change of variable $v=\sqrt{x+\lambda}$:
+ equation~\eqref{oep:eq:v0equation} is that theorem's
+ $aX+b\log X=L$ with $(a,b,X,L):=(b,-2p,v_0,\log(y/K))$. Since $p>0$ its
+ logarithmic coefficient is negative, and the branch rule for that sign
+ gives the large solution, for $L$ above the threshold $L_c$ there, as
+ $(-2p/b)\,W_{-1}\bigl(-(b/2p)e^{-L/(2p)}\bigr)$, which
+ is~\eqref{oep:eq:v0}.
+\item[(b)] \emph{The coefficient recursion is an instance} of
+ \file{p0:thm:lambert-centered}(2)--(4) with $(a,b,Q):=(b,-2p,\sum_{j\ge1}\ell_jt^j)$
+ over $R=\Reals$: its $\Psi(t,u)=-\frac1b\bigl[-2p\log(1+tu)
+ +\sum_j\ell_jt^j(1+tu)^{-j}\bigr]$, and the coefficient of $t^m$ in
+ $\Psi(t,\delta_{<m}(t))$ is the right side of~\eqref{oep:eq:inverserecurrence},
+ so its $c_n$ are the $c_j$ of Theorem~\ref{oep:thm:inverse}; equivalently,
+ of \file{p0:thm:core-reversion} with $\Lambda=b$, $h=0$ and
+ $f(t,u)=-2p\log(1+tu)+\sum_j\ell_jt^j(1+tu)^{-j}$. The volume's
+ \file{p0:eq:c-bell} gives the $c_n$ in closed Bell-polynomial form.
+\item[(c)] \emph{The analytic statement~\eqref{oep:eq:inversevJ} is an
+ instance} of \file{p0:thm:lambert-centered}(5), applied to $\mathcal G$ on
+ a tail $[v_1,\infty)$ with the model data $(C,a,\alpha,b,\delta,Q):=
+ (K,b,1,-2p,1,\sum_j\ell_jt^j)$ of \file{p0:def:model}. The bound
+ \file{p0:eq:model-analytic} is the logarithm of the fixed-order Bessel
+ expansion. The derivative condition \file{p0:eq:model-derivative} reads
+ $(\log\mathcal G)'(v)=b-2p/v+\OO(v^{-2})$; proof: with $z=2\sqrt a\,v$, the
+ recurrence $I_\nu'(z)=I_{\nu-1}(z)-(\nu/z)I_\nu(z)$ (DLMF~10.29.2) gives
+ \[
+  (\log\mathcal G)'(v)=\frac\nu v+2\sqrt a\,\frac{I_\nu'(z)}{I_\nu(z)}
+  =2\sqrt a\,\frac{I_{\nu-1}(z)}{I_\nu(z)},
+ \]
+ and the expansion displayed in Section~\ref{oep:sec:bessel}, at the orders
+ $\mu=\nu$ and $\nu-1$ with two terms each, gives
+ $I_{\nu-1}(z)/I_\nu(z)=1+\bigl((4\nu^2-1)-(4(\nu-1)^2-1)\bigr)/(8z)+\OO(z^{-2})
+ =1+(2\nu-1)/(2z)+\OO(z^{-2})$; hence
+ $(\log\mathcal G)'(v)=b+(2\nu-1)/(2v)+\OO(v^{-2})$, and
+ $(2\nu-1)/2=-\beta-\tfrac32=-2p$. \qed\ The same expansion shows that
+ $\mathcal G$ is positive and strictly increasing on a tail, and it
+ sharpens~\eqref{oep:eq:modelderivative} to
+ $\calM'(x)/\calM(x)=\sqrt a/\sqrt{x+\lambda}-p/(x+\lambda)+\OO(x^{-3/2})$.
+ Part~(5) then gives $\mathcal G^{-1}(y)=v_0+\sum_{n\le J}c_nv_0^{-n}
+ +\OO(v_0^{-J-1})$, which is~\eqref{oep:eq:inversevJ};
+ \eqref{oep:eq:inversexJ} follows by squaring, as in the proof of
+ Theorem~\ref{oep:thm:inverse}. The source proves the theorem directly; its
+ mean-value step is the argument of \file{p0:thm:backward-error}.
+\item[(d)] \emph{Proposition~\ref{oep:prop:threshold} is not an instance as
+ proved, only an analogue.} For $y$ above $\max_{n<n_1}f(n)$, with $n_1$ past
+ eventual increase, $T(y)$ is the integer staircase $N_\ast(y)$ of
+ \file{p0:def:three-inverses}(1) for $A_n=f(n)$. \file{p0:thm:staircase}(1)
+ writes $N_\ast$ as the ceiling of the inverse of an interpolation
+ $\mathcal A$ with $\mathcal A(n)=f(n)$; the proposition instead compares
+ $f$ with $\calM$, which does not interpolate $f$ ($\calM(n)=f(n)$ only up
+ to a relative $\OO(n^{-R})$), and brackets $T(y)$ directly. Its two-ceiling
+ form~\eqref{oep:eq:ceilenclosure} plays the part of the separation condition
+ \file{p0:thm:staircase}(2): whenever the two ceilings coincide, $T(y)$ is
+ their common value, by~\eqref{oep:eq:ceilenclosure} itself.
+\end{enumerate}
+No novelty is claimed for the inversion machinery: the source calls the
+Lambert-$W$ inversion a classical tool (Section~\ref{oep:sec:sources}).
+\end{remark}
+
+\section{Attribution and the scope of the source check}\label{oep:sec:sources}
 The four OEIS records were independently re-fetched on 3 October 2026 from the official \texttt{oeis/oeisdata} repository and matched the frozen input records byte for byte. A067590 revision 17 and A116492 revision 18 explicitly label their leading equivalents as conjectures dated 6 July 2025. A067591 revision 6 and A116491 revision 14 contain transform descriptions but no asymptotic formula. These are the records' own revision fields, rather than a web cache's date. The report proves the stated equivalents; it does not infer historical novelty merely from their continued conjectural labels.
 
-Allouche's seven-page primary preprint \cite{allouche2019}, published in 2021, explicitly establishes~\eqref{eq:Q} and $D(0)=-1$ in the proof of Theorem 3.1, and credits Allouche--Cohen for the entire continuation. It evaluates zeta-regularized multiplicative products. Allouche's 2015 article \cite{allouche2015}, especially Sections 3.2--3.3, discusses the shifted Dirichlet continuation, $Q$, and the Flajolet--Martin constant. T\'oth's 2022 paper \cite{toth} gives linear combinations of Thue--Morse Dirichlet series and reinforces the Allouche--Cohen attribution. None of these inspected primary texts states the restricted additive-partition coefficient equivalents proved here. The original Allouche--Cohen 1985 paper was not independently obtained; its credit is supported by the inspected primary articles, and this report reproves the needed analytic estimates rather than claiming that continuation is new.
+Allouche's seven-page primary preprint \cite{allouche2019}, published in 2021, explicitly establishes~\eqref{oep:eq:Q} and $D(0)=-1$ in the proof of Theorem 3.1, and credits Allouche--Cohen for the entire continuation. It evaluates zeta-regularized multiplicative products. Allouche's 2015 article \cite{allouche2015}, especially Sections 3.2--3.3, discusses the shifted Dirichlet continuation, $Q$, and the Flajolet--Martin constant. T\'oth's 2022 paper \cite{toth} gives linear combinations of Thue--Morse Dirichlet series and reinforces the Allouche--Cohen attribution. None of these inspected primary texts states the restricted additive-partition coefficient equivalents proved here. The original Allouche--Cohen 1985 paper was not independently obtained; its credit is supported by the inspected primary articles, and this report reproves the needed analytic estimates rather than claiming that continuation is new.
 
 Golafshan--Rigo's 2026 author preprint \cite{golafshan} concerns multiplication of a $k$-ary partition series by a generalized Thue--Morse series, a digit-product $k$-regular coefficient sequence, and its summatory behavior. These differ from partitions whose allowed positive parts have a selected binary digit parity. Merca's neighboring article \cite{merca} was checked only at the publisher abstract/reference level; its subscription full text was not read. It must not be included in a claim that all adjacent literature has been ruled out.
 
@@ -519,13 +909,36 @@ Atlas 1, lines 855--875 and 1377--1427, gives signed ruler-weight partition/Bell
 
 Exact-ID searches returned no indexed default-branch matches for the four target sequences. Expanded searches found other odious/evil material, identified by snippets rather than exhaustively reviewed. No identical coefficient theorem was located in the primary sources and repository passages examined. This bounded negative result is not an exhaustive literature exclusion, a repository-wide originality certificate, or a historical-first claim. The eta transformation, Mellin method, Hankel--Bessel formulas, and Lambert--$W$ inversion are classical tools used with explicit attribution.
 
-\section{Exact companion and reproducibility}\label{sec:companion}
+\begin{writenote}[The atlas and the OEIS records at the commit of this write, 6~October 2026]
+The three atlas files cited above are archived drafts under
+\path{Analysis/FabiusFunction/docs/archive/research-frontiers/}; their blobs
+are still \file{c927e43a}, \file{7fee5be7} and \file{66c8012a}, and the cited
+line ranges begin where the source says (``Partition and Bell-polynomial
+formulas'' and ``Shifted Dirichlet series and Mellin transforms'' in
+Atlas~1, the Pascal-row statistic $R_u(n)$, ``Evil and odious numbers'' and
+``Laplace, Mellin, Dirichlet, and finite-product transforms'' in Atlas~2,
+the partition formulae and ``An entire shifted Dirichlet series'' in
+Atlas~3). The atlas is now the consolidated volume named in
+Section~\ref{oep:sec:provenance}; the statements overlapping this report are
+its \file{p1:thm:boundary-flatness}, \file{p1:thm:Mellin-integral},
+\file{p1:cor:Dirichlet-trivial-zeros}, \file{p1:thm:Dirichlet-dyadic},
+\file{p1:cor:G-Dirichlet}, \file{p1:thm:Woods-Robbins} and
+\file{p1:thm:evil-odious}, compared in Remark~\ref{oep:rem:atlas}, which also
+states their formal status. The write did not map the archived partition and
+Pascal-row passages to the volume; as the source says, those concern signed
+sums or a different ``partition function'', not the counts $p_\sigma(n)$.
+The four OEIS records were at the same revisions on 6~October 2026
+(Remark~\ref{oep:rem:kotesovec}). Until batch~107 placed this report, no
+file of the repository named the four sequences.
+\end{writenote}
+
+\section{Exact companion and reproducibility}\label{oep:sec:companion}
 The accompanying Python code uses only the standard library for its exact checks. It fixes finite workload limits in the source rather than exposing an unbounded precision or order control. Two differently structured coefficient constructions are compared: multiplication of the part factors, and a logarithmic-derivative Euler recurrence. To see the latter, write $P(q)=\sum_{n\geq0}f(n)q^n$ and
 \[
  q\frac{P'(q)}{P(q)}=\sum_{j\geq1}b_jq^j.
 \]
 Then $f(0)=1$ and exact coefficient comparison gives
-\begin{equation}\label{eq:Eulerrecurrence}
+\begin{equation}\label{oep:eq:Eulerrecurrence}
  n f(n)=\sum_{j=1}^{n}b_j f(n-j).
 \end{equation}
 For unrestricted parts,
@@ -533,11 +946,11 @@ For unrestricted parts,
  b_j=\sum_{k\mid j,\ k\in E_\sigma}k.
 \]
 For cap $m$ and $r=m+1$,
-\begin{equation}\label{eq:cappedb}
+\begin{equation}\label{oep:eq:cappedb}
  b_j=\sum_{k\mid j,\ k\in E_\sigma}k
        -r\,\mathbf1_{r\mid j}\sum_{k\mid(j/r),\ k\in E_\sigma}k.
 \end{equation}
-Every division in~\eqref{eq:Eulerrecurrence} is checked for zero remainder. The coefficient algebra checks use rational arithmetic: the direct product, modified Bessel differential equation, and Gaussian saddle agree through order $6$ for all three relevant values of $\beta$. The formal inverse passes both logarithmic and multiplicative composition checks through order $6$. These checks are independent of floating-point approximations. Exact bounded thresholds scan the complete finite range and return a first hitting index or an explicit beyond-range result. Booleans are rejected as integer controls, and no float is silently coerced into an exact target.
+Every division in~\eqref{oep:eq:Eulerrecurrence} is checked for zero remainder. The coefficient algebra checks use rational arithmetic: the direct product, modified Bessel differential equation, and Gaussian saddle agree through order $6$ for all three relevant values of $\beta$. The formal inverse passes both logarithmic and multiplicative composition checks through order $6$. These checks are independent of floating-point approximations. Exact bounded thresholds scan the complete finite range and return a first hitting index or an explicit beyond-range result. Booleans are rejected as integer controls, and no float is silently coerced into an exact target.
 
 The two coefficient constructions agree for both signs and caps $1,2,3,5$, as well as unrestricted multiplicity, through $n=512$. The four displayed OEIS prefixes match in full, with $54$, $63$, $69$, and $74$ terms for A067590, A067591, A116492, and A116491 respectively. For example, the exact thresholds for target $100000$ are $76$ and $110$ in the unrestricted odious and evil cases, and $170$ and $186$ in the distinct-part cases.
 
@@ -545,10 +958,110 @@ The JSON outputs separate exact statements from numerical illustrations. The exa
 
 The source archive contains this article, the PDF, the bounded companion and tests, deterministic reference JSON, source-provenance metadata, and reproducible local PDF/ZIP build scripts. Outputs require an existing trusted parent and an absent destination. Descriptor-pinned, no-follow, exclusive creation rejects destination or parent symlinks, existing files/directories, and parent traversal; a detected failure is not permission to overwrite. The build runs TeX without shell escape and pins its metadata. The archive uses a fixed allowlist, verified SHA-256 inputs, fixed entry order and metadata, and stored members. The release receipt records normal and optimized Python tests, two clean PDF builds, two byte-identical ZIP builds, and all-page visual review. Matching bytes are a reproducibility check, not a mathematical proof or a cross-version guarantee for arbitrary TeX installations.
 
+\begin{writenote}[The package here, and the intake reruns, 6~October 2026]
+``The source archive'' and ``the companion'' above are the delivered ones.
+In this report the companion program and its tests are
+\file{code/companion-companion.py} and \file{code/companion-test_companion.py}
+(delivered \file{companion/companion.py}, \file{companion/test_companion.py});
+the frozen OEIS prefixes, the reference outputs, the recorded test outputs and
+\file{verification.json} are \file{data/companion-*} (the reference run's
+\file{SHA256SUMS} is not shipped); the companion README is
+\file{companion-README.md}; the release tools \file{build_pdf.py},
+\file{make_zip.py}, \file{release_tools.py} and \file{test_release.py} are in
+\file{code/}; \file{RELEASE_RECEIPT.json} and \file{SOURCE_PROVENANCE.json}
+are in \file{data/}. The companion reads \file{oeis_prefixes.json} beside
+itself and the tests import it as \file{companion}, so the programs run only
+on a copy with the delivered names (the report README gives the route); the
+release tools expect the whole delivered package and were not run. On copies
+at the write (Windows, Python 3.14.4) the nine mathematical tests passed
+(25~s); the seven output-safety tests failed, because they need POSIX
+directory descriptors and ownership checks, which is also why the command
+line refuses to write on Windows; recomputing the two JSON payloads in
+process gave bytes identical to the shipped reference outputs (at placement
+also under \texttt{-O}). The release receipt's 16 of 16 passes were recorded
+under Python 3.12.14.
+\end{writenote}
+
 \section{Conclusions and limitations}
 The odious unrestricted and distinct-part equivalents are proved with their exact constant expressions, and their evil counterparts follow from the same signed-product analysis. The coefficient expansions hold at every fixed algebraic order. Fixed multiplicity caps remove the signed constant and power from the local product, giving the all-order ratio $m+1$. Uniform arc control and the completed Hankel comparison justify a relative flat error rather than merely a formal saddle series. The comparison inverse is defined as an inverse of an explicit smooth Bessel function; the ordinary integer threshold is controlled by ceilings of an enclosure.
 
 The analysis does not provide uniform estimates for growing caps, a leading beyond-all-orders correction, interval-certified constants, effective monotonicity onsets, or numerical remainder certificates. The source search is bounded and preserves the unread-source caveats. No report was published, no OEIS entry was edited, no external party was contacted, and no repository or earlier report was modified in preparing this local deliverable.
+
+\section{Further questions and research}\label{oep:sec:further}
+\begin{writenote}[Added 6 October 2026, batch~107]
+Following Vladimir Reshetnikov's standing rule of 4~October 2026, every
+claim of the source that is not proved in full is stated here as an open
+question, with its source, the argument offered and what is missing. The
+source has no questions section; its non-claims (end of
+Section~\ref{oep:sec:provenance}) mark the boundaries collected below. The
+intake found no false claim in the source; the write found none either, and
+proves one negative statement (Question~\ref{oep:q:caps}).
+\end{writenote}
+\begin{enumerate}
+\item\label{oep:q:caps} \textbf{Growing caps} (source:
+ Theorem~\ref{oep:thm:capped}, ``No estimate here is asserted to be uniform
+ when $m$ grows with $n$'', and the conclusions). The proof needs $w$ and
+ $(m+1)w$ to tend to zero together in~\eqref{oep:eq:localcapped}, and the arc
+ bound~\eqref{oep:eq:caploss} loses the factor $(m+1)^{-2}$; all constants
+ depend on~$m$. \emph{[write] The ratio law~\eqref{oep:eq:ratiotheorem} is
+ not uniform in $1\le m\le n$.} Proof: no part occurs more than $n$ times in
+ a partition of $n$, so $p_{\sigma,n}(n)=p_\sigma(n)$, and
+ by~\eqref{oep:eq:odiouslead}--\eqref{oep:eq:evillead}
+ \[
+  \frac{p_{-,n}(n)}{(n+1)\,p_{+,n}(n)}
+  =\frac{p_-(n)}{(n+1)\,p_+(n)}\sim\frac{K_-}{K_+}\,n^{-1/2}\longrightarrow0,
+  \qquad \frac{K_-}{K_+}=\frac{C_-}{C_+}A^{-1/2}=\frac{\sqrt{12}\,Q}{\pi}\approx1.795 .
+ \]
+ \emph{Heuristic (not a proof):} at the saddle $\Re w\asymp n^{-1/2}$, and
+ $F_\sigma((m+1)w)\to1$ when $(m+1)w\to\infty$, so the transition from the
+ ratio $m+1$ to the unrestricted ratio $\asymp n^{1/2}$ should occur for
+ $m\asymp\sqrt n$. Open: the range of $m=m(n)$ on which
+ $p_{-,m}(n)/p_{+,m}(n)\sim m+1$, and the law in the transition window.
+ Missing: a local model of $F_\sigma(w)/F_\sigma((m+1)w)$ uniform in~$m$,
+ and an arc bound without the $(m+1)^{-2}$ loss.
+\item\label{oep:q:residual} \textbf{The residuals beyond all algebraic
+ orders} (source: after Theorem~\ref{oep:thm:capped}, ``We do not determine
+ the leading residual beyond all algebraic orders'', and
+ Section~\ref{oep:sec:companion}). Proved: the relative errors
+ in~\eqref{oep:eq:unrestrictedflat}, \eqref{oep:eq:cappedflat}
+ and~\eqref{oep:eq:ratiotheorem} are smaller than every power of~$n$.
+ \emph{Observations at intake} (exact counts, mpmath models; uncertified):
+ $p_\sigma(n)/\calM(n)-1=3.33\cdot10^{-8}$, $8.49\cdot10^{-10}$ (odious) and
+ $-4.40\cdot10^{-8}$, $-7.77\cdot10^{-10}$ (evil) at $n=1000$, $3000$, of
+ opposite signs for the two signs~$\sigma$; $p_{-,m}(n)/p_{+,m}(n)-(m+1)$ at
+ $n=500$, $1000$, $1500$ is $-5.6\cdot10^{-5}$, $-1.6\cdot10^{-6}$,
+ $-2.8\cdot10^{-7}$ for $m=1$ and $+5.6\cdot10^{-5}$, $+9.8\cdot10^{-7}$,
+ $-2.4\cdot10^{-6}$ for $m=2$, so for $m=2$ it is not of one sign in this
+ window. These values determine no rate. Open: the leading term of each
+ residual. A natural first step (a sketch by the write): at $q=-1$ the
+ signed sum is again flat, since $S(w+\pi i)=(1+e^{-w})S(2w)$ (the factor
+ $j=0$ of~\eqref{oep:eq:S} becomes $1+e^{-w}$ and the others are unchanged),
+ so a Mellin treatment of the arc near $q=-1$, as in
+ Section~\ref{oep:sec:mellin}, looks feasible. Missing: local models at
+ $q=-1$ and at the other roots of unity that compete, and a second saddle
+ analysis.
+\item\label{oep:q:effective} \textbf{Effective constants and onsets}
+ (source: Proposition~\ref{oep:prop:threshold}, ``Neither $C$ nor $y_0$ is
+ numerically certified here'', and the abstract's ``numerical onset
+ certificate''). Exact first thresholds are known only where the companion
+ scanned (for example $T(100000)=76$, $110$, $170$, $186$ for unrestricted
+ odious, unrestricted evil, distinct odious and distinct evil parts). Missing:
+ explicit constants in Lemma~\ref{oep:lem:flatness} on sectors (the formal
+ bound $\mathcal E(t)\le2^{\binom m2}t^m$ of Remark~\ref{oep:rem:atlas}
+ covers the real axis only), in the arc estimates of
+ Section~\ref{oep:sec:arcs} and in the contour completion of
+ Section~\ref{oep:sec:bessel}; an interval value of~$d$ (from
+ \eqref{oep:eq:dquadrature} or from~\eqref{oep:eq:Q}), which would also
+ certify the digits of Kot\v e\v sovec's decimal
+ (Remark~\ref{oep:rem:kotesovec}); and from these, an explicit onset of
+ eventual increase and certified threshold enclosures.
+\item\label{oep:q:literature} \textbf{The literature boundary} (source,
+ Section~\ref{oep:sec:sources}). Merca's article~\cite{merca} was read at
+ abstract level only and the Allouche--Cohen original~\cite{allouchecohen}
+ was not obtained. Open: whether either, or other work on partitions with
+ digit-restricted parts, already contains the equivalents proved here.
+ Missing: reading them.
+\end{enumerate}
 
 \begin{thebibliography}{99}
 \raggedright
@@ -569,6 +1082,7 @@ The analysis does not provide uniform estimates for growing caps, a leading beyo
 \bibitem{dlmfasymptotic} NIST DLMF, large-argument modified Bessel expansion, Eq. 10.40.1. \url{https://dlmf.nist.gov/10.40.E1}.
 \bibitem{dlmfcoeff} NIST DLMF, Bessel expansion coefficients, Eq. 10.17.1. \url{https://dlmf.nist.gov/10.17.E1}.
 \bibitem{lambert} NIST DLMF, Section 4.13, Lambert $W$ function and its real branches. \url{https://dlmf.nist.gov/4.13}.
-\bibitem{atlas} V. Reshetnikov, \emph{Thue--Morse Formula Atlas}, parts 1, 2 and 3, \texttt{ProveIt} repository, \path{Analysis/FabiusFunction/docs/archive/research-frontiers/}, inspected at the commit specified in Section~\ref{sec:sources}. \url{https://github.com/VladimirReshetnikov/ProveIt}. Exact source paths, blob identifiers and SHA-256 hashes are included in \texttt{SOURCE\_PROVENANCE.json}.
+\bibitem{atlas} V. Reshetnikov, \emph{Thue--Morse Formula Atlas}, parts 1, 2 and 3, \texttt{ProveIt} repository, \path{Analysis/FabiusFunction/docs/archive/research-frontiers/}, inspected at the commit specified in Section~\ref{oep:sec:sources}. \url{https://github.com/VladimirReshetnikov/ProveIt}. Exact source paths, blob identifiers and SHA-256 hashes are included in \texttt{SOURCE\_PROVENANCE.json}.
+\textup{[write, 6~October 2026]} The three files are archived drafts, unchanged at the commit of this write; the current atlas is the consolidated volume \path{Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/thue-morse/Thue_Morse_Atlas_and_Frontiers/}, with Lean modules in \path{Analysis/FabiusFunction/Lean/FabiusFunction/} (Remark~\ref{oep:rem:atlas}). \texttt{SOURCE\_PROVENANCE.json} is shipped as \file{data/SOURCE_PROVENANCE.json}.
 \end{thebibliography}
 \end{document}
