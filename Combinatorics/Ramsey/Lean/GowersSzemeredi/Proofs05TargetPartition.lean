@@ -64,17 +64,18 @@ private lemma chunkNatAP_partition (L m : Nat) (hm : 0 < m) (hLm : m * m ≤ L) 
 
 /-- An interval at least as long as the square of the target admits a
 partition into nonempty progressions of target length or target minus one. -/
-theorem section5_target_interval_partition (L v : Nat)
+theorem section5_target_interval_partition_unit_step (L v : Nat)
     (hv : 1 ≤ v) (hL : v ^ 2 ≤ L) :
     ∃ M : Nat, ∃ P : Fin M → NatAP,
       0 < M ∧ IsNatAPPartition P (Finset.range L) ∧
-      ∀ j, (P j).IsProper ∧ 0 < (P j).length ∧
-        ((P j).length = v - 1 ∨ (P j).length = v) := by
+      (∀ j, (P j).IsProper ∧ 0 < (P j).length ∧
+        ((P j).length = v - 1 ∨ (P j).length = v)) ∧
+      ∀ j, (P j).step = 1 := by
   by_cases hv1 : v = 1
   · subst v
     have hLpos : 0 < L := by norm_num at hL; omega
     refine ⟨L / 1, chunkNatAP L 1, by simpa, chunkNatAP_partition L 1 (by omega)
-      (by simpa using hL), ?_⟩
+      (by simpa using hL), ?_, fun _ => rfl⟩
     intro j
     refine ⟨chunkNatAP_proper L 1 j, ?_, Or.inr ?_⟩ <;>
       simp [chunkNatAP, coarseChunkLength, Nat.mod_one]
@@ -85,7 +86,7 @@ theorem section5_target_interval_partition (L v : Nat)
       exact (Nat.mul_le_mul hmv hmv).trans (by simpa [pow_two] using hL)
     have hmL : m ≤ L := by nlinarith
     refine ⟨L / m, chunkNatAP L m, Nat.div_pos hmL hm,
-      chunkNatAP_partition L m hm hLm, ?_⟩
+      chunkNatAP_partition L m hm hLm, ?_, fun _ => rfl⟩
     intro j
     refine ⟨chunkNatAP_proper L m j, ?_, ?_⟩
     · exact lt_of_lt_of_le hm (coarseChunk_length_bounds hm j).1
@@ -94,6 +95,17 @@ theorem section5_target_interval_partition (L v : Nat)
       split_ifs
       · right; dsimp [m]; omega
       · exact Or.inl rfl
+
+/-- The target partition with only its length and properness data exposed. -/
+theorem section5_target_interval_partition (L v : Nat)
+    (hv : 1 ≤ v) (hL : v ^ 2 ≤ L) :
+    ∃ M : Nat, ∃ P : Fin M → NatAP,
+      0 < M ∧ IsNatAPPartition P (Finset.range L) ∧
+      ∀ j, (P j).IsProper ∧ 0 < (P j).length ∧
+        ((P j).length = v - 1 ∨ (P j).length = v) := by
+  obtain ⟨M, P, hM, hpart, hcells, _⟩ :=
+    section5_target_interval_partition_unit_step L v hv hL
+  exact ⟨M, P, hM, hpart, hcells⟩
 
 /-- The target partition transported to an arbitrary proper natural progression. -/
 theorem section5_target_progression_partition (P : NatAP) (v : Nat)
