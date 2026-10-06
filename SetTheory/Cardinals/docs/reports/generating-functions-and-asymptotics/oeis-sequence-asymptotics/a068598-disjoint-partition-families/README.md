@@ -78,7 +78,9 @@ Added by the write (6 October 2026), with proofs, marked `[write]`:
   (Adv. Math. 427 (2023) 109127, arXiv:2107.13460v3; read at abstract level),
   `Q(k) = ((1 ± o(1)) k e^{−α})^k` with `α = 1.942 ± 0.003`, improves the
   linear term of the lower bound to `−((log 5 + α)/5) n`, a coefficient in
-  `[0.7099, 0.7111]` instead of `0.9219…`; the constant `1/5` is unchanged.
+  `[0.7096, 0.7109]` instead of `0.9219…` (corrected after the independent
+  check below; first printed as `[0.7099, 0.7111]`); the constant `1/5` is
+  unchanged.
   The source does not cite this theorem.
 - **Remark 5.2 (`mdp:rem:fits`)**: the two fits, quoted and refuted as
   asymptotics (next-but-one section).
@@ -165,7 +167,12 @@ every `n ≥ 1215`, and `0.26 e^{0.129 n^{1.36}} > a(n)` for every
 `n ≥ 8579`, because each fit exceeds the proved upper bound there; the
 proof is a convexity argument from `n₀ = 1219` (resp. `8587`) plus finitely
 many direct evaluations (40-digit mpmath, smallest margin 2.16 resp. 0.93 in
-the logarithm; not interval-certified).
+the logarithm). The independent check below encloses all of them in Arb ball
+arithmetic (300 bits) and certifies every sign for `n ≤ 1400` resp.
+`n ≤ 9000`: the 2022 fit beats the bound at 1212, 1213, not 1214, then for
+all `n ≥ 1215`; the 2026 fit at 8576, 8577, not 8578, then for all
+`n ≥ 8579`; `1219` and `8587` are the least admissible `n₀`. (The write said
+"not interval-certified".)
 
 **What is not said.** On the data range the fits are fair (at `n = 24, 45,
 46` they give 0.487, 0.689, 0.728 times `a(n)` for 2022 and 0.940, 0.907,
@@ -195,7 +202,8 @@ From the source, kept in the article (collected at the end of Section 1.1):
 
 The write adds: Remark 3.3 rests on Simkin's theorem as stated in its
 abstract; the explicit ranges of Remark 5.2 use finitely many floating
-evaluations of elementary numbers.
+evaluations of elementary numbers (enclosed in ball arithmetic by the
+independent check below).
 
 ## Further questions
 
@@ -211,7 +219,11 @@ wrong**; the two corrections above concern OEIS text.
    *proved at the write:* `D(k) ≥ k^{2k−o(k)}` would give
    `log a(n) ≥ (1/4 − o(1)) n log n` along `n = 8k + 2` (the decomposition is
    recovered from any maximal extension as the edges meeting `[4k]`). Open:
-   the bound on `D(k)`; the known constructions give `k!`.
+   the bound on `D(k)`; the source's complementary-pair construction gives
+   only `k!` (its block restriction is not counted there: for `k = 1, …, 6`
+   the block triples number 1, 3, 15, 105, 993, 12123; corrected after the
+   independent check below, the write said "the known constructions give
+   `k!`").
 3. **Effective onsets and monotonicity** (`mdp:q:effective`): an explicit
    queens lower bound with onset; and (added by the write, not a claim of the
    source) whether `a(n)` is nondecreasing, strictly increasing for `n ≥ 7`,
@@ -250,6 +262,27 @@ wrong**; the two corrections above concern OEIS text.
   Not read by the write: the full texts of Nathanson, Luria–Simkin, Simkin
   and Filaseta (what the source read is fingerprinted in
   `data/SOURCE_PROVENANCE.json`).
+
+**Independent check of the write (6 October 2026).** An adversarial check
+made by the intake after the write (`6e53455cf`) fetched the OEIS entry
+(still revision #50) and b-file, the `FindClique` documentation and the two
+arXiv abstracts again, and re-derived every [write] statement. Remark 1.2:
+quotations verbatim; an independent brute force reproduces the OEIS maximal
+counts for `n ≤ 20`, the complete-subgraph table for `n ≤ 12` and the whole
+`n = 8` example. Remark 5.2: quotations verbatim, (a) and (c) re-derived, and
+(b) recomputed in Arb ball arithmetic (python-flint, 300 bits) and 60-digit
+mpmath, with no undecided sign for `n ≤ 1400` resp. `n ≤ 9000` (the remark
+now says so). Remark 6.3, Proposition 9.1, the `n = 8k + 2` implication and
+the monotonicity data (strict for `7 ≤ n ≤ 46`) were confirmed. Two errors
+were corrected, each with a dated note keeping the first wording: Remark
+3.3's interval (`(log 5 + α)/5` runs from 0.709687… to 0.710887…, so
+`[0.7099, 0.7111]` became `[0.7096, 0.7109]`), and Question 2's sentence
+giving `k!` for the block construction (the source says `k!` only of the
+complementary-pair construction; the block triples number 1, 3, 15, 105,
+993, 12123 for `k = 1, …, 6`, and `D(k) = 1, 4, 32, 392, 6883, 171088`).
+The intake recomputed the interval, both counts (by separate bitmask dynamic
+programs) and the Arb signs before applying the corrections. Recorded at the
+end of Section 9.
 
 ## Relation to the repository
 
@@ -307,7 +340,7 @@ unnumbered.
 ```text
 README.md                                    this guide (replaces the delivery README)
 article.tex                                  the report (delivered Report163.tex; labels prefixed, [write] additions)
-article.pdf                                  compiled report, 16 pages
+article.pdf                                  compiled report, 17 pages
 companion-README.md                          the companion's README (delivered companion/README.md)
 code/companion-disjoint_partitions.py        bounded exact companion and CLI (delivered companion/disjoint_partitions.py)
 code/companion-test_disjoint_partitions.py   14 unit tests (delivered companion/test_disjoint_partitions.py)
@@ -402,9 +435,9 @@ B=$(mktemp -d); cp article.tex "$B/"; cd "$B"
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The committed PDF was built this way with MiKTeX on 6 October 2026: 16
-pages; no errors or warnings, no undefined references or citations, no
-multiply defined labels, no duplicate PDF destinations, no overfull or
+The committed PDF was built this way with MiKTeX on 6 October 2026, after
+the independent check (16 pages at the write): 17 pages; no errors or
+warnings, no undefined references or citations, no multiply defined labels, no duplicate PDF destinations, no overfull or
 underfull boxes. The delivered source builds the same way to 9 pages, also
 without warnings. The article keeps the delivered preamble lines that
 suppress PDF dates and trailer identifiers; the delivered byte-identity claims
