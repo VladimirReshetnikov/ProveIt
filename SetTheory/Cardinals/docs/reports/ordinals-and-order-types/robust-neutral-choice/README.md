@@ -169,7 +169,8 @@ what is proved are attached to them.
    rule off the cores is the open part.
 3. **Two budgets** (`rch:q:tradeoff`). *Observation:* for `n ≤ 5`, `ε(2) < 1`
    only at the smallest `ε(1)`, `(5/8, 15/16)` for majority of five.
-4. **Dense extraction from majority** (`rch:q:dense`).
+4. **Dense extraction from majority** (`rch:q:dense`): the sufficient
+   schedule grows at least doubly exponentially (`7n_j ≥ (7n_{j−1})²`).
 5. **A cost of changing one's mind** (`rch:q:mind`).
 6. **Several alternatives and other groups** (`rch:q:groups`): regularity
    half proved (Proposition 11.1); existence, packing and a prefix
@@ -180,6 +181,23 @@ what is proved are attached to them.
    of complementary `E₀`-classes; where that principle lies is open.
 9. **Dependent laws** (`rch:q:dependent`).
 10. **Effective and formal quantitative ergodicity** (`rch:q:formal`).
+
+**Independent check of the write (5 October 2026).** An adversarial check
+made by the intake after the write (`9ccf04eae`) found no item needing a
+correction. It reread the proof of Proposition 11.1 line by line (both
+zero–one laws are proved inside it, with no external ergodicity theorem; `G`
+may be infinite), confirmed Remark 10.1 against `GenericErgodicity.lean` at
+`74a988c32` (the three declarations exist as quoted and nothing else uses
+them), re-derived facts (a)–(c) of Question 1, and with its own exact
+enumeration of all 65,814 neutral rules in dimensions 1–5 (not shipped)
+reproduced the `K(n,m,r)` formula in all 35 cases, the printed values, the
+equality cases and the attainable `(ε(1), ε(2))` lists. It also confirmed
+the growth bound of Question 4 (its sharper form `7n_j ≥ (7n_{j−1})²` is now
+recorded there), the ZF equivalence of Question 8, and the
+Huang–Klurman–Pohoata note against arXiv:1812.05989v1. Its suggestion that
+`|Σ| ≥ 2` in Proposition 11.1 follows from the hypothesis on `G` holds only
+for nonempty `Σ`, so the statement is unchanged. The record is a dated note
+at the end of Section 11.1.
 
 ## Checks made at intake
 
@@ -359,8 +377,8 @@ B=$(mktemp -d); mkdir "$B/figures"; cp article.tex "$B/"; cp figures/robustness_
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The committed PDF was built this way with MiKTeX on 5 October 2026: 30
-pages; no errors or warnings, no undefined references or citations, no
+The committed PDF was built this way with MiKTeX on 5 October 2026, and
+rebuilt after the independent check: 30 pages (unchanged); no errors or warnings, no undefined references or citations, no
 multiply defined labels, no duplicate PDF destinations, no overfull boxes,
 and one underfull line (badness 1675) in the delivered paragraph on
 `FiniteCycles.lean` in Section 10, which the delivered text shows identically

@@ -1823,7 +1823,10 @@ observations about those dimensions only.
  of Section~\ref{rch:sec:extraction}). Proved: the schedule
  \eqref{rch:eq:explicitschedule} suffices. Since $q_j\ge n_{j-1}$ and
  $\delta_j^{-2}=4^{j-1}/a^2>1$, it forces $n_j+1\ge8n_{j-1}^2$, so
- $n_j>n_{j-1}^2$: the schedule grows at least doubly exponentially. Missing:
+ $n_j>n_{j-1}^2$: the schedule grows at least doubly exponentially. [Sharper
+ form, from the independent check of 5~October 2026: for $j\ge2$,
+ $n_j\ge8n_{j-1}^2-1\ge7n_{j-1}^2$, that is, $7n_j\ge(7n_{j-1})^2$, so
+ $7n_j\ge(7n_1)^{2^{j-1}}\ge7^{2^{j-1}}$.] Missing:
  any lower bound on the growth needed for bounded density
  \eqref{rch:eq:density} or for equivalence with $\beta$, and the separation
  from pairwise decorrelation and from central limit theorems.
@@ -1920,6 +1923,38 @@ acts transitively and one fibre $A_s$ is measurable (or has the Baire
 property), then so is every $A_{gs}=gA_s$, that is, every fibre, and the
 previous case applies.
 \end{proof}
+
+\begin{writenote}[Independent check of the write, 5 October 2026]
+An adversarial check made by the intake after the write (commit
+\file{9ccf04eae}) found no item needing a correction. It reread the proof of
+Proposition~\ref{rch:prop:alphabet} line by line: the prefix maps
+$\phi_\pi$ preserve $\lambda$ and every fibre; both zero--one laws are
+proved inside the proof (a Dynkin-system argument for the measure, finitely
+many cylinders for category), so no external ergodicity or Hewitt--Savage
+theorem is used; $G$ may be infinite; and the specialization to
+Theorem~\ref{rch:thm:choice} is correct. (The check suggested remarking that
+$\lvert\Sigma\rvert\ge2$ follows from the hypothesis on $G$. That holds only
+for nonempty $\Sigma$: for $\Sigma=\varnothing$ the hypothesis on $G$ holds
+vacuously, $F$ is the empty map and there are no fibres. The statement is
+left as it is.) It confirmed Remark~\ref{rch:rem:lean} against
+\file{SetTheory/Cardinals/Cardinals/Countable/GenericErgodicity.lean} at
+commit \file{74a988c32} (the three declarations and their hypotheses, and
+that no other Lean file uses them, so the assembled statement is not a
+repository theorem); re-derived facts (a)--(c) of
+item~\ref{rch:q:constants}; and, with its own program (exact rational
+arithmetic over all $65{,}814$ neutral rules of dimensions $1$--$5$, written
+independently of the write's; not shipped), reproduced the displayed
+formula for $K(n,m,r)$ in all $35$ cases $1\le r\le m\le n\le5$, the three
+printed values, the equality cases of Theorem~\ref{rch:thm:prefix} and every
+list of attainable pairs in item~\ref{rch:q:tradeoff}. It confirmed the
+growth bound of item~\ref{rch:q:dense} (the sharper form recorded there is
+the check's), the ZF equivalence of item~\ref{rch:q:weakchoice}, and the
+note on Huang, Klurman and Pohoata against arXiv:1812.05989v1 (Theorem~1.1
+with its two bounds, their sharpness and the extremal sets, the attribution
+to Kleitman, and the entry ``J. Combin. Theory Ser. A 43 (1986)'' in that
+paper's bibliography), together with the identity behind
+\eqref{rch:eq:kleitodd}.
+\end{writenote}
 
 \clearpage
 \appendix
