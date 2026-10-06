@@ -1,0 +1,61 @@
+{
+  "schema": "report168-source-provenance-v1",
+  "source_review_date_utc": "2026-10-03",
+  "priority_scope": "Bounded inspected-source coverage only; no historical-priority certificate.",
+  "sources": [
+    {
+      "id": "A197458",
+      "url": "https://oeis.org/A197458",
+      "official_data_url": "https://github.com/oeis/oeisdata/blob/main/seq/A197/A197458.seq",
+      "git_blob": "fbbeceda324e1ddd7d8fab5ff2f0afe869bb84f9",
+      "revision": "25, 8 April 2020",
+      "coverage": "Definition, all 17 numeric terms n=0..16, recurrence, source links; no asymptotic in the retrieved record.",
+      "role": "Sequence identification and finite exact fixtures. Only the finite numeric fixture is distributed."
+    },
+    {
+      "id": "Mathar2014",
+      "title": "The number of binary n x m matrices with at most k 1's in each row or column",
+      "url": "https://oeis.org/A247158/a247158.pdf",
+      "coverage": "Full seven-page paper inspected; recurrences, tables and Maple code. No asymptotic theorem found.",
+      "role": "Direct exact-enumeration predecessor; Table 2 includes A197458 as its square diagonal."
+    },
+    {
+      "id": "MSE72600",
+      "url": "https://math.stackexchange.com/questions/72600/filling-out-an-n-times-n-square-grid-with-0s-and-1s",
+      "coverage": "Original 2011 question and 2012 answer inspected.",
+      "role": "Original exposition of the recurrence, not a refereed publication."
+    },
+    {
+      "id": "GouldenJacksonViaOEIS",
+      "urls": ["https://oeis.org/A062154", "https://oeis.org/A062156"],
+      "citation": "I. P. Goulden and D. M. Jackson, Combinatorial Enumeration, Wiley, 1983, Problem 3.4.15",
+      "coverage": "Companion OEIS entries inspected; printed exercise and its answer were NOT directly inspected.",
+      "role": "Prior companion generating-function context. Exact textbook scope is an unresolved source gap."
+    },
+    {
+      "id": "A001499",
+      "url": "https://oeis.org/A001499",
+      "coverage": "Entry inspected; original cited Knuth solution was NOT inspected.",
+      "role": "Classical exactly-two family. Historical attribution is indirect through OEIS."
+    },
+    {
+      "id": "GreenhillMcKayWang2006",
+      "title": "Asymptotic enumeration of sparse 0-1 matrices with irregular row and column sums",
+      "url": "https://cs.anu.edu.au/~bdm/papers/irregular.pdf",
+      "coverage": "Author-hosted full paper inspected, including Theorem 1.3.",
+      "role": "Uniform prescribed-degree asymptotics cover degree bound two; the A197458 sum over vectors is not explicitly performed."
+    },
+    {
+      "id": "CaizerguesDePanafieu2023",
+      "title": "Exact enumeration of graphs and bipartite graphs with degree constraints",
+      "url": "https://journals.muni.cz/eurocomb/article/view/35569",
+      "doi": "10.5817/CZ.MUNI.EUROCOMB23-035",
+      "coverage": "Full nine-page paper inspected; Section 3, Theorem 2.",
+      "role": "Prior exact bounded-degree bipartite generating-function theorem covers the degree set; no scalar A197458 asymptotic was found."
+    }
+  ],
+  "report_scope": "Self-contained sequence-specific all-fixed-order expansion, four corrections, logarithmic expansion, constructive fixed-order real inversion, and existential two-ceiling integer enclosure.",
+  "excluded_claims": ["Historical priority", "Convergence of the formal asymptotic series", "Complete beyond-all-orders transseries", "Effective finite-n remainder constant or onset", "Universally correct rounding of an asymptotic inverse"],
+  "computation_scope": "Exact finite checks validate implementations and algebra, not the analytic theorem. Any floating-point diagnostics are uncertified.",
+  "distribution": "No third-party paper, full OEIS record, or private working report is bundled."
+}

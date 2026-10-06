@@ -1,0 +1,47 @@
+\section{Exact computations and reproducible outputs}\label{sec:computation}
+The accompanying package separates exact combinatorial checks, rational certificates for constants, floating-point diagnostics, and deterministic document reproduction. None of these finite checks replaces the analytic proof or supplies an effective onset for Theorems~\ref{thm:transfer} and~\ref{thm:matrix}.
+
+\subsection{An exact labelled graph recursion}
+For a list of residual caps $\boldsymbol c=(c_1,\ldots,c_r)$, let $T(\boldsymbol c)$ count graphs on $r$ labelled remaining vertices obeying those caps. A cap above $r-1$ can be replaced by $r-1$. Sorting the cap list preserves the count, since relabelling is a bijection. Remove a vertex of cap $c_1$, and group the other vertices by their common cap $a$, with multiplicity $m_a$. If it chooses $j_a$ neighbors in group $a$, then
+\begin{equation}\label{eq:caprecurrence}
+ T(\boldsymbol c)=
+ \sum_{\substack{0\le j_a\le m_a\ (a\ge1)\\\sum_a j_a\le c_1}}
+ \left(\prod_a\binom{m_a}{j_a}\right)
+ T\left(\operatorname{sort}\bigcup_a
+ \{(a-1)^{[j_a]},a^{[m_a-j_a]}\}\right).
+\end{equation}
+Here no neighbor may be selected from cap zero, an exponent in square brackets means multiplicity, and every new cap is truncated to $r-2$. The base case with at most one vertex is $1$. Every neighbor subset is counted once, and $\binom{m_a}{j_a}$ is necessary because the vertices remain labelled even though the memoization key is sorted. Induction on $r$ proves the recurrence.
+
+In particular,
+\[
+ B(M,k)=T(k^{[M]}),\qquad
+ U_f(M,k)=T(k^{[M-f]},(M-1)^{[f]}).
+\]
+This computation does not use the asymptotic formulas. It regenerates all 17 published OEIS values $A_1,\ldots,A_{17}$ and separately checks the empty convention $A_0=1$. For reference, the beginning is
+\[
+ 1,\ 5,\ 14,\ 315,\ 2634,\ 301262,\ 8035168,\ 4451407563
+ \qquad(n=1,\ldots,8).
+\]
+
+Two direct algorithms supply independent small-case checks. One enumerates all upper-triangular sign assignments, mirrors them, and tests row sums literally. The other enumerates every simple graph edge mask and tests each specified degree cap. The former checks $n=0,\ldots,5$; the latter checks all mixed uniform-cap/free-coordinate choices at graph orders $M=0,\ldots,6$. The exact receipt records $113$ exhaustive mixed-graph cases, $88$ additional multi-free inclusion and product-correlation checks, and $2800$ capped-binomial variance inequalities evaluated with rational parameters and integer arithmetic. The all-free value $2^{\binom M2}$ is also checked. Full ranges and output values are recorded in the receipt.
+
+\subsection{Constants and diagnostics have different guarantees}
+The package contains rational interval certificates for $\ell$ and the transfer constant. The root is isolated by opposite signs of $\phi(x)-x\Phi(x)$ at rational endpoints and the strict monotonicity proved in Section~\ref{sec:results}. Rational Taylor bounds and a Machin formula for $\pi$ enclose the elementary integrals and exponentials used in those sign tests. In particular the verifier establishes
+\[
+\begin{split}
+ 0.506054468989180763236198306442
+ &<\ell<0.506054468989180763236198306443,\\
+ 1.441772308685820474543062664826
+ &<\Phi(\ell)^{-1}<1.441772308685820474543062664827.
+\end{split}
+\]
+Additional certified constants and the exact arithmetic details are listed in the certificate receipt and computation notes. Certification of these constants is independent of, and does not certify, the asymptotic remainders.
+
+A separate diagnostic script evaluates ratios of exact small counts to the leading model, finite saddle roots, truncated variances, and critical-window correction factors at bounded test parameters, using binary64 arithmetic. Its decimal values are explicitly labelled noncertified. Agreement is useful for catching signs, offsets, and factors of two; it does not prove a convergence rate, a larger free-vertex regime, or an effective finite threshold.
+
+\subsection{A frozen and bounded build}
+The public package includes TeX source, Python programs, frozen receipts, source attribution, and a SHA-256 manifest. It contains no copied third-party paper or private review record. The build verifies source hashes, membership, and directory structure before execution, writes only into a new external output directory, and checks that source bytes remain unchanged afterward.
+
+Public numerical and combinatorial APIs reject invalid or out-of-range inputs before expensive work. These checks use explicit exceptions, not assertions that disappear under Python optimization. Python children are invoked with \texttt{-B}; the guard suite contains $170$ checks, including hostile inherited settings and optimized execution. Additionally, the integer-to-decimal conversion limit is set to $640$ explicitly, independently of the inherited environment. More expensive algorithms have smaller documented bounds. Those bounds are implementation limits and do not restrict the mathematical theorems.
+
+TeX uses a private format and cache, fixed reproducibility metadata, and \texttt{-no-shell-escape}. The archive has sorted members, fixed timestamps, stored compression, and fixed regular-file modes. The replay verifier extracts the actual generated ZIP into separate clean trees, rebuilds under ordinary and optimized Python, compares all seven top-level output files byte for byte, checks every archive member and its metadata, and verifies source immutability. Logs are retained separately for inspection. Reproduction is claimed for the recorded Python and TeX toolchain, not arbitrary future versions.

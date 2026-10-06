@@ -1,0 +1,92 @@
+\section{Relative concentration for mixed constraints}\label{sec:concentration}
+Take a random graph with independent edge probability $1/2$. Let $E_f$ be the event that its first $M-f$ degrees are at most $k=M/2+O(1)$. Then
+\[
+ \PP(E_f)=2^{-H}U_f(M,k),\qquad \PP(E_0)=2^{-H}B(M,k).
+\]
+We prove the following stronger uniformity than is needed for the critical window.
+
+\begin{lemma}\label{lem:relative}
+Uniformly over $0\le f\le M$ and bounded offsets $k-M/2$,
+\begin{equation}\label{eq:relative}
+ \PP(\boldsymbol d\in\cC\mid E_f)=1-o(1).
+\end{equation}
+\end{lemma}
+\begin{proof}
+We first recall the product-measure correlation inequality used here. Two increasing functions of independent Bernoulli coordinates have nonnegative covariance. An induction on the number of coordinates proves it: condition on the last coordinate, use the induction hypothesis for the conditional covariance, and observe that both conditional means are increasing functions of the remaining Bernoulli variable. The covariance of two increasing functions of one Bernoulli variable is nonnegative. The same statement follows for two decreasing functions by negation; opposite monotonicities give nonpositive covariance. This is the Harris--FKG inequality in the form required below.
+
+Every cap event is decreasing in the edges. If
+\[
+ h_M=\PP\{\Bin(M-1,1/2)\le k\},
+\]
+then $h_M\to1/2$ uniformly for bounded offsets. Repeated positive association gives
+\begin{equation}\label{eq:denominator}
+ \PP(E_f)\ge\PP(E_0)\ge h_M^M\ge3^{-M}
+\end{equation}
+for large $M$. This rough exponential lower bound is enough to control very small unconditional edge-count tails.
+
+Write $t=M^{1/2+\delta}$ and let $m$ denote the number of edges. A binomial Chernoff bound, or the exponential moment proof of Hoeffding's inequality, gives
+\begin{equation}\label{eq:edgetail}
+ \PP(m<H/2-Mt\mid E_f)
+ \le3^M\exp\{-cM^{1+2\delta}\}=o(1)
+\end{equation}
+for an absolute $c>0$. Indeed $m\sim\Bin(H,1/2)$ and the squared deviation divided by $H$ is of order $M^{1+2\delta}$. Also, a free vertex's event $d_i>M/2+t$ is increasing, while $E_f$ is decreasing. Hence
+\[
+ \PP(d_i>M/2+t\mid E_f)
+ \le\PP\{\Bin(M-1,1/2)>M/2+t\}
+ \le e^{-c'M^{2\delta}}.
+\]
+A union bound over at most $M$ vertices is still $o(1)$.
+
+It remains to rule out low degrees after these two exceptional events have been removed. Fix $m\ge H/2-Mt$. Impose cap $k$ on constrained vertices and cap $D=\lceil M/2+t\rceil$ on free vertices. Call these caps $c_i$; all are at most $D$, while every cap is at least $k=M/2+O(1)$ for sufficiently large $M$. The conditional law, given $m$ and these caps, is uniform over its allowed graphs.
+
+Fix a vertex $v$, and let $a_d$ be the number of allowed graphs with degree $d$ at $v$. For $d<\min_i c_i$, consider a switch that deletes an edge $ab$ and inserts $av$, where $a\notin N(v)\cup\{v\}$. The vertex $a$ keeps its degree, $b$ loses one, and $v$ gains one, so all caps are respected. Counting oriented edges by their first endpoint, the number of forward switches is exactly
+\[
+ 2m-d-\sum_{a\in N(v)}d_a\ge 2m-d(D+1)=:L_d.
+\]
+This count already excludes $b=v$, because $a$ is not adjacent to $v$.
+
+In a target graph with degree $d+1$ at $v$, a reverse switch first chooses $a\in N(v)$ and then a nonneighbor $b$ of $a$ other than $a$. Ignoring a possible cap violation at $b$ gives an upper bound
+\[
+ (d+1)(M-1)-\sum_{a\in N(v)}d_a.
+\]
+The vertices outside $N(v)\cup\{v\}$ number $M-d-2$ and have total degree at most $(M-d-2)D$. Therefore
+\[
+ \sum_{a\in N(v)}d_a\ge2m-(d+1)-(M-d-2)D,
+\]
+so the number of reverse switches is at most
+\[
+ R_d=(d+1)M-2m+(M-d-2)D.
+\]
+Switches with their ordered endpoints reverse uniquely. Double counting yields
+\begin{equation}\label{eq:switchratio}
+ a_dL_d\le a_{d+1}R_d.
+\end{equation}
+
+The gain is visible without a hidden asymptotic cancellation:
+\[
+ L_d-R_d=4m-(M+1)d-M-(M-2)D.
+\]
+Using $d\le M/2-10t$, $m\ge H/2-Mt$, and $D\le M/2+t+1$ gives
+\begin{equation}\label{eq:switchgain}
+ L_d-R_d\ge5Mt+12t-\tfrac52M+2\ge c_1Mt
+\end{equation}
+for large $M$. Also $R_d=O(M^2)$ whenever the target class is nonempty. If a lower class is nonempty, $L_d>0$ forces a nonempty next class; a zero reverse bound cannot occur in that case. Thus \eqref{eq:switchratio} implies
+\[
+ a_{d+1}\ge(1+c_2M^{-1/2+\delta})a_d
+ \qquad(d\le M/2-10t)
+\]
+through every relevant nonempty class.
+
+Put $a=\lfloor M/2-M^{1/2+2\delta}\rfloor$ and $b=\lfloor M/2-10t\rfloor$. Then $b-a\sim M^{1/2+2\delta}$ and $b$ lies below every cap. For each $d\le a$, iteration to level $b$ gives
+$a_d\le a_b\exp(-c_3M^{3\delta})$; if all such lower classes are empty the conclusion is immediate. Summing at most $M$ possible lower degrees and dividing by the total number of allowed graphs gives
+\[
+ \PP(d_v\le a\mid m,\text{caps})\le M e^{-c_3M^{3\delta}}.
+\]
+This is uniform in $v,m,f$. A union bound over $v$, followed by restoration of the discarded events in \eqref{eq:edgetail} and the free upper tails, proves \eqref{eq:relative}.
+\end{proof}
+
+For comparison, positive association also gives the exact elementary bounds
+\begin{equation}\label{eq:FKGbound}
+ 1\le\frac{U_f(M,k)}{B(M,k)}\le h_M^{-f}.
+\end{equation}
+Indeed, conditioned on $E_f$, the probability that every free vertex also satisfies its cap is at least the product of their unconditional cap probabilities. For $f=1$, the upper bound tends to $2$. These bounds are useful finite checks, but they do not replace the relative concentration argument above.

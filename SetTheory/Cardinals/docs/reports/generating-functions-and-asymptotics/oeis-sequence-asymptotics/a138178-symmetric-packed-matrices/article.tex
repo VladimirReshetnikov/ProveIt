@@ -1,0 +1,54 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,booktabs,array,longtable}
+\usepackage{xcolor,enumitem,fancyhdr}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black,breaklinks=true]{hyperref}
+\pdfmapfile{+lm.map}\pdfmapfile{+cm.map}\pdfmapfile{+symbols.map}
+\pdfinfoomitdate=1\pdfsuppressptexinfo=15
+\pdftrailerid{<53796D5061636B65643230323631303035><53796D5061636B65643230323631303035>}
+\providecommand{\ReportNumber}{238}
+\hypersetup{pdftitle={All Fixed Order Asymptotics for Symmetric Packed Matrices},pdfauthor={Report \ReportNumber},pdfsubject={OEIS A138178 marked expansions collision laws and controlled inverses}}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small Symmetric packed matrices}\fancyhead[R]{\small Report \ReportNumber}\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0pt}\setlength{\headheight}{14pt}
+\setlength{\parskip}{4pt}\setlength{\emergencystretch}{2em}
+\setlist{itemsep=2pt,topsep=4pt}\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]\newtheorem{lemma}[theorem]{Lemma}\newtheorem{proposition}[theorem]{Proposition}\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\E}{\mathbb E}\newcommand{\PP}{\mathbb P}\newcommand{\R}{\mathbb R}\newcommand{\C}{\mathbb C}\newcommand{\N}{\mathbb N}\newcommand{\ii}{\mathrm i}\newcommand{\dd}{\mathrm d}\newcommand{\eps}{\varepsilon}\newcommand{\ceil}[1]{\left\lceil #1\right\rceil}\newcommand{\TV}{d_{\mathrm{TV}}}\newcommand{\Pois}{\operatorname{Pois}}\newcommand{\Var}{\operatorname{Var}}\newcommand{\Cov}{\operatorname{Cov}}\newcommand{\Law}{\operatorname{Law}}
+\begin{document}
+\begin{center}
+{\large Report \ReportNumber}\par\vspace{8pt}
+{\LARGE\bfseries All Fixed Order Asymptotics\\[5pt] for Symmetric Packed Matrices}\par\vspace{9pt}
+{\large Dimension, trace, collision laws, and controlled inverses}\par\vspace{7pt}
+5 October 2026
+\end{center}
+\begin{abstract}
+Let $A_n$ count symmetric nonnegative integer matrices of total entry sum $n$ with no zero line and with ordered, distinguished positions, the sequence OEIS A138178. Writing $L=\log 2$ and $I_n$ for the involution number, we prove
+\[
+ A_n=\frac{e^{L^2/4}I_n}{2L^{n+1}}
+ \left(1-\frac{L^2}{6\sqrt n}
+ +\frac{-L^2/4+L^4/18}{n}+O(n^{-3/2})\right),
+\]
+and construct every fixed subsequent order. The proof is uniform for complex dimension and trace markers near one. It controls all polynomial degrees in the geometric transform, the full auxiliary-dimension range, and both angular saddles before expanding a normalized pair of Gaussian integrals. Dimension and trace have independent Gaussian limits on the respective scales $n^{1/2}$ and $n^{1/4}$. A further theorem, uniform on every fixed compact set of collision markers including zero, gives independent Poisson counts of repeated diagonal and off-diagonal cells, their joint independence from the Gaussian pair, a sharp leading total-variation constant, and an $O(n^{-1})$ corrected Poisson approximation. We also give an all-fixed-order Lambert-$W$ inverse with rounding-safe two-ceiling bounds. The geometric transform is attributed to Jovovic in OEIS; the leading symmetric binary equivalent and a related nonsymmetric collision mechanism are prior results of Cameron, Prellberg, and Stark. No global priority, complete transseries, or effective numerical onset is asserted.
+\end{abstract}
+\setcounter{tocdepth}{1}
+\begingroup\small\setlength{\parskip}{0pt}
+\makeatletter\renewcommand\l@section[2]{\@dottedtocline{1}{0em}{2em}{#1}{#2}}\makeatother
+\tableofcontents\endgroup
+\clearpage
+\input{sections/01_model}
+\input{sections/02_theorem}
+\input{sections/03_envelope}
+\input{sections/04_saddles}
+\input{sections/05_all_orders}
+\input{sections/06_fluctuations}
+\input{sections/07_collisions}
+\input{sections/08_total_variation}
+\input{sections/09_inverse}
+\input{sections/10_computation}
+\input{sections/11_outlook}
+\input{sections/12_references}
+\end{document}

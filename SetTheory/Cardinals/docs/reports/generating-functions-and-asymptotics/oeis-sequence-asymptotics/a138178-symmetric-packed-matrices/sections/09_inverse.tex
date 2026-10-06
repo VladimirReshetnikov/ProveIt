@@ -1,0 +1,112 @@
+\section{Elementary growth and controlled inversion}\label{sec:inverse}
+Combining \eqref{eq:logI} and \eqref{eq:unmarked}, with $L=\log2$, gives
+\begin{equation}\label{eq:logA}
+ \log A_n=\frac n2\log\frac{n}{eL^2}+\sqrt n+c
+                 +\frac b{\sqrt n}+\frac d n+O(n^{-3/2}),
+\end{equation}
+where
+\begin{equation}\label{eq:cbd}
+ c=\frac{L^2-1}{4}-\log(2\sqrt2 L),\quad
+ b=\frac7{24}-\frac{L^2}{6},\quad
+ d=-\frac7{48}-\frac{L^2}{4}+\frac{L^4}{24}.
+\end{equation}
+Thus the elementary leading equivalent is
+\begin{equation}\label{eq:elementary}
+ A_n\sim\frac{e^{(L^2-1)/4}}{2\sqrt2 L}
+       n^{n/2}(eL^2)^{-n/2}e^{\sqrt n}.
+\end{equation}
+The all-order algorithm and the involution saddle provide every further logarithmic coefficient by formal logarithm at each fixed order, with the already proved remainder.
+
+\subsection{A Lambert W seed and its corrections}
+For $X\to\infty$, let $y=\log X$, and define
+\begin{equation}\label{eq:Wseed}
+ w=W\left(\frac{2y}{eL^2}\right),\qquad N=\frac{2y}{w},\qquad Q=w+1,
+\end{equation}
+where $W$ is the positive real branch of the Lambert function. Then
+$F_0(N)=y$ for $F_0(x)=(x/2)\log(x/(eL^2))$. Set
+\begin{align}
+ \alpha&=-\frac2Q,\label{eq:alpha}\\
+ \beta&=-\frac{2c}{Q}+\frac2{Q^2}-\frac2{Q^3},\label{eq:beta}\\
+ \gamma&=-\frac{2b}{Q}
+ +c\left(\frac2{Q^2}-\frac4{Q^3}\right)
+ -\frac1{Q^3}+\frac{14}{3Q^4}-\frac4{Q^5}.\label{eq:gamma}
+\end{align}
+
+\begin{proposition}[Controlled smooth inverse]\label{prop:inverse}
+Let $\nu(X)$ be the eventual unique real solution of
+\[
+ \frac x2\log\frac{x}{eL^2}+\sqrt x+c+bx^{-1/2}+dx^{-1}=\log X.
+\]
+Then
+\begin{equation}\label{eq:inverse}
+ \nu(X)=N+\alpha\sqrt N+\beta+\frac\gamma{\sqrt N}
+                     +O\left(\frac1{NQ}\right).
+\end{equation}
+This is the inverse of the specified smooth approximation, not a definition of a noninteger combinatorial count.
+\end{proposition}
+\begin{proof}
+The left side of the defining equation has positive derivative for all sufficiently large $x$ and tends to infinity. At $N$,
+\[
+ F_0'(N)=Q/2,\qquad F_0''(N)=1/(2N),\qquad
+ F_0'''(N)=-1/(2N^2).
+\]
+Substitute $x=N+\alpha\sqrt N+\beta+\gamma/\sqrt N$, expand $F_0$, $\sqrt x$ and $x^{-1/2}$, and cancel successively the coefficients of $\sqrt N$, $1$, and $N^{-1/2}$. This gives \eqref{eq:alpha}--\eqref{eq:gamma}. The remaining residual is $O(N^{-1})$; division by a derivative comparable to $Q$ gives the stated error. In particular the $d/x$ term first changes the root at the retained error scale.
+\end{proof}
+
+The same procedure constructs all fixed orders. Given enough terms in \eqref{eq:logA}, the resulting smooth inverse has, for every fixed $J\geq0$, the form
+\begin{equation}\label{eq:inverseall}
+ N+\sum_{j=0}^J N^{(1-j)/2}R_j(Q)
+       +O_J\left(\frac{N^{-J/2}}{Q}\right),
+\end{equation}
+where $R_0=\alpha$, $R_1=\beta$, $R_2=\gamma$. Each $R_j$ is rational in $Q$, with possible poles only at $Q=0$, and depends on finitely many logarithmic coefficients of $A_n$. Inductively substitute the previous terms, compute the first remaining coefficient, and cancel it by division by $F_0'(N)=Q/2$. Taylor expansion of $\sqrt x$ and inverse half-powers introduces only rational functions of $Q$. The mean value theorem then gives the error at that fixed order. The smooth root is always defined using enough logarithmic terms for the asserted accuracy.
+
+\subsection{Why integer thresholds need a rounding qualification}
+Define the eventual threshold
+\[
+ m(X)=\min\{n\geq1:A_n\geq X\}.
+\]
+The sequence is strictly increasing for $n\geq1$. Adding $1$ to the first diagonal entry is an injection from $\mathcal A_n$ into $\mathcal A_{n+1}$. The identity matrix of dimension $n+1$ is outside its image, since a packed matrix of total sum $n$ has dimension at most $n$.
+
+A rounding-safe shorthand for \eqref{eq:inverse} is
+\begin{equation}\label{eq:rounding}
+ m(X)=\ceil{N+\alpha\sqrt N+\beta+\gamma/\sqrt N
+                    +O(1/(NQ))}.
+\end{equation}
+Its meaning is that a perturbation of the indicated size exists \emph{before} the ceiling is taken. It does not claim that the ceiling of the bare displayed truncation is always correct. The target $X$ can lie arbitrarily close to a sequence value.
+
+To justify the shorthand directly, apply \eqref{eq:logA} at the consecutive integers $m(X)-1,m(X)$. The smooth root lies between
+$m(X)-1-O(n^{-3/2}/\log n)$ and $m(X)+O(n^{-3/2}/\log n)$, with $n\asymp m(X)$. A perturbation on that scale makes its ceiling equal to $m(X)$. Combining with \eqref{eq:inverse} gives \eqref{eq:rounding}. In particular the real approximation determines $m(X)$ up to $O(1)$; away from the integer-boundary error band it determines the ceiling.
+
+\begin{theorem}[Two-ceiling threshold bounds]\label{thm:ceilings}
+For every fixed $J\geq0$, write the all-order logarithmic approximation as
+\[
+ F_J(x)=\frac x2\log\frac{x}{eL^2}+\sqrt x+c
+                 +\sum_{j=1}^J b_jx^{-j/2},\qquad p=(J+1)/2.
+\]
+There exist $B_J>0$ and $n_J$ such that
+\begin{equation}\label{eq:logbounds}
+ F_J(n)-B_Jn^{-p}\leq\log A_n\leq F_J(n)+B_Jn^{-p}
+ \qquad(n\geq n_J).
+\end{equation}
+Let $\ell_J(y)$ and $r_J(y)$ be the eventual roots of
+\begin{equation}\label{eq:bracketroots}
+ F_J(\ell_J)+B_J\ell_J^{-p}=y,\qquad
+ F_J(r_J)-B_Jr_J^{-p}=y.
+\end{equation}
+For sufficiently large $X$,
+\begin{equation}\label{eq:ceilings}
+ \ceil{\ell_J(\log X)}\leq m(X)\leq\ceil{r_J(\log X)}.
+\end{equation}
+If $x_J$ solves $F_J(x_J)=\log X$, then
+\begin{equation}\label{eq:rootwidth}
+ r_J(\log X)-\ell_J(\log X)
+ =O_J\left(x_J^{-(J+1)/2}/\log x_J\right).
+\end{equation}
+\end{theorem}
+\begin{proof}
+The constants in \eqref{eq:logbounds} exist by the proved fixed-order remainder. Both functions $H_\pm(x)=F_J(x)\pm B_Jx^{-p}$ are eventually strictly increasing. Their roots satisfy $\ell_J\leq r_J$. Every sufficiently large integer $n<\ell_J$ has
+$\log A_n\leq H_+(n)<\log X$, while $n=\ceil{r_J}$ satisfies
+$\log A_n\geq H_-(n)\geq\log X$. For $X$ sufficiently large all smaller exceptional indices are also below the threshold. This proves \eqref{eq:ceilings}. The derivative is comparable to $\log x_J$, so the mean value theorem applied to the perturbations $\pm B_Jx^{-p}$ proves \eqref{eq:rootwidth}.
+\end{proof}
+
+When the two ceilings agree, their common value is the exact threshold. Otherwise they isolate the ambiguity caused by an integer boundary. This theorem proves the existence of the remainder constants and starting indices, but supplies no numerical values for them. It is an asymptotic bound, not a certified finite-input inverse program. Producing such a program requires effective versions of the global and local remainder estimates.

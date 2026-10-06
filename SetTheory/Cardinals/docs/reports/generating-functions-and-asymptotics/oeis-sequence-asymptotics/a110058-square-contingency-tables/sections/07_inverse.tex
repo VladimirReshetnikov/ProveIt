@@ -1,0 +1,77 @@
+\section{Controlled inversion and logarithmic reversion}\label{sec:inverse}
+\subsection{Strict monotonicity of the count}
+For any $n\times n$ table counted by $a_n$, add $1$ to its $n$ diagonal entries, append a zero last row and last column, and place $n+1$ in the new bottom-right entry. This gives an injective map into the tables counted by $a_{n+1}$. The all-ones $(n+1)\times(n+1)$ table is not in its image, because its new off-diagonal entries are nonzero. Thus $a_{n+1}>a_n$ for $n\geq1$. In particular \eqref{eq:inversecount} is a well-defined integer threshold.
+
+\subsection{An asymptotic two-ceiling enclosure}
+For fixed $K$, differentiation of \eqref{eq:FK} gives
+\begin{equation}\label{eq:FKprime}
+F_K'(x)=2x\log4-\log x-\log(4\pi)-1+\frac1x+O_K(x^{-2}).
+\end{equation}
+It is positive and comparable to $x$ on a sufficiently large real half-line. Since $F_K(x)\to\infty$, there is a unique root $t_K$ on this increasing branch for sufficiently large $Y$.
+
+\begin{theorem}\label{thm:inverse}
+For each fixed $K\geq0$, there exist positive constants $B_K,D_K,N_K$ such that, for sufficiently large $Y$, the roots $x_-,x_+$ on the increasing branches defined by
+\begin{align}
+F_K(x_-)+B_Kx_-^{-K-1}&=\log Y,\label{eq:minusroot}\\
+F_K(x_+)-B_Kx_+^{-K-1}&=\log Y\label{eq:plusroot}
+\end{align}
+satisfy
+\begin{equation}\label{eq:tworoots}
+\ceil{x_-}\leq\nu(Y)\leq\ceil{x_+},\qquad
+x_+-t_K=O_K(t_K^{-K-2}),\quad t_K-x_-=O_K(t_K^{-K-2}).
+\end{equation}
+In particular \eqref{eq:inverseintro} holds. At $K=2$, the real-index uncertainty is $O(t_2^{-4})$.
+\end{theorem}
+\begin{proof}
+Theorem~\ref{thm:main} gives
+$|\log a_n-F_K(n)|\leq B_Kn^{-K-1}$ for $n\geq N_K$. Both perturbed real functions in \eqref{eq:minusroot}--\eqref{eq:plusroot} have derivatives comparable to $x$ for large $x$. If an integer $n<x_-$ lies in that range, its upper log bound is less than $\log Y$, so $a_n<Y$. If $n\geq x_+$, its lower log bound is at least $\log Y$, so $a_n\geq Y$. Increasing $Y$ disposes of the finitely many smaller integers and proves the ceiling inequalities. At $t_K$, the two perturbations are $\pm B_Kt_K^{-K-1}$; the mean value theorem and \eqref{eq:FKprime} place the roots within $O_K(t_K^{-K-2})$. Enlarging the constant gives \eqref{eq:inverseintro}.
+\end{proof}
+The constants in this theorem are existential asymptotic constants. Computing a root of $F_K$ to many decimal places does not compute $B_K$ or prove a certified finite-$Y$ enclosure. Near an integer, the two ceilings can differ, even when their real arguments are very close.
+
+\subsection{Four explicit terms of the inverse}
+Write
+\[
+a=\log4,\qquad b=\log(4\pi),\qquad
+r=\sqrt{\frac{\log Y}{a}},\qquad \ell=\log r.
+\]
+Define polynomials in $\ell$, with constants depending on $a,b$, by
+\begin{align}
+d&=\frac{\ell+b}{2a},\label{eq:reversiond}\\
+e&=\frac{ad^2+d-\ell-b/2-1/4}{2a},\label{eq:reversione}\\
+f&=\frac{e-d+d^2/2-C_1}{2a},\label{eq:reversionf}\\
+g&=\frac{f-ae^2+de-d^3/6-e+d^2/2+C_1d-C_2}{2a},\label{eq:reversiong}
+\end{align}
+where $C_1=-3/2$ and $C_2=223/32$. Then the implicit root $t_2$ satisfies
+\begin{equation}\label{eq:reversion}
+t_2=r+d+\frac e r+\frac f{r^2}+\frac g{r^3}
+       +O\left(\frac{(\log r)^5}{r^4}\right).
+\end{equation}
+Here the displayed logarithmic remainder is deliberately conservative. It is a truncation error for the explicit log-polynomial expression, distinct from the $O(t_2^{-4})$ uncertainty between the implicit asymptotic threshold and the sequence.
+
+To check \eqref{eq:reversion}, put $s=d+e/r+f/r^2+g/r^3$ and use
+\begin{align*}
+F_2(r+s)-ar^2={}&r(2as-\ell-b)
+ +as^2-s(\ell+b)-s+\ell+b/2+1/4\\
+&+\frac{-s^2/2+s+C_1}{r}
+ +\frac{s^3/6-s^2/2-C_1s+C_2}{r^2}
+ +O\left(\frac{(\log r)^5}{r^3}\right).
+\end{align*}
+The coefficients of $r,1,r^{-1},r^{-2}$ vanish successively by \eqref{eq:reversiond}--\eqref{eq:reversiong}, using $2ad=\ell+b$. Since $d=O(\ell)$ and $e,f,g=O(\ell^4)$ collectively, ordinary Taylor bounds for $\log(1+s/r)$ and $(1+s/r)^{-1}$ justify the residual estimate. The derivative is comparable to $r$, so the mean value theorem gives \eqref{eq:reversion}. The companion exact symbolic check verifies these four cancellations treating $a,b,\ell,C_1,C_2$ as indeterminates.
+
+\subsection{Finite-step inversion at any fixed order}
+For any fixed $K$, start Newton iteration at $x_0=r+d$:
+\begin{equation}\label{eq:newton}
+x_{j+1}=x_j-\frac{F_K(x_j)-\log Y}{F_K'(x_j)}.
+\end{equation}
+The first two reversion terms imply $x_0-t_K=O((\log r)^2/r)$. In a fixed relative neighborhood of $r$, $F_K'\asymp r$ and $F_K''=O_K(1)$. Taylor's theorem for one Newton step therefore gives
+\[
+|x_{j+1}-t_K|\leq\frac{C_K}{r}|x_j-t_K|^2.
+\]
+By induction, for each fixed $j$,
+\begin{equation}\label{eq:newtonerror}
+x_j-t_K=O_K\left(
+ r^{-(2^{j+1}-1)}(\log r)^{2^{j+1}}\right).
+\end{equation}
+Choosing $2^{j+1}-1>K+2$ makes this numerical-iteration approximation asymptotically smaller than the sequence uncertainty in Theorem~\ref{thm:inverse}. For $K=2$, two Newton steps from $r+d$ suffice. This statement concerns exact-real iteration; floating-point evaluation must additionally control its own rounding error.
+
+Equations~\eqref{eq:reversion} and \eqref{eq:newtonerror} provide fixed-order logarithmic reversion. If one calls such expansions the algebraic part of a formal transseries, the qualification matters: no nonperturbative exponential sectors, resurgence statement, or Stokes behavior have been established here.

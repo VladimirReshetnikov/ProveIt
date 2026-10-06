@@ -39,8 +39,11 @@ decimal.
   Lambert `W` are classical (DLMF).
 - **What is numerical only.** `d ≈ −0.4874506225215474`,
   `Q ≈ 1.6281601297189172`, `K₋ ≈ 0.2218648339570363`,
-  `K₊ ≈ 0.1235806870073263` are uncertified. The intake's independent
-  recomputation agrees (below).
+  `K₊ ≈ 0.1235806870073263` are floating-point values of the delivery. The
+  intake's independent recomputation agrees (below), and since the
+  independent check of 6 October 2026 `log Q` has a machine interval
+  enclosure (mpmath `iv`), hence `d` and `K±` given `d = −log Q`; see
+  "Kotěšovec's conjectures".
 - **The companion** checks finite coefficient identities through `n = 512`,
   the four OEIS prefixes, the Bessel coefficient algebra and the formal
   inverse through order 6, and exact first thresholds; it proves nothing
@@ -90,7 +93,11 @@ Added by the write (6 October 2026), with proofs, marked `[write]`:
   integer `k`. (c) A second route to `D(0) = −1` and `D(−k) = 0` from the
   atlas's dyadic equation (`p1:thm:Dirichlet-dyadic`), derivative bridge
   (`p1:cor:G-Dirichlet`), Woods–Robbins product (`p1:thm:Woods-Robbins`) and
-  trivial zeros, each formal in Lean, plus (b); it does not reach `d`.
+  trivial zeros, each formal in Lean, plus (b); it does not reach `d`. The
+  dyadic equation is used at `s = 0` in its entire form
+  `p1:eq:Dirichlet-dyadic-entire` (`Fabius.dirichletMellinContinuation_dyadic`),
+  since `p1:thm:Dirichlet-dyadic` itself is stated for `ℜs > 0` only (cited
+  after the independent check of 6 October 2026).
   (d) Exactly what is formal (next-but-one section).
 - **Remark 6.3 (`oep:rem:transseries`)**: Section 6 against the transseries
   volume
@@ -133,8 +140,19 @@ line
 `c = 1/(2·12^{1/4}) = 0.2686424829558855…` respectively. The second decimal
 is elementary. The first rests on a floating evaluation of `d`; the intake's
 independent mpmath quadrature of `d` gives `K₋ = 0.221864833957`, which
-begins with the nine printed digits, but no interval enclosure exists, so
-those digits are supported by two concordant computations, not proved. The
+begins with the nine printed digits. The independent check of 6 October 2026
+enclosed `log Q = Σ_{k≥1} ε(k) log(2k/(2k+1))` in interval arithmetic
+(mpmath `iv`, 120 bits; Prouhet blocks of length `2¹⁰`, on which
+`Σ_{r<2¹⁰} ε(r) r^i = 0` for `i < 10`, with the tail bound
+`|block n| ≤ 1/(22 n¹¹)`): `d ∈ [−0.48745062252154755, −0.48745062252154734]`
+and `K₋ ∈ [0.22186483395703626, 0.22186483395703629]`. Given the established
+evaluation `d = −log Q`, the nine printed digits are therefore correct (a
+machine interval computation, not a formal proof). The quadrature and the
+block sum, two independent routes, agree to `4·10⁻³²`:
+`d = −0.4874506225215474445445025398…`, `Q = 1.6281601297189172488215312…`,
+`K₋ = 0.22186483395703627316229215…`, `K₊ = 0.12358068700732633070667746…`.
+(The write's wording, kept in a dated note in Remark 1.3, said that the
+digits were supported by two concordant computations, not proved.) The
 evil counterparts A067591 (#6) and A116491 (#14) carry no asymptotic line.
 This is recorded only; **nothing was submitted to the OEIS**, and both lines
 are still labelled conjectures there.
@@ -178,9 +196,37 @@ wrong.**
    `+5.6·10⁻⁵, +9.8·10⁻⁷, −2.4·10⁻⁶` (`m = 2`, not of one sign). Sketch:
    `S(w + πi) = (1 + e^{−w}) S(2w)` is again flat, so the arc at `q = −1`
    looks amenable to the same Mellin method.
-3. **Effective constants and onsets** (`oep:q:effective`), which would also
-   certify the digits of Kotěšovec's first decimal.
+3. **Effective constants and onsets** (`oep:q:effective`). The interval
+   value of `d` that would certify the digits of Kotěšovec's first decimal
+   was supplied by the independent check (given `d = −log Q`); the error
+   constants, onsets and threshold enclosures remain open.
 4. **The literature boundary** (`oep:q:literature`): Merca, Allouche–Cohen.
+
+**Independent check of the write (6 October 2026).** An adversarial check
+made by the intake after the write (`715fb82db`) re-read Remarks 1.3, 2.3
+and 6.3, Question 1 and the counts with its own code (mpmath at 40 digits).
+The two conjecture lines are verbatim at A067590 #17 and A116492 #18, and the
+shift `N = n − 1/48` against Kotěšovec's unshifted `n` is harmless. Counts
+recomputed from the definitions agree with all 54, 63, 69 and 74 listed terms
+and with the b-files of A067590 and A116492 (`0 ≤ n ≤ 10000`) and A116491
+(`0 ≤ n ≤ 1000`); the relative Bessel residuals of Question 2 were
+reproduced. The bridge (b) of Remark 2.3 was re-proved and checked
+(`∂_s D(s,1/2)|₀ = log 2` to 30 digits, the second derivative to 40 digits,
+`D(2,1/2) = −3D(2)`, `|D(2πi/log 2, 1/2)| = 4.5·10⁻³⁷`); each Lean
+declaration named in (d) was re-read; Remark 6.3 was confirmed item by item;
+and for Question 1, `K₋/K₊ = √12 Q/π = 1.7953034517754646109` with
+`√n p₋(n)/((n+1)p₊(n)) = 1.9497, 1.8334, 1.8175` at `n = 100, 1000, 3000`.
+No mathematical error was found. Three precision fixes to Remark 2.3 are
+made, each with a dated note keeping the first wording: (i) the atlas states
+`p1:thm:Dirichlet-dyadic` for `ℜs > 0` only, so differentiating at `s = 0`
+cites its entire form `p1:eq:Dirichlet-dyadic-entire`
+(`Fabius.dirichletMellinContinuation_dyadic`); (ii)
+`Fabius.le_lacunaryExpProduct` needs the level condition `1/2 ≤ 2^m t ≤ 2`;
+(iii) the differentiation step of (c) is already formal, as
+`Fabius.thueMorseGammaLog_dyadic` at `r = 0`, `a = 1`, so only the
+conclusion `D′(0,1/2) = log 2` is not stated in Lean. Added: the interval
+enclosure of `log Q` in Remark 1.3 (previous section). The record is a dated
+note at the end of Section 10.
 
 ## Checks made at intake
 
@@ -220,8 +266,10 @@ wrong.**
 **Formal status.** No statement of this report is formalized. The
 neighbouring Lean development
 (`Analysis/FabiusFunction/Lean/FabiusFunction/`) formalizes, for the atlas:
-the effective real-axis flatness bounds of `𝓔(t) = S(t)`
-(`Fabius.lacunaryExpProduct_le`, `Fabius.le_lacunaryExpProduct`,
+the effective real-axis flatness bounds of `𝓔(t) = S(t)`, the upper bound
+`𝓔(t) ≤ 2^{C(m,2)} t^m` for all `t > 0` (`Fabius.lacunaryExpProduct_le`)
+and the lower bound `2^{C(m,2)} (t/2)^m 𝓔(1/2) ≤ 𝓔(t)` at the matching level
+`1/2 ≤ 2^m t ≤ 2` only (`Fabius.le_lacunaryExpProduct`;
 `ThueMorseBoundaryFlatness.lean`); the entire continuation of the *shifted*
 series `D(s,a)`, `a > 0` (`Fabius.dirichletMellinContinuation`,
 `Fabius.dirichletMellinContinuation_differentiable`,
@@ -236,8 +284,13 @@ Woods–Robbins value (`Fabius.woods_robbins`, `Fabius.mpLimit_one_half_one`);
 and the evil and odious enumerators (`Fabius.evilEnum`, `Fabius.odiousEnum`).
 **Not formal:** the sector and derivative forms of flatness, the unshifted
 `D(s)`, its values and `d`, the evaluation `d = −log Q`, the bridge of
-Remark 2.3, the combination in Remark 2.3(c) (which nobody has written in
-Lean), and everything in Sections 3–6. Placement in the collection, or
+Remark 2.3, the conclusion `D′(0,1/2) = log 2` of Remark 2.3(c), and
+everything in Sections 3–6. The inputs of that conclusion are formal: the
+differentiated dyadic equation is `Fabius.thueMorseGammaLog_dyadic` at
+`r = 0`, `a = 1` (`ThueMorseGammaTower.lean`), and the bridge and its value
+are `Fabius.mpLimit_eq_deriv_sub` and `Fabius.mpLimit_one_half_one`. (The
+write said "the combination in Remark 2.3(c) (which nobody has written in
+Lean)"; corrected after the independent check of 6 October 2026.) Placement in the collection, or
 beside the Fabius development, confers no formal status.
 
 **The Thue–Morse atlas.** The source checked three archived atlas files at
@@ -297,7 +350,7 @@ last delivered one, and the added displays are unnumbered.
 ```text
 README.md                                         this guide (replaces the delivery README)
 article.tex                                       the report (delivered Report165.tex; labels prefixed, [write] additions)
-article.pdf                                       compiled report, 23 pages
+article.pdf                                       compiled report, 24 pages
 companion-README.md                               the companion's README (delivered companion/README.md)
 code/companion-companion.py                       exact companion and bounded CLI (delivered companion/companion.py)
 code/companion-test_companion.py                  16 unit tests (delivered companion/test_companion.py)
@@ -399,7 +452,7 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
 The committed PDF was built this way with MiKTeX on 6 October 2026: 23
-pages; no errors or warnings, no undefined references or citations, no
+pages at the write, 24 after the independent check; no errors or warnings, no undefined references or citations, no
 multiply defined labels, no duplicate PDF destinations, no overfull or
 underfull boxes. The delivered source builds the same way to 15 pages, also
 without warnings. The article keeps the delivered preamble lines that

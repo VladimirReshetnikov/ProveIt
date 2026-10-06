@@ -1,0 +1,55 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,booktabs,array,longtable}
+\usepackage{xcolor,enumitem,fancyhdr}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black,breaklinks=true]{hyperref}
+\pdfmapfile{+lm.map}\pdfmapfile{+cm.map}\pdfmapfile{+symbols.map}
+\pdfinfoomitdate=1\pdfsuppressptexinfo=15
+\pdftrailerid{<5371756172655461626C65733230323600><5371756172655461626C65733230323600>}
+\hypersetup{pdftitle={All Fixed Order Asymptotics for Square Contingency Tables},pdfauthor={Report 236},pdfsubject={OEIS A110058 geometric saddle expansion and controlled inverse}}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small Square contingency tables}\fancyhead[R]{\small Report 236}\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0pt}\setlength{\headheight}{14pt}
+\setlength{\parskip}{4pt}\setlength{\emergencystretch}{2em}
+\setlist{itemsep=2pt,topsep=4pt}\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]\newtheorem{lemma}[theorem]{Lemma}\newtheorem{proposition}[theorem]{Proposition}\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\E}{\mathbb E}\newcommand{\PP}{\mathbb P}\newcommand{\R}{\mathbb R}\newcommand{\N}{\mathbb N}\newcommand{\ii}{\mathrm i}\newcommand{\1}{\mathbf 1}\newcommand{\Cov}{\operatorname{Cov}}\newcommand{\Var}{\operatorname{Var}}\newcommand{\eps}{\varepsilon}\newcommand{\cost}{\operatorname{cost}}\newcommand{\Part}{\mathcal P}\newcommand{\dd}{\mathrm d}\newcommand{\ceil}[1]{\left\lceil #1\right\rceil}
+\begin{document}
+\begin{center}
+{\large Report 236}\par\vspace{8pt}
+{\LARGE\bfseries All Fixed Order Asymptotics\\[5pt] for Square Contingency Tables}\par\vspace{9pt}
+{\large The density one model and its controlled inverse}\par\vspace{7pt}
+5 October 2026
+\end{center}
+\begin{abstract}
+Let $a_n$ count labelled $n\times n$ nonnegative integer matrices with every row and column sum equal to $n$, the sequence OEIS A110058. With the classical leading equivalent
+\[
+L_n=\frac{e^{1/4}4^{n^2}}{(4\pi)^{n-1/2}n^{n-1}},
+\]
+we prove that, for every fixed $K\geq0$, the logarithm $\log(a_n/L_n)$ has a rational inverse-power expansion through $n^{-K}$ with error $O_K(n^{-K-1})$. A finite connected-Wick algorithm determines every coefficient; the first two are $-3/2$ and $223/32$. The proof combines Canfield--McKay's absolute localization theorem for integer tables with Isaev's complex cumulant theorem. We give the gauge normalization, product cutoff, all-order variation bounds, and connected-diagram power counting needed for this application. An independent formal Gaussian factorization verifies all eighteen cumulants entering the first two corrections. A compact-positive-density extension has coefficient polynomials in $1/[\lambda(1+\lambda)]$ and proves an eventual square case of the Canfield--McKay correction-factor conjecture. The expansion also gives a two-ceiling enclosure for the inverse counting function, with real-index uncertainty $O(t^{-4})$ at two corrections. Constants in the asymptotic remainder are not made numerically explicit. The accompanying exact computations verify identities and small counts; they are not finite-size error certificates.
+\end{abstract}
+\setcounter{tocdepth}{1}
+\begingroup
+\small\setlength{\parskip}{0pt}
+\makeatletter
+\renewcommand\l@section[2]{\@dottedtocline{1}{0em}{2em}{#1}{#2}}
+\makeatother
+\tableofcontents
+\endgroup
+\clearpage
+\input{sections/01_results}
+\input{sections/02_imported}
+\input{sections/03_gauge}
+\input{sections/04_cumulants}
+\input{sections/05_diagrams}
+\input{sections/06_coefficients}
+\input{sections/07_inverse}
+\input{sections/07_density}
+\input{sections/07_conjecture}
+\input{sections/08_computation}
+\input{sections/09_outlook}
+\input{sections/10_references}
+\end{document}

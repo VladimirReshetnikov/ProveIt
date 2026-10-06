@@ -1,0 +1,73 @@
+\section{An eventual square case of a correction factor conjecture}\label{sec:conjecture}
+Canfield--McKay's Conjecture~1 \cite[Eq.~(1.4)]{CM} defines a correction $\Delta(m,s;n,t)$ by
+\begin{align}\label{eq:CMdelta}
+M(m,s;n,t)={}&G_{\rm Good}(m,s;n,t)
+ \left(1+\frac1m\right)^{(m-1)/2}
+ \left(1+\frac1n\right)^{(n-1)/2}\notag\\
+&\times\exp\left(-\frac12+\frac{\Delta(m,s;n,t)}{m+n}\right),
+\end{align}
+where $ms=nt$, $M$ is their table count, and
+\[
+G_{\rm Good}(m,s;n,t)=
+\frac{\binom{n+s-1}{s}^{m}\binom{m+t-1}{t}^{n}}
+ {\binom{mn+ms-1}{ms}}.
+\]
+They conjecture $0<\Delta<2$ for all positive integer admissible parameters. This $G_{\rm Good}$ differs from the Gaussian prefactor $G_n$ of \eqref{eq:leading}.
+
+\begin{corollary}\label{cor:delta}
+On each fixed compact interval $I\subset(0,\infty)$, uniformly over square tables with integer line sum $s$ and $\lambda=s/n\in I$,
+\begin{equation}\label{eq:deltaasymp}
+\Delta(n,s;n,s)=\frac1n\left(\frac{67}{6}+\frac5{3u}\right)+O_I(n^{-2}),
+\qquad u=\lambda(1+\lambda).
+\end{equation}
+Consequently $0<\Delta(n,s;n,s)<2$ for all sufficiently large $n$, uniformly over those margins. In particular,
+\begin{equation}\label{eq:deltadensityone}
+\Delta(n,n;n,n)=\frac{12}{n}+O(n^{-2}).
+\end{equation}
+\end{corollary}
+\begin{proof}
+Set $\mathcal L(n,\lambda)=\mathcal G(n,\lambda)e^{B_0(u)}$. The standard Stirling expansion of the three factorial ratios in $G_{\rm Good}$ gives, uniformly on $I$,
+\begin{equation}\label{eq:goodstirling}
+\log\frac{G_{\rm Good}(n,s;n,s)e^{1/2}}{\mathcal L(n,\lambda)}
+ =\frac{g_2(u)}{n^2}+O_I(n^{-4}),
+\end{equation}
+where
+\begin{equation}\label{eq:g2}
+g_2(u)=\frac4{45}+\frac1{12u}+\frac1{60u^2}+\frac1{180u^3}.
+\end{equation}
+Here is an explicit way to see the coefficient. If
+$B(N,\lambda)=\binom{(1+\lambda)N-1}{\lambda N}$, write
+\[
+\log B(N,\lambda)=N\log H(\lambda)-\tfrac12\log(2\pi N u)
+ +\frac{b_1(u)}N+\frac{b_3(u)}{N^3}+O_I(N^{-5}),
+\]
+with
+\[
+b_1(u)=-\frac{1+1/u}{12},\qquad
+b_3(u)=\frac{1+3/u^2+1/u^3}{360}.
+\]
+The constant in this display needs the factor $1/(1+\lambda)$ in
+$\binom{(1+\lambda)N-1}{\lambda N}=\binom{(1+\lambda)N}{\lambda N}/(1+\lambda)$; it is already included in $-\tfrac12\log(2\pi N u)$. Since
+$\log G_{\rm Good}=2n\log B(n,\lambda)-\log B(n^2,\lambda)$,
+its $n^{-2}$ coefficient is $2b_3-b_1=g_2$. Its constant is $2b_1=B_0-1/2$. This proves \eqref{eq:goodstirling}.
+
+Taking logarithms in \eqref{eq:CMdelta} in the square case,
+\[
+\frac{\Delta}{2n}=\log\frac{T(n,s)}{G_{\rm Good}}-(n-1)\log(1+1/n)+\frac12.
+\]
+Use Theorem~\ref{thm:density}, \eqref{eq:goodstirling}, and
+\[
+(n-1)\log(1+1/n)=1-\frac{3}{2n}+\frac5{6n^2}+O(n^{-3}).
+\]
+The constants and $n^{-1}$ terms cancel. The remaining coefficient is
+\[
+P_2(1/u)-g_2(u)-\frac56=\frac{67}{12}+\frac5{6u}.
+\]
+Multiplication by $2n$ proves \eqref{eq:deltaasymp}. The leading coefficient is positive and bounded above and below on $I$, so its uniform remainder proves the eventual strict inequalities. Substituting $u=2$ gives \eqref{eq:deltadensityone}.
+\end{proof}
+
+This is an eventual compact-positive-density \emph{square} case of the conjecture, with no explicit starting index. It does not settle all finite sizes, nonsquare tables, or densities tending to zero or infinity. Prior progress includes Greenhill--McKay \cite[Corollary~4.2]{GM}, which proves
+$\Delta(m,s;n,t)\sim5(s+t)/(6st)$ in the sparse regime
+$st=o((mn)^{1/5})$. Their preceding Corollary~4.1 also contains $-3/(4n)-3/(4m)$, hence $-3/(2n)$ for squares, under sparse assumptions. Those assumptions exclude fixed positive square density. Thus the numerical first coefficient has a sparse-regime antecedent; the present assertion concerns its analytically controlled dense regime and the next correction.
+
+The explicit prefactor in the original conjecture also suggests a term $-3/(2n)$ on expansion. It did not prove that coefficient, because the unknown term $\Delta/(2n)$ could have contributed at the same order. The present corollary shows $\Delta\to0$ in the stated regime.

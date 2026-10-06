@@ -1,0 +1,50 @@
+\section{The model and its exact transform}\label{sec:model}
+A matrix is \emph{packed} if it has no zero row or column. Let $\mathcal A_n$ be the set of symmetric packed matrices with nonnegative integer entries and total entry sum $n$. The dimension is allowed to vary. Rows and columns are ordered, and simultaneous permutations are not identified. The empty matrix is the sole object of weight zero. For $n>0$, the dimension is at most $n$, so the set is finite. An off-diagonal entry of value $m$ contributes $2m$ to the total sum, while a diagonal entry contributes its value once.
+
+Put $A_n=|\mathcal A_n|$. The first values are
+\[
+1,\ 1,\ 3,\ 9,\ 33,\ 125,\ 531,\ 2349,\ 11205,\ 55589,\ 291423.
+\]
+This is OEIS A138178~\cite{oeis138178}. The entry also identifies these objects with normal semistandard Young tableaux, whose used alphabet is an initial interval. The matrix model, rather than any quotient by relabeling, is used throughout this report.
+
+For $M\in\mathcal A_n$, let $D(M)$ be its actual dimension and $T(M)$ its diagonal sum, and define
+\[
+ A_n(u,v)=\sum_{M\in\mathcal A_n}u^{D(M)}v^{T(M)},\qquad A_0(u,v)=1.
+\]
+The auxiliary quantities
+\begin{equation}\label{eq:notation}
+ q=\frac{u}{1+u},\qquad L=L(u)=\log(1+1/u),\qquad
+ I_n(v)=n![x^n]e^{vx+x^2/2}
+\end{equation}
+use the branch of the logarithm positive at $u=1$. In particular $L(1)=\log2$, and $I_n(1)$ is the involution number. Define the coefficient polynomial
+\begin{equation}\label{eq:fn}
+ f_n(k,v)=[z^n](1-vz)^{-k}(1-z^2)^{-(k^2-k)/2}.
+\end{equation}
+For integer $k\geq0$, this counts all symmetric $k\times k$ matrices, with zero lines allowed, marking their diagonal sum. For every fixed $n>0$, it is a polynomial in $k$ of degree at most $n$ with zero constant term.
+
+\begin{proposition}[Exact geometric transform]\label{prop:transform}
+For $u,v$ in a complex neighborhood of $(1,1)$,
+\begin{equation}\label{eq:transform}
+ A_n(u,v)=\frac1{1+u}\sum_{k\geq0}q^k f_n(k,v).
+\end{equation}
+The series converges absolutely for fixed $n$. The marker $u$ records the actual packed dimension, not the auxiliary index $k$.
+\end{proposition}
+\begin{proof}
+Deleting simultaneous zero rows and columns from a $k\times k$ matrix leaves a unique packed matrix. Each particular packed matrix of dimension $d$ has $\binom{k}{d}$ preimages. Since $1-q=(1+u)^{-1}$,
+\[
+ (1-q)\sum_{k\geq d}q^k\binom{k}{d}
+ =\left(\frac{q}{1-q}\right)^d=u^d.
+\]
+The diagonal sum is unchanged by insertion of zero lines. Summing over the finite family of packed matrices proves the identity. The polynomial degree assertion follows by expanding the logarithm of \eqref{eq:fn}: every atom $k^a z^b$ has $a\leq b$.
+\end{proof}
+
+The unmarked geometric generating-function transform is already recorded in OEIS, credited to Vladeta Jovovic in December 2009~\cite{oeis138178}. Its use here, and the short marked extension above, must not be mistaken for a newly discovered unmarked identity.
+
+\subsection{Prior results and the boundary of the model}
+Cameron, Prellberg, and Stark~\cite{cps}, Proposition 4.2, prove the leading equivalent for the symmetric \emph{binary} companion $B_n$, OEIS A135588~\cite{oeis135588}:
+\begin{equation}\label{eq:priorbinary}
+ B_n\sim e^{-L-L^2/4}\frac{I_n(1)P_n}{n!},\qquad L=\log2,
+\end{equation}
+where $P_n$ is the ordered Bell number. Their Section 2 also obtains a Poisson collision limit in a nonsymmetric incidence-matrix argument based on pairs of random preorders. The collision mechanism therefore has substantial precedent. The present treatment concerns the nonnegative symmetric model, uniform marked expansions to every fixed order, and quantitative refinements of its joint collision law.
+
+Rectangular packed matrices, matrices with decreasing margins, and matrices considered up to row or column permutations are different counting models. Related rectangular and Burge-polynomial frameworks appear in \cite{matrixcomp,caylerian}. Their familiar names and related generating functions do not identify their sequences with $A_n$. A bounded check of relevant public sources and existing reports found no duplicate of the result assembled here; it is not a certificate of worldwide novelty. The source notes accompanying this report describe the public attributions and the limits of that check.

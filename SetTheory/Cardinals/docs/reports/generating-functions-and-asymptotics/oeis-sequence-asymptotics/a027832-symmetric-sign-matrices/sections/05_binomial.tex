@@ -1,0 +1,70 @@
+\section{A uniform sub Gaussian bound}\label{sec:binomial}
+The eventual summation weight grows like the exponential of a positive square. Weak convergence alone cannot justify its expectation. We first establish a uniform bound strong enough to do so.
+
+\begin{lemma}[Capped binomial exponential moments]\label{lem:subgaussian}
+Let $X$ have the distribution of $\Bin(b,r)$ conditioned on $X\le k$, where $0<r<1$ and $0\le k\le b$ are arbitrary. Then
+\begin{equation}\label{eq:variance}
+ \Var(X)\le\frac b4,
+\end{equation}
+and, for every real $u$,
+\begin{equation}\label{eq:mgf}
+ \E e^{u(X-\E X)}\le e^{bu^2/8}.
+\end{equation}
+The same statements hold without conditioning.
+\end{lemma}
+\begin{proof}
+Write the binomial as the sum of $b$ independent Bernoulli variables and condition their sum to be at most $k$. The conditional coordinates are exchangeable. For $b\ge2$, let $F(j)=\PP\{\Bin(b-2,r)\le j\}$, extended by zero below its support and by one above it. The unnormalized probabilities for two selected coordinates are
+\[
+ (1-r)^2F(k),\quad r(1-r)F(k-1),\quad
+ r(1-r)F(k-1),\quad r^2F(k-2).
+\]
+Their covariance has the sign of $F(k-2)F(k)-F(k-1)^2$.
+
+To check this sign directly, let $q_j$ be the binomial mass sequence, extended by zero. Its successive positive ratios decrease. Consequently, for $i\le j$,
+$q_{j+1}q_{i-1}\le q_jq_i$. Sum over $i\le j$ to obtain
+$q_{j+1}F(j-1)\le q_jF(j)$. Since
+\[
+ F(j)^2-F(j-1)F(j+1)=q_jF(j)-q_{j+1}F(j-1),
+\]
+$F$ is log-concave, including the support boundaries. Thus the conditional coordinates are pairwise negatively correlated. If $a$ is their common conditional success probability, then
+\[
+ \Var(X)\le b a(1-a)\le b/4.
+\]
+The cases $b\le1$ are immediate.
+
+Exponential tilting by $e^{uX}$ preserves the capped-binomial family, replacing $r$ by
+\[
+ r_u=\frac{re^u}{1-r+re^u}.
+\]
+The second derivative of its log moment-generating function is the variance under this tilted law, hence is bounded by $b/4$ for every real $u$. Integrating twice from zero proves \eqref{eq:mgf}. Without a cap, the same variance and tilting argument applies.
+\end{proof}
+
+\begin{corollary}\label{cor:squareUI}
+If $X_1,\ldots,X_M$ are independent, each ordinary or capped $\Bin(M-1,r)$ variables, set
+\[
+ Z_M=\frac{\sum_iX_i-\sum_i\E X_i}{M}.
+\]
+For $M\ge2$,
+\begin{equation}\label{eq:sumtail}
+ \PP(|Z_M|>u)\le2\exp\left\{-\frac{2M}{M-1}u^2\right\},\quad u\ge0.
+\end{equation}
+For each fixed $\alpha<2$, $\sup_M\E e^{\alpha Z_M^2}<\infty$. If $a_M$ stays in a bounded set, there exists $\eta>0$ such that
+\begin{equation}\label{eq:shiftUI}
+ \sup_M\E e^{(1+\eta)(Z_M+a_M)^2}<\infty.
+\end{equation}
+\end{corollary}
+\begin{proof}
+Multiplying \eqref{eq:mgf} and optimizing the exponential Markov bound gives \eqref{eq:sumtail}. For $0<\alpha<2$, integration of that tail gives, for example,
+\[
+ \E e^{\alpha Z_M^2}
+ \le1+4\alpha\int_0^\infty u e^{-(2-\alpha)u^2}\,\dd u
+ =1+\frac{2\alpha}{2-\alpha}.
+\]
+Nonpositive $\alpha$ are immediate. Finally, for any $\rho>0$,
+\[
+ (z+a)^2\le(1+\rho)z^2+(1+\rho^{-1})a^2.
+\]
+Choose small fixed $\rho,\eta>0$ with $(1+\rho)(1+\eta)<2$ and use boundedness of $a_M$. This proves \eqref{eq:shiftUI}.
+\end{proof}
+
+The gap between the required quadratic coefficient $1$ and the admissible coefficient $2$ is the strict margin that permits the critical number of free coordinates. It also controls third and fourth centered moments at orders $M^{3/2}$ and $M^2$, respectively, by integration of the single-coordinate sub-Gaussian tail.

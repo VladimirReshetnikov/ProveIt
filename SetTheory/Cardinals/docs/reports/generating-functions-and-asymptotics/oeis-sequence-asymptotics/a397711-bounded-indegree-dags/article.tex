@@ -1,0 +1,897 @@
+\newcommand{\DoNotLoadEpstopdf}{}
+\pdfinfoomitdate=1
+\pdftrailerid{}
+\pdfsuppressptexinfo=-1
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=1in]{geometry}
+\usepackage{booktabs,longtable,array}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\hypersetup{pdftitle={Report 157 Airy logarithmic asymptotics for bounded indegree labelled DAGs},pdfauthor={},pdfsubject={OEIS A397711 and every fixed indegree bound}}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{1.2em}
+\setlength{\emergencystretch}{2em}
+\setcounter{tocdepth}{1}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\NN}{\mathbb N}
+\newcommand{\ZZ}{\mathbb Z}
+\newcommand{\EE}{\mathbb E}
+\newcommand{\PP}{\mathbb P}
+\newcommand{\ind}{\mathbf 1}
+\newcommand{\floor}[1]{\left\lfloor #1\right\rfloor}
+\newcommand{\ceil}[1]{\left\lceil #1\right\rceil}
+\DeclareMathOperator{\Ai}{Ai}
+\title{Airy logarithmic asymptotics for bounded indegree labelled DAGs\\\large Exact parking reduction and a Lambert W inverse}
+\author{Report 157}
+\date{3 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+Let $a_n$ count simple directed acyclic graphs on the labelled vertex set
+$[n]$ with every indegree at most two, the sequence OEIS A397711. If
+$-\zeta$ is the largest real zero of the Airy function, then
+\[
+ \log a_n=2n\log n-n-\kappa n^{1/3}+o(n^{1/3}),
+ \qquad \kappa=\frac{3\zeta}{2^{1/3}}.
+\]
+An exact reduction through generalized parking functions represents the
+count as a Poisson excursion partition function with potential
+$q_i=\log(i/(i-1))\sim i^{-1}$. Geometric blocks transfer established
+homogeneous area-tilt bounds of Mallein to this singular potential.
+Explicit interface intervals, a fixed initial segment, and a forced
+terminal descent handle the boundaries and the growing number of blocks.
+
+For $y=\log x$ and $b=y/[2W_0(y/(2\sqrt e))]$, the threshold inverse is
+\[
+ \min\{n\geq1:a_n\geq x\}
+ =b+\frac{\kappa b^{1/3}}{2\log b+1}
+   +o\!\left(\frac{b^{1/3}}{\log b}\right).
+\]
+The same argument gives the logarithmic Airy correction for every fixed
+integer indegree bound $c\geq2$. Exact enumeration, generalized parking
+functions, and the homogeneous Airy estimates are prior inputs. The
+result is a logarithmic asymptotic; no power prefactor, amplitude,
+$O(\log n)$ remainder, or all-orders expansion is established.
+\end{abstract}
+\newpage
+\tableofcontents
+\medskip
+\noindent\textbf{Scope and priority.}
+All logarithms are natural. The graph model is unweighted and labelled;
+graphs are not counted once per compatible topological ordering. The
+mathematical statements below follow from the cited probability lemmas,
+whose hypotheses are verified explicitly. A bounded literature search
+found no equivalent application to this model. This does not establish
+first-ever priority. In particular, Steinsky's 2003 paper on bounded
+indegree DAG coding was not available for a full-text inspection, so its
+priority implications remain unresolved. Section~\ref{sec:sources}
+records this limitation separately from the proof.
+\newpage
+
+\section{The graph model and main results}\label{sec:main}
+A simple directed graph has no loops and at most one edge of each
+orientation between two different vertices. A directed acyclic graph
+(DAG) has no directed cycle; in particular it cannot contain both
+orientations of a pair. Write $a_{n,c}$ for the number of such graphs on
+$[n]=\{1,\ldots,n\}$ in which each vertex has at most $c$ incoming edges.
+The labels are part of the object. Put $a_{0,c}=1$, and abbreviate
+$a_n=a_{n,2}$. The first values are
+\[
+ a_0,a_1,a_2,a_3,a_4,a_5=1,1,3,25,443,13956.
+\]
+The sequence is A397711~\cite{oeis}. Exact counting for
+fixed indegree bounds is established prior art; see Allen et
+al.~\cite{allen}, Theorem~18 and Table~1, and Steinsky~\cite{steinsky}.
+
+Let $\Ai$ be the Airy function and let
+\begin{equation}\label{eq:airyconstants}
+ \Ai(-\zeta)=0,\qquad
+ \zeta=2.338107410459767\ldots,
+ \qquad c_A=\frac\zeta{2^{1/3}},\qquad \kappa=3c_A.
+\end{equation}
+Here $-\zeta$ is the largest real zero, and
+$\kappa=5.567271244467717\ldots$. Decimal values are supplied for
+orientation; the exact constants are defined by \eqref{eq:airyconstants}.
+
+\begin{theorem}[The first logarithmic correction]\label{thm:main}
+As $n\to\infty$,
+\begin{equation}\label{eq:main}
+ \log a_n=2n\log n-n-\kappa n^{1/3}+o(n^{1/3}).
+\end{equation}
+Equivalently,
+\begin{equation}\label{eq:stretched}
+ a_n=\left(\frac{n^2}{e}\right)^n
+       \exp\{-\kappa n^{1/3}+o(n^{1/3})\},
+ \qquad \lim_{n\to\infty}\frac{a_n^{1/n}}{n^2}=\frac1e.
+\end{equation}
+\end{theorem}
+
+The error in \eqref{eq:main} is only $o(n^{1/3})$. Formula
+\eqref{eq:stretched} is therefore not a ratio equivalent to an explicitly
+given sequence. An unproved logarithmic term could still change a power
+prefactor, and an unproved constant term could still change an amplitude.
+No such refinement is inferred from this theorem or from finite data.
+
+\begin{theorem}[Threshold inversion]\label{thm:inverse}
+For real $x\to\infty$, define
+\begin{equation}\label{eq:inverseparameters}
+ N(x)=\min\{n\geq1:a_n\geq x\},\qquad
+ y=\log x,\qquad
+ b=\frac{y}{2W_0(y/(2\sqrt e))},
+\end{equation}
+where $W_0$ is the positive real branch of Lambert's $W$ function on
+positive arguments. Then
+\begin{equation}\label{eq:inverse}
+ N(x)=b+\frac{\kappa b^{1/3}}{2\log b+1}
+           +o\!\left(\frac{b^{1/3}}{\log b}\right).
+\end{equation}
+\end{theorem}
+
+The displacement in \eqref{eq:inverse} is positive. The negative Airy
+term lowers the count at a given $n$, so a larger index is needed to
+reach $x$. The allowed error scale grows; the theorem supplies
+neither eventual exact rounding nor an additive $o(1)$ inverse error.
+
+\begin{theorem}[Every fixed indegree bound]\label{thm:fixedc}
+For each fixed integer $c\geq2$, as $n\to\infty$,
+\begin{align}
+ \log a_{n,c}
+ &=cn\log n-\bigl[c-1+\log((c-1)!)\bigr]n\notag\\
+ &\hspace{1em}-\kappa(c-1)^{2/3}n^{1/3}+o(n^{1/3}).
+ \label{eq:fixedc}
+\end{align}
+Consequently,
+\begin{equation}\label{eq:fixedroot}
+ \lim_{n\to\infty}\frac{a_{n,c}^{1/n}}{n^c}
+ =\frac{e^{-(c-1)}}{(c-1)!}.
+\end{equation}
+The error term and its starting index may depend on $c$. No uniformity
+is asserted when $c$ grows with $n$.
+\end{theorem}
+
+The proof is organized around a potential-transfer lemma for the
+Poisson-minus-one walk. The exact counting identities come first so
+that the factorials, interval endpoints, and area convention can all be
+checked before any limiting argument is applied.
+
+\section{Exact enumeration and generalized parking functions}\label{sec:exact}
+\subsection{Inclusion and exclusion over sinks}
+Define, with $\binom mj=0$ when $j>m$,
+\begin{equation}\label{eq:g}
+ g_c(m)=\sum_{j=0}^c\binom mj,\qquad
+ g(m)=g_2(m)=1+m+\binom m2=1+\frac{m(m+1)}2.
+\end{equation}
+
+\begin{proposition}[Sink recurrence]\label{prop:sink}
+For every integer $n\geq1$,
+\begin{equation}\label{eq:sink}
+ a_{n,c}=\sum_{k=1}^n(-1)^{k+1}\binom nk
+                  g_c(n-k)^k a_{n-k,c}.
+\end{equation}
+\end{proposition}
+\begin{proof}
+Every nonempty finite DAG has a sink. Fix a set $K$ of $k$ labelled
+vertices and require all of them to be sinks. There are no edges inside
+$K$ or from $K$ to its complement. The complement supports any allowable
+DAG, giving $a_{n-k,c}$ choices. Each sink chooses its parent set
+independently from the $n-k$ complementary vertices, with at most $c$
+parents, giving $g_c(n-k)^k$ choices. These choices create no directed
+cycle. Inclusion and exclusion over the $n$ sink events proves
+\eqref{eq:sink}.
+\end{proof}
+
+This direct derivation fixes the normalization and model. It does not
+assert that bounded-indegree DAG enumeration itself is new. In
+particular, one must not multiply the count by a number of topological
+orders; that would give a different weighted model.
+
+\subsection{General vector parking bounds}
+For a nondecreasing positive integer vector $u_1,\ldots,u_n$, a
+$u$-parking preference word is a labelled word of $n$ positive integers
+whose sorted values $b_1\leq\cdots\leq b_n$ satisfy $b_i\leq u_i$.
+Let $P_n(u_1,\ldots,u_n)$ count these words and put $P_0=1$.
+Kung and Yan~\cite{kungyan}, Corollary~5.3 and Theorem~5.4, give the
+identity
+\begin{equation}\label{eq:parkingidentity}
+ x^n=\sum_{j=0}^n\binom nj P_j(u_1,\ldots,u_j)
+                         (x-u_{j+1})^{n-j}.
+\end{equation}
+The last term is $P_n$, so its apparent use of $u_{n+1}$ is harmless.
+The counting decomposition initially proves this for every sufficiently
+large integer $x$. Both sides are polynomials in $x$, hence it is a
+polynomial identity and may be evaluated at $x=0$.
+
+Take
+\begin{equation}\label{eq:parkingbounds}
+ u_i=g_c(i-1),\qquad u_0=0.
+\end{equation}
+Moving the $j=n$ term of \eqref{eq:parkingidentity} to the other side and
+putting $k=n-j$ gives exactly \eqref{eq:sink}. The initial values agree,
+so induction yields
+\begin{equation}\label{eq:parkingcount}
+ a_{n,c}=P_n\bigl(g_c(0),\ldots,g_c(n-1)\bigr).
+\end{equation}
+This is an equality of counts obtained from established parking theory;
+no new explicit graph-to-parking bijection is required or claimed.
+
+\subsection{Occupancies and the barrier}
+Let
+\begin{equation}\label{eq:di}
+ d_i=u_i-u_{i-1}\quad(i\geq1).
+\end{equation}
+In the present applications every $d_i$ is positive. For a preference
+word, let $x_i$ be the number of its letters in the integer interval
+$(u_{i-1},u_i]$. The sorted parking condition is equivalent to
+\begin{equation}\label{eq:occupancyconditions}
+ x_i\geq0,\qquad \sum_{i=1}^n x_i=n,\qquad
+ \sum_{j=1}^i x_j\geq i\quad(1\leq i\leq n).
+\end{equation}
+Indeed, $b_i\leq u_i$ holds exactly when at least $i$ letters lie at or
+below $u_i$. Once the occupancies are fixed, there are
+$n!/\prod_i x_i!$ ways to allocate the labelled positions and
+$\prod_i d_i^{x_i}$ ways to choose their preference values. Therefore
+\begin{equation}\label{eq:occupancy}
+ a_{n,c}=n!\sum_{\boldsymbol x\text{ satisfying }\eqref{eq:occupancyconditions}}
+                  \prod_{i=1}^n\frac{d_i^{x_i}}{x_i!}.
+\end{equation}
+For $c=2$,
+\begin{equation}\label{eq:quadraticd}
+ u_i=1+\binom i2,\qquad d_1=1,\qquad d_i=i-1\quad(i\geq2),
+ \qquad \prod_{i=1}^n d_i=(n-1)!.
+\end{equation}
+The first two increments are both one. This initial duplication will
+make $q_1=0$ below; shifting it would change an exact identity.
+
+\section{The exact Poisson excursion representation}\label{sec:poisson}
+Let $X_1,X_2,\ldots$ be independent Poisson random variables of mean one,
+and define
+\begin{equation}\label{eq:walk}
+ S_0=0,\qquad S_i=\sum_{j=1}^i(X_j-1),\qquad
+ E_n=\{S_i\geq0\ (1\leq i\leq n),\ S_n=0\}.
+\end{equation}
+Then \eqref{eq:occupancyconditions} is exactly the event $E_n$, under
+$x_i=X_i$. For positive $d_i$, put
+\begin{equation}\label{eq:qgeneral}
+ q_0=0,\qquad q_i=\log(d_{i+1}/d_i)\quad(i\geq1),\qquad
+ Z_n(q)=\EE\left[\exp\left\{-\sum_{i=0}^{n-1}q_iS_i\right\};E_n\right].
+\end{equation}
+The semicolon denotes multiplication by the event indicator.
+
+\begin{proposition}[Exact normalization]\label{prop:normalization}
+For every integer $n\geq1$, with the increments \eqref{eq:di} and the
+potential \eqref{eq:qgeneral},
+\begin{equation}\label{eq:normalization}
+ a_{n,c}=n!e^n\left(\prod_{i=1}^n d_i\right)Z_n(q).
+\end{equation}
+In particular, for $c=2$,
+\begin{align}
+ q_0=q_1&=0,\qquad q_i=\log\frac{i}{i-1}\quad(i\geq2),\label{eq:q2}\\
+ a_n&=n!(n-1)!e^nZ_n(q).\label{eq:normalization2}
+\end{align}
+\end{proposition}
+\begin{proof}
+For any fixed occupancy vector, its Poisson probability is
+$e^{-n}/\prod_i x_i!$. Equation~\eqref{eq:occupancy} consequently equals
+$n!e^n\EE[\prod_i d_i^{X_i};E_n]$. On $E_n$, summation by parts gives
+\begin{align}
+ \sum_{i=1}^n(X_i-1)\log d_i
+ &=\sum_{i=1}^n(S_i-S_{i-1})\log d_i\notag\\
+ &=S_n\log d_n-S_0\log d_1
+   -\sum_{i=1}^{n-1}S_i\log\frac{d_{i+1}}{d_i}\notag\\
+ &=-\sum_{i=1}^{n-1}q_iS_i.\label{eq:summationparts}
+\end{align}
+Factoring out $\prod_i d_i$ proves \eqref{eq:normalization}.
+Equation~\eqref{eq:quadraticd} gives the specialization.
+\end{proof}
+
+The area is charged at the left endpoint of each step, from $i=0$ to
+$i=n-1$. Its first term vanishes because $S_0=0$. Its last term is
+$q_{n-1}S_{n-1}$, not $q_nS_n$. This convention matches the probability
+input below and prevents interface costs from being double-counted.
+For \eqref{eq:q2}, $q_i\geq0$ and $iq_i\to1$.
+
+\section{The homogeneous Airy estimates used}\label{sec:input}
+The external probability input is Mallein~\cite{mallein}, Lemma~2.6,
+equation~(2.15), and Lemma~2.7, equation~(2.19), in the arXiv version~3
+and corresponding author manuscript. The assumptions are given there
+in equations~(2.12)--(2.13). We state precisely the homogeneous
+variance-one specialization that is used here.
+
+When the walk starts at $x\in\ZZ_{\geq0}$, write $\EE_x$ for expectation
+and still write $S_j$ for its absolute height. For $m\geq1$, $h>0$, and
+$J\subseteq[0,\infty)$ define the killed area-tilt kernel
+\begin{equation}\label{eq:kernel}
+ K_{m,h}(x,J)=\EE_x\left[
+ \exp\left\{-\frac hm\sum_{j=0}^{m-1}S_j\right\};
+ S_j\geq0\ (0\leq j\leq m),\ S_m\in J\right].
+\end{equation}
+Every endpoint interval below is intersected with $\ZZ$ when used for
+this walk.
+
+\begin{proposition}[Homogeneous bounds from Mallein]\label{prop:input}
+For each fixed $h>0$,
+\begin{equation}\label{eq:upperinput}
+ \limsup_{m\to\infty}m^{-1/3}
+  \log\sup_{x\in\ZZ_{\geq0}}K_{m,h}(x,[0,\infty))
+ \leq-c_Ah^{2/3}.
+\end{equation}
+For each fixed $h>0$ and fixed $0<a<b$, $0<a'<b'$,
+\begin{equation}\label{eq:lowerinput}
+ \liminf_{m\to\infty}m^{-1/3}
+ \log\inf_{x\in[a m^{1/3},b m^{1/3}]\cap\ZZ}
+ K_{m,h}(x,[a'm^{1/3},b'm^{1/3}])
+ \geq-c_Ah^{2/3}.
+\end{equation}
+\end{proposition}
+
+The source treats independent centered increments with continuous
+positive variance profile and a uniform exponential moment of their
+absolute values. For $Y=X_1-1$,
+\[
+ \EE Y=0,\qquad \EE Y^2=1,\qquad
+ \EE e^{\mu|Y|}<\infty\quad\text{for every fixed }\mu>0.
+\]
+Thus the homogeneous array has variance profile identically one and
+satisfies every required moment condition. Neither symmetry nor a
+nonlattice law is assumed in the cited estimates. The lower estimate
+uses an interval of terminal heights, not an exact endpoint. The exact
+zero endpoint in our application will be supplied separately.
+
+The normalization of $c_A$ can also be checked at the Brownian level.
+The killed operator $\tfrac12 d^2/dx^2-hx$ on the positive half-line
+has eigenfunction $\Ai((2h)^{1/3}x-\zeta)$ with eigenvalue
+$-\zeta h^{2/3}/2^{1/3}$. This verifies the variance-one convention; it
+is not a replacement proof of the random-walk rare-event bounds.
+
+\begin{remark}[The quantifier needed for many blocks]\label{rem:quantifier}
+Fix $h$, the endpoint parameters when needed, and $\epsilon>0$.
+Equations~\eqref{eq:upperinput}--\eqref{eq:lowerinput} give a single
+integer $m_0$ such that the corresponding bounds
+\[
+ K\leq e^{(-c_Ah^{2/3}+\epsilon)m^{1/3}},\qquad
+ K\geq e^{(-c_Ah^{2/3}-\epsilon)m^{1/3}}
+\]
+hold for every integer $m\geq m_0$, with the indicated supremum or
+infimum. This elementary consequence of limsup and liminf is the
+uniformity used below. We do not vary $h$ or the scaled endpoint
+intervals with the total horizon, and do not require a uniform theorem
+over such varying parameters.
+\end{remark}
+
+\section{Transferring the estimates to a singular potential}\label{sec:transfer}
+\begin{lemma}[A reciprocal potential]\label{lem:transfer}
+For the walk \eqref{eq:walk}, let $(q_i)_{i\geq0}$ be finite real numbers
+such that $q_i\geq0$ and
+\begin{equation}\label{eq:beta}
+ iq_i\longrightarrow\beta>0.
+\end{equation}
+Then
+\begin{equation}\label{eq:transfer}
+ \log Z_n(q)=-3c_A\beta^{2/3}n^{1/3}+o(n^{1/3}).
+\end{equation}
+The value of $q_0$ is immaterial because $S_0=0$.
+\end{lemma}
+
+The potential is singular after rescaling time near zero. A direct
+substitution into a smooth bounded-potential theorem would therefore
+need justification. The proof below uses only the homogeneous bounds,
+with a fixed initial cutoff and a geometric partition.
+
+\subsection{Geometric grid and rounding control}
+Fix $r>1$ and a large constant $T>1$. For integers $N\to\infty$, put
+\begin{equation}\label{eq:grid}
+ J=\floor{\log_r(N/T)},\qquad
+ A_j=Nr^{j-J},\qquad t_j=\floor{A_j}\quad(0\leq j\leq J),
+ \qquad m_j=t_j-t_{j-1}.
+\end{equation}
+In particular, $T\leq A_0<rT$, $T-1\leq t_0<rT$, and $t_J=N$.
+Writing $M_j=A_j-A_{j-1}$ gives
+\begin{equation}\label{eq:griderrors}
+ |m_j-M_j|<1,\qquad M_j=(r-1)A_0r^{j-1}.
+\end{equation}
+For fixed $r$ and sufficiently large $T$, all $m_j$ are positive and
+bounded below by a constant times $Tr^{j-1}$. Uniformly over all the
+blocks,
+\begin{equation}\label{eq:gridratios}
+ \frac{m_j}{t_{j-1}}=(r-1)+O(T^{-1}),\qquad
+ \frac{m_j}{t_j}=(1-r^{-1})+O(T^{-1}).
+\end{equation}
+The constants here may depend on $r$.
+
+The cube-root sum has the limit
+\begin{equation}\label{eq:gridsum}
+ N^{-1/3}\sum_{j=1}^Jm_j^{1/3}\longrightarrow
+ D(r)=\frac{(1-r^{-1})^{1/3}}{1-r^{-1/3}}.
+\end{equation}
+To verify rounding does not affect this limit, the mean value theorem
+and \eqref{eq:griderrors} give
+\[
+ |m_j^{1/3}-M_j^{1/3}|\leq C_rM_j^{-2/3}
+\]
+when $T$ is sufficiently large. The right side is summable over the
+geometric grid, with a sum bounded independently of $N$. The exact
+geometric sum is
+\[
+ N^{-1/3}\sum_{j=1}^JM_j^{1/3}
+ =(1-r^{-1})^{1/3}\sum_{k=0}^{J-1}r^{-k/3},
+\]
+which tends to $D(r)$. This proves \eqref{eq:gridsum}.
+
+The minimum block length is not asserted to tend to infinity with $N$.
+Instead, $T$ is chosen sufficiently large once the fixed parameters and
+required length thresholds have been selected. It then remains fixed
+while $N\to\infty$.
+
+\subsection{Comparing the potential on each block}
+Fix also $\rho\in(0,1)$ and set
+\begin{equation}\label{eq:hpm}
+ h_-=(1-\rho)\beta(1-r^{-1}),\qquad
+ h_+=(1+\rho)\beta(r-1).
+\end{equation}
+After increasing $T$, condition~\eqref{eq:beta} and
+\eqref{eq:gridratios} imply simultaneously on every block
+\begin{equation}\label{eq:comparison}
+ \frac{h_-}{m_j}\leq q_i\leq\frac{h_+}{m_j}
+ \qquad(t_{j-1}\leq i<t_j).
+\end{equation}
+For example, first bound $iq_i$ between
+$(1-\delta)\beta$ and $(1+\delta)\beta$ for all indices above a fixed
+cutoff. On the block use $i\leq t_j$ for the lower bound and
+$i\geq t_{j-1}$ for the upper bound. Choose $\delta>0$ small in terms
+of $r,\rho$, then enlarge $T$ to absorb the ratio errors. No monotonicity
+of $q_i$ is needed. Nonnegativity permits the kernel comparisons on
+nonnegative paths and removal of the initial cost in the upper bound.
+
+\subsection{Upper bound}
+Take $N=n$. Remove the final requirement $S_n=0$ and the nonnegative
+area cost before $t_0$. The remaining initial distribution on nonnegative
+heights has total mass at most one. The Markov property and
+\eqref{eq:comparison} yield
+\begin{equation}\label{eq:upperproduct}
+ Z_n(q)\leq\prod_{j=1}^J
+      \sup_{x\in\ZZ_{\geq0}}K_{m_j,h_-}(x,[0,\infty)).
+\end{equation}
+For fixed $r,\rho,\epsilon>0$, choose $T$ still larger so that every
+$m_j$ exceeds the single threshold in
+Remark~\ref{rem:quantifier}. Consequently,
+\[
+ \log Z_n(q)\leq(-c_Ah_-^{2/3}+\epsilon)
+                       \sum_{j=1}^Jm_j^{1/3}.
+\]
+Take $n\to\infty$, then $\epsilon\downarrow0$, then
+$\rho\downarrow0$, while $r$ remains fixed. Formula~\eqref{eq:gridsum}
+and the algebraic identity
+\begin{equation}\label{eq:upperconstant}
+ (1-r^{-1})^{2/3}D(r)=1+r^{-1/3}+r^{-2/3}
+\end{equation}
+give
+\begin{equation}\label{eq:upperfinal}
+ \limsup_{n\to\infty}n^{-1/3}\log Z_n(q)
+ \leq-c_A\beta^{2/3}(1+r^{-1/3}+r^{-2/3}).
+\end{equation}
+
+\subsection{Lower bound interfaces with explicit slack}
+Fix in addition $\eta>0$, and reserve a short terminal interval by
+setting
+\begin{equation}\label{eq:tail}
+ L_n=\ceil{2\eta n^{1/3}},\qquad N=n-L_n.
+\end{equation}
+Use \eqref{eq:grid} with this $N$. At ordinary interfaces require
+\begin{equation}\label{eq:interfaces}
+ S_{t_j}\in I_j=[t_j^{1/3},2t_j^{1/3}]
+ \qquad(0\leq j<J),
+\end{equation}
+and at the last interface require
+\begin{equation}\label{eq:lastinterface}
+ S_N\in I_J^{(\eta)}=[\eta N^{1/3},2\eta N^{1/3}].
+\end{equation}
+Only sufficiently large $n$, hence $J\geq1$, is relevant.
+
+The following fixed intervals make the choice of parameters transparent.
+Put
+\begin{equation}\label{eq:alphagamma}
+ \alpha=(r-1)^{-1/3},\qquad
+ \gamma=\left(\frac r{r-1}\right)^{1/3}.
+\end{equation}
+By \eqref{eq:gridratios}, after increasing $T$ the scaled incoming
+sets $I_{j-1}/m_j^{1/3}$ all lie in
+\begin{equation}\label{eq:incominginterval}
+ [a,b]=[\alpha/2,3\alpha].
+\end{equation}
+All ordinary scaled outgoing sets $I_j/m_j^{1/3}$ contain the fixed
+interval
+\begin{equation}\label{eq:outgoinginterval}
+ [a',b']=[5\gamma/4,7\gamma/4],
+\end{equation}
+and the last set $I_J^{(\eta)}/m_J^{1/3}$ contains
+\begin{equation}\label{eq:lastoutgoing}
+ [a'_\eta,b'_\eta]=[5\eta\gamma/4,7\eta\gamma/4].
+\end{equation}
+Indeed, the limiting ordinary outgoing interval is $[\gamma,2\gamma]$,
+and the last one is $[\eta\gamma,2\eta\gamma]$, so these choices have
+strict positive slack. These intervals depend on the fixed $r,\eta$
+only. We can therefore select the two lower-bound length thresholds
+first and subsequently increase $T$ to exceed their maximum. Increasing
+$T$ preserves the required containments, so there is no circular choice.
+
+\subsection{A finite initial segment}
+For any possible $t_0$, choose an integer
+$H\in[t_0^{1/3},2t_0^{1/3}]$. Force $X_1=H+1$ and
+$X_2=\cdots=X_{t_0}=1$. This path is nonnegative, ends at height $H$,
+and has weighted probability
+\begin{equation}\label{eq:initialcost}
+ \frac{e^{-t_0}}{(H+1)!}
+       \exp\left\{-H\sum_{i=1}^{t_0-1}q_i\right\}.
+\end{equation}
+For fixed $T,r$, both $t_0$ and the selected $H$ take values in finite
+sets. Because each $q_i$ is finite, the minimum of
+\eqref{eq:initialcost} over these possibilities is a positive constant
+$C_{T,r,q}$. It may be very small as $T$ increases, but $T$ remains fixed
+in the limit in $n$, so $n^{-1/3}\log C_{T,r,q}\to0$.
+
+\subsection{Multiplying the lower kernels}
+Apply \eqref{eq:lowerinput} at $h=h_+$, with incoming interval
+\eqref{eq:incominginterval}, and with the ordinary or last outgoing
+interval as appropriate. For fixed $r,\rho,\eta,\epsilon$, enlarge
+$T$ so all lengths exceed both thresholds. The actual block transition
+mass is at least
+\begin{equation}\label{eq:lowerfactor}
+ \exp\{(-c_Ah_+^{2/3}-\epsilon)m_j^{1/3}\}.
+\end{equation}
+The reason is that \eqref{eq:comparison} bounds the actual potential
+above by $h_+/m_j$, so its weight is at least the homogeneous weight.
+
+For a given incoming height in $I_{j-1}$, the selected outgoing interval
+is contained in $I_j$ (or in $I_J^{(\eta)}$ for the last block). Every
+resulting point of $I_j$ is covered by the incoming infimum for the next
+block. The Markov property thus multiplies \eqref{eq:lowerfactor} without
+an endpoint matching loss. Each transition mass already sums over its
+terminal lattice points; there is no division by an interval length or
+additional per-state factor. The left-endpoint area convention assigns
+each interface cost exactly once, to its outgoing block.
+
+Although the number of blocks grows with $n$, the total logarithmic
+error in their product is only
+$\epsilon\sum_jm_j^{1/3}$. After division by $N^{1/3}$ it tends to
+$\epsilon D(r)$. This uses the all-$m\geq m_0$ bound, not an unjustified
+exchange of a blockwise limit with an increasing product.
+
+\subsection{Closing the excursion at zero}
+At time $N$ let the integer height be
+$s\in I_J^{(\eta)}$. Then
+$s\leq2\eta N^{1/3}\leq L_n$. For the remaining $L_n$ steps force
+$X_i=0$ for the first $s$ steps and $X_i=1$ for the remaining steps.
+The walk descends by one to zero, then stays at zero. Both prescribed
+outcomes have probability $e^{-1}$, so this conditional event has
+probability exactly $e^{-L_n}$, independently of $s$.
+
+Throughout the tail the height is at most $L_n$. Since $N/n\to1$,
+condition~\eqref{eq:beta} gives
+$\max_{N\leq i<n}q_i=O(n^{-1})$. Therefore its extra area satisfies
+\begin{equation}\label{eq:tailarea}
+ \sum_{i=N}^{n-1}q_iS_i
+ \leq L_n^2\max_{N\leq i<n}q_i=O(n^{-1/3}).
+\end{equation}
+The weighted tail probability is at least
+$\exp\{-L_n-O(n^{-1/3})\}$. This step uses the special support of the
+Poisson-minus-one walk; Lemma~\ref{lem:transfer} is asserted precisely
+for that walk, which is also the walk used for all fixed $c$.
+
+Combining the initial segment, all blocks, and the terminal tail gives
+\begin{align}
+ \log Z_n(q)\geq\log C_{T,r,q}
+   +(-c_Ah_+^{2/3}-\epsilon)\sum_{j=1}^Jm_j^{1/3}
+   -L_n-O(n^{-1/3}).\label{eq:lowerproduct}
+\end{align}
+First take $n\to\infty$. Then send $\epsilon,\rho\downarrow0$, with
+$r,\eta$ fixed. Using $N/n\to1$, \eqref{eq:gridsum}, and
+\begin{equation}\label{eq:lowerconstant}
+ (r-1)^{2/3}D(r)=1+r^{1/3}+r^{2/3},
+\end{equation}
+we obtain
+\begin{equation}\label{eq:lowerfinal}
+ \liminf_{n\to\infty}n^{-1/3}\log Z_n(q)
+ \geq-c_A\beta^{2/3}(1+r^{1/3}+r^{2/3})-2\eta.
+\end{equation}
+Finally send $\eta\downarrow0$ and $r\downarrow1$ in
+\eqref{eq:upperfinal} and \eqref{eq:lowerfinal}. Both bounds tend to
+$-3c_A\beta^{2/3}$, proving Lemma~\ref{lem:transfer}.
+
+\begin{remark}[Order of limits]
+The fixed parameters $r,\rho,\eta,\epsilon$ are selected first, then
+$T$ is fixed sufficiently large, and only then $n$ tends to infinity.
+At each fixed $r$, the error parameter $\epsilon$ tends to zero before
+$r\downarrow1$. This matters because $D(r)$ diverges as $r\downarrow1$.
+No quantitative rate in the homogeneous estimates is needed or claimed.
+\end{remark}
+
+\section{Completion of the DAG asymptotics}\label{sec:completion}
+For $c=2$, the exact potential \eqref{eq:q2} satisfies
+$iq_i\to1$. Lemma~\ref{lem:transfer} therefore gives
+\begin{equation}\label{eq:zlimit}
+ \log Z_n(q)=-\kappa n^{1/3}+o(n^{1/3}).
+\end{equation}
+Using $(n-1)!=n!/n$, Stirling's formula yields
+\begin{align}
+ \log\bigl(n!(n-1)!e^n\bigr)
+ &=2\log(n!)-\log n+n\notag\\
+ &=2n\log n-n+\log(2\pi)+O(n^{-1}).\label{eq:stirling}
+\end{align}
+Combining \eqref{eq:normalization2}, \eqref{eq:zlimit}, and
+\eqref{eq:stirling} proves Theorem~\ref{thm:main}.
+
+The two factorials cancel their logarithmic terms. This cancellation
+is an exact normalization check, not evidence of a missing universal
+prefactor. Any logarithmic contribution in $\log a_n$ beyond
+\eqref{eq:stirling} must come from a sharper analysis of $Z_n(q)$;
+Lemma~\ref{lem:transfer} does not provide that sharper analysis.
+
+\subsection{Extension to every fixed c}
+Fix an integer $c\geq2$. Pascal's identity applied to \eqref{eq:g} gives
+\begin{equation}\label{eq:generald}
+ d_1=1,\qquad
+ d_i=g_c(i-1)-g_c(i-2)
+     =\sum_{j=0}^{c-1}\binom{i-2}{j}\quad(i\geq2).
+\end{equation}
+These increments are positive and nondecreasing, so
+$q_i=\log(d_{i+1}/d_i)\geq0$. As $i\to\infty$ with $c$ fixed,
+\begin{equation}\label{eq:dasymptotic}
+ d_i=\frac{i^{c-1}}{(c-1)!}\bigl(1+O(i^{-1})\bigr),
+ \qquad iq_i\longrightarrow c-1.
+\end{equation}
+For the second assertion one may expand the fixed polynomial one term
+further: $d_i=A i^{c-1}(1+B/i+O(i^{-2}))$ for constants $A>0,B$.
+Taking a ratio at consecutive integers gives
+$q_i=(c-1)/i+O(i^{-2})$.
+
+Summing logarithms in \eqref{eq:dasymptotic} gives
+\begin{equation}\label{eq:productgeneral}
+ \log\prod_{i=1}^n d_i
+ =(c-1)\log(n!)-n\log((c-1)!)+O(\log n).
+\end{equation}
+Finite initial indices are absorbed in the error. Proposition
+\ref{prop:normalization}, Lemma~\ref{lem:transfer} with $\beta=c-1$,
+and Stirling's formula now give
+\begin{align*}
+ \log a_{n,c}
+ &=c\log(n!)+n-n\log((c-1)!)
+   -\kappa(c-1)^{2/3}n^{1/3}+o(n^{1/3})+O(\log n)\\
+ &=cn\log n-\bigl[c-1+\log((c-1)!)\bigr]n
+   -\kappa(c-1)^{2/3}n^{1/3}+o(n^{1/3}).
+\end{align*}
+This proves Theorem~\ref{thm:fixedc}. The $O(\log n)$ error in the
+separate product calculation is absorbed by $o(n^{1/3})$; it does not
+improve the final remainder to $O(\log n)$.
+
+For context, $c=1$ is a different boundary case: such DAGs are rooted
+labelled forests with edges oriented away from the roots, and
+$a_{n,1}=(n+1)^{n-1}$ for $n\geq1$. In that case $d_i=1$ and $q_i=0$,
+so $\beta=0$. The positive-$\beta$ transfer lemma is not used to claim
+an Airy correction there. The forest formula is a useful independent
+finite check of the exact recurrence.
+
+\section{Lambert W and the threshold inverse}\label{sec:inverse}
+The threshold in \eqref{eq:inverseparameters} exists because the counts
+grow without bound. They are strictly increasing for $n\geq2$: extend
+any allowed graph on $[n-1]$ by vertex $n$ as a sink, either isolated or
+with one of the $n-1$ old vertices as its sole parent. These $n$
+extensions are distinct and respect the indegree bound, so
+\begin{equation}\label{eq:monotonicity}
+ a_n\geq n a_{n-1}\qquad(n\geq2).
+\end{equation}
+
+Put $F(t)=2t\log t-t$. If
+$w=W_0(y/(2\sqrt e))$, then $we^w=y/(2\sqrt e)$ and
+\[
+ b=\frac y{2w}=\sqrt e\,e^w,\qquad
+ \log b=\frac12+w,\qquad F(b)=2bw=y.
+\]
+Thus $b$ is the exact large positive solution of the leading smooth
+model, and
+\begin{equation}\label{eq:derivatives}
+ F'(b)=2\log b+1,\qquad F''(b)=2/b.
+\end{equation}
+
+Here are explicit bracketing details for the error precision.
+Fix $\epsilon>0$. Theorem~\ref{thm:main} implies that for every
+sufficiently large integer $n$,
+\begin{equation}\label{eq:countbrackets}
+ F(n)-(\kappa+\epsilon)n^{1/3}
+ \leq\log a_n\leq
+ F(n)-(\kappa-\epsilon)n^{1/3}.
+\end{equation}
+For any fixed real $A$, let
+\[
+ t_A=b+\frac{A b^{1/3}}{F'(b)}.
+\]
+Taylor's theorem and \eqref{eq:derivatives} give
+\begin{equation}\label{eq:taylorinverse}
+ F(t_A)=y+A b^{1/3}
+        +O\!\left(\frac{b^{-1/3}}{\log^2 b}\right),
+ \qquad t_A^{1/3}=b^{1/3}
+        +O\!\left(\frac{b^{-1/3}}{\log b}\right).
+\end{equation}
+Integer rounding changes $F(t_A)$ by $O(\log b)$, which is
+$o(b^{1/3})$. Choosing $A=\kappa-2\epsilon$ and
+$A=\kappa+2\epsilon$ in \eqref{eq:countbrackets} shows, for all
+sufficiently large $x$,
+\begin{equation}\label{eq:inversebrackets}
+ \floor{t_{\kappa-2\epsilon}}<N(x)
+ \leq\ceil{t_{\kappa+2\epsilon}}.
+\end{equation}
+For the left inequality the upper count bound is below $y$; for the
+right inequality the lower count bound is above $y$. The strict
+margins are of order $\epsilon b^{1/3}$ and dominate the Taylor and
+rounding errors.
+
+Finally, $O(1)=o(b^{1/3}/\log b)$. Divide the displacement bounds by
+$b^{1/3}/F'(b)$ and let $\epsilon\downarrow0$. This proves
+\eqref{eq:inverse}. No numerical asymptotic onset or explicit
+remainder constant is supplied by this proof, so it does not certify a
+finite-input numerical bracket for $N(x)$.
+
+\section{Exact companion and reproducibility}\label{sec:companion}
+The accompanying source package contains the editable LaTeX article,
+the PDF, a Python standard-library companion, tests, attributed numerical
+prefixes, deterministic exact output, source provenance, and controlled
+build and archive helpers. No journal full text or unrelated research
+material is bundled.
+
+The count calculation uses the sink recurrence
+\eqref{eq:sink} with arbitrary-precision integers. Independently
+structured checks use the parking occupancy constraints, rational
+Poisson area weights, and direct small-graph enumeration. In the latter,
+each unordered vertex pair has three possible states: absent, one
+orientation, or the other. An indegree check and an acyclicity test then
+select precisely the required labelled simple DAGs. Small parking-word
+enumeration checks the weak upper-bound convention directly. The
+$c=1$ forest formula supplies another independent reference case.
+
+The exact threshold operation searches a bounded table of actual
+counts. If its chosen range is too short, it reports that fact rather
+than replacing an exact answer by the asymptotic inverse. Workload
+limits are software limits only and do not restrict the mathematical
+theorems. Finite checks support the formulas' indexing and the code's
+correctness; they prove neither an asymptotic rate nor scholarly
+priority.
+
+The README records the exact command lines, bounds, shipped test
+coverage, and output policies. Validation is explicit rather than
+implemented with Python assertions that disappear under optimization;
+the suite is run both normally and with \texttt{-O}. Output is
+exclusive and refuses existing targets and symbolic-link traversal.
+These are local safety measures under a trusted-parent and
+nonadversarial-concurrent-environment assumption, not an operating-system
+sandbox or a claim of general race resistance.
+
+For the PDF, the helper creates an exclusive clean build directory,
+uses a fresh LaTeX format and cache, disables shell escape, fixes PDF
+metadata, and repeats compilation until references stabilize. The
+settled log must contain no warnings or layout diagnostics. Identical
+bytes are expected on repeated builds within the recorded toolchain,
+not across arbitrary TeX versions, fonts, or platforms. In particular,
+the directory creation and subsequent opening require a trusted parent
+and no adversarial concurrent replacement.
+
+The release manifest covers a fixed sorted payload allowlist. The ZIP
+uses fixed timestamps, permissions, order, and stored compression; it
+includes the checksum manifest, which necessarily excludes its own
+self-hash. A separately reported archive digest identifies the complete
+release. The supplied commands permit checksum validation, fresh
+extraction, exact-output replay, normal and optimized tests, clean PDF
+rebuild, and deterministic archive replay.
+
+\section{Attribution and limits of source clearance}\label{sec:sources}
+The argument has three distinct prior inputs. First, bounded-indegree
+labelled DAG enumeration is already treated by Steinsky~\cite{steinsky}
+and Allen et al.~\cite{allen}. Second, the general-vector parking
+identity is due to Kung and Yan~\cite{kungyan}; Yan's survey~\cite{yan}
+provides additional context. Third, the homogeneous killed-walk
+area-tilt estimates are Mallein's~\cite{mallein}. The proof here applies
+these inputs to a reciprocal potential, verifies the endpoint and
+block quantifiers, and derives the stated DAG logarithmic asymptotic
+and threshold displacement. It does not claim any of the underlying
+mechanisms as new.
+
+The source preparation for this report inspected the relevant exact
+counting section of Allen et al., all pages of the Kung--Yan author
+manuscript through rendering and OCR, and the specific Mallein
+assumptions, lemmas, and nearby proofs used above. The crucial formula
+pages were checked visually because the parking manuscript's original
+text extraction was damaged. The homogeneous estimates also agree
+between Mallein's arXiv version~3 and author manuscript. These statements
+record the scope of the source check, not a claim that all surrounding
+literature was exhaustively reviewed.
+
+Steinsky's publisher abstract verifies bounded-indegree enumeration,
+generation, ranking, and unranking, but the full text was not read in
+this source pass. No assertion is made that it contains no relevant
+asymptotic. This unresolved full-text priority check remains important
+before any claim of novelty or publication priority.
+
+Related models require care. Chen and Pearl's bounded-indegree
+Bayesian-network sampling model~\cite{chenpearl} weights DAGs through
+compatible orders, whereas the present count gives every labelled graph
+weight one. General parking-function asymptotics with affine bounds,
+such as Yin~\cite{yin}, concern a different boundary from the quadratic
+$u_i=1+\binom i2$ here. Results for related graph and parking models do not by themselves
+identify the enumeration of arbitrary labelled simple DAGs. A bounded search found no equivalent
+result for this exact model, but absence from a search is not a proof
+of global priority.
+
+The remaining analytic target is a quantitative expansion of the
+inhomogeneous excursion partition function that controls terms below
+$n^{1/3}$. Such a result would be needed to isolate a logarithmic
+prefactor, an amplitude, or further powers. None is supplied here.
+Similarly, no uniform extension to growing $c$ is obtained: all constants,
+cutoffs, and probability parameters in the fixed-$c$ argument are chosen
+after $c$ is fixed.
+
+\begin{thebibliography}{99}
+\raggedright
+\bibitem{allen}
+T.~E. Allen, J. Goldsmith, H.~E. Justice, N. Mattei, and K. Raines,
+\emph{Uniform Random Generation and Dominance Testing for CP-Nets},
+Journal of Artificial Intelligence Research \textbf{59} (2017), 771--813.
+Theorem~18 and Table~1.
+\url{https://par.nsf.gov/servlets/purl/10048706}.
+
+\bibitem{steinsky}
+B. Steinsky, \emph{Efficient coding of labeled directed acyclic graphs},
+Soft Computing \textbf{7} (2003), 350--356.
+\href{https://doi.org/10.1007/s00500-002-0223-5}{doi:10.1007/s00500-002-0223-5}.
+Publisher abstract inspected; full text not inspected.
+
+\bibitem{oeis}
+OEIS Foundation Inc., \emph{A397711}, number of labelled simple DAGs
+with each indegree at most two. Official data mirror consulted
+3 October 2026; entry version header 12 July 2026.
+\url{https://oeis.org/A397711}.
+\url{https://github.com/oeis/oeisdata/blob/main/seq/A397/A397711.seq}.
+
+\bibitem{kungyan}
+J.~P.~S. Kung and C.~H. Yan, \emph{Gon\v{c}arov polynomials and parking
+functions}, Journal of Combinatorial Theory, Series A \textbf{102}
+(2003), 16--37. Corollary~5.3 and Theorem~5.4.
+\href{https://doi.org/10.1016/S0097-3165(03)00009-8}{doi:10.1016/S0097-3165(03)00009-8}.
+Author manuscript: \url{https://people.tamu.edu/~huafei-yan/Files/GP.pdf}.
+
+\bibitem{yan}
+C.~H. Yan, \emph{Parking Functions}, in M. B\'ona (ed.),
+Handbook of Enumerative Combinatorics, CRC Press (2015), 835--893.
+Author copy:
+\url{https://people.tamu.edu/~huafei-yan/Files/Yan-Final-Own-Copy.pdf}.
+
+\bibitem{mallein}
+B. Mallein, \emph{Maximal displacement of a branching random walk in
+time-inhomogeneous environment}, Stochastic Processes and their
+Applications \textbf{125} (2015), 3958--4019.
+\href{https://doi.org/10.1016/j.spa.2015.05.011}{doi:10.1016/j.spa.2015.05.011}.
+\url{https://arxiv.org/abs/1307.4496}; version~3, 19 May 2015,
+assumptions~(2.12)--(2.13), Lemmas~2.6--2.7, equations~(2.15) and~(2.19).
+Author manuscript:
+\url{https://www.math.univ-toulouse.fr/~bmallein/publications/brwtie.pdf}.
+
+\bibitem{chenpearl}
+E.~Y.-J. Chen and J. Pearl, \emph{Random Bayesian networks with bounded
+indegree}, Proceedings of AISTATS 2014, Proceedings of Machine Learning
+Research \textbf{33} (2014).
+\url{https://proceedings.mlr.press/v33/chen14a.pdf}.
+
+\bibitem{yin}
+M. Yin, \emph{Parking Functions, Multi-Shuffle, and Asymptotic Phenomena},
+33rd International Conference on Probabilistic, Combinatorial and
+Asymptotic Methods for the Analysis of Algorithms (AofA 2022),
+Leibniz International Proceedings in Informatics \textbf{225},
+Article~18.
+\href{https://doi.org/10.4230/LIPIcs.AofA.2022.18}{doi:10.4230/LIPIcs.AofA.2022.18}.
+\end{thebibliography}
+\end{document}

@@ -1,0 +1,334 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,booktabs}
+\usepackage[hidelinks]{hyperref}
+\hypersetup{pdftitle={Report 132 Lonesum decomposable matrix asymptotics},pdfauthor={},pdfsubject={OEIS A299907}}
+\pdfinfoomitdate=1
+\pdftrailerid{}
+\pdfsuppressptexinfo=15
+\setlength{\emergencystretch}{2em}
+\allowdisplaybreaks[2]
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\E}{\mathbb E}
+\newcommand{\ii}{\mathrm i}
+\title{All orders asymptotics for\newline square lonesum decomposable matrices}
+
+\author{Report 132}
+\date{October 2, 2026}
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Let $a_n$ count square binary matrices that split, after independent row and column permutations, into lonesum blocks and zero rows and columns. Starting from Kamano's exact bivariate generating function, we prove a complete expansion in powers of $n^{-1/2}$, with an explicit leading constant and first two correction coefficients. The proof treats the anisotropic saddle and all complementary arcs. We also give a coefficient algorithm, exact integer enumeration, and all-orders inverse threshold brackets that keep rounding uncertainty inside the ceiling. The results concern OEIS A299907, equivalently induced-$P_5$-free bipartite graphs on two fixed labelled shores of size $n$.
+\end{abstract}
+
+\section{The counted objects and prior results}
+A binary matrix is \emph{lonesum} if its row-sum and column-sum vectors determine it uniquely among binary matrices of the same dimensions. A matrix is \emph{lonesum decomposable} if independent permutations of its rows and columns turn it into a block diagonal matrix with lonesum blocks having no zero row or column, together with optional zero rows and columns outside those blocks. We count the original labelled matrices, not equivalence classes under those permutations. Write $D(m,n)$ for this count and $a_n=D(n,n)$, including $a_0=1$ and the all-zero matrix in every dimension. The diagonal begins
+\[
+1,2,16,344,13528,833432,73871416
+\]
+and is OEIS A299907; the rectangular array is A299906~\cite{OEIS,OEISrect}.
+
+Kamano proves uniqueness of the nonzero block decomposition and the exact exponential generating function~\cite[Proposition 1.2; Theorem 3.1, equation (9)]{Kamano}
+\begin{equation}\label{eq:egf}
+ F(x,y)=\sum_{m,n\geq0}D(m,n)\frac{x^my^n}{m!n!}
+ =\exp\left(x+y+\frac{1}{1-(e^x-1)(e^y-1)}-1\right).
+\end{equation}
+The constant $-1$ is important: it ensures $F(0,0)=1$.
+
+There is also a useful graph interpretation. Regard a matrix as the bipartite adjacency matrix on fixed labelled row and column shores. Kamano's forbidden submatrix is
+\[
+ U=\begin{pmatrix}1&1&0\\1&0&1\end{pmatrix},
+\]
+up to row and column permutations and transposition~\cite[Theorem 2.1]{Kamano}. Its graph is exactly the induced path
+$y_2-x_1-y_1-x_2-y_3$ on five vertices. Thus the forbidden configurations are precisely induced copies of $P_5$. Each nontrivial connected component is a chain (or Ferrers) graph. The theorem below consequently enumerates induced-$P_5$-free bipartite graphs with this prescribed balanced bipartition; it does not count graphs up to isomorphism or graphs with an unspecified bipartition.
+
+\paragraph{Prior-art boundary.}
+Equation~\eqref{eq:egf} and the exact enumeration are prior results. Ordinary lonesum matrices have generating function
+$e^{x+y}/(1-(e^x-1)(e^y-1))$; their asymptotics, including higher-order extensions, are already treated by Khera, Lundberg and Melczer~\cite{KLM}. Their use of the symbol $D$ for an ordinary-lonesum variant is unrelated to $D(m,n)$ here. The present exponential of a pole has different saddle scales. Related restricted decomposable classes are studied by B\'enyi and Ram\'irez~\cite{BMRW}. A scoped search of the inspected OEIS entries and accessible primary literature located no balanced-shore asymptotic equivalent for this decomposable class. The full text of Khera's 2021 dissertation was not available in that search~\cite{KheraThesis}. This is a limitation on priority assessment, not a claim of worldwide novelty or the resolution of a named open conjecture.
+
+\section{Main expansion}
+Put $\ell=\log 2$ and $\beta=\sqrt{2/\ell}$.
+\begin{theorem}\label{thm:asympt}
+For each fixed integer $M\geq0$, there are explicitly computable real constants $c_j$ such that
+\begin{equation}\label{eq:main}
+ a_n=(n!)^2 C\ell^{-2n}n^{-5/4}e^{\beta\sqrt n}
+ \left(\sum_{j=0}^M c_j n^{-j/2}+O_M(n^{-(M+1)/2})\right),
+\end{equation}
+where $c_0=1$ and
+\begin{align}
+ C&=\frac{\exp(-5/8+1/(8\ell))}{\pi(2\ell)^{1/4}\sqrt{1-\ell}},\label{eq:C}\\
+ c_1&=-\frac{\sqrt2(167\ell^3-143\ell^2-\ell+1)}{192\ell^{3/2}(\ell-1)},\label{eq:c1}\\
+ c_2&=\frac{65041\ell^6-108866\ell^5+42099\ell^4+1724\ell^3-573\ell^2-2\ell+1}
+ {36864\ell^3(\ell-1)^2}.\label{eq:c2}
+\end{align}
+Numerically $C=0.3394739586934123704\ldots$,
+$c_1=-0.5317063378238041150\ldots$, and
+$c_2=-0.1635701301266242142\ldots$.
+\end{theorem}
+
+\section{The saddle and exclusion of other arcs}
+Write $g=\log F$ and $A(z)=e^z-1$. For any $0<r<\ell$, the closed bidisc $|x|,|y|\leq r$ lies in the domain of analyticity of $F$: indeed
+$|A(x)A(y)|\leq A(r)^2<1$.
+The positive symmetric saddle is the unique solution of
+\begin{equation}\label{eq:saddle}
+ n=r+\frac{re^r(e^r-1)}{[1-(e^r-1)^2]^2}.
+\end{equation}
+The right side increases strictly from $0$ to infinity: it is a power series with nonnegative coefficients and a positive linear coefficient. With $\delta=\ell-r$,
+\[
+1-(e^r-1)^2=4\delta-6\delta^2+\frac{14}{3}\delta^3+O(\delta^4),\qquad
+\frac1{1-(e^r-1)^2}=\frac1{4\delta}+\frac38+\frac{13}{48}\delta+O(\delta^2).
+\]
+The right side of \eqref{eq:saddle} equals
+$\ell/(8\delta^2)-1/(8\delta)+83\ell/96+O(\delta)$, giving
+\[
+ r_n=\ell-\sqrt{\ell/8}\,n^{-1/2}+\frac1{16}n^{-1}+O(n^{-3/2}).
+\]
+Let $s=e^{r_n}$, $q=s-1$, and $D=1-q^2$. The angular Hessian has diagonal entry
+\[
+ B_{11}=n+r_n^2\left(\frac{sq}{D^2}+\frac{2s^2q^2}{D^3}\right)
+\]
+and off-diagonal entry
+\[
+ B_{12}=r_n^2\left(\frac{s^2}{D^2}+\frac{2s^2q^2}{D^3}\right).
+\]
+Its eigenvalues satisfy
+\begin{equation}\label{eq:eigenvalues}
+ \lambda_+\sim4\sqrt{2\ell}\,n^{3/2},\qquad
+ \lambda_-=n-\frac{r_n^2s}{D^2}\sim(1-\ell)n.
+\end{equation}
+Thus the common-angle width is $n^{-3/4}$ and the opposing-angle width is $n^{-1/2}$.
+
+Here is the required global contour estimate; a local Hessian calculation alone would not justify the expansion.
+\begin{lemma}\label{lem:arc}
+Uniformly for $r<\ell$ sufficiently near $\ell$, put
+$d=1-A(r)^2$, $\theta=u+v$, $\phi=u-v$, and
+$P=A(re^{\ii\theta})A(re^{\ii\phi})$.
+There are fixed positive constants $c,\eta$ such that for
+$|\theta|,|\phi|\leq\eta$,
+\begin{equation}\label{eq:loss}
+ \frac1d-\Re\frac1{1-P}
+ \ \geq\ c\min\left(\frac{v^2}{d^2}+\frac{u^2}{d^3},\frac1d\right).
+\end{equation}
+On the remainder of $[-\pi,\pi]^2$, after deleting this neighborhood, the left side is at least $c/d$.
+\end{lemma}
+\begin{proof}
+Near zero write
+$P=\rho e^{\ii\omega}$, with the continuous argument vanishing at zero.
+For $\psi_r(\theta)=\arg A(re^{\ii\theta})$, its derivative at zero is
+$\mu_r=re^r/(e^r-1)>0$. The log-modulus curvature is
+\[
+ \sigma_r^2=\frac{re^r}{e^r-1}-\frac{r^2e^r}{(e^r-1)^2}
+ \longrightarrow 2\ell(1-\ell)>0.
+\]
+Hence, uniformly in $r$, $A(r)^2-\rho\asymp u^2+v^2$.
+Also $\omega=\psi_r(u+v)+\psi_r(u-v)$.
+Since $\psi_r$ is odd, this equals $u$ times a continuous even function of $u$ whose value at $(u,v)=(0,0)$ is $2\mu_r$. Shrinking the neighborhood gives $|\omega|\asymp|u|$.
+
+The exact identity
+\[
+ \frac1{1-\rho}-\Re\frac1{1-\rho e^{\ii\omega}}
+ =\frac{\rho(1+\rho)(1-\cos\omega)}
+ {(1-\rho)((1-\rho)^2+2\rho(1-\cos\omega))}
+\]
+now proves the claim. In detail let $k=A(r)^2-\rho$, so $1-\rho=d+k$.
+The difference between $1/d$ and $1/(1-\rho)$ is $k/[d(d+k)]$.
+If $k\geq d$, this is at least $1/(2d)$.
+If $k<d$, the sum of the two displayed differences is bounded below by a positive constant times
+\[
+ \frac{u^2+v^2}{d^2}+\frac{u^2}{d(d^2+u^2)},
+\]
+which implies \eqref{eq:loss}.
+
+Away from zero, the triangle inequality for
+$A(re^{\ii\theta})=\sum_{j\geq1}r^je^{\ii j\theta}/j!$
+is strict unless $\theta=0\pmod{2\pi}$ (the terms $j=1,2$ suffice for strictness). Compactness, with $r$ restricted to a closed interval ending at $\ell$, gives a fixed gap $\rho\leq A(r)^2-c_0$ outside the neighborhood. The reciprocal is then uniformly bounded, while $1/d\to\infty$.
+\end{proof}
+Since $\Re(re^{\ii\theta}+re^{\ii\phi})\leq2r$, the lemma also bounds the loss of the real part of $g$. In particular the contribution outside
+\[
+ |u|\leq n^{-3/4}\log n,\qquad |v|\leq n^{-1/2}\log n
+\]
+is smaller than the central exponential scale by $\exp(-c\log^2 n)$, even after accounting for the polynomial central area. No competing point of the Cauchy torus contributes.
+
+\section{Local expansion and coefficient recipe}
+For extraction it is simpler to use the explicit radius
+$r=\ell-\alpha t^2$, where $\alpha=\sqrt{\ell/8}$ and $t=n^{-1/4}$, rather than to expand the exact saddle.
+Set
+\[
+ \theta=t^3U+t^2V,\qquad \phi=t^3U-t^2V,
+ \qquad m=r e^{\ii t^3U}\cos(t^2V),\quad h=\ii r e^{\ii t^3U}\sin(t^2V).
+\]
+Then $x=m+h$, $y=m-h$, and
+\[
+ H=1-A(x)A(y)=2e^m\cosh h-e^{2m}.
+\]
+Cauchy's formula reads
+\[
+ \frac{a_n}{(n!)^2}=\frac{r^{-2n}}{(2\pi)^2}
+ \int_{[-\pi,\pi]^2}\exp\{g(re^{\ii\theta},re^{\ii\phi})-\ii n(\theta+\phi)\}\,d\theta\,d\phi.
+\]
+Define the following formal Laurent series, keeping $\ell=\log2$ so $e^\ell=2$:
+\begin{equation}\label{eq:formal}
+ \mathcal E(t,U,V)=2m+H^{-1}-1
+       -2t^{-4}\log(r/\ell)-2\ii U/t
+ =\beta t^{-2}+\gamma-AU^2-BV^2+\sum_{j\geq1}P_j(U,V)t^j,
+\end{equation}
+where
+\[
+ \gamma=2\ell-\frac58+\frac1{8\ell},\qquad
+ A=4\sqrt{2\ell},\qquad B=1-\ell.
+\]
+The $t^{-1}$ term cancels. Each $P_j$ is a polynomial in $U,V$. In particular
+\[
+ P_1=-\ii U\left(16\ell U^2+4\sqrt{2\ell}(1-\ell)V^2+\frac1{\sqrt{2\ell}}\right),
+\]
+\begin{align*}
+ P_2={}&\sqrt{2\ell}\left(32\ell U^4+(1-\ell)^2V^4+
+ \left(\frac{\ell-1}{2}+\frac1{4\ell}\right)V^2-\frac{83}{192}+\frac1{48\ell^2}\right)\\
+ &+24\ell(1-\ell)U^2V^2+3U^2.
+\end{align*}
+
+Let $Q_0=1$ and
+\begin{equation}\label{eq:Q}
+ Q_j=\frac1j\sum_{k=1}^j kP_kQ_{j-k}.
+\end{equation}
+These are the coefficients of $\exp(\sum_{j\geq1}P_jt^j)$.
+Let $\E$ denote the product Gaussian functional with density
+$\sqrt{AB}\,e^{-AU^2-BV^2}/\pi$. Then the all-orders recipe is
+\begin{equation}\label{eq:recipe}
+ c_j=\E Q_{2j}.
+\end{equation}
+For monomials the functional is explicit:
+\[
+ \E(U^{2p}V^{2q})=\frac{(2p-1)!!(2q-1)!!}{(2A)^p(2B)^q},
+\]
+and odd moments vanish. Thus each coefficient involves only finitely many exact algebraic operations over $\mathbb Q(\sqrt\ell,\sqrt2)$.
+For example $c_1=\E(P_2+P_1^2/2)$ gives \eqref{eq:c1}; continuing the same recurrence gives \eqref{eq:c2}.
+
+For completeness, this formal manipulation is an asymptotic expansion with controlled remainder. On the central logarithmic box, $H/(4\alpha t^2)=1+O(t|U|+t^2(1+V^2))$, so its reciprocal and all other factors have ordinary convergent Taylor expansions after removing the displayed Laurent terms. For each fixed order, Taylor remainders are bounded by a fixed power of $t$ times a polynomial in $|U|+|V|$. For a fixed constant $K>0$, the exponential of the perturbation is bounded in modulus by $K\exp((AU^2+BV^2)/2)$ on this box for sufficiently small $t$. Integrating the remainder against the remaining Gaussian removes any artificial logarithmic factors. Lemma~\ref{lem:arc} applies equally to this explicit radius, since $1-A(r)^2\asymp t^2$, and makes the complement smaller than every power of $t$.
+
+Moreover $\mathcal E(-t,U,V)=\mathcal E(t,-U,V)$, so $Q_j$ is odd in $U$ when $j$ is odd. All odd powers integrate to zero. Expanding through degree $2M+1$ therefore leaves $O(t^{2M+2})=O(n^{-(M+1)/2})$.
+Finally the Jacobian is $d\theta\,d\phi=2t^5dU\,dV$, and the central Gaussian integral is $\pi/\sqrt{AB}$. Its total prefactor is
+\[
+ \frac{e^\gamma}{2\pi\sqrt{AB}}=\frac{e^\gamma}{4\pi(2\ell)^{1/4}\sqrt{1-\ell}}=C,
+\]
+because $e^{2\ell}=4$. This proves Theorem~\ref{thm:asympt}.
+
+\section{Inversion and integer thresholds}
+The asymptotic inverse must be distinguished from exact integer rounding. Define
+\[
+ N(T)=\min\{n\geq0:a_n\geq T\}\qquad(T>1).
+\]
+The sequence obeys $a_{n+1}\geq2a_n$: adjoining a last row and column that are zero except for a freely chosen bottom-right entry $0$ or $1$ gives two disjoint injections. The first construction adds isolated row and column vertices; the second adds a separate $1\times1$ lonesum block. Hence both preserve lonesum decomposability, and deleting the last row and column recovers the input. Thus the sequence is strictly increasing.
+Writing $k=\log(2\pi C)$, Stirling's formula gives
+\begin{equation}\label{eq:log}
+ \log a_n=2n\log\frac{n}{e\ell}+\beta\sqrt n-\frac14\log n+k+\frac{c_1}{\sqrt n}+O(n^{-1}).
+\end{equation}
+For $L=\log T$, let
+\[
+ x=\frac{L}{2W(L/(2e\ell))},\qquad h=\log(x/\ell),
+\]
+where $W$ is the positive real Lambert function. This $x$ solves $2x\log(x/(e\ell))=L$. Define
+\begin{align*}
+ D_1&=\frac{\frac14\log x-k}{2h}+\frac{\beta^2}{8h^2}-\frac{\beta^2}{8h^3},\\
+ X_1&=x-\frac{\beta\sqrt x}{2h}+D_1,\\
+ D_2&=-\frac{c_1+\beta D_1(\frac12-\frac1h)+\frac{\beta}{8h}
+                  +\frac{\beta^3}{24h^3}-\frac{\beta^3}{32h^2}}
+                 {2h\sqrt x},\qquad X_2=X_1+D_2.
+\end{align*}
+There are fixed positive $K_1,K_2$ and sufficiently large $T_0$ such that, for $T\geq T_0$,
+\begin{align}\label{eq:brackets}
+ \left\lceil X_1-\frac{K_1}{\sqrt x\,h}\right\rceil
+ &\leq N(T)\leq
+ \left\lceil X_1+\frac{K_1}{\sqrt x\,h}\right\rceil,\\
+ \left\lceil X_2-\frac{K_2}{x h}\right\rceil
+ &\leq N(T)\leq
+ \left\lceil X_2+\frac{K_2}{x h}\right\rceil.\nonumber
+\end{align}
+These constants and the onset threshold are existential here; numerical tests do not turn them into certified finite-$T$ error bounds.
+To verify the orders, expand the right side of \eqref{eq:log} at $x$.
+The term $-\beta\sqrt x/(2h)$ cancels the order-$\sqrt x$ term. The displayed $D_1$ cancels all order-one terms, leaving $O(x^{-1/2})$ in the logarithm. The numerator of $D_2$ is exactly the remaining coefficient at order $x^{-1/2}$; adding $D_2$ leaves $O(x^{-1})$. Division by the derivative $2h+O(x^{-1/2})$ gives the stated location scales. Applying increasing upper and lower smooth envelopes to the integer values in \eqref{eq:log}, as detailed below, gives \eqref{eq:brackets}. No interpolation of the unknown exact sequence is being assumed.
+
+In particular one may write $N(T)=\lceil X_1+O((\sqrt x\,h)^{-1})\rceil$, provided the error is explicitly kept \emph{inside} the ceiling. There is no unconditional justification for replacing this by $\lceil X_1\rceil$ for all large $T$: a threshold may be arbitrarily close to a jump. If the error interval crosses an integer, compare the adjacent exact $a_n$ values.
+
+An all-orders version is equally direct. Define $d_j$ by
+\[
+ \log\left(1+\sum_{j\geq1}c_jz^j\right)=\sum_{j\geq1}d_jz^j
+\]
+and set
+\[
+ \Phi_M(y)=2\log\Gamma(y+1)-2y\log\ell-\frac54\log y
+       +\beta\sqrt y+\log C+\sum_{j=1}^M d_jy^{-j/2}.
+\]
+For fixed $M$, let $y_M$ be the sufficiently large real solution of
+$\Phi_M(y_M)=\log T$. Then
+\[
+ \left\lceil y_M-E_M\right\rceil\leq N(T)\leq\left\lceil y_M+E_M\right\rceil,
+ \qquad E_M=K_M\frac{y_M^{-(M+1)/2}}{\log y_M}
+\]
+for a fixed $K_M$ and all sufficiently large $T$.
+To justify the ceiling bracket directly, the expansion gives
+$|\log a_n-\Phi_M(n)|\leq A_M n^{-(M+1)/2}$ for all sufficiently large integers $n$. In a fixed relative neighborhood of $y_M$, the derivative of $\Phi_M$ is bounded below by a positive multiple of $\log y_M$. Choose $K_M$ large enough that moving by $E_M$ makes the change in $\Phi_M$ dominate this error. Every integer below $y_M-E_M$ then has $a_n<T$, and the integer $\lceil y_M+E_M\rceil$ has $a_n\geq T$. Monotonicity covers smaller integers outside that neighborhood. This proves the bracket without defining an exact real-valued extension of $a_n$.
+
+The real root can be found by Newton iteration from $x$. In the relevant neighborhood $\Phi_M'\asymp\log x$ and $\Phi_M''=O(1/x)$, so an iteration with location error $e$ produces error $O(e^2/(x\log x))$. A fixed number of iterations, chosen from the requested order, obtains any prescribed algebraic accuracy. If an approximate numerical root is used in a ceiling bracket, its certified location error must be added to $E_M$. This is a constructive all-orders inverse, with the unavoidable rounding caveat.
+
+\section{Exact enumeration and finite checks}
+Put $B_0=B_1=1$ and
+\begin{equation}\label{eq:B}
+ B_{k+1}=(2k+1)B_k-k(k-1)B_{k-1}\qquad(k\geq1).
+\end{equation}
+Indeed, if $b(z)=\exp(z/(1-z))$, then $(1-z)^2b'(z)=b(z)$, which gives~\eqref{eq:B} for $B_k=k![z^k]b(z)$. These are the numbers of sets of nonempty lists, OEIS A000262~\cite{lists}. Expanding~\eqref{eq:egf} in powers of $(e^x-1)(e^y-1)$ and using
+\[
+ n![x^n]e^x(e^x-1)^k=k!S(n+1,k+1)
+\]
+gives the finite exact sum
+\begin{equation}\label{eq:exact}
+ a_n=\sum_{k=0}^n k!B_k\,S(n+1,k+1)^2.
+\end{equation}
+Here $S(n,k)$ denotes a Stirling number of the second kind, defined by
+$S(0,0)=1$ and $S(n+1,k)=kS(n,k)+S(n,k-1)$, with zero values outside $0\leq k\leq n$.
+
+For $R_n$ equal to the exact value divided by the leading term of~\eqref{eq:main}, representative diagnostics are
+\begin{center}
+\begin{tabular}{r r r r}
+\toprule
+$n$&$R_n$&$\sqrt n(R_n-1)$&$n(R_n-1-c_1/\sqrt n)$\\
+\midrule
+100 &0.9450185161&$-0.5498148394$&$-0.1810850157$\\
+400 &0.9729784069&$-0.5404318613$&$-0.1745104690$\\
+800 &0.9809866090&$-0.5377799072$&$-0.1717864824$\\
+3200&0.9905481783&$-0.5346757802$&$-0.1679770262$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The limits of the last two columns are $c_1$ and $c_2$. These finite computations are consistency checks, not error certificates for the asymptotic expansion or its onset.
+
+\paragraph{Reproducible calculations.}
+The accompanying bundle includes the article source, a deterministic PDF build, integer enumeration, and symbolic coefficient extraction. The script \texttt{derive\_general.py} computes the recurrence~\eqref{eq:Q} and Gaussian moments using $\ell=8z^2$ to avoid nested radicals. It accepts every nonnegative coefficient order, including zero. The separate script \texttt{derive.py} obtains $P_1,P_2,c_1$ by direct expansion with $\ell$. The default finite checker verifies exact small fixtures, exhaustive forbidden-submatrix counts through $n=3$, the symbolic formulas for $c_1,c_2$, parity, and the two displayed inverse cancellations. All checks use explicit guards and also run under Python's optimization flag. Optional high-$n$ diagnostics are separate so routine checking does not require the $n=3200$ computation.
+
+The bundle's integrity manifest covers a closed file inventory. Its quality-assurance procedure runs checks on immutable copies, rejects selected modified fixtures and formulas after rebuilding their integrity manifest, compares two clean PDF builds byte for byte, and replays a freshly extracted archive. These tests check reproducibility and the finite identities they name. They do not mechanize or replace the analytic proof in Sections~2--4.
+
+\section{Further questions}
+\begin{enumerate}
+\item \textbf{Effective remainders.} The proof gives constants and onset thresholds that exist for every fixed order. Explicit numerical values would turn the inverse brackets into certified finite-$T$ tools; this requires quantitative bounds throughout the contour argument.
+\item \textbf{Rectangular asymptotics.} For $m/n$ tending to a fixed positive ratio, the saddle approaches a generally nonsymmetric point on $(e^x-1)(e^y-1)=1$. Uniform expansions as the aspect ratio varies, especially toward an unbalanced regime, remain a separate problem.
+\item \textbf{The number of blocks.} Kamano's marked generating function is
+\[
+ F(x,y;w)=\exp\left(x+y+w\left(\frac1{1-(e^x-1)(e^y-1)}-1\right)\right).
+\]
+A uniform analysis in $w$ near $1$ should be a starting point for the distribution of the decomposition order. No central or local limit theorem is asserted here.
+\item \textbf{Beyond the power series.} The expansion concerns every fixed algebraic order relative to the leading term. Optimal truncation and exponentially small terms require additional analysis; the present proof does not identify them.
+\end{enumerate}
+
+\begin{thebibliography}{9}
+\bibitem{Kamano} K. Kamano, \emph{Lonesum decomposable matrices}, Discrete Mathematics 341 (2018), 341--349. DOI: \href{https://doi.org/10.1016/j.disc.2017.09.002}{10.1016/j.disc.2017.09.002}. Preprint \href{https://arxiv.org/abs/1701.07157}{arXiv:1701.07157}, Theorem 3.1, equation (9), PDF page 7.
+\bibitem{OEIS} OEIS Foundation Inc., \href{https://oeis.org/A299907}{A299907}.
+\bibitem{OEISrect} OEIS Foundation Inc., \href{https://oeis.org/A299906}{A299906}, rectangular lonesum decomposable matrices.
+\bibitem{lists} OEIS Foundation Inc., \href{https://oeis.org/A000262}{A000262}, sets of lists.
+\bibitem{KLM} J. Khera, E. Lundberg and S. Melczer, \emph{Asymptotic enumeration of lonesum matrices}, Advances in Applied Mathematics 123 (2021), 102118. \href{https://doi.org/10.1016/j.aam.2020.102118}{doi:10.1016/j.aam.2020.102118}; \href{https://arxiv.org/abs/1912.08850}{arXiv:1912.08850}. See also Remark 2 on higher orders.
+\bibitem{BMRW} B. B\'enyi and J. L. Ram\'irez, \emph{Some applications of $S$-restricted set partitions}, \href{https://arxiv.org/abs/1804.03949}{arXiv:1804.03949}, Section 4.3 and Theorem 11.
+\bibitem{KheraThesis} J. Khera, \emph{Lonesum Matrices and Acyclic Orientations: Enumeration and Asymptotics}, Ph.D. dissertation, Florida Atlantic University, 2021. \href{https://www.math.fau.edu/mathdepartment/dissertations/dissertations.php}{University dissertation listing}; \href{https://www.math.fau.edu/mathdepartment/dissertaion-defense-anouncement-jessica-khera031121.pdf}{defense abstract}. Full text not inspected.
+\end{thebibliography}
+\end{document}

@@ -1,0 +1,92 @@
+\section{Finite coefficient construction and rigorous remainder}\label{sec:allorders}
+Set $h=n^{-1/2}$ and make the central substitutions
+\begin{equation}\label{eq:scaling}
+ t=h^{-2}(1+hy),\quad \theta=hw,\quad
+ \rho(h)=\sqrt{1+v^2h^2/4}-vh/2,
+\end{equation}
+so that
+\[
+ x=h^{-1}\rho(h)e^{\ii hw},\qquad
+ k=h^{-2}(1+hy)/L.
+\]
+Let $\mathcal E$ be the product Gaussian functional with independent variables $Y,W$ satisfying
+\[
+ Y\sim N(0,1),\qquad
+ \PP(W\in\dd w)=\pi^{-1/2}e^{-w^2}\,\dd w.
+\]
+It is enough to define it on polynomials:
+\[
+ \mathcal E(Y^{2a})=(2a-1)!!,\qquad
+ \mathcal E(W^{2b})=\frac{(2b-1)!!}{2^b},
+\]
+with zeroth moments $1$, odd moments $0$, and products factorized.
+
+Define formal series with removable singularities at $h=0$ by
+\begin{align}
+ G(h,y)&=h^{-2}\bigl(\log(1+hy)-hy\bigr)+y^2/2,\label{eq:G}\\
+ H(h,w)&=v h^{-1}\rho(h)(e^{\ii hw}-1)
+ +\frac{\rho(h)^2}{2h^2}(e^{2\ii hw}-1)-\frac{\ii w}{h}+w^2,\label{eq:H}\\
+ \mathcal B(h,y,w)&=B\bigl(h^{-1}\rho(h)e^{\ii hw},
+                       h^{-2}(1+hy)/L,v\bigr).\label{eq:scaledB}
+\end{align}
+Here $G(0,y)=H(0,w)=0$ and $\mathcal B(0,y,w)=S(L,v)$.
+
+\begin{proposition}[Finite Gaussian algorithm]\label{prop:algorithm}
+The coefficients in Theorem~\ref{thm:main} are defined by
+\begin{equation}\label{eq:algorithm}
+ \sum_{j\geq0}C_j(L,v)h^j
+ =e^{-S(L,v)}
+ \frac{\mathcal E\exp(G+H+\mathcal B)}
+      {(\mathcal E\exp G)(\mathcal E\exp H)}.
+\end{equation}
+This is an identity of formal power series: at any fixed order only finitely many Gaussian moments are taken. Both denominator factors are required.
+\end{proposition}
+\begin{proof}
+On the central window, the gamma exponent is $-y^2/2+G$ and the angular exponent is $-w^2+H$. Dividing by the exact gamma normalization and the exact involution coefficient integral gives respectively the two factors in the denominator. In particular the gamma density is centered at $n$, not its mean $n+1$; the series $G$ and its normalizer retain that shift.
+
+The least powers of $h$ in the three summand families of \eqref{eq:B} are respectively $m-2$, $2m-4$, and $2m-2$. To calculate through $h^J$ one therefore needs only
+\[
+ m\leq J+2,\qquad m\leq\lfloor J/2\rfloor+2,
+ \qquad m\leq\lfloor J/2\rfloor+1
+\]
+in those families. Each surviving coefficient is a polynomial in $y,w,L,v$ with rational coefficients apart from powers of $\ii$. Gaussian evaluation kills odd powers of $w$; the surviving powers of $\ii$ are real. Denominator division, with both constant terms equal to $1$, proves the rational-polynomial assertion.
+\end{proof}
+
+For transparency, the first calculation can be displayed without a symbolic system. Put $a=(v^2-1)/2$. The first nonconstant terms are
+\begin{align*}
+ G_1&=y^3/3,\qquad H_1=vw^2/2-2\ii w^3/3,\\
+ \mathcal B_1&=aL(-v+2\ii w-y)
+       +\frac{L^2}{4}(-2v+4\ii w-2y)+\frac{v^3L^2}{3}.
+\end{align*}
+The normalizers cancel the expectations of $G_1,H_1$, leaving
+$C_1=\mathcal E\mathcal B_1$, exactly \eqref{eq:C1}. At second order,
+\begin{equation}\label{eq:secondalgorithm}
+ C_2=\mathcal E\left(\mathcal B_2+(G_1+H_1)\mathcal B_1
+                         +\frac{\mathcal B_1^2}{2}\right)
+       -\mathcal E(G_1+H_1)C_1.
+\end{equation}
+Substitution in this finite polynomial identity gives \eqref{eq:D2}--\eqref{eq:C2}. The reproduction package checks these identities exactly and separately checks the collision first correction.
+
+\subsection{Why the formal algorithm is asymptotic}
+A formal Gaussian calculation alone would not prove the theorem. Choose a fixed $0<\alpha<1/3$ and restrict $|y|,|w|\leq h^{-\alpha}$. The previous section bounds the excluded tails by $O(e^{-c h^{-2\alpha}})$. On this window, $1+hy$ is separated from zero, $\rho$ is analytic, and $|x/k|=O(h)$. The logarithmic series \eqref{eq:B} and any fixed number of its $h$ derivatives converge uniformly.
+
+Taylor's theorem through order $J$ for the local exponential has an integrable remainder bounded by
+\begin{equation}\label{eq:taylorbound}
+ C_Jh^{J+1}(1+|y|+|w|)^{D_J}e^{\eta(y^2+w^2)},
+ \qquad \eta<1/4.
+\end{equation}
+Here is a direct justification valid also at the intermediate points in Taylor's integral remainder. For every $0\leq s\leq h$, the identity
+$\rho(s)^2+vs\rho(s)=1$ removes the apparent singularity in $H$. Uniformly on the window,
+\[
+ |G(s,y)|\leq Cs|y|^3,\qquad
+ |H(s,w)|\leq Cs(|w|^2+|w|^3),\qquad
+ |\mathcal B(s,y,w)|\leq C.
+\]
+Because $h(|y|+|w|)=o(1)$, the residual real parts are at most
+$\eta(y^2+w^2)+C$ after taking $h$ sufficiently small. Every fixed derivative is bounded by a polynomial in $|y|+|w|$: the only denominator factors are powers of $1+sy$ and analytic factors separated from zero, and the least-degree structure of \eqref{eq:B} bounds the number of relevant terms. Differentiating the exponential a fixed number of times multiplies it only by such polynomials. This proves \eqref{eq:taylorbound}.
+
+Multiplication by the Gaussian density $e^{-y^2/2-w^2}$ makes \eqref{eq:taylorbound} integrable over the full plane. Its integral is $O_J(h^{J+1})$. Extending each finite polynomial coefficient integral from the window to the full plane loses only an exponentially small tail. The same argument applies to both denominator integrals, whose constant terms are nonzero. This proves \eqref{eq:main} after the exponentially small pole error \eqref{eq:poleerror} is restored.
+
+The notation $\mathcal E e^{G+H+\mathcal B}$ in \eqref{eq:algorithm} is formal. The proof extends only finite polynomial truncations to the full real plane; it never integrates $\log(1+hy)$ through $y=-1/h$.
+
+Finally the normalized quantity in \eqref{eq:main} is holomorphic and nonzero on a slightly smaller neighborhood for large $n$, by Lemma~\ref{lem:involution} and its uniform limit $1$. Cauchy's formula, applied on a larger compact polydisc, bounds all fixed derivatives of the remainder. Its analytic logarithm consequently has a differentiable expansion to every fixed order. This completes the proof of Theorem~\ref{thm:main}.

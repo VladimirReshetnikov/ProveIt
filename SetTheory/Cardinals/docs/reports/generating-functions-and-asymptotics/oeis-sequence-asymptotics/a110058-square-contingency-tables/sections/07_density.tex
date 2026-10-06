@@ -1,0 +1,129 @@
+\section{A compact positive density extension}\label{sec:density}
+The square proof extends with uniform constants on each fixed compact interval of positive densities. This section specifies the quantifiers and all changes to the analytic argument; it does not assert uniformity in sparse or unbounded density regimes.
+
+Let $T(n,s)$ count labelled $n\times n$ nonnegative integer tables with all line sums $s$, and write
+\begin{equation}\label{eq:densitydefs}
+\lambda=\frac{s}{n},\qquad u=\lambda(1+\lambda),\qquad A_\lambda=\frac u2,
+\qquad H(\lambda)=\frac{(1+\lambda)^{1+\lambda}}{\lambda^\lambda}.
+\end{equation}
+The matrix $A$ of \eqref{eq:augmented} is unrelated to the scalar $A_\lambda$; the whitening map $T$ stays as in \eqref{eq:whitening}. Define
+\begin{equation}\label{eq:densityG}
+\mathcal G(n,\lambda)=\frac{H(\lambda)^{n^2}}
+ {(2\pi u)^{n-1/2}n^{n-1}},\qquad
+B_0(u)=\frac13-\frac1{6u}.
+\end{equation}
+
+\begin{theorem}\label{thm:density}
+There are polynomials $P_j\in\mathbb Q[z]$, of degree at most $j+1$, such that for every fixed compact interval $I=[\lambda_-,\lambda_+]\subset(0,\infty)$ and every fixed integer $K\geq0$,
+\begin{equation}\label{eq:densitytheorem}
+\log\frac{T(n,s)}{\mathcal G(n,s/n)}
+ =B_0(u)+\sum_{j=1}^K\frac{P_j(1/u)}{n^j}
+   +O_{I,K}(n^{-K-1}),
+\end{equation}
+uniformly over positive integers $n,s$ with $s/n\in I$. In particular,
+\begin{equation}\label{eq:densitypolys}
+P_1(z)=-\frac32,\qquad
+P_2(z)=\frac{1171}{180}+\frac{11}{12}z+\frac1{60}z^2+\frac1{180}z^3.
+\end{equation}
+At $\lambda=1$, this recovers Theorem~\ref{thm:main}.
+\end{theorem}
+The statement permits varying admissible densities $s_n/n$. For a fixed rational density, it applies along the admissible subsequence. At a fixed irrational density, exact integral margins are unavailable; rounding $\lambda n$ changes the density and must be reflected in every occurrence of $\lambda$ in \eqref{eq:densitytheorem}.
+
+\subsection{Uniform localization and the scaled gauge}
+The centered characteristic function is now
+\[
+\psi_\lambda(z)=\frac{e^{-\ii\lambda z}}{1-\lambda(e^{\ii z}-1)},\qquad
+\mathcal F_\lambda(\theta,\phi)=\prod_{i,j}\psi_\lambda(\theta_i+\phi_j).
+\]
+Although an individual factor need not be $2\pi$-periodic, the full product is periodic in each angle because $n\lambda=s\in\mathbb Z$. Gauge invariance is exact. Each table has geometric product probability $H(\lambda)^{-n^2}$, giving
+\[
+T(n,s)=H(\lambda)^{n^2}(2\pi)^{-2n}\int\mathcal F_\lambda.
+\]
+
+Canfield--McKay's condition~(1.1) specializes to
+\[
+\frac23\left(4+\frac1u\right)\leq a\log n.
+\]
+With fixed $a=b=1/8$, it holds uniformly on $I$ for all sufficiently large $n$; their polynomial density bound is automatic. Their stated asymptotic constants allow dependence on $a,b$ and the fixed localization exponent, with margins among the asymptotic variables. One can also check uniformity directly in their localization proof. The subdivision count $\lceil6000(1+\lambda)\rceil$ is bounded on $I$, its angular width is bounded above and below, and $A_\lambda$, $A_\lambda^{-1}$ and $\lambda/(1+\lambda)$ have the needed compact bounds. The far-region decay is $\exp\{-c_I n^{1+\eta}\}$ against a reciprocal Gaussian normalization $\exp\{O_I(n\log n)\}$. The exceptional-coordinate decay is $\exp\{-c_I n(m_2+n_2)\}$, and the remaining omitted small intervals contribute $\exp\{-c_I n^{2\eta}\}$. Their Lemma~4 is uniform in $\lambda>0$. More precisely, after normalization the three bounds have the forms
+\[
+ e^{C_I n\log n-c_I n^{1+\eta}},\qquad
+ \sum_{1\leq r\leq2n^\eta}n^{C_Ir+C_I}e^{-c_Inr},\qquad
+ n^{C_I}e^{-c_In^{2\eta}},
+\]
+where $r=m_2+n_2$ counts exceptional coordinates. The middle sum decays geometrically in $r$ for sufficiently large $n$. Each expression is $O_I(e^{-c'_In^\eta})$ for a sufficiently small fixed $\eta$. Thus
+\begin{equation}\label{eq:densityminor}
+\int_{\mathcal R_{\lambda,\eta}^c}|\mathcal F_\lambda|
+ =O_I(e^{-c_I n^\eta})I_{0,\lambda},\qquad
+I_{0,\lambda}=\pi^{n-1/2}A_\lambda^{-n+1/2}n^{1-n}
+ e^{-(1+2A_\lambda)/(12A_\lambda)}.
+\end{equation}
+The region has centered deviations bounded by $(1+\lambda)^{-1}n^{-1/2+\eta}$ and mean sum bounded by $(1+\lambda)^{-1}n^{-1+4\eta}$. These bounds make its small $v^\perp$ representative $o_I(\rho)$ uniformly, as before.
+
+The correct augmented weight is $\exp\{-A_\lambda(v\cdot x)^2/2\}$. Its quadratic part is $-A_\lambda q_+(x)$ and its full Gaussian integral is
+\[
+Z_{n,\lambda}=\frac1{\sqrt2}\left(\frac\pi{A_\lambda n}\right)^n.
+\]
+The real gauge fiber has mass $\sqrt{2\pi/A_\lambda}/(2n)$, so the conversion factor is $Q_{n,\lambda}=2n\sqrt{2\pi A_\lambda}$. In particular,
+\[
+\frac{Q_{n,\lambda}Z_{n,\lambda}}{(2\pi)^{2n}}
+ =(4\pi A_\lambda)^{-n+1/2}n^{1-n},\qquad
+\frac{I_{0,\lambda}}{Q_{n,\lambda}Z_{n,\lambda}}
+ =\frac{e^{-(1+2A_\lambda)/(12A_\lambda)}}{2\pi}.
+\]
+The last ratio is uniformly bounded above and below on $I$. The proof of Lemma~\ref{lem:transfer} now applies verbatim with this weight: the omitted gauge tail is $e^{-\Omega_I(n^{1+2\eps})}$ and its normalization costs at most $e^{O_I(n\log n)}$. This proves a uniform torus-to-cube transfer. Using an unscaled gauge while retaining the scaled Gaussian covariance would give an incorrect normalization.
+
+\subsection{Uniform analytic and cumulant estimates}
+Define
+\[
+h_\lambda(z)=-\ii\lambda z-\log[1-\lambda(e^{\ii z}-1)]+A_\lambda z^2
+ =\sum_{d\geq3}h_d(\lambda)z^d.
+\]
+The nearest singularity is at $-\ii\log(1+1/\lambda)$. For example, $r_0=\tfrac14\log(1+1/\lambda_+)>0$ gives a uniform analytic disk of radius $2r_0$, because
+$\lambda_+(e^{2r_0}-1)<1$. The logarithmic series on this disk is uniformly bounded. Hence \eqref{eq:derivativebounds} holds with constants depending only on $I$, and
+\begin{equation}\label{eq:densitycumulants}
+h_d(\lambda)=\frac{\ii^d}{d!}\kappa_d(\lambda),\qquad
+\kappa_d(\lambda)=\sum_{j=1}^d\genfrac{\{}{\}}{0pt}{}{d}{j}(j-1)!\lambda^j.
+\end{equation}
+The independent Gaussian coordinates before applying $T$ now have variance $1/(2A_\lambda n)$. Conditioning on the same cube preserves independence, with complement probability $O_I(e^{-c_I n^{2\eps}})$. The coefficient-vector bounds \eqref{eq:rowsumbounds} are unchanged. Therefore \eqref{eq:Dk} holds uniformly, and the same $\alpha,m,L$ in \eqref{eq:cutofforders} satisfy Isaev's hypotheses uniformly for sufficiently large $n$.
+
+Taylor replacement inside the finite cumulants has the same exponent \eqref{eq:replacementexponent}; its constants depend on $I,p$. Fixed-degree Gaussian moments remain uniformly polynomially bounded since $A_\lambda$ stays away from zero. Removing the conditioning again costs less than every inverse power of $n$. The resulting finite exponent is real and uniformly bounded by the connected-diagram estimate below, so absolute localization errors are relative negligible errors. This establishes the uniform version of \eqref{eq:analyticreduction}.
+
+\subsection{The density polynomials and their coefficients}
+The pair-sum covariance becomes
+\[
+\Cov(Z_{ij},Z_{k\ell})=\frac{n\delta_{ik}+n\delta_{j\ell}-1}{2A_\lambda n^2}.
+\]
+For a tuple of even total degree $2E$, its Gaussian cumulant is exactly $A_\lambda^{-E}K_{\boldsymbol d}(n)$, with $K_{\boldsymbol d}$ the density-one polynomial. Hence the uniform finite formula is
+\begin{equation}\label{eq:densityfinite}
+\log\frac{T(n,s)}{\mathcal G(n,\lambda)}
+ =\sum_{\substack{\boldsymbol d\text{ nondecreasing},\ r\geq1,\ d_a\geq3\\
+                    D\text{ even},\ c(\boldsymbol d)\leq p}}
+ \frac{\prod_a h_{d_a}(\lambda)}{\prod_d m_d!}
+ A_\lambda^{-E}K_{\boldsymbol d}(n)+O_{I,p}(n^{-p}).
+\end{equation}
+The power bound is unchanged. This already proves existence, uniformity and a finite rational-function coefficient algorithm.
+
+To obtain the polynomial structure, use
+\[
+\kappa_2=u,\qquad \kappa_{d+1}=u\frac{\dd}{\dd\lambda}\kappa_d.
+\]
+Inductively, $\kappa_d$ is divisible by $u$, has degree $d$, and satisfies
+$\kappa_d(-1-\lambda)=(-1)^d\kappa_d(\lambda)$. For an even-total-degree tuple,
+$\prod_a\kappa_{d_a}/u^r$ is a polynomial invariant under $\lambda\mapsto-1-\lambda$ of degree at most $2(E-r)$. Any such polynomial is a polynomial in $u$ of degree at most $E-r$: set $w=1+2\lambda$ and note that invariance means an even polynomial in $w$, with $w^2=1+4u$. Multiplication by $A_\lambda^{-E}=(2/u)^E$ therefore makes each weighted tuple a polynomial in $1/u$ of degree at most $E-r=c$. To contribute to $n^{-j}$ it must have $c\leq j+1$, proving the asserted degree bound.
+
+The cost-one constant is
+\[
+\frac{1+6u}{2u}-\frac{2(1+4u)}{3u}=B_0(u).
+\]
+For the first correction, put $w=1+2\lambda$. The seven tuple contributions, in the order $(3,3),(4),(3,3,3,3),(3,3,4),(3,5),(4,4),(6)$, are
+\begin{align*}
+&\frac{w^2}{2u},\quad-\frac{1+6u}{2u},\quad
+\frac{11w^4}{8u^2},\quad-\frac{31w^2(1+6u)}{12u^2},\\
+&\frac{5w^2(1+12u)}{6u^2},\quad
+\frac{13(1+6u)^2}{24u^2},\quad-\frac{1+30u+120u^2}{6u^2}.
+\end{align*}
+With $w^2=1+4u$, the first two sum to $-1$ and the remaining five to $-1/2$. All eighteen tuples at costs at most three give
+\[
+P_2(1/u)=\frac{1171u^3+165u^2+3u+1}{180u^3}.
+\]
+The same independent formal-factorization computation described in Section~\ref{sec:coefficients}, with a separately expanded geometric logarithm and the scalar factor $A_\lambda^{-E}$, verifies these rational-function identities exactly. Taking $p=K+1$ in \eqref{eq:densityfinite} completes the proof of Theorem~\ref{thm:density}.

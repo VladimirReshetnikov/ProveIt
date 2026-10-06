@@ -299,7 +299,8 @@ asymptotic statement, and byte identity of rebuilds is toolchain-specific.
 No OEIS entry was edited. The write adds: Remark~\ref{mdp:rem:simkin} rests
 on Simkin's theorem as stated in its abstract, and the explicit ranges in
 Remark~\ref{mdp:rem:fits} use finitely many floating evaluations of
-elementary numbers (margins stated there).
+elementary numbers (margins stated there; enclosed in ball arithmetic by the
+independent check of 6~October 2026, Section~\ref{mdp:sec:further}).
 \end{writenote}
 \medskip\noindent\begin{minipage}{\textwidth}
 \emph{Reading conventions} (letters the manuscript reuses, with the tempting
@@ -479,9 +480,14 @@ above gives $\log a(n)\ge k\log k-\alpha k+o(k)$, hence, for all
 sufficiently large~$n$,
 \[
  \log a(n)\ge\frac n5\log n-\frac{\log5+\alpha}{5}\,n+o(n),
- \qquad \frac{\log5+\alpha}{5}\in[0.7099,\,0.7111],
+ \qquad \frac{\log5+\alpha}{5}\in[0.7096,\,0.7109],
 \]
-against $(\log5+3)/5=0.9219\ldots$ in~\eqref{mdp:eq:linear}. The constant
+against $(\log5+3)/5=0.9219\ldots$ in~\eqref{mdp:eq:linear}
+\textup{(interval corrected after the independent check of 6~October 2026:
+for $\alpha\in[1.939,1.945]$ the coefficient runs from
+$(\log5+1.939)/5=0.709687\ldots$ to $(\log5+1.945)/5=0.710887\ldots$; the
+first wording printed $[0.7099,\,0.7111]$, which misses the lower part of
+this range)}. The constant
 $1/5$ is unchanged: it comes from $k\sim n/5$, not from the size of the
 queens count. The upper half of Simkin's theorem bounds only the queens
 contribution, not $a(n)$. As for~\eqref{mdp:eq:linear}, this is a
@@ -620,10 +626,19 @@ $2.16$ (at $n=1215$), respectively $0.93$ (at $n=8579$). Hence
 and both ratios $A\exp(Bn^c)/a(n)$ tend to infinity. The values of $g$,
 $g'$ and of the differences are evaluations of explicit elementary numbers
 in 40-digit floating-point arithmetic (mpmath), with the margins stated;
-they are not interval-certified. Because of the floor, the comparison with
-the upper bound is not monotone just below these ranges: the 2022 fit first
-exceeds it at $n=1212$ but not at $n=1214$, and the 2026 fit first at
-$n=8576$ but not at $n=8578$.
+an independent recomputation in Arb ball arithmetic (python-flint, 300 bits)
+encloses every one of them and every sign of
+$\log A+Bn^c-\log\bigl(3^{n-1}n^{\lfloor(n-2)/4\rfloor}\bigr)$ for
+$2\le n\le1400$, respectively $2\le n\le9000$, and $1219$ and $8587$ are the
+least integers $n_0>x_c$ with $g(n_0)>0$ and $g'(n_0)>0$. Because of the
+floor, the comparison with the upper bound is not monotone just below these
+ranges: the 2022 fit exceeds it at no $n\le1211$, at $n=1212$ and $1213$, not
+at $n=1214$, and at every $n\ge1215$; the 2026 fit at no $n\le8575$, at
+$n=8576$ and $8577$, not at $n=8578$, and at every $n\ge8579$
+\textup{(passage sharpened after the independent check of 6~October 2026;
+the first wording read ``they are not interval-certified'' and ``the 2022 fit
+first exceeds it at $n=1212$ but not at $n=1214$, and the 2026 fit first at
+$n=8576$ but not at $n=8578$'')}.
 
 \emph{(c) What is not said.} On the data range the fits are fair: the 2022
 fit gives $0.487$, $0.689$ and $0.728$ times $a(n)$ at $n=24$, $45$ and
@@ -1001,10 +1016,16 @@ families are numerous.
  so the decomposition is recovered and distinct decompositions give
  distinct maximal families. Hence $a(8k+2)\ge D(k)$ and
  $\log a(n)\ge(2k-o(k))\log k=(\tfrac14-o(1))\,n\log n$. Open: whether
- $D(k)\ge k^{2k-o(k)}$; the source's block construction (one part from each
- of four consecutive $k$-blocks, permutations $\pi,\sigma,\tau$ with
- $i+\pi(i)+\sigma(i)+\tau(i)=2k+2$) and its complementary-pair
- construction give only $k!$. Even a positive answer settles only
+ $D(k)\ge k^{2k-o(k)}$; the source's block restriction (one part from each of
+ four consecutive $k$-blocks) reduces it to counting triples of permutations
+ $\pi,\sigma,\tau$ of $[k]$ with $i+\pi(i)+\sigma(i)+\tau(i)=2k+2$, a number the
+ source does not estimate, and its elementary complementary-pair construction
+ exhibits only $k!$ of them (for $k=1,\dots,6$ there are $1,3,15,105,993,12123$
+ such triples and $D(k)=1,4,32,392,6883,171088$; finite counts, no asymptotic
+ claim) \textup{(sentence corrected after the independent check of
+ 6~October 2026; the first wording said that the block construction ``and its
+ complementary-pair construction give only $k!$'', but the source says $k!$
+ only of the latter)}. Even a positive answer settles only
  $n\equiv2\pmod 8$, not the full limit.
 \item\label{mdp:q:effective} \textbf{Effective onsets and monotonicity}
  (source: Section~6, ``the asymptotic queens estimate, without an explicit
@@ -1025,6 +1046,43 @@ families are numerous.
  maximal families of disjoint partitions or on maximal matchings of the
  hypergraph $H_n$, already counts these families. Missing: reading it.
 \end{enumerate}
+\begin{writenote}[Independent check of the write, 6~October 2026]
+An adversarial check made by the intake after the write (commit
+\file{6e53455cf}) fetched again the OEIS entry (still revision~\#50 of
+17~February 2026) and its b-file, the Wolfram \texttt{FindClique}
+documentation and the arXiv abstracts of Luria--Simkin and of Simkin (journal
+data from Crossref), and re-derived every statement marked [write].
+\emph{Remark~\ref{mdp:rem:cliques}.} The quotations are verbatim; a brute
+force from the definition, independent of the write's, gives the OEIS maximal
+counts for $n\le20$ and the printed counts of nonempty complete subgraphs for
+$n\le12$; the graph for $n=8$ (6 vertices, 9 edges, 21 nonempty and 3 maximal
+cliques), the first discrepancy at $n=3$, the maximal-clique convention and
+the description of the entry's three programs were confirmed.
+\emph{Remark~\ref{mdp:rem:fits}.} Both quotations are verbatim and parts~(a)
+and~(c) were re-derived (the six ratios as printed). Part~(b) was recomputed
+in Arb ball arithmetic (python-flint, 300 bits) and in 60-digit mpmath: no
+sign of the difference is undecided for $2\le n\le1400$, respectively
+$2\le n\le9000$; $x_c$, $g(n_0)$, $g'(n_0)$ and the direct margins are as
+printed, and $n_0=1219$, $8587$ are the least admissible choices. The remark
+now says so. \emph{Remark~\ref{mdp:rem:transseries}.} Both Lambert instances,
+their side conditions and the staircase caveat were confirmed against the
+volume. \emph{Proposition~\ref{mdp:prop:typical}} and the implication in
+Question~\ref{mdp:q:quadruples} were re-derived step by step, and the data
+are strictly increasing for $7\le n\le46$, as stated. Two errors were found;
+each is corrected with a dated note keeping the first wording.
+(i)~The interval of Remark~\ref{mdp:rem:simkin}: for
+$\alpha=1.942\pm0.003$, $(\log5+\alpha)/5$ runs from $0.709687\ldots$ to
+$0.710887\ldots$, so the printed $[0.7099,\,0.7111]$ is now
+$[0.7096,\,0.7109]$; the derivation and the constant $1/5$ stand.
+(ii)~Question~\ref{mdp:q:quadruples} attributed $k!$ to both of the source's
+constructions; the source says it of the complementary-pair construction
+only, and the block triples are more numerous: $1,3,15,105,993,12123$ for
+$k=1,\dots,6$, against $k!=1,2,6,24,120,720$ (and
+$D(k)=1,4,32,392,6883,171088$). Before applying the corrections the intake
+recomputed the interval, the triple counts and $D(k)$ (by bitmask dynamic
+programs, not the check's enumeration) and the Arb signs. No mathematical
+statement of the source or of the write changes.
+\end{writenote}
 
 \begin{thebibliography}{9}
 \bibitem{oeis}
