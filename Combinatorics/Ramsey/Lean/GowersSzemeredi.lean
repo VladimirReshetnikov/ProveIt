@@ -54,6 +54,8 @@ import GowersSzemeredi.Proofs16RecurrenceThreshold
 import GowersSzemeredi.Proofs16SingletonPartition
 import GowersSzemeredi.Proofs16StepBounds
 import GowersSzemeredi.Proofs16ProductGeometry
+import GowersSzemeredi.Proofs16OrientedPartitions
+import GowersSzemeredi.Proofs16ProductTiling
 import GowersSzemeredi.Proofs16ArrangementSelection
 import GowersSzemeredi.Proofs16CubeDensity
 import GowersSzemeredi.Proofs05Progressions

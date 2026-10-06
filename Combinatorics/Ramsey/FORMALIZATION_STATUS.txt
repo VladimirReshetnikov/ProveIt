@@ -12,8 +12,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 157 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 1,547 public Gowers theorems and found only propext,
+  All 159 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 1,581 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 97 exact
   companion proofs and 23 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -130,6 +130,14 @@ Constructive inputs for Lemma 16.6
   of length n with 2*n<=N to its centered integer step, and proves
   centeredAbs(step)*(length-1)<=n-1. This supplies the residue-partition
   budget when such a short index model has been constructed.
+  Proofs16OrientedPartitions proves that reversal preserves carriers and
+  properness, then constructs residue partitions for signed modular steps.
+  Properness and length at least two discharge the nonzero-step premise.
+  Proofs16ProductTiling uses short containment of a base axis to partition
+  its product with a sufficiently long unit-step final axis into proper
+  common-step boxes. The resulting final axes have lengths v-1 or v and
+  the box widths are at least v-1. Its explicit short-index-model hypotheses
+  still have to be derived from the original Lemma 16.6 inputs.
   Lemma 16.6 is still open. Initial step alignment, uniform assembly,
   the dimension endpoint, and proper-input migration remain. The paper's
   definition also requires axes to remain progressions in integer
