@@ -12,8 +12,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 180 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 1,744 public Gowers theorems and found only propext,
+  All 183 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 1,753 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 99 exact
   companion proofs and 21 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -217,7 +217,8 @@ Two-anchor interpolation for Lemma 16.10
   candidates, independently of the number of affine classes.
   This preserves the correlation between slope and intercept choices; it
   does not yet prove a stronger MultiplyLinear parameter or a final bound.
-  The common-domain construction and final quantitative comparison in
+  The common base partition is now constructed below. Synchronization with
+  the final-coordinate progression and the final quantitative comparison in
   Lemma 16.10 remain outstanding.
 
 Corrected distinct-anchor sampling estimate
@@ -247,9 +248,18 @@ Corrected distinct-anchor sampling estimate
   Proofs16AnchoredFibres assembles graph assignment, pruning, shared sampling,
   ambient mass, and the two-anchor interpolation identity. It applies over a
   prime modulus and keeps the long-column and corrected sampling hypotheses.
-  A complete Lemma 16.10 proof still needs the modular-box wrapper, short-cell
-  handling, a common base partition for slice covers, and the unresolved final
-  width comparison with the corrected sampling cost.
+  Proofs16ProductAnchors transports samples and good sets to actual products
+  of finite base and column sets with exact cardinalities. Proofs16AnchoredCover
+  attaches them to the sufficiently long cells of Section16LineCover, retaining
+  its original exceptional set in the domain and its proper-box partition.
+  Proofs16CommonSliceCover uses the existing finite-union theorem to obtain
+  a single base partition and a common pool of p candidates for all r sampled
+  slices. Anchored interpolation gives r*r*p*p global multilinear candidates
+  per base cell, with the union theorem's explicit width and graph bounds.
+  A complete Lemma 16.10 proof still needs short-column handling, synchronization
+  of base and final-coordinate steps, and the unresolved final width comparison
+  with the corrected sampling cost. The base-cell conclusion does not assert
+  synchronized product boxes.
   The newly received gowers_interpolation_article.zip proposes sampling
   without replacement and singleton recovery for a sharper local bound. Its
   argument has been inspected, but is not a checked Lean result at this stage.
