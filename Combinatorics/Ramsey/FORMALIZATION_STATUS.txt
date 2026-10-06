@@ -12,8 +12,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 153 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 1,501 public Gowers theorems and found only propext,
+  All 154 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 1,508 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 97 exact
   companion proofs and 23 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -113,8 +113,14 @@ Constructive inputs for Lemma 16.6
   proves local final-coordinate linearity under the explicit scale budgets.
   Proofs16ShortScale verifies ceiling rounding above the singleton scale:
   v=ceil((zeta/2)*sqrt(s))+1 fits both v^2<=s and 2/s<=zeta/v.
-  Lemma 16.6 is still open. Its uniform assembly, singleton case, and
-  proper-input migration must be completed before counting its companion.
+  Proofs16RecurrenceThreshold proves that the radius dominates the base
+  polynomial threshold, and recovers the full simultaneous threshold from
+  a recurrence root. A target width greater than one therefore supplies
+  the threshold automatically. Its local-linearity theorem combines all
+  these estimates with the product partition in positive base dimension.
+  Lemma 16.6 is still open. Its uniform assembly, singleton case, dimension
+  endpoint, and proper-input migration must be handled before counting
+  its companion. The local result is not counted as a numbered proof.
 
 Shared Section 16 migration
   Box.IsProper is now a shared definition. MultiplyLinear requires proper
