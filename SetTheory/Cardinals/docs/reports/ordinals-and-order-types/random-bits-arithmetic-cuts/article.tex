@@ -43,6 +43,12 @@
 \newcommand{\TV}{\operatorname{TV}}
 \newcommand{\Fin}{\operatorname{Fin}}
 \newcommand{\powerset}{\mathcal P}
+% Added by the ProveIt write phase (batch 114, 6 October 2026): dated notes
+% marked [write].
+\newcommand{\file}[1]{\nolinkurl{#1}}
+\newenvironment{writenote}[1][]{\par\smallskip\begingroup\small
+ \noindent\textbf{[write]}\if\relax\detokenize{#1}\relax\else~\textbf{#1.}\fi\ }%
+ {\par\endgroup\smallskip}
 \pagestyle{fancy}
 \fancyhf{}
 \fancyhead[L]{\small\color{muted}Random bits and cuts of arithmetic}
@@ -125,11 +131,37 @@ and proof audit, a concrete ProveIt formalization plan, and fourteen further
 research problems.
 \end{abstract}
 
+\begin{writenote}[Status and trust boundary, added 6 October 2026, batch~114]
+This manuscript is filed in ProveIt as the single-source research report
+\file{random-bits-arithmetic-cuts} (provenance, the sources as the write read
+them, relation to the repository with the formal status of each statement,
+reading conventions and the collected non-claims in
+Section~\ref{rbc:sec:provenance}). It is AI-assisted (its title page says it
+was developed and written with ChatGPT), unrefereed, and \emph{not
+formalized}: no Lean or Rocq declaration exists for any theorem, lemma,
+proposition or corollary of this report. The one sentence of the text with a
+formal counterpart in the repository is the passing remark of
+Section~\ref{rbc:sec:introduction} that $\PA$ has no finite models
+(\file{no_finite_PA_model}, \file{model_carrier_not_finite}).
+\emph{What rests on what.} The infinite-model results rest on the written
+proofs alone. The finite computations of Section~\ref{rbc:sec:audit} check
+small finite cases and regenerate the plotted data; they verify no infinite
+theorem. The fair-coin standard cut (Corollary~\ref{rbc:cor:fair}) is
+credited to Glazer's 2023 announcement, and the finite source-coding
+asymptotics and the pairwise atom bound to the classical literature.
+Section~\ref{rbc:sec:formalization} is the source's \emph{proposal} for a
+formalization, not a description of the repository. The write adds
+Remark~\ref{rbc:rem:cp-class}, with a proof, and
+Section~\ref{rbc:sec:further}, which carries the fourteen questions of
+Section~\ref{rbc:sec:questions} and the source's priority statement as open
+questions with their status.
+\end{writenote}
+
 \tableofcontents
 \newpage
 
 \section{The problem and its mathematical setting}
-\label{sec:introduction}
+\label{rbc:sec:introduction}
 
 A finite binary word can always be encoded by an ordinary natural number.
 That observation changes character inside a nonstandard model of arithmetic.
@@ -146,7 +178,7 @@ report treats these as two parts of one problem, while keeping the change in
 quantifiers explicit.
 
 \begin{problem}[Finite catalogs and infinite coding cuts]
-\label{prob:main}
+\label{rbc:prob:main}
 \begin{enumerate}[label=(\alph*)]
 \item Given independent bits on $N$ sites and a catalog of at most $K$ words,
 determine the largest possible probability of finding the observed word in
@@ -167,6 +199,13 @@ There are no finite models of $\PA$: its successor is injective and omits
 zero. Part (a) is consequently a finite coding problem, not a purported
 finite model of arithmetic. Nor is a catalog of $K$ externally selected
 codes the same as the model's unrestricted collection of codes.
+
+\begin{writenote}[6~October 2026]
+The first sentence of this paragraph is formalized in the repository
+(\file{no_finite_PA_model} and \file{model_carrier_not_finite}, by the
+argument given here; details in Section~\ref{rbc:sec:provenance}). Nothing
+else in this report is.
+\end{writenote}
 
 \subsection{Why this connects Glazer and ProveIt}
 
@@ -228,8 +267,281 @@ were executed for this report.\\
 \end{tabular}
 \end{center}
 
+\subsection{Provenance, sources and reading conventions}\label{rbc:sec:provenance}
+\begin{writenote}[Added 6 October 2026, batch~114]
+\emph{Provenance.} This report was built from one manuscript, the archive
+\file{Random_Bits_Arithmetic_Cuts.zip} (817{,}508 bytes, wrapper directory
+\file{random_bits_arithmetic_cuts/}, 17 files), which arrived in ProveIt's
+\file{docs/incoming} in commit \file{2399df2bd} (5~October 2026; not part of
+a session bundle) and was placed as batch~114 in \file{99053b5d1}. The text
+is the delivered \file{random_bits_arithmetic_cuts.tex} (2{,}647 lines,
+37-page PDF), shipped as \file{article.tex}. Its title page reads ``Research
+report prepared for Vladimir Reshetnikov'' and ``Developed and written with
+ChatGPT''; its PDF author field reads ``Research report prepared with ChatGPT
+for Vladimir Reshetnikov''. Its repository pin is
+\file{3b9458b31f459b480ab43a068d7cc56f4cfdbb28}, the placement commit of
+batch~98D (Section~\ref{rbc:sec:audit} and \file{SOURCE_AUDIT.txt}). The
+delivered PDF and \file{SHA256SUMS.txt} (16 entries, all verified at
+placement and again at the write) are not shipped; both are retrievable from
+the arrival commit. This is a single-source report, so no merge choice was
+made. The write prefixed the 87 delivered labels with \file{rbc:} (the 22
+labels \file{bs:}$\ldots$ became \file{rbc:bs:}$\ldots$) and updated every
+reference. It added this subsection, the notes marked [write],
+Remark~\ref{rbc:rem:cp-class}, Section~\ref{rbc:sec:further}, a label and
+the reference format \file{Q1}, \dots, \file{Q14} on the fourteen questions
+of Section~\ref{rbc:sec:questions}, and it changed the title of
+Section~\ref{rbc:sec:formalization} (the delivered title is kept in the note
+there). No statement, proof or number of the source was changed: every
+theorem, equation, figure and section keeps its delivered number.
+
+\emph{The sources, as the write read them} (5--6~October 2026).
+\begin{itemize}
+\item Glazer~\cite{glazer2023}: the official seminar abstract. It announces
+ that the standard cut of a countable model of $\PA$, ``or even Q'', is
+ uniformly definable relative to a randomly chosen predicate; that for a
+ countably saturated model no formula yields a set measured by the
+ completed product measure on $2^M$; and a programme of combinatorial ideals
+ on $2^M$ for models of any cardinality. It names no formula.
+ Sections~\ref{rbc:sec:introduction} and~\ref{rbc:sec:product} describe it
+ accurately.
+\item Abdul-Quader and Schmerl~\cite{abdul-quader-schmerl}, arXiv
+ version~3: all models there are models of $\PA$, ``definable'' means
+ definable with parameters, a \emph{class} is a set whose restriction below
+ each element is definable, and Theorem~19 states that in a nonstandard
+ model no class is strongly CP-generic. This is the obstruction invoked in
+ Question~\ref{rbc:q:cpgeneric}; Remark~\ref{rbc:rem:cp-class} spells it out.
+\item Benjamini, Gurel-Gurevich and Peled~\cite{benjamini-gurel-peled},
+ arXiv:1201.3261v1 (16 January 2012; its comments say the manuscript had
+ been on the authors' websites since 2007): Proposition~25, formula~(12), is
+ the maximal probability that all $n$ bits equal one under pairwise
+ independence with marginal $p$, obtained by adapting the closed forms of
+ Boros and Pr\'ekopa. At $p=1/2$ it gives $1/(n+1)$ for odd $n$ and
+ $1/(n+2)$ for even $n$, as Theorem~\ref{rbc:thm:pairwise-atom} says (after
+ complementing coordinates, every word is the all-ones word). Boros and
+ Pr\'ekopa~\cite{boros-prekopa} were read neither by the source nor by the
+ write.
+\item Kontoyiannis and Verd\'u~\cite{kontoyiannis-verdu}, Chen, Effros and
+ Kostina~\cite{chen-effros-kostina}: the arXiv records were located
+ (arXiv:1212.2668 and arXiv:1902.03366; the DOI of the second is confirmed
+ there); their theorems were not read by the write. The source proves
+ Theorem~\ref{rbc:thm:budget-normal} itself and credits the expansion to
+ them; nothing in the report depends on the exact form of their statements.
+\item The four repository files the source read
+ \cite{proveit-list,proveit-finite,proveit-beta,proveit-evaluator} are
+ byte-identical at the pin and at the write's HEAD \file{3988bf5c4}; their
+ relation to this report is described below.
+\end{itemize}
+
+\emph{What was checked at intake.} The batch-114 dossier read
+Sections~\ref{rbc:sec:introduction}--\ref{rbc:sec:formalization} in full
+and checked by hand the Borel--Cantelli tail with finite-change invariance,
+the nullity of fixed patterns with the countability of codes, the diagonal
+marker recursion and its marker property \eqref{rbc:bs:marker-property}, the
+product-weight error bound in \eqref{rbc:bs:product-error}, the
+second-moment bound \eqref{rbc:eq:pairwise-mismatch}, the two moment
+polynomials of Theorem~\ref{rbc:thm:pairwise-atom}, the induction
+equivalence and the locally finite $\Sigma_1$ list formula. It found no
+error. The write reread the whole text, including
+Sections~\ref{rbc:sec:audit} and~\ref{rbc:sec:questions} and the
+bibliography, and found none either. Independent intake programs confirmed
+the Hamming-layer formula of Theorem~\ref{rbc:thm:binomial-budget} against
+sorted atom sums for $N\le8$ at $p=1/10$ and $p=1/3$, the three values of
+the table in Section~\ref{rbc:sec:consequences} to all printed digits, and
+the first two moments and the atoms of the pairwise extremizers for
+$N\le10$. The delivered script was rerun on copies at placement and at the
+write (note in Section~\ref{rbc:sec:audit}).
+
+\emph{Relation to the repository; formal status.} Placement in the
+collection confers no formal status. At HEAD the repository's formal
+developments contain the following, and nothing else that bears on this
+report.
+\begin{itemize}\raggedright
+\item \emph{Formalized: the remark that $\PA$ has no finite models}
+ (Section~\ref{rbc:sec:introduction}). Lean: \file{no_finite_PA_model} and
+ \file{model_carrier_not_finite}, with the model-independent lemma
+ \file{finite_carrier_cannot_have_injective_successor_missing_zero}, in
+ \file{Logic/PeanoArithmetic/NoFiniteModel/Lean/NoFiniteModel/Theorem.lean};
+ Coq counterparts (for example \file{peano_arithmetic_has_no_finite_model})
+ in \file{Logic/PeanoArithmetic/NoFiniteModel/Coq/NoFiniteModel.v}. The Lean
+ theorems are stated for the shallow interface \file{SetTheory.PA.Model} of
+ \file{Logic/Interpretability/PAHF/Lean/PAHF/PASyntax.lean}, whose induction
+ field ranges over every Lean predicate, the kind of interface that
+ Section~\ref{rbc:sec:formalization} says cannot express nonstandard models.
+ The proof uses only that successor is injective and omits zero, exactly as
+ the remark does, so the argument covers every first-order model of $\PA$;
+ the formal statement is the one for the shallow interface.
+\item \emph{Ingredients only, not statements of this report.}
+ \file{finite_list_beta_code} and \file{finite_vector_beta_code}, in
+ \file{Logic/PeanoArithmetic/NotFinitelyAxiomatizable/Lean/PAFiniteBasisReduction/FiniteBetaCoding.lean}:
+ in every raw arithmetic structure satisfying all axioms of $\PA$
+ (\file{RawPASatisfies}), an externally finite list of arbitrary, possibly
+ nonstandard, elements (a Lean list, or a vector indexed by
+ \file{Fin n}) has a beta code whose entry at the numeral $i$ is the
+ remainder modulo $1+(i+1)\cdot\mathit{step}$, the convention of
+ \eqref{rbc:eq:induction-beta}. That is the step ``encode this externally
+ finite list'' in the proof of Lemma~\ref{rbc:lem:induction-locally-finite}
+ (for standard $n$). It is not
+ Lemma~\ref{rbc:lem:induction-coding-equivalence}, whose sequences have a
+ possibly nonstandard internal length $x$ and need the internal Chinese
+ remainder theorem of $\PA$; the binary relation $\Bit$ of
+ \eqref{rbc:eq:bit} is not formalized at all.
+ \file{not_sat_inductionForm}, in
+ \file{.../PAFiniteBasisReduction/EvaluatorCutContract.lean}: under that
+ module's evaluator \file{Contract}, the induction instance of the specific
+ formula \texttt{cutAt evalFormula} is false, because that formula defines
+ exactly the standard elements (\file{sat_cutAt_iff_isStandard}; the sealed
+ form is \file{not_sat_sealed_induction}). This is the pattern of
+ Corollary~\ref{rbc:cor:induction-sigma-obstruction} and
+ Lemma~\ref{rbc:lem:induction-locally-finite} (a formula that defines a
+ proper successor-closed set containing $0$ refutes its own induction
+ instance), but for a different formula and with no predicate $P$; it says
+ nothing about $\chi$ or $\ell$. \file{raw_above_of_nonstandard} (in
+ \file{FiniteBetaCoding.lean}): a nonstandard element lies above every
+ numeral, the fact behind ``every standard index $i$ would satisfy $i<n$''
+ in the same proof.
+\item \emph{Not formalized:} every theorem, lemma, proposition and corollary
+ of this report; nothing probabilistic, no coding cut, no external
+ summability cut, no $\Bit$ coding and no statement about induction in
+ $(M,P)$. The source's plan (Section~\ref{rbc:sec:formalization}) is a
+ proposal, carried as Question~\ref{rbc:q:verified}.
+\end{itemize}
+
+\emph{Stale claims.} The source's statements about the repository
+(Sections~\ref{rbc:sec:introduction}, \ref{rbc:sec:formalization}
+and~\ref{rbc:sec:audit}) were checked against HEAD and are accurate: the
+\file{ListCoding} README calls its formula specifications metatheorems about
+the standard interpretation; \file{NotFinitelyAxiomatizable} works with raw
+first-order structures, not with the meta-level \file{PA.Model}; the two Lean
+files contain what is said of them. The source did not cite the
+\file{NoFiniteModel} project, present at its pin since July 2026, which
+formalizes its remark on finite models. Its statement that searches found
+no repository treatment of random predicates or coin flipping is still
+true: Glazer's other work is cited elsewhere (surreal-number reports, and
+\file{measurable-box-games} and \file{naming-elementary-embeddings} in this
+collection), but no other file cites the coin-flipping talk or treats
+random predicates on models of arithmetic.
+
+\emph{Neighbouring reports} (under
+\file{SetTheory/Cardinals/docs/reports/ordinals-and-order-types/}):
+\file{noisy-parity-cubes} (same batch; \emph{see also}): its
+Proposition \file{np:found:biased} makes a total parity label measurable for
+the completed product measure of independent Bernoulli$(q_i)$ coordinates
+exactly when $\sum_i\min(q_i,1-q_i)<\infty$, the minority-mass condition of
+Theorem~\ref{rbc:thm:product} and Theorem~\ref{rbc:thm:budget-atomic}, by the
+same first Borel--Cantelli step (almost every point is a finite modification
+of the modal sequence); the theorems differ and neither source cites the
+other. \file{robust-neutral-choice} (same batch) has a different biased
+threshold, $\sum_i(p_i-1/2)^2=\infty$. \file{measurable-box-games} answers Glazer's \emph{choiceless box game
+paradox} (arXiv:2211.10474) and uses product measures on random bits, a
+different problem with no shared theorem; the other new reports of batch~114
+(\file{freiling-symmetry-blacklists},
+\file{bounded-width-power-set-compression}) share a delivery template, but
+no theorem and no citation.
+
+\emph{Reading conventions.} No symbol was renamed. The source reuses the
+following letters; read them by section.
+
+\begingroup\small\renewcommand{\arraystretch}{1.1}
+\begin{center}
+\begin{tabular}{>{\raggedright}p{0.17\textwidth}>{\raggedright}p{0.37\textwidth}>{\raggedright\arraybackslash}p{0.37\textwidth}}
+\toprule
+Symbol & Main meaning & Other meanings; tempting false readings\\
+\midrule
+$\E$ (roman) & exponentiation $t\mapsto2^t$, named in a definitional
+ expansion (\S\S\ref{rbc:sec:coding}, \ref{rbc:sec:induction}) &
+ not expectation, which is $\mathbb E$ (\S\ref{rbc:sec:dependence}); $E_S$ is
+ the error term of \eqref{rbc:bs:product-error}\\
+$\Prob$, $\Pr$ & probability (\S\S\ref{rbc:bs:section}--\ref{rbc:sec:dependence},
+ resp.\ \S\ref{rbc:sec:finite-budget}) & the same notion\\
+$\SumCut(w)$ & the external summability cut \eqref{rbc:eq:sumcut} & not a
+ sum computed inside $M$; $S$ is also a finite index set $S\subseteq\N$
+ (\S\ref{rbc:bs:section}) and the successor symbol (proof of
+ Theorem~\ref{rbc:thm:induction-local-equivalence})\\
+$\coded_a=\mathcal D_a$ & the countable family of internally coded subsets
+ of $[0,a)$ & $\mathcal D(f)$: minimal sensitive supports
+ \eqref{rbc:bs:sensitive}; $\mathcal A_x$ (\S\ref{rbc:sec:finite-budget}) is
+ $\mathcal D_x$ again; $D_f$, $D$: deviation predicates\\
+$A_a$ & the event $a\in\Cut(P)$ (\S\ref{rbc:sec:regularity}) & $A_S$:
+ marker sets (\S\ref{rbc:bs:section}); $A,B,C$: marker sequences
+ in \eqref{rbc:bs:triple}; $A_t$: fair bits and $A$: a predicate
+ (\S\ref{rbc:sec:dependence}, Remark~\ref{rbc:bs:scope})\\
+$\theta_P$, $\vartheta$ & the same coding formula,
+ \eqref{rbc:eq:theta} and \eqref{rbc:eq:induction-theta} & $\theta\in(0,1]$:
+ the captured fraction of a layer (Theorem~\ref{rbc:thm:binomial-budget})\\
+$\chi$, $\ell$, $\Lambda$ & bare-language $\Sigma_1(P)$ formulas
+ \eqref{rbc:eq:induction-chi}, \eqref{rbc:eq:induction-list} and the
+ bounded matrix \eqref{rbc:eq:induction-lambda} & $\chi$, $\ell$ are not
+ bounded; $\lambda$ is the Poisson parameter\\
+$\delta$ & a bias bound ($\delta<1/2$ in Theorem~\ref{rbc:bs:universality},
+ $\delta<1$ in Theorem~\ref{rbc:bs:boolean}) & $\delta(z,P,\bar a)$: a bounded
+ formula (Theorem~\ref{rbc:thm:induction-local-equivalence}); $\delta_n$:
+ conditional bounds (\S\ref{rbc:sec:dependence}); a small $\delta>0$ in
+ proofs\\
+$\varepsilon_t$, $\varepsilon_i$ & minority mass $\min(p,1-p)$
+ \eqref{rbc:eq:mode} & $\varepsilon>0$: a threshold
+ (Proposition~\ref{rbc:bs:vanishing})\\
+$c$ & an internal binary code & also constants ($c=\delta/2$ in
+ \eqref{rbc:bs:bias-construction}, $c\le1/4$ in \S\ref{rbc:sec:product})\\
+$W$ & $W_w(a)$ \eqref{rbc:eq:sumcut}; $W$, $W_x$ external sums
+ (Theorem~\ref{rbc:thm:induction-three-regimes}) & the number of ones
+ (Theorem~\ref{rbc:thm:pairwise-atom}); $W_N\sim\operatorname{Bin}(N,p)$\\
+$q$ & prescribed marginals $q_t$ (Theorem~\ref{rbc:thm:realization}) &
+ $q(x)$ (Lemma~\ref{rbc:bs:onesided}); mismatch probabilities $q_t$
+ (Theorem~\ref{rbc:thm:pairwise-cut}); the atom bound $q_N$; a modulus
+ $q\ge6$; a quotient in \eqref{rbc:eq:bit}\\
+$Q$ & $Q_N(K)$, the optimal catalog mass & Robinson arithmetic $Q$; a
+ predicate $Q$ (Propositions~\ref{rbc:prop:cut-structure},
+ \ref{rbc:prop:stability})\\
+$K$ & a catalog size & a cut $K$ in \eqref{rbc:bs:triple}; a catalog of $K$
+ words is not the model's family of codes (\S\ref{rbc:sec:finite-budget})\\
+$b$, $B$ & the modal predicate $b_t$ \eqref{rbc:eq:mode} & $b_f=f(\mathbf
+ 0)$; an element $b$ in proofs; $B_N(r)$: partial binomial sums; a
+ predicate $B$\\
+$a$ & an endpoint in $M$ & $N=2a-1$ or $2a$ (Theorem~\ref{rbc:thm:pairwise-atom});
+ $a_N=\prod(1-\varepsilon_i)$; $a_j$: constraint endpoints\\
+$I$ & a cut & $\mathsf I\Delta_0$, $\mathsf I\Sigma_1$ (sans serif):
+ induction schemes\\
+cut & nonempty, downward and successor closed; $M$ allowed & no closure
+ under $+$ or $\cdot$ is assumed; a cut need not be definable\\
+finite & externally finite (finite in the metatheory) & an interval
+ $[0,a)$ with nonstandard $a$ is internally finite but externally
+ infinite\\
+$\Cut(P)=M$ & every bounded restriction of $P$ is coded ($P$ is a class) &
+ not that $P$ itself is coded or definable\\
+\bottomrule
+\end{tabular}
+\end{center}
+\endgroup
+
+\emph{What the source does not claim} (from the title page, the text, the
+delivered README and the audit files; all kept in force). The fair-coin
+standard cut is Glazer's: the $\PA$ case is reconstructed with the source's
+own formula, and his $Q$ case and the uncountable and measurability problems
+are not claimed. Optimal finite ranking, the normal source-coding transition
+and the pairwise atom bound are classical; the sparse Poisson staircase is
+derived, not presented as a new source-coding theorem. No established
+priority and no solution of a named open problem are claimed; the literature
+and repository searches were focused, not exhaustive. The finite checks
+neither simulate a nonstandard model, nor verify an infinite theorem, nor
+establish priority; the reviews were an internal audit, not peer review; no
+Lean or Rocq formalization was made. The $\Pi^0_3$ bound is not claimed
+optimal; the catalog bound $Kq_N$ is not claimed sharp for $K>1$;
+Theorem~\ref{rbc:thm:realization} keeps finitely many prescribed marginals
+but does not match arbitrary correlated data;
+Theorem~\ref{rbc:thm:budget-atomic} concerns prefixes of one infinite bias
+sequence, not the triangular array $p_N=\lambda/N$; the induction theorems
+need a nonstandard model (the standard-model exception); no failure of bare
+$\Delta_0(P)$ induction is inferred by deleting $\E$; the countable
+conjunction theorem gives no law for countably infinite conjunctions or
+disjunctions (Remark~\ref{rbc:bs:finite}); the vanishing condition of
+Proposition~\ref{rbc:bs:vanishing} is not vanishing in the internal order;
+nothing is claimed about uncountable or countably saturated models; no
+personal endorsement by Glazer is assumed. The write adds that none of its
+own additions is formalized either.
+\end{writenote}
+
 \section{Arithmetic coding and the deterministic cut}
-\label{sec:coding}
+\label{rbc:sec:coding}
 
 \subsection{Internal and external conventions}
 
@@ -256,7 +568,7 @@ arithmetically definable; with $\E$ named one convenient definition is
 \Bit(c,t)\quad\Longleftrightarrow\quad
 \exists q\le c\ \exists r<\E(t)\
  \bigl(c=q\E(t+1)+\E(t)+r\bigr).
-\label{eq:bit}
+\label{rbc:eq:bit}
 \end{equation}
 All arithmetic in this formula takes place in $M$. Naming $\E$ is only a
 convenience for syntax; later complexity claims distinguish the named
@@ -267,9 +579,9 @@ For $P\subseteq M$, define
 \begin{align}
  \theta_P(a)&:\ \exists c<\E(a)\ \forall t<a\
                   \bigl(P(t)\leftrightarrow\Bit(c,t)\bigr),
-                  \label{eq:theta}\\
+                  \label{rbc:eq:theta}\\
  \Cut(P)&=\{a\in M:(M,P)\models\theta_P(a)\}.
-                  \label{eq:cut}
+                  \label{rbc:eq:cut}
 \end{align}
 Let $\coded_a$ be the family of subsets of $[0,a)$ that have such a code.
 \end{definition}
@@ -280,7 +592,7 @@ symbol. A law used to sample the predicate is external data, not an extra
 symbol in this formula.
 
 \begin{lemma}[Elementary coding operations]
-\label{lem:code-operations}
+\label{rbc:lem:code-operations}
 For every $a\in M$, the family $\coded_a$ contains the empty set and every
 externally finite subset of $[0,a)$. It is closed under union, intersection,
 complement within $[0,a)$, and symmetric difference. Restrictions of coded
@@ -303,7 +615,7 @@ they use no induction involving the external predicate $P$.
 \end{proof}
 
 \begin{proposition}[Deterministic structure]
-\label{prop:cut-structure}
+\label{rbc:prop:cut-structure}
 For every predicate $P$, $\Cut(P)$ is a cut. Moreover:
 \begin{enumerate}[label=(\roman*)]
 \item changing finitely many bits below $a$ does not change whether
@@ -317,7 +629,7 @@ $\Cut(P\mathbin\triangle Q)=\Cut(P)\cap\Cut(Q)$.
 
 \begin{proof}
 Every standard initial segment is a finite pattern, so it is coded. Downward
-closure and successor closure follow from Lemma~\ref{lem:code-operations}.
+closure and successor closure follow from Lemma~\ref{rbc:lem:code-operations}.
 The same lemma proves (i)--(iii). For (iv), suppose
 $I=\Cut(P)\subsetneq J=\Cut(Q)$. At any $a\in J\setminus I$, the segment
 of $Q$ is coded and that of $P$ is not. Coding their symmetric difference
@@ -330,7 +642,7 @@ the symmetric-difference cut as well. This proves equality everywhere.
 \begin{remark}[A filtration by cuts]
 Under symmetric difference, predicates form a vector space over
 $\mathbb F_2$. The predicates coded below a fixed endpoint form a subspace.
-Proposition~\ref{prop:cut-structure} gives the familiar strong-triangle
+Proposition~\ref{rbc:prop:cut-structure} gives the familiar strong-triangle
 behavior of a filtration: two different coding cuts cannot cancel to give a
 larger one. If $\Cut(R)=M$, then
 $\Cut(P\mathbin\triangle R)=\Cut(P)$ for every $P$. Thus finite changes
@@ -345,7 +657,7 @@ bounded coding of a definable set. This matches the class terminology in
 the literature on generic expansions \cite{abdul-quader-schmerl}.
 
 \section{The exact classification for independent noise}
-\label{sec:product}
+\label{rbc:sec:product}
 
 For a family $w=(w_t)_{t\in M}$ of finite nonnegative real numbers, write
 \begin{equation}
@@ -354,7 +666,7 @@ For a family $w=(w_t)_{t\in M}$ of finite nonnegative real numbers, write
                           \text{ is externally finite}\Bigr\},
  \qquad
  \SumCut(w)=\{a:W_w(a)<\infty\}.
-\label{eq:sumcut}
+\label{rbc:eq:sumcut}
 \end{equation}
 This is an ordinary real sum in the metatheory. It is not a nonstandard
 sum calculated by $M$. Adding the one summand at $a$ preserves finiteness,
@@ -367,22 +679,22 @@ $\mu_p=\bigotimes_{t\in M}\Bern(p_t)$. Put
 \begin{equation}
  \varepsilon_t=\min(p_t,1-p_t),\qquad
  b_t=\ind_{\{p_t>1/2\}}.
-\label{eq:mode}
+\label{rbc:eq:mode}
 \end{equation}
 The tie convention at $p_t=1/2$ is immaterial to the theorem.
 
 \begin{theorem}[Arbitrary independent biases]
-\label{thm:product}
+\label{rbc:thm:product}
 For every countable $M\models\PA$ and every family of independent
 Bernoulli biases, with probability one simultaneously at all endpoints,
 \begin{equation}
  \boxed{\quad\Cut(P)=\Cut(b)\cap\SumCut(\varepsilon).\quad}
-\label{eq:main-product}
+\label{rbc:eq:main-product}
 \end{equation}
 In particular, when $0\le p_t\le1/2$ for all $t$,
 \begin{equation}
  \boxed{\quad\Cut(P)=\SumCut(p)\quad\text{almost surely}.\quad}
-\label{eq:zero-modal}
+\label{rbc:eq:zero-modal}
 \end{equation}
 \end{theorem}
 
@@ -393,7 +705,7 @@ at $t$ is exactly $\varepsilon_t$. Enumerate $[0,a)$ externally. The
 probability of any mismatch after the first $L$ positions is at most the
 sum of their mismatch probabilities, which tends to zero as $L\to\infty$.
 Consequently only finitely many mismatches occur almost surely. By
-Proposition~\ref{prop:cut-structure}(i), $P$ is coded below $a$ if and only
+Proposition~\ref{rbc:prop:cut-structure}(i), $P$ is coded below $a$ if and only
 if $b$ is coded there. This half needs no independence.
 
 Suppose instead that $\sum_{t<a}\varepsilon_t=\infty$. For any fixed
@@ -403,7 +715,7 @@ independence gives
  \mu_p\{P|_F=d|_F\}
  \le\prod_{t\in F}(1-\varepsilon_t)
  \le\exp\left(-\sum_{t\in F}\varepsilon_t\right).
-\label{eq:singleton-bound}
+\label{rbc:eq:singleton-bound}
 \end{equation}
 As the finite sets exhaust the interval, the right side tends to zero.
 Thus every specified pattern has probability zero. Since $M$ is countable,
@@ -417,7 +729,7 @@ chosen modal predicate is empty, hence has coding cut $M$.
 \end{proof}
 
 \begin{corollary}[The fair-coin case]
-\label{cor:fair}
+\label{rbc:cor:fair}
 Under fair independent bits, $\Cut(P)=\std$ almost surely. More generally,
 the same holds whenever
 $\sum_{t<a}\min(p_t,1-p_t)=\infty$ for every nonstandard $a$; in
@@ -429,7 +741,7 @@ $\delta>0$.
 Every nonstandard interval is externally infinite. Fair bits contribute
 $1/2$ at every position, and uniformly nondegenerate bits contribute at
 least $\delta$. Standard intervals have finite sums. Apply
-Theorem~\ref{thm:product}.
+Theorem~\ref{rbc:thm:product}.
 \end{proof}
 
 This corollary recovers the $\PA$ conclusion announced by Glazer; the
@@ -460,16 +772,16 @@ defining the standard cut inside the original structure.
 
 \begin{example}[The mode matters]
 Given any fixed external predicate $B$, flip its bits independently with
-globally summable error probabilities. Theorem~\ref{thm:product} gives
+globally summable error probabilities. Theorem~\ref{rbc:thm:product} gives
 $\Cut(P)=\Cut(B)$ almost surely. Small total noise does not make a
 noncodable modal pattern codable.
 \end{example}
 
 \section{Realizing any cut without changing prescribed finite data}
-\label{sec:realization}
+\label{rbc:sec:realization}
 
 \begin{lemma}[Cofinal markers]
-\label{lem:markers}
+\label{rbc:lem:markers}
 For each cut $I\subseteq M$ and finite set $F\subseteq M$, there is an
 externally strictly increasing sequence $u_0<u_1<\cdots$ in $I\setminus F$
 cofinal in $I$. Its set $U$ satisfies
@@ -490,7 +802,7 @@ vacuous.
 \end{proof}
 
 \begin{theorem}[Arbitrary cut, finite marginals, full support]
-\label{thm:realization}
+\label{rbc:thm:realization}
 Fix a cut $I$, a finite set $F\subseteq M$, and prescribed numbers
 $q_t\in(0,1)$ for $t\in F$. There exists an independent product law with
 the following properties:
@@ -504,7 +816,7 @@ Outside $F$, the probabilities may all be taken at most $1/4$.
 
 \begin{proof}
 Take cofinal markers $U\subseteq I\setminus F$ as in
-Lemma~\ref{lem:markers}. Set $p_t=1/4$ on $U$, keep the prescribed values
+Lemma~\ref{rbc:lem:markers}. Set $p_t=1/4$ on $U$, keep the prescribed values
 on $F$, and assign the remaining points strictly positive probabilities
 less than $1/4$ with finite total sum. For example, an external enumeration
 assigns them $2^{-j-4}$.
@@ -513,7 +825,7 @@ The minority-mass sum below $a$ is finite exactly when $a\in I$: finitely
 many prescribed coordinates and summable residual noise do not affect
 divergence, and the markers have precisely the required intersections.
 The modal predicate is supported on a subset of $F$, hence is internally
-coded everywhere. Theorem~\ref{thm:product} now gives the required cut.
+coded everywhere. Theorem~\ref{rbc:thm:product} now gives the required cut.
 
 Every nonempty basic cylinder fixes only finitely many bits and therefore
 has positive probability, proving full support. For any fixed full
@@ -524,7 +836,7 @@ finite noise mass.
 \end{proof}
 
 \begin{corollary}[Weak limits do not preserve the coding cut]
-\label{cor:weak}
+\label{rbc:cor:weak}
 For any cut $I$ and any enumeration $m_0,m_1,\ldots$ of $M$, there are
 full-support nonatomic product laws $\mu_n$ for which
 \[
@@ -537,14 +849,14 @@ $\TV$ is the supremum of the difference on measurable events.
 \end{corollary}
 
 \begin{proof}
-Apply Theorem~\ref{thm:realization} with
+Apply Theorem~\ref{rbc:thm:realization} with
 $F_n=\{m_0,\ldots,m_{n-1}\}$ and $q_t=1/2$. Every fixed finite cylinder
 has its fair probability for all sufficiently large $n$. On the compact
 space $2^M$, continuous functions are uniformly approximable by functions
 depending on finitely many coordinates: use uniform continuity in any
 compatible product metric. Thus cylinder convergence proves weak
 convergence. The exact-cut event is Borel by
-Proposition~\ref{prop:category} below. It has probabilities one and zero
+Proposition~\ref{rbc:prop:category} below. It has probabilities one and zero
 under the two laws when $I\ne\std$, proving the total-variation assertion.
 \end{proof}
 
@@ -557,7 +869,7 @@ collection of marginal data determines the infinite definability outcome.
 
 % ---- sections/boolean_spectra.tex ----
 \section{Independent predicates and complete Boolean coding spectra}
-\label{bs:section}
+\label{rbc:bs:section}
 
 The product classification has a stronger consequence than the realization of
 a single cut.  It permits a complete description of the cuts obtained by taking
@@ -583,7 +895,7 @@ independent.
 \subsection{A useful one-sided form of the product classification}
 
 \begin{lemma}[Bias bounded away from one]
-\label{bs:onesided}
+\label{rbc:bs:onesided}
 Let $X\subseteq M$ have independent bits with
 $\Prob(x\in X)=q(x)$.  If a constant $\eta>0$ satisfies
 $q(x)\leq 1-\eta$ for every $x\in M$, then
@@ -599,7 +911,7 @@ We have the pointwise comparisons
 \]
 For the first inequality, use $\min\{q,1-q\}=q$ when $q\leq1/2$;
 when $q>1/2$, use $1-q\geq\eta\geq\eta q$.
-If $\sum_{x<a}q(x)=\infty$, Theorem~\ref{thm:product} therefore excludes
+If $\sum_{x<a}q(x)=\infty$, Theorem~\ref{rbc:thm:product} therefore excludes
 $a$ from the coding cut almost surely.  If the sum is finite, the number of
 ones of $X$ below $a$ is finite almost surely: its expectation is that sum,
 or equivalently the first Borel--Cantelli lemma applies.  A finite external
@@ -623,22 +935,22 @@ Write
 An assigned family $(C_S)_{S\in\mathcal F}$ of cuts is
 \emph{inclusion monotone} if
 \begin{equation}
-\label{bs:monotonicity}
+\label{rbc:bs:monotonicity}
   S\subseteq T\quad\Longrightarrow\quad C_S\subseteq C_T.
 \end{equation}
 The direction is significant: intersecting more independent predicates can
 make their bounded restrictions easier to code.
 
 \begin{theorem}[Countable conjunction universality]
-\label{bs:universality}
+\label{rbc:bs:universality}
 Let $(C_S)_{S\in\mathcal F}$ be any family of cuts of $M$, and fix
 $0<\delta<1/2$.  The following are equivalent.
 \begin{enumerate}
-\item The family satisfies \eqref{bs:monotonicity}.
+\item The family satisfies \eqref{rbc:bs:monotonicity}.
 \item There is an independent Bernoulli array $(P_i)_{i\in\N}$, with
       probabilities $0<p_i(x)<\delta$ for every $i,x$, such that
       \begin{equation}
-      \label{bs:simultaneous}
+      \label{rbc:bs:simultaneous}
         \Prob\bigl(\Cut(P_S)=C_S\text{ for every }S\in\mathcal F\bigr)=1.
       \end{equation}
 \end{enumerate}
@@ -654,14 +966,14 @@ The bits of $P_S$ are independent, with probabilities
 \[
   p_S(x)=\prod_{i\in S}p_i(x).
 \]
-Lemma~\ref{bs:onesided} gives
+Lemma~\ref{rbc:bs:onesided} gives
 $\Cut(P_S)=\SumCut(p_S)$ almost surely.  If $S\subseteq T$, then
 $p_T(x)\leq p_S(x)$, whence
 $\SumCut(p_S)\subseteq\SumCut(p_T)$.  Countability of $\mathcal F$ makes
 these statements simultaneous and proves the required condition.
 
 \emph{The diagonal marker construction.}
-Assume \eqref{bs:monotonicity}.  Enumerate all constraints
+Assume \eqref{rbc:bs:monotonicity}.  Enumerate all constraints
 \[
   \{(S,a):S\in\mathcal F,\ a\in C_S\}
      =\{(S_j,a_j):j\in\N\}.
@@ -683,7 +995,7 @@ For $S\in\mathcal F$, define its marker set
 \]
 We claim that
 \begin{equation}
-\label{bs:marker-property}
+\label{rbc:bs:marker-property}
   A_S\cap[0,a)\text{ is finite}\quad\Longleftrightarrow\quad a\in C_S.
 \end{equation}
 If $a\in C_S$, find an index $j$ of the constraint $(S,a)$.  For every
@@ -691,7 +1003,7 @@ $n\geq j$ with $S\subseteq U_n$, the construction imposes $x_n>a$.
 Only finitely many earlier markers can lie below $a$.  Conversely, if
 $a\notin C_S$, every marker with label $U_n=S$ belongs to $C_S$ and hence
 lies below $a$.  There are infinitely many such stages, and all their
-markers are distinct.  This proves \eqref{bs:marker-property}.
+markers are distinct.  This proves \eqref{rbc:bs:marker-property}.
 
 The diagonal requirement is needed for a countable family.  Choosing
 individually cofinal marker sequences for the cuts would control each
@@ -704,7 +1016,7 @@ $\rho:M\to(0,\delta/4]$, and put $c=\delta/2$.  For example, for
 an external enumeration $M=\{z_0,z_1,\ldots\}$ one may use
 $\rho(z_n)=\delta 2^{-n-2}$.  Define
 \begin{equation}
-\label{bs:bias-construction}
+\label{rbc:bs:bias-construction}
   p_i(x)=\rho(x)+c\,\mathbf1_{
     \{x=x_n\text{ for some }n\text{ with }i\in U_n\}}.
 \end{equation}
@@ -713,7 +1025,7 @@ distinct, at most one marker label contributes at any given $x$.
 
 For $S\in\mathcal F$ and $s=|S|$, expansion of the product gives
 \begin{equation}
-\label{bs:product-error}
+\label{rbc:bs:product-error}
   p_S(x)=c^s\mathbf1_{A_S}(x)+E_S(x),
   \qquad 0\leq E_S(x)\leq s\rho(x).
 \end{equation}
@@ -729,10 +1041,10 @@ The error is globally summable.  Consequently
     =\SumCut(\mathbf1_{A_S})
     =C_S,
 \]
-where the last equality is \eqref{bs:marker-property}.  Take the countable
+where the last equality is \eqref{rbc:bs:marker-property}.  Take the countable
 product measure under which all bits have the prescribed probabilities.
-Lemma~\ref{bs:onesided}, followed by the intersection of countably many
-probability-one events, proves \eqref{bs:simultaneous}.
+Lemma~\ref{rbc:bs:onesided}, followed by the intersection of countably many
+probability-one events, proves \eqref{rbc:bs:simultaneous}.
 
 \emph{Full support, absence of atoms, and infinite outputs.}
 Every finite cylinder in $\{0,1\}^{\N\times M}$ has positive probability
@@ -756,8 +1068,8 @@ with that property cannot be bounded in $M$, and is therefore cofinal.
 \end{proof}
 
 \begin{remark}[Scope of the necessity statement]
-\label{bs:scope}
-Condition \eqref{bs:monotonicity} is necessary for this independent
+\label{rbc:bs:scope}
+Condition \eqref{rbc:bs:monotonicity} is necessary for this independent
 representation with uniformly small probabilities.  It is not a general
 law for intersections of arbitrary deterministic predicates.  If
 $\Cut(A)\ne M$ and $B=M$ is the constantly true predicate, then
@@ -768,11 +1080,11 @@ hypotheses of the spectral laws.
 \end{remark}
 
 \begin{remark}[A finite family]
-\label{bs:finite}
+\label{rbc:bs:finite}
 The same proof applies to a finite index set, because its collection of
 constraints is still countable.  Thus any prescribed finite table of
 conjunction cuts is realizable precisely when it satisfies
-\eqref{bs:monotonicity}.  The countable theorem supplies a common
+\eqref{rbc:bs:monotonicity}.  The countable theorem supplies a common
 probability-one event for all finite conjunctions.  It does not assert
 a corresponding law for countably infinite conjunctions or disjunctions.
 \end{remark}
@@ -784,7 +1096,7 @@ $f:\{0,1\}^{F}\to\{0,1\}$ be a Boolean function.  For $S\subseteq F$,
 write $\mathbf1_S$ for the vector with ones exactly on $S$, and set
 $b_f=f(\mathbf0)$.  Define
 \begin{equation}
-\label{bs:sensitive}
+\label{rbc:bs:sensitive}
   \mathcal D(f)=\min_{\subseteq}
    \{S\subseteq F:f(\mathbf1_S)\ne b_f\}.
 \end{equation}
@@ -799,12 +1111,12 @@ The observable predicate is
 \]
 
 \begin{theorem}[Boolean classification]
-\label{bs:boolean}
+\label{rbc:bs:boolean}
 Suppose the array is independent and
 $0\leq p_i(x)\leq\delta<1$ for every $i\in F$ and $x\in M$.
 Then
 \begin{equation}
-\label{bs:boolean-law}
+\label{rbc:bs:boolean-law}
   \Cut(f(P))
    =\bigcap_{S\in\mathcal D(f)}\SumCut
        \left(\prod_{i\in S}p_i\right)
@@ -826,12 +1138,12 @@ Let $r=|F|$, $\eta=(1-\delta)^r$, and define the deviation probability
 The event that all $r$ input bits are zero has probability at least
 $\eta$, and never contributes to a deviation.  Hence
 \begin{equation}
-\label{bs:deviation-bound}
+\label{rbc:bs:deviation-bound}
   0\leq e_f(x)\leq1-\eta.
 \end{equation}
 We also have the two-sided estimate
 \begin{equation}
-\label{bs:polynomial-bound}
+\label{rbc:bs:polynomial-bound}
   \eta\sum_{S\in\mathcal D(f)}\prod_{i\in S}p_i(x)
   \ \leq\ e_f(x)\ \leq\
   \sum_{S\in\mathcal D(f)}\prod_{i\in S}p_i(x).
@@ -850,28 +1162,28 @@ event with probability
   \ \geq\ \eta\prod_{i\in S}p_i(x).
 \]
 Summing these disjoint contributions gives the lower inequality in
-\eqref{bs:polynomial-bound}.
+\eqref{rbc:bs:polynomial-bound}.
 
 Let $D_f$ be the predicate of deviations from $b_f$.  Its bits are
 independent.  If $b_f=0$, then $D_f=f(P)$; if $b_f=1$, they are
 complements.  Complementation preserves coding cuts, since the
 complement of an internally coded string of length $a$ is internally
-coded as well.  Lemma~\ref{bs:onesided} and
-\eqref{bs:deviation-bound} therefore give
+coded as well.  Lemma~\ref{rbc:bs:onesided} and
+\eqref{rbc:bs:deviation-bound} therefore give
 $\Cut(f(P))=\SumCut(e_f)$ almost surely.  By
-\eqref{bs:polynomial-bound}, a sum of $e_f$ over an initial segment is
+\eqref{rbc:bs:polynomial-bound}, a sum of $e_f$ over an initial segment is
 finite exactly when every one of the finitely many corresponding product
 sums is finite.  This proves the first equality in
-\eqref{bs:boolean-law}; the same lemma applied to each $P_S$ proves the
+\eqref{rbc:bs:boolean-law}; the same lemma applied to each $P_S$ proves the
 second.  There are only countably many Boolean functions on finite
 subsets of $\N$, so all the equalities can be imposed simultaneously.
 \end{proof}
 
-Together, Theorems~\ref{bs:universality} and~\ref{bs:boolean} give a
+Together, Theorems~\ref{rbc:bs:universality} and~\ref{rbc:bs:boolean} give a
 complete realization statement: specify any inclusion-monotone table
 $(C_S)$, and the entire finitary Boolean spectrum is
 \begin{equation}
-\label{bs:complete-spectrum}
+\label{rbc:bs:complete-spectrum}
   f\longmapsto\bigcap_{S\in\mathcal D(f)}C_S.
 \end{equation}
 Conversely, every independent array whose probabilities are uniformly
@@ -881,8 +1193,8 @@ under the stronger requirement that all probabilities lie below an
 arbitrarily prescribed $\delta<1/2$.
 
 \begin{corollary}[Nonconstant observables remain infinite]
-\label{bs:infinite-observables}
-In the countable realization of Theorem~\ref{bs:universality}, almost
+\label{rbc:bs:infinite-observables}
+In the countable realization of Theorem~\ref{rbc:bs:universality}, almost
 surely every nonconstant finitary Boolean observable takes each of the
 values $0$ and $1$ at infinitely many points of $M$.
 \end{corollary}
@@ -909,12 +1221,12 @@ observable that has only finitely many exceptional values.
 For two predicates $P,Q$, the minimal sensitive supports of both OR and
 XOR are the two singletons.  Consequently
 \begin{equation}
-\label{bs:or-xor}
+\label{rbc:bs:or-xor}
   \Cut(P\cup Q)=\Cut(P\mathbin{\triangle}Q)
        =\Cut(P)\cap\Cut(Q)
        \qquad\text{almost surely}
 \end{equation}
-under the hypotheses of Theorem~\ref{bs:boolean}.  For example, when
+under the hypotheses of Theorem~\ref{rbc:bs:boolean}.  For example, when
 $p,q\leq1/4$, the coordinate probabilities are
 $p+q-pq$ and $p+q-2pq$, respectively; each is comparable to $p+q$.
 For parity or union of any fixed finite number of inputs, the same
@@ -925,13 +1237,13 @@ For AND the only minimal sensitive support is the full set of inputs.
 If $I,J,K$ are cuts, there exist independent predicates with uniformly
 arbitrarily small positive biases satisfying
 \begin{equation}
-\label{bs:triple}
+\label{rbc:bs:triple}
   \Cut(P)=I,\qquad \Cut(Q)=J,\qquad
   \Cut(P\cap Q)=K
   \quad\text{almost surely}
 \end{equation}
 if and only if $I\cup J\subseteq K$.  This is the two-input instance of
-Theorem~\ref{bs:universality}.  Both $K=I\cup J$ and $K=M$ are allowed,
+Theorem~\ref{rbc:bs:universality}.  Both $K=I\cup J$ and $K=M$ are allowed,
 as is every intermediate cut.  Because cuts of a linear order are
 nested, $I\cup J$ is their larger member and $I\cap J$ their smaller
 member.
@@ -961,7 +1273,7 @@ Let $\operatorname{Thr}_t$ output one when at least $t$ of $r$ bits equal
 one.  Its minimal sensitive supports are exactly the $t$-element subsets,
 so
 \begin{equation}
-\label{bs:threshold}
+\label{rbc:bs:threshold}
   \Cut(\operatorname{Thr}_t(P_1,\ldots,P_r))
        =\bigcap_{\substack{S\subseteq\{1,\ldots,r\}\\|S|=t}}C_S
        \qquad\text{almost surely}.
@@ -991,7 +1303,7 @@ $(1-\delta)p\leq p(1-q)\leq p$.
 \subsection{A series threshold for repeated independent thinning}
 
 \begin{proposition}[Power-law marker threshold]
-\label{bs:power-law}
+\label{rbc:bs:power-law}
 Let $I$ be a proper cut of $M$ and let $\alpha>0$.  There are independent,
 identically distributed predicates $(P_i)_{i\in\N}$ with strictly
 positive uniformly small probabilities such that, simultaneously for
@@ -1026,19 +1338,19 @@ positive-series test therefore gives summability cut $I$ when
 $r\alpha\leq1$, including the harmonic boundary, and $M$ when
 $r\alpha>1$.  In the latter case the sum of the success probabilities
 over the whole of $M$ is finite, giving the asserted finiteness of the
-random set.  Lemma~\ref{bs:onesided} and countability finish the proof.
+random set.  Lemma~\ref{rbc:bs:onesided} and countability finish the proof.
 \end{proof}
 
 For example, taking $\alpha=1/k$ leaves the coding cut equal to $I$
 through conjunction order $k$, and makes it maximal at order $k+1$.
-Theorem~\ref{bs:universality} allows a more general prescribed hierarchy,
+Theorem~\ref{rbc:bs:universality} allows a more general prescribed hierarchy,
 and realizes maximal cuts by infinite cofinal outputs as well.
 
 \subsection{Universality with vanishing probabilities}
 
 \begin{proposition}[Vanishing-bias refinement]
-\label{bs:vanishing}
-Theorem~\ref{bs:universality} remains true with the additional condition
+\label{rbc:bs:vanishing}
+Theorem~\ref{rbc:bs:universality} remains true with the additional condition
 that, for each $\varepsilon>0$, the set
 \[
   \{x\in M:\sup_{i\in\N}p_i(x)\geq\varepsilon\}
@@ -1050,7 +1362,7 @@ conclusions can all be retained.
 \begin{proof}
 Enumerate the marker labels as $V_0,V_1,\ldots$.  Keep the diagonal
 marker placement unchanged, but at the $k$th occurrence of label $V_m$
-replace the constant $c$ in \eqref{bs:bias-construction} by
+replace the constant $c$ in \eqref{rbc:bs:bias-construction} by
 \[
   d_{m,k}=\frac{c\,2^{-m}}{1+\log(k+1)},
   \qquad m,k\geq0,
@@ -1068,7 +1380,7 @@ Indeed, $(1+\log(k+1))^{-s}\geq1/k$ for all sufficiently large $k$.
 For a fixed $S$, the leading term of the product weight is now
 $d_{m,k}^{|S|}$ at markers whose label $V_m$ contains $S$, and zero
 elsewhere.  The error remains bounded by $|S|\rho$.  On $C_S$ its marker
-support is locally finite by \eqref{bs:marker-property}; outside $C_S$,
+support is locally finite by \eqref{rbc:bs:marker-property}; outside $C_S$,
 the markers with label exactly $S$ already have divergent total leading
 weight.  Thus the summability cut is still $C_S$.
 
@@ -1082,7 +1394,7 @@ for a nonconstant Boolean observable.  The proofs of full support and of
 cofinality when the cut is $M$ are unchanged.
 \end{proof}
 
-The condition in Proposition~\ref{bs:vanishing} is invariant under the
+The condition in Proposition~\ref{rbc:bs:vanishing} is invariant under the
 choice of an external enumeration of $M$.  It describes vanishing outside
 finite external sets.  It does not assert that the probabilities vanish
 as $x$ increases in the internal order of $M$.
@@ -1091,7 +1403,7 @@ as $x$ increases in the internal order of $M$.
 
 % ---- sections/induction.tex ----
 \section{An exact induction phase diagram}
-\label{sec:induction}
+\label{rbc:sec:induction}
 
 The coding cut also measures a precise fragment of induction in the
 expanded arithmetic.  Throughout this section, $M$ is a fixed countable
@@ -1107,14 +1419,14 @@ In the language with $\E$, the formula
   \vartheta(x,P)\;\equiv\;
   \exists c<\E(x)\;\forall a<x\,
        \bigl(P(a)\leftrightarrow\Bit(c,a)\bigr)
-  \label{eq:induction-theta}
+  \label{rbc:eq:induction-theta}
 \end{equation}
 is bounded.  For example, its bit relation can be expanded as
 \begin{equation}
  \Bit(c,a)\;\equiv\;
  \exists q\le c\;\exists r<\E(a)\,
        \bigl(c=q\E(a+1)+\E(a)+r\bigr).
- \label{eq:induction-bit}
+ \label{rbc:eq:induction-bit}
 \end{equation}
 Thus the precise complexity assertion is
 $\vartheta\in\Delta_0(P,\E)$.  Naming a definable function is harmless
@@ -1125,11 +1437,11 @@ For a bare-language formulation, put
 \begin{align}
  \operatorname{Rem}(u,m,r)
    &\;\equiv\;r<m\;\wedge\;
-        \exists q\le u\;(u=qm+r), \label{eq:induction-rem}\\
+        \exists q\le u\;(u=qm+r), \label{rbc:eq:induction-rem}\\
  \operatorname{Beta}(u,v,i,r)
    &\;\equiv\;
         \operatorname{Rem}\bigl(u,1+(i+1)v,r\bigr).
-        \label{eq:induction-beta}
+        \label{rbc:eq:induction-beta}
 \end{align}
 These are bounded formulas in the language of addition and
 multiplication.  Define
@@ -1137,7 +1449,7 @@ multiplication.  Define
  \chi(x,P)\;\equiv\;\exists u\;\exists v\;
  \Bigl[v>0\;\wedge\;\forall i<x\,
   \bigl(& (P(i)\wedge\operatorname{Beta}(u,v,i,1))
-       \label{eq:induction-chi}\\[-2mm]
+       \label{rbc:eq:induction-chi}\\[-2mm]
        &\vee
        (\neg P(i)\wedge\operatorname{Beta}(u,v,i,0))
   \bigr)\Bigr].\nonumber
@@ -1146,7 +1458,7 @@ The matrix following $\exists u\exists v$ is bounded, so this is a
 $\Sigma_1(P)$ formula in the original arithmetic language.
 
 \begin{lemma}[Two equivalent coding formulas]
-\label{lem:induction-coding-equivalence}
+\label{rbc:lem:induction-coding-equivalence}
 For every predicate $P\subseteq M$ and every $x\in M$,
 \[
  (M,P)\models\chi(x,P)
@@ -1196,14 +1508,14 @@ identify the pattern those codes represent.
 \end{proof}
 
 \begin{corollary}
-\label{cor:induction-sigma-obstruction}
+\label{rbc:cor:induction-sigma-obstruction}
 If $\Cut(P)$ is proper, then $(M,P)$ fails
 $\mathsf{I}\Sigma_1(P)$ in the original arithmetic language.
 \end{corollary}
 
 \begin{proof}
 The formula $\chi$ defines $\Cut(P)$ by
-Lemma~\ref{lem:induction-coding-equivalence}.  This set contains $0$
+Lemma~\ref{rbc:lem:induction-coding-equivalence}.  This set contains $0$
 and is closed under successor, but is not all of $M$.  Consequently
 the induction instance for the $\Sigma_1(P)$ formula $\chi$ is false.
 \end{proof}
@@ -1215,13 +1527,13 @@ formula in the language with $P$ and the named function $\E$, allowing
 parameters from $M$.
 
 \begin{theorem}[Local coding and bounded induction]
-\label{thm:induction-local-equivalence}
+\label{rbc:thm:induction-local-equivalence}
 For an arbitrary predicate $P\subseteq M$,
 \begin{equation}
  \Cut(P)=M
  \quad\Longleftrightarrow\quad
  (M,P)\models\mathsf{I}\Delta_0(P,\E).
- \label{eq:induction-local-equivalence}
+ \label{rbc:eq:induction-local-equivalence}
 \end{equation}
 This equivalence also holds when $M$ is standard, and does not require
 countability of $M$.
@@ -1273,7 +1585,7 @@ An external induction on the finite syntax of $\delta$ now gives
  \quad\Longleftrightarrow\quad
  M\models\delta_c(z,\bar a)
  \qquad(z\le b+1).
- \label{eq:induction-local-substitution}
+ \label{rbc:eq:induction-local-substitution}
 \end{equation}
 For atomic predicate formulas this is precisely the choice of $c$;
 the quantified steps follow because all their bounded ranges were
@@ -1289,7 +1601,7 @@ The assumed induction premises for $\delta$ therefore imply
 \]
 Ordinary arithmetic induction, with $b,c,\bar a$ as parameters,
 gives $M\models\delta_c(b,\bar a)$.  This contradicts
-\eqref{eq:induction-local-substitution}.  Although $\E$ is named,
+\eqref{rbc:eq:induction-local-substitution}.  Although $\E$ is named,
 this last induction is legitimate in the arithmetic reduct:
 the named function is a definitional extension of a function whose
 existence and uniqueness are provable in $\PA$, so the arithmetic
@@ -1314,7 +1626,7 @@ sets in a nonstandard model can have infinitely many external
 elements.
 
 \begin{lemma}[Counting finite lists]
-\label{lem:induction-locally-finite}
+\label{rbc:lem:induction-locally-finite}
 If $M$ is nonstandard and $P\subseteq M$ is externally infinite and
 externally locally finite, then $\Cut(P)=M$, but a
 $\Sigma_1(P)$ formula in the original arithmetic language defines
@@ -1328,7 +1640,7 @@ Every restriction $P\cap[0,x)$ is an externally finite set of
 elements of $M$.  Such a set has a binary code in $M$, obtained by
 adding the corresponding finitely many powers of $2$.
 Thus $\Cut(P)=M$, and bounded induction follows from
-Theorem~\ref{thm:induction-local-equivalence}.
+Theorem~\ref{rbc:thm:induction-local-equivalence}.
 
 For the stronger obstruction, define the bounded formula
 \begin{align}
@@ -1336,7 +1648,7 @@ For the stronger obstruction, define the bounded formula
  \;\wedge\;
    \forall i<n\;\exists r<y\,
       \bigl(\operatorname{Beta}(u,v,i,r)\wedge P(r)\bigr)
-      \label{eq:induction-lambda}\\
+      \label{rbc:eq:induction-lambda}\\
  &\wedge\;
    \forall i<n\;\forall j<n\;
    \forall r<y\;\forall s<y\,
@@ -1353,7 +1665,7 @@ Then
  \ell(n,P)\;\equiv\;
        \exists u\;\exists v\;\exists y\,
                   \Lambda(u,v,y,n,P)
- \label{eq:induction-list}
+ \label{rbc:eq:induction-list}
 \end{equation}
 is a $\Sigma_1(P)$ formula.  It asserts that there is an internally
 coded strictly increasing $n$-term list of elements of $P$, all below
@@ -1389,7 +1701,7 @@ The zero-modal cut classification says
 $\Cut(P)=\SumCut(p)=\{x\in M:W_x<\infty\}$ almost surely.
 
 \begin{theorem}[Three induction regimes]
-\label{thm:induction-three-regimes}
+\label{rbc:thm:induction-three-regimes}
 For a countable nonstandard model $M$ and the preceding independent
 product law, exactly one of the following deterministic alternatives
 holds, with the indicated conclusion almost surely.
@@ -1430,19 +1742,19 @@ countably many $x$, so this conclusion holds simultaneously for
 all initial segments on one event of probability $1$.
 The second Borel--Cantelli lemma, using independence and $W=\infty$,
 makes $P$ externally infinite almost surely.  Apply
-Lemma~\ref{lem:induction-locally-finite}.
+Lemma~\ref{rbc:lem:induction-locally-finite}.
 
 In the third alternative the zero-modal coding-cut theorem gives
 $\Cut(P)=\SumCut(p)\ne M$ almost surely.  Bounded induction fails
-by Theorem~\ref{thm:induction-local-equivalence}, and bare-language
+by Theorem~\ref{rbc:thm:induction-local-equivalence}, and bare-language
 $\Sigma_1(P)$ induction fails by
-Corollary~\ref{cor:induction-sigma-obstruction}.
+Corollary~\ref{rbc:cor:induction-sigma-obstruction}.
 These alternatives exhaust the possibilities for the nonnegative
 sums $W$ and $W_x$.
 \end{proof}
 
 \begin{corollary}[Full support does not determine induction]
-\label{cor:induction-full-support}
+\label{rbc:cor:induction-full-support}
 Each of the three regimes occurs for a product measure that assigns
 positive probability to every nonempty finite cylinder in $2^M$.
 \end{corollary}
@@ -1461,7 +1773,7 @@ $0<p_a<1$ at every coordinate, which gives full support.
 
 \begin{remark}[The standard-model exception]
 The nonstandard hypothesis in
-Theorem~\ref{thm:induction-three-regimes} is necessary.  In the
+Theorem~\ref{rbc:thm:induction-three-regimes} is necessary.  In the
 standard model every subset of $\N$ satisfies every semantic
 first-order induction instance, regardless of its probability law.
 An infinite locally finite predicate then makes $\ell(n,P)$ true
@@ -1474,7 +1786,7 @@ nonstandard possible list lengths.
 
 % ---- sections/regularity.tex ----
 \section{Category, finite observations, and two orders of limits}
-\label{sec:regularity}
+\label{rbc:sec:regularity}
 
 For each endpoint let
 \[
@@ -1486,7 +1798,7 @@ global event $A_a$ generally is not: the bits outside $[0,a)$ are arbitrary.
 This distinction is useful when discussing its topology and measure.
 
 \begin{proposition}[Category and Borel complexity]
-\label{prop:category}
+\label{rbc:prop:category}
 For every nonstandard $a$, $A_a$ is dense, meager, and $F_\sigma$, and its
 complement is dense. The exact-standard-cut fiber $\mathcal E_{\std}$ is a
 dense $G_\delta$. Every other exact-cut fiber is dense and meager. Each
@@ -1514,14 +1826,14 @@ Standard endpoints belong to every coding cut. Hence
 \]
 is a dense $G_\delta$. For a cut $I\ne\std$, choose a nonstandard $a\in I$;
 then $\mathcal E_I\subseteq A_a$, making the fiber meager. Its density
-follows from Theorem~\ref{thm:realization}: it has measure one for a law of
+follows from Theorem~\ref{rbc:thm:realization}: it has measure one for a law of
 full support, so every nonempty open set meets it. Finally,
 \begin{equation}
  \mathcal E_I=
    \left(\bigcap_{a\in I}A_a\right)
    \cap
    \left(\bigcap_{a\notin I}(2^M\setminus A_a)\right).
-\label{eq:fiber-borel}
+\label{rbc:eq:fiber-borel}
 \end{equation}
 The first intersection is a countable intersection of $F_\sigma$ sets,
 and the second is $G_\delta$. This gives $\Pi^0_3$.
@@ -1552,19 +1864,19 @@ repeated traces are harmless. For $K,N\ge1$, define
 \begin{equation}
  u_{K,N}(P)=\ind_{\{\exists j<K\ \forall i<N:
                           P(t_i)=\Bit(c_j,t_i)\}}.
-\label{eq:finite-test}
+\label{rbc:eq:finite-test}
 \end{equation}
 Here $K$ and $N$ are external integers. Each test uses only finitely many
 predicate bits and finitely many proposed internal descriptions.
 
 \begin{theorem}[Exact noncommutation of finite tests]
-\label{thm:double-limit}
+\label{rbc:thm:double-limit}
 For every predicate $P$,
 \begin{equation}
  \lim_{K\to\infty}\lim_{N\to\infty}u_{K,N}(P)=\ind_{A_a}(P),
  \qquad
  \lim_{N\to\infty}\lim_{K\to\infty}u_{K,N}(P)=1.
-\label{eq:double-limit}
+\label{rbc:eq:double-limit}
 \end{equation}
 In particular, under fair product measure the first limit is zero and the
 second is one almost surely.
@@ -1579,9 +1891,9 @@ of these $K$ codes matches the whole interval. Letting $K$ increase gives
 exactly $A_a$.
 
 For a fixed $N$, all prescribed bits on $\{t_0,\ldots,t_{N-1}\}$ have an
-internal code, by Lemma~\ref{lem:code-operations}. That code eventually
+internal code, by Lemma~\ref{rbc:lem:code-operations}. That code eventually
 appears in the enumeration, so the inner limit over $K$ is one. The
-fair-measure assertion follows from Corollary~\ref{cor:fair}.
+fair-measure assertion follows from Corollary~\ref{rbc:cor:fair}.
 \end{proof}
 
 This is a precise form of the obstacle to inferring an infinite coding
@@ -1593,7 +1905,7 @@ support probabilistic conclusions under a specified law, but it cannot
 give a logically certain noncoding certificate for an arbitrary predicate.
 
 \begin{proposition}[The coding-cut map has exact Baire class two]
-\label{prop:baire-two}
+\label{rbc:prop:baire-two}
 For nonstandard $M$, the map $P\mapsto\Cut(P)$, viewed as a map
 $2^M\to2^M$ of characteristic functions, is Baire class two, is not Baire
 class one, and is discontinuous at every point.
@@ -1605,7 +1917,7 @@ $g_{K,N}(P)(a)$ to mean that one of the first $K$ codes agrees with $P$ on
 $F_N\cap[0,a)$. Each coordinate depends on finitely many bits, so
 $g_{K,N}:2^M\to2^M$ is continuous. For fixed $K$, its pointwise limit
 as $N\to\infty$ records matching one of the first $K$ codes on the whole
-interval, by the finite-code argument in Theorem~\ref{thm:double-limit}.
+interval, by the finite-code argument in Theorem~\ref{rbc:thm:double-limit}.
 Call this limit $g_K$; it is Baire class one. Letting $K\to\infty$ gives
 the coding-cut map, hence Baire class two.
 
@@ -1620,12 +1932,12 @@ would make every coordinate continuous there, which is impossible.
 
 \subsection{Stability under locally summable perturbations}
 
-The weak instability in Corollary~\ref{cor:weak} has a useful counterpart.
+The weak instability in Corollary~\ref{rbc:cor:weak} has a useful counterpart.
 A perturbation that produces only finitely many changes on each bounded
 interval cannot alter a coding cut.
 
 \begin{proposition}[Local error stability]
-\label{prop:stability}
+\label{rbc:prop:stability}
 Suppose a coupling of two random predicates $P,Q$ satisfies
 \[
  \sum_{t<a}\Prob(P(t)\ne Q(t))<\infty
@@ -1640,7 +1952,7 @@ their deterministic almost-sure coding cuts are the same.
 \end{proposition}
 
 \begin{proof}
-The union-tail argument from Theorem~\ref{thm:product} gives only finitely
+The union-tail argument from Theorem~\ref{rbc:thm:product} gives only finitely
 many mismatches below each endpoint, simultaneously by countability of
 $M$. Use finite-change invariance. For product laws, take mutually
 independent uniform random variables $U_t$ and set
@@ -1657,7 +1969,7 @@ cut is stable, even though weak convergence alone does not preserve it.
 
 % ---- sections/dependence.tex ----
 \section{How much independence is actually necessary?}
-\label{sec:dependence}
+\label{rbc:sec:dependence}
 
 The product proof used exponentially small matching probabilities. For the
 infinite coding conclusion it is enough that the matching probability of
@@ -1665,19 +1977,19 @@ each fixed code tends to zero. This permits a sharp reduction in the
 independence assumption for a single predicate.
 
 \begin{theorem}[Pairwise independence suffices for the full bias formula]
-\label{thm:pairwise-cut}
+\label{rbc:thm:pairwise-cut}
 Let the bits $(P(t))_{t\in M}$ be pairwise independent, with arbitrary
 marginal probabilities $p_t\in[0,1]$. Define $b,\varepsilon$ as in
-\eqref{eq:mode}. Then
+\eqref{rbc:eq:mode}. Then
 \begin{equation}
  \Cut(P)=\Cut(b)\cap\SumCut(\varepsilon)
  \qquad\text{almost surely}.
-\label{eq:pairwise-main}
+\label{rbc:eq:pairwise-main}
 \end{equation}
 \end{theorem}
 
 \begin{proof}
-The summable case in Theorem~\ref{thm:product} used no independence and
+The summable case in Theorem~\ref{rbc:thm:product} used no independence and
 therefore remains unchanged. In the divergent case, fix an internal
 candidate pattern $d$ below $a$ and write
 $Y_t=\ind_{\{P(t)\ne d(t)\}}$. Coordinatewise transformations preserve
@@ -1696,7 +2008,7 @@ Cauchy--Schwarz, gives for $m_F>0$
  \Prob(Z_F=0)\le\frac{\operatorname{Var}(Z_F)}
                    {m_F^2+\operatorname{Var}(Z_F)}
                \le\frac{1}{1+m_F}.
-\label{eq:pairwise-mismatch}
+\label{rbc:eq:pairwise-mismatch}
 \end{equation}
 As $F$ exhausts the interval, $m_F\to\infty$. Thus matching $d$ on the
 whole interval has probability zero. Countability of the codes and
@@ -1708,7 +2020,7 @@ The finite version has a sharp parity effect, not the exponential bound
 available under full independence.
 
 \begin{theorem}[Sharp finite atom bound; classical moment extremum]
-\label{thm:pairwise-atom}
+\label{rbc:thm:pairwise-atom}
 Among all distributions of $N\ge1$ pairwise-independent fair bits, the
 largest possible probability of any specified word is
 \begin{equation}
@@ -1716,7 +2028,7 @@ largest possible probability of any specified word is
        1/(N+1),&N\text{ odd},\\
        1/(N+2),&N\text{ even}.
      \end{cases}
-\label{eq:pairwise-parity}
+\label{rbc:eq:pairwise-parity}
 \end{equation}
 Consequently the probability of any catalog of $K$ words is at most
 $\min(1,Kq_N)$; this last catalog bound is not asserted sharp for
@@ -1759,7 +2071,7 @@ bound is the union bound over its words.
 \end{proof}
 
 \begin{theorem}[Marginal fairness alone allows every cut]
-\label{thm:fair-marginals}
+\label{rbc:thm:fair-marginals}
 For every cut $I$, there is a full-support nonatomic law on $2^M$ under
 which each individual bit is fair and $\Cut(P)=I$ almost surely.
 Thus pairwise independence is the least level in the hierarchy of
@@ -1767,19 +2079,19 @@ $k$-wise independent fair laws that forces the standard cut.
 \end{theorem}
 
 \begin{proof}
-Take a predicate $X$ with the law in Theorem~\ref{thm:realization} for $I$,
+Take a predicate $X$ with the law in Theorem~\ref{rbc:thm:realization} for $I$,
 and an independent fair bit $Z$. Set $P(t)=X(t)\mathbin\oplus Z$ for every
 $t$. Each $P(t)$ is fair. Its full law is the equal mixture of the law of
 $X$ and its complement. Both components have full support and no atoms,
 so their mixture has the same properties. Complementation preserves the
 coding cut, giving $\Cut(P)=I$. The pairwise-positive result is
-Theorem~\ref{thm:pairwise-cut}; choosing $I\ne\std$ proves the claimed
+Theorem~\ref{rbc:thm:pairwise-cut}; choosing $I\ne\std$ proves the claimed
 sharpness among the levels $k=1,2,\ldots$.
 \end{proof}
 
 \subsection{Limits of the pairwise extension}
 
-Theorem~\ref{thm:pairwise-cut} concerns a single predicate. It does not
+Theorem~\ref{rbc:thm:pairwise-cut} concerns a single predicate. It does not
 permit replacing joint independence by pairwise independence of all the
 individual bits in the Boolean-spectrum theorem. For example, let $A_t$
 be independent fair bits and let $Z$ be a separate fair bit. Set
@@ -1804,7 +2116,7 @@ states independence of the whole array indexed by both row and position.
 \subsection{A general dependent-law criterion}
 
 \begin{proposition}[Local atoms are the exact obstruction]
-\label{prop:dependent-atoms}
+\label{rbc:prop:dependent-atoms}
 For an arbitrary Borel law $\nu$ on $2^M$, let $\nu_a$ be its restriction
 law on $2^{[0,a)}$. Then
 \[
@@ -1822,7 +2134,7 @@ The event $a\in\Cut(P)$ is the union of the singleton-pattern events
 indexed by the countable family $\coded_a$. Such a union is null exactly
 when all of its members are null. Now take the countable union over
 nonstandard endpoints. The final warning follows already from
-Theorem~\ref{thm:realization} with $I=M$.
+Theorem~\ref{rbc:thm:realization} with $I=M$.
 \end{proof}
 
 Another sufficient condition allows substantial dependence. Suppose the
@@ -1852,7 +2164,7 @@ can still change what happens where the lower bounds are summable.
 % corollary, remark. All logarithms in this file are natural.
 
 \section{The finite candidate-budget problem}
-\label{sec:finite-budget}
+\label{rbc:sec:finite-budget}
 
 The unrestricted finite version of binary coding is vacuous: every binary
 word of ordinary finite length has an arithmetic code.  A meaningful finite
@@ -1880,7 +2192,7 @@ $b$ are independent Bernoulli variables of parameters $\varepsilon_i$.
 Write $a_N=\prod_{i=1}^N(1-\varepsilon_i)$.
 
 \begin{proposition}[Exact finite optimization]
-\label{prop:budget-exact}
+\label{rbc:prop:budget-exact}
 The value $Q_N(K)$ is the sum of the $K$ largest atom probabilities of the
 product distribution.  In particular,
 \[
@@ -1910,7 +2222,7 @@ $Q_N(K)=1$.  For an infinite sequence of biases this convention makes the
 following statement uniform in $N$.
 
 \begin{theorem}[Finite budgets characterize the atomic regime]
-\label{thm:budget-atomic}
+\label{rbc:thm:budget-atomic}
 For independent coordinates with $0\le\varepsilon_i\le1/2$, the following
 are equivalent:
 \begin{enumerate}
@@ -1952,7 +2264,7 @@ $1-\prod(1-\varepsilon_i)\le\sum\varepsilon_i$, this proves
 \]
 If $\sum\varepsilon_i=\infty$, then
 $a_N\le\exp(-\sum_{i\le N}\varepsilon_i)\to0$; hence
-Proposition~\ref{prop:budget-exact} gives $Q_N(K)\to0$.
+Proposition~\ref{rbc:prop:budget-exact} gives $Q_N(K)\to0$.
 Every infinite word is then an atom of mass at most $\lim_Na_N=0$,
 so no countable set can have positive probability.
 
@@ -1989,7 +2301,7 @@ $h(\varepsilon_i)\ge\varepsilon_i\log(1/\varepsilon_i)
 \ge c'/(i\log i)$ for sufficiently large $i$.
 Thus a countably supported product law may have infinite Shannon entropy.
 High-confidence finite candidate budgets nevertheless remain uniformly
-bounded by Theorem~\ref{thm:budget-atomic}.  Shannon-entropy summability
+bounded by Theorem~\ref{rbc:thm:budget-atomic}.  Shannon-entropy summability
 cannot replace minority-mass summability in the infinite coding theorem.
 \end{remark}
 
@@ -2008,7 +2320,7 @@ $B_N(r-1)<K\le B_N(r)$.  Define
 \]
 
 \begin{theorem}[Exact biased finite answer]
-\label{thm:binomial-budget}
+\label{rbc:thm:binomial-budget}
 If $W_N\sim\operatorname{Bin}(N,p)$, then
 \[
  \boxed{Q_N(K)=\Pr(W_N<r)+\theta\Pr(W_N=r).}
@@ -2040,7 +2352,7 @@ classical third-order source-coding expansion \cite{kontoyiannis-verdu,chen-effr
 included to make explicit which part of the finite problem is solved.
 
 \begin{theorem}[Normal transition and third-order budget]
-\label{thm:budget-normal}
+\label{rbc:thm:budget-normal}
 For fixed $0<p<1/2$ and $0<\tau<1$,
 \[
  \log K_N^*(\tau)
@@ -2107,7 +2419,7 @@ number of disagreements stays finite, the candidate-budget scale changes
 from exponential to polynomial.
 
 \begin{theorem}[Sparse candidate-budget staircase]
-\label{thm:budget-poisson}
+\label{rbc:thm:budget-poisson}
 Let $p_N=\lambda/N$ with fixed $\lambda>0$.  Fix an integer $r\ge1$ and
 a constant $\kappa>0$, and let $K_N/N^r\to\kappa$.  For
 $Z\sim\operatorname{Poisson}(\lambda)$,
@@ -2163,7 +2475,7 @@ noise with $p=1/N$. Left: the global polynomial-budget staircase; the dashed
 curve is the Poisson limit. Right: the resolved critical multiplier at
 $K\sim\kappa N^r$. Every curve is evaluated from the Hamming-layer formula;
 no simulation of nonstandard arithmetic is involved.}
-\label{fig:poisson}
+\label{rbc:fig:poisson}
 \end{figure}
 
 \begin{figure}[htbp]
@@ -2171,14 +2483,14 @@ no simulation of nonstandard arithmetic is involved.}
 \includegraphics[width=0.80\textwidth]{figures/fixed_bias_normal_transition.pdf}
 \caption{The fixed-bias normal transition. The standardized catalog budget
 uses the entropy term, the square-root dispersion term, and the
-$-\tfrac12\log N$ correction in Theorem~\ref{thm:budget-normal}.
+$-\tfrac12\log N$ correction in Theorem~\ref{rbc:thm:budget-normal}.
 Finite probabilities are computed from exact layer counts and numerical
 binomial probabilities.}
-\label{fig:normal}
+\label{rbc:fig:normal}
 \end{figure}
 
 \begin{remark}[A fixed infinite law and a triangular array are different]
-Theorem~\ref{thm:budget-atomic} concerns prefixes of one fixed infinite
+Theorem~\ref{rbc:thm:budget-atomic} concerns prefixes of one fixed infinite
 sequence of biases. The sparse theorem uses a different product law at each
 length $N$, with $p_N=\lambda/N$ at all of its sites. Bounded total row mass
 in that triangular array does not imply uniformly bounded high-confidence
@@ -2208,16 +2520,16 @@ identified with the full internal family of codes.
 
 % ---- sections/outlook.tex ----
 \section{Consequences linking the constructions}
-\label{sec:consequences}
+\label{rbc:sec:consequences}
 
 The universal construction has a stronger logical feature than arbitrary
 coding cuts alone. Its Boolean outputs can be locally coded without
 satisfying the stronger induction scheme.
 
 \begin{corollary}[All nonconstant Boolean outputs fail stronger induction]
-\label{cor:boolean-induction}
+\label{rbc:cor:boolean-induction}
 For a nonstandard $M$, in the realization of
-Theorem~\ref{bs:universality}, and also in its vanishing-bias refinement,
+Theorem~\ref{rbc:bs:universality}, and also in its vanishing-bias refinement,
 almost surely every nonconstant finitary Boolean observable $R=f(P)$
 fails $\mathsf I\Sigma_1(R)$. If its coding cut is $M$, it nevertheless
 satisfies $\mathsf I\Delta_0(R,\E)$.
@@ -2225,13 +2537,13 @@ satisfies $\mathsf I\Delta_0(R,\E)$.
 
 \begin{proof}
 If the output cut is proper, use the bare-language coding formula from
-Corollary~\ref{cor:induction-sigma-obstruction}. If its cut is $M$, consider
+Corollary~\ref{rbc:cor:induction-sigma-obstruction}. If its cut is $M$, consider
 the deviation predicate $D$ from the all-zero output value $f(\mathbf0)$.
-The proof of Theorem~\ref{bs:boolean} identifies its coding cut with the
+The proof of Theorem~\ref{rbc:bs:boolean} identifies its coding cut with the
 summability cut of its deviation probabilities. Therefore every bounded
 restriction of $D$ is externally finite almost surely. The marker
 construction makes $D$ infinite almost surely, including in the
-vanishing-bias refinement. Lemma~\ref{lem:induction-locally-finite} gives
+vanishing-bias refinement. Lemma~\ref{rbc:lem:induction-locally-finite} gives
 failure of $\mathsf I\Sigma_1(D)$. If $R$ is the complement of $D$, literal
 substitution of $\neg R$ for $D$ preserves the formula class and transfers
 the failed induction instance. Complete local coding gives the bounded
@@ -2282,8 +2594,22 @@ $K=N^2/2$ & $0.91968940$ & $2.5/e\approx0.91969860$\\
 \end{tabular}
 \end{center}
 
-\section{A concrete formalization route in ProveIt}
-\label{sec:formalization}
+\section{A proposed formalization route in ProveIt}
+\label{rbc:sec:formalization}
+
+\begin{writenote}[A proposal, not repository status; 6~October 2026]
+The delivered title of this section is ``A concrete formalization route in
+ProveIt''. It is the source's proposal. None of the modules in the table
+below exists in the repository at HEAD (\file{3988bf5c4}), and no statement
+of this report is verified. What the repository does contain is listed by
+declaration in Section~\ref{rbc:sec:provenance}: the beta-coding lemmas
+\file{finite_list_beta_code} and \file{finite_vector_beta_code} cover
+externally finite lists only (the binary relation $\Bit$ and the internal
+coding lemmas of the first row of the table are not formalized), and
+\file{not_sat_inductionForm} concerns the formula \texttt{cutAt evalFormula},
+not the coding formulas of Section~\ref{rbc:sec:induction}. The plan is
+carried as Question~\ref{rbc:q:verified} of Section~\ref{rbc:sec:further}.
+\end{writenote}
 
 The mathematics naturally separates into interfaces that can be verified
 independently and then connected. An efficient first target is the
@@ -2363,7 +2689,7 @@ countability assumptions visible in its type. Full formalization was not
 performed in this report.
 
 \section{Verification and source audit}
-\label{sec:audit}
+\label{rbc:sec:audit}
 
 \subsection{Mathematical checks}
 
@@ -2425,16 +2751,32 @@ source-coding asymptotics, and the known finite pairwise moment optimum
 are explicitly credited. Our results are formulated so that their proofs
 can be assessed independently of any priority claim.
 
+\begin{writenote}[6~October 2026]
+At the write's HEAD (\file{3988bf5c4}) the four cited repository files are
+byte-identical to the pin, and the search statement above is still true
+(Section~\ref{rbc:sec:provenance}, ``Stale claims''). The finite checks were
+rerun at placement and at the write on copies of the delivered script
+(Python~3.13.5, NumPy~2.5.3, SciPy~1.18.1, Matplotlib~3.11.2; 25--35~s).
+Every count of the table above and the maximal error
+$3.33\times10^{-16}$ were reproduced. The regenerated JSON differs from the
+shipped one only in its version block; the four CSV tables have the same
+rows, and differ in 19, 3, 7 and 3 rows by floating-point noise of at most
+$1.02\times10^{-14}$. In the repository the script is
+\file{code/verify_finite_budgets.py} and its JSON is
+\file{data/finite_budget_verification.json}; because the script writes its
+outputs beside itself, it must be rerun on a copy (see the README).
+\end{writenote}
+
 \section{Further research questions and topics}
-\label{sec:questions}
+\label{rbc:sec:questions}
 
 The following are proposed problems arising from this report. They are
 not all asserted to be previously unposed problems in the literature.
 Each entry identifies a concrete next target and the part of the present
 work that makes it accessible.
 
-\begin{enumerate}[label=\textbf{Q\arabic*.},leftmargin=*]
-\item \textbf{The weakest arithmetic base.}
+\begin{enumerate}[label=\textbf{Q\arabic*.},ref=Q\arabic*,leftmargin=*]
+\item \textbf{The weakest arithmetic base.}\label{rbc:q:base}
 Determine the weakest arithmetic theory supporting the arbitrary-bias
 classification and the countable conjunction universality theorem for one
 uniform formula. The present proof uses total exponentiation and internal
@@ -2443,7 +2785,7 @@ extending the full noise and Boolean classifications that far requires
 an alternative to the coding operations assumed here. A first target is
 an explicit elementary-arithmetic interface with all coding lemmas proved.
 
-\item \textbf{Exact Borel complexity of cut fibers.}
+\item \textbf{Exact Borel complexity of cut fibers.}\label{rbc:q:borel}
 Classify the exact Borel or Wadge complexity of $\mathcal E_I$ from the
 order-theoretic position of $I$. The uniform $\Pi^0_3$ upper bound is
 proved, and cuts with a cofinal successor block have lower-complexity
@@ -2451,14 +2793,14 @@ descriptions. Which remaining cuts attain the full bound? The closed-code
 description and the finite two-limit representation give concrete
 starting points for reductions.
 
-\item \textbf{Automorphism-invariant laws.}
+\item \textbf{Automorphism-invariant laws.}\label{rbc:q:invariant}
 Which cuts can be selected by a law invariant under the automorphism
 group of $M$? Such a cut must be invariant, but this necessary condition
 need not provide biases whose local summability realizes it. The
 arbitrary-marker construction deliberately makes no invariance demand.
 Analyze orbit-constant biases first, then invariant dependent laws.
 
-\item \textbf{Effective realization relative to a presentation.}
+\item \textbf{Effective realization relative to a presentation.}\label{rbc:q:effective}
 Given a presentation of a countable model and descriptions of its target
 cuts, determine the oracle complexity needed to carry out the diagonal
 marker construction. The existence proof enumerates all true constraints
@@ -2466,7 +2808,7 @@ $(S,a\in C_S)$ and is not an unconditional computable algorithm. An
 oracle-relative construction, with explicit moduli for the finite
 constraints, would connect the theorem to ProveIt's computability work.
 
-\item \textbf{Arithmetic genericity under biased laws.}
+\item \textbf{Arithmetic genericity under biased laws.}\label{rbc:q:cpgeneric}
 Characterize the product measures that almost surely produce strongly
 CP-generic predicates. The exact coding cut alone cannot encode all the
 genericity requirements on definable tuples. Existing results rule out
@@ -2475,7 +2817,7 @@ strongly CP-generic classes in nonstandard models
 an obstruction. Determine which additional divergence conditions on
 definable families are sufficient and necessary.
 
-\item \textbf{Induction over an arbitrary modal predicate.}
+\item \textbf{Induction over an arbitrary modal predicate.}\label{rbc:q:modal}
 The exact cut formula allows an arbitrary modal pattern $b$, whereas
 the three-regime full-induction theorem assumes zero-modal noise.
 Classify higher induction in $(M,P)$ when the modal expansion $(M,b)$
@@ -2483,23 +2825,23 @@ has prescribed logical properties. Globally finite errors preserve
 induction with parameters, but infinite locally finite errors may have
 different effects when $b$ cannot itself be defined from $P$.
 
-\item \textbf{Boolean spectra with correlations inside each site.}
+\item \textbf{Boolean spectra with correlations inside each site.}\label{rbc:q:withinsite}
 Replace the product distribution across the input bits at a fixed site
 by an arbitrary finite joint law, while keeping the vectors at different
 sites independent. Determine the attainable Boolean cut tables. The
-minimal-support rule in Theorem~\ref{bs:boolean} uses within-site
+minimal-support rule in Theorem~\ref{rbc:bs:boolean} uses within-site
 independence, and XOR cancellation shows it can fail without it. Finite
 atom probabilities of these joint laws give a direct starting point.
 
-\item \textbf{Quantitative approximate independence.}
+\item \textbf{Quantitative approximate independence.}\label{rbc:q:approx}
 The pairwise proof only needs the mismatch variance to be negligible
 relative to the square of its mean along an exhaustion. Find useful
 uniform conditions on covariance errors that guarantee this for all
 internal codes simultaneously, and obtain optimal finite catalog bounds.
-The exact estimate \eqref{eq:pairwise-mismatch} identifies the needed
+The exact estimate \eqref{rbc:eq:pairwise-mismatch} identifies the needed
 scale; small pairwise errors individually may still accumulate too fast.
 
-\item \textbf{More than one target under limited independence.}
+\item \textbf{More than one target under limited independence.}\label{rbc:q:multiword}
 For pairwise-independent fair bits and a specified catalog
 $\mathcal C\subseteq\{0,1\}^N$, compute the exact maximum of
 $\Prob(X\in\mathcal C)$. The atom optimum is known, but the bound
@@ -2507,7 +2849,7 @@ $Kq_N$ may lose information about overlaps and geometry for multiword
 catalogs. Determine exact solutions for Hamming balls, linear catalogs,
 and catalogs of two or three words before approaching arbitrary sets.
 
-\item \textbf{All-order sparse expansions and inversion.}
+\item \textbf{All-order sparse expansions and inversion.}\label{rbc:q:sparse}
 Derive uniform higher-order expansions for $Q_N(K)$ and for the least
 budget attaining a prescribed confidence when $p_N\to0$. The fixed
 Poisson parameter, the transition $Np_N\to\infty$, lattice effects,
@@ -2515,7 +2857,7 @@ and a confidence approaching a staircase endpoint require different
 scales. The exact Hamming-layer formula supplies a natural starting
 point for asymptotic inversion and transseries methods.
 
-\item \textbf{Algorithms for unequal biases.}
+\item \textbf{Algorithms for unequal biases.}\label{rbc:q:unequal}
 The exact optimum ranks subsets by sums of costs
 $\log((1-\varepsilon_i)/\varepsilon_i)$. Determine efficient certified
 algorithms for the first $K$ subsets, especially with many repeated or
@@ -2523,23 +2865,23 @@ structured biases. An arithmetic catalog imposed by a particular code
 enumeration can be much harder than an unrestricted optimal list; the
 computational resource model should make that distinction explicit.
 
-\item \textbf{Growing or internally nonstandard alphabets.}
+\item \textbf{Growing or internally nonstandard alphabets.}\label{rbc:q:alphabets}
 Finite fixed alphabets admit straightforward modal-probability variants
 of the atom argument. The more interesting target is a uniform theory
 when alphabet sizes grow, or when the model regards the alphabet itself
 as nonstandard finite. How do finite-description costs, modal atoms,
 and the complexity of a single coding formula interact then?
 
-\item \textbf{A verified end-to-end theorem.}
+\item \textbf{A verified end-to-end theorem.}\label{rbc:q:verified}
 Implement the arithmetic and probability interfaces of
-Section~\ref{sec:formalization}, culminating first in
-Theorem~\ref{thm:pairwise-cut}, then in
-Theorem~\ref{bs:universality}. A meaningful deliverable would include a
+Section~\ref{rbc:sec:formalization}, culminating first in
+Theorem~\ref{rbc:thm:pairwise-cut}, then in
+Theorem~\ref{rbc:bs:universality}. A meaningful deliverable would include a
 kernel-checked countable-model theorem and independent finite certificates
 for the source-coding and pairwise moment examples, with every unproved
 interface stated separately.
 
-\item \textbf{Beyond countable models.}
+\item \textbf{Beyond countable models.}\label{rbc:q:uncountable}
 Determine replacements for the countable-null-union argument when the
 family of internal codes is uncountable, and compare the relevant ideals
 with those raised in Glazer's seminar. Standard systems, cardinal
@@ -2556,6 +2898,108 @@ with an exact finite catalog theory and several sharp limitations. Its
 remaining questions concern symmetry, effective construction, weakened
 arithmetic, and dependence: restrictions under which the freedom to
 prescribe arbitrary cuts becomes a more rigid mathematical phenomenon.
+
+\subsection{Further questions and research}\label{rbc:sec:further}
+\begin{writenote}[Added 6 October 2026, batch~114]
+Following Vladimir Reshetnikov's standing rule of 4~October 2026, every
+unproved claim of the source is carried here as an open question, with its
+source and what is missing. The fourteen questions above are the source's
+own statements of open problems, each with its sketch; the write found
+nothing in the source to be wrong, so nothing is refuted. Status at the
+write:
+\begin{itemize}
+\item Question~\ref{rbc:q:base}: open. Glazer's abstract announces the
+ fair-coin case for $Q$; no proof of it was read or is reproduced here, and
+ his formula is not public. The proofs here use total exponentiation and
+ internal coding in $\PA$ (Lemmas~\ref{rbc:lem:code-operations}
+ and~\ref{rbc:lem:induction-coding-equivalence}).
+\item Question~\ref{rbc:q:borel}: open. Known here: the uniform $\Pi^0_3$
+ upper bound (Proposition~\ref{rbc:prop:category}) and $\Delta^0_3$ for the
+ cuts $\{x:x<a+n,\ n\text{ standard}\}$ (the remark following it). Missing:
+ any lower bound or completeness result.
+\item Question~\ref{rbc:q:invariant}: open; nothing beyond the invariance of
+ the selected cut is proved.
+\item Question~\ref{rbc:q:effective}: open; the construction of
+ Theorem~\ref{rbc:bs:universality} enumerates all true constraints
+ $(S,a)$ with $a\in C_S$, and no oracle bound is proved.
+\item Question~\ref{rbc:q:cpgeneric}: open in general.
+ Remark~\ref{rbc:rem:cp-class} below settles the laws whose almost-sure
+ coding cut is $M$ (the random predicate is almost surely not strongly
+ CP-generic); for laws with a proper coding cut, the fair-coin law included,
+ nothing is known here.
+\item Question~\ref{rbc:q:modal}: open; Theorem~\ref{rbc:thm:induction-three-regimes}
+ covers zero-modal laws ($p_t\le1/2$) only.
+\item Question~\ref{rbc:q:withinsite}: open; the XOR example of
+ Section~\ref{rbc:sec:dependence} shows that the minimal-support rule of
+ Theorem~\ref{rbc:bs:boolean} fails without within-site independence.
+\item Question~\ref{rbc:q:approx}: open; by \eqref{rbc:eq:pairwise-mismatch}
+ it suffices that $\operatorname{Var}(Z_F)/m_F^2\to0$ along an exhaustion for
+ every internal code, and no uniform condition guaranteeing this is proved.
+\item Question~\ref{rbc:q:multiword}: open; only the union bound
+ $\min(1,Kq_N)$ of Theorem~\ref{rbc:thm:pairwise-atom} is proved, and it is
+ not claimed sharp for $K>1$.
+\item Question~\ref{rbc:q:sparse}: open; Theorem~\ref{rbc:thm:budget-poisson}
+ gives the leading-order limits only.
+\item Question~\ref{rbc:q:unequal}: open; Proposition~\ref{rbc:prop:budget-exact}
+ characterizes the optimal list, with no algorithm or complexity bound.
+\item Question~\ref{rbc:q:alphabets}: open; only binary alphabets are treated.
+\item Question~\ref{rbc:q:verified}: open. Section~\ref{rbc:sec:formalization}
+ is the source's plan for it. At HEAD none of its modules exists; the
+ declarations that do exist (the finite-model remark, beta coding of
+ externally finite lists, the induction failure of a different formula) are
+ listed in Section~\ref{rbc:sec:provenance}. Missing: every row of the table
+ in Section~\ref{rbc:sec:formalization}, starting with the binary coding
+ interface in raw $\PA$ models.
+\item Question~\ref{rbc:q:uncountable}: open; the source makes no claim, and
+ Glazer's abstract records the obstruction for countably saturated models
+ under the completed product measure.
+\item \emph{Priority} (source: Sections~\ref{rbc:sec:introduction}
+ and~\ref{rbc:sec:audit}, \file{SOURCE_AUDIT.txt}). The arbitrary-bias
+ formula, the realization theorems, the Boolean spectra, the
+ finite-marginal and weak-limit separations and the induction classification
+ are proposed as new; the source found them in no source it inspected, and
+ calls this ``a bounded literature assessment, not a priority certificate''.
+ Missing: a literature search beyond the cited sources; the write made none.
+\end{itemize}
+\end{writenote}
+
+\begin{remark}[{[write]} A maximal coding cut excludes strong CP-genericity, 6~October 2026]\label{rbc:rem:cp-class}
+Let $M\models\PA$ be nonstandard and let $P\subseteq M$ satisfy
+$\Cut(P)=M$. Then $P$ is a class of $M$ in the sense
+of~\cite{abdul-quader-schmerl}, and therefore, by Theorem~19 there, $P$ is
+not strongly CP-generic. Consequently, if $M$ is countable and nonstandard,
+then under every independent product law with
+$\Cut(b)\cap\SumCut(\varepsilon)=M$ the random predicate is almost surely
+not strongly CP-generic. This holds, for example, for every zero-modal law
+with $W_x<\infty$ for all $x$ (the first two regimes of
+Theorem~\ref{rbc:thm:induction-three-regimes}) and for the law of
+Theorem~\ref{rbc:thm:realization} with $I=M$. This makes explicit the
+sentence of Question~\ref{rbc:q:cpgeneric} that a maximal coding cut
+already supplies an obstruction; it says nothing about laws with a proper
+coding cut.
+\end{remark}
+
+\begin{proof}
+Fix $a\in M$. Since $a\in\Cut(P)$, there is $c<\E(a)$ with
+$(M,P)\models\forall t<a\,(P(t)\leftrightarrow\Bit(c,t))$. Hence
+\[
+ \{x\in P:x<a\}=\{x\in M:M\models x<a\wedge\Bit(c,x)\},
+\]
+and the right side is defined in $M$ by an arithmetic formula with the
+parameters $a$ and $c$: $\Bit$ is given by \eqref{rbc:eq:bit}, in which $\E$
+abbreviates the $\PA$-definable function $t\mapsto2^t$. So every bounded
+restriction of $P$ is definable with parameters, which is the definition of
+a class in~\cite{abdul-quader-schmerl} (definability there means
+definability with parameters, and all models are models of $\PA$). Their
+Theorem~19 says that in a nonstandard model no class is strongly
+CP-generic. For the probabilistic statement, Theorem~\ref{rbc:thm:product}
+gives $\Cut(P)=\Cut(b)\cap\SumCut(\varepsilon)=M$ almost surely, and the
+first part applies to every predicate in that event. In the zero-modal case
+($p_t\le1/2$ for all $t$) the modal predicate is empty, so $\Cut(b)=M$ and
+$\SumCut(\varepsilon)=\SumCut(p)=\{x:W_x<\infty\}$, which is $M$ when every
+$W_x$ is finite. The law of Theorem~\ref{rbc:thm:realization} with $I=M$
+has $\Cut(P)=M$ almost surely by that theorem.
+\end{proof}
 
 
 
