@@ -506,11 +506,20 @@ def lemma_13_7_without_domain : Prop :=
     IsStage136Data S D E F →
     ∃ G : Stage137Data N, IsStage137DataWithoutDomain S D E F G
 
+/-- Earlier full-domain Lemma 13.7 encoding omitting the paper's standing
+prime-modulus assumption. The all-moduli extension remains unproved. -/
+def lemma_13_7_without_prime_assumption : Prop :=
+  ∀ (N : Nat) [NeZero N] (S : Section13Context N) (D : Stage134Data N)
+      (E : Stage135Data N) (F : Stage136Data N),
+    IsStage136Data S D E F →
+    ∃ G : Stage137Data N, IsStage137Data S D E F G
+
 /-- **Lemma 13.7.** After propagating the corrected Lemma 13.6 density, the
 progression-size exponent is `2^-100 * alpha^448`, all in the exponent of
-`m2`. -/
+`m2`. The paper's standing prime-modulus assumption is explicit; the
+earlier all-moduli encoding is preserved above. No scale assumption is added. -/
 def lemma_13_7 : Prop :=
-  ∀ (N : Nat) [NeZero N] (S : Section13Context N) (D : Stage134Data N)
+  ∀ (N : Nat) [Fact N.Prime] (S : Section13Context N) (D : Stage134Data N)
       (E : Stage135Data N) (F : Stage136Data N),
     IsStage136Data S D E F →
     ∃ G : Stage137Data N, IsStage137Data S D E F G
