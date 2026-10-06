@@ -1,0 +1,2108 @@
+{
+  "status": "FROZEN first original independent record audit PASS; never replay",
+  "auditor_sha256": "169608112c81a997ada6593c5e52de842a4b3b9e2384bfaaebd39ac8256f30cc",
+  "inputs": [
+    {
+      "path": "/tmp/positive7_power_alias_compiler_root.json",
+      "sha256": "e2985ae7fa1754c347261bca096c4d360f263bcbabf58481f7a0e1d305558b2a",
+      "bytes": 481989
+    },
+    {
+      "path": "/tmp/positive7_common_center_compiler_root.json",
+      "sha256": "ff634059250ac399883ae3311a81354204a84be82b6ae973983e2e9e95b7d6db",
+      "bytes": 488927
+    }
+  ],
+  "coverage": {
+    "full_rows": 2705,
+    "literal_rows": 2681,
+    "rebound_rows": 14,
+    "inserted_rows": 10,
+    "deleted_parent_rows": 14
+  },
+  "examples": [
+    {
+      "r": 1,
+      "full_rows": 809,
+      "literal_rows": 805,
+      "rebound_rows": [
+        {
+          "before": [
+            "left_form_shift_0",
+            "*",
+            "lane_scale",
+            "centered_form_0_2"
+          ],
+          "after": [
+            "left_form_shift_0",
+            "*",
+            "lane_scale",
+            "decoded_v_sum_0"
+          ]
+        },
+        {
+          "before": [
+            "left_form_pair_0",
+            "+",
+            "left_form_shift_0",
+            "centered_form_0_1"
+          ],
+          "after": [
+            "left_form_uncentered_0",
+            "+",
+            "left_form_shift_0",
+            "decoded_u_sum_0"
+          ]
+        }
+      ],
+      "inserted_rows": [
+        [
+          "common_center_pair",
+          "*",
+          "pack_R2",
+          "center_word"
+        ],
+        [
+          "left_form_pair_0",
+          "+",
+          "left_form_uncentered_0",
+          "common_center_pair"
+        ]
+      ],
+      "removed_rows": [
+        [
+          "centered_form_0_1",
+          "+",
+          "decoded_u_sum_0",
+          "center_word"
+        ],
+        [
+          "centered_form_0_2",
+          "+",
+          "decoded_v_sum_0",
+          "center_word"
+        ]
+      ],
+      "old_center_fanout": {
+        "centered_form_0_1": [
+          [
+            "left_form_pair_0",
+            3
+          ]
+        ],
+        "centered_form_0_2": [
+          [
+            "left_form_shift_0",
+            3
+          ]
+        ]
+      },
+      "restored_pair_fanout": {
+        "left_form_pair_0": [
+          [
+            "left_form_repeated_0",
+            3
+          ]
+        ]
+      },
+      "semantic_form_descriptors": {
+        "centered_form_0_1": {
+          "semantic_sum": [
+            "decoded_u_sum_0",
+            "center_word"
+          ]
+        },
+        "centered_form_0_2": {
+          "semantic_sum": [
+            "decoded_v_sum_0",
+            "center_word"
+          ]
+        }
+      },
+      "changed_metadata_sites": {
+        "centered_input_forms": [
+          {
+            "path": [
+              "0",
+              0
+            ],
+            "removed": "centered_form_0_1"
+          },
+          {
+            "path": [
+              "0",
+              1
+            ],
+            "removed": "centered_form_0_2"
+          }
+        ],
+        "lanes_in_order": [
+          {
+            "path": [
+              62,
+              0
+            ],
+            "removed": "centered_form_0_1"
+          },
+          {
+            "path": [
+              63,
+              0
+            ],
+            "removed": "centered_form_0_2"
+          },
+          {
+            "path": [
+              64,
+              0
+            ],
+            "removed": "centered_form_0_1"
+          },
+          {
+            "path": [
+              65,
+              0
+            ],
+            "removed": "centered_form_0_2"
+          }
+        ]
+      },
+      "stages": {
+        "input_and_mass": {
+          "M": 2,
+          "A": 4,
+          "operations": 6
+        },
+        "geometry_without_redundant_masks": {
+          "M": 6,
+          "A": 142,
+          "operations": 148
+        },
+        "shared_history_decoder": {
+          "M": 0,
+          "A": 5,
+          "operations": 5
+        },
+        "sparse_uncentered_input_forms": {
+          "M": 5,
+          "A": 3,
+          "operations": 8
+        },
+        "shared_pack_powers_and_coefficients": {
+          "M": 8,
+          "A": 4,
+          "operations": 12
+        },
+        "selector_power_and_geometric_extension": {
+          "M": 5,
+          "A": 3,
+          "operations": 8
+        },
+        "shared_selector_polynomial": {
+          "M": 9,
+          "A": 9,
+          "operations": 18
+        },
+        "repeated_high_left_pack": {
+          "M": 22,
+          "A": 18,
+          "operations": 40
+        },
+        "upper_output_horner_pack": {
+          "M": 56,
+          "A": 56,
+          "operations": 112
+        },
+        "factored_pack_joins": {
+          "M": 25,
+          "A": 14,
+          "operations": 39
+        },
+        "shared_native_scale": {
+          "M": 4,
+          "A": 0,
+          "operations": 4
+        },
+        "complete_native64": {
+          "M": 33,
+          "A": 31,
+          "operations": 64
+        },
+        "paired_increment_rows": {
+          "M": 30,
+          "A": 168,
+          "operations": 198
+        },
+        "selected_quotient_pair_appends": {
+          "M": 12,
+          "A": 14,
+          "operations": 26
+        },
+        "fused_action_postprocessor": {
+          "M": 12,
+          "A": 21,
+          "operations": 33
+        },
+        "recurrence_right_sides": {
+          "M": 6,
+          "A": 14,
+          "operations": 20
+        },
+        "single_polynomial_finalizer": {
+          "M": 23,
+          "A": 45,
+          "operations": 68
+        }
+      },
+      "certificate_ledger": {
+        "M": 235,
+        "A": 506,
+        "operations": 741
+      },
+      "polynomial_ledger": {
+        "M": 258,
+        "A": 551,
+        "operations": 809
+      },
+      "source_digest": "d8492ba9701ebb3c5bcba754c96d1dfaf397b3750ecb49eaf231e5946c596121",
+      "fixed_role_uses": {
+        "alpha": [
+          {
+            "consumer": "program_scaled",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "gamma": [
+          {
+            "consumer": "program_tau",
+            "operator": "+",
+            "operand_index": 3
+          }
+        ],
+        "K": [
+          {
+            "consumer": "cell_radix",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "center_lambda": [
+          {
+            "consumer": "center_height",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "guard_bound": [
+          {
+            "consumer": "joint_bound",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "form_basis_u_0_1": [
+          {
+            "consumer": "decoded_u_0_1",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "form_basis_u_0_2": [
+          {
+            "consumer": "decoded_u_0_2",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "form_basis_v_0_1": [
+          {
+            "consumer": "decoded_v_0_1",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "form_basis_v_0_2": [
+          {
+            "consumer": "decoded_v_0_2",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "form_basis_v_0_3": [
+          {
+            "consumer": "decoded_v_0_3",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "quotient_T_0_1_1": [
+          {
+            "consumer": "quotient_term_0_1_1",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "quotient_T_0_1_2": [
+          {
+            "consumer": "quotient_term_0_1_2",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "quotient_T_0_2_1": [
+          {
+            "consumer": "quotient_term_0_2_1",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "quotient_T_0_2_2": [
+          {
+            "consumer": "quotient_term_0_2_2",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "relator_E_8_4_1": [
+          {
+            "consumer": "quotient_action_term_0_4_1",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "relator_E_8_4_2": [
+          {
+            "consumer": "quotient_action_term_0_4_2",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "relator_E_8_5_1": [
+          {
+            "consumer": "quotient_action_term_0_5_1",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "relator_E_8_5_2": [
+          {
+            "consumer": "quotient_action_term_0_5_2",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "relator_E_8_6_1": [
+          {
+            "consumer": "quotient_action_term_0_6_1",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "relator_E_8_6_2": [
+          {
+            "consumer": "quotient_action_term_0_6_2",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "kappa_minus_one": [
+          {
+            "consumer": "baseline_mass",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ]
+      },
+      "positive_witnesses": 102,
+      "topology_liveness_and_all_fields": true
+    },
+    {
+      "r": 2,
+      "full_rows": 875,
+      "literal_rows": 868,
+      "rebound_rows": [
+        {
+          "before": [
+            "left_form_shift_1",
+            "*",
+            "lane_scale",
+            "centered_form_1_2"
+          ],
+          "after": [
+            "left_form_shift_1",
+            "*",
+            "lane_scale",
+            "decoded_v_sum_1"
+          ]
+        },
+        {
+          "before": [
+            "left_form_pair_1",
+            "+",
+            "left_form_shift_1",
+            "centered_form_1_1"
+          ],
+          "after": [
+            "left_form_uncentered_1",
+            "+",
+            "left_form_shift_1",
+            "decoded_u_sum_1"
+          ]
+        },
+        {
+          "before": [
+            "left_form_shift_0",
+            "*",
+            "lane_scale",
+            "centered_form_0_2"
+          ],
+          "after": [
+            "left_form_shift_0",
+            "*",
+            "lane_scale",
+            "decoded_v_sum_0"
+          ]
+        },
+        {
+          "before": [
+            "left_form_pair_0",
+            "+",
+            "left_form_shift_0",
+            "centered_form_0_1"
+          ],
+          "after": [
+            "left_form_uncentered_0",
+            "+",
+            "left_form_shift_0",
+            "decoded_u_sum_0"
+          ]
+        }
+      ],
+      "inserted_rows": [
+        [
+          "common_center_pair",
+          "*",
+          "pack_R2",
+          "center_word"
+        ],
+        [
+          "left_form_pair_1",
+          "+",
+          "left_form_uncentered_1",
+          "common_center_pair"
+        ],
+        [
+          "left_form_pair_0",
+          "+",
+          "left_form_uncentered_0",
+          "common_center_pair"
+        ]
+      ],
+      "removed_rows": [
+        [
+          "centered_form_0_1",
+          "+",
+          "decoded_u_sum_0",
+          "center_word"
+        ],
+        [
+          "centered_form_0_2",
+          "+",
+          "decoded_v_sum_0",
+          "center_word"
+        ],
+        [
+          "centered_form_1_1",
+          "+",
+          "decoded_u_sum_1",
+          "center_word"
+        ],
+        [
+          "centered_form_1_2",
+          "+",
+          "decoded_v_sum_1",
+          "center_word"
+        ]
+      ],
+      "old_center_fanout": {
+        "centered_form_0_1": [
+          [
+            "left_form_pair_0",
+            3
+          ]
+        ],
+        "centered_form_0_2": [
+          [
+            "left_form_shift_0",
+            3
+          ]
+        ],
+        "centered_form_1_1": [
+          [
+            "left_form_pair_1",
+            3
+          ]
+        ],
+        "centered_form_1_2": [
+          [
+            "left_form_shift_1",
+            3
+          ]
+        ]
+      },
+      "restored_pair_fanout": {
+        "left_form_pair_0": [
+          [
+            "left_form_repeated_0",
+            3
+          ]
+        ],
+        "left_form_pair_1": [
+          [
+            "left_form_repeated_1",
+            3
+          ]
+        ]
+      },
+      "semantic_form_descriptors": {
+        "centered_form_0_1": {
+          "semantic_sum": [
+            "decoded_u_sum_0",
+            "center_word"
+          ]
+        },
+        "centered_form_0_2": {
+          "semantic_sum": [
+            "decoded_v_sum_0",
+            "center_word"
+          ]
+        },
+        "centered_form_1_1": {
+          "semantic_sum": [
+            "decoded_u_sum_1",
+            "center_word"
+          ]
+        },
+        "centered_form_1_2": {
+          "semantic_sum": [
+            "decoded_v_sum_1",
+            "center_word"
+          ]
+        }
+      },
+      "changed_metadata_sites": {
+        "centered_input_forms": [
+          {
+            "path": [
+              "0",
+              0
+            ],
+            "removed": "centered_form_0_1"
+          },
+          {
+            "path": [
+              "0",
+              1
+            ],
+            "removed": "centered_form_0_2"
+          },
+          {
+            "path": [
+              "1",
+              0
+            ],
+            "removed": "centered_form_1_1"
+          },
+          {
+            "path": [
+              "1",
+              1
+            ],
+            "removed": "centered_form_1_2"
+          }
+        ],
+        "lanes_in_order": [
+          {
+            "path": [
+              64,
+              0
+            ],
+            "removed": "centered_form_0_1"
+          },
+          {
+            "path": [
+              65,
+              0
+            ],
+            "removed": "centered_form_0_2"
+          },
+          {
+            "path": [
+              66,
+              0
+            ],
+            "removed": "centered_form_0_1"
+          },
+          {
+            "path": [
+              67,
+              0
+            ],
+            "removed": "centered_form_0_2"
+          },
+          {
+            "path": [
+              68,
+              0
+            ],
+            "removed": "centered_form_1_1"
+          },
+          {
+            "path": [
+              69,
+              0
+            ],
+            "removed": "centered_form_1_2"
+          },
+          {
+            "path": [
+              70,
+              0
+            ],
+            "removed": "centered_form_1_1"
+          },
+          {
+            "path": [
+              71,
+              0
+            ],
+            "removed": "centered_form_1_2"
+          }
+        ]
+      },
+      "stages": {
+        "input_and_mass": {
+          "M": 2,
+          "A": 4,
+          "operations": 6
+        },
+        "geometry_without_redundant_masks": {
+          "M": 6,
+          "A": 154,
+          "operations": 160
+        },
+        "shared_history_decoder": {
+          "M": 0,
+          "A": 5,
+          "operations": 5
+        },
+        "sparse_uncentered_input_forms": {
+          "M": 10,
+          "A": 6,
+          "operations": 16
+        },
+        "shared_pack_powers_and_coefficients": {
+          "M": 8,
+          "A": 4,
+          "operations": 12
+        },
+        "selector_power_and_geometric_extension": {
+          "M": 2,
+          "A": 1,
+          "operations": 3
+        },
+        "shared_selector_polynomial": {
+          "M": 11,
+          "A": 11,
+          "operations": 22
+        },
+        "repeated_high_left_pack": {
+          "M": 26,
+          "A": 21,
+          "operations": 47
+        },
+        "upper_output_horner_pack": {
+          "M": 60,
+          "A": 60,
+          "operations": 120
+        },
+        "factored_pack_joins": {
+          "M": 29,
+          "A": 16,
+          "operations": 45
+        },
+        "shared_native_scale": {
+          "M": 4,
+          "A": 0,
+          "operations": 4
+        },
+        "complete_native64": {
+          "M": 33,
+          "A": 31,
+          "operations": 64
+        },
+        "paired_increment_rows": {
+          "M": 30,
+          "A": 168,
+          "operations": 198
+        },
+        "selected_quotient_pair_appends": {
+          "M": 24,
+          "A": 28,
+          "operations": 52
+        },
+        "fused_action_postprocessor": {
+          "M": 12,
+          "A": 21,
+          "operations": 33
+        },
+        "recurrence_right_sides": {
+          "M": 6,
+          "A": 14,
+          "operations": 20
+        },
+        "single_polynomial_finalizer": {
+          "M": 23,
+          "A": 45,
+          "operations": 68
+        }
+      },
+      "certificate_ledger": {
+        "M": 263,
+        "A": 544,
+        "operations": 807
+      },
+      "polynomial_ledger": {
+        "M": 286,
+        "A": 589,
+        "operations": 875
+      },
+      "source_digest": "33657f4023288e2496762bee7f2806caceda8fa50f98c376868b1e8472452d07",
+      "fixed_role_uses": {
+        "alpha": [
+          {
+            "consumer": "program_scaled",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "gamma": [
+          {
+            "consumer": "program_tau",
+            "operator": "+",
+            "operand_index": 3
+          }
+        ],
+        "K": [
+          {
+            "consumer": "cell_radix",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "center_lambda": [
+          {
+            "consumer": "center_height",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "guard_bound": [
+          {
+            "consumer": "joint_bound",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "form_basis_u_0_1": [
+          {
+            "consumer": "decoded_u_0_1",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "form_basis_u_0_2": [
+          {
+            "consumer": "decoded_u_0_2",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "form_basis_v_0_1": [
+          {
+            "consumer": "decoded_v_0_1",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "form_basis_v_0_2": [
+          {
+            "consumer": "decoded_v_0_2",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "form_basis_v_0_3": [
+          {
+            "consumer": "decoded_v_0_3",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "form_basis_u_1_1": [
+          {
+            "consumer": "decoded_u_1_1",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "form_basis_u_1_2": [
+          {
+            "consumer": "decoded_u_1_2",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "form_basis_v_1_1": [
+          {
+            "consumer": "decoded_v_1_1",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "form_basis_v_1_2": [
+          {
+            "consumer": "decoded_v_1_2",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "form_basis_v_1_3": [
+          {
+            "consumer": "decoded_v_1_3",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "quotient_T_0_1_1": [
+          {
+            "consumer": "quotient_term_0_1_1",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "quotient_T_0_1_2": [
+          {
+            "consumer": "quotient_term_0_1_2",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "quotient_T_0_2_1": [
+          {
+            "consumer": "quotient_term_0_2_1",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "quotient_T_0_2_2": [
+          {
+            "consumer": "quotient_term_0_2_2",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "relator_E_8_4_1": [
+          {
+            "consumer": "quotient_action_term_0_4_1",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "relator_E_8_4_2": [
+          {
+            "consumer": "quotient_action_term_0_4_2",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "relator_E_8_5_1": [
+          {
+            "consumer": "quotient_action_term_0_5_1",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "relator_E_8_5_2": [
+          {
+            "consumer": "quotient_action_term_0_5_2",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "relator_E_8_6_1": [
+          {
+            "consumer": "quotient_action_term_0_6_1",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "relator_E_8_6_2": [
+          {
+            "consumer": "quotient_action_term_0_6_2",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "quotient_T_1_1_1": [
+          {
+            "consumer": "quotient_term_1_1_1",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "quotient_T_1_1_2": [
+          {
+            "consumer": "quotient_term_1_1_2",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "quotient_T_1_2_1": [
+          {
+            "consumer": "quotient_term_1_2_1",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "quotient_T_1_2_2": [
+          {
+            "consumer": "quotient_term_1_2_2",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "relator_E_10_4_1": [
+          {
+            "consumer": "quotient_action_term_1_4_1",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "relator_E_10_4_2": [
+          {
+            "consumer": "quotient_action_term_1_4_2",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "relator_E_10_5_1": [
+          {
+            "consumer": "quotient_action_term_1_5_1",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "relator_E_10_5_2": [
+          {
+            "consumer": "quotient_action_term_1_5_2",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "relator_E_10_6_1": [
+          {
+            "consumer": "quotient_action_term_1_6_1",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "relator_E_10_6_2": [
+          {
+            "consumer": "quotient_action_term_1_6_2",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "kappa_minus_one": [
+          {
+            "consumer": "baseline_mass",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ]
+      },
+      "positive_witnesses": 108,
+      "topology_liveness_and_all_fields": true
+    },
+    {
+      "r": 4,
+      "full_rows": 1021,
+      "literal_rows": 1008,
+      "rebound_rows": [
+        {
+          "before": [
+            "left_form_shift_3",
+            "*",
+            "lane_scale",
+            "centered_form_3_2"
+          ],
+          "after": [
+            "left_form_shift_3",
+            "*",
+            "lane_scale",
+            "decoded_v_sum_3"
+          ]
+        },
+        {
+          "before": [
+            "left_form_pair_3",
+            "+",
+            "left_form_shift_3",
+            "centered_form_3_1"
+          ],
+          "after": [
+            "left_form_uncentered_3",
+            "+",
+            "left_form_shift_3",
+            "decoded_u_sum_3"
+          ]
+        },
+        {
+          "before": [
+            "left_form_shift_2",
+            "*",
+            "lane_scale",
+            "centered_form_2_2"
+          ],
+          "after": [
+            "left_form_shift_2",
+            "*",
+            "lane_scale",
+            "decoded_v_sum_2"
+          ]
+        },
+        {
+          "before": [
+            "left_form_pair_2",
+            "+",
+            "left_form_shift_2",
+            "centered_form_2_1"
+          ],
+          "after": [
+            "left_form_uncentered_2",
+            "+",
+            "left_form_shift_2",
+            "decoded_u_sum_2"
+          ]
+        },
+        {
+          "before": [
+            "left_form_shift_1",
+            "*",
+            "lane_scale",
+            "centered_form_1_2"
+          ],
+          "after": [
+            "left_form_shift_1",
+            "*",
+            "lane_scale",
+            "decoded_v_sum_1"
+          ]
+        },
+        {
+          "before": [
+            "left_form_pair_1",
+            "+",
+            "left_form_shift_1",
+            "centered_form_1_1"
+          ],
+          "after": [
+            "left_form_uncentered_1",
+            "+",
+            "left_form_shift_1",
+            "decoded_u_sum_1"
+          ]
+        },
+        {
+          "before": [
+            "left_form_shift_0",
+            "*",
+            "lane_scale",
+            "centered_form_0_2"
+          ],
+          "after": [
+            "left_form_shift_0",
+            "*",
+            "lane_scale",
+            "decoded_v_sum_0"
+          ]
+        },
+        {
+          "before": [
+            "left_form_pair_0",
+            "+",
+            "left_form_shift_0",
+            "centered_form_0_1"
+          ],
+          "after": [
+            "left_form_uncentered_0",
+            "+",
+            "left_form_shift_0",
+            "decoded_u_sum_0"
+          ]
+        }
+      ],
+      "inserted_rows": [
+        [
+          "common_center_pair",
+          "*",
+          "pack_R2",
+          "center_word"
+        ],
+        [
+          "left_form_pair_3",
+          "+",
+          "left_form_uncentered_3",
+          "common_center_pair"
+        ],
+        [
+          "left_form_pair_2",
+          "+",
+          "left_form_uncentered_2",
+          "common_center_pair"
+        ],
+        [
+          "left_form_pair_1",
+          "+",
+          "left_form_uncentered_1",
+          "common_center_pair"
+        ],
+        [
+          "left_form_pair_0",
+          "+",
+          "left_form_uncentered_0",
+          "common_center_pair"
+        ]
+      ],
+      "removed_rows": [
+        [
+          "centered_form_0_1",
+          "+",
+          "decoded_u_sum_0",
+          "center_word"
+        ],
+        [
+          "centered_form_0_2",
+          "+",
+          "decoded_v_sum_0",
+          "center_word"
+        ],
+        [
+          "centered_form_1_1",
+          "+",
+          "decoded_u_sum_1",
+          "center_word"
+        ],
+        [
+          "centered_form_1_2",
+          "+",
+          "decoded_v_sum_1",
+          "center_word"
+        ],
+        [
+          "centered_form_2_1",
+          "+",
+          "decoded_u_sum_2",
+          "center_word"
+        ],
+        [
+          "centered_form_2_2",
+          "+",
+          "decoded_v_sum_2",
+          "center_word"
+        ],
+        [
+          "centered_form_3_1",
+          "+",
+          "decoded_u_sum_3",
+          "center_word"
+        ],
+        [
+          "centered_form_3_2",
+          "+",
+          "decoded_v_sum_3",
+          "center_word"
+        ]
+      ],
+      "old_center_fanout": {
+        "centered_form_0_1": [
+          [
+            "left_form_pair_0",
+            3
+          ]
+        ],
+        "centered_form_0_2": [
+          [
+            "left_form_shift_0",
+            3
+          ]
+        ],
+        "centered_form_1_1": [
+          [
+            "left_form_pair_1",
+            3
+          ]
+        ],
+        "centered_form_1_2": [
+          [
+            "left_form_shift_1",
+            3
+          ]
+        ],
+        "centered_form_2_1": [
+          [
+            "left_form_pair_2",
+            3
+          ]
+        ],
+        "centered_form_2_2": [
+          [
+            "left_form_shift_2",
+            3
+          ]
+        ],
+        "centered_form_3_1": [
+          [
+            "left_form_pair_3",
+            3
+          ]
+        ],
+        "centered_form_3_2": [
+          [
+            "left_form_shift_3",
+            3
+          ]
+        ]
+      },
+      "restored_pair_fanout": {
+        "left_form_pair_0": [
+          [
+            "left_form_repeated_0",
+            3
+          ]
+        ],
+        "left_form_pair_1": [
+          [
+            "left_form_repeated_1",
+            3
+          ]
+        ],
+        "left_form_pair_2": [
+          [
+            "left_form_repeated_2",
+            3
+          ]
+        ],
+        "left_form_pair_3": [
+          [
+            "left_form_repeated_3",
+            3
+          ]
+        ]
+      },
+      "semantic_form_descriptors": {
+        "centered_form_0_1": {
+          "semantic_sum": [
+            "decoded_u_sum_0",
+            "center_word"
+          ]
+        },
+        "centered_form_0_2": {
+          "semantic_sum": [
+            "decoded_v_sum_0",
+            "center_word"
+          ]
+        },
+        "centered_form_1_1": {
+          "semantic_sum": [
+            "decoded_u_sum_1",
+            "center_word"
+          ]
+        },
+        "centered_form_1_2": {
+          "semantic_sum": [
+            "decoded_v_sum_1",
+            "center_word"
+          ]
+        },
+        "centered_form_2_1": {
+          "semantic_sum": [
+            "decoded_u_sum_2",
+            "center_word"
+          ]
+        },
+        "centered_form_2_2": {
+          "semantic_sum": [
+            "decoded_v_sum_2",
+            "center_word"
+          ]
+        },
+        "centered_form_3_1": {
+          "semantic_sum": [
+            "decoded_u_sum_3",
+            "center_word"
+          ]
+        },
+        "centered_form_3_2": {
+          "semantic_sum": [
+            "decoded_v_sum_3",
+            "center_word"
+          ]
+        }
+      },
+      "changed_metadata_sites": {
+        "centered_input_forms": [
+          {
+            "path": [
+              "0",
+              0
+            ],
+            "removed": "centered_form_0_1"
+          },
+          {
+            "path": [
+              "0",
+              1
+            ],
+            "removed": "centered_form_0_2"
+          },
+          {
+            "path": [
+              "1",
+              0
+            ],
+            "removed": "centered_form_1_1"
+          },
+          {
+            "path": [
+              "1",
+              1
+            ],
+            "removed": "centered_form_1_2"
+          },
+          {
+            "path": [
+              "2",
+              0
+            ],
+            "removed": "centered_form_2_1"
+          },
+          {
+            "path": [
+              "2",
+              1
+            ],
+            "removed": "centered_form_2_2"
+          },
+          {
+            "path": [
+              "3",
+              0
+            ],
+            "removed": "centered_form_3_1"
+          },
+          {
+            "path": [
+              "3",
+              1
+            ],
+            "removed": "centered_form_3_2"
+          }
+        ],
+        "lanes_in_order": [
+          {
+            "path": [
+              68,
+              0
+            ],
+            "removed": "centered_form_0_1"
+          },
+          {
+            "path": [
+              69,
+              0
+            ],
+            "removed": "centered_form_0_2"
+          },
+          {
+            "path": [
+              70,
+              0
+            ],
+            "removed": "centered_form_0_1"
+          },
+          {
+            "path": [
+              71,
+              0
+            ],
+            "removed": "centered_form_0_2"
+          },
+          {
+            "path": [
+              72,
+              0
+            ],
+            "removed": "centered_form_1_1"
+          },
+          {
+            "path": [
+              73,
+              0
+            ],
+            "removed": "centered_form_1_2"
+          },
+          {
+            "path": [
+              74,
+              0
+            ],
+            "removed": "centered_form_1_1"
+          },
+          {
+            "path": [
+              75,
+              0
+            ],
+            "removed": "centered_form_1_2"
+          },
+          {
+            "path": [
+              76,
+              0
+            ],
+            "removed": "centered_form_2_1"
+          },
+          {
+            "path": [
+              77,
+              0
+            ],
+            "removed": "centered_form_2_2"
+          },
+          {
+            "path": [
+              78,
+              0
+            ],
+            "removed": "centered_form_2_1"
+          },
+          {
+            "path": [
+              79,
+              0
+            ],
+            "removed": "centered_form_2_2"
+          },
+          {
+            "path": [
+              80,
+              0
+            ],
+            "removed": "centered_form_3_1"
+          },
+          {
+            "path": [
+              81,
+              0
+            ],
+            "removed": "centered_form_3_2"
+          },
+          {
+            "path": [
+              82,
+              0
+            ],
+            "removed": "centered_form_3_1"
+          },
+          {
+            "path": [
+              83,
+              0
+            ],
+            "removed": "centered_form_3_2"
+          }
+        ]
+      },
+      "stages": {
+        "input_and_mass": {
+          "M": 2,
+          "A": 4,
+          "operations": 6
+        },
+        "geometry_without_redundant_masks": {
+          "M": 6,
+          "A": 178,
+          "operations": 184
+        },
+        "shared_history_decoder": {
+          "M": 0,
+          "A": 5,
+          "operations": 5
+        },
+        "sparse_uncentered_input_forms": {
+          "M": 20,
+          "A": 12,
+          "operations": 32
+        },
+        "shared_pack_powers_and_coefficients": {
+          "M": 8,
+          "A": 4,
+          "operations": 12
+        },
+        "selector_power_and_geometric_extension": {
+          "M": 6,
+          "A": 3,
+          "operations": 9
+        },
+        "shared_selector_polynomial": {
+          "M": 15,
+          "A": 15,
+          "operations": 30
+        },
+        "repeated_high_left_pack": {
+          "M": 32,
+          "A": 27,
+          "operations": 59
+        },
+        "upper_output_horner_pack": {
+          "M": 68,
+          "A": 68,
+          "operations": 136
+        },
+        "factored_pack_joins": {
+          "M": 37,
+          "A": 20,
+          "operations": 57
+        },
+        "shared_native_scale": {
+          "M": 4,
+          "A": 0,
+          "operations": 4
+        },
+        "complete_native64": {
+          "M": 33,
+          "A": 31,
+          "operations": 64
+        },
+        "paired_increment_rows": {
+          "M": 30,
+          "A": 168,
+          "operations": 198
+        },
+        "selected_quotient_pair_appends": {
+          "M": 48,
+          "A": 56,
+          "operations": 104
+        },
+        "fused_action_postprocessor": {
+          "M": 12,
+          "A": 21,
+          "operations": 33
+        },
+        "recurrence_right_sides": {
+          "M": 6,
+          "A": 14,
+          "operations": 20
+        },
+        "single_polynomial_finalizer": {
+          "M": 23,
+          "A": 45,
+          "operations": 68
+        }
+      },
+      "certificate_ledger": {
+        "M": 327,
+        "A": 626,
+        "operations": 953
+      },
+      "polynomial_ledger": {
+        "M": 350,
+        "A": 671,
+        "operations": 1021
+      },
+      "source_digest": "aadf0a72c869ab2beb30775b49dcd240a7d2dcc9755f4c1545d74a2c7a6c914e",
+      "fixed_role_uses": {
+        "alpha": [
+          {
+            "consumer": "program_scaled",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "gamma": [
+          {
+            "consumer": "program_tau",
+            "operator": "+",
+            "operand_index": 3
+          }
+        ],
+        "K": [
+          {
+            "consumer": "cell_radix",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "center_lambda": [
+          {
+            "consumer": "center_height",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "guard_bound": [
+          {
+            "consumer": "joint_bound",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "form_basis_u_0_1": [
+          {
+            "consumer": "decoded_u_0_1",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "form_basis_u_0_2": [
+          {
+            "consumer": "decoded_u_0_2",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "form_basis_v_0_1": [
+          {
+            "consumer": "decoded_v_0_1",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "form_basis_v_0_2": [
+          {
+            "consumer": "decoded_v_0_2",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "form_basis_v_0_3": [
+          {
+            "consumer": "decoded_v_0_3",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "form_basis_u_1_1": [
+          {
+            "consumer": "decoded_u_1_1",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "form_basis_u_1_2": [
+          {
+            "consumer": "decoded_u_1_2",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "form_basis_v_1_1": [
+          {
+            "consumer": "decoded_v_1_1",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "form_basis_v_1_2": [
+          {
+            "consumer": "decoded_v_1_2",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "form_basis_v_1_3": [
+          {
+            "consumer": "decoded_v_1_3",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "form_basis_u_2_1": [
+          {
+            "consumer": "decoded_u_2_1",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "form_basis_u_2_2": [
+          {
+            "consumer": "decoded_u_2_2",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "form_basis_v_2_1": [
+          {
+            "consumer": "decoded_v_2_1",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "form_basis_v_2_2": [
+          {
+            "consumer": "decoded_v_2_2",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "form_basis_v_2_3": [
+          {
+            "consumer": "decoded_v_2_3",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "form_basis_u_3_1": [
+          {
+            "consumer": "decoded_u_3_1",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "form_basis_u_3_2": [
+          {
+            "consumer": "decoded_u_3_2",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "form_basis_v_3_1": [
+          {
+            "consumer": "decoded_v_3_1",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "form_basis_v_3_2": [
+          {
+            "consumer": "decoded_v_3_2",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "form_basis_v_3_3": [
+          {
+            "consumer": "decoded_v_3_3",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "quotient_T_0_1_1": [
+          {
+            "consumer": "quotient_term_0_1_1",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "quotient_T_0_1_2": [
+          {
+            "consumer": "quotient_term_0_1_2",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "quotient_T_0_2_1": [
+          {
+            "consumer": "quotient_term_0_2_1",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "quotient_T_0_2_2": [
+          {
+            "consumer": "quotient_term_0_2_2",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "relator_E_8_4_1": [
+          {
+            "consumer": "quotient_action_term_0_4_1",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "relator_E_8_4_2": [
+          {
+            "consumer": "quotient_action_term_0_4_2",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "relator_E_8_5_1": [
+          {
+            "consumer": "quotient_action_term_0_5_1",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "relator_E_8_5_2": [
+          {
+            "consumer": "quotient_action_term_0_5_2",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "relator_E_8_6_1": [
+          {
+            "consumer": "quotient_action_term_0_6_1",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "relator_E_8_6_2": [
+          {
+            "consumer": "quotient_action_term_0_6_2",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "quotient_T_1_1_1": [
+          {
+            "consumer": "quotient_term_1_1_1",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "quotient_T_1_1_2": [
+          {
+            "consumer": "quotient_term_1_1_2",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "quotient_T_1_2_1": [
+          {
+            "consumer": "quotient_term_1_2_1",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "quotient_T_1_2_2": [
+          {
+            "consumer": "quotient_term_1_2_2",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "relator_E_10_4_1": [
+          {
+            "consumer": "quotient_action_term_1_4_1",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "relator_E_10_4_2": [
+          {
+            "consumer": "quotient_action_term_1_4_2",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "relator_E_10_5_1": [
+          {
+            "consumer": "quotient_action_term_1_5_1",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "relator_E_10_5_2": [
+          {
+            "consumer": "quotient_action_term_1_5_2",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "relator_E_10_6_1": [
+          {
+            "consumer": "quotient_action_term_1_6_1",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "relator_E_10_6_2": [
+          {
+            "consumer": "quotient_action_term_1_6_2",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "quotient_T_2_1_1": [
+          {
+            "consumer": "quotient_term_2_1_1",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "quotient_T_2_1_2": [
+          {
+            "consumer": "quotient_term_2_1_2",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "quotient_T_2_2_1": [
+          {
+            "consumer": "quotient_term_2_2_1",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "quotient_T_2_2_2": [
+          {
+            "consumer": "quotient_term_2_2_2",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "relator_E_12_4_1": [
+          {
+            "consumer": "quotient_action_term_2_4_1",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "relator_E_12_4_2": [
+          {
+            "consumer": "quotient_action_term_2_4_2",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "relator_E_12_5_1": [
+          {
+            "consumer": "quotient_action_term_2_5_1",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "relator_E_12_5_2": [
+          {
+            "consumer": "quotient_action_term_2_5_2",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "relator_E_12_6_1": [
+          {
+            "consumer": "quotient_action_term_2_6_1",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "relator_E_12_6_2": [
+          {
+            "consumer": "quotient_action_term_2_6_2",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "quotient_T_3_1_1": [
+          {
+            "consumer": "quotient_term_3_1_1",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "quotient_T_3_1_2": [
+          {
+            "consumer": "quotient_term_3_1_2",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "quotient_T_3_2_1": [
+          {
+            "consumer": "quotient_term_3_2_1",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "quotient_T_3_2_2": [
+          {
+            "consumer": "quotient_term_3_2_2",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "relator_E_14_4_1": [
+          {
+            "consumer": "quotient_action_term_3_4_1",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "relator_E_14_4_2": [
+          {
+            "consumer": "quotient_action_term_3_4_2",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "relator_E_14_5_1": [
+          {
+            "consumer": "quotient_action_term_3_5_1",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "relator_E_14_5_2": [
+          {
+            "consumer": "quotient_action_term_3_5_2",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "relator_E_14_6_1": [
+          {
+            "consumer": "quotient_action_term_3_6_1",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "relator_E_14_6_2": [
+          {
+            "consumer": "quotient_action_term_3_6_2",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ],
+        "kappa_minus_one": [
+          {
+            "consumer": "baseline_mass",
+            "operator": "*",
+            "operand_index": 2
+          }
+        ]
+      },
+      "positive_witnesses": 120,
+      "topology_liveness_and_all_fields": true
+    }
+  ],
+  "fixed_recipe_and_r0_fallback_literal": true,
+  "generic_ledger_scope": "Declared all-r formulas and collected branch are hand-reviewed separately, not inferred from these three uniform saved graphs.",
+  "execution_scope": "Fresh original literal-record construction/comparison, source/name hashes, operation and role counts, topology/fanout/liveness and semantic-descriptor references only. No evaluation of saved arithmetic or coefficient instructions, symbolic or degree propagation, scientific sampling, saved helper execution/import, or build."
+}
