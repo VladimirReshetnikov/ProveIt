@@ -12,8 +12,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 175 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 1,716 public Gowers theorems and found only propext,
+  All 177 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 1,734 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 99 exact
   companion proofs and 21 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -217,8 +217,8 @@ Two-anchor interpolation for Lemma 16.10
   candidates, independently of the number of affine classes.
   This preserves the correlation between slope and intercept choices; it
   does not yet prove a stronger MultiplyLinear parameter or a final bound.
-  The common-domain construction, simultaneous good-sample selection, and
-  final quantitative comparison in Lemma 16.10 remain outstanding.
+  The common-domain construction and final quantitative comparison in
+  Lemma 16.10 remain outstanding.
 
 Corrected distinct-anchor sampling estimate
   Proofs16DistinctSampling counts samples avoiding a subset exactly and
@@ -231,9 +231,16 @@ Corrected distinct-anchor sampling estimate
   A checked counterexample uses q=1, sigma=1/4, n=4, and c=1: the class
   meets the stated size threshold but its distinct-pair failure probability
   is one for all 16 draws, while the printed expression is below sigma.
-  A complete Lemma 16.10 proof still needs to handle such small classes or
-  short cells, select one sample with controlled total discarded mass, and
-  carry the corrected sampling cost through the unresolved width comparison.
+  Proofs16SampleSelection now selects a single shared sample by a finite
+  weighted average. Weights are class sizes, so the estimate controls lost
+  points. Whole successful classes are retained, including their anchors.
+  Proofs16ClassPruning deletes classes below sigma*n/q. If 2*q<=sigma*n,
+  every nonempty surviving class has at least two elements. For q classes
+  per base point with total mass at most |T|*n, pruning and sampling together
+  discard at most 2*sigma*|T|*n points, in the sum-of-class-sizes formulation.
+  A complete Lemma 16.10 proof still needs geometric transport of these class
+  counts, short-cell handling, a common base partition for slice covers, and
+  the unresolved final width comparison with the corrected sampling cost.
 
 Shared Section 16 migration
   Box.IsProper is now a shared definition. MultiplyLinear requires proper
