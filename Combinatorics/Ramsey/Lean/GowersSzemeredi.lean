@@ -60,6 +60,9 @@ import GowersSzemeredi.Proofs16BoundedChunks
 import GowersSzemeredi.Proofs16RelativeSteps
 import GowersSzemeredi.Proofs16RetiledRecurrence
 import GowersSzemeredi.Proofs16ShortParents
+import GowersSzemeredi.Proofs16LocalizedCover
+import GowersSzemeredi.Proofs16LocalizationBudget
+import GowersSzemeredi.Proofs16LocalizedThreshold
 import GowersSzemeredi.Proofs16ArrangementSelection
 import GowersSzemeredi.Proofs16CubeDensity
 import GowersSzemeredi.Proofs05Progressions

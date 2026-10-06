@@ -12,8 +12,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 163 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 1,614 public Gowers theorems and found only propext,
+  All 166 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 1,637 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 97 exact
   companion proofs and 23 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -151,10 +151,25 @@ Constructive inputs for Lemma 16.6
   disjointness even when the intermediate product is not itself a box,
   and derives final-axis linearity from the frequency cover. Its above-one
   wrapper discharges the recurrence threshold and rounding budgets.
-  Lemma 16.6 is still open. Uniform graph counts across preliminary cells,
-  the good-set mass estimate, quantitative absorption of localization and
-  integer-rounding losses, the dimension endpoint, and proper-input/prime-
-  modulus migration remain. The paper's
+  Proofs16LocalizedCover applies MultiplyLinear to all preliminary cells,
+  pads local graph families with zero functions to one natural count below
+  the common real bound, and unites their good sets. Disjointness preserves
+  the (1-sigma) mass bound and identifies each local good set inside its cell.
+  Its short-parent wrapper retains the parent geometry and proves a uniform
+  child width of at least (m/8)^a, where a is the multiple-linearity exponent.
+  Proofs16LocalizationBudget bounds the combined localization and natural-
+  floor loss by sixteen after taking the recurrence root. Ceiling rounding
+  still reaches the original target width, with the extra unit of tiling
+  slack and the Bohr budget, when zeta<=1/32.
+  Proofs16LocalizedThreshold proves this radius bound and a factor-sixteen
+  threshold margin. Its combined parameter theorem derives the preliminary
+  scale, positive floored recurrence input, full recurrence threshold, and
+  all short-cell budgets from the original above-one width target, assuming
+  the multiple-linearity exponent lies in (0,1].
+  Lemma 16.6 is still open. The local constructions must now be assembled
+  with the actual Section 16 parameter bounds and width identity. The small
+  scale and dimension endpoints and proper-input/prime-modulus migration
+  also remain. The paper's
   definition also requires axes to remain progressions in integer
   representatives; Box.IsProper alone allows wrapping and does not express
   that requirement. These local results are not counted as numbered proofs.
