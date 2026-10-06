@@ -27,7 +27,10 @@ Throughout `r = s + 1`, `N = n + 1`, `t = W(4eN e^{−r/2})` and
   `L^p` convergence of both to 1 and the deficit rate `d/r`.
 - **Added by the write**: Remark 18.1, which shows from Part I's estimates
   that Part II's open ratio `R(b,u) = A(b,u)/(C_b u^{b+1})` satisfies
-  `log R(b,u)/u → 1/2` at the moving saddle.
+  `log R(b,u)/u → 1/2` at the moving saddle; and, after the independent check
+  of 5 October 2026, Proposition 18.2, which extends its lower bound to
+  `b ≥ (u/2)(H_u − 1) − Ku` and the limit to `α − ½ log log u → ∞`, covering
+  Part I's whole saddle window.
 
 | Source | Bundle report | Archive | Pin | Placed | Printed as |
 |---|---|---|---|---|---|
@@ -150,7 +153,9 @@ Part I. The front matter uses `lam:` (`lam:sec:guide`, `lam:sec:status`,
 added `lam:ao:part`, `lam:bg:part`, `lam:ao:sub:further`,
 `lam:bg:sec:further`, `lam:bg:rem:ratio` and its three equations
 `lam:bg:eq:ratio-upper`, `-lower`, `-saddle`. 139 labels in all, all
-distinct. The six label names that occur in both manuscripts (`eq:B0`,
+distinct. After the independent check (5 October 2026) the write added
+`lam:bg:prop:tilt` and its equation `lam:bg:eq:ratio-tilt` (Proposition 18.2,
+equation (18.5)): 141 labels, all distinct. The six label names that occur in both manuscripts (`eq:B0`,
 `eq:G`, `eq:size`, `eq:uniform`, `sec:inverse`, `thm:inverse`) are distinct
 under the prefixes; `eq:G` and `eq:uniform` name different mathematics in the
 two (front matter, "Notation across the two Parts").
@@ -168,7 +173,9 @@ takes the same steps in the same order, is not reprinted. Part II's Section 13
 keeps the statement of Report 109's Theorem 3.1 (Theorem 13.1) and a pointer.
 Report 109's (3.2)–(3.5) are Part I's (2.1)–(2.3) and the display after them.
 The write's Remark 18.1 is the last statement of Section 18, so no delivered
-number moved. A check of the build's `.aux` against separate builds of the
+number moved; Proposition 18.2, added after the independent check, follows it,
+and the `.aux` of the rebuild, compared with that of a build of the committed
+text, keeps all 139 earlier labels at their numbers. A check of the build's `.aux` against separate builds of the
 two delivered `.tex` files confirmed every label's number under these
 offsets. The delivered READMEs, audits and code use the manuscripts' own
 numbers.
@@ -244,10 +251,58 @@ localization away from the saddle. Dated notes: Part I determines the
 coefficient of `n/log n` that Part II leaves undetermined (`1/2 − (log 4)/r`:
 `1/2 − log 2` for A135501, `1/2 − log 4` for A220894); Part II's Lambert
 expression is lower by `N/(2 log N)(1 + o(1))`, so its residual factor
-`exp{O(n/log n)}` is attained; Part II's inverse omits the constant
+`exp{O(n/log n)}` is attained, with constant `1/2` against the Lambert form
+and `1/2 − (log 4)/r` against the four-scale form (the second added after the
+independent check); Part II's inverse omits the constant
 `[1 + r/2 − 2 log(4r)]/ℓ` of the denominator, nonzero, so its error
 `O(L/ℓ³)` is of exact order and its approximation lies below `ν_s(y)`. Also:
 the front matter, two further-questions sections, the merged bibliography.
+
+**Added after the independent check** (marked `[write]`, dated 5 October
+2026): **Proposition 18.2** with a complete proof. With `κ_K` the least
+positive integer with `H_κ ≥ 2K + 3` (`κ_K ≤ e^{2K+3}`; `κ_0 = 11`,
+`κ_1 = 83`), `log R(b,u) ≥ u/2 − 2κ_K(1 + log u)` for all `u ≥ 1`, `b ≥ 0`
+with `b ≥ (u/2)(H_u − 1) − Ku`. Hence `log R(b,u)/u → 1/2` whenever
+`α − ½ log log u → ∞` and `log(b+1) = o(u)` (including `α ≥ δ log u`), and
+the two-sided bound of Remark 18.1(4) holds for every admissible `u` in Part
+I's window `|u/u_* − 1| < 1/log N`, `r = 1, 2`. The proof tilts the
+single-spine law by `θ = 1 − κ/u` before Cantelli's inequality; the idea is
+the independent check's, the write wrote out the proof, sharpened its mean
+estimate and made the constant explicit, and checked every step numerically
+(the note after the proposition lists the checks).
+
+- *[Independent check, 5 October 2026.]* An adversarial check of the write
+  made by the intake after it (`b432720bf`) found all eleven items it examined
+  valid, with no counterexample and no gap in any proof chain: Remark 18.1
+  (1)–(4) with their proofs, the note after it, the coefficient
+  `1/2 − (log 4)/r` with `M_r − (N/r)(w − 2 + 1/w) = N/(2 log N)(1 + o(1))`,
+  the attained residual factor, the inverse constant `1 + r/2 − 2 log(4r)`
+  with the order and side of Part II's error, the gap between the two `u_*`,
+  the front-matter row on the ratio, and Part II's further-questions item 5.
+  Three sentences are corrected where they stand, each with a dated note
+  keeping the first wording: the note after Part II's Remark 14.1 now says
+  that the residual constant is `1/2` against the Lambert form and
+  `1/2 − (log 4)/r` (−0.193 for `r = 2`, −0.886 for `r = 1`) against the
+  four-scale form that the remark displays (exact data: −0.901 at `n = 600`,
+  `s = 0`); the evidence sentence after Remark 18.1 no longer calls the full
+  ratios decreasing (0.737, 0.738, 0.732 are not monotone; overall the ratio
+  rises to 0.754 at `N = 72` and falls to 0.664 at `N = 740`); and the
+  front-matter row no longer claims two-sided bounds for all `(b,u)`, since
+  the lower bound `u/2 − O(log u)` needs `b ≥ (u/2)(H_u − 1) + au`. The check
+  also proposed the exponential tilt of Proposition 18.2, and
+  further-questions item 5 is re-scoped with a dated note. The tests, none of
+  which used the delivered or the write's programs: its own recurrence for
+  `A_s(n)`, equal to the OEIS b-files of A135501 for `n ≤ 300` and A220894 for
+  `n ≤ 200`, run to `n = 600`; the sum of `A(b,u)` over `u` equal to `A_s(n)`
+  for `n ≤ 24`; `A(b,u)` exactly for `u ≤ 8`, `b ≤ 400` and `u ≤ 24`,
+  `b ≤ 44`, and in floating point for `u ≤ 120`, `b ≤ 400`, against (4.7),
+  (18.2) and (18.3) (29,160 cells); a re-derivation of Remark 18.1 and of
+  Proposition 4.2; the Cantelli margin at the saddle for `N ≤ 740` (0.197 to
+  0.43 for `r = 2`; negative at `u = 136, 138` inside the window at
+  `N = 740`); and 160-digit checks of the coefficient and of the inverse
+  constant out to `L = 10^16` and `v = 10^15`. The record is an unlabelled
+  dated paragraph at the end of Section 20. This was a careful reading with
+  numerical tests, not a formal verification.
 
 ## What the report does not claim
 
@@ -295,7 +350,11 @@ claim stated without proof, with source, sketch and what is missing:
   Report 109's and Report 110's question 2; (3) the consecutive-root-chain
   fraction of a longest unary path; (4) pointer to Part I's item 3; (5) the
   ratio frontier beyond Remark 18.1 (second order at the saddle; bounded
-  `α = b/u`; the part of the saddle window not covered for `r = 2`).
+  `α = b/u`; the part of the saddle window not covered for `r = 2`),
+  re-scoped after the independent check (dated note): Proposition 18.2 closes
+  the window and gives the limit 1/2 whenever `α − ½ log log u → ∞`, so the
+  second order and the limit for smaller `α`, in particular bounded `α`,
+  remain open.
 
 Superseded statements stay as printed with dated notes: Report 109's Theorem
 1.1 ("the coefficient of the next scale `n/log n` is not determined"), its
@@ -435,6 +494,12 @@ delivered `.tex` files, each 16 pages and warning-free). The log carries one
 notation longtable breaking across a page, as in other reports with
 longtables.
 
+Rebuilt on 5 October 2026 after the independent check, in a scratch copy with
+four pdfLaTeX passes: 45 pages, no errors, no undefined or multiply defined
+references, no duplicate destinations, no overfull or underfull boxes, and the
+same single infinite-glue message; the 141 labels resolve, and the 139 earlier
+ones keep their numbers (`.aux` compared with a build of the committed text).
+
 ## Delivered path → shipped path
 
 Report 110 (`110-orders-`; `README.md` replaced by this guide):
@@ -467,5 +532,6 @@ Two manuscripts (bundle Reports 110 and 109) → one report; base 110. Arrival
 `60f54ea06`, placement `9c995cefe`, write batch 103 (5 October 2026). Neither
 manuscript pins a ProveIt commit. Merge choices (base and order, the one proof
 printed once in Report 109's wording, the shape variable renamed in the moved
-text, the merged questions, the merged bibliography, the write's Remark 18.1)
+text, the merged questions, the merged bibliography, the write's Remark 18.1 and,
+after the independent check, Proposition 18.2)
 are listed in the article's front matter, "Provenance and merge decisions".
