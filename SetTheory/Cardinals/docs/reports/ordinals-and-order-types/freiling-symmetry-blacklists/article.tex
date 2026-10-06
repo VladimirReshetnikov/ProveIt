@@ -74,6 +74,12 @@
 \newcommand{\angles}[1]{\left\langle#1\right\rangle}
 \newcommand{\eps}{\varepsilon}
 \newcommand{\doi}[1]{\href{https://doi.org/#1}{doi:#1}}
+% Added by the ProveIt write phase (batch 114, 5 October 2026): dated notes
+% marked [write].
+\newcommand{\file}[1]{\nolinkurl{#1}}
+\newenvironment{writenote}[1][]{\par\smallskip\begingroup\small
+ \noindent\textbf{[write]}\if\relax\detokenize{#1}\relax\else~\textbf{#1.}\fi\ }%
+ {\par\endgroup\smallskip}
 
 \setlist[itemize]{leftmargin=1.5em,itemsep=0.35em,topsep=0.35em}
 \setlist[enumerate]{leftmargin=1.7em,itemsep=0.35em,topsep=0.35em}
@@ -156,6 +162,37 @@ research program about exact finite spectra, weak choice, Borel colourings,
 and generalized symmetry axioms.
 \end{abstract}
 
+\begin{writenote}[Status and trust boundary, added 5 October 2026, batch~114]
+This is an AI-assisted, unrefereed external manuscript (its status box says
+so), filed in ProveIt as the single-source research report
+\file{freiling-symmetry-blacklists} (provenance, the sources as the write
+read them, relation to the repository, the collected non-claims and the
+reading conventions are in Section~\ref{fbl:sec:provenance}). Its author
+line reads ``Research report prepared for Vladimir Reshetnikov''. No
+statement of the report is formalized in Lean or Rocq; the formalization
+plan of Section~\ref{fbl:sec:formal} is a proposal.
+\emph{What rests on what.} The partition of an arbitrary infinite system
+into $2k+1$ safe sets is Theorem~3 of de Bruijn and
+Erd\H{o}s~\cite{deBruijnErdos}, which the write read: the finite case of
+Corollary~\ref{fbl:cor:qcolor} and its low-degree-vertex induction are
+already there (note after Corollary~\ref{fbl:cor:weighted}). Tur\'an's
+theorem with its equality case is quoted without proof in
+Theorem~\ref{fbl:thm:critical}; propositional compactness from $\BPI$ in
+Theorem~\ref{fbl:thm:dbe}; the Kuratowski--Ulam and Mycielski theorems in
+Theorem~\ref{fbl:thm:perfect}; Tonelli's theorem in
+Theorem~\ref{fbl:thm:random}. Every other theorem, corollary, lemma and
+proposition is proved in the text; the intake and the write reread every
+proof and found no error. The exhaustive program \file{code/verification.py}
+checks the case $k=1$ for $n\le7$, the count $40$ by enumeration and the
+count $72{,}576$ only by evaluating \eqref{fbl:eq:critical-count} (note in
+Section~\ref{fbl:sec:computation}); it proves nothing beyond those cases. The
+source makes no historical-priority claim for its finite refinements
+``without a more exhaustive literature review'' (delivery README), and the
+write made no such review either. The write adds the notes marked [write],
+Section~\ref{fbl:sec:provenance} and Section~\ref{fbl:sec:further} with
+three propositions proved there.
+\end{writenote}
+
 \tableofcontents
 \newpage
 
@@ -188,7 +225,7 @@ regularity-based strengthening of Freiling's conclusion.\\
 \end{tabularx}
 \end{center}
 
-\subsection{Freiling symmetry in one line}
+\subsection{Freiling symmetry in one line}\label{fbl:sec:freiling}
 Freiling's axiom of symmetry concerns maps
 $f:\R\to[\R]^{\le\aleph_0}$ and asserts the existence of $x,y$ such that
 $y\notin f(x)$ and $x\notin f(y)$ \cite{Freiling}.  In the language of this
@@ -197,7 +234,26 @@ The finite problem below replaces ``countable'' by a fixed bound $k$, asks
 for much larger safe sets and exact counts, and then returns to infinite sets
 to study global partitions and definable relations.
 
-\subsection{The classical theorem that must be credited}
+\begin{writenote}[Freiling and Sierpi\'nski, 5 October 2026]
+The write confirmed the data of~\cite{Freiling} (J. Symbolic Logic
+\textbf{51}, no.~1, March 1986, 190--200, doi:10.2307/2273955) and read its
+abstract and reference list on the publisher's page, not its body. The
+abstract presents the axioms as based on ``some intuition of Stuart Davidson
+and an old theorem of Sierpi\'nski''; the reference list cites
+Sierpi\'nski's book~\cite{Sierpinski}, which the write did not read. The
+statement of the axiom above and its well-known equivalence with the
+negation of the continuum hypothesis in ZFC, usually credited to
+Sierpi\'nski, are therefore not checked here against Freiling's text or
+Sierpi\'nski's. This report proves only one direction of that
+equivalence, and only in the form of the remark after
+Corollary~\ref{fbl:cor:freiling}: under CH a well-ordering of $\R$ in type
+$\omega_1$ gives countable blacklists with no safe pair (each of two
+distinct reals precedes the other or follows it). The converse, that
+Freiling's axiom holds when CH fails, is neither stated nor used in this
+report.
+\end{writenote}
+
+\subsection{The classical theorem that must be credited}\label{fbl:sec:dbe-credit}
 De Bruijn and Erd\H{o}s proved in 1951 that if $\lvert F(x)\rvert\le k$ for
 all $x$, then the entire set is the union of $2k+1$ safe sets
 \cite{deBruijnErdos}.  Their paper explicitly adopts the Axiom of Choice and
@@ -206,6 +262,221 @@ infinite partition is therefore classical.  The point of this report is to
 refine the finite theory sharply, expose the exact extremizers, quantify the
 safe-set spectrum, and isolate the weak-choice and regularity questions that
 the classical formulation leaves hidden.
+
+\begin{writenote}[de Bruijn and Erd\H{o}s, read 5 October 2026]
+The write read the paper~\cite{deBruijnErdos} in full (the scan of the
+reprint in the Eindhoven University of Technology repository). It confirms
+the paragraph above: ``The Axiom of Choice is adopted throughout the
+paper'', and its Theorem~1 (a graph all of whose finite subgraphs are
+$k$-colourable is $k$-colourable) is deduced from Rado's selection theorem,
+with a proof by Tychonoff's theorem credited to Rabson and A.~Stone. Their
+Theorem~3 is Theorem~\ref{fbl:thm:dbe} below: for $f(b)\subseteq S\setminus
+\{b\}$ with $\lvert f(b)\rvert\le k$, $S$ is the union of $2k+1$
+\emph{independent} sets (their word for safe). Its proof for finite $S$ is
+the argument of Lemma~\ref{fbl:lem:edge-budget} and
+Corollary~\ref{fbl:cor:qcolor}: the graph has at most $k\lvert S\rvert$
+edges, hence a vertex joined to fewer than $2k+1$ others, and induction on
+$\lvert S\rvert$; the infinite case follows from Theorem~1. Their Theorem~4
+is the countable-colour statement of Question~\ref{fbl:q:countable}: if every
+$f(b)$ is finite, $S$ is the union of countably many independent sets
+(apply Theorem~3 to each $S_k=\{b:\lvert f(b)\rvert=k\}$). The paper says that
+Theorems~1, 3 and~4 were announced in Erd\H{o}s~\cite{Erdos1950}, which the
+write did not read. In the language of combinatorial set theory a map $F$
+with $x\notin F(x)$ is a \emph{set mapping} and a safe set a \emph{free
+set}; Hajnal's free set theorem~\cite{Hajnal} (not read) belongs to that
+literature. The source does not use this vocabulary, and the write did not
+survey that literature; this is one more reason to keep the source's
+priority caveat as it stands.
+\end{writenote}
+
+\subsection{Provenance, sources and reading conventions}
+\label{fbl:sec:provenance}
+\begin{writenote}[Added 5 October 2026, batch~114]
+\emph{Provenance.} The report is built from one manuscript, the archive
+\file{From_Finite_Blacklists_to_Freiling_Symmetry.zip} (wrapper directory of
+the same name, 6 files), which reached ProveIt's \file{docs/incoming} in the
+arrival commit \file{2399df2bd} (5~October 2026, ``New research reports''),
+outside the session bundle of the intake, and was placed as batch~114 in
+\file{99053b5d1}. The text is the delivered
+\file{From_Finite_Blacklists_to_Freiling_Symmetry.tex} (1{,}291 lines),
+shipped as \file{article.tex}; the delivered \file{verification.py} and
+\file{verification_output.txt} are shipped unchanged in \file{code/} and
+\file{data/}. The delivered 19-page PDF and \file{SHA256SUMS.txt} (four
+entries, all verified at placement) are not shipped; they and the delivery
+\file{README.txt} (staged at placement and replaced by the report README)
+are retrievable from the arrival commit. The package pins ProveIt revision
+\file{a763feee1f3703dc710d9b810b1de66168f1e266} (bibliography
+entry~\cite{ProveIt}); that commit is the batch-98A write commit of this
+repository and an ancestor of the commit \file{9ccf04eae} this write is
+based on. The status box calls the report ``AI-assisted'' and
+``unrefereed''; the author line reads ``Research report prepared for
+Vladimir Reshetnikov''. The package contains no e-mail address, no
+``prepared for private review'' line and no personal data. Single source:
+no merge choice was made. The write prefixed the 36 delivered labels with
+\file{fbl:} and updated every reference; it added the notes marked [write],
+this subsection, labels on eight delivered headings, one corollary, one
+conjecture and the thirteen questions (none had a label), four
+bibliography entries after the delivered ones, and
+Section~\ref{fbl:sec:further} with
+Propositions~\ref{fbl:prop:small}--\ref{fbl:prop:finite}. No statement,
+proof or number of the source was changed: the added propositions are the
+last numbered statements of their section and the added displays are
+unnumbered, so every delivered theorem and equation keeps its number.
+
+\emph{The sources, as the write read them} (5~October 2026).
+\begin{itemize}\raggedright
+\item de Bruijn and Erd\H{o}s~\cite{deBruijnErdos}: read in full (note
+ above). The reprint is headed ``Reprinted from Proceedings, Series A, 54,
+ No.~5 and Indag. Math., 13, No.~5, 1951'' with the single pagination
+ 371--373, and the paper was communicated at the meeting of 24~November
+ 1951. The bibliography's ``Indagationes Mathematicae \textbf{13} (1951),
+ 369--373'' is not supported by that copy, which gives 371--373 for both.
+\item Freiling~\cite{Freiling}: data, abstract and reference list read, body
+ not read (note in Section~\ref{fbl:sec:freiling}).
+\item L\"auchli~\cite{Lauchli} and Mycielski~\cite{Mycielski}: bibliographic
+ data confirmed through Crossref; the papers were not read. L\"auchli's
+ paper is in the delivered bibliography but cited nowhere in the text; see
+ Question~\ref{fbl:q:hierarchy} in Section~\ref{fbl:sec:further}.
+\item Not read: Glazer's dissertation and papers~\cite{GlazerThesis,
+ GlazerBox,GlazerTennenbaum} (motivation only), Cowen~\cite{Cowen1990,
+ Cowen1998}, Howard and Rubin~\cite{HowardRubin}, Kechris~\cite{Kechris},
+ and the uncited entries Tur\'an~\cite{Turan}, Jech~\cite{Jech} and
+ Bollob\'as~\cite{Bollobas}. The standard facts the proofs take from them
+ (propositional compactness from $\BPI$, the Kuratowski--Ulam and Mycielski
+ theorems, Tur\'an's theorem and its equality case) are used as the source
+ states them.
+\item The OEIS: the counts of distinct conflict graphs in
+ Section~\ref{fbl:sec:computation} are terms of A133686, labelled graphs
+ whose components have at most one cycle~\cite{OEIS}, and
+ $R_1,R_3,R_5=1,2,24$ are terms of A007079, labelled regular tournaments
+ on $2k+1$ nodes. The write identified both by searching the OEIS; the
+ source names neither. OEIS data are licensed CC BY-SA~4.0; nothing was
+ submitted.
+\end{itemize}
+
+\emph{What was checked at intake.} The batch-114 dossier read the
+manuscript in full and checked the block construction, the Tur\'an count
+$\binom t2q^2$, the arc-saturation step, formula~\eqref{fbl:eq:i3-formula},
+the component costs in the proof of Theorem~\ref{fbl:thm:k1-triples} and the
+partition optimization, the clique-fibre choice function and the Lindenbaum
+recursion; no error. Independent programs confirmed the tables of
+$A_2(n,1)$ and $A_3(n,1)$ for $n\le12$ from the closed forms, the critical
+counts, $R_5=24$ by brute force, and $I_{C_4}$, $I_{C_5}$. The delivered
+verifier, run on a copy, printed its recorded output. The write reread every
+proof, found no error, reran the verifier on a copy (about 6~seconds,
+output identical up to line endings), and made the computation reported in
+Section~\ref{fbl:sec:further}.
+
+\emph{Relation to the repository.}
+\begin{itemize}\raggedright
+\item \emph{Formal status.} No statement of this report is formalized in
+ Lean or Rocq, and its place in the collection confers no formal status.
+ The plan of Section~\ref{fbl:sec:formal} is a proposal; at the write's base
+ commit no Lean or Rocq file of the repository mentions blacklists, free
+ sets of set mappings, Freiling's axiom, $\SAP_k$ or the Boolean prime ideal theorem.
+\item \emph{Stale claims.} The source's one statement about the repository,
+ that it ``already contains substantial work on measurable box games and
+ infinite hat guessing'', is correct at the pin and at the write's base
+ commit: \file{measurable-box-games} (in this category, five Parts; title
+ ``Countable Information, Uncountably Many Boxes'') is unchanged between the
+ two. Nothing needed correcting. The bibliography entry~\cite{ProveItBoxes}
+ names the repository's owner as its author; that report's README records
+ how each of its Parts was produced.
+\item \file{measurable-box-games} is cited as background only: it shares the
+ motivation from Glazer's work and no theorem with this report.
+\item \file{bounded-width-power-set-compression} (same category and batch;
+ \emph{see also}): it too pairs an exact finite extremal theory with its
+ choiceless infinite form over ZF (there, an infinite set admitting a
+ bounded-width compression of its power set is Dedekind-infinite), and it
+ too asks for the weakest standard choice principle that suffices, naming
+ finite-choice schemes, the Boolean prime ideal theorem and compactness
+ principles among the candidates, as Questions~\ref{fbl:q:sap1}
+ and~\ref{fbl:q:hierarchy} do here. Neither source cites the other; no
+ theorem is shared.
+\item Batch~114 also filed \file{noisy-parity-cubes},
+ \file{robust-neutral-choice} and \file{random-bits-arithmetic-cuts} in the
+ same category; they share only the Glazer motivation and choice-built
+ nonmeasurable objects, and no theorem.
+\end{itemize}
+\end{writenote}
+
+\begin{writenote}[What is not claimed, collected from the source]
+The partition of an infinite system into $2k+1$ safe sets is de Bruijn and
+Erd\H{o}s's (1951), ``not \ldots\ this report'', and their paper assumes the
+Axiom of Choice. ``No exhaustive priority search has been made for the
+finite refinements proved here'', and the delivery README makes ``no
+historical-priority claim \ldots\ without a more exhaustive literature
+review''; the ledger of Section~\ref{fbl:sec:ledger} must be read the same
+way (see the reading conventions below). No endorsement, collaboration or
+authorship by Elliot Glazer is implied; the motivation rests on his public
+work only. The computation ``is verification, not proof''. The perfect safe
+set is ``classical tools, derived here'': Kuratowski--Ulam and Mycielski,
+with the application to blacklists spelled out. The regularity theorems do
+not yield a partition of $X$ into finitely many definable safe sets. The
+coefficientwise conjectures are ``supported only by the proved coefficients
+and small exhaustive checks'', and the exact choice strength of $\SAP_k$ is
+open. The research program and the formalization plan are proposals.
+\end{writenote}
+
+\begin{writenote}[Reading conventions]
+In the ledger of Section~\ref{fbl:sec:ledger}, ``no priority claim after an
+exhaustive search'' means that no priority is claimed, as a claim would need
+an exhaustive search; it does not say that one was made (the status box says
+the opposite). ``Proved here'' in that ledger means proved in this text, not
+first proved here. The colour set $2k+1$ in $c:X\to2k+1$ is the von Neumann
+ordinal $\{0,\dots,2k\}$. ``Safe'' is de Bruijn and Erd\H{o}s's
+``independent'' and the set-mapping literature's ``free''. The source reuses
+letters as follows; no symbol was renamed.
+\end{writenote}
+\begin{center}\small
+\renewcommand{\arraystretch}{1.12}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.17\textwidth}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{0.27\textwidth}@{}}
+\toprule
+Symbol & Meaning here (where) & Not to be read as\\
+\midrule
+$F$, $F(x)$ & the blacklist system and the blacklist of $x$ & the families
+ $\cA_e$, $\cA$\\
+$A_r(n,k)$, $A$ & the minimum number of safe $r$-sets
+ \eqref{fbl:eq:Ar-definition}; a safe set (Corollary~\ref{fbl:cor:weighted})
+ or a member of the family $\cA$ (proof of
+ Theorem~\ref{fbl:thm:choice-sandwich}) & each other\\
+$\cA_e$, $\cA$ & the $r$-sets containing the edge $e$ (proof of
+ Theorem~\ref{fbl:thm:asymptotic}); a family of $m$-element sets
+ (Theorem~\ref{fbl:thm:choice-sandwich}) & each other\\
+$\Cm_m$, $\Cm_{\mathrm{fin}}$ & choice for families of $m$-element sets,
+ for families of nonempty finite sets (Section~\ref{fbl:sec:further}) &
+ $C=R\cup R^{-1}$ (proof of Theorem~\ref{fbl:thm:perfect}); the cycle
+ $C_s$; countable choice\\
+$q$, $Q(H)$ & $q=2k+1$; the cost of a component $H$ (proof of
+ Theorem~\ref{fbl:thm:k1-triples}) & each other\\
+$t$, $t(G)$ & $t=r-1$, the number of blocks (Section~\ref{fbl:sec:critical});
+ the number of triangles of $G$ & each other\\
+$R$, $R_q$ & a relation on $X$ (Section~\ref{fbl:sec:definable}); the
+ number of labelled regular tournaments on $q$ points & each other\\
+$H_n$, $H$ & the conjectured minimizer
+ (Conjecture~\ref{fbl:conj:pseudoforest-poly}); a unicyclic component &
+ each other\\
+$s$, $a$ & a block size (proof of Theorem~\ref{fbl:thm:alpha}); the
+ remainder in $n=3a+s$ and the order of a component
+ (Theorem~\ref{fbl:thm:k1-triples}); $a$ is also a point of $A$ in the
+ sandwich proof & \\
+$m$ & the number of edges in \eqref{fbl:eq:i3-formula}; the size of the
+ sets in $\Cm_m$ & each other\\
+$c$, $c_n$ & a colouring or a colour; the correction \eqref{fbl:eq:cn} & \\
+$b(x)$, $L(x)$ & $\lvert F(x)\rvert$ and the list of $x$
+ (Theorem~\ref{fbl:thm:list}) & \\
+$e$, $e_F(S)$, $e(G)$ & a conflict edge; edge counts & \\
+$i_r$, $I_G(z)$, $\alpha$ & the number of safe (independent) $r$-sets, the
+ independence polynomial, the independence number & \\
+$\SAP_k$, $\SAP_{\mathrm{fin}}$, $\SAP^{+}_{\mathrm{fin}}$, $\BPI$ & the
+ partition principle for $k$-bounded systems; its analogues for finite
+ blacklists with countably many colours (Section~\ref{fbl:sec:further}); the
+ Boolean prime ideal theorem &
+ \\
+$P$, $\mu$ & a perfect set; a probability measure & \\
+\bottomrule
+\end{tabularx}
+\end{center}
 
 \section{The sparse symmetry-avoidance problem}
 
@@ -238,7 +509,7 @@ Thus safe sets are exactly the independent sets of $G_F$.
 For finite $X$, write $n=\lvert X\rvert$ and let
 $i_r(F)=i_r(G_F)$ denote the number of safe $r$-subsets.  The central finite
 spectrum is
-\begin{equation}\label{eq:Ar-definition}
+\begin{equation}\label{fbl:eq:Ar-definition}
    A_r(n,k)
    \defeq
    \min_F i_r(F),
@@ -246,7 +517,7 @@ spectrum is
 where the minimum ranges over all $k$-bounded systems on an $n$-element
 labelled set.
 
-\begin{problem}[Sparse symmetry-avoidance spectrum]\label{prob:main}
+\begin{problem}[Sparse symmetry-avoidance spectrum]\label{fbl:prob:main}
 Determine $A_r(n,k)$, the structure and number of its minimizers, and the
 corresponding infinite partition principle.  In particular:
 \begin{enumerate}[label=(\alph*)]
@@ -269,9 +540,9 @@ foundational content.
 For $S\subseteq X$, let $G_F[S]$ be the induced conflict graph and let
 $e_F(S)$ be its number of edges.
 
-\begin{lemma}[Induced edge budget]\label{lem:edge-budget}
+\begin{lemma}[Induced edge budget]\label{fbl:lem:edge-budget}
 For every finite $S\subseteq X$,
-\begin{equation}\label{eq:edge-budget}
+\begin{equation}\label{fbl:eq:edge-budget}
    e_F(S)
    \le
    \sum_{x\in S}\lvert F(x)\cap S\rvert
@@ -289,10 +560,10 @@ Consequently every nonempty finite induced subgraph has average degree at
 most $2k$ and hence a vertex of degree at most $2k$.  A more useful local
 version allows the budget to vary from point to point.
 
-\begin{theorem}[Heterogeneous list theorem]\label{thm:list}
+\begin{theorem}[Heterogeneous list theorem]\label{fbl:thm:list}
 Let $X$ be finite, put $b(x)=\lvert F(x)\rvert$, and assign a finite list of
 colours $L(x)$ to each $x\in X$.  If
-\begin{equation}\label{eq:local-list}
+\begin{equation}\label{fbl:eq:local-list}
           \lvert L(x)\rvert\ge 2b(x)+1
           \qquad(x\in X),
 \end{equation}
@@ -307,14 +578,14 @@ $d_{G_F[S]}(x)\ge 2b(x)+1$.  Then
   2e_F(S)=\sum_{x\in S}d_{G_F[S]}(x)
   \ge 2\sum_{x\in S}b(x)+\lvert S\rvert,
 \]
-contradicting \cref{lem:edge-budget}.  Hence some $x\in S$ has
+contradicting \cref{fbl:lem:edge-budget}.  Hence some $x\in S$ has
 $d_{G_F[S]}(x)\le 2b(x)$.  Remove such a vertex repeatedly.  Colour the
 vertices in reverse removal order.  When $x$ is restored, at most $2b(x)$
 colours are forbidden by already coloured neighbours, while its list has at
 least $2b(x)+1$ colours.
 \end{proof}
 
-\begin{corollary}[Finite partition bound]\label{cor:qcolor}
+\begin{corollary}[Finite partition bound]\label{fbl:cor:qcolor}
 Every finite $k$-bounded blacklist system is the union of
 \[
               q\defeq 2k+1
@@ -322,7 +593,7 @@ Every finite $k$-bounded blacklist system is the union of
 safe sets.
 \end{corollary}
 
-\begin{corollary}[Weighted safe set]\label{cor:weighted}
+\begin{corollary}[Weighted safe set]\label{fbl:cor:weighted}
 If nonnegative weights $w(x)$ are assigned to a finite $k$-bounded system,
 then some safe set $A$ satisfies
 \[
@@ -332,8 +603,19 @@ then some safe set $A$ satisfies
 \end{corollary}
 
 \begin{proof}
-Apply \cref{cor:qcolor} and take a colour class of maximum total weight.
+Apply \cref{fbl:cor:qcolor} and take a colour class of maximum total weight.
 \end{proof}
+
+\begin{writenote}[Credit, 5 October 2026]
+Corollary~\ref{fbl:cor:qcolor}, with the proof given here for constant
+lists (at most $k\lvert S\rvert$ edges, so a vertex of degree at most $2k$,
+then induction), is the finite case of Theorem~3 of de Bruijn and
+Erd\H{o}s~\cite{deBruijnErdos} and is proved there the same way (note in
+Section~\ref{fbl:sec:dbe-credit}). Their paper has no list
+version: Theorem~\ref{fbl:thm:list}, with lists of size $2\lvert
+F(x)\rvert+1$ varying from point to point, and
+Corollary~\ref{fbl:cor:weighted} are not in it.
+\end{writenote}
 
 \section{The exact finite threshold}
 
@@ -341,9 +623,9 @@ The colouring bound immediately gives a safe set of size
 $\lceil n/q\rceil$.  The next result shows that no improvement is possible,
 for any value of $n$.
 
-\begin{theorem}[Exact finite avoidance number]\label{thm:alpha}
+\begin{theorem}[Exact finite avoidance number]\label{fbl:thm:alpha}
 For every $n\ge1$ and $k\ge0$,
-\begin{equation}\label{eq:alpha}
+\begin{equation}\label{fbl:eq:alpha}
   \min_F \alpha(G_F)
   =
   \left\lceil\frac{n}{2k+1}\right\rceil.
@@ -351,7 +633,7 @@ For every $n\ge1$ and $k\ge0$,
 \end{theorem}
 
 \begin{proof}
-The lower bound follows from \cref{cor:qcolor}: one of the $q=2k+1$ colour
+The lower bound follows from \cref{fbl:cor:qcolor}: one of the $q=2k+1$ colour
 classes has at least $\lceil n/q\rceil$ vertices.
 
 For sharpness, partition the vertex set into blocks of size at most $q$, with
@@ -365,10 +647,10 @@ one point from each block.  Its maximum size is therefore the number of
 blocks.
 \end{proof}
 
-\begin{corollary}[Sharp threshold for a safe $r$-set]\label{cor:threshold}
+\begin{corollary}[Sharp threshold for a safe $r$-set]\label{fbl:cor:threshold}
 For $r\ge2$, every $k$-bounded system on $n$ points has a safe $r$-set if
 and only if
-\begin{equation}\label{eq:threshold}
+\begin{equation}\label{fbl:eq:threshold}
        n>(r-1)(2k+1).
 \end{equation}
 Equivalently, the least forcing value is
@@ -378,14 +660,14 @@ Equivalently, the least forcing value is
 \end{corollary}
 
 This exact threshold is the first answer to
-\cref{prob:main}.  Its equality case is much more rigid than the proof of the
+\cref{fbl:prob:main}.  Its equality case is much more rigid than the proof of the
 lower bound suggests.
 
-\section{Critical rigidity and exact enumeration}
+\section{Critical rigidity and exact enumeration}\label{fbl:sec:critical}
 
 Put $q=2k+1$ and $t=r-1$.  The critical size is $n=tq$.
 
-\begin{theorem}[Classification at the last failing value]\label{thm:critical}
+\begin{theorem}[Classification at the last failing value]\label{fbl:thm:critical}
 Let $F$ be a $k$-bounded blacklist system on $n=tq$ points, where
 $q=2k+1$ and $t\ge1$.  The following are equivalent.
 \begin{enumerate}[label=(\roman*)]
@@ -414,7 +696,7 @@ Therefore
  =ktq
  =kn.
 \end{align*}
-On the other hand, \cref{lem:edge-budget} gives $e(G)\le kn$.  Equality
+On the other hand, \cref{fbl:lem:edge-budget} gives $e(G)\le kn$.  Equality
 holds throughout.  Equality in Tur\'an's theorem forces $\overline G$ to be
 the balanced complete $t$-partite graph, hence $G$ is $tK_q$.
 
@@ -432,10 +714,10 @@ conflict graph with exactly $k$ outgoing arcs at every point.
 Let $R_q$ be the number of regular tournaments on a fixed labelled
 $q$-element vertex set.  Regular tournaments exist because $q$ is odd.
 
-\begin{corollary}[Number of labelled critical systems]\label{cor:critical-count}
+\begin{corollary}[Number of labelled critical systems]\label{fbl:cor:critical-count}
 The number of labelled $k$-bounded systems on $n=tq$ points with no safe
 $(t+1)$-set is
-\begin{equation}\label{eq:critical-count}
+\begin{equation}\label{fbl:eq:critical-count}
   \boxed{
   \frac{(tq)!}{(q!)^t t!}\,R_q^t }.
 \end{equation}
@@ -463,9 +745,9 @@ question is how rapidly it grows after the threshold.
 
 \subsection{Safe pairs: an exact formula}
 
-\begin{theorem}[Exact pair spectrum]\label{thm:pairs}
+\begin{theorem}[Exact pair spectrum]\label{fbl:thm:pairs}
 For all $n\ge1$ and $k\ge0$,
-\begin{equation}\label{eq:pairs}
+\begin{equation}\label{fbl:eq:pairs}
    \boxed{
    A_2(n,k)=\max\left\{0,\binom n2-kn\right\}. }
 \end{equation}
@@ -476,7 +758,7 @@ There are at most $kn$ conflict edges, so at least
 $\binom n2-kn$ pairs are safe.  The count is nonnegative.
 
 If $n\le2k+1$, orient the complete graph with maximum outdegree at most $k$
-as in the proof of \cref{thm:alpha}; there are no safe pairs.  If
+as in the proof of \cref{fbl:thm:alpha}; there are no safe pairs.  If
 $n>2k+1$, label the vertices by $\Z/n\Z$ and set
 \[
        F(i)=\{i+1,i+2,\ldots,i+k\}\pmod n.
@@ -489,9 +771,9 @@ exactly $kn$ edges and the lower bound is attained.
 We use the convention $\binom ab=0$ when $b<0$ or $b>a$.
 
 \begin{theorem}[Universal lower bound and asymptotic sharpness]
-\label{thm:asymptotic}
+\label{fbl:thm:asymptotic}
 For every $n,k,r$,
-\begin{equation}\label{eq:union-lower}
+\begin{equation}\label{fbl:eq:union-lower}
  A_r(n,k)
  \ge
  \max\left\{0,
@@ -506,17 +788,17 @@ If $n>2k+1$, then
  \nonumber\\
  &+n\binom{2k}{2}\binom{n-3}{r-3}
  +\binom{kn}{2}\binom{n-4}{r-4}.
- \label{eq:bonf-upper}
+ \label{fbl:eq:bonf-upper}
 \end{align}
 Consequently, for fixed $k$ and $r\ge2$,
-\begin{equation}\label{eq:asymptotic}
+\begin{equation}\label{fbl:eq:asymptotic}
  A_r(n,k)
  =
  \binom nr-kn\binom{n-2}{r-2}
  +O_{k,r}(n^{r-2}),
 \end{equation}
 and hence
-\begin{equation}\label{eq:density-asymptotic}
+\begin{equation}\label{fbl:eq:density-asymptotic}
  \frac{A_r(n,k)}{\binom nr}
  =1-\frac{k r(r-1)}{n-1}+O_{k,r}(n^{-2}).
 \end{equation}
@@ -527,10 +809,10 @@ For each conflict edge $e$, let $\cA_e$ be the family of $r$-subsets
 containing $e$.  Then $\lvert\cA_e\rvert=\binom{n-2}{r-2}$.  Since there are
 at most $kn$ conflict edges, the union bound shows that at most
 $kn\binom{n-2}{r-2}$ subsets are unsafe, proving
-\cref{eq:union-lower}.
+\cref{fbl:eq:union-lower}.
 
 For the upper bound on the minimum, use the circulant construction from
-\cref{thm:pairs}.  Its conflict graph is $2k$-regular with $kn$ edges.
+\cref{fbl:thm:pairs}.  Its conflict graph is $2k$-regular with $kn$ edges.
 Bonferroni's inequality gives
 \[
  \left|\bigcup_e\cA_e\right|
@@ -542,9 +824,9 @@ There are exactly $n\binom{2k}{2}$ pairs of incident edges, each lying in
 $\binom{n-3}{r-3}$ common $r$-sets.  The number of disjoint edge pairs is at
 most $\binom{kn}{2}$, and each lies in $\binom{n-4}{r-4}$ common $r$-sets.
 Subtracting the resulting lower bound on unsafe sets from $\binom nr$ proves
-\cref{eq:bonf-upper}.  The two error terms are
+\cref{fbl:eq:bonf-upper}.  The two error terms are
 $O_{k,r}(n^{r-2})$, and division by $\binom nr$ gives
-\cref{eq:density-asymptotic}.
+\cref{fbl:eq:density-asymptotic}.
 \end{proof}
 
 The first correction has a transparent interpretation: to first order, each
@@ -558,16 +840,16 @@ connected component contains at most one cycle.  This permits an exact safe
 triple count.
 
 \begin{theorem}[Exact safe triples for one blacklist per point]
-\label{thm:k1-triples}
+\label{fbl:thm:k1-triples}
 For $n<3$, $A_3(n,1)=0$.  For $n\ge3$, write $n=3a+s$ with
 $s\in\{0,1,2\}$.  Then
-\begin{equation}\label{eq:k1-triples}
+\begin{equation}\label{fbl:eq:k1-triples}
  \boxed{
  A_3(n,1)
  =\binom n3-n(n-2)+c_n, }
 \end{equation}
 where
-\begin{equation}\label{eq:cn}
+\begin{equation}\label{fbl:eq:cn}
  c_n=
  \begin{cases}
     2a,   &s=0,\\
@@ -589,7 +871,7 @@ toward an arbitrary root.  Every outdegree is at most one.
 
 For any graph $G$ with $m$ edges, degrees $d(v)$, and $t(G)$ triangles,
 inclusion--exclusion on the edges contained in a triple gives
-\begin{equation}\label{eq:i3-formula}
+\begin{equation}\label{fbl:eq:i3-formula}
  i_3(G)
  =\binom n3-m(n-2)
    +\sum_v\binom{d(v)}2-t(G).
@@ -611,10 +893,28 @@ triangle, whence again $Q(H)\ge s$.
 Thus a component of size three costs at least $2$, while every other
 component of size $s\ge4$ costs at least $s$.  Minimizing the total cost over
 partitions of $n$ into integers at least three gives exactly
-\cref{eq:cn}: use as many $3$'s as possible, with one $4$ or one $5$ to
-absorb a nonzero remainder.  Substitution into \cref{eq:i3-formula} proves
+\cref{fbl:eq:cn}: use as many $3$'s as possible, with one $4$ or one $5$ to
+absorb a nonzero remainder.  Substitution into \cref{fbl:eq:i3-formula} proves
 the result, and the displayed cycle unions attain equality.
 \end{proof}
+
+\begin{writenote}[A step made explicit, 5 October 2026]
+The step ``a minimizer may be assumed to have all components unicyclic''
+needs that a pseudoforest on $n\ge3$ vertices to which no edge can be added
+without leaving the class has only unicyclic components. Suppose such a
+pseudoforest has a tree component $T$. If $\lvert T\rvert\ge3$, two
+nonadjacent vertices of $T$ exist, and joining them makes $T$ unicyclic. If
+$\lvert T\rvert\le2$, then $n\ge3$ gives another component $U$, and an edge
+from $T$ to $U$ yields a tree if $U$ is a tree and a unicyclic component if
+$U$ is unicyclic. Either way an edge can be added, a contradiction. Adding
+edges never increases $i_3$, so starting from any minimizer and adding
+edges while possible reaches a minimizer with all components unicyclic,
+hence with $m=n$. The minimum over partitions is as stated: a part of size
+$3$ costs $2=3-1$ and a part of size $s\ge4$ costs at least $s$, so the
+total cost is at least $n$ minus the number of parts of size~$3$, which is
+at most $a$ when $s=0$ and at most $a-1$ otherwise (the remainder must be
+absorbed by a part of size at least $4$); this gives $2a$, $2a+2$, $2a+3$.
+\end{writenote}
 
 The first values are:
 \begin{center}
@@ -625,12 +925,12 @@ $A_3(n,1)$&0&0&0&0&0&0&6&15&27&48&75&108
 \end{tabular}
 \end{center}
 
-\section{Algorithms and certificates}
+\section{Algorithms and certificates}\label{fbl:sec:algorithms}
 
-The proof of \cref{thm:list} is constructive.
+The proof of \cref{fbl:thm:list} is constructive.
 
 \begin{proposition}[Linear-time peeling after graph construction]
-\label{prop:algorithm}
+\label{fbl:prop:algorithm}
 Given the blacklist lists explicitly, one can produce the elimination order
 and a safe $(2k+1)$-colouring in
 $O(n+\sum_x|F(x)|+e(G_F))$ time, using adjacency lists and a queue of
@@ -652,7 +952,7 @@ This yields three useful certificates.
 $\lceil n/(2k+1)\rceil$ by its largest colour class.
 \item At the critical size $n=(r-1)(2k+1)$, failure of a safe $r$-set can be
 verified simply by checking the block decomposition and regular tournament
-conditions of \cref{thm:critical}.
+conditions of \cref{fbl:thm:critical}.
 \item A claimed extremizer can be checked in time linear in its explicit
 blacklist data, rather than by searching all $r$-subsets.
 \end{itemize}
@@ -661,11 +961,26 @@ The optimization problem above threshold remains nontrivial: finding a
 maximum independent set is hard in broad sparse graph classes, even though
 the universal guarantee and its certificate are easy.
 
+\begin{writenote}[Scope of the third certificate, 5 October 2026]
+The text proves a linear-time check for two kinds of extremizer only: the
+critical systems, through the block and regular-tournament conditions of
+Theorem~\ref{fbl:thm:critical} (second item), and the minimizers of
+$A_2(n,k)$, since $i_2(F)=\binom n2-e(G_F)$ and the proof of
+Theorem~\ref{fbl:thm:pairs} shows that a system is a minimizer exactly when
+$e(G_F)=\min\{kn,\binom n2\}$. For a claimed minimizer of $A_r(n,k)$ with
+$r\ge3$, or of $\alpha(G_F)$ above the critical size, the text gives no such
+check: verifying it needs the value $A_r(n,k)$, unknown in general
+(Question~\ref{fbl:q:exact}), or an upper bound on the independence number.
+The third item is therefore stated in Section~\ref{fbl:sec:further} as an
+open question for those cases (item~\ref{fbl:fq:certificate}). The
+hardness sentence above is the source's, given without a reference.
+\end{writenote}
+
 \section{The infinite partition and its choice content}
 
 \subsection{The classical compactness extension}
 
-\begin{theorem}[de Bruijn--Erd\H{o}s, relation form]\label{thm:dbe}
+\begin{theorem}[de Bruijn--Erd\H{o}s, relation form]\label{fbl:thm:dbe}
 Assume a graph-colouring compactness principle, for example the Boolean
 Prime Ideal Theorem.  If $F:X\to[X]^{\le k}$, then $X$ is the union of
 $2k+1$ safe sets.
@@ -673,7 +988,7 @@ $2k+1$ safe sets.
 
 \begin{proof}
 Every finite induced subsystem is $(2k+1)$-colourable by
-\cref{cor:qcolor}.  Graph-colouring compactness extends the compatible
+\cref{fbl:cor:qcolor}.  Graph-colouring compactness extends the compatible
 finite constraints to a colouring of all of $X$.  This is the relation
 problem proved by de Bruijn and Erd\H{o}s \cite{deBruijnErdos}; the weaker
 hypothesis $\BPI$ suffices because it is equivalent to propositional
@@ -695,9 +1010,9 @@ exists $c:X\to 2k+1$ such that every colour class is safe.
 \end{quote}
 \end{definition}
 
-\begin{theorem}[Choice sandwich]\label{thm:choice-sandwich}
+\begin{theorem}[Choice sandwich]\label{fbl:thm:choice-sandwich}
 Over ZF, for every $k\ge1$,
-\begin{equation}\label{eq:choice-sandwich}
+\begin{equation}\label{fbl:eq:choice-sandwich}
  \BPI
  \Longrightarrow \SAP_k
  \Longrightarrow
@@ -707,7 +1022,7 @@ where $\Cm_m$ denotes the axiom of choice for families of $m$-element sets.
 \end{theorem}
 
 \begin{proof}
-The first implication is \cref{thm:dbe}.  For the second, fix
+The first implication is \cref{fbl:thm:dbe}.  For the second, fix
 $2\le m\le k+1$ and a family $\cA$ of pairwise arbitrary $m$-element sets.
 Disjointify it by taking
 \[
@@ -725,14 +1040,25 @@ a choice function for $\cA$.
 \end{proof}
 
 Since choice for pairs is not provable in ZF, neither is $\SAP_k$ for any
-$k\ge1$.  On the other hand, \cref{eq:choice-sandwich} leaves a large gap:
+$k\ge1$.  On the other hand, \cref{fbl:eq:choice-sandwich} leaves a large gap:
 $\BPI$ is substantially stronger than the displayed bounded finite-choice
 principles.  Locating $\SAP_k$ in that gap is one of the main open problems
 proposed here.
 
+\begin{writenote}[5 October 2026]
+For $k=1$ the lower end can be raised: $\SAP_1$ also implies choice for
+triples (Proposition~\ref{fbl:prop:three}). The finite-blacklist analogue,
+de Bruijn and Erd\H{o}s's countable-colour theorem, lies over ZF between
+$\BPI$ and choice for families of nonempty finite sets
+(Proposition~\ref{fbl:prop:finite}). The comparison of $\BPI$ with the
+finite-choice principles in the preceding paragraph is stated without proof
+or reference (item~\ref{fbl:fq:hierarchy} of
+Section~\ref{fbl:sec:further}).
+\end{writenote}
+
 \subsection{Well-orderable sets require no additional choice}
 
-\begin{theorem}[ZF theorem for well-orderable domains]\label{thm:wellorderable}
+\begin{theorem}[ZF theorem for well-orderable domains]\label{fbl:thm:wellorderable}
 In ZF, if $X$ is well-orderable and $F:X\to[X]^{\le k}$, then $X$ has a
 safe $(2k+1)$-colouring.
 \end{theorem}
@@ -741,7 +1067,7 @@ safe $(2k+1)$-colouring.
 Introduce propositional atoms $p_{x,c}$ for $x\in X$ and
 $c<2k+1$, and impose the finite clauses saying that each point receives
 exactly one colour and conflict neighbours receive different colours.
-Every finite set of clauses is satisfiable by \cref{cor:qcolor}.
+Every finite set of clauses is satisfiable by \cref{fbl:cor:qcolor}.
 
 Because $X$ is well-orderable, the set of all formulas in this language is
 well-orderable.  The usual Lindenbaum construction can therefore be carried
@@ -758,7 +1084,7 @@ Thus any choiceless counterexample to $\SAP_k$ must live on a genuinely
 non-well-orderable set.  This is exactly the kind of boundary between local
 finite mathematics and global choice that motivates Glazer's work.
 
-\section{Definable infinite relations: perfect and random safe sets}
+\section{Definable infinite relations: perfect and random safe sets}\label{fbl:sec:definable}
 
 The unrestricted partition problem is choice-sensitive.  Borel or measurable
 regularity produces a different and much stronger kind of conclusion: one
@@ -767,7 +1093,7 @@ countable.
 
 \subsection{A perfect safe set from Baire category}
 
-\begin{theorem}[Perfect symmetry avoidance]\label{thm:perfect}
+\begin{theorem}[Perfect symmetry avoidance]\label{fbl:thm:perfect}
 Let $X$ be a perfect Polish space and let $R\subseteq X^2$ be a Borel
 irreflexive relation whose vertical sections
 \[
@@ -792,7 +1118,7 @@ $C=R\cup R^{-1}$ is therefore meagre.  Mycielski's theorem supplies a
 perfect set $P$ whose distinct pairs avoid $C$ \cite{Mycielski,Kechris}.
 \end{proof}
 
-\begin{corollary}[Definable strengthening of Freiling symmetry]
+\begin{corollary}[Definable strengthening of Freiling symmetry]\label{fbl:cor:freiling}
 A Borel countable-valued blacklist relation on $\R$ not only has a safe
 pair; it has a perfect, hence continuum-sized, safe set.
 \end{corollary}
@@ -804,7 +1130,7 @@ blacklists and destroys every safe pair.  Such a relation cannot be Borel.
 
 \subsection{An almost surely safe countable sample}
 
-\begin{theorem}[Random countable avoidance]\label{thm:random}
+\begin{theorem}[Random countable avoidance]\label{fbl:thm:random}
 Let $(X,\mu)$ be an atomless standard probability space and let
 $R\subseteq X^2$ be product-measurable with every vertical section $R_x$
 countable.  If $(X_n)_{n\in\N}$ are independent samples with law $\mu$, then
@@ -838,11 +1164,11 @@ countable blacklists are almost surely avoided simultaneously by an entire
 random sequence.
 
 \subsection{What these regularity theorems do not say}
-Neither \cref{thm:perfect,thm:random} automatically yields a partition of
+Neither \cref{fbl:thm:perfect,fbl:thm:random} automatically yields a partition of
 all of $X$ into finitely many definable safe sets.  Perfect-set extraction,
 almost-sure sampling, ordinary finite colouring, Borel colouring, and
 measurable colouring are different problems.  Their separation is a major
-source of further questions in \cref{sec:questions}.
+source of further questions in \cref{fbl:sec:questions}.
 
 \section{Finite versus infinite: the phase diagram}
 
@@ -871,7 +1197,7 @@ by compactness and weak choice.  The definable infinite form is dramatically
 more regular than either: category and measure amplify a pairwise symmetry
 intuition into perfect or countably infinite safe sets.
 
-\section{Computational verification}
+\section{Computational verification}\label{fbl:sec:computation}
 
 The accompanying script \texttt{verification.py} performs exhaustive checks
 for all $1$-bounded systems on at most seven labelled vertices.  A vertex has
@@ -899,14 +1225,40 @@ All checks passed.
 \end{verbatim}
 
 The computation is verification, not proof.  The proofs in
-\cref{thm:alpha,thm:critical,thm:pairs,thm:asymptotic,thm:k1-triples} are
+\cref{fbl:thm:alpha,fbl:thm:critical,fbl:thm:pairs,fbl:thm:asymptotic,fbl:thm:k1-triples} are
 independent of the search.
 
-\section{A proposed research program}\label{sec:questions}
+\begin{writenote}[What the program computes, 5 October 2026]
+The shipped \file{code/verification.py} (standard library only) does four
+things. (1)~For each $n\le7$ it runs through all $n^n$ one-bounded systems,
+collects their distinct conflict graphs (the second column, which is
+A133686 of the OEIS, labelled graphs whose components have at most one
+cycle, as the proof of Theorem~\ref{fbl:thm:k1-triples} predicts), and
+computes the coefficientwise minimum of their independence polynomials; it
+asserts that the coefficients of $z^2$ and $z^3$ equal
+\eqref{fbl:eq:pairs} and \eqref{fbl:eq:k1-triples} with $k=1$, and that
+the largest $r$ with a positive minimum is $\lceil n/3\rceil$. The column
+headed \texttt{alpha\_min} prints that theorem value after the assertion.
+(2)~It counts the systems on six points with no safe triple among all
+$6^6=46{,}656$ one-bounded systems: $40$, by enumeration. (3)~It finds
+$R_3=2$ and $R_5=24$ by running through all orientations of $K_3$ and
+$K_5$. (4)~It obtains $72{,}576$ by evaluating
+\eqref{fbl:eq:critical-count} with $R_5=24$; no two-bounded system is
+enumerated, so this count rests on Corollary~\ref{fbl:cor:critical-count}.
+The program writes no file. The write reran it on a copy (Windows, Python
+3.14.4): about 6~seconds, output identical to
+\file{data/verification_output.txt} up to line endings. For $n\le7$ every
+coefficient of $I_{H_n}$ beyond $z^3$ vanishes, so these checks do cover
+every coefficient of Conjecture~\ref{fbl:conj:pseudoforest-poly} there, as
+the text after it says; Proposition~\ref{fbl:prop:small} turns this into a
+proof for $n\le9$.
+\end{writenote}
+
+\section{A proposed research program}\label{fbl:sec:questions}
 
 \subsection{The choice-theoretic core}
 
-\begin{question}[Exact strength of $\SAP_1$]
+\begin{question}[Exact strength of $\SAP_1$]\label{fbl:q:sap1}
 Is $\SAP_1$ equivalent over ZF to choice for pairs, to a known permutation
 or multiple-choice principle, or to a strictly stronger principle?
 \end{question}
@@ -916,13 +1268,13 @@ components may have cycles, one-way tails, or highly branching inverse
 trees.  Colouring all components simultaneously appears to require choosing
 phases or markers, but much less than arbitrary propositional compactness.
 
-\begin{question}[The hierarchy $\SAP_k$]
+\begin{question}[The hierarchy $\SAP_k$]\label{fbl:q:hierarchy}
 Do the principles $\SAP_k$ form a strict hierarchy?  Does some finite $k$
 reach $\BPI$?  What are their implications among the standard principles in
 Howard--Rubin's catalogue \cite{HowardRubin}?
 \end{question}
 
-\begin{question}[Choice-free countable-colour theorem]
+\begin{question}[Choice-free countable-colour theorem]\label{fbl:q:countable}
 De Bruijn and Erd\H{o}s also proved that finite, but not uniformly bounded,
 blacklists admit a countable safe partition under their ambient choice
 assumptions.  What is the exact ZF strength of that statement?
@@ -930,9 +1282,9 @@ assumptions.  What is the exact ZF strength of that statement?
 
 \subsection{The finite spectrum}
 
-\begin{question}[Exact $A_r(n,k)$]
+\begin{question}[Exact $A_r(n,k)$]\label{fbl:q:exact}
 Determine $A_r(n,k)$ beyond pairs and the case $(r,k)=(3,1)$.  The asymptotic
-in \cref{thm:asymptotic} fixes the first two orders but leaves an
+in \cref{fbl:thm:asymptotic} fixes the first two orders but leaves an
 $O(n^{r-2})$ optimization problem involving overlap patterns among conflict
 edges.
 \end{question}
@@ -944,7 +1296,7 @@ For a graph $G$, let
 be its independence polynomial.
 
 \begin{conjecture}[Coefficientwise pseudoforest minimizer]
-\label{conj:pseudoforest-poly}
+\label{fbl:conj:pseudoforest-poly}
 For $n\ge3$, among all $n$-vertex pseudoforests, the independence polynomial
 is coefficientwise minimized by
 \[
@@ -970,7 +1322,15 @@ according to $n\bmod 3$.
 The theorem on safe triples proves one coefficient of this conjecture, and
 the exhaustive search verifies all coefficients for $n\le7$.
 
-\begin{conjecture}[Critical block minimization]
+\begin{writenote}[5 October 2026]
+Theorem~\ref{fbl:thm:pairs} with $k=1$ proves the coefficient of $z^2$ as
+well. Proposition~\ref{fbl:prop:small} proves both conjectures in their
+smallest cases (this one for $n\le9$), and an exact computation of the write
+confirms this one for $n\le18$ (item~\ref{fbl:fq:pseudoforest} of
+Section~\ref{fbl:sec:further}).
+\end{writenote}
+
+\begin{conjecture}[Critical block minimization]\label{fbl:conj:critical-block}
 When $q=2k+1$ divides $n$, the disjoint union $(n/q)K_q$ minimizes the
 independence polynomial coefficientwise among conflict graphs of
 $k$-bounded systems.
@@ -979,63 +1339,63 @@ $k$-bounded systems.
 The divisibility hypothesis matters.  For example, with $k=1$ and $n=4$,
 $C_4$ has fewer independent pairs than $K_3\sqcup K_1$.
 
-\begin{question}[Stability and supersaturation]
+\begin{question}[Stability and supersaturation]\label{fbl:q:stability}
 If a critical or near-critical system has very few safe $r$-sets, must it be
 close, in edit distance, to a union of regular-tournament blocks?  Find sharp
 supersaturation inequalities above $n=(r-1)(2k+1)$.
 \end{question}
 
-\begin{question}[Enumeration]
+\begin{question}[Enumeration]\label{fbl:q:enumeration}
 Enumerate all minimizers of $A_r(n,k)$ and obtain asymptotics for their
 number.  At the exact threshold the answer is
-\cref{eq:critical-count}; beyond it, one expects a mixture of tournament
+\cref{fbl:eq:critical-count}; beyond it, one expects a mixture of tournament
 counts and sparse stability theory.
 \end{question}
 
 \subsection{Definability and regularity}
 
-\begin{question}[Borel partition number]
+\begin{question}[Borel partition number]\label{fbl:q:borel}
 For a Borel $k$-bounded blacklist relation on a standard Borel space, is a
 Borel safe partition into finitely many pieces always possible?  If not,
 what is the optimal Borel chromatic bound, and how does it depend on
 additional bounds on incoming sections?
 \end{question}
 
-\begin{question}[Measurable positive safe sets]
-Under the hypotheses of \cref{thm:random}, when must there exist a measurable
+\begin{question}[Measurable positive safe sets]\label{fbl:q:measurable}
+Under the hypotheses of \cref{fbl:thm:random}, when must there exist a measurable
 safe set of positive measure?  What is the best universal measure bound
 under measure-preserving, bounded-indegree, or graphing assumptions?
 \end{question}
 
-\begin{question}[Regularity strength in ZF]
+\begin{question}[Regularity strength in ZF]\label{fbl:q:regularity}
 Which fragments of dependent choice or Baire-category regularity suffice for
-\cref{thm:perfect,thm:random}?  Can their exact foundational strengths be
+\cref{fbl:thm:perfect,fbl:thm:random}?  Can their exact foundational strengths be
 separated from $\SAP_k$?
 \end{question}
 
 \subsection{Cardinal, probabilistic, and higher-arity extensions}
 
-\begin{question}[Cardinal blacklists]
+\begin{question}[Cardinal blacklists]\label{fbl:q:cardinal}
 For infinite cardinals $\kappa$, study assignments
 $F:X\to[X]^{\le\kappa}$.  Determine the least number of safe classes, the
 largest forced safe cardinality, and the relation to generalized Freiling
 principles and cardinal arithmetic.
 \end{question}
 
-\begin{question}[Random blacklist systems]
+\begin{question}[Random blacklist systems]\label{fbl:q:random}
 In a random $k$-out directed model, determine the typical independence
 number, safe-set polynomial, fluctuations, and the gap between typical and
 worst-case behaviour.  The worst-case value is $n/(2k+1)$, while random
 sparse graphs should have substantially larger safe sets.
 \end{question}
 
-\begin{question}[Hypergraph avoidance]
+\begin{question}[Hypergraph avoidance]\label{fbl:q:hypergraph}
 Allow each point to forbid configurations of arity $d>2$.  Find the finite
 threshold, compactness strength, and measurable perfect-set analogues for
 safe subsets avoiding all directed forbidden patterns.
 \end{question}
 
-\begin{question}[Game and online forms]
+\begin{question}[Game and online forms]\label{fbl:q:game}
 Study a game in which an adversary reveals blacklists online and a player
 must colour immediately, or chooses a large safe set under limited queries.
 Determine competitive ratios and whether randomization changes the sharp
@@ -1044,13 +1404,284 @@ constant $2k+1$.
 
 \subsection{Sequence and formalization projects}
 The arrays $A_r(n,k)$, the number of minimizers, and the labelled critical
-counts \cref{eq:critical-count} are natural candidates for an OEIS-oriented
+counts \cref{fbl:eq:critical-count} are natural candidates for an OEIS-oriented
 subproject once enough terms and independent literature checks are available.
 The regular tournament factor $R_{2k+1}$ links the problem to existing
 tournament enumeration, while the new two-parameter structure records the
 finite--infinite symmetry problem rather than tournament counts alone.
 
-\section{Formalization plan for ProveIt}
+\begin{writenote}[5 October 2026]
+$R_{2k+1}$ is A007079 of the OEIS~\cite{OEIS} (labelled regular tournaments
+on $2k+1$ nodes; $R_7=2640$). Nothing has been submitted to the OEIS. The
+computation reported in Section~\ref{fbl:sec:further}
+(item~\ref{fbl:fq:pseudoforest}) gives $A_r(n,1)$ for every $r$ and every
+$n\le18$.
+\end{writenote}
+
+\subsection{Further questions and research}\label{fbl:sec:further}
+\begin{writenote}[Added 5 October 2026, batch~114]
+Following Vladimir Reshetnikov's standing rule of 4~October 2026, every
+claim of the source that is not proved in full is stated here as an open
+question, with its source, the argument offered and what is missing. The two
+conjectures and the thirteen research questions above are the source's own
+proposals; all are open, three are re-scoped below by
+Propositions~\ref{fbl:prop:small}--\ref{fbl:prop:finite}, which the write
+proves, and one by an exact computation. Four sentences of the body that
+assert more than is proved are attached to the items they belong to: the
+third certificate of Section~\ref{fbl:sec:algorithms} (a new item), the
+comparison of $\BPI$ with the finite-choice principles after
+Theorem~\ref{fbl:thm:choice-sandwich}, the sketch after
+Question~\ref{fbl:q:sap1}, and the expectations in
+Questions~\ref{fbl:q:enumeration} and~\ref{fbl:q:random}. The intake and the
+write found no false statement in the source.
+\end{writenote}
+\begin{enumerate}[leftmargin=*,label=\textbf{\arabic*.},ref=\arabic*]
+\item\label{fbl:fq:pseudoforest} \textbf{Coefficientwise pseudoforest
+ minimizer} (Conjecture~\ref{fbl:conj:pseudoforest-poly}). Proved: the
+ coefficients of $z^0,\dots,z^3$ (Theorems~\ref{fbl:thm:pairs}
+ and~\ref{fbl:thm:k1-triples}), and with them the whole conjecture for
+ $n\le9$ (Proposition~\ref{fbl:prop:small}). \emph{Observation of the
+ write} (exact computation, 5~October 2026; program not shipped): the
+ conjecture holds for every $n\le18$, so that $A_r(n,1)=[z^r]I_{H_n}$ for
+ all $r$ and $n\le18$. Method: by the reduction in the proof of
+ Theorem~\ref{fbl:thm:k1-triples} (every pseudoforest on $n\ge3$ vertices
+ is a spanning subgraph of one whose components are all unicyclic, and
+ adding edges lowers every coefficient), it suffices to range over
+ all-unicyclic graphs; a unicyclic component is a cycle with a rooted tree
+ at each cycle vertex, its independence polynomial is the trace of a
+ product of $2\times2$ transfer matrices with entries the polynomials of the
+ rooted trees with the root in or out, and every quantity is a polynomial
+ with nonnegative coefficients in those entries, so only coefficientwise
+ minimal objects need to be kept at each stage. The final set of minimal
+ polynomials is $\{I_{H_n}\}$ for every $3\le n\le18$. Cross-checks: without
+ that pruning, all distinct independence polynomials of all-unicyclic
+ graphs were enumerated for $n\le11$ (575 for $n=11$), and the coefficientwise
+ minima for $n\le7$ agree with a brute-force run of the delivered program
+ over all $n^n$ systems. Missing: a proof for $n\ge10$; the first coefficient
+ not covered by Proposition~\ref{fbl:prop:small} is that of $z^4$ at
+ $n=10$, where $[z^4]I_{H_{10}}=18$.
+\item\label{fbl:fq:critical-block} \textbf{Critical block minimization}
+ (Conjecture~\ref{fbl:conj:critical-block}). Proved: the coefficients of
+ $z^0,z^1,z^2$ and of every $z^r$ with $r>n/q$, hence the whole conjecture
+ for $n\in\{q,2q\}$ (Proposition~\ref{fbl:prop:small}); for $k=1$ it is
+ the case $3\mid n$ of item~\ref{fbl:fq:pseudoforest}, so it holds for
+ $n\le18$. Missing: every case with $k\ge2$ and $n\ge3q$, beginning with
+ the coefficient of $z^3$ at $(k,n)=(2,15)$, which is $125$ for $3K_5$.
+\item\label{fbl:fq:sap1} \textbf{Exact strength of $\SAP_1$}
+ (Question~\ref{fbl:q:sap1}). Proved: $\SAP_1\Rightarrow\Cm_2$
+ (Theorem~\ref{fbl:thm:choice-sandwich}) and, by
+ Proposition~\ref{fbl:prop:three}, $\SAP_1\Rightarrow\Cm_3$. So $\SAP_1$ is
+ equivalent to choice for pairs only if $\Cm_2$ implies $\Cm_3$ over ZF;
+ the write did not consult the literature on implications among the
+ principles $\Cm_m$. The source's sketch (colouring the components of a
+ partial functional graph ``appears to require choosing phases or markers,
+ but much less than arbitrary propositional compactness'') is a heuristic.
+ Missing: any upper bound on $\SAP_1$ below $\BPI$ other than
+ well-orderability of the domain (Theorem~\ref{fbl:thm:wellorderable}).
+\item\label{fbl:fq:hierarchy} \textbf{The hierarchy $\SAP_k$}
+ (Question~\ref{fbl:q:hierarchy}). Proved: $\BPI\Rightarrow\SAP_k\Rightarrow
+ \bigwedge_{2\le m\le k+1}\Cm_m\wedge\Cm_3$, and $\BPI$ implies a principle
+ $\SAP^{+}_{\mathrm{fin}}$ that implies every $\SAP_k$
+ (Proposition~\ref{fbl:prop:finite}). The sentence after
+ Theorem~\ref{fbl:thm:choice-sandwich}, ``$\BPI$ is substantially stronger
+ than the displayed bounded finite-choice principles'', is given without
+ proof or reference; read as ``$\bigwedge_{2\le m\le k+1}\Cm_m$ does not
+ imply $\BPI$ over ZF'', it was not checked by the write, and the open
+ problem of locating $\SAP_k$ in the gap presupposes it. L\"auchli's
+ paper~\cite{Lauchli}, in the source's bibliography but cited nowhere in
+ its text, bears on the last clause: by its abstract (seen by the write
+ only in a search-engine excerpt of the publisher's page) it assigns to
+ every Boolean algebra a graph whose finite subgraphs are $3$-colourable and
+ whose $3$-colourability yields a prime ideal. Such graphs need not be
+ conflict graphs of $k$-bounded systems, and the write did not examine
+ whether the construction can be adapted. Missing: whether some $\SAP_k$
+ implies $\SAP_{k+1}$ or $\BPI$, and their places in the Howard--Rubin
+ catalogue.
+\item\label{fbl:fq:countable} \textbf{The countable-colour theorem}
+ (Question~\ref{fbl:q:countable}). The statement is Theorem~4 of de Bruijn
+ and Erd\H{o}s (read; note in Section~\ref{fbl:sec:dbe-credit}), whose proof
+ applies their Theorem~3 to each class $S_k$ under the Axiom of Choice.
+ Re-scoped by Proposition~\ref{fbl:prop:finite}: over ZF it lies between
+ $\BPI$ and choice for families of nonempty finite sets. Missing: its exact
+ position, and whether it implies any $\SAP_k$.
+\item\label{fbl:fq:exact} \textbf{Exact $A_r(n,k)$}
+ (Question~\ref{fbl:q:exact}). Known exactly: $r=2$
+ (Theorem~\ref{fbl:thm:pairs}), $(r,k)=(3,1)$
+ (Theorem~\ref{fbl:thm:k1-triples}), the zero range
+ (Corollary~\ref{fbl:cor:threshold}), and, from item~\ref{fbl:fq:pseudoforest},
+ every $r$ for $k=1$, $n\le18$ (computation). Missing: everything else, in
+ particular the $O(n^{r-2})$ term of \eqref{fbl:eq:asymptotic}.
+\item\label{fbl:fq:stability} \textbf{Stability and supersaturation}
+ (Question~\ref{fbl:q:stability}). Proved: rigidity at the critical size
+ (Theorem~\ref{fbl:thm:critical}). Missing: any stability or
+ supersaturation statement.
+\item\label{fbl:fq:enumeration} \textbf{Enumeration of minimizers}
+ (Question~\ref{fbl:q:enumeration}). Proved: the critical count
+ \eqref{fbl:eq:critical-count}. The expectation beyond threshold (``a
+ mixture of tournament counts and sparse stability theory'') is a
+ heuristic. Missing: any count beyond threshold.
+\item\label{fbl:fq:certificate} \textbf{Linear-time certificates for
+ extremizers} (the third item of the list in
+ Section~\ref{fbl:sec:algorithms}). Proved: linear-time checks for critical
+ systems and for minimizers of $A_2(n,k)$ (note there). Missing: a check
+ for claimed minimizers of $A_r(n,k)$, $r\ge3$, or of $\alpha(G_F)$ above
+ the critical size, that does not search the $r$-subsets.
+\item\label{fbl:fq:borel} \textbf{Borel partition number}
+ (Question~\ref{fbl:q:borel}). Proved: perfect safe sets for countable
+ sections (Theorem~\ref{fbl:thm:perfect}), which is not a partition (the
+ source's own caveat). Missing: everything asked.
+\item\label{fbl:fq:measurable} \textbf{Measurable positive safe sets}
+ (Question~\ref{fbl:q:measurable}). Proved: almost surely safe countable
+ samples (Theorem~\ref{fbl:thm:random}). Missing: everything asked.
+\item\label{fbl:fq:regularity} \textbf{Regularity strength in ZF}
+ (Question~\ref{fbl:q:regularity}). The proofs of
+ Theorems~\ref{fbl:thm:perfect} and~\ref{fbl:thm:random} are written in
+ ZFC. Missing: the fragments of choice they need, and their separation from
+ $\SAP_k$.
+\item\label{fbl:fq:cardinal} \textbf{Cardinal blacklists}
+ (Question~\ref{fbl:q:cardinal}). Proved here: nothing; the classical
+ free-set literature for set mappings of infinite order (note in
+ Section~\ref{fbl:sec:dbe-credit}) was not surveyed by the source or the
+ write. Missing: everything asked.
+\item\label{fbl:fq:random} \textbf{Random blacklist systems}
+ (Question~\ref{fbl:q:random}). The worst case is
+ $\lceil n/(2k+1)\rceil$ (Theorem~\ref{fbl:thm:alpha}; the question prints
+ $n/(2k+1)$). That random sparse systems ``should have substantially larger
+ safe sets'' is a heuristic of the source, not proved. Missing: everything
+ asked.
+\item\label{fbl:fq:hypergraph} \textbf{Hypergraph avoidance}
+ (Question~\ref{fbl:q:hypergraph}). Missing: everything asked.
+\item\label{fbl:fq:game} \textbf{Game and online forms}
+ (Question~\ref{fbl:q:game}). Missing: everything asked.
+\item\label{fbl:fq:formal} \textbf{Formalization and sequences.} The plan
+ M1--M7 of Section~\ref{fbl:sec:formal} and the OEIS subproject above are
+ proposals; nothing is formalized or submitted.
+\end{enumerate}
+
+\begin{proposition}[{[write]} Small cases, 5~October 2026]
+\label{fbl:prop:small}
+\begin{enumerate}[label=(\alph*)]
+\item Let $n\ge3$ and let $G$ be an $n$-vertex pseudoforest. Then
+ $i_r(G)\ge i_r(H_n)$ for $r\le3$ and for every $r>\deg I_{H_n}$. Here
+ the degree of $I_{H_n}$ is $a$ if $n=3a$, and $a+1$ if $n=3a+1$ or
+ $n=3a+2$. Consequently Conjecture~\ref{fbl:conj:pseudoforest-poly} holds for
+ $3\le n\le9$.
+\item Let $k\ge0$, $q=2k+1$, $n=tq$ with $t\ge1$, and let $G$ be the
+ conflict graph of a $k$-bounded system on $n$ points. Then
+ $i_r(G)\ge i_r(tK_q)$ for $r\le2$ and for every $r\ge t+1$. Consequently
+ Conjecture~\ref{fbl:conj:critical-block} holds for $n\in\{q,2q\}$.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+(a) By the first paragraph of the proof of
+Theorem~\ref{fbl:thm:k1-triples}, the $n$-vertex pseudoforests are exactly
+the conflict graphs of one-bounded systems on $n$ points. For every graph,
+$i_0=1$ and $i_1=n$. By Lemma~\ref{fbl:lem:edge-budget} with $k=1$ and
+$S=X$, $G$ has at most $n$ edges, so $i_2(G)=\binom n2-e(G)\ge\binom n2-n$;
+each component $K_3$, $C_4$, $C_5$ of $H_n$ has as many edges as vertices,
+so $H_n$ has exactly $n$ edges and $i_2(H_n)=\binom n2-n$. By
+Theorem~\ref{fbl:thm:k1-triples}, $i_3(G)\ge A_3(n,1)$, and the graphs that
+the theorem names as attaining $A_3(n,1)$ are $aK_3$, $(a-1)K_3\sqcup C_4$
+and $(a-1)K_3\sqcup C_5$, that is, $H_n$; so $i_3(G)\ge i_3(H_n)$. The
+independence polynomial of a disjoint union is the product of those of the
+components, so $I_{H_n}$ is $(1+3z)^a$, $(1+3z)^{a-1}(1+4z+2z^2)$ or
+$(1+3z)^{a-1}(1+5z+5z^2)$, of degree $a$, $a+1$ and $a+1$ (all coefficients
+of the factors are positive), and $i_r(H_n)=0\le i_r(G)$ for $r$ beyond
+the degree. For $n=3,\dots,9$ the degrees are $1,2,2,2,3,3,3$, at most
+$3$, so every $r$ falls under one of the two cases.
+
+(b) For every graph, $i_0=1$ and $i_1=n$. By
+Lemma~\ref{fbl:lem:edge-budget}, $e(G)\le kn$, so $i_2(G)\ge\binom n2-kn$;
+and $tK_q$ has $t\binom q2=tqk=kn$ edges, so $i_2(tK_q)=\binom n2-kn$. An
+independent set of $tK_q$ has at most one vertex in each of the $t$
+cliques, so $i_r(tK_q)=0\le i_r(G)$ for $r\ge t+1$. For $t\le2$ every
+$r$ satisfies $r\le2$ or $r\ge t+1$.
+\end{proof}
+
+\begin{proposition}[{[write]} $\SAP_1$ gives choice for triples, 5~October 2026]
+\label{fbl:prop:three}
+Over ZF, $\SAP_k$ implies $\Cm_3$ for every $k\ge1$. In particular
+$\SAP_1\Rightarrow\Cm_2\wedge\Cm_3$. (For $k\ge2$ this is already part of
+Theorem~\ref{fbl:thm:choice-sandwich}; the new case is $k=1$.)
+\end{proposition}
+
+\begin{proof}
+Let $\cA$ be a family of $3$-element sets. For $A\in\cA$ let $\Sigma(A)$ be
+the set of permutations of $A$ of order $3$; it has exactly two elements,
+$\sigma$ and $\sigma^{-1}$, and is defined from $A$ without any choice. Put
+\[
+ X=\{(A,\sigma,a):A\in\cA,\ \sigma\in\Sigma(A),\ a\in A\},\qquad
+ F(A,\sigma,a)=\{(A,\sigma,\sigma(a))\}.
+\]
+Since $\sigma$ has no fixed point, $(A,\sigma,a)\notin F(A,\sigma,a)$ and
+$\lvert F(x)\rvert=1\le k$. On each fibre $\{A\}\times\{\sigma\}\times A$
+the arcs $a\to\sigma(a)\to\sigma^2(a)\to a$ join every two of its three
+points, so every fibre is a clique of the conflict graph. $\SAP_k$ gives
+$c:X\to2k+1$ with safe colour classes; $c$ is injective on each fibre. Let
+$s(A,\sigma)$ be the point $a\in A$ for which $c(A,\sigma,a)$ is least.
+Define $g(A)=s(A,\sigma)$ if $s(A,\sigma)=s(A,\sigma^{-1})$, and otherwise
+let $g(A)$ be the unique element of $A\setminus\{s(A,\sigma),
+s(A,\sigma^{-1})\}$. The definition is symmetric in $\sigma$ and
+$\sigma^{-1}$, so $g(A)$ depends only on $A$ and $c$, and $g(A)\in A$. Thus
+$g$ is a choice function on $\cA$, defined in ZF from the single
+witness $c$. The second sentence follows with
+Theorem~\ref{fbl:thm:choice-sandwich} for $m=2$.
+\end{proof}
+
+Let $\SAP_{\mathrm{fin}}$ be the statement that for every set $X$ and every
+$F:X\to[X]^{<\omega}$ with $x\notin F(x)$ there is $c:X\to\omega$ whose
+colour classes are safe (the conclusion of Theorem~4
+of~\cite{deBruijnErdos}), $\SAP^{+}_{\mathrm{fin}}$ the same statement with
+the extra requirement $c(x)\le2\lvert F(x)\rvert$ for every $x$, and
+$\Cm_{\mathrm{fin}}$ the axiom of choice for families of nonempty finite
+sets.
+
+\begin{proposition}[{[write]} Countable colours over ZF, 5~October 2026]
+\label{fbl:prop:finite}
+Over ZF,
+\[
+ \BPI\Longrightarrow\SAP^{+}_{\mathrm{fin}}\Longrightarrow\SAP_{\mathrm{fin}}
+ \Longrightarrow\Cm_{\mathrm{fin}},
+ \qquad\text{and}\qquad
+ \SAP^{+}_{\mathrm{fin}}\Longrightarrow\SAP_k\quad\text{for every }k\ge1.
+\]
+\end{proposition}
+
+\begin{proof}
+\emph{$\BPI\Rightarrow\SAP^{+}_{\mathrm{fin}}$.} Let $F:X\to[X]^{<\omega}$,
+$b(x)=\lvert F(x)\rvert$ and $L(x)=\{0,1,\dots,2b(x)\}$. Take propositional
+variables $p_{x,j}$ for $x\in X$ and $j\in L(x)$, and the clauses
+$\bigvee_{j\in L(x)}p_{x,j}$ (a finite disjunction),
+$\neg(p_{x,i}\wedge p_{x,j})$ for $i\ne j$ in $L(x)$, and
+$\neg(p_{x,j}\wedge p_{y,j})$ for every conflict edge $\{x,y\}$ and
+$j\in L(x)\cap L(y)$. A finite set of these clauses mentions a finite set
+$S$ of points. On $S$ consider the system $F_S(x)=F(x)\cap S$; its conflict
+graph is the induced graph $G_F[S]$, and $\lvert L(x)\rvert=2b(x)+1\ge
+2\lvert F_S(x)\rvert+1$. Theorem~\ref{fbl:thm:list} gives a proper list
+colouring of $G_F[S]$ from the lists $L(x)$, and setting $p_{x,j}$ true
+exactly when $x$ has colour $j$ satisfies the finite set. $\BPI$ is
+equivalent over ZF to the compactness theorem of propositional logic (the
+fact used in Theorem~\ref{fbl:thm:dbe}), so all clauses are satisfied by one
+valuation; let $c(x)$ be the unique $j\in L(x)$ with $p_{x,j}$ true. Then
+$c(x)\le2b(x)$, and two conflicting points get different colours, so every
+colour class is safe.
+
+\emph{$\SAP^{+}_{\mathrm{fin}}\Rightarrow\SAP_{\mathrm{fin}}$} is trivial,
+and \emph{$\SAP^{+}_{\mathrm{fin}}\Rightarrow\SAP_k$}: for a $k$-bounded
+system, $c(x)\le2k$, so $c$ maps into $2k+1$.
+
+\emph{$\SAP_{\mathrm{fin}}\Rightarrow\Cm_{\mathrm{fin}}$.} This is the
+clique-fibre argument of Theorem~\ref{fbl:thm:choice-sandwich} without the
+size bound. Let $\cA$ be a family of nonempty finite sets, $X=\{(A,a):
+A\in\cA,\ a\in A\}$ and $F(A,a)=\{(A,b):b\in A\setminus\{a\}\}$, a finite set
+not containing $(A,a)$. Each fibre $\{A\}\times A$ is a clique of the
+conflict graph, so a colouring $c:X\to\omega$ with safe classes is
+injective on it, and choosing from $A$ the element of least colour defines
+a choice function on $\cA$ in ZF.
+\end{proof}
+
+\section{Formalization plan for ProveIt}\label{fbl:sec:formal}
 
 A compact Lean development can be organized into the following modules.
 
@@ -1077,7 +1708,7 @@ The finite core should require only ordinary finite combinatorics from
 Mathlib.  The descriptive-set-theoretic perfect-set theorem is a separate,
 substantially larger formalization project.
 
-\section{Assumption, novelty, and claim ledger}
+\section{Assumption, novelty, and claim ledger}\label{fbl:sec:ledger}
 
 \begin{longtable}{p{0.26\textwidth}p{0.18\textwidth}p{0.47\textwidth}}
 \toprule
@@ -1142,9 +1773,9 @@ point of contact with Glazer's published interests.
 \section{A self-contained compactness lemma for well-orderable languages}
 
 For completeness, we isolate the logical fact used in
-\cref{thm:wellorderable}.
+\cref{fbl:thm:wellorderable}.
 
-\begin{lemma}\label{lem:wellordered-compactness}
+\begin{lemma}\label{fbl:lem:wellordered-compactness}
 In ZF, let $V$ be a well-orderable set of propositional variables and let
 $T$ be a set of formulas over $V$.  If every finite subset of $T$ is
 satisfiable, then $T$ is satisfiable.
@@ -1178,7 +1809,7 @@ The archive contains:
 \item \texttt{article.tex}: the complete source of this report;
 \item \texttt{article.pdf}: the compiled report;
 \item \texttt{verification.py}: the finite exhaustive checks described in
-\cref{sec:questions} and the computational section;
+\cref{fbl:sec:questions} and the computational section;
 \item \texttt{README.txt}: a short build and verification guide.
 \end{itemize}
 
@@ -1189,6 +1820,21 @@ python3 verification.py
 The script uses only the Python standard library.  The $n=7$ exhaustive
 check is the largest one and may take several seconds to a few minutes,
 depending on hardware.
+
+\begin{writenote}[Names in this appendix, 5 October 2026]
+The list above describes the delivered archive. There the source and the
+PDF were named \file{From_Finite_Blacklists_to_Freiling_Symmetry.tex} and
+\file{.pdf}, not \file{article.tex} and \file{article.pdf}; the archive
+also held \file{verification_output.txt} and \file{SHA256SUMS.txt}. In this
+report the source is \file{article.tex}, the program is
+\file{code/verification.py}, its recorded output is
+\file{data/verification_output.txt}, and the README replaces
+\file{README.txt}. The checks are described in
+Section~\ref{fbl:sec:computation}, not in \cref{fbl:sec:questions}. The
+program writes no file and can be run from any directory; on Windows use
+\texttt{py} for \texttt{python3}. The whole run took about 6~seconds at
+the write.
+\end{writenote}
 
 \begin{thebibliography}{99}
 
@@ -1285,6 +1931,30 @@ V.~Reshetnikov,
 repository report in \texttt{ProveIt/SetTheory/Cardinals/docs/reports/
 ordinals-and-order-types/measurable-box-games}, 2026.
 \url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/SetTheory/Cardinals/docs/reports/ordinals-and-order-types/measurable-box-games}.
+
+% Entries added by the ProveIt write phase (batch 114, 5 October 2026).
+\bibitem{Erdos1950}
+P.~Erd\H{o}s,
+``Some remarks on set theory,''
+\emph{Proceedings of the American Mathematical Society} \textbf{1} (1950),
+127--141. [Added by the write, as cited by~\cite{deBruijnErdos}; not read.]
+
+\bibitem{Sierpinski}
+W.~Sierpi\'nski,
+\emph{Hypoth\`ese du continu}, 2nd ed., Chelsea, New York, 1956.
+[Added by the write, as cited by~\cite{Freiling}; not read.]
+
+\bibitem{Hajnal}
+A.~Hajnal,
+``Proof of a conjecture of S.~Ruziewicz,''
+\emph{Fundamenta Mathematicae} \textbf{50} (1961), 123--128.
+[Added by the write; data from a search listing; not read.]
+
+\bibitem{OEIS}
+OEIS Foundation Inc.,
+\emph{The On-Line Encyclopedia of Integer Sequences}, entries A133686 and
+A007079, \url{https://oeis.org}, accessed 5 October 2026. [Added by the
+write.]
 
 \end{thebibliography}
 
