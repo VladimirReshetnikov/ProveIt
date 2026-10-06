@@ -12,13 +12,21 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 119 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 1,151 public Gowers theorems and found only propext,
+  All 122 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 1,161 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 88 exact
   companion proofs and 32 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
   errors remain in this build. The JSON ledger reproduces exactly and has no
   unmatched numbered TeX headings or unmatched catalogue entries.
+
+New polynomial-partition infrastructure
+  ProgressionChunks shares the rounding arithmetic from Section 16.
+  Proofs05TargetPartition constructs target-length refinements on natural
+  progressions, preserving containment and therefore all diameter bounds.
+  Proofs05LinearPartition proves the strong degree-one Corollary 5.6 input.
+  It gives diameter at most N*r^(-1/8) for targets v <= r^(1/16), already
+  when r >= 65536. This is an auxiliary bound, not a new Szemeredi estimate.
 
 New Section 18 infrastructure
   Proofs18IntervalTransfer:
@@ -53,8 +61,10 @@ Next substantial obligations
      The square-root recurrence is proved in Proofs05PolynomialPartition.
      Proofs05Lemma9Induction and Proofs05Lemma9Scale already provide the
      simultaneous refinement engine and its rounding-safe scale schedule.
-     The one-polynomial degree induction still needs its actual target-length
-     partition construction, including a separate degree-one argument.
+     The strong degree-one input and target-length refinement now have proofs.
+     The higher-degree step still needs the prescribed-difference residue
+     partition, lower-degree polynomial decomposition, and quantitative scale
+     bounds to assemble the complete induction.
   2. Complete the multilinear partition results and the bilinear extraction
      stages 13.5--13.9. Corollary 13.10 currently requires extra compatibility
      and grid inputs; do not silently discharge them by citing the paper.
