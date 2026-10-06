@@ -254,8 +254,13 @@ Lambert core `p0:thm:lambert-core` or factorial core `p0:prop:factorial-core`,
 and no Lambert W occurs (volume:
 `Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex`).
 Part I's Theorem 7.2 has a quadratic phase, outside the volume's
-exponential–power model `p0:def:model`; its triangular recurrence is the scheme
-of `p0:thm:core-reversion` with log-polynomial coefficients — an analogue.
+exponential–power model `p0:def:model`, but its formal part is an **instance**
+of `p0:thm:core-reversion`: with `X = y(1 + E)`, expansion variable `1/y` and
+an indeterminate `z` for `log y`, the equation `F_r(X) = αy²` divided by `y²`
+is `p0:eq:core-master` over `R = ℝ[z]` with `Λ = 2α`, `h(u) = αu²`, and its
+triangular recurrence is (7.8) with `e_{j+1} = P_{r,j}(z)`; the degree bound
+and the analytic remainder are Part I's. (Corrected after the independent
+check below; the write had called it an analogue.)
 Part I's Theorem 8.1 is the series of `p0:thm:perturbed-inversion` at
 `ε = 1`, with the convergence at `ε = 1` proved in Part I. Part I's Theorem 9.1
 has the residue-class form of `p0:thm:staircase` (4) but is proved directly at
@@ -307,6 +312,27 @@ conjecture of A252782 and A270917 (Theorem 2.1, Corollary 2.3). **Corrected**:
 one printed decimal in Part II — `β = 0.684930142718664…` should read
 `0.684930142718661…` (`β = 0.6849301427186619…`); dated note at (15.2); nothing
 depends on it. No mathematical claim of either manuscript was found wrong.
+
+**Independent check of the write (5 October 2026).** An adversarial check
+made by the intake after the write (`8f7baed2b`) re-pulled both OEIS entries
+and found the quoted lines character for character (A270917's history puts
+the unsigned conjecture in Kotěšovec's revision of 25 March 2016). It
+re-derived the proof of Proposition 2.2; recomputed `A_±(n)` exactly for
+`n ≤ 109` (equal to both b-files for `n ≤ 80`) and found both bounds there;
+confirmed Corollary 2.3's decimal certificate (`log 2/γ₀ = 413.734008…`; the
+factor `2^((n−1)/n²)` works at 413 and fails at 412) and every number of
+Remark 2.4 (`n = 109` is the largest failure of `log p(n) < γ₀n²`, whose
+minimum margin on `110 ≤ n ≤ 413` is 0.0474, at 110); recomputed `δ`, `β`, `κ`
+to 40 digits; and confirmed the dated notes at Part I's question 3 and at the
+end of Section 10, Theorem 8.1 as an instance of `p0:thm:perturbed-inversion`
+at `ε = 1`, Theorem 21.1's coefficients as an instance of
+`p0:eq:perturbed-multi` (SymPy and an independent Taylor solve), and Theorem
+9.1 as not an instance of `p0:thm:staircase`. No mathematical error was
+found. One classification was understated and is corrected with a dated
+note keeping the first wording: Theorem 7.2's formal part is an instance of
+`p0:thm:core-reversion`, not only an analogue (above). Added at (15.2): the
+corrected `β` decimal is truncated; rounded to fifteen places it is
+`0.684930142718662`. The record is a dated note at the end of Section 27.
 
 ## Relation to neighbouring reports
 
@@ -416,7 +442,7 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
 pdfLaTeX (MiKTeX), in a scratch copy; commit only `article.pdf`. The build
-(49 pages): no errors, no undefined or multiply defined references or
+(51 pages after the independent check; 49 at the write): no errors, no undefined or multiply defined references or
 citations, no duplicate destinations, no overfull or underfull boxes, no
 warnings. The log carries two "Infinite glue shrinkage found in box being
 split" messages, from the notation longtable and Part I's Table 1 breaking
