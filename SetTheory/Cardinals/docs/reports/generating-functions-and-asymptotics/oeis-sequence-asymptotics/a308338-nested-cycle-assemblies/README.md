@@ -166,7 +166,12 @@ both read at the write and identical). Corollary 4.5 applies it for all
   `C Γ(p+2) δ^{−(p+2)}`; `T_q` in (5.69) has the same factor, while the proof
   of (5.72) uses `Σ_j f_j(p+1) = C Γ(p+2)`. Theorem 4.1(ii)'s covariance
   (4.13) (preprint (4.49)) fails the same way (`−1.4956` at `q = 1`, `p = 1`,
-  `C = 3`, `u_1 = 10`). Which step first drops `C` was not traced.
+  `C = 3`, `u_1 = 10`). Their own identity `f_0(p+1) + f_1(p+1) = C Γ(p+2)`
+  and (5.73) give `det Θ*(1) = C T_1` for their matrix (5.74), so (5.72) as
+  printed holds only for `C = 1`: the factor is lost with (5.62) and carried
+  through `T_q`. The inversion that produces (4.13) was not checked. (Added
+  after the independent check below; the write said that the step which first
+  drops `C` was not traced.)
 - **Against this report**: here `p = 1`, `C = c`, `r_N = (n/c)^{1/2}`. Read
   at `u = 0`, the printed display predicts the normalized component count to
   have limiting variance `c(1 − c/2) = 0.40384`, the corrected one `c/2 =
@@ -182,8 +187,10 @@ paper (Question 6). Nothing was sent to the authors.
 ## The OEIS entries at the write (6 October 2026)
 
 - **A308338** (live revision #21; the source froze #17 of 15 January 2026):
-  revisions #18–#21 by Alois P. Heinz on 5 October 2026 add a Maple program
-  and a b-file for `0 ≤ n ≤ 445`; the 22 data terms are unchanged.
+  revisions #18–#20 by Alois P. Heinz on 5 October 2026 add a Maple program
+  and a b-file for `0 ≤ n ≤ 445` (#21 is the OEIS server installing that
+  b-file; the write said "#18–#21 by Heinz"); the 22 data terms are
+  unchanged.
 - **A392471** (live #42; the source froze #37 of 25 January 2026): on
   5 October 2026 Heinz inserted the column `k = 0` (offset now 0, rows from
   `n = 0`), a Maple program and a b-file of rows `0..150`. The delivered
@@ -262,6 +269,26 @@ outside literature.
   `M_1`, `V_1`: at `n = 40000`, `9.682/9.344`, `12.92/12.69`, `16.97/16.53`
   for `√n` times the residual against the next coefficient), and a 256-bit
   fixed-point evaluation of `E K_n` near `n = 4500`.
+
+**Independent check of the write (6 October 2026).** An adversarial check
+made by the intake after the write (`399df8a49`) re-derived every `[write]`
+statement. Riedel's note, fetched again in both versions (byte-identical),
+is paraphrased exactly. The check's own computation (exact to `n = 120`, 320-bit
+fixed point to 4501, double precision to 40000) gives
+`E K_4500/√4500 = 0.771935140148`, and `n = 4501` is the first `n` with the
+ratio below Riedel's `N = 0.7719351399`; the table, the margin above
+`e^{−γ/2}` and the monotonicity claims were confirmed. The log-log exponent
+`log E K_n/log n` comes closest to Riedel's `M` bound at `n = 7510` (off by
+`6·10⁻⁸`), so his value is still not identified. Remark 10.1 was confirmed on
+the published page images and in this very model: exact finite-`n`
+variances at `n = 20000` give `Var/r_N = 0.10799, 0.05448, 0.02976` for
+`u = 0.5, 1, 2`, against corrected `0.10817, 0.05458, 0.02971` and printed
+`0.21008, 0.12122, 0.05000`; and from their (5.73)–(5.74),
+`det Θ*(1) = C T_1` (re-derived symbolically for this record), so their (5.72)
+holds only for `C = 1`. Remark 8.2 and the b-files were confirmed. No
+mathematical error was found. Corrected, with a dated note keeping the first
+wording: the A308338 revision attribution (#18–#20 by Heinz, #21 the server);
+strengthened, also with a dated note: the last sentence of Remark 10.1(c).
 
 ## Relation to the repository
 
@@ -412,8 +439,8 @@ B=$(mktemp -d); cp article.tex "$B/"; cd "$B"
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The committed PDF was built this way with MiKTeX on 6 October 2026: 22
-pages; no errors or warnings, no undefined references or citations, no
+The committed PDF was built this way with MiKTeX on 6 October 2026, after
+the independent check (also 22 pages at the write): 22 pages; no errors or warnings, no undefined references or citations, no
 multiply defined labels, no duplicate PDF destinations, no overfull or
 underfull boxes. The delivered source builds the same way to 15 pages, also
 without warnings. The article keeps the delivered preamble lines that
