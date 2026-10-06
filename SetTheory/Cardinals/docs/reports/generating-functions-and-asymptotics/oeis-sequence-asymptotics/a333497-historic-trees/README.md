@@ -118,7 +118,56 @@ recurrence: 1, 1, 1, 1, 2, 4, 8, 18, 48, 144, …). The order-`r` all-one family
   04's cyclic cone `{V ≤ 2}` *equals* Part I's cone `𝒞_3 = {s^- ≤ 2}`.
   Remark 33.2: hence source 04's Euler-step Lemma 36.2 proves Part I's cone
   invariance (9.16) in every order without the strong-k-positivity
-  theorem. Remark 33.3: credit and a pointer (below).
+  theorem. Part I's other use of that theorem (Weiss–Margaliot), the strict
+  sign-regularity of `T_r = exp(δ J_r)` that Alseidi–Margaliot–Garloff need
+  for (9.17), is not replaced. Remark 33.3: credit and a pointer (below).
+- *[Independent check, 5 October 2026.]* An adversarial check of Parts II–IV
+  made by the intake after the write (`6603ab5a8`) found all eight items it
+  examined valid, with no counterexample and no gap in any proof chain:
+  Theorem 30.1 with its proof, the write's precision note on the step from a
+  recurrence to an ODE, Remarks 33.1–33.3 with Lemma 36.2, the radii
+  `1183/960` and `121/6720` with the note that a radius in `t` needs a bound
+  on `|c|`, the order dictionary, and `16800^(1/6) ≤ ρ_4 ≤ 840^(1/4)` with
+  the extreme `r_j` of Proposition 35.1. Three passages of the write said
+  more than the mathematics gives and are corrected where they stand, each
+  with a dated note keeping the first wording. Part I uses Weiss–Margaliot
+  twice: for the cone invariance (9.16), which Lemma 36.2 replaces, and for
+  the strict sign-regularity of `T_r` feeding Alseidi–Margaliot–Garloff's
+  spectral step (9.17), which it does not; Part IV's credit-table row
+  "Cyclic cone K" and the note after Lemma 36.2 had said that the whole
+  strong-k-positivity step was replaced (dated note after Remark 33.2, and
+  inside the note after Lemma 36.2). Remark 33.3 said the cyclic count is
+  Mallet-Paret and Smith's discrete Lyapunov function for couplings "of
+  fixed sign"; they assume strictly signed couplings and weight each change
+  by the coupling's sign, so the plain cyclic count is theirs only when every
+  coupling is positive (dated note after the remark). Remark 33.2 now names
+  the second use of Weiss–Margaliot, and Part I's note after (9.16) says that
+  it is still used for `T_r`. The tests, none of which used the delivered or
+  the write's programs: a line-by-line reading of the proof of Theorem 30.1
+  (the branch-counting argument: the continuations `H_0, …, H_N` around `ρ`
+  are independent for every `N`, against the finite-dimensional solution
+  space of a linear ODE at an ordinary point), with `D_2`, `D_3`, the
+  exponents and the P-recursive-to-D-finite step recomputed; its own
+  `h_0..h_600` for A333497, equal to `data/independent-exact_h_0_600.txt`,
+  and the A336009 terms against the 31-term OEIS prefix fixture; brute force
+  over every `v ∈ {-1,0,1}^d`, `d ≤ 9`, for Remark 33.1 (29,523 vectors);
+  200,000 random Euler steps for Lemma 36.2 (and a negative-coupling control
+  that raises `V` from 0 to 2); an RK4 run of Part I's nonlinear system at
+  `r = 30` for six values of `ρ`, with `V(Z(s)) ≤ 2` throughout; the radii,
+  `c_0`, the order dictionary (`59!/(29!)² = 1773968723472921360`), the
+  `ρ_4` bounds and the `r_j` extremes re-derived. As corroborating evidence
+  only, not part of the proof, a recurrence search over `GF(p)`,
+  `p = 2147483629`: 204 systems (both sequences, every order `s ≤ 60` from
+  `n = 0` and `s ≤ 40` from `n = 150`, each at the largest degree 601 terms
+  allow, e.g. degree 286 at order 1, 42 at order 12, 7 at order 60) all
+  have full column rank, so no recurrence of those orders and degrees exists;
+  the same code finds the known recurrences of the Apéry numbers and of
+  `n![zⁿ] eᶻ/(1-z)³` (positive controls). Theorem 30.1 covers every order
+  and degree and does not depend on the search. Its account of Mallet-Paret
+  and Smith rests on a citing paper and recollection, not a reread of the
+  paper. The record is an unlabelled dated paragraph at the end of
+  Section 41. This was a careful reading with exact computations, not a
+  formal verification.
 
 ### Parts II–IV: second routes (re-proofs of Part I)
 
@@ -154,11 +203,15 @@ novelty is claimed for them.
   (Weiss–Margaliot 2021; Alseidi–Margaliot–Garloff 2019), Lanford's stable
   manifolds, Flajolet–Odlyzko transfer.
 - **Likely prior art, credited at the write:** the cyclic sign-change count
-  of source 04's Lemma 36.2 is the discrete Lyapunov function of
-  J. Mallet-Paret and H. L. Smith, *The Poincaré–Bendixson theorem for
-  monotone cyclic feedback systems*, J. Dynam. Differential Equations 2 (1990),
-  367–421 (bibliographic data checked at the write; internal statement
-  numbers not). Source 04 does not cite it. Their Poincaré–Bendixson theorem
+  of source 04's Lemma 36.2 is the positive-feedback case of the discrete
+  Lyapunov function of J. Mallet-Paret and H. L. Smith, *The
+  Poincaré–Bendixson theorem for monotone cyclic feedback systems*, J. Dynam.
+  Differential Equations 2 (1990), no. 4, 367–421 (bibliographic data checked
+  at the write and again at the independent check; internal statement
+  numbers not). They assume strictly signed couplings and count sign changes
+  weighted by the coupling signs, which is the plain cyclic count only when
+  every coupling is positive; Lemma 36.2 allows vanishing couplings
+  (wording corrected at the independent check). Source 04 does not cite it. Their Poincaré–Bendixson theorem
   may bear on the open order-59 question (Part I's Question 1): the
   uncentred Fowler system is a monotone cyclic feedback system, so once the
   normalized orbit is known to be bounded, its limit set may be restricted to
@@ -235,7 +288,15 @@ prefixed by the batch-77 write, plus ten section labels; 76 in `article.tex`,
 labels of Parts II–IV under the sub-prefixes `his:o5:` (53), `his:o7:` (64) and
 `his:o59:` (65): 299 labels in all. The sources' labels were prefixed before
 anything cited them, and the build of the new text resolves every existing
-label to the same number as the build of the committed text.
+label to the same number as the build of the committed text. After the
+write, the intake's independent check (5 October 2026) corrected the
+credit-table row "Cyclic cone K" of Section 33.3, the first two sentences of
+Remark 33.3 and the note after Lemma 36.2, added a clause to Remark 33.2 and
+a sentence to Part I's note after (9.16), dated notes after Remarks 33.2 and
+33.3 and inside the note after Lemma 36.2, pointers in the batch-103 note of
+Section 1 and before Theorem 30.1's proof, and an unlabelled dated paragraph
+at the end of Section 41; no label was added, and none was renumbered (aux
+files compared).
 
 ## Files
 
@@ -243,9 +304,9 @@ label to the same number as the build of the committed text.
 README.md                                   this guide
 REPRODUCIBILITY.md                          source 01's delivered replay guide (delivery paths; see below)
 article.tex                                 the report, Parts I-IV (source 01 delivered as historic-trees.tex)
-extensions.tex                              Part I Sections 8-9, \input by article.tex (label prefixes; batch-103 dated notes)
+extensions.tex                              Part I Sections 8-9, \input by article.tex (label prefixes; batch-103 dated notes; one sentence of the independent check)
 references.bib                              source 01's delivered bibliography (BibTeX)
-article.pdf                                 compiled report, 83 pages
+article.pdf                                 compiled report, 84 pages
 figures/oscillation.pdf                     Part I's figure (exploratory)
 figures/oscillation.csv                     its data, written by make_figure.py (CRLF, kept by a -text line)
 code/build.sh                               source 01: delivered PDF build (compiles historic-trees.tex)
@@ -503,7 +564,10 @@ The committed PDF was built in a scratch directory with MiKTeX: 83 pages, no
 errors or warnings (LaTeX or BibTeX), no undefined references or citations, no
 multiply defined labels, no duplicate PDF destinations, no overfull or
 underfull boxes; every Part I label has the same number as in the build of the
-batch-77 text (28 pages). `code/build.sh` and the three `build.py` scripts are
+batch-77 text (28 pages). After the independent check of 5 October 2026 it was
+rebuilt the same way with pdfLaTeX and BibTeX (four pdfLaTeX passes): 84 pages
+(was 83), the same clean log, all 299 labels with the same numbers and the
+same bibliography numbers as before; Parts I–III keep their pagination. `code/build.sh` and the three `build.py` scripts are
 kept as delivered; they compile the delivered sources, not `article.tex`.
 
 ## Provenance
