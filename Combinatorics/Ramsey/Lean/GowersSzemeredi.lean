@@ -104,6 +104,7 @@ import GowersSzemeredi.Proofs07BohrHom
 import GowersSzemeredi.Proofs07AffineRestriction
 import GowersSzemeredi.Proofs07ProgressionLinearity
 import GowersSzemeredi.Proofs07SimultaneousLinearity
+import GowersSzemeredi.Proofs07CeilingPartition
 import GowersSzemeredi.Proofs08QuadraticBias
 import GowersSzemeredi.Proofs08Coloring
 import GowersSzemeredi.Proofs09Moments

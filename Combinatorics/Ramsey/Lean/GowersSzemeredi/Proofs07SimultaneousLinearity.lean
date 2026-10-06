@@ -1072,7 +1072,8 @@ private lemma cor711_spectrumUnion_card {p q : Nat} [NeZero p]
       nlinarith [mul_le_mul hqReal halphaPow (by norm_num : (0 : Real) <= 1)
         (by positivity : (0 : Real) <= q)]
 
-private def cor711Exponent (alpha : Real) (q : Nat) : Real :=
+/-- The quantitative exponent in Corollary 7.11. -/
+def cor711Exponent (alpha : Real) (q : Nat) : Real :=
   (2 : Real) ^ (-(14 : Real)) * alpha ^ 2 * (q : Real)⁻¹
 
 private lemma two_rpow_neg_fourteen :
@@ -1111,9 +1112,8 @@ private lemma cor711_bohr_nonzero_threshold {p q m l : Nat}
     (hl : 0 < l) (halpha : 0 < alpha) (hlp : l < p)
     (hKpos : 0 < Kcard)
     (hKcard : Kcard <= 4097 * q * alpha ^ (-(2 : Real)))
-    (hmBound : (m : Real) <= (l : Real) ^ cor711Exponent alpha q)
-    (hlarge : 1024 * Real.pi / alpha <
-      (l : Real) ^ cor711Exponent alpha q) :
+    (hbudget : (1024 * Real.pi / alpha) * (m : Real) ^ 2 ≤
+      (l : Real) ^ (3 * cor711Exponent alpha q)) :
     2 * (p : Real) ^ (-(1 / Kcard)) <
       alpha / (512 * Real.pi * (m : Real) ^ 2) := by
   let e := cor711Exponent alpha q
@@ -1135,28 +1135,17 @@ private lemma cor711_bohr_nonzero_threshold {p q m l : Nat}
       (Real.rpow_pos_of_pos (zero_lt_one.trans hpReal) (3 * e))
       (Real.rpow_pos_of_pos hlReal (3 * e))).2
     exact Real.rpow_le_rpow hlReal.le hlpReal (by positivity)
-  have hmNonneg : (0 : Real) <= m := by positivity
-  have hmSq : (m : Real) ^ 2 <=
-      ((l : Real) ^ e) ^ 2 := by
-    nlinarith [sq_nonneg ((l : Real) ^ e - m)]
-  have hlPower : (l : Real) ^ (-(3 * e)) * (m : Real) ^ 2 <=
-      ((l : Real) ^ e)⁻¹ := by
-    have hLe : 0 < (l : Real) ^ e := Real.rpow_pos_of_pos hlReal e
-    calc
-      (l : Real) ^ (-(3 * e)) * (m : Real) ^ 2 =
-          ((l : Real) ^ e) ^ (-(3 : Real)) * (m : Real) ^ 2 := by
-        rw [show -(3 * e) = e * (-3) by ring, Real.rpow_mul hlReal.le]
-      _ <= ((l : Real) ^ e) ^ (-(3 : Real)) *
-          ((l : Real) ^ e) ^ 2 := by gcongr
-      _ = ((l : Real) ^ e)⁻¹ := by
-        rw [← Real.rpow_natCast, ← Real.rpow_add hLe]
-        norm_num [Real.rpow_neg_one]
-  have hlargeInv : ((l : Real) ^ e)⁻¹ < alpha / (1024 * Real.pi) := by
-    have hconstant : 0 < 1024 * Real.pi / alpha := by positivity
-    have hinv := (inv_lt_inv₀ (Real.rpow_pos_of_pos hlReal e) hconstant).2 hlarge
-    calc
-      ((l : Real) ^ e)⁻¹ < (1024 * Real.pi / alpha)⁻¹ := hinv
-      _ = alpha / (1024 * Real.pi) := by field_simp
+  have hLpos : 0 < (l : Real) ^ (3 * e) := Real.rpow_pos_of_pos hlReal _
+  have hCpos : (0 : Real) < 1024 * Real.pi := by positivity
+  have hb : 1024 * Real.pi * (m : Real) ^ 2 ≤ (l : Real) ^ (3 * e) * alpha := by
+    apply (div_le_iff₀ halpha).mp
+    simpa only [div_mul_eq_mul_div] using hbudget
+  have hlPower : (l : Real) ^ (-(3 * e)) * (m : Real) ^ 2 ≤
+      alpha / (1024 * Real.pi) := by
+    rw [Real.rpow_neg hlReal.le]
+    rw [mul_comm, ← div_eq_mul_inv]
+    apply (div_le_div_iff₀ hLpos hCpos).2
+    nlinarith [hb]
   have hcore : (p : Real) ^ (-(1 / Kcard)) * (m : Real) ^ 2 <
       alpha / (1024 * Real.pi) := by
     calc
@@ -1164,8 +1153,7 @@ private lemma cor711_bohr_nonzero_threshold {p q m l : Nat}
           (p : Real) ^ (-(3 * e)) * (m : Real) ^ 2 := by
         exact mul_lt_mul_of_pos_right hpExponent (by positivity)
       _ <= (l : Real) ^ (-(3 * e)) * (m : Real) ^ 2 := by gcongr
-      _ <= ((l : Real) ^ e)⁻¹ := hlPower
-      _ < alpha / (1024 * Real.pi) := hlargeInv
+      _ ≤ alpha / (1024 * Real.pi) := hlPower
   apply (lt_div_iff₀ (by positivity : 0 < 512 * Real.pi * (m : Real) ^ 2)).2
   have hcore' := (lt_div_iff₀ (by positivity : (0 : Real) < 1024 * Real.pi)).1 hcore
   nlinarith
@@ -1228,7 +1216,8 @@ private lemma cor711_residueClass_large {l d m : Nat}
   have hquot := (quotient_lt_residueClassLength hd a.isLt hdl).2 hcoord
   omega
 
-private def Cor711Conclusion {N q : Nat} (m : Nat) (R : IntAP)
+/-- A simultaneous affine progression partition with prescribed integer cell sizes. -/
+def Cor711Conclusion {N q : Nat} (m : Nat) (R : IntAP)
     (A : Fin q -> Finset Int) (phi : Fin q -> Int -> ZMod N) : Prop :=
   exists M : Nat, exists S : Fin M -> IntAP,
     IsIntAPPartition S R /\
@@ -1237,10 +1226,18 @@ private def Cor711Conclusion {N q : Nat} (m : Nat) (R : IntAP)
     (exists d : Nat, 0 < d /\ forall j, (S j).step = d) /\
     (forall i j, IntAPLinearOn (S j) (A i) (phi i))
 
-/-- The corrected finite form of Corollary 7.11, including the lower-size
-hypothesis required by the nonzero Bohr-neighborhood argument. -/
-theorem corollary_7_11_holds : corollary_7_11 := by
-  intro N q m _ R A phi alpha hq hm halpha hl hproper hA hmBound hlarge
+/-- The simultaneous partition construction under its direct numerical
+budget. This form allows integer targets slightly above the displayed power
+in Corollary 7.11 when the ambient progression is sufficiently large. -/
+theorem corollary_7_11_of_budget (N q m : Nat) [NeZero N] (R : IntAP)
+    (A : Fin q → Finset Int) (phi : Fin q → Int → ZMod N) (alpha : Real)
+    (hq : 0 < q) (hm : 0 < m) (halpha : 0 < alpha) (hl : 0 < R.length)
+    (hproper : R.IsProper)
+    (hA : ∀ i, A i ⊆ R.carrier ∧ alpha * R.length ≤ (A i).card ∧
+      FreimanHom 8 (A i) (phi i))
+    (hbudget : (1024 * Real.pi / alpha) * (m : Real) ^ 2 ≤
+      (R.length : Real) ^ (3 * cor711Exponent alpha q)) :
+    Cor711Conclusion m R A phi := by
   by_cases hmOne : m = 1
   · subst m
     exact cor711_one_partition R A phi hl hproper
@@ -1277,7 +1274,7 @@ theorem corollary_7_11_holds : corollary_7_11 := by
       2 * (p : Real) ^ (-(1 / (L.card : Real))) < delta := by
     unfold delta
     exact cor711_bohr_nonzero_threshold hq hmTwo hl halpha (by omega)
-      hLcardPos hLcard hmBound hlarge
+      hLcardPos hLcard hbudget
   have hpTwo : 2 <= p := hpPrime.two_le
   obtain ⟨_hcardBohr, hnonzero⟩ :=
     lemma_7_7_holds p L delta hpTwo hdelta hdeltaOne
@@ -1345,5 +1342,23 @@ theorem corollary_7_11_holds : corollary_7_11 := by
   exact balancedResidueChunkAP_linear R (A i) (phi i) D m z hDpos hDle hm
     (by omega : R.length < p) (hclasses z.1)
     (bohr K (beta / (32 * Real.pi))) psi hpsi hagree hshort hAmodNe
+
+/-- The corrected finite form of Corollary 7.11, including the lower-size
+hypothesis required by the nonzero Bohr-neighborhood argument. -/
+theorem corollary_7_11_holds : corollary_7_11 := by
+  intro N q m _ R A phi alpha hq hm halpha hl hproper hA hmBound hlarge
+  apply corollary_7_11_of_budget N q m R A phi alpha hq hm halpha hl hproper hA
+  let X : Real := (R.length : Real) ^ cor711Exponent alpha q
+  have hX : 0 < X := Real.rpow_pos_of_pos (by exact_mod_cast hl) _
+  have hmX : (m : Real) ≤ X := hmBound
+  calc
+    _ ≤ X * X ^ 2 := mul_le_mul hlarge.le
+      (pow_le_pow_left₀ (Nat.cast_nonneg _) hmX 2) (by positivity) hX.le
+    _ = (R.length : Real) ^ (3 * cor711Exponent alpha q) := by
+      rw [show X * X ^ 2 = X ^ 3 by ring]
+      dsimp only [X]
+      rw [← Real.rpow_natCast, ← Real.rpow_mul (by positivity)]
+      congr 1
+      ring
 
 end LeanProofs.GowersSzemeredi
