@@ -191,6 +191,21 @@
 > The [scalar complement reuse](residue_affine_complement_reuse.md) and [vector positive-guard template](counter_vector_positive_guard.md), with [independent proof and source review](review_counter_positive_guard_extensions.md), extend the counter-step savings to every fixed program of the stated form. Reusing the scalar remainder-complement equation saves one addition: the complete SOS costs **10B+21**, with six positive witnesses; its B=14 fixture costs **161=76M+85A**, of exact degree28. For r counters and K states represented directly, positivity forces the branch selector using only two witnesses, giving a paid SOS template of **2(r+2)K+7r+11** operations and degree at most2K+2. This saves three operations against the same template with an explicit Boolean residual. The distinct endpoint interfaces cannot be compared without a paid conversion. The scalar source receives independent inert structure and polynomial checks; the vector result is proof-only. Neither result supplies unbounded iteration or improves the universal84 frontier.
 >
 >
+> The [centralizer-to-projective bridge](positive7_centralizer_projective_bridge_aristotle.md)
+> now proves that the new universal word family retains the **3=2M+1A ordinary-input
+> loader**. Naming only the two query words gives four presentation generators,
+> 17681 relator slots and35370 signed alphabet slots; the third word stays a
+> fixed conjugator. Britton's lemma removes both projective ambiguities, and
+> the seven-coordinate positive lift and generic column6 compiler apply.
+> The note supplies exact finite word-composition and coefficient recipes
+> without expanding the large matrices. Both full hand challenges pass;
+> the [mandatory scope correction](positive7_centralizer_projective_bridge_metadata_correction_aristotle.md)
+> amends one frozen read-range endpoint. Actual fixed-data/source bindings
+> remain to be published and audited. The old specialized sparse paired
+> formulas do not automatically transfer to this conjugator, and the
+> **84-operation /18-positive-witness /degree187** frontier is unchanged.
+>
+>
 > The [bounded review of the latest four report topics](triage_batch105_computational_relevance_pascal.md)
 > finds no new Turing-completeness or Diophantine interface in the inspected
 > guides and theorem statements. A398540's placement game supplies a
