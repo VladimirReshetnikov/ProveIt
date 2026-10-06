@@ -597,6 +597,41 @@ and hence to $t\band(i\bor(i+d))=0$.  Summing $0\le t\le m-2$ gives
 \eqref{lim:eq:array-two-bit-formula}.
 \end{proof}
 
+\emph{[Correction, 6 October 2026, after the independent check of the
+batch-114 write.]} Formula~\eqref{lim:eq:array-power-formula} is printed
+above as delivered in batch~73O1. Its first term must be read as the
+coefficient of $x^{2^r}$ in $[P_m]$, that is, as $\binom{m+r-1}{r}$ reduced
+modulo~$2$ to $\{0,1\}$: the proof obtains it from~\eqref{lim:eq:PQ-iterates}
+and~\eqref{lim:eq:P-closed}, which determine only that parity. With the
+binomial read as an integer, (c) is false. For $m=2$ and $r=1$ the right side
+is $\binom21+2\binom22=4\equiv0\pmod4$, while
+$g_2(2)=[x^2]\bigl(F(x)+F(x)^2+F(x)^4+\cdots\bigr)=1+1=2$; for $m=3$ and
+$r=1$ it is $3+2=5\equiv1$, while $g_3(2)=3$. The repaired statement is
+\[
+ g_m(2^r)\equiv
+ \Bigl(\binom{m+r-1}{r}\bmod2\Bigr)
+ +2\sum_{\ell=1}^{m-1}
+     \binom{\#\{0\le j\le r:j\band(\ell-1)=0\}}2
+ \pmod4,
+\]
+with $\binom{m+r-1}{r}\bmod2\in\{0,1\}$. An independent computation (exact
+composition modulo~$4$ for $1\le m\le6$ and $1\le N\le160$) compared parts
+(a)--(d) with $g_m(N)$: with the integer reading, (c) fails at $19$ of the
+$960$ entries, all at powers of two; with the reading modulo~$2$, no entry
+fails. The proof of \cref{lim:prop:power-diagonal} uses
+\eqref{lim:eq:array-power-formula} with this reading: it discards
+$\binom{2^r+r-1}{r}$, which is even by \cref{lim:prop:diagonal-even} but
+can be $\equiv2\pmod4$ (it is $2$ at $r=1$). So
+\cref{lim:prop:power-diagonal} and \cref{lim:thm:diagonal-classification}
+stand as stated; parts (a), (b) and (d) are unaffected. No other place in
+Part~I or Part~II uses the integer reading: Part~II compares with (c) only
+at weight~$0$, where the residue is taken modulo~$2$
+(\cref{lim:dsd:sec:claims}), and the delivered verifier
+\texttt{code/verify\_a168362.py} tests one-bit exponents only for parity
+and on the diagonal $m=N$. Under Vladimir Reshetnikov's standing rule of
+4~October 2026 the printed formula is kept, and this note records the
+counterexample and the repair.
+
 \begin{remark}[A logarithmic-time evaluation of $E$]
 \label{lim:rem:E-fast}
 The parity in~\eqref{lim:eq:E-def} can be evaluated without enumeration.  Every
@@ -3034,6 +3069,41 @@ set-partition composition, and the weighted scaling identity.
 The core theorem needs no analytic estimates or automata library.
 A second stage could verify the digit-polynomial formula and
 finite transition certificates for concrete automata.
+
+\emph{[Independent check of the write, 6 October 2026.]} An adversarial
+check made by the intake after the write (commit \texttt{42d31831e}), with
+its own exact integer code, found every addition of the write correct. It
+confirmed the counterexample to Research question~\ref{lim:q:odd-prime}
+(\cref{lim:dsd:prop:odd-correction}; $[x^{2p-1}]F_p(F_p(x))=p$ computed for
+all primes $p\le13$) and the corrected support statement modulo~$p^2$ (the only
+digit sums carrying a coefficient nonzero modulo~$p^2$ are $1$ and $p$, and
+$p$ is occupied for every tested $m\notin\{0,1\}$, inverse iterates
+included); the answer to Research question~\ref{lim:q:higher-precision} for
+every $q$, with the support condition, the valuation bound and the
+integrality of $N!\,A_p(m,N)/p^{(N-1)/(p-1)}$ holding at $4090$ coefficients
+($p\le11$, $-3\le m\le6$); the second routes to
+\cref{lim:thm:whole-array-support}, to \cref{lim:prop:P-closed}
+(\eqref{lim:dsd:eq:modp-row} in $170$ of $170$ cases) and to
+\cref{lim:prop:diagonal-even} ($p\mid A_p(N,N)$ for $2\le N\le40,30,26$ at
+$p=2,3,5$); \cref{lim:dsd:rem:oeis-example} against the live entries (the
+printed rows of A168365, A168366 and A168362, $114$, $110$ and $64$
+entries, are those of plain composition); the agreement at $p=2$, $m=2$
+with \cref{lim:thm:full-array-formula}(c),(d) claimed in
+\cref{lim:dsd:sec:claims} (its own implementation of the residue formula of
+\cref{lim:dsd:thm:residue} agrees with direct composition in $160$, $60$,
+$32$ and $17$ cases for $p=2,3,5,7$); and the \verb|\crefalias| change
+(Part~I's heads, equation tags and appendix letters unchanged; the nine
+cross-references of the earlier build that named a lemma, proposition or
+corollary ``Theorem'' now carry the right name; no undefined reference). A
+minor observation, needing no change: A168366's example prints no $F_0$
+row, so the initial condition $F_0(x)=x$ in
+\cref{lim:dsd:rem:oeis-example} is the natural one there, not a printed
+one. The check also found an error of Part~I that predates the write:
+formula~\eqref{lim:eq:array-power-formula} of
+\cref{lim:thm:full-array-formula}(c) is false with its binomial read as an
+integer. Under the standing rule of 4~October 2026 it is kept as printed
+and corrected, with the counterexample, in a dated note after the proof of
+that theorem; Part~II uses only its content modulo~$2$.
 
 \appendix
 \phantomsection
