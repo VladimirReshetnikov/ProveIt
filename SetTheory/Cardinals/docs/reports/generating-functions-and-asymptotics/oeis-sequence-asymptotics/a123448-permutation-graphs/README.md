@@ -105,7 +105,8 @@ Added by the write (5 October 2026), with proofs, marked `[write]`:
   the source's own).
 - **`h_8 = −3687969659/2520`** (`8! h_8 = −59,007,514,544`), end of Section 7,
   from the OEIS term `a_10 = 524,572`, which the companion does not
-  enumerate; `h_8` is conditional on that term.
+  enumerate; `h_8` was conditional on that term until the independent check
+  below confirmed `a_10` by exhaustive enumeration.
 - **Johnston's question** (Section 10.3; next section).
 - Section 1.1 (provenance, sources as read, relation to the repository,
   reading conventions, collected non-claims), notes on the 1990 table
@@ -126,7 +127,8 @@ Pierrot, arXiv:2402.06394v1 (9 February 2024), Section 4.3, prove
 permutation gives a modular-prime graph, which has at most four realizers,
 Proposition 4.6; so `a_n ≥ s_n/4 ~ e⁻² n!/4 ≈ 0.0338 n!`). The source quotes
 those "coarse bounds" but does not connect them to Johnston. What is new in
-the sources read is the constant `1/4` and the expansion to every fixed order.
+the sources read is the constant `1/4` and the expansion to every fixed order;
+whether El-Zahar–Sauer already implies the constant is `prg:q:priority`.
 
 Priority of the leading term is **not** claimed (the source's own caveat,
 kept): El-Zahar and Sauer (Order 5 (1988)) prove that unlabeled
@@ -202,7 +204,8 @@ On copies (5 October 2026; Windows, Python 3.14, standard library only):
   14, the quoted 1990 values from 15). The values for `n = 15, …, 19` are
   representable as IEEE doubles; the printed `a_20 = 480,517,922,278,457,424`
   is not (it is `≡ 16 (mod 64)` in `[2⁵⁸, 2⁵⁹)`, where doubles are multiples of
-  64). Observations only.
+  64). Observations only. (It is exact in the 56-bit double formats of 1990;
+  see the independent check below.)
 - The dossier read the manuscript in full and spot-checked the proofs; no
   error. It recomputed `k! h_k`, `U⁻¹ − 1 = 4y + 17y² + …`, the
   total-variation coefficient `−15` and the residual `−97/24`.
@@ -213,6 +216,32 @@ On copies (5 October 2026; Windows, Python 3.14, standard library only):
   Klazar, Habib–Paul, Bayoumi–El-Zahar–Khamis (all read by the source),
   El-Zahar–Sauer and Winkler (abstracts only, by the source), the 2026 journal
   text of Bassino et al.
+
+**Independent check of the write (5 October 2026).** An adversarial check
+made by the intake after the write (`6fb3059e5`) reread Johnston's post, OEIS
+A123448 (revision 35) and a fresh download of arXiv:2402.06394v1
+(Proposition 4.6; Section 4.3, "using 4e² < 30") and confirmed the account of
+both in Section 10.3; it confirmed all four parts of Remark 8.2 against the
+transseries volume (staircase hypotheses with `n_0 = n_1 = 1`; not an
+instance of `p0:thm:staircase` (1)–(2); factorial core `κ = 1`, `d = −1`;
+the two shifts as `e_1`, `e_2` of `p0:thm:core-reversion`, with
+`q_1 = −47/12`, `q_2 = −9` recomputed). Its own exhaustive enumeration
+(canonical forms of the inversion graphs of all permutations; 283 s for
+`n = 10`) gave `a_1, …, a_10` and `r_1, …, r_9` as in the table and the
+OEIS, in particular `a_10 = 524,572`, and its own exact series code gave
+`h_0, …, h_8` and `8! h_8 = −59,007,514,544`; the `h_8` note's caveat is
+discharged (dated sentence added). It confirmed every number of the note on
+the 1990 table. One inference there was wrong as worded and is corrected
+with a dated note keeping the first wording: `a_20` is not an IEEE binary64
+value, but `a_20 ≡ 0 (mod 16)`, so it is exact in the 56-bit-significand
+double formats of 1990 (IBM System/370 hexadecimal long, spacing 16 in
+`[16¹⁴, 16¹⁵)`; VAX D_floating, spacing 8 in `[2⁵⁸, 2⁵⁹)`); the observation
+does not decide how the table was computed. Two wordings of the note on
+Johnston's question were qualified, also with the first wording kept: the
+constant `1/4` is new relative to the two sources discussed there
+(`prg:q:priority`), and `1/30` is a convenient weakening of `e⁻²/4`
+(`4e² ≈ 29.56 < 30`), not a rounding. No mathematical error was found. The
+record is a dated note at the end of Section 12.1.
 
 ## Relation to the repository
 
@@ -284,7 +313,7 @@ section and the added displays are unnumbered.
 ```text
 README.md                                          this guide (replaces the delivery README)
 article.tex                                        the report (delivered Report153.tex; labels prefixed, [write] additions)
-article.pdf                                        compiled report, 27 pages
+article.pdf                                        compiled report, 28 pages
 companion-README.md                                the companion's guide (delivered companion/README.md)
 code/companion-verify.py                           exact checker: claims, algebra, enumeration replay (delivered companion/verify.py)
 code/companion-enumeration.py                      two exhaustive graph enumerators (delivered companion/enumeration.py)
@@ -386,7 +415,8 @@ B=$(mktemp -d); cp article.tex "$B/"; cd "$B"
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The committed PDF was built this way with MiKTeX on 5 October 2026: 27 pages;
+The committed PDF was built this way with MiKTeX on 5 October 2026: 28
+pages after the independent check (27 at the write);
 no errors or warnings, no undefined references or citations, no multiply
 defined labels, no duplicate PDF destinations, no overfull or underfull boxes.
 The delivered source built the same way gives 22 pages and is equally clean.

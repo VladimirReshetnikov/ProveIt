@@ -972,7 +972,12 @@ evaluating \eqref{prg:eq:H} in exact rational arithmetic gives
 an integer, as Corollary~\ref{prg:cor:denominator} requires. The same program
 reproduces $h_0,\dots,h_7$ from the table. The value of $h_8$ depends on the
 OEIS term $a_{10}$ being correct; $h_9$ would also need $r_{10}$, which is not
-known here.
+known here. \textup{(Added after the independent check of 5~October 2026:
+the value $a_{10}=524{,}572$ was confirmed by an exhaustive canonical
+enumeration of the inversion graphs of all $10!$ permutations, which also
+reproduced $a_1,\dots,a_9$ and $r_1,\dots,r_9$ of the table, and an
+independent exact program recomputed $h_8$ and $8!\,h_8$ from these values.
+The caveat of the previous sentence is therefore discharged.)}
 \end{writenote}
 
 \section{Threshold inversion with rounding preserved}\label{prg:sec:inverse}
@@ -1496,7 +1501,14 @@ Two observations, neither a check of the table's exactness nor of the
 theorem. (i) The values for $n=15,\dots,19$ are representable in IEEE double
 precision; the value for $n=20$ is not: it lies in $[2^{58},2^{59})$, where
 doubles are multiples of $64$, and it is $\equiv16\pmod{64}$. So that entry is
-not, as printed, the output of a plain double-precision computation. (ii) With
+not an IEEE~754 binary64 value. It is, however, exactly representable in the
+56-bit-significand double formats in use in 1990 (IBM System/370 hexadecimal
+long, spacing $16$ at this size; VAX D\_floating, spacing $8$), since
+$a_{20}\equiv0\pmod{16}$; the observation does not decide how the table was
+computed. \textup{(Corrected after the independent check of 5~October 2026;
+the first wording read ``So that entry is not, as printed, the output of a
+plain double-precision computation'', which holds only for IEEE binary64.)}
+(ii) With
 $S_8(n)=\frac14\sum_{k=0}^{7}h_k(n-k)!$, the relative difference
 $(a_n-S_8(n))/a_n$, computed from the OEIS terms ($n\le14$) and the quoted
 values ($n\ge15$), is $0.1152$, $0.0238$, $0.0107$, $0.00458$, $0.00174$,
@@ -1553,9 +1565,16 @@ arXiv:2402.06394v1 (9~February 2024, Section~4.3) shows $a_n\ge n!/30$ for all
 large $n$, which is the coarse lower bound quoted in the next paragraph. Their
 argument (every simple permutation realizes a modular-prime graph, and such a
 graph has at most four realizers) gives $a_n\ge s_n/4$, hence
-$\liminf_{n}a_n/n!\ge e^{-2}/4\approx0.0338$, and $1/30$ is a rounding of
-that, since $4e^2<30$. What the present report adds is the constant $1/4$ and
-the expansion to every fixed order. The placement record of batch~106 said
+$\liminf_{n}a_n/n!\ge e^{-2}/4\approx0.0338$, and $1/30$ is a convenient
+weakening of that, since $4e^2\approx29.56<30$. Relative to these two sources,
+the present report adds the constant $1/4$ and the expansion to every fixed
+order; whether El-Zahar--Sauer~\cite{ES} already implies the constant is
+Question~\ref{prg:q:priority} of Section~\ref{prg:sec:further}.
+\textup{(Wording qualified after the independent check of 5~October 2026; the
+first wording read ``$1/30$ is a rounding of that'' and ``What the present
+report adds is the constant $1/4$ and the expansion to every fixed order'',
+which read as a priority claim that the El-Zahar--Sauer caveat leaves open.)}
+The placement record of batch~106 said
 that this report answers Johnston's question; that holds for the sharp
 constant, not for the dichotomy itself.
 \end{writenote}
@@ -1733,7 +1752,8 @@ Section~\ref{prg:sec:sources}).
 \item\label{prg:q:growth} \emph{Growth of $h_k$ and orders that increase
  with $n$} (source, second paragraph above, and
  Remark~\ref{prg:rem:fixed}). Bound $h_k$ (the write's $h_8=-3687969659/2520$,
- from the OEIS term $a_{10}$, continues the growth of $|h_k|$), make the
+ from the OEIS term $a_{10}$, confirmed at the independent check, continues
+ the growth of $|h_k|$), make the
  constants uniform in $R$, and decide whether a truncation order $R(n)\to\infty$,
  optimal truncation, Borel summation or a description of the exponentially
  small sectors is justified. Missing: every estimate uniform in $R$.
@@ -1755,10 +1775,41 @@ Section~\ref{prg:sec:sources}).
  text of El-Zahar--Sauer~\cite{ES} (two-dimensional posets $\sim n!/2$) or of
  Winkler~\cite{Winkler} contain $a_n\sim n!/4$ or its method; what does the
  final journal text of~\cite{BBFGP} (2026) say about permutation graphs; are
- the 1990 values for $n=15,\dots,20$ exact (the printed $a_{20}$ is not a
- double, note in Section~\ref{prg:sec:sources})? Missing: the three full
+ the 1990 values for $n=15,\dots,20$ exact (the printed $a_{20}$ is not an
+ IEEE double, note in Section~\ref{prg:sec:sources}; it is exact in the
+ 56-bit double formats of 1990)? Missing: the three full
  texts and an exact enumeration beyond $n=14$.
 \end{enumerate}
+\end{writenote}
+\begin{writenote}[Independent check of the write, 5~October 2026]
+An adversarial check made by the intake after the write (commit
+\file{6fb3059e5}) reread Johnston's post and OEIS A123448 (revision~35;
+$a_{11}$ by Jablonski,$a_{12}$--$a_{14}$ by Johnston) and a fresh download
+of arXiv:2402.06394v1 (Proposition~4.6 and the proof of Theorem~2.1 in
+Section~4.3, with ``using $4e^2<30$''), and confirmed the account of both in
+Section~\ref{prg:sec:sources}. It confirmed the four parts of
+Remark~\ref{prg:rem:transseries} against the transseries volume: the
+staircase hypotheses with $n_0=n_1=1$, that the bracket is not an instance of
+\texttt{p0:thm:staircase}\,(1)--(2), the factorial core with $\kappa=1$,
+$d=-1$, and the two shifts as $e_1$, $e_2$ of \texttt{p0:thm:core-reversion}
+(with $q_1=-47/12$, $q_2=-9$ recomputed). By its own exhaustive enumeration
+(canonical forms of the inversion graphs of all permutations, self-tested on
+the graph counts $1,2,4,11,34,156$ of A000088) it found
+$a_1,\dots,a_{10}$ and $r_1,\dots,r_9$ as in the table and the OEIS, in
+particular $a_{10}=524{,}572$, and its own exact series code gave
+$h_0,\dots,h_8$, $8!\,h_8=-59{,}007{,}514{,}544$ and $[x^{10}]Q=-1{,}319{,}072$;
+the caveat of the note on $h_8$ is discharged there. It confirmed that
+$a_{15},\dots,a_{19}$ are IEEE doubles and $a_{20}$ is not, and every number
+of the note on the quoted values. One inference there was wrong as worded and
+is corrected with a dated note keeping the first wording: $a_{20}$ is not an
+IEEE binary64 value, but it is divisible by $16$ and so exact in the 56-bit
+double formats of 1990 (IBM System/370 hexadecimal long, VAX D\_floating), so
+the observation does not show that the table was not computed in double
+precision. Two wordings of the note on Johnston's question were qualified,
+also with the first wording kept: the report adds the constant $1/4$
+relative to the two sources discussed there (Question~\ref{prg:q:priority}),
+and $1/30$ is a weakening of $e^{-2}/4$ rather than a rounding. No
+mathematical error was found.
 \end{writenote}
 
 \begin{thebibliography}{99}
