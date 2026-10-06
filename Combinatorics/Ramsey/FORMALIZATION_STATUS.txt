@@ -4,7 +4,7 @@ Scope
   The goal remains open. No improvement to the final Szemeredi bound is claimed.
   The source catalogue contains all 120 unique numbered theorem, lemma,
   proposition, and corollary headings in sz-thm-gowers-proof.tex.
-  There are 96 checked exact companion proofs and 24 open statements.
+  There are 97 checked exact companion proofs and 23 open statements.
   The JSON ledger records every statement, its TeX heading lines, its Lean
   definition, and related results. Conditional implications, restricted cases,
   and counterexamples are not counted as proofs of the full statement.
@@ -12,10 +12,10 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 145 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 1,426 public Gowers theorems and found only propext,
-  Classical.choice, and Quot.sound. The audit independently counted 96 exact
-  companion proofs and 24 open catalogue statements from Lean's theorem types.
+  All 149 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 1,457 public Gowers theorems and found only propext,
+  Classical.choice, and Quot.sound. The audit independently counted 97 exact
+  companion proofs and 23 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
   errors remain in this build. The JSON ledger reproduces exactly and has no
   unmatched numbered TeX headings or unmatched catalogue entries.
@@ -76,7 +76,7 @@ Completed Lemma 16.1
   the corrected multilinear partition statements. The original displayed
   exponent and the explicit rounding-safe threshold are unchanged.
 
-Preparatory results for Lemma 16.5
+Completed Lemma 16.5
   Proofs16ArrangementSelection disintegrates arrangement counts over their
   sidelengths and proves a weighted selection estimate. It selects a set H
   carrying at least (theta_1/4)*N^(17*k+15) arrangements, with each selected
@@ -86,10 +86,17 @@ Preparatory results for Lemma 16.5
   points, proves that the higher cube correlation equals the domain fibre
   count function, and matches the Section 10 and Section 16 large spectra.
   It also bounds the total fixed-side cube count by N^(k+1).
-  Lemma 16.5 remains open: the cube-density lower bound, exact-density
-  reparameterization, and explicit comparison of the Bohr radii remain.
-  Theorem 10.13's density equality and upper bound 1/6 must be respected;
-  its existing statement cannot simply be invoked with a density lower bound.
+  Proofs16DomainBounds bounds additive sixteen-tuples by the fibre cap
+  times the fifteenth power of the domain size, then derives a bound linear
+  in that size. This proves the required cube-density lower bound. Exact
+  density normalization uses the original fibre cap for sparse domains and
+  a sixfold cap for dense ones, respecting Theorem 10.13's upper bound 1/6.
+  Proofs16RadiusBounds and Proofs16RadiusComparison include the ceiling in
+  the spectrum parameter and prove the explicit Section 16 radius fits
+  inside the Section 10 extraction radius at every admissible density.
+  Proofs16Lemma5 combines these results with Theorem 10.13, restricts the
+  Bohr model to the requested spectrum and radius, and proves the exact
+  catalogue companion without additional assumptions or statement changes.
 
 Shared Section 16 migration
   Box.IsProper is now a shared definition. MultiplyLinear requires proper
