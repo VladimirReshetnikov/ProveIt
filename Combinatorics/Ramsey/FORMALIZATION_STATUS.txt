@@ -13,8 +13,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 713 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 4,583 public Gowers theorems and found only propext,
+  All 718 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 4,606 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 113 exact
   companion proofs and 7 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -427,6 +427,39 @@ Linear inverse-loss sampling budget in the complete affine lift
   This improves the actual Section 16 construction; it does not establish
   the still-unsupported comparison with the unit-parameter controls or
   assert the refuted two-premise Lemma 16.10 predicate.
+
+Uniform power-width cover from the actual contextual lift
+  Proofs16UniformLiftParameters replaces locally chosen counts by uniform
+  ceilings. For sigma=rho/4, let Qd=ceil(section16Lemma9DeltaQBound),
+  R=ceil(6*max(1,section16Lemma9QBound)/sigma), and
+  a=multipleC(sigma/(R*s),gamma,k)^(R*s). The line exponent e uses Qd
+  in the full Lemma 16.9 denominator. The final exponent E=e*a/4 is
+  proved positive. These quantities depend only on the input real
+  parameters and dimension, not on the parent box or modulus.
+  Proofs16UniformLiftControls proves all count and exponent comparisons,
+  including the full candidate count R*b+R^2*b^2, where
+  b=multipleQ(sigma/(R*s),gamma,k)^(R*s). It preserves the improved linear
+  sampling budget and keeps the gamma- and delta-side counts distinct.
+  Proofs16RoundedPowerWidth absorbs the floor, division by eight, square
+  root, and division by four into a pure power above an explicit finite
+  threshold. More generally, every target exponent u<e*a/2 is available:
+  the threshold is the maximum of positivePowerThreshold(16,z,e) and
+  positivePowerThreshold(1,(z/16)^(a/2)/4,e*a/2-u), with z=zeta/2.
+  Thus the fixed exponent E can be increased to any value below 2*E by
+  increasing the starting width, without changing the graph budget.
+  Proofs16UniformPowerCover applies these estimates to the constructed
+  affine lift. For every sufficiently wide proper parent box it produces
+  a proper partition of width at least m^E, retains at least (1-rho) of
+  the parent mass, and covers the selected function with the uniform number
+  of global multilinear graphs. The starting width is fully specified.
+  Proofs16ContextualPowerCover instantiates this theorem with the genuine
+  common-base witnesses and structured-pair covers, obtaining the all-ones
+  graph cover with no additional lifting hypothesis. This is a proved
+  contextual large-box conclusion with its actual quantitative controls.
+  It does not imply the all-scale unit-parameter statement required by the
+  current Section 16 induction; that comparison and induction remain open.
+  The false packaged Lemma 16.10 predicate remains unasserted and the
+  catalogue count remains 113/120.
 
 Shared Section 16 migration
   Box.IsProper is now a shared definition. MultiplyLinear requires proper

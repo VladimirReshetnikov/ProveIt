@@ -456,6 +456,7 @@ import GowersSzemeredi.Proofs18FiveTermSourceThreshold
 import GowersSzemeredi.Proofs18ShortLocalizationInverse
 import GowersSzemeredi.Proofs17LocalizationFromDimensionInduction
 import GowersSzemeredi.Proofs18StructuralInverseConsequences
+import GowersSzemeredi.Proofs16ContextualPowerCover
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 
