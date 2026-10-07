@@ -276,6 +276,23 @@ R_2(W(n)) is 1.0412, 1.0400, 1.0245, 1.0144, 1.0076, 1.0040 at n = 100,
 300, 1000, 3000, 10^4, 3·10^4 (numerical evidence for the unmarked part of
 Q_2 only).
 
+Independent check of the batch-100 write (7 October 2026): an adversarial
+check by the intake after the write (`72091374c`) re-derived every
+statement the write added, with its own code, from fresh extractions of both
+archives. Provenance facts, label counts (104: Part I 37 + 19, Part II 38
+of 44 + 10) and the numerals of both texts were recounted; OEIS A007716
+(#55), A007718 (#18) and A120733 (#102) were fetched again (the Euler
+transform of A007718 with c°_0 = 0 gives A007716 to n = 50; the reciprocal
+coefficients are 1, −1, −3, −3, −8, −8, −38; Σ M_{k,l}(n) is A120733 for
+n ≤ 8); the cited passages of a277364, a260700 and a307316 and
+Pavlichin–Jiao–Weissman's Theorem 12 were read. The four unmarked
+contributions of `data/01-asymptotics-reconstruct_Q2.json` add up to the
+printed R_2, and Z_n computed independently of the mass formula, as
+Σ_d [n, n−d](B_{n−d}/B_n)² with exact Stirling numbers of the first kind,
+gives the ratios 1.04124, 1.04000, 1.02454, 1.01443, 1.00760, 1.00404 at
+the six sizes above. No mathematical error and no defect of the write was
+found; the check is recorded at the end of Appendix A.
+
 ## Building
 
 ```

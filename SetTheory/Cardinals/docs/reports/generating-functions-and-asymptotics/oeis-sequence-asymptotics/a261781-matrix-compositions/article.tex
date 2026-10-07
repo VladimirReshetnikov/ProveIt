@@ -3112,13 +3112,20 @@ finding such a statistic is a separate combinatorial problem
 (its Theorems~13.1 and~15.1, labels \texttt{a122:pd:thm:trichotomy} and
 \texttt{a122:pd:thm:allorders}), proves the analogous law for a different
 array: for a uniformly chosen pair of an ordered partition of an $m$-set
-and a map of an $n$-set to its blocks, the defect (the number of missing
-blocks, $m$ minus the block count) tends to a Poisson law of parameter
+and a map of an $n$-set to its blocks, the defect ($m$ minus the number
+of blocks) tends to a Poisson law of parameter
 $e^{-c}/2$ at $n=m(\log m+c)$, with an expansion through every fixed order
 summed by Touchard polynomials. There the factor $1/2$ comes from defects
-that are pairs (its Proposition~16.1); its source note names the same
-mechanism, pairs weighted by $1/2!$, for the parameter $Lr/2$ of
-Theorem~\ref{mxc:tp:thm:defect}. No theorem is shared.]
+that are pairs (its Proposition~16.1); a dated note of its batch-98 write,
+on its source audit, names the same mechanism, pairs weighted by $1/2!$,
+for the parameter $Lr/2$ of
+Theorem~\ref{mxc:tp:thm:defect}. No theorem is shared.
+\textup{(Wording corrected after the independent check of 7~October 2026;
+the note first read ``the defect (the number of missing blocks, $m$ minus
+the block count)'' and ``its source note names the same mechanism''. The
+defect $m-K$ is not a number of missing blocks, and the delivered source
+audit of that report does not mention this report: the sentence is in the
+write's note about that audit.)}]
 
 For $n=2N$, $k=N$ the limiting mean is $v=0.55230808135934145323\ldots$.
 Direct evaluation of the positive weights in~\eqref{mxc:tp:eq:defectdef}
@@ -5488,6 +5495,15 @@ Theorem~\ref{mxc:hz:thm:smooth} is of order $(\log k)/k$ for smooth
 compactly supported statistics, smaller than $k^{p-1}$ for every
 $0<p<1$; but $|Y|^p$ is neither compactly supported nor smooth at the
 origin, so that theorem does not apply to it directly.
+\textup{(Added after the independent check of 7~October 2026; numerical
+evidence, not proof.)} At $p=\frac12$ the continued constant is
+$\mathcal M_{1/2}=-2.9608$, and exact multiplicities give
+$(\mathsf M_{1/2}(k)-1)k^{1/2}=-2.395$, $-2.516$, $-2.573$, $-2.614$,
+$-2.694$ at $k=500$, $1024$, $1500$, $2048$, $4096$; the differences from
+$\mathcal M_{1/2}$ are $2.04$, $2.05$, $2.05$, $2.06$, $2.05$ times
+$(\log k)/k^{1/2}$, as a further term of order $(\log k)/k$ in
+$\mathsf M_{1/2}(k)$ would make them. The data are consistent with the
+candidate at $p=\frac12$; they do not test other $p$.
 
 \begin{question}[An expansion through the critical moment order; manuscript~08]\label{mxc:hz:q:critical}
 Can the three moment regimes be replaced by one uniform formula when
@@ -7246,6 +7262,47 @@ approaches consistent with the error terms proved. The write checked
 $H_{1,s}$, $H_{2,s}$, the bound of Remark~\ref{mxc:hz:rem:large-m} and the
 translation of every renamed formula against the delivered source. These
 checks do not replace an independent review of the proofs.
+
+\paragraph{Independent check of the batch-98 write (7 October 2026).} An
+adversarial check made by the intake after the write (commit
+\texttt{324818ddb}) and its reciprocal note (commit \texttt{639b038ab})
+re-derived every statement they added, with its own code. \emph{Sources.}
+The archive (30~files; 29-page PDF with author ``OpenAI ChatGPT'' and
+``An OEIS-related research article''; 2{,}041 lines), the pin (a merge
+commit of 4~October 2026, 19:16~$-0700$; this report unchanged to the
+placement), the generic \path{requirements.txt} (the same blob as a file of
+the Fabius tree), the 8-gram shares $1.25\,\%$ and $0.50\,\%$ (word
+tokens), the decimals of the printed text (unchanged from the
+manuscript), \cite{hzpsi} and \cite{hztoth} (23~pages) are as printed.
+\emph{Statements.} $H_{1,s}$, $H_{2,s}$ ($s\le3$) and $H_{3,s}$ ($s\le2$)
+were recomputed as determinants from the inclusion--exclusion generating
+function, and $T_u(2,2)=u+2u^2$; the Part~I note on $\mathsf E_m(k)$ (every
+order $2\le m\le k-1$ occurs, through the pair $(1,1+m)$), the masses
+$3\log k/(\zeta(2)\psi(m)k)$ of Research question~7's note and
+Remark~\ref{mxc:hz:rem:large-m} were checked by hand. \emph{Numbers.} The
+check's own computation of the atoms ($\mathsf D_k=\sum\varphi(m)\mathsf
+E_m(k)=2(c-G_k)$ asserted for every $k$ used) reproduces
+Table~\ref{mxc:hz:tab:discrepancy} (distances to $10^{-12}$; maximizing
+angle $1/7$ for $k\le256$ and $1/11$, or its mirror $10/11$, above) and the
+entries $k=1024$, $2048$, $4096$ of
+Table~\ref{mxc:hz:tab:first-moment}, the limit $-0.6273278444052115$, and
+the placement's values at $k=500$ and~$1500$ of $\mathsf M_1(k)-(\log
+k)/\pi$, $(k/\log k)(\mathcal F_k(t)-t)$ and $k\hznu_k((kx,\infty))$, with
+$\Xi(0.05)=1.2438$, $\Xi(0.1)=0.2520$ and $\mathcal I_3=\frac32\log(2\pi)-\frac{11}4$
+to fifteen digits. A rerun of manuscript~08's program on a copy confirms
+Remark~\ref{mxc:hz:rem:longdouble} exactly (16 of 20 and 20 of 4{,}804 rows;
+on Windows NumPy's \texttt{longdouble} is the 64-bit double), the four
+PDF-structure checks of the text summary, and that the JSON summary
+records the Python version but not the platform. The source and the
+wording of the evidence note at Research question~\ref{mxc:hz:q:discrepancy},
+of the fractional-moment candidate and of the last-zeros speculation are
+manuscript~08's, as stated. No mathematical error was found. Corrected
+with the first wording kept: the reciprocal note after
+Theorem~\ref{mxc:tp:thm:defect} (the defect of the sibling report is not
+``the number of missing blocks'', and the pair mechanism is named in a
+note of that report's write, not in its source note). Added: numerical
+evidence for the fractional-moment candidate at $p=\frac12$ (Research
+question~\ref{mxc:hz:q:fractional}).
 
 \paragraph{Part~IV (batch 108).}
 [Added 6 October 2026, batch 108.] Part~IV is built from Report~169 of a
