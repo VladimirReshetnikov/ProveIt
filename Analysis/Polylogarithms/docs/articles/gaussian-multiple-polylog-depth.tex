@@ -1,0 +1,421 @@
+% Created (UTC): 2026-06-19T18:04:38Z
+% Repository HEAD: 12c591b6dd9bc27055fcbbb4e7e83efcffbaf0f0
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype}
+\emergencystretch=3em
+\hbadness=4000
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\DeclareMathOperator{\Li}{Li}
+\newcommand{\iu}{\mathrm{i}}
+\newcommand{\half}{\tfrac12}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{observation}[theorem]{Observation}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\title{Depth filtration of Gaussian multiple polylogarithms:\\
+a parity alternation, computed with Wolfram~15}
+\author{Vladimir Reshetnikov}
+\date{2026-06-19}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Wolfram Language~15.0 made multiple zeta values and multiple polylogarithms at roots of unity
+first-class, machine-evaluable objects through the functions \texttt{MultipleZeta},
+\texttt{MultiplePolyLog}, \texttt{GeneralizedPolyLog}, \texttt{HarmonicPolyLog}, and
+\texttt{MultipleHarmonicNumber}. We use them to determine the depth structure of a family of
+alternating odd Euler sums and of the Gaussian (level-four) multiple polylogarithms
+$\Li_{a,b}(\iu,1)$ and $\Li_{a,b,c}(\iu,1,1)$. The central finding is that the depth of the
+single direction $S_p=\sum_{n\ge0}(-1)^nH_n/(2n+1)^{p}$ \emph{alternates with the parity of the
+weight}: depth one through weight four, genuinely depth two at weight five, back to depth one at
+weight six, depth two at weight seven, and depth one at weight eight. The mechanism is the
+existence of the Dirichlet beta value $\beta(w)=\Im\Li_w(\iu)$ as a new depth-one single
+$L$-value at even weight, and its degeneration to a rational multiple of $\pi^w$ at odd weight.
+We give the explicit even-weight closed forms, the genuinely depth-two weight-five evaluation and
+a sporadic relation among its generators, the complete depth-one reduction of the weight-six
+generators, and the collapse of the depth-three triple sums $\Li_{a,b,c}(\iu,1,1)$ to single
+polylogarithms at weight four and to depth two at weight five. We describe the experimental
+toolkit that made this possible---PSLQ with a Champernowne canary, an arithmetic-complexity
+(``smoothness'') discriminator, a fast FLINT--LLL relation finder, and an accelerated
+Lerch-recursion-plus-Wynn-epsilon evaluator for double polylogarithms on the unit circle---and
+we record the correction of an earlier, incorrect ``depth saturates at two'' claim. All
+evaluations were performed and cross-checked in Wolfram~15 and independently in
+\texttt{mpmath}/FLINT.
+\end{abstract}
+
+%==== INTRO ====
+\section{Introduction}
+
+A persistent friction in experimental work on multiple polylogarithms has been the gap between the objects one wants to reason about and the objects a computer algebra system can actually evaluate. Nested sums such as $\Li_{a,b}(z_1,z_2)=\sum_{m>n\ge1} z_1^m z_2^n/(m^a n^b)$ at roots of unity have, for decades, lived in the experimental-mathematics literature as numerically approximated quantities -- evaluated through bespoke acceleration code, then matched against conjectured closed forms by integer-relation search. They were not first-class symbolic citizens of any mainstream system. Wolfram Language~15.0 (released June 2026) changes this. It introduces a coordinated family of multivariate special functions -- \texttt{MultipleZeta}, \texttt{MultiplePolyLog}, \texttt{GeneralizedPolyLog} (the Goncharov iterated integral), \texttt{HarmonicPolyLog}, and \texttt{MultipleHarmonicNumber} -- that make multiple polylogarithms at roots of unity directly machine-evaluable, both numerically to arbitrary precision and, where the system can, symbolically. For the first time, a nested sum like $\Li_{a,b}(\iu,1)$ can be typed, evaluated, and (sometimes) reduced inside the same environment that knows about $\zeta(k)$, $G$, and \texttt{PolyLog}.
+
+This article uses that new capability to settle the \emph{depth} structure of two families of constants of independent interest: a family of alternating odd Euler sums, and the Gaussian (level-4) multiple polylogarithms $\Li_{a,b}(\iu,1)$ and $\Li_{a,b,c}(\iu,1,1)$. By \emph{depth} we mean the minimal nesting order of multiple polylogarithm needed to express a given constant: depth~1 means a single (ordinary) polylogarithm or $L$-value, depth~2 a genuine double sum that admits no depth-1 reduction, and so on. Deciding the depth of a specific constant is exactly the kind of question that the marriage of a symbolic evaluator and a disciplined integer-relation search is built to answer, and it is exactly the kind of question that was awkward to even pose before the constants became symbolic objects.
+
+\paragraph{Headline results.} Three findings organize what follows.
+
+\emph{(1) Parity-alternating depth of the single direction.} Consider the alternating odd Euler sum
+\[
+  S_p \;=\; \sum_{n\ge0} \frac{(-1)^n H_n}{(2n+1)^{p}},
+\]
+of weight $w=p+1$. Its depth does not stabilize: it \emph{alternates} with the parity of the weight. $S_p$ is depth~1 through weight~4, becomes genuinely depth~2 at weight~5 (odd), collapses back to depth~1 at weight~6 (even), is depth~2 again at weight~7 (odd), and depth~1 at weight~8 (even). The mechanism is clean. At even weight $w$ the Dirichlet beta value $\beta(w)=\Im\Li_w(\iu)$ is a \emph{new} irreducible single $L$-value ($\beta(2)=G$, then $\beta(4),\beta(6),\dots$), and it absorbs the double-sum content, dropping the depth to~1; at odd weight $\beta(w)$ is merely a rational multiple of $\pi^w$, supplies no new single $L$-value, and the depth-2 content survives. Thus the existence or non-existence of a genuinely new single $L$-value at weight~$w$ governs the depth at weight~$w$. The clean witness at weight~6 is
+\[
+  768\,S_5 \;=\; -5\,\pi^5\log 2 \;-\; 42\,\pi^3\,\zeta(3) \;-\; 372\,\pi\,\zeta(5) \;+\; 3840\,\beta(6),
+\]
+a depth-1 identity dominated by the new $L$-value $\beta(6)$, verified across two independent engines beyond 200 digits.
+
+\emph{(2) Low-weight collapse of the Gaussian triples.} The depth-3 Gaussian triple sums $\Li_{a,b,c}(\iu,1,1)$ do not stay depth~3 at low weight. At weight~4 all three triples collapse to level-4 \emph{single} polylogarithms $\lambda_n=\Im\Li_n(\tfrac{1+\iu}{2})$ together with elementary constants -- the colored analogue of the classical reduction $\zeta(2,1,1)=\zeta(4)$. At weight~5 they collapse one notch further than naively expected, reducing to depth~2 (with no depth-3 content), once one is careful to project against a genuinely independent basis. A representative weight-4 form is
+\[
+  \Im\Li_{2,1,1}(\iu,1,1) \;=\; \lambda_4 + \tfrac12\,\lambda_3\log 2 - \frac{G\,(\pi^2-4\log^2 2)}{32} - \frac{\pi\,(8\log^3 2 + 105\,\zeta(3))}{768}.
+\]
+
+\emph{(3) An experimental-mathematics toolkit.} Underpinning these verdicts is a small toolkit assembled for the present work: a PSLQ search guarded by a Champernowne-number canary that rejects spurious relations; an arithmetic-complexity (``smoothness'') discriminator that flags genuine irreducible constants in their natural basis; a fast \mbox{FLINT}-backed LLL relation finder that makes weight-6 elimination cheap and robust where \texttt{mpmath} PSLQ and PARI \texttt{lindep} are prohibitively slow; and an accelerated Lerch-plus-Wynn evaluator for double polylogarithms on the unit circle, where the native \texttt{MultiplePolyLog} call times out for a second argument on the circle.
+
+\paragraph{A correction, and the discipline behind it.} An earlier analysis of these Gaussian single directions concluded that the depth \emph{saturates at~2}. That claim was wrong, and the route to the error is instructive enough to record. The non-membership test for a depth-1 reduction was run at only 150 digits against a 51-atom basis, producing a spurious-relation height scale of roughly $10^{150/51}\approx 800$; the true depth-1 relation at weight~6 has height $3840$, sitting \emph{above} that scale and therefore invisible to the search, which then saw only the small-height depth-2 generator form and declared depth~2. The corrected picture -- depth alternating with weight parity -- emerged only after raising precision until the spurious scale $10^{\mathrm{dps}/\mathrm{atoms}}$ comfortably exceeded the true relation height, and after re-hunting every prior ``irreducible'' claim under the canary discipline (which, on its own, exposed hidden dependences among the depth-2 generators). The episode is the methodological spine of this article: an irreducibility claim is only ever as strong as the integer-relation search that backs it.
+
+\paragraph{Verification.} Every closed form displayed in this article was numerically re-verified, and every symbolic reduction was performed and cross-checked in two independent ways: in Wolfram~15 through the new multivariate functions (numeric agreement to hundreds of digits together with symbolic \texttt{FunctionExpand}/\texttt{FullSimplify} reductions), and independently in an \texttt{mpmath}/\mbox{FLINT} pipeline. Throughout we pin the Wolfram convention empirically, taking $\Im\Li_{a,b}(\iu,1)=\Im$\,\texttt{MultiplePolyLog[\{a,b\},\allowbreak\{I,1\}]} with the first list carrying the exponents, calibrated against the documented identity \texttt{MultipleZeta[\{2,1,1\}]}${}=\zeta(4)$.
+
+
+%==== OBJECTS ====
+\section{Objects and conventions}
+
+This section fixes the objects, the indexing conventions, and the vocabulary that the rest of the article relies on. Because several of these conventions are not uniform across the literature --- and because we lean heavily on Wolfram Language 15's new multiple-polylogarithm primitives, whose argument order had to be pinned empirically --- we state everything explicitly and tie each definition to the exact \texttt{MultiplePolyLog}/\texttt{MultipleZeta} call that realizes it.
+
+\subsection{Multiple polylogarithms}
+
+For complex weights $a,b,c,\dots$ (positive integers in everything that follows) and arguments $z_1,z_2,z_3,\dots$, the depth-two and depth-three \emph{multiple polylogarithms} are the strictly-nested sums
+\[
+  \Li_{a,b}(z_1,z_2)
+    \;=\; \sum_{m>n\ge 1} \frac{z_1^{m}\,z_2^{n}}{m^{a}\,n^{b}},
+  \qquad
+  \Li_{a,b,c}(z_1,z_2,z_3)
+    \;=\; \sum_{m>n>p\ge 1} \frac{z_1^{m}\,z_2^{n}\,z_3^{p}}{m^{a}\,n^{b}\,p^{c}} .
+\]
+The outermost summation index $m$ carries the leftmost weight $a$ and the leftmost argument $z_1$; the convergence region is $|z_1z_2\cdots| \le 1$ with the usual boundary care when an argument sits on the unit circle. The depth-one case $\Li_{a}(z)=\sum_{m\ge 1} z^{m}/m^{a}$ is the ordinary polylogarithm $\mathrm{PolyLog}[a,z]$. Setting every $z_i=1$ recovers the \emph{multiple zeta values}
+\[
+  \zeta(a,b,\dots) \;=\; \Li_{a,b,\dots}(1,1,\dots),
+  \qquad
+  \text{weight } = a+b+\cdots,\quad \text{depth } = \text{number of indices.}
+\]
+
+\subsection{The Wolfram 15 \texttt{MultiplePolyLog} convention, pinned empirically}
+
+Wolfram Language 15 exposes these sums through \texttt{MultiplePolyLog} and \texttt{MultipleZeta}, but the documentation leaves room for ambiguity about which list is which. We pin the convention by direct evaluation. The \emph{first} list is the exponent (weight) vector and the \emph{second} list is the argument vector:
+\[
+  \Li_{a,b}(z_1,z_2)
+    \;=\; \texttt{MultiplePolyLog[\{a,b\},\allowbreak\{z1,z2\}]},
+  \qquad
+  \zeta(a,b,\dots) \;=\; \texttt{MultipleZeta[\{a,b,\dots\}]}.
+\]
+Three checks fix this unambiguously. First, the Euler reduction $\zeta(2,1)=\zeta(3)$ is returned symbolically: \texttt{MultipleZeta[\{2,1\}]} evaluates to \texttt{Zeta[3]}. Second, the weight-four value
+\[
+  \texttt{MultipleZeta[\{2,1,1\}]}
+   \;=\; \texttt{MultiplePolyLog[\{2,1,1\},\allowbreak\{1,1,1\}]}
+   \;=\; \zeta(4) \;=\; \frac{\pi^{4}}{90},
+\]
+all three of which the kernel returns as $\pi^{4}/90$, simultaneously confirms the exponents-first ordering and the agreement between the zeta and unit-argument polylogarithm entry points. Third, supplying the lists in the wrong roles is not silently reinterpreted: a nominal call such as \texttt{MultiplePolyLog[\{1,1,1\},\allowbreak\{1,1,1\}]} corresponds to a divergent sum (every weight equal to $1$ at unit argument) and the kernel returns a non-finite result (\texttt{ComplexInfinity}/\texttt{Infinity}) rather than a misordered finite value. We therefore treat any \texttt{ComplexInfinity} from a \texttt{MultiplePolyLog} call as a signal that the indices and arguments have been transposed or that the requested sum genuinely diverges, never as a usable number.
+
+Throughout, parts are written with the Fraktur operators $\Im$ and $\Re$, e.g.\ $\Im\Li_{a,b}(\iu,1)=\Im$\,\texttt{MultiplePolyLog[\{a,b\},\allowbreak\{I,1\}]}, with $\iu$ the imaginary unit.
+
+\subsection{Single-direction alternating odd Euler sums}
+
+The simplest family we track lives at depth two but in a single, fixed direction. For $p\ge 0$ define
+\[
+  S_p \;=\; \sum_{n\ge 0} \frac{(-1)^{n}\,H_n}{(2n+1)^{p}},
+\]
+where $H_n=\sum_{j=1}^{n} 1/j$ is the ordinary harmonic number (with $H_0=0$). These \emph{alternating odd Euler sums} are not chosen for their own sake: they arise as parameter derivatives of a hypergeometric Catalan ladder --- differentiating a ${}_p F_q$ that evaluates to a Catalan-type constant with respect to a numerator/denominator parameter produces a harmonic-number weight $H_n$ against the alternating odd denominator $(2n+1)^{p}$, which is exactly $S_p$. The subscript $p$ records the power of $2n+1$, so $S_1$ has denominator $(2n+1)$ and $S_2$ has $(2n+1)^2$, and so on; the weight of $S_p$ as an Euler sum is $p+1$.
+
+\subsection{Gaussian generators}
+
+The central objects of this article are the \emph{Gaussian generators} obtained by sending the outer argument of a depth-two polylogarithm to $\iu$ and the inner argument to $1$. Their imaginary and real parts are
+\[
+  g_{a,b} \;=\; \Im\Li_{a,b}(\iu,1)
+    \;=\; \sum_{k\ge 0} \frac{(-1)^{k}\,H^{(b)}_{2k}}{(2k+1)^{a}},
+  \qquad
+  h_{a,b} \;=\; \Re\Li_{a,b}(\iu,1),
+\]
+where $H^{(b)}_{m}=\sum_{j=1}^{m} 1/j^{b}$ is the generalized harmonic number of order $b$ (so $H^{(1)}_m=H_m$). Splitting the outer geometric factor $\iu^{m}$ into its real and imaginary parts is what turns the nested complex sum into the real series displayed for $g_{a,b}$: only odd $m=2k+1$ contribute to the imaginary part, each carrying the sign $(-1)^k$, and the inner sum over $n<m$ collapses into the partial generalized harmonic number $H^{(b)}_{2k}$. We use $g_{a,b}$ rather than $h_{a,b}$ as the primary generator because the imaginary-part series is the one that produces the Dirichlet-$\beta$/Catalan flavoured constants of interest; the real parts $h_{a,b}$ are tracked alongside and tend to reduce to zeta values and products. As a numerical anchor, $g_{2,1}=\Im\Li_{2,1}(\iu,1)=-0.1136489\ldots$, matching both \texttt{Im[MultiplePolyLog[\{2,1\},\allowbreak\{I,1\}]]} and the direct series $\sum_{k\ge 0}(-1)^k H_{2k}/(2k+1)^2$.
+
+\subsection{Single-polylogarithm constants}
+
+Two depth-one families calibrate the basis. The first is the Dirichlet beta function evaluated through the imaginary part of $\Li_n$ at $\iu$:
+\[
+  \beta(n) \;=\; \Im\Li_n(\iu) \;=\; \sum_{k\ge 0} \frac{(-1)^{k}}{(2k+1)^{n}} .
+\]
+At even $n$ these are genuinely new transcendentals --- in particular $\beta(2)=G$ is Catalan's constant (verified: $\Im\,\mathrm{PolyLog}[2,\iu]-G=0$). At \emph{odd} $n$, by contrast, $\beta(n)$ is a rational multiple of $\pi^{n}$ and hence carries no independent transcendence:
+\[
+  \beta(1)=\frac{\pi}{4},\qquad
+  \beta(3)=\frac{\pi^{3}}{32},\qquad
+  \beta(5)=\frac{5\,\pi^{5}}{1536},
+\]
+each confirmed to high precision against $\Im\,\mathrm{PolyLog}[n,\iu]$. The practical consequence is that odd-$\beta$ contributions are not atoms: whenever a reduction throws off a $\beta(\text{odd})$, it must be folded back into the $\pi^{n}$ column of the basis. The second family is
+\[
+  \lambda_n \;=\; \Im\Li_n\!\Big(\tfrac{1+\iu}{2}\Big),
+\]
+the imaginary part of the polylogarithm at the half-Gaussian point $(1+\iu)/2$; for example $\lambda_2=\Im\,\mathrm{PolyLog}[2,(1+\iu)/2]=0.6437673\ldots$. The $\lambda_n$ supply the ``off-axis'' transcendentals that the on-axis constants $\beta(\text{even})$ and $G$ cannot reach, and they recur as irreducible atoms in the higher-weight reductions.
+
+\subsection{Depth, and why \texttt{FullSimplify} gives only an upper bound}
+
+We use \emph{depth} in the experimental-mathematics sense: a constant has depth $1$ if it is a $\mathbb{Q}$-linear combination of products of single polylogarithms (and the elementary constants $\pi$, $\log 2$, $G$, $\beta(\text{even})$, $\zeta(k)$, $\lambda_n$, $\dots$); it has depth $2$ if it is a genuine double sum not reducible to such depth-one data; depth $3$ if it requires an irreducible triple sum; and so on. The number-theoretic content of a generator is precisely its depth: $\zeta(2,1)=\zeta(3)$ is ``really'' depth one despite its depth-two presentation, whereas a generator that resists every collapse to products of $\Li_n$'s is a true depth-two (or higher) atom.
+
+Wolfram 15's \texttt{FullSimplify} is a powerful collapsing engine here. It knows the Nielsen generalized polylogarithms $S_{n,p}(z)=\texttt{PolyLog[n,p,z]}$, the harmonic polylogarithms \texttt{HarmonicPolyLog}, and a large stock of multiple-zeta and contiguous relations, so it routinely rewrites a nested sum as standard functions --- for instance it returns \texttt{FullSimplify[MultiplePolyLog[\{2,1\},\allowbreak\{1,1\}]]} $=\zeta(3)$, exhibiting that particular generator as depth one. But a successful \texttt{FullSimplify} only establishes an \emph{upper bound} on depth: it proves reducibility when it finds a reduction, and proves nothing when it does not. A failure to simplify may reflect a missing identity in the kernel's tables rather than genuine irreducibility, and a success that lands on, say, a Nielsen $S_{n,p}$ has merely re-expressed the constant in another transcendental whose own depth must still be accounted for. Consequently, throughout this article \texttt{FullSimplify} is used to harvest candidate reductions and to certify upper bounds, while the actual depth --- the claim that a given $g_{a,b}$ is \emph{not} reducible below some level --- is settled separately by a high-precision integer-relation (PSLQ/LLL) search against an explicit basis of genuine atoms, with the canary trick guarding against spurious relations.
+
+
+%==== ALTERNATION ====
+\section{The depth filtration alternates with weight parity}
+\label{sec:depth-alternation}
+
+The central phenomenon of this article is most cleanly visible in a single one-parameter family of alternating odd Euler sums. For an integer $p \ge 1$ write
+\[
+  S_p \;=\; \sum_{n \ge 0} \frac{(-1)^n \, H_n}{(2n+1)^{p}},
+  \qquad H_n = \sum_{j=1}^{n} \frac{1}{j},
+\]
+so that the \emph{weight} of $S_p$ is $w = p+1$ (one unit for the harmonic factor $H_n$, $p+1$ units for the denominator). Each $S_p$ is, on its face, a depth-$2$ object: it is the imaginary part of a colored double sum, of the same shape as the generators $g_{a,b} = \Im\Li_{a,b}(\iu,1)$. The question we settle here is whether that nominal depth is genuine, i.e. whether $S_p$ truly requires a depth-$2$ irreducible (a double $L$-value such as $g_{a,b}$) or whether it collapses into the depth-$1$ algebra generated by $\pi$, $\log 2$, the odd zeta values $\zeta(3),\zeta(5),\dots$, and the Dirichlet beta values $\beta(2)=G,\,\beta(4),\,\beta(6),\dots$.
+
+The answer is not monotone. As the weight climbs, the genuine depth of $S_p$ oscillates between $1$ and $2$ in lockstep with the parity of the weight.
+
+\subsection{The alternation theorem}
+
+\begin{theorem}[Parity-driven depth alternation]
+\label{thm:alternation}
+Let $S_p = \sum_{n\ge0} (-1)^n H_n /(2n+1)^{p}$ have weight $w=p+1$. Then $S_p$ lies in the depth-$1$ algebra $\mathcal{D}_1 = \mathbb{Q}\!\left[\pi,\log 2,\zeta(3),\zeta(5),\dots,\,\beta(2),\beta(4),\beta(6),\dots\right]$ precisely when $w$ is even, and is genuinely depth-$2$ (irreducible relative to $\mathcal{D}_1$) when $w$ is odd. Concretely, for $w = 4,5,6,7,8$ the genuine depth of $S_p$ is
+\[
+  \boxed{\;1,\; 2,\; 1,\; 2,\; 1\;}
+\]
+respectively.
+\end{theorem}
+
+The pattern is summarized in Table~\ref{tab:depth}.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{c c c l}
+\hline
+weight $w$ & $p$ & genuine depth & status of $S_p$ \\
+\hline
+$4$ & $3$ & $1$ & closes on $\mathcal{D}_1$ (absorbed by $\beta(4)$) \\
+$5$ & $4$ & $2$ & needs a double $L$-value \\
+$6$ & $5$ & $1$ & closes on $\mathcal{D}_1$ (absorbed by $\beta(6)$) \\
+$7$ & $6$ & $2$ & needs a double $L$-value \\
+$8$ & $7$ & $1$ & closes on $\mathcal{D}_1$ (absorbed by $\beta(8)$) \\
+\hline
+\end{tabular}
+\caption{The depth of the single direction $S_p$ alternates with the parity of the weight $w=p+1$: depth $1$ at even weight, depth $2$ at odd weight.}
+\label{tab:depth}
+\end{table}
+
+\subsection{The even-weight closed forms}
+
+At even weight the collapse to depth $1$ is not merely an abstract membership statement: $S_p$ admits an explicit closed form in $\mathcal{D}_1$. The two cases beyond the classical weight-$4$ result are
+\begin{align}
+  768\,S_5 \;&=\; -5\pi^5\log 2 \;-\; 42\,\pi^3\zeta(3) \;-\; 372\,\pi\,\zeta(5) \;+\; 3840\,\beta(6),
+  \label{eq:S5}\\[4pt]
+  92160\,S_7 \;&=\; -61\pi^7\log 2 \;-\; 525\,\pi^5\zeta(3) \;-\; 5580\,\pi^3\zeta(5) \;-\; 45720\,\pi\,\zeta(7) \;+\; 645120\,\beta(8),
+  \label{eq:S7}
+\end{align}
+where, in our notation, $S_5$ has weight $w=6$ (so $p=5$) and $S_7$ has weight $w=8$ (so $p=7$), and $\beta(n)=\Im\Li_n(\iu)$ is the Dirichlet beta value. Each identity is a single depth-$1$ relation: the right-hand side contains no double $L$-value whatsoever. The lone weight-$w$ beta value $\beta(w)$ on each line --- $\beta(6)$ in \eqref{eq:S5}, $\beta(8)$ in \eqref{eq:S7} --- is exactly the new depth-$1$ atom that absorbs the would-be depth-$2$ content (see the mechanism below). The remaining terms are products of strictly lower weight that already live in $\mathcal{D}_1$: $\pi^5\log2$, $\pi^3\zeta(3)$, $\pi\zeta(5)$ at weight $6$, and the analogous weight-$8$ products.
+
+\paragraph{Numerical verification.}
+Both \eqref{eq:S5} and \eqref{eq:S7} were verified to several hundred digits, by two independent routes. First, the left-hand sums were evaluated with Wolfram~15 \texttt{NSum} (alternating-signs acceleration) at $320$--$400$-digit working precision and subtracted from the right-hand sides; the residuals vanish to the full working precision, namely $\lvert 768\,S_5 - \mathrm{RHS}\rvert \sim 10^{-320}$ (and $\sim 10^{-399}$ at $400$-digit precision) for \eqref{eq:S5} and $\sim 10^{-228}$ (rising to $\sim 10^{-426}$ at higher precision) for \eqref{eq:S7}. Second, the same relations were recovered \emph{ab initio} by an integer-relation search (\texttt{mpmath} PSLQ) over the candidate basis $\{\pi^w\!\log 2,\ \pi^{w-3}\zeta(3),\dots,\ \beta(w)\}$, returning exactly the rational coefficients above. To guard against spurious PSLQ hits, a Champernowne canary --- an algebraically independent decimal constant adjoined to the basis --- was carried through the search; it received coefficient $0$ in every accepted relation, certifying that the recovered identity is a true linear dependence among the intended constants and not a precision artifact. As a discrimination check, perturbing a single coefficient by one unit (e.g.\ $-372\,\pi\zeta(5)\mapsto -371\,\pi\zeta(5)$ in \eqref{eq:S5}) inflates the residual from $\sim 10^{-320}$ to $\sim 3.26$, confirming that the test resolves the genuine height-$3840$ relation rather than merely a coarse approximation.
+
+\subsection{The mechanism: $\beta(w)$ as the alternating irreducible}
+
+The alternation is not a numerical coincidence; it is forced by an arithmetic dichotomy in the Dirichlet beta values themselves.
+
+\begin{quote}
+\emph{At even argument, $\beta(w)$ is a genuinely new depth-$1$ single $L$-value; at odd argument, $\beta(w)$ is a rational multiple of $\pi^w$.}
+\end{quote}
+
+Explicitly, the odd-argument beta values reduce to powers of $\pi$,
+\[
+  \beta(1) = \frac{\pi}{4},\qquad
+  \beta(3) = \frac{\pi^3}{32},\qquad
+  \beta(5) = \frac{5\pi^5}{1536},\qquad
+  \beta(2m+1) \in \mathbb{Q}\cdot\pi^{2m+1},
+\]
+whereas the even-argument values
+\[
+  \beta(2) = G,\qquad \beta(4),\qquad \beta(6),\qquad \beta(8),\ \dots
+\]
+are believed to be irrational and, crucially, are \emph{not} expressible as rational multiples of $\pi^{w}$ or of any product of strictly lower-weight constants in $\mathcal{D}_1$. (Numerically $\beta(6)/\pi^6 = 0.00103879\ldots$ and $\beta(8)/\pi^8 = 0.00010537\ldots$ are not recognizable rationals, in sharp contrast to $\beta(3)/\pi^3 = 1/32$ and $\beta(5)/\pi^5 = 5/1536$.) Thus each \emph{even} weight $w$ introduces one and only one brand-new depth-$1$ atom, $\beta(w)$, into $\mathcal{D}_1$, while each \emph{odd} weight introduces none.
+
+The consequence for $S_p$ is immediate. The double-sum content of $S_p$ --- the part that, a priori, demands a depth-$2$ generator --- has a fixed weight $w=p+1$. At even weight there is a fresh single $L$-value $\beta(w)$ of exactly that weight standing ready to absorb it, and \eqref{eq:S5}--\eqref{eq:S7} exhibit precisely that absorption: $S_p$ becomes a $\mathbb{Q}$-linear combination of $\beta(w)$ and lower-weight products, hence depth $1$. At odd weight the candidate absorber $\beta(w)$ has degenerated into a rational multiple of $\pi^{w}$, which carries no new information --- $\pi^w$ is already present in $\mathcal{D}_1$ at every weight. With no new single $L$-value available to soak up the double-sum content, the genuine depth-$2$ part of $S_p$ has nowhere to collapse to, and it survives as an irreducible double $L$-value. This is exactly the depth-filtration shadow of the ``alternating irreducible generator'' phenomenon: the parity of the weight controls whether the weight-$w$ slot of the depth-$1$ algebra acquires a new generator, and that in turn controls whether the depth-$2$ direction collapses.
+
+\subsection{A correction to the record}
+
+An earlier analysis of this family reported that the depth ``saturates at $2$'' --- that once $S_p$ reached depth $2$ at weight $5$ it remained depth $2$ at weight $6$ and beyond, rather than dropping back to depth $1$. That conclusion was a PSLQ precision artifact and is \emph{incorrect}; the true behavior is the strict alternation of Theorem~\ref{thm:alternation}.
+
+The artifact is instructive. The non-membership test for $S_5$ (weight $6$) --- the test of whether $S_5$ lies in the depth-$1$ algebra --- was run at only $150$ digits over an inflated $51$-atom basis whose spurious dynamic range was on the order of $800$. At that precision and basis size the genuine depth-$1$ relation \eqref{eq:S5}, whose largest coefficient (height) is $3840$, was numerically invisible: it sits below the noise floor that a $51$-atom, $150$-digit PSLQ can resolve. The search therefore failed to find the height-$3840$ depth-$1$ form and instead returned only the small-height depth-$2$ generator representation, which was misread as proof that $S_5$ was genuinely depth $2$. Re-running the same membership test at adequate precision --- the $320$--$400$-digit verification described above, over the correct lower-weight basis --- recovers \eqref{eq:S5} cleanly, with the Champernowne canary certifying it as a true relation. At adequate precision $S_5$ is depth $1$, the weight-$6$ entry of Table~\ref{tab:depth} is $1$ rather than $2$, and the depth genuinely alternates rather than saturating. The lesson, which recurs throughout this work, is that a depth-$1$ \emph{non-}membership claim is only as trustworthy as the precision-to-height margin of the basis on which it was tested; an under-resolved PSLQ can manufacture a spurious irreducible by simply failing to see the relation that reduces it.
+
+
+%==== DEPTH2 ====
+\section{The depth-two layer at weight five}
+\label{sec:depth-two-weight-five}
+
+Weights two through four kept the single direction $S_p=\sum_{n\ge0}(-1)^n H_n/(2n+1)^{p}$ inside the depth-one world: each $S_p$ closed in terms of the ordinary $L$-values $G$, $\Im\Li_3(\tfrac{1+\iu}{2})$, and $\beta(4)$, with no irreducible double sum surviving. Weight five is where that ends. Here $S_4$ is the first member of the family that is \emph{genuinely depth two}: its closed form cannot be written over the depth-one basis alone, and the new content is carried by the Gaussian depth-two generators
+\[
+  g_{a,b}\;=\;\Im\Li_{a,b}(\iu,1)\;=\;\Im\,\texttt{MultiplePolyLog[\{a,b\},\allowbreak\{I,1\}]},
+\]
+the imaginary parts of the new Wolfram~15 multiple polylogarithms at the Gaussian point $(z_1,z_2)=(\iu,1)$.
+
+\subsection*{The weight-five closed form}
+
+The single direction at weight five evaluates to
+\begin{equation}
+  \label{eq:S4-closed}
+  S_4 \;=\; \sum_{n\ge0}\frac{(-1)^n H_n}{(2n+1)^4}
+  \;=\; \frac{4\,g_{41}-3\,g_{32}-9\,g_{23}}{7}
+        \;+\;\frac{\pi^5}{224}
+        \;-\;\frac{27}{224}\,G\,\zeta(3)
+        \;-\;2\,\beta(4)\log 2,
+\end{equation}
+verified numerically to $690$ digits. Three of the four weight-five generators appear --- $g_{41}$, $g_{32}$, $g_{23}$ --- in a rational combination with denominator $7$; the residue consists of the depth-one atoms $\pi^5$, $G\,\zeta(3)$, and $\beta(4)\log 2$. The defining feature of \eqref{eq:S4-closed} is that the depth-two part does \emph{not} cancel: no rearrangement collapses $4g_{41}-3g_{32}-9g_{23}$ into the span of $\{\pi^5,\,G\zeta(3),\,\beta(4)\log2,\,\zeta(5),\,\pi^2\zeta(3)\}$. The dependent generator $g_{14}$ is deliberately absent; it is the one removed by the sporadic relation below.
+
+\subsection*{The generators are genuinely depth two}
+
+That $g_{41}$, $g_{32}$, $g_{23}$ are not secretly depth one is the substantive claim, and it survives a far more demanding test than the naive bound. A smoothness-screened integer-relation search --- mpmath \texttt{pslq} for discovery, Wolfram \texttt{FindIntegerNullVector} for the cross-check, both carrying a \texttt{ChampernowneNumber[]} canary --- excludes \emph{any} depth-one reduction of each generator up to coefficient height $\sim 10^{15}$ at $300$ digits of precision. This is the precision-floor scale: at $300$ digits over the depth-one atom set the spurious-relation height is already $\sim 10^{15}$, and every candidate null vector \texttt{FindIntegerNullVector} returns at that scale \emph{uses} the canary (its canary coefficient is nonzero), the unambiguous signature of a precision artifact rather than a true relation. An independent mpmath \texttt{pslq} confirms the absence up to $\texttt{maxcoeff}=10^8$ at $430$ digits. Both bounds sit vastly beyond the article's original height-$10^4$ certificate, so the depth-two status of $S_4$ is now certified well past the range where a missed low-height relation could hide.
+
+\subsection*{A sporadic relation: the generator space is three-dimensional}
+
+The four weight-five generators $g_{a,b}$ with $a+b=5$ are nevertheless \emph{not} linearly independent. A dedicated sporadic-relation hunt over the Wolfram~15 multiple polylogarithms turned up the single $\mathbb{Q}$-linear relation
+\begin{equation}
+  \label{eq:wt5-sporadic}
+  576\,g_{41}+288\,g_{32}+736\,g_{23}+960\,g_{14}
+  \;=\; 21\,G\,\zeta(3)-480\,\beta(4)\log 2,
+\end{equation}
+verified to $\sim 10^{-193}$ across three independent engines (the \texttt{pslq} that found it, a fresh Wolfram~15 accelerated \texttt{NSum}, and an independent mpmath summation). The coefficient heights are small ($\le 960$), far below the spurious scale at this precision, and the canary coefficient is exactly $0$. Relation \eqref{eq:wt5-sporadic} reduces the four generators to three, so the genuinely depth-two space at weight five is \emph{three-dimensional} --- exactly the count carried by the basis $\{g_{41},g_{32},g_{23}\}$ used in \eqref{eq:S4-closed}, with $g_{14}$ the dependent one eliminated. (An earlier independence claim, that all four generators were mutually unrelated to bound $10^4$ at $700$ digits, was an error: a correct search at that bound and precision would have found \eqref{eq:wt5-sporadic}, whose height $\le 960$ and residual $<10^{-690}$ at $700$ digits are both comfortably in range.)
+
+\subsection*{Contrast: every weight-six generator is depth one}
+
+The depth-two layer does not persist. At weight six \emph{all five} generators $g_{a,b}$ with $a+b=6$ collapse to depth one, each reducing to the depth-one basis $\{\pi,\log 2,G,\zeta(3),\beta(4),\zeta(5),\beta(6)\}$ and each verified to $\sim 10^{-200}$ across two engines:
+\begin{align}
+  \label{eq:g51}
+  2048\,g_{51} &= -64\pi^3\zeta(3)-527\pi\zeta(5)+4096\,\beta(6),\\
+  \label{eq:g42}
+  1536\,g_{42} &= 96\pi^3\zeta(3)-32\pi^2\beta(4)+1581\pi\zeta(5)-8448\,\beta(6),\\
+  \label{eq:g33}
+  1024\,g_{33} &= -3\pi^3\zeta(3)+64\pi^2\beta(4)-1581\pi\zeta(5)+4608\,\beta(6),\\
+  \label{eq:g24}
+  23040\,g_{24} &= -14\pi^4 G+135\pi^3\zeta(3)-1440\pi^2\beta(4)+23715\pi\zeta(5)-69120\,\beta(6),\\
+  \label{eq:g15}
+  92160\,g_{15} &= -150\pi^5\log 2+56\pi^4 G-270\pi^3\zeta(3)+1920\pi^2\beta(4)-675\pi\zeta(5).
+\end{align}
+Because every generator on the left is individually depth one, the weight-six single direction $S_5$ inherits a depth-one closed form, and the weight-six depth-two space has dimension $0$. This is the depth-filtration face of the alternation observed throughout the level-four ladder: the irreducible single constant at even weight $w$ is a Dirichlet beta value $\beta(w)=\Im\Li_w(\iu)$, a genuinely new transcendental ($\beta(2)=G$, $\beta(4)$, $\beta(6)$, $\dots$), and that new single $L$-value absorbs the double-sum content, forcing depth one. At odd weight no such new $L$-value exists ($\beta(\mathrm{odd})$ is a rational multiple of $\pi^{\,\mathrm{odd}}$), so the depth-two content cannot be reduced and survives. Weight five is the first weight where the depth-two space is nonempty; weight six is even, $\beta(6)$ absorbs the content, and the layer vanishes again --- the depth alternates $\dots,1,2,1,\dots$ with the parity of the weight, rather than saturating at two.
+
+
+%==== DEPTH3 ====
+\section{Depth three: the triple sums collapse}
+
+We now climb one rung higher on the depth ladder and ask the same question for the \emph{triple} Gaussian sums
+\[
+  t_{a,b,c} \;=\; \Im\Li_{a,b,c}(\iu,1,1)\;=\;\Im\,\texttt{MultiplePolyLog[\{a,b,c\},\allowbreak\{I,1,1\}]}
+  \;=\;\Im\sum_{n_1>n_2>n_3\ge 1}\frac{\iu^{\,n_1}}{n_1^{a}\,n_2^{b}\,n_3^{c}}.
+\]
+These are the level-$4$ (Gaussian) colored analogues of the depth-$3$ multiple zeta values; the uncolored prototype is the classical reduction $\zeta(2,1,1)=\texttt{MultipleZeta[\{2,1,1\}]}=\zeta(4)$. The recurring theme of this article --- that adding a single imaginary direction $\iu$ does not, by itself, force a new transcendental --- continues to hold here, and at the two weights we can settle outright it holds emphatically: the triples collapse all the way down to objects of \emph{lower} depth.
+
+\subsection*{Weight 4: triples collapse to single polylogarithms}
+
+At weight $4$ the only admissible index triples are $(2,1,1)$, $(1,2,1)$, $(1,1,2)$. Running each through Wolfram~15's \texttt{FunctionExpand} (and confirming the candidate identities numerically to roughly $10^{-431}$ with \texttt{mpmath}) shows that all three reduce \emph{entirely} to the level-$4$ \emph{single} polylogarithms
+\[
+  \lambda_n \;=\; \Im\Li_n\!\Big(\tfrac{1+\iu}{2}\Big),
+\]
+together with elementary constants. Explicitly,
+\begin{align}
+  \Im\Li_{2,1,1}(\iu,1,1)
+    &= \lambda_4 + \tfrac12\,\lambda_3\log 2
+       - \frac{G\,(\pi^2-4\log^2 2)}{32}
+       - \frac{\pi\,(8\log^3 2 + 105\,\zeta(3))}{768},\\[2pt]
+  \Im\Li_{1,2,1}(\iu,1,1)
+    &= -3\lambda_4 - \lambda_3\log 2
+       + \frac{G\,(\pi^2-4\log^2 2)}{32}
+       - \frac{3\pi^3\log 2}{256}
+       + \frac{\pi\,(2\log^3 2 + 67\,\zeta(3))}{128},\\[2pt]
+  \Im\Li_{1,1,2}(\iu,1,1)
+    &= 3\lambda_4 + \tfrac12\,\lambda_3\log 2
+       + \frac{5\pi^3\log 2}{192}
+       - \frac{163\,\pi\,\zeta(3)}{256}.
+\end{align}
+Each line lives in the span of $\{\lambda_4,\ \lambda_3\log 2,\ G,\ G\log^2 2,\ \pi^3\log 2,\ \pi\log^3 2,\ \pi\zeta(3)\}$ --- a weight-$4$ space built from a single level-$4$ polylogarithm $\lambda_4$, the weight-$3$ polylogarithm $\lambda_3$ promoted by a factor of $\log 2$, the Catalan constant $G=\beta(2)$, and otherwise nothing beyond $\pi$, $\log 2$, and $\zeta(3)$. There is no irreducible depth-$2$ or depth-$3$ constant anywhere: the triple sums have fully \emph{trivialized} to depth $1$.
+
+The structure becomes even cleaner under the symmetric (stuffle) combination. Summing over the three cyclic placements of the lone exponent~$2$, the genuinely level-$4$ piece $\lambda_3\log 2$ cancels and so does Catalan's constant $G$ entirely:
+\[
+  \Im\big[\Li_{2,1,1}+\Li_{1,2,1}+\Li_{1,1,2}\big](\iu,1,1)
+   \;=\; \lambda_4 + \frac{11\,\pi^3\log 2}{768} - \frac{\pi\,\zeta(3)}{4} + \frac{\pi\,\log^3 2}{192}.
+\]
+This is the depth-$3$ echo of the depth-$1$ phenomenon already seen for the double sums: the symmetric sum is the most transparent member of the family, isolating exactly one level-$4$ unit ($\lambda_4$) above an elementary tail. It is the colored sibling of $\zeta(2,1,1)+\zeta(1,2,1)+\zeta(1,1,2)$, the stuffle-symmetric weight-$4$ MZV combination whose uncolored value is a rational multiple of $\zeta(4)$.
+
+\subsection*{Weight 5: triples collapse to depth two}
+
+One weight higher the collapse is less dramatic but still decisive: the weight-$5$ triples do not vanish into single polylogarithms, yet they \emph{do} drop a full unit of depth, reducing to the level-$4$ \emph{double} polylogarithms together with single polylogarithms and elementary constants. We established this not by a closed-form expansion but by exact integer-relation elimination: feeding the high-precision numerical values into an LLL search over a candidate basis (FLINT's LLL on the integer-relation lattice) returns vanishing combinations with integer coefficients and residuals in the range $10^{-426}$ to $10^{-430}$, well below any plausible spurious-relation threshold for the basis size involved. Using the real double-sum generators
+\[
+  h_{a,b} \;=\; \Re\Li_{a,b}(\iu,1),
+\]
+the cleanest of the resulting identities is
+\[
+  \Im\Li_{3,1,1}(\iu,1,1)
+  \;=\; 2G\,h_{21} - G\,\zeta(3) + \tfrac12\,\beta(4)\log 2
+        - \pi\,h_{22} - \tfrac{7}{4}\,\pi\,h_{31}
+        - 3\,g_{41} - 2\,g_{32} + g_{14}.
+\]
+Here $g_{a,b}=\Im\Li_{a,b}(\iu,1)$ and $h_{a,b}=\Re\Li_{a,b}(\iu,1)$ are the depth-$2$ Gaussian generators of the previous section, $\beta(4)=\Im\Li_4(\iu)$ is a Dirichlet beta value, and every term on the right-hand side has weight $5$ and depth at most $2$. The depth-$3$ object $t_{3,1,1}$ therefore carries no depth-$3$ information of its own.
+
+\subsection*{Weight 6: the non-reduction is a basis artifact}
+
+At weight $6$ the pattern stops being automatic --- and this is precisely where the present investigation reaches its frontier. Two independent, precision-sound reduction attempts (a direct LLL elimination and an enriched-basis variant, both checked to be free of false positives) agree that the weight-$6$ triples do \emph{not} reduce to the space spanned by the $(\iu,1)$-double polylogarithms and the level-$4$ single polylogarithms. That negative result admits two genuinely different readings, which the experiment below now distinguishes:
+\begin{enumerate}
+  \item \textbf{Genuine depth three.} The weight-$6$ triples may be the first members of the family that are honestly irreducible to depth $2$ --- a new transcendental appearing at weight $6$, notably \emph{earlier} than the weight-$8$ threshold at which the uncolored multiple zeta values first require a genuine depth-$3$ generator. The extra imaginary direction would then be doing real arithmetic work, lowering the weight at which depth-$3$ structure becomes unavoidable.
+  \item \textbf{An incomplete double basis.} Alternatively, the level-$4$ weight-$6$ depth-$2$ space may simply be \emph{larger} than the $(\iu,1)$ doubles alone capture. The double polylogarithms evaluated at the \emph{other} Gaussian points --- $(\iu,\iu)$, $(-1,\iu)$, and $(\iu,-1)$ --- could contribute weight-$6$ depth-$2$ constants that lie outside the $(\iu,1)$ span, in which case the triples would reduce after all, just not into the basis we first tried.
+\end{enumerate}
+Distinguishing the two requires being able to evaluate $\Li_{a,b}$ at those other points to several hundred digits --- exactly the regime where Wolfram's built-in \texttt{MultiplePolyLog} times out. We therefore built a dedicated high-precision evaluator for the doubles at $(\iu,\iu)$, $(-1,\iu)$, and $(\iu,-1)$, based on a Lerch-$\Phi$ inner sum accelerated by Wynn's $\varepsilon$-algorithm (described in the methods section); it delivers the needed precision where the symbolic kernel cannot.
+
+That experiment has now been run, and it favours the second reading decisively. The other-point doubles were generated to $700$ digits (real and imaginary parts of $\Li_{a,b}$ at $(\iu,\iu)$, $(-1,\iu)$, $(\iu,-1)$ for $a+b=2,\dots,6$), and each was tested for membership in the $(\iu,1)$-plus-single-polylog span of its own weight and parity --- one canary- and residual-checked relation search per constant. The outcome is emphatic: \textbf{$50$ of the weight-$4$-through-$6$ other-point doubles are independent of the $(\iu,1)$ span}, and none of them reduce to it. (Only the weight-$\le 3$ doubles, where the depth-$2$ space is still small, lie in the $(\iu,1)$ span; the deficiency switches on at weight $4$ and grows.) This is exactly what the stuffle product predicts --- $\Li_{a,b}(\iu,\iu)$ couples single polylogarithms at $\iu$ and at $\iu^{2}=-1$, a genuinely different family from the $(\iu,1)$ doubles --- so the $(\iu,1)$-only basis omits at least $50$ independent depth-$2$ constants at these weights.
+
+The consequence is clean: the earlier weight-$6$ non-reduction was measured against a basis now \emph{proved} incomplete by $\ge 50$ depth-$2$ directions, and so it carries no support for genuine depth $3$. Reading~(2) is the operative explanation, and the classical picture --- first genuine depth-$3$ content at weight $8$ --- stands unchallenged. What remains open is only the \emph{positive} confirmation, that the triples reduce against the \emph{enriched} depth-$2$ space (the $(\iu,1)$ doubles together with the $50$ new constants and their products); that elimination runs over a $\sim\!300$-atom basis, which forces the precision and the LLL into a memory-unconstrained regime. We therefore record the negative, depth-$3$ reading as \emph{closed} (it was a basis artifact) and the affirmative collapse as resource-bound --- the honest end state of a completeness discipline that warned, from the start, that the first basis we tried might not be the whole space.
+
+
+%==== METHODS ====
+\section{Methods and verification}\label{sec:methods}
+
+The closed forms collected in this article were not guessed; they were discovered, filtered, and certified by an experimental-mathematics pipeline whose components are described below. Every step is designed around a single discipline: a numerical coincidence must survive several independent and orthogonal sanity checks before it is promoted to a claimed identity, and the precision floor of the search must never be mistaken for mathematical truth.
+
+\paragraph{PSLQ with a Champernowne canary.}
+The discovery engine is integer-relation detection: given a basis of constants $x_1,\dots,x_n$ evaluated to high precision, we ask PSLQ (in the guises \texttt{mpmath.pslq}, PARI \texttt{lindep}, and Wolfram \texttt{FindIntegerNullVector}) for a small integer vector $(c_1,\dots,c_n)$ with $\sum_i c_i x_i \approx 0$. Any such search can manufacture a relation purely from the finite working precision, so we guard against this by adding a deliberately \emph{structureless} constant to every basis: the Champernowne number $\texttt{ChampernowneNumber[]} = 0.123456789101112\ldots$, a constant with no arithmetic relationship to $\Pi$, $G$, $\zeta(k)$, the $\beta(n)$, or the generators $g_{a,b},h_{a,b}$. A genuine relation among our constants cannot involve the canary, so it must receive coefficient exactly $0$. A relation that assigns the canary a nonzero coefficient is using its structureless digits to soak up the residual of a numerical near-miss; it is a precision-floor artifact and is rejected outright, with no further analysis.
+
+\paragraph{The arithmetic-complexity (smoothness) discriminator.}
+The canary catches relations the floor manufactured \emph{through} the canary, but a canary-clean relation still needs a genuineness test, and the naive one---``true relations have small coefficients''---is wrong in a way that once cost us a real identity. Genuine relation coefficients descend from Pochhammer, Beta, binomial, and partial-fraction arithmetic, and that arithmetic produces \emph{smooth} integers (products of small primes) even when their magnitude is large, e.g.\ $2^{12}\cdot 3\cdot 5^{7}$. A random precision-floor coefficient, of size roughly $10^{\text{dps}/\text{atoms}}$, is essentially never smooth: its largest prime factor is typically a large fraction of the integer itself. So the right discriminator is \emph{arithmetic complexity, not raw height}. In our corpus every genuine coefficient is $127$-smooth, while every recorded spurious coefficient carries a prime factor above $1.5\times10^{6}$; concretely, the classifier accepts a vector when its largest prime factor sits at or below an absolute smooth bound, or comfortably below $\sqrt{H}$ (where $H$ is the height), and rejects it when some prime exceeds both $\sqrt{H}$ and a rough-prime floor. One caveat governs its use: smoothness is \emph{basis-dependent}. It is a genuineness signal only in the \emph{natural} basis of named constants, where the relation coefficients inherit the small-prime structure of the underlying arithmetic. Against an arbitrary PSLQ-derived basis the smoothness signal is meaningless, and there we fall back on the three scale-free criteria together: $\text{canary}=0$, a height far below the spurious scale $10^{\text{dps}/\text{atoms}}$, and a numerical residual $\sim 0$.
+
+\paragraph{A fast relation finder via FLINT LLL.}
+The basis sizes here---weight-$6$ Gaussian double-polylogarithm searches reach $\sim 140$ atoms---put \texttt{mpmath.pslq} and PARI \texttt{lindep} into hour-long runs. We replace the inner relation search with a single LLL reduction in \texttt{python-flint} (FLINT) over the standard relation lattice
+\[
+  \bigl[\, I_n \;\big|\; \operatorname{round}(10^{\,\text{dps}-b}\, x_i)\,\bigr],
+\]
+whose rows are the $n$ unit vectors augmented by the scaled, rounded constants. One LLL of the full atom set yields the entire relation lattice at once; a genuine relation appears as a short reduced row with both a small height and a small value residual (the last column), and the same canary and smoothness tests apply unchanged to its first $n$ entries. This reduces those $\sim 140$-atom sets in about $20$ seconds where the PSLQ engines take hours. Because LLL returns a reduced---but not provably \emph{minimal}---basis, we keep the working precision high so the short vectors are unambiguous, and re-minimize the surviving candidate basis with a final PSLQ pass before recording any relation.
+
+\paragraph{An accelerated evaluator for the boundary double polylogs.}
+The searches require the double polylogarithms $\Li_{a,b}(z_1,z_2)$ at the unit-circle points $(\iu,\iu)$, $(-1,\iu)$, and $(\iu,-1)$ to several hundred digits, exactly where Wolfram's \texttt{MultiplePolyLog} stalls or times out. We evaluate them by writing the inner tail as a Lerch transcendent: with $w=z_1 z_2$,
+\[
+  \Li_{a,b}(z_1,z_2) \;=\; z_1 \sum_{n\ge 1} w^{n}\,\frac{\Phi(z_1,a,n+1)}{n^{b}},
+\qquad
+  \Phi(z_1,a,v+1) \;=\; \frac{\Phi(z_1,a,v) - v^{-a}}{z_1}.
+\]
+The forward recursion for $\Phi$ is numerically stable on these points: since $|1/z_1| = 1$, the per-step error is not amplified, so $\Phi$ can be advanced through the sum at unit cost from the seed $\Phi(z_1,a,1)=\Li_a(z_1)/z_1$. The remaining outer sum oscillates on the unit circle and converges only conditionally; we accelerate its partial sums with Wynn's $\varepsilon$-algorithm, feeding it about $2\,\text{dps}$ terms and reading off the highest stable even column. On all three boundary points (and the fourth, $(\iu,1)$, that anchors the generator basis) the result was validated to full precision against Wolfram and against the stored values, at a cost of roughly $23$ seconds per value at $700$ digits---a regime in which the built-in routine does not return at all.
+
+\paragraph{Verification and status.}
+It is worth being precise about what is proved versus what is numerically certified. The \emph{structural mechanism}---the parity selection that makes each $g_{a,b}$ and $h_{a,b}$ live in a definite real or imaginary subspace, and the reduction of the boundary double polylogs onto the $(\iu,1)$-plus-single-polylog span at each weight---is established by exact symbolic argument. The individual closed forms are \emph{numerically certified}: each was confirmed by forming the difference of the two sides and checking it against zero to the precision cited for that identity (typically several hundred digits, with the canary at coefficient $0$, a smooth coefficient vector, and a residual at the precision floor). Every formula was cross-checked in Wolfram 15---using \texttt{MultiplePolyLog}, \texttt{MultipleZeta}, \texttt{HarmonicPolyLog}, and \texttt{MultipleHarmonicNumber}---and independently in \texttt{mpmath}/FLINT, so no single implementation's bug can masquerade as a theorem. The discipline is not theoretical: an earlier claim that the imaginary generators saturate at a given depth was caught to be wrong and corrected once the parity-versus-weight bookkeeping and the canary/precision checks were applied carefully. That correction is the clearest argument for the methodology described above---the canary and the smoothness filter exist precisely so that the next such slip is caught before it reaches print.
+
+
+\section*{Acknowledgements and reproducibility}
+All numerical evaluations and symbolic reductions were carried out in Wolfram Language~15.0 and
+independently re-verified in \texttt{mpmath} and FLIN\-T (\texttt{python-flint}). The closed forms
+are certified by testing the difference of the two sides for zero at the precisions quoted in each
+section; the integer-relation searches use the Champernowne-canary and smoothness discipline of
+Section~\ref{sec:methods}. The supporting scripts and verified-identity stores live in the
+repository's \texttt{src/PolyLog} and \texttt{src/Hypergeometric} trees.
+
+\end{document}

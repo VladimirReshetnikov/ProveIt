@@ -1,0 +1,198 @@
+% Created (UTC): 2026-06-21T20:40:54Z
+% Repository HEAD: de37a4c74e9632cdf6a8673bb978e07f8374b51a
+\documentclass[11pt]{article}
+\usepackage[margin=0.6in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs}
+\usepackage{microtype}
+\emergencystretch=3em \hbadness=4000
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\DeclareMathOperator{\Li}{Li}
+\newcommand{\lp}{\ln\phi}
+\theoremstyle{plain}\newtheorem{theorem}{Theorem}\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\title{Golden-ratio polylogarithm ladders:\\
+reconstruction, extension to weight nine, and Reshetnikov's conjectures}
+\author{Vladimir Reshetnikov}
+\date{2026-06-21}
+\begin{document}
+\maketitle
+\begin{center}\small
+Research report. Created (UTC) 2026-06-21T20:40:54Z; repository \texttt{HEAD}
+\texttt{de37a4c74e9632cdf6a8673bb978e07f8374b51a}. Store \texttt{polylog-ladders.wl}.
+\end{center}
+
+\begin{abstract}
+A polylogarithm ladder packages, for a fixed algebraic base and a range of weights $n$, a rational-coefficient
+combination $\sum_k c_k\,\Li_n(\rho^{a_k})$ that collapses to $\zeta(n)$ plus $\pi$-powers times logarithms.
+For the golden ratio $\phi$ (with $\rho=\phi^{-1}$, $1-\rho^2=\rho$) these were charted by Abouzahra and Lewin
+(1985) and revisited on MathOverflow by Reshetnikov and Tito Piezas III. We verify Reshetnikov's tetralogarithm
+conjecture (MSE 1373123) and his three $\Li_5$ golden conjectures (MO 261408) to several hundred digits,
+confirm Tito's golden family at weights $2$--$5$, and---this is the new part---\emph{reconstruct the explicit
+weight-$6$ and weight-$7$ coefficients Tito found but left unwritten} (``too tedious to write here''), with the
+$\zeta(6)$ and $\zeta(7)$ coefficients coming out to exactly his stated $32155$ and $44689995$. We then push the
+family two weights further than the published material: explicit \emph{weight-$8$ and weight-$9$} golden ladders,
+both on the eight-argument union set $\{\phi^{-2},\phi^{-4},\phi^{-6},\phi^{-8},\phi^{-10},\phi^{-12},\phi^{-20},\phi^{-24}\}$.
+The six-argument family caps at weight $7$; reaching weights $8$--$9$ requires the larger union of the
+index-$12$, $20$, $24$ argument sets---so the family does not stop at weight $7$, the argument set \emph{grows}.
+\end{abstract}
+
+\section{Setup}
+With $\phi=\tfrac{1+\sqrt5}2$, $\rho=\phi^{-1}$, the defining relation $1-\rho^2=\rho$ is the seed of the
+golden ladders. Reshetnikov's conjectures live among the values $\Li_n(\phi^{-2k})$; all coefficients below were
+obtained or verified by PSLQ (\texttt{mpmath}, $130$--$420$ digits, Champernowne canary) and, where the
+cancellation depth allows, cross-checked in Wolfram.
+\begin{remark}
+These golden combinations cancel $\sim10^8$-sized terms down to zero across $100$+ digits. Wolfram's adaptive
+\texttt{N} silently under-resolves this even at large \texttt{\$MaxExtraPrecision}; \texttt{mpmath}'s explicit
+precision tracking is authoritative here. (Per-term polylogarithm values agree between the two engines.)
+\end{remark}
+
+\section{Reshetnikov's conjectures, verified}
+The tetralogarithm conjecture (\href{https://math.stackexchange.com/q/1373123}{MSE 1373123},
+\href{https://mathoverflow.net/q/261408}{MO 261408}) holds: with $\alpha=\ln2,\beta=\ln3$,
+\begin{multline}\label{eq:tetra}
+  720\Li_4(\tfrac12)-2160\Li_4(\tfrac13)+2160\Li_4(\tfrac23)+270\Li_4(\tfrac14)+540\Li_4(\tfrac34)+135\Li_4(\tfrac19)\\
+  =19\pi^4+30(\pi^2-\beta^2)(10\alpha^2-12\alpha\beta+3\beta^2)-30\alpha^2(19\alpha^2-24\alpha\beta+8\beta^2),
+\end{multline}
+and is in fact the \emph{unique} integer relation (height $2160$) among those six tetralogarithms and the
+weight-$4$ elementary basis $\{\pi^4,\pi^2\ln^2,\ln^4,\zeta(3)\ln\}$---a rational base-$2\times$base-$3$ ladder.
+The three $\Li_5$ golden conjectures also hold (verified to $\sim10^{-257}$):
+{\scriptsize
+\begin{align}
+  4455\Li_5(\phi^{-2})-1215\Li_5(\phi^{-4})-360\Li_5(\phi^{-6})+15\Li_5(\phi^{-12})
+  &=3015\zeta(5)-702\lp^5+180\pi^2\lp^3-38\pi^4\lp,\notag\\
+  45000\Li_5(\phi^{-2})-16875\Li_5(\phi^{-4})-144\Li_5(\phi^{-10})+9\Li_5(\phi^{-20})
+  &=28944\zeta(5)-6000\lp^5+1600\pi^2\lp^3-356\pi^4\lp,\notag\\
+  15660\Li_5(\phi^{-2})-19440\Li_5(\phi^{-4})+7680\Li_5(\phi^{-6})+2430\Li_5(\phi^{-8})-15\Li_5(\phi^{-24})
+  &=5025\zeta(5)+2088\lp^5-240\pi^2\lp^3-28\pi^4\lp.\notag
+\end{align}}
+
+\section{Completing Tito's family: the unwritten weight-6 and weight-7 ladders}
+Tito's ``old answer'' lists the golden family at weights $2$--$5$ (all verified here), then states the weight-$6$
+and weight-$7$ ladders only schematically, the integer coefficients ``too tedious to write.'' We recover them by
+PSLQ. On the six-argument set $\{\phi^{-2},\phi^{-4},\phi^{-6},\phi^{-8},\phi^{-12},\phi^{-24}\}$:
+{\footnotesize
+\begin{align}
+\label{eq:Li6}
+  &98820\Li_6(\phi^{-2})-104490\Li_6(\phi^{-4})+33120\Li_6(\phi^{-6})+7290\Li_6(\phi^{-8})-50\Li_6(\phi^{-12})-15\Li_6(\phi^{-24})\notag\\
+  &\qquad=-13032\lp^6+3240\pi^2\lp^4-424\pi^4\lp^2+\mathbf{32155}\,\zeta(6),\\
+\label{eq:Li7}
+  &74707920\Li_7(\phi^{-2})-39497220\Li_7(\phi^{-4})+8346240\Li_7(\phi^{-6})+1377810\Li_7(\phi^{-8})-6300\Li_7(\phi^{-12})-945\Li_7(\phi^{-24})\notag\\
+  &\qquad=2814912\lp^7-979776\pi^2\lp^5+213696\pi^4\lp^3-51448\pi^6\lp+\mathbf{44689995}\,\zeta(7).
+\end{align}}
+The $\zeta(6)$ and $\zeta(7)$ coefficients reproduce Tito's stated $32155$ and $44689995$ \emph{exactly}---an
+independent confirmation that the reconstructions~\eqref{eq:Li6}--\eqref{eq:Li7} are correct (residuals
+$10^{-117}$, $10^{-114}$ by direct substitution; coefficients primitive).
+
+\section{Two weights beyond: explicit ladders at weight 8 and 9}
+Tito remarks that the index-$24$ ladder ``can be extended even to $n=9$'' but gives no formula. We find the
+explicit ladders. The six-argument set of~\eqref{eq:Li6}--\eqref{eq:Li7} closes at weights $2$--$7$ but
+\emph{not} at $8$ or $9$. Reaching them requires the \emph{eight}-argument union of the index-$12$, $20$, $24$
+sets, $\mathcal A=\{\phi^{-2},\phi^{-4},\phi^{-6},\phi^{-8},\phi^{-10},\phi^{-12},\phi^{-20},\phi^{-24}\}$:
+{\scriptsize
+\begin{align}
+\label{eq:Li8}
+  &{-}490795200\Li_8(\phi^{-2})+636131475\Li_8(\phi^{-4})-388684800\Li_8(\phi^{-6})+82668600\Li_8(\phi^{-8})\notag\\
+  &\quad+9507456\Li_8(\phi^{-10})+5250000\Li_8(\phi^{-12})-74277\Li_8(\phi^{-20})-18900\Li_8(\phi^{-24})\notag\\
+  &\qquad=-23641920\lp^8+7956480\pi^2\lp^6-1434720\pi^4\lp^4+184432\pi^6\lp^2-148565886\,\zeta(8),\\
+\label{eq:Li9}
+  &220857840000\Li_9(\phi^{-2})-143129581875\Li_9(\phi^{-4})+58302720000\Li_9(\phi^{-6})-9300217500\Li_9(\phi^{-8})\notag\\
+  &\quad-855671040\Li_9(\phi^{-10})-393750000\Li_9(\phi^{-12})+3342465\Li_9(\phi^{-20})+708750\Li_9(\phi^{-24})\notag\\
+  &\qquad=-2364192000\lp^9+1022976000\pi^2\lp^7-258249600\pi^4\lp^5+55329600\pi^6\lp^3-14149132\pi^8\lp+125596001790\,\zeta(9).
+\end{align}}
+Both are verified by direct substitution (residuals $0$ at $150$ digits for~\eqref{eq:Li8}, $10^{-190}$ at $200$
+digits for~\eqref{eq:Li9}); coefficients are primitive. The weight-$9$ ladder appeared identically across three
+independent searches with different padding arguments (the extra arguments returned coefficient $0$), a strong
+guard against over-fitting.
+\begin{remark}
+So the golden family does \emph{not} cap at weight $7$: the closure persists, but the argument set grows---four
+or five arguments per index at weight $5$, six arguments at weights $6$--$7$, eight arguments (the full union) at
+weights $8$--$9$. Whether the growth can be sustained to arbitrarily high weight is exactly the question
+Abouzahra--Lewin address in the negative; our data are consistent with an eventual stop once the required
+argument set outgrows the available golden multiplicative relations.
+\end{remark}
+
+\section{The proof of Reshetnikov's tetralogarithm conjecture}
+The conjecture~\eqref{eq:tetra} is provable from elementary functional equations. The six tetralogarithms span a
+$5$-dimensional space modulo the weight-$4$ elementary basis ($\Li_4(\tfrac19)$ is the only reducible member), so
+\eqref{eq:tetra} is the unique relation among them. Two duplications
+$\Li_4(\tfrac14)=8\bigl(\Li_4(\tfrac12)+\Li_4(-\tfrac12)\bigr)$ and
+$\Li_4(\tfrac19)=8\bigl(\Li_4(\tfrac13)+\Li_4(-\tfrac13)\bigr)$ reduce the left side to the reflected arguments,
+and a single \emph{cross-base Kummer relation} then cancels every tetralogarithm:
+{\footnotesize
+\begin{multline}\label{eq:kummer}
+  \Li_4(\tfrac34)+4\Li_4(\tfrac23)=-\tfrac{16}3\Li_4(\tfrac12)-4\Li_4(-\tfrac12)+2\Li_4(\tfrac13)-2\Li_4(-\tfrac13)
+  +\tfrac{19}{540}\pi^4+\tfrac59\pi^2\ln^2 2+\tfrac16\pi^2\ln^2 3\\
+  -\tfrac23\pi^2\ln2\ln3-\tfrac{19}{18}\ln^4 2-\tfrac16\ln^4 3+\tfrac43\ln^3 2\ln3-\ln^2 2\ln^2 3+\tfrac23\ln2\ln^3 3.
+\end{multline}}
+\!(Verified to residual $0$.) Notably, Bailey's base-$2$ identity is \emph{not} used---its arguments $\Li_4(\pm\tfrac18)$
+never appear---and there is \emph{no} base-$3$ analogue of Bailey's identity (a search over $\{\Li_4(3^{-k})\}$ finds
+no relation in $\{\pi,\ln3\}$). The base-$2$/base-$3$ asymmetry is genuine.
+
+\section{Canonical index-20/24 ladders and a $\zeta$-elimination chain}
+Reshetnikov's $\Li_5$ conjectures are the weight-$5$ entries of three first-degree golden ladders (Abouzahra--Lewin).
+In canonical (monic, $a^{n-1}$-normalized) form, with $\rho=\phi^{-1}$, $\ell=\ln\rho$, and
+$\mathrm{tw}(n)=D_1\tfrac{\ell^n}{n!}+D_2\zeta(2)\tfrac{\ell^{n-2}}{(n-2)!}+D_3\zeta(4)\tfrac{\ell^{n-4}}{(n-4)!}$:
+{\scriptsize
+\begin{align*}
+  L_{20}(n)&=\tfrac{\Li_n(\rho^{20})}{20^{n-1}}-\tfrac{\Li_n(\rho^{10})}{10^{n-1}}-3\tfrac{\Li_n(\rho^{4})}{4^{n-1}}+\tfrac12\tfrac{\Li_n(\rho^{2})}{2^{n-1}}+\mathrm{tw}(n),\quad (D_1,D_2,D_3)=(-\tfrac12,\tfrac1{25},-\tfrac{89}{4000}),\quad L_{20}(5)=\tfrac{201}{10000}\zeta(5),\\
+  L_{24}(n)&=\tfrac{\Li_n(\rho^{24})}{24^{n-1}}-\tfrac43\tfrac{\Li_n(\rho^{12})}{12^{n-1}}-2\tfrac{\Li_n(\rho^{8})}{8^{n-1}}+\tfrac73\tfrac{\Li_n(\rho^{4})}{4^{n-1}}-\tfrac{205}{576}\tfrac{\Li_n(\rho^{2})}{2^{n-1}}+\mathrm{tw}(n),\ (D_1,D_2,D_3)=(\tfrac{179}{576},-\tfrac5{192},\tfrac{629}{41472}),\ L_{24}(5)=-\tfrac{1541}{110592}\zeta(5),
+\end{align*}}
+\!each vanishing for $n\le4$. The shared factor $67$ in $201=3\cdot67$, $1541=23\cdot67$ is what lets the three
+indices jointly eliminate $\zeta(5)$. Combining them removes higher zetas: $M_{20}=L_{20}-\tfrac{1296}{625}L_{12}$ and
+$M_{24}=L_{24}+\tfrac{23}{16}L_{12}$ kill $\zeta(5)$ and reach weight $7$, and
+$T=M_{24}+\tfrac{409375}{373248}M_{20}$ kills $\zeta(7)$ and reaches weight $9$, with
+$T(9)=\tfrac{66452911}{41278242816000}\zeta(9)+\tfrac{3537283}{2063912140800}\zeta(8)\ell-\tfrac{11527}{2866544640}\zeta(6)\tfrac{\ell^3}{3!}$
+(confirmed by direct substitution and an independent PSLQ at $460$ digits). This is the Abouzahra--Lewin route to
+weight $9$, distinct from the single eight-argument ladders~\eqref{eq:Li8}--\eqref{eq:Li9}.
+
+\section{A new ladder base: the minimal Pisot number}
+Beyond the golden ratio, the minimal Pisot number $\omega=0.7548776\ldots$ (the real root of $x^3+x^2-1$, the base
+Abouzahra--Lewin deferred to a never-published sequel) carries its own ladder. Its seeds are pure units---$1-\omega=\omega^5$,
+$1-\omega^2=\omega^3$, $1-\omega^3=\omega^2$, $1-\omega^5=\omega$---and the first-degree ladder climbs to weight $4$
+(with $\lambda=\ln\omega$):
+{\footnotesize
+\begin{align*}
+  &\tfrac12\Li_2(\omega^2)-\Li_2(\omega^5)-\lambda^2=0,\qquad
+  -\Li_3(\omega)+\tfrac64\Li_3(\omega^2)+\tfrac39\Li_3(\omega^3)-\Li_3(\omega^5)-\tfrac{6\lambda^3}{3!}=0,\\
+  &-71\Li_4(\omega)-\tfrac{120}8\Li_4(\omega^2)+\tfrac{1053}{27}\Li_4(\omega^3)-17\Li_4(\omega^5)+\tfrac{5488}{343}\Li_4(\omega^7)-\Li_4(\omega^{14})+51\zeta(4)+\tfrac{2010\lambda^4}{4!}-\tfrac{84\zeta(2)\lambda^2}{2!}=0.
+\end{align*}}
+\!The weight-$4$ step requires the index-$7$ leg $\omega^7,\omega^{14}$ (the ``higher index unlocks higher weight''
+signature) and the ladder stops there. Among the bases tested, this is the only genuinely new one: $x^3+x-1$,
+$x^4+x^3-1$, $x^5+x^4-1$, $x^6+x-1$ and others support only the trivial weight-$2$ reflection, and $x^4+x^2-1$ is the
+golden ratio in disguise.
+
+\section{Hunting more ladder bases, and a methodological caveat}
+Beyond $\phi$ and $\omega$, which other bases admit ladders? A pure-unit seed is a relation $1-\rho^a=\rho^b$;
+ladders need several. A brute-force scan over \emph{all} degree-$\le5$ monic unit polynomials finds that
+$\omega$ (the minimal Pisot number) is the \emph{unique} base with $\ge3$ pure-unit seeds---it has four,
+$1-\omega=\omega^5,\ 1-\omega^2=\omega^3,\ 1-\omega^3=\omega^2,\ 1-\omega^5=\omega$. The golden ratio and the
+supergolden reciprocal $x^3+x-1$ have two; the only other ``four-seed'' bases, $x^6+x^2-1$ and $x^6+x^3-1$, are
+\emph{root-disguises} ($\rho^2,\rho^3$ land on the supergolden/golden reciprocals), as $x^4+x^2-1$ is
+$\sqrt{\,\text{golden}\,}$. The $n$-bonacci reciprocals and the smallest quartic Salem number have $\le1$ seed and
+support no ladder.
+
+Two bases the earlier survey had dismissed as ``weight-$2$ only'' do, in fact, carry weight-$3$ ladders. With
+$\rho$ the root of $x^3+x-1$ (the supergolden reciprocal) and of $x^4+x-1$ (the reciprocal of the second-smallest
+Pisot number $x^4-x^3-1$),
+{\footnotesize
+\begin{align*}
+  -60\Li_3(\rho)+54\Li_3(\rho^2)-32\Li_3(\rho^3)-3\Li_3(\rho^6)&=24\ln^3\rho-4\pi^2\ln\rho-36\zeta(3),\\
+  -12\Li_3(\rho)+12\Li_3(\rho^3)-12\Li_3(\rho^4)-3\Li_3(\rho^6)&=22\ln^3\rho-2\pi^2\ln\rho-12\zeta(3),
+\end{align*}}
+\!each verified in two engines (and by direct substitution to $400$+ digits). The lesson is methodological:
+\textbf{a PSLQ ``no relation'' is not a proof of non-existence.} The first relation above was \emph{missed} by a
+pure-tower PSLQ search at $300$ digits, yet holds by direct substitution to $400$---so the survey's negative
+verdicts were false negatives. The reliable test is to take a candidate relation and substitute it at precision far
+above where it was found. Whether these two bases climb past weight $3$ is left open here; the question is delicate
+precisely because PSLQ negatives cannot settle it.
+
+\section{Verification and reproducibility}
+Equations~\eqref{eq:tetra}--\eqref{eq:Li9}, Tito's weights $2$--$5$, and Bailey's base-$2$ identity
+$\Li_4(\tfrac1{64})-8\Li_4(\tfrac18)-54\Li_4(\tfrac14)+96\Li_4(\tfrac12)=5\ln^4 2-2\pi^2\ln^2 2+\tfrac49\pi^4$
+are in \texttt{src/PolyLog/identities/polylog-ladders.wl}; scripts under
+\texttt{src/PolyLog/tools/scratch/ladders/}. The negative result that the cubic base $\rho^3+\rho=1$ supports
+only the weight-$2$ reflection (its weight-$3$ relation being generic duplication) is recorded there too---the
+golden relation $1-\rho^2=\rho$ is what makes the tower climb.
+\end{document}

@@ -1,0 +1,58 @@
+% Created (UTC): 2026-06-21T13:35:29Z
+% Repository HEAD: 5cfae70592cb
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}\usepackage{microtype}
+\emergencystretch=3em\hbadness=4000
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\DeclareMathOperator{\Li}{Li}
+\DeclareMathOperator{\Cl}{Cl}
+\newcommand{\code}[1]{\texttt{\small #1}}
+\title{Independent verification of dilogarithm ladders and Sun's conjecture (arXiv:2506.10206)}
+\author{Vladimir Reshetnikov}\date{2026-06-21}
+\begin{document}\maketitle
+\begin{center}\small Verification report. Created (UTC) 2026-06-21T13:35:29Z; \texttt{HEAD} \texttt{5cfae70592cb}.\end{center}
+
+\begin{abstract}
+We independently re-verify, to $\ge38$ digits, the principal dilogarithm identities of C.~Hakimoglu-Brown,
+\emph{Analytic Dilogarithm Identities}, arXiv:2506.10206 (June 2025): the $\mathbb{Q}(\sqrt3)$ and
+$\mathbb{Q}(\sqrt2)$ two-term $\Li_2$-relations, the famous Lima and Zagier ladder identities, and---most
+notably---the resolution of an \emph{open conjecture of Z.-W.\ Sun}. The paper's engine, the
+D'Aurizio-style inverse-binomial $_4F_3$-series, is the natural sibling of the central-binomial ladder
+of \code{harvested-central-binomial-arcsin.wl}.
+\end{abstract}
+
+\section{What was verified}
+All to $\ge38$ digits (\code{tools/scratch/dilog-inverse-binomial/}); a representative selection:
+\begin{itemize}
+\item \textbf{Sun's open conjecture} (eq.\ (24)), proved in the paper via the $\mathbb{Q}(\sqrt3)$
+  evaluation (25):
+  \[ \sum_{n\ge0}\frac{\binom{2n}{n}}{(2n+1)8^{n}}\Bigl(\sum_{0\le k<n}\frac{(-1)^k}{2k+1}-\frac{(-1)^n}{2n+1}\Bigr)=-\frac{\sqrt2}{16}\pi^2. \]
+\item \textbf{Theorem 2} ($\mathbb{Q}(\sqrt3)$):
+  $8\Li_2(2-\sqrt3)-\Li_2(4\sqrt3-7)=\tfrac{5\pi^2}{12}+\ln(2-\sqrt3)\ln(2+\sqrt3)$,
+  and $3\Li_2(7-4\sqrt3)=6\Li_2(2-\sqrt3)+6\Li_2(\sqrt3-2)$.
+\item \textbf{Lima's identity} ($\mathbb{Q}(\sqrt2)$, eq.\ (26)):
+  $\Li_2(\tfrac1{\sqrt2})-\Li_2(1-\sqrt2)=\tfrac{\pi^2}6-\tfrac{\ln^2 2}8+\tfrac12\ln2\,\ln(\sqrt2-1)$.
+\item \textbf{Zagier's four-term} (eq.\ (27)): $3L(-\tfrac16)-L(\tfrac18)+L(\tfrac19)+L(\tfrac1{28})=-\tfrac{\pi^2}{12}$,
+  with the (unnormalized) Rogers $L(x)=\Li_2(x)+\tfrac12\ln|x|\ln|1-x|$; and its compressed three-term form.
+\item the rational-argument $\tfrac{\pi^2}{18}+2\ln2\ln3-2\ln^2 2-\tfrac23\ln^2 3=\Li_2(\tfrac14)+\tfrac13\Li_2(\tfrac19)$,
+  the inverse-tangent/$\Cl_2(\tfrac\pi3)$ relation (30), and $\Li_2(\tfrac43)+\Li_2(4)=\tfrac12(\pi^2-\ln^2 3)$ (real parts).
+\item the \textbf{engine}: $\,{}_4F_3(\{1,1,1,\tfrac32\};\{\tfrac52,\tfrac52,\tfrac52\};1)=\tfrac{27}2\bigl(7\zeta(3)+(3-2G)\pi-12\bigr)$
+  (D'Aurizio) and the cube-binomial $_4F_3$ of eq.\ (1).
+\item the paper's \textbf{claimed-original elliptic $_4F_3(1)$ evaluations} (eqs.\ 32, 33, 35):
+  \begin{align*}
+   \Cl_2(\tfrac\pi3)&=\tfrac{\sqrt3}2\,{}_4F_3\bigl(\{1,\tfrac12,\tfrac12,\tfrac12\};\{\tfrac32,\tfrac56,\tfrac76\};1\bigr),\\
+   {}_4F_3\bigl(\{1,\tfrac12,\tfrac23,\tfrac13\};\{\tfrac32,\tfrac54,\tfrac34\};1\bigr)&=\tfrac{3\sqrt3}4\bigl(2\ln(4+3\sqrt2)+\ln(\tfrac72-2\sqrt3)\bigr),\\
+   \ln^2\!\Bigl(\tfrac{5+\sqrt{13}}{2\sqrt3}\Bigr)-\tfrac{\pi^2}{12}&=\tfrac1{180}\,{}_4F_3\bigl(\{1,1,1,\tfrac32\};\{\tfrac76,\tfrac{11}6,2\};-\tfrac1{324}\bigr).
+  \end{align*}
+\end{itemize}
+\textbf{All check out.} One caution worth recording: equation (27) uses the \emph{unnormalized} Rogers
+$L$ (so the right side is $-\tfrac{\pi^2}{12}$, not a pure rational); with the $\tfrac6{\pi^2}$-normalized
+$L$ the identity reads $3L(-\tfrac16)-L(\tfrac18)+L(\tfrac19)+L(\tfrac1{28})=-\tfrac12$.
+
+\paragraph{Connection.} The paper evaluates inverse-binomial series with $\binom{2n}{n}^{\!2}$ and
+$\binom{3n}{n}$ via beta integrals; this is the reciprocal-binomial sibling of the central-binomial
+ladder $\sum\binom{2n}{n}4^{-n}(2n{+}1)^{-p}$ studied in \code{harvested-central-binomial-arcsin.wl}.
+The verified identities are stored (with attribution) in
+\code{src/PolyLog/identities/harvested-dilogarithm-ladders-2506.10206.wl}.
+\end{document}

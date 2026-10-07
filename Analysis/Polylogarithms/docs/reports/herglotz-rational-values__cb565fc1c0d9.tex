@@ -1,0 +1,190 @@
+% Created (UTC): 2026-06-25T15:55:27Z
+% Repository HEAD: cb565fc1c0d9dc16fd97b6733689659fd66d61ca
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs}
+\usepackage{microtype}
+\emergencystretch=3em \hbadness=4000
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\DeclareMathOperator{\Li}{Li}
+\DeclareMathOperator{\Real}{Re}
+\newcommand{\Cl}{\operatorname{Cl}}
+\theoremstyle{plain}\newtheorem{theorem}{Theorem}\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\title{The Herglotz function at rational arguments:\\
+a general closed form for $F(2/q)$, and the elementary boundary}
+\author{Vladimir Reshetnikov}
+\date{2026-06-25}
+\begin{document}
+\maketitle
+\begin{center}\small
+Research report. Created (UTC) 2026-06-25T15:55:27Z; repository \texttt{HEAD}
+\texttt{cb565fc1c0d9dc16fd97b6733689659fd66d61ca}. Store \texttt{herglotz-rational-values.wl}.\\
+Source: D.\ Radchenko and D.\ Zagier, \emph{Arithmetic properties of the Herglotz function}
+(\texttt{src/PolyLog/docs/pdfs/HerglotzFunction/}). Reproducer:
+\texttt{src/PolyLog/tools/scratch/herglotz/rational\_harvest.py}.
+\end{center}
+
+\begin{abstract}
+Radchenko and Zagier prove (their Theorem 3) that for every positive rational $x$ the value $F(x)-F(1)$ of
+the Herglotz function is a rational combination of dilogarithms at cyclotomic arguments, and they write out
+two explicit cases: $F(n)$ (a pure combination of logarithms, eq.~23) and the single fractional example
+$F(2/5)$ (eq.~24). We turn the second into a general theorem. For \emph{every} $q\ge3$,
+\[
+  F(2/q)-F(1)=-\frac{(q-1)(q-2)}{12q}\pi^2+\log^2 2
+  -2\sum_{k=1}^{\lfloor(q-1)/2\rfloor}\log^2\!\Bigl(2\sin\tfrac{\pi k}{q}\Bigr)
+  -\tfrac12\sum_{k=1}^{\lfloor(q-1)/2\rfloor}\Li_2\!\Bigl(-\cot^2\tfrac{\pi k}{q}\Bigr),
+\]
+with an explicit boundary correction for even $q$. We give a complete proof, and the companion pure-logarithm
+formula for $F(1/q)$. The new ingredient $\Li_2(-\cot^2\frac{\pi k}{q})$ is a dilogarithm at an algebraic
+argument of degree $\varphi(q)/2$: for $q=5$ it collapses to the rational $\Li_2(4/5)$ of eq.~24, but for
+$q\ge7$ it does not, which is exactly why no simpler form than Theorem~3 exists there. Every statement is
+verified to $>10^{-99}$ against the exact dilogarithm sum and cross-checked against the defining integral.
+\end{abstract}
+
+\section{The exact dilogarithm sum}
+Radchenko--Zagier's Theorem~3 is proved from the integral representation
+$F(P/Q)-F(1)=\int_0^1\bigl(\tfrac{Q}{1-t^Q}-\tfrac{P}{1-t^P}\bigr)\log(1-t^P)\tfrac{dt}{t}$
+via the distribution relations, giving the \emph{exact, finite} evaluation
+\begin{equation}\label{eq:dilogsum}
+  F\!\Bigl(\tfrac PQ\Bigr)-F(1)=\sum_{\alpha^P=1}\Bigl(\sum_{\substack{\beta^Q=1\\\beta\neq1}}f(\alpha,\beta)
+  -\sum_{\substack{\beta^P=1\\\beta\neq1}}f(\alpha,\beta)\Bigr),\qquad
+  f(\alpha,\beta)=\Li_2\!\Bigl(\tfrac{\beta}{\beta-1}\Bigr)-\Li_2\!\Bigl(\tfrac{\alpha-\beta}{1-\beta}\Bigr).
+\end{equation}
+Because~\eqref{eq:dilogsum} is a finite sum of dilogarithms, it evaluates $F(P/Q)-F(1)$ to arbitrary
+precision with no quadrature error; we use it as ground truth, cross-checked against the defining integral.
+
+\section{Two reductions on the line \texorpdfstring{$\Real=\tfrac12$}{Re=1/2}}
+The whole calculation rests on one elementary observation. For a unit $\beta=e^{i\theta}$,
+\begin{equation}\label{eq:line}
+  \frac{\beta}{\beta-1}=\frac{1}{1-\beta^{-1}}\ \text{has real part } \tfrac12,\qquad
+  \arg\frac{\beta}{\beta-1}=\frac{\theta}{2}-\frac{\pi}{2},\qquad
+  \Bigl|\frac{\beta}{\beta-1}\Bigr|=\frac{1}{2\sin(\theta/2)} .
+\end{equation}
+By the reflection $\Li_2(z)+\Li_2(1-z)=\tfrac{\pi^2}{6}-\log z\log(1-z)$ with $1-z=\bar z$ on the line
+$\Real z=\tfrac12$,
+\begin{equation}\label{eq:reRe}
+  2\Real\Li_2\Bigl(\tfrac12+iy\Bigr)=\frac{\pi^2}{6}-\log^2|z|-(\arg z)^2 .
+\end{equation}
+The second reduction handles the $\alpha=-1$ part of~\eqref{eq:dilogsum}: for $\beta=e^{i\theta}$,
+$\tfrac{-1-\beta}{1-\beta}=-i\cot\tfrac\theta2$ is purely imaginary, and for real $y$
+\begin{equation}\label{eq:imax}
+  \Real\Li_2(iy)=\tfrac14\Li_2(-y^2),
+\end{equation}
+from $\Li_2(iy)+\Li_2(-iy)=\tfrac12\Li_2(-y^2)$ together with $\Li_2(-iy)=\overline{\Li_2(iy)}$.
+
+\section{$F(1/q)$: pure logarithms}
+\begin{theorem}\label{thm:F1q}
+For all $q\ge2$, with $m=\lfloor(q-1)/2\rfloor$,
+\[
+  F\!\Bigl(\tfrac1q\Bigr)-F(1)=-\frac{(q-1)(3q-2)}{24q}\,\pi^2
+  -\sum_{k=1}^{m}\log^2\!\Bigl(2\sin\tfrac{\pi k}{q}\Bigr)\;-\;[\,q\ \mathrm{even}\,]\,\tfrac12\log^2 2 .
+\]
+\end{theorem}
+\begin{proof}
+With $P=1$ only $\alpha=1$ occurs and the inner $\beta^P$-sum is empty, so \eqref{eq:dilogsum} reads
+$F(1/q)-F(1)=\sum_{\beta^q=1,\beta\neq1}\bigl(\Li_2(\tfrac{\beta}{\beta-1})-\Li_2(1)\bigr)$. Pairing each
+$\beta=e^{2\pi ik/q}$ with $\bar\beta$ and applying~\eqref{eq:reRe} with $|z|=1/(2\sin\frac{\pi k}{q})$ and
+$\arg z=\tfrac{\pi k}{q}-\tfrac\pi2$ gives, after subtracting $(q-1)\tfrac{\pi^2}{6}$, the formula with the
+$\pi^2$ coefficient $-\bigl[\tfrac{q-1}{12}+\sum_{k=1}^{m}(\tfrac kq-\tfrac12)^2\bigr]$, which equals the
+clean rational $-\tfrac{(q-1)(3q-2)}{24q}$. For even $q$ the self-conjugate root $\beta=-1$ contributes
+$\Li_2(\tfrac12)=\tfrac{\pi^2}{12}-\tfrac12\log^2 2$, supplying the extra $-\tfrac12\log^2 2$.
+\end{proof}
+This is the conjecturally complete list (with $F(n)$, eq.~23) of pure-logarithm values: only $x=n$ and
+$x=1/n$ avoid genuine dilogarithms.
+
+\section{$F(2/q)$: the general theorem}
+\begin{theorem}\label{thm:F2q}
+For every $q\ge3$,
+\[
+  F\!\Bigl(\tfrac2q\Bigr)-F(1)=-\frac{(q-1)(q-2)}{12q}\pi^2+\log^2 2
+  -2\!\!\sum_{k=1}^{\lfloor(q-1)/2\rfloor}\!\!\log^2\!\Bigl(2\sin\tfrac{\pi k}{q}\Bigr)
+  -\tfrac12\!\!\sum_{k=1}^{\lfloor(q-1)/2\rfloor}\!\!\Li_2\!\Bigl(-\cot^2\tfrac{\pi k}{q}\Bigr),
+\]
+where for even $q$ the two sums run to $k=\tfrac q2-1$ and a further $-\log^2 2$ is added.
+\end{theorem}
+\begin{proof}[Proof (odd $q$)]
+Here $P=2$, so $\alpha\in\{1,-1\}$ and the inner $\beta^P$-sum is the single term $\beta=-1$. Split
+\eqref{eq:dilogsum} as $\bigl(\sum_\alpha\sum_{\beta^q\neq1}f(\alpha,\beta)\bigr)-\sum_\alpha f(\alpha,-1)$.
+For the first part, $f(1,\beta)+f(-1,\beta)=2\Li_2(\tfrac{\beta}{\beta-1})-\tfrac{\pi^2}{6}
+-\Li_2(\tfrac{-1-\beta}{1-\beta})$. Summing over $\beta\neq1$: the $\Li_2(\tfrac\beta{\beta-1})$ pieces give
+$2S_1$ with $S_1=\sum_{k=1}^{(q-1)/2}\bigl[\tfrac{\pi^2}{6}-\log^2(2\sin\tfrac{\pi k}q)-\pi^2(\tfrac kq-\tfrac12)^2\bigr]$
+by~\eqref{eq:reRe}; the constants give $-(q-1)\tfrac{\pi^2}{6}$; and by~\eqref{eq:imax} (with
+$\tfrac{-1-\beta}{1-\beta}=-i\cot\tfrac{\pi k}{q}$, pairing $k\leftrightarrow q-k$) the last pieces give
+$-\tfrac12\sum_{k=1}^{(q-1)/2}\Li_2(-\cot^2\tfrac{\pi k}q)$. For the boundary,
+$\sum_{\alpha}f(\alpha,-1)=2\Li_2(\tfrac12)-\tfrac{\pi^2}{6}=-\log^2 2$ using
+$\Li_2(\tfrac12)=\tfrac{\pi^2}{12}-\tfrac12\log^2 2$, so $-\sum_\alpha f(\alpha,-1)=+\log^2 2$. Collecting,
+\[
+  F(2/q)-F(1)=2S_1-(q-1)\tfrac{\pi^2}{6}-\tfrac12\!\sum\Li_2(-\cot^2\tfrac{\pi k}q)+\log^2 2 ,
+\]
+and the $\tfrac{\pi^2}{6}$ terms of $2S_1$ cancel the $-(q-1)\tfrac{\pi^2}{6}$, leaving the $\pi^2$ coefficient
+$-2\sum_{k=1}^{(q-1)/2}(\tfrac kq-\tfrac12)^2$. The elementary identity
+$2\sum_{k=1}^{(q-1)/2}(\tfrac kq-\tfrac12)^2=\tfrac{(q-1)(q-2)}{12q}$ finishes the proof. The even-$q$ case is
+identical except that $\beta=-1$ is now a genuine $q$-th root, contributing the displayed boundary term.
+\end{proof}
+The coefficient is exactly twice that of eq.~23 for $F(q)$. For $q=5$ the two terms
+$\Li_2(-\cot^2\tfrac\pi5)+\Li_2(-\cot^2\tfrac{2\pi}5)$ collapse (the real subfield is quadratic) to the single
+$\Li_2(4/5)$ of eq.~24; Theorem~\ref{thm:F2q} is the general statement behind that one example.
+
+\section{The elementary boundary for $F(p/q)$}
+The collapse in Theorem~\ref{thm:F2q} is special to $p=2$, where the $\alpha=-1$ arguments lie on the
+imaginary axis~\eqref{eq:imax}. For $p\ge3$ the arguments $(\alpha-\beta)/(1-\beta)$ are cyclotomic ratios
+$(1-\zeta_p^a)/(1-\zeta_q^b)$ lying off both special lines, and no $-\cot^2$ form exists. Numerically (PSLQ
+with a Champernowne canary, $130$ digits), $F(p/q)-F(1)$ reduces to dilogarithms at \emph{rational} arguments
+exactly when the maximal real subfield $\mathbb Q(\zeta_q)^+$ has degree $\le2$ --- i.e.\ $q\in\{3,4,5,6,8,12\}$
+--- and otherwise needs genuine $\Li_2$ at arguments of degree $\varphi(q)/2$. The harvested table of
+collapsing cases is in \texttt{src/PolyLog/tools/scratch/herglotz/harvest\_table.py}.
+
+\begin{proposition}[Collapse criterion]\label{prop:collapse}
+For coprime $p/q$, the value $F(p/q)-F(1)$ reduces to dilogarithms at \emph{rational} arguments (together with
+$\pi^2$ and logarithms) if and only if $\operatorname{rad}(q)\mid 30$, i.e.\ every prime factor of $q$ lies in
+$\{2,3,5\}$; otherwise it requires genuine $\Li_2$ at the cyclotomic-ratio arguments. Across all such rational
+cases only two new dilogarithm constants ever occur: $\Li_2(1/3)$ (conductor $3$) and the pair
+$\{\Li_2(1/5),\Li_2(2/5)\}$ (conductor $5$).
+\end{proposition}
+This was found by PSLQ with a Champernowne canary and re-verified against the exact sum~\eqref{eq:dilogsum}; e.g.
+$F(3/4)-F(1)=-\tfrac{19}{144}\pi^2-\tfrac34\log^2 2-2\log2\log3+\tfrac74\log^2 3+2\Li_2(\tfrac13)$ and
+$F(4/5)-F(1)=\tfrac{3}{80}\pi^2+\tfrac{11}4\log^2 2-\tfrac12\log^2 5-\Li_2(\tfrac15)-\log^2(2\sin\tfrac\pi5)-\log^2(2\sin\tfrac{2\pi}5)$.
+
+\section{Further general laws}
+The same machinery yields three more closed-form families and a derivative law; all are verified to
+$>10^{-149}$ against~\eqref{eq:dilogsum} (and cross-checked against the integral) by an independent
+multi-agent pass.
+
+\paragraph{The $F(n/(n+1))$ family (Radchenko--Zagier's Example 2, made explicit).} For all $n\ge2$,
+\[
+  F\!\Bigl(\tfrac{n}{n+1}\Bigr)-F(1)=-\frac{3n^2+3n+2}{24n(n+1)}\pi^2+\Li_2\!\Bigl(\tfrac{n}{n+1}\Bigr)
+  +\tfrac12\log^2\!\tfrac{n+1}{n}-\tfrac12 S(n+1)+\tfrac12 S(n),\quad S(q):=\!\sum_{k=1}^{q-1}\!\log^2\!\Bigl(2\sin\tfrac{\pi k}q\Bigr),
+\]
+the single dilogarithm $\Li_2(n/(n+1))$ appearing with coefficient exactly $+1$ (the paper's bilinear-log claim).
+
+\paragraph{The reciprocity law for $F(p/2)$.} For all odd $p\ge3$,
+\[
+  F\!\Bigl(\tfrac p2\Bigr)+F\!\Bigl(\tfrac2p\Bigr)-2F(1)=-\frac{(p-2)^2}{12p}\pi^2+\tfrac12\log^2\!\tfrac p2 .
+\]
+The $\Li_2(-\cot^2\frac{\pi k}{p})$ terms of $F(p/2)$ are exactly minus those of $F(2/p)$ and cancel in the sum;
+combined with Theorem~\ref{thm:F2q} this gives $F(p/2)$ in closed form.
+
+\paragraph{The derivative law $F'(2/q)$ (Radchenko--Zagier Proposition 4).} For all $q\ge3$, writing
+$T(q):=\tfrac2q F'(2/q)-(1+\log2)$,
+\[
+  T(q)=\frac{q^2-4}{24q}\pi^2+W(q),\qquad W(q)=\sum_{k=1}^{q-1}\cot\tfrac{2\pi k}{q}\,\Cl_2\!\Bigl(\tfrac{2\pi k}q\Bigr),
+\]
+with an extra $-\log2$ for even $q$. Unlike $F(2/q)$ itself, this does \emph{not} reduce to elementary form:
+$W(q)$ is a genuine Clausen combination, irreducible over the vocabulary of Theorem~\ref{thm:F2q}.
+
+\paragraph{The values $J(p/q)$.} With $J(x)=F(2x)-2F(x)+F(x/2)+\tfrac{\pi^2}{12x}$, the combination $J(2/q)$ is a
+\emph{pure-logarithm} value if and only if $q\in\{3,5\}$ --- so Radchenko--Zagier's stated
+$J(2/5)=\tfrac{11\pi^2}{240}+\tfrac34\log^2 2-2\log^2\tfrac{\sqrt5+1}2$ (their only worked $J$ example) is a
+special case, not a general law (the dilogarithms cancel only at $q=3,5$); we also record
+$J(2/3)=-\tfrac{\pi^2}{144}+\tfrac34\log^2 2$. The values $J(1/q)$ always retain the $\Li_2(-\cot^2)$
+dilogarithms inherited from $F(2/q)$.
+
+\section*{Verification and reproducibility}
+The exact sum~\eqref{eq:dilogsum}, the formulas of Theorems~\ref{thm:F1q}--\ref{thm:F2q} (verified for
+$q=3,\dots,40$ to better than $10^{-99}$, odd and even, prime and composite), the step-by-step audit of the
+reductions~\eqref{eq:line}--\eqref{eq:imax}, and the collapse table are in
+\texttt{src/PolyLog/tools/scratch/herglotz/} and recorded in
+\texttt{src/PolyLog/identities/herglotz-rational-values.wl}.
+\end{document}

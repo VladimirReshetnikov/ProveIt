@@ -1,0 +1,541 @@
+% Article: The polylogarithm-polygamma bridge and the layers below the digamma
+% - Created (UTC): 2026-06-11T13:07:42Z
+% - Repository HEAD: 68236dab4fa7979b44b115e72bd7c124ae550d92
+% Source corpus: src/PolyLog/docs/reduction-method.md §4,
+%   src/PolyLog/docs/reports/polygamma-complex-arguments-cm-lattices__d41f7be20c61.md §2.10,
+%   src/PolyLog/docs/reports/loggamma-integrals-clausen-bridge__c5013328db83.md,
+%   src/PolyLog/docs/reports/binet-malmsten-lambert-bridge__a3c91e07f5d2.md,
+%   src/PolyLog/identities/polygamma-clausen-values.wl,
+%   commits 272af472..68236dab4 of VladimirReshetnikov/Smithereens.
+\documentclass[11pt]{article}
+\usepackage[margin=1.1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!50!black,citecolor=blue!50!black,urlcolor=blue!60!black]{hyperref}
+\usepackage{xurl}
+
+\newtheorem{result}{Result}[section]
+\newtheorem{law}[result]{Law}
+\newtheorem{negative}[result]{Negative result}
+\theoremstyle{remark}
+\newtheorem{remark}[result]{Remark}
+
+\newcommand{\Li}{\operatorname{Li}}
+\newcommand{\Cl}{\operatorname{Cl}}
+\newcommand{\Catalan}{G}
+\newcommand{\dps}[1]{\textsf{\footnotesize[#1]}}
+
+\title{The Polylogarithm--Polygamma Bridge:\\
+An Exact Finite Fourier Transform, Clausen-Type Laws\\ at Rational Arguments,
+and the Layers Below the Digamma}
+\author{Vladimir Reshetnikov\thanks{%
+v.reshetnikov@gmail.com. Prepared with agentic assistance (Anthropic Claude) in the
+\emph{Smithereens} repository,
+\texttt{github.com/VladimirReshetnikov/Smithereens}, \texttt{src/PolyLog}.
+Provenance: created 2026-06-11 (UTC); repository snapshot
+\texttt{68236dab4fa7979b44b115e72bd7c124ae550d92}.}}
+\date{June 11, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+The classical cyclotomic formula expressing $\Li_n$ at a $q$-th root of unity as a finite
+sum of polygamma values is one half of an \emph{exact finite Fourier transform over}
+$\mathbb{Z}/q$; we record the inverse direction and its structural consequences: the
+polygamma relation lattice (reflection $+$ multiplication) and the cyclotomic-polylogarithm
+relation lattice (inversion/reflection $+$ distribution) are DFT-conjugate --- which explains
+their identical dimension counts $\varphi(q)/2$ per denominator grid --- and Catalan's
+constant is exactly the $q=4$ odd component of the parity split. Pushing the bridge into
+explicit ``store-level'' laws unifies the fifteen closed forms of MathWorld's
+\emph{Polygamma Function} special-cases block into instances of sine/cosine-weighted
+Clausen-DFT laws valid at \emph{every} rational argument; the trigamma law turns out to be classical (Lewin 1991),
+and the corpus now carries a $54$-entry verified store of $\psi^{(m)}(p/q)$ closed forms
+($m\le 3$, $q\in\{3,4,5,6,8,12\}$) in canonical Clausen atoms. A genuine sharpening emerged
+en route: the folklore collapse $\Cl_3(\text{rational angle})\in\mathbb{Q}\cdot\zeta(3)$
+holds exactly for denominators with $\varphi(q)\le 2$ (the crystallographic angles), and
+fails first at $q=5,8,12$, where $\Cl_3(2\pi/5)$, $\Cl_3(\pi/4)$, $\Cl_3(\pi/6)$ are genuine
+new atoms with exact $L(3,\chi)$ bridges. Below the digamma, integrating Kummer's series
+shows that $\psi^{(-2)}$ at rationals lands in the weight-$2$ Clausen lattice with
+$\zeta'(-1)$ as the one new constant; Binet's second formula and the Malmsten--Vardi log-log
+integrals join the same picture as the Lambert-kernel and Mellin faces of one bridge; and
+the generalized-Stieltjes layer splits by character parity --- odd combinations of
+$\gamma_1(k/q)$ reduce classically (Malmsten 1846), while even combinations are
+elementary-equivalent to Deninger's $\zeta''(0,\cdot)$ layer (Blagouchine 2015) and resist
+all standard atoms. Everything is verified numerically at $40$--$100$ digits, most of it
+dual-engine, with PSLQ-canary discipline; epistemic status is stated per result.
+\end{abstract}
+
+\section{Introduction: one bridge, many faces}\label{sec:intro}
+
+Polylogarithms at roots of unity and polygamma functions at rational arguments are two
+spellings of the same finite-dimensional object. This article assembles the recorded
+results of a research program that made the dictionary exact and then walked it in both
+directions and \emph{downward} --- through $\log\Gamma$ into negative polygamma order,
+Malmsten's integrals, and the generalized Stieltjes constants. The organizing picture is a
+ladder of bridges:
+
+\begin{center}
+\small
+\begin{tabular}{lll}
+\toprule
+object & polylogarithm side (at roots of unity) & new atom\\
+\midrule
+$\psi^{(m)}$, $m\ge1$ & $\operatorname{Re}/\operatorname{Im}\Li_{m+1}$ --- exact two-way DFT & ---\\
+$\log\Gamma=\psi^{(-1)}$ & $\Li_1$ (Kummer's log-sine series) & $\log 2\pi$\\
+$\psi^{(-2)}$ & $\Cl_2=\operatorname{Im}\Li_2$ (\S\ref{sec:psim2}) & $\zeta'(-1)$\\
+$\psi^{(-3)}$ & expected $\operatorname{Im}/\operatorname{Re}\Li_3$ layer & expected $\zeta'(-2)$ flavour\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Here $\Cl_s$ denotes the Clausen/Glaisher values
+\[
+\Cl_{2k}(\theta)=\operatorname{Im}\Li_{2k}(e^{i\theta}),\qquad
+\Cl_{2k+1}(\theta)=\operatorname{Re}\Li_{2k+1}(e^{i\theta}),
+\]
+and $\psi^{(-2)}(z)=\int_0^z\log\Gamma(t)\,dt$ in the Wolfram normalization.
+
+\paragraph{Epistemic status.}
+These are recorded results of experimental mathematics from the PolyLog corpus of the
+Smithereens repository. Classical statements are attributed; the remaining identities are
+verified numerically at the stated precision, most of them in \emph{two independent
+engines} (the Wolfram kernel at $60$ digits and \texttt{mpmath} at $70$ digits), with the
+project's PSLQ-canary discipline: every PSLQ discovery must survive re-evaluation at
+elevated precision, and ``independence'' claims are supported by negative PSLQ controls at
+stated coefficient heights (evidence, not proof). The $54$-entry polygamma--Clausen store is
+additionally re-verified in a fresh kernel by the project's regression suite.
+
+\section{The two-way exact DFT}\label{sec:dft}
+
+\begin{law}[forward direction; classical]\label{law:forward}
+For every $n\ge2$, every $q\ge1$, and $\gcd(p,q)=1$,
+\[
+\Li_n\!\bigl(e^{2\pi ip/q}\bigr)
+=\frac{(-1)^n}{q^n\,(n-1)!}\sum_{k=1}^{q-1}e^{2\pi ikp/q}\,
+\psi^{(n-1)}\!\Bigl(\frac{k}{q}\Bigr)\;+\;\frac{\zeta(n)}{q^n}.
+\]
+\end{law}
+
+This is identity 10.08.03.0007.01 of the \texttt{functions.wolfram.com} \emph{PolyLog}
+reference \cite{WolframFunctions}; it is provable by rearranging the absolutely convergent Hurwitz-zeta series, and
+it is the workhorse of the project's cyclotomic reducer (\texttt{cycloExact}): a finite
+polygamma sum, exact and fast, resolving $\Li_n$ at \emph{every} root of unity with no
+PSLQ, no squarefree-radical basis, and no nested-radical limitation.
+
+\begin{result}[inverse direction]\label{res:inverse}
+Inverting the discrete Fourier transform over $\mathbb{Z}/q$ gives, with
+$\zeta_q=e^{2\pi i/q}$,
+\[
+\psi^{(n-1)}\!\Bigl(\frac{k}{q}\Bigr)
+=(-1)^n\,(n-1)!\;q^{\,n-1}\sum_{p=0}^{q-1}\zeta_q^{-pk}\,\Li_n\!\bigl(\zeta_q^{\,p}\bigr).
+\]
+\dps{verified to $40$ digits at weights $2,3$ across $q\le21$; re-verified by mpmath at
+$70$ dps for $n-1=1,2,3$ over the full store grid}
+\end{result}
+
+The bridge is therefore an \emph{exact finite Fourier transform, in both directions}.
+Three non-obvious consequences are recorded.
+
+\begin{enumerate}
+\item \textbf{DFT-conjugacy of the relation lattices.} The distribution relation
+$\sum_{j}\Li_n(z\,\zeta_m^{\,j})=m^{1-n}\Li_n(z^m)$ Fourier-transforms into the polygamma
+multiplication theorem, and polylogarithm inversion/reflection corresponds to the symmetry
+$k\leftrightarrow q-k$ of the $\psi$-grid. This is \emph{why} the two relation lattices ---
+computed independently by the project's two reducers --- carry identical dimension counts
+$\varphi(q)/2$ per denominator grid.
+\item \textbf{The parity split, and Catalan as the $q=4$ odd component.} Clausen-type
+values ($\operatorname{Im}\Li_n$ at even $n$, etc.)\ are the odd part of the $\psi$-grid
+under $k\mapsto q-k$; in particular
+\[
+\Catalan=\operatorname{Im}\Li_2(i)=\frac{\psi^{(1)}(1/4)-\psi^{(1)}(3/4)}{16},
+\]
+which identifies the well-known ``arguments $1/4$ and $3/4$'' pairing (Math.SE 893486) as
+the $q=4$ odd component of the parity split.
+\item \textbf{Certificate transport.} Cyclotomic-polylogarithm proof certificates can in
+principle be transported to and from $\psi$-side lattice certificates through the exact
+$\mathbb{Q}(\zeta_q)$ DFT matrix. The $\psi$-side elementary atoms ($\pi^2\csc^2$ values)
+are far lighter than the sine-product algebraic objects that constrain the
+$\Gamma$-certificate sweeps on large grids, so the transport is a proposed escape route
+from that bottleneck (not yet implemented).
+\end{enumerate}
+
+\section{Clausen-type laws for polygamma values at rational arguments}\label{sec:laws}
+
+MathWorld's \emph{Polygamma Function} page lists fifteen closed forms in its
+special-cases block, eqs.~(22)--(36) ($\psi^{(1)}$, $\psi^{(2)}$, $\psi^{(3)}$ at $p/q$
+with $q\in\{2,3,4,6\}$) in Catalan/Clausen/$\beta$ atoms, several of them traditionally
+presented as isolated curiosities. All of them ---
+and their extension to \emph{every} rational argument --- are instances of three
+sine/cosine-weighted Clausen-DFT laws, obtained by splitting the inverse DFT of
+Result~\ref{res:inverse} into its elementary (reflection) half and its Clausen half.
+
+\begin{law}[trigamma; Lewin 1991]\label{law:psi1}
+For $0<p<q$, $\gcd(p,q)=1$,
+\[
+\psi^{(1)}\!\Bigl(\frac{p}{q}\Bigr)
+=\frac{\pi^2}{2\sin^2(\pi p/q)}
++2q\!\!\sum_{j=1}^{\lfloor(q-1)/2\rfloor}\!\!\sin\Bigl(\frac{2\pi jp}{q}\Bigr)\,
+\Cl_2\Bigl(\frac{2\pi j}{q}\Bigr).
+\]
+\dps{verified at $q=3,4,5,8,12$ to $10^{-46}$ or better, then over the full store grid to
+$10^{-50}$ in-kernel and at $70$ dps in mpmath}
+\end{law}
+
+This law is classical --- MathWorld's \emph{Trigamma Function} eq.~(14) cites Lewin
+(1991) \cite{Lewin} --- and was independently re-derived here from the DFT bridge before the attribution
+was spotted; the project's records explicitly re-frame the finding as \emph{placement},
+not novelty. MathWorld's scattered coefficients are its small-$q$ shadows: the $3\sqrt3$
+of $q=3$ is $2q\sin(2\pi/3)$, the $8\Catalan$ of $q=4$ is $2q\,\Cl_2(\pi/2)$.
+
+\begin{law}[tetragamma]\label{law:psi2}
+\[
+\psi^{(2)}\!\Bigl(\frac{p}{q}\Bigr)
+=-\pi^3\cot\Bigl(\frac{\pi p}{q}\Bigr)\csc^2\Bigl(\frac{\pi p}{q}\Bigr)
+-2q^2\Biggl(\zeta(3)
++2\!\!\sum_{j=1}^{\lfloor(q-1)/2\rfloor}\!\!\cos\Bigl(\frac{2\pi jp}{q}\Bigr)
+\Cl_3\Bigl(\frac{2\pi j}{q}\Bigr)+\varepsilon_q\Biggr),
+\]
+where $\varepsilon_q=(-1)^p\,\Cl_3(\pi)$ for even $q$, $\varepsilon_q=0$ for odd $q$,
+and $\Cl_3(\pi)=-\tfrac34\zeta(3)$.
+\dps{verified over the full store grid to $10^{-50}$ in-kernel and at $70$ dps in mpmath}
+\end{law}
+
+\begin{law}[pentagamma]\label{law:psi3}
+\[
+\psi^{(3)}\!\Bigl(\frac{p}{q}\Bigr)
+=\pi^4\Bigl(2\cot^2\Bigl(\frac{\pi p}{q}\Bigr)\csc^2\Bigl(\frac{\pi p}{q}\Bigr)
++\csc^4\Bigl(\frac{\pi p}{q}\Bigr)\Bigr)
++12\,q^3\!\!\sum_{j=1}^{\lfloor(q-1)/2\rfloor}\!\!\sin\Bigl(\frac{2\pi jp}{q}\Bigr)\,
+\Cl_4\Bigl(\frac{2\pi j}{q}\Bigr),
+\]
+equivalently, in difference form,
+$\psi^{(3)}(p/q)-\psi^{(3)}(1-p/q)=24\,q^3\sum_j\sin(2\pi jp/q)\,\Cl_4(2\pi j/q)$.
+\dps{same verification battery}
+\end{law}
+
+The $\psi^{(3)}$ law is the Lewin law one weight up, by the same derivation; no literature
+citation has been located, and the project records it as ``presumably in Lewin's orbit.''
+MathWorld's $162\sqrt3$ and $768\beta(4)$ coefficients are $12q^3\sin(2\pi j/q)$-instances
+of the one-sided law ($24q^3$ in the difference form).
+
+\begin{result}[new instances beyond the MathWorld table]\label{res:newinstances}
+Among the instances at $q\in\{5,8,12\}$:
+\[
+\psi^{(1)}\!\bigl(\tfrac15\bigr)
+=\frac{\pi^2}{2\sin^2(\pi/5)}
++10\Bigl[\sin\tfrac{2\pi}{5}\,\Cl_2\!\bigl(\tfrac{2\pi}{5}\bigr)
++\sin\tfrac{4\pi}{5}\,\Cl_2\!\bigl(\tfrac{4\pi}{5}\bigr)\Bigr],
+\]
+\[
+\psi^{(1)}\!\bigl(\tfrac1{12}\bigr)
+=40\,\Catalan+\frac{4\pi^2}{(\sqrt3-1)^2}+30\sqrt3\,\Cl_2\!\bigl(\tfrac{2\pi}{3}\bigr),
+\]
+the latter after duplication/triplication canonicalization collapses the raw five-atom DFT
+form onto the canonical atom set. Also, MathWorld's eq.~(27) simplifies: from
+$\Cl_3(2\pi/3)=-\tfrac49\zeta(3)$,
+\[
+\psi^{(2)}\!\bigl(\tfrac13\bigr)=-\frac{4\pi^3}{3\sqrt3}-26\,\zeta(3).
+\]
+\end{result}
+
+\begin{result}[the polygamma--Clausen store]\label{res:store}
+The corpus now carries \texttt{identities/polygamma-clausen-values.wl}: $54$ entries
+$\psi^{(m)}(p/q)$ for $m\in\{1,2,3\}$, $q\in\{3,4,5,6,8,12\}$, all $p$ coprime to $q$
+($18$ arguments $\times\,3$ orders), in canonicalized Clausen atoms. The residual atom
+basis across the store is
+\begin{align*}
+&\{\Catalan,\ \beta(4),\ \zeta(3)\}\ \cup\
+\Cl_2\bigl\{\tfrac{2\pi}{3},\tfrac{2\pi}{5},\tfrac{4\pi}{5},\tfrac{\pi}{4}\bigr\}\\
+&\qquad\cup\
+\Cl_3\bigl\{\tfrac{2\pi}{5},\tfrac{\pi}{4},\tfrac{\pi}{6}\bigr\}\ \cup\
+\Cl_4\bigl\{\tfrac{2\pi}{3},\tfrac{2\pi}{5},\tfrac{4\pi}{5},\tfrac{\pi}{4}\bigr\}.
+\end{align*}
+Every entry is verified in-kernel to $|{\rm lhs}-{\rm rhs}|<10^{-50}$ at $60$ digits
+(including a disk round-trip) and independently by an mpmath script at $70$ dps
+(tolerance $10^{-55}$) that re-derives the raw DFT bridge, the three laws, all $17$
+Clausen canonicalization relations, and the $L$-function bridges of
+Section~\ref{sec:collapse} from mpmath primitives, with positive and negative PSLQ
+controls.
+\end{result}
+
+\section{The boundary of the odd-weight Clausen collapse}\label{sec:collapse}
+
+A folklore rule says that odd-weight Clausen values at rational angles collapse to
+rational multiples of zeta values ($\Cl_3(2\pi/3)=-\tfrac49\zeta(3)$ being the standard
+example). The store emission \emph{sharpened the rule's scope}:
+
+\begin{result}[crystallographic-angle rule]\label{res:crystal}
+$\Cl_3(2\pi j/q)\in\mathbb{Q}\cdot\zeta(3)$ holds exactly for lowest-terms denominators
+with $\varphi(q)\le2$, i.e.\ $q\in\{1,2,3,4,6\}$ --- the crystallographic angles --- where
+only the principal even character survives the cosine DFT. For $q=5,8,12$ the even
+quadratic character $\chi_q$ survives, and $s=3$ odd against $\chi(-1)=+1$ is the
+parity-\emph{mismatch} case, so $\Cl_3(2\pi/5)$, $\Cl_3(\pi/4)$, $\Cl_3(\pi/6)$ are genuine
+atoms \dps{PSLQ-canaried in mpmath over $\{\zeta(3),\pi^3\}$ at coefficient height
+$10^{10}$, with an independent in-kernel Rationalize canary against $\zeta(3)$}, with
+exact character bridges
+\begin{gather*}
+\Cl_3\!\bigl(\tfrac{2\pi}{5}\bigr)=-\tfrac{6}{25}\zeta(3)+\tfrac{\sqrt5}{4}L(3,\chi_5),
+\qquad
+\Cl_3\!\bigl(\tfrac{\pi}{4}\bigr)=-\tfrac{3}{256}\zeta(3)+\tfrac{1}{\sqrt2}L(3,\chi_8),\\
+\Cl_3\!\bigl(\tfrac{\pi}{6}\bigr)=\tfrac{\zeta(3)}{24}+\tfrac{\sqrt3}{2}L(3,\chi_{12}),
+\end{gather*}
+where $\chi_q$ is the even quadratic (Kronecker) character mod $q$.
+\end{result}
+
+Consequently the $m=2$ store entries for $q\in\{5,8,12\}$ each carry one genuine $\Cl_3$
+atom, while those for $q\in\{3,4,6\}$ terminate in $\{\zeta(3),\pi^3\}$ with algebraic
+coefficients. The negative controls are numerical evidence of independence, not proof; no
+classical closed form for $L(3,\chi_q)$ in the parity-mismatch case is known.
+
+\section{Below the digamma: \texorpdfstring{$\psi^{(-2)}$}{psi(-2)} at rationals}
+\label{sec:psim2}
+
+One integration below the digamma sits $\psi^{(-2)}(z)=\int_0^z\log\Gamma(t)\,dt$.
+Integrating Kummer's Fourier series of $\log\Gamma$ \cite{Kummer} predicts that at rational points this
+grid lands in $\{\text{Clausen values}\}/\pi\,\oplus\,\zeta'(-1)\,\oplus\,\text{logs}$:
+the weight-$2$ Clausen world enters through the negative-order polygamma ladder, with the
+Glaisher-layer constant $\zeta'(-1)$ as the genuinely new atom. PSLQ confirms
+\dps{$100$-digit canaries; residuals $\le10^{-60}$}:
+
+\begin{result}[log-gamma integrals in the Clausen lattice]\label{res:loggamma}
+\begin{align*}
+\int_0^{1/4}\log\Gamma(t)\,dt
+&=\frac{3}{32}+\frac{\log2}{8}+\frac{\log\pi}{8}
++\frac{\Catalan}{4\pi}-\frac{9}{8}\,\zeta'(-1),\\[4pt]
+\int_0^{1/3}\log\Gamma(t)\,dt
+&=\frac{1}{9}+\frac{\log2}{6}-\frac{\log3}{72}+\frac{\log\pi}{6}
++\frac{\Cl_2(2\pi/3)}{4\pi}-\frac{4}{3}\,\zeta'(-1),\\[4pt]
+\int_0^{1/6}\log\Gamma(t)\,dt
+&=\frac{5}{72}+\frac{7\log2}{72}+\frac{\log3}{144}+\frac{\log\pi}{12}
++\frac{\Cl_2(\pi/3)}{4\pi}-\frac{5}{6}\,\zeta'(-1).
+\end{align*}
+\end{result}
+
+The structural punchline: the quarter-point integral carries Catalan
+($\Cl_2(\pi/2)=\Catalan$) and the third-point integral carries
+$\Cl_2(2\pi/3)=\tfrac23\,\Cl_2(\pi/3)$, two-thirds of Gieseking's constant --- the
+``level-3 Catalan'' that had surfaced independently in the
+repository's Eisenstein-ladder work --- now arriving from a completely different direction.
+
+\begin{negative}[recorded on purpose]\label{neg:psim2}
+(i) The half-point probe $\int_0^{1/2}\log\Gamma$ initially found no relation --- because
+$\log\Gamma(1/2)=\tfrac12\log\pi$ made the PSLQ basis $\mathbb{Q}$-dependent, and PSLQ
+returned that degeneracy instead of the target. Basis atoms must be
+$\mathbb{Q}$-independent. (ii) A $\psi^{(-3)}(1/4)$ probe via Cauchy's repeated-integration
+kernel produced only a large-coefficient candidate (heights $\sim10^6$) with a weak canary
+($10^{-46}$ at $100$ dps) --- \emph{rejected} as a PSLQ false positive. The weight-$3$
+level needs a properly prepared basis (presumably $\zeta'(-2)$-equivalents plus
+Barnes-$G$-layer logarithms).
+\end{negative}
+
+\section{Binet's second formula and Malmsten's integrals: the Lambert-kernel face}
+\label{sec:binet}
+
+Binet's second formula
+\[
+\log\Gamma(z)=\Bigl(z-\tfrac12\Bigr)\log z-z+\tfrac12\log(2\pi)
++2\int_0^\infty\frac{\arctan(t/z)}{e^{2\pi t}-1}\,dt
+\]
+is the integrated Abel--Plana formula with the \emph{Lambert kernel} $1/(e^{2\pi t}-1)$ ---
+the same kernel whose moment sums are the Eisenstein $q$-series of the companion CM
+article. Malmsten/Vardi log-log integrals $\int_0^1\ln\ln(1/x)\,R(x)\,dx$ are the
+\emph{Mellin avatars} of Kummer's Fourier series: expanding the rational kernel $R$ in a
+geometric series produces $L'(\chi,1)$-type sums, and Kummer's formula converts
+odd-character $L'(1)$ into $\log\Gamma$ at rationals.
+
+\begin{result}\label{res:binet}
+Binet's formula replays exactly at $z=1,\tfrac12,\tfrac14$ \dps{residuals $\le10^{-52}$},
+turning every $\Gamma$-store atom into a closed-form arctan--Lambert integral; e.g.
+\[
+\int_0^\infty\frac{\arctan(4t)}{e^{2\pi t}-1}\,dt
+=\frac{1}{2}\Bigl[\log\Gamma\bigl(\tfrac14\bigr)-\tfrac12\log2+\tfrac14
+-\tfrac12\log(2\pi)\Bigr].
+\]
+\end{result}
+
+\begin{result}[Vardi's integral \cite{Vardi}, re-derived blind]\label{res:vardi}
+PSLQ over $\{\pi\gamma,\ \pi\log2,\ \pi\log\pi,\ \pi\log\Gamma(1/4)\}$, with the $\gamma$
+atom \emph{declined} (coefficient $0$) \dps{canary exact at $80$ dps}:
+\[
+\int_0^1\frac{\ln\ln(1/x)}{1+x^2}\,dx=\frac{\pi}{4}\,
+\ln\!\Bigl(\frac{4\pi^3}{\Gamma(1/4)^4}\Bigr).
+\]
+The $q=3$ Malmsten variant \dps{canary $3.4\times10^{-81}$; $\gamma$ declined again}:
+\[
+\int_0^1\frac{\ln\ln(1/x)}{1+x+x^2}\,dx
+=\frac{\pi}{6\sqrt3}\,\ln\!\Bigl(\frac{2^8\pi^8}{3^3\,\Gamma(1/3)^{12}}\Bigr).
+\]
+\end{result}
+
+Both integrals carry exactly the harvested-$\Gamma$-store atoms: the log-log family is a
+systematic \emph{integral-representation generator} for the identity stores --- every odd
+Dirichlet character (each denominator $q$) yields one such evaluation through Kummer's
+formula, with the $\Gamma$-lattice reducer supplying the closed form mechanically.
+
+\section{The log-gamma moment ladder}\label{sec:moments}
+
+\begin{result}[Hurwitz ladder; classical (Whittaker--Watson \cite{WhittakerWatson})]\label{res:hurwitzladder}
+\[
+\log\Gamma(z)=\Bigl(z-\tfrac12\Bigr)\log z-z+\tfrac12\log(2\pi)
++\frac12\sum_{n\ge2}\frac{n-1}{n(n+1)}\,\zeta(n,z+1)
+\qquad\text{\dps{verified exactly at $z=1/3$}}.
+\]
+Since $\zeta(n,z+1)$ is $\psi^{(n-1)}(z+1)$ up to factorials, this is a
+$\mathbb{Q}$-linear ladder between $\log\Gamma$ and the \emph{entire polygamma tower at
+the same point} --- a candidate certificate law binding the $\Gamma$ and trigamma stores
+into one linear system.
+\end{result}
+
+\begin{result}[second moment; classical (Espinosa--Moll \cite{EspinosaMoll})]\label{res:em}
+With $L=\log(2\pi)$,
+\[
+\int_0^1\bigl[\log\Gamma(x)\bigr]^2dx
+=\frac{\gamma^2}{12}+\frac{\pi^2}{48}+\frac{\gamma L}{6}+\frac{L^2}{3}
+-(\gamma+L)\frac{\zeta'(2)}{\pi^2}+\frac{\zeta''(2)}{2\pi^2}
+\qquad\text{\dps{verified to $1.6\times10^{-61}$}}.
+\]
+The quadratic-moment layer adds $\zeta''(2)$ to the atom inventory.
+\end{result}
+
+\begin{negative}[the cubic moment stays open]\label{neg:cubic}
+\[
+\int_0^1\bigl[\log\Gamma(x)\bigr]^3dx
+=5.7403888072294742800195716881024614629610130074549\ldots
+\]
+($50$ digits, tanh-sinh quadrature cross-calibrated by the second moment). PSLQ over the
+natural weight-mixed basket ($\gamma^3,\dots,L^3$, $\pi^2\gamma$, $\pi^2L$,
+$\zeta(3)$, $(\gamma{+}L)\zeta'(2)/\pi^2$, $(\gamma{+}L)\zeta''(2)/\pi^2$,
+$\zeta'''(2)/\pi^2$, $\zeta'(2)^2/\pi^4$, $\zeta'(3)$, $\gamma\zeta'(2)/\pi^2$) returns
+only uniform-height junk at $60$ dps --- consistent with Espinosa--Moll and Bailey et al.
+The Kummer-cube resonance $k_1\pm k_2\pm k_3=0$ produces a genuinely new depth-$2$ constant
+(Tornheim--Witten-derivative flavour); finding the right \emph{named} atom is the open
+problem, not search depth.
+\end{negative}
+
+\section{The Stieltjes layer}\label{sec:stieltjes}
+
+Differentiating $L(s,\chi)=q^{-s}\sum_k\chi(k)\,\zeta(s,k/q)$ at $s=1$ gives the exact
+ladder
+\[
+L'(\chi,1)=-\ln q\;L(1,\chi)-\frac1q\sum_k\chi(k)\,\gamma_1\!\Bigl(\frac{k}{q}\Bigr),
+\]
+so every Malmsten log-log integral is a statement about \emph{first generalized Stieltjes
+constants} $\gamma_1(k/q)$ --- Blagouchine's program, equivalent to Deninger's
+$\zeta''(0,a)$ layer via the functional equation.
+
+\begin{result}[even-character Malmsten integral]\label{res:evenchi}
+\dps{verified to $10^{-51}$; even character mod 5; $\varphi$ the golden ratio}
+\[
+\int_0^1\ln\ln\frac1x\cdot\frac{(1-x)(1-x^2)}{1-x^5}\,dx
+=-(\gamma+\ln5)\,\frac{2\ln\varphi}{\sqrt5}
+-\frac{\gamma_1(\tfrac15)-\gamma_1(\tfrac25)-\gamma_1(\tfrac35)+\gamma_1(\tfrac45)}{5}.
+\]
+\end{result}
+
+\begin{result}[the parity dichotomy]\label{res:parity}
+The dichotomy is empirically sharp. The \emph{odd} $\gamma_1$-combination reduces exactly
+as differentiated-Kummer predicts \dps{verified blind}:
+\[
+\gamma_1\!\bigl(\tfrac13\bigr)-\gamma_1\!\bigl(\tfrac23\bigr)
+=-\frac{\pi}{\sqrt3}\Bigl(\gamma+4\ln2-\tfrac12\ln3+4\ln\pi-6\ln\Gamma\bigl(\tfrac13\bigr)\Bigr),
+\]
+which is \emph{Malmsten's 1846 reflection identity} \cite{Malmsten} (long misattributed
+to Almkvist--Meurman). The \emph{even} combination does \emph{not} reduce to standard atoms
+\dps{PSLQ junk at coefficient height $10^8$ --- honest negative}; pushing Blagouchine's
+rational-arguments theorem \cite{BlagouchineJNT} through it collapses everything except a $\zeta''$-block
+\dps{derived and verified to $10^{-50}$}:
+\[
+\gamma_1\!\bigl(\tfrac15\bigr)-\gamma_1\!\bigl(\tfrac25\bigr)
+-\gamma_1\!\bigl(\tfrac35\bigr)+\gamma_1\!\bigl(\tfrac45\bigr)
+=\sqrt5\,\Bigl[\zeta''\bigl(0,\tfrac15\bigr)-\zeta''\bigl(0,\tfrac25\bigr)
+-\zeta''\bigl(0,\tfrac35\bigr)+\zeta''\bigl(0,\tfrac45\bigr)\Bigr]
+-2\sqrt5\,\ln\varphi\,\bigl(\gamma+\ln10\pi\bigr).
+\]
+\end{result}
+
+The canonical atom for the even layer is thus the even-character $\zeta''(0,l/q)$
+combination (Deninger's layer \cite{Deninger}); Malmsten integrals, even $\gamma_1$-combinations, and even
+$L'(\chi,1)$ are all elementary-equivalent to it. Two practical records: Blagouchine's
+particular value $\gamma_1(1/4)$ was re-verified exactly against \texttt{mpmath}'s
+generalized Stieltjes constants, and the reduction coefficients live in
+$\mathbb{Q}(\sqrt q)$ --- rational-coefficient PSLQ baskets \emph{miss} the relation, so a
+$\sqrt q$-weighted basket or direct derivation is required.
+
+\section{Open directions}\label{sec:open}
+
+\begin{enumerate}
+\item Attribution: a literature citation for the $\psi^{(3)}$ law (Law~\ref{law:psi3})
+and the general-$m$ odd-half Clausen-DFT version; only the trigamma law's Lewin 1991
+attribution is confirmed.
+\item Implementing certificate transport across the exact $\mathbb{Q}(\zeta_q)$ DFT
+matrix (Section~\ref{sec:dft}, consequence 3).
+\item Closed forms (or proofs of independence) for $L(3,\chi_5)$, $L(3,\chi_8)$,
+$L(3,\chi_{12})$ --- equivalently for the three genuine $\Cl_3$ atoms.
+\item The $\psi^{(-3)}$ layer with a properly prepared basis; a store schema for
+integral/infinite-sum claims; the named atom for the cubic log-gamma moment.
+\item Extending the polygamma--Clausen store beyond $m\le3$, $q\in\{3,4,5,6,8,12\}$, and
+equipping its entries with replayable proof certificates.
+\end{enumerate}
+
+\section*{Sources and verification artifacts}
+
+This article presents results recorded in the Smithereens repository
+(\texttt{src/PolyLog}) in the commit range \texttt{272af472..68236dab4} (2026-06-09
+through 2026-06-11): the two-way DFT in \path{docs/reduction-method.md}~\S4; the Clausen
+laws and store in \path{identities/polygamma-clausen-values.wl} with generator
+\path{tools/generate-polygamma-clausen-store.wl} and cross-engine verifier
+\path{tools/verify-polygamma-clausen-mpmath.py}; the $\psi^{(-2)}$ bridge in
+\path{docs/reports/loggamma-integrals-clausen-bridge__c5013328db83.md}; the
+Binet/Malmsten/Stieltjes material in
+\path{docs/reports/binet-malmsten-lambert-bridge__a3c91e07f5d2.md}.
+
+\begin{thebibliography}{9}
+
+\bibitem{Lewin}
+L.~Lewin, \emph{Polylogarithms and Associated Functions}, North-Holland, 1981; and (ed.)
+\emph{Structural Properties of Polylogarithms}, AMS, 1991. (The trigamma Clausen-DFT law;
+cited via MathWorld, \emph{Trigamma Function}, eq.~(14).)
+
+\bibitem{WolframFunctions}
+Wolfram Research, \emph{The Wolfram Functions Site}, \texttt{functions.wolfram.com},
+PolyLog identity 10.08.03.0007.01. (The forward cyclotomic formula.)
+
+\bibitem{Kummer}
+E.~E.~Kummer, \emph{Beitrag zur Theorie der Function
+$\Gamma(x)$}, J.~reine angew.\ Math.\ \textbf{35} (1847), 1--4. (The Fourier series of
+$\log\Gamma$.)
+
+\bibitem{Malmsten}
+C.~J.~Malmsten, \emph{De integralibus quibusdam definitis, seriebusque infinitis},
+J.~reine angew.\ Math.\ \textbf{38} (1849), 1--39 (dated 1846). (The log-log integrals and
+the reflection identity for $\gamma_1$.)
+
+\bibitem{Vardi}
+I.~Vardi, \emph{Integrals, an introduction to analytic number theory}, Amer.\ Math.\
+Monthly \textbf{95} (1988), 308--315.
+
+\bibitem{BlagouchineJNT}
+I.~V.~Blagouchine, \emph{A theorem for the closed-form evaluation of the first generalized
+Stieltjes constant at rational arguments and some related summations}, J.~Number Theory
+\textbf{148} (2015), 537--592. (Vendored in the repository at
+\texttt{src/PolyLog/docs/pdfs/1401.3724v3/}.)
+
+\bibitem{EspinosaMoll}
+O.~Espinosa and V.~Moll, \emph{On some integrals involving the Hurwitz zeta function,
+Part~1}, Ramanujan J.\ \textbf{6} (2002), 159--188. (The second log-gamma moment.)
+
+\bibitem{WhittakerWatson}
+E.~T.~Whittaker and G.~N.~Watson, \emph{A Course of Modern Analysis}, 4th ed., Cambridge
+University Press, 1927. (Binet's formulas; the Hurwitz-series ladder.)
+
+\bibitem{Deninger}
+C.~Deninger, \emph{On the analogue of the formula of Chowla and Selberg for real quadratic
+fields}, J.~reine angew.\ Math.\ \textbf{351} (1984), 171--191. (The $\zeta''(0,a)$
+layer.)
+
+\end{thebibliography}
+
+\end{document}

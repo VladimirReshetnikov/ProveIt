@@ -1,0 +1,243 @@
+% Created (UTC): 2026-06-21T16:04:59Z
+% Repository HEAD: 31ffeac4a7ca7bfcc21480d16ed05ba5b4d46b3a
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs}
+\usepackage{microtype}
+\emergencystretch=3em \hbadness=4000
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\DeclareMathOperator{\Li}{Li}
+\DeclareMathOperator{\Ti}{Ti}
+\DeclareMathOperator{\Cl}{Cl}
+\DeclareMathOperator{\arctanh}{arctanh}
+\newcommand{\chitwo}{\chi_{2}}
+\newcommand{\dS}{\delta_{\mathrm S}}
+\newcommand{\up}{u_{p}}
+\newcommand{\uq}{u_{q}}
+\newcommand{\vp}{v_{p}}
+\newcommand{\vq}{v_{q}}
+\theoremstyle{plain}\newtheorem{theorem}{Theorem}\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\title{Cleo's arctangent--sine integral:\\
+the Reshetnikov--Lee $\chitwo$ master formula, an elementary-value\\ classification, and a sibling trichotomy}
+\author{Vladimir Reshetnikov}
+\date{2026-06-21}
+\begin{document}
+\maketitle
+\begin{center}\small
+Research report. Created (UTC) 2026-06-21T16:04:59Z; repository \texttt{HEAD}
+\texttt{31ffeac4a7ca7bfcc21480d16ed05ba5b4d46b3a}.\\
+Companion to \texttt{central-binomial-arcsin-ladder}; store \texttt{cleo-arctan-sin-chi2.wl}.
+\end{center}
+
+\begin{abstract}
+The Math.StackExchange integral $I=\int_0^{\pi/2}\arctan^2\!\bigl(\tfrac{6\sin x}{3+\cos2x}\bigr)\,dx$
+was evaluated in 2014 by Cleo and, independently, by Sangchul Lee, in two forms that we show are the
+\emph{same} three-term Legendre-$\chitwo$ combination. The engine behind it is the two-parameter master
+formula $\int_0^{\pi/2}\arctan(p\sin x)\arctan(q\sin x)\,dx=\pi\,\chitwo(\up\uq)$, with
+$\up=\tan(\tfrac12\arctan p)$---conjectured and proved by Lee in 2013, seeded by Reshetnikov's
+single-arctangent ladder $\int_0^{\pi/2}\arctan(t\sin x)\,dx=2\chitwo(u_t)$. We give a short third
+(differentiation) proof, machine-checked in Wolfram, and then record four contributions that are
+\emph{not} in the prior literature: (i)~a \emph{classification} of the elementary values of $\chitwo$ at
+algebraic points---over the metallic-mean, $\tan(\pi/k)$, and rational families the elementary set is
+\emph{closed} at exactly the three classical golden/silver values, and Cleo's three arguments all avoid
+it, which is the structural reason $I$ has no elementary closed form; (ii)~a proof that the three-term
+$\chitwo$ representation of $I$ is \emph{minimal} (not a single dilogarithm, not a two-term combination,
+no Catalan constant); (iii)~an alternate \emph{Landen-mirror} three-term form; and (iv)~a \emph{sibling
+trichotomy} extending the master formula: $(\arctan,\arctan)\!\to\!\chitwo(\up\uq)$,
+$(\arctanh,\arctanh)\!\to\!\chitwo(\vp\vq)$, $(\arctan,\arctanh)\!\to\!\Ti_2(\up\vq)$. All identities are
+verified in two engines (mpmath and Wolfram), to between $40$ and $160$ digits.
+\end{abstract}
+
+\section{The integral and its provenance}
+The object (Math.StackExchange \href{https://math.stackexchange.com/q/564816}{question 564816}) is
+\begin{equation}\label{eq:I}
+  I=\int_0^{\pi/2}\arctan^2\!\left(\frac{6\sin x}{3+\cos2x}\right)dx=1.330970396842566666125327\ldots
+\end{equation}
+\href{https://math.stackexchange.com/a/570815}{Cleo} gave the dilogarithmic form
+\begin{multline}\label{eq:cleo}
+  I=\frac{\pi}{2}\Bigl(2\Li_2\bigl((1-\sqrt2)(2-\sqrt5)\bigr)-2\Li_2\bigl((1-\sqrt2)(\sqrt5-2)\bigr)\\
+  +\Li_2(3-\sqrt8)-\Li_2(\sqrt8-3)+\Li_2(9-\sqrt{80})-\Li_2(\sqrt{80}-9)\Bigr),
+\end{multline}
+while \href{https://math.stackexchange.com/a/571079}{Sangchul Lee} gave the Legendre-chi form
+\begin{equation}\label{eq:lee}
+  I=\pi\Bigl(\chitwo(3-2\sqrt2)+\chitwo(9-4\sqrt5)+2\chitwo\bigl((\sqrt2-1)(\sqrt5-2)\bigr)\Bigr),
+\end{equation}
+where $\chitwo(x)=\tfrac12\bigl(\Li_2(x)-\Li_2(-x)\bigr)=\sum_{k\ge0}\frac{x^{2k+1}}{(2k+1)^2}$. These are
+identical: $\Li_2(x)-\Li_2(-x)=2\chitwo(x)$ turns each $\Li_2$ pair in~\eqref{eq:cleo} into a $\chitwo$, and
+$3-\sqrt8=(\sqrt2-1)^2$, $9-\sqrt{80}=(\sqrt5-2)^2$, $(1-\sqrt2)(2-\sqrt5)=(\sqrt2-1)(\sqrt5-2)$, so both
+equal
+\begin{equation}\label{eq:canon}
+  I=\pi\Bigl[\chitwo\bigl((\sqrt2-1)^2\bigr)+\chitwo\bigl((\sqrt5-2)^2\bigr)
+  +2\,\chitwo\bigl((\sqrt2-1)(\sqrt5-2)\bigr)\Bigr].
+\end{equation}
+The arguments are a silver$\,\otimes\,$golden pair: $\sqrt2-1=\tan\frac\pi8=\dS^{-1}$ (reciprocal silver
+ratio $\dS=1+\sqrt2$) and $\sqrt5-2=\phi^{-3}$ (golden $\phi=\tfrac{1+\sqrt5}2$, $\phi^3=\sqrt5+2$), so
+$I=\pi[\chitwo(\dS^{-2})+\chitwo(\phi^{-6})+2\chitwo(\dS^{-1}\phi^{-3})]$.
+
+\section{The master formula (Reshetnikov--Lee) and a differentiation proof}
+The closed forms~\eqref{eq:cleo}--\eqref{eq:lee} are instances of a two-parameter master formula. Its
+seed is Reshetnikov's single-arctangent ladder
+$\int_0^{\pi/2}\arctan(t\sin x)\,dx=2\chitwo(u_t)$; inspired by it, Lee
+(\href{https://math.stackexchange.com/a/562492}{a/562492}, 2013) conjectured and proved
+\begin{theorem}[Lee 2013]\label{thm:master}
+For real $p,q$,
+\begin{equation}\label{eq:master}
+\begin{aligned}
+  J(p,q)&:=\int_0^{\pi/2}\arctan(p\sin x)\,\arctan(q\sin x)\,dx=\pi\,\chitwo\!\bigl(\up\uq\bigr),\\
+  &\qquad\text{where}\quad\up=\frac{\sqrt{1+p^2}-1}{p}=\tan\!\bigl(\tfrac12\arctan p\bigr).
+\end{aligned}
+\end{equation}
+\end{theorem}
+Lee gives two proofs (a triple integral and a Fourier-orthogonality argument). We record a short third
+proof by differentiation, which is the most direct route and is machine-verifiable.
+\begin{proof}
+Both sides vanish on the axes, and $\partial_pJ(p,0)=\partial_p[\pi\chitwo(\up u_0)]=0$ (since $u_0=0$),
+symmetrically in $q$; hence each side equals the double integral of its mixed partial over
+$[0,p]\times[0,q]$, and it suffices to match mixed partials. Differentiating under the integral and using
+the partial fraction $\frac{s^2}{(1+p^2s^2)(1+q^2s^2)}=\frac{1}{p^2-q^2}\bigl(\frac1{1+q^2s^2}-\frac1{1+p^2s^2}\bigr)$
+together with $\int_0^{\pi/2}\frac{dx}{1+c\sin^2x}=\frac{\pi}{2\sqrt{1+c}}$,
+\begin{equation}\label{eq:lhsmixed}
+  \partial_p\partial_q J=\frac{\pi}{2(p^2-q^2)}\Bigl(\frac{1}{\sqrt{1+q^2}}-\frac{1}{\sqrt{1+p^2}}\Bigr).
+\end{equation}
+On the right, $\chitwo'(w)=\arctanh(w)/w$ gives
+$\partial_p\partial_q[\pi\chitwo(\up\uq)]=\pi\,\up'\uq'/(1-\up^2\uq^2)$. The substitution
+$p=\frac{2\up}{1-\up^2}$ yields $\sqrt{1+p^2}=\frac{1+\up^2}{1-\up^2}$ and $\up'=\frac{(1-\up^2)^2}{2(1+\up^2)}$,
+whence both sides reduce to the same rational function
+$\frac{\pi(1-\up^2)^2(1-\uq^2)^2}{4(1+\up^2)(1+\uq^2)(1-\up^2\uq^2)}$. (Wolfram confirms this reconciliation
+symbolically: \texttt{FullSimplify} of the difference returns $0$.)
+\end{proof}
+
+\section{Cleo's integral as the perfect-square instance}\label{sec:square}
+The argument in~\eqref{eq:I} collapses to a sum of arctangents. With $\cos2x=1-2\sin^2x$,
+\[
+  \frac{6\sin x}{3+\cos2x}=\frac{3\sin x}{2-\sin^2x}=\frac{(1+\tfrac12)\sin x}{1-(1\cdot\tfrac12)\sin^2x},
+\]
+the tangent-addition shape with roots $1,\tfrac12$ of $t^2-\tfrac32t+\tfrac12$, so for $0\le x\le\frac\pi2$
+\begin{equation}\label{eq:collapse}
+  \arctan\!\left(\frac{6\sin x}{3+\cos2x}\right)=\arctan(\sin x)+\arctan(\tfrac12\sin x),
+\end{equation}
+so that $I=\int_0^{\pi/2}\bigl(\arctan(\sin x)+\arctan(\tfrac12\sin x)\bigr)^2 dx$.
+Applying Theorem~\ref{thm:master} to the expanded square, with $u_1=\sqrt2-1$, $u_{1/2}=\sqrt5-2$,
+reproduces~\eqref{eq:canon}. The coefficient pattern $1,2,1$ is a perfect square: writing $a=\sqrt2-1$,
+$b=\sqrt5-2$,
+\begin{equation}\label{eq:squareseries}
+  \frac{I}{\pi}=\sum_{k\ge0}\frac{\bigl((\sqrt2-1)^{2k+1}+(\sqrt5-2)^{2k+1}\bigr)^2}{(2k+1)^2}.
+\end{equation}
+The coefficients $a^{2k+1}+b^{2k+1}$ are the $\sin$-power Fourier coefficients of
+$\arctan(\sin x)+\arctan(\tfrac12\sin x)$; \eqref{eq:squareseries} is the Parseval form underlying Lee's
+Fourier proof.
+
+\section{Which $\chitwo$ are elementary: a classification}
+The master formula expresses $I$ in $\chitwo$, but $\chitwo$ is only \emph{elementary}---reducible to
+$\pi^2$, Catalan's constant $G$, and products of logarithms of units---at very special arguments. The
+following three values are classical (Lewin, \emph{Dilogarithms}, 1958, p.~19; restated by J.~M.\
+Campbell, \emph{Irish Math.\ Soc.\ Bulletin} \textbf{89} (2022), eqs.~(6)--(7)):
+\begin{equation}\label{eq:elem}
+  \chitwo(\phi^{-1})=\frac{\pi^2}{12}-\frac34\ln^2\phi,\quad
+  \chitwo(\phi^{-3})=\frac{\pi^2}{24}-\frac34\ln^2\phi,\quad
+  \chitwo(\sqrt2-1)=\frac{\pi^2}{16}-\frac14\ln^2(1+\sqrt2).
+\end{equation}
+(Wolfram \texttt{FullSimplify} renders the first as $\tfrac1{12}(\pi^2-9\operatorname{arccsch}^2 2)$ with
+$\operatorname{arccsch}2=\ln\phi$; the two golden values are Landen partners via
+$\tfrac{1-\phi^{-1}}{1+\phi^{-1}}=\phi^{-3}$ and the $\chitwo$ Landen law~\eqref{eq:landen}.) What is
+\emph{not} in the literature is the boundary itself.
+\begin{proposition}[Elementary-$\chitwo$ classification]\label{prop:class}
+Over the families of inverse metallic means $m_n^{-k}$ ($m_n=\tfrac{n+\sqrt{n^2+4}}2$, $1\le n\le6$,
+$1\le k\le6$), the silver/bronze powers, the tangents $\tan(\pi/k)$ for $k=5,8,10,12$ and their squares,
+and the rationals tested, the \emph{only} elementary values of $\chitwo$ are the three of~\eqref{eq:elem}
+and their algebraic aliases. In particular $\chitwo(\phi^{-2}),\chitwo(\phi^{-4}),\dots,\chitwo(\phi^{-6})$,
+$\chitwo(\dS^{-2}),\chitwo(\dS^{-3}),\chitwo(\dS^{-4})$, $\chitwo(\tfrac1{\sqrt2})$, $\chitwo(\tfrac2{\sqrt5})$,
+$\chitwo(2-\sqrt3)$ and $\chitwo(1/\sqrt3)$ are \emph{not} elementary.
+\end{proposition}
+Each statement is an integer-relation result at $130$--$140$ digits with a Champernowne canary to reject
+false positives (a nonzero canary coefficient kills a candidate; residual gate $\le9\times10^{-131}$).
+The three arguments of Cleo's integral, $\dS^{-2},\phi^{-6},\dS^{-1}\phi^{-3}$, all lie in the
+non-elementary set. This is the structural reason $I$ has no elementary closed form: each building block
+is individually transcendental beyond the elementary level. Indeed (Section~\ref{sec:minimal}) the whole
+of $I$ is provably not elementary, and $G$ does not enter it.
+
+\section{New closed-form integrals from elementary $\chitwo$}
+Conversely,~\eqref{eq:elem} feeds the master formula to produce integrals that \emph{do} close. The
+cleanest cross integral uses $u_2=\phi^{-1}$, $u_{2/\sqrt5}=\phi^{-2}$, so $u_2u_{2/\sqrt5}=\phi^{-3}$:
+\begin{equation}\label{eq:A}
+  \boxed{\;\int_0^{\pi/2}\arctan(2\sin x)\,\arctan\!\bigl(\tfrac2{\sqrt5}\sin x\bigr)\,dx
+  =\frac{\pi^3}{24}-\frac{3\pi}{4}\ln^2\phi\;}\qquad(=0.7463164407\ldots).
+\end{equation}
+The diagonal $\int_0^{\pi/2}\arctan^2(\lambda\sin x)\,dx=\pi\,\chitwo(u_\lambda^2)$ closes at three clean
+$\lambda$, since $u_{\sqrt\phi}^2=\phi^{-3}$, $u_{\sqrt{2+2\sqrt2}}^2=\sqrt2-1$, and $u_{2\phi^{3/2}}^2=\phi^{-1}$:
+\begin{equation}\label{eq:diag}
+  \int_0^{\pi/2}\!\arctan^2(\sqrt\phi\,\sin x)\,dx=\frac{\pi^3}{24}-\frac{3\pi}{4}\ln^2\phi,\quad
+  \int_0^{\pi/2}\!\arctan^2\!\bigl(2\phi^{3/2}\sin x\bigr)\,dx=\frac{\pi^3}{12}-\frac{3\pi}{4}\ln^2\phi.
+\end{equation}
+The simplest non-elementary diagonal is the $(1,1)$ case $\int_0^{\pi/2}\arctan^2(\sin x)\,dx=\pi\,\chitwo(3-2\sqrt2)$.
+
+\section{A sibling trichotomy}
+The master formula has two siblings under the companion half-angle substitution
+$\vp=\frac{1-\sqrt{1-p^2}}{p}=\tanh(\tfrac12\arctanh p)$ (for $|p|<1$). Replacing one or both
+arctangents by $\arctanh$ produces:
+\begin{equation}\label{eq:trich}
+  \int_0^{\pi/2}\!\!\begin{cases}\arctan(p\sin x)\,\arctan(q\sin x)\\[2pt]
+  \arctanh(p\sin x)\,\arctanh(q\sin x)\\[2pt]
+  \arctan(p\sin x)\,\arctanh(q\sin x)\end{cases}\!\!dx=
+  \begin{cases}\pi\,\chitwo(\up\uq),\\[2pt]\pi\,\chitwo(\vp\vq),\\[2pt]\pi\,\Ti_2(\up\vq),\end{cases}
+\end{equation}
+where $\Ti_2(z)=\Im\Li_2(\mathrm iz)=\int_0^z\frac{\arctan t}{t}\,dt$ is the inverse-tangent integral: like
+pairs give the Legendre chi, the mixed pair gives the inverse-tangent integral. The linear shadows are
+$\int_0^{\pi/2}\arctan(\lambda\sin x)\,dx=2\chitwo(u_\lambda)$ (Reshetnikov) and, with $\theta=\arcsin\lambda$,
+\begin{equation}\label{eq:lintanh}
+  \int_0^{\pi/2}\arctanh(\lambda\sin x)\,dx=\theta\,\ln\tan\tfrac\theta2+2\Cl_2(\theta)-\tfrac12\Cl_2(2\theta),
+\end{equation}
+the latter showing that the $\arctanh$ branch is \emph{not} a clean $2\chitwo(v_\lambda)$ mirror---that
+coincidence is special to $\arctan$. By $x\mapsto\frac\pi2-x$ the $\cos$ versions of all of these equal the
+$\sin$ versions. The weight-$3$ analogue $\int_0^{\pi/2}\arctan(p\sin x)\arctan(q\sin x)/\sin x\,dx$ has
+\emph{no} single-$\chi_3$ closed form: its coefficient $\frac{4^N}{(2N+1)\binom{2N}{N}}$ couples the two
+summation indices only through $N=m+n$, so it does not factor through $\up\uq$ (numerically no clean
+$\chi_3$ relation appears up to height $10^8$).
+
+\section{An alternate form, and minimality}\label{sec:minimal}
+\paragraph{Landen-mirror form.} Applying the $\chitwo$ Landen law
+\begin{equation}\label{eq:landen}
+  \chitwo(x)+\chitwo\!\left(\frac{1-x}{1+x}\right)=\frac{\pi^2}{8}-\frac12\ln x\,\ln\frac{1-x}{1+x}
+  \qquad(0<x<1)
+\end{equation}
+to the three arguments of~\eqref{eq:canon} sends $(\sqrt2-1)^2\mapsto\tfrac1{\sqrt2}$,
+$(\sqrt2-1)(\sqrt5-2)\mapsto\sqrt5-\sqrt2$, $(\sqrt5-2)^2\mapsto\tfrac2{\sqrt5}$, giving a second three-term
+representation
+\begin{equation}\label{eq:mirror}
+  \frac{I}{\pi}=\mathcal E-\Bigl[\chitwo(\tfrac1{\sqrt2})+2\,\chitwo(\sqrt5-\sqrt2)+\chitwo(\tfrac2{\sqrt5})\Bigr],
+\end{equation}
+with the elementary constant
+$\mathcal E=\frac{\pi^2}{2}-\frac12\ln2\,\ln(1+\sqrt2)+3\ln2\,\ln\phi-\frac32\ln5\,\ln\phi
++\bigl(\ln(1+\sqrt2)+3\ln\phi\bigr)\ln(\sqrt5-\sqrt2)$. The three mirror arguments are themselves
+non-elementary, so~\eqref{eq:mirror} is also irreducibly three-term; it trades the small original
+arguments for larger ones plus a richer logarithmic constant (the unit $\ln(\sqrt5-\sqrt2)=\ln3-\ln(\sqrt5+\sqrt2)$
+enters intrinsically).
+\paragraph{Minimality.} A height-bounded, canary-clean search (dps $\ge120$, residual gate
+$\le10^{-105}$) finds no shorter form: $I/\pi$ is \emph{not} a rational multiple of any single $\chitwo(w)$
+or $\Li_2(w)$ over $209$ algebraic arguments in $\mathbb Q(\sqrt2,\sqrt5,\sqrt{10})$; it is \emph{not}
+elementary; it admits \emph{no} two-$\chitwo$-plus-elementary representation; and Catalan's constant $G$
+does not occur. The three-term $\chitwo$ structure is minimal.
+
+\section{Verification and reproducibility}
+All displayed identities are verified in two independent engines---\texttt{mpmath} (\texttt{mp.quad},
+\texttt{mp.pslq}) and Wolfram (\texttt{NIntegrate}, \texttt{FullSimplify})---at the precisions noted:
+\eqref{eq:canon}/\eqref{eq:cleo}/\eqref{eq:lee} exact to $160$ digits; the master formula~\eqref{eq:master}
+and its differentiation proof symbolically (\texttt{FullSimplify}$\to0$) and numerically at eight $(p,q)$
+($\sim10^{-48}$); the elementary values~\eqref{eq:elem} symbolically and to $\sim10^{-78}$; the new
+integrals~\eqref{eq:A}--\eqref{eq:diag} to $\sim10^{-54}$; the sibling trichotomy~\eqref{eq:trich} and the
+linear forms to $\sim10^{-40}$; the Landen-mirror form~\eqref{eq:mirror} to $\sim10^{-71}$; the
+classification and minimality searches to $\ge130$ digits with a Champernowne canary. Closed forms are in
+\texttt{src/PolyLog/identities/cleo-arctan-sin-chi2.wl}; scripts under
+\texttt{src/PolyLog/tools/scratch/cleo-chi2/}.
+
+\paragraph{Attribution.} The master formula~\eqref{eq:master} is Lee's (a/562492, 2013), seeded by
+Reshetnikov's single-arctangent ladder; the evaluation~\eqref{eq:cleo}/\eqref{eq:lee} is Cleo's
+(a/570815) and Lee's (a/571079); the elementary values~\eqref{eq:elem} are classical (Lewin 1958;
+Campbell 2022). New here are the elementary-$\chitwo$ classification (Proposition~\ref{prop:class}), the
+minimality of the three-term form, the Landen-mirror form~\eqref{eq:mirror}, and the sibling
+trichotomy~\eqref{eq:trich}.
+
+\end{document}
