@@ -1,0 +1,15 @@
+.PHONY: all pdf verify clean
+
+ARTICLE = gowers_bilinear_extraction_and_additive_defects
+
+all: pdf
+
+pdf:
+	latexmk -pdf -interaction=nonstopmode -halt-on-error $(ARTICLE).tex
+
+verify:
+	python3 verification/quantitative_exact_checks.py
+	python3 verification/verify_structural.py
+
+clean:
+	latexmk -c $(ARTICLE).tex

@@ -1,0 +1,183 @@
+EXACT VERIFICATION INVENTORY
+Prepared 7 October 2026 from the two main scripts, the graph-realization
+supplement, and their JSON outputs.
+All computations use integer or rational arithmetic. Finite tests supplement
+the analytic proofs; they neither prove universal claims nor establish novelty.
+
+Notation: C_n is the cyclic group of order n. Distinct cases below refer to
+the explicit coordinate models in the scripts, not equivalence classes under
+group isomorphism. Conditional counters overlap and must not be added to obtain
+a number of maps. Random samples may repeat maps.
+
+SCRIPT 1: code/check_extraction.py
+Output: data/extraction_checks.json — all exact checks passed.
+SHA256: ed05b341febac6e452d4b524a736dac173251254b4e19869066fd5fb33b74b97
+
+| Test family | Exact count | Domains, ranges, and meaning |
+|---|---:|---|
+| Universal small-ball inequality | 99,999 order inputs | Every integer n=2,...,100000; beta_n(1/5)<=1/2. |
+| Odd small-ball inequality | 49,999 order inputs | Every odd n=3,...,99999; beta_n(1/7)<=1/3. The JSON combines these first two rows as 149,998. |
+| Odd torsion cutoffs | 79,964 pairs (ell,n) | ell in {3,5,7,9,11,13,17,31}; every odd n from ell through 20001; beta_n(1/(3ell-2))<=1/ell. |
+| p-primary small-ball formula | 72 pairs (p,a) | p in {2,3,5,7,11,13,17,19}, a=1,...,9, n=p^a. Includes exact equality beta=1/p for the 63 odd-prime cases. |
+| Universal and odd adaptive recurrences | 200,002 recurrence cases | q=0,...,100000 for each of bases 2 and 3. The JSON's recurrence_inputs=100001 counts q inputs, not the two applications per input. |
+| p-primary adaptive recurrences | 80,008 recurrence cases | The eight primes above and every q=0,...,10000. |
+| Sharp radius examples | 2 examples | F=C_5 minus zero and F=C_7 minus zero; maximize the minimum distance over all 5 or 7 characters respectively, obtaining 1/5 and 1/7. |
+| Universal forbidden-set selectors | 316 selector cases | Every subset of sign-orbits on each of the 14 models listed below. Includes the empty forbidden set. |
+| Odd forbidden-set selectors | 46 selector cases | Rechecks every forbidden set on the odd models C_3,C_5,C_7,C_9,C_3^2 using the stronger odd parameters. |
+| p-primary forbidden-set selectors | 8,388 selector cases | Every forbidden set on the 11 primary models listed below. Some repeat the preceding underlying group-and-set inputs under different parameters. |
+| Freiman extraction, universal | 2,441 underlying partial-map cases | Six exhaustive suites below; each nonempty partial domain B and every map on B. |
+| Freiman extraction, odd | 1,613 variant applications | Rechecks the eligible cases among those same 2,441 partial maps. |
+| Freiman extraction, primary | 2,441 variant applications | Rechecks all 2,441 partial maps with their p-primary parameters. |
+| Projective rank obstructions | 16,459 character tuples | p=2,3,5, dimension d=1,2,3, every ordered tuple of d-1 characters; one sign-orbit representative per projective line. |
+| Riesz constant coefficients | 16 Laurent polynomials | ell=1,...,16; exact constant coefficient of (2-z-z^(-1))^ell is binom(2ell,ell). Division by 2^ell gives the stated c_ell. |
+| Riesz finite-torsion product averages | 18 full products, 36 deleted products | ell=1,...,6, q=1,2,3; H=C_((ell+1)^q), D={(ell+1)^j:0<=j<q}. Exact coefficient accumulation modulo the group order gives normalized integral one, both before and after deleting each factor. |
+| Riesz dissociativity in those examples | 5,236 nonzero coefficient vectors | Exhausts coefficients in [-ell,ell]^q other than zero for the preceding 18 cyclic examples; none gives a zero relation. |
+
+Universal forbidden-set models (number of cases):
+C_2:2; C_3:2; C_4:4; C_5:4; C_6:8; C_7:8; C_8:16; C_9:16;
+C_10:32; C_12:64; C_2^2:8; C_2 x C_3:8; C_3^2:16; C_2^3:128.
+Total 316. C_6 and C_2 x C_3 are isomorphic but are separate coordinate models.
+
+Primary forbidden-set models (prime, model, number of cases):
+(2,C_2,2), (2,C_4,4), (2,C_8,16), (2,C_2^3,128),
+(3,C_3,2), (3,C_9,16), (3,C_3^2,16),
+(5,C_5,4), (5,C_25,4096), (5,C_5^2,4096), (7,C_7,8).
+Total 8,388. Across universal/odd/primary variants there are 8,750 selector
+applications to 8,508 distinct coordinate-model-and-forbidden-set pairs;
+242 applications revisit a pair using another theorem's parameters.
+
+| Exhaustive partial-map suite | k | Underlying maps | Universal variants | Odd variants | Primary variants |
+|---|---:|---:|---:|---:|---:|
+| Nonempty B subset C_4, B -> C_2 | 2 | 80 | 80 | 0 | 80 |
+| Nonempty B subset C_4, B -> C_3 | 2 | 255 | 255 | 255 | 255 |
+| Nonempty B subset C_4, B -> C_5 | 2 | 1,295 | 1,295 | 1,295 | 1,295 |
+| Nonempty B subset C_4, B -> C_2^2 | 2 | 624 | 624 | 0 | 624 |
+| Nonempty B subset C_3, B -> C_3 | 3 | 63 | 63 | 63 | 63 |
+| Nonempty B subset C_3, B -> C_2^2 | 3 | 124 | 124 | 0 | 124 |
+| TOTAL | | 2,441 | 2,441 | 1,613 | 2,441 |
+
+Thus there are 6,495 extraction variant applications, NOT 6,495 distinct maps.
+Each application forms the actual vertical defect set of the graph, chooses
+characters, and verifies both an equal-arc selection and an exact-fiber
+selection. Each output is tested for all Freiman orders j=1,...,k. The two
+selected subsets often coincide and are not counted as distinct maps or
+distinct restrictions. There are 12,990 selected-subset verification passes.
+
+Projective obstruction tuple counts, by p and dimension d=1,2,3:
+p=2: 1,4,64 (total 69); p=3: 1,9,729 (total 739);
+p=5: 1,25,15625 (total 15,651). Sum: 16,459.
+
+SCRIPT 2: code/verify_affine.py
+Output: data/affine_checks.json — PASS.
+SHA256: 663f13c62f3e236a71929cb0f2ba8a12d2c300e7d11e8a137db67254182aca6c
+
+| Test family | Exact count | Domains, ranges, and meaning |
+|---|---:|---|
+| Exhaustive map suites | 21,116 map cases | Every map in each of 16 explicit domain/target suites listed below. Within each suite the maps are distinct; isomorphic coordinate models are not identified. |
+| Reproducible sampled maps | 2,400 map evaluations | Six suites, each with 200 uniform samples and 200 samples obtained from an affine map by 1-5 attempted coordinate changes. Seed 20261007. Repeated maps and unchanged attempted coordinates are allowed. |
+| Signed identity and basic inequalities | 23,516 map evaluations | The preceding 21,116+2,400 evaluations. Each checks the exact signed graph identity, ED<=6E(S), 0<=C<=A, basic and torsion-resolved Schur inequalities, 2Z3<=sC, and ED<=6s^3-2sA+sC-Z3. This is the JSON function_checks counter. |
+| Averaged-kernel support gain | The same 23,516 evaluations | Checks ED<=6s^3-2sA+sC-Z3-3(s^3-E(S)) directly using the signed energy and set energy. This row does not add maps. |
+| Original averaged-kernel equality | 23,489 eligible evaluations | All of those evaluations with nonempty error support; checks ED=6s^3-2sA+sC-Z3 iff A=0 and support is a coset. The equality classification applies to the original bound, not the strengthened support bound. |
+| Earlier structural remainder | 3,580 eligible evaluations | Among the same 23,516, those with 2s<=N; checks the full one-third structural remainder. Includes zero error support. |
+| No-order-three remainder | 5,105 eligible evaluations | Among the same 23,516, targets with no nonzero order-three elements; checks Z<=s(A-C)/2 and the earlier complete (A,C,E(S)) remainder. |
+| No-order-three kernel support gain | The same 5,105 evaluations | Checks ED<=6s^3-2sA+sC-4(s^3-E(S)). No extra maps are introduced. |
+| Four-ninths inequality | 1,587 eligible evaluations | Among the same 23,516, those with 9s<4N; checks 2((epsilon-Psi)N^3-3(s^3-E(S))) >= (4N-9s)A. Includes zero error support. |
+| Four-ninths equality classification | 1,560 eligible evaluations | Among the same 23,516, those with 0<9s<4N; checks epsilon=Psi iff A=0 and the support is a coset. Uses direct translated-subgroup closure, independently of E(S)=s^3. |
+| No-order-three half-range profile | 281 eligible evaluations | No-order-three targets and 0<2s<N; directly checks (epsilon-Psi)N^3 >= 4(s^3-E(S))+min(2N-3s,4N-8s)A. |
+| No-order-three half-range equality | The same 281 evaluations | Directly checks epsilon=Psi iff A=0 and support is a coset, using translated-subgroup closure. This row does not add new maps to the preceding row. |
+| Four-ninths endpoint | 2 eligible evaluations | Among the existing suites, those with 9s=4N; checks strict epsilon>Psi and (epsilon-Psi)N^3>=3(s^3-E(S)). This small endpoint sample supplements the analytic proof. |
+| No-order-three half-range endpoint | 104 eligible evaluations | No-order-three targets and 2s=N; checks (epsilon-Psi)N^3>=4(s^3-E(S)), with epsilon=Psi iff A=0 and support is an index-two coset. |
+| Global correction/inverse branch | 323 eligible evaluations | Among the same 23,516, those with epsilon<2/9; enumerates the affine family and checks uniqueness of nearest affine map, d<1/7, and epsilon>=Psi(d). |
+| Pointwise signed kernel | 9,760 ordered quadruples | All nonzero signed-label quadruples on C_3,C_5,C_7,C_9,C_3^2; checks K<=6, unbalanced K<=4, and the indicated order-three cap K<=3. |
+| One-point extremizer identity | 350 specified maps | For each N=16,...,40 and W=C_3,C_5,C_9, maps zero except f(0)=b for each nonzero b; verifies E=N^3-4N^2+10N-6. Separate from the 23,516 function_checks evaluations. |
+
+Exhaustive affine suites:
+* C_n -> C_3 for n=1,...,8: 3+9+27+81+243+729+2187+6561 = 9,840 maps.
+* C_n -> C_5 for n=1,...,5: 5+25+125+625+3125 = 3,905 maps.
+* C_2^2 -> C_3: 81 maps.
+* C_2 x C_3 -> C_3: 729 maps.
+* C_2^2 -> C_3^2: 6,561 maps.
+Total 21,116 cases. C_6 and C_2 x C_3 are isomorphic but separately modeled.
+
+Sampled affine suites, 400 evaluations each:
+C_16 -> C_3; C_17 -> C_5; C_18 -> C_9; C_2 x C_8 -> C_3^2;
+C_3 x C_5 -> C_7; C_3^2 -> C_5^2.
+There are 1,200 uniform and 1,200 affine-based samples. The source does not
+deduplicate these 2,400 samples; do not call their number a distinct-map count.
+
+Kernel quadruple counts: C_3:16; C_5:256; C_7:1296;
+C_9:4096; C_3^2:4096. Total 9,760.
+One-point count: 25 domain orders times (2+4+8) nonzero target values =350.
+
+SCRIPT 3: code/check_graph_realization.py
+Output: data/realization_checks.json — PASS.
+SHA256: 874fbf1cd8ca3758a7c89c95dc1441662b6f26f98e7f573ed754d76e73919c0c
+
+| Construction | k | q | Vertices | k-multisets | Subsets exhausted | Maximum Freiman size |
+|---|---:|---:|---:|---:|---:|---:|
+| F=C_3 minus zero | 2 | 1 | 4 | 10 | 16 | 3 |
+| F=C_3 minus zero | 3 | 1 | 6 | 56 | 64 | 5 |
+| F=C_5 minus zero | 2 | 2 | 8 | 36 | 256 | 6 |
+| F=C_5 minus zero | 3 | 2 | 12 | 364 | 4,096 | 10 |
+| F=C_2^2 minus zero | 2 | 3 | 12 | 78 | 4,096 | 9 |
+| F=C_2^2 minus zero | 3 | 3 | 18 | 1,140 | 262,144 | 15 |
+| TOTAL | | | | 1,684 | 270,672 | |
+
+Each construction uses ambient Z^((2k-1)q), then reduces coordinates modulo
+2k+1. All k-multisets include repetitions. The script compares the complete
+integer and finite-domain relation partitions, checks that the only 12
+nontrivial relation classes across all six constructions are the prescribed
+block relations, and computes the actual target defects. Every subset is
+tested against those directly enumerated relation obstructions. It checks
+both the exact maximum cardinality and the exact weighted maximum for the
+explicit weights w_i=(7i+3) mod 11 in each construction. Integer and finite
+versions share the same underlying 1,684 multisets and 270,672 subsets; do
+not double the input counts for the two interpretations.
+
+SCOPE AND REPORTING LIMITS
+
+1. The main scripts do not numerically test infinite groups, arbitrary real
+weights, translated-arc expectation, the lonely-runner transfer, or the full
+finite-image ceil(N theta/k)/N rounding theorem. Those assertions rest on their
+analytic proofs. The extraction script does test finite-exponent occupied-cell
+bounds and exact fibers, which are different stated refinements. The graph
+supplement checks finitely many relations in a free abelian group and one
+specified integer weight vector per construction; it does not exhaust an
+infinite group or all possible weight vectors.
+2. The affine script directly checks the final support gains of 3 and 4,
+the no-order-three min{2-3t,4-8t} color profile, both local equality
+classifications in the open ranges, the original averaged-kernel equality
+classification, and both endpoint conclusions in the eligible existing maps.
+Coset status is determined by translation and closure under addition and
+negation, rather than inferred from the set-energy identity. The new checks
+reuse the original suites and do not enlarge the stated map inventory.
+3. The internal, separately executed 12,816-map audit has no supplied script in
+this package. It is deliberately EXCLUDED from all counts and publication
+verification claims in this inventory.
+4. The one-point identity tests verify the displayed values, not maximality over
+all maps on domains of orders 16-40. Maximality follows from the proved global
+recovery theorem.
+5. All three programs must be run without Python -O/-OO, since their checks
+use assertions. All three explicitly reject optimized execution.
+
+RIESZ EXTENSION: INDEPENDENT ANALYTIC AUDIT
+
+The optional statement is correct for integer ell>=1 and q=|D|>=1. Its constant
+is c_ell=2^(-ell)binom(2ell,ell), because
+
+ (1-cos theta)^ell = 2^(-ell)(1-z)^ell(1-z^(-1))^ell, z=exp(i theta),
+
+and the constant coefficient is 2^(-ell)sum_j binom(ell,j)^2. Every product
+frequency has the form sum_f a_f f with |a_f|<=ell. Therefore ell-dissociativity
+ensures that only the all-zero frequency contributes to Haar integration;
+torsion introduces no extra term under this hypothesis. The same holds after
+deleting any factor. All products are nonnegative.
+
+Let delta=max_chi min_f ||chi(f)||, attained by compactness. The closed bad
+arcs at radius delta cover the dual. On each such arc the associated normalized
+factor is at most (1-cos(2pi delta))^ell/c_ell. Integrating the covering
+inequality and the remaining normalized products yields
+1<=q(1-cos(2pi delta))^ell/c_ell, exactly the claimed lower bound for delta.
+The inverse-cosine argument is valid because c_ell<=2^ell and q>=1. No
+torsion-free hypothesis or stronger 2ell-dissociativity is needed. Attribution
+to Bedert's Riesz-product argument should remain explicit.

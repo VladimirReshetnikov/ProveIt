@@ -1,0 +1,150 @@
+{
+  "schema_version": 1,
+  "article_title": "Second-Order Degeneracy, Dual Uniformity Bounds, and an Acyclic Model Theorem",
+  "article_date": "2026-10-06",
+  "repository": {
+    "url": "https://github.com/VladimirReshetnikov/ProveIt",
+    "directory": "Combinatorics/Ramsey",
+    "commit": "8c12c906e4ab5a00001a65de3c882f935a15661a",
+    "mutated": false
+  },
+  "primary_paper": {
+    "author": "W. T. Gowers",
+    "title": "A new proof of Szemerédi’s theorem",
+    "journal": "Geometric and Functional Analysis",
+    "volume": 11,
+    "year": 2001,
+    "pages": "465-588",
+    "doi": "10.1007/s00039-001-0332-9"
+  },
+  "prior_project_sources": [
+    {
+      "title": "Local Quantitative Refinements of Gowers’s Proof of Szemerédi’s Theorem",
+      "scope": "integrated earlier sources01-14",
+      "role": "baseline and duplication check"
+    },
+    {
+      "title": "Degree Filtrations in Gowers’ Ramsey Framework",
+      "file": "gowers_degree_stratification.tex",
+      "role": "prior translation coset lemma, affine arrangement, first coefficient"
+    },
+    {
+      "title": "Prime Torsion and Norm Gaps in Gowers Cube Counts",
+      "file": "gowers_cube_structure.tex",
+      "role": "prior balanced moment, real norm bounds, two-harmonic lower example"
+    },
+    {
+      "title": "Graded Fourier Selection and Two Further Refinements of Gowers’ Argument",
+      "file": "gowers_graded_refinements.tex",
+      "role": "earlier U4 factor5 and order3 cube count"
+    },
+    {
+      "title": "Efficient Interpolation in Gowers’ Szemerédi Framework",
+      "file": "gowers_interpolation.tex",
+      "role": "prior anchor sampling, shared interpolation, Section16 budget audit"
+    }
+  ],
+  "results": [
+    {
+      "name": "rank-two classification and census",
+      "status": "deductive proof",
+      "hypothesis": "prime characteristic>=5"
+    },
+    {
+      "name": "second coefficient and explicit cubic remainder",
+      "status": "deductive proof",
+      "scope": "fixed dimension; stated characteristic and field-size hypotheses"
+    },
+    {
+      "name": "exact two-cube dimensions1 and2",
+      "status": "deductive proof",
+      "scope": "every odd prime"
+    },
+    {
+      "name": "exact two-cube dimension3",
+      "status": "exact computer-assisted finite proof with algebraic reduction",
+      "scope": "every odd prime",
+      "certificate": "code/dimension_three_certificate.json"
+    },
+    {
+      "name": "finite-field exactness through dimension3",
+      "status": "deductive reduction to prime theorem",
+      "scope": "every finite field of characteristic>=5"
+    },
+    {
+      "name": "full-subfield translation count and all-dimensional characteristic3 ternary count",
+      "status": "deductive proof",
+      "scope": "F_s subset F_q; ternary application s=3"
+    },
+    {
+      "name": "eventual Laurent polynomiality and fixed-characteristic polynomiality",
+      "status": "deductive proof using rational affine arrangements",
+      "scope": "fixed k outside finite bad-prime set; all extensions at fixed p>k"
+    },
+    {
+      "name": "fourth and fifth real norm gaps",
+      "status": "deductive proof with exact finite coefficient lemma",
+      "scope": "real mean-zero functions on finite odd-order abelian groups",
+      "certificate": "code/dual_gap_certificate.json"
+    },
+    {
+      "name": "acyclic cover and multilinear inverse implication",
+      "status": "conditional theorem from explicitly stated I1-I7 interfaces",
+      "scope": "deep source inputs are not newly proved or formally certified"
+    }
+  ],
+  "exact_verifiers": {
+    "code/verify_rank_two.py": "supplemental finite checks of general deductive statements",
+    "code/verify_dimension_three.py": "complete finite part of exact dimension3 theorem",
+    "code/verify_dual_gap.py": "complete finite part of fourth/fifth norm proof"
+  },
+  "optional_crosscheck": {
+    "file": "code/check_dual_numeric.py",
+    "dependency": "numpy",
+    "arithmetic": "floating point",
+    "proof_premise": false
+  },
+  "not_claimed": [
+    "sharp norm constants",
+    "all-dimensional signed-coordinate exactness in characteristic>=5",
+    "new global Szemeredi bound",
+    "Lean proof or new Lean build",
+    "exhaustive literature priority search",
+    "new certification of imported interfaces I1-I7"
+  ],
+  "source_file_sha256": {
+    "sources/gowers_source.tex": "e06fd9cc6f5e3234a8f5d0c2cb8960e6b18fce70198de944e71f0f79531bc5b6",
+    "sources/previous_article.tex": "4a08472a28425b19f5393e15c73e37589539bf3e5470c850753ea7d2806c0bfe",
+    "sources/library/gowers_degree_stratification.tex": "1070e8f767965e359745e1921d47293af1c0b8d4826bc227e18fc76f88539a22",
+    "sources/library/prime_gap/gowers_cube_structure.tex": "6d4cd44ce35bafd7b6a00374ff0581ac2b4c65c82ea72fc51b19189c3eb79658",
+    "sources/library/gowers_graded_refinements.tex": "0aeb93582e22d4c550a262cd775f564c0cffc59b8795cda44663d77c882ff645",
+    "sources/library/gowers_interpolation.tex": "01891c50d96499e21ffbd68187c4f1aafd9c937562a726d5aa3cda49c125bff1"
+  },
+  "validation": {
+    "exact_verifiers": "All three packaged exact verifiers passed on the final code copies.",
+    "pdf_pages": 45,
+    "final_tex_log": "No warnings, undefined references, overfull boxes, or underfull boxes.",
+    "visual_review": "All pages rendered and reviewed; key tables, figure, theorem pages and source ledger inspected at page scale.",
+    "out_of_page_text_spans": 0,
+    "optional_independent_direct_cube_check": {
+      "cases": 30,
+      "character_orders": [
+        5,
+        7,
+        9,
+        11,
+        13
+      ],
+      "phases_per_order": 2,
+      "basepoints_per_phase": 3,
+      "maximum_relative_disagreement": 2.17e-14,
+      "proof_premise": false
+    },
+    "formal_proof_assistant_build": false,
+    "exact_certificate_sha256": {
+      "dimension_three_certificate.json": "9d97159cf7d1a8762b79e969fba298f4e6115233d663edcf5c17e698f6f8fae4",
+      "dual_gap_certificate.json": "e209e435d81c9c5b93468d8be5e47397b414a107ee02e88e37cfdd64b55add59",
+      "rank_two_verification.json": "f251ba8fd39ff6817989a952a63e8c36d78a03a731eee82db8f2e3755039383c"
+    }
+  }
+}
