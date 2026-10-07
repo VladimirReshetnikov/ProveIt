@@ -1,5 +1,5 @@
 /- Modified for ProveIt: import Lean 4.32 compatibility declarations.
-Statements and proofs are unchanged from the pinned upstream source. -/
+Use prod_le_prod' for generic product comparisons; mathematical statements are unchanged. -/
 import OAI.Compat.Core
 import OAI.Compat.BigOperators
 import Mathlib.Data.Nat.Factorization.Basic
@@ -629,7 +629,7 @@ theorem largestBadPrimeProduct_le_prescribed {Ω : Type*}
       (∏ p ∈ S, p ^ b p) *
         ∏ p ∈ S, p ^ largestTestedBadDepth A (prescribedDeepBad b bad) p x := by
   rw [← Finset.prod_mul_distrib]
-  apply Finset.prod_le_prod
+  apply Finset.prod_le_prod'
   intro p hp
   rw [← pow_add]
   exact Nat.pow_le_pow_right (hprime p hp).pos

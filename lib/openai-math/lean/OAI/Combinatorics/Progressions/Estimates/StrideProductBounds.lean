@@ -1,5 +1,5 @@
 /- Modified for ProveIt: import Lean 4.32 compatibility declarations.
-Statements and proofs are unchanged from the pinned upstream source. -/
+Use Finsupp.mapDomain_apply for injective reindexing; statements unchanged. -/
 import OAI.Compat.BigOperators
 import OAI.Combinatorics.Progressions.Polynomial.MultiaffinePolynomialBias
 
@@ -215,7 +215,7 @@ theorem fullSquarefreeExponent_map_equiv {ι κ : Type*} [Fintype ι] [Fintype �
       (SquarefreeIndex.ofFinset (Finset.univ : Finset κ)).val := by
   ext j
   obtain ⟨i,rfl⟩ := e.surjective j
-  rw [Finsupp.mapDomain_apply_of_injective e.injective]
+  rw [Finsupp.mapDomain_apply e.injective]
   simp [SquarefreeIndex.ofFinset_apply]
 
 theorem fin_multiaffine_polynomial_bias {n : ℕ} (P : MvPolynomial (Fin (n+1)) ℝ)

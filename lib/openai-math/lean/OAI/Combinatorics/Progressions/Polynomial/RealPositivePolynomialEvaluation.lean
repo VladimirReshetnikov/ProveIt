@@ -1,5 +1,5 @@
 /- Modified for ProveIt: import Lean 4.32 compatibility declarations.
-Statements and proofs are unchanged from the pinned upstream source. -/
+Use prod_le_prod' for generic product comparisons; mathematical statements are unchanged. -/
 import OAI.Compat.TensorProduct
 import Mathlib.LinearAlgebra.Dimension.Constructions
 import OAI.Combinatorics.Progressions.Estimates.PolarizedCoefficientPermutation
@@ -253,7 +253,7 @@ theorem positivePolynomial_finrank_le_total [FiniteDimensional ℚ L] :
   classical
   have h : (∏ i, (bound i + 1)) ≤ 2 ^ (∑ i, bound i) := by
     calc
-      _ ≤ ∏ i, 2 ^ bound i := Finset.prod_le_prod (fun i _ => Nat.succ_le_of_lt (Nat.lt_two_pow_self))
+      _ ≤ ∏ i, 2 ^ bound i := Finset.prod_le_prod' (fun i _ => Nat.succ_le_of_lt (Nat.lt_two_pow_self))
       _ = _ := by rw [Finset.prod_pow_eq_pow_sum]
   exact F.positivePolynomial_finrank_le.trans (Nat.mul_le_mul_right _ h)
 

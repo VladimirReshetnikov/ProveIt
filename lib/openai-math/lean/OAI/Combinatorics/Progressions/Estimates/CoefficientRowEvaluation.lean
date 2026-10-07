@@ -1,5 +1,5 @@
 /- Modified for ProveIt: import Lean 4.32 compatibility declarations.
-Statements and proofs are unchanged from the pinned upstream source. -/
+Use prod_le_prod' for generic product comparisons; mathematical statements are unchanged. -/
 import OAI.Compat.Core
 import OAI.Combinatorics.Progressions.Geometry.CoordinateConstantDecomposition
 import OAI.Combinatorics.Progressions.Lattices.CommonIntegerSiteResidual
@@ -25,7 +25,7 @@ theorem boundedSiteMatrix_natAbs_le {K S : Type*} (h : ℕ) (site : S → K → 
   simp only [Int.natAbs_pow]
   calc
     _ ≤ ∏ k ∈ d.val.support, L ^ d.val k :=
-      Finset.prod_le_prod (fun k _ => Nat.pow_le_pow_left (hsite s k) _)
+      Finset.prod_le_prod' (fun k _ => Nat.pow_le_pow_left (hsite s k) _)
     _ = L ^ d.val.degree := by rw [Finset.prod_pow_eq_pow_sum]; rfl
     _ ≤ L ^ h := Nat.pow_le_pow_right hL d.property
 

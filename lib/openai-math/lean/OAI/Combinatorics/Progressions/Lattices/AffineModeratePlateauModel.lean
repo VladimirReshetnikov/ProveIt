@@ -1,3 +1,5 @@
+/- Modified for ProveIt: use Mathlib v4.32.0's generic prod_le_prod'
+for product comparisons. Mathematical statements unchanged. -/
 import OAI.Combinatorics.Progressions.Fourier.FixedPrincipalCoefficientSpectrum
 import OAI.Combinatorics.Progressions.Probability.AllocatedActiveAxisSourceLaw
 
@@ -57,7 +59,7 @@ theorem finiteResidueModeModel_residue_card [DecidableEq A] [DecidableEq J]
   simp only [Fintype.card_fun, ZMod.card]
   calc
     ∏ a, D a ^ Fintype.card J ≤ ∏ _a : A, Q ^ Fintype.card J :=
-      Finset.prod_le_prod (fun a _ => Nat.pow_le_pow_left (hQ a) _)
+      Finset.prod_le_prod' (fun a _ => Nat.pow_le_pow_left (hQ a) _)
     _ = Q ^ (Fintype.card A * Fintype.card J) := by
       simp only [Finset.prod_const, Finset.card_univ, ← pow_mul, Nat.mul_comm]
 

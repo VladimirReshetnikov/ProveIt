@@ -1,3 +1,5 @@
+/- Modified for ProveIt: use Finsupp.mapDomain_apply for injective
+reindexing on Mathlib v4.32.0. Mathematical statements unchanged. -/
 import OAI.Combinatorics.Progressions.Estimates.StrideProductBounds
 
 namespace OAI
@@ -54,7 +56,7 @@ theorem prependPolynomialVariable_top {n : ℕ} (P : MvPolynomial (Fin n) ℝ) :
     refine Fin.cases ?_ (fun i => ?_) j
     · simp only [SquarefreeIndex.ofFinset_apply, Finset.mem_univ, ite_true,
         Finsupp.add_apply, Finsupp.single_eq_same, Finsupp.mapDomain_of_notMem_range _ 0 hz, add_zero]
-    · simp [SquarefreeIndex.ofFinset_apply, Finsupp.mapDomain_apply_of_injective (Fin.succ_injective n),
+    · simp [SquarefreeIndex.ofFinset_apply, Finsupp.mapDomain_apply (Fin.succ_injective n),
         Fin.succ_ne_zero]
   rw [he, prependPolynomialVariable, MvPolynomial.coeff_X_mul,
     MvPolynomial.coeff_rename_mapDomain Fin.succ (Fin.succ_injective n)]

@@ -1,5 +1,5 @@
-/- Modified for ProveIt: import Lean 4.32 compatibility declarations.
-Statements and proofs are unchanged from the pinned upstream source. -/
+/- Modified for ProveIt: import Lean 4.32 compatibility declarations and
+use the older FreeMonoid induction case name mul_of. Statements unchanged. -/
 import OAI.Compat.MvPolynomial
 import Mathlib.Algebra.Algebra.Opposite
 import Mathlib.Algebra.FreeMonoid.FreeSemigroup
@@ -787,7 +787,7 @@ theorem freeAugmentation_word_of_ne_one {w : FreeMonoid X} (hw : w ≠ 1) :
     freeAugmentation (freeWord w) = 0 := by
   induction w using FreeMonoid.inductionOn' with
   | one => exact (hw rfl).elim
-  | of_mul x w _ => simp
+  | mul_of x w _ => simp
 
 theorem freeDegreeInverse_degree (p : FreeAlgebra ℚ X) :
     freeDegreeInverse (freeDegree p) = p - freeAugmentation p • 1 := by

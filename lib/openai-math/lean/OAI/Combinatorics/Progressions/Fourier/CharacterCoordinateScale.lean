@@ -1,3 +1,5 @@
+/- Modified for ProveIt: use Mathlib v4.32.0's generic prod_le_prod'
+for product comparisons. Mathematical statements unchanged. -/
 import Mathlib.Algebra.BigOperators.Pi
 import Mathlib.Algebra.Group.AddChar
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
@@ -95,7 +97,7 @@ theorem exists_coordinate_order_power_ge {I : Type*} [Fintype I] [DecidableEq I]
   refine ⟨i, latticeCharacter_coordinate_order_pos χ hχ i, (latticeCharacter_order_le_product χ hχ).trans ?_⟩
   calc
     _ ≤ ∏ _j : I, orderOf (latticeCharacterCoordinates χ i) :=
-      Finset.prod_le_prod (fun coordinate hcoordinate => hi coordinate hcoordinate)
+      Finset.prod_le_prod' (fun coordinate hcoordinate => hi coordinate hcoordinate)
     _ = _ := by simp
 
 end Erdos3

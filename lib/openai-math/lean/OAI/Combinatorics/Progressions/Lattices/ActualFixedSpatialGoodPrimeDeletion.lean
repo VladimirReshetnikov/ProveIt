@@ -1,3 +1,5 @@
+/- Modified for ProveIt: use Mathlib v4.32.0's generic prod_le_prod'
+for product comparisons. Mathematical statements unchanged. -/
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import OAI.Combinatorics.Progressions.Lattices.InjectiveSmallPrimeProduct
 import OAI.Combinatorics.Progressions.Probability.ActualFixedSpatialUnchargedDensity
@@ -39,7 +41,7 @@ theorem retainedPrimeProduct_le_chargedProduct_mul_smallProduct
       · exact (hsmall hs).elim
   calc
     (∏ l ∈ retained, p l) ≤ ∏ l ∈ retained, w l :=
-      Finset.prod_le_prod hpoint
+      Finset.prod_le_prod' hpoint
     _ ≤ ∏ l, w l := Finset.prod_le_prod_of_subset_of_one_le
       (Finset.subset_univ _) (fun l _ _ => hw l)
     _ = ((∏ l, p l ^ b l) * (∏ l, p l ^ e l)) *
@@ -52,7 +54,7 @@ theorem retainedPrimePowerModulus_le_power_of_primeProduct
     (∏ l ∈ retained, p l ^ A l) ≤ (∏ l ∈ retained, p l) ^ depth := by
   calc
     (∏ l ∈ retained, p l ^ A l) ≤ ∏ l ∈ retained, p l ^ depth :=
-      Finset.prod_le_prod (fun l hl => pow_le_pow_right' (hp l) (hA l hl))
+      Finset.prod_le_prod' (fun l hl => pow_le_pow_right' (hp l) (hA l hl))
     _ = (∏ l ∈ retained, p l) ^ depth := Finset.prod_pow _ _ _
 
 theorem retainedPrimePowerModulus_le_charged_cutoff

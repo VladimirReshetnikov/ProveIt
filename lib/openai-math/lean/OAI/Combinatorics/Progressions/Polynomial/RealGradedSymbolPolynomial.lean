@@ -1,5 +1,5 @@
 /- Modified for ProveIt: import Lean 4.32 compatibility declarations.
-Statements and proofs are unchanged from the pinned upstream source. -/
+Use Finsupp.mapDomain_apply for injective reindexing; statements unchanged. -/
 import OAI.Compat.Core
 import OAI.Compat.TensorProduct
 import Mathlib.Algebra.Module.TransferInstance
@@ -43,7 +43,7 @@ noncomputable def ofSupportedCoordinates (b : Basis ι S V)
     b.repr (coefficients (ofSupportedCoordinates (R := R) b A c) z.val.1) z.val.2 = c z := by
   change mixedCoordinates b ((mixedCoordinates b).symm _) z.val = _
   rw [LinearEquiv.apply_symm_apply]
-  exact Finsupp.mapDomain_apply_of_injective Subtype.val_injective c z
+  exact Finsupp.mapDomain_apply Subtype.val_injective c z
 
 theorem ofSupportedCoordinates_apply_of_not_mem (b : Basis ι S V)
     (A : Set ((σ →₀ ℕ) × ι)) (c : A →₀ S) (α : σ →₀ ℕ) (i : ι)

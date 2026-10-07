@@ -1,3 +1,5 @@
+/- Modified for ProveIt: use Mathlib v4.32.0's generic prod_le_prod'
+for product comparisons. Mathematical statements unchanged. -/
 import Mathlib.Algebra.BigOperators.Fin
 import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 import Mathlib.Algebra.Order.BigOperators.Ring.Finset
@@ -19,7 +21,7 @@ theorem prod_range_le_uniform_pow (K : ℕ → ℕ) (K0 n : ℕ)
     (∏ j ∈ Finset.range n, K j) ≤ K0 ^ n := by
   calc
     _ ≤ ∏ _j ∈ Finset.range n, K0 :=
-      Finset.prod_le_prod (fun j hj => hK j (Finset.mem_range.mp hj))
+      Finset.prod_le_prod' (fun j hj => hK j (Finset.mem_range.mp hj))
     _ = K0 ^ n := by simp
 
 theorem sum_graded_sizes_le (depth K0 : ℕ) (sizes : Fin (depth + 1) → ℕ)

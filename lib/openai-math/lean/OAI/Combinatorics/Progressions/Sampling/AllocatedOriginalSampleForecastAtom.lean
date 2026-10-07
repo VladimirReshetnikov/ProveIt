@@ -1,5 +1,5 @@
 /- Modified for ProveIt: import Lean 4.32 compatibility declarations.
-Statements and proofs are unchanged from the pinned upstream source. -/
+Use prod_le_prod' for generic product comparisons; mathematical statements are unchanged. -/
 import OAI.Compat.FinsetInj
 import OAI.Combinatorics.Progressions.Estimates.AllocatedOriginalSampleQuadratureUniformBounds
 import OAI.Combinatorics.Progressions.Geometry.CanonicalSpatialSupportTwo
@@ -368,7 +368,7 @@ theorem allocatedFixedPathLift_prod_le_allAxis :
   calc
     _ ≤ ∏ a, (allocatedFixedPathLiftRowCap P
         (unitProfilePrincipalLowerBound_pos B) hδ a + 1) :=
-      Finset.prod_le_prod (fun _ _ => le_add_of_nonneg_right zero_le_one)
+      Finset.prod_le_prod' (fun _ _ => le_add_of_nonneg_right zero_le_one)
     _ ≤ _ := allocatedFixedPathLift_prod_add_one_le_allAxis B P hδ
 
 theorem allocatedFixedPathLift_sum_lip_le_allAxis :

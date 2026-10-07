@@ -54,6 +54,13 @@ verified.** The Gowers facade does not import the quantitative conclusion.
 [`quantitative-port-manifest.json`](quantitative-port-manifest.json) records
 the upstream source hashes, import closure, and initial compatibility imports.
 
+The first 100 manifest entries have compiled (106 modules including their
+compatibility dependencies). The incremental `OAI.QuantitativePortAudit`
+imports this batch and the three new compatibility modules. Its axiom scan
+checks 2,928 public OAI theorems and reports only `propext`,
+`Classical.choice`, and `Quot.sound`; the three compatibility declarations
+also pass. This checkpoint does not certify `Results.Conclusions`.
+
 The quantitative statement has existential positive constants `C`, `c`, and
 `eta` for each progression length, and bounds the extremal cardinality by
 `C*N*exp(-c*(log(log N))^(1+eta))`. A checked conditional bridge in
@@ -91,6 +98,11 @@ unchanged.
   `Isometry.lipschitz`), and `Compat/FinsetInj.lean` (injective finite-sum
   comparison proved using `sum_image` and subset comparison). These are
   local proofs under Apache-2.0, with no copied upstream proof text.
+- `Estimates/FormalExpLog.lean` uses the older explicit-ring derivative API
+  and derives reverse substitution from `substInvOfIsUnit`. The initial
+  dependency batch also adapts the free-monoid induction case name.
+  Generic product comparisons and injective `Finsupp` reindexing use their
+  older Mathlib names; the manifest records these changes.
 - Upstream files that use a backported name gain the corresponding
   `import OAI.Compat.<Topic>` line, and nothing else, unless a further change
   is listed in their header comment.

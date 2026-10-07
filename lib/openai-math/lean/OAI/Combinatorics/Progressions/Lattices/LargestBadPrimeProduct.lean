@@ -1,5 +1,5 @@
 /- Modified for ProveIt: import Lean 4.32 compatibility declarations.
-Statements and proofs are unchanged from the pinned upstream source. -/
+Use prod_le_prod' for generic product comparisons; mathematical statements are unchanged. -/
 import OAI.Compat.Core
 import Mathlib.Data.Nat.Factorization.Basic
 import Mathlib.Data.Nat.Log
@@ -129,7 +129,7 @@ theorem prime_power_small_correction (S : Finset ℕ) (b : ℕ → ℕ) {Qs : �
       _ = _ := rfl
   calc
     _ ≤ ∏ p ∈ S, g p * (if Qs ≤ p ^ b p then p ^ b p else 1) :=
-      Finset.prod_le_prod hlocal
+      Finset.prod_le_prod' hlocal
     _ = (∏ p ∈ S, g p) * ∏ p ∈ S, (if Qs ≤ p ^ b p then p ^ b p else 1) :=
       Finset.prod_mul_distrib
     _ ≤ _ := Nat.mul_le_mul_right _ hbase

@@ -1,5 +1,5 @@
 /- Modified for ProveIt: import Lean 4.32 compatibility declarations.
-Statements and proofs are unchanged from the pinned upstream source. -/
+Use Finsupp.mapDomain_apply for injective reindexing; statements unchanged. -/
 import OAI.Compat.Core
 import OAI.Combinatorics.Progressions.Estimates.RationalHeight
 import OAI.Combinatorics.Progressions.Estimates.TruncatedSeries
@@ -114,7 +114,7 @@ theorem freeWordCoefficients_embedding (p : WordPolynomial X) (w : FreeSemigroup
     (FreeAlgebra.equivMonoidAlgebraFreeMonoid.symm
       (MonoidAlgebra.mapDomain FreeSemigroup.toFreeMonoid p))).coeff w.toFreeMonoid = _
   rw [AlgEquiv.apply_symm_apply]
-  exact Finsupp.mapDomain_apply_of_injective FreeSemigroup.toFreeMonoid_injective p.coeff w
+  exact Finsupp.mapDomain_apply FreeSemigroup.toFreeMonoid_injective p.coeff w
 
 end Erdos3
 

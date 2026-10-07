@@ -1,3 +1,5 @@
+/- Modified for ProveIt: use Finsupp.mapDomain_apply for injective
+reindexing on Mathlib v4.32.0. Mathematical statements unchanged. -/
 import Mathlib.Algebra.MvPolynomial.Equiv
 import OAI.Combinatorics.Progressions.Estimates.ModularMultilinearSublevelFiber
 import OAI.Combinatorics.Progressions.Estimates.ModularMultilinearSublevelNumerics
@@ -53,7 +55,7 @@ theorem degreeOf_killCompl_le (f : J → I) (hf : Function.Injective f)
   have ham : a.mapDomain f ∈ P.support := by
     simpa only [mem_support_iff, coeff_killCompl] using ha
   have hh := monomial_le_degreeOf (f j) ham
-  simpa only [Finsupp.mapDomain_apply_of_injective hf] using hh
+  simpa only [Finsupp.mapDomain_apply hf] using hh
 
 noncomputable def conditionPolynomial (f : J → I) (hf : Function.Injective f)
     (v : I → R) (P : MvPolynomial I R) : MvPolynomial J R :=
@@ -113,7 +115,7 @@ theorem fullShiftExponent_mapDomain [Fintype I] {r : ℕ} (f : Fin r → I)
   rw [SquarefreeIndex.ofFinset_apply]
   by_cases hi : i ∈ Set.range f
   · obtain ⟨j, rfl⟩ := hi
-    rw [Finsupp.mapDomain_apply_of_injective hf, fullShiftExponent_apply]
+    rw [Finsupp.mapDomain_apply hf, fullShiftExponent_apply]
     simp only [Finset.mem_image, Finset.mem_univ, true_and, exists_apply_eq_apply, ite_true]
   · rw [Finsupp.mapDomain_of_notMem_range _ _ hi]
     have hn : i ∉ Finset.univ.image f := by simpa only [Finset.mem_image,

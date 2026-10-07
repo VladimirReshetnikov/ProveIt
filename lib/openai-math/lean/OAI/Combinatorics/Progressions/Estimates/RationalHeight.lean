@@ -1,3 +1,5 @@
+/- Modified for ProveIt: use Mathlib v4.32.0's generic prod_le_prod'
+for the natural-number product bounds. Mathematical statements unchanged. -/
 import Mathlib.Algebra.Order.BigOperators.Group.Finset
 import Mathlib.Data.Rat.Lemmas
 import Mathlib.Tactic
@@ -57,7 +59,7 @@ omit [DecidableEq ι] in
 theorem arrayDenominator_le (q : ι → ℚ) {H : ℕ}
     (hq : ∀ i, (q i).den ≤ H) :
     arrayDenominator q ≤ H ^ Fintype.card ι := by
-  exact (Finset.prod_le_prod fun i _ => hq i).trans_eq (by simp)
+  exact (Finset.prod_le_prod' fun i _ => hq i).trans_eq (by simp)
 
 theorem arrayDenominator_eq (q : ι → ℚ) (i : ι) :
     arrayDenominator q = (q i).den * ∏ j ∈ Finset.univ.erase i, (q j).den := by
@@ -78,7 +80,7 @@ theorem clearedArray_natAbs_le (q : ι → ℚ) {H : ℕ}
     (clearedArray q i).natAbs ≤ H ^ Fintype.card ι := by
   have hprod : (∏ j ∈ Finset.univ.erase i, (q j).den) ≤
       H ^ (Finset.univ.erase i).card := by
-    exact (Finset.prod_le_prod fun j _ => (hq j).2).trans_eq (by simp)
+    exact (Finset.prod_le_prod' fun j _ => (hq j).2).trans_eq (by simp)
   have hcard : (Finset.univ.erase i).card + 1 = Fintype.card ι := by
     simpa using Finset.card_erase_add_one (Finset.mem_univ i)
   calc

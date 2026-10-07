@@ -1,3 +1,5 @@
+/- Modified for ProveIt: use Mathlib v4.32.0's generic prod_le_prod'
+for product comparisons. Mathematical statements unchanged. -/
 import Mathlib.Data.Fintype.BigOperators
 import OAI.Combinatorics.Progressions.Dynamics.FinitePrimitiveCorrectionBudget
 import OAI.Combinatorics.Progressions.Estimates.FiniteFiberRepresentatives
@@ -186,7 +188,7 @@ theorem exists_finite_vector_subspace_normalized_correction_representatives
     simp only [Fintype.card_fin]
     calc
       _ ≤ ∏ _i : η, (2 * ⌈(q : ℝ) * bound⌉₊ + 3) ^ S.card :=
-        Finset.prod_le_prod (fun i _ => hn i)
+        Finset.prod_le_prod' (fun i _ => hn i)
       _ = _ := by simp
   · intro a ha
     obtain ⟨j, hj⟩ := hcomplete a ha

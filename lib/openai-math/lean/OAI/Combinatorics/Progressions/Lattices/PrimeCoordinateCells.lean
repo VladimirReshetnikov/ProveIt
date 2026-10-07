@@ -1,5 +1,5 @@
 /- Modified for ProveIt: import Lean 4.32 compatibility declarations.
-Statements and proofs are unchanged from the pinned upstream source. -/
+Use prod_le_prod' for generic product comparisons; mathematical statements are unchanged. -/
 import OAI.Compat.BigOperators
 import Mathlib.Data.Int.ModEq
 import Mathlib.Data.Nat.Factorization.Basic
@@ -43,7 +43,7 @@ theorem periodPrimeCoordinates_card_pow_le {ι : Type*} [Fintype ι]
   calc
     2 ^ A.card ≤ 2 ^ M.primeFactors.card := Nat.pow_le_pow_right (by norm_num) hcard
     _ = ∏ _p ∈ M.primeFactors, 2 := by simp
-    _ ≤ ∏ p ∈ M.primeFactors, p := Finset.prod_le_prod fun p hp => (Nat.mem_primeFactors.mp hp).1.two_le
+    _ ≤ ∏ p ∈ M.primeFactors, p := Finset.prod_le_prod' fun p hp => (Nat.mem_primeFactors.mp hp).1.two_le
     _ ≤ M := Nat.le_of_dvd hM (Nat.prod_primeFactors_dvd M)
 
 theorem periodPrimeCoordinates_card_log_le {ι : Type*} [Fintype ι]

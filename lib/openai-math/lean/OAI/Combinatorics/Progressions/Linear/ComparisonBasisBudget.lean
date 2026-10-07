@@ -1,3 +1,5 @@
+/- Modified for ProveIt: use Mathlib v4.32.0's generic prod_le_prod'
+for product comparisons. Mathematical statements unchanged. -/
 import Mathlib.Data.Nat.Factorial.BigOperators
 import OAI.Combinatorics.Progressions.Estimates.RationalPowerHeight
 
@@ -13,7 +15,7 @@ variable {σ : Type*} [Fintype σ]
 
 theorem multidegreeFactorial_mono {a b : σ → ℕ} (h : a ≤ b) :
     multidegreeFactorial a ≤ multidegreeFactorial b :=
-  Finset.prod_le_prod (fun i _ => Nat.factorial_le (h i))
+  Finset.prod_le_prod' (fun i _ => Nat.factorial_le (h i))
 
 theorem multidegreeFactorial_le_total (a : σ → ℕ) :
     multidegreeFactorial a ≤ (∑ i, a i).factorial :=
