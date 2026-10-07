@@ -571,7 +571,7 @@ private lemma contextEncodeArrangement_injective {N : Nat} [NeZero N]
     congrArg (fun c ↦ c.2.2) hcode
   exact Prod.ext hx (Prod.ext hy hh)
 
-private lemma context_arrangementCount_le_card_pow {N : Nat} [NeZero N]
+theorem context_arrangementCount_le_card_pow {N : Nat} [NeZero N]
     (B : Finset (Pair N)) :
     arrangementCount 8 B ≤ B.card ^ 15 * N ^ 2 := by
   classical
@@ -623,27 +623,20 @@ private lemma context_card_lower_of_arrangements {N : Nat} [NeZero N]
         mul_le_mul_of_nonneg_right hcoefficient (by positivity)
   exact (not_lt_of_ge harr) hcontra
 
-/-- **Gowers, Lemma 13.11.** Failure of cubic uniformity yields a large
-two-dimensional domain on which the selected Fourier frequency is separately
-an order-eight Freiman homomorphism and respects almost every arrangement. -/
-theorem lemma_13_11_holds : lemma_13_11 := by
-  intro alpha halpha halphaOne
+/-- Before purification, retain the exact two-fibre exponent rather than
+rounding it to `2^24`. The prime threshold is unnecessary for this preparation. -/
+theorem section13_prepared_frequency_graph {N : Nat} [NeZero N] [Fact N.Prime]
+    (alpha : Real) (halpha : 0 < alpha) (halphaOne : alpha ≤ 1)
+    (f : ZMod N → Complex) (hf : DiscValued f) (hnotUniform : ¬ UniformOfDegree f alpha 3) :
+    ∃ A : Finset (Pair N), ∃ phi : Pair N → ZMod N,
+      (alpha / 2) ^ (14409429 : Nat) * (N : Real) ^ 2 ≤ A.card ∧
+      SeparatelyFreimanEight A phi ∧
+      ∀ z, z ∈ A → (alpha / 2) * N ≤ ‖secondDifferenceFourier f z.1 z.2 (phi z)‖ := by
+  classical
   let a : Real := alpha / 2
-  let beta : Real := a ^ ((2 : Nat) ^ 24)
-  let eta : Real := (1 / 2 : Real) ^ 44
   have ha : 0 < a := by dsimp only [a]; positivity
   have haHalf : a ≤ 1 / 2 := by dsimp only [a]; nlinarith
   have haOne : a ≤ 1 := haHalf.trans (by norm_num)
-  have hbeta : 0 < beta := pow_pos ha _
-  have heta : 0 < eta := by dsimp only [eta]; positivity
-  have hetaOne : eta ≤ 1 := by
-    dsimp only [eta]
-    exact pow_le_one₀ (by norm_num) (by norm_num)
-  obtain ⟨N0, hN0⟩ :=
-    lemma_12_6_holds beta a eta hbeta ha heta hetaOne
-  refine ⟨N0, ?_⟩
-  intro N _ _ hN f hf hnotUniform
-  classical
   have hprime : Nat.Prime N := Fact.out
   have hNreal : (0 : Real) < N := by exact_mod_cast NeZero.pos N
   have hN2 : 0 < (N : Real) ^ 2 := pow_pos hNreal 2
@@ -730,15 +723,48 @@ theorem lemma_13_11_holds : lemma_13_11 := by
       _ ≤ (2 : Real) ^ (-(1882 : Real)) * a ^ 9312 *
           ((B1.card : Real) / (N : Real) ^ 2) ^ 1165 :=
         mul_le_mul hconstantMul hdensityPow (by positivity) (by positivity)
+  refine ⟨B2, phi, (mul_le_mul_of_nonneg_right hB2coefficient hN2.le).trans hB2raw,
+    ⟨?_, hB2horizontal⟩, ?_⟩
+  · intro x
+    have hsec : (↑(verticalSection B2 x) : Set (ZMod N)) ⊆ ↑(verticalSection B1 x) := by
+      intro y hy
+      have hyB2 : (x, y) ∈ B2 := by simpa [verticalSection] using hy
+      simpa [verticalSection] using hB2sub hyB2
+    exact IsAddFreimanHom.subset hsec (hB1vertical x) (Set.mapsTo_univ _ _)
+  · intro z hz
+    exact hB1large z (hB2sub hz)
+
+/-- **Gowers, Lemma 13.11.** Failure of cubic uniformity yields a large
+two-dimensional domain on which the selected Fourier frequency is separately
+an order-eight Freiman homomorphism and respects almost every arrangement. -/
+theorem lemma_13_11_holds : lemma_13_11 := by
+  intro alpha halpha halphaOne
+  let a : Real := alpha / 2
+  let beta : Real := a ^ ((2 : Nat) ^ 24)
+  let eta : Real := (1 / 2 : Real) ^ 44
+  have ha : 0 < a := by dsimp only [a]; positivity
+  have haHalf : a ≤ 1 / 2 := by dsimp only [a]; nlinarith
+  have haOne : a ≤ 1 := haHalf.trans (by norm_num)
+  have hbeta : 0 < beta := pow_pos ha _
+  have heta : 0 < eta := by dsimp only [eta]; positivity
+  have hetaOne : eta ≤ 1 := by
+    dsimp only [eta]
+    exact pow_le_one₀ (by norm_num) (by norm_num)
+  obtain ⟨N0, hN0⟩ :=
+    lemma_12_6_holds beta a eta hbeta ha heta hetaOne
+  refine ⟨N0, ?_⟩
+  intro N _ _ hN f hf hnotUniform
+  classical
+  have hprime : Nat.Prime N := Fact.out
+  have hNreal : (0 : Real) < N := by exact_mod_cast NeZero.pos N
+  have hN2 : 0 < (N : Real) ^ 2 := pow_pos hNreal 2
+  obtain ⟨B2, phi, hB2exact, hB2freiman, hB2large⟩ :=
+    section13_prepared_frequency_graph alpha halpha halphaOne f hf hnotUniform
   have hbetaPower : beta ≤ a ^ 14409429 := by
     dsimp only [beta]
     exact pow_le_pow_of_le_one ha.le haOne (by norm_num)
   have hB2card : beta * (N : Real) ^ 2 ≤ B2.card :=
-    (mul_le_mul_of_nonneg_right
-      (hbetaPower.trans hB2coefficient) hN2.le).trans hB2raw
-  have hB2large (z : Pair N) (hz : z ∈ B2) :
-      a * N ≤ ‖secondDifferenceFourier f z.1 z.2 (phi z)‖ :=
-    hB1large z (hB2sub hz)
+    (mul_le_mul_of_nonneg_right hbetaPower hN2.le).trans hB2exact
   obtain ⟨A, hAsub, harrRaw, hmostly⟩ :=
     hN0 N hN f B2 phi hf hB2card hB2large
   have harr : a ^ ((2 : Nat) ^ 68) * (N : Real) ^ 32 ≤
@@ -750,23 +776,22 @@ theorem lemma_13_11_holds : lemma_13_11 := by
   · constructor
     · intro x
       have hsec : (↑(verticalSection A x) : Set (ZMod N)) ⊆
-          ↑(verticalSection B1 x) := by
+          ↑(verticalSection B2 x) := by
         intro y hy
         have hyA : (x, y) ∈ A := by simpa [verticalSection] using hy
-        have hyB1 := hB2sub (hAsub hyA)
+        have hyB1 := hAsub hyA
         simpa [verticalSection] using hyB1
-      exact IsAddFreimanHom.subset hsec (hB1vertical x) (Set.mapsTo_univ _ _)
+      exact IsAddFreimanHom.subset hsec (hB2freiman.1 x) (Set.mapsTo_univ _ _)
     · intro y
       have hsec : (↑(horizontalSection A y) : Set (ZMod N)) ⊆
           ↑(horizontalSection B2 y) := by
         intro x hx
         have hxA : (x, y) ∈ A := by simpa [horizontalSection] using hx
         simpa [horizontalSection] using hAsub hxA
-      exact IsAddFreimanHom.subset hsec (hB2horizontal y) (Set.mapsTo_univ _ _)
+      exact IsAddFreimanHom.subset hsec (hB2freiman.2 y) (Set.mapsTo_univ _ _)
   · simpa only [MostlyRespectsEight, eta, context_eta_eq] using hmostly
   · intro z hz
     have hzlarge := hB2large z (hAsub hz)
-    dsimp only [a] at hzlarge
     convert hzlarge using 1
     ring
 

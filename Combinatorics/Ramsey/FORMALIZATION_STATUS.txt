@@ -12,8 +12,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 487 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 3,211 public Gowers theorems and found only propext,
+  All 488 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 3,216 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 108 exact
   companion proofs and 12 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -1202,6 +1202,23 @@ Completed Corollary 5.8 in every positive degree
   heading and its stated length and density conclusions were rechecked.
   Source 41 (Report277) gives a related stronger written localization
   budget; this formal proof uses the already checked finite Weyl estimate.
+
+Prepared frequency graph and reusable restriction score
+  section13_prepared_frequency_graph exposes the exact pre-purification
+  exponent 14,409,429 already established by the two fibre restrictions.
+  For a disc-valued function failing cubic uniformity, it supplies a
+  separately order-eight Freiman frequency map on density at least
+  (alpha/2)^14409429, with every Fourier modulus at least alpha*N/2.
+  No large-prime threshold is needed for this preparation. Lemma 13.11
+  now invokes this helper and keeps its original purification and conclusion.
+  context_arrangementCount_le_card_pow exposes the sharp upper count
+  T(A)<=|A|^15*N^2 needed to recover density after selection.
+  Proofs12BernoulliSelection extracts the existing finite Bernoulli proof
+  into a shared module. The seeded score theorem selects one actual subset
+  and the positive-score corollary simultaneously retains good mass and
+  bounds the bad/good ratio. The original Lemma 12.5 uses the shared proof.
+  These are inputs to source 57's improved purification route to Theorem
+  13.12; neither Fejer purification nor its near-maximal endpoint is yet proved.
 
 Reproducible checks (from repository root)
   python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.Audit
