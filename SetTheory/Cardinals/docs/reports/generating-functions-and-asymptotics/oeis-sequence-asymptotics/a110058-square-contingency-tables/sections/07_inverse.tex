@@ -92,10 +92,15 @@ of the separation condition \file{p0:thm:staircase}(2): when
 $\lceil x_-\rceil=\lceil x_+\rceil$, $\nu(Y)$ equals that value. The Newton
 statement~\eqref{sqt:eq:newtonerror} has no counterpart there. The phase is
 neither of the two Lambert cores (\file{p0:thm:lambert-core},
-\file{p0:prop:factorial-core}), no Lambert function occurs, and the leading
-balance $x^2\log4-x\log x$ is not of the monomial--logarithmic type of
+\file{p0:prop:factorial-core}), and no Lambert function occurs. The
+equation $F_K(x)=\log Y$ as it stands is not of the monomial--logarithmic
+type of \file{plt:thm:lw-template}, whose balance is linear plus logarithmic
+in the log-variable, but after a change of variable it is (see~(3)).
+\textup{(Corrected after the independent check of 6~October 2026; the
+sentence first ended ``no Lambert function occurs, and the leading balance
+$x^2\log4-x\log x$ is not of the monomial--logarithmic type of
 \file{plt:thm:lw-template}, whose balance is linear plus logarithmic in the
-log-variable.
+log-variable'', which overlooked the change of variable added to~(3).)}
 (3)~\emph{An instance after a change of variables.} The formal part of the
 reversion~\eqref{sqt:eq:reversion} is an instance of
 \file{p0:thm:core-reversion}. Put $t_{\rm vol}=1/r$, $x=r(1+E)$, and take
@@ -115,7 +120,22 @@ $h_{\rm vol}(u)=au^2$. Its unique solution $E=\sum_ne_n^{\rm vol}t^n$ has
 $(e_1^{\rm vol},\ldots,e_4^{\rm vol})=(d,e,f,g)$
 of~\eqref{sqt:eq:reversiond}--\eqref{sqt:eq:reversiong} (checked by the write
 in SymPy from the triangular recurrence \file{p0:eq:core-triangular}, and
-the displayed equation re-derived from~\eqref{sqt:eq:FK}). The volume's
+the displayed equation re-derived from~\eqref{sqt:eq:FK}). After the
+further change of variable $G(x)=\sqrt{F_2(x)/a}$ the same formal reversion
+is also an instance of the volume's \file{plt:thm:lw-template}:
+$F_2(x)/a=x^2(1+\varepsilon)$ with $\varepsilon$ of positive order in
+$x^{-1}$ and coefficients polynomial in $\log x$, so
+$G(x)=x-\frac1{2a}\log x-\frac b{2a}+B(x)$ with
+$B\in x^{-1}\R[\log x][[x^{-1}]]$, and $G(x)=r$ is of
+monomial--logarithmic type (\file{plt:def:lw-monomial-log-datum}) with data
+$(1,-1/(2a),-b/(2a),B)$, $Z_{\rm vol}=x$, $\xi_{\rm vol}=r$; its unique
+formal solution, re-expanded in $r$ and $\ell$, begins
+$r+d+e/r+f/r^2+g/r^3$ as in~\eqref{sqt:eq:reversion}. This is the route of
+Remark~12.2(c) of \file{a089479-fixed-permanent-matrices} and of
+Remark~11.1(a) of \file{a222959-zero-slope-matrices}. \textup{(Added after
+the independent check of 6~October 2026, which found this instance and
+checked with SymPy that the solution of $G(x)=r$ reproduces $d$, $e$, $f$,
+$g$.)} The volume's
 theorem is formal; the analytic remainder
 $O((\log r)^5/r^4)$ in~\eqref{sqt:eq:reversion} is the source's own. The
 write makes no novelty claim for these inversions.

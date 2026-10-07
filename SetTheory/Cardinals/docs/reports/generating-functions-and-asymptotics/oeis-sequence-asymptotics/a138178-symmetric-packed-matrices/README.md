@@ -108,7 +108,8 @@ Added by the write (6 October 2026), marked `[write]`:
   (`D_3 = −L²(22L² − 65)/240`), so Theorem 2.1 with `J = 3` adds the term
   `C_3 n^{−3/2}` to Corollary 2.2, remainder `O(n^{−2})`. A table compares
   `A_n` with the expansion for `16 ≤ n ≤ 500`. One implementation only
-  (Question 1).
+  (Question 1); the independent check below confirmed the value numerically
+  at three values of `L`.
 - **Remark 9.3 (`spm:rem:transseries`)**, against the transseries volume:
   `m(X)` is exactly the staircase `N_*` of `p0:def:three-inverses` (an
   **instance**, `n_1 = 1`); the seed `N` is the core solution of
@@ -204,7 +205,8 @@ From the source, kept in the article (collected in Section 1.2):
   reproduction is claimed for the recorded toolchain only.
 
 The delivery README adds that the manifest "is an integrity record, not a
-digital signature or independent provenance proof". The write adds: `C_3` rests on one implementation by the write (Question 1).
+digital signature or independent provenance proof". The write adds: `C_3` rests on one implementation by the write (Question 1),
+confirmed numerically, not derived, by the independent check below.
 
 ## Further questions
 
@@ -220,6 +222,9 @@ wrong**, no claim was narrowed, and the source imports no unchecked input.
 1. **The third coefficient** (`spm:q:third`, added by the write): a second,
    independent derivation of `C_3(L,1)` (for instance by the factorial-degree
    moments of `code/symbolic_coefficients.py`), and `C_3(L,v)` for `v ≠ 1`.
+   The independent check below confirmed `C_3(L,1)` numerically, to eight to
+   ten digits at `L = log 2, log(9/4), log(9/5)`; a derivation is still
+   missing.
 2. **The literature boundary** (`spm:q:priority`, source: Section 1 and
    `SOURCES.md`): whether the matrix-composition and Burge-polynomial papers
    (Munarini–Poneti–Rinaldi; Cerbai–Claesson), which the write did not read,
@@ -255,6 +260,30 @@ wrong**, no claim was narrowed, and the source imports no unchecked input.
   `p0:thm:staircase`, `plt:thm:lw-template`, `q2:thm:fubini`); Part IV of
   `a261781-matrix-compositions`. Not read: Munarini–Poneti–Rinaldi;
   Cerbai–Claesson.
+- **Independent check of the write (6 October 2026).** An adversarial check
+  made by the intake after the write (`c569b0b98`), with its own code, after
+  fetching A138178, its b-file, A135588 and Cameron–Prellberg–Stark v2
+  again. Counts by a route different from the write's (zero-line
+  inclusion–exclusion (10.4) with `f_n(j)` from the first-order recurrence
+  `(n+1)a_{n+1} = j a_n + (n−1+j+j(j−1)) a_{n−1}`): `A_0, …, A_2000` exactly,
+  all 501 b-file terms and the 25 data terms agreeing; A135588's 26 terms by
+  binomial cell factors. Remark 5.2: the table reproduced to every digit;
+  Richardson extrapolation in `h` of the exact counts gives
+  `C_3 ≈ 0.1177251847` (four node sets of 7–13 points up to `n = 2000`)
+  against the formula's `0.1177251846518…`, and marked counts `A_n(u,1)` to
+  `n = 1500` give `0.154285415` (`u = 4/5`) and `0.087284579` (`u = 5/4`)
+  against `0.1542854152…` and `0.0872845791…` at `L = log(9/4)`,
+  `log(9/5)`: numerical confirmation at three values of `L`, independent of
+  the Gaussian prescription, not a derivation (Question 1 stays open).
+  Remark 1.2: the entries, both generating functions, Proposition 4.2
+  (`C_s ≈ 0.44341`, p. 14) and the Poisson(`(log 2)²/2`) limit with (8)
+  (p. 9) as quoted. The notes in Sections 1.1 and 4.3 (`q2:thm:fubini`,
+  Part IV of `a261781-matrix-compositions` with `r log 2 = 1.1046161…`, the
+  Lean names; the identity in law) and Remark 9.3 (1)–(4) re-derived
+  (`e_1, …, e_5` polynomials in `1/Q` without constant term, degrees
+  1, 3, 5, 7, 9, `d` first in `e_4`). Archive facts and the 110/93 label and
+  reference counts confirmed. No defect found. The check is recorded at the
+  end of Section 5.
 
 ## Relation to the repository
 
@@ -340,7 +369,7 @@ sections/09_inverse.tex            Section 9, inversion (and Remark 9.3)
 sections/10_computation.tex        Section 10, exact reproduction (two notes)
 sections/11_outlook.tex            Section 11, further questions; Section 12 (the write's)
 sections/12_references.tex         bibliography
-article.pdf                        compiled report, 29 pages
+article.pdf                        compiled report, 30 pages
 COMPUTATION.md                     algorithms, bounds and limitations (delivered at the root)
 SOURCES.md                         source attribution and its limits (delivered at the root)
 code/build.py                      manifest-verified build and deterministic ZIP (delivered at the root)
@@ -447,7 +476,9 @@ B=$(mktemp -d); cp -r article.tex sections "$B/"; cd "$B"
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The committed PDF was built this way with MiKTeX on 6 October 2026: 29
+The committed PDF was built this way with MiKTeX on 6 October 2026, after
+the independent check (29 pages at the write; label numbers unchanged, aux
+files compared): 30
 pages; no errors, no LaTeX or package warnings, no undefined references or
 citations, no multiply defined labels, no duplicate PDF destinations, no
 overfull or underfull boxes. The delivered preamble's `\pdfmapfile` lines

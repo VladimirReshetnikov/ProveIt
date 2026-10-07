@@ -140,3 +140,52 @@ regimes are thus formally compatible; substituting $\lambda\to0$ into a
 fixed-density formula proves nothing about the transition (the source's
 Question~4 in Section~\ref{sqt:sec:outlook}; Question~\ref{sqt:q:regime}).
 \end{remark}
+\begin{writenote}[Independent check of the write, 6~October 2026]
+An adversarial check made by the intake after the write (commit
+\file{d63de7211}) re-derived the statements marked [write] with its own
+code, after fetching again the OEIS entry A110058 and its b-file (revision
+and data as quoted), Canfield--McKay's arXiv:math/0703600v2 and Isaev's
+arXiv:2508.16952v2. \emph{Lemma~\ref{sqt:lem:sequential}.} The subsequence
+argument was re-read and holds; against the rendered preprint, the region~(3.1)
+(bounds $(1+\lambda)^{-1}(mn)^{-1/2+2\varepsilon}$,
+$(1+\lambda)^{-1}n^{-1/2+\varepsilon}$, $(1+\lambda)^{-1}m^{-1/2+\varepsilon}$
+on open half circles), Theorem~3 and the convention of p.~4 are as the
+lemma uses them, and~(4.1) at $m=n$ is exactly $I_{0,\lambda}$; the left side
+of~(1.1) at $m=n$ is $\tfrac23(4+1/u)$, equal to $3$ at $\lambda=1$ (SymPy).
+The paragraph after the lemma matches the two places where the minor-arc
+integral enters the proof of Lemma~\ref{sqt:lem:transfer}.
+\emph{Remark~\ref{sqt:rem:uniformity}.} Every quotation and every bound
+(the factors $\lambda(1+\lambda)^{-1}>(\log n)^{-1}$, $A=O(\log n)$,
+$N=\lceil6000(1+\lambda)\rceil$, $\delta=2\pi/N$, the three pieces with
+$O(e^{-n^{1-\varepsilon}})I_0$ and $e^{-n^\varepsilon}I_0$, and the omitted
+proofs of Lemmas~3 and~4) was found on pp.~15--20; Isaev's Theorem~1.2 and
+the inequality $\overline\Delta_V(f,X)\le\Delta_V(f)$ (``Clearly'') were
+found as Section~\ref{sqt:sec:provenance} says.
+\emph{Remark~\ref{sqt:rem:cmregime}.} The quotations of Conjecture~1 and of
+the record of proved cases are verbatim, and the three first wordings are
+those of the delivered files. From the fresh b-file, at $80$ digits, all
+thirteen values of $\Delta(n,n;n,n)$ and $n\Delta$ in the table, the margin
+($\min=0.5651$ at $n=13$), the ratios $0.36$ and $0.61$, both
+monotonicities of Question~\ref{sqt:q:monotone} and the Richardson values
+$9.94$, $10.98$, $11.43$, $11.66$, $11.78$ were reproduced;
+$P_2(1/u)-g_2(u)-\tfrac56=\tfrac{67}{12}+\tfrac5{6u}$ and the expansion of
+$(n-1)\log(1+1/n)$ were rechecked in SymPy.
+\emph{Remark~\ref{sqt:rem:oeis}.} Revision~\#30, its name, data, link and
+Pak's formula are as quoted, Pak's main terms are exactly
+$\log L_n-\tfrac12\log(4\pi)-\tfrac14$ (SymPy), and
+$\tfrac12\log(4\pi)+\tfrac14=1.515512123\ldots$.
+\emph{Remark~\ref{sqt:rem:transseries}.} Parts~(1) and~(3) hold (the master
+equation is exact and the triangular recurrence gives $d,e,f,g$). One
+statement was too strong: (2) said that the leading balance is not of the
+monomial--logarithmic type of \file{plt:thm:lw-template}, but after
+$G=\sqrt{F_2/a}$ the reversion is a formal instance of that theorem, as for
+the sibling reports \file{a089479-fixed-permanent-matrices} and
+\file{a222959-zero-slope-matrices}; corrected with a dated note keeping the
+first wording, and the instance added to~(3). \emph{Provenance.} The archive
+(669{,}911 bytes, the SHA-256 quoted, 35 files, 34 manifest entries, 980
+delivered lines, 24 pages) and the counts of 97 labels and 87 references
+were confirmed. For the record, the intake's Richardson values $-1.47$ and
+$6.5$ for $D_1$, $D_2$ match fits of order two or three at the top of the
+range; the exact fit through all eight values $6\le n\le13$ gives
+$-1.4964$ and $6.9139$. No other defect was found.
+\end{writenote}
