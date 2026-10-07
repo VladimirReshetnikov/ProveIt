@@ -12,8 +12,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 629 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 4,026 public Gowers theorems and found only propext,
+  All 635 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 4,096 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 113 exact
   companion proofs and 7 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -1919,6 +1919,27 @@ Actual non-top vertex and remainder covers
   remains unproved; neither the refuted packaged Lemma 16.10 nor the
   contextual lifting obligation is asserted.
 
+Relative progression counting and stopping at every length
+  Proofs03LinearPatternStep and Proofs03LinearPatternBound prove the
+  Cauchy--Schwarz reduction and generalized von Neumann estimate for
+  arbitrary distinct coefficients over a prime field. Proofs03AnyFactorBound
+  moves the uniform factor to any position by reindexing, preserving
+  degree k-2 and exponent 1/2^(k-1).
+  Proofs18GeneralRelativeCount proves the finite telescoping identity and
+  bounds the relative k-term progression-count error by
+  k*alpha^(1/2^(k-1))*N^2. Proofs18GeneralProgressionExistence turns this
+  into an integer count and removes the at most N constant progressions.
+  Proofs18GeneralIntervalStopping supplies at least floor(L/k)^2
+  progressions in the interval support and transfers a nonconstant
+  progression back to the original integer interval. For 2<=k<=L,
+  2L<N<=8L, and 0<delta<=1, relative uniformity of degree k-2 with
+  alpha=(delta^k/(512*k^3))^(2^(k-1)) guarantees a k-term progression
+  whenever 512*k^2 < delta^k*N. This parameter specializes exactly
+  to the existing four-term choice. The stopping branch now covers
+  arbitrary progression lengths without an inverse-theorem assumption.
+  The higher-degree nonuniform density-increment construction and its
+  threshold remain open, as do the seven numbered catalogue statements.
+
 Reproducible checks (from repository root)
   python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.Audit
   python3 Combinatorics/Ramsey/scripts/gowers_status.py
@@ -1965,6 +1986,8 @@ Next substantial obligations
      Extend the relative-balance, boundary refinement, uniform stopping,
      and fixed-parameter iteration now completed for four-term progressions
      to the higher-degree construction, retaining explicit thresholds.
+     Relative counting and the uniform stopping branch are now proved
+     for arbitrary progression lengths; the nonuniform branch remains.
   4. Close Theorem 18.2 and its headline consequences; then investigate tighter
      final bounds without treating improved auxiliary statements as a proved
      improvement of the full Szemeredi estimate.

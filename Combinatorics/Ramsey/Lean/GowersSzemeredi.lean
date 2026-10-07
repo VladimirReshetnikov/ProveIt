@@ -438,6 +438,7 @@ import GowersSzemeredi.Proofs16UnusedCoordinateCover
 import GowersSzemeredi.Proofs16CoarseFunctionCover
 import GowersSzemeredi.Proofs16AmbientFaceCover
 import GowersSzemeredi.Proofs16CommonBaseLineCovers
+import GowersSzemeredi.Proofs18GeneralIntervalStopping
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 
