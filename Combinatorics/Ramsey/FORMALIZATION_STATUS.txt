@@ -12,8 +12,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 281 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 2,572 public Gowers theorems and found only propext,
+  All 285 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 2,605 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 101 exact
   companion proofs and 19 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -901,6 +901,29 @@ Explicit relative stopping and an ordinary-interval dichotomy
   prime choices, cardinality-preserving reindexing, and controlled shrinking
   lengths is the remaining quadratic quantitative task. This checkpoint does
   not prove Theorem 8.2 or improve any final headline bound.
+
+Finite quadratic iteration with an explicit recursive threshold
+  Proofs18NaturalReindex pulls a set on a proper natural progression back to
+  Fin(length), preserving its intersection cardinality. Every positive-step
+  progression in the pullback transports to the original set.
+  Proofs18QuadraticIterationStep fixes alpha using the initial lower density
+  delta, so tau, sigma, and all step constants stay fixed as density increases.
+  It chooses a prime 2*L<N<=4*L and exports an ordinary-interval step with
+    gain=tau/8, rho=sigma/16, c=tau/(8*C_1(4*pi*tau/64)),
+    T=max(4,exp(D*(2/alpha)^25378984),32/tau,8193/delta^4).
+  Every set of density at least d>=delta in an interval of length L>=T either
+  has a four-term progression or reindexes to length l>=c*L^rho and density
+  at least d+gain, with exact progression transport back to the original set.
+  Proofs18DensityIteration proves finite termination for this general type
+  of step. Its backward thresholds are
+    R(0)=max(1,T), R(n+1)=max(max(1,T),(R(n)/c)^(1/rho)).
+  Proofs18QuadraticIteration applies it with n=ceil(1/gain). For every
+  0<delta<=1 and L>=R(n), a subset B of Fin L with |B|>=delta*L contains an
+  ordinary four-term progression. This is a full quantitative interval
+  theorem with an explicit finite recursive threshold, not a conditional
+  increment or qualitative existence result. The comparison with the exact
+  double-exponential form in Theorem 8.2 remains to be established, as do the
+  other open catalogue obligations; the exact-companion count is unchanged.
 
 Reproducible checks (from repository root)
   python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.Audit

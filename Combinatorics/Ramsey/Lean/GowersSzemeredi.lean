@@ -263,6 +263,10 @@ import GowersSzemeredi.Proofs18RelativeProgressionCount
 import GowersSzemeredi.Proofs18RelativeProgressionExistence
 import GowersSzemeredi.Proofs18IntervalUniformStopping
 import GowersSzemeredi.Proofs18IntervalQuadraticDichotomy
+import GowersSzemeredi.Proofs18NaturalReindex
+import GowersSzemeredi.Proofs18QuadraticIterationStep
+import GowersSzemeredi.Proofs18DensityIteration
+import GowersSzemeredi.Proofs18QuadraticIteration
 
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
