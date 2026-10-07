@@ -1,0 +1,158 @@
+import OAI.Combinatorics.Progressions.Geometry.ActualFixedSpatialRetainedPatchEndpoint
+
+namespace OAI
+
+section
+
+namespace Erdos3
+
+open scoped NNReal
+
+def recoveredKernelScalarBudget (B : ℝ) : ℝ := 8 * (B + 1) ^ 2
+
+theorem recoveredKernelScalarBudget_ge {B : ℝ} (hB : 1 ≤ B) :
+    1 ≤ recoveredKernelScalarBudget B ∧ B ≤ recoveredKernelScalarBudget B := by
+  unfold recoveredKernelScalarBudget
+  constructor <;> nlinarith [sq_nonneg B]
+
+theorem recoveredKernelScalarBudget_discounted_score {B score δ : ℝ}
+    (hB : 1 ≤ B) (hscore : Real.exp (-B) ≤ score)
+    (hδ : 0 ≤ δ) (hδ1 : δ ≤ 1) :
+    Real.exp (-recoveredKernelScalarBudget B) ≤ (score / 2) / (1 + δ) := by
+  have hL : B + 4 ≤ recoveredKernelScalarBudget B := by
+    unfold recoveredKernelScalarBudget
+    nlinarith [sq_nonneg B]
+  have hexp4 : (4 : ℝ) ≤ Real.exp 4 := by
+    linarith only [Real.add_one_le_exp (4 : ℝ)]
+  have hfour : 4 * Real.exp (-recoveredKernelScalarBudget B) ≤ score := by
+    calc
+      _ ≤ Real.exp 4 * Real.exp (-recoveredKernelScalarBudget B) :=
+        mul_le_mul_of_nonneg_right hexp4 (Real.exp_nonneg _)
+      _ = Real.exp (4 - recoveredKernelScalarBudget B) := by rw [← Real.exp_add]; rfl
+      _ ≤ Real.exp (-B) := Real.exp_le_exp.mpr (by linarith)
+      _ ≤ score := hscore
+  apply (le_div_iff₀ (by linarith : (0 : ℝ) < 1 + δ)).mpr
+  apply (le_div_iff₀ (by norm_num : (0 : ℝ) < 2)).mpr
+  have he := Real.exp_nonneg (-recoveredKernelScalarBudget B)
+  nlinarith
+
+private theorem mul_exp_bound {x y a b : ℝ} (hx : x ≤ Real.exp a)
+    (hy : y ≤ Real.exp b) (hy0 : 0 ≤ y) : x * y ≤ Real.exp (a + b) := by
+  calc
+    _ ≤ Real.exp a * Real.exp b := mul_le_mul hx hy hy0 (Real.exp_nonneg _)
+    _ = _ := (Real.exp_add _ _).symm
+
+theorem recoveredRationalCap_le_exp {B : ℝ} (hB : 1 ≤ B)
+    (q r : ℕ) (Icap : ℝ≥0)
+    (hq : (q : ℝ) ≤ Real.exp B) (hr : (r : ℝ) ≤ B)
+    (hI : (Icap : ℝ) ≤ Real.exp B) :
+    (Icap : ℝ) * (q : ℝ) ^ r ≤ Real.exp (B + B ^ 2) := by
+  have hpow : (q : ℝ) ^ r ≤ Real.exp (B ^ 2) := by
+    calc
+      _ ≤ (Real.exp B) ^ r := pow_le_pow_left₀ (Nat.cast_nonneg _) hq r
+      _ = Real.exp ((r : ℝ) * B) := (Real.exp_nat_mul B r).symm
+      _ ≤ _ := Real.exp_le_exp.mpr (by nlinarith)
+  exact mul_exp_bound hI hpow (pow_nonneg (Nat.cast_nonneg _) _)
+
+theorem recoveredKernel_constants_le_exp {B : ℝ} (hB : 1 ≤ B)
+    (κ Dcap Dlip Rcap K H Tinverse : ℝ≥0)
+    (hκ : (κ : ℝ) ≤ Real.exp B) (hDcap : (Dcap : ℝ) ≤ Real.exp B)
+    (hDlip : (Dlip : ℝ) ≤ Real.exp B)
+    (hRcap : (Rcap : ℝ) ≤ Real.exp (B + B ^ 2))
+    (hK : (K : ℝ) ≤ Real.exp B) (hH : (H : ℝ) ≤ Real.exp B)
+    (hTinverse : (Tinverse : ℝ) ≤ Real.exp B) :
+    ((κ * (Dcap * Rcap) : ℝ≥0) : ℝ) ≤ Real.exp (recoveredKernelScalarBudget B) ∧
+    ((κ * (Rcap * (Dlip * Tinverse)) : ℝ≥0) : ℝ) ≤
+      Real.exp (recoveredKernelScalarBudget B) ∧
+    ((κ * (Rcap * (Dlip * (K * H))) : ℝ≥0) : ℝ) ≤
+      Real.exp (recoveredKernelScalarBudget B) := by
+  have hDC := mul_exp_bound hDcap hRcap Rcap.coe_nonneg
+  have hDT := mul_exp_bound hDlip hTinverse Tinverse.coe_nonneg
+  have hKH := mul_exp_bound hK hH H.coe_nonneg
+  have hDKH := mul_exp_bound hDlip hKH (mul_nonneg K.coe_nonneg H.coe_nonneg)
+  have hspace := mul_exp_bound hRcap hDT (mul_nonneg Dlip.coe_nonneg Tinverse.coe_nonneg)
+  have hlift := mul_exp_bound hRcap hDKH
+    (mul_nonneg Dlip.coe_nonneg (mul_nonneg K.coe_nonneg H.coe_nonneg))
+  have hcap := mul_exp_bound hκ hDC (mul_nonneg Dcap.coe_nonneg Rcap.coe_nonneg)
+  have hspace' := mul_exp_bound hκ hspace
+    (mul_nonneg Rcap.coe_nonneg (mul_nonneg Dlip.coe_nonneg Tinverse.coe_nonneg))
+  have hlift' := mul_exp_bound hκ hlift
+    (mul_nonneg Rcap.coe_nonneg
+      (mul_nonneg Dlip.coe_nonneg (mul_nonneg K.coe_nonneg H.coe_nonneg)))
+  simp only [NNReal.coe_mul]
+  refine ⟨hcap.trans ?_, hspace'.trans ?_, hlift'.trans ?_⟩ <;>
+    apply Real.exp_le_exp.mpr <;>
+    unfold recoveredKernelScalarBudget <;> nlinarith [sq_nonneg B]
+
+theorem recoveredKernel_joint_constants_le_exp {B : ℝ} (hB : 1 ≤ B)
+    (κ Dcap Dlip D Icap H Tinverse : ℝ≥0) (q r : ℕ)
+    (hDcap : Dcap ≤ D) (hDlip : Dlip ≤ D)
+    (hjoint : (κ : ℝ) * (D : ℝ) * (Icap : ℝ) ≤ Real.exp B)
+    (hq : (q : ℝ) ≤ Real.exp B) (hr : (r : ℝ) ≤ B)
+    (hH : (H : ℝ) ≤ Real.exp B) (hTinverse : (Tinverse : ℝ) ≤ Real.exp B) :
+    let Rcap : ℝ≥0 := Icap * (q : ℝ≥0) ^ r
+    ((κ * (Dcap * Rcap) : ℝ≥0) : ℝ) ≤ Real.exp (recoveredKernelScalarBudget B) ∧
+    ((κ * (Rcap * (Dlip * Tinverse)) : ℝ≥0) : ℝ) ≤
+      Real.exp (recoveredKernelScalarBudget B) ∧
+    ((κ * (Rcap * (Dlip * H)) : ℝ≥0) : ℝ) ≤
+      Real.exp (recoveredKernelScalarBudget B) := by
+  have hpow : (q : ℝ) ^ r ≤ Real.exp (B ^ 2) := by
+    calc
+      _ ≤ (Real.exp B) ^ r := pow_le_pow_left₀ (Nat.cast_nonneg _) hq r
+      _ = Real.exp ((r : ℝ) * B) := (Real.exp_nat_mul B r).symm
+      _ ≤ _ := Real.exp_le_exp.mpr (by nlinarith)
+  have hbaseCap : (κ : ℝ) * (Dcap : ℝ) * (Icap : ℝ) ≤ Real.exp B := by
+    apply le_trans _ hjoint
+    exact mul_le_mul_of_nonneg_right
+      (mul_le_mul_of_nonneg_left hDcap κ.coe_nonneg) Icap.coe_nonneg
+  have hbaseLip : (κ : ℝ) * (Dlip : ℝ) * (Icap : ℝ) ≤ Real.exp B := by
+    apply le_trans _ hjoint
+    exact mul_le_mul_of_nonneg_right
+      (mul_le_mul_of_nonneg_left hDlip κ.coe_nonneg) Icap.coe_nonneg
+  have hcap := mul_exp_bound hbaseCap hpow (pow_nonneg (Nat.cast_nonneg _) _)
+  have hlip := mul_exp_bound hbaseLip hpow (pow_nonneg (Nat.cast_nonneg _) _)
+  have hspace := mul_exp_bound hlip hTinverse Tinverse.coe_nonneg
+  have hactive := mul_exp_bound hlip hH H.coe_nonneg
+  have hexp : Real.exp (B + B ^ 2) ≤ Real.exp (recoveredKernelScalarBudget B) := by
+    apply Real.exp_le_exp.mpr
+    unfold recoveredKernelScalarBudget
+    nlinarith [sq_nonneg B]
+  have hexp' : Real.exp (B + B ^ 2 + B) ≤ Real.exp (recoveredKernelScalarBudget B) := by
+    apply Real.exp_le_exp.mpr
+    unfold recoveredKernelScalarBudget
+    nlinarith [sq_nonneg B]
+  dsimp only
+  simp only [NNReal.coe_mul, NNReal.coe_pow, NNReal.coe_natCast]
+  constructor
+  · convert hcap.trans hexp using 1
+    first | rfl | ring
+  constructor
+  · convert hspace.trans hexp' using 1
+    first | rfl | ring
+  · convert hactive.trans hexp' using 1
+    first | rfl | ring
+
+theorem recoveredKernelScalarBudget_le_power {p B : ℝ} {a : ℕ}
+    (hp : 2 ≤ p) (hB : 0 ≤ B) (hbudget : B ≤ (p + 2) ^ a) :
+    recoveredKernelScalarBudget B ≤ (p + 2) ^ (2 * a + 4) := by
+  apply le_trans _ (spatialPatchExtractionCost_le_power hp hB hbudget)
+  unfold recoveredKernelScalarBudget spatialPatchExtractionCost
+  nlinarith [sq_nonneg (B + 1)]
+
+theorem recoveredPatchExtractionCost_le_power {p B : ℝ} {a : ℕ}
+    (hp : 2 ≤ p) (hB : 0 ≤ B) (hbudget : B ≤ (p + 2) ^ a) :
+    spatialPatchExtractionCost (recoveredKernelScalarBudget B) ≤
+      (p + 2) ^ (4 * a + 12) := by
+  have hnonneg : 0 ≤ recoveredKernelScalarBudget B := by
+    unfold recoveredKernelScalarBudget
+    positivity
+  have h := spatialPatchExtractionCost_le_power hp hnonneg
+    (recoveredKernelScalarBudget_le_power hp hB hbudget)
+  have he : 2 * (2 * a + 4) + 4 = 4 * a + 12 := by omega
+  rwa [he] at h
+
+end Erdos3
+
+end
+
+end OAI

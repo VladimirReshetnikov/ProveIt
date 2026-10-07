@@ -1,0 +1,139 @@
+% Created (UTC): 2026-06-21T18:28:10Z
+% Repository HEAD: 4d0a91f7c224c233697d6e5077ab6589475572e3
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs}
+\usepackage{microtype}
+\emergencystretch=3em \hbadness=4000
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\DeclareMathOperator{\Li}{Li}
+\DeclareMathOperator{\Cl}{Cl}
+\newcommand{\iu}{\mathrm{i}}
+\newcommand{\Imag}{\operatorname{Im}}
+\newcommand{\Real}{\operatorname{Re}}
+\theoremstyle{plain}\newtheorem{theorem}{Theorem}\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\title{Clausen constants at roots of unity:\\
+the fundamental basis by Dirichlet conductor, and a weight parity swap}
+\author{Vladimir Reshetnikov}
+\date{2026-06-21}
+\begin{document}
+\maketitle
+\begin{center}\small
+Research report. Created (UTC) 2026-06-21T18:28:10Z; repository \texttt{HEAD}
+\texttt{4d0a91f7c224c233697d6e5077ab6589475572e3}.\\
+Store \texttt{clausen-roots-of-unity.wl}. Companions: \texttt{polylog-vertical-line},
+\texttt{cleo-arctan-sin-chi2}.
+\end{center}
+
+\begin{abstract}
+The imaginary parts $\Cl_2(2\pi a/n)=\Imag\Li_2(e^{2\pi\iu a/n})$ that appear when one evaluates the
+dilogarithm at algebraic points (as in Reshetnikov's Math.StackExchange questions 1430169 and 1410276)
+are organized completely by the theory of odd Dirichlet characters. We record the explicit picture and
+verify it numerically: the $\mathbb Q$-span of $\{\Cl_2(2\pi a/n)\}$ has dimension $\varphi(n)/2$, and the
+genuinely \emph{new} constants entering at exact level $n$ are indexed by the \emph{primitive} odd
+characters mod $n$. By conductor the fundamental constants are $V=\Cl_2(\pi/3)$ (Gieseking, conductor $3$),
+$G=\Cl_2(\pi/2)$ (Catalan, conductor $4$), $W_8=\Cl_2(\pi/4)$ (conductor $8$), and $W_{24}=\Cl_2(\pi/12)$
+(conductor $24$); conductor $12$ contributes nothing. This settles the open question in MSE answer
+a/5113303: level $24$ needs exactly \emph{one} new constant $W_{24}$ beyond $\{G,V,W_8\}$. We give the
+reduction tables, the $L$-value/trigamma forms, a new closed form
+$\Li_2(e^{\iu\pi/12})=\tfrac{73\pi^2}{576}+\iu W_{24}$, and a clean \emph{weight parity swap}: at weight
+$3$ the imaginary part $\Imag\Li_3(e^{2\pi\iu a/n})$ is \emph{elementary} (a rational multiple of $\pi^3$),
+so the deep constants move to the real part---the reverse of weight $2$.
+\end{abstract}
+
+\section{Context: dilogarithms at algebraic points}
+\href{https://math.stackexchange.com/q/1430169}{MSE 1430169} asks for a closed form of
+$\Li_2\!\bigl(\tfrac12+\iu(1-\tfrac{\sqrt3}2)\bigr)$. The standard route (Sangchul Lee,
+\href{https://math.stackexchange.com/a/1430262}{a/1430262}) uses $\Li_2(z)=-\Li_2(z/(z-1))-\tfrac12\ln^2(1-z)$
+to send the point to the unit circle: here $z/(z-1)=e^{7\pi\iu/6}$, and
+$\Li_2(e^{\iu\theta})=\bigl(\tfrac{\pi^2}6-\tfrac{\pi\theta}2+\tfrac{\theta^2}4\bigr)+\iu\Cl_2(\theta)$ for
+$\theta\in[0,2\pi)$, so everything reduces to the Clausen value $\Cl_2(7\pi/6)$. The closed form's
+nontrivial content is therefore the reduction of a single $\Cl_2$ at a rational angle. A later answer
+(\href{https://math.stackexchange.com/a/5113303}{a/5113303}) expresses the whole level-$12$ family through
+two constants---the Catalan constant $G$ and the Gieseking constant $V$---and asks whether level $24$
+needs something new. It does; the organizing principle is classical, and we make it explicit.
+
+\section{The fundamental constants, by conductor}
+For $n>2$ the values $\Cl_2(2\pi a/n)$, $1\le a<n$, are linear combinations of $L(2,\chi)$ over the
+\emph{odd} Dirichlet characters $\chi$ mod $n$ (those with $\chi(-1)=-1$), because $\Cl_2$ is an odd
+function of the angle. Hence:
+\begin{proposition}\label{prop:dim}
+$\dim_{\mathbb Q}\operatorname{span}\{\Cl_2(2\pi a/n):1\le a<n\}=\varphi(n)/2$, the number of odd
+characters mod $n$. The constants genuinely new at exact level $n$ (not already present at any proper
+divisor) are indexed by the \emph{primitive} odd characters mod $n$; their count is
+$0,0,1,0,2,1,2,0,4,0,5,0,1,2,7,\dots$ for $n=3,4,5,\dots$.
+\end{proposition}
+The first few fundamental constants, one per primitive odd character, are
+\[
+  \underbrace{V=\Cl_2(\tfrac\pi3)}_{\text{conductor }3},\quad
+  \underbrace{G=\Cl_2(\tfrac\pi2)}_{\text{conductor }4},\quad
+  \underbrace{W_8=\Cl_2(\tfrac\pi4)}_{\text{conductor }8},\quad
+  \underbrace{W_{24}=\Cl_2(\tfrac\pi{12})}_{\text{conductor }24}.
+\]
+Conductor $12$ has \emph{no} primitive odd character (every odd character mod $12$ factors through $3$ or
+$4$), which is exactly why the level-$12$ family of a/5113303 collapses onto $\{G,V\}$. Conductors $6$ and
+$10$ likewise add nothing. The pentagon level $5$ is the first to add \emph{two} constants at once,
+$\Cl_2(2\pi/5)$ and $\Cl_2(4\pi/5)$ (two conjugate primitive odd characters mod $5$).
+
+Their canonical $L$-value (trigamma) forms are
+\begin{equation}\label{eq:trig}
+  G=\frac{\psi^{(1)}(\tfrac14)-\pi^2}{8},\qquad
+  \sqrt3\,V=\frac{3\psi^{(1)}(\tfrac13)-2\pi^2}{6}\ \ \Bigl(\text{i.e. }\psi^{(1)}(\tfrac13)=\tfrac{2\pi^2}3+2\sqrt3\,V\Bigr).
+\end{equation}
+
+\section{Reduction tables and the settled level-24 question}
+Every $\Cl_2(2\pi a/n)$ at $n\in\{8,12,24\}$ reduces to the basis above (PSLQ, $\ge110$ digits,
+Champernowne canary; all confirmed in Wolfram):
+\begin{align*}
+\text{level }12:\quad
+  &\Cl_2(\tfrac\pi6)=\tfrac23G+\tfrac14V,\quad \Cl_2(\tfrac{5\pi}6)=\tfrac23G-\tfrac14V,\quad
+  \Cl_2(\tfrac{2\pi}3)=\tfrac23V;\\
+\text{level }8:\quad
+  &\Cl_2(\tfrac{3\pi}4)=W_8-\tfrac12G;\\
+\text{level }24:\quad
+  &\Cl_2(\tfrac{5\pi}{12})=\tfrac{16W_8+24W_{24}-4G-3V}{24},\quad
+  \Cl_2(\tfrac{7\pi}{12})=\tfrac{4W_8+6W_{24}-3G}{6},\\
+  &\Cl_2(\tfrac{11\pi}{12})=\tfrac{24W_{24}-8G-3V}{24}.
+\end{align*}
+The four level-$24$ values $\Cl_2(k\pi/12)$, $k\in\{1,5,7,11\}$, span a $4$-dimensional space
+$\{G,V,W_8,W_{24}\}$ ($=\varphi(24)/2$), and $W_{24}$ is provably outside $\operatorname{span}\{G,V,W_8\}$.
+\begin{remark}
+This settles a/5113303: the dilogarithms of $24$th roots of unity require exactly one constant beyond the
+level-$12$ pair $\{G,V\}$ and the level-$8$ constant $W_8$, namely $W_{24}=\Cl_2(\pi/12)$.
+\end{remark}
+
+\section{A new closed form}
+Since $\Cl_2(\pi/12)=W_{24}$ is itself fundamental, the cleanest carrier is the dilogarithm at the
+primitive $24$th root $e^{\iu\pi/12}$:
+\begin{equation}\label{eq:new}
+  \Li_2(e^{\iu\pi/12})=\frac{73\pi^2}{576}+\iu\,W_{24},
+\end{equation}
+the real part being $\tfrac{\pi^2}6-\tfrac{\pi}{2}\!\cdot\!\tfrac\pi{12}+\tfrac14(\tfrac\pi{12})^2$. Pulling
+this back through $z=1/(1-e^{\iu\theta})$ gives Reshetnikov-style closed forms at the corresponding
+$\mathbb Q(\sqrt2,\sqrt3,\sqrt6)$ points; the cleanest stays the root-of-unity form~\eqref{eq:new}.
+
+\section{A weight parity swap}
+The same character parity that makes $\Cl_2$ (weight $2$, odd characters) carry deep constants reverses one
+weight up. For odd $\chi$, $L(s,\chi)$ is a rational multiple of $\pi^s$ exactly when $s$ is \emph{odd};
+since $\Imag\Li_3(e^{\iu\theta})=\sum\sin(k\theta)/k^3$ pairs with odd characters at $s=3$,
+\begin{equation}\label{eq:swap}
+  \Imag\Li_3(e^{2\pi\iu a/n})\in\mathbb Q\cdot\pi^3\quad\text{for all }a,n,
+\end{equation}
+e.g. $\Imag\Li_3(e^{2\pi\iu/3})=\tfrac{2\pi^3}{81}$, $\Imag\Li_3(\iu)=\tfrac{\pi^3}{32}$,
+$\Imag\Li_3(e^{\iu\pi/3})=\tfrac{5\pi^3}{162}$, $\Imag\Li_3(e^{2\pi\iu/5})=\tfrac{4\pi^3}{125}$. Thus at
+weight $3$ the \emph{imaginary} part at roots of unity is elementary, and the deep constants
+($\zeta(3)$ and the even-character $L(3,\chi)$) live in the \emph{real} part---the exact reverse of weight
+$2$. (On the line $\Real z=1$ the picture is different again: there $\Imag\Li_3(1+\iu)$ is the central-binomial
+Gaussian tower constant, because $1+\iu$ is not a root of unity; see \texttt{polylog-vertical-line}.)
+
+\section{Verification and reproducibility}
+Proposition~\ref{prop:dim}'s reductions, the trigamma forms~\eqref{eq:trig}, the new closed
+form~\eqref{eq:new}, the original MSE value, and the weight-$3$ rationals~\eqref{eq:swap} are verified in
+\texttt{mpmath} (PSLQ, $90$--$110$ digits, Champernowne canary) and Wolfram, residuals
+$10^{-63}$ to $10^{-73}$. (Two level-$24$ reductions were sign-corrected against Wolfram before storing.)
+Closed forms are in \texttt{src/PolyLog/identities/clausen-roots-of-unity.wl}; scripts under
+\texttt{src/PolyLog/tools/scratch/clausen-roots/}.
+
+\end{document}

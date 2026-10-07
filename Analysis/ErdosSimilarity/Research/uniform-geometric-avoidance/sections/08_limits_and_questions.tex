@@ -1,0 +1,172 @@
+\section{Scope, limitations, and further research}
+\label{sec:questions}
+
+The uniform result is stronger than taking countably many individually
+avoided ratios, but it does not remove all restrictions on an infinite
+pattern. The next proposition makes one limitation precise.
+
+\begin{proposition}[Ratio bounds alone cannot support uniform avoidance]
+\label{prop:annular-obstruction}
+Every measurable $E\subset\R$ of positive measure contains a translate
+of some positive decreasing sequence $(a_n)$ with
+\begin{equation}\label{eq:annular-ratios}
+ \frac18<\frac{a_{n+1}}{a_n}<\frac12\qquad(n\ge1).
+\end{equation}
+Consequently no positive-measure set can simultaneously avoid all
+sequences satisfying even these fixed two-sided ratio bounds.
+\end{proposition}
+
+\begin{proof}
+Choose a Lebesgue density point $x$ of $E$. For all sufficiently large
+$j$, the interval
+\[
+ (x+\tfrac12 4^{-j},\ x+4^{-j})
+\]
+meets $E$: otherwise its missing length $\tfrac12 4^{-j}$ would
+contradict density one at $x$ on intervals of radius $4^{-j}$.
+Choose $y_j$ in each such intersection and put $a_j=y_j-x$.
+The bounds $\tfrac12 4^{-j}<a_j<4^{-j}$ give
+\eqref{eq:annular-ratios}; reindex the sufficiently late tail from one.
+\end{proof}
+
+The polynomial dependence in \cref{thm:poly-family} prevents this
+unrestricted freedom to choose each annular point independently. The
+number of parameters and the growth of their sign complexity are doing
+real work. A common envelope is necessary for the present proof but is
+not, by itself, enough.
+
+\subsection{What the theorems do not claim}
+
+The general Erd\H{o}s similarity conjecture for an arbitrary infinite
+set is not resolved here. In particular, arbitrary rapidly decaying
+sequences, such as sequences whose logarithmic scales have unbounded
+successive gaps, need not admit the synchronized sampling used above.
+The same applies to arbitrary infinite mixtures and to unrestricted
+nonlinear images of geometric sequences.
+
+No effective complexity bound of practical size is supplied. The first
+branching choice already grows with $\log(1/Q)/p$, while the tree depth
+needed to make default avoidance rare can be exponential in the
+branching number. The proof explicitly permits this cost. The exact
+verification suite tests structural identities at feasible sizes; it
+does not instantiate the full small-density construction.
+
+The inherited routing argument is fully credited to \cite{OpenAI84}.
+The novel claims relative to that inspected source are the common-ratio
+uniformization, the polynomial-family extension and its applications,
+the periodic tail assembly, and the effective certificate framework.
+A targeted repository and literature search located no earlier statement
+with these simultaneous quantifiers. That search is evidence about
+provenance, not a substitute for external mathematical review.
+
+\subsection{Questions arising from this work}
+
+The following are proposed research directions. Except for the explicitly
+identified classical conjecture, they are questions suggested by this
+paper, not assertions that each has an established open-problem status
+in the literature.
+
+\begin{question}[Quantitative normalized blockers]
+For a ratio interval $[\alpha,\beta]$ and hole budget $\delta$, how small
+can the number of rational arcs and the finite witnessing exponent be
+in \cref{prop:effective-H}? Can the tree depth be replaced by a
+substantially smaller construction?
+\end{question}
+The present proof controls the parameter entropy locally but pays a
+large price for finding a default on every center route with high
+probability. A different routing rule could change that price without
+changing the synchronization lemma.
+
+\begin{question}[Derandomization with short certificates]
+Can one construct useful normalized blockers by deterministic
+conditional expectation, while representing the tables implicitly?
+Can the final quantified polynomial certificate be made small enough
+for complete independent checking in Lean or another proof assistant?
+\end{question}
+The terminal-address argument gives an exact probability identity.
+The obstacle is the number of table entries, not a need to estimate
+that identity numerically.
+
+\begin{question}[Infinite mixtures]
+Is there one positive-measure compact set avoiding every affine
+sequence $a_n=\int_{[\alpha,\beta]}q^n\,d\mu(q)$, where $\mu$ ranges
+over all probability measures on a fixed compact interval
+$0<\alpha<\beta<1$?
+\end{question}
+Finite support is covered here with no bound on its size, using a
+countable union of finite-dimensional families. Passing to limits of
+measures does not preserve a useful uniform finite witness automatically.
+The unrestricted-annulus obstruction does not directly settle this
+more structured class.
+
+\begin{question}[Bounds near cancellations and root collisions]
+For the signed exponential polynomials in \cref{thm:signed-exp-poly},
+can one obtain sharp uniform bounds on the first usable tail and the
+finite certificate size as the dominant coefficient tends to zero or
+as the largest two bases coalesce?
+\end{question}
+The existence theorem uses a countable exhaustion by coefficient and
+root-separation bounds. It gives an effective answer on each compact
+box, but does not control the deterioration sharply near its boundary.
+
+\begin{question}[Oscillatory recurrences]
+What remains true for real linear recurrence sequences whose
+characteristic roots are nonreal and have modulus less than one?
+Which spectral separation conditions guarantee a uniformly usable
+subsequence and a polynomial parameter count?
+\end{question}
+Oscillation can create arbitrarily small terms and destroy monotonicity.
+Using several coordinates of a recurrence state rather than one scalar
+term may provide a suitable replacement for the first-crossing rule.
+
+\begin{question}[A parameter-complexity threshold]
+What is the weakest quantitative hypothesis on the number of realized
+local key vectors that ensures a common avoiding set? Is there a
+natural sharp boundary between the finite-dimensional families handled
+here and the class excluded by \cref{prop:annular-obstruction}?
+\end{question}
+The proof can absorb any fixed exponential rate in window length by
+increasing $M$. It cannot absorb arbitrary rates whose coefficient
+grows uncontrollably with the window location.
+
+\begin{question}[Sharper effective representations]
+Can the compact avoiding set be chosen computable in the Hausdorff
+representation, or with an explicitly computable distance function,
+while retaining simultaneous avoidance and near-full measure?
+\end{question}
+The effective measure modulus in \eqref{eq:measure-modulus} does not
+by itself answer this. Nor does it automatically make the perfect
+support construction effective.
+
+\begin{question}[Geometric regularity of the avoiding set]
+Can one prescribe additional regularity of the complementary intervals,
+such as quantitative bounds on their distribution, while avoiding all
+geometric progressions? Which familiar positive-measure Cantor
+constructions necessarily contain some such progression?
+\end{question}
+The results of \cite{BGKMW} concerning symmetric Cantor sets show
+that geometric regularity can force progressions. A successful avoiding
+construction must depart from those sufficient conditions.
+
+\begin{question}[Beyond contracting geometric scales]
+Can the routing mechanism be combined with a different sampling rule
+to handle a fixed supergeometric sequence, or a nontrivial compact
+family of them? Can this yield new cases of the full Erd\H{o}s
+similarity conjecture?
+\end{question}
+The obstruction is visible in the proof: a large gap between successive
+logarithmic scales leaves too few independent samples at a common
+resolution. A new ingredient is required there.
+
+\begin{question}[Uniform nonlinear images]
+For which finite-dimensional classes of maps $\phi$ can one avoid all
+sets $\{x+s\phi(q^n):n\ge1\}$ simultaneously? Every nonconstant real
+polynomial $\phi$ is covered by \cref{thm:signed-exp-poly}, after
+absorbing its constant term into the translation;
+which additional analytic classes have comparably controlled local
+sign complexity?
+\end{question}
+A Taylor expansion alone does not justify this extension, since a
+small error can move a point across the boundary of the avoiding set.
+The finite positive-margin certificates provide a possible way to
+quantify such errors on compact parameter ranges.

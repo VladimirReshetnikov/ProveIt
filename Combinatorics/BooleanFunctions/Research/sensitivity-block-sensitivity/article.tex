@@ -1,0 +1,938 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,booktabs,array}
+\usepackage{verbatim}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\hypersetup{pdftitle={An explicit exponent above 65/32 for ordinary sensitivity versus block sensitivity},pdfauthor={ChatGPT},pdfsubject={Indexed tournament recurrences and an exact integer separation certificate}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\DeclareMathOperator{\bs}{bs}
+\DeclareMathOperator{\dist}{dist}
+\newcommand{\sens}{s}
+\newcommand{\bits}{\{0,1\}}
+\newcommand{\zero}{\mathbf{0}}
+\newcommand{\one}{\mathbf{1}}
+\newcommand{\NN}{\mathbb{N}}
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\floor}[1]{\left\lfloor #1\right\rfloor}
+\newcommand{\ceil}[1]{\left\lceil #1\right\rceil}
+\setlength{\emergencystretch}{2em}
+
+\title{An explicit exponent above $65/32$\\
+for ordinary sensitivity versus block sensitivity}
+\author{Research companion prepared with ChatGPT\\for the ProveIt repository}
+\date{7 October 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We give an explicitly quantified refinement of the nested-tournament
+construction in the repository manuscript \emph{A superquadratic separation
+between sensitivity and block sensitivity}.  A fixed total Boolean function
+has sensitivity at most $S_*=9\cdot2^{318}$ and block sensitivity at zero at
+least $B_*=100\cdot2^{646}$.  Its iterated disjoint compositions consequently
+satisfy
+\[
+ \bs(F_m,\zero)\ge \sens(F_m)^{\alpha_*},\qquad
+ \alpha_*=
+ \frac{\log100+646\log2}{\log9+318\log2}
+ =2.03208272439\ldots>\frac{65}{32}.
+\]
+Moreover, $\bs(F_m,\zero)/\sens(F_m)^{65/32}$ tends to infinity.
+The refinement allows different tournament sizes at different depths,
+retains the sensitivity of each nested predicate separately, and sharpens
+the count of clauses that are one gate away from accepting.  We prove all
+combinatorial and composition statements used here.  The remaining finite
+calculation consists of twenty applications of explicit integer
+recurrences; a complete dependency-free verifier is included.  The
+construction is an existence theorem with a finite search procedure for
+its labels, not a practical truth-table construction.  No optimality of
+the exponent, and no new Lean formalization, is claimed.
+\end{abstract}
+
+\tableofcontents
+
+\section{Main result, attribution, and scope}
+\label{sec:main}
+
+Ordinary sensitivity counts input bits that individually change a Boolean
+function's value.  Block sensitivity permits disjoint nonempty groups of
+bits to change together.  Huang's theorem settled the polynomial relation
+between these measures \cite{Huang2019}; determining the best possible
+exponent remains a finer quantitative problem.  It is essential here to
+use ordinary sensitivity.  A separation involving the smaller spectral
+sensitivity does not by itself give the result below.
+
+The starting point is OpenAI's September 25, 2026 repository manuscript
+\cite{OpenAI2026}.  It adapts the tournament architecture of Meiburg
+\cite{Meiburg2026} to nested predicates and proves that the ratio
+$\bs(f)/\sens(f)^2$ is unbounded.  We inspected the four source sections
+giving the construction, recurrences, numerical bounds, and composition
+argument at the pinned repository revision recorded in the references.
+The repository also supplies a Lean proof entry and a comparator
+configuration for its quantitative separation theorem.  That original
+formalization was not rebuilt for this companion; the new estimates below
+are proved in prose and checked by exact arithmetic.
+
+\begin{theorem}[Explicit ordinary-sensitivity exponent]
+\label{thm:main}
+Put
+\[
+ S_*=9\cdot2^{318},\qquad B_*=100\cdot2^{646},\qquad
+ \alpha_*=\frac{\log B_*}{\log S_*}.
+\]
+There is a positive integer $n_*$ and, for every integer $m\ge1$, a
+nonconstant total Boolean function
+$F_m:\bits^{n_*^m}\to\bits$ such that
+\begin{gather}
+ F_m(\zero)=0,\qquad
+ \sens(F_m)\le S_*^m,\qquad
+ \bs(F_m,\zero)\ge B_*^m,
+ \label{eq:main-bounds}\\
+ \bs(F_m,\zero)\ge \sens(F_m)^{\alpha_*},\qquad
+ \alpha_*>\frac{65}{32}.
+ \label{eq:main-exponent}
+\end{gather}
+In particular,
+\[
+ \frac{\bs(F_m,\zero)}{\sens(F_m)^{65/32}}
+ \longrightarrow\infty.
+\]
+The number $n_*$ is specified by Equation~\eqref{eq:seed-dimension}.
+\end{theorem}
+
+The quantitative comparison with the source deserves precision.  Its
+printed fixed-power example takes depth $d=9$ and $M=9^{10}$, giving an
+exponent approximately $2.00025240714$.  The same published inequalities,
+without any new lemma, already give approximately $2.00647082823$ when
+one instead takes $d=20$ and $M=9^{21}$.  Our result therefore should not be
+described merely as an improvement over the source's first displayed
+seed.  We change the parameter schedule and its analysis, obtaining the
+larger certified exponent in Theorem~\ref{thm:main}.
+
+\begin{center}
+\begin{tabular}{@{}p{0.55\linewidth}l@{}}
+\toprule
+Certificate being compared & Certified exponent\\
+\midrule
+Source's displayed seed, $d=9$, $M=9^{10}$
+  & $2.00025240714\ldots$\\
+Source's same estimate evaluated at $d=20$, $M=9^{21}$
+  & $2.00647082823\ldots$\\
+Theorem~\ref{thm:main}, using the simple bounds $S_*,B_*$
+  & $2.03208272439\ldots$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+These numerical values describe particular sufficient estimates.  We do
+not prove that the source's parameter family has no better choice, nor
+that our schedule is optimal within its more general family.  Likewise,
+the finite label search implicit in the proof is far too large for a
+practical construction.  Its purpose is to establish an unambiguous
+finite Boolean function with controlled complexity measures.
+
+\section{Definitions and bookkeeping}
+
+For a positive integer $n$, write $[n]=\{1,\ldots,n\}$.  If
+$x\in\bits^n$ and $B\subseteq[n]$, let $x^B$ be obtained from $x$ by
+flipping precisely the coordinates in $B$.  Write $x^a=x^{\{a\}}$.
+For a total function $f:\bits^n\to\bits$, define
+\begin{align*}
+ \sens(f,x)&=|\{a\in[n]:f(x^a)\ne f(x)\}|,\\
+ \sens(f)&=\max_{x\in\bits^n}\sens(f,x).
+\end{align*}
+The block sensitivity $\bs(f,x)$ is the largest cardinality of a family
+of pairwise disjoint nonempty sets $B_1,\ldots,B_b\subseteq[n]$ for
+which $f(x^{B_j})\ne f(x)$ for every $j$; put
+$\bs(f)=\max_x\bs(f,x)$.
+
+We will construct a family of predicates $P_1,\ldots,P_H$ on the same
+input space satisfying
+\[
+                    P_1(x)\ge P_2(x)\ge\cdots\ge P_H(x)
+                    \quad\text{for all }x.
+\]
+Nesting refers to the predicate index and does not assert monotonicity
+in the input bits.  Let
+\begin{align*}
+ S_0(q)&=\max_{x:P_q(x)=0}|\{a:P_q(x^a)=1\}|,\\
+ S_1(q)&=\max_{x:P_q(x)=1}|\{a:P_q(x^a)=0\}|.
+\end{align*}
+Two further profiles measure simultaneous changes of distinct
+predicates:
+\begin{align*}
+ J_0&=\max_{\substack{q<q'\\P_q(x)=P_{q'}(x)=0}}
+       |\{a:P_q(x^a)=P_{q'}(x^a)=1\}|,\\
+ J_1&=\max_{\substack{q<q'\\P_q(x)=P_{q'}(x)=1}}
+       |\{a:P_q(x^a)=P_{q'}(x^a)=0\}|.
+\end{align*}
+All maxima range over the relevant inputs as well as the displayed
+indices.  An empty maximum is zero.  Thus $J_0=J_1=0$ if $H=1$.
+
+Unlike the source's scalar sensitivity envelopes, we retain each
+$S_b(q)$ individually.  This is useful because the target conditions at
+every stage use the strongest child predicate, whereas different parent
+predicates use different gate thresholds.  The two joint profiles remain
+scalar maxima; no array indexed by pairs is needed for our certificate.
+
+\section{Labelled regular tournaments}
+\label{sec:labels}
+
+A tournament is an orientation of every pair of distinct vertices, with
+exactly one of $i\to j$ and $j\to i$.  For an integer $h\ge1$, there
+is a tournament on $k=2h+1$ vertices having outdegree exactly $h$ at every
+vertex: place the vertices cyclically and direct an edge from each vertex
+to the next $h$ vertices.
+
+Each directed edge $i\to j$ will receive a label $a(i,j)\in[4]$.
+The label chooses one of four child inputs in row $j$.  The following
+condition limits how many almost-satisfied target rows can coexist.
+
+\begin{definition}
+An edge labelling has the $\tau$-exclusion property if there is no
+$I\subseteq[k]$ of cardinality $\tau$ for which labels
+$m_j\in[4]$, $j\in I$, satisfy
+\[
+                   a(i,j)=m_j
+          \quad\text{whenever }i,j\in I\text{ and }i\to j.
+\]
+\end{definition}
+
+\begin{lemma}[A uniform label choice]
+\label{lem:labels}
+Let $e\ge1$, $h=2^e$, $k=2h+1$, and $\tau=e+6$.  Every tournament
+on $k$ vertices has a labelling by $[4]$ with the $\tau$-exclusion
+property.
+\end{lemma}
+
+\begin{proof}
+Independently label each directed edge uniformly from $[4]$.  For fixed
+$I$ and fixed choices $(m_j)_{j\in I}$, the probability of all required
+equalities is $4^{-\binom{\tau}{2}}$.  There are at most
+$k^\tau4^\tau$ choices to consider.  Since $k<2^{e+2}$, the probability
+of any violation is at most
+\[
+ k^\tau4^{\tau-\binom{\tau}{2}}
+ <2^{\tau(e+2)+2\tau-\tau(\tau-1)}
+ =2^{\tau(e+5-\tau)}=2^{-\tau}<1.
+\]
+If $\tau>k$, there are no such subsets and the conclusion is automatic.
+In all cases an admissible labelling exists.
+\end{proof}
+
+This proof also defines a finite deterministic search: enumerate all
+labellings and test the exclusion property until an admissible one is
+found.  The probability argument proves termination.  The exponent
+certificate is independent of which admissible labelling is selected.
+Nothing in the proof requires enumerating the labellings during the
+integer calculation supplied with this article.
+
+\section{The nested predicates}
+\label{sec:construction}
+
+Fix a depth $d\ge1$, a positive number $b_0$ of initial blocks, and
+integers $e_1,\ldots,e_d\ge1$.  Set
+\[
+ L=d+2,\quad H_\ell=d+1-\ell,\quad
+ h_\ell=2^{e_\ell},\quad k_\ell=2h_\ell+1,\quad
+ \tau_\ell=e_\ell+6.
+\]
+At each level choose a regular tournament on $[k_\ell]$ and an
+admissible labelling from Lemma~\ref{lem:labels}.  These choices are
+fixed thereafter.
+
+\subsection{Initial predicates}
+
+Partition $[Lb_0]$ into $b_0$ disjoint blocks $E_1,\ldots,E_{b_0}$,
+each of cardinality $L$.  Let $z_j$ be the indicator of $E_j$ and put
+\[
+ D(x)=\min_{j\in[b_0]}\dist(x,z_j),\qquad
+ P_{0,q}(x)=\one\{D(x)\le H_0-q\},\quad 1\le q\le H_0.
+\]
+Here $\dist$ denotes Hamming distance.  The radii range from $d$ to
+zero, and distinct centres have distance $2L=2d+4$.
+
+\begin{lemma}[Initial profiles]
+\label{lem:base}
+The initial predicates are nested, vanish at zero, and satisfy
+\begin{gather}
+ S_{0,0}(q)\le L-q,\qquad
+ S_{0,1}(q)\le Lb_0-d-1+q,
+ \label{eq:base}\\
+ J_{0,0}=J_{0,1}=0.
+ \label{eq:base-joint}
+\end{gather}
+Flipping any one of $E_1,\ldots,E_{b_0}$ at zero makes every
+initial predicate equal to one.
+\end{lemma}
+
+\begin{proof}
+Nesting follows by decreasing the radius.  At zero, $D(\zero)=L>d$,
+while $D(z_j)=0$, proving the claims about zero and the blocks.
+
+Fix a radius $R=H_0-q$.  At a rejecting input, a successful one-bit
+flip must move toward a centre at distance exactly $R+1$.  There is at
+most one centre within distance $d+1$ of that input: two would have
+mutual distance at most $2d+2$, contrary to their separation.  There
+are at most $R+1=L-q$ possible successful flips.  At an accepting
+input lying strictly inside an $R$-ball, no bit flip can leave that
+ball.  On its boundary, at most $Lb_0-R=Lb_0-d-1+q$ flips increase
+the distance from its centre.  These observations prove
+Equation~\eqref{eq:base}.
+
+The function $D$ is $1$-Lipschitz on edges of the Boolean cube, by the
+triangle inequality.  To cross two distinct integer-radius thresholds
+in the same direction would require changing $D$ by at least two.
+This proves Equation~\eqref{eq:base-joint}.
+\end{proof}
+
+\subsection{One recursive stage}
+
+At level $\ell\ge1$, split the input into $4k_\ell$ disjoint child
+inputs, arranged in rows $j\in[k_\ell]$ and positions $c\in[4]$.
+Each child is an input to the preceding level.  Write it as $x_{j,c}$,
+and abbreviate
+\[
+                 H=H_\ell,\qquad Q=H+1=H_{\ell-1}.
+\]
+For each $q\in[H]$, clause $i$ requires
+\begin{align}
+ P_{\ell-1,Q}(x_{i,c})&=1
+                 &&\text{for every }c\in[4],
+ \label{eq:targets}\\
+ P_{\ell-1,Q-q}(x_{j,a(i,j)})&=0
+                 &&\text{for every edge }i\to j.
+ \label{eq:gates}
+\end{align}
+The four conditions in Equation~\eqref{eq:targets} are its targets;
+the $h_\ell$ conditions in Equation~\eqref{eq:gates} are its gates.
+Set $P_{\ell,q}=1$ if some clause holds, and set it to zero otherwise.
+
+Every condition in a fixed clause uses a different child.  The targets
+lie in its own row, each gate lies in a different outgoing neighbour
+row, and there is only one edge from $i$ to a given $j$.  Consequently,
+a one-bit flip can change at most one condition of any fixed clause.
+It may change conditions of several different clauses; our upper bounds
+will explicitly allow that through union bounds.
+
+Increasing $q$ decreases the child gate index $Q-q$, so nesting of the
+child predicates makes the gate condition more restrictive.  The
+targets are unchanged.  The parent predicates are therefore nested as
+well.  Their common input dimension is
+\begin{equation}
+ N_\ell=Lb_0\,4^\ell\prod_{j=1}^\ell k_j.
+ \label{eq:recursive-dimension}
+\end{equation}
+
+\section{The indexed sensitivity recurrences}
+\label{sec:recurrences}
+
+In this section unprimed profiles refer to the child family with $Q$
+predicates, and primed profiles to the parent family with $H=Q-1$
+predicates.  Write $h$ for its tournament outdegree and $\tau$ for its
+exclusion threshold.  For a fixed parent index $q$, put $g=Q-q$.
+
+\begin{proposition}[Four coupled profile bounds]
+\label{prop:recurrences}
+For every parent index $q\in[H]$,
+\begin{align}
+ S'_1(q)&\le hS_0(g)+4S_1(Q),
+ \label{eq:one-rec}\\
+ S'_0(q)&\le (\tau-1)S_0(Q)
+                  +\max\{S_1(g)+J_1,\,3J_1\}.
+ \label{eq:zero-rec}
+\end{align}
+The joint profiles satisfy
+\begin{align}
+ J'_1&\le hJ_0+4S_1(Q),
+ \label{eq:joint-one-rec}\\
+ J'_0&\le (\tau-1)S_0(Q)+3J_1.
+ \label{eq:joint-zero-rec}
+\end{align}
+\end{proposition}
+
+\begin{proof}
+\emph{One-to-zero transitions.}
+At an input where $P'_q=1$, fix a satisfied clause.  Every flip that
+makes $P'_q=0$ must break that same clause.  Breaking one of its $h$
+gates changes child predicate $g$ from zero to one, while breaking one
+of its four targets changes child predicate $Q$ from one to zero.
+Equation~\eqref{eq:one-rec} follows.
+
+\emph{Candidate clauses at a rejecting input.}
+Fix an input $x$ with $P'_q(x)=0$.  Let $\mathcal T$ be the clauses
+that fail exactly one target and no gate at $x$; let $\mathcal G$ be
+the clauses that fail exactly one gate and no target.  These lists are
+chosen before the bit flip.  If one bit makes a clause hold, that
+clause must belong to one of the two lists, because a bit can affect
+at most one of its conditions.
+
+For $j\in\mathcal T$, write $m_j$ for the position of its unique
+failed target.  If $i,j\in\mathcal T$ and $i\to j$, clause $i$ has
+a passing gate in child $(j,a(i,j))$.  Its predicate $g$ is zero, so
+its strongest predicate $Q$ is also zero.  Row $j$ has just one such
+failed target, forcing $a(i,j)=m_j$.  Thus any $\tau$ vertices of
+$\mathcal T$ would violate the exclusion property, and
+\[
+                         |\mathcal T|\le\tau-1.
+\]
+Repairing a target in this list changes predicate $Q$ from zero to
+one.  The total contribution is at most $(\tau-1)S_0(Q)$.
+
+All targets in the row of a vertex of $\mathcal G$ are true.  Hence an
+edge $i\to j$ inside $\mathcal G$ supplies a failed gate of clause
+$i$: its selected child in row $j$ has predicate $Q=1$, and therefore
+$g=1$.  Every vertex of the induced tournament on $\mathcal G$ has
+outdegree at most one.  If $u=|\mathcal G|$, edge counting gives
+\[
+                         \frac{u(u-1)}2\le u,
+                         \qquad u\le3.
+\]
+
+Suppose a vertex of $\mathcal G$ has an outgoing edge within
+$\mathcal G$.  That edge is its unique failed gate.  Initially the
+selected child has both predicates $g$ and $Q$ equal to one.  A repair
+makes $g=0$ and hence $Q=0$.  Since $g<Q$, this contributes at most
+$J_1$ bit flips.
+
+If $u=3$, all three induced outdegrees are one, so every gate repair
+has this joint bound and the total is at most $3J_1$.  If $u=2$, one
+vertex is the source of the sole induced edge and the other is a sink.
+The first contributes at most $J_1$; the sink's failed gate contributes
+at most $S_1(g)$.  For $u=1$ the bound is $S_1(g)$, and for $u=0$
+it is zero.  In all cases the gate contribution is at most
+\[
+                         \max\{S_1(g)+J_1,3J_1\}.
+\]
+Adding the target contribution proves Equation~\eqref{eq:zero-rec}.
+This case split is the sharpened ordinary-sensitivity gate count.
+
+\emph{Joint transitions from one.}
+Fix $q<q'$ and an input where both parent predicates are one.  Choose
+a clause that holds for $q'$.  By nesting it also holds for $q$.
+Let $g=Q-q$ and $g'=Q-q'$, so $g'<g<Q$.  A flip that makes both
+parent predicates zero must break this fixed clause even for $q$.
+A target break contributes at most $4S_1(Q)$ in total.  Otherwise a
+gate must change from passing for $q'$ to failing for $q$: it begins
+with $g'=g=0$, and finishes with $g=g'=1$.  Such a gate has at most
+$J_0$ repairs in this direction, and there are $h$ gates.  Taking
+maxima proves Equation~\eqref{eq:joint-one-rec}.
+
+\emph{Joint transitions from zero.}
+Fix $q<q'$ and an input where both parents are zero.  Form the two
+candidate lists for the weaker parent $q$.  For a flip making both
+parents one, choose a clause that holds afterward for $q'$.  It also
+holds afterward for $q$, so it belongs to those fixed initial lists.
+Its choice is allowed to depend on the flipped bit.
+
+If it is in $\mathcal T$, the preceding target count applies.  If it
+is in $\mathcal G$, its unique failed gate at index $q$ has $g=1$
+initially, which implies $g'=1$.  To hold for $q'$ after the flip,
+that gate must have $g'=0$, which implies $g=0$.  Thus each such
+clause contributes at most $J_1$, including a possible sink.  There
+are at most three clauses in $\mathcal G$, proving
+Equation~\eqref{eq:joint-zero-rec}.
+
+The argument only counts possible successful coordinates by unions of
+sets.  Overlap among the coordinates counted for different clauses can
+only improve the upper bound.  When $H=1$, the joint maxima are empty
+and their displayed inequalities remain valid.
+\end{proof}
+
+\subsection{Numerical comparison sequences}
+
+The finite calculation uses upper envelopes rather than exact
+sensitivities.  Initialize, for $q\in[d+1]$,
+\begin{equation}
+ A_{0,q}=L-q,\qquad C_{0,q}=Lb_0-d-1+q,
+ \qquad U_0=V_0=0.
+ \label{eq:initial-envelopes}
+\end{equation}
+At level $\ell$, set $H=H_\ell$, $Q=H+1$, and, for $q\in[H]$,
+define
+\begin{align}
+ A_{\ell,q}
+  &=(\tau_\ell-1)A_{\ell-1,Q}
+       +\max\{C_{\ell-1,Q-q}+V_{\ell-1},\,3V_{\ell-1}\},
+ \label{eq:A}\\
+ C_{\ell,q}
+  &=h_\ell A_{\ell-1,Q-q}+4C_{\ell-1,Q},
+ \label{eq:C}\\
+ U_\ell
+  &=(\tau_\ell-1)A_{\ell-1,Q}+3V_{\ell-1},
+ \label{eq:U}\\
+ V_\ell
+  &=h_\ell U_{\ell-1}+4C_{\ell-1,Q}.
+ \label{eq:V}
+\end{align}
+Every quantity here is a nonnegative integer.  The joint envelopes may
+remain positive at the final level even though the actual joint profiles
+are zero; this is harmless because they are only upper bounds.
+
+\begin{corollary}[Validity of the envelopes]
+\label{cor:envelopes}
+At every level and valid predicate index,
+\[
+ S_{\ell,0}(q)\le A_{\ell,q},\quad
+ S_{\ell,1}(q)\le C_{\ell,q},\quad
+ J_{\ell,0}\le U_\ell,\quad J_{\ell,1}\le V_\ell.
+\]
+\end{corollary}
+
+\begin{proof}
+The base case is Lemma~\ref{lem:base}.  All sums, scalar multiples,
+and maxima in Equations~\eqref{eq:A}--\eqref{eq:V} are nondecreasing
+functions of their arguments.  Proposition~\ref{prop:recurrences}
+therefore proves the assertion inductively.
+\end{proof}
+
+The separate index information is used throughout this induction.  In
+particular, replacing $A_{\ell-1,Q}$ by the largest value of
+$A_{\ell-1,q}$ can lose useful information.  The finite certificate
+never makes that replacement.
+
+\section{Disjoint sensitive blocks and final balancing}
+\label{sec:blocks}
+
+\begin{lemma}[Blocks shared by all predicates]
+\label{lem:blocks}
+At level $\ell$, every predicate vanishes at zero.  There are
+\[
+             b_\ell=b_0\prod_{j=1}^\ell k_j
+\]
+pairwise disjoint nonempty coordinate blocks, each of cardinality
+$L4^\ell$, such that flipping any one of them at zero makes every
+predicate at that level equal to one.
+\end{lemma}
+
+\begin{proof}
+Lemma~\ref{lem:base} supplies the base case.  At a higher level all
+targets are false at zero, so all clauses fail.  Enumerate the
+preceding-level block family as $B_1,\ldots,B_{b_{\ell-1}}$.
+For each row $i$ and each index $j$, take the union of the copies of
+$B_j$ in all four children of row $i$.  Flipping this union makes
+every target in clause $i$ true.  All its gates lie in other rows and
+are still zero, so that clause holds for every parent index.
+
+Different indices $j$ give disjoint unions within a row, because the
+child block families are disjoint; different rows use disjoint input
+coordinates.  The new family therefore has $k_\ell b_{\ell-1}$
+members, each four times the previous size.
+\end{proof}
+
+At depth $d$, only one predicate remains.  Let $f$ be the OR of $m_0$
+disjoint copies of $P_{d,1}$.  This OR is the standard balancing step
+used in sensitivity constructions; we spell out the estimates to avoid
+any implicit equality between the sensitivities at zero and at one.
+
+\begin{proposition}[OR balancing]
+\label{prop:or}
+The resulting total Boolean function is nonconstant, vanishes at zero,
+and satisfies
+\begin{equation}
+ \sens(f)\le\max\{m_0A_{d,1},C_{d,1}\},\qquad
+ \bs(f,\zero)\ge m_0b_0\prod_{j=1}^d k_j.
+ \label{eq:OR}
+\end{equation}
+Its input dimension is $m_0N_d$.
+\end{proposition}
+
+\begin{proof}
+At a rejecting OR input, every copy rejects; possible successful bit
+flips lie in their disjoint inputs and contribute at most
+$m_0A_{d,1}$.  At an accepting OR input with at least two accepting
+copies, no one-bit flip can make the OR reject.  If exactly one copy
+accepts, every sensitive bit belongs to that copy, contributing at most
+$C_{d,1}$.  These are upper bounds and do not assume that either
+maximum is attained simultaneously with another.
+
+Each copy contributes the disjoint blocks from Lemma~\ref{lem:blocks}
+at zero; the families in distinct copies are also disjoint.  Flipping
+one of these blocks makes the OR accept.  This gives the block lower
+bound, and also proves nonconstancy.
+\end{proof}
+
+\section{A twenty-stage integer certificate}
+\label{sec:certificate}
+
+We now fix
+\begin{equation}
+ d=20,\qquad L=22,\qquad b_0=2^{18},\qquad m_0=100.
+ \label{eq:parameters}
+\end{equation}
+Every stage has four children per row, $h_\ell=2^{e_\ell}$,
+$k_\ell=2^{e_\ell+1}+1$, and $\tau_\ell=e_\ell+6$.
+The exponent schedule is given in Table~\ref{tab:parameters}.
+Its entries sum to $608$.
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{@{}rrrrrr@{}}
+\toprule
+Stage $\ell$ & $e_\ell$ & $\tau_\ell$
+  & Stage $\ell$ & $e_\ell$ & $\tau_\ell$\\
+\midrule
+1 &43&49&11&30&36\\
+2 &43&49&12&28&34\\
+3 &39&45&13&26&32\\
+4 &39&45&14&24&30\\
+5 &40&46&15&23&29\\
+6 &40&46&16&22&28\\
+7 &37&43&17&20&26\\
+8 &36&42&18&19&25\\
+9 &34&40&19&18&24\\
+10&32&38&20&15&21\\
+\bottomrule
+\end{tabular}
+\caption{The fixed schedule.  All label-existence conditions follow from
+Lemma~\ref{lem:labels}; no numerical probability estimate is needed.}
+\label{tab:parameters}
+\end{table}
+
+\begin{lemma}[Finite arithmetic certificate]
+\label{lem:arithmetic}
+For Equations~\eqref{eq:initial-envelopes}--\eqref{eq:V} and the
+parameters of Table~\ref{tab:parameters},
+\begin{equation}
+       100A_{20,1}<9\cdot2^{318},\qquad
+       C_{20,1}<9\cdot2^{318}.
+ \label{eq:finite-inequalities}
+\end{equation}
+\end{lemma}
+
+\begin{proof}[Proof by exact finite computation]
+Appendix~\ref{app:verifier} contains the complete integer computation.
+Its arrays $a$ and $c$ store $A_{\ell,q}$ and $C_{\ell,q}$ in
+increasing order of $q$, with zero-based array indexing.  Its variables
+$u,v$ store $U_\ell,V_\ell$.  At each stage, $H$ is one less than the
+incoming array length, so the strongest child entry is the last one;
+the child index $Q-q$ is stored at array index $H-q$.  The program is
+therefore a direct evaluation of the four displayed recurrences,
+not an approximation to them.
+
+The initialization stores Equation~\eqref{eq:initial-envelopes}.
+There are exactly twenty stages and every operation is addition,
+multiplication, an integer power, comparison, or maximum on integers.
+The two concluding integer comparisons are precisely
+Equation~\eqref{eq:finite-inequalities}.  The accompanying executable
+\texttt{verify.py} performs the same calculation, checks additional
+dimension and label identities, and prints the final exact values.
+No floating-point number, random sample, external solver, or third-party
+package is used in the certificate.
+\end{proof}
+
+\begin{remark}[Role of the computation]
+The search that suggested the schedule is not part of the proof.  Any
+method of finding the twenty exponents would give the same theorem once
+the fixed schedule and its inequalities were certified.  Conversely,
+checking the integer computation alone would not prove the theorem
+without Proposition~\ref{prop:recurrences} and the block construction.
+The logical division is explicit: those are general combinatorial
+proofs; Lemma~\ref{lem:arithmetic} is a finite arithmetic calculation.
+\end{remark}
+
+By Proposition~\ref{prop:or} and Lemma~\ref{lem:arithmetic}, the seed
+satisfies $\sens(f)\le S_*$.  Meanwhile,
+\begin{align*}
+ \bs(f,\zero)
+ &\ge 100\cdot2^{18}
+            \prod_{\ell=1}^{20}(2^{e_\ell+1}+1)\\
+ &>100\cdot2^{18+608+20}
+   =100\cdot2^{646}=B_*.
+\end{align*}
+Its specified input dimension is
+\begin{equation}
+ n_*=100\cdot22\cdot2^{18}\cdot4^{20}
+             \prod_{\ell=1}^{20}(2^{e_\ell+1}+1).
+ \label{eq:seed-dimension}
+\end{equation}
+The disjoint sensitive blocks occupy precisely these inputs when one
+counts their common size $22\cdot4^{20}$.  This provides a useful
+consistency check on the construction's bookkeeping.
+
+The rational exponent comparison has a short elementary certificate.
+Directly,
+\[
+ \frac{B_*^{32}}{S_*^{65}}
+ =\frac{4\cdot100^{32}}{9^{65}}>1.
+\]
+Indeed $100>81$ and
+$2\cdot100^3=2{,}000{,}000>1{,}594{,}323=3\cdot81^3$.
+Multiplication by $(100/81)^{13}>1$ gives
+$2\cdot100^{16}>3\cdot81^{16}=3^{65}$; squaring proves
+$4\cdot100^{32}>9^{65}$.  Since $S_*>1$, this establishes
+\begin{equation}
+                    \frac{\log B_*}{\log S_*}>\frac{65}{32}.
+ \label{eq:exponent-exact}
+\end{equation}
+The decimal expansion in the abstract is informational.  It is not
+used in Equation~\eqref{eq:exponent-exact} or in any theorem.
+
+\section{Composition and the infinite family}
+\label{sec:composition}
+
+The composition principle is standard \cite{Tal2013}; for completeness,
+we give precisely the forms required at zero.
+
+\begin{lemma}[Disjoint composition]
+\label{lem:composition}
+Let $f:\bits^a\to\bits$ and $g:\bits^b\to\bits$ be total Boolean
+functions, and define
+\[
+ (f\circ g)(x_1,\ldots,x_a)
+          =f(g(x_1),\ldots,g(x_a)),\qquad x_i\in\bits^b.
+\]
+Then
+\[
+                     \sens(f\circ g)\le\sens(f)\sens(g).
+\]
+If $g(\zero)=0$, then $(f\circ g)(\zero)=f(\zero)$ and
+\[
+                  \bs(f\circ g,\zero)
+                  \ge\bs(f,\zero)\bs(g,\zero).
+\]
+\end{lemma}
+
+\begin{proof}
+At an input $x=(x_1,\ldots,x_a)$ let
+$y=(g(x_1),\ldots,g(x_a))$.  A raw bit in child $x_i$ is sensitive
+for the composition exactly when that bit is sensitive for $g$ at
+$x_i$ and coordinate $i$ is sensitive for $f$ at $y$.  Thus
+\[
+ \sens(f\circ g,x)
+    =\sum_{i:f(y^i)\ne f(y)}\sens(g,x_i)
+    \le\sens(f,y)\sens(g)
+    \le\sens(f)\sens(g).
+\]
+
+For the second assertion, let $C_1,\ldots,C_p$ and
+$D_1,\ldots,D_q$ be disjoint sensitive blocks at zero for $f$ and
+$g$.  Index the composed input coordinates by $[a]\times[b]$.
+The sets $C_i\times D_j$ are nonempty and pairwise disjoint.  Flipping
+one of them at zero makes exactly the children indexed by $C_i$
+output one, because $g(\zero)=0$ and $D_j$ is sensitive there.  The
+outer input becomes $\zero^{C_i}$, which changes $f$.  There are
+$pq$ such blocks, proving the claim.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+Take the seed $f$ of Sections~\ref{sec:blocks}--\ref{sec:certificate}.
+Set $F_1=f$ and $F_{m+1}=f\circ F_m$, using disjoint copies of $F_m$.
+These functions have $n_*^m$ inputs and vanish at zero.
+Lemma~\ref{lem:composition} gives
+\[
+                  \sens(F_m)\le S_*^m,\qquad
+                  \bs(F_m,\zero)\ge B_*^m.
+\]
+The block bound proves nonconstancy and tends to infinity.  A
+nonconstant Boolean function has positive sensitivity: along a path
+of one-bit flips between two inputs with different outputs, at least
+one edge changes the output.
+
+Since $S_*^{\alpha_*}=B_*$,
+\[
+ \sens(F_m)^{\alpha_*}
+ \le S_*^{m\alpha_*}=B_*^m\le\bs(F_m,\zero).
+\]
+Equation~\eqref{eq:exponent-exact} gives $\alpha_*>65/32$.  More
+explicitly,
+\[
+ \frac{\bs(F_m,\zero)}{\sens(F_m)^{65/32}}
+ \ge\left(\frac{B_*}{S_*^{65/32}}\right)^m,
+\]
+and the base on the right is strictly greater than one.  This proves
+the asserted divergence and completes the theorem.
+\end{proof}
+
+\section{What the refinement changes and what remains open}
+\label{sec:research}
+
+The source architecture and its central insight are retained: nesting
+forces some otherwise expensive gate repairs to change two child
+predicates simultaneously.  The initial joint profiles vanish, and a
+controlled number of recursive stages exploits that asymmetry before
+composition amplifies the resulting seed.  The refinement has three
+specific ingredients.
+
+First, the outdegrees $h_\ell$ are allowed to vary by level.  The
+schedule begins with very large tournaments and ends with much smaller
+ones.  Each stage still uses the same proved local construction; the
+source's global requirement that one size parameter serve every level
+is unnecessary for the finite certificate.
+
+Second, each sensitivity $S_b(q)$ is tracked separately.  The strongest
+target index is used exactly where the proof requires it, and the gate
+index remains $Q-q$.  This preserves information lost by taking an
+early maximum over all indices.  The joint profiles can remain scalar,
+so this gain does not require an exponentially large collection of
+auxiliary quantities.
+
+Third, the gate candidate list is counted according to its size.  A
+three-vertex list is a directed cycle and has no sink; a two-vertex
+list has one sink.  The resulting maximum
+$\max\{S_1(g)+J_1,3J_1\}$ improves the simultaneous sum
+$S_1(g)+3J_1$ used in the source's convenient upper bound.  All three
+changes are inequalities for every relevant input, not assumptions
+about the inputs where the displayed sensitive blocks occur.
+
+The following questions are suitable next steps.
+
+\begin{enumerate}
+\item \textbf{Optimize the certified exponent.}
+For fixed depth and a prescribed input-size budget, optimize the integer
+schedule $(e_\ell)$, the number of initial blocks, and the final OR
+multiplicity under Equations~\eqref{eq:A}--\eqref{eq:V}.  More
+generally, vary the number of positions per row and use its corresponding
+label-exclusion condition.  A search result should always be converted
+to a finite exact certificate, as here.
+
+\item \textbf{Determine the accuracy of the envelopes.}
+For small parameters, compare actual profile maxima with the upper
+bounds.  Which case of the target/gate analysis is attainable
+simultaneously?  Strong incompatibilities between the candidate target
+and gate lists could improve the recurrence rather than merely its
+parameters.  Small exhaustive calculations are evidence for such a
+lemma, not a substitute for its proof at the large certified parameters.
+
+\item \textbf{Use pair-specific joint profiles.}
+For parent indices $q<q'$, a nonsink gate repair at zero changes both
+the child predicate $Q-q'$ and the strongest child predicate $Q$.
+Only a possible sink needs the pair $Q-q',Q-q$.  Tracking those pairs
+separately gives additional valid inequalities.  Whether they yield a
+material exponent improvement after optimization is open in this note;
+the present certificate does not need them.
+
+\item \textbf{Reduce the label-search and seed size.}
+The union bound proves existence but is inefficient.  Explicit
+labellings, conditional-expectation constructions, or a local-lemma
+analysis may permit smaller tournaments or exclusion thresholds.
+The meaningful target is a reduction in the seed input dimension while
+preserving a proved separation exponent.
+
+\item \textbf{Identify an architectural improvement.}
+The factor three in the joint gate bound comes from a possible directed
+three-cycle among almost-satisfied clauses.  A different clause system
+that retains a large supply of disjoint sensitive blocks while
+restricting this obstruction may improve the exponent more than further
+numerical optimization.
+
+\item \textbf{Formalize the generalized recurrence.}
+Extend the repository's sensitivity definitions and proof development to
+indexed sensitivities and level-dependent tournament parameters.  Once
+the general combinatorial lemmas are formalized, the fixed numerical
+certificate should become a small theorem about integer recurrences.
+The comparator statement should use the same ordinary-sensitivity and
+block-sensitivity definitions as the prose theorem.
+\end{enumerate}
+
+These questions distinguish optimization of a sufficient certificate
+from improvements to the Boolean functions themselves.  The latter may
+require new information about which worst-case profiles can coexist.
+Neither the finite search that found our schedule nor the upper
+envelopes prove a barrier for the underlying construction.
+
+\appendix
+\section{Complete core of the integer verifier}
+\label{app:verifier}
+
+The following program is sufficient for the finite inequalities.  The
+packaged \texttt{verify.py} adds explanatory output and consistency
+checks but uses these same recurrences.  Python's integers have arbitrary
+precision; their use here involves no rounding or probabilistic step.
+The explicit checks remain active when Python is run with optimization
+enabled.
+
+\begingroup
+\small
+\begin{verbatim}
+def require(condition, message):
+    if not condition:
+        raise ArithmeticError(message)
+
+E = [43,43,39,39,40,40,37,36,34,32,
+     30,28,26,24,23,22,20,19,18,15]
+d, b0, copies = 20, 2**18, 100
+L = d + 2
+a = [L-q for q in range(1, d+2)]
+c = [L*b0-d-1+q for q in range(1, d+2)]
+u = v = 0
+
+for e in E:
+    h, tau = 2**e, e+6
+    H = len(a)-1
+    new_a = [
+        (tau-1)*a[-1] + max(c[H-q]+v, 3*v)
+        for q in range(1, H+1)
+    ]
+    new_c = [
+        h*a[H-q] + 4*c[-1]
+        for q in range(1, H+1)
+    ]
+    new_u = (tau-1)*a[-1] + 3*v
+    new_v = h*u + 4*c[-1]
+    a, c, u, v = new_a, new_c, new_u, new_v
+
+require(len(a) == len(c) == 1, "Final profile lengths")
+require(sum(E) == 608, "Sum of outdegree exponents")
+S_star = 9 * 2**318
+B_star = 100 * 2**646
+require(copies*a[0] < S_star, "Zero-sensitivity bound")
+require(c[0] < S_star, "One-sensitivity bound")
+require(B_star**32 > S_star**65, "Exponent exceeds 65/32")
+print("All exact certificate inequalities hold.")
+\end{verbatim}
+\endgroup
+
+\begin{thebibliography}{9}
+
+\bibitem{OpenAI2026}
+\begingroup
+\raggedright
+OpenAI.
+\emph{A superquadratic separation between sensitivity and block
+sensitivity}. Repository manuscript, September 25, 2026.
+Reviewed in \texttt{VladimirReshetnikov/math}, commit
+\texttt{adc7f1241b42e322a6451854ab7e4b4c146bf78a},
+October 6, 2026, 21:58:50 UTC.
+\href{https://github.com/VladimirReshetnikov/math/tree/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/A-superquadratic-separation-between-sensitivity-and-block-sensitivity-September-25-2026/build}{Pinned manuscript source}.
+Source sections: \texttt{00-introduction.tex},
+\texttt{01-construction.tex}, \texttt{02-recurrences.tex}, and
+\texttt{03-separation.tex}, under \texttt{build/sections/}.
+The related proof entry is
+\href{https://github.com/VladimirReshetnikov/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/lean/OAI/Combinatorics/Sensitivity/Separation.lean}{\texttt{OAI.Combinatorics.Sensitivity.Separation}}.
+\par
+\endgroup
+
+\bibitem{Huang2019}
+Hao Huang.
+Induced subgraphs of hypercubes and a proof of the Sensitivity Conjecture.
+\emph{Annals of Mathematics} \textbf{190} (2019), 949--955.
+\href{https://doi.org/10.4007/annals.2019.190.3.6}{doi:10.4007/annals.2019.190.3.6}.
+
+\bibitem{Meiburg2026}
+Alexander Meiburg.
+\emph{Block Sensitivity can exceed Spectral Sensitivity Squared}.
+Preprint, August 1, 2026.
+\href{https://arxiv.org/abs/2608.00851}{arXiv:2608.00851}.
+The spectral measure studied there is distinct from the ordinary
+sensitivity used in this companion.
+
+\bibitem{Tal2013}
+Avishay Tal.
+Properties and Applications of Boolean Function Composition.
+In \emph{Proceedings of ITCS 2013}, 441--454.
+\href{https://doi.org/10.1145/2422436.2422485}{doi:10.1145/2422436.2422485}.
+
+\end{thebibliography}
+\end{document}

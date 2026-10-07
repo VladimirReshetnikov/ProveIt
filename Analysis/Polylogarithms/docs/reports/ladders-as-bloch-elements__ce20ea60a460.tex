@@ -1,0 +1,144 @@
+% Created (UTC): 2026-06-21T21:41:24Z
+% Repository HEAD: ce20ea60a460c71d5f24caf4d2551e867036bf69
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs}
+\usepackage{microtype}
+\emergencystretch=3em \hbadness=4000
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\DeclareMathOperator{\Li}{Li}
+\DeclareMathOperator{\Real}{Re}
+\theoremstyle{plain}\newtheorem{theorem}{Theorem}\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\title{Our polylogarithm ladders as Bloch-group elements:\\ the Zagier $K$-theory picture}
+\author{Vladimir Reshetnikov}
+\date{2026-06-21}
+\begin{document}
+\maketitle
+\begin{center}\small
+Research report. Created (UTC) 2026-06-21T21:41:24Z; repository \texttt{HEAD}
+\texttt{ce20ea60a460c71d5f24caf4d2551e867036bf69}. Store \texttt{zagier-bloch-framework.wl}.\\
+Companion to \texttt{golden-polylog-ladders}; reads Zagier's paper in
+\texttt{docs/pdfs/PolylogsDedekindZetaAndKTheory/}.
+\end{center}
+
+\begin{abstract}
+The golden, minimal-Pisot, and supergolden polylogarithm ladders we computed are not isolated curiosities: each is
+an element of a \emph{Bloch group} $\mathcal B_m(F)$, and in Don Zagier's framework relating polylogarithms,
+Dedekind zeta values, and algebraic $K$-theory, each maps under the \emph{modified polylogarithm} $P_m$ to a
+rational multiple of $\zeta(m)$. We make the identification explicit, observe that our minimal-Pisot base
+$\omega$ \emph{is} Zagier's flagship ``spectacular'' ladder example (the field $\mathbb Q(\theta)$,
+$\theta^3-\theta-1=0$, discriminant $-23$), and---most usefully---resolve the open question from the base hunt: for
+the complex cubic fields ($\omega$, supergolden), real-argument ladders exist at every weight but give only
+$\zeta(\text{even})$ at even weights, while the genuine field invariant $\zeta_F(\text{even})$ is carried by the
+\emph{imaginary} part of $P_m$ at the complex embedding. This is why a real-argument weight-$4$ ladder search
+returns ``none''---the content is not real.
+\end{abstract}
+
+\section{The modified polylogarithm}
+Zagier's one-valued modified polylogarithm (his eq.~(33)) is
+\begin{equation}\label{eq:Pm}
+  P_m(x)=\Real_m\!\Bigl(\sum_{j=0}^m \frac{2^j B_j}{j!}\,(\log|x|)^j\,\Li_{m-j}(x)\Bigr),\qquad
+  \Real_m=\begin{cases}\Real,&m\text{ odd},\\ \operatorname{Im},&m\text{ even},\end{cases}
+\end{equation}
+with $B_j$ the Bernoulli numbers and $\Li_1(x)=-\log(1-x)$. It is continuous on the Riemann sphere away from
+$\{0,1,\infty\}$, satisfies $P_m(\bar x)=(-1)^{m-1}P_m(x)$, and $P_m(1)=\zeta(m)$ for odd $m$, $0$ for even $m$;
+$P_2(\mathrm i)$ is Catalan's constant. We verified our implementation against Zagier's worked examples
+$P_5(-\tfrac18)-126P_5(\tfrac12)-162P_5(-\tfrac12)=\tfrac{403}{16}\zeta(5)$ (his eq.~(825)) and the long
+thirteen-term relation (825)/(833), to $60$ digits.
+
+\section{Ladders are Bloch-group elements}
+Zagier's ``Ladders'' section (\S9C) records exactly our construction. A number $u$ satisfying a multiplicative
+relation $\prod_r(1-u^r)^{a_r}=\pm u^N$---our \emph{pure-unit seeds} $1-\rho^a=\rho^b$ are the special case---yields,
+for each $m\ge2$, a Bloch-group element $\xi_m=\sum_r\frac{a_r}{r^{m-1}}[u^r]\in\ker\beta_m$. Under the regulator
+$P_m$, the messy elementary ``tower'' (powers of $\log\rho$ times $\pi^{2k}$ and $\zeta$) is absorbed and a clean
+$\zeta$-multiple remains. For our ladders:
+\begin{align}
+  \text{golden}:&\quad 15\,P_3(\phi^{-2})=12\,\zeta(3),\label{eq:goldenP3}\\
+  \text{supergolden}:&\quad -60\,P_3(\rho)+54\,P_3(\rho^2)-32\,P_3(\rho^3)-3\,P_3(\rho^6)=-36\,\zeta(3),
+  \label{eq:sgP3}
+\end{align}
+both exact. Compare~\eqref{eq:goldenP3} with the ``raw'' form $15\Li_3(\phi^{-2})=10\ln^3\phi-2\pi^2\ln\phi+12\zeta(3)$:
+the modified polylogarithm is simply the natural coordinate in which a ladder \emph{is} its $\zeta$-value. The
+higher golden ladders (weights $5$ through $9$ in the companion report) become, in the same way, the stated
+$\zeta(5),\zeta(6),\zeta(7),\zeta(9)$ multiples.
+
+\section{The bases as number fields}
+\begin{center}\small
+\begin{tabular}{lllll}
+\toprule
+base $\rho$ & minimal polynomial of $1/\rho$ & field $F$ & signature & disc \\
+\midrule
+golden $\phi^{-1}$ & $x^2-x-1$ & $\mathbb Q(\sqrt5)$ & $(2,0)$ totally real & $5$ \\
+minimal Pisot $\omega$ & $x^3-x-1$ & $\mathbb Q(\theta)$ & $(1,1)$ & $-23$ \\
+supergolden recip.\ & $x^3-x^2-1$ & $\mathbb Q(\sigma)$ & $(1,1)$ & $-31$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+The middle row is Zagier's own running example (\S4--5, \S9C): the field $\mathbb Q(\theta)$, $\theta^3-\theta-1=0$,
+whose ladder he calls ``particularly spectacular,'' and whose defining unit relations
+$1-\theta=-\theta^{-4},\,1+\theta=\theta^3,\dots$ are precisely the seeds we rediscovered. Our supergolden base
+gives a \emph{different} complex cubic field, discriminant $-31$.
+
+\section{Resolution of the even/odd question}
+By Borel's theorem the rank of $K_{2m-1}(F)$ is $n_+=r_1+r_2$ for odd $m$ and $n_-=r_2$ for even $m$, and the
+regulator covolume is a rational multiple of $\sqrt{\Delta}\,\zeta_F(m)/\pi^{m n_\mp}$. For a complex cubic field
+($n_+=2,n_-=1$) this dictates the behaviour we observed:
+\begin{itemize}
+\item \textbf{Odd weights} ($m=3,5,\dots$): $P_m$ is the \emph{real} part, $n_+=2$, and genuine \emph{real-argument}
+ladders exist (we found the weight-$3$ ones for $\omega$, supergolden, and $x^4+x-1$).
+\item \textbf{Even weights} ($m=4,\dots$): $P_m$ is the \emph{imaginary} part and \emph{vanishes on real arguments}.
+A real-argument ladder can only produce $\zeta(\text{even})=$ rational$\,\cdot\pi^{\text{even}}$ (the trivial
+$\mathbb Q$-part). The field invariant $\zeta_F(\text{even})$ is carried by $P_m$ at the \emph{complex} embedding.
+\end{itemize}
+Concretely, for the supergolden base, $P_4$ at the complex root of $x^3+x-1$ equals $-0.91599\ldots\neq0$ (the
+$K_7$ regulator), whereas $P_4(\text{real }\rho)=0$. \emph{This is the resolution of the open question}: the
+weight-$4$ real-argument search returns ``none'' not because the field is silent at weight $4$, but because its
+weight-$4$ content is imaginary.
+\begin{remark}
+Whether the supergolden base climbs to weight $5$ in the \emph{real} ladder is therefore a question about how many
+relations $\prod(1-\rho^r)^{a_r}=\pm\rho^N$ the specific number $\rho$ satisfies (Zagier: the conditions to climb
+alternate $n_-$ and $n_+$), not one that a PSLQ ``no relation'' can settle---consistent with the methodological
+caveat of the companion report. The minimal Pisot $\omega$ satisfies many such relations (Zagier/Lewin list seven
+beyond the defining ones) and so climbs high; whether the supergolden $\sigma$ does is open.
+\end{remark}
+
+\section{The reliable climbing method, and how high each base goes}
+Two companion papers supply the \emph{deterministic} method that blind PSLQ could not: Zagier's
+\emph{Bloch--Wigner--Ramakrishnan} function $D_m$ (Math.\ Ann.\ 1990) and Cohen--Lewin--Zagier's
+\emph{A Sixteenth-Order Polylogarithm Ladder}. The recipe: (i) find the \emph{cyclotomic relations}
+$\prod_n(\alpha^n-1)^{c_n}=\pm\alpha^N$, equivalently the $k$ for which $\Phi_k(\alpha)$ is a unit
+($|\mathrm{Norm}|=1$), giving $I(1)=(\#\text{units})-\operatorname{rank}\mathcal O_F^\times$ independent relations;
+(ii) \emph{pseudointegrate}---the $m$-th rung is $\sum_n\frac{c_n}{n^{m-1}}P_m(\alpha^n)=0$, the relations
+living in a lattice in $\mathbb R^{d(m)}$ with $d(m)=r_2$ ($m$ even), $r_1+r_2$ ($m$ odd; halved if $\alpha$ is
+self-reciprocal). One climbs while $I(m)=I(1)-\sum_{j=2}^m d(j)>0$. \emph{The maximal weight is therefore a
+count, not a search}, and a PSLQ ``no relation'' is a false negative whenever $I(m)>0$.
+
+Computing the cyclotomic units (via $\mathrm{Norm}\,\Phi_k(\rho)=\operatorname{Res}(p,\Phi_k)$) gives:
+\begin{center}\small
+\begin{tabular}{lllc}
+\toprule
+base & $I(1)$ & signature & climbs to weight \\
+\midrule
+golden $x^2+x-1$ & $2$ & $(2,0)$ & $2$ free; $3,5,7,9$ by $\zeta$-exhaustion \\
+supergolden $x^3+x-1$ & $4$ & $(1,1)$ & $\mathbf 3$ (then $I(4)=0$, stops) \\
+$x^4+x-1$ & $7$ & $(2,1)$ & $4$ (the weight-$4$ rung is imaginary) \\
+minimal Pisot $x^3+x^2-1$ & $8$ & $(1,1)$ & $6$ ($8$--$9$ with ratio-units) \\
+Lehmer $x^{10}+x^9-\cdots+x+1$ & $71$ & $(2,4)$ & $\mathbf{16}$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+This \emph{settles the open question}: the supergolden base reaches weight $3$ and stops ($I(4)=0$)---its
+$I(1)=4$ is simply too small---so there is no weight-$5$ real ladder, deterministically and not by a flaky PSLQ
+negative. It also corrects two earlier false negatives: the minimal Pisot $\omega$ climbs to weight $6$ (not $4$),
+and \textbf{Lehmer's number---declared earlier ``not a ladder base at all''---is in fact the champion, weight $16$}.
+We reproduced Cohen--Lewin--Zagier's Lehmer data exactly: the $52$ cyclotomic units at $k\le120$ are
+$k=1,2,3,5,6,7,8,9,10,11,13,16,\dots,118$, matching their list term for term.
+
+\section*{Verification and reproducibility}
+$P_m$~\eqref{eq:Pm} and the identities~\eqref{eq:goldenP3}--\eqref{eq:sgP3}, the validation against Zagier's
+eqs.~(825)/(833), and the complex-embedding computation $P_4(\sigma_{\mathbb C})=-0.916\ldots$ are in
+\texttt{src/PolyLog/tools/scratch/zagier/} and stored in
+\texttt{src/PolyLog/identities/zagier-bloch-framework.wl}.
+\end{document}

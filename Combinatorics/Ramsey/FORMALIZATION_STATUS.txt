@@ -20,8 +20,8 @@ Scope
   checkpoints; the current catalogue count is stated here and in the ledger.
 
 Verification at this checkpoint
-  All 766 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 4,887 public Gowers theorems and found only propext,
+  All 769 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 4,903 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 114 exact
   companion proofs and 6 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -36,6 +36,28 @@ Verification at this checkpoint
   proof now reduces the local let definitions before introducing the two
   cover hypotheses. The repaired statement and all quantitative bounds
   are unchanged. The full combined build and axiom scan now pass.
+
+Conditional quantitative density bridge and dependency port
+  Proofs01QuantitativeDensityBridge proves the exact Theorem 1.3 from
+  OAI.Erdos3.QuantitativeDensityTheorem. An elementary exponential estimate
+  gives a sufficiently large N0 for its existential positive constants.
+  This implication is checked in the full audit, but its quantitative
+  premise is not yet proved by the compiled vendored subset. No exact
+  companion is added and the six open catalogue statements remain open.
+  The pinned Results.Conclusions import closure is being backported:
+  4,136 upstream modules, including 128 previously present, add 4,008 files.
+  These new sources are outside the current Gowers import closure, and
+  the complete quantitative dependency build has not yet passed.
+  The first 200 pinned manifest entries compile as a 209-module closure.
+  OAI.QuantitativePortAudit checks 4,389 public OAI theorems in this prefix
+  using only the three standard axioms, and checks the added compatibility
+  lemmas. This partial dependency audit is separate from the Gowers audit
+  above and does not certify Results.Conclusions.
+  lib/openai-math/quantitative-port-manifest.json records original hashes;
+  its README documents the port status. LICENSE.provenance records the
+  source and copyright-notice status beside the unchanged Apache license.
+  The upstream constants are existential: even after successful porting,
+  this route alone will not give Theorem 18.2's explicit all-N threshold.
 
 All-scale integer geometry for Section 13
   Proofs07AllScalesStepSpan retains a common positive integer step ratio
@@ -2539,6 +2561,32 @@ Selected-domain repair of the remaining exact lifting obligation
   any of the seven exact source companions. The older packaged lemma and
   universal contract are both preserved unchanged and both are now refuted.
 
+Mass and cover-parameter budget for the exact structural induction
+  Proofs16BudgetedExtraction proves the finite closing argument with a
+  nonunit cover parameter s for each piece. If every piece has mass at
+  least m, and |Gamma|*s <= r*m, greedy extraction produces q pieces with
+  q*s<=r. The actual finite-union theorem and parameter monotonicity then
+  give MultiplyLinear(gamma,r) on the retained relation. Empty families
+  are handled explicitly. No local power-cover comparison is substituted.
+  Section16BudgetedPieceAt records the sufficient uniform mass fraction
+  eta>0 and parameter s>=1, with s<=eta*S(theta,gamma,k). Its implication
+  to the exact Theorem162At k is proved with the source's unchanged final
+  parameter gamma^-2*S(theta,gamma,k).
+  Proofs16BudgetedLiftInduction transports selected common-base domains
+  with these two parameters back into the original relation, and proves
+  the exact dimension step and full conditional induction from
+  Section16BudgetedLiftAt. The constants eta and s precede the modulus
+  and structured input in its quantifiers; s also cannot depend on the
+  inner loss variable of MultiplyLinear. The previous selected-unit
+  obligation implies this one by taking eta=1/S and s=1.
+  Keeping all common-base mass instead permits eta=theta2 and
+  s=theta2*S(theta,gamma,k+1), the proved selection reserve, which exceeds
+  one. When |phi(B)|<=theta^-1, a nonunit finite-value cover of the entire
+  good domain realizes these parameters without discarding any of it.
+  The general budgeted selection remains unproved. The repaired Lemma
+  16.10 still does not supply its fixed, all-loss cover parameter, so no
+  open catalogue entry is closed by this more flexible induction route.
+
 Fourier localization and inverse induction from the joint power cover
   Proofs16PowerCoverDenseBox selects a dense multilinear graph from any
   large-box cover at half the initial density. It keeps the exact width
@@ -2849,17 +2897,20 @@ Next substantial obligations
      q_delta <= q(sigma/2t,delta,k)^t = exp(poly(1/theta)). The certified
      Lemma 16.9 widths are therefore doubly exponential, a full exponential
      level below Theorem 16.2's targets at every theta for fixed inner loss.
-     The notes also give a proved regime-splitting reduction: theta'-free
+     The notes also give a written regime-splitting reduction (not yet
+     formalized in Lean): theta'-free
      covers with losses decaying as a power of the box width, plus bounded
      fibres, imply MultiplyLinear under explicit budgets. They also give a
      heuristic (balanced rank-d progression slabs) suggesting that the
      existential Section16SelectedLiftAt obligation is false, and compare
      with Gowers-Milicevic's iterated-exponential multi-homomorphism
      bounds.
-     The exact induction now has a proved reduction from the existential
-     Section16SelectedLiftAt obligation, allowing sufficient-mass selection
-     inside a chosen common-base domain. Its finite-global-candidate case
-     is proved; the general selection is still the substantive gap.
+     The exact induction now has a proved reduction from the more flexible
+     Section16BudgetedLiftAt obligation: select mass fraction eta and a
+     fixed nonunit cover parameter s with s<=eta*S. The earlier
+     Section16SelectedLiftAt implies it via eta=1/S and s=1. The finite
+     global-candidate unit-selection case and full-domain finite-value
+     budgeted case are proved; the general selection remains the gap.
      The stronger universal Section16ContextualLiftAt is now formally
      refuted in every positive dimension, with genuine upstream fields;
      do not attempt to discharge that false contract.

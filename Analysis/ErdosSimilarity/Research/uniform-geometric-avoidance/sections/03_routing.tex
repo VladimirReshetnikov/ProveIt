@@ -1,0 +1,143 @@
+\section{Finite random routing and exact conditional failure}
+\label{sec:routing}
+
+This section presents the routing argument inherited from
+\cite[Sections~3--4]{OpenAI84}, with the common grids and sampled terms
+from \cref{sec:synchronization}. We include the conditioning details
+because the points choose their leaves adaptively: unconditional
+independence of their entire routes is neither true nor needed.
+
+\subsection{Selectors, defaults, and terminal bits}
+
+Set $m_0=M-1$. For every edge $e=(P,i)$ with $1\le i<M$, assign an
+independent fair bit to every key at resolution $b_e$:
+\[
+ S_e:\{0,\ldots,N_{b_e}-1\}\longrightarrow\{0,1\}.
+\]
+The $M$th child is the default and has no selector table. For each
+leaf $L$, let $b(L)$ be the endpoint of its incoming edge, and assign
+independent Bernoulli-$p$ entries to a terminal table $T_L$ on the
+keys at resolution $b(L)$. Every entry in all these tables is
+independent of all others. The probability space is finite.
+
+Route $z\in\R$ from the root. At each internal vertex choose the
+first child $i<M$ for which $S_{(P,i)}(J_{b_{(P,i)}}(z))=1$;
+if no such child exists, choose child $M$. Write $L(z)$ for the leaf
+reached. Define the random set
+\begin{equation}\label{eq:random-set}
+ A=\{z:T_{L(z)}(J_{b(L(z))}(z))=1\}.
+\end{equation}
+Each realization is a $1$-periodic finite union of half-open cells.
+All its tables and routing rules are independent of $q$ and $t$.
+
+\begin{lemma}[Mean density]\label{lem:mean-density}
+$\E\rho(A)=p$.
+\end{lemma}
+
+\begin{proof}
+Let $\calA$ be the sigma-field of all selector entries. Conditional
+on $\calA$, the terminal address of each fixed point $z$ is determined.
+Its terminal bit remains Bernoulli-$p$, so
+$\Prob(z\in A\mid\calA)=p$. Integrate on one period; since the
+probability space is finite, the interchange of expectation and
+integration is immediate.
+\end{proof}
+
+\subsection{Expose only the center entries}
+
+For a fixed center $x$, reveal the addressed entry at $x$ in \emph{every}
+selector table, including tables outside its route. Define
+\begin{equation}\label{eq:center-field}
+ \calF_x=\sigma\bigl(S_e(J_{b_e}(x)): e=(P,i),\ i<M\bigr)
+ \subseteq\calA.
+\end{equation}
+The exposed addresses are deterministic. On any atom $\xi$ of $\calF_x$,
+all other selector entries remain independent fair bits and all terminal
+entries retain their independent Bernoulli-$p$ distributions.
+
+At each vertex reached by $x$, its $m_0$ selector entries are fresh
+relative to the previous ancestor decisions. Thus
+\begin{equation}\label{eq:no-default}
+ \Prob(\text{$x$ has no default on its route})=(1-2^{-m_0})^d.
+\end{equation}
+On an atom where the route uses a default, let $U$ be the first such
+vertex and $h$ its height. Both are fixed on that atom. Put $r=r_h$
+and $e_i=(U,i)$ for $1\le i\le m_0$. All selectors at $x$ on these
+edges are zero.
+
+For $z\in\R$, let $L_i(z)$ be the leaf reached by routing from
+child $U_i$. Define a local test
+\begin{equation}\label{eq:local-test}
+ Q_i(z)=S_{e_i}(J_{b_{e_i}}(z))\,
+ T_{L_i(z)}(J_{b(L_i(z))}(z)).
+\end{equation}
+This uses only the table on $e_i$ and tables below that child.
+
+\begin{lemma}[A successful local test is an actual hit]\label{lem:local-hit}
+Suppose $x\in\calS$ and the atom $\xi$ has first default $U$.
+For $j\in W_{e_i}$ and any $q\in[\alpha,\beta]$, $t\in[1,2]$,
+\begin{equation}\label{eq:local-hit}
+ Q_i(x+ta_j(q))=1\quad\Longrightarrow\quad x+ta_j(q)\in A.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+At a strict ancestor of $U$, the child chosen by $x$ is nondefault.
+Every selector consulted to make that choice lies earlier than $e_i$
+in preorder. By \cref{lem:stable}, its value at $x+ta_j(q)$ equals
+its value at $x$. Hence the translated point reaches $U$.
+The selectors of children $1,\ldots,i-1$ of $U$ are also earlier
+in preorder and remain zero. If the test in \eqref{eq:local-test}
+is one, child $i$ is selected and its terminal entry is one. This is
+exactly the membership rule \eqref{eq:random-set}.
+\end{proof}
+
+\begin{lemma}[Exact conditional failure]\label{lem:failure}
+Under the assumptions of \cref{lem:local-hit}, for every fixed
+$(q,t)\in[\alpha,\beta]\times[1,2]$,
+\begin{equation}\label{eq:failure}
+ \Prob\!\left(Q_i(x+ta_j(q))=0\text{ for every }i\le m_0,
+ j\in W_{e_i}\,\middle|\,\xi\right)
+ =(1-p/2)^{m_0r}.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+There are $m_0r$ pairs $(i,j)$. Write
+\[
+ A_{ij}=S_{e_i}(J_{b_{e_i}}(x+ta_j(q))).
+\]
+For one $i$, \cref{lem:separation} makes all these addresses distinct
+and different from the exposed center address. Different $i$ use
+different tables. Conditional on $\xi$, the $A_{ij}$ are therefore
+independent fair bits.
+
+Now condition on the larger sigma-field $\calA$ of \emph{all}
+selectors. The leaf and terminal address of every local test are fixed.
+Those addresses are pairwise distinct. Different children $i$ have
+disjoint subtrees and hence different terminal tables. Within a child,
+different leaves again have different tables. If two distinct $j,j'$
+reach the same leaf, its resolution is at least $b_{e_i}$, so
+\cref{lem:separation} makes their terminal keys distinct. This covers
+all possible pairs.
+
+Consequently, conditional on $\calA$, the probability that all tests
+fail is
+\[
+ (1-p)^{\sum_{i,j}A_{ij}}.
+\]
+The tests with $A_{ij}=0$ already fail; each of the others consults a
+different Bernoulli-$p$ terminal entry. Average this expression over
+the independent fair $A_{ij}$ conditional on $\xi$:
+\[
+ \E\!\left[(1-p)^{\sum_{i,j}A_{ij}}\mid\xi\right]
+ =\prod_{i,j}\left(\tfrac12+\tfrac12(1-p)\right)
+ =(1-p/2)^{m_0r}.
+\]
+No independence of the internal routes has been invoked.
+\end{proof}
+
+The geometry now enters only through how many different vectors of
+local keys can occur as $(q,t)$ varies. That count must be obtained
+\emph{before} revealing the unexposed table entries; otherwise a
+union bound over representatives would not be justified.

@@ -15,6 +15,11 @@
 \setlength{\headheight}{14pt}\setlength{\parskip}{4pt}\setlength{\parindent}{1.2em}
 \emergencystretch=2em
 \numberwithin{equation}{section}
+% Added in the write (batch 112, 7 October 2026).
+\newcommand{\file}[1]{\nolinkurl{#1}}
+\newenvironment{writenote}[1][]{\par\smallskip\begingroup\small
+ \noindent\textbf{[write]}\if\relax\detokenize{#1}\relax\else~\textbf{#1.}\fi\ }%
+ {\par\endgroup\smallskip}
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{proposition}[theorem]{Proposition}
 \newtheorem{lemma}[theorem]{Lemma}
@@ -30,11 +35,32 @@
 \begin{abstract}
 Let $A_n(M)$ be the edge-weighted number of labeled fat trees, with edge multiplicity $M\ge1$. Starting from Zaslavsky's exact weighted formula, we derive an explicit expansion to every fixed order, with a relative remainder uniform over the entire unbounded parameter range $M\ge1$. The saddle equation $Mr(1+r)\ee^r=1$ places the coefficient calculation on a compact interval after adjoining the regular endpoint $r=0$. A frequency-one Fourier bound controls all noncentral arcs; a uniform Taylor remainder gives the coefficient expansion. We supply a finite rational coefficient engine, the first two corrections, and logarithmic coefficients. For fixed $M$, a Lambert $W$ center and recursive corrections yield shrinking two-ceiling enclosures for the actual integer inverse. Applications include OEIS A055779 and A295623. A separate elementary appendix gives explicit finite-$n$ total-variation bounds for the block deficit and all fixed correction orders for a bounded Poisson parameter. This is an attributed specialization and refinement of standard methods and existing exact formulas. We make no first-prefactor claim, global novelty claim, convergent-series claim, or uniform-in-$M$ inverse claim. Exact checks and high-precision diagnostics are separated in a portable deterministic TeX, PDF, and code package.
 \end{abstract}
+\begin{writenote}[Status and trust boundary, added 7 October 2026, batch~112]
+This is bundle Report~203 of an external AI-assisted research session, filed
+in ProveIt as the single-source research report
+\file{a055779-labeled-fat-trees} (provenance, the sources as the write read
+them, what was checked, relation to the repository, the collected non-claims
+and the reading conventions are in Section~\ref{fat:sec:provenance}). It is
+unrefereed and not formalized. Its author line and its PDF author field read
+``Report 203'': it names no person or tool. \emph{What rests on what.}
+Theorems~\ref{fat:thm:main}, \ref{fat:thm:inverse}, \ref{fat:thm:TV}
+and~\ref{fat:thm:poissonall} and Corollary~\ref{fat:cor:log} have complete
+conventional proofs in the text: the exact formula~\eqref{fat:eq:exact}
+(Zaslavsky's, re-proved in Section~\ref{fat:sec:model}), a Cauchy integral
+with a frequency-one damping bound, a uniform Taylor remainder, Stirling's
+expansion, and Bonferroni product inequalities. No proof uses a computation;
+every decimal is a diagnostic. The write adds Remarks~\ref{fat:rem:oeis}
+and~\ref{fat:rem:transseries} (the three OEIS entries quoted and checked; the
+inverse against the transseries volume) and dated notes, among them the
+correction of two printed decimals that are roundings, not truncations
+(Section~\ref{fat:sec:applications}). No statement, proof or number of the
+source was changed.
+\end{writenote}
 \clearpage
 {\small\setcounter{tocdepth}{1}\tableofcontents}
 \newpage
 
-\section{Results and their scope}\label{sec:results}
+\section{Results and their scope}\label{fat:sec:results}
 A fat tree on $[n]=\{1,\ldots,n\}$ consists of a partition of the original labeled vertices into nonempty blocks and original-vertex edges whose contraction along the blocks is a tree. Thus a fat tree with $k$ blocks has $k-1$ edges. Give each edge weight $M>0$ and sum the resulting weights; the result is $A_n(M)$. When $M$ is a positive integer, this is the count with $M$ distinguishable colors per edge. The main enumeration of interest is \cite{oeis55779}
 \[
  A_n(1)=\operatorname{A055779}(n),\qquad n\ge1.
@@ -42,64 +68,193 @@ A fat tree on $[n]=\{1,\ldots,n\}$ consists of a partition of the original label
 The word \emph{deficit} below always means $D=n-K$, where $K$ is the number of blocks. It does not mean the edge count $K-1$ or the number of nonsingleton blocks.
 
 For $M\ge1$, let $r=r(M)$ be the unique positive solution of
-\begin{equation}\label{eq:saddle}
+\begin{equation}\label{fat:eq:saddle}
  Mr(1+r)\ee^r=1.
 \end{equation}
 Let $r_1=r(1)$. Define
 \begin{align}
- b(r)&=\frac{1+3r+r^2}{1+r},& H(r)&=\log(1+r)+\frac{r^2}{1+r},\label{eq:bH}\\
+ b(r)&=\frac{1+3r+r^2}{1+r},& H(r)&=\log(1+r)+\frac{r^2}{1+r},\label{fat:eq:bH}\\
  q(M)&=M\ee^{H(r)}=\frac{\exp(1/(1+r)-1)}r,&
- C(M)&=\frac1{M\sqrt{b(r)}}.\label{eq:qC}
+ C(M)&=\frac1{M\sqrt{b(r)}}.\label{fat:eq:qC}
 \end{align}
 These definitions are exact. Numerical values quoted later are illustrations rather than interval certificates.
 
-\begin{theorem}[Every fixed order uniformly in multiplicity]\label{thm:main}
+\begin{theorem}[Every fixed order uniformly in multiplicity]\label{fat:thm:main}
 For each fixed integer $J\ge0$, there are rational functions $c_0,\ldots,c_J$ of $r$, regular on $[0,r_1]$, with $c_0=1$, such that
-\begin{equation}\label{eq:main}
+\begin{equation}\label{fat:eq:main}
  A_n(M)=C(M)q(M)^n n^{n-2}
  \left\{\sum_{j=0}^{J}\frac{c_j(r)}{n^j}+O_J(n^{-J-1})\right\}
 \end{equation}
 as $n\to\infty$, uniformly for all real $M\ge1$. Equivalently,
-\begin{equation}\label{eq:normalized}
+\begin{equation}\label{fat:eq:normalized}
  \frac{A_n(M)}{M^{n-1}n^{n-2}}
  =\frac{\ee^{nH(r)}}{\sqrt{b(r)}}
  \left\{\sum_{j=0}^{J}\frac{c_j(r)}{n^j}+O_J(n^{-J-1})\right\}.
 \end{equation}
-The constants implicit in the remainder may depend on $J$ but not on $M$ or $n$. The finite coefficient algorithm is given in Section~\ref{sec:coefficients}. In particular,
-\begin{equation}\label{eq:c1}
+The constants implicit in the remainder may depend on $J$ but not on $M$ or $n$. The finite coefficient algorithm is given in Section~\ref{fat:sec:coefficients}. In particular,
+\begin{equation}\label{fat:eq:c1}
  c_1(r)=-\frac{r^2(2r^5+21r^4+85r^3+152r^2+132r+48)}
  {24(r^2+3r+1)^3}.
 \end{equation}
 For every $j\ge1$, $c_j(0)=0$.
 \end{theorem}
 
-Uniformity permits any substitution $M=M_n\ge1$ into \eqref{eq:main}. It does not turn the fixed-$M$ inverse in Section~\ref{sec:inverse} into a theorem for arbitrary moving parameters. ``Every fixed order'' means a valid truncation for each prescribed $J$; it does not mean convergence of the infinite expansion, uniformity in $J$, or exponentially small control after optimal truncation. No effective optimal remainder constant or numerical onset is asserted.
+Uniformity permits any substitution $M=M_n\ge1$ into \eqref{fat:eq:main}. It does not turn the fixed-$M$ inverse in Section~\ref{fat:sec:inverse} into a theorem for arbitrary moving parameters. ``Every fixed order'' means a valid truncation for each prescribed $J$; it does not mean convergence of the infinite expansion, uniformity in $J$, or exponentially small control after optimal truncation. No effective optimal remainder constant or numerical onset is asserted.
 
 The inverse result concerns
 \[
  N_M(y)=\min\{n\ge1:A_n(M)\ge y\},\qquad y\ge1.
 \]
-The sequence is strictly increasing. For fixed $M\ge1$, define $Y=\log y$, $w=W(qY)$, $t=Y/w$ and $L=w+1$. The positive real Lambert branch is used for large $y$. Section~\ref{sec:inverse} constructs $X_J=t+\sum_{k=0}^Jp_kt^{-k}$ and proves
-\begin{equation}\label{eq:inverse-preview}
+The sequence is strictly increasing. For fixed $M\ge1$, define $Y=\log y$, $w=W(qY)$, $t=Y/w$ and $L=w+1$. The positive real Lambert branch is used for large $y$. Section~\ref{fat:sec:inverse} constructs $X_J=t+\sum_{k=0}^Jp_kt^{-k}$ and proves
+\begin{equation}\label{fat:eq:inverse-preview}
  \left\lceil X_J-K_{J,M}\frac{t^{-J-1}}L\right\rceil
  \le N_M(y)\le
  \left\lceil X_J+K_{J,M}\frac{t^{-J-1}}L\right\rceil
 \end{equation}
 for sufficiently large $y$. The two ceilings need not agree at every threshold.
 
-\section{Existing formulas and attribution}\label{sec:prior}
+\begin{remark}[{[write]} The OEIS entries, quoted and checked, 7~October 2026]\label{fat:rem:oeis}
+The write read the three entries in the internal format on 7~October 2026.
+\emph{A055779} (revision \#42, 16 October 2025; entry by Thomas Zaslavsky, 12 July 2000): ``Number of fat trees on n labeled vertices.'' It lists seventeen terms and a b-file for $n\le100$ (T.~D. Noe), cites Zaslavsky's paper and Kot\v{e}\v{s}ovec's 2012 note, records Jovovic's formula $a(n)=\sum_{k=1}^n\binom nk k^{n-k}n^{k-2}$ (16 June 2006), the polynomials in $M$ for $n\le6$ in a comment, and Kot\v{e}\v{s}ovec's limit ``Lim\_{n->infinity} (a(n)\^{}(1/n))/n = (1-r)\^{}(r-1)*r\^{}(1-2*r) = 1.6554879129915343..., where r = 0.6924583254616546... is the root of the equation exp(1-1/r)=(1-r)/r\^{}2'' (25 August 2012). That $r$ is the parameter called $p=1/(1+r_1)$ in Section~\ref{fat:sec:applications}, not this report's $r_1$. The entry has no asymptotic formula beyond this limit and no conjecture.
+\emph{A295623} (revision \#15, 5 July 2022; Ilya Gutkovskiy, 24 November 2017): ``a(n) = n! * [x\^{}n] exp(n*x*exp(x)).'', offset~$0$, b-file $n\le360$.
+\emph{A162695} (revision \#19, 5 November 2025; Paul D. Hanna, 10 July 2009): ``E.g.f. satisfies A(x) = exp( x*A(x) * exp(x*A(x)) ).'' It states $L(n)=n\,\mathrm{A055779}(n)$ for the coefficients of $\log A(x)$, and the formula ``a(n) \textasciitilde{} s*sqrt((1+r*s)/(1+r*s*(3+r*s))) * n\^{}(n-1) / (exp(n)*r\^{}n)'', with $r=0.2222181377976171017\ldots$ and $s=1.998622764215824983\ldots$, credited to Kot\v{e}\v{s}ovec, 15 July 2014; that $r$ is the $\rho$ of Section~\ref{fat:sec:applications}.
+
+With its own code (exact rationals; SymPy~1.14.0 and mpmath~1.3.0 for the algebra and the decimals) the write checked: the finite sum~\eqref{fat:eq:exact} against all $100$ b-file terms of A055779 and its seventeen listed terms; \eqref{fat:eq:oeisrelation} against all $360$ b-file terms of A295623 with $n\ge1$ (its offset-zero term is~$1$); the logarithm relation of A162695 by taking the logarithm of its exponential generating function from its b-file, for $n\le60$; the polynomials $A_3$, $A_6$ and the first six values of Section~\ref{fat:sec:model}; and the coefficientwise inequality~\eqref{fat:eq:monotone} for $n\le30$. Everything agrees, and every attribution of Section~\ref{fat:sec:prior} matches the entries as quoted. No OEIS conjecture exists here to settle, and no OEIS edit is part of this work.
+\end{remark}
+
+\subsection{Provenance, sources and reading conventions}\label{fat:sec:provenance}
+\begin{writenote}[Added 7 October 2026, batch~112]\raggedright
+\emph{Provenance.} This report is Report~203 of the session bundle that
+ProveIt's \file{docs/incoming} intake processed as batch~112: the archive
+\file{Report203.zip} ($537{,}766$ bytes, 20 files in a wrapper directory
+\file{Report203/}), arrival commit \file{60f54ea06}, placed in
+\file{f79c9bef1}. The text is the delivered \file{Report203.tex} (688 lines,
+dated 4~October 2026, 19 pages as delivered), shipped as \file{article.tex}.
+The programs are shipped under \file{code/} (the root \file{build.py} and
+\file{test_guards.py} beside them), the expected outputs as
+\file{data/code-expected-*}, \file{code/.python-version} as
+\file{data/code-.python-version}, the two equal \file{requirements.txt}
+files as \file{data/requirements.txt} and \file{data/code-requirements.txt},
+and the source manifest, which also records the PDF engine banner and the
+build epoch, as \file{data/manifests-source_manifest.json}; the code guide
+\file{code/README.md} is shipped at the root as \file{code-README.md}. Not
+shipped, and retrievable from the arrival commit: the delivered PDF, the pure
+checksum manifest \file{manifests/package_manifest.json} (19 entries,
+verified at the write, as were the 17 of the source manifest), and the
+delivered README, replaced by the report README. The package records no
+ProveIt commit; it carries no ``prepared for private review'' line and no
+personal data. It is a single-source report, so no merge choice was made.
+The write prefixed the 70 delivered labels with \file{fat:} and updated the
+references to them; it added this subsection, the notes marked [write] and
+Remarks~\ref{fat:rem:oeis} and~\ref{fat:rem:transseries}, each the last
+statement of its section, and inserted nothing before a delivered display or
+statement, so every theorem, section and equation of the source keeps its
+delivered number.
+
+\emph{The sources, as the write read them} (7~October 2026): OEIS A055779,
+A295623 and A162695 in the internal format with their b-files
+(Remark~\ref{fat:rem:oeis}); the transseries volume
+\path{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex}
+(\file{p0:def:model}, \file{p0:prop:factorial-core},
+\file{p0:thm:core-reversion}, \file{p0:rem:core-instances},
+\file{p0:def:three-inverses}, \file{p0:thm:staircase}). Not read by the
+write: Zaslavsky's paper, Kot\v{e}\v{s}ovec's note, Arratia--DeSalvo and the
+DLMF; the source's account of them (Section~\ref{fat:sec:prior}) is
+reported, not confirmed.
+
+\emph{What was checked at intake.} The batch-112 dossier read the
+manuscript, found no demonstrably wrong claim, confirmed $c_1(r)$ for $M=1$
+and $M=4$ against exact values to $n=1000$, and reran the delivered suite on
+a copy; its only failure was a Windows artifact (carriage returns in the
+compared outputs of \file{check.py}). \emph{What the write checked.} It read
+every proof and found no error. With its own code it verified, besides the
+checks of Remark~\ref{fat:rem:oeis}: $\kappa_1,\ldots,\kappa_4$
+from~\eqref{fat:eq:P}; $s_1$, $s_2$ of~\eqref{fat:eq:s1}--\eqref{fat:eq:s2}
+from the multi-index formula~\eqref{fat:eq:sell}; $c_1$ in~\eqref{fat:eq:c1}
+and $c_2$ in~\eqref{fat:eq:c2expanded} from~\eqref{fat:eq:firsttwo};
+$c_1(0)=c_2(0)=0$; $d_2=c_2-c_1^2/2$ as printed in Section~\ref{fat:sec:log};
+$p_0,p_1,p_2$ of~\eqref{fat:eq:p0}--\eqref{fat:eq:p2} by solving the
+expansion~\eqref{fat:eq:inverse-engine}, and~\eqref{fat:eq:p0bounded}; the
+derivation of~\eqref{fat:eq:inverse-engine} from $F_J(t+h)-Y$ (by hand); the
+decimals of Section~\ref{fat:sec:applications} to 50 digits, the
+identities linking Kot\v{e}\v{s}ovec's $p$ to $q(1)$ and $C(1)$, and every
+entry of the diagnostic table (each a correct rounding of the recomputed
+value); and, in the appendix, $\E A(Z)$, $\E A(Z)^2$, $e_2(d)$ by Newton's
+identities, and the second coefficient of~\eqref{fat:eq:P6}. Two printed
+decimals are roundings where the notation ``$\ldots$'' asks for truncations;
+the note at the end of Section~\ref{fat:sec:applications}.1 gives the
+truncations. It reran the four delivered programs on a copy (\file{coefficients.py}, \file{exact_checks.py}, \file{symbolic_checks.py}, \file{numerical_diagnostics.py}, Python~3.14.4 with the pinned SymPy and mpmath): in normal and \texttt{-O} mode each output equals its \file{data/code-expected-*} file after removing carriage returns; \file{check.py} itself stops at the first comparison because it compares bytes and Windows writes carriage returns.
+Floating computations are observations, not certificates.
+
+\emph{Relation to the repository.} Before batch~112 no file of the
+repository named A055779, A295623 or A162695. The nearest reports, by
+object, are in the same directory: \file{a242375-many-color-rooted-trees}
+and \file{a244407-high-outdegree-rooted-trees} (batch~112; colored and
+outdegree-bounded rooted trees, a different model), and by method the
+Lambert-scale reports \file{a277364-bell-asymptotics} and
+\file{a064856-stirling-catalan-transforms}. They share no result with this
+report, so no reciprocal note is proposed. No Lean or Rocq file treats these
+sequences; no statement of this report is formalized, and its place in the
+collection confers no formal status. The inverse is compared with the
+transseries volume in Remark~\ref{fat:rem:transseries}.
+\end{writenote}
+\begin{writenote}[What is not claimed, collected from the source]
+The exact formula is Zaslavsky's, its coefficient form a rewrite; the leading
+amplitude is implicit in Kot\v{e}\v{s}ovec's 2014 A162695 formula and is not
+claimed as new or as the solution of an open problem; saddle-point expansion
+and Poisson assembly approximation are standard, with Arratia--DeSalvo
+credited; no first-prefactor, global novelty, new general method,
+convergent-series, uniformity-in-$J$, optimal-truncation, effective-onset or
+optimized-constant claim; the inverse is for fixed $M$ only, not uniform in
+$M$ and not for moving parameters, with no computable $K_{J,M}$ and no
+licence for the single-ceiling rule $N_M(y)=\lceil X_J(y)\rceil$; no claim
+about linear or other interpolations; the deficit appendix concerns $D=n-K$
+only, its $O(1/n)$ bound is to the moving law $\Pois(\lambda)$, with no rate
+to $\Pois(1/\tau)$, no maximal Poisson range, no new tier theorem and no
+high-colour inverse; the block-count scales of Section~\ref{fat:sec:future}
+are motivation, not theorems; the prior-source check was bounded and is not
+an exhaustive novelty certification; numerical output is diagnostic, not
+interval-certified; byte identity of the PDF only with the recorded TeX
+toolchain. \emph{The write adds:} its checks are exact, symbolic or
+floating computations; its transseries remark claims no novelty for any
+inversion.
+\end{writenote}
+\medskip
+\begingroup\small
+\noindent\emph{Reading conventions} (letters the source uses in more than
+one sense, with the tempting false readings; no symbol was renamed).\par\smallskip
+\renewcommand{\arraystretch}{1.1}
+\noindent\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.8in}>{\raggedright\arraybackslash}p{5.4in}@{}}
+\toprule
+Symbol & Meanings\\
+\midrule
+$D$ & The block deficit $n-K$ (Section~\ref{fat:sec:results}, the appendix); the operator $z\,\mathrm d/\mathrm dz$ in Section~\ref{fat:sec:coefficients}.\\
+$A$ & $A_n(M)$ the weighted count; $A(d)=(3d^2-d)/2$ in the appendix (the source says so); $A_h(u)$ in the second engine; $A(x)$ the A162695 e.g.f.\ in the OEIS entry, which the source calls $T(x)$.\\
+$r$, $p$, $\rho$, $s$ & $r=r(M)$ the saddle, $r_1=r(1)=0.4441\ldots$. \emph{False readings:} the ``r'' of A055779's OEIS limit formula is Kot\v{e}\v{s}ovec's $p=1/(1+r_1)=0.6925\ldots$; the ``r'' of A162695's formula is the source's $\rho=0.2222\ldots$, and its ``s'' is $s=\exp(1/(1+r_1))$. $p_k$ are the inverse coefficients, unrelated to $p$; $s_\ell$ the saddle terms, unrelated to $s$.\\
+$c$, $c_j$, $C$ & $c_j(r)$ the relative corrections; $c=\log C(M)$; $C(M)$ the amplitude; $C_J$, $C$ generic constants.\\
+$a$ & $a=\log q(M)$; $a_0=\ee^{-r_1}/(1+r_1)$ in the damping bound.\\
+$B$ & $B=2\log t-c$ in Section~\ref{fat:sec:inverse}; the Bernoulli numbers $B_{2m}$ in~\eqref{fat:eq:stirling}.\\
+$T$ & $T(x)$ the A162695 e.g.f.; $T_1(n)$, $T_2(n)$ the diagnostics; $T=t^{-1}$ in~\eqref{fat:eq:inverse-engine}.\\
+$t$, $w$, $L$ & $t=Y/w$, $w=W(qY)$, $L=w+1$ in the inverse; $t=A(d)/n$ in the appendix proofs; $w_d$ the deficit weights.\\
+$E$, $P$, $Q$ & $E_h(u)$ the engine terms and $\E$ expectation; $P_j(r)$ the polynomials of~\eqref{fat:eq:P} and $P_d$ probabilities; $Q$ the multi-index weight and $Q_d$ Poisson probabilities.\\
+$K$ & The number of blocks; $K_{J,M}$ the inverse constant.\\
+\bottomrule
+\end{tabular}
+\endgroup
+
+\section{Existing formulas and attribution}\label{fat:sec:prior}
 The exact weighted formula is existing work. Zaslavsky's treatment of spanning fat forests in Section~11.3 of \emph{Perpendicular dissections of space} \cite{zaslavsky} gives the full multiplicity-$M$ partition-profile sum. In the present normalization it implies
-\begin{equation}\label{eq:exact}
+\begin{equation}\label{fat:eq:exact}
  A_n(M)=\sum_{k=1}^n\binom nk k^{n-k}n^{k-2}M^{k-1}
  =\frac{n!}{Mn^2}[z^n]\exp(nM z\ee^z).
 \end{equation}
 The coefficient expression is a rewrite of that prior formula, not a new identity. The $M=1$ expression is also explicit in A295623 \cite{oeis295623}. For $n\ge1$,
-\begin{equation}\label{eq:oeisrelation}
+\begin{equation}\label{fat:eq:oeisrelation}
  \operatorname{A295623}(n)=n^2\operatorname{A055779}(n).
 \end{equation}
-The offset-zero term of A295623 is a separate convention, outside \eqref{eq:oeisrelation}.
+The offset-zero term of A295623 is a separate convention, outside \eqref{fat:eq:oeisrelation}.
 
-Kot\v{e}\v{s}ovec's 2012 note \cite{kotesovec} analytically determines the exponential base for A055779 and estimates the leading prefactor numerically. Its four-page argument and numerical discussion do not supply a symbolic prefactor or correction expansion. That observation is not a present-day novelty boundary. In particular, the related A162695 entry \cite{oeis162695} gives a symbolic leading amplitude credited to Kot\v{e}\v{s}ovec in 2014, together with an implicit generating function and an exact logarithm relation to A055779. Passing to the logarithm under the usual square-root singular expansion recovers the fat-tree leading amplitude. This is a mathematical inference from the related formula, rather than an explicit fat-tree theorem printed in that entry. Section~\ref{sec:applications} spells out the normalization.
+Kot\v{e}\v{s}ovec's 2012 note \cite{kotesovec} analytically determines the exponential base for A055779 and estimates the leading prefactor numerically. Its four-page argument and numerical discussion do not supply a symbolic prefactor or correction expansion. That observation is not a present-day novelty boundary. In particular, the related A162695 entry \cite{oeis162695} gives a symbolic leading amplitude credited to Kot\v{e}\v{s}ovec in 2014, together with an implicit generating function and an exact logarithm relation to A055779. Passing to the logarithm under the usual square-root singular expansion recovers the fat-tree leading amplitude. This is a mathematical inference from the related formula, rather than an explicit fat-tree theorem printed in that entry. Section~\ref{fat:sec:applications} spells out the normalization.
 
 Accordingly, this report offers an explicit complete derivation and refinement: the rational coefficient engine, a controlled fixed-order remainder uniform over $M\ge1$, and the discrete inverse. Saddle-point expansion itself is standard, and no new general saddle method is proposed. The leading constant is not presented as newly discovered or as a first proof of an open problem from 2012.
 
@@ -107,15 +262,15 @@ The appendix is also deliberately narrow. The block-deficit Poisson limit follow
 
 The source check supporting these distinctions is bounded. The cited entries and relevant primary-source statements were inspected on 4 October 2026. A repository-path screen covered 28,509 entries in 14 cached, nontruncated tree responses; it was not a content search, was not a fresh complete repository snapshot, omitted an unsupplied subtree, and could not exclude nested modules or arbitrarily named files. Exact-ID Library and web searches were also incomplete. These checks do not certify absence of equivalent corrections or inverses elsewhere. Third-party papers and their page images are cited but not redistributed in the accompanying package.
 
-\section{The exact model and its coefficient formula}\label{sec:model}
-We prove \eqref{eq:exact} to make the normalization and later probabilistic calculations self-contained, while retaining its attribution.
+\section{The exact model and its coefficient formula}\label{fat:sec:model}
+We prove \eqref{fat:eq:exact} to make the normalization and later probabilistic calculations self-contained, while retaining its attribution.
 
 Fix a partition $\pi$ into $k$ blocks of sizes $s_1,\ldots,s_k$, with $\sum_i s_i=n$. For each edge $ij$ of a tree on the blocks there are $s_is_j$ original endpoint choices and a weight factor $M$. If $k\ge2$, the weighted Cayley identity is
-\begin{equation}\label{eq:cayley}
+\begin{equation}\label{fat:eq:cayley}
  \sum_{T\text{ on }[k]}\prod_{i=1}^k s_i^{\deg_T(i)}
  =\left(\prod_{i=1}^k s_i\right)(s_1+\cdots+s_k)^{k-2}.
 \end{equation}
-For completeness, each label $i$ occurs $\deg_T(i)-1$ times in the Pr\"ufer word of length $k-2$. Summing its product weight over all words yields the last factor in \eqref{eq:cayley}. Thus the total weight for this partition is
+For completeness, each label $i$ occurs $\deg_T(i)-1$ times in the Pr\"ufer word of length $k-2$. Summing its product weight over all words yields the last factor in \eqref{fat:eq:cayley}. Thus the total weight for this partition is
 \[
  M^{k-1}n^{k-2}\prod_i s_i.
 \]
@@ -126,7 +281,7 @@ The sum of $\prod_i s_i$ over partitions with $k$ blocks counts rooted partition
  \sum_{\substack{\pi\text{ partition of }[n]\\|\pi|=k}}\prod_{B\in\pi}|B|
  =\binom nk k^{n-k}.
 \]
-Summing the preceding weighted Cayley expression proves the finite sum in \eqref{eq:exact} for integer colors. Since the same reasoning is coefficientwise in $M$, it proves the weighted formula for all positive real $M$ as well.
+Summing the preceding weighted Cayley expression proves the finite sum in \eqref{fat:eq:exact} for integer colors. Since the same reasoning is coefficientwise in $M$, it proves the weighted formula for all positive real $M$ as well.
 
 A rooted block has exponential generating function $z\ee^z$. Expanding the exponential directly gives
 \[
@@ -143,9 +298,9 @@ As small exact checks,
 \end{align*}
 At $M=1$ the first six values are $1,2,10,89,1156,19897$. The package independently enumerates original vertex-edge sets for small $n$ and verifies this polynomial, rather than checking only a reformulation of the same finite sum.
 
-\section{A finite coefficient engine}\label{sec:coefficients}
+\section{A finite coefficient engine}\label{fat:sec:coefficients}
 Let $D=z\,\mathrm d/\mathrm dz$ and $F_M(z)=Mz\ee^z$. Define polynomials
-\begin{equation}\label{eq:P}
+\begin{equation}\label{fat:eq:P}
  P_0(r)=1,\qquad P_{j+1}(r)=(1+r)P_j(r)+rP'_j(r),
  \qquad \kappa_j(r)=\frac{P_j(r)}{1+r}.
 \end{equation}
@@ -157,40 +312,40 @@ Indeed $D^jF_M(z)=Mz\ee^zP_j(z)$, so at the saddle $D^jF_M(r)=\kappa_j(r)$. In t
 \end{align*}
 
 For $\ell\ge1$ sum over the finite set of nonnegative integer vectors $(m_3,\ldots,m_{2\ell+2})$ satisfying
-\begin{equation}\label{eq:multiindex}
+\begin{equation}\label{fat:eq:multiindex}
  \sum_{j=3}^{2\ell+2}(j-2)m_j=2\ell,
  \qquad Q=\sum_{j=3}^{2\ell+2}jm_j.
 \end{equation}
 Then $Q=2\ell+2\sum_jm_j$ is even. Define $s_0=1$ and
-\begin{equation}\label{eq:sell}
- s_\ell(r)=\sum_{\eqref{eq:multiindex}}
+\begin{equation}\label{fat:eq:sell}
+ s_\ell(r)=\sum_{\eqref{fat:eq:multiindex}}
  \frac{(-1)^{Q/2}(Q-1)!!}{b^{Q/2}}
  \prod_{j=3}^{2\ell+2}
  \frac{\kappa_j(r)^{m_j}}{m_j!(j!)^{m_j}}.
 \end{equation}
 Here $(-1)!!=1$ gives the empty-product convention when $\ell=0$.
 Let $g_\ell$ be the Stirling coefficients specified formally by
-\begin{equation}\label{eq:stirling}
+\begin{equation}\label{fat:eq:stirling}
  \sum_{\ell\ge0}g_\ell u^\ell
  =\exp\left\{\sum_{m\ge1}\frac{B_{2m}}{2m(2m-1)}u^{2m-1}\right\},
 \end{equation}
 where $B_j$ are the Bernoulli numbers with $B_2=1/6$. Then
-\begin{equation}\label{eq:convolution}
+\begin{equation}\label{fat:eq:convolution}
  c_\ell(r)=\sum_{a=0}^\ell g_a s_{\ell-a}(r).
 \end{equation}
 Only finitely many rational operations and polynomial derivatives are needed for any prescribed order. The familiar first coefficients are $g_0=1$, $g_1=1/12$, $g_2=1/288$ and $g_3=-139/51840$.
 
 \subsection{The first corrections}
-The constraints in \eqref{eq:multiindex} give
+The constraints in \eqref{fat:eq:multiindex} give
 \begin{align}
- s_1&=\frac{\kappa_4}{8b^2}-\frac{5\kappa_3^2}{24b^3},\label{eq:s1}\\
+ s_1&=\frac{\kappa_4}{8b^2}-\frac{5\kappa_3^2}{24b^3},\label{fat:eq:s1}\\
  s_2&=-\frac{\kappa_6}{48b^3}+\frac{7\kappa_3\kappa_5}{48b^4}
  +\frac{35\kappa_4^2}{384b^4}
  -\frac{35\kappa_3^2\kappa_4}{64b^5}
- +\frac{385\kappa_3^4}{1152b^6}.\label{eq:s2}
+ +\frac{385\kappa_3^4}{1152b^6}.\label{fat:eq:s2}
 \end{align}
 Consequently
-\begin{equation}\label{eq:firsttwo}
+\begin{equation}\label{fat:eq:firsttwo}
  c_1=\frac1{12}+s_1,\qquad
  c_2=\frac1{288}+\frac{s_1}{12}+s_2.
 \end{equation}
@@ -200,10 +355,10 @@ These compact formulas specify $c_2$ explicitly without a long polynomial. For a
  &-122408r^5-172632r^4-168720r^3-115248r^2-50304r-10368.
 \end{align*}
 Then
-\begin{equation}\label{eq:c2expanded}
+\begin{equation}\label{fat:eq:c2expanded}
  c_2(r)=\frac{r^3V(r)}{1152(r^2+3r+1)^6}.
 \end{equation}
-The negative sign in the $\kappa_3^2$ term of \eqref{eq:s1} comes from $i^6=-1$; omitting it would already contradict the exact endpoint cancellation proved below.
+The negative sign in the $\kappa_3^2$ term of \eqref{fat:eq:s1} comes from $i^6=-1$; omitting it would already contradict the exact endpoint cancellation proved below.
 
 \subsection{A second formal engine}
 A useful independently structured way to generate the saddle terms is to set
@@ -211,28 +366,28 @@ A useful independently structured way to generate the saddle terms is to set
  A_h(u)=\frac{\kappa_{h+2}(iu)^{h+2}}{(h+2)!\,b^{(h+2)/2}},\qquad h\ge1,
 \]
 and define $E_0(u)=1$, followed by
-\begin{equation}\label{eq:engine2}
+\begin{equation}\label{fat:eq:engine2}
  E_h(u)=\frac1h\sum_{v=1}^h vA_v(u)E_{h-v}(u).
 \end{equation}
 This is the differential recurrence for
 $\sum_hE_h(u)\varepsilon^h=\exp(\sum_{h\ge1}A_h(u)\varepsilon^h)$.
-Apply the normalized Gaussian moment functional, which sends $u^{2m}$ to $(2m-1)!!$ and odd powers to zero. Its value on $E_{2\ell}$ is $s_\ell$. One can avoid square roots and complex arithmetic by storing the $b$ and $i$ powers symbolically until taking the even moments. The package checks this recurrence against \eqref{eq:sell} in exact rational arithmetic.
+Apply the normalized Gaussian moment functional, which sends $u^{2m}$ to $(2m-1)!!$ and odd powers to zero. Its value on $E_{2\ell}$ is $s_\ell$. One can avoid square roots and complex arithmetic by storing the $b$ and $i$ powers symbolically until taking the even moments. The package checks this recurrence against \eqref{fat:eq:sell} in exact rational arithmetic.
 
-\section{Uniform saddle expansion}\label{sec:proof}
-We now prove Theorem~\ref{thm:main}, including its fixed-order remainder. Existence and uniqueness of $r$ follow because $r(1+r)\ee^r$ is strictly increasing from zero to infinity. Since $M\ge1$, $0<r\le r_1$. Also
+\section{Uniform saddle expansion}\label{fat:sec:proof}
+We now prove Theorem~\ref{fat:thm:main}, including its fixed-order remainder. Existence and uniqueness of $r$ follow because $r(1+r)\ee^r$ is strictly increasing from zero to infinity. Since $M\ge1$, $0<r\le r_1$. Also
 \[
  b(r)=r+2-\frac1{1+r},\qquad 1\le b(r)\le b(r_1).
 \]
 The limiting point $r=0$ is an analytic compactification of the angular integral, not the saddle of a finite-$M$ original model.
 
 \subsection{Cauchy integral and a global bound}
-Using \eqref{eq:saddle}, write
-\begin{equation}\label{eq:phi}
+Using \eqref{fat:eq:saddle}, write
+\begin{equation}\label{fat:eq:phi}
  \phi_r(\theta)=F_M(r\ee^{i\theta})
  =\frac{\ee^{i\theta}\exp(r(\ee^{i\theta}-1))}{1+r}.
 \end{equation}
 This formula and every angular derivative extend continuously to $r=0$. Cauchy's coefficient formula gives
-\begin{equation}\label{eq:cauchy}
+\begin{equation}\label{fat:eq:cauchy}
  [z^n]\ee^{nF_M(z)}=
  \frac{\exp(n/(1+r))r^{-n}}{2\pi}
  \int_{-\pi}^{\pi}
@@ -245,21 +400,21 @@ Every coefficient in $F_M(z)=\sum_{j\ge1}Mz^j/(j-1)!$ is nonnegative. Hence
  \Re(\phi_r(\theta)-\phi_r(0))
  &=-\sum_{j\ge1}\frac{Mr^j}{(j-1)!}(1-\cos j\theta)\notag\\
  &\le-Mr(1-\cos\theta)
- \le-\frac{2a_0}{\pi^2}\theta^2,\quad |\theta|\le\pi,\label{eq:damping}
+ \le-\frac{2a_0}{\pi^2}\theta^2,\quad |\theta|\le\pi,\label{fat:eq:damping}
 \end{align}
 where $a_0=\ee^{-r_1}/(1+r_1)>0$, because $Mr=\ee^{-r}/(1+r)\ge a_0$. The last inequality uses $1-\cos\theta\ge2\theta^2/\pi^2$. Thus the frequency-one term alone controls every noncentral arc; possible roots of unity do not require a separate dominance assumption.
 
 \subsection{The central remainder}
-Set $\varepsilon=n^{-1/2}$ and $u=\sqrt{nb}\,\theta$. Fix $0<\delta<1/6$ and call $|u|\le n^\delta$ the central region. Joint analyticity of \eqref{eq:phi} in a fixed complex neighborhood of $\theta=0$, compactness of $0\le r\le r_1$, and $b\ge1$ give uniform bounds on every fixed derivative.
+Set $\varepsilon=n^{-1/2}$ and $u=\sqrt{nb}\,\theta$. Fix $0<\delta<1/6$ and call $|u|\le n^\delta$ the central region. Joint analyticity of \eqref{fat:eq:phi} in a fixed complex neighborhood of $\theta=0$, compactness of $0\le r\le r_1$, and $b\ge1$ give uniform bounds on every fixed derivative.
 
 For real $0\le s\le\varepsilon$, remove the quadratic part by defining
-\begin{equation}\label{eq:Psi}
+\begin{equation}\label{fat:eq:Psi}
  \Psi(s,u,r)=s^{-2}
  \left[\phi_r\left(\frac{su}{\sqrt b}\right)-\phi_r(0)
        -\frac{isu}{\sqrt b}\right]+\frac{u^2}{2}.
 \end{equation}
 At $s=0$ the singularity is removable. The analytic Taylor factorization has the form
-\begin{equation}\label{eq:G}
+\begin{equation}\label{fat:eq:G}
  \Psi(s,u,r)=su^3G_r(su/\sqrt b),
 \end{equation}
 with the bounded powers of $b$ absorbed into $G_r$. The functions $G_r$ and their fixed derivatives are uniformly bounded in one fixed complex disk. On the central region, their argument tends uniformly to zero and
@@ -269,34 +424,34 @@ with the bounded powers of $b$ absorbed into $G_r$. The functions $G_r$ and thei
 \]
 for large $n$, uniformly in $r$.
 
-For every fixed $h\ge1$, differentiating \eqref{eq:G} gives
-\begin{equation}\label{eq:derivative}
+For every fixed $h\ge1$, differentiating \eqref{fat:eq:G} gives
+\begin{equation}\label{fat:eq:derivative}
  |\partial_s^h\Psi(s,u,r)|\le C_h|u|^{h+2}.
 \end{equation}
 There are only two kinds of term: either the leading $s$ remains, or it is differentiated once. The former is bounded using $s|u|\le C$, and the latter directly. The finite Bell-polynomial formula for derivatives of $\exp\Psi$ now yields, for every fixed positive integer $H$,
-\begin{equation}\label{eq:bellbound}
+\begin{equation}\label{fat:eq:bellbound}
  |\partial_s^H\exp\Psi(s,u,r)|\le C_H(1+|u|^{3H}).
 \end{equation}
 Indeed each product of derivatives in this formula has total differentiation order $H$ and at most $H$ factors, so its total power of $|u|$ is at most $3H$; the exponential itself is uniformly bounded.
 
 Taylor's real integral remainder through degree $2J+1$ therefore gives
-\begin{equation}\label{eq:remainder}
+\begin{equation}\label{fat:eq:remainder}
  \exp\Psi(\varepsilon,u,r)
  =\sum_{h=0}^{2J+1}E_h(u)\varepsilon^h
  +O_J\bigl(\varepsilon^{2J+2}(1+|u|^{6J+6})\bigr)
 \end{equation}
-on the central region, uniformly in $r$. The coefficients $E_h$ are those of \eqref{eq:engine2}. Multiplication by $\ee^{-u^2/2}$ and integration gives a uniform $O_J(n^{-J-1})$ error because every fixed Gaussian moment is finite. The same choice of $\delta$ works at every fixed $J$; it need not shrink with the order.
+on the central region, uniformly in $r$. The coefficients $E_h$ are those of \eqref{fat:eq:engine2}. Multiplication by $\ee^{-u^2/2}$ and integration gives a uniform $O_J(n^{-J-1})$ error because every fixed Gaussian moment is finite. The same choice of $\delta$ works at every fixed $J$; it need not shrink with the order.
 
-Each $E_h$ has parity $h$ in $u$. Odd terms integrate to zero over the symmetric central region. For the even term of degree $2\ell$ in $\varepsilon$, multiplying the Taylor monomials gives exactly \eqref{eq:multiindex}; integrating $u^Q$ gives $(Q-1)!!$ and the factor $i^Q=(-1)^{Q/2}$. This proves \eqref{eq:sell}. The discarded odd coefficient of degree $2J+1$ may involve $\kappa_{2J+3}$, which is supplied by analyticity but is not needed for the final coefficient $s_J$.
+Each $E_h$ has parity $h$ in $u$. Odd terms integrate to zero over the symmetric central region. For the even term of degree $2\ell$ in $\varepsilon$, multiplying the Taylor monomials gives exactly \eqref{fat:eq:multiindex}; integrating $u^Q$ gives $(Q-1)!!$ and the factor $i^Q=(-1)^{Q/2}$. This proves \eqref{fat:eq:sell}. The discarded odd coefficient of degree $2J+1$ may involve $\kappa_{2J+3}$, which is supplied by analyticity but is not needed for the final coefficient $s_J$.
 
 \subsection{Tails and factorial normalization}
-For the complementary region, \eqref{eq:damping} and the upper bound on $b$ give
+For the complementary region, \eqref{fat:eq:damping} and the upper bound on $b$ give
 \[
  \left|\exp\{n[\phi_r(\theta)-\phi_r(0)-i\theta]\}\right|
  \le\exp(-c u^2)
 \]
 with a positive constant independent of $r$. Integrating over $|u|>n^\delta$ is $O(\exp(-c' n^{2\delta}))$, even relative to the leading $n^{-1/2}$ scale. Gaussian polynomial tails have the same property, so the finite central coefficient integrals can be extended to the whole real line. We obtain
-\begin{equation}\label{eq:saddleexp}
+\begin{equation}\label{fat:eq:saddleexp}
  [z^n]\exp(nF_M(z))=
  \frac{\exp(n/(1+r))r^{-n}}{\sqrt{2\pi nb}}
  \left\{\sum_{\ell=0}^{J}s_\ell(r)n^{-\ell}+O_J(n^{-J-1})\right\}.
@@ -308,26 +463,26 @@ The positive-real Stirling expansion with fixed-order remainder \cite{dlmf} is
  n!=\sqrt{2\pi n}(n/\ee)^n
  \left\{\sum_{a=0}^{J}g_an^{-a}+O_J(n^{-J-1})\right\}.
 \]
-Multiplying \eqref{eq:saddleexp} by $n!/(Mn^2)$ gives \eqref{eq:main} and \eqref{eq:convolution}. The finite coefficient functions are bounded on $[0,r_1]$, so the multiplication preserves the uniform remainder. Algebra using \eqref{eq:saddle} gives both expressions for $q$ in \eqref{eq:qC} and then \eqref{eq:normalized}.
+Multiplying \eqref{fat:eq:saddleexp} by $n!/(Mn^2)$ gives \eqref{fat:eq:main} and \eqref{fat:eq:convolution}. The finite coefficient functions are bounded on $[0,r_1]$, so the multiplication preserves the uniform remainder. Algebra using \eqref{fat:eq:saddle} gives both expressions for $q$ in \eqref{fat:eq:qC} and then \eqref{fat:eq:normalized}.
 
 Regularity of all $c_j$ follows because their denominators contain only positive powers of $1+r$ and $b(r)$. To establish the endpoint cancellation, set $r=0$ in the angular integral itself. Then $\phi_0(\theta)=\ee^{i\theta}$ and
 \[
  \int_{-\pi}^{\pi}\exp\{n(\ee^{i\theta}-1-i\theta)\}\dd\theta
  =2\pi\ee^{-n}\frac{n^n}{n!}.
 \]
-The normalized saddle factor is exactly the reciprocal of the Stirling factor. Their product is $1$ for every $n$. Uniqueness of fixed-order asymptotic coefficients implies $c_j(0)=0$ for all $j\ge1$. This does not invoke coefficient extraction at an impossible finite-$M$ saddle $r=0$, nor does it justify adding an extra factor of $r$ to the uniform error. The proof of Theorem~\ref{thm:main} is complete.
+The normalized saddle factor is exactly the reciprocal of the Stirling factor. Their product is $1$ for every $n$. Uniqueness of fixed-order asymptotic coefficients implies $c_j(0)=0$ for all $j\ge1$. This does not invoke coefficient extraction at an impossible finite-$M$ saddle $r=0$, nor does it justify adding an extra factor of $r$ to the uniform error. The proof of Theorem~\ref{fat:thm:main} is complete.
 
-\section{Logarithmic coefficients}\label{sec:log}
+\section{Logarithmic coefficients}\label{fat:sec:log}
 Let
 \[
  a=\log q(M),\qquad c=\log C(M).
 \]
 Define $d_j$ formally by
-\begin{equation}\label{eq:dformal}
+\begin{equation}\label{fat:eq:dformal}
  \sum_{j\ge1}d_ju^j=\log\left(1+\sum_{j\ge1}c_ju^j\right).
 \end{equation}
 A finite recurrence obtained by differentiation is
-\begin{equation}\label{eq:drecursion}
+\begin{equation}\label{fat:eq:drecursion}
  d_k=c_k-\frac1k\sum_{i=1}^{k-1}i\,d_i c_{k-i},\qquad k\ge1.
 \end{equation}
 Thus $d_1=c_1$ and $d_2=c_2-c_1^2/2$. For reference,
@@ -337,27 +492,27 @@ Thus $d_1=c_1$ and $d_2=c_2-c_1^2/2$. For reference,
  d_2(r)&=-\frac{r^3(1+r)^2U(r)}{48(r^2+3r+1)^6}.
 \end{align*}
 
-\begin{corollary}[Uniform logarithmic expansion]\label{cor:log}
+\begin{corollary}[Uniform logarithmic expansion]\label{fat:cor:log}
 For every fixed $J\ge0$, uniformly over $M\ge1$,
-\begin{equation}\label{eq:log}
+\begin{equation}\label{fat:eq:log}
  \log A_n(M)=n\log n+an-2\log n+c
  +\sum_{j=1}^{J}d_j(r)n^{-j}+O_J(n^{-J-1}).
 \end{equation}
 \end{corollary}
 \begin{proof}
-The bracket in \eqref{eq:main} is $1+O(1/n)$ uniformly. For sufficiently large $n$ it lies in a fixed positive neighborhood of $1$, where the Taylor remainder for the logarithm is uniform. Apply that finite Taylor formula and \eqref{eq:dformal}. The possibly unbounded dependence of $a$ and $c$ on $M$ stays in the exact leading terms and does not enter this remainder argument.
+The bracket in \eqref{fat:eq:main} is $1+O(1/n)$ uniformly. For sufficiently large $n$ it lies in a fixed positive neighborhood of $1$, where the Taylor remainder for the logarithm is uniform. Apply that finite Taylor formula and \eqref{fat:eq:dformal}. The possibly unbounded dependence of $a$ and $c$ on $M$ stays in the exact leading terms and does not enter this remainder argument.
 \end{proof}
 
-\section{The actual discrete inverse}\label{sec:inverse}
+\section{The actual discrete inverse}\label{fat:sec:inverse}
 \subsection{Monotonicity without interpolation}
 Two disjoint extensions of each fat tree on $[n]$ yield fat trees on $[n+1]$. One inserts $n+1$ into the block containing vertex $1$, retaining all edges. The other creates the singleton block $\{n+1\}$ and connects it to original vertex $1$ by a new edge. Each map is injective, their images are disjoint, and the second multiplies the weight by $M$. Consequently, coefficientwise as a polynomial in $M$,
-\begin{equation}\label{eq:monotone}
+\begin{equation}\label{fat:eq:monotone}
  A_{n+1}(M)\ge(1+M)A_n(M)>A_n(M),\qquad M>0.
 \end{equation}
 Since $A_1=1$, the sequence is unbounded and $N_M(y)$ exists for $y\ge1$.
 
 We fix $M\ge1$ for the rest of this section. In particular $a,c,d_j$ are constants. With $Y=\log y$, set
-\begin{equation}\label{eq:Lambert}
+\begin{equation}\label{fat:eq:Lambert}
  w=W(qY),\quad t=\frac{Y}{w},\quad
  L=w+1=\log(qt)+1,\quad B=2\log t-c.
 \end{equation}
@@ -371,7 +526,7 @@ For each $J\ge0$ put
 Substitute $x=t+\sum_{k=0}^{J}p_kt^{-k}$ into $F_J(x)-Y$ and cancel coefficients of $t^0,t^{-1},\ldots,t^{-J}$, treating $L$ and $\log t$ as formal coefficient parameters. At the $t^{-k}$ equation the coefficient of $p_k$ is $L$, so the procedure is unique.
 
 For an explicit finite implementation, write $T=t^{-1}$ and $h=\sum_{k=0}^Jp_kT^k$. Expand to degree $J$ the expression
-\begin{align}\label{eq:inverse-engine}
+\begin{align}\label{fat:eq:inverse-engine}
  Lh-B
  &+\sum_{m\ge2}\frac{(-1)^m h^mT^{m-1}}{m(m-1)}
  -2\sum_{m\ge1}\frac{(-1)^{m+1}h^mT^m}{m}\notag\\
@@ -379,23 +534,23 @@ For an explicit finite implementation, write $T=t^{-1}$ and $h=\sum_{k=0}^Jp_kT^
 \end{align}
 Only $m\le J+1$ is needed in the first sum and $m\le J$ in the second. The first three coefficients are
 \begin{align}
- p_0&=B/L,\label{eq:p0}\\
- p_1&=-\frac{p_0^2/2-2p_0+d_1}{L},\label{eq:p1}\\
- p_2&=-\frac{(p_0-2)p_1-p_0^3/6+p_0^2-d_1p_0+d_2}{L}.\label{eq:p2}
+ p_0&=B/L,\label{fat:eq:p0}\\
+ p_1&=-\frac{p_0^2/2-2p_0+d_1}{L},\label{fat:eq:p1}\\
+ p_2&=-\frac{(p_0-2)p_1-p_0^3/6+p_0^2-d_1p_0+d_2}{L}.\label{fat:eq:p2}
 \end{align}
 In particular
-\begin{equation}\label{eq:p0bounded}
+\begin{equation}\label{fat:eq:p0bounded}
  p_0=2-\frac{2a+2+c}{L}.
 \end{equation}
-All $p_k$ are rational expressions in $L$ and the fixed constants $a,c,d_1,\ldots,d_k$. They are bounded as $t\to\infty$: \eqref{eq:p0bounded} starts the induction, and each later equation is a polynomial in earlier bounded coefficients divided by $L$. In fact $p_k=O(1/L)$ for $k\ge1$.
+All $p_k$ are rational expressions in $L$ and the fixed constants $a,c,d_1,\ldots,d_k$. They are bounded as $t\to\infty$: \eqref{fat:eq:p0bounded} starts the induction, and each later equation is a polynomial in earlier bounded coefficients divided by $L$. In fact $p_k=O(1/L)$ for $k\ge1$.
 
-\begin{theorem}[Fixed-multiplicity inverse at every fixed order]\label{thm:inverse}
+\begin{theorem}[Fixed-multiplicity inverse at every fixed order]\label{fat:thm:inverse}
 Fix $M\ge1$ and $J\ge0$. Define
-\begin{equation}\label{eq:XJ}
+\begin{equation}\label{fat:eq:XJ}
  X_J(y)=t+\sum_{k=0}^Jp_kt^{-k}
 \end{equation}
-by \eqref{eq:Lambert} and the finite recursion above. There is a constant $K_{J,M}>0$ such that for all sufficiently large $y$,
-\begin{equation}\label{eq:inverse}
+by \eqref{fat:eq:Lambert} and the finite recursion above. There is a constant $K_{J,M}>0$ such that for all sufficiently large $y$,
+\begin{equation}\label{fat:eq:inverse}
  \left\lceil X_J(y)-K_{J,M}\frac{t^{-J-1}}L\right\rceil
  \le N_M(y)\le
  \left\lceil X_J(y)+K_{J,M}\frac{t^{-J-1}}L\right\rceil.
@@ -404,7 +559,7 @@ Thus the horizontal uncertainty is $O_{J,M}(t^{-J-1}/L)$ and tends to zero. Neit
 \end{theorem}
 \begin{proof}
 Since $X_J-t$ is bounded, ordinary Taylor expansions of $F_J$ about $t$ have controlled finite remainders. The recursion cancels all coefficients through $t^{-J}$ and gives
-\begin{equation}\label{eq:residual}
+\begin{equation}\label{fat:eq:residual}
  F_J(X_J)-Y=O_{J,M}(t^{-J-1}).
 \end{equation}
 Holding $L$ fixed in coefficient extraction is legitimate: the residual is evaluated at each given $t$, and no derivative of $p_k(t)$ is taken in that calculation. On a fixed interval about $t$ containing $X_J$ and the neighboring integers,
@@ -413,7 +568,7 @@ Holding $L$ fixed in coefficient extraction is legitimate: the residual is evalu
 \]
 for sufficiently large $t$. For example, $|x-t|\le5$ suffices eventually because $X_J-t\to2$.
 
-Choose positive constants $R,E$ such that the absolute residual in \eqref{eq:residual} is at most $Rt^{-J-1}$ and the integer expansion \eqref{eq:log} satisfies
+Choose positive constants $R,E$ such that the absolute residual in \eqref{fat:eq:residual} is at most $Rt^{-J-1}$ and the integer expansion \eqref{fat:eq:log} satisfies
 \[
  |\log A_n(M)-F_J(n)|\le E n^{-J-1}
 \]
@@ -429,15 +584,26 @@ Similarly $m_+=\lceil X_J+\eta\rceil$ is at least $X_J+\eta$, and
  \log A_{m_+}(M)
  \ge F_J(X_J)+K t^{-J-1}/2-E't^{-J-1}>Y.
 \]
-Both indices are in the fixed local interval for large $t$. Monotonicity \eqref{eq:monotone} excludes all earlier indices and proves the two ceiling bounds, including threshold equality cases.
+Both indices are in the fixed local interval for large $t$. Monotonicity \eqref{fat:eq:monotone} excludes all earlier indices and proves the two ceiling bounds, including threshold equality cases.
 \end{proof}
 
 \subsection{What the rounding statement does and does not say}
-For large $y$, $2\eta<1$, so \eqref{eq:inverse} leaves at most two neighboring integers. If the two displayed ceilings coincide, the inverse is determined. At points arbitrarily close to a sequence threshold they may differ. A small real approximation error by itself never licenses the unconditional rule $N_M(y)=\lceil X_J(y)\rceil$ for every large $y$.
+For large $y$, $2\eta<1$, so \eqref{fat:eq:inverse} leaves at most two neighboring integers. If the two displayed ceilings coincide, the inverse is determined. At points arbitrarily close to a sequence threshold they may differ. A small real approximation error by itself never licenses the unconditional rule $N_M(y)=\lceil X_J(y)\rceil$ for every large $y$.
 
 The proof compares actual integer values $A_n$ directly. It makes no claim about the ordinary linear interpolation between successive sequence values. Nor does it rely on inventing a smooth interpolation whose error would have to be proved separately. Exact sequence evaluation or the exact finite sum can resolve the last two candidates when numerical error has been controlled; the asymptotic theorem alone supplies no computable value of $K_{J,M}$.
 
-\section{OEIS applications and numerical illustrations}\label{sec:applications}
+\begin{remark}[{[write]} The inverse and the transseries volume, 7~October 2026]\label{fat:rem:transseries}
+Compared statement by statement with the repository's transseries
+volume~\cite{TSvol}; its symbols are not used here.
+\begin{enumerate}
+\item \emph{The centre $t$.} The equation $t\log(qt)=Y$ of~\eqref{fat:eq:Lambert} is the volume's factorial core \file{p0:prop:factorial-core} with $\kappa=1$, $d=\log q=a$ and target $Y$: its solution there is $X=\exp(v-d)$ with $v=W_0(Ye^{d})=W(qY)=w$, and $e^{w}/q=Y/w=t$ because $we^w=qY$. The source's $L=w+1$ is that proposition's core slope $\Phi_0'(t)/\kappa=v+1$. So $t$ is an exact instance.
+\item \emph{The corrections $p_k$.} After the shift $x=t+p_0+E$, the relation $Lp_0=B$ cancels the zeroth-order term of~\eqref{fat:eq:inverse-engine}, and the remaining equation for $E$ has the form $\Lambda E+f(T,E)=0$ of \file{p0:thm:core-reversion}, with $\Lambda=L$, $h=0$, every term of $f$ divisible by $T$, and coefficient ring $\mathbb Q[L^{\pm1},B,d_1,d_2,\ldots]$ (the source likewise treats $L$ and $\log t$ as formal parameters). So $\sum_{k\ge1}p_kt^{-k}$ is, as a formal series, an instance of that theorem, of the kind its \file{p0:rem:core-instances} describes for the factorial core; the analytic residual bound~\eqref{fat:eq:residual} and the derivative bound are the source's own.
+\item \emph{The two ceilings.} Theorem~\ref{fat:thm:inverse} brackets the integer staircase $N_M(y)$ (the volume's $N_\ast$ of \file{p0:def:three-inverses}(1)) around $X_J$, which is not the inverse of an interpolation of $(A_n(M))_n$; the bracket is proved directly at the integers from the integer-index expansion~\eqref{fat:eq:log} and monotonicity~\eqref{fat:eq:monotone}, as Section~\ref{fat:sec:inverse}.3 stresses. It is an analogue of \file{p0:thm:staircase}(2), not an instance, and like that item it leaves two candidates near a threshold.
+\item \emph{The forward expansion.} $\log A_n(M)$ grows like $n\log n$, faster than the exponential--power class \file{p0:def:model} allows, so Theorem~\ref{fat:thm:main} is not an instance of that model; its logarithmic form~\eqref{fat:eq:log} is the phase that the factorial core inverts at leading order.
+\end{enumerate}
+\end{remark}
+
+\section{OEIS applications and numerical illustrations}\label{fat:sec:applications}
 \subsection{A055779 and the older parameter}
 For $M=1$, the main constants evaluate numerically to
 \begin{align*}
@@ -459,7 +625,7 @@ Kot\v{e}\v{s}ovec's parameter $p$ is related to the present saddle by $p=1/(1+r_
  \exp(1-1/p)=\frac{1-p}{p^2},\qquad
  C(1)=\sqrt{\frac{p}{1+p-p^2}}.
 \]
-His expression $q=(1-p)^{p-1}p^{1-2p}$ agrees with \eqref{eq:qC} by substitution. This is an illuminating normalization of the same amplitude, not a priority claim.
+His expression $q=(1-p)^{p-1}p^{1-2p}$ agrees with \eqref{fat:eq:qC} by substitution. This is an illuminating normalization of the same amplitude, not a priority claim.
 
 The inverse formulas specialize without further analysis. Set $Y=\log y$, $t=Y/W(q(1)Y)$ and $L=1+W(q(1)Y)$. Already
 \[
@@ -468,8 +634,12 @@ The inverse formulas specialize without further analysis. Set $Y=\log y$, $t=Y/W
 \]
 has a two-ceiling horizontal error $O(t^{-2}/L)$; adding $p_2/t^2$ improves that to $O(t^{-3}/L)$. The constants and onset are asymptotic, not numerically certified by this display.
 
+\begin{writenote}[Two decimals, 7 October 2026]
+The write recomputed the five constants above to 50 digits. $r_1$, $C(1)$ and $c_2(r_1)$ are correct truncations. Two are roundings at the last printed digit, although ``$\ldots$'' marks a truncation: the correct truncations are $q(1)=1.65548791299153430662521161862\ldots$ (the next digits are $5179\ldots$) and $c_1(r_1)=-0.07357275810351076496294030050\ldots$ (next digits $6972\ldots$). Both printed values are within one unit of their last digit, so nothing else is affected. Kot\v{e}\v{s}ovec's parameter is $p=0.6924583254616546081\ldots$, his OEIS ``r'' (Remark~\ref{fat:rem:oeis}); the identities displayed above hold to 60 digits.
+\end{writenote}
+
 \subsection{A295623 and A162695}
-For A295623, the exact relation \eqref{eq:oeisrelation} immediately gives, for every fixed $J$,
+For A295623, the exact relation \eqref{fat:eq:oeisrelation} immediately gives, for every fixed $J$,
 \[
  \operatorname{A295623}(n)=C(1)q(1)^n n^n
  \left\{\sum_{j=0}^Jc_j(r_1)n^{-j}+O_J(n^{-J-1})\right\}.
@@ -514,16 +684,16 @@ Predicted limit & $-0.073572758104$ & $-0.023088083813$\\
 These values illustrate the derived orders. Finite agreement does not prove the asymptotic theorem, its parameter uniformity, or any effective onset. The full diagnostics also cover fixed $M=2,10,10^{12}$ and moving $M=n,n^2$.
 
 \appendix
-\section{An elementary Poisson deficit window}\label{sec:poisson}
-This appendix is logically independent of the analytic saddle proof. It starts only from the existing exact sum. The result is a quantitative elementary consequence, with the general assembly prior discussed in Section~\ref{sec:prior}.
+\section{An elementary Poisson deficit window}\label{fat:sec:poisson}
+This appendix is logically independent of the analytic saddle proof. It starts only from the existing exact sum. The result is a quantitative elementary consequence, with the general assembly prior discussed in Section~\ref{fat:sec:prior}.
 
 \subsection{Exact tilted Poisson law}
-Choose a fat tree on $[n]$ with probability proportional to $M^{K-1}$ and let $D=n-K$. Put $\lambda=n/M$. The $k=n-d$ summand of \eqref{eq:exact}, divided by the all-singleton term $n^{n-2}M^{n-1}$, is
-\begin{equation}\label{eq:weightdeficit}
+Choose a fat tree on $[n]$ with probability proportional to $M^{K-1}$ and let $D=n-K$. Put $\lambda=n/M$. The $k=n-d$ summand of \eqref{fat:eq:exact}, divided by the all-singleton term $n^{n-2}M^{n-1}$, is
+\begin{equation}\label{fat:eq:weightdeficit}
  w_d=\binom nd(1-d/n)^dM^{-d}=\frac{\lambda^d}{d!}f_n(d),\quad 0\le d<n,
 \end{equation}
 where
-\begin{equation}\label{eq:fn}
+\begin{equation}\label{fat:eq:fn}
  f_n(d)=\prod_{i=0}^{d-1}(1-i/n)(1-d/n)^d,\quad d<n;
  \qquad f_n(d)=0,\quad d\ge n.
 \end{equation}
@@ -532,7 +702,7 @@ Empty products have value one. Define the polynomial
  \mathcal R_n(\lambda)=\sum_{d\ge0}\frac{\lambda^d f_n(d)}{d!}.
 \]
 Then, exactly,
-\begin{equation}\label{eq:Rn}
+\begin{equation}\label{fat:eq:Rn}
  A_n(M)=n^{n-2}M^{n-1}\mathcal R_n(\lambda),\qquad
  \Prob(D=d)=\frac{\Prob(Z=d)f_n(d)}{\E f_n(Z)},\quad Z\sim\Pois(\lambda).
 \end{equation}
@@ -540,11 +710,11 @@ The denominator is positive because $f_n(0)=1$. For integer $M$ this is ordinary
 
 \subsection{Explicit finite bounds}
 Write $A(d)=(3d^2-d)/2$; this auxiliary polynomial is distinct from $A_n(M)$.
-\begin{lemma}[Product bounds for every deficit]\label{lem:bonf}
+\begin{lemma}[Product bounds for every deficit]\label{fat:lem:bonf}
 For every $n\ge1$ and integer $d\ge0$,
 \begin{align}
- 0\le1-f_n(d)&\le A(d)/n,\label{eq:bonf1}\\
- 0\le f_n(d)-1+A(d)/n&\le A(d)^2/(2n^2).\label{eq:bonf2}
+ 0\le1-f_n(d)&\le A(d)/n,\label{fat:eq:bonf1}\\
+ 0\le f_n(d)-1+A(d)/n&\le A(d)^2/(2n^2).\label{fat:eq:bonf2}
 \end{align}
 \end{lemma}
 \begin{proof}
@@ -556,30 +726,30 @@ If $d<n$, the product defining $f_n(d)$ has a list of factors $1-x_i$ with $x_i\
 and $\sum_{i<j}x_ix_j\le(\sum_i x_i)^2/2$. This proves both claims below the cutoff. If $d\ge n$, then $t=A(d)/n\ge1$, $f_n(d)=0$, and the claims reduce to $1\le t$ and $0\le t-1\le t^2/2$. Thus the truncated tail, including $n=1$, causes no missing case.
 \end{proof}
 
-\begin{theorem}[Finite expectation and total-variation bounds]\label{thm:TV}
+\begin{theorem}[Finite expectation and total-variation bounds]\label{fat:thm:TV}
 For all $n\ge1$ and $\lambda>0$,
 \begin{align}
  0\le1-\ee^{-\lambda}\mathcal R_n(\lambda)
- &\le\frac{3\lambda^2+2\lambda}{2n},\label{eq:P2}\\
+ &\le\frac{3\lambda^2+2\lambda}{2n},\label{fat:eq:P2}\\
  0\le\ee^{-\lambda}\mathcal R_n(\lambda)-1+
  \frac{3\lambda^2+2\lambda}{2n}
- &\le\frac{9\lambda^4+48\lambda^3+46\lambda^2+4\lambda}{8n^2},\label{eq:P3}\\
+ &\le\frac{9\lambda^4+48\lambda^3+46\lambda^2+4\lambda}{8n^2},\label{fat:eq:P3}\\
  \TV(\mathcal L(D),\Pois(\lambda))
- &\le\min\left\{1,\frac{3\lambda^2+2\lambda}{2n}\right\},\quad\lambda=n/M.\label{eq:P4}
+ &\le\min\left\{1,\frac{3\lambda^2+2\lambda}{2n}\right\},\quad\lambda=n/M.\label{fat:eq:P4}
 \end{align}
 Here $\TV(P,Q)=\tfrac12\sum_d|P_d-Q_d|$.
 \end{theorem}
 \begin{proof}
-Since $\E f_n(Z)=\ee^{-\lambda}\mathcal R_n(\lambda)$, take expectations in Lemma~\ref{lem:bonf}. The Poisson factorial moments give
+Since $\E f_n(Z)=\ee^{-\lambda}\mathcal R_n(\lambda)$, take expectations in Lemma~\ref{fat:lem:bonf}. The Poisson factorial moments give
 \[
  \E A(Z)=\frac{3\lambda^2+2\lambda}{2},\qquad
  \E A(Z)^2=\frac{9\lambda^4+48\lambda^3+46\lambda^2+4\lambda}{4}.
 \]
-This proves \eqref{eq:P2}--\eqref{eq:P3}. For the total-variation bound let $Q_d=\Prob(Z=d)$ and $P_d=Q_df_n(d)/\E f_n(Z)$. Since $0\le f_n\le1$ and $\E f_n\le1$, both $P_d$ and $Q_d$ dominate $Q_df_n(d)$. Their common mass is therefore at least $\E f_n(Z)$, whence
+This proves \eqref{fat:eq:P2}--\eqref{fat:eq:P3}. For the total-variation bound let $Q_d=\Prob(Z=d)$ and $P_d=Q_df_n(d)/\E f_n(Z)$. Since $0\le f_n\le1$ and $\E f_n\le1$, both $P_d$ and $Q_d$ dominate $Q_df_n(d)$. Their common mass is therefore at least $\E f_n(Z)$, whence
 \[
  \TV(P,Q)=1-\sum_d\min(P_d,Q_d)\le1-\E f_n(Z).
 \]
-Combine this with \eqref{eq:P2} and the trivial cap at one. In particular there is no extraneous division by $\E f_n$ in the final bound.
+Combine this with \eqref{fat:eq:P2} and the trivial cap at one. In particular there is no extraneous division by $\E f_n$ in the final bound.
 \end{proof}
 
 For bounded $\lambda=n/M$, the approximation to the \emph{moving} law $\Pois(\lambda)$ has error $O(1/n)$. If $M/n\to\tau>0$, then
@@ -600,22 +770,22 @@ with $e_0(d)=1$. For each fixed $j$, $e_j(d)$ is a polynomial in $d$ of degree a
  S_m(d)=\sum_{i=0}^{d-1}i^m+d^{m+1},
 \]
 a polynomial of degree $m+1$. Newton's identities
-\begin{equation}\label{eq:newton}
+\begin{equation}\label{fat:eq:newton}
  j e_j(d)=\sum_{m=1}^j(-1)^{m-1}e_{j-m}(d)S_m(d)
 \end{equation}
 generate the polynomials and inductively give degree at most $2j$.
 
-\begin{theorem}[Bounded-parameter expansion]\label{thm:poissonall}
+\begin{theorem}[Bounded-parameter expansion]\label{fat:thm:poissonall}
 For every fixed integer $J\ge0$ and finite $\Lambda\ge0$, uniformly for $0\le\lambda\le\Lambda$,
-\begin{equation}\label{eq:poissonall}
+\begin{equation}\label{fat:eq:poissonall}
  \ee^{-\lambda}\mathcal R_n(\lambda)
  =\sum_{j=0}^{J}\frac{(-1)^j\E e_j(Z)}{n^j}
  +O_{J,\Lambda}(n^{-J-1}),\qquad Z\sim\Pois(\lambda).
 \end{equation}
-Every coefficient is a polynomial in $\lambda$, generated finitely by \eqref{eq:newton} and the Poisson factorial moments.
+Every coefficient is a polynomial in $\lambda$, generated finitely by \eqref{fat:eq:newton} and the Poisson factorial moments.
 \end{theorem}
 \begin{proof}
-For $d<n$, the Bonferroni remainder after degree $J$ in the product \eqref{eq:fn} is at most
+For $d<n$, the Bonferroni remainder after degree $J$ in the product \eqref{fat:eq:fn} is at most
 \[
  \frac{e_{J+1}(d)}{n^{J+1}}
  \le\frac{A(d)^{J+1}}{(J+1)!n^{J+1}}.
@@ -624,11 +794,11 @@ For $d\ge n$, put $t=A(d)/n\ge1$ and recall $f_n(d)=0$. Since $e_j(d)\le A(d)^j/
 \[
  \sum_{j=0}^J\frac{t^j}{j!}\le C_Jt^{J+1}.
 \]
-Taking expectations in both ranges proves \eqref{eq:poissonall}, because every fixed polynomial moment of a Poisson variable is bounded on $0\le\lambda\le\Lambda$. At $\lambda=0$ the expression is understood through the polynomial extension; it need not represent a finite-$M$ original model.
+Taking expectations in both ranges proves \eqref{fat:eq:poissonall}, because every fixed polynomial moment of a Poisson variable is bounded on $0\le\lambda\le\Lambda$. At $\lambda=0$ the expression is understood through the polynomial extension; it need not represent a finite-$M$ original model.
 \end{proof}
 
 The first two nonconstant terms are
-\begin{equation}\label{eq:P6}
+\begin{equation}\label{fat:eq:P6}
  \ee^{-\lambda}\mathcal R_n(\lambda)
  =1-\frac{3\lambda^2/2+\lambda}{n}
  +\frac{9\lambda^4/8+16\lambda^3/3+4\lambda^2}{n^2}
@@ -638,11 +808,11 @@ For example,
 \[
  e_2(d)=\frac98d^4-\frac{17}{12}d^3+\frac38d^2-\frac1{12}d,
 \]
-and its Poisson expectation gives the second coefficient. The first-two-factor Bonferroni bound \eqref{eq:P3} is an upper bound on the remainder, not this exact second coefficient; the two polynomials have different purposes.
+and its Poisson expectation gives the second coefficient. The first-two-factor Bonferroni bound \eqref{fat:eq:P3} is an upper bound on the remainder, not this exact second coefficient; the two polynomials have different purposes.
 
 Conditional on $K=k$, the profile weight is that of rooted partitions: the factor $n^{k-2}M^{k-1}$ is independent of the profile. Equivalently, choose $k$ roots and assign $n-k$ remaining labels to them. This connects the model to sparse occupancy and to the assembly weights $m_j=j$. It does not identify a full fat tree with a rooted partition. General conditioned-rank tier theorems such as \cite{arratia} cannot be transferred to random $D$ without a suitable mixing or uniformity argument. No such new tier theorem, maximal Poisson range, or high-color inverse is claimed here.
 
-\section{Reproduction and validation}\label{sec:reproduction}
+\section{Reproduction and validation}\label{fat:sec:reproduction}
 The accompanying archive contains the complete TeX source and PDF, self-contained public code, expected exact and diagnostic data, pinned Python dependencies, and fixed member manifests. It contains no private paths, external notebooks, research-note dependencies, third-party papers, or source-page images. The core exact script uses only the Python standard library. Symbolic checks use SymPy 1.14.0; the separately labelled 100-decimal diagnostics use mpmath 1.3.0.
 
 The exact validation combines several genuinely different calculations:
@@ -659,7 +829,7 @@ The high-precision numerical calculations are labelled \emph{diagnostics only}. 
 
 A normal archive rebuild first validates the complete fixed public-member list and manifests, replays every data calculation, compiles the PDF in a clean temporary TeX environment, and requires byte identity for every public member. The deterministic ZIP uses fixed metadata and uncompressed members. Separate normal and optimized Python runs must reproduce both every member and the whole ZIP byte for byte. The README states the recorded PDF toolchain and commands. Byte identity across arbitrary TeX distributions or different dependency versions is not promised; the files and mathematical computations remain portable within their stated dependencies.
 
-\section{Further questions and boundaries}\label{sec:future}
+\section{Further questions and boundaries}\label{fat:sec:future}
 Several extensions would require additional arguments rather than a reinterpretation of the present bounds.
 \begin{enumerate}[leftmargin=*]
 \item \textbf{Effective error constants.} The compactness proof can be made quantitative by bounding analytic derivatives and Gaussian tails explicitly. Useful optimized constants and onsets would turn the asymptotic inverse enclosure into a certified practical inversion algorithm.
@@ -668,6 +838,10 @@ Several extensions would require additional arguments rather than a reinterpreta
 \item \textbf{Sharper Poisson and component results.} The sufficient range $\lambda=o(\sqrt n)$ from the elementary total-variation bound is not established as maximal. Conditional occupancy methods may sharpen it and may transfer known fixed-rank component tiers, but random-rank mixing and errors need a separate proof.
 \end{enumerate}
 The inverse is proved only for fixed $M$. The uniform direct expansion and bounded-$\lambda$ appendix are complementary statements, not a license to interchange all parameter regimes. Finally, the bounded prior check supports careful attribution and source comparison; it is not a claim of exhaustive novelty certification.
+
+\begin{writenote}[Added 7 October 2026, under Vladimir's standing rule of 4 October 2026]
+Every open question and unproved claim of the source is in this section, with its sketch and what is missing: effective constants (item~1), late terms and exponentially small corrections (item~2), the block-count crossover (item~3, a formal differentiation of the leading saddle with respect to a marking parameter, offered as motivation; missing an analytic-marking proof or an independent distributional argument), and sharper Poisson and component results (item~4). Also open, from the source's non-claims: an inverse uniform in $M$ or for moving $M=M_n$, a computable $K_{J,M}$, and a rate to $\Pois(1/\tau)$. Not resolved by the write: the source's comparison with Kot\v{e}\v{s}ovec's 2012 note and with Arratia--DeSalvo, which the write did not read. No claim of the source was found to be false, so nothing is refuted; the two rounded decimals of Section~\ref{fat:sec:applications} are corrected in a note there.
+\end{writenote}
 
 \begin{thebibliography}{9}
 \bibitem{zaslavsky}
@@ -684,5 +858,6 @@ V\'aclav Kot\v{e}\v{s}ovec, \emph{Asymptotic formula for number of fat trees on 
 Richard Arratia and Stephen DeSalvo, \emph{Poisson and independent process approximation for random combinatorial structures with a given number of components, and near-universal behavior for low rank assemblies}, \href{https://arxiv.org/abs/1606.04642v2}{arXiv:1606.04642v2} (2016), especially Theorems~3.3, 3.14 and 3.19.
 \bibitem{dlmf}
 NIST Digital Library of Mathematical Functions, Section~5.11, \emph{Asymptotic Expansions}, \url{https://dlmf.nist.gov/5.11}, positive-real Stirling expansion and remainder bounds.
+\bibitem{TSvol}{\raggedright ProveIt, \emph{Transseries and inversion}, \file{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex}; Part~0 (\file{p0:def:model}, \file{p0:prop:factorial-core}, \file{p0:thm:core-reversion}, \file{p0:def:three-inverses}, \file{p0:thm:staircase}). [Added in the write.]\par}
 \end{thebibliography}
 \end{document}

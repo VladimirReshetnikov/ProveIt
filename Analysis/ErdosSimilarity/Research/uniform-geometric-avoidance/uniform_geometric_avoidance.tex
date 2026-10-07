@@ -1,0 +1,155 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=26mm,headheight=14pt]{geometry}
+\usepackage{fontspec}
+\setmainfont{Latin Modern Roman}[Ligatures=TeX]
+\setsansfont{Latin Modern Sans}[Scale=0.95]
+\setmonofont{Latin Modern Mono}[Scale=0.9]
+\usepackage{amsmath,amsthm,amssymb,mathtools}
+\usepackage{microtype,booktabs,longtable,array,enumitem,graphicx,xcolor}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,calc}
+\usepackage{fancyhdr,needspace}
+\definecolor{ink}{HTML}{173D49}
+\definecolor{teal}{HTML}{176F76}
+\definecolor{muted}{HTML}{58616B}
+\usepackage[unicode,colorlinks=true,linkcolor=ink,citecolor=teal,urlcolor=teal,
+ pdftitle={Uniform avoidance of geometric progressions and exponential-polynomial patterns},
+ pdfauthor={Research manuscript prepared with ChatGPT for Vladimir Reshetnikov}]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\usepackage{titlesec}
+\titleformat{\section}{\Large\bfseries\color{ink}}{\thesection}{0.7em}{}
+\titleformat{\subsection}{\large\bfseries\color{ink}}{\thesubsection}{0.7em}{}
+\setlength{\parskip}{3pt}
+\setlength{\emergencystretch}{2em}
+\setlist{itemsep=2pt,topsep=5pt}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\color{muted}Uniform geometric avoidance}
+\fancyhead[R]{\small\color{muted}7 October 2026}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{question}{Research question}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\R}{\mathbb R}\newcommand{\N}{\mathbb N}\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}\newcommand{\E}{\mathbb E}
+\newcommand{\Prob}{\mathbb P}\newcommand{\ind}{\mathbf 1}
+\newcommand{\calS}{\mathcal S}\newcommand{\calA}{\mathcal A}
+\newcommand{\calF}{\mathcal F}\newcommand{\calI}{\mathcal I}
+\newcommand{\dist}{\operatorname{dist}}\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\GP}{G_q}\newcommand{\eps}{\varepsilon}
+\DeclareMathOperator{\supp}{supp}
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\raggedright
+\vspace*{12mm}
+{\sffamily\small\color{teal}RESEARCH ARTICLE \quad / \quad ANALYSIS, COMBINATORICS, COMPUTABILITY}\par
+\vspace{12mm}
+{\Huge\bfseries\color{ink}Uniform avoidance of geometric progressions\par}
+\vspace{5mm}
+{\LARGE\color{ink}and exponential-polynomial patterns\par}
+\vspace{9mm}
+{\large Common periodic avoiding sets\par
+and effective finite certificates}\par
+\vspace{13mm}
+{\large Prepared for Vladimir Reshetnikov}\par
+{\color{muted}Mathematical development and exposition with ChatGPT}\par
+{\color{muted}7 October 2026}\par
+\vspace{10mm}
+\begin{abstract}
+We prove that, for every $\eps>0$, there is a closed, symmetric, $1$-periodic set
+$F\subset\R$ whose measure in every interval of length one exceeds $1-\eps$
+and which contains no affine copy of $\{q^n:n\ge1\}$ for \emph{any}
+$q\in(0,1)$. Its compact section answers negatively Question~1 of
+Burgin--Goldberg--Keleti--MacMahon--Wang. The construction extends the
+fixed-ratio routing method in the October 2026 OpenAI manuscript by
+synchronizing a ratio-dependent subsequence to common spatial grids.
+An elementary arrangement of lines bounds the number of parameter tests,
+including boundary cases. A polynomial-family version, using the classical
+bound for realizable polynomial sign conditions, yields one common avoiding
+set for every finite positive exponential mixture
+$\sum_{i=1}^m c_iq_i^n$, with unrestricted finite $m$, positive bases below
+one, and nonnegative coefficients not all zero. A uniform dominant-term
+reduction also covers arbitrary real polynomial coefficients with positive
+real bases, and hence all nonzero real solutions of homogeneous
+constant-coefficient recurrences whose characteristic roots lie in $(0,1)$.
+For rational accuracy the
+compact set can be effectively closed with computable Lebesgue measure.
+Finite avoidance statements on rational compact parameter boxes have
+algorithmically obtainable rational certificates and positive margins.
+The probability argument is given in full; exact finite checks accompany
+the article. The similarity conjecture for arbitrary infinite patterns remains
+outside the conclusions of this paper.
+\end{abstract}
+\vfill
+{\small\color{muted}Research status. Complete proofs are presented here, with explicit attribution
+of the inherited construction and the new extensions. This manuscript has
+not undergone external peer review or Lean formalization. The accompanying
+computations check finite identities and invariants; they are not a substitute
+for the proofs.}
+\end{titlepage}
+\hypersetup{pageanchor=true}
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\clearpage
+\input{sections/01_context}
+\input{sections/02_synchronization}
+\input{sections/03_routing}
+\input{sections/04_uniformity}
+\input{sections/05_global}
+\input{sections/06_algebraic_families}
+\input{sections/07_effectivity}
+\input{sections/08_limits_and_questions}
+\appendix
+\input{sections/09_appendices}
+\begin{thebibliography}{99}
+\bibitem{BGKMW}
+A. Burgin, S. Goldberg, T. Keleti, C. MacMahon, and X. Wang,
+\emph{Large sets avoiding infinite arithmetic / geometric progressions},
+Real Analysis Exchange \textbf{48}(2) (2023), 351--364.
+\href{https://doi.org/10.14321/realanalexch.48.2.1668676378}{doi:10.14321/realanalexch.48.2.1668676378}.
+Author preprint \href{https://arxiv.org/abs/2210.09284}{arXiv:2210.09284},
+Question~1 and Theorem~1.1.
+\bibitem{OpenAI84}
+OpenAI, \emph{The geometric case of the Erd\H{o}s similarity conjecture},
+5 October 2026, family~084 in the \texttt{openai/math} collection.
+\href{https://github.com/openai/math/tree/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/The-geometric-case-of-the-Erdos-similarity-conjecture-October-5-2026}{Pinned manuscript and source}.
+Revision \texttt{adc7f1241b42e322a6451854ab7e4b4c146bf78a}.
+\bibitem{OpenAICatalog}
+OpenAI, \emph{Mathematical research catalogue}, \texttt{README.md},
+\texttt{overview.tex}, and manuscript sources, revision
+\texttt{adc7f1241b42e322a6451854ab7e4b4c146bf78a},
+\url{https://github.com/openai/math}.
+\bibitem{ProveIt}
+V. Reshetnikov, \emph{ProveIt}, repository and research reports,
+revision \texttt{39beb65f2322d6190300fcd23f009f04420b4cb3},
+\url{https://github.com/VladimirReshetnikov/ProveIt}.
+\bibitem{JLM}
+Y. Jung, C.-K. Lai, and Y. Mooroogen,
+\emph{Fifty years of the Erd\H{o}s similarity conjecture},
+\href{https://arxiv.org/abs/2412.11062v2}{arXiv:2412.11062v2}, 2025.
+\bibitem{BPR}
+S. Basu, R. Pollack, and M.-F. Roy,
+\emph{An asymptotically tight bound on the number of semi-algebraically
+connected components of realizable sign conditions},
+Combinatorica \textbf{29} (2009), 523--546.
+\href{https://arxiv.org/abs/math/0603256}{arXiv:math/0603256}.
+In particular, the sign-condition bounds in Section~3.2.
+\bibitem{PerrucciRoy}
+D. Perrucci and M.-F. Roy,
+\emph{Elementary recursive quantifier elimination based on Thom encoding
+and sign determination}, Annals of Pure and Applied Logic \textbf{168}
+(2017), 1588--1604.
+\href{https://arxiv.org/abs/1609.02879v2}{arXiv:1609.02879v2}.
+\end{thebibliography}
+\end{document}

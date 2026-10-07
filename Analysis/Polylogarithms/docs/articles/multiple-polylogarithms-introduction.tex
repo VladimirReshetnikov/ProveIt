@@ -1,0 +1,879 @@
+% Created (UTC): 2026-06-19T20:32:52Z
+% Repository HEAD: 7b925f71e5ec90b450f9be01ff36cb542cee8cea
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\emergencystretch=3em
+\hbadness=4000
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\DeclareMathOperator{\Li}{Li}
+\newcommand{\iu}{\mathrm{i}}
+% shuffle product: a rotated amalg (the standard shuffle symbol)
+\newcommand{\shuffle}{\mathbin{\rotatebox[origin=c]{180}{\ensuremath{\amalg}}}}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+
+\title{Multiple zeta values and the multiple, harmonic, and Nielsen\\
+polylogarithms: an introduction for the polylogarithm-literate}
+\author{Vladimir Reshetnikov}
+\date{2026-06-19}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+The classical polylogarithm $\Li_s(z)=\sum_{n\ge1}z^n/n^s$ and its functional equations are, after Lewin,
+familiar territory. This article introduces the modern functions that sit one level above it: the
+\emph{multiple polylogarithms} $\Li_{s_1,\dots,s_k}(z_1,\dots,z_k)$ and their values at unity, the
+\emph{multiple zeta values} $\zeta(s_1,\dots,s_k)$, together with two important special families---the
+\emph{harmonic polylogarithms} of Remiddi and Vermaseren and the \emph{Nielsen generalized polylogarithms}
+$S_{n,p}$ already present in Lewin. We assume only fluency with the ordinary polylogarithm and develop the
+new functions from scratch, emphasizing, in the identity-rich spirit of Lewin, their fundamental
+properties: the dual series-and-integral representations, the shuffle and stuffle products and the
+double-shuffle relations they force, duality and the sum theorem, the explicit closed-form families and the
+conjectural dimensions of the multiple-zeta algebra, the argument transformations of the harmonic
+polylogarithms, and the functional equations and special values of the Nielsen polylogarithms. Throughout
+we point to the Wolfram Language~15 implementations (\texttt{MultipleZeta}, \texttt{MultiplePolyLog},
+\texttt{GeneralizedPolyLog}, \texttt{HarmonicPolyLog}, \texttt{MultipleHarmonicNumber}), so that every
+identity below can be checked by direct computation. The displayed numerical identities have been
+re-verified independently.
+\end{abstract}
+
+\section{Introduction}
+
+The reader of this article is assumed to be on intimate terms with the classical
+polylogarithm
+\[
+  \Li_s(z)=\sum_{n\ge1}\frac{z^n}{n^s}\qquad(|z|\le1,\ s\in\mathbb{C}),
+\]
+and in particular with its low-order incarnations: the dilogarithm $\Li_2$, the
+trilogarithm $\Li_3$, and the inverse tangent integral and Clausen function that
+arise from them on the unit circle. From Lewin's monograph (Lewin 1981) such a
+reader carries a substantial toolkit of functional equations. The dilogarithm
+alone satisfies the inversion relation
+\[
+  \Li_2(z)+\Li_2(1/z)=-\tfrac{\pi^2}{6}-\tfrac12\log^2(-z),
+\]
+the reflection (Euler) relation $\Li_2(z)+\Li_2(1-z)=\tfrac{\pi^2}{6}-\log z\,\log(1-z)$,
+Landen's transformation, the duplication formula
+$\Li_2(z^2)=2\bigl(\Li_2(z)+\Li_2(-z)\bigr)$, and—governing all of these—Abel's
+five-term relation, whose five dilogarithm arguments form the universal functional
+equation of $\Li_2$ modulo elementary terms. Higher polylogarithms inherit
+inversion and duplication and a thinner web of ladder relations; the special
+values $\Li_n(\pm1)$, $\Li_n(\tfrac12)$, $\Li_n(\iu)$ assemble into the catalogue
+that occupies so much of Lewin. The single feature underlying every one of these
+identities is that $\Li_s$ is an \emph{iterated integral}: the recursion
+\begin{equation}\label{eq:intro-iterate}
+  \Li_{s+1}(z)=\int_0^z \Li_s(t)\,\frac{dt}{t},\qquad
+  \Li_1(z)=\int_0^z\frac{dt}{1-t}=-\log(1-z),
+\end{equation}
+expresses $\Li_n(z)$ as an $n$-fold iterated integral of the two differential
+forms $dt/t$ and $dt/(1-t)$ along the path from $0$ to $z$. This is the seed from
+which the entire present subject grows.
+
+\medskip
+There are three natural directions in which to push past a single sum, and each
+has matured into its own theory.
+
+\paragraph{(i) Nesting the sum, iterating the integral.}
+If in \eqref{eq:intro-iterate} we no longer insist that every step use the same
+variable, we may interpose a \emph{second} polylogarithmic summation inside the
+first. The result is the \emph{multiple polylogarithm}, the strictly nested sum
+\begin{equation}\label{eq:intro-mpl}
+  \Li_{s_1,\dots,s_k}(z_1,\dots,z_k)
+  =\sum_{n_1>n_2>\dots>n_k\ge1}\ \prod_{i=1}^{k}\frac{z_i^{\,n_i}}{n_i^{\,s_i}},
+\end{equation}
+of \emph{weight} $w=s_1+\dots+s_k$ and \emph{depth} $k$. (The depth-one case is
+the classical $\Li_s(z)$; we keep the same symbol $\Li$ throughout, the number of
+indices disambiguating which object is meant.) Equivalently, and this is the
+governing fact, \eqref{eq:intro-mpl} is an iterated integral of the forms
+$dt/t$ and $dt/(a-t)$ over a word whose letters encode the $s_i$ and the partial
+products $z_1\cdots z_i$. Goncharov made this dictionary the foundation of the
+modern theory; it is what allows the same object to be read two ways at once.
+
+\paragraph{(ii) Specializing to $1$: the multiple zeta values.}
+Setting every $z_i=1$ in \eqref{eq:intro-mpl} produces the \emph{multiple zeta
+values} (MZVs)
+\begin{equation}\label{eq:intro-mzv}
+  \zeta(s_1,\dots,s_k)=\Li_{s_1,\dots,s_k}(1,\dots,1)
+  =\sum_{n_1>\dots>n_k\ge1}\frac{1}{n_1^{\,s_1}\cdots n_k^{\,s_k}},
+\end{equation}
+convergent (\emph{admissible}) precisely when $s_1\ge2$. These numbers were
+introduced in depth two by Euler—who already proved $\zeta(2,1)=\zeta(3)$ and the
+sum theorem $\sum_{a=2}^{s-1}\zeta(a,s-a)=\zeta(s)$—and revived in full
+generality by Zagier (1994) and Hoffman around the same time, after which their
+appearance as periods of mixed Tate motives, as values of Feynman integrals, and
+as the coordinates of Drinfel'd's associator made them a central object. Their
+arithmetic is astonishingly rigid: the $\mathbb{Q}$-vector space spanned by
+weight-$w$ MZVs is conjecturally of dimension $d_w$ with
+$d_w=d_{w-2}+d_{w-3}$ (Zagier's conjecture), so that, for example, weight $8$
+admits a basis of size $4$ and \emph{every} admissible weight-$8$ MZV is a
+rational combination of four chosen ones. The relations that force this collapse
+are not ad hoc; they spring from a single structural tension explained below.
+
+\paragraph{(iii) Restricting the alphabet: harmonic and Nielsen polylogarithms.}
+If instead of evaluating we restrict the iterated-integral \emph{alphabet} to the
+forms with singularities at $0$ and $\pm1$—that is, to $dt/t$, $dt/(1-t)$, and
+$dt/(1+t)$—we obtain the \emph{harmonic polylogarithms} (HPLs)
+$H_{a_1,\dots,a_k}(x)$ of Remiddi and Vermaseren (1999), the workhorses of
+multi-loop Feynman-integral evaluation. They are exactly the multiple
+polylogarithms \eqref{eq:intro-mpl} with all $z_i\in\{\pm1\}$, repackaged as
+functions of a single argument $x$ through the path endpoint. A distinguished
+sub-family, in which the integration word consists of a block of $dt/t$'s followed
+by a single block of $dt/(1-t)$'s, gives Nielsen's generalized polylogarithm
+\begin{equation}\label{eq:intro-nielsen}
+  S_{n,p}(z)=\frac{(-1)^{n+p-1}}{(n-1)!\,p!}\int_0^1\frac{\log^{n-1}t\,\log^{p}(1-tz)}{t}\,dt,
+\end{equation}
+already studied by Nielsen (1909) and tabulated by Lewin, with $S_{n-1,1}=\Li_n$
+the classical polylogarithm and $S_{1,p}$ the next case up. Thus Nielsen's
+functions, far from being exotic, are the simplest non-classical specialization of
+the whole edifice, and they sit inside Lewin's own pages waiting to be recognized.
+
+\medskip
+\paragraph{The unifying theme.}
+Every object named above—$\Li_{s_1,\dots,s_k}$, $\zeta(s_1,\dots,s_k)$, the HPLs,
+the $S_{n,p}$—is simultaneously a \emph{nested sum} and an \emph{iterated
+integral}, a word in an alphabet of differential forms. This double life is not a
+curiosity; it is the engine of the entire theory. The sum representation carries
+one natural multiplication: multiplying two nested sums and re-sorting the summation
+indices by their relative order produces the \emph{stuffle} (quasi-shuffle, or
+harmonic) product, written $\ast$. The integral representation carries a
+\emph{different} natural multiplication: multiplying two iterated integrals over
+the same path and re-expanding by interleaving their letters produces the
+\emph{shuffle} product, written $\shuffle$. The same number, computed two ways,
+must agree—so for MZVs every pair $(\,u\ast v,\ u\shuffle v\,)$ yields a linear
+relation among MZVs of the given weight. These \emph{double-shuffle} relations
+(Hoffman; Borwein--Bradley--Broadhurst--Lison\v{e}k), together with Ohno's
+generalization of the duality and sum theorems, are conjecturally enough to
+generate \emph{all} $\mathbb{Q}$-linear relations among MZVs, and they are what
+make the dimensions $d_w$ so small. The reader should hold onto this one picture:
+\emph{two ways of writing the same word, two multiplications, and their forced
+coincidence}.
+
+\medskip
+\paragraph{Computational availability.}
+A practical novelty of the present moment is that all four families are now
+first-class, arbitrary-precision, and partly symbolic objects in Wolfram Language
+$15$: \texttt{MultipleZeta} for \eqref{eq:intro-mzv}, \texttt{MultiplePolyLog} for
+\eqref{eq:intro-mpl}, \texttt{HarmonicPolyLog} for the HPLs, and
+\texttt{GeneralizedPolyLog} for the Goncharov form, with the finite truncations
+supplied by \texttt{MultipleHarmonicNumber}. The kernel knows the structural
+identities and many special values symbolically—for instance it returns Euler's
+$\zeta(2,1)=\zeta(3)$, evaluates $\zeta(3,1)=\tfrac14\zeta(4)=\pi^4/360$ (a special
+case of Zagier's $\zeta(\{3,1\}^n)$ evaluation), reduces
+\eqref{eq:intro-iterate}'s seed to $H_{1}(x)=-\log(1-x)$, and confirms
+$\zeta(6,4,2,8)=\Li_{6,4,2,8}(1,1,1,1)$—so every identity stated in the sections
+that follow can be checked numerically, and frequently symbolically, by the reader
+at a live kernel. We will flag the relevant function names as we go, but keep the
+code references short: a long iterated-integral call belongs on its own line, not
+inside an inline formula.
+
+\medskip
+\paragraph{Roadmap.}
+The remaining sections develop the four families in the order in which their
+algebra unfolds. We first treat the multiple zeta values \eqref{eq:intro-mzv} as
+numbers—convergence, the Euler depth-two evaluations, the duality theorem, the sum
+theorem, and the stuffle/shuffle double-shuffle machinery that organizes them. We
+then promote them to the functions \eqref{eq:intro-mpl}, the multiple
+polylogarithms, recording the differential equations, the regularization of
+divergent words, and the inversion/path-reversal identities that generalize the
+classical ones. The harmonic polylogarithms come next, with their
+$\{0,\pm1\}$-alphabet bookkeeping, their reduction algorithms, and their role in
+the Feynman-integral literature (Remiddi--Vermaseren; Broadhurst--Kreimer). We
+close with Nielsen's $S_{n,p}$ \eqref{eq:intro-nielsen}, the historical bridge
+back to Lewin—their integral and series forms, the reflection and argument
+transformations catalogued by K\"olbig (1986), and their explicit place inside the
+harmonic-polylogarithm hierarchy. Throughout, the classical $\Li_s(z)$ the reader
+already commands will reappear as the depth-one boundary of every construction.
+
+
+\section{Multiple polylogarithms: two faces}
+
+The classical polylogarithm $\Li_s(z)=\sum_{n\ge1}z^n/n^s$ has, for the reader of Lewin, two complementary descriptions: a power series and an iterated integral $\Li_s(z)=\int_0^z\Li_{s-1}(t)\,dt/t$. Each survives the passage to many indices, and the resulting two descriptions of one and the same function are the source of essentially every nontrivial identity in this circle of ideas. We set up both here; the products they generate occupy the next section.
+
+\subsection{The nested sum}
+
+\begin{definition}
+For $s_1,\dots,s_k\in\mathbb{C}$ and $z_1,\dots,z_k\in\mathbb{C}$ the \emph{multiple polylogarithm} is the strictly nested sum
+\[
+  \Li_{s_1,\dots,s_k}(z_1,\dots,z_k)
+  \;=\;\sum_{n_1>n_2>\dots>n_k\ge1}\;\prod_{i=1}^{k}\frac{z_i^{\,n_i}}{n_i^{\,s_i}} .
+\]
+Its \emph{weight} is $w=s_1+\dots+s_k$ and its \emph{depth} is $k$. The single-index case $k=1$ recovers $\Li_s(z)$.
+\end{definition}
+
+Two features of this definition demand comment before anything is proved.
+
+\begin{remark}[Conventions differ; ours is fixed]\label{rem:conv}
+The inequality is \emph{strict}, $n_1>n_2>\dots>n_k$. A sizable part of the literature (and several computer-algebra systems) instead uses a non-strict summation $n_1\ge n_2\ge\dots\ge n_k$, or reverses the role of the indices so that the \emph{innermost} summation variable carries the first parameter. These choices are genuinely different functions (they differ by lower-depth terms, exactly the diagonal contributions $n_i=n_{i+1}$), and the discrepancy is the single most common source of sign and indexing confusion when comparing sources. We adhere throughout to the strict, ``outermost variable carries $s_1$'' convention above. The arguments are likewise ordered with $z_1$ paired to the largest index $n_1$. When checking against \texttt{MultiplePolyLog}, confirm the convention numerically on a small case rather than assuming agreement.
+\end{remark}
+
+\begin{remark}[Multiple zeta values]
+Setting every $z_i=1$ gives the \emph{multiple zeta value}
+\[
+  \zeta(s_1,\dots,s_k)=\Li_{s_1,\dots,s_k}(1,\dots,1)
+  =\sum_{n_1>\dots>n_k\ge1}\prod_i n_i^{-s_i},
+\]
+the central special values of the theory (Zagier 1994; Hoffman 1992). The strict nesting is what makes $\zeta(s_1,\dots,s_k)$ finite for $s_1\ge2$.
+\end{remark}
+
+\paragraph{Convergence.} The single-variable series $\Li_s(z)$ converges absolutely for $|z|<1$ (any $s$), on $|z|=1$ for $\Re s>1$, and conditionally on $|z|=1$, $z\ne1$, for $\Re s>0$. For the nested sum the corresponding statement is clean.
+
+\begin{theorem}[Domain of absolute convergence]
+The series $\Li_{s_1,\dots,s_k}(z_1,\dots,z_k)$ converges absolutely on the closed polydisc $|z_i|\le1$ $(1\le i\le k)$ provided $\Re s_i\ge1$ for all $i$ and the boundary case is excluded at the outermost letter only: it suffices that $(s_1,z_1)\ne(1,1)$. In particular $\zeta(s_1,\dots,s_k)$ is finite (``admissible'') precisely when $s_1\ge2$.
+\end{theorem}
+
+The asymmetry between $s_1$ and the inner $s_i$ is a feature of the strict ordering: the innermost sum over $n_k$ is a finite-tail harmonic-type sum bounded by $\log n_{k-1}$, and the logarithmic factors are absorbed as long as the \emph{outermost} index is summed against an exponent strictly larger than $1$ (or damped by $|z_1|<1$). A divergence can therefore enter only through $(s_1,z_1)=(1,1)$.
+
+\subsection{The iterated integral}
+
+The second face is Chen's iterated integral. Fix the two differential one-forms
+\[
+  \omega_0=\frac{dt}{t},\qquad \omega_1=\frac{dt}{1-t},
+\]
+and, for a word $u=a_1a_2\cdots a_w$ in the letters $\{0,1\}$, write the iterated integral over the standard simplex
+\[
+  \int_0^z u \;=\; \int_{0<t_1<t_2<\dots<t_w<z}\ \omega_{a_w}(t_1)\,\omega_{a_{w-1}}(t_2)\cdots\omega_{a_1}(t_w),
+\]
+i.e.\ the leftmost letter $a_1$ is attached to the \emph{outermost} (largest) variable $t_w$ and one integrates from the top down. This is the orientation under which $d/dz$ strips the outermost form. With this normalization the one-variable multiple polylogarithm is an iterated integral over a single explicit word.
+
+\begin{theorem}[Iterated-integral representation]\label{thm:iter}
+For $s_1\ge2$ and the remaining $s_i\ge1$,
+\[
+  \Li_{s_1,\dots,s_k}(z,1,\dots,1)
+  \;=\;\int_0^z\ \underbrace{0^{\,s_1-1}1}_{\text{block }1}\,\underbrace{0^{\,s_2-1}1}_{\text{block }2}\cdots\underbrace{0^{\,s_k-1}1}_{\text{block }k},
+\]
+the iterated integral of the binary word
+\[
+  u(\mathbf s)=0^{\,s_1-1}1\,0^{\,s_2-1}1\,\cdots\,0^{\,s_k-1}1
+\]
+of length $w$. Equivalently, with the alternative kernel $\widetilde\omega_1=dt/(t-1)=-\omega_1$ one carries one sign per $1$-letter, giving the textbook normalization
+\[
+  \Li_{s_1,\dots,s_k}(z,1,\dots,1)=(-1)^k\!\!\int_{0<t_1<\dots<t_w<z}\!\!\prod_{j=1}^{w}\eta_{a_{w+1-j}}(t_j),\qquad
+  \eta_0=\tfrac{dt}{t},\ \eta_1=\tfrac{dt}{t-1},
+\]
+the factor $(-1)^k$ being exactly the number of $1$-letters in $u(\mathbf s)$, one per block.
+\end{theorem}
+
+\paragraph{The composition $\leftrightarrow$ word dictionary.} The map $\mathbf s=(s_1,\dots,s_k)\mapsto u(\mathbf s)$ is a bijection between compositions (ordered tuples with each $s_i\ge1$) and binary words that \emph{end in a $1$}. Reading $u$ from left to right: a $1$ \emph{closes a block} and contributes a new summation index; the run of $0$'s immediately preceding that $1$ sets the corresponding exponent, $s_i-1$ zeros for exponent $s_i$. Thus depth $k=$ (number of $1$'s) and weight $w=$ (length of the word). Admissibility $s_1\ge2$ is the requirement that $u$ \emph{begin with a $0$}: a leading $1$ would attach $\omega_1$ to the top variable and produce the logarithmic divergence at $t_w\to1$ when $z=1$. The endpoints play dual roles --- $\omega_0$ is singular at $0$, $\omega_1$ at $1$ --- so a convergent word neither starts with $1$ nor ends with $0$.
+
+\begin{proof}[Origin]
+Expand the innermost form geometrically. The depth-one case is Lewin's
+$\Li_s(z)=\int_0^z 0^{s-1}1$, obtained by iterating $\Li_s(z)=\int_0^z\Li_{s-1}(t)\,\omega_0$ down to $\Li_1(z)=-\log(1-z)=\int_0^z\omega_1$. For general depth, $\int_0^z\omega_1$ on the innermost block introduces $\sum_{n_k\ge1}t^{n_k}/n_k$, the subsequent $\omega_0$'s raise the power of $n_k$, and the next $\omega_1$ couples a strictly larger index $n_{k-1}>n_k$; the strict inequality is forced by the nesting of the simplex $t_1<\dots<t_w$. Carrying this out reproduces the nested sum, and Chen's theory (1977) guarantees convergence and homotopy invariance of the integral. The general framework is due to Goncharov; the systematic exploitation for these functions is Goncharov's and Borwein--Bradley--Broadhurst--Lisone\v{k}'s.
+\end{proof}
+
+\subsection{Goncharov's iterated integral and \texttt{GeneralizedPolyLog}}
+
+To accommodate arbitrary arguments $z_i$ (not all equal to $1$) one allows the singular point of the kernel to move. For points $a_0,a_1,\dots,a_w,a_{w+1}\in\mathbb{C}$ define Goncharov's iterated integral
+\[
+  I(a_0;\,a_1,\dots,a_w;\,a_{w+1})
+  \;=\;\int_{a_0<t_1<\dots<t_w<a_{w+1}}\ \prod_{i=1}^{w}\frac{dt_i}{\,t_i-a_i\,}
+  \;=\;\int_0^{a_{w+1}}\omega_{a_1}\cdots\omega_{a_w},\quad \omega_a=\frac{dt}{t-a},
+\]
+(the path running from the basepoint $a_0$, conventionally $0$). Every $\Li_{s_1,\dots,s_k}(z_1,\dots,z_k)$ is, up to sign, such an $I$: the singular points $a_i$ are products of the $z_j$'s, e.g.\ in depth one $\Li_s(z)=-I(0;\,0^{s-1},z^{-1};\,1)$, and in general the dictionary records, for each block, a $0$-run followed by a singularity at $(z_iz_{i+1}\cdots z_k)^{-1}$. This $I(a_0;\mathbf a;a_{w+1})$ --- the \emph{Goncharov polylogarithm}, presented as a Chen iterated integral with an explicit base point --- is the object computed by Wolfram~15's \texttt{GeneralizedPolyLog}; the all-arguments-$\pm1$ specialization is \texttt{HarmonicPolyLog}, and the nested-sum form with arbitrary $z_i$ is \texttt{MultiplePolyLog}.
+
+\subsection{Two facts to carry forward}
+
+\begin{enumerate}
+\item[(1)] \textbf{The differential strips the last letter.} In the integral orientation above,
+\[
+  z\frac{d}{dz}\,\Li_{s_1,\dots}(z,1,\dots)=\begin{cases}\Li_{s_1-1,s_2,\dots}(z,1,\dots),& s_1\ge2,\\[2pt]
+  \dfrac{z}{1-z}\,\text{(remove the leading block)},& s_1=1,\end{cases}
+\]
+i.e.\ differentiation removes one outer letter --- a $0$ lowers $s_1$, the closing $1$ deletes the block and shifts the basepoint. This recursion (equivalently the integral equation defining the word) drives every analytic continuation and every series-rearrangement proof. It is also the recursion behind the appearance of \texttt{HarmonicPolyLog} in \texttt{DSolve}/\texttt{AsymptoticDSolveValue} output for Fuchsian systems with rational coefficients (Remiddi--Vermaseren 1999 for the $\{0,1\}$-alphabet case).
+\item[(2)] \textbf{One function, two presentations.} The \emph{same} $\Li_{s_1,\dots,s_k}$ is simultaneously the nested sum and the iterated integral. Multiplying two nested sums and re-sorting the indices yields the \emph{stuffle} (harmonic, quasi-shuffle) product $\ast$; multiplying two iterated integrals over a common path and shuffling the letters yields the \emph{shuffle} product $\shuffle$. Both express a product of polylogarithms as a $\mathbb{Q}$-linear combination of polylogarithms, but through different combinatorics; equating them is the engine of the next section.
+\end{enumerate}
+
+\subsection{The smallest nontrivial example, in full}
+
+Take depth $k=2$, $\mathbf s=(2,1)$, the lightest admissible non-classical case. The nested sum is
+\[
+  \Li_{2,1}(z,1)=\sum_{m>n\ge1}\frac{z^m}{m^2\,n}
+  =\sum_{m=2}^{\infty}\frac{z^m}{m^2}\,H_{m-1},\qquad H_{m-1}=\sum_{n=1}^{m-1}\tfrac1n,
+\]
+exhibiting the characteristic harmonic-number coefficient. The associated word is
+\[
+  u(2,1)=\underbrace{0^{\,2-1}1}_{\text{block }(s_1=2)}\ \underbrace{0^{\,1-1}1}_{\text{block }(s_2=1)}=011,
+\]
+a word of length $w=3$ (weight $3$) with two $1$'s (depth $2$), beginning in $0$ (admissible) and ending in $1$ (convergent). By Theorem~\ref{thm:iter},
+\[
+  \Li_{2,1}(z,1)=\int_0^z 011
+  =\int_{0<t_1<t_2<t_3<z}\frac{dt_3}{t_3}\,\frac{dt_2}{1-t_2}\,\frac{dt_1}{1-t_1},
+\]
+the leading $0$ sitting on the outermost variable $t_3$ and the two $1$'s on $t_2,t_1$. (Equivalently $(-1)^2=+1$ in the $\eta_1=dt/(t-1)$ normalization, consistent with the unsigned $\omega_1=dt/(1-t)$ form.) A numerical check at $z=0.7$ gives both sides equal to $0.2384965\ldots$, and at $z=1$ the integral $\int_0^1 011$ recovers Euler's celebrated
+\[
+  \zeta(2,1)=\sum_{m>n\ge1}\frac{1}{m^2 n}=\zeta(3),
+\]
+the depth-two value whose collapse to a depth-one zeta was Euler's first multiple-zeta identity --- and, in Wolfram~15, exactly the symbolic output of \texttt{MultipleZeta} on $\{2,1\}$.
+
+
+\section{Multiple zeta values and their relations}
+
+Specializing the multiple polylogarithm at $z_1=\dots=z_k=1$ produces the central objects of this article, the \emph{multiple zeta values} (MZVs):
+\begin{equation}
+  \zeta(s_1,\dots,s_k) \;=\; \Li_{s_1,\dots,s_k}(1,\dots,1)
+  \;=\; \sum_{n_1>n_2>\dots>n_k\ge1}\;\prod_{i=1}^{k}\frac{1}{n_i^{\,s_i}}.
+  \label{eq:mzv-def}
+\end{equation}
+The outermost summation index $n_1$ carries the exponent $s_1$, and the strict inequalities make the sum a genuine iterated, rather than ordinary, multiple series. The series \eqref{eq:mzv-def} converges if and only if $s_1\ge2$; such an index tuple is called \emph{admissible}. (Any $s_i\ge1$ for $i\ge2$ is allowed; only the leading entry is constrained.) We call $w=s_1+\dots+s_k$ the \emph{weight} and $k$ the \emph{depth}. In Wolfram Language these are \texttt{MultipleZeta}, with $\zeta(2,1)$ written \texttt{MultipleZeta[\{2,1\}]}.
+
+The depth-one values are the classical $\zeta(s)=\sum_{n\ge1}n^{-s}$, with Euler's $\zeta(2n)=(-1)^{n+1}B_{2n}(2\pi)^{2n}/2(2n)!\in\pi^{2n}\mathbb{Q}$. The first genuinely new phenomenon is that distinct MZVs can collapse onto a single lower-depth value. The prototype is Euler's identity
+\begin{equation}
+  \zeta(2,1)\;=\;\sum_{n>m\ge1}\frac{1}{n^2\,m}\;=\;\zeta(3),
+  \label{eq:euler-21}
+\end{equation}
+already known to Euler in the 1740s. The conjecture --- now a vast web of theorems --- is that the $\mathbb{Q}$-vector space spanned by all MZVs is \emph{weight-graded}: products and relations never mix weights, so one studies each weight $w$ separately.
+
+\subsection*{The sum theorem}
+
+Euler's $\zeta(2,1)=\zeta(3)$ is the depth-two case of the first structural theorem. Summing all admissible MZVs of a fixed weight $w$ and fixed depth $k$ recovers the single zeta value $\zeta(w)$.
+\begin{theorem}[Sum theorem; Euler for $k=2$, Granville and Zagier in general, 1990s]
+For all $w>k\ge1$,
+\begin{equation}
+  \sum_{\substack{s_1+\dots+s_k=w\\ s_1\ge2,\;s_i\ge1}}\zeta(s_1,\dots,s_k)\;=\;\zeta(w).
+  \label{eq:sum-thm}
+\end{equation}
+\end{theorem}
+\noindent At $w=3,k=2$ the only admissible tuple is $(2,1)$, recovering \eqref{eq:euler-21}. At $w=4,k=2$ the admissible tuples are $(3,1)$ and $(2,2)$, so
+\begin{equation}
+  \zeta(3,1)+\zeta(2,2)=\zeta(4)=\tfrac{\pi^4}{90}.
+  \label{eq:sum-wt4}
+\end{equation}
+This one equation does not separate $\zeta(3,1)$ from $\zeta(2,2)$; for that we need a \emph{second} multiplication law, to which we now turn.
+
+\subsection*{The two products}
+
+MZVs admit two structurally different multiplication rules, because $\zeta(s_1,\dots,s_k)$ has two faithful representations: as a nested sum \eqref{eq:mzv-def}, and as an iterated integral. Each representation makes the product of two MZVs expand into a sum of MZVs, but the two expansions differ --- and that discrepancy is the engine of the theory.
+
+\paragraph{(a) The stuffle (harmonic / quasi-shuffle) product.}
+Multiply two nested sums directly. For depth one,
+\[
+  \zeta(a)\,\zeta(b)=\Bigl(\sum_{m\ge1}m^{-a}\Bigr)\Bigl(\sum_{n\ge1}n^{-b}\Bigr)
+  =\sum_{m>n}+\sum_{n>m}+\sum_{m=n},
+\]
+splitting the lattice $\{(m,n)\}$ by the trichotomy $m>n$, $m<n$, $m=n$. The three regions are exactly two depth-two MZVs and one depth-one MZV:
+\begin{equation}
+  \zeta(a)\,\zeta(b)=\zeta(a,b)+\zeta(b,a)+\zeta(a+b).
+  \label{eq:stuffle-d1}
+\end{equation}
+The general rule is the same combinatorial device --- the \emph{quasi-shuffle} of Hoffman --- applied to the index words $(s_1,\dots,s_k)$ and $(t_1,\dots,t_\ell)$: interleave the two words in all order-preserving ways, and additionally allow any aligned pair $s_i,t_j$ to \emph{collide} into a single slot $s_i+t_j$. (Setting $a=b=2$ in \eqref{eq:stuffle-d1} gives $\zeta(2)^2=2\,\zeta(2,2)+\zeta(4)$, used below.) A depth-two example of the general rule:
+\[
+  \zeta(a)\,\zeta(b,c)=\zeta(a,b,c)+\zeta(b,a,c)+\zeta(b,c,a)
+  +\zeta(a+b,c)+\zeta(b,a+c),
+\]
+the first three terms inserting $a$ into the three gaps of $(b,c)$, the last two colliding $a$ with $b$ and with $c$.
+
+\paragraph{(b) The shuffle product.}
+The integral representation reads each MZV as a Chen iterated integral over the simplex $1>t_1>\dots>t_w>0$ against the two one-forms $\omega_0=\tfrac{dt}{t}$ and $\omega_1=\tfrac{dt}{1-t}$. Encode an admissible index as a binary word: each $s_i$ becomes $\underbrace{0\cdots0}_{s_i-1}1$, so that, e.g., $\zeta(2)\leftrightarrow 01$, $\zeta(3)\leftrightarrow 001$, $\zeta(2,1)\leftrightarrow 011$, $\zeta(3,1)\leftrightarrow 0011$, $\zeta(2,2)\leftrightarrow 0101$. Admissibility ($s_1\ge2$) is the condition that the word \emph{begins with $0$}; convergence at the inner end requires the word to \emph{end with $1$}. Multiplying two iterated integrals over the same simplex produces the integral over the product region, which decomposes into the $\binom{w_1+w_2}{w_1}$ order-preserving interleavings --- the \emph{shuffle product} $\shuffle$ --- of the two letter words, \emph{without} any collision term. Thus
+\begin{equation}
+  \zeta(a)\,\zeta(b)=\sum_{\text{words }u\,\in\,(\text{word }a)\,\shuffle\,(\text{word }b)}\zeta(u).
+  \label{eq:shuffle-gen}
+\end{equation}
+
+\subsection*{The double-shuffle relation: $\zeta(3,1)$ in closed form}
+
+The canonical demonstration computes $\zeta(2)^2$ by both products and equates the results. Stuffle, from \eqref{eq:stuffle-d1} with $a=b=2$:
+\begin{equation}
+  \zeta(2)^2=2\,\zeta(2,2)+\zeta(4).
+  \label{eq:z2sq-stuffle}
+\end{equation}
+Shuffle: $\zeta(2)$ is the word $01$, and we shuffle $01\shuffle01$. Writing the two factors as $0_a1_a$ and $0_b1_b$ and listing the $\binom{4}{2}=6$ interleavings that preserve $0_a\!\to\!1_a$ and $0_b\!\to\!1_b$:
+\[
+  0_a0_b1_a1_b,\;\;0_a0_b1_b1_a,\;\;0_b0_a1_a1_b,\;\;0_b0_a1_b1_a,\;\;0_a1_a0_b1_b,\;\;0_b1_b0_a1_a.
+\]
+Forgetting the colour labels, these are the words $0011$ (four times) and $0101$ (twice). Since $0011\leftrightarrow\zeta(3,1)$ and $0101\leftrightarrow\zeta(2,2)$,
+\begin{equation}
+  \zeta(2)^2=4\,\zeta(3,1)+2\,\zeta(2,2).
+  \label{eq:z2sq-shuffle}
+\end{equation}
+Now subtract \eqref{eq:z2sq-stuffle} from \eqref{eq:z2sq-shuffle}: the $2\,\zeta(2,2)$ terms cancel and we obtain the \emph{double-shuffle relation}
+\begin{equation}
+  4\,\zeta(3,1)=\zeta(4)
+  \qquad\Longrightarrow\qquad
+  \zeta(3,1)=\tfrac14\zeta(4)=\frac{\pi^4}{360}.
+  \label{eq:z31}
+\end{equation}
+Feeding this back into the sum-theorem relation \eqref{eq:sum-wt4} also pins $\zeta(2,2)=\zeta(4)-\zeta(3,1)=\tfrac34\zeta(4)=\pi^4/120$ --- consistent with the all-2's family below.
+
+\begin{remark}[Regularized double shuffle]
+The naive double-shuffle relations above are produced only by admissible words. To capture the boundary case, one regularizes the divergent $\zeta(1)$ (the word $1$). Comparing the two regularizations --- shuffle versus stuffle --- as polynomials in a formal variable $T$ standing for the regularized $\zeta(1)$ yields the \emph{extended} or \emph{regularized double-shuffle relations} of Ihara, Kaneko, and Zagier (2006). These are conjectured to generate \emph{all} $\mathbb{Q}$-linear relations among MZVs.
+\end{remark}
+
+\subsection*{Other relation families}
+
+The double-shuffle relations sit inside a larger, heavily overlapping web. We list the principal families, one line each.
+
+\paragraph{Duality.} The integral substitution $t\mapsto1-t$ swaps $\omega_0\leftrightarrow\omega_1$ and reverses the order of integration, giving $\zeta(\mathbf{s})=\zeta(\mathbf{s}^\dagger)$, where the \emph{dual} word $\mathbf{s}^\dagger$ is obtained from the binary word by reading it backwards and exchanging $0\leftrightarrow1$. The simplest instance is $011\mapsto011$ read backwards is $110$, complemented is $001$: thus $\zeta(2,1)=\zeta(3)$ \eqref{eq:euler-21} is precisely a self/dual coincidence. Likewise $0011\,(\zeta(3,1))$ is \emph{self}-dual---read backwards and complemented it is again $0011$---so duality says nothing new there; the cleanest nontrivial higher instance is the depth-three identity $\zeta(2,1,1)=\zeta(4)$, from $0111\mapsto0001$.
+
+\paragraph{Hoffman's relations.} A distinguished subfamily of the double-shuffle relations, $\sum_{i}\zeta(s_1,\dots,s_i+1,\dots,s_k)=\sum_{i}\zeta(s_1,\dots,1,s_i,\dots,s_k)$, conjectured by Hoffman (1992) to already generate everything.
+
+\paragraph{Derivation relations.} An infinite family produced by certain Hopf-algebra derivations acting on the algebra of admissible words (Ihara--Kaneko--Zagier), equivalent over $\mathbb{Q}$ to large portions of the regularized double shuffle.
+
+\paragraph{Ohno's relation.} A single generating identity (Ohno 1999) that simultaneously generalizes the sum theorem \eqref{eq:sum-thm} \emph{and} duality, obtained by summing MZVs over all ways of distributing a fixed total increment among the indices of $\mathbf{s}$ and of its dual.
+
+\paragraph{Cyclic sum formula.} Hoffman--Ohno (and Ohno--Wakabayashi): a cyclic sum of MZVs of weight $w$ equals a weighted sum of weight-$w$ values, refining the sum theorem with a cyclic symmetry on the index word.
+
+\subsection*{Closed-form families}
+
+Beyond individual reductions, several infinite families of MZVs evaluate to powers of $\pi$ in closed form. Throughout, $\{s\}_n$ denotes the index $s$ repeated $n$ times.
+
+\paragraph{All 2's.} The generating function $\prod_{n\ge1}(1-x^2/n^2)=\sin(\pi x)/\pi x$ yields, after extracting the relevant power sums,
+\begin{equation}
+  \zeta(\{2\}_n)=\zeta(\underbrace{2,2,\dots,2}_{n})=\frac{\pi^{2n}}{(2n+1)!}.
+  \label{eq:all2}
+\end{equation}
+For $n=1$ this is $\zeta(2)=\pi^2/6$; for $n=2$, $\zeta(2,2)=\pi^4/120$, matching \eqref{eq:z31}; for $n=3$, $\zeta(2,2,2)=\pi^6/5040$.
+
+\paragraph{The $\{3,1\}$ family.} A celebrated result of Borwein, Bradley, Broadhurst, and Lison\v{e}k (1998), originally conjectured experimentally:
+\begin{equation}
+  \zeta(\{3,1\}_n)=\zeta(\underbrace{3,1,3,1,\dots,3,1}_{n\text{ blocks}})=\frac{2\,\pi^{4n}}{(4n+2)!}.
+  \label{eq:bbbl31}
+\end{equation}
+For $n=1$ this reproduces $\zeta(3,1)=2\pi^4/6!=\pi^4/360$ of \eqref{eq:z31}; for $n=2$, $\zeta(3,1,3,1)=2\pi^8/10!$. The proof is a striking generating-function argument identifying $\sum_n\zeta(\{3,1\}_n)x^{4n}$ with a ratio of $\cosh$ and $\cos$.
+
+\paragraph{The $\{2\}_a\,3\,\{2\}_b$ family.} Zagier (2012) evaluated the two-parameter family $\zeta(\{2\}_a,3,\{2\}_b)$ as an explicit $\mathbb{Q}$-linear combination of products $\pi^{2m}\zeta(2n+1)$, a result whose proof unexpectedly drew on the arithmetic of the modular-form-like generating series; it remains one of the deepest known closed-form families.
+
+\subsection*{Dimensions and the weight grading}
+
+Let $D_w$ be the $\mathbb{Q}$-vector space spanned by all MZVs of weight $w$ (with $D_0=\mathbb{Q}$, $D_1=0$ since $\zeta(1)$ diverges), and $d_w=\dim_\mathbb{Q}D_w$. Zagier (1994) conjectured the remarkably simple recursion
+\begin{equation}
+  d_w=d_{w-2}+d_{w-3},\qquad d_0=1,\;d_1=0,\;d_2=1,
+  \label{eq:zagier-dim}
+\end{equation}
+giving the sequence
+\[
+  d_0,d_1,d_2,\dots=1,0,1,1,1,2,2,3,4,5,7,9,\dots .
+\]
+The \emph{upper} bound $d_w\le$ (the recursion value) is a theorem, proved independently by Goncharov and by Terasoma (around 2002), with the conceptual framework of mixed Tate motives completed by Deligne and Goncharov; it amounts to showing that the known relations (e.g.\ associator / motivic) suffice to cut the dimension down. Broadhurst and Kreimer (1997) refined the count by also grading by depth, conjecturing a two-variable generating function that brings in the dimensions of spaces of cusp forms (the first modular obstruction appearing at weight $12$, depth $4$). The matching \emph{lower} bound --- equivalently, that no further relations exist and the conjectured spanning sets are linearly independent --- is wide open; even $\dim D_w\ge2$ for some specific large $w$ would already imply transcendence statements (such as the linear independence of $\pi^4$ and $\zeta(3)^2$ over $\mathbb{Q}$ at $w=6$) that are presently out of reach.
+
+\subsection*{A table of low-weight reductions}
+
+The following table records all admissible MZVs through weight $5$ together with their reductions to the conjectural basis $\{1\}$ (weight $\le2$), $\{\zeta(3)\}$, $\{\zeta(4)\}\sim\{\pi^4\}$, $\{\zeta(5),\zeta(2)\zeta(3)\}$. Every entry has been verified symbolically.
+
+\begin{center}
+\renewcommand{\arraystretch}{1.25}
+\begin{tabular}{c c l}
+\hline
+$w$ & $\dim$ & MZVs of weight $w$ and their reductions\\
+\hline
+$2$ & $1$ & $\zeta(2)=\dfrac{\pi^2}{6}$\\
+$3$ & $1$ & $\zeta(3)$; \quad $\zeta(2,1)=\zeta(3)$\\
+$4$ & $1$ & $\zeta(4)=\dfrac{\pi^4}{90}$; \quad $\zeta(3,1)=\dfrac{\pi^4}{360}$, \quad $\zeta(2,2)=\dfrac{\pi^4}{120}$, \quad $\zeta(2,1,1)=\zeta(4)$\\
+$5$ & $2$ & $\zeta(5),\ \zeta(2)\zeta(3)$ span; \quad $\zeta(4,1)=2\zeta(5)-\zeta(2)\zeta(3)$,\\
+    &     & $\zeta(3,2)=-\tfrac{11}{2}\zeta(5)+3\,\zeta(2)\zeta(3)$, \quad $\zeta(2,3)=\tfrac{9}{2}\zeta(5)-2\,\zeta(2)\zeta(3)$,\\
+    &     & $\zeta(3,1,1)=2\zeta(5)-\zeta(2)\zeta(3)$, \quad $\zeta(2,1,1,1)=\zeta(5)$ (duality of $\zeta(5)$)\\
+\hline
+\end{tabular}
+\end{center}
+
+\noindent The pattern $d_2=d_3=d_4=1<d_5=2$ is the first appearance of an irreducible higher-depth direction: at weight $5$ the single new generator $\zeta(2)\zeta(3)$ (a product, hence not a primitive) joins $\zeta(5)$, and every depth-$\ge2$ value of weight $5$ is a rational combination of these two. The first \emph{primitive} new MZV that is conjecturally not a polynomial in single zetas appears at weight $8$, with $\zeta(6,2)$ the classic witness.
+
+
+\section{Harmonic polylogarithms}
+
+The multiple polylogarithms of the previous sections are nested \emph{sums}. For the practitioner who must actually manipulate weight-$w$ transcendentals---most insistently the particle physicist computing Feynman integrals---it is the \emph{iterated-integral} avatar that is decisive, because integration variables, differential equations, and analytic continuation all speak the language of integrals. The harmonic polylogarithms (HPLs) of Remiddi and Vermaseren (1999) are precisely this avatar, specialised to the three integration kernels that arise when a rational integrand has singularities only at $t=0,1,-1$. They have become the de facto standard basis for one-scale problems, and Wolfram~15 exposes them directly as \texttt{HarmonicPolyLog}.
+
+\subsection{Definition: kernels and iterated integrals}
+
+Fix the alphabet $\{0,1,-1\}$ and the three rational \emph{kernels}
+\[
+  f_{0}(t)=\frac1t,\qquad f_{1}(t)=\frac1{1-t},\qquad f_{-1}(t)=\frac1{1+t}.
+\]
+A harmonic polylogarithm $H(a_1,\dots,a_w;z)$ is indexed by a word $\vec a=(a_1,\dots,a_w)$ over this alphabet; the length $w$ is the \emph{weight}. The definition is recursive in the leftmost letter. When the leading letter is nonzero,
+\begin{equation}\label{eq:hpl-rec}
+  H(a_1,a_2,\dots,a_w;z)=\int_0^z f_{a_1}(t)\,H(a_2,\dots,a_w;t)\,dt,\qquad a_1\neq 0,
+\end{equation}
+with the depth-zero seed $H(;z)=1$ (the empty word). A leading $0$ would make \eqref{eq:hpl-rec} diverge at $t=0$, so the all-zeros words are defined separately by the convention
+\begin{equation}\label{eq:hpl-zeros}
+  H(\underbrace{0,\dots,0}_{w};z)=\frac{1}{w!}\,\ln^{w} z,
+\end{equation}
+which is exactly the regularised value $\int_0^z\frac{dt_1}{t_1}\cdots$ obtained by extracting the logarithmic endpoint singularity. Every word is handled by combining \eqref{eq:hpl-rec} and \eqref{eq:hpl-zeros}: one strips leading $0$'s using \eqref{eq:hpl-zeros}-style shuffle regularisation (made precise below) and integrates the rest. Equivalently, $H(\vec a;z)$ is the Chen iterated integral $\int_{0\le t_w\le\cdots\le t_1\le z}\prod_i f_{a_i}(t_i)\,dt_i$, read so that $a_1$ labels the \emph{outermost} integration.
+
+\subsection{The weight-one and weight-two cases}
+
+At weight one \eqref{eq:hpl-rec}--\eqref{eq:hpl-zeros} give the three building blocks
+\begin{equation}\label{eq:hpl-w1}
+  H(0;z)=\ln z,\qquad H(1;z)=-\ln(1-z),\qquad H(-1;z)=\ln(1+z),
+\end{equation}
+since $\int_0^z dt/(1-t)=-\ln(1-z)$ and $\int_0^z dt/(1+t)=\ln(1+z)$. At weight two, integrating these against another kernel reproduces the classical dilogarithm and its companions:
+\begin{align}
+  H(0,1;z)&=\int_0^z\frac{dt}{t}\bigl(-\ln(1-t)\bigr)=\Li_2(z), &
+  H(0,-1;z)&=\int_0^z\frac{dt}{t}\ln(1+t)=-\Li_2(-z),\label{eq:hpl-w2a}\\
+  H(1,0;z)&=\int_0^z\frac{\ln t}{1-t}\,dt=-\Li_2(z)-\ln z\,\ln(1-z), &
+  H(1,1;z)&=\tfrac12\ln^2(1-z),\label{eq:hpl-w2b}
+\end{align}
+the last by \eqref{eq:hpl-rec} with $H(1;t)=-\ln(1-t)$ and $\int_0^z(-\ln(1-t))/(1-t)\,dt=\tfrac12\ln^2(1-z)$. The pair $H(0,1;z)=\Li_2(z)$ and $H(0,-1;z)=-\Li_2(-z)$ shows the general pattern: the words $H(\underbrace{0,\dots,0}_{s-1},1;z)=\Li_s(z)$ and $H(\underbrace{0,\dots,0}_{s-1},-1;z)=-\Li_s(-z)$ recover the entire ladder of classical polylogarithms, so the HPLs are a strict superset of the functions of Lewin's treatise. In Wolfram~15 these read, e.g., \texttt{HarmonicPolyLog[\{0,1\},x]} $=\Li_2(x)$ and \texttt{HarmonicPolyLog[\{0,-1\},x]} $=-\Li_2(-x)$.
+
+\subsection{The condensed $m$-notation}
+
+Writing out long strings of $0$'s is wasteful, and Remiddi and Vermaseren introduced a condensed index that absorbs them. To each maximal block ``$\underbrace{0,\dots,0}_{|m|-1}\,\sigma$'' consisting of $|m|-1$ zeros followed by a sign letter $\sigma\in\{1,-1\}$ one assigns a single integer
+\[
+  m=\sigma\cdot(\text{number of zeros}+1),
+\]
+so the sign of $m$ records $\sigma$ and the magnitude $|m|$ records how many kernels (one $f_{\pm1}$ preceded by $|m|-1$ copies of $f_0$) the block contributes. The resulting tuple is written as a subscript,
+\[
+  H_{m_1,\dots,m_k}(z):=H(\vec a;z),
+\]
+and the \emph{depth} of the HPL is $k$, the number of nonzero letters, while the weight is $w=\sum_i|m_i|$. Thus \eqref{eq:hpl-w2a} becomes $H_{2}(z)=\Li_2(z)$ and $H_{-2}(z)=-\Li_2(-z)$, the polylogarithm ladder is $H_{s}(z)=\Li_s(z)$, $H_{-s}(z)=-\Li_s(-z)$, and a mixed word such as $H(0,1,-1;z)$ is $H_{2,-1}(z)$. The $m$-notation is the input most reduction tables are organised by; the explicit word notation $H(\vec a;z)$ is the one that makes the integral representation \eqref{eq:hpl-rec} transparent. (Some authors reverse the global sign or the letter ordering; we follow the convention compatible with \eqref{eq:hpl-w1}--\eqref{eq:hpl-w2a} and with \texttt{HarmonicPolyLog}, where indices read outermost-integration-first.)
+
+\subsection{The shuffle algebra}
+
+\begin{theorem}[Shuffle product]\label{thm:hpl-shuffle}
+For a fixed argument $z$, the product of two harmonic polylogarithms is a $\mathbb{Q}$-linear combination of harmonic polylogarithms of the same argument:
+\[
+  H(\vec a;z)\,H(\vec b;z)=\sum_{\vec c\in \vec a\shuffle \vec b}H(\vec c;z),
+\]
+the sum running over all words $\vec c$ in the shuffle $\vec a\shuffle\vec b$, i.e.\ all interleavings of $\vec a$ and $\vec b$ that preserve the internal order of each.
+\end{theorem}
+
+This is the iterated-integral analogue of integration by parts: a product of two iterated integrals over $[0,z]$ is the integral over the union of the two simplices, which decomposes into the $\binom{|\vec a|+|\vec b|}{|\vec a|}$ ordered shuffles. Concretely, at weight $1+1$,
+\begin{equation}\label{eq:hpl-shuffle-ex}
+  H(0;z)\,H(1;z)=H(0,1;z)+H(1,0;z),
+\end{equation}
+which is the statement $\ln z\cdot(-\ln(1-z))=\Li_2(z)+\bigl(-\Li_2(z)-\ln z\,\ln(1-z)\bigr)=-\ln z\,\ln(1-z)$, i.e.\ the integration-by-parts consistency that re-expresses the product of the two weight-one HPLs through the two weight-two ones. (The dilogarithm \emph{reflection} formula is a different relation---the $z\mapsto1-z$ image of $H(0,1;z)$, derived in \eqref{eq:dilog-refl} below.) The shuffle algebra is graded by weight, and crucially it lets one strip leading zeros: since $H(0;z)=\ln z$, repeated use of \eqref{thm:hpl-shuffle} expresses any $H(0,\vec a;z)$ through $\ln z$ and HPLs whose words begin with a nonzero letter, which is the regularisation alluded to after \eqref{eq:hpl-zeros}.
+
+\subsection{Values at \texorpdfstring{$z=1$}{z=1}: Euler sums and colored MZVs}
+
+Setting $z=1$ turns admissible HPLs (those whose word does not begin with $1$, so that the boundary integral converges) into constants. Because the kernels live on the fourth-root-of-unity locus $\{0,\pm1\}$, these constants are exactly the level-$2$, or \emph{alternating}, multiple zeta values---the Euler sums. Words over $\{0,1\}$ give the ordinary MZVs,
+\begin{equation}\label{eq:hpl-mzv}
+  H(\underbrace{0,\dots,0}_{s_1-1},1,\underbrace{0,\dots,0}_{s_2-1},1,\dots;1)=\zeta(s_1,s_2,\dots),
+\end{equation}
+so for instance $H(0,1;1)=\Li_2(1)=\zeta(2)$ and $H(0,0,1;1)=\zeta(3)$. Admitting the letter $-1$ produces the alternating Euler sums: with $\bar s$ marking a sign,
+\[
+  H(0,-1;1)=-\Li_2(-1)=\tfrac{\pi^2}{12}=\zeta(\bar2),\qquad
+  H(0,0,-1;1)=-\Li_3(-1)=\tfrac34\zeta(3),
+\]
+in the alternating-MZV notation $\zeta(\bar s_1,\dots)=\sum_{n_1>\cdots}\prod(\operatorname{sgn})^{n_i}/n_i^{s_i}$. Thus the $\mathbb{Q}$-algebra of HPL values at $1$ is the algebra of alternating MZVs; its dimensions and the structure of its relations were mapped by Borwein--Bradley--Broadhurst--Lisone\v{k} and, on the motivic side, Deligne and Goncharov. This is the practical reason HPLs are the right basis: the boundary data of a Feynman integral land automatically in a well-understood number-theoretic ring.
+
+\subsection{Argument transformations: the Remiddi--Vermaseren toolkit}
+
+The feature that makes HPLs genuinely usable---as opposed to merely definable---is that the natural M\"obius and quadratic substitutions of the variable $z$ each carry an HPL into a $\mathbb{Q}$-linear combination of HPLs (of the substituted or the original argument, possibly with explicit logarithms and constants). Remiddi and Vermaseren give algorithms for five transformations:
+\begin{equation}\label{eq:hpl-transforms}
+  z\mapsto -z,\qquad z\mapsto 1-z,\qquad z\mapsto \tfrac1z,\qquad z\mapsto \tfrac{1-z}{1+z},\qquad z\mapsto z^2 .
+\end{equation}
+The first four are the involutions/order-$3$,$\,4$ maps permuting the singular set $\{0,1,-1,\infty\}$; the fifth is the duplication relation. The mechanism is uniform: differentiate the target combination with respect to $z$, observe that $d H(\vec a;z)/dz$ is $f_{a_1}(z)\,H(a_2,\dots;z)$ (a kernel times a lower-weight HPL), match the rational kernels obtained under the substitution against partial fractions in $\{0,\pm1\}$, and integrate back, fixing the constant of integration at a convenient point ($z=0$ or $z=1$). The upshot is a closed-form rewriting that delivers \emph{both} the analytic continuation of an HPL across its cuts and the reduction of any rational-kernel iterated integral to the canonical HPL basis.
+
+\paragraph{Weight one.} The transformations act on \eqref{eq:hpl-w1} by the elementary logarithm laws, e.g.\ under $z\mapsto -z$,
+\[
+  H(0;-z)=\ln(-z)=H(0;z)+\ln(-1),\quad H(1;-z)=-\ln(1+z)=-H(-1;z),\quad H(-1;-z)=\ln(1-z)=-H(1;z),
+\]
+so $z\mapsto -z$ swaps the letters $1\leftrightarrow -1$ and negates each (up to the branch constant $\ln(-1)=\iu\pi$ carried by the $0$-letter), the cleanest instance of the general phenomenon: a signed letter permutation of the alphabet $\{0,1,-1\}$ plus boundary constants.
+
+\paragraph{Weight two.} The substitution $z\mapsto 1-z$ exchanges the kernels $f_0\leftrightarrow f_1$ and reverses the orientation of $[0,z]$, so it maps $H(0,1;z)=\Li_2(z)$ to a combination involving $H(\cdot;1-z)$ and the boundary value $H(0,1;1)=\zeta(2)$. Differentiating $\Phi(z):=H(0,1;z)+H(0,1;1-z)$ gives
+\[
+  \Phi'(z)=\frac{-\ln(1-z)}{z}+\frac{(-1)\cdot(-\ln z)}{1-z}=\frac{d}{dz}\bigl(-\ln z\,\ln(1-z)\bigr),
+\]
+whence $\Phi(z)=-\ln z\,\ln(1-z)+C$; evaluating at $z\to1^-$ (where $H(0,1;1-z)\to0$ and $H(0,1;1)=\zeta(2)$, $\ln(1-z)\to-\infty$ but $\ln z\,\ln(1-z)\to0$) fixes $C=\zeta(2)=\pi^2/6$. In the $\Li$ language this is precisely Euler's dilogarithm reflection
+\begin{equation}\label{eq:dilog-refl}
+  \Li_2(z)+\Li_2(1-z)=\frac{\pi^2}{6}-\ln z\,\ln(1-z),
+\end{equation}
+recovered here as the $z\mapsto1-z$ image of a single weight-two HPL. The inversion $z\mapsto1/z$ likewise reproduces $\Li_2(z)+\Li_2(1/z)=-\tfrac{\pi^2}{6}-\tfrac12\ln^2(-z)$, and $z\mapsto z^2$ encodes the duplication $\Li_2(z^2)=2\bigl(\Li_2(z)+\Li_2(-z)\bigr)$ as $H(0,1;z^2)=2\bigl(H(0,1;z)-H(0,-1;z)\bigr)$. At higher weight the same five transformations close the HPL basis under all the moves one needs in practice, which is why a one-scale integral, once expressed in HPLs, can be continued and simplified entirely algorithmically.
+
+\subsection{Relation to Nielsen polylogarithms and to \texorpdfstring{$\Li$}{Li}}
+
+The harmonic polylogarithms contain the Nielsen generalised polylogarithms $S_{n,p}(z)$ of Nielsen (1909), studied analytically by K\"olbig (1986). Indeed $S_{n,p}(z)$ is, up to sign, the single HPL whose word is $n$ zeros followed by $p$ ones,
+\begin{equation}\label{eq:nielsen}
+  S_{n,p}(z)=H(\underbrace{0,\dots,0}_{n},\underbrace{1,\dots,1}_{p};z),
+\end{equation}
+of weight $n+p$ and depth $p$; the classical case is $S_{n,1}(z)=\Li_{n+1}(z)$, consistent with \eqref{eq:hpl-w2a} for $n=1,p=1$. Thus the chain of inclusions reads: classical $\Li_s$ (depth-$1$ HPLs over $\{0,1\}$) $\subset$ Nielsen $S_{n,p}$ (two-letter words $0^n1^p$) $\subset$ harmonic polylogarithms (arbitrary words over $\{0,1,-1\}$) $\subset$ multiple polylogarithms (the $z=1$ specialisations being MZVs and Euler sums). Each enlargement adds exactly the words the previous class could not name.
+
+\subsection{Finite truncations and Wolfram~15}
+
+Behind every iterated integral stands a nested \emph{sum}, and behind every value at $z=1$ stands the partial sum of that series. These partial sums are the multiple (finite) harmonic numbers
+\[
+  H^{(s_1,\dots,s_k)}_{N}=\sum_{N\ge n_1>n_2>\cdots>n_k\ge1}\;\prod_{i=1}^{k}\frac{1}{n_i^{s_i}},
+\]
+generalising the ordinary $H_N=H_N^{(1)}=\sum_{n\le N}1/n$; their $N\to\infty$ limits are the admissible MZVs, and they are the natural objects in which the series expansions of $\varepsilon$-dependent Feynman integrals are stored. Wolfram~15 provides all of these as first-class functions: \texttt{HarmonicPolyLog} for $H(\vec a;z)$ (with the index/sign conventions used above; recall \texttt{HarmonicPolyLog[\{1\},x]} $=-\ln(1-x)$), \texttt{MultiplePolyLog} and \texttt{MultipleZeta} for the limiting transcendentals, and \texttt{MultipleHarmonicNumber} for the finite sums $H^{(\vec s)}_N$. With \texttt{DSolve} and \texttt{AsymptoticDSolveValue} now returning harmonic polylogarithms for Fuchsian systems with rational coefficients, the entire Remiddi--Vermaseren workflow---solve the differential equation, expand at the boundary into Euler sums, continue by the transformations \eqref{eq:hpl-transforms}---is available without leaving the kernel.
+
+\begin{remark}
+The choice of alphabet $\{0,1,-1\}$ is what fixes the singular set at $\{0,1,-1,\infty\}$ and hence ties the boundary values to \emph{alternating} MZVs. Allowing the additional kernels $f_{1/2}(t)=1/(t-\tfrac12)$ or roots of unity of higher order enlarges the class to the two-dimensional harmonic polylogarithms and to Goncharov's multiple polylogarithms with general singular points (the \texttt{GeneralizedPolyLog} of the previous section), at the price of boundary constants drawn from level-$N$ colored MZVs rather than the level-$2$ Euler sums. For one-scale problems the three-letter alphabet is almost always enough, which is the empirical reason HPLs, not their more general cousins, became the working basis of the field.
+\end{remark}
+
+
+\section{Nielsen's generalized polylogarithms}
+
+Long before multiple zeta values acquired their modern algebraic name, Nielsen (1909) introduced a two-parameter family of higher polylogarithms that already pervades Lewin's \emph{Polylogarithms and Associated Functions} (1981, Chapter~7). They are the simplest objects that go beyond the ordinary $\Li_s(z)$ while remaining genuinely ``one-variable'': a single argument $z$, two integer indices $n,p\ge1$, and a closed integral representation. The reader who is comfortable with the dilogarithm reflection and Landen's transformation will find here their direct higher-weight descendants, and -- once we translate into the language of the previous sections -- their place as one distinguished corner of the multiple-polylogarithm world.
+
+\subsection{Definition and elementary reductions}
+
+\begin{definition}
+For integers $n,p\ge1$ the \emph{Nielsen generalized polylogarithm} is
+\begin{equation}\label{eq:nielsen-def}
+  S_{n,p}(z)\;=\;\frac{(-1)^{n+p-1}}{(n-1)!\,p!}\int_0^1 \frac{(\ln t)^{n-1}\,\ln^{p}(1-zt)}{t}\,dt ,
+\end{equation}
+analytically continued from $|z|<1$ to $z\in\mathbb{C}\setminus[1,\infty)$ along the cut of $\ln(1-zt)$. Its \emph{weight} is $n+p$ and its \emph{depth} is $p$.
+\end{definition}
+
+The normalizing factorials are chosen exactly so that two boundary specializations collapse onto familiar functions. Setting $p=1$ and integrating $\ln(1-zt)/t$ termwise against $(\ln t)^{n-1}$ recovers the classical Euler integral for the polylogarithm:
+\begin{equation}\label{eq:Snone}
+  S_{n,1}(z)\;=\;\Li_{n+1}(z),\qquad n\ge1 .
+\end{equation}
+Thus the entire first column of the Nielsen table is nothing but the ordinary polylogarithm shifted by one weight; in particular the lowest member is the dilogarithm,
+\begin{equation}\label{eq:S11}
+  S_{1,1}(z)\;=\;\Li_2(z).
+\end{equation}
+At the opposite corner $n=1$ the inner factor $\ln t$ disappears and \eqref{eq:nielsen-def} reduces to a pure power of $\ln(1-zt)$, giving the elementary
+$
+  S_{0,p}(z) = \tfrac{(-1)^p}{p!}\,\ln^{p}(1-z)
+$
+in the degenerate $n=0$ row (we keep $n\ge1$ in the sequel, but this boundary is the seed for the recursions below).
+
+\subsection{Series and the multiple-polylogarithm identification}
+
+Expanding $\ln^{p}(1-zt)$ as a power of the series $-\sum_{m\ge1}(zt)^m/m$ and integrating against $(\ln t)^{n-1}/t$ turns \eqref{eq:nielsen-def} into a single power series in $z$ whose coefficients are nested harmonic sums:
+\begin{equation}\label{eq:nielsen-series}
+  S_{n,p}(z)\;=\;\sum_{k\ge1}\frac{z^{k}}{k^{\,n+1}}\;c^{(p)}_{k},
+  \qquad
+  c^{(p)}_{k}=\sum_{k> m_1>\cdots> m_{p-1}\ge1}\frac{1}{m_1\cdots m_{p-1}} ,
+\end{equation}
+so $c^{(1)}_k\equiv1$ (reproducing \eqref{eq:Snone}) and in general $c^{(p)}_k$ is a depth-$(p-1)$ harmonic sum, an instance of \texttt{MultipleHarmonicNumber}. Comparing \eqref{eq:nielsen-series} with the strictly nested sum of the article preamble identifies $S_{n,p}$ as a multiple polylogarithm with a single repeated argument:
+\begin{equation}\label{eq:nielsen-MPL}
+  \boxed{\;S_{n,p}(z)\;=\;\Li_{n+1,\,\underbrace{\scriptstyle 1,\dots,1}_{p-1}}\!\bigl(z,\underbrace{1,\dots,1}_{p-1}\bigr)\;}
+\end{equation}
+of weight $n+p$ and depth $p$. Its iterated-integral word over the alphabet $\{0,1\}$ (with $0\leftrightarrow dt/t$, $1\leftrightarrow dt/(1-t)$) is
+\[
+  0^{\,n}\,1^{\,p}\;=\;\underbrace{0\cdots0}_{n}\underbrace{1\cdots1}_{p},
+\]
+a single block of $n$ zeros followed by a single block of $p$ ones. This is the defining structural fact: among all multiple polylogarithms, the Nielsen family is exactly the ``one initial zero-block, one trailing one-block'' subclass. Everything peculiar about $S_{n,p}$ -- the two-index labelling, the clean ladders, the duality below -- is a shadow of that two-block word.
+
+\begin{remark}[Sign and normalization]
+Equation~\eqref{eq:nielsen-MPL} carries a $+$ sign under the strictly-nested-sum convention fixed in the preamble; we verified it numerically, e.g.\ the depth-$2$ partial sums of $\Li_{2,1}(z,1)$ agree with $S_{1,2}(z)$ to high precision, and likewise $\Li_{3,1,1}(z,1,1)=S_{2,3}(z)$. In sources that normalize the multiple polylogarithm by the \emph{iterated integral} $\int 0^{n}1^{p}$ rather than by the nested sum, the same content appears as $S_{n,p}(z)=(-1)^{p-1}\,\mathrm{(integral~word~}0^{n}1^{p})$; the $(-1)^{p-1}$ is precisely the sign produced by the $p$ kernels $dt/(1-t)=-d\ln(1-t)$. We keep the nested-sum convention and so quote \eqref{eq:nielsen-MPL} without that factor.
+\end{remark}
+
+\subsection{Integral and differential relations}
+
+Differentiating \eqref{eq:nielsen-series} (or \eqref{eq:nielsen-def}) in $z$ lowers the leading index by one and threads the function back into the ladder:
+\begin{equation}\label{eq:dSnp}
+  \frac{d}{dz}\,S_{n,p}(z)\;=\;\frac{1}{z}\,S_{n-1,p}(z)\quad(n\ge1),
+  \qquad
+  \frac{d}{dz}\,S_{1,p}(z)\;=\;\frac{1}{z}\,S_{0,p}(z)\;=\;\frac{(-1)^{p}}{p\,!}\,\frac{\ln^{p}(1-z)}{z},
+\end{equation}
+the second relation being the $n=1$ boundary, where the $dt/t$ block is exhausted and the degenerate row $S_{0,p}(z)=\tfrac{(-1)^{p}}{p!}\ln^{p}(1-z)$ is the pure power of $\ln(1-z)$. The two clean ladder moves are the integral forms of these derivatives,
+\begin{align}
+  \text{zero-block ladder:}\quad
+    & S_{n,p}(z)=\int_0^{z}S_{n-1,p}(u)\,\frac{du}{u}\qquad (n\ge1),\label{eq:ladder0}\\[2pt]
+  \text{one-block ladder:}\quad
+    & S_{0,p}(z)=\int_0^{z} S_{0,p-1}(u)\,\frac{du}{1-u}\qquad (p\ge1),\label{eq:ladder1}
+\end{align}
+with seed $S_{0,0}(z)=1$ (the empty word): \eqref{eq:ladder0} peels the outermost $0$ from the word $0^{n}1^{p}$, and \eqref{eq:ladder1} peels the outermost $1$ from the pure one-block $1^{p}$; in iterated-integral terms both are simply ``integrate against the next letter of $0^{n}1^{p}$.'' The practical content is that the whole Nielsen table is generated from the empty word by first applying the $1$-kernel integral $\int_0^{z}(\cdot)\,du/(1-u)$ a total of $p$ times to build $S_{0,p}$ (so $S_{0,1}(z)=-\ln(1-z)$, $S_{0,2}(z)=\tfrac12\ln^{2}(1-z)$, and so on), then the $0$-kernel integral $\int_0^{z}(\cdot)\,du/u$ a total of $n$ times to prepend the zeros; this is exactly the Fuchsian recursion that \texttt{HarmonicPolyLog} encodes, and it is why \texttt{DSolve} now returns Nielsen polylogs for the relevant rational-coefficient ODEs.
+
+\subsection{Special values}
+
+\subsubsection*{The point $z=1$ and Hoffman's duality}
+
+Setting $z=1$ in \eqref{eq:nielsen-MPL} turns the multiple polylogarithm into a multiple zeta value with the same two-block word. The first column reproduces Euler,
+\begin{equation}\label{eq:Snp-one-col}
+  S_{n,1}(1)=\zeta(n+1),\qquad S_{1,2}(1)=\zeta(3),
+\end{equation}
+and in general
+\begin{equation}\label{eq:Snp-one}
+  S_{n,p}(1)\;=\;\zeta\bigl(n+1,\{1\}^{p-1}\bigr),
+\end{equation}
+the MZV whose argument string is $n+1$ followed by $p-1$ ones (admissible because the leading entry $n+1\ge2$). Now the iterated-integral word $0^{\,n}1^{\,p}$ of $S_{n,p}$ has a manifest symmetry: reversing it and exchanging $0\leftrightarrow1$ sends $0^{n}1^{p}\mapsto 0^{p}1^{n}$, the word of $S_{p,n}$. This reversal-complement is exactly Hoffman's MZV \emph{duality} (the Kontsevich integral symmetry $\omega\mapsto\overline{\omega}^{\mathrm{rev}}$), so
+\begin{equation}\label{eq:duality}
+  \boxed{\;\zeta\bigl(n+1,\{1\}^{p-1}\bigr)\;=\;\zeta\bigl(p+1,\{1\}^{n-1}\bigr),\qquad\text{equivalently}\qquad S_{n,p}(1)=S_{p,n}(1).\;}
+\end{equation}
+This is a striking statement: the value of a Nielsen polylogarithm at $1$ is invariant under swapping its two indices, even though $S_{n,p}(z)$ and $S_{p,n}(z)$ are wholly different functions of $z$. For $p=1$ it degenerates to the tautology $\zeta(n+1)=\zeta(n+1)$; the first nontrivial case is $S_{1,2}(1)=S_{2,1}(1)$, i.e.\ $\zeta(2,1)=\zeta(3)$, Euler's reflection. We confirmed \eqref{eq:Snp-one} and \eqref{eq:duality} symbolically against \texttt{MultipleZeta} (e.g.\ $S_{1,2}(1)-\zeta(2,1)$ and $S_{n,p}(1)-S_{p,n}(1)$ vanish to $>70$ digits for all $n,p\le4$).
+
+\subsubsection*{The points $z=-1$ and $z=\tfrac12$ (Kölbig 1986)}
+
+At $z=-1$ the column reduction \eqref{eq:Snone} gives $S_{n,1}(-1)=\Li_{n+1}(-1)=-(1-2^{-n})\,\zeta(n+1)$, and the first off-column value is the elegant
+\begin{equation}\label{eq:S12-minus}
+  S_{1,2}(-1)\;=\;\tfrac18\,\zeta(3).
+\end{equation}
+Higher entries $S_{n,p}(-1)$ reduce (Kölbig 1986) to the alternating-MZV basis at their weight; for example $S_{2,2}(-1)$ and $S_{1,3}(-1)$ already require $\Li_4(\tfrac12)$ alongside $\pi^4$, $\ln^4 2$, $\pi^2\ln^2 2$ and $\zeta(3)\ln 2$, the unmistakable level-$2$ weight-$4$ signature (we recovered both reductions by integer-relation search). At the binary point $z=\tfrac12$ the cleanest closed form is
+\begin{equation}\label{eq:S12-half}
+  \boxed{\;S_{1,2}\!\left(\tfrac12\right)\;=\;\tfrac18\,\zeta(3)\;-\;\tfrac16\,\ln^{3}2.\;}
+\end{equation}
+We obtained \eqref{eq:S12-half} by PSLQ over $\{\zeta(3),\pi^2\ln 2,\ln^3 2\}$ -- the relation $24\,S_{1,2}(\tfrac12)-3\,\zeta(3)+4\ln^3 2=0$ -- and verified it to $40$ digits. (Compare Lewin's dilogarithm value $\Li_2(\tfrac12)=\tfrac{\pi^2}{12}-\tfrac12\ln^2 2$: the same flavour, one weight up.)
+
+\subsection{Functional equations}
+
+The reader who knows Lewin's dilogarithm chapter expects three staples -- reflection $z\leftrightarrow 1-z$, inversion $z\leftrightarrow 1/z$, and the Landen ladder -- to survive at higher weight. They do, as specializations of the harmonic-polylogarithm argument transformations of the previous section, but they grow extra lower-weight ``tail'' terms.
+
+\subsubsection*{Reflection $z\mapsto 1-z$}
+
+At weight $2$ the only reflection is the dilogarithm law itself, here in Nielsen dress ($n=p=1$):
+\begin{equation}\label{eq:refl-w2}
+  S_{1,1}(z)+S_{1,1}(1-z)\;=\;\frac{\pi^2}{6}-\ln z\,\ln(1-z),
+\end{equation}
+which is exactly Euler's reflection for $\Li_2$. At weight $3$ the genuinely new instance is the $S_{1,2}$ reflection; carrying out the integer-relation search over the natural weight-$3$ basis yields the clean
+\begin{equation}\label{eq:refl-w3}
+  \boxed{\;S_{1,2}(z)\;=\;\zeta(3)\;-\;\Li_3(1-z)\;+\;\ln(1-z)\,\Li_2(1-z)\;+\;\tfrac12\,\ln z\,\ln^{2}(1-z).\;}
+\end{equation}
+We verified \eqref{eq:refl-w3} to $40$ digits at several rational and one negative argument. Two consistency checks are worth noting. Putting $z=1$ collapses the right side to $\zeta(3)-\Li_3(0)+0+0=\zeta(3)$, reproducing \eqref{eq:Snp-one-col}; and adding \eqref{eq:refl-w3} to its $z\mapsto1-z$ image recovers the symmetric Euler relation $S_{1,2}(z)+S_{1,2}(1-z)=2\zeta(3)-\Li_3(z)-\Li_3(1-z)+\cdots$ with the logarithmic tails arranging themselves into the $\zeta(3)+\Li_3$ shuffle. Identity \eqref{eq:refl-w3} is precisely the statement that the iterated integral of $001$ from $0$ to $z$ and from $0$ to $1-z$ differ by an explicit lower-weight boundary correction -- the weight-$3$ avatar of the dilogarithm reflection.
+
+\subsubsection*{Inversion $z\mapsto 1/z$ and Landen}
+
+The inversion does \emph{not} close on $S_{n,p}$ alone at weight $\ge3$: $S_{1,2}(1/z)$ is not a $\mathbb{Q}$-combination of $S_{1,2}(z)$, $\zeta(3)$, $\pi^2\ln z$ and $\ln^3 z$ (an integer-relation search over that ad hoc basis returns only spurious large-coefficient vectors). What is true is the structural statement that $z\mapsto 1/z$, like $z\mapsto1-z$ and the Landen map $z\mapsto z/(z-1)$, is one of the $S_3$ (in fact $\mathfrak{S}$-group) argument transformations under which the \emph{whole} weight-$w$ harmonic-polylogarithm space is closed. Concretely, writing $S_{n,p}$ in the word $0^{n}1^{p}$ and applying the HPL substitution rules of the previous section expresses $S_{n,p}(1/z)$ -- equivalently $S_{n,p}(z/(z-1))$ -- as an explicit $\mathbb{Q}$-linear combination of all weight-$(n+p)$ harmonic polylogarithms in $z$ together with products of $\ln z$, $\ln(1-z)$ and lower-weight $S$'s and $\zeta$'s. Thus the Nielsen polylogarithms inherit the dilogarithm's full transformation calculus, but only after one leaves the two-index Nielsen subfamily for the ambient HPL algebra; the inversion is the cheapest illustration that $\{S_{n,p}\}$ is \emph{not} closed under the group of fractional-linear argument changes, whereas the HPLs are.
+
+\subsection{Placement inside the multiple-polylogarithm world}
+
+Equation~\eqref{eq:nielsen-MPL} identifies $S_{n,p}$ as the ``one trailing block'' corner of the depth-$p$ multiple polylogarithms: the words $0^{n}1^{p}$ form a single two-parameter slice of the full $\{0,1\}^{*}$ alphabet, the slice closest to the ordinary polylogarithm (recovered at $p=1$) and stable under the two operations -- evaluation at $1$ to MZVs, and the duality swap $n\leftrightarrow p$ -- that organize the modern theory. This is exactly why the Nielsen polylogarithms are the natural bridge between Lewin's classical apparatus and the MZV algebra: every Lewin-style identity (reflection, Landen, the special values at $\pm1,\tfrac12$) is the $p\le2$ or $n\le2$ shadow of a multiple-polylogarithm identity, and conversely the duality $S_{n,p}(1)=S_{p,n}(1)$ is the first place a classical reader meets a genuinely MZV-theoretic symmetry with no single-variable analogue. In the Wolfram Language the family is a first-class function: \texttt{PolyLog[n,p,z]} is exactly $S_{n,p}(z)$, with \texttt{PolyLog[n,1,z]} agreeing with \texttt{PolyLog[n+1,z]} per \eqref{eq:Snone}, and it sits one specialization step from \texttt{MultiplePolyLog} via \eqref{eq:nielsen-MPL} and one from \texttt{MultipleZeta} via \eqref{eq:Snp-one}.
+
+
+\section{The unifying picture}
+
+The four families introduced above---the multiple polylogarithm $\Li_{s_1,\dots,s_k}(z_1,\dots,z_k)$, the Nielsen polylogarithm $S_{n,p}$, the harmonic polylogarithm, and the multiple zeta value $\zeta(s_1,\dots,s_k)$---are not four unrelated generalizations of $\Li_s(z)$ that happen to share a notation. They are four windows onto a single object: an \emph{iterated integral} read as a \emph{word} in a small alphabet. Once one adopts that point of view, the seemingly disparate definitions (a strictly nested sum here, a Chen integral there, a value at a special point) become coordinates on one space, and the calculus of these functions---their functional equations, their reduction tables, their conjectural dimensions---turns into the combinatorics of words and a single coproduct. This closing section assembles that picture conceptually; it states no new theorem and gives no proof, but it is the bridge from this introduction to the research literature.
+
+\subsection{One alphabet, one integral}
+
+Recall the iterated-integral form of the ordinary polylogarithm. Writing $\omega_0=\frac{dt}{t}$ and $\omega_1=\frac{dt}{1-t}$, one has, along the straight path from $0$,
+\[
+  \Li_s(z)\;=\;\int_0^z \underbrace{\omega_0\cdots\omega_0}_{s-1}\,\omega_1,
+  \qquad
+  \int_0^z \omega_{a_1}\cdots\omega_{a_w}
+  \;=\;\int_{0\le t_w\le\cdots\le t_1\le z}\;\prod_{i=1}^{w}\frac{dt_i}{\,t_i-a_i\,}\,,
+\]
+with the convention that $\omega_0$ contributes $dt/t$ (pole at $0$) and $\omega_1$ contributes $-\,dt/(t-1)$ (pole at $1$). Thus $\Li_s(z)$ is the integral of the \emph{word} $0^{\,s-1}1$ of length (weight) $w=s$: a block of $0$'s followed by a single trailing $1$. The depth is the number of $1$'s, here $1$.
+
+Each family is now obtained by enlarging the alphabet or by specializing the endpoint, while keeping the same integral.
+
+\begin{itemize}
+\item \textbf{Ordinary $\Li$ and Nielsen $S_{n,p}$: alphabet $\{0,1\}$, one trailing block.} The Nielsen polylogarithm
+$S_{n,p}(z)=\frac{(-1)^{n+p-1}}{(n-1)!\,p!}\int_0^1 \frac{(\log t)^{\,n-1}\,(\log(1-zt))^{\,p}}{t}\,dt$
+is, in word form, the integral of $0^{\,n}1^{\,p}$: $n$ zeros followed by $p$ ones, weight $w=n+p$, depth~$p$. Ordinary $\Li_s=S_{s-1,1}$ is the depth-one case $p=1$. Nielsen's polylogarithms (Nielsen 1909; tabulated and extended by K\"olbig 1986 and surveyed in Lewin 1981) are therefore exactly the depth-arbitrary words over $\{0,1\}$ whose $1$'s are all \emph{consolidated at the end}---a strict subclass of the multiple polylogarithms over $\{0,1\}$, which allow the $1$'s to interleave the $0$'s freely.
+
+\item \textbf{General multiple polylogarithms: alphabet $\{0\}\cup\mu_\infty$.} Allowing the singularities $a_i$ to range over $\{0\}$ and the roots of unity $\mu_\infty=\bigcup_N\mu_N$ (equivalently, allowing the arguments $z_i$ in the nested sum to be roots of unity) gives the full Goncharov multiple polylogarithm. In Wolfram~15 the iterated-integral form is \texttt{GeneralizedPolyLog}, and the nested-sum form is \texttt{MultiplePolyLog}; the dictionary between them is the standard change of variables that turns a word $0^{\,s_1-1}\xi_1\cdots$ into the strictly nested sum $\sum_{n_1>\cdots>n_k\ge1}\prod_i z_i^{n_i}/n_i^{s_i}$.
+
+\item \textbf{Harmonic polylogarithms: the fixed alphabet $\{0,1,-1\}$.} Remiddi and Vermaseren (1999) fixed the three letters $0,\pm1$---kernels $\frac{dt}{t}$, $\frac{dt}{1-t}$, $\frac{dt}{1+t}$---to capture exactly the iterated integrals that arise in Fuchsian ODE systems with rational coefficients (the Feynman-integral regime). This is the \emph{level-two} colored case: the singularities are the second and ``fourth'' roots in the sense that $\{1,-1\}=\mu_2$, with $0$ adjoined. Wolfram~15 exposes it as \texttt{HarmonicPolyLog}, and \texttt{DSolve}/\texttt{AsymptoticDSolveValue} now return these words directly.
+
+\item \textbf{Multiple zeta values: the words over $\{0,1\}$ evaluated at the single point $1$.} Setting every $z_i=1$ (endpoint of the integral at $1$, all letters in $\{0,1\}$) collapses the function to a number: $\zeta(s_1,\dots,s_k)=\Li_{s_1,\dots,s_k}(1,\dots,1)$, admissible iff $s_1\ge2$ (no $1$ in the leading position, so the integral converges at $1$). These are the periods one gets by ``stopping'' a $\{0,1\}$-multiple polylogarithm at its natural endpoint; \texttt{MultipleZeta} in Wolfram~15.
+\end{itemize}
+
+So the entire menagerie is one integral $\int_0^z \omega_{a_1}\cdots\omega_{a_w}$ over an alphabet that is $\{0,1\}$, or $\{0,\pm1\}$, or $\{0\}\cup\mu_\infty$, specialized at a point. Weight is word length, depth is the count of non-zero letters, and the classical $\Li_s(z)$ is the simplest non-trivial word.
+
+\subsection{A double algebra: shuffle and stuffle}
+
+What makes this circle of functions an \emph{algebra}---and the source of essentially every classical identity---is that the periods multiply in two genuinely different ways.
+
+\paragraph{Shuffle, from the integral.} A product of two iterated integrals along the \emph{same} path is again an iterated integral: it is the sum over all interleavings of the two words that preserve the internal order of each. This is the \emph{shuffle product} $\shuffle$, an avatar of Fubini's theorem on the simplex $0\le t_w\le\cdots\le t_1\le z$. For the smallest example,
+\[
+  \Li_1(z)\,\Li_1(z)\;=\;2\,\Li_{1,1}(z,z)\;+\;\ \text{(the two interleavings of }1\shuffle1),
+\]
+and at the level of MZVs $\zeta(2)\,\zeta(3)=\sum$ (shuffles of $001\shuffle 00001$). The product respects weight, so the $\mathbb{Q}$-span of these periods is a graded \emph{shuffle algebra}.
+
+\paragraph{Stuffle, from the sum.} The \emph{same} numbers also multiply through their defining nested sums. Multiplying $\sum_{m\ge1}a_m\cdot\sum_{n\ge1}b_n$ and splitting the index plane into $m>n$, $m<n$, and the diagonal $m=n$ gives the \emph{stuffle} (harmonic, or quasi-shuffle) product $\ast$, in which interleavings of the two index-words are augmented by ``stuffing'' terms that merge two letters on the diagonal and add their exponents:
+\[
+  \zeta(2)\,\zeta(3)\;=\;\zeta(2,3)+\zeta(3,2)+\zeta(5).
+\]
+The extra summand $\zeta(5)$---the diagonal contribution---is precisely what distinguishes $\ast$ from $\shuffle$ (Hoffman; the quasi-shuffle formalism is Hoffman's). 
+
+\begin{remark}
+The span of MZVs is therefore a \emph{double shuffle} algebra: the two products $\shuffle$ and $\ast$ compute the \emph{same} number two different ways, so every pair $(u,v)$ of words yields a linear relation $u\shuffle v - u\ast v=0$ among MZVs. Regularizing the divergent boundary words (the inadmissible $s_1=1$ case) and demanding that $\shuffle$ and $\ast$ stay compatible produces the \emph{extended} (regularized) double-shuffle relations, conjecturally a complete set of $\mathbb{Q}$-linear relations among MZVs. Euler's reflection $\zeta(2,1)=\zeta(3)$ and the sum theorem are the first fruits; Ohno's relation is a uniform generalization spanning both.
+\end{remark}
+
+\subsection{Goncharov's coproduct organizes the functional equations}
+
+Two products is already a rich structure; the organizing principle for the \emph{functional} equations (the $z$-dependent identities---inversion, duplication, the five-term dilogarithm relation and its higher avatars) is a \emph{coproduct}. Goncharov observed that iterated integrals carry a Hopf-algebra comultiplication that one may describe, without any heavy formalism, by saying what differentiation and path-composition do to a word.
+
+Concretely, the iterated integral $I(a_0;a_1,\dots,a_w;a_{w+1})$ (lower and upper endpoints $a_0,a_{w+1}$, letters $a_1,\dots,a_w$) has a coproduct whose two halves are exactly the two natural operations one can perform on such an object:
+\begin{itemize}
+\item \emph{Differentiation} with respect to the endpoints or the singular points $a_i$ removes one letter at a time---each term of the coproduct's ``right factor'' is the elementary one-form $d\log\frac{a_{i+1}-a_i}{a_{i-1}-a_i}$ obtained by collapsing a single letter;
+\item \emph{Path composition / subdivision} keeps a sub-collection $a_0<a_{i_1}<\cdots<a_{i_r}<a_{w+1}$ of the marked points as the ``left factor'' (a lower-weight iterated integral) and tensors it against the product of the small integrals over the omitted gaps.
+\end{itemize}
+The coproduct is thus: sum over all subsequences of the marked points; for each, take the integral over the retained points $\otimes$ the product of the integrals over the deleted segments. This is the combinatorial heart of why functional equations exist and how to generate them: an identity among multiple polylogarithms of weight $w$ is detected by computing its coproduct, finding that the lower-weight $\otimes$ lower-weight pieces vanish by induction, and reducing the claim to a statement about the weight-$1$ primitive (a $\log$, integrated). Brown's ``$d$ and $\partial$'' calculus and the symbol map are downstream of this single coproduct, and the dihedral/clean functional equations of Goncharov, as well as the historical inversion and Landen relations of Lewin, all fall out of it.
+
+\begin{remark}
+The reader who knows $\Li_2$ well can see the mechanism in miniature: $d\,\Li_2(z)=-\log(1-z)\,d\log z$, so the ``derivative half'' of the dilogarithm's coproduct is $-\log(1-z)\otimes\log z$ (weight $1\otimes1$). The five-term relation is exactly the statement that a particular weight-two combination has vanishing $1\otimes1$ coproduct and trivial constant term---hence is itself constant. Goncharov's coproduct is the systematic, all-weight, all-depth version of this one observation.
+\end{remark}
+
+\subsection{The motivic viewpoint, in one paragraph}
+
+Why should the dimensions and relations be so rigid? The conjectural answer is geometric. Multiple zeta values are, conjecturally, exactly the \emph{periods of mixed Tate motives over $\mathbb{Z}$}: the graded $\mathbb{Q}$-vector space they span is conjecturally isomorphic to a space built from the (motivic) fundamental group of $\mathbb{P}^1\setminus\{0,1,\infty\}$, and its Poincar\'e series is governed by the algebraic $K$-theory of $\mathbb{Z}$. This is the Zagier dimension conjecture: the dimension $d_w$ of the weight-$w$ MZVs satisfies $d_w=d_{w-2}+d_{w-3}$ (Zagier 1994), whose generating function $\frac{1}{1-x^2-x^3}$ encodes precisely the ranks of $K_\bullet(\mathbb{Z})\otimes\mathbb{Q}$ (one generator in each odd degree $\ge3$, matching $\zeta(3),\zeta(5),\zeta(7),\dots$); Goncharov and Deligne made the motivic side rigorous, and Brown (building on Deligne--Goncharov) proved that the motivic MZVs are spanned by the $\{2,3\}$-words, giving the upper bound $d_w$. The ``level $N$'' colored analogues slot into the same picture: replacing $\mu_1$ by $\mu_N$ replaces mixed Tate motives over $\mathbb{Z}$ by those over the ring of $S$-integers of the cyclotomic field $\mathbb{Q}(\mu_N)$. The harmonic polylogarithms are the level-two ($N=2$) case (motives over $\mathbb{Z}[\tfrac12]$); the level-three and level-four (the Eisenstein and Gaussian) cases correspond to $\mathbb{Q}(\mu_3)$ and $\mathbb{Q}(\mu_4)=\mathbb{Q}(\iu)$, where the depth filtration acquires new single $L$-values---the Dirichlet $\beta$-values $\beta(w)=\Im\Li_w(\iu)$ at $N=4$ being the simplest---in exact analogy with how the odd zeta values generate the $N=1$ case. This cyclotomic ladder, anticipated numerically in the colored Euler-sum data of Borwein--Bradley--Broadhurst--Lisone\v{k} and Broadhurst--Kreimer, is the bridge from the present introduction to current research: the families catalogued here are the first few rungs of the periods of mixed Tate motives over cyclotomic fields.
+
+
+\section{Computing with them in Wolfram 15}
+
+Version~15.0 (June~2026) is the first release of the Wolfram Language to provide first-class symbols for every object in this article: multiple zeta values, multiple and harmonic polylogarithms, Goncharov's iterated integrals, and finite multiple harmonic sums. This closing section is a practical field guide. For each symbol we record its entry point, its argument convention, one evaluated example checked against the running kernel, and--just as important--the boundary between what the kernel reduces \emph{symbolically} and what it leaves \emph{inert} for numerical treatment. Throughout, code spans are kept short and outside inline mathematics; the displayed outputs are literal kernel returns.
+
+\subsection{The five symbols and their conventions}
+
+\paragraph{Multiple zeta values: \texttt{MultipleZeta}.} The single-list form \texttt{MultipleZeta[\{s1,\dots,sk\}]} is the admissible MZV $\zeta(s_1,\dots,s_k)$ in our convention, with $s_1\ge 2$ and weight $w=\sum_i s_i$. Depth-one collapses to ordinary zeta, and Euler's reductions fire automatically:
+\[
+  \texttt{MultipleZeta[\{2,1\}]}\;=\;\texttt{Zeta[3]},\qquad
+  \texttt{MultipleZeta[\{3,1\}]}\;=\;\tfrac{\pi^4}{360},
+\]
+the second being $\zeta(3,1)=\tfrac14\zeta(4)$. The convention is the strictly-nested one (largest index outermost), so $s_1$ is the slowest-decaying exponent and admissibility is read off the \emph{first} entry; a non-admissible call such as \texttt{MultipleZeta[\{1,2\}]} returns directed infinity rather than a finite number.
+
+\paragraph{Multiple polylogarithms: \texttt{MultiplePolyLog}.} The signature is \emph{exponents first, arguments second}:
+\[
+  \texttt{MultiplePolyLog[\{s1,\dots,sk\},\{z1,\dots,zk\}]}\;=\;\Li_{s_1,\dots,s_k}(z_1,\dots,z_k)
+  \;=\!\!\sum_{n_1>\dots>n_k\ge1}\prod_{i}\frac{z_i^{\,n_i}}{n_i^{\,s_i}}.
+\]
+The two lists must have equal length. The pin to our zeta convention is
+\[
+  \texttt{MultiplePolyLog[\{2,1,1\},\{1,1,1\}]}\;=\;\tfrac{\pi^4}{90}\;=\;\zeta(4)
+  \;=\;\texttt{MultipleZeta[\{2,1,1\}]},
+\]
+exactly Hoffman's sum theorem at weight~$4$. Off the all-ones point the kernel still finds closed forms when they exist; for instance
+\[
+  \texttt{MultiplePolyLog[\{2,1\},\{1/2,1\}]}\;=\;\tfrac18\zeta(3)-\tfrac16\log^3 2 .
+\]
+This is the function on which a reader will spend the most time, and the one most likely to stay inert (\S\ref{ssec:inert}).
+
+\paragraph{Goncharov iterated integrals: \texttt{GeneralizedPolyLog}.} This is the Chen iterated-integral presentation $G(a_1,\dots,a_k;x)$, written \texttt{GeneralizedPolyLog[\{a1,\dots,ak\},x]} with an optional final base-point argument (a single base point, or a list of them). The integrand letters $a_i$ are the singularities $1/(t-a_i)$, read in the iterated-integral order, so the dictionary to single polylogarithms reverses sign with each letter:
+\[
+  \texttt{GeneralizedPolyLog[\{0,1\},x]}\;=\;-\,\Li_2(x),\qquad
+  \texttt{GeneralizedPolyLog[\{1,0\},x]}\;=\;\Li_2(x)+\log(1-x)\log x .
+\]
+The optional base point fixes the lower limit of integration (the default is~$0$), which matters for the trailing-zero / shuffle-regularised cases.
+
+\paragraph{Harmonic polylogarithms: \texttt{HarmonicPolyLog}.} The Remiddi--Vermaseren (1999) HPLs are the $\{0,\pm1\}$ specialisation, \texttt{HarmonicPolyLog[\{a1,\dots,ak\},x]} with each $a_i\in\{0,1,-1\}$, iterated integrals over $dt/t$, $dt/(1-t)$, $dt/(1+t)$. Condensed (collapsed-index) lists are accepted. Low-weight values land on familiar constants and logarithms:
+\[
+  \texttt{HarmonicPolyLog[\{1\},x]}=-\log(1-x),\qquad
+  \texttt{HarmonicPolyLog[\{0,1\},x]}=\Li_2(x),
+\]
+while a sign letter mixes the two scales,
+\[
+  \texttt{HarmonicPolyLog[\{-1,1\},x]}=\tfrac{\pi^2}{12}-\tfrac12\log^2 2+\log 2\,\log(1-x)-\log(1-x)\log(1+x)-\Li_2\!\big(\tfrac{1-x}{2}\big).
+\]
+HPLs are the natural output basis for Fuchsian ODE solving: \texttt{DSolve} and \texttt{AsymptoticDSolveValue} now return them for rational-coefficient systems, the Feynman-integral / hypergeometric-parameter regime.
+
+\paragraph{Finite multiple harmonic sums: \texttt{MultipleHarmonicNumber}.} These are the truncations $H_n(s_1,\dots,s_k)=\sum_{n\ge n_1>\dots>n_k\ge1}\prod_i n_i^{-s_i}$, the finite shadows whose $n\to\infty$ limits are the MZVs. The bare form \texttt{MultipleHarmonicNumber[n]} is the ordinary $H_n$; an index list specifies the exponents, and an optional third list carries \emph{decoration weights} (signs/roots of unity) for alternating sums:
+\[
+  \texttt{MultipleHarmonicNumber[5]}=\tfrac{137}{60},\quad
+  \texttt{MultipleHarmonicNumber[5,\{2,1\}]}=\tfrac{59}{96},\quad
+  \texttt{MultipleHarmonicNumber[5,\{2,1\},\{1,-1\}]}=-\tfrac{2743}{7200}.
+\]
+These are exact rationals, useful as a finite-$n$ check on any conjectured MZV identity before committing to a limit.
+
+\paragraph{Nielsen polylogarithms.} There is no separate Nielsen head: the Nielsen generalised polylogarithm $S_{n,p}(z)$ is \texttt{PolyLog[n,p,z]}, the three-argument form of the ordinary \texttt{PolyLog}. Thus \texttt{PolyLog[n,1,z]} is the classical $\Li_{n+1}(z)$ (so \texttt{PolyLog[2,1,x]} returns \texttt{PolyLog[3,x]}), and the genuinely new content lives at $p\ge2$, where \texttt{PolyLog[2,2,x]} is the inert $S_{2,2}(x)$ studied by Nielsen (1909) and K\"olbig (1986).
+
+\subsection{What reduces symbolically}
+
+The kernel knows the classical reduction tables. Every weight-$\le 7$ MZV that is a polynomial in single zetas is returned in that form without prompting: alongside $\zeta(2,1)=\zeta(3)$ and $\zeta(3,1)=\tfrac14\zeta(4)$ one has the Euler value
+\[
+  \texttt{MultipleZeta[\{4,1\}]}\;=\;2\,\zeta(5)-\tfrac{\pi^2}{6}\,\zeta(3),
+\]
+and depth drops automatically wherever the data-mine tables permit. \texttt{FullSimplify} closes the remaining easy cases: \texttt{FullSimplify[MultiplePolyLog[\{2,1\},\{1,1\}]]} returns \texttt{Zeta[3]}. For the polylogarithms proper, \texttt{FunctionExpand} and \texttt{FullSimplify} are the levers that rewrite a multiple polylog into Nielsen or harmonic-polylog form: \texttt{FunctionExpand} turns \texttt{PolyLog[1,2,x]} into a closed expression in $\Li_2,\Li_3$ and logarithms, and rewrites the depth-one \texttt{MultiplePolyLog[\{3\},\{x\}]} back to \texttt{PolyLog[3,x]}. The practical workflow is: try \texttt{FullSimplify} first for a numerical-constant target, \texttt{FunctionExpand} when you want the answer re-expressed in a chosen lower-level basis.
+
+\subsection{What stays inert}\label{ssec:inert}
+
+Anything not covered by a stored reduction is returned unevaluated, and you should expect this to be the common case at weight~$\ge 6$ and depth~$\ge 2$ away from special points. The objects \texttt{MultiplePolyLog[\{2,1\},\{x,1\}]}, \texttt{PolyLog[2,2,x]}, and the irreducible MZV pieces (e.g.\ \texttt{MultipleZeta[\{5,3\}]}, which surfaces inside the reduction of $\zeta(6,2)$) all persist as heads. Treat these numerically: \texttt{N} accepts a precision request and delivers it,
+\[
+  \texttt{N[MultiplePolyLog[\{2,1\},\{1/2,1\}],20]}\;=\;0.094753004230127705722,
+\]
+which is the high-precision input an integer-relation search (\texttt{PSLQ}/\texttt{FindIntegerNullVector}) consumes.
+
+\begin{remark}[Two caveats worth stating out loud]
+\emph{(i) Divergent and transposed calls self-flag.} A non-admissible or mis-transposed \texttt{MultiplePolyLog} does not silently return a finite, wrongly-ordered value: it evaluates to infinity. Thus both \texttt{MultiplePolyLog[\{1,2\},\{1,1\}]} (a divergent index pattern) and \texttt{MultiplePolyLog[\{2,1\},\{1,2\}]} (an argument outside the unit disk) return \texttt{Infinity} (the directed infinity \texttt{DirectedInfinity[1]}) rather than a plausible-looking finite number. The infinity in the output is therefore a feature: it tells you the call, not the value, was malformed---check your index/argument transposition before reading further.
+
+\emph{(ii) A returned symbolic form bounds the depth from above.} When the kernel hands back, say, a weight-$8$ MZV written with a single \texttt{MultipleZeta[\{5,3\}]} term plus products of single zetas, that expression certifies an \emph{upper} bound on the depth/length of the answer, not a proof that no shorter form exists. The stored tables are not a completeness oracle. To settle genuine irreducibility---is this value really a new depth-$2$ constant, or a yet-unrecognised product of lower-weight pieces?---you must run an integer-relation search at high precision against the candidate basis and trust a relation only after the usual safeguards (a canary test against a deliberately false target). The kernel's symbolic form is the starting hypothesis for that search, not its conclusion.
+\end{remark}
+
+\subsection{References}
+
+For orientation in the literature behind these symbols: Lewin (1981) for the classical $\Li_s$ and Nielsen functions; Zagier (1994) for the founding MZV survey and the dimension conjecture; Hoffman and Ohno for the algebraic (shuffle/stuffle) and sum-theorem structure; Goncharov for the iterated-integral viewpoint behind \texttt{GeneralizedPolyLog}; Remiddi--Vermaseren (1999) for the harmonic polylogarithms; Nielsen (1909) and K\"olbig (1986) for $S_{n,p}$; Borwein--Bradley--Broadhurst for the experimental-mathematics reductions; and the Bl\"umlein--Broadhurst--Vermaseren data mine for the machine-checked tables that the kernel's symbolic reductions ultimately rest on.
+
+
+\end{document}

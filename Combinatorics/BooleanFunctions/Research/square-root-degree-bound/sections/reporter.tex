@@ -1,0 +1,163 @@
+\section{Exact finite reporters}
+\label{sec:reporter}
+
+We first state the cancellation mechanism from
+\cite[Sections 1--2]{OpenAI2026}, and then derive a closed finite-law
+formula that will be used for the explicit witness.
+
+\subsection{The reporting rule}
+
+Let \(U,Z_1,\ldots,Z_m\) be independent copies of a centered random
+variable with finite support \(\mathcal S\) and variance \(\sigma^2\).
+Choose leaf tests \(I_i\subseteq\mathcal S\) and a deterministic selector
+\(\iota:\mathcal S\to[m]\). Define
+\[
+ B=\{Z_j\in I_j\ \hbox{for all }j\},\qquad
+ P=\{Z_j\in I_j\ \hbox{for all }j\ne\iota(U)\},\qquad
+ A=P\setminus B.
+\]
+The report \(\mathcal W\) is the following tagged observation.
+\begin{center}
+\begin{tabular}{@{}ll@{}}
+\toprule
+Event & Reported information\\
+\midrule
+\(A\) & The single tag \(A\)\\
+\(B\) & The tag \(B\) and all \(m\) leaf values\\
+\(P^c\) & The ordinary tag, \(U\), \(\iota(U)\), and all unselected leaves\\
+\bottomrule
+\end{tabular}
+\end{center}
+Put \(L=U+\sum_j Z_j\). The exceptional indicator satisfies the
+pointwise identity
+\begin{equation}\label{eq:reporter-cancellation}
+ \1_A=
+ \sum_{i=1}^m\1_{\{\iota(U)=i\}}
+       \prod_{j\ne i}\1_{\{Z_j\in I_j\}}
+ -\prod_{j=1}^m\1_{\{Z_j\in I_j\}}.
+\end{equation}
+Each summand involves at most \(m\) of the \(m+1\) inputs.
+
+\begin{proposition}[Degree cost and exact exceptional gain]
+\label{prop:reporter}
+Suppose each scalar input is a function of an independent cube
+observation of cell degree at most \(d\). Then every cell of
+\(\mathcal W\) has degree at most \(md\). If \(\Pbb(A)>0\), then
+\begin{equation}\label{eq:optimal-exceptional}
+ \Var(\E[L\mid\mathcal W])
+ =m\sigma^2+\Pbb(A)\bigl(\sigma^2-\Var(L\mid A)\bigr).
+\end{equation}
+For any prescribed exceptional predictor \(b\),
+\begin{equation}\label{eq:reporter-predictor}
+ \Var(\E[L\mid\mathcal W])
+ \ge m\sigma^2+
+ \E\bigl[\1_A\{\sigma^2-(L-b)^2\}\bigr].
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Equation~\eqref{eq:reporter-cancellation} and
+Lemma~\ref{lem:observation-calculus} handle the exceptional cell.
+A \(B\)-cell fixes all leaves and ignores \(U\). An ordinary cell fixes
+\(U\) and the unselected leaves, at least one of which fails its test.
+Those fixed values already force \(P^c\), so the selected leaf remains
+unrestricted. These indicators involve at most \(m\) inputs.
+
+On each nonexceptional cell, precisely one independent input with its
+original law is unreported. Thus the conditional variance of \(L\) is
+\(\sigma^2\) there. On \(A\) it is \(\Var(L\mid A)\).
+Subtracting the averaged residual variance from
+\(\Var L=(m+1)\sigma^2\) gives
+\eqref{eq:optimal-exceptional}. Replacing the optimal mean on \(A\)
+by \(b\) only increases the mean squared error and proves the last
+inequality.
+\end{proof}
+
+The same predictor calculation holds for real input laws, with finite
+interval tests and a measurable selector. Only the assertion about
+finite cell indicators needs the finite-alphabet restriction. This
+distinction will be used for the Gaussian model.
+
+\subsection{An exact formula for singleton tests}
+
+Write \(p(t)=\Pbb(U=t)\). Suppose \(I_i=\{a_i\}\), with
+\(p(a_i)>0\), and set
+\begin{align}
+ Q&=\prod_{i=1}^m p(a_i),&
+ a_\Sigma&=\sum_{i=1}^m a_i,&
+ w_t&=\frac{p(t)}{p(a_{\iota(t)})},\notag\\
+ W&=\sum_{t\in\mathcal S}w_t,&
+ K_0&=W-1,&
+ R_1&=\sum_{t\in\mathcal S}w_t(t-a_{\iota(t)}),\notag\\
+ H_2&=\sum_{t\in\mathcal S}w_t(t-a_{\iota(t)})^2.&&&
+ \label{eq:singleton-parameters}
+\end{align}
+The notation \(K_0\) is local to this finite formula; it is not the
+fourth-moment bound used later.
+
+\begin{theorem}[Finite selector formula and score law]
+\label{thm:finite-selector}
+Assume \(K_0>0\). The exceptional report has probability \(QK_0\) and
+conditional mean
+\[
+ b_*=\E[L\mid A]=a_\Sigma+\frac{R_1}{K_0}.
+\]
+For \(T=\E[L\mid\mathcal W]\),
+\begin{equation}\label{eq:finite-retention}
+ \E T^2=m\sigma^2+
+ Q\left(\frac{R_1^2}{K_0}-H_2\right).
+\end{equation}
+In particular, the report has positive variance advantage if and only
+if \(R_1^2>K_0H_2\). More strongly,
+\begin{equation}\label{eq:finite-score-law}
+ \Law(T)=\Law(U_1+\cdots+U_m)
+ -Q\sum_{t\in\mathcal S}w_t\delta_{a_\Sigma+t-a_{\iota(t)}}
+ +Q\delta_{a_\Sigma}+QK_0\delta_{b_*}.
+\end{equation}
+The right side is an identity of signed measures whose total is the
+probability law on the left.
+\end{theorem}
+
+\begin{proof}
+Given \(U=t\), event \(P\) has probability
+\(Q/p(a_{\iota(t)})\). Thus
+\[
+ \Pbb(P)=QW,\quad \Pbb(B)=Q,\quad \Pbb(A)=QK_0.
+\]
+On \(P\), the unselected leaf sum equals
+\(a_\Sigma-a_{\iota(t)}\), and the selected input is unrestricted.
+Therefore
+\[
+ \E[L\1_P]=Q\sum_t w_t(a_\Sigma+t-a_{\iota(t)}).
+\]
+On \(B\), all leaves are fixed while \(U\) is centered, so
+\(\E[L\1_B]=Qa_\Sigma\). Subtraction and division by \(QK_0\)
+give \(b_*\).
+
+Define the baseline random variable
+\[
+ T_0=U+\sum_{j\ne\iota(U)} Z_j.
+\]
+Conditionally on \(U=t\), the remaining sum always has the law of
+\(m-1\) independent inputs. It follows that
+\(\Law(T_0)=\Law(U_1+\cdots+U_m)\), despite the
+dependence of the omitted index on \(U\).
+The true score agrees with \(T_0\) on \(P^c\).
+The restriction of the law of \(T_0\) to \(P\) is
+\[
+ Q\sum_t w_t\delta_{a_\Sigma+t-a_{\iota(t)}}.
+\]
+On \(B\) the true score is \(a_\Sigma\), and on \(A\) it is \(b_*\).
+Replacing these restrictions gives \eqref{eq:finite-score-law}.
+
+The first moment of the correction is zero. For the second moment,
+the terms involving \(a_\Sigma^2\) cancel because
+\(-W+1+K_0=0\); the linear terms cancel because
+\(K_0(b_*-a_\Sigma)=R_1\). The remaining correction is precisely
+\(Q(R_1^2/K_0-H_2)\), proving \eqref{eq:finite-retention}.
+\end{proof}
+
+This formula turns a probabilistic design problem into a finite
+rational inequality. It also provides the entire score distribution,
+so higher moments and readout behavior can be checked without
+enumerating every bit string.

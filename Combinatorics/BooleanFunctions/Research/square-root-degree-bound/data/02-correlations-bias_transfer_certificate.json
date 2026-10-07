@@ -1,0 +1,966 @@
+{
+  "arithmetic": "exact rational; Python standard library",
+  "scope": "finite regression examples, not a proof of the universal theorem",
+  "examples": [
+    {
+      "name": "oriented_majority",
+      "target_biases": [
+        "1/5",
+        "4/5",
+        "1/2"
+      ],
+      "source_block_biases": [
+        "1/2",
+        "1/5",
+        "4/5"
+      ],
+      "block_size": 4,
+      "source_bits": 12,
+      "source_assignments_per_gadget_choice": 4096,
+      "gadget_choice_count": 8,
+      "outer_degree": 3,
+      "target_derivatives": [
+        "1/2",
+        "-1/2",
+        "8/25"
+      ],
+      "target_normalized_singletons": [
+        "2/5",
+        "-2/5",
+        "8/25"
+      ],
+      "target_L1": "28/25",
+      "gadget_pairs": [
+        {
+          "source_p": "1/2",
+          "target_q": "1/5",
+          "orientation": 1,
+          "weights": [
+            "4/5",
+            "1/5"
+          ],
+          "mean": "-3/5",
+          "average_A": "21/20",
+          "mean_A_covariance": "1/200",
+          "boundary_weight": 2,
+          "atom_gap": "1/16",
+          "gadgets": [
+            {
+              "probability": "3/16",
+              "mean": "-5/8",
+              "singletons": [
+                "1/8",
+                "1/8",
+                "3/8",
+                "3/8"
+              ],
+              "A": "1",
+              "degree": 4,
+              "prefix_size": 3
+            },
+            {
+              "probability": "1/4",
+              "mean": "-1/2",
+              "singletons": [
+                "1/4",
+                "1/4",
+                "1/4",
+                "1/2"
+              ],
+              "A": "5/4",
+              "degree": 4,
+              "prefix_size": 4
+            }
+          ]
+        },
+        {
+          "source_p": "1/5",
+          "target_q": "4/5",
+          "orientation": -1,
+          "weights": [
+            "3/16",
+            "13/16"
+          ],
+          "mean": "3/5",
+          "average_A": "-156/125",
+          "mean_A_covariance": "1248/390625",
+          "boundary_weight": -2,
+          "atom_gap": "64/625",
+          "gadgets": [
+            {
+              "probability": "448/625",
+              "mean": "271/625",
+              "singletons": [
+                "-448/625",
+                "-128/625",
+                "-128/625",
+                "-128/625"
+              ],
+              "A": "-832/625",
+              "degree": 4,
+              "prefix_size": 4
+            },
+            {
+              "probability": "512/625",
+              "mean": "399/625",
+              "singletons": [
+                "-192/625",
+                "-192/625",
+                "-192/625",
+                "-192/625"
+              ],
+              "A": "-768/625",
+              "degree": 4,
+              "prefix_size": 5
+            }
+          ]
+        },
+        {
+          "source_p": "4/5",
+          "target_q": "1/2",
+          "orientation": 1,
+          "weights": [
+            "15/128",
+            "113/128"
+          ],
+          "mean": "0",
+          "average_A": "387/250",
+          "mean_A_covariance": "-339/156250",
+          "boundary_weight": 2,
+          "atom_gap": "64/625",
+          "gadgets": [
+            {
+              "probability": "256/625",
+              "mean": "-113/625",
+              "singletons": [
+                "256/625",
+                "256/625",
+                "256/625",
+                "256/625"
+              ],
+              "A": "1024/625",
+              "degree": 4,
+              "prefix_size": 1
+            },
+            {
+              "probability": "64/125",
+              "mean": "3/125",
+              "singletons": [
+                "0",
+                "64/125",
+                "64/125",
+                "64/125"
+              ],
+              "A": "192/125",
+              "degree": 3,
+              "prefix_size": 2
+            }
+          ]
+        }
+      ],
+      "all_choices": [
+        {
+          "choices": [
+            0,
+            0,
+            0
+          ],
+          "weight": "9/512",
+          "direct_signed_singleton_sum": "643901/390625",
+          "direct_singletons": [
+            "180001/3125000",
+            "180001/3125000",
+            "540003/3125000",
+            "540003/3125000",
+            "24836/78125",
+            "7096/78125",
+            "7096/78125",
+            "7096/78125",
+            "11664/78125",
+            "11664/78125",
+            "11664/78125",
+            "11664/78125"
+          ],
+          "degree": 12,
+          "mean": "-372001/625000",
+          "block_means": [
+            "-5/8",
+            "271/625",
+            "-113/625"
+          ],
+          "block_singleton_sums": [
+            "1",
+            "-832/625",
+            "1024/625"
+          ]
+        },
+        {
+          "choices": [
+            0,
+            0,
+            1
+          ],
+          "weight": "339/2560",
+          "direct_signed_singleton_sum": "135989/78125",
+          "direct_singletons": [
+            "39469/625000",
+            "39469/625000",
+            "118407/625000",
+            "118407/625000",
+            "5684/15625",
+            "1624/15625",
+            "1624/15625",
+            "1624/15625",
+            "0",
+            "2916/15625",
+            "2916/15625",
+            "2916/15625"
+          ],
+          "degree": 11,
+          "mean": "-65069/125000",
+          "block_means": [
+            "-5/8",
+            "271/625",
+            "3/125"
+          ],
+          "block_singleton_sums": [
+            "1",
+            "-832/625",
+            "192/125"
+          ]
+        },
+        {
+          "choices": [
+            0,
+            1,
+            0
+          ],
+          "weight": "39/512",
+          "direct_signed_singleton_sum": "577969/390625",
+          "direct_singletons": [
+            "172769/3125000",
+            "172769/3125000",
+            "518307/3125000",
+            "518307/3125000",
+            "10644/78125",
+            "10644/78125",
+            "10644/78125",
+            "10644/78125",
+            "9616/78125",
+            "9616/78125",
+            "9616/78125",
+            "9616/78125"
+          ],
+          "degree": 12,
+          "mean": "-428769/625000",
+          "block_means": [
+            "-5/8",
+            "399/625",
+            "-113/625"
+          ],
+          "block_singleton_sums": [
+            "1",
+            "-768/625",
+            "1024/625"
+          ]
+        },
+        {
+          "choices": [
+            0,
+            1,
+            1
+          ],
+          "weight": "1469/2560",
+          "direct_signed_singleton_sum": "124441/78125",
+          "direct_singletons": [
+            "39661/625000",
+            "39661/625000",
+            "118983/625000",
+            "118983/625000",
+            "2436/15625",
+            "2436/15625",
+            "2436/15625",
+            "2436/15625",
+            "0",
+            "2404/15625",
+            "2404/15625",
+            "2404/15625"
+          ],
+          "degree": 11,
+          "mean": "-78061/125000",
+          "block_means": [
+            "-5/8",
+            "399/625",
+            "3/125"
+          ],
+          "block_singleton_sums": [
+            "1",
+            "-768/625",
+            "192/125"
+          ]
+        },
+        {
+          "choices": [
+            1,
+            0,
+            0
+          ],
+          "weight": "9/2048",
+          "direct_signed_singleton_sum": "569697/312500",
+          "direct_singletons": [
+            "180001/1562500",
+            "180001/1562500",
+            "180001/1562500",
+            "180001/781250",
+            "127344/390625",
+            "36384/390625",
+            "36384/390625",
+            "36384/390625",
+            "62656/390625",
+            "62656/390625",
+            "62656/390625",
+            "62656/390625"
+          ],
+          "degree": 12,
+          "mean": "-420001/781250",
+          "block_means": [
+            "-1/2",
+            "271/625",
+            "-113/625"
+          ],
+          "block_singleton_sums": [
+            "5/4",
+            "-832/625",
+            "1024/625"
+          ]
+        },
+        {
+          "choices": [
+            1,
+            0,
+            1
+          ],
+          "weight": "339/10240",
+          "direct_signed_singleton_sum": "595809/312500",
+          "direct_singletons": [
+            "39469/312500",
+            "39469/312500",
+            "39469/312500",
+            "39469/156250",
+            "28336/78125",
+            "8096/78125",
+            "8096/78125",
+            "8096/78125",
+            "0",
+            "15664/78125",
+            "15664/78125",
+            "15664/78125"
+          ],
+          "degree": 11,
+          "mean": "-71469/156250",
+          "block_means": [
+            "-1/2",
+            "271/625",
+            "3/125"
+          ],
+          "block_singleton_sums": [
+            "5/4",
+            "-832/625",
+            "192/125"
+          ]
+        },
+        {
+          "choices": [
+            1,
+            1,
+            0
+          ],
+          "weight": "39/2048",
+          "direct_signed_singleton_sum": "521697/312500",
+          "direct_singletons": [
+            "172769/1562500",
+            "172769/1562500",
+            "172769/1562500",
+            "172769/781250",
+            "54576/390625",
+            "54576/390625",
+            "54576/390625",
+            "54576/390625",
+            "54464/390625",
+            "54464/390625",
+            "54464/390625",
+            "54464/390625"
+          ],
+          "degree": 12,
+          "mean": "-492769/781250",
+          "block_means": [
+            "-1/2",
+            "399/625",
+            "-113/625"
+          ],
+          "block_singleton_sums": [
+            "5/4",
+            "-768/625",
+            "1024/625"
+          ]
+        },
+        {
+          "choices": [
+            1,
+            1,
+            1
+          ],
+          "weight": "1469/10240",
+          "direct_signed_singleton_sum": "556001/312500",
+          "direct_singletons": [
+            "39661/312500",
+            "39661/312500",
+            "39661/312500",
+            "39661/156250",
+            "12144/78125",
+            "12144/78125",
+            "12144/78125",
+            "12144/78125",
+            "0",
+            "13616/78125",
+            "13616/78125",
+            "13616/78125"
+          ],
+          "degree": 11,
+          "mean": "-87661/156250",
+          "block_means": [
+            "-1/2",
+            "399/625",
+            "3/125"
+          ],
+          "block_singleton_sums": [
+            "5/4",
+            "-768/625",
+            "192/125"
+          ]
+        }
+      ],
+      "average_signed_singleton_sum": "41109/25000",
+      "formula_average_signed_singleton_sum": "41109/25000",
+      "actual_gadget_floor": "5/4",
+      "actual_gadget_floor_times_target_L1": "7/5",
+      "greedy_steps": [
+        {
+          "step": 1,
+          "branch_values": [
+            "6431/4000",
+            "4477/2500"
+          ],
+          "selected": 1,
+          "conditional_expectation": "4477/2500"
+        },
+        {
+          "step": 2,
+          "branch_values": [
+            "592749/312500",
+            "551981/312500"
+          ],
+          "selected": 0,
+          "conditional_expectation": "592749/312500"
+        },
+        {
+          "step": 3,
+          "branch_values": [
+            "569697/312500",
+            "595809/312500"
+          ],
+          "selected": 1,
+          "conditional_expectation": "595809/312500"
+        }
+      ],
+      "greedy_choices": [
+        1,
+        0,
+        1
+      ],
+      "greedy_signed_singleton_sum": "595809/312500",
+      "greedy_at_least_average": true,
+      "all_chain_and_conditional_expectation_checks_passed": true
+    },
+    {
+      "name": "conditional_selector",
+      "target_biases": [
+        "1/5",
+        "4/5",
+        "1/2"
+      ],
+      "source_block_biases": [
+        "1/2",
+        "1/5",
+        "4/5"
+      ],
+      "block_size": 4,
+      "source_bits": 12,
+      "source_assignments_per_gadget_choice": 4096,
+      "gadget_choice_count": 8,
+      "outer_degree": 2,
+      "target_derivatives": [
+        "1/2",
+        "-1/2",
+        "0"
+      ],
+      "target_normalized_singletons": [
+        "2/5",
+        "-2/5",
+        "0"
+      ],
+      "target_L1": "4/5",
+      "gadget_pairs": [
+        {
+          "source_p": "1/2",
+          "target_q": "1/5",
+          "orientation": 1,
+          "weights": [
+            "4/5",
+            "1/5"
+          ],
+          "mean": "-3/5",
+          "average_A": "21/20",
+          "mean_A_covariance": "1/200",
+          "boundary_weight": 2,
+          "atom_gap": "1/16",
+          "gadgets": [
+            {
+              "probability": "3/16",
+              "mean": "-5/8",
+              "singletons": [
+                "1/8",
+                "1/8",
+                "3/8",
+                "3/8"
+              ],
+              "A": "1",
+              "degree": 4,
+              "prefix_size": 3
+            },
+            {
+              "probability": "1/4",
+              "mean": "-1/2",
+              "singletons": [
+                "1/4",
+                "1/4",
+                "1/4",
+                "1/2"
+              ],
+              "A": "5/4",
+              "degree": 4,
+              "prefix_size": 4
+            }
+          ]
+        },
+        {
+          "source_p": "1/5",
+          "target_q": "4/5",
+          "orientation": -1,
+          "weights": [
+            "3/16",
+            "13/16"
+          ],
+          "mean": "3/5",
+          "average_A": "-156/125",
+          "mean_A_covariance": "1248/390625",
+          "boundary_weight": -2,
+          "atom_gap": "64/625",
+          "gadgets": [
+            {
+              "probability": "448/625",
+              "mean": "271/625",
+              "singletons": [
+                "-448/625",
+                "-128/625",
+                "-128/625",
+                "-128/625"
+              ],
+              "A": "-832/625",
+              "degree": 4,
+              "prefix_size": 4
+            },
+            {
+              "probability": "512/625",
+              "mean": "399/625",
+              "singletons": [
+                "-192/625",
+                "-192/625",
+                "-192/625",
+                "-192/625"
+              ],
+              "A": "-768/625",
+              "degree": 4,
+              "prefix_size": 5
+            }
+          ]
+        },
+        {
+          "source_p": "4/5",
+          "target_q": "1/2",
+          "orientation": 1,
+          "weights": [
+            "15/128",
+            "113/128"
+          ],
+          "mean": "0",
+          "average_A": "387/250",
+          "mean_A_covariance": "-339/156250",
+          "boundary_weight": 2,
+          "atom_gap": "64/625",
+          "gadgets": [
+            {
+              "probability": "256/625",
+              "mean": "-113/625",
+              "singletons": [
+                "256/625",
+                "256/625",
+                "256/625",
+                "256/625"
+              ],
+              "A": "1024/625",
+              "degree": 4,
+              "prefix_size": 1
+            },
+            {
+              "probability": "64/125",
+              "mean": "3/125",
+              "singletons": [
+                "0",
+                "64/125",
+                "64/125",
+                "64/125"
+              ],
+              "A": "192/125",
+              "degree": 3,
+              "prefix_size": 2
+            }
+          ]
+        }
+      ],
+      "all_choices": [
+        {
+          "choices": [
+            0,
+            0,
+            0
+          ],
+          "weight": "9/512",
+          "direct_signed_singleton_sum": "81152/78125",
+          "direct_singletons": [
+            "32/625",
+            "32/625",
+            "96/625",
+            "96/625",
+            "165312/390625",
+            "47232/390625",
+            "47232/390625",
+            "47232/390625",
+            "-15312/390625",
+            "-15312/390625",
+            "-15312/390625",
+            "-15312/390625"
+          ],
+          "degree": 8,
+          "mean": "-199999/390625",
+          "block_means": [
+            "-5/8",
+            "271/625",
+            "-113/625"
+          ],
+          "block_singleton_sums": [
+            "1",
+            "-832/625",
+            "1024/625"
+          ]
+        },
+        {
+          "choices": [
+            0,
+            0,
+            1
+          ],
+          "weight": "339/2560",
+          "direct_signed_singleton_sum": "79268/78125",
+          "direct_singletons": [
+            "8/125",
+            "8/125",
+            "24/125",
+            "24/125",
+            "27328/78125",
+            "7808/78125",
+            "7808/78125",
+            "7808/78125",
+            "0",
+            "-3828/78125",
+            "-3828/78125",
+            "-3828/78125"
+          ],
+          "degree": 7,
+          "mean": "-41531/78125",
+          "block_means": [
+            "-5/8",
+            "271/625",
+            "3/125"
+          ],
+          "block_singleton_sums": [
+            "1",
+            "-832/625",
+            "192/125"
+          ]
+        },
+        {
+          "choices": [
+            0,
+            1,
+            0
+          ],
+          "weight": "39/512",
+          "direct_signed_singleton_sum": "89536/78125",
+          "direct_singletons": [
+            "32/625",
+            "32/625",
+            "96/625",
+            "96/625",
+            "70848/390625",
+            "70848/390625",
+            "70848/390625",
+            "70848/390625",
+            "1072/390625",
+            "1072/390625",
+            "1072/390625",
+            "1072/390625"
+          ],
+          "degree": 8,
+          "mean": "-247231/390625",
+          "block_means": [
+            "-5/8",
+            "399/625",
+            "-113/625"
+          ],
+          "block_singleton_sums": [
+            "1",
+            "-768/625",
+            "1024/625"
+          ]
+        },
+        {
+          "choices": [
+            0,
+            1,
+            1
+          ],
+          "weight": "1469/2560",
+          "direct_signed_singleton_sum": "87652/78125",
+          "direct_singletons": [
+            "8/125",
+            "8/125",
+            "24/125",
+            "24/125",
+            "11712/78125",
+            "11712/78125",
+            "11712/78125",
+            "11712/78125",
+            "0",
+            "268/78125",
+            "268/78125",
+            "268/78125"
+          ],
+          "degree": 7,
+          "mean": "-49339/78125",
+          "block_means": [
+            "-5/8",
+            "399/625",
+            "3/125"
+          ],
+          "block_singleton_sums": [
+            "1",
+            "-768/625",
+            "192/125"
+          ]
+        },
+        {
+          "choices": [
+            1,
+            0,
+            0
+          ],
+          "weight": "9/2048",
+          "direct_signed_singleton_sum": "97152/78125",
+          "direct_singletons": [
+            "64/625",
+            "64/625",
+            "64/625",
+            "128/625",
+            "165312/390625",
+            "47232/390625",
+            "47232/390625",
+            "47232/390625",
+            "-5312/390625",
+            "-5312/390625",
+            "-5312/390625",
+            "-5312/390625"
+          ],
+          "degree": 8,
+          "mean": "-179999/390625",
+          "block_means": [
+            "-1/2",
+            "271/625",
+            "-113/625"
+          ],
+          "block_singleton_sums": [
+            "5/4",
+            "-832/625",
+            "1024/625"
+          ]
+        },
+        {
+          "choices": [
+            1,
+            0,
+            1
+          ],
+          "weight": "339/10240",
+          "direct_signed_singleton_sum": "96768/78125",
+          "direct_singletons": [
+            "16/125",
+            "16/125",
+            "16/125",
+            "32/125",
+            "27328/78125",
+            "7808/78125",
+            "7808/78125",
+            "7808/78125",
+            "0",
+            "-1328/78125",
+            "-1328/78125",
+            "-1328/78125"
+          ],
+          "degree": 7,
+          "mean": "-36531/78125",
+          "block_means": [
+            "-1/2",
+            "271/625",
+            "3/125"
+          ],
+          "block_singleton_sums": [
+            "5/4",
+            "-832/625",
+            "192/125"
+          ]
+        },
+        {
+          "choices": [
+            1,
+            1,
+            0
+          ],
+          "weight": "39/2048",
+          "direct_signed_singleton_sum": "105536/78125",
+          "direct_singletons": [
+            "64/625",
+            "64/625",
+            "64/625",
+            "128/625",
+            "70848/390625",
+            "70848/390625",
+            "70848/390625",
+            "70848/390625",
+            "11072/390625",
+            "11072/390625",
+            "11072/390625",
+            "11072/390625"
+          ],
+          "degree": 8,
+          "mean": "-227231/390625",
+          "block_means": [
+            "-1/2",
+            "399/625",
+            "-113/625"
+          ],
+          "block_singleton_sums": [
+            "5/4",
+            "-768/625",
+            "1024/625"
+          ]
+        },
+        {
+          "choices": [
+            1,
+            1,
+            1
+          ],
+          "weight": "1469/10240",
+          "direct_signed_singleton_sum": "105152/78125",
+          "direct_singletons": [
+            "16/125",
+            "16/125",
+            "16/125",
+            "32/125",
+            "11712/78125",
+            "11712/78125",
+            "11712/78125",
+            "11712/78125",
+            "0",
+            "2768/78125",
+            "2768/78125",
+            "2768/78125"
+          ],
+          "degree": 7,
+          "mean": "-44339/78125",
+          "block_means": [
+            "-1/2",
+            "399/625",
+            "3/125"
+          ],
+          "block_singleton_sums": [
+            "5/4",
+            "-768/625",
+            "192/125"
+          ]
+        }
+      ],
+      "average_signed_singleton_sum": "1149/1000",
+      "formula_average_signed_singleton_sum": "1149/1000",
+      "actual_gadget_floor": "5/4",
+      "actual_gadget_floor_times_target_L1": "1",
+      "greedy_steps": [
+        {
+          "step": 1,
+          "branch_values": [
+            "22093/20000",
+            "829/625"
+          ],
+          "selected": 1,
+          "conditional_expectation": "829/625"
+        },
+        {
+          "step": 2,
+          "branch_values": [
+            "96813/78125",
+            "105197/78125"
+          ],
+          "selected": 1,
+          "conditional_expectation": "105197/78125"
+        },
+        {
+          "step": 3,
+          "branch_values": [
+            "105536/78125",
+            "105152/78125"
+          ],
+          "selected": 0,
+          "conditional_expectation": "105536/78125"
+        }
+      ],
+      "greedy_choices": [
+        1,
+        1,
+        0
+      ],
+      "greedy_signed_singleton_sum": "105536/78125",
+      "greedy_at_least_average": true,
+      "all_chain_and_conditional_expectation_checks_passed": true
+    }
+  ]
+}

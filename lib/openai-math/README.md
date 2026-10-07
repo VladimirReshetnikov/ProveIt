@@ -12,14 +12,17 @@ Mathlib `v4.32.0` workspace.
 - License: Apache License 2.0 ([`LICENSE`](LICENSE)), the upstream license of
   the `lean/` directory. It governs everything in this directory instead of
   the repository's MIT-0 license.
+- Provenance and copyright: [`LICENSE.provenance`](LICENSE.provenance)
+  records the pinned source, upstream copyright-notice status, and local
+  modifications. The upstream Apache license text is preserved unchanged.
 - Lake library: `OAI` in the root `lakefile.toml`, with source root
   `lib/openai-math/lean` and module names unchanged from upstream
   (`OAI.Combinatorics.Progressions.*`). The declarations keep their upstream
   namespaces (`OAI.Erdos3.*`).
 
-## Why this subset
+## Verified subset and quantitative backport
 
-The 137 modules are two import closures (128 upstream modules), one extract
+The previously verified 137 modules are two import closures (128 upstream modules), one extract
 and eight backport modules. The first closure (90 upstream modules) supplies
 the upstream results used
 to prove Freiman's theorem and the Balog–Szemerédi theorem, Theorems 7.1 and
@@ -43,8 +46,33 @@ The second closure (38 upstream modules, `FixedDensity/`) supplies
 Theorem 1.2 of the catalogue is derived in
 `GowersSzemeredi/Proofs01SzemerediFixedDensity.lean`.
 
-Nothing else from upstream is vendored. In particular, the upstream headline
-theorem (the quantitative density bound) is **not** part of this subset.
+The pinned quantitative closure rooted at
+`OAI.Combinatorics.Progressions.Results.Conclusions` is now also vendored:
+4,136 upstream modules, including the 128 already present, so this adds
+4,008 modules. **This quantitative backport is in progress and is not yet
+verified.** The Gowers facade does not import the quantitative conclusion.
+[`quantitative-port-manifest.json`](quantitative-port-manifest.json) records
+the upstream source hashes, import closure, and initial compatibility imports.
+
+The first 200 manifest entries have compiled (209 modules including their
+compatibility dependencies). The incremental `OAI.QuantitativePortAudit`
+imports this batch and the added compatibility modules. Its axiom scan
+checks 4,389 public OAI theorems and reports only `propext`,
+`Classical.choice`, and `Quot.sound`; the separately listed compatibility declarations
+also pass. This checkpoint does not certify `Results.Conclusions`.
+
+The quantitative statement has existential positive constants `C`, `c`, and
+`eta` for each progression length, and bounds the extremal cardinality by
+`C*N*exp(-c*(log(log N))^(1+eta))`. A checked conditional bridge in
+`GowersSzemeredi/Proofs01QuantitativeDensityBridge.lean` derives the exact
+asymptotic Theorem 1.3 from this statement. It does not determine the explicit
+all-N threshold in Theorem 18.2. No new exact catalogue companion may be
+claimed until the quantitative proof compiles and passes the axiom audit.
+
+The additional modules use the same upstream revision and license. Files
+needing the existing compatibility declarations have explicitly marked
+import-only modifications; subsequent port edits must also be documented
+in their file headers.
 
 ## Modifications
 
@@ -56,7 +84,8 @@ unchanged.
 - `OAI/Compat/*.lean` (not upstream) backport the declarations that upstream
   uses from its newer toolchain but that are absent from Lean 4.32.0 /
   Mathlib `v4.32.0`. Each module has narrow imports and states the upstream
-  signature. All but one are renames: the core `if_pos`/`if_neg`/`dif_pos`/
+  signature. Of the original eight modules, all but one are renames: the
+  core `if_pos`/`if_neg`/`dif_pos`/
   `dif_neg` family appears as `ite_eq_left`/`ite_eq_right`/`dite_eq_left`/
   `dite_eq_right`, and the Mathlib lemmas `Finset.prod_le_prod₀` etc. and
   `Matrix.det_of_isUpperTriangular` and
@@ -64,6 +93,32 @@ unchanged.
   names.
   The exception is `TensorProduct.inductionOn`, which drops the `zero` case
   of `TensorProduct.induction_on`.
+- The quantitative port adds `Compat/Set.lean` (definitional predicate
+  membership), `Compat/Isometry.lean` (the newer name for
+  `Isometry.lipschitz`), and `Compat/FinsetInj.lean` (injective finite-sum
+  comparison proved using `sum_image` and subset comparison). These are
+  local proofs under Apache-2.0, with no copied upstream proof text.
+- `Compat/MatrixInjective.lean` derives matrix-vector injectivity from a
+  nonzero determinant using the older trivial-kernel theorem. It supports
+  integer-fiber and residue-refined-period modules.
+- `Compat/ContinuousLinearMap.lean` supplies the newer `lipschitzWith` name
+  as an alias of the existing norm-controlled `lipschitz` theorem. It is
+  used by affine averaging and subsequent coordinate estimates.
+- `Compat/ExteriorPower.lean` is a Mathlib backport, with the original
+  Justus Springer copyright and author notice retained. Its separate pinned
+  source and license are recorded in [`LICENSE.provenance`](LICENSE.provenance)
+  and [`LICENSE.mathlib`](LICENSE.mathlib). It compiles with the local
+  `Compat/GramMatrix.lean` characterization; the exported inner-product and
+  orthonormal-basis declarations pass the three-axiom check. Its downstream
+  consumers remain outside the audited first-200 prefix.
+- Imports of relocated Mathlib modules use their older paths. All directly
+  imported Mathlib source paths now exist in the local checkout; this path
+  check does not establish that all importing modules compile.
+- `Estimates/FormalExpLog.lean` uses the older explicit-ring derivative API
+  and derives reverse substitution from `substInvOfIsUnit`. The initial
+  dependency batch also adapts the free-monoid induction case name.
+  Generic product comparisons and injective `Finsupp` reindexing use their
+  older Mathlib names; the manifest records these changes.
 - Upstream files that use a backported name gain the corresponding
   `import OAI.Compat.<Topic>` line, and nothing else, unless a further change
   is listed in their header comment.
@@ -71,11 +126,12 @@ unchanged.
 
 ## Trust
 
-A search of the vendored sources finds no `sorry`, `axiom`, `native_decide`,
+A source scan of both the previous subset and the incoming quantitative closure finds no `sorry`, `axiom`, `native_decide`,
 `implemented_by`, `@[extern]` or `unsafe`. `#print axioms` for
 `theorem_1_2_holds`, `theorem_7_1_holds` and `theorem_7_2_holds`, which use
 this subset, reports
-only `propext`, `Classical.choice` and `Quot.sound` (checked 2026-10-06 with
+only `propext`, `Classical.choice` and `Quot.sound` (checked for those
+previously verified imports on 2026-10-06 with
 Lean 4.32.0 / Mathlib `v4.32.0`).
 
 ## Building
@@ -83,5 +139,5 @@ Lean 4.32.0 / Mathlib `v4.32.0`).
 Lake can build any module of `OAI` (`lake build +OAI.<Module>`), but
 `Combinatorics/Ramsey/scripts/check_gowers.py` builds the Gowers modules and
 their `OAI` imports one `lean` process at a time without Lake's trace pass;
-both use the root workspace's Mathlib. 18 upstream modules import all of
+both use the root workspace's Mathlib. 64 vendored modules import all of
 Mathlib.

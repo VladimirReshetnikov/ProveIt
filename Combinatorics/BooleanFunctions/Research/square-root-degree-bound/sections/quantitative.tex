@@ -1,0 +1,403 @@
+\section{A uniform quantitative amplification theorem}
+\label{amp:sec}
+
+The amplification argument of \cite{OpenAI2026} takes a sufficiently large
+finite average separately at each stage.  We now give conditions under which
+one averaging count works at every stage, together with explicit bounds for
+that count.  The main point is to control the error relative to the product
+of the interval probabilities.  The product itself will not enter the required
+normal-approximation accuracy.  Positive-power growth can also be obtained
+nonquantitatively from a Boolean seed by the composition argument in
+Section~\ref{subsec:composition}; the result here supplies fixed
+parameters and dimension bounds.
+
+For a finite observation $F$ of $N$ independent fair signs, retain the notation
+\[
+ H_N=\sum_{i=1}^N X_i,\qquad T_F=\E[H_N\mid F],\qquad
+ v(F)=\E T_F^2.
+\]
+When $v(F)>0$, write
+\[
+ \kappa(F)=\frac{\E T_F^4}{v(F)^2}.
+\]
+All degree bounds in this section are bounds on the indicators of the
+attained cells.  A function of an observation then has the same degree bound.
+
+\subsection{The reporting identity for nonsingleton intervals}
+
+We restate the reporting construction of \cite{OpenAI2026} in the form
+needed for quantitative estimates.  Fix $m\ge3$, bounded intervals
+$I_1,\ldots,I_m$, a selector $\iota:\R\to\{1,\ldots,m\}$, and a real
+number $c$.  Apply the rule to independent copies
+$(U,Z_1,\ldots,Z_m)$ of a centered variance-one random variable.  Put
+\[
+ L_0=U+\sum_{j=1}^m Z_j,\qquad
+ \mathsf B=\bigcap_j\{Z_j\in I_j\},\qquad
+ \mathsf P=\bigcap_{j\ne\iota(U)}\{Z_j\in I_j\},\qquad
+ \mathsf A=\mathsf P\setminus\mathsf B.
+\]
+The observation $\mathcal W$ reports the tag $\mathsf A$ on $\mathsf A$,
+the tag $\mathsf B$ and all leaf values on $\mathsf B$, and the tag
+$\mathsf P^c$, the central value, the selected index, and all unselected
+leaf values on $\mathsf P^c$.  The identity
+\begin{equation}
+ \1_{\mathsf A}
+ =\sum_{i=1}^m\1_{\{\iota(U)=i\}}
+                 \prod_{j\ne i}\1_{I_j}(Z_j)
+       -\prod_{j=1}^m\1_{I_j}(Z_j)
+ \label{amp:cell-identity}
+\end{equation}
+shows that every cell indicator is a linear combination of functions of at
+most $m$ input coordinates.  For an ordinary report on $\mathsf P^c$, the
+reported leaves already certify a failed test, so the omitted leaf is
+unrestricted.  This verifies the same assertion for all ordinary reports,
+including on finite alphabets with atoms at interval endpoints.
+
+For a centered variance-one law $V$, define
+\begin{align}
+ q_i^V&=\Pbb(V\in I_i),&
+ \mu_i^V&=\E[V\mid V\in I_i],\notag\\
+ s_i^V&=\Var(V\mid V\in I_i),&
+ Q_V&=\prod_iq_i^V,\quad S_V=\sum_i s_i^V,
+ \label{amp:interval-parameters}
+\end{align}
+whenever all $q_i^V$ are positive.  Thus $s_i^V$ denotes a variance, not
+a standard deviation.  With $C_i=\{t:\iota(t)=i\}$, put
+\begin{equation}
+ J_V=\sum_{i=1}^m\frac1{q_i^V}
+       \E\left[\1_{C_i}(V)
+       \left((V+c-\mu_i^V)^2+\sum_{j\ne i}s_j^V\right)\right].
+ \label{amp:J}
+\end{equation}
+
+\begin{proposition}[Exact predictor gain]
+\label{amp:reporter}
+For the reporting rule above, use the predictor
+$b_V=\sum_i\mu_i^V-c$ on $\mathsf A$, the sum of the leaves on
+$\mathsf B$, and the sum of the reported values on $\mathsf P^c$.
+Its mean squared error is
+\begin{equation}
+ 1-\Delta_V,\qquad
+ \Delta_V=Q_V(c^2+S_V-J_V).
+ \label{amp:relative-gain}
+\end{equation}
+Consequently
+\begin{equation}
+ \Var\bigl(\E[L_0\mid\mathcal W]\bigr)\ge m+\Delta_V.
+ \label{amp:variance-gain}
+\end{equation}
+On every product of finite input alphabets, the observation has finite
+range and the coordinate-degree property stated after
+\eqref{amp:cell-identity}.
+\end{proposition}
+
+\begin{proof}
+The error on $\mathsf B$ is the unreported central input.  The error on
+each ordinary report is its unreported leaf.  Independence therefore makes
+the integrated squared errors on these events equal to their probabilities.
+It follows that the total error is
+$1-\E[\1_{\mathsf A}(1-(L_0-b_V)^2)]$.
+
+Conditional on $U=t$ and $\mathsf P$, the event has probability
+$Q_V/q_{\iota(t)}^V$, and $L_0-b_V$ has mean
+$t+c-\mu_{\iota(t)}^V$ and variance
+$1+\sum_{j\ne\iota(t)}s_j^V$.  Thus the contribution on
+$\mathsf P$ to the last gain is $-Q_VJ_V$.  On $\mathsf B$, the
+central input remains unrestricted; the same difference has mean $c$ and
+variance $1+S_V$.  Its contribution is $-Q_V(c^2+S_V)$.
+Subtracting, since $\1_{\mathsf A}=\1_{\mathsf P}-\1_{\mathsf B}$,
+proves \eqref{amp:relative-gain}.  Conditional expectation minimizes
+mean squared error, and $\Var(L_0)=m+1$, proving
+\eqref{amp:variance-gain}.  The finite-alphabet assertion follows from
+\eqref{amp:cell-identity} and the description of the ordinary reports.
+\end{proof}
+
+The law-dependent predictor $b_V$ is only a tool for estimating the error.
+The observation $\mathcal W$, its cells, and their degree bounds do not
+depend on $b_V$.
+
+\subsection{Restricted moments from a Kolmogorov bound}
+
+Write $d_{\mathrm K}$ for Kolmogorov distance and let $G$ denote a standard
+normal random variable.
+
+\begin{lemma}[Restricted first and second moments]
+\label{amp:restricted}
+Suppose $U$ is centered, has variance one, and satisfies $\E U^4\le K$,
+where $K\ge3$.  If $d_{\mathrm K}(U,G)\le\delta\le1$ and $E$ is a
+union of at most $\ell$ intervals, then
+\begin{align}
+ |\Pbb(U\in E)-\Pbb(G\in E)|&\le2\ell\delta,\\
+ |\E[U\1_E(U)]-\E[G\1_E(G)]|
+   &\le(2\ell+3)K^{1/4}\delta^{3/4},\\
+ |\E[U^2\1_E(U)]-\E[G^2\1_E(G)]|
+   &\le(2\ell+4)\sqrt{K\delta}.
+ \label{amp:restricted-bounds}
+\end{align}
+Unbounded intervals and arbitrary endpoint conventions are allowed.
+For one bounded interval $I\subseteq[-B,B]$, the unnormalized moments
+also satisfy the sharper estimates
+\begin{equation}
+ \begin{aligned}
+ |q_U-q_G|&\le2\delta,\\
+ |\E[U\1_I(U)]-\E[G\1_I(G)]|&\le4B\delta,\\
+ |\E[U^2\1_I(U)]-\E[G^2\1_I(G)]|&\le4B^2\delta.
+ \end{aligned}
+ \label{amp:bounded-moments}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Let $D(t)=F_U(t)-\Phi_{\mathrm G}(t)$, where $\Phi_{\mathrm G}$ is
+the standard normal distribution function. Both fourth moments are at most $K$.
+Markov's inequality, applied to the appropriate right or left tail, gives
+\[
+ |D(t)|\le\min\{\delta,K/|t|^4\}.
+\]
+The same bound holds at left limits.  If $\delta>0$, split the following
+integrals at $R=(K/\delta)^{1/4}$ to obtain
+\begin{equation}
+ \int_{\R}|D(t)|\,dt\le\frac83K^{1/4}\delta^{3/4},\qquad
+ \int_{\R}2|tD(t)|\,dt\le4\sqrt{K\delta}.
+ \label{amp:cdf-integrals}
+\end{equation}
+At any endpoint, $|tD(t)|\le K^{1/4}\delta^{3/4}$ and
+$|t^2D(t)|\le\sqrt{K\delta}$.  Stieltjes integration by parts over
+the disjoint intervals now gives the first assertion.  There are at most
+$2\ell$ finite endpoint contributions; the integral terms in
+\eqref{amp:cdf-integrals} need be counted only once.  The constants
+$2\ell+3$ and $2\ell+4$ follow.  Boundary terms at infinity vanish
+by the fourth-moment bound.  Left limits handle any atoms at an included
+or excluded endpoint.  When $\delta=0$, the laws coincide.
+
+For a bounded interval, the total variations of its indicator, of $t$
+times its indicator, and of $t^2$ times its indicator are bounded by
+$2$, $4B$, and $4B^2$, respectively.  The same integration-by-parts
+argument gives \eqref{amp:bounded-moments}.
+\end{proof}
+
+\subsection{Transfer of a fixed Gaussian gain}
+
+\begin{theorem}[Explicit relative transfer]
+\label{amp:transfer}
+Assume $I_i\subseteq[-B,B]$ with $B\ge1$, and each selector cell $C_i$
+is a union of at most $\ell$ intervals.  In the Gaussian model, suppose
+\[
+ q=\min_i q_i^G>0,\qquad
+ \Gamma=c^2+S_G-J_G>0.
+\]
+For $K\ge3$, set $C=|c|+B$ and
+\begin{align}
+ A={}&\frac{36mB^2}{q}\notag\\
+ &+\frac{2m}{q}\left((2\ell+4)\sqrt K
+      +2C(2\ell+3)K^{1/4}+2\ell(C^2+mB^2)\right)\notag\\
+ &+\frac{48B(1+C)+76mB^2+4(1+C)^2}{q^2},
+ \label{amp:A}\\
+ \delta_*={}&\min\left\{1,\frac{q}{4m},
+                           \left(\frac{\Gamma}{2A}\right)^2\right\}.
+ \label{amp:delta-star}
+\end{align}
+Every centered variance-one law $U$ with $\E U^4\le K$ and
+$d_{\mathrm K}(U,G)\le\delta_*$ satisfies
+\begin{equation}
+ Q_U\ge Q_G/2,\qquad c^2+S_U-J_U\ge\Gamma/2,\qquad
+ \Delta_U\ge Q_G\Gamma/4.
+ \label{amp:transfer-conclusion}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Write $\delta=d_{\mathrm K}(U,G)$.  Since $\delta\le q/(4m)$,
+all interval probabilities for $U$ are positive.  The bounded-interval
+estimates in Lemma~\ref{amp:restricted} imply
+\begin{align}
+ |\mu_i^U-\mu_i^G|&\le\frac{12B\delta}{q},&
+ |s_i^U-s_i^G|&\le\frac{36B^2\delta}{q},\\
+ \left|\frac1{q_i^U}-\frac1{q_i^G}\right|&\le\frac{4\delta}{q^2},&
+ \frac1{q_i^U}&\le\frac2q.
+ \label{amp:parameter-errors}
+\end{align}
+For example, the first conditional moment changes by at most
+$(4B\delta+2B\delta)/(q/2)=12B\delta/q$.  The conditional
+second moment changes by at most $12B^2\delta/q$; subtracting the
+squared means costs at most a further $24B^2\delta/q$.
+Moreover,
+\[
+ \frac{Q_U}{Q_G}
+ \ge\prod_i\left(1-\frac{2\delta}{q_i^G}\right)
+ \ge1-\frac{2m\delta}{q}\ge\frac12.
+\]
+
+For completeness, we bound $J_U-J_G$ with all factors displayed.
+Put
+\[
+ N_i^V(t)=(t+c-\mu_i^V)^2+\sum_{j\ne i}s_j^V.
+\]
+In \eqref{amp:J}, first replace $N_i^U$ by $N_i^G$ under the law
+of $U$, then replace that law by the Gaussian law, and finally replace
+$1/q_i^U$ by $1/q_i^G$.  The three absolute errors are at most,
+respectively,
+\begin{align}
+ E_1&=\frac{\delta}{q^2}
+                 \left(48B(1+C)+72mB^2\right),\\
+ E_2&=\frac{2m}{q}\Bigl((2\ell+4)\sqrt{K\delta}
+       +2C(2\ell+3)K^{1/4}\delta^{3/4}\notag\\
+    &\hspace{37mm}+2\ell(C^2+mB^2)\delta\Bigr),\\
+ E_3&=\frac{4\delta}{q^2}\left((1+C)^2+mB^2\right).
+ \label{amp:three-errors}
+\end{align}
+For $E_1$, use
+\[
+ |(t+c-\mu_i^U)^2-(t+c-\mu_i^G)^2|
+ \le\frac{24B\delta}{q}(|t|+C),
+\]
+together with \eqref{amp:parameter-errors}.  The cells $C_i$ partition
+the line and $\E|U|\le1$, so these terms are summed before taking
+expectations.  For $E_2$, expand the fixed quadratic $N_i^G$ and use
+\eqref{amp:restricted-bounds}; its three coefficient bounds are
+$1$, $2C$, and $C^2+mB^2$.  For $E_3$, use the denominator estimate
+and $\E|G|\le1$, again summing over the partition first.
+
+Finally $|S_U-S_G|\le36mB^2\delta/q$.  Since
+$\delta\le1$, equations \eqref{amp:A} and \eqref{amp:three-errors}
+give
+\[
+ |S_U-S_G|+|J_U-J_G|\le A\sqrt\delta\le\Gamma/2.
+\]
+Together with the product bound, this proves
+\eqref{amp:transfer-conclusion}.
+\end{proof}
+
+The hypotheses are fixed one-dimensional estimates.  In particular,
+$\delta_*$ depends on $q$, $\Gamma$, the number of leaves, and the
+geometry of the intervals, while the small product $Q_G$ determines
+the eventual gain rather than the accuracy requirement.
+
+\subsection{One averaging count for every stage}
+
+\begin{theorem}[Fixed-count amplification]
+\label{amp:fixed-count}
+Assume the hypotheses of Theorem~\ref{amp:transfer}, use $K=6$, and
+choose an integer
+\[
+ M\ge\max\{2,\lceil6/\delta_*^2\rceil\}.
+\]
+Let $0<\eta\le Q_G\Gamma/4$, and set
+\begin{equation}
+ \begin{aligned}
+ d_*&=mM,\qquad n_*=(m+1)M,\qquad v_*=M(m+\eta),\\
+ \alpha&=\frac{\log v_*}{2\log d_*}
+       =\frac12+\frac{\log(1+\eta/m)}{2\log(mM)}.
+ \end{aligned}
+ \label{amp:scales}
+\end{equation}
+Writing $L(f)=\sum_i\widehat f(\{i\})$, there are finite observations
+$F_k$ and Boolean readouts $f_k$ such that
+\begin{align}
+ N_k&=n_*^k,& \degc(F_k)&\le d_*^k,\notag\\
+ v(F_k)&\ge v_*^k,& \kappa(F_k)&\le6,\notag\\
+ \deg(f_k)&\le d_*^k,& L(f_k)&\ge6^{-1/2}d_*^{k\alpha}.
+ \label{amp:iterates}
+\end{align}
+In particular, the Boolean degrees tend to infinity and
+$L(f_k)\ge6^{-1/2}\deg(f_k)^\alpha$.
+\end{theorem}
+
+\begin{proof}
+For a finite observation with score $T$, positive variance $v$, and
+$\E T^4/v^2\le6$, take $M$ independent copies and form
+\[
+ Z=\frac{T_1+\cdots+T_M}{\sqrt{Mv}}.
+\]
+Its score as an observation of the underlying signs is exactly
+$\sqrt{Mv}\,Z$, and its cell degree is at most $M\degc(F)$.
+Writing $\kappa=\E T^4/v^2$, independence gives
+\begin{equation}
+ \E Z^4=3+\frac{\kappa-3}{M}.
+ \label{amp:average-fourth}
+\end{equation}
+The Berry--Esseen inequality with an absolute constant below one
+\cite{Shevtsova2011}, and
+$\E|T/\sqrt v|^3\le\sqrt\kappa$, give
+\begin{equation}
+ d_{\mathrm K}(Z,G)\le\sqrt{6/M}\le\delta_*.
+ \label{amp:BE}
+\end{equation}
+Thus Theorem~\ref{amp:transfer} applies to $m+1$ independent copies
+of $Z$.  If $F'$ is their report, the conditional-expectation identity
+for the total underlying sign sum gives
+\[
+ v(F')\ge Mv(m+\eta),\qquad \degc(F')\le mM\degc(F).
+\]
+
+It remains to check the fourth moment uniformly.  Let $r=m+1$,
+$S_0=Z_1+\cdots+Z_r$, and
+$V=\Var(\E[S_0\mid F'])\ge m+\eta$.  Conditional Jensen's
+inequality and independence yield
+\begin{align}
+ \kappa(F')\le\frac{\E S_0^4}{V^2}
+ &\le\frac{3r^2+r(\kappa-3)/M}{(m+\eta)^2}\notag\\
+ &\le\frac{3(m+1)^2+3(m+1)/2}{m^2}\le6.
+ \label{amp:moment-invariant}
+\end{align}
+The last inequality follows from
+\[
+ 6m^2-3(m+1)^2-\tfrac32(m+1)
+ =\tfrac32(2m+1)(m-3)\ge0.
+\]
+Start with one revealed sign, whose variance and cell degree are both
+one and whose standardized fourth moment is one.  Induction proves
+the observation assertions in \eqref{amp:iterates} with the same $M$
+at every step.
+
+Take $f_k=\operatorname{sign}(T_{F_k})$, with sign $+1$ at zero.
+It is a function of the observation, so has the stated degree bound,
+and conditioning gives $L(f_k)=\E|T_{F_k}|$.
+For any centered variance-one $Y$, H\"older's inequality gives
+\[
+ 1=\E Y^2\le(\E|Y|)^{2/3}(\E Y^4)^{1/3}.
+\]
+Thus $\E|T_{F_k}|\ge\sqrt{v(F_k)/6}$, which proves the lower
+bound.  Finally every Boolean function satisfies $L(f)\le\deg(f)$:
+each absolute singleton coefficient is at most its influence, and the
+sum of the influences is at most the degree by Parseval.  Hence the
+degrees here tend to infinity.
+\end{proof}
+
+\begin{corollary}[Degree budgets and ambient dimension]
+\label{amp:dimension}
+With the notation of Theorem~\ref{amp:fixed-count}, put
+\[
+ \theta=\frac{\log n_*}{\log d_*},\qquad
+ \beta=\frac{2\log n_*}{\log v_*}.
+\]
+For every real degree budget $D\ge d_*$, one of the readouts has
+\begin{equation}
+ \deg(f)\le D,\qquad n\le D^\theta,\qquad
+ L(f)\ge6^{-1/2}d_*^{-\alpha}D^\alpha.
+ \label{amp:budget}
+\end{equation}
+For each individual iterate, its actual degree $d=\deg(f_k)$ also gives
+\begin{equation}
+ N_k\le(\sqrt6\,d)^\beta.
+ \label{amp:actual-degree}
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Choose $k=\lfloor\log D/\log d_*\rfloor$.  Then
+$D/d_*<d_*^k\le D$, and \eqref{amp:budget} follows from
+\eqref{amp:iterates}.  For \eqref{amp:actual-degree}, the already
+proved inequality
+$d\ge L(f_k)\ge6^{-1/2}v_*^{k/2}$ implies
+$(\sqrt6\,d)^\beta\ge n_*^k=N_k$.
+\end{proof}
+
+If all interval endpoints and selector cut points are rational, these
+constructions are terminating exact algorithms.  Every unnormalized score
+and its variance are rational because the underlying cube is finite.  A
+normalized score is a quadratic algebraic number, so comparisons with the
+fixed rational cut points are decidable, including equality.  Conditional
+scores can be obtained by finite enumeration of cells.  The dimension and
+degree bounds quantify mathematical size; no efficient running-time claim
+is made.

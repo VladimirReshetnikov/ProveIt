@@ -1,0 +1,130 @@
+% Created (UTC): 2026-06-21T17:56:12Z
+% Repository HEAD: 28452162a50b1e706a92d6e9a96de9b8652ee5c5
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs}
+\usepackage{microtype}
+\emergencystretch=3em \hbadness=4000
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\DeclareMathOperator{\Li}{Li}
+\DeclareMathOperator{\Ti}{Ti}
+\DeclareMathOperator{\Cl}{Cl}
+\newcommand{\iu}{\mathrm{i}}
+\newcommand{\Real}{\operatorname{Re}}
+\newcommand{\Imag}{\operatorname{Im}}
+\theoremstyle{plain}\newtheorem{theorem}{Theorem}\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\title{The dilogarithm and trilogarithm on the line $\Real z=1$:\\
+vertical-line closed forms, $\Real\!\leftrightarrow\!\Li_2(-y^2)$, $\Imag\!\leftrightarrow\!\Ti_2(y)$}
+\author{Vladimir Reshetnikov}
+\date{2026-06-21}
+\begin{document}
+\maketitle
+\begin{center}\small
+Research report. Created (UTC) 2026-06-21T17:56:12Z; repository \texttt{HEAD}
+\texttt{28452162a50b1e706a92d6e9a96de9b8652ee5c5}.\\
+Store \texttt{polylog-vertical-line.wl}. Companions: \texttt{cleo-arctan-sin-chi2} ($\Ti_2$),
+\texttt{central-binomial-arcsin-ladder} (the $\Imag\Li_n(1+\iu)$ tower).
+\end{center}
+
+\begin{abstract}
+Reshetnikov's Math.StackExchange question 1410276 asks for $\Real\Li_2(1\pm\iu\sqrt3)$ and its imaginary
+companion. We place both inside a clean general picture: on the vertical line $\Real z=1$ the reflection
+point $1-z=-\iu y$ is \emph{purely imaginary}, so the dilogarithm reflection and duplication laws collapse,
+giving for all $y>0$
+\begin{align*}
+  \Real\Li_2(1+\iu y)&=\frac{\pi^2}{6}-\tfrac12\ln(1{+}y^2)\ln y-\frac\pi2\arctan y-\tfrac14\Li_2(-y^2),\\
+  \Imag\Li_2(1+\iu y)&=\frac\pi4\ln(1{+}y^2)-\arctan y\,\ln y+\Ti_2(y),
+\end{align*}
+where $\Ti_2$ is the inverse-tangent integral. The \emph{real} part rides $\Li_2(-y^2)$; the \emph{imaginary}
+part rides $\Ti_2(y)$, which for $y=\tan\theta$ is pure Clausen. The MSE results are the case $y=\sqrt3$;
+$y=1$ gives $\Real\Li_2(1+\iu)=\pi^2/16$, $\Imag\Li_2(1+\iu)=\tfrac\pi4\ln2+G$. At weight $3$ the symmetry
+\emph{half-lifts}: the real part still closes at special $y$ ($\Real\Li_3(1+\iu)=\tfrac{35}{64}\zeta(3)+\tfrac{\pi^2\ln2}{32}$;
+$\Real\Li_3(1+\iu\sqrt3)$ via $\Li_3(\tfrac14)$), but the imaginary part becomes the deep Gaussian tower
+$\Imag\Li_3(1+\iu)=\mathcal F_3-\tfrac{\pi^3}{192}$ of the central-binomial corpus, and the general real part
+acquires the genuine obstruction $\int_0^y\arctan^2(t)/t\,dt$. All identities are two-engine verified
+(mpmath and Wolfram) to $\ge50$ digits.
+\end{abstract}
+
+\section{The problem and the key geometric fact}
+\href{https://math.stackexchange.com/q/1410276}{MSE 1410276} records
+\begin{equation}\label{eq:mse}
+  \Real\Li_2(1\pm\iu\sqrt3)=\frac{\pi^2}{24}-\tfrac12\ln^2 2-\tfrac14\Li_2(\tfrac14),
+\end{equation}
+with $\Imag\Li_2(1+\iu\sqrt3)=\tfrac{\pi\ln2}{2}+\tfrac{5\sqrt3}{72}\bigl[\psi_1(\tfrac13)-\psi_1(\tfrac23)\bigr]$
+(\href{https://math.stackexchange.com/a/1410829}{a/1410829}, \href{https://math.stackexchange.com/a/1410705}{a/1410705}).
+The point $1+\iu\sqrt3=2e^{\iu\pi/3}$, but the structurally decisive fact is that for any $z=1+\iu y$ the
+reflection point $1-z=-\iu y$ is \emph{purely imaginary}. This is exactly what makes the dilogarithm
+functional equations collapse.
+
+\section{The weight-2 vertical-line theorem}
+\begin{theorem}\label{thm:wt2}
+For $y>0$,
+\begin{align}
+  \Real\Li_2(1+\iu y)&=\frac{\pi^2}{6}-\tfrac12\ln(1{+}y^2)\ln y-\frac\pi2\arctan y-\tfrac14\Li_2(-y^2),
+  \label{eq:Re2}\\
+  \Imag\Li_2(1+\iu y)&=\frac\pi4\ln(1{+}y^2)-\arctan y\,\ln y+\Ti_2(y),\qquad \Ti_2(y)=\Imag\Li_2(\iu y).
+  \label{eq:Im2}
+\end{align}
+\end{theorem}
+\begin{proof}
+The reflection law $\Li_2(z)+\Li_2(1-z)=\zeta(2)-\ln z\ln(1-z)$ at $z=1+\iu y$, $1-z=-\iu y$, gives
+$\Li_2(1+\iu y)=\zeta(2)-\ln(1+\iu y)\ln(-\iu y)-\Li_2(-\iu y)$. The duplication law
+$\Li_2(\iu y)+\Li_2(-\iu y)=\tfrac12\Li_2(-y^2)$ together with $\overline{\Li_2(w)}=\Li_2(\bar w)$ yields
+$\Real\Li_2(-\iu y)=\tfrac12\bigl(\Li_2(\iu y)+\Li_2(-\iu y)\bigr)=\tfrac14\Li_2(-y^2)$ and
+$\Imag\Li_2(-\iu y)=-\Ti_2(y)$. Expanding $\ln(1+\iu y)=\tfrac12\ln(1{+}y^2)+\iu\arctan y$ and
+$\ln(-\iu y)=\ln y-\tfrac{\iu\pi}2$ and taking real and imaginary parts gives~\eqref{eq:Re2}--\eqref{eq:Im2}.
+\end{proof}
+On the line $\Real z=1$ the dilogarithm thus splits into a \emph{real} part carried by the even real
+dilogarithm $\Li_2(-y^2)$ and an \emph{imaginary} part carried by the odd inverse-tangent integral
+$\Ti_2(y)$. Equation~\eqref{eq:mse} is the case $y=\sqrt3$ (using
+$\Li_2(-3)=\Li_2(\tfrac14)-\zeta(2)+2\ln2\ln\tfrac23$), and the trigamma form of the imaginary part is just
+$\Ti_2(\sqrt3)=\tfrac{\pi}6\ln3+\tfrac{5\sqrt3}{72}[\psi_1(\tfrac13)-\psi_1(\tfrac23)]$ substituted
+into~\eqref{eq:Im2}.
+
+\section{The Clausen form at $y=\tan\theta$}
+Since $1+\iu\tan\theta=e^{\iu\theta}/\cos\theta$, Theorem~\ref{thm:wt2} combines with Ramanujan's
+$\Ti_2(\tan\theta)=\theta\ln\tan\theta+\tfrac12\bigl[\Cl_2(2\theta)+\Cl_2(\pi-2\theta)\bigr]$ so that the
+$\theta\ln\tan\theta$ terms cancel, leaving a pure-Clausen imaginary part:
+\begin{equation}\label{eq:clausen}
+  \Imag\Li_2(1+\iu\tan\theta)=-\frac\pi2\ln\cos\theta+\tfrac12\bigl[\Cl_2(2\theta)+\Cl_2(\pi-2\theta)\bigr].
+\end{equation}
+\begin{corollary}\label{cor:specials}
+$\Real\Li_2(1+\iu)=\dfrac{\pi^2}{16}$ and $\Imag\Li_2(1+\iu)=\dfrac{\pi\ln2}{4}+G$ (with $G$ Catalan's
+constant), from $y=1$ in Theorem~\ref{thm:wt2} (using $\Li_2(-1)=-\pi^2/12$, $\Ti_2(1)=G$).
+\end{corollary}
+
+\section{Weight 3: a half-lifted symmetry}
+At weight $3$ the real/imaginary split survives only in part. The \emph{real} part still closes at special
+$y$:
+\begin{equation}\label{eq:Re3}
+  \Real\Li_3(1+\iu)=\frac{35}{64}\zeta(3)+\frac{\pi^2\ln2}{32},\qquad
+  \Real\Li_3(1+\iu\sqrt3)=\frac{35\zeta(3)+18\Li_3(\tfrac14)+6\pi^2\ln2-24\ln^3 2}{144},
+\end{equation}
+the second being the exact weight-3 analogue of the $\Li_2(\tfrac14)$ in~\eqref{eq:mse}. But the general
+real part does \emph{not} close: differentiating, $\partial_y\Real\Li_3(1+\iu y)=-\bigl(\Imag\Li_2(1+\iu y)-y\,\Real\Li_2(1+\iu y)\bigr)/(1+y^2)$,
+and integrating the $\Ti_2$ contribution produces $\int_0^y\arctan^2(t)/t\,dt$, a genuine weight-3
+inverse-tangent-square constant that is elementary only when $\arctan y$ is a rational multiple of $\pi$
+(as at $y=1,\sqrt3$). Meanwhile the \emph{imaginary} part is no longer elementary at all: it is the
+central-binomial Gaussian tower constant
+\begin{equation}\label{eq:Im3}
+  \Imag\Li_3(1+\iu)=\mathcal F_3-\frac{\pi^3}{192},\qquad
+  \mathcal F_3=\sqrt2\,{}_4F_3\bigl(\{\tfrac12\}^4;\{\tfrac32\}^3;\tfrac12\bigr),
+\end{equation}
+the $n=3$ entry of the $\Imag\Li_n(1+\iu)$ tower (companion report
+\texttt{gaussian-1plusi-tower}). So on $\Real z=1$ the imaginary part is precisely the deep object that
+the central-binomial ladder measures, while the real part remains tractable---the two halves of the
+polylogarithm part ways at weight $3$.
+
+\section{Verification and reproducibility}
+Theorem~\ref{thm:wt2}, the Clausen form~\eqref{eq:clausen}, Corollary~\ref{cor:specials}, and the
+weight-3 values~\eqref{eq:Re3}--\eqref{eq:Im3} are verified in \texttt{mpmath} and Wolfram: the general
+formulas at six $y$ and the Clausen form at $\theta=\pi/k$ ($k=3,4,6,8,12$) to $\sim10^{-51}$;
+$\Real\Li_3(1+\iu)$ and $\Real\Li_3(1+\iu\sqrt3)$ to $\sim10^{-74}$; and $\Imag\Li_3(1+\iu)$ matched
+against $\mathcal F_3-\pi^3/192$ from the central-binomial store. Closed forms are in
+\texttt{src/PolyLog/identities/polylog-vertical-line.wl}; scripts under
+\texttt{src/PolyLog/tools/scratch/li2-vertical/}.
+
+\end{document}

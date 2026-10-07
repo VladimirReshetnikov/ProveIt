@@ -1,0 +1,260 @@
+\section{A completely explicit rational Gaussian seed}
+\label{gaussian:sec}
+
+We now instantiate Section~\ref{amp:sec}.  The parameters are deliberately
+conservative: their purpose is to give a reproducible numerical theorem
+using rational inequalities, with no unspecified ``sufficiently large''
+choice.  The resulting exponent is very small.  The construction complements
+the small exact witness and the codimension classification rather than
+providing a practical Boolean example.
+
+\subsection{Intervals and selector}
+
+Set
+\begin{equation}
+ \begin{aligned}
+ s&=2^{13},\qquad m=s^2+1=2^{26}+1,\qquad R=9,\\
+ c&=\frac13,\qquad h=\frac9{s^3}=\frac9{2^{39}}.
+ \end{aligned}
+ \label{gaussian:parameters}
+\end{equation}
+For $0\le i<m$, take
+\begin{equation}
+ a_i=c-9+\frac{18i}{m-1},\qquad I_i=[a_i-h,a_i+h].
+ \label{gaussian:intervals}
+\end{equation}
+For $|t|\le9$, the selector chooses a center nearest to $t+c$, with
+ties resolved by the smaller index.  For $|t|>9$, it chooses the middle
+index, whose center is $c$.  Every endpoint and cut point is rational.
+Each selector cell is an interval except for the middle cell, which is
+a union of at most three intervals.  Thus $\ell=3$ is valid in
+Theorem~\ref{amp:transfer}.
+
+Let $q_i,\mu_i,s_i$ be the Gaussian interval probabilities, means, and
+variances from \eqref{amp:interval-parameters}, and write
+$Q=\prod_iq_i$, $S=\sum_i s_i$, and $J=J_G$.  Define
+\[
+ r_0=\frac9{s^2},\qquad e_0=r_0+h.
+\]
+The elementary interval estimates are
+\begin{equation}
+ |\mu_i-a_i|\le h,\qquad 0\le s_i\le h^2,\qquad
+ S\le mh^2=\frac{81}{s^4}(1+s^{-2}).
+ \label{gaussian:interval-estimates}
+\end{equation}
+On $|t|\le9$, nearest-center selection additionally gives
+$|t+c-\mu_{\iota(t)}|\le e_0$.
+
+\begin{lemma}[Certified Gaussian gain]
+\label{gaussian:gain}
+The parameters \eqref{gaussian:parameters}--\eqref{gaussian:intervals}
+satisfy
+\begin{equation}
+ J_{\rm central}<\frac3{40},\qquad
+ J_{\rm tail}<\frac1{1000},\qquad
+ \Gamma:=c^2+S-J>\frac1{32}.
+ \label{gaussian:gain-bounds}
+\end{equation}
+Moreover every interval is contained in $[-10,10]$, and
+\begin{equation}
+ q:=\min_iq_i>
+ q_0:=\frac1{2^{38}3^{49}}>2^{-116}.
+ \label{gaussian:q-bound}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Write $\phi(t)=(2\pi)^{-1/2}e^{-t^2/2}$.  If $|t|\le9$ and
+$z\in I_{\iota(t)}$, then $z-t=c+\xi$ with $|\xi|\le e_0$.
+Consequently
+\[
+ \frac{z^2-t^2}{2}
+ \le ct+\frac{c^2}{2}+e_0(9+c)+\frac{e_0^2}{2}
+ <ct+\frac1{16}.
+\]
+The last inequality is a rational comparison after substituting
+\eqref{gaussian:parameters}; it is also among the checks in the
+constant certificate below.  Taking the minimum density on the selected
+interval gives
+\begin{equation}
+ \frac{\phi(t)}{q_{\iota(t)}}
+ \le\frac{e^{1/16}e^{ct}}{2h}
+ \qquad(|t|\le9).
+ \label{gaussian:density-ratio}
+\end{equation}
+Inserting \eqref{gaussian:interval-estimates} into
+\eqref{amp:J} and integrating $e^{ct}$, we obtain
+\begin{align}
+ J_{\rm central}
+ &\le\frac{3(e_0^2+mh^2)}{h}e^{1/16}\sinh3\notag\\
+ &=\frac{54}{s}(1+s^{-1}+s^{-2})e^{1/16}\sinh3.
+ \label{gaussian:central}
+\end{align}
+The elementary series bound $e^x<(1-x)^{-1}$ for $0<x<1$
+gives $e^{1/16}<16/15$.  Also $e<11/4$ implies
+$\sinh3<e^3/2<21/2$.  Thus the last expression is less than
+\[
+ \frac{54}{8192}(1+8192^{-1}+8192^{-2})\frac{16}{15}\frac{21}{2}
+ <\frac3{40}.
+\]
+For an entirely rational justification of the bound on $e$, sum its
+series through $1/3!$ and bound the remaining factorial tail by
+$(1/24)\sum_{j\ge0}5^{-j}=5/96$.  This gives
+$e<87/32<11/4$; the strict lower bound $e>5/2$ follows from the
+first three terms and the positive remainder.
+
+On $|t|>9$ the fallback interval has center $c$, and
+$c+h<1/2$.  Its probability is at least $2h\phi(1/2)$.
+Since $h<1$, $S<1$, and $|t|\ge9$,
+\[
+ (t+c-\mu_{\rm middle})^2+\sum_{j\ne\rm middle}s_j
+ \le(|t|+h)^2+S\le2t^2.
+\]
+Integration by parts and the Gaussian tail bound give
+\[
+ \int_9^\infty t^2e^{-t^2/2}\,dt
+ \le\left(9+\frac19\right)e^{-81/2}.
+\]
+Using both tails therefore yields
+\begin{equation}
+ J_{\rm tail}\le\frac{164}{9h}e^{-323/8}
+ <\frac{55}{3h}e^{-323/8}
+ <\frac{55\,2^{79}}{27\,5^{40}}
+ <\frac1{1000}.
+ \label{gaussian:tail}
+\end{equation}
+Here $323/8>40$ and $e>5/2$ justify the penultimate exponential
+comparison.  In particular,
+\[
+ \Gamma\ge c^2-J
+ >\frac19-\frac3{40}-\frac1{1000}
+ =\frac{79}{2250}>\frac1{32}.
+\]
+
+Finally, $|a_i|+h<10$ for every $i$.  Since $\sqrt{2\pi}<3$,
+\[
+ q_i\ge2h\min_{z\in I_i}\phi(z)
+ >\frac{2h}{3}e^{-50}
+ >\frac{2h}{3}\,3^{-50}
+ =\frac1{2^{38}3^{49}}.
+\]
+The last strict inequality uses $e<3$.  The integer inequality
+$3^{49}<2^{78}$ now proves \eqref{gaussian:q-bound}.
+\end{proof}
+
+\subsection{A fixed averaging count and an explicit exponent}
+
+\begin{theorem}[Fully numerical quantitative instance]
+\label{gaussian:explicit}
+For the rational reporting rule above, set
+\begin{equation}
+ M=2^{1123},\qquad
+ \eta_0=2^{-(116m+7)},\qquad
+ \varepsilon_0=2^{-8\,000\,000\,000}.
+ \label{gaussian:numerical-choices}
+\end{equation}
+There is a sequence of exactly specified finite Boolean functions $f_k$
+on $((m+1)M)^k$ bits, with
+\begin{equation}
+ \begin{aligned}
+ \deg(f_k)&\le(mM)^k,\\
+ L(f_k)&\ge6^{-1/2}\bigl(M(m+\eta_0)\bigr)^{k/2}
+       \ge6^{-1/2}\deg(f_k)^{1/2+\varepsilon_0}.
+ \end{aligned}
+ \label{gaussian:explicit-growth}
+\end{equation}
+Their degrees tend to infinity.  For every degree budget $D\ge mM$,
+the functions in Corollary~\ref{amp:dimension} can be chosen on at most
+\begin{equation}
+ D^{1+2^{-35}}
+ \label{gaussian:budget-dimension}
+\end{equation}
+bits.  In terms of the actual degree $d=\deg(f_k)$ of an iterate,
+\begin{equation}
+ N_k\le(\sqrt6\,d)^{2+2^{-34}}.
+ \label{gaussian:actual-dimension}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+We verify the transfer directly with
+\[
+ K=6,\quad B=10,\quad\ell=3,\quad C=|c|+B<11,
+ \qquad\delta=2^{-560}.
+\]
+Using $m<2^{27}$, $q>2^{-116}$, $\sqrt6<3$, and
+$6^{1/4}<2$, the constant in \eqref{amp:A} is bounded by the
+explicit integer
+\begin{align}
+ A<&\ 3600m\,2^{116}
+     +2m\,2^{116}(1152+600m)\notag\\
+    &\quad +(6336+7600m)\,2^{232}\notag\\
+   <&\ 2^{274}.
+ \label{gaussian:A-bound}
+\end{align}
+Consequently $A\sqrt\delta<2^{-6}=1/64<\Gamma/2$.
+Also $\delta<q/(4m)$, so the proof of
+Theorem~\ref{amp:transfer} applies at this value of $\delta$.
+Since
+\[
+ \sqrt{6/M}=\sqrt6\,2^{-1123/2}<2^{-560},
+\]
+the same count $M$ works at every stage of
+Theorem~\ref{amp:fixed-count}.  Lemma~\ref{gaussian:gain} further gives
+\[
+ \frac{Q\Gamma}{4}>
+ \frac{(2^{-116})^m}{128}=\eta_0.
+\]
+Thus $\eta_0$ is an admissible lower gain, even though the exact
+Gaussian interval probabilities are not evaluated.
+
+Write
+\[
+ \varepsilon=
+ \frac{\log(1+\eta_0/m)}{2\log(mM)}.
+\]
+For $0<x<1$, $\log(1+x)>x/2$.  Moreover
+$\log(mM)<1150$ and $4600m<2^{40}$.  Hence
+\begin{equation}
+ \begin{aligned}
+ \varepsilon&>\frac{\eta_0}{4600m}>2^{-(116m+47)}\\
+             &=2^{-7\,784\,628\,387}>\varepsilon_0.
+ \end{aligned}
+ \label{gaussian:epsilon}
+\end{equation}
+The growth assertion follows from Theorem~\ref{amp:fixed-count}.
+
+For the dimension estimate, use $\log(1+1/m)<1/m$ and
+$\log2>1/2$ to obtain
+\[
+ \theta-1
+ =\frac{\log(1+1/m)}{\log(mM)}
+ <\frac2{1123m}<2^{-35}.
+\]
+The last step is the integer inequality $1123m>2^{36}$.
+This proves \eqref{gaussian:budget-dimension}.
+Since $v_*=M(m+\eta_0)>mM=d_*$, the exponent in
+\eqref{amp:actual-degree} satisfies
+$\beta<2\theta<2+2^{-34}$, proving
+\eqref{gaussian:actual-dimension}.
+\end{proof}
+
+\subsection{What the finite certificate verifies}
+
+The accompanying script \texttt{code/verify\_constants.py} uses Python
+integer and rational arithmetic.  It checks the density-exponent margin,
+the rational bounds in \eqref{gaussian:central} and
+\eqref{gaussian:tail}, the variance and endpoint bounds, the probability
+comparison $3^{49}<2^{78}$, the integer upper bound in
+\eqref{gaussian:A-bound}, the averaging inequality, and the exponent and
+dimension comparisons.  Its recorded output is
+\texttt{data/constant\_certificate.json}.  The analytic implications of
+those rational comparisons are proved above; the script does not approximate
+Gaussian probabilities or certify a numerical normal-distribution table.
+
+The two very small dyadic constants in
+\eqref{gaussian:numerical-choices} are stored by their integer exponents.
+Neither the verification nor the construction of the certificate allocates
+an integer with billions of bits.  The Boolean construction is nevertheless
+finite and algorithmically specified.  Its size precludes using the displayed
+parameters to generate a truth table in practice.

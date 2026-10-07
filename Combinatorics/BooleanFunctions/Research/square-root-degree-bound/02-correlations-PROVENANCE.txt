@@ -1,0 +1,67 @@
+SOURCE PROVENANCE AND MATHEMATICAL DEPENDENCIES
+
+OpenAI repository pin:
+adc7f1241b42e322a6451854ab7e4b4c146bf78a
+https://github.com/openai/math/tree/adc7f1241b42e322a6451854ab7e4b4c146bf78a
+
+Principal manuscript:
+preprints/Unbounded-Violations-of-the-Square-Root-Degree-Bound-September-26-2026/
+Family 192, manuscript dated 26 September 2026.
+All seven source sections were reviewed: introduction, observations,
+reporting, alternatives, mean cost, weighted construction, and small width.
+Formalization scope: lean/docs/192.md. Its reported status was read, but
+the Lean development was not rebuilt for this package.
+
+ProveIt detailed-review pin:
+d980a69f2c6a6508e793d7e2661f445cc2e0cea8
+https://github.com/VladimirReshetnikov/ProveIt/tree/d980a69f2c6a6508e793d7e2661f445cc2e0cea8
+
+Relevant report:
+SetTheory/Cardinals/docs/reports/ordinals-and-order-types/noisy-parity-cubes/
+Its README explicitly describes the report as unrefereed and not formalized.
+It is a conceptual neighbor concerning Walsh spectra, noise, and inspection
+budgets; it is not used as an unproved premise of this manuscript.
+
+Relevant existing formal files:
+Analysis/FabiusFunction/Lean/FabiusFunction/ThueMorseBooleanCube.lean
+Analysis/FabiusFunction/Lean/FabiusFunction/ThueMorseWalsh.lean
+Their scope is specific finite Boolean-product and Walsh-character identities,
+not the general biased Fourier or observation theory developed here.
+
+Existing formal connection between the repositories:
+lib/openai-math/README.md documents the 137-module family-159 subset used by
+ProveIt's additive-combinatorics development. Those modules are not logical
+dependencies of the Boolean results in this package.
+
+PRIOR WORK REQUIRING EXPLICIT CREDIT
+
+CHHL (2018 conference / 2019 Theory of Computing), Claim 3.3, already gives
+the maximal-retention restriction. Blasiok et al. (2021, revised 2024),
+Claim 33, gives its explicit derivative identity. The normalized/Jensen
+3^(ell/2) comparison in this article follows immediately from that identity;
+it is sharper than the 4^ell statement in Bansal--Sinha Theorem 3.4 but is
+not claimed as a new restriction method or a new best-known bound.
+
+Keller and O'Donnell--Tan provide related bias-reduction and composition
+frameworks. Gilmer--Saks--Srinivasan provide prior composition-limit and
+critical-exponent methodology for other Boolean complexity measures.
+
+Fejer--Riesz, Bernstein, Riesz interpolation, Bernstein--Szego, and
+Berry--Esseen are classical analytic inputs. The scalar biased singleton
+bound is explicitly identified as a classical consequence, independently
+of the observation formulation. Complete bibliography and primary links
+are in article.tex and article.pdf.
+
+PROPOSED EXTENSIONS
+
+The manuscript supplies complete written proofs of the fixed-count moment
+invariant, the exact binomial witness, the singleton-degree frontier and
+its initial-slope characterization, explicit transfer refinements and
+conjunction constant asymptotics, finite-observation ceilings and their
+strictness/arithmetic gap, and the exact uniform degree-two extremum.
+No claim of exhaustive historical priority is made. The source Gaussian
+reporting mechanism is reconstructed with direct attribution.
+
+The Python programs certify their stated finite computations. They do not
+formalize the infinite analytic arguments or certify novelty. No repository
+source code or third-party manuscript text is bundled here.

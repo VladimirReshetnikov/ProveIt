@@ -1,0 +1,92 @@
+% Created (UTC): 2026-06-25T19:01:26Z
+% Repository HEAD: 469ff48bb80ab3c4e221417ab9ac2934d8f3d22a
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype}
+\emergencystretch=3em \hbadness=4000
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\DeclareMathOperator{\Li}{Li}
+\newcommand{\Cl}{\operatorname{Cl}_2}
+\theoremstyle{plain}\newtheorem{proposition}{Proposition}
+\theoremstyle{remark}\newtheorem{remark}[proposition]{Remark}
+\title{Where the Herglotz rational values meet the golden ladders\\ and the Clausen lattice}
+\author{Vladimir Reshetnikov}
+\date{2026-06-25}
+\begin{document}
+\maketitle
+\begin{center}\small
+Research note. Created (UTC) 2026-06-25T19:01:26Z; repository \texttt{HEAD}
+\texttt{469ff48bb80ab3c4e221417ab9ac2934d8f3d22a}. Companion to
+\texttt{herglotz-rational-values}; bridges to \texttt{golden-polylog-ladders} and
+\texttt{clausen-roots-of-unity}. Reproducer
+\texttt{src/PolyLog/tools/scratch/herglotz/bridges.py}.
+\end{center}
+
+\begin{abstract}
+The general formula $F(2/q)-F(1)=\dots-\tfrac12\sum\Li_2(-\cot^2\tfrac{\pi k}q)$ introduces dilogarithms at
+algebraic arguments; for $q=5$ these live in $\mathbb Q(\sqrt5)$, the field of our golden polylogarithm
+ladders, and the Herglotz \emph{derivative} law introduces a Clausen sum $W(q)$ that lives in our
+conductor-$q$ Clausen lattice. We make both connections explicit. The golden-argument dilogarithms of
+$F(2/5)$ split into a symmetric part that reduces to $\Li_2(\tfrac15)$ plus golden constants and an
+antisymmetric part that is a genuinely new $\mathbb Q(\sqrt5)$ real-dilogarithm constant; and the derivative
+Clausen sum $W(q)$ is an element of the conductor-$q$ Clausen lattice over the real cyclotomic field
+$\mathbb Q(\zeta_q)^+$, with clean closed forms whenever $\cot\frac{2\pi k}q\in\mathbb Q(\zeta_q)^+$. All
+identities are verified to $\sim10^{-80}$.
+\end{abstract}
+
+\section{The golden bridge ($q=5$)}
+For $q=5$ the two algebraic arguments are $-\cot^2\tfrac{\pi}{5}=-\tfrac{5+2\sqrt5}{5}$ and
+$-\cot^2\tfrac{2\pi}{5}=-\tfrac{5-2\sqrt5}{5}$, both in $\mathbb Q(\sqrt5)$. Comparing our
+$F(2/5)$ formula with Radchenko--Zagier's eq.~(24) (which uses the rational $\Li_2(4/5)$) gives a
+dilogarithm functional equation tying the two:
+\begin{proposition}\label{prop:bridge}
+With $\ell_k:=\log^2(2\sin\tfrac{\pi k}5)$,
+\[
+  \Li_2\!\Bigl(\tfrac45\Bigr)+\Li_2\!\Bigl(-\cot^2\tfrac{\pi}{5}\Bigr)+\Li_2\!\Bigl(-\cot^2\tfrac{2\pi}{5}\Bigr)
+  =2\log^2 2-2\log2\log\tfrac25-6(\ell_1+\ell_2).
+\]
+\end{proposition}
+Eliminating the rational dilogarithm gives a closed form for the symmetric golden-argument sum:
+\begin{proposition}\label{prop:goldensum}
+With $\varphi=\tfrac{1+\sqrt5}2$,
+\[
+  \Li_2\!\Bigl(-\cot^2\tfrac{\pi}{5}\Bigr)+\Li_2\!\Bigl(-\cot^2\tfrac{2\pi}{5}\Bigr)
+  =\Li_2\!\Bigl(\tfrac15\Bigr)-\frac{\pi^2}{6}-3\log^2\varphi+\tfrac14\log^2 5 .
+\]
+\end{proposition}
+Substituting Proposition~\ref{prop:goldensum} into the $F(2/5)$ theorem re-expresses that Herglotz value
+entirely through $\Li_2(\tfrac15)$ and golden constants --- the same constants the golden ladders reach for
+from the other side.
+
+\begin{remark}[A new $\mathbb Q(\sqrt5)$ constant]
+Only the \emph{symmetric} combination reduces. The antisymmetric part
+$X:=\tfrac12\bigl(\Li_2(-\cot^2\tfrac{\pi}{5})-\Li_2(-\cot^2\tfrac{2\pi}{5})\bigr)$ admits no integer relation
+over $\{\pi^2,\log^2\varphi,\log^2 5,\log^2 2,\Li_2(\tfrac15),\Li_2(\tfrac25),\text{log products}\}$ (PSLQ
+with a Champernowne canary, $100$ digits, $\mathrm{maxcoeff}=10^5$): it is a genuinely new real-dilogarithm
+constant attached to $\mathbb Q(\sqrt5)$. (Consistently, $X$ is not balanced as a Bloch-group element, so
+Borel's vanishing of $K_3(\mathbb Q(\sqrt5))\otimes\mathbb Q$ does not force it to reduce.)
+\end{remark}
+
+\section{The Clausen bridge (the derivative law)}
+The derivative law $\tfrac2q F'(2/q)-(1+\log2)=\tfrac{q^2-4}{24q}\pi^2+W(q)$ carries the Clausen sum
+$W(q)=\sum_{k=1}^{q-1}\cot\tfrac{2\pi k}q\,\Cl(\tfrac{2\pi k}q)$. Unlike the \emph{value} $F(2/q)$, this does
+not reduce to logarithms: $W(q)$ is a $\mathbb Q(\zeta_q)^+$-linear combination of the conductor-$q$ Clausen
+values $\Cl(\tfrac{2\pi k}q)$ --- i.e.\ an element of our conductor-$q$ Clausen lattice over the real
+cyclotomic field. The coefficients $\cot\tfrac{2\pi k}q$ are rational over $\mathbb Q(\zeta_q)^+$ exactly when
+$\sin\tfrac{2\pi k}q\in\mathbb Q(\zeta_q)^+$; in those cases $W(q)$ has a clean closed form, e.g.
+\[
+  W(8)=2\,\Cl\!\Bigl(\tfrac{\pi}4\Bigr)-2\,\Cl\!\Bigl(\tfrac{3\pi}4\Bigr),\qquad
+  W(12)=\frac{22\sqrt3}{9}\Bigl(\Cl\!\Bigl(\tfrac{\pi}6\Bigr)-\Cl\!\Bigl(\tfrac{5\pi}6\Bigr)\Bigr).
+\]
+For $q=5,7,9,11$ the cotangents lie in a strictly larger field (e.g.\ $\cot\tfrac{2\pi}5\notin\mathbb Q(\sqrt5)$),
+so no rational- or $\mathbb Q(\sqrt5)$-coefficient reduction exists, while membership in the conductor-$q$
+Clausen lattice over $\mathbb Q(\zeta_q)^+$ persists. So differentiating $F$ at a rational moves from the
+real-dilogarithm world of $F(2/q)$ into the imaginary-dilogarithm (Clausen) lattice we mapped at roots of
+unity.
+
+\section*{Verification}
+Propositions~\ref{prop:bridge}--\ref{prop:goldensum}, the irreducibility of $X$, and the $W(8),W(12)$
+closed forms are checked to $\sim10^{-80}$ in
+\texttt{src/PolyLog/tools/scratch/herglotz/bridges.py}.
+\end{document}

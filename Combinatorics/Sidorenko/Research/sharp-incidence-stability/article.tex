@@ -1,0 +1,1603 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=27mm,headheight=14pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsthm}
+\usepackage{newpxtext,newpxmath}
+\usepackage{microtype,mathtools,amsthm,booktabs,longtable,array,enumitem}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{fancyhdr,tocloft}
+\setlength{\cftbeforesecskip}{4pt}
+\setlength{\cftbeforetoctitleskip}{0pt}
+\setlength{\cftaftertoctitleskip}{12pt}
+\usepackage[hyphens]{url}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue]{hyperref}
+\hypersetup{pdftitle={Sharp Stability Constants for Fractional Covers and Incidence Spans},pdfauthor={ChatGPT; research memorandum for ProveIt},pdfsubject={Submodularity, entropy, Ramsey density, and Lagrangian intersection counts}}
+\setlength{\emergencystretch}{2em}
+\setlength{\parskip}{3pt}
+\setlist{nosep}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Sharp fractional-cover stability}
+\fancyhead[R]{\small Research memorandum}
+\fancyfoot[C]{\thepage}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{question}[theorem]{Research question}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Pp}{\mathbb P}
+\newcommand{\Fq}{\mathbb F_q}
+\newcommand{\RR}{\mathbb R}
+\newcommand{\NN}{\mathbb N}
+\newcommand{\1}{\mathbf 1}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\Span}{\operatorname{span}}
+\newcommand{\codim}{\operatorname{codim}}
+\newcommand{\KL}{D_{\mathrm{KL}}}
+\newcommand{\TV}{d_{\mathrm{TV}}}
+\newcommand{\Red}{\mathfrak R}
+\newcommand{\Gap}{\mathfrak G}
+\newcommand{\Kopt}{\mathsf K}
+\newcommand{\binomtwo}[1]{\binom{#1}{2}}
+\newcommand{\src}[1]{\texttt{\detokenize{#1}}}
+\newcommand{\oaicommit}{\texttt{adc7f1241b42e322a6451854ab7e4b4c146bf78a}}
+\newcommand{\picommit}{\texttt{1210e9d3ac88a573f98d7ef8626ba3d2c30e9749}}
+
+\title{\bfseries Sharp Stability Constants for Fractional Covers
+and Incidence Spans\\[5pt]
+\large Ramsey density, equality structure, and singular Lagrangian counts}
+\author{Research memorandum prepared with ChatGPT\\for the ProveIt project}
+\date{October 7, 2026 \quad\textperiodcentered\quad Version 1.0}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+We determine the exact constant comparing the total subadditivity defect of a
+submodular function with a prescribed fractional-cover gap. For a fractional
+cover $(S_j,\gamma_j)$ of a finite ground set $E$, the constant is
+\[
+ \Kopt_\gamma=\max_{F\subseteq E,\ |F|\ge2}
+ \frac{|F|-1}{\sum_{j:S_j\cap F\ne\varnothing}\gamma_j-1},
+\]
+provided all denominators are positive. The inequality holds for every normalized
+monotone submodular function, and for every normalized submodular function when
+the cover is a fractional partition. A unit-contraction argument supplies a
+self-contained proof. The same constant is sharp for discrete entropy and, in
+the fractional-partition case, for positive-definite determinant inequalities.
+For subspaces indexed by edges of a simple uniform hypergraph, the result becomes
+an optimal incidence-span inequality; in graphs its constant is precisely
+$m_2(G)$. We classify equality for strictly balanced hypergraphs and identify the
+exact dimension cost of repairing a family to a direct sum.
+A separate exterior-algebra count controls dependent families of intersections
+of independent random Lagrangians. Applied to the explicit 13-point graph in the
+OpenAI Sidorenko manuscript, it replaces the nondirect residual estimate
+$O_D(q^{-D+1641})$ by $O_D(q^{-D+224})$ for even $D\ge364$; the residual argument
+alone already gives $O_D(q^{-7})$ at $D=310$. This does not set the dimension
+threshold for the full Sidorenko construction. Exact finite certificates and a
+research agenda accompany the proofs.
+\end{abstract}
+
+\vspace{4pt}
+\noindent\textbf{Status.} The theorems below are proved in this manuscript.
+The accompanying computations are supplementary exact checks, not a formal
+verification. No new Lean compilation or independent verification of either
+repository's entire breakthrough program is claimed. Priority beyond the
+explicitly compared literature remains to be established.
+
+\newpage
+\begingroup
+\fontsize{9.5}{11.3}\selectfont
+\tableofcontents
+\endgroup
+\newpage
+
+\section{Repository review and the research target}
+\label{sec:review}
+
+\subsection{Snapshots, rather than an unqualified list of breakthroughs}
+
+This study uses the following fixed repository states:
+\begin{center}
+\begin{tabular}{@{}p{0.25\linewidth}p{0.68\linewidth}@{}}
+\toprule
+Repository & Pinned commit and observed date\\
+\midrule
+\src{openai/math} & \oaicommit\newline October 6, 2026\\[3pt]
+\src{ProveIt} & \picommit\newline October 7, 2026\\
+\bottomrule
+\end{tabular}
+\end{center}
+The OpenAI release describes a collection of 722 manuscripts in 372 result
+families and explicitly distinguishes different stages of verification
+\cite{OpenAIReadme,OpenAICatalog}. Its catalog contains claims concerning
+quasipolynomial bounds for arithmetic progressions, superexponential van der
+Waerden numbers, sharp logarithmic exponents in off-diagonal Ramsey theory, and
+counterexamples to Sidorenko's conjecture. A catalog entry is evidence of what
+is claimed, not a substitute for checking the claim's proof.
+
+The ProveIt checkpoint takes a similarly useful, more fine-grained approach.
+Its Ramsey status file reports 113 checked exact companions among 120 numbered
+source statements, seven open statements, a successful build of 739 reachable
+modules, and an axiom audit of 4,709 public theorems. It also records repairs to
+geometric interfaces and states that an improvement of the general all-length
+Gowers--Szemer\'edi bound is not claimed \cite{ProveItStatus}. These are
+\emph{repository-reported} verification results; the present work did not rerun
+that build. The checkpoint includes vendored OpenAI mathematics modules, so the
+two projects already have an explicit technical connection.
+
+The review here is deliberately selective. It examines the current status and
+several candidate directions, then reads the relevant finite-complex,
+rank-layer, and singular-tail arguments of the Sidorenko manuscript in detail.
+It is not an audit of all 722 manuscripts, nor of all ProveIt research reports.
+
+\subsection{Why the selected target is not a catalog-level extrapolation}
+
+The progression and Ramsey-number claims are natural candidates, but their
+principal quantitative mechanisms would require substantial independent
+verification before importing them as black boxes. The selected Sidorenko
+manuscript contains a more accessible structural bottleneck: it assigns
+subspaces to edges of a fixed graph and uses the inequality
+\begin{equation}
+ \sum_v\dim\Bigl(\sum_{e\ni v}H_e\Bigr)
+ \ge 2\dim\Bigl(\sum_e H_e\Bigr),
+ \label{eq:sourceweak}
+\end{equation}
+with an extra unit of dimension when the family is not direct
+\cite[\src{sections/tail.tex}, \src{lem:tail-span}]{OpenAISidorenko}.
+This lemma is elementary, transparent, and independent of the difficult
+finite-field construction that surrounds it.
+
+The question we pursue is stronger than whether the extra unit can be enlarged
+for one example:
+\begin{quote}
+For a fixed incidence pattern, what is the \emph{optimal} comparison between
+local span excess and the total dimension of linear dependence? Does the same
+comparison hold for arbitrary submodular functions, and can it improve the
+singular counting argument rather than merely restate its qualitative step?
+\end{quote}
+We answer the optimal-constant question for all fractional covers satisfying a
+necessary nondegeneracy condition, not only for graph incidence patterns. The
+answer then feeds into a new dependent-family counting estimate.
+
+The OpenAI formalization record for result family 161 describes a Lean theorem
+asserting a finite simple host violating Sidorenko's inequality for the fixed
+35-vertex, 66-edge pattern. It explicitly excludes the separate forcing
+consequence from that comparator's scope \cite{OpenAILean161}. We do not use the
+existence of this comparator as a proof of any new statement below.
+
+\subsection{Relation to prior inequalities}
+
+Fractional subadditivity and its entropy analogues are classical. Madiman and
+Tetali give a broad framework of fractional inequalities and gap duality
+\cite{MadimanTetali}. Ellis, Friedgut, Kindler, and Yehudayoff develop geometric
+stability via information theory \cite{EllisEtAl}. Jakhar, Kurri, Chillara, and
+Prabhakaran establish approximate modularity estimates controlled by a
+pair-separation parameter, together with exact equality criteria
+\cite{Jakhar2025}; their later work develops convex-functional extensions
+\cite{Jakhar2026}.
+
+Thus neither the principle ``a small cover gap means weak dependence'' nor the
+zero-gap independence criterion is presented here as new. The contribution
+studied here is the \emph{exact best constant for total defect}, expressed by
+an optimization over all supports $F$, together with the incidence-span equality
+classification and the exterior-algebra application. In particular, the
+comparison with \cite{Jakhar2025} is quantitative and concerns a different,
+global defect; Section~\ref{sec:comparison} spells out the distinction.
+
+The quantity $m_2(G)$ in the graph specialization is the familiar 2-density
+from random Ramsey theory; see, for example, the definition and discussion in
+\cite{RamseyTilings}. Its identification as the constant in the span problem
+is an algebraic statement. It does not by itself improve a random Ramsey
+threshold or a numerical Ramsey number.
+
+\subsection{Main conclusions and their logical separation}
+
+The central results are Theorem~\ref{thm:cover} (all fractional covers),
+Theorem~\ref{thm:span} (uniform-hypergraph spans),
+Theorem~\ref{thm:equality} (strictly balanced equality cases), and
+Theorem~\ref{thm:count} (dependent Lagrangian intersection counts).
+The explicit source-graph improvement is Corollary~\ref{cor:residual}.
+The first three results are independent of every claimed breakthrough in the
+reviewed repositories. The counting theorem is also proved independently. Its
+application to the particular weighted singular tail imports only the
+specified residual-profile gain bound, not the entire Sidorenko conclusion.
+
+\section{The exact fractional-cover stability constant}
+\label{sec:cover}
+
+\subsection{Definitions and the optimal-constant theorem}
+
+Let $E$ be a finite set with $m=|E|\ge2$. Let $S_j\subseteq E$,
+$j\in J$, and let $\gamma_j\ge0$ be real weights. Repetitions of the sets
+$S_j$ are allowed. Empty sets and zero weights can be discarded.
+The family is a \emph{fractional cover} if
+\begin{equation}
+ \sum_{j:e\in S_j}\gamma_j\ge1\qquad(e\in E),
+ \label{eq:cover}
+\end{equation}
+and a \emph{fractional partition} if equality holds for every $e$.
+A function $f:2^E\to\RR$ is normalized if $f(\varnothing)=0$, monotone if
+$f(A)\le f(B)$ whenever $A\subseteq B$, and submodular if
+\[
+ f(A)+f(B)\ge f(A\cup B)+f(A\cap B).
+\]
+Define its total defect and cover gap by
+\begin{equation}
+ \Red(f)=\sum_{e\in E}f(\{e\})-f(E),\qquad
+ \Gap_\gamma(f)=\sum_j\gamma_j f(S_j)-f(E).
+ \label{eq:defects}
+\end{equation}
+Submodularity and normalization imply $\Red(f)\ge0$.
+For nonempty $F\subseteq E$, put
+\begin{equation}
+ c_\gamma(F)=\sum_{j:S_j\cap F\ne\varnothing}\gamma_j-1.
+ \label{eq:coverageexcess}
+\end{equation}
+Condition~\eqref{eq:cover} gives $c_\gamma(F)\ge0$.
+
+\begin{theorem}[Exact fractional-cover constant]
+\label{thm:cover}
+Assume that $c_\gamma(F)>0$ whenever $|F|\ge2$, and set
+\begin{equation}
+ \boxed{\displaystyle
+ \Kopt_\gamma=\max_{F\subseteq E,\ |F|\ge2}
+ \frac{|F|-1}{c_\gamma(F)}.}
+ \label{eq:K}
+\end{equation}
+Then every normalized monotone submodular function satisfies
+\begin{equation}
+ \boxed{\displaystyle
+ \Red(f)\le \Kopt_\gamma\Gap_\gamma(f).}
+ \label{eq:maincover}
+\end{equation}
+The constant is best possible, even among rank functions of one-dimensional
+subspace arrangements and among entropy functions of finite random variables.
+For a fractional partition, monotonicity of $f$ is unnecessary.
+
+If $c_\gamma(F)=0$ for some $|F|\ge2$, no finite constant in
+\eqref{eq:maincover} works for all normalized monotone submodular functions.
+\end{theorem}
+
+For a fractional partition, the positive-denominator condition is equivalent
+to requiring that no two distinct elements have identical incidence columns
+on the positive-weight sets. Indeed,
+\[
+ c_\gamma(\{e,f\})=1-\sum_{j:e,f\in S_j}\gamma_j.
+\]
+If two columns differ, their common weight is strictly less than one. Conversely,
+common weight one forces their positive-weight columns to agree. Positivity on
+pairs implies positivity on all larger sets.
+
+\subsection{Unit contraction of an integral polymatroid}
+
+The following elementary lemma is the engine of the proof. It is stated and
+proved directly, so no representability assumption or matroid-expansion theorem
+is needed.
+
+\begin{lemma}[Unit contraction]
+\label{lem:contraction}
+Let $f$ be normalized, monotone, integer-valued, and submodular. If
+$f(\{e_0\})\ge1$, define
+\begin{equation}
+ f'(S)=\min\{f(S),f(S\cup\{e_0\})-1\}.
+ \label{eq:unitcontraction}
+\end{equation}
+Then $f'$ has the same four properties, $f'(E)=f(E)-1$, and
+\begin{equation}
+ f(S)-f'(S)=\1_{\{f(S\cup\{e_0\})=f(S)\}}.
+ \label{eq:closureindicator}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Write
+\[
+ d(S)=\1_{\{f(S\cup\{e_0\})=f(S)\}}.
+\]
+A nonzero marginal is a positive integer, so \eqref{eq:closureindicator} holds.
+Diminishing returns shows that $d(A)\le d(B)$ for $A\subseteq B$.
+Also $d(\varnothing)=0$, because $f(\{e_0\})\ge1$, and $d(E)=1$.
+
+For monotonicity, the only nontrivial case is $A\subseteq B$ with
+$d(A)=0$ and $d(B)=1$. If $f(A)=f(B)$, monotonicity and $d(B)=1$ would give
+\[
+ f(A\cup\{e_0\})\le f(B\cup\{e_0\})=f(B)=f(A),
+\]
+contradicting $d(A)=0$. Consequently $f(B)-f(A)\ge1$, and
+$f'(B)-f'(A)=f(B)-f(A)-1\ge0$.
+
+For submodularity set $I=A\cap B$ and $U=A\cup B$. We need
+\[
+ f(A)+f(B)-f(U)-f(I)\ge d(A)+d(B)-d(U)-d(I).
+\]
+The right side is positive only if $d(A)=d(B)=d(U)=1$ and $d(I)=0$;
+otherwise it is at most zero. In that exceptional case, applying submodularity
+to $A\cup\{e_0\}$ and $B\cup\{e_0\}$ gives
+\[
+ f(A)+f(B)\ge f(U)+f(I\cup\{e_0\})\ge f(U)+f(I)+1.
+\]
+This proves the required inequality. Normalization, integrality, and
+$f'(E)=f(E)-1$ have already been checked. Monotonicity and normalization also
+give nonnegativity.
+\end{proof}
+
+\subsection{Proof of the exact constant}
+
+\begin{proof}[Proof of Theorem~\ref{thm:cover}]
+First suppose that $f$ is integer-valued and monotone. We induct on $f(E)$.
+If $f(E)=0$, monotonicity forces $f$ to vanish. Otherwise subadditivity ensures
+that some $e_0$ has $f(\{e_0\})>0$. Apply Lemma~\ref{lem:contraction} and put
+\[
+ F=\{e:f(\{e,e_0\})=f(\{e\})\},\qquad
+ U=\{j:f(S_j\cup\{e_0\})=f(S_j)\}.
+\]
+The set $F$ contains $e_0$. If $S_j$ meets $F$, diminishing returns makes the
+marginal of $e_0$ over $S_j$ zero, so $j\in U$. Therefore
+\begin{align}
+ \Red(f)-\Red(f')&=|F|-1,\label{eq:Rincrement}\\
+ \Gap_\gamma(f)-\Gap_\gamma(f')&=\sum_{j\in U}\gamma_j-1
+ \ge c_\gamma(F).\label{eq:Gincrement}
+\end{align}
+If $|F|=1$, the first increment is zero and the second is nonnegative.
+If $|F|\ge2$, definition~\eqref{eq:K} yields
+\[
+ |F|-1\le \Kopt_\gamma c_\gamma(F)
+ \le \Kopt_\gamma\bigl(\Gap_\gamma(f)-\Gap_\gamma(f')\bigr).
+\]
+Adding the induction hypothesis for $f'$ proves the result.
+
+Scaling proves the inequality for rational-valued monotone submodular
+functions. For completeness, real-valued functions can be approximated without
+leaving the monotone submodular cone. Put
+\[
+ h(S)=(2m+1)|S|-|S|^2.
+\]
+Its nontrivial monotonicity increments are at least two, and its submodularity
+slack on incomparable $A,B$ is $2|A\setminus B||B\setminus A|\ge2$.
+Thus $f+\varepsilon h$ can be approximated coordinatewise by a normalized
+rational-valued function within $\varepsilon/4$, while preserving all relevant
+inequalities. Comparable-set submodularity inequalities are identities.
+Letting $\varepsilon\downarrow0$ proves the real case by continuity.
+
+When the weights form a fractional partition, adding a modular function
+$M|S|$ changes neither defect in \eqref{eq:defects}. For any normalized
+submodular $f$, a sufficiently large $M$ makes $f(S)+M|S|$ monotone. The already
+proved case therefore removes the monotonicity hypothesis.
+
+To prove optimality, fix $F\subseteq E$, $|F|\ge2$, and use the function
+\begin{equation}
+ f_F(S)=\1_{\{S\cap F\ne\varnothing\}}.
+ \label{eq:rankone}
+\end{equation}
+It is normalized, monotone, and submodular, and
+\[
+ \Red(f_F)=|F|-1,\qquad \Gap_\gamma(f_F)=c_\gamma(F).
+\]
+It is realized by assigning one common nonzero line to the elements of $F$
+and the zero subspace to the others. It is also, up to multiplication by the
+entropy of a nonconstant finite random variable $Z$, the entropy function
+obtained by setting $X_e=Z$ for $e\in F$ and making the remaining variables
+constant. Taking a maximizing $F$ proves sharpness. A zero denominator gives a
+positive total defect and a zero cover gap, excluding every finite constant.
+\end{proof}
+
+\begin{remark}[What the contraction proof does not assert]
+Repeated contractions do not express an arbitrary submodular function as a sum
+of coverage functions. They decompose the \emph{two particular defects} into
+increments with controlled ratios. In particular, the proof neither assumes
+that every polymatroid is linearly representable nor makes such a conclusion.
+\end{remark}
+
+\subsection{A finite network for the optimal constant}
+
+The support formula is explicit but contains exponentially many subsets. Its
+comparison with a prescribed rational number has a useful network formulation.
+
+\begin{proposition}[A cut formulation]
+\label{prop:cut}
+For an explicitly given rational fractional cover and a rational $\kappa>0$,
+the assertion $\Kopt_\gamma>\kappa$ is decidable using at most
+$\binom{m}{2}$ minimum-cut computations on networks with $m+|J|+2$ vertices.
+\end{proposition}
+
+\begin{proof}
+The assertion is equivalent to the existence of $F$, $|F|\ge2$, with
+\[
+ |F|-\kappa\sum_{j:S_j\cap F\ne\varnothing}\gamma_j>1-\kappa.
+\]
+Fix a pair of elements that must belong to $F$. Create a source $s$, a sink
+$t$, one vertex for each $e\in E$, and one vertex for each $j\in J$.
+Use capacity one on $s\to e$, capacity $\kappa\gamma_j$ on $j\to t$, and a
+capacity $M$ on $e\to j$ whenever $e\in S_j$, where $M$ exceeds the sum of all
+finite capacities. Add capacity-$M$ source arcs to the two forced elements.
+A minimum cut cannot cut any $M$-arc. Its source-side element vertices form a
+set $F$ containing the forced pair, and every row meeting $F$ must also lie on
+the source side. Extra row vertices cannot lower the cut. Its finite capacity
+is consequently
+\[
+ m-|F|+\kappa\sum_{j:S_j\cap F\ne\varnothing}\gamma_j.
+\]
+The required strict inequality is equivalent to a cut value smaller than
+$m-1+\kappa$. Enumerating the forced pair covers all $|F|\ge2$.
+\end{proof}
+
+This is an algorithmic consequence of the exact constant, not a claim of a new
+minimum-cut algorithm. The supplied verifier uses direct exact enumeration for
+the small certificates, avoiding a dependency on a network-flow library.
+
+\section{Entropy, determinants, and the lower cover gap}
+\label{sec:entropy}
+
+\subsection{Optimal control of total correlation}
+
+Let $(X_e)_{e\in E}$ be finite-valued random variables and write $H(X_S)$ for
+joint entropy, using natural logarithms. Then
+\begin{equation}
+ \Red(H)=\sum_e H(X_e)-H(X_E)
+ =\KL\!\left(P_{X_E}\,\middle\|\,\bigotimes_e P_{X_e}\right).
+ \label{eq:TC}
+\end{equation}
+The entropy set function is normalized, monotone, and submodular, so
+Theorem~\ref{thm:cover} gives the following sharp statement.
+
+\begin{corollary}[Sharp entropy stability]
+\label{cor:entropy}
+For every fractional cover satisfying the positive-denominator condition,
+\begin{equation}
+ \KL\!\left(P_{X_E}\,\middle\|\,\bigotimes_e P_{X_e}\right)
+ \le\Kopt_\gamma\left(\sum_j\gamma_j H(X_{S_j})-H(X_E)\right).
+ \label{eq:entropybound}
+\end{equation}
+The coefficient cannot be decreased, even for binary-valued variables.
+In particular, with $g$ denoting the expression in parentheses,
+\begin{equation}
+ \TV\!\left(P_{X_E},\bigotimes_eP_{X_e}\right)
+ \le\sqrt{\Kopt_\gamma g/2}.
+ \label{eq:TV}
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Only the final estimate needs an additional argument. For probability measures
+$P,Q$, let $A=\{x:P(x)\ge Q(x)\}$. The log-sum inequality gives
+$\KL(P\|Q)\ge d(P(A)\|Q(A))$, where $d$ is binary relative entropy.
+As a function of its first argument, $d(p\|q)$ has second derivative
+$1/(p(1-p))\ge4$ and value and derivative zero at $p=q$.
+Hence $d(p\|q)\ge2(p-q)^2$. Since $P(A)-Q(A)=\TV(P,Q)$, this proves
+\eqref{eq:TV}. Sharpness of the coefficient in \eqref{eq:entropybound} follows
+from the common binary variable construction in \eqref{eq:rankone}; no claim
+of sharpness of the square-root bound for every fixed cover is needed.
+\end{proof}
+
+The same entropy inequality holds conditionally on another random variable:
+apply it to each conditional distribution and average. Its constant is still
+sharp because the conditioning variable may be constant. This extension does
+not require a linear or Gaussian model of the dependence.
+
+\subsection{A sharp determinant inequality}
+
+\begin{corollary}[Positive-definite matrices]
+\label{cor:determinants}
+Let $(S_j,\gamma_j)$ be a fractional partition with finite $\Kopt_\gamma$.
+For every real positive-definite matrix $\Sigma$ indexed by $E$,
+\begin{equation}
+ \boxed{\displaystyle
+ \frac{\prod_{e\in E}\Sigma_{ee}}{\det\Sigma}
+ \le
+ \left(\frac{\prod_j(\det\Sigma_{S_j})^{\gamma_j}}
+ {\det\Sigma}\right)^{\Kopt_\gamma}.}
+ \label{eq:detbound}
+\end{equation}
+Here the determinant of the empty principal submatrix is one. The exponent is
+optimal even if one restricts to covariance matrices of nonsingular Gaussian
+vectors.
+\end{corollary}
+
+\begin{proof}
+The set function $f(S)=\log\det\Sigma_S$, with $f(\varnothing)=0$, is
+submodular. One direct proof conditions on the common block $C=A\cap B$ by
+Schur complementation. The remaining positive-definite block matrix on
+$A\setminus B$ and $B\setminus A$ has determinant at most the product of its
+two diagonal-block determinants: take a second Schur complement and use
+$0<M_{QQ}-M_{QP}M_{PP}^{-1}M_{PQ}\le M_{QQ}$.
+Taking determinants gives the required inequality for $f$.
+This $f$ need not be monotone, which is why the fractional-partition version of
+Theorem~\ref{thm:cover} is used. Exponentiating its conclusion yields
+\eqref{eq:detbound}.
+
+For sharpness choose a maximizing support $F$, put
+$\Sigma_F=\mathbf 1\mathbf 1^{\mathsf T}+\varepsilon I$, and use an independent
+identity block outside $F$. For every $S$ with $r=|S\cap F|\ge1$,
+\[
+ \det\Sigma_S=\varepsilon^{r-1}(r+\varepsilon).
+\]
+Consequently, as $\varepsilon\downarrow0$,
+\begin{align*}
+ \log\frac{\prod_e\Sigma_{ee}}{\det\Sigma}
+ &=(|F|-1)\log(1/\varepsilon)+O(1),\\
+ \log\frac{\prod_j(\det\Sigma_{S_j})^{\gamma_j}}{\det\Sigma}
+ &=c_\gamma(F)\log(1/\varepsilon)+O(1).
+\end{align*}
+In the second identity we used
+$\sum_j\gamma_j|S_j\cap F|=|F|$. Their ratio tends to
+$\Kopt_\gamma$. Every matrix in the approximation is positive definite.
+\end{proof}
+
+\subsection{The exact lower-gap constant}
+
+For a fractional partition define
+\[
+ \Gap^-_\gamma(f)=f(E)-\sum_j\gamma_j
+ \bigl(f(E)-f(E\setminus S_j)\bigr).
+\]
+This is the lower fractional-subadditivity gap in conditional notation.
+The standard gap duality \cite{MadimanTetali} has an exact-constant consequence.
+
+\begin{corollary}[Optimal comparison with the lower gap]
+\label{cor:lower}
+For a separating fractional partition, put
+\begin{equation}
+ \Kopt^-_\gamma=\max_{|F|\ge2}
+ \frac{|F|-1}{1-\sum_{j:F\subseteq S_j}\gamma_j}.
+ \label{eq:Kminus}
+\end{equation}
+Then every normalized submodular function satisfies
+$\Red(f)\le\Kopt^-_\gamma\Gap^-_\gamma(f)$, and this coefficient is sharp.
+\end{corollary}
+
+\begin{proof}
+Let $w=\sum_j\gamma_j$. Separation implies $w>1$. The complementary sets
+$T_j=E\setminus S_j$, with weights $\bar\gamma_j=\gamma_j/(w-1)$, form a
+fractional partition, and direct expansion gives
+\[
+ \Gap^-_\gamma(f)=(w-1)\Gap_{\bar\gamma}(f).
+\]
+For $|F|\ge2$,
+\[
+ (w-1)c_{\bar\gamma}(F)
+ =1-\sum_{j:F\subseteq S_j}\gamma_j>0.
+\]
+Theorem~\ref{thm:cover} proves the inequality. The rank-one functions $f_F$
+again give equality for a maximizing support.
+\end{proof}
+
+For the star partition of a simple graph with $m\ge2$ edges and maximum degree
+$d_{\max}$, normalized by weights $1/2$, formula~\eqref{eq:Kminus} simplifies to
+\begin{equation}
+ \Kopt^-_\gamma=\max\{m-1,\,2(d_{\max}-1)\}.
+ \label{eq:graphlower}
+\end{equation}
+Indeed, a collection of at least two distinct edges is contained in at most one
+star. A support contained in a star has denominator $1/2$; every other support
+has denominator one. If the whole graph is a star, the star term dominates;
+otherwise the whole edge set attains $m-1$. This also shows why the optimal
+upper-gap and lower-gap constants need not resemble one another.
+
+\subsection{Comparison with pair-separation stability}
+\label{sec:comparison}
+
+For a separating fractional partition, \cite[Theorem 3]{Jakhar2025} controls
+$f(\{e\})+f(E\setminus\{e\})-f(E)$ using the gap and
+\[
+ \sigma=\min_{e\ne f}\sum_{j:e\in S_j,\ f\notin S_j}\gamma_j.
+\]
+A chain-rule summation of those pointwise estimates gives the valid comparison
+\begin{equation}
+ \Red(f)\le\frac{m-1}{\sigma}\Gap_\gamma(f).
+ \label{eq:paircomparison}
+\end{equation}
+For example, each term
+$f(\{e\})-f(\{e\}\mid\text{earlier elements})$ is bounded above by the
+corresponding single-element versus all-other-elements defect; the first term
+in the chain is zero. This derives \eqref{eq:paircomparison} without attributing
+to the cited paper a statement in precisely this form.
+
+For a graph with adjacent edges, the star partition has $\sigma=1/2$.
+The new exact comparison will be
+$\Red(f)\le 2m_2(G)\Gap_\gamma(f)$, replacing $2(m-1)$ by $2m_2(G)$.
+For the 33-edge source graph, the improvement in this particular derived global
+bound is a factor of eleven. This does not imply that every conclusion of
+\cite{Jakhar2025} is weakened by that factor; its pointwise estimates address
+additional quantities.
+
+\section{Incidence spans, directness repair, and equality}
+\label{sec:spans}
+
+\subsection{Uniform hypergraphs and the sharp span inequality}
+
+Let $\mathcal H=(V,E)$ be a finite simple $a$-uniform hypergraph with at least
+two edges. The word simple means that different edges are different $a$-element
+subsets. Isolated vertices may be removed. For $F\subseteq E$ let
+$V(F)=\bigcup_{e\in F}e$, and define
+\begin{equation}
+ \mu_a(\mathcal H)=\max_{F\subseteq E,\ |F|\ge2}
+ \frac{|F|-1}{|V(F)|-a}.
+ \label{eq:adensity}
+\end{equation}
+All denominators are positive. In a graph, this is the usual $m_2(G)$.
+
+Assign finite-dimensional subspaces $H_e$ of a common vector space over an
+arbitrary field. Put
+\begin{equation}
+ \begin{gathered}
+ d_e=\dim H_e,\qquad t=\sum_e d_e,\qquad
+ K=\sum_eH_e,\quad k=\dim K,\\
+ K_v=\sum_{e\ni v}H_e,\qquad k_v=\dim K_v,\qquad
+ R=t-k,\qquad \Delta=\sum_v k_v-a k.
+ \end{gathered}
+ \label{eq:spanparameters}
+\end{equation}
+The quantity $R$ is the dimension of the kernel of the addition map
+$\bigoplus_eH_e\to K$. It measures all linear relations, not merely the number
+of pairs with nonzero intersection.
+
+\begin{theorem}[Sharp incidence-span inequality]
+\label{thm:span}
+For every such arrangement,
+\begin{equation}
+ \boxed{\displaystyle R\le\mu_a(\mathcal H)\Delta.}
+ \label{eq:spanmain}
+\end{equation}
+The coefficient is optimal for each fixed hypergraph. In particular,
+$\Delta=0$ if and only if the $H_e$ form a direct sum. For graphs this reads
+\begin{equation}
+ \sum_v\dim K_v-2\dim K
+ \ge\frac{\sum_e\dim H_e-\dim K}{m_2(G)}.
+ \label{eq:graphspan}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+For $F\subseteq E$, the function $f(F)=\dim\sum_{e\in F}H_e$ is normalized,
+monotone, and submodular. The stars $S_v=\{e:v\in e\}$, with weights $1/a$,
+form a fractional partition. Here
+\[
+ \Gap_\gamma(f)=\Delta/a,\qquad
+ c_\gamma(F)=(|V(F)|-a)/a,\qquad
+ \Kopt_\gamma=a\mu_a(\mathcal H).
+\]
+Theorem~\ref{thm:cover} proves the inequality and sharpness.
+If $\Delta=0$, then $R=0$, which is directness. Conversely, a direct family has
+$k=\sum_e d_e$ and $k_v=\sum_{e\ni v}d_e$, so $\Delta=0$.
+\end{proof}
+
+\subsection{An exact flag identity over every field}
+
+A direct linear proof supplies additional information needed for equality.
+Choose a nonzero line $L$ lying in at least one $H_e$, and quotient $K$ by $L$.
+Use primes for the images and their dimensions. Set
+\[
+ F_L=\{e:L\subseteq H_e\},\qquad U_L=\{v:L\subseteq K_v\}.
+\]
+Then $F_L\ne\varnothing$, $V(F_L)\subseteq U_L$, and rank-nullity gives
+\begin{equation}
+ R-R'=|F_L|-1,\qquad
+ \Delta-\Delta'=|U_L|-a.
+ \label{eq:linearstep}
+\end{equation}
+Repeating until the ambient span becomes zero yields a flag with $k$ steps and
+\begin{equation}
+ \boxed{\displaystyle
+ R=\sum_{\ell=1}^k(|F_\ell|-1),\qquad
+ \Delta=\sum_{\ell=1}^k(|U_\ell|-a).}
+ \label{eq:flag}
+\end{equation}
+The supports and visible vertex sets are taken in the \emph{successive
+quotients}, not all in the original arrangement. At each step,
+\[
+ |F_\ell|-1\le\mu_a(|V(F_\ell)|-a)
+ \le\mu_a(|U_\ell|-a)
+\]
+when $|F_\ell|\ge2$; the singleton case contributes zero on the left and a
+nonnegative quantity on the right. This proves \eqref{eq:spanmain} again.
+
+\begin{corollary}[Equality certificate by a flag]
+\label{cor:flag}
+Equality in \eqref{eq:spanmain} holds if and only if every step of one such flag
+has one of the following forms: a singleton support with $|U_\ell|=a$, or a
+support maximizing \eqref{eq:adensity} with $U_\ell=V(F_\ell)$.
+If equality holds, this property holds for every admissible flag.
+\end{corollary}
+
+\begin{proof}
+The total slack is the sum of the nonnegative step slacks in
+\eqref{eq:linearstep}. A step slack is zero precisely under the stated
+conditions. This reasoning does not depend on which admissible flag was chosen.
+\end{proof}
+
+\subsection{The exact cost of repairing to a direct sum}
+
+\begin{theorem}[Optimal directness repair]
+\label{thm:repair}
+Among all families $H'_e\subseteq H_e$ forming a direct sum, the minimum of
+$\sum_e\codim_{H_e}H'_e$ is exactly $R$. In particular a direct family can be
+obtained by deleting at most $\mu_a(\mathcal H)\Delta$ dimensions in total,
+and the resulting total dimension can be $k$.
+\end{theorem}
+
+\begin{proof}
+A direct family of subspaces of $K$ has total dimension at most $k$, so its
+number of deleted dimensions is at least $t-k=R$. Conversely, choose a basis
+of each $H_e$, scan the union of these bases, and retain a vector precisely
+when it enlarges the span of the previously retained vectors. The retained
+vectors form a basis of $K$. Assign each retained vector to its original edge
+and let $H'_e$ be the span of the vectors assigned to $e$. Their total union
+is a basis, so the family is direct and has total dimension $k$.
+The final bound follows from Theorem~\ref{thm:span}.
+\end{proof}
+
+This is a dimension-edit statement, not a claim that a near-extremal family has
+a common core after a similarly small edit. The latter, different stability
+problem is discussed in Section~\ref{sec:questions}.
+
+\subsection{Equality for strictly balanced hypergraphs}
+
+\begin{definition}
+A simple $a$-uniform hypergraph with $m\ge2$ edges is \emph{strictly
+$a$-balanced} if its full edge set is the unique maximizer in
+\eqref{eq:adensity}. Thus
+$\mu_a=(m-1)/(|V|-a)$ and every proper support of at least two edges has
+strictly smaller density.
+\end{definition}
+
+\begin{theorem}[Common-core classification]
+\label{thm:equality}
+Suppose $\mathcal H$ is strictly $a$-balanced. Equality
+$R=\mu_a(\mathcal H)\Delta$ holds if and only if there are subspaces $C,P_e$
+such that
+\begin{equation}
+ H_e=C\oplus P_e\quad(e\in E),\qquad
+ K=C\oplus\bigoplus_{e\in E}P_e.
+ \label{eq:commoncore}
+\end{equation}
+Necessarily $C=\bigcap_eH_e$. In particular, if the total intersection is zero,
+equality is equivalent to directness.
+\end{theorem}
+
+\begin{proof}
+Suppose equality holds. Take any nonzero vector in $H_e\cap H_f$ for $e\ne f$
+and begin a flag by its line. Corollary~\ref{cor:flag} and strict balance force
+$F_L=E$. Hence every pairwise intersection equals
+$C=\bigcap_e H_e$.
+
+Fix an edge $e_0$ and quotient by $H_{e_0}$, using successive one-dimensional
+quotients inside its current image. Equality is preserved at every step,
+because both the step slack and the remaining slack are nonnegative and their
+sum is zero. In the final quotient the $e_0$-space is zero. No nonzero line
+there can have support $E$. Thus a further flag can contain only singleton
+supports, so its redundancy is zero. Writing $c=\dim C$ and comparing total
+edge dimensions before and after the quotient gives
+\[
+ 0=R_{\mathrm{quotient}}
+ =R-\sum_{e\ne e_0}\dim(H_e\cap H_{e_0})
+ =R-(m-1)c.
+\]
+Choose any complement $P_e$ to $C$ in $H_e$. The addition map from
+$C\oplus\bigoplus_eP_e$ onto $K$ has domain dimension
+$c+\sum_e(d_e-c)=t-(m-1)c=k$, so it is an isomorphism. This proves
+\eqref{eq:commoncore}.
+
+Conversely, an arrangement of the form \eqref{eq:commoncore} satisfies
+\[
+ R=(m-1)c,\qquad \Delta=(|V|-a)c.
+\]
+Their ratio is $\mu_a$, proving equality.
+\end{proof}
+
+\section{Ramsey density and the source complex}
+\label{sec:density}
+
+\subsection{Several exact graph constants}
+
+For graphs with at least two edges, isolated vertices do not affect $m_2$.
+The following examples make the optimal constant concrete.
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+Graph & $m_2(G)$ & Equality structure covered above\\
+\midrule
+$K_n$, $n\ge3$ & $(n+1)/2$ & Common core and private summands\\
+$C_\ell$, $\ell\ge3$ & $(\ell-1)/(\ell-2)$ & Common core and private summands\\
+Forest with adjacent edges & $1$ & May have several maximizing supports\\
+Matching with at least two edges & $1/2$ & May have several maximizing supports\\
+Maximal planar graph, $n\ge4$ & $3-1/(n-2)$ & Common core and private summands\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+For $K_n$, any support on $s$ vertices has at most $\binom{s}{2}$ edges, so
+its density is at most $(s+1)/2$; equality at the maximum requires the entire
+$K_n$. A proper support of a cycle is a forest and has density at most one,
+whereas the complete cycle has density $(\ell-1)/(\ell-2)>1$.
+A forest has at most $v-1$ edges on $v$ vertices, and an adjacent pair attains
+density one. A matching support of $r\ge2$ edges has $2r$ vertices and density
+$(r-1)/(2r-2)=1/2$.
+
+For a simple planar graph on $s\ge3$ vertices, the familiar edge bound
+$e\le3s-6$ follows by Euler's formula and face-length counting, with disconnected
+cases obtained by adding planar connecting edges if necessary. A support in a
+maximal planar graph on $n$ vertices therefore has density at most
+\[
+ 3-\frac1{s-2}\le3-\frac1{n-2}.
+\]
+The second inequality is strict for $s<n$, and a proper support on all $n$
+vertices loses at least one edge. Thus maximal planar graphs are strictly
+2-balanced, giving the last line of the table.
+
+These calculations explain the appearance of the same density parameter as in
+random Ramsey theory without relying on a probabilistic threshold theorem.
+The shared parameter is useful, but an implication between the two theories
+would require additional arguments.
+
+\subsection{The 13-point graph}
+
+The Sidorenko manuscript specifies 22 triples on 13 points. Its bipartite
+pattern has one part consisting of points and the other of triples; incidence
+creates 35 vertices and 66 edges. The graph relevant to the span calculation
+is a \emph{different} graph: the 13-vertex point graph $G_*$, whose edges are
+pairs contained in a triple. It has 33 edges. Confusing these two graphs would
+give the wrong density and the wrong constant.
+
+Here is the triple system from the source \cite{OpenAISidorenko}:
+\begin{equation}
+\begin{array}{rrrr}
+013&019&023&029\\
+1\,3\,10&1\,7\,10&1\,7\,12&1\,9\,12\\
+234&249&3\,4\,11&3\,10\,11\\
+489&4\,8\,11&567&5\,6\,11\\
+5\,7\,10&5\,10\,11&6\,7\,12&6\,8\,11\\
+6\,8\,12&8\,9\,12&&
+\end{array}
+\label{eq:faces}
+\end{equation}
+Entries such as $013$ denote the set $\{0,1,3\}$, not a decimal integer.
+The degree sequence is
+\begin{equation}
+ (4,6,4,6,5,4,5,5,5,6,5,6,5).
+ \label{eq:degrees}
+\end{equation}
+Appendix~\ref{app:rotation} gives a rotation system whose face cycles are exactly
+these 22 triangles. It is connected and has Euler characteristic
+$13-33+22=2$, so it is a spherical embedding. Thus $G_*$ is maximal planar.
+Alternatively, the included exact subset certificate directly checks its
+density on every vertex subset of size at least three.
+
+\begin{corollary}[Optimal source-graph span bound]
+\label{cor:sourcegraph}
+For subspaces indexed by the 33 edges of $G_*$,
+\begin{equation}
+ m_2(G_*)=\frac{32}{11},\qquad
+ \boxed{32\Delta\ge11R.}
+ \label{eq:3211}
+\end{equation}
+The coefficient is optimal. Equality holds precisely for the common-core
+arrangements of Theorem~\ref{thm:equality}.
+\end{corollary}
+
+\begin{proof}
+Since $G_*$ is maximal planar with 13 vertices,
+$m_2(G_*)=3-1/11=32/11$, and it is strictly 2-balanced. Apply
+Theorems~\ref{thm:span} and~\ref{thm:equality}. Assigning the same line to every
+edge gives $R=32$ and $\Delta=11$, establishing sharpness concretely.
+\end{proof}
+
+For integer dimensions a useful form is
+\begin{equation}
+ \Delta\ge\left\lceil\frac{11R}{32}\right\rceil.
+ \label{eq:ceilbound}
+\end{equation}
+The original extra-unit assertion detects only whether $R$ is zero. In
+contrast, \eqref{eq:ceilbound} forces increasingly large excess as the number
+of relations grows, which is exactly what is needed to offset the entropy of
+choosing a relation subspace in the next section.
+
+\section{Counting dependent Lagrangian intersection families}
+\label{sec:counting}
+
+\subsection{The event to be counted}
+
+Let $G=(V,E)$ be any fixed finite simple graph. Prescribe nonnegative integers
+$h_e$. Let $L_v$, $v\in V$, be independent uniformly distributed Lagrangian
+subspaces of a $2D$-dimensional nondegenerate symplectic space over $\Fq$.
+A Lagrangian has dimension $D$ and is totally isotropic.
+We count families
+\begin{equation}
+ H_e\subseteq L_u\cap L_v\quad(e=\{u,v\}),\qquad \dim H_e=h_e.
+ \label{eq:containment}
+\end{equation}
+Containment, rather than equality, is intentional: it permits an upper bound
+for actual intersection profiles while avoiding unnecessary exactness
+constraints.
+
+Write
+\begin{equation}
+ t=\sum_e h_e,\quad t_v=\sum_{e\ni v}h_e,\quad
+ k=\dim\sum_eH_e,\quad k_v=\dim\sum_{e\ni v}H_e,
+ \quad R=t-k,\quad \Delta=\sum_v k_v-2k.
+ \label{eq:countparameters}
+\end{equation}
+Define $b(x)=x(x+1)/2$. All constants in this section may depend on the fixed
+graph and prescribed dimensions but can be chosen uniformly in $q$ and $D$.
+Empty or dimensionally impossible strata contribute zero.
+
+\subsection{Two elementary symplectic counts}
+
+\begin{lemma}[Lagrangian containment probability]
+\label{lem:lagcount}
+If $A$ is a fixed isotropic $s$-space, $s\le D$, and $L$ is a uniform
+Lagrangian, then
+\begin{equation}
+ \Pp(A\subseteq L)=\prod_{i=D-s+1}^{D}(q^i+1)^{-1}
+ \le q^{-Ds+\binom{s}{2}}.
+ \label{eq:lagprob}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Let $N_D$ be the number of Lagrangians in dimension $2D$.
+Every line is isotropic. Count pairs consisting of a line and a Lagrangian
+containing it. The quotient of the line's orthogonal complement by the line is
+symplectic of dimension $2(D-1)$, so
+\[
+ N_D\frac{q^D-1}{q-1}=\frac{q^{2D}-1}{q-1}N_{D-1}.
+\]
+Thus $N_D=(q^D+1)N_{D-1}$ and $N_D=\prod_{i=1}^D(q^i+1)$.
+The quotient $A^\perp/A$ similarly identifies the Lagrangians containing $A$
+with those in dimension $2(D-s)$, proving the product formula.
+The exponent in the bound is minus
+$\sum_{i=D-s+1}^D i=-Ds+\binom{s}{2}$.
+\end{proof}
+
+\begin{lemma}[Embedding count with linear Gram constraints]
+\label{lem:gram}
+Let $P$ be a $k$-dimensional vector space and let
+$\mathcal L\subseteq\Lambda^2P$ have dimension $\ell$.
+The number of injective linear maps $\phi:P\to\Fq^{2D}$ whose pulled-back
+symplectic form vanishes on $\mathcal L$ is at most
+\begin{equation}
+ q^{2Dk-\ell}.
+ \label{eq:gramcount}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+There are $q^{\binom{k}{2}-\ell}$ alternating forms on $P$ annihilating
+$\mathcal L$. Fix one such form and a basis of $P$. Having chosen $i-1$
+independent image vectors, prescribing the pairings of the next vector with
+them imposes $i-1$ independent linear equations, by nondegeneracy of the
+ambient form. There are at most $q^{2D-(i-1)}$ choices; excluding dependent
+choices can only decrease this number. Multiplying and then summing over the
+forms gives \eqref{eq:gramcount}. If $k>2D$, no injection exists.
+The proof uses alternating forms and remains valid in characteristic two.
+\end{proof}
+
+\subsection{Relations and exterior constraints}
+
+Set
+\[
+ U=\bigoplus_{e\in E}U_e,\quad U_e=\Fq^{h_e},\qquad
+ U_v=\bigoplus_{e\ni v}U_e.
+\]
+For a family of based subspaces $H_e$, the basis vectors define a map
+$\Phi:U\to\Fq^{2D}$. Its kernel $N$ has dimension $R$, and its quotient
+$P=U/N$ has dimension $k$. Let $\pi:U\to P$ be the quotient map. Put
+\begin{equation}
+ \mathcal L_0=\sum_v\Lambda^2U_v\subseteq\Lambda^2U,
+ \qquad
+ \mathcal L=(\Lambda^2\pi)(\mathcal L_0).
+ \label{eq:exteriorconstraints}
+\end{equation}
+Local isotropy of all $\Phi(U_v)$ is exactly the condition that the pulled-back
+alternating form vanish on $\mathcal L$.
+Because the graph is simple, distinct edges share at most one endpoint.
+Counting basis wedges therefore gives
+\begin{equation}
+ \ell_0:=\dim\mathcal L_0
+ =\sum_v\binom{t_v}{2}-\sum_e\binom{h_e}{2}.
+ \label{eq:ellzero}
+\end{equation}
+A wedge inside a single edge block is counted twice in the first sum; a wedge
+between adjacent distinct edge blocks is counted once, and a wedge between
+disjoint edges is not counted. This proves the identity without an independence
+assumption on the eventual image subspaces.
+
+Let $\ell=\dim\mathcal L$ and define
+\begin{equation}
+ B_N=\ell_0-\ell,\qquad
+ A_N=\sum_v\left[\binom{t_v}{2}-\binom{k_v}{2}\right].
+ \label{eq:AB}
+\end{equation}
+The second quantity is nonnegative. Choosing a complement to $N$ in $U$ shows
+\begin{equation}
+ \dim\ker(\Lambda^2\pi)=Rk+\binom R2,
+ \qquad 0\le B_N\le Rk+\binom R2.
+ \label{eq:exteriorkernel}
+\end{equation}
+Indeed, the kernel is the sum of $N\wedge P$ and $\Lambda^2N$ in such a
+splitting. These dimensions, not an assertion of independence of arbitrary
+orthogonality equations, will control the dependent case.
+
+\subsection{The dependent-family counting theorem}
+
+\begin{theorem}[Relation-sensitive Lagrangian count]
+\label{thm:count}
+For fixed $h_e,k,k_v$, the probability that a family satisfying
+\eqref{eq:containment} exists with those ranks is at most
+\begin{equation}
+ C\,q^{-\sum_e b(h_e)-D\Delta+2Rk+\binom R2-A_N}.
+ \label{eq:maincount}
+\end{equation}
+Here $A_N$ is determined by the prescribed $k_v$ and hence is constant on the
+stratum. A more precise bound on a stratum where $B_N=B$ is fixed is
+\begin{equation}
+ C\,q^{-\sum_e b(h_e)-D\Delta+Rk+B-A_N}.
+ \label{eq:finecount}
+\end{equation}
+The constant $C$ depends only on the finite graph and the prescribed edge
+dimensions. In particular, it can be chosen independently of $D$ and $q$.
+\end{theorem}
+
+\begin{proof}
+There are at most $C_t q^{R(t-R)}=C_tq^{Rk}$ possible relation spaces
+$N\subseteq U$ of dimension $R$; this is the usual Gaussian-binomial bound,
+also obtained by counting full-rank matrices and dividing by ordered bases.
+For each fixed $N$, discard it if an edge block is not injective in $P=U/N$
+or if it has the wrong local ranks. Lemma~\ref{lem:gram} bounds the remaining
+injective maps $P\to\Fq^{2D}$ by $q^{2Dk-\ell}$.
+
+A family of subspaces $H_e$ is represented by exactly
+$\prod_e|\mathrm{GL}(h_e,q)|$ choices of its ordered edge bases. These choices
+can change $N$, but preserve every rank and the dimensions of the exterior
+constraint spaces. We have summed over all such $N$, so division by this
+multiplicity is legitimate. For fixed $h_e$ it is bounded below by a positive
+constant times $q^{\sum_eh_e^2}$.
+
+For each resulting locally isotropic family, independence of the Lagrangians
+and Lemma~\ref{lem:lagcount} bound its containment probability by
+\[
+ q^{-D\sum_v k_v+\sum_v\binom{k_v}{2}}.
+\]
+The expectation of the number of such contained families is therefore at most
+a constant times $q$ to the exponent
+\begin{align*}
+ Rk+2Dk-\ell-\sum_eh_e^2
+ -D\sum_v k_v+\sum_v\binom{k_v}{2}
+ &= -D\Delta+Rk-\sum_eh_e^2-\ell
+       +\sum_v\binom{k_v}{2}\\
+ &= -\sum_e b(h_e)-D\Delta+Rk+B_N-A_N.
+\end{align*}
+The last equality uses \eqref{eq:ellzero} and
+$h^2-\binom h2=b(h)$. The event that a family exists has probability at most
+this expectation. This proves \eqref{eq:finecount}; using
+\eqref{eq:exteriorkernel} proves \eqref{eq:maincount}.
+Only boundedly many integer exterior ranks can occur, so summing over $B_N$
+changes the constant, not the exponent bound.
+\end{proof}
+
+\begin{remark}[Why the ambient span need not be isotropic]
+Only the local spans $K_v$ must be isotropic. Pairs of edge spaces with no common
+endpoint need not be mutually orthogonal. The Gram-space proof retains exactly
+the local equations through $\mathcal L$ and never imposes isotropy on the
+whole $k$-dimensional ambient span. Replacing that span by a globally isotropic
+space would be an unjustified restriction of the event being bounded.
+\end{remark}
+
+\begin{corollary}[Weights and direct families]
+\label{cor:weighted}
+If a nonnegative weight $W$ is at most $C_0q^g$ on the event in
+Theorem~\ref{thm:count}, its weighted contribution is bounded by the same
+expressions with $g$ added to the exponent and $C_0$ absorbed into the constant.
+When $R=0$, one has $\Delta=A_N=B_N=0$, and the unweighted bound reduces to
+$Cq^{-\sum_e b(h_e)}$.
+\end{corollary}
+
+The direct-family exponent agrees with the direct orthogonality cancellation
+in the source \cite[\src{lem:tail-residual-counts}]{OpenAISidorenko}.
+The new point is a controlled extension of that cancellation to dependent
+families, with explicit payment for choosing relations and for losing exterior
+constraints.
+
+\section{An explicit improvement of the residual singular tail}
+\label{sec:application}
+
+\subsection{The precise imported interface}
+
+The source's earlier profile analysis isolates possible residual strata with
+\begin{equation}
+ h_e\in\{0,2\},\qquad c_j=0,
+ \label{eq:residualprofile}
+\end{equation}
+where $c_j$ is the dimension common to the three point Lagrangians on a face.
+For a residual stratum with $m$ nonzero edge spaces, the center-integrated
+nonnegative weight is bounded by $O_D(q^{2m})$. This is the gain
+$\frac23\sum_e b(h_e)=2m$ stated in the source's residual-profile argument
+\cite[\src{sections/tail.tex}, \src{lem:tail-residue} and
+\src{lem:tail-residual-counts}]{OpenAISidorenko}.
+
+For clarity, our new estimate has the following standalone interpretation:
+\emph{for any nonnegative weight satisfying this pointwise bound on these
+intersection strata, the conclusion below follows}. Neither the finite-field
+rank-layer limit nor the counterexample theorem is needed to prove that
+statement. Connecting the weight to the particular source construction uses
+the just-specified gain bound.
+
+\subsection{The rank-dependent exponent}
+
+There are at most 33 nonzero edges, so $1\le m\le33$ on a singular residual
+stratum. Since $t=2m$, one has $k=2m-R$. Dropping the helpful nonnegative term
+$A_N$ from Theorem~\ref{thm:count} and adding the gain $2m$ gives
+\begin{align}
+ -3m-D\Delta+2R(2m-R)+\binom R2+2m
+ &=-m-D\Delta+4mR-\frac{3R^2+R}{2}.
+ \label{eq:residualexp}
+\end{align}
+The nondirect case has $R\ge1$. Every nonzero edge space has dimension two, so
+$k\ge2$ and $R\le2m-2\le64$. By \eqref{eq:ceilbound},
+\begin{equation}
+ \Delta\ge j(R):=\left\lceil\frac{11R}{32}\right\rceil.
+ \label{eq:j}
+\end{equation}
+Because the coefficient of $m$ in \eqref{eq:residualexp} is $4R-1>0$, replacing
+$m$ by 33 gives a valid upper bound for the exponent:
+\begin{equation}
+ -Dj(R)+B(R),\qquad
+ B(R)=\frac{263R-3R^2}{2}-33,
+ \qquad 1\le R\le64.
+ \label{eq:BR}
+\end{equation}
+This maximizes over a \emph{larger} collection than the realizable profiles.
+Thus the resulting constants are safe sufficient bounds, not claims of
+optimal geometric dimension thresholds.
+
+\begin{corollary}[Improved nondirect residual estimate]
+\label{cor:residual}
+For the point graph $G_*$ and the residual gain interface above, the total
+nondirect residual contribution satisfies
+\begin{equation}
+ \begin{cases}
+ O_D(q^{-7}),&D=310,\\
+ O_D(q^{-D+303}),&\text{every even }D\ge310,\\
+ O_D(q^{-D+224}),&\text{every even }D\ge364.
+ \end{cases}
+ \label{eq:improvedresidual}
+\end{equation}
+The direct singular residual contribution is $O_D(q^{-m})$ on an $m$-edge
+stratum, hence at most $O_D(q^{-1})$ after summing all singular direct residual
+strata.
+\end{corollary}
+
+\begin{proof}
+Appendix~\ref{app:exponents} gives an exact 22-row certificate, grouping all
+$1\le R\le64$ by $j(R)$, for
+\begin{equation}
+ \max_R\{B(R)-310j(R)\}=-7,\qquad
+ \max_R\{B(R)-364j(R)\}=-140.
+ \label{eq:exponentmax}
+\end{equation}
+The maxima occur at $R=8$ and $R=2$, respectively. Since $j(R)\ge1$, increasing
+$D$ from 310 or 364 decreases every upper bound at least linearly with slope
+one. This gives both uniform formulas in \eqref{eq:improvedresidual}.
+There are only finitely many edge-support and local-rank strata at fixed edge
+dimensions, so summing preserves the estimates. For direct families use
+Corollary~\ref{cor:weighted}: the exponent is $-3m+2m=-m$.
+\end{proof}
+
+The local common dimensions $c_j=0$ were not used in deriving
+\eqref{eq:BR}; only the gain bound and $h_e\in\{0,2\}$ were used.
+This intentional relaxation is one source of potential further improvements.
+
+\subsection{What changes in the source proof, and what does not}
+
+The source's nondirect residual estimate is $O_D(q^{-D+1641})$ and its final
+singular-tail argument chooses an even $D$ above an earlier residue threshold
+and additionally $D>1641$ \cite[\src{prop:singular-tail}]{OpenAISidorenko}.
+With the present replacement, that \emph{additional residual restriction} can
+be changed to $D\ge310$. The other dimension conditions remain in force.
+For a fixed even $D\ge364$, the explicit exponent offset improves from 1641
+to 224, a reduction of 1417.
+
+This distinction is essential. The source has other sufficiently-large-dimension
+requirements, including the reduction of large intersection profiles and the
+transverse finite-field analysis. We have not bounded those thresholds by 310
+or 364. Nor have we made the smallest admissible field size explicit, produced
+a smaller 35-vertex pattern, or optimized the eventual finite host order.
+The source's global $q$-rate can still be limited by nonresidual profiles, so a
+$q^{-7}$ residual estimate is not a $q^{-7}$ estimate for the entire construction.
+
+The structural gain is nevertheless more than a numerical adjustment. The old
+argument pays a worst-case constant for every nondirect family. The new argument
+retains the relation dimension $R$, the incidence deficit $\Delta$, and the
+number of lost alternating-form constraints. It therefore extends to other
+fixed graph patterns and prescribed edge dimensions.
+
+\section{Verification, provenance, and integration}
+\label{sec:verification}
+
+\subsection{What has actually been checked}
+
+The package contains a standard-library Python verifier, using exact integer,
+rational, and prime-field arithmetic with seed 20261007. Its recorded run checks:
+\begin{enumerate}[label=(\roman*)]
+\item the 13-point rotation system, its 22 face cycles, all 8,100 vertex subsets
+of size at least three, and the unique maximizing density $32/11$;
+\item 1,200 subspace arrangements over $\mathbb F_2,\mathbb F_3,\mathbb F_5$,
+including a directness-repair certificate for every arrangement;
+\item 320 polymatroid--cover comparisons and 702 unit contractions, with
+submodularity and monotonicity rechecked after every contraction;
+\item all 15,750 assignments of subspaces of $\mathbb F_2^2$ to the edges of
+$K_3$ and $K_4$, testing the equality classification;
+\item 163 exterior-rank and exponent-cancellation checks, exact four-dimensional
+symplectic counts over $\mathbb F_2$ and $\mathbb F_3$, and every residual
+exponent in the finite optimization.
+\end{enumerate}
+All checks pass in the recorded run. The precise counts and grouped exponent
+table are written to \src{certificates/verification_results.json}.
+These tests are not used as substitutes for the general proofs. For example,
+testing representable polymatroids alone would not justify
+Theorem~\ref{thm:cover}; its nonrepresentable cases are covered by the integral
+contraction proof and continuity argument.
+
+No Lean executable was available in the working environment, and no new Lean
+proof is claimed. The accompanying code is a verifier of finite certificates,
+not a formalization of the full mathematics.
+
+\subsection{Suggested integration boundary}
+
+A suitable new location is
+\begin{center}
+\src{Combinatorics/Ramsey/Research/SharpIncidenceStability/}.
+\end{center}
+This is a proposed destination, not a statement that the folder already exists.
+The article and exact tests should initially be integrated as a research result
+with written proofs. The source Sidorenko paper and its Lean comparator should
+remain unchanged until the replacement count has been reviewed and translated
+into their actual interfaces.
+
+A formalization can be split into four independent layers. First formalize
+finite normalized integral submodular functions and the unit-contraction lemma.
+Second formalize the cover increments and sharp constant, initially with
+rational weights and a finite maximum. Third establish the linear quotient
+identities, directness repair, and strict-balance classification. Fourth build
+the exterior-power and finite symplectic counting layer, importing the first
+three layers only through their precise numerical conclusions.
+
+The source-specific application requires a small explicit graph certificate,
+the exact residual gain hypothesis, and the elementary integer optimization.
+It should not be proved by assuming the desired final vanishing statement.
+The general covariance and entropy applications can be integrated independently
+of the finite-field argument.
+
+\subsection{Novelty and verification ledger}
+
+The following distinctions should accompany any repository summary.
+The broad fractional-subadditivity framework, zero-gap modularity, information-
+theoretic stability principle, and random-Ramsey use of $m_2$ are prior work
+\cite{MadimanTetali,EllisEtAl,Jakhar2025,Jakhar2026,RamseyTilings}.
+The sharp support formula, the direct proof supplied here, the strict-balanced
+linear equality classification, and the relation-sensitive count are the
+specific results advanced in this memorandum. The comparison against the
+reviewed sources has not located these exact statements there; this is not an
+exhaustive priority determination across all literature.
+
+The 35-vertex Sidorenko counterexample remains a result claimed by the cited
+source, with the formalization scope described by its own record. Our main
+inequalities do not depend on its correctness. Our improvement of its weighted
+residual tail has an explicit imported interface and does not claim to verify
+the full construction.
+
+\section{Further research questions}
+\label{sec:questions}
+
+The exact-constant problem has been settled here under the stated hypotheses.
+The following questions are subsequent problems rather than hidden assumptions
+in the proofs.
+
+\begin{question}[Intrinsic equality for non-strict patterns]
+Can the flag certificate in Corollary~\ref{cor:flag} be replaced by an intrinsic,
+order-free description of all equality arrangements when several supports
+maximize $\mu_a$? A natural target is a decomposition organized by overlapping
+density-maximizing subhypergraphs. The common-core theorem settles the
+unique-maximizer case, but does not imply a simultaneous direct decomposition
+for arbitrary overlaps.
+\end{question}
+
+A concrete first step is to classify graphs made by gluing two strictly
+2-balanced graphs along an edge. Depending on their densities, the maximizers
+can be one side, both sides separately, or their union. Exact examples in these
+three regimes should distinguish genuine nesting from artifacts of a chosen
+quotient flag.
+
+\begin{question}[Stability of sharp equality, not merely directness]
+For a strictly $a$-balanced hypergraph, let
+$S=\mu_a\Delta-R$. Does small $S$ force a family close, under an explicitly
+specified dimension-edit distance, to a common-core-plus-private arrangement?
+Can the edit cost be bounded using $S$ and the positive density gap between the
+whole hypergraph and its proper supports?
+\end{question}
+
+Theorem~\ref{thm:repair} does not answer this question: it controls the cost of
+removing \emph{all} dependence by $R$, which may be large when a large common
+core nearly attains sharp equality. A stability theorem should retain that
+core rather than delete it. The flag proof controls bad steps, but turning
+that information into simultaneous subspaces requires an additional argument.
+
+\begin{question}[Entropy extremizers and bounded-conditioning determinants]
+What are all distributions attaining the sharp coefficient
+$\Kopt_\gamma$, beyond the common-random-variable examples? For positive-definite
+matrices with uniformly bounded condition number, what is the optimal
+replacement for $\Kopt_\gamma$ in \eqref{eq:detbound}?
+\end{question}
+
+The determinant sharpness construction approaches a singular matrix. It does
+not settle a compact, bounded-condition-number problem. Local expansion around
+independence gives a quadratic form on correlations, while the unrestricted
+constant is controlled by rank-one common-information supports; comparing these
+two mechanisms is a concrete direction.
+
+\begin{question}[Geometry of the relation space]
+Can the exponent $Rk+B_N-A_N$ in \eqref{eq:finecount} be bounded substantially
+better on relation spaces realizable as pairwise intersections of Lagrangians?
+Can one replace the full Grassmannian cost $Rk$ by the dimension of the relevant
+relation variety?
+\end{question}
+
+The proof uses the entire kernel bound
+$B_N\le Rk+\binom R2$ and ignores the favorable term $A_N$ in the explicit
+application. Neither relaxation is expected to be universally tight in the
+source's residual geometry. Exact small-field searches can suggest which
+relation patterns are feasible, but a field-uniform dimension argument is
+needed for a new asymptotic bound.
+
+\begin{question}[Using the source's zero common-face intersections]
+For $G_*$, can the additional conditions $c_j=0$ eliminate the profiles governing
+our relaxed maxima, especially $(R,\Delta)=(2,1)$ and $(8,3)$? What is the actual
+maximum of the weighted exponent over realizable residual profiles?
+\end{question}
+
+All triangles of $G_*$ are the 22 listed faces, as can also be checked from the
+edge list. This makes a triangle-supported common line incompatible with a
+zero common-face intersection. It does \emph{not} automatically eliminate a
+triangle that appears only after quotienting: lifting quotient information is
+the substantive obstacle. A proof resolving that obstacle could improve the
+constants without changing the analytic rank-layer construction.
+
+\begin{question}[The full dimension threshold]
+Can the earlier large-profile reduction and transverse counting thresholds in
+the Sidorenko construction be made explicit and brought into the same numerical
+range as the residual threshold? Can the field-size dependence then be made
+effective enough to produce a finite host certificate?
+\end{question}
+
+This requires tracking the source's local gain parameters, its dimension-
+independent bounded-profile reduction, and its subsequent finite-field errors.
+The present residual improvement supplies one component of such a program,
+not its completion.
+
+\begin{question}[Beyond pair-incidence geometry]
+What is the correct analogue of the exterior count for hypergraph-indexed
+subspaces or for other classical polar spaces? When two hyperedges share
+several vertices, the wedge multiplicities in \eqref{eq:ellzero} change.
+Can their exact correction be combined with $\mu_a$ to give comparably sharp
+singular-tail bounds?
+\end{question}
+
+The abstract stability theorem already handles uniform hypergraphs. What is
+missing is not the entropy or span estimate, but a replacement for the
+simple-graph wedge identity and a suitable geometric containment model.
+
+\begin{question}[Formal proofs and reusable certificates]
+Can the sharp fractional-cover theorem and strict-balanced equality theorem be
+formalized as reusable finite-combinatorial results, independently of a
+particular analytic application? Can the relation-sensitive count be organized
+so that the source graph enters only through a density certificate and local
+multiplicities?
+\end{question}
+
+A successful implementation would make future graph changes auditable without
+repeating the entire proof. The finite support formula and the explicit
+network reduction also suggest certificates for optimal constants: a maximizing
+support gives the lower certificate, and minimum-cut or density inequalities
+give the upper certificate.
+
+\appendix
+\section{A planar rotation certificate for the source graph}
+\label{app:rotation}
+
+The following cyclic neighbor orders specify an orientable rotation system.
+For a directed edge $(u,v)$, move to $(v,w)$ where $w$ is the successor of $u$
+in the row for $v$. This permutation of directed edges has exactly 22 cycles,
+each of length three, and their underlying unordered triples are
+\eqref{eq:faces}. Thus the data are independently checkable without a graph
+layout algorithm.
+
+\begin{center}
+\begin{tabular}{@{}rl@{}}
+\toprule
+Vertex & Cyclic order of neighbors\\
+\midrule
+0 & $1,9,2,3$\\
+1 & $0,3,10,7,12,9$\\
+2 & $3,0,9,4$\\
+3 & $1,0,2,4,11,10$\\
+4 & $2,9,8,11,3$\\
+5 & $7,10,11,6$\\
+6 & $11,8,12,7,5$\\
+7 & $12,1,10,5,6$\\
+8 & $9,12,6,11,4$\\
+9 & $4,2,0,1,12,8$\\
+10 & $5,7,1,3,11$\\
+11 & $10,3,4,8,6,5$\\
+12 & $8,9,1,7,6$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The graph is connected. Gluing oriented disks along the face cycles yields a
+connected closed orientable surface with Euler characteristic two, hence a
+sphere. This proves planarity. The independent density check in the verifier
+enumerates all $2^{13}$ vertex subsets, ignores those of size below three, and
+checks $e(S)\le3|S|-6$ on the remaining 8,100 subsets. For fixed vertex support,
+adding missing induced edges only increases $(e-1)/(v-2)$, so this is also a
+complete certificate of the maximum over edge supports. Only the entire
+13-vertex set attains $32/11$, and it must retain all 33 edges to do so.
+
+\section{Exact certificate for the residual exponent optimization}
+\label{app:exponents}
+
+Recall $j(R)=\lceil11R/32\rceil$ and
+$B(R)=(263R-3R^2)/2-33$, for $1\le R\le64$.
+The table gives the maximum of $B$ on each consecutive interval with fixed
+$j$. It can be checked from the quadratic formula alone; its first difference
+is $B(R+1)-B(R)=130-3R$, which changes sign only once.
+The last two columns certify \eqref{eq:exponentmax}.
+
+\begin{center}
+\small
+\begin{tabular}{@{}rrrrr@{}}
+\toprule
+$j$ & Range of $R$ & $\max B(R)$ & $\max B(R)-310j$ & $\max B(R)-364j$\\
+\midrule
+1 & $1$--$2$ &224&$-86$&$-140$\\
+2 & $3$--$5$ &587&$-33$&$-141$\\
+3 & $6$--$8$ &923&$-7$&$-169$\\
+4 & $9$--$11$ &1232&$-8$&$-224$\\
+5 & $12$--$14$ &1514&$-36$&$-306$\\
+6 & $15$--$17$ &1769&$-91$&$-415$\\
+7 & $18$--$20$ &1997&$-173$&$-551$\\
+8 & $21$--$23$ &2198&$-282$&$-714$\\
+9 & $24$--$26$ &2372&$-418$&$-904$\\
+10 & $27$--$29$ &2519&$-581$&$-1121$\\
+11 & $30$--$32$ &2639&$-771$&$-1365$\\
+12 & $33$--$34$ &2704&$-1016$&$-1664$\\
+13 & $35$--$37$ &2779&$-1251$&$-1953$\\
+14 & $38$--$40$ &2827&$-1513$&$-2269$\\
+15 & $41$--$43$ &2848&$-1802$&$-2612$\\
+16 & $44$--$46$ &2849&$-2111$&$-2975$\\
+17 & $47$--$49$ &2834&$-2436$&$-3354$\\
+18 & $50$--$52$ &2792&$-2788$&$-3760$\\
+19 & $53$--$55$ &2723&$-3167$&$-4193$\\
+20 & $56$--$58$ &2627&$-3573$&$-4653$\\
+21 & $59$--$61$ &2504&$-4006$&$-5140$\\
+22 & $62$--$64$ &2354&$-4466$&$-5654$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+At $D=308$, the relaxed bound has value zero at $R=11$. At $D=309$, its maximum
+is $-4$, again at $R=11$. The source uses even $D$, so 310 is the first even
+dimension at which this particular relaxed optimization proves decay.
+This is a statement about the displayed upper-bound calculation, not a lower
+bound on the dimension required by the actual geometry.
+
+\section{Reproduction and source identifiers}
+\label{app:reproduce}
+
+From the package root, run
+\begin{verbatim}
+python3 code/verify.py
+latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+\end{verbatim}
+The Python program uses only the standard library. The LaTeX document uses
+standard TeX Live packages, including \src{newpxtext} and \src{newpxmath}.
+The PDF is provided so that compilation is not required to read the result.
+
+The mathematical source locations most relevant to the application are under
+\begin{center}
+\small
+\src{preprints/A-counterexample-to-Sidorenkos-conjecture-September-23-2026/build/}.
+\end{center}
+Their blob identifiers at the pinned OpenAI commit are:
+\begin{center}
+\small
+\begin{tabular}{@{}ll@{}}
+\toprule
+Source & Git blob identifier\\
+\midrule
+\src{sections/complex.tex} & \src{178b0e9da21867a727ea847dae8e537b9d719a70}\\
+\src{sections/kernel.tex} & \src{bbe11be8fffe968012060ec43e6aff597e922831}\\
+\src{sections/tail.tex} & \src{dc11e07a592e70d3a13e3a005c72378c88edc351}\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The package does not redistribute the upstream manuscripts or their font files.
+It includes the finite graph data needed to reproduce the calculations, with
+attribution, and the new article and verifier. The source code's finite checks
+must not be described as an axiom audit or a theorem-prover certificate.
+
+\begingroup
+\small
+\raggedright
+\begin{thebibliography}{20}
+
+\bibitem{OpenAIReadme}
+OpenAI, \emph{Mathematics research collection: repository README},
+\src{openai/math}, snapshot October 6, 2026.
+\url{https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/README.md}.
+
+\bibitem{OpenAICatalog}
+OpenAI, \emph{OpenAI Research Catalog}, October 6, 2026,
+\src{overview.tex}, especially combinatorics families 159--161 and 170.
+\url{https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/overview.tex}.
+
+\bibitem{ProveItStatus}
+Vladimir Reshetnikov and ProveIt contributors,
+\emph{Gowers Szemeredi formalization checkpoint}, October 7, 2026,
+\src{Combinatorics/Ramsey/FORMALIZATION_STATUS.txt}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/1210e9d3ac88a573f98d7ef8626ba3d2c30e9749/Combinatorics/Ramsey/FORMALIZATION_STATUS.txt}.
+
+\bibitem{OpenAISidorenko}
+OpenAI, \emph{A counterexample to Sidorenko's conjecture},
+OpenAI Math Release preprint, September 23, 2026.
+Source snapshot at commit \oaicommit.
+\url{https://github.com/openai/math/tree/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/A-counterexample-to-Sidorenkos-conjecture-September-23-2026}.
+
+\bibitem{OpenAILean161}
+OpenAI, \emph{Counterexamples to Sidorenko's conjecture and the forcing
+conjecture: scope of the Lean formalization}, \src{lean/docs/161.md},
+October 2026 snapshot.
+\url{https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/lean/docs/161.md}.
+
+\bibitem{MadimanTetali}
+M. Madiman and P. Tetali,
+\emph{Information inequalities for joint distributions, with interpretations
+and applications}, IEEE Transactions on Information Theory \textbf{56} (2010),
+2699--2713. DOI: \href{https://doi.org/10.1109/TIT.2010.2046253}{10.1109/TIT.2010.2046253}.
+\url{https://arxiv.org/abs/0901.0044}.
+
+\bibitem{EllisEtAl}
+D. Ellis, E. Friedgut, G. Kindler, and A. Yehudayoff,
+\emph{Geometric stability via information theory},
+Discrete Analysis \textbf{2016}:10, 28 pp.
+DOI: \href{https://doi.org/10.19086/da.784}{10.19086/da.784}.
+\url{https://arxiv.org/abs/1510.00258}.
+
+\bibitem{Jakhar2025}
+G. Jakhar, G. R. Kurri, S. Chillara, and V. M. Prabhakaran,
+\emph{Fractional subadditivity of submodular functions: equality conditions and
+their applications}, arXiv:2501.12058v1, January 21, 2025.
+\url{https://arxiv.org/abs/2501.12058}.
+
+\bibitem{Jakhar2026}
+G. Jakhar, G. R. Kurri, S. Chillara, and V. M. Prabhakaran,
+\emph{Generalized information inequalities via submodularity, and two
+combinatorial problems}, arXiv:2601.15723v1, January 22, 2026.
+\url{https://arxiv.org/abs/2601.15723}.
+
+\bibitem{RamseyTilings}
+L. Arag\~ao, X. Cheng, R. Filipe, R. Miyazaki, D. Peng, and Z. Yan,
+\emph{Ramsey properties for tilings in random graphs},
+arXiv:2605.21471v1, 2026; see Section 1.1 for the 2-density convention and
+its random Ramsey context.
+\url{https://arxiv.org/abs/2605.21471}.
+
+\end{thebibliography}
+\endgroup
+\end{document}

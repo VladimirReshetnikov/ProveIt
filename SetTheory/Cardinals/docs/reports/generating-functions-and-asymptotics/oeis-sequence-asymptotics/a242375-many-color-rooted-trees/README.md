@@ -1,91 +1,223 @@
-# Report 222 — Many color rooted trees and their symmetries
+# Many-Color Rooted Trees and Their Symmetries (OEIS A242249, A255517, A242375, A255523)
 
-This self-contained report treats OEIS A242249/A255517 and diagonals A242375/A255523. It includes:
+**Uniform asymptotics, Poisson laws, and exact inverses for rooted trees
+with `q` colors on the non-root vertices, uniformly for `q ≥ 40`; with
+Kotěšovec's growth-base conjectures in A242249 and A255517 proved.**
 
-- A common complex domain and all fixed-order uniform asymptotics for both signs
-- Analytic palette coefficients and rounding-sensitive asymmetry crossover corrections
-- Leaf-pair Poisson limits, all fixed-order signed-Poisson expansions, and the sharp moving-parameter total-variation constant
-- The asymptotic elementary-abelian automorphism-group law and a sharp recursive-class defect
-- A separately proved labeled-Cayley contrast and explicit failure of positive exponential-moment convergence
-- Diagonal and real-palette inversion, with exact integer-threshold safeguards
-- Offline exact code, independent finite checks, exact rational domain certificates, and optional numerical diagnostics
+A single-source report: bundle Report 222 of one external research session
+(the session bundle of Reports 1–243, arrival commit `60f54ea06`), placed by
+`f79c9bef1` (batch 112) and written on 7 October 2026. The author line and
+the PDF author field read "Report 222"; the manuscript names no person, tool
+or addressee.
 
-## Read first
+| Source | Archive | Placed | Shipped as |
+|---|---|---|---|
+| *Many color rooted trees and their symmetries: Uniform asymptotics, Poisson laws, and exact inverses* ("Report 222", 4 October 2026) | `Report222.zip` (630,103 bytes, 18 files, no wrapper directory; `article.tex`, 1128 lines, 29 pp.) | `f79c9bef1` | `article.tex` |
 
-Open Report222.pdf. Its complete source is article.tex; tables.tex is generated from verified exact results.
+The package records no ProveIt commit, so no pin is recorded.
 
-The probability model is uniform over colored rooted isomorphism classes. N counts all vertices; diagonal n counts nonroot vertices. Only positive integer q is a counting probability. The all-order expansion depths are fixed. The core q≥40 range is distinct from the marked q≥200 range and from existential monotonicity/onset constants.
+**Status:** AI-assisted, unrefereed, not formalized: no Lean or Rocq
+declaration exists for any statement of this report, and its place in the
+collection confers no formal status.
 
-The comparison Poisson parameter is λ_N=e^(-2)/(q/N). A rate against a fixed limiting parameter requires a rate for q/N. The sharp group-defect coefficient concerns the recursive class B; the total-variation bound for the whole automorphism group is only an upper bound. No positive exponential-moment convergence is claimed.
+## What the report proves
 
-Enumeration and general transfer/inversion machinery are prior; the leading diagonal constants are already posted on OEIS. The 1992 Labelle full text was not accessible in the source review. No worldwide novelty claim or effective numerical onset is made.
+`A_+(N, q)` counts rooted trees with `N` vertices and `q` colors on the
+non-root vertices up to color-preserving isomorphism (A242249), `A_−(N, q)`
+those with trivial automorphism group (A255517); `a = e^{−1}`;
+`L(N, q) = q^{N−1} N^{N−2}/(N−1)!` the exact Cayley baseline.
 
-## Portable exact code
+- **Theorem 4.1:** for either sign and every fixed `M`,
+  `A_σ/L = e^{N S_σ(1/q)} H_σ(1/q) (1 + Σ_{j<M} d_{σ,j}(1/q) N^{−j} + O_M(1/(q N^M)))`
+  **uniformly for all integers `q ≥ 40`**, from a common complex domain
+  (Section 3, rational constants certified in Appendix A).
+- Proposition 5.1: palette expansions of `S_±`, `log H_±`; hence the growth
+  bases `D_±(q) = eq ± 1/(2e) + O(1/q)`.
+- **Theorem 6.1:** the asymmetry crossover `p(N, q) → exp(−1/(e² α))` for
+  `q/N → α`, with rounding-sensitive corrections.
+- **Theorem 7.1:** leaf-sibling pairs `J ⇒ Poisson(1/(e² α))`; Theorem 8.2:
+  every fixed order of signed-Poisson corrections; (54): the sharp
+  total-variation constant `𝒞(α)/N`.
+- **Theorem 9.3:** `Aut ≅ (C_2)^J` with probability `1 − (a³+a⁴)/(α² N) + O(N^{−2})`.
+- Theorem 10.1: the labeled-sampling contrast (mean halved); Section 10.3:
+  divergence of positive exponential moments.
+- **Theorem 11.1:** diagonal corrections `ℓ_{±,1}`, `ℓ_{±,2}` for A242375 and
+  A255523 (`b_±(n) = A_±(n+1, n)`); Proposition 11.2: a smooth inverse.
+- Proposition 12.1 and Corollary 12.3: palette sizing and a global eventual
+  integer threshold `q_min = ⌈q_*(N)⌉`.
 
-Python 3.10+; no third-party dependencies for this section.
+(Section, statement and equation numbers are those of the committed PDF.)
 
-    python3 code/test_exact.py
-    python3 -O code/test_exact.py
-    python3 code/certify_bounds.py
-    python3 code/colored_trees.py count 640 640
-    python3 code/colored_trees.py count 20 20 --kind identity
-    python3 code/colored_trees.py marked 6 3
-    python3 code/colored_trees.py marked 6 3 --kind B
-    python3 code/colored_trees.py diagonal 35 --kind identity
-    python3 code/colored_trees.py inverse 1000000 --max-n 100
-    python3 code/colored_trees.py palette 10 9 10 --max-q 100
+## What the report does not claim
 
-The count kinds are all, identity, zero (J=0), and B. The marked command prints a JSON map from the marking exponent to its exact coefficient as a decimal string. The exact inverse returns the least index within the specified bound, or null if none occurs there. Palette search exhaustively checks all smaller positive palettes; it does not assume finite-size monotonicity.
+Enumeration (Riordan, Labelle, Foissy), fixed-model analysis
+(Harary–Robinson–Schwenk, Genitrini), uniform transfer (Flajolet–Sedgewick),
+automorphism laws (Olsson–Wagner) and asymptotic inversion are prior; the
+leading diagonal constants are Kotěšovec's (OEIS); Labelle's 1992 article was
+not accessible. No worldwide novelty claim, no effective onset; fixed
+expansion depths; integer palettes only for probabilities; the ranges
+`q ≥ 40`, `q ≥ 200`, `Q_0` and all onsets differ; moving Poisson parameter;
+the class-`ℬ` defect is an upper bound for non-elementary-abelian groups; no
+moment convergence; no finite-size monotonicity in `q`; no truncated
+expansion inside a ceiling; numerical brackets are diagnostics.
 
-### Input and serialization safeguards
+## The write's findings
 
-- Exact counts: 1≤N≤2000, 1≤q≤1,000,000
-- Diagonals: 0≤n≤1999
-- Full marked polynomials: 1≤N≤12, 1≤q≤100
-- Exact marked prefixes: N≤640, degree K≤32, N(K+1)≤12000
-- Palette scan: N·max_q≤20000
-- User threshold input: positive ASCII decimal, at most 600 digits
-- Computed integers are printed in base-10^9 chunks, without changing Python's global decimal conversion setting
-- Explicit exception checks remain active under python -O
-- No global recursion or precision setting is changed; mpmath diagnostics use a temporary precision context
+- **Kotěšovec's two conjectures are proved** (Remark 5.2, from
+  Proposition 5.1): A242249's "Conjecture: d(k) ~ k * exp(1)." (26 August
+  2014) and A255517's "Conjecture: For big k the limit asymptotically
+  approaches k*exp(1)." (24 February 2015). The column growth base is
+  `D_±(k) = k/r_±(1/k) = ek ± 1/(2e) + O(1/k)` for `k ≥ 20`, so both
+  statements hold, with `d(k+1) − d(k) → e`. The source proves the expansions
+  but does not name the conjectures. Solving the singularity equation with
+  40-digit arithmetic reproduces Kotěšovec's posted `d(5)`, `d(10)`,
+  `d(100)`, `d(200)` and the A255517 limits for `k = 5, 10, 100` in all 25
+  significant digits compared. No OEIS edit.
+- **One decimal corrected** (note at the end of Section 13.2):
+  `𝒞(1) = 0.13683983139099866117…`; the printed `0.1368398313909987…` is a
+  rounding; truncation `0.1368398313909986…`.
+- **Remark 11.3 (transseries volume):** the diagonal core `X = L_y/W(eL_y)` is
+  an exact instance of `p0:prop:factorial-core` (`κ = 1`, `d = 1`); the
+  corrections in (72) are, formally, an instance of `p0:thm:core-reversion`
+  (`Λ = h`); nearest-integer recovery at range points is an instance of
+  `p0:thm:staircase`(3); Corollary 12.3 above `Q_0` is `p0:thm:staircase`(1)
+  in the index `q`, with Lemma 12.2 excluding small palettes.
+- **Recomputed:** all b-file terms of A242249 and A255517 with `n ≤ 60`,
+  `k ≤ 40` (2460 each), both diagonals for `n ≤ 60`, all 36 entries of the
+  table in Section 13, the class-`ℬ` defect row at `N = 80, …, 640`,
+  `a³ + a⁴`, and the approach of exact diagonal values to `ℓ_{±,1}`,
+  `ℓ_{±,2}`.
 
-The regression suite actually computes and prints the 2067-digit A_+(640,640) under PYTHONINTMAXSTRDIGITS=640 in normal and optimized subprocesses. It tests the input guard separately. Bounds are intentional implementation safeguards and can be reviewed in the source; they are not mathematical theorem restrictions.
+## Further questions, and the standing rule
 
-## Optional symbolic and numerical checks
+Section 14 (the source's list, with a dated note under Vladimir's standing
+rule of 4 October 2026): effective onsets, all-palette monotonicity,
+exceptional automorphism groups, other local repetitions, moments and large
+deviations, growing orders; added from the non-claims: a fixed-parameter
+Poisson rate, an exact group total-variation constant, Labelle 1992. No claim
+of the source was found false; the two OEIS conjectures are proved, not
+refuted.
 
-Recorded versions: SymPy 1.14.0 and mpmath 1.3.0. These are unnecessary for the exact core.
+## Relation to the repository
 
-    python3 code/palette_jets.py --order 4
-    python3 code/diagnostics.py --tv
+No other file of the repository names A242249, A255517, A242375 or A255523.
+Nearest (same directory): `a244407-high-outdegree-rooted-trees`,
+`a055779-labeled-fat-trees`, `a003238-uniform-trees-binary-partitions`
+(batch 112) and `a116379-bounded-identity-trees` (rooted identity trees of
+bounded outdegree); no shared result, so no reciprocal note. No Lean or Rocq
+development treats these sequences.
 
-requirements-optional.txt records those versions. Palette generation is bounded to orders 1..6. The symbolic output contains exact expressions with a=e^(-1), and exact verification of the first fixed-size palette coefficient and the Poisson correction algebra.
+## Labels and numbering
 
-The numerical program uses exact integer counts, then 80-digit arithmetic. It records crossover/gap/class-B checks through N=640, diagonal inverse checks through n=320, and TV checks through N=320. Marked-prefix coefficients through degree 16 and the omitted actual probability mass are exact. Numerical TV brackets use explicit Poisson tails summed through degree 159; these are high-precision diagnostics, not directed-rounding interval certificates. No optional diagnostic was omitted because of the validation environment.
+All labels carry the prefix `mct:`: the 92 delivered labels, prefixed before
+anything cited them (71 references updated: 48 `\eqref`, 23 `\ref`), the
+write's label for Section 1 (`mct:sec:scope`), and the write's three
+(`mct:sec:provenance`, `mct:rem:oeis`, `mct:rem:transseries`); 96 in all. The
+write's remarks are the last statements of their sections and its additions
+contain no numbered display, so every number is delivered (checked against
+the `.aux` of a build of the delivered text: 92 labels, 0 differences).
+Section 1.1 is the write's.
 
-results/analytic_bounds.json is different: it certifies the stated elementary analytic-domain inequalities using rational arithmetic only. It does not certify the implicit asymptotic constants or onsets.
+## Notation
 
-## Rebuild the PDF and deterministic ZIP
+No symbol was renamed. Letters with several senses are tabulated in Section
+1.1 with the false readings: `N` versus the diagonal index `n` (A242375`(n)`
+is `A_+(n+1, n)`), `A`, `D` (the growth bases `D_±(q)` are Kotěšovec's
+`d(k)`), `L`/`ℒ`, `C`/`𝒞`, `H`/`h`, `S`, `R`, `r`, `p`/`P`, `a`, `λ` (the
+class and labeled models' Poisson means differ by two), `δ`, `ε`.
 
-A TeX Live installation with pdfTeX, the standard LaTeX/AMS packages, Latin Modern, microtype, hyperref, geometry, enumitem, and fancyhdr is required. The build never downloads or installs software. It initializes a fresh format from the installed TeX sources and uses only local writable caches, including on machines whose default TeX cache is read-only.
+## The write's additions
 
-    python3 build.py
-    python3 build.py --checks
-    python3 build.py --optional
-    python3 -O build.py --optional
+The status note after the abstract, Section 1.1 (provenance, sources read,
+checks, relation, collected non-claims, reading conventions), Remarks 5.2 and
+11.3, the dated notes at the ends of Sections 13.2 and 14, the label
+prefixes and the label of Section 1, the bibliography entry `TSvol`, the
+`\file` macro and `writenote` environment in the preamble, and the generated
+table printed inline instead of `\input{tables.tex}`. Everything else is
+delivered text.
 
---checks regenerates portable results; --optional also regenerates symbolic/numerical results. --pdf-only and --zip-only are available separately. The small article table is regenerated from the exact result file during checked builds.
+## Files
 
-The PDF is date-free with a fixed source epoch; ZIP members have fixed timestamps and permissions and use stored bytes rather than implementation-dependent compression. Rebuilds with the same TeX/font and optional-library versions are byte reproducible. Different toolchain versions can change PDF or symbolic formatting; mathematical counts do not depend on them.
+```text
+README.md                          this guide (replaces the delivered README.md)
+article.tex                        the report (delivered article.tex, written)
+article.pdf                        compiled report, 33 pages
+code/build.py                      PDF and deterministic ZIP builder (delivered root build.py)
+code/certify_bounds.py             rational certificate of the domain inequalities (Appendix A)
+code/colored_trees.py              exact counts, marked polynomials, diagonals, inverses, palette search
+code/diagnostics.py                optional mpmath diagnostics (crossover, defects, inverses, TV)
+code/make_tables.py                generator of tables.tex
+code/palette_jets.py               optional SymPy palette coefficients, orders 1..6
+code/test_exact.py                 exact regression suite (Prüfer enumeration, Euler products, guards)
+data/oeis_diagonal_prefix.json     OEIS diagonal prefixes n = 0..35 (third-party, CC BY-SA 4.0)
+data/requirements-optional.txt     SymPy and mpmath versions (delivered root)
+data/results-analytic_bounds.json  output of certify_bounds.py (delivered results/)
+data/results-diagnostics.json      output of diagnostics.py --tv (delivered results/)
+data/results-exact_checks.json     output of test_exact.py (delivered results/)
+data/results-palette_jets.json     output of palette_jets.py --order 4 (delivered results/)
+data/tables.tex                    generated table, printed inline in Section 13 (delivered root)
+```
 
-SHA256SUMS covers every public file except itself and the ZIP that contains it. The builder verifies the archive membership, CRCs, and all manifest hashes. It excludes caches and build intermediates. No source-paper PDFs or working notes are included.
+Every file except `README.md`, `article.tex` and `article.pdf` is
+byte-identical to its delivery. Not shipped (retrievable from `60f54ea06`):
+the delivered `Report222.pdf` (29 pages), the pure checksum manifest
+`SHA256SUMS` (17 entries, verified at the write), and the delivered
+`README.md`, replaced by this guide.
 
-## Recorded validation
+```sh
+git show 60f54ea06:docs/incoming/Report222.zip > <scratch>/r222.zip
+```
 
-- Entire marked polynomials and four scalar classes independently checked by Prüfer enumeration through N=6, q=1,2,3
-- Orbit-stabilizer, class-B group order, and labeled expectation checked exactly
-- Independent Euler products through N=11 for q=1,2,3,5,40
-- Both OEIS diagonal prefixes checked at n=0..35
-- Exact threshold, invalid-input, and large-output regressions
-- Exact rational analytic-domain certificates
-- Optional symbolic and numerical outputs replayed in ordinary and optimized modes
-- PDF rendered and visually checked; deterministic rebuild and archive checks recorded with the release
+**Delivered text that names the delivery layout.** The programs write and
+compare `results/*.json` and read `data/oeis_diagonal_prefix.json` by
+delivered paths; `code/build.py` expects the delivered root layout
+(`build.py`, `tables.tex`, `results/`, `SHA256SUMS`), so it runs only in a
+re-extracted archive; Section 13 describes the delivered archive.
+
+**Third-party data.** `data/oeis_diagonal_prefix.json` holds OEIS terms
+(CC BY-SA 4.0, https://oeis.org/LICENSE), not MIT-0 like the rest of the
+repository.
+
+## Rerunning the checks (on scratch copies)
+
+Never run the programs in place. From this directory (Git Bash):
+
+```sh
+T=$(mktemp -d); mkdir -p "$T/data"; cp -r code "$T/"; cp data/oeis_diagonal_prefix.json "$T/data/"
+cd "$T"
+py -B code/test_exact.py | tr -d '\r' | cmp - <(tr -d '\r' < "$OLDPWD/data/results-exact_checks.json") && echo same-exact
+py -B code/certify_bounds.py | tr -d '\r' | cmp - <(tr -d '\r' < "$OLDPWD/data/results-analytic_bounds.json") && echo same-cert
+py -B code/palette_jets.py --order 4 | tr -d '\r' | cmp - <(tr -d '\r' < "$OLDPWD/data/results-palette_jets.json")   # SymPy 1.14.0
+py -B code/diagnostics.py --tv | tr -d '\r' | cmp - <(tr -d '\r' < "$OLDPWD/data/results-diagnostics.json")          # mpmath 1.3.0
+```
+
+At the write (7 October 2026, Windows, Python 3.14.4) all four outputs
+equalled the recorded results after removing carriage returns
+(`test_exact.py` also under `-O`; `diagnostics.py --tv` took 66 s). The
+builder was not run.
+
+## Build
+
+pdfLaTeX (lmodern, amsmath, amssymb, amsthm, mathtools, microtype, booktabs,
+longtable, array, hyperref, enumitem, fancyhdr, geometry). In a scratch copy:
+
+```sh
+B=$(mktemp -d); cp article.tex "$B/"; cd "$B"
+latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+```
+
+The committed PDF was built this way with MiKTeX pdfLaTeX (7 October 2026):
+33 pages; no errors or warnings, no undefined references, no multiply defined
+labels, no duplicate destinations, no overfull or underfull boxes. The
+delivered text (with its `tables.tex`) gives 29 pages with no warnings.
+
+## Provenance
+
+- Batch 112 of `docs/incoming`: bundle Report 222 (arrival `60f54ea06`),
+  placed unprefixed by `f79c9bef1`; written 7 October 2026.
+- Sources cited by the report: Riordan (1957); Labelle (1991, 1992);
+  Harary–Robinson–Schwenk (1975); Bell–Burris–Yeats (2006); Genitrini (2016);
+  Flajolet–Sedgewick (2009); Foissy (2021); Olsson–Wagner (2023);
+  Bartholdi–Diaconis (2026); Dimitrov–Fox–Hadaway–Tharp–Wagner (2026); OEIS
+  A242249, A255517, A242375, A255523; the ProveIt repository; and the
+  repository's transseries volume (added by the write).

@@ -1,0 +1,368 @@
+\section{Polynomial families and finite exponential mixtures}
+\label{sec:algebraic}
+
+The geometric proof works because the dependence of all selected terms
+on the parameters has controlled complexity. For a fixed-dimensional
+polynomial family, a classical sign-condition theorem provides that
+control even when the degrees grow with the original sequence index.
+We state the general normalized result first. No semialgebraicity of
+the parameter set is needed for this existence theorem.
+
+\begin{theorem}[Uniform hitting for polynomial families]\label{thm:poly-family}
+Let $\Theta\subset\R^d$ be nonempty and compact, and let
+$f_n\in\R[X_1,\ldots,X_d]$, $n\ge0$, satisfy $f_0=1$ on $\Theta$.
+Suppose there are constants $0<\alpha<\beta<1$, $A_0\ge1$, and
+an integer $D_0\ge1$ such that, for all $n\ge0$ and $z\in\Theta$,
+\begin{equation}\label{eq:family-assumptions}
+ \alpha f_n(z)\le f_{n+1}(z)\le\beta f_n(z),
+ \qquad \deg f_n\le A_0(n+1)^{D_0}.
+\end{equation}
+For each $0<p<1$ there exists an open $1$-periodic $H\subset\R$
+with $\rho(H)\le6p$ such that
+\begin{equation}\label{eq:family-hit}
+ \forall x\in\R\ \forall t\in[1,2]\ \forall z\in\Theta
+ \quad \exists n\ge1:\ x+tf_n(z)\in H.
+\end{equation}
+\end{theorem}
+
+By induction, $\alpha^n\le f_n(z)\le\beta^n$, so every member
+is strictly positive, strictly decreasing, and converges uniformly to
+zero. The family may contain coinciding members and redundant
+parameters.
+
+\subsection{The sign-condition theorem used}
+
+\begin{lemma}[Classical full sign-condition bound]\label{lem:signs}
+If $S$ real polynomials in $v\ge1$ variables have degrees at most
+$\Delta\ge1$, then the number of realized sign vectors in
+$\{-1,0,1\}^S$ is at most
+\begin{equation}\label{eq:sign-bound}
+ \bigl(8\Delta(S+1)\bigr)^v.
+\end{equation}
+The same bound holds after restricting the variables to an arbitrary
+subset of $\R^v$.
+\end{lemma}
+
+\begin{proof}[Justification and source]
+We use the finite all-sign-condition component bound recorded in
+\cite[Section~3.2, equation~(3.3)]{BPR}, with ambient dimension $v$:
+\[
+ \#\{\text{realized sign vectors}\}
+ \le \sum_{j=0}^v\binom Sj4^j\Delta(2\Delta-1)^{v-1}.
+\]
+A sign realization has at least one connected component, so that
+component estimate implies the displayed inequality. Since
+$\binom Sj\le S^j$ and
+$\sum_{j=0}^v(4S)^j\le(1+4S)^v$, the right-hand side is at most
+$2^{v-1}\Delta^v(1+4S)^v\le(8\Delta(S+1))^v$.
+Restriction cannot increase the number of realized sign vectors.
+This is a finite degree-dependent bound, not just a fixed-degree
+asymptotic. It includes zero signs.
+\end{proof}
+
+We do not need to distinguish connected components with the same sign
+vector: the vector itself determines all the discrete choices below.
+This observation also allows an arbitrary compact $\Theta$ in
+\cref{thm:poly-family}.
+
+\subsection{Simultaneously encode selection and grid addresses}
+
+Choose $Q,T,c$ as in \eqref{eq:Q-T} and define, for $z\in\Theta$,
+\[
+ \nu_j(z)=\min\{n\ge1:f_n(z)\le Q^j\},
+ \qquad a_j(z)=f_{\nu_j(z)}(z).
+\]
+Exactly as in \cref{lem:envelopes},
+\begin{equation}\label{eq:family-envelope}
+ \alpha Q^j<a_j(z)\le Q^j,\quad \nu_j(z)\le Tj,
+ \quad a_j(z)-a_{j'}(z)>(\alpha-Q)Q^j\quad(j'>j).
+\end{equation}
+Thus the common grids, windows, stable centers, and finite random
+routing from \cref{sec:synchronization,sec:routing} apply without
+change. In particular the fixed-$(z,t)$ failure probability is
+$(1-p/2)^{m_0r}$.
+
+Fix $x$ and a center-exposure atom with first default $U$.
+There are $m_0r$ relevant pairs $(i,j)$. Put $N=TB$.
+For every relevant $j$ and $1\le n\le N$, include the polynomial
+\begin{equation}\label{eq:selection-polynomial}
+ f_n(z)-Q^j.
+\end{equation}
+The signs of these polynomials, including equality, determine the
+first $n$ at which the level is crossed, and hence determine
+$\nu_j(z)$.
+
+For every pair $(i,j)$, each grid boundary
+\[
+ \gamma\in\Gamma_{b_{e_i}^*}\cap[x,x+2Q^j],
+\]
+and every $1\le n\le N$, also include
+\begin{equation}\label{eq:key-polynomial}
+ t f_n(z)-(\gamma-x).
+\end{equation}
+There are at most $1+4cQ^{-2r}$ such boundaries per pair by
+\eqref{eq:boundary-count}. Some of the resulting tests are irrelevant
+when $n$ is not selected; retaining them only enlarges the bound.
+Once \eqref{eq:selection-polynomial} specifies $\nu_j(z)$, the signs
+in \eqref{eq:key-polynomial} for that $n$ determine the selected
+point's key. All selected points lie in the interval used to list
+the boundaries, by \eqref{eq:family-envelope}.
+
+The combined list contains at most
+\begin{equation}\label{eq:family-S}
+ S\le m_0rTB\bigl(2+4cQ^{-2r}\bigr)
+\end{equation}
+polynomials in $v=d+1$ variables $(z,t)$, of degrees at most
+\begin{equation}\label{eq:family-degree}
+ \Delta\le A_0(TB+1)^{D_0}+1.
+\end{equation}
+A realized sign vector determines the full local key vector for every
+unrevealed table outcome. Representatives can therefore be chosen
+before those entries are revealed, exactly as in the geometric proof.
+By \cref{lem:signs}, \eqref{eq:family-S}, and
+\eqref{eq:family-degree}, their number is at most
+\begin{equation}\label{eq:family-complexity}
+ C_0(B+1)^{(D_0+2)v}Q^{-2vr},
+\end{equation}
+where $C_0$ depends on $d,A_0,D_0,T,c,M$, but not on $r_0,r,B$.
+Here we used $r\le B$ and absorbed only polynomial factors into
+$(B+1)^{(D_0+2)v}$.
+
+\subsection{Complete the normalized family proof}
+
+Choose $M$ so that
+\begin{equation}\label{eq:family-theta}
+ \theta_v=Q^{-2v}(1-p/2)^{M-1}<1.
+\end{equation}
+Then choose $d_{\rm tree}$ (the tree height, distinct from parameter
+dimension $d$), followed by $g$, so that the no-default probability
+and the unstable-center density are each less than $p$.
+With these choices fixed, $B(r_0)$ is affine in $r_0$.
+Choose $r_0$ large enough that
+\[
+ C_0(B(r_0)+1)^{(D_0+2)v}\theta_v^{r_0}<p.
+\]
+The union bound over the representatives now gives the same pointwise
+stable-center estimate as \eqref{eq:pointwise-miss}, uniformly for
+$(z,t)\in\Theta\times[1,2]$.
+
+Enlarge the random set to $A^+$ and define the residual centers by
+\[
+ R=\{x:\exists(z,t)\in\Theta\times[1,2],\ 
+       x+tf_n(z)\notin A^+\text{ for every }1\le n\le TB\}.
+\]
+This is closed and periodic because the original polynomials are
+continuous and $\Theta\times[1,2]$ is compact. Its expected density
+is at most $3p$. The identical open-neighborhood repair gives an open
+periodic $H$ of density at most $6p$. On a residual center the original
+terms converge to the center, uniformly because $f_n\le\beta^n$.
+This proves \cref{thm:poly-family}.
+
+\subsection{Proof for all positive mixtures}
+
+Fix a component count $d\ge1$ and an interval $I_j=[\alpha_j,\beta_j]$
+from \eqref{eq:ratio-exhaustion}. Take
+\begin{equation}\label{eq:mixture-family}
+ \Theta_{d,j}=\{w\in[0,1]^d:\textstyle\sum_iw_i=1\}\times I_j^d,
+ \qquad f_n(w,q)=\sum_{i=1}^d w_iq_i^n.
+\end{equation}
+This is a compact rational semialgebraic parameter set. The polynomials
+have degree at most $n+1$, $f_0=1$, and
+\[
+ \alpha_j f_n(w,q)\le f_{n+1}(w,q)\le\beta_j f_n(w,q).
+\]
+Thus \cref{thm:poly-family} applies. There is no loss at repeated bases
+or zero weights, since all arguments include boundary sign conditions.
+
+Enumerate the pairs $(d,j)$ by $\ell\ge1$ in a computable order.
+For each $\ell,k$, with $k\ge0$, choose the normalized blocker for
+that family with budget
+\[
+ p_{\ell,k}=\frac\eps{24}2^{-\ell}2^{-(k+1)}.
+\]
+Form $C^*$ by the same union of signed contractions as
+\eqref{eq:global-C}, and put $F^*_\eps=\R\setminus C^*$.
+It is closed, symmetric, periodic, and has density at least $1-\eps/2$.
+
+It remains to verify that a tail can always be brought back into one
+of the normalized families. Absorb $\sum_i c_i$ into the dilation,
+so assume $\sum_i c_i=1$ and write $a_n=\sum_i c_iq_i^n$.
+For $h\ge0$ set
+\begin{equation}\label{eq:mixture-tail}
+ w_i^{(h)}=\frac{c_iq_i^h}{a_h},
+ \qquad
+ a_{h+n}=a_h\sum_i w_i^{(h)}q_i^n.
+\end{equation}
+The new weights remain in the same simplex. Choose $h$ large enough
+that $|s|a_h\le1$, then normalize it by a dyadic contraction as in
+\eqref{eq:tail-normalization}. The appropriate normalized blocker
+gives a hit at an original index $h+n$. Since $h$ can be required to
+exceed any prescribed threshold, the hits occur infinitely often.
+This proves \cref{thm:mixtures}.
+
+\subsection{An additional class: positive polynomial factors}
+
+\begin{corollary}[Positive exponential polynomials]\label{cor:exp-polynomial}
+One common closed, symmetric, $1$-periodic set of measure greater than
+$1-\eps$ per unit interval can avoid, with infinitely many omissions,
+every nontrivial affine pattern whose terms are
+\begin{equation}\label{eq:positive-exp-poly}
+ a_n=\sum_{i=1}^d P_i(n)q_i^n,
+ \qquad 0<q_i<1,
+\end{equation}
+where $d$ is finite and the $P_i$ have nonnegative real coefficients,
+not all zero. The compact section can also have the effective properties
+of \cref{thm:effective-intro}.
+\end{corollary}
+
+\begin{proof}
+Fix $d$, a degree bound $D$, a base interval $[\alpha,\beta]=I_j\subset(0,1)$,
+and an integer $h\ge1$ so large that
+$\beta(1+1/h)^D<1$. Consider normalized families
+\[
+ f_n(w,q)=\sum_{i=1}^d\sum_{k=0}^D
+    w_{ik}(1+n/h)^kq_i^n,
+ \quad w_{ik}\ge0,\quad\sum_{i,k}w_{ik}=1,
+ \quad q_i\in[\alpha,\beta].
+\]
+They have $f_0=1$ and polynomial parameter degree at most $n+1$.
+Each summand's ratio from $n$ to $n+1$ lies between $\alpha$ and
+$\beta(1+1/h)^D<1$, and so does the ratio of the sums. Apply
+\cref{thm:poly-family}, and assemble blockers over all the countably
+many choices of $d,D,j,h$, with summable budgets.
+
+Write $P_i(n)=\sum_k c_{ik}n^k$, $c_{ik}\ge0$. A tail has
+\[
+ a_{h+n}=A_h\sum_{i,k}w_{ik}^{(h)}(1+n/h)^kq_i^n,
+ \quad
+ A_h=\sum_{i,k}c_{ik}h^kq_i^h,
+ \quad w_{ik}^{(h)}=\frac{c_{ik}h^kq_i^h}{A_h}.
+\]
+For all $h\ge1$, $A_h>0$; it tends to zero as $h\to\infty$.
+Choose $h$ satisfying the contraction condition and $|s|A_h\le1$,
+and as large as desired. The normalized family and a dyadic contraction
+then produce an arbitrarily late hit. The families have effective
+rational polynomial descriptions; the argument of
+\cref{sec:effective} therefore applies.
+\end{proof}
+
+In \cref{cor:exp-polynomial}, negative polynomial coefficients and
+complex bases are outside that corollary. The next theorem removes the
+coefficient restriction by proving a separate uniform tail reduction.
+
+\subsection{Signed coefficients and stable positive-root recurrences}
+
+The positivity restriction can in fact be removed when every base is a
+positive real number. The price is a countable compact exhaustion that
+controls the dominant term before the normalized theorem is applied.
+
+\begin{theorem}[All real exponential polynomials with positive bases]
+\label{thm:signed-exp-poly}
+For every $0<\eps<1$ there exists one closed, symmetric, $1$-periodic
+set $F^{\rm ep}_\eps\subset\R$, of measure at least $1-\eps/2$ in
+every unit interval, with the following property. For every finite sum
+\begin{equation}\label{eq:signed-exp-poly}
+ A_n=\sum_{i=1}^m P_i(n)q_i^n,\qquad q_i\in(0,1),
+\end{equation}
+with arbitrary real polynomial coefficients, not identically zero
+after equal bases have been combined, and every $x\in\R$, $s\ne0$,
+infinitely many $x+sA_n$ lie outside $F^{\rm ep}_\eps$.
+For rational accuracy its compact section can be effectively closed
+with computable measure.
+\end{theorem}
+
+\begin{proof}
+Combine equal bases and discard zero polynomials. Relabel so that
+$q_m$ is the largest remaining base. If $P_m$ has degree $j$ and
+nonzero leading coefficient $\lambda$, divide all polynomials by
+$\lambda$ and replace $s$ by $s\lambda$. Hence we may suppose
+$P_m$ is monic of degree $j$.
+
+Fix integers $m\ge1$, $k\ge j\ge0$, $R\ge1$, and rational
+$0<a<b<1$, $0<\delta<b$. Consider the compact parameter set where
+all bases belong to $[a,b]$, all polynomial degrees are at most $k$,
+all coefficients have absolute value at most $R$, $P_m$ is monic of
+degree $j$, and
+\[
+ q_i\le q_m-\delta\quad(i<m).
+\]
+For $m=1$ the separation conditions are vacuous. The set is rational
+semialgebraic. Empty sets may be skipped by quantifier elimination.
+Countably many such boxes cover every normalized nonzero expression.
+
+Put $r_*=1-\delta/b\in(0,1)$. Uniformly on each box, for $n\ge1$,
+\begin{equation}\label{eq:dominance}
+ A_n=n^jq_m^n(1+E_n),\qquad
+ |E_n|\le \frac{Rj}{n}+(m-1)R(k+1)n^k r_*^n.
+\end{equation}
+Indeed the lower terms of the monic dominant polynomial contribute
+at most $Rj/n$ after division by $n^j$. Each other polynomial has
+absolute value at most $R(k+1)n^k$, and its base ratio is at most
+$1-\delta/q_m\le1-\delta/b=r_*$. Dropping the additional factor
+$n^{-j}\le1$ gives the stated estimate.
+
+Choose rational $e\in(0,1)$ such that $b(1+e)/(1-e)<1$.
+Then choose $N$ large enough that the right-hand side of
+\eqref{eq:dominance} is at most $e$ for every $n\ge N$ and
+\[
+ \beta_*:=b(1+1/N)^j\frac{1+e}{1-e}<1.
+\]
+These choices are effective: after imposing
+$(1+1/N)^kr_*\le r'_*<1$ for some rational $r'_*\in(r_*,1)$,
+the sequence $n^kr_*^n$ is decreasing for $n\ge N$, so the
+required tail bounds reduce to rational inequalities at $N$.
+It follows that $A_n>0$ for $n\ge N$, and
+\begin{equation}\label{eq:dominant-ratios}
+ \alpha_*:=a\frac{1-e}{1+e}
+ \le\frac{A_{n+1}}{A_n}\le\beta_*<1
+ \qquad(n\ge N).
+\end{equation}
+
+For \emph{each} integer $h\ge N$, augment this compact box by the
+parameter $u$ satisfying $uA_h=1$, and use the sequence of polynomials
+\[
+ f_n=uA_{h+n},\qquad n\ge0.
+\]
+The augmented set is compact: $A_h\ge(1-e)h^j a^h>0$ uniformly,
+so $u=1/A_h$ is continuous and bounded there. It is rational
+semialgebraic, $f_0=1$, and \eqref{eq:dominant-ratios} gives the
+required uniform contraction bounds. Parameter degree is at most
+$h+n+2$, so \cref{thm:poly-family} applies.
+
+Enumerate all these boxes \emph{and all integers $h\ge N$} as the
+normalized families in the signed-contraction assembly of
+\cref{sec:global}. The same budgets give one periodic set of density
+at least $1-\eps/2$. For any original expression, choose its box and
+then $h$ as large as desired with $|s|A_h\le1$. Since
+$A_{h+n}=A_h f_n$, a dyadic contraction of the normalized blocker
+hits the original affine sequence at an index beyond $h$.
+This proves infinitely many omissions. Including every $h\ge N$
+is what makes the contractions-only assembly valid for these
+normalized tail families.
+
+All enumerated families and tail bounds have effective rational data.
+Consequently \cref{prop:effective-H} and the measure modulus in
+\cref{sec:effective} prove the last assertion.
+\end{proof}
+
+\begin{corollary}[Real linear recurrences with roots in $(0,1)$]
+\label{cor:recurrences}
+The set $F^{\rm ep}_\eps$ simultaneously avoids, with infinitely many
+omissions in every nonzero affine scale, every nonzero real solution of a
+homogeneous constant-coefficient linear recurrence whose characteristic
+roots are all real and lie in $(0,1)$, allowing repeated roots.
+\end{corollary}
+
+\begin{proof}
+For completeness, if the distinct roots are $q_i$ with multiplicities
+$m_i$, the sequences $n^kq_i^n$, $0\le k<m_i$, satisfy the recurrence.
+Applying the shift operator minus $q_i$ lowers the polynomial degree
+in the corresponding term. These $\sum_i m_i$ sequences are linearly
+independent: in a vanishing combination, divide by the largest base
+to isolate its polynomial, which cannot tend to zero unless it is
+zero; then repeat for the smaller bases. A recurrence of order
+$\sum_i m_i$ has that dimension of solutions, since its initial
+values determine it. Therefore every solution has the form
+\eqref{eq:signed-exp-poly}. A nonzero solution gives a nonzero
+expression, and \cref{thm:signed-exp-poly} applies.
+\end{proof}

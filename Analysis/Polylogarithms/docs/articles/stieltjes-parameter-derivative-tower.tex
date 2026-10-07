@@ -1,0 +1,352 @@
+% Article: The parameter-derivative tower of the generalized Stieltjes constants
+% - Created (UTC): 2026-06-28T23:08:52Z
+% - Repository HEAD: f594924c0dcc98e0fcb8147b287a09aa52f75955
+% Source corpus: src/PolyLog/docs/reports/
+%   stieltjes-general-k-duality-and-gamma2-tables__a4f0bee12e5b.md,
+%   stieltjes-second-parameter-derivative-s3-layer__221c04334769.md,
+%   stieltjes-derivative-relations__41afbe98f668.md, and the supporting tools
+%   src/PolyLog/tools/stieltjes_general_k.py (+ scratch/g1k_grid_rank.py,
+%   stieltjes_s2deriv_hunts.py, stieltjes_s3.py).
+\documentclass[11pt]{article}
+\usepackage[margin=1.1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!50!black,citecolor=blue!50!black,urlcolor=blue!60!black]{hyperref}
+\usepackage{xurl}
+\hypersetup{
+  pdftitle={The Parameter-Derivative Tower of the Generalized Stieltjes
+    Constants: a Uniform Harmonic-Number Theorem},
+  pdfauthor={Vladimir Reshetnikov},
+}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\Glaisher}{\mathsf{A}}
+\newcommand{\Cat}{\mathsf{G}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\h}[1]{H_{#1}}
+\newcommand{\zd}[2]{\zeta^{(#1)}(#2)}      % j-th s-derivative of zeta
+\newcommand{\Ld}[2]{L^{(#1)}(#2)}
+\newcommand{\chim}[1]{\chi_{-#1}}
+\DeclareMathOperator{\Li}{Li}
+
+\title{The Parameter-Derivative Tower of the Generalized\\
+Stieltjes Constants: a Uniform Harmonic-Number Theorem}
+\author{Vladimir Reshetnikov\thanks{%
+v.reshetnikov@gmail.com. Prepared with agentic assistance (Anthropic Claude) in
+the \emph{Smithereens} repository,
+\texttt{github.com/VladimirReshetnikov/Smithereens}, \texttt{src/PolyLog}.
+Provenance: created 2026-06-28 (UTC); repository snapshot
+\texttt{f594924c0dcc98e0fcb8147b287a09aa52f75955}. Every displayed identity was
+verified numerically (mpmath, \(60\)--\(220\) digits), the \(q=4\) entries
+independently in a second computer-algebra system (Wolfram, \(\sim426\)
+digits), and the whole development was re-derived by an independent multi-agent
+workflow.}}
+\date{June 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+The generalized Stieltjes constants $\gamma_n(a)$, regarded as functions of the
+Hurwitz parameter $a$, have a parameter-derivative tower whose $k$-th rung lives
+at the $s=k+1$ derivative layer of the Hurwitz zeta function. We show this tower
+is \emph{uniform in $k$} and governed entirely by the harmonic numbers: writing
+$\h{k}=\sum_{m\le k}1/m$ and $\h{k}^{(2)}=\sum_{m\le k}1/m^2$,
+\[
+  \gamma_1^{(k)}(a)=(-1)^{k+1}k!\,\bigl[\zeta'(k{+}1,a)+\h{k}\,\zeta(k{+}1,a)\bigr],
+\]
+\[
+  \gamma_2^{(k)}(a)=(-1)^{k}k!\,\bigl[\zeta''(k{+}1,a)+2\h{k}\,\zeta'(k{+}1,a)
+   +(\h{k}^2-\h{k}^{(2)})\,\zeta(k{+}1,a)\bigr],
+\]
+and likewise for every $n$, with the elementary symmetric functions of
+$\{1,\tfrac12,\dots,\tfrac1k\}$ as coefficients. The same $\h{k}$ controls the
+rational-argument landscape: a character coordinate
+$\sum_p\chi(p)\gamma_1^{(k)}(p/q)=(-1)^{k+1}k!\,q^{k+1}[L'(k{+}1,\chi)+(\h{k}+\ln
+q)L(k{+}1,\chi)]$, a distribution row, and a residual-lattice dimension
+$\varphi(q)-1$ that is \emph{independent of $k$}. We give explicit closed-form
+tables for the second-constant derivatives $\gamma_2'(p/q)$ and
+$\gamma_2''(p/q)$ at $q\in\{1,2,3,4,6\}$, and we establish the
+derivative\,$\leftrightarrow$\,negapolygamma duality at all orders: the
+functional equation pairs $s=k+1$ with $s=-k$, the layer of the negative-order
+polygamma $\psi^{(-(k+1))}$, through the harmonic-number bridge
+$L'(k{+}1,\chi)/L(k{+}1,\chi)+\overline{L'(-k,\chi)/L(-k,\chi)}=\gamma+\ln(2\pi/q)-\h{k}$,
+with a clean parity dichotomy. As a representative corollary,
+$\gamma_1''(\tfrac14)=-256\pi^3\,\psi^{(-3)}(\tfrac14)+(\text{elementary})$.
+\end{abstract}
+
+\section{Introduction and notation}\label{sec:intro}
+
+The generalized (Hurwitz) Stieltjes constants $\gamma_n(a)$ are the Laurent
+coefficients of the Hurwitz zeta function at its pole,
+\begin{equation}\label{eq:laurent}
+  \zeta(s,a)=\frac{1}{s-1}+\sum_{n\ge0}\frac{(-1)^n}{n!}\,\gamma_n(a)\,(s-1)^n ,
+\end{equation}
+so $\gamma_0(a)=-\psi(a)$ and $\gamma_n(1)=\gamma_n$ is the ordinary $n$-th
+Stieltjes constant. The word ``constant'' is a misnomer: each $\gamma_n$ is a
+smooth function of $a$ on $(0,\infty)$, and the object of this note is the
+\emph{parameter-derivative tower}
+\[
+  \gamma_n^{(k)}(a):=\frac{d^k}{da^k}\,\gamma_n(a),\qquad k=0,1,2,\dots
+\]
+Blagouchine~\cite{Blagouchine2015} gave the closed-form theory of $\gamma_1(p/q)$
+at rational arguments; the present development is the analogue ``one (and two)
+order(s) up,'' for the derivatives in the parameter, which had not been
+tabulated.
+
+Throughout, $\zeta^{(j)}(s_0,a)=\partial_s^j\zeta(s,a)\big|_{s=s_0}$ and
+$L^{(j)}(s_0,\chi)$ similarly for a Dirichlet $L$-function; $\h{k}=\sum_{m=1}^k
+1/m$, $\h{k}^{(2)}=\sum_{m=1}^k 1/m^2$ (with $\h0=\h0^{(2)}=0$); $\psi^{(k)}$ is
+the $k$-th derivative of the digamma function and $\psi^{(-n)}$ the
+negative-order polygamma (Wolfram's $\texttt{PolyGamma}[-n,\cdot]$); $\Glaisher$
+is the Glaisher--Kinkelin constant, $\Cat$ Catalan's constant, $\beta$ the
+Dirichlet beta function, and $\chim3,\chim4$ the odd quadratic characters of
+conductors $3,4$.
+
+\section{The uniform master identity}\label{sec:master}
+
+\begin{theorem}[Harmonic-number master identity]\label{thm:master}
+For all $k\ge1$ and $n\ge0$,
+\begin{equation}\label{eq:masterN}
+  \gamma_n^{(k)}(a)=(-1)^{n+k}\,k!\,n!\sum_{i+j=n} e_i(k)\,
+   \frac{\zeta^{(j)}(k{+}1,a)}{j!},
+\end{equation}
+where $e_i(k)$ is the $i$-th elementary symmetric function of
+$\{1,\tfrac12,\dots,\tfrac1k\}$; in particular $e_0=1$, $e_1=\h{k}$,
+$e_2=\tfrac12(\h{k}^2-\h{k}^{(2)})$. The first two rows are
+\begin{align}
+  \gamma_1^{(k)}(a)&=(-1)^{k+1}k!\,\bigl[\zeta'(k{+}1,a)+\h{k}\,\zeta(k{+}1,a)\bigr],
+   \label{eq:master1}\\
+  \gamma_2^{(k)}(a)&=(-1)^{k}k!\,\bigl[\zeta''(k{+}1,a)+2\h{k}\,\zeta'(k{+}1,a)
+   +(\h{k}^2-\h{k}^{(2)})\,\zeta(k{+}1,a)\bigr].\label{eq:master2}
+\end{align}
+\end{theorem}
+
+\begin{proof}
+From $\partial_a\zeta(s,a)=-s\,\zeta(s{+}1,a)$, iteration gives
+$\partial_a^k\zeta(s,a)=(-1)^k (s)_k\,\zeta(s{+}k,a)$ with the rising factorial
+$(s)_k=s(s{+}1)\cdots(s{+}k{-}1)$. For $k\ge1$ this annihilates the pole term in
+\eqref{eq:laurent}, so
+\[
+  \sum_{n\ge0}\frac{(-1)^n}{n!}\,\gamma_n^{(k)}(a)\,(s-1)^n
+   =(-1)^k(s)_k\,\zeta(s{+}k,a).
+\]
+Set $s=1+\varepsilon$. Then
+$(s)_k=(1+\varepsilon)_k=\prod_{m=1}^k(m+\varepsilon)=k!\prod_{m=1}^k(1+\varepsilon/m)
+ =k!\sum_{i\ge0}e_i(k)\,\varepsilon^i$,
+the generating identity for the elementary symmetric functions of $\{1/m\}$,
+while $\zeta(s{+}k,a)=\zeta(k{+}1{+}\varepsilon,a)=\sum_{j\ge0}\zeta^{(j)}(k{+}1,a)\,\varepsilon^j/j!$
+is analytic at $\varepsilon=0$ because $k{+}1\ge2$. Comparing coefficients of
+$\varepsilon^n$ yields \eqref{eq:masterN}; $n=1,2$ give
+\eqref{eq:master1}--\eqref{eq:master2}.
+\end{proof}
+
+Theorem~\ref{thm:master} is the harmonic-number repackaging of Coffey's
+all-orders Stirling-number ladder~\cite{Coffey2009}: the change of basis from
+the unsigned Stirling numbers $\bigl|s(k{+}1,i{+}1)\bigr|$ to the symmetric
+functions $e_i(k)$ turns the coefficients into $\h{k}$, $\h{k}^2-\h{k}^{(2)}$,
+\dots. The specializations $\gamma_1'=\zeta'(2,a)+\zeta(2,a)$,
+$\gamma_1''=-2\zeta'(3,a)-3\zeta(3,a)$,
+$\gamma_2'=-[\zeta''(2,a)+2\zeta'(2,a)]$ and
+$\gamma_2''=2\zeta''(3,a)+6\zeta'(3,a)+2\zeta(3,a)$ are the $s=2,3$ layers used
+below. Identity~\eqref{eq:masterN} was verified against numerical $k$-th
+parameter-derivatives of $\gamma_1,\gamma_2$ for $k=1,\dots,5$.
+
+\section{The uniform rational-argument landscape}\label{sec:landscape}
+
+Three structural facts hold uniformly in $k$; all follow from
+$\sum_{p}\chi(p)\,\zeta(s,p/q)=q^{s}L(s,\chi)$ (and its multiplicative cousin)
+differentiated in $s$, fed through Theorem~\ref{thm:master}.
+
+\begin{proposition}[Character coordinate]\label{prop:char}
+For a primitive Dirichlet character $\chi$ modulo $q$ and all $k\ge1$,
+\begin{equation}\label{eq:char}
+  \sum_{p=1}^{q-1}\chi(p)\,\gamma_1^{(k)}(p/q)
+   =(-1)^{k+1}k!\,q^{k+1}\bigl[L'(k{+}1,\chi)+(\h{k}+\ln q)\,L(k{+}1,\chi)\bigr].
+\end{equation}
+\end{proposition}
+
+\begin{proposition}[Distribution row]\label{prop:dist}
+For $d\ge2$ and all $k\ge1$, with $\psi^{(k)}(a)=(-1)^{k+1}k!\,\zeta(k{+}1,a)$,
+\begin{equation}\label{eq:dist}
+  \sum_{j=0}^{d-1}\gamma_1^{(k)}\!\Bigl(\tfrac{a+j}{d}\Bigr)
+   =d^{\,k+1}\gamma_1^{(k)}(a)+d^{\,k+1}\ln d\;\psi^{(k)}(a).
+\end{equation}
+\end{proposition}
+
+\begin{proof}[Proof of \eqref{eq:char} and \eqref{eq:dist}]
+Apply $\sum_p\chi(p)\,(\cdot)$ (resp. $\sum_{j<d}(\cdot)$) to
+\eqref{eq:master1}. For \eqref{eq:char}, use
+$\sum_p\chi(p)\zeta(s,p/q)=q^sL(s,\chi)$ and its $s$-derivative
+$q^s\ln q\,L(s,\chi)+q^sL'(s,\chi)$ at $s=k{+}1$; collect. For \eqref{eq:dist},
+use $\sum_{j<d}\zeta(s,(a{+}j)/d)=d^s\zeta(s,a)$ and its $s$-derivative, and
+recognize $(-1)^{k+1}k!\,\zeta(k{+}1,a)=\psi^{(k)}(a)$.
+\end{proof}
+
+\begin{theorem}[$k$-independent rank]\label{thm:rank}
+Fix a grid denominator $q$. The $\Q$-vector space of linear relations among
+$\{\gamma_1^{(k)}(r/q):1\le r<q\}$ generated by the distribution
+rows~\eqref{eq:dist} has, for every $k\ge1$, residual dimension
+\[
+  (q-1)-\operatorname{rank}=\varphi(q)-1 ,
+\]
+one residual direction per non-principal character mod $q$, both parities.
+\end{theorem}
+
+The rank was computed by exact rational row reduction; for $k=1,2,3$ and every
+$q=3,\dots,30$ the residual vectors are bitwise identical (the collapsed
+coordinate carries weight $d^{k+1}$, which changes the integer entries but not
+the rank). Thus differentiation in the parameter destroys, at \emph{every}
+order, the Malmsten--Blagouchine reflection halving $\varphi(q)/2-1$ of the
+underived constants. Equation~\eqref{eq:char} was verified for
+$\chim3,\chim4,\chi_5$ and $k=1,\dots,5$; \eqref{eq:dist} for
+$k=1,\dots,5$, $d\in\{2,3,5\}$.
+
+\section{Explicit tables for the second constant}\label{sec:tables}
+
+We record the closed forms of $\gamma_2'=-[\zeta''(2,a)+2\zeta'(2,a)]$ (the
+$s=2$ layer) and $\gamma_2''=2\zeta''(3,a)+6\zeta'(3,a)+2\zeta(3,a)$ (the $s=3$
+layer) at the elementary denominators. The new constants entering are the
+\emph{second} $s$-derivatives $\zeta''(2),\zeta''(3)$, $\beta''(s)=L''(s,\chim4)$
+and $L''(s,\chim3)$; the values $L(3,\chim4)=\pi^3/32$ and
+$L(3,\chim3)=4\pi^3/(81\sqrt3)$ are elementary. As at the first-derivative
+layers, the odd-character block flips sign as a single unit under $p\mapsto q-p$
+(including any elementary $\pi$-power value-part it carries). All entries are
+exact and were verified to $<10^{-70}$.
+
+\paragraph{Second constant, first parameter-derivative.}
+\begin{align*}
+\gamma_2'(1)   &= -\zeta''(2)-2\zeta'(2),\\
+\gamma_2'(\tfrac12) &= -3\zeta''(2)-(6+8\ln2)\zeta'(2)-\tfrac43\pi^2\ln2-\tfrac23\pi^2\ln^2 2,\\
+\gamma_2'(\tfrac13) &= -4\zeta''(2)-(8+9\ln3)\zeta'(2)-\tfrac32\pi^2\ln3-\tfrac34\pi^2\ln^2 3\\
+ &\quad -\Bigl[\tfrac92 L''(2,\chim3)+9(1{+}\ln3)L'(2,\chim3)+\bigl(9\ln3+\tfrac92\ln^2 3\bigr)L(2,\chim3)\Bigr],\\
+\gamma_2'(\tfrac14) &= -6\zeta''(2)-(12+28\ln2)\zeta'(2)-\tfrac{14}{3}\pi^2\ln2-5\pi^2\ln^2 2\\
+ &\quad -\Bigl[8\beta''(2)+16(1{+}2\ln2)\beta'(2)+\bigl(32\ln2+32\ln^2 2\bigr)\Cat\Bigr],
+\end{align*}
+with $\gamma_2'(2/3),\gamma_2'(3/4)$ obtained by negating the bracketed
+odd-character block, and the $q=6$ entries given in the source report.
+
+\paragraph{Second constant, second parameter-derivative.}
+\begin{align*}
+\gamma_2''(1)   &= 2\zeta''(3)+6\zeta'(3)+2\zeta(3),\\
+\gamma_2''(\tfrac12) &= 14\zeta''(3)+(42+32\ln2)\zeta'(3)+(14+48\ln2+16\ln^2 2)\zeta(3),\\
+\gamma_2''(\tfrac13) &= 26\zeta''(3)+(78+54\ln3)\zeta'(3)+(26+81\ln3+27\ln^2 3)\zeta(3)\\
+ &\quad +\Bigl[27L''(3,\chim3)+(81+54\ln3)L'(3,\chim3)+(27+81\ln3+27\ln^2 3)L(3,\chim3)\Bigr],\\
+\gamma_2''(\tfrac14) &= 56\zeta''(3)+(168+240\ln2)\zeta'(3)+(56+360\ln2+248\ln^2 2)\zeta(3)\\
+ &\quad +\Bigl[64\beta''(3)+(192+256\ln2)\beta'(3)+(2+12\ln2+8\ln^2 2)\pi^3\Bigr],
+\end{align*}
+again with $\gamma_2''(2/3),\gamma_2''(3/4)$ the odd-block negations. The
+reducible fractions collapse correctly ($\tfrac24=\tfrac36=\tfrac12$,
+$\tfrac26=\tfrac13$), an internal consistency check.
+
+\section{The derivative\,$\leftrightarrow$\,negapolygamma duality}\label{sec:duality}
+
+The functional equation pairs the layer $s=k+1$ of $\gamma_1^{(k)}$ with the
+layer $s=-k$, which is exactly where the negative-order polygamma
+$\psi^{(-(k+1))}$ lives (its ladder uses $\zeta'(-k,\cdot)$). The seam is a
+single uniform identity.
+
+\begin{theorem}[Harmonic-number bridge law]\label{thm:bridge}
+Let $\chi$ be a primitive character mod $q$ for which $L(-k,\chi)\neq0$. Then
+\begin{equation}\label{eq:bridge}
+  \frac{L'(k{+}1,\chi)}{L(k{+}1,\chi)}
+   +\overline{\left(\frac{L'(-k,\chi)}{L(-k,\chi)}\right)}
+   =\gamma+\ln\frac{2\pi}{q}-\h{k}.
+\end{equation}
+The same $\h{k}$ that sets the master coefficient in
+Theorem~\ref{thm:master} sets the bridge constant; the case $k=1$ recovers the
+generalized-Glaisher constant $C_q=\gamma+\ln(2\pi/q)-1$.
+\end{theorem}
+
+\begin{remark}[Parity dichotomy]\label{rem:parity}
+Since $L(-k,\chi)=0$ if and only if $\chi(-1)=(-1)^k$, the
+direct form \eqref{eq:bridge} applies precisely when $\chi(-1)\neq(-1)^k$;
+otherwise the $s=-k$ side has a trivial zero and \eqref{eq:bridge} holds in its
+first-nonzero-order variant (a ratio of leading nonzero derivatives). This is
+what makes the \emph{value-level} corollary parity-selective.
+\end{remark}
+
+At $z=\tfrac14$ the governing character is $\chim4$ (odd). For $k$ even there is
+no trivial zero, and $\psi^{(-(k+1))}(\tfrac14)$ carries the genuine derivative
+atom $\beta'(k{+}1)=L'(k{+}1,\chim4)$, so $\gamma_1^{(k)}(\tfrac14)$ is an exact
+finite combination of $\psi^{(-(k+1))}(\tfrac14)$ and elementary constants. The
+representative instance $k=2$ is, after eliminating $\beta'(3)$ entirely,
+\begin{equation}\label{eq:k2duality}
+\begin{aligned}
+  \gamma_1''(\tfrac14)=\;&-256\,\pi^3\,\psi^{(-3)}(\tfrac14)
+   -56\,\zeta'(3)-84\,\zeta(3)-120\ln2\,\zeta(3)+35\pi\,\zeta(3)\\
+   &-3\pi^3-4\ln2\,\pi^3+64\ln\Glaisher\,\pi^3-2\gamma\,\pi^3+2\ln(2\pi)\,\pi^3 ,
+\end{aligned}
+\end{equation}
+verified to $<10^{-118}$. (The irrational coefficient $-256\pi^3$ on
+$\psi^{(-3)}(\tfrac14)$ is why a rational integer-relation search for this
+identity must take $\pi^3\psi^{(-3)}$, not $\psi^{(-3)}$, as the search atom.)
+For $k$ odd the value-level duality \emph{degenerates}: by
+Remark~\ref{rem:parity}, $\psi^{(-(k+1))}(\tfrac14)$ then carries only the lower
+\emph{value} atom (for $k=1$, $\beta'(-1)=2\Cat/\pi$, elementary; for $k=3$,
+$\beta'(-3)\sim\beta(4)/\pi^3$), while the genuine derivative atom
+$\beta'(k{+}1)$ of $\gamma_1^{(k)}(\tfrac14)$ is tied instead to the second
+derivative $\beta''(-k)$, absent from $\psi^{(-(k+1))}$. Numerically the
+coefficient of $\beta'(k{+}1)$ in $\psi^{(-(k+1))}(\tfrac14)$ is zero to $\sim
+10^{-163}$ for $k=1,3$. The clean odd-$k$ value-level duality therefore lives at
+even-character points (e.g.\ $q=5$), where the parity is reversed.
+
+\section{The new atoms are genuine}\label{sec:atoms}
+
+The $\gamma_2$ tables of \S\ref{sec:tables} introduce six second-$s$-derivative
+constants:
+$\zeta''(2),\zeta''(3),\beta''(2),\beta''(3),L''(2,\chim3),L''(3,\chim3)$. A
+PSLQ sweep at $200$ digits with planted controls (the elementary values
+$\beta(3)=\pi^3/32$, $L(3,\chim3)=4\pi^3/(81\sqrt3)$, $\zeta(2)=\pi^2/6$ are
+recovered; a random constant is rejected) finds \emph{no} reduction of any of
+the six over a basket of the lower value and first-derivative atoms with
+$\gamma$/log products, and no relation among them: each is a genuine,
+mutually independent atom, the natural continuation of the $\beta'(2),\beta'(3)$
+findings at the first-derivative layers. This was reproduced by an independent
+agent with its own controls.
+
+\section*{Verification record}
+
+Every identity above was checked numerically in the
+\emph{Smithereens} repository: the master identity, character coordinate,
+distribution row, rank theorem, $\gamma_2$ tables, bridge law and the
+duality~\eqref{eq:k2duality} by the self-test battery in
+\texttt{src/PolyLog/tools/stieltjes\_general\_k.py} (with
+\texttt{scratch/g1k\_grid\_rank.py} for the exact rank and
+\texttt{stieltjes\_s2deriv\_hunts.py} for \S\ref{sec:atoms}); the $q=4$ table
+entries and the master identities additionally in an independent
+computer-algebra system. An independent multi-agent workflow re-derived the
+$\gamma_2''$ table (all entries to $<10^{-128}$), re-verified the general-$k$
+claims at the independent point $a=\sqrt2-1$ for $k=1,\dots,5$, confirmed the
+bridge law in both parities ($\le 2.7\times10^{-161}$), and reproduced the atom
+sweep.
+
+\begin{thebibliography}{9}
+\bibitem{Blagouchine2015} I.~V.~Blagouchine,
+  \emph{A theorem for the closed-form evaluation of the first generalized
+  Stieltjes constant at rational arguments and some related summations},
+  J.\ Number Theory \textbf{148} (2015), 537--592.
+\bibitem{Coffey2009} M.~W.~Coffey,
+  \emph{Series representations for the Stieltjes constants},
+  arXiv:0905.1111; Rocky Mountain J.\ Math.\ \textbf{44} (2014), 443--477.
+\bibitem{Connon2019} D.~F.~Connon,
+  \emph{On some new formulae involving the Stieltjes constants} (2019).
+\bibitem{MillerAdamchik1998} J.~Miller and V.~S.~Adamchik,
+  \emph{Derivatives of the Hurwitz zeta function for rational arguments},
+  J.\ Comput.\ Appl.\ Math.\ \textbf{100} (1998), 201--206.
+\bibitem{BaileyBorwein2016} D.~H.~Bailey and J.~M.~Borwein,
+  \emph{Computation and structure of character polylogarithms with
+  applications to character Mordell--Tornheim--Witten sums},
+  Math.\ Comp.\ \textbf{85} (2016), 295--324.
+\end{thebibliography}
+
+\end{document}

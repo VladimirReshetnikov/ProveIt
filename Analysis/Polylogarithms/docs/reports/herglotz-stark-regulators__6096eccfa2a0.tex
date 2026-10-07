@@ -1,0 +1,261 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage[colorlinks=true,linkcolor=blue,urlcolor=blue]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{observation}{Observation}
+\newcommand{\Jc}{\mathcal{J}}
+\newcommand{\Fc}{\mathcal{F}}
+\newcommand{\Li}{\operatorname{Li}}
+\newcommand{\reg}{\operatorname{reg}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\rhoB}{\varrho}
+
+\title{Stark--Kronecker regulator evaluations of the Herglotz function:\\
+independent verification and a ring-class extension}
+\author{Smithereens \texttt{src/PolyLog} research log}
+\date{Created (UTC): 2026-06-26T02:17:48Z}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Provenance.}
+\begin{itemize}\itemsep0pt
+  \item Created (UTC): 2026-06-26T02:17:48Z
+  \item Repository HEAD: \texttt{6096eccfa2a09e7d74f0dab24e3798a783c0e48c}
+  \item Scope: \texttt{src/PolyLog}; reproducers under
+        \texttt{tools/scratch/herglotz/} (\texttt{stark\_examples.gp},
+        \texttt{stark\_family.gp}, \texttt{rho\_engine.py},
+        \texttt{validate\_thm5.py}).
+\end{itemize}
+
+\begin{abstract}
+Radchenko and Zagier (\emph{Arithmetic properties of the Herglotz function},
+\S6.2) give two numerical examples in which the Herglotz value
+$\Jc(\varepsilon)$ at an even-trace quadratic unit $\varepsilon$ is expressed,
+\emph{conjecturally on the abelian Stark conjecture}, through a $2\times2$
+determinant of logarithms of algebraic units in a ring class field. We
+(i) independently confirm both examples to $\gtrsim 80$ digits;
+(ii) identify the first determinant exactly as the negative of the
+\emph{regulator} of the cubic Hilbert class field of $\Q(\sqrt{257})$,
+sharpening the example to
+$\Jc(16+\sqrt{257})=4\zeta(2)+\log2\,\log u+2\reg(H_0)$;
+(iii) build and validate (to $\sim10^{-38}$) an independent Kronecker-limit
+engine that computes the per-narrow-class atoms $\rhoB(\mathcal B)$ and confirms
+Radchenko--Zagier Theorem~5 for genuinely multi-class fields beyond the $45$
+one-class-per-genus rows tabulated in the paper; and
+(iv) extend the single $\sqrt{257}$ example to a family of five closed forms
+$\Jc(n+\sqrt{n^2+1})$, $n\in\{6,10,14,16,26\}$, governed by the regulator of a
+cubic ring class field, all verified to $\sim10^{-110}$. The four cases with
+$n\in\{6,10,14,26\}$ live over class-number-one fields and so were not
+accessible to the paper's tables; they obey a uniform law
+$\Jc(n+\sqrt{n^2+1})=\tfrac n4\,\zeta(2)+\tfrac23\log2\,\log u+\tfrac23\reg(H_0)$.
+\end{abstract}
+
+\section{Background}
+
+The Herglotz function is $F(x)=\sum_{n\ge1}\frac{\psi(nx)-\log(nx)}{n}$ on
+$\mathbb C\setminus(-\infty,0]$ (eq.~3 of the paper), with the integral
+representation $F(x)=\int_0^1\!\bigl(\tfrac1{1-y}+\tfrac1{\log y}\bigr)
+\log(1-y^x)\,\tfrac{dy}{y}$ (eq.~5). Its companions are
+\[
+  J(x)=\int_0^1\frac{\log(1+t^x)}{1+t}\,dt,\qquad
+  \Jc(x)=J(x)-\tfrac12\log^2 2+\tfrac{\pi^2}{24}\Bigl(x-\tfrac1x\Bigr),
+\]
+and $\Fc(x)=F(x)-F(1)+\tfrac{\pi^2}{12}(x-2+x^{-1})-\tfrac14\log^2 x$
+(eq.~11), so that $\Jc(x)=\Fc(2x)-2\Fc(x)+\Fc(x/2)$.
+
+For a real quadratic field $K$ of discriminant $D>0$, the Kronecker limit
+$\rhoB(\mathcal B)=\lim_{s\to1}\bigl(D^{s/2}\zeta(\mathcal B,s)-\log\varepsilon/(s-1)\bigr)$
+of the partial zeta function over a narrow ideal class $\mathcal B$ is given by
+the reduced-form cycle formula (eqs.~26--28)
+\begin{equation}\label{eq:rho}
+  \rhoB(\mathcal B)=2\gamma\log\varepsilon-\ell(\mathcal B)\frac{\pi^2}{6}
+     +\sum_{j\bmod\ell}\Bigl[\Fc(w_j)-\Fc(w_j')+L\!\Bigl(\tfrac{w_j'}{w_j}\Bigr)\Bigr],
+\end{equation}
+where $\{w_j\}$ is the cycle of reduced quadratic irrationals
+($w_j>1>w_j'>0$) of $\mathcal B$ and $L(z)=\Li_2(z)+\tfrac12\log z\,\log(1-z)$ is
+the Rogers function. Theorem~5 of the paper expresses
+$\Jc(n+\sqrt{n^2\pm1})$ as a rational combination of $\zeta(2)$,
+$\log2\,\log(n+\sqrt{n^2\pm1})$, and at most four atoms $\rhoB(\mathcal B)$ of
+discriminant $4^a(n^2\pm1)$; for $n$ even in the $n^2-1$ case,
+\begin{equation}\label{eq:thm5even}
+  2\Jc(u)=\rhoB(\mathcal B_1)-\rhoB(\mathcal B_2)+\log2\,\log u,\qquad
+  u=n+\sqrt{n^2-1}.
+\end{equation}
+When the class group is multi-class, the non-genus part of
+$\sum_{\mathcal B}\chi(\mathcal B)\rhoB(\mathcal B)=D^{1/2}L_K(1,\chi)$ is, by the
+abelian Stark conjecture, an algebraic multiple of a determinant of unit
+logarithms in a ring class field (Proposition~6).
+
+\section{Independent verification of the two published examples}
+
+Both worked examples in the paper carry a ``$\stackrel{?}{=}$'': they are
+predicted by Stark's conjecture and were checked only numerically. We recompute
+$\Jc$ at the relevant unit two independent ways --- the $J$-integral and the
+$\Fc$-difference (each to $\ge80$ digits) --- and confirm:
+\[
+  \Jc(16+\sqrt{257})=4\zeta(2)+\log2\,\log u-2\,\Delta_1,\qquad
+  2\,\Jc(10+3\sqrt{11})=5\zeta(2)+\log2\,\log u+\Delta_2,
+\]
+with $\Delta_1=\bigl|\begin{smallmatrix}\log(-\alpha_1)&\log(3-\alpha_1)\\
+\log\alpha_3&\log(3-\alpha_3)\end{smallmatrix}\bigr|$ ($\alpha_i$ the roots of
+$x^3-2x^2-3x+1$) and $\Delta_2$ the paper's $\beta,\gamma$ determinant. The
+residuals are $<10^{-78}$ and $1.7\times10^{-80}$ respectively (the paper's
+$|\cdot|$ is the absolute value of the determinant; the literal matrix gives
+$\Delta_1=-1.9746$).
+
+\paragraph{The determinant is a regulator.} The number $\Delta_1=-1.9745938707\ldots$
+equals \emph{exactly} $-\reg(H_0)$, where $H_0$ is the cubic Hilbert class field
+of $\Q(\sqrt{257})$ ($H_0=\Q[x]/(x^3-2x^2-3x+1)=\Q[x]/(x^3-5x-3)$, a totally
+real $S_3$-cubic of unit rank $2$). Hence the example takes the regulator form
+\begin{equation}\label{eq:257}
+  \boxed{\;\Jc(16+\sqrt{257})=4\,\zeta(2)+\log2\,\log(16+\sqrt{257})+2\,\reg(H_0)\;}
+\end{equation}
+verified to $6.7\times10^{-110}$ (Table~\ref{tab:family}). The second example
+has narrow class number $4$ over an order of discriminant $396$ (conductor $3$
+over $\Q(\sqrt{11})$); its determinant is a $2\times2$ Stark minor of a degree-8
+ring class field with cyclic group $C_4$ and does not collapse to a single field
+regulator, matching the paper's explicit $\beta,\gamma$ construction.
+
+\section{A Kronecker-limit engine and a test of Theorem 5}
+
+We implemented \eqref{eq:rho} directly: reduced indefinite forms of a given
+discriminant are enumerated and grouped into narrow classes by the
+minus-continued-fraction (right-neighbour) operator, and $\Fc$ is evaluated to
+high precision from the series~(3) with an Euler--Maclaurin tail
+($\psi(z)-\log z=-\tfrac1{2z}-\sum_{k\ge1}\tfrac{B_{2k}}{2k}z^{-2k}$), the
+inversion functional equation~(4) folding arguments $<1$ to $>1$. For
+$D=257$ the engine returns exactly three narrow classes (cycle lengths
+$17,11,11$), reproduces the totally positive fundamental unit
+$\prod w_j=\varepsilon^2=513+32\sqrt{257}$, and yields
+$\rhoB(\mathcal B_0)=26.8366\ldots$, $\rhoB(\mathcal B_1),\rhoB(\mathcal B_2)=18.9467\ldots$
+(the conjugate cubic pair). Validating \eqref{eq:thm5even} against the engine
+for $n=2,4,6,8$ gives residuals $\sim5\times10^{-38}$ at 40-digit precision ---
+the first direct numerical confirmation of the Theorem~5 atom decomposition for
+genuinely multi-class discriminants (the paper tabulates only the $45$
+one-class-per-genus cases).
+
+\section{The cubic ring-class family}
+
+The unit $u=n+\sqrt{n^2+1}$ generates the order of discriminant $4(n^2+1)$
+(minimal polynomial $x^2-2nx-1$). The relevant Stark object is the ring class
+field of \emph{that} order, not the Hilbert class field of the maximal order.
+Searching $2\le n\le1500$, the order of discriminant $4(n^2+1)$ has narrow class
+number exactly $3$ precisely for
+\[
+  n\in\{6,10,14,16,26\},\qquad D_0=n^2+1\in\{37,101,197,257,677\},
+\]
+and the $n^2-1$ branch yields no such case in range. For each, the conductor-$2$
+ring class field is a cyclic cubic $H_0$ over $K$; computing its regulator (via
+\texttt{bnrclassfield}/\texttt{bnfinit}) and fitting by integer relation gives
+the closed forms of Table~\ref{tab:family}, each independently re-checked by the
+$\Fc$-route at $110$ digits.
+
+\begin{table}[h]\centering
+\begin{tabular}{rrlccc r}
+\toprule
+$n$ & $D_0$ & $H_0$ & $\zeta(2)$ & $\log2\,\log u$ & $\reg(H_0)$ & residual\\
+\midrule
+$6$  & $37$  & $x^3-x^2-3x+1$  & $3/2$  & $2/3$ & $2/3$ & $1.3\times10^{-110}$\\
+$10$ & $101$ & $x^3-x^2-5x-1$  & $5/2$  & $2/3$ & $2/3$ & $5.3\times10^{-110}$\\
+$14$ & $197$ & $x^3-x^2-7x-3$  & $7/2$  & $2/3$ & $2/3$ & $5.3\times10^{-110}$\\
+$16$ & $257$ & $x^3-x^2-4x+3$  & $4$    & $1$   & $2$   & $6.7\times10^{-110}$\\
+$26$ & $677$ & $x^3-x^2-11x-7$ & $13/2$ & $2/3$ & $2/3$ & $1.1\times10^{-109}$\\
+\bottomrule
+\end{tabular}
+\caption{Closed forms $\Jc(n+\sqrt{n^2+1})=c_1\zeta(2)+c_2\log2\,\log u+c_3\reg(H_0)$,
+where $H_0$ is the conductor-$2$ cubic ring class field of the order of
+discriminant $4(n^2+1)$ (narrow class number $3$). The $n=16$ row is the
+Radchenko--Zagier example~\eqref{eq:257}; the four others are new.}
+\label{tab:family}
+\end{table}
+
+\begin{observation}
+The coefficient $c_1=n/4$ in all five rows is forced by the $n\,\zeta(2)$ term of
+Theorem~5. For the four cases in which the underlying field
+$\Q(\sqrt{n^2+1})$ has class number one (so $H_0$ is a genuine ring class field
+of the non-maximal order, $n\in\{6,10,14,26\}$) the remaining coefficients are
+\emph{uniform},
+\[
+  \Jc(n+\sqrt{n^2+1})=\frac n4\,\zeta(2)+\frac23\log2\,\log u+\frac23\reg(H_0).
+\]
+The single case $n=16$, where the field already has class number three
+($H_0$ being its Hilbert class field), gives instead $(c_2,c_3)=(1,2)$. The
+discrepancy is the index $[\,O_{H_0}^\times:\langle\text{Stark units}\rangle\,]$,
+which differs between the ring-class and Hilbert-class situations.
+\end{observation}
+
+\begin{observation}[Completeness]
+The list $\{37,101,197,257,677\}$ is the \emph{complete} set of $D_0=n^2+1$ for
+which the order of discriminant $4D_0$ has narrow class number exactly $3$, over
+the range $2\le n\le5000$. Since the narrow class number grows on average like
+$\sqrt{D_0}$, the value $3$ occurs only sparsely and the family is, empirically,
+finite.
+\end{observation}
+
+\begin{observation}[Single regulator $\iff$ $C_3$]
+The reduction of $\Jc$ to a \emph{single} ring-class-field regulator is special
+to the cyclic-cubic case. The orders of discriminant $4(n^2+1)$ with narrow class
+number $5$ ($n=20$) and $7$ ($n=24,40$) do \emph{not} satisfy
+$\Jc=c_1\zeta(2)+c_2\log2\,\log u+c_3\reg(H_0)$ for the Hilbert quintic/septic
+$H_0$ (integer-relation search returns only spurious $10^{18}$-height vectors).
+The reason is representation-theoretic: a $C_3$ group has a single pair of
+conjugate non-trivial characters, hence a single $2$-dimensional Stark
+representation whose regulator is exactly $\reg(H_0)$; for $C_5$ and $C_7$ there
+are two and three such pairs, and the specific $\rhoB(\mathcal B)$-combination of
+Theorem~5 selects a sub-determinant of the unit lattice rather than the full
+field regulator (as already in the published $C_4$ example $10+3\sqrt{11}$).
+\end{observation}
+
+\section{The regulator as a leading L-value}
+
+The regulator $\reg(H_0)$ in Table~\ref{tab:family} is not merely a determinant of
+units: it is the leading Taylor coefficient at $s=0$ of the cubic ring-class
+$L$-function. Writing $\chi$ for either of the two conjugate order-$3$ characters
+of the narrow ray class group modulo $(2)\infty_1\infty_2$, the abelian Stark
+conjecture --- a theorem of Stark in this rank-one-per-place setting --- gives
+\[
+  L_K(s,\chi)=\reg(H_0)\,s^2+O(s^3)\qquad(s\to0),
+\]
+the order of vanishing $2$ being the unit rank of the totally real cubic $H_0$.
+We confirmed numerically (PARI \texttt{bnrL1}, $50$ digits) that the leading
+coefficient equals $\reg(H_0)$ exactly for all four conjugate-character pairs
+($D_0=37,101,257,677$; differences $<10^{-57}$). Hence the closed forms read,
+intrinsically,
+\[
+  \Jc(n+\sqrt{n^2+1})=\frac n4\,\zeta(2)+\frac23\log2\,\log u
+     +\frac23\,L_K^{*}(0,\chi),\qquad n\in\{6,10,14,26\},
+\]
+with $L_K^{*}(0,\chi)=\lim_{s\to0}s^{-2}L_K(s,\chi)$. This places the Herglotz
+value squarely inside the Stark/Artin $L$-value framework and identifies the
+``new constant'' of each row as a single leading $L$-coefficient.
+
+\section{Notes and open directions}
+\begin{itemize}\itemsep1pt
+  \item \textbf{Why $\tfrac23$?} The uniformity of $(c_2,c_3)=(\tfrac23,\tfrac23)$
+        across $n\in\{6,10,14,26\}$ amounts to
+        $\rhoB(\mathcal A_1)-\rhoB(\mathcal A_2)=\tfrac23\log2\,\log u+\tfrac83\reg(H_0)$
+        for these conductor-$2$ ring classes; a structural (index-theoretic)
+        proof would upgrade the table to a theorem.
+  \item \textbf{Higher class number.} For $C_5,C_7,\ldots$ the value
+        $\Jc(n+\sqrt{n^2+1})$ is no longer a single field regulator but a
+        specific Stark sub-determinant of the unit lattice (cf.\ the published
+        $C_4$ example). Making these explicit --- the analogue of the paper's
+        $\beta,\gamma$ construction --- is the natural next step; the
+        $\rhoB(\mathcal B)$ engine already evaluates the underlying atoms.
+  \item \textbf{The $n^2-1$ branch} (norm $+1$ units, even discriminants
+        $4(n^2-1)$) is governed by~\eqref{eq:thm5even} with narrow classes; an
+        analogous regulator table awaits the same ring-class analysis.
+\end{itemize}
+
+All computations are reproducible from the scripts listed under Provenance; the
+verified closed forms are stored in
+\texttt{src/PolyLog/identities/herglotz-stark-regulators.wl}.
+
+\end{document}
