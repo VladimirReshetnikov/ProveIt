@@ -12,8 +12,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 523 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 3,467 public Gowers theorems and found only propext,
+  All 526 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 3,481 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 108 exact
   companion proofs and 12 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -1375,8 +1375,16 @@ Near-maximal frequency selection and finite additive correction
   theta/(1-2*theta), hence at most 2*theta. The proof uses the increment
   cocycle and a quantitative averaged distance bound.
   All five modules pass the full axiom audit. Connecting Fourier
-  concentration to the addition test, correcting symmetry to bilinearity,
-  and assembling the endpoint square remain necessary.
+  concentration to the addition test and assembling the endpoint square
+  remain necessary.
+  Proofs13EndpointRowCorrection corrects arbitrary cyclic rows with loss
+  six times their addition-test failure, including large-failure rows.
+  Proofs13EndpointSymmetricRankOne gives a pivot proof over finite fields:
+  some scalar bilinear map is within the symmetry disagreement of a
+  row-linear table. This strengthens the source argument by removing
+  its zero-row assumption. Proofs13EndpointBilinearCorrection combines
+  these results: a symmetric table has distance at most 18 times its
+  averaged addition-test failure from some scalar bilinear map.
 
 Reproducible checks (from repository root)
   python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.Audit
@@ -1399,9 +1407,9 @@ Next substantial obligations
      are now proved. Source 57 (gowers_research_proveit) gives an explicit
      near-maximal U^4 argument. Unit-modulus normalization and uniform
      derivative/Fourier transfer, dominant-frequency concentration, and
-     finite additive correction are now proved. The Fourier addition-test
-     estimate, symmetry-based bilinear correction, and assembly of the
-     ambient square remain unproved.
+     finite additive correction, and symmetry-based bilinear correction
+     are now proved. The Fourier addition-test estimate and assembly of
+     the ambient square remain unproved.
      The weaker constants in the formal purification still yield the same
      2^53 length top power and an improved 2^42 density top power.
      Source 53 (Report281) gives an explicit

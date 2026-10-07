@@ -228,34 +228,26 @@ import GowersSzemeredi.Proofs18AffineCubeEnergy
 import GowersSzemeredi.Proofs18PrimeCubeModel
 import GowersSzemeredi.Proofs18CubicPrimeModel
 import GowersSzemeredi.Proofs18UniformInterval
-
 import GowersSzemeredi.Proofs08QuadraticFrequencies
 import GowersSzemeredi.Proofs08AffineFrequencyProgression
-
 import GowersSzemeredi.Proofs08OddFrequencyProgression
 import GowersSzemeredi.Proofs17QuadraticLocalization
 import GowersSzemeredi.Proofs18QuadraticPrimeModel
-
 import GowersSzemeredi.Proofs18LinearFourierObstruction
 import GowersSzemeredi.Proofs18QuadraticCorrelation
-
 import GowersSzemeredi.Proofs18PartitionFourierBias
 import GowersSzemeredi.Proofs05VariablePhaseRefinement
 import GowersSzemeredi.Proofs18TwistedPartitionDiscrepancy
-
 import GowersSzemeredi.Proofs18QuadraticDiscrepancy
 import GowersSzemeredi.Proofs18QuadraticDensityIncrement
-
 import GowersSzemeredi.Proofs05RefinementConstantBounds
 import GowersSzemeredi.Proofs18QuadraticThreshold
 import GowersSzemeredi.Proofs18QuadraticThresholdGrowth
 import GowersSzemeredi.Proofs18QuadraticDichotomy
-
 import GowersSzemeredi.Proofs18RelativeBalance
 import GowersSzemeredi.Proofs18RelativeQuadraticIncrement
 import GowersSzemeredi.Proofs18RelativeIntervalModel
 import GowersSzemeredi.Proofs18ExceptionalCellSelection
-
 import GowersSzemeredi.Proofs18BoundaryRefinement
 import GowersSzemeredi.Proofs18IntervalBoundaryBand
 import GowersSzemeredi.Proofs18IntervalBoundarySelection
@@ -368,6 +360,17 @@ import GowersSzemeredi.Proofs13EndpointFiniteError
 import GowersSzemeredi.Proofs13EndpointAdditiveCollision
 import GowersSzemeredi.Proofs13EndpointAdditiveCorrection
 import GowersSzemeredi.Proofs13EndpointFrequencyMap
+import GowersSzemeredi.Proofs13EndpointRowCorrection
+import GowersSzemeredi.Proofs13EndpointSymmetricRankOne
+import GowersSzemeredi.Proofs13EndpointBilinearCorrection
+
+
+
+
+
+
+
+
 
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
