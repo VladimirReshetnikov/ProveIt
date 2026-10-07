@@ -2767,6 +2767,32 @@ Repaired Lemma 16.10 with an exact companion
   That theorem stays open, together with Corollary 16.11, Theorems 18.1, 18.2
   and 1.3, and Corollary 18.7. Count: 114/120.
 
+Regime splitting: loss-independent covers suffice for MultiplyLinear
+  Proofs16RegimeSplitting proves multiplyLinear_of_powerLossCover. The
+  hypotheses are:
+  - k >= 1, r >= 1, gamma > 0, C >= 0 and delta > 0;
+  - every fibre of the relation has at most M points;
+  - on every proper box of width W >= T there is a cover whose exceptional
+    fraction C*W^-delta does not depend on any requested loss, with at most
+    Q multilinear graphs on proper cells of width at least W^E
+    (Section16PowerLossCover).
+  With b = c(r^-1,gamma,k)^r, it concludes MultiplyLinear gamma r provided
+  Q <= 1/b, 3^k*M <= 1/b, b <= E, b*C <= delta*log 2 and T <= 2^(1/b).
+  The proof splits the boxes into two regimes:
+  - Where width^e <= 2, a new exact coarse relation cover is used
+    (section16_coarse_relation_cover): cells of at most 3^k points, sides
+    1 only on axes of length 1, and 3^k*M constant graphs per cell.
+  - Elsewhere, width^e > 2 with e <= theta*b forces C*W^-delta <= theta
+    (section16_power_loss_le).
+  The proof uses the monotonicity facts c(theta/r)^r <= theta*c(1/r)^r and
+  q(1/r)^r <= q(theta/r)^r.
+  The module and its 112-module closure were compiled locally. Its three
+  main theorems depend only on propext, Classical.choice and Quot.sound.
+  This reduces the exact Theorem 16.2 to a structure theorem whose losses
+  do not depend on the requested loss and decay as a power of the box
+  width. It proves no catalogue statement, so the count stays 114/6. See
+  Research/GowersSzemeredi/SECTION16_RESEARCH_NOTES.md.
+
 Reproducible checks (from repository root)
   python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.Audit
   python3 Combinatorics/Ramsey/scripts/gowers_status.py

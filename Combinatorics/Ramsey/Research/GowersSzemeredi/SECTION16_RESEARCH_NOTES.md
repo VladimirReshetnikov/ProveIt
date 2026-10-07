@@ -140,7 +140,15 @@ bound analogue, and no published erratum for §16 of Gowers (2001). As
 encoded, Theorem 16.2's quantitative content appears to be beyond current
 published methods, although the statement may well be true.
 
-## E. A positive reduction (proved; suitable for Lean)
+## E. A positive reduction (proved; formalized in `Proofs16RegimeSplitting`)
+
+The Lean version, `multiplyLinear_of_powerLossCover`, is kernel-checked. Its
+axioms are only propext, Classical.choice and Quot.sound. It differs from the
+statement below in two ways. Condition (3) becomes `b·C ≤ δ·log 2`, which is
+linear in C, because the proof then needs only `exp y ≥ y`. The
+covers are also required only on boxes of width at least a threshold `T`,
+with the added condition `T ≤ 2^(1/b)`; this matches the thresholds of the
+existing `LargeBoxMultilinearCover` profiles. Here `b = c(1/R,γ,k)^R = 1/B`.
 
 **Proposition (regime splitting).** Let `Γ ⊆ Z_N^k × Z_N` have all fibres of
 size at most `M`. Let `R ≥ 1`, `0 < γ ≤ 1`, `A = A_k` and `B = (R/γ)^(A R)`.
