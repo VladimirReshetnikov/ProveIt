@@ -1,0 +1,15 @@
+.PHONY: all pdf verify quick clean
+
+all: pdf
+
+pdf:
+	latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+
+verify:
+	python code/verify.py
+
+quick:
+	python code/verify.py --quick --output data/verification_quick.json
+
+clean:
+	latexmk -c article.tex

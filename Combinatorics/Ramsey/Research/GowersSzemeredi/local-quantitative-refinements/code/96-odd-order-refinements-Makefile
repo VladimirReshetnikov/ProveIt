@@ -1,0 +1,12 @@
+.PHONY: all pdf verify clean
+
+all: pdf verify
+
+pdf:
+	latexmk -pdf -interaction=nonstopmode -halt-on-error gowers_local_refinements.tex
+
+verify:
+	python3 code/run_all.py
+
+clean:
+	latexmk -c gowers_local_refinements.tex

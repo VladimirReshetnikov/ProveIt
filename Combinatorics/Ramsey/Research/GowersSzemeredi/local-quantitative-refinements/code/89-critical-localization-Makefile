@@ -1,0 +1,16 @@
+PYTHON ?= python3
+LATEXMK ?= latexmk
+
+.PHONY: all pdf check clean
+all: check pdf
+
+pdf:
+	$(LATEXMK) -pdf -interaction=nonstopmode -halt-on-error critical_phase_removal.tex
+
+check:
+	$(PYTHON) code/verify.py --output data/verification.json
+
+clean:
+	rm -f critical_phase_removal.aux critical_phase_removal.fdb_latexmk \
+	 critical_phase_removal.fls critical_phase_removal.log \
+	 critical_phase_removal.out critical_phase_removal.toc

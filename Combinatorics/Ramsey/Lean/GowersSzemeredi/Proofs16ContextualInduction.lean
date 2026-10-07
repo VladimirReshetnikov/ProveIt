@@ -5,16 +5,18 @@ import GowersSzemeredi.Proofs16InductionAssembly
 import GowersSzemeredi.Proofs16LargePieceMass
 import GowersSzemeredi.Proofs16BaseCaseEndpoint
 
-/-! The higher-dimensional induction conditional on one contextual lifting
-obligation. The original product property and the actual common-base data
-are retained; the refuted two-premise catalogue predicate is not used. -/
+/-! Historical conditional induction from the universal common-base lift.
+Proofs16ContextualLiftCounterexample refutes this premise for every k>=1.
+The conditional implications are preserved; the viable remaining obligation
+is the existential selected-domain contract in Proofs16SelectedLiftInduction. -/
 set_option autoImplicit false
 noncomputable section
 namespace LeanProofs.GowersSzemeredi
 
-/-- The outstanding contextual lifting step. The threshold is uniform in
-the partial function, and the full upstream product property is explicit.
-This is an unasserted proposition, not a replacement proof of Lemma 16.10. -/
+/-- The universal common-base lifting predicate, preserved unchanged.
+Proofs16ContextualLiftCounterexample proves its negation for k>=1 with the
+actual product property, structured pair, and complete common-base fields.
+This definition asserts nothing and is not a proof of Lemma 16.10. -/
 def Section16ContextualLiftAt (k : Nat) : Prop :=
   ∀ theta gamma : Real, 0 < theta → theta ≤ 1 → 0 < gamma → gamma ≤ 1 →
     ∃ N0 : Nat, ∀ (N : Nat) [NeZero N] [Fact N.Prime], N0 ≤ N →

@@ -1,0 +1,212 @@
+SOURCE REVIEW AND PROVENANCE
+Research package: spectral_transfer and third_energy
+Review date: 7 October 2026
+
+1. FIXED REPOSITORY SNAPSHOTS
+
+openai/math:
+  adc7f1241b42e322a6451854ab7e4b4c146bf78a
+  https://github.com/openai/math/tree/adc7f1241b42e322a6451854ab7e4b4c146bf78a
+
+VladimirReshetnikov/ProveIt:
+  fe7165a3cda1f9182b2a258cf13431a906c4b0c5
+  https://github.com/VladimirReshetnikov/ProveIt/tree/fe7165a3cda1f9182b2a258cf13431a906c4b0c5
+
+These commits identify the material compared in this package. Later repository
+changes are outside the review. GitHub source retrieval, source-text reading,
+targeted searches, and commit/intake records were used. A repository catalogue
+or claim of formalization was treated as evidence of what the source reports,
+not as independent verification of an entire manuscript.
+
+2. CANDIDATE-FAMILY SCREENING IN OPENAI/MATH
+
+The repository catalogue and overview were reviewed, followed by selective
+reading of mathematical source files. The four candidates below were screened
+for a concrete question connected with ProveIt's research. This was not a
+complete proof audit of any family's global headline theorem.
+
+Family 159: quasipolynomial bounds for arithmetic progressions.
+
+  Source directory:
+  preprints/Quasipolynomial-Bounds-for-Arithmetic-Progressions-September-23-2026/
+
+  Selected source files read:
+  build/sections/00-introduction.tex
+  build/sections/03-relative-detection.tex
+  build/sections/04-scalar.tex
+  build/sections/09-consequences.tex
+  lean/docs/159.md (relative to the repository root)
+
+The introduction and consequences were read fully; the relative-detection and
+scalar material received selective mathematical inspection. The source reports
+quasipolynomial Szemeredi bounds and consequences for sets with divergent sums
+of reciprocals. Its consequences already discuss weighted divergence and
+harmonic tails, so these were not treated as unexplored applications. This
+family is close to ProveIt's Gowers--Szemeredi work, but its complete global
+quantitative argument was not audited. The stated Lean scope does not certify
+the whole quantitative bound. No new Szemeredi bound is asserted here.
+
+Family 182: polynomial-difference avoidance.
+
+The catalogue groups intersective polynomial differences, prime arguments, and
+square differences. The selected branch is:
+
+  preprints/A-power-saving-for-square-difference-free-sets-September-24-2026/
+
+Its graph and tuple sections were read directly. They expose a local loss
+between the p^(-1/2) single-edge spectral estimate and the p^(-1/8) whole-list
+estimate. That precise interface was selected because it can be improved and
+propagated through a complete finite construction without assuming the source's
+global power-saving theorem for integer sets. The main paper addresses this
+finite question. It does not audit the other two global branches of Family 182.
+
+Family 169: elementary positivity of chromatic quasisymmetric functions.
+
+  Source file read in full:
+  preprints/Elementary-Positivity-of-Chromatic-Quasisymmetric-Functions-September-24-2026/build/sections/01-introduction.tex
+
+The source reports a deterministic terminating map from a class of permutations
+to partitions, yielding a positive expansion in the elementary symmetric-function
+basis with q recording graph inversions. It does not claim e-unimodality in
+that introduction. The announced route uses graph alphabets in a quantum torus,
+positive Hall/scattering constructions, interval rotations, and packet
+bijections. This offered an enumerative-combinatorics connection, but auditing
+the foundational mechanism would require a separate project. The full proof
+was not read, and no consequence of that headline theorem is used here.
+
+Family 242: single-fold Diophantine representations.
+
+  Source directory:
+  preprints/Single-fold-Diophantine-representations-September-24-2026/
+
+  Selected source files read:
+  build/main.tex
+  build/consequences.tex
+
+The source reports representations of recursively enumerable sets with exactly
+one complete auxiliary tuple when a solution exists. Its consequences derive
+undecidability under an at-most-one-solution promise, including fixed-degree and
+fixed-variable-count versions through specialization; the inspected consequences
+do not numerically specify the resulting constants or polynomial. The elliptic,
+power, and computation body files were not audited. A connection to Diophantine
+research was considered, but no local question was selected without checking
+that underlying uniqueness machinery.
+
+3. PRIMARY SOURCE FOR THE SPECTRAL-TRANSFER PAPER
+
+The following paths are relative to the Family 182 square-difference directory
+above, at the fixed openai/math commit.
+
+  README.md
+    Manuscript metadata and attribution.
+
+  build/sections/graph.tex
+    lem:graph-count: scalar graph counting.
+    eq:single-square-mixing: the single-square spectral estimate.
+    lem:list-mixing and eq:list-mixing: the original
+      (32m)^(1/4) p^(-1/8) whole-list estimate.
+    eq:list-four-cycle: the fourth-moment step in that estimate.
+
+  build/sections/tuples.tex
+    eq:tuple-fixed-parameters: h=24, t0=80, ell=161.
+    prop:tuple-laws: the source finite tuple-law requirements.
+    lem:marked-positive: the marked-cut positive matrix.
+    lem:unmarked-error and lem:tuple-marking-domination:
+      the domination and pairing mechanism.
+    eq:tuple-mixture: the original marking weights.
+    eq:tuple-exception-bound: control of terminal exceptional mass.
+    lem:conditional-mixing and eq:tuple-conditional-mixing:
+      the source conditional estimate.
+    eq:tuple-full-pair-law: the exact full selected-pair law.
+
+  lean/docs/182.md (relative to the repository root)
+    Read as a statement of the source's formalization scope; it is not a
+    formalization of the present replacement theorem or tuple refinements.
+
+The permutation-block architecture, index interaction, marked-cut positivity,
+and list regrouping are inherited from this source and explicitly credited and
+reproved in the new paper. The contribution is the whole-list spectral
+replacement with geometric coefficients and optimal ordering, its exact
+square-field specialization, the revised marking scale and depth, the
+fixed-index subgroup extension, and the matching conditional-norm obstruction.
+
+Telescoping products, Cauchy--Schwarz, spectral mixing, character orthogonality,
+and Gram-matrix positivity are classical ingredients. The bibliography gives
+relevant external mathematical context, including edge-exposure arguments of
+Conlon, Fox, and Zhao. No claim that telescoping itself is new is intended.
+Targeted searches in ProveIt did not locate an earlier version of the same
+whole-list theorem; that bounded search does not establish global priority.
+
+4. PROVEIT ENERGY AND LOCAL-REFINEMENT SOURCES
+
+The reviewed ProveIt research area is:
+
+  Combinatorics/Ramsey/Research/GowersSzemeredi/local-quantitative-refinements/
+
+The integrated article.tex, source inventories, and selected companion records
+were consulted. At the reviewed snapshot, the integrated article contains
+sources 01--53, while later staged material extends the source inventory through
+88. The distinction matters: later results were not presumed absent merely
+because they had not yet been folded into article.tex.
+
+Recent intake commits checked:
+
+  487859db599dfd3a20d24b11595a44973047babf
+    Records for Reports 288--293 on hereditary relative energy.
+  https://github.com/VladimirReshetnikov/ProveIt/commit/487859db599dfd3a20d24b11595a44973047babf
+
+  bbde2b873b2dc7b48af1730926452bdda18bf9c8
+    Reports 294--299 and subsequent local/product-property refinements.
+  https://github.com/VladimirReshetnikov/ProveIt/commit/bbde2b873b2dc7b48af1730926452bdda18bf9c8
+
+Complete LaTeX texts of Reports 288, 290, and 291 were read. Selected source and
+companion records for adjacent reports were also inspected; this does not mean
+that every proof in Reports 288--299 was independently audited.
+
+Report 288 is the direct predecessor of the third-energy paper:
+
+  Sharp Hereditary Energy Rigidity on Arbitrary Abelian Groups:
+  Infinite Domains and Finite Witnesses
+
+  Immutable archive location:
+  https://github.com/VladimirReshetnikov/ProveIt/blob/579f95dfea87f625278792dc75b2131ce315c75a/docs/incoming/Report288_Sharp_Hereditary_Energy_Rigidity.zip
+
+  Archive-intake commit:
+  579f95dfea87f625278792dc75b2131ce315c75a
+
+That report establishes the arbitrary-group second-energy threshold 3/4,
+distinguishes hereditary infima from individual finite tests, and develops the
+torsion-aware local Jensen route. Report 290 advances the indicator endpoint
+classification and the next indicator gap. Report 291 develops the sharp
+weighted gap and three-coset extremizers. Later intake includes further
+rigidity, fourth-norm extremizers, finite saturation, and counterexamples to an
+overly universal endpoint-lifting statement. These existing results were not
+treated as new problems solved by the present package.
+
+The new third-energy paper moves from additive quadruples to ordered additive
+sextuples and then selected higher-energy families. Its local cyclic forcing,
+exact finite characteristic reduction, third-energy sum of squares, and
+higher-energy formulas are supplied in the manuscript. The Jensen approach is
+credited to Report 288 and developed explicitly for the present quantities.
+The reviewed sources did not reveal the same arbitrary-group m=3 theorem; no
+exhaustive search of all hereditary-energy literature or publication-priority
+determination has been completed.
+
+5. CLAIMS, PROOFS, AND COMPUTATION
+
+The main paper's theorems use no global Szemeredi or square-difference theorem
+as a premise. Its numerical checks are diagnostics supporting proofs in the
+text. The companion's universal m=3 theorem includes a finite computer-assisted
+lemma with an exact integer checker and a proved reduction covering arbitrary
+targets. The companion's higher-energy index-two formulas and cyclic-coset
+bound have proofs independent of that enumeration.
+
+Both papers distinguish proved statements from further questions. In
+particular, this package does not establish a new integer density exponent,
+the universal m>=4 rigidity threshold, or a complete third-energy endpoint
+classification. It includes no Lean development and claims no external peer
+review or certification. Source comparison and a second AI-assisted proof
+review are useful checks, but do not establish those statuses.
+
+See README.txt for build and verification commands and the papers themselves
+for complete hypotheses, proofs, quantitative limitations, and research agendas.

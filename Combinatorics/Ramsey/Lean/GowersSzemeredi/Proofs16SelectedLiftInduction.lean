@@ -19,7 +19,8 @@ def Section16SelectedLiftAt (k : Nat) : Prop :=
         ∃ D : Section16CommonBaseData theta gamma B phi, Section16SelectedUnitDomain D
 
 /-- The older universal contract would imply the selection obligation once
-a common-base witness is constructed. The converse is not asserted. -/
+a common-base witness is constructed. Its premise is now refuted for k>=1
+in Proofs16ContextualLiftCounterexample; the converse is not asserted. -/
 theorem Section16ContextualLiftAt.selected_lift {k : Nat}
     (h : Section16ContextualLiftAt k) (hth : Theorem162At k) : Section16SelectedLiftAt k := by
   intro theta gamma ht ht1 hg hg1

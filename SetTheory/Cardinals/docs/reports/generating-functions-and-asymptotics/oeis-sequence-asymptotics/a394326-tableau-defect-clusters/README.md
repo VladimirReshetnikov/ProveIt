@@ -126,7 +126,11 @@ Vladimir's standing rule with an explicit proof.
   300). The residual comment is compatible: the limit is `−0.0000129…`, and
   the largest `|residual|` over `30 ≤ n ≤ 300` is 0.000163… (at `n = 33`);
   between 300 and about 1000 it is not certified here (Question 8). The
-  "Hankel determinant analysis" is not assessed.
+  "Hankel determinant analysis" is not assessed. (Added after the
+  independent check of 7 October 2026: the range between is closed, see
+  below; the comment's inequality holds for every `n ≥ 30`, and `a_n/φ^n`
+  decreases strictly for every `n ≥ 30`, both resting on Theorem 1.1 for the
+  tail.)
 - **Trust boundary.** The refutation rests on the certified bracket (1), i.e.
   on the computer certificate, which the intake replayed. Independently of it,
   the write's own exact generator (the first-return walk, truncated by height;
@@ -175,6 +179,13 @@ its own computations leave open:
    and for all large `n`; the envelope (3) is effective only near `n ≈ 1000`.
    Missing: terms to that range, or a sharper envelope.
 
+**Questions 7 and 8 settled** (dated note after the independent check of 7
+October 2026, Section 10.3): the check's exact terms `a_1, …, a_1250` give
+`a_{n+1} > a_n` for `4 ≤ n < 1250` and `|a_n − a_{n−1} − a_{n−2}|/a_n < 0.0002`
+for `30 ≤ n ≤ 1250`; with Corollary 1.2 (`n ≥ 600`) and the envelope (3)
+(`n ≥ 982`) both hold for every `n` (from 4, resp. 30). The tails rest on the
+computer certificate.
+
 **Refuted, with proof (Remark 1.4):** A394326's `a(n) ~ A*phi^n` and
 `a(n) ~ a(n-1) + a(n-2)`. **Nothing in the source was found to be wrong.**
 
@@ -198,6 +209,48 @@ its own computations leave open:
   (`ρ = 0.618039763403548969…`, `c ≈ 0.183811179648135`, matching the source's
   refinements); the 100 b-file terms; Route B below (all certificates equal,
   45 s).
+
+## Independent check of the write (7 October 2026)
+
+An adversarial check made by the intake after the write (`5d3107954`), with
+its own code, after fetching again A394326 (#15) and its b-file, A393486 (#28)
+and A393487 (#34).
+
+- **Remark 1.3.** Every quotation, revision, date and author line confirmed.
+- **The refutation (Remark 1.4), checked hardest.** The certificate chain
+  replayed by Route B (all eight records and `N_H8` equal, `PASS`, 49 s).
+  Independently of the certificate: the exceptional row (16) re-derived
+  symbolically; the zero of height-truncated `N` at heights 14, 20, 26 by
+  floating determinants, `0.6180397634035489691315…` each time (`N_H(1/φ) > 0`,
+  `D_20 = −0.43190569…` inside the source's interval); and `a_{n−1}/a_n` from
+  the check's exact terms equal to the same value to 60 digits at `n = 1100`
+  (errors falling about `10⁻⁹` per 100 indices: next pole near modulus
+  0.755). Corroboration, not proof; it sits inside the bracket (1),
+  `5.77…·10⁻⁶` above `1/φ`. The proofs of (a), (b), the exact rationals
+  (`6289/(25·10^{10})`, (4), the band (6), (40), all 125 digits of `Y_0`;
+  `a_601` is the first term above `Y_0`), `λ/φ < 0.9999907`,
+  `(λ/φ)^{10} > 0.99990` and every exact value of (c), (d) confirmed
+  (truncations).
+- **The check's generator.** Weight-ordered, with no step count and no height
+  truncation: states are pruned only by the gauge bound `2W ≥ g(u) + 1` on the
+  deficit still needed to return (verified on every edge). It equals the
+  b-file in all 100 terms, the 65 shipped coefficients and the write's terms,
+  and runs to `n = 1250` in seconds.
+- **Two additions** (dated notes): the comment's inequality and the decrease
+  of `a_n/φ^n` for every `n ≥ 30` (Remark 1.4(c); envelope thresholds 982 and
+  1137); Questions 7 and 8 settled (above).
+- **Remark 8.3.** (a)–(c) re-derived against the volume: `n_1 = 600` is
+  admissible (`a_n < y` for `n ≤ 600` by the definition of `Y_0`);
+  `p0:thm:lambert-core`(1) with `b = 0`; `p0:thm:core-reversion` with `Λ = 1`,
+  `h = 0`, `f = −εt(1+u)^α` a formal instance as stated.
+- **Provenance.** Archive facts, staged bytes, the 71 delivered label numbers
+  and 59 references, and the comparison report's blob confirmed, **except**
+  one inconsistency: Section 1.1 says "The write did not rerun the
+  certificate", while this README and the write's commit message record a
+  Route B replay at the write (dated note added there).
+- The check read the source's proofs and found no error.
+
+The check is recorded at the end of Section 10.3.
 
 ## Relation to the repository
 
@@ -259,7 +312,7 @@ delivered text of Section 1, and the added displays are unnumbered.
 ```text
 README.md                                    this guide (replaces the delivery README)
 article.tex                                  the report (delivered Report183.tex; labels prefixed, [write] additions)
-article.pdf                                  compiled report, 25 pages
+article.pdf                                  compiled report, 26 pages
 README_REPRODUCIBILITY.md                    delivered reproducibility guide (delivered names)
 code/reproduce.py                            replay driver: run_all in normal and -O subprocesses, byte comparison (delivered at the root)
 code/build.py                                PDF and ZIP builder; TeX Live (delivered at the root)
@@ -382,7 +435,9 @@ B=$(mktemp -d); cp article.tex "$B/"; cd "$B"
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The committed PDF was built this way with MiKTeX on 7 October 2026: 25 pages;
+The committed PDF was built this way with MiKTeX on 7 October 2026 (25
+pages), and rebuilt after the independent check of the same day (label
+numbers unchanged, aux files compared): 26 pages;
 no errors or warnings, no undefined references or citations, no multiply
 defined labels, no duplicate PDF destinations, no overfull or underfull boxes
 (the delivered text also builds without any, 21 pages). The article keeps the

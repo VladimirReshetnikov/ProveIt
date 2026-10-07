@@ -927,7 +927,11 @@ No novelty is claimed for any of these inversions. The staircase arithmetic
 is formalized generically (for an arbitrary strictly monotone function) as
 \file{Fabius.staircase_ceil} in
 \path{Analysis/FabiusFunction/Lean/FabiusFunction/StaircaseInversion.lean};
-nothing about $a_n^\pm$ is formalized.
+nothing about $a_n^\pm$ is formalized. (Corrected after the independent
+check of 7~October 2026: \file{Fabius.staircase_ceil} is the arithmetic of
+\file{p0:thm:staircase}(1), used in~(a). The nearest-integer step of~(c),
+\file{p0:thm:staircase}(3), is \file{Fabius.staircase_round} in the same
+file: $|x-n|\le\eta<1/2$ implies $\lfloor x+1/2\rfloor=n$.)
 \end{remark}
 
 \section{Reproducibility and the meaning of the checks}\label{rrm:sec:repro}
@@ -998,6 +1002,48 @@ from these values.
 \end{writenote}
 
 The central conclusion is that bounded rounding selects a scalar amplitude while preserving the complete classical algebraic asymptotic expansion. Its selection is both analytically explicit and certifiable from finite integer data.
+
+\begin{writenote}[Independent check of the write, 7 October 2026]
+An adversarial check made by the intake after the write (commit
+\file{1ebd8c33c}) re-derived the statements marked [write] with its own code,
+after fetching again A065094 (revision~\#19), A065095 (\#20), A376995
+(\#16), the names of A160617 and A160618, and both b-files.
+\emph{Remark~\ref{rrm:rem:oeis}.} Every quotation, revision, date and author
+line confirmed (Kot\v{e}\v{s}ovec's comment is quoted in two fragments; the
+elided words are ``It follows that the constant above is equal to''); both
+b-files are byte-identical to the shipped ones and equal the check's orbits
+in all $2000$ terms. \emph{The conjectures.} The proof chain of
+Corollary~\ref{rrm:cor:oeis} re-read; by a route different from the
+brackets~\eqref{rrm:eq:bracket}, namely $A=1+\sum_kw_k\eps_k$
+of~\eqref{rrm:eq:A} with $w_k=k(Q_k-Q_{k+1})$ from a Miller backward
+recurrence for the minimal solution normalized by $Q_1=eE_1(1)$, the check
+gets $A_\pm$ to $80$ digits, agreeing with the bracket at $N=10000$ to
+$3\cdot10^{-82}$; the four tabulated endpoints are the outward $70$-place
+roundings of the exact brackets, the 69-digit common truncations hold, and
+all four of Kot\v{e}\v{s}ovec's decimals ($50$, $48$, $49$, $47$ places) and
+the source's four $48$-place values are truncations; $N/T_N<8.0967911913136482\cdot10^{-84}$.
+\emph{Coefficients.} $c_1,\dots,c_6$ re-derived by an ansatz in the three-term
+recurrence~\eqref{rrm:eq:recP} itself (not through the operator
+of~\eqref{rrm:eq:operator}), $b_1,\dots,b_5$, the five coefficients
+of~\eqref{rrm:eq:delta}, the range inverse~\eqref{rrm:eq:rangeinverse}, the
+prefactor shift and $c_1=d_1-1$, $c_2=d_2-d_1+3/4$, and the ratio
+expansion~\eqref{rrm:eq:ratios}: all agree. $T_N$ by the positive
+sum~\eqref{rrm:eq:positiveT} equals~\eqref{rrm:eq:Tinteger} at $N=150$ and
+$3000$, and the $N=3000$ brackets agree with those at $N=10000$ to $40$
+places. \emph{The residual diagnostic} of Section~\ref{rrm:sec:questions}
+reproduced ($3.294$ at $n=946$, $4.073$ at $n=1528$, $H_{2500}=24.50$, the
+twelve averages), and both orbits satisfy the
+envelopes~\eqref{rrm:eq:floorenv}--\eqref{rrm:eq:ceilenv} for $n\le2500$.
+\emph{Remark~\ref{rrm:rem:transseries}.} (a)--(e) re-derived against the
+volume: the instance claims hold, including $z(L_{\mathrm{vol}})=-2D^2/Y^2$
+and $L_c=\tfrac12(1+\log2)$ for the branch rule; one correction, made by a
+dated note there: the Lean declaration for~(c) is
+\file{Fabius.staircase_round}, not \file{Fabius.staircase_ceil}.
+\emph{Provenance.} Archive facts, the staged files (byte-identical), the 101
+delivered label numbers and 63 references (aux of a build of the delivered
+text, 19 pages) and Route~B (six certificates byte-identical, normal equal to
+optimized, 20~s) confirmed. No error was found in the source's proofs.
+\end{writenote}
 
 \begin{thebibliography}{9}
 \bibitem{oeisfloor}

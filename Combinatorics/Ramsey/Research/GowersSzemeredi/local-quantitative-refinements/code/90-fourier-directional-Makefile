@@ -1,0 +1,18 @@
+PYTHON ?= python3
+MANUSCRIPT = gowers_fourier_directional
+
+.PHONY: all verify figures clean
+
+all:
+	latexmk -pdf -interaction=nonstopmode -halt-on-error $(MANUSCRIPT).tex
+
+verify:
+	$(PYTHON) code/verify_frontiers.py --output data/verification_frontiers.json
+	$(PYTHON) code/verify_fourier_lp.py --output data/verification_fourier_lp.json
+	$(PYTHON) code/verify_directional.py > data/verification_directional.json
+
+figures:
+	$(PYTHON) code/make_figures.py
+
+clean:
+	latexmk -c $(MANUSCRIPT).tex
