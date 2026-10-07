@@ -229,6 +229,10 @@ import GowersSzemeredi.Proofs18UniformInterval
 import GowersSzemeredi.Proofs08QuadraticFrequencies
 import GowersSzemeredi.Proofs08AffineFrequencyProgression
 
+import GowersSzemeredi.Proofs08OddFrequencyProgression
+import GowersSzemeredi.Proofs17QuadraticLocalization
+import GowersSzemeredi.Proofs18QuadraticPrimeModel
+
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 

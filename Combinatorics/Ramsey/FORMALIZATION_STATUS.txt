@@ -12,8 +12,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 253 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 2,319 public Gowers theorems and found only propext,
+  All 256 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 2,338 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 101 exact
   companion proofs and 19 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -716,6 +716,23 @@ Quadratic Fourier frequencies on an affine progression
   formula is in the original cyclic coordinate. No large-modulus hypothesis
   is needed for these two results. The quadratic inverse theorem's complete
   bias and density-increment conclusions remain open.
+
+Quadratic obstruction in a smaller prime model
+  Proofs08OddFrequencyProgression proves a general padded-cover density
+  selection lemma and uses it to retain half the affine-frequency density on
+  an odd progression of length between N^e/2 and sqrt(N), for sufficiently
+  large N, where e=2^-14*(alpha/2)^24718.
+  Proofs17QuadraticLocalization supplies the actual one-dimensional Fourier
+  energy to Proposition 17.7. A quadratic polynomial twist then fails linear
+  uniformity on a partition with proper cell lengths l or l+1, l>=N^e/6,
+  and all cell lengths <=sqrt(N). Its parameter is
+  beta=2^-19*alpha^2*(alpha/2)^12359.
+  Proofs18QuadraticPrimeModel selects a cell of length L and transfers its
+  actual twisted index function to a prime 3*L<M<=6*L with M<=N/2. The
+  resulting disc-valued interval model fails linear uniformity at beta/216.
+  Both the new parameter and exponent are independent of the old modulus;
+  the fixed-alpha lower threshold remains existential. This completes the
+  quadratic-to-linear analytic transfer, not the density-increment iteration.
 
 Reproducible checks (from repository root)
   python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.Audit
