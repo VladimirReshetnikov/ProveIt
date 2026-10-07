@@ -13,8 +13,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 722 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 4,625 public Gowers theorems and found only propext,
+  All 727 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 4,640 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 113 exact
   companion proofs and 7 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -2277,6 +2277,36 @@ Finite closing argument for Theorem 16.2
   Its implication to the exact fixed-dimension Theorem 16.2 is now proved,
   with piece mass N^k/s(theta,gamma,k) and the original iteration parameter.
   No large-piece existence premise is discharged by this conditional result.
+
+Large pieces and finite extraction with the proved power profile
+  Proofs16PowerCoverTransport records LargeBoxMultilinearCover with its
+  actual exceptional fraction, graph budget, width exponent, and minimum
+  parent width. Relation restriction and coordinate translation preserve
+  these parameters exactly. Proofs16GoodGraphGeometry identifies the
+  translated all-ones graph independently of any cover predicate: it is
+  contained in the original relation and its cardinality equals the
+  common-base good-pair count, with no loss of mass.
+  Proofs16PowerCoverProfile gives the full quantified profile of the
+  compressed contextual lift and transports it to that original subrelation.
+  The selected piece has mass at least N^(k+1)/s(theta,gamma,k+1), and is
+  chosen independently of the requested cover loss and the parent box.
+  Its graph count, exponent, and starting width use the previously checked
+  uniform formulas; they are uniform over the relation and common-base data.
+  Proofs16LargePowerPiece combines structured extraction and common-base
+  construction with this proved lift. Assuming only Theorem162At l for
+  1<=l<=k, every product relation with projection at least theta*N^(k+1)
+  has such a large power-covered subrelation above a uniform modulus
+  threshold. No separate contextual-lifting assumption remains for this
+  conclusion, and no relation-cardinality upper bound is needed at this step.
+  Proofs16PowerDecomposition executes the finite greedy extraction with
+  these actual profiles. For |Gamma|<=gamma^-2*N^(k+1), it leaves a base set
+  J of size at least (1-theta)*N^(k+1), with Gamma restricted to J contained
+  in the union of at most gamma^-2*s(theta,gamma,k+1) profiled subrelations.
+  The two-dimensional instance is proved unconditionally using Lemma 16.3.
+  This is a decomposition into pieces with the valid large-box controls.
+  Combining them into one box cover and obtaining the intended source
+  controls remain separate obligations. It is not a proof of Theorem 16.2,
+  including its exact two-dimensional instance, and the count stays 113/120.
 
 Transport and spectrum inputs for the large-piece construction
   Proofs16Translations transports multilinear functions, proper boxes,
