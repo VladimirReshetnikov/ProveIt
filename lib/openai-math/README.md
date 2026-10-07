@@ -102,6 +102,9 @@ unchanged.
 - `Compat/Stirling.lean` proves the power expansion in descending factorials
   by induction from the Stirling recurrence. This is a local Apache-2.0
   proof, with no upstream proof text copied; its axiom check passes.
+- `Compat/FinsuppWeight.lean` derives finite-index weight summation from
+  `Finsupp.sum_fintype`; it is a local Apache-2.0 proof with no copied
+  upstream proof text. Its axiom check passes.
 - `Compat/MatrixInjective.lean` derives matrix-vector injectivity from a
   nonzero determinant using the older trivial-kernel theorem. It supports
   integer-fiber and residue-refined-period modules.

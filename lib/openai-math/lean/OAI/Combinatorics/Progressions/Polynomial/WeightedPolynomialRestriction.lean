@@ -1,6 +1,8 @@
 /- Modified for ProveIt: import Lean 4.32 compatibility declarations.
 Mathematical statements are unchanged from the pinned upstream source.
-Use MvPolynomial coefficient lemmas explicitly on Lean 4.32; statements unchanged. -/
+Use MvPolynomial coefficient lemmas explicitly on Lean 4.32; statements unchanged.
+Import the finite-weight compatibility lemma for Lean 4.32. -/
+import OAI.Compat.FinsuppWeight
 import OAI.Compat.Core
 import OAI.Combinatorics.Progressions.Estimates.RealifiedTripleLayers
 import OAI.Combinatorics.Progressions.Geometry.CoordinateSubstitutionAlgebra

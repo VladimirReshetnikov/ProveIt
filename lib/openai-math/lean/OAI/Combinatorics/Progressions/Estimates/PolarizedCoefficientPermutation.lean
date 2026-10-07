@@ -1,3 +1,6 @@
+/- Modified for ProveIt: Import the finite-weight compatibility lemma for Lean 4.32.
+Mathematical statements and proof bodies are unchanged. -/
+import OAI.Compat.FinsuppWeight
 import OAI.Combinatorics.Progressions.Estimates.SubmoduleSupRestriction
 import OAI.Combinatorics.Progressions.Polynomial.AdditiveTriplePolynomialRestriction
 import OAI.Combinatorics.Progressions.Polynomial.DilationPairPolynomial

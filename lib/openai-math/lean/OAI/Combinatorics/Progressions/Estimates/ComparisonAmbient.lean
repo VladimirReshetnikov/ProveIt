@@ -1,5 +1,7 @@
 /- Modified for ProveIt: import Lean 4.32 compatibility declarations.
-Statements and proofs are unchanged from the pinned upstream source. -/
+Statements and proofs are unchanged from the pinned upstream source.
+Import the finite-weight compatibility lemma for Lean 4.32. -/
+import OAI.Compat.FinsuppWeight
 import OAI.Compat.Core
 import OAI.Compat.TensorProduct
 import OAI.Combinatorics.Progressions.Nilpotent.ComparisonLayerBracket
