@@ -1,0 +1,12 @@
+.PHONY: all pdf verify clean
+
+all: verify pdf
+
+pdf:
+	latexmk -pdf -interaction=nonstopmode -halt-on-error gowers_rigidity_gaps.tex
+
+verify:
+	python3 code/verify_all.py
+
+clean:
+	latexmk -c gowers_rigidity_gaps.tex

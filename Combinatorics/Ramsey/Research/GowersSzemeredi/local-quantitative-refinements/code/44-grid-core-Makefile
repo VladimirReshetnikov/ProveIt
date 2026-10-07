@@ -1,0 +1,17 @@
+.PHONY: all pdf pdf-pdflatex verify clean
+
+all: pdf
+
+pdf:
+	latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+
+pdf-pdflatex:
+	pdflatex -interaction=nonstopmode -halt-on-error article.tex
+	pdflatex -interaction=nonstopmode -halt-on-error article.tex
+	pdflatex -interaction=nonstopmode -halt-on-error article.tex
+
+verify:
+	python3 code/verify.py --max-d 10
+
+clean:
+	latexmk -c article.tex

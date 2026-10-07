@@ -1,0 +1,14 @@
+.PHONY: all pdf check clean
+
+all: check pdf
+
+pdf: fejer-arrangement-selection.pdf
+
+fejer-arrangement-selection.pdf: fejer-arrangement-selection.tex
+	latexmk -pdf -interaction=nonstopmode -halt-on-error $<
+
+check:
+	python3 verify_fejer_selection.py --output verification-results.json
+
+clean:
+	latexmk -c fejer-arrangement-selection.tex
