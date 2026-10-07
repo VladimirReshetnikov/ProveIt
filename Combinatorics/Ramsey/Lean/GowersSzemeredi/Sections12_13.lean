@@ -537,15 +537,29 @@ def lemma_13_7_without_prime_assumption : Prop :=
     IsStage136Data S D E F →
     ∃ G : Stage137Data N, IsStage137Data S D E F G
 
-/-- **Lemma 13.7.** After propagating the corrected Lemma 13.6 density, the
-progression-size exponent is `2^-100 * alpha^448`, all in the exponent of
-`m2`. The paper's standing prime-modulus assumption is explicit; the
-earlier all-moduli encoding is preserved above. No scale assumption is added. -/
-def lemma_13_7 : Prop :=
+/-- The positive integer step and index span retained by the actual
+Corollary 7.11 partition used in Lemma 13.7. -/
+def Stage137StepSpan {N : Nat} (F : Stage136Data N) (G : Stage137Data N) : Prop :=
+  ∃ t : Nat, 0 < t ∧ G.S.step = (t : ZMod N) * F.R.step ∧
+    t * (G.S.length - 1) < F.R.length
+
+/-- The earlier conclusion discarding the construction's integer span.
+This weaker consequence remains proved and available. -/
+def lemma_13_7_without_step_span : Prop :=
   ∀ (N : Nat) [Fact N.Prime] (S : Section13Context N) (D : Stage134Data N)
       (E : Stage135Data N) (F : Stage136Data N),
     IsStage136Data S D E F →
     ∃ G : Stage137Data N, IsStage137Data S D E F G
+
+/-- **Lemma 13.7.** The corrected density gives exponent
+`2^-100 * alpha^448`. Retain the integer step and span from the constructed
+partition: these are proved outputs, needed by the subsequent localization.
+The standing prime assumption is explicit and no scale hypothesis is added. -/
+def lemma_13_7 : Prop :=
+  ∀ (N : Nat) [Fact N.Prime] (S : Section13Context N) (D : Stage134Data N)
+      (E : Stage135Data N) (F : Stage136Data N),
+    IsStage136Data S D E F →
+    ∃ G : Stage137Data N, IsStage137Data S D E F G ∧ Stage137StepSpan F G
 
 /-- Data produced by Lemma 13.8.  The row coefficients are stored as choices;
 the paper's claim that they are unique is false for rows with fewer than two
@@ -613,12 +627,20 @@ def lemma_13_9_without_preceding_geometry : Prop :=
     IsStage137Data S D E F G → IsStage138Data S D E G H →
     ∃ J : Stage139Data N, IsStage139Data S E G H J
 
-/-- **Lemma 13.9.** The paragraph immediately before the lemma retains
-proper progressions from Stages 13.5--13.6 and states that `R` is smaller
-than `Q`. These contextual hypotheses, and the standing prime modulus,
-are explicit here. Propagating the corrected preceding densities changes
-the progression-size exponent to `2^-284 * alpha^1408`. -/
-def lemma_13_9 : Prop :=
+/-- Geometric data retained by the chosen Stage 13.9 witness. Support and
+properness come from Stages 13.7--13.8. Short columns produce at most three
+heights; otherwise localization supplies an actual bounded integer step.
+The weaker modular multiple in `IsStage139Data` alone does not imply this. -/
+def Stage139ConstructionGeometry {N : Nat} [NeZero N]
+    (G : Stage137Data N) (J : Stage139Data N) : Prop :=
+  G.S.IsProper ∧ 0 < G.S.length ∧
+  J.D ⊆ G.S.carrier.product (translateFinset J.U.carrier G.y) ∧
+  (J.U.length ≤ 3 ∨ ∃ t : Nat, 0 < t ∧
+    J.U.step = (t : ZMod N) * G.S.step ∧ t * (J.U.length - 1) < G.S.length)
+
+/-- Earlier Stage 13.9 interface discarding the geometry of the chosen
+witness. Its weaker conclusion remains proved separately. -/
+def lemma_13_9_without_construction_geometry : Prop :=
   ∀ (N : Nat) [Fact N.Prime] (S : Section13Context N) (D : Stage134Data N)
       (E : Stage135Data N) (F : Stage136Data N) (G : Stage137Data N)
       (H : Stage138Data N),
@@ -627,11 +649,44 @@ def lemma_13_9 : Prop :=
     F.R.length ≤ E.Q.length →
     ∃ J : Stage139Data N, IsStage139Data S E G H J
 
-/-- **Corollary 13.10.** -/
-def corollary_13_10 : Prop :=
+/-- **Lemma 13.9.** Retain the preceding proper progressions, the printed
+comparison `R.length <= Q.length`, and the integer span now exported by
+Lemma 13.7. Short-parent localization preserves the original corrected
+length exponent `2^-284 * alpha^1408` and density, and exports the geometry
+of the chosen witness for Corollary 13.10. No unproved grid is assumed. -/
+def lemma_13_9 : Prop :=
+  ∀ (N : Nat) [Fact N.Prime] (S : Section13Context N) (D : Stage134Data N)
+      (E : Stage135Data N) (F : Stage136Data N) (G : Stage137Data N)
+      (H : Stage138Data N),
+    IsStage135Data S D E → IsStage136Data S D E F →
+    IsStage137Data S D E F G → Stage137StepSpan F G → IsStage138Data S D E G H →
+    F.R.length ≤ E.Q.length →
+    ∃ J : Stage139Data N, IsStage139Data S E G H J ∧ Stage139ConstructionGeometry G J
+
+/-- Earlier overgeneralized corollary interface: it quantified over arbitrary
+Stage 13.9 packages without the support or geometry of the actual witness.
+Preserved for comparison, not asserted. -/
+def corollary_13_10_without_construction_geometry : Prop :=
   ∀ (N : Nat) [NeZero N] (S : Section13Context N) (E : Stage135Data N)
       (G : Stage137Data N) (H : Stage138Data N) (J : Stage139Data N),
     IsStage139Data S E G H J →
+    ∃ V W : ModAP N, ∃ E' : Finset (Pair N),
+      V.step != 0 ∧ V.step = W.step ∧ V.IsProper ∧ W.IsProper ∧
+      V.length = W.length ∧
+      (J.U.length : Real) ^ ((1 : Real) / 2) - 1 ≤ V.length ∧
+      E' ⊆ V.carrier.product W.carrier ∧
+      (2 : Real) ^ (-(137 : Int)) * S.alpha ^ 704 * V.length * W.length ≤
+        E'.card ∧
+      BilinearOn E' S.phi
+
+/-- **Corollary 13.10.** Apply the square construction to the witness chosen
+by the strengthened Lemma 13.9, under the standing prime convention. All
+extra geometric data are proved outputs of preceding lemmas. The older
+arbitrary-package predicate is preserved above. -/
+def corollary_13_10 : Prop :=
+  ∀ (N : Nat) [Fact N.Prime] (S : Section13Context N) (E : Stage135Data N)
+      (G : Stage137Data N) (H : Stage138Data N) (J : Stage139Data N),
+    IsStage139Data S E G H J → Stage139ConstructionGeometry G J →
     ∃ V W : ModAP N, ∃ E' : Finset (Pair N),
       V.step != 0 ∧ V.step = W.step ∧ V.IsProper ∧ W.IsProper ∧
       V.length = W.length ∧

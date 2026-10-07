@@ -43,7 +43,7 @@ theorem stage137_affine_base_partition {N : Nat} [Fact N.Prime]
 
 
 /-- The complete corrected Lemma 13.7 under the standing prime assumption. -/
-theorem lemma_13_7_holds : lemma_13_7 := by
+theorem lemma_13_7_without_step_span_holds : lemma_13_7_without_step_span := by
   intro N _ S D E F hF
   apply lemma_13_7_of_affine_base_partitions S D E F hF
   have hR := stage136_progression_nonempty S D E F hF

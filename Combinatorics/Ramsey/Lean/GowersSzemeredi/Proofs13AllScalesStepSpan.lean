@@ -114,4 +114,9 @@ theorem lemma_13_7_all_scales_with_step_span {N : Nat} [Fact N.Prime]
       (criticalHeights S D E) F.Y y (fun h hh ↦ (hY h hh).1)
 
 
+/-- The numbered statement now retains the construction's integer span. -/
+theorem lemma_13_7_holds : lemma_13_7 := by
+  intro N _ S D E F hF
+  exact lemma_13_7_all_scales_with_step_span S D E F hF
+
 end LeanProofs.GowersSzemeredi

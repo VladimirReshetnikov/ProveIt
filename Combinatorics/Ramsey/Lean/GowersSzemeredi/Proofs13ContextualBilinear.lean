@@ -6,7 +6,8 @@ set_option autoImplicit false
 noncomputable section
 namespace LeanProofs.GowersSzemeredi
 
-theorem lemma_13_9_holds : lemma_13_9 := by
+theorem lemma_13_9_without_construction_geometry_holds :
+    lemma_13_9_without_construction_geometry := by
   intro N _ S D E F G H h135 h136 h137 h138 hlength
   exact lemma_13_9_of_progression_length_bound S D E F G H
     h135 h136 h137 h138 hlength

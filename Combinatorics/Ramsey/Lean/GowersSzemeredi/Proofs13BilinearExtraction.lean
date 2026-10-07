@@ -32,7 +32,7 @@ theorem section13_bilinear_extraction_of_budgets {N : Nat} [Fact N.Prime]
       IsStage137Data S D E F G ∧ IsStage138Data S D E G H ∧ IsStage139Data S E G H J := by
   obtain ⟨F, hF, hFupper⟩ := lemma_13_6_from_initial_stages S D E m hαsixth h134 h135
     hm hsize hupper hlower hbudget
-  obtain ⟨G, hG⟩ := lemma_13_7_holds N S D E F hF
+  obtain ⟨G, hG⟩ := lemma_13_7_without_step_span_holds N S D E F hF
   have hα := S.alpha_pos
   have hN : (0 : Real) < N := by exact_mod_cast NeZero.pos N
   have hζ : 0 < section13Zeta S.alpha := by unfold section13Zeta; positivity

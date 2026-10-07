@@ -424,6 +424,7 @@ import GowersSzemeredi.Proofs13AllScalesStepSpan
 import GowersSzemeredi.Proofs13AllScalesCoefficientSpan
 import GowersSzemeredi.Proofs13LocalizedStage139
 import GowersSzemeredi.Proofs13ConstructedSquare
+import GowersSzemeredi.Proofs13ConstructedChain
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 

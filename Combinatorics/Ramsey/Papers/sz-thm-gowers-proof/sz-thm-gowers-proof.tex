@@ -2767,6 +2767,9 @@ $$
 
 where $m_{2}$ equals either $m$ or $m+1$. This proves the lemma. \(\square\)
 
+% Formalization refinement: the partition construction also retains a
+% positive integer step ratio a with a*(|S|-1) < |R|.  This is proved at
+% every scale and exported by the Lean companion for the following lemmas.
 Lemma 13.7. There exist $y \in \mathbb{Z}_{N}$, an arithmetic progression $S \subset R$ of size $m_{3} \geqslant m_{2}^{2^{-66}\alpha^{256}}$ and a set $B \subset S \times(I+y)$ of size at least $2^{-26} \alpha^{128} m_{3}|I| \geqslant$ $2^{-31} \alpha^{160} m_{1} m_{3}$ such that, for every $h \in I$, the restriction of $\phi(x, y+h)$ to $B$ is linear in $x$.
 
 Proof. Choose $y \in \mathbb{Z}_{N}$ uniformly at random. The expected number of pairs $x, h$ such that $x \in R, h \in I$ and $((x, y),(x, y+h)) \in Y_{h}$ is at least $2^{-26} \alpha^{128} m_{2}|I|$, so let us fix a value of $y$ such that there are at least this many. The number of $x \in R$ such that $(x, y) \in A$ is then at least $2^{-26} \alpha^{128} m_{2}$. One of our main assumptions is that $\phi$ is a homomorphism of order 8 for each fixed $y$. Hence, by Corollary 7.11, applied to the single set $\{x \in R:(x, y) \in A\}$ we can find a partition of $R$ into arithmetic progressions $S_{1}, \ldots, S_{M}$ all of length at least $m_{2}^{2^{-66}\alpha^{256}}$ such that the restriction of $x \mapsto \phi(x, y)$ to any $S_{j}$ is linear (where defined). By averaging, we can choose some $S_{j}$, which we shall call $S$, such that the number of pairs $x, h$ with $x \in S, h \in I$ and $((x, y),(x, y+h)) \in Y_{h}$ is at least $2^{-26} \alpha^{128} m_{3}|I|$, where $m_{3}$ is the size of $S$.
@@ -2816,11 +2819,25 @@ We have shown that the map $h \mapsto\left(a_{h}, c_{h}\right)$ is a homomorphis
 
 At this point let us recall that the arithmetic progression $S$ is a subset of $R$, which has the same common difference $d$ as $Q$. Moreover, we fixed our numbers so that $R$ would be considerably smaller than $Q$. It follows that $S$ is a subset of a translate of $Q$ and, writing $d_{1}$ for the common difference of $S$, that $d_{1}$ is a multiple of $d$. Recall also that the cardinalities of $S$ and $Q$ are $m_{3}$ and $m_{1}$ respectively and that $J$ is a subset of $Q$.
 
+% Formalization repair of the construction used by Corollary 13.10:
+% retain the integer span from Lemma 13.7 and partition Q into parents
+% with lengths between floor(|S|/2) and |S|.  The Corollary 7.11 budget
+% absorbs a factor-three parent-length loss without reducing the target.
+% For |S| >= 8 this gives t*(|U|-1) < |S| with a positive integer t;
+% for smaller |S| choose |U| <= 3.  Both branches preserve the full
+% corrected length and density bounds.  The Lean statement exports this
+% proved geometry, properness, and support with the chosen witness.
 Lemma 13.9. There exists an arithmetic progression $U \subset Q$ of common difference $d_{2}$, which is a multiple of $d_{1}$, and size $m_{4} \geqslant m_{3}^{2^{-182}\alpha^{832}}$ such that the set $D$ of all $(x, y+h) \in C$ such that $h \in U \cap J$ has cardinality at least $2^{-84} \alpha^{416} m_{3} m_{4}=2^{-84} \alpha^{416}|S||U+y|$ and the restriction of $\phi$ to $D$ is bilinear.
 
 Proof. Let us partition $Q$ into maximal subprogressions $T_{1}, \ldots, T_{M}$ of common difference $d_{1}$. By the remarks immediately preceding the statement of this lemma, each $T_{i}$ has cardinality at least $m_{3}$. By averaging, we can\\
 choose $T=T_{j}$ such that the set of all $(x, y+h) \in C$ with $h \in J \cap T$ has cardinality at least $2^{-84} \alpha^{416} m_{3}|T|$. Applying Corollary 7.11 to the homomorphism $h \mapsto(a(h), c(h))$ restricted to $J \cap T$, with $\alpha$ replaced by $2^{-84} \alpha^{416}$, we obtain a partition of $T$ into arithmetic progressions $U_{1}, \ldots, U_{L}$ of size at least $|T|^{2^{-182} \alpha^{832}}$ such that the restriction of the map $h \mapsto(a(h), c(h))$ to any $U_{i}$ is linear. By averaging again we may choose $U=U_{i}$ of cardinality $m_{4}$ such that the set $D$ defined in the statement has the required size. Then because the coefficients $a(h)$ and $c(h)$ vary linearly in $h$ when $h \in U \cap J$, the restriction of $\phi$ to $D$ is bilinear. \(\square\)
 
+% The assertion in the proof below that U lies in a translate of S
+% does not follow from the original preceding construction.  The Lean
+% companion uses the repaired Stage 13.9 construction documented above:
+% bounded-step padded covers give the same square-root length and 1/4
+% density loss, while |U| <= 3 requires only a singleton square.  All
+% geometry is proved by the preceding lemmas; no grid is assumed.
 Corollary 13.10. There exist arithmetic progressions $V$ and $W$ with the same common difference and same cardinality $m_{5} \geqslant m_{4}^{1 / 2}-1$, and a subset $E \subset V \times W$ of size at least $2^{-86} \alpha^{416}|V||W|$, such that the restriction of $\phi$ to $E$ is bilinear.
 
 Proof. We already have a comparable statement for $S \times(U+y)$. The common difference of $S$ is $d_{1}$ and the common difference of $U+y$ is $d_{2}$, which is a multiple of $d_{1}$. All we do now is apply one further averaging argument to pass to subprogressions of the same size and same common difference.
