@@ -457,6 +457,7 @@ import GowersSzemeredi.Proofs18ShortLocalizationInverse
 import GowersSzemeredi.Proofs17LocalizationFromDimensionInduction
 import GowersSzemeredi.Proofs18StructuralInverseConsequences
 import GowersSzemeredi.Proofs16ContextualPowerCover
+import GowersSzemeredi.Proofs16CompressedLiftImprovement
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 

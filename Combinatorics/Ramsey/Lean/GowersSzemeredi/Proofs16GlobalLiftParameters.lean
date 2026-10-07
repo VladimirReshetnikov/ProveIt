@@ -41,7 +41,7 @@ theorem Section16LineCover.global_affine_lift_rounded {N k q : Nat} [Fact N.Prim
     let b := (multipleQ (((r : ℝ) * s)⁻¹ * ε) gamma k) ^ ((r : ℝ) * s)
     ∃ (n : Nat) (H : Finset (Point N (k + 1))) (L : Nat)
       (Q : Fin L → Box N (k + 1)) (mu : Fin L → Fin n → Point N (k + 1) → ZMod N),
-      (n : ℝ) ≤ (r : ℝ) * b + (r : ℝ) * r * b * b ∧
+      (n : ℝ) ≤ max b ((r.choose 2 : ℝ) * b * b) ∧
       H ⊆ P.carrier ∧ (1 - σ - 2 * τ - ε) * (P.carrier.card : ℝ) ≤ H.card ∧
       IsBoxPartition Q P ∧ (∀ j, (Q j).IsProper) ∧
       (∀ j, Real.sqrt (((⌊l⌋₊ : ℝ) / 8) ^

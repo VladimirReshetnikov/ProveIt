@@ -1,4 +1,4 @@
-import GowersSzemeredi.Proofs16SynchronizedSliceCover
+import GowersSzemeredi.Proofs16CompressedSynchronizedCover
 
 /-! # Local affine lifting with explicit verified bounds
 
@@ -26,7 +26,7 @@ theorem section16_local_affine_lift {N k q r m v : Nat} [Fact N.Prime]
     (hvscale : (v : ℝ) ^ 2 + 1 ≤ ((m : ℝ) / 8) ^
       ((multipleC (((r : ℝ) * s)⁻¹ * ε) gamma k) ^ ((r : ℝ) * s))) :
     ∃ (p : Nat) (G : Finset (Point N (k + 1))) (L : Nat) (S : Fin L → Box N (k + 1))
-      (nu : Fin L → ((Fin r × Fin p) ⊕ (Fin r × Fin r × Fin p × Fin p)) →
+      (nu : Fin L → Fin (section16CompressedCandidateCount r p) →
         Point N (k + 1) → ZMod N),
       (p : ℝ) ≤ (multipleQ (((r : ℝ) * s)⁻¹ * ε) gamma k) ^ ((r : ℝ) * s) ∧
       G ⊆ P.carrier ∧ (1 - 2 * τ - ε) * (P.carrier.card : ℝ) ≤ G.card ∧
@@ -60,7 +60,7 @@ theorem section16_local_affine_lift {N k q r m v : Nat} [Fact N.Prime]
         rw [appendCoordinate_eq_snoc]
         exact (hprod.mem_snoc h x).mpr ⟨hh, hx⟩) hz) τ hq hτ hτ1 hr
   obtain ⟨p, G, L, S, nu, hp, hG, hGm, hSpart, hSproper, hnu, hc⟩ :=
-    ha.synchronized_cover hD hsections hrpos hs ε hε hε1 T I hT hI hstep u hu.symm
+    ha.synchronized_compressed_cover hD hsections hrpos hs ε hε hε1 T I hT hI hstep u hu.symm
       hk hm hmT hmI hv hvscale (2 * τ) (hcarrier ▸ hF) (hcarrier ▸ hFm)
   refine ⟨p, G, L, S, nu, hp, hG.trans hF, ?_, ?_, hSproper, hnu, hc⟩
   · simpa only [← hcarrier] using hGm

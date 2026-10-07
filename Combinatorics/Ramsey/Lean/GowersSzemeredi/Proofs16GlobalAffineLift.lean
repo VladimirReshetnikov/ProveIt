@@ -24,7 +24,7 @@ theorem Section16LineCover.global_affine_lift {N k q r m : Nat} [Fact N.Prime]
     let b := (multipleQ (((r : ℝ) * s)⁻¹ * ε) gamma k) ^ ((r : ℝ) * s)
     ∃ (n : Nat) (H : Finset (Point N (k + 1))) (L : Nat)
       (Q : Fin L → Box N (k + 1)) (mu : Fin L → Fin n → Point N (k + 1) → ZMod N),
-      (n : ℝ) ≤ (r : ℝ) * b + (r : ℝ) * r * b * b ∧
+      (n : ℝ) ≤ max b ((r.choose 2 : ℝ) * b * b) ∧
       H ⊆ P.carrier ∧ (1 - σ - 2 * τ - ε) * (P.carrier.card : ℝ) ≤ H.card ∧
       IsBoxPartition Q P ∧ (∀ j, (Q j).IsProper) ∧
       (∀ j, Real.sqrt (((m : ℝ) / 8) ^
@@ -36,7 +36,7 @@ theorem Section16LineCover.global_affine_lift {N k q r m : Nat} [Fact N.Prime]
   obtain ⟨E, M, S, T, J, ell, hE, hEm, hSpart, hSproper, hproduct, hwidth, hell, hc⟩ := hline
   have hlocal : ∀ u, ∃ (p : Nat) (G : Finset (Point N (k + 1)))
       (L : Nat) (R : Fin L → Box N (k + 1))
-      (nu : Fin L → ((Fin r × Fin p) ⊕ (Fin r × Fin r × Fin p × Fin p)) →
+      (nu : Fin L → Fin (section16CompressedCandidateCount r p) →
         Point N (k + 1) → ZMod N),
       (p : ℝ) ≤ (multipleQ (((r : ℝ) * s)⁻¹ * ε) gamma k) ^ ((r : ℝ) * s) ∧
       G ⊆ (S u).carrier ∧ (1 - 2 * τ - ε) * ((S u).carrier.card : ℝ) ≤ G.card ∧
@@ -58,7 +58,7 @@ theorem Section16LineCover.global_affine_lift {N k q r m : Nat} [Fact N.Prime]
   choose p G L R nu hp hG hGm hRpart hRproper hnu hcov using hlocal
   let b := (multipleQ (((r : ℝ) * s)⁻¹ * ε) gamma k) ^ ((r : ℝ) * s)
   let pmax := Nat.floor b
-  let n := r * pmax + r * r * pmax * pmax
+  let n := section16CompressedCandidateCount r pmax
   have hrpos : 0 < r := by
     by_contra hz
     have hz' : r = 0 := by omega
@@ -68,8 +68,8 @@ theorem Section16LineCover.global_affine_lift {N k q r m : Nat} [Fact N.Prime]
   have hb : 1 ≤ b := (section16_slice_control_ranges (k := k) hrpos hs hg hg1 hε hε1).2.2
   have hpmax : (pmax : ℝ) ≤ b := Nat.floor_le (zero_le_one.trans hb)
   have hpn (u : Fin M) :
-      Fintype.card ((Fin r × Fin (p u)) ⊕ (Fin r × Fin r × Fin (p u) × Fin (p u))) ≤ n :=
-    section16_recovered_candidate_mono (Nat.le_floor (hp u))
+      Fintype.card (Fin (section16CompressedCandidateCount r (p u))) ≤ n :=
+    by simpa only [Fintype.card_fin] using section16_compressed_candidate_mono (r := r) (Nat.le_floor (hp u))
   have hgood := IsPartition.good_union hSpart G (2 * τ + ε) hG
     (fun u => by simpa only [sub_add_eq_sub_sub] using hGm u)
   have hmass := good_intersection_mass P.carrier E (Finset.univ.biUnion G)
@@ -77,7 +77,7 @@ theorem Section16LineCover.global_affine_lift {N k q r m : Nat} [Fact N.Prime]
   let e := section5NatFlattenEquiv L
   refine ⟨n, E ∩ Finset.univ.biUnion G, ∑ u, L u, boxFlatten L R,
     fun j => padFiniteMultilinearFamily (nu (e.symm j).1 (e.symm j).2) n,
-    section16_recovered_candidate_bound hpmax, Finset.inter_subset_left.trans hE,
+    section16_compressed_candidate_bound hpmax, Finset.inter_subset_left.trans hE,
     ?_, boxFlatten_partition P S L R hSpart hRpart,
     fun j => (hRproper _ _).1, fun j => (hRproper _ _).2,
     fun j => padFiniteMultilinearFamily_isMultilinear _ (hnu _ _), ?_⟩

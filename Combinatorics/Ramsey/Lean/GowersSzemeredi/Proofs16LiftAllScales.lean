@@ -57,7 +57,7 @@ theorem section16_local_affine_lift_all_scales {N k q r m : Nat} [Fact N.Prime]
     (hε : 0 < ε) (hε1 : ε ≤ 1)
     (hr : 6 * (q : ℝ) ≤ (r : ℝ) * τ) :
     ∃ (p : Nat) (G : Finset (Point N (k + 1))) (L : Nat) (S : Fin L → Box N (k + 1))
-      (nu : Fin L → ((Fin r × Fin p) ⊕ (Fin r × Fin r × Fin p × Fin p)) →
+      (nu : Fin L → Fin (section16CompressedCandidateCount r p) →
         Point N (k + 1) → ZMod N),
       (p : ℝ) ≤ (multipleQ (((r : ℝ) * s)⁻¹ * ε) gamma k) ^ ((r : ℝ) * s) ∧
       G ⊆ P.carrier ∧ (1 - 2 * τ - ε) * (P.carrier.card : ℝ) ≤ G.card ∧
@@ -101,6 +101,6 @@ theorem section16_local_affine_lift_all_scales {N k q r m : Nat} [Fact N.Prime]
       simpa only [pointSingletonBox_width (by omega : 0 < k + 1), Nat.cast_one] using hwidth
     · intro j z hz _ _
       have hz' : z = x j := by simpa only [pointSingletonBox_carrier, Finset.mem_singleton] using hz
-      exact ⟨Sum.inl (⟨0, hrpos⟩, 0), congrArg phi hz'⟩
+      exact ⟨⟨0, by unfold section16CompressedCandidateCount; omega⟩, congrArg phi hz'⟩
 
 end LeanProofs.GowersSzemeredi

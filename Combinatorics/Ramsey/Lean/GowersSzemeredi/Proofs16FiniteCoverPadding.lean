@@ -1,4 +1,5 @@
 import GowersSzemeredi.Proofs16LiftAllScales
+import GowersSzemeredi.Proofs16CompressedCandidateBounds
 
 /-! # Uniform finite candidate families for global affine lifting -/
 set_option autoImplicit false
