@@ -13,8 +13,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 727 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 4,640 public Gowers theorems and found only propext,
+  All 732 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 4,663 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 113 exact
   companion proofs and 7 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -2304,9 +2304,51 @@ Large pieces and finite extraction with the proved power profile
   in the union of at most gamma^-2*s(theta,gamma,k+1) profiled subrelations.
   The two-dimensional instance is proved unconditionally using Lemma 16.3.
   This is a decomposition into pieces with the valid large-box controls.
-  Combining them into one box cover and obtaining the intended source
-  controls remain separate obligations. It is not a proof of Theorem 16.2,
+  Their common box cover is now proved with the controls described below.
+  Obtaining the intended source controls remains open. This does not prove Theorem 16.2,
   including its exact two-dimensional instance, and the count stays 113/120.
+
+Joint structural cover with uniform power controls
+  Proofs16PowerCoverUnion refines a cover of one relation by a cover of
+  another on every cell. The exceptional fractions and graph budgets add,
+  the exponents multiply, and the new starting width is
+    max(T, max(1,U)^(1/e)).
+  This guarantees that every intermediate cell is wide enough to apply
+  the second cover. Properness is retained, and the global good set is
+  formed using the disjoint local good sets and their intersection with
+  the first good set. Graph padding keeps one count over the whole parent.
+  Proofs16PowerCoverFiniteUnion iterates this construction: r covers with
+  parameters (eta,C,e,T) give loss r*eta, graph count at most r*C, exponent
+  e^r, and the recursively defined section16PowerIterationThreshold.
+  The empty-family case is proved explicitly. Proofs16PowerCoverUniformUnion
+  makes the controls depend only on an upper bound R on r: cap e at one,
+  use exponent min(e,1)^R, and take the iteration threshold after R steps.
+  Monotonicity of the threshold and parameter weakening are proved.
+  Proofs16JointPowerProfile specializes this to the extracted pieces. Set
+    R = ceil(gamma^-2*s(theta,gamma,k+1)), eta = rho/(R+1).
+  The single-piece controls at loss eta give a joint graph budget R*C,
+  exponent min(e,1)^R, and a finite explicit starting width, all independent
+  of the actual piece count and the relation. The exponent is strictly
+  positive in the stated parameter ranges. The final loss is at most rho.
+  Proofs16JointPowerStructure combines this with finite extraction. Above
+  a uniform modulus threshold, every product relation satisfying the
+  cardinality budget has a base set J of mass at least (1-theta)*N^(k+1)
+  such that Gamma restricted to J has this joint cover for every loss rho.
+  The only hypotheses are the exact structural theorems in dimensions
+  1 through k. Dimension two is unconditional via the proved base case.
+  This is now a single structural cover, rather than a list of independent
+  covers. Its actual controls and large-box threshold are retained; it is
+  not the source's MultiplyLinear conclusion or an exact Theorem 16.2
+  companion. All seven open catalogue statements remain open.
+  Incoming Report 299 (docs/incoming/report299_endpoint_lifting.zip)
+  gives a written all-dimensional endpoint obstruction to the older
+  universal Section16ContextualLiftAt contract: some valid common-base
+  witnesses fail the unit cover, while a different witness for the same
+  input succeeds. This report has no Lean proof and its negation is not
+  asserted here. It motivates an existential witness-selection repair;
+  it does not invalidate the checked large-box controls above, nor claim
+  to refute Theorem 16.2. Keep the universal contract unasserted pending
+  formal verification of this stronger obstruction.
 
 Transport and spectrum inputs for the large-piece construction
   Proofs16Translations transports multilinear functions, proper boxes,
