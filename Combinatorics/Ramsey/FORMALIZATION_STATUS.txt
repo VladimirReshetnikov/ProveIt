@@ -13,8 +13,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 701 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 4,475 public Gowers theorems and found only propext,
+  All 705 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 4,506 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 113 exact
   companion proofs and 7 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -1049,6 +1049,37 @@ Explicit improved five-term Szemeredi bound
   theorem_18_2_five_holds consequently proves the exact five-term instance
   of Theorem 18.2. This is a restricted instance; the catalogue count stays
   113/120, and the general all-length quantitative theorem remains open.
+
+General inverse induction after polynomial localization
+  Proofs18GeneralLocalInverseAssembly applies an inverse theorem in any
+  degree to selected prime models, transports their full proper partitions
+  to the original cells, and includes the unselected cells in the count.
+  With comparable-prime ratio R and lower-degree exponent sigma<=16, the
+  full partition count is at most D*N/l^(sigma/16), where
+    D=max(1,2*boundaryRefinementConstant(1/16)*R^(1-sigma/16)).
+  Its localized_partition theorem constructs the prime models directly
+  from failure of partition uniformity at eta. The common local parameter
+  is (eta/2)/(2*(degree+2))^(degree+2); the surviving discrepancy is
+  eta*beta*N/2. It handles arbitrary degrees, with genuine proper transport.
+  Proofs18GeneralPhaseInverseAssembly removes polynomial phases, including
+  a separate polynomial on each cell. From a count D*N^(1-e), it produces
+  average cell size at least N^(e/(2*K)), with K the actual polynomial
+  partition constant, and retains half the discrepancy above an explicit
+  positive-power threshold. Its cell-length count conversion is general
+  in both the exponent and the length-loss constant.
+  Proofs18GeneralInverseStep composes these constructions: a localized
+  degree-d obstruction and the degree-d inverse bound give the degree-(d+1)
+  inverse conclusion, with discrepancy eta*beta/4 and average-size exponent
+  e*sigma/(32*polynomialPartitionConstant(d+1)). Every constant and threshold
+  is a finite formula. Proofs18ShortLocalizationInverse supplies the local
+  prime geometry from the actual localization lengths l or l+1, their
+  N^e/c lower bound, and their sqrt(N) upper bound. Its explicit threshold
+  guarantees both the lower-degree starting modulus and absence of wrapping.
+  The existing Fejer cubic assembly and phase-removal proofs now instantiate
+  the general lemmas, preserving their original statements and numerical
+  bounds. The higher-degree structural localization hypothesis remains
+  unasserted; these general induction steps are not exact companions for
+  Theorem 18.1 and do not change the 113/120 catalogue count.
 
 Cubic obstruction in a strictly smaller prime model
   Proofs17LocalizedPhaseRemoval now exports proposition_17_7_with_upper:
@@ -2298,7 +2329,10 @@ Next substantial obligations
      five-term iteration now satisfies a strictly smaller numerical bound
      than the source five-term instance. For arbitrary degrees, supply the
      Section 16 structural input and propagate the now-proved interval
-     transport and assembly steps.
+     transport and assembly steps. The full inverse induction after short
+     polynomial localization is now proved in every degree, with explicit
+     constants and thresholds; supply that structural localization and then
+     verify its resulting numerical budget.
   4. Close Theorem 18.2 and its headline consequences; then investigate tighter
      final bounds without treating improved auxiliary statements as a proved
      improvement of the full Szemeredi estimate.
