@@ -11,7 +11,16 @@ the pipeline repeats the structural check before matrix filters. Cancelling
 pairs can expose homogeneity. Evidence under `seifert_after_reduction` describes
 the reduced diagram: replay `reidemeister_trace` with `fastunknot.simplify.replay`
 before passing that certificate to `verify_seifert_certificate`. An unchanged
-diagram is not checked twice. The integrated suite now has 76 passing tests.
+diagram is not checked twice. The integrated suite now has 98 passing tests.
+
+Report 09 adds checked Gauss-interlacement factorization as the default visible
+sum decomposition, with `connected_sum_factorization` certificate evidence.
+Use `factor_backend="legacy"` or `--legacy-factor` for the historical cut traces.
+The modular Alexander filter uses sparse elimination at 256 crossings and above;
+its low-level API retains explicit `backend="dense"` and `backend="sparse"` choices.
+Preprocessing and factorization now share the cooperative `UNKNOWN` resource
+handler. Run `benchmark_factor_sparse.py --output results/factor_sparse_local.json`
+for isolated paired kernel measurements.
 
 ```bash
 python3 -m fastunknot recognize examples/trefoil.json
@@ -103,8 +112,9 @@ port is in `../rust/`.
    else certifies `KNOTTED`. O(n³) field operations.
 6. **Modular Jones test.** The Kauffman bracket at a generic A in F_p by a
    frontier scan that merges partial states with equal boundary matchings.
-   Cost is bounded by the number of crossingless matchings of the scan
-   boundary (proved, no multiplicity factor). Skipped above 4096 frontier
+   Cost is bounded by all perfect matchings of the scan
+   boundary, `(w-1)!!` (no multiplicity factor). A Catalan bound requires
+   a certified common disk boundary, which the current order does not supply. Skipped above 4096 frontier
    states. Rejects knots with trivial Alexander polynomial such as the Conway
    knot.
 7. **Exact Alexander polynomial** over Z[t] (fraction-free Bareiss).
@@ -163,7 +173,9 @@ verticals pass over horizontals. `{"pd": []}` is one crossing-free circle.
 ## Complexity
 
 * Steps 1–5 and 7: polynomial in the crossing number n.
-* Step 6: at most n · Catalan(w/2) · poly(w) field operations for scan width w.
+* Step 6: at most n · (w-1)!! · poly(w) field operations for scan width w.
+  The older unconditional Catalan claim was refuted by report 09; it requires
+  a certified disk frontier.
 * Step 4 with step 8: if the visible factors have n_1, …, n_k crossings, the
   cost is poly(n) + Σ 2^O(n_i). Polynomial when every factor has O(log n)
   crossings; this is a restricted-class statement, not a bound for all diagrams.

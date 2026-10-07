@@ -48,6 +48,7 @@ OPTIONS = {
         ("--no-modular", None, False, None, "disable only the modular Alexander stage"),
         ("--no-jones", None, False, None, None),
         ("--no-factor", None, False, None, "do not split visible connected sums"),
+        ("--legacy-factor", None, False, None, "use the historical recursive two-edge-cut factorizer"),
         ("--jones-max-states", int, 4096, None, None),
         ("--pivot", str, "minfill", ("minfill", "lifo"), None),
         ("--algebra", str, "bits", ("bits", "sets"), None),
@@ -170,6 +171,7 @@ def main(argv: list[str] | None = None) -> int:
                            use_exact_alexander=True if args.exact_alexander else None, use_r3=not args.no_r3,
                            race=args.race, race_after=args.race_after,
                            use_jones=not args.no_jones, use_factorization=not args.no_factor,
+                           factor_backend="legacy" if args.legacy_factor else "interlacement",
                            jones_max_states=args.jones_max_states, pivot=args.pivot,
                            algebra=args.algebra, tail=args.tail, max_objects=args.max_objects,
                            seconds=args.seconds, check_d_squared=args.check_d2).to_json()

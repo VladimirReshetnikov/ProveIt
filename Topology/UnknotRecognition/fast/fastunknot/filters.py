@@ -7,13 +7,15 @@ merely skips the filter.  Both were proposed by the acceleration proposals.
 * ``alexander_obstruction``: the first Alexander minor evaluated at t = -1 and
   at a generic point of the prime field F_p.  For the unknot the minor is a unit +-t^k of
   Z[t, 1/t] with 0 <= k < n, so an evaluation outside {+-v^k} proves the knot
-  nontrivial.  O(n^3) field operations instead of fraction-free elimination
-  over Z[t].
+  nontrivial.  Dense or incidence-indexed sparse elimination avoids
+  fraction-free elimination over Z[t].  Worst-case arithmetic remains cubic;
+  the sparse path measures its actual Schur-update work.
 * ``jones_obstruction``: the Kauffman bracket at a generic A in F_p, computed by
   scanning the diagram and summing state weights as soon as partial smoothings
-  induce the same boundary matching.  Its cost is bounded by the number of
-  crossingless matchings of the scan boundary (Catalan(w/2)), with no
-  multiplicity factor: unlike the Khovanov scan it really is 2^O(w) poly(n).
+  induce the same boundary matching.  An arbitrary frontier of w endpoints
+  has at most (w-1)!! matchings, giving 2^O(w log(w+1)) poly(n) work with no
+  multiplicity factor.  Catalan(w/2) and 2^O(w) require a certified common
+  disk boundary; planarity and the current greedy order do not imply that.
   A value different from delta * (-A^3)^writhe proves the knot nontrivial.
 """
 from __future__ import annotations
@@ -33,8 +35,8 @@ PRIME = (1 << 61) - 1      # a Mersenne prime
 # multiplicative order 61 modulo 2^61 - 1, so {+-2^k} is a tiny structured set
 # and cyclotomic-looking invariants (torus knots) can land in it.  Proposal 03,
 # which uses p = 2^31 - 1 and t = 2, misses T(3,61) for exactly this reason:
-# Delta(2) = -2^29 mod p.  Generic constants make a false "inconclusive"
-# as unlikely as a random collision (about n / 2^60).
+# Delta(2) = -2^29 mod p.  These fixed constants carry no probabilistic guarantee.
+# An inconclusive result remains inconclusive, even for an adversarial input.
 ALEXANDER_T = 0x2545F4914F6CDD1D % PRIME
 JONES_A = 0x9E3779B97F4A7C15 % PRIME
 
@@ -76,31 +78,56 @@ def determinant_mod(matrix, p: int = PRIME, reduced: bool = False) -> int:
     return det % p
 
 
-def alexander_obstruction(diagram: Diagram) -> dict | None:
-    """A witness that the Alexander polynomial is not a unit, or None (inconclusive)."""
+def alexander_obstruction(diagram: Diagram, *, backend: str = "auto", check=None,
+                          statistics: list | None = None) -> dict | None:
+    """Exact one-sided Alexander witness, retaining the original witness format.
+
+    ``backend`` is auto, dense, or sparse.  The sparse path eliminates the
+    actual nonzero pattern with row and column incidence indexes.  ``statistics``
+    may collect deterministic sparse-work counters without changing evidence.
+    The field and evaluation points are fixed; no probabilistic completeness
+    claim is made for an inconclusive result.
+    """
+    if backend not in ("auto", "dense", "sparse"):
+        raise ValueError("Alexander backend must be auto, dense, or sparse")
     n = diagram.crossings
     if n == 0:
         return None
-    rows = alexander_rows(diagram)[:-1]          # sparse: at most three nonzero entries per row
+    sparse_mode = backend == "sparse" or (backend == "auto" and n >= 256)
+    rows = alexander_rows(diagram)[:-1]
     for value in (-1, ALEXANDER_T):
-        cache: dict = {}                         # the entries are a handful of distinct polynomials
-        minor = [[0] * (n - 1) for _ in rows]
-        for i, sparse in enumerate(rows):
-            for col, poly in sparse.items():
+        if check is not None:
+            check()
+        cache: dict = {}
+        if sparse_mode:
+            from .sparse import sparse_determinant
+            minor = [{} for _ in rows]
+        else:
+            minor = [[0] * (n - 1) for _ in rows]
+        for i, row in enumerate(rows):
+            for col, poly in row.items():
                 if col < n - 1:
                     key = tuple(poly)
                     number = cache.get(key)
                     if number is None:
                         number = cache[key] = _evaluate(poly, value, PRIME)
-                    minor[i][col] = number
-        det = determinant_mod(minor, reduced=True)
+                    if number or not sparse_mode:
+                        minor[i][col] = number
+        if sparse_mode:
+            counters = {} if statistics is not None else None
+            det = sparse_determinant(minor, p=PRIME, check=check, stats=counters)
+            if statistics is not None:
+                statistics.append(dict(counters, evaluation=value))
+        else:
+            det = determinant_mod(minor, reduced=True)
         units, term = set(), 1
         for _ in range(n):
             units.add(term)
             units.add(-term % PRIME)
             term = term * value % PRIME
         if det not in units:
-            return {"kind": "alexander-minor-not-a-unit", "prime": PRIME, "t": value, "minor": det}
+            return {"kind": "alexander-minor-not-a-unit", "prime": PRIME,
+                    "t": value, "minor": det}
     return None
 
 

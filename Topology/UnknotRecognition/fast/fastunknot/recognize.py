@@ -29,6 +29,7 @@ from .alexander import alexander_polynomial, evaluate, format_polynomial
 from .diagram import Diagram
 from .factor import convolve, visible_factors
 from .filters import FilterLimit, alexander_obstruction, jones_obstruction
+from .interlace import visible_factors_interlacement
 from .ordering import best_scan_order
 from .scan import ScanLimit, khovanov_rank
 from .seifert import seifert_certificate
@@ -113,7 +114,7 @@ def _decide_prime_looking(diagram: Diagram, evidence: dict, *, use_modular, use_
             raise ScanLimit("time budget exhausted")
 
     if use_modular:
-        witness = alexander_obstruction(diagram)
+        witness = alexander_obstruction(diagram, check=check)
         if witness is not None:
             evidence["alexander_modular"] = witness
             return "KNOTTED", "alexander-modular"
@@ -206,8 +207,11 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
               jones_max_transitions: int | None = 200_000, max_objects: int | None = None,
               seconds: float | None = None, check_d_squared: bool = False,
               pivot: str = "minfill", algebra: str = "bits", tail: int = 0,
-              race: int = 1, race_after: float = 1.0) -> Result:
+              race: int = 1, race_after: float = 1.0,
+              factor_backend: str = "interlacement") -> Result:
     start = monotonic()
+    if factor_backend not in ("interlacement", "legacy"):
+        raise ValueError("factor_backend must be interlacement or legacy")
     if backend not in ("standard", "shared", "saturated", "euler"):
         raise ValueError("backend must be standard, shared, saturated, or euler")
     if euler_max_states is not None and (type(euler_max_states) is not int or euler_max_states < 0):
@@ -217,53 +221,71 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
     deadline = None if seconds is None else start + seconds
     original = diagram
     evidence: dict[str, Any] = {}
-    if use_seifert:
-        certificate = seifert_certificate(diagram)
-        if certificate is not None:
-            evidence["seifert_certificate"] = certificate
-            return Result(certificate["status"], certificate["criterion"], diagram.crossings,
-                          diagram.crossings, monotonic() - start, evidence)
-    if use_reduction:
-        diagram, trace = simplify(diagram, r3=False)      # Reidemeister III waits until the filters have failed
-        evidence["reidemeister_trace"] = [m.to_json() for m in trace]
-    if diagram.crossings == 0:
-        return Result("UNKNOT", "reidemeister-reduction", original.crossings, 0, monotonic() - start, evidence)
-    if use_seifert and diagram.crossings < original.crossings:
-        # Cancelling opposite-sign crossings can expose homogeneity even when
-        # the original signed graph was inconclusive. Replay the reduction
-        # trace before checking this certificate: it describes the new diagram.
-        certificate = seifert_certificate(diagram)
-        if certificate is not None:
-            evidence["seifert_after_reduction"] = certificate
-            return Result(certificate["status"], "reduced-" + certificate["criterion"],
-                          original.crossings, diagram.crossings, monotonic() - start, evidence)
-    if use_descending:
-        dart = descending_start(diagram)
-        if dart is not None:
-            evidence["descending_start_dart"] = dart
-            return Result("UNKNOT", "descending-diagram", original.crossings, diagram.crossings,
-                          monotonic() - start, evidence)
-    factors = [diagram]
-    if use_factorization:
-        factors, cuts = visible_factors(diagram)
-        if cuts:
-            evidence["connected_sum_cuts"] = cuts
-    options = dict(use_modular=use_modular and use_alexander, use_jones=use_jones, use_alexander=use_alexander,
-                   use_exact_alexander=use_exact_alexander, use_r3=use_r3 and use_reduction,
-                   use_descending=use_descending,
-                   jones_max_states=jones_max_states, jones_max_transitions=jones_max_transitions,
-                   max_objects=max_objects, deadline=deadline, check_d_squared=check_d_squared,
-                   scan_options=dict(pivot=pivot, algebra=algebra, tail=tail, race=race,
-                                     race_after=race_after, backend=backend,
-                                     euler_max_states=euler_max_states))
-    method = "reduced-khovanov-F2-scan"
+    def check():
+        if deadline is not None and monotonic() > deadline:
+            raise ScanLimit("time budget exhausted")
+
     try:
+        check()
+        if use_seifert:
+            certificate = seifert_certificate(diagram)
+            check()
+            if certificate is not None:
+                evidence["seifert_certificate"] = certificate
+                return Result(certificate["status"], certificate["criterion"], diagram.crossings,
+                              diagram.crossings, monotonic() - start, evidence)
+        if use_reduction:
+            diagram, trace = simplify(diagram, r3=False)      # Reidemeister III waits until the filters have failed
+            check()
+            evidence["reidemeister_trace"] = [m.to_json() for m in trace]
+        if diagram.crossings == 0:
+            return Result("UNKNOT", "reidemeister-reduction", original.crossings, 0, monotonic() - start, evidence)
+        if use_seifert and diagram.crossings < original.crossings:
+            # Cancelling opposite-sign crossings can expose homogeneity even when
+            # the original signed graph was inconclusive. Replay the reduction
+            # trace before checking this certificate: it describes the new diagram.
+            certificate = seifert_certificate(diagram)
+            check()
+            if certificate is not None:
+                evidence["seifert_after_reduction"] = certificate
+                return Result(certificate["status"], "reduced-" + certificate["criterion"],
+                              original.crossings, diagram.crossings, monotonic() - start, evidence)
+        if use_descending:
+            dart = descending_start(diagram)
+            check()
+            if dart is not None:
+                evidence["descending_start_dart"] = dart
+                return Result("UNKNOT", "descending-diagram", original.crossings, diagram.crossings,
+                              monotonic() - start, evidence)
+        factors = [diagram]
+        if use_factorization:
+            check()
+            if factor_backend == "interlacement":
+                factors, certificate = visible_factors_interlacement(diagram, check=check)
+                if len(factors) > 1:
+                    evidence["connected_sum_factorization"] = certificate
+            else:
+                factors, cuts = visible_factors(diagram, check=check)
+                if cuts:
+                    evidence["connected_sum_cuts"] = cuts
+            check()
+        options = dict(use_modular=use_modular and use_alexander, use_jones=use_jones, use_alexander=use_alexander,
+                       use_exact_alexander=use_exact_alexander, use_r3=use_r3 and use_reduction,
+                       use_descending=use_descending,
+                       jones_max_states=jones_max_states, jones_max_transitions=jones_max_transitions,
+                       max_objects=max_objects, deadline=deadline, check_d_squared=check_d_squared,
+                       scan_options=dict(pivot=pivot, algebra=algebra, tail=tail, race=race,
+                                         race_after=race_after, backend=backend,
+                                         euler_max_states=euler_max_states))
+        method = "reduced-khovanov-F2-scan"
+        check()
         if len(factors) == 1:
             status, method = _decide_prime_looking(diagram, evidence, **options)
         else:
             status, reports = "UNKNOT", []
             evidence["factors"] = reports
             for factor in sorted(factors, key=lambda d: d.crossings):
+                check()
                 sub: dict[str, Any] = {"crossings": factor.crossings}
                 reports.append(sub)
                 reduced, trace = simplify(factor, r3=False) if use_reduction else (factor, [])
@@ -271,11 +293,13 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
                     sub["status"], sub["method"] = "UNKNOT", "reduction-or-descending"
                     continue
                 sub["status"], sub["method"] = _decide_prime_looking(reduced, sub, **options)
+                check()
                 if sub["status"] == "KNOTTED":
                     status, method = "KNOTTED", "connected-sum-factor:" + sub["method"]
                     break
             else:
                 method = "connected-sum-all-factors-trivial"
+        check()
     except (ScanLimit, MemoryError) as exc:
         evidence["reason"] = str(exc) or "memory allocation failed"
         return Result("UNKNOWN", "resource-limit", original.crossings, diagram.crossings,

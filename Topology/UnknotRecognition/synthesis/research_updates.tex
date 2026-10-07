@@ -1,0 +1,126 @@
+\section{Further incoming reports and checked integrations}
+\label{sec:incoming}
+
+\subsection{Intake status and provenance}
+Reports 08--11 arrived during the October continuation and were merged
+from the shared main branch before further integration. Their delivered
+contents remain unchanged. Local reruns passed 59 test methods for report
+08, 69 for report 09, 15 for report 10's numerical kernels, and 62 for
+report 11. These are separate suites and their counts must not be added
+as though they were independent mathematical cases. Logs and local
+cross-checks are retained under \code{synthesis/data/}. The current
+production suite, after the selected report 09 integrations below,
+passes 98 tests. Reports 08, 10, and 11 and report 09's pointed backend
+remain under integration review at this checkpoint.
+
+\subsection{Canonical visible factors from interlacement}
+Traverse the validated spherical knot diagram and record the crossing
+number at each visit, obtaining a double-occurrence word $W$ of length
+$2n$. Join two crossing labels if their occurrences alternate cyclically.
+Report 09 identifies the connected components of this interlacement
+graph with the atomic crossing sets of visible connected-sum
+factorization. This is a statement about the given diagram; it does not
+find hidden prime factors of an arbitrary knot presentation.
+
+For completeness, the central argument is short. A chord not adjacent
+to any chord of a connected component has both endpoints in one gap
+between successive endpoints of that component. Connectedness forces
+every chord of another component into the same gap. Consequently the
+component intervals are nested or disjoint. An innermost component is
+a contiguous closed interval: every crossing it visits is visited twice.
+Only the two edges at the ends of that interval connect its projection
+subgraph to the rest. In the projection sphere these form a visible
+splitting curve. Removing the interval preserves interlacements among
+the remaining labels, so induction splits all graph components.
+Conversely, a visible two-edge split separates whole intervals and
+cannot divide a connected interlacement component. The induced traversal,
+with original crossing rotations and over/under data, determines each
+factor diagram.
+
+The implementation never builds the potentially quadratic graph. A stack
+tracks active components, union--find merges them when a closing chord
+crosses later-open components, and circular linked lists maintain an
+open representative of each component. Every successful merge decreases
+the number of components. Each chord is opened and closed once, giving
+$O(n\alpha(n))$ combinatorial work and $O(n)$ storage. Checked PD output
+construction sorts labels, for $O(n\log(n+1))$ total interface work.
+
+The certificate contains a partition of crossing labels and a forest of
+actual interlaced pairs. A separate verifier checks every forest edge,
+connectivity within each proposed group, and proper component nesting.
+It does not rerun the discovery algorithm. Production recognition now
+uses this factorizer and exposes \code{connected\_sum\_factorization}
+evidence. The historical API and cut-trace schema remain available
+through \code{factor\_backend="legacy"} or \code{--legacy-factor}.
+
+On a cyclic sum of $k$ standard trefoil diagrams, the old recursive
+factorizer peels off one factor per internal call. Its internal crossing
+visits total
+\[
+ 3\sum_{j=2}^k j=3\left(k(k+1)/2-1\right),
+\]
+which is quadratic in input size. The new factorizer reads the word once
+and constructs constant-size factors directly. Seven local paired kernel
+runs measured baseline/new ratios 14.20, 56.59, and 117.20 for $k=32,128,256$;
+A/A ratios were 1.007, 1.005, and 0.985. These are factorizer timings,
+not default recognition speedups: the Seifert stage already decides this
+homogeneous family before factorization.
+
+\subsection{Sparse modular Alexander elimination}
+The Alexander minor starts with at most three nonzero entries per row.
+Report 09's sparse determinant keeps row dictionaries and column incidence
+sets. It selects a shortest active row, then a least-populated column in
+that row, and records row and column permutation signs. Removing a pivot
+updates only its incident Schur-complement positions. The determinant
+equals the signed product of pivots, by the same block-elimination
+identity as dense Gaussian elimination; a zero active row proves
+singularity. All arithmetic is exact in the fixed prime field.
+
+If $m$ is the minor dimension, $E$ its initial nonzero count, and
+\[
+ F=\sum_{\text{pivots}}(\text{row degree}-1)(\text{column degree}-1),
+\]
+the arithmetic work is $O(m+E+F)$ plus at most $m$ inversions. Heap
+maintenance and stable neighbor order add logarithmic bookkeeping.
+The bound is conditional on actual fill; $F$ may still be cubic. The
+logical number of live entries also differs from Python container
+capacity and resident memory. The implementation reports these work
+counters rather than claiming linear complexity for every Alexander
+matrix.
+
+The sparse path is selected automatically at 256 crossings; dense and
+sparse modes remain explicit low-level options. On positive three-braid
+examples with 62, 262, and 514 crossings, local paired sparse-kernel
+speedups were 0.67, 1.10, and 1.98 (A/A ratios 0.999, 0.999, 1.002).
+The small-case regression motivates retaining the dense path below the
+threshold. These kernel measurements also bypass the Seifert stage.
+The exact witness dictionaries agree, including determinant signs.
+The reproduction script is \code{fast/benchmark\_factor\_sparse.py};
+raw samples are in \code{fast/results/factor\_sparse\_20261007.json}.
+
+\subsection{Resource handling and the corrected frontier bound}
+Factorization and preprocessing now execute inside the same resource
+handler as the exact backend. Cooperative deadline checks occur before
+and after coarse operations and between factors; sparse elimination
+receives the callback at each pivot. An exhausted deadline or a memory
+allocation failure yields \code{UNKNOWN}. Tests inject these failures
+and advance a simulated clock during preprocessing, ensuring an expired
+operation does not leak an exception or produce a late verdict.
+
+Report 09 also corrects an older theoretical statement. The scan stores
+endpoint pairings but supplies no certificate that all frontier points
+lie on one disk boundary in a common cyclic order. On arbitrary frontiers
+the safe scalar-state bound is
+\[
+ s_i\le\min\{2^i,(w_i-1)!!\},
+ \qquad T\le\operatorname{poly}(n,w,\log p)(w-1)!!.
+\]
+The Catalan count is valid only with that additional disk condition.
+We reproduced three counterexamples by independent prefix-resolution
+enumeration: an explicit six-crossing input, a twelve-crossing greedy
+order, and the existing double-Conway fixture under its default best
+order. Each has a six-endpoint frontier with six nonzero Laurent and
+modular matching states, exceeding the third Catalan number five.
+The data are in \code{synthesis/data/frontier-counterexamples-integration.json}.
+The earlier proposition and user documentation have been corrected;
+the exact bracket calculation and all verdicts are unchanged.

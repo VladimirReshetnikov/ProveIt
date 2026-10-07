@@ -91,7 +91,9 @@ certificate stage and optional exact, saturated, and Euler-assisted shared
 scanners. A follow-up repeats the structural check when RI/RII removes crossings,
 with replayable evidence tied to the reduced diagram. Euler geometry is now
 prepared within its inference budget, and completed matching Euler values
-are computed directly from classical-link connectivity. All 76 integrated tests
+are computed directly from classical-link connectivity. Report 09 contributes
+interlacement factorization, sparse Alexander elimination, and broader resource
+handling. All 98 integrated tests
 pass on CPython 3.13.14. The Rust port retains
 the earlier pipeline. The maintained theory article is
 [`synthesis/report.pdf`](synthesis/report.pdf), with the new analysis in
