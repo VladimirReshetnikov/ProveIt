@@ -12,8 +12,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 225 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 2,065 public Gowers theorems and found only propext,
+  All 227 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 2,104 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 101 exact
   companion proofs and 19 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -550,6 +550,19 @@ Retained integer geometry in affine extraction
   integer step ratio and discharge or weaken the parent-size inequality.
   These are concrete remaining conditions, not a supplied square-grid or
   recurrence partition, and no numbered catalogue obligation is closed yet.
+
+Linear-budget short-parent localization
+  Proofs13ShortParentChunks partitions any interval of length at least m into
+  lengths from m to 2m-1, by adding the remainder to the last block. Applying
+  this within residue classes needs only p*m<=r, replacing the quadratic
+  p*m^2<=r budget of the earlier almost-equal target partition.
+  Proofs13SpanLocalization therefore constructs suitable height parents from
+  a*(|S|-1)<|Q|. They have the column step and lengths between floor(|S|/2)
+  and |S|. Weighted selection and coefficient extraction produce a bilinear
+  square of density delta/4 and width at least
+  floor(|S|/2)^(cor711Exponent(delta,1)/2)-1 at the displayed affine scale.
+  The integer span still has to be retained in the Stage 13.7 selection and
+  the remaining large-scale bounds propagated through the full chain.
 
 Reproducible checks (from repository root)
   python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.Audit
