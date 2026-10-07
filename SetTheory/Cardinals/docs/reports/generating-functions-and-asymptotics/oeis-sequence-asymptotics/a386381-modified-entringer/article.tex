@@ -34,6 +34,14 @@
 \newcommand{\one}{\mathbf 1}\newcommand{\fall}[2]{#1^{\underline{#2}}}
 \newcommand{\HH}{\mathcal H}\newcommand{\GG}{\mathcal G}
 \newcommand{\CC}{\mathbb C}\newcommand{\NN}{\mathbb N}
+% Added by the ProveIt write phase (batch 110, 7 October 2026): dated notes
+% marked [write], a macro for file, label and declaration names, longtable.
+\usepackage{longtable}
+\newcommand{\file}[1]{\nolinkurl{#1}}
+\expandafter\def\expandafter\UrlBreaks\expandafter{\UrlBreaks\do\-\do\_\do\.}
+\newenvironment{writenote}[1][]{\par\smallskip\begingroup\small
+ \noindent\textbf{[write]}\if\relax\detokenize{#1}\relax\else~\textbf{#1.}\fi\ }%
+ {\par\endgroup\smallskip}
 \title{\textbf{Modified Entringer Connection Constants\\and Spectral Limits}\\[7pt]\large Exact amplitude, all fixed orders, inverse bounds,\\and a marked Bernoulli limit for OEIS A386381 and A386363}
 \author{Research report 180}
 \date{3 October 2026}
@@ -46,14 +54,42 @@ Marking the recursive boundary injections gives an entire endpoint function $C(\
 
 The boustrophedon transform, singularity analysis, Fredholm theory and Bernoulli spectral interpretation are classical. The report gives family-specific deductions with full proofs and bounded source comparison, not a historical priority claim. The asymptotic remainder constants are non-effective; the amplitude certificate is a separate finite calculation with explicit tail bounds.
 \end{abstract}
+
+\begin{writenote}[Status and trust boundary, added 7 October 2026, batch~110]
+This is bundle Report~180 of an external AI-assisted research session,
+filed in ProveIt as the single-source research report
+\file{a386381-modified-entringer} (provenance, the sources as the write read
+them, what was checked, relation to the repository, the collected non-claims
+and the reading conventions are in Section~\ref{men:sec:provenance}). It is
+unrefereed and not formalized. Its author line reads ``Research report 180'':
+it names no person or tool. \emph{What rests on what.}
+Proposition~\ref{men:prop:ode} (the boustrophedon reduction, credited to
+Millar, Sloane and Young and also derived directly), the Frobenius
+construction, Theorems~\ref{men:thm:transfer}, \ref{men:thm:fredholm},
+\ref{men:thm:law}, \ref{men:thm:weighted}, \ref{men:thm:largemark},
+\ref{men:thm:tail} and~\ref{men:thm:zeros} and the inverse statements have
+conventional proofs that use no computation. The decimal enclosure of the
+amplitude~\eqref{men:eq:certified} combines proved Taylor tails with
+interval arithmetic in mpmath, whose implementation is trusted; the
+coefficient tables, the Sturm count for~\eqref{men:eq:P10} and the displayed
+correction polynomials are exact finite computations of the shipped
+programs. Every other decimal is a diagnostic. The recurrence, the leading
+scale and the numerical amplitude $25.5745\ldots$ are prior (OEIS; Kurkov,
+Kot\v{e}\v{s}ovec); the new content is the exact identification of the
+amplitude as a connection value and everything built on it. The write adds
+Remark~\ref{men:rem:oeis} (the OEIS entries quoted, and all $265$ b-file
+terms recomputed), Remark~\ref{men:rem:transseries} (the inverses against
+the transseries volume, statement by statement), and dated notes. No
+statement, proof or number of the source was changed.
+\end{writenote}
 \setcounter{tocdepth}{1}{\small\tableofcontents}
 \newpage
 
-\section{The sequence and the precise scope}
+\section{The sequence and the precise scope}\label{men:sec:scope}
 Let $T(n,k)$ be the triangle specified in OEIS A386363~\cite{triangle}:
 \begin{align}
  T(0,0)&=1,& T(n,0)&=0\quad(n>0),\notag\\
- T(n,1)&=T(n-1,n-1)\quad(n>0),\label{eq:triangle}\\
+ T(n,1)&=T(n-1,n-1)\quad(n>0),\label{men:eq:triangle}\\
  T(n,k)&=T(n,k-1)+(n-2)T(n-1,n-k)\quad(2\le k\le n).\notag
 \end{align}
 Write $d_n=T(n,n)$, the sequence A386381~\cite{diagonal}. The first terms are
@@ -69,7 +105,7 @@ Write $d_n=T(n,n)$, the sequence A386381~\cite{diagonal}. The first terms are
 \]
 % END VERIFIED OEIS PREFIX
 The definitions and recurrence are prior work. The triangle entry is attributed to Mikhail Kurkov, 19 July 2025. The diagonal entry attributes the numerical leading equivalent
-\begin{equation}\label{eq:oeis}
+\begin{equation}\label{men:eq:oeis}
  d_n\sim c\,\frac{2^{n+1}n^{2n-3}}{e^{2n}\pi^{n-1}},
  \qquad c=25.574519628957467521537232312735336894\ldots,
 \end{equation}
@@ -86,14 +122,206 @@ An ``all fixed orders'' expansion means that the truncation order is fixed befor
 
 The classical transform theorem of Millar, Sloane and Young~\cite{msy} supplies the central exact reduction; we also derive it in the present normalization. Frobenius analysis, Abel's identity, logarithmic singularity transfer~\cite{fo,fs}, Lambert inversion and trace-class determinant methods are established tools. The Bernoulli interpretation is the familiar spectral phenomenon described by Hough, Krishnapur, Peres and Vir\'ag~\cite{hkpv}. Our direct product proof requires no construction of a point process.
 
-\section{From the triangle to a differential equation}\label{sec:ode}
-For $n\ge2$, the last two entries in row $n$ coincide because the final increment in \eqref{eq:triangle} is $(n-2)T(n-1,0)=0$. Define
-\begin{equation}\label{eq:normalization}
+\begin{remark}[{[write]} The OEIS entries, quoted, 7~October 2026]\label{men:rem:oeis}
+The entries were read on 7~October 2026 in the OEIS internal format; the
+quotations are verbatim.
+\begin{enumerate}[label=(\alph*)]\raggedright
+\item A386363~\cite{triangle} (revision \#24, 27~February 2026), offset
+ $0$, author line ``\texttt{\_Mikhail Kurkov\_, Jul 19 2025}'', is named
+ \begin{center}\small
+ \parbox{0.92\textwidth}{\raggedright\texttt{Variation of triangle of Entringer numbers (A008281) read by rows: T(n, k) = T(n, k-1) + (n-2)*T(n-1, n-k) for 1 < k <= n, T(n, 1) = T(n-1, n-1) for n > 0, T(n, 0) = 0\^{}n.}}
+ \end{center}
+ which is~\eqref{men:eq:triangle}. Its example rows agree with the write's
+ own computation of the triangle (for instance row $8$ is
+ $0, 10960, 76720, 140800, 196480, 237760, 260800, 264640, 264640$).
+\item A386381~\cite{diagonal} (revision \#27, 27~February 2026), offset
+ $0$, ``\texttt{Main diagonal of A386363.}'', author line
+ ``\texttt{\_Mikhail Kurkov\_, Jul 20 2025}''. Its asymptotic line reads
+ \begin{center}\small
+ \parbox{0.92\textwidth}{\raggedright\texttt{a(n) \textasciitilde{} c * 2\^{}(n+1) * n\^{}(2*n-3) / (exp(2*n) * Pi\^{}(n-1)), where c = 25.574519628957467521537232312735336894... - \_Vaclav Kotesovec\_, Sep 02 2025}}
+ \end{center}
+ which is~\eqref{men:eq:oeis}. Corollary~\ref{men:cor:scalar} proves it,
+ with $c=\pi C(1)$; the printed decimal is the truncation (not a rounding)
+ of the enclosure~\eqref{men:eq:certified}. The entry links a b-file
+ ``\texttt{Table of n, a(n) for n = 0..264}'' (Kot\v{e}\v{s}ovec).
+ Its other formula lines, Kurkov's Conjectures~1 and~2 on divisibility
+ (the second concerns the Euler numbers A000111) and Luschny's conjecture
+ that $2a(n)$ is divisible by A060818$(n)$, are outside the scope of this
+ report and are not addressed by it.
+\end{enumerate}
+The b-file, fetched on 7~October 2026, has $265$ terms; the write
+recomputed $d_0,\dots,d_{264}$ from~\eqref{men:eq:triangle} in exact
+integer arithmetic with its own code: all $265$ agree. (Section~\ref{men:sec:limits}
+records that the source could not retrieve this file.) OEIS content is
+published under CC~BY-SA~4.0. Nothing was submitted to the OEIS.
+\end{remark}
+
+\subsection{Provenance, sources and reading conventions}\label{men:sec:provenance}
+\begin{writenote}[Added 7 October 2026, batch~110]
+\emph{Provenance.} This report is Report~180 of the session bundle that
+ProveIt's \file{docs/incoming} intake processed as batch~110: the archive
+\file{Modified_Entringer_Asymptotics_and_Spectral_Limits_Source.zip}
+($789{,}613$ bytes, SHA-256 \file{23d6b43bbad1...e089a7f571f95f}, 34 files,
+no wrapper directory), arrival commit \file{60f54ea06}, placed in
+\file{8622ca7e5}. The text is the delivered \file{Report180.tex} (1{,}018
+lines, dated 3~October 2026; the delivered PDF has 22 pages), shipped as
+\file{article.tex}. The exact core is shipped as \file{code/verify.py},
+\file{code/exact.py} and \file{code/regenerate.py}; the delivered root
+programs \file{build.py}, \file{guard_tests.py}, \file{test_build.py} and
+\file{verify_manifest.py} under \file{code/}; the optional programs as
+\file{code/optional-*.py}; the frozen references as
+\file{data/references-*.json}, the generated summaries as
+\file{data/generated-*.json}, and \file{README_CODE.md},
+\file{SOURCE_AUDIT.md} and \file{optional-README.md} at the report root (the
+report README maps every name). Not shipped, and retrievable from the arrival
+commit: the delivered PDF, the checksum manifest \file{SHA256SUMS.json}
+(33 entries, verified at placement) and the delivered README, replaced by the
+report README. The package records no ProveIt commit; its source audit names
+three neighbouring reports by their GitHub paths. It carries no ``prepared for
+private review'' line and no personal data. It is a single-source report, so
+no merge choice was made. The write prefixed the 102 delivered labels with
+\file{men:} and updated the 73 references to them; it added labels to
+Section~\ref{men:sec:scope} and to this subsection, the notes marked [write],
+Remarks~\ref{men:rem:oeis} and~\ref{men:rem:transseries}, and dated notes.
+The added remarks are the last statements of their sections, this subsection
+follows the last delivered text of Section~\ref{men:sec:scope}, and the added
+displays are unnumbered, so every theorem, section and equation of the source
+keeps its delivered number.
+
+\emph{The sources, as the write read them} (7~October 2026).
+\begin{itemize}\raggedright
+\item OEIS A386363 and A386381 with the b-file of A386381, in the internal
+ format (Remark~\ref{men:rem:oeis}).
+\item The transseries volume
+ \path{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex}:
+ \file{p0:def:core}, \file{p0:prop:factorial-core},
+ \file{p0:def:three-inverses} and \file{p0:thm:staircase}, read for
+ Remark~\ref{men:rem:transseries}.
+\item Not read by the write: the boustrophedon paper~\cite{msy} (the
+ identity used, $B=EA$ for exponential generating functions, is also
+ derived directly in the proof of Proposition~\ref{men:prop:ode}), the
+ singularity-analysis sources~\cite{fo,fs}, HKPV~\cite{hkpv} and the DLMF
+ sections~\cite{dlmf}; the source's account of them is reported, not
+ confirmed.
+\end{itemize}
+
+\emph{What was checked at intake.} The batch-110 dossier read the
+manuscript and found no error. On copies it ran \file{code/verify.py} in
+normal and optimized mode (identical output, equal to the recorded
+\file{generated/verification.json}: 21 OEIS terms, exact $n\le101$,
+corrections through order six, six real and two nonreal roots of
+$P_{10}$) and \file{code/regenerate.py} with \texttt{--compare} (pass).
+\emph{What the write checked} (Python~3.14.4, SymPy~1.14.0,
+mpmath~1.3.0, own code). Every proof was read line by line, with no error
+found; in particular the monotonicity step $d_n\ge(n-1)d_{n-1}$ in the
+proof of Theorem~\ref{men:thm:inverse} (it uses $T(n-1,n-2)=T(n-1,n-1)$
+for $n\ge3$), the Stirling step of Corollary~\ref{men:cor:scalar}, and the
+equivalence of~\eqref{men:eq:tailfactorial} and~\eqref{men:eq:tailmass}
+through $(2m+1)!=4\sqrt\pi\,m^{3/2}(2m/e)^{2m}\{1+O(m^{-1})\}$. By exact
+symbolic re-expansion from the recurrences~\eqref{men:eq:cfunc}
+and~\eqref{men:eq:hrec} it recomputed $L_0(1),\dots,L_4(1)$
+of~\eqref{men:eq:Lfirst}, the coefficient of $t^4$ in $H_1$, the six
+corrections~\eqref{men:eq:scalar6}, the polynomials $s_1,\dots,s_4$
+of~\eqref{men:eq:sfirst}, $Q_1,Q_2,Q_3$ of~\eqref{men:eq:Qfirst}, the
+expansion~\eqref{men:eq:logpgfcorrection}, the mean and variance
+corrections~\eqref{men:eq:mean}--\eqref{men:eq:variance}, and the
+coefficients $1/6$, $-2$, $\rho^2/3-541/180$ of~\eqref{men:eq:logexpansion}:
+all agree. It recomputed $P_{10}$ from the marked
+array~\eqref{men:eq:markedarray} (equal to~\eqref{men:eq:P10}, with
+$P_{10}(1)=d_{10}$), its six real roots and its trivial gcd with its
+derivative; $C(1)$ from the midpoint formula~\eqref{men:eq:midpoint} at
+$m=420$ and 70 digits (note at the end of Section~\ref{men:sec:certificate});
+the optical length $\mathcal A=4.2586174557058935695\ldots$; and $C(\lambda)$
+for large $\lambda$ (note after the proof of Theorem~\ref{men:thm:largemark}).
+On a copy of the delivered layout rebuilt from the shipped files, the
+verifier and the regeneration comparison pass with output byte-identical to
+the dossier's run. Floating computations are observations, not
+certificates.
+
+\emph{Relation to the repository.} Before batch~110 no file of the
+repository named A386381 or A386363. No statement of this report is
+formalized in Lean or Rocq, and its place in the collection confers no
+formal status. Nearest reports, all in
+\file{SetTheory/Cardinals/docs/reports/}: \file{a125054-central-poupard-numbers}
+(tangent numbers by the Seidel boustrophedon, pole-sector asymptotics),
+\file{congruences-and-valuations/secant-number-periodicity} (secant numbers
+through the Entringer triangle, congruences),
+\file{a205497-zigzag-eulerian-spectra} and
+\file{a122399-surjection-diagonal}. They share classical ingredients but no
+object or result with this report, so no reciprocal note is proposed. The
+inverses are compared with the transseries volume in
+Remark~\ref{men:rem:transseries}.
+\end{writenote}
+
+\begin{writenote}[What is not claimed, collected from the source]
+The recurrence, the leading scale and the numerical amplitude are prior
+(OEIS), and the source does not ``present that numerical observation as
+new''. It makes ``not a historical priority claim'': the boustrophedon
+transform, singularity analysis, Fredholm theory and the Bernoulli spectral
+interpretation are classical, and its overlap review is bounded (``Search
+misses \dots\ are not evidence of worldwide novelty or exhaustive
+non-overlap''); it settles no posed open problem. Every expansion is for a
+fixed order; no convergence of the inverse-power series, growing-order
+error theorem, complete set of exponentially small sectors or explicit
+asymptotic onset is asserted; the remainder constants are non-effective.
+The marked statistic is the recursive coefficient statistic, with no
+claimed combinatorial family. The amplitude certificate trusts mpmath's
+interval implementation and is ``not a proof-assistant verification''; the
+longer decimal strings are diagnostics, and the enclosure gives no
+effective finite-$N$ constants. The inverse bracket is not an effective
+finite-input certificate, and $\lceil x_1\rceil$ or $\lceil\xi_M\rceil$ is
+not asserted to work. Theorem~\ref{men:thm:largemark} gives no
+complex-sector uniformity and no joint limit with $N$; the tail results
+concern the limiting law only, with non-effective constants and no
+conditioned-Poisson law. Theorem~\ref{men:thm:zeros} is a bounded-region
+statement, with no eventual real-rootedness and no escape rate. The write
+adds: its checks are exact finite or floating computations; it claims no
+novelty for any inversion (Remark~\ref{men:rem:transseries}).
+\end{writenote}
+
+\medskip
+\begingroup\small
+\noindent\emph{Reading conventions} (letters the source reuses, with the
+tempting false readings; no symbol of the source was renamed; symbols of the
+transseries volume carry the subscript ``vol'' in
+Remark~\ref{men:rem:transseries}).\par\smallskip
+\renewcommand{\arraystretch}{1.1}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.95in}>{\raggedright\arraybackslash}p{3.3in}>{\raggedright\arraybackslash}p{1.85in}@{}}
+\toprule
+Symbol & Meaning here (where) & Not to be read as\\
+\midrule
+\endhead
+$c$, $C(\lambda)$, $C_*$ & the amplitude $\pi C(1)$~\eqref{men:eq:amplitude}; the endpoint $A_\lambda(\rho)$; $\log(2\pi c)$~\eqref{men:eq:inverseconstants}; $C_{R,M}$, $c_0$, $c_k$ are generic constants & each other\\
+$A$, $A_\lambda$, $\mathcal A$ & the scalar solution $A_1$; the marked solution; the optical length~\eqref{men:eq:optical} & each other; the volume's $A_n$, $\mathcal A_{\mathrm{vol}}$ (an interpolation)\\
+$d$, $d_n$ & $1/(e\sqrt\rho)$~\eqref{men:eq:inverseconstants}; the sequence A386381 & each other; the volume's $d_{\mathrm{vol}}$\\
+$E$, $\E$, $e_n$ & $\sec z+\tan z$; expectation; Taylor coefficients of $E$ & each other; Euler's $e$\\
+$K$, $K_0$, $K_M$, $K_{\mathrm{tail}}$, $k$ & the Green operator (Section~\ref{men:sec:fredholm}) but a compact mark set in Theorems~\ref{men:thm:transfer} and~\ref{men:thm:weighted}; the trace~\eqref{men:eq:K0}; the inverse constant; the tail constant~\eqref{men:eq:tailK}; the kernel $k(s,t)$, but $k=\sqrt\lambda$ in Section~\ref{men:sec:largemark} & each other\\
+$L$, $L_j$, $L_\lambda$, $\mathcal L_\lambda$ & $\log X$; the coefficients~\eqref{men:eq:Ldef}; the series $\rho\cot(\rho t/2)H_\lambda$; the differential operator~\eqref{men:eq:L} & each other; the volume's $L_{\mathrm{vol}}$\\
+$H_\lambda$, $H(x)$ & the Frobenius solution (Lemma~\ref{men:lem:frobenius}); the tail carrier of Corollary~\ref{men:cor:tailinverse} & each other\\
+$G_\lambda$, $G$, $G_N$, $\GG$ & the second Frobenius germ; the limiting PGF~\eqref{men:eq:limitingpgf}; the finite PGF~\eqref{men:eq:finitepgf}; the space $L^2(dx/x)$ & each other\\
+$W(r,j)$, $W_0$, $W_x$ & the normalized array~\eqref{men:eq:normalization}; Lambert's function; a Wronskian & each other\\
+$p_n$, $p_j$, $p(m)$, $q_n$, $q_m$ & Taylor coefficients of $A$~\eqref{men:eq:taylor}; Bernoulli parameters~\eqref{men:eq:limitingpgf}; masses $\PP(J=m)$; $p_n\rho^n$; $\PP(J\ge m)$ & each other\\
+$Q_\lambda$, $Q_j$, $Q$ & the analytic part in~\eqref{men:eq:localsingular}; the PGF corrections~\eqref{men:eq:Qrec}; the Liouville potential & each other\\
+$N$, $n$, $M$, $m$ & $N=n-2$ (the factorial carrier) and $n$ (the logarithmic carrier and inverse); a fixed order, but $M(r)$ the tilted mean; the truncation degree $m=420$, but $m$ a mass index in Section~\ref{men:sec:tail} & each other\\
+$V$, $V(r)$, $v_J$ & the Volterra operator~\eqref{men:eq:volterra}; the tilted variance; the limiting variance & each other\\
+$S$, $\mu$, $\mu_J$ & the operator~\eqref{men:eq:S}, but a Bernoulli sum in~\eqref{men:eq:bernoullilocal}; the measure $E(s)\,ds$; the limiting mean & each other\\
+$x_0$, $x_1$ & Lambert starts for $d_n$~\eqref{men:eq:lambert}; for the tail inverse~\eqref{men:eq:tailLambert} & each other\\
+$B$, $B_{2j}$, $B_\nu$, $B_1$, $B_2$ & the boundary series; Bernoulli numbers; $\sup yI_\nu K_\nu$; generic constants & each other\\
+$\rho$, $\kappa_j$, $\Phi$ & $\pi/2$; eigenvalues of $K$; $\rho t\cot(\rho t/2)$ & the volume's $\rho_{\mathrm{vol}}$, $\kappa_{\mathrm{vol}}$, $\Phi_0$\\
+$T(n,k)$, $T$, $t$ & the triangle; $\log(1/y)$ in Corollary~\ref{men:cor:tailinverse}; $1-z/\rho$, also an integration variable & each other\\
+$\delta_m$, $\delta$ & the midpoint error bound~\eqref{men:eq:delta}; $\rho-z$, and the secant step, in Section~\ref{men:sec:largemark} & each other\\
+\bottomrule
+\end{longtable}
+\endgroup
+
+\section{From the triangle to a differential equation}\label{men:sec:ode}
+For $n\ge2$, the last two entries in row $n$ coincide because the final increment in \eqref{men:eq:triangle} is $(n-2)T(n-1,0)=0$. Define
+\begin{equation}\label{men:eq:normalization}
  W(r,j)=\frac{T(r+2,j+1)}{r!}\quad(0\le j\le r),\qquad
  a_r=W(r,0),\quad b_r=W(r,r).
 \end{equation}
 Then $a_0=b_0=1$, and direct substitution gives
-\begin{equation}\label{eq:reflected}
+\begin{equation}\label{men:eq:reflected}
  W(r,j)-W(r,j-1)=W(r-1,r-j),\qquad
  a_r=\frac{b_{r-1}}r\quad(r\ge1).
 \end{equation}
@@ -103,13 +331,13 @@ The factorial normalization need not be integral. Set
  B(z)=\sum_{r\ge0}b_r\frac{z^r}{r!}.
 \]
 
-\begin{proposition}\label{prop:ode}
+\begin{proposition}\label{men:prop:ode}
 The selected analytic solution at zero satisfies
-\begin{equation}\label{eq:ode}
+\begin{equation}\label{men:eq:ode}
  B=EA,\qquad (zA')'=EA,\qquad A(0)=A'(0)=1.
 \end{equation}
 Moreover,
-\begin{equation}\label{eq:extract}
+\begin{equation}\label{men:eq:extract}
  d_{N+2}=(N!)^2[z^N]B(z)\qquad(N\ge0).
 \end{equation}
 \end{proposition}
@@ -127,11 +355,11 @@ The original boundary values are $F(0,z)=A(z)$ and $F(z,0)=B(z)$, so
  \frac{B(z)}{A(z)}=
  \frac{\cos(z/2)+\sin(z/2)}{\cos(z/2)-\sin(z/2)}=E(z).
 \]
-This is a formal identity near zero; the denominator has constant term one. The relation $a_{r+1}=b_r/(r+1)$ gives $(zA')'=B$. Finally $d_{N+2}=N!b_N$ by \eqref{eq:normalization}, yielding \eqref{eq:extract}.
+This is a formal identity near zero; the denominator has constant term one. The relation $a_{r+1}=b_r/(r+1)$ gives $(zA')'=B$. Finally $d_{N+2}=N!b_N$ by \eqref{men:eq:normalization}, yielding \eqref{men:eq:extract}.
 \end{proof}
 
 For an exact scalar coefficient algorithm write $E(z)=\sum e_nz^n$ and $A(z)=\sum p_nz^n$. Since $E'=(1+E^2)/2$,
-\begin{equation}\label{eq:taylor}
+\begin{equation}\label{men:eq:taylor}
  \begin{split}
  e_0=p_0&=1,\\
  2(n+1)e_{n+1}&=\sum_{j=0}^n e_je_{n-j}+\one_{\{n=0\}},\\
@@ -140,54 +368,54 @@ For an exact scalar coefficient algorithm write $E(z)=\sum e_nz^n$ and $A(z)=\su
 \end{equation}
 All coefficients are positive rationals. These recurrences and the original integer triangle provide independent finite computations of the same diagonal.
 
-\section{Boundary marking and an entire endpoint function}\label{sec:mark}
+\section{Boundary marking and an entire endpoint function}\label{men:sec:mark}
 The marking starts after the fixed $n=2$ base. Define integer polynomials $U_{r,j}(\lambda)$ by
 \begin{align}
  U_{0,0}(\lambda)&=1,\notag\\
- U_{r,0}(\lambda)&=\lambda U_{r-1,r-1}(\lambda),\label{eq:markedarray}\\
+ U_{r,0}(\lambda)&=\lambda U_{r-1,r-1}(\lambda),\label{men:eq:markedarray}\\
  U_{r,j}(\lambda)&=U_{r,j-1}(\lambda)+rU_{r-1,r-j}(\lambda)
        \quad(1\le j\le r),\notag
 \end{align}
 and put $P_{r+2}(\lambda)=U_{r,r}(\lambda)$. At $\lambda=1$ this is precisely $T(r+2,j+1)$ and $P_n(1)=d_n$. Coefficients are nonnegative integers. The exponent of $\lambda$ records how many left-boundary injections occur in the recursive expansion, counted with the recurrence multiplicities. Equivalently, the following probability definition needs only these coefficients:
-\begin{equation}\label{eq:finitepgf}
+\begin{equation}\label{men:eq:finitepgf}
  \PP(J_N=k)=\frac{[\lambda^k]P_{N+2}(\lambda)}{P_{N+2}(1)},\qquad
  G_N(\lambda)=\E\lambda^{J_N}=\frac{P_{N+2}(\lambda)}{P_{N+2}(1)}.
 \end{equation}
 This is a valid finite law, with no claim that $J_N$ is a statistic in an independently identified classical combinatorial family.
 
 Apply the transform proof to $W_\lambda(r,j)=U_{r,j}(\lambda)/r!$. Its boundary relation has the extra factor $\lambda$, so
-\begin{equation}\label{eq:markedode}
+\begin{equation}\label{men:eq:markedode}
  B_\lambda=EA_\lambda,\qquad (zA_\lambda')'=\lambda EA_\lambda,
  \quad A_\lambda(0)=1,\quad A_\lambda'(0)=\lambda,
 \end{equation}
 and $P_{N+2}(\lambda)=(N!)^2[z^N]B_\lambda$. Integrating twice on the real interval gives
-\begin{equation}\label{eq:volterra}
+\begin{equation}\label{men:eq:volterra}
  A_\lambda(z)=1+\lambda(VA_\lambda)(z),\qquad
  (Vf)(z)=\int_0^z E(s)f(s)\log\frac zs\,ds.
 \end{equation}
 The integral at $s=0$ is interpreted as an improper integral.
 
-\begin{theorem}\label{thm:endpoint}
+\begin{theorem}\label{men:thm:endpoint}
 The endpoint
 \[
  C(\lambda)=A_\lambda(\rho)
    =\sum_{j\ge0}\lambda^j(V^j1)(\rho)
 \]
 is an entire function of $\lambda$. If
-\begin{equation}\label{eq:K0}
+\begin{equation}\label{men:eq:K0}
  K_0=\int_0^\rho E(s)\log\frac\rho s\,ds,
 \end{equation}
 then
-\begin{equation}\label{eq:endbound}
+\begin{equation}\label{men:eq:endbound}
  0\le(V^j1)(\rho)\le\frac{K_0^j}{j!},\qquad
  |C(\lambda)|\le e^{|\lambda|K_0},\qquad
  1<C(1)\le e^{\pi^2/3}<200.
 \end{equation}
 \end{theorem}
 \begin{proof}
-Near zero the integrand in \eqref{eq:K0} is $O(\log(1/s))$. Near $\rho$, the simple pole $E(s)\sim2/(\rho-s)$ is cancelled by $\log(\rho/s)\sim(\rho-s)/\rho$. Thus $K_0<\infty$.
+Near zero the integrand in \eqref{men:eq:K0} is $O(\log(1/s))$. Near $\rho$, the simple pole $E(s)\sim2/(\rho-s)$ is cancelled by $\log(\rho/s)\sim(\rho-s)/\rho$. Thus $K_0<\infty$.
 
-In the ordered integral for $V^j1$, every factor $\log(s_{i+1}/s_i)$ is bounded by $\log(\rho/s_i)$, with the endpoint interpreted as $s_{j+1}=\rho$. Integration of the symmetric product over the ordered simplex gives $K_0^j/j!$. The same bound works uniformly for $0\le z\le\rho$. The Volterra series consequently converges uniformly there and locally uniformly in $\lambda$, solves \eqref{eq:volterra}, and defines its continuous endpoint. Iteration of the same estimate proves uniqueness. Positivity and the nonzero first iterate give $C(1)>1$.
+In the ordered integral for $V^j1$, every factor $\log(s_{i+1}/s_i)$ is bounded by $\log(\rho/s_i)$, with the endpoint interpreted as $s_{j+1}=\rho$. Integration of the symmetric product over the ordered simplex gives $K_0^j/j!$. The same bound works uniformly for $0\le z\le\rho$. The Volterra series consequently converges uniformly there and locally uniformly in $\lambda$, solves \eqref{men:eq:volterra}, and defines its continuous endpoint. Iteration of the same estimate proves uniqueness. Positivity and the nonzero first iterate give $C(1)>1$.
 
 For $0<s<\rho$, use $\cot x\le1/x$ for $0<x\le\pi/4$:
 \[
@@ -198,42 +426,42 @@ For $0<s<\rho$, use $\cot x\le1/x$ for $0<x\le\pi/4$:
 The series bound now proves all assertions. The integral identity follows by expanding $(1-u)^{-1}$ and using monotone convergence.
 \end{proof}
 
-In particular the exact amplitude in \eqref{eq:oeis} will be
-\begin{equation}\label{eq:amplitude}
+In particular the exact amplitude in \eqref{men:eq:oeis} will be
+\begin{equation}\label{men:eq:amplitude}
  c=\pi C(1)=\pi A_1(\pi/2).
 \end{equation}
 The endpoint is finite even though $A_1'$ has a logarithmic singularity there. Entire dependence on the mark does not imply that $C$ is nonzero everywhere; its negative zeros will be important.
 
-\section{Frobenius construction uniform in complex marks}\label{sec:frobenius}
+\section{Frobenius construction uniform in complex marks}\label{men:sec:frobenius}
 Set $t=1-z/\rho$ and
-\begin{equation}\label{eq:cfunc}
+\begin{equation}\label{men:eq:cfunc}
  \Phi(t)=\rho t\cot(\rho t/2)
    =2+\sum_{j\ge1}\gamma_{2j}t^{2j},\qquad
  \gamma_{2j}=\frac{(-1)^j2B_{2j}\rho^{2j}}{(2j)!}
             =-\frac{4\zeta(2j)}{16^j}.
 \end{equation}
-Here $B_{2j}$ are Bernoulli numbers, with $B_2=1/6$. The radius of convergence of $\Phi$ is four. Equation \eqref{eq:markedode} becomes
-\begin{equation}\label{eq:L}
+Here $B_{2j}$ are Bernoulli numbers, with $B_2=1/6$. The radius of convergence of $\Phi$ is four. Equation \eqref{men:eq:markedode} becomes
+\begin{equation}\label{men:eq:L}
  \mathcal L_\lambda A=0,\qquad
  \mathcal L_\lambda=(1-t)\frac{d^2}{dt^2}-\frac d{dt}
                    -\lambda\frac{\Phi(t)}t.
 \end{equation}
 The exponents at $t=0$ are $0$ and $1$.
 
-\begin{lemma}\label{lem:frobenius}
+\begin{lemma}\label{men:lem:frobenius}
 There are functions $H_\lambda(t)$ and $G_\lambda(t)$ analytic for $|t|<1$, jointly holomorphic with respect to $t$ and $\lambda$, normalized by
 \[
  H_\lambda(0)=0,\quad H_\lambda'(0)=1,\qquad
  G_\lambda(0)=1,\quad G_\lambda'(0)=0,
 \]
 such that on a fixed branch of $\log t$
-\begin{equation}\label{eq:fundamental}
+\begin{equation}\label{men:eq:fundamental}
  F_\lambda=G_\lambda+2\lambda H_\lambda\log t,\qquad
  \mathcal L_\lambda F_\lambda=\mathcal L_\lambda H_\lambda=0,
  \qquad F_\lambda H_\lambda'-F_\lambda'H_\lambda=\frac1{1-t}.
 \end{equation}
 Writing $H_\lambda=\sum_{m\ge0}h_m(\lambda)t^m$, its explicit recurrence is
-\begin{equation}\label{eq:hrec}
+\begin{equation}\label{men:eq:hrec}
  h_0=0,\quad h_1=1,\qquad
  h_{m+1}=\frac{(m^2+2\lambda)h_m+
  \lambda\sum_{j=1}^{\lfloor m/2\rfloor}\gamma_{2j}h_{m-2j}}{m(m+1)}
@@ -241,38 +469,38 @@ Writing $H_\lambda=\sum_{m\ge0}h_m(\lambda)t^m$, its explicit recurrence is
 \end{equation}
 \end{lemma}
 \begin{proof}
-Coefficient comparison in \eqref{eq:L} gives \eqref{eq:hrec}, so every coefficient is a polynomial in $\lambda$ with coefficients in $\mathbb Q[\rho^2]$. To see convergence uniformly on $|\lambda|\le L$, choose any $a>1$. The sum $\sum_{j\ge1}|\gamma_{2j}|a^{-2j}$ is finite. For all sufficiently large $m$,
+Coefficient comparison in \eqref{men:eq:L} gives \eqref{men:eq:hrec}, so every coefficient is a polynomial in $\lambda$ with coefficients in $\mathbb Q[\rho^2]$. To see convergence uniformly on $|\lambda|\le L$, choose any $a>1$. The sum $\sum_{j\ge1}|\gamma_{2j}|a^{-2j}$ is finite. For all sufficiently large $m$,
 \[
  m^2+2L+L\sum_{j\ge1}|\gamma_{2j}|a^{-2j}\le a m(m+1).
 \]
-A large enough constant $D$ covers the preceding finitely many coefficients. Induction in \eqref{eq:hrec} then gives $|h_m|\le Da^m$. Since $a>1$ is arbitrary, $H$ converges jointly and locally uniformly for $|t|<1$ and compact mark sets.
+A large enough constant $D$ covers the preceding finitely many coefficients. Induction in \eqref{men:eq:hrec} then gives $|h_m|\le Da^m$. Since $a>1$ is arbitrary, $H$ converges jointly and locally uniformly for $|t|<1$ and compact mark sets.
 
 For the second solution compute
-\begin{equation}\label{eq:logforcing}
+\begin{equation}\label{men:eq:logforcing}
  \mathcal L_\lambda(H_\lambda\log t)
  =\frac{2(1-t)H_\lambda'}t
   -\frac{(1-t)H_\lambda}{t^2}-\frac{H_\lambda}t
  =\frac1t+\text{an analytic function}.
 \end{equation}
-The term $-2\lambda/t$ in $\mathcal L_\lambda G$ cancels $2\lambda/t$ from this forcing. With $g_0=1,g_1=0$, the remaining coefficient equations determine $g_{m+1}$ for $m\ge1$ by division only by $m(m+1)$. Their coefficients are polynomial in $\lambda$. The forcing in \eqref{eq:logforcing} has coefficients bounded by a polynomial in $m$ times $Da^m$ on each compact mark set. Choosing a slightly larger geometric factor absorbs that polynomial and gives the same majorant induction for $G$. Thus $G$ too is jointly analytic on the stated domain. This constructs the pair without dividing by any parameter-dependent coefficient.
+The term $-2\lambda/t$ in $\mathcal L_\lambda G$ cancels $2\lambda/t$ from this forcing. With $g_0=1,g_1=0$, the remaining coefficient equations determine $g_{m+1}$ for $m\ge1$ by division only by $m(m+1)$. Their coefficients are polynomial in $\lambda$. The forcing in \eqref{men:eq:logforcing} has coefficients bounded by a polynomial in $m$ times $Da^m$ on each compact mark set. Choosing a slightly larger geometric factor absorbs that polynomial and gives the same majorant induction for $G$. Thus $G$ too is jointly analytic on the stated domain. This constructs the pair without dividing by any parameter-dependent coefficient.
 
 Abel's identity gives the Wronskian as a constant times $(1-t)^{-1}$. Its limit as $t\to0$ is one, since $F_\lambda\to1$, $H_\lambda'\to1$, and $F_\lambda'H_\lambda\to0$. This proves the final identity and nonsingularity of the pair for every complex $\lambda$.
 \end{proof}
 
-Fix $t_0\in(0,1)$. Values of the selected solution and its derivative at $t_0$ are entire in $\lambda$ by the Volterra construction and ordinary analytic continuation. Solve the two-by-two connection system at $t_0$ using \eqref{eq:fundamental}; its determinant is never zero. Both connection coefficients are entire. Taking $t\to0$ identifies the first with $C(\lambda)$, so
-\begin{equation}\label{eq:connection}
+Fix $t_0\in(0,1)$. Values of the selected solution and its derivative at $t_0$ are entire in $\lambda$ by the Volterra construction and ordinary analytic continuation. Solve the two-by-two connection system at $t_0$ using \eqref{men:eq:fundamental}; its determinant is never zero. Both connection coefficients are entire. Taking $t\to0$ identifies the first with $C(\lambda)$, so
+\begin{equation}\label{men:eq:connection}
  A_\lambda=C(\lambda)\{G_\lambda+2\lambda H_\lambda\log t\}
                    +D(\lambda)H_\lambda
 \end{equation}
 with $D$ entire. In particular, we never divide by $C(\lambda)$.
 
 Define the analytic function
-\begin{equation}\label{eq:Ldef}
+\begin{equation}\label{men:eq:Ldef}
  L_\lambda(t)=\rho\cot(\rho t/2)H_\lambda(t)
             =\sum_{j\ge0}L_j(\lambda)t^j.
 \end{equation}
-Multiplying \eqref{eq:connection} by $E(z)=\cot(\rho t/2)$ gives
-\begin{equation}\label{eq:localsingular}
+Multiplying \eqref{men:eq:connection} by $E(z)=\cot(\rho t/2)$ gives
+\begin{equation}\label{men:eq:localsingular}
  B_\lambda(z)=\frac2\rho C(\lambda)
      \{t^{-1}+\lambda L_\lambda(t)\log t\}+Q_\lambda(t),
 \end{equation}
@@ -281,21 +509,21 @@ where $Q$ is analytic in $t$ near zero and jointly holomorphic in the mark. The 
 At $\lambda=1$, the first coefficients are
 \begin{align}
  H_1(t)&=t+\frac32t^2+\frac32t^3+\left(\frac{11}8-\frac{\rho^2}{72}\right)t^4+O(t^5),\notag\\
- L_0(1)&=2,&L_1(1)&=3,&L_2(1)&=3-\frac{\rho^2}6,\label{eq:Lfirst}\\
+ L_0(1)&=2,&L_1(1)&=3,&L_2(1)&=3-\frac{\rho^2}6,\label{men:eq:Lfirst}\\
  L_3(1)&=\frac{11}4-\frac{5\rho^2}{18},&&
  L_4(1)=\frac{99}{40}-\frac{3\rho^2}{10}-\frac{\rho^4}{360}.\notag
 \end{align}
-Recurrences \eqref{eq:cfunc}, \eqref{eq:hrec} and \eqref{eq:Ldef} specify every subsequent coefficient exactly.
+Recurrences \eqref{men:eq:cfunc}, \eqref{men:eq:hrec} and \eqref{men:eq:Ldef} specify every subsequent coefficient exactly.
 
-\section{All fixed asymptotic orders with absolute uniform errors}\label{sec:transfer}
+\section{All fixed asymptotic orders with absolute uniform errors}\label{men:sec:transfer}
 For a nonnegative integer $j$ let $\fall N{j+1}=N(N-1)\cdots(N-j)$, and put
-\begin{equation}\label{eq:RN}
+\begin{equation}\label{men:eq:RN}
  R_N(\lambda)=\frac{\rho^{N+1}P_{N+2}(\lambda)}{2(N!)^2}.
 \end{equation}
 
-\begin{theorem}\label{thm:transfer}
+\begin{theorem}\label{men:thm:transfer}
 For every fixed integer $M\ge1$ and compact $K\subset\CC$,
-\begin{equation}\label{eq:allorders}
+\begin{equation}\label{men:eq:allorders}
  R_N(\lambda)=C(\lambda)\left\{1+\lambda
  \sum_{j=0}^{M-1}\frac{(-1)^{j+1}j!L_j(\lambda)}{\fall N{j+1}}\right\}
        +O_{K,M}(N^{-M-1})
@@ -303,19 +531,19 @@ For every fixed integer $M\ge1$ and compact $K\subset\CC$,
 uniformly for $\lambda\in K$. The error is absolute and remains valid at zeros of $C$.
 \end{theorem}
 \begin{proof}
-The meromorphic function $E(z)=\tan(\pi/4+z/2)$ has its closest pole at $\rho$ and its next closest pole at $-3\rho$. The apparent singularity of $\sec z+\tan z$ at $-\rho$ is removable. Choose $\rho<R<3\rho$ and a slit disk $|z|<R$ cut from $\rho$ along the positive real axis. The selected analytic solution of \eqref{eq:markedode} continues there. The coefficient singularity at zero is removable for this solution. Local ODE continuation along fixed paths and finite covers of compact transfer contours give bounds uniform on compact mark sets. Together with the convergent local Frobenius construction, this provides a fixed indented, or $\Delta$, domain around the dominant singularity.
+The meromorphic function $E(z)=\tan(\pi/4+z/2)$ has its closest pole at $\rho$ and its next closest pole at $-3\rho$. The apparent singularity of $\sec z+\tan z$ at $-\rho$ is removable. Choose $\rho<R<3\rho$ and a slit disk $|z|<R$ cut from $\rho$ along the positive real axis. The selected analytic solution of \eqref{men:eq:markedode} continues there. The coefficient singularity at zero is removable for this solution. Local ODE continuation along fixed paths and finite covers of compact transfer contours give bounds uniform on compact mark sets. Together with the convergent local Frobenius construction, this provides a fixed indented, or $\Delta$, domain around the dominant singularity.
 
 For $N>j$, the exact coefficient identity is
-\begin{equation}\label{eq:logcoefficient}
+\begin{equation}\label{men:eq:logcoefficient}
  [z^N](1-z/\rho)^j\log(1-z/\rho)
  =\rho^{-N}\frac{(-1)^{j+1}j!}{\fall N{j+1}}.
 \end{equation}
 It follows either by multiplying the series for $\log(1-z/\rho)$ by the finite binomial polynomial, or by differentiating the generalized binomial coefficient with respect to its exponent at the integer $j$. The pole $t^{-1}$ contributes exactly $\rho^{-N}$.
 
-To control the remainder without losing a logarithm, first retain terms of $L_\lambda$ through $j=M$, one more than displayed in \eqref{eq:allorders}. The remaining logarithmic tail is $O_{K,M}(t^{M+1}\log t)$. Standard localized $\Delta$-domain transfer~\cite{fo,fs} gives its coefficient as
+To control the remainder without losing a logarithm, first retain terms of $L_\lambda$ through $j=M$, one more than displayed in \eqref{men:eq:allorders}. The remaining logarithmic tail is $O_{K,M}(t^{M+1}\log t)$. Standard localized $\Delta$-domain transfer~\cite{fo,fs} gives its coefficient as
 $O_{K,M}(\rho^{-N}N^{-M-2}\log N)$, which is smaller than the required $\rho^{-N}N^{-M-1}$. The explicit $j=M$ term itself is $O_{K,M}(\rho^{-N}N^{-M-1})$ and may be absorbed.
 
-For completeness, the locally analytic function $Q_\lambda$ can be expanded to arbitrarily high fixed Taylor order in $t$. Its polynomial part has zero $N$th coefficient for large $N$; its local high-order remainder, handled on the same contour, is smaller than the requested error. The contour away from $\rho$ lies outside $|z|=\rho$ and contributes exponentially smaller terms. This is a localized argument: it does not say that $Q_\lambda$ is globally entire or that a finite subtraction makes the full remainder exponentially small. Compact parameter bounds at each step prove the asserted uniformity. Multiplying by the normalization in \eqref{eq:RN} completes the proof.
+For completeness, the locally analytic function $Q_\lambda$ can be expanded to arbitrarily high fixed Taylor order in $t$. Its polynomial part has zero $N$th coefficient for large $N$; its local high-order remainder, handled on the same contour, is smaller than the requested error. The contour away from $\rho$ lies outside $|z|=\rho$ and contributes exponentially smaller terms. This is a localized argument: it does not say that $Q_\lambda$ is globally entire or that a finite subtraction makes the full remainder exponentially small. Compact parameter bounds at each step prove the asserted uniformity. Multiplying by the normalization in \eqref{men:eq:RN} completes the proof.
 \end{proof}
 
 Re-expanding each falling factorial in powers of $N^{-1}$ gives, for every fixed order, polynomials $s_j(\lambda)\in\mathbb Q[\rho^2,\lambda]$ with $s_0=1$ and
@@ -327,28 +555,28 @@ The first four are
 \begin{align}
  s_1(\lambda)&=-2\lambda,\notag\\
  s_2(\lambda)&=\lambda(2\lambda+1),\notag\\
- s_3(\lambda)&=\frac\lambda3\{\rho^2-(2\lambda+1)^2\},\label{eq:sfirst}\\
+ s_3(\lambda)&=\frac\lambda3\{\rho^2-(2\lambda+1)^2\},\label{men:eq:sfirst}\\
  s_4(\lambda)&=\frac\lambda6
  (4\lambda^3+4\lambda^2+\lambda-7\lambda\rho^2+3\rho^2).\notag
 \end{align}
 In this notation the bracket is multiplied by $C$ and followed by an absolute error; it is not a relative-error statement at a zero of $C$. At $\lambda=0$, $A_0=1$ and $B_0=E$ exactly, and all algebraic correction polynomials vanish.
 
-\begin{corollary}\label{cor:scalar}
+\begin{corollary}\label{men:cor:scalar}
 For any fixed $M\ge1$,
-\begin{equation}\label{eq:scalarall}
+\begin{equation}\label{men:eq:scalarall}
  d_{N+2}=2C(1)\rho^{-N-1}(N!)^2
  \left\{1+\sum_{j=0}^{M-1}\frac{(-1)^{j+1}j!L_j(1)}{\fall N{j+1}}
                 +O_M(N^{-M-1})\right\}.
 \end{equation}
 The first six ordinary inverse-power corrections are
-\begin{align}\label{eq:scalar6}
+\begin{align}\label{men:eq:scalar6}
  1-\frac2N+\frac3{N^2}
  &+\frac{-3+\rho^2/3}{N^3}
  +\frac{3/2-2\rho^2/3}{N^4}\notag\\
  &+\frac{3/5-7\rho^2/15+\rho^4/15}{N^5}
  +\frac{-6/5+13\rho^2/30+19\rho^4/45}{N^6}+O(N^{-7}).
 \end{align}
-In particular \eqref{eq:oeis} holds with $c=\pi C(1)$.
+In particular \eqref{men:eq:oeis} holds with $c=\pi C(1)$.
 \end{corollary}
 \begin{proof}
 Set $\lambda=1$ and use $C(1)>0$ to convert the absolute error to a relative error. The displayed coefficients follow by formal re-expansion of the finite rational sum. Finally Stirling's formula gives
@@ -356,29 +584,29 @@ Set $\lambda=1$ and use $C(1)>0$ to convert the absolute error to a relative err
  2C(1)\rho^{1-n}\Gamma(n-1)^2
  \sim 4\pi C(1)\rho^{1-n}n^{2n-3}e^{-2n},
 \]
-which is \eqref{eq:oeis} with \eqref{eq:amplitude}.
+which is \eqref{men:eq:oeis} with \eqref{men:eq:amplitude}.
 \end{proof}
 
-There are no $\log N$ factors in this single dominant algebraic expansion. The local solution has just one logarithm, and its integer-power logarithmic coefficients are the exact rational expressions \eqref{eq:logcoefficient}. This does not address all farther singularities or a full exponential transseries.
+There are no $\log N$ factors in this single dominant algebraic expansion. The local solution has just one logarithm, and its integer-power logarithmic coefficients are the exact rational expressions \eqref{men:eq:logcoefficient}. This does not address all farther singularities or a full exponential transseries.
 
-\section{An exact Wronskian formula and a certified amplitude}\label{sec:certificate}
+\section{An exact Wronskian formula and a certified amplitude}\label{men:sec:certificate}
 Write $A=A_1$, $H=H_1$. Both the endpoint definition and the following geometrically convergent formula specify the same constant.
 
-\begin{proposition}\label{prop:wronskian}
+\begin{proposition}\label{men:prop:wronskian}
 For $0<z<\rho$, with $t=1-z/\rho$,
-\begin{equation}\label{eq:wronskian}
+\begin{equation}\label{men:eq:wronskian}
  C(1)=z\left\{\frac{A(z)H'(t)}\rho+A'(z)H(t)\right\}.
 \end{equation}
 In particular
-\begin{equation}\label{eq:midpoint}
+\begin{equation}\label{men:eq:midpoint}
  C(1)=\frac{A(\rho/2)H'(1/2)+\rho A'(\rho/2)H(1/2)}2.
 \end{equation}
 \end{proposition}
 \begin{proof}
-The $z$-equation is $A''+A'/z-EA/z=0$. Abel's identity says that $z$ times the Wronskian of two solutions is constant. For the solutions $A(z)$ and $H(1-z/\rho)$, the limit at $z\uparrow\rho$ is $-C(1)$: the first derivative of the latter tends to $-1/\rho$, while its value tends to zero and $A'$ grows only logarithmically. This gives \eqref{eq:wronskian}, with its sign as displayed, and then \eqref{eq:midpoint}.
+The $z$-equation is $A''+A'/z-EA/z=0$. Abel's identity says that $z$ times the Wronskian of two solutions is constant. For the solutions $A(z)$ and $H(1-z/\rho)$, the limit at $z\uparrow\rho$ is $-C(1)$: the first derivative of the latter tends to $-1/\rho$, while its value tends to zero and $A'$ grows only logarithmically. This gives \eqref{men:eq:wronskian}, with its sign as displayed, and then \eqref{men:eq:midpoint}.
 \end{proof}
 
-We give explicit tails so that the decimal enclosure is a finite certificate rather than just a high-precision observation. From \eqref{eq:taylor} and positivity,
+We give explicit tails so that the decimal enclosure is a finite certificate rather than just a high-precision observation. From \eqref{men:eq:taylor} and positivity,
 \[
  q_n=p_n\rho^n\ge0,\qquad \sum_{n\ge0}q_n=C(1)<200.
 \]
@@ -387,21 +615,21 @@ Thus, truncating through degree $m\ge1$ at $z=\rho/2$,
  \epsilon_A&=200\,2^{-m-1},&
  |A-A_m|&\le\epsilon_A,\notag\\
  \epsilon_D&=200(m+1)2^{-m},&
- |\rho A'-\rho A_m'|&\le\epsilon_D.\label{eq:Atails}
+ |\rho A'-\rho A_m'|&\le\epsilon_D.\label{men:eq:Atails}
 \end{align}
 The derivative bound uses the decrease of $n2^{1-n}$ for $n\ge2$. The full values satisfy $|A|\le200$ and $|\rho A'|\le200$ because $n2^{1-n}\le1$ for $n\ge1$.
 
 A convenient majorant for $H$ is
-\begin{equation}\label{eq:hmajorant}
+\begin{equation}\label{men:eq:hmajorant}
  |h_n(1)|\le\frac23\left(\frac32\right)^n\qquad(n\ge1).
 \end{equation}
-Indeed, with $a=3/2$ and \eqref{eq:cfunc},
+Indeed, with $a=3/2$ and \eqref{men:eq:cfunc},
 \[
  \sum_{j\ge1}|\gamma_{2j}|a^{-2j}
  =4\sum_{j\ge1}\frac{\zeta(2j)}{36^j}
  <8\sum_{j\ge1}36^{-j}=\frac8{35}.
 \]
-The $m=1$ step of \eqref{eq:hrec} is equality in \eqref{eq:hmajorant}. For $m\ge2$ the induction follows from
+The $m=1$ step of \eqref{men:eq:hrec} is equality in \eqref{men:eq:hmajorant}. For $m\ge2$ the induction follows from
 \[
  m^2+2+\frac8{35}\le\frac32m(m+1).
 \]
@@ -410,17 +638,17 @@ This proves $|H(1/2)|\le2$, $|H'(1/2)|\le16$, and the geometric tails
  \epsilon_H&=\frac83\left(\frac34\right)^{m+1},&
  |H-H_m|&\le\epsilon_H,\notag\\
  \epsilon_T&=\frac{16}3(m+4)\left(\frac34\right)^{m+1},&
- |H'-H_m'|&\le\epsilon_T.\label{eq:Htails}
+ |H'-H_m'|&\le\epsilon_T.\label{men:eq:Htails}
 \end{align}
-Consequently the midpoint product error in \eqref{eq:midpoint} is at most
-\begin{equation}\label{eq:delta}
+Consequently the midpoint product error in \eqref{men:eq:midpoint} is at most
+\begin{equation}\label{men:eq:delta}
  \delta_m=\frac12\bigl(16\epsilon_A+200\epsilon_T+\epsilon_A\epsilon_T
  +2\epsilon_D+200\epsilon_H+\epsilon_D\epsilon_H\bigr).
 \end{equation}
 For example, one may write each partial sum as its full value plus its tail and bound the resulting cross terms. The estimate is deliberately conservative.
 
 The implementation takes $m=420$. Exact rational arithmetic verifies $\delta_{420}<10^{-44}$; the value is approximately $5.7\cdot10^{-48}$. The finite recurrences and products use outward interval arithmetic at 90 decimal places, with interval-valued $\pi$ and enclosed rational inputs. Adding $[-\delta_{420},\delta_{420}]$ before multiplying by the interval for $\pi$ gives the following shortened outward endpoints:
-\begin{equation}\label{eq:certified}
+\begin{equation}\label{men:eq:certified}
  \begin{gathered}
  25.5745196289574675215372323127353368945234275278994<c,\\
  c<25.5745196289574675215372323127353368945234275279353.
@@ -432,15 +660,25 @@ For orientation, ordinary multiprecision evaluation gives
 \[
  C(1)=8.1406224322985719224911291170229833094279980423378659572\ldots.
 \]
-The companion diagnostics evaluate the Wronskian at $z/\rho=0.4,0.5,0.6$ and compare long strings. Agreement is useful for detecting mistakes, but those strings are not additional interval-certified digits. Likewise, the amplitude enclosure does not provide effective finite-$N$ constants for \eqref{eq:allorders}.
+The companion diagnostics evaluate the Wronskian at $z/\rho=0.4,0.5,0.6$ and compare long strings. Agreement is useful for detecting mistakes, but those strings are not additional interval-certified digits. Likewise, the amplitude enclosure does not provide effective finite-$N$ constants for \eqref{men:eq:allorders}.
 
-\section{Logarithmic carriers and discrete inversion}\label{sec:inverse}
+\begin{writenote}[Added 7 October 2026]
+With its own code (exact rational Taylor coefficients from~\eqref{men:eq:taylor},
+the recurrence~\eqref{men:eq:hrec} with $\gamma_{2j}=-4\zeta(2j)/16^j$, $m=420$,
+70 digits; floating, not interval) the write evaluated~\eqref{men:eq:midpoint}:
+$C(1)=8.14062243229857192249112911702298330942799804233786595723\ldots$ and
+$\pi C(1)=25.57451962895746752153723231273533689452342752791735\ldots$. The
+latter lies inside~\eqref{men:eq:certified}; the source's printed $C(1)$ and the
+OEIS decimal of $c$ are truncations of these values.
+\end{writenote}
+
+\section{Logarithmic carriers and discrete inversion}\label{men:sec:inverse}
 Set
-\begin{equation}\label{eq:inverseconstants}
+\begin{equation}\label{men:eq:inverseconstants}
  d=\frac1{e\sqrt\rho},\qquad C_* =\log(2\pi c).
 \end{equation}
 Taking the logarithm of the scalar expansion and applying Stirling with $N=n-2$ yields
-\begin{equation}\label{eq:logexpansion}
+\begin{equation}\label{men:eq:logexpansion}
  \begin{split}
  \log d_n={}&2n\log(dn)-3\log n+C_*+\frac1{6n}-\frac2{n^2}\\
  &+\frac{\rho^2/3-541/180}{n^3}+O(n^{-4}).
@@ -452,47 +690,102 @@ $\Gamma(n-1)=\Gamma(n+1)/(n(n-1))$ and
  2\log\Gamma(n+1)=(2n+1)\log n-2n+\log(2\pi)
                   +\frac1{6n}-\frac1{180n^3}+O(n^{-5}),
 \]
-then expand the finite correction bracket in powers of $1/(n-2)$. In particular the $1/n$ and $1/n^2$ terms in \eqref{eq:logexpansion} are not those of \eqref{eq:scalar6}.
+then expand the finite correction bracket in powers of $1/(n-2)$. In particular the $1/n$ and $1/n^2$ terms in \eqref{men:eq:logexpansion} are not those of \eqref{men:eq:scalar6}.
 
 For $L=\log X$ and sufficiently large $X$, define
-\begin{equation}\label{eq:lambert}
+\begin{equation}\label{men:eq:lambert}
  x_0=\frac{L}{2W_0(dL/2)},\qquad
  x_1=x_0+\frac{3\log x_0-C_*}{2\log(x_0/\sqrt\rho)},
 \end{equation}
 where $W_0$ is the positive real branch of Lambert $W$. The leading function $f(x)=2x\log(dx)$ has $f(x_0)=L$ and
-$f'(x)=2\log(x/\sqrt\rho)$. The correction in \eqref{eq:lambert} cancels the residual $-3\log x_0+C_*$. It tends to $3/2$ and is bounded. Taylor's theorem gives a remaining residual $O(1/x_0)$ in any sufficiently accurate logarithmic carrier from \eqref{eq:logexpansion}. Its derivative is asymptotic to $2\log x$, so the corresponding smooth inverse is
-\begin{equation}\label{eq:x1error}
+$f'(x)=2\log(x/\sqrt\rho)$. The correction in \eqref{men:eq:lambert} cancels the residual $-3\log x_0+C_*$. It tends to $3/2$ and is bounded. Taylor's theorem gives a remaining residual $O(1/x_0)$ in any sufficiently accurate logarithmic carrier from \eqref{men:eq:logexpansion}. Its derivative is asymptotic to $2\log x$, so the corresponding smooth inverse is
+\begin{equation}\label{men:eq:x1error}
  x=x_1+O\left(\frac1{x_0\log x_0}\right).
 \end{equation}
 This describes an inverse of a chosen asymptotic carrier, not a canonical interpolation of the integer sequence.
 
 For an unambiguous integer statement fix $M\ge1$ and define the real carrier
-\begin{equation}\label{eq:carrier}
+\begin{equation}\label{men:eq:carrier}
  F_M(x)=2C(1)\rho^{1-x}\Gamma(x-1)^2
  \left\{1+\sum_{j=0}^{M-1}
   \frac{(-1)^{j+1}j!L_j(1)}{\fall{(x-2)}{j+1}}\right\}.
 \end{equation}
 It is positive for all sufficiently large real $x$, and its logarithmic derivative is asymptotic to $2\log x$. Let $\xi_M(X)$ denote its unique eventual inverse.
 
-\begin{theorem}\label{thm:inverse}
+\begin{theorem}\label{men:thm:inverse}
 There are constants $K_M>0$ and $X_M$ such that, for $X\ge X_M$, writing $\xi=\xi_M(X)$,
-\begin{equation}\label{eq:inversebracket}
+\begin{equation}\label{men:eq:inversebracket}
  \left\lceil\xi-\frac{K_M\xi^{-M-1}}{\log\xi}\right\rceil
  \le \min\{n\ge3:d_n\ge X\}
  \le\left\lceil\xi+\frac{K_M\xi^{-M-1}}{\log\xi}\right\rceil.
 \end{equation}
 \end{theorem}
 \begin{proof}
-Equation \eqref{eq:scalarall} implies
+Equation \eqref{men:eq:scalarall} implies
 $\log d_n=\log F_M(n)+O_M(n^{-M-1})$. The exact sequence is strictly increasing from $n=2$ onward: for $n\ge3$, the initial boundary term and the $k=2$ increment give
 $d_n\ge d_{n-1}+(n-2)T(n-1,n-2)=(n-1)d_{n-1}>d_{n-1}$.
 
-For $x$ near $\xi$, a lower bound $c_0\log\xi$ for $(\log F_M)'(x)$ converts a displacement of $K_M\xi^{-M-1}/\log\xi$ into a logarithmic change exceeding the remainder bound when $K_M$ is sufficiently large. Thus every integer below the left real endpoint has $d_n<X$, while every integer at or above the right endpoint has $d_n\ge X$. The estimates hold first on a fixed proportional neighborhood of $\xi$; outside that neighborhood monotonicity and the same boundary comparisons suffice. Taking ceilings yields \eqref{eq:inversebracket}. Enlarge the eventual constants to cover the finite onset of the comparison.
+For $x$ near $\xi$, a lower bound $c_0\log\xi$ for $(\log F_M)'(x)$ converts a displacement of $K_M\xi^{-M-1}/\log\xi$ into a logarithmic change exceeding the remainder bound when $K_M$ is sufficiently large. Thus every integer below the left real endpoint has $d_n<X$, while every integer at or above the right endpoint has $d_n\ge X$. The estimates hold first on a fixed proportional neighborhood of $\xi$; outside that neighborhood monotonicity and the same boundary comparisons suffice. Taking ceilings yields \eqref{men:eq:inversebracket}. Enlarge the eventual constants to cover the finite onset of the comparison.
 \end{proof}
 
-The envelope tends to zero and eventually the two integer bounds differ by at most one. If the inverse is farther from an integer than the envelope, both bounds coincide. Close to an integer boundary an exact sequence evaluation is still necessary. Neither $K_M$ nor $X_M$ has been computed here as an effective finite-input certificate. Taking $\lceil x_1\rceil$, or even $\lceil\xi_M\rceil$, is not asserted to work for every large threshold. Higher fixed-order refinements can be obtained from \eqref{eq:carrier} by Newton iteration with controlled Taylor remainders.
+The envelope tends to zero and eventually the two integer bounds differ by at most one. If the inverse is farther from an integer than the envelope, both bounds coincide. Close to an integer boundary an exact sequence evaluation is still necessary. Neither $K_M$ nor $X_M$ has been computed here as an effective finite-input certificate. Taking $\lceil x_1\rceil$, or even $\lceil\xi_M\rceil$, is not asserted to work for every large threshold. Higher fixed-order refinements can be obtained from \eqref{men:eq:carrier} by Newton iteration with controlled Taylor remainders.
 
-\section{A Green operator despite the infinite measure}\label{sec:fredholm}
+\begin{remark}[{[write]} The inverses against the transseries volume, 7~October 2026]\label{men:rem:transseries}
+The volume is
+\path{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex};
+its symbols carry the subscript ``vol''. Statement by statement:
+\begin{enumerate}[label=(\alph*)]
+\item \emph{Instance.} $N(X)=\min\{n\ge3:d_n\ge X\}$ is the integer
+ staircase of \file{p0:def:three-inverses}(1) with $A_n=d_n$ and
+ $n_{1,\mathrm{vol}}=3$ ($d_n$ is strictly increasing from $n=2$, as the
+ proof of Theorem~\ref{men:thm:inverse} shows), so
+ \file{p0:thm:staircase}(1) gives $N(X)=\lceil\nu_{\mathcal A}(X)\rceil$ for
+ every admissible interpolation $\mathcal A_{\mathrm{vol}}$ of $(d_n)$.
+\item \emph{Analogue.} Theorem~\ref{men:thm:inverse}, as stated and proved, is
+ a direct two-ceiling bracket at the integers about the root $\xi_M$ of the
+ carrier~\eqref{men:eq:carrier}, which does not interpolate the sequence: an
+ analogue of \file{p0:thm:staircase}(2), not an instance. It can be routed
+ through \file{p0:thm:staircase}(1) as follows; this is the same comparison
+ rearranged, not an independent proof. Let $E_n=\log d_n-\log F_M(n)$, so
+ $|E_n|\le C_Mn^{-M-1}$ by~\eqref{men:eq:scalarall}, let $\widetilde E$ be its
+ piecewise-linear interpolation on $[n_2,\infty)$ and
+ $\mathcal A_{\mathrm{vol}}=F_Me^{\widetilde E}$. On each $[n,n+1]$,
+ $|\widetilde E'|\le|E_n|+|E_{n+1}|\le2C_Mn^{-M-1}$ while
+ $(\log F_M)'\ge c_0\log x$, so for $n_2$ large $\mathcal A_{\mathrm{vol}}$ is
+ continuous, strictly increasing and equal to $d_n$ at the integers
+ $n\ge n_2$: it is admissible (with $n_{1,\mathrm{vol}}=n_2$). Its inverse
+ $\nu$ satisfies $\log F_M(\nu)=\log F_M(\xi)-\widetilde E(\nu)$ with
+ $|\widetilde E(\nu)|\le C_M\lfloor\nu\rfloor^{-M-1}$; hence $\nu/\xi\to1$,
+ and the mean value theorem gives $|\nu-\xi|\le K_M\xi^{-M-1}/\log\xi$ for
+ a suitable $K_M$ and large $X$. For $X>d_{n_2}$ the staircase from $n_2$
+ equals $N(X)$, so \file{p0:thm:staircase}(1) and the monotonicity of the
+ ceiling give~\eqref{men:eq:inversebracket}.
+\item \emph{Instance.} The Lambert start $x_0$ of~\eqref{men:eq:lambert}
+ solves $2x\log(dx)=L$, which is \file{p0:prop:factorial-core} with
+ $\kappa_{\mathrm{vol}}=2$ and $d_{\mathrm{vol}}=2\log d=-(2+\log\rho)$: its
+ solution $X_{\mathrm{vol}}=\exp(v-d_{\mathrm{vol}}/2)=e^v/d$ with
+ $v=W_0(dL/2)$ equals $L/(2v)$ because $ve^v=dL/2$. The correction $x_1$ is
+ one Newton step, not a statement of the volume.
+\item \emph{Instance, and analogue.} In Corollary~\ref{men:cor:tailinverse},
+ $n(y)$ is the staircase of the strictly increasing sequence
+ $A_m=-\log q_m$ ($A_0=0$; every mass is positive) at the level
+ $T=\log(1/y)$, with $n_{1,\mathrm{vol}}=0$: an instance of
+ \file{p0:def:three-inverses}(1), so \file{p0:thm:staircase}(1) applies. The
+ bracket~\eqref{men:eq:tailinverse} is again an analogue of
+ \file{p0:thm:staircase}(2); the argument of~(b) applies with
+ $|A_m-H(m)|=O(m^{-1/2})$ in place of $C_Mn^{-M-1}$. Its start $x_0$
+ of~\eqref{men:eq:tailLambert} is \file{p0:prop:factorial-core} with
+ $\kappa_{\mathrm{vol}}=2$, $d_{\mathrm{vol}}=2\log(2/(e\mathcal A))$
+ ($v=W_0(T/(e\mathcal A))$, $X_{\mathrm{vol}}=T/(2v)$).
+\end{enumerate}
+No novelty is claimed for any of these inversions. The staircase arithmetic
+is formalized generically (for an arbitrary strictly monotone function) as
+\file{Fabius.staircase_ceil} in
+\path{Analysis/FabiusFunction/Lean/FabiusFunction/StaircaseInversion.lean};
+nothing about $d_n$ is formalized.
+\end{remark}
+
+\section{A Green operator despite the infinite measure}\label{men:sec:fredholm}
 The endpoint connection has a useful spectral interpretation. Put
 \[
  \mu(ds)=E(s)\,ds\quad(0<s<\rho),\qquad
@@ -500,15 +793,15 @@ The endpoint connection has a useful spectral interpretation. Put
  \GG=L^2((0,\rho),dx/x).
 \]
 The measure $\mu$ has infinite total mass near $\rho$, but is $\sigma$-finite. Define
-\begin{equation}\label{eq:S}
+\begin{equation}\label{men:eq:S}
  (Sf)(x)=\int_0^x f(s)\,\mu(ds),\qquad
  k(s,t)=\log\frac\rho{\max(s,t)}.
 \end{equation}
 For each $x<\rho$, the integral defining $Sf$ exists by Cauchy--Schwarz, since $\mu((0,x))<\infty$.
 
-\begin{theorem}\label{thm:fredholm}
+\begin{theorem}\label{men:thm:fredholm}
 The operator $S:\HH\to\GG$ is Hilbert--Schmidt, with $\|S\|_{\mathrm{HS}}^2=K_0$. The operator $K=S^*S$ is positive, injective and trace class, with kernel $k$ and an infinite sequence of positive eigenvalues $\kappa_j$ satisfying $\sum_j\kappa_j=K_0$. Moreover
-\begin{equation}\label{eq:determinant}
+\begin{equation}\label{men:eq:determinant}
  C(\lambda)=\det(I+\lambda K)=\prod_{j\ge1}(1+\lambda\kappa_j)
 \end{equation}
 locally uniformly for every complex $\lambda$.
@@ -528,11 +821,11 @@ It follows that $K=S^*S$ is positive trace class. The kernel product gives
 If $Sf=0$ almost everywhere, its locally absolutely continuous representative is identically zero on $(0,\rho)$. Its derivative is $E(s)f(s)$ almost everywhere, so $f=0$. Thus $S$ and $K$ are injective. The space $\HH$ is infinite dimensional, and a finite-rank compact operator cannot be injective there. The spectral theorem therefore gives infinitely many strictly positive eigenvalues with the stated sum.
 
 For ordered points $0<s_1<\cdots<s_j<\rho$, the determinant of the kernel matrix is
-\begin{equation}\label{eq:minor}
+\begin{equation}\label{men:eq:minor}
  \det[k(s_i,s_\ell)]_{i,\ell=1}^j
  =\log\frac\rho{s_j}\prod_{i=1}^{j-1}\log\frac{s_{i+1}}{s_i}.
 \end{equation}
-To see this, write $u_i=\log(\rho/s_i)$ and reverse both row and column order. The kernel matrix becomes $[\min(u_i,u_\ell)]$ with increasing $u_i$. It factors as a unit lower-triangular matrix, the diagonal matrix of successive increments, and the transpose of the first matrix. Multiplying the increments proves \eqref{eq:minor}. By symmetry, its $1/j!$ integral over the full product space is the ordered integral. That integral is precisely $(V^j1)(\rho)$.
+To see this, write $u_i=\log(\rho/s_i)$ and reverse both row and column order. The kernel matrix becomes $[\min(u_i,u_\ell)]$ with increasing $u_i$. It factors as a unit lower-triangular matrix, the diagonal matrix of successive increments, and the transpose of the first matrix. Multiplying the increments proves \eqref{men:eq:minor}. By symmetry, its $1/j!$ integral over the full product space is the ordered integral. That integral is precisely $(V^j1)(\rho)$.
 
 We justify the Fredholm expansion rather than assuming finite total measure. Let $P_\epsilon$ be multiplication by $\one_{[\epsilon,\rho-\epsilon]}$. On that compact interval the continuous kernel has the ordinary Fredholm series. Dominated convergence in the Hilbert--Schmidt norm gives $\|S-SP_\epsilon\|_{\mathrm{HS}}\to0$. The decomposition
 \[
@@ -541,28 +834,28 @@ We justify the Fredholm expansion rather than assuming finite total measure. Let
 \]
 and the Hilbert--Schmidt product inequality imply trace-norm convergence. Hence the Fredholm determinants converge locally uniformly in $\lambda$.
 
-The ordered coefficients converge as well by dominated convergence. They are bounded by $K_0^j/j!$, exactly as in Theorem~\ref{thm:endpoint}, which permits locally uniform passage through the series in $\lambda$. Thus the limit of the Fredholm series equals the endpoint Volterra series. This proves the first equality in \eqref{eq:determinant}. The standard spectral product for a trace-class operator gives the second; alternatively it follows from finite spectral truncations and the same trace-norm continuity.
+The ordered coefficients converge as well by dominated convergence. They are bounded by $K_0^j/j!$, exactly as in Theorem~\ref{men:thm:endpoint}, which permits locally uniform passage through the series in $\lambda$. Thus the limit of the Fredholm series equals the endpoint Volterra series. This proves the first equality in \eqref{men:eq:determinant}. The standard spectral product for a trace-class operator gives the second; alternatively it follows from finite spectral truncations and the same trace-norm continuity.
 \end{proof}
 
 This is a Green-kernel determinant and a classical min-covariance factorization applied to the particular weight $E(s)$. The infinite total mass of $\mu$ is harmless because the relevant two-variable kernel has the required Hilbert--Schmidt factorization. If point-process language is used, $K$ is an $L$-ensemble or Green operator; the correlation operator is $K(I+K)^{-1}$, with eigenvalues in $(0,1)$. These two operators must not be identified.
 
-\section{The limiting law and every fixed probability correction}\label{sec:probability}
+\section{The limiting law and every fixed probability correction}\label{men:sec:probability}
 Let
-\begin{equation}\label{eq:limitingpgf}
+\begin{equation}\label{men:eq:limitingpgf}
  G(\lambda)=\frac{C(\lambda)}{C(1)},\qquad
  p_j=\frac{\kappa_j}{1+\kappa_j},\qquad
  \mu_J=\sum_jp_j,\qquad v_J=\sum_jp_j(1-p_j).
 \end{equation}
 
-\begin{theorem}\label{thm:law}
+\begin{theorem}\label{men:thm:law}
 The limiting probability generating function is
-\begin{equation}\label{eq:bernoulli}
+\begin{equation}\label{men:eq:bernoulli}
  G(\lambda)=\prod_{j\ge1}(1-p_j+p_j\lambda).
 \end{equation}
 It is the law of $J=\sum_{j\ge1}Y_j$, where the $Y_j$ are independent Bernoulli variables with success probabilities $p_j$. This sum is almost surely finite, has every fixed exponential moment, and assigns positive probability to every nonnegative integer. Its mean and variance are $\mu_J$ and $v_J$, with $0<v_J<\mu_J<\infty$, and $\PP(J=0)=1/C(1)$.
 \end{theorem}
 \begin{proof}
-Equation \eqref{eq:bernoulli} is \eqref{eq:determinant} divided by the positive scalar $C(1)$. Since $\sum_jp_j\le\sum_j\kappa_j=K_0<\infty$, the independent sum is finite almost surely, for example by the first Borel--Cantelli lemma. Its finite partial-sum PGFs converge to the displayed product, locally uniformly. For every real $a>0$,
+Equation \eqref{men:eq:bernoulli} is \eqref{men:eq:determinant} divided by the positive scalar $C(1)$. Since $\sum_jp_j\le\sum_j\kappa_j=K_0<\infty$, the independent sum is finite almost surely, for example by the first Borel--Cantelli lemma. Its finite partial-sum PGFs converge to the displayed product, locally uniformly. For every real $a>0$,
 \[
  \E e^{aJ}=\prod_j\{1+p_j(e^a-1)\}
        \le\exp\{(e^a-1)\textstyle\sum_jp_j\}<\infty.
@@ -573,7 +866,7 @@ Termwise expectations and variances are therefore justified. Every $p_j$ lies st
 This spectral Bernoulli product is a standard principle; compare the point-count theorem in HKPV~\cite[Theorem 7]{hkpv}. Here it follows directly from the determinant and does not imply that the finite polynomials $P_n$ themselves factor into Bernoulli factors.
 
 For fixed-order corrections define $Q_0(\lambda)=1$ by formal division
-\begin{equation}\label{eq:Qrec}
+\begin{equation}\label{men:eq:Qrec}
  \sum_{j\ge0}Q_j(\lambda)u^j
   =\frac{\sum_{j\ge0}s_j(\lambda)u^j}{\sum_{j\ge0}s_j(1)u^j},
  \qquad
@@ -582,30 +875,30 @@ For fixed-order corrections define $Q_0(\lambda)=1$ by formal division
 These are formal series, used only to any fixed finite degree. The first terms are
 \begin{align}
  Q_1(\lambda)&=2(1-\lambda),\notag\\
- Q_2(\lambda)&=(\lambda-1)(2\lambda-1),\label{eq:Qfirst}\\
+ Q_2(\lambda)&=(\lambda-1)(2\lambda-1),\label{men:eq:Qfirst}\\
  Q_3(\lambda)&=\frac{\lambda-1}{3}
                    (-4\lambda^2+4\lambda+\rho^2+3).\notag
 \end{align}
 In particular $Q_j(1)=0$ for $j>0$.
 
-\begin{theorem}\label{thm:weighted}
+\begin{theorem}\label{men:thm:weighted}
 For every fixed $M\ge0$ and compact $K\subset\CC$,
-\begin{equation}\label{eq:pgfexpansion}
+\begin{equation}\label{men:eq:pgfexpansion}
  G_N(\lambda)=G(\lambda)\sum_{j=0}^M\frac{Q_j(\lambda)}{N^j}
                          +O_{K,M}(N^{-M-1})
 \end{equation}
 uniformly on $K$. Define signed coefficients
 $\nu_j(k)=[\lambda^k]G(\lambda)Q_j(\lambda)$. For every $w>0$,
-\begin{equation}\label{eq:l1}
+\begin{equation}\label{men:eq:l1}
  \sum_{k\ge0}w^k\left|\PP(J_N=k)-\sum_{j=0}^M\frac{\nu_j(k)}{N^j}\right|
                   =O_{w,M}(N^{-M-1}).
 \end{equation}
 Consequently $J_N\to J$ in total variation and with every fixed exponential moment, and all fixed moments have corresponding expansions.
 \end{theorem}
 \begin{proof}
-The exact ratio is $G_N=R_N(\lambda)/R_N(1)$. The denominator tends to $C(1)>0$. Divide its scalar finite expansion into the absolute compact-uniform numerator expansion of Theorem~\ref{thm:transfer}. This proves \eqref{eq:pgfexpansion}, even at zeros of $C(\lambda)$, because the only division by an endpoint function is at $\lambda=1$.
+The exact ratio is $G_N=R_N(\lambda)/R_N(1)$. The denominator tends to $C(1)>0$. Divide its scalar finite expansion into the absolute compact-uniform numerator expansion of Theorem~\ref{men:thm:transfer}. This proves \eqref{men:eq:pgfexpansion}, even at zeros of $C(\lambda)$, because the only division by an endpoint function is at $\lambda=1$.
 
-For \eqref{eq:l1}, choose $R>w$ and apply Cauchy's estimate to the entire difference in \eqref{eq:pgfexpansion} on $|\lambda|=R$. Its $k$th coefficient is bounded in absolute value by $C_{R,M}N^{-M-1}R^{-k}$. Summing the geometric series gives the explicit bound
+For \eqref{men:eq:l1}, choose $R>w$ and apply Cauchy's estimate to the entire difference in \eqref{men:eq:pgfexpansion} on $|\lambda|=R$. Its $k$th coefficient is bounded in absolute value by $C_{R,M}N^{-M-1}R^{-k}$. Summing the geometric series gives the explicit bound
 \[
  \frac{C_{R,M}}{1-w/R}\,N^{-M-1}.
 \]
@@ -619,8 +912,8 @@ For practical use, the first signed corrections may be written without coefficie
 \]
 They have total mass zero, as do all higher corrections.
 
-The logarithm of the correction factor in \eqref{eq:pgfexpansion}, expanded near $\lambda=1$, is
-\begin{equation}\label{eq:logpgfcorrection}
+The logarithm of the correction factor in \eqref{men:eq:pgfexpansion}, expanded near $\lambda=1$, is
+\begin{equation}\label{men:eq:logpgfcorrection}
  \frac{2(1-\lambda)}N+\frac{\lambda-1}{N^2}
  +\frac{2\lambda^2+\lambda\rho^2-\lambda-\rho^2-1}{3N^3}
  +O(N^{-4}).
@@ -628,22 +921,22 @@ The logarithm of the correction factor in \eqref{eq:pgfexpansion}, expanded near
 Using $\lambda\,d/d\lambda$ for ordinary cumulants gives
 \begin{align}
  \E J_N&=\mu_J-\frac2N+\frac1{N^2}
-               +\frac{\rho^2+3}{3N^3}+O(N^{-4}),\label{eq:mean}\\
+               +\frac{\rho^2+3}{3N^3}+O(N^{-4}),\label{men:eq:mean}\\
  \Var J_N&=v_J-\frac2N+\frac1{N^2}
-               +\frac{\rho^2+7}{3N^3}+O(N^{-4}).\label{eq:variance}
+               +\frac{\rho^2+7}{3N^3}+O(N^{-4}).\label{men:eq:variance}
 \end{align}
-The constants $\mu_J$ and $v_J$ have the exact convergent spectral definitions \eqref{eq:limitingpgf}; no unverified numerical eigenvalue computation is needed.
+The constants $\mu_J$ and $v_J$ have the exact convergent spectral definitions \eqref{men:eq:limitingpgf}; no unverified numerical eigenvalue computation is needed.
 
-\section{Growth for a large positive boundary mark}\label{sec:largemark}
+\section{Growth for a large positive boundary mark}\label{men:sec:largemark}
 The preceding coefficient asymptotics keep the mark in a fixed compact set. We now study the endpoint function itself in a different limit, using the exact differential equation. Define the finite optical length
-\begin{equation}\label{eq:optical}
+\begin{equation}\label{men:eq:optical}
  \mathcal A=\int_0^\rho\sqrt{\frac{E(z)}z}\,dz.
 \end{equation}
 Both endpoint singularities are integrable. Numerically $\mathcal A\approx4.2586174557$, an ordinary quadrature value rather than an interval certificate.
 
-\begin{theorem}\label{thm:largemark}
+\begin{theorem}\label{men:thm:largemark}
 As the real parameter $\lambda\to+\infty$,
-\begin{equation}\label{eq:largemark}
+\begin{equation}\label{men:eq:largemark}
  C(\lambda)=\frac{\exp(\mathcal A\sqrt\lambda)}{2\sqrt2\,\pi\sqrt\lambda}
                  \{1+O(\lambda^{-1/2})\}.
 \end{equation}
@@ -652,7 +945,7 @@ The implied constant is an existence constant. This statement gives neither comp
 
 We first record the endpoint comparison needed for a proof. The modified Bessel functions $I_\nu$ and $K_\nu$ have positive values on the positive real axis for $\nu=0,1$, and their Wronskian, endpoint limits and large-argument expansions are classical~\cite{dlmf}.
 
-\begin{lemma}\label{lem:bessel}
+\begin{lemma}\label{men:lem:bessel}
 Fix $a>0$, $\nu\in\{0,1\}$, and a bounded continuous real function $q$ on $[0,a]$. In
 \[
  u''=\left(k^2+\frac{\nu^2-1/4}{x^2}+q(x)\right)u,
@@ -660,7 +953,7 @@ Fix $a>0$, $\nu\in\{0,1\}$, and a bounded continuous real function $q$ on $[0,a]
 \]
 select the solution regular at zero with the same leading coefficient as
 $c_k\sqrt{x}I_\nu(kx)$, where $c_k\ne0$ may depend on $k$. For the endpoint-analytic coefficients used below, this solution is unique. At the fixed point $a$,
-\begin{equation}\label{eq:besselcompare}
+\begin{equation}\label{men:eq:besselcompare}
  u(a)=c_k\sqrt a I_\nu(ka)\{1+O(k^{-1})\},\qquad
  u'(a)=c_k\left.\frac d{dx}(\sqrt x I_\nu(kx))\right|_{x=a}
                       \{1+O(k^{-1})\}.
@@ -673,7 +966,7 @@ Put $f(x)=\sqrt{x}I_\nu(kx)$ and $h(x)=\sqrt{x}K_\nu(kx)$. Their Wronskian is $f
 \]
 is nonnegative and has diagonal $x$-derivative one. Let
 $B_\nu=\sup_{y>0}yI_\nu(y)K_\nu(y)<\infty$; finiteness follows from the classical zero and infinity limits and continuity on intervening compact intervals. Consequently
-\begin{equation}\label{eq:greenbound}
+\begin{equation}\label{men:eq:greenbound}
  0\le\frac{\mathcal G_k(x,t)f(t)}{f(x)}
  \le tI_\nu(kt)K_\nu(kt)\le\frac{B_\nu}k.
 \end{equation}
@@ -695,12 +988,12 @@ with $D$ independent of $k$. Since $K_\nu/I_\nu$ is decreasing, for $0<t<a$,
   +D\frac{K_\nu(ka)}{I_\nu(ka)}tI_\nu(kt)^2
  \le\frac{(1+D)B_\nu}k.
 \]
-This supplies an integrable majorant for differentiating the Volterra equation at $a$; the moving endpoint contributes zero because $\mathcal G_k(a,a)=0$. Combining the bound with the estimate for $r$ proves the derivative assertion in \eqref{eq:besselcompare}. No uncontrolled error term was differentiated.
+This supplies an integrable majorant for differentiating the Volterra equation at $a$; the moving endpoint contributes zero because $\mathcal G_k(a,a)=0$. Combining the bound with the estimate for $r$ proves the derivative assertion in \eqref{men:eq:besselcompare}. No uncontrolled error term was differentiated.
 \end{proof}
 
-\begin{proof}[Proof of Theorem~\ref{thm:largemark}]
+\begin{proof}[Proof of Theorem~\ref{men:thm:largemark}]
 Put $k=\sqrt\lambda$ and use the Liouville variables
-\begin{equation}\label{eq:liouville}
+\begin{equation}\label{men:eq:liouville}
  x=\int_0^z\sqrt{E(s)/s}\,ds,\qquad
  g=(zE(z))^{1/4},\qquad \psi=gA_\lambda.
 \end{equation}
@@ -710,12 +1003,12 @@ A direct substitution in $(zA_\lambda')'=k^2EA_\lambda$ gives
  \qquad 0<x<\mathcal A.
 \]
 The derivatives on $g$ here are with respect to $x$. At the left endpoint, analytic inversion in $\sqrt z$ gives
-\begin{equation}\label{eq:leftQ}
+\begin{equation}\label{men:eq:leftQ}
  g=\sqrt{x/2}\{1+x^2/24+O(x^4)\},\qquad
  Q=-\frac1{4x^2}+\frac16+O(x^2).
 \end{equation}
 Indeed $x=2\sqrt z$ times an analytic function of $z$ with constant term one. At the right endpoint write $\delta=\rho-z$ and $v=\mathcal A-x$. Since $E(z)=\cot(\delta/2)$,
-\begin{equation}\label{eq:rightQ}
+\begin{equation}\label{men:eq:rightQ}
  v=2\sqrt{2\delta/\rho}\{1+O(\delta)\},\quad
  g=2v^{-1/2}h(v^2),\quad h(0)=1,\quad
  Q=\frac3{4v^2}+O(v^2),
@@ -727,7 +1020,7 @@ The selected left solution has $\psi_A\sim\sqrt{x/2}$. The right solution $H_\la
  U_\ell(x)=\sqrt{x/2}I_0(kx),\qquad
  U_r(v)=\frac{\sqrt v I_1(kv)}{2k}.
 \]
-Fix $a\in(0,\mathcal A)$ and write $b=\mathcal A-a$. Apply Lemma~\ref{lem:bessel} at both endpoints. The standard positive-axis Bessel expansions then give
+Fix $a\in(0,\mathcal A)$ and write $b=\mathcal A-a$. Apply Lemma~\ref{men:lem:bessel} at both endpoints. The standard positive-axis Bessel expansions then give
 \begin{align*}
  \psi_A(a)&=\frac{e^{ka}}{\sqrt{4\pi k}}\{1+O(k^{-1})\},&
  \psi_{A,x}(a)&=\frac{k e^{ka}}{\sqrt{4\pi k}}\{1+O(k^{-1})\},\\
@@ -743,7 +1036,7 @@ The constant follows either from Abel's identity or by taking $z\uparrow\rho$: $
 \[
  -C(\lambda)=-\frac{e^{k\mathcal A}}{2\sqrt2\,\pi k}\{1+O(k^{-1})\},
 \]
-which proves \eqref{eq:largemark}.
+which proves \eqref{men:eq:largemark}.
 \end{proof}
 
 For stable quadrature, the substitution $z=\rho\sin^2\theta$ removes both endpoint singularities:
@@ -751,26 +1044,40 @@ For stable quadrature, the substitution $z=\rho\sin^2\theta$ removes both endpoi
  \mathcal A=2\sqrt2\int_0^{\pi/2}\sqrt{u\cot u}\,d\theta,
  \qquad u=\frac\pi4\cos^2\theta,
 \]
-with $u\cot u=1$ at $u=0$. The optional numerical check uses this smooth formula. The proof uses only its exact integral. Liouville transformation, Bessel comparison and Wronskian matching are classical methods; no new general asymptotic method is asserted. In particular, \eqref{eq:largemark} does not license inserting a growing $\lambda$ into Theorem~\ref{thm:transfer} or extracting finite-size rare-tail probabilities without further uniform analysis.
+with $u\cot u=1$ at $u=0$. The optional numerical check uses this smooth formula. The proof uses only its exact integral. Liouville transformation, Bessel comparison and Wronskian matching are classical methods; no new general asymptotic method is asserted. In particular, \eqref{men:eq:largemark} does not license inserting a growing $\lambda$ into Theorem~\ref{men:thm:transfer} or extracting finite-size rare-tail probabilities without further uniform analysis.
 
-\subsection{Rare counts in the fixed limiting law}\label{sec:tail}
-The determinant product supplies enough structure to extract a far-tail theorem from the real-positive estimate alone. This concerns the single limiting variable $J$ of Theorem~\ref{thm:law}. It is not a joint limit for the finite variables $J_N$.
+\begin{writenote}[Added 7 October 2026: a diagnostic]
+The write evaluated $C(\lambda)$ for real $\lambda$ by the marked analogue
+of~\eqref{men:eq:wronskian} at $z=\rho/2$,
+$C(\lambda)=z\{A_\lambda(z)H_\lambda'(t)/\rho+A_\lambda'(z)H_\lambda(t)\}$
+($900$ Taylor and Frobenius terms, 60 digits, floating). The ratio of
+$C(\lambda)$ to the right-hand side of~\eqref{men:eq:largemark} without its
+error factor is $1.005513$, $1.002776$, $1.001390$, $1.000695$ at
+$\lambda=25,100,400,1600$, and $\sqrt\lambda$ times its excess over one is
+$0.02756$, $0.02776$, $0.02780$, $0.02781$: consistent with the stated
+$O(\lambda^{-1/2})$ error, and suggesting (not proving) a first correction
+$c_1\lambda^{-1/2}$ with $c_1\approx0.0278$; see item~4 of
+Section~\ref{men:sec:limits}.
+\end{writenote}
 
-\begin{theorem}\label{thm:tail}
+\subsection{Rare counts in the fixed limiting law}\label{men:sec:tail}
+The determinant product supplies enough structure to extract a far-tail theorem from the real-positive estimate alone. This concerns the single limiting variable $J$ of Theorem~\ref{men:thm:law}. It is not a joint limit for the finite variables $J_N$.
+
+\begin{theorem}\label{men:thm:tail}
 Put $p(m)=\PP(J=m)$ and
-\begin{equation}\label{eq:tailK}
+\begin{equation}\label{men:eq:tailK}
  K_{\mathrm{tail}}=\frac{\mathcal A}{4\sqrt2\,\pi^{3/2}C(1)}.
 \end{equation}
 As the integer $m\to\infty$,
 \begin{align}
  p(m)&=\frac{\mathcal A^{2m+1}}{\sqrt2\,\pi C(1)(2m+1)!}
-                      \{1+O(m^{-1/2})\}\label{eq:tailfactorial}\\
+                      \{1+O(m^{-1/2})\}\label{men:eq:tailfactorial}\\
  &=K_{\mathrm{tail}}\,m^{-3/2}
           \left(\frac{e\mathcal A}{2m}\right)^{2m}
-                      \{1+O(m^{-1/2})\}.\label{eq:tailmass}
+                      \{1+O(m^{-1/2})\}.\label{men:eq:tailmass}
 \end{align}
 The upper tail satisfies
-\begin{equation}\label{eq:tailratio}
+\begin{equation}\label{men:eq:tailratio}
  \frac{\PP(J\ge m)}{p(m)}
        =1+\frac{\mathcal A^2}{4m^2}+o(m^{-2}).
 \end{equation}
@@ -785,13 +1092,13 @@ For each $r>0$, exponential tilting of the positive product gives independent Be
 \]
 Their mean is finite because $\sum p_j(r)\le rK_0$. The sums and their derivatives converge locally uniformly in $r$. Also $M'(r)=\sum_j\kappa_j/(1+r\kappa_j)^2$ is positive and decreasing.
 
-We first obtain derivative estimates without differentiating an asymptotic error. Set $s=\log r$, $k=e^{s/2}$ and $f(s)=\log C(e^s)$. Theorem~\ref{thm:largemark} gives
+We first obtain derivative estimates without differentiating an asymptotic error. Set $s=\log r$, $k=e^{s/2}$ and $f(s)=\log C(e^s)$. Theorem~\ref{men:thm:largemark} gives
 \[
  f(s)=\mathcal A k-s/2-\log(2\sqrt2\,\pi)+O(k^{-1}),
  \qquad f'=M(e^s),\quad f''=V(e^s)\ge0.
 \]
 Convexity bounds $f'(s)$ between its forward and backward secants at step $h=k^{-1}$. The leading secant error is $O(kh)=O(1)$, while division of the two remainder values by $h$ gives $O(1/(kh))=O(1)$. Hence
-\begin{equation}\label{eq:tiltmean}
+\begin{equation}\label{men:eq:tiltmean}
  M(r)=\frac{\mathcal A}2\sqrt r+O(1).
 \end{equation}
 For $0<\delta<1$, monotonicity of $M'$ yields
@@ -800,18 +1107,18 @@ For $0<\delta<1$, monotonicity of $M'$ yields
  \le V(r)\le
  \frac{M(r)-M(r(1-\delta))}\delta.
 \]
-Using \eqref{eq:tiltmean} and $\delta=r^{-1/4}$ gives
-\begin{equation}\label{eq:tiltvariance}
+Using \eqref{men:eq:tiltmean} and $\delta=r^{-1/4}$ gives
+\begin{equation}\label{men:eq:tiltvariance}
  V(r)=\frac{\mathcal A}4\sqrt r+O(r^{1/4}).
 \end{equation}
 The strictly increasing continuous $M$ ranges from zero to infinity. Thus there is a unique $r_m>0$ with $M(r_m)=m$, and, writing $k_m=\sqrt{r_m}$,
-\begin{equation}\label{eq:saddlemark}
+\begin{equation}\label{men:eq:saddlemark}
  k_m=\frac{2m}{\mathcal A}+O(1),\qquad
  V(r_m)=\frac m2+O(\sqrt m).
 \end{equation}
 
 We need a uniform elementary local estimate. For any finite or countable independent Bernoulli sum $S$ with finite mean $M$, variance $V\to\infty$, and integer mean $M$,
-\begin{equation}\label{eq:bernoullilocal}
+\begin{equation}\label{men:eq:bernoullilocal}
  \PP(S=M)=\frac1{\sqrt{2\pi V}}+O(V^{-1})
          =\frac{1+O(V^{-1/2})}{\sqrt{2\pi V}},
 \end{equation}
@@ -838,9 +1145,9 @@ Choose $\theta_0$ so that $B_1\theta_0\le1/4$. The exponential difference identi
  |\psi(\theta)-e^{-V\theta^2/2}|
        \le B_1V|\theta|^3e^{-V\theta^2/4}.
 \]
-Its integral is $O(V^{-1})$. The remaining arcs and the omitted Gaussian tails are exponentially small by the modulus bound. Fourier inversion at the integer mean proves \eqref{eq:bernoullilocal}. No logarithm near $\theta=\pi$ is used.
+Its integral is $O(V^{-1})$. The remaining arcs and the omitted Gaussian tails are exponentially small by the modulus bound. Fourier inversion at the integer mean proves \eqref{men:eq:bernoullilocal}. No logarithm near $\theta=\pi$ is used.
 
-The exact tilting identity, followed by \eqref{eq:largemark}, \eqref{eq:saddlemark} and \eqref{eq:bernoullilocal}, now gives
+The exact tilting identity, followed by \eqref{men:eq:largemark}, \eqref{men:eq:saddlemark} and \eqref{men:eq:bernoullilocal}, now gives
 \begin{align*}
  p(m)&=\frac{C(r_m)}{C(1)r_m^m}\,\PP_{r_m}(J=m)\\
  &=\frac{e^{\mathcal A k_m}k_m^{-2m-1}}
@@ -850,21 +1157,21 @@ Set $k_0=2m/\mathcal A$. Since $\Delta=k_m-k_0=O(1)$,
 \[
  \mathcal A\Delta-(2m+1)\log(1+\Delta/k_0)=O(m^{-1}).
 \]
-The order-one linear terms cancel exactly. Replacing $k_m$ by $k_0$ therefore changes the answer only by $1+O(m^{-1})$. Simplification proves \eqref{eq:tailmass}. Stirling's formula in the form
+The order-one linear terms cancel exactly. Replacing $k_m$ by $k_0$ therefore changes the answer only by $1+O(m^{-1})$. Simplification proves \eqref{men:eq:tailmass}. Stirling's formula in the form
 \[
  (2m+1)!=4\sqrt\pi\,m^{3/2}(2m/e)^{2m}\{1+O(m^{-1})\}
 \]
-proves the equivalent factorial statement \eqref{eq:tailfactorial}; its denominator is $\sqrt2$ times $\pi$, not $\sqrt{2\pi}$.
+proves the equivalent factorial statement \eqref{men:eq:tailfactorial}; its denominator is $\sqrt2$ times $\pi$, not $\sqrt{2\pi}$.
 
 Dividing the mass estimates at consecutive integers gives
 \[
  \frac{p(m+1)}{p(m)}=\frac{\mathcal A^2}{4m^2}\{1+O(m^{-1/2})\}.
 \]
 Consequently all sufficiently late consecutive ratios are bounded by $B_2/m^2$ for a fixed $B_2$. Summing the resulting geometric majorant shows
-$\sum_{j\ge2}p(m+j)/p(m)=O(m^{-4})$. Adding the $j=1$ term proves \eqref{eq:tailratio} (and even an $O(m^{-5/2})$ remainder there). This does not improve the relative error of the mass formula itself.
+$\sum_{j\ge2}p(m+j)/p(m)=O(m^{-4})$. Adding the $j=1$ term proves \eqref{men:eq:tailratio} (and even an $O(m^{-5/2})$ remainder there). This does not improve the relative error of the mass formula itself.
 \end{proof}
 
-\begin{corollary}\label{cor:tailinverse}
+\begin{corollary}\label{men:cor:tailinverse}
 Let $q_m=\PP(J\ge m)$ and define the small-tail threshold explicitly by
 \[
  n(y)=\min\{m\ge0:q_m\le y\},\qquad y\downarrow0.
@@ -874,13 +1181,13 @@ Put $T=\log(1/y)$ and
  H(x)=2x\log\frac{2x}{e\mathcal A}+\frac32\log x-\log K_{\mathrm{tail}}.
 \]
 Let $x$ be the unique eventual solution of $H(x)=T$. Constants $D>0$ and $y_*>0$ exist such that for $0<y<y_*$,
-\begin{equation}\label{eq:tailinverse}
+\begin{equation}\label{men:eq:tailinverse}
  \left\lceil x-\frac{Dx^{-1/2}}{\log x}\right\rceil
  \le n(y)\le
  \left\lceil x+\frac{Dx^{-1/2}}{\log x}\right\rceil.
 \end{equation}
 A smooth approximation is
-\begin{equation}\label{eq:tailLambert}
+\begin{equation}\label{men:eq:tailLambert}
  \begin{gathered}
  x_0=\frac{T}{2W_0(T/(e\mathcal A))},\qquad
  x_1=x_0-\frac{(3/2)\log x_0-\log K_{\mathrm{tail}}}
@@ -892,35 +1199,35 @@ The correction $x_1-x_0$ tends to $-3/4$.
 \end{corollary}
 \begin{proof}
 The theorem gives $-\log q_m=H(m)+O(m^{-1/2})$ and
-$H'(x)=2\log(2x/\mathcal A)+3/(2x)\sim2\log x$. Since every mass is positive, $q_m$ decreases strictly. Choose $D$ large enough that the carrier change over the real displacement in \eqref{eq:tailinverse} dominates the logarithmic error. At the integer ceiling of the upper endpoint, $q_m\le y$; at the integer immediately below the lower ceiling, $q_m>y$. These integers lie within $1+o(1)$ of $x$, so the errors are uniformly $O(x^{-1/2})$. Monotonicity gives both bounds. The formulas in \eqref{eq:tailLambert} invert the leading term and apply one Newton correction; the remaining carrier residual is $O(1/x_0)$, giving the stated inverse error.
+$H'(x)=2\log(2x/\mathcal A)+3/(2x)\sim2\log x$. Since every mass is positive, $q_m$ decreases strictly. Choose $D$ large enough that the carrier change over the real displacement in \eqref{men:eq:tailinverse} dominates the logarithmic error. At the integer ceiling of the upper endpoint, $q_m\le y$; at the integer immediately below the lower ceiling, $q_m>y$. These integers lie within $1+o(1)$ of $x$, so the errors are uniformly $O(x^{-1/2})$. Monotonicity gives both bounds. The formulas in \eqref{men:eq:tailLambert} invert the leading term and apply one Newton correction; the remaining carrier residual is $O(1/x_0)$, giving the stated inverse error.
 \end{proof}
 
-The tilts used in the proof grow as $r_m\sim4m^2/\mathcal A^2$, outside every fixed compact mark set. The argument uses the exact limiting product and Theorem~\ref{thm:largemark}, never a substitution into the finite-$N$ expansion. It establishes neither simultaneous finite-size rare tails nor all fixed tail corrections. The inverse constants are non-effective and a single unconditional ceiling remains unjustified. Exponential tilting, the Bernoulli local estimate, convex secants and the monotone-density argument are classical methods, specialized here with the exact endpoint constant.
+The tilts used in the proof grow as $r_m\sim4m^2/\mathcal A^2$, outside every fixed compact mark set. The argument uses the exact limiting product and Theorem~\ref{men:thm:largemark}, never a substitution into the finite-$N$ expansion. It establishes neither simultaneous finite-size rare tails nor all fixed tail corrections. The inverse constants are non-effective and a single unconditional ceiling remains unjustified. Exponential tilting, the Bernoulli local estimate, convex secants and the monotone-density argument are classical methods, specialized here with the exact endpoint constant.
 
-\section{Simple limiting zeros and finite nonreal zeros}\label{sec:zeros}
+\section{Simple limiting zeros and finite nonreal zeros}\label{men:sec:zeros}
 The determinant formula already puts every zero of $C$ on the negative real axis. Simplicity follows from the special Green operator.
 
-\begin{theorem}\label{thm:zeros}
+\begin{theorem}\label{men:thm:zeros}
 Every positive eigenvalue $\kappa_j$ of $K$ is simple. Hence the zeros $-1/\kappa_j$ of $C$ are all simple and negative. For each fixed bounded disk, all zeros of $P_{N+2}$ in that disk are real and simple for all sufficiently large $N$. In particular, all nonreal zeros of the finite polynomials escape every bounded disk as $N\to\infty$.
 \end{theorem}
 \begin{proof}
 Put $k_0(t)=\log(\rho/t)$. This belongs to $L^2(\mu)$: near zero its squared logarithm is integrable, and near $\rho$ it vanishes quadratically against a weight with only a simple pole. Since $0\le k(s,t)\le k_0(t)$, dominated convergence shows that $s\mapsto k(s,\cdot)$ extends continuously as an $L^2(\mu)$-valued function to $[0,\rho]$, with endpoint values $k_0$ and zero.
 
 If $Kf=\kappa f$ with $\kappa>0$, the integral representation therefore supplies a continuous representative of $f$ on $[0,\rho]$, with $f(\rho)=0$. For $0<s<\rho$, split the integral at $s$ and differentiate; the matching boundary terms cancel, leaving
-\begin{equation}\label{eq:eigenderivative}
+\begin{equation}\label{men:eq:eigenderivative}
  f'(s)=-\frac1{\kappa s}\int_0^s E(t)f(t)\,dt.
 \end{equation}
 Continuity of $f$ and $E$ at zero makes the right-hand side bounded near zero. Integrating again gives
-\begin{equation}\label{eq:eigenvolterra}
+\begin{equation}\label{men:eq:eigenvolterra}
  f(s)=f(0)-\kappa^{-1}\int_0^s E(t)f(t)\log\frac st\,dt.
 \end{equation}
 If $f(0)=0$, iteration of the Volterra bound forces $f=0$. Thus evaluation at zero is injective on each eigenspace, which must be one dimensional. Since $K$ is self-adjoint, its eigenvalues have no additional algebraic multiplicity. The trace-class product now gives simple zeros of $C$.
 
-Theorem~\ref{thm:transfer} gives $R_N\to C$ locally uniformly. Choose a larger disk containing the fixed disk whose boundary contains no zero of $C$. It contains only finitely many limiting zeros. Place small disjoint disks, invariant under conjugation, around these simple real zeros. Rouch\'e's theorem gives exactly one zero of $R_N$ in each small disk for large $N$, counted with multiplicity. The real coefficients force that unique zero to be real, and its multiplicity is one. On the remaining compact portion $C$ is bounded away from zero, so uniform convergence excludes any further zeros. The nonzero normalization in \eqref{eq:RN} does not change zeros of $P_{N+2}$. This proves the assertion, including when the original fixed disk has a limiting zero on its boundary.
+Theorem~\ref{men:thm:transfer} gives $R_N\to C$ locally uniformly. Choose a larger disk containing the fixed disk whose boundary contains no zero of $C$. It contains only finitely many limiting zeros. Place small disjoint disks, invariant under conjugation, around these simple real zeros. Rouch\'e's theorem gives exactly one zero of $R_N$ in each small disk for large $N$, counted with multiplicity. The real coefficients force that unique zero to be real, and its multiplicity is one. On the remaining compact portion $C$ is bounded away from zero, so uniform convergence excludes any further zeros. The nonzero normalization in \eqref{men:eq:RN} does not change zeros of $P_{N+2}$. This proves the assertion, including when the original fixed disk has a limiting zero on its boundary.
 \end{proof}
 
 The theorem is a bounded-region statement. It neither proves eventual complete real-rootedness nor bounds the rate of escape of nonreal roots. In fact complete real-rootedness fails at a modest finite index:
-\begin{align}\label{eq:P10}
+\begin{align}\label{men:eq:P10}
  P_{10}(\lambda)={}&\lambda^8+204\lambda^7+13230\lambda^6+366404\lambda^5\notag\\
  &+4948521\lambda^4+33906984\lambda^3+112276976\lambda^2\notag\\
  &+152976000\lambda+55843200.
@@ -935,14 +1242,14 @@ An exact Sturm chain, starting with $P_{10}$ and its derivative and taking negat
 \]
 so it has exactly six real roots. Its exact gcd with its derivative is one, and its positive coefficients exclude nonnegative real roots. Thus six roots are negative real and two form a nonreal conjugate pair. The accompanying exact code verifies the chain over the rationals; approximate roots are not used to establish the conclusion. This counterexample also rules out a finite Poisson-binomial interpretation for the stated marking.
 
-\section{Computational evidence and reproducibility}\label{sec:reproduce}
+\section{Computational evidence and reproducibility}\label{men:sec:reproduce}
 The proofs above are conventional mathematical proofs, not formal proof-assistant developments. The accompanying source archive separates exact finite checks, the amplitude certificate and numerical diagnostics.
 
-The standard-library core regenerates the original integer triangle and its marked polynomial version, independently evaluates the formal ODE, and checks agreement with the inspected OEIS prefix. It constructs Frobenius and correction coefficients using exact rational polynomial arithmetic, verifies the displayed marked and scalar corrections, and performs the exact Sturm calculation for \eqref{eq:P10}. It also checks the rational Taylor-tail bound used in \eqref{eq:delta}. All correctness checks raise explicit exceptions and remain active under optimized Python.
+The standard-library core regenerates the original integer triangle and its marked polynomial version, independently evaluates the formal ODE, and checks agreement with the inspected OEIS prefix. It constructs Frobenius and correction coefficients using exact rational polynomial arithmetic, verifies the displayed marked and scalar corrections, and performs the exact Sturm calculation for \eqref{men:eq:P10}. It also checks the rational Taylor-tail bound used in \eqref{men:eq:delta}. All correctness checks raise explicit exceptions and remain active under optimized Python.
 
 The optional environment contains the separately pinned symbolic and multiprecision programs. These reproduce the 420-term Wronskian diagnostic, the interval enclosure, and high-order numerical comparisons. Optional dependencies are not needed to run the exact core or to rebuild the PDF from its supplied \LaTeX{} source. The package README gives the precise commands and output inventory. The build disables shell escape, fixes archival timestamps and checks the source manifest; third-party papers are cited and are not redistributed.
 
-For scale, the original scalar diagnostics report the following absolute errors of the normalized twelve-term falling-factorial approximation. They compare the exact integer diagonal with the high-precision carrier in \eqref{eq:scalarall}:
+For scale, the original scalar diagnostics report the following absolute errors of the normalized twelve-term falling-factorial approximation. They compare the exact integer diagonal with the high-precision carrier in \eqref{men:eq:scalarall}:
 \begin{center}
 \begin{tabular}{rr}
 \toprule
@@ -957,8 +1264,14 @@ $N$&Absolute normalized error\\\midrule
 \end{center}
 These are diagnostics, not uniform error certificates. At small $N$, adding many terms can worsen the approximation; the theorem is fixed-order asymptotics. Exact finite checks support the formulas but cannot replace the analytic continuation, parameter uniformity, trace-class or inverse arguments.
 
-\section{Source limits and further directions}\label{sec:limits}
+\section{Source limits and further directions}\label{men:sec:limits}
 The source comparison checked the official OEIS records, the classical transform paper, standard singularity-analysis sources, the relevant HKPV spectral theorem, and the cited classical Bessel formulas. All 21 displayed A386381 terms were compared with independent recurrence values. Access to the linked b-file did not succeed during that comparison; no assertion about its farther terms is based on that failed retrieval.
+
+\begin{writenote}[Added 7 October 2026]
+The b-file (Kot\v{e}\v{s}ovec, $0\le n\le264$) was fetched by the write on
+7~October 2026: all $265$ terms agree with the write's exact recomputation
+from~\eqref{men:eq:triangle} (Remark~\ref{men:rem:oeis}).
+\end{writenote}
 
 A bounded comparison of existing report titles and full relevant README files located no report on this particular modified Entringer endpoint problem. Related material on central Poupard numbers, zigzag Eulerian spectra, and surjection diagonals uses different objects or only shares classical methods. Search misses, including unreliable fuzzy searches among generically titled documents, are not evidence of worldwide novelty or exhaustive non-overlap. This report makes no claim to settle an explicitly posed open problem.
 
@@ -971,17 +1284,27 @@ Several concrete extensions remain outside the established results:
  \item \textbf{Farther singularities.} Continuation toward $-3\rho$ and beyond may reveal exponentially smaller contributions and further connection data. The present dominant expansion alone does not specify a complete exponential transseries.
  \item \textbf{A combinatorial model for the mark.} The recursive coefficient statistic is exact. A natural independently recognizable family with that statistic would require a new construction or bijection, rather than an interpretation inferred only from coefficient positivity.
 \end{enumerate}
+\begin{writenote}[Added 7 October 2026, under Vladimir's standing rule of 4 October 2026]
+The six directions above are the source's open questions, credited to it and
+kept as stated. The write found no further unproved claim in the source and
+no wrong one: every statement proved above has a complete argument, and the
+remaining assertions are scoped as non-claims (Section~\ref{men:sec:provenance}).
+For item~4, the diagnostic after the proof of Theorem~\ref{men:thm:largemark}
+suggests a first large-mark correction coefficient near $0.0278$; it is not
+a theorem here.
+\end{writenote}
+
 The central conclusions are already exact: the posted scalar amplitude is a positive connection value, every fixed correction has an explicit recurrence, and the marked endpoint is a trace-class determinant whose simple spectrum explains the limiting Bernoulli law and the bounded-region zero behavior.
 
 \begin{thebibliography}{9}
 \small
 \setlength{\itemsep}{3pt}
 \bibitem{triangle}
-OEIS Foundation Inc., \emph{A386363}, modified Entringer triangle, entry attributed to Mikhail Kurkov, 19 July 2025. Inspected 3 October 2026.
+OEIS Foundation Inc., \emph{A386363}, modified Entringer triangle, entry attributed to Mikhail Kurkov, 19 July 2025. Inspected 3 October 2026 (and by the write on 7~October 2026, revision \#24).
 \href{https://oeis.org/A386363}{OEIS record}.
 
 \bibitem{diagonal}
-OEIS Foundation Inc., \emph{A386381}, diagonal of A386363. Leading asymptotic and numerical amplitude attributed to V\'aclav Kot\v e\v sovec, 2 September 2025. Inspected 3 October 2026.
+OEIS Foundation Inc., \emph{A386381}, diagonal of A386363. Leading asymptotic and numerical amplitude attributed to V\'aclav Kot\v e\v sovec, 2 September 2025. Inspected 3 October 2026 (and by the write on 7~October 2026, revision \#27, with its b-file).
 \href{https://oeis.org/A386381}{OEIS record}.
 
 \bibitem{msy}
