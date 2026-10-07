@@ -12,8 +12,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 616 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 3,955 public Gowers theorems and found only propext,
+  All 618 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 3,964 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 113 exact
   companion proofs and 7 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -1868,6 +1868,19 @@ Exact induction reduced to contextual lifting
   and the proved zero- and one-dimensional bases. It never invokes the
   refuted two-premise lemma_16_10 predicate. This is a precise open obligation,
   not a proved replacement of Lemma 16.10 or an exact Theorem 16.2 companion.
+
+Box covers for an unused coordinate
+  Proofs16UnusedCoordinateCover extends a lower-dimensional partial function
+  across one unused coordinate. Short-parent localization and compatible
+  final-axis tiling preserve the graph count and exceptional mass. The
+  explicit rounded width is sqrt((m/8)^a)/4, where a is the original cover
+  exponent, whenever (m/8)^a >= 16. This is a proved geometric construction;
+  absorption into the ambient-dimensional controls is a separate obligation.
+  Proofs16CoarseFunctionCover partitions any proper box of width at least
+  two into cells with side lengths two or three and covers an arbitrary
+  function exactly by at most 3^k constant multilinear graphs per cell.
+  A separate singleton construction retains one graph per singleton cell.
+  These provide the small-scale branch for the same dimension-extension step.
 
 Reproducible checks (from repository root)
   python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.Audit

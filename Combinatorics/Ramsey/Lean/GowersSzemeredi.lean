@@ -434,6 +434,8 @@ import GowersSzemeredi.Proofs16LargePieceMass
 import GowersSzemeredi.Proofs16SpectrumInduction
 import GowersSzemeredi.Proofs16CommonBaseAssembly
 import GowersSzemeredi.Proofs16ContextualInduction
+import GowersSzemeredi.Proofs16UnusedCoordinateCover
+import GowersSzemeredi.Proofs16CoarseFunctionCover
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 
