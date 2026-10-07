@@ -12,24 +12,17 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 410 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 2,840 public Gowers theorems and found only propext,
-  Classical.choice, and Quot.sound. The audit independently counted 106 exact
-  companion proofs and 14 open catalogue statements from Lean's theorem types.
+  All 453 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 2,902 public Gowers theorems and found only propext,
+  Classical.choice, and Quot.sound. The audit independently counted 107 exact
+  companion proofs and 13 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
   errors remain in this build. The JSON ledger reproduces exactly and has no
   unmatched numbered TeX headings or unmatched catalogue entries.
-  This full build includes the 98 vendored lib/openai-math modules and the
-  exact Theorems 7.1 and 7.2 companions. The axiom check follows their
-  dependencies transitively. Lemma 16.4 also passed an independent exact-type
-  and transitive-axiom check before integration into this full audit.
-  Addendum (Theorem 1.2, after the audit above): Proofs01SzemerediFixedDensity
-  and its imports (38 further vendored FixedDensity modules, lib/openai-math)
-  were compiled one module at a time on the Windows workstation; #print
-  axioms reports only propext, Classical.choice, and Quot.sound for
-  theorem_1_2_holds, and a file importing it together with
-  Proofs07FreimanClosure elaborates without name collisions. The full Audit
-  build has not been rerun with it. Ledger: 107 exact, 13 open.
+  This full build includes all 137 vendored lib/openai-math modules and
+  the exact Theorems 1.2, 7.1, and 7.2 companions. Their dependencies pass
+  the transitive axiom check. The earlier workstation-only validation of
+  Theorem 1.2 is now confirmed by the full repository audit.
 
 Completed Theorem 1.2 (Szemeredi, qualitative) by a non-Gowers route
   Proofs01SzemerediFixedDensity proves theorem_1_2 with its exact catalogue
@@ -1073,6 +1066,19 @@ Zero-dimensional relation induction
   a constant graph and checks the prescribed graph budget for every loss
   parameter. This case needs neither the product property nor a modulus
   threshold. The full Theorem 16.2 remains open in higher dimensions.
+
+Arbitrary-modulus progression moments for Corollary 5.8
+  Proofs05ProgressionMoments proves a subgroup-averaging correlation
+  inequality for finite abelian groups and the cyclic progression second
+  moment bound. Off-diagonal covariances remain nonnegative for composite
+  moduli; the diagonal contribution is retained exactly.
+  Proofs05ProgressionVariance proves each direction has the same mean,
+  the variance lower bound N^2*delta*(1-delta)/L, and the conditional
+  variance upper bound supplied by a uniform sample-density bound.
+  Proofs05ProperDirections bounds the number of nonproper directions by
+  L*(L-1)/2, using the cyclic torsion bound. When N >= L^3 and L >= 2,
+  their number is strictly less than N/(2L). These are inputs to the
+  threshold-free written proof (Report277); Corollary 5.8 remains open.
 
 Reproducible checks (from repository root)
   python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.Audit

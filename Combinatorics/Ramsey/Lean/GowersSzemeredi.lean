@@ -295,6 +295,9 @@ import GowersSzemeredi.Proofs15LowerDensityRestriction
 import GowersSzemeredi.Proofs15ZeroDensityRestriction
 import GowersSzemeredi.Proofs16StructuredExtraction
 import GowersSzemeredi.Proofs16BaseCaseZero
+import GowersSzemeredi.Proofs05ProgressionMoments
+import GowersSzemeredi.Proofs05ProgressionVariance
+import GowersSzemeredi.Proofs05ProperDirections
 
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
