@@ -12,8 +12,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 453 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 2,902 public Gowers theorems and found only propext,
+  All 454 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 2,909 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 107 exact
   companion proofs and 13 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -1078,7 +1078,14 @@ Arbitrary-modulus progression moments for Corollary 5.8
   Proofs05ProperDirections bounds the number of nonproper directions by
   L*(L-1)/2, using the cyclic torsion bound. When N >= L^3 and L >= 2,
   their number is strictly less than N/(2L). These are inputs to the
-  threshold-free written proof (Report277); Corollary 5.8 remains open.
+  threshold-free written proof (Report277).
+  Proofs05VarianceIncrement combines these estimates to construct a proper
+  L-term progression of density at least delta + (1-delta)/(2L), for
+  0 < delta < 1, L >= 2, and N >= L^3. Its low-correlation wrapper gives
+  gain alpha/3 whenever alpha <= 3*(1-delta)/(2L). Neither statement
+  assumes prime N, a phase partition, or a positive correlation threshold.
+  Corollary 5.8 remains open: the all-degree phase-localization estimates
+  and the high-correlation assembly still need formal proofs.
 
 Reproducible checks (from repository root)
   python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.Audit

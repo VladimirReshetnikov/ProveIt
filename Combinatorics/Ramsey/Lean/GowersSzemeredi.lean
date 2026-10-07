@@ -298,6 +298,7 @@ import GowersSzemeredi.Proofs16BaseCaseZero
 import GowersSzemeredi.Proofs05ProgressionMoments
 import GowersSzemeredi.Proofs05ProgressionVariance
 import GowersSzemeredi.Proofs05ProperDirections
+import GowersSzemeredi.Proofs05VarianceIncrement
 
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
