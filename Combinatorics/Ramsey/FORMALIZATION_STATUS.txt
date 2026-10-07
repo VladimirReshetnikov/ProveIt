@@ -12,8 +12,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 221 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 2,033 public Gowers theorems and found only propext,
+  All 222 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 2,044 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 101 exact
   companion proofs and 19 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -514,6 +514,19 @@ Verified Section 13 exponent margins
   assumptions for sufficiently large N; the recurrence module independently
   constructs Stage 13.5 at that scale.
   No catalogue obligation is newly counted by these estimates.
+
+Constructed common-step square covers
+  Proofs13CommonStepCover covers a progression by cells of exactly m points
+  at an integer multiple t of its step. If t*m fits in its length, the total
+  padded capacity is at most twice the original length. No source points
+  are deleted. Product-cover averaging retains one quarter of the density.
+  corollary_13_10_of_integer_step_fit constructs the actual proper square
+  progressions at m=floor(sqrt(|U|)), with density 2^-137*alpha^704 and a
+  selected subset of the original bilinear set. It replaces the abstract
+  square-grid assumption by the explicit integer bound t*m<=|S|.
+  The full extraction still has to produce this bounded integer step ratio;
+  a modular multiple alone does not prove that bound. Corollary 13.10 is
+  therefore still open in the exact catalogue.
 
 Reproducible checks (from repository root)
   python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.Audit
