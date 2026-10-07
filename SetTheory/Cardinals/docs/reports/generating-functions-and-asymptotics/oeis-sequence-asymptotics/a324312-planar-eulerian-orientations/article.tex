@@ -25,6 +25,13 @@
 \DeclareMathOperator{\Log}{Log}
 \DeclareMathOperator{\Ree}{Re}
 \DeclareMathOperator{\Arg}{Arg}
+% Added by the ProveIt write phase (batch 109, 6 October 2026): dated notes
+% marked [write] and a macro for file, label and declaration names.
+\newcommand{\file}[1]{\nolinkurl{#1}}
+\expandafter\def\expandafter\UrlBreaks\expandafter{\UrlBreaks\do\-\do\_\do\.}
+\newenvironment{writenote}[1][]{\par\smallskip\begingroup\small
+ \noindent\textbf{[write]}\if\relax\detokenize{#1}\relax\else~\textbf{#1.}\fi\ }%
+ {\par\endgroup\smallskip}
 \title{\textbf{Planar Eulerian orientation asymptotics}\\[0.5em]
 \large Exact Lambert sectors, logarithmic corrections and inverse indices\\[0.6em]\normalsize Report 171}
 \author{}
@@ -34,49 +41,280 @@
 \begin{abstract}
 We give explicit, reproducible refinements of the known asymptotics of the planar Eulerian orientation sequences \href{https://oeis.org/A324312}{A324312}, \href{https://oeis.org/A277493}{A277493}, and the quartic specialization \href{https://oeis.org/A324314}{A324314}. The leading equivalents and global analytic continuation are inputs from Bousquet-M\'elou and Elvey Price. We derive six universal logarithmic correction polynomials, an arbitrary fixed-order decomposition into exact analytic Lambert models, and smooth inverse charts with rigorous asymptotic ceiling bounds. Keeping the entire first Lambert model reveals a relative correction asymptotic to $2/(m\log m)$, where $m=n+2$; no fixed logarithmic truncation resolves this smaller scale. A bounded executable companion checks integer counts, independent Lagrange inversion, symbolic identities and numerical models. Floating-point diagnostics and asymptotic existence bounds are explicitly distinguished from certified finite-index inequalities.
 \end{abstract}
+
+\begin{writenote}[Status and trust boundary, added 6 October 2026, batch~109]
+This is bundle Report~171 of an external AI-assisted research session,
+filed in ProveIt as the single-source research report
+\file{a324312-planar-eulerian-orientations} (provenance, the sources as the
+write read them, what was checked, relation to the repository, the
+collected non-claims and the reading conventions are in
+Section~\ref{peo:sec:provenance}). It is unrefereed and not formalized. Its
+author line and its PDF author field are empty, and the title block reads
+``Report 171'': it names no person or tool. \emph{What rests on what.}
+Every statement about the counts is conditional on one published input
+that is not re-proved (Lemma~\ref{peo:lem:Hankel}, about the model
+coefficients $h_m$ alone, is not): the global $\Delta$-continuation of the inverse series $R$ with
+its leading singular equivalent, Bousquet-M\'elou and Elvey Price's
+Propositions~8.2 (quartic) and~8.3 (general). For the general family, which
+carries A324312 and A277493, its authors write that they ``will not give any
+details'' (Remark~\ref{peo:rem:input}). Granted that input,
+Theorems~\ref{peo:thm:two}, \ref{peo:thm:fixed}, \ref{peo:thm:logarithms}
+and~\ref{peo:thm:inverse}, like Lemma~\ref{peo:lem:Hankel}, have
+conventional proofs (the hypergeometric continuation formula of the DLMF, a contraction
+argument for the Lambert branch, analytic implicit functions, and
+absolute-value contour bounds); no proof uses a computation. The explicit
+$U_1,U_2,U_3$ and $Q_0,\dots,Q_5$ are outputs of finite generators, computed
+by the shipped programs; the write rederived all of them with its own code.
+Every decimal is a diagnostic. The leading equivalents are Bousquet-M\'elou
+and Elvey Price's; the inverse-log and reciprocal-Gamma tools are Elvey Price
+and Guttmann's. The write adds Remarks~\ref{peo:rem:oeis},
+\ref{peo:rem:input} and~\ref{peo:rem:transseries} (the OEIS entries quoted;
+the analytic input as published, with a citation note; the inverses against
+the transseries volume), dated notes, and one question in
+Section~\ref{peo:sec:questions}. No statement, proof or number of the source
+was changed.
+\end{writenote}
 \tableofcontents
 
-\section{Scope and principal results}
+\section{Scope and principal results}\label{peo:sec:scope}
 A planar map is a connected graph embedded in the oriented sphere, considered up to orientation-preserving homeomorphism. Loops and multiple edges are allowed. An Eulerian orientation directs every edge so that the indegree and outdegree agree at every vertex. The general family is counted by edges; the quartic family, in which every vertex has degree four, is counted by vertices.
 
 The essential exponential rates are $4\pi$ and $4\sqrt3\pi$, with a factor $n^{-2}(\log n)^{-2}$. These leading results are already theorems of Bousquet-M\'elou and Elvey Price \cite{BMEP}, not new conclusions about previously unknown growth. Our purpose is to make the slower logarithmic corrections, smaller algebraic sectors and inverse problem explicit and reproducible.
 
-For either family, write $m=n+2$, $L=\log m$, and $T=\log L+C+\gamma$. The constants $\kappa_0,\mu,C$ are specified in Section~\ref{sec:objects}. The three useful levels of approximation are
+For either family, write $m=n+2$, $L=\log m$, and $T=\log L+C+\gamma$. The constants $\kappa_0,\mu,C$ are specified in Section~\ref{peo:sec:objects}. The three useful levels of approximation are
 \begin{align}
  a_n&=\frac{\kappa_0\mu^m}{m^2L^2}
  \left\{\sum_{j=0}^J\frac{Q_j(T)}{L^j}
  +\Oh_J\!\left(\frac{(\log L)^{J+1}}{L^{J+1}}\right)\right\},
- \label{eq:previewlogs}\\
+ \label{peo:eq:previewlogs}\\
  a_n&=\kappa_0\mu^m\left\{h_m-\frac12 k_m
- +\Oh\bigl(m^{-4}L^{-3}\bigr)\right\},\label{eq:previewmodels}\\
+ +\Oh\bigl(m^{-4}L^{-3}\bigr)\right\},\label{peo:eq:previewmodels}\\
  \frac{a_n}{\kappa_0\mu^m h_m}
- &=1+\frac{2}{mL}(1+o(1)).\label{eq:previewrelative}
+ &=1+\frac{2}{mL}(1+o(1)).\label{peo:eq:previewrelative}
 \end{align}
-Here $J$ is any fixed nonnegative integer, $Q_0=1$, $Q_1=3-2T$, and $h_m,k_m$ are coefficients of actual analytic functions, not of a truncated logarithmic series. The exact definitions and all fixed-order error arguments appear below. Equation~\eqref{eq:previewrelative} is relative to the exact coefficient model $h_m$; it must not be read as the next correction after a finite sum in~\eqref{eq:previewlogs}.
+Here $J$ is any fixed nonnegative integer, $Q_0=1$, $Q_1=3-2T$, and $h_m,k_m$ are coefficients of actual analytic functions, not of a truncated logarithmic series. The exact definitions and all fixed-order error arguments appear below. Equation~\eqref{peo:eq:previewrelative} is relative to the exact coefficient model $h_m$; it must not be read as the next correction after a finite sum in~\eqref{peo:eq:previewlogs}.
 
 \paragraph{Attribution and boundary.}
 The enumeration, leading equivalents, analytic logarithmic inversion and Hankel--Gamma transfer have substantial antecedents \cite{BMEP,BC,EPG,DLMF}. The contribution here is a worked refinement: the displayed $Q_0$--$Q_5$, a constructive exact-sector organization, and rounding-aware inverse charts with an executable companion. The particular explicit formulas were not located in the inspected primary sources; this bounded inspection is not a claim of universal priority. The refined enumeration preprint \cite{refined}, inspected as version 3 of 2 June 2026, discusses a predicted general-weight singularity picture in Section 6.4. We prove no general-weight phase diagram. The retrieved OEIS versions on 3 October 2026 supplied exact descriptions but no asymptotic formulas; this dated observation does not certify their latest uncached revisions.
 
-\section{Exact objects and normalizations}\label{sec:objects}
+\begin{remark}[{[write]} The OEIS entries, quoted, 6~October 2026]\label{peo:rem:oeis}
+The entries were read again on 6~October 2026 in the OEIS internal format;
+the quotations are verbatim.
+\begin{enumerate}[label=(\alph*)]\raggedright
+\item A324312 (revision \#18, 2~October 2025), offset~$1$: ``\texttt{Expansion
+ of the generating function of rooted planar Eulerian orientations, counted
+ by edges.}'', data $1,5,33,252,2108,\dots$ (22 terms), formulas
+ ``\texttt{G.f.: (1/(4t\^{}2))*(t-2t\^{}2-R(t)) where R(t) is A324311.}'' and
+ ``\texttt{a(n) = A277493(n)/2. - \_Andrew Elvey Price\_, Dec 12 2024}''.
+\item A277493 (revision \#53, 21~December 2024), offset~$0$: ``\texttt{Number
+ of planar rooted Eulerian orientations (i.e., planar directed Eulerian maps
+ with in-degree and out-degree equal for each vertex) with n edges.}'', data
+ $1,2,10,66,504,\dots$ (23 terms; ``\texttt{a(16) onwards added by \_Andrew
+ Howroyd\_, Dec 12 2024}''), formulas ``\texttt{G.f.: (1/(2*t\^{}2))*(t-R(t))
+ where R(t) is the g.f. of A324311.}'' and ``\texttt{a(n) = 2*A324312(n) for
+ n>0.}'' (Elvey Price, 12~December 2024).
+\item A324314 (revision \#7, 22~February 2019), offset~$1$:
+ ``\texttt{Expansion of the generating function of quartic rooted planar
+ Eulerian orientations, counted by vertices.}'', data
+ $4,35,402,5334,\dots$ (20 terms), formula ``\texttt{G.f.:
+ (1/(3t\^{}2))*(t-3t\^{}2-R(t)) where R(t) is A324313.}''.
+\end{enumerate}
+These are the three generating functions of~\eqref{peo:eq:seqgfs}. No entry
+states an asymptotic formula, as the source found on 3~October 2026. The
+write computed $r_m$, $m\le40$, by its own exact Lagrange inversion
+of~\eqref{peo:eq:Omega} (rational arithmetic), found the
+residual of~\eqref{peo:eq:ODE} zero through $t^{38}$ for both families, and
+compared $-r_{n+2}/d_0$ with every printed term (22, 22 positive-index and
+20): all agree, and A277493 is twice A324312 on every printed positive
+index. The shipped fixture transcribes 22, 5 and 20 of these terms; all
+agree with the live data. Nothing was submitted to the OEIS.
+\end{remark}
+
+\subsection{Provenance, sources and reading conventions}\label{peo:sec:provenance}
+\begin{writenote}[Added 6 October 2026, batch~109]
+\emph{Provenance.} This report is Report~171 of the session bundle that
+ProveIt's \file{docs/incoming} intake processed as batch~109: the archive
+\file{Planar_Eulerian_Orientations_Lambert_Expansions_and_Inverses_Source.zip}
+($3{,}455{,}433$ bytes, SHA-256 \file{f0b45e63f38b...482a01cf2c7d1}, 25
+files, no wrapper directory), arrival commit \file{60f54ea06}, placed in
+\file{f7e9e5c2f}. The text is the delivered \file{Report171.tex} (564
+lines, dated 3~October 2026), shipped as \file{article.tex}. The programs
+are shipped under \file{code/} (the root \file{build.py} as
+\file{code/build.py}), the fixtures and recorded outputs as
+\file{data/fixtures-*} and \file{data/outputs-*}, and \file{BUILD-INFO.json}
+and \file{requirements.txt} under \file{data/} (the report README maps every
+name). Not shipped, and retrievable from the arrival commit: the delivered
+14-page PDF; the checksum manifest \file{SHA256SUMS.json} (24 entries,
+verified at placement); the delivered README, replaced by the report
+README; and \file{outputs/exact.json} ($3{,}024{,}729$ bytes), which no
+shipped program reads and which the companion regenerates byte for byte
+(the README gives the command; at the write it took 18~s). The fixture-hash
+file \file{fixtures/SHA256.json} is shipped as \file{data/fixtures-SHA256.json}
+because the companion reads it. The package records no ProveIt commit and
+names no repository path; it carries no ``prepared for private review'' line
+and no personal data. It is a single-source report, so no merge choice was
+made. The write prefixed the 58 delivered labels with \file{peo:} and
+updated the 45 references to them; it added labels to
+Sections~\ref{peo:sec:scope} and~\ref{peo:sec:questions}, to
+Appendix~\ref{peo:app:sources} and to Sections~\ref{peo:sec:joint}
+and~\ref{peo:sec:generator}, and added this subsection, the notes marked
+[write], Remarks~\ref{peo:rem:oeis}, \ref{peo:rem:input}
+and~\ref{peo:rem:transseries}, and one question in
+Section~\ref{peo:sec:questions}. The added
+statements are the last of their sections, this subsection follows the last
+delivered text of Section~\ref{peo:sec:scope}, and no display, table or
+statement was added before a delivered one, so every theorem, section,
+equation and table of the source keeps its delivered number.
+
+\emph{The sources, as the write read them} (6~October 2026).
+\begin{itemize}\raggedright
+\item OEIS A324312, A277493 and A324314, in the internal format
+ (Remark~\ref{peo:rem:oeis}).
+\item Bousquet-M\'elou and Elvey Price~\cite{BMEP}, arXiv:1803.08265v2 (the
+ version the source names as inspected): Theorems~1.1 and~1.2, the root
+ convention of Section~2, Section~7, and Section~8 (the differential
+ equations of Section~8.1 and Propositions~8.2 and~8.3 of Section~8.2, with
+ the sentences around them); Remark~\ref{peo:rem:input}.
+\item The refined enumeration~\cite{refined}: the abstract page (versions~1,
+ 19~March 2025; 2, 1~June 2026; 3, 2~June 2026) and, in version~3, the title
+ and opening of Section~6.4, ``Predicted singular behaviour''.
+\item The transseries volume
+ \path{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex}:
+ \file{p0:thm:lambert-core}, \file{p0:thm:core-reversion},
+ \file{p0:def:three-inverses}, \file{p0:thm:staircase},
+ \file{plt:def:lw-monomial-log-datum} and \file{plt:thm:lw-template}, read
+ for Remark~\ref{peo:rem:transseries}.
+\item Not read by the write: the published version of~\cite{BMEP},
+ Bousquet-M\'elou and Courtiel~\cite{BC}, Elvey Price and
+ Guttmann~\cite{EPG}, and the DLMF pages~\cite{DLMF}; the source's account of
+ them is reported, not confirmed (the constants $H$, $C$, $\delta_j$ that the
+ source derives from the DLMF formula were recomputed from the digamma
+ definition~\eqref{peo:eq:hyper}).
+\end{itemize}
+
+\emph{What was checked at intake.} The batch-109 dossier read the
+manuscript in full and found no error; it checked the relative correction
+$2/(mL)$ of~\eqref{peo:eq:previewrelative} from the leading terms
+of~\eqref{peo:eq:hkleading} and the contour argument of
+Theorem~\ref{peo:thm:fixed}, and it reran the companion on copies
+(\file{exact} in about 50~s, byte-identical to the delivered
+\file{outputs/exact.json}; \file{symbolic}, \file{diagnostics} and the three
+\file{inverse} runs identical; the \file{test\_companion.py} receipt equal as
+JSON; \file{test\_build.py} fails on Windows, which writes its synthetic
+files with CRLF). \emph{What the write checked.} Every proof line by line,
+with no mathematical error found: Table~\ref{peo:tab:parameters} ($r_0$ from
+the hypergeometric form of $\Omega'$, $\rho=\Omega(r_0)$ numerically, $A$,
+$\kappa_0$ and the amplitudes $\pi^2$, $2\pi^2$, $8\pi^2/3$);
+$H$, $C$ and $\delta_1,\dots,\delta_4$ from the digamma
+definition~\eqref{peo:eq:hyper} (both families, matching
+Appendix~\ref{peo:app:U}); the contraction argument of Section~\ref{peo:sec:models}
+($\Ree\Lambda>C-\log S_0=1$ on $D_s$); the joint
+equation~\eqref{peo:eq:joint}, $q_1$ and~\eqref{peo:eq:localtwo}; the
+contour estimates of the proof of Theorem~\ref{peo:thm:fixed}; the
+reciprocal-Gamma identities ($1/\Gamma(-1-w)=w(1+w)/\Gamma(1-w)$, and the
+coefficient $-2$ of $w$ in $1/\Gamma(-2-w)$) and the Hankel integral of
+Lemma~\ref{peo:lem:Hankel}; $-f'=1/(v(v-1))$ and the two equivalents
+of~\eqref{peo:eq:hkleading}; $E_1$, $E_2$; the chart~\eqref{peo:eq:inverse2};
+and~\eqref{peo:eq:hODE}, \eqref{peo:eq:F1h}. With its own code (SymPy~1.14.0,
+mpmath~1.3.0) it rederived $Q_0,\dots,Q_5$ from the
+generator~\eqref{peo:eq:fgenerator} and the coefficients $c_j$, and
+$U_1,U_2,U_3$ of both families from~\eqref{peo:eq:Ugenerator}: all as
+printed; it checked~\eqref{peo:eq:hODE} and~\eqref{peo:eq:hLagrange}
+against direct Taylor coefficients of $F_0$ (agreement to $10^{-52}$), and
+recomputed Table~\ref{peo:tab:diagnostics}, the ``about 165\% and 185\%''
+and the three values of $x_J(y)-1000$ (note at the end of
+Section~\ref{peo:sec:companion}). It reran \file{exact},
+\file{symbolic}, \file{diagnostics}, the three \file{inverse} runs and
+\file{test\_companion.py} from the shipped files (README, Route~B): all
+outputs byte-identical, the test receipt equal as JSON. Finite and floating
+computations are observations, not certificates.
+
+\emph{Relation to the repository.} Before batch~109 no file of the
+repository named A324312, A277493 or A324314, and no report counted planar
+Eulerian orientations. The reports
+\file{a110058-square-contingency-tables} and
+\file{a380592-tied-football-seasons}, in the same directory
+\file{SetTheory/Cardinals/docs/reports/generating-functions-and-asymptotics/oeis-sequence-asymptotics/},
+cite a cumulant expansion for counting Eulerian orientations of a fixed
+graph, a different object; no result is shared. No statement of this report
+is formalized in Lean or Rocq, and its place in the collection confers no
+formal status. The inverses of Sections~\ref{peo:sec:models}--\ref{peo:sec:inverse}
+are compared with the transseries volume in
+Remark~\ref{peo:rem:transseries}.
+\end{writenote}
+\begin{writenote}[What is not claimed, collected from the source]
+The leading equivalents and the global analytic continuation are
+Bousquet-M\'elou and Elvey Price's and are not re-proved; for the general
+family their published proposition omits the proof details. The
+enumeration, the analytic logarithmic inversion and the Hankel--Gamma
+transfer have antecedents, and the analytic tools of Elvey Price and
+Guttmann are not claimed as new; the explicit formulas ``were not located
+in the inspected primary sources; this bounded inspection is not a claim of
+universal priority''. No general-weight phase diagram is proved; the
+refined preprint's prediction is motivation only. Theorem~\ref{peo:thm:fixed}
+is a fixed-$K$ statement: no convergence of the sector sum as
+$K\to\infty$, no uniformity in growing $K$, no optimal truncation and no
+complete transseries with exponentially small terms. No effective constants
+or starting indices are supplied; no uniform $o(1)$ approximation of $N(y)$
+and no formula $N(y)=\lceil x_J(y)\rceil$ is claimed, and exact finite-index
+identification needs exact counts. Universality of $Q_j$ is only across the
+two inverse hypergeometric families. The diagnostics use no interval
+arithmetic; finite checks do not certify the analytic remainders. The OEIS
+observations are dated. The write adds: its own checks are floating or
+finite; Remark~\ref{peo:rem:input} corrects one citation and no
+mathematics; Remark~\ref{peo:rem:transseries} claims no novelty for any
+inversion.
+\end{writenote}
+\medskip\noindent\begin{minipage}{\textwidth}
+\emph{Reading conventions} (letters the source reuses, with the tempting
+false readings; no symbol of the source was renamed; symbols of the
+transseries volume carry the subscript ``vol'' in
+Remark~\ref{peo:rem:transseries}).\par
+\smallskip
+\begingroup\small\renewcommand{\arraystretch}{1.1}
+\noindent\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.95in}>{\raggedright\arraybackslash}p{3.35in}>{\raggedright\arraybackslash}p{1.8in}@{}}
+\toprule
+Symbol & Meaning here (where) & Not to be read as\\
+\midrule
+$a$, $a_n$, $a_j$ & the family parameter $\tfrac12$, $\tfrac13$; the counts; the ${}_2F_1$ coefficients~\eqref{peo:eq:hyper} & each other\\
+$h_m$, $h_j$, $h$ & $[z^m]F_0$~\eqref{peo:eq:F01}; digamma combinations~\eqref{peo:eq:hyper}; the model $F_0$ in~\eqref{peo:eq:hODE} & each other; the volume's $h_{\mathrm{vol}}$\\
+$q$, $q_\ell$, $q(\eta,w)$ & $Y/b$ (Section~\ref{peo:sec:inverse}); the reversion unknown and its coefficients (Section~\ref{peo:sec:sectors}); also $u/\eta$ & each other\\
+$C$, $c_j$, $c$ & $1+\log4$ or $1+\log6$; reciprocal-Gamma coefficients~\eqref{peo:eq:Gamma}; $\Ree\Lambda$, and the ODE constant $c\in\{16,27\}$ & each other\\
+$\delta$, $\delta_j$ & $\delta_2$; the local constants~\eqref{peo:eq:integrated} & each other\\
+$A$, $\alpha$, $\kappa_0$ & $r_0/\alpha$; $a(1-a)$; $A/d_0$ & sequence names; the volume's $\kappa_{\mathrm{vol}}$\\
+$T$, $t$, $T_q$ & $\log L+C+\gamma$; the series variable, also $\log L+C$ in~\eqref{peo:eq:fgenerator} and $z=1-t/m$ in Lemma~\ref{peo:lem:Hankel}; $T$ at $L_q$ & each other\\
+$L$, $\Li_J$, $L_q$ & $\log m$; the comparison~\eqref{peo:eq:comparison}; $\log q$ & the volume's $L_{\mathrm{vol}}$\\
+$w$, $W_{-1}$ & $1/v$ (Section~\ref{peo:sec:sectors}); in~\eqref{peo:eq:fgenerator} $v-L-t$; in~\eqref{peo:eq:Gamma} a formal variable; Lambert's function & each other\\
+$D$, $D_s$ & $-x^2\partial_x+x\partial_t$; the slit disk~\eqref{peo:eq:slitdisk} & each other\\
+$M_j$, $M_J$ & sector models (Theorem~\ref{peo:thm:fixed}); the comparison root (Section~\ref{peo:sec:inverse}) & each other\\
+$E_K$, $E_j$ & the coefficient remainder; inverse-log coefficients & each other\\
+$K$, $K_J$, $k$, $k_m$ & sector order; the constant of Theorem~\ref{peo:thm:inverse}; $\sin(\pi a)/\pi$; $[z^m]F_1$ & each other\\
+$\rho$, $\mu$, $r$, $r_m$ & the radius, $\rho^{-1}$; the $\Delta$-radius and the variable of $\Omega$; $[t^m]R$ & the volume's $\rho_{\mathrm{vol}}$, $\mu_{\mathrm{vol}}$\\
+\bottomrule
+\end{tabular}
+\endgroup
+\end{minipage}
+
+\section{Exact objects and normalizations}\label{peo:sec:objects}
 The root convention matters. In the paper \cite{BMEP}, the orientation of the root edge must agree with the direction used to root the map. This is the convention for A324312 and A324314. A277493 allows both root-edge orientations and has twice the positive-index counts of A324312. The size-zero value of A277493 is 1 and is treated separately.
 
 Let $R(t)=\sum_{m\ge1}r_mt^m$ be the compositional inverse of $\Omega$, with $R(0)=0$. The defining series are
 \begin{align}
  \Omega_{\rm g}(r)&=\sum_{j\ge0}\binom{2j}{j}^{\!2}\frac{r^{j+1}}{j+1},
  &\Omega_{\rm q}(r)&=\sum_{j\ge0}\binom{2j}{j}\binom{3j}{j}\frac{r^{j+1}}{j+1}.
- \label{eq:Omega}
+ \label{peo:eq:Omega}
 \end{align}
 The generating functions from \cite[Theorems 1.1--1.2]{BMEP} and the OEIS entries are
 \begin{align}
  \sum_{n\ge1}\mathrm{A324312}(n)t^n&=\frac{t-2t^2-R_{\rm g}(t)}{4t^2},\nonumber\\
- \sum_{n\ge0}\mathrm{A277493}(n)t^n&=\frac{t-R_{\rm g}(t)}{2t^2},\label{eq:seqgfs}\\
+ \sum_{n\ge0}\mathrm{A277493}(n)t^n&=\frac{t-R_{\rm g}(t)}{2t^2},\label{peo:eq:seqgfs}\\
  \sum_{n\ge1}\mathrm{A324314}(n)t^n&=\frac{t-3t^2-R_{\rm q}(t)}{3t^2}.\nonumber
 \end{align}
 Consequently, for $n\ge1$ and always with $m=n+2$,
 \begin{equation}
  a_n=-r_m/d_0,\qquad
  d_0=4,\ 2,\ 3
- \quad\text{for A324312, A277493, A324314 respectively.}\label{eq:shift}
+ \quad\text{for A324312, A277493, A324314 respectively.}\label{peo:eq:shift}
 \end{equation}
 Their first positive-index terms are $1,5,33,252$; $2,10,66,504$; and $4,35,402,5334$. The index origins are 1, 0 and 1 respectively. The second component of an OEIS offset is metadata, not an additional index shift.
 
@@ -93,20 +331,20 @@ $A=r_0/\alpha$ & $1/4$ & $1/6$\\
 $C$ & $1+\log4$ & $1+\log6$\\
 $\delta$ & $-5/2$ & $-3$\\\bottomrule
 \end{tabular}
-\caption{Family parameters. $r_0$ is the limiting value of $R$ at $t=\rho$, not a coefficient $r_m$.}\label{tab:parameters}
+\caption{Family parameters. $r_0$ is the limiting value of $R$ at $t=\rho$, not a coefficient $r_m$.}\label{peo:tab:parameters}
 \end{table}
-The amplitude $\kappa_0=A/d_0$ is $1/16$, $1/8$, $1/18$ in the order of~\eqref{eq:shift}. Thus
+The amplitude $\kappa_0=A/d_0$ is $1/16$, $1/8$, $1/18$ in the order of~\eqref{peo:eq:shift}. Thus
 \begin{equation}
  a_n\sim\frac{\kappa_0\mu^{n+2}}{(n+2)^2\log^2(n+2)}.
- \label{eq:leading}
+ \label{peo:eq:leading}
 \end{equation}
 If only a leading equivalent is wanted, replacing $n+2$ by $n$ gives amplitudes $\pi^2$, $2\pi^2$, $8\pi^2/3$ multiplying $\mu^n/(n^2\log^2n)$. Such replacement is unsuitable when resolving algebraic-order corrections.
 
-\section{Analytic input and local singular equation}\label{sec:analytic}
+\section{Analytic input and local singular equation}\label{peo:sec:analytic}
 We use the following published global input. By \cite[Propositions 8.2 and 8.3]{BMEP}, the quartic and general inverse series respectively continue analytically into a domain
 \begin{equation}
  |t|<r,\qquad t\ne\rho,\qquad |\Arg(t-\rho)|>\phi,
- \quad r>\rho,\quad 0<\phi<\pi/2,\label{eq:Delta}
+ \quad r>\rho,\quad 0<\phi<\pi/2,\label{peo:eq:Delta}
 \end{equation}
 and have the stated leading singular equivalents there. In particular, the domain includes every other point of $|t|=\rho$. This is a global continuation assertion, stronger than a local sector expansion. The quartic result uses the earlier spanning-forest analysis \cite[Proposition 8.4]{BC}; for the general proposition, the authors of \cite{BMEP} omit proof details and refer to the preceding argument. We take their published proposition as input, and do not independently re-prove global continuation in this report.
 
@@ -115,7 +353,7 @@ Set
  z=t/\rho,\quad s=1-z,\quad u=1-R(t)/r_0,\quad
  k=\frac{\sin(\pi a)}{\pi}.
 \end{equation}
-All local logarithms are continued from positive $s,u$ near zero. Taylor coefficient matching in~\eqref{eq:Omega} gives
+All local logarithms are continued from positive $s,u$ near zero. Taylor coefficient matching in~\eqref{peo:eq:Omega} gives
 \begin{equation}
  \Omega'(r)={}_2F_1(a,1-a;1;r/r_0).
 \end{equation}
@@ -124,14 +362,14 @@ The zero-balanced hypergeometric continuation formula \cite[15.8.10, $m=0$]{DLMF
  \Omega'(r_0(1-u))=k\sum_{j\ge0}a_ju^j(-\log u+h_j),\quad
  a_j=\frac{(a)_j(1-a)_j}{(j!)^2},\quad
  h_j=2\psi(j+1)-\psi(j+a)-\psi(j+1-a).
- \label{eq:hyper}
+ \label{peo:eq:hyper}
 \end{equation}
 It converges for $|u|<1$, $|\arg u|<\pi$, uniformly on compact subsectors. The regularized hypergeometric notation in the cited formula causes no extra factor here, because the lower parameter is 1. Integrating to the singular point yields
 \begin{equation}
  s=\alpha\sum_{j\ge1}b_ju^j(-\log u+H+\delta_j),\quad
  b_j=\frac{a_{j-1}}{j},\quad H=h_0+1,\quad
  \delta_j=h_{j-1}-h_0+\frac1j-1.
- \label{eq:integrated}
+ \label{peo:eq:integrated}
 \end{equation}
 Indeed $r_0k/\rho=\alpha$ and
 $\int_0^u x^{j-1}(-\log x+h)\dd x
@@ -141,21 +379,50 @@ The endpoint logarithm is integrable. Here $b_1=1$, $b_2=\alpha/2$, $\delta_1=0$
  \delta_2=\delta=\frac32-\frac1\alpha,\quad
  H=\begin{cases}1+4\log2&\text{general},\\1+3\log3&\text{quartic},\end{cases}
  \qquad C=H+\log\alpha.
- \label{eq:constants}
+ \label{peo:eq:constants}
 \end{equation}
 These identities follow from digamma reflection and multiplication; for example,
 $h_1-h_0=2-1/a-1/(1-a)=2-1/\alpha$.
 
-\section{Exact analytic Lambert models}\label{sec:models}
+\begin{remark}[{[write]} The analytic input as published, 6~October 2026]\label{peo:rem:input}
+In arXiv:1803.08265v2 of~\cite{BMEP}, Section~8.2 defines a
+$\Delta$-domain of radius $\rho$ exactly as~\eqref{peo:eq:Delta} and states:
+Proposition~8.2, for the quartic series $R$ of its Theorem~1.1, radius
+$\rho=\sqrt3/(12\pi)$, analyticity in a $\Delta$-domain, and
+$R(t)-\tfrac1{27}\sim\tfrac16(1-t/\rho)/\log(1-t/\rho)$ there, introduced by
+``the first part of the following result is the case $u=-1$ of [17,
+Prop.~8.4]'' ([17] is~\cite{BC}); and Proposition~8.3, for the general
+series of its Theorem~1.2, radius $\rho=1/(4\pi)$ and
+$R(t)-\tfrac1{16}\sim\tfrac14(1-t/\rho)/\log(1-t/\rho)$, followed by ``The
+proof closely follows the proof of Proposition~8.2 given in [17, Sec.~8.3],
+and we will not give any details.'' So the source's account in this
+section is accurate, and its trust boundary is real: every statement here
+about A324312 and A277493 rests on a proposition whose proof is only
+indicated (question~\ref{peo:q:continuation}). The two leading forms agree
+with this report's: $F_0=s/v$ and $v\sim-\log s$ give
+$R(\rho z)-r_0\sim As/\log s$, with $A=\tfrac14$, $\tfrac16$ as in
+Table~\ref{peo:tab:parameters}, and $\sqrt3/(12\pi)=1/(4\sqrt3\pi)$.
+\emph{A citation note.} The source attributes the differential
+equations~\eqref{peo:eq:ODE} to ``\cite[Section~7]{BMEP}''
+(Section~\ref{peo:sec:companion} and Appendix~\ref{peo:app:sources}). In
+arXiv:1803.08265v2 they are in Section~8.1, ``Nature of the series'' (as
+$R(27R-1)R''=6tR'^3$ and $R(16R-1)R''=4tR'^3$); Section~7 solves the
+functional equations of general orientations and contains no such
+equation. The published version was not read. The equations themselves are
+right: the write checked them to order $t^{38}$
+(Remark~\ref{peo:rem:oeis}), and the companion to $t^{1001}$.
+\end{remark}
+
+\section{Exact analytic Lambert models}\label{peo:sec:models}
 \subsection{A sufficient continuation domain}
 Put $S_0=e^{C-1}$, equal to 4 or 6, and define
 \begin{equation}
  D_s=\{s:0<|s|<S_0,\ |\Arg s|<\pi\}.
- \label{eq:slitdisk}
+ \label{peo:eq:slitdisk}
 \end{equation}
 For $s\in D_s$, set $\Lambda=C-\Log s$ and let $v$ be the solution
 \begin{equation}
- v-\Log v=\Lambda.\label{eq:Lambert}
+ v-\Log v=\Lambda.\label{peo:eq:Lambert}
 \end{equation}
 This defines the continuation of the real solution $v>1$; on the positive real axis it is conventionally written
 $-W_{-1}(-e^{-C}s)$. Away from that axis the implicit continuation is our definition, avoiding software conventions for the two lips of the Lambert branch \cite[4.13]{DLMF}.
@@ -164,12 +431,12 @@ For completeness, let $c=\Ree\Lambda>1$. On the closed complete half-plane $\Ree
 $\Ree(\Lambda+\Log v)\ge c+\log c>c$.
 Integration of $1/v$ along a straight segment shows its Lipschitz constant is at most $1/c<1$. The contraction theorem gives a unique fixed point there. The derivative $1-1/v$ is nonzero, so the analytic implicit-function theorem gives local analytic dependence; uniqueness glues these solutions on $D_s$. In particular $\Ree v>1$.
 
-Choose any $1<r_*<S_0-1$. Then $|z|<r_*$, $z\notin[1,\infty)$ implies $1-z\in D_s$. All rational functions of $v$ with possible finite poles only at 0 and 1 therefore give analytic models on that slit disk. Intersect it with~\eqref{eq:Delta}, after scaling by $\rho$. This common domain is all that the coefficient proofs require; no larger slit-plane continuation is asserted.
+Choose any $1<r_*<S_0-1$. Then $|z|<r_*$, $z\notin[1,\infty)$ implies $1-z\in D_s$. All rational functions of $v$ with possible finite poles only at 0 and 1 therefore give analytic models on that slit disk. Intersect it with~\eqref{peo:eq:Delta}, after scaling by $\rho$. This common domain is all that the coefficient proofs require; no larger slit-plane continuation is asserted.
 
 In a smaller closed $\Delta$-sector at $s=0$, $\Im\Lambda$ is bounded, as is $\Im v=\Im\Lambda+\arg v$. The fixed-point equation gives
 \begin{equation}
  v=\Lambda+\Oh(\log\Lambda),\qquad
- |v|\asymp\log(1/|s|),\label{eq:vbound}
+ |v|\asymp\log(1/|s|),\label{peo:eq:vbound}
 \end{equation}
 uniformly there.
 
@@ -178,38 +445,38 @@ Define the analytic functions
 \begin{equation}
  F_0(z)=\frac{1-z}{v(z)},\qquad
  F_1(z)=\frac{(1-z)^2(v(z)+\delta)}{v(z)^2(v(z)-1)},\qquad
- h_m=[z^m]F_0,\quad k_m=[z^m]F_1.\label{eq:F01}
+ h_m=[z^m]F_0,\quad k_m=[z^m]F_1.\label{peo:eq:F01}
 \end{equation}
 They are analytic at $z=0$, with the specific branch just defined. ``Exact model'' means these function and coefficient definitions are exact. Finite-precision extraction of their coefficients is a numerical approximation to that definition.
 
-\begin{theorem}\label{thm:two}
+\begin{theorem}\label{peo:thm:two}
 For either family, as $m\to\infty$,
 \begin{equation}
  r_m\rho^m=-Ah_m+\frac A2 k_m+\Oh(m^{-4}(\log m)^{-3}).
- \label{eq:twosectors}
+ \label{peo:eq:twosectors}
 \end{equation}
-Thus~\eqref{eq:previewmodels} holds for each of the three sequences with the constants of Section~\ref{sec:objects}. Moreover,
+Thus~\eqref{peo:eq:previewmodels} holds for each of the three sequences with the constants of Section~\ref{peo:sec:objects}. Moreover,
 \begin{equation}
  h_m\sim\frac1{m^2\log^2m},\qquad
- k_m\sim-\frac4{m^3\log^3m},\label{eq:hkleading}
+ k_m\sim-\frac4{m^3\log^3m},\label{peo:eq:hkleading}
 \end{equation}
-and~\eqref{eq:previewrelative} follows.
+and~\eqref{peo:eq:previewrelative} follows.
 \end{theorem}
-The local inversion and coefficient remainder are proved in the next section. The leading coefficient estimates in~\eqref{eq:hkleading} are proved in Section~\ref{sec:logs}. Notice that the $F_1$ contribution is positive in the count, although its coefficients are asymptotically negative.
+The local inversion and coefficient remainder are proved in the next section. The leading coefficient estimates in~\eqref{peo:eq:hkleading} are proved in Section~\ref{peo:sec:logs}. Notice that the $F_1$ contribution is positive in the count, although its coefficients are asymptotically negative.
 
-\section{Any fixed number of exact sectors}\label{sec:sectors}
-\subsection{Joint analytic reversion and branch identification}
-Set $\eta=s/(\alpha v)$, $w=1/v$, and $u=\eta q$. Equation~\eqref{eq:Lambert} implies $-\log\eta+H=v$. Dividing~\eqref{eq:integrated} by $s=\alpha\eta v$ gives
+\section{Any fixed number of exact sectors}\label{peo:sec:sectors}
+\subsection{Joint analytic reversion and branch identification}\label{peo:sec:joint}
+Set $\eta=s/(\alpha v)$, $w=1/v$, and $u=\eta q$. Equation~\eqref{peo:eq:Lambert} implies $-\log\eta+H=v$. Dividing~\eqref{peo:eq:integrated} by $s=\alpha\eta v$ gives
 \begin{equation}
  1=q(1-w\log q)+\sum_{j\ge2}b_j\eta^{j-1}q^j
- \{1+w(\delta_j-\log q)\}.\label{eq:joint}
+ \{1+w(\delta_j-\log q)\}.\label{peo:eq:joint}
 \end{equation}
 This is a genuinely analytic implicit equation, not just a formal one. Gamma and digamma asymptotics give $a_j=\Oh((j+1)^{-1})$, $b_j=\Oh(j^{-2})$ and $\delta_j=\Oh(1)$. With $q$ in a small disk about 1 and its analytic logarithm, the sum and all its derivatives converge normally on smaller product neighborhoods satisfying $|\eta q|<r<1$. It is jointly analytic near $(\eta,w,q)=(0,0,1)$.
 
 The derivative of the right side in $q$ is 1 at that base point, and at $(0,w,1)$ it is $1-w$. Hence there is a unique analytic solution $q(\eta,w)$ near $(0,0)$, with $q(0,w)=1$. For each fixed $K\ge1$ it has the uniform expansion
 \begin{equation}
  q(\eta,w)=1+\sum_{\ell=1}^{K-1}q_\ell(w)\eta^\ell+\Oh_K(\eta^K).
- \label{eq:qseries}
+ \label{peo:eq:qseries}
 \end{equation}
 The leading singular equivalent furnished by the published analytic input gives $u/\eta\to1$ uniformly in the smaller $\Delta$-sector. The branch of the actual inverse $R$ therefore lies in this uniqueness neighborhood and is the analytic solution just constructed. This identifies the implicit expansion with the desired generating function.
 
@@ -221,24 +488,24 @@ At first order,
 Consequently
 \begin{equation}
  R(\rho z)=r_0-AF_0(z)+\frac A2F_1(z)+\Oh(s^3/v^3).
- \label{eq:localtwo}
+ \label{peo:eq:localtwo}
 \end{equation}
 
 \subsection{Triangular sector generator}
 Let $\xi=s/\alpha$. There are rational functions $U_\ell(v)$ such that, for each fixed $K$,
 \begin{equation}
  u=\sum_{j=1}^K\xi^jU_{j-1}(v)+\Oh_K((s/v)^{K+1}),\qquad U_0(v)=1/v.
- \label{eq:Usectors}
+ \label{peo:eq:Usectors}
 \end{equation}
 A finite generator substitutes $p(\xi)=\sum_{\ell\ge0}\xi^\ell U_\ell(v)$ into
 \begin{equation}
  1=\sum_{j\ge1}b_j\xi^{j-1}p(\xi)^j
  \{v-\log(vp(\xi))+\delta_j\}.
- \label{eq:Ugenerator}
+ \label{peo:eq:Ugenerator}
 \end{equation}
 At coefficient $\xi^\ell$ the new $U_\ell$ has multiplier $v-1$. This makes the recurrence triangular. Equivalently,
 $U_{j-1}(v)=v^{-j}q_{j-1}(1/v)$ with $q_0=1$.
-The induction in~\eqref{eq:joint} divides only by $1-w$, so each $q_\ell$ is rational with possible finite pole only at $w=1$. Accordingly $U_\ell$ has possible finite poles only at $v=0,1$.
+The induction in~\eqref{peo:eq:joint} divides only by $1-w$, so each $q_\ell$ is rational with possible finite pole only at $w=1$. Accordingly $U_\ell$ has possible finite poles only at $v=0,1$.
 
 For reference, the first nontrivial functions are
 \begin{align}
@@ -246,36 +513,36 @@ For reference, the first nontrivial functions are
  U_1^{\rm q}(v)&=-\frac{v-3}{9v^2(v-1)},\nonumber\\
  U_2^{\rm g}(v)&=-\frac{8v^3-20v^2-20v+23}{512v^3(v-1)^3},&
  U_2^{\rm q}(v)&=-\frac{12v^3-35v^2-38v+43}{729v^3(v-1)^3}.
- \label{eq:Uexplicit}
+ \label{peo:eq:Uexplicit}
 \end{align}
-The next functions $U_3$ are given in Appendix~\ref{app:U} and checked independently by substitution in the companion.
+The next functions $U_3$ are given in Appendix~\ref{peo:app:U} and checked independently by substitution in the companion.
 
-\begin{theorem}[Fixed-sector coefficient expansion]\label{thm:fixed}
+\begin{theorem}[Fixed-sector coefficient expansion]\label{peo:thm:fixed}
 For each fixed integer $K\ge1$ define actual analytic functions
 $M_j(z)=(1-z)^jU_{j-1}(v(z))$, $1\le j\le K$. Then
 \begin{equation}
  r_m\rho^m=-r_0\sum_{j=1}^K\alpha^{-j}[z^m]M_j(z)
  +\Oh_K\!\left(m^{-K-2}(\log m)^{-K-1}\right).
- \label{eq:fixedK}
+ \label{peo:eq:fixedK}
 \end{equation}
 All implied constants may depend on the family and the fixed order $K$.
 \end{theorem}
 This is a fixed-$K$ coefficient theorem. The joint analytic reversion gives a locally convergent series near $s=0$, but does not justify exchanging its infinite sum with coefficient extraction at $z=0$. In particular, the theorem does not establish convergence of the coefficient-sector sum as $K\to\infty$, uniformity when $K$ grows with $m$, optimal truncation, or a complete transseries including exponentially small terms. It supplies a rigorous algebraic-sector hierarchy in exact Lambert models.
 
 \subsection{The full coefficient remainder argument}
-\begin{proof}[Proof of Theorem~\ref{thm:fixed}]
-The analytic reversion above gives~\eqref{eq:Usectors}. Subtract the corresponding analytic models on the common global $\Delta$-domain and write
+\begin{proof}[Proof of Theorem~\ref{peo:thm:fixed}]
+The analytic reversion above gives~\eqref{peo:eq:Usectors}. Subtract the corresponding analytic models on the common global $\Delta$-domain and write
 \begin{equation}
  E_K(z)=R(\rho z)-r_0+r_0\sum_{j=1}^K\alpha^{-j}M_j(z).
 \end{equation}
 For small $s=1-z$ in that domain,
 \begin{equation}
  |E_K(z)|\le B_K|s|^{K+1}\bigl(\log(1/|s|)\bigr)^{-K-1}.
- \label{eq:Ebound}
+ \label{peo:eq:Ebound}
 \end{equation}
 Choose $\pi/2<\theta<\pi-\phi$ in a common smaller domain. Deform the coefficient contour into an arc $|s|=1/m$, rays $s=re^{\pm i\theta}$ up to a fixed sufficiently small radius $\varepsilon$, and closing curves away from $z=1$ with $|z|>1+\varepsilon_1$.
 
-On the small arc the Cauchy kernel $|z|^{-m-1}$ is bounded, the arc length is $\Oh(m^{-1})$, and~\eqref{eq:Ebound} is $\Oh_K(m^{-K-1}(\log m)^{-K-1})$. Its contribution is of the asserted order. On the rays put $r=t/m$. For a small enough terminal radius,
+On the small arc the Cauchy kernel $|z|^{-m-1}$ is bounded, the arc length is $\Oh(m^{-1})$, and~\eqref{peo:eq:Ebound} is $\Oh_K(m^{-K-1}(\log m)^{-K-1})$. Its contribution is of the asserted order. On the rays put $r=t/m$. For a small enough terminal radius,
 $|1-s|^{-m-1}\le B e^{-ct}$ with fixed $c>0$. For $1\le t\le\sqrt m$, $\log(1/|s|)\ge(\log m)/2$, so the absolute integral is bounded by a constant times
 \begin{equation}
  m^{-K-2}(\log m)^{-K-1}
@@ -283,27 +550,27 @@ $|1-s|^{-m-1}\le B e^{-ct}$ with fixed $c>0$. For $1\le t\le\sqrt m$, $\log(1/|s
 \end{equation}
 The remaining ray portions $\sqrt m\le t\le\varepsilon m$ are exponentially small: the remainder is bounded on the fixed local contour, and the kernel decays exponentially. The closing curves are also exponentially small by analyticity and $|z|>1+\varepsilon_1$.
 
-Thus $[z^m]E_K=\Oh_K(m^{-K-2}(\log m)^{-K-1})$. The constant $r_0$ has zero coefficient for $m\ge1$, proving~\eqref{eq:fixedK}. Taking $K=2$ and using~\eqref{eq:localtwo} proves~\eqref{eq:twosectors}.
+Thus $[z^m]E_K=\Oh_K(m^{-K-2}(\log m)^{-K-1})$. The constant $r_0$ has zero coefficient for $m\ge1$, proving~\eqref{peo:eq:fixedK}. Taking $K=2$ and using~\eqref{peo:eq:localtwo} proves~\eqref{peo:eq:twosectors}.
 \end{proof}
 The proof uses absolute-value bounds. It remains valid when the singular power $K+1$ is an integer, and does not assume an extra cancellation at a reciprocal-Gamma zero for an unspecified remainder. No effective constants or starting indices are supplied.
 
-\section{Universal logarithmic correction polynomials}\label{sec:logs}
+\section{Universal logarithmic correction polynomials}\label{peo:sec:logs}
 \subsection{Hankel transfer with a finite derivative expansion}
 Let $f(\ell)=1/v$, where $v-\log v=\ell+C$ in the large-real branch, and put
 \begin{equation}
  c_j=[w^j]\frac1{\Gamma(-1-w)},\qquad
  \frac1{\Gamma(-1-w)}=w(1+w)
  \exp\!\left(-\gamma w-\sum_{k\ge2}\frac{\zeta(k)}k w^k\right).
- \label{eq:Gamma}
+ \label{peo:eq:Gamma}
 \end{equation}
 In particular $c_0=0$, $c_1=1$, $c_2=1-\gamma$.
 
-\begin{lemma}\label{lem:Hankel}
+\begin{lemma}\label{peo:lem:Hankel}
 For every fixed integer $P\ge1$, with $L=\log m$,
 \begin{equation}
  h_m=\frac1{m^2}\sum_{j=1}^P c_j(-1)^jf^{(j)}(L)
  +\Oh_P(m^{-2}L^{-P-2})+\Oh_P(m^{-3}L^{-2}).
- \label{eq:derivative}
+ \label{peo:eq:derivative}
 \end{equation}
 \end{lemma}
 \begin{proof}
@@ -332,17 +599,17 @@ The portions beyond $|t|=\sqrt m$ and the outer closing contour are exponentiall
 \end{equation}
 Taylor's factor $(-1)^j/j!$ produces $c_j(-1)^jf^{(j)}(L)$. The constant term vanishes since $c_0=0$, completing the proof.
 \end{proof}
-This lemma is a finite-order derivative formula. It does not assert convergence of the infinite derivative series. Since $-f'(L)=1/(v(v-1))\sim L^{-2}$, it proves the first equivalent in~\eqref{eq:hkleading}.
+This lemma is a finite-order derivative formula. It does not assert convergence of the infinite derivative series. Since $-f'(L)=1/(v(v-1))\sim L^{-2}$, it proves the first equivalent in~\eqref{peo:eq:hkleading}.
 
 For $F_1=s^2g(\ell)$, where $g=(v+\delta)/(v^2(v-1))=v^{-2}+\Oh(v^{-3})$, the identical proof uses $1/\Gamma(-2-w)$. Its coefficient of $w$ is $-2$, and $g'(L)\sim-2L^{-3}$. Subtracting $s^2g(L)$, again a polynomial, gives
 $k_m\sim2m^{-3}g'(L)\sim-4m^{-3}L^{-3}$.
-Together with Theorem~\ref{thm:two}, this proves~\eqref{eq:previewrelative}; the safe remainder divided by $h_m$ is $\Oh(m^{-2}L^{-1})$, smaller than $1/(mL)$.
+Together with Theorem~\ref{peo:thm:two}, this proves~\eqref{peo:eq:previewrelative}; the safe remainder divided by $h_m$ is $\Oh(m^{-2}L^{-1})$, smaller than $1/(mL)$.
 
-\subsection{Finite generator and explicit formulas}
+\subsection{Finite generator and explicit formulas}\label{peo:sec:generator}
 Put $x=1/L$ and $t=\log L+C$. Formally write $v=L+t+w$. The Lambert equation becomes
 \begin{equation}
  w=\log(1+x(t+w)),\qquad f=\frac{x}{1+x(t+w)}.
- \label{eq:fgenerator}
+ \label{peo:eq:fgenerator}
 \end{equation}
 For any requested finite order this determines polynomial coefficients in $t$ recursively; the analytic implicit-function theorem in $(x,xt)$ near $(0,0)$ justifies the finite expansion and its polynomial-log remainder. Differentiation with respect to $L$ acts as
 \begin{equation}
@@ -350,34 +617,45 @@ For any requested finite order this determines polynomial coefficients in $t$ re
 \end{equation}
 Expand $\sum_j c_j(-D)^jf$ only to the required finite order, substitute $t=T-\gamma$, and take the coefficient of $x^{j+2}$ to obtain $Q_j(T)$. For $Q_0$ through $Q_J$, derivative orders through $J+1$ suffice, with all intermediate series truncated at degree $J+2$.
 
-\begin{theorem}\label{thm:logarithms}
-For every fixed integer $J\ge0$, all three sequences satisfy~\eqref{eq:previewlogs}. The universal polynomials through degree five are
+\begin{theorem}\label{peo:thm:logarithms}
+For every fixed integer $J\ge0$, all three sequences satisfy~\eqref{peo:eq:previewlogs}. The universal polynomials through degree five are
 \begin{align}
  Q_0={}&1,\nonumber\\
  Q_1={}&3-2T,\nonumber\\
  Q_2={}&3T^2-11T+6-\frac{\pi^2}{2},\nonumber\\
  Q_3={}&-4T^3+25T^2+(2\pi^2-35)T
-       +10-\frac{25\pi^2}{6}-8\zeta(3),\label{eq:Qlow}\\
+       +10-\frac{25\pi^2}{6}-8\zeta(3),\label{peo:eq:Qlow}\\
  Q_4={}&5T^4-\frac{137}{3}T^3+
        \left(\frac{225}{2}-5\pi^2\right)T^2\nonumber\\
       &+\left(-85+40\zeta(3)+\frac{137\pi^2}{6}\right)T
-       +15-\frac{75\pi^2}{4}-\frac{274\zeta(3)}3+\frac{\pi^4}{12},\label{eq:Q4}\\
+       +15-\frac{75\pi^2}{4}-\frac{274\zeta(3)}3+\frac{\pi^4}{12},\label{peo:eq:Q4}\\
  Q_5={}&-6T^5+\frac{147}{2}T^4+
        \left(10\pi^2-\frac{812}{3}\right)T^3\nonumber\\
       &+\left(\frac{735}{2}-\frac{147\pi^2}{2}-120\zeta(3)\right)T^2\nonumber\\
       &+\left(-175-\frac{\pi^4}{2}+588\zeta(3)+\frac{406\pi^2}{3}\right)T\nonumber\\
       &+21-\frac{245\pi^2}{4}-\frac{1624\zeta(3)}{3}
        -144\zeta(5)+\frac{49\pi^4}{40}+20\pi^2\zeta(3).
-       \label{eq:Q5}
+       \label{peo:eq:Q5}
 \end{align}
 \end{theorem}
 \begin{proof}
-The finite expansion~\eqref{eq:fgenerator}, substituted into Lemma~\ref{lem:Hankel} at sufficiently high fixed derivative order, gives the stated terms and a relative remainder $\Oh_J((\log L)^{J+1}/L^{J+1})$. The coefficient error in Theorem~\ref{thm:fixed} with $K=1$ is $\Oh(m^{-3}L^{-2})$ and is absorbed in any such fixed logarithmic remainder. Finite algebra gives~\eqref{eq:Qlow}--\eqref{eq:Q5}. The companion independently verifies the generated identities using a second reversion equation for $f=xF$,
+The finite expansion~\eqref{peo:eq:fgenerator}, substituted into Lemma~\ref{peo:lem:Hankel} at sufficiently high fixed derivative order, gives the stated terms and a relative remainder $\Oh_J((\log L)^{J+1}/L^{J+1})$. The coefficient error in Theorem~\ref{peo:thm:fixed} with $K=1$ is $\Oh(m^{-3}L^{-2})$ and is absorbed in any such fixed logarithmic remainder. Finite algebra gives~\eqref{peo:eq:Qlow}--\eqref{peo:eq:Q5}. The companion independently verifies the generated identities using a second reversion equation for $f=xF$,
 $1/F+x\log F=1+xt$.
 \end{proof}
 The leading polynomial term is $(-1)^j(j+1)T^j$. Universality here is only across the two specified inverse hypergeometric families: their first-sector Lambert equations differ through $C$. Later exact sectors depend on additional local constants such as $\delta$. At accessible indices a higher logarithmic truncation need not improve an approximation monotonically.
 
-\section{Smooth inverse charts and integer thresholds}\label{sec:inverse}
+\begin{writenote}[Rederived, 6 October 2026]
+With its own code the write solved $w=\log(1+x(t+w))$ to order $x^8$, applied
+$\sum_jc_j(-D)^jf$ with $c_j$ from~\eqref{peo:eq:Gamma}, and substituted
+$t=T-\gamma$: the coefficients of $x^0$ and $x^1$ vanish and those of
+$x^2,\dots,x^7$ are exactly $Q_0,\dots,Q_5$ of~\eqref{peo:eq:Qlow}--\eqref{peo:eq:Q5}
+(SymPy); the leading coefficients are $1,-2,3,-4,5,-6$, as stated. This
+checks the finite algebra with the same generator, not the analytic
+remainder, which rests on Lemma~\ref{peo:lem:Hankel} and
+Theorem~\ref{peo:thm:fixed}.
+\end{writenote}
+
+\section{Smooth inverse charts and integer thresholds}\label{peo:sec:inverse}
 Let $b=\log\mu$, and for large positive real $y$ put
 \begin{equation}
  Y=\log(y/\kappa_0),\qquad q=Y/b,\qquad
@@ -392,7 +670,7 @@ For fixed $J\ge0$ define the smooth comparison
 \begin{equation}
  \Li_J(m)=bm-2\log m-2\log\log m+\log\kappa_0
  +\sum_{j=1}^J\frac{E_j(\log\log m+C+\gamma)}{(\log m)^j}.
- \label{eq:comparison}
+ \label{peo:eq:comparison}
 \end{equation}
 Its derivative tends to $b>0$. For large $y$ it has a unique large real solution $M_J(y)$ of $\Li_J(M_J)=\log y$; set $\xi_J=M_J-2$. This is a smooth comparison root, not an integer-valued inverse.
 
@@ -400,19 +678,19 @@ The explicit chart is
 \begin{equation}
  x_J(y)=q-2+\frac2b(\log q+\log\log q)
  -\frac1b\sum_{j=1}^J\frac{E_j(T_q)}{L_q^j}.
- \label{eq:inversegeneral}
+ \label{peo:eq:inversegeneral}
 \end{equation}
 In particular,
 \begin{align}
  x_2(y)={}&q-2+\frac2b(\log q+\log\log q)
  +\frac{2T_q-3}{bL_q}\nonumber\\
  &+\frac{-T_q^2+5T_q-3/2+\pi^2/2}{bL_q^2}.
- \label{eq:inverse2}
+ \label{peo:eq:inverse2}
 \end{align}
-\begin{theorem}\label{thm:inverse}
+\begin{theorem}\label{peo:thm:inverse}
 For each fixed $J$, as $y\to\infty$,
 \begin{equation}
- x_J(y)-\xi_J(y)=\Oh_J(\log q/q).\label{eq:smootherror}
+ x_J(y)-\xi_J(y)=\Oh_J(\log q/q).\label{peo:eq:smootherror}
 \end{equation}
 Define $N(y)=\min\{n:a_n\ge y\}$ with the sequence's own index origin. There are constants $K_J>0$, $y_J$ such that for $y\ge y_J$, setting
 \begin{equation}
@@ -424,58 +702,129 @@ one has
  \left\lceil x_J(y)-\varepsilon_J(y)\right\rceil
  \le N(y)\le
  \left\lceil x_J(y)+\varepsilon_J(y)\right\rceil.
- \label{eq:ceiling}
+ \label{peo:eq:ceiling}
 \end{equation}
 \end{theorem}
 \begin{proof}
-Taking logarithms in Theorem~\ref{thm:logarithms} gives
+Taking logarithms in Theorem~\ref{peo:thm:logarithms} gives
 \begin{equation}
  \log a_n-\Li_J(n+2)
  =\Oh_J\!\left(\frac{(\log\log(n+2))^{J+1}}{(\log(n+2))^{J+1}}\right).
- \label{eq:logdiscrepancy}
+ \label{peo:eq:logdiscrepancy}
 \end{equation}
-Substitute $m=x_J+2$ into~\eqref{eq:comparison}. Because $m=q+\Oh(\log q)$, replacing $m$ by $q$ in its slowly varying terms costs $\Oh_J(\log q/q)$; the terms displayed in~\eqref{eq:inversegeneral} cancel all the retained corrections at $q$. The derivative $b+o(1)$ and the mean-value theorem imply~\eqref{eq:smootherror}.
+Substitute $m=x_J+2$ into~\eqref{peo:eq:comparison}. Because $m=q+\Oh(\log q)$, replacing $m$ by $q$ in its slowly varying terms costs $\Oh_J(\log q/q)$; the terms displayed in~\eqref{peo:eq:inversegeneral} cancel all the retained corrections at $q$. The derivative $b+o(1)$ and the mean-value theorem imply~\eqref{peo:eq:smootherror}.
 
-The asymptotic formula also implies $a_{n+1}/a_n\to\mu>1$, hence eventual strict increase. Enlarge $y_J$ beyond all values in any finite initial exceptional portion. Uniformly for integers near $\xi_J$, the discrepancy in~\eqref{eq:logdiscrepancy} transports through the increasing smooth comparison with derivative bounded below by $b/2$. Choosing $K_J$ large enough and including~\eqref{eq:smootherror} shows every integer below $x_J-\varepsilon_J$ has $a_n<y$, and the integer $\lceil x_J+\varepsilon_J\rceil$ has $a_n\ge y$. This proves~\eqref{eq:ceiling}.
+The asymptotic formula also implies $a_{n+1}/a_n\to\mu>1$, hence eventual strict increase. Enlarge $y_J$ beyond all values in any finite initial exceptional portion. Uniformly for integers near $\xi_J$, the discrepancy in~\eqref{peo:eq:logdiscrepancy} transports through the increasing smooth comparison with derivative bounded below by $b/2$. Choosing $K_J$ large enough and including~\eqref{peo:eq:smootherror} shows every integer below $x_J-\varepsilon_J$ has $a_n<y$, and the integer $\lceil x_J+\varepsilon_J\rceil$ has $a_n\ge y$. This proves~\eqref{peo:eq:ceiling}.
 \end{proof}
 The constants and starting point in this theorem are not explicitly evaluated or certified here. The two ceiling values may differ near an integer boundary, even though $\varepsilon_J(y)\to0$. No uniform $o(1)$ approximation to the step function $N(y)$, and no unconditional formula $N(y)=\lceil x_J(y)\rceil$, is claimed. Exact finite-index identification requires exact count comparisons. The forward Lambert model uses $W_{-1}$; the explicit inverse chart itself uses only ordinary real logarithms.
 
-\section{Reproducible computations and numerical use}\label{sec:companion}
+\begin{remark}[{[write]} The inversions and the transseries volume, 6~October 2026]\label{peo:rem:transseries}
+Compared, statement by statement, with
+\path{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex};
+symbols of the volume carry the subscript ``vol''.
+\begin{enumerate}[label=(\alph*)]
+\item \emph{Instance.} The threshold $N(y)$ is the integer staircase $N_\ast$
+ of \file{p0:def:three-inverses} with $A_n=a_n$ and $n_1$ the onset of
+ strict increase (eventual, as the proof above shows; the first 1000 terms
+ of each sequence are strictly increasing, by the exact counts), for $y$
+ above the finitely many earlier values; \file{p0:thm:staircase}(1) gives
+ $N(y)=\lceil\nu_{\mathcal A}(y)\rceil$ for every admissible interpolation. The
+ source does not use this.
+\item \emph{Theorem~\ref{peo:thm:inverse}: an analogue as stated and
+ proved; also a consequence of \file{p0:thm:staircase}(1) once an
+ interpolation is supplied.} The source brackets $N(y)$ directly about the
+ explicit chart $x_J$, which is not the inverse of an interpolation of the
+ counts; the conclusion has the form of \file{p0:thm:staircase}(2). A second
+ route (added by the write): let $E(n)=\log a_n-\Li_J(n+2)$, which
+ is $\Oh_J((\log\log n)^{J+1}/(\log n)^{J+1})$
+ by~\eqref{peo:eq:logdiscrepancy}, let $\tilde E$ be its piecewise-linear
+ interpolation, and put $\log\mathcal A(x)=\Li_J(x+2)+\tilde E(x)$. Since
+ $\Li_J'\to b>0$ and $|\tilde E'|\le2\max|E|\to0$ on the unit intervals,
+ $\mathcal A$ is eventually continuous, strictly increasing and equal to
+ $a_n$ at the integers. For $\nu=\nu_{\mathcal A}(y)$ one has
+ $\Li_J(\nu+2)-\Li_J(M_J)=-\tilde E(\nu)$, so, once $\Li_J'\ge b/2$ on the
+ segment, $|\nu-\xi_J|\le(2/b)|\tilde E(\nu)|\le(2/b)\max(|E(\lfloor\nu\rfloor)|,|E(\lceil\nu\rceil)|)$,
+ which is $\Oh_J((\log\log q)^{J+1}/(\log q)^{J+1})$ because $\nu\sim q$.
+ With~\eqref{peo:eq:smootherror}, $|\nu-x_J|\le\varepsilon_J$ for a
+ suitable $K_J$, and \file{p0:thm:staircase}(1) with the monotonicity of
+ the ceiling gives~\eqref{peo:eq:ceiling}.
+\item \emph{Instance on the real axis.} For real $s\in(0,S_0)$ the Lambert
+ equation~\eqref{peo:eq:Lambert}, $v-\log v=\Lambda$, is
+ \file{p0:thm:lambert-core} with $a_{\mathrm{vol}}=1$, $b_{\mathrm{vol}}=-1$:
+ its branch rule gives two positive solutions exactly when
+ $\Lambda>L_c=|b_{\mathrm{vol}}|(1-\log(|b_{\mathrm{vol}}|/a_{\mathrm{vol}}))=1$,
+ the large one $-W_{-1}(-e^{-\Lambda})=-W_{-1}(-e^{-C}s)$, the source's
+ branch; the threshold $1$ is the source's condition $\Ree\Lambda>1$ on
+ $D_s$. The complex continuation by the contraction argument is the
+ source's own.
+\item \emph{Formal instance.} The large-$\Lambda$ expansion of $v$ behind the
+ generator~\eqref{peo:eq:fgenerator} is \file{plt:thm:lw-template} with
+ $\xi_{\mathrm{vol}}=\Lambda=L+C$, $Z_{\mathrm{vol}}=v$ and data
+ $(\rho_{\mathrm{vol}},\mu_{\mathrm{vol}},\beta_{\mathrm{vol}},B_{\mathrm{vol}})=(1,-1,0,0)$,
+ the pure Lambert case $q_N=a_{\mathrm{vol}}^{N+1}\mathrm{LamP}_N$ with
+ $a_{\mathrm{vol}}=-1$; the source re-expands it in $x=1/L$ and
+ $t=\log L+C$ instead of in $1/(L+C)$.
+\item \emph{Formal instance after a change of variable.} With $q=1+E$, the
+ joint equation~\eqref{peo:eq:joint} reads
+ $\Lambda_{\mathrm{vol}}E+h_{\mathrm{vol}}(E)+f_{\mathrm{vol}}(\eta,E)=0$
+ with $\Lambda_{\mathrm{vol}}=1-w$,
+ $h_{\mathrm{vol}}(u)=-w\bigl((1+u)\log(1+u)-u\bigr)$ and
+ $f_{\mathrm{vol}}(\eta,u)=\sum_{j\ge2}b_j\eta^{j-1}(1+u)^j(1+w\delta_j-w\log(1+u))$,
+ which is \file{p0:thm:core-reversion} over the ring
+ $\mathbb Q[w,(1-w)^{-1}]$; its triangular recurrence gives each $q_\ell$
+ rational in $w$ with poles only at $w=1$, as the source says. The
+ convergence, by the analytic implicit-function theorem, and the branch
+ identification are the source's own.
+\item \emph{Not shown to be an instance of \file{plt:thm:lw-template}.} The
+ comparison equation $\Li_J(m)=\log y$ behind the chart~\eqref{peo:eq:inversegeneral}
+ has the core $bm-2\log m$, which is \file{p0:thm:lambert-core} with
+ $a_{\mathrm{vol}}=b$, $b_{\mathrm{vol}}=-2$; the source inverts it by a
+ direct logarithmic expansion about $q$ instead. In the chart
+ $Z_{\mathrm{vol}}=m$, $\xi_{\mathrm{vol}}=\log y$ the terms $-2\log\log m$
+ and $E_j(\log\log m+C+\gamma)/(\log m)^j$ have $t$-order $0$ ($t=1/m$) and
+ are not polynomial in $\log Z$, so hypothesis (H3) fails. The write does
+ not claim that no other chart makes the full equation an instance;
+ \eqref{peo:eq:smootherror} is the source's own analytic estimate.
+\end{enumerate}
+No novelty is claimed for any of these inversions.
+\end{remark}
+
+\section{Reproducible computations and numerical use}\label{peo:sec:companion}
 \subsection{Independent exact checks}
 The companion supplies bounded exact integer calculations and deliberately separate floating-point diagnostics. The equations from \cite[Section 7]{BMEP} are
 \begin{equation}
  R(cR-1)R''=dt(R')^3,\qquad R(0)=0,\quad R'(0)=1,
- \quad(c,d)=(16,4)\text{ or }(27,6).\label{eq:ODE}
+ \quad(c,d)=(16,4)\text{ or }(27,6).\label{peo:eq:ODE}
 \end{equation}
 For $m\ge2$, let $R_{<m}=\sum_{j<m}r_jt^j$. The coefficient of the new $r_m$ in the left-minus-right residual is $-m(m-1)r_m$, so
 \begin{equation}
  r_m=\frac{[t^{m-1}]\{R_{<m}(cR_{<m}-1)R_{<m}''-dt(R_{<m}')^3\}}{m(m-1)}.
- \label{eq:recurrence}
+ \label{peo:eq:recurrence}
 \end{equation}
 Integer divisibility is checked before division. A second exact route, independent of this differential recurrence, is Lagrange inversion:
 \begin{equation}
  r_m=\frac1m\sum_{k=0}^{m-1}(-1)^k\binom{m+k-1}{k}
  [r^{m-1}]\left(\frac{\Omega(r)}r-1\right)^k.
- \label{eq:Lagrange}
+ \label{peo:eq:Lagrange}
 \end{equation}
 The package checks a bounded prefix against this formula and against frozen OEIS terms, tests the full generated differential residual, and checks rooting divisibility. It also verifies the $Q$ identities and the sector residuals independently rather than merely printing the stored expressions. The command reference, exact output sizes and resource limits are in the included README.
 
 \subsection{Numerical coefficient extraction of the exact models}
-For $h(z)=F_0(z)$, differentiation of~\eqref{eq:Lambert} yields
+For $h(z)=F_0(z)$, differentiation of~\eqref{peo:eq:Lambert} yields
 \begin{equation}
  hh''=-(h')^3,\qquad h(0)=1/v_0,\qquad h'(0)=-1/(v_0-1),
  \quad v_0-\log v_0=C,\quad v_0>1.
- \label{eq:hODE}
+ \label{peo:eq:hODE}
 \end{equation}
 It also gives
 \begin{equation}
  F_1=h^2-(\delta+1)h^2h'
-     =h^2-\frac{\delta+1}{3}(h^3)'.\label{eq:F1h}
+     =h^2-\frac{\delta+1}{3}(h^3)'.\label{peo:eq:F1h}
 \end{equation}
-Coefficient comparison in~\eqref{eq:hODE} is triangular; maintaining the needed convolutions yields a quadratic-arithmetic-operation recurrence. An independent small-prefix check sets $h=h_0(1-q)$ and inverts
+Coefficient comparison in~\eqref{peo:eq:hODE} is triangular; maintaining the needed convolutions yields a quadratic-arithmetic-operation recurrence. An independent small-prefix check sets $h=h_0(1-q)$ and inverts
 \begin{equation}
  z=h_0\left\{(v_0-1)q+\sum_{j\ge2}\frac{q^j}{j(j-1)}\right\}
- \label{eq:hLagrange}
+ \label{peo:eq:hLagrange}
 \end{equation}
 by Lagrange's formula. Agreement between these routes is a valuable implementation diagnostic; without interval arithmetic it is not a proof of their rounding error.
 
@@ -486,9 +835,9 @@ Family at $n=1000$ & $F_0$ model & $F_0-F_1/2$ model\\\midrule
 A324312 & $-1.46974833746\times10^{-4}$ & $+3.81810914855\times10^{-8}$\\
 A324314 & $-1.31150652412\times10^{-4}$ & $+4.44844452278\times10^{-8}$\\\bottomrule
 \end{tabular}
-\caption{Relative error $(\text{approximation}/a_n)-1$ from high-precision numerical extraction of the exact analytic models, using $m=n+2$. These are diagnostics, not interval-certified error bounds.}\label{tab:diagnostics}
+\caption{Relative error $(\text{approximation}/a_n)-1$ from high-precision numerical extraction of the exact analytic models, using $m=n+2$. These are diagnostics, not interval-certified error bounds.}\label{peo:tab:diagnostics}
 \end{table}
-The values in Table~\ref{tab:diagnostics} were reproduced at 110 decimal digits, and the first 60 $h_m$ were independently compared with~\eqref{eq:hLagrange}. The independent route agreed to better than $10^{-90}$ relative discrepancy on that checked prefix. This is empirical agreement, not a certified accuracy statement. A277493 has the same relative errors as A324312. In contrast, the shifted leading equivalent alone at $n=1000$ overestimates by about 165\% and 185\% in the two families. This slow logarithmic convergence explains the practical value of keeping the first analytic model whole.
+The values in Table~\ref{peo:tab:diagnostics} were reproduced at 110 decimal digits, and the first 60 $h_m$ were independently compared with~\eqref{peo:eq:hLagrange}. The independent route agreed to better than $10^{-90}$ relative discrepancy on that checked prefix. This is empirical agreement, not a certified accuracy statement. A277493 has the same relative errors as A324312. In contrast, the shifted leading equivalent alone at $n=1000$ overestimates by about 165\% and 185\% in the two families. This slow logarithmic convergence explains the practical value of keeping the first analytic model whole.
 
 The inverse chart also need not improve monotonically with truncation. At $y=\mathrm{A324312}(1000)$, the numerical values of $x_J(y)-1000$ for $J=0,1,2$ are approximately $-0.391352$, $-0.00264436$, $+0.0300876$. These numbers test the explicit chart at a known level; they do not turn the asymptotic ceiling theorem into a finite certified bound.
 
@@ -497,7 +846,24 @@ The distribution contains this source and PDF, executable Python, fixed formula 
 
 All exact identities and integer checks can be repeated without network access. Numerical diagnostics require the listed arbitrary-precision package; symbolic verification requires the listed symbolic package. The README distinguishes bounded exact verification commands from the slower floating-point diagnostics; the full archive build regenerates both. The asymptotic statements rest on the proofs and cited analytic input, not on the finite checks.
 
-\section{Further research directions}
+\begin{writenote}[Rechecked, 6 October 2026]
+From the regenerated exact counts and its own model coefficients (the
+recurrence~\eqref{peo:eq:hODE} with incremental convolutions at 60 digits,
+and $k_m$ from~\eqref{peo:eq:F1h}), the write reproduced all four entries of
+Table~\ref{peo:tab:diagnostics} to the printed digits, the leading
+overestimates $+1.6475$ and $+1.8500$ (the ``about 165\% and 185\%''), and
+$x_J(y)-1000=-0.39135215$, $-0.0026443594$, $+0.030087643$ ($J=0,1,2$) at
+$y=\mathrm{A324312}(1000)$. The $(1+o(1))$ of~\eqref{peo:eq:previewrelative}
+is slow: at $n=1000$, $mL\,(a_n/(\kappa_0\mu^mh_m)-1)=1.0177$ (general) and
+$0.9082$ (quartic), not near $2$, while $mL\,(-k_m/(2h_m))=1.0180$ and
+$0.9085$; so the exact first sector accounts for almost all of the
+discrepancy, and its slow approach to $2$ is a property of the exact
+models. Neither number tests the theorem, which is asymptotic. The exact file \file{outputs/exact.json} is not
+shipped in this repository; the README gives the command that regenerates it
+and its SHA-256.
+\end{writenote}
+
+\section{Further research directions}\label{peo:sec:questions}
 \begin{enumerate}[leftmargin=*,itemsep=0.4em]
 \item \textbf{Effective error constants.} Quantify the common $\Delta$-domain, implicit-function bounds and contour constants to obtain explicit finite-index forward inequalities. Interval-certified Lambert coefficient extraction would then support rigorous threshold localization.
 \item \textbf{Large sector order.} Determine the growth of $U_j$ and the optimal truncation scale. The fixed-$K$ theorem alone does not answer whether the infinite coefficient-sector representation converges, or how additional distant singularities enter exponentially small corrections.
@@ -506,9 +872,31 @@ All exact identities and integer checks can be repeated without network access. 
 \item \textbf{Certified inversion algorithms.} Combine the smooth chart with interval model bounds and a short exact recurrence window. Such a method could turn the asymptotic ceiling sandwich into a practical, certified integer inverse at specified large levels.
 \end{enumerate}
 
+\begin{writenote}[Added 6 October 2026, under Vladimir's standing rule of 4 October 2026]
+The source's five directions stand. One question is added: the input on
+which every count statement for the general family rests is published with
+its proof only indicated (Remark~\ref{peo:rem:input}).
+\end{writenote}
+\begin{enumerate}[leftmargin=*,itemsep=0.4em,start=6]
+\item\label{peo:q:continuation} \textbf{Continuation for the general
+family.} Write out the proof of Proposition~8.3 of~\cite{BMEP}: radius
+$1/(4\pi)$, analyticity of the general inverse series $R$ in a
+$\Delta$-domain, and $R(t)-\frac1{16}\sim\frac14(1-t/\rho)/\log(1-t/\rho)$
+there. Its authors say that the proof ``closely follows the proof of
+Proposition~8.2 given in [17, Sec.~8.3]'' and give no details, and the
+source takes the proposition as input (Section~\ref{peo:sec:analytic}).
+Sketch: the quartic argument of~\cite{BC}, Section~8.3, with $\Omega_{\rm g}$
+for $\Omega_{\rm q}$; BMEP name nonnegativity of the coefficients of
+$t-R(t)$ as one key ingredient. Missing: the written argument, in particular
+that $\rho$ is the only singularity on $|t|=\rho$ and the continuation
+beyond it. Until then, Theorems~\ref{peo:thm:two}, \ref{peo:thm:fixed},
+\ref{peo:thm:logarithms} and~\ref{peo:thm:inverse} are conditional for
+A324312 and A277493.
+\end{enumerate}
+
 \appendix
-\section{The fourth local sector}\label{app:U}
-The finite generator~\eqref{eq:Ugenerator} gives
+\section{The fourth local sector}\label{peo:app:U}
+The finite generator~\eqref{peo:eq:Ugenerator} gives
 \begin{align}
  U_3^{\rm g}(v)&=-\frac{40v^5-158v^4+112v^3-82v^2+107v-46}
  {8192v^4(v-1)^5},\\
@@ -523,10 +911,10 @@ General & $0$ & $-5/2$ & $-3$ & $-193/60$\\
 Quartic & $0$ & $-3$ & $-211/60$ & $-3139/840$\\\bottomrule
 \end{tabular}
 \end{center}
-These give $M_4=s^4U_3(v)$ in Theorem~\ref{thm:fixed}, whose remainder for $K=4$ is $\Oh(m^{-6}(\log m)^{-5})$. The companion checks vanishing residual coefficients after substituting $U_0,U_1,U_2,U_3$ in the local equation.
+These give $M_4=s^4U_3(v)$ in Theorem~\ref{peo:thm:fixed}, whose remainder for $K=4$ is $\Oh(m^{-6}(\log m)^{-5})$. The companion checks vanishing residual coefficients after substituting $U_0,U_1,U_2,U_3$ in the local equation.
 
-\section{Source map and theorem dependencies}
-The exact inverse descriptions and root convention come from \cite[Theorems 1.1--1.2 and Section 2]{BMEP}; its Section 7 supplies~\eqref{eq:ODE}. The global continuation and leading singular equivalents used to identify the actual branch are \cite[Propositions 8.2--8.3]{BMEP}. For the quartic antecedent, \cite[Theorem 7.1, equation (53), Proposition 8.4]{BC} gives analytic logarithmic inversion, the local regular constant and global continuation. The general proposition's omitted proof details are acknowledged in Section~\ref{sec:analytic}.
+\section{Source map and theorem dependencies}\label{peo:app:sources}
+The exact inverse descriptions and root convention come from \cite[Theorems 1.1--1.2 and Section 2]{BMEP}; its Section 7 supplies~\eqref{peo:eq:ODE}. The global continuation and leading singular equivalents used to identify the actual branch are \cite[Propositions 8.2--8.3]{BMEP}. For the quartic antecedent, \cite[Theorem 7.1, equation (53), Proposition 8.4]{BC} gives analytic logarithmic inversion, the local regular constant and global continuation. The general proposition's omitted proof details are acknowledged in Section~\ref{peo:sec:analytic}.
 
 The hypergeometric and Lambert facts are the specific DLMF sections cited in the body. Elvey Price and Guttmann \cite{EPG} discuss logarithmic test singularities, inverse-log corrections and reciprocal-Gamma derivative transfer, including the limiting integer-power issue. We therefore do not claim those analytic tools as new. The 2026 version of \cite{refined}, Section 6.4, explicitly distinguishes predicted general-weight behavior from the specializations proved in the earlier paper. The frozen OEIS fixtures reproduce the displayed terms and their source URLs as retrieved on 3 October 2026; any future proposed OEIS update should recheck the then-current entry.
 
