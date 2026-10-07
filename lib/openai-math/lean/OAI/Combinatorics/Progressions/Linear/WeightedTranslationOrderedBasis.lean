@@ -1,3 +1,7 @@
+/-
+Modified for ProveIt: rewrite the supported layer basis at default transparency
+on Lean 4.32. Mathematical statements are unchanged.
+-/
 import OAI.Combinatorics.Progressions.Estimates.WeightedTranslationStructureConstants
 
 namespace OAI
@@ -62,7 +66,8 @@ theorem weightedLayerBasis_height (hwd : ∀ i, w i ≤ d) (r : ℕ)
     (i : {j : Fin (Fintype.card (WeightedBasisIndex w d)) // r ≤ weightedOrderedGrade w d j}) (j) :
     RationalHeightLE ((weightedOrderedBasis w d hw).repr
       (weightedLayerBasis w d hw hwd r i).val j) 1 := by
-  rw [weightedLayerBasis, supportedSubmoduleBasis_coe]
+  rw [weightedLayerBasis]
+  erw [supportedSubmoduleBasis_coe]
   exact basis_repr_height_one (weightedOrderedBasis w d hw) _ _
 
 noncomputable def weightedLayerIndexEquiv (hwd : ∀ i, w i ≤ d) (r : ℕ) :

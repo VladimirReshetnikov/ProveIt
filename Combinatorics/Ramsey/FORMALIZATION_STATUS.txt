@@ -20,8 +20,8 @@ Scope
   checkpoints; the current catalogue count is stated here and in the ledger.
 
 Verification at this checkpoint
-  All 770 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 4,912 public Gowers theorems and found only propext,
+  All 771 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 4,931 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 114 exact
   companion proofs and 6 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -46,6 +46,18 @@ Conditional Section 16 regime splitting
   inner loss. Existence of those covers with the required budgets remains
   a premise. The reduction does not close Theorem 16.2 or its dependants.
 
+One-dimensional cover with graph count independent of the loss
+  The merged Proofs16PolyBaseCase is included in the full audit. For a
+  one-dimensional relation over a prime modulus contained in q > 0
+  order-eight Freiman graphs,
+  section16_freiman_family_poly_cover proves MultiplyLinearWith graph
+  count 3*q, independent of the loss 0 < sigma <= 1, and width exponent
+    (2^-14 * (sigma/q)^2 / q) * log(2)/log(1024*pi/(sigma/q)).
+  It deletes the sparse graphs and applies Corollary 7.11 simultaneously
+  to the remaining graphs; small boxes use the exact coarse cover.
+  This supplies a stronger base case for the dimension-two approach.
+  The higher-dimensional lift and Theorem 16.2 remain unproved.
+
 Conditional quantitative density bridge and dependency port
   Proofs01QuantitativeDensityBridge proves the exact Theorem 1.3 from
   OAI.Erdos3.QuantitativeDensityTheorem. An elementary exponential estimate
@@ -57,8 +69,8 @@ Conditional quantitative density bridge and dependency port
   4,136 upstream modules, including 128 previously present, add 4,008 files.
   These new sources are outside the current Gowers import closure, and
   the complete quantitative dependency build has not yet passed.
-  The first 800 pinned manifest entries compile as an 813-module closure.
-  OAI.QuantitativePortAudit checks 16,329 public OAI theorems in this prefix
+  The first 900 pinned manifest entries compile as a 913-module closure.
+  OAI.QuantitativePortAudit checks 17,747 public OAI theorems in this prefix
   using only the three standard axioms, and checks the added compatibility
   lemmas. This partial dependency audit is separate from the Gowers audit
   above and does not certify Results.Conclusions.
