@@ -259,6 +259,14 @@ manuscript uses a repository theorem as a premise.
 - `generating-functions-and-asymptotics/oeis-sequence-asymptotics/a116379-bounded-identity-trees`:
   rooted identity trees, the other classical coding of hereditarily finite
   sets.
+- `generating-functions-and-asymptotics/oeis-sequence-asymptotics/a089479-fixed-permanent-matrices`
+  (batch 108): proves Robinson's strong-component transform (its Section 4,
+  (19), `fpm:eq:robinson`) by the component form of the marked-source sieve
+  of Proposition 5.1 (`sbd:prop:marked`), for all labelled digraphs weighted
+  by the permanent; its permanent-one case is the classical acyclic-digraph
+  asymptotic (A003024), a class that contains the extensional ones counted
+  here. A dated `[write]` note of 7 October 2026 after Proposition 5.1 says
+  so; no theorem is shared.
 
 **Stale claims.** The manuscripts' repository statements are true at their
 pins and stay as dated provenance: Part I's (Section 1.3 and `SOURCES.md`: no
@@ -544,7 +552,9 @@ cd "$B"; latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
 The committed PDF was built this way with MiKTeX: 63 pages (Part I's 23
-pages before batch 98); no errors or warnings, no undefined references or
+pages before batch 98; rebuilt on 7 October 2026 after the batch-108
+reciprocal note, still 63 pages, every label keeping its number); no errors
+or warnings, no undefined references or
 citations, no multiply defined labels, no duplicate PDF destinations, no
 overfull or underfull boxes. (Until 5 October 2026 the uncaptioned notation
 longtable of Part II and Table 3 shared the PDF destination `table.3`, which
