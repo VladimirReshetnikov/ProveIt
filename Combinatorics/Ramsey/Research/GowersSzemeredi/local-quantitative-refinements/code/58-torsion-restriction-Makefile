@@ -1,0 +1,23 @@
+PYTHON ?= python3
+LATEXMK ?= latexmk
+ARTICLE := gowers_torsion_uniform_restriction
+
+.PHONY: all pdf check numbers figures clean
+
+all: check pdf
+
+pdf:
+	$(LATEXMK) -pdf -interaction=nonstopmode -halt-on-error $(ARTICLE).tex
+
+check:
+	$(PYTHON) code/verify_constants.py
+	$(PYTHON) code/verify_expectations.py
+
+numbers:
+	$(PYTHON) code/explore_kernels.py --no-figure
+
+figures:
+	$(PYTHON) code/explore_kernels.py
+
+clean:
+	$(LATEXMK) -c $(ARTICLE).tex

@@ -1,0 +1,277 @@
+SOURCE AUDIT AND CONTRIBUTION BOUNDARIES
+Polynomial restriction on every cyclic group
+7 October 2026
+
+1. PURPOSE AND PINNED SOURCE STATE
+
+This record accompanies gowers_torsion_uniform_restriction.tex and its PDF.
+It identifies the inspected predecessors, explains the quantitative
+comparisons, and records the scope of the contribution. It is a targeted
+source audit, not an exhaustive literature-priority determination.
+
+Repository: VladimirReshetnikov/ProveIt
+Pinned commit: 5d4718772d1a7dd4c48e1f49c8f92390c73b7ff1
+Inspection date: 7 October 2026
+
+Repository source directory:
+https://github.com/VladimirReshetnikov/ProveIt/tree/5d4718772d1a7dd4c48e1f49c8f92390c73b7ff1/Combinatorics/Ramsey/Research/GowersSzemeredi/local-quantitative-refinements
+
+The combined report at this snapshot contains sources 01--27. Sources
+28--46 are separately placed records awaiting integration into that report.
+The source numbers below are the repository's identifiers. Historical pins
+inside an older source's audit describe that older source's own inspection;
+they do not replace the present pinned commit.
+
+2. WHAT WAS INSPECTED
+
+Original Gowers paper:
+  W. T. Gowers, A new proof of Szemeredi's theorem, Geometric and
+  Functional Analysis 11 (2001), 465--588.
+  DOI: https://doi.org/10.1007/s00039-001-0332-9
+  Repository transcription:
+  https://github.com/VladimirReshetnikov/ProveIt/blob/5d4718772d1a7dd4c48e1f49c8f92390c73b7ff1/Combinatorics/Ramsey/Papers/sz-thm-gowers-proof/sz-thm-gowers-proof.tex
+  Relevant portions: Lemmas 9.1--9.3 and Corollary 9.4; the relation to
+  later arrangement restriction is discussed without claiming to complete
+  those later steps.
+
+Source 04:
+  Sharper Local Bounds in Gowers's Proof of Szemeredi's Theorem:
+  polynomial homomorphism restriction, sharp cube estimates, and
+  floor-pattern complexity.
+  The merged manuscript's Section 4 from this source was inspected,
+  including the polynomial restriction theorem and its proof, repeated
+  entries, exceptional Fourier relations, and the single-kernel barrier.
+  Useful merged labels:
+    gsr:en:04:rest:main
+    gsr:en:04:rest:eight
+    gsr:en:04:rest:method-bound
+
+Source 17:
+  Polynomial-loss restriction in Gowers's Szemeredi argument:
+  Fejer filters, density-sensitive moments, and finite-field systems.
+  The relevant theorem, signed certificate, finite-field extension,
+  boundary cases, method barriers, and research questions were inspected
+  in the merged manuscript. Useful merged labels:
+    gsr:en:17:thm:main
+    gsr:en:17:prop:certificate
+    gsr:en:17:sec:boundaries
+  Its research direction headed "Composite cyclic moduli" explicitly
+  asks for coefficient-minor gcd or Smith-normal-form control and
+  explicit torsion dependence.
+
+Source 29:
+  The README placement record, source-audit record, and rank-restriction
+  implementation were inspected:
+    data/29-moment-stability-source_audit.json
+    code/29-moment-stability-verify_rank_restriction.py
+  These describe and test finite-field selection by affine rank,
+  including nongeneric tuples, repeated entries, nonlinear graph maps,
+  and systems with more than one relation. The implementation audits
+  actual random-map selections against rank-based survival counts.
+  This audit does not claim to have inspected source 29's full unmerged
+  manuscript or to have reverified every result in that source.
+
+Source 40:
+  The README placement record and the following audit/code records were
+  inspected:
+    40-fejer-selection-PROOF_AUDIT.md
+    code/40-fejer-selection-verify_fejer_selection.py
+  The audit records one-filter Fejer arrangement selection, vector-valued
+  targets, finite abelian targets without small torsion, exact principal
+  survival formulas when small torsion is present, and a kernel-class
+  gain--mass barrier. The code supplies finite algebraic and numerical
+  checks for that arrangement construction.
+  SOURCE 40'S FULL UNMERGED MANUSCRIPT WAS NOT INSPECTED. The comparison
+  credits the results described in its inspected records; it does not
+  claim a line-by-line audit of that manuscript or invent theorem numbers.
+  Direct audit URL:
+  https://github.com/VladimirReshetnikov/ProveIt/blob/5d4718772d1a7dd4c48e1f49c8f92390c73b7ff1/Combinatorics/Ramsey/Research/GowersSzemeredi/local-quantitative-refinements/40-fejer-selection-PROOF_AUDIT.md
+
+Shkredov:
+  I. D. Shkredov, On Gowers norms of some functions,
+  arXiv:0912.2436v1, 12 December 2009.
+  https://arxiv.org/pdf/0912.2436
+  Lemma 2.1 and its proof, PDF pages 4--6, were inspected. They explicitly
+  extend Gowers's restriction mechanism to systems of equations,
+  coordinate-specific sets/maps, and a prescribed tuple family, using
+  repeated cosine selection. This is an important predecessor. Its
+  conventions and output differ from selection of one common subset
+  while counting all ordered tuples, so no blanket dominance claim over
+  its wider system theorem is made.
+
+Modern global context:
+  J. Leng, A. Sah and M. Sawhney, Improved bounds for Szemeredi's theorem,
+  arXiv:2402.17995 (2024).
+  https://arxiv.org/abs/2402.17995
+  This provides the global quantitative context, already cited in the
+  repository. It obtains, for fixed k >= 5, bounds of the form
+  r_k(N) <<_k N exp(-(log log N)^{c_k}), with c_k > 0. No estimate from
+  this paper is used as a black box in the present restriction proof,
+  and no improvement over its global conclusions is asserted.
+
+3. QUANTITATIVE COMPARISON AT SIXTEEN VARIABLES
+
+Notation: b = |B|. T_16 counts all ordered additive sixteen-tuples,
+including repetitions. G_16 counts those also respected by the map.
+The common input is G_16 >= alpha b^15, with 0 < alpha, eta <= 1.
+
+Source       Domain/target setting             Retained T_16 divided by b^15
+Gowers 9.3   Cyclic setting                    (alpha eta / 4)^(2^19)
+Source 04    Same prime field                  alpha^16 eta^15 / (2*3200^8)
+Source 17    F_p-vector spaces; weights        alpha^16 eta^15 / (2*18^16)
+Present      Every cyclic domain;             (alpha eta / 4)^54
+             arbitrary abelian target
+
+The associated conditions and quality conclusions are essential:
+
+Gowers, Lemma 9.3:
+  The modulus is sufficiently large in terms of the input parameters.
+  The respected proportion is at least 1-eta. The repository's current
+  formal baseline has an all-moduli exact companion.
+
+Source 04, exact polynomial restriction theorem at d=8:
+  b >= 242*3200^8*(alpha eta)^(-16).
+  The respected proportion is at least 1/(1+eta), hence at least 1-eta.
+  Its convenient order-eight corollary uses the coarser constant 2^(-95)
+  after substituting alpha=gamma^7.
+
+Source 17:
+  L = ceil(17/(alpha eta)), p > 2L-2,
+  N >= 2*L^16*(2L-1)^15*beta^(-15),
+  where N=|V| and beta=b/N. The respected proportion is at least 1-eta.
+  In the prime-cyclic specialization the size condition implies the
+  characteristic condition. Fractional input weights and vector-valued
+  maps are allowed in this source's theorem.
+
+Present theorem and finite-quotient corollary:
+  b >= (4/(alpha eta))^54.
+  The respected proportion is at least 1-eta. Every cyclic modulus is
+  allowed, including arbitrarily small prime factors. The proof first
+  treats finite abelian targets. A finite quotient of the subgroup
+  generated by phi(B) preserves all relevant zero/nonzero discrepancies,
+  giving the same conclusion for arbitrary abelian target groups.
+
+Sources 04 and 17 have better prime-field retention powers than 54.
+Source 04 has a better threshold degree than source 17; source 17 has
+a larger retained constant at sixteen variables and additional weighted
+generality. The present result should not be described as dominating
+those prime-field theorems. Its quantitative improvement over the original
+Lemma 9.3 preserves every cyclic modulus and supplies an explicit threshold.
+
+4. PRIOR INGREDIENTS CREDITED IN THE ARTICLE
+
+Gowers introduced repeated random cosine/Riesz restriction and the
+expectation comparison favoring respected configurations. Conditional
+independence of point selections is part of that architecture.
+
+Source 04 already uses powered-cosine kernels, nonnegative Fourier
+weights, weighted exceptional-relation summation, and a separate
+repeated-point correction. In particular, summing weights instead of
+counting coefficient vectors is an established ingredient here.
+
+Source 17 already gives Fejer selection, an exact signed certificate,
+weighted/vector-valued forms, finite-field rank gaps, and scalar-method
+barriers. Source 29 further treats actual affine ranks of nongeneric
+tuples. The present work does not claim to originate rank-sensitive
+selection or a signed first-moment objective.
+
+Source 40's audit records the exact small-torsion principal spectrum.
+Thus the expression sum_{a|n} c_n^m itself is not claimed as new.
+
+The moment implication G_16 >= gamma^7 b^15 from gamma b^3 respected
+quadruples was already obtained in source 04 and used in source 17.
+It is included as an interface consequence, not as a new discovery.
+
+5. CONTRIBUTIONS ESTABLISHED IN THIS ARTICLE
+
+A. A repeated-filter expectation bound with decaying errors:
+
+   E G_m(B') >= P^k G_m(B),
+
+   E U_m(B') <= Q^k U_m(B)
+      + [tau_G(2D)*(R_m^k-P^k) + binom(m,2)*R_2^k] b^(m-2).
+
+   Here tau_G(2D)=max_{1<=d<=2D}|G[d]|, P=sum c_n^m,
+   Q=sum_{2|n}c_n^m, and R_s=int K^s. Arrays with some nonprincipal
+   layer have total coefficient weight exactly R_m^k-P^k, so no factor
+   k is lost. The repeated bad tuples are charged their decaying
+   survival R_2^k instead of probability one.
+
+B. Explicit domain and target torsion treatment. Nonprincipal coefficient
+   vectors yield a nonzero minor of size at most 2D. Its multiplication
+   kernel controls the number of completions. On every cyclic group,
+   |G[d]|=gcd(N,d)<=2D in this range. The target discrepancy-order spectrum
+   controls principal survival. The proof also supplies weighted torsion
+   profiles, heterogeneous filters, and discrepancy-order refinements.
+
+C. Certified retention exponent 54 at sixteen variables, using the fixed
+   filter cos^50(pi t) and exact integer inequalities for binomial sums.
+   The exact parameters give more precise nonintegral powers. The integer
+   54 is a convenient certified choice, not a globally optimal constant.
+
+D. Fixed-order asymptotic optimality of the principal-spectrum cost.
+   For each fixed integer a>=2,
+
+   I_{m,a} := inf_K [-log P_m(K) / log(P_m(K)/Q_{m,a}(K))]
+       = m log m / (2 log a) + O_a(m log log m),
+
+   with +infinity assigned to zero-gain filters. The class consists of
+   finite real even trigonometric polynomials with 0<=K<=1, K(0)=1,
+   and nonnegative Fourier coefficients. The lower bound does not assume
+   decreasing coefficients; powered cosines attain the leading term.
+   The same principal-spectrum cost bound covers any finite list of
+   independent, heterogeneous scalar layers in this class, because their total
+   cost-to-gain ratio is a weighted average of the individual ratios.
+   Zero-gain layers add nonnegative cost and no gain. The quantity being
+   optimized is exactly the ratio formed from the principal weights P_m
+   and Q_{m,a}; the theorem does not bound every possible analysis of
+   the resulting random subsets. Extra coefficient relations, particular
+   input structure, and favorable outcomes may improve actual counts
+   beyond a guarantee based only on those principal weights.
+
+E. The arbitrary-abelian-target corollary uses only a finite quotient
+   preserving the finitely many discrepancies relevant to B and m.
+   The constants are unchanged. It does not assert a finite quotient
+   embedding the whole target group.
+
+6. RESOLVED PROJECT QUESTION AND REMAINING BOUNDARIES
+
+Source 17's composite-modulus question is answered for a single balanced
+additive relation and a common selected subset, with explicit torsion
+and size dependence. This does not settle arbitrary linear systems or
+the higher arrangements needed in the full Gowers induction.
+
+The following distinctions must be retained during integration:
+
+* No new global bound for progression-free sets, Ramsey numbers, or
+  Szemeredi's theorem follows without further parameter propagation.
+* The large explicit size hypothesis is part of the theorem, not an
+  omitted technicality or an unconditional finite-size assertion.
+* No optimality of exponent 54, the size threshold, or the best possible
+  subset is asserted.
+* The asymptotic method theorem has fixed a. It does not provide a
+  growing-a uniform error estimate.
+* The method lower bound concerns only the principal-spectrum cost
+  I_{m,a}. It is not an impossibility theorem for obtaining stronger
+  conclusions by a different analysis of the same selected sets.
+  Adaptive restrictions, joint filters outside the independent scalar
+  product class, signed Fourier filters, and structural extraction
+  methods are also outside this principal-cost argument.
+* The general finite-abelian-domain theorem retains a torsion factor.
+  In families with large bounded-exponent torsion, its sufficient size
+  hypothesis may be vacuous. A dimension-independent all-group theorem
+  is not asserted.
+* The finite calculations certify the stated constants and selected
+  finite expectation examples. The infinite families are justified by
+  the written proofs, not by exhaustive finite testing.
+* The existing formal baseline is not a Lean proof of this strengthening.
+  The accompanying article provides proposed integration interfaces;
+  no new Lean theorem is claimed to have been compiled or kernel-checked.
+* No first-in-the-literature priority claim or resolution of a major
+  longstanding open problem is made. The resolved local project question
+  and the method extremal problem are stated precisely.
+
+This package supplies a self-contained mathematical contribution and
+reproducible certificates. Independent referee review and any later
+formalization should preserve the domains, tuple conventions, thresholds,
+and method-class qualifications recorded above.

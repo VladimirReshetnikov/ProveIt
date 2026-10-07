@@ -1,0 +1,81 @@
+{
+  "cases": 1512,
+  "cases_with_bad_tuples": 1188,
+  "cases_with_repeated_bad_tuples": 1188,
+  "cases_requiring_nonprincipal_correction": 615,
+  "inequality_assertions": 6048,
+  "arithmetic": "fractions.Fraction only",
+  "domain_moduli": [
+    2,
+    3,
+    4,
+    5,
+    6,
+    8,
+    9
+  ],
+  "codomain_moduli": [
+    2,
+    3,
+    4,
+    6
+  ],
+  "tuple_order": 4,
+  "cosine_degrees": [
+    1,
+    2,
+    3
+  ],
+  "layer_counts": [
+    1,
+    2,
+    3
+  ],
+  "subsets": [
+    "full cyclic domain",
+    "domain with zero removed"
+  ],
+  "maps": [
+    "x squared modulo H",
+    "floor(x/2) modulo H",
+    "indicator of the last element of the subset"
+  ],
+  "repeated_singleton_regression": {
+    "actual_survival": "1/2",
+    "incorrect_occurrence_product": "35/128"
+  },
+  "repeated_bad_tuple_regression": {
+    "domain_modulus": 2,
+    "target_modulus": 4,
+    "subset": [
+      0,
+      1
+    ],
+    "map": {
+      "0": 0,
+      "1": 1
+    },
+    "tuple": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "domain_discrepancy": 0,
+    "target_discrepancy": 2,
+    "cosine_degree": 1,
+    "layers": 1,
+    "actual_containment_probability": "1/4",
+    "formal_occurrence_product": "9/64",
+    "actual_minus_formal": "7/64",
+    "interpretation": "The formal occurrence product is smaller than the actual probability of retaining this bad tuple, so it cannot supply the required bad-tuple upper bound."
+  },
+  "checks": [
+    "good expectation lower bound including repetitions",
+    "distinct bad weighted Fourier error bound",
+    "repeated bad Holder moment bound",
+    "combined bad expectation bound"
+  ],
+  "scope": "Finite regression checks, not a substitute for the general written proof.",
+  "generated_by": "code/verify_expectations.py"
+}

@@ -1,0 +1,15 @@
+.PHONY: all pdf check
+
+all: pdf
+
+pdf: gowers-character-affine-refinements.pdf
+
+gowers-character-affine-refinements.pdf: gowers-character-affine-refinements.tex
+	latexmk -pdf -interaction=nonstopmode -halt-on-error gowers-character-affine-refinements.tex
+
+check:
+	mkdir -p build
+	python3 code/check_extraction.py > build/extraction_checks.json
+	python3 code/verify_affine.py --output build/affine_checks.json > build/affine_console.json
+	python3 code/check_graph_realization.py > build/realization_checks.json
+	python3 -c 'import json,pathlib; names=("extraction_checks.json","affine_checks.json","realization_checks.json"); assert all(json.loads((pathlib.Path("build")/n).read_text()) == json.loads((pathlib.Path("data")/n).read_text()) for n in names), "A verification report changed"; print("PASS: all three exact reports match")'

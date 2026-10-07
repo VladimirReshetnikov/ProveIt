@@ -1,0 +1,71 @@
+INTEGRATION GUIDE
+
+Suggested destination: alongside the existing Part II material under
+Combinatorics/Ramsey/Research/GowersSzemeredi/local-quantitative-refinements/.
+Assign a source number using the repository's normal intake process.
+This archive deliberately does not reserve a source number.
+
+The standalone source uses conventional theorem environments and inline
+bibliography entries. For integration into the combined article, preserve
+the mathematical body, prefix labels and citation keys according to the
+repository convention, and remove only the standalone preamble, title,
+table of contents, bibliography wrapper, and final end-of-document marker.
+The .tex contains the entire article; no fragment files are required.
+
+DEPENDENCIES AND PLACEMENT
+
+* Character distributions and adaptive separation:
+  place with Section 7's Freiman restriction material. The central labels
+  are lem:small-ball, lem:adaptive, thm:sharp-separation, thm:profile.
+  The exact rank is an integer statement before it is logarithmic.
+
+* Localization and graph defects:
+  thm:freiman-extraction, thm:finite-image, cor:finite-exponent,
+  lem:vertical-injection, cor:doubling, thm:realizability.
+  The Plunnecke--Ruzsa and Reiher--Schoen inputs are explicitly external.
+  Preserve repeated summands and the distinction between sign orbits,
+  projective lines, character-image order, and target exponent.
+
+* Affine rigidity:
+  extends source 11's local cubic and source 14's structural context.
+  lem:signed-graph-identity and lem:affine-averaged-kernel are the main
+  finite combinatorial identities. thm:affine-local-third retains the
+  support-energy remainder; thm:affine-four-ninths gives the larger
+  local ranges. These two estimates are complementary. The support
+  coefficients 3 and 4 are sharp in their signed-kernel bounds.
+  lem:affine-kernel-equality classifies equality for the ORIGINAL kernel
+  inequality only; its strengthened support-defect version has further
+  equality cases. cor:affine-endpoints resolves the two boundaries.
+
+* Classical recovery:
+  thm:affine-global-two-ninths, cor:affine-sixteen,
+  cor:affine-partial-two-ninths. Preserve the attribution to the
+  Ben-Or--Coppersmith--Luby--Rubinfeld correction theorem. Source 11's
+  prior cubic and that classical theorem already imply these global
+  consequences. The exact cutoff 16 is sufficient; it is not proved
+  optimal. A target-without-involutions obstruction occurs at N=12.
+
+* Further questions:
+  ten questions and a six-stage proposed formalization path. Keep the
+  distinction between the established lonely runner conjecture and the
+  manuscript's proposed refinements. General mixed-torsion existence
+  and bare graph-defect realizability are answered by the proved results.
+
+ATTRIBUTION TO KEEP VISIBLE
+
+Green--Tao separation/Bohr localization; Gowers--Milicevic finite-field
+kernel extraction; source 31's prior use of weights; source 11's cubic;
+classical homomorphism correction; Reiher--Schoen BSG; Bedert's Riesz
+method and cited lonely-runner bound. The article makes no claim to
+have introduced any of those underlying methods.
+
+The Green--Tao probability discussion establishes a counterexample to
+one displayed estimate only. Do not turn it into a statement that their
+separation lemma or inverse theorem has been disproved.
+
+FORMAL STATUS
+
+No Lean implementation is included. The Python programs are exact finite
+consistency checks, not formal proofs. They should be stored with the
+research supplement and must not change a formal proof-status ledger
+without separately checked Lean proofs.
