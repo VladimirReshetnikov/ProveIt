@@ -645,7 +645,7 @@ private theorem polynomial_missing_interval_witness
 polynomial values separated from the recurrence scale.  This is the form
 needed when the sample length is `floor (sqrt t)` but the desired recurrence
 has the stronger scale `t ^ (-gamma) * N`. -/
-private theorem polynomial_missing_interval_witness_at_scale
+theorem polynomial_missing_interval_witness_at_scale
     {N k u M : Nat} [NeZero N] (a : ZMod N) (scale : Real)
     (hu : 2 ≤ u) (huN : u ≤ N) (hM : 0 < M) (hMeven : Even M)
     (hMN : 2 * M ≤ N) (hMscale : (M : Real) ≤ scale)

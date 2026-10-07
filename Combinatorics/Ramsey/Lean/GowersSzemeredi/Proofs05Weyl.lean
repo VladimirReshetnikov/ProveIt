@@ -2109,7 +2109,7 @@ all factorization multiplicities.  The repaired threshold
 the single logarithm in the rational-sum estimate.
 -/
 
-private def weylDifferencingPower (k : Nat) : Nat := 2 ^ (k - 1)
+def weylDifferencingPower (k : Nat) : Nat := 2 ^ (k - 1)
 
 private def weylDivisorParameter (k : Nat) : Nat := 8 * k ^ 3
 
@@ -2134,7 +2134,7 @@ private lemma weyl_divisor_exponent_le {k : Nat} (hk : 1 ≤ k) :
       field_simp [ne_of_gt hkPos]
       <;> ring
 
-private def weylRaisedCoefficientAt (k m : Nat) : Real :=
+def weylRaisedCoefficientAt (k m : Nat) : Real :=
   let K := weylDifferencingPower k
   (2 : Real) ^ (K + 2 * k + 12) * Nat.factorial k *
     (m : Real) ^ ((k - 1) * 2 ^ m) * (k + 1)
@@ -2205,7 +2205,7 @@ private lemma finiteDifferenceSum_nil_eq_weylSum (alpha : Real) (k t : Nat) :
   · intro n hn
     push_cast <;> rfl
 
-private def weylRationalFactor (k t : Nat) (q : Int) : Real :=
+def weylRationalFactor (k t : Nat) (q : Int) : Real :=
   (q : Real)⁻¹ + (t : Real)⁻¹ +
     (q : Real) * (t : Real) ^ (-(k : Real))
 
@@ -2301,7 +2301,7 @@ before the final `2^(k-1)`-st root are visible.  The hypotheses `2 ≤ t` and
 `k ≤ t` are harmless both for the asymptotic and repaired explicit forms.
 -/
 
-private theorem weyl_raised_estimate {alpha : Real} {k t m : Nat}
+theorem weyl_raised_estimate {alpha : Real} {k t m : Nat}
     (hk : 2 ≤ k) (ht : 2 ≤ t) (hkt : k ≤ t) (hm : 1 ≤ m)
     (a q : Int) (hq : 0 < q) (haq : Int.gcd a q = 1)
     (halpha : |alpha - (a : Real) / (q : Real)| ≤ ((q : Real) ^ 2)⁻¹) :

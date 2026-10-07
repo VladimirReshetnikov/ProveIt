@@ -311,6 +311,10 @@ import GowersSzemeredi.Proofs05QuadraticRecurrenceBudget
 import GowersSzemeredi.Proofs05QuadraticLocalizationBudget
 import GowersSzemeredi.Proofs05ModularApproximation
 import GowersSzemeredi.Proofs05QuadraticRecurrenceTransfer
+import GowersSzemeredi.Proofs05QuadraticWeyl
+import GowersSzemeredi.Proofs05RecurrenceFourierScale
+import GowersSzemeredi.Proofs05RecurrenceFourierWitness
+import GowersSzemeredi.Proofs05QuadraticRecurrence
 
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue

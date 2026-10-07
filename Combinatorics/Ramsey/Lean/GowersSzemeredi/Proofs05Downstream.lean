@@ -329,7 +329,7 @@ private lemma downstream_exponential_eq_exp_valMinAbs {N : Nat} [NeZero N]
       push_cast
       ring
 
-private lemma downstream_norm_exponential_sub_one_le {N : Nat} [NeZero N]
+lemma downstream_norm_exponential_sub_one_le {N : Nat} [NeZero N]
     (x : ZMod N) :
     ‖exponential x - 1‖ ≤ 2 * Real.pi * centeredAbs x / N := by
   have hN : (0 : Real) < N := by exact_mod_cast NeZero.pos N

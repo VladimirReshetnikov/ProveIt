@@ -1124,7 +1124,7 @@ Finite quadratic recurrence and localization budgets
   1/(128R^2). The stated normalized Weyl lower bound then gives
   q <= 2^40*sqrt(T)*R^3. Multiplying by a frequency of size <=4R^2
   gives a candidate strictly below T/R^2. These are conditional numeric
-  estimates, not an unconditional recurrence theorem.
+  estimates; the analytic inputs are now discharged as described below.
   Proofs05ModularApproximation isolates the sign and integer-representative
   argument in every degree: approximation of -(a*r).valMinAbs/N at
   denominator q with error <=1/(q*T) bounds the centered residue of
@@ -1138,11 +1138,15 @@ Finite quadratic recurrence and localization budgets
   hence at most (2L)^1024, the degree-two localization budget. The
   leading quadratic error on a chunk of length <=2H is <=1/(8L);
   the proved affine localization at target 2L supplies the other half.
-  Remaining analytic step: supply the Fourier witness and normalized
-  Weyl bound, then assemble the proper quadratic phase partition.
-  The existing checked weyl_raised_estimate at degree two and divisor
-  parameter two, and polynomial_missing_interval_witness_at_scale,
-  are candidate reusable inputs; both are currently private helpers.
+  Proofs05QuadraticWeyl specializes the finite Weyl estimate at degree
+  two and divisor parameter two, with normalized constant 2^25.
+  Proofs05RecurrenceFourierScale and Proofs05RecurrenceFourierWitness
+  produce a frequency of centered size <=4R^2 and norm >=t/(8R),
+  using an even Fourier interval strictly below N/R to handle rounding.
+  Proofs05QuadraticRecurrence now proves the unconditional recurrence:
+  for R>=2 and N>=2^256*R^16, every a in ZMod N admits 1<=p<=2^256*R^16
+  with centeredAbs(a*p^2)<N/R. The proper quadratic phase partition
+  remains to be assembled; the full all-degree Corollary 5.8 stays open.
 
 Reproducible checks (from repository root)
   python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.Audit
