@@ -12,8 +12,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 275 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 2,502 public Gowers theorems and found only propext,
+  All 276 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 2,516 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 101 exact
   companion proofs and 19 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -849,9 +849,15 @@ Boundary refinement and a progression inside the original interval
   analytic threshold is the same explicit exponential threshold. No loss
   from replacing the original density by its density in the modulus occurs.
   This proves a genuine progression increment, not merely an increment on
-  an arbitrary intersection. Transport to an ordinary progression, the
-  relative-balanced uniform stopping case, and quantitative iteration still
-  have to be assembled before claiming Theorem 8.2 or any headline bound.
+  an arbitrary intersection. Proofs18NaturalIntervalIncrement now transports
+  the entire progression to an ordinary positive-step progression whenever
+  2*L<N. Its carrier is exactly the set of natural representatives, including
+  zero- and one-point cases. Length, all intersection cardinalities, and the
+  relative density increment are unchanged. A finite-set interface takes the
+  extension by zero of 1_B-delta on Fin L and returns a natural progression
+  contained in [0,L), with the same explicit bounds. The relative-balanced
+  uniform stopping case and quantitative iteration remain open before any
+  claim of Theorem 8.2 or an improved headline bound.
 
 Reproducible checks (from repository root)
   python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.Audit

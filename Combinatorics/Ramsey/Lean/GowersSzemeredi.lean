@@ -257,6 +257,7 @@ import GowersSzemeredi.Proofs18BoundaryRefinement
 import GowersSzemeredi.Proofs18IntervalBoundaryBand
 import GowersSzemeredi.Proofs18IntervalBoundarySelection
 import GowersSzemeredi.Proofs18IntervalQuadraticIncrement
+import GowersSzemeredi.Proofs18NaturalIntervalIncrement
 
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
