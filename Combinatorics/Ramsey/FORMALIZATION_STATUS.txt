@@ -13,8 +13,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 649 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 4,187 public Gowers theorems and found only propext,
+  All 655 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 4,224 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 113 exact
   companion proofs and 7 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -818,11 +818,32 @@ Interior discrepancy on cubic localization cells
   with common discrepancy parameter and count exponent. The threshold for
   the original prime is qualitative; all local inverse thresholds and the
   boundary scale requirement are discharged by the constructed choice.
-  These interior families do not yet cover their supporting intervals.
-  A controlled completion and transport back to the original modulus,
-  followed by removal of the cubic phase, remain necessary for a global
-  cubic discrepancy theorem. Carrier-injective modular properness alone
-  does not supply the no-wrap geometry needed for that transport.
+  This particular interior-family interface does not cover its supporting
+  interval. The complete interval partition and original-modulus transport
+  are now constructed separately below. Global cubic assembly and phase
+  removal remain. Carrier-injective modular properness alone does not
+  supply the no-wrap geometry; the small-arc construction supplies it.
+
+Full interval completion and discrepancy transport
+  Proofs18NaturalClipping constructs exact intersections of ordinary
+  progressions with integer intervals, including empty intersections.
+  Proofs18NaturalWrapSplit splits a translated ordinary progression at its
+  unique possible modular wrap. Proofs18SmallArcUnwrap first translates a
+  short modular arc to zero and uses the proved natural representative
+  theorem, obtaining at most two disjoint ordinary pieces for every clipped
+  carrier-injective modular progression. The condition is 2*(d+1) < N.
+  Proofs18IntervalPartitionUnwrap assembles these pieces into a full
+  partition of the supporting interval, with exactly twice as many indexed
+  cells and no loss of total discrepancy. Empty cells are allowed.
+  Proofs18FullIntervalDiscrepancy refines to diameter N/16, proves the
+  integer rounding condition for N >= 4, and applies any function inverse
+  bound. Its complete ordinary partition has count at most
+  2*C(1/16)*N^(1-sigma/16), preserving beta*N discrepancy exactly.
+  Proofs18LocalDiscrepancyTransport maps that partition through a proper
+  original progression. It preserves properness, full coverage, every cell
+  sum, and the count budget. No boundary mass is discarded and the old
+  modulus need not be prime. This closes the missing local interval
+  geometry without conflating injectivity with absence of modular wraps.
 
 Cubic obstruction in a strictly smaller prime model
   Proofs17LocalizedPhaseRemoval now exports proposition_17_7_with_upper:
@@ -2064,11 +2085,12 @@ Next substantial obligations
      from an explicit function discrepancy bound are already proved for
      arbitrary progression lengths. Discharge the higher-degree inverse
      input and its numerical budget, rather than repeating those reductions.
-     The cubic construction now yields interior discrepancy families on a
-     positive mass of localization cells. Complete and transport those
-     families with a controlled cell count, remove the cubic phase, and
-     make the original modulus threshold explicit. Keep the interval
-     geometry distinct from carrier-injective modular properness.
+     The cubic construction yields local models on a positive mass of
+     cells, and full interval completion and transport are now proved.
+     Assemble the local refinements with the unselected cells, control the
+     global count, remove the cubic phase, and make the original modulus
+     threshold explicit. Keep the interval geometry distinct from
+     carrier-injective modular properness.
   4. Close Theorem 18.2 and its headline consequences; then investigate tighter
      final bounds without treating improved auxiliary statements as a proved
      improvement of the full Szemeredi estimate.

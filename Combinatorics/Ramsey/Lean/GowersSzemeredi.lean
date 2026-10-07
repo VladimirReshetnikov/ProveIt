@@ -443,6 +443,7 @@ import GowersSzemeredi.Proofs18FromFunctionDiscrepancy
 import GowersSzemeredi.Proofs18QuadraticSourceThreshold
 import GowersSzemeredi.Proofs18CubicCellModels
 import GowersSzemeredi.Proofs18CubicLocalDiscrepancy
+import GowersSzemeredi.Proofs18LocalDiscrepancyTransport
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 
