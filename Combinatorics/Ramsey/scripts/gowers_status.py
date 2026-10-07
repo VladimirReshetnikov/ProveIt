@@ -28,14 +28,14 @@ for source, text in texts.items():
         related = []
         for p, content in texts.items():
             for companion in re.finditer(r'^theorem (' + re.escape(name) + r'_\w+)\b', content, re.M):
-                entry = {'name': companion[1], 'file': str(p.relative_to(ROOT)),
+                entry = {'name': companion[1], 'file': p.relative_to(ROOT).as_posix(),
                          'line': content.count('\n', 0, companion.start()) + 1}
                 header = content[companion.end():].split(':=', 1)[0]
                 if re.fullmatch(r'\s*:\s*' + re.escape(name) + r'\s*', header):
                     exact.append(entry)
                 else:
                     related.append(entry)
-        rows.append({'statement': name, 'file': str(source.relative_to(ROOT)),
+        rows.append({'statement': name, 'file': source.relative_to(ROOT).as_posix(),
                      'line': text.count('\n', 0, match.start()) + 1,
                      'paper_heading_lines': headings.get(name, []),
                      'status': 'exact_companion' if exact else 'open',
@@ -43,7 +43,7 @@ for source, text in texts.items():
 rows.sort(key=lambda r: tuple(map(int, r['statement'].split('_')[-2:])))
 catalogue_names = {row['statement'] for row in rows}
 print(json.dumps({'scope': 'Source inventory of numbered Prop definitions; compile companions before treating them as verified. Related theorems may be conditional, restricted cases, or counterexamples. This does not certify fidelity to the paper.',
-                  'paper': str(PAPER.relative_to(ROOT)),
+                  'paper': PAPER.relative_to(ROOT).as_posix(),
                   'paper_statements_without_catalogue_entries': sorted(set(headings) - catalogue_names),
                   'catalogue_entries_without_paper_headings': sorted(catalogue_names - set(headings)),
                   'counts': dict(Counter(row['status'] for row in rows)),

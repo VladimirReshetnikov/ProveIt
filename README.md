@@ -480,6 +480,11 @@ Abel--Galois and Abel--Ruffini development, pinned at commit `bce31b97...`;
 its CeCILL-B license is retained.  The polynomial-formulas project wraps its
 explicit radical-term semantics and quintic obstruction, while the root Rocq
 build compiles the pinned sources under the `Abel` logical path.
+[`lib/openai-math`](lib/openai-math/) is a ported 98-module subset of the
+`openai/math` Lean library (commit `adc7f124...`, Apache-2.0, license
+retained) that proves the Freiman and Balog–Szemerédi inputs of the Gowers
+Szemerédi formalization; it is the root Lake library `OAI`, and its README
+lists every port change.
 The exception is
 [`Algebra/SurrealNumbers/vendor/combinatorial-games`](Algebra/SurrealNumbers/vendor/combinatorial-games/),
 a 28-module subset of `vihdzp/combinatorial-games` (Apache-2.0, license
