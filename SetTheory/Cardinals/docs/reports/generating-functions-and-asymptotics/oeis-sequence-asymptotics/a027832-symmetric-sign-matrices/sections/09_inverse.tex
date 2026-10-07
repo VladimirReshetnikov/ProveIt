@@ -152,3 +152,43 @@ $n=\lfloor r_s(\log A_n)+\tfrac12\rfloor$ for all sufficiently large $n$ of
 parity~$s$, the analogue of \file{p0:thm:staircase}(3), with an
 ineffective threshold. No novelty is claimed for the inversions.
 \end{remark}
+\begin{writenote}[Independent check of the write, 6~October 2026]
+An adversarial check made by the intake after the write (commit
+\file{b5026035f}) re-derived the statements marked [write] with its own
+code, after fetching again the OEIS entry A027832, Flammenkamp's table,
+McKay--Wanless--Wormald's final version and Greenhill--McKay's
+arXiv:1103.0080v3. \emph{Remark~\ref{ssm:rem:oeis}.} Revision~\#6 (12~November
+2018), its name, offset, example, two references and one link are as quoted,
+with no formula, program or asymptotic; the table's heading is verbatim and
+its 16 values equal $A_1,\ldots,A_{16}$; literal enumeration gives
+$A_1,\ldots,A_5$. With $\ell=0.50605446898918\ldots$ recomputed at 50 digits,
+all 17 ratios of the table were reproduced to the digits shown, and so were
+the statements about them (odd ratios increasing and below $1$ from $n=5$;
+even ratios within $4.34\cdot10^{-4}$ of $1$ from $n=6$, above $1$ at $n=8$,
+below from $n=10$, their distance from $1$ increasing from $n=8$ to $16$).
+\emph{Section~\ref{ssm:sec:provenance}.} Against the rendered pages,
+Corollary~2 (p.~3; $\zeta_0,\dots,\zeta_4=1.083878$, $0.610230$,
+$1.012108$, $-0.677408$, $0.104696$, recomputed, with $\zeta_1=q$), Lemma~2
+and~(1) (p.~6), (17)--(18) (pp.~11--12, uniform over concentrated
+sequences), (22), (26) and~(29) (pp.~12--14) are as the write reads them,
+and $\alpha(r)=\tfrac M2\mu_M(r)$ holds identically in exact rational
+arithmetic ($6\le M\le15$, four caps near $M/2$, three values of $r$);
+Greenhill--McKay's loop-to-vertex bijection is on p.~3 of the preprint.
+The restored text: the delivered file has carriage returns at byte offsets
+$4435$ and $5322$, each inside \verb|{\rm even}|. \emph{Remark~\ref{ssm:rem:transseries}.}
+(1)~The injection and the extra matrix were re-checked by hand and against the
+data; (2)~$F_s$ satisfies every clause of \file{p0:def:core} on
+$(X_\ast,\infty)$, $X_\ast=1$ here ($|b|/\log2=0.2126$, $\log2-\ell/4=0.5666$);
+(3)~the master equation is exact and the triangular recurrence gives
+$e_1,\dots,e_4=0$, $A$, $B$, $D$ (SymPy); (4)~is accurate. For the record,
+the remark does not name \file{plt:thm:lw-template}: with $Z=\sqrt t$ and
+$H=(F_s/a)^{1/4}=Z+\sum_{m\ge1}\beta_mZ^{-m}$ the model equation $H=\sqrt u$
+is a degenerate instance of it ($\mu_{\rm vol}=0$, no logarithm), whose
+solution squared reproduces~\eqref{ssm:eq:modelinverse} through $u^{-1}$
+(SymPy); this changes nothing in the remark. \emph{Provenance.} The
+archive facts (567{,}302 bytes, the SHA-256 quoted, 31 files, 30 manifest
+entries, 792 delivered lines, 19 pages) and the counts of 74 labels and 67
+references were confirmed. No error was found in the article; the report
+README printed two roundings as truncations ($Z_0=1.08388\ldots$,
+$J=-0.67741\ldots$), corrected there with a dated note.
+\end{writenote}

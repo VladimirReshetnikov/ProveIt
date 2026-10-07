@@ -68,9 +68,12 @@ at most `k`, `B = U_0`. Statement numbers are the delivered ones.
   `= (1+o(1)) Φ(ℓ)^{−f} exp{−(2θ_Mℓ/(1+2ℓ²)) f/√M + ℓ²f²/(2(1+2ℓ²)M)}`,
   `θ_M = k − M/2 + 1`; in particular `U_f/B ~ Φ(ℓ)^{−f}` for `f = o(√M)`.
 - **Theorem 2.2 (`ssm:thm:matrix`)**: the display at the top, with
-  `q = Φ(ℓ)e^{−ℓ²/2} = 0.61023…`, `Z_0 = exp(5ℓ²/4 − ℓ⁴/2)/√(1+2ℓ²) = 1.08388…`,
-  `J = −4ℓ²/(1+2ℓ²) = −0.67741…`, `ℓ = 0.50605446898…`; each a relative
-  `1 + o(1)` statement along its parity.
+  `q = Φ(ℓ)e^{−ℓ²/2} = 0.61023…`, `Z_0 = exp(5ℓ²/4 − ℓ⁴/2)/√(1+2ℓ²) = 1.08387…`,
+  `J = −4ℓ²/(1+2ℓ²) = −0.67740…`, `ℓ = 0.50605446898…`; each a relative
+  `1 + o(1)` statement along its parity. (The write first printed
+  `Z_0 = 1.08388…` and `J = −0.67741…`, roundings rather than truncations of
+  `1.0838783…` and `−0.6774080…`; corrected after the independent check
+  below. The article's own values in Section 2 are correct.)
 - **Lemmas 3.2, 4.1, 5.1, 6.1, 6.2 and Corollary 5.2**: graphicality in the
   window, relative concentration, the capped-binomial variance and
   moment-generating bounds, the finite saddle, the product-model limits and
@@ -251,6 +254,25 @@ was narrowed.
   read: McKay–Wormald 1990; McKay–Wanless–Wormald's Theorem 3, Lemma 4 and
   (14); Greenhill–McKay's Theorem 1.4; Anderson; Greene–Kleitman;
   Dandi–Gamarnik–Zdeborová; Minzer–Sah–Sawhney; Liebenau–Wormald.
+- **Independent check of the write (6 October 2026).** An adversarial check
+  made by the intake after the write (`b5026035f`), with its own code, after
+  fetching the OEIS entry, Flammenkamp's table, McKay–Wanless–Wormald's
+  final version and Greenhill–McKay v3 again. Remark 1.2: the entry and the
+  table as quoted; literal enumeration gives `A_1, …, A_5`; all 17 ratios
+  reproduced with `ℓ` at 50 digits, and every statement about them (even
+  ratios within `4.34·10^{−4}` of 1 from `n = 6`). Section 1.2: Corollary 2
+  (`ζ_0, …, ζ_4` recomputed, `ζ_1 = q`), Lemma 2, (1), (17)–(18), (22),
+  (26), (29) as read, and `α(r) = (M/2)μ_M(r)` identically in exact
+  rationals (`6 ≤ M ≤ 15`); Greenhill–McKay p. 3 as quoted; the two carriage
+  returns at offsets 4435 and 5322. Remark 9.3 (1)–(4) re-derived (the
+  admissible-core clauses, the exact master equation, `e_1, …, e_4` by
+  SymPy). For the record, the remark does not name `plt:thm:lw-template`:
+  with `Z = √t`, `H = (F_s/a)^{1/4}` the model equation is a degenerate
+  instance of it (`μ = 0`, no logarithm) reproducing (9.6); nothing changes.
+  Archive facts and the 74/67 label and reference counts confirmed. No error
+  in the article; this README printed two roundings as truncations
+  (`Z_0 = 1.08388…`, `J = −0.67741…`), corrected above with a dated note.
+  The check is recorded at the end of Section 9.
 
 ## Relation to the repository
 
@@ -320,7 +342,7 @@ sections/09_inverse.tex          Section 9, inversion (and Remark 9.3)
 sections/10_computation.tex      Section 10, exact computations and reproducibility
 sections/11_outlook.tex          Section 11, scope and questions; Section 12 (the write's)
 sections/12_references.tex       bibliography
-article.pdf                      compiled report, 25 pages
+article.pdf                      compiled report, 26 pages
 COMPUTATION.md                   algorithms, bounds and certificate derivation (delivered at the root)
 SOURCES.md                       source attribution and its limits (delivered at the root)
 code/build.py                    manifest-verified build and deterministic ZIP (delivered at the root)
@@ -425,7 +447,9 @@ B=$(mktemp -d); cp -r article.tex sections "$B/"; cd "$B"
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The committed PDF was built this way with MiKTeX on 6 October 2026: 25
+The committed PDF was built this way with MiKTeX on 6 October 2026, after
+the independent check (25 pages at the write; label numbers unchanged, aux
+files compared): 26
 pages; no errors, no LaTeX or package warnings, no undefined references or
 citations, no multiply defined labels, no duplicate PDF destinations, no
 overfull or underfull boxes. The delivered preamble's `\pdfmapfile` lines
