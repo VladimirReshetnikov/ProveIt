@@ -307,6 +307,10 @@ import GowersSzemeredi.Proofs05ThresholdFreeScale
 import GowersSzemeredi.Proofs05ThresholdFreeCorollary
 import GowersSzemeredi.Proofs05AffineLocalizationScale
 import GowersSzemeredi.Proofs05AffineLocalization
+import GowersSzemeredi.Proofs05QuadraticRecurrenceBudget
+import GowersSzemeredi.Proofs05QuadraticLocalizationBudget
+import GowersSzemeredi.Proofs05ModularApproximation
+import GowersSzemeredi.Proofs05QuadraticRecurrenceTransfer
 
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
