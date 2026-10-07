@@ -1,0 +1,11 @@
+.PHONY: all pdf verify demo clean
+all: pdf verify
+pdf:
+	latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+verify:
+	python code/verify.py
+demo:
+	python code/depth_reduction.py
+clean:
+	latexmk -c article.tex
+	find code -type d -name __pycache__ -prune -exec rm -rf {} +
