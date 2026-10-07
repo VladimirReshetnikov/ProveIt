@@ -1,0 +1,210 @@
+\section{A line arrangement controls every ratio and dilation}
+\label{sec:uniformity}
+
+Fix a stable center $x$ and an atom $\xi$ with first default vertex $U$.
+Write $r=r_h$ for its window length. Every local test $Q_i(z)$ consults
+only the edge $e_i=(U,i)$ and its child subtree. Thus its outcome, for
+\emph{every} realization of the remaining tables, is determined by
+$J_{b_{e_i}^*}(z)$. We count the possible vectors
+\begin{equation}\label{eq:key-vector}
+ \left(J_{b_{e_i}^*}(x+ta_j(q)):
+  1\le i\le m_0,\ j\in W_{e_i}\right).
+\end{equation}
+
+\subsection{Counting all faces, not only open regions}
+
+\begin{lemma}[An elementary arrangement bound]\label{lem:line-arrangement}
+For $L$ affine lines in the plane, the total number of vertices,
+one-dimensional faces, and two-dimensional faces is at most $2L^2+1$.
+After restriction to a rectangle, the number of sign vectors of $F$
+affine functions is therefore at most $2(F+4)^2+1$.
+The same bound holds if either pair of opposite sides is omitted, and
+is also an upper bound on a vertical segment.
+\end{lemma}
+
+\begin{proof}
+Discard duplicate lines. There are at most $L(L-1)/2$ intersection
+points. Each line is divided by at most $L-1$ points into at most $L$
+one-dimensional open pieces, giving at most $L^2$ edges. Adding the
+lines one at a time gives at most $1+L(L+1)/2$ two-dimensional regions.
+The sum is $2L^2+1$. Parallel lines, multiple intersections, and other
+degeneracies only reduce these bounds.
+For a rectangle, append its four supporting lines. Every face of the
+resulting arrangement has constant signs, including zeros. Its
+intersection with the required rectangle or open-sided rectangle is
+empty or a single convex face. On a vertical segment the direct bound
+$2F+3$ is smaller than the stated bound.
+\end{proof}
+
+The inclusion of zero signs is essential: a point exactly on a cell
+boundary belongs to its right-hand cell. Sampling only the interiors
+of two-dimensional regions would not justify the construction.
+
+\begin{lemma}[Deterministic parameter representatives]\label{lem:representatives}
+Let
+\begin{equation}\label{eq:F-count}
+ F_r=m_0r(1+4cQ^{-2r}).
+\end{equation}
+The vector \eqref{eq:key-vector} has at most
+\begin{equation}\label{eq:D-count}
+ D(r,B)=(2Tm_0rB+3)\bigl[2(F_r+4)^2+1\bigr]
+\end{equation}
+possible values. In particular,
+\begin{equation}\label{eq:D-coarse}
+ D(r,B)\le C(B+1)^4Q^{-4r},
+\end{equation}
+where the constant independent of $r_0,r,B$ is
+\begin{equation}\label{eq:C-count}
+ C=(2T+3)\bigl[2(5+4c)^2+1\bigr]m_0^3.
+\end{equation}
+One representative $(q,t)$ for each value can be chosen using only
+$x$, the deterministic grids and windows, and $U$; the unexposed random
+entries are irrelevant to this choice.
+\end{lemma}
+
+\begin{proof}
+There are $m_0r$ relevant indices $j$, all at most $B$.
+Partition $[\alpha,\beta]$ at the jumps of every relevant
+$\nu_j(q)$. Retain each jump and endpoint as a singleton, and each
+intervening open interval as a separate stratum. By
+\cref{lem:envelopes}, at most $2Tm_0rB+3$ strata result.
+On an open stratum every exponent $n_j=\nu_j(q)$ is constant.
+
+For a pair $(i,j)$, the translated point lies in $(x,x+2Q^j]$.
+Only boundaries $\gamma\in\Gamma_{b_{e_i}^*}\cap[x,x+2Q^j]$
+can change its key. Their number is at most
+\begin{equation}\label{eq:boundary-count}
+ 1+2N_{b_{e_i}^*}Q^j
+ \le1+4cQ^{j-b_{e_i}^*}
+ \le1+4cQ^{-2r},
+\end{equation}
+using \cref{lem:span}. A boundary with $\gamma\le x$ is never
+attained by a translated point and may be discarded. For the others,
+the boundary equation is
+\[
+ tq^{n_j}=\gamma-x.
+\]
+In coordinates
+\begin{equation}\label{eq:log-coordinates}
+ u=-\log q,\qquad v=\log t,
+\end{equation}
+it becomes the affine line
+\begin{equation}\label{eq:boundary-line}
+ v-n_ju=\log(\gamma-x).
+\end{equation}
+There are at most $F_r$ such lines, counting repetitions if necessary.
+The logarithm is increasing, so its sign relative to a boundary is
+exactly the sign of the original displacement relative to that boundary.
+The sign vector, including its zeros, determines every key in
+\eqref{eq:key-vector}.
+
+On an open ratio stratum, \cref{lem:line-arrangement} supplies at most
+$2(F_r+4)^2+1$ representatives. On a singleton stratum the exponents
+are assigned by \eqref{eq:nu}, and a one-dimensional boundary count
+gives the same upper bound. Multiplication by the number of strata
+proves \eqref{eq:D-count}. All geometric data used here are fixed
+under $\xi$.
+
+Finally $r\le B$, $m_0\ge1$, and $Q^{-2r}\ge1$. Hence
+\[
+ 2Tm_0rB+3\le(2T+3)m_0(B+1)^2,
+ \qquad
+ F_r+4\le m_0r(5+4c)Q^{-2r}.
+\]
+These inequalities give \eqref{eq:D-coarse} with \eqref{eq:C-count}.
+\end{proof}
+
+\begin{proposition}[Conditional uniform failure bound]\label{prop:uniform-failure}
+For a stable $x$ and an atom $\xi$ whose first default has height $h$,
+\begin{align}
+ &\Prob\!\left(\exists(q,t)\in[\alpha,\beta]\times[1,2]
+   \ \forall j\in\mathcal J:\ x+ta_j(q)\notin A
+   \,\middle|\,\xi\right)\notag\\
+ &\hspace{30mm}\le C(B+1)^4
+  \bigl[Q^{-4}(1-p/2)^{m_0}\bigr]^{r_h}.
+ \label{eq:uniform-failure}
+\end{align}
+\end{proposition}
+
+\begin{proof}
+If the selected points all miss $A$, \cref{lem:local-hit} implies
+failure of all local tests at that parameter pair. A representative
+from \cref{lem:representatives} has exactly the same key vector, so
+all its local tests also fail for that realization of the tables.
+Apply \cref{lem:failure} at each representative, and then the union
+bound and \eqref{eq:D-coarse}. Because representatives were selected
+before revealing the remaining entries, each application uses precisely
+the fixed-parameter probability proved in \cref{lem:failure}.
+\end{proof}
+
+\subsection{Choose the parameters without a circular dependence}
+
+Here is the complete order of choice.
+First, after fixing $p,\alpha,\beta,Q,T,c$, choose $M$ so large that
+\begin{equation}\label{eq:theta}
+ \theta=Q^{-4}(1-p/2)^{M-1}<1.
+\end{equation}
+Second choose $d$ with $(1-2^{1-M})^d<p$.
+Third compute $K$ from \eqref{eq:Kedges} and choose $g$ with
+\begin{equation}\label{eq:gap-choice}
+ 4KcQ^{g+1}<p.
+\end{equation}
+The index $j_0$ was fixed using only $Q$.
+Finally choose $r_0$ so large that
+\begin{equation}\label{eq:base-length-choice}
+ C(B(r_0)+1)^4\theta^{r_0}<p.
+\end{equation}
+Such a choice exists because \cref{lem:span} makes $B(r_0)$ affine
+in $r_0$ while $0<\theta<1$. For every height $h$ we have
+$r_h\ge r_0$, so \eqref{eq:uniform-failure} is less than $p$ with
+this same choice. All comparisons in the choices can be made with
+rational arithmetic when the initial parameters are rational.
+
+Together with \eqref{eq:no-default}, this proves, for every stable $x$,
+\begin{equation}\label{eq:pointwise-miss}
+ \Prob\!\left(\exists(q,t)\in[\alpha,\beta]\times[1,2]
+  \ \forall j\in\mathcal J:\ x+ta_j(q)\notin A\right)<2p.
+\end{equation}
+No claim is made that the required tree is of manageable size. The
+parameter choice proves existence; its computational cost is discussed
+in \cref{sec:effective}.
+
+\subsection{Repair all centers using the original exponents}
+
+We now prove \cref{prop:normalized}. For each table outcome, enlarge
+the finite half-open cell union $A$ to an open periodic $A^+\supset A$
+with $\rho(A^+)\le\rho(A)+p$. Define
+\begin{equation}\label{eq:R-original}
+ R=\left\{x\in\R:\exists(q,t)\in[\alpha,\beta]\times[1,2]
+   \quad x+tq^n\notin A^+\ \text{for all }1\le n\le TB\right\}.
+\end{equation}
+The use of the \emph{original} exponents in this definition is deliberate.
+The maps $q\mapsto a_j(q)$ jump. A projection argument applied directly
+to those selected terms would not establish closedness.
+
+By contrast, $x+tq^n$ is continuous for every original integer $n$.
+On $(\R/\Z)\times[\alpha,\beta]\times[1,2]$ the joint miss set
+in \eqref{eq:R-original} is closed. Its projection $R$ is therefore
+closed and periodic. If a stable center belongs to $R$, then for the
+witnessing $(q,t)$ all selected exponents also miss, because
+$\nu_j(q)\le Tj\le TB$. Thus \eqref{eq:pointwise-miss} bounds
+$\Prob(x\in R)$ by $2p$ on $\calS$. From
+\eqref{eq:unstable-density} and \eqref{eq:gap-choice},
+\begin{equation}\label{eq:expected-R}
+ \E\rho(R)\le2p\rho(\calS)+\rho(\R\setminus\calS)\le3p.
+\end{equation}
+Also \cref{lem:mean-density} gives $\E\rho(A^+)\le2p$.
+Choose an outcome with
+\[
+ \rho(A^+)+\rho(R)\le5p.
+\]
+Outer regularity on the circle supplies an open periodic $V\supset R$
+with $\rho(V)\le\rho(R)+p$. Set $H=A^+\cup V$. Then
+$\rho(H)\le6p$.
+
+For $x\notin R$, every pair $(q,t)$ has a hit in $A^+$ among
+$n=1,\ldots,TB$. For $x\in R$, openness of $V$ and convergence
+$x+tq^n\to x$ give a hit in $V$ for all sufficiently large $n$.
+This proves \eqref{eq:normalized-hit}, and hence
+\cref{prop:normalized}. Notice that the repair indices need not lie
+in the finite prefix used to define $R$.

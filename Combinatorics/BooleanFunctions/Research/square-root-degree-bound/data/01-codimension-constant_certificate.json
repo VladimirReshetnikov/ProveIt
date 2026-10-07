@@ -1,0 +1,314 @@
+{
+  "arithmetic": "Python integers and fractions.Fraction; all comparisons exact",
+  "scope": "Rational comparisons underlying the analytic proof in the article",
+  "parameters": {
+    "s": 8192,
+    "m": 67108865,
+    "R": 9,
+    "c": "1/3",
+    "h": "9/549755813888",
+    "K": 6,
+    "B": 10,
+    "selector_intervals_per_cell": 3,
+    "M": {
+      "base": 2,
+      "exponent": 1123
+    },
+    "delta": {
+      "base": 2,
+      "negative_exponent": 560
+    },
+    "eta_lower_bound": {
+      "base": 2,
+      "negative_exponent": 7784628347
+    },
+    "epsilon": {
+      "base": 2,
+      "negative_exponent": 8000000000
+    }
+  },
+  "checks_passed": 35,
+  "all_passed": true,
+  "checks": [
+    {
+      "name": "e_upper_identity",
+      "left": "87/32",
+      "relation": "=",
+      "right": "87/32",
+      "explanation": "Sum through 1/3! plus geometric factorial-tail bound 5/96.",
+      "passed": true
+    },
+    {
+      "name": "e_upper_11_over_4",
+      "left": "87/32",
+      "relation": "<",
+      "right": "11/4",
+      "explanation": "Provides e<11/4 and hence also e<3.",
+      "passed": true
+    },
+    {
+      "name": "e_upper_three",
+      "left": "87/32",
+      "relation": "<",
+      "right": "3",
+      "explanation": "Used to replace exp(-50) by 3^(-50).",
+      "passed": true
+    },
+    {
+      "name": "sinh_three_upper",
+      "left": "1331/64",
+      "relation": "<",
+      "right": "21",
+      "explanation": "sinh(3)<e^3/2<21/2.",
+      "passed": true
+    },
+    {
+      "name": "exp_small_geometric_bound",
+      "left": "16/15",
+      "relation": "=",
+      "right": "16/15",
+      "explanation": "The article proves exp(x)<1/(1-x), for 0<x<1.",
+      "passed": true
+    },
+    {
+      "name": "density_exponent_margin",
+      "left": "302238265177573602771673/5440166188265831286177792",
+      "relation": "<",
+      "right": "1/16",
+      "explanation": "Controls phi(t)/q_selected by exp(1/16+ct)/(2h).",
+      "passed": true
+    },
+    {
+      "name": "all_interval_endpoints",
+      "left": "15393162788891/1649267441664",
+      "relation": "<",
+      "right": "10",
+      "explanation": "Every interval is contained in [-10,10].",
+      "passed": true
+    },
+    {
+      "name": "fallback_interval_endpoint",
+      "left": "549755813915/1649267441664",
+      "relation": "<",
+      "right": "1/2",
+      "explanation": "The fallback probability is at least 2h phi(1/2).",
+      "passed": true
+    },
+    {
+      "name": "width_below_one",
+      "left": "9/549755813888",
+      "relation": "<",
+      "right": "1",
+      "explanation": "Used in the tail numerator comparison.",
+      "passed": true
+    },
+    {
+      "name": "variance_sum_below_one",
+      "left": "5435818065/302231454903657293676544",
+      "relation": "<",
+      "right": "1",
+      "explanation": "Each interval conditional variance is at most h^2.",
+      "passed": true
+    },
+    {
+      "name": "tail_numerator_at_cutoff",
+      "left": "101",
+      "relation": "<=",
+      "right": "162",
+      "explanation": "t^2-2t-2 is increasing for t>=9, so (t+1)^2+1<=2t^2.",
+      "passed": true
+    },
+    {
+      "name": "central_prefactor_identity",
+      "left": "1812160539/274877906944",
+      "relation": "=",
+      "right": "1812160539/274877906944",
+      "explanation": "Exact simplification before the exponential bounds.",
+      "passed": true
+    },
+    {
+      "name": "central_integral_bound",
+      "left": "12685123773/171798691840",
+      "relation": "<",
+      "right": "3/40",
+      "explanation": "Uses exp(1/16)<16/15 and sinh(3)<21/2.",
+      "passed": true
+    },
+    {
+      "name": "tail_prefactor_relaxation",
+      "left": "164/9",
+      "relation": "<",
+      "right": "55/3",
+      "explanation": "Gaussian integration by parts produces 164/(9h).",
+      "passed": true
+    },
+    {
+      "name": "tail_exponent_relaxation",
+      "left": "323/8",
+      "relation": ">",
+      "right": "40",
+      "explanation": "Together with e>5/2 this bounds exp(-323/8) by (2/5)^40.",
+      "passed": true
+    },
+    {
+      "name": "tail_integral_bound",
+      "left": "6649092007880460460883968/49112713895738124847412109375",
+      "relation": "<",
+      "right": "1/1000",
+      "explanation": "Entirely rational upper bound for both Gaussian tails.",
+      "passed": true
+    },
+    {
+      "name": "gain_identity",
+      "left": "79/2250",
+      "relation": "=",
+      "right": "79/2250",
+      "explanation": "S is nonnegative and may be omitted for this lower bound.",
+      "passed": true
+    },
+    {
+      "name": "positive_gain_margin",
+      "left": "79/2250",
+      "relation": ">",
+      "right": "1/32",
+      "explanation": "Provides Gamma>1/32.",
+      "passed": true
+    },
+    {
+      "name": "probability_lower_bound_identity",
+      "left": "1/65778098752015304414318001339236352",
+      "relation": "=",
+      "right": "1/65778098752015304414318001339236352",
+      "explanation": "Uses sqrt(2pi)<3 and e<3, without evaluating an interval mass.",
+      "passed": true
+    },
+    {
+      "name": "probability_integer_comparison",
+      "left": "239299329230617529590083",
+      "relation": "<",
+      "right": "302231454903657293676544",
+      "explanation": "Equivalent to q0>2^(-116).",
+      "passed": true
+    },
+    {
+      "name": "probability_dyadic_comparison",
+      "left": "1/65778098752015304414318001339236352",
+      "relation": ">",
+      "right": "1/83076749736557242056487941267521536",
+      "explanation": "Uniform lower bound for every Gaussian interval mass.",
+      "passed": true
+    },
+    {
+      "name": "leaf_count_bound",
+      "left": "67108865",
+      "relation": "<",
+      "right": "134217728",
+      "explanation": "Used in transfer and logarithmic dimension bounds.",
+      "passed": true
+    },
+    {
+      "name": "sqrt_six_bound_squared",
+      "left": "6",
+      "relation": "<",
+      "right": "9",
+      "explanation": "Justifies sqrt(K)<3 with K=6.",
+      "passed": true
+    },
+    {
+      "name": "fourth_root_six_bound_fourth_power",
+      "left": "6",
+      "relation": "<",
+      "right": "16",
+      "explanation": "Justifies K^(1/4)<2 with K=6.",
+      "passed": true
+    },
+    {
+      "name": "mean_coefficient_bound",
+      "left": "31/3",
+      "relation": "<",
+      "right": "11",
+      "explanation": "The transfer coefficient C=B+|c| is less than 11.",
+      "passed": true
+    },
+    {
+      "name": "transfer_constant_bound",
+      "left": "3520079608997149429749854886403843444716435237993103533907258433532132452011606016",
+      "relation": "<",
+      "right": "30354201441027016733116592294117482916287606860189680019559568902170379456331382784",
+      "explanation": "Rational majorant of all three terms in the transfer constant A.",
+      "passed": true
+    },
+    {
+      "name": "transfer_error_margin",
+      "left": "662053391171340129649681094103939944932180079/365375409332725729550921208179070754913983135744",
+      "relation": "<",
+      "right": "1/64",
+      "explanation": "A sqrt(delta)<1/64<Gamma/2.",
+      "passed": true
+    },
+    {
+      "name": "transfer_error_vs_gain",
+      "left": "662053391171340129649681094103939944932180079/365375409332725729550921208179070754913983135744",
+      "relation": "<",
+      "right": "79/4500",
+      "explanation": "Checks the actual rational Gaussian gain bound as well.",
+      "passed": true
+    },
+    {
+      "name": "interval_product_accuracy",
+      "left": "1/3773962424821541352241554580988268890916921220416440428376206300245624162392148852086126725177658767541468375030763844899770584629924792632561434251432696043649395326976",
+      "relation": "<",
+      "right": "1/17657174196422654167497483275778526197841920",
+      "explanation": "Ensures Q_U>=Q_G/2 by a product estimate.",
+      "passed": true
+    },
+    {
+      "name": "berry_esseen_squared",
+      "left": "3/56971169535859552651673922053729860865637486561612038919884150448180453661914876030559524836165804222520296002620373895898888826700892439717737601036402048250720345388614220594158194211326497047778268169743779974140336530352787765291564289626013508853409292148309539883979412357803110031516333770537681167444722944096508010537063813218304",
+      "relation": "<",
+      "right": "1/14242792383964888162918480513432465216409371640403009729971037612045113415478719007639881209041451055630074000655093473974722206675223109929434400259100512062680086347153555148539548552831624261944567042435944993535084132588196941322891072406503377213352323037077384970994853089450777507879083442634420291861180736024127002634265953304576",
+      "explanation": "The Berry--Esseen constant is below one; E|score|^3<=sqrt(6).",
+      "passed": true
+    },
+    {
+      "name": "moment_closure_factor",
+      "left": "13510798781448183",
+      "relation": ">=",
+      "right": "0",
+      "explanation": "6m^2-[3(m+1)^2+3(m+1)/2] is this nonnegative quantity.",
+      "passed": true
+    },
+    {
+      "name": "power_exponent_denominator",
+      "left": "308700779000",
+      "relation": "<",
+      "right": "1099511627776",
+      "explanation": "Combines log(1+x)>x/2 with log(mM)<1150.",
+      "passed": true
+    },
+    {
+      "name": "power_exponent_integer_identity",
+      "left": "7784628387",
+      "relation": "=",
+      "right": "7784628387",
+      "explanation": "No giant dyadic number is allocated.",
+      "passed": true
+    },
+    {
+      "name": "power_exponent_comparison",
+      "left": "7784628387",
+      "relation": "<",
+      "right": "8000000000",
+      "explanation": "Therefore the proved positive exponent exceeds 2^(-8,000,000,000).",
+      "passed": true
+    },
+    {
+      "name": "budget_dimension_comparison",
+      "left": "75363255395",
+      "relation": ">",
+      "right": "68719476736",
+      "explanation": "With log(2)>1/2, theta-1<2/(1123m)<2^(-35).",
+      "passed": true
+    }
+  ]
+}

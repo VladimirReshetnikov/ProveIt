@@ -1,0 +1,258 @@
+\section{Exact minimality in a specified reporter family}
+\label{enum:section}
+
+The twenty-bit construction is small enough to admit a finite
+minimality question. This section answers that question for the
+binomial-block reporters defined below. It does not establish a
+minimum dimension among all observations of a Boolean cube.
+
+\subsection{The class being classified}
+
+\begin{definition}[Binomial sum-level reporter]\label{enum:definition}
+Choose positive integers \(n,m\), and take \(m+1\) independent blocks
+of \(n\) uniform signs. Write their raw sums as
+\(U,Z_1,\ldots,Z_m\). Their common alphabet and probabilities are
+\[
+ \mathcal S_n=\{x_j=2j-n:0\le j\le n\},\qquad
+ p_j=2^{-n}\binom nj.
+\]
+Choose tests \(I_i\subseteq\mathcal S_n\) and a selector
+\(\iota:\mathcal S_n\to[m]\), and use the refined report of
+Section~\ref{sec:reporter}. In particular, an all-pass report reveals
+all leaf sums, and an ordinary report reveals the central sum and all
+unselected leaf sums. The total number of input bits is
+\(N=n(m+1)\).
+\end{definition}
+
+The tests are unions of complete sum levels. They cannot distinguish
+two sign strings having the same sum. This restriction is part of the
+definition and part of the minimality conclusion.
+
+\begin{lemma}[Exact degree of a nonconstant reporter]
+\label{enum:exact-degree}
+Every nonconstant reporter in Definition~\ref{enum:definition} has
+maximum cell degree exactly \(nm\).
+\end{lemma}
+
+\begin{proof}
+Proposition~\ref{prop:reporter} gives the upper bound. The indicator
+of any nonempty \(n\)-bit sum level has degree exactly \(n\): its
+top Walsh character is constant, with value
+\((-1)^{(n-x_j)/2}\), throughout that level, so the corresponding
+coefficient is that sign times \(p_j\), and is nonzero.
+
+If all tests are nonempty, choose one allowed value in each test.
+The corresponding all-pass cell fixes these \(m\) raw leaf sums and
+places no condition on the center. Its indicator is a product of
+\(m\) level indicators on disjoint blocks. Their nonzero top
+coefficients multiply, giving degree \(nm\).
+
+If a test is empty, the all-pass event is empty. Unless the whole
+observation is the single exceptional tag, there is an attained
+ordinary cell. Such a cell fixes the central sum and \(m-1\)
+unselected leaf sums; its reported values already force an unselected
+failure. Its indicator is again a product of \(m\) level indicators,
+and has degree \(nm\).
+\end{proof}
+
+Thus an advantage over the block bound \(nm\) is an advantage over
+the actual maximum cell degree, apart from constant observations,
+which have no advantage.
+
+\subsection{The exact finite objective}
+
+The singleton formula of Theorem~\ref{thm:finite-selector} extends
+to arbitrary nonempty proper tests without numerical integration.
+For test \(I_i\), put
+\[
+ \beta_i=\Pbb(Z_i\in I_i),\quad
+ \mu_i=\E[Z_i\mid Z_i\in I_i],\quad
+ s_i^2=\Var(Z_i\mid Z_i\in I_i).
+\]
+For a selector \(j\mapsto i_j=\iota(x_j)\), define
+\begin{align*}
+ Q&=\prod_i\beta_i,& S&=\sum_i s_i^2,&
+ w_j&=p_j/\beta_{i_j},\\
+ R_0&=\sum_jw_j,& K&=R_0-1,&
+ R_1&=\sum_jw_j(x_j-\mu_{i_j}),\\
+ H_2&=\sum_jw_j(x_j-\mu_{i_j})^2.&&&&
+\end{align*}
+Every number here is rational. Since all tests are proper,
+\(\beta_i<1\), and hence \(K>0\).
+
+\begin{proposition}[Objective for arbitrary sum-level tests]
+\label{enum:objective}
+For the reporter \(F\), its exact advantage is
+\begin{equation}\label{enum:gain}
+ g:=v(F)-nm
+ =Q\left\{\frac{R_1^2}{K}-H_2-KS+
+               \sum_j w_j s_{i_j}^2\right\}.
+\end{equation}
+The exceptional cell has probability \(QK\) and optimal predictor
+\[
+ b_* = \sum_i\mu_i+\frac{R_1}{K}.
+\]
+\end{proposition}
+
+\begin{proof}
+The identities \(\Pbb(P)=QR_0\), \(\Pbb(B)=Q\), and
+\(\Pbb(A)=QK\) follow by conditioning on the center.
+For a constant exceptional predictor \(b\), put
+\(C=\sum_i\mu_i-b\). Conditional on \(U=x_j\) and \(P\), the
+mean of \(L-b\) is \(x_j+C-\mu_{i_j}\), and its variance is
+\(n+S-s_{i_j}^2\). On \(B\), its mean is \(C\) and its variance
+is \(n+S\). Subtracting the contribution of \(B\) from that of
+\(P\) gives
+\[
+ \E[\1_A\{n-(L-b)^2\}]
+ =Q\left\{-KC^2-2R_1C-H_2-KS+
+                       \sum_jw_js_{i_j}^2\right\}.
+\]
+The maximum occurs at \(C=-R_1/K\). The optimizing predictor is
+the conditional mean on \(A\), so
+\eqref{eq:optimal-exceptional} identifies the maximum with
+\(v(F)-nm\). This proves \eqref{enum:gain}.
+\end{proof}
+
+\subsection{Reductions that make the enumeration complete}
+
+\begin{lemma}[Reduction to distinct proper tests and onto selectors]
+\label{enum:reductions}
+If a reporter has positive advantage, then it has no empty or full
+leaf test. From any positive reporter one can obtain another positive
+reporter with no more input bits, distinct tests, and a surjective
+selector. A reporter with one leaf has no positive advantage.
+\end{lemma}
+
+\begin{proof}
+If at least two tests are empty, \(A\) is empty. If exactly one test,
+at leaf \(i\), is empty, then \(A\) requires selecting \(i\) and
+the success of all other tests. Thus \(A\) is independent of
+\(Z_i\), which retains variance \(n\) on that event. In either
+case \eqref{eq:optimal-exceptional} rules out a positive advantage.
+
+If test \(i\) is full, then \(A\) is false when \(i\) is selected,
+and is independent of \(Z_i\) when another leaf is selected.
+Consequently \(A\) is independent of \(Z_i\) altogether. Again
+\(\Var(L\mid A)\ge n\), whenever \(A\) is nonempty. This also
+rules out using a full test as a favorable selector fallback.
+
+Suppose next that a proper nonempty leaf test is never selected.
+Deleting it leaves \(K,R_1,H_2\) and the selected-variance term in
+\eqref{enum:gain} unchanged, decreases \(S\) by \(s_i^2\), and
+divides \(Q\) by \(\beta_i\). The new advantage is
+\[
+ g'=\frac{g}{\beta_i}+\frac{QK}{\beta_i}s_i^2>0.
+\]
+If two tests coincide, merge their selector labels. The parameters
+in \eqref{enum:gain} do not change, because the two tests have the
+same probability, mean, and variance. One copy is now unused and
+can be deleted. Repeating these operations gives the stated
+reduction. A surjective selector has at most \(n+1\) leaf labels.
+
+Finally, when \(m=1\), the reporter only describes its leaf and
+never the independent center. Its retained variance is at most
+\(n\). By Lemma~\ref{enum:exact-degree}, a nonconstant such
+reporter has degree \(n\); a constant one has both variance and
+degree zero.
+\end{proof}
+
+\subsection{The finite certificate}
+
+\begin{theorem}[Twenty-bit minimality in the binomial reporter class]
+\label{enum:minimality}
+No reporter in Definition~\ref{enum:definition} on fewer than twenty
+bits has retained variance greater than its maximum cell degree.
+The reporter of Theorem~\ref{thm:witness} attains a strict advantage
+on twenty bits. Thus twenty is the minimum within this specified
+class.
+\end{theorem}
+
+\begin{proof}
+It suffices to consider a nonconstant reporter with distinct nonempty
+proper tests and a surjective selector, by
+Lemmas~\ref{enum:exact-degree} and~\ref{enum:reductions}.
+Its codimension is exactly \(n\). If \(n\le3\), the analytic
+codimension obstruction excludes an advantage. The case \(m=1\)
+has already been excluded. If \(n\ge7\) and \(m\ge2\), then
+\(n(m+1)\ge21\). Therefore fewer than twenty bits leave only the
+four parameter pairs in the following table.
+
+\begin{center}
+\begin{tabular}{@{}rrrrr@{}}
+\toprule
+Block size \(n\)&Leaves \(m\)&Bits \(N\)&Configurations&Maximum \(g\)\\
+\midrule
+4&2&12&13,050&\(-1/12\)\\
+4&3&16&609,000&\(-35/17152\)\\
+5&2&15&117,242&\(-595/8576\)\\
+6&2&18&992,250&\(-1293/33152\)\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+There are \(q_n=2^{n+1}-2\) nonempty proper sum-level tests. The
+certificate enumerates every unordered family of \(m\) distinct
+tests and every onto map from the \(n+1\) central sums to those
+tests. The exact number of configurations is therefore
+\begin{equation}\label{enum:count}
+ \binom{q_n}{m}
+ \sum_{r=0}^m(-1)^r\binom mr(m-r)^{n+1}.
+\end{equation}
+This gives exactly the counts in the table. Sorting the test masks
+only removes permutations of leaf labels; all selectors for each
+sorted family are still included.
+
+The program \texttt{code/enumerate\_reporters.py} evaluates
+\eqref{enum:gain} with integer fractions for every configuration,
+compares them exactly, and obtains the displayed maxima. All
+1,731,542 configurations have nonpositive advantage; in these four
+reduced cases the maxima are strictly negative. The JSON output
+records the counts and a maximizing family, selector, and predictor
+for each row. This exact finite exhaustion completes the lower
+bound. The twenty-bit upper bound is
+Theorem~\ref{thm:witness}.
+\end{proof}
+
+The only computational part of this theorem is the four-row finite
+exhaustion. The codimension threshold and the positive twenty-bit
+construction have independent mathematical proofs. In particular,
+their validity does not depend on this minimality search.
+
+\subsection{Reproduction and limits of the certificate}
+
+The companion code uses only the Python standard library. The command
+\begin{verbatim}
+python code/run_verification.py
+\end{verbatim}
+checks the twenty-bit witness and writes
+\texttt{data/witness\_certificate.json}. It enumerates all \(5^5=3125\)
+tuples of block sums, with their exact binomial multiplicities, so
+every one of the \(2^{20}\) sign strings is accounted for. All 622
+cells, their conditional moments, the complete score law, and the
+retained variance are checked.
+
+The same verifier also performs a complete degree check. Block symmetry
+makes a Walsh coefficient depend only on the five subset sizes in its
+blocks. There are 56 such profiles of total degree greater than 16;
+all their coefficients vanish on each of the 622 cells, giving 34,832
+exact zero checks. A degree-16 coefficient is nonzero on every cell.
+The code uses the exact sum of a fixed character on each binomial
+layer, rather than a numerical transform.
+
+To regenerate the complete minimality certificate, run
+\begin{verbatim}
+python code/run_verification.py --exhaustive
+\end{verbatim}
+This writes \nolinkurl{data/minimality_certificate.json}. A separate
+implementation, \nolinkurl{code/enumerate_two_leaf_integer.py},
+uses cross-multiplied integer comparisons in its inner loop. The
+included independent check of the largest two-leaf case agrees with
+the fraction implementation on all 992,250 configurations and on
+the exact maximum \(-1293/33152\).
+
+These are reproducible finite certificates, not a Lean formalization
+of the enumeration programs. They do not exclude smaller witnesses
+outside Definition~\ref{enum:definition}, including leaf tests that
+split individual sum levels, unequal block sizes, different reporting
+mechanisms, or general partitions of a cube.

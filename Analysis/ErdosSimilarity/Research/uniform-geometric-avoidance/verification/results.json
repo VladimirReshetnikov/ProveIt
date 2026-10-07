@@ -1,0 +1,205 @@
+{
+  "status": "passed",
+  "arithmetic": "Python fractions.Fraction and arbitrary-precision integers; no floating point",
+  "scope": "Exact finite checks only; neither an infinite-set construction nor a formal theorem proof",
+  "synchronization": {
+    "bands": [
+      {
+        "alpha": "1/4",
+        "beta": "3/4",
+        "Q": "1/16",
+        "T": 10,
+        "rational_ratios": 53,
+        "levels_per_ratio": 24
+      },
+      {
+        "alpha": "1/8",
+        "beta": "7/8",
+        "Q": "1/32",
+        "T": 26,
+        "rational_ratios": 79,
+        "levels_per_ratio": 24
+      },
+      {
+        "alpha": "1/3",
+        "beta": "2/3",
+        "Q": "1/16",
+        "T": 7,
+        "rational_ratios": 35,
+        "levels_per_ratio": 24
+      }
+    ],
+    "exact_jump_levels": 24
+  },
+  "positive_mixtures": {
+    "normalized_mixtures": 5,
+    "levels_per_mixture": 24,
+    "degeneracies_included": [
+      "zero coefficient",
+      "repeated base"
+    ]
+  },
+  "windows": {
+    "parameter_cases": 162,
+    "edge_instances": 3312,
+    "M_values": [
+      2,
+      3,
+      4
+    ],
+    "height_values": [
+      1,
+      2,
+      3
+    ]
+  },
+  "grids": {
+    "grid_levels": 80,
+    "rational_ratios": 25,
+    "point_configurations": 1800,
+    "stable_centers": 4,
+    "half_open_boundary_cases": 20,
+    "sample_window_endpoint": 43
+  },
+  "conditional_routing": {
+    "models": [
+      {
+        "model": "two-point geometric address pattern",
+        "test_count": 2,
+        "selector_states": 16,
+        "terminal_entries": 4,
+        "complete_assignments": 256,
+        "joint_outcome_patterns_checked_per_p": 4,
+        "probabilities": [
+          {
+            "p": "1/3",
+            "failure_probability": "25/36",
+            "target": "25/36"
+          },
+          {
+            "p": "2/5",
+            "failure_probability": "16/25",
+            "target": "16/25"
+          },
+          {
+            "p": "1/2",
+            "failure_probability": "9/16",
+            "target": "9/16"
+          }
+        ]
+      },
+      {
+        "model": "shared and gate-dependent subtree selectors",
+        "test_count": 4,
+        "selector_states": 64,
+        "terminal_entries": 12,
+        "complete_assignments": 262144,
+        "joint_outcome_patterns_checked_per_p": 16,
+        "probabilities": [
+          {
+            "p": "1/3",
+            "failure_probability": "625/1296",
+            "target": "625/1296"
+          },
+          {
+            "p": "2/5",
+            "failure_probability": "256/625",
+            "target": "256/625"
+          },
+          {
+            "p": "1/2",
+            "failure_probability": "81/256",
+            "target": "81/256"
+          }
+        ]
+      }
+    ],
+    "negative_control": [
+      {
+        "p": "1/3",
+        "shared_terminal_failure": "3/4",
+        "independent_terminal_target": "25/36",
+        "gap": "1/18"
+      },
+      {
+        "p": "2/5",
+        "shared_terminal_failure": "7/10",
+        "independent_terminal_target": "16/25",
+        "gap": "3/50"
+      },
+      {
+        "p": "1/2",
+        "shared_terminal_failure": "5/8",
+        "independent_terminal_target": "9/16",
+        "gap": "1/16"
+      }
+    ],
+    "negative_control_meaning": "Aliasing terminal addresses breaks the identity; this failure is expected."
+  },
+  "no_default": [
+    {
+      "M": 2,
+      "height": 1,
+      "center_selector_assignments": 2,
+      "no_default_probability": "1/2"
+    },
+    {
+      "M": 2,
+      "height": 2,
+      "center_selector_assignments": 8,
+      "no_default_probability": "1/4"
+    },
+    {
+      "M": 2,
+      "height": 3,
+      "center_selector_assignments": 128,
+      "no_default_probability": "1/8"
+    },
+    {
+      "M": 3,
+      "height": 1,
+      "center_selector_assignments": 4,
+      "no_default_probability": "3/4"
+    },
+    {
+      "M": 3,
+      "height": 2,
+      "center_selector_assignments": 256,
+      "no_default_probability": "9/16"
+    },
+    {
+      "M": 4,
+      "height": 2,
+      "center_selector_assignments": 32768,
+      "no_default_probability": "49/64"
+    }
+  ],
+  "periodic_assembly": {
+    "budget_cases": 256,
+    "signed_contraction_density_cases": 28,
+    "signed_scale_normalizations": 350,
+    "full_signed_density_budget": "eta/2",
+    "exact_rectangular_tail": "(eta/2)*(2^-M+2^-(K+1)-2^-(M+K+1))",
+    "tail_majorant": "(eta/2)*(2^-M+2^-(K+1))"
+  },
+  "checks_by_category": {
+    "adaptive_terminal_addresses": 80,
+    "affine_endpoint": 324,
+    "dyadic_grids": 875,
+    "exhaustive_routing": 68,
+    "grid_separation": 42000,
+    "half_open_boundaries": 45,
+    "jump_boundaries": 48,
+    "mixture_synchronization": 1429,
+    "no_default_distribution": 17,
+    "periodic_budgets": 768,
+    "periodic_density": 34,
+    "preorder_windows": 10422,
+    "scale_normalization": 3500,
+    "shared_terminal_negative_control": 6,
+    "stability_density": 5,
+    "stable_keys": 16201,
+    "synchronization": 15937
+  },
+  "total_exact_checks": 91759
+}

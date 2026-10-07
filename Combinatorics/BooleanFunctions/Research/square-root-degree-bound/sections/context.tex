@@ -1,0 +1,165 @@
+\section{Research context and the results}
+\label{sec:context}
+
+The useful common ground between the two repositories is finite Fourier
+analysis with explicit verification. The OpenAI manuscript
+\emph{Unbounded Violations of the Square-Root Degree Bound}
+\cite{OpenAI2026} develops low-degree observations whose conditional
+coordinate sums retain unexpectedly large variance. ProveIt's
+\emph{Noisy parity cubes} report \cite{ProveItNoise} studies spectral
+samples, parity noise, and query costs, while its Thue--Morse Lean files
+\cite{ProveItWalsh} establish finite character identities. This article
+uses the former observation mechanism, develops a new structural
+threshold and rigidity theory, and follows the latter repository's
+practice of separating written proofs from finite computational checks.
+
+\subsection{What was reviewed}
+
+The OpenAI repository catalog and overview were examined to choose a
+focused problem. The proof-level review for this article covers all seven
+section files of result family 192: the observation calculus, reporting
+construction, alternative reports, mean-cost extension, weighted
+Gaussian mixture, and small-width calculation. The fixed source revision
+is
+\[
+\texttt{adc7f1241b42e322a6451854ab7e4b4c146bf78a}.
+\]
+The ProveIt review covers the actual source of \emph{Noisy parity cubes},
+its verification script, and the two Lean files
+\texttt{ThueMorseBooleanCube.lean} and \texttt{ThueMorseWalsh.lean}, at
+revision
+\[
+\texttt{dfc1a5a6817462e0465e445e1466c41ee42ea839}.
+\]
+The repository README was also inspected at the later snapshot
+\texttt{1aa2f12ec85b}.
+These are scoped mathematical reviews, not audits of every result in
+either repository. Exact paths and source identities are recorded in the
+accompanying provenance file.
+
+Theorem 3.1 of \emph{Noisy parity cubes} represents a Boolean rule's
+two-input disagreement under independent XOR noise as a mixture of the
+corresponding parity disagreement probabilities, with squared Walsh
+coefficients as weights. Its Lemma 3.2 compares total influence with
+expected exact query cost. Those conclusions concern noise response and
+queries; they do not imply a variance bound for arbitrary low-degree
+cells. The inspected Lean files prove product identities and vanishing
+nontrivial Walsh-character sums in a binary representation. They do not formalize the
+conditional-expectation results proved here.
+
+\subsection{The distinction between three Fourier quantities}
+
+For \(f:\{-1,1\}^N\to\{-1,1\}\), write
+\[
+ L(f)=\sum_{i=1}^N\widehat f(\{i\}),\qquad
+ L_{\mathrm{abs}}(f)=\sum_{i=1}^N|\widehat f(\{i\})|.
+\]
+These differ from the squared first-level Fourier weight and from total
+influence. Coordinate sign changes preserve degree and turn the signed
+sum into the absolute sum. Thus their universal extremal inequalities
+are equivalent, although the values for a particular function need not
+be equal.
+
+The Gopalan--Servedio problem asks whether \(L(f)\le\sqrt{\deg f}\);
+O'Donnell's problem list records it and the stronger majority benchmark
+\(L(f)\le B_{\deg f}\), where \(B_d=\E|H_d|\)
+\cite{ODonnell2012}. The same square-root question appears as
+Conjecture 3.17 in \cite{FHKL2016}. The source manuscript
+\cite{OpenAI2026} proves violations by every constant factor. The
+present article does not claim that prior conclusion as a new theorem.
+
+For coordinate-subcube partitions, the retained variance equals the
+expected number of fixed coordinates. This is the conditional-sum
+calculation behind the decision-tree inequality of O'Donnell and
+Servedio \cite[Theorem 3]{ODonnellServedio2007}. Blais, Tan, and Wan
+\cite[Lemma 3.1]{BlaisTanWan2015} use the same type of conditional sum
+for parity decision trees. General low-degree indicators allow
+cancellation unavailable to coordinate subcubes. The codimension
+question asks how far that cancellation can first go.
+
+\subsection{The structural threshold}
+
+Let \(D(F)\) denote maximum cell degree, as defined precisely in
+Section~\ref{sec:observations}. The principal result is the following.
+
+\begin{theorem}[First possible codimension for a variance gain]
+\label{thm:headline}
+Let \(X_1,\ldots,X_N\) be independent uniform signs and
+\(H_N=\sum_iX_i\).
+\begin{enumerate}
+\item If \(C\ne\varnothing\) and
+\(\deg\1_C\le N-k\), where \(k\in\{1,2,3\}\), then
+\[
+ \Var(H_N\mid C)\ge k.
+\]
+Equality holds if and only if \(\Law(H_N\mid C)\) is an integer translate
+of the law of a sum of \(k\) independent uniform signs.
+\item Consequently, if \(D(F)\le N-k\), then \(v(F)\le N-k\).
+Equality holds if and only if every attained cell has the equality
+distribution in the first assertion.
+\item There is an explicit twenty-bit observation \(F_*\) with
+\[
+ D(F_*)=16,\qquad
+ v(F_*)=16+\frac9{34816}.
+\]
+Its exceptional cell \(A\) has exact degree 16 and
+\[
+ \Var(H_{20}\mid A)=4-\frac9{289}.
+\]
+\end{enumerate}
+Thus four is the smallest Fourier codimension \(N-D(F)\) at which
+retained variance can exceed cell degree.
+\end{theorem}
+
+The first two assertions are proved using interlacing even and odd
+integer lattices. The last is a completely specified finite example,
+not a limiting construction. Its numerical excess is small, but it
+locates an exact boundary that the qualitative amplifier does not
+identify.
+
+The equality statement is distributional. It does not classify a cell
+as a coordinate subcube. Indeed, the proof only requires certain
+alternating moments of the Hamming-weight distribution to vanish.
+The stability theorem makes this distinction quantitative. If
+\(\Delta=(N-k)-v(F)\), then for suitable integer shifts \(c(F)\) and an
+independent \(k\)-sign sum \(S_k\),
+\begin{equation}\label{eq:headline-stability}
+ \TV\bigl(\Law(F,H_N),\Law(F,c(F)+S_k)\bigr)
+ \le C_k\Delta,\qquad
+ (C_1,C_2,C_3)=\left(\frac14,\frac14,\frac38\right).
+\end{equation}
+We also prove sharper local bounds and construct extremizers in the
+abstract moment class.
+
+\subsection{Other contributions and their scope}
+
+The finite reporter is reduced to an exact rational optimization
+formula, and its full score law is computed as a four-atom perturbation
+of \(H_{16}\). Tensorization proves that no universal additive constant
+can repair \(v(F)\le D(F)\). Exhaustive rational enumeration proves
+twenty-bit minimality within the family of equal binomial blocks,
+sum-level leaf tests, and a central-sum selector. This is not a
+classification of every observation on fewer than twenty bits.
+
+For the source Gaussian amplifier, we prove explicit restricted-moment
+estimates, a uniform fourth-moment invariant, and a single copy count
+valid at every iteration. The resulting construction has polynomial
+dimension growth in its prescribed degree budget. A fully rational
+choice supplies the numerical exponent
+\(\varepsilon_0=2^{-8\,000\,000\,000}\).
+Its size makes the construction an effective existence theorem rather
+than a practical way to tabulate a counterexample.
+
+There is a necessary priority distinction here. Once an arbitrary-factor
+square-root violation is known, balanced block composition already
+implies a positive power separation. Fact 2.7 of
+\cite{BlaisTanWan2015} gives the relevant multiplication rule.
+Section~\ref{subsec:composition} proves the short deduction, including
+the balancing step. The additional content of our analytic construction
+is the fixed quantitative schedule and explicit constants, not the bare
+existence of a positive exponent.
+
+All main mathematical claims are proved below. Their priority relative
+to the entire literature remains a matter for further scholarly review;
+the comparison here is with the repository sources and primary papers
+actually inspected.

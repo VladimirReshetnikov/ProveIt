@@ -1,0 +1,1842 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=27mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array,longtable}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black,
+ pdftitle={Exact restriction laws and Fourier cancellation on hyperbolic quadrics},
+ pdfauthor={ChatGPT; research manuscript prepared for the ProveIt project}}
+\setlength{\emergencystretch}{2em}
+\setlength{\parskip}{3pt}
+\setlist{itemsep=3pt,topsep=5pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{question}[theorem]{Question}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\F}{\mathbb F}
+\newcommand{\C}{\mathbb C}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Pp}{\mathbb P}
+\newcommand{\Sym}{\operatorname{Sym}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\im}{\operatorname{im}}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\Cov}{\operatorname{Cov}}
+\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\GL}{\operatorname{GL}}
+\newcommand{\Gr}{\operatorname{Gr}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\J}{\mathsf J}
+\newcommand{\D}{\mathsf D}
+\newcommand{\I}{\mathsf I}
+\newcommand{\G}{\mathcal G}
+\newcommand{\one}{\mathbf 1}
+\newcommand{\gb}[2]{\genfrac{[}{]}{0pt}{}{#1}{#2}_{q}}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\norm}[1]{\left\|#1\right\|}
+\title{Exact restriction laws and Fourier cancellation\\on hyperbolic quadrics\\[5pt]
+\large Sharp polar averaging and two-family discriminant discrepancies}
+\author{Research manuscript prepared with ChatGPT\\for the ProveIt project}
+\date{7 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+Let $H$ be a split nondegenerate symmetric form on $\F_q^{2r}$, where $q$ is odd,
+and let $Q$ be a uniformly random symmetric form. We investigate the determinant
+characters of the restrictions of $Q$ to the maximal $H$-isotropic subspaces.
+An exact conditional extension law gives the joint sign distribution for two
+arbitrary subspaces, including every possible singular common restriction.
+For the average over all generators we prove the sharp fixed-rank variance
+asymptotic $q^{-(r-1)}(1+O_r(q^{-1}))$ for determinant character.
+A different phenomenon occurs on subtracting the averages over the two classical
+Latin--Greek families: every Fourier frequency of rank less than $r$ cancels.
+The resulting exact second moment is
+\[
+ \E\Delta_{\D}^{\,2}
+ =\frac{4p_r}{N_r}q^{-\lfloor r/2\rfloor},\qquad
+ p_r=\prod_{\substack{1\le j\le r\\j\text{ odd}}}(1-q^{-j}),\quad
+ N_r=2\prod_{j=1}^{r-1}(q^j+1).
+\]
+Its exponent is $\lfloor r^2/2\rfloor$, rather than $r-1$.
+In even rank the character contrast is, pointwise, a signed count of common
+generators times an explicit scalar. It is exactly zero with probability
+$1-(2+O_r(q^{-1}))q^{-r}$, and a nonzero value forces a square characteristic
+polynomial for $H^{-1}Q$. The variance-normalized contrast converges to zero
+in probability, despite having second moment one. An analogous odd-rank
+identity holds for nonsingularity.
+We also obtain exact nonsingularity and individual-sign contrast variances,
+a general incidence-to-Fourier transfer principle, and sharp Grassmannian
+averaging. These results yield an $O_r(q^{-1})$ local transverse approximation
+for $r\ge3$ in the rank-layer setup of the cited OpenAI manuscript, replacing
+its $O_r(q^{-1/2})$ estimate. All theorems have proofs here; exhaustive finite
+checks and integration notes accompany the article. Classical rank/type counts,
+Fourier ingredients, and the Latin--Greek halving are explicitly distinguished
+from the proposed research contribution. Literature priority, independent
+referee approval, and proof-assistant verification are not asserted.
+\end{abstract}
+\newpage
+\tableofcontents
+\newpage
+
+\section{Research setting, source review, and principal conclusions}
+\label{sec:intro}
+
+\subsection{A specific local problem selected from the repositories}
+The direct mathematical starting point is the section \emph{Transverse
+configurations and determinant signs} in the manuscript filed as
+\emph{A counterexample to Sidorenko's conjecture} in \texttt{openai/math}
+\cite{openai}. Its lemma labelled \texttt{lem:transverse-restrictions} treats
+any family $\mathcal U$ of distinct $r$-subspaces and proves
+\begin{equation}\label{eq:source-bound}
+ \E\abs{\frac1{|\mathcal U|}\sum_{U\in\mathcal U}
+ \one_{\{\chi(\det(Q|_U))=\xi\}}-\frac12}
+ =O_r\bigl(q^{-1/2}+|\mathcal U|^{-1/2}\bigr),\qquad \xi=\pm1.
+\end{equation}
+The source uses this for maximal isotropic subspaces of a split form and for
+all middle-dimensional subspaces. Its proof bounds every off-diagonal
+covariance by $O_r(q^{-1})$, discarding the dimension and nullity of the common
+restriction. We retain that information exactly.
+
+The selected ProveIt context is its \emph{Local Quantitative Refinements of
+Gowers's Proof of Szemer\'edi's Theorem} program \cite{proveit}. The reviewed
+inventory includes sharp moment and density-transfer inequalities, refinements
+of restriction estimates, and collision-sensitive improvements of local
+counting arguments. Its source-33 audit explicitly separates written proofs,
+finite tests, source interfaces, and unresolved priority. This article follows
+that local-theorem approach, but does not use an unverified ProveIt theorem as
+a premise. The connection to ProveIt is its quantitative counting and
+restriction program; the direct external theorem interface comes from
+\texttt{openai/math}.
+
+This was a scoped review of repository inventories and selected mathematical
+sources, not a proof audit of every manuscript in either repository. In
+particular, the title of the Sidorenko manuscript is not treated as a
+certification of its global conclusion. Our finite-field theorems stand
+independently of that conclusion.
+
+\subsection{Three distinct scales}
+Fix an odd prime power $q$ and a split form $H$ on a $2r$-dimensional vector
+space. Write $\G$ for its maximal totally isotropic $r$-subspaces, and
+$\G_+,\G_-$ for its two equal-sized classical families. For a symmetric form
+$C$ set
+\[
+ \J(C)=\one_{\{\det C\ne0\}},\qquad
+ \D(C)=\chi(\det C),\qquad
+ \I_\xi(C)=\frac{\J(C)+\xi\D(C)}2.
+\]
+Thus $\I_\xi$ is the indicator of a nonsingular restriction of sign $\xi$;
+$\D$ is zero, not a quotient discriminant, on a singular matrix.
+For $f\in\{\J,\D,\I_\xi\}$ define
+\begin{equation}\label{eq:averages-intro}
+ \overline f(Q)=\frac1{N_r}\sum_{U\in\G}f(Q|_U),\qquad
+ F_{f,\pm}(Q)=\frac2{N_r}\sum_{U\in\G_\pm}f(Q|_U),\qquad
+ \Delta_f=F_{f,+}-F_{f,-}.
+\end{equation}
+All expectations below are with respect to uniform $Q$ on the full vector
+space of symmetric forms, unless conditioning is explicitly displayed.
+
+Theorems~\ref{thm:polar} and \ref{thm:contrast} prove, for fixed $r\ge2$,
+\begin{align}
+ \Var(\overline\D)&=(1+O_r(q^{-1}))q^{-(r-1)},\label{eq:intro-average}\\
+ \Var(\overline\I_\xi)&=(\tfrac14+o_r(1))q^{-(r-1)},\label{eq:intro-indicator}\\
+ \E\Delta_\D^2&=(2+O_r(q^{-1}))q^{-\lfloor r^2/2\rfloor}.
+ \label{eq:intro-contrast}
+\end{align}
+The third line concerns agreement between the two families, not proximity of
+either family to an unbiased coin. Their means have a deterministic
+finite-field bias, and their much larger common fluctuations mostly cancel
+in the difference. In particular, replacing the true mean by $1/2$ before
+estimating variance would lose the principal distinction.
+
+\begin{center}
+\begin{tabular}{@{}lrrrrrrr@{}}
+\toprule
+Generator dimension $r$ &2&3&4&5&6&7&8\\
+\midrule
+All-generator variance exponent &1&2&3&4&5&6&7\\
+Two-family character exponent &2&4&8&12&18&24&32\\
+\bottomrule
+\end{tabular}
+\end{center}
+These are exponents of $q^{-1}$ in variance, not in standard deviation.
+
+\subsection{Attribution and the claim boundary}
+The classification of symmetric forms by rank and determinant type, exact
+rank/type counts, and their translation association schemes are classical;
+Schmidt gives explicit counts and eigenvalues \cite{schmidt2015,schmidt2020}.
+The Fourier calculations below are elementary specializations of that
+established theory, not new general eigenvalue formulas. The two generator
+families and their equality of proper-subspace incidences are the classical
+Latin--Greek halving; see Kiermaier, Schmidt and Wassermann
+\cite{polar-designs}, especially their discussion preceding Lemma~14.
+
+The proposed contribution is the assembled restriction-covariance calculus,
+its sharp averaging laws, the explicit discriminant contrast identities,
+and the resulting local rank-layer improvement. We give direct proofs so
+that these statements can be checked without importing the full association
+scheme machinery. A literature search sufficient to identify the classical
+background is not sufficient to certify that no equivalent specialization
+has appeared elsewhere. Accordingly, these are proved research results
+presented for review, not a claim to have settled a named longstanding
+conjecture or established historical priority.
+
+\section{Symmetric forms: normalization and exact marginal laws}
+\label{sec:counts}
+Throughout, $q\ge3$ is an odd prime power, $\chi:\F_q\to\{0,1,-1\}$ is the
+quadratic character with $\chi(0)=0$, and $\eps=\chi(-1)$. Write
+\[
+ c(n)=\frac{n(n+1)}2,\qquad \Sym_n=\{C\in M_n(\F_q):C=C^{\mathsf T}\}.
+\]
+A quadratic form is represented by $x^{\mathsf T}Cx$. Odd characteristic
+identifies this description with symmetric bilinear forms; all determinant
+characters in this article use the displayed matrix convention. Empty
+matrices have determinant $1$. In particular $\J_0=\D_0=1$.
+
+For uniform $C\in\Sym_n$, let
+\begin{equation}\label{eq:marginal-defs}
+ p_n=\E\J(C),\qquad \mu_n=\E\D(C),\qquad
+ \pi_{n,\xi}=\Pp(\D(C)=\xi)=\frac{p_n+\xi\mu_n}{2}.
+\end{equation}
+For $n=0$ the last formula means $\pi_{0,+}=1$ and $\pi_{0,-}=0$.
+The Gaussian coefficient $\gb nk$ counts the $k$-subspaces of $\F_q^n$;
+it is zero outside $0\le k\le n$. We use
+\begin{equation}\label{eq:G-rho}
+ G_{t,k}=\gb tk q^{c(t-k)-c(t)},\qquad
+ \rho_{k,a}=\prod_{j=a-k+1}^{a}(1-q^{-j})\quad(0\le k\le a),
+\end{equation}
+and set $\rho_{k,a}=0$ for $k>a$. Thus $\rho_{k,a}$ is the probability that
+a uniform $k$-by-$a$ matrix has full row rank.
+
+\begin{lemma}[Radical and quotient counting]\label{lem:radical}
+For uniform $C\in\Sym_t$, the probability that $C$ has nullity $k$ and its
+nondegenerate quotient has determinant character $\sigma$ is
+\begin{equation}\label{eq:radical-type}
+ \Pp(k(C)=k,\sigma(C)=\sigma)
+ =G_{t,k}\frac{p_{t-k}+\sigma\mu_{t-k}}2,\qquad \sigma=\pm1.
+\end{equation}
+The probability of nullity $k$ alone is $G_{t,k}p_{t-k}$.
+\end{lemma}
+\begin{proof}
+Choose the radical $K$, in $\gb tk$ ways. Forms with radical exactly $K$
+are precisely the pullbacks of nonsingular forms on $\F_q^t/K$.
+In any chosen quotient basis their signed count is
+$q^{c(t-k)}\pi_{t-k,\sigma}$. Division by $q^{c(t)}$ gives the result.
+Changes of quotient basis multiply determinants by squares and do not
+alter the sign. The zero-dimensional quotient is covered by the empty
+matrix convention.
+\end{proof}
+
+\begin{proposition}[Exact marginal probabilities; classical]\label{prop:marginals}
+For every $n\ge0$,
+\begin{equation}\label{eq:p-product}
+ p_n=\prod_{\substack{1\le j\le n\\j\text{ odd}}}(1-q^{-j}),
+\end{equation}
+and
+\begin{equation}\label{eq:mu-product}
+ \mu_{2m}=\eps^m q^{-m}p_{2m},\qquad \mu_{2m+1}=0.
+\end{equation}
+Moreover $1-p_n\le 9/(8q)$ for $n\ge1$, and
+$|\pi_{n,\xi}-1/2|\le q^{-1}$ for $n\ge2$.
+\end{proposition}
+\begin{proof}
+Consider a symmetric extension of an $(n-1)$-dimensional leading block by
+one row and column. If the leading block is nonsingular, Schur complementation
+makes the last scalar uniform, so its conditional nonsingularity probability
+is $1-q^{-1}$ and its conditional determinant-character mean is zero.
+If the leading block has nullity one, eliminate its nondegenerate part.
+The remaining block has the form
+$\left(\begin{smallmatrix}0&b\\b&d\end{smallmatrix}\right)$ and is nonsingular
+exactly when $b\ne0$. Its determinant has character $\eps$ in that case.
+Nullity at least two cannot be repaired by one new dimension. Lemma~\ref{lem:radical}
+therefore gives, for $n\ge2$,
+\begin{align}
+ p_n&=(1-q^{-1})p_{n-1}
+       +q^{-1}(1-q^{-(n-1)})p_{n-2},\label{eq:p-recursion}\\
+ \mu_n&=\eps q^{-1}(1-q^{-(n-1)})\mu_{n-2}.
+ \label{eq:mu-recursion}
+\end{align}
+Here $G_{n-1,1}(1-q^{-1})=q^{-1}(1-q^{-(n-1)})$.
+The initial values are $p_0=1$, $p_1=1-q^{-1}$, $\mu_0=1$, $\mu_1=0$.
+Induction proves the two products: $p_{2m}=p_{2m-1}$ and
+$p_{2m+1}=(1-q^{-(2m+1)})p_{2m}$.
+
+The product inequality $1-\prod(1-x_i)\le\sum x_i$ gives
+$1-p_n\le q^{-1}/(1-q^{-2})\le9/(8q)$.
+For odd $n\ge3$, $\mu_n=0$. For even $n\ge4$,
+$|\mu_n|\le q^{-2}$, so
+$|\pi_{n,\xi}-1/2|\le9/(16q)+1/(2q^2)<q^{-1}$.
+For $n=2$, use $p_2=1-q^{-1}$ and
+$|\mu_2|=q^{-1}(1-q^{-1})$ directly.
+\end{proof}
+
+\section{An exact extension law and the two-subspace distribution}
+\label{sec:overlap}
+\begin{lemma}[Extension through an arbitrary singular block]\label{lem:extension}
+Fix $C\in\Sym_t$ of nullity $k$ and quotient determinant character $\sigma$.
+Let
+\[
+ M=\begin{pmatrix}C&B\\B^{\mathsf T}&E\end{pmatrix},
+\]
+where $B\in M_{t,a}(\F_q)$ and $E\in\Sym_a$ are independent and uniform.
+Define, for $k\le a$,
+\begin{equation}\label{eq:AB-def}
+ A_{a,k}=\rho_{k,a}p_{a-k},\qquad
+ B_{a,k}=\eps^k\rho_{k,a}\mu_{a-k},
+\end{equation}
+and define both quantities to be zero when $k>a$. Then
+\begin{equation}\label{eq:extension-moments}
+ \E[\J(M)\mid C]=A_{a,k},\qquad
+ \E[\D(M)\mid C]=\sigma B_{a,k}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Choose coordinates in which $C=C_0\oplus0_k$, with $C_0$ nonsingular.
+Eliminating $C_0$ by congruence leaves, apart from this fixed summand,
+\begin{equation}\label{eq:extension-block}
+ \begin{pmatrix}0_k&Z\\Z^{\mathsf T}&F\end{pmatrix},
+\end{equation}
+where $Z$ is uniform $k$-by-$a$ and $F$ is uniform symmetric, independently.
+Indeed, conditional on the mixed block adjacent to $C_0$, the Schur
+complement is a translation of the uniform matrix $E$.
+If $Z$ does not have full row rank, a nonzero vector in its left kernel
+is radical for \eqref{eq:extension-block}; if $k>a$ this always occurs.
+If $Z$ has full row rank, independent invertible changes of its row and
+column coordinates make it $(I_k\ 0)$. Congruence then gives $k$ hyperbolic
+planes and a residual form $R\in\Sym_{a-k}$. The changes in the bottom
+symmetric block are invertible linear transformations and translations,
+so $R$ is uniform, also conditional on $Z$ and the eliminated entries.
+The determinant character of a nonsingular extension is
+$\sigma\eps^k\chi(\det R)$; all determinant factors from changes of basis
+are squares. Multiplying the residual expectations by
+$\Pp(\rank Z=k)=\rho_{k,a}$ proves the claim.
+\end{proof}
+
+\begin{proposition}[Full rank-and-type transition]\label{prop:full-transition}
+In Lemma~\ref{lem:extension}, the rank $\ell$ of the residual rectangular
+matrix $Z$ has distribution
+\begin{equation}\label{eq:rectangular-rank}
+ R_{k,a}(\ell)=q^{-ka}\gb k\ell\gb a\ell\,|\GL_\ell(\F_q)|.
+\end{equation}
+Conditional on $\ell$, the extension is congruent to
+\[
+ C_0\ \oplus\ H_\ell\ \oplus\ R\ \oplus\ 0_{k-\ell},
+ \qquad R\text{ uniform in }\Sym_{a-\ell},
+\]
+where $H_\ell$ is a sum of $\ell$ hyperbolic planes. Thus, if $R$ has rank
+$j$ and quotient sign $\zeta$, the full extension has rank
+$t-k+2\ell+j$ and quotient sign $\sigma\eps^\ell\zeta$.
+The probability of the residual pair $(j,\zeta)$ is
+$\gb{a-\ell}{j}q^{c(j)-c(a-\ell)}\pi_{j,\zeta}$.
+\end{proposition}
+\begin{proof}
+A rank-$\ell$ linear map is specified by its kernel, image, and an
+isomorphism between the resulting $\ell$-dimensional spaces. This gives
+\eqref{eq:rectangular-rank}. Reduce $Z$ to a block with $I_\ell$ and zeros
+and apply the same congruence elimination as in Lemma~\ref{lem:extension}.
+The unmatched $k-\ell$ zero rows remain radical, while the unpaired new
+coordinates carry a uniform symmetric form. Lemma~\ref{lem:radical} supplies
+its rank/type probability. If several $(\ell,j,\zeta)$ yield the same final
+rank and sign, their probabilities are added; the statement is an exact
+mixture, not a disjoint parametrization by final rank alone.
+\end{proof}
+
+\begin{theorem}[Exact joint restriction-sign law]\label{thm:joint}
+Let $U,V$ be subspaces of dimensions $r,s$ in any finite-dimensional
+$\F_q$-space, with $t=\dim(U\cap V)$, $a=r-t$ and $b=s-t$.
+For uniform ambient symmetric $Q$ and $\xi,\eta\in\{\pm1\}$,
+\begin{align}
+ &\E\bigl[\I_\xi(Q|_U)\I_\eta(Q|_V)\bigr]\notag\\
+ &\quad=\frac14\sum_{k=0}^{t}G_{t,k}\Bigl[
+ p_{t-k}\bigl(A_{a,k}A_{b,k}+\xi\eta B_{a,k}B_{b,k}\bigr)
+ \notag\\[-2pt]
+ &\hspace{47mm}
+ +\mu_{t-k}\bigl(\xi B_{a,k}A_{b,k}+\eta A_{a,k}B_{b,k}\bigr)
+ \Bigr].\label{eq:joint-law}
+\end{align}
+The conventions above cover $t=0$, coincident subspaces, and
+zero-dimensional spaces without separate limiting arguments.
+\end{theorem}
+\begin{proof}
+Choose an ambient basis beginning with $U\cap V$ and then the separate
+extensions to $U$ and $V$. The two restrictions share precisely the leading
+symmetric block $C=Q|_{U\cap V}$. Every other entry on which either
+restriction depends is independent and uniform, so the restrictions are
+conditionally independent given $C$.
+For nullity $k$ and quotient sign $\sigma$ of $C$, Lemma~\ref{lem:extension}
+gives conditional sign probabilities
+\[
+ \frac{A_{a,k}+\xi\sigma B_{a,k}}2,
+ \qquad \frac{A_{b,k}+\eta\sigma B_{b,k}}2.
+\]
+Multiply them, weight by \eqref{eq:radical-type}, and sum over
+$\sigma=\pm1$. The even terms sum to $p_{t-k}$ and the odd terms to
+$\mu_{t-k}$, giving \eqref{eq:joint-law}.
+\end{proof}
+
+\begin{corollary}[Exact covariance kernels]\label{cor:kernels}
+For equal dimensions $r=s$, put $a=r-t$ and define
+\begin{align}
+ K_\J(r,t)&=\sum_{k=0}^{t}G_{t,k}p_{t-k}A_{a,k}^{\,2}-p_r^2,
+ \label{eq:KJ}\\
+ K_\D(r,t)&=\sum_{k=0}^{t}G_{t,k}p_{t-k}B_{a,k}^{\,2}-\mu_r^2,
+ \label{eq:KD}\\
+ K_{\J\D}(r,t)&=\sum_{k=0}^{t}G_{t,k}\mu_{t-k}A_{a,k}B_{a,k}-p_r\mu_r.
+ \label{eq:KJD}
+\end{align}
+These are respectively the covariances of the two nonsingularity indicators,
+the two determinant characters, and the nonsingularity indicator on $U$
+with the determinant character on $V$. In particular
+\begin{equation}\label{eq:KI}
+ K_{\I_\xi}(r,t)=\tfrac14\bigl(K_\J(r,t)+K_\D(r,t)
+                          +2\xi K_{\J\D}(r,t)\bigr).
+\end{equation}
+All three kernels vanish at $t=0$. Also $K_\J,K_\D\ge0$, and
+$|K_{\J\D}|\le\sqrt{K_\J K_\D}$.
+\end{corollary}
+\begin{proof}
+Condition on the common restriction as above. For equal dimensions the
+conditional expectations are the same functions of $C$, namely
+$A_{a,k}$ and $\sigma B_{a,k}$. Their variances and covariance are precisely
+the displayed kernels. This proves positivity and the Cauchy--Schwarz
+bound, including the case $U=V$. For $t=0$ the common block is deterministic.
+\end{proof}
+
+\section{Uniform covariance estimates and intersection profiles}
+\label{sec:bounds}
+The exact kernels already give an algorithm for every finite parameter.
+The following bounds identify which intersection dimensions dominate.
+The constants are deliberately simple and uniform in the dimension.
+
+\begin{lemma}[Uniform kernel bounds]\label{lem:kernel-bounds}
+For $r\ge1$, $0\le t\le r$ and $a=r-t$,
+\begin{equation}\label{eq:kernel-bounds}
+ 0\le K_\D(r,t)\le4q^{-a},\qquad
+ 0\le K_\J(r,t)\le64q^{-(2a+1)}.
+\end{equation}
+Both kernels are exactly zero when $t=0$. For fixed $r,t$ with $t\ge1$,
+\begin{equation}\label{eq:KD-asymptotic}
+ K_\D(r,t)=q^{-(r-t)}(1+O_r(q^{-1})).
+\end{equation}
+\end{lemma}
+\begin{proof}
+First note the dimension-free estimates
+\begin{equation}\label{eq:gaussian-bounds}
+ q^{k(t-k)}\le\gb tk\le2q^{k(t-k)},\qquad
+ G_{t,k}\le2q^{-k(k+1)/2}.
+\end{equation}
+For the upper bound, divide the Gaussian coefficient by its leading power.
+The numerator is at most one, whereas the denominator is at least
+$\prod_{j\ge1}(1-q^{-j})\ge1-\sum_{j\ge1}q^{-j}\ge1/2$.
+The lower bound holds term by term in the Gaussian product.
+
+By \eqref{eq:mu-product}, $B_{a,k}$ vanishes unless $a-k$ is even;
+otherwise $|B_{a,k}|^2\le q^{-(a-k)}$. Dropping the nonnegative subtracted
+mean square in \eqref{eq:KD} gives
+\[
+ K_\D(r,t)\le2q^{-a}
+ \sum_{\substack{k\ge0\\ k\equiv a\pmod2}}q^{-k(k-1)/2}
+ \le4q^{-a}.
+\]
+Each parity-restricted series is at most two for $q\ge3$.
+
+For $a=0$, $K_\J=p_r(1-p_r)\le9/(8q)$, which is enough.
+Suppose $a\ge1$. Let $h(C)=\E[\J(Q|_U)\mid C]$ and compare it with
+$p_a$, rather than its unknown-at-this-stage mean. If the common block
+has nullity zero, $h(C)=p_a$. For $1\le k\le a$, product bounds give
+\[
+ |A_{a,k}-p_a|
+ \le (1-\rho_{k,a})+(p_{a-k}-p_a)
+ \le3q^{-(a-k+1)}.
+\]
+For $k>a$ the difference is at most one. Consequently
+\begin{align*}
+ K_\J(r,t)&=\Var h(C)\le\E|h(C)-p_a|^2\\
+ &\le18q^{-2a-2}\sum_{k\ge1}q^{k(3-k)/2}
+       +2\sum_{k\ge a+1}q^{-k(k+1)/2}\\
+ &\le54q^{-2a-1}+3q^{-(a+1)(a+2)/2}
+ \le57q^{-2a-1}\le64q^{-2a-1}.
+\end{align*}
+We used $\sum_{k\ge1}q^{k(3-k)/2}\le3q$,
+and $(a+1)(a+2)/2\ge2a+1$ for $a\ge1$.
+
+Finally fix $r,t\ge1$. If $a$ is even, the $k=0$ term in the second
+moment in \eqref{eq:KD} equals
+$p_t\mu_a^2=q^{-a}(1+O_r(q^{-1}))$; the remaining nonzero terms have
+$k\ge2$ and are $O_r(q^{-a-1})$ in total. If $a$ is odd, the first
+nonzero term is $k=1$, and
+\[
+ G_{t,1}p_{t-1}\rho_{1,a}^2\mu_{a-1}^2
+ =q^{-a}(1+O_r(q^{-1})).
+\]
+The remaining nonzero terms have $k\ge3$ and are smaller. In either case
+$\mu_r^2=O_r(q^{-r})=O_r(q^{-a-1})$ when nonzero.
+The same argument includes $a=0$, where the leading term is $p_r$.
+\end{proof}
+
+\begin{theorem}[Exact profile formula for arbitrary subspace sampling]
+\label{thm:profile}
+Let $\mathcal U$ be any finite family of $r$-subspaces and let real weights
+$\alpha_U$ have sum one. Put
+$Z_f=\sum_{U\in\mathcal U}\alpha_U f(Q|_U)$.
+Then $\E Z_\J=p_r$, $\E Z_\D=\mu_r$, $\E Z_{\I_\xi}=\pi_{r,\xi}$ and
+\begin{equation}\label{eq:profile}
+ \Var Z_f=\sum_{U,V\in\mathcal U}\alpha_U\alpha_V
+ K_f\bigl(r,\dim(U\cap V)\bigr),
+ \qquad f\in\{\J,\D,\I_\xi\}.
+\end{equation}
+The mixed covariance uses $K_{\J\D}$ in the same way.
+For nonnegative weights the kernel upper bounds may be inserted term by
+term. In particular,
+\begin{equation}\label{eq:weighted-D-bound}
+ \Var Z_\D\le4\sum_{\substack{U,V\in\mathcal U\\\dim(U\cap V)\ge1}}
+ \alpha_U\alpha_V q^{-(r-\dim(U\cap V))}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Expand the variance or covariance of the finite weighted sum and apply
+Corollary~\ref{cor:kernels}. All restrictions have the same marginal law.
+For the last statement use nonnegative products of weights, the vanishing
+at intersection dimension zero, and Lemma~\ref{lem:kernel-bounds}.
+\end{proof}
+
+This theorem retains the geometry suppressed by a uniform $O(q^{-1})$
+off-diagonal estimate. It also handles repeated subspaces by combining
+their weights. Signed weights are allowed in the exact identity, but not
+in the termwise positive upper bound. In Section~\ref{sec:fourier} signed
+weights instead lead to cancellation.
+
+\section{Hyperbolic geometry and sharp all-generator averaging}
+\label{sec:polar}
+Let $V$ have dimension $2r$, and let $H$ be split and nondegenerate.
+Thus $V$ has a hyperbolic basis $e_1,\ldots,e_r,f_1,\ldots,f_r$ in which
+$H(e_i,e_j)=H(f_i,f_j)=0$ and $H(e_i,f_j)=\delta_{ij}$.
+A \emph{generator} is a totally $H$-isotropic $r$-subspace.
+
+\begin{lemma}[Intersection counts and the two families; classical]
+\label{lem:polar-geometry}
+The number of generators is
+\begin{equation}\label{eq:N}
+ N_r=2\prod_{j=1}^{r-1}(q^j+1).
+\end{equation}
+For a fixed generator $U$, the number of generators $W$ with
+$\dim(U\cap W)=t$ is
+\begin{equation}\label{eq:polar-count}
+ n_{r,t}=\gb rt q^{(r-t)(r-t-1)/2}.
+\end{equation}
+There is a partition $\G=\G_+\sqcup\G_-$ into equal families, such that
+$U,W$ are in the same family exactly when $r-\dim(U\cap W)$ is even.
+Every proper totally isotropic subspace lies in the same number of
+generators of each family.
+\end{lemma}
+\begin{proof}
+Choose $T=U\cap W$ in $\gb rt$ ways. The quotient $T^\perp/T$ is a
+split space of dimension $2(r-t)$, and $W/T$ is a generator complementary
+to $U/T$. In a fixed complementary hyperbolic decomposition, such
+subspaces are graphs of alternating matrices of size $r-t$: the graph
+is isotropic precisely when the matrix plus its transpose is zero.
+There are $q^{(r-t)(r-t-1)/2}$ choices, proving \eqref{eq:polar-count}.
+Summing over $t$ and using
+\[
+ \prod_{j=0}^{r-1}(1+zq^j)
+ =\sum_{a=0}^r q^{a(a-1)/2}\gb ra z^a
+\]
+at $z=1$ proves \eqref{eq:N}. The product identity follows by induction
+from the Gaussian Pascal recurrence.
+
+For completeness, the family partition can be constructed by determinants
+of isometries. Fix a generator $U_0$. Every generator extends to a
+hyperbolic basis: choose an isotropic basis vector $e$, choose a vector
+$f$ with $H(e,f)=1$, replace $f$ by $f-H(f,f)e/2$, split off this
+hyperbolic plane, and continue on its orthogonal complement. Thus an
+isometry $g$ carries $U_0$ to any given $U$. In a hyperbolic decomposition
+adapted to $U_0$, an isometry stabilizing $U_0$ has diagonal blocks
+$A$ and $A^{-\mathsf T}$ and hence determinant one. Therefore
+$s(U)=\det g\in\{1,-1\}$ is well defined.
+
+Given two generators intersecting in dimension $t$, complete a basis of
+the intersection to a hyperbolic basis in which the remaining $r-t$
+directions of the two generators are paired complementary directions.
+Swapping these $r-t$ hyperbolic pairs maps one generator to the other
+and has determinant $(-1)^{r-t}$. This proves the parity criterion.
+A single pair swap has determinant $-1$ and exchanges the two families,
+so they have equal size.
+
+If $T$ is proper and totally isotropic, choose a hyperbolic basis beginning
+with a basis of $T$. A pair swap outside those initial coordinates fixes
+$T$ pointwise and exchanges the families. It gives a bijection between
+the two sets of generators containing $T$. This proves the final assertion.
+\end{proof}
+
+Set $w_{r,t}=n_{r,t}/N_r$. Equations~\eqref{eq:gaussian-bounds} and
+\eqref{eq:N} imply the useful uniform estimate
+\begin{equation}\label{eq:polar-weights}
+ 0\le w_{r,t}\le q^{-t(t-1)/2},\qquad \sum_{t=0}^r w_{r,t}=1.
+\end{equation}
+
+\begin{theorem}[Sharp polar averaging]\label{thm:polar}
+Let $r\ge2$. With averages as in \eqref{eq:averages-intro}, their exact
+variances are
+\begin{equation}\label{eq:polar-exact}
+ \Var(\overline f)=\sum_{t=0}^r w_{r,t}K_f(r,t),
+ \qquad f\in\{\J,\D,\I_\xi\}.
+\end{equation}
+Uniformly in $r$ and odd $q$,
+\begin{align}
+ \Var(\overline\D)&\le12q^{-(r-1)},\label{eq:polar-D-bound}\\
+ \Var(\overline\J)&\le192q^{-2(r-1)},\label{eq:polar-J-bound}\\
+ \Var(\overline\I_\xi)&\le40q^{-(r-1)}.\label{eq:polar-I-bound}
+\end{align}
+For fixed $r$ as $q\to\infty$ through odd prime powers,
+\begin{equation}\label{eq:polar-sharp}
+ \Var(\overline\D)=(1+O_r(q^{-1}))q^{-(r-1)},\qquad
+ \Var(\overline\I_\xi)=(\tfrac14+o_r(1))q^{-(r-1)}.
+\end{equation}
+In particular,
+\begin{equation}\label{eq:polar-L1}
+ \E|\overline\I_\xi-\pi_{r,\xi}|
+ \le\sqrt{40}\,q^{-(r-1)/2},\qquad
+ \E|\overline\I_\xi-\tfrac12|
+ \le\sqrt{40}\,q^{-(r-1)/2}+q^{-1}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Apply Theorem~\ref{thm:profile} with uniform weights and the intersection
+counts in Lemma~\ref{lem:polar-geometry}. The $t=0$ term vanishes.
+For determinant character,
+\[
+ \Var(\overline\D)
+ \le4q^{-(r-1)}\sum_{t\ge1}q^{-(t-1)(t-2)/2}
+ \le12q^{-(r-1)}.
+\]
+For nonsingularity,
+\[
+ \Var(\overline\J)
+ \le64q^{-2(r-1)}\sum_{t\ge1}q^{-(t-2)(t-3)/2}
+ \le192q^{-2(r-1)}.
+\]
+Both displayed series are at most three for $q\ge3$.
+Since $\overline\I_\xi=(\overline\J+\xi\overline\D)/2$,
+\[
+ \Var(\overline\I_\xi)
+ \le\tfrac12\bigl(\Var(\overline\J)+\Var(\overline\D)\bigr)
+ \le\bigl(6+96q^{-(r-1)}\bigr)q^{-(r-1)}
+ \le40q^{-(r-1)}.
+\]
+
+For fixed $r$, the two leading contributions to the determinant variance
+are $t=1$ and $t=2$. Indeed,
+\[
+ w_{r,1}=\tfrac12(1+O_r(q^{-1})),\qquad
+ w_{r,2}=\tfrac12q^{-1}(1+O_r(q^{-1})),
+\]
+and Lemma~\ref{lem:kernel-bounds} gives respectively
+$K_\D(r,1)=q^{-(r-1)}(1+O_r(q^{-1}))$ and
+$K_\D(r,2)=q^{-(r-2)}(1+O_r(q^{-1}))$.
+These formulas include the diagonal term when $r=2$.
+The contributions from $t\ge3$ are $O_r(q^{-r})$.
+Thus the two half-contributions add to the first asymptotic in
+\eqref{eq:polar-sharp}. The nonsingularity variance is of smaller order,
+and its covariance with $\overline\D$ is bounded by the geometric mean
+of the variances. This proves the indicator asymptotic. The $L^1$ bounds
+follow by Cauchy--Schwarz and Proposition~\ref{prop:marginals}.
+\end{proof}
+
+\begin{remark}[What is and is not improved]
+For $r\ge3$, \eqref{eq:polar-L1} is $O(q^{-1})$, improving
+\eqref{eq:source-bound} in the polar setting. For $r=2$, the true-centered
+standard deviation remains of order $q^{-1/2}$. For fixed $r\ge3$,
+$|\pi_{r,\xi}-1/2|=(2q)^{-1}+O_r(q^{-2})$, so an $o(q^{-1})$ bound
+around $1/2$ is impossible without changing the center. The theorem does
+not claim such a bound. When $r=1$, $N_1=2$ and ordinary polar averaging
+has no concentration as $q\to\infty$; this is why $r\ge2$ is explicit.
+\end{remark}
+
+\section{Grassmannian averaging with an ambient-dimension exponent}
+\label{sec:grassmann}
+The same kernels give a second, quantitatively different law. Let
+$\mathcal U=\Gr(r,\F_q^n)$, where $n\ge2r\ge2$, and let
+$\overline f^{\,\mathrm{Gr}}$ denote the uniform average over this family.
+
+\begin{theorem}[Sharp Grassmannian character averaging]\label{thm:grassmann}
+For a fixed $r$-subspace, the fraction of $r$-subspaces meeting it in
+dimension $t$ is
+\begin{equation}\label{eq:grassmann-weights}
+ v_{n,r,t}
+ =\frac{\gb rt\gb{n-r}{r-t}q^{(r-t)^2}}{\gb nr}.
+\end{equation}
+The exact variance of each restriction statistic is
+$\sum_{t=0}^r v_{n,r,t}K_f(r,t)$. Uniformly for $n\ge2r\ge2$,
+\begin{align}
+ \Var(\overline\D^{\,\mathrm{Gr}})&\le20q^{-(n-r)},\label{eq:grassmann-D}\\
+ \Var(\overline\J^{\,\mathrm{Gr}})&\le384q^{-n},\label{eq:grassmann-J}\\
+ \Var(\overline\I_\xi^{\,\mathrm{Gr}})&\le80q^{-(n-r)}.
+ \label{eq:grassmann-I}
+\end{align}
+For fixed $n,r$ as $q\to\infty$,
+\begin{equation}\label{eq:grassmann-asymptotic}
+ \Var(\overline\D^{\,\mathrm{Gr}})
+ =(1+O_{n,r}(q^{-1}))q^{-(n-r)},\quad
+ \Var(\overline\I_\xi^{\,\mathrm{Gr}})
+ =(\tfrac14+o_{n,r}(1))q^{-(n-r)}.
+\end{equation}
+For $n=2r$ and $r\ge2$,
+$\E|\overline\I_\xi^{\,\mathrm{Gr}}-1/2|\le(\sqrt{80}+1)q^{-1}$.
+\end{theorem}
+\begin{proof}
+Fix $U$. Choose $T=U\cap W$ in $\gb rt$ ways and the image of $W$
+in $\F_q^n/U$ in $\gb{n-r}{r-t}$ ways. After choosing complements,
+$W/T$ is the graph of a map from this image to $U/T$, giving
+$q^{(r-t)^2}$ choices. This proves \eqref{eq:grassmann-weights}.
+The variance identity follows from Theorem~\ref{thm:profile}.
+
+The Gaussian bounds imply
+$v_{n,r,t}\le4q^{-t(n-2r+t)}$.
+Put $d=n-2r\ge0$. For determinant character, Lemma~\ref{lem:kernel-bounds}
+therefore yields
+\[
+ \Var(\overline\D^{\,\mathrm{Gr}})
+ \le16q^{-(n-r)}\sum_{t\ge1}q^{-(t-1)d-t(t-1)}
+ \le20q^{-(n-r)}.
+\]
+For nonsingularity it yields
+\[
+ \Var(\overline\J^{\,\mathrm{Gr}})
+ \le256q^{-n}\sum_{t\ge1}q^{-(t-1)d-(t-1)^2}
+ \le384q^{-n}.
+\]
+The two series are at most $5/4$ and $3/2$, respectively, for $q\ge3$.
+The indicator variance is at most half the sum of the other two, hence
+at most $(10+192q^{-r})q^{-(n-r)}\le80q^{-(n-r)}$.
+
+For the asymptotic, the unique leading term is $t=1$:
+$v_{n,r,1}=q^{-(n-2r+1)}(1+O_{n,r}(q^{-1}))$ and
+$K_\D(r,1)=q^{-(r-1)}(1+O_r(q^{-1}))$.
+Terms with $t\ge2$ are smaller by at least $q^{-2}$ relative to this
+leading scale when bounded as above. The nonsingularity variance is
+smaller by a factor $q^{-r}$, so Cauchy--Schwarz proves the indicator
+asymptotic. The final $L^1$ bound follows from the exact mean and
+Proposition~\ref{prop:marginals}.
+\end{proof}
+
+\section{From incidence cancellation to Fourier cancellation}
+\label{sec:fourier}
+The sharp ordinary averages arose from positive overlap contributions.
+We now use the difference of the two generator families to annihilate
+those contributions at the Fourier level. This argument applies to
+\emph{every} congruence-invariant statistic, not only determinant signs.
+
+Fix a nontrivial additive character $\psi:\F_q\to\C^\times$. For
+$f:\Sym_r\to\C$ define the normalized transform
+\begin{equation}\label{eq:fourier-normalization}
+ \widehat f(A)=q^{-c(r)}\sum_{C\in\Sym_r}f(C)\psi(\tr(AC)).
+\end{equation}
+The trace pairing is nondegenerate on symmetric matrices because $q$ is
+odd: diagonal entries pair with coefficient one and off-diagonal entries
+with coefficient two. Consequently
+\begin{equation}\label{eq:fourier-parseval}
+ f(C)=\sum_{A\in\Sym_r}\widehat f(A)\psi(-\tr(AC)),\qquad
+ \E|f(C)|^2=\sum_{A\in\Sym_r}|\widehat f(A)|^2.
+\end{equation}
+A function is congruence-invariant when
+$f(g^{\mathsf T}Cg)=f(C)$ for every $g\in\GL_r(\F_q)$.
+Its Fourier transform is invariant under the dual congruence action as
+well, by a change of variables in \eqref{eq:fourier-normalization}.
+
+\begin{theorem}[Incidence-to-Fourier transfer]\label{thm:transfer}
+Let $\mathcal U$ be a family of $r$-subspaces of a finite-dimensional
+space $V$, let $w_U\in\C$, and let $f:\Sym_r\to\C$ be
+congruence-invariant. Define
+\[
+ Z_w(Q)=\sum_{U\in\mathcal U}w_U f(Q|_U).
+\]
+Identify an ambient Fourier frequency with a symmetric tensor
+$S\in\Sym^2V$, or its symmetric matrix in a chosen ambient basis, and
+let $T=\im S$. Its Fourier coefficient in $Z_w$ is zero if no member
+of $\mathcal U$ contains $T$. Otherwise it is
+\begin{equation}\label{eq:transfer}
+ \widehat {Z_w}(S)=\widehat f(A_{S,U})
+               \sum_{\substack{W\in\mathcal U\\T\subseteq W}}w_W,
+\end{equation}
+where $U$ is any member containing $T$, and $A_{S,U}$ is the coordinate
+matrix of $S$ inside $\Sym^2U$. Its congruence class, viewed in size $r$,
+is independent of that choice.
+In particular, if all incidence sums on subspaces of dimension at most
+$s$ vanish, then $Z_w$ has no Fourier frequencies of rank at most $s$.
+\end{theorem}
+\begin{proof}
+Let $P$ be the basis-column matrix of $U$. Restriction sends $Q$ to
+$P^{\mathsf T}QP$, and
+\[
+ \tr(A P^{\mathsf T}QP)=\tr(PAP^{\mathsf T}Q).
+\]
+Thus lifting a restriction statistic embeds its frequency $A$ as
+$S=PAP^{\mathsf T}$. The map $A\mapsto PAP^{\mathsf T}$ is injective;
+its image consists exactly of symmetric tensors supported in $U$.
+For example, a left inverse $R$ of $P$ gives
+$A=RSR^{\mathsf T}$ whenever $\im S\subseteq U$.
+In a basis of $U$ beginning with a basis of $T=\im S$, $A$ has a
+nonsingular block supported on $T$ and a zero complementary block.
+The same description holds in every other $r$-subspace containing $T$.
+Changes of basis give congruent matrices, so congruence-invariance
+makes $\widehat f(A)$ common to all these lifts. Summing the individual
+Fourier coefficients proves \eqref{eq:transfer} and the annihilation
+assertion. This includes the zero frequency and the zero subspace.
+\end{proof}
+
+\begin{theorem}[Exact top-rank energy identity]\label{thm:top-rank}
+Let $H$ be split on $\F_q^{2r}$, $r\ge1$, and let $f:\Sym_r\to\C$ be
+congruence-invariant. Define its two-family contrast by
+\[
+ \Delta_f(Q)=\frac2{N_r}\sum_{U\in\G_+}f(Q|_U)
+             -\frac2{N_r}\sum_{U\in\G_-}f(Q|_U).
+\]
+Every Fourier coefficient of $\Delta_f$ of rank less than $r$ vanishes.
+All its remaining frequencies have rank exactly $r$, with image a
+generator. Moreover
+\begin{equation}\label{eq:top-energy}
+ \boxed{\displaystyle
+ \E|\Delta_f|^2=\frac4{N_r}
+             \sum_{\substack{A\in\Sym_r\\\det A\ne0}}|\widehat f(A)|^2.}
+\end{equation}
+For a second invariant statistic $g$,
+\begin{equation}\label{eq:top-cross-energy}
+ \E[\Delta_f\overline{\Delta_g}]
+ =\frac4{N_r}\sum_{\det A\ne0}\widehat f(A)\overline{\widehat g(A)}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Use Theorem~\ref{thm:transfer} with weights $2/N_r$ and $-2/N_r$ on the
+two families. If a frequency has rank less than $r$ and is supported on
+some generator, its support is a proper totally isotropic subspace.
+Lemma~\ref{lem:polar-geometry} makes the signed incidence sum zero.
+If its rank is $r$, its image itself must be the unique generator
+supporting it. Its coefficient is then $\pm(2/N_r)\widehat f(A)$ with
+$A$ nonsingular. Frequencies of rank greater than $r$ never arise from
+an $r$-dimensional restriction.
+
+For each generator there are all nonsingular $A\in\Sym_r$, and these
+full-rank frequency sets are disjoint for distinct generators, since
+their images differ. Parseval therefore gives
+$N_r(2/N_r)^2\sum_{\det A\ne0}|\widehat f(A)|^2$, proving
+\eqref{eq:top-energy}. The mixed identity follows by the same orthogonality
+calculation. All contrasts have mean zero since their zero frequency
+vanishes.
+\end{proof}
+
+\begin{remark}[Why class invariance matters]
+For arbitrary functions chosen in unrelated bases on the different
+subspaces, the coefficient $\widehat f(A_{S,U})$ need not be constant
+among the subspaces containing $\im S$. Equality of incidence counts
+alone would then not prove cancellation. Congruence-invariance is an
+essential hypothesis of the transfer theorem as stated.
+\end{remark}
+
+\begin{theorem}[Rigidity of the universal top-rank filter]
+\label{thm:filter-rigidity}
+Let weights $w_U$ be assigned to all generators of a split $2r$-space.
+The following are equivalent: for every congruence-invariant $f$, the
+weighted statistic $\sum_Uw_Uf(Q|_U)$ has no Fourier frequencies of rank
+less than $r$; and $w_U=a$ on $\G_+$ and $w_U=-a$ on $\G_-$ for one scalar
+$a$. Thus the universal maximal-rank filter in this generator family is
+unique up to scaling.
+\end{theorem}
+\begin{proof}
+The indicated weights have the property by Theorem~\ref{thm:top-rank}.
+Conversely, test the asserted vanishing with $f=\delta_0$, the indicator
+of the zero form, whose Fourier coefficients are all $q^{-c(r)}$.
+For each totally isotropic $(r-1)$-space $T$, choose a frequency with
+image $T$. Equation~\eqref{eq:transfer} forces the sum of weights on
+generators containing $T$ to vanish. There are exactly two such
+generators, from the split rank-one quotient $T^\perp/T$, so the weights
+are opposite on adjacent generators. The adjacency graph is connected:
+in a hyperbolic basis adapted to two generators, swap their differing
+paired directions one at a time, obtaining a path of codimension-one
+intersections. Propagating the opposite-weight relation along such a
+path and using the parity criterion in Lemma~\ref{lem:polar-geometry}
+proves the claim. For $r=1$, the same argument uses the zero subspace
+and the two generators directly.
+\end{proof}
+
+\section{Exact two-family discrepancies}
+\label{sec:contrast}
+\subsection{The nonsingular Fourier coefficients}
+We evaluate only the full-rank Fourier layer needed by
+Theorem~\ref{thm:top-rank}. These evaluations lie within the classical
+symmetric-form Fourier theory \cite{schmidt2015,schmidt2020}; the elementary
+recursion is included to fix every normalization and parity sign.
+Put
+\[
+ \gamma=\sum_{x\in\F_q}\chi(x)\psi(x).
+\]
+The usual one-variable calculation gives
+\begin{equation}\label{eq:gauss}
+ |\gamma|^2=q,\qquad \gamma^2=\eps q,\qquad
+ \sum_x\psi(ax^2)=\chi(a)\gamma\quad(a\ne0).
+\end{equation}
+For clarity, the first identity follows by substituting $x=uy$ in
+$\sum_{x,y}\chi(x)\chi(y)\psi(x-y)$: the inner sum over $y\ne0$ is
+$q-1$ for $u=1$ and $-1$ otherwise. Also
+$\overline\gamma=\eps\gamma$, which gives the second identity.
+The last identity follows by counting the two square roots of each
+nonzero square and using $\sum_x\psi(ax)=0$.
+
+Define unnormalized transforms
+\[
+ d_n(A)=\sum_{C\in\Sym_n}\D(C)\psi(\tr(AC)),\qquad
+ j_n(A)=\sum_{C\in\Sym_n}\J(C)\psi(\tr(AC)).
+\]
+The empty values are $d_0=j_0=1$.
+
+\begin{lemma}[Full-rank Fourier recursion]\label{lem:fourier-recursion}
+For a nonsingular block diagonal matrix $A=B\oplus a$, $a\ne0$,
+\begin{equation}\label{eq:fourier-recursions}
+ d_n(B\oplus a)=\chi(a)^n\gamma^n j_{n-1}(B),\qquad
+ j_n(B\oplus a)=-\chi(a)^{n-1}\gamma^{n-1}d_{n-1}(B).
+\end{equation}
+For nonsingular $A$ these imply
+\begin{align}
+ d_{2m}(A)&=(-1)^m\gamma^{2m^2},&
+ j_{2m}(A)&=\chi(\det A)d_{2m}(A),\label{eq:fourier-even}\\
+ d_{2m+1}(A)&=(-1)^m\chi(\det A)\gamma^{2m^2+2m+1},&
+ j_{2m+1}(A)&=(-1)^{m+1}\gamma^{2m^2+2m}.
+ \label{eq:fourier-odd}
+\end{align}
+Consequently, at every nonsingular frequency,
+\begin{equation}\label{eq:fourier-magnitudes}
+ |\widehat\D_n(A)|^2=q^{-c(n)-\lfloor n/2\rfloor},\qquad
+ |\widehat\J_n(A)|^2=q^{-c(n)-\lceil n/2\rceil}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Write
+$C=\left(\begin{smallmatrix}C_0&z\\z^{\mathsf T}&x\end{smallmatrix}\right)$.
+If $C_0$ is singular, $\det C$ is independent of $x$, since its coefficient
+as a polynomial in $x$ is $\det C_0=0$. Summing $\psi(ax)$ then makes
+its entire contribution to both transforms zero.
+
+If $C_0$ is nonsingular, set $h=z^{\mathsf T}C_0^{-1}z$. Then
+$\det C=\det C_0(x-h)$. The sum over $x$ in the determinant-character
+transform is
+\[
+ \chi(\det C_0)\chi(a)\gamma\,\psi(ah),
+\]
+whereas the sum in the nonsingularity transform is $-\psi(ah)$.
+Diagonalizing $C_0^{-1}$ and using \eqref{eq:gauss} gives
+\[
+ \sum_z\psi(a z^{\mathsf T}C_0^{-1}z)
+ =\chi(a)^{n-1}\chi(\det C_0)\gamma^{n-1}.
+\]
+Multiplying the factors and summing over nonsingular $C_0$ with weight
+$\psi(\tr(BC_0))$ proves \eqref{eq:fourier-recursions}.
+Every nonsingular symmetric matrix is congruent to a nonsingular diagonal
+matrix: choose a vector of nonzero norm and split off its line repeatedly,
+using polarization in odd characteristic. Thus congruence-invariance
+allows the recursion to be iterated for every nonsingular $A$.
+The formulas \eqref{eq:fourier-even}--\eqref{eq:fourier-odd} follow by
+induction, starting at $n=0$. Squaring magnitudes, using
+$|\gamma|^2=q$, and dividing by $q^{2c(n)}$ proves
+\eqref{eq:fourier-magnitudes}.
+\end{proof}
+
+\subsection{The exact second moments}
+\begin{theorem}[Two-family discriminant and sign discrepancy]\label{thm:contrast}
+Let $r\ge1$, $q$ odd, and let $\Delta_f$ be the contrast between the two
+families of generators of a fixed split form on $\F_q^{2r}$. Then
+\begin{align}
+ \E\Delta_\D^2&=\frac{4p_r}{N_r}q^{-\lfloor r/2\rfloor},
+ \label{eq:contrast-D}\\
+ \E\Delta_\J^2&=\frac{4p_r}{N_r}q^{-\lceil r/2\rceil},
+ \label{eq:contrast-J}\\
+ \E[\Delta_\J\Delta_\D]
+ &=\begin{cases}
+ \displaystyle\frac{4\mu_r}{N_r}q^{-r/2},&r\text{ even},\\[4pt]
+ 0,&r\text{ odd}.
+ \end{cases}\label{eq:contrast-cross}
+\end{align}
+The individual-sign contrasts satisfy
+\begin{equation}\label{eq:contrast-I}
+ \E\Delta_{\I_\xi}^2
+ =\begin{cases}
+ \displaystyle\frac{2q^{-m}}{N_r}(p_r+\xi\mu_r)
+       =\frac{4q^{-m}}{N_r}\pi_{r,\xi},&r=2m,\\[6pt]
+ \displaystyle\frac{p_rq^{-m}}{N_r}(1+q^{-1}),&r=2m+1.
+ \end{cases}
+\end{equation}
+All these contrasts have mean zero, so these second moments are variances.
+\end{theorem}
+\begin{proof}
+There are $q^{c(r)}p_r$ nonsingular matrices in $\Sym_r$.
+Insert \eqref{eq:fourier-magnitudes} in \eqref{eq:top-energy} to obtain
+\eqref{eq:contrast-D} and \eqref{eq:contrast-J}.
+For even $r$, \eqref{eq:fourier-even} gives
+$\widehat\J(A)=\chi(\det A)\widehat\D(A)$ on the nonsingular layer.
+The sum of $\chi(\det A)$ on that layer is $q^{c(r)}\mu_r$, so
+\eqref{eq:top-cross-energy} gives the first case of
+\eqref{eq:contrast-cross}. For odd $r$, the mixed Fourier product is a
+constant multiple of $\chi(\det A)$, whose sum is zero since $\mu_r=0$.
+Finally $\Delta_{\I_\xi}=(\Delta_\J+\xi\Delta_\D)/2$; expanding its
+square gives \eqref{eq:contrast-I}.
+\end{proof}
+
+\begin{corollary}[Quadratic exponent in both asymptotic regimes]
+\label{cor:quadratic}
+For every odd $q$ and $r\ge1$,
+\begin{equation}\label{eq:normalized-contrast}
+ q^{\lfloor r^2/2\rfloor}\E\Delta_\D^2
+ =\frac{2p_r}{\prod_{j=1}^{r-1}(1+q^{-j})}\le2.
+\end{equation}
+For fixed $r$ this quantity is $2+O_r(q^{-1})$ as $q\to\infty$.
+For fixed odd $q$, let
+$p_\infty(q)=\prod_{j\ge1,\ j\text{ odd}}(1-q^{-j})>0$.
+Then
+\begin{equation}\label{eq:fixed-q-limit}
+ \lim_{r\to\infty}q^{\lfloor r^2/2\rfloor}\E\Delta_\D^2
+ =2p_\infty(q)^2.
+\end{equation}
+\end{corollary}
+\begin{proof}
+Use $N_r=2q^{r(r-1)/2}\prod_{j=1}^{r-1}(1+q^{-j})$ and the integer
+identity $r(r-1)/2+\lfloor r/2\rfloor=\lfloor r^2/2\rfloor$.
+This gives \eqref{eq:normalized-contrast} and the fixed-$r$ limit.
+The products converge absolutely for fixed $q$. Writing $x=q^{-1}$,
+\[
+ \prod_{j\ge1}(1+x^j)
+ =\frac{\prod_{j\ge1}(1-x^{2j})}{\prod_{j\ge1}(1-x^j)}
+ =\frac1{\prod_{j\ge1,\ j\text{ odd}}(1-x^j)}.
+\]
+Taking the limit in \eqref{eq:normalized-contrast} therefore proves
+\eqref{eq:fixed-q-limit}.
+\end{proof}
+
+\begin{corollary}[Common fluctuations and almost perfect correlation]
+\label{cor:correlation}
+For $f=\J,\D$, or $\I_\xi$,
+\begin{equation}\label{eq:family-variance}
+ \Cov(\overline f,\Delta_f)=0,\qquad
+ \Var(F_{f,\pm})=\Var(\overline f)+\tfrac14\E\Delta_f^2.
+\end{equation}
+For determinant character, fixed $r\ge2$, and $q\to\infty$,
+\begin{equation}\label{eq:family-correlation}
+ 1-\operatorname{Corr}(F_{\D,+},F_{\D,-})
+ =(1+O_r(q^{-1}))q^{-\lfloor r^2/2\rfloor+r-1}.
+\end{equation}
+\end{corollary}
+\begin{proof}
+An $H$-isometry of determinant $-1$ exchanges the families and preserves
+the uniform law of $Q$ under congruence. It fixes $\overline f$ and
+negates $\Delta_f$, so their covariance is zero.
+Use $F_{f,\pm}=\overline f\pm\Delta_f/2$ to obtain
+\eqref{eq:family-variance} and
+$\Cov(F_{f,+},F_{f,-})=\Var(\overline f)-\E\Delta_f^2/4$.
+For $f=\D$, divide by the common variance of the two family averages.
+If $v=\Var(\overline\D)$ and $d=\E\Delta_\D^2$, the correlation deficit
+is $d/(2v+d/2)$. Equations~\eqref{eq:polar-sharp} and
+\eqref{eq:normalized-contrast} give \eqref{eq:family-correlation}.
+\end{proof}
+
+For example, Markov's inequality applied to the exact second moment gives
+\begin{equation}\label{eq:contrast-tail}
+ \Pp(|\Delta_\D|\ge u)
+ \le\min\left\{1,\frac{4p_rq^{-\lfloor r/2\rfloor}}{N_ru^2}\right\}
+ \quad(u>0).
+\end{equation}
+This is a rigorous second-moment tail bound, not a claim of Gaussian tails
+or a central limit theorem. The family means remain
+$\E F_{\D,\pm}=\mu_r$, $\E F_{\J,\pm}=p_r$, and
+$\E F_{\I_\xi,\pm}=\pi_{r,\xi}$.
+
+\section{Rare geometric exceptions and a non-Gaussian limit}
+\label{sec:rare}
+The exact variance has a stronger pointwise explanation in one parity for
+each observable. In even generator dimension, the determinant-character
+averages agree \emph{exactly} unless the two forms have a common generator.
+In odd generator dimension the same statement holds for nonsingularity.
+This reveals why a standard deviation need not describe a typical sample.
+
+For a fixed split $H$ and arbitrary symmetric $Q$, define
+\begin{equation}\label{eq:common-counts}
+ C_\pm(Q)=|\{U\in\G_\pm:Q|_U=0\}|,\qquad
+ C(Q)=C_+(Q)+C_-(Q),\qquad Z(Q)=C_+(Q)-C_-(Q).
+\end{equation}
+Here $Q|_U=0$ means that the whole restricted form is zero, not merely
+that its determinant vanishes. Set $M_r=N_r/2$.
+
+\begin{theorem}[Pointwise geometric discrepancy identity]
+\label{thm:pointwise}
+For every symmetric $Q$,
+\begin{align}
+ \Delta_\D(Q)&=(-\eps)^m\frac{q^{m^2}}{M_r}Z(Q),
+ &&r=2m,\label{eq:pointwise-D}\\
+ \Delta_\J(Q)&=(-1)^{m+1}\frac{q^{m(m+1)}}{M_r}Z(Q),
+ &&r=2m+1.\label{eq:pointwise-J}
+\end{align}
+Consequently, the corresponding contrast is zero whenever $H$ and $Q$
+have no common totally isotropic $r$-subspace.
+If either displayed contrast is nonzero, the characteristic polynomial
+of the $H$-self-adjoint operator $T=H^{-1}Q$ is a square in $\F_q[x]$.
+In particular, a nonsquare characteristic polynomial certifies exact
+equality of the corresponding two family averages.
+\end{theorem}
+\begin{proof}
+Let $\delta_0$ be the indicator of the zero matrix on $\Sym_r$.
+Its Fourier transform is identically $q^{-c(r)}$, and its contrast is
+$\Delta_{\delta_0}=Z/M_r$.
+For even $r=2m$, Lemma~\ref{lem:fourier-recursion} shows that the
+unnormalized transform of $\D$ on every nonsingular frequency equals
+\[
+ (-1)^m\gamma^{2m^2}=(-1)^m\eps^{m^2}q^{m^2}
+ =(-\eps)^m q^{m^2}.
+\]
+Theorem~\ref{thm:top-rank} annihilates all other Fourier frequencies of
+the contrast. Thus the transforms of $\Delta_\D$ and
+$(-\eps)^m q^{m^2}\Delta_{\delta_0}$ agree everywhere. Fourier inversion
+proves \eqref{eq:pointwise-D}. For odd $r=2m+1$, the full-rank
+unnormalized transform of $\J$ is
+\[
+ (-1)^{m+1}\gamma^{2m^2+2m}=(-1)^{m+1}q^{m(m+1)},
+\]
+since $m(m+1)$ is even. The same argument proves
+\eqref{eq:pointwise-J}.
+
+A nonzero discrepancy forces $Z\ne0$, hence a common generator $U$.
+Since $Q(u,v)=H(Tu,v)$, its vanishing on $U\times U$ implies
+$TU\subseteq U^{\perp_H}=U$. In a hyperbolic basis adapted to $U$,
+self-adjointness then forces the block form
+\[
+ T=\begin{pmatrix}A&B\\0&A^{\mathsf T}\end{pmatrix},\qquad B=B^{\mathsf T}.
+\]
+Therefore $\det(xI-T)=\det(xI-A)^2$.
+The square condition does not conversely force a nonzero discrepancy:
+for $Q=aH$, all generators are common and $C_+=C_-=M_r$.
+\end{proof}
+
+\begin{theorem}[Exact rare-event moments and asymptotic law]
+\label{thm:rare-law}
+For uniform $Q$, put
+\begin{equation}\label{eq:lambda-R}
+ \Lambda_r=N_rq^{-c(r)},\qquad
+ R_r=\sum_{a=1}^r\gb ra q^{-a(r+1-a)}.
+\end{equation}
+Then
+\begin{equation}\label{eq:common-moments}
+ \E C=\Lambda_r,\qquad
+ \E[C(C-1)]=\Lambda_r R_r,\qquad
+ \E Z=0,\qquad \E Z^2=\Lambda_r p_r.
+\end{equation}
+In particular,
+\begin{equation}\label{eq:rare-bound}
+ \Pp(Z\ne0)\le\Lambda_r
+ =2q^{-r}\prod_{j=1}^{r-1}(1+q^{-j})\le4q^{-r}.
+\end{equation}
+For fixed $r\ge1$ as $q\to\infty$,
+\begin{align}
+ \Pp(Z=1)=\Pp(Z=-1)&=(1+O_r(q^{-1}))q^{-r},
+ \label{eq:rare-one}\\
+ \Pp(Z\ne0)&=(2+O_r(q^{-1}))q^{-r},
+ \label{eq:rare-nonzero}\\
+ \Pp(|Z|\ge2)&=O_r(q^{-r-1}).\label{eq:rare-many}
+\end{align}
+Thus the selected contrasts in Theorem~\ref{thm:pointwise} are exactly
+zero except on a rare geometric event, and their first-order nonzero
+values are the two opposite multiples of one specified there.
+\end{theorem}
+\begin{proof}
+For each generator $U$, restriction is uniform on $\Sym_r$, so
+$\Pp(Q|_U=0)=q^{-c(r)}$. This proves $\E C=\Lambda_r$.
+For two generators with intersection dimension $t$, the two zero
+restrictions impose $2c(r)-c(t)$ independent linear conditions.
+Using \eqref{eq:polar-count} and setting $a=r-t$ gives
+\begin{align*}
+ \E[C(C-1)]
+ &=N_r\sum_{t=0}^{r-1}n_{r,t}q^{-2c(r)+c(t)}\\
+ &=N_rq^{-c(r)}\sum_{a=1}^r\gb ra q^{-a(r+1-a)}
+ =\Lambda_r R_r.
+\end{align*}
+A family-swapping isometry gives $\E Z=0$. To compute its second
+moment, apply \eqref{eq:top-energy} to $\delta_0$:
+\[
+ \E\Delta_{\delta_0}^{\,2}
+ =\frac4{N_r}\bigl(q^{c(r)}p_r\bigr)q^{-2c(r)}.
+\]
+Since $Z=M_r\Delta_{\delta_0}$, this equals the final identity in
+\eqref{eq:common-moments}.
+
+The event $Z\ne0$ is contained in $C\ge1$, so Markov's inequality gives
+the first bound in \eqref{eq:rare-bound}.
+The product is at most
+$\exp(\sum_{j\ge1}q^{-j})\le e^{1/2}<2$, proving its uniform version.
+For the asymptotic law, \eqref{eq:gaussian-bounds} gives
+$R_r\le2\sum_{a\ge1}q^{-a}\le2/(q-1)$, and the $a=1$ term gives
+$R_r=q^{-1}(1+O_r(q^{-1}))$.
+For any nonnegative integer $C$,
+\[
+ \Pp(C\ge2)\le\tfrac12\E[C(C-1)],\qquad
+ \E C-\E[C(C-1)]\le\Pp(C=1)\le\E C.
+\]
+It follows that
+$\Pp(C=1)=\Lambda_r(1+O_r(q^{-1}))$ and
+$\Pp(C\ge2)=O_r(\Lambda_r q^{-1})$.
+When $C=1$, $Z=1$ or $-1$; the two cases have equal probability by
+family-swapping symmetry. The difference between these single-common-
+generator events and $Z=\pm1$ is contained in $C\ge2$.
+Finally $\Lambda_r=(2+O_r(q^{-1}))q^{-r}$. This proves
+\eqref{eq:rare-one}--\eqref{eq:rare-many}.
+\end{proof}
+
+\begin{corollary}[Variance normalization does not produce a Gaussian limit]
+\label{cor:non-gaussian}
+Let $f_r=\D$ when $r$ is even and $f_r=\J$ when $r$ is odd, and set
+\[
+ W_{r,q}=\frac{\Delta_{f_r}}{\sqrt{\E\Delta_{f_r}^{\,2}}}.
+\]
+Then $\E W_{r,q}=0$ and $\E W_{r,q}^2=1$ for every $r,q$, but
+$W_{r,q}\to0$ in probability both when $r$ is fixed and $q\to\infty$,
+and when $q$ is fixed and $r\to\infty$. In these regimes its limiting
+distribution is the point mass at zero, not a nondegenerate Gaussian,
+and its squares are not uniformly integrable.
+\end{corollary}
+\begin{proof}
+By Theorem~\ref{thm:pointwise}, $W_{r,q}$ is, up to a sign,
+$Z/\sqrt{\Lambda_r p_r}$. Thus it has second moment one by
+\eqref{eq:common-moments}, while
+$\Pp(W_{r,q}\ne0)\le\Lambda_r\le4q^{-r}$ tends to zero in both
+stated regimes. This proves convergence in probability. Uniform
+integrability of the squares would then force their expectations to
+tend to zero, contradicting their constant value one.
+\end{proof}
+
+\begin{remark}[A substantive limit-law distinction]
+For even $r$, the variance $\E\Delta_\D^2\asymp q^{-r^2/2}$ is carried
+by jumps of order $q^{-r^2/4+r/2}$ occurring with probability of order
+$q^{-r}$. The jump size is therefore much larger than the root mean
+square by a factor of order $q^{r/2}$. The odd-rank determinant-character
+contrast and the even-rank nonsingularity contrast are not covered by
+this sparse pointwise identity; no Gaussian or non-Gaussian limit is
+asserted for those remaining cases.
+\end{remark}
+
+\begin{theorem}[Complete rank-two discrepancy law]\label{thm:rank-two-law}
+For $r=2$, put
+\[
+ a_q=\frac{(q^2-1)(q^3-q+1)}{q^7},\qquad
+ b_q=\frac{(q-1)^2(q+1)}{4q^7}.
+\]
+The signed common-generator count $Z$ has exactly the following law:
+\begin{center}
+\begin{tabular}{@{}cccccc@{}}
+\toprule
+Value of $Z$&$-2$&$-1$&$0$&$1$&$2$\\
+\midrule
+Probability&$b_q$&$a_q$&$1-2a_q-2b_q$&$a_q$&$b_q$\\
+\bottomrule
+\end{tabular}
+\end{center}
+In particular $\Delta_\D=-\eps qZ/(q+1)$, so this also gives the full
+finite-$q$ law of the determinant-character contrast, not merely its
+second moment.
+\end{theorem}
+\begin{proof}
+Choose coordinates in which the projective quadric of $H$ is
+$\det X=0$ for a $2$-by-$2$ matrix $X=(x_{ij})$.
+Its points have the form $X=uv^{\mathsf T}$ with $[u],[v]\in\mathbb P^1$.
+Its two line families are the fibers with one factor fixed: indeed a
+line spanned by $uv^{\mathsf T}$ and $u'v'^{\mathsf T}$ consists of
+rank-one matrices only if
+$\det(u,u')\det(v,v')=0$, forcing one factor to be fixed.
+Pulling back the quadratic form $Q$ gives a bihomogeneous polynomial
+$F(u,v)$ of bidegree $(2,2)$. The resulting linear map from the
+10-dimensional space of quadratics in the four $x_{ij}$ to the
+9-dimensional space of bidegree-$(2,2)$ polynomials is onto: every
+bihomogeneous monomial is a product of two $x_{ij}=u_iv_j$.
+Its kernel is therefore the one-dimensional span of $H$, and uniform
+$Q$ induces uniform $F$ in this 9-dimensional space.
+
+If $F=0$, both family counts are $q+1$ and $Z=0$. If $F\ne0$, at most
+two fibers from either family can lie in its zero set, since a nonzero
+binary quadratic coefficient has at most two projective roots.
+Hence $|Z|\le2$. Having $Z=2$ means that exactly two fibers from the
+first family and no fibers from the second lie in the zero set.
+The first condition forces
+$F(u,v)=a(u)b(v)$, where $a$ is a binary quadratic with two distinct
+$\F_q$-projective roots; the second says that $b$ has no such root.
+
+The number of choices of $a$ is
+$(q-1)\binom{q+1}{2}=q(q^2-1)/2$.
+The number of nonzero binary quadratics $b$ with no projective root is
+$q(q-1)^2/2$, by Proposition~\ref{prop:marginals} in dimension two
+(or by counting irreducible affine quadratics).
+A nonzero tensor $a\otimes b$ has $q-1$ such factorizations, from
+opposite scalar rescalings. Division by $q^9$ therefore gives
+\[
+ \Pp(Z=2)=\frac{q(q^2-1)}2\frac{q(q-1)^2}2
+          \frac1{q-1}\frac1{q^9}
+ =b_q.
+\]
+The opposite value has the same probability. By
+\eqref{eq:common-moments}, $\E Z^2=2(q^2-1)/q^4$.
+Symmetry and the five-point support imply
+$2\Pp(Z=1)+8b_q=2(q^2-1)/q^4$, which gives $a_q$.
+The remaining probability is its complement. The final contrast
+identity is \eqref{eq:pointwise-D} with $m=1$.
+\end{proof}
+
+\section{A local improvement in the rank-layer transverse argument}
+\label{sec:application}
+This section makes the source interface explicit and proves it in the
+present notation. It improves a local estimate, not the separate global
+claims, singular-tail estimates, or parameter optimization of the cited
+manuscript.
+
+\subsection{Conditioning without an independence assumption}
+\begin{lemma}[High-probability conditioning]\label{lem:conditioning}
+Let $Q$ be uniform in $\Sym_n$ and $L$ fixed. The event
+$\mathcal A_L=\{Q\text{ and }Q-L\text{ nonsingular}\}$ satisfies
+\begin{equation}\label{eq:conditioning-prob}
+ \Pp(\mathcal A_L)\ge1-2(1-p_n)\ge1-\frac9{4q}\ge\frac14.
+\end{equation}
+For every nonnegative random variable $Z$,
+\begin{equation}\label{eq:conditioning-bound}
+ \E[Z\mid\mathcal A_L]\le\frac{\E Z}{\Pp(\mathcal A_L)}\le4\E Z.
+\end{equation}
+The same conclusions hold when only $Q$ is required to be nonsingular.
+In particular the $O(q^{-1})$ polar $L^1$ bound for $r\ge3$, the
+$O(q^{-1})$ middle-Grassmannian bound for $r\ge2$, and the quadratic
+contrast second-moment upper bound persist under these conditionings.
+\end{lemma}
+\begin{proof}
+Both $Q$ and $Q-L$ are marginally uniform. Apply the union bound and
+Proposition~\ref{prop:marginals}; no independence is required.
+For nonnegative $Z$, $\E[Z\one_{\mathcal A_L}]\le\E Z$, proving
+\eqref{eq:conditioning-bound}. Insert the appropriate absolute error
+or contrast square to obtain the stated consequences. This argument
+does not assert that the exact conditional mean or exact conditional
+variance equals the unconditional one.
+\end{proof}
+
+\begin{lemma}[Relative conditioning along a nonsingular pencil]
+\label{lem:pencil-conditioning}
+Let $H\in\Sym_n$ be nonsingular, let $S\subseteq\F_q$ have size $k$,
+and put
+\[
+ \mathcal A_S=\{Q-sH\text{ nonsingular for every }s\in S\},\qquad
+ \delta=kn/q<1.
+\]
+If a nonnegative statistic $X(Q)$ is invariant under every translation
+$Q\mapsto Q+aH$, then
+\begin{equation}\label{eq:relative-conditioning}
+ (1-\delta)\E X\le\E[X\mid\mathcal A_S]
+                  \le(1-\delta)^{-1}\E X.
+\end{equation}
+For a real translation-invariant statistic $Y$, with $v=\Var Y$,
+\begin{align}
+ |\E[Y\mid\mathcal A_S]-\E Y|
+ &\le\frac{\delta}{1-\delta}\sqrt v,\label{eq:relative-mean}\\
+ \left(1-\delta-\frac{\delta^2}{(1-\delta)^2}\right)v
+ \le\Var(Y\mid\mathcal A_S)&\le(1-\delta)^{-1}v.
+ \label{eq:relative-variance}
+\end{align}
+\end{lemma}
+\begin{proof}
+Partition $\Sym_n$ into its affine lines $Q+\F_q H$.
+On each line, $\det(Q+aH)$ is a polynomial in $a$ of degree $n$ with
+nonzero leading coefficient $\det H$, so it has at most $n$ roots.
+The $k$ shifted nonsingularity conditions exclude at most $kn$ values
+of $a$. Thus, conditional on the affine line, the probability of
+$\mathcal A_S$ lies between $1-\delta$ and one. A line-invariant
+nonnegative $X$ can be multiplied by these bounds before averaging;
+dividing by $\Pp(\mathcal A_S)\in[1-\delta,1]$ proves
+\eqref{eq:relative-conditioning}.
+
+Let $Y_0=Y-\E Y$. Its mean is zero, and subtracting one from the
+conditional line probability shows
+$|\E[Y_0\one_{\mathcal A_S}]|\le\delta\E|Y_0|\le\delta\sqrt v$.
+This proves \eqref{eq:relative-mean}. Apply
+\eqref{eq:relative-conditioning} to $Y_0^2$, then subtract the square
+of the conditional mean to obtain \eqref{eq:relative-variance}.
+\end{proof}
+
+\begin{corollary}[The sharp polar laws survive pencil conditioning]
+\label{cor:conditional-polar}
+For a fixed split $H$ on $\F_q^{2r}$ and a fixed finite set of shifts
+$S$, the expectations of the squared contrasts $\Delta_f^2$ for
+$f\in\{\J,\D,\I_+,\I_-\}$ change from their exact values in
+Theorem~\ref{thm:contrast} by a factor $1+O_{r,|S|}(q^{-1})$
+after conditioning on $\mathcal A_S$. The conditional means of the
+contrasts are zero.
+The variances of the ordinary polar averages also change by a factor
+$1+O_{r,|S|}(q^{-1})$.
+For the sparse contrasts of Theorem~\ref{thm:pointwise}, the conditional
+probability of a nonzero discrepancy is
+$(2+O_{r,|S|}(q^{-1}))q^{-r}$.
+\end{corollary}
+\begin{proof}
+Every restriction to an $H$-isotropic generator is unchanged by
+$Q\mapsto Q+aH$. Apply Lemma~\ref{lem:pencil-conditioning} to contrast
+squares, ordinary averages, and $\one_{\{Z\ne0\}}$.
+An $H$-isometry exchanging the two families preserves
+$\mathcal A_S$ and negates each contrast, so its conditional mean is
+exactly zero. The probability assertion follows from
+\eqref{eq:rare-nonzero}. The estimates concern fixed $r,|S|$ as
+$q\to\infty$; the explicit lemma requires $q>2r|S|$.
+No relative preservation of the mixed moment
+$\E[\Delta_\J\Delta_\D]$ is asserted.
+\end{proof}
+
+\subsection{The local statistic and its improved estimate}
+For $D=2r$ let $\mathcal R_{r,\xi}\subseteq\Sym_D$ consist of matrices of
+rank $r$ and nondegenerate-quotient determinant character $\xi$. Write
+\begin{equation}\label{eq:rank-layer-normalization}
+ \lambda_{r,\xi}=\frac{|\mathcal R_{r,\xi}|}{q^{c(D)}}
+ =\gb Dr q^{c(r)-c(D)}\pi_{r,\xi},\qquad
+ K_\xi(A)=\frac{\one_{\mathcal R_{r,\xi}}(A)}{\lambda_{r,\xi}}.
+\end{equation}
+The count follows by choosing the image of a rank-$r$ symmetric matrix:
+for a basis-column matrix $P$ of its image it has a unique representation
+$PRP^{\mathsf T}$ with $R$ nonsingular symmetric, and its quotient sign
+is $\chi(\det R)$.
+For independent uniform $X_1,X_2,X_3\in\Sym_D$, signs
+$\xi_1,\xi_2,\xi_3$, and an active subset $A\subseteq\{1,2,3\}$, define
+\begin{align}
+ F_A(X)&=\E_Y\prod_{i\in A}K_{\xi_i}(X_i-Y),\label{eq:local-F}\\
+ G_A(X)&=\prod_{\substack{i<j\\i,j\in A}}
+ \bigl(1+\eps^r\chi(\det(X_i-X_j))\xi_i\xi_j\bigr),
+ \label{eq:local-G}\\
+ \mathcal T&=\{X_i-X_j\text{ nonsingular for all }i<j\}.
+ \label{eq:local-T}
+\end{align}
+The empty products are one. On $\mathcal T$, $G_A$ is zero on a failed
+active pair match and otherwise equals $2^{\binom{|A|}{2}}$.
+
+\begin{theorem}[Improved local transverse approximation]\label{thm:local}
+For fixed $r\ge3$, uniformly in the active subset and signs,
+\begin{equation}\label{eq:local-improvement}
+ \E\bigl[\one_{\mathcal T}|F_A-G_A|\bigr]=O_r(q^{-1})
+ \quad(q\to\infty\text{ through odd prime powers}).
+\end{equation}
+On $\mathcal T$ one also has $0\le F_A\le C_r$, with $C_r$ independent
+of $q$. For two active incidences, the $O_r(q^{-1})$ conclusion holds
+already for $r\ge2$. Thus, in the notation of the source, the estimate
+labelled \texttt{eq:transverse-local-l1} can be replaced by
+$O_r(q^{-1})$ when $r\ge3$.
+\end{theorem}
+\begin{proof}
+We first establish the algebraic parametrization. If $B$ is nonsingular
+in $\Sym_{2r}$ and $A_0$ has rank $r$, then
+\begin{equation}\label{eq:projection-identity}
+ \rank(B-A_0)=r\quad\Longleftrightarrow\quad A_0B^{-1}A_0=A_0.
+\end{equation}
+If the two ranks are $r$, their images are complementary because their
+sum is $B$. The decomposition
+$A_0B^{-1}+(B-A_0)B^{-1}=I$ therefore consists of the two complementary
+projections, which proves the forward direction. Conversely,
+$A_0B^{-1}$ is an idempotent of rank $r$ under the displayed identity,
+and its complementary idempotent has rank $r$, proving the reverse.
+If $A_0$ and $A_0-B$ have quotient signs $\xi_1,\xi_2$, their
+complementary image representation gives
+\begin{equation}\label{eq:pair-match}
+ \chi(\det B)=\eps^r\xi_1\xi_2.
+\end{equation}
+Indeed $B$ is congruent to $R_1\oplus(-R_2)$ in bases of those images.
+
+Suppose first that all three incidences are active. On $\mathcal T$ put
+\[
+ B_0=X_1-X_2,\quad B_1=X_1-X_3,\quad
+ Q=B_0^{-1},\quad L=B_0^{-1}-B_1^{-1},\quad A_0=X_1-Y.
+\]
+The identity $L=B_0^{-1}(B_1-B_0)B_1^{-1}$ shows that $L$ is symmetric
+and nonsingular. Write $A_0=PRP^{\mathsf T}$, where the columns of $P$
+span its $r$-dimensional image. Equation~\eqref{eq:projection-identity}
+for $B_0$ and $B_1$ is equivalent to
+\begin{equation}\label{eq:local-parametrization}
+ P^{\mathsf T}LP=0,\qquad P^{\mathsf T}QP\text{ nonsingular},\qquad
+ R=(P^{\mathsf T}QP)^{-1}.
+\end{equation}
+Consequently the centers satisfying all three rank conditions are in
+bijection with maximal $L$-isotropic subspaces on which $Q$ restricts
+nonsingularly. The image recovers the subspace and the last equation
+recovers the center, so there is no multiplicity.
+
+Let $\mathcal M$ be the event that every pair match
+\eqref{eq:pair-match} holds. If a match fails, both $F_A$ and $G_A$
+vanish. If all matches hold, multiplication of their three determinant
+characters gives $\chi(\det L)=\eps^r$, and hence $L$ is split.
+Here is an elementary justification of this last criterion. A diagonal
+nondegenerate form in dimension at least three has a nonzero isotropic
+vector: for nonzero $a,b,c$, the two sets $\{ax^2:x\in\F_q\}$ and
+$\{-c-by^2:y\in\F_q\}$ have size $(q+1)/2$ and intersect. Split off
+hyperbolic planes until the anisotropic remainder has dimension at most
+two. An anisotropic binary form has determinant character $-\eps$,
+whereas a hyperbolic plane has character $\eps$. Thus a nondegenerate
+form of dimension $2r$ is split exactly when its determinant character
+is $\eps^r$.
+
+Inversion in \eqref{eq:local-parametrization} preserves nonzero
+determinant character. Once the sign on the first image equals
+$\xi_1$, the pair matches force the other two signs as well. If
+$f_{\xi_1}(Q;L)$ denotes the restriction-sign fraction among the
+$N_r$ generators of split $L$, the exact normalized count on $\mathcal M$
+is therefore
+\begin{equation}\label{eq:local-triple-factor}
+ F_A=\frac{q^{-c(D)}N_r}
+ {\lambda_{r,\xi_1}\lambda_{r,\xi_2}\lambda_{r,\xi_3}}
+ f_{\xi_1}(Q;L)
+ =(16+O_r(q^{-1}))f_{\xi_1}(Q;L).
+\end{equation}
+The leading coefficient follows from
+$\lambda_{r,\xi}=(1/2+O_r(q^{-1}))q^{-c(r)}$ and
+$r(r-1)/2-c(2r)+3c(r)=0$.
+
+It remains to justify the probability law to which the averaging theorem
+is applied. Before invertibility conditioning, $B_0,B_1$ are independent
+uniform symmetric matrices, by conditioning on $X_1$ and translating
+$X_2,X_3$. Conditional on both being nonsingular, inversion preserves
+the independent uniform laws on nonsingular symmetric matrices.
+Conditional further on $L=Q-(Q-L)$, $Q$ is uniform on
+$\{Q:Q,Q-L\text{ nonsingular}\}$: each such $Q$ gives exactly one
+ordered inverse pair. The third transverse condition is precisely
+nonsingularity of $L$. For every fixed nonsingular split $L$,
+Theorem~\ref{thm:polar} and Lemma~\ref{lem:conditioning} therefore give
+\[
+ \E\bigl[\one_{\mathcal M}|f_{\xi_1}(Q;L)-1/2|
+       \mid\mathcal T,L\bigr]=O(q^{-1})\qquad(r\ge3).
+\]
+The matching indicator stays \emph{inside} this expectation; there is
+no unjustified conditioning on the matches. For nonsplit $L$, the match
+event is empty. Combining this bound with
+\eqref{eq:local-triple-factor}, whose target is $8$ on a match, and
+integrating over $L$ proves \eqref{eq:local-improvement} for three active
+incidences. Since $0\le f_{\xi_1}\le1$, it also proves the uniform bound
+on $F_A$ there.
+
+For two active incidences, relabel them $1,2$ and set $B=X_1-X_2$,
+$Q=B^{-1}$. The same projection identity parametrizes centers by all
+$r$-subspaces on which $Q$ is nonsingular. On the pair match the exact
+count is
+\begin{equation}\label{eq:local-pair-factor}
+ F_A=\frac{q^{-c(D)}\gb Dr}
+ {\lambda_{r,\xi_1}\lambda_{r,\xi_2}}
+ \overline\I_{\xi_1}^{\,\mathrm{Gr}}(Q)
+ =(4+O_r(q^{-1}))\overline\I_{\xi_1}^{\,\mathrm{Gr}}(Q),
+\end{equation}
+and off the match both quantities vanish. Conditional on $B$ being
+nonsingular, $Q$ is uniform nonsingular symmetric. Theorem~\ref{thm:grassmann}
+and Lemma~\ref{lem:conditioning}, with the match indicator retained
+inside the expectation, give error $O_r(q^{-1})$ for $r\ge2$.
+Restricting the nonnegative error to the smaller event $\mathcal T$
+can only decrease its expectation. Formula~\eqref{eq:local-pair-factor}
+also gives the uniform bound. For zero or one active incidence,
+$F_A=G_A=1$ by normalization and translation invariance.
+\end{proof}
+
+\begin{remark}[Scope of the application]
+The statement just proved is a local replacement in an explicitly
+identified source argument. It does not analyze the other sections of
+the Sidorenko manuscript, improve its global quantitative choices, or
+certify its claimed counterexample. In particular, a better local error
+need not improve a global theorem if another error term dominates.
+The two-family exact identities are unconditional identities; their
+conditional upper bounds follow from Lemma~\ref{lem:conditioning},
+not from a claim that conditioning preserves the entire Fourier law.
+\end{remark}
+
+\section{Exact checks, examples, and reproducibility}
+\label{sec:checks}
+The accompanying programs separate closed-form rational evaluation from direct
+finite-field enumeration. The module \texttt{code/exact\_formulas.py} implements
+the marginal laws, extension probabilities, covariance kernels, intersection
+profiles, and common-generator moments using Python integers and
+\texttt{fractions.Fraction}. The program \texttt{code/verify.py} then compares
+these formulas with explicit matrices and subspaces. Every pass/fail comparison
+is exact. Numerical evidence supports the audit; the proofs in the preceding
+sections, not the finite tests, establish the general theorems.
+
+\subsection{An exhaustive four-dimensional example}
+Take $q=3$, $r=2$, and the standard hyperbolic form on $\F_3^4$.
+There are $3^{10}=59\,049$ symmetric forms $Q$ and eight generators, four in
+each family. The verifier enumerates all of them. It obtains
+\begin{align*}
+ \E\overline\J&=\frac23,&
+ \E\overline\D&=-\frac29,&
+ \E\overline\I_+&=\frac29,&
+ \E\overline\I_-&=\frac49,\\
+ \Var(\overline\J)&=\frac1{36},&
+ \Var(\overline\D)&=\frac{41}{324},&
+ \Cov(\overline\J,\overline\D)&=-\frac1{108}.
+\end{align*}
+The contrast covariance matrix is
+\[
+ \begin{pmatrix}
+ \E\Delta_\J^2&\E\Delta_\J\Delta_\D\\
+ \E\Delta_\J\Delta_\D&\E\Delta_\D^2
+ \end{pmatrix}
+ =\begin{pmatrix}1/9&-1/27\\-1/27&1/9\end{pmatrix}.
+\]
+Consequently
+$\E\Delta_{\I_+}^{\,2}=1/27$ and
+$\E\Delta_{\I_-}^{\,2}=2/27$, in agreement with
+Theorem~\ref{thm:contrast}. Notice that neither individual-sign mean equals
+$1/2$ in this example. Centering at the exact mean is essential.
+
+For the signed common-generator count $Z$, the complete histogram is
+\begin{center}
+\begin{tabular}{@{}lrrrrr@{}}
+\toprule
+Value of $Z$ & $-2$ & $-1$ & $0$ & $1$ & $2$\\
+\midrule
+Number of forms &108&5\,400&48\,033&5\,400&108\\
+\bottomrule
+\end{tabular}
+\end{center}
+These counts agree with Theorem~\ref{thm:rank-two-law}:
+$a_3=200/2187$, $b_3=4/2187$, and
+$\Pp(Z=0)=593/729$. The pointwise identity is
+$\Delta_\D=3Z/4$, since $\chi(-1)=-1$ in $\F_3$.
+The characteristic polynomial obstruction was checked for every one of the
+$13\,635$ forms having at least one common generator, using polynomial
+coefficient arithmetic rather than Newton identities that would divide by
+zero in characteristic three.
+
+\subsection{Coverage and limitations of the checks}
+The closed-form suite checks 96 pairs $(r,q)$ with $1\le r\le16$ and
+$q\in\{3,5,7,9,11,25\}$, as well as 120 Grassmannian parameter triples.
+The appearances of $q=9,25$ here evaluate exact prime-power counting formulas;
+\emph{they do not perform field arithmetic modulo 9 or 25}.
+All direct field enumerations use $\F_3$.
+
+The direct suite enumerates every symmetric matrix in dimensions one, two,
+and three and checks every nonsingular Fourier frequency in those dimensions.
+The Fourier check works in $\mathbb Z[\zeta_3]$: if the three residue-class
+counts are $c_0,c_1,c_2$, its squared norm is the integer
+$c_0^2+c_1^2+c_2^2-c_0c_1-c_0c_2-c_1c_2$.
+It also checks all conditional extensions of every leading block of sizes
+one and two, and all four joint-sign probabilities for
+$(r,s,t)=(2,2,0),(2,2,1),(2,3,1),(2,2,2)$.
+
+A separate odd-rank pointwise check uses all 80 generators of a split form
+on $\F_3^6$ and every one of the $3^9=19\,683$ matrices in the slice
+\[
+ Q=\begin{pmatrix}0&B\\B^{\mathsf T}&C\end{pmatrix},
+ \qquad B\text{ diagonal},\quad C\in\Sym_3(\F_3).
+\]
+This verifies the identity for $\Delta_\J$ on that slice. It is not an
+enumeration of all $3^{21}$ forms in $\Sym_6(\F_3)$.
+
+The actual successful transcript is shipped as
+\texttt{verification-results.txt}. The programs require Python with NumPy;
+run \texttt{python code/verify.py} without the \texttt{-O} option, so that
+assertions remain enabled. No randomized testing, floating-point tolerance,
+proof-assistant certification, or external referee review is represented by
+this transcript.
+
+\section{Further research questions and topics}
+\label{sec:questions}
+The following are specific research directions suggested by the proved
+results. They are proposed here; this list is not a claim that every question
+has appeared previously as a named open problem.
+
+\begin{question}[Self-adjoint pencils and the distribution of common generators]
+Classify the possible values of $Z(Q)$ in terms of the primary decomposition
+of the self-adjoint operator $H^{-1}Q$, including nonsemisimple blocks.
+Determine the full joint distribution of $(C_+,C_-)$ for $r=3$ and beyond.
+The square-characteristic-polynomial obstruction is necessary for a common
+generator but is not, by itself, a classification of nonzero $Z$: the scalar
+pencil $Q=aH$ has $Z=0$. A useful next result would distinguish zero counts,
+balanced positive counts, and genuine family imbalance by module invariants.
+\end{question}
+
+\begin{question}[The remaining parity and higher moments]
+The variance-normalized contrast has a degenerate limit for even-rank
+$\D$ and odd-rank $\J$, by Corollary~\ref{cor:non-gaussian}.
+What are the laws for odd-rank $\D$ and even-rank $\J$? Determine higher
+moments in all parities, their dependence on $q$ and $r$, and the law
+conditional on a nonzero contrast. The rare-event theorem already excludes
+a nondegenerate Gaussian limit in the two parities it treats; a conjecture
+about the other parities should not ignore that obstruction.
+\end{question}
+
+\begin{question}[Ordinary averaging and simultaneous asymptotic regimes]
+Find sharp higher moments and a distributional description for
+$\overline\D-\mu_r$ and $\overline\I_\xi-\pi_{r,\xi}$.
+Do different behaviors occur for fixed $r$ with $q\to\infty$, fixed $q$
+with $r\to\infty$, and jointly growing parameters?
+The exact covariance kernels and incidence profiles give second moments in
+all these regimes, but fixed-rank $O_r(\cdot)$ estimates alone do not give a
+uniform distributional theorem. Identify which geometric degeneracies
+carry the ordinary variance, rather than assuming independent sampling.
+\end{question}
+
+\begin{question}[Three or more restriction laws]
+For two subspaces, their dimensions and intersection dimension suffice for
+the joint law. For three or more subspaces, identify the additional
+configuration invariants needed for an exact analogue of
+Theorem~\ref{thm:joint}. Derive a practical recursive calculus that keeps
+singular overlaps and compatibility constraints without treating the
+restrictions as conditionally independent when they are not. This is a
+natural route to higher moments and to face systems sharing several point
+matrices in rank-layer constructions.
+\end{question}
+
+\begin{question}[Smaller signed designs and partial spectral cancellation]
+Theorem~\ref{thm:filter-rigidity} classifies universal cancellation of every
+rank below $r$ when all generators are available: only the Latin--Greek
+signed weight survives, up to scaling. What are optimal support sizes and
+weight norms when cancellation is required only through rank $s<r$?
+Can a small signed subfamily reproduce a prescribed part of the discriminant
+contrast, or can one prove a support-size obstruction from the incidence
+matrix? The exact energy identity provides an objective function for this
+optimization rather than merely a heuristic for sampling.
+\end{question}
+
+\begin{question}[Other polar geometries and characteristic two]
+Develop analogous incidence-to-Fourier identities for Hermitian or
+alternating forms, and identify the statistic replacing determinant
+character. In characteristic two, symmetric bilinear and quadratic forms
+have different structural features; the trace pairing and type invariants
+used here cannot simply be copied. The association-scheme framework of
+\cite{schmidt2020} is a starting point, but a useful extension should state
+its Fourier dual space and geometric design hypothesis explicitly.
+\end{question}
+
+\begin{question}[Sharp finite-field bounds and conditioning]
+Optimize the uniform constants in the covariance and averaging inequalities,
+and compute exact conditional moments for a fixed finite pencil of
+invertibility constraints. Lemma~\ref{lem:pencil-conditioning} gives a
+relative $1+O_{r,k}(q^{-1})$ comparison because the observables are constant
+along pencil lines. Can the first correction term be expressed using the
+characteristic polynomial and the restriction profile? This would separate
+an exact conditioning effect from the deterministic bias $\pi_{r,\xi}-1/2$.
+\end{question}
+
+\begin{question}[Propagation through the rank-layer construction]
+Track Theorem~\ref{thm:local} through every other error estimate in the
+cited transverse and rank-layer arguments. Determine whether the improved
+local rate changes an admissible field-size or dimension choice once the
+other sources of error are retained. A full answer must audit those other
+inputs; an $O(q^{-1})$ replacement in one local lemma is not automatically
+an improved global counterexample parameter. It may also be useful to
+retain the two families separately and investigate whether their exact
+agreement off the rare pencil locus simplifies a signed construction.
+\end{question}
+
+\begin{question}[A modular formalization]
+Formalize, in order: the extension law and finite counting identities;
+the two-subspace compatibility map; the weighted Fourier-transfer theorem;
+the two-family incidence cancellation; and the pointwise rare-event identity.
+The first two stages use finite linear algebra and finite sums only. The
+geometric parity argument and the additive-character normalization should
+be separate reusable modules. Finally connect the local rank-layer theorem
+to the source's precise definitions rather than assigning formal status
+from its inclusion in a research directory. The supplied code is a test
+suite, not a substitute for any of these proof obligations.
+\end{question}
+
+\appendix
+\section{Pinned sources and integration scope}
+The repository versions used for the final source crosswalk are:
+\begin{center}
+\begin{tabular}{@{}ll@{}}
+\toprule
+Repository & Commit\\
+\midrule
+\texttt{openai/math} & \texttt{adc7f1241b42e322a6451854ab7e4b4c146bf78a}\\
+\texttt{VladimirReshetnikov/ProveIt} & \texttt{a41aa448d67395387593f1931cda142836afccdc}\\
+\bottomrule
+\end{tabular}
+\end{center}
+The direct OpenAI source is the file \texttt{transverse.tex} in the
+September-23-2026 Sidorenko manuscript's \texttt{build/sections/} directory.
+Its exact blob is
+\begin{center}
+\texttt{d4991976e630f117c8d85a7e22deb60643a2450d}.
+\end{center}
+The reviewed source labels are
+\begin{center}
+\begin{tabular}{l}
+\texttt{lem:transverse-restrictions}\\
+\texttt{lem:local-transverse}\\
+\texttt{eq:transverse-three-normalization}\\
+\texttt{eq:transverse-two-normalization}.
+\end{tabular}
+\end{center}
+In that source, $b(n)$ denotes what this article calls $c(n)$.
+The full repository path is recorded in the accompanying source audit.
+
+The ProveIt inventory is the \texttt{README.md} in the research directory
+whose path components are
+\begin{center}
+\begin{tabular}{l}
+\texttt{Combinatorics/Ramsey/Research/GowersSzemeredi/}\\
+\texttt{local-quantitative-refinements/}.
+\end{tabular}
+\end{center}
+Its blob is \texttt{02f1eb26decc04804b38d00bee586568701ff88e}.
+The selected companion audit and its blob are
+\begin{center}
+\begin{tabular}{l}
+\texttt{33-arrangement-stability-SOURCE\_AUDIT.md}\\
+\texttt{9ed4c250339f2f6172ff0765adcc3e34e24b699b}.
+\end{tabular}
+\end{center}
+They establish context and claim boundaries, not premises for the theorems
+proved here. More detailed provenance and a theorem-status ledger accompany
+the source archive.
+
+No repository was modified during preparation. The deliverable contains
+this manuscript, its PDF, the verification programs and their transcript,
+and integration notes. It does not redistribute the cited third-party
+manuscripts or imply their authors' endorsement. Proposed inclusion in
+ProveIt does not by itself confer formal or independently reviewed status.
+
+\clearpage
+\begin{thebibliography}{9}
+\bibitem{openai}
+\texttt{openai/math} contributors,
+\emph{A counterexample to Sidorenko's conjecture}, repository manuscript
+filed under 23 September 2026, section ``Transverse configurations and
+determinant signs.''
+\href{https://github.com/openai/math/tree/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/A-counterexample-to-Sidorenkos-conjecture-September-23-2026}{Pinned repository source}.
+Accessed 7 October 2026; exact file and blob are recorded in Appendix A.
+This citation attributes the source artifact, not independent verification
+of its global claim.
+
+\bibitem{proveit}
+\texttt{VladimirReshetnikov/ProveIt},
+\emph{Local Quantitative Refinements of Gowers's Proof of Szemer\'edi's
+Theorem}, research inventory and
+\texttt{33-arrangement-stability-SOURCE\_AUDIT.md}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/a41aa448d67395387593f1931cda142836afccdc/Combinatorics/Ramsey/Research/GowersSzemeredi/local-quantitative-refinements}{Pinned research directory}.
+Accessed 7 October 2026. Used for research context and provenance, not as
+an unverified theorem input.
+
+\bibitem{schmidt2015}
+K.-U. Schmidt,
+\emph{Symmetric bilinear forms over finite fields with applications to
+coding theory}, Journal of Algebraic Combinatorics \textbf{42} (2015),
+635--670. \href{https://arxiv.org/abs/1410.7184}{arXiv:1410.7184}.
+
+\bibitem{schmidt2020}
+K.-U. Schmidt,
+\emph{Quadratic and symmetric bilinear forms over finite fields and their
+association schemes}, Algebraic Combinatorics \textbf{3} (2020), 161--189.
+\href{https://doi.org/10.5802/alco.88}{doi:10.5802/alco.88}.
+
+\bibitem{polar-designs}
+M. Kiermaier, K.-U. Schmidt and A. Wassermann,
+\emph{Designs in finite classical polar spaces}, Designs, Codes and
+Cryptography \textbf{93} (2025), 1143--1162.
+\href{https://doi.org/10.1007/s10623-024-01491-x}{doi:10.1007/s10623-024-01491-x}.
+Published online 17 September 2024. See the Latin--Greek halving discussion
+and Lemma 14.
+\end{thebibliography}
+\end{document}

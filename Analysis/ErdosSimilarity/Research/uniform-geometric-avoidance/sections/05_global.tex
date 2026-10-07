@@ -1,0 +1,115 @@
+\section{A common periodic set and consequences}
+\label{sec:global}
+
+\subsection{Only contracting copies of the periodic sets are needed}
+
+We prove \cref{thm:main}. For $j\ge1$ put
+\begin{equation}\label{eq:ratio-exhaustion}
+ I_j=\left[\frac1{j+2},1-\frac1{j+2}\right],
+ \qquad \bigcup_{j\ge1}I_j=(0,1).
+\end{equation}
+For $j\ge1$ and $k\ge0$, use \cref{prop:normalized} on $I_j$ with
+\begin{equation}\label{eq:global-budget}
+ p_{j,k}=\frac\eps{24}\,2^{-j}2^{-(k+1)}
+\end{equation}
+to obtain $H_{j,k}$. Define
+\begin{equation}\label{eq:global-C}
+ C=\bigcup_{j\ge1,\ k\ge0}
+ \left(2^{-k}H_{j,k}\ \cup\ (-2^{-k}H_{j,k})\right),
+ \qquad F_\eps=\R\setminus C.
+\end{equation}
+Every component in this union is open with period $2^{-k}$ and hence
+also period one. The union is open, symmetric, and $1$-periodic.
+The density of a contracted component in a unit interval is
+\begin{equation}\label{eq:contraction-density}
+ \rho(2^{-k}H_{j,k})=\rho(H_{j,k}).
+\end{equation}
+It is \emph{not} $2^{-k}\rho(H_{j,k})$: there are $2^k$ complete
+periods in a unit interval. The summable budget explicitly pays for
+this fact. Reflections have the same density, and therefore
+\begin{equation}\label{eq:global-density}
+ \rho(C)\le12\sum_{j\ge1,k\ge0}p_{j,k}=\frac\eps2.
+\end{equation}
+Periodicity gives \eqref{eq:main-density} for every $u$.
+
+Fix $x$, $s\ne0$, and $q\in(0,1)$, and choose $j$ with $q\in I_j$.
+Choose an integer $h\ge0$ so that $0<|s|q^h\le1$.
+There are $k\ge0$ and $t\in[1,2)$ with
+\begin{equation}\label{eq:tail-normalization}
+ |s|q^h=2^{-k}t.
+\end{equation}
+If $s>0$, apply the normalized hitting property of $H_{j,k}$ at center
+$2^kx$. Some $n\ge1$ satisfies
+\[
+ 2^kx+tq^n\in H_{j,k},
+ \quad\text{so}\quad x+sq^{h+n}\in2^{-k}H_{j,k}\subset C.
+\]
+If $s<0$, apply it at $-2^kx$ and reflect; the hit lies in
+$-2^{-k}H_{j,k}$. This proves that every orbit meets $C$.
+Apply the same assertion after any initial tail, replacing $s$ by
+$sq^J$, to obtain arbitrarily late hits. The proof of
+\cref{thm:main} is complete.
+
+This contraction-only assembly improves the global organization of
+the fixed-ratio construction. It uses the elementary identity that a
+tail of $G_q$ is a scaled copy of $G_q$. It does not require a relation
+between the ratio $q$ and the dyadic grid base.
+
+\subsection{Large compact subsets of arbitrary measurable sets}
+
+\begin{corollary}[Avoidance inside any measurable set]\label{cor:inside}
+If $A\subset\R$ is measurable with $0<m(A)<\infty$, then for every
+$\delta>0$ there is a compact $K\subset A$ such that
+$m(K)>m(A)-\delta$ and $K$ contains no affine copy of any $G_q$,
+$0<q<1$.
+\end{corollary}
+
+\begin{proof}
+Choose compact $A_0\subset A$ with $m(A_0)>m(A)-\delta/2$ and a
+bounded interval $I$ containing $A_0$. An affine image of the compact
+set in \cref{thm:main}, with sufficiently small accuracy, gives a
+compact $K_0\subset I$ with $m(I\setminus K_0)<\delta/2$.
+Set $K=A_0\cap K_0$. Avoidance is inherited by subsets and preserved
+by invertible affine maps; the measure bound follows.
+\end{proof}
+
+\begin{corollary}[A fat Cantor avoiding set]\label{cor:fat-cantor}
+The compact set in \cref{thm:main} can be chosen perfect and nowhere
+dense without losing measure. In particular there is a fat Cantor
+set answering \cite[Question~1]{BGKMW} negatively.
+\end{corollary}
+
+\begin{proof}
+The set $F_\eps$ has empty interior, since every nonempty interval
+contains an affine contracting geometric progression. Its compact
+section $K$ is therefore nowhere dense. Let $K'$ be the support of
+the finite measure $\ind_K\,dm$. It is a closed subset of $K$;
+its complement in $K$ is covered by countably many rational intervals
+of that measure zero, so $m(K')=m(K)$. The support has no isolated
+points: a measure supported on one isolated point of a neighborhood
+would have an atom there, whereas $\ind_K\,dm$ is atomless.
+Thus $K'$ is perfect and has all the required properties.
+\end{proof}
+
+The effective-closedness claim later concerns the original construction.
+We do not infer an effective procedure for taking the measure support
+in \cref{cor:fat-cantor}.
+
+\begin{corollary}[Finite-dimensional line patterns]\label{cor:dimensions}
+For each $d\ge1$ and $\delta>0$, there is a compact
+$E\subset[0,1]^d$ of $d$-dimensional measure greater than $1-\delta$
+containing no set $\{x+q^nv:n\ge1\}$ with $x\in\R^d$,
+$v\in\R^d\setminus\{0\}$, and $0<q<1$.
+\end{corollary}
+
+\begin{proof}
+Take $E=K^d$ with $m(K)$ sufficiently close to one. A nonzero $v$
+has a nonzero coordinate. Projection to that coordinate would give
+an affine copy of $G_q$ in $K$ if the whole pattern lay in $E$.
+\end{proof}
+
+The periodic set in \cref{thm:main} is asserted to avoid contracting
+ratios. A nonempty periodic set cannot exclude all expanding geometric
+orbits: it contains $x+2^n$ whenever it contains $x$. The compact
+section automatically excludes expanding orbits because they are
+unbounded. The range $0<q<1$ keeps the main statement precise.

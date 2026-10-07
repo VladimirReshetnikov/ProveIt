@@ -1,0 +1,1764 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=1in]{geometry}
+\usepackage{microtype}
+\usepackage{booktabs,array,longtable}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage[hyphens]{url}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black]{hyperref}
+\hypersetup{pdftitle={Local Fourier Sign Codes: Exact Obstructions, Robust Sidorenko Bounds, and Sharp Girth Forcing},pdfauthor={AI-assisted research manuscript prepared for ProveIt},pdfsubject={Finite Fourier sign codes and graph homomorphism inequalities},pdfkeywords={Sidorenko, Gowers U2, Fourier sign codes, forcing, finite abelian groups}}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Local Fourier sign codes}
+\fancyhead[R]{\small ProveIt research manuscript}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\emergencystretch}{2em}
+\setlist{itemsep=3pt,topsep=5pt}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\E}{\mathbb E}
+\newcommand{\F}{\mathbb F}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\C}{\mathbb C}
+\newcommand{\T}{\mathbb T}
+\newcommand{\one}{\mathbf 1}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\Span}{\operatorname{span}}
+\newcommand{\Cut}[1]{\left\|#1\right\|_{\square}}
+\newcommand{\Fl}{\mathcal F}
+\newcommand{\Err}{\mathcal E}
+\newcommand{\Rel}{\mathcal R}
+\newcommand{\Hstar}{H_{\!*}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\norm}[1]{\left\|#1\right\|}
+
+\title{\textbf{Local Fourier Sign Codes}\\[5pt]
+\large Exact Obstructions, Robust Sidorenko Bounds,\\
+and Sharp Girth Forcing}
+\author{Research manuscript prepared for the ProveIt project\\
+\small AI-assisted mathematical development; not independently refereed}
+\date{7 October 2026}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+For a real even function on a finite abelian group, we classify the
+Fourier-sign obstruction to proving bipartite homomorphism inequalities
+term by term. Short zero-sum relations define a binary linear code. Its
+first violated constraint is exactly the first one-sided degree threshold
+at which a negative conserved Fourier monomial can occur; a simple theta
+graph realizes the obstruction. The shortest obstruction is computable in
+a two-sheeted Cayley graph, and its length is at most the order of the
+generated frequency subgroup, a bound attained for odd cyclic groups.
+
+We then replace exact sign constraints by explicit moment defects. These
+give a lower bound consisting of the random-density term, the contributions
+of all simple cycles, and a controlled error. For a cyclic pattern of girth
+$g$, with $c_g$ shortest cycles, this yields the sharp cut-norm forcing scale
+$p(\delta+\eps)^{1/g}/(4c_g^{1/g})$. Both its exponent and its asymptotic
+constant are optimal in the weighted scalar Cayley class.
+
+For the 35-vertex, 66-edge incidence pattern specified in the
+\texttt{openai/math} Sidorenko manuscript, we prove a cubic-defect bound
+with an exact $33p^{62}\|w-p\|_{U^2}^4$ surplus. Thus a scalar Cayley
+counterexample for this pattern would require a quantitatively nonzero
+mass of sign-frustrated frequency triples. We also give its complete
+one-character density polynomial and reproducible exact-arithmetic
+checks. The results do not assume the correctness of the repository's
+counterexample construction, do not assert a counterexample of our own,
+and do not settle the unrestricted Sidorenko problem. Priority of the
+combined refinements requires further literature and expert review.
+\end{abstract}
+
+\vspace{3pt}
+\noindent\textbf{Keywords.} Fourier analysis; graph homomorphisms; Sidorenko inequalities;
+Gowers uniformity; signed zero-sum relations; binary codes; forcing.
+
+\clearpage
+\setcounter{tocdepth}{1}
+\tableofcontents
+\clearpage
+
+\section{Research setting, contributions, and scope}
+\label{sec:intro}
+
+\subsection{The intersection of the two repositories}
+
+The \texttt{openai/math} catalogue includes a manuscript titled
+\emph{A counterexample to Sidorenko's conjecture}, dated 23 September 2026.
+Its finite-complex section specifies an incidence graph with 13 point
+vertices, 22 face vertices, and 66 edges \cite{OpenAICatalogue,OpenAIComplex}.
+Its kernel section uses finite-field rank layers, several matrix
+coordinates, vertex types, and activation laws \cite{OpenAIKernel}.
+These are precise source statements, not independent certification here
+of the manuscript's headline claim.
+
+The Gowers--Szemeredi development in \texttt{ProveIt} organizes finite
+Fourier analysis, additive relations, uniformity, and local quantitative
+estimates. Its inspected definitions use an unnormalized discrete Fourier
+transform on $\Z/N\Z$, together with additive-cube and Bohr-set language
+\cite{ProveItDefinitions}. A companion source audit carefully distinguishes
+statement catalogues from kernel-checked proofs \cite{ProveItAudit}.
+That distinction is retained throughout this article.
+
+A useful common question is therefore not simply whether a large
+construction can be repeated. It is the following.
+
+\begin{quote}
+Which local additive relations among Fourier frequencies permit negative
+graph-count contributions, and how much such local negativity is required
+for a global deficit?
+\end{quote}
+
+We answer an exact version for termwise Fourier positivity, and a
+quantitative necessary-condition version for the actual homomorphism
+inequality. The bridge to Gowers's language is particularly direct for
+four-cycles: the relevant spectral fourth moment is precisely the fourth
+power of the normalized $U^2$ norm.
+
+\subsection{What is proved here}
+
+There are four principal results. First, the safe signs on a prescribed
+symmetric spectrum form the orthogonal complement of a finite binary
+relation code. The first failed relation is realized as a negative flow
+on a simple theta graph, giving an exact degree threshold
+(Theorems~\ref{thm:threshold} and \ref{thm:code}). A finite cutoff and a
+shortest-witness algorithm make the criterion effective
+(Theorem~\ref{thm:bfs}).
+
+Second, a difference of ordinary moments of $w$ and its Fourier-absolute
+companion bounds the entire negative-flow mass. The resulting robust
+inequality retains the contribution of \emph{every} simple cycle
+(Theorem~\ref{thm:inventory}). Third, this implies a sharp girth-controlled
+forcing theorem, including the exact asymptotic cut-norm constant and an
+explicit exclusion of forests (Theorems~\ref{thm:forcing} and
+\ref{thm:sharp}). Fourth, applying these results to the source incidence
+pattern gives a cubic obstruction certificate and a sharp $U^2$ surplus
+(Theorem~\ref{thm:incidence}).
+
+The basic ingredients---Fourier orthogonality, sign characters, cycle
+flows, and the even-subgraph expansion---are standard mathematical
+mechanisms, not claimed inventions. The proposed contributions are their
+precise local-sign classification, the explicit robust error functional,
+the sharp cycle-inventory forcing bounds, and the concrete incidence
+application. All are proved below, but the claim that any one formulation
+is absent from all earlier literature is \emph{not} established.
+
+\subsection{Comparison with inspected literature}
+
+Yuqi Zhao proves Sidorenko-type inequalities for even subdivisions in
+finite abelian Cayley hosts using Fourier pairing
+\cite{YuqiZhao}. We rederive the required positivity directly from vertex
+orthogonality, so no circuit-matrix rank assertion over a general finite
+abelian group is needed. The final discussion of that preprint uses an
+edge-count forcing exponent. For cyclic patterns, our shortest-cycle
+argument gives the exponent $g$, counts all $c_g$ shortest cycles, and
+proves optimality in the weighted class. The forest exception and the
+distinction between normalized operator eigenvalues and adjacency-matrix
+eigenvalues are made explicit in Section~\ref{sec:forcing}.
+
+The positive-graph problem studied by Conlon, Lee, and Versteegen
+\cite{PositiveGraphs} concerns positivity across arbitrary weighted hosts.
+Here the graph and a scalar abelian convolution host are both relevant;
+our termwise sign condition must not be confused with a classification
+of positive graphs. Likewise, a finite relation code tests a sufficient
+proof mechanism for Sidorenko, not the necessity of Sidorenko itself.
+
+\subsection{Trust boundary}
+
+The proof chain uses only finite Fourier duality, elementary finite sums,
+linear algebra over $\F_2$, basic inequalities, and the explicit face list.
+It imports no unproved repository theorem. No Lean build or kernel check
+of this manuscript was performed. The exact Python checks are regression
+and finite-certificate checks, not a substitute for the proofs.
+
+In particular, the actual typed matrix kernel in
+\cite{OpenAIKernel} is not identified here with a single scalar kernel
+$w(x-y)$ on a uniformly measured finite abelian group. The scalar-host
+conclusions below therefore neither contradict that construction nor
+certify its validity. The source audit and integration notes distributed
+with the article specify the inspected files and the remaining formal
+verification work.
+
+\section{Normalized Fourier flows}
+\label{sec:flows}
+
+Let $G$ be a finite abelian group with uniform probability measure, and
+write its character group $\Gamma=\widehat G$ additively. For
+$\xi\in\Gamma$, write $\chi_\xi:G\to\T$ for the corresponding character.
+The identity of $\Gamma$ is denoted by $0$. Define
+\begin{equation}
+ \lambda_\xi=\widehat w(\xi)
+   =\E_{x\in G}w(x)\overline{\chi_\xi(x)},
+ \qquad
+ w(x)=\sum_{\xi\in\Gamma}\lambda_\xi\chi_\xi(x).
+ \label{eq:fourier}
+\end{equation}
+Throughout, $w:G\to\R$ is even: $w(-x)=w(x)$. Consequently
+\begin{equation}
+ \lambda_\xi\in\R,\qquad
+ \lambda_{-\xi}=\lambda_\xi.
+ \label{eq:real-even}
+\end{equation}
+Write $p=\lambda_0=\E w$, and assume $p>0$. Unless explicitly stated
+otherwise, the algebraic statements allow $w$ to be signed. A
+\emph{weighted scalar Cayley host} means the graphon
+\begin{equation}
+ W(x,y)=w(x-y),\qquad 0\leq w\leq1.
+ \label{eq:host}
+\end{equation}
+It is symmetric and has constant degree $p$. Values on the diagonal are
+included; this is a finite probability-space graphon, not necessarily a
+loopless $0$--$1$ graph.
+
+Let $H=(L\sqcup R,E)$ be a finite simple bipartite graph and set $e=|E|$.
+Isolated vertices and disconnected graphs are permitted. The
+homomorphism density is
+\begin{equation}
+ t(H,W)=\E_{(x_v)\in G^{V(H)}}
+          \prod_{uv\in E}w(x_u-x_v),
+ \label{eq:density}
+\end{equation}
+where each edge is written with $u\in L$, $v\in R$. Samples at different
+vertices are independent and are allowed to coincide.
+
+\begin{definition}[Conserved frequency labeling]
+A map $\phi:E\to\Gamma$ is a \emph{Fourier flow} if
+\begin{equation}
+ \sum_{a\ni v}\phi(a)=0\quad\text{for every }v\in V(H).
+ \label{eq:unsigned-flow}
+\end{equation}
+The set of such maps is $\Fl_H(\Gamma)$, and its weight is
+$A(\phi)=\prod_{a\in E}\lambda_{\phi(a)}$.
+\end{definition}
+
+The unsigned appearance of \eqref{eq:unsigned-flow} is deliberate:
+orient every edge from $L$ to $R$. At a left vertex all incidence signs
+are positive, and at a right vertex all are negative. Either condition
+is equivalent to the displayed zero sum. No division by two or assumption
+on the exponent of $G$ is involved.
+
+\begin{lemma}[Flow expansion]
+\label{lem:flow}
+For every finite bipartite $H$,
+\begin{equation}
+ t(H,W)=\sum_{\phi\in\Fl_H(\Gamma)} A(\phi).
+ \label{eq:flow-expansion}
+\end{equation}
+The identically zero flow contributes $p^e$.
+\end{lemma}
+\begin{proof}
+Insert \eqref{eq:fourier} at every edge. A fixed labeling contributes the
+coefficient product times
+\[
+ \prod_{u\in L}\E_{x_u}\chi_{\sum_{a\ni u}\phi(a)}(x_u)
+ \prod_{v\in R}\E_{x_v}\overline{
+       \chi_{\sum_{a\ni v}\phi(a)}(x_v)}.
+\]
+Character orthogonality makes this expression one precisely when all
+vertex sums vanish and zero otherwise. All sums are finite, so their
+interchange is immediate. There is no additional $|G|$ factor: the
+averages in \eqref{eq:fourier} already fix the normalization.
+\end{proof}
+
+Define the active nonzero spectrum and its signs by
+\begin{equation}
+ S=\{\xi\ne0:\lambda_\xi\ne0\},\qquad
+ \sigma(\xi)=\sgn(\lambda_\xi)\quad(\xi\in S).
+ \label{eq:spectrum}
+\end{equation}
+Then $S=-S$ and $\sigma(-\xi)=\sigma(\xi)$. When helpful extend
+$\sigma$ to $0$ by $\sigma(0)=1$.
+
+\begin{lemma}[Realizability of prescribed signs]
+\label{lem:realizable}
+Every finite symmetric $S\subseteq\Gamma\setminus\{0\}$ and every even
+sign function $\sigma:S\to\{\pm1\}$ occur as the active spectrum and
+signs of a weighted scalar Cayley host with any prescribed
+$p\in(0,1)$.
+\end{lemma}
+\begin{proof}
+Choose positive even numbers $a_\xi=a_{-\xi}$ with
+$\sum_{\xi\in S}a_\xi\leq\min(p,1-p)$ and put
+$w(x)=p+\sum_{\xi\in S}\sigma(\xi)a_\xi\chi_\xi(x)$.
+Pairing inverse frequencies shows that $w$ is real and even. The triangle
+inequality gives $0\leq w\leq1$. Fourier inversion gives exactly the
+specified coefficients and no others.
+\end{proof}
+
+\section{Exact local sign obstructions}
+\label{sec:signs}
+
+\begin{definition}[Frustration length]
+The \emph{frustration length} of $(S,\sigma)$ is
+\begin{equation}
+ r(S,\sigma)=\min\left\{k\geq1:
+  \begin{array}{l}
+   \xi_1,\ldots,\xi_k\in S,\quad \sum_i\xi_i=0,\\[-2pt]
+   \prod_i\sigma(\xi_i)=-1
+  \end{array}\right\},
+ \label{eq:frustration}
+\end{equation}
+with minimum $\infty$ when the set is empty. Repetitions are allowed.
+For an integer $D\geq0$, call the signs \emph{$D$-safe} if $r>D$.
+\end{definition}
+
+Every such sign function is $2$-safe: a length-one nonzero frequency
+cannot sum to zero, and a length-two relation consists of inverse
+frequencies with equal signs.
+
+For a part $A\in\{L,R\}$ write
+$\Delta_A(H)=\max_{v\in A}\deg_H(v)$, with maximum zero for an empty
+part.
+
+\begin{theorem}[Exact threshold for the termwise method]
+\label{thm:threshold}
+Fix a real even spectrum with $p>0$, and an integer $D\geq2$. The
+following are equivalent:
+\begin{enumerate}[label=(\roman*)]
+ \item The signs on $S$ are $D$-safe.
+ \item Every Fourier-flow weight is nonnegative for every finite simple
+ bipartite graph with a designated part $L$ satisfying $\Delta_L(H)\leq D$.
+\end{enumerate}
+In particular, if
+\begin{equation}
+ \min(\Delta_L(H),\Delta_R(H))<r(S,\sigma),
+ \label{eq:degree-threshold}
+\end{equation}
+then $t(H,W)\geq p^e$.
+
+If $r=r(S,\sigma)<\infty$, a negative flow already occurs on the graph
+$\Theta_{r,3}$ consisting of $r$ internally disjoint three-edge paths
+between two endpoints. It has $2r+2$ vertices, $3r$ edges, and maximum
+degree $r$ in each part.
+\end{theorem}
+\begin{proof}
+Assume (i), and take a flow of nonzero weight. At a left vertex, discard
+all incident zero frequencies; the remaining tuple has length at most
+$D$, has sum zero, and has positive sign product. Multiplying these
+positive local products over the left part counts every edge exactly
+once. Thus the global product has positive sign. A weight containing a
+zero coefficient is zero. This proves (ii), and the zero flow proves the
+stated Sidorenko inequality.
+
+Conversely, suppose a negative relation of minimum length $r\leq D$
+exists, say $\sum_{i=1}^r\xi_i=0$ with sign product $-1$. The endpoints
+of $\Theta_{r,3}$ lie in opposite parts. On the $i$th path place the
+successive unsigned edge labels
+\[
+   \xi_i,\ -\xi_i,\ \xi_i.
+\]
+Every internal vertex has zero sum. Each endpoint has sum
+$\sum_i\xi_i=0$. This is a conserved flow, and its weight is
+$\prod_i\lambda_{\xi_i}^3$, which is strictly negative. Since $r\geq3$,
+all internal degrees are at most $r$, and the graph is simple. Condition
+(ii) therefore fails.
+\end{proof}
+
+\begin{remark}[What the equivalence does not say]
+\label{rem:not-sidorenko}
+A negative flow may be outweighed by positive flows. Theorem~
+\ref{thm:threshold} classifies the applicability of a \emph{termwise}
+proof, not the actual validity of $t(H,W)\geq p^e$. The explicit theta
+calculation in Section~\ref{sec:examples} shows that this distinction
+persists even for admissible nonnegative hosts.
+\end{remark}
+
+\subsection{A finite cutoff and a shortest-witness algorithm}
+
+Let $K=\langle S\rangle\leq\Gamma$, and write
+$b(\xi)\in\F_2$ for the sign bit, so that
+$\sigma(\xi)=(-1)^{b(\xi)}$. Consider the directed graph on
+$K\times\F_2$ whose allowed steps are
+\begin{equation}
+ (x,a)\longmapsto(x+\xi,a+b(\xi))\qquad(\xi\in S).
+ \label{eq:double-cover}
+\end{equation}
+Because signs are even, every step has its inverse; the graph may also
+be viewed as undirected.
+
+\begin{theorem}[Finite detection and algorithm]
+\label{thm:bfs}
+The frustration length equals the distance from $(0,0)$ to $(0,1)$ in
+\eqref{eq:double-cover}, with infinite distance when the target is
+unreachable. If it is finite, then
+\begin{equation}
+ 3\leq r(S,\sigma)\leq |K|.
+ \label{eq:finite-cutoff}
+\end{equation}
+Breadth-first search finds a shortest relation, or certifies that none
+exists, using $O(|K||S|)$ group operations and $O(|K|)$ stored states,
+assuming constant-time group operations. The upper bound $|K|$ is sharp.
+\end{theorem}
+\begin{proof}
+A walk with successive labels $\xi_1,\ldots,\xi_k$ ends at
+$(\sum_i\xi_i,\sum_i b(\xi_i))$. Thus reaching $(0,1)$ is exactly a
+negative zero-sum relation, including its length.
+
+Take a shortest such relation of length $r$, and let
+$s_j=\sum_{i=1}^j\xi_i$ for $0\leq j\leq r$. We claim
+$s_0,\ldots,s_{r-1}$ are distinct. Otherwise a nonempty proper
+consecutive block is a zero-sum relation. If its sign is negative it
+is a shorter witness. If its sign is positive, removing it leaves a
+shorter negative zero-sum relation. Both alternatives contradict
+minimality. There are only $|K|$ possible partial sums, proving the upper
+bound. The lower bound was observed after the definition.
+
+The cover has $2|K|$ states and at most $2|K||S|$ directed edges, so
+breadth-first search has the asserted cost and recovers labels from
+predecessor pointers. To see sharpness, take $K=\Z/q\Z$ for an odd prime
+$q$, $S=\{1,-1\}$, and both signs negative. A shorter zero-sum word has
+equal numbers of $1$ and $-1$, hence positive sign, whereas $q$ copies
+of $1$ give a negative relation. Thus $r=q=|K|$.
+\end{proof}
+
+\begin{corollary}[The sharp Boolean rank cutoff]
+\label{cor:boolean-cutoff}
+If $K\cong\F_2^k$, then either $r(S,\sigma)=\infty$ or
+$r(S,\sigma)\leq k+1$. Hence the terminal relation code is already
+reached at degree $k+1$.
+\end{corollary}
+\begin{proof}
+A shortest negative relation cannot repeat a frequency: deleting two
+copies preserves its sum and negative sign. Its distinct frequencies
+have no nonempty proper zero-sum subset, since either that subset or
+its complement would be a shorter negative relation. They form a
+minimal linear dependency, so all but one are linearly independent.
+Their number is at most $k+1$. Equality of the terminal code follows
+by the orthogonal-complement argument used in Theorem~\ref{thm:code}.
+Proposition~\ref{prop:circuit} attains the bound for every $k\geq2$.
+\end{proof}
+
+The complexity bound is polynomial in the \emph{explicit group size},
+not in a compressed presentation of a potentially enormous group. The
+algorithm is useful for obtaining a small mathematical certificate even
+when listing every zero-sum tuple of a given length would be expensive.
+
+\section{Binary relation codes and global sign characters}
+\label{sec:codes}
+
+Choose one representative $\xi_j$ from each inversion orbit in $S$,
+for $1\leq j\leq m$. An orbit with $\xi_j=-\xi_j$ is included only once.
+For $n=(n_1,\ldots,n_m)\in\Z^m$, put
+\[
+ \pi(n)=\sum_{j=1}^m n_j\xi_j\in K,
+ \qquad \|n\|_1=\sum_j|n_j|.
+\]
+Write $\bar n\in\F_2^m$ for coordinatewise reduction modulo two.
+
+\begin{definition}[Local relation code]
+For $D\geq0$ define
+\begin{equation}
+ \Rel_D(S)=\Span_{\F_2}
+   \{\bar n:\pi(n)=0,\ \|n\|_1\leq D\}
+   \ \leq\F_2^m.
+ \label{eq:relation-code}
+\end{equation}
+Write $\Rel_\infty(S)$ for the span with no length restriction.
+The safe-sign code is its orthogonal complement
+$\Rel_D(S)^\perp$ under the standard dot product on $\F_2^m$.
+\end{definition}
+
+\begin{theorem}[Code classification]
+\label{thm:code}
+Let $b_j\in\F_2$ encode the sign of $\lambda_{\xi_j}$. Then
+\begin{equation}
+ \sigma\text{ is $D$-safe}
+ \quad\Longleftrightarrow\quad
+ b\in\Rel_D(S)^\perp.
+ \label{eq:safe-code}
+\end{equation}
+Consequently the number of safe sign assignments is exactly
+\begin{equation}
+ 2^{m-\dim\Rel_D(S)}.
+ \label{eq:code-size}
+\end{equation}
+The spaces $\Rel_D(S)$ increase with $D$, and they stabilize to the full
+relation space by $D=|K|$.
+\end{theorem}
+\begin{proof}
+A tuple of frequencies determines an integer vector $n$ by taking the
+number of occurrences of $\xi_j$ minus the number of occurrences of
+$-\xi_j$. For an orbit of order two one may simply count all occurrences
+positively. Its sum is $\pi(n)$, its sign is $(-1)^{b\cdot\bar n}$,
+and $\|n\|_1$ is at most the tuple length. The parity identity holds
+because subtraction and addition agree modulo two.
+
+Conversely, an integer relation $n$ can be realized by taking $|n_j|$
+copies of $\xi_j$ if $n_j\geq0$ and of $-\xi_j$ otherwise. The resulting
+tuple has length $\|n\|_1$ and the required parity vector. Thus safety
+is precisely orthogonality to all the displayed generators, equivalently
+to their span. Rank--nullity proves \eqref{eq:code-size}, and monotonicity
+is immediate.
+
+By Theorem~\ref{thm:bfs}, a sign vector satisfying all constraints of
+length at most $|K|$ satisfies all constraints of every length. Hence
+$\Rel_{|K|}(S)^\perp=\Rel_\infty(S)^\perp$. Taking orthogonal
+complements in finite-dimensional $\F_2^m$ proves stabilization.
+\end{proof}
+
+\begin{theorem}[The terminal code and translations]
+\label{thm:global}
+The following conditions are equivalent:
+\begin{enumerate}[label=(\roman*)]
+ \item $r(S,\sigma)=\infty$.
+ \item The sign function extends to a homomorphism $s:K\to\{\pm1\}$.
+ \item There is an $a\in G$ such that
+       $\chi_\xi(a)=\sigma(\xi)$ for every $\xi\in S$.
+ \item Some translate $x\mapsto w(x+a)$ has nonnegative Fourier
+       coefficients at every frequency.
+\end{enumerate}
+The terminal safe-sign code has dimension
+\begin{equation}
+ \dim_{\F_2}(K/2K).
+ \label{eq:terminal-dimension}
+\end{equation}
+If these conditions hold, $t(H,W)\geq p^e$ for every bipartite $H$.
+\end{theorem}
+\begin{proof}
+Under (i), every relation among the generators has positive sign, so
+\[
+ s\left(\sum_j n_j\xi_j\right)=\prod_j\sigma(\xi_j)^{n_j}
+\]
+is well defined and is a homomorphism. The converse is immediate by
+multiplying the signs along a zero-sum relation.
+
+Every circle-valued character of a subgroup of a finite abelian group
+extends to the whole group. For completeness, suppose it is defined on
+$K_0$, and adjoin $\gamma$ whose coset has order $n$ modulo $K_0$.
+Choose $z\in\T$ with $z^n=s(n\gamma)$ and set
+$s'(k+j\gamma)=s(k)z^j$. The choice of root makes this well defined.
+Iterating proves extension to $\Gamma$. Finite Fourier duality identifies
+characters of $\Gamma$ with evaluations $\xi\mapsto\chi_\xi(a)$ for
+$a\in G$. This proves (ii)$\Rightarrow$(iii); the reverse follows by
+restriction, because the values on the generating set are signs.
+
+The Fourier coefficient of $w(x+a)$ at $\xi$ is
+$\lambda_\xi\chi_\xi(a)$. It is nonnegative for every active frequency
+exactly when the multiplier is $\sigma(\xi)$, proving the equivalence
+with (iv). Homomorphisms $K\to\{\pm1\}$ are precisely the linear
+functionals on $K/2K$, and distinct ones differ on $S$. This gives
+\eqref{eq:terminal-dimension}. Finally, Theorem~\ref{thm:threshold}
+applies with arbitrarily large $D$.
+\end{proof}
+
+\begin{remark}[The translating element need not have order two]
+It is not valid to require the sign character to extend as a
+$\{\pm1\}$-valued character on all of $\Gamma$. For example, the
+nontrivial sign character on $2\Z/4\Z$ cannot do so. It extends as a
+circle-valued character, corresponding to a translate of order four.
+The correct assertion is (iii), only on the active spectrum. In that
+case the translated function is still real and even, because its active
+Fourier coefficients are real and invariant under inversion.
+\end{remark}
+
+There is also a direct density interpretation: replacing $w(x-y)$ by
+$w(x-y+a)$ does not change a bipartite homomorphism density, since one
+can translate all variables in $L$ by $a$. The group-theoretic
+classification therefore recovers global positivity after a suitable
+translation. The finite-degree codes are substantially larger, as the
+next section shows.
+
+\section{Strict hierarchies and a cautionary theta calculation}
+\label{sec:examples}
+
+\subsection{Independent frequencies in odd characteristic}
+
+\begin{proposition}[A dimension-independent degree window]
+\label{prop:odd-spectrum}
+Let $G=\F_q^m$, where $q$ is an odd prime, and let
+$S=\{\pm e_1,\ldots,\pm e_m\}$ in the dual group. Every even assignment
+of signs on $S$ is $(q-1)$-safe. If any sign is negative, its frustration
+length is exactly $q$, and no translate makes every Fourier coefficient
+nonnegative.
+\end{proposition}
+\begin{proof}
+An integer relation of $\ell^1$ length less than $q$ has each coordinate
+congruent to zero modulo $q$ and of absolute value less than $q$. Every
+coordinate is therefore zero as an integer, so its parity vector is zero.
+All signs are safe through degree $q-1$. If the sign of $e_j$ is negative,
+$q$ copies of $e_j$ give a negative zero-sum relation, so the threshold is
+exactly $q$. Finally $K=\F_q^m$ has odd order, and consequently has no
+nontrivial homomorphism to $\{\pm1\}$. Theorem~\ref{thm:global} proves
+the translation assertion.
+\end{proof}
+
+For example, take
+\begin{equation}
+ w(x)=p+2\sum_{j=1}^m a_j\cos(2\pi x_j/q),
+ \qquad
+ 2\sum_j|a_j|\leq\min(p,1-p),
+ \label{eq:odd-example}
+\end{equation}
+with all $a_j\ne0$. Some $a_j$ may be negative. This is an admissible
+host that satisfies the Sidorenko inequality for \emph{every} bipartite
+pattern whose smaller one-sided maximum degree is less than $q$.
+There is no restriction on $m$. Thus the criterion is not simply global
+nonnegative Fourier spectrum in disguise.
+
+\subsection{Every finite threshold in characteristic two}
+
+\begin{proposition}[Circuit spectra]
+\label{prop:circuit}
+For every integer $r\geq3$ there is a weighted scalar Cayley host on
+$\F_2^{r-1}$ whose frustration length is exactly $r$.
+\end{proposition}
+\begin{proof}
+Take
+\[
+ S=\{e_1,\ldots,e_{r-1},e_1+\cdots+e_{r-1}\}.
+\]
+The only nonzero linear dependency among these $r$ distinct frequencies
+is their full sum. Assign signs with total product $-1$. A zero-sum
+integer tuple has, modulo two, either no odd multiplicities or odd
+multiplicity at all $r$ frequencies. The former has positive sign; the
+latter has length at least $r$. The tuple containing all $r$ frequencies
+once is a negative relation. Lemma~\ref{lem:realizable} supplies an
+admissible $w$ with precisely these signs.
+\end{proof}
+
+In particular, the descending safe-sign spaces can lose a dimension
+at an arbitrarily late prescribed degree. The phenomenon is not an
+artifact of using a cyclic group of large odd order.
+
+\subsection{Graphical spectra and signed cycles}
+
+There is a useful concrete coding interpretation. Let $X$ be a finite
+simple graph, and attach the frequency $e_u+e_v\in\F_2^{V(X)}$ to each
+edge $uv$ of $X$. Assign signs to those frequencies.
+
+\begin{proposition}[A cycle-space realization]
+\label{prop:graphical}
+For the graphical spectrum just described, the frustration length is
+the length of the shortest cycle in $X$ with negative edge-sign product,
+or infinity if no such cycle exists. Moreover $\Rel_D(S)$ is the span
+of the edge-incidence vectors of cycles of length at most $D$.
+\end{proposition}
+\begin{proof}
+Reducing a frequency tuple modulo two gives an edge set in which every
+vertex of $X$ has even degree. Its sign equals the sign of the tuple,
+and its cardinality is no greater than the tuple length. Every nonempty
+even-degree edge set decomposes into edge-disjoint simple cycles: follow
+unused edges until returning to a previously visited vertex, remove the
+resulting cycle, and iterate. A negative total sign forces at least one
+negative cycle. This proves the threshold assertion in both directions.
+
+For the code assertion, an integer relation of length at most $D$ reduces
+to an even-degree edge set with at most $D$ edges. Every cycle in its
+edge-disjoint decomposition has length at most $D$. Conversely, each
+such cycle itself gives an integer relation of that length. Hence the
+spans agree.
+\end{proof}
+
+This is a realization of ordinary cycle-space reasoning inside the
+Fourier obstruction code, not a claim of a new theory of signed graphs.
+It provides easily inspectable examples and compact parity certificates.
+
+\subsection{Why a negative term is not a counterexample}
+
+The theta witness in Theorem~\ref{thm:threshold} is optimal for the
+\emph{sign test}, but it need not violate Sidorenko. This can be seen
+without appealing to any general theorem about theta graphs.
+
+Let $q$ be an odd prime, $G=\Z/q\Z$, and
+\begin{equation}
+ w(x)=p+a\chi(x)+a\overline{\chi(x)},
+ \qquad a<0,
+ \qquad 2|a|\leq\min(p,1-p),
+ \label{eq:theta-w}
+\end{equation}
+where $\chi(x)=\exp(2\pi ix/q)$. The only nonzero Fourier coefficients
+are $\lambda_0=p$ and $\lambda_{\pm1}=a$.
+
+\begin{proposition}[Exact theta polynomial]
+\label{prop:theta-polynomial}
+For $\Theta_{q,3}$ and \eqref{eq:theta-w},
+\begin{equation}
+ t(\Theta_{q,3},W)=
+ \sum_{j=0}^{(q-1)/2}
+   \binom q{2j}\binom{2j}{j}
+   p^{3(q-2j)}a^{6j}
+   +2a^{3q}.
+ \label{eq:theta-poly}
+\end{equation}
+The last term is negative, but $t(\Theta_{q,3},W)\geq p^{3q}$.
+\end{proposition}
+\begin{proof}
+For normalized convolution
+$(f*g)(z)=\E_y f(z-y)g(y)$, averaging the two internal vertices of a
+three-edge path gives $h=w*w*w$. Thus
+$t(\Theta_{q,3},W)=\E_z h(z)^q$, and
+\[
+ h(z)=p^3+a^3\chi(z)+a^3\overline{\chi(z)}.
+\]
+In expanding its $q$th power, a term with $u$ positive and $v$ negative
+frequencies survives averaging exactly when $u-v\equiv0\pmod q$.
+Since $u+v\leq q$, either $u=v=j$ or $(u,v)=(q,0),(0,q)$.
+These alternatives give exactly \eqref{eq:theta-poly}.
+
+On the other hand, $w\geq0$ implies $h\geq0$, and $\E h=p^3$.
+Convexity of $x\mapsto x^q$ on $[0,\infty)$ gives
+$\E h^q\geq(\E h)^q=p^{3q}$. The negative Fourier contribution is
+therefore genuinely present but is compensated by the others.
+\end{proof}
+
+\section{Moment defects and the robust cycle-inventory inequality}
+\label{sec:robust}
+
+The exact sign test is qualitative. We now measure its failure without
+requiring a spectral support cutoff or discarding small coefficients.
+Define the real even Fourier-absolute companion
+\begin{equation}
+ w^\#(x)=\sum_{\xi\in\Gamma}|\lambda_\xi|\chi_\xi(x).
+ \label{eq:abs-companion}
+\end{equation}
+There is no assertion that $w^\#$ takes values in $[0,1]$, or even that
+it is pointwise nonnegative. Its usefulness comes from its Fourier
+coefficients.
+
+For every integer $d\geq0$ set
+\begin{align}
+ M_d&=\E_x w^\#(x)^d
+   =\sum_{\xi_1+\cdots+\xi_d=0}
+                  \prod_{i=1}^d|\lambda_{\xi_i}|,\label{eq:M}\\
+ B_d&=\E_x w(x)^d
+   =\sum_{\xi_1+\cdots+\xi_d=0}
+                  \prod_{i=1}^d\lambda_{\xi_i},\label{eq:B}\\
+ D_d&=\frac{M_d-B_d}{2}.\label{eq:D}
+\end{align}
+Empty products give $M_0=B_0=1$ and $D_0=0$.
+
+\begin{lemma}[Exact local negative mass]
+\label{lem:defect}
+The number $D_d$ is the sum of the absolute weights of all zero-sum
+frequency $d$-tuples whose coefficient product is negative. In particular
+$D_d\geq0$ and $D_0=D_1=D_2=0$. If $w\geq0$, then
+\begin{equation}
+ 0<p^d\leq B_d\leq M_d\qquad(d\geq1).
+ \label{eq:moments-positive}
+\end{equation}
+For any $D\geq0$, the signs are $D$-safe if and only if
+$D_d=0$ for all $0\leq d\leq D$; equivalently, it is enough that
+$D_D=0$.
+\end{lemma}
+\begin{proof}
+Orthogonality proves the moment identities. Subtracting the signed sum
+from its absolute-weight sum cancels each nonnegative term and doubles
+the absolute value of each negative term. This proves the first claim.
+There are no negative relations of lengths one or two; zero frequencies
+have positive coefficient. For nonnegative $w$, Jensen's inequality
+proves $B_d\geq p^d$ for $d\geq1$, with equality for $d=1$.
+Finally, every negative active tuple has strictly positive absolute
+weight. Removing its zero labels leaves precisely a relation of the
+type in \eqref{eq:frustration}. These observations prove both directions
+of the last assertion. If a negative relation has length $k\leq D$,
+padding it by $D-k$ zero frequencies multiplies its negative weight by
+the positive factor $p^{D-k}$. Thus $D_D=0$ alone is sufficient.
+\end{proof}
+
+For a part $A=L$ or $R$ define
+\begin{equation}
+ \Err_A(H,w)=\frac12\left(
+   \prod_{v\in A}M_{\deg(v)}-
+   \prod_{v\in A}B_{\deg(v)}\right),
+ \qquad
+ \Err_H(w)=\min\{\Err_L(H,w),\Err_R(H,w)\}.
+ \label{eq:error}
+\end{equation}
+These expressions are nonnegative, including for signed $w$: they will
+be identified as negative masses in a partially constrained sum.
+
+Let $c_\ell(H)$ count undirected simple cycles of length $\ell$ in $H$,
+each cycle counted once, not once per starting point or orientation.
+Define
+\begin{equation}
+ Q_\ell(w)=\sum_{\xi\ne0}|\lambda_\xi|^\ell,
+ \qquad
+ \mathcal C_H(w)=\sum_{\substack{\ell\geq4\\\ell\text{ even}}}
+       c_\ell(H)p^{e-\ell}Q_\ell(w).
+ \label{eq:inventory}
+\end{equation}
+Only lengths of cycles actually present in $H$ are included, so every
+power $p^{e-\ell}$ in this sum has nonnegative exponent.
+
+\begin{theorem}[Robust cycle inventory]
+\label{thm:inventory}
+For every finite simple bipartite $H$ and every real even $w$ with
+$p>0$,
+\begin{equation}
+ \boxed{\quad
+ t(H,W)\ \geq\ p^e+\mathcal C_H(w)-\Err_H(w).
+ \quad}
+ \label{eq:main-inventory}
+\end{equation}
+If all full Fourier-flow weights are nonnegative, the error in
+\eqref{eq:main-inventory} can instead be taken to be zero. In particular,
+zero error is valid under the one-sided sign condition
+\eqref{eq:degree-threshold}.
+\end{theorem}
+\begin{proof}
+Let $N_H$ be the absolute mass of the negative terms in
+\eqref{eq:flow-expansion}. Fix one side $A$. Relax the flow constraints
+by imposing them only at vertices of $A$. Each edge is incident to
+exactly one such vertex, so the variables at distinct vertices of $A$
+are disjoint. The total absolute weight of the relaxed assignments is
+$\prod_{v\in A}M_{\deg(v)}$, whereas their signed total is
+$\prod_{v\in A}B_{\deg(v)}$. Their negative mass is therefore exactly
+$\Err_A(H,w)$. Every negative full flow is among these assignments,
+with exactly the same absolute weight. Thus
+\begin{equation}
+ N_H\leq\Err_A(H,w),\qquad N_H\leq\Err_H(w).
+ \label{eq:negative-control}
+\end{equation}
+
+The positive-weight sum contains the zero flow, of weight $p^e$. It
+also contains the following flows. For each simple cycle $C$ of even
+length $\ell$ and each $\xi\ne0$, put alternating labels
+$\xi,-\xi$ around $C$ and zero labels elsewhere. Choose one distinguished
+edge of each cycle to carry $\xi$, thereby fixing the alternating rule.
+This is a flow of weight
+$p^{e-\ell}|\lambda_\xi|^\ell\geq0$. If the coefficient is nonzero,
+its edge support is exactly $C$. Distinct cycles therefore produce
+distinct flows; for a fixed cycle the distinguished-edge label separates
+the choices of $\xi$. Frequencies of order two cause no duplication,
+since such a frequency appears only once in the sum over $\Gamma$.
+Zero-weight assignments may harmlessly be omitted.
+
+It follows that the positive mass is at least
+$p^e+\mathcal C_H(w)$. Subtracting the negative mass and using
+\eqref{eq:negative-control} proves the result. Notice the factor $1/2$
+in \eqref{eq:error}: it is essential because we are bounding the
+negative mass, not the difference between the original expansion and an
+all-absolute expansion.
+\end{proof}
+
+The estimate retains only a subset of positive flows. More complicated
+Eulerian supports can make it strict. Its advantage is that the retained
+terms have exact coefficients and require no classification of all flows.
+
+\subsection{Relative local defects and inverse certificates}
+
+Assume $w\geq0$. Write
+\begin{equation}
+ \eps_d=\frac{D_d}{M_d},\qquad
+ P_A=\prod_{v\in A}M_{\deg(v)},
+ \label{eq:relative-defect}
+\end{equation}
+with $\eps_0=0$. Lemma~\ref{lem:defect} gives
+$0\leq\eps_d<1/2$. Equation~\eqref{eq:error} becomes the exact identity
+\begin{equation}
+ \Err_A=\frac{P_A}{2}
+   \left(1-\prod_{v\in A}(1-2\eps_{\deg(v)})\right)
+ \leq P_A\sum_{v\in A}\eps_{\deg(v)}.
+ \label{eq:relative-error}
+\end{equation}
+The inequality follows by expanding, or inductively from
+$1-\prod_i(1-x_i)\leq\sum_i x_i$ for $x_i\in[0,1]$.
+
+\begin{corollary}[A deficit forces local negative mass]
+\label{cor:inverse}
+Suppose $w\geq0$ and
+$\eta=p^e-t(H,W)>0$. Then on \emph{both} sides $A=L,R$,
+\begin{equation}
+ \Err_A(H,w)\geq\eta+\mathcal C_H(w).
+ \label{eq:inverse-error}
+\end{equation}
+Consequently, for each side there is a vertex $v\in A$ with
+\begin{equation}
+ \frac{D_{\deg(v)}}{M_{\deg(v)}}
+ \geq\frac{\eta+\mathcal C_H(w)}{|A|P_A}.
+ \label{eq:inverse-vertex}
+\end{equation}
+In particular, the spectrum has a sign-frustrated zero-sum relation of
+length at most $\deg(v)$.
+\end{corollary}
+\begin{proof}
+Rearrange \eqref{eq:main-inventory}; since $\Err_H$ is the minimum of
+the two side errors, each side is at least the displayed quantity.
+Equation~\eqref{eq:relative-error} and averaging over $A$ prove
+\eqref{eq:inverse-vertex}. A positive defect contains a negative tuple;
+discarding its zero labels proves the final assertion. A positive deficit
+cannot occur when either side is empty, so the denominators are valid.
+\end{proof}
+
+The estimate is independent of $|G|$ in form, but its moment factors can
+be large. It is not a bound solely in terms of the density $p$ or the
+cardinality of the spectrum. Any simplification of those factors requires
+additional analytic or structural hypotheses.
+
+\subsection{The $U^2$ interpretation}
+
+For any complex function $f:G\to\C$, use the normalized convention
+\begin{equation}
+ \|f\|_{U^2}^4=
+ \E_{x,a,b}f(x)\overline{f(x+a)}\,
+                 \overline{f(x+b)}f(x+a+b).
+ \label{eq:u2}
+\end{equation}
+Expanding the four Fourier series and averaging successively in $x,a,b$
+forces the same frequency at all four positions. Hence
+\begin{equation}
+ \|f\|_{U^2}^4=\sum_{\xi\in\Gamma}|\widehat f(\xi)|^4.
+ \label{eq:u2-fourier}
+\end{equation}
+For $f=w-p$, its zero coefficient vanishes, so
+\begin{equation}
+ Q_4(w)=\|w-p\|_{U^2}^4.
+ \label{eq:Q4-U2}
+\end{equation}
+This is the normalization used in all subsequent bounds.
+
+For $G=\Z/N\Z$, the unnormalized Fourier transform in the inspected
+\texttt{ProveIt} definitions must be divided by $N$ to match
+\eqref{eq:fourier}; reversing the frequency convention has no effect
+for an even real $w$. The raw two-dimensional cube sum has $N^3$
+terms. Thus the corresponding unnormalized fourth-root quantity is
+$N^{3/4}\|f\|_{U^2}$, not $\|f\|_{U^2}$ itself. This conversion is
+important for any Lean integration \cite{ProveItDefinitions}.
+
+\section{Sharp girth forcing}
+\label{sec:forcing}
+
+For a real kernel on $G\times G$, use the set-cut convention
+\begin{equation}
+ \Cut{K}=\max_{A,B\subseteq G}
+    \left|\E_{x,y}\one_A(x)K(x,y)\one_B(y)\right|.
+ \label{eq:cut}
+\end{equation}
+Different conventions allowing arbitrary $[-1,1]$ test functions have
+different constants; the factor $1/4$ below is for \eqref{eq:cut}.
+Write
+\begin{equation}
+ \beta(w)=\max_{\xi\ne0}|\lambda_\xi|,
+ \label{eq:beta}
+\end{equation}
+with maximum zero when there is no nonprincipal frequency.
+
+\begin{lemma}[The cut-norm constant]
+\label{lem:cut}
+For $W(x,y)=w(x-y)$ and $p=\E w$,
+\begin{equation}
+ \Cut{W-p}\leq\frac{\beta(w)}4.
+ \label{eq:cut-beta}
+\end{equation}
+\end{lemma}
+\begin{proof}
+The convolution operator
+$Tf(x)=\E_y(w(x-y)-p)f(y)$ kills constants and acts on nonprincipal
+characters with eigenvalues $\lambda_\xi$. Parseval gives its $L^2$
+operator norm as $\beta(w)$. For sets $A,B$, subtract their densities
+$\alpha,\gamma$ from their indicators. The bilinear form is unchanged,
+and Cauchy--Schwarz bounds it by
+\[
+ \beta(w)\sqrt{\alpha(1-\alpha)}
+              \sqrt{\gamma(1-\gamma)}\leq\beta(w)/4.
+\]
+Taking the maximum proves the claim.
+\end{proof}
+
+\begin{theorem}[Robust forcing with the girth exponent]
+\label{thm:forcing}
+Let $H$ be a finite simple bipartite graph containing a cycle, let its
+girth be $g$, and let $c_g=c_g(H)>0$. Let $0\leq w\leq1$ be even,
+with $p>0$. Put
+\begin{equation}
+ \delta=\frac{t(H,W)}{p^e}-1,
+ \qquad \eps=\frac{\Err_H(w)}{p^e}.
+ \label{eq:global-delta}
+\end{equation}
+Then $\delta+\eps\geq0$, and
+\begin{align}
+ Q_g(w)&\leq\frac{p^g}{c_g}(\delta+\eps),\label{eq:force-Q}\\
+ \beta(w)&\leq\frac{p}{c_g^{1/g}}(\delta+\eps)^{1/g},\label{eq:force-beta}\\
+ \Cut{W-p}&\leq\frac{p}{4c_g^{1/g}}
+                    (\delta+\eps)^{1/g}.
+ \label{eq:force-cut}
+\end{align}
+Whenever all full Fourier-flow weights are nonnegative, one can use
+$\eps=0$ instead, whether or not the particular local error functional
+in \eqref{eq:error} vanishes. For $g=4$, \eqref{eq:force-Q} also gives
+\begin{equation}
+ \|w-p\|_{U^2}\leq\frac{p}{c_4^{1/4}}(\delta+\eps)^{1/4}.
+ \label{eq:force-u2}
+\end{equation}
+\end{theorem}
+\begin{proof}
+Retain only the shortest-cycle term from Theorem~\ref{thm:inventory}:
+\[
+ c_gp^{e-g}Q_g(w)\leq t(H,W)-p^e+\Err_H(w).
+\]
+Divide by $p^e$ to obtain \eqref{eq:force-Q}. The inequality
+$\beta(w)^g\leq Q_g(w)$ gives \eqref{eq:force-beta};
+Lemma~\ref{lem:cut} gives \eqref{eq:force-cut}. The zero-error version
+follows from the zero-error clause of Theorem~\ref{thm:inventory}.
+Equation~\eqref{eq:Q4-U2} proves the final assertion.
+\end{proof}
+
+\subsection{Both exponent and leading constant are optimal}
+
+\begin{theorem}[Sharpness in the weighted scalar class]
+\label{thm:sharp}
+For every fixed cyclic bipartite $H$ of girth $g$, and every fixed
+$p\in(0,1)$, the exponent $1/g$ in \eqref{eq:force-cut} cannot be
+replaced by a larger exponent in a uniform zero-error bound. With
+exponent $1/g$, the leading constant $1/(4c_g^{1/g})$ cannot be
+reduced. The coefficient $c_g$ in \eqref{eq:force-Q} is likewise
+optimal.
+\end{theorem}
+\begin{proof}
+Take $G=\Z/2\Z$, with its nontrivial character $\chi$, and let
+\begin{equation}
+ w_t(x)=p+t\chi(x),\qquad
+ 0<|t|\leq\min(p,1-p).
+ \label{eq:rank-one}
+\end{equation}
+This is an admissible host. A conserved labeling selects the edges
+carrying the nonzero frequency. The selected edge set $F$ must have
+even degree at every vertex. Conversely every such $F$ is a conserved
+labeling. Therefore
+\begin{equation}
+ t(H,W_t)=\sum_{\substack{F\subseteq E\\
+                         \deg_F(v)\ \mathrm{even}\ \forall v}}
+                  p^{e-|F|}t^{|F|}.
+ \label{eq:even-subgraph}
+\end{equation}
+Every even-degree edge set decomposes into cycles. Since $H$ is
+bipartite, $|F|$ is even, so every term is nonnegative even when $t<0$.
+The smallest nonempty such sets have size $g$ and are exactly the
+$c_g$ shortest cycles. The next possible size is at least $g+2$.
+Consequently
+\begin{equation}
+ \delta_t:=\frac{t(H,W_t)}{p^e}-1
+   =c_g(t/p)^g+O_H\bigl((t/p)^{g+2}\bigr).
+ \label{eq:sharp-asymptotic}
+\end{equation}
+The meaning of the remainder is elementary: a finite polynomial has
+only powers at least $g+2$ left after its leading term. If no such powers
+occur, the remainder is identically zero.
+
+Here $\beta(w_t)=|t|$ and $Q_g(w_t)=|t|^g$. Moreover
+$W_t(x,y)-p=t\chi(x)\chi(y)$. Taking both sets in \eqref{eq:cut} to
+be the $\chi=1$ class gives $|t|/4$, so
+\begin{equation}
+ \Cut{W_t-p}=|t|/4.
+ \label{eq:exact-rank-one-cut}
+\end{equation}
+It follows that
+\begin{equation}
+ \lim_{t\to0}
+ \frac{\Cut{W_t-p}}{p\delta_t^{1/g}}
+      =\frac1{4c_g^{1/g}}.
+ \label{eq:sharp-limit}
+\end{equation}
+Any larger exponent would make the proposed right-hand side decay
+strictly faster than $|t|$, and any smaller constant with the same
+exponent would contradict this limit. The corresponding limit for
+$Q_g$ proves its coefficient optimal. These hosts also have zero local
+sign defect, since a zero-sum tuple over $\Z/2\Z$ uses the nonzero
+frequency an even number of times.
+\end{proof}
+
+Sharpness here permits weighted kernels and diagonal values. It does
+not by itself prove a sharp constant in the narrower class of loopless
+$0$--$1$ Cayley graphs; that transfer is a separate question.
+
+\subsection{The indispensable forest exception}
+
+\begin{proposition}[Forests do not force in regular hosts]
+\label{prop:forest}
+For every forest $H$ and every scalar Cayley host of mean $p$,
+\begin{equation}
+ t(H,W)=p^{e(H)}.
+ \label{eq:forest}
+\end{equation}
+No conclusion $\Cut{W-p}\to0$ follows from this equality alone.
+\end{proposition}
+\begin{proof}
+An isolated vertex contributes one. If an edge is present, integrate a
+leaf variable first; its only incident factor averages to $p$,
+independently of the remaining endpoint. Delete the leaf and iterate.
+The nonconstant family \eqref{eq:rank-one} has positive cut norm but
+still satisfies \eqref{eq:forest}, proving the last statement.
+\end{proof}
+
+For the unnormalized weighted adjacency matrix
+$A_{xy}=w(x-y)$, the eigenvalues are $|G|\lambda_\xi$, whereas the
+normalized convolution operator has eigenvalues $\lambda_\xi$.
+For example, a bound $\beta(w)\leq p\rho$ means nonprincipal adjacency
+eigenvalues of size at most $|G|p\rho$, not $p\rho$. This normalization
+and the cyclic-pattern hypothesis are essential when comparing forcing
+statements such as the concluding discussion in \cite{YuqiZhao}.
+
+\subsection{Even subdivisions as an established positivity class}
+
+\begin{proposition}[Fourier pairing on even subdivisions]
+\label{prop:subdivision}
+Suppose $H$ is obtained by replacing every edge of a graph by a path
+of positive even length. For every real even $w$, every full Fourier-flow
+weight of $H$ is nonnegative. Hence, when $p>0$, the zero-error
+cycle-inventory inequality holds; when $H$ is cyclic, so do the sharp
+girth-forcing bounds.
+\end{proposition}
+\begin{proof}
+The original vertices lie in one part of the subdivided graph. On a
+replacement path, the degree-two conservation equations force
+successive labels to be $\xi,-\xi,\xi,-\xi,\ldots$. A path of even
+length $2k$ therefore contributes $\lambda_\xi^{2k}\geq0$. Multiplying
+over all replacement paths gives a nonnegative global weight. The
+remaining conclusions follow from Theorems~\ref{thm:inventory} and
+\ref{thm:forcing}.
+\end{proof}
+
+The baseline Sidorenko conclusion in this proposition is not presented
+as new; it is the positivity mechanism in \cite{YuqiZhao}. The useful
+additional point here is the sharp shortest-cycle forcing statement.
+The particular one-sided moment defect $\Err_H$ need not vanish for
+this argument to work: positivity of complete flows is enough.
+
+\section{Block-local certification}
+\label{sec:blocks}
+
+High degrees at articulation vertices can make a global maximum-degree
+test unnecessarily restrictive. Scalar translation invariance permits
+an exact reduction to blocks.
+
+\begin{lemma}[Gluing at one vertex]
+\label{lem:glue}
+Suppose $H$ is the union of graphs $H_1,H_2$ that meet at exactly one
+vertex and have disjoint edge sets. Then for every scalar Cayley host,
+\begin{equation}
+ t(H,W)=t(H_1,W)t(H_2,W).
+ \label{eq:gluing}
+\end{equation}
+\end{lemma}
+\begin{proof}
+Fix the image $x$ of the common vertex. The remaining variables in the
+two graphs are independent. The rooted homomorphism density of either
+graph is independent of $x$, because translating every variable by
+$-x$ leaves every difference unchanged. Its constant value equals the
+unrooted density. Multiplication and averaging over $x$ prove the claim.
+\end{proof}
+
+Treat bridges as single-edge blocks, and let $\mathcal B$ denote the
+blocks containing cycles. Repeated use of \eqref{eq:gluing}, component
+factorization, and leaf integration yields
+\begin{equation}
+ t(H,W)=p^{b(H)}\prod_{B\in\mathcal B}t(B,W),
+ \label{eq:block-factor}
+\end{equation}
+where $b(H)$ is the number of bridges. Isolated vertices contribute one.
+
+\begin{corollary}[A blockwise degree threshold]
+\label{cor:block-degree}
+Let $w$ be even with $p>0$. If
+\begin{equation}
+ r(S,\sigma)>
+ \max_{B\in\mathcal B}
+       \min\{\Delta_{L\cap V(B)}(B),
+              \Delta_{R\cap V(B)}(B)\},
+ \label{eq:block-degree}
+\end{equation}
+then $t(H,W)\geq p^{e(H)}$. The side chosen in the minimum may vary
+from block to block.
+\end{corollary}
+\begin{proof}
+Apply Theorem~\ref{thm:threshold} to each cyclic block and multiply the
+resulting positive lower bounds in \eqref{eq:block-factor}.
+\end{proof}
+
+For a robust version assume $w\geq0$, and put
+$q_B=\min\{1,\Err_B(w)/p^{e(B)}\}$. Nonnegativity of every block density
+and Theorem~\ref{thm:inventory}, with its surplus discarded, give
+\begin{equation}
+ \frac{t(H,W)}{p^{e(H)}}\geq\prod_{B\in\mathcal B}(1-q_B).
+ \label{eq:robust-block}
+\end{equation}
+This does not replace the sharper full-graph inventory in all examples;
+it is an alternative certificate when block degrees or block defects
+are substantially smaller. The exact factorization is a consequence
+of translation invariance, not a generic statement about arbitrary
+irregular graphons.
+
+\section{The 35-vertex incidence pattern}
+\label{sec:incidence}
+
+\subsection{The finite object and its short cycles}
+
+Let $I=\{0,\ldots,12\}$ and let $J=\{0,\ldots,21\}$ index the triples
+in Table~\ref{tab:faces}. Define $\Hstar$ to be their incidence graph,
+with disjoint vertex sets $I$ and $J$, and with $i$ adjacent to $j$ exactly
+when point $i$ occurs in face $j$. This is the finite pattern specified
+in \cite{OpenAIComplex}; we use its explicit data, not an assertion about
+a host witnessing its failure.
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{r@{\quad}l@{\qquad\qquad}r@{\quad}l}
+\toprule
+Face & Points & Face & Points\\
+\midrule
+0 & $0,1,3$ & 11 & $3,10,11$\\
+1 & $0,1,9$ & 12 & $4,8,9$\\
+2 & $0,2,3$ & 13 & $4,8,11$\\
+3 & $0,2,9$ & 14 & $5,6,7$\\
+4 & $1,3,10$ & 15 & $5,6,11$\\
+5 & $1,7,10$ & 16 & $5,7,10$\\
+6 & $1,7,12$ & 17 & $5,10,11$\\
+7 & $1,9,12$ & 18 & $6,7,12$\\
+8 & $2,3,4$ & 19 & $6,8,11$\\
+9 & $2,4,9$ & 20 & $6,8,12$\\
+10 & $3,4,11$ & 21 & $8,9,12$\\
+\bottomrule
+\end{tabular}
+\caption{The complete face list defining $\Hstar$. Numerical incidence
+data are from the finite-complex section of \cite{OpenAIComplex}.}
+\label{tab:faces}
+\end{table}
+
+\begin{proposition}[Short-cycle certificate]
+\label{prop:incidence-data}
+The graph $\Hstar$ is connected, with 35 vertices and 66 edges. Every
+face vertex has degree three; the point degrees in order are
+\begin{equation}
+ (4,6,4,6,5,4,5,5,5,6,5,6,5).
+ \label{eq:point-degrees}
+\end{equation}
+Its girth is four, and
+\begin{equation}
+ c_4(\Hstar)=33,\qquad c_6(\Hstar)=88.
+ \label{eq:incidence-cycles}
+\end{equation}
+\end{proposition}
+\begin{proof}
+There are 22 triples on 13 points, giving 35 vertices and 66 incidences.
+Counting occurrences yields \eqref{eq:point-degrees}. In the displayed
+face order, every face after the first meets an earlier face, and all
+13 points occur; hence the incidence graph is connected.
+
+List the point pairs occurring in the triples. There are 33 distinct
+pairs, each occurring in exactly two faces; this can be checked directly
+from the complete list. A four-cycle is uniquely a choice of a point
+pair and two faces containing it. Consequently
+$c_4=\sum_{\{i,k\}}\binom{2}{2}=33$. Simplicity and bipartiteness
+exclude shorter cycles.
+
+For the six-cycle count, form the point graph whose edges are those 33
+pairs. Its three-cliques, checked from the same list, are exactly the
+22 displayed faces. Any six-cycle in the incidence graph uses three
+points that form such a clique. For a fixed face $\{a,b,c\}$, each of
+its three point pairs has two choices of containing face. All three
+pair-face sets have the given face in common, and any two intersect
+only there: a face containing two of these pairs contains the entire
+triple. Among the $2^3=8$ assignments, the assignments with three
+distinct faces number
+$8-3\cdot2+3\cdot1-1=4$. These are precisely the six-cycles on the
+given point triple. The total is $22\cdot4=88$.
+
+The distributed verifier separately checks pair multiplicities, the
+three-clique list, connectedness, and these counts using exact integers.
+\end{proof}
+
+\subsection{Cubic defects control all scalar-host violations}
+
+Put $f=w-p$, and abbreviate
+\begin{equation}
+ E_3(w)=\frac{M_3^{22}-B_3^{22}}2,
+ \qquad
+ R_*(w)=33p^{62}\|f\|_{U^2}^4+88p^{60}Q_6(w).
+ \label{eq:incidence-error}
+\end{equation}
+
+\begin{theorem}[Incidence-pattern inequality and inverse obstruction]
+\label{thm:incidence}
+Let $G$ be any finite abelian group and let $0\leq w\leq1$ be even with
+$p=\E w>0$. Then
+\begin{equation}
+ \boxed{\quad t(\Hstar,W)\geq p^{66}+R_*(w)-E_3(w).\quad}
+ \label{eq:incidence-main}
+\end{equation}
+If $D_3=0$, the error vanishes, and in particular
+\begin{equation}
+ t(\Hstar,W)\geq p^{66}+33p^{62}\|w-p\|_{U^2}^4.
+ \label{eq:incidence-u2}
+\end{equation}
+In that case, with $\delta=t(\Hstar,W)/p^{66}-1$,
+\begin{equation}
+ \|w-p\|_{U^2}\leq p(\delta/33)^{1/4},\qquad
+ \Cut{W-p}\leq\frac{p}{4\cdot33^{1/4}}\delta^{1/4}.
+ \label{eq:incidence-force}
+\end{equation}
+Both constants and the exponent in \eqref{eq:incidence-force} are
+asymptotically sharp in this class.
+
+Conversely, if $\eta=p^{66}-t(\Hstar,W)>0$, then
+\begin{equation}
+ \boxed{\quad
+ D_3\geq\frac{\eta+R_*(w)}{22M_3^{21}}>0.
+ \quad}
+ \label{eq:incidence-inverse}
+\end{equation}
+Thus a scalar Cayley counterexample for this pattern must have
+$\xi+\zeta+\theta=0$ with
+$\lambda_\xi\lambda_\zeta\lambda_\theta<0$, and the entire collection
+of such triples has at least the weighted mass in
+\eqref{eq:incidence-inverse}.
+\end{theorem}
+\begin{proof}
+The face part consists of 22 degree-three vertices. Its error in
+\eqref{eq:error} is exactly $E_3(w)$, so $\Err_{\Hstar}(w)\leq E_3(w)$.
+Retain the four- and six-cycle terms of Theorem~\ref{thm:inventory},
+use Proposition~\ref{prop:incidence-data}, and apply
+\eqref{eq:Q4-U2}. This gives \eqref{eq:incidence-main}.
+
+If $D_3=0$, then $M_3=B_3$, so the error is zero. A relation of length
+one or two cannot be negative, and a negative triple containing a zero
+frequency would reduce to one of those cases. Thus $D_3=0$ is also
+exactly three-safety. The $U^2$ and cut bounds follow from the preceding
+section, with $g=4$ and $c_g=33$; their sharpness follows from
+Theorem~\ref{thm:sharp}.
+
+Finally a deficit implies $E_3(w)\geq\eta+R_*(w)$. Since
+$0<B_3\leq M_3$ and $M_3-B_3=2D_3$,
+\[
+ E_3(w)=D_3\sum_{j=0}^{21}M_3^{21-j}B_3^j
+       \leq22D_3M_3^{21}.
+\]
+This proves \eqref{eq:incidence-inverse}. Lemma~\ref{lem:defect}
+identifies $D_3$ with the claimed exact weighted triple mass.
+\end{proof}
+
+A useful normalized robust form, even when $D_3\ne0$, is obtained by
+putting $\eps_*=E_3(w)/p^{66}$:
+\begin{equation}
+ \|w-p\|_{U^2}\leq p\bigl((\delta+\eps_*)/33\bigr)^{1/4},
+ \qquad
+ \Cut{W-p}\leq\frac p4
+       \bigl((\delta+\eps_*)/33\bigr)^{1/4}.
+ \label{eq:incidence-robust-force}
+\end{equation}
+Here $\delta$ may be negative, but the sum in the fourth root is
+nonnegative by \eqref{eq:incidence-main}.
+
+The theorem gives a restricted-host forcing result for a pattern used
+in a general nonforcing claim. There is no conflict: a host with cubic
+sign frustration lies outside the zero-defect class, and a typed
+activation kernel is not automatically a scalar convolution kernel.
+Whether this particular pattern has a scalar abelian counterexample
+remains a question, not a consequence of either construction.
+
+\section{A sufficient certificate for typed convolution kernels}
+\label{sec:typed}
+
+The source construction motivates keeping vertex types rather than
+silently replacing them by a scalar group variable. There is a useful
+extension of the sign-code method, with additional explicit hypotheses.
+It is a sufficient certificate, not a classification of arbitrary typed
+kernels.
+
+Let $\mathcal A,\mathcal B$ be finite type sets with probability measures
+$\mu,\nu$. For each type pair take a real even function $w_{ab}:G\to\R$
+whose Fourier coefficients $\lambda_{ab}(\xi)$ have the same positive
+zero mode $\lambda_{ab}(0)=p$. The bipartite kernel is
+\begin{equation}
+ U((a,x),(b,y))=w_{ab}(x-y)
+ \label{eq:typed-kernel}
+\end{equation}
+on $(\mathcal A\times G)\times(\mathcal B\times G)$ with product
+probability measures. Let $S=-S$ be the union of its active nonzero
+spectra, and put $D_L=\Delta_L(H)$, $D_R=\Delta_R(H)$.
+
+\begin{theorem}[Typed sign-gauge certificate]
+\label{thm:typed}
+Suppose there are even sign functions
+$s_a,t_b:S\to\{\pm1\}$ such that
+\begin{equation}
+ \sgn\lambda_{ab}(\xi)=s_a(\xi)t_b(\xi)
+ \quad\text{whenever }\lambda_{ab}(\xi)\ne0,\quad\xi\in S.
+ \label{eq:type-factor}
+\end{equation}
+Suppose every $s_a$ is $D_L$-safe and every $t_b$ is $D_R$-safe. Then
+\begin{equation}
+ t_{L,R}(H,U)\geq p^{e(H)}.
+ \label{eq:typed-bound}
+\end{equation}
+Existence of such a certificate is equivalent to feasibility of a finite
+affine linear system over $\F_2$.
+\end{theorem}
+\begin{proof}
+Condition on all sampled vertex types. Expanding only the group
+coordinates gives the conservation equations of Lemma~\ref{lem:flow},
+with coefficient $\lambda_{a(u)b(v)}(\phi(uv))$ on each edge. For a
+nonzero-weight flow, factor its sign using \eqref{eq:type-factor}.
+The product of all $s$ factors groups into one zero-sum tuple at each
+left vertex; each such tuple is positive by $D_L$-safety. The $t$
+factors similarly group into positive tuples at the right vertices.
+The full coefficient is therefore positive. For every type assignment
+the zero flow has weight $p^e$, independent of the types. Averaging the
+type assignments proves \eqref{eq:typed-bound}.
+
+Choose inversion-orbit representatives $\xi_1,\ldots,\xi_m$ of $S$.
+Let $z_a,u_b\in\F_2^m$ encode the proposed sign functions, and let
+$b_{ab,j}$ be the known sign bit of a nonzero coefficient. Precisely the
+required conditions are
+\begin{equation}
+ \begin{cases}
+   z_{a,j}+u_{b,j}=b_{ab,j}
+         &\text{for every active type--frequency pair},\\
+   z_a\in\Rel_{D_L}(S)^\perp &\text{for every }a,\\
+   u_b\in\Rel_{D_R}(S)^\perp &\text{for every }b.
+ \end{cases}
+ \label{eq:typed-linear-system}
+\end{equation}
+Theorem~\ref{thm:code} identifies the safety conditions with these
+linear constraints. Thus \eqref{eq:typed-linear-system} is necessary and
+sufficient for the stated certificate, and Gaussian elimination decides
+its feasibility once relation-code bases have been supplied.
+\end{proof}
+
+At a single fixed frequency, \eqref{eq:type-factor} is possible if and
+only if every cycle of the active bipartite type graph has positive sign
+product. Necessity follows by multiplying around a cycle. For
+sufficiency, choose a sign at one root of each component, propagate
+along a spanning tree, and use the cycle condition to check every
+remaining edge. The local additive constraints in
+\eqref{eq:typed-linear-system} are extra compatibility requirements
+across different frequencies.
+
+The scalar theorem is recovered by using one type on each side,
+assigning the spectral sign to one side and the constant positive sign
+to the other. For general typed kernels, a negative total density
+relative to $p^e$ implies that this sufficient certificate cannot exist;
+it does not identify which type-cycle or additive constraint fails.
+No claim is made that the rank-layer activation kernel in
+\cite{OpenAIKernel} meets the real-even or sign-gauge hypotheses. Testing
+that actual kernel requires additional work.
+
+\section{Further research questions}
+\label{sec:questions}
+
+The following are precise questions left unresolved by this article.
+They are proposed research targets, not assertions that each is new to
+the entire literature.
+
+\begin{enumerate}[leftmargin=*,label=\textbf{Q\arabic*.}]
+\item \textbf{Scalar witnesses for the incidence pattern.}
+Does there exist a finite abelian group and an even nonnegative scalar
+kernel with $t(\Hstar,W)<p^{66}$? Theorem~\ref{thm:incidence} supplies a
+necessary weighted negative-triple certificate. An affirmative answer
+would need to show that negative contributions survive all positive
+cycle and higher-flow contributions. A negative answer would separate
+this scalar host class from more general typed or nonabelian hosts.
+
+\item \textbf{The gap between sign safety and total positivity.}
+For a fixed $D$, characterize the spectra for which Sidorenko holds for
+all patterns of one-sided degree at most $D$, without requiring
+termwise positivity. The theta example proves that the first failed
+relation alone is insufficient. A useful intermediate target is a
+criterion combining $D_3$, $Q_4$, and a finite collection of higher
+moments for the incidence pattern.
+
+\item \textbf{Sharper robust errors.}
+Can one replace the relaxed one-sided error $\Err_H$ by an efficiently
+computable functional retaining selected constraints on both sides?
+For $\Hstar$, what is the best bound for negative full-flow mass in
+terms of $D_3$, $M_3$, and low spectral moments? In particular, is a
+substantially smaller replacement for the factor $22M_3^{21}$ available
+under a natural boundedness or sparsity hypothesis?
+
+\item \textbf{Weighted stability of the relation code.}
+Under what spectral distribution hypotheses does small normalized
+$D_D$ imply closeness, in a specified Fourier-weighted metric, to a
+$D$-safe sign assignment? This is a weighted constraint-repair question.
+The odd-characteristic and Boolean-circuit examples rule out a
+hypothesis-free passage from bounded-degree safety to a global
+translation character.
+
+\item \textbf{Complete typed certificates.}
+Can the affine system \eqref{eq:typed-linear-system} be weakened while
+still certifying all full-flow weights, or can its failure be converted
+into a bounded-size typed graph obstruction? A careful spectral analysis
+of the source activation kernel is a natural test case. The distinction
+between type-cycle frustration and frequency-relation frustration may
+separate two different mechanisms for negative density.
+
+\item \textbf{Efficient code filtrations in compressed groups.}
+The shortest-witness algorithm is linear in the explicit cover size,
+but $|K|$ may be exponential in a succinct group description. Develop
+parameterized algorithms in spectrum size, rank, and degree that output
+bases of $\Rel_D(S)$, preferably together with short integer-relation
+certificates. The terminal code can also be studied through a relation
+matrix and integer normal forms; extracting the complete degree
+filtration is a finer problem.
+
+\item \textbf{Other host classes and sharp constants.}
+Determine which sharp constants survive restriction to simple $0$--$1$
+Cayley graphs or extension to compact abelian groups. In the latter
+case, absolute convergence or an approximation theorem is needed before
+interchanging infinite Fourier sums. A nonabelian extension would need
+to control matrix-valued Fourier products rather than merely signs.
+
+\item \textbf{Formal verification and certified enumeration.}
+Formalize the flow identity, the sign-code equivalence, the relaxed
+negative-mass identity, and the injection from cycles to flows. For the
+concrete pattern, kernel-check the pair and clique certificates and the
+one-character polynomial. The integration plan distributed with this
+article separates finite algebraic goals from analytic norm lemmas and
+from computations that currently use a Python trusted boundary.
+\end{enumerate}
+
+\section{Reproducibility and proof status}
+\label{sec:validation}
+
+The package contains \texttt{article.tex}, its compiled PDF,
+\texttt{verify.py}, the actual JSON output of the checker, machine-readable
+face data, source and integration notes, and a build script. No downloaded
+third-party PDF, font file, or entire repository is redistributed.
+
+The checker uses only Python's standard library. Every asserted equality
+or inequality uses integers or exact rational numbers; no floating-point
+tolerance is used. It checks 56 graph--host instances across seven small
+bipartite graphs and two Boolean groups, comparing a primal vertex sum
+with a conserved-flow expansion. In those instances it also checks local
+moment identities, the robust inventory bound, the girth surplus,
+negative-mass control, the forest identity, and the cut-norm factor.
+
+Additional tests compare tuple and integer-relation descriptions in 11
+code cases, recover shortest witnesses in six cover-graph cases, and
+check three exact theta polynomials with a negative term but no total
+deficit. The incidence certificate verifies its degrees, pair
+multiplicities, point-graph triangles, connectedness, short-cycle counts,
+and the polynomial in Appendix~\ref{app:polynomial}.
+
+The finite tests are not exhaustive over groups, functions, or graphs.
+The general assertions are supported by the written proofs, not by an
+inference from those tests. The typed extension has a written proof but
+no dedicated typed-instance regression test in this package. No Lean
+source is supplied as a purported proof, and no external peer or formal
+verification is claimed.
+
+\appendix
+\section{The complete one-character polynomial of the incidence graph}
+\label{app:polynomial}
+
+Let $w_t$ be the two-point host \eqref{eq:rank-one}, and put $z=(t/p)^2$.
+The density of $\Hstar$ is
+\begin{equation}
+ t(\Hstar,W_t)=p^{66}P_*(z),\qquad
+ P_*(z)=\sum_{j=0}^{22}A_jz^j.
+ \label{eq:Pstar}
+\end{equation}
+Here $A_j$ counts even-degree edge subsets of $\Hstar$ with $2j$ edges.
+The degree cannot exceed 22: a face vertex has degree three, so an
+even-degree selected subgraph uses at most two of its incidences,
+for at most 44 selected edges in total.
+
+There is a small independent vertex-side formula. For a sign assignment
+$s=(s_0,\ldots,s_{12})\in\{\pm1\}^{13}$ let $k(s)$ be the number of
+monochromatic faces and put
+\begin{equation}
+ N_k=\#\{s\in\{\pm1\}^{13}:k(s)=k\}.
+ \label{eq:Nk}
+\end{equation}
+Averaging the spin at a face $\{a,b,c\}$ gives
+\[
+ \E_{\tau=\pm1}(p+ts_a\tau)(p+ts_b\tau)(p+ts_c\tau)
+   =p^3\bigl(1+z(s_as_b+s_as_c+s_bs_c)\bigr).
+\]
+The parenthesized pair sum is $3$ for a monochromatic face and $-1$
+otherwise. Hence the exact identity
+\begin{equation}
+ P_*(z)=2^{-13}\sum_{k=0}^{22}N_k(1+3z)^k(1-z)^{22-k}
+ \label{eq:Pstar-primal}
+\end{equation}
+computes the entire polynomial by enumerating only $2^{13}=8192$
+point-spin assignments. Equivalently,
+\begin{equation}
+ A_j=2^{-13}\sum_{k=0}^{22}N_k
+       \sum_{a+b=j}\binom ka3^a\binom{22-k}{b}(-1)^b,
+ \label{eq:Aj}
+\end{equation}
+where binomial coefficients outside their natural range vanish.
+The values obtained by exact enumeration are in Table~\ref{tab:poly}.
+They begin
+\[
+ P_*(z)=1+33z^2+88z^3+823z^4+4232z^5+\cdots.
+\]
+The zero linear coefficient and the coefficients $33,88$ agree with
+the independent girth and short-cycle counts. Also
+\begin{equation}
+ P_*(1)=\sum_j A_j=2^{32},
+ \label{eq:Pstar-one}
+\end{equation}
+in agreement with the cycle-space dimension
+$66-35+1=32$. To see the dimension formula directly, choose a spanning
+tree. Any choice of the 32 chord bits determines a unique even-degree
+labeling on the tree by successive leaf elimination, including the
+last root constraint. Thus there are exactly $2^{32}$ such subgraphs.
+
+The coefficient table is an exact finite certificate accompanied by an
+executable derivation, not a formally kernel-checked enumeration.
+\begin{table}[p]
+\centering
+\begin{tabular}{rrr}
+\toprule
+$j$ & $N_j$: point-spin assignments & $A_j$: even subgraphs with $2j$ edges\\
+\midrule
+0 & $96$ & $1$ \\
+1 & $352$ & $0$ \\
+2 & $696$ & $33$ \\
+3 & $1\,012$ & $88$ \\
+4 & $1\,130$ & $823$ \\
+5 & $1\,176$ & $4\,232$ \\
+6 & $1\,080$ & $24\,831$ \\
+7 & $784$ & $127\,584$ \\
+8 & $646$ & $603\,274$ \\
+9 & $492$ & $2\,540\,960$ \\
+10 & $290$ & $9\,417\,578$ \\
+11 & $180$ & $30\,237\,520$ \\
+12 & $102$ & $83\,066\,126$ \\
+13 & $80$ & $192\,776\,048$ \\
+14 & $38$ & $373\,654\,910$ \\
+15 & $8$ & $599\,077\,600$ \\
+16 & $10$ & $785\,645\,157$ \\
+17 & $12$ & $830\,015\,520$ \\
+18 & $6$ & $690\,493\,733$ \\
+19 & $0$ & $436\,109\,080$ \\
+20 & $0$ & $196\,772\,043$ \\
+21 & $0$ & $56\,595\,016$ \\
+22 & $2$ & $7\,805\,139$ \\
+\bottomrule
+\end{tabular}
+\caption{Exact enumeration for the incidence pattern. The second column
+sums to $8192$, and the third to $2^{32}$. The $N_j$ column, together
+with Equation~\eqref{eq:Aj}, reproduces every entry of the $A_j$ column.}
+\label{tab:poly}
+\end{table}
+
+\clearpage
+
+\section{A finite-group normalization pitfall}
+\label{app:normalization}
+
+A general integer matrix that has full row rank over $\Q$ need not
+define a surjective map on an arbitrary finite abelian group. Thus
+Fourier formulas normalized by a putative $|G|^{k-m}$ kernel size need
+a surjectivity hypothesis or an explicit multiplicity factor.
+
+For a small example, let $G=\Z/2\Z$ and
+\[
+ L=\begin{pmatrix}1&1\\1&-1\end{pmatrix}.
+\]
+This matrix has determinant $-2$ over $\Z$ but its two rows coincide on
+$G$. Its kernel has size two, not $|G|^{2-2}=1$. For $f\equiv1$ a
+uniform kernel average is one, whereas summing the corresponding
+Fourier coefficient products over both row frequencies gives two:
+the map on row frequencies has a two-element kernel.
+
+This does not invalidate the special graphic identities needed here.
+It explains why Lemma~\ref{lem:flow} derives the expansion by averaging
+\emph{vertex variables} directly. The theorem then has no hidden
+matrix-rank assumption and works equally in even and odd characteristic.
+This normalization issue is separate from the stronger graphical
+structure used in subdivision arguments such as \cite{YuqiZhao}.
+
+\section{Source snapshot and integration boundary}
+\label{app:sources}
+
+The repository references below were inspected on 7 October 2026. The
+OpenAI repository head was
+\begin{center}
+\small\texttt{adc7f1241b42e322a6451854ab7e4b4c146bf78a},
+\end{center}
+and the ProveIt head was
+\begin{center}
+\small\texttt{a41aa448d67395387593f1931cda142836afccdc}.
+\end{center}
+The finite-complex source and ProveIt definitions were also read at
+these explicit commits. Other selected material was read from the moving
+branch, with source blob identifiers recorded where returned by the
+connector. The review was targeted, not an audit of all manuscripts or
+all formalization files in either repository.
+
+For integration, use a separate research directory, for example
+\nolinkurl{Combinatorics/Sidorenko/Research/LocalFourierSignCodes/}, adapting
+that path to the maintainer's chosen taxonomy. The mathematical APIs
+should begin with normalized finite-group Fourier coefficients and
+explicit bipartitions. Existing unnormalized Gowers definitions require
+the conversion stated after \eqref{eq:Q4-U2}. No statement catalogue
+should be imported as an axiom establishing a theorem.
+
+The provided \texttt{INTEGRATION.md} lists the proposed formalization
+order and invariant checks. The \texttt{SOURCE\_AUDIT.md} records the
+limited source review, priority qualifications, and typed-versus-scalar
+boundary. There is no claim that the repository has been modified.
+
+\begin{thebibliography}{9}
+\bibitem{OpenAICatalogue}
+OpenAI, \emph{Mathematics manuscript collection},
+\texttt{openai/math}, \texttt{CONTENTS.md}, especially result family 161.
+Repository snapshot consulted 7 October 2026.
+\url{https://github.com/openai/math}.
+
+\bibitem{OpenAIComplex}
+OpenAI mathematics manuscript collection,
+\emph{A counterexample to Sidorenko's conjecture}, dated
+23 September 2026, finite-complex source section.
+Path under \texttt{openai/math}:\par
+\nolinkurl{preprints/A-counterexample-to-Sidorenkos-conjecture-September-23-2026/build/sections/complex.tex}.
+Source blob \texttt{178b0e9da21867a727ea847dae8e537b9d719a70}.
+The explicit face data, rather than the claimed counterexample theorem,
+are the input used here.
+
+\bibitem{OpenAIKernel}
+Same manuscript, kernel-construction source section,\par
+\nolinkurl{preprints/A-counterexample-to-Sidorenkos-conjecture-September-23-2026/build/sections/kernel.tex}.
+Source blob \texttt{bbe11be8fffe968012060ec43e6aff597e922831}.
+The inspected portion defines the rank-layer and typed activation
+kernels; the complete analytic proof was not audited here.
+
+\bibitem{ProveItDefinitions}
+Vladimir Reshetnikov, \emph{ProveIt},
+Gowers--Szemeredi finite-combinatorial definitions,\par
+\nolinkurl{Combinatorics/Ramsey/Lean/GowersSzemeredi/Definitions.lean}.
+Pinned read at the ProveIt commit recorded in Appendix~\ref{app:sources}.
+\url{https://github.com/VladimirReshetnikov/ProveIt}.
+
+\bibitem{ProveItAudit}
+\emph{ProveIt}, targeted fixed-radius Bohr source audit,\par
+\nolinkurl{Combinatorics/Ramsey/Research/GowersSzemeredi/local-quantitative-refinements/30-fixed-radius-bohr-SOURCE_AUDIT.md}.
+Source blob \texttt{ea818e377eaf18b512c40e0081674ed78e5197ad}.
+Consulted for normalization and verification-status context, not as a
+premise in the present proofs.
+
+\bibitem{YuqiZhao}
+Yuqi Zhao, \emph{Sidorenko-Type Inequalities for Even Subdivisions over
+Finite Abelian Groups}, arXiv:2507.15723v1, 21 July 2025.
+\url{https://arxiv.org/abs/2507.15723v1}.
+
+\bibitem{PositiveGraphs}
+David Conlon, Joonkyung Lee, and Leo Versteegen,
+\emph{Around the positive graph conjecture}, arXiv:2404.17467, 2024.
+\url{https://arxiv.org/abs/2404.17467}.
+The abstract was consulted for the distinction between arbitrary-host
+positivity and the restricted Fourier certificates considered here.
+\end{thebibliography}
+
+\end{document}
