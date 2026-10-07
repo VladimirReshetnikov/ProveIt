@@ -1760,7 +1760,17 @@ classical: Chow and West~\cite{fpf-lp-cw}, Theorem~3.1, give the Chebyshev
 quotient and growth constant; Krattenthaler~\cite{fpf-lp-kratt},
 Theorem~9, gives a Dyck-path formulation, and his Theorem~8 marks
 occurrences rather than first failure; first-ascent stopping statistics in
-Catalan permutations predate the manuscript~\cite{fpf-lp-firstascent}. The
+Catalan permutations predate the manuscript~\cite{fpf-lp-firstascent}.
+\textup{(Theorem numbers checked after the independent check of
+7~October 2026 against the published paper of Chow and West, in its
+author-hosted copy, and against arXiv:math/0002200v1 of Krattenthaler:
+Chow--West's Theorem~3.1 gives the generating function of
+$S_n(123;r(r-1)\cdots1(r+1))$ as a quotient of modified Chebyshev
+polynomials, and the growth constant $4\cos^2(\pi/(r+2))$ is their
+Corollary~4.1, not part of Theorem~3.1; Krattenthaler's Theorem~9 counts
+these permutations by Dyck paths of height at most $r$, and his Theorem~8
+marks occurrences, as stated. Krattenthaler himself cites the Chow--West
+result as ``Theorem~3.6, first case''.)} The
 $r=2$ first-failure formula, the beta law and the identity
 $Z_n(2)=(n+2)\binom{2n}n-4^n$ are Part~I's and are credited. Its scope
 ledger (Table~\ref{fpf:lp:tab:scope}) ``does not assert that no equivalent
@@ -3459,7 +3469,57 @@ Dyck-path formulation and occurrence marking to Krattenthaler, Theorems~9
 and~8, are the manuscript's; this write did not recheck the theorem numbers
 against the papers. The reverse-complement step that matches \(\tau_r\)
 with Chow--West's pattern \(r(r-1)\cdots1(r+1)\) was rechecked.
+\textup{(Added after the independent check of 7~October 2026: the theorem
+numbers were then checked against the papers; they are right, except that
+the growth constant is Chow--West's Corollary~4.1 rather than their
+Theorem~3.1 (note in Section~\ref{fpf:lp:sec:provenance}). The priority
+search itself was not extended, so this question stays open.)}
 \end{enumerate}
+
+\begin{writenote}[Independent check of the batch-98 write, 7~October 2026]
+An adversarial check made by the intake after the write (commit
+\texttt{246175583}) re-derived every \textsf{[write]} statement of Part~II
+and of the dated notes in Part~I with its own code, from a fresh extraction
+of the archive. \emph{Fidelity.} The decimal numerals of the manuscript's
+body and of Part~II without its \textsf{[write]} material agree as
+multisets; the $98$ manuscript labels are all present with the prefix
+\texttt{fpf:lp:}, the nine others are the write's, and exactly eleven would
+have collided with Part~I's under \texttt{fpf:} alone. \emph{Counts.} A
+brute-force enumeration of $\Av_n(123)$ with its own $\tau_r$ matcher
+confirms the positive formula \eqref{fpf:lp:eq:positive-formula} and the
+diagonal for $r=2,3,4$ and $n\le9$; at $r=2$ the formula equals Part~I's
+binomial difference for $2\le k<n\le60$ and gives
+$Z_{n,2}(2)=(n+2)\binom{2n}n-4^n$ for $n\le60$; $T_3(n,n)=\operatorname{Fib}(2n-1)$
+for $n\le40$; the fixed-column constant at $r=2$ is $p_k$ for $k<40$.
+\emph{The $r=2$ notes.} The derivative of $C^{r+1}/(1-uC)$ was redone by
+hand; $L_2=P$ and $L_r(1)=1$ ($2\le r\le9$) hold to $10^{-35}$;
+$2+G_1+G+IG'$ has generating function $P(yt)/P(y)$, with mean $9/2$ and
+variance $21/4$ at $y=1$; $\mathcal P_2(t)=\frac12+\frac12((1-t)^{-1/2}-C(t/4))$,
+hence $p_{2,m}=b_m/2$, and $\mathcal P_2(2/y)$ equals Part~I's
+$\mathcal A(y)$ identically (by the same algebra; numerically to $10^{-45}$
+at $y=2.5,3,5,7$); the counterexample to \eqref{fpf:lp:eq:kernel} at $r=2$,
+$k=1$ is correct. The finite-$n$ value
+$\sqrt\pi\,n^{3/2}4^{-n}Z_{n,r}(y)$ at $n=600$ differs from $L_r(y)$ by the
+relative amounts $-1.4\cdot10^{-3}$ ($r=3$, $y=1.2$) and $-3.5\cdot10^{-3}$
+($r=4$, $y=0.8$), consistent with $O(n^{-1})$. \emph{$r=3$.} $\rho_3$,
+$y_c=6-2\sqrt5$, $P_3=(5-\sqrt5)/2$, $a_3=4/\sqrt\pi$, $s_3^*$, $2a_3/P_3$,
+$P_3/(P_3+2a_3)$ and $\Prob(M_3=0)=\frac15$ were recomputed, and the
+check's own evaluation of the window reproduces every entry of
+Table~\ref{fpf:lp:tab:numerical} to the printed ten digits. \emph{The
+median note.} The monotonicity argument at question~3 is correct; the
+check computed the median coordinate $\sigma_n$ at $r=3$: $0.752$, $0.481$,
+$0.373$, $0.280$ at $n=100$, $400$, $1200$, $4000$, decreasing towards
+$0$ slowly, as the note says. \emph{Sources.} The delivered archive (24
+files, 1{,}044{,}533 bytes; 23-page PDF with author ``ChatGPT''; 1{,}482
+lines), the pin (a merge commit of 4~October 2026, 19:54~PDT; this
+report unchanged to the placement), the quotation of ``two independent AI
+proof audits'', the A273821 mentions at the placement commit, and OEIS
+A273821 (fetched again: revision \#13 of 10~June 2016, its generating
+function still ``(conjectured)'') are as printed. The theorem numbers of
+Chow--West and Krattenthaler, which the write left unchecked, were checked
+(note in Section~\ref{fpf:lp:sec:provenance}). No mathematical error was
+found.
+\end{writenote}
 
 \section{Source audit and statement boundaries}
 \label{fpf:lp:app:audit}

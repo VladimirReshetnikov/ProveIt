@@ -111,7 +111,13 @@ Part II (manuscript 07's non-claims, kept in Section 14):
   Part I's.
 - Its scope ledger "does not assert that no equivalent refinement exists
   elsewhere"; no worldwide priority. This write did not recheck the cited
-  theorem numbers of Chow–West and Krattenthaler.
+  theorem numbers of Chow–West and Krattenthaler. [Independent check,
+  7 October 2026: checked against the published Chow–West paper
+  (author-hosted copy) and Krattenthaler's arXiv:math/0002200v1. Chow–West's
+  Theorem 3.1 gives the Chebyshev-quotient generating function; the growth
+  constant `4cos²(π/(r+2))` is their Corollary 4.1, not Theorem 3.1.
+  Krattenthaler's Theorems 9 and 8 are as stated. Dated notes in Section
+  14.1 and at question 12 say so.]
 - Sections 19–23 fix `r >= 3`; the constants are not uniform in `r`;
   Theorem 18.1 is an iterated limit (`n → ∞`, then `r → ∞`); no joint
   `r = r(n)` theorem.
@@ -127,6 +133,23 @@ Part II (manuscript 07's non-claims, kept in Section 14):
   conditional "prediction" for other pattern families, and priority with
   the unrechecked theorem numbers). No claim of manuscript 07 was found to
   be false.
+- **Independent check of the batch-98 write (7 October 2026).** An
+  adversarial check by the intake after the write (`246175583`) re-derived
+  every `[write]` statement with its own code from a fresh extraction: the
+  manuscript's numerals and labels survive unchanged (eleven collisions
+  under `fpf:` alone, as stated); a brute-force enumeration confirms the
+  positive formula and diagonal for `r = 2, 3, 4`, `n ≤ 9`; at `r = 2` the
+  formula equals Part I's binomial difference (`n ≤ 60`), `Z_{n,2}(2)` and
+  the fixed-column constant `p_k` hold; `T_3(n,n) = Fib(2n−1)` (`n ≤ 40`);
+  `L_2 = P`, the geometric decomposition (mean 9/2, variance 21/4),
+  `p_{2,m} = b_m/2`, the `r = 2` counterexample to the uniform estimate and
+  `P_2(2/y) = A(y)` were confirmed; the `r = 3` constants and all of Table 9
+  were reproduced to the printed digits; the median coordinate `σ_n` of the
+  question-3 note is 0.752, 0.481, 0.373, 0.280 at `n = 100, 400, 1200,
+  4000`, decreasing to 0 slowly; provenance facts and OEIS A273821
+  (revision #13, still "(conjectured)") are as printed. No mathematical
+  error. The Chow–West and Krattenthaler theorem numbers were checked
+  (above). Recorded in a dated note at the end of Section 26.
 
 ## Relation to the repository
 
@@ -147,6 +170,11 @@ only: `enumerative-combinatorics/mesh-avoidance-catalan-inflation` proves a
 Catalan-type generating function marked conjectural in A289587, and
 `enumerative-combinatorics/adjacency-bounded-132-avoiders` studies
 132-avoiders under another constraint. No other report cites Chow–West.
+[Independent check, 7 October 2026: still true. Since batch 105,
+`generating-functions-and-asymptotics/oeis-sequence-asymptotics/a224182-unique-1432-order`
+counts permutations with exactly one occurrence of 1432 = τ_3 (and of
+τ_r = 1 ⊕ δ_r in its Corollary 4.2) and points to Part II's worked example;
+it studies a different statistic and shares no theorem with this report.]
 
 ## Labels
 
@@ -177,7 +205,7 @@ factorials as `(M)_h` (underlined) instead of `(M)^h`.
 ```text
 README.md                        this guide (replaces both delivery READMEs)
 article.tex                      the report, standalone LaTeX with an internal bibliography
-article.pdf                      compiled report, 58 pages (unnumbered title page, then pages 1-57)
+article.pdf                      compiled report, 59 pages (unnumbered title page, then pages 1-58)
 sources.md                       Part I: the manuscript's source and search record, as delivered
 OEIS_update.txt                  Part I: draft OEIS amendments, NOT submitted, as delivered
 code/verify.py                   Part I: exact enumeration, insertion DP, symbolic and 100-digit checks
@@ -335,7 +363,10 @@ this directory). The committed PDF was built in a scratch directory on
 5 October 2026: 58 pages, no errors, no undefined references or citations,
 no multiply defined labels, no duplicate PDF destinations (the title page is
 built with `pageanchor=false`), no overfull or underfull boxes; the
-committed text before this write built the same way to 30 pages.
+committed text before this write built the same way to 30 pages. After
+the independent check of 7 October 2026 it was rebuilt the same way: 59
+pages, no warnings, no overfull or underfull boxes, all 231 labels with
+unchanged numbers.
 Manuscript 07 was written for lmodern and `cleveref`; it is set here in the
 report's newtx fonts with plain references.
 
