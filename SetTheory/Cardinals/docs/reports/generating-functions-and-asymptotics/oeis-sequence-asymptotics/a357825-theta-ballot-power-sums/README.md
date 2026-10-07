@@ -270,6 +270,27 @@ them.
   l ↦ P(S = n, R_{≥2} = l) is a fibre local limit theorem that neither report
   proves, and (H2e) would need log-concavity in l (new item F8). Dated note
   at the end of Section 21.1 (the two-instance statement).]*
+  *[Update, batch-101 reciprocal note, dated 7 October 2026: the second,
+  `A215570_Balanced_Ballot_Asymptotics.zip` (bundle Report 86), has been
+  examined and written (batch 101, placement `f7c612c72`) into Part VI of
+  [`a215561-fixed-composition-excursions`](../a215561-fixed-composition-excursions/)
+  as source 101-86, together with bundle Report 90 (source 101-90). It is
+  **not** an instance of Part II's lattice-peak transfer theorem
+  (Theorem 15.1, `tbs:lpt:thm:transfer`; Theorem 18.1): it has no power sum
+  and no growing exponent (one coefficient, r_n ≡ 1). Its "lattice factor 4"
+  counts the dominant points of a mark torus, i.e. the index of the
+  sublattice that carries (length, #(±2), #(+2) − #(−2)), the classical
+  periodicity factor of a lattice local limit theorem; read as a lattice sum
+  it sits in the fine-lattice limit q ≍ 1/n → 0, where Proposition 16.1 gives
+  the phase-independent √(2π/q) and Remark 18.2 says to parametrize the
+  sublattice first. The factor also depends on the coordinates: source
+  101-90's coordinates give 2h = ν(r − 1) dominant pairs (r − 1 mark points,
+  each with ν time phases), those of that report's Section 6 give ν (one
+  mark point), and for the zero-free walk with the steps −2, −1 marked there
+  is one dominant point; only the count divided by the square root of the
+  Gaussian determinant is the same in all of them (its Remark 36.4).
+  Remark 38.1 there gives the argument; the same holds for source 101-90.
+  README only; the article is unchanged.]*
 - [`ballot-polynomial-hankel-determinants`](../../../hankel-determinants/catalan-and-ballot/ballot-polynomial-hankel-determinants/)
   studies Hankel determinants of ballot moments, not growing powers; there
   is no overlap.

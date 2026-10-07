@@ -1,6 +1,12 @@
 # Inversion Sequences Solved by Kernel Orbits
 
-**Square-root asymptotics to every fixed order and Lambert-W₋₁ threshold inverses for OEIS A279544, A279567, A279569 and A279558**
+**Square-root asymptotics to every fixed order and threshold inverses for OEIS A279544, A279567, A279569 and A279558**
+
+*[Dated note, 7 October 2026: this subtitle, and the article's, read
+"… and Lambert-W₋₁ threshold inverses …", the error that the independent
+check corrected in the abstract (below) but left in both subtitles: Part
+III's inverse contains no `W₋₁`. The abstract's dated note now quotes the old
+subtitle.]*
 
 This is a research report built on 5 October 2026 (write batch 104) from
 three manuscripts of one external research session, Reports 118, 119 and 122
@@ -430,7 +436,11 @@ All in `SetTheory/Cardinals/docs/reports/generating-functions-and-asymptotics/oe
   not new inverse mechanics.
 - No other report treats A279544, A279567, A279569 or A279558 (searched
   5 October 2026). This write edits no other report; suggested sibling
-  cross-links are left to a reciprocal-notes commit.
+  cross-links are left to a reciprocal-notes commit. *[Dated note,
+  7 October 2026: no such commit was needed. Both siblings name this report
+  in their own batch-104 writes: `a279551-inversion-log-deficit` (`80adcb910`)
+  and `a279571-inversion-cone-walk` (`4d3a6730f`), in their READMEs' sections
+  on neighbouring reports.]*
 
 ## Relation to the formal project
 
@@ -578,6 +588,12 @@ references), no errors, warnings, undefined or multiply defined
 references or citations, duplicate destinations, or overfull or underfull
 boxes, and the same single infinite-glue message; all 252 labels keep their
 numbers and pages (`.aux` compared with a build of the committed text).
+
+Rebuilt on 7 October 2026 (cleanup pass: the subtitle without
+"Lambert-W₋₁", and the abstract's dated note quoting the old one) with three
+pdfLaTeX passes: 66 pages, equally clean, the same single infinite-glue
+message; all 252 labels keep their numbers and pages (`.aux` compared with
+a build of the committed text); page 1 rendered and inspected.
 
 ## Delivered path → shipped path
 

@@ -308,7 +308,14 @@ Two notes about particular files:
   [`a202058-ascent-000-growth`](../a202058-ascent-000-growth/) (000-avoiding;
   factorial growth), [`a202062-ascent-201-enumeration`](../a202062-ascent-201-enumeration/)
   (201-avoiding; cubic generating function, `μ^n n^{−9/2}` asymptotics) and this
-  report. A202061 and A202062 share μ.
+  report. A202061 and A202062 share μ. *[Dated note, 7 October 2026, batch-102
+  reciprocal note: the 100- and 110-avoiding classes of the same paper
+  (A202059, A202060), which grow factorially with
+  `log aₙ = n log n − 2n log log n + O(n)` (for A202059 with the sharp
+  linear constant, `log 2 − 1`), are treated in
+  [`a202059-ascent-100-110-growth`](../a202059-ascent-100-110-growth/)
+  (batch 102, bundle Reports 243 and 241), so the "three reports" above are
+  now four; no shared theorem.]*
 - **Same method, other sequences** (dated note, 5 October 2026, batch 104).
   [`a279551-inversion-log-deficit`](../a279551-inversion-log-deficit/)
   treats the Britt–Beaton inversion-sequence classes A279551 and A279556 by

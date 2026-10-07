@@ -247,7 +247,26 @@ w ~ log n.
 - `.../a088714-bell-scale-growth` compares A088714 with the Bell numbers.
 
 No theorem is shared with any of them. A reciprocal note for a260700 is
-proposed separately; a307316 already cites this report.
+proposed separately; a307316 already cites this report. *[Dated note,
+7 October 2026: the a260700 note was applied in `639b038ab` ("A third
+neighbour (batch 100)" in its README, and a dated note in its Section 9).]*
+
+*Later reports that name this one* (dated note, 7 October 2026; reciprocal
+pointers, all in the same directory). Each lists this report among its
+neighbours; none uses a theorem of it, and none is used here.
+
+- `a008608-tesler-matrices` (batch 103): names it among the matrix-counting
+  reports that treat other objects by other methods.
+- `a123448-permutation-graphs` and `a156808-circle-graphs` (batch 106,
+  unlabelled permutation and circle graphs): "the same rare-symmetry
+  philosophy" for other objects, in their words; no shared statement.
+- `a064856-stirling-catalan-transforms` (batch 107, Stirling transforms of
+  the Catalan numbers): a neighbour by method, through the Ewens laws of
+  (`bpm:eq:Ewens`) here.
+- `a110058-square-contingency-tables` and `a138178-symmetric-packed-matrices`
+  (batch 108): contingency tables in the Canfield–McKay regime and symmetric
+  packed matrices; both note that this report counts nonnegative matrices
+  without zero lines up to row and column permutations, a different count.
 
 ## Checks by the intake
 
@@ -301,7 +320,11 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
 pdfLaTeX (MiKTeX here); 27 pages, no warnings, no overfull boxes. Copy only
-`article.pdf` back.
+`article.pdf` back. Rebuilt on 7 October 2026 (cleanup pass, the dated
+paragraph "Later neighbours" in Appendix A) with three pdfLaTeX passes:
+27 pages, the same single infinite-glue message as a build of the committed
+text and nothing else; all 104 labels keep their numbers and pages (`.aux`
+compared); page 26 rendered and inspected.
 
 ## Rerunning
 

@@ -360,7 +360,11 @@ All in `SetTheory/Cardinals/docs/reports/generating-functions-and-asymptotics/oe
   20.1 (`cps:amp:thm:inverse`, `γ = C_A`, `μ = 9`, `α = κ`), and the
   non-D-finiteness argument of its Remark 27.1 (`cps:log:rem:criterion`),
   with derivative order 5 > κ − 1. Its Section 22.5 and README still call
-  Report 123 unplaced; a reciprocal note is a separate commit.
+  Report 123 unplaced; a reciprocal note is a separate commit. *[Dated note,
+  7 October 2026: that note was applied in `32919c4cf`. a377922's Section
+  22.5 now says that Report 123 is Part II here, with Remark 26.1's finding
+  ((H1)–(H4) hold, (H5) fails at the origin endpoints), and its Questions Q1
+  and Q3 and README gained dated notes pointing here.]*
 - `a348351-one-sided-rectangulations` (bundle Report 111): the same spine as
   Part II for a four-colour bounded-step walk; its non-D-finiteness criterion
   is Remark 10.1 (`osr:rem:criterion`). Its Questions 1 and 2
@@ -368,7 +372,10 @@ All in `SetTheory/Cardinals/docs/reports/generating-functions-and-asymptotics/oe
   filed by a later intake batch": it is Part I here. Whether Part I's route
   transfers there was not checked; as written it does not (there
   `p ≈ 1.957`, while Part I uses `p > 2` and `4 < p < 5`). Reciprocal note
-  in a separate commit.
+  in a separate commit. *[Dated note, 7 October 2026: applied in
+  `32919c4cf`; a348351's Questions 1 and 2 (`osr:q:equivalent`,
+  `osr:q:harmonic`) and its README now identify Report 125 as Part I here,
+  with the same caveat on `p`.]*
 - The transseries volume
   `Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex`:
   Corollary 1.2 is an instance of `p0:thm:lambert-core`,

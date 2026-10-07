@@ -126,7 +126,14 @@ Guttmann–Kotěšovec L-convex polyomino asymptotic from the same GK paper and
 states that 201-avoiding ascent sequences are not addressed there; the two
 reports share only that citation (no generating function, constant,
 bijection or method). (These pointers are made here only; the neighbouring
-reports are not edited by this write.)
+reports are not edited by this write.) *[Dated note, 7 October 2026,
+batch-102 reciprocal note: batch 102 added
+[`a202059-ascent-100-110-growth`](../a202059-ascent-100-110-growth/)
+(bundle Reports 243 and 241) for the 100- and 110-avoiding classes
+(A202059, A202060): factorial growth, with root `Θ((log n)^{−2})` after
+division by `n!`, and the refutation of the fractional-factorial scale
+`Γ(3n/4+1) μⁿ n^g` conjectured by Conway, Conway, Elvey Price and Guttmann.
+No shared theorem.]*
 
 ## Notation
 

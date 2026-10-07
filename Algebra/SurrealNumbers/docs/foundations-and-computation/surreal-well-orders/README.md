@@ -26,7 +26,7 @@ are merged as Part XVI, with source 34 as base (write `62b16914e`). One more,
 source 36, a fifth independent answer to the same request, was delivered in
 batch 97 (manuscript 01; arrival `d7cf7d554`, fifteen minutes after the batch-96
 placement; placement `6571ee1af`, batch 97A) and is printed whole as Part XVII
-(the commit that adds this README text). Author lines: 08 and 09 "Research manuscript
+(write `a21a42d8c`). Author lines: 08 and 09 "Research manuscript
 prepared for Vladimir Reshetnikov", 11 "Research report", 12 "Research report
 prepared for Vladimir Reshetnikov"; 13, 14 and 17 "Research manuscript
 prepared for Vladimir Reshetnikov", 15, 16 and 18 "Research article prepared
@@ -270,7 +270,7 @@ XI's on source 29 keep the statement and cite the printed proof).
 
 ```
 article.tex                              the report, standalone LaTeX with an internal bibliography
-article.pdf                              the compiled report, 1,050 pages (title page unnumbered)
+article.pdf                              the compiled report, 1,051 pages (title page unnumbered)
 README.md                                this guide
 09-core-RESEARCH_STATUS.md               source 09's research status and audit, as delivered
 11-raw-orders-repository_audit.md        source 11's targeted repository audit, as delivered

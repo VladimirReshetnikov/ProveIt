@@ -79,3 +79,18 @@ power sums, use 0^0=1; this controls the initial nonperiodic terms.
 
 The integer-valued parameter-polynomial argument does not assume that all
 polynomials in l have integral ordinary coefficients.
+
+## Related report (dated note, 7 October 2026)
+
+See also the sibling report
+[`a168362-lacunary-iterates-mod4`](../a168362-lacunary-iterates-mod4/),
+Part II (batch 114). For the iterates of F_p(x) = sum_j x^(p^j), whose
+coefficients count ordered trees with every vertex arity a power of the
+prime p, it proves that every coefficient of index N has p-adic valuation at
+least (s_p(N)-1)/(p-1), s_p the base-p digit sum (its Theorem 16.1), by
+integral exponential (Hurwitz) series and Legendre's formula. Ordered
+children and restricted arities put that class outside the tree
+specifications treated here; no shared theorem. That report names this one
+as a methodological neighbour, not a source. This section is a pointer
+added in the collection's cleanup pass; the rest of this README is the
+delivered guide.

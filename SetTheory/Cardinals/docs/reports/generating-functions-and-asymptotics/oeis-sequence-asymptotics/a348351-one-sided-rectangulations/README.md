@@ -277,6 +277,14 @@ Rocq, and its place in the collection confers no formal status.
   (its Remark 26.4), while here `p ≈ 1.957`. A dated note in Question 1 of
   the article says so. *[5 October 2026; this bullet first read "Report 125
   (A279571, later batch): see Question 1."]*
+- `a333497-historic-trees` (dated note, 7 October 2026, batch-103
+  reciprocal note). Its Part III (bundle Report 115, batch 103) proves that
+  the exponential generating functions of A333497 and A336009 are not
+  D-finite, so that neither sequence is P-recursive (Theorem 30.1 there), by
+  a different method: windings about the dominant singularity produce
+  infinitely many linearly independent germs, which no linear ODE allows.
+  Section 10 here argues from the growth exponent instead (Remark 10.1).
+  Only the type of conclusion is shared; no theorem or lemma.
 
 **Stale claims.** The manuscript makes no claim about the repository. Before
 batch 103 no file mentioned A348351, one-sided or area-universal

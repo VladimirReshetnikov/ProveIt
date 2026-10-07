@@ -67,8 +67,9 @@ article.pdf
 article.tex
 ```
 
-**Report 110, prefix `110-orders-`**: 18 files besides the article (1 at the
-root, 7 in `code/`, 10 in `data/`); its `report110.tex` is the base of
+**Report 110, prefix `110-orders-`**: 20 files besides the article (1 at the
+root, 7 in `code/`, 12 in `data/`; corrected 7 October 2026, this line said
+18 and 10, against the listing below); its `report110.tex` is the base of
 `article.tex`. Root: the delivering session's audit of its finite checker.
 `code/`: the exact checker, the separately coded auditor probes, the
 integrity, corruption, build, replay and sealing scripts. `data/`: the four
@@ -278,7 +279,14 @@ that the hypothesis of Remark 18.1(4) excludes part of the window for both
 `r`; for `r = 1` that part is covered by Remark 18.1(2), for `r = 2` it is
 not, since the margin `α − ½(H_u − 1)` tends to
 `log 2 − ½ − γ/2 ≈ −0.0955` at the upper edge. A dated note after the proof
-keeps the first wording.
+keeps the first wording. *[Dated note, 7 October 2026: the note after the
+proposition said its checks covered "the range `4κ_K ≤ u ≤ 600`, where (18.5)
+does not follow from `R ≥ 1`". That is false: the right side of (18.5) is
+negative for `u < 4κ_K(1 + log u)` (at `u = 4κ_K` it is `−2κ_K log(4κ_K)`;
+`K = 0`, `u = 44`, `b = 1936` is an admissible example), and the bound says
+more than `R ≥ 1` only for `u ≥ 295`, `978`, `2989` (`K = 0, ½, 1`). Of those
+cells only `K = 0`, `295 ≤ u ≤ 600` test more than `R ≥ 1`. A dated note in
+place says so; the proposition is unaffected.]*
 
 - *[Independent check, 5 October 2026.]* An adversarial check of the write
   made by the intake after it (`b432720bf`) found all eleven items it examined
@@ -380,7 +388,13 @@ claim stated without proof, with source, sketch and what is missing:
   re-scoped after the independent check (dated note): Proposition 18.2 closes
   the window and gives the limit 1/2 whenever `α − ½ log log u → ∞`, so the
   second order and the limit for smaller `α`, in particular bounded `α`,
-  remain open.
+  remain open. *[Dated note, 7 October 2026: for `α → ∞` the limit 1/2 is
+  now proved outside this report, under `log(b+1) = o(u)` alone, by a note
+  committed in `a8455335c`
+  (`Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/closed_lambda_tilt_entropy_aristotle.md`):
+  it bounds Proposition 18.2's tilt loss by `½ log C(u+κ, κ)` instead of
+  `(κ/2) H_u`. Open: the second order and bounded `α`. A dated note at
+  item 5 says so.]*
 
 Superseded statements stay as printed with dated notes: Report 109's Theorem
 1.1 ("the coefficient of the next scale `n/log n` is not determined"), its
@@ -417,7 +431,14 @@ Part I, Section 2. The Rocq development has the equivalent `term V` with
 `lam : term (option V) -> term V`
 (`Computability/CombinatoryLogic/Coq/Lambda.v`, line 16). Neither defines a
 size or counts terms, and **no statement of this report is formalized**;
-placement in the collection confers no formal status.
+placement in the collection confers no formal status. *[Dated note,
+7 October 2026: "neither defines a size" is false of the Rocq development.
+`Lambda.v` lines 232–237 define `UntypedLambda.size`, with every variable,
+application and abstraction of size one: A135501's convention (`s = 1`).
+The Lean `Term` has no size function. Neither development counts terms, so
+the conclusion stands: nothing here is formalized. The article's front
+matter ("Relation to neighbouring reports and to the formal project") has
+the same dated note.]*
 
 ## Delivery names, renames and discrepancies
 
@@ -532,6 +553,14 @@ errors, no undefined or multiply defined references, no duplicate
 destinations, no overfull or underfull boxes, and the same single
 infinite-glue message; all 141 labels keep their numbers and pages (`.aux`
 compared with a build of the committed text).
+
+Rebuilt on 7 October 2026 (cleanup pass: the dated notes on the Rocq size
+function, the test range after Proposition 18.2 and further-questions item
+5), with three pdfLaTeX passes: 46 pages, equally clean, the same single
+infinite-glue message; all 141 labels keep their numbers, and only
+`lam:bg:sec:further` (Section 20) moves, from page 42 to 43 (`.aux`
+compared with a build of the committed text). Pages 7–8, 40 and 43
+rendered and inspected.
 
 ## Delivered path → shipped path
 
