@@ -428,6 +428,7 @@ import GowersSzemeredi.Proofs13ConstructedChain
 import GowersSzemeredi.Proofs13SquareExponentLimit
 import GowersSzemeredi.Proofs16DenseMultilinearBox
 import GowersSzemeredi.Proofs16CorollaryFromInduction
+import GowersSzemeredi.Proofs16MultilinearProduct
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 

@@ -12,8 +12,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 603 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 3,874 public Gowers theorems and found only propext,
+  All 605 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 3,885 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 113 exact
   companion proofs and 7 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -1797,6 +1797,20 @@ Finite averaging input for Corollary 16.11
   the common exponent for both width and density is (alpha/8)*c^r; thus
   the stronger width exponent is larger by the factor 8/alpha. These are
   conditional results, not exact companions: Theorem 16.2 remains open.
+
+Rigidity of the original product property at the unit endpoint
+  Proofs16ProductEndpoint proves that saturation of the N^3 additive-count
+  bound forces preservation of every additive quadruple. On ZMod N this
+  gives a globally affine map. Unit product property on the entire domain
+  therefore forces affine coordinate restrictions, which combine into one
+  multilinear function by induction and two-anchor interpolation.
+  Proofs16MultilinearProduct proves the converse with arbitrary nonnegative
+  weights and any finite family of parallel lines. Thus, over a prime
+  field, full-domain unit product property is equivalent to multilinearity.
+  This supplies the positive endpoint requested by source 50's plan and
+  distinguishes the genuine upstream hypothesis from the insufficient
+  packaged premises of Lemma 16.10. It is an endpoint result, not a proof
+  of the general quantitative induction or a repair of that false predicate.
 
 Reproducible checks (from repository root)
   python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.Audit
