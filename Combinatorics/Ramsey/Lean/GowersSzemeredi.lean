@@ -299,6 +299,10 @@ import GowersSzemeredi.Proofs05ProgressionMoments
 import GowersSzemeredi.Proofs05ProgressionVariance
 import GowersSzemeredi.Proofs05ProperDirections
 import GowersSzemeredi.Proofs05VarianceIncrement
+import GowersSzemeredi.Proofs05CoverMass
+import GowersSzemeredi.Proofs05WeightedPhaseTransfer
+import GowersSzemeredi.Proofs05HighCorrelationAssembly
+import GowersSzemeredi.Proofs05HighCorrelationScale
 
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue

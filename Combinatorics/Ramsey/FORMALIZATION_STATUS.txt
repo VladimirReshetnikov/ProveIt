@@ -12,8 +12,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 454 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 2,909 public Gowers theorems and found only propext,
+  All 458 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 2,936 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 107 exact
   companion proofs and 13 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -1084,8 +1084,20 @@ Arbitrary-modulus progression moments for Corollary 5.8
   0 < delta < 1, L >= 2, and N >= L^3. Its low-correlation wrapper gives
   gain alpha/3 whenever alpha <= 3*(1-delta)/(2L). Neither statement
   assumes prime N, a phase partition, or a positive correlation threshold.
+  Proofs05CoverMass computes the exact balanced mass on any cover of A,
+  bounds total phase correlation by 2*delta*(1-delta), and obtains the
+  strict density range and comparable-parent cardinality bounds.
+  Proofs05WeightedPhaseTransfer removes local phases with error weighted
+  by actual balanced mass, and selects a positive-density cell from a
+  partition of a cover (the cover need not be the whole group).
+  Proofs05HighCorrelationAssembly proves that local phase partitions
+  with pointwise error <= 1/(4L) give density gain alpha/3 when
+  alpha >= 3*(1-delta)/(2L). Its local partition assumptions are explicit.
+  Proofs05HighCorrelationScale proves each comparable parent has positive
+  cardinality and, in the strict high branch, 3*N < 8*L*M*|P_i|.
   Corollary 5.8 remains open: the all-degree phase-localization estimates
-  and the high-correlation assembly still need formal proofs.
+  and final target-length rounding still need formal proofs. The new
+  conditional assembly does not count as an exact catalogue companion.
 
 Reproducible checks (from repository root)
   python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.Audit
