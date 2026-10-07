@@ -13,6 +13,16 @@ The relocated source was rebuilt in three `pdflatex` passes on 2026-09-29:
 720 A4 pages, no undefined references, 110 overfull-box warnings. The title
 and provenance pages were visually checked. This is the current PDF paired
 with the source in this directory; the linked receipts remain historical.
+On 2026-10-07 two dated repair boxes were added to Appendix V (the Fubini
+pole lattice). One sits after the proof of `q2:thm:fubini`: the
+Mittag-Leffler entire part is 1/4, not 0, and the theorem for n >= 1 stands.
+The other follows `q2:rem:weighted`: the remark's direction is reversed and it
+needs max, not min, of rho_x; the uniform bound rho_x^2/12 holds for every
+weight by a different argument. Both defects were found by Report 220
+(`a173217-ordered-tuple-relations` in the research-report collection). The PDF
+was rebuilt in three `pdflatex` passes with the same page and overfull counts
+(720, 110) and no undefined references; pages 681 and 683 were visually
+checked.
 
 ## Status
 

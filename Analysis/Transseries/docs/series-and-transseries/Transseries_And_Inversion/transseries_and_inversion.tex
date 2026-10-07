@@ -54936,6 +54936,25 @@ $n+1\ge2$.  Pairing $k$ with $-k$, and using
 $\zeta_{-k}=\overline{\zeta_k}$, turns the sum into the real cosine form.
 \end{proof}
 
+\begin{repairbox}
+\textbf{Claim repaired} (dated note, 2026-10-07).  The proof above says that the
+entire part of the Mittag--Leffler expansion vanishes ``by the decay of both
+sides as $\Re z\to-\infty$''.  Neither side decays there:
+$(2-\e^{z})^{-1}\to\tfrac12$, and the pole sum, summed symmetrically in $k$, is
+$-\tfrac12\sum_{k}(z-\zeta_k)^{-1}=-\tfrac14\coth\bigl(\tfrac12(z-\rho)\bigr)\to\tfrac14$.
+Since $\coth\bigl(\tfrac12(z-\rho)\bigr)=(\e^{z}+2)/(\e^{z}-2)$, the exact expansion is
+\[
+ \frac1{2-\e^{z}}=\frac14-\frac12\sum_{k\in\Int}\frac1{z-\zeta_k}
+ \qquad(\text{symmetric summation}),
+\]
+so the entire part is the constant $\tfrac14$, not $0$.  The defect was found by
+Report~220 (Appendix~A) of the research-report collection, written as
+\textsf{a173217-ordered-tuple-relations}, and re-checked at 40 digits.
+\textbf{Correction.}  The constant affects only the coefficient of $z^{0}$.
+Extracting $\Coef{z^{n}/n!}$ for $n\ge1$ is unchanged, so
+\cref{q2:thm:fubini}, which is stated for $n\ge1$, stands as printed.
+\end{repairbox}
+
 \begin{remark}[What a simple pole does and does not contribute]
 \label{q2:rem:simple-pole}
 A simple pole contributes \emph{one} exact sector with a \emph{constant}
@@ -55113,6 +55132,31 @@ $x$, and a statement about $\mathfrak{F}_n(x)$ on a compact $x$-interval needs
 the bound of \cref{q2:thm:pole-tail} with $\rho$ replaced by
 $\min_x\rho_x$.
 \end{remark}
+
+\begin{repairbox}
+\textbf{Claim repaired} (dated note, 2026-10-07).  Remark~\ref{q2:rem:weighted} has the
+direction backwards.  The relative size of the sector $k\ne0$ is
+$|u_k(x)|=\rho_x/|\zeta_k(x)|\le\rho_x/(2\pi|k|)$, which tends to $0$ as
+$\rho_x\to0$, that is as $x\to\infty$: the leading-pole approximation
+\emph{improves} as $x\to\infty$ and degrades as $x\to0^{+}$, where
+$\rho_x\to\infty$.  Numerically, $|T_3(x)-1|$ is $0.618$, $6.2\cdot10^{-3}$,
+$2.9\cdot10^{-4}$, $1.1\cdot10^{-7}$, $1.4\cdot10^{-11}$ at
+$x=0.001,\,0.1,\,1,\,10,\,100$.  Since the bounds of \cref{q2:thm:pole-tail}
+increase with $\rho$, a statement uniform on a compact $x$-interval needs
+$\max_x\rho_x$ (the value at the left endpoint), not $\min_x\rho_x$.  The defect was
+found by Report~220 (Appendix~A) of the research-report collection
+(\textsf{a173217-ordered-tuple-relations}).
+\textbf{Correction.}  With $T_n(x)=\sum_k u_k(x)^{n+1}$, the uniform estimate
+\[
+ |T_n(x)-1|\ \le\ \frac{\rho_x^{2}}{12}\qquad(n\ge1,\ x>0)
+\]
+holds for every weight, but not by the proof of \eqref{q2:eq:uniform}: that proof
+uses that $2(\rho/2\pi)^{n+1}\zeta(n+1)$ decreases in $n$, which needs
+$\rho\le2\pi$, that is $x\ge1/(\e^{2\pi}-1)$.  For all $x>0$ use instead
+$|u_k|<1$ for $k\ne0$, so $|u_k|^{n+1}\le|u_k|^{2}\le\rho_x^{2}/(4\pi^{2}k^{2})$,
+and sum over $k\ne0$.  On a compact interval $[x_0,x_1]\subset(0,\infty)$ the
+bound $\rho_{x_0}^{2}/12$ is therefore uniform in $n$ and $x$.
+\end{repairbox}
 
 \section{Two sequences, two kinds of expansion}
 \label{q2:sec:compare}
