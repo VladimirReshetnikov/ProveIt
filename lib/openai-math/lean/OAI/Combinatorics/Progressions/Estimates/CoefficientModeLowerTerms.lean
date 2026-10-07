@@ -1,3 +1,7 @@
+/-
+Modified for ProveIt: use explicit MvPolynomial coefficient lemmas on Lean 4.32.
+Mathematical statements are unchanged.
+-/
 import Mathlib.Algebra.MvPolynomial.Coeff
 import OAI.Combinatorics.Progressions.Estimates.HomogeneousScaledSubstitution
 import OAI.Combinatorics.Progressions.Polynomial.PolynomialSiteRemoval
@@ -55,13 +59,13 @@ theorem polynomialTopSymbol_add {I : Type*} (h : ℕ) (P Q : MvPolynomial I ℝ)
     (direction : Fin h → I → ℝ) :
     polynomialTopSymbol h (P + Q) direction =
       polynomialTopSymbol h P direction + polynomialTopSymbol h Q direction := by
-  simp only [polynomialTopSymbol, map_add, AddMonoidAlgebra.coeff_add, Finsupp.add_apply]
+  simp only [polynomialTopSymbol, map_add, MvPolynomial.coeff_add]
 
 theorem polynomialTopSymbol_eq_zero_of_degree_lt {I : Type*} {h : ℕ}
     (Q : MvPolynomial I ℝ) (hQ : Q.totalDegree < h) (direction : Fin h → I → ℝ) :
     polynomialTopSymbol h Q direction = 0 := by
   simp only [polynomialTopSymbol, homogeneousComponent_eq_zero h Q hQ, map_zero,
-    AddMonoidAlgebra.coeff_zero, Finsupp.zero_apply]
+    MvPolynomial.coeff_zero]
 
 theorem polynomialTopSymbol_add_lower {I : Type*} {h : ℕ}
     (P Q : MvPolynomial I ℝ) (hQ : Q.totalDegree < h) (direction : Fin h → I → ℝ) :

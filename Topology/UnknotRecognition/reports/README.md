@@ -12,12 +12,26 @@ modification times.
 | `04/` | `unknot_recognition_partial.zip` | `unknot` | Khovanov cube, Knot Atlas fixtures | dual-4-connectivity pattern test, potential | 62 |
 | `05/` | `unknot_recognition_partial_implementation (1).zip` | `unknot_recognition` | Reidemeister I/II traces, determinant, Khovanov cube | bond-enumeration pattern test, simplicial normal coordinates, pattern complexity | 58 |
 | `06/` | `unknot-recognition-implementation.zip` | `unknot` | Khovanov cube, 11-crossing fixtures, report verifier | bond-enumeration pattern test | 45 |
-| `07/` | `unknot_structural_compression.zip` | `fastunknot` 0.3.0 (`07/fast/`) | signed-Seifert-graph certificate stage, exact component-sharing Khovanov backend | Euler/component scans | not run |
+| `07/` | `unknot_structural_compression.zip` | `fastunknot` 0.3.0 (`07/fast/`) | signed-Seifert-graph certificate stage, exact component-sharing Khovanov backend | Euler/component scans | 69 integrated tests pass |
+| `08/` | `unknot_recognition_progress.zip` | `fastunknot` 0.3.0 (`08/Topology/UnknotRecognition/fast/`, `code_changes.patch`) | complete decision for closures of braids on at most three strands (`O(ell)` symbol operations), integral-matrix second backend, writhe obstruction | matching multiplicities after unit cancellation, residue diagnostic | not run |
+| `09/` | `unknot_progress_20261007.zip` | `fastunknot` 0.3.0 (`09/fast/`, `integration/fastunknot-0.3.patch`) | proved performance improvements to the scan; article with eleven research questions | — | not run |
+| `10/` | `unknot_component_entropy_20261007.zip` | standard-library kernel (`10/code/`) | component-quotient factorization of F2 cobordism composition, `poly(w)·2^(w/2)` composition | sparse-profile restart potential (conditional) | not run |
+| `11/` | `unknot_twist_research_bundle.zip` | `twistkh` (opt-in backend) | twist-compressed Khovanov complex for braid closures given as twist blocks, exact preflight cost certificates | — | not run |
+| `12/` | `unknot_frobenius_research.zip` | opt-in adapter for `fastunknot` (`12/reference/legacy/` baseline) | exact component quotient for compiled cobordisms, succinct block cancellation | quasi-polynomial bound for the structured block problem only | not run |
 
 Archives `01/`–`06/` each contain a README, a LaTeX report with PDF under
 `docs/`, examples, recorded results, and a standard-library-only Python package.
 
-`07/` (placed 7 October 2026) continues the project's own `../fast/` package
+`07/`–`12/` were placed on 7 October 2026. Each is a research continuation of
+this project, and all but `10/` extend or patch `../fast/`. Of these, only
+`07/` has been integrated (see below). `08/`–`12/` were placed as delivered,
+under the standing intake rule: no test runs, no patch application, no
+review. Their recorded results are the authors' own. `08/` ships its changed files in the repository's own
+layout (`08/Topology/UnknotRecognition/...`); `11/` suggests
+`research/twist_compression/` as its home. Both are kept inside their report
+directories as delivered.
+
+`07/` continues the project's own `../fast/` package
 rather than being an independent implementation. It contains:
 
 - the article (`paper/`);
@@ -26,9 +40,12 @@ rather than being an independent implementation. It contains:
   `4e6fe879e`);
 - `integration.patch`, benchmarks and provenance.
 
-The patch is **not applied** to `../fast/`. By Vladimir's direction, reports on
-this topic are placed as delivered, without test runs or review. Their recorded
-results are the authors' own and are unchecked here.
+The archive was originally placed as delivered, without review. On 7 October
+2026, the continuing algorithm-improvement task reviewed and integrated its
+patch into `../fast/`; all 69 integrated tests passed on CPython 3.13.14. The
+archive remains unchanged. The authors' archived timings remain separate from
+the new local measurements in `../fast/results/structural_integration_20261007.json`.
+See `../synthesis/structural.tex` for the integration analysis and proof limits.
 
 ## Test status (last observed 18 September 2026)
 

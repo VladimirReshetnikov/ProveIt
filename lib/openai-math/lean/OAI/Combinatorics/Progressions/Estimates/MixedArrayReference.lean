@@ -1,3 +1,7 @@
+/-
+Modified for ProveIt: use the older unconditional Measure.map_smul theorem
+on Lean 4.32. Mathematical statements are unchanged.
+-/
 import Mathlib.Probability.Distributions.Uniform
 import OAI.Combinatorics.Progressions.Geometry.ProductChartReference
 import OAI.Combinatorics.Progressions.Probability.OrthonormalMixedLaw
@@ -153,7 +157,7 @@ theorem orthonormalArrayChart_scaled_reference (c : ℝ≥0∞) (hc : c ≠ ∞)
       (c ^ Fintype.card O • mixedArrayReference I Z O)
       (Measure.pi (fun _ : O => c • (volume : Measure E).prod (Measure.count : Measure (Z → ℤ)))) := by
   refine ⟨(orthonormalArrayChart o).measurable, ?_⟩
-  rw [Measure.map_smul _ (orthonormalArrayChart o).measurable.aemeasurable,
+  rw [Measure.map_smul,
     (orthonormalArrayChart_measurePreserving o).map_eq,
     pi_smul_finite _ _ (fun _ => hc)]
   simp only [Finset.prod_const, Finset.card_univ]

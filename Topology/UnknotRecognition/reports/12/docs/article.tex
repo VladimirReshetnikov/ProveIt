@@ -1,0 +1,788 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=1in]{geometry}
+\usepackage{microtype,booktabs,longtable,array,enumitem,listings,xcolor}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black,
+ pdftitle={Exact Cobordism Contraction and Succinct Block Cancellation},pdfauthor={Research memorandum for ProveIt}}
+\usepackage{fancyhdr}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small ProveIt: Unknot Recognition}\fancyhead[R]{\small 7 October 2026}\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\parskip}{4pt}\setlength{\parindent}{0pt}
+\setcounter{tocdepth}{2}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\F}{\mathbb F_2}
+\newcommand{\R}[1]{R_{#1}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\End}{\operatorname{End}}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\Mat}{\operatorname{Mat}}
+\newcommand{\id}{\operatorname{id}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\Kh}{\operatorname{Kh}}
+\newcommand{\poly}{\operatorname{poly}}
+\newcommand{\bit}{\operatorname{bit}}
+\newcommand{\code}[1]{\texttt{#1}}
+\DeclareMathOperator{\diag}{diag}
+\lstset{basicstyle=\small\ttfamily,breaklines=true,columns=fullflexible,keepspaces=true,frame=single,framerule=0.2pt}
+\title{\textbf{Exact Cobordism Contraction and\newline Succinct Block Cancellation}\\[6pt]
+\large Toward quasi-polynomial unknot recognition in ProveIt}
+\author{Research memorandum for the ProveIt project\\\small Prepared with ChatGPT}
+\date{7 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We develop two complementary improvements for the exact Khovanov-scanning approach used in ProveIt's unknot recognizer. First, a compiled genus-zero cobordism composition factors through a square-free algebra on its connected components. We identify the exact quotient, prove its minimality for a fixed gluing plan, compute the rank of the linearized operation, and obtain a dense composition algorithm using $\poly(b)2^b$ work instead of the current Cartesian monomial-pair loop, where $2b$ is the number of boundary endpoints. The arithmetic uses the classical fast subset-convolution algorithm, supplemented by characteristic-two polarization.
+
+Second, we develop checked cancellation of matrix units and low-rank radical perturbations. For tensor-described interface maps, a block with $2^m$ generators can be cancelled without enumerating those generators. The running time depends polynomially on the tensor description and on the explicit interface dimensions, rather than on $2^m$. This gives an unconditional quasi-polynomial algorithm for a precisely specified structured algebraic subproblem, not a general quasi-polynomial unknot recognizer.
+
+The bundle includes a standard-library Python implementation, 29 passing test methods, source-audited adapters, paired measurements including regressions, and a verifiable $2^{40}$-dimensional structured block example. Dense ten-variable compositions improve substantially in the measured harness, but the ordinary diagram tests never enter the dense path. We therefore recommend opt-in integration, not an unconditional replacement. Explicit tensor-rank obstructions and complete cost accounting identify the additional structural theorems needed for the global target.
+\end{abstract}
+\vspace{3pt}
+\textbf{Status.} Research draft with complete proofs of the stated algebraic results and executable checks. No claim of a general quasi-polynomial recognition algorithm, formal Lean verification, exhaustive novelty search, or full-repository regression run is made.
+\newpage
+\tableofcontents
+\newpage
+
+\section{Problem, contribution, and source audit}
+\label{sec:audit}
+\subsection{What must be improved}
+The mathematical target is an exact decision procedure for an $n$-crossing knot diagram whose worst-case bit complexity is quasi-polynomial. We use ``quasi-polynomial'' for
+\[
+ \exp((\log(n+2))^{O(1)}),
+\]
+and distinguish the stronger target $n^{O(\log n)}=\exp(O((\log n)^2))$ whenever the exponent matters. Neither a polynomial-time test of one invariant nor a fast implementation of one exponential backend establishes this target.
+
+The inspected project is ProveIt, owned on GitHub by VladimirReshetnikov. The relevant directory is \path{Topology/UnknotRecognition}. Its current README explicitly separates the exact implementations from the announced quasi-polynomial goal \cite{repo}. The relevant Python implementation is a scanning computation in the dotted cobordism category, following Bar-Natan's local construction \cite{bnfast}. It extends the partial complex at a crossing, deloops closed circles, and cancels invertible differential entries.
+
+There are three different kinds of growth:
+\begin{equation}\label{eq:threecosts}
+ \text{boundary complexity},\qquad
+ \text{morphism coefficient complexity},\qquad
+ \text{multiplicity of chain objects}.
+\end{equation}
+They must not be conflated. The first part of this paper improves the second. The succinct-block part addresses the third on an explicit structured class. It does not assert that arbitrary knot diagrams belong to that class.
+
+\subsection{The default engine is not the older algebra adapter}
+The current \code{scan\_fast.py} uses \code{planar.Planar}, with interned matching identifiers, compact object arrays, cached gluing plans, and a bucket/heap cancellation queue. The separately retained \code{algebra.BitAlgebra} is relevant to compatibility and ablation configurations. Its scalar involution shortcuts must not be mistaken for a description of the default composition routine.
+
+The following source blobs were read through the repository connector on 7 October 2026. Blob identifiers are content identifiers, not an assertion that a complete checkout was fetched.
+\begin{center}\small
+\begin{tabular}{p{0.29\linewidth}p{0.63\linewidth}}
+\toprule
+File within \code{fast/fastunknot/} & Source blob identifier\\
+\midrule
+\code{algebra.py} & \path{d6d28604ac39c29145aa52f91074539a5aeac949}\\
+\code{geometry.py} & \path{96acc160dbf2df7981b2db98b602311712a01531}\\
+\code{planar.py} & \path{1078526e7e7dbaf0b7267728105d870d94136769}\\
+\code{scan\_fast.py} & \path{2c1ad52d14296b109376af19668ae0eebb4c6fdd}\\
+\code{scan.py} & \path{4acff3cb5ffb4c4ad226a8bf6dcda3d8dc0bb561}\\
+\bottomrule
+\end{tabular}
+\end{center}
+The bundled \code{algebra.py} fixture is byte-identical to its listed blob and its Git blob hash is checked. The \code{Planar}/\code{FastScan} execution fixtures were transcribed from the inspected source with shortened comments and formatting. They are \emph{source-derived fixtures}, not byte-identical files from a complete checkout. Independent checks against the older set-based implementation help detect transcription mistakes; they do not replace an eventual full-checkout regression run.
+
+\subsection{Current mathematical context}
+Kelom\"aki and Sch\"utz prove that the standard scanning and divide-and-conquer algorithms can take exponential time even for positive or alternating three-braids. Their obstruction is exponential total Betti number in a basis-expanding computation. They also give a polynomial algorithm for three-braid homology using a different description \cite[Theorems 1.2--1.3]{ks}. Thus bounded boundary width is not enough to bound the number of explicit generators. This is a statement about those homology algorithms, not a lower bound for unknot decision, and not a lower bound for the repository's entire filtered pipeline. In particular, an earlier filter may decide the same braid family cheaply.
+
+Lackenby's July 2026 preprint gives a hierarchy-based algorithm and bounds the number of visits to a step by $L(g+1)^L$, in terms of hierarchy length $L$ and pattern complexity $g$. Section 9 explicitly leaves primitive running times insufficiently specified for a runtime estimate. The refined algorithm in Section 10 gives $L\leq4c_q(H)$ \cite[Propositions 9.1 and 10.2]{lackenby}. A linear bound in this geometric parameter is not automatically a logarithmic-depth or bit-complexity bound. Section~\ref{sec:accounting} explains the precise extra accounting needed.
+
+Unknot detection by reduced Khovanov homology is an established theorem of Kronheimer and Mrowka \cite{km}. Our adapter does not change the detector, coefficients, grading convention, diagram validation, or preliminary filters. It replaces an algebra operation by an equal algebra operation.
+
+\subsection{What is being claimed as research progress}
+The deliverable is an exact, tested implementation of a component quotient and a structured cancellation mechanism, with proofs and counter-obstructions. Fast subset convolution, Schur complements, low-rank inverse identities, and product-tensor contraction are established algebraic ideas. We claim neither invention of these identities nor a literature-wide priority result. The contribution is their precise specialization, compatibility analysis, optimal-quotient characterization, succinct cancellation theorem, and measured integration into this research program.
+
+\section{The coefficient algebra and compiled cobordisms}
+\label{sec:algebra}
+\subsection{Representation and conventions}
+For $s\geq0$, let
+\begin{equation}\label{eq:ring}
+ R_s=\F[x_1,\ldots,x_s]/(x_1^2,\ldots,x_s^2).
+\end{equation}
+For $S\subseteq[s]$, write $x_S=\prod_{i\in S}x_i$. Its coefficient vector has $2^s$ binary entries. The implementation encodes
+\[
+ F=\sum_{S\subseteq[s]} f_Sx_S
+ \quad\text{by}\quad
+ \operatorname{enc}(F)=\sum_{S\subseteq[s]} f_S2^{\operatorname{mask}(S)}.
+\]
+An exponent in this integer encoding is a subset mask. Ordinary integer multiplication is \emph{not} ring multiplication. Addition is XOR.
+
+If $a$ and $b$ are crossingless matchings on the same boundary, the circles of $a\cup\overline b$ index a basis of dotted cobordisms in $\Hom(a,b)$. We identify the underlying coefficient space with $R_s$. For endomorphisms of a matching with $b$ arcs, composition is the multiplication of $R_b$. For different source and target matchings, the operation is specified by a gluing plan, rather than by multiplying coefficients in an arbitrarily chosen common ring.
+
+We work in the ungraded coefficient algebra used for total-rank computation. Homological degrees of chain objects are still respected. Quantum shifts are not used to justify any cancellation. The matrix and tensor constructions later in the paper are restricted to copies of one matching, unless explicitly phrased in categorical terms.
+
+\subsection{A plan and its local output map}
+A genus-zero plan has connected components $j=1,\ldots,c$. Component $j$ carries a disjoint set $L_j$ of left input discs, a disjoint set $Q_j$ of right input discs, a disjoint set $B_j$ of output circles, and $e_j\geq0$ fixed dots. The input sets partition their respective variable sets; the output sets partition the output variables. In the code these sets are bit masks.
+
+The \code{BitAlgebra} plan stores $(L_j,Q_j,B_j,e_j)$. The default \code{Planar} additionally stores the precomputed list of masks $B_j\setminus\{i\}$. Our adapter removes only this redundant fifth field when compiling the new operation. It preserves the engine's own circle numbering.
+
+For one component, put $z=z_j$ and define the linear map $\lambda_j:R_1\to R_{B_j}$ by the following rule. On an input $z^t$, $t\in\{0,1\}$, set $d=e_j+t$. If $d\geq2$, the output is zero. Otherwise,
+\begin{equation}\label{eq:lambda}
+ \lambda_j(z^t)=
+ \begin{cases}
+  1,& B_j=\varnothing,\ d=1,\\
+  0,& B_j=\varnothing,\ d=0,\\
+  x_{B_j},& B_j\ne\varnothing,\ d=1,\\
+  \displaystyle\sum_{i\in B_j}x_{B_j\setminus\{i\}},
+       &B_j\ne\varnothing,\ d=0.
+ \end{cases}
+\end{equation}
+These are the multiplication/comultiplication/counit rules of the square-zero Frobenius algebra. A positive-genus component gives zero in this characteristic-two specialization: adding a handle acts by multiplication by $2x=0$. Such a plan is represented by \code{None}.
+
+\section{An exact and minimal component quotient}
+\label{sec:quotient}
+Let $a$ and $d$ be the numbers of left and right input discs, and $h$ the number of output circles. Define ring homomorphisms
+\[
+ \pi_L:R_a\longrightarrow R_c,\qquad
+ \pi_R:R_d\longrightarrow R_c,
+\]
+by sending every input variable belonging to component $j$ to $z_j$. Define
+\[
+ \Lambda=\lambda_1\otimes\cdots\otimes\lambda_c:R_c\longrightarrow R_h,
+\]
+using the disjoint output-variable blocks.
+
+\begin{theorem}[Component factorization]\label{thm:factor}
+For every valid compiled plan and every pair of coefficient vectors $F,G$, its bilinear cobordism operation is
+\begin{equation}\label{eq:factor}
+ \mathcal B(F,G)=\Lambda\bigl(\pi_L(F)\pi_R(G)\bigr).
+\end{equation}
+For a positive-genus zero plan, both sides are interpreted as zero.
+\end{theorem}
+\begin{proof}
+It suffices to check input monomials. A monomial with two left dots in the same connected component maps to zero under $\pi_L$, because $z_j^2=0$. The original evaluator also kills it. The same holds on the right. For the remaining monomials, multiplying their component images kills exactly those pairs with both a left and a right dot in one component. Every surviving component therefore receives zero or one variable dot. Adding its fixed dots and applying \eqref{eq:lambda} is exactly the existing component evaluator. The output circles of different components are disjoint, so their outputs multiply by tensor product. Bilinearity completes the proof.
+\end{proof}
+
+This factorization is not a heuristic aggregation by number of dots. It preserves which connected component receives each dot and all cancellations between projected monomials. For example, if $x_1,x_2$ belong to one component, then both $x_1+x_2$ and $x_1x_2$ project to zero, for different reasons. Forgetting the first cancellation would give an incorrect algorithm.
+
+\begin{proposition}[Exact rank of the linearized plan]\label{prop:rank}
+View $\mathcal B$ as the linear map $R_a\otimes R_d\to R_h$. Its rank is zero if a component has at least two fixed dots, or if a closed component has no inputs and no fixed dot. Otherwise its rank equals $2^u$, where $u$ is the number of components that have a nonempty output, at least one input, and no fixed dot.
+\end{proposition}
+\begin{proof}
+Regroup the input tensor factors by connected component. Each component with at least one input maps onto $\langle1,z_j\rangle$ before fixed dots are imposed; a component with no inputs receives only $1$. For an open component without a fixed dot and with an input, the two images in \eqref{eq:lambda} are nonzero and have disjoint supports, hence are independent. This contributes rank two. Every other nonzero case has a one-dimensional image. The zero cases are exactly those stated. Ranks of tensor products of linear maps over a field multiply, which gives the formula.
+\end{proof}
+
+\begin{theorem}[Minimality for an ordinary nonzero composition plan]\label{thm:minimal}
+Suppose every component has a left input, a right input, a nonempty output, and no fixed dot. Define $F\sim F'$ when
+\[
+ \mathcal B(F,G)=\mathcal B(F',G)\quad\hbox{for every }G.
+\]
+Then
+\begin{equation}\label{eq:equivalence}
+ F\sim F'\quad\Longleftrightarrow\quad \pi_L(F)=\pi_L(F').
+\end{equation}
+If $r_j$ is a chosen representative left variable in component $j$, the kernel of $\pi_L$ is the ideal generated by $x_i+x_{r_j}$ for $i\in L_j\setminus\{r_j\}$. The quotient is $R_c$. A worst-case lossless encoding of the equivalence classes requires at least $2^c$ bits.
+\end{theorem}
+\begin{proof}
+Equality after projection implies equivalence by Theorem~\ref{thm:factor}. In the other direction, choose $G=1$, so that $\pi_R(G)=1$. The map $\Lambda$ is injective: for each component its two images have disjoint nonempty supports, and this remains true for tensor products. Thus equality of $\mathcal B(F,1)$ and $\mathcal B(F',1)$ forces equality of their projections.
+
+Quotienting by the stated ideal identifies the variables in each component and leaves exactly one square-zero variable per component. Hence the resulting quotient is $R_c$ and its kernel is exactly that ideal. Surjectivity also follows by selecting one input variable from each component. There are $2^{2^c}$ different elements of $R_c$. An injective fixed-length binary representation therefore needs at least $2^c$ bits in the worst case; the same worst-case bound follows for unrestricted variable-length encodings by counting binary strings of smaller maximum length.
+\end{proof}
+
+\begin{remark}[Constructive recovery]
+Fix one output circle $i_j\in B_j$ in every component. From $\Lambda(H)$ one recovers the coefficient of $z_S$ in $H$ by reading the output monomial that dots all of $B_j$ for $j\in S$ and all of $B_j\setminus\{i_j\}$ otherwise. No other component-occupancy pattern produces that monomial. This is an explicit left inverse, not merely a dimension argument.
+\end{remark}
+
+For ordinary composition between matchings on $2b$ endpoints, a nonzero plan has the hypotheses of Theorem~\ref{thm:minimal}. Each connected component contains a gluing arc and consequently discs from both sides; surviving outer arcs supply output boundary. Moreover $a,d,h,c\leq b$. Thus the component quotient is the exact context-specific information that this composition needs. It need not be a sufficient representation for a \emph{different} future gluing plan.
+
+\section{Dense arithmetic, sparse polarization, and real bit costs}
+\label{sec:arithmetic}
+\subsection{The dense multiplication algorithm}
+In $R_s$, multiplication is disjoint subset convolution:
+\begin{equation}\label{eq:subset}
+ (FG)_S=\sum_{T\subseteq S}f_Tg_{S\setminus T}.
+\end{equation}
+We specialize the fast subset-convolution method of Bj\"orklund, Husfeldt, Kaski, and Koivisto \cite{bhkk}. For completeness, the algebraic correctness argument is included.
+
+\begin{lemma}[Ranked transforms]\label{lem:subset}
+All coefficients in \eqref{eq:subset} can be computed in $O((s+1)^2 2^s)$ field operations and $O((s+1)2^s)$ coefficient storage.
+\end{lemma}
+\begin{proof}
+Set $f_k(S)=f_S$ when $|S|=k$ and zero otherwise, and form ranked zeta transforms
+\[
+ \widehat f_k(S)=\sum_{T\subseteq S} f_k(T),\qquad
+ \widehat g_k(S)=\sum_{T\subseteq S} g_k(T).
+\]
+Compute $\widehat h_k(S)=\sum_{i=0}^k\widehat f_i(S)\widehat g_{k-i}(S)$, then invert the subset zeta transform in $S$. The resulting $h_k(S)$ is the sum of $f_Ag_B$ over $A\cup B=S$ and $|A|+|B|=k$. Selecting $k=|S|$ forces $A\cap B=\varnothing$ and yields \eqref{eq:subset}. In characteristic two the M\"obius inversion uses the same XOR butterfly as the zeta transform. There are $O(s2^s)$ transform edges at each of $s+1$ ranks, and $O(s^2)$ scalar products per subset.
+\end{proof}
+
+This classical result improves the usual $3^s$ disjoint-pair enumeration. The repository kernel instead loops through every pair of supported monomials before testing collisions, which can give $\Theta(4^s)$ pair visits on dense inputs. These are different comparison baselines.
+
+\begin{theorem}[Dense cobordism contraction]\label{thm:complexity}
+Given the plan and dense input vectors, \eqref{eq:factor} can be evaluated using
+\begin{equation}\label{eq:densecost}
+ O\!\left((a+1)2^a+(d+1)2^d+(c+1)^2 2^c+(h+1)2^h\right)
+\end{equation}
+field operations and ordinary subset-mask operations. On matchings with $b$ arcs this is $O((b+1)^2 2^b)$ in the corresponding word-RAM accounting, and $\poly(b)2^b$ in a conservative bit-operation accounting.
+\end{theorem}
+\begin{proof}
+For each input monomial, scan its set variables and record their components. Kill a monomial if two of its variables enter one component; otherwise XOR it into its projected coefficient. This costs the first two terms. Lemma~\ref{lem:subset} gives the product cost.
+
+For the lift, closed components first require prescribed occupancy: a closed undotted component requires occupancy one, while a closed once-dotted component requires occupancy zero. An open once-dotted component also requires occupancy zero. In an open undotted component with $r_j$ output circles, the occupancy-zero and occupancy-one contributions together contain $r_j+1$ distinct output monomials. Across components the total number of possible generated output monomials is at most
+\[
+ \prod_{B_j\ne\varnothing}(r_j+1)\leq\prod_j2^{r_j}=2^h.
+\]
+The supports associated with different admissible occupancy patterns are disjoint. Partial expansion work is bounded by the number of stages times the final output work. Occupancy checks are absorbed by the component-transform term. This proves \eqref{eq:densecost}. All subset masks have polynomially many bits in the displayed parameters, so moving from a word-RAM to bit operations adds only polynomial factors.
+\end{proof}
+
+\subsection{A characteristic-two sparsity improvement}
+\begin{lemma}[Scalar square and polarization]\label{lem:polarization}
+For $F\in R_s$, $F^2=F(0)$. Consequently
+\begin{equation}\label{eq:polarize}
+ FG=F(F+G)+F(0)=G(F+G)+G(0).
+\end{equation}
+A sparse product can therefore be evaluated using at most
+\[
+ \min\{|\supp F||\supp G|,
+        |\supp F||\supp(F+G)|,
+        |\supp G||\supp(F+G)|\}
+\]
+monomial-pair visits, plus representation traversal and a possible constant correction.
+\end{lemma}
+\begin{proof}
+Every nonconstant square-free monomial squares to zero, and each cross term occurs twice. Squaring thus leaves only the constant coefficient. Expanding the two right sides of \eqref{eq:polarize} proves the identities. Choose the representation with the fewest pairs and restore its indicated constant term.
+\end{proof}
+
+The important place to apply this lemma is \emph{after component projection}. Two originally different morphisms can have equal or nearly equal component images. A global coefficient comparison before projection misses this opportunity. This is not an identity between arbitrary morphisms before they are placed in a common component algebra.
+
+\subsection{Representation discipline}
+A Python integer holding $2^b$ coefficients is not a unit-cost machine word. Repeatedly removing one bit from a coefficient-sized integer may repeatedly copy a large object. The implementation reads its bytes once when traversing the support and repacks through a byte array. Ranked transforms use short, rank-indexed bit polynomials, not coefficient-sized integers as if each arithmetic operation were free.
+
+The production prototype selects among a small-support original loop, projected sparse multiplication, and the ranked transform. Its default dense allocation limit is 18 component/output variables. Crossing that limit raises a resource exception on a selected factored path, not a knot verdict. The asymptotic theorem concerns the uncapped algorithmic family; to exercise it at parameter $b$, the limit must be at least the relevant variable counts. A fixed implementation cap cannot itself support an asymptotic claim beyond the cap.
+
+\section{Matrix units: the scalar shortcut has a strict boundary}
+\label{sec:units}
+Let $J=(x_1,\ldots,x_b)\subset R_b$. Then $J^{b+1}=0$. Write $A_0$ for the augmentation of a matrix, obtained by taking every entry's constant coefficient.
+
+\begin{theorem}[Unit blocks and logarithmic doubling]\label{thm:unit}
+A matrix $A\in\Mat_M(R_b)$ is invertible if and only if $A_0\in\Mat_M(\F)$ is invertible. In that case, setting
+\[
+ N=A_0^{-1}A-I\in\Mat_M(J),
+\]
+one has $N^{b+1}=0$ and
+\begin{equation}\label{eq:inverse}
+ A^{-1}=\left(\sum_{k=0}^{b}N^k\right)A_0^{-1}.
+\end{equation}
+With $t=\lceil\log_2(b+1)\rceil$, the sum can be computed as
+\begin{equation}\label{eq:doubling}
+ \sum_{k=0}^{2^t-1}N^k=\prod_{j=0}^{t-1}(I+N^{2^j}),
+\end{equation}
+using $O(\log(b+2))$ matrix products. The exponent bound is sharp uniformly over matrix sizes.
+\end{theorem}
+\begin{proof}
+An inverse descends to an inverse after augmentation. Conversely, if $A_0$ is invertible, every entry of a product of $b+1$ matrices in $\Mat_M(J)$ is a sum of products of $b+1$ elements of $J$, so it vanishes. Thus $N^{b+1}=0$. Multiplying the geometric sum by $I+N$ gives $I$ on both sides. The factors in \eqref{eq:doubling} are polynomials in the same matrix and hence commute with one another; expanding them chooses each exponent from $0$ to $2^t-1$ exactly once.
+
+For sharpness, take the $(b+1)$-by-$(b+1)$ strictly upper triangular matrix with $N_{i,i+1}=x_i$. Its $b$th power has top-right entry $x_1\cdots x_b\ne0$. Moreover $I+N$ has exact order $2^{\lceil\log_2(b+1)\rceil}$: every smaller power of two leaves a nonzero power of $N$.
+\end{proof}
+
+\begin{example}[A matrix unit is not generally an involution]\label{ex:noninvolution}
+Over $R_2=\F[x,y]/(x^2,y^2)$,
+\[
+ A=\begin{pmatrix}1&x&0\\0&1&y\\0&0&1\end{pmatrix},\qquad
+ A^{-1}=\begin{pmatrix}1&x&xy\\0&1&y\\0&0&1\end{pmatrix}.
+\]
+The off-diagonal $xy$ term cannot be omitted. The scalar identity $(1+\nu)^{-1}=1+\nu$ does not extend to arbitrary matrix units.
+\end{example}
+
+With dense classical matrix multiplication and ring multiplication cost $\mu(b)=\poly(b)2^b$, this inverse costs $O(M^3\mu(b)\log(b+2))$, including a conservative allowance for augmentation inversion. This is not automatically faster than a well-chosen scalar cancellation sequence. Its purpose is to expose the smaller interface in the next section and to avoid an incorrect use of scalar involution in a future block implementation.
+
+\section{Schur cancellation through a low-rank interface}
+\label{sec:interface}
+\subsection{The categorical cancellation identity}
+Consider a differential block between consecutive homological degrees,
+\begin{equation}\label{eq:blockd}
+ \partial=\begin{pmatrix}A&C\\D&E\end{pmatrix}:
+ U\oplus X\longrightarrow V\oplus Y,
+\end{equation}
+where $A:U\to V$ is invertible.
+
+\begin{proposition}[Cancellation with explicit basis changes]\label{prop:schur}
+The block $A$ is contractible and the remaining differential is
+\begin{equation}\label{eq:schur}
+ S=E+DA^{-1}C.
+\end{equation}
+The statement holds in an additive characteristic-two category, with all compositions well typed.
+\end{proposition}
+\begin{proof}
+Multiply \eqref{eq:blockd} on the left and right by the invertible block matrices
+\[
+ P=\begin{pmatrix}I&0\\DA^{-1}&I\end{pmatrix},\qquad
+ Q=\begin{pmatrix}I&A^{-1}C\\0&I\end{pmatrix}.
+\]
+Direct multiplication gives $P\partial Q=\diag(A,S)$. Apply the same changes of basis to adjacent differentials. The equation $\partial^2=0$ and invertibility of $A$ force the adjacent maps into and out of the $A$ summand to vanish. The remaining two-term summand has contracting homotopy $A^{-1}$ and can be removed. This also explains why a complete implementation must retain or reconstruct the basis changes, not merely the scalar dimensions of the removed summands.
+\end{proof}
+
+\subsection{Low-rank radical corrections}
+For the following matrix computations all objects are copies of one matching, so entries lie in the same $R_b$. Let
+\[
+ A=A_0+UV,\qquad B=A_0^{-1},
+\]
+where $A_0$ now denotes an invertible background $M$-by-$M$ matrix (not necessarily the augmentation), $U$ is $M$-by-$r$, $V$ is $r$-by-$M$, and $K=VBU$ has entries in $J$.
+
+\begin{theorem}[Interface Schur formula]\label{thm:woodbury}
+The matrix $A$ is invertible and, writing $T=(I_r+K)^{-1}$,
+\begin{align}
+ A^{-1}&=B+BUTVB,\label{eq:woodbury}\\
+ S&=E+DBC+(DBU)T(VBC).\label{eq:small-schur}
+\end{align}
+Thus the Schur update is determined by the four contractions
+\begin{equation}\label{eq:four}
+ K=VBU,\quad L=DBU,\quad R=VBC,\quad H=E+DBC,
+\end{equation}
+and equals $H+LTR$.
+\end{theorem}
+\begin{proof}
+The matrix $K$ is nilpotent by Theorem~\ref{thm:unit}, so $T$ exists. Multiplying the proposed inverse by $A$ gives, after keeping all factors in their displayed order,
+\[
+ (A_0+UV)(B+BUTVB)
+ =I+U\bigl(I+T+KT\bigr)VB=I.
+\]
+The product in the other order is also $I$, since $T(I+K)=I$. Substitution in \eqref{eq:schur} yields \eqref{eq:small-schur}. No inverse of an expanded $M$-by-$M$ matrix is needed once the four contractions are available.
+\end{proof}
+
+This is a specialized low-rank inverse identity, not a new general matrix identity. The nontrivial algorithmic issue is whether the contractions can be formed without first expanding $M$ objects. If $U,V,C,D$ are ordinary explicit matrices, their input alone can cost $\Omega(Mr)$ or more. Hiding their construction behind an oracle would not establish a succinct algorithm. Section~\ref{sec:tensors} gives an explicit representation in which this issue is resolved.
+
+\begin{proposition}[Coefficient-rank certificate]\label{prop:coefficientrank}
+Suppose a radical matrix has the expansion
+\[
+ A-A_0=\sum_{\varnothing\ne S\subseteq[b]}x_S H_S,
+\]
+and each nonzero binary coefficient matrix has a factorization $H_S=P_SQ_S$ of inner dimension $r_S$. Then $A-A_0=UV$ with $U$ radical-valued and
+\[
+ r\leq\sum_{S:H_S\ne0}r_S.
+\]
+In particular, a dot-linear correction with every coefficient rank at most $\rho$ has interface dimension at most $b\rho$.
+\end{proposition}
+\begin{proof}
+Concatenate the blocks $x_SP_S$ horizontally to form $U$, and stack the $Q_S$ vertically to form $V$. Their product is the displayed expansion. All weights $x_S$ lie in $J$.
+\end{proof}
+Finding these factorizations in a large explicitly represented coefficient matrix may itself be expensive. The proposition is a certificate construction, not a claim that low rank or its factorization is available for free.
+
+\section{Succinct cancellation of exponentially large blocks}
+\label{sec:tensors}
+\subsection{An explicit input model}
+Let the hidden generator index be $\sigma\in\{0,1\}^m$, so there are $M=2^m$ generators. A product-tensor description of a vector $v\in R_b^M$ has the form
+\begin{equation}\label{eq:cp}
+ v(\sigma)=\sum_{t=1}^{s_v}\alpha_t
+       \prod_{j=1}^m v_{t,j}(\sigma_j),
+ \qquad v_{t,j}(0),v_{t,j}(1),\alpha_t\in R_b.
+\end{equation}
+It consists of actual coefficients, not an oracle for coordinates. Its size is $O(s_v(m+1)2^b)$ bits up to indexing and fixed-size metadata. A sufficient radical-valued certificate is that every $\alpha_t$ has zero constant coefficient.
+
+\begin{lemma}[Pairing without generator enumeration]\label{lem:pairing}
+Given two descriptions \eqref{eq:cp}, their bilinear pairing is
+\begin{equation}\label{eq:pairing}
+ \langle v,w\rangle
+ =\sum_{t,u}\alpha_t\beta_u
+      \prod_{j=1}^m
+       \bigl(v_{t,j}(0)w_{u,j}(0)+v_{t,j}(1)w_{u,j}(1)\bigr).
+\end{equation}
+It is computable in $O((m+1)s_vs_w)$ ring operations and does not enumerate $2^m$ coordinates.
+\end{lemma}
+\begin{proof}
+Insert both descriptions into $\sum_\sigma v(\sigma)w(\sigma)$, exchange the finite sums, and factor the sum over independent binary choices $\sigma_j$. The ring is commutative, so factors belonging to the same mode can be grouped. This gives \eqref{eq:pairing} and the stated operation count.
+\end{proof}
+
+\begin{theorem}[Succinct same-matching block cancellation]\label{thm:succinct}
+Let $A=I_M+UV$ in \eqref{eq:blockd}, with $M=2^m$, and suppose:
+\begin{enumerate}[label=(\roman*),nosep]
+\item $U$ has $r$ columns, $V$ has $r$ rows, $C$ has $q$ columns, and $D$ has $p$ rows;
+\item each of these vectors has a product-tensor description with at most $s$ terms;
+\item every term weight in every column of $U$ is radical;
+\item $E\in\Mat_{p\times q}(R_b)$ is explicit.
+\end{enumerate}
+Then the exact $p$-by-$q$ Schur complement can be computed, without enumerating any of the $M$ generator indices, in
+\begin{equation}\label{eq:succinctcost}
+ O\!\left(\mu(b)\left[(m+1)s^2(r+p)(r+q)
+ +r^3\log(b+2)+pr^2+prq+pq\right]\right)
+\end{equation}
+operations in the same conservative ring/bit accounting as above. Here $\mu(b)=\poly(b)2^b$ bounds one ring multiplication and includes addition cost.
+\end{theorem}
+\begin{proof}
+The radical-weight certificate ensures every entry of $U$ lies in $J$, so every entry of $K=VU$ lies in $J$. The four contractions in \eqref{eq:four}, with $B=I$, require respectively $r^2,pr,rq,pq$ vector pairings. Their total number is $(r+p)(r+q)$. Lemma~\ref{lem:pairing} gives the first term of \eqref{eq:succinctcost}. Compute the $r$-by-$r$ inverse $T$ using Theorem~\ref{thm:unit}, then $H+LTR$ using dense rectangular products. These give the remaining terms. Every loop in the construction ranges over modes, tensor terms, coefficients, or explicit interface dimensions. No loop ranges over $\{0,1\}^m$.
+\end{proof}
+
+\begin{corollary}[A precise quasi-polynomial subproblem]\label{cor:qp}
+For a family whose parameters satisfy
+\[
+ b=O((\log(n+2))^2),\qquad m,s,r,p,q\leq n^{O(1)},
+\]
+the structured Schur problem of Theorem~\ref{thm:succinct} is solvable in $n^{O(\log n)}$ bit time even when $M=2^m$ is exponential in a polynomial of $n$.
+\end{corollary}
+\begin{proof}
+All factors in \eqref{eq:succinctcost} except $\mu(b)$ are polynomial in $n$ and $b$. The latter is $2^{O((\log n)^2)}$ times a polynomial factor. Multiplying these bounds proves the claim.
+\end{proof}
+
+This is unconditional for the stated algebraic input model. It is \emph{not} an assertion that a knot diagram can be converted into such a sequence of blocks within these bounds. The latter would require a separate, topology-aware representation and closure theorem. Also, the explicit outer dimensions $p,q$ are part of the bound; they must not secretly contain the same exponential multiplicity that was removed from the hidden index.
+
+\subsection{Separable backgrounds}
+\begin{corollary}[An invertible tensor background]\label{cor:separable}
+Replace $I_M$ by $A_0=\bigotimes_{j=1}^m A_j$, where each $A_j\in\Mat_2(R_b)$ is invertible. The same conclusion holds with an additional polynomial term for $m$ small inverses and local transformations. The number of product-tensor terms does not increase.
+\end{corollary}
+\begin{proof}
+The inverse is $B=\bigotimes_jA_j^{-1}$. On a term in \eqref{eq:cp}, applying $B$ replaces the two-entry factor $v_{t,j}$ by $A_j^{-1}v_{t,j}$, without changing its scalar weight or term count. Transform the columns of $U$ and $C$ this way, leaving the rows of $V,D$ unchanged. Form $VBU,DBU,VBC,E+DBC$ by the same pairings. Radical term weights remain radical. Theorem~\ref{thm:woodbury} completes the proof.
+\end{proof}
+
+\subsection{A fully specified \texorpdfstring{$2^{40}$}{2-to-the-40}-generator example}
+The supplied certificate uses $b=2$, $m=40$, $r=3$, and $p=q=1$. Write the first two index bits as a label $j\in\{0,1,2,3\}$. For the remaining 38 modes, define $u_j$ by fixing one parity class of modes to zero and leaving the other free; define $v_j$ with the roles reversed. Both also fix their first two bits to the label $j$. Each vector has $2^{19}$ nonzero coordinates, but one product-tensor term. Their pairings are
+\[
+ \langle v_i,u_j\rangle=\delta_{ij}.
+\]
+Set
+\[
+ U=(0,\ xu_0,\ yu_1),\qquad
+ V=\begin{pmatrix}v_0\\v_1\\v_2\end{pmatrix},\quad
+ C=u_2,\quad D=v_0,\quad E=0.
+\]
+Then
+\[
+ K=VU=\begin{pmatrix}0&x&0\\0&0&y\\0&0&0\end{pmatrix},
+ \quad L=(0,x,0),\quad R=(0,0,1)^T,\quad H=0.
+\]
+Consequently $S=xy\ne0$. The $xy$ contribution is exactly the matrix phenomenon of Example~\ref{ex:noninvolution}. Using the scalar involution shortcut on $I+K$ would return an incorrect answer.
+
+The hidden module has $1\,099\,511\,627\,776$ generators. The two nonzero outer-product rectangles in $UV$ each have $2^{38}$ entries. The verifier reads the tensor description and recomputes the small interface; it neither creates these rectangles nor enumerates the generators. It reports an \emph{algebraic} certificate, with \code{unknot\_verdict: null}. This example demonstrates the exact representation theorem, not a trillion-crossing knot computation.
+
+\section{Why succinctness still needs structural theorems}
+\label{sec:obstructions}
+\subsection{An explicit product-tensor obstruction}
+\begin{proposition}[Equality tensors need exponentially many product terms]\label{prop:tensorrank}
+For $k\geq1$, let $v(\sigma,\tau)=1$ when $\sigma=\tau$ and zero otherwise, where $\sigma,\tau\in\{0,1\}^k$. Any description of $v$ as a sum of products over the $2k$ individual binary modes has at least $2^k$ terms, even if its coefficients lie in $R_b$.
+\end{proposition}
+\begin{proof}
+Apply augmentation to a proposed $R_b$ description. Flatten the resulting tensor into a matrix with row index $\sigma$ and column index $\tau$. Each product term becomes a binary matrix of rank at most one. The target flattening is the $2^k$-by-$2^k$ identity, of rank $2^k$. Thus at least $2^k$ terms are necessary.
+\end{proof}
+The function itself has a short factored Boolean formula,
+\[
+ v(\sigma,\tau)=\prod_{j=1}^k(1+\sigma_j+\tau_j).
+\]
+Therefore a short circuit does not imply a short description in the particular product-tensor format used here. The theorem is a representation obstruction; it does not claim that this tensor necessarily occurs in a difficult unknot instance.
+
+There is a separate information-theoretic obstruction for arbitrary morphisms: $R_b$ contains $2^{2^b}$ elements. A lossless worst-case encoding of all of them needs at least $2^b$ bits. The component quotient removes information irrelevant to one composition; it does not evade this count when an identity endomorphism context retains all coefficients.
+
+\subsection{A bounded-bond extension}
+The product-tensor format is not the only possible succinct format. For a fixed common mode ordering, consider a matrix-product description
+\[
+ v(\sigma)=A_1^{\sigma_1}\cdots A_m^{\sigma_m},
+\]
+with end dimensions one and all intermediate dimensions at most $\chi$; coefficients lie in $R_b$. This subsection gives an algebraic extension, not an additional shipped backend.
+
+\begin{proposition}[Pairing bounded-bond descriptions]\label{prop:bond}
+Two such vectors with maximum bond dimension $\chi$ can be paired using $O(m\chi^3)$ ring operations. Substituting this pairing into Theorem~\ref{thm:succinct} replaces its product-tensor pairing term by $O(m\chi^3(r+p)(r+q))$, provided radicality is supplied by a valid certificate.
+\end{proposition}
+\begin{proof}
+Start with the one-by-one matrix $Z_0=(1)$. For the two families of cores $A_j^\eps,B_j^\eps$, update
+\[
+ Z_j=\sum_{\eps\in\{0,1\}}(A_j^\eps)^T Z_{j-1} B_j^\eps.
+\]
+Induction shows that $Z_j$ sums the products of all partial paths with the same first $j$ physical bits. At the last mode, $Z_m$ is the desired scalar pairing. Each update uses a constant number of matrix products with dimensions at most $\chi$. The Schur argument depends only on exact pairings and therefore applies unchanged.
+\end{proof}
+
+For the equality tensor, interleaving paired modes gives a bounded-bond description despite its large product-tensor rank. However, low bond dimension for different incompatible mode orders does not by itself yield a cheap common-order pairing. A representation theorem must specify its ordering, intermediate ranks, and the costs of reordering and recompression.
+
+\subsection{Operations that do not establish the missing bound}
+A local tensor extension can preserve a short description for one step while multiplying its term count by a constant greater than one. Repeating that argument $n$ times gives an exponential bound. Likewise, a recurrence $s_{i+1}\leq s_i^d$ with $d>1$ is not harmless at logarithmic depth: it yields $s_0^{d^L}$, which can be far larger than quasi-polynomial. A useful global theorem needs a genuinely controlled description-size recurrence or a verified recompression step.
+
+The code therefore never discards generators just because a rank or term-count cap has been reached. A cap raises a resource exception. Numerical tensor truncation, inferred equality from hashes without verification, and unproved identification of boundary objects are not sound replacements for chain maps.
+
+\section{End-to-end accounting and the remaining topological gap}
+\label{sec:accounting}
+\subsection{What the arithmetic improvement proves for an explicit scan}
+Let $B$ be the maximum number of matching arcs at any frontier. Let $Q$ be the number of composition requests that actually reach the arithmetic backend, including requests not served by higher-level caches. Let $H$ be the bit work for all remaining operations, including diagram processing, ordering, object and edge bookkeeping, transfers, and any rank computation.
+
+\begin{corollary}[A costed backend replacement]\label{cor:scan}
+With the dense contraction algorithm and uncapped resources, total runtime is bounded by
+\[
+ H+Q\,\poly(B)2^B.
+\]
+Thus $B=O((\log n)^2)$ and $H,Q\leq n^{O(\log n)}$ are sufficient for the strong quasi-polynomial target.
+\end{corollary}
+\begin{proof}
+Apply Theorem~\ref{thm:complexity} to each request and add the other work. Multiplication of two $n^{O(\log n)}$ quantities remains $n^{O(\log n)}$.
+\end{proof}
+
+This statement deliberately displays $H$ and $Q$. A bound on $B$ alone does not bound the number of live objects, and therefore does not bound either quantity. Nor does a count of distinct matching \emph{types} bound the number of copies of a type. Cached topology can be small while the differential between multiplicity spaces is large.
+
+For a fully specified explicit scan with at most $M$ live objects before each reduction, scalar eliminations number at most $O(nM)$ and a naive Schur update can touch $O(M^2)$ entries per cancellation. This gives a coarse $O(nM^3)$ bound on touched entry pairs, before charging their arithmetic and the other data structures. It is useful for conditional accounting, not a proof that $M$ is small.
+
+\subsection{A costed succinct schedule}
+\begin{theorem}[Composition of verified structured stages]\label{thm:schedule}
+Suppose a recognition algorithm produces a sequence of at most $n^a$ algebraic stages. Every stage is either a polynomial-size exact operation or a same-matching Schur problem of Theorem~\ref{thm:succinct}, with $b\leq C(\log(n+2))^2$ and all other displayed parameters at most $n^a$. Suppose the entire stage schedule, all required descriptions, all transitions, and the final decision certificate can be constructed and verified within $n^{O(\log n)}$ bit operations. Then the resulting recognition algorithm has bit complexity $n^{O(\log n)}$.
+\end{theorem}
+\begin{proof}
+Each structured stage has the asserted bound by Corollary~\ref{cor:qp}. Summing over polynomially many stages preserves it. The stated construction, transition, and verification costs also have that bound. Correctness follows from the exact stage identities and the assumed sound final certificate.
+\end{proof}
+The construction and transition hypotheses are substantial. This paper supplies neither a general schedule for knot diagrams nor a proof that crossing addition and cancellation maintain the required descriptions. The theorem records the exact missing interface between the algebraic result and a global recognizer, rather than treating it as implicit.
+
+\subsection{Hierarchy costs: iteration counts are not running times}
+Suppose a hierarchy routine has at most $O(L(g+1)^L)$ primitive-step visits and each visit costs at most $P(n)$ bit operations, measured against the original input size. Then
+\begin{equation}\label{eq:hierarchy}
+ T(n)=O\bigl(P(n)L(g+1)^L\bigr).
+\end{equation}
+For $L=O(\log n)$, $g=n^{O(1)}$, and $P(n)=n^{O(\log n)}$, this is $n^{O(\log n)}$. The elementary logarithm calculation is
+\[
+ \log T\leq O(1)+\log P+\log L+L\log(g+1)=O((\log n)^2).
+\]
+This accounting applies to the step count discussed in Section~\ref{sec:audit}, only after its additional hypotheses are proved.
+
+Two common hidden losses deserve emphasis. First, $n^{O(\log n)}$ candidates at each of $O(\log n)$ recursively branching levels can give $\exp(O((\log n)^3))$, not the stronger $\exp(O((\log n)^2))$ target. Second, ``polynomial in the current representation size'' is insufficient when that size obeys $\ell_{i+1}\leq\ell_i^d$. Bounds must control every intermediate encoding in terms of the original $n$, including integer coordinate lengths, labels, provenance, and conversion costs.
+
+The algebraic interface here may become a useful compression primitive, but it does not supply the layered-handle encoding, constructive surface routines, or topology-preserving cutting provenance required by the hierarchy route.
+
+\section{Implementation, validation, and measured performance}
+\label{sec:experiments}
+\subsection{Implementation boundary}
+The package is standard-library Python. \code{subset.py} implements sparse and ranked multiplication; \code{kernel.py} compiles component quotients and lifts; \code{blocks.py} implements checked inverses and interfaces; \code{tensors.py} provides explicit product-tensor pairings and separable backgrounds. \code{adapters.py} creates a subclass of the caller's \code{Planar} class without global monkey patches. The default crossing-transfer routine is unchanged. In particular, it retains its existing optimization that separates the locally touched circles from untouched renumbered circles.
+
+The adapter must be installed before any crossing is processed. Otherwise interned matching identifiers, coefficient numbering, or caches may be incompatible. It clears its component-plan cache at every stage, preserves the existing shape cache, and passes the scanner's resource-check callback into the new arithmetic. Scalar identities are used only when their source and target matching conditions hold.
+
+The block/tensor code is a verified algebraic prototype, not yet a replacement cancellation driver for the complete scanner. It does not silently identify matrices between different matching types with matrices over one $R_b$.
+
+\subsection{Validation actually performed}
+The final test log reports \textbf{29 passing test methods}. The significant internal checks include 65,536 exhaustive products in $R_3$, comparing the transform and polarized methods with unpolarized sparse multiplication; 2,245 monomial compositions across all noncrossing matching triples with at most three arcs, also compared against the older set-based cobordism oracle; all 2,744 four-arc matching triples with seeded polynomial inputs; and 300 additional comparisons with the byte-identical \code{BitAlgebra} fixture.
+
+Full raw scans were compared on six existing examples and 40 seeded valid braid closures. The checks compare the entire unnormalized homological-degree rank dictionary, not only a knot verdict. They also evaluate $\partial^2$ during the scans. The forced factored mode is tested in addition to the adaptive mode, since the latter may deliberately bypass the new kernel on sparse inputs.
+
+Matrix tests verify inverses on both sides, the sharp nilpotence family, the failure of matrix involution, and agreement of small-interface and full Schur calculations. Tensor tests compare pairings against explicit expansion, compare succinct Schur complements against full matrices through 16 hidden generators, check a separable background, and reject tampered certificates. The $2^{40}$ example is verified through the proven contraction formula, not by an infeasible full expansion.
+
+These are finite computational checks supporting the proofs. They are not a proof assistant certification or a claim that the entire current repository's test suite was run. The original archive is retained only as an independent correctness oracle; it is not the timing baseline for the current-engine measurements.
+
+\subsection{Benchmark protocol}
+Measurements were made on CPython 3.13.5 under Linux x86-64. Each listed comparison uses five repetitions with fixed seeded inputs and alternating baseline/adaptive execution order. Garbage collection is performed before, not inside, the timed region. Every paired result is checked for equality. Raw timings and environment metadata are included in JSON and CSV. The execution environment is shared: CPU isolation and a stable clock frequency were not established. The ratios below describe these finite paired measurements, not hardware-independent speedup guarantees.
+
+The microbenchmarks precompile the topological plan for both engines. ``Cold'' means that its monomial-result memo is empty; ``warm'' means a repeated call on the same inputs with this memo retained. This is not a benchmark of the scanner's higher-level whole-composition cache, which could bypass both kernels. The reported speedup is the ratio of separate median times, not a confidence interval. Small microsecond-scale differences should not be overinterpreted.
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{lrcrrr}
+\toprule
+Input & $b$ & Memo & Baseline & Adaptive & Speedup \\
+\midrule
+dense & 4 & cold & 0.071 & 0.136 & 0.52 \\
+dense & 6 & cold & 0.754 & 0.231 & 3.27 \\
+dense & 8 & cold & 11.447 & 0.956 & 11.97 \\
+dense & 10 & cold & 435.724 & 13.071 & 33.33 \\
+dense & 6 & warm & 0.137 & 0.191 & 0.72 \\
+dense & 8 & warm & 2.027 & 0.950 & 2.13 \\
+dense & 10 & warm & 98.373 & 9.123 & 10.78 \\
+near equal & 10 & cold & 182.002 & 0.861 & 211.47 \\
+near equal & 10 & warm & 41.806 & 0.936 & 44.68 \\
+sparse & 10 & cold & 0.025 & 0.028 & 0.87 \\
+sparse & 10 & warm & 0.014 & 0.018 & 0.80 \\
+\bottomrule
+\end{tabular}
+\caption{Composition microbenchmarks. Times are milliseconds; speedup is baseline/adaptive. Topology is precompiled, whole-result caches are bypassed, and sparse regressions are included.}
+\label{tab:micro}
+\end{table}
+
+The dense ten-variable samples reduce the median cold composition time from 435.7 milliseconds to 13.1 milliseconds, a ratio of 33.3. The warmed baseline still visits every supported pair: its median is 98.4 milliseconds, compared with 9.1 milliseconds for the adaptive kernel, a ratio of 10.8. Nearly equal samples benefit additionally from polarization after projection. Smaller or sparse cases can regress because the dispatch, checks, and quotient setup have a cost. These cases are retained in the table rather than excluded from the performance claim.
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{lrrrr}
+\toprule
+Diagram & Rank & Baseline & Adaptive & Ratio \\
+\midrule
+Trefoil & 6 & 0.604 & 0.586 & 1.032 \\
+Figure-eight & 10 & 0.785 & 0.821 & 0.956 \\
+Eight-crossing unknot & 2 & 1.377 & 1.543 & 0.893 \\
+Conway & 66 & 5.852 & 5.590 & 1.047 \\
+Kinoshita--Terasaka & 66 & 6.474 & 6.082 & 1.064 \\
+$T(3,5)$ & 14 & 3.933 & 4.264 & 0.922 \\
+Forty-crossing braid unknot & 2 & 9.462 & 8.434 & 1.122 \\
+Alternating three-braid (10) & 242 & 6.022 & 6.097 & 0.988 \\
+\bottomrule
+\end{tabular}
+\caption{Raw scanning comparisons in the current-engine source-derived harness. Median milliseconds include the common order-selection routine; no preliminary recognition filters are used. All rank dictionaries agree.}
+\label{tab:scans}
+\end{table}
+
+Every adaptive scan in this table made \emph{zero} factored-path calls at the threshold used. Where nontrivial compositions occurred, their support-product maximum was at most two. The measurements therefore provide no evidence of an end-to-end dense-kernel speedup on these ordinary diagrams. Variations in cases with no changed arithmetic are measurement noise or overhead, not algorithmic wins. The appropriate integration decision is to keep the new path opt-in and collect morphology profiles on larger workloads.
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{rrrrr}
+\toprule
+$M$ & Full Schur & Build interface & Evaluate & Ratio \\
+\midrule
+8 & 10.023 & 0.760 & 0.339 & 9.12 \\
+16 & 67.511 & 1.229 & 0.341 & 43.02 \\
+24 & 190.821 & 2.166 & 0.366 & 75.36 \\
+\bottomrule
+\end{tabular}
+\caption{Structured block experiment over $R_3$, with supplied inner rank $r=2$ and $p=q=2$. Median milliseconds. Ratio compares the full Schur calculation with the sum of interface-building and evaluation medians.}
+\label{tab:interface}
+\end{table}
+
+These interface measurements use synthetic matrices satisfying the proved low-rank radical hypothesis, not matrices extracted from knot diagrams. The $U,V$ factors are supplied to the interface method; the full $A$ is supplied to the dense method. The ``build'' column includes forming all four contractions, so the comparison does not hide that work. It does not include discovering a low-rank factorization from an arbitrary matrix. Larger improvements in this structured setting must not be transferred to an unstructured scanner workload.
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{rrrr}
+\toprule
+$m$ & Hidden generators & Verify & Schur result \\
+\midrule
+10 & $2^{10}$ & 0.444 & $xy$ \\
+20 & $2^{20}$ & 0.482 & $xy$ \\
+40 & $2^{40}$ & 0.708 & $xy$ \\
+80 & $2^{80}$ & 1.208 & $xy$ \\
+160 & $2^{160}$ & 2.293 & $xy$ \\
+\bottomrule
+\end{tabular}
+\caption{Description-sized verification of the explicit complementary-support family. Nine repetitions; median milliseconds. The represented matrix is never expanded.}
+\label{tab:succinct}
+\end{table}
+
+The last table measures certificate parsing into tensor objects, contractions, checked small inverse, and comparison with the claimed Schur result; file I/O and generation of the already supplied JSON object are outside the timed region. It illustrates description-sized work. It is not paired with a claimed measurement of an expanded trillion-dimensional matrix.
+
+\section{Repository integration and reproducibility}
+\label{sec:integration}
+The suggested destination is the additive directory
+\begin{center}
+\path{Topology/UnknotRecognition/research/frobenius-contraction/}.
+\end{center}
+Nothing in the bundle requires overwriting the existing recognizer or changing its default result path. The intended initial integration is a research package and an opt-in adapter.
+
+From the bundle root, run
+\begin{lstlisting}
+PYTHONPATH=src:. python -m unittest discover -s tests -v
+python benchmarks/run_benchmarks.py --repeats 5
+python benchmarks/succinct_example.py
+PYTHONPATH=src python -m unknot_frobenius.verify \
+  examples/succinct_interface_2pow40.json
+sh build.sh
+\end{lstlisting}
+Windows users can use \code{python run\_tests.py} and the provided path setup in the benchmark scripts instead of setting \code{PYTHONPATH}. Building the PDF requires \code{pdflatex}; no bibliography processor is needed. The final \code{article.tex} is self-contained, with its tables and references embedded.
+
+An actual-checkout validation script is included separately. It checks the two inspected production blob identifiers, imports the production \code{FastScan}, and compares unchanged versus adapted scans. Its presence is not a claim that it was run against a complete checkout during this session. Repository-wide Python and Rust regressions, cache behavior on larger inputs, and timing on the user's target platform remain integration tasks.
+
+\subsection{Acceptance conditions for a default switch}
+A default switch should require: agreement on all existing invariants and degree ranks; a documented allocation/timeout policy; paired measurements showing no material regressions on ordinary inputs; actual invocation of the new path on representative expensive inputs; and a reproducible account of cache-warmness and coefficient supports. The present data satisfy arithmetic correctness checks but not the empirical case for a default switch.
+
+For the tensor-block driver, a further acceptance condition is a typed certificate connecting the structured matrices to actual chain objects and differential maps. The existing algebraic verifier deliberately does not certify this topological provenance.
+
+\section{Further research questions and concrete milestones}
+\label{sec:questions}
+\subsection{1. Where does dense coefficient arithmetic actually occur?}
+Instrument the production Python and Rust engines to record input and projected support sizes, component counts, memo sizes, and repeated whole-result cache hits. The decisive dataset should include diagrams that survive the preliminary filters and require substantial exact-backend work. The milestone is a public, paired corpus demonstrating that the dense path is used often enough to offset dispatch overhead. A negative result is useful: it would redirect effort away from an already cheap kernel.
+
+\subsection{2. Can isotypic multiplicity blocks be extracted without expansion?}
+Define a typed representation for many copies of one matching and homological degree, including shifted objects where appropriate. Construct $A_0,U,V,C,D,E$ together with proofs of their source and target types. The key bound is the cost of obtaining the factors from the scanner's state, not merely the cost after they have been supplied. An initial milestone is to identify a growing, diagram-derived family with polynomial-size factors and a measured multiplicity reduction.
+
+\subsection{3. Which elementary operations preserve succinct descriptions?}
+Give explicit formulas for crossing addition, delooping, basis changes, and the Schur update in the chosen tensor or bounded-bond representation. Track coefficient width, term count or bond dimension, explicit outer dimensions, and construction time simultaneously. The desired theorem controls these parameters by the original diagram size throughout the computation; an exponential recurrence disguised as repeated local simplification does not suffice.
+
+\subsection{4. Can heterogeneous matching interfaces be treated efficiently?}
+The tensor implementation currently uses one coefficient ring $R_b$ for a same-matching sector. A general scanner has $\Hom(a,b)$ bimodules between different matchings. Extend the four-contraction formula using their correctly typed compositions, and use the component quotient to contract coefficients without imposing a false common-ring structure. A successful extension needs both an algebraic proof and an explicit cost bound for basis changes and gluing plans.
+
+\subsection{5. Which representation survives the equality-tensor obstruction?}
+Implement the bounded-bond pairing of Proposition~\ref{prop:bond}, then compare it with product-tensor descriptions on diagram-derived interfaces. The equality tensor is a mandatory regression example. Study common-order width, not just the separate bond dimensions of two inputs. An ordering/recompression algorithm needs exact certificates; numerical low-rank truncation is not sufficient for a decision procedure.
+
+\subsection{6. Can one certify a nontrivial homology class before full expansion?}
+Design cycle/cocycle or chain-retraction certificates that prove the rank is larger than the unknot rank while retaining short descriptions. For example, several cycles together with dual cocycles and a full-rank pairing would provide an independently checkable lower bound. The missing work is to construct and evaluate those maps cheaply in the tangle representation. A partial-complex object count alone is not such a certificate, since later attachments may create cancellations.
+
+\subsection{7. Should the three-braid route bypass scanning entirely?}
+The polynomial three-braid result cited in Section~\ref{sec:audit} suggests a specialized exact backend rather than further optimization of a basis-expanding computation on that class. Implement its normal-form and invariant formulas with explicit coefficient and bit-length checks. Compare all relevant ranks against the current backend on a broad finite range. This is an implementation of a known result, not a new theorem being claimed here, but could be a high-value performance improvement.
+
+\subsection{8. Can extremal-degree computations supply useful early certificates?}
+Analyze when a small collection of exactly computed homological degrees suffices to rule out the unknot, and how to choose those degrees adaptively. The specification must state which part of the homology is certified and what it implies for decision. It must also give uniform parameter dependence before allowing the number of retained degrees to grow with input size.
+
+\subsection{9. Can hierarchy primitives meet an original-input size bound?}
+For the geometric route, specify the binary representation of layered handles, boundary patterns, surfaces, and cutting provenance. Implement one primitive with a worst-case cost and an independently checkable output certificate. The milestone is not a fast demonstration alone, but a bound on every integer and data structure in terms of the original crossing number. Only then can a step-count estimate be converted to runtime using \eqref{eq:hierarchy}.
+
+\subsection{10. Is there a logarithmic-depth decomposition with bounded interfaces?}
+Search for a decomposition invariant that simultaneously controls frontier size, description size, and recursion depth. Prove an explicit recurrence and solve it without suppressing the dependence of an inner algorithm on a growing parameter. Both the $n^{O(\log n)}$ and the broader quasi-polynomial target should be tracked. A counterfamily forcing large interfaces in a proposed representation would be a substantive negative result, not merely a failed implementation.
+
+\subsection{11. What should be formally verified first?}
+The most self-contained targets are the component factorization, exact plan-rank formula, scalar polarization, and nilpotent matrix inverse. Next formalize the typed block-cancellation identity and tensor pairing. These are small algebraic interfaces with clean specifications and extensive finite tests. A full proof-carrying recognizer must ultimately also verify diagram parsing, topology-changing moves, and the connection to the final detection theorem.
+
+\subsection{12. Can the selector become predictably non-regressive?}
+The current threshold is a heuristic. Develop a selector based on component count, projected support, and memo availability, or run competing exact kernels under a shared budget when the overhead is justified. A theorem about arithmetic work does not automatically control wall-clock overhead. Preserve a deterministic result, explicit resource exceptions, and paired benchmark evidence for each added selection rule.
+
+\section{Conclusion}
+The component algebra is an exact, minimal sufficient quotient for a fixed nonzero gluing plan. It gives a provable dense arithmetic improvement and a safe place to exploit characteristic-two polarization. The block analysis identifies precisely where scalar involution stops being valid, and the tensor-interface theorem demonstrates that exponential multiplicity can sometimes be removed without expanding it. The supplied verifier realizes this distinction on a $2^{40}$-generator structured block.
+
+The empirical result is deliberately narrower than the algebraic result: dense compositions improve substantially in the tested harness, but the ordinary scanned diagrams remain sparse and show no established overall speedup. The global quasi-polynomial target now has a sharper set of obligations: construct succinct diagram-derived blocks, preserve their descriptions under exact operations, and charge all transitions and topology certificates to the original input size. Those obligations are research problems stated here, not assumptions silently converted into a recognition theorem.
+
+\appendix
+\section{Claim ledger and artifact map}
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.21\linewidth}>{\raggedright\arraybackslash}p{0.43\linewidth}>{\raggedright\arraybackslash}p{0.28\linewidth}}
+\toprule
+Claim & Status and limitation & Artifact\\
+\midrule\endhead
+Component factorization & Proved for every valid compiled plan; exact current-operation specialization. & \code{kernel.py}; Theorem~\ref{thm:factor}\\
+Minimal quotient and rank & Proved; minimality needs the stated open, undotted, input-covering hypotheses. & Theorem~\ref{thm:minimal}; \code{linearized\_rank}\\
+Dense speed bound & Proved algorithmic bound; ranked convolution is classical; allocation caps are separate. & \code{subset.py}; Theorem~\ref{thm:complexity}\\
+Block inverse and Schur & Proved and checked; scalar involution is not used on matrix units. & \code{blocks.py}\\
+Succinct cancellation & Proved for supplied tensor-described same-matching blocks. No general construction from a diagram. & \code{tensors.py}; Theorem~\ref{thm:succinct}\\
+Bounded-bond extension & Proved pairing algorithm; not implemented in this bundle. & Proposition~\ref{prop:bond}\\
+Measured speedups & Finite paired measurements with raw data and negative cases. No universal wall-clock claim. & \code{results/}\\
+Production adapter & Implemented and exercised with source-derived current-engine fixtures. Complete-checkout run remains required. & \code{adapters.py}; \code{integration/}\\
+General quasi-polynomial unknot recognition & Not established by this work. & Section~\ref{sec:accounting} states missing hypotheses\\
+\bottomrule
+\end{longtable}
+
+\section{Verifier specification and safety boundary}
+The JSON schema \code{unknot-frobenius-interface-v1} specifies the ring variable count, number of binary modes, product-tensor terms for the columns of $U,C$ and rows of $V,D$, the explicit matrix $E$, and a claimed Schur complement. A term consists of a ring coefficient and one two-entry factor per mode. Coefficients use the bit encoding in Section~\ref{sec:algebra}.
+
+The verifier validates coefficient ranges, matrix dimensions, common mode counts, and radical weights in $U$. It constructs the four contractions itself, computes and checks the small inverse, and compares the resulting Schur matrix with the claim. It imposes explicit input-size and parameter limits. It does not treat successful algebraic verification as proof that the input was extracted from a knot complex. In particular, neither a JSON description nor a large represented dimension certifies a topological result.
+
+A future topological certificate must additionally bind the algebra to a diagram, matching types, homological degrees, previous chain maps, and the exact representation transitions. A final knot verdict also needs the existing detector's hypotheses. This separation prevents a mathematically correct matrix computation from being misreported as an unknot certificate.
+
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\raggedright
+\begin{thebibliography}{9}
+\setlength{\itemsep}{4pt}
+\bibitem{repo}
+Vladimir Reshetnikov and ProveIt contributors.
+\emph{ProveIt: Topology/UnknotRecognition}, repository source inspected 7 October 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Topology/UnknotRecognition}.
+Relevant content identifiers are recorded in Section~\ref{sec:audit} and \code{reference/provenance.json}.
+
+\bibitem{bnfast}
+Dror Bar-Natan.
+Fast Khovanov homology computations.
+\emph{Journal of Knot Theory and Its Ramifications} \textbf{16}(3) (2007), 243--255.
+\href{https://doi.org/10.1142/S0218216507005294}{doi:10.1142/S0218216507005294}.
+Preprint \href{https://arxiv.org/abs/math/0606318}{arXiv:math/0606318}.
+
+\bibitem{bhkk}
+Andreas Bj\"orklund, Thore Husfeldt, Petteri Kaski, and Mikko Koivisto.
+Fourier meets M\"obius: fast subset convolution.
+In \emph{Proceedings of STOC 2007}, 67--74.
+\href{https://doi.org/10.1145/1250790.1250801}{doi:10.1145/1250790.1250801}.
+Preprint \href{https://arxiv.org/abs/cs/0611101}{arXiv:cs/0611101}.
+
+\bibitem{ks}
+Tuomas Kelom\"aki and Dirk Sch\"utz.
+\emph{On computational complexity of Khovanov homology}.
+Preprint, 5 January 2026, 30 pages.
+\href{https://arxiv.org/abs/2601.02119v1}{arXiv:2601.02119v1}.
+
+\bibitem{lackenby}
+Marc Lackenby.
+\emph{Incompressible surfaces, hierarchies and unknot recognition}.
+Preprint, 25 July 2026, 54 pages.
+\href{https://arxiv.org/abs/2607.23350v1}{arXiv:2607.23350v1}.
+Author's PDF: \url{https://people.maths.ox.ac.uk/lackenby/algorithm-incompressible-250726.pdf}.
+
+\bibitem{km}
+Peter B. Kronheimer and Tomasz S. Mrowka.
+Khovanov homology is an unknot-detector.
+\emph{Publications Math\'ematiques de l'IH\'ES} \textbf{113} (2011), 97--208.
+\href{https://doi.org/10.1007/s10240-010-0030-y}{doi:10.1007/s10240-010-0030-y}.
+Preprint \href{https://arxiv.org/abs/1005.4346}{arXiv:1005.4346}.
+\end{thebibliography}
+\endgroup
+\end{document}

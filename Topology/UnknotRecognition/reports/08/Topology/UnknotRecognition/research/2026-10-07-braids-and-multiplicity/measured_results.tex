@@ -1,0 +1,83 @@
+The final run used CPython 3.12.14 on x86\_64 Linux, with 15 paired
+rounds per case and a rotating three-arm order: baseline, new, and a
+second baseline call. Each implementation had one warm-up. The timed
+region includes fresh PD construction and recognition; it excludes
+process startup, imports, and JSON decoding. All published samples
+finished with the expected exact verdict.
+
+The comparison rule uses an order-statistic interval with at least 95\%
+coverage for the median new/old ratio under independent sampling. It
+labels a case faster only when the interval lies below one and the
+median ratio is below the first quartile of the paired baseline-control
+ratios. The slower rule is symmetric. These are exploratory workload
+comparisons with a local A/A noise control; they are not simultaneous
+confidence guarantees across the whole corpus.
+
+Twenty-one of 28 cases satisfy the faster rule, seven support no timing
+claim, and none satisfy the slower rule. This is a statement about these
+completed measurements, not a proof that regressions are impossible.
+The default-pipeline speedup ranges are 3.97--7.04 for positive
+three-braids, 2.39--3.88 for alternating three-braids, and 2.44--5.29
+for the five scrambled three-braid unknots. The larger 10.72--51.05
+range belongs to the explicitly labeled R3-disabled ablation.
+
+\begingroup
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{longtable}{@{}p{0.38\textwidth}rrrrl@{}}
+\caption{All paired pipeline measurements. Times are separate medians in
+milliseconds; speedup is the median of paired old/new ratios, which need
+not equal the quotient of the displayed medians. ``None'' means no timing
+claim under the stated rule.}\label{tab:paired}\\
+\toprule
+Case & \(n\) & Old ms & New ms & Speedup & Claim\\
+\midrule
+\endfirsthead
+\toprule
+Case & \(n\) & Old ms & New ms & Speedup & Claim\\
+\midrule
+\endhead
+\midrule
+\multicolumn{6}{r}{\emph{Continued on next page}}\\
+\endfoot
+\bottomrule
+\endlastfoot
+Positive three-braid, \(r=5\) & 10 & 0.351 & 0.087 & 4.09\(\times\) & Faster \\
+Positive three-braid, \(r=11\) & 22 & 0.630 & 0.156 & 3.97\(\times\) & Faster \\
+Positive three-braid, \(r=23\) & 46 & 1.559 & 0.272 & 4.40\(\times\) & Faster \\
+Positive three-braid, \(r=47\) & 94 & 3.966 & 0.575 & 7.04\(\times\) & Faster \\
+Positive three-braid, \(r=95\) & 190 & 8.705 & 1.452 & 5.67\(\times\) & Faster \\
+Alternating three-braid, \(r=5\) & 10 & 0.210 & 0.085 & 2.39\(\times\) & Faster \\
+Alternating three-braid, \(r=11\) & 22 & 0.448 & 0.158 & 2.91\(\times\) & Faster \\
+Alternating three-braid, \(r=23\) & 46 & 2.040 & 0.424 & 3.88\(\times\) & Faster \\
+Alternating three-braid, \(r=47\) & 94 & 2.752 & 0.871 & 2.52\(\times\) & Faster \\
+Alternating three-braid, \(r=95\) & 190 & 7.481 & 2.244 & 2.72\(\times\) & Faster \\
+Scrambled unknot, seed 0 & 190 & 6.059 & 2.221 & 2.44\(\times\) & Faster \\
+Scrambled unknot, seed 0 (R3 off) & 190 & 17.365 & 1.731 & 10.72\(\times\) & Faster \\
+Scrambled unknot, seed 4 & 158 & 6.295 & 1.197 & 5.12\(\times\) & Faster \\
+Scrambled unknot, seed 4 (R3 off) & 158 & 31.022 & 1.502 & 21.36\(\times\) & Faster \\
+Scrambled unknot, seed 5 & 202 & 10.292 & 2.411 & 4.42\(\times\) & Faster \\
+Scrambled unknot, seed 5 (R3 off) & 202 & 80.592 & 1.563 & 51.05\(\times\) & Faster \\
+Scrambled unknot, seed 7 & 198 & 6.787 & 1.394 & 4.36\(\times\) & Faster \\
+Scrambled unknot, seed 7 (R3 off) & 198 & 58.837 & 2.089 & 27.66\(\times\) & Faster \\
+Scrambled unknot, seed 14 & 182 & 6.815 & 1.259 & 5.29\(\times\) & Faster \\
+Scrambled unknot, seed 14 (R3 off) & 182 & 19.499 & 1.185 & 14.83\(\times\) & Faster \\
+Morton's four-braid unknot & 11 & 2.818 & 2.913 & 1.03\(\times\) & None \\
+Stabilized unknot, 16 strands & 15 & 0.120 & 0.133 & 0.93\(\times\) & None \\
+Stabilized unknot, 64 strands & 63 & 0.474 & 0.544 & 0.81\(\times\) & None \\
+Stabilized unknot, 256 strands & 255 & 2.838 & 2.206 & 1.20\(\times\) & None \\
+Conway & 11 & 0.820 & 0.795 & 0.97\(\times\) & None \\
+Kinoshita--Terasaka & 11 & 0.932 & 0.869 & 1.04\(\times\) & None \\
+Eight-crossing unknot (braid) & 8 & 0.508 & 0.092 & 5.57\(\times\) & Faster \\
+Grid unknot & 6 & 0.080 & 0.078 & 1.02\(\times\) & None \\
+\end{longtable}
+\endgroup
+
+Raw word timings are separate five-repetition experiments. At 128,000
+letters the symbolic median is 0.112884 seconds and the matrix median
+is 0.626293 seconds; the latter's largest final entry has 88,863 bits.
+At 1,024,000 letters the symbolic median is 1.044478 seconds, with exactly
+2,048,000 quotient-token operations. At 1,000 letters, however, the matrix
+code is faster (0.000258 versus 0.000744 seconds). The asymptotically better
+symbolic method does not win every small case. Raw scaling samples do not
+use the three-arm comparison rule and are reported as descriptive timings.

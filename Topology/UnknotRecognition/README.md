@@ -30,7 +30,7 @@ in `synthesis/report.pdf`.
 | `docs/` | the source material: a pointer to the 109-page talk `quasipolynomial-talk.pdf` (not redistributed here; https://people.maths.ox.ac.uk/lackenby/quasipolynomial-talk.pdf), and the arXiv source and PDF of Lackenby's July 2026 preprint *Incompressible surfaces, hierarchies and unknot recognition* (arXiv:2607.23350v1) in `docs/arXiv-2607.23350v1/` |
 | `reports/` | the six original archives (`*.zip`) and their extracted contents in `01/` .. `06/` |
 | `synthesis/` | the synthesized report (`report.tex`, `report.pdf`), the cross-validation scripts and data, and the table generator |
-| `fast/` | `fastunknot` 0.2 (Python): polynomial and width-bounded filters plus a scanning (Bar-Natan) Khovanov backend; tests, examples, ablation |
+| `fast/` | `fastunknot` 0.3.0 (Python): signed-Seifert certificates, optional component sharing, polynomial and width-bounded filters plus a scanning (Bar-Natan) Khovanov backend; tests, examples, ablation |
 | `proposals/` | nine independently produced proposals for accelerating `fastunknot` 0.1, extracted into `01/` .. `09/`, with a comparison of their ideas |
 | `rust/` | a Rust implementation of the 0.2 pipeline, with tests, a Python cross-check and a profile; since September 2026 also the Reidemeister III search and a race of scan orders on threads (`--race N`) |
 
@@ -84,7 +84,22 @@ The report PDFs inside `proposals/01` .. `09` are omitted by the same rule
 PDFs without a same-name source are always included: the preprint's figure
 PDFs in `docs/arXiv-2607.23350v1/`.
 
-## Test status (last observed 18 September 2026)
+## Current integration (7 October 2026)
+
+Report 07 is integrated into the Python implementation: a linear Seifert-graph
+certificate stage and optional exact, saturated, and Euler-assisted shared
+scanners. A follow-up repeats the structural check when RI/RII removes crossings,
+with replayable evidence tied to the reduced diagram. Euler geometry is now
+prepared within its inference budget, and completed matching Euler values
+are computed directly from classical-link connectivity. All 76 integrated tests
+pass on CPython 3.13.14. The Rust port retains
+the earlier pipeline. The maintained theory article is
+[`synthesis/report.pdf`](synthesis/report.pdf), with the new analysis in
+[`synthesis/structural.tex`](synthesis/structural.tex). The original report 07
+archive stays unchanged. The quasi-polynomial theorem is conditional on actual
+component sizes and the complete scan frontier; no universal bound is proved.
+
+## Historical test status (18 September 2026)
 
 All unit-test suites are green on CPython 3.14.4 and rustc 1.96.1 / Windows 11:
 

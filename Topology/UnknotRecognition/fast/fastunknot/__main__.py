@@ -33,6 +33,10 @@ def _scan_worker() -> int:
 # One table for both parsers.  (flag, type or None for a switch, default, choices, help)
 OPTIONS = {
     "recognize": [
+        ("--no-seifert", None, False, None, "disable the linear signed Seifert graph certificate"),
+        ("--backend", str, "standard", ("standard", "shared", "saturated", "euler"),
+         "Khovanov backend: standard, component sharing, saturated decision, or Euler bounds"),
+        ("--euler-max-states", int, 4096, None, "state budget for optional Euler continuation"),
         ("--max-objects", int, None, None, "ceiling on objects of the scanning complex (UNKNOWN when exceeded)"),
         ("--seconds", float, None, None, "cooperative time budget"),
         ("--no-reduction", None, False, None, None),
@@ -55,6 +59,7 @@ OPTIONS = {
         ("--output", str, None, None, "write the JSON result to this file"),
     ],
     "khovanov": [
+        ("--shared", None, False, None, "use exact component sharing (cannot combine with --factor)"),
         ("--check-d2", None, False, None, None),
         ("--factor", None, False, None, "multiply ranks over visible connected summands"),
         ("--pivot", str, "minfill", ("minfill", "lifo"), None),
@@ -150,7 +155,16 @@ def main(argv: list[str] | None = None) -> int:
         print(f"invalid input: {exc}", file=sys.stderr)
         return 2
     if args.command == "recognize":
+        if args.euler_max_states < 0:
+            print("--euler-max-states must be nonnegative", file=sys.stderr)
+            return 2
+        if args.backend != "standard" and (args.pivot != "minfill" or args.algebra != "bits"
+                                            or args.tail != 0 or args.race != 1):
+            print("shared backends require minfill, bits, tail=0, and race=1", file=sys.stderr)
+            return 2
         result = recognize(diagram, use_reduction=not args.no_reduction,
+                           use_seifert=not args.no_seifert, backend=args.backend,
+                           euler_max_states=args.euler_max_states,
                            use_descending=not args.no_descending,
                            use_alexander=not args.no_alexander, use_modular=not args.no_modular,
                            use_exact_alexander=True if args.exact_alexander else None, use_r3=not args.no_r3,
@@ -166,6 +180,14 @@ def main(argv: list[str] | None = None) -> int:
         print(text)
         return EXIT[result["status"]]
     if args.command == "khovanov":
+        if args.shared:
+            if args.factor or args.pivot != "minfill" or args.algebra != "bits" or args.tail or args.race != 1:
+                print("--shared requires no --factor, minfill, bits, tail=0, and race=1", file=sys.stderr)
+                return 2
+            from .component_scan import compressed_khovanov_rank
+            result = compressed_khovanov_rank(diagram.pd, check_d_squared=args.check_d2)
+            print(json.dumps(result, indent=1))
+            return 0
         options = dict(check_d_squared=args.check_d2, pivot=args.pivot, algebra=args.algebra, tail=args.tail,
                        race=args.race, race_after=args.race_after)
         result = factored_khovanov_rank(diagram, **options) if args.factor else khovanov_rank(diagram.pd, **options)
