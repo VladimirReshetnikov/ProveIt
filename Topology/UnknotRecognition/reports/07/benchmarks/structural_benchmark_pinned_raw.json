@@ -1,0 +1,6524 @@
+{
+  "protocol": "random-order interleaved A/B plus A/A; fresh uncached validated PD per invocation",
+  "boundary": "recognition only; excludes input validation, imports, file I/O and JSON output",
+  "A": "unmodified baseline fastunknot.recognize with default settings",
+  "B": "seifert_certificate first; on inconclusive, same default baseline recognizer",
+  "AA1_AA2": "two independent identical baseline arms",
+  "uncertainty": "95% percentile bootstrap of mean paired log speedups; 3000 fixed-seed resamples",
+  "rounds": 9,
+  "baseline_options": {},
+  "target_batch_seconds": 0.03,
+  "max_loops": 256,
+  "gc_disabled": true,
+  "cpu_affinity": [
+    8
+  ],
+  "environment": {
+    "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "platform": "Linux-6.18.44-x86_64-with-glibc2.39",
+    "logical_cpus": 9,
+    "baseline_package": "/workspace/scratch/aa977207bcf8/baseline/fast/fastunknot/__init__.py"
+  },
+  "cases": {
+    "weaving_3_2": {
+      "family": "weaving3",
+      "crossings": 4,
+      "loops": 256,
+      "status": "KNOTTED",
+      "baseline_method": "alexander-modular",
+      "structural_method": "homogeneous-seifert-genus",
+      "samples": [
+        {
+          "round": 0,
+          "arm_order": [
+            "AA1",
+            "A",
+            "AA2",
+            "B"
+          ],
+          "AA1": {
+            "wall_seconds": 8.126725e-05,
+            "cpu_seconds": 8.128274609375e-05,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "A": {
+            "wall_seconds": 9.059567578125e-05,
+            "cpu_seconds": 9.06135390625e-05,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA2": {
+            "wall_seconds": 0.00010174041015625,
+            "cpu_seconds": 0.00010175965234375,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 1.58115390625e-05,
+            "cpu_seconds": 1.5823953125e-05,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          }
+        },
+        {
+          "round": 1,
+          "arm_order": [
+            "B",
+            "AA2",
+            "AA1",
+            "A"
+          ],
+          "B": {
+            "wall_seconds": 1.83817890625e-05,
+            "cpu_seconds": 1.8397828125e-05,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "AA2": {
+            "wall_seconds": 0.00011780966796875,
+            "cpu_seconds": 0.0001178282578125,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA1": {
+            "wall_seconds": 0.0001199885,
+            "cpu_seconds": 0.0001200092265625,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "A": {
+            "wall_seconds": 0.0001143012578125,
+            "cpu_seconds": 0.00011432399609375,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 2,
+          "arm_order": [
+            "A",
+            "B",
+            "AA1",
+            "AA2"
+          ],
+          "A": {
+            "wall_seconds": 8.411269921875e-05,
+            "cpu_seconds": 8.4128671875e-05,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 1.891828125e-05,
+            "cpu_seconds": 1.893487109375e-05,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "AA1": {
+            "wall_seconds": 9.387296875e-05,
+            "cpu_seconds": 9.37866171875e-05,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA2": {
+            "wall_seconds": 9.375582421875e-05,
+            "cpu_seconds": 9.373821484375e-05,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 3,
+          "arm_order": [
+            "B",
+            "A",
+            "AA1",
+            "AA2"
+          ],
+          "B": {
+            "wall_seconds": 2.9236453125e-05,
+            "cpu_seconds": 2.92506015625e-05,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "A": {
+            "wall_seconds": 0.00060682172265625,
+            "cpu_seconds": 0.000606391453125,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA1": {
+            "wall_seconds": 0.00040337126171875,
+            "cpu_seconds": 0.0004030728671875,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA2": {
+            "wall_seconds": 0.00012084637109375,
+            "cpu_seconds": 0.00012071140234375,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 4,
+          "arm_order": [
+            "AA2",
+            "A",
+            "AA1",
+            "B"
+          ],
+          "AA2": {
+            "wall_seconds": 0.00011411729296875,
+            "cpu_seconds": 0.00011413701171875,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "A": {
+            "wall_seconds": 8.1474875e-05,
+            "cpu_seconds": 8.149587890625e-05,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA1": {
+            "wall_seconds": 8.67869140625e-05,
+            "cpu_seconds": 8.6806296875e-05,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 2.022848828125e-05,
+            "cpu_seconds": 2.02441171875e-05,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          }
+        },
+        {
+          "round": 5,
+          "arm_order": [
+            "B",
+            "A",
+            "AA1",
+            "AA2"
+          ],
+          "B": {
+            "wall_seconds": 1.223744140625e-05,
+            "cpu_seconds": 1.224508984375e-05,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "A": {
+            "wall_seconds": 8.44508515625e-05,
+            "cpu_seconds": 8.44659609375e-05,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA1": {
+            "wall_seconds": 8.25068359375e-05,
+            "cpu_seconds": 8.252279296875e-05,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA2": {
+            "wall_seconds": 8.465964453125e-05,
+            "cpu_seconds": 8.467905859375e-05,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 6,
+          "arm_order": [
+            "AA1",
+            "A",
+            "B",
+            "AA2"
+          ],
+          "AA1": {
+            "wall_seconds": 0.00014421026953125,
+            "cpu_seconds": 0.000144236578125,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "A": {
+            "wall_seconds": 0.00013759446875,
+            "cpu_seconds": 0.00013762266015625,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 1.998228125e-05,
+            "cpu_seconds": 1.99985546875e-05,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "AA2": {
+            "wall_seconds": 0.0002222357734375,
+            "cpu_seconds": 0.0002222643984375,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 7,
+          "arm_order": [
+            "AA1",
+            "B",
+            "AA2",
+            "A"
+          ],
+          "AA1": {
+            "wall_seconds": 0.00017509140234375,
+            "cpu_seconds": 0.00017508432421875,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 3.789668359375e-05,
+            "cpu_seconds": 3.79175859375e-05,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "AA2": {
+            "wall_seconds": 0.000177689390625,
+            "cpu_seconds": 0.00017770948046875,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "A": {
+            "wall_seconds": 0.0001548545546875,
+            "cpu_seconds": 0.0001548765546875,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 8,
+          "arm_order": [
+            "A",
+            "AA2",
+            "B",
+            "AA1"
+          ],
+          "A": {
+            "wall_seconds": 0.00030796824609375,
+            "cpu_seconds": 0.0003077016953125,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA2": {
+            "wall_seconds": 0.0004507461171875,
+            "cpu_seconds": 0.000450785515625,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 4.29151875e-05,
+            "cpu_seconds": 4.293426953125e-05,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "AA1": {
+            "wall_seconds": 0.00011565823046875,
+            "cpu_seconds": 0.00011567775,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        }
+      ],
+      "summary": {
+        "median_A_seconds": 0.0001143012578125,
+        "median_B_seconds": 1.998228125e-05,
+        "paired_AB_geometric_speedup": 6.417117915163972,
+        "paired_AB_speedup_95pct_bootstrap": [
+          4.958178206539264,
+          9.021790316746468
+        ],
+        "paired_AB_min_max": [
+          4.027729302714129,
+          20.755654595370824
+        ],
+        "paired_AA_geometric_ratio": 0.8842873650848091,
+        "paired_AA_min_max": [
+          0.2565928491861835,
+          3.337884771118392
+        ]
+      }
+    },
+    "weaving_3_5": {
+      "family": "weaving3",
+      "crossings": 10,
+      "loops": 9,
+      "status": "KNOTTED",
+      "baseline_method": "alexander-modular",
+      "structural_method": "homogeneous-seifert-genus",
+      "samples": [
+        {
+          "round": 0,
+          "arm_order": [
+            "AA1",
+            "AA2",
+            "A",
+            "B"
+          ],
+          "AA1": {
+            "wall_seconds": 0.00014750633333333334,
+            "cpu_seconds": 0.00014767288888888888,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA2": {
+            "wall_seconds": 0.00012592477777777778,
+            "cpu_seconds": 0.00012612566666666668,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "A": {
+            "wall_seconds": 0.00012930266666666667,
+            "cpu_seconds": 0.00012944277777777777,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 2.2621444444444446e-05,
+            "cpu_seconds": 2.2691555555555556e-05,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          }
+        },
+        {
+          "round": 1,
+          "arm_order": [
+            "AA1",
+            "A",
+            "B",
+            "AA2"
+          ],
+          "AA1": {
+            "wall_seconds": 0.00013654955555555555,
+            "cpu_seconds": 0.00013669322222222222,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "A": {
+            "wall_seconds": 0.0002621337777777778,
+            "cpu_seconds": 0.00026249677777777776,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 2.272466666666667e-05,
+            "cpu_seconds": 2.2818e-05,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "AA2": {
+            "wall_seconds": 0.00016079266666666666,
+            "cpu_seconds": 0.00016101111111111114,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 2,
+          "arm_order": [
+            "AA1",
+            "A",
+            "B",
+            "AA2"
+          ],
+          "AA1": {
+            "wall_seconds": 0.00017720388888888886,
+            "cpu_seconds": 0.00017750877777777778,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "A": {
+            "wall_seconds": 0.00031401022222222227,
+            "cpu_seconds": 0.00031437777777777775,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 4.372722222222222e-05,
+            "cpu_seconds": 4.403188888888889e-05,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "AA2": {
+            "wall_seconds": 0.00012212622222222222,
+            "cpu_seconds": 0.0001222458888888889,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 3,
+          "arm_order": [
+            "B",
+            "AA2",
+            "A",
+            "AA1"
+          ],
+          "B": {
+            "wall_seconds": 2.726711111111111e-05,
+            "cpu_seconds": 2.736711111111111e-05,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "AA2": {
+            "wall_seconds": 0.000589136,
+            "cpu_seconds": 0.0005896528888888889,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "A": {
+            "wall_seconds": 0.00029777533333333334,
+            "cpu_seconds": 0.00029816055555555556,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA1": {
+            "wall_seconds": 0.0005368414444444445,
+            "cpu_seconds": 0.0005373315555555555,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 4,
+          "arm_order": [
+            "B",
+            "AA2",
+            "A",
+            "AA1"
+          ],
+          "B": {
+            "wall_seconds": 0.00017182966666666667,
+            "cpu_seconds": 0.00017220155555555555,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "AA2": {
+            "wall_seconds": 0.000150968,
+            "cpu_seconds": 0.00015118,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "A": {
+            "wall_seconds": 0.00040668888888888887,
+            "cpu_seconds": 0.00040705077777777773,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA1": {
+            "wall_seconds": 0.00020893877777777777,
+            "cpu_seconds": 0.00020927333333333335,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 5,
+          "arm_order": [
+            "A",
+            "AA1",
+            "B",
+            "AA2"
+          ],
+          "A": {
+            "wall_seconds": 0.0007124875555555555,
+            "cpu_seconds": 0.0007128873333333334,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA1": {
+            "wall_seconds": 0.00025303833333333335,
+            "cpu_seconds": 0.0002534707777777778,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 2.2396777777777778e-05,
+            "cpu_seconds": 2.2484777777777777e-05,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "AA2": {
+            "wall_seconds": 0.000221287,
+            "cpu_seconds": 0.00022160188888888888,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 6,
+          "arm_order": [
+            "AA2",
+            "AA1",
+            "B",
+            "A"
+          ],
+          "AA2": {
+            "wall_seconds": 0.0007264755555555555,
+            "cpu_seconds": 0.0007269197777777778,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA1": {
+            "wall_seconds": 0.00012311233333333333,
+            "cpu_seconds": 0.00012326588888888888,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 2.749022222222222e-05,
+            "cpu_seconds": 2.7588444444444444e-05,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "A": {
+            "wall_seconds": 0.0010932016666666668,
+            "cpu_seconds": 0.001093750111111111,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 7,
+          "arm_order": [
+            "B",
+            "AA1",
+            "AA2",
+            "A"
+          ],
+          "B": {
+            "wall_seconds": 4.171155555555555e-05,
+            "cpu_seconds": 4.186544444444444e-05,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "AA1": {
+            "wall_seconds": 0.00021389777777777779,
+            "cpu_seconds": 0.00021420955555555556,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA2": {
+            "wall_seconds": 0.000113094,
+            "cpu_seconds": 0.00011319033333333333,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "A": {
+            "wall_seconds": 0.0005918836666666666,
+            "cpu_seconds": 0.0005923256666666666,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 8,
+          "arm_order": [
+            "B",
+            "AA1",
+            "A",
+            "AA2"
+          ],
+          "B": {
+            "wall_seconds": 3.226188888888889e-05,
+            "cpu_seconds": 3.249411111111111e-05,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "AA1": {
+            "wall_seconds": 0.0003111056666666667,
+            "cpu_seconds": 0.00031156022222222224,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "A": {
+            "wall_seconds": 0.000119162,
+            "cpu_seconds": 0.000119294,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA2": {
+            "wall_seconds": 0.0003112756666666667,
+            "cpu_seconds": 0.0003117396666666667,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        }
+      ],
+      "summary": {
+        "median_A_seconds": 0.00031401022222222227,
+        "median_B_seconds": 2.749022222222222e-05,
+        "paired_AB_geometric_speedup": 9.77052224513445,
+        "paired_AB_speedup_95pct_bootstrap": [
+          5.687702476481371,
+          17.233691869752718
+        ],
+        "paired_AB_min_max": [
+          2.3668141641561053,
+          39.76692723069213
+        ],
+        "paired_AA_geometric_ratio": 0.9559686634587404,
+        "paired_AA_min_max": [
+          0.1694652110340946,
+          1.8913273717242098
+        ]
+      }
+    },
+    "weaving_3_10": {
+      "family": "weaving3",
+      "crossings": 20,
+      "loops": 26,
+      "status": "KNOTTED",
+      "baseline_method": "alexander-modular",
+      "structural_method": "homogeneous-seifert-genus",
+      "samples": [
+        {
+          "round": 0,
+          "arm_order": [
+            "B",
+            "AA2",
+            "A",
+            "AA1"
+          ],
+          "B": {
+            "wall_seconds": 3.5743461538461536e-05,
+            "cpu_seconds": 3.581761538461538e-05,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "AA2": {
+            "wall_seconds": 0.00034984507692307695,
+            "cpu_seconds": 0.0003500076923076923,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "A": {
+            "wall_seconds": 0.00033819876923076925,
+            "cpu_seconds": 0.0003383273461538461,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA1": {
+            "wall_seconds": 0.0004883116538461538,
+            "cpu_seconds": 0.0004884484615384616,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 1,
+          "arm_order": [
+            "AA2",
+            "AA1",
+            "A",
+            "B"
+          ],
+          "AA2": {
+            "wall_seconds": 0.0005368727307692308,
+            "cpu_seconds": 0.000537032,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA1": {
+            "wall_seconds": 0.0002781920769230769,
+            "cpu_seconds": 0.00027830653846153846,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "A": {
+            "wall_seconds": 0.000327772,
+            "cpu_seconds": 0.0003278996153846154,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 4.716211538461538e-05,
+            "cpu_seconds": 4.7252307692307696e-05,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          }
+        },
+        {
+          "round": 2,
+          "arm_order": [
+            "AA1",
+            "A",
+            "B",
+            "AA2"
+          ],
+          "AA1": {
+            "wall_seconds": 0.00032078292307692304,
+            "cpu_seconds": 0.00032092288461538465,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "A": {
+            "wall_seconds": 0.00033052669230769233,
+            "cpu_seconds": 0.0003306943076923077,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 3.4819461538461536e-05,
+            "cpu_seconds": 3.486319230769231e-05,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "AA2": {
+            "wall_seconds": 0.00030410676923076926,
+            "cpu_seconds": 0.0003042231923076923,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 3,
+          "arm_order": [
+            "AA1",
+            "B",
+            "AA2",
+            "A"
+          ],
+          "AA1": {
+            "wall_seconds": 0.0004415504230769231,
+            "cpu_seconds": 0.0004417224230769231,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 7.800488461538461e-05,
+            "cpu_seconds": 0.0001896963076923077,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "AA2": {
+            "wall_seconds": 0.0007006319230769231,
+            "cpu_seconds": 0.0007008148846153846,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "A": {
+            "wall_seconds": 0.0003096536538461539,
+            "cpu_seconds": 0.00030978207692307694,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 4,
+          "arm_order": [
+            "B",
+            "A",
+            "AA1",
+            "AA2"
+          ],
+          "B": {
+            "wall_seconds": 6.944130769230768e-05,
+            "cpu_seconds": 6.953823076923076e-05,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "A": {
+            "wall_seconds": 0.0003469879615384616,
+            "cpu_seconds": 0.000347129,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA1": {
+            "wall_seconds": 0.0003106640384615384,
+            "cpu_seconds": 0.0003107868461538461,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA2": {
+            "wall_seconds": 0.00033742511538461536,
+            "cpu_seconds": 0.00033756076923076924,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 5,
+          "arm_order": [
+            "A",
+            "B",
+            "AA2",
+            "AA1"
+          ],
+          "A": {
+            "wall_seconds": 0.00028548761538461535,
+            "cpu_seconds": 0.00028564542307692306,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 3.2148e-05,
+            "cpu_seconds": 3.2179923076923076e-05,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "AA2": {
+            "wall_seconds": 0.0002759103461538461,
+            "cpu_seconds": 0.000276031,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA1": {
+            "wall_seconds": 0.0005927473846153846,
+            "cpu_seconds": 0.0005929210769230769,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 6,
+          "arm_order": [
+            "AA1",
+            "A",
+            "B",
+            "AA2"
+          ],
+          "AA1": {
+            "wall_seconds": 0.0009050195,
+            "cpu_seconds": 0.0009052397307692308,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "A": {
+            "wall_seconds": 0.0006755828846153846,
+            "cpu_seconds": 0.0006757838846153846,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 3.67175e-05,
+            "cpu_seconds": 3.676996153846154e-05,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "AA2": {
+            "wall_seconds": 0.0004982668076923077,
+            "cpu_seconds": 0.0004984106538461539,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 7,
+          "arm_order": [
+            "AA1",
+            "AA2",
+            "A",
+            "B"
+          ],
+          "AA1": {
+            "wall_seconds": 0.0006679105769230769,
+            "cpu_seconds": 0.0006681190769230769,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA2": {
+            "wall_seconds": 0.0008617211923076922,
+            "cpu_seconds": 0.0008619466538461539,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "A": {
+            "wall_seconds": 0.0006107330384615384,
+            "cpu_seconds": 0.0006105085769230769,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 0.0001236206923076923,
+            "cpu_seconds": 0.0001237585,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          }
+        },
+        {
+          "round": 8,
+          "arm_order": [
+            "B",
+            "A",
+            "AA2",
+            "AA1"
+          ],
+          "B": {
+            "wall_seconds": 4.080446153846154e-05,
+            "cpu_seconds": 4.0870230769230765e-05,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "A": {
+            "wall_seconds": 0.0005149271923076923,
+            "cpu_seconds": 0.0005150615,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA2": {
+            "wall_seconds": 0.0002891144230769231,
+            "cpu_seconds": 0.0002892375,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA1": {
+            "wall_seconds": 0.00032679,
+            "cpu_seconds": 0.0003269431923076923,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        }
+      ],
+      "summary": {
+        "median_A_seconds": 0.00033819876923076925,
+        "median_B_seconds": 4.080446153846154e-05,
+        "paired_AB_geometric_speedup": 7.944962507736537,
+        "paired_AB_speedup_95pct_bootstrap": [
+          5.838151475169083,
+          10.87585216747426
+        ],
+        "paired_AB_min_max": [
+          3.969670045317675,
+          18.399479393079176
+        ],
+        "paired_AA_geometric_ratio": 1.0471103408045423,
+        "paired_AA_min_max": [
+          0.5181713672148771,
+          2.1483333005746434
+        ]
+      }
+    },
+    "weaving_3_20": {
+      "family": "weaving3",
+      "crossings": 40,
+      "loops": 17,
+      "status": "KNOTTED",
+      "baseline_method": "alexander-modular",
+      "structural_method": "homogeneous-seifert-genus",
+      "samples": [
+        {
+          "round": 0,
+          "arm_order": [
+            "B",
+            "AA2",
+            "A",
+            "AA1"
+          ],
+          "B": {
+            "wall_seconds": 7.305458823529412e-05,
+            "cpu_seconds": 7.316288235294117e-05,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "AA2": {
+            "wall_seconds": 0.0006973712941176471,
+            "cpu_seconds": 0.0006975467647058824,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "A": {
+            "wall_seconds": 0.0008550534705882353,
+            "cpu_seconds": 0.0008552985294117647,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA1": {
+            "wall_seconds": 0.0008148583529411765,
+            "cpu_seconds": 0.0008150651764705882,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 1,
+          "arm_order": [
+            "A",
+            "AA2",
+            "B",
+            "AA1"
+          ],
+          "A": {
+            "wall_seconds": 0.0005624608235294119,
+            "cpu_seconds": 0.0005626399411764706,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA2": {
+            "wall_seconds": 0.0006652045882352941,
+            "cpu_seconds": 0.0006647082941176471,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 8.732558823529411e-05,
+            "cpu_seconds": 8.746923529411764e-05,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "AA1": {
+            "wall_seconds": 0.0005875867647058825,
+            "cpu_seconds": 0.0005877642352941176,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 2,
+          "arm_order": [
+            "A",
+            "AA1",
+            "AA2",
+            "B"
+          ],
+          "A": {
+            "wall_seconds": 0.0008840297647058824,
+            "cpu_seconds": 0.0008843451176470588,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA1": {
+            "wall_seconds": 0.0006238604117647059,
+            "cpu_seconds": 0.0006241209411764706,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA2": {
+            "wall_seconds": 0.0007225325294117647,
+            "cpu_seconds": 0.0007227789411764706,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 0.00010358988235294117,
+            "cpu_seconds": 0.0001037294705882353,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          }
+        },
+        {
+          "round": 3,
+          "arm_order": [
+            "AA1",
+            "AA2",
+            "A",
+            "B"
+          ],
+          "AA1": {
+            "wall_seconds": 0.0008601192941176471,
+            "cpu_seconds": 0.000860394,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA2": {
+            "wall_seconds": 0.0008396635294117647,
+            "cpu_seconds": 0.0008398915294117647,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "A": {
+            "wall_seconds": 0.0008639919411764706,
+            "cpu_seconds": 0.0008627427058823529,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 7.484911764705883e-05,
+            "cpu_seconds": 7.498105882352941e-05,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          }
+        },
+        {
+          "round": 4,
+          "arm_order": [
+            "AA2",
+            "B",
+            "A",
+            "AA1"
+          ],
+          "AA2": {
+            "wall_seconds": 0.0006693631764705882,
+            "cpu_seconds": 0.000669596,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 7.234470588235293e-05,
+            "cpu_seconds": 7.2453e-05,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "A": {
+            "wall_seconds": 0.0007890708823529412,
+            "cpu_seconds": 0.0007843011176470588,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA1": {
+            "wall_seconds": 0.0007371019411764706,
+            "cpu_seconds": 0.0007373080588235294,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 5,
+          "arm_order": [
+            "AA2",
+            "B",
+            "AA1",
+            "A"
+          ],
+          "AA2": {
+            "wall_seconds": 0.0010341594705882353,
+            "cpu_seconds": 0.0010344594705882352,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 0.00016907423529411765,
+            "cpu_seconds": 0.00016925688235294118,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "AA1": {
+            "wall_seconds": 0.0008965918235294118,
+            "cpu_seconds": 0.0008968598235294118,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "A": {
+            "wall_seconds": 0.001081186470588235,
+            "cpu_seconds": 0.0010814388823529412,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 6,
+          "arm_order": [
+            "B",
+            "A",
+            "AA1",
+            "AA2"
+          ],
+          "B": {
+            "wall_seconds": 6.511905882352942e-05,
+            "cpu_seconds": 6.519058823529412e-05,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "A": {
+            "wall_seconds": 0.0010081231764705882,
+            "cpu_seconds": 0.001008351,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA1": {
+            "wall_seconds": 0.0011230764117647059,
+            "cpu_seconds": 0.001123309294117647,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA2": {
+            "wall_seconds": 0.0015273866470588236,
+            "cpu_seconds": 0.001527680294117647,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 7,
+          "arm_order": [
+            "AA1",
+            "AA2",
+            "B",
+            "A"
+          ],
+          "AA1": {
+            "wall_seconds": 0.0013650318823529412,
+            "cpu_seconds": 0.0013653243529411763,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA2": {
+            "wall_seconds": 0.0012921301764705882,
+            "cpu_seconds": 0.0012924489411764706,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 0.0001009319411764706,
+            "cpu_seconds": 0.00010116005882352941,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "A": {
+            "wall_seconds": 0.0012594011764705882,
+            "cpu_seconds": 0.0012597165882352942,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 8,
+          "arm_order": [
+            "AA1",
+            "A",
+            "B",
+            "AA2"
+          ],
+          "AA1": {
+            "wall_seconds": 0.0008554897058823529,
+            "cpu_seconds": 0.0008558647647058824,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "A": {
+            "wall_seconds": 0.0007034057647058824,
+            "cpu_seconds": 0.0007037210588235294,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 6.604594117647059e-05,
+            "cpu_seconds": 6.61345294117647e-05,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "AA2": {
+            "wall_seconds": 0.0008850762941176471,
+            "cpu_seconds": 0.0008854075294117647,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        }
+      ],
+      "summary": {
+        "median_A_seconds": 0.0008639919411764706,
+        "median_B_seconds": 7.484911764705883e-05,
+        "paired_AB_geometric_speedup": 10.070868341994577,
+        "paired_AB_speedup_95pct_bootstrap": [
+          8.344627641780528,
+          12.095847886266721
+        ],
+        "paired_AB_min_max": [
+          6.394744111705891,
+          15.481230759224731
+        ],
+        "paired_AA_geometric_ratio": 0.9539723698574586,
+        "paired_AA_min_max": [
+          0.735292804822755,
+          1.1684713147996442
+        ]
+      }
+    },
+    "weaving_3_50": {
+      "family": "weaving3",
+      "crossings": 100,
+      "loops": 11,
+      "status": "KNOTTED",
+      "baseline_method": "alexander-modular",
+      "structural_method": "homogeneous-seifert-genus",
+      "samples": [
+        {
+          "round": 0,
+          "arm_order": [
+            "AA2",
+            "A",
+            "B",
+            "AA1"
+          ],
+          "AA2": {
+            "wall_seconds": 0.0016924222727272727,
+            "cpu_seconds": 0.0016928382727272727,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "A": {
+            "wall_seconds": 0.0017840672727272727,
+            "cpu_seconds": 0.0017844852727272728,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 0.000179537,
+            "cpu_seconds": 0.0001797329090909091,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "AA1": {
+            "wall_seconds": 0.001614269818181818,
+            "cpu_seconds": 0.0016146195454545453,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 1,
+          "arm_order": [
+            "A",
+            "AA1",
+            "AA2",
+            "B"
+          ],
+          "A": {
+            "wall_seconds": 0.001861466909090909,
+            "cpu_seconds": 0.0018619951818181818,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA1": {
+            "wall_seconds": 0.0020180706363636365,
+            "cpu_seconds": 0.002018473272727273,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA2": {
+            "wall_seconds": 0.001844634,
+            "cpu_seconds": 0.0018450540909090909,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 0.00020943454545454545,
+            "cpu_seconds": 0.00021275863636363636,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          }
+        },
+        {
+          "round": 2,
+          "arm_order": [
+            "B",
+            "AA1",
+            "A",
+            "AA2"
+          ],
+          "B": {
+            "wall_seconds": 0.00041678136363636366,
+            "cpu_seconds": 0.0004171611818181818,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "AA1": {
+            "wall_seconds": 0.00196012,
+            "cpu_seconds": 0.0019557825454545453,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "A": {
+            "wall_seconds": 0.002062951,
+            "cpu_seconds": 0.002063433,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA2": {
+            "wall_seconds": 0.0023351964545454545,
+            "cpu_seconds": 0.0023356103636363638,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 3,
+          "arm_order": [
+            "AA1",
+            "AA2",
+            "A",
+            "B"
+          ],
+          "AA1": {
+            "wall_seconds": 0.002014888909090909,
+            "cpu_seconds": 0.002015336090909091,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA2": {
+            "wall_seconds": 0.0033355534545454544,
+            "cpu_seconds": 0.0033360406363636365,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "A": {
+            "wall_seconds": 0.002364111727272727,
+            "cpu_seconds": 0.0023645781818181816,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 0.00015995581818181818,
+            "cpu_seconds": 0.000160111,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          }
+        },
+        {
+          "round": 4,
+          "arm_order": [
+            "B",
+            "AA1",
+            "A",
+            "AA2"
+          ],
+          "B": {
+            "wall_seconds": 0.0001754929090909091,
+            "cpu_seconds": 0.0001757528181818182,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "AA1": {
+            "wall_seconds": 0.001773014,
+            "cpu_seconds": 0.0017734332727272727,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "A": {
+            "wall_seconds": 0.002019460818181818,
+            "cpu_seconds": 0.002019864909090909,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA2": {
+            "wall_seconds": 0.0020299447272727274,
+            "cpu_seconds": 0.0020304160909090908,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 5,
+          "arm_order": [
+            "A",
+            "B",
+            "AA2",
+            "AA1"
+          ],
+          "A": {
+            "wall_seconds": 0.0025624065454545454,
+            "cpu_seconds": 0.0025629046363636362,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 0.00020376127272727273,
+            "cpu_seconds": 0.00020400154545454545,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "AA2": {
+            "wall_seconds": 0.0023224756363636363,
+            "cpu_seconds": 0.002322988363636364,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA1": {
+            "wall_seconds": 0.0018583566363636365,
+            "cpu_seconds": 0.0018588620909090908,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 6,
+          "arm_order": [
+            "A",
+            "AA1",
+            "B",
+            "AA2"
+          ],
+          "A": {
+            "wall_seconds": 0.004209233272727273,
+            "cpu_seconds": 0.004209989818181818,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA1": {
+            "wall_seconds": 0.0042969,
+            "cpu_seconds": 0.0043448563636363634,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 0.000726812,
+            "cpu_seconds": 0.000727223,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "AA2": {
+            "wall_seconds": 0.003571956272727273,
+            "cpu_seconds": 0.0035724818181818185,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 7,
+          "arm_order": [
+            "AA1",
+            "B",
+            "A",
+            "AA2"
+          ],
+          "AA1": {
+            "wall_seconds": 0.004232799909090909,
+            "cpu_seconds": 0.004175386818181818,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 0.0011021559090909092,
+            "cpu_seconds": 0.0011017572727272727,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "A": {
+            "wall_seconds": 0.004047059363636364,
+            "cpu_seconds": 0.004046687090909091,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA2": {
+            "wall_seconds": 0.003826896727272727,
+            "cpu_seconds": 0.0038274630909090907,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 8,
+          "arm_order": [
+            "A",
+            "B",
+            "AA2",
+            "AA1"
+          ],
+          "A": {
+            "wall_seconds": 0.0028741248181818183,
+            "cpu_seconds": 0.0028746468181818185,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 0.00024854527272727276,
+            "cpu_seconds": 0.0002489120909090909,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "AA2": {
+            "wall_seconds": 0.0021572538181818183,
+            "cpu_seconds": 0.002157711909090909,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA1": {
+            "wall_seconds": 0.0024029765454545455,
+            "cpu_seconds": 0.0024035181818181815,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        }
+      ],
+      "summary": {
+        "median_A_seconds": 0.002364111727272727,
+        "median_B_seconds": 0.00020943454545454545,
+        "paired_AB_geometric_speedup": 8.493092429211506,
+        "paired_AB_speedup_95pct_bootstrap": [
+          6.278202139178315,
+          11.09282280520939
+        ],
+        "paired_AB_min_max": [
+          3.671948161104084,
+          14.779779530029314
+        ],
+        "paired_AA_geometric_ratio": 0.9353626533945675,
+        "paired_AA_min_max": [
+          0.6040643439082537,
+          1.2029542558535342
+        ]
+      }
+    },
+    "weaving_3_100": {
+      "family": "weaving3",
+      "crossings": 200,
+      "loops": 5,
+      "status": "KNOTTED",
+      "baseline_method": "alexander-modular",
+      "structural_method": "homogeneous-seifert-genus",
+      "samples": [
+        {
+          "round": 0,
+          "arm_order": [
+            "AA2",
+            "AA1",
+            "A",
+            "B"
+          ],
+          "AA2": {
+            "wall_seconds": 0.004334458,
+            "cpu_seconds": 0.0043354122,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA1": {
+            "wall_seconds": 0.0045081997999999995,
+            "cpu_seconds": 0.0045090814,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "A": {
+            "wall_seconds": 0.0056155106,
+            "cpu_seconds": 0.0056163576,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 0.0003685642,
+            "cpu_seconds": 0.0003689464,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          }
+        },
+        {
+          "round": 1,
+          "arm_order": [
+            "B",
+            "A",
+            "AA2",
+            "AA1"
+          ],
+          "B": {
+            "wall_seconds": 0.0004687398,
+            "cpu_seconds": 0.000469543,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "A": {
+            "wall_seconds": 0.0053505174,
+            "cpu_seconds": 0.0053513486,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA2": {
+            "wall_seconds": 0.005268375400000001,
+            "cpu_seconds": 0.0052694887999999995,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA1": {
+            "wall_seconds": 0.0046430012,
+            "cpu_seconds": 0.0046440752,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 2,
+          "arm_order": [
+            "B",
+            "AA2",
+            "AA1",
+            "A"
+          ],
+          "B": {
+            "wall_seconds": 0.00040132359999999997,
+            "cpu_seconds": 0.0004018574,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "AA2": {
+            "wall_seconds": 0.0042428522,
+            "cpu_seconds": 0.004242181,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA1": {
+            "wall_seconds": 0.0050672122,
+            "cpu_seconds": 0.0050683252,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "A": {
+            "wall_seconds": 0.004507651200000001,
+            "cpu_seconds": 0.0045085784,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 3,
+          "arm_order": [
+            "AA2",
+            "A",
+            "B",
+            "AA1"
+          ],
+          "AA2": {
+            "wall_seconds": 0.0051738332,
+            "cpu_seconds": 0.005166860400000001,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "A": {
+            "wall_seconds": 0.004648938599999999,
+            "cpu_seconds": 0.0046498198,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 0.00045202640000000004,
+            "cpu_seconds": 0.00045272920000000004,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "AA1": {
+            "wall_seconds": 0.004462132400000001,
+            "cpu_seconds": 0.0044629264,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 4,
+          "arm_order": [
+            "AA1",
+            "AA2",
+            "B",
+            "A"
+          ],
+          "AA1": {
+            "wall_seconds": 0.0048915002,
+            "cpu_seconds": 0.004892549,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA2": {
+            "wall_seconds": 0.004404018599999999,
+            "cpu_seconds": 0.004404976200000001,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 0.0006606468,
+            "cpu_seconds": 0.0006614978000000001,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "A": {
+            "wall_seconds": 0.004958829200000001,
+            "cpu_seconds": 0.004959692,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 5,
+          "arm_order": [
+            "A",
+            "AA2",
+            "AA1",
+            "B"
+          ],
+          "A": {
+            "wall_seconds": 0.0052717578,
+            "cpu_seconds": 0.005272910400000001,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA2": {
+            "wall_seconds": 0.0051978245999999995,
+            "cpu_seconds": 0.005198851599999999,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA1": {
+            "wall_seconds": 0.0049774952,
+            "cpu_seconds": 0.004978583,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 0.00034785640000000004,
+            "cpu_seconds": 0.00034841340000000003,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          }
+        },
+        {
+          "round": 6,
+          "arm_order": [
+            "B",
+            "A",
+            "AA1",
+            "AA2"
+          ],
+          "B": {
+            "wall_seconds": 0.0010519204,
+            "cpu_seconds": 0.0010526236000000001,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "A": {
+            "wall_seconds": 0.006123902200000001,
+            "cpu_seconds": 0.006122913,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA1": {
+            "wall_seconds": 0.0060979312,
+            "cpu_seconds": 0.006097306,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA2": {
+            "wall_seconds": 0.005238287,
+            "cpu_seconds": 0.0052392715999999995,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 7,
+          "arm_order": [
+            "AA1",
+            "A",
+            "AA2",
+            "B"
+          ],
+          "AA1": {
+            "wall_seconds": 0.006576912599999999,
+            "cpu_seconds": 0.006578407,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "A": {
+            "wall_seconds": 0.0065538302,
+            "cpu_seconds": 0.0065548776,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA2": {
+            "wall_seconds": 0.0085354624,
+            "cpu_seconds": 0.0085366864,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 0.000510778,
+            "cpu_seconds": 0.0005112262,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          }
+        },
+        {
+          "round": 8,
+          "arm_order": [
+            "AA1",
+            "A",
+            "B",
+            "AA2"
+          ],
+          "AA1": {
+            "wall_seconds": 0.0056003486,
+            "cpu_seconds": 0.0056014714,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "A": {
+            "wall_seconds": 0.0047559908,
+            "cpu_seconds": 0.0047569985999999995,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 0.000450296,
+            "cpu_seconds": 0.000451001,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "AA2": {
+            "wall_seconds": 0.0076372342,
+            "cpu_seconds": 0.007638321,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        }
+      ],
+      "summary": {
+        "median_A_seconds": 0.0052717578,
+        "median_B_seconds": 0.00045202640000000004,
+        "paired_AB_geometric_speedup": 10.676888101970611,
+        "paired_AB_speedup_95pct_bootstrap": [
+          8.687329949951089,
+          12.722667292776931
+        ],
+        "paired_AB_min_max": [
+          5.821640306623962,
+          15.2361802909778
+        ],
+        "paired_AA_geometric_ratio": 0.9549635157154571,
+        "paired_AA_min_max": [
+          0.7332953859133978,
+          1.1942938290426426
+        ]
+      }
+    },
+    "weaving_3_250": {
+      "family": "weaving3",
+      "crossings": 500,
+      "loops": 1,
+      "status": "KNOTTED",
+      "baseline_method": "alexander-modular",
+      "structural_method": "homogeneous-seifert-genus",
+      "samples": [
+        {
+          "round": 0,
+          "arm_order": [
+            "AA1",
+            "AA2",
+            "B",
+            "A"
+          ],
+          "AA1": {
+            "wall_seconds": 0.022651755,
+            "cpu_seconds": 0.022620532,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA2": {
+            "wall_seconds": 0.021875342,
+            "cpu_seconds": 0.021879205,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 0.001156688,
+            "cpu_seconds": 0.001159102,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "A": {
+            "wall_seconds": 0.025962129,
+            "cpu_seconds": 0.025965943,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 1,
+          "arm_order": [
+            "B",
+            "AA1",
+            "AA2",
+            "A"
+          ],
+          "B": {
+            "wall_seconds": 0.001008261,
+            "cpu_seconds": 0.001010044,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "AA1": {
+            "wall_seconds": 0.018752149,
+            "cpu_seconds": 0.018757127,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA2": {
+            "wall_seconds": 0.025857051,
+            "cpu_seconds": 0.025852661,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "A": {
+            "wall_seconds": 0.01558506,
+            "cpu_seconds": 0.015589124,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 2,
+          "arm_order": [
+            "B",
+            "AA1",
+            "A",
+            "AA2"
+          ],
+          "B": {
+            "wall_seconds": 0.000967718,
+            "cpu_seconds": 0.000969792,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "AA1": {
+            "wall_seconds": 0.019817662,
+            "cpu_seconds": 0.019822642,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "A": {
+            "wall_seconds": 0.019960158,
+            "cpu_seconds": 0.019965098,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA2": {
+            "wall_seconds": 0.023491877,
+            "cpu_seconds": 0.02349773,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 3,
+          "arm_order": [
+            "AA2",
+            "A",
+            "B",
+            "AA1"
+          ],
+          "AA2": {
+            "wall_seconds": 0.022083941,
+            "cpu_seconds": 0.022087947,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "A": {
+            "wall_seconds": 0.017991649,
+            "cpu_seconds": 0.017995304,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 0.00161446,
+            "cpu_seconds": 0.001617838,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "AA1": {
+            "wall_seconds": 0.018502022,
+            "cpu_seconds": 0.018505422,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 4,
+          "arm_order": [
+            "AA1",
+            "AA2",
+            "A",
+            "B"
+          ],
+          "AA1": {
+            "wall_seconds": 0.019192241,
+            "cpu_seconds": 0.01919619,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA2": {
+            "wall_seconds": 0.015780248,
+            "cpu_seconds": 0.01578378,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "A": {
+            "wall_seconds": 0.014993837,
+            "cpu_seconds": 0.014997557,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 0.000850373,
+            "cpu_seconds": 0.000852009,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          }
+        },
+        {
+          "round": 5,
+          "arm_order": [
+            "B",
+            "A",
+            "AA1",
+            "AA2"
+          ],
+          "B": {
+            "wall_seconds": 0.001309944,
+            "cpu_seconds": 0.001312798,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "A": {
+            "wall_seconds": 0.0273748,
+            "cpu_seconds": 0.02737913,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA1": {
+            "wall_seconds": 0.014954144,
+            "cpu_seconds": 0.014957708,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA2": {
+            "wall_seconds": 0.018754422,
+            "cpu_seconds": 0.01878952,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 6,
+          "arm_order": [
+            "AA2",
+            "A",
+            "B",
+            "AA1"
+          ],
+          "AA2": {
+            "wall_seconds": 0.038264038,
+            "cpu_seconds": 0.038269638,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "A": {
+            "wall_seconds": 0.023287791,
+            "cpu_seconds": 0.023292684,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 0.00079638,
+            "cpu_seconds": 0.0007975,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "AA1": {
+            "wall_seconds": 0.024887134,
+            "cpu_seconds": 0.0248915,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 7,
+          "arm_order": [
+            "B",
+            "A",
+            "AA1",
+            "AA2"
+          ],
+          "B": {
+            "wall_seconds": 0.001873751,
+            "cpu_seconds": 0.001876471,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "A": {
+            "wall_seconds": 0.032496693,
+            "cpu_seconds": 0.032501455,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA1": {
+            "wall_seconds": 0.030496723,
+            "cpu_seconds": 0.03050155,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA2": {
+            "wall_seconds": 0.033759384,
+            "cpu_seconds": 0.033763985,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 8,
+          "arm_order": [
+            "B",
+            "A",
+            "AA2",
+            "AA1"
+          ],
+          "B": {
+            "wall_seconds": 0.001992192,
+            "cpu_seconds": 0.001995238,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "A": {
+            "wall_seconds": 0.035155781,
+            "cpu_seconds": 0.035161187,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA2": {
+            "wall_seconds": 0.030666809,
+            "cpu_seconds": 0.030671516,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA1": {
+            "wall_seconds": 0.028348119,
+            "cpu_seconds": 0.02835285,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        }
+      ],
+      "summary": {
+        "median_A_seconds": 0.023287791,
+        "median_B_seconds": 0.001156688,
+        "paired_AB_geometric_speedup": 18.572915594008556,
+        "paired_AB_speedup_95pct_bootstrap": [
+          15.732655655590339,
+          21.96930845770166
+        ],
+        "paired_AB_min_max": [
+          11.144066127373858,
+          29.24205906727944
+        ],
+        "paired_AA_geometric_ratio": 0.8679526978982177,
+        "paired_AA_min_max": [
+          0.6504053231391836,
+          1.21621922545197
+        ]
+      }
+    },
+    "weaving_3_500": {
+      "family": "weaving3",
+      "crossings": 1000,
+      "loops": 1,
+      "status": "KNOTTED",
+      "baseline_method": "alexander-modular",
+      "structural_method": "homogeneous-seifert-genus",
+      "samples": [
+        {
+          "round": 0,
+          "arm_order": [
+            "AA2",
+            "AA1",
+            "A",
+            "B"
+          ],
+          "AA2": {
+            "wall_seconds": 0.081697224,
+            "cpu_seconds": 0.081707004,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA1": {
+            "wall_seconds": 0.086264911,
+            "cpu_seconds": 0.086274119,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "A": {
+            "wall_seconds": 0.110227703,
+            "cpu_seconds": 0.110238183,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 0.003025313,
+            "cpu_seconds": 0.003029994,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          }
+        },
+        {
+          "round": 1,
+          "arm_order": [
+            "A",
+            "B",
+            "AA2",
+            "AA1"
+          ],
+          "A": {
+            "wall_seconds": 0.072874649,
+            "cpu_seconds": 0.072883458,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 0.004121773,
+            "cpu_seconds": 0.004126454,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "AA2": {
+            "wall_seconds": 0.07243225,
+            "cpu_seconds": 0.072434248,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA1": {
+            "wall_seconds": 0.076729234,
+            "cpu_seconds": 0.076719933,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 2,
+          "arm_order": [
+            "AA2",
+            "A",
+            "B",
+            "AA1"
+          ],
+          "AA2": {
+            "wall_seconds": 0.066406041,
+            "cpu_seconds": 0.066379212,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "A": {
+            "wall_seconds": 0.068545715,
+            "cpu_seconds": 0.068556063,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 0.001703467,
+            "cpu_seconds": 0.001705009,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "AA1": {
+            "wall_seconds": 0.070138184,
+            "cpu_seconds": 0.070146477,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 3,
+          "arm_order": [
+            "AA2",
+            "B",
+            "A",
+            "AA1"
+          ],
+          "AA2": {
+            "wall_seconds": 0.060949732,
+            "cpu_seconds": 0.060957688,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 0.003781692,
+            "cpu_seconds": 0.003786838,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "A": {
+            "wall_seconds": 0.092960465,
+            "cpu_seconds": 0.092969428,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA1": {
+            "wall_seconds": 0.087046074,
+            "cpu_seconds": 0.087054667,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 4,
+          "arm_order": [
+            "AA2",
+            "B",
+            "AA1",
+            "A"
+          ],
+          "AA2": {
+            "wall_seconds": 0.085465699,
+            "cpu_seconds": 0.085475987,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 0.001935369,
+            "cpu_seconds": 0.001937606,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "AA1": {
+            "wall_seconds": 0.105485717,
+            "cpu_seconds": 0.1055175,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "A": {
+            "wall_seconds": 0.06039927,
+            "cpu_seconds": 0.06040691,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 5,
+          "arm_order": [
+            "B",
+            "A",
+            "AA1",
+            "AA2"
+          ],
+          "B": {
+            "wall_seconds": 0.003967699,
+            "cpu_seconds": 0.003971438,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "A": {
+            "wall_seconds": 0.063566336,
+            "cpu_seconds": 0.063574214,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA1": {
+            "wall_seconds": 0.059906447,
+            "cpu_seconds": 0.059914695,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA2": {
+            "wall_seconds": 0.059550999,
+            "cpu_seconds": 0.059559004,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 6,
+          "arm_order": [
+            "A",
+            "B",
+            "AA2",
+            "AA1"
+          ],
+          "A": {
+            "wall_seconds": 0.208567501,
+            "cpu_seconds": 0.208583749,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 0.003933875,
+            "cpu_seconds": 0.003937709,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "AA2": {
+            "wall_seconds": 0.109305472,
+            "cpu_seconds": 0.10929122,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA1": {
+            "wall_seconds": 0.103443416,
+            "cpu_seconds": 0.103453707,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 7,
+          "arm_order": [
+            "AA2",
+            "A",
+            "AA1",
+            "B"
+          ],
+          "AA2": {
+            "wall_seconds": 0.110406736,
+            "cpu_seconds": 0.110398485,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "A": {
+            "wall_seconds": 0.103446582,
+            "cpu_seconds": 0.103456763,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA1": {
+            "wall_seconds": 0.100844706,
+            "cpu_seconds": 0.100855587,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 0.002406799,
+            "cpu_seconds": 0.002411193,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          }
+        },
+        {
+          "round": 8,
+          "arm_order": [
+            "B",
+            "A",
+            "AA1",
+            "AA2"
+          ],
+          "B": {
+            "wall_seconds": 0.009341857,
+            "cpu_seconds": 0.009549846,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "A": {
+            "wall_seconds": 0.130313219,
+            "cpu_seconds": 0.130311853,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA1": {
+            "wall_seconds": 0.082703376,
+            "cpu_seconds": 0.082712801,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA2": {
+            "wall_seconds": 0.09176597,
+            "cpu_seconds": 0.09177591,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        }
+      ],
+      "summary": {
+        "median_A_seconds": 0.092960465,
+        "median_B_seconds": 0.003781692,
+        "paired_AB_geometric_speedup": 27.86467331360917,
+        "paired_AB_speedup_95pct_bootstrap": [
+          20.902682940667773,
+          37.19363282938978
+        ],
+        "paired_AB_min_max": [
+          13.949391325514831,
+          53.018334593752975
+        ],
+        "paired_AA_geometric_ratio": 1.0559327839022798,
+        "paired_AA_min_max": [
+          0.9012423232708159,
+          1.4281617185781883
+        ]
+      }
+    },
+    "positive_3_5": {
+      "family": "positive3",
+      "crossings": 10,
+      "loops": 65,
+      "status": "KNOTTED",
+      "baseline_method": "alexander-modular",
+      "structural_method": "homogeneous-seifert-genus",
+      "samples": [
+        {
+          "round": 0,
+          "arm_order": [
+            "A",
+            "AA2",
+            "AA1",
+            "B"
+          ],
+          "A": {
+            "wall_seconds": 0.00028553983076923077,
+            "cpu_seconds": 0.00028561226153846154,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA2": {
+            "wall_seconds": 0.00021954613846153847,
+            "cpu_seconds": 0.00021960720000000001,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA1": {
+            "wall_seconds": 0.0006618864,
+            "cpu_seconds": 0.0006619609846153846,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 4.9268384615384615e-05,
+            "cpu_seconds": 4.933156923076923e-05,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          }
+        },
+        {
+          "round": 1,
+          "arm_order": [
+            "AA1",
+            "AA2",
+            "B",
+            "A"
+          ],
+          "AA1": {
+            "wall_seconds": 0.000312543,
+            "cpu_seconds": 0.00031260783076923076,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA2": {
+            "wall_seconds": 0.0003107760923076923,
+            "cpu_seconds": 0.0003108338307692308,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 1.9848169230769233e-05,
+            "cpu_seconds": 1.9866276923076923e-05,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "A": {
+            "wall_seconds": 0.00032378372307692306,
+            "cpu_seconds": 0.00032384,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 2,
+          "arm_order": [
+            "AA2",
+            "AA1",
+            "B",
+            "A"
+          ],
+          "AA2": {
+            "wall_seconds": 0.0002828831846153846,
+            "cpu_seconds": 0.00028294173846153843,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA1": {
+            "wall_seconds": 0.0003082728307692308,
+            "cpu_seconds": 0.00030835510769230767,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 2.1501938461538463e-05,
+            "cpu_seconds": 2.1519123076923075e-05,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "A": {
+            "wall_seconds": 0.00028296509230769235,
+            "cpu_seconds": 0.0002830411230769231,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 3,
+          "arm_order": [
+            "AA2",
+            "A",
+            "AA1",
+            "B"
+          ],
+          "AA2": {
+            "wall_seconds": 0.0003067351076923077,
+            "cpu_seconds": 0.0003067991384615385,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "A": {
+            "wall_seconds": 0.00023709244615384615,
+            "cpu_seconds": 0.0002371644923076923,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA1": {
+            "wall_seconds": 0.00023660763076923077,
+            "cpu_seconds": 0.00023666635384615386,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 3.196610769230769e-05,
+            "cpu_seconds": 3.2012753846153847e-05,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          }
+        },
+        {
+          "round": 4,
+          "arm_order": [
+            "A",
+            "B",
+            "AA2",
+            "AA1"
+          ],
+          "A": {
+            "wall_seconds": 0.00027053675384615383,
+            "cpu_seconds": 0.0002706001384615385,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 2.8198815384615384e-05,
+            "cpu_seconds": 2.8241292307692306e-05,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "AA2": {
+            "wall_seconds": 0.00027747243076923074,
+            "cpu_seconds": 0.0002775317076923077,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA1": {
+            "wall_seconds": 0.000440719,
+            "cpu_seconds": 0.0004407966923076923,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 5,
+          "arm_order": [
+            "AA2",
+            "A",
+            "B",
+            "AA1"
+          ],
+          "AA2": {
+            "wall_seconds": 0.0004774582,
+            "cpu_seconds": 0.00047740507692307693,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "A": {
+            "wall_seconds": 0.00044029240000000003,
+            "cpu_seconds": 0.00044023481538461536,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 4.2408907692307694e-05,
+            "cpu_seconds": 4.246203076923077e-05,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "AA1": {
+            "wall_seconds": 0.0004371991692307692,
+            "cpu_seconds": 0.0004371406615384615,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 6,
+          "arm_order": [
+            "AA2",
+            "B",
+            "A",
+            "AA1"
+          ],
+          "AA2": {
+            "wall_seconds": 0.0006354988615384615,
+            "cpu_seconds": 0.0006355998307692307,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 4.926193846153846e-05,
+            "cpu_seconds": 4.9311523076923073e-05,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "A": {
+            "wall_seconds": 0.0005871511538461539,
+            "cpu_seconds": 0.0005872332307692307,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA1": {
+            "wall_seconds": 0.00040659233846153847,
+            "cpu_seconds": 0.00040668041538461535,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 7,
+          "arm_order": [
+            "A",
+            "AA1",
+            "AA2",
+            "B"
+          ],
+          "A": {
+            "wall_seconds": 0.0004492908,
+            "cpu_seconds": 0.0004493839692307692,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA1": {
+            "wall_seconds": 0.0004883182615384615,
+            "cpu_seconds": 0.0004884172000000001,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA2": {
+            "wall_seconds": 0.00047454664615384615,
+            "cpu_seconds": 0.0004746439384615385,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 7.041832307692307e-05,
+            "cpu_seconds": 7.04847076923077e-05,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          }
+        },
+        {
+          "round": 8,
+          "arm_order": [
+            "AA1",
+            "B",
+            "A",
+            "AA2"
+          ],
+          "AA1": {
+            "wall_seconds": 0.0003471379846153846,
+            "cpu_seconds": 0.0003471988461538461,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 2.9607292307692306e-05,
+            "cpu_seconds": 2.9654e-05,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "A": {
+            "wall_seconds": 0.0003285939230769231,
+            "cpu_seconds": 0.00032865156923076925,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA2": {
+            "wall_seconds": 0.00038605573846153845,
+            "cpu_seconds": 0.0003861356923076923,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        }
+      ],
+      "summary": {
+        "median_A_seconds": 0.00032378372307692306,
+        "median_B_seconds": 3.196610769230769e-05,
+        "paired_AB_geometric_speedup": 9.721841328148086,
+        "paired_AB_speedup_95pct_bootstrap": [
+          7.859317107578474,
+          11.877979779708237
+        ],
+        "paired_AB_min_max": [
+          5.795599612171325,
+          16.313027126702632
+        ],
+        "paired_AA_geometric_ratio": 1.0912503911718432,
+        "paired_AA_min_max": [
+          0.6398002625484338,
+          3.014794086737962
+        ]
+      }
+    },
+    "positive_3_20": {
+      "family": "positive3",
+      "crossings": 40,
+      "loops": 60,
+      "status": "KNOTTED",
+      "baseline_method": "alexander-modular",
+      "structural_method": "homogeneous-seifert-genus",
+      "samples": [
+        {
+          "round": 0,
+          "arm_order": [
+            "B",
+            "A",
+            "AA1",
+            "AA2"
+          ],
+          "B": {
+            "wall_seconds": 8.712388333333333e-05,
+            "cpu_seconds": 8.716885000000001e-05,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "A": {
+            "wall_seconds": 0.0007231016333333333,
+            "cpu_seconds": 0.0007232135666666666,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA1": {
+            "wall_seconds": 0.0006042253666666667,
+            "cpu_seconds": 0.0006043297833333333,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA2": {
+            "wall_seconds": 0.0007569349333333334,
+            "cpu_seconds": 0.0007457825333333333,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 1,
+          "arm_order": [
+            "AA2",
+            "AA1",
+            "B",
+            "A"
+          ],
+          "AA2": {
+            "wall_seconds": 0.0008120640166666667,
+            "cpu_seconds": 0.0008121890833333333,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA1": {
+            "wall_seconds": 0.0007528214,
+            "cpu_seconds": 0.0007529402333333332,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 0.000123303,
+            "cpu_seconds": 0.00012336171666666666,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "A": {
+            "wall_seconds": 0.0006698823333333334,
+            "cpu_seconds": 0.0006699879499999999,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 2,
+          "arm_order": [
+            "AA1",
+            "A",
+            "AA2",
+            "B"
+          ],
+          "AA1": {
+            "wall_seconds": 0.0006369929666666667,
+            "cpu_seconds": 0.0006371237,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "A": {
+            "wall_seconds": 0.0006783733333333334,
+            "cpu_seconds": 0.0006784882666666667,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA2": {
+            "wall_seconds": 0.0007128702166666667,
+            "cpu_seconds": 0.0007129999833333332,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 7.550823333333334e-05,
+            "cpu_seconds": 8.98657e-05,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          }
+        },
+        {
+          "round": 3,
+          "arm_order": [
+            "A",
+            "AA1",
+            "AA2",
+            "B"
+          ],
+          "A": {
+            "wall_seconds": 0.0005332411166666667,
+            "cpu_seconds": 0.0005333274666666667,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA1": {
+            "wall_seconds": 0.0007522821833333334,
+            "cpu_seconds": 0.0007524241833333333,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA2": {
+            "wall_seconds": 0.0005159850166666667,
+            "cpu_seconds": 0.0005160839333333333,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 8.674268333333334e-05,
+            "cpu_seconds": 8.68217e-05,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          }
+        },
+        {
+          "round": 4,
+          "arm_order": [
+            "A",
+            "AA1",
+            "B",
+            "AA2"
+          ],
+          "A": {
+            "wall_seconds": 0.00059749425,
+            "cpu_seconds": 0.0005975957166666667,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA1": {
+            "wall_seconds": 0.0005521132,
+            "cpu_seconds": 0.0005522110833333333,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 7.385519999999999e-05,
+            "cpu_seconds": 7.391621666666667e-05,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "AA2": {
+            "wall_seconds": 0.0005625337,
+            "cpu_seconds": 0.0005626253333333333,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 5,
+          "arm_order": [
+            "AA2",
+            "B",
+            "AA1",
+            "A"
+          ],
+          "AA2": {
+            "wall_seconds": 0.0006086614666666667,
+            "cpu_seconds": 0.0006087659833333333,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 7.802316666666667e-05,
+            "cpu_seconds": 7.809381666666666e-05,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "AA1": {
+            "wall_seconds": 0.0006115730833333334,
+            "cpu_seconds": 0.0006116609833333333,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "A": {
+            "wall_seconds": 0.0007408000333333333,
+            "cpu_seconds": 0.0007408966,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 6,
+          "arm_order": [
+            "B",
+            "A",
+            "AA2",
+            "AA1"
+          ],
+          "B": {
+            "wall_seconds": 0.00011438866666666667,
+            "cpu_seconds": 0.00011446838333333333,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "A": {
+            "wall_seconds": 0.0012857521,
+            "cpu_seconds": 0.0012858995666666666,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA2": {
+            "wall_seconds": 0.00118950295,
+            "cpu_seconds": 0.0011893288,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA1": {
+            "wall_seconds": 0.00101165285,
+            "cpu_seconds": 0.00101178165,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 7,
+          "arm_order": [
+            "AA1",
+            "B",
+            "AA2",
+            "A"
+          ],
+          "AA1": {
+            "wall_seconds": 0.0008595212,
+            "cpu_seconds": 0.0008596433166666666,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 0.00013842618333333333,
+            "cpu_seconds": 0.00013849848333333335,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "AA2": {
+            "wall_seconds": 0.0011911705666666666,
+            "cpu_seconds": 0.0011913054166666668,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "A": {
+            "wall_seconds": 0.0010644902666666666,
+            "cpu_seconds": 0.0010646143333333333,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 8,
+          "arm_order": [
+            "AA1",
+            "B",
+            "AA2",
+            "A"
+          ],
+          "AA1": {
+            "wall_seconds": 0.0010081713499999999,
+            "cpu_seconds": 0.0010083241,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 7.157175e-05,
+            "cpu_seconds": 7.164919999999999e-05,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "AA2": {
+            "wall_seconds": 0.000766693,
+            "cpu_seconds": 0.0007668015833333334,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "A": {
+            "wall_seconds": 0.0009994695833333335,
+            "cpu_seconds": 0.0009641263833333333,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        }
+      ],
+      "summary": {
+        "median_A_seconds": 0.0007231016333333333,
+        "median_B_seconds": 8.674268333333334e-05,
+        "paired_AB_geometric_speedup": 8.497037786244274,
+        "paired_AB_speedup_95pct_bootstrap": [
+          7.134390604400253,
+          10.177143662161836
+        ],
+        "paired_AB_min_max": [
+          5.432814557093772,
+          13.964582161723495
+        ],
+        "paired_AA_geometric_ratio": 0.9709877021725972,
+        "paired_AA_min_max": [
+          0.721576929494872,
+          1.4579535432892576
+        ]
+      }
+    },
+    "positive_3_100": {
+      "family": "positive3",
+      "crossings": 200,
+      "loops": 5,
+      "status": "KNOTTED",
+      "baseline_method": "alexander-modular",
+      "structural_method": "homogeneous-seifert-genus",
+      "samples": [
+        {
+          "round": 0,
+          "arm_order": [
+            "AA1",
+            "AA2",
+            "B",
+            "A"
+          ],
+          "AA1": {
+            "wall_seconds": 0.0059000597999999994,
+            "cpu_seconds": 0.0059011504,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA2": {
+            "wall_seconds": 0.004398745599999999,
+            "cpu_seconds": 0.0043975538,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 0.0009094284,
+            "cpu_seconds": 0.0009100824,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "A": {
+            "wall_seconds": 0.0035874798,
+            "cpu_seconds": 0.0035863583999999997,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 1,
+          "arm_order": [
+            "B",
+            "AA2",
+            "A",
+            "AA1"
+          ],
+          "B": {
+            "wall_seconds": 0.0005746864000000001,
+            "cpu_seconds": 0.0005754056,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "AA2": {
+            "wall_seconds": 0.0048670017999999995,
+            "cpu_seconds": 0.0048680265999999995,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "A": {
+            "wall_seconds": 0.0044320806,
+            "cpu_seconds": 0.0044331718,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA1": {
+            "wall_seconds": 0.0043554245999999994,
+            "cpu_seconds": 0.004356280400000001,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 2,
+          "arm_order": [
+            "A",
+            "B",
+            "AA1",
+            "AA2"
+          ],
+          "A": {
+            "wall_seconds": 0.0040325852,
+            "cpu_seconds": 0.0040335818,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 0.000320244,
+            "cpu_seconds": 0.0003206296,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "AA1": {
+            "wall_seconds": 0.0035104588,
+            "cpu_seconds": 0.0035114568,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA2": {
+            "wall_seconds": 0.0036063966,
+            "cpu_seconds": 0.0036072628,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 3,
+          "arm_order": [
+            "B",
+            "AA1",
+            "A",
+            "AA2"
+          ],
+          "B": {
+            "wall_seconds": 0.0008390715999999999,
+            "cpu_seconds": 0.000839933,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "AA1": {
+            "wall_seconds": 0.0039955497999999996,
+            "cpu_seconds": 0.003996332,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "A": {
+            "wall_seconds": 0.005131571,
+            "cpu_seconds": 0.0051326266,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA2": {
+            "wall_seconds": 0.0044255182,
+            "cpu_seconds": 0.0044264236,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 4,
+          "arm_order": [
+            "A",
+            "AA2",
+            "AA1",
+            "B"
+          ],
+          "A": {
+            "wall_seconds": 0.0035826892,
+            "cpu_seconds": 0.003583495,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA2": {
+            "wall_seconds": 0.004470553,
+            "cpu_seconds": 0.0044715274000000005,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA1": {
+            "wall_seconds": 0.003597618,
+            "cpu_seconds": 0.0035983902,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 0.000449085,
+            "cpu_seconds": 0.0004499078,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          }
+        },
+        {
+          "round": 5,
+          "arm_order": [
+            "B",
+            "AA2",
+            "AA1",
+            "A"
+          ],
+          "B": {
+            "wall_seconds": 0.0003746132,
+            "cpu_seconds": 0.000375166,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "AA2": {
+            "wall_seconds": 0.0037979272,
+            "cpu_seconds": 0.003798767,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA1": {
+            "wall_seconds": 0.003868027,
+            "cpu_seconds": 0.0038650156,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "A": {
+            "wall_seconds": 0.0047027992,
+            "cpu_seconds": 0.0047038057999999995,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 6,
+          "arm_order": [
+            "A",
+            "AA1",
+            "AA2",
+            "B"
+          ],
+          "A": {
+            "wall_seconds": 0.0069496052,
+            "cpu_seconds": 0.0069507807999999996,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA1": {
+            "wall_seconds": 0.005935231799999999,
+            "cpu_seconds": 0.005936439,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA2": {
+            "wall_seconds": 0.011603993,
+            "cpu_seconds": 0.0116054368,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 0.0008721408,
+            "cpu_seconds": 0.000873072,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          }
+        },
+        {
+          "round": 7,
+          "arm_order": [
+            "A",
+            "B",
+            "AA1",
+            "AA2"
+          ],
+          "A": {
+            "wall_seconds": 0.006094603200000001,
+            "cpu_seconds": 0.0060956294,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 0.0010534582,
+            "cpu_seconds": 0.0010544096,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "AA1": {
+            "wall_seconds": 0.005349369200000001,
+            "cpu_seconds": 0.0053486858,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA2": {
+            "wall_seconds": 0.0054700054,
+            "cpu_seconds": 0.005470800400000001,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 8,
+          "arm_order": [
+            "AA2",
+            "AA1",
+            "A",
+            "B"
+          ],
+          "AA2": {
+            "wall_seconds": 0.0064379267999999995,
+            "cpu_seconds": 0.0064391088,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA1": {
+            "wall_seconds": 0.0038239866,
+            "cpu_seconds": 0.0038248614,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "A": {
+            "wall_seconds": 0.0043581956,
+            "cpu_seconds": 0.0043592388,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 0.0003596758,
+            "cpu_seconds": 0.00036008540000000003,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          }
+        }
+      ],
+      "summary": {
+        "median_A_seconds": 0.0044320806,
+        "median_B_seconds": 0.0005746864000000001,
+        "paired_AB_geometric_speedup": 7.978931549334653,
+        "paired_AB_speedup_95pct_bootstrap": [
+          6.205183785842515,
+          10.078545407325601
+        ],
+        "paired_AB_min_max": [
+          3.9447633260628323,
+          12.592227176777707
+        ],
+        "paired_AA_geometric_ratio": 0.8598295735044699,
+        "paired_AA_min_max": [
+          0.5114818493944282,
+          1.3413050757015819
+        ]
+      }
+    },
+    "positive_3_500": {
+      "family": "positive3",
+      "crossings": 1000,
+      "loops": 1,
+      "status": "KNOTTED",
+      "baseline_method": "alexander-modular",
+      "structural_method": "homogeneous-seifert-genus",
+      "samples": [
+        {
+          "round": 0,
+          "arm_order": [
+            "AA2",
+            "B",
+            "A",
+            "AA1"
+          ],
+          "AA2": {
+            "wall_seconds": 0.074185531,
+            "cpu_seconds": 0.074193595,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 0.003697351,
+            "cpu_seconds": 0.003701483,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "A": {
+            "wall_seconds": 0.077548396,
+            "cpu_seconds": 0.077556676,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA1": {
+            "wall_seconds": 0.064328554,
+            "cpu_seconds": 0.064336643,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 1,
+          "arm_order": [
+            "AA2",
+            "AA1",
+            "B",
+            "A"
+          ],
+          "AA2": {
+            "wall_seconds": 0.070149887,
+            "cpu_seconds": 0.070115614,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA1": {
+            "wall_seconds": 0.077053743,
+            "cpu_seconds": 0.077024153,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 0.002100148,
+            "cpu_seconds": 0.002103115,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "A": {
+            "wall_seconds": 0.068619612,
+            "cpu_seconds": 0.068628522,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 2,
+          "arm_order": [
+            "A",
+            "AA2",
+            "AA1",
+            "B"
+          ],
+          "A": {
+            "wall_seconds": 0.062308765,
+            "cpu_seconds": 0.062316843,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA2": {
+            "wall_seconds": 0.064328547,
+            "cpu_seconds": 0.064336388,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA1": {
+            "wall_seconds": 0.069807526,
+            "cpu_seconds": 0.069794533,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 0.002966835,
+            "cpu_seconds": 0.002945476,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          }
+        },
+        {
+          "round": 3,
+          "arm_order": [
+            "AA1",
+            "AA2",
+            "B",
+            "A"
+          ],
+          "AA1": {
+            "wall_seconds": 0.067986381,
+            "cpu_seconds": 0.067995021,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA2": {
+            "wall_seconds": 0.092566305,
+            "cpu_seconds": 0.092608019,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 0.001816445,
+            "cpu_seconds": 0.001819149,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "A": {
+            "wall_seconds": 0.085219118,
+            "cpu_seconds": 0.085229086,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 4,
+          "arm_order": [
+            "A",
+            "AA2",
+            "AA1",
+            "B"
+          ],
+          "A": {
+            "wall_seconds": 0.061621759,
+            "cpu_seconds": 0.061603691,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA2": {
+            "wall_seconds": 0.05480957,
+            "cpu_seconds": 0.05438402,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA1": {
+            "wall_seconds": 0.05613893,
+            "cpu_seconds": 0.05612411,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 0.001765131,
+            "cpu_seconds": 0.001767722,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          }
+        },
+        {
+          "round": 5,
+          "arm_order": [
+            "B",
+            "AA1",
+            "A",
+            "AA2"
+          ],
+          "B": {
+            "wall_seconds": 0.003930571,
+            "cpu_seconds": 0.003934876,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "AA1": {
+            "wall_seconds": 0.056205902,
+            "cpu_seconds": 0.056158697,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "A": {
+            "wall_seconds": 0.064103036,
+            "cpu_seconds": 0.064101265,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA2": {
+            "wall_seconds": 0.058282465,
+            "cpu_seconds": 0.058269183,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 6,
+          "arm_order": [
+            "AA2",
+            "B",
+            "A",
+            "AA1"
+          ],
+          "AA2": {
+            "wall_seconds": 0.134505107,
+            "cpu_seconds": 0.134516616,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 0.003463132,
+            "cpu_seconds": 0.003467012,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "A": {
+            "wall_seconds": 0.121731489,
+            "cpu_seconds": 0.121742909,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA1": {
+            "wall_seconds": 0.120525379,
+            "cpu_seconds": 0.12054551,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 7,
+          "arm_order": [
+            "B",
+            "AA1",
+            "AA2",
+            "A"
+          ],
+          "B": {
+            "wall_seconds": 0.003031663,
+            "cpu_seconds": 0.003035676,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "AA1": {
+            "wall_seconds": 0.109156835,
+            "cpu_seconds": 0.109167801,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA2": {
+            "wall_seconds": 0.125784121,
+            "cpu_seconds": 0.125796932,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "A": {
+            "wall_seconds": 0.108913283,
+            "cpu_seconds": 0.10892304,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 8,
+          "arm_order": [
+            "B",
+            "A",
+            "AA1",
+            "AA2"
+          ],
+          "B": {
+            "wall_seconds": 0.003682517,
+            "cpu_seconds": 0.003685535,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "A": {
+            "wall_seconds": 0.106174914,
+            "cpu_seconds": 0.10618552,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA1": {
+            "wall_seconds": 0.092934257,
+            "cpu_seconds": 0.092936872,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA2": {
+            "wall_seconds": 0.083196154,
+            "cpu_seconds": 0.083193926,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        }
+      ],
+      "summary": {
+        "median_A_seconds": 0.077548396,
+        "median_B_seconds": 0.003031663,
+        "paired_AB_geometric_speedup": 28.884931676349638,
+        "paired_AB_speedup_95pct_bootstrap": [
+          23.46277043727525,
+          35.195171152982724
+        ],
+        "paired_AB_min_max": [
+          16.3088355356003,
+          46.91533076971777
+        ],
+        "paired_AA_geometric_ratio": 0.9534809094888217,
+        "paired_AA_min_max": [
+          0.7344614328075426,
+          1.117049917956544
+        ]
+      }
+    },
+    "positive_5_7": {
+      "family": "positive5",
+      "crossings": 28,
+      "loops": 32,
+      "status": "KNOTTED",
+      "baseline_method": "alexander-modular",
+      "structural_method": "homogeneous-seifert-genus",
+      "samples": [
+        {
+          "round": 0,
+          "arm_order": [
+            "AA1",
+            "AA2",
+            "A",
+            "B"
+          ],
+          "AA1": {
+            "wall_seconds": 0.00064249340625,
+            "cpu_seconds": 0.000642636,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA2": {
+            "wall_seconds": 0.000648064875,
+            "cpu_seconds": 0.000648213,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "A": {
+            "wall_seconds": 0.00077829884375,
+            "cpu_seconds": 0.00078006165625,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 4.671971875e-05,
+            "cpu_seconds": 4.677625e-05,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          }
+        },
+        {
+          "round": 1,
+          "arm_order": [
+            "AA1",
+            "A",
+            "AA2",
+            "B"
+          ],
+          "AA1": {
+            "wall_seconds": 0.00266042290625,
+            "cpu_seconds": 0.0026607450625,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "A": {
+            "wall_seconds": 0.001555558125,
+            "cpu_seconds": 0.00155584071875,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA2": {
+            "wall_seconds": 0.00177218603125,
+            "cpu_seconds": 0.0017106306875,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 0.00015965621875,
+            "cpu_seconds": 0.0001598373125,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          }
+        },
+        {
+          "round": 2,
+          "arm_order": [
+            "A",
+            "B",
+            "AA1",
+            "AA2"
+          ],
+          "A": {
+            "wall_seconds": 0.000750483875,
+            "cpu_seconds": 0.00075062796875,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 8.91031875e-05,
+            "cpu_seconds": 8.92401875e-05,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "AA1": {
+            "wall_seconds": 0.00076491303125,
+            "cpu_seconds": 0.000765061625,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA2": {
+            "wall_seconds": 0.0007428750625,
+            "cpu_seconds": 0.00074304746875,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 3,
+          "arm_order": [
+            "AA1",
+            "A",
+            "B",
+            "AA2"
+          ],
+          "AA1": {
+            "wall_seconds": 0.00104904925,
+            "cpu_seconds": 0.00104923725,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "A": {
+            "wall_seconds": 0.000931708875,
+            "cpu_seconds": 0.000931873125,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 8.186428125e-05,
+            "cpu_seconds": 8.199959375e-05,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "AA2": {
+            "wall_seconds": 0.00088811184375,
+            "cpu_seconds": 0.000887344125,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 4,
+          "arm_order": [
+            "AA1",
+            "AA2",
+            "B",
+            "A"
+          ],
+          "AA1": {
+            "wall_seconds": 0.00096314396875,
+            "cpu_seconds": 0.0009633185,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA2": {
+            "wall_seconds": 0.0006609345625,
+            "cpu_seconds": 0.0006610549375,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 0.00013939140625,
+            "cpu_seconds": 0.00013949190625,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "A": {
+            "wall_seconds": 0.00133113603125,
+            "cpu_seconds": 0.0013313274375,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 5,
+          "arm_order": [
+            "AA2",
+            "AA1",
+            "B",
+            "A"
+          ],
+          "AA2": {
+            "wall_seconds": 0.00083071909375,
+            "cpu_seconds": 0.00083087953125,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA1": {
+            "wall_seconds": 0.0009701979375,
+            "cpu_seconds": 0.00097034375,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 6.80999375e-05,
+            "cpu_seconds": 6.818525e-05,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "A": {
+            "wall_seconds": 0.00084100753125,
+            "cpu_seconds": 0.00083755421875,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 6,
+          "arm_order": [
+            "AA2",
+            "AA1",
+            "A",
+            "B"
+          ],
+          "AA2": {
+            "wall_seconds": 0.00101430234375,
+            "cpu_seconds": 0.00101445334375,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA1": {
+            "wall_seconds": 0.00135091765625,
+            "cpu_seconds": 0.00135112196875,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "A": {
+            "wall_seconds": 0.00107271728125,
+            "cpu_seconds": 0.00107218075,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 0.00013387134375,
+            "cpu_seconds": 0.00013405640625,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          }
+        },
+        {
+          "round": 7,
+          "arm_order": [
+            "B",
+            "AA1",
+            "A",
+            "AA2"
+          ],
+          "B": {
+            "wall_seconds": 0.0001189756875,
+            "cpu_seconds": 0.0001190888125,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "AA1": {
+            "wall_seconds": 0.00126882896875,
+            "cpu_seconds": 0.00126902940625,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "A": {
+            "wall_seconds": 0.001032798,
+            "cpu_seconds": 0.00103294809375,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA2": {
+            "wall_seconds": 0.0014290831875,
+            "cpu_seconds": 0.00142928928125,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 8,
+          "arm_order": [
+            "AA2",
+            "AA1",
+            "B",
+            "A"
+          ],
+          "AA2": {
+            "wall_seconds": 0.00125311546875,
+            "cpu_seconds": 0.0012533014375,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA1": {
+            "wall_seconds": 0.00098739925,
+            "cpu_seconds": 0.00098754003125,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 7.34116875e-05,
+            "cpu_seconds": 7.352715625e-05,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "A": {
+            "wall_seconds": 0.0008070801875,
+            "cpu_seconds": 0.00080723471875,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        }
+      ],
+      "summary": {
+        "median_A_seconds": 0.000931708875,
+        "median_B_seconds": 8.91031875e-05,
+        "paired_AB_geometric_speedup": 10.383586281317006,
+        "paired_AB_speedup_95pct_bootstrap": [
+          9.122409766536764,
+          12.06619392733121
+        ],
+        "paired_AB_min_max": [
+          8.013046341368334,
+          16.65889402962213
+        ],
+        "paired_AA_geometric_ratio": 1.1243068424079004,
+        "paired_AA_min_max": [
+          0.7879555193624291,
+          1.5012097259188346
+        ]
+      }
+    },
+    "positive_5_31": {
+      "family": "positive5",
+      "crossings": 124,
+      "loops": 8,
+      "status": "KNOTTED",
+      "baseline_method": "alexander-modular",
+      "structural_method": "homogeneous-seifert-genus",
+      "samples": [
+        {
+          "round": 0,
+          "arm_order": [
+            "A",
+            "AA1",
+            "B",
+            "AA2"
+          ],
+          "A": {
+            "wall_seconds": 0.006515104625,
+            "cpu_seconds": 0.006516028375,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA1": {
+            "wall_seconds": 0.006344592375,
+            "cpu_seconds": 0.006345560375,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 0.000462537875,
+            "cpu_seconds": 0.000463060875,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "AA2": {
+            "wall_seconds": 0.005390388125,
+            "cpu_seconds": 0.005391145625,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 1,
+          "arm_order": [
+            "AA2",
+            "B",
+            "A",
+            "AA1"
+          ],
+          "AA2": {
+            "wall_seconds": 0.004078033875,
+            "cpu_seconds": 0.004078847375,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 0.00022441175,
+            "cpu_seconds": 0.000224718375,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "A": {
+            "wall_seconds": 0.004669253125,
+            "cpu_seconds": 0.004670006125,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA1": {
+            "wall_seconds": 0.00461552325,
+            "cpu_seconds": 0.00461638875,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 2,
+          "arm_order": [
+            "B",
+            "A",
+            "AA2",
+            "AA1"
+          ],
+          "B": {
+            "wall_seconds": 0.000322764625,
+            "cpu_seconds": 0.00032334725,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "A": {
+            "wall_seconds": 0.003854994,
+            "cpu_seconds": 0.00385564525,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA2": {
+            "wall_seconds": 0.003872047,
+            "cpu_seconds": 0.0038727475,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA1": {
+            "wall_seconds": 0.00407043925,
+            "cpu_seconds": 0.004070053375,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 3,
+          "arm_order": [
+            "AA2",
+            "B",
+            "A",
+            "AA1"
+          ],
+          "AA2": {
+            "wall_seconds": 0.00342407675,
+            "cpu_seconds": 0.0034073145,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 0.000276855625,
+            "cpu_seconds": 0.000277321375,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "A": {
+            "wall_seconds": 0.00413455775,
+            "cpu_seconds": 0.004135236,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA1": {
+            "wall_seconds": 0.003509452625,
+            "cpu_seconds": 0.003510116375,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 4,
+          "arm_order": [
+            "AA2",
+            "A",
+            "B",
+            "AA1"
+          ],
+          "AA2": {
+            "wall_seconds": 0.0035007985,
+            "cpu_seconds": 0.003501391375,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "A": {
+            "wall_seconds": 0.00491020575,
+            "cpu_seconds": 0.004910946,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 0.00021413125,
+            "cpu_seconds": 0.000214425,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "AA1": {
+            "wall_seconds": 0.003251680375,
+            "cpu_seconds": 0.00325233925,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 5,
+          "arm_order": [
+            "A",
+            "AA1",
+            "AA2",
+            "B"
+          ],
+          "A": {
+            "wall_seconds": 0.004830610125,
+            "cpu_seconds": 0.004831393875,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA1": {
+            "wall_seconds": 0.0053206835,
+            "cpu_seconds": 0.0053214895,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA2": {
+            "wall_seconds": 0.004366760125,
+            "cpu_seconds": 0.004367602625,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 0.00044880575,
+            "cpu_seconds": 0.0004494155,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          }
+        },
+        {
+          "round": 6,
+          "arm_order": [
+            "A",
+            "B",
+            "AA1",
+            "AA2"
+          ],
+          "A": {
+            "wall_seconds": 0.005606342875,
+            "cpu_seconds": 0.00560724725,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 0.000391173875,
+            "cpu_seconds": 0.000391594625,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "AA1": {
+            "wall_seconds": 0.006681085625,
+            "cpu_seconds": 0.0066818665,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA2": {
+            "wall_seconds": 0.007257049875,
+            "cpu_seconds": 0.007257896375,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 7,
+          "arm_order": [
+            "AA2",
+            "A",
+            "B",
+            "AA1"
+          ],
+          "AA2": {
+            "wall_seconds": 0.006284442875,
+            "cpu_seconds": 0.006280622,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "A": {
+            "wall_seconds": 0.006086329375,
+            "cpu_seconds": 0.006087168125,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 0.00068773475,
+            "cpu_seconds": 0.000688108375,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "AA1": {
+            "wall_seconds": 0.006163856,
+            "cpu_seconds": 0.006164731875,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 8,
+          "arm_order": [
+            "B",
+            "AA2",
+            "AA1",
+            "A"
+          ],
+          "B": {
+            "wall_seconds": 0.000353900125,
+            "cpu_seconds": 0.00035429725,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "AA2": {
+            "wall_seconds": 0.0036450735,
+            "cpu_seconds": 0.00364562625,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA1": {
+            "wall_seconds": 0.0033088215,
+            "cpu_seconds": 0.0033094255,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "A": {
+            "wall_seconds": 0.0032491735,
+            "cpu_seconds": 0.003249743125,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        }
+      ],
+      "summary": {
+        "median_A_seconds": 0.004830610125,
+        "median_B_seconds": 0.000353900125,
+        "paired_AB_geometric_speedup": 13.513079897633062,
+        "paired_AB_speedup_95pct_bootstrap": [
+          11.116837629725824,
+          16.59692636291143
+        ],
+        "paired_AB_min_max": [
+          8.849820915694606,
+          22.930822801436037
+        ],
+        "paired_AA_geometric_ratio": 1.0323225846080346,
+        "paired_AA_min_max": [
+          0.9077516543905082,
+          1.2184510592965077
+        ]
+      }
+    },
+    "positive_5_101": {
+      "family": "positive5",
+      "crossings": 404,
+      "loops": 1,
+      "status": "KNOTTED",
+      "baseline_method": "alexander-modular",
+      "structural_method": "homogeneous-seifert-genus",
+      "samples": [
+        {
+          "round": 0,
+          "arm_order": [
+            "A",
+            "AA1",
+            "AA2",
+            "B"
+          ],
+          "A": {
+            "wall_seconds": 0.023222552,
+            "cpu_seconds": 0.023228728,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA1": {
+            "wall_seconds": 0.020192742,
+            "cpu_seconds": 0.020196888,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA2": {
+            "wall_seconds": 0.020563663,
+            "cpu_seconds": 0.02056858,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 0.000693726,
+            "cpu_seconds": 0.000694877,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          }
+        },
+        {
+          "round": 1,
+          "arm_order": [
+            "AA2",
+            "AA1",
+            "B",
+            "A"
+          ],
+          "AA2": {
+            "wall_seconds": 0.023092924,
+            "cpu_seconds": 0.023096789,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA1": {
+            "wall_seconds": 0.021416878,
+            "cpu_seconds": 0.021420902,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 0.000731229,
+            "cpu_seconds": 0.00073256,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "A": {
+            "wall_seconds": 0.023596699,
+            "cpu_seconds": 0.023601078,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 2,
+          "arm_order": [
+            "B",
+            "AA1",
+            "A",
+            "AA2"
+          ],
+          "B": {
+            "wall_seconds": 0.000759969,
+            "cpu_seconds": 0.000761134,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "AA1": {
+            "wall_seconds": 0.024574344,
+            "cpu_seconds": 0.024578678,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "A": {
+            "wall_seconds": 0.029298704,
+            "cpu_seconds": 0.029303423,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA2": {
+            "wall_seconds": 0.026169673,
+            "cpu_seconds": 0.026174528,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 3,
+          "arm_order": [
+            "AA1",
+            "A",
+            "AA2",
+            "B"
+          ],
+          "AA1": {
+            "wall_seconds": 0.026754024,
+            "cpu_seconds": 0.02674923,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "A": {
+            "wall_seconds": 0.032374597,
+            "cpu_seconds": 0.032367046,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA2": {
+            "wall_seconds": 0.031214647,
+            "cpu_seconds": 0.031219984,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 0.000936333,
+            "cpu_seconds": 0.000938982,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          }
+        },
+        {
+          "round": 4,
+          "arm_order": [
+            "A",
+            "B",
+            "AA2",
+            "AA1"
+          ],
+          "A": {
+            "wall_seconds": 0.028323056,
+            "cpu_seconds": 0.028327792,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 0.00077941,
+            "cpu_seconds": 0.00078166,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "AA2": {
+            "wall_seconds": 0.019362502,
+            "cpu_seconds": 0.019366291,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA1": {
+            "wall_seconds": 0.027198146,
+            "cpu_seconds": 0.027202449,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 5,
+          "arm_order": [
+            "AA2",
+            "AA1",
+            "B",
+            "A"
+          ],
+          "AA2": {
+            "wall_seconds": 0.025629869,
+            "cpu_seconds": 0.025636121,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA1": {
+            "wall_seconds": 0.017878566,
+            "cpu_seconds": 0.017884006,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 0.000711307,
+            "cpu_seconds": 0.000712816,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "A": {
+            "wall_seconds": 0.020452853,
+            "cpu_seconds": 0.020457634,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 6,
+          "arm_order": [
+            "B",
+            "AA1",
+            "AA2",
+            "A"
+          ],
+          "B": {
+            "wall_seconds": 0.001670196,
+            "cpu_seconds": 0.001673856,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "AA1": {
+            "wall_seconds": 0.03996453,
+            "cpu_seconds": 0.039971685,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA2": {
+            "wall_seconds": 0.032570607,
+            "cpu_seconds": 0.032576077,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "A": {
+            "wall_seconds": 0.031511419,
+            "cpu_seconds": 0.031516361,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 7,
+          "arm_order": [
+            "AA1",
+            "B",
+            "AA2",
+            "A"
+          ],
+          "AA1": {
+            "wall_seconds": 0.0370061,
+            "cpu_seconds": 0.037012624,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 0.000744207,
+            "cpu_seconds": 0.000745569,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "AA2": {
+            "wall_seconds": 0.060014939,
+            "cpu_seconds": 0.060022412,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "A": {
+            "wall_seconds": 0.034913878,
+            "cpu_seconds": 0.034919884,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 8,
+          "arm_order": [
+            "B",
+            "AA2",
+            "AA1",
+            "A"
+          ],
+          "B": {
+            "wall_seconds": 0.001160181,
+            "cpu_seconds": 0.001162681,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "AA2": {
+            "wall_seconds": 0.03334575,
+            "cpu_seconds": 0.033350887,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA1": {
+            "wall_seconds": 0.021408418,
+            "cpu_seconds": 0.021412608,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "A": {
+            "wall_seconds": 0.02073597,
+            "cpu_seconds": 0.020739833,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        }
+      ],
+      "summary": {
+        "median_A_seconds": 0.028323056,
+        "median_B_seconds": 0.000759969,
+        "paired_AB_geometric_speedup": 30.64017216895042,
+        "paired_AB_speedup_95pct_bootstrap": [
+          24.87208583984958,
+          36.81715684511952
+        ],
+        "paired_AB_min_max": [
+          17.873047395190923,
+          46.91420263448207
+        ],
+        "paired_AA_geometric_ratio": 0.8895782468743507,
+        "paired_AA_min_max": [
+          0.6166148065234224,
+          1.404681378470613
+        ]
+      }
+    },
+    "positive_5_251": {
+      "family": "positive5",
+      "crossings": 1004,
+      "loops": 1,
+      "status": "KNOTTED",
+      "baseline_method": "alexander-modular",
+      "structural_method": "homogeneous-seifert-genus",
+      "samples": [
+        {
+          "round": 0,
+          "arm_order": [
+            "AA1",
+            "B",
+            "AA2",
+            "A"
+          ],
+          "AA1": {
+            "wall_seconds": 0.137387765,
+            "cpu_seconds": 0.137380164,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 0.002205604,
+            "cpu_seconds": 0.002208277,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "AA2": {
+            "wall_seconds": 0.164555215,
+            "cpu_seconds": 0.164568473,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "A": {
+            "wall_seconds": 0.140737003,
+            "cpu_seconds": 0.140749635,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 1,
+          "arm_order": [
+            "B",
+            "AA2",
+            "A",
+            "AA1"
+          ],
+          "B": {
+            "wall_seconds": 0.003159833,
+            "cpu_seconds": 0.003163916,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "AA2": {
+            "wall_seconds": 0.133935286,
+            "cpu_seconds": 0.133946897,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "A": {
+            "wall_seconds": 0.137307596,
+            "cpu_seconds": 0.137320075,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA1": {
+            "wall_seconds": 0.133269123,
+            "cpu_seconds": 0.13327377,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 2,
+          "arm_order": [
+            "B",
+            "AA2",
+            "AA1",
+            "A"
+          ],
+          "B": {
+            "wall_seconds": 0.002227428,
+            "cpu_seconds": 0.002230799,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "AA2": {
+            "wall_seconds": 0.141012991,
+            "cpu_seconds": 0.141024615,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA1": {
+            "wall_seconds": 0.138341799,
+            "cpu_seconds": 0.138353902,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "A": {
+            "wall_seconds": 0.126562712,
+            "cpu_seconds": 0.126574105,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 3,
+          "arm_order": [
+            "A",
+            "AA1",
+            "B",
+            "AA2"
+          ],
+          "A": {
+            "wall_seconds": 0.123447517,
+            "cpu_seconds": 0.123385691,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA1": {
+            "wall_seconds": 0.115372275,
+            "cpu_seconds": 0.11537401,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 0.00312215,
+            "cpu_seconds": 0.003126298,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "AA2": {
+            "wall_seconds": 0.127267593,
+            "cpu_seconds": 0.127279349,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 4,
+          "arm_order": [
+            "B",
+            "AA2",
+            "AA1",
+            "A"
+          ],
+          "B": {
+            "wall_seconds": 0.002390283,
+            "cpu_seconds": 0.002393508,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "AA2": {
+            "wall_seconds": 0.136637966,
+            "cpu_seconds": 0.136641328,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA1": {
+            "wall_seconds": 0.125635275,
+            "cpu_seconds": 0.125646323,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "A": {
+            "wall_seconds": 0.130279986,
+            "cpu_seconds": 0.130292294,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 5,
+          "arm_order": [
+            "A",
+            "B",
+            "AA2",
+            "AA1"
+          ],
+          "A": {
+            "wall_seconds": 0.123398191,
+            "cpu_seconds": 0.123409349,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 0.001900708,
+            "cpu_seconds": 0.001903864,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "AA2": {
+            "wall_seconds": 0.127189131,
+            "cpu_seconds": 0.127200631,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA1": {
+            "wall_seconds": 0.128367069,
+            "cpu_seconds": 0.128378417,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 6,
+          "arm_order": [
+            "A",
+            "AA1",
+            "AA2",
+            "B"
+          ],
+          "A": {
+            "wall_seconds": 0.25533077,
+            "cpu_seconds": 0.255352715,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA1": {
+            "wall_seconds": 0.204986928,
+            "cpu_seconds": 0.203327935,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA2": {
+            "wall_seconds": 0.2320385,
+            "cpu_seconds": 0.23205544,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 0.007296202,
+            "cpu_seconds": 0.007301631,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          }
+        },
+        {
+          "round": 7,
+          "arm_order": [
+            "AA1",
+            "B",
+            "A",
+            "AA2"
+          ],
+          "AA1": {
+            "wall_seconds": 0.232685668,
+            "cpu_seconds": 0.232695747,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 0.00439607,
+            "cpu_seconds": 0.004400692,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          },
+          "A": {
+            "wall_seconds": 0.222560691,
+            "cpu_seconds": 0.222513688,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA2": {
+            "wall_seconds": 0.300129577,
+            "cpu_seconds": 0.300150055,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          }
+        },
+        {
+          "round": 8,
+          "arm_order": [
+            "AA1",
+            "A",
+            "AA2",
+            "B"
+          ],
+          "AA1": {
+            "wall_seconds": 0.206669892,
+            "cpu_seconds": 0.206676991,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "A": {
+            "wall_seconds": 0.176559861,
+            "cpu_seconds": 0.176572981,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "AA2": {
+            "wall_seconds": 0.182078637,
+            "cpu_seconds": 0.182094973,
+            "status": "KNOTTED",
+            "method": "alexander-modular"
+          },
+          "B": {
+            "wall_seconds": 0.01086057,
+            "cpu_seconds": 0.010866558,
+            "status": "KNOTTED",
+            "method": "homogeneous-seifert-genus"
+          }
+        }
+      ],
+      "summary": {
+        "median_A_seconds": 0.137307596,
+        "median_B_seconds": 0.00312215,
+        "paired_AB_geometric_speedup": 44.13099168468462,
+        "paired_AB_speedup_95pct_bootstrap": [
+          33.06106182492635,
+          55.37365300328315
+        ],
+        "paired_AB_min_max": [
+          16.256960822498268,
+          64.92222424486033
+        ],
+        "paired_AA_geometric_ratio": 0.9324757375894833,
+        "paired_AA_min_max": [
+          0.7752840300707852,
+          1.1350584308251386
+        ]
+      }
+    },
+    "conway": {
+      "family": "inconclusive_control",
+      "crossings": 11,
+      "loops": 7,
+      "status": "KNOTTED",
+      "baseline_method": "jones-modular",
+      "structural_method": "jones-modular",
+      "samples": [
+        {
+          "round": 0,
+          "arm_order": [
+            "AA1",
+            "AA2",
+            "B",
+            "A"
+          ],
+          "AA1": {
+            "wall_seconds": 0.0008853764285714286,
+            "cpu_seconds": 0.0008859122857142857,
+            "status": "KNOTTED",
+            "method": "jones-modular"
+          },
+          "AA2": {
+            "wall_seconds": 0.0008127841428571429,
+            "cpu_seconds": 0.0008132255714285714,
+            "status": "KNOTTED",
+            "method": "jones-modular"
+          },
+          "B": {
+            "wall_seconds": 0.0006510727142857143,
+            "cpu_seconds": 0.0006513515714285714,
+            "status": "KNOTTED",
+            "method": "jones-modular"
+          },
+          "A": {
+            "wall_seconds": 0.0010812982857142856,
+            "cpu_seconds": 0.0010817424285714287,
+            "status": "KNOTTED",
+            "method": "jones-modular"
+          }
+        },
+        {
+          "round": 1,
+          "arm_order": [
+            "A",
+            "AA1",
+            "B",
+            "AA2"
+          ],
+          "A": {
+            "wall_seconds": 0.0012815675714285713,
+            "cpu_seconds": 0.001275299,
+            "status": "KNOTTED",
+            "method": "jones-modular"
+          },
+          "AA1": {
+            "wall_seconds": 0.000857895,
+            "cpu_seconds": 0.0008584365714285715,
+            "status": "KNOTTED",
+            "method": "jones-modular"
+          },
+          "B": {
+            "wall_seconds": 0.0010666572857142857,
+            "cpu_seconds": 0.0010671704285714287,
+            "status": "KNOTTED",
+            "method": "jones-modular"
+          },
+          "AA2": {
+            "wall_seconds": 0.0009066024285714285,
+            "cpu_seconds": 0.0009070747142857144,
+            "status": "KNOTTED",
+            "method": "jones-modular"
+          }
+        },
+        {
+          "round": 2,
+          "arm_order": [
+            "A",
+            "AA2",
+            "B",
+            "AA1"
+          ],
+          "A": {
+            "wall_seconds": 0.001058454,
+            "cpu_seconds": 0.0010589495714285713,
+            "status": "KNOTTED",
+            "method": "jones-modular"
+          },
+          "AA2": {
+            "wall_seconds": 0.0009668637142857143,
+            "cpu_seconds": 0.0009674721428571428,
+            "status": "KNOTTED",
+            "method": "jones-modular"
+          },
+          "B": {
+            "wall_seconds": 0.0007449952857142857,
+            "cpu_seconds": 0.0007453408571428572,
+            "status": "KNOTTED",
+            "method": "jones-modular"
+          },
+          "AA1": {
+            "wall_seconds": 0.000969955,
+            "cpu_seconds": 0.0009705358571428571,
+            "status": "KNOTTED",
+            "method": "jones-modular"
+          }
+        },
+        {
+          "round": 3,
+          "arm_order": [
+            "AA2",
+            "B",
+            "AA1",
+            "A"
+          ],
+          "AA2": {
+            "wall_seconds": 0.001172823142857143,
+            "cpu_seconds": 0.00117345,
+            "status": "KNOTTED",
+            "method": "jones-modular"
+          },
+          "B": {
+            "wall_seconds": 0.001971164,
+            "cpu_seconds": 0.0019717187142857143,
+            "status": "KNOTTED",
+            "method": "jones-modular"
+          },
+          "AA1": {
+            "wall_seconds": 0.001609107857142857,
+            "cpu_seconds": 0.001609788142857143,
+            "status": "KNOTTED",
+            "method": "jones-modular"
+          },
+          "A": {
+            "wall_seconds": 0.0014346352857142856,
+            "cpu_seconds": 0.0014352597142857143,
+            "status": "KNOTTED",
+            "method": "jones-modular"
+          }
+        },
+        {
+          "round": 4,
+          "arm_order": [
+            "AA2",
+            "A",
+            "B",
+            "AA1"
+          ],
+          "AA2": {
+            "wall_seconds": 0.0009404138571428572,
+            "cpu_seconds": 0.000941053,
+            "status": "KNOTTED",
+            "method": "jones-modular"
+          },
+          "A": {
+            "wall_seconds": 0.000810294,
+            "cpu_seconds": 0.0008107708571428572,
+            "status": "KNOTTED",
+            "method": "jones-modular"
+          },
+          "B": {
+            "wall_seconds": 0.0010897015714285713,
+            "cpu_seconds": 0.0010901694285714286,
+            "status": "KNOTTED",
+            "method": "jones-modular"
+          },
+          "AA1": {
+            "wall_seconds": 0.001461572857142857,
+            "cpu_seconds": 0.001462114,
+            "status": "KNOTTED",
+            "method": "jones-modular"
+          }
+        },
+        {
+          "round": 5,
+          "arm_order": [
+            "AA2",
+            "AA1",
+            "B",
+            "A"
+          ],
+          "AA2": {
+            "wall_seconds": 0.0017087634285714286,
+            "cpu_seconds": 0.0017093354285714285,
+            "status": "KNOTTED",
+            "method": "jones-modular"
+          },
+          "AA1": {
+            "wall_seconds": 0.0018758435714285714,
+            "cpu_seconds": 0.0018763357142857144,
+            "status": "KNOTTED",
+            "method": "jones-modular"
+          },
+          "B": {
+            "wall_seconds": 0.0012185641428571429,
+            "cpu_seconds": 0.0012191564285714287,
+            "status": "KNOTTED",
+            "method": "jones-modular"
+          },
+          "A": {
+            "wall_seconds": 0.001381604142857143,
+            "cpu_seconds": 0.0013821982857142856,
+            "status": "KNOTTED",
+            "method": "jones-modular"
+          }
+        },
+        {
+          "round": 6,
+          "arm_order": [
+            "AA2",
+            "AA1",
+            "B",
+            "A"
+          ],
+          "AA2": {
+            "wall_seconds": 0.0015975667142857143,
+            "cpu_seconds": 0.001598416857142857,
+            "status": "KNOTTED",
+            "method": "jones-modular"
+          },
+          "AA1": {
+            "wall_seconds": 0.0015246648571428571,
+            "cpu_seconds": 0.0015252127142857143,
+            "status": "KNOTTED",
+            "method": "jones-modular"
+          },
+          "B": {
+            "wall_seconds": 0.0014894574285714286,
+            "cpu_seconds": 0.001490042,
+            "status": "KNOTTED",
+            "method": "jones-modular"
+          },
+          "A": {
+            "wall_seconds": 0.0010216647142857144,
+            "cpu_seconds": 0.0010221884285714286,
+            "status": "KNOTTED",
+            "method": "jones-modular"
+          }
+        },
+        {
+          "round": 7,
+          "arm_order": [
+            "A",
+            "AA1",
+            "B",
+            "AA2"
+          ],
+          "A": {
+            "wall_seconds": 0.0016963588571428571,
+            "cpu_seconds": 0.0016970517142857143,
+            "status": "KNOTTED",
+            "method": "jones-modular"
+          },
+          "AA1": {
+            "wall_seconds": 0.001575630142857143,
+            "cpu_seconds": 0.0015761027142857144,
+            "status": "KNOTTED",
+            "method": "jones-modular"
+          },
+          "B": {
+            "wall_seconds": 0.001961063857142857,
+            "cpu_seconds": 0.001961634857142857,
+            "status": "KNOTTED",
+            "method": "jones-modular"
+          },
+          "AA2": {
+            "wall_seconds": 0.001396845857142857,
+            "cpu_seconds": 0.0013972884285714286,
+            "status": "KNOTTED",
+            "method": "jones-modular"
+          }
+        },
+        {
+          "round": 8,
+          "arm_order": [
+            "A",
+            "AA1",
+            "B",
+            "AA2"
+          ],
+          "A": {
+            "wall_seconds": 0.001349271142857143,
+            "cpu_seconds": 0.0013499635714285714,
+            "status": "KNOTTED",
+            "method": "jones-modular"
+          },
+          "AA1": {
+            "wall_seconds": 0.001068283142857143,
+            "cpu_seconds": 0.0010688652857142858,
+            "status": "KNOTTED",
+            "method": "jones-modular"
+          },
+          "B": {
+            "wall_seconds": 0.001354947142857143,
+            "cpu_seconds": 0.0013554587142857143,
+            "status": "KNOTTED",
+            "method": "jones-modular"
+          },
+          "AA2": {
+            "wall_seconds": 0.0008788447142857143,
+            "cpu_seconds": 0.0008793378571428571,
+            "status": "KNOTTED",
+            "method": "jones-modular"
+          }
+        }
+      ],
+      "summary": {
+        "median_A_seconds": 0.0012815675714285713,
+        "median_B_seconds": 0.0012185641428571429,
+        "paired_AB_geometric_speedup": 1.0030551451436536,
+        "paired_AB_speedup_95pct_bootstrap": [
+          0.8294365735282121,
+          1.2174042166518908
+        ],
+        "paired_AB_min_max": [
+          0.6859307924400467,
+          1.6607949649688019
+        ],
+        "paired_AA_geometric_ratio": 1.1366731714410134,
+        "paired_AA_min_max": [
+          0.946274764950521,
+          1.5541804770756704
+        ]
+      }
+    },
+    "kinoshita_terasaka": {
+      "family": "inconclusive_control",
+      "crossings": 11,
+      "loops": 28,
+      "status": "KNOTTED",
+      "baseline_method": "jones-modular",
+      "structural_method": "jones-modular",
+      "samples": [
+        {
+          "round": 0,
+          "arm_order": [
+            "AA1",
+            "AA2",
+            "B",
+            "A"
+          ],
+          "AA1": {
+            "wall_seconds": 0.001841012892857143,
+            "cpu_seconds": 0.00184130025,
+            "status": "KNOTTED",
+            "method": "jones-modular"
+          },
+          "AA2": {
+            "wall_seconds": 0.0014396839642857144,
+            "cpu_seconds": 0.0014399369285714287,
+            "status": "KNOTTED",
+            "method": "jones-modular"
+          },
+          "B": {
+            "wall_seconds": 0.0014816355714285714,
+            "cpu_seconds": 0.00151011925,
+            "status": "KNOTTED",
+            "method": "jones-modular"
+          },
+          "A": {
+            "wall_seconds": 0.0010799362142857143,
+            "cpu_seconds": 0.0010801282142857143,
+            "status": "KNOTTED",
+            "method": "jones-modular"
+          }
+        },
+        {
+          "round": 1,
+          "arm_order": [
+            "AA1",
+            "A",
+            "B",
+            "AA2"
+          ],
+          "AA1": {
+            "wall_seconds": 0.0013212601428571429,
+            "cpu_seconds": 0.0013215035714285713,
+            "status": "KNOTTED",
+            "method": "jones-modular"
+          },
+          "A": {
+            "wall_seconds": 0.001126369,
+            "cpu_seconds": 0.001126592142857143,
+            "status": "KNOTTED",
+            "method": "jones-modular"
+          },
+          "B": {
+            "wall_seconds": 0.0013198215,
+            "cpu_seconds": 0.0013200650357142857,
+            "status": "KNOTTED",
+            "method": "jones-modular"
+          },
+          "AA2": {
+            "wall_seconds": 0.0015001294285714286,
+            "cpu_seconds": 0.0015003813214285713,
+            "status": "KNOTTED",
+            "method": "jones-modular"
+          }
+        },
+        {
+          "round": 2,
+          "arm_order": [
+            "AA1",
+            "B",
+            "AA2",
+            "A"
+          ],
+          "AA1": {
+            "wall_seconds": 0.0010432370714285714,
+            "cpu_seconds": 0.00104343875,
+            "status": "KNOTTED",
+            "method": "jones-modular"
+          },
+          "B": {
+            "wall_seconds": 0.0012871215,
+            "cpu_seconds": 0.001287313892857143,
+            "status": "KNOTTED",
+            "method": "jones-modular"
+          },
+          "AA2": {
+            "wall_seconds": 0.0011293519642857142,
+            "cpu_seconds": 0.0011295645357142857,
+            "status": "KNOTTED",
+            "method": "jones-modular"
+          },
+          "A": {
+            "wall_seconds": 0.00090076425,
+            "cpu_seconds": 0.0009009474285714285,
+            "status": "KNOTTED",
+            "method": "jones-modular"
+          }
+        },
+        {
+          "round": 3,
+          "arm_order": [
+            "B",
+            "AA2",
+            "A",
+            "AA1"
+          ],
+          "B": {
+            "wall_seconds": 0.00108094925,
+            "cpu_seconds": 0.0010811462857142856,
+            "status": "KNOTTED",
+            "method": "jones-modular"
+          },
+          "AA2": {
+            "wall_seconds": 0.001059331607142857,
+            "cpu_seconds": 0.0010595459642857143,
+            "status": "KNOTTED",
+            "method": "jones-modular"
+          },
+          "A": {
+            "wall_seconds": 0.001153776892857143,
+            "cpu_seconds": 0.001153943107142857,
+            "status": "KNOTTED",
+            "method": "jones-modular"
+          },
+          "AA1": {
+            "wall_seconds": 0.00094283175,
+            "cpu_seconds": 0.0009430000357142856,
+            "status": "KNOTTED",
+            "method": "jones-modular"
+          }
+        },
+        {
+          "round": 4,
+          "arm_order": [
+            "AA1",
+            "A",
+            "B",
+            "AA2"
+          ],
+          "AA1": {
+            "wall_seconds": 0.0009395391071428572,
+            "cpu_seconds": 0.0009397103928571428,
+            "status": "KNOTTED",
+            "method": "jones-modular"
+          },
+          "A": {
+            "wall_seconds": 0.0010881269642857142,
+            "cpu_seconds": 0.0010846814285714287,
+            "status": "KNOTTED",
+            "method": "jones-modular"
+          },
+          "B": {
+            "wall_seconds": 0.0010438304285714285,
+            "cpu_seconds": 0.0010439896071428572,
+            "status": "KNOTTED",
+            "method": "jones-modular"
+          },
+          "AA2": {
+            "wall_seconds": 0.0008373036428571428,
+            "cpu_seconds": 0.0008374593571428572,
+            "status": "KNOTTED",
+            "method": "jones-modular"
+          }
+        },
+        {
+          "round": 5,
+          "arm_order": [
+            "AA1",
+            "A",
+            "B",
+            "AA2"
+          ],
+          "AA1": {
+            "wall_seconds": 0.0009450722142857143,
+            "cpu_seconds": 0.000945278,
+            "status": "KNOTTED",
+            "method": "jones-modular"
+          },
+          "A": {
+            "wall_seconds": 0.0009960380357142858,
+            "cpu_seconds": 0.0009962169642857143,
+            "status": "KNOTTED",
+            "method": "jones-modular"
+          },
+          "B": {
+            "wall_seconds": 0.000931959,
+            "cpu_seconds": 0.0009321648928571428,
+            "status": "KNOTTED",
+            "method": "jones-modular"
+          },
+          "AA2": {
+            "wall_seconds": 0.0008944019285714285,
+            "cpu_seconds": 0.0008920953928571428,
+            "status": "KNOTTED",
+            "method": "jones-modular"
+          }
+        },
+        {
+          "round": 6,
+          "arm_order": [
+            "AA1",
+            "B",
+            "AA2",
+            "A"
+          ],
+          "AA1": {
+            "wall_seconds": 0.001688781642857143,
+            "cpu_seconds": 0.0016505822142857142,
+            "status": "KNOTTED",
+            "method": "jones-modular"
+          },
+          "B": {
+            "wall_seconds": 0.0014708290714285713,
+            "cpu_seconds": 0.0014710826785714287,
+            "status": "KNOTTED",
+            "method": "jones-modular"
+          },
+          "AA2": {
+            "wall_seconds": 0.0017937968928571429,
+            "cpu_seconds": 0.0017940715357142856,
+            "status": "KNOTTED",
+            "method": "jones-modular"
+          },
+          "A": {
+            "wall_seconds": 0.001267394857142857,
+            "cpu_seconds": 0.0012676231785714285,
+            "status": "KNOTTED",
+            "method": "jones-modular"
+          }
+        },
+        {
+          "round": 7,
+          "arm_order": [
+            "AA2",
+            "A",
+            "B",
+            "AA1"
+          ],
+          "AA2": {
+            "wall_seconds": 0.0019663155714285713,
+            "cpu_seconds": 0.001966587357142857,
+            "status": "KNOTTED",
+            "method": "jones-modular"
+          },
+          "A": {
+            "wall_seconds": 0.001879422392857143,
+            "cpu_seconds": 0.0018797078214285714,
+            "status": "KNOTTED",
+            "method": "jones-modular"
+          },
+          "B": {
+            "wall_seconds": 0.0016542446785714287,
+            "cpu_seconds": 0.0016544631785714286,
+            "status": "KNOTTED",
+            "method": "jones-modular"
+          },
+          "AA1": {
+            "wall_seconds": 0.001520276642857143,
+            "cpu_seconds": 0.0015201621785714287,
+            "status": "KNOTTED",
+            "method": "jones-modular"
+          }
+        },
+        {
+          "round": 8,
+          "arm_order": [
+            "B",
+            "A",
+            "AA1",
+            "AA2"
+          ],
+          "B": {
+            "wall_seconds": 0.0011458205357142857,
+            "cpu_seconds": 0.001145995357142857,
+            "status": "KNOTTED",
+            "method": "jones-modular"
+          },
+          "A": {
+            "wall_seconds": 0.0007369999642857143,
+            "cpu_seconds": 0.0007371419642857143,
+            "status": "KNOTTED",
+            "method": "jones-modular"
+          },
+          "AA1": {
+            "wall_seconds": 0.0008548291428571429,
+            "cpu_seconds": 0.0008492064642857143,
+            "status": "KNOTTED",
+            "method": "jones-modular"
+          },
+          "AA2": {
+            "wall_seconds": 0.0008376078571428572,
+            "cpu_seconds": 0.0008377561785714285,
+            "status": "KNOTTED",
+            "method": "jones-modular"
+          }
+        }
+      ],
+      "summary": {
+        "median_A_seconds": 0.0010881269642857142,
+        "median_B_seconds": 0.0012871215,
+        "paired_AB_geometric_speedup": 0.8828956324050116,
+        "paired_AB_speedup_95pct_bootstrap": [
+          0.7713612157567815,
+          1.0051406774741372
+        ],
+        "paired_AB_min_max": [
+          0.643207152703264,
+          1.1361211658726162
+        ],
+        "paired_AA_geometric_ratio": 0.977606718306113,
+        "paired_AA_min_max": [
+          0.773160048645004,
+          1.278761824488713
+        ]
+      }
+    },
+    "hard_unknot_8": {
+      "family": "inconclusive_control",
+      "crossings": 8,
+      "loops": 82,
+      "status": "UNKNOT",
+      "baseline_method": "reidemeister-reduction",
+      "structural_method": "reidemeister-reduction",
+      "samples": [
+        {
+          "round": 0,
+          "arm_order": [
+            "AA2",
+            "AA1",
+            "A",
+            "B"
+          ],
+          "AA2": {
+            "wall_seconds": 0.0005362244146341464,
+            "cpu_seconds": 0.0005362929268292683,
+            "status": "UNKNOT",
+            "method": "reidemeister-reduction"
+          },
+          "AA1": {
+            "wall_seconds": 0.0006190261707317074,
+            "cpu_seconds": 0.0006191148414634146,
+            "status": "UNKNOT",
+            "method": "reidemeister-reduction"
+          },
+          "A": {
+            "wall_seconds": 0.001061360512195122,
+            "cpu_seconds": 0.0010614691341463414,
+            "status": "UNKNOT",
+            "method": "reidemeister-reduction"
+          },
+          "B": {
+            "wall_seconds": 0.001071649768292683,
+            "cpu_seconds": 0.0010717604024390243,
+            "status": "UNKNOT",
+            "method": "reidemeister-reduction"
+          }
+        },
+        {
+          "round": 1,
+          "arm_order": [
+            "AA1",
+            "A",
+            "AA2",
+            "B"
+          ],
+          "AA1": {
+            "wall_seconds": 0.0006560117926829269,
+            "cpu_seconds": 0.0006561170975609756,
+            "status": "UNKNOT",
+            "method": "reidemeister-reduction"
+          },
+          "A": {
+            "wall_seconds": 0.0007700784390243902,
+            "cpu_seconds": 0.0007701824390243902,
+            "status": "UNKNOT",
+            "method": "reidemeister-reduction"
+          },
+          "AA2": {
+            "wall_seconds": 0.000616371756097561,
+            "cpu_seconds": 0.0006164666219512196,
+            "status": "UNKNOT",
+            "method": "reidemeister-reduction"
+          },
+          "B": {
+            "wall_seconds": 0.0007820684268292683,
+            "cpu_seconds": 0.0007821703780487805,
+            "status": "UNKNOT",
+            "method": "reidemeister-reduction"
+          }
+        },
+        {
+          "round": 2,
+          "arm_order": [
+            "AA1",
+            "A",
+            "AA2",
+            "B"
+          ],
+          "AA1": {
+            "wall_seconds": 0.0006498840487804879,
+            "cpu_seconds": 0.000649962768292683,
+            "status": "UNKNOT",
+            "method": "reidemeister-reduction"
+          },
+          "A": {
+            "wall_seconds": 0.0007180267682926829,
+            "cpu_seconds": 0.0007184542926829268,
+            "status": "UNKNOT",
+            "method": "reidemeister-reduction"
+          },
+          "AA2": {
+            "wall_seconds": 0.0005162360731707317,
+            "cpu_seconds": 0.0005163192317073171,
+            "status": "UNKNOT",
+            "method": "reidemeister-reduction"
+          },
+          "B": {
+            "wall_seconds": 0.0006472104390243901,
+            "cpu_seconds": 0.0006473062926829269,
+            "status": "UNKNOT",
+            "method": "reidemeister-reduction"
+          }
+        },
+        {
+          "round": 3,
+          "arm_order": [
+            "AA1",
+            "AA2",
+            "A",
+            "B"
+          ],
+          "AA1": {
+            "wall_seconds": 0.0005885324268292683,
+            "cpu_seconds": 0.0005879122195121951,
+            "status": "UNKNOT",
+            "method": "reidemeister-reduction"
+          },
+          "AA2": {
+            "wall_seconds": 0.0006618546341463415,
+            "cpu_seconds": 0.0006619494512195122,
+            "status": "UNKNOT",
+            "method": "reidemeister-reduction"
+          },
+          "A": {
+            "wall_seconds": 0.0005451363292682926,
+            "cpu_seconds": 0.0005452120609756099,
+            "status": "UNKNOT",
+            "method": "reidemeister-reduction"
+          },
+          "B": {
+            "wall_seconds": 0.0006526881829268293,
+            "cpu_seconds": 0.0006527686585365854,
+            "status": "UNKNOT",
+            "method": "reidemeister-reduction"
+          }
+        },
+        {
+          "round": 4,
+          "arm_order": [
+            "A",
+            "B",
+            "AA2",
+            "AA1"
+          ],
+          "A": {
+            "wall_seconds": 0.0005353941707317073,
+            "cpu_seconds": 0.0005354798902439024,
+            "status": "UNKNOT",
+            "method": "reidemeister-reduction"
+          },
+          "B": {
+            "wall_seconds": 0.0006321511585365854,
+            "cpu_seconds": 0.0006319343658536586,
+            "status": "UNKNOT",
+            "method": "reidemeister-reduction"
+          },
+          "AA2": {
+            "wall_seconds": 0.0005469288658536585,
+            "cpu_seconds": 0.0005465417682926829,
+            "status": "UNKNOT",
+            "method": "reidemeister-reduction"
+          },
+          "AA1": {
+            "wall_seconds": 0.0005733346341463414,
+            "cpu_seconds": 0.0005733115487804878,
+            "status": "UNKNOT",
+            "method": "reidemeister-reduction"
+          }
+        },
+        {
+          "round": 5,
+          "arm_order": [
+            "A",
+            "AA1",
+            "B",
+            "AA2"
+          ],
+          "A": {
+            "wall_seconds": 0.0008810625731707316,
+            "cpu_seconds": 0.0008811777804878049,
+            "status": "UNKNOT",
+            "method": "reidemeister-reduction"
+          },
+          "AA1": {
+            "wall_seconds": 0.000760335243902439,
+            "cpu_seconds": 0.0007604306829268293,
+            "status": "UNKNOT",
+            "method": "reidemeister-reduction"
+          },
+          "B": {
+            "wall_seconds": 0.0007793313170731706,
+            "cpu_seconds": 0.0007794295121951219,
+            "status": "UNKNOT",
+            "method": "reidemeister-reduction"
+          },
+          "AA2": {
+            "wall_seconds": 0.0008530011463414634,
+            "cpu_seconds": 0.0008531314634146341,
+            "status": "UNKNOT",
+            "method": "reidemeister-reduction"
+          }
+        },
+        {
+          "round": 6,
+          "arm_order": [
+            "B",
+            "AA1",
+            "A",
+            "AA2"
+          ],
+          "B": {
+            "wall_seconds": 0.0011043998902439023,
+            "cpu_seconds": 0.001104504,
+            "status": "UNKNOT",
+            "method": "reidemeister-reduction"
+          },
+          "AA1": {
+            "wall_seconds": 0.0008842323048780488,
+            "cpu_seconds": 0.000884193512195122,
+            "status": "UNKNOT",
+            "method": "reidemeister-reduction"
+          },
+          "A": {
+            "wall_seconds": 0.0008157743170731707,
+            "cpu_seconds": 0.000815725024390244,
+            "status": "UNKNOT",
+            "method": "reidemeister-reduction"
+          },
+          "AA2": {
+            "wall_seconds": 0.001033058487804878,
+            "cpu_seconds": 0.0010331604146341464,
+            "status": "UNKNOT",
+            "method": "reidemeister-reduction"
+          }
+        },
+        {
+          "round": 7,
+          "arm_order": [
+            "A",
+            "B",
+            "AA1",
+            "AA2"
+          ],
+          "A": {
+            "wall_seconds": 0.000987741707317073,
+            "cpu_seconds": 0.0009878652195121952,
+            "status": "UNKNOT",
+            "method": "reidemeister-reduction"
+          },
+          "B": {
+            "wall_seconds": 0.0010076275975609756,
+            "cpu_seconds": 0.0010077381585365853,
+            "status": "UNKNOT",
+            "method": "reidemeister-reduction"
+          },
+          "AA1": {
+            "wall_seconds": 0.0009856796829268294,
+            "cpu_seconds": 0.0009858239146341465,
+            "status": "UNKNOT",
+            "method": "reidemeister-reduction"
+          },
+          "AA2": {
+            "wall_seconds": 0.0009236696463414634,
+            "cpu_seconds": 0.0009230401951219511,
+            "status": "UNKNOT",
+            "method": "reidemeister-reduction"
+          }
+        },
+        {
+          "round": 8,
+          "arm_order": [
+            "A",
+            "AA1",
+            "B",
+            "AA2"
+          ],
+          "A": {
+            "wall_seconds": 0.0009463786463414634,
+            "cpu_seconds": 0.0009467306097560975,
+            "status": "UNKNOT",
+            "method": "reidemeister-reduction"
+          },
+          "AA1": {
+            "wall_seconds": 0.000922336243902439,
+            "cpu_seconds": 0.0009224711585365853,
+            "status": "UNKNOT",
+            "method": "reidemeister-reduction"
+          },
+          "B": {
+            "wall_seconds": 0.0009148002682926829,
+            "cpu_seconds": 0.0009149195365853659,
+            "status": "UNKNOT",
+            "method": "reidemeister-reduction"
+          },
+          "AA2": {
+            "wall_seconds": 0.0007671516097560976,
+            "cpu_seconds": 0.000767640256097561,
+            "status": "UNKNOT",
+            "method": "reidemeister-reduction"
+          }
+        }
+      ],
+      "summary": {
+        "median_A_seconds": 0.0008157743170731707,
+        "median_B_seconds": 0.0007820684268292683,
+        "paired_AB_geometric_speedup": 0.9529565135398249,
+        "paired_AB_speedup_95pct_bootstrap": [
+          0.868951272371795,
+          1.0323599188057664
+        ],
+        "paired_AB_min_max": [
+          0.7386584554015214,
+          1.1305365944738617
+        ],
+        "paired_AA_geometric_ratio": 1.039023456260837,
+        "paired_AA_min_max": [
+          0.8559363436981516,
+          1.2588892612422216
+        ]
+      }
+    },
+    "grid_scrambled_unknot": {
+      "family": "inconclusive_control",
+      "crossings": 6,
+      "loops": 40,
+      "status": "UNKNOT",
+      "baseline_method": "reidemeister-reduction",
+      "structural_method": "reidemeister-reduction",
+      "samples": [
+        {
+          "round": 0,
+          "arm_order": [
+            "A",
+            "AA2",
+            "B",
+            "AA1"
+          ],
+          "A": {
+            "wall_seconds": 2.1573724999999998e-05,
+            "cpu_seconds": 2.161685e-05,
+            "status": "UNKNOT",
+            "method": "reidemeister-reduction"
+          },
+          "AA2": {
+            "wall_seconds": 2.9392975e-05,
+            "cpu_seconds": 2.9445974999999997e-05,
+            "status": "UNKNOT",
+            "method": "reidemeister-reduction"
+          },
+          "B": {
+            "wall_seconds": 6.4603975e-05,
+            "cpu_seconds": 6.466815e-05,
+            "status": "UNKNOT",
+            "method": "reidemeister-reduction"
+          },
+          "AA1": {
+            "wall_seconds": 1.6069475e-05,
+            "cpu_seconds": 1.6088e-05,
+            "status": "UNKNOT",
+            "method": "reidemeister-reduction"
+          }
+        },
+        {
+          "round": 1,
+          "arm_order": [
+            "B",
+            "A",
+            "AA2",
+            "AA1"
+          ],
+          "B": {
+            "wall_seconds": 5.2031325e-05,
+            "cpu_seconds": 5.2141525000000004e-05,
+            "status": "UNKNOT",
+            "method": "reidemeister-reduction"
+          },
+          "A": {
+            "wall_seconds": 2.015405e-05,
+            "cpu_seconds": 2.0194425e-05,
+            "status": "UNKNOT",
+            "method": "reidemeister-reduction"
+          },
+          "AA2": {
+            "wall_seconds": 1.7082475e-05,
+            "cpu_seconds": 1.71053e-05,
+            "status": "UNKNOT",
+            "method": "reidemeister-reduction"
+          },
+          "AA1": {
+            "wall_seconds": 1.990365e-05,
+            "cpu_seconds": 1.9957075e-05,
+            "status": "UNKNOT",
+            "method": "reidemeister-reduction"
+          }
+        },
+        {
+          "round": 2,
+          "arm_order": [
+            "A",
+            "AA1",
+            "AA2",
+            "B"
+          ],
+          "A": {
+            "wall_seconds": 1.80903e-05,
+            "cpu_seconds": 1.8120325000000002e-05,
+            "status": "UNKNOT",
+            "method": "reidemeister-reduction"
+          },
+          "AA1": {
+            "wall_seconds": 3.898005e-05,
+            "cpu_seconds": 3.905325e-05,
+            "status": "UNKNOT",
+            "method": "reidemeister-reduction"
+          },
+          "AA2": {
+            "wall_seconds": 2.386575e-05,
+            "cpu_seconds": 2.3901349999999998e-05,
+            "status": "UNKNOT",
+            "method": "reidemeister-reduction"
+          },
+          "B": {
+            "wall_seconds": 6.6640975e-05,
+            "cpu_seconds": 6.675147500000001e-05,
+            "status": "UNKNOT",
+            "method": "reidemeister-reduction"
+          }
+        },
+        {
+          "round": 3,
+          "arm_order": [
+            "A",
+            "AA2",
+            "AA1",
+            "B"
+          ],
+          "A": {
+            "wall_seconds": 3.189525e-05,
+            "cpu_seconds": 3.1965674999999996e-05,
+            "status": "UNKNOT",
+            "method": "reidemeister-reduction"
+          },
+          "AA2": {
+            "wall_seconds": 2.00161e-05,
+            "cpu_seconds": 2.0051875e-05,
+            "status": "UNKNOT",
+            "method": "reidemeister-reduction"
+          },
+          "AA1": {
+            "wall_seconds": 1.8999849999999997e-05,
+            "cpu_seconds": 1.90357e-05,
+            "status": "UNKNOT",
+            "method": "reidemeister-reduction"
+          },
+          "B": {
+            "wall_seconds": 3.800285e-05,
+            "cpu_seconds": 3.8047275e-05,
+            "status": "UNKNOT",
+            "method": "reidemeister-reduction"
+          }
+        },
+        {
+          "round": 4,
+          "arm_order": [
+            "AA1",
+            "B",
+            "AA2",
+            "A"
+          ],
+          "AA1": {
+            "wall_seconds": 2.067445e-05,
+            "cpu_seconds": 2.0715775e-05,
+            "status": "UNKNOT",
+            "method": "reidemeister-reduction"
+          },
+          "B": {
+            "wall_seconds": 3.5213925e-05,
+            "cpu_seconds": 3.5238625e-05,
+            "status": "UNKNOT",
+            "method": "reidemeister-reduction"
+          },
+          "AA2": {
+            "wall_seconds": 1.7968099999999998e-05,
+            "cpu_seconds": 1.7989974999999997e-05,
+            "status": "UNKNOT",
+            "method": "reidemeister-reduction"
+          },
+          "A": {
+            "wall_seconds": 1.67837e-05,
+            "cpu_seconds": 1.6803224999999997e-05,
+            "status": "UNKNOT",
+            "method": "reidemeister-reduction"
+          }
+        },
+        {
+          "round": 5,
+          "arm_order": [
+            "B",
+            "A",
+            "AA2",
+            "AA1"
+          ],
+          "B": {
+            "wall_seconds": 4.3706525e-05,
+            "cpu_seconds": 4.3767474999999996e-05,
+            "status": "UNKNOT",
+            "method": "reidemeister-reduction"
+          },
+          "A": {
+            "wall_seconds": 3.2331125e-05,
+            "cpu_seconds": 3.239175e-05,
+            "status": "UNKNOT",
+            "method": "reidemeister-reduction"
+          },
+          "AA2": {
+            "wall_seconds": 3.5619225e-05,
+            "cpu_seconds": 3.566855e-05,
+            "status": "UNKNOT",
+            "method": "reidemeister-reduction"
+          },
+          "AA1": {
+            "wall_seconds": 4.369485e-05,
+            "cpu_seconds": 4.3777375e-05,
+            "status": "UNKNOT",
+            "method": "reidemeister-reduction"
+          }
+        },
+        {
+          "round": 6,
+          "arm_order": [
+            "AA1",
+            "AA2",
+            "B",
+            "A"
+          ],
+          "AA1": {
+            "wall_seconds": 0.0001024598,
+            "cpu_seconds": 0.000102573225,
+            "status": "UNKNOT",
+            "method": "reidemeister-reduction"
+          },
+          "AA2": {
+            "wall_seconds": 1.7479925e-05,
+            "cpu_seconds": 1.7508975e-05,
+            "status": "UNKNOT",
+            "method": "reidemeister-reduction"
+          },
+          "B": {
+            "wall_seconds": 8.793539999999999e-05,
+            "cpu_seconds": 8.803055000000001e-05,
+            "status": "UNKNOT",
+            "method": "reidemeister-reduction"
+          },
+          "A": {
+            "wall_seconds": 2.1043375e-05,
+            "cpu_seconds": 2.108375e-05,
+            "status": "UNKNOT",
+            "method": "reidemeister-reduction"
+          }
+        },
+        {
+          "round": 7,
+          "arm_order": [
+            "AA1",
+            "AA2",
+            "B",
+            "A"
+          ],
+          "AA1": {
+            "wall_seconds": 2.2214275e-05,
+            "cpu_seconds": 2.2252475e-05,
+            "status": "UNKNOT",
+            "method": "reidemeister-reduction"
+          },
+          "AA2": {
+            "wall_seconds": 0.00010991565,
+            "cpu_seconds": 0.00010998185000000001,
+            "status": "UNKNOT",
+            "method": "reidemeister-reduction"
+          },
+          "B": {
+            "wall_seconds": 3.98346e-05,
+            "cpu_seconds": 3.98824e-05,
+            "status": "UNKNOT",
+            "method": "reidemeister-reduction"
+          },
+          "A": {
+            "wall_seconds": 1.635645e-05,
+            "cpu_seconds": 1.637395e-05,
+            "status": "UNKNOT",
+            "method": "reidemeister-reduction"
+          }
+        },
+        {
+          "round": 8,
+          "arm_order": [
+            "B",
+            "AA2",
+            "A",
+            "AA1"
+          ],
+          "B": {
+            "wall_seconds": 7.015494999999999e-05,
+            "cpu_seconds": 7.0227675e-05,
+            "status": "UNKNOT",
+            "method": "reidemeister-reduction"
+          },
+          "AA2": {
+            "wall_seconds": 6.103685e-05,
+            "cpu_seconds": 6.1136325e-05,
+            "status": "UNKNOT",
+            "method": "reidemeister-reduction"
+          },
+          "A": {
+            "wall_seconds": 7.6518075e-05,
+            "cpu_seconds": 7.6605625e-05,
+            "status": "UNKNOT",
+            "method": "reidemeister-reduction"
+          },
+          "AA1": {
+            "wall_seconds": 2.1380400000000003e-05,
+            "cpu_seconds": 2.1421625e-05,
+            "status": "UNKNOT",
+            "method": "reidemeister-reduction"
+          }
+        }
+      ],
+      "summary": {
+        "median_A_seconds": 2.1043375e-05,
+        "median_B_seconds": 5.2031325e-05,
+        "paired_AB_geometric_speedup": 0.46973921784835426,
+        "paired_AB_speedup_95pct_bootstrap": [
+          0.3443505666432812,
+          0.6451940519347108
+        ],
+        "paired_AB_min_max": [
+          0.23930493293940783,
+          1.090701012544375
+        ],
+        "paired_AA_geometric_ratio": 0.9409902110967768,
+        "paired_AA_min_max": [
+          0.20210293074735036,
+          5.861569772181517
+        ]
+      }
+    }
+  }
+}
