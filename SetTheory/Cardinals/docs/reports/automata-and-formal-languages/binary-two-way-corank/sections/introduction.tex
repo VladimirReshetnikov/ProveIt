@@ -1,0 +1,205 @@
+\section{Problem, source review, and contribution}
+\label{intro:section}
+
+The state cost of replacing nondeterminism by deterministic two-way
+head motion is a central succinctness problem for finite automata.
+Two-way and one-way finite automata recognize the same regular
+languages, but their state complexities can be very different.
+Sakoda and Sipser formulated the relevant simulation questions in
+1978~\cite{SakodaSipser1978}; Pighizzini's survey gives the historical
+landscape~\cite{Pighizzini2012}. A two-way target can revisit the input
+without keeping every previously read symbol in its finite control.
+A lower bound against unrestricted targets must therefore survive
+arbitrary interior reversals and arbitrarily long computations.
+
+This article concentrates on one concrete research direction suggested
+by the two repositories: \emph{how much of the recent full-relation
+lower-bound mechanism survives over a fixed binary alphabet, and how
+tightly can its two algebraic bottlenecks be controlled?} We give
+explicit answers, including all constants and the complete machine
+model.
+
+\subsection{What was reviewed}
+
+The repository review is a targeted mathematical review, rather than
+an endorsement of every manuscript in either collection.
+We pinned the inspected OpenAI release to commit
+\texttt{adc7f1241b42}
+and the inspected ProveIt tree to
+\texttt{670a67d35eda}.
+The accompanying source audit records the full commit identifiers,
+exact paths, and blob hashes.
+All statements about these repositories refer to these snapshots,
+accessed on 7 October 2026.
+
+The principal OpenAI source is
+\emph{An exponential two-way deterministic state lower bound for
+one-way liveness}, dated 25 September 2026~\cite{OpenAILiveness2026}.
+It supplies a matching-diagram approach to unrestricted two-way
+determinization. For full relations on an $h$-element set, its
+algebraic degree bound is
+\[
+ k\ge 2^{\lfloor(h-2)/31\rfloor},
+\]
+and its general machine representation uses at most $4(s+1)^2$
+ports when an accepting initial configuration counts as success.
+The manuscript expressly works over an alphabet containing all
+$2^{h^2}$ binary relations. Its companion
+\emph{An exponential state lower bound for two-way nondeterministic
+complementation}~\cite{OpenAIComplement2026} uses an ordered path
+monoid and gives a different rank-amplification theorem.
+We inspect the relevant arguments and distinguish which ones are
+reproved here from which one is imported.
+
+The formalization summary in the same OpenAI repository is a useful
+scope check~\cite{OpenAIFormal129}. It describes the formal results
+associated with the source theorem. It is not a formal certificate
+for the new estimates, compiler, or sparse representation in this
+article. We have neither extended nor rerun that Lean development.
+
+Three nearby ProveIt report series make the choice of topic especially
+natural. The \emph{shuffle-six-state-bound} report distinguishes
+reachability over a full transformation-pair alphabet from
+distinguishability over a fixed three-letter alphabet
+\cite{ProveItShuffle}. This distinction is directly relevant: a
+large-alphabet witness does not by itself settle the quantitative
+cost of a fixed-alphabet witness. The \emph{DFAO reversal coloring
+obstruction} reports study sharp output-reversal and coloring
+phenomena~\cite{ProveItDFAO}; the \emph{constrained crossover closure}
+reports study finite fragments, closures, and binary NFA rank
+parameters~\cite{ProveItCrossover}. These are neighboring questions
+with different machine models and invariants. They motivate a
+carefully scoped automata report, but no theorem from those three
+series is used as a premise below.
+
+\subsection{The machine convention}
+\label{intro:model}
+
+An input is $\Lmark w\Rmark$, where $w\in\Sigma^*$ and the two
+endmarkers are distinct and lie outside $\Sigma$. The head starts
+on $\Lmark$ in one designated initial state. A transition reads
+the current symbol, changes state, and moves by $-1$, $0$, or $+1$.
+It may never cross either endmarker. Deterministic transitions are
+partial functions; nondeterministic transitions are relations.
+Acceptance means that some finite run reaches a designated accepting
+state, including an initially accepting configuration. A nonaccepting
+infinite run rejects. All states, including initial and accepting
+states, are counted.
+
+A \emph{1NFA} has no left moves; the constructions here use right
+moves on ordinary symbols and only a final stay move to enter the
+accepting state on $\Rmark$. A \emph{2DFA} may move in either direction
+and stay. Thus the lower bound includes partial transitions,
+rejecting loops, and unrestricted reversals. Changing to a convention
+that requires a positive transition before initial acceptance can be
+handled with one extra initial copy in the target normalization;
+the resulting binary port bound is $8s+10$. We state the sharper
+constant under the convention just fixed.
+
+\begin{theorem}[Binary determinization]\label{intro:main}
+For every integer $h\ge2$, there is an explicitly defined language
+$B_h\subseteq\bits^*$ recognized by a $6h+2$-state 1NFA such that
+every $s$-state 2DFA recognizing $B_h$ satisfies
+\begin{equation}\label{intro:h-bound}
+ 8s+2\ \ge\ 2\left(\frac52\right)^{\lfloor(h-2)/9\rfloor}.
+\end{equation}
+Consequently, for every $n\ge14$ there is a language recognized by
+an $n$-state binary 1NFA for which every equivalent 2DFA satisfies
+\begin{equation}\label{intro:n-bound}
+ s\ \ge\ \frac14\left(\frac52\right)^{\lfloor(n-14)/54\rfloor}
+             -\frac14
+   \ =\ 2^{(\log_2(5/2)/54)n-O(1)}.
+\end{equation}
+The exponent coefficient is
+$\log_2(5/2)/54=0.0244801499\ldots$.
+\end{theorem}
+
+The proof is assembled in Section~\ref{comp:main-proof}.
+The familiar subset construction gives an exponential one-way
+deterministic upper bound and hence a two-way upper bound; with
+the present endmarker convention the harmless normalization costs
+only a constant number of states. Accordingly the worst-case
+binary 1NFA-to-2DFA state growth is $2^{\Theta(n)}$ under this model.
+The precise coefficient in the exponent is not claimed optimal.
+For small $n$, \eqref{intro:n-bound} may give only a weak numerical
+bound; the parity-aware recurrence in Section~\ref{alg:optimization-section}
+is appreciably stronger for finite parameters.
+
+\subsection{Three ingredients}
+
+The proof connects three independently useful constructions.
+
+First, for idempotents $e_1,\ldots,e_v$ in the Brauer monoid
+$\Br{m}$, every word $w$ in these generators satisfies
+\[
+ m-\rk(w)\ \le\ \sum_{i=1}^{v}\bigl(m-\rk(e_i)\bigr).
+\]
+Repetition of a generator costs nothing further in this bound.
+The proof uses the parity and invariance of the union of the
+generators' cap components. Applied twice to the source's
+relation-addition construction, it gives
+\[
+ k\ge F(h):=2(5/2)^{\lfloor(h-2)/9\rfloor}
+\]
+whenever a submonoid of $\Br{k}$ maps onto the full relation
+monoid on $h$ points. The choice of two arms of size five is
+optimal among fixed rectangular choices in this particular
+amplifier.
+
+Second, symbol-local crossing slots represent an $s$-state 2DFA
+over an $a$-letter alphabet by matching diagrams of degree at most
+$2(a+2)s+2$. The bound is linear in $s$ for a fixed alphabet.
+The accepting configuration's predecessor component is a tree;
+doubling its edges into a contour turns reachability into a
+matching connection. Inactive candidate edges receive private
+leaves, ensuring that each symbol's diagram is determined entirely
+by that symbol and the fixed transition table.
+
+Third, two cyclic state registers implement every $h$-point relation
+using four fixed relation letters on $2h$ states. A two-bit decoder
+uses $6h$ ordinary states; adding one initial and one accepting state
+gives $6h+2$. Singleton contexts ensure that any monoid recognizing
+the complete binary language retains every relation product on the
+submonoid generated by canonical encodings. No homomorphism on
+all arbitrary binary strings is assumed.
+
+\subsection{Attribution and the status of the improvements}
+
+The cap-component classification is classical
+\cite{Dolinka2015}. The sharp support bound and its equality and
+stability formulas are explicit consequences of that structure,
+proved here for their use and independent interest. The
+relation-corner architecture and deterministic tree-contour method
+are adaptations of the OpenAI liveness manuscript
+\cite{OpenAILiveness2026}, with earlier contour ideas in reversible
+and halting simulations~\cite{SipserHalting1980,LangeMcKenzieTapp2000}.
+The sharp corank budget changes the accounting, rather than merely
+optimizing a numerical parameter in the old support inequality.
+
+Alphabet substitution itself is established methodology, including
+the full-automata approach of Yan~\cite{Yan2008}.
+Kapoutsis discusses binary liveness encodings in the few-reversal
+setting~\cite[Section~8]{Kapoutsis2013}. More directly,
+TheoremDB record R816 contains an earlier explicit four-letter,
+$3h$-state relation encoding and a $9h$-state binary decoder,
+with a constant-state-factor macro transfer~\cite{TheoremDBR816}.
+Its stated lower bound imports the quadratic liveness theorem of
+Adeogun and Kapoutsis~\cite{AdeogunKapoutsis2026}.
+The same transfer principle can be combined with a stronger
+large-alphabet theorem. We therefore do not claim that
+the mere possibility of a binary transfer originates here.
+
+The specific contributions developed in this article are the sharp
+word corank budget, its two uses in the stronger amplifier,
+the sparse local matching degree bound, the smaller two-register
+compiler, and their explicit combination. We supply proofs and
+independent finite diagnostics, and make the source dependence
+reviewable. A targeted literature and repository review cannot
+certify priority against all existing work. These results are
+offered as a research manuscript for independent review, not as
+an announcement of established priority.
+
+Finally, the state lower bounds do not establish $\mathsf{L}\ne
+\mathsf{NL}$ or any other uniform space separation. Uniform
+simulation, constructibility, and bounds tied to input length
+are separate issues. No such conclusion is used or asserted.

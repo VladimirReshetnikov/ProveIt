@@ -1,0 +1,186 @@
+\section{A separate consequence for binary complementation}
+\label{complement:section}
+
+The binary compiler also transfers an exponential lower bound when
+the machine recognizing the complementary language may itself be
+nondeterministic. This section uses one external algebraic theorem
+from \cite{OpenAIComplement2026}, identified below. The determinization
+theorem proved earlier is independent of this imported premise.
+
+\subsection{The external path-diagram bound}
+
+For $m\ge1$, take disjoint sets $D^+,D^-$, each with $m$ labels.
+A path diagram is a quadruple of relations
+\[
+ F\subseteq D^+\times D^+,\quad
+ B\subseteq D^-\times D^-,\quad
+ L\subseteq D^+\times D^-,\quad
+ R\subseteq D^-\times D^+.
+\]
+The positive sign denotes entry from the left and the negative sign
+entry from the right. The relations $F,B$ describe through paths;
+$L,R$ describe returns to the side of entry. Product means joining
+adjacent boundaries and recording finite paths from an outer entry
+to the first outer exit. Expanding and contracting traversals of a
+consecutive block proves associativity. The identity has identity
+through relations and empty return relations. Write $\mathcal T_m$
+for this finite monoid and $z\sqsubseteq w$ for inclusion in all four
+relations. Multiplication preserves $\sqsubseteq$ in both arguments.
+
+\begin{center}
+\fbox{\begin{minipage}{0.92\linewidth}
+\begin{theorem}[Imported order-reversing image bound]
+\label{complement:imported}
+Let $m\ge1$, let $H$ be a finite set with $h\ge2$ elements, and let
+$S_0$ be a submonoid of $\mathcal T_m$. Suppose a surjective
+multiplicative map $\phi_0:S_0\to\Rel{H}$ satisfies
+\[
+ z\sqsubseteq w\quad\Longrightarrow\quad
+ \phi_0(w)\subseteq\phi_0(z)
+ \qquad(z,w\in S_0).
+\]
+Then
+\begin{equation}\label{complement:external-bound}
+ 2m\ge2^{\lfloor(h-2)/127\rfloor}.
+\end{equation}
+Identity preservation of $\phi_0$ is not required.
+\end{theorem}
+This is the theorem entitled \emph{Order-reversing image bound},
+source label \texttt{amp:image}, in Section~2 of
+\cite{OpenAIComplement2026}. Its full hypotheses and numerical
+conclusion are stated here; its proof by missing recurrent classes
+and nested corners is not reproduced in this article.
+\end{minipage}}
+\end{center}
+
+The parameter $m$ counts labels in each direction. Thus the quantity
+in \eqref{complement:external-bound} is the total number $2m$ of
+directional labels; it is not the degree of the Brauer matching
+representation used in the determinization proof.
+
+\begin{lemma}[Finite acceptance and monotonicity]
+\label{complement:representation}
+For an $s$-state binary 2NFA $C$ in the endmarker model of this article,
+there are a homomorphism $\tau:\bits^*\to\mathcal T_{s+1}$,
+fixed endmarker diagrams $\lambda,\rho$, and positive labels $a,b$
+such that
+\begin{equation}\label{complement:acceptance}
+ u\in L(C)\quad\Longleftrightarrow\quad
+ (a,b)\in F_{\lambda\tau(u)\rho}.
+\end{equation}
+Consequently $\tau(u)\sqsubseteq\tau(v)$ implies
+\begin{equation}\label{complement:monotonicity}
+ xuy\in L(C)\quad\Longrightarrow\quad xvy\in L(C)
+ \qquad(x,y\in\bits^*).
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+The finite-computation construction of \cite{OpenAIComplement2026}
+has the following exact normalization. Add one new success state.
+From every original accepting state, allow a stay move into it; in
+the new state sweep right and make one designated artificial exit
+past the right endmarker. This exit represents acceptance and is
+not an additional move available to the original machine. A finite
+computation reaches it precisely when an original finite computation
+has reached an accepting state, including an accepting initial state.
+
+Use the resulting $s+1$ states as labels in each direction. For each
+cell symbol, including markers, a local diagram edge records any
+finite sequence of stay transitions followed by one exit move from
+the cell. The entry sign records the side of arrival. Finite
+computations split into such visits, and local edge witnesses
+concatenate back into finite computations. This gives
+\eqref{complement:acceptance} with the marker diagrams fixed and
+the ordinary-cell products defining $\tau$. Missing transitions and
+infinite nonaccepting computations create no finite successful path.
+Finally, inclusion of all four relations is preserved by adjoining
+the diagrams for $x,y$ and the markers. The designated accepting
+edge therefore persists, proving \eqref{complement:monotonicity}.
+\end{proof}
+
+\subsection{Encoded contexts give the required antitone quotient}
+
+Let $H=[h]$ and let $B_h$ be the binary language constructed above,
+recognized by a $6h+2$-state 1NFA. For a word $w=R_1\cdots R_t$ over the formal
+alphabet $\Rel{H}$, write
+\[
+ r(w)=R_1\cdots R_t,\qquad
+ \enc(w)=\enc(R_1)\cdots\enc(R_t),
+\]
+and use $r(\eps)=\Id_H$, $\enc(\eps)=\eps$. The compiler proves
+\begin{equation}\label{complement:compiler-property}
+ \enc(w)\in B_h\quad\Longleftrightarrow\quad r(w)\ne\varnothing.
+\end{equation}
+The transition tables also define $B_h$ on every other binary word,
+so complementation below is taken in the full set $\bits^*$.
+
+\begin{proposition}[Direct antitone quotient]\label{complement:quotient}
+If an $s$-state 2NFA $C$ recognizes $\bits^*\setminus B_h$, a
+submonoid of $\mathcal T_{s+1}$ admits a surjective unital
+homomorphism onto $\Rel{H}$ that reverses inclusion.
+\end{proposition}
+
+\begin{proof}
+Use $\tau$ from Lemma~\ref{complement:representation} and let
+\[
+ S_0=\{\tau(\enc(w)):w\in\Rel{H}^{*}\}.
+\]
+This is the submonoid generated by the diagrams of the individual
+encoded relations, including the empty product. Suppose
+$\tau(\enc(u))\sqsubseteq\tau(\enc(v))$.
+Fix $i,j\in H$ and use the binary contexts
+$x=\enc(\Id_{\{i\}})$ and $y=\enc(\Id_{\{j\}})$.
+For every relation $A$, the product $\Id_{\{i\}}A\Id_{\{j\}}$
+is empty exactly when $(i,j)\notin A$. Hence
+\eqref{complement:compiler-property}, followed by complement
+acceptance and \eqref{complement:monotonicity}, gives
+\[
+ (i,j)\notin r(u)\quad\Longrightarrow\quad(i,j)\notin r(v).
+\]
+Thus $r(v)\subseteq r(u)$. Equality of the two diagrams gives this
+inclusion in both directions, so
+\[
+ \phi_0\bigl(\tau(\enc(w))\bigr)=r(w)
+\]
+is well-defined. Concatenation proves multiplicativity, the empty
+word proves unitality, and every $A\in\Rel{H}$ is the image of
+$\tau(\enc(A))$. The implication just proved is the required
+order reversal.
+\end{proof}
+
+\begin{theorem}[Binary nondeterministic complementation]
+\label{complement:binary}
+Under the imported premise of Theorem~\ref{complement:imported},
+every $s$-state 2NFA recognizing $\bits^*\setminus B_h$ satisfies
+\begin{equation}\label{complement:state-bound}
+ 2(s+1)\ge2^{\lfloor(h-2)/127\rfloor},\qquad
+ s\ge\frac12\,2^{\lfloor(h-2)/127\rfloor}-1.
+\end{equation}
+Consequently, for each $n\ge14$, an $n$-state binary one-way NFA has
+a complementary language requiring at least
+\begin{equation}\label{complement:n-bound}
+ \frac12\,2^{\lfloor(n-14)/762\rfloor}-1
+\end{equation}
+states in every two-way nondeterministic recognizer.
+\end{theorem}
+
+\begin{proof}
+Apply Theorem~\ref{complement:imported} to
+Proposition~\ref{complement:quotient}, with $m=s+1$.
+For the last assertion choose $h=\lfloor(n-2)/6\rfloor$ and add
+unreachable states to $B_h$ to obtain exactly $n$ states.
+The identity
+$\lfloor(h-2)/127\rfloor=\lfloor(n-14)/762\rfloor$
+gives \eqref{complement:n-bound}.
+\end{proof}
+
+The same homomorphism $\tau$ and its $2(s+1)$ directional labels are
+used throughout this argument. In particular, encoded word length
+does not introduce a state factor. The external dependency is
+specifically Theorem~\ref{complement:imported}; the encoding and
+the antitone-quotient argument have been given here. This article
+provides no new Lean formalization of that imported theorem or of
+this complementation transfer. The compiler's finite exact audits
+verify its stated encoding behavior and do not certify the external
+path-diagram bound.
