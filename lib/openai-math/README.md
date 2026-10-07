@@ -54,10 +54,10 @@ verified.** The Gowers facade does not import the quantitative conclusion.
 [`quantitative-port-manifest.json`](quantitative-port-manifest.json) records
 the upstream source hashes, import closure, and initial compatibility imports.
 
-The first 400 manifest entries have compiled (409 modules including their
+The first 500 manifest entries have compiled (510 modules including their
 compatibility dependencies). The incremental `OAI.QuantitativePortAudit`
 imports this batch and the added compatibility modules. Its axiom scan
-checks 7,272 public OAI theorems and reports only `propext`,
+checks 10,042 public OAI theorems and reports only `propext`,
 `Classical.choice`, and `Quot.sound`; the separately listed compatibility declarations
 also pass, with explicit rejection of any unapproved axiom. This checkpoint
 does not certify `Results.Conclusions`.
