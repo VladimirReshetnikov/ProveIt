@@ -260,6 +260,9 @@ import GowersSzemeredi.Proofs18IntervalQuadraticIncrement
 import GowersSzemeredi.Proofs18NaturalIntervalIncrement
 import GowersSzemeredi.Proofs03FourFactorSymmetry
 import GowersSzemeredi.Proofs18RelativeProgressionCount
+import GowersSzemeredi.Proofs18RelativeProgressionExistence
+import GowersSzemeredi.Proofs18IntervalUniformStopping
+import GowersSzemeredi.Proofs18IntervalQuadraticDichotomy
 
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue

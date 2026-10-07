@@ -12,8 +12,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 278 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 2,541 public Gowers theorems and found only propext,
+  All 281 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 2,572 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 101 exact
   companion proofs and 19 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -826,8 +826,8 @@ Relative balance, interval models, and exceptional-cell selection
   a cell with positive discrepancy >=(beta/8)*its size and size >=beta*N/(8M).
   If every nonexceptional cell is contained in S or disjoint from S, the
   selected cell lies inside S and has relative density at least delta+beta/8.
-  The next checkpoint constructs the required geometric refinement. The
-  relative-balanced uniform stopping case remains necessary for iteration.
+  Subsequent checkpoints construct the geometric refinement and prove the
+  relative-balanced uniform stopping case. Quantitative iteration remains.
 
 Boundary refinement and a progression inside the original interval
   The Section 5 local and efficient refinement interfaces now retain the
@@ -856,8 +856,8 @@ Boundary refinement and a progression inside the original interval
   relative density increment are unchanged. A finite-set interface takes the
   extension by zero of 1_B-delta on Fin L and returns a natural progression
   contained in [0,L), with the same explicit bounds. The relative-balanced
-  uniform stopping case and quantitative iteration remain open before any
-  claim of Theorem 8.2 or an improved headline bound.
+  uniform stopping case is proved below. Quantitative iteration remains
+  open before any claim of Theorem 8.2 or an improved headline bound.
 
 Four-factor symmetries and relative uniform counting
   Proofs03FourFactorSymmetry proves that the four-factor progression average
@@ -873,8 +873,34 @@ Four-factor symmetries and relative uniform counting
   from uniformity of 1_A-delta*1_S, for A contained in S and 0<=delta<=1.
   Here AP4 denotes the complex indicator sum, including constant progressions.
   This addresses the analytic obstruction in the relative uniform case.
-  An explicit interval-support count and removal of constant progressions
-  are still needed to complete the quantitative stopping condition.
+  The next checkpoint supplies an explicit interval-support count and removes
+  constant progressions to complete the quantitative stopping condition.
+
+Explicit relative stopping and an ordinary-interval dichotomy
+  Proofs18RelativeProgressionExistence identifies the complex indicator sum
+  with an integer-valued four-term count. Without a nonconstant progression
+  this count is at most N. Relative uniformity therefore forces a progression
+  whenever delta^4*AP4(S) exceeds N plus the explicit counting error.
+  Proofs18IntervalUniformStopping constructs (floor(L/4))^2 distinct counted
+  progressions inside [0,L). For L>=4 their number is at least L^2/64; if
+  N<=8*L it is at least N^2/4096. Together with 2*L<N, the conditions
+    4*alpha^(1/8) <= delta^4/8192,   8192 < delta^4*N
+  ensure that quadratic uniformity of the zero-extended finite relative
+  balance gives a nonconstant ordinary four-term progression in B.
+  Proofs18IntervalQuadraticDichotomy fixes
+    alpha=(delta^4/32768)^8
+  and proves the complete one-step alternative for a set B in Fin L of
+  relative density delta>0. Under the explicit exponential analytic
+  threshold, 32<=tau*N, and the displayed interval/size conditions, either
+  B contains an ordinary four-term progression, or a proper natural
+  progression Q lies entirely inside [0,L), has length at least
+    tau/(8*C_1(4*pi*tau/64))*N^(sigma/16),
+  and has relative B-density at least delta+tau/8. Here tau and sigma are
+  evaluated at the fixed alpha above. Both branches retain the original
+  interval-relative density. Iterating this alternative with explicit
+  prime choices, cardinality-preserving reindexing, and controlled shrinking
+  lengths is the remaining quadratic quantitative task. This checkpoint does
+  not prove Theorem 8.2 or improve any final headline bound.
 
 Reproducible checks (from repository root)
   python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.Audit
