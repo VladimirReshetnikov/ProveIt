@@ -23,6 +23,15 @@
 \newcommand{\fall}[2]{(#1)_{\underline{#2}}}
 \newcommand{\Normal}{\mathcal N}
 \newcommand{\coef}[2]{[#1]#2}
+% Added by the ProveIt write phase (batch 109, 7 October 2026): the array
+% package (for the reading-conventions table), dated notes marked [write]
+% and a macro for file, label and declaration names.
+\usepackage{array}
+\newcommand{\file}[1]{\nolinkurl{#1}}
+\expandafter\def\expandafter\UrlBreaks\expandafter{\UrlBreaks\do\-\do\_\do\.}
+\newenvironment{writenote}[1][]{\par\smallskip\begingroup\small
+ \noindent\textbf{[write]}\if\relax\detokenize{#1}\relax\else~\textbf{#1.}\fi\ }%
+ {\par\endgroup\smallskip}
 \title{Diagonal multiple alignments\\\large All fixed orders, column counts and inverse thresholds}
 \author{Report 177 \quad OEIS A262810}
 \date{3 October 2026}
@@ -31,6 +40,32 @@
 \begin{abstract}
 We study binary matrices with $n$ labelled rows, every row sum $n$, ordered nonzero columns, and no prescribed number of columns. Their number is OEIS A262810. We prove a constructive all-fixed-orders expansion, uniformly with every fixed number of real marking derivatives. Centering the roots of a falling factorial explains why only powers of $n^{-2}$ occur after a natural gamma normalization. Three correction polynomials are explicit. The column count has a Gaussian limit on scale $n$ with an essential $n/4$ centering shift. Substituting $k=n$ in the classical fixed-$k$ alignment equivalent misses a factor $e^{-1/12}$. A Lambert-$W$ inverse expansion gives a boundary-safe two-ceiling enclosure. The leading diagonal equivalent is credited to Kot\v{e}\v{s}ovec (2016); the exact alignment family and fixed-dimensional asymptotic are classical. Exact rational finite checks accompany the analytic proof.
 \end{abstract}
+\begin{writenote}[Status and trust boundary, added 7 October 2026, batch~109]
+This is bundle Report~177 of an external AI-assisted research session, filed
+in ProveIt as the single-source research report
+\file{a262810-diagonal-alignments} (provenance, the sources as the write read
+them, what was checked, relation to the repository, the collected non-claims
+and the reading conventions are in Section~\ref{dma:sec:provenance}). It is
+unrefereed and not formalized. Its author line reads ``Report 177 \quad OEIS
+A262810'' and its PDF title and author fields are empty: it names no person
+or tool. \emph{What rests on what.} Theorems~\ref{dma:thm:main},
+\ref{dma:thm:law}, \ref{dma:thm:inverse} and~\ref{dma:thm:ceiling},
+Corollary~\ref{dma:cor:C} and Proposition~\ref{dma:prop:fixed} have
+conventional proofs in the text: the positive binomial-power
+representation, Euler--Maclaurin with a vanishing boundary, gamma moment
+expansions after centring the roots, Stirling's series, the real
+moment-generating-function limit theorem, and implicit differentiation with
+Lagrange inversion. The explicit $L_1,L_2,L_3$ and $C_1,C_2,C_3$ are outputs
+of a finite rational algorithm (Section~\ref{dma:sec:algorithm}), checked by
+the shipped verifier and rederived numerically by the write. The leading
+diagonal equivalent is Kot\v{e}\v{s}ovec's (2016), the exact family and the
+fixed-dimensional asymptotic are classical (Griggs--Hanlon--Odlyzko--Waterman,
+Pemantle--Wilson, Eger), and the unmarked relation of
+Section~\ref{dma:sec:corollary} is recorded in the OEIS. The write adds
+Remarks~\ref{dma:rem:oeis} and~\ref{dma:rem:transseries} (the OEIS entries
+quoted and the b-file compared; the inverses against the transseries volume)
+and dated notes. No statement, proof or number of the source was changed.
+\end{writenote}
 \begingroup
 \small
 \setlength{\parskip}{0pt}
@@ -48,70 +83,264 @@ Thus $n\leq\ell(M)\leq n^2$. An alignment column records which of $n$ strings ad
 Throughout, a fixed order means an integer chosen before $n\to\infty$. All asymptotic constants may depend on that order and on a specified compact parameter interval. No effective onset or numerical remainder constant is asserted.
 
 For $u>0$, put
-\begin{equation}\label{eq:carrier}
+\begin{equation}\label{dma:eq:carrier}
  \lambda(u)=\log(1+u^{-1}),\qquad
  \mathcal B_n(u)=\frac{\Gamma(N+1)}{(1+u)\Gamma(n+1)^n\lambda(u)^{N+1}}
  \exp\left(-\frac{n-1}{2}\lambda(u)-\frac{\lambda(u)^2}{24}\right).
 \end{equation}
-\begin{theorem}[Uniform marked expansion]\label{thm:main}
+\begin{theorem}[Uniform marked expansion]\label{dma:thm:main}
 There are rational polynomials $L_j(z)$, constructible at every order, such that for every $J,r\geq0$ and compact $U\subset(0,\infty)$,
-\begin{equation}\label{eq:main}
+\begin{equation}\label{dma:eq:main}
  \left\|\log\frac{A_n(u)}{\mathcal B_n(u)}-
  \sum_{j=1}^J\frac{L_j(\lambda(u))}{N^j}\right\|_{C^r(U)}
  =O_{J,r,U}(N^{-J-1}).
 \end{equation}
 Here the norm is the maximum of the suprema of derivatives of orders $0,\ldots,r$. In particular,
 \begin{align}
- L_1(z)&=\frac{z^4}{2880},\label{eq:L1}\\
- L_2(z)&=\frac{z^4(693-z^2)}{181440},\label{eq:L2}\\
- L_3(z)&=\frac{z^4(3z^4+3200z^2+493920)}{29030400}.\label{eq:L3}
+ L_1(z)&=\frac{z^4}{2880},\label{dma:eq:L1}\\
+ L_2(z)&=\frac{z^4(693-z^2)}{181440},\label{dma:eq:L2}\\
+ L_3(z)&=\frac{z^4(3z^4+3200z^2+493920)}{29030400}.\label{dma:eq:L3}
 \end{align}
 Only integer powers of $N^{-1}=n^{-2}$ occur in this normalization.
 \end{theorem}
-The statement is an asymptotic family: it does not assert convergence of the infinite series. Section~\ref{sec:proof} supplies the growing-degree lattice and differentiated remainder arguments; Section~\ref{sec:algorithm} makes the coefficient construction explicit.
+The statement is an asymptotic family: it does not assert convergence of the infinite series. Section~\ref{dma:sec:proof} supplies the growing-degree lattice and differentiated remainder arguments; Section~\ref{dma:sec:algorithm} makes the coefficient construction explicit.
 
 At $u=1$ write $\lambda=\log 2$ once and for all. The leading equivalent recorded in A262810 by V\'aclav Kot\v{e}\v{s}ovec on 23 March 2016 is
-\begin{equation}\label{eq:K}
+\begin{equation}\label{dma:eq:K}
  K_n=\frac{n^{n^2-n/2+1}}
  {e^{1/12}\,2^{n+\lambda/24}\,\pi^{(n-1)/2}\lambda^{n^2+1}}.
 \end{equation}
 Its factors $e^{-1/12}$ and $e^{-\lambda^2/24}$ are part of that credited equivalent.
-\begin{corollary}[Corrections to the credited equivalent]\label{cor:C}
+\begin{corollary}[Corrections to the credited equivalent]\label{dma:cor:C}
 For every fixed $J$, $\log(a_n/K_n)=\sum_{j=1}^J C_jn^{-2j}+O(n^{-2J-2})$. The first three logarithmic coefficients are
 \begin{align}
- C_1&=\frac{\lambda^4+248}{2880},\label{eq:C1}\\
- C_2&=-\frac{\lambda^6-693\lambda^4+144}{181440},\label{eq:C2}\\
- C_3&=\frac{3\lambda^8+3200\lambda^6+493920\lambda^4-63360}{29030400}.\label{eq:C3}
+ C_1&=\frac{\lambda^4+248}{2880},\label{dma:eq:C1}\\
+ C_2&=-\frac{\lambda^6-693\lambda^4+144}{181440},\label{dma:eq:C2}\\
+ C_3&=\frac{3\lambda^8+3200\lambda^6+493920\lambda^4-63360}{29030400}.\label{dma:eq:C3}
 \end{align}
 The first three ordinary multiplicative coefficients are respectively
 $C_1$, $C_2+C_1^2/2$, and $C_3+C_1C_2+C_1^3/6$.
 \end{corollary}
 
 Let $\mathsf L_n$ be the number of columns under the uniform law on $\mathcal A_n$.
-\begin{theorem}[Column count]\label{thm:law}
+\begin{theorem}[Column count]\label{dma:thm:law}
 Set $\sigma^2=(1-\lambda)/(4\lambda^2)>0$. Then
 \begin{align}
  \E\mathsf L_n={}&\frac{n^2}{2\lambda}+\frac n4+
  \left(\frac1{2\lambda}-\frac34+\frac\lambda{24}\right)
- -\frac{\lambda^3}{1440n^2}+O(n^{-4}),\label{eq:mean}\\
+ -\frac{\lambda^3}{1440n^2}+O(n^{-4}),\label{dma:eq:mean}\\
  \Var(\mathsf L_n)={}&\sigma^2 n^2-\frac n8+
  \left(\sigma^2-\frac{7+\lambda}{48}\right)
- +\frac{3\lambda^2+\lambda^3}{2880n^2}+O(n^{-4}),\label{eq:variance}\\
+ +\frac{3\lambda^2+\lambda^3}{2880n^2}+O(n^{-4}),\label{dma:eq:variance}\\
  \frac{\mathsf L_n-n^2/(2\lambda)-n/4}{n}
- &\ \Longrightarrow\ \Normal(0,\sigma^2).\label{eq:clt}
+ &\ \Longrightarrow\ \Normal(0,\sigma^2).\label{dma:eq:clt}
 \end{align}
-All fixed cumulants have constructive expansions by differentiating \eqref{eq:main}. Centering only by $n^2/(2\lambda)$ changes the limiting mean in \eqref{eq:clt} to $1/4$.
+All fixed cumulants have constructive expansions by differentiating \eqref{dma:eq:main}. Centering only by $n^2/(2\lambda)$ changes the limiting mean in \eqref{dma:eq:clt} to $1/4$.
 \end{theorem}
 
-\section{Exact constructions and finite certificates}\label{sec:exact}
+\begin{remark}[{[write]} The OEIS entries, quoted, 7~October 2026]\label{dma:rem:oeis}
+The entries were read on 7~October 2026 in the OEIS internal format; the
+quotations are verbatim.
+\begin{enumerate}[label=(\alph*)]\raggedright
+\item A262810 (revision \#19, 12~July 2018), offset~$0$, by Alois P. Heinz
+ (2~October 2015): ``\texttt{Number of lattice paths from \{n\}\^{}n to
+ \{0\}\^{}n using steps that decrement one or more components by one.}'';
+ data $1,1,13,16081,5552351121,\dots$ (9 terms); formulas ``\texttt{a(n) =
+ A262809(n,n).}'' and ``\texttt{a(n) \textasciitilde{} n\^{}(n\^{}2 - n/2 + 1) /
+ (exp(1/12) * 2\^{}(n + log(2)/24) * Pi\^{}((n-1)/2) * log(2)\^{}(n\^{}2+1)). -
+ \_Vaclav Kotesovec\_, Mar 23 2016}'', which is~\eqref{dma:eq:K} exactly; a
+ b-file ``\texttt{Table of n, a(n) for n = 0..25}'' (Heinz). A path is a
+ sequence of nonempty sets of coordinates to decrement, that is, of nonzero
+ binary columns with row sums~$n$: the entry's definition is the source's.
+\item A262809 (revision \#59, 30~May 2026): ``\texttt{Number A(n,k) of
+ lattice paths from \{n\}\^{}k to \{0\}\^{}k using steps that decrement one or
+ more components by one; square array A(n,k), n>=0, k>=0, read by
+ antidiagonals.}''; comments ``\texttt{Also, A(n,k) is the number of
+ alignments for k sequences of length n each (Slowinski 1998).}'' and
+ ``\texttt{d(k) = (2\^{}(1/k) - 1)\^{}(-k). - \_David Bevan\_, Apr 07 2022}''
+ (the growth rate of~\eqref{dma:eq:G}), Kot\v{e}\v{s}ovec's row and column
+ asymptotics (23~March 2016); formula ``\texttt{A(n,k) = Sum\_\{i >= 0\}
+ binomial(i,n)\^{}k/2\^{}(i+1). - \_Peter Bala\_, Jan 30 2018}'', which
+ is~\eqref{dma:eq:positive} at $u=1$.
+\item A316674 (revision \#27, 4~November 2021): formula ``\texttt{A(n,k) =
+ A262809(n,k) * A011782(n) for k>0, A(n,0) = 1.}''.
+\item A316677 (revision \#8, 10~July 2018), which the source could not fetch:
+ ``\texttt{Number of paths from \{0\}\^{}n to \{n\}\^{}n that always move
+ closer to \{n\}\^{}n.}'', with the formula ``\texttt{a(n) = A262810(n) *
+ ceiling(2\^{}(n-1)) = A262810(n) * A011782(n).}'' So the unmarked diagonal
+ relation of Section~\ref{dma:sec:corollary} is recorded in A316677 itself.
+\end{enumerate}
+\emph{The b-files.} The write computed $a_n$, $0\le n\le25$, exactly from
+Howroyd's formula in A262809 (inner alternating sums first), a route
+different from the source's difference table: all 26 terms of the A262810
+b-file agree, the sequence is strictly increasing from $n=1$, and all 26
+terms of the A316677 b-file equal $2^{n-1}a_n$ ($n\ge1$). No entry states a
+correction to Kot\v{e}\v{s}ovec's equivalent; nothing was submitted to the
+OEIS.
+\end{remark}
+
+\subsection{Provenance, sources and reading conventions}\label{dma:sec:provenance}
+\begin{writenote}[Added 7 October 2026, batch~109]
+\emph{Provenance.} This report is Report~177 of the session bundle that
+ProveIt's \file{docs/incoming} intake processed as batch~109: the archive
+\file{Diagonal_Sequence_Alignments_Asymptotics_and_Inverses_Source.zip}
+($1{,}120{,}000$ bytes, SHA-256 \file{ce7560445477...ecbecaf8cef9b4e}, 21
+files, no wrapper directory), arrival commit \file{60f54ea06}, placed in
+\file{f7e9e5c2f}. The text is the delivered \file{report.tex} (572 lines,
+dated 3~October 2026), shipped as \file{article.tex}; the delivered README
+calls it ``byte-identical to the separately delivered \file{Report177.tex}'',
+a file that is not in the archive. The programs are shipped under
+\file{code/}, the frozen results, \file{BIBLIOGRAPHY.json} and two
+\file{generated/} records under \file{data/}, and \file{README_CODE.md} and
+\file{source_audit.md} at the root (the report README maps every name). Not
+shipped, and retrievable from the arrival commit: the delivered 14-page
+\file{Report177.pdf}; the checksum manifest \file{SHA256SUMS.json} (20
+entries, verified at placement); the delivered README, replaced by the
+report README; and three \file{generated/} files that are byte copies of
+shipped ones. The package records no ProveIt commit and names no repository
+path; it carries no ``prepared for private review'' line and no personal
+data. It is a single-source report, so no merge choice was made. The write
+prefixed the 61 delivered labels with \file{dma:} and updated the 45
+references to them; it added this subsection, the notes marked [write] and
+Remarks~\ref{dma:rem:oeis} and~\ref{dma:rem:transseries}, each the last
+statement of its section, and inserted nothing before a delivered display or
+statement, so every theorem, section and equation of the source keeps its
+delivered number. In the preamble it loads \file{array}, for the table below.
+
+\emph{The sources, as the write read them} (7~October 2026).
+\begin{itemize}\raggedright
+\item OEIS A262810, A262809, A316674 and A316677 in the internal format, and
+ the b-files of A262810 and A316677 (Remark~\ref{dma:rem:oeis}).
+\item Eger~\cite{eger}, arXiv:1511.00622v2 (24~July 2016), Section~5.5: the
+ inclusion--exclusion formula, the positive sum (credited there to a comment
+ in A126086) and the fixed-dimensional equivalent (credited to
+ Griggs--Hanlon--Odlyzko--Waterman and Raichev--Wilson); and Section~5.6,
+ which states the unmarked relation $\widetilde A_n(1)=2^{n-1}a_n$ for every
+ number of sequences, citing E.~Duchi and R.~A. Sulanke, ``The $2^{n-1}$
+ factor for multi-dimensional lattice paths with diagonal steps'',
+ S\'em.\ Lothar.\ Combin.\ 51 (2004), B51c (note at the end of
+ Section~\ref{dma:sec:corollary}).
+\item The transseries volume
+ \path{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex}:
+ \file{p0:def:three-inverses}, \file{p0:thm:staircase},
+ \file{p0:thm:lambert-core}, \file{p0:prop:factorial-core},
+ \file{p0:thm:core-reversion}, \file{plt:def:lw-monomial-log-datum} and
+ \file{plt:thm:lw-template}, read for Remark~\ref{dma:rem:transseries}.
+\item Not read by the write: Griggs--Hanlon--Odlyzko--Waterman~\cite{ghow},
+ Pemantle--Wilson~\cite{pw}, the Duchi--Sulanke paper and Slowinski's; the
+ source's account of the first two is reported, not confirmed. The write
+ checked~\eqref{dma:eq:G} numerically instead: $A(n,k)/G(n,k)=0.99707$,
+ $0.99853$ ($k=2$; $n=40,80$) and $0.99461$, $0.99730$ ($k=3$), approaching
+ one at rate about $1/n$.
+\end{itemize}
+
+\emph{What was checked at intake.} The batch-109 dossier read the manuscript
+and found no error; with its own inclusion--exclusion it found
+$(\log(a_n/K_n)-C_1n^{-2}-C_2n^{-4}-C_3n^{-6})n^8=0.01450$, $0.01385$,
+$0.01374$ at $n=8,16,24$, mean and variance errors times $n^4$ bounded,
+$(\log(a_n/G(n,n))+1/12)n^2$ approaching $0.10612999$, and $a_1,\dots,a_4$;
+it checked the injection of Section~\ref{dma:sec:inverse} and $C_1$ by hand,
+and reran the verifier on copies (\file{verify\_report177.py} at orders 3
+and~5 identical to \file{checks.json} and \file{checks.order5.json} after
+removing Windows CR bytes, \file{verify\_manifest.py} passing;
+\file{check\_reproducibility.py} fails on Windows, comparing CRLF output with
+the frozen file). \emph{What the write checked.} Every proof line by line,
+with no mathematical error found: the generating function~\eqref{dma:eq:gf}
+and the positive representation~\eqref{dma:eq:positive}; the
+identity~\eqref{dma:eq:basis}; the root expansion~\eqref{dma:eq:rootexp} and
+$B_1,\dots,B_4$; the three regions of Lemma~\ref{dma:lem:em}; the scaled
+tail~\eqref{dma:eq:scaledtail}; the odd-degree Taylor step and the cumulants
+of $Y-1$; $L_1$ by hand; the Stirling relation~\eqref{dma:eq:stirling} (at
+$j=1,2,3$ to 64 digits); the embedding weight $\sum_{m\ge\ell}2^{-m}\binom
+m\ell=2$ and~\eqref{dma:eq:Mrelations}; $g'(0)$, $g''(0)$ and the $n/4$
+shift; Proposition~\ref{dma:prop:fixed}; $x_0$ from the Lambert equation;
+the proofs of Theorems~\ref{dma:thm:inverse} and~\ref{dma:thm:ceiling} and the
+injection; and the shifted series of Section~\ref{dma:sec:corollary}. With its
+own code (Python 3.14.4, mpmath~1.3.0, exact integers to $n=25$): the
+b-files (Remark~\ref{dma:rem:oeis}); $(\log(a_n/K_n)-C_1n^{-2}-C_2n^{-4}-C_3n^{-6})n^8=0.014181$,
+$0.013880$, $0.013777$, $0.013730$ at $n=10,15,20,25$;
+$(\log(a_n/G(n,n))+1/12)n^2=0.1061302552$, $0.1061300175$, $0.1061300038$ at
+$n=10,20,25$ against $31/360+\lambda^2/24=0.1061299867\ldots$; the mean and
+variance errors of Theorem~\ref{dma:thm:law} times $n^4$ ($-0.00262$,
+$-0.00259$, $-0.00257$ and $0.00698$, $0.00689$, $0.00684$ at $n=12,16,20$);
+and the inverse diagnostics at the end of Section~\ref{dma:sec:inverse}. It
+reran the verifier from the shipped files (README, Route~B): both orders give
+the frozen results after removing CR bytes, and
+\file{check\_reproducibility.py} fails on Windows as at intake. Finite and
+floating computations are observations, not certificates.
+
+\emph{Relation to the repository.} Before batch~109 no file of the
+repository named A262809, A316674 or A316677, and A262810 was named only in
+the neighbouring report \file{a138178-symmetric-packed-matrices}, whose
+source's \file{SOURCES.md} read ``177 (A262810 diagonal alignments)'' and
+found ``different models''; that report's Section~1.1 and README already
+point to this one, so no reciprocal note is needed. The source's audit found ``no A262810/A262809 alignment entry'' in
+the public catalogue on 3~October 2026; that was true. No result is shared
+with any report. No statement of this report is formalized in Lean or Rocq,
+and its place in the collection confers no formal status. The inverses of
+Section~\ref{dma:sec:inverse} are compared with the transseries volume in
+Remark~\ref{dma:rem:transseries}.
+\end{writenote}
+\begin{writenote}[What is not claimed, collected from the source]
+No global novelty: the leading diagonal equivalent~\eqref{dma:eq:K} is
+Kot\v{e}\v{s}ovec's, the exact family, the positive sum and the
+fixed-dimensional asymptotic are classical (Griggs--Hanlon--Odlyzko--Waterman
+1990, Pemantle--Wilson 2008, Eger 2015), and the unmarked relation of
+Section~\ref{dma:sec:corollary} is recorded (``not as an independent
+discovery''); the source assessment is ``bounded \dots, not a theorem of
+global priority or an exhaustive literature search''. No complex-parameter
+uniformity, local central limit theorem or Berry--Esseen rate; no effective
+remainder constants or onsets; no exact universal single ceiling; no
+convergent infinite series (of $L_j$ or of the inverse); no exponentially
+improved counting. Proposition~\ref{dma:prop:fixed} is a nonuniformity
+example, ``not an error in the fixed-$k$ theorem'', and Pemantle and
+Wilson's corrections of a handbook formula are unrelated. The source
+compared no b-file and did not inspect A316677 directly. Exact rational
+finite checks establish finite identities and bounds, not the analytic
+theorem. The write adds: its own checks are floating or finite;
+Remark~\ref{dma:rem:transseries} claims no novelty for any inversion.
+\end{writenote}
+\medskip\noindent\begin{minipage}{\textwidth}
+\emph{Reading conventions} (letters the source reuses, with the tempting
+false readings; no symbol of the source was renamed; symbols of the
+transseries volume carry the subscript ``vol'' in
+Remark~\ref{dma:rem:transseries}).\par
+\smallskip
+\begingroup\small\renewcommand{\arraystretch}{1.1}
+\noindent\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.95in}>{\raggedright\arraybackslash}p{3.45in}>{\raggedright\arraybackslash}p{1.75in}@{}}
+\toprule
+Symbol & Meaning here (where) & Not to be read as\\
+\midrule
+$\lambda$, $\lambda(u)$, $\lambda(t)$ & $\log2$ from~\eqref{dma:eq:K} on; $\log(1+u^{-1})$~\eqref{dma:eq:carrier}; $\log(1+e^{-t})$~\eqref{dma:eq:cgf} & each other\\
+$\rho$ & $u/(1+u)$ (Section~\ref{dma:sec:exact}); the homotopy parameter in the proof of Theorem~\ref{dma:thm:inverse} & each other; the volume's $\rho_{\mathrm{vol}}$\\
+$h$, $H_q$, $H_J$, $H_0$ & $(n-1)/2$; the exponentiated coefficients (Section~\ref{dma:sec:proof}) and~\eqref{dma:eq:H}; the inverse surrogate~\eqref{dma:eq:FH} & each other; the volume's $h_{\mathrm{vol}}$\\
+$q$ & $m-h$ (Section~\ref{dma:sec:center}); a Taylor index (Section~\ref{dma:sec:proof}); $\mathsf M-h$ in~\eqref{dma:eq:qmean} & each other\\
+$B_r(N)$, $\mathrm B_s(x)$, $\mathrm B_{2s}$ & centred power sums~\eqref{dma:eq:rootexp}; Bernoulli polynomials and numbers & each other; the volume's $B_{\mathrm{vol}}$\\
+$K_n$, $K$, $C_j$, $C_J$ & Kot\v{e}\v{s}ovec's equivalent~\eqref{dma:eq:K}; the inverse order of Theorem~\ref{dma:thm:inverse}; the corrections~\eqref{dma:eq:C1}--\eqref{dma:eq:C3}; the constant of Theorem~\ref{dma:thm:ceiling} & each other\\
+$L_j$, $\mathsf L_n$ & correction polynomials~\eqref{dma:eq:main}; the column count & each other; the volume's $L_{\mathrm{vol}}$\\
+$N$, $\mathcal N$ & $n^2$; the normal law & each other\\
+$a$, $a_n$, $a_j$ & $\lambda^2/24$~\eqref{dma:eq:g}; the counts; the roots $h-j$ & each other; the volume's $a_{\mathrm{vol}}$\\
+$r_m$, $r$, $R_j$, $R$ & ratios $t_{m+1}/t_m$ (Section~\ref{dma:sec:exact}) and remainders in the proof of Theorem~\ref{dma:thm:ceiling}; derivative orders; the coefficients~\eqref{dma:eq:algorithm}; an integer order in Lemma~\ref{dma:lem:em} & each other\\
+$t$, $t_m$, $T$ & the mgf variable; series terms (Section~\ref{dma:sec:exact}); the threshold logarithm (Section~\ref{dma:sec:inverse}) & each other; the volume's $t_{\mathrm{vol}}$\\
+$\mathsf M$, $M$ & the auxiliary integer~\eqref{dma:eq:Mrelations}; a fixed order in Lemma~\ref{dma:lem:em} & each other\\
+$F(v)$, $F_0$, $F_J$, $G_N$, $G(n,k)$ & the grid recursion~\eqref{dma:eq:grid}; the inverse surrogates~\eqref{dma:eq:FH}; $\Gamma(N+1)/\lambda^{N+1}$; the fixed-$k$ equivalent~\eqref{dma:eq:G} & each other\\
+$p$, $p_n(m)$ & $J-q$ (Section~\ref{dma:sec:proof}) and $2J+2$ (proof of Theorem~\ref{dma:thm:ceiling}); $\binom mn^n$ & each other\\
+$\mu_r$, $\kappa_r$ & moments and cumulants of $Y-1$ & the volume's $\mu_{\mathrm{vol}}$, $\kappa_{\mathrm{vol}}$\\
+$\nu(T)$, $D$, $W$ & the integer threshold; $(F_0')^{-1}\,\mathrm d/\mathrm dx$; the Lambert function & the volume's $\nu_{\mathcal A}$\\
+\bottomrule
+\end{tabular}
+\endgroup
+\end{minipage}
+
+\section{Exact constructions and finite certificates}\label{dma:sec:exact}
 For arbitrary row sums $n_1,\ldots,n_k$, the generating function of a sequence of nonzero binary columns is
-\begin{equation}\label{eq:gf}
+\begin{equation}\label{dma:eq:gf}
  \sum_{n_1,\ldots,n_k\geq0} A(n_1,\ldots,n_k;u)
  x_1^{n_1}\cdots x_k^{n_k}
  =\frac1{1-u(\prod_{i=1}^k(1+x_i)-1)}.
 \end{equation}
 For $u>0$, expanding near $x=0$ gives the positive representation
-\begin{equation}\label{eq:positive}
+\begin{equation}\label{dma:eq:positive}
  A(n_1,\ldots,n_k;u)=\frac1{1+u}
  \sum_{m\geq0}\left(\frac u{1+u}\right)^m
  \prod_{i=1}^k\binom m{n_i}.
@@ -119,20 +348,20 @@ For $u>0$, expanding near $x=0$ gives the positive representation
 The unmarked identity is classical; Eger~\cite[Section 5.5]{eger} gives both this and inclusion--exclusion. It is also recorded for A262809~\cite{oeisarray}. The marking follows the same column construction.
 
 Let $p_n(m)=\binom mn^n$. Inclusion--exclusion over columns unused by every row gives
-\begin{equation}\label{eq:difference}
+\begin{equation}\label{dma:eq:difference}
  d_{n,j}=[u^j]A_n(u)=\Delta^jp_n(0)
  =\sum_{i=0}^j(-1)^{j-i}\binom ji\binom in^n,
  \qquad A_n(u)=\sum_{j=0}^{N}d_{n,j}u^j.
 \end{equation}
 The signed formula is evaluated exactly with integers, not by cancellation of floating-point approximations. A genuinely positive independent construction expands $p_n$ in the binomial basis using
-\begin{equation}\label{eq:basis}
+\begin{equation}\label{dma:eq:basis}
  \binom mr\binom mn
  =\sum_{j=\max(r,n)}^{r+n}\binom jr\binom r{r+n-j}\binom mj.
 \end{equation}
-Indeed, choose an $r$-set and an $n$-set in an $m$-set by first choosing their $j$-element union, then the $r$-set, then the $r+n-j$ intersection. Repeating \eqref{eq:basis} $n$ times yields the same $d_{n,j}$ with positive integer operations.
+Indeed, choose an $r$-set and an $n$-set in an $m$-set by first choosing their $j$-element union, then the $r$-set, then the $r+n-j$ intersection. Repeating \eqref{dma:eq:basis} $n$ times yields the same $d_{n,j}$ with positive integer operations.
 
 A third, small-instance recursion is
-\begin{equation}\label{eq:grid}
+\begin{equation}\label{dma:eq:grid}
  F(v)=\sum_{\varnothing\ne S\subseteq\operatorname{supp}(v)}F(v-\boldsymbol1_S),
  \qquad F(0)=1,
 \end{equation}
@@ -145,19 +374,19 @@ For a rational mark $u>0$, write $\rho=u/(1+u)$ and
  \quad(m\geq n).
 \]
 The ratios decrease to $\rho<1$. If $r_M<1$ and $S_M=\sum_{m=n}^M t_m$, then
-\begin{equation}\label{eq:tail}
+\begin{equation}\label{dma:eq:tail}
  S_M\leq A_n(u)\leq S_M+\frac{t_Mr_M}{1-r_M}.
 \end{equation}
 Every endpoint is rational. These finite certificates check exact identities; they are logically separate from the analytic asymptotic theorem.
 
-\section{Centering the growing degree}\label{sec:center}
+\section{Centering the growing degree}\label{dma:sec:center}
 Put
 \[
  h=\frac{n-1}2,\quad q=m-h,\quad a_j=h-j\ (0\leq j<n),\quad
  P_n(q)=\prod_{j=0}^{n-1}(q+a_j)^n.
 \]
 The multiset of roots is symmetric. For $q>h$,
-\begin{equation}\label{eq:rootexp}
+\begin{equation}\label{dma:eq:rootexp}
  P_n(q)=q^N\exp\left(-\sum_{r\geq1}B_r(N)q^{-2r}\right),\qquad
  B_r(N)=\frac n{2r}\sum_{j=0}^{n-1}(h-j)^{2r}.
 \end{equation}
@@ -172,26 +401,26 @@ It is an odd polynomial in $n$, of degree $2r+1$, as follows either by replacing
 \begin{align}
  B_1(N)&=N(N-1)/24,\notag\\
  B_2(N)&=N(N-1)(3N-7)/960,\notag\\
- B_3(N)&=N(N-1)(3N^2-18N+31)/8064,\label{eq:B}\\
+ B_3(N)&=N(N-1)(3N^2-18N+31)/8064,\label{dma:eq:B}\\
  B_4(N)&=N(N-1)(5N^3-55N^2+239N-381)/92160.\notag
 \end{align}
 This parity is the source of the all-orders $n^{-2}$ structure; observing the first coefficients alone would not prove it.
 
-\section{Uniform analytic remainder bounds}\label{sec:proof}
+\section{Uniform analytic remainder bounds}\label{dma:sec:proof}
 Fix $0<\alpha\leq\lambda\leq\beta<\infty$. Constants below are uniform on this interval. Define
 \[
  f(q)=e^{-\lambda q}P_n(q)\boldsymbol1_{q\geq h},\qquad
  G_N(\lambda)=\frac{\Gamma(N+1)}{\lambda^{N+1}},\qquad
  I_n(\lambda)=\int_h^\infty e^{-\lambda q}P_n(q)\,\dd q.
 \]
-The lattice is $\mathbb Z-h$. Its point $h$ has value zero; all original terms with $m<n$ vanish. Equation~\eqref{eq:positive} becomes
-\begin{equation}\label{eq:lattice}
+The lattice is $\mathbb Z-h$. Its point $h$ has value zero; all original terms with $m<n$ vanish. Equation~\eqref{dma:eq:positive} becomes
+\begin{equation}\label{dma:eq:lattice}
  A_n(u)=\frac{e^{-\lambda h}}{(1+u)(n!)^n}
  \sum_{q\in\mathbb Z-h}f(q).
 \end{equation}
 
 \subsection{Lattice replacement with growing degree}
-\begin{lemma}\label{lem:em}
+\begin{lemma}\label{dma:lem:em}
 For all fixed $M,r\geq0$,
 \[
  \left\|\frac{\sum_{q\in\mathbb Z-h}f(q)-I_n(\lambda)}{G_N(\lambda)}
@@ -201,7 +430,7 @@ Moreover $cG_N\leq I_n\leq G_N$ with $c>0$ independent of $n$ and $\lambda$ for 
 \end{lemma}
 \begin{proof}
 For any fixed integer $R\geq2$ and $n>R$, the cutoff at $h$ has the boundary regularity required by Euler--Maclaurin. Its derivatives through order $R-1$ vanish there, and its $R$th derivative is integrable. The periodic-Bernoulli remainder, or $R$ integrations by parts in Poisson summation, gives
-\begin{equation}\label{eq:em}
+\begin{equation}\label{dma:eq:em}
  \left|\sum_{q\in\mathbb Z-h}f(q)-I_n\right|
  \leq c_R\|f^{(R)}\|_1.
 \end{equation}
@@ -214,20 +443,20 @@ On $\mathcal C=\{|q-N/\lambda|\leq\sqrt N\log N\}$, all $q+a_j$ are comparable t
  \ell^{(s)}=O_s(N^{1-s})\quad(s\geq2).
 \]
 For the first equality, the linear $a_j$ term cancels; the correction to $N/q$ is $O(N^2/q^3)=O(N^{-1})$. In Bell's derivative formula, a product with $m_s$ factors $\ell^{(s)}$ and $\sum s m_s=R$ is at most $O_R(N^{-R/2}(\log N)^R)$. Hence
-\begin{equation}\label{eq:centralderivative}
+\begin{equation}\label{dma:eq:centralderivative}
  |f^{(R)}|\leq c_R N^{-R/2}(\log N)^R f\quad\hbox{on }\mathcal C.
 \end{equation}
-The logarithm of $P_n(q)/q^N$ is bounded between fixed constants there by \eqref{eq:rootexp}. A gamma variable of shape $N+1$ and rate $\lambda$ lies in $\mathcal C$ with probability tending to one uniformly. This proves $I_n\geq cG_N$; the upper bound follows from $P_n\leq q^N$.
+The logarithm of $P_n(q)/q^N$ is bounded between fixed constants there by \eqref{dma:eq:rootexp}. A gamma variable of shape $N+1$ and rate $\lambda$ lies in $\mathcal C$ with probability tending to one uniformly. This proves $I_n\geq cG_N$; the upper bound follows from $P_n\leq q^N$.
 
 On $[N/(2\lambda),2N/\lambda]\setminus\mathcal C$, the same logarithmic derivatives are bounded by fixed powers of $N$. The gamma Chernoff bound gives a loss $\exp(-c\log^2N)$ after integration, smaller than $N^{-A}$ for every fixed $A$. For completeness, the bound follows from the gamma mgf $(1-t/\lambda)^{-(N+1)}$ by exponential Markov inequality, optimizing $t$; on compact relative deviations the rate is quadratic.
 
 On the two far tails, do not use singular logarithmic derivatives near $h$. Differentiating the product of its $N$ nonnegative linear factors yields
-\begin{equation}\label{eq:leibniz}
+\begin{equation}\label{dma:eq:leibniz}
  |f^{(R)}(q)|\leq\sum_{j=0}^R\binom Rj\lambda^{R-j}
  \fall Nj e^{-\lambda q}(q+h)^{N-j}.
 \end{equation}
 Integrate each term after the substitution $z=q+h$. If $Z_j$ has gamma shape $N-j+1$ and rate $\lambda$, after factoring out $\binom Rj$, the corresponding integral divided by $G_N$ is exactly
-\begin{equation}\label{eq:tailintegrated}
+\begin{equation}\label{dma:eq:tailintegrated}
  \lambda^R e^{\lambda h}\Prob(Z_j\hbox{ belongs to the shifted integration region}),
 \end{equation}
 since $\fall Nj\Gamma(N-j+1)/\Gamma(N+1)=1$. In the lower tail the upper endpoint is $N/(2\lambda)+h$; in the upper tail the lower endpoint is $2N/\lambda+h$. For fixed $j$ these probabilities are $O(e^{-cN})$. The prefactor $e^{\lambda h}=e^{O(\sqrt N)}$ is absorbed. This integrated estimate avoids a false pointwise comparison at the cutoff.
@@ -246,11 +475,11 @@ Set $\varepsilon=N^{-1}$ and let $Y$ have gamma shape $N+1$ and rate $N$, so its
  Q_N(y,\lambda)=\prod_j\left(1+\frac{\lambda a_j}{Ny}\right)^n,
 \]
 and put it equal to zero below that cutoff. Scaling $q=Ny/\lambda$ gives
-\begin{equation}\label{eq:expect}
+\begin{equation}\label{dma:eq:expect}
  I_n/G_N=\E Q_N(Y,\lambda).
 \end{equation}
-Fix a neighborhood $V$ of $1$ with compact closure in $(0,\infty)$. On $V$, the series \eqref{eq:rootexp} is absolutely convergent and
-\begin{equation}\label{eq:g}
+Fix a neighborhood $V$ of $1$ with compact closure in $(0,\infty)$. On $V$, the series \eqref{dma:eq:rootexp} is absolutely convergent and
+\begin{equation}\label{dma:eq:g}
  \log Q_N(y,\lambda)=-\frac a{y^2}+\sum_{j=1}^J\varepsilon^j g_j(y;\lambda)+O(\varepsilon^{J+1}),
  \qquad a=\lambda^2/24.
 \end{equation}
@@ -268,13 +497,13 @@ The expectation outside $V$ is negligible in every required fixed $\lambda$ deri
  \left(1+\frac{\beta h}{Ny}\right)^{N-s}.
 \]
 Multiplication by the gamma density and the substitution $z=y+\beta h/N$ bound each tail integral by
-\begin{equation}\label{eq:scaledtail}
+\begin{equation}\label{dma:eq:scaledtail}
  h^s e^{\beta h}\Prob\{\operatorname{Gamma}(N-s+1,N)
  \hbox{ lies in the shifted tail}\}.
 \end{equation}
 The factorials cancel exactly. Because the shift is $O(N^{-1/2})$ and $V$ is fixed, these probabilities are $O(e^{-cN})$. Boundary terms from differentiating the cutoff vanish for $n>s$, owing to the multiplicity-$n$ zero. This proves the differentiated tail assertion without assuming complex-parameter uniformity.
 
-Exponentiate \eqref{eq:g} as
+Exponentiate \eqref{dma:eq:g} as
 \[
  Q_N(y,\lambda)=e^{-a/y^2}\sum_{q=0}^JH_q(y;\lambda)\varepsilon^q
  +O_{C^r}(\varepsilon^{J+1})\quad(y\in V).
@@ -284,29 +513,29 @@ For the $q$th term put $p=J-q$. Taylor-expand its smooth coefficient about $y=1$
  O\bigl(\E|Y-1|^{2p+2}\bigr)=O(\varepsilon^{p+1}).
 \]
 This step needs the odd degree $2p+1$ before estimating the remainder; stopping at degree $2p$ with an absolute odd moment would not suffice for the stated order. The signed moments are exactly
-\begin{equation}\label{eq:mu}
+\begin{equation}\label{dma:eq:mu}
  \mu_r(\varepsilon)=\E(Y-1)^r
  =\sum_{j=0}^r(-1)^{r-j}\binom rj\prod_{i=1}^j(1+i\varepsilon).
 \end{equation}
 Their valuation is at least $\lceil r/2\rceil$. For example, $Y-1$ has cumulants $\kappa_1=\varepsilon$ and
 $\kappa_r=(r-1)!(\varepsilon^{r-1}+\varepsilon^r)$ for $r\geq2$; the moment--cumulant formula proves the valuation and the even absolute-moment estimate. Thus the degree $2p+1$ term can be omitted from the coefficient algorithm, because it is already $O(\varepsilon^{p+1})$.
 
-All these estimates commute with any fixed number of $\lambda$ derivatives: the law of $Y$ is independent of $\lambda$, and coefficient bounds are uniform. Taking logarithms is valid because the leading expectation $e^{-a}$ stays bounded away from zero. Lemma~\ref{lem:em}, \eqref{eq:lattice}, and the smooth change of variable $\lambda=\log(1+1/u)$ prove Theorem~\ref{thm:main}.
+All these estimates commute with any fixed number of $\lambda$ derivatives: the law of $Y$ is independent of $\lambda$, and coefficient bounds are uniform. Taking logarithms is valid because the leading expectation $e^{-a}$ stays bounded away from zero. Lemma~\ref{dma:lem:em}, \eqref{dma:eq:lattice}, and the smooth change of variable $\lambda=\log(1+1/u)$ prove Theorem~\ref{dma:thm:main}.
 
-\section{A constructive algorithm at every fixed order}\label{sec:algorithm}
+\section{A constructive algorithm at every fixed order}\label{dma:sec:algorithm}
 The following finite rational procedure computes $L_1,\ldots,L_J$.
 \begin{enumerate}[label=\arabic*.]
-\item Compute $B_r(N)$ for $1\leq r\leq J+1$ by the Bernoulli formula in Section~\ref{sec:center}. Expand
+\item Compute $B_r(N)$ for $1\leq r\leq J+1$ by the Bernoulli formula in Section~\ref{dma:sec:center}. Expand
 \[
 -\sum_{r=1}^{J+1}B_r(\varepsilon^{-1})\lambda^{2r}\varepsilon^{2r}y^{-2r}
 \]
 through degree $J$, giving $-a/y^2+\sum_{j=1}^Jg_j\varepsilon^j$.
 \item Form $H_0=1$ and
-\begin{equation}\label{eq:H}
+\begin{equation}\label{dma:eq:H}
  H_j=\frac1j\sum_{s=1}^j s g_s H_{j-s}.
 \end{equation}
-\item Compute the moments \eqref{eq:mu} through degree $2J$ and form, discarding powers above $\varepsilon^J$,
-\begin{equation}\label{eq:algorithm}
+\item Compute the moments \eqref{dma:eq:mu} through degree $2J$ and form, discarding powers above $\varepsilon^J$,
+\begin{equation}\label{dma:eq:algorithm}
  \sum_{q=0}^J\varepsilon^q\sum_{r=0}^{2(J-q)}\frac{\mu_r(\varepsilon)}{r!}
  \left[e^a\frac{\dd^r}{\dd y^r}
  \{e^{-a/y^2}H_q(y;\lambda)\}\right]_{y=1}
@@ -315,11 +544,11 @@ through degree $J$, giving $-a/y^2+\sum_{j=1}^Jg_j\varepsilon^j$.
 No transcendental symbolic operation is needed: start from $f=H_q$ and replace
 $f$ by $\partial_y f+2ay^{-3}f$ at each differentiation, then evaluate at $y=1$.
 \item With $R_0=1$, extract the logarithm by
-\begin{equation}\label{eq:logrec}
+\begin{equation}\label{dma:eq:logrec}
  L_j=R_j-\frac1j\sum_{s=1}^{j-1}s L_sR_{j-s}.
 \end{equation}
 \end{enumerate}
-Every operation is rational polynomial or Laurent-polynomial arithmetic. The proof in Section~\ref{sec:proof} establishes the remainder at each fixed order, rather than merely identifying a formal series.
+Every operation is rational polynomial or Laurent-polynomial arithmetic. The proof in Section~\ref{dma:sec:proof} establishes the remainder at each fixed order, rather than merely identifying a formal series.
 
 As a transparent first-order check,
 \[
@@ -332,22 +561,22 @@ $f'(1)+f''(1)/2=e^{-a}(2a^2-a)$. Adding $g_1(1)$ cancels the terms in $a$ and le
 \]
 The supplied rational verifier implements this algorithm and checks the printed $L_j$.
 
-To pass from the exact gamma carrier to \eqref{eq:K}, set
+To pass from the exact gamma carrier to \eqref{dma:eq:K}, set
 $b_s=\mathrm B_{2s}/(2s(2s-1))$, with $\mathrm B_{2s}$ the Bernoulli number. Stirling's expansion in
 $\log\Gamma(N+1)-n\log\Gamma(n+1)$ gives
-\begin{equation}\label{eq:stirling}
+\begin{equation}\label{dma:eq:stirling}
  C_j=L_j(\lambda)-b_{j+1}+\mathbf{1}_{\{j\text{ odd}\}}b_{(j+1)/2}.
 \end{equation}
-The constant from $-n\log\Gamma(n+1)$ is $-1/12$. The remaining leading terms give exactly \eqref{eq:K}, including $e^{-\lambda^2/24}$. Taking sufficiently many Stirling terms proves the remainder in Corollary~\ref{cor:C}; \eqref{eq:stirling} gives \eqref{eq:C1}--\eqref{eq:C3}.
+The constant from $-n\log\Gamma(n+1)$ is $-1/12$. The remaining leading terms give exactly \eqref{dma:eq:K}, including $e^{-\lambda^2/24}$. Taking sufficiently many Stirling terms proves the remainder in Corollary~\ref{dma:cor:C}; \eqref{dma:eq:stirling} gives \eqref{dma:eq:C1}--\eqref{dma:eq:C3}.
 
-\section{The complete marked law and its central limit}\label{sec:statistics}
-The polynomial \eqref{eq:difference} is the exact column-count law:
+\section{The complete marked law and its central limit}\label{dma:sec:statistics}
+The polynomial \eqref{dma:eq:difference} is the exact column-count law:
 \[
  \Prob(\mathsf L_n=j)=d_{n,j}/a_n,\qquad
  \E e^{t\mathsf L_n}=A_n(e^t)/A_n(1).
 \]
-For all real $t$ in any fixed compact interval, write $\lambda(t)=\log(1+e^{-t})$. Taking logarithms in Theorem~\ref{thm:main} gives the complete all-orders real cumulant-generating expansion
-\begin{align}\label{eq:cgf}
+For all real $t$ in any fixed compact interval, write $\lambda(t)=\log(1+e^{-t})$. Taking logarithms in Theorem~\ref{dma:thm:main} gives the complete all-orders real cumulant-generating expansion
+\begin{align}\label{dma:eq:cgf}
  \log\E e^{t\mathsf L_n}
  ={}&-(N+1)\log\frac{\lambda(t)}\lambda
  -\log\frac{1+e^t}{2}
@@ -356,11 +585,11 @@ For all real $t$ in any fixed compact interval, write $\lambda(t)=\log(1+e^{-t})
  &+\sum_{j=1}^J\frac{L_j(\lambda(t))-L_j(\lambda)}{N^j}
  +O_{C^r}(N^{-J-1}).
 \end{align}
-The remainder vanishes at $t=0$ and has the proved fixed derivative bounds. For a fixed positive mark $u_0$, the tilted law assigning probability $u_0^{\ell(M)}/A_n(u_0)$ has the same formula with $A_n(u_0e^t)/A_n(u_0)$. Thus \eqref{eq:main} describes all fixed positive tilts as well as all fixed cumulants.
+The remainder vanishes at $t=0$ and has the proved fixed derivative bounds. For a fixed positive mark $u_0$, the tilted law assigning probability $u_0^{\ell(M)}/A_n(u_0)$ has the same formula with $A_n(u_0e^t)/A_n(u_0)$. Thus \eqref{dma:eq:main} describes all fixed positive tilts as well as all fixed cumulants.
 
 \subsection{Direct moment identities and cancellation control}
-Introduce an auxiliary integer $\mathsf M$ with probability proportional to $2^{-m}\binom mn^n$. This variable is a device from the positive sum and is not the column count. Differentiating the absolutely convergent exact series in \eqref{eq:positive}, then setting $u=e^t$ and $t=0$, proves
-\begin{equation}\label{eq:Mrelations}
+Introduce an auxiliary integer $\mathsf M$ with probability proportional to $2^{-m}\binom mn^n$. This variable is a device from the positive sum and is not the column count. Differentiating the absolutely convergent exact series in \eqref{dma:eq:positive}, then setting $u=e^t$ and $t=0$, proves
+\begin{equation}\label{dma:eq:Mrelations}
  \E\mathsf L_n=\frac{\E\mathsf M-1}{2},\qquad
  \Var(\mathsf L_n)=\frac{\Var(\mathsf M)-\E\mathsf M-1}{4}.
 \end{equation}
@@ -373,23 +602,23 @@ independent of the alignment, so deletion gives the uniform law on $\mathcal A_n
  \E(\mathsf M\mid\mathsf L_n)=2\mathsf L_n+1,\qquad
  \Var(\mathsf M\mid\mathsf L_n)=2(\mathsf L_n+1).
 \]
-Total expectation and total variance recover \eqref{eq:Mrelations}.
+Total expectation and total variance recover \eqref{dma:eq:Mrelations}.
 
 For clarity, $\lambda'(0)=-1/2$ and $\lambda''(0)=1/4$; the separate term $-\log(1+e^t)$ contributes $-1/2$ and $-1/4$ respectively.
 
 Put $q=\mathsf M-h$. The $C^2$ version of the theorem justifies differentiating the normalized logarithm of its positive lattice partition function. It gives
 \begin{align}
  \E q&=\frac{N+1}{\lambda}+\frac\lambda{12}
- -\frac{\lambda^3}{720N}+O(N^{-2}),\label{eq:qmean}\\
+ -\frac{\lambda^3}{720N}+O(N^{-2}),\label{dma:eq:qmean}\\
  \Var(q)&=\frac{N+1}{\lambda^2}-\frac1{12}
- +\frac{\lambda^2}{240N}+O(N^{-2}).\label{eq:qvar}
+ +\frac{\lambda^2}{240N}+O(N^{-2}).\label{dma:eq:qvar}
 \end{align}
 These formulas can also be obtained without differentiating a remainder: insert $m$ and $m^2$ separately in the positive series, apply the same lattice estimate, then use $m=h+NY/\lambda$ in the gamma integral. The polynomial insertions preserve the Taylor proof. One must retain enough terms before subtracting the squared mean: an $m^2$ insertion has scale $N^2$, so to get an $O(N^{-2})$ absolute remainder it suffices to keep the normalized expectation through $\varepsilon^3$ with remainder $O(\varepsilon^4)$, and correspondingly enough terms in the first moment and denominator. The arbitrary-order theorem allows this precision. A bare $O(N^{-2})$ normalized second-moment error would not justify the variance claim.
 
-Now substitute $\E\mathsf M=\E q+h$ and $\Var(\mathsf M)=\Var(q)$ in \eqref{eq:Mrelations}. This proves \eqref{eq:mean}--\eqref{eq:variance}, including the constant terms and the $n^{-2}$ corrections.
+Now substitute $\E\mathsf M=\E q+h$ and $\Var(\mathsf M)=\Var(q)$ in \eqref{dma:eq:Mrelations}. This proves \eqref{dma:eq:mean}--\eqref{dma:eq:variance}, including the constant terms and the $n^{-2}$ corrections.
 
 \subsection{A real moment-generating-function proof}
-For a fixed real $s$, take $t=s/n$ in \eqref{eq:cgf}. The function
+For a fixed real $s$, take $t=s/n$ in \eqref{dma:eq:cgf}. The function
 $g(t)=-\log(\lambda(t)/\lambda)$ satisfies
 \[
  g'(0)=\frac1{2\lambda},\qquad
@@ -399,22 +628,22 @@ Hence $Ng(s/n)=sn/(2\lambda)+\sigma^2s^2/2+O(n^{-1})$. The $h$-term is
 \[
  -h(\lambda(s/n)-\lambda)=s/4+O(n^{-1}).
 \]
-All other differences in \eqref{eq:cgf} tend to zero. Therefore
+All other differences in \eqref{dma:eq:cgf} tend to zero. Therefore
 \[
  \log\E\exp\left\{s\frac{\mathsf L_n-N/(2\lambda)-n/4}{n}\right\}
  \longrightarrow\frac{\sigma^2s^2}{2}.
 \]
-The real mgf convergence theorem proves \eqref{eq:clt}. This argument requires no complex extension of the marking theorem. It provides neither a local central limit theorem nor a Berry--Esseen rate, and no such conclusion is claimed.
+The real mgf convergence theorem proves \eqref{dma:eq:clt}. This argument requires no complex extension of the marking theorem. It provides neither a local central limit theorem nor a Berry--Esseen rate, and no such conclusion is claimed.
 
-\section{The fixed dimensional limit and the diagonal}\label{sec:fixed}
+\section{The fixed dimensional limit and the diagonal}\label{dma:sec:fixed}
 For fixed $k$, let $A(n,k)=A(n,\ldots,n;1)$ with $k$ row sums. The classical theorem of Griggs, Hanlon, Odlyzko, and Waterman~\cite{ghow}, as displayed also by Pemantle and Wilson~\cite[Section 4.9]{pw} and Eger~\cite{eger}, is
-\begin{equation}\label{eq:G}
+\begin{equation}\label{dma:eq:G}
  A(n,k)\sim G(n,k),\qquad
  G(n,k)=\frac{2^{(1-k^2)/(2k)}(2^{1/k}-1)^{-kn-1}}
  {\sqrt k\,(\pi n)^{(k-1)/2}}\quad(n\to\infty,\ k\hbox{ fixed}).
 \end{equation}
 Its quantifier on $k$ matters.
-\begin{proposition}\label{prop:fixed}
+\begin{proposition}\label{dma:prop:fixed}
 Substitution $k=n$ in the fixed-dimensional leading expression gives
 \[
  \log\frac{a_n}{G(n,n)}=-\frac1{12}
@@ -428,36 +657,36 @@ Use
  \log\frac{e^z-1}{z}=\frac z2+\frac{z^2}{24}
  -\frac{z^4}{2880}+O(z^6),\qquad z=\lambda/n,
 \]
-in the exact expression $G(n,n)$, and compare with \eqref{eq:K} and $C_1$ in \eqref{eq:C1}. The constant discrepancy is $-1/12$; the $n^{-2}$ coefficient is $31/360+\lambda^2/24$ after the $\lambda^4$ terms cancel.
+in the exact expression $G(n,n)$, and compare with \eqref{dma:eq:K} and $C_1$ in \eqref{dma:eq:C1}. The constant discrepancy is $-1/12$; the $n^{-2}$ coefficient is $31/360+\lambda^2/24$ after the $\lambda^4$ terms cancel.
 \end{proof}
 This is a nonuniformity example, not an error in the fixed-$k$ theorem. The previously reported typographical corrections to a Waterman handbook formula discussed in~\cite{pw} are a separate matter and are not claimed here.
 
-\section{Lambert inversion with a safe integer boundary}\label{sec:inverse}
+\section{Lambert inversion with a safe integer boundary}\label{dma:sec:inverse}
 For $\lambda=\log2$, define
 \begin{align}
  F_0(x)&=x^2\log(x/\lambda),\notag\\
  H_0(x)&=-\frac x2\log x-x\log2-\frac{x-1}{2}\log\pi
- +\log x-\log\lambda-\frac1{12}-\frac{\lambda^2}{24},\label{eq:FH}\\
+ +\log x-\log\lambda-\frac1{12}-\frac{\lambda^2}{24},\label{dma:eq:FH}\\
  H_J(x)&=H_0(x)+\sum_{j=1}^JC_jx^{-2j},\qquad F_J(x)=F_0(x)+H_J(x).\notag
 \end{align}
-Corollary~\ref{cor:C} says $\log a_n=F_J(n)+O(n^{-2J-2})$. These are smooth asymptotic surrogates, not a claimed analytic continuation of the discrete sequence.
+Corollary~\ref{dma:cor:C} says $\log a_n=F_J(n)+O(n^{-2J-2})$. These are smooth asymptotic surrogates, not a claimed analytic continuation of the discrete sequence.
 
 \subsection{All fixed inverse orders}
 The positive Lambert branch solves $W(z)e^{W(z)}=z$ for $z>0$. The large inverse of $F_0$ is
-\begin{equation}\label{eq:x0}
+\begin{equation}\label{dma:eq:x0}
  x_0(T)=\sqrt{\frac{2T}{W(2T/\lambda^2)}}.
 \end{equation}
 For large $T$, let $x_J(T)$ be the exact large real root of $F_J(x)=T$ and set
 $D=(F_0'(x))^{-1}\dd/\dd x$.
-\begin{theorem}[Constructive inverse expansion]\label{thm:inverse}
+\begin{theorem}[Constructive inverse expansion]\label{dma:thm:inverse}
 For every fixed $J\geq0$ and $K\geq1$,
-\begin{equation}\label{eq:inverse}
+\begin{equation}\label{dma:eq:inverse}
  x_J(T)=x_0(T)+\sum_{k=1}^K\frac{(-1)^k}{k!}
  \left.D^{k-1}\left(\frac{H_J(x)^k}{F_0'(x)}\right)\right|_{x=x_0(T)}
  +O_{J,K}(x_0(T)^{-K}).
 \end{equation}
 In particular, with the functions on the right evaluated at $x_0$,
-\begin{equation}\label{eq:inverse2}
+\begin{equation}\label{dma:eq:inverse2}
  x_J=x_0-\frac{H_J}{F_0'}+
  \frac{H_JH_J'}{(F_0')^2}-\frac{H_J^2F_0''}{2(F_0')^3}
  +O(x_0^{-2}).
@@ -475,7 +704,7 @@ Uniformly in this neighborhood,
 Implicit differentiation, followed by induction, gives
 $\partial_\rho^kX=O_k(x_0^{1-k})$ for every fixed $k\geq1$. In the differentiated equation the term containing the highest derivative is $(F_0'+\rho H_J')\partial_\rho^kX$; the other Bell-polynomial terms obey the displayed bounds and already established derivative bounds. Taylor's theorem in $\rho$ through degree $K$ consequently has remainder $O(x_0^{-K})$.
 
-To compute its coefficients, make the change $w=F_0(x)$. The equation becomes $w=T-\rho H_J(F_0^{-1}(w))$. The Lagrange inversion formula applied to $F_0^{-1}(w)$ gives exactly the finite coefficients in \eqref{eq:inverse}; they can equivalently be obtained by successive implicit differentiation at $\rho=0$. The first two yield \eqref{eq:inverse2}. Finally $-H_J/F_0'\to1/4$.
+To compute its coefficients, make the change $w=F_0(x)$. The equation becomes $w=T-\rho H_J(F_0^{-1}(w))$. The Lagrange inversion formula applied to $F_0^{-1}(w)$ gives exactly the finite coefficients in \eqref{dma:eq:inverse}; they can equivalently be obtained by successive implicit differentiation at $\rho=0$. The first two yield \eqref{dma:eq:inverse2}. Finally $-H_J/F_0'\to1/4$.
 \end{proof}
 No convergence of the infinite inverse series follows or is needed.
 
@@ -486,13 +715,13 @@ Define
 \]
 The sequence is strictly increasing for positive $n$. To see this, add a zero row to an $n$-row matrix, append a column with ones in all old rows and zero in the new row, then append $n+1$ columns supported only on the new row. Every row sum becomes $n+1$. Deleting the fixed final $n+2$ columns and the new row recovers the original. This is an injection; the all-ones $(n+1)\times(n+1)$ matrix is outside its image, proving strictness.
 
-\begin{theorem}[Boundary-safe enclosure]\label{thm:ceiling}
+\begin{theorem}[Boundary-safe enclosure]\label{dma:thm:ceiling}
 For every fixed $J\geq0$ there exist constants $C_J>0$ and $T_J$ such that, with $x=x_J(T)$ and
 \[
  \delta_J(x)=C_J\frac{x^{-2J-3}}{\log x},
 \]
 all $T\geq T_J$ satisfy
-\begin{equation}\label{eq:ceiling}
+\begin{equation}\label{dma:eq:ceiling}
  \left\lceil x-\delta_J(x)\right\rceil\leq\nu(T)
  \leq\left\lceil x+\delta_J(x)\right\rceil.
 \end{equation}
@@ -506,11 +735,88 @@ Write $\log a_m=F_J(m)+r_m$ with $|r_m|\leq C m^{-p}$, $p=2J+2$, for all large i
  \qquad
  m\geq x+\delta_J(x)\ \Longrightarrow\ \log a_m\geq T.
 \]
-First applying the same derivative bounds at neighboring integers a fixed distance from $x$ locates the threshold in this neighborhood. Monotonicity then extends the implications to more distant integers, proving \eqref{eq:ceiling}. The threshold-sample assertion follows by the mean value theorem.
+First applying the same derivative bounds at neighboring integers a fixed distance from $x$ locates the threshold in this neighborhood. Monotonicity then extends the implications to more distant integers, proving \eqref{dma:eq:ceiling}. The threshold-sample assertion follows by the mean value theorem.
 \end{proof}
-If the two ceilings coincide, they determine the exact threshold. A universal single-ceiling formula is unwarranted when $T$ is arbitrarily close to $\log a_n$. To use the $K$-term approximation \eqref{eq:inverse} instead of the exact surrogate root, enlarge the radius by its error. Taking $K\geq2J+4$ makes $O(x_0^{-K})$ smaller than the $x^{-2J-3}/\log x$ scale. Taking only $K=2J+3$ does not establish this extra logarithmic gain. The constants and onsets in this enclosure are existence statements, not certified numerical thresholds.
+If the two ceilings coincide, they determine the exact threshold. A universal single-ceiling formula is unwarranted when $T$ is arbitrarily close to $\log a_n$. To use the $K$-term approximation \eqref{dma:eq:inverse} instead of the exact surrogate root, enlarge the radius by its error. Taking $K\geq2J+4$ makes $O(x_0^{-K})$ smaller than the $x^{-2J-3}/\log x$ scale. Taking only $K=2J+3$ does not establish this extra logarithmic gain. The constants and onsets in this enclosure are existence statements, not certified numerical thresholds.
 
-\section{A binomial coupling for the nonnegative analogue}\label{sec:corollary}
+\begin{writenote}[Rechecked, 7 October 2026]
+At the sequence thresholds $T=\log a_n$, from exact $a_n$ and the roots $x_J$
+of $F_J(x)=T$ at 60 digits: $x_J(T)-n=1.4\cdot10^{-5}$, $1.8\cdot10^{-10}$,
+$3.1\cdot10^{-11}$, $2.3\cdot10^{-12}$ ($J=0,1,2,3$) at $n=10$, and
+$6.9\cdot10^{-7}$, $1.2\cdot10^{-12}$, $3.6\cdot10^{-14}$, $4.5\cdot10^{-16}$
+at $n=25$ (rounded), each below the scale $n^{-2J-3}/\log n$ of
+Theorem~\ref{dma:thm:ceiling}. The first correction $-H_0/F_0'$ at $x_0$ is
+about $0.33$ for $n\le25$: its limit $1/4$ (Theorem~\ref{dma:thm:inverse}) is
+approached at a logarithmic rate. Observations, not tests of the asymptotic
+statements.
+\end{writenote}
+\begin{remark}[{[write]} The inversions and the transseries volume, 7~October 2026]\label{dma:rem:transseries}
+Compared, statement by statement, with the transseries volume
+(\path{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex});
+symbols of the volume carry the subscript ``vol''.
+\begin{enumerate}[label=(\alph*)]
+\item \emph{Instance.} The threshold $\nu(T)$ is the integer staircase
+ $N_\ast$ of \file{p0:def:three-inverses} with $A_n=\log a_n$, $n_1=1$ (the
+ injection above makes $a$ strictly increasing) and $y=T$, for $T\ge0$; so
+ \file{p0:thm:staircase}(1) gives $\nu(T)=\lceil\nu_{\mathcal A}(T)\rceil$ for
+ every admissible interpolation $\mathcal A$. The source does not use this.
+\item \emph{Theorem~\ref{dma:thm:ceiling}: an analogue as stated and proved;
+ also a consequence of \file{p0:thm:staircase}(1) once an interpolation is
+ supplied.} The source brackets $\nu(T)$ directly about the root $x_J$ of the
+ surrogate $F_J$, which is not the inverse of an interpolation of the
+ counts; the conclusion has the form of \file{p0:thm:staircase}(2). A second
+ route (added by the write): with $r_m=\log a_m-F_J(m)=O(m^{-2J-2})$
+ (Corollary~\ref{dma:cor:C}), let $\tilde r$ be the piecewise-linear
+ interpolation of $(r_m)$ and $\mathcal A=F_J+\tilde r$ on $[m_0,\infty)$.
+ Since $F_J'\asymp x\log x$ and $|\tilde r'|\le2\max|r_m|$ on each unit
+ interval, $\mathcal A$ is continuous and strictly increasing for a suitable
+ $m_0$, with $\mathcal A(m)=\log a_m$, so it is admissible with
+ $n_1=m_0$. For $\nu=\nu_{\mathcal A}(T)$ one has
+ $F_J(\nu)-F_J(x_J)=-\tilde r(\nu)$, hence
+ $|\nu-x_J|\le|\tilde r(\nu)|/\min F_J'=O(x^{-2J-3}/\log x)$, which is at
+ most $\delta_J(x)$ for a suitable $C_J$; \file{p0:thm:staircase}(1) and the
+ monotonicity of the ceiling give~\eqref{dma:eq:ceiling} for large $T$. Since
+ $\nu_{\mathcal A}(\log a_n)=n$, the same bound gives the threshold-sample
+ assertion, and \file{p0:thm:staircase}(3) adds that
+ $n=\lfloor x_J(\log a_n)+\tfrac12\rfloor$ for all large $n$, which the source
+ does not state.
+\item \emph{Instance after a change of variable.} The Lambert start
+ $x_0$~\eqref{dma:eq:x0} is \file{p0:prop:factorial-core} after $X=x^2$: then
+ $F_0=X(\tfrac12\log X-\log\lambda)$, so $\kappa_{\mathrm{vol}}=\tfrac12$,
+ $d_{\mathrm{vol}}=-\log\lambda$, $v=W_0(2T/\lambda^2)$ and
+ $X=e^{v+2\log\lambda}=2T/v$; the side condition
+ $\kappa_{\mathrm{vol}}\log X+d_{\mathrm{vol}}>0$ is $x>\lambda$. Its large-$T$
+ expansion is a \emph{formal} instance of \file{plt:thm:lw-template} with
+ $Z_{\mathrm{vol}}=\log x$, $\xi_{\mathrm{vol}}=\log T$ and data
+ $(\rho_{\mathrm{vol}},\mu_{\mathrm{vol}},\beta_{\mathrm{vol}},B_{\mathrm{vol}})=(2,1,0,\log(1-t_{\mathrm{vol}}\log\lambda))$,
+ since $\log F_0=2Z_{\mathrm{vol}}+\log Z_{\mathrm{vol}}+\log(1-\log\lambda/Z_{\mathrm{vol}})$.
+\item \emph{Formal instance after a change of variable.} With $x=x_0(1+E)$,
+ $t_{\mathrm{vol}}=1/x_0$ and $\ell=\log(x_0/\lambda)$, the equation
+ $F_0(x)+H_J(x)=T$ divided by $x_0^2\ell$ reads
+ $\Lambda_{\mathrm{vol}}E+h_{\mathrm{vol}}(E)+f_{\mathrm{vol}}(t_{\mathrm{vol}},E)=0$
+ with $\Lambda_{\mathrm{vol}}=2+1/\ell$,
+ $h_{\mathrm{vol}}(u)=u^2+\{(1+u)^2\log(1+u)-u\}/\ell$ and
+ $f_{\mathrm{vol}}=H_J(x_0(1+u))/(x_0^2\ell)\in t_{\mathrm{vol}}R[[t_{\mathrm{vol}},u]]$,
+ using $\log x_0=\ell+\log\lambda$, over the ring $R$ generated over
+ $\mathbb Q$ by $\lambda$, $\log\lambda$, $\log\pi$, $C_1,\dots,C_J$, $\ell$, $\ell^{-1}$ and
+ $(2\ell+1)^{-1}$. So the inverse expansion of
+ Theorem~\ref{dma:thm:inverse} is formally \file{p0:thm:core-reversion}: its
+ unique formal solution $E\in t_{\mathrm{vol}}R[[t_{\mathrm{vol}}]]$ is what the
+ Lagrange terms of~\eqref{dma:eq:inverse}, of size $O(x_0^{1-k})$, sum to
+ after re-expansion in $t_{\mathrm{vol}}$. The analytic remainder
+ $O(x_0^{-K})$ is the source's own.
+\item \emph{Not shown to be an instance.} The full surrogate equation
+ $F_J(x)=T$ is not shown to be an instance of \file{plt:thm:lw-template}: in
+ the chart of (c) the factor $1+H_J/F_0$ is $1+O(1/x)=1+O(e^{-Z_{\mathrm{vol}}})$,
+ not a series in $t_{\mathrm{vol}}=1/Z_{\mathrm{vol}}$ with coefficients
+ polynomial in $\log Z_{\mathrm{vol}}$, so (H3) fails there. The write does not
+ claim that no other chart makes it an instance.
+\end{enumerate}
+The same holds for the nonnegative analogue, whose surrogate replaces $H_J$
+by $H_J+(x-1)\log2$. No novelty is claimed for any of these inversions.
+\end{remark}
+
+\section{A binomial coupling for the nonnegative analogue}\label{dma:sec:corollary}
 Let $\widetilde A_n(u)$ count nonnegative-integer matrices with the same labelled rows and row sums, ordered columns, and no zero column. This is the diagonal A316677 of the array A316674. The already recorded unmarked relation to binary matrices is
 $\widetilde A_n(1)=2^{n-1}a_n$~\cite{oeisnonnegative}. We use it as a corollary of the marked exact construction, not as an independent discovery.
 
@@ -520,11 +826,11 @@ The column generating function replaces $\prod(1+x_i)$ by $\prod(1-x_i)^{-1}$. H
  \binom{m+n-1}{n}^{\!n}.
 \]
 Shifting $k=m+n-1$ gives the exact polynomial identity, interpreted for $u>0$,
-\begin{equation}\label{eq:tilde}
+\begin{equation}\label{dma:eq:tilde}
  \widetilde A_n(u)=\left(\frac{1+u}{u}\right)^{n-1}A_n(u).
 \end{equation}
 The apparent negative powers cause no problem because $A_n(u)$ is divisible by $u^n$. Equivalently, under the uniform laws,
-\begin{equation}\label{eq:coupling}
+\begin{equation}\label{dma:eq:coupling}
  \widetilde{\mathsf L}_n\ \overset{d}=\
  \mathsf L_n-(n-1)+\operatorname{Bin}(n-1,1/2),
 \end{equation}
@@ -540,26 +846,67 @@ and
 \]
 All fixed-order marked expansions follow by adding $(n-1)\log((1+u)/u)$ to the binary logarithm. Likewise the logarithmic count surrogate is $F_J(x)+(x-1)\log2$. The inverse proof applies after replacing $H_J$ by $H_J+(x-1)\log2$, with the same remainder scales and boundary-safe enclosure.
 
-\section{Sources, reproducibility and remaining questions}\label{sec:scope}
+\begin{writenote}[Added 7 October 2026]
+The unmarked relation $\widetilde A_n(1)=2^{n-1}a_n$ is older than the OEIS
+entries: Eger~\cite[Section~5.6]{eger} states it for every number of
+sequences, citing Duchi and Sulanke, ``The $2^{n-1}$ factor for
+multi-dimensional lattice paths with diagonal steps'' (S\'em.\ Lothar.\
+Combin.\ 51 (2004), B51c), which the write did not read; whether their
+argument also tracks the number of steps, which would give the marked
+identity~\eqref{dma:eq:tilde}, was not checked. A316677 records the diagonal
+relation directly (Remark~\ref{dma:rem:oeis}(d)). The source presents the
+relation as a corollary, ``not as an independent discovery'', so its claims
+are unaffected.
+\end{writenote}
+
+\section{Sources, reproducibility and remaining questions}\label{dma:sec:scope}
 \subsection{Attribution and the scope of the source check}
-The leading diagonal equivalent \eqref{eq:K} is recorded in OEIS with Kot\v{e}\v{s}ovec's 2016 attribution. The exact family and fixed-dimensional asymptotic precede this report: Griggs--Hanlon--Odlyzko--Waterman~\cite{ghow}, Pemantle--Wilson~\cite{pw}, and Eger~\cite{eger} are the primary sources used. The report's work is the proved growing-diagonal expansion, its explicit corrections, the marked law and shifted Gaussian limit, the fixed-dimension substitution comparison, and the inverse construction.
+The leading diagonal equivalent \eqref{dma:eq:K} is recorded in OEIS with Kot\v{e}\v{s}ovec's 2016 attribution. The exact family and fixed-dimensional asymptotic precede this report: Griggs--Hanlon--Odlyzko--Waterman~\cite{ghow}, Pemantle--Wilson~\cite{pw}, and Eger~\cite{eger} are the primary sources used. The report's work is the proved growing-diagonal expansion, its explicit corrections, the marked law and shifted Gaussian limit, the fixed-dimension substitution comparison, and the inverse construction.
 
 The inspected OEIS entries and primary papers do not supply this collection of diagonal results. This is a bounded source assessment, not a theorem of global priority or an exhaustive literature search. A262810 cross-references both A262809 and A316677. The directly accessible A316674 page establishes the nonnegative array relation; a direct fetch of A316677 failed. The A262810 b-file also could not be retrieved, so no b-file comparison is claimed. The separate source audit records these limits and the document URLs.
 
+\begin{writenote}[Added 7 October 2026]
+The write read A316677 and both b-files (Remark~\ref{dma:rem:oeis}): the 26
+terms of the A262810 b-file agree with its exact computation, so the
+sentences above on the failed fetch and the missing b-file comparison
+describe 3~October 2026. The audit's statement that the public catalogue had
+no A262810/A262809 alignment entry was true then and remained true until this
+report (Section~\ref{dma:sec:provenance}).
+\end{writenote}
+
 \subsection{What the package verifies}
-The companion package contains this complete \LaTeX{} source, the PDF, source metadata, and a Python standard-library verifier using exact integers and fractions. Its independent finite constructions are the positive binomial-basis multiplication \eqref{eq:basis} and the signed difference table \eqref{eq:difference}; the small grid recursion \eqref{eq:grid} supplies a third check. For $1\leq n\leq10$ and $u=1/2,1,2$, the exact rational intervals \eqref{eq:tail} enclose the finite marked polynomial, with relative tail less than $10^{-70}$. The coefficient algorithm checks $B_1$--$B_4$, $L_1$--$L_3$, and $C_1$--$C_3$. An independent Gaussian Laplace calculation agrees with the gamma-central-moment route; the extension run checks both routes through order five. The nonnegative coupling and exact moment relations are checked separately.
+The companion package contains this complete \LaTeX{} source, the PDF, source metadata, and a Python standard-library verifier using exact integers and fractions. Its independent finite constructions are the positive binomial-basis multiplication \eqref{dma:eq:basis} and the signed difference table \eqref{dma:eq:difference}; the small grid recursion \eqref{dma:eq:grid} supplies a third check. For $1\leq n\leq10$ and $u=1/2,1,2$, the exact rational intervals \eqref{dma:eq:tail} enclose the finite marked polynomial, with relative tail less than $10^{-70}$. The coefficient algorithm checks $B_1$--$B_4$, $L_1$--$L_3$, and $C_1$--$C_3$. An independent Gaussian Laplace calculation agrees with the gamma-central-moment route; the extension run checks both routes through order five. The nonnegative coupling and exact moment relations are checked separately.
 
 The build uses an installed TeX stack, shell escape disabled, isolated temporary directories, fixed timestamps and a complete strict file manifest. Verification and negative guards run with ordinary and optimized Python. A fresh extraction can replay the verification and reproduce the artifacts under the same toolchain. No downloaded program is executed. These are arithmetic and packaging certificates; they do not replace the proof of the analytic remainders or supply effective asymptotic constants.
+
+\begin{writenote}[The shipped layout, 7 October 2026]
+In ProveIt the ``companion package'' is not shipped as such: the PDF and the
+checksum manifest are not shipped, the README is replaced by the report
+README, the programs are under \file{code/} and the frozen results under
+\file{data/}, and the release-only \file{generated/} records are shipped only
+where they are not byte copies (Section~\ref{dma:sec:provenance}). The
+verifier, run from the shipped files on a copy, reproduces the frozen results
+(the report README gives the route). The delivered programs expect the
+delivered layout.
+\end{writenote}
 
 \subsection{Further questions}
 Several extensions remain open within this report's scope.
 \begin{enumerate}[label=\arabic*.]
-\item Determine the largest growth regimes $k=k(n)$ for which the fixed-dimensional expression \eqref{eq:G} remains relatively accurate, and describe the crossover to $k\asymp n$. The diagonal factor already shows that uniformity cannot extend unchanged to $k=n$.
+\item Determine the largest growth regimes $k=k(n)$ for which the fixed-dimensional expression \eqref{dma:eq:G} remains relatively accurate, and describe the crossover to $k\asymp n$. The diagonal factor already shows that uniformity cannot extend unchanged to $k=n$.
 \item Prove a local central limit theorem and an explicit convergence rate for the column count. The present real-mgf argument alone does not establish either.
 \item Extract effective constants and onsets for the all-orders remainder and the inverse enclosure. The rational finite checks do not make the asymptotic constants effective.
 \item Study the large-order behavior of $L_j$, optimal truncation, and exponentially small lattice sectors. The all-fixed-orders proof does not settle convergence, resurgence, or exponentially accurate counting.
 \item Extend the uniform marked analysis to unequal row sums whose dimension also grows. This requires estimates beyond the exact symmetric falling-factorial cancellation used here.
 \end{enumerate}
+
+\begin{writenote}[Added 7 October 2026, under Vladimir's standing rule of 4 October 2026]
+The five questions stand as the source states them. The write found no
+unproved claim of the source outside them and no claim of the source that is
+wrong; the b-file and A316677 comparisons the source could not make are now
+made (notes above), and the priority of the marked coupling relative to
+Duchi and Sulanke is noted at the end of Section~\ref{dma:sec:corollary}.
+\end{writenote}
 
 \begin{thebibliography}{9}
 \bibitem{oeisdiag} OEIS Foundation, \emph{A262810: Number of alignments of $n$ sequences of length $n$}. Formula by V. Kot\v{e}\v{s}ovec, 23 March 2016. Inspected 3 October 2026. \url{https://oeis.org/A262810}.
