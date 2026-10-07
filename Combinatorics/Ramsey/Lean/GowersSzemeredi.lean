@@ -388,6 +388,9 @@ import GowersSzemeredi.Proofs16FiniteAlphabetCover
 import GowersSzemeredi.Proofs16FiniteAlphabetFibres
 import GowersSzemeredi.Proofs16FiniteAlphabetMultilinear
 import GowersSzemeredi.Proofs16FiniteAlphabetBoxCover
+import GowersSzemeredi.Proofs16AlphabetConcentration
+import GowersSzemeredi.Proofs16UniformAlphabet
+import GowersSzemeredi.Proofs16BalancedAlphabetExistence
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 

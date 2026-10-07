@@ -12,8 +12,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 542 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 3,539 public Gowers theorems and found only propext,
+  All 545 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 3,554 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 110 exact
   companion proofs and 10 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -1474,6 +1474,22 @@ Finite-alphabet bounds for the Section 16 cover obstruction
   counterexample to the current lemma_16_10 encoding. The balanced-word
   existence argument, the two packaged-premise witnesses, and the final
   negation of that encoding remain unproved. No source-lemma count changes.
+
+Concentration and finite-family balanced-word existence
+  Proofs16AlphabetConcentration proves the Hoeffding upper tail
+  exp(-2*epsilon^2*|T|) for independent [0,1]-valued variables with
+  common mean p, including empty T.
+  Proofs16UniformAlphabet constructs the product measure of uniform
+  letters, proves each symbol has mean 1/|C|, and applies the estimate
+  directly to the finite symbol count on T.
+  Proofs16BalancedAlphabetExistence takes a finite family T_j with
+  |T_j|>=L. If |J|*|C|*exp(-2*epsilon^2*L)<1, there exists one word
+  whose every symbol count on every T_j is at most
+  (1/|C|+epsilon)*|T_j|. The proof uses a finite union bound and gives
+  an actual existential witness. All three modules pass the full audit.
+  Specializing this construction to long modular progressions and
+  discharging the large-modulus error budget remain necessary for the
+  intended Section 16 counterexample.
 
 Reproducible checks (from repository root)
   python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.Audit
