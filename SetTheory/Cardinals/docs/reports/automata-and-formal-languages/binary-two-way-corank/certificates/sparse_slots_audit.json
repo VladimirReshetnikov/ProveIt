@@ -1,0 +1,72 @@
+{
+  "status": "pass",
+  "method": "symbol-local lane wiring, local contraction, Brauer products, direct run comparison",
+  "maximum_word_length": 5,
+  "random_seed": 20261007,
+  "total_machines": 800,
+  "total_machine_word_pairs": 50400,
+  "total_local_diagrams": 3200,
+  "claims_checked": [
+    "at most 4*s+1 crossing candidate triples",
+    "diagram degree at most 8*s+2",
+    "every local wire contracts to a perfect matching",
+    "local diagrams depend only on the scanned symbol",
+    "product connects the test sides iff original machine accepts",
+    "partial transitions, stay moves, rejecting loops, initial acceptance, empty input"
+  ],
+  "families": [
+    {
+      "name": "exhaustive_one_state",
+      "machines": 288,
+      "words_per_machine": 63,
+      "machine_word_pairs": 18144,
+      "local_diagrams_constructed": 1152,
+      "outcomes": {
+        "accept_initial": 9072,
+        "reject_loop": 5040,
+        "reject_undefined": 4032
+      },
+      "diagram_degrees": {
+        "2": 160,
+        "4": 76,
+        "6": 52
+      },
+      "machine_features": {
+        "accepting_initial_state": 144,
+        "has_partial_transition": 216,
+        "has_stay_transition": 216,
+        "no_accepting_states": 144
+      },
+      "maximum_direct_steps": 7
+    },
+    {
+      "name": "seeded_two_state",
+      "machines": 512,
+      "words_per_machine": 63,
+      "machine_word_pairs": 32256,
+      "local_diagrams_constructed": 2048,
+      "outcomes": {
+        "accept_initial": 14994,
+        "accept_later": 4367,
+        "reject_loop": 7597,
+        "reject_undefined": 5298
+      },
+      "diagram_degrees": {
+        "2": 151,
+        "4": 87,
+        "6": 129,
+        "8": 83,
+        "10": 45,
+        "12": 15,
+        "14": 2
+      },
+      "machine_features": {
+        "accepting_initial_state": 238,
+        "has_partial_transition": 414,
+        "has_stay_transition": 493,
+        "no_accepting_states": 148
+      },
+      "maximum_direct_steps": 13
+    }
+  ]
+}

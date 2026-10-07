@@ -1,0 +1,178 @@
+\section{Exact finite audits and reproducibility}
+\label{verify:section}
+
+The universal claims in this article are proved mathematically.
+The accompanying programs test independent representations of the
+objects involved, with special attention to failure modes that are
+easy to miss in a diagram argument: reversed product conventions,
+loops and parallel edges, pending binary bits, multiplicity of
+paths, and spurious dependence on an adjacent input symbol.
+These computations support the implementation and exposition.
+They are not finite substitutes for the induction, a proof-assistant
+formalization, or a certificate of bibliographic novelty.
+
+\subsection{Idempotent structure}
+
+The script \texttt{code/brauer\_audit.py} enumerates every perfect
+matching on $2m$ ports for $0\le m\le7$, a total of 146,600
+diagrams. Its primary test of idempotence computes the literal
+three-layer graph product $e^2$ and compares the resulting matching
+with $e$. A separate graph predicate tests the alternating-component
+classification. The enumeration includes nonidempotents, so the
+classification is not used to generate only purported positive
+examples.
+
+For the idempotents it checks the sharp support bound, the exact
+deficit identity, equality structure, fixed-rank maxima, the
+component-deletion stability statement, and the maximizer count.
+The observed totals are:
+\begin{center}
+\begin{tabular}{rrrr}
+\toprule
+$m$ & All diagrams & Idempotents & Support equality cases\\
+\midrule
+0 & 1 & 1 & 1\\
+1 & 1 & 1 & 1\\
+2 & 3 & 2 & 1\\
+3 & 15 & 10 & 7\\
+4 & 105 & 40 & 25\\
+5 & 945 & 296 & 61\\
+6 & 10,395 & 1,936 & 481\\
+7 & 135,135 & 17,872 & 2,731\\
+\bottomrule
+\end{tabular}
+\end{center}
+An equality case here means $|\supp(e)|=3\crk(e)/2$,
+including the identity. The counts do not assert that every
+fixed-rank support maximizer must attain that equality when
+$m<3\crk(e)/2$.
+
+\subsection{The repetition-independent budget}
+
+The script \texttt{code/idempotent\_budget\_audit.py} uses literal
+diagram multiplication from the preceding script. For every
+ordered idempotent pair through degree four, it tests the relative
+corner bound along all positive powers up to the first repetition.
+It also closes each pair of distinct idempotent generators under
+multiplication and checks every resulting element. The exact
+coverage is 1,706 ordered corner pairs, 1,898 distinct positive
+corner powers, and 826 complete generated monoids containing
+4,280 inspected elements when counted separately for each
+generating family.
+
+The same program samples reproducible families in degrees zero
+through twelve, with the seed recorded in its JSON output. It
+tests 3,250 corner pairs, 3,250 families of two to four
+idempotents, 195,000 repeated-word prefixes, and 3,442
+final-word powers. Each family also receives a graph check of
+component invariance, even cap-edge counts, and the identity
+between the total edge budget and the sum of generator coranks.
+These larger-degree checks are sampled, and are labeled as such.
+
+\subsection{The relation compiler}
+
+The script \texttt{code/relation\_compiler\_audit.py} independently
+constructs the four-letter transition tables and the binary decoder.
+It compares path counts using arbitrary-precision nonnegative
+integers, not just Boolean reachability.
+
+\begin{center}
+\begin{tabular}{p{0.65\textwidth}r}
+\toprule
+Test family & Cases\\
+\midrule
+Every individual relation for $1\le h\le4$ & 66,066\\
+Every ordered pair of relations for $1\le h\le3$ & 262,404\\
+Singleton entry tests for every relation, $1\le h\le3$ & 4,674\\
+Every binary string of length at most twelve, $1\le h\le4$ & 32,764\\
+\midrule
+Total & 365,908\\
+\bottomrule
+\end{tabular}
+\end{center}
+The arbitrary-string tests include odd lengths and noncanonical
+even words. They compare the actual pending-bit behavior with
+direct decoding. For canonical concatenations, the expected
+path-count matrix is an ordinary integer matrix product,
+so accidental duplicate paths are detectable.
+
+\subsection{Actual symbol-local matching diagrams}
+
+The script \texttt{code/sparse\_slots\_audit.py} constructs the
+local lane graphs themselves, contracts them to perfect matchings,
+multiplies those matchings, and compares the test-port predicate
+with direct execution of the original deterministic machine.
+It does not infer the result by applying a graph-connectivity
+predicate to an already assembled whole-input graph.
+
+Every legal one-state binary machine in the stated model is
+tested: there are 288, including both choices of accepting set
+and all legal partial transition rows at the two ordinary symbols
+and two markers. An additional 512 two-state machines are sampled
+with a fixed seed. Each is tested on all 63 binary words of
+length at most five. The audit constructs 3,200 local diagrams
+and performs 50,400 machine-word comparisons.
+
+The direct executions include 24,066 initial acceptances, 4,367
+later acceptances, 12,637 rejecting infinite runs, and 9,330
+undefined rejecting halts. Every local matching is checked to
+be perfect and to satisfy $k\le8s+2$. This explicitly exercises
+the corner cases in Section~\ref{mach:section}.
+
+\subsection{Exact recurrence and finite consequences}
+
+The script \texttt{code/finite\_bounds.py} evaluates
+\eqref{alg:D} through $h=256$, using only integer ceilings.
+It also verifies the explicit union-graph obstruction in
+Section~\ref{research:union}. Selected values are:
+\begin{center}
+\small
+\begin{tabular}{rrrrr}
+\toprule
+$h$ & Source states $6h+2$ & $\lceil F(h)\rceil$
+ & Degree bound $2D(h)$ & 2DFA states, at least\\
+\midrule
+10 & 62 & 2 & 6 & 1\\
+20 & 122 & 13 & 18 & 2\\
+50 & 302 & 196 & 416 & 52\\
+100 & 602 & 19,074 & 66,452 & 8,307\\
+200 & 1,202 & 1,136,868,378 & 1,769,699,850 & 221,212,481\\
+\bottomrule
+\end{tabular}
+\end{center}
+The last column applies \eqref{comp:integer-bound} to the exact
+recurrence. The closed form remains useful because it gives a
+simple exponential statement for all parameters; the recurrence
+preserves the improvements from parity and the best arm sizes
+at each finite stage.
+
+\subsection{Reproduction and interpretation}
+
+From the extracted package directory, run:
+\begin{verbatim}
+python3 code/run_all.py --output-dir reproduced
+\end{verbatim}
+All audit programs require only Python's standard library.
+The runner invokes them with Python optimization enabled;
+mathematical checks raise explicit exceptions rather than relying
+on removable assertion statements. The \texttt{certificates}
+directory contains the executed reference outputs, including the
+random seeds, parameter ranges, and a case-stream digest for the
+relation compiler. Timing fields and local output paths may
+change across runs; mathematical counts and the fixed case-stream
+digest should agree.
+
+The article can be rebuilt with the supplied Makefile, using
+\texttt{pdflatex} and \texttt{bibtex}. TeX source, bibliography,
+audit programs, reference JSON, exact recurrence CSV, source
+provenance, theorem ledger, and licensing notices are supplied
+together. No remote network access is required for compilation
+or for any mathematical audit.
+
+The independent review performed during preparation checked
+the algebraic corners, the amplifier, the modular compiler,
+the machine convention, and the sparse local construction.
+It was an additional AI-assisted mathematical review, not
+independent human peer review. The source snapshots and precise
+theorem dependencies make subsequent human or formal review
+possible without reconstructing the research session.

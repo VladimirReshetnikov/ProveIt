@@ -6,6 +6,8 @@
 \usepackage{lmodern,microtype,amsmath,amssymb,amsthm,mathtools,booktabs,longtable}
 \usepackage[margin=1in]{geometry}
 \usepackage[hidelinks]{hyperref}
+\usepackage{xurl}% [write] lets the long Myrvold--Fowler URL break (one underfull line in the delivered build)
+\usepackage{array}% [write] for the reading-conventions table
 \hypersetup{pdftitle={Report206 Graphs with a distinguished maximal independent set},pdfauthor={Report206},pdfsubject={A340021 asymptotic expansions and inverse thresholds}}
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{lemma}[theorem]{Lemma}
@@ -19,6 +21,11 @@
 \newcommand{\floor}[1]{\left\lfloor #1\right\rfloor}
 \newcommand{\calD}{\mathcal D}
 \DeclareMathOperator{\supp}{supp}
+% Added in the write (batch 112, 7 October 2026).
+\newcommand{\file}[1]{\nolinkurl{#1}}
+\newenvironment{writenote}[1][]{\par\smallskip\begingroup\small
+ \noindent\textbf{[write]}\if\relax\detokenize{#1}\relax\else~\textbf{#1.}\fi\ }%
+ {\par\endgroup\smallskip}
 \title{Graphs with a distinguished maximal independent set\\[4pt]\large All fixed order expansions and inverse thresholds for A340021}
 \author{Report206}
 \date{4 October 2026}
@@ -27,11 +34,28 @@
 \begin{abstract}
 Let $U_n$ count isomorphism classes of graphs on $n$ vertices with a distinguished maximal independent set. A uniform two-color Burnside estimate reduces $U_n$ to the classical expected number of maximal cliques in a random graph, with relative error $O(n^2 2^{-3n/8})$. Keeping a full discrete Poisson carrier then yields every fixed algebraic order, with relative remainder $O_R((\log n)^{2R}/n^R)$ and an exact finite recipe for its coefficient polynomials. A separate finite-sector expansion has only logarithmic-order error. Exact Lambert $W$ switch points describe the lattice phase, while logistic limits and adjacent-pair concentration have their own slower convergence rates. Finally, finitely many explicit Newton evaluations produce inverse threshold envelopes of arbitrarily high fixed algebraic order, with integer-safe two-ceiling bounds. Full proofs and reproducible exact checks are included. These are concrete applications of established enumeration and depoissonization ideas; no general new method or global priority claim is made.
 \end{abstract}
+\begin{writenote}[Status and trust boundary, added 7 October 2026, batch~112]
+This is bundle Report~206 of an external AI-assisted research session, filed
+in ProveIt as the single-source research report
+\file{a340021-distinguished-maximal-independent-sets} (provenance, the sources
+as the write read them, what was checked, relation to the repository, the
+collected non-claims and the reading conventions are in
+Section~\ref{mis:sec:provenance}). It is unrefereed and not formalized. Its
+author line and PDF author field read ``Report206'': it names no person or
+tool. \emph{What rests on what.} Every theorem has a conventional proof in the
+text: Burnside's lemma with an explicit orbit-deficit bound, Laplace-type
+localization of the carrier sum, finite logarithmic expansions, Stirling's
+formula, exact adjacent-weight ratios with the Lambert function, and Newton's
+method with Taylor bounds. No proof uses a computation; the exact checks
+corroborate finite identities and the floating tables are illustrations. The
+write adds Remarks~\ref{mis:rem:transseries} and~\ref{mis:rem:oeis} and dated
+notes; no statement, proof or number of the source was changed.
+\end{writenote}
 \setcounter{tocdepth}{1}
 \tableofcontents
 \clearpage
 
-\section{The object and the scope of the results}
+\section{The object and the scope of the results}\label{mis:sec:scope}% [write] label added
 An object is a finite simple undirected graph $G$, together with a distinguished maximal independent set $B$. Color $B$ black and its complement white. The black vertices have no edges between them, and every white vertex has at least one black neighbor. Edges between white vertices are unrestricted. Isomorphisms preserve the distinguished set, equivalently both colors. The word \emph{maximal} means maximal by inclusion, not largest possible cardinality. Counting a graph once for every orbit of maximal independent sets is different from counting only its underlying uncolored isomorphism class.
 
 Write $U(n,k)$ for the number with $k$ black vertices, put $U_n=\sum_{k=0}^n U(n,k)$, and adopt $U_0=1$. For $n>0$, $U(n,0)=0$. The sequence is OEIS \href{https://oeis.org/A340021}{A340021} \cite{oeis}. Throughout, $a=\log 2$, $N=\binom n2$, and unmarked logarithms are natural. All asymptotic constants may depend on fixed truncation orders. Assertions for $n$ use integer $n\to\infty$; a real variable $t$ is explicitly indicated.
@@ -43,7 +67,130 @@ The expected number of maximal cliques of a given size in a dense random graph i
 
 Dense random-graph rigidity and support counting are classical \cite{er}. Wright's colored-graph expansions \cite{wright} concern proper colorings, where every color class is independent. Here the white induced graph is arbitrary and the black class is logarithmic in size. Banderier, Hwang, Ravelomanana and Zacharovas \cite{bhvr}, notably equation (1.8), Section~2 and their concluding discussion, analyze the expectation of \emph{all} independent sets and develop precise depoissonization and periodic-effect methods. Our maximality factor changes that count, but neither full expansions nor Poisson--Charlier methods are new in general. We identify the Poisson transform and the first Poisson--Charlier correction explicitly below. Troyka's split-graph asymptotics \cite{troyka} are related labeled-to-unlabeled enumeration: their other class is a clique, whereas ours is arbitrary. Myrvold and Fowler \cite{mf} give exact orbit-enumeration background for independent sets in a fixed graph.
 
-The contribution here is the explicit combination of a uniform conditional Burnside bound, a full-lattice coefficient expansion with its remainder, quantitative switch laws, and finite Newton inversion for this particular aggregate unlabeled count. This is an application-level description, not a worldwide novelty certificate. Source access and comparison limits are recorded in Section~\ref{sec:sources}.
+The contribution here is the explicit combination of a uniform conditional Burnside bound, a full-lattice coefficient expansion with its remainder, quantitative switch laws, and finite Newton inversion for this particular aggregate unlabeled count. This is an application-level description, not a worldwide novelty certificate. Source access and comparison limits are recorded in Section~\ref{mis:sec:sources}.
+
+\subsection{Provenance, sources and reading conventions}\label{mis:sec:provenance}
+\begin{writenote}[Added 7 October 2026, batch~112]\raggedright
+\emph{Provenance.} This report is Report~206 of the session bundle that
+ProveIt's \file{docs/incoming} intake processed as batch~112: the archive
+\file{Report206.zip} ($496{,}154$ bytes, 14 files, no wrapper directory),
+arrival commit \file{60f54ea06}, placed in \file{f79c9bef1}. The text is the
+delivered \file{Report206.tex} (513 lines, 16 pages, dated 4~October 2026),
+shipped as \file{article.tex}. The programs are shipped under \file{code/}
+(\file{build.py}, \file{verify_exact.py}, \file{independent_checks.py},
+\file{diagnostics.py}), the generated outputs, the requirements and the
+generated table source under \file{data/}. The text reads its four tables with
+\verb|\input{tables.tex}|; the write prints the shipped \file{data/tables.tex}
+inline at that place. Not shipped, and retrievable from the arrival commit:
+the delivered \file{Report206.pdf}; the delivered \file{README.txt}, which was
+staged as the report README and is replaced by it; and the pure checksum
+manifest \file{MANIFEST.json} (13 entries, verified at the write). The package
+records no ProveIt commit; it carries no ``prepared for private review'' line
+and no personal data. It is a single-source report, so no merge choice was
+made. The write prefixed the 54 delivered labels (50 in the text, 4 in the
+generated tables) with \file{mis:} and updated the 44 references to them (29
+\verb|\eqref|, 15 \verb|\ref|); it labelled Section~1
+(\file{mis:sec:scope}) and added this subsection, the notes marked
+[write] and Remarks~\ref{mis:rem:transseries} and~\ref{mis:rem:oeis}, each the
+last statement of its section, and inserted nothing before a delivered display,
+statement or table, so every theorem, section, equation and table of the source
+keeps its delivered number. One preamble line (\texttt{xurl}) lets the long
+Myrvold--Fowler URL break, which removes the one underfull line of the
+delivered build.
+
+\emph{The sources, as the write read them} (7~October 2026): OEIS A340021 in
+the internal format with its b-file (Remark~\ref{mis:rem:oeis}); the
+transseries volume
+\path{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex}
+(\file{p0:def:model}, \file{p0:thm:lambert-core}, \file{p0:def:three-inverses},
+\file{p0:thm:staircase}, \file{plt:def:lw-monomial-log-datum},
+\file{plt:thm:lw-template}). Not read by the write: the cited literature; the
+source's account of it (Sections~\ref{mis:sec:scope}.1 and~\ref{mis:sec:sources})
+is reported, not confirmed.
+
+\emph{What was checked at intake.} The batch-112 dossier read the manuscript,
+found no demonstrably wrong claim, noted that the source saw the OEIS entry
+only as a cached 2025 snapshot (its b-file request returned HTTP 403), and
+reran the delivered suite on a copy. \emph{What the write checked.} It
+read every proof and found no error. With its own code (Python 3.14.4, exact
+integers; SymPy 1.14.0; mpmath 1.3.0 at 90 digits) it computed $U_n$ for
+$0\le n\le40$ from~\eqref{mis:eq:burnside}, equal to all 41 terms of the OEIS
+b-file (Remark~\ref{mis:rem:oeis}); counted the colored graphs for $n\le5$ by
+canonical forms under all vertex permutations ($1,1,2,5,16,66$); confirmed
+$U(n,0)=0$ for $0<n<15$ and the identity sum~\eqref{mis:eq:identity} for
+$n\le8$; checked by SymPy the printed $C_1$, $C_2$, $C_3$, $P_2$, $P_3$ of
+Section~4 (with the Faulhaber sums), $C_1=-((k-y)^2-k)/2$
+behind~\eqref{mis:eq:charlier}, and $p_1(j)=-j(j+1)/2-1/12$; checked the Poisson
+identity~\eqref{mis:eq:poisson} at $t=7$ and~\eqref{mis:eq:charlier} at $t=50$
+numerically (to $10^{-86}$); and recomputed, with its own implementation of the
+carrier, every entry of Tables~\ref{mis:tab:orders}--\ref{mis:tab:inverse}
+(note in Section~\ref{mis:sec:numeric}). For the closed
+approximation~\eqref{mis:eq:zstar} at the four targets of
+Table~\ref{mis:tab:inverse}, $(z_*-n)\,x^2/(\log x)^3$ is $-0.25$, $-0.13$,
+$-0.08$, $-0.04$, consistent with the stated $O((\log x)^3/x^2)$. It reran,
+on fresh copies, \file{code/verify_exact.py} (normal and \texttt{-O},
+identical), \file{code/independent_checks.py} (28~s) and
+\file{code/diagnostics.py} (15~s): each output equals the shipped JSON file.
+The builder was not run. Floating computations are observations, not
+certificates.
+
+\emph{Relation to the repository.} Before batch~112 no file of the repository
+named A340021. The report \file{a001425-commutative-magmas} (batch~112) also
+reduces an unlabeled count to its labeled count by Burnside's lemma, for a
+different object. Other reports use maximal independent sets of particular
+graphs (\file{graph-theory/trapezohedral-minimal-dominating-sets}: cycles;
+\file{log-concavity-and-unimodality/independence-system-thresholds}: independence
+systems), not this aggregate count. No result is shared, so no reciprocal note
+is proposed. No Lean or Rocq file treats this sequence; no statement of this
+report is formalized, and its place in the collection confers no formal status.
+The inverse is compared with the transseries volume in
+Remark~\ref{mis:rem:transseries}.
+\end{writenote}
+\begin{writenote}[What is not claimed, collected from the source]
+The expected number of maximal cliques and its logarithmic growth
+(Bollob\'as--Erd\H{o}s; Fried--Kessler--Shnerb), dense-graph rigidity
+(Erd\H{o}s--R\'enyi), colored-graph expansions (Wright), depoissonization and
+periodic-effect methods (Banderier--Hwang--Ravelomanana--Zacharovas),
+split-graph enumeration (Troyka) and orbit enumeration (Myrvold--Fowler) are
+prior; the cycle-type program is Howroyd's; no general new method and no
+worldwide priority claim. The source checked only twenty displayed OEIS terms of
+a cached snapshot, not the b-file or later revisions. All truncation orders and
+sector widths are fixed (no growing orders); a fixed number of lattice sectors
+gives only powers of $1/\log n$, and a fixed number of Stirling terms cannot
+promote them; the logistic and adjacent-pair laws converge slowly, and $k=300$
+need not make the logistic law numerically close; the inverse constants and
+onsets are existential, with no certified rounding algorithm and no universal
+single-ceiling identity; the floating tables use a finite carrier cutoff and
+are not interval certificates; the first nonidentity symmetry coefficient is
+deliberately not computed. \emph{The write adds:} its checks are exact or
+floating computations; its transseries remark claims no novelty for any
+inversion.
+\end{writenote}
+\medskip
+\begingroup\small
+\noindent\emph{Reading conventions} (letters the source uses in more than one
+sense, with the tempting false readings; no symbol was renamed).\par\smallskip
+\renewcommand{\arraystretch}{1.1}
+\noindent\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.8in}>{\raggedright\arraybackslash}p{5.4in}@{}}
+\toprule
+Symbol & Meanings\\
+\midrule
+$U$ & $U_n$, $U(n,k)$ the unlabeled counts (A340021). \emph{False reading:} not the number of graphs having a maximal independent set; each graph is counted once per orbit of its maximal independent sets.\\
+$a$, $N$ & $a=\log2$ throughout; $N=\binom n2$.\\
+$L$ & $L(n,k)$ the labeled count; $L=(\log t)/a=\log_2t$ in Lemma~\ref{mis:lem:tails} and Section~5; $\mathcal L(X_n)$ a law.\\
+$b_n$, $B$ & $b_n$ the expected number of maximal cliques in $G(n,1/2)$; $B$ the black set; $B_r$ Bernoulli polynomials; $\mathcal B(t)$ the sector scale; $B$ a weight ratio in the proof of Theorem~\ref{mis:thm:pair}.\\
+$\mu$ & $\mu_j(t)$ the carrier coefficients, $\mu_0$ the Poisson transform of $b_n$. \emph{False reading:} $\mu_0(n)$ is not $b_n$; the source keeps them apart.\\
+$P$, $p$, $C$ & $P_j(k,y)$ the carrier polynomials; $p_h(j)$ the shifted Stirling polynomials; $C_r(k,y)$ the logarithmic coefficients; $C$, $C_{R,j}$, $C_R$ constants.\\
+$y$ & $y=t2^{-k}$ (or $t2^{-K}$, $n2^{-m}$); in Section~5 $y=t2^{-K}$ at the sector centre.\\
+$k$, $K$, $m$ & $k$ the number of black vertices; $K$ the sector centre; $m=n-k$ white vertices, and $m$ a mode in Theorem~\ref{mis:thm:pair}.\\
+$W$, $W_k$, $V_j$ & $W$ the principal Lambert function; $W_k=W((k+1)/2)$; $V_j$ sector weights.\\
+$D$, $d$ & $D$ the white-edge orbit deficit; $d=k-c(\pi)$ the black defect; $d(u,v)$ the domination product; $d$ the inverse shift in~\eqref{mis:eq:x-d}; $D_r(j)$ Stirling coefficients; $\calD_A(t)$ the retained domain.\\
+$s$, $t$ & $s$ a black support size and the logistic coordinate~\eqref{mis:eq:s}; $t$ a white support size and the real variable.\\
+$q$, $r$ & $q=n2^{-m/4}$ in Theorem~\ref{mis:thm:burnside}; $q_k(t)$ the carrier law; $r_k(t)$ the adjacent ratio; $r$ a summation index.\\
+$\rho_R$, $\nu$, $x$, $z$ & $\rho_R$ the root of $F_R=T$; $\nu(Y)$ the integer threshold; $x=\sqrt{2T/a}$; $z_j$ Newton iterates, $z_*$ the closed approximation.\\
+\bottomrule
+\end{tabular}
+\endgroup
 
 \section{Exact enumeration and the identity contribution}
 Fix $k\ge1$ and $m=n-k$. On fixed black and white label sets there are
@@ -51,42 +198,42 @@ Fix $k\ge1$ and $m=n-k$. On fixed black and white label sets there are
  L(n,k)=2^{\binom m2}(2^k-1)^m
 \]
 objects. Each white vertex independently chooses a nonempty black neighborhood, and the white graph is arbitrary. The identity term in Burnside's lemma is
-\begin{equation}\label{eq:identity}
+\begin{equation}\label{mis:eq:identity}
  I(n,k)=\frac{L(n,k)}{k!m!},\qquad
  I_n=\sum_{k=1}^n I(n,k)=\frac{2^N}{n!}\,b_n,
 \end{equation}
 where
-\begin{equation}\label{eq:bn}
+\begin{equation}\label{mis:eq:bn}
  b_n=\sum_{k=1}^n\binom nk2^{-\binom k2}(1-2^{-k})^{n-k}.
 \end{equation}
 By complementation, $b_n$ is exactly the expected number of maximal cliques in $G(n,1/2)$. We use $b_n$ for this finite sum to distinguish it from the carrier $\mu_0(t)$ below.
 
 For a partition $v$ with $m_i$ parts equal to $i$, let $z(v)=\prod_i i^{m_i}m_i!$. If $u\vdash m$ and $v\vdash k$ are cycle partitions, put
 \begin{align}
- e(u)&=\sum_i\floor{u_i/2}+\sum_{i<j}\gcd(u_i,u_j),\label{eq:eu}\\
- d(u,v)&=\prod_i\left(2^{\sum_j\gcd(u_i,v_j)}-1\right).\label{eq:duv}
+ e(u)&=\sum_i\floor{u_i/2}+\sum_{i<j}\gcd(u_i,u_j),\label{mis:eq:eu}\\
+ d(u,v)&=\prod_i\left(2^{\sum_j\gcd(u_i,v_j)}-1\right).\label{mis:eq:duv}
 \end{align}
 Empty products are one. The exact formula is
-\begin{equation}\label{eq:burnside}
+\begin{equation}\label{mis:eq:burnside}
  U(n,k)=\sum_{u\vdash m,\,v\vdash k}\frac{2^{e(u)}d(u,v)}{z(u)z(v)}.
 \end{equation}
 It also applies at $k=0$, including $n=0$ with these conventions. The inspected OEIS entry credits its cycle-type program to Andrew Howroyd \cite{oeis}. The white-edge orbit formula is classical; see Erd\H{o}s and R\'enyi \cite{er}, p.~305, equations (2.8)--(2.9).
 
 \begin{proof}
-Within a white cycle of length $\ell$, unordered pairs have $\floor{\ell/2}$ orbits; between two white cycles the number is their gcd. Thus \eqref{eq:eu} counts white-edge orbits. Along a white cycle of length $\ell$, choose its first black neighborhood and propagate it by the black permutation $\pi$. Consistency requires that neighborhood to be invariant under $\pi^\ell$. A black cycle of length $r$ splits into $\gcd(\ell,r)$ cycles under $\pi^\ell$. Hence there are $2^{\sum_j\gcd(\ell,v_j)}-1$ nonempty choices. Multiplication gives \eqref{eq:duv}; the usual cycle-type weights in Burnside's lemma give \eqref{eq:burnside}.
+Within a white cycle of length $\ell$, unordered pairs have $\floor{\ell/2}$ orbits; between two white cycles the number is their gcd. Thus \eqref{mis:eq:eu} counts white-edge orbits. Along a white cycle of length $\ell$, choose its first black neighborhood and propagate it by the black permutation $\pi$. Consistency requires that neighborhood to be invariant under $\pi^\ell$. A black cycle of length $r$ splits into $\gcd(\ell,r)$ cycles under $\pi^\ell$. Hence there are $2^{\sum_j\gcd(\ell,v_j)}-1$ nonempty choices. Multiplication gives \eqref{mis:eq:duv}; the usual cycle-type weights in Burnside's lemma give \eqref{mis:eq:burnside}.
 \end{proof}
 
 \section{A uniform symmetry estimate}
-\begin{theorem}\label{thm:burnside}
+\begin{theorem}\label{mis:thm:burnside}
 As $n\to\infty$,
-\begin{equation}\label{eq:uniform}
+\begin{equation}\label{mis:eq:uniform}
  U_n=I_n\left(1+O(n^2 2^{-3n/8})\right).
 \end{equation}
 The error is nonnegative. The same relative bound is uniform for $U(n,k)/I(n,k)$ over $1\le k\le n/4$.
 \end{theorem}
 \begin{proof}
 Take black and white permutations $\pi\in S_k$, $\tau\in S_m$ with support sizes $s,t$, and let $d=k-c(\pi)\ge s/2$. A white pair is fixed individually only if both its endpoints are fixed or they form a transposition. At most $\binom{m-t}{2}+t/2$ pairs are individually fixed. All other pair orbits contain at least two members. If $D$ is the deficit in the number of white-edge orbits relative to $\binom m2$, then
-\begin{equation}\label{eq:edge-deficit}
+\begin{equation}\label{mis:eq:edge-deficit}
  D\ge \frac{t(2m-t-2)}4.
 \end{equation}
 For each fixed white vertex, the ratio of admissible neighborhoods to the identity count is
@@ -94,16 +241,16 @@ For each fixed white vertex, the ratio of admissible neighborhoods to the identi
  \frac{2^{k-d}-1}{2^k-1}\le2^{-d}.
 \]
 For a moved white cycle of length $\ell$, the number of choices is at most $2^k-1\le(2^k-1)^\ell$. Consequently the fixed-object count for $(\pi,\tau)$, divided by $L(n,k)$, is at most
-\begin{equation}\label{eq:joint-deficit}
+\begin{equation}\label{mis:eq:joint-deficit}
  2^{-D-d(m-t)}.
 \end{equation}
 Crucially, there is no factor $(1-2^{-k})^{-m}$; such a factor would spoil small $k$.
 
-For $t\le m/2$ and $m\ge4$, \eqref{eq:edge-deficit} gives $D\ge tm/4$, while $d(m-t)\ge sm/4$. The number of permutations with support $s$ is at most $k^s$, and analogously at most $m^t$ for white support $t$. Support one is impossible. Set $q=n2^{-m/4}$. For $q<1/2$, the sum over nonidentity pairs in this range is bounded by
+For $t\le m/2$ and $m\ge4$, \eqref{mis:eq:edge-deficit} gives $D\ge tm/4$, while $d(m-t)\ge sm/4$. The number of permutations with support $s$ is at most $k^s$, and analogously at most $m^t$ for white support $t$. Support one is impossible. Set $q=n2^{-m/4}$. For $q<1/2$, the sum over nonidentity pairs in this range is bounded by
 \[
  \left(1+\frac{q^2}{1-q}\right)^2-1\le6q^2.
 \]
-If $t>m/2$, the concave quadratic in \eqref{eq:edge-deficit} is at least $m(m-2)/8$. Even summing over all $k!m!\le n!$ permutation pairs gives at most
+If $t>m/2$, the concave quadratic in \eqref{mis:eq:edge-deficit} is at least $m(m-2)/8$. Even summing over all $k!m!\le n!$ permutation pairs gives at most
 \[
  n!2^{-m(m-2)/8}.
 \]
@@ -121,10 +268,10 @@ The ratio of the entire omitted tail to $I_n$ is therefore at most
 \[
  n!2^{n-1-\binom{\floor{n/4}+1}{2}}=\exp(-\Omega(n^2)).
 \]
-Summing the uniform small-$k$ estimate proves \eqref{eq:uniform}.
+Summing the uniform small-$k$ estimate proves \eqref{mis:eq:uniform}.
 \end{proof}
 
-\begin{corollary}\label{cor:tv-burnside}
+\begin{corollary}\label{mis:cor:tv-burnside}
 The black-size distributions proportional to $U(n,k)$ and to $I(n,k)$ differ in total variation by $O(n^2 2^{-3n/8})$. The fraction of unlabeled objects with a nontrivial color-preserving automorphism group is also $O(n^2 2^{-3n/8})$.
 \end{corollary}
 \begin{proof}
@@ -133,32 +280,32 @@ Coordinatewise $U(n,k)\ge I(n,k)$, and their total excess is $U_n-I_n$. Normaliz
 
 \section{The full discrete carrier and all fixed algebraic orders}
 For real $t>0$, $k\ge1$, and $y=t2^{-k}$, define
-\begin{equation}\label{eq:weights}
+\begin{equation}\label{mis:eq:weights}
  w_k(t)=\frac{t^k 2^{-\binom k2}}{k!}e^{-t2^{-k}}.
 \end{equation}
 The following finite polynomial construction is valid for any requested order. For $r\ge1$, put
-\begin{equation}\label{eq:Cr}
+\begin{equation}\label{mis:eq:Cr}
  C_r(k,y)=-\frac1r\sum_{i=0}^{k-1}i^r+\frac{k y^r}{r}-\frac{y^{r+1}}{r+1}.
 \end{equation}
 The power sum is understood as its Faulhaber polynomial in $k$. Set $P_0=1$ and
-\begin{equation}\label{eq:P-rec}
+\begin{equation}\label{mis:eq:P-rec}
  jP_j=\sum_{r=1}^j rC_rP_{j-r}.
 \end{equation}
 Equivalently, the exact finite recipe is
-\begin{equation}\label{eq:P-finite}
+\begin{equation}\label{mis:eq:P-finite}
  P_j(k,y)=\sum_{\substack{m_1,\ldots,m_j\ge0\\\sum r m_r=j}}
              \prod_{r=1}^j\frac{C_r(k,y)^{m_r}}{m_r!}.
 \end{equation}
 It follows from $\deg C_r\le r+1\le2r$ that $\deg P_j\le2j$. Define
-\begin{equation}\label{eq:carrier}
+\begin{equation}\label{mis:eq:carrier}
  \mu_j(t)=\sum_{k\ge1}w_k(t)P_j(k,t2^{-k}),\qquad
  H_R(t)=\sum_{j=0}^{R-1}t^{-j}\mu_j(t),\quad R\ge1.
 \end{equation}
 All these series converge absolutely and locally uniformly with their fixed-order derivatives, since the factor $2^{-k(k-1)/2}$ dominates polynomial and exponential growth in $k$ on compact $t$-intervals.
 
-\begin{theorem}\label{thm:carrier}
+\begin{theorem}\label{mis:thm:carrier}
 For every fixed integer $R\ge1$,
-\begin{equation}\label{eq:all-order}
+\begin{equation}\label{mis:eq:all-order}
  U_n=\frac{2^N}{n!}\left\{H_R(n)+
        O_R\left(\mu_0(n)\frac{(\log n)^{2R}}{n^R}\right)\right\}.
 \end{equation}
@@ -168,14 +315,14 @@ The first terms, useful for direct implementation, are
 \begin{align}
  C_1&=-\frac{k(k-1)}2+ky-\frac{y^2}2,\notag\\
  C_2&=-\frac{k(k-1)(2k-1)}{12}+\frac{ky^2}2-\frac{y^3}3,\notag\\
- C_3&=-\frac{k^2(k-1)^2}{12}+\frac{ky^3}3-\frac{y^4}4,\label{eq:firstCs}\\
+ C_3&=-\frac{k^2(k-1)^2}{12}+\frac{ky^3}3-\frac{y^4}4,\label{mis:eq:firstCs}\\
  P_1&=C_1,\qquad P_2=C_2+\frac{C_1^2}{2},\qquad
  P_3=C_3+C_1C_2+\frac{C_1^3}{6}.\notag
 \end{align}
-The coefficient functions in \eqref{eq:carrier} retain the full discrete phase. They are not constants; one or two summands generally do not reproduce algebraic-order accuracy.
+The coefficient functions in \eqref{mis:eq:carrier} retain the full discrete phase. They are not constants; one or two summands generally do not reproduce algebraic-order accuracy.
 
 \subsection{Localization and the uniform remainder}
-\begin{lemma}\label{lem:tails}
+\begin{lemma}\label{mis:lem:tails}
 Let $L=(\log t)/a$. For every fixed polynomial $Q(k,y)$ and every $B>0$, there exists $A>0$ such that
 \[
  \sum_{k\notin\calD_A(t)}w_k(t)|Q(k,t2^{-k})|
@@ -192,24 +339,24 @@ Put $h=\floor L$, so $1\le t2^{-h}<2$. For $k=h-d\le h$, complete the square in 
 \begin{align}
  \log\frac{w_k}{w_h}
  &\le d\log h-\frac{ad^2}{2}+O(d+1)-t2^{-k}\notag\\
- &\le O((\log L)^2)-t2^{-k}.\label{eq:left-tail}
+ &\le O((\log L)^2)-t2^{-k}.\label{mis:eq:left-tail}
 \end{align}
 The constants are absolute. For $k\ge h$, the factorial ratio is at most one, and the same square completion gives
-\begin{equation}\label{eq:right-tail}
+\begin{equation}\label{mis:eq:right-tail}
  \frac{w_k}{w_h}\le C\exp\left(-\frac a2(k-L-1/2)^2\right).
 \end{equation}
 On the left, absorb any fixed power of $y=t2^{-k}$ into $e^{y/2}$. For $y>A\log t$, the remaining sum is bounded by a polynomial in $L$ times
-$\exp(O((\log L)^2)-A\log t/2)w_h$. Choosing $A$ large gives any fixed power $t^{-B}$. On the right, $k>2L$ in \eqref{eq:right-tail} gives a Gaussian tail of size $\exp(-c(\log t)^2)w_h$, even after polynomial factors. Since $w_h\le\mu_0(t)$, the tail result follows. On the retained domain, $k+y=O(\log t)$, proving the moment statement after adding the tails.
+$\exp(O((\log L)^2)-A\log t/2)w_h$. Choosing $A$ large gives any fixed power $t^{-B}$. On the right, $k>2L$ in \eqref{mis:eq:right-tail} gives a Gaussian tail of size $\exp(-c(\log t)^2)w_h$, even after polynomial factors. Since $w_h\le\mu_0(t)$, the tail result follows. On the retained domain, $k+y=O(\log t)$, proving the moment statement after adding the tails.
 \end{proof}
 
-\begin{proof}[Proof of Theorem~\ref{thm:carrier}]
-For $k\in\calD_A(n)$, divide the $k$th summand of \eqref{eq:bn} by $w_k(n)$. Its logarithm is exactly
-\begin{equation}\label{eq:logexpand}
+\begin{proof}[Proof of Theorem~\ref{mis:thm:carrier}]
+For $k\in\calD_A(n)$, divide the $k$th summand of \eqref{mis:eq:bn} by $w_k(n)$. Its logarithm is exactly
+\begin{equation}\label{mis:eq:logexpand}
  \sum_{i=0}^{k-1}\log(1-i/n)+(n-k)\log(1-y/n)+y
        =\sum_{r\ge1}\frac{C_r(k,y)}{n^r}.
 \end{equation}
 For sufficiently large $n$, $k,y=O(\log n)$ on this domain and both logarithm series converge absolutely. Truncation after $r=R-1$ has error
-$O_R((\log n)^{R+1}/n^R)$. Exponentiation, using $C_r=O((\log n)^{r+1})$ and the finite recursion \eqref{eq:P-rec}, gives
+$O_R((\log n)^{R+1}/n^R)$. Exponentiation, using $C_r=O((\log n)^{r+1})$ and the finite recursion \eqref{mis:eq:P-rec}, gives
 \[
  \frac{\binom nk2^{-\binom k2}(1-2^{-k})^{n-k}}{w_k(n)}
  =\sum_{j=0}^{R-1}\frac{P_j(k,y)}{n^j}
@@ -219,12 +366,12 @@ For all $1\le k\le n$, the exact summand is bounded by $e^{1/2}w_k(n)$: use $\bi
 \[
  (1-2^{-k})^{n-k}\le\exp(-n2^{-k}+k2^{-k}),\qquad k2^{-k}\le1/2.
 \]
-Thus Lemma~\ref{lem:tails} controls both exact tails and all polynomial correction tails, including the carrier indices beyond $n$. Summation gives the expansion for $b_n$. The lemma also gives $\mu_j/\mu_0=O((\log t)^{2j})$. Hence $H_R/\mu_0=1+O_R((\log t)^2/t)$, and Theorem~\ref{thm:burnside} absorbs the exponentially small symmetry error into every fixed algebraic order.
+Thus Lemma~\ref{mis:lem:tails} controls both exact tails and all polynomial correction tails, including the carrier indices beyond $n$. Summation gives the expansion for $b_n$. The lemma also gives $\mu_j/\mu_0=O((\log t)^{2j})$. Hence $H_R/\mu_0=1+O_R((\log t)^2/t)$, and Theorem~\ref{mis:thm:burnside} absorbs the exponentially small symmetry error into every fixed algebraic order.
 \end{proof}
 
 \subsection{Poissonization and differentiation}
-Set $b_0=0$ only for the purpose of the following transform. Interchanging nonnegative sums in \eqref{eq:bn}, with $n=k+m$, proves the exact identity
-\begin{equation}\label{eq:poisson}
+Set $b_0=0$ only for the purpose of the following transform. Interchanging nonnegative sums in \eqref{mis:eq:bn}, with $n=k+m$, proves the exact identity
+\begin{equation}\label{mis:eq:poisson}
  e^{-t}\sum_{n\ge0}\frac{b_n t^n}{n!}
  =\sum_{k\ge1}\frac{t^k2^{-\binom k2}}{k!}
        e^{-t}\sum_{m\ge0}\frac{[t(1-2^{-k})]^m}{m!}
@@ -236,14 +383,14 @@ Since
  t^2w_k''(t)=\bigl((k-y)^2-k\bigr)w_k(t),
 \]
 we have the familiar first Poisson--Charlier correction
-\begin{equation}\label{eq:charlier}
+\begin{equation}\label{mis:eq:charlier}
  \mu_1(t)=-\frac{t^2}{2}\mu_0''(t).
 \end{equation}
 Thus this expansion is a concrete depoissonization calculation, with an elementary uniform remainder proof, rather than a new general method.
 
 For later use, $t\,d/dt$ sends $w_kP(k,y)$ to
-$w_k[(k-y)P+y\partial_yP]$. Each application increases total polynomial degree by at most one. Termwise differentiation is justified by local uniform convergence; Lemma~\ref{lem:tails} then gives
-\begin{equation}\label{eq:derivatives}
+$w_k[(k-y)P+y\partial_yP]$. Each application increases total polynomial degree by at most one. Termwise differentiation is justified by local uniform convergence; Lemma~\ref{mis:lem:tails} then gives
+\begin{equation}\label{mis:eq:derivatives}
  \frac{\mu_j^{(r)}(t)}{\mu_0(t)}
        =O_{j,r}\left(\frac{(\log t)^{2j+r}}{t^r}\right)
 \end{equation}
@@ -260,10 +407,10 @@ Then $\lambda\le y<2\lambda$ and $K\sim L$. For fixed integer $j$, define
  V_j&=\left(\frac yK\right)^j2^{-j(j-1)/2}
                 \exp\bigl(y(1-2^{-j})\bigr),\notag\\
  \mathcal B(t)&=\frac{t^K2^{-K(K-1)/2}e^{-y}}
-                    {\sqrt{2\pi K}(K/e)^K}.\label{eq:sectors}
+                    {\sqrt{2\pi K}(K/e)^K}.\label{mis:eq:sectors}
 \end{align}
 Let $B_r(z)$ be the Bernoulli polynomial with $B_1(z)=z-1/2$. Define $p_h(j)$ by the \emph{formal} series
-\begin{equation}\label{eq:stirling-poly}
+\begin{equation}\label{mis:eq:stirling-poly}
  \sum_{h\ge0}p_h(j)z^h
  =\exp\left(\sum_{r\ge1}
        \frac{(-1)^r B_{r+1}(j+1)}{r(r+1)}z^r\right).
@@ -274,9 +421,9 @@ This does not assert convergence of the Stirling series. For a finite exact reci
 \]
 In particular $p_1(j)=-j(j+1)/2-1/12$.
 
-\begin{theorem}\label{thm:sectors}
+\begin{theorem}\label{mis:thm:sectors}
 For every fixed $M\ge1$, take $J=M+3$ and $S_0=\sum_{j=-J}^J V_j$. Then
-\begin{equation}\label{eq:sector-expansion}
+\begin{equation}\label{mis:eq:sector-expansion}
  U_n=\frac{2^N}{n!}\mathcal B(n)
  \left\{\sum_{j=-J}^J V_j(n)\sum_{h=0}^{M-1}\frac{p_h(j)}{K^h}
            +O_M(K^{-M}S_0)\right\}.
@@ -290,7 +437,7 @@ Shifted Stirling expansion of $\Gamma(K+j+1)^{-1}$ gives, uniformly for the fixe
        \left(\sum_{h=0}^{M-1}p_h(j)K^{-h}+O_M(K^{-M})\right).
 \]
 The exact adjacent ratio
-\begin{equation}\label{eq:ratio}
+\begin{equation}\label{mis:eq:ratio}
  r_k(t)=\frac{w_{k+1}(t)}{w_k(t)}
        =\frac{t2^{-k}}{k+1}\exp(t2^{-k-1})
 \end{equation}
@@ -299,34 +446,34 @@ strictly decreases with $k$. Direct comparison gives
  \frac{w_{K+j}}{w_K}=y^j2^{-j(j-1)/2}\frac{K!}{(K+j)!}
                          \exp\bigl(y(1-2^{-j})\bigr).
 \]
-For a fixed $j>0$, its logarithm divided by $\log K$ is at most $-j+2+o(1)$, uniformly for $\lambda\le y<2\lambda$. For $j=-h<0$, it is at most $h-(2^h-1)+o(1)$. With $J=M+3$, the first omitted right term ($j=M+4$) is $O(K^{-M-1})w_K$; the first omitted left term is smaller. The outgoing ratios tend uniformly to zero, and monotonicity of \eqref{eq:ratio} bounds all further tails by geometric sums. Thus the finite-sector error is $O_M(K^{-M}S_0\mathcal B)$. Theorem~\ref{thm:carrier} with $R=1$ incurs only $O((\log n)^2/n)$ relative error, smaller than every fixed power $K^{-1}$, proving the result.
+For a fixed $j>0$, its logarithm divided by $\log K$ is at most $-j+2+o(1)$, uniformly for $\lambda\le y<2\lambda$. For $j=-h<0$, it is at most $h-(2^h-1)+o(1)$. With $J=M+3$, the first omitted right term ($j=M+4$) is $O(K^{-M-1})w_K$; the first omitted left term is smaller. The outgoing ratios tend uniformly to zero, and monotonicity of \eqref{mis:eq:ratio} bounds all further tails by geometric sums. Thus the finite-sector error is $O_M(K^{-M}S_0\mathcal B)$. Theorem~\ref{mis:thm:carrier} with $R=1$ incurs only $O((\log n)^2/n)$ relative error, smaller than every fixed power $K^{-1}$, proving the result.
 \end{proof}
-A fixed number of sectors cannot be promoted to a fixed power of $n^{-1}$ merely by increasing the number of Stirling terms. In \eqref{eq:all-order}, retain the full carrier when algebraic-order precision matters.
+A fixed number of sectors cannot be promoted to a fixed power of $n^{-1}$ merely by increasing the number of Stirling terms. In \eqref{mis:eq:all-order}, retain the full carrier when algebraic-order precision matters.
 
 \section{Black set sizes and their lattice transitions}
 For a uniform unlabeled object, let $X_n$ be its number of black vertices. Set $q_k(t)=w_k(t)/\mu_0(t)$.
-\begin{theorem}\label{thm:law}
+\begin{theorem}\label{mis:thm:law}
 The carrier law approximates the exact black-size law in total variation:
-\begin{equation}\label{eq:law}
+\begin{equation}\label{mis:eq:law}
  \TV\bigl(\mathcal L(X_n),(q_k(n))_{k\ge1}\bigr)
        =O((\log n)^2/n).
 \end{equation}
 \end{theorem}
 \begin{proof}
-In the proof of Theorem~\ref{thm:carrier}, the sum of the \emph{absolute} summand errors is\[O(\mu_0(n)(\log n)^2/n).\] Normalizing the positive sums gives the claimed bound for the identity black-size law. Corollary~\ref{cor:tv-burnside} adds the smaller symmetry error.
+In the proof of Theorem~\ref{mis:thm:carrier}, the sum of the \emph{absolute} summand errors is\[O(\mu_0(n)(\log n)^2/n).\] Normalizing the positive sums gives the claimed bound for the identity black-size law. Corollary~\ref{mis:cor:tv-burnside} adds the smaller symmetry error.
 \end{proof}
-More generally, normalize the summands $w_k\sum_{j<R}P_j/n^j$ by $H_R$ to obtain fixed-order signed approximations with the same $\ell^1$ remainder as in \eqref{eq:all-order}. Signed corrections need not be probability masses term by term; their approximation error is interpreted in $\ell^1$.
+More generally, normalize the summands $w_k\sum_{j<R}P_j/n^j$ by $H_R$ to obtain fixed-order signed approximations with the same $\ell^1$ remainder as in \eqref{mis:eq:all-order}. Signed corrections need not be probability masses term by term; their approximation error is interpreted in $\ell^1$.
 
 \subsection{Exact switches and logistic windows}
 Write $W$ for the positive real Lambert function, characterized by $W(z)e^{W(z)}=z$. Put
-\begin{equation}\label{eq:switch}
+\begin{equation}\label{mis:eq:switch}
  W_k=W((k+1)/2),\qquad t_k=2^{k+1}W_k.
 \end{equation}
 Then $r_k(t)=1$ exactly at $t=t_k$, and the $t_k$ increase strictly. Because $r_k$ decreases with $k$, these are the ordered switches between consecutive carrier modes.
 
-\begin{theorem}\label{thm:logistic}
+\begin{theorem}\label{mis:thm:logistic}
 Suppose $k\to\infty$ and $t>0$ varies so that
-\begin{equation}\label{eq:s}
+\begin{equation}\label{mis:eq:s}
  s=\log(t/t_k)+(t-t_k)2^{-k-1}
 \end{equation}
 stays in a fixed compact interval. Let $n$ be an integer nearest to $t$. Uniformly in that interval,
@@ -334,12 +481,12 @@ stays in a fixed compact interval. Let $n$ be an integer nearest to $t$. Uniform
  \Prob(X_n=k)&=\frac{1}{1+e^s}
                     +O\left(\sqrt{\frac{\log k}{k}}\right),\notag\\
  \Prob(X_n=k+1)&=\frac{e^s}{1+e^s}
-                    +O\left(\sqrt{\frac{\log k}{k}}\right),\label{eq:logistic}\\
+                    +O\left(\sqrt{\frac{\log k}{k}}\right),\label{mis:eq:logistic}\\
  \Prob(X_n\notin\{k,k+1\})&=O\left(\sqrt{\frac{\log k}{k}}\right).\notag
 \end{align}
 \end{theorem}
 \begin{proof}
-Equation \eqref{eq:ratio} gives $r_k=e^s$ exactly, and bounded $s$ implies
+Equation \eqref{mis:eq:ratio} gives $r_k=e^s$ exactly, and bounded $s$ implies
 $y=t2^{-k}=2\log k+O(\log\log k)$. Eliminate $e^{y/2}$ using $ye^{y/2}=(k+1)e^s$ to get
 \begin{align*}
  \frac{w_{k-1}}{w_k}&=\frac{k y}{2(k+1)^2e^{2s}}
@@ -347,19 +494,19 @@ $y=t2^{-k}=2\log k+O(\log\log k)$. Eliminate $e^{y/2}$ using $ye^{y/2}=(k+1)e^s$
  \frac{w_{k+2}}{w_{k+1}}&=\frac{\sqrt{y(k+1)e^s}}{2(k+2)}
                         =O\left(\sqrt{\log k/k}\right).
 \end{align*}
-Monotone adjacent ratios bound the remaining tails geometrically. Normalizing the two retained weights gives \eqref{eq:logistic} for $q(t)$. Rounding $t$ to $n$ changes $s$ by $O(\log k/t)$ and is negligible. Theorem~\ref{thm:law} transfers the result to $X_n$.
+Monotone adjacent ratios bound the remaining tails geometrically. Normalizing the two retained weights gives \eqref{mis:eq:logistic} for $q(t)$. Rounding $t$ to $n$ changes $s$ by $O(\log k/t)$ and is negligible. Theorem~\ref{mis:thm:law} transfers the result to $X_n$.
 \end{proof}
 For $t=t_k(1+u/(1+W_k))$ with bounded $u$, direct expansion yields
 \[
  s=\log\left(1+\frac{u}{1+W_k}\right)+\frac{W_ku}{1+W_k}
    =u+O((\log k)^{-2}).
 \]
-The relative transition width is therefore of order $1/\log k$. Keeping exact $s$ avoids this additional, generally slower, coordinate-approximation error. Even $k=300$ need not make the logistic approximation numerically close throughout a fixed window; Section~\ref{sec:numeric} illustrates this honestly.
+The relative transition width is therefore of order $1/\log k$. Keeping exact $s$ avoids this additional, generally slower, coordinate-approximation error. Even $k=300$ need not make the logistic approximation numerically close throughout a fixed window; Section~\ref{mis:sec:numeric} illustrates this honestly.
 
 \subsection{Uniform concentration on an adjacent pair}
-\begin{theorem}\label{thm:pair}
+\begin{theorem}\label{mis:thm:pair}
 Choose a mode $m$ of $w_k(n)$, choosing either in case of a tie. Retain $m$ and whichever of its two neighbors has larger weight. Their combined probability under the exact unlabeled law is
-\begin{equation}\label{eq:pair}
+\begin{equation}\label{mis:eq:pair}
  1-O\left(\left(\frac{\log\log n}{\log n}\right)^{1/3}\right).
 \end{equation}
 \end{theorem}
@@ -383,48 +530,48 @@ Hence the smaller neighbor has weight $O((\log m/m)^{1/3})w_m$. For the next out
  \frac{w_{m+2}}{w_{m+1}}\le\frac{\sqrt{y(m+1)}}{2(m+2)}
                        =O\left(\sqrt{\log m/m}\right).
 \]
-Geometric continuation controls all more distant terms. The retained neighbor at an exact tie is a tied mode, so no switch exception is needed. The modal interval gives $y=\Theta(\log m)$ and $n=2^m y$, hence $m\sim\log_2 n$. Normalize and apply \eqref{eq:law}; its error is smaller than \eqref{eq:pair}.
+Geometric continuation controls all more distant terms. The retained neighbor at an exact tie is a tied mode, so no switch exception is needed. The modal interval gives $y=\Theta(\log m)$ and $n=2^m y$, hence $m\sim\log_2 n$. Normalize and apply \eqref{mis:eq:law}; its error is smaller than \eqref{mis:eq:pair}.
 \end{proof}
 These results describe an orderly lattice phase with explicit switches. A shrinking continuous saddle width is a warning to retain the discrete structure, rather than a reason to call the behavior erratic.
 
 \section{Finite Newton inversion and integer thresholds}
 For real $t$ sufficiently large, define
-\begin{equation}\label{eq:FR}
+\begin{equation}\label{mis:eq:FR}
  F_R(t)=\frac{a t(t-1)}2-\log\Gamma(t+1)+\log H_R(t).
 \end{equation}
-Positivity is guaranteed eventually by Theorem~\ref{thm:carrier}. That theorem yields
-\begin{equation}\label{eq:logU}
+Positivity is guaranteed eventually by Theorem~\ref{mis:thm:carrier}. That theorem yields
+\begin{equation}\label{mis:eq:logU}
  \log U_n=F_R(n)+O_R((\log n)^{2R}/n^R).
 \end{equation}
-From \eqref{eq:derivatives} and differentiated Stirling estimates,
+From \eqref{mis:eq:derivatives} and differentiated Stirling estimates,
 \begin{align}
  F_R'(t)&=at-\log t-a/2+O_R(\log t/t),\notag\\
- F_R''(t)&=a+O(1/t)+O_R((\log t)^{C_R}/t^2),\label{eq:Fder}
+ F_R''(t)&=a+O(1/t)+O_R((\log t)^{C_R}/t^2),\label{mis:eq:Fder}
 \end{align}
-for some fixed exponent $C_R$. Indeed $H_R/\mu_0=1+O((\log t)^2/t)$ and its differentiated correction is $O_R((\log t)^3/t^2)$; the latter is absorbed by $O_R(\log t/t)$. Thus $F_R'(t)\ge at/2$ eventually and $F_R''$ is bounded. Equation \eqref{eq:logU} then proves eventual strict increase of the exact sequence. There is also a direct injection proving nondecrease for $n\ge1$: add a universal white vertex. Deleting any universal white vertex in the image recovers the same colored isomorphism class, because universal white vertices are interchangeable. This injection alone is not used to claim strict increase.
+for some fixed exponent $C_R$. Indeed $H_R/\mu_0=1+O((\log t)^2/t)$ and its differentiated correction is $O_R((\log t)^3/t^2)$; the latter is absorbed by $O_R(\log t/t)$. Thus $F_R'(t)\ge at/2$ eventually and $F_R''$ is bounded. Equation \eqref{mis:eq:logU} then proves eventual strict increase of the exact sequence. There is also a direct injection proving nondecrease for $n\ge1$: add a universal white vertex. Deleting any universal white vertex in the image recovers the same colored isomorphism class, because universal white vertices are interchangeable. This injection alone is not used to claim strict increase.
 
 Given $Y\to\infty$, set
-\begin{equation}\label{eq:x-d}
+\begin{equation}\label{mis:eq:x-d}
  T=\log Y,\qquad x=\sqrt{2T/a},\qquad
  d=\frac{\log x-1+a/2}{a},\qquad z_0=x+d.
 \end{equation}
 For a fixed number $j$ of steps, evaluate explicitly
-\begin{equation}\label{eq:newton}
+\begin{equation}\label{mis:eq:newton}
  z_{i+1}=z_i-\frac{F_R(z_i)-T}{F_R'(z_i)},\qquad 0\le i<j.
 \end{equation}
 There is no implicit root search in this recipe: only finitely many evaluations of the analytic carriers and their derivatives.
 
-\begin{theorem}\label{thm:inverse}
+\begin{theorem}\label{mis:thm:inverse}
 Let $R\ge1$ and $j\ge0$ be fixed. For some constant $C_{R,j}>0$ and all sufficiently large $Y$, the threshold
 \[
  \nu(Y)=\min\{n\ge0:U_n\ge Y\}
 \]
 satisfies
-\begin{equation}\label{eq:ceilings}
+\begin{equation}\label{mis:eq:ceilings}
  \ceil{z_j-\varepsilon}\le\nu(Y)\le\ceil{z_j+\varepsilon},
 \end{equation}
 where
-\begin{equation}\label{eq:eps}
+\begin{equation}\label{mis:eq:eps}
  \varepsilon=C_{R,j}\left\{
    \frac{(\log x)^{2R}}{x^{R+1}}+
    \frac{(\log x)^{2^{j+1}}}{x^{2^{j+1}-1}}\right\}.
@@ -432,63 +579,168 @@ where
 The constants and onset are existential. This is not a certified all-small-input rounding algorithm, and no universal single-ceiling identity is asserted.
 \end{theorem}
 \begin{proof}
-First $\log\mu_0(t)=O((\log t)^2)$. A lower bound follows from the positive $h=\floor{\log_2t}$ term; an upper bound follows from Gaussian square completion, or Lemma~\ref{lem:tails} and the size of that term. Consequently
+First $\log\mu_0(t)=O((\log t)^2)$. A lower bound follows from the positive $h=\floor{\log_2t}$ term; an upper bound follows from Gaussian square completion, or Lemma~\ref{mis:lem:tails} and the size of that term. Consequently
 \[
  F_R(t)=at^2/2-t\log t+(1-a/2)t+O_R((\log t)^2).
 \]
-The large equation $F_R(t)=T$ has a unique root $\rho_R$, by \eqref{eq:Fder}, and $\rho_R\sim x$. Substituting $x+d$ cancels terms of orders $x\log x$ and $x$; the residual is $O_R((\log x)^2)$. Division by the derivative lower bound gives
+The large equation $F_R(t)=T$ has a unique root $\rho_R$, by \eqref{mis:eq:Fder}, and $\rho_R\sim x$. Substituting $x+d$ cancels terms of orders $x\log x$ and $x$; the residual is $O_R((\log x)^2)$. Division by the derivative lower bound gives
 \[
  z_0-\rho_R=O_R((\log x)^2/x).
 \]
-All fixed finitely many Newton iterates lie in an interval comparable to $x$. Taylor's theorem and \eqref{eq:Fder} give
+All fixed finitely many Newton iterates lie in an interval comparable to $x$. Taylor's theorem and \eqref{mis:eq:Fder} give
 \[
  |z_{i+1}-\rho_R|\le\frac Cx|z_i-\rho_R|^2.
 \]
 Induction yields the explicit fixed-step estimate
-\begin{equation}\label{eq:newton-error}
+\begin{equation}\label{mis:eq:newton-error}
  z_j-\rho_R=O_{R,j}\left(
        \frac{(\log x)^{2^{j+1}}}{x^{2^{j+1}-1}}\right).
 \end{equation}
 
-For integer $n\in[x/2,2x]$, \eqref{eq:logU} has uniform vertical error $O_R((\log x)^{2R}/x^R)$. The derivative lower bound converts it into a horizontal error
-$\delta=C_R(\log x)^{2R}/x^{R+1}$. Enlarging $C_R$ handles endpoint equality: every integer below $\rho_R-\delta$ is below threshold, and every integer at or above $\rho_R+\delta$ is above threshold. Combine this with \eqref{eq:newton-error} to obtain the two ceilings.
+For integer $n\in[x/2,2x]$, \eqref{mis:eq:logU} has uniform vertical error $O_R((\log x)^{2R}/x^R)$. The derivative lower bound converts it into a horizontal error
+$\delta=C_R(\log x)^{2R}/x^{R+1}$. Enlarging $C_R$ handles endpoint equality: every integer below $\rho_R-\delta$ is below threshold, and every integer at or above $\rho_R+\delta$ is above threshold. Combine this with \eqref{mis:eq:newton-error} to obtain the two ceilings.
 
 To justify the global minimum in $\nu(Y)$, choose $Y$ above the largest of the finitely many values before eventual monotonicity begins. Since $F_R(t)\sim at^2/2$, the later threshold lies in $[x/2,2x]$ for all sufficiently large $Y$. Thus no earlier exceptional value escapes the local envelope argument.
 \end{proof}
-For any prescribed fixed algebraic accuracy, choose $R$ and then $j$ so that both powers in \eqref{eq:eps} exceed it. The shrinking interval often yields a single integer when its two ceilings agree; targets near an integer crossing retain the two-ceiling ambiguity.
+For any prescribed fixed algebraic accuracy, choose $R$ and then $j$ so that both powers in \eqref{mis:eq:eps} exceed it. The shrinking interval often yields a single integer when its two ceilings agree; targets near an integer crossing retain the two-ceiling ambiguity.
 
 \subsection{A closed second approximation}
 A useful formula using only $\mu_0$ is
-\begin{equation}\label{eq:zstar}
+\begin{equation}\label{mis:eq:zstar}
  z_*=x+d+
  \frac{-ad^2/2+(\log x+a/2)d+\tfrac12\log(2\pi x)-\log\mu_0(x)}{ax}.
 \end{equation}
-It gives threshold envelopes with horizontal error $O((\log x)^3/x^2)$. To verify this, expand $F_1$ at $x+d$ through constant order using Stirling's formula. The correction in \eqref{eq:zstar} cancels that constant residual. Equation \eqref{eq:derivatives} bounds variation of $\log\mu_0$, and the remaining vertical error is $O((\log x)^3/x)$. Equation \eqref{eq:logU} adds only $O((\log x)^2/x)$. Dividing by $F_1'\sim ax$ gives the stated envelope width, with ceilings interpreted as in Theorem~\ref{thm:inverse}.
+It gives threshold envelopes with horizontal error $O((\log x)^3/x^2)$. To verify this, expand $F_1$ at $x+d$ through constant order using Stirling's formula. The correction in \eqref{mis:eq:zstar} cancels that constant residual. Equation \eqref{mis:eq:derivatives} bounds variation of $\log\mu_0$, and the remaining vertical error is $O((\log x)^3/x)$. Equation \eqref{mis:eq:logU} adds only $O((\log x)^2/x)$. Dividing by $F_1'\sim ax$ gives the stated envelope width, with ceilings interpreted as in Theorem~\ref{mis:thm:inverse}.
 
-If $\mu_0$ in \eqref{eq:zstar} is replaced by a fixed-width $M$th-order sector approximation, the added horizontal error is $O(1/[x(\log x)^M])$. That error does not preserve $x^{-2}$ precision by itself. A computational evaluation also needs adequate precision and a controlled series tail; the illustrative numerical program below does not claim a certified interval algorithm.
+If $\mu_0$ in \eqref{mis:eq:zstar} is replaced by a fixed-width $M$th-order sector approximation, the added horizontal error is $O(1/[x(\log x)^M])$. That error does not preserve $x^{-2}$ precision by itself. A computational evaluation also needs adequate precision and a controlled series tail; the illustrative numerical program below does not claim a certified interval algorithm.
 
-\section{Exact checks and numerical illustrations}\label{sec:numeric}
+\begin{remark}[{[write]} The inverse and the transseries volume, 7~October 2026]\label{mis:rem:transseries}
+Compared statement by statement with the repository's transseries
+volume~\cite{TSvol}; its symbols are not used here.
+\begin{enumerate}\raggedright
+\item \emph{The growth.} $\log U_n=\frac a2n^2-n\log n+O(n)$ is not of the exponential--power form of \file{p0:def:model}, and $F_R$ keeps the exact Gamma function and the carrier $H_R$; no instance of the volume's model is claimed.
+\item \emph{The centre $z_0=x+d$.} After the substitution $G=\sqrt{2F_R/a}$, the equation $F_R(t)=T$ reads $G(t)=x$ with $G(t)=t-\frac1a\log t+\frac{1-a/2}{a}+O((\log t)^2/t)$. Its leading balance is a monomial--logarithmic datum (\file{plt:def:lw-monomial-log-datum}) in the chart in which $t$ itself is the logarithm of the unknown, with exponent one, logarithmic power $-1/a$ and constant $(1-a/2)/a$, and $z_0$ agrees with the first two terms $X+q_0$ of \file{plt:thm:lw-template} for that datum up to $O(\log x/x)$. The remaining terms of $F_R$ contain $\log H_R(t)$, whose lattice-periodic phase is not a polynomial in $\log t$; so the write has not shown the Newton iterates~\eqref{mis:eq:newton} or $z_*$ of~\eqref{mis:eq:zstar} to be instances of that theorem. They are proved directly.
+\item \emph{The threshold.} $\nu(Y)$ is the volume's staircase (\file{p0:def:three-inverses}(1)) of the eventually strictly increasing sequence $U_n$; $F_R$ is not an interpolation of $\log U_n$ (it differs from it by the vertical error of~\eqref{mis:eq:logU}), so Theorem~\ref{mis:thm:inverse} is proved directly: its two-ceiling envelope is an analogue of \file{p0:thm:staircase}(2), not an instance, and its refusal of a universal single-ceiling identity is the caution of that theorem.
+\item \emph{The switch points.} The equation $r_k(t)=1$ of~\eqref{mis:eq:switch} reads $2^{-k-1}t+\log t=\log((k+1)2^k)$, the volume's dominant block \file{p0:thm:lambert-core} with slope $2^{-k-1}$, logarithmic coefficient $1$ and target $\log((k+1)2^k)$; its positive-coefficient branch gives exactly $t_k=2^{k+1}W_0((k+1)/2)$. So the switch points are exact instances (of an equation in $t$ for fixed $k$, not of an inverse of the sequence).
+\end{enumerate}
+\end{remark}
+
+\section{Exact checks and numerical illustrations}\label{mis:sec:numeric}
 The accompanying exact verifier checks every displayed OEIS term, all cycle-type row integrality, a separate graph-and-black-set canonicalization through $n=5$, and 36,448 support/orbit-loss inequalities. It tests the coefficient recursion against a separately expanded product at 100 rational points through order six, and 25 integer shifts of the Stirling formula through order eight. A second implementation uses actual vertex permutations, direct edge orbits and inclusion--exclusion over uncovered white vertices. It imports none of the first verifier's code and matches every black-size row through $n=7$. Its symbolic tests include the coefficient identities, shifted Stirling recurrence, switching identities and the displayed closed inverse.
 
 All guards raise explicit exceptions and remain active under optimized Python. Finite and formal checks certify those finite identities; the proofs above, not these tests, establish asymptotic errors. The public build regenerates every numerical table from the included programs, compares the independent rows, compiles this document, and packages its public files deterministically.
 
-\input{tables.tex}
+% [write] inlined from the delivered tables.tex (shipped as data/tables.tex)
+\begin{longtable}{r r}
+\caption{The twenty displayed reference terms, all reproduced exactly.}\label{mis:tab:exact}\\
+\toprule $n$ & $U_n$ \\ \midrule
+\endfirsthead
+\toprule $n$ & $U_n$ \\ \midrule
+\endhead
+\bottomrule\endfoot
+0 & 1 \\
+1 & 1 \\
+2 & 2 \\
+3 & 5 \\
+4 & 16 \\
+5 & 66 \\
+6 & 407 \\
+7 & 3948 \\
+8 & 66781 \\
+9 & 2057140 \\
+10 & 117820559 \\
+11 & 12562407832 \\
+12 & 2488441442819 \\
+13 & 915216371901462 \\
+14 & 625792587599236833 \\
+15 & 797474948692631218674 \\
+16 & 1899724021357155410243835 \\
+17 & 8486672841492724213636009230 \\
+18 & 71324140440429733888694354552551 \\
+19 & 1131126439181050621704917376323373818 \\
+\end{longtable}
+\begin{table}[htbp]\centering\small
+\caption{Noncertified relative errors $H_R(n)/b_n-1$. The symmetry error is excluded.}\label{mis:tab:orders}
+\begin{tabular}{r r r r r}\toprule
+$n$ & $R=1$ & $R=2$ & $R=3$ & $R=4$ \\ \midrule
+100 & $8.54304\times10^{-2}$ & $-3.24676\times10^{-3}$ & $7.02660\times10^{-5}$ & $-1.01646\times10^{-6}$ \\
+1000 & $2.32015\times10^{-2}$ & $-2.41043\times10^{-4}$ & $1.47486\times10^{-6}$ & $-5.90507\times10^{-9}$ \\
+$10^6$ & $1.23212\times10^{-4}$ & $-7.10380\times10^{-9}$ & $2.54785\times10^{-13}$ & $-6.37256\times10^{-18}$ \\
+$10^{12}$ & $5.98912\times10^{-10}$ & $-1.73223\times10^{-19}$ & $3.22262\times10^{-29}$ & $-4.33384\times10^{-39}$ \\
+\bottomrule\end{tabular}\end{table}
+\begin{table}[htbp]\centering\small
+\caption{Noncertified carrier switch probabilities. $q_k=q_{k+1}$ at $s=0$; substantial outside mass may remain at finite $k$.}\label{mis:tab:switch}
+\begin{tabular}{r r r r r r}\toprule
+$k$ & $s$ & $q_k(t)$ & $q_{k+1}(t)$ & Outside pair & Logistic $q_{k+1}$ \\ \midrule
+10 & 0 & 0.423368 & 0.423368 & 0.153264 & 0.500000 \\
+30 & 0 & 0.444843 & 0.444843 & 0.110314 & 0.500000 \\
+100 & 0 & 0.465222 & 0.465222 & 0.069555 & 0.500000 \\
+300 & -2 & 0.649258 & 0.087867 & 0.262875 & 0.119203 \\
+300 & 0 & 0.478088 & 0.478088 & 0.043823 & 0.500000 \\
+300 & 2 & 0.096728 & 0.714728 & 0.188545 & 0.880797 \\
+\bottomrule\end{tabular}\end{table}
+\begin{table}[htbp]\centering\small
+\caption{Noncertified Newton errors $z_j-n$ with $R=4$. The target is the identity count, not the exact unlabeled count.}\label{mis:tab:inverse}
+\begin{tabular}{r r r r r}\toprule
+Target $n$ & $j=0$ & $j=1$ & $j=2$ & $j=3$ \\ \midrule
+100 & $-1.59196\times10^{-1}$ & $1.34600\times10^{-4}$ & $1.58789\times10^{-8}$ & $1.57828\times10^{-8}$ \\
+1000 & $-2.69169\times10^{-2}$ & $3.65575\times10^{-7}$ & $8.60930\times10^{-12}$ & $8.60923\times10^{-12}$ \\
+10000 & $-3.99618\times10^{-3}$ & $7.99461\times10^{-10}$ & $1.61355\times10^{-15}$ & $1.61355\times10^{-15}$ \\
+$10^6$ & $-6.97526\times10^{-5}$ & $2.43276\times10^{-15}$ & $9.19385\times10^{-24}$ & $9.19385\times10^{-24}$ \\
+\bottomrule\end{tabular}\end{table}
+\clearpage
 
-The floating computations use 220 decimal digits and a finite carrier cutoff $k\le\max(30,\floor{2\log_2t}+80)$ (also $k\le n$ for the finite expectation). Their omitted tails are not interval-certified by the program. The algebraic-order table compares $H_R(n)$ to the finite expectation $b_n$, not directly to $n!U_n/2^N$; the symmetry error is separately bounded by Theorem~\ref{thm:burnside}. The switch table concerns the real carrier law, before integer rounding and unlabeled transfer. The inverse table uses a target equal to the logarithm of the identity Burnside count and omits the unlabeled discrepancy. None of these floating tables determines a rigorous asymptotic constant or onset.
+The floating computations use 220 decimal digits and a finite carrier cutoff $k\le\max(30,\floor{2\log_2t}+80)$ (also $k\le n$ for the finite expectation). Their omitted tails are not interval-certified by the program. The algebraic-order table compares $H_R(n)$ to the finite expectation $b_n$, not directly to $n!U_n/2^N$; the symmetry error is separately bounded by Theorem~\ref{mis:thm:burnside}. The switch table concerns the real carrier law, before integer rounding and unlabeled transfer. The inverse table uses a target equal to the logarithm of the identity Burnside count and omits the unlabeled discrepancy. None of these floating tables determines a rigorous asymptotic constant or onset.
+\begin{writenote}[The tables recomputed, 7 October 2026]
+The write recomputed all entries of Tables~\ref{mis:tab:orders},
+\ref{mis:tab:switch} and~\ref{mis:tab:inverse} with its own implementation at
+90 digits (carrier coefficients from SymPy polynomials $P_0,\ldots,P_3$, cutoff
+$k\le2\log_2t+120$; $b_n$ from~\eqref{mis:eq:bn}; switch points solved from the
+exact coordinate~\eqref{mis:eq:s}; Newton steps with the analytic derivative of
+$H_4$) and found every printed value to be the correct six-digit rounding (for
+example $q_{k+1}=0.0878674903\ldots$ at $k=300$, $s=-2$, printed $0.087867$).
+Table~\ref{mis:tab:exact} agrees with the OEIS b-file
+(Remark~\ref{mis:rem:oeis}). The independent recomputation confirms the
+transcription, not an error certificate.
+\end{writenote}
 
 \section{Reproduction and implementation boundaries}
 The archive contains the editable \texttt{Report206.tex}, its compiled PDF, all newly written verification and diagnostic code, generated data and table source, a build script and file hashes. It does not contain third-party papers or private working notes. The Python dependencies are SymPy 1.14.0 and mpmath 1.3.0; a standard pdfLaTeX installation with the packages named in the TeX preamble is also required. Exact cycle-type verification itself uses only the Python standard library.
 
 Run \texttt{python build.py} after extraction. Run \texttt{python -O build.py} in a separate extraction for the optimized replay. Each invocation regenerates the exact and floating results, checks cross-implementation agreement, generates all printed table cells and the PDF, and writes \texttt{Report206.zip}. It also tests that deliberately false guards fail even in optimized mode. A fixed ZIP timestamp, sorted entries, fixed PDF metadata, and a fixed source-date environment make complete rebuilt ZIP bytes reproducible in the recorded environment. The archive manifest lists file hashes; the archive cannot contain its own hash without a circular definition. The recorded environment uses Python 3.12.14, SymPy 1.14.0, mpmath 1.3.0 and pdfTeX 1.40.26 (TeX Live 2025/dev/Debian). Different TeX or library versions can change bytes, even when mathematical output is unchanged.
+\begin{writenote}[The shipped files, 7 October 2026]
+In ProveIt the PDF and \file{MANIFEST.json} are not shipped; the programs are
+\file{code/*.py}, their outputs and \file{tables.tex} are under \file{data/}.
+The builder expects the delivered flat layout and runs only in a re-extracted
+archive; the report README gives commands that rerun the three programs on a
+copy.
+\end{writenote}
 
 The carrier coefficient recipe is exact and finite at each order, but its coefficient \emph{functions} involve convergent infinite sums. The numeric implementation uses a specified cutoff for illustration. A validated implementation could combine outward-rounded arithmetic with ratio and polynomial tail bounds; that extra certification is not silently supplied by high precision alone.
 
-\section{Source access and comparison limits}\label{sec:sources}
+\section{Source access and comparison limits}\label{mis:sec:sources}
 The OEIS page inspected on 4 October 2026 was a rendered cached snapshot whose footer was from 2025. It displayed the definition, twenty terms, Howroyd's exact program, and no asymptotic formula. Direct raw entry and b-file requests returned HTTP 403. Only the twenty displayed terms were checked; no agreement with the full b-file or every subsequent OEIS revision is claimed.
 
 Primary comparisons include the Bollob\'as--Erd\H{o}s article, the full Fried--Kessler--Shnerb preprint with its supplementary material, Banderier and collaborators' author manuscript, Erd\H{o}s--R\'enyi's rigidity paper, Wright's colored-graph paper and Troyka's split-graph preprint. The Myrvold--Fowler publisher introduction supplies its exact enumeration scope; its scanned full paper was not fully text-audited in this comparison. The cited links let the reader inspect these sources directly.
 
 A bounded search for the sequence identifier and related maximal-clique, maximal-independent-set and colored-graph asymptotic phrases did not locate a theorem matching all the specific results here. A public report-repository path/title screen was also negative. Neither is an exhaustive historical or full-text theorem search. The article makes no claim that a sparse OEIS formula field implies unpublished mathematics, and no worldwide priority assertion is needed for its proofs.
+
+\begin{remark}[{[write]} The OEIS entry, 7~October 2026]\label{mis:rem:oeis}
+The write read A340021 in the internal format on 7~October 2026: revision \#15
+(16 February 2025), by Andrew Howroyd (30 December 2020), ``Number of bicolored
+graphs on n unlabeled nodes such that black nodes are not adjacent to each
+other and every white node is adjacent to a black node.'', with a comment that
+for $n>0$ the term is ``the total number of indistinguishable maximal
+independent vertex sets summed over distinct unlabeled graphs with n nodes''
+(the source's reading in Section~\ref{mis:sec:scope}), twenty displayed terms,
+Howroyd's PARI program and a Mathematica translation by Jean-Fran\c{c}ois
+Alcover (7 January 2021), and a b-file by Howroyd for $n=0,\ldots,40$; it has no
+asymptotic formula and no conjecture, as the source's snapshot showed.
+\emph{Checks.} All 41 b-file terms equal the write's own evaluation
+of~\eqref{mis:eq:burnside}, so the twenty terms of Table~\ref{mis:tab:exact},
+which the source checked against its snapshot, also agree with the current
+entry and its b-file. No OEIS edit is part of this work.
+\end{remark}
 
 \section{Further questions}
 \begin{enumerate}
@@ -498,10 +750,18 @@ A bounded search for the sequence identifier and related maximal-clique, maximal
 \item \textbf{Growing orders and adaptive sectors.} All truncation orders here are fixed. A uniform theory with $R$ or the sector width growing with $n$ would need explicit control of coefficient growth and remainders; the fixed-order proofs do not provide it automatically.
 \item \textbf{Other dense edge probabilities.} For fixed $p\in(0,1)$ the classical maximal-clique expectation changes its base and domination factor. A corresponding weighted unlabeled or two-color model would require a precisely specified measure and a fresh uniform symmetry argument before transferring these conclusions.
 \end{enumerate}
+\begin{writenote}[Added 7 October 2026, under Vladimir's standing rule of 4 October 2026]
+Every open question of the source is in this list, with its sketch and what is
+missing; the write adds from the non-claims an interval-certified evaluation of
+the carrier coefficients and of the tables (the floating values use a finite
+cutoff), and a uniform treatment of the logistic window at moderate $k$ (the
+table shows outside mass $0.26$ at $k=300$, $s=-2$). No claim of the source was
+found false, and the OEIS entry contains no conjecture.
+\end{writenote}
 
 \clearpage
 \begin{thebibliography}{9}
-\bibitem{oeis} OEIS Foundation Inc., \emph{A340021}, graphs with a distinguished maximal independent set; exact cycle-type program credited to Andrew Howroyd. \url{https://oeis.org/A340021}. Inspected snapshot and access limits: Section~\ref{sec:sources}.
+\bibitem{oeis} OEIS Foundation Inc., \emph{A340021}, graphs with a distinguished maximal independent set; exact cycle-type program credited to Andrew Howroyd. \url{https://oeis.org/A340021}. Inspected snapshot and access limits: Section~\ref{mis:sec:sources}.
 \bibitem{be} B. Bollob\'as and P. Erd\H{o}s, \emph{Cliques in random graphs}, Mathematical Proceedings of the Cambridge Philosophical Society \textbf{80} (1976), 419--427. \href{https://doi.org/10.1017/S0305004100053056}{doi:10.1017/S0305004100053056}. Author archive: \url{https://users.renyi.hu/~p_erdos/1976-05.pdf}.
 \bibitem{fks} Y. Fried, D. A. Kessler and N. M. Shnerb, \emph{Communities as cliques}, Scientific Reports \textbf{6} (2016), 35648. \href{https://doi.org/10.1038/srep35648}{doi:10.1038/srep35648}. Full preprint with supplements: \url{https://arxiv.org/abs/1605.07479}.
 \bibitem{bhvr} C. Banderier, H.-K. Hwang, V. Ravelomanana and V. Zacharovas, \emph{Analysis of an Exhaustive Search Algorithm in Random Graphs and the $n^{c\log n}$-Asymptotics}, SIAM Journal on Discrete Mathematics \textbf{28}(1) (2014), 342--371. \href{https://doi.org/10.1137/130916357}{doi:10.1137/130916357}. Author manuscript: \url{https://lipn.fr/~cb/Papers/mis-n-to-the-logn.pdf}.
@@ -509,5 +769,6 @@ A bounded search for the sequence identifier and related maximal-clique, maximal
 \bibitem{wright} E. M. Wright, \emph{Counting Coloured Graphs III}, Canadian Journal of Mathematics \textbf{24} (1972), 82--89. \href{https://doi.org/10.4153/CJM-1972-010-7}{doi:10.4153/CJM-1972-010-7}.
 \bibitem{mf} W. Myrvold and P. Fowler, \emph{Fast Enumeration of All Independent Sets of a Graph up to Isomorphism}, Journal of Combinatorial Mathematics and Combinatorial Computing \textbf{85} (2013), 173--194. \url{https://combinatorialpress.com/article/jcmcc/Volume%20085/vol-085-paper%2011.pdf}.
 \bibitem{troyka} J. Troyka, \emph{Split graphs: combinatorial species and asymptotics}, Electronic Journal of Combinatorics \textbf{26}(2) (2019), P2.42. \url{https://arxiv.org/abs/1803.07248}.
+\bibitem{TSvol}{\raggedright ProveIt, \emph{Transseries and inversion}, \file{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex}; Part~0 (\file{p0:def:model}, \file{p0:thm:lambert-core}, \file{p0:def:three-inverses}, \file{p0:thm:staircase}) and the chapter on the Lambert template (\file{plt:def:lw-monomial-log-datum}, \file{plt:thm:lw-template}). [Added in the write.]\par}
 \end{thebibliography}
 \end{document}

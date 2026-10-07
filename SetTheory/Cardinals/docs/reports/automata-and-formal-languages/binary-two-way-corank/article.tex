@@ -1,0 +1,130 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=1in,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,booktabs,longtable,array,enumitem,xcolor,tikz,fancyhdr}
+\usetikzlibrary{arrows.meta,positioning,calc}
+\usepackage{xurl}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\definecolor{ink}{HTML}{16354A}
+\definecolor{accent}{HTML}{176B83}
+\hypersetup{colorlinks=true,linkcolor=accent,citecolor=accent,urlcolor=accent,
+  pdftitle={Binary Two-Way Automata and Corank Budgets in Brauer Monoids},
+  pdfauthor={Prepared with ChatGPT for Vladimir Reshetnikov}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{question}{Research question}
+\newcommand{\Br}[1]{\mathcal{B}_{#1}}
+\newcommand{\Rel}[1]{\mathcal{R}_{#1}}
+\DeclareMathOperator{\rk}{rank}
+\DeclareMathOperator{\crk}{corank}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\OWL}{OWL}
+\newcommand{\Id}{I}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\Lmark}{\vdash}
+\newcommand{\Rmark}{\dashv}
+\newcommand{\bits}{\{0,1\}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\code}{\operatorname{code}}
+\newcommand{\enc}{\operatorname{enc}}
+\newcommand{\ceil}[1]{\left\lceil #1\right\rceil}
+\newcommand{\floor}[1]{\left\lfloor #1\right\rfloor}
+\setlength{\emergencystretch}{2em}
+\setlist{itemsep=3pt,topsep=5pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textcolor{ink}{Binary automata and corank budgets}}
+\fancyhead[R]{\small 7 October 2026}
+\fancyfoot[C]{\thepage}
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\centering
+\vspace*{0.7cm}
+{\Large\color{accent} RESEARCH ARTICLE AND REPRODUCIBILITY PACKAGE\par}
+\vspace{1.1cm}
+{\huge\bfseries\color{ink} Binary Two-Way Automata\\[5pt]
+and Corank Budgets\\[5pt] in Brauer Monoids\par}
+\vspace{0.65cm}
+{\large Sharp compression, exponential amplification,\\
+and exact finite verification\par}
+\vspace{0.85cm}
+{\large Prepared with ChatGPT for Vladimir Reshetnikov\par}
+\vspace{0.2cm}
+{\large 7 October 2026\par}
+\vspace{1cm}
+\begin{minipage}{0.9\textwidth}
+\textbf{Main quantitative result.}
+For every $n\ge14$, an $n$-state one-way nondeterministic automaton
+over the fixed alphabet $\bits$ has no equivalent two-way
+deterministic automaton with fewer than
+\[
+ \frac14\left(\frac52\right)^{\lfloor(n-14)/54\rfloor}-\frac14
+\]
+states, under the explicitly specified endmarker model.
+\end{minipage}
+\vspace{0.7cm}
+\begin{abstract}
+We develop and sharpen the matching-monoid method in the September
+2026 OpenAI manuscript on one-way liveness, in the context of recent
+automata reports in ProveIt. The central algebraic observation is a
+sharp, repetition-independent budget: the corank of any word in
+finitely many Brauer idempotents is at most the sum of their individual
+coranks. A short proof follows from the classical colored-component
+description of idempotents. This budget controls both nested corners
+in a relation-addition amplifier, giving the degree lower bound
+$2(5/2)^{\lfloor(h-2)/9\rfloor}$ for a Brauer monoid having the full
+relation monoid on $h$ points as a divisor.
+
+On the automata side, we construct a symbol-local matching representation
+of a binary $s$-state deterministic two-way automaton in degree at most
+$8s+2$. A four-letter compiler on $2h$ relation states, followed by
+two-bit decoding, gives a completely defined binary one-way
+nondeterministic language with $6h+2$ states and the required relation
+divisor. Together these yield an explicit exponential binary
+determinization lower bound with coefficient
+$\log_2(5/2)/54$ in the exponent. We also prove a sharp support bound
+with equality, enumeration, and stability, and give an optimized
+finite recurrence. A separate binary complementation consequence is
+stated with its external theorem dependency identified.
+
+All arguments for the determinization theorem are given here.
+Exact finite audits accompany the proofs; they are diagnostic evidence,
+not a replacement for proof or a Lean formalization. Attribution,
+source versions, limitations of novelty claims, and a focused research
+agenda are included.
+\end{abstract}
+\end{titlepage}
+\hypersetup{pageanchor=true}
+\pagenumbering{roman}
+\begingroup
+\small
+\tableofcontents
+\endgroup
+\clearpage
+\pagenumbering{arabic}
+\input{sections/introduction}
+\input{sections/algebra}
+\input{sections/machines}
+\input{sections/compiler}
+\input{sections/complement}
+\input{sections/verification}
+\input{sections/research}
+\clearpage
+\addcontentsline{toc}{section}{References}
+\begingroup
+\raggedright
+\bibliographystyle{plain}
+\bibliography{references}
+\endgroup
+\end{document}

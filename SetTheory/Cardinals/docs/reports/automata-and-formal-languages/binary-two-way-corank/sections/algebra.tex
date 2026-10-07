@@ -1,0 +1,609 @@
+\section{Corank budgets and relation-monoid divisors}
+\label{alg:section}
+
+The algebraic argument has two parts. First, the cap components of
+idempotent matching diagrams impose a corank budget that is independent
+of the length of a word in those idempotents. Second, this budget
+strengthens the relation-addition construction of
+\cite{OpenAILiveness2026}. We give the corner arguments and the complete
+induction, so the degree bound below does not depend on importing the
+source manuscript's exponential bound as an unproved assumption.
+
+\subsection{Matching diagrams and their cap components}
+\label{alg:definitions}
+
+Write $[m]=\{1,\ldots,m\}$, with $[0]=\varnothing$.
+The \emph{Brauer monoid} $\Br{m}$ consists of the perfect matchings on
+two copies of $[m]$, called the left and right ports. A matching edge
+between opposite sides is a \emph{transversal}; an edge whose endpoints
+are on the same side is a \emph{cap}. Multiplication places the first
+factor to the left of the second, identifies equally indexed ports at
+the interface, and follows paths between the remaining outer ports.
+Components with no outer port are discarded. Parallel edges at an
+interface are retained. This is the usual diagram multiplication
+associated with Brauer's algebras; see
+\cite{Brauer1937,Auinger2012,EastGray2017}.
+
+Associativity follows by contracting paths in a substring of a glued
+diagram: the contraction preserves exactly the connections available
+to the rest of the diagram. The identity $\Id_m$ consists of the $m$
+fixed transversals. Set
+\[
+ \rk(a)=\#\{\text{transversals of }a\},\qquad
+ \crk(a)=m-\rk(a),
+\]
+\[
+ \supp(a)=\{i:\text{left }i\text{ is not paired with right }i\}.
+\]
+In particular, $\crk(a)$ is even: each side has
+$\crk(a)/2$ caps. Following disjoint transversal paths through a
+product gives
+\begin{equation}\label{alg:rank-basic}
+ \rk(ab)\le\min\{\rk(a),\rk(b)\}.
+\end{equation}
+The rank-$m$ diagrams are precisely permutations, and these are exactly
+the units. A rank-$m$ idempotent is therefore $\Id_m$.
+
+The \emph{cap graph} of a diagram has vertex set $[m]$: draw one red
+edge for each left cap and one blue edge for each right cap, identifying
+the two port labels but retaining the colors and parallel edges.
+Its degrees are at most two, with at most one incident edge of each
+color. A connected component is consequently an alternating path,
+an alternating cycle, or an isolated vertex. A two-vertex cycle means
+two parallel edges of different colors.
+
+\begin{lemma}[Idempotent component description]\label{alg:components}
+For an idempotent $e\in\Br{m}$, every cap component is either an
+alternating path with an odd number of vertices, or an alternating
+cycle with an even number of vertices. Each path component carries
+exactly one transversal of $e$, joining its two missing-color
+endpoints; an isolated vertex carries a fixed transversal. A cycle
+component carries no transversal. In particular, every edge of $e$,
+including every transversal, stays within one cap component.
+
+Conversely, any collection of such colored components, completed by
+these transversals, defines an idempotent. A path on $2a+1$ vertices
+contributes $2a$ to corank, and a cycle on $2b$ vertices contributes
+$2b$.
+\end{lemma}
+
+\begin{proof}
+This is the classical component description underlying the enumeration
+in \cite{Dolinka2015}; we recall its connector proof. Let $X,Y$ be the
+left and right transversal endpoint sets of $e$, and let $p:X\to Y$
+be the bijection specified by its transversals. At the middle interface
+of $e^2$, retain the right caps of the first copy and the left caps of
+the second. Contracting the edges that identify equal labels gives
+the cap graph just defined. A missing blue edge is a right-transversal
+endpoint in $Y$, and a missing red edge is a left-transversal endpoint
+in $X$.
+
+Because $\rk(e^2)=\rk(e)$, every endpoint of the first kind must
+connect to one of the second kind. A path with both endpoints of the
+same kind would join two transversals coming from the same outer
+side and reduce the rank. Thus each nontrivial path has an even
+number of alternating edges and an odd number of vertices. Its
+endpoints define a bijection $\gamma:Y\to X$; an isolated vertex in
+$X\cap Y$ is included as a connector of length zero. The transversal
+bijection of $e^2$ is $p\gamma p$. Since it equals $p$, one has
+$\gamma=p^{-1}$. Hence the transversal belonging to a connector path
+joins that path's endpoints, and a zero-length connector forces a
+fixed transversal. All remaining components are alternating cycles.
+The stated component contributions now follow by counting caps.
+
+Conversely, for a matching assembled in this way, each interface
+connector is the inverse of its transversal. Gluing two copies
+therefore reproduces every transversal, while the outer caps already
+agree. Closed interface components do not affect the product. Thus
+the square equals the original diagram.
+\end{proof}
+
+\subsection{A budget for arbitrarily long words}
+\label{alg:budget-section}
+
+\begin{theorem}[Corank budget]\label{alg:budget}
+Let $e_1,\ldots,e_v\in\Br{m}$ be idempotents. Every word $w$ in
+these generators, allowing repetitions and the empty word, satisfies
+\begin{equation}\label{alg:budget-eq}
+ \crk(w)\le\sum_{i=1}^{v}\crk(e_i).
+\end{equation}
+Thus each chosen generator is charged once, independently of how
+often it occurs in the word.
+\end{theorem}
+
+\begin{proof}
+Superimpose the cap graphs of the generators on $[m]$. Retain each
+edge occurrence, including occurrences with the same endpoints from
+different generators. Let $C$ be a connected component of this union
+multigraph, and let $E_C$ be its number of edges, counted with these
+multiplicities.
+
+Each cap component of each individual $e_i$ is entirely contained
+in a union component. By Lemma~\ref{alg:components}, it has an even
+number of edges. Consequently $E_C$ is even. Connectedness gives
+$E_C\ge |C|-1$, and parity improves this to
+\begin{equation}\label{alg:component-budget}
+ E_C\ge 2\left\lfloor\frac{|C|}{2}\right\rfloor.
+\end{equation}
+This includes isolated vertices, for which both sides vanish.
+
+Every cap and every transversal of every $e_i$ stays inside a union
+component, again by Lemma~\ref{alg:components}. The same is therefore
+true in any glued word and in the matching obtained after contraction.
+The restriction of $w$ to the two copies of $C$ is a Brauer diagram
+of degree $|C|$. Its rank has the parity of $|C|$, so its corank is
+at most $2\lfloor |C|/2\rfloor$, and hence at most $E_C$.
+Summing over $C$ proves the result, because the total number of cap
+edge occurrences is exactly $\sum_i\crk(e_i)$.
+\end{proof}
+
+\begin{corollary}[Budget relative to an idempotent]\label{alg:relative-budget}
+Let $e,b_1,\ldots,b_v\in\Br{m}$ be idempotents. If $w$ is any word
+in them and $z=ewe$, then
+\begin{equation}\label{alg:relative-budget-eq}
+ \rk(e)-\rk(z)\le\sum_{i=1}^{v}\crk(b_i).
+\end{equation}
+The conclusion applies to every positive power of every such
+sandwich, with the same right-hand side.
+\end{corollary}
+
+\begin{proof}
+Apply Theorem~\ref{alg:budget} to the generating family
+$e,b_1,\ldots,b_v$, then subtract $\crk(e)$ from the resulting
+ambient corank inequality. Repeated sandwiches and their powers are
+still words in this fixed family.
+\end{proof}
+
+\begin{remark}
+The bound does not require disjoint supports or commuting generators.
+The hypothesis of idempotence supplies both facts used in the proof:
+an even cap-edge count on each individual component, and preservation
+of that component by transversals. Merely controlling the size of the
+union of supports loses this information.
+The coefficient one is sharp, already for a single nonidentity
+idempotent and the word consisting of that generator. Equality with
+several nonidentity generators is obtained by putting identical
+left and right cap matchings on disjoint even-sized blocks and
+using fixed transversals elsewhere: their product spends exactly
+the sum of the block sizes.
+\end{remark}
+
+\subsection{Sharp support, equality, and stability}
+\label{alg:support-section}
+
+The same classical components give an exact refinement of the support
+estimate used in \cite{OpenAILiveness2026}. This refinement is not
+needed to prove Theorem~\ref{alg:budget}, but it describes precisely
+where that earlier support estimate wastes rank information.
+
+\begin{theorem}[Sharp support and its deficit]\label{alg:support}
+Let $e\in\Br{m}$ be idempotent, let $c=\crk(e)$, and set
+$\delta(e)=3c/2-|\supp(e)|$. Then
+\begin{equation}\label{alg:support-bound}
+ |\supp(e)|\le\min\{m,3c/2\}.
+\end{equation}
+For every admissible even $c\in[0,m]$, this is the exact maximum
+support among idempotents of corank $c$.
+
+More precisely, if the nontrivial odd path components have sizes
+$2a_j+1$ with $a_j\ge1$, and the cycle components have sizes $2b_k$
+with $b_k\ge1$, then
+\begin{equation}\label{alg:deficit}
+ \delta(e)=\sum_j(a_j-1)+\sum_k b_k.
+\end{equation}
+Equality $|\supp(e)|=3c/2$ holds exactly when all nontrivial
+components are three-vertex paths. Removing at most $5\delta(e)$
+indices, in whole components, leaves only such paths and fixed
+transversals. The removed components contribute at most
+$4\delta(e)$ to the original corank. The constants $5$ and $4$
+are both best possible for these component deletion statements.
+\end{theorem}
+
+\begin{proof}
+By Lemma~\ref{alg:components}, the support is exactly the union of
+nontrivial cap components. A path of size $2a+1\ge3$ contributes
+$2a$ to corank and $2a+1$ to support, giving deficit $a-1$.
+A cycle of size $2b$ contributes $2b$ to both, giving deficit $b$.
+Isolated vertices contribute zero. This proves
+\eqref{alg:deficit}, the bound, and the equality classification.
+
+For attainability, write $c=2q$. If $m\ge3q$, use $q$ disjoint
+three-vertex path components and $m-3q$ isolated vertices. If
+$2q\le m<3q$, put $r=m-2q$. Use $r$ three-vertex paths and
+$q-r$ two-vertex cycles. These components use all $m$ vertices,
+have rank $r$, and attain support $m$.
+
+For stability, remove every cycle and every odd path with at least
+five vertices. A removed path has $a\ge2$ and
+$2a+1\le5(a-1)$; a removed cycle satisfies $2b\le5b$.
+Equation~\eqref{alg:deficit} bounds the total number of removed
+vertices by $5\delta(e)$. A single five-vertex alternating path
+has deficit one and must be removed in its entirety under the stated
+component deletion rule. Hence the factor cannot be smaller than five.
+The removed paths satisfy $2a\le4(a-1)$ for $a\ge2$, while the
+removed cycles satisfy $2b\le4b$. Their total corank is at most
+$4\delta(e)$. The same five-vertex path has corank four and
+deficit one, proving sharpness of this second constant.
+\end{proof}
+
+\begin{corollary}[Number of support maximizers]\label{alg:support-count}
+For $q\ge0$ and $m\ge3q$, the number of labeled idempotents of
+corank $2q$ and support $3q$ is
+\begin{equation}\label{alg:maximizer-count}
+ \frac{m!}{q!\,(m-3q)!}.
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Choose $q$ unordered disjoint triples and leave the other vertices
+isolated. Their number is
+\[
+ \frac{m!}{(3!)^q q!\,(m-3q)!}.
+\]
+On each triple there are six idempotent hooks: choose the two distinct transversal
+endpoints in order; the remaining vertex determines both caps.
+Multiplying by $6^q$ gives the formula.
+\end{proof}
+
+\subsection{Corner reductions and unit lifts}
+\label{alg:corners-section}
+
+We next record the finite-semigroup tools needed to apply the budget
+inside successive corners. A \emph{unital} homomorphism preserves
+the designated identity, including when the identity of a corner
+differs from that of its ambient monoid.
+
+\begin{lemma}[Faithful reduction of a matching corner]\label{alg:corner}
+Let $e\in\Br{m}$ be idempotent and put $r=\rk(e)$. There is an
+injective unital homomorphism
+\[
+ R_e:e\Br{m}e\longrightarrow\Br{r}
+\]
+such that $\rk(R_e(z))=\rk(z)$ for every $z$ in the corner.
+\end{lemma}
+
+\begin{proof}
+Use the endpoint sets $X,Y$ and transversal bijection $p:X\to Y$
+from Lemma~\ref{alg:components}. Every $z=eae$ contains all the
+left caps of $e$ on its outer left side and all the right caps of
+$e$ on its outer right side. Delete those prescribed caps, retaining
+the left ports in $X$, the right ports in $Y$, and every matching
+edge among these retained ports. In particular, additional caps
+among retained ports are not deleted.
+
+Number $X$ by $[r]$ and give the right port $p(x)$ the same number
+as the left port $x$. The retained diagram defines $R_e(z)$.
+Restoring the prescribed caps reconstructs $z$, proving injectivity;
+no transversal was deleted, proving rank preservation.
+
+At the interface of $zw$ with $z,w\in e\Br{m}e$, the prescribed
+caps form precisely the connector of $e^2$. The connector sends
+$p(x)$ to $x$, as established in Lemma~\ref{alg:components}.
+Contracting it therefore identifies equal numbers in the two reduced
+diagrams. Any closed connector components are irrelevant. This gives
+$R_e(zw)=R_e(z)R_e(w)$, and the numbering gives $R_e(e)=\Id_r$.
+If $r=0$, all outer ports are prescribed caps, so the same argument
+identifies the corner with the one-element monoid $\Br{0}$.
+\end{proof}
+
+This explicit construction is a version of the local-monoid methods
+used for diagram semigroups; compare
+\cite{Auinger2012,Pin1997,OpenAILiveness2026}.
+
+\begin{lemma}[Minimum-rank corners lift units]\label{alg:unit-lifts}
+Let $S\subseteq\Br{m}$ be nonempty and closed under multiplication,
+and let $\phi:S\twoheadrightarrow M$ be multiplicative, where $M$
+is a monoid. For each idempotent $q\in M$ there is an idempotent
+$e\in S$ above $q$. Every such $e$ gives a unital surjection
+\begin{equation}\label{alg:induced-corner-map}
+ R_e(eSe)\twoheadrightarrow qMq,\qquad R_e(z)\longmapsto\phi(z).
+\end{equation}
+If $e$ has minimum rank among idempotents above $q$, every element
+of $eSe$ whose image is a unit of $qMq$ reduces to a permutation
+diagram. In particular all units of $qMq$ have unit lifts in the
+reduced corner.
+\end{lemma}
+
+\begin{proof}
+In any finite semigroup an element has a positive idempotent power:
+its powers are eventually periodic, and an exponent sufficiently
+large and divisible by the eventual period has this property.
+An idempotent power of a preimage of $q$ is still above $q$.
+Furthermore, $\phi(eSe)=qMq$ by surjectivity, and the identity
+$e$ of the corner maps to $q$. Lemma~\ref{alg:corner} transfers this
+map faithfully to the reduced corner, proving
+\eqref{alg:induced-corner-map}.
+
+Now let $y\in eSe$ map to a unit. Some positive power of its image
+is $q$, and a further positive power of $y$ is an idempotent $z$
+above $q$. Minimality and \eqref{alg:rank-basic} give
+\[
+ \rk(e)\le\rk(z)\le\rk(y)\le\rk(e).
+\]
+Thus $R_e(y)$ has full rank and is a permutation. Its inverse is
+a positive power of itself and therefore belongs to $R_e(eSe)$.
+Surjectivity supplies such a preimage for every target unit.
+\end{proof}
+
+For a finite set $H$, let $\Rel{H}$ be the monoid of all binary
+relations on $H$, in path order:
+$(x,z)\in AB$ when $(x,y)\in A$ and $(y,z)\in B$ for some $y$.
+Its identity is $\Id_H$ and its zero is the empty relation. Its
+units are exactly the permutation relations. A relation on
+$F\subseteq H$ is identified with the same subset of $H\times H$;
+equivalently, it is a relation $A$ satisfying $A=\Id_FA\Id_F$.
+
+\begin{lemma}[A full relation corner]\label{alg:relation-corner}
+Suppose $P\in\Rel{H}$ is idempotent and $F\subseteq H$ satisfies
+$\Id_FP\Id_F=\Id_F$. Put $E=\Id_F$ and $Q=PEP$. Then $Q$ is
+idempotent, $PQ=QP=Q$, and
+\begin{equation}\label{alg:relation-corner-iso}
+ Q\Rel{H}Q\longrightarrow\Rel{F},\qquad Z\longmapsto EZE
+\end{equation}
+is a unital isomorphism, with inverse $A\mapsto PAP$.
+\end{lemma}
+
+\begin{proof}
+From $P^2=P$ and $EPE=E$ one obtains
+$Q^2=Q$, $PQ=QP=Q$, $EQ=EP$, $QE=PE$, and $EQE=E$.
+If $Z=QZQ$, then $PZP=Z$ and
+\[
+ Z=PEPZPEP=PEZEP.
+\]
+Thus $EZE$ determines $Z$. Conversely, for $A=EAE$,
+\[
+ QAQ=PAP,\qquad E(PAP)E=A.
+\]
+These formulas prove the inverse assertion. For $A,B\in\Rel{F}$,
+\[
+ (PAP)(PBP)=PAPBP=PA(EPE)BP=PABP,
+\]
+so the bijection respects products. It sends the corner identity
+$Q$ to $E$, proving unitality.
+\end{proof}
+
+\subsection{Amplifying the rank cost of one relation addition}
+\label{alg:amplification-section}
+
+The next construction follows the two-stage relation-corner strategy
+of \cite{OpenAILiveness2026}. Its rank accounting is different:
+Corollary~\ref{alg:relative-budget} controls both the complete chain
+and each local sandwich, without passing through support sizes.
+
+\begin{definition}\label{alg:admissible-bound}
+A number $L\ge0$ is an \emph{addition bound at size $h\ge2$} if the
+following holds. Whenever an identity-containing submonoid
+$S\subseteq\Br{m}$ admits a unital surjection
+$\phi:S\twoheadrightarrow\Rel{H}$, with $|H|=h$ and with permutation
+diagram lifts for all permutations of $H$, every idempotent $a\in S$
+with
+\[
+ \phi(a)=\Id_H\cup\{(x,y)\},\qquad x\ne y,
+\]
+has $\crk(a)\ge L$.
+\end{definition}
+
+\begin{proposition}[General amplification]\label{alg:amplification}
+Let $p,q\ge1$, $h\ge p+q+1$, and $k=h-p-q+1$. If $L$ is an
+addition bound at size $k$, then
+\begin{equation}\label{alg:general-amplification}
+ \frac{pq}{p+q}\,L
+\end{equation}
+is an addition bound at size $h$.
+\end{proposition}
+
+\begin{proof}
+Fix data from Definition~\ref{alg:admissible-bound} at size $h$ and
+write $c=\crk(a)$. Choose disjoint sets
+$U=\{u_1,\ldots,u_p\}$, $V=\{v_1,\ldots,v_q\}$, and $\{z\}$
+inside $H$. Conjugating $a$ by permutation lifts supplies idempotents
+$s_i,t_j\in S$ such that
+\begin{equation}\label{alg:conjugate-images}
+ \phi(s_i)=\Id_H\cup\{(u_i,z)\},\qquad
+ \phi(t_j)=\Id_H\cup\{(z,v_j)\}.
+\end{equation}
+All these conjugates have corank $c$. The inverses of the chosen
+permutation lifts belong to $S$, since each is a power of a
+finite-order permutation.
+
+Put $P_0=\Id_{H\setminus\{z\}}$ and choose an idempotent lift
+$b_0\in S$ of $P_0$ by taking a positive idempotent power.
+For each pair $(i,j)$ let $g_{ij}=b_0s_it_jb_0$. The path through
+$z$ in \eqref{alg:conjugate-images}, followed by deletion of its
+endpoints from the outer relation, gives
+\[
+ \phi(g_{ij})=P_0\cup\{(u_i,v_j)\}.
+\]
+List the $pq$ pairs in any order. If $E_\ell\subseteq U\times V$
+contains the first $\ell$ listed pairs, define $P_\ell=P_0\cup E_\ell$.
+Because $U\cap V=\varnothing$,
+\begin{equation}\label{alg:union-relations}
+ (P_0\cup A)(P_0\cup B)=P_0\cup(A\cup B)
+ \quad(A,B\subseteq U\times V).
+\end{equation}
+In particular all $P_\ell$ are idempotent.
+
+Inductively choose $b_\ell$ to be a positive idempotent power of
+$b_{\ell-1}g_{ij}b_{\ell-1}$, where $(i,j)$ is the $\ell$th pair.
+Equation~\eqref{alg:union-relations} gives
+\begin{equation}\label{alg:chain}
+ b_\ell^2=b_\ell,\qquad
+ b_\ell\in b_{\ell-1}Sb_{\ell-1},\qquad
+ \phi(b_\ell)=P_\ell.
+\end{equation}
+Write $r_\ell=\rk(b_\ell)$ and
+$\Delta_\ell=r_{\ell-1}-r_\ell\ge0$. Every $b_\ell$ is a word in
+the fixed idempotent family $b_0,s_1,\ldots,s_p,t_1,\ldots,t_q$
+and lies in the corner of $b_0$. Corollary~\ref{alg:relative-budget}
+therefore gives the single global budget
+\begin{equation}\label{alg:global-budget}
+ \sum_{\ell=1}^{pq}\Delta_\ell
+ =r_0-r_{pq}\le(p+q)c.
+\end{equation}
+
+We prove that each $\Delta_\ell\ge L$. Fix the pair $(i,j)$ at
+step $\ell$, put $b=b_{\ell-1}$ and $P=P_{\ell-1}$, and pass to
+the reduced corner
+\[
+ T=R_b(bSb)\subseteq\Br{r_{\ell-1}},\qquad
+ \beta=R_b(b_\ell).
+\]
+The induced map $\theta:T\twoheadrightarrow P\Rel{H}P$ is unital
+by Lemma~\ref{alg:unit-lifts}, and $\beta$ is idempotent with
+\[
+ \theta(\beta)=P_\ell,\qquad \crk(\beta)=\Delta_\ell.
+\]
+Here and below corank is computed in the currently displayed ambient
+Brauer monoid; all ranks are preserved by the reductions.
+
+Retain precisely
+\[
+ F=\{u_i,v_j\}\cup
+    \bigl(H\setminus(U\cup V\cup\{z\})\bigr),\qquad E=\Id_F.
+\]
+Then $|F|=k$. The only potential earlier added pair with both
+endpoints in $F$ is $(u_i,v_j)$, and this pair has not yet been added.
+Thus $EPE=E$. Put $Q=PEP$. By Lemma~\ref{alg:relation-corner},
+restriction identifies $Q\Rel{H}Q$ with $\Rel{F}$, and
+\[
+ Q(P\Rel{H}P)Q=Q\Rel{H}Q.
+\]
+Moreover, $PP_\ell=P_\ell P=P_\ell$, so
+\begin{equation}\label{alg:new-edge-survives}
+ E(QP_\ell Q)E=EP_\ell E
+ =\Id_F\cup\{(u_i,v_j)\}.
+\end{equation}
+
+Choose an idempotent $d\in T$ of minimum rank among those with
+$\theta(d)=Q$, and set $r'=\rk(d)$. Lemma~\ref{alg:unit-lifts}
+and the restriction isomorphism give a unital surjection
+\[
+ \psi:T'=R_d(dTd)\twoheadrightarrow\Rel{F}
+\]
+with permutation diagram lifts for every permutation of $F$.
+Take a positive idempotent power $v$ of $R_d(d\beta d)$.
+Equation~\eqref{alg:new-edge-survives} says that its image before
+taking the power is already the idempotent relation
+$\Id_F\cup\{(u_i,v_j)\}$; the power has the same image.
+The size-$k$ addition bound consequently gives $\crk(v)\ge L$.
+
+On the other hand, apply Corollary~\ref{alg:relative-budget} to the
+two idempotents $d,\beta$ in $\Br{r_{\ell-1}}$. The corresponding
+power of $d\beta d$ loses at most $\crk(\beta)$ relative to
+$\rk(d)$. Faithfulness and rank preservation of $R_d$ give
+\[
+ L\le\crk(v)\le\crk(\beta)=\Delta_\ell.
+\]
+This proves the local claim. Summing it and using
+\eqref{alg:global-budget} yields $pqL\le(p+q)c$, as required.
+\end{proof}
+
+\begin{theorem}[Exponential cost of an addition]\label{alg:rank}
+For every $h\ge2$, the number
+\begin{equation}\label{alg:F}
+ F(h)=2\left(\frac52\right)^{\lfloor(h-2)/9\rfloor}
+\end{equation}
+is an addition bound at size $h$.
+\end{theorem}
+
+\begin{proof}
+Any idempotent above a nonidentity relation has positive corank:
+otherwise it is the ambient identity, contradicting unitality.
+Corank is even, so it is at least two. This proves the assertion
+for $2\le h\le10$. For $h\ge11$, use strong induction and
+Proposition~\ref{alg:amplification} with $p=q=5$. It gives an
+addition bound $(5/2)F(h-9)=F(h)$. All smaller sets used in this
+step have size $h-9\ge2$.
+\end{proof}
+
+\begin{theorem}[Degree of a full relation-monoid divisor]\label{alg:divisor}
+Let $H$ have $h\ge2$ elements. If an identity-containing submonoid
+$S\subseteq\Br{k}$ has a unital surjection onto $\Rel{H}$, then
+\begin{equation}\label{alg:divisor-bound}
+ k\ge F(h)=2\left(\frac52\right)^{\lfloor(h-2)/9\rfloor}.
+\end{equation}
+No assumption about permutation lifts is needed.
+\end{theorem}
+
+\begin{proof}
+Choose an idempotent $e\in S$ of minimum rank above $\Id_H$;
+the identity of $S$ is one possible choice. Its reduced corner
+$R_e(eSe)\subseteq\Br{r}$, where $r=\rk(e)$, maps unitally onto
+$\Rel{H}$ and has permutation lifts by Lemma~\ref{alg:unit-lifts}.
+Lift any relation $\Id_H\cup\{(x,y)\}$ with $x\ne y$ to that
+corner and take an idempotent power. Theorem~\ref{alg:rank} bounds
+its corank below by $F(h)$, whereas its corank is at most $r\le k$.
+\end{proof}
+
+\subsection{Choice of parameters and finite integer bounds}
+\label{alg:optimization-section}
+
+\begin{proposition}[Optimal fixed rectangular amplification]
+\label{alg:optimal-parameters}
+Among fixed positive integer choices of $p,q$, the ratio
+\begin{equation}\label{alg:rate}
+ \frac{\log\bigl(pq/(p+q)\bigr)}{p+q-1}
+\end{equation}
+is maximized at $p=q=5$. Thus the fixed choice in
+Theorem~\ref{alg:rank} has the best asymptotic exponential rate
+within Proposition~\ref{alg:amplification}.
+\end{proposition}
+
+\begin{proof}
+At fixed $p+q$, balancing $p,q$ maximizes their product. For an even
+sum write $p=q=t$; the rate is
+$f(t)=\log(t/2)/(2t-1)$. Its derivative has the sign of
+\[
+ N(t)=2-1/t-2\log(t/2),\qquad
+ N'(t)=(1-2t)/t^2<0\quad(t>1/2).
+\]
+One has $N(4)>0>N(5)$: for example, $\log 2<3/4$ and
+$\log(5/2)>312/343>9/10$, using the first two positive terms of
+$\log((1+x)/(1-x))$ at $x=3/7$ for the latter bound.
+Thus only $t=4,5$ can maximize the rate
+over integers. The inequality $f(5)>f(4)$ is equivalent to
+$5^7>2^{16}$, namely $78125>65536$.
+
+For an odd sum $2t+1$, the best factor is $t(t+1)/(2t+1)$, and
+\[
+ \frac{t(t+1)}{2t+1}
+ \le\sqrt{\frac t2\frac{t+1}{2}}.
+\]
+Its deletion cost $2t$ is the arithmetic mean of $2t-1$ and
+$2t+1$. Taking logarithms shows that its rate is at most the
+larger of the rates for the two neighboring even sums. This
+completes the optimization.
+\end{proof}
+
+The resulting base-two rate is
+\[
+ \frac{\log_2(5/2)}9=0.1468808994\ldots.
+\]
+The optimization concerns this particular rectangular construction;
+it is not an optimality assertion about the true minimum degree of
+a Brauer monoid admitting the required divisor.
+
+\begin{proposition}[Parity-aware finite recurrence]\label{alg:finite-recurrence}
+Define positive integers $D(h)$ recursively by $D(2)=1$ and, for
+$h\ge3$,
+\begin{equation}\label{alg:D}
+ D(h)=\max\left\{1,\ \max_{2\le s\le h-1}
+ \left\lceil\frac{\lfloor s^2/4\rfloor}{s}\,
+ D(h-s+1)\right\rceil\right\}.
+\end{equation}
+Then $2D(h)$ is an addition bound at size $h$, and the conclusion
+of Theorem~\ref{alg:divisor} can be strengthened to $k\ge2D(h)$.
+\end{proposition}
+
+\begin{proof}
+Use strong induction. For each allowed $s$, choose balanced positive
+$p,q$ with $p+q=s$ and $pq=\lfloor s^2/4\rfloor$.
+Proposition~\ref{alg:amplification} and the induction hypothesis
+give corank at least $2pqD(h-s+1)/s$. Corank is an even integer,
+so it is at least twice the corresponding ceiling in
+\eqref{alg:D}. The baseline bound is two, and taking the maximum
+proves the addition claim. The minimum-rank corner proof of
+Theorem~\ref{alg:divisor} then applies unchanged.
+Every recursive argument $h-s+1$ lies between $2$ and $h-1$;
+no monotonicity of $D$ is assumed or needed.
+\end{proof}

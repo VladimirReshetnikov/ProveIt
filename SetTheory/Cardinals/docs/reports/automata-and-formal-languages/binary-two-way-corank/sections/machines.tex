@@ -1,0 +1,326 @@
+\section{A linear-degree local representation of deterministic machines}
+\label{mach:section}
+
+The connection with automata requires more than a matching representation
+of a completed configuration graph. Each input symbol must determine its
+own diagram, independently of its neighbors and its position. We adapt the
+candidate-slot construction of \cite{OpenAILiveness2026}, retaining only
+crossing transitions that occur somewhere in the finite transition table.
+This changes its quadratic degree bound to a linear bound for every fixed
+alphabet. The underlying traversal of a configuration tree is related to
+the halting and reversible-simulation methods of
+\cite{SipserHalting1980,LangeMcKenzieTapp2000}; all traversal and locality
+claims needed here are proved below.
+
+\subsection{Machine convention and statement}
+
+Let $\Sigma$ be an alphabet of size $a$. The scanned input is
+$\Lmark w\Rmark$, where the two endmarkers are distinct and are not in
+$\Sigma$. An $s$-state deterministic two-way finite automaton has state
+set $Q$, initial state $q_0$, accepting set $A\subseteq Q$, and a partial
+function
+\[
+ \delta:Q\times(\Sigma\cup\{\Lmark,\Rmark\})
+ \rightharpoonup Q\times\{-1,0,1\}.
+\]
+Moves at endmarkers never leave the marked tape. The initial head position
+is the left marker. Acceptance means that an accepting state occurs at
+some finite time, including time zero. An undefined transition halts; an
+infinite run without an accepting state rejects. Initial and accepting
+states are included in $s$. Stay moves, partial transition tables, and
+rejecting cycles are allowed throughout.
+
+\begin{theorem}[Sparse-slot local representation]\label{mach:representation}
+For every machine in this convention, there are an even integer $k$ and
+a map
+\[
+ \eta:\Sigma\cup\{\Lmark,\Rmark\}\longrightarrow\Br{k}
+\]
+such that
+\begin{equation}\label{mach:degree-bound}
+ 2\le k\le 2(a+2)s+2.
+\end{equation}
+Designate ports $1,2$ on each side as test ports. For every
+$w=a_1\cdots a_\ell$, the machine accepts $w$ exactly when
+\begin{equation}\label{mach:whole-diagram}
+ \eta(\Lmark)\eta(a_1)\cdots\eta(a_\ell)\eta(\Rmark)
+\end{equation}
+pairs a left test port with a right test port. In that case both left
+test ports are paired with right test ports. Each diagram depends only
+on its displayed symbol and the machine. In particular, for
+$\Sigma=\bits$ one has $k\le8s+2$.
+\end{theorem}
+
+\subsection{Acceptance becomes reachability of one sink}
+
+Add a new state $f$ and define an auxiliary partial successor rule by
+\begin{equation}\label{mach:normalization}
+ \widehat\delta(q,b)=
+ \begin{cases}
+ (f,0),&q\in A,\\
+ \delta(q,b),&q\in Q\setminus A,\\
+ (f,1),&q=f,\ b\ne\Rmark,\\
+ \text{undefined},&q=f,\ b=\Rmark.
+ \end{cases}
+\end{equation}
+The accepting-state rule takes precedence even when the original entry
+was undefined. For a fixed word of length $\ell$, let
+$c_0=(0,q_0)$ and $t=(\ell+1,f)$. The original machine accepts exactly
+when this new successor rule reaches $t$ from $c_0$. Until an accepting
+state first occurs, the runs agree. Such a state enters $f$, which sweeps
+to the right marker and stops. Conversely, the first entry into $f$
+must come from an old accepting state. This includes acceptance initially
+and acceptance on either marker. There is no additional copy of the
+initial state.
+
+\begin{lemma}[The component of a functional sink]\label{mach:tree}
+Let $\sigma:V\rightharpoonup V$ be a partial function on a finite set,
+and suppose $\sigma(t)$ is undefined. Make an undirected multigraph with
+one edge for each defined successor, retaining loops and parallel edges.
+The component of $t$ consists precisely of the vertices whose forward
+successor paths reach $t$, and this component is a tree.
+\end{lemma}
+
+\begin{proof}
+Write $B$ for the set of vertices reaching $t$, allowing zero steps.
+For every successor $u\mapsto v$, one has $u\in B$ if and only if
+$v\in B$: prepend the edge in one direction, and remove the first
+step of the unique successor path in the other. Here $u\ne t$, because
+$t$ has no successor. Membership in $B$ is therefore constant along
+undirected edges. A forward path is also an undirected path, so $B$ is
+exactly the component of $t$.
+
+Every vertex of that component other than $t$ has exactly one outgoing
+edge, and all these edges stay in the component. If the component has
+$v$ vertices, it consequently has $v-1$ edges, counted with multiplicity.
+It is connected and hence is a tree, with neither loops nor parallel
+edges.
+\end{proof}
+
+Apply the lemma to all configurations of \eqref{mach:normalization}.
+Call the resulting undirected successor multigraph $G$. Its component
+containing $t$ is a tree, and contains $c_0$ precisely on accepted
+inputs. Other components may contain nonaccepting cycles. They need no
+modification.
+
+\subsection{A sparse set of boundary slots}
+
+Put $Q'=Q\cup\{f\}$. The fixed set of crossing candidates is
+\begin{equation}\label{mach:slot-set}
+ C=\{(d,p,q):d\in\{-1,1\},\ p,q\in Q',\
+       \widehat\delta(p,b)=(q,d)\text{ for some }b\},
+ \qquad J=|C|.
+\end{equation}
+Each old state supplies at most $a+2$ candidates, one per scanned symbol.
+The new state supplies just the single candidate $(1,f,f)$, since all
+its defined crossing rules are identical. Therefore
+\begin{equation}\label{mach:slot-count}
+ 1\le J\le(a+2)s+1,\qquad k=2J\le2(a+2)s+2.
+\end{equation}
+In fact the first upper bound can be improved to
+$(a+2)(s-|A|)+1$, because old accepting states now have only stay rules.
+The important point is that the candidate set is a union over local
+transition-table entries, not over all pairs of states.
+
+Fix an enumeration of $C$. At every boundary between neighboring cells,
+reserve one edge slot for each $(d,p,q)\in C$. The direction $d$
+determines which cell is the source: the left cell for $d=1$, the right
+cell for $d=-1$. At its target end the candidate edge is always attached
+to state vertex $q$. At its source end attach it to state vertex $p$
+if that cell's scanned symbol makes $\widehat\delta(p,b)=(q,d)$.
+Otherwise attach it to a fresh degree-one vertex. Different unused
+slots have different fresh vertices.
+
+Every actual crossing successor edge occurs in its own slot. Every
+other slot is a leaf edge attached to a state vertex at its target end.
+Keep every actual stay edge inside its cell, with two distinct
+incidences when the edge is a loop. The resulting graph is exactly $G$
+with additional leaves and leaf edges. Thus it preserves connectivity
+between configurations and preserves the tree property of the component
+containing $t$.
+
+This asymmetric attachment rule is what ensures locality. A target cell
+never tests its neighbor's symbol: its target attachment is unconditional.
+Only the source cell chooses between a state vertex and a fresh leaf,
+using its own transition row. Omitting candidates that never occur
+removes possible dummy leaves, without removing any actual successor.
+
+\subsection{Contour wires and the two marker tests}
+
+An incidence records one endpoint of an edge at its vertex. A loop has
+two distinct incidences at the same vertex. At every vertex of positive
+degree choose a cyclic order of its incidences. An arrival along one
+incidence is followed by departure along the next incidence in this
+order. A degree-one vertex consequently reflects the traversal back
+along its edge.
+
+\begin{lemma}[Contour of a tree]\label{mach:contour}
+On a finite tree with at least one edge, these successor rules form one
+cycle on the directed edge traversals, for every choice of cyclic
+orders. Opening the reflection joins at two distinct leaves produces
+two paths, each joining a tip at one leaf to a tip at the other.
+\end{lemma}
+
+\begin{proof}
+The rule permutes the directed traversals: every departure has one
+preceding arrival. A one-edge tree has a single cycle of length two.
+For induction, remove a leaf $z$ from a larger tree and call its neighbor
+$v$. Restrict the cyclic order at $v$ to the remaining incidences.
+Reinserting $vz$ replaces one step of the smaller contour by a detour
+from $v$ to $z$, back to $v$, and then onward. It inserts two directed
+traversals into the existing cycle and creates no new cycle. The contour
+is therefore a circular wire. Cutting it at two distinct reflection
+joins produces two intervals, each with one endpoint at each cut.
+\end{proof}
+
+Only inward boundaries of marker cells receive candidate slots. On the
+outward side of the left-marker cell, add a test edge from $c_0$ to a
+new outer leaf $z_L$. On the outward side of the right-marker cell, add
+a test edge from $t$ to another new outer leaf $z_R$. These two test
+edges preserve the tree property of the $t$-component. The test leaves
+are connected if and only if the original machine accepts.
+
+Each graph edge now receives two lanes, one in each travel direction.
+An incidence has an incoming tip and an outgoing tip. For an edge with
+incidences $i,j$, one lane joins the outgoing tip at $i$ to the incoming
+tip at $j$, and the other joins the outgoing tip at $j$ to the incoming
+tip at $i$. This also applies to loops, whose incidences remain distinct.
+At every vertex except $z_L,z_R$, join the incoming tip of each incidence
+to the outgoing tip of the next incidence in the chosen cyclic order.
+The two outer test-leaf joins are left open.
+
+For each candidate slot, its two ports are labeled by absolute travel
+directions $\rightarrow,\leftarrow$. The same enumeration is used on
+both sides of every cell. The correspondence of ports to local tips is
+\[
+ \begin{array}{c|cc}
+ \text{cell side}&\rightarrow\text{ lane}&\leftarrow\text{ lane}\\ \hline
+ \text{left}&\text{incoming}&\text{outgoing}\\
+ \text{right}&\text{outgoing}&\text{incoming}
+ \end{array}
+\]
+Consequently equal-index gluing joins an outgoing half-lane in one cell
+to the appropriate incoming half-lane in the next.
+
+At each outward marker side, use ports $1,2$ for the two open tips of
+its test edge. The same indices remain ordinary candidate-lane indices
+on inward and ordinary boundaries. Pair the remaining outward ports as
+$(3,4),(5,6),\ldots,(k-1,k)$, disconnected from all graph edges. This
+uses every outward port because $k$ is even; for $k=2$ there are no
+remaining ports.
+
+Choose incidence orders separately for each symbol type, then reuse
+those orders at every occurrence of that symbol. For example, order
+incidences by boundary side and candidate index, followed by state-indexed
+stay-edge roles and the marker test role. A loop's two roles are distinct.
+Every incidence and its attachment are determined by the local symbol,
+so this choice requires no information about an adjacent cell.
+
+\subsection{Local contraction and correctness}
+
+Inside one cell, every lane tip belongs to one lane and one join. The
+only exposed endpoints are its boundary ports, each used exactly once.
+The separately paired unused outward ports have the same degree-one
+property. The finite local wiring therefore has degree two at internal
+points and degree one at its ports. Each component containing a port
+is a path to exactly one other port. Discard closed components and pair
+the two endpoints of every remaining path. This defines a perfect
+matching on the cell's $2k$ ports, which is the required $\eta(b)$.
+
+All operations used to define this matching depend only on $b$ and the
+machine. In particular, an ordinary symbol has the same diagram at its
+first, last, and intermediate occurrences. Gluing equal-index ports of
+neighboring cell diagrams reconstructs the full two-lane wiring.
+Contracting paths before gluing or after gluing yields the same matching
+of outer ports, by the path definition of Brauer multiplication. Thus
+\eqref{mach:whole-diagram} represents the complete wiring with the two
+test-leaf joins open.
+
+If a wire joins a left test port to a right test port, it stays inside
+one component of the augmented graph. The separately paired outward
+ports cannot participate. Hence $z_L$ and $z_R$ are connected, and the
+machine accepts. Conversely, on an accepted input both test leaves lie
+in the tree component of $t$. Temporarily close their reflection joins.
+Lemma~\ref{mach:contour} gives one circular contour through both joins;
+opening them again gives two paths between the two test sides. Both
+left test ports therefore meet right test ports. This proves the
+acceptance criterion and completes Theorem~\ref{mach:representation}.
+
+For $w$ empty, there are still two distinct adjacent marker cells. Their
+inward boundaries glue by precisely the same slot scheme, and both test
+edges are present. The accepted component has at least those two edges,
+so the tree-contour argument applies without an exceptional case.
+Rejecting cycles elsewhere never enter the proof of the converse and
+cannot create a wire between disconnected test leaves.
+
+Extend $\eta$ to body words by multiplication, with
+$\eta(\varepsilon)=\Id$. Equality $\eta(u)=\eta(v)$ then implies
+that $xuy$ and $xvy$ have the same acceptance status for every pair of
+body words $x,y$. This follows by adjoining the same marker diagrams
+and context diagrams to the two equal products. This context property
+is the precise form needed for the syntactic-monoid arguments below.
+
+\subsection{Why the linear order cannot be improved universally}
+
+The following observation concerns arbitrary recognition by Brauer
+monoids, so it also applies to the particular test-port representation.
+Fixed marker diagrams and a fixed port predicate can always be absorbed
+into an accepting subset of the monoid of body-word diagrams.
+
+\begin{theorem}[A linear degree is sometimes necessary]
+\label{mach:linear-optimality}
+For every $s\ge2$ there is a binary language recognized by an $s$-state
+one-way DFA under the usual end-of-input acceptance convention such that
+every monoid recognizer
+\[
+ \rho:\bits^*\longrightarrow\Br{m},\qquad
+ L=\rho^{-1}(P),\quad P\subseteq\Br{m},
+\]
+has $m\ge s$. The same language has an $(s+1)$-state machine in the
+accepting-at-any-time convention of this section. Consequently a universal
+degree bound of order $o(s)$ is impossible even over a binary alphabet.
+\end{theorem}
+
+\begin{proof}
+Use state set $[s]$, initial state $1$, and final set $\{1\}$. Let
+$0$ act as the cycle $(1\,2\,\cdots\,s)$ and $1$ as the
+transposition $(1\,2)$. These permutations generate the full symmetric
+group $\mathfrak S_s$: conjugates of the transposition give the adjacent
+transpositions. Finite orders ensure that inverses are represented by
+positive words as well.
+
+The syntactic monoid of the accepted language is precisely
+$\mathfrak S_s$. Equal word permutations give equal acceptance in every
+context. Conversely, suppose two permutations disagree at state $i$.
+A prefix can carry state $1$ to $i$, and a suffix can carry one of the
+two distinct resulting states to $1$ and the other away from $1$.
+The corresponding context distinguishes the two words. This proves the
+claimed syntactic monoid directly.
+
+Let $S=\rho(\bits^*)$. If two words have equal $\rho$-images, every
+context also has equal images and hence equal acceptance. Therefore the
+assignment from a word image to its syntactic class is a well-defined
+unital surjection $S\twoheadrightarrow\mathfrak S_s$.
+Choose an idempotent $e$ of minimum rank above the group identity and
+put $r=\rk(e)$. Lemmas~\ref{alg:corner} and~\ref{alg:unit-lifts}
+give a reduced corner
+\[
+ R_e(eSe)\subseteq\Br{r}
+ \quad\text{surjecting onto }\mathfrak S_s.
+\]
+Every target element is a unit, so every element of this reduced corner
+is a permutation. Thus it is a subgroup of $\mathfrak S_r$ and
+\[
+ s!\le |R_e(eSe)|\le r!\le m!.
+\]
+For $s\ge2$ this forces $m\ge s$.
+
+To realize the witness in the convention used above, keep all $s$
+permutation states nonaccepting, move right on body symbols, and add
+one accepting state entered at the right marker exactly from state $1$.
+The left-marker rule enters the body without changing the permutation
+state. Other right-marker rules may be undefined. This uses $s+1$
+states, including the new accepting state, and also handles the empty
+word. It proves the stated asymptotic necessity. The argument does not
+claim that the constant $8$ in the binary upper bound is optimal.
+\end{proof}

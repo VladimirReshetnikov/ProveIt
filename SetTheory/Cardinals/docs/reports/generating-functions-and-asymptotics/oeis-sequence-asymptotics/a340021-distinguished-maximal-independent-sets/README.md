@@ -1,57 +1,215 @@
-Report206
-Graphs with a distinguished maximal independent set
-All fixed order expansions and inverse thresholds for OEIS A340021
-4 October 2026
+# Graphs with a Distinguished Maximal Independent Set (OEIS A340021)
 
-CONTENTS
-Report206.tex and Report206.pdf: standalone article, complete proofs and sources
-verify_exact.py: standard-library rational and integer verification
-independent_checks.py: independent permutation/inclusion-exclusion and symbolic checks
-diagnostics.py: 220-decimal-digit numerical illustrations, not interval certificates
-build.py: complete deterministic regeneration and packaging
-exact_results.json, independent_results.json, diagnostics.json, checks.json: generated data
-tables.tex: every printed table cell, generated from the programs' output
-requirements.txt: Python dependency versions
-MANIFEST.json: SHA-256 digests of all other archive files
+**A uniform Burnside reduction of the unlabeled count to the expected number
+of maximal cliques in `G(n, 1/2)`, every fixed algebraic order through a full
+discrete Poisson carrier, exact Lambert-W switch points with logistic windows,
+and finite Newton inversion with two-ceiling threshold envelopes.**
 
-REBUILD
-Use Python 3.10 or later, the pinned dependencies in requirements.txt, and
-pdfLaTeX with standard amsmath, amsthm, mathtools, lmodern, microtype,
-geometry, booktabs, longtable and hyperref packages.
-Run:
-    python build.py
-In a separate archive extraction, run:
-    python -O build.py
-Both regenerate all data, table source, PDF, manifest and Report206.zip.
-The archive uses sorted, uncompressed entries and fixed timestamps; PDF
-metadata dates and random identifiers are disabled. Complete ZIP bytes are
-expected to match with the same Python, SymPy, mpmath and TeX environment.
-Recorded environment: Python 3.12.14, SymPy 1.14.0, mpmath 1.3.0,
-pdfTeX 1.40.26 (TeX Live 2025/dev/Debian). If the installed TeX format is
-missing, the build initializes a private format from installed TeX sources
-in a temporary directory. Shell escape is disabled. No TeX binary is downloaded.
-The build invokes six deliberately false checks in normal and optimized
-Python and requires all six to fail. No correctness guard uses assert.
+A single-source report: bundle Report 206 of one external research session
+(the session bundle of Reports 1–243, arrival commit `60f54ea06`), placed by
+`f79c9bef1` (batch 112) and written on 7 October 2026. The author line and
+the PDF author field read "Report206"; the manuscript names no person, tool
+or addressee.
 
-The first exact verifier uses only the standard library and can be run alone:
-    python verify_exact.py
-    python -O verify_exact.py
+| Source | Archive | Placed | Shipped as |
+|---|---|---|---|
+| *Graphs with a distinguished maximal independent set: All fixed order expansions and inverse thresholds for A340021* ("Report206", 4 October 2026) | `Report206.zip` (496,154 bytes, 14 files, no wrapper directory; `Report206.tex`, 513 lines, 16 pp.) | `f79c9bef1` | `article.tex` |
 
-INTERPRETATION
-The exact/formal checks certify the finite identities they test. They do not
-establish asymptotic remainder constants or effective onsets. Floating data
-use a documented finite series cutoff and are illustrative, not rigorous
-interval computations. Inverse constants and onsets in the article are
-existential. The integer-safe conclusion is a two-ceiling envelope, not an
-unconditional single-ceiling rounding formula.
+The package records no ProveIt commit, so no pin is recorded.
 
-Source scope: 20 displayed OEIS terms checked from an inspected cached
-snapshot. Direct raw entry/b-file access failed. No claim covers the full
-b-file or every later OEIS revision. The article credits classical
-maximal-clique expectation, logarithmic growth, shrinking-width, rigidity,
-colored-graph, and depoissonization prior. No global priority claim is made.
+**Status:** AI-assisted, unrefereed, not formalized: no Lean or Rocq
+declaration exists for any statement of this report, and its place in the
+collection confers no formal status.
 
-PUBLIC MATERIALS ONLY
-This archive includes newly written report and code materials. It does not
-redistribute any third-party PDF, internal note, private report or credential.
-All literature is referenced by public links in Report206.pdf/tex.
+## What the report proves
+
+`U_n` counts graphs on `n` vertices with a distinguished maximal independent
+set (black), up to color-preserving isomorphism; `a = log 2`, `N = C(n,2)`;
+`b_n = Σ_k C(n,k) 2^{−C(k,2)} (1−2^{−k})^{n−k}` is the expected number of
+maximal cliques in `G(n,1/2)`, and the identity Burnside term is
+`I_n = 2^N b_n/n!`.
+
+- Section 2: the exact cycle-type formula (5) (Howroyd's program in OEIS).
+- **Theorem 3.1:** `U_n = I_n (1 + O(n² 2^{−3n/8}))`, uniformly for
+  `U(n,k)/I(n,k)` over `k ≤ n/4`; Corollary 3.2: total-variation and
+  nontrivial-automorphism consequences.
+- **Theorem 4.1:** for every fixed `R`,
+  `U_n = (2^N/n!){H_R(n) + O_R(μ_0(n)(log n)^{2R}/n^R)}` with the full
+  discrete carrier `H_R = Σ_{j<R} t^{−j} μ_j(t)` and an exact finite recipe
+  for the polynomials `P_j`; `μ_0` is the Poisson transform of `b_n` (19)
+  and `μ_1 = −(t²/2)μ_0''` (20).
+- Theorem 5.1: a finite-sector expansion in powers of `1/log n` only.
+- **Theorems 6.1–6.3:** the black-size law within `O((log n)²/n)` of the
+  carrier law; exact switches `t_k = 2^{k+1} W((k+1)/2)` with logistic
+  windows (error `O(√(log k/k))`); concentration on an adjacent pair up to
+  `O((log log n/log n)^{1/3})`.
+- **Theorem 7.1:** finitely many explicit Newton steps from
+  `z_0 = x + d` give `⌈z_j − ε⌉ ≤ ν(Y) ≤ ⌈z_j + ε⌉` with
+  `ε = O((log x)^{2R}/x^{R+1} + (log x)^{2^{j+1}}/x^{2^{j+1}−1})`; a closed
+  second approximation `z_*` (39).
+
+(Section, statement and equation numbers are those of the committed PDF.)
+
+## What the report does not claim
+
+The maximal-clique expectation and its growth (Bollobás–Erdős;
+Fried–Kessler–Shnerb), rigidity (Erdős–Rényi), colored-graph expansions
+(Wright), depoissonization (Banderier–Hwang–Ravelomanana–Zacharovas),
+split graphs (Troyka) and orbit enumeration (Myrvold–Fowler) are prior; no
+general new method and no worldwide priority claim. Fixed orders and sector
+widths only; sector expansions give only powers of `1/log n`; slow logistic
+and pair laws; existential inverse constants and onsets, no single-ceiling
+rule; floating tables use a finite cutoff and certify nothing; the first
+symmetry coefficient is not computed.
+
+## The write's findings
+
+- **The OEIS entry** (Remark 10.1): A340021 (#15, 16 February 2025, Andrew
+  Howroyd, 2020) quoted. The source saw only a cached snapshot (its b-file
+  request returned HTTP 403); the b-file (n = 0..40) equals the write's own
+  evaluation of (5) in all 41 terms, so the twenty terms of Table 1 agree
+  with the current entry. No asymptotic formula and no conjecture in the
+  entry; no OEIS edit.
+- **Recomputed:** brute-force canonical counts for `n ≤ 5`; the identity
+  sum; `C_1, C_2, C_3, P_2, P_3`, `p_1(j)` (SymPy); the Poisson identity and
+  the Charlier identity numerically; **every entry of Tables 2–4** with the
+  write's own carrier implementation at 90 digits (all correct six-digit
+  roundings); the closed approximation `z_*` against the stated
+  `O((log x)³/x²)`.
+- **Remark 7.2 (transseries volume):** growth outside `p0:def:model`; after
+  `G = sqrt(2F_R/a)` the centre `z_0` agrees with the first two terms of
+  `plt:thm:lw-template` for the leading monomial–logarithmic datum, but the
+  Newton iterates and `z_*` are not shown to be instances (the carrier's
+  lattice phase); Theorem 7.1 is an analogue of `p0:thm:staircase`(2) proved
+  directly, not an instance; the switch points `t_k` are exact instances of
+  `p0:thm:lambert-core` (positive branch).
+
+## Further questions, and the standing rule
+
+Section 11 (the source's list, with a dated note under Vladimir's standing
+rule of 4 October 2026): effective inverse certification, a sharper symmetry
+correction, sharper phase laws, growing orders and adaptive sectors, other
+edge probabilities; added from the non-claims: interval-certified carrier
+coefficients and tables, and the logistic window at moderate `k`. No claim of
+the source was found false; nothing is refuted.
+
+## Relation to the repository
+
+No other file of the repository names A340021. `a001425-commutative-magmas`
+(batch 112) also reduces an unlabeled count to a labeled one by Burnside's
+lemma, for a different object; `graph-theory/trapezohedral-minimal-dominating-sets`
+and `log-concavity-and-unimodality/independence-system-thresholds` use maximal
+independent sets of particular graphs. No shared result, so no reciprocal
+note. No Lean or Rocq development treats this sequence.
+
+## Labels and numbering
+
+All labels carry the prefix `mis:`: the 54 delivered labels (50 in the text,
+4 in the generated tables), prefixed before anything cited them (44
+references updated: 29 `\eqref`, 15 `\ref`), the write's label for Section 1
+(`mis:sec:scope`) and its three (`mis:sec:provenance`,
+`mis:rem:transseries`, `mis:rem:oeis`); 58 in all. The write's remarks are the
+last statements of their sections and its additions contain no numbered
+display or table, so every number is delivered (checked against the `.aux` of
+a build of the delivered text: 54 labels, 0 differences). Section 1.2 is the
+write's.
+
+## Notation
+
+No symbol was renamed. Letters with several senses are tabulated in Section
+1.2 with the false readings: `U` (each graph counted once per orbit of its
+maximal independent sets), `a`, `N`, `L`, `b_n`/`B`, `μ` (`μ_0(n)` is not
+`b_n`), `P`/`p`/`C`, `y`, `k`/`K`/`m`, `W`, `D`/`d`, `s`/`t`, `q`/`r`, and the
+inverse symbols `ρ_R`, `ν`, `x`, `z`.
+
+## The write's additions
+
+The status note after the abstract, Section 1.2 (provenance, sources read,
+checks, relation, collected non-claims, reading conventions), Remarks 7.2 and
+10.1, the dated notes in Sections 8, 9 and 11, the label prefixes and the label
+of Section 1, the bibliography entry `TSvol`, the `\file` macro and
+`writenote` environment, two preamble packages (`xurl`, which lets the long
+Myrvold–Fowler URL break and so removes the delivered build's one underfull
+line, and `array`), and the generated tables printed inline instead of
+`\input{tables.tex}`. Everything else is delivered text.
+
+## Files
+
+```text
+README.md                    this guide (replaces the delivered README.txt)
+article.tex                  the report (delivered Report206.tex, written)
+article.pdf                  compiled report, 20 pages
+code/build.py                deterministic regeneration, PDF and ZIP builder
+code/diagnostics.py          220-digit numerical illustrations (Tables 2-4)
+code/independent_checks.py   permutation edge orbits with inclusion-exclusion, SymPy identities
+code/verify_exact.py         standard-library exact verification (OEIS terms, Burnside rows, inequalities)
+data/checks.json             build summary (guard cases, cross-implementation agreement)
+data/diagnostics.json        output of diagnostics.py
+data/exact_results.json      output of verify_exact.py
+data/independent_results.json output of independent_checks.py
+data/requirements.txt        SymPy 1.14.0 and mpmath 1.3.0
+data/tables.tex              generated table source, printed inline in Section 8
+```
+
+Every file except `README.md`, `article.tex` and `article.pdf` is
+byte-identical to its delivery (the delivered root files, moved to `code/`
+and `data/`). Not shipped (retrievable from `60f54ea06`): the delivered
+`Report206.pdf` (16 pages), the delivered `README.txt` (replaced by this
+guide), and the pure checksum manifest `MANIFEST.json` (13 entries, verified at
+the write).
+
+```sh
+git show 60f54ea06:docs/incoming/Report206.zip > <scratch>/r206.zip
+```
+
+**Delivered text that names the delivery layout.** `code/build.py` expects
+the delivered flat layout (all files at the root, with `MANIFEST.json`) and
+writes `Report206.zip`, so it runs only in a re-extracted archive; Section 9
+of the report describes the delivered archive (a dated note there says what
+is shipped).
+
+**Third-party data.** `data/exact_results.json` and `data/tables.tex` contain
+the twenty OEIS terms displayed for A340021 (CC BY-SA 4.0,
+https://oeis.org/LICENSE).
+
+## Rerunning the checks (on scratch copies)
+
+Never run the programs in place. The three programs print JSON to standard
+output and read no files. From this directory (Git Bash):
+
+```sh
+T=$(mktemp -d); cp code/*.py "$T/"; cd "$T"
+py -B verify_exact.py > exact.json                 # standard library only, 2 s
+py -B independent_checks.py > independent.json     # SymPy 1.14.0, about 30 s
+py -B diagnostics.py > diagnostics.json            # mpmath 1.3.0, about 15 s
+py -c "import json,sys; d=sys.argv[1]; [print(a, json.load(open(a))==json.load(open(d+'/'+b))) for a,b in [('exact.json','exact_results.json'),('independent.json','independent_results.json'),('diagnostics.json','diagnostics.json')]]" "$(cygpath -m "$OLDPWD/data")"
+```
+
+At the write (7 October 2026, Windows, Python 3.14.4) all three outputs
+equalled the shipped JSON files, from the shipped code and from a delivered
+copy (`verify_exact.py` also under `-O`, identical). The builder was not run.
+
+## Build
+
+pdfLaTeX (lmodern, microtype, amsmath, amssymb, amsthm, mathtools, booktabs,
+longtable, geometry, hyperref, xurl, array). In a scratch copy:
+
+```sh
+B=$(mktemp -d); cp article.tex "$B/"; cd "$B"
+latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+```
+
+The committed PDF was built this way with MiKTeX pdfLaTeX (7 October 2026):
+20 pages; no errors or warnings, no undefined references, no multiply
+defined labels, no duplicate destinations, no overfull or underfull boxes.
+The delivered text (with its `tables.tex`) gives 16 pages and one underfull
+line, removed by `xurl`.
+
+## Provenance
+
+- Batch 112 of `docs/incoming`: bundle Report 206 (arrival `60f54ea06`),
+  placed unprefixed by `f79c9bef1`; written 7 October 2026.
+- Sources cited by the report: OEIS A340021; Bollobás–Erdős (1976);
+  Fried–Kessler–Shnerb (2016); Banderier–Hwang–Ravelomanana–Zacharovas
+  (2014); Erdős–Rényi (1963); Wright (1972); Myrvold–Fowler (2013); Troyka
+  (2019); and the repository's transseries volume (added by the write).
