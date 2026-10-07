@@ -226,6 +226,9 @@ import GowersSzemeredi.Proofs18PrimeCubeModel
 import GowersSzemeredi.Proofs18CubicPrimeModel
 import GowersSzemeredi.Proofs18UniformInterval
 
+import GowersSzemeredi.Proofs08QuadraticFrequencies
+import GowersSzemeredi.Proofs08AffineFrequencyProgression
+
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 
