@@ -12,8 +12,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 611 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 3,922 public Gowers theorems and found only propext,
+  All 614 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 3,941 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 113 exact
   companion proofs and 7 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -1842,6 +1842,18 @@ Transport and spectrum inputs for the large-piece construction
   Lemma 14.3. The preceding-dimensional Theorem 16.2 now applies to this
   spectrum with exactly the parameters of Lemma 16.6 and a threshold
   uniform in the input domain. The all-ones unit cover remains unresolved.
+
+Compatible common-base witnesses for the Section 16 lifting step
+  Proofs16DenseSelection retains the sidelength cardinality and each selected
+  cube-domain density from the actual Lemma 16.5 construction, together with
+  one shared selected family and induced map. Proofs16VertexIdentity solves
+  the alternating cube sum for the all-ones vertex with its correct parity
+  signs and derives the identity required by Lemma 16.9 from Lemma 16.7.
+  Proofs16CommonBaseAssembly applies the preceding-dimensional induction to
+  the spectrum, intersects its retained base with the selected sidelengths,
+  and constructs Section16CommonBaseData with all these compatible witnesses.
+  Its threshold is uniform over the input structured pair. This discharges
+  the common-base bookkeeping; the general all-ones lifting remains open.
 
 Reproducible checks (from repository root)
   python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.Audit

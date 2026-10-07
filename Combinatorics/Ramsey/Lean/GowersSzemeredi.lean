@@ -432,6 +432,7 @@ import GowersSzemeredi.Proofs16MultilinearProduct
 import GowersSzemeredi.Proofs16InductionAssembly
 import GowersSzemeredi.Proofs16LargePieceMass
 import GowersSzemeredi.Proofs16SpectrumInduction
+import GowersSzemeredi.Proofs16CommonBaseAssembly
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 
