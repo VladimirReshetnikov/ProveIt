@@ -129,6 +129,34 @@ Theorems 9.1 and 21.2 are proved directly at the integers and are **not**
 instances of `p0:thm:staircase` (they reach the conclusion of its item (2) when
 the ceilings agree).
 
+## Independent check of the write (7 October 2026)
+
+An independent adversarial check of the write (`bb51b57e3`) reconstructed its
+additions from the commit's diff, rebuilt both delivered manuscripts and diffed
+them against the Parts, and read A330499 (#11) and A330498 (#13) again.
+
+- **Confirmed:** the proof of Kotěšovec's conjecture as stated (the live
+  formula field is quoted verbatim; (77) is it with `c = log 2`); the write's
+  observation, re-derived, with an explicit amplitude ratio
+  `τ(odd m)√(2μm)/σ(odd m)` (`√(2M) = 1.8538…` for the first mode of A330498
+  against A330499; the two `H_0(√n)` stand in the ratio 1.853–1.857 at
+  `n = 100…600`); the transseries classification, checked against
+  `p0:prop:factorial-core`, `p0:eq:operator-series` and `p0:thm:staircase`;
+  both sequences recomputed from the Stirling formulas to `n = 600`, equal to
+  the two live b-files; every intake number (scaled errors and residuals);
+  `C` and its six-digit truncation; the certificates 359101/26730899 and
+  599/89401; Table 1; the two `P_1` specializations (`κ_3 = M(M²+1)`);
+  `h(m) = (1 − v)τ(u)` and the Voronoi coefficient; the numbering table (the
+  `.aux` of both delivered builds: Part I unchanged, Part II shifted exactly by
+  12 / 71 / 3); 176 + 19 labels; the 48 staged files; both exact checkers and
+  `verify_coefficients.py` (PASS).
+- **Corrected (dated bracket):** the notation-table row for `α_m`, `A_m`, `β_m`
+  attributed `α = 1/4 + J/2` to Part I; it is Part II's exponent, and Part I's
+  `α` is the dual parameter.
+
+The check's record is the last paragraph of the front-matter section "What was
+checked, and what was not". Its code and outputs are outside the repository.
+
 ## Relation to the repository
 
 No other placed report treats A330499, A330498 or A003713. Part II's
@@ -182,7 +210,7 @@ provenance and merge decisions, what was checked, neighbours), the
 ```text
 README.md                                     this guide (replaces Report 185's delivered README)
 article.tex                                   the merged report (delivered Report185.tex, merged with Report211.tex)
-article.pdf                                   compiled report, 43 pages
+article.pdf                                   compiled report, 44 pages
 185-eta-README_REPRODUCIBILITY.md             Part I: integrity and reproducibility limits (delivered README_REPRODUCIBILITY.md)
 185-eta-optional-README.md                    Part I: optional numerical diagnostics (delivered optional/README.md)
 code/185-eta-verify_exact.py                  Part I: mandatory exact kernel (delivered code/verify_exact.py)
@@ -312,7 +340,8 @@ B=$(mktemp -d); cp article.tex "$B/"; cd "$B"
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The committed PDF was built this way with MiKTeX: 43 pages; no errors or
+The committed PDF was rebuilt this way with MiKTeX after the independent check
+(7 October 2026): 44 pages (the write's build had 43); no errors or
 warnings, no undefined references or citations, no multiply defined labels,
 no duplicate PDF destinations, no overfull or underfull boxes. The delivered
 sources, built the same way, give 21 and 16 pages.
