@@ -1,0 +1,349 @@
+\section{Pattern counts and a nearly uniform outer coloring}
+\label{sec:outer}
+
+\subsection{Counting comparisons, with equality retained}
+
+\begin{lemma}[Arrangement count]\label{lem:arrangement}
+The joint signs, including zero signs, of \(u\) affine functions on
+\(\R^e\) have at most
+\begin{equation}\label{eq:arrangement}
+ \sum_{d=0}^e\binom ud\sum_{j=0}^{e-d}\binom uj
+ \le(e+1)^2(u+1)^e
+\end{equation}
+realized values. Restricting the parameter domain does not increase
+this count.
+\end{lemma}
+
+\begin{proof}
+The strict regions of \(u\) hyperplanes in dimension \(e\) number at
+most \(\sum_{j=0}^e\binom uj\). Add the hyperplanes one at a time:
+a new hyperplane splits no more regions than the number of regions
+in its induced arrangement of dimension \(e-1\). Induction and
+Pascal's identity prove the bound.
+For a sign pattern with zero signs, select \(d\) independent zero
+equations defining their common affine intersection. There are at
+most \(\binom ud\) choices. On that intersection count strict regions
+in dimension \(e-d\); all equations vanishing identically there have
+forced zero signs. Sum over \(d\). The final estimate follows by
+bounding every binomial product by \((u+1)^e\).
+\end{proof}
+
+This elementary form of the standard arrangement bound
+\cite{stanley2007} keeps exact boundary events visible.
+
+\begin{lemma}[Global label entropy]\label{lem:global}
+Let \(T_{\rm glob}\) be the number of literal label words
+\((L(n_j))_{j<k}\) of nonzero-step cyclic progressions. Then
+\begin{equation}\label{eq:global-entropy}
+ \log T_{\rm glob}
+ =O\!\left(D(\log k+\log\lambda)\right)
+ =O_A(k^{2/3}L^{5/3}).
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+For a circle partition with \(F\) endpoints, freely vary a scalar
+start and step \(a,b\in[0,1)\). The labels of
+\((a+jb)\bmod1\), \(j<k\), are determined by comparisons of \(a+jb\)
+with all lifts \(\tau+z\) of endpoints, where \(-1\le z\le k\).
+At most \(3k^2F\) affine lines in the parameters \((a,b)\) suffice.
+By \cref{lem:arrangement}, there are at most
+\(9(3k^2F+1)^2\) scalar words.
+
+Apply this separately to all \(2D\) coordinates. Letting their starts
+and steps vary independently only enlarges the possible set.
+We may take \(F=|U|+|V|=k^2\lambda+O(k^3L)\), so
+\[
+ T_{\rm glob}\le[9(3k^2F+1)^2]^{2D}.
+\]
+Now use \cref{lem:dilation}. The identity of every interval, not just
+its rank among the visits, is preserved in this count.
+\end{proof}
+
+\subsection{Eligible blocks and counting through one fixed label}
+
+Fix \(h_0<h\le2M\) and \(t\in\{0,\ldots,h-1\}^D\).
+In the second coordinate system define
+\[
+ s_i=\frac{h}{\gcd(h,\lambda t_i)}.
+\]
+A coordinate is \emph{stationary} if \(s_i=1\), and \emph{rotating}
+otherwise. By \cref{lem:dilation}, a rotating coordinate has \(s_i>h_0\).
+Stationary refers only to its rational motion; a real drift is allowed.
+
+\begin{definition}\label{def:eligible}
+Consider paths, in the torus,
+\[
+ X_z=x+\frac zh(t+u),\qquad
+ Y_z=y+\frac zh(\lambda t+v),\qquad 0\le z<h,
+\]
+where \(x,y\in\T^D\) and \(u,v\in\R^D\).
+A position is \emph{regular} when
+\(\rho(Y_{z,i})\ge\eta\) in every rotating coordinate.
+Record \(L(X_z,Y_z)\) at a regular position and a dummy symbol at
+every other position.
+The resulting literal word is \emph{eligible} for \(h,t\) if it has
+a realization satisfying all of the following:
+\begin{enumerate}
+ \item at least \(h/2\) positions are regular, and their full labels
+       are pairwise distinct;
+ \item \(|u_i|\le H_x\) in every coordinate and \(|v_i|\le H\)
+       in each rotating coordinate;
+ \item in each stationary coordinate,
+       \(|v_i|\le |V(Y_{z,i})|\) at every regular position.
+\end{enumerate}
+\end{definition}
+
+Only the recorded word and \(h,t\) are counted; its potentially many
+real realizations do not give extra events.
+
+\begin{lemma}[Anchored local count]\label{lem:local}
+There is an absolute constant \(C_1\) such that for any full label
+\(\beta\) and \(h_0<h\le2M\), the number of pairs consisting of \(t\)
+and an eligible pattern for \(h,t\) containing \(\beta\) is at most
+\begin{equation}\label{eq:local-count}
+ \left(\frac{C_1 D h}{\zeta}\right)^{6D}.
+\end{equation}
+The constant is independent of \(q,\lambda\), and the widths of the
+intervals in \(\beta\).
+\end{lemma}
+
+\begin{proof}
+Fix \(t\) and an anchor index \(z_0\) recording \(\beta\).
+In any scalar coordinate re-anchor the representative at \(z_0\).
+Its value at \(z\) before reducing modulo one is
+\[
+ a+\tau_z+\frac{z-z_0}{h}b,
+\]
+where \(\tau_z\) is fixed, \(a\) belongs to the interval in \(\beta\),
+and \(b\) is the appropriate drift.
+We retain only the restrictions on \(a,b\) imposed at the anchor.
+For a first coordinate the total target range has length at most
+\(3H_x\), hence meets at most four lifted \(U\)-endpoints.
+For a stationary second coordinate with anchor interval \(I\), the
+translation is integral and \(|b|\le |I|\).
+Every target lies in \(\mathcal N(I)\), meeting at most \(49\)
+endpoints by \cref{lem:mesh}.
+For a rotating second coordinate the target range has length at most
+\(4H\), and its truncated output is determined by at most
+\(C_0D/\zeta\) breakpoints.
+
+All the enclosing ranges and breakpoint lifts are fixed before
+\((a,b)\) vary. Their magnitude introduces no additional factor:
+each range is shorter than one in the second system, so each
+relevant circle breakpoint has at most one lift in it.
+Over all \(h\) positions there are \(O(Dh/\zeta)\) comparisons in
+two real parameters. Thus the scalar output has at most
+\(C_2(Dh/\zeta)^2\) possibilities, including boundary outputs.
+Taking the product over \(2D\) scalar coordinates determines the
+dummy mask as well as the actual regular labels.
+There is no separate mask to enumerate.
+
+There are \(h^D\) choices of \(t\) and at most \(h\) choices of \(z_0\).
+The resulting bound is
+\[
+ h^{D+1}[C_2(Dh/\zeta)^2]^{2D}
+ \le(C_1Dh/\zeta)^{6D},
+\]
+after enlarging an absolute constant.
+\end{proof}
+
+\subsection{Residual tests: the change needed for near-uniformity}
+
+For each realized word \(w\) and integer \(h_0<h\le2M\), divide its
+first \(h\fl{k/h}\) positions into consecutive blocks of length \(h\).
+Let
+\begin{equation}\label{eq:residual-set}
+ S(w,h)=\bigcup\{\text{full blocks containing no heavy position of }w\}.
+\end{equation}
+Every position in this set is light. Crucially, \(S(w,h)\) is determined
+by \(w,h\), rather than being an arbitrary subset of the light
+positions.
+
+We impose two global kinds of tests: the set of all light positions,
+and each \(S(w,h)\). A test is included only if its set has at least
+\(\zeta k\) positions. For such a set \(S\), let \(w_{\max}\) be its
+maximum label multiplicity. Group occurrences by label, fix their
+order deterministically from the word, and distribute the list
+cyclically into \(w_{\max}\) rows.
+Each row has distinct labels and at least
+\begin{equation}\label{eq:row-length}
+ \fl{|S|/w_{\max}}\ge\zeta M-1
+\end{equation}
+positions. The number of row tests is at most
+\(k(2M+1)T_{\rm glob}\).
+
+The local tests are all eligible recorded patterns, tested on their
+regular positions. Each also has distinct labels.
+For a test of length \(l\), we require each color \(b\in\Z/s\Z\)
+to occur between \((1/s-\zeta)l\) and \((1/s+\zeta)l\).
+
+\begin{lemma}[Finite local lemma]\label{lem:lll}
+Let finitely many events \(E\) have a dependency graph such that
+each \(E\) is independent of the joint sigma-algebra of its
+nonneighbors. If \(0<z_E<1\) and
+\[
+ \Prb(E)\le z_E\prod_{F\sim E}(1-z_F)
+\]
+for every \(E\), then all their complements have positive joint
+probability.
+\end{lemma}
+
+\begin{proof}
+An induction on the number of conditioned complements proves
+\(\Prb(E\mid\bigcap_{F\in T}F^c)\le z_E\) whenever \(E\notin T\),
+and proves that every such conditioning event has positive probability.
+For the conditional estimate split \(T\) into neighbors \(T_1\) of
+\(E\) and nonneighbors \(T_2\).
+If \(T_1\) is empty, use independence.
+Otherwise expose the complements in \(T_1\) one at a time after
+conditioning on \(T_2\). The induction hypothesis gives a denominator
+at least \(\prod_{F\in T_1}(1-z_F)\), while independence bounds the
+numerator by \(\Prb(E)\).
+The displayed hypothesis completes the induction.
+Positivity follows by multiplying the conditional probabilities of
+successive complements. This is the finite asymmetric local lemma
+\cite{erdosLovasz1975}.
+\end{proof}
+
+\begin{proposition}[Simultaneously balanced tests]\label{prop:outer-tests}
+For sufficiently large absolute \(A\), and then all sufficiently large
+\(k\), there is a coloring \(c_*:\cL\to\Z/s\Z\) satisfying every
+global row test and every eligible local test above, for \(s=2\)
+or \(s=3\).
+\end{proposition}
+
+\begin{proof}
+Color each label independently and uniformly in \(\Z/s\Z\).
+For a fixed color its count on \(l\) distinct labels is a sum of
+independent Bernoulli variables of mean \(1/s\).
+For a Bernoulli variable \(X\) with mean \(q\), the function
+\[
+ g(t)=\log(1-q+qe^t)-qt
+\]
+has \(g(0)=g'(0)=0\) and \(g''(t)\le1/4\).
+Hence \(\E e^{t(X-q)}\le e^{t^2/8}\).
+Markov's inequality with \(t=4\zeta\), and the analogous negative
+value, gives a two-sided tail at most \(2e^{-2\zeta^2l}\).
+Union over the at most three colors bounds each bad event by
+\begin{equation}\label{eq:hoeffding}
+ \Prb(E)\le6e^{-2\zeta^2l(E)}.
+\end{equation}
+
+Assign \(z_E=e^{-\zeta^2l(E)/2}\).
+For any one label, the total incident weight from global events is
+at most
+\begin{equation}\label{eq:global-weight}
+ k(2M+1)T_{\rm glob}
+ \exp[-\zeta^2(\zeta M-1)/2]=o(\zeta^2).
+\end{equation}
+Indeed its positive logarithm is \(O_A(k^{2/3}L^{5/3})+O(L)\),
+whereas its negative term has order \(k^{3/4}/L^3\).
+The latter grows faster.
+For local events \cref{lem:local} bounds the incident weight by
+\begin{equation}\label{eq:local-weight}
+ \sum_{h>h_0}
+ (C_1Dh/\zeta)^{6D} e^{-\zeta^2h/4}.
+\end{equation}
+The function \(\log(C_1Dh/\zeta)/h\) is decreasing for \(h\ge h_0\)
+once \(k\) is large. At the initial point,
+\[
+ \frac{6D\log(C_1Dh_0/\zeta)}{h_0}
+ =\left(\frac4A+o(1)\right)\zeta^2.
+\]
+Choose \(A\) large enough that this is at most \(\zeta^2/8\).
+Then \eqref{eq:local-weight} is at most
+\[
+ \sum_{h>h_0} e^{-\zeta^2h/8}
+ =O\!\left(\zeta^{-2}e^{-\zeta^2h_0/8}\right)
+ =o(\zeta^2).
+\]
+These estimates also show \(\zeta^2l(E)\to\infty\) uniformly over the
+included tests.
+
+Join events sharing a label. They have the required dependency
+property because the underlying label colors are independent.
+For large \(k\), the total weight incident to any label is at most
+\(\zeta^2/16\), so
+\(\sum_{F\sim E}z_F\le\zeta^2l(E)/16\).
+All weights are less than \(1/2\), and
+\(\log(1-z)\ge-2z\) on that interval. Consequently
+\[
+ z_E\prod_{F\sim E}(1-z_F)
+ \ge e^{-5\zeta^2l(E)/8}
+ \ge6e^{-2\zeta^2l(E)}
+ \ge\Prb(E).
+\]
+Apply \cref{lem:lll}, and fix one successful coloring \(c_*\).
+\end{proof}
+
+Define \(c_0(n)=c_*(L(n))\).
+All randomness used for this outer coloring is now finished.
+
+\begin{theorem}[Nearly uniform or globally affine]\label{thm:dichotomy}
+For every nonzero-step cyclic progression \(n_j=n_0+jd\), either
+its entire centered second-coordinate path is affine in \(\R^D\),
+or, for every color \(b\in\Z/s\Z\),
+\begin{align}
+ \#\{j:c_0(n_j)=b\}&\ge(1/s-4\zeta)k,\label{eq:outer-each}\\
+ \#\{j:c_0(n_j)\ne b\}&\ge(1-1/s-4\zeta)k.\label{eq:outer-complement}
+\end{align}
+\end{theorem}
+
+\begin{proof}
+If all labels are light, the global test on all \(k\) positions proves
+both assertions, with \(\zeta\) in place of \(4\zeta\).
+Otherwise use a heavy label to obtain \(h,t,u,v\) from
+\cref{lem:return}. When \(h\le h_0\), \cref{lem:short} gives the
+affine alternative.
+
+Suppose \(h>h_0\). For a rotating coordinate, the rational part of a
+full \(h\)-block visits an equally spaced \(s_i\)-point grid, each point
+\(h/s_i\) times, where \(s_i>h_0\).
+The actual drift has magnitude at most \(4MH/k<\eta\).
+Nonregular positions in that coordinate therefore correspond to grid
+points within \(2\eta\) of the cut.
+An arc of length \(4\eta\) contains at most \(4\eta s_i+1\) such
+grid points, including endpoints.
+The nonregular fraction in a block is thus at most
+\[
+ D(4\eta+1/h_0)
+ =\zeta/25+D/h_0\le\zeta.
+\]
+Distinct block indices have distinct full labels by
+\cref{lem:return}. Also \(|u_i|\le H_x\) and \(|v_i|\le H\)
+eventually.
+
+Any full block containing a heavy position \(j_*\) is eligible.
+To check its only remaining condition, take a stationary coordinate,
+and put \(I_*=V(y_i(n_{j_*}))\), \(w_*=|I_*|\).
+The circle displacement within the block is at most
+\(|v_i|\le(2M/k)w_*\).
+By the neighborhood estimate of \cref{lem:mesh}, every interval
+visited in that block has length at least \(w_*/16\).
+Since \(2M/k\le1/16\) eventually, its length is at least \(|v_i|\).
+This proves eligibility even if the heavy anchor itself is nonregular.
+
+Let \(B_*\) be the union of heavy-containing full blocks, and let
+\(S=S(w,h)\) be their light complement among the full blocks.
+The remaining tail has fewer than \(h\le2M\le\zeta k\) positions.
+For either the indicator of one color or its complement, let its
+uniform mean be \(\beta\), where \(\beta=1/s\) or \(1-1/s\).
+The local tests give at least
+\((\beta-\zeta)(1-\zeta)|B_*|\) successes on \(B_*\).
+If \(|S|\ge\zeta k\), its row tests add
+\((\beta-\zeta)|S|\), giving at least
+\((\beta-\zeta)(1-\zeta)^2k\).
+If \(|S|<\zeta k\), discard \(S\) and the tail instead, to get
+\((\beta-\zeta)(1-\zeta)(1-2\zeta)k\).
+Both expressions are at least \((\beta-4\zeta)k\) for \(0\le\beta\le1\).
+This proves \eqref{eq:outer-each} and \eqref{eq:outer-complement}.
+\end{proof}
+
+\begin{remark}
+The two tested parts \(B_*\) and \(S(w,h)\) are disjoint.
+It would be invalid to replace the test on \(S(w,h)\) by balance on
+the entire light set and then add its count to the block counts:
+light positions already lying in \(B_*\) could be counted twice.
+The new residual tests resolve exactly this overlap.
+\end{remark}
