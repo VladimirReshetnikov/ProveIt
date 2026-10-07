@@ -197,6 +197,20 @@ $\tau$, $H$, $B$, $\mathcal K_j$, $\ell$, $L$, $M_n$ and $s$ do not mean
 what they mean in Parts~I or~II; a table at the start of Part~III fixes
 them.
 \end{writenote}
+
+\begin{writenote}[Added 7 October 2026, batch-103 reciprocal note]
+The notes above say that no other report of the repository treats
+tournament score sequences. Since batch~103 that is no longer complete: the
+sibling report \texttt{a345470-\allowbreak self-\allowbreak complementary-\allowbreak scores}
+(same directory) treats self-complementary score sequences
+(OEIS A345470) and their strong subfamily (A351869). It uses this report's
+sequences only as inputs: its $S_k$, $T_k$ are $S_k$, $I_k$ here, and its
+$\lambda=\sum_kN_k/(k4^k)$ is exactly this report's
+$\lambda=A(1/4)=0.3302375439859293\ldots$, which lies inside its certified
+enclosure $[0.3302375420437401,0.3302375453489038]$. No theorem or question
+of this report is answered or re-proved there. The note after
+\eqref{tss:eq:known} records the one shared constant.
+\end{writenote}
 \clearpage
 \tableofcontents
 \clearpage
@@ -258,6 +272,22 @@ I_n\sim\frac{\e^{-\lambda}}{2\sqrt\pi}\frac{4^n}{n^{5/2}},\quad
 \frac{S_{n,m}}{S_n}\longrightarrow m p^{m-1}\e^{-2\lambda}.
 \end{equation}
 Bassan, Donderwinkel, and Kolesnik give a shorter proof of the leading result \cite{BDK}. We do not present the leading enumeration problem as an open conjecture solved here.
+
+\begin{writenote}[Added 7 October 2026, batch-103 reciprocal note]
+The constant $\e^{-\lambda}=1-I(1/4)=1/S(1/4)=0.71875297770\ldots$ is also the
+limiting strong fraction of \emph{self-complementary} score sequences: the
+sibling report \texttt{a345470-\allowbreak self-\allowbreak complementary-\allowbreak scores}
+(Part~I, Theorem~1.1, from Report~116 of the batch-103 bundle) proves
+$D_n/C_n\to\e^{-\lambda}$ with $C_n\sim A\,2^nn^{-3/4}$. There the fraction
+carries one factor $\e^{-\lambda}$, against the two in
+$I_n/S_n\to\e^{-2\lambda}$ here. Here $S=\e^{A}$ and $I=1-\e^{-A}$ are both
+transforms of the one singular series $A$, so $S_n\sim\e^{\lambda}[z^n]A$
+and $I_n\sim\e^{-\lambda}[z^n]A$. There $D(z)=C(z)\,\e^{-A(z^2)}$
+(Stockmeyer), and the dominant factor $C$, of order $2^nn^{-3/4}$, only picks
+up the value $\e^{-A(1/4)}$ of the lighter, summable factor. The sibling's
+Lambert-$W_{-1}$ inverse is the mechanism of \eqref{tss:eq:lambert}, for
+$2^tt^{-3/4}$ in place of $4^xx^{-5/2}$.
+\end{writenote}
 
 Uniform renewal expansions and geometric-sum approximations have an established literature, including Blanchet and Glynn \cite{BG}. Olvera-Cravioto, Blanchet, and Glynn \cite{OCBG} explicitly study a logarithmic heavy-traffic/heavy-tail transition. Their queueing and survival-probability setting differs from the local lattice coefficient problem here. We credit the transition mechanism to that literature and prove the needed coefficient estimates directly, rather than importing an unchecked theorem. The contribution of this report is an explicit refinement for the score-sequence model, with constants, fixed-order generators, and inverse scopes. A bounded primary-source review supports this focus; it cannot certify that no equivalent refinement exists elsewhere.
 

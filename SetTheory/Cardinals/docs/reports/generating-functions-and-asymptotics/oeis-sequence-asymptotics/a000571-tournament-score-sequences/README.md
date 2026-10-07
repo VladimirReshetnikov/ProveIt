@@ -341,9 +341,18 @@ RQ9 and Part III's RQ9 propose formalization orders (equality-index
 decomposition, marked-block identities, total-variation lemma, then the
 local generator and the Puiseux inverse recursion); none of it exists.
 
-**Neighbouring reports.** None: no other repository report treats tournament
-score sequences or A000571, A351822, A145855, A054946 (searched at all
-three placements and again at the batch-98 write; no other batch-98
+**Neighbouring reports.** Since batch 103,
+`a345470-self-complementary-scores` (same directory) treats
+self-complementary score sequences (A345470, A351869). It uses this report's
+λ = 0.3302375439859293… and proves the strong fraction
+D_n/C_n → e^{−λ} = 1/S(1/4) (against I_n/S_n → e^{−2λ} here). It answers or
+re-proves nothing of this report; two dated notes in Part I (after the
+batch-98 note and after `tss:eq:known`) record the link. *[Dated note,
+7 October 2026: this paragraph first read "None: no other repository report
+treats tournament score sequences or A000571, A351822, A145855, A054946 …",
+true until batch 103.]* Before batch 103 no other repository report treated
+tournament score sequences or A000571, A351822, A145855, A054946 (searched at
+all three placements and again at the batch-98 write; no other batch-98
 manuscript concerns tournaments). Batch-77 manuscripts 13 and 14 (cluster P5, beta renewals) use
 the word "renewal" for an unrelated object. The batch-77 report
 `a116379-bounded-identity-trees` shares only the delivered PDF build script
@@ -478,7 +487,7 @@ No statement, proof or number of any manuscript was changed.
 ```text
 README.md                                     this guide (replaces the three delivery READMEs)
 article.tex                                   the report (Part I delivered as report.tex; Part II as tournament_coexistence.tex; Part III as article.tex)
-article.pdf                                   compiled report, 82 pages
+article.pdf                                   compiled report, 83 pages
 02-coex-code-README.md                        Part II: delivered code README (algorithms, precision, outputs)
 03-supercrit-SOURCE_NOTES.md                  Part III: delivered source and provenance notes (pin, bounded literature check)
 code/run_checks.py                            Part I: one command for all checks; writes results/ beside scripts/ (see below)
@@ -730,6 +739,17 @@ duplicate PDF destinations, no overfull or underfull boxes. The log's pdfTeX
 notices "fontmap entry … already exists, duplicates ignored" (684 of them)
 come from the `\pdfmapfile` lines and are identical in a build of the
 batch-77 text, which had 17 pages, and of the batch-85 text (47 pages).
+
+Rebuilt on 7 October 2026 (cleanup pass: the two batch-103 reciprocal notes
+in Part I, one at the end of the front matter and one after
+`tss:eq:known`), with three pdfLaTeX passes: 83 pages (title and front
+matter pages 1–4, contents 5–8, Part I pages 9–22, Part II pages 23–49,
+Part III pages 50–78, Part II's Appendices A–B pages 79–80, Part III's
+Appendices C–E pages 81–83, references page 83), equally clean, with the
+same 684 fontmap notices and the same two "Infinite glue shrinkage" messages
+as a build of the committed text. All 287 labels keep their numbers; their
+pages move by one or two (`.aux` compared). Pages 3 and 10 rendered and
+inspected.
 `code/build_pdf.sh`, `code/02-coex-build.sh` and `code/03-supercrit-build.sh`
 / `.ps1` are kept as delivered; each builds only its own manuscript's
 delivered source, which is not shipped.
