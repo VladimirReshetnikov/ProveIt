@@ -1,0 +1,283 @@
+\section{Direct reduced scanning and an exact early-stop criterion}
+\label{sec:pointed}
+
+The existing scanner computes an unreduced complex and obtains the reduced
+rank by dividing the final rank by two.  We implement the pointed complex
+directly.  The underlying construction is standard reduced Khovanov theory,
+expressed in the local cobordism category used by Bar--Natan's
+algorithm~\cite{barnatan2005,barnatan2007}.  Our contributions here are an
+implementation compatible with the current scanner, a basepoint placement
+rule with an exact frontier guarantee, and a decision-only stopping rule.
+The last rule addresses a specific limitation identified in the earlier
+reports: a recognizer need not always finish computing the full homology
+before proving that its rank exceeds one~\cite{repository}.  The improvements
+do not furnish a general quasi-polynomial bound.
+
+\subsection{The quotient at a persistent endpoint}
+
+Cut an edge of the knot diagram into two boundary endpoints, denoted by
+$p$ and $q$, and distinguish $p$.  After its first appearance in the scan,
+$p$ remains a boundary endpoint until the end.  For crossingless matchings
+$a,b$ on the current boundary, the usual basis of
+$\operatorname{Hom}(a,b)$ is indexed by dot subsets on the circles of
+$a\cup\overline b$.  Exactly one of these circles contains $p$.
+Write $x_p$ for a dot on that circle, and put
+$A=\F[x]/(x^2)$.
+
+\begin{proposition}[Pointed quotient]
+\label{prop:pointedquotient}
+On the category of matchings with persistent endpoint $p$, the subspaces
+$x_p\operatorname{Hom}(a,b)$ form a two-sided ideal.  The quotient is an
+additive category, and subsequent gluing away from $p$ induces an additive
+functor on it.  Applying the quotient to a chain homotopy equivalence gives
+a chain homotopy equivalence.
+\end{proposition}
+
+\begin{proof}
+The fixed endpoint supplies a distinguished boundary segment of every
+cobordism.  A dot near that segment may be moved through a composite by
+the dot-sliding relation.  Thus composing on either side with a morphism
+divisible by the boundary dot produces another morphism divisible by the
+same boundary dot.  Gluing away from the segment preserves this property.
+Composition and gluing therefore descend to the quotient.  They preserve
+addition and direct sums.  Finally, the equation expressing a chain homotopy,
+$fg-\mathrm{id}=dh+hd$, remains an equation after applying an additive
+functor.  The same applies to the equation for the other composite.
+\end{proof}
+
+An invertible cancellation performed before the marked endpoint appears
+can consequently be retained.  The prefix is computed in the ordinary
+category; after attaching the crossing that introduces $p$, the quotient
+functor is applied to the resulting complex.  The prefix need not be rebuilt.
+This delayed introduction is essential to the frontier policy below.
+
+If an overlay has $k$ circles, the pointed Hom space has dimension
+$2^{k-1}$.  We assign $p$ a fresh integer label smaller than every original
+label.  The existing circle-numbering convention, which orders circles by
+their minimum label, then makes its circle index zero.  A pointed monomial
+is encoded by deleting that dot bit.  This halves the maximum coefficient
+bit-vector length for the same pair of pointed matchings.  It does not imply
+that the whole scan takes half as much time: object multiplicities,
+cancellation order, topology compilation, and Python bookkeeping also matter.
+
+\subsection{Compiling the pointed surface evaluation}
+
+The quotient can be evaluated without first forming a full unpointed
+morphism.  Let a connected genus-zero surface component have boundary-circle
+set $B$.  The ordinary dotted relations evaluate its undotted version as
+\begin{equation}
+  \sum_{j\in B}\prod_{i\in B\setminus\{j\}}x_i,
+  \label{eq:undottedcomponent}
+\end{equation}
+and its once-dotted version as $\prod_{i\in B}x_i$.  Two dots give zero.
+A closed sphere requires exactly one dot, and a component of positive genus
+vanishes over $\F$ in this theory.
+
+\begin{lemma}[Marked surface rule]
+\label{lem:markedsurface}
+If $p\in B$, the pointed evaluation of this component is
+\[
+ \begin{cases}
+  \displaystyle\prod_{i\in B\setminus\{p\}}x_i,
+      &\text{if the component carries no dot},\\[4pt]
+  0,  &\text{if it carries at least one dot}.
+ \end{cases}
+\]
+Unmarked components retain their ordinary evaluation.
+\end{lemma}
+
+\begin{proof}
+Every term of \eqref{eq:undottedcomponent} except the term indexed by $p$
+contains $x_p$ and disappears in the quotient.  The once-dotted product
+contains $x_p$ as well.  The remaining vanishing relations are unchanged.
+\end{proof}
+
+The implementation compiles this rule into the same component plans used
+by the original algebra.  Euler characteristics, genus tests, and the number
+of closed circles are computed before taking the quotient; deleting a dot
+variable must not alter those topological quantities.  Only the dot masks
+and the evaluation of the marked component change.  The first marked stage
+requires particular care: its incoming masks still use the ordinary basis,
+while its outgoing masks use the compressed pointed basis.  Later stages
+use compressed masks on both sides.
+
+For a matching with $m$ arcs, the pointed endomorphism ring is
+\[
+ \F[x_2,\ldots,x_m]/(x_2^2,\ldots,x_m^2).
+\]
+Its units are precisely the polynomials with constant coefficient one.
+Each is its own inverse, since every positive-degree polynomial squares to
+zero in characteristic two.  Thus the existing equal-matching pivot tests,
+identity shortcuts, and cancellation formulas continue to apply.
+
+After all crossings have been attached, the only endpoints are $p,q$.
+There is one matching, and its pointed endomorphism ring is $\F$.
+Scalar cancellation therefore leaves a zero differential, whose object
+count is the reduced rank.  Closing the cut identifies its marked arc with
+the marked circle carrying $A/(x)$.  This is the reduced Khovanov complex.
+The alternative convention using $xA$ is isomorphic through $1\mapsto x$,
+up to the quantum shift.  The implementation records the same unnormalized
+homological degrees as the original scanner and does not output quantum
+gradings.
+
+\subsection{A basepoint policy that preserves the frontier}
+
+A straightforward early cut can make the computation substantially worse.
+Once both ends of the original edge have been processed, its two cut
+endpoints remain permanently on the frontier.  Intermediate matchings then
+have extra boundary data, and previously useful cancellations can be delayed.
+The number of removed dot variables alone is therefore an inadequate cost
+model.
+
+\begin{theorem}[Last-crossing basepoint]
+\label{thm:lastedgefrontier}
+Fix an order of $n$ crossings and choose an edge whose second occurrence
+belongs to the last crossing.  Cut this edge at its two occurrences.  The
+cut and original diagrams have equal frontier cardinalities after every
+proper prefix of the order.  Their final frontiers have cardinalities two
+and zero respectively.  In particular,
+\[
+ w_{\mathrm{cut}}\leq\max\{w_{\mathrm{original}},2\}.
+\]
+\end{theorem}
+
+\begin{proof}
+Before the first occurrence of the edge, neither frontier contains it or
+its replacements.  From the first occurrence until the last crossing, the
+original frontier contains precisely that edge label; the cut frontier
+contains its first replacement instead.  No other boundary label changes.
+At the last crossing the original edge closes, while the second replacement
+appears and the first persists.  This also covers a loop whose two
+occurrences both lie in the last crossing.
+\end{proof}
+
+Among the edges of the last crossing, the implementation selects one whose
+first occurrence is earliest.  This keeps the quotient active for as long
+as possible subject to the theorem.  It is a deterministic placement policy,
+not a proof of optimal running time or minimum live-object count.  An
+explicit edge option remains available for controlled experiments.
+
+The distinction was material in development.  On the supplied 36-crossing
+stress closure, an initial first-crossing cut required over two million
+compositions, whereas the baseline required fewer than twenty-four thousand.
+The last-crossing policy instead reduced the composition count below
+seventeen thousand.  Section~\ref{sec:experiments} records the work counts
+and the mixed timing results.  In particular, the pointed engine remains
+opt-in: reduced state sizes do not overcome its bookkeeping costs on every
+small input.
+
+\subsection{Safe termination from isolated summands}
+
+The full-rank API continues until the reduced homology has been computed.
+A separate decision API can sometimes stop much earlier.  An object is
+\emph{isolated} when its row of the differential and its set of incoming
+nonzero differential entries are both empty.  This is stronger than being
+a cycle: it identifies a direct summand at the level of complexes.
+
+\begin{theorem}[Isolated-summand lower bound]
+\label{thm:isolatedbound}
+At any stage of the ordinary-then-pointed scan of a validated knot diagram,
+suppose there are $s$ isolated matching objects.  Then
+\[
+ \dim_{\F}\widetilde{\operatorname{Kh}}(K;\F)\geq s.
+\]
+This remains valid when the marked endpoint has not yet appeared.
+\end{theorem}
+
+\begin{proof}
+The partial complex is a direct sum of its $s$ one-term isolated complexes
+and the remaining complex.  Subsequent tensoring and gluing with the
+unprocessed tangle are additive.  Delooping and cancellation give chain
+homotopy equivalences, and the pointed quotient preserves those equivalences
+by Proposition~\ref{prop:pointedquotient}.  Thus the completed complex is
+chain homotopy equivalent to the direct sum of the completed isolated
+complexes and a remaining complex.
+
+Every live object has a concrete realization in the processed part of the
+original diagram: transfer extends a partial smoothing, delooping removes
+closed circles and duplicates the remaining matching, and Gaussian
+cancellation deletes objects without introducing a new matching shape.
+This realization lies in the actual processed region, which may have holes;
+no common disk for all frontier matchings is required.  Completing this
+realized matching with the original unprocessed tangle therefore produces
+the reduced Khovanov complex of a nonempty classical link, with grading
+shifts.  The marked edge is either
+already represented by the persistent endpoint or is still in the
+unprocessed complement.  It is consequently present in every completed
+summand.  Reduction therefore cannot silently turn this summand into the
+empty link.
+
+The reduced Khovanov homology of any nonempty link is nonzero.  One direct
+argument uses its graded Euler characteristic: for a link with $\ell\geq1$
+components, its reduced Jones specialization at one has absolute value
+$2^{\ell-1}$.  This is an \emph{integer} Euler characteristic of dimensions,
+including when the coefficient field is $\F$; it is not the residue of that
+integer modulo two.  Nonzero Euler characteristic forces nonzero homology.
+Each completed isolated complex hence contributes at least one dimension,
+and dimensions add under direct sums.
+\end{proof}
+
+\begin{corollary}
+Two isolated objects certify that the input is knotted.
+\end{corollary}
+
+\begin{proof}
+The theorem forces reduced rank at least two.  Reduced rank one is exactly
+the unknot case, using Khovanov unknot detection and its coefficient-field
+consequence as in the existing recognizer~\cite{kronheimermrowka,repository}.
+\end{proof}
+
+There is no early unknot conclusion from finding zero or one isolated
+object.  Nor is a large unfinished complex a homology lower bound: its
+objects can still cancel.  The implementation therefore examines actual
+isolation, preserves resource-limit exceptions, and keeps the rank and
+decision result types distinct.
+
+The decision engine checks after each intermediate reduction.  It also
+inspects the final transfer before performing its scalar cancellation;
+isolated objects already present there can avoid that final elimination.
+Upon finding two, it returns a knot verdict, lower bound two, and no exact
+rank.  The associated record contains the scan order, marked edge, stage,
+remaining crossing count, and two object IDs with matchings and homological
+degrees.  This is \emph{replay data}, not an independently checkable small
+topological certificate.  A verifier must replay the preceding reductions
+unless a separate chain-equivalence witness is supplied.
+
+Natural-order sums of two, three, and eight Conway diagrams give explicit
+before-closure examples: all stop after the first eleven crossings, leaving
+eleven, twenty-two, and seventy-seven crossings respectively.  The existing
+visible-factorization step already handles this family efficiently.  These
+examples establish that the decision mechanism works without computing full
+homology; they do not show a new advantage over the complete prior pipeline
+on that family.  On the supplied prime examples, isolation generally becomes
+visible only at the final transfer.
+
+\subsection{Verification and limitations}
+
+The algebra tests compare the compressed evaluation with ``lift to the
+ordinary algebra, compose, then quotient'' for every polynomial input on all
+triples of noncrossing matchings with at most six endpoints.  Diagram tests
+compare 2,898 exhaustively generated signed braid closures with an independent
+dense reduced-cube oracle.  Further tests vary every basepoint edge and three
+crossing orders on the smaller diagrams, verify the frontier theorem,
+check the differential square after each stage, and replay an early result.
+The separate decision API is checked against all 2,898 independent ranks.
+Section~\ref{sec:experiments} gives the full counts and reproducible commands.
+
+Cross-stage caches require an additional invariant.  Unpointed topology
+plans can be shared because they do not depend on the quotient, but a
+numerical morphism value has different bit meanings before and after
+compression.  The implementation clears shared numerical results whenever
+the pair ``marked on input, marked on output'' changes.  It also uses a
+distinct transformed-plan memo within each stage.  Without this distinction,
+a numerically identical integer from an earlier cache could represent a
+different polynomial.
+
+The pointed Hom spaces still have exponential dependence on frontier width,
+and reduced homology can itself have exponentially many generators.  Neither
+the quotient nor the frontier theorem bounds the multiplicities of the
+intermediate complexes.  The early-stop theorem removes the obligation to
+finish some large-rank computations, but supplies no universal bound on when
+isolated summands appear.  Proving such a bound for a substantial class,
+or finding larger direct summands with efficiently certified nonzero
+closures, is a precise next research problem.

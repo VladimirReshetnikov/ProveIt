@@ -1,0 +1,243 @@
+\section{Verification and performance evidence}
+\label{sec:experiments}
+
+The archive separates correctness tests, deterministic work counters, and
+timing experiments.  None can replace the others.  Exhaustive finite tests
+are particularly useful for gluing and parity conventions; the theorems
+establish the general claims.  Operation counts expose structural work;
+wall-clock ratios determine whether the Python implementation benefits on
+the tested machine.
+
+\subsection{Independent correctness checks}
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{P{34mm}P{108mm}}
+\toprule
+Component & Verification performed \\
+\midrule
+Interlacement discovery & All 146,600 canonical double-occurrence words
+through seven labels, compared with an explicit interlacement graph;
+separate forest and separation certificate verification. \\
+PD factor reconstruction & 32,055 rotation assignments through five
+crossings, of which 2,109 validate as spherical; 600 generated braid knots,
+600 relabelings, and 14 supplied fixtures.  All 3,323 validated diagrams
+have the same factor PD multiset as the archived geometric algorithm. \\
+Sparse determinant & 450 small matrices against the independent Leibniz
+formula; 420 additional dense comparisons; permutation matrices through
+dimension 1,000; singularity, input preservation, complete-pivot signs,
+resource callbacks, and transient nonzero-count regression. \\
+Pointed algebra & Lift--compose--quotient identities for every polynomial
+input on all triples of noncrossing matchings through six endpoints. \\
+Pointed diagram scan & 2,898 signed braid diagrams against an independent
+dense reduced-cube oracle; 8,002 rank scans, including 5,052 additional
+basepoint/order variations; 2,898 decision scans; 42 cache pairs;
+intermediate differential-square checks. \\
+Frontier correction & Exact enumeration of full prefix resolutions,
+independent component counting and Laurent coefficients; agreement with
+both reference and optimized gluing engines. \\
+Hierarchy budget & All 364 radix tuples of length at most five with
+radices in $\{1,2,3\}$; 284,932 strict transitions; 17,021 explicit
+decreasing sequences in the smallest cases. \\
+\bottomrule
+\end{tabular}
+\caption{Finite verification supporting distinct parts of the research.
+The sets of scans overlap as described; their counts are not counts of
+distinct knot types.}
+\label{tab:validation}
+\end{table}
+
+The two main algebraic crosschecks use separate constructions.  Factor
+discovery is checked against an explicit graph, and its PD output against
+the archived face-based algorithm.  The pointed scanner is checked against
+a dense cube construction, not merely against its own unpointed quotient
+code.  The baseline's division by two in each homological degree is justified
+by the characteristic-two splitting, which changes quantum degree only
+\cite[Corollary~3.2.C]{shumakovitch2014}.
+
+The complete regression suite also retains the original tests.  New
+integration checks cover budget exceptions during factorization, propagation
+to \code{UNKNOWN}, evidence compatibility, and exact transient sparse
+storage counters.  The final executable test log is retained in
+\path{data/unit_tests.txt}.  These are finite validation results, not a
+formal proof-assistant verification of the Python interpreter or the whole
+topological theory.
+
+\subsection{Measurement protocol}
+
+Measurements use Python 3.12.14 on the supplied x86-64 Linux environment.
+The archive records the platform string, seeds, source hashes where captured,
+input generators, raw times, crossing orders, work counters, and A/A controls.
+It does not claim CPU isolation, fixed frequency, or performance portability.
+The considerable variability in some small A/A cases precludes a persuasive
+claim about changes of only a few percent on those cases.
+
+For factorization, sparse elimination, and the full pipeline, each block
+randomly orders two baseline calls and two updated calls.  Inputs are
+preconstructed; timed calls receive fresh diagram objects to prevent cached
+diagram properties from moving between arms.  Some fast cases use a common
+small batch count.  The block ratio is the arithmetic mean of the two updated
+times divided by the arithmetic mean of the two baseline times.  Nine blocks
+give the displayed median ratio.  Under an independent-block interpretation,
+the interval from the second to the eighth ordered ratio has nominal
+coverage $1-2(1+9)/2^9=0.9609375$ for the population median.  Dependence and
+shared-environment drift are not removed by this calculation.
+
+The separate pointed experiment uses the same precomputed crossing order
+for both engines and randomizes two calls of each per block.  Its block
+ratio is the ratio of the \emph{geometric} means, and its intervals are
+percentile bootstrap intervals for the median, using 2,000 resamples.
+It uses 51 blocks for small cases and 21 for the stress closure.  The two
+experiments' interval methods are explicitly different; they should not be
+treated as identical estimators.
+
+Pooled arm medians in milliseconds provide a readable scale.  Their quotient
+need not equal the median paired ratio, because median and division do not
+commute.  Ratios below one favor the updated implementation.  Intervals
+describe measurement uncertainty for these fixed inputs, not uncertainty
+about an asymptotic theorem or a representative distribution of all knots.
+
+The final audit changed the sparse peak counter and recognition's budget
+handling.  Sparse and pipeline timings were therefore repeated on that final
+code.  The earlier factorization algorithm was unchanged and retains its
+original paired measurements.  The first pointed timing used a development
+wrapper; it too was repeated against the final public API.  Both earlier
+and final raw records remain in the archive, with their provenance.
+
+\subsection{Visible factorization and complete-pipeline gains}
+
+\begin{table}[htbp]
+\centering\small
+\input{tables/factorization}
+\caption{Checked factorization of the specified cyclic trefoil sums.
+The input diagram is already constructed, but output factor validation
+is timed.  This compares with the quadratic-work embedding proved in
+Theorem~\ref{thm:quadratic-factor-family}.}
+\label{tab:factor-times}
+\end{table}
+
+The largest factorization example has 512 summands and 1,536 crossings.
+Its old recursive calls collectively visit 393,981 crossings before leaf
+work, whereas the new algorithm discovers the component partition in one
+pass and reconstructs all factors together.  The measured difference is
+consistent with that structural change.  It is not needed to prove the
+quadratic lower bound or the new upper bound.
+
+\begin{table}[htbp]
+\centering\small
+\input{tables/pipeline}
+\caption{Complete recognition with the updated defaults and the archived
+defaults.  The pointed option is off in this comparison.}
+\label{tab:pipeline-times}
+\end{table}
+
+The whole-pipeline comparison shows that the factorization benefit survives
+integration.  On connected sums, the pipeline no longer pays repeated global
+reconstruction before examining its first decisive summand.  The large torus
+example also benefits from the sparse filter.  The small Conway,
+Kinoshita--Terasaka, and hard-unknot fixtures show no consistent substantial
+improvement; their noisy results are included to avoid generalizing the
+large-family gains to every use case.
+
+\subsection{Sparse elimination: measured work and crossover}
+
+\begin{table}[htbp]
+\centering\small
+\input{tables/alexander}
+\caption{The original dense modular Alexander filter versus a forced
+sparse backend on $T(3,q)$ diagrams with $n=2q$.  Forced sparse results
+below the default 256-crossing threshold are retained.}
+\label{tab:alexander-times}
+\end{table}
+
+\begin{table}[htbp]
+\centering\small
+\input{tables/sparse_work}
+\caption{Deterministic sparse counters for the two evaluated minors.
+$F$ counts all attempted Schur positions.  $Z_{\max}$ includes transient
+nonzeros inside a row update in the final implementation.}
+\label{tab:sparse-work}
+\end{table}
+
+The sampled matrices maintain small pivot neighborhoods, so the counter
+$F$ is far below a cubic dense-matrix allowance.  At the small end, incidence
+and priority management can outweigh this saving.  This motivates an
+explicit crossover policy and supports keeping both backends available.
+The observations do not prove a fill theorem for the torus family or for
+general Alexander matrices; such a theorem is a separate research question.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\linewidth]{figures/scaling.pdf}
+\caption{Measured scaling on two specified families.  Lines connect sampled
+input sizes and are not fitted asymptotic exponents.  The factorization
+comparison also has a structural proof; the sparse-family comparison has
+a bound in terms of elimination work and measured pivot counters.}
+\label{fig:scaling}
+\end{figure}
+
+\subsection{Pointed scanning: savings and regressions}
+
+\begin{table}[htbp]
+\centering\small
+\input{tables/pointed}
+\caption{Direct reduced versus ordinary full-rank scanning, with the same
+precomputed order.  These timings exclude the recognizer's preceding
+filters and do not time early termination.}
+\label{tab:pointed-times}
+\end{table}
+
+\begin{table}[htbp]
+\centering\small
+\input{tables/pointed_work}
+\caption{Selected deterministic scanner counters.  A is the ordinary
+scanner; B is the pointed scanner.  Peak objects are measured before
+cancellation at each crossing.}
+\label{tab:pointed-work}
+\end{table}
+
+On the 36-crossing stress closure, compositions decrease from 23,710 to
+16,705, peak objects from 17,694 to 12,341, and transferred entries from
+251,455 to 173,583.  These are exact work-count changes for the specified
+order.  They do not amount to halving the whole computation, and the
+timing table confirms that the effect depends on the input.
+
+The three survivor cases are simplified unknot diagrams retained by the
+repository's hard-unknot experiment after its filters fail to decide.
+They are relevant to the residual decision stage, but have only 15 or 16
+crossings.  Their results must not be extrapolated to large difficult
+unknots.  The stress closure is useful for measuring substantial homological
+work; it is not evidence that the complete pipeline needs homology on
+every large input.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\linewidth]{figures/pointed_ratios.pdf}
+\caption{Pointed scan ratios with nominal 95\% bootstrap intervals.
+The vertical reference is equal time.  Mixed results support retaining
+an explicit \code{--pointed} option instead of changing the default scan.}
+\label{fig:pointed-ratios}
+\end{figure}
+
+The before-closure examples in Section~\ref{sec:pointed} validate a new
+decision mechanism.  They are not added to a headline speedup figure,
+because visible factorization already handles those connected sums.  An
+honest next experiment should seek prime-looking filter survivors on which
+the certificate arises substantially before the last crossing.
+
+\subsection{What the experiment does not settle}
+
+The corpus contains deterministic constructed families and small finite
+enumerations.  It is neither a uniform sample of knot types nor a validated
+distribution of hard unknot instances.  Relabeled diagrams improve
+representation coverage without adding knot types.  Exhaustive braid-word
+enumeration similarly contains repeated knots.  Large filter-decided examples
+mainly test preprocessing and rejection; a general complexity claim must
+also handle large unknots and nontrivial knots that survive all filters.
+
+The remaining quantitative uncertainty is explicit: there is no universal
+bound on retained multiplicity, no guarantee of a useful early isolated
+summand, no implemented noose certificate for the current order, and no
+constructive hierarchy backend satisfying Section~\ref{sec:hierarchy}.
+The experiments measure completed changes while leaving these obligations
+open.

@@ -1,0 +1,234 @@
+\section{Frontier topology and a corrected state bound}
+\label{sec:frontiers}
+
+The scalar Kauffman-bracket filter is sensitive to the number of matching states
+at a scan frontier.  The previous implementation documentation bounded this
+number by a Catalan number, using planarity of the diagram.  That argument needs
+a geometric hypothesis which the existing greedy ordering does not enforce.
+We give a validated one-component counterexample, establish the safe bound for
+the current representation, and state precisely when the sharper bound is
+available.  This correction concerns a complexity justification; it does not
+identify an incorrect bracket evaluation.
+
+\subsection{What the dictionary actually represents}
+
+Fix a planar diagram with $n$ crossings, an order of its crossings, and a nonzero
+evaluation point $A\in\mathbb{F}_p$.  After processing $i$ crossings, let $B_i$ be the
+set of segment labels occurring exactly once among their PD rows.  These are
+the edges with one processed endpoint.  Write $w_i=|B_i|$ and
+$w=\max_i w_i$.  Every $w_i$ is even.  Resolving the processed crossings gives
+disjoint circles and arcs with endpoints in $B_i$.  The circles contribute
+powers of $\delta=-A^2-A^{-2}$; the remaining arcs specify a perfect matching
+of $B_i$.
+
+More explicitly, before any final normalization, the partial state is
+\begin{equation}
+ \sum_{\sigma\in\{0,1\}^i}
+ A^{i-2|\sigma|}\delta^{\ell(\sigma)}[M(\sigma)],
+ \label{eq:partial-bracket}
+\end{equation}
+where $\ell(\sigma)$ counts closed circles and $M(\sigma)$ records endpoint
+connectivity.  The dictionary combines equal matchings and drops zero
+coefficients.  Different embedded arcs with the same labeled connectivity need
+not be distinguished: subsequent gluing uses that connectivity to determine
+which circles close.  There is no single cyclic order of all frontier points
+stored or certified by the greedy scan.
+
+\begin{proposition}[Safe matching count]
+\label{prop:frontier-matching-count}
+Let $s_i$ be the number of nonzero scalar states after $i$ crossings.  Then
+\begin{equation}
+ s_i\leq\min\{2^i,(w_i-1)!!\},\qquad (-1)!!=1.
+ \label{eq:frontier-matching-count}
+\end{equation}
+The scan attempts at most $2\sum_{i=0}^{n-1}s_i$ state transitions.
+\end{proposition}
+
+\begin{proof}
+There are $2^i$ choices of partial resolution.  Every resulting state is a
+perfect matching on $w_i$ labeled points.  Pair the smallest available label:
+there are $w_i-1$ choices for its partner, then $w_i-3$ choices for the next
+pair, and so on.  Hence there are $(w_i-1)!!$ possible matchings.  Combining
+coefficients and cancellations only decrease the support.  Each stored state
+has two outgoing smoothing transitions at the next crossing.
+\end{proof}
+
+With polynomial work per matching operation and the usual dictionary-cost
+model, Proposition~\ref{prop:frontier-matching-count} gives
+\begin{equation}
+ T\leq \poly(n,w,\log p)(w-1)!!
+   =2^{O(w\log(w+1))}\poly(n,\log p).
+ \label{eq:general-frontier-runtime}
+\end{equation}
+Ordered dictionaries can provide deterministic comparison guarantees with
+additional polynomial factors in the width and label bit lengths.  Arithmetic
+counts, dictionary assumptions, and a concrete Python runtime should remain
+separate claims.  Persistent matching caches also require their own memory
+accounting; a small current coefficient dictionary does not bound every cache
+retained from earlier stages.
+
+For even $w$, the exact comparison is
+\begin{equation}
+ (w-1)!!=\frac{w!}{2^{w/2}(w/2)!}
+   =\sqrt{2}(w/e)^{w/2}\bigl(1+O(w^{-1})\bigr).
+\end{equation}
+This is a safe envelope for the representation, rather than a prediction of
+the number of states on a particular input.  The additional $2^i$ bound and
+measured support sizes can be much smaller.
+
+\subsection{An explicit knot with more than Catalan-many states}
+
+Consider the following six-crossing PD code, with crossings numbered from zero:
+\begin{lstlisting}
+[(2,3,0,4), (0,5,1,6), (1,7,8,2),
+ (3,9,9,8), (5,10,10,7), (4,11,11,6)]
+\end{lstlisting}
+Every segment label occurs twice.  The associated rotation system has six
+vertices, twelve edges, and eight faces, of degrees
+$4,4,6,4,3,1,1,1$, so its connected supporting surface has Euler
+characteristic two.  Opposite-port traversal follows the single segment circuit
+\[
+ 0,2,7,10,5,6,11,4,3,9,8,1,0.
+\]
+Thus this is a spherical diagram with exactly one link component.  The input
+also passes the repository's full \code{Diagram.from\_pd} validation.
+
+Process crossings $0,1,2$.  The frontier is
+$B_3=\{3,4,5,6,7,8\}$.  Direct expansion of
+\eqref{eq:partial-bracket} gives the following six nonzero coefficients in
+$\mathbb Z[A,A^{-1}]$.
+\begin{center}
+\begin{tabular}{ll}
+\toprule
+Endpoint matching & Laurent coefficient \\
+\midrule
+$\{(3,5),(4,6),(7,8)\}$ & $2A^{-1}$ \\
+$\{(3,5),(4,8),(6,7)\}$ & $A$ \\
+$\{(3,6),(4,5),(7,8)\}$ & $A^{-3}+A$ \\
+$\{(3,6),(4,8),(5,7)\}$ & $A^{-1}$ \\
+$\{(3,8),(4,5),(6,7)\}$ & $A^3$ \\
+$\{(3,8),(4,6),(5,7)\}$ & $A$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+The third Catalan number is $C_3=5$.  For any fixed cyclic order of six points,
+there are exactly five disk-noncrossing perfect matchings.  Consequently no
+choice of cyclic order makes all six states disk-noncrossing.  Relabeling the
+frontier cannot repair the argument.
+
+This example also survives the actual scalar specialization.  At
+\[
+ p=2^{61}-1=2305843009213693951,
+ \qquad A=2177342782468422681,
+\]
+all six coefficients remain nonzero.  This matters because distinct smoothing
+connectivities alone would not exclude cancellation after aggregation or
+specialization.  The JSON artifact records the exact Laurent polynomials, their
+field residues, and a witness smoothing for each matching.
+
+The problem is observable under existing ordering code, rather than only a
+carefully chosen order.  A second, twelve-crossing validated example has
+\code{scan\_order(start=0)} equal to its identity order and reaches the same
+six-state frontier.  More directly, the pre-existing
+\path{fast/examples/conway_sum_2.json} fixture, under the actual default
+\code{best\_scan\_order} with twelve starting choices, begins with
+\[
+ 7,9,4,10,5,8,1,3,0,2.
+\]
+After this tenth crossing its frontier is
+$\{0,5,6,12,13,22\}$, again with six nonzero exact and modular states.
+This is a statement about a specified fixture and specified deterministic
+ordering, not a statistical claim about typical knots.
+
+The portable verifier
+\path{tools/verify_frontier_counterexamples.py} computes every prefix smoothing
+from scratch using a connectivity graph on segment labels.  It independently
+counts closed components, expands the full Laurent coefficients, and then
+compares their field specialization with both the reference gluing routine and
+the optimized \code{Planar.glue} routine.  The three checks agree.  The complete
+reproducible records are in \path{data/frontier_counterexamples.json}.  The
+independent construction is valuable here: using only the same incremental
+matching engine to both generate and validate the evidence would provide a
+weaker check.
+
+\subsection{The geometric hypothesis that restores Catalan counting}
+
+\begin{proposition}[A certified disk frontier]
+\label{prop:disk-frontier}
+Suppose a processed tangle is contained in an embedded disk whose boundary
+meets the diagram transversely exactly at its frontier points, away from
+crossings.  Then its nonzero matching support has cardinality at most
+\begin{equation}
+ C_{w_i/2}=\frac{1}{w_i/2+1}\binom{w_i}{w_i/2}.
+\end{equation}
+If this condition holds at every stage, the scalar scan has a
+$2^{O(w)}\poly(n,\log p)$ implementation.
+\end{proposition}
+
+\begin{proof}
+The disk boundary supplies one cyclic order shared by every resolution.  Its
+resolved arcs are pairwise disjoint in the disk.  Two pairs with alternating
+endpoints cannot occur, by separation in a disk, so every endpoint matching is
+noncrossing in that cyclic order.  The number of such matchings on $2k$ points
+is $C_k$: pairing a distinguished point divides the remaining points into two
+even subintervals and gives the Catalan recurrence.  Since $C_k\leq4^k$, the
+state bound and the two smoothing transitions yield the stated runtime, with
+the same polynomial per-state accounting as above.
+\end{proof}
+
+The hypothesis is sufficient, not asserted necessary.  A regular neighborhood
+of a processed crossing set can have several boundary components.  Connectedness
+of that set, planarity of the whole diagram, and small cardinality of its
+frontier do not produce the single disk required by the proof.  Algorithms
+based on sphere-cut decompositions explicitly retain nooses which supply the
+missing cyclic boundary information.  The distinction between unrestricted
+pairing tables and noose-constrained tables is standard in dynamic programming
+on embedded graphs~\cite{ruesauthilikos}; the implementation-specific issue here
+is applying the latter count to a scan that does not certify the latter
+geometry.
+
+A useful next interface would attach a checkable disk or noose certificate to
+an ordering or decomposition.  The checker would verify the embedding and the
+boundary incidences independently of coefficient propagation.  A successful
+certificate would authorize the Catalan resource estimate; an unsuccessful one
+would leave the general matching bound available.  This suggests a concrete
+separation of responsibilities: geometry supplies the boundary guarantee, and
+the algebraic engine exploits it.
+
+\subsection{What these bounds do and do not say about the target}
+
+For the specific target $n^{O(\log n)}=2^{O(\log^2 n)}$, the general upper
+bound~\eqref{eq:general-frontier-runtime} suffices if
+\begin{equation}
+ w\log(w+1)=O(\log^2 n),
+ \label{eq:arbitrary-width-target}
+\end{equation}
+for example if $w=O(\log^2 n/\log\log n)$ asymptotically.  The certified-disk
+bound suffices already at $w=O(\log^2 n)$.  These are sufficient parameter
+regimes derived from two different upper bounds.  They are not lower bounds
+on the width any successful algorithm must achieve.
+
+In particular, a six-state counterexample does not establish
+$(w-1)!!$ lower growth on an infinite family of knot diagrams.  It disproves
+the stated Catalan argument and no more.  It does not rule out a sharper
+unconditional support theorem, compression of many matching states, or a
+different algebraic representation with single-exponential dependence on an
+appropriate graph parameter.  Proving a factorial lower bound would require
+a family of validated diagrams and orders, together with a proof that the
+claimed states occur and remain algebraically independent or nonzero under
+the relevant evaluation.  None is claimed here.
+
+Nor does planarity by itself establish the small-width promise in
+\eqref{eq:arbitrary-width-target}.  A global recognizer would need a theorem
+producing controlled interfaces after permitted reductions, or a route around
+large-width residual pieces.  Testing more greedy starts can improve an
+individual order, but does not supply that theorem.  This distinction should
+guide benchmarks: record the full support profile, frontier widths, cache
+costs, and any certified boundary topology, rather than inferring complexity
+from crossing number alone.
+
+Finally, all the runtime statements in this section concern a scalar Jones
+filter.  A differing value is an obstruction to being the unknot; agreement
+is not an unknot certificate supplied by this algorithm.  A fast filter is a
+useful part of a complete recognition pipeline, but its favorable width regime
+does not resolve the runtime of the residual exact decision procedure.

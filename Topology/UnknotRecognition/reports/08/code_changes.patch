@@ -1,0 +1,1547 @@
+--- a/Topology/UnknotRecognition/fast/README.md
++++ b/Topology/UnknotRecognition/fast/README.md
+@@ -1,10 +1,101 @@
+-# fastunknot 0.2: exact unknot recognition with a scanning Khovanov backend
++# fastunknot 0.3: exact braid shortcuts and a scanning Khovanov fallback
+ 
+ **Status: exact, complete, and exponential in the worst case. The `n^O(log n)`
+-bound announced in Lackenby's February 2021 talk is NOT achieved here**, for the
+-reasons documented in the synthesized report (`../synthesis/`): the accelerated
+-hierarchy operations in the talk's final flowchart have no published
+-algorithmic specification with cost bounds.
++bound announced in Lackenby's February 2021 talk is NOT achieved here**. This
++branch implements a complete near-linear decision for explicit three-braid
++knot closures, and retains the general exponential fallback. See the
++accompanying research article for the proofs and the remaining implementation
++gap between this package and a general quasi-polynomial algorithm.
++
++## New in 0.3: a complete source-braid shortcut
++
++`Diagram.from_braid` and braid JSON now retain the checked original word.
++`recognize` uses that structure before the general diagram pipeline:
++
++1. **Bennequin obstruction, every strand count.** If a knot closure on `m`
++   strands has exponent sum `e` with `abs(e) > m-1`, it is knotted.
++2. **At most three strands.** One and two strands have elementary decisions.
++   For three strands, reduce the image in `B3/centre = C2*C3` by a stack, then
++   cyclically reduce it. This gives a complete decision in `O(n)` word-RAM
++   operations for an explicit word of `n` letters. A conservative bit bound
++   is `O(n log(n+2))`. It uses no Khovanov complex or conjugator search.
++3. **Checked endpoint descent.** For more strands, singleton endpoint
++   generators can be removed by explicit Markov destabilizations. The
++   certificate can be replayed with `verify_singleton_reduction`. If the
++   resulting braid is decided, its answer applies to the original closure.
++   The full pipeline first tries its cheap Reidemeister I/II and descending
++   tests, so long chains of trivial kinks avoid repeated word rescanning.
++   The raw-word API runs endpoint descent directly. An unresolved input
++   continues through the existing general pipeline.
++
++There is an independently implemented matrix mode. It computes the integral
++reduced Burau representation at `t=-1`, using two additions per letter. On a
++three-braid knot closure the criterion is
++`abs(e) <= 2 and abs(2-trace(matrix)) == 1`. Matrix entries can have `O(n)`
++bits; this mode takes `O(n^2)` bit time. The writhe condition is essential:
++`T(3,5)` is knotted but has determinant one. Hexadecimal matrix witnesses avoid
++Python's large-decimal-integer JSON conversion limit.
++
++```python
++from fastunknot import Diagram, braid_certificate, recognize
++
++# Complete raw-word decision for at most three strands; no PD conversion.
++certificate = braid_certificate(3, [1, -2, 1, -2])
++assert certificate["status"] == "KNOTTED"
++
++# The regular API automatically uses retained, checked braid provenance.
++d = Diagram.from_braid(3, [1, -2])
++assert recognize(d).status == "UNKNOT"
++assert recognize(d, braid_backend="matrix").status == "UNKNOT"
++
++# Explicit ablation preserves access to every general scanner/filter stage.
++general = recognize(d, use_braid=False)
++```
++
++The raw-word API can return `INCONCLUSIVE` for more than three strands.
++`recognize` then uses the existing exact fallback. `--no-braid` disables all
++source-braid shortcuts; `--no-braid-reduction` disables endpoint descent only;
++`--braid-backend matrix` selects the independent matrix mode. These options
++have matching Python keyword arguments.
++
++The source word is auxiliary to PD equality and hashing. PD and grid inputs
++do not acquire unverified braid metadata. Mirrors preserve a correctly
++mirrored source word, and pickle restoration checks that provenance matches
++the PD. `Diagram.to_json()` retains its existing PD output;
++`Diagram.to_json(preserve_braid=True)` explicitly keeps the source word.
++
++## New validation and timings
++
++`tests/test_braid.py` includes all 46,376 one-component three-braid words of
++lengths 2, 4, 6 and 8, compared between the two new backends. All 2,856 such
++words of lengths at most 6 are checked against the independent dense reduced
++Khovanov cube. Additional tests cover exact Alexander determinants, braid
++relations, conjugation, mirroring, provenance, resource limits, and Morton's
++four-braid unknot as a genuine fallback regression.
++
++`tests/test_braid_reduction.py` checks replayable endpoint descent and invalid
++certificates. `tests/test_residue.py` checks scalar residue profiles against
++actual unit cancellation in both existing scanners.
++
++```sh
++python -m unittest discover -s tests -v
++python benchmark_braid.py --baseline /path/to/pinned/fast --output results/braid_benchmark.json
++```
++
++The baseline for the supplied measurement is commit
++`4e6fe879e5238ec0b134b6d33fdca0b8c7c1c711`. Without `--baseline`, the script
++compares the current implementation with its own `use_braid=False` ablation.
++It rotates baseline/new/baseline-control timing order, constructs a fresh PD
++for every run, and saves all samples, paired ratios and an A/A control.
++If any sample is `UNKNOWN`, or the verdicts disagree, the case receives no
++speed comparison. All 1,260 samples in the supplied 28-case measurement
++finished with their expected exact verdicts.
++Pipeline measurements include PD construction and recognition, while raw-word
++scaling is reported separately. Startup, imports and JSON parsing are outside
++the timing region. Timings establish practical effects on the stated corpus;
++the operation bounds are proved independently in the article.
++
++## Historical 0.2 work
+ 
+ Version 0.2 integrates the ideas of the nine acceleration proposals in
+ `../proposals/` that gave a measurable speedup. The 36-crossing braid closure
+@@ -17,6 +108,7 @@
+ 
+ 1. **Validation.** One component, spherical rotation system. Inputs: PD code,
+    braid word, or rectangular (grid) diagram.
++   A retained source braid first uses the shortcuts described above.
+ 2. **Reidemeister I/II reduction**, incremental: O(1) work per move on a
+    mutable dart structure, one revalidation at the end. (A search for
+    Reidemeister III moves that unlock further I/II moves runs later, between
+@@ -89,6 +181,11 @@
+ 
+ ## Complexity
+ 
++* Source three-braid word: `O(n)` word-RAM operations and conservatively
++  `O(n log(n+2))` bit time; independent matrix mode `O(n^2)` bit time.
++  This assumes an explicit Artin word, not a compressed list of huge powers.
++* Straightforward endpoint descent: `O(n*m)` word operations for `m` strands.
++  It is a sufficient simplification, not a complete braid-index algorithm.
+ * Steps 1–5 and 7: polynomial in the crossing number n.
+ * Step 6: at most n · Catalan(w/2) · poly(w) field operations for scan width w.
+ * Step 4 with step 8: if the visible factors have n_1, …, n_k crossings, the
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/benchmark_braid.py
+@@ -0,0 +1,224 @@
++"""Reproducible paired timings and scaling experiment for braid shortcuts.
++
++Run from fast/:
++  python benchmark_braid.py --baseline /path/to/pinned/fast --output results/braid_benchmark.json
++
++Without --baseline, the old side is a use_braid=False ablation of the current
++general diagram pipeline.  Reported pipeline times include fresh PD conversion
++but exclude Python startup/import and JSON parsing.  Raw-word timings avoid PD
++conversion.  Exact operation counts accompany timings; measurements themselves
++are never used as a proof of an asymptotic bound.
++Any UNKNOWN sample suppresses the speed comparison for its entire case.
++"""
++from __future__ import annotations
++
++import argparse
++import importlib.util
++import json
++import math
++import os
++from pathlib import Path
++import platform
++import statistics
++import sys
++import time
++
++import fastunknot
++from hard_unknots import make
++
++
++BASELINE_REVISION = "4e6fe879e5238ec0b134b6d33fdca0b8c7c1c711"
++
++
++def load_baseline(path):
++    init = Path(path).resolve() / "fastunknot" / "__init__.py"
++    name = "pinned_baseline_fastunknot"
++    spec = importlib.util.spec_from_file_location(name, init, submodule_search_locations=[str(init.parent)])
++    if spec is None or spec.loader is None:
++        raise ValueError(f"cannot load baseline package at {init}")
++    module = importlib.util.module_from_spec(spec)
++    sys.modules[name] = module
++    spec.loader.exec_module(module)
++    return module
++
++
++def input_cases():
++    result = []
++    for family, generator in (("positive", (1, 2)), ("alternating", (1, -2))):
++        for power in (5, 11, 23, 47, 95):
++            result.append({"name": f"{family}_3braid_power_{power}", "family": family,
++                           "data": {"braid": {"strands": 3, "word": list(generator) * power}},
++                           "options": {}, "expected": "KNOTTED"})
++    for seed in (0, 4, 5, 7, 14):
++        word = make(3, conjugator_length=15, steps=500, seed=seed)
++        for r3 in (True, False):
++            result.append({"name": f"scrambled_unknot_seed_{seed}_r3_{int(r3)}",
++                           "family": "scrambled_unknot", "seed": seed,
++                           "data": {"braid": {"strands": 3, "word": word}},
++                           "options": {"use_r3": r3}, "expected": "UNKNOT"})
++    morton = [-3, -3, 2, -3, 2, 1, 1, 1, -2, 1, -2]
++    result.append({"name": "morton_four_braid_unknot", "family": "fallback",
++                   "data": {"braid": {"strands": 4, "word": morton}},
++                   "options": {}, "expected": "UNKNOT"})
++    for strands in (16, 64, 256):
++        word = [1, -2] + list(range(3, strands))
++        result.append({"name": f"stabilized_unknot_{strands}_strands", "family": "endpoint_descent",
++                       "data": {"braid": {"strands": strands, "word": word}},
++                       "options": {}, "expected": "UNKNOT"})
++    examples = Path(__file__).parent / "examples"
++    for name, expected in (("conway.json", "KNOTTED"), ("kinoshita_terasaka.json", "KNOTTED"),
++                           ("hard_unknot_8.json", "UNKNOT"), ("grid_scrambled_unknot.json", "UNKNOT")):
++        result.append({"name": name[:-5], "family": "general_input",
++                       "data": json.loads((examples / name).read_text()), "options": {}, "expected": expected})
++    return result
++
++
++def run_pipeline(module, case, *, ablation=False):
++    started = time.perf_counter()
++    diagram = module.Diagram.from_json(case["data"])
++    built = time.perf_counter()
++    options = {**case["options"], "seconds": 10.0}
++    if ablation:
++        options["use_braid"] = False
++    result = module.recognize(diagram, **options)
++    finished = time.perf_counter()
++    if result.status not in (case["expected"], "UNKNOWN"):
++        raise AssertionError((case["name"], result.to_json()))
++    return {"build_seconds": built - started, "recognize_seconds": finished - built,
++            "total_seconds": finished - started, "status": result.status,
++            "method": result.method, "input_crossings": result.input_crossings,
++            "reduced_crossings": result.reduced_crossings}
++
++
++def summarize(samples):
++    result = {"samples": samples, "statuses": sorted({s["status"] for s in samples}),
++              "methods": sorted({s["method"] for s in samples})}
++    for key in ("build_seconds", "recognize_seconds", "total_seconds"):
++        values = [sample[key] for sample in samples]
++        result[key] = {"median": statistics.median(values), "min": min(values), "max": max(values)}
++    return result
++
++
++def paired_summary(samples):
++    """The baseline project's A/A control and order-statistic comparison rule."""
++    statuses = {sample["status"] for arm in samples.values() for sample in arm}
++    all_decided = len(statuses) == 1 and statuses <= {"UNKNOT", "KNOTTED"}
++    ratios = [new["total_seconds"] / old["total_seconds"]
++              for new, old in zip(samples["new"], samples["baseline"])]
++    controls = [other["total_seconds"] / old["total_seconds"]
++                for other, old in zip(samples["baseline_control"], samples["baseline"])]
++    ordered, aa = sorted(ratios), sorted(controls)
++    count = len(ordered)
++    tail, rank = 0.0, 0
++    for candidate in range(1, count // 2 + 1):
++        tail += math.comb(count, candidate - 1) / 2 ** count
++        if 2 * tail <= 0.05:
++            rank = candidate
++        else:
++            break
++    interval = [ordered[rank - 1], ordered[count - rank]] if rank else None
++    quartiles = [aa[count // 4], aa[-1 - count // 4]]
++    median = statistics.median(ratios)
++    conclusion = "no timing claim"
++    if not all_decided:
++        conclusion = "incomplete or inconsistent verdicts: no timing claim"
++    elif interval is not None:
++        if interval[1] < 1 and median < quartiles[0]:
++            conclusion = "measured faster"
++        elif interval[0] > 1 and median > quartiles[1]:
++            conclusion = "measured slower"
++    return {"new_over_old_ratios": ratios, "old2_over_old_ratios": controls,
++            "all_samples_decided_consistently": all_decided,
++            "median_new_over_old": median if all_decided else None,
++            "median_speedup": 1 / median if all_decided else None,
++            "ci95_median_new_over_old": interval if all_decided else None,
++            "aa_median": statistics.median(controls), "aa_quartiles": quartiles,
++            "comparison_rule_result": conclusion,
++            "qualification": "Order-statistic interval assumes independent samples; A/A checks local timing noise."}
++
++
++def raw_scaling(repetitions, largest):
++    rows = []
++    for requested in (1000, 2000, 4000, 8000, 16000, 32000, 64000, 128000, 256000, 512000, 1024000):
++        if requested > largest:
++            continue
++        power = requested // 2
++        if power % 3 == 0:
++            power += 1
++        word = [1, -2] * power
++        for backend in ("free-product", "matrix"):
++            if backend == "matrix" and requested > 128000:
++                continue
++            samples, witness = [], None
++            for _ in range(repetitions):
++                started = time.perf_counter()
++                witness = fastunknot.braid_certificate(3, word, backend=backend)
++                samples.append(time.perf_counter() - started)
++            assert witness is not None and witness["status"] == "KNOTTED"
++            row = {"family": "alternating_3braid", "letters": len(word), "backend": backend,
++                   "samples_seconds": samples, "median_seconds": statistics.median(samples)}
++            if backend == "free-product":
++                row["stats"] = witness["free_product_stats"]
++                row["certificate_cyclic_letters"] = len(witness["cyclic_word"])
++            else:
++                row["max_entry_bits"] = witness["max_entry_bits"]
++            rows.append(row)
++            print(f"raw {backend:12s} {len(word):8d} letters: {row['median_seconds']:.6f}s", flush=True)
++    return rows
++
++
++def main():
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument("--baseline", type=Path)
++    parser.add_argument("--output", type=Path, default=Path("results/braid_benchmark.json"))
++    parser.add_argument("--repetitions", type=int, default=15)
++    parser.add_argument("--raw-repetitions", type=int, default=5)
++    parser.add_argument("--largest-raw", type=int, default=1024000)
++    args = parser.parse_args()
++    if args.repetitions < 1 or args.raw_repetitions < 1:
++        parser.error("repetitions must be positive")
++    baseline = load_baseline(args.baseline) if args.baseline else fastunknot
++    rows = []
++    for case in input_cases():
++        # Warm both paths; each subsequent run still builds a fresh Diagram.
++        run_pipeline(baseline, case, ablation=args.baseline is None)
++        run_pipeline(fastunknot, case)
++        samples = {"baseline": [], "new": [], "baseline_control": []}
++        for repeat in range(args.repetitions):
++            order = ["baseline", "new", "baseline_control"]
++            offset = repeat % 3
++            order = order[offset:] + order[:offset]
++            for side in order:
++                samples[side].append(run_pipeline(fastunknot if side == "new" else baseline,
++                                                  case, ablation=side != "new" and args.baseline is None))
++        old, new = summarize(samples["baseline"]), summarize(samples["new"])
++        comparison = paired_summary(samples)
++        speedup = comparison["median_speedup"]
++        row = {**case, "baseline": old, "new": new,
++               "baseline_control": summarize(samples["baseline_control"]),
++               "paired_comparison": comparison, "total_speedup": speedup}
++        rows.append(row)
++        shown_speedup = f"{speedup:.2f}" if speedup is not None else "not comparable"
++        print(f"{case['name']:43s} old={old['total_seconds']['median']:.6f}s "
++              f"new={new['total_seconds']['median']:.6f}s ratio={shown_speedup} "
++              f"({comparison['comparison_rule_result']})", flush=True)
++    output = {
++        "baseline_revision": BASELINE_REVISION if args.baseline else None,
++        "comparison": "pinned-source comparison" if args.baseline else "source-braid shortcut ablation",
++        "python": platform.python_version(), "platform": platform.platform(),
++        "processor": platform.processor(), "logical_cpus": os.cpu_count(),
++        "repetitions": args.repetitions, "clock": "time.perf_counter",
++        "raw_repetitions": args.raw_repetitions,
++        "timing_scope": "fresh PD construction and recognize; excludes process startup, imports and JSON parsing",
++        "pairing": "three rotating arms: baseline, new, baseline-control; one warm-up per implementation",
++        "general_quasipolynomial_bound_established": False,
++        "cases": rows,
++        "raw_scaling": raw_scaling(args.raw_repetitions, args.largest_raw),
++    }
++    args.output.parent.mkdir(parents=True, exist_ok=True)
++    args.output.write_text(json.dumps(output, indent=2) + "\n")
++    print(f"saved {args.output}")
++
++
++if __name__ == "__main__":
++    main()
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/benchmark_residue.py
+@@ -0,0 +1,97 @@
++"""Reproduce intrinsic prefix profiles on actual scanning complexes.
++
++Run from fast/: python3 benchmark_residue.py --output results/residue_profiles.json
++This records deterministic work and equality checks, not performance claims
++about running the diagnostic inside the recognition pipeline.
++"""
++from __future__ import annotations
++
++import argparse
++import json
++import platform
++from pathlib import Path
++
++from fastunknot.diagram import Diagram
++from fastunknot.ordering import best_scan_order
++from fastunknot.residue import object_profile, residue_profile, profile_records
++from fastunknot.scan import ScanComplex
++from fastunknot.scan_fast import FastScan
++
++
++def measure(name, diagram):
++    order = best_scan_order(diagram.pd)
++    configurations = [
++        ("optimized", lambda: FastScan()),
++        ("generic_minfill", lambda: ScanComplex(pivot="minfill")),
++        ("generic_lifo", lambda: ScanComplex(pivot="lifo")),
++        ("sets_lifo", lambda: ScanComplex(pivot="lifo", algebra="sets")),
++    ]
++    rows = []
++    expected_profiles = None
++    for label, constructor in configurations:
++        scanner = constructor()
++        stages = []
++        profiles = []
++        for stage, crossing in enumerate(order, 1):
++            scanner.add_crossing(diagram.pd[crossing], reduce_now=False)
++            before = sum(object_profile(scanner).values())
++            predicted = residue_profile(scanner, check_squared=True)
++            scanner.eliminate()
++            actual = object_profile(scanner)
++            assert predicted == actual, (name, label, stage)
++            profiles.append(profile_records(actual))
++            stages.append({
++                "stage": stage, "crossing": crossing,
++                "boundary_points": len(scanner.points),
++                "objects_before": before,
++                "canonical_objects_after": sum(actual.values()),
++                "matching_types_after": len({matching for matching, degree in actual}),
++                "profile": profiles[-1],
++            })
++        if expected_profiles is None:
++            expected_profiles = profiles
++        else:
++            assert profiles == expected_profiles, (name, label)
++        rows.append({
++            "configuration": label, "stages": stages,
++            "peak_objects_before": max(s["objects_before"] for s in stages),
++            "peak_canonical_objects": max(s["canonical_objects_after"] for s in stages),
++            "peak_boundary_points": max(s["boundary_points"] for s in stages),
++            "final_unreduced_rank": stages[-1]["canonical_objects_after"],
++            "stats": scanner.stats,
++        })
++    return {"name": name, "pd": [list(row) for row in diagram.pd],
++            "crossings": diagram.crossings, "order": order, "runs": rows,
++            "all_predictions_match": True, "all_completed_profiles_match": True}
++
++
++def main():
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument("--output", default="results/residue_profiles.json")
++    args = parser.parse_args()
++    root = Path(__file__).resolve().parent
++    names = ["conway", "kinoshita_terasaka", "figure_eight", "hard_unknot_8", "torus_3_5"]
++    examples = [(name, Diagram.from_json(json.loads(
++        (root / "examples" / (name + ".json")).read_text()))) for name in names]
++    examples.append(("alternating_3braid_10", Diagram.from_braid(3, [1, -2] * 5)))
++    cases = [measure(name, diagram) for name, diagram in examples]
++    result = {
++        "python": platform.python_version(), "platform": platform.platform(),
++        "field": "F2", "degree_convention": "unnormalized cube degree",
++        "cases": cases,
++        "prefixes_per_configuration": sum(case["crossings"] for case in cases),
++        "pre_post_checks": 4 * sum(case["crossings"] for case in cases),
++        "all_checks_passed": True,
++    }
++    output = Path(args.output)
++    output.parent.mkdir(parents=True, exist_ok=True)
++    output.write_text(json.dumps(result, indent=2) + "\n")
++    print(json.dumps({key: result[key] for key in
++                      ("prefixes_per_configuration", "pre_post_checks", "all_checks_passed")}))
++    for case in cases:
++        print(case["name"], [(r["configuration"], r["peak_canonical_objects"],
++                             r["stats"]["compositions"]) for r in case["runs"]])
++
++
++if __name__ == "__main__":
++    main()
+--- a/Topology/UnknotRecognition/fast/fastunknot/__init__.py
++++ b/Topology/UnknotRecognition/fast/fastunknot/__init__.py
+@@ -1,6 +1,7 @@
+ """fastunknot: exact unknot recognition with polynomial and width-bounded filters and a
+ scanning Khovanov backend.  No quasi-polynomial guarantee is claimed."""
+ from .alexander import alexander_polynomial
++from .braid import braid_certificate
+ from .diagram import Diagram, DiagramError
+ from .factor import visible_factors
+ from .filters import alexander_obstruction, jones_obstruction
+@@ -9,5 +10,5 @@
+ 
+ __all__ = ["Diagram", "DiagramError", "Result", "ScanLimit", "alexander_obstruction",
+            "alexander_polynomial", "factored_khovanov_rank", "jones_obstruction", "khovanov_rank",
+-           "recognize", "visible_factors"]
+-__version__ = "0.2.0"
++           "recognize", "visible_factors", "braid_certificate"]
++__version__ = "0.3.0"
+--- a/Topology/UnknotRecognition/fast/fastunknot/__main__.py
++++ b/Topology/UnknotRecognition/fast/fastunknot/__main__.py
+@@ -37,6 +37,12 @@
+         ("--seconds", float, None, None, "cooperative time budget"),
+         ("--no-reduction", None, False, None, None),
+         ("--no-descending", None, False, None, None),
++        ("--no-braid", None, False, None,
++         "disable the source-braid shortcut and use the general diagram pipeline"),
++        ("--braid-backend", str, "free-product", ("free-product", "matrix"),
++         "exact at-most-three-strand backend for a retained source braid"),
++        ("--no-braid-reduction", None, False, None,
++         "disable singleton endpoint destabilization of retained source braids"),
+         ("--no-alexander", None, False, None, "disable both Alexander stages"),
+         ("--no-r3", None, False, None, "no Reidemeister III search before the Khovanov scan"),
+         ("--exact-alexander", None, False, None,
+@@ -152,6 +158,8 @@
+     if args.command == "recognize":
+         result = recognize(diagram, use_reduction=not args.no_reduction,
+                            use_descending=not args.no_descending,
++                           use_braid=not args.no_braid, braid_backend=args.braid_backend,
++                           use_braid_reduction=not args.no_braid_reduction,
+                            use_alexander=not args.no_alexander, use_modular=not args.no_modular,
+                            use_exact_alexander=True if args.exact_alexander else None, use_r3=not args.no_r3,
+                            race=args.race, race_after=args.race_after,
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/fastunknot/braid.py
+@@ -0,0 +1,215 @@
++"""Certified braid shortcuts and exact recognition for at most three strands.
++
++For a knot closure, Bennequin's inequality and its mirror imply
++``abs(exponent_sum) <= strands - 1`` if the knot is trivial.  Violation is a
++linear one-sided obstruction for any strand count.
++
++For three strands the quotient B_3 / centre is C_2 * C_3.  Put
++``x = sigma_1 sigma_2 sigma_1`` and ``y = sigma_1 sigma_2``.  A stack computes
++the reduced word, then cyclic reduction determines its conjugacy class.  At
++exponent sums 2 and -2 the unknot classes have cyclic words y and y^2;
++at exponent sum 0 the cyclic word has two x's, one y and one y^2.
++
++An independent matrix backend uses the specialization of reduced Burau at
++t=-1: sigma_1 -> [[1,1],[0,1]], sigma_2 -> [[1,0],[-1,1]].  Together with the
++Bennequin bound, ``abs(2 - trace(matrix)) == 1`` characterizes the unknot among
++three-braid knot closures.  See the accompanying article for proofs, including
++the lift from C_2 * C_3 and the small-trace conjugacy classification.
++
++Neither backend computes Khovanov homology, nor supplies a general
++quasi-polynomial unknot algorithm.  Inputs are explicit braid words.
++"""
++from __future__ import annotations
++
++from collections import deque
++
++from .diagram import DiagramError
++
++
++# 0 means x (order two); 1,2 mean y,y^2 (order three).
++_IMAGE = {1: (2, 0), -1: (0, 1), 2: (0, 2), -2: (1, 0)}
++_ALPHABET = "XYZ"
++
++
++def _checked_word(strands, word, check=None):
++    """Validate the word and its one-component closure without creating PD."""
++    if check is not None:
++        check()
++    if type(strands) is not int or strands < 1:
++        raise DiagramError("strands must be a positive integer")
++    try:
++        word = tuple(word)
++    except TypeError as exc:
++        raise DiagramError("braid word must be an iterable of integers") from exc
++    if strands > len(word) + 1:
++        raise DiagramError("too few crossings for a one-component closure")
++    permutation = list(range(strands))
++    exponent = 0
++    for position, generator in enumerate(word):
++        if type(generator) is not int or not 1 <= abs(generator) < strands:
++            raise DiagramError("braid generators must satisfy 1 <= |g| < strands")
++        if check is not None and position % 1024 == 0:
++            check()
++        exponent += 1 if generator > 0 else -1
++        i = abs(generator) - 1
++        permutation[i], permutation[i + 1] = permutation[i + 1], permutation[i]
++    current = permutation[0]
++    length = 1
++    while current != 0:
++        current = permutation[current]
++        length += 1
++    if length != strands:
++        raise DiagramError("the braid closure is a link, not a knot")
++    return word, exponent
++
++
++def free_product_normal_form(word, *, check=None):
++    """Return a cyclically reduced C2*C3 word and exact operation counters.
++
++    ``word`` must already be a word in +/-1,+/-2.  The returned representative
++    is invariant under conjugation only up to cyclic rotation; the decision
++    predicates below have that invariance.  No conjugator search is performed.
++    """
++    stack = []
++    maximum = token_operations = 0
++    for position, generator in enumerate(word):
++        if check is not None and position % 1024 == 0:
++            check()
++        for token in _IMAGE[generator]:
++            token_operations += 1
++            if stack and (stack[-1] == 0) == (token == 0):
++                previous = stack.pop()
++                if token != 0:
++                    product = (previous + token) % 3
++                    if product:
++                        stack.append(product)
++            else:
++                stack.append(token)
++            maximum = max(maximum, len(stack))
++    reduced_length = len(stack)
++    cyclic = deque(stack)
++    conjugations = 0
++    while len(cyclic) > 1 and (cyclic[0] == 0) == (cyclic[-1] == 0):
++        if check is not None and conjugations % 1024 == 0:
++            check()
++        first, last = cyclic.popleft(), cyclic.pop()
++        conjugations += 1
++        if first != 0:
++            product = (last + first) % 3
++            if product:
++                cyclic.append(product)
++    return tuple(cyclic), {
++        "token_operations": token_operations,
++        "cyclic_conjugations": conjugations,
++        "max_stack_tokens": maximum,
++        "reduced_tokens": reduced_length,
++        "cyclic_tokens": len(cyclic),
++    }
++
++
++def burau_at_minus_one(word, *, check=None):
++    """Integral 2x2 Burau product, using only additions and subtractions.
++
++    ``word`` must already be a word in +/-1,+/-2.  Multiplication is on the
++    right.  At most two integer additions are needed for each input letter.
++    The entries have O(len(word)) bits, so this backend uses O(n^2) bit time.
++    """
++    a, b, c, d = 1, 0, 0, 1
++    for position, generator in enumerate(word):
++        if check is not None and position % 1024 == 0:
++            check()
++        if generator == 1:
++            b, d = a + b, c + d
++        elif generator == -1:
++            b, d = b - a, d - c
++        elif generator == 2:
++            a, c = a - b, c - d
++        elif generator == -2:
++            a, c = a + b, c + d
++        else:
++            raise DiagramError("three-braid generators must be +/-1 or +/-2")
++    return ((a, b), (c, d))
++
++
++def braid_certificate(strands, word, *, backend="free-product", use_braid_reduction=True, check=None):
++    """Validate an explicit braid word and return an exact decision witness.
++
++    UNKNOT/KNOTTED is a complete decision for one-, two-, and three-braid knot
++    closures.  More strands first use the Bennequin obstruction, then optionally
++    a checked singleton endpoint destabilization.  Unresolved inputs return
++    INCONCLUSIVE.  This raw-word API avoids PD conversion.
++
++    ``check`` is an optional cooperative budget callback, called regularly.
++    Matrix witnesses use signed hexadecimal strings to remain JSON-safe even
++    when entries exceed Python's decimal integer conversion digit limit.
++    """
++    if backend not in ("free-product", "matrix"):
++        raise ValueError("braid backend must be 'free-product' or 'matrix'")
++    word, exponent = _checked_word(strands, word, check)
++    result = {
++        "status": "INCONCLUSIVE", "method": "braid-bennequin-inconclusive",
++        "strands": strands, "input_letters": len(word), "exponent_sum": exponent,
++        "bennequin_bound_for_unknot": strands - 1,
++    }
++    linear_complexity = {
++        "domain": "explicit braid word",
++        "word_ram_time": "O(n + m)",
++        "conservative_bit_time": "O((n + m) log(n + m + 2))",
++        "variables": "n=input letters, m=strands",
++    }
++    if abs(exponent) > strands - 1:
++        result.update(status="KNOTTED", method="braid-bennequin", complexity=linear_complexity)
++        return result
++    if strands <= 2:
++        # B1 is trivial.  A knot closure in B2 has odd exponent; the preceding
++        # obstruction leaves exactly the two one-crossing unknot classes.
++        result.update(status="UNKNOT", method="braid-at-most-two", complexity=linear_complexity)
++        return result
++    if strands > 3:
++        if use_braid_reduction:
++            from .braid_reduction import singleton_reduce
++            reduced_strands, reduced_word, reduction = singleton_reduce(
++                strands, word, check=(lambda: None) if check is None else check)
++            result["strand_reduction"] = reduction
++            if reduced_strands < strands:
++                following = braid_certificate(reduced_strands, reduced_word, backend=backend,
++                                              use_braid_reduction=False, check=check)
++                result.update(
++                    status=following["status"],
++                    method="braid-destabilization:" + following["method"],
++                    after_reduction=following,
++                    complexity={"domain": "explicit m-strand braid of n letters with endpoint descent",
++                                "word_ram_time": "O(n*m)",
++                                "conservative_bit_time": "O(n*m*log(n + m + 2))"},
++                )
++                if backend == "matrix":
++                    result["complexity"] = {
++                        "domain": "explicit m-strand braid of n letters with endpoint descent",
++                        "bit_time": "O(n*m*log(n + m + 2) + n^2)",
++                    }
++        return result
++    if backend == "free-product":
++        cyclic, stats = free_product_normal_form(word, check=check)
++        trivial = ((exponent == 2 and cyclic == (1,))
++                   or (exponent == -2 and cyclic == (2,))
++                   or (exponent == 0 and len(cyclic) == 4
++                       and cyclic.count(0) == 2 and cyclic.count(1) == cyclic.count(2) == 1))
++        result.update(
++            status="UNKNOT" if trivial else "KNOTTED", method="three-braid-free-product",
++            quotient="B3/centre = <X,Y | X^2=Y^3=1>; Z=Y^2",
++            cyclic_word="".join(_ALPHABET[token] for token in cyclic),
++            free_product_stats=stats, complexity=linear_complexity,
++        )
++    else:
++        matrix = burau_at_minus_one(word, check=check)
++        trace = matrix[0][0] + matrix[1][1]
++        determinant = abs(2 - trace)
++        result.update(
++            status="UNKNOT" if determinant == 1 else "KNOTTED", method="three-braid-matrix",
++            matrix_hex=[[hex(entry) for entry in row] for row in matrix],
++            trace_hex=hex(trace), knot_determinant_hex=hex(determinant),
++            max_entry_bits=max(abs(entry).bit_length() for row in matrix for entry in row),
++            complexity={"domain": "explicit three-braid word of n letters",
++                        "bit_time": "O(n^2)", "bit_space": "O(n)"},
++        )
++    return result
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/fastunknot/braid_reduction.py
+@@ -0,0 +1,123 @@
++"""Checked elementary Markov descent to at most three strands.
++
++This recognizes a sufficient condition for destabilization, not a complete
++braid-index algorithm.  In particular it need not reduce Morton's four-braid
++unknot.  Every successful step has a compact replayable certificate.
++"""
++from __future__ import annotations
++
++from collections import deque
++
++
++def _validate(strands, word):
++    if type(strands) is not int or strands < 1:
++        raise ValueError("strands must be a positive integer")
++    word = tuple(word)
++    if any(type(g) is not int or not 1 <= abs(g) < strands for g in word):
++        raise ValueError("invalid Artin generator")
++    return word
++
++
++def _free_cyclic(word, check):
++    stack = []
++    for index, generator in enumerate(word):
++        if index & 255 == 0:
++            check()
++        if stack and stack[-1] == -generator:
++            stack.pop()
++        else:
++            stack.append(generator)
++    ends = deque(stack)
++    while len(ends) > 1 and ends[0] == -ends[-1]:
++        ends.popleft()
++        ends.pop()
++        if len(ends) & 255 == 0:
++            check()
++    return tuple(ends)
++
++
++def _delete_endpoint(strands, word, side, position):
++    endpoint = strands - 1 if side == "right" else 1
++    if side not in ("left", "right") or not 0 <= position < len(word):
++        raise ValueError("invalid endpoint step")
++    if abs(word[position]) != endpoint:
++        raise ValueError("step points to the wrong generator")
++    if sum(abs(g) == endpoint for g in word) != 1:
++        raise ValueError("endpoint generator is not a singleton")
++    # Cyclically rotate u sigma v into v u sigma, then destabilize.
++    remaining = word[position + 1:] + word[:position]
++    if side == "left":
++        remaining = tuple(g - 1 if g > 0 else g + 1 for g in remaining)
++    return remaining
++
++
++def singleton_reduce(strands, word, check=lambda: None):
++    """Return (strands, word, certificate), stopping once strands <= 3.
++
++    At most max(original_strands-3, 0) endpoint steps are made.  With L input letters
++    the straightforward algorithm uses O(L*strands) word operations.  It
++    neither increases the word length nor changes the isotopy class of its
++    closure.  A failed search makes no claim about minimal braid index.
++    """
++    word = _validate(strands, word)
++    original_strands, original_length = strands, len(word)
++    steps = []
++    while True:
++        check()
++        word = _free_cyclic(word, check)
++        if strands <= 3:
++            break
++        right = [i for i, g in enumerate(word) if abs(g) == strands - 1]
++        left = [i for i, g in enumerate(word) if abs(g) == 1]
++        if len(right) == 1:
++            side, position = "right", right[0]
++        elif len(left) == 1:
++            side, position = "left", left[0]
++        else:
++            break
++        steps.append({"strands": strands, "length": len(word), "side": side,
++                      "position": position, "generator": word[position]})
++        word = _delete_endpoint(strands, word, side, position)
++        strands -= 1
++    certificate = {"kind": "singleton-markov-descent-v1",
++                   "input_strands": original_strands, "input_length": original_length,
++                   "steps": steps, "final_strands": strands, "final_word": list(word)}
++    return strands, word, certificate
++
++
++def verify_singleton_reduction(strands, word, certificate, check=lambda: None):
++    """Replay supplied choices; raise ValueError if any claimed move is invalid.
++
++    The verifier does not search for a reducible endpoint and does not trust
++    an asserted final braid.  An empty or prematurely stopped certificate is
++    legal: it proves exactly the reductions it contains, never completeness.
++    """
++    word = _validate(strands, word)
++    if not isinstance(certificate, dict):
++        raise ValueError("certificate must be a dictionary")
++    if certificate.get("kind") != "singleton-markov-descent-v1":
++        raise ValueError("unknown reduction certificate")
++    if (certificate.get("input_strands") != strands or
++            certificate.get("input_length") != len(word)):
++        raise ValueError("certificate is for a different input size")
++    steps = certificate.get("steps")
++    if not isinstance(steps, list):
++        raise ValueError("missing reduction steps")
++    for step in steps:
++        check()
++        if not isinstance(step, dict):
++            raise ValueError("reduction step must be a dictionary")
++        word = _free_cyclic(word, check)
++        if strands <= 3 or step.get("strands") != strands or step.get("length") != len(word):
++            raise ValueError("invalid intermediate braid size")
++        position = step.get("position")
++        if type(position) is not int or not 0 <= position < len(word):
++            raise ValueError("invalid generator position")
++        if step.get("generator") != word[position]:
++            raise ValueError("claimed generator differs from the input")
++        word = _delete_endpoint(strands, word, step.get("side"), position)
++        strands -= 1
++    word = _free_cyclic(word, check)
++    if certificate.get("final_strands") != strands or certificate.get("final_word") != list(word):
++        raise ValueError("claimed final braid is not the replay result")
++    return strands, word
+--- a/Topology/UnknotRecognition/fast/fastunknot/diagram.py
++++ b/Topology/UnknotRecognition/fast/fastunknot/diagram.py
+@@ -80,6 +80,16 @@
+     @property
+     def crossings(self) -> int:
+         return len(self.pd)
++
++    @property
++    def braid_source(self):
++        """Validated original braid, or None for a diagram supplied as PD/grid.
++
++        This provenance is auxiliary: equality and hashing still depend only
++        on PD.  It is attached only by checked conversion, never accepted as an
++        unchecked second argument to the public Diagram constructor.
++        """
++        return self.__dict__.get("_braid_source")
+ 
+     @classmethod
+     def from_pd(cls, data: Iterable[Iterable[int]]) -> "Diagram":
+@@ -136,7 +146,9 @@
+         if len(cycles(permutation)) != 1:
+             raise DiagramError("the braid closure is a link, not a knot")
+         if not word:
+-            return cls(())
++            result = cls(())
++            object.__setattr__(result, "_braid_source", (strands, tuple(word)))
++            return result
+         current = list(range(strands))
+         next_label = strands
+         rows = []
+@@ -151,7 +163,9 @@
+         closure = DisjointSet(next_label)
+         for top, bottom in enumerate(current):
+             closure.union(top, bottom)
+-        return cls.from_pd([[closure.find(x) for x in row] for row in rows])
++        result = cls.from_pd([[closure.find(x) for x in row] for row in rows])
++        object.__setattr__(result, "_braid_source", (strands, tuple(word)))
++        return result
+ 
+     @classmethod
+     def from_grid(cls, rows: Sequence[Sequence[int]]) -> "Diagram":
+@@ -248,7 +262,33 @@
+         return found
+ 
+     def __getstate__(self):
+-        return {"pd": self.pd}
++        state = {"pd": self.pd}
++        if self.braid_source is not None:
++            state["braid_source"] = self.braid_source
++        return state
++
++    def __setstate__(self, state):
++        # Preserve checked provenance across process/cache serialization.  A
++        # mismatched PD/word pair must never authorize a specialized verdict.
++        if "pd" in self.__dict__:
++            raise AttributeError("cannot reinitialize an immutable Diagram")
++        restored = Diagram.from_pd(state["pd"])
++        source = state.get("braid_source")
++        if source is not None:
++            try:
++                strands, word = source
++            except (TypeError, ValueError) as exc:
++                raise DiagramError("invalid serialized braid provenance") from exc
++            braid = Diagram.from_braid(strands, word)
++            # Mirroring a crossing can change the choice of its first under
++            # port.  A half-turn of one PD row leaves that crossing unchanged.
++            if (len(braid.pd) != len(restored.pd)
++                    or any(a != b and a[2:] + a[:2] != b
++                           for a, b in zip(braid.pd, restored.pd))):
++                raise DiagramError("serialized braid provenance does not match PD")
++            source = braid.braid_source
++        object.__setattr__(self, "_braid_source", source)
++        object.__setattr__(self, "pd", restored.pd)
+ 
+     def alpha(self) -> list[int]:
+         """The dart involution; a fresh list on every call, because callers modify it."""
+@@ -315,7 +355,14 @@
+         return sum(self.signs())
+ 
+     def mirror(self) -> "Diagram":
+-        return Diagram.from_pd([row[1:] + row[:1] for row in self.pd])
+-
+-    def to_json(self) -> dict[str, Any]:
++        result = Diagram.from_pd([row[1:] + row[:1] for row in self.pd])
++        if self.braid_source is not None:
++            strands, word = self.braid_source
++            object.__setattr__(result, "_braid_source", (strands, tuple(-g for g in word)))
++        return result
++
++    def to_json(self, *, preserve_braid: bool = False) -> dict[str, Any]:
++        if preserve_braid and self.braid_source is not None:
++            strands, word = self.braid_source
++            return {"braid": {"strands": strands, "word": list(word)}}
+         return {"pd": [list(row) for row in self.pd]}
+--- a/Topology/UnknotRecognition/fast/fastunknot/recognize.py
++++ b/Topology/UnknotRecognition/fast/fastunknot/recognize.py
+@@ -1,8 +1,12 @@
+ """The recognition pipeline (version 0.2).
+ 
+ 1. validate the diagram (one component, spherical rotation system);
++   if a checked source braid is retained, use the Bennequin obstruction and
++   the complete polynomial-time at-most-three-strand decision first;
+ 2. crossing-decreasing Reidemeister I/II moves (polynomial);
+ 3. descending-diagram test (linear; sufficient for UNKNOT);
++   then try checked endpoint descent on a remaining source braid with more
++   than three strands; cheap diagram reductions get priority over this step;
+ 4. split along visible two-edge cuts; a connected sum is trivial exactly when
+    every summand is, so the summands are examined separately, smallest first,
+    and the first knotted summand decides;
+@@ -27,6 +31,7 @@
+     from typing import Any
+ 
+ from .alexander import alexander_polynomial, evaluate, format_polynomial
++from .braid import braid_certificate
+ from .diagram import Diagram
+ from .factor import convolve, visible_factors
+ from .filters import FilterLimit, alexander_obstruction, jones_obstruction
+@@ -175,6 +180,7 @@
+ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: bool = True,
+               use_factorization: bool = True, use_modular: bool = True, use_jones: bool = True,
+               use_alexander: bool = True, use_exact_alexander: bool | None = None, use_r3: bool = True,
++              use_braid: bool = True, braid_backend: str = "free-product", use_braid_reduction: bool = True,
+               jones_max_states: int | None = 4096,
+               jones_max_transitions: int | None = 200_000, max_objects: int | None = None,
+               seconds: float | None = None, check_d_squared: bool = False,
+@@ -184,6 +190,26 @@
+     deadline = None if seconds is None else start + seconds
+     original = diagram
+     evidence: dict[str, Any] = {}
++    if use_braid and diagram.braid_source is not None:
++        def check_braid():
++            if deadline is not None and monotonic() > deadline:
++                raise ScanLimit("time budget exhausted")
++
++        try:
++            strands, word = diagram.braid_source
++            # For more strands this initial step is only the cheap Bennequin
++            # obstruction.  The potentially O(n*m) endpoint descent waits
++            # until R1/R2 and the descending test have had their chance.
++            witness = braid_certificate(strands, word, backend=braid_backend,
++                                        use_braid_reduction=False, check=check_braid)
++        except (ScanLimit, MemoryError) as exc:
++            evidence["reason"] = str(exc) or "memory allocation failed"
++            return Result("UNKNOWN", "resource-limit", original.crossings, diagram.crossings,
++                          monotonic() - start, evidence)
++        evidence["braid"] = witness
++        if witness["status"] != "INCONCLUSIVE":
++            return Result(witness["status"], witness["method"], original.crossings, diagram.crossings,
++                          monotonic() - start, evidence)
+     if use_reduction:
+         diagram, trace = simplify(diagram, r3=False)      # Reidemeister III waits until the filters have failed
+         evidence["reidemeister_trace"] = [m.to_json() for m in trace]
+@@ -194,6 +220,22 @@
+         if dart is not None:
+             evidence["descending_start_dart"] = dart
+             return Result("UNKNOT", "descending-diagram", original.crossings, diagram.crossings,
++                          monotonic() - start, evidence)
++    if (use_braid and use_braid_reduction and original.braid_source is not None
++            and original.braid_source[0] > 3):
++        try:
++            strands, word = original.braid_source
++            witness = braid_certificate(strands, word, backend=braid_backend,
++                                        use_braid_reduction=True, check=check_braid)
++        except (ScanLimit, MemoryError) as exc:
++            evidence["reason"] = str(exc) or "memory allocation failed"
++            return Result("UNKNOWN", "resource-limit", original.crossings, diagram.crossings,
++                          monotonic() - start, evidence)
++        # The checked original braid has the same closure as the diagram
++        # after the explicitly recorded Reidemeister reductions.
++        evidence["braid"] = witness
++        if witness["status"] != "INCONCLUSIVE":
++            return Result(witness["status"], witness["method"], original.crossings, diagram.crossings,
+                           monotonic() - start, evidence)
+     factors = [diagram]
+     if use_factorization:
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/fastunknot/residue.py
+@@ -0,0 +1,111 @@
++"""Audit the intrinsic multiplicities of a partial Khovanov complex.
++
++This is an optional diagnostic, not an extra pass in the recognition pipeline.
++The positive-degree radical of the matching algebra kills every morphism
++between distinct matchings and retains the undotted identity coefficient on
++an endomorphism.  The resulting scalar chain complex splits by matching.
++Its Betti numbers equal the object multiplicities after exhaustive unit
++cancellation, independent of the pivot rule.  See the accompanying article.
++
++Both FastScan and the bits/sets variants of ScanComplex are supported.
++No crossingless-disk or Catalan state-count assumption is used here.
++"""
++from __future__ import annotations
++
++from collections import defaultdict
++
++
++def _matching_key(matching):
++    return tuple(sorted(tuple(sorted(pair)) for pair in matching))
++
++
++def _snapshot(scan):
++    if hasattr(scan, "mid"):
++        objects = {i: (scan.algebra.pairs[m], scan.deg[i])
++                   for i, m in enumerate(scan.mid) if m is not None}
++        out = {i: scan.out[i] for i in objects}
++    else:
++        objects = {i: (_matching_key(m), h) for i, (m, h) in scan.objects.items()}
++        out = {i: scan.out.get(i, {}) for i in objects}
++    return objects, out
++
++
++def _scalar(value):
++    return bool(value & 1) if isinstance(value, int) else frozenset() in value
++
++
++def _rank(rows):
++    pivots = {}
++    for row in rows:
++        while row:
++            top = row.bit_length() - 1
++            old = pivots.get(top)
++            if old is None:
++                pivots[top] = row
++                break
++            row ^= old
++    return len(pivots)
++
++
++def residue_profile(scan, *, check_squared=False):
++    """Return {(matching, degree): canonical multiplicity} without changing scan.
++
++Only nonzero multiplicities are returned.  A negative dimension or a failed
++optional scalar d^2 check reports an invalid complex; it never yields a knot
++verdict.  Cost is the sum of ordinary F2 rank computations on scalar blocks.
++"""
++    objects, out = _snapshot(scan)
++    groups = defaultdict(list)
++    for ident, key in objects.items():
++        groups[key].append(ident)
++    scalar_out = {}
++    for source, (matching, degree) in objects.items():
++        row = []
++        for target, value in out[source].items():
++            if target not in objects:
++                raise ArithmeticError("differential points to a deleted object")
++            target_matching, target_degree = objects[target]
++            if target_degree != degree + 1:
++                raise ArithmeticError("differential does not increase degree by one")
++            if target_matching == matching and _scalar(value):
++                row.append(target)
++        scalar_out[source] = row
++    if check_squared:
++        for row in scalar_out.values():
++            parity = set()
++            for middle in row:
++                parity.symmetric_difference_update(scalar_out[middle])
++            if parity:
++                raise ArithmeticError("residue differential has nonzero square")
++    ranks = {}
++    for (matching, degree), sources in groups.items():
++        index = {target: col for col, target in
++                 enumerate(groups.get((matching, degree + 1), []))}
++        rows = [sum(1 << index[target] for target in scalar_out[source])
++                for source in sources]
++        ranks[matching, degree] = _rank(rows)
++    answer = {}
++    for key, sources in groups.items():
++        matching, degree = key
++        beta = len(sources) - ranks.get(key, 0) - ranks.get((matching, degree - 1), 0)
++        if beta < 0:
++            raise ArithmeticError("negative residue homology dimension")
++        if beta:
++            answer[key] = beta
++    return answer
++
++
++def object_profile(scan):
++    """Return actual object counts with the same keys as residue_profile."""
++    objects, _ = _snapshot(scan)
++    answer = defaultdict(int)
++    for key in objects.values():
++        answer[key] += 1
++    return dict(answer)
++
++
++def profile_records(profile):
++    """A deterministic, JSON-serializable list for experiment artifacts."""
++    return [{"matching": [list(pair) for pair in matching],
++             "degree": degree, "multiplicity": count}
++            for (matching, degree), count in sorted(profile.items())]
+--- a/Topology/UnknotRecognition/fast/pyproject.toml
++++ b/Topology/UnknotRecognition/fast/pyproject.toml
+@@ -4,8 +4,8 @@
+ 
+ [project]
+ name = "fastunknot"
+-version = "0.1.0"
+-description = "Exact unknot recognition: polynomial filters plus a scanning Khovanov backend (exponential worst case, no quasi-polynomial claim)"
++version = "0.3.0"
++description = "Exact unknot recognition: near-linear three-braid decision and a general exponential Khovanov fallback"
+ requires-python = ">=3.10"
+ license = {text = "MIT"}
+ dependencies = []
+--- a/Topology/UnknotRecognition/fast/tests/test_acceleration.py
++++ b/Topology/UnknotRecognition/fast/tests/test_acceleration.py
+@@ -273,7 +273,8 @@
+         self.assertTrue(default.evidence["alexander_polynomial"].startswith("not computed"))
+         self.assertEqual((forced.evidence["alexander_polynomial"], forced.evidence["determinant"]), ("1", 1))
+         trefoil = Diagram.from_braid(2, [1, 1, 1])
+-        self.assertEqual(recognize(trefoil, use_modular=False, use_jones=False).method, "alexander-polynomial")
++        self.assertEqual(recognize(trefoil, use_modular=False, use_jones=False, use_braid=False).method,
++                         "alexander-polynomial")
+         self.assertNotIn("alexander_polynomial", recognize(trefoil, use_alexander=False, use_jones=False).evidence)
+         for other in random_knot_braids(31, 40, lengths=(4, 16)):
+             self.assertEqual(recognize(other).status, recognize(other, use_exact_alexander=True).status)
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/tests/test_braid.py
+@@ -0,0 +1,192 @@
++"""Independent checks of the exact source-braid decision backend.
++
++These tests compare two different representations, the old exact Alexander
++code, and the independent dense Khovanov cube.  Passing examples or timings is
++not used in place of the mathematical proof in the accompanying article.
++"""
++from __future__ import annotations
++
++import itertools
++import json
++import os
++import pickle
++import random
++import sys
++import unittest
++from unittest.mock import patch
++
++ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
++sys.path.insert(0, ROOT)
++
++from fastunknot import Diagram, DiagramError, braid_certificate, recognize
++from fastunknot.alexander import alexander_polynomial, evaluate
++from fastunknot.braid import burau_at_minus_one, free_product_normal_form
++from test_fastunknot import one_component, reference_reduced_rank
++
++
++def cyclic_signature(word):
++    reduced, _ = free_product_normal_form(word)
++    if not reduced:
++        return ()
++    return min(reduced[i:] + reduced[:i] for i in range(len(reduced)))
++
++
++class BraidRepresentationTests(unittest.TestCase):
++    def test_all_words_through_eight_agree_between_backends(self):
++        count = 0
++        for length in (2, 4, 6, 8):
++            for word in itertools.product((1, -1, 2, -2), repeat=length):
++                if not one_component(3, word):
++                    continue
++                free = braid_certificate(3, word)
++                matrix = braid_certificate(3, word, backend="matrix")
++                self.assertEqual(free["status"], matrix["status"], word)
++                count += 1
++        self.assertEqual(count, 46376)
++
++    def test_all_words_through_six_against_independent_khovanov_cube(self):
++        count = 0
++        for length in (2, 4, 6):
++            for word in itertools.product((1, -1, 2, -2), repeat=length):
++                if not one_component(3, word):
++                    continue
++                expected = "UNKNOT" if reference_reduced_rank(Diagram.from_braid(3, word)) == 1 else "KNOTTED"
++                self.assertEqual(braid_certificate(3, word)["status"], expected, word)
++                count += 1
++        self.assertEqual(count, 2856)
++
++    def test_burau_determinant_against_exact_alexander(self):
++        rng = random.Random(3270)
++        checked = 0
++        while checked < 120:
++            word = [rng.choice((1, -1, 2, -2)) for _ in range(rng.randrange(1, 10) * 2)]
++            if not one_component(3, word):
++                continue
++            matrix = burau_at_minus_one(word)
++            a, b = matrix[0]
++            c, d = matrix[1]
++            self.assertEqual(a * d - b * c, 1)
++            expected = abs(evaluate(alexander_polynomial(Diagram.from_braid(3, word)), -1))
++            self.assertEqual(abs(2 - a - d), expected, word)
++            checked += 1
++
++    def test_artin_relations_and_conjugation(self):
++        rng = random.Random(260107)
++        for _ in range(200):
++            left = [rng.choice((1, -1, 2, -2)) for _ in range(16)]
++            right = [rng.choice((1, -1, 2, -2)) for _ in range(16)]
++            for a, b in ((1, 2), (-1, -2)):
++                first, second = left + [a, b, a] + right, left + [b, a, b] + right
++                self.assertEqual(burau_at_minus_one(first), burau_at_minus_one(second))
++                self.assertEqual(cyclic_signature(first), cyclic_signature(second))
++            base = left + right
++            inverse = [-g for g in reversed(left)]
++            self.assertEqual(cyclic_signature(left + base + inverse), cyclic_signature(base))
++
++    def test_long_word_exact_work_bound_and_large_integer_json(self):
++        conjugator = [1, -2] * 12001
++        word = conjugator + [1, -2] + [-g for g in reversed(conjugator)]
++        free = braid_certificate(3, word)
++        self.assertEqual(free["status"], "UNKNOT")
++        stats = free["free_product_stats"]
++        self.assertEqual(stats["token_operations"], 2 * len(word))
++        self.assertLessEqual(stats["max_stack_tokens"], 2 * len(word))
++        self.assertLessEqual(stats["cyclic_conjugations"], len(word))
++        # Large integral witnesses must serialize without converting huge
++        # Python integers to decimal strings (the usual 4300-digit ceiling).
++        certificate = braid_certificate(3, conjugator, backend="matrix")
++        self.assertGreater(certificate["max_entry_bits"], 15000)
++        self.assertEqual(certificate["status"], "KNOTTED")
++        self.assertEqual(json.loads(json.dumps(certificate)), certificate)
++
++
++class BraidPipelineTests(unittest.TestCase):
++    def test_invalid_and_unsupported_inputs(self):
++        for strands, word in ((0, []), (True, []), (3, [1]), (2, [1, 1]),
++                              (3, [1, 3]), (3, [1, 2.0]), (1, [1]), (3, None)):
++            with self.assertRaises(DiagramError):
++                braid_certificate(strands, word)
++        with self.assertRaises(ValueError):
++            braid_certificate(3, [1, 2], backend="guess")
++
++    def test_elementary_cases_and_necessary_writhe_bound(self):
++        self.assertEqual(braid_certificate(1, [])["status"], "UNKNOT")
++        for exponent in (1, -1, 3, -3, 31, -31):
++            result = braid_certificate(2, [1 if exponent > 0 else -1] * abs(exponent))
++            self.assertEqual(result["status"], "UNKNOT" if abs(exponent) == 1 else "KNOTTED")
++        # Determinant alone cannot decide, even on three strands: T(3,5).
++        word = [1, 2] * 5
++        matrix = burau_at_minus_one(word)
++        self.assertEqual(abs(2 - matrix[0][0] - matrix[1][1]), 1)
++        self.assertEqual(braid_certificate(3, word)["method"], "braid-bennequin")
++        self.assertEqual(braid_certificate(3, word)["status"], "KNOTTED")
++        self.assertEqual(braid_certificate(4, [1, 2, 3] * 3)["method"], "braid-bennequin")
++
++    def test_provenance_is_checked_immutable_and_serializable(self):
++        word = [1, -2, 1, -2]
++        diagram = Diagram.from_json({"braid": {"strands": 3, "word": word}})
++        expected = diagram.braid_source
++        word.append(1)
++        self.assertEqual(diagram.braid_source, expected)
++        with self.assertRaises(AttributeError):
++            diagram.braid_source = (3, (1, 2))
++        with self.assertRaises(TypeError):
++            Diagram(diagram.pd, braid_source=(3, (1, 2)))
++        pd_only = Diagram.from_pd(diagram.pd)
++        self.assertIsNone(pd_only.braid_source)
++        self.assertEqual(pd_only, diagram)
++        self.assertEqual(hash(pd_only), hash(diagram))
++        for value in (diagram, diagram.mirror(), pd_only):
++            restored = pickle.loads(pickle.dumps(value))
++            self.assertEqual(restored, value)
++            self.assertEqual(restored.braid_source, value.braid_source)
++        retained = Diagram.from_json(diagram.to_json(preserve_braid=True))
++        self.assertEqual(retained.braid_source, diagram.braid_source)
++        self.assertIsNone(Diagram.from_json(diagram.to_json()).braid_source)
++        corrupted = diagram.__getstate__()
++        corrupted["braid_source"] = (3, (1, 2, 1, 2))
++        with self.assertRaises(DiagramError):
++            object.__new__(Diagram).__setstate__(corrupted)
++        with self.assertRaises(AttributeError):
++            diagram.__setstate__(pd_only.__getstate__())
++
++    def test_early_dispatch_opt_out_and_resource_limit(self):
++        word = [1, -2] * 7
++        diagram = Diagram.from_braid(3, word)
++        with patch("fastunknot.recognize.khovanov_rank", side_effect=AssertionError("scan called")):
++            with patch("fastunknot.recognize.simplify", side_effect=AssertionError("reducer called")):
++                result = recognize(diagram)
++        self.assertEqual((result.status, result.method), ("KNOTTED", "three-braid-free-product"))
++        self.assertEqual(recognize(diagram, braid_backend="matrix").method, "three-braid-matrix")
++        self.assertEqual(recognize(diagram, use_braid=False).status, result.status)
++        self.assertFalse(result.to_json()["quasipolynomial_guarantee"])
++        self.assertEqual(recognize(diagram, seconds=0).status, "UNKNOWN")
++
++    def test_mirrors_and_real_four_strand_fallback(self):
++        for word in ([1, 2], [1, -2], [1, -2] * 2, [1, 2] * 5):
++            original = Diagram.from_braid(3, word)
++            self.assertEqual(recognize(original).status, recognize(original.mirror()).status)
++        # Morton's irreducible four-braid representative of the unknot.
++        # Neither endpoint occurs once, so the exact PD fallback is required.
++        morton = [-3, -3, 2, -3, 2, 1, 1, 1, -2, 1, -2]
++        self.assertEqual(braid_certificate(4, morton)["status"], "INCONCLUSIVE")
++        self.assertEqual(recognize(Diagram.from_braid(4, morton)).status, "UNKNOT")
++
++    def test_diagram_reductions_precede_endpoint_descent(self):
++        chain = Diagram.from_braid(257, range(1, 257))
++        with patch("fastunknot.braid_reduction.singleton_reduce", side_effect=AssertionError("descent called")):
++            result = recognize(chain)
++        self.assertEqual((result.status, result.method), ("UNKNOT", "reidemeister-reduction"))
++        stabilized_figure_eight = Diagram.from_braid(4, [1, -2, 1, -2, 3])
++        result = recognize(stabilized_figure_eight)
++        self.assertEqual((result.status, result.method),
++                         ("KNOTTED", "braid-destabilization:three-braid-free-product"))
++        self.assertEqual((result.input_crossings, result.reduced_crossings), (5, 4))
++        self.assertEqual(result.evidence["braid"]["strands"], 4)
++        self.assertEqual(result.evidence["braid"]["after_reduction"]["strands"], 3)
++        self.assertEqual(recognize(stabilized_figure_eight, use_braid_reduction=False).method,
++                         "alexander-modular")
++
++
++if __name__ == "__main__":
++    unittest.main()
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/tests/test_braid_reduction.py
+@@ -0,0 +1,79 @@
++"""Topology-preserving endpoint descent and adversarial certificate replay."""
++import copy
++import random
++import unittest
++
++from fastunknot.braid_reduction import singleton_reduce, verify_singleton_reduction
++from fastunknot.diagram import Diagram
++from fastunknot.scan import khovanov_rank
++
++
++MORTON = [-3, -3, 2, -3, 2, 1, 1, 1, -2, 1, -2]
++
++
++class BraidReductionTests(unittest.TestCase):
++    def test_right_and_left_destabilizations_preserve_full_khovanov_rank(self):
++        # No braid classifier is used as the oracle for these Markov moves.
++        for original in ([1, 2], [1, -2] * 2, [1, 1, 1, 2]):
++            expected = khovanov_rank(Diagram.from_braid(3, original).pd)["reduced_rank"]
++            for sign in (-1, 1):
++                for side in ("left", "right"):
++                    if side == "right":
++                        word = list(original) + [3 * sign]
++                    else:
++                        word = [g + 1 if g > 0 else g - 1 for g in original] + [sign]
++                    strands, reduced, certificate = singleton_reduce(4, word)
++                    self.assertEqual(strands, 3)
++                    self.assertEqual(verify_singleton_reduction(4, word, certificate),
++                                     (strands, reduced))
++                    observed = khovanov_rank(Diagram.from_braid(4, word).pd)["reduced_rank"]
++                    final = khovanov_rank(Diagram.from_braid(strands, reduced).pd)["reduced_rank"]
++                    self.assertEqual(observed, expected)
++                    self.assertEqual(final, expected)
++
++    def test_conjugated_repeated_stabilization(self):
++        rng = random.Random(260107)
++        word = [1, -2]
++        for strands in range(4, 12):
++            word.append((strands - 1) * rng.choice((-1, 1)))
++            conjugator = [rng.randrange(1, strands) * rng.choice((-1, 1)) for _ in range(20)]
++            conjugated = conjugator + word + [-g for g in reversed(conjugator)]
++            reduced_strands, reduced, certificate = singleton_reduce(strands, conjugated)
++            self.assertEqual(reduced_strands, 3)
++            self.assertEqual(reduced, (1, -2))
++            self.assertEqual(len(certificate["steps"]), strands - 3)
++            self.assertEqual(verify_singleton_reduction(strands, conjugated, certificate),
++                             (3, (1, -2)))
++
++    def test_morton_unknot_requires_a_more_general_operation(self):
++        strands, word, certificate = singleton_reduce(4, MORTON)
++        self.assertEqual(strands, 4)
++        self.assertEqual(list(word), MORTON)
++        self.assertEqual(certificate["steps"], [])
++        self.assertEqual(khovanov_rank(Diagram.from_braid(4, MORTON).pd)["reduced_rank"], 1)
++
++    def test_tampering_is_rejected(self):
++        original = [1, -2, 3]
++        for malformed in (None, [], "certificate"):
++            with self.assertRaises(ValueError):
++                verify_singleton_reduction(4, original, malformed)
++        _, _, certificate = singleton_reduce(4, original)
++        malformed = copy.deepcopy(certificate)
++        malformed["steps"] = [None]
++        with self.assertRaises(ValueError):
++            verify_singleton_reduction(4, original, malformed)
++        bad = copy.deepcopy(certificate)
++        bad["steps"][0]["position"] = 0
++        with self.assertRaises(ValueError):
++            verify_singleton_reduction(4, original, bad)
++        bad = copy.deepcopy(certificate)
++        bad["final_word"] = [1, 1, 1, 2]
++        with self.assertRaises(ValueError):
++            verify_singleton_reduction(4, original, bad)
++        # Same length and alleged local index cannot authorize a non-singleton deletion.
++        with self.assertRaises(ValueError):
++            verify_singleton_reduction(4, [3, -2, 3], certificate)
++
++
++if __name__ == "__main__":
++    unittest.main()
+--- a/Topology/UnknotRecognition/fast/tests/test_fastunknot.py
++++ b/Topology/UnknotRecognition/fast/tests/test_fastunknot.py
+@@ -263,7 +263,7 @@
+         d = Diagram.from_braid(3, [1, 2] * 5)
+         with self.assertRaises(Exception):
+             khovanov_rank(d.pd, max_objects=3)
+-        result = recognize(d, max_objects=3, use_alexander=False, use_jones=False)
++        result = recognize(d, max_objects=3, use_alexander=False, use_jones=False, use_braid=False)
+         self.assertEqual(result.status, "UNKNOWN")
+         self.assertIsNone(result.is_unknot)
+         self.assertEqual(recognize(d, seconds=0.0, use_alexander=False, use_jones=False).status, "UNKNOWN")
+@@ -298,21 +298,26 @@
+ 
+ class PipelineTests(unittest.TestCase):
+     def test_methods(self):
+-        self.assertEqual(recognize(Diagram.from_braid(2, [1])).method, "reidemeister-reduction")
+-        self.assertEqual(recognize(Diagram.from_braid(3, [1, 2]), use_reduction=False).method,
++        # These are regression tests of the general PD pipeline's stages.
++        # The new source-braid path is checked separately in test_braid.py.
++        def general(diagram, **options):
++            return recognize(diagram, use_braid=False, **options)
++
++        self.assertEqual(general(Diagram.from_braid(2, [1])).method, "reidemeister-reduction")
++        self.assertEqual(general(Diagram.from_braid(3, [1, 2]), use_reduction=False).method,
+                          "descending-diagram")
+         # (sigma_1 sigma_2)^2 closes to a trefoil, not an unknot
+-        self.assertEqual(recognize(Diagram.from_braid(3, [1, 2, 1, 2])).status, "KNOTTED")
+-        self.assertEqual(recognize(Diagram.from_braid(2, [1, 1, 1])).method, "alexander-modular")
+-        self.assertEqual(recognize(Diagram.from_braid(2, [1, 1, 1]), use_modular=False, use_jones=False).method,
++        self.assertEqual(general(Diagram.from_braid(3, [1, 2, 1, 2])).status, "KNOTTED")
++        self.assertEqual(general(Diagram.from_braid(2, [1, 1, 1])).method, "alexander-modular")
++        self.assertEqual(general(Diagram.from_braid(2, [1, 1, 1]), use_modular=False, use_jones=False).method,
+                          "alexander-polynomial")
+-        r = recognize(load("torus_3_5.json"))
++        r = general(load("torus_3_5.json"))
+         self.assertEqual((r.status, r.method), ("KNOTTED", "alexander-modular"))
+-        r = recognize(load("conway.json"))
++        r = general(load("conway.json"))
+         self.assertEqual((r.status, r.method), ("KNOTTED", "jones-modular"))
+-        r = recognize(load("conway.json"), use_jones=False)
++        r = general(load("conway.json"), use_jones=False)
+         self.assertEqual((r.status, r.method), ("KNOTTED", "reduced-khovanov-F2-scan"))
+-        r = recognize(load("hard_unknot_8.json"), use_reduction=False, use_descending=False)
++        r = general(load("hard_unknot_8.json"), use_reduction=False, use_descending=False)
+         self.assertEqual((r.status, r.method), ("UNKNOT", "reduced-khovanov-F2-scan"))
+         self.assertFalse(r.to_json()["quasipolynomial_guarantee"])
+ 
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/tests/test_residue.py
+@@ -0,0 +1,64 @@
++"""Check the residue prediction against actual topological cancellations."""
++import random
++import unittest
++
++from fastunknot.diagram import Diagram, DiagramError
++from fastunknot.ordering import best_scan_order
++from fastunknot.residue import object_profile, residue_profile
++from fastunknot.scan import ScanComplex
++from fastunknot.scan_fast import FastScan
++
++
++class ResidueTests(unittest.TestCase):
++    def test_canonical_multiplicities_across_pivots_and_encodings(self):
++        rng = random.Random(3270)
++        diagrams = [Diagram.from_braid(3, [1, -2] * 4),
++                    Diagram.from_braid(3, [1, 2] * 5)]
++        while len(diagrams) < 18:
++            strands = rng.choice((3, 4))
++            word = [rng.choice((-1, 1)) * rng.randrange(1, strands)
++                    for _ in range(rng.randrange(4, 11))]
++            try:
++                diagrams.append(Diagram.from_braid(strands, word))
++            except DiagramError:
++                continue
++        self.checked_prefixes = 0
++        for diagram in diagrams:
++            scanners = [FastScan(), ScanComplex(pivot="minfill"),
++                        ScanComplex(pivot="lifo"),
++                        ScanComplex(pivot="lifo", algebra="sets")]
++            for crossing in best_scan_order(diagram.pd):
++                profiles = []
++                for scan in scanners:
++                    scan.add_crossing(diagram.pd[crossing], reduce_now=False)
++                    predicted = residue_profile(scan, check_squared=True)
++                    scan.eliminate()
++                    actual = object_profile(scan)
++                    self.assertEqual(predicted, actual)
++                    self.assertEqual(residue_profile(scan), actual)
++                    profiles.append(predicted)
++                for profile in profiles[1:]:
++                    self.assertEqual(profiles[0], profile)
++                self.checked_prefixes += 1
++        self.assertGreater(self.checked_prefixes, 90)
++
++    def test_uncancelled_closed_complex_agrees_with_full_linear_homology(self):
++        diagram = Diagram.from_braid(3, [1, -2] * 2)
++        scan = FastScan()
++        for slots in diagram.pd:
++            scan.add_crossing(slots, reduce_now=False)
++        profile = residue_profile(scan, check_squared=True)
++        self.assertTrue(all(matching == () for matching, _ in profile))
++        self.assertEqual({degree: value for (_, degree), value in profile.items()},
++                         scan.linear_ranks())
++
++    def test_empty_complex_and_nonmutation(self):
++        scan = FastScan()
++        before = (list(scan.mid), list(scan.deg), [dict(row) for row in scan.out])
++        self.assertEqual(residue_profile(scan), {((), 0): 1})
++        after = (list(scan.mid), list(scan.deg), [dict(row) for row in scan.out])
++        self.assertEqual(before, after)
++
++
++if __name__ == "__main__":
++    unittest.main()

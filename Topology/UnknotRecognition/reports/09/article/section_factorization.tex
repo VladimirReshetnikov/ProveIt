@@ -1,0 +1,340 @@
+\section{Certified visible factorization through interlacement}
+\label{sec:factorization}
+
+Visible connected sums provide a useful opportunity to replace repeated
+geometric reconstruction by a single combinatorial computation.  The
+underlying correspondence is established mathematics: connected-sum
+decomposability of a planar curve is characterized by disconnectedness of
+its interlacement graph \cite{khan2021}.  Courcelle's atomic decomposition
+places the related word and graph decompositions in a broader framework
+\cite[Definition~22 and Lemma~23]{courcelle}.  Computing overlap components
+without constructing all overlap edges also has precedents, including
+linear-time methods discussed by Schmidt \cite[Section~4.1 and Lemma~15]{schmidt}.
+Our contribution here is a concrete certified implementation, its precise
+relationship to the existing PD factorizer, and an exact family exhibiting
+quadratic work in that implementation.  We give the necessary proofs because
+the spherical embedding, crossing data, certificate format, and reconstruction
+cost all matter for a correct replacement.
+
+\subsection{Words, gaps, and geometric cuts}
+
+Fix a validated spherical one-component PD diagram $D$ with $n>0$ crossings.
+Following its strand through opposite crossing ports gives a cyclic word
+$W$ of length $2n$, with each crossing label occurring twice.  After fixing
+a starting position, write $p_x<q_x$ for the positions of label $x$.
+
+\begin{definition}
+The interlacement graph $I(W)$ has the crossing labels as vertices, and
+distinct labels $x,y$ are adjacent precisely when
+\begin{equation}
+\label{eq:interlacement}
+p_x<p_y<q_x<q_y
+\quad\text{or}\quad
+p_y<p_x<q_y<q_x.
+\end{equation}
+A cyclic interval of visits is \emph{closed} if every label occurring in it
+has both occurrences there.  A \emph{visible split} uses a Jordan curve in
+the projection sphere meeting the diagram transversely in exactly two edge
+interiors, with at least one crossing on each side.
+\end{definition}
+
+The adjacency relation is independent of the starting position and of
+traversal reversal.  In a chord picture it says exactly that the endpoints
+of the two chords alternate.
+
+\begin{lemma}[Gap property]
+\label{lem:interlace-gaps}
+If $C$ and $E$ are distinct connected components of $I(W)$, all endpoints
+of $E$ belong to a single gap between consecutive endpoints of $C$ on the
+circle.  Consequently, their first-to-last endpoint intervals in a linear
+reading are disjoint or nested.  A nested interval contains no endpoint of
+the outer component.
+\end{lemma}
+
+\begin{proof}
+Take a chord $e\notin C$ with no neighbor in $C$.  Its endpoints divide the
+circle into two open arcs.  Since no chord of $C$ alternates with $e$, both
+endpoints of each chord of $C$ lie in one of these arcs.  Chords lying in
+different arcs cannot alternate with one another.  Connectedness of $C$
+therefore puts all its endpoints in the same arc.  The complementary arc
+contains no endpoint of $C$, so the endpoints of $e$ belong to one gap of $C$.
+Chords in different gaps of $C$ cannot interlace.  Connectedness of $E$ now
+puts all its chords in a single gap.
+
+For the linear assertion, suppose the first endpoint of $C$ precedes the
+first endpoint of $E$.  If the latter follows the last endpoint of $C$,
+the hulls are disjoint.  Otherwise it lies in a bounded internal gap of $C$;
+the first assertion places all endpoints of $E$ in that gap.  This gives
+the asserted nesting and exclusion of outer endpoints.
+\end{proof}
+
+\begin{lemma}[Closed intervals and two-edge cuts]
+\label{lem:closed-visible-cut}
+A nonempty proper closed interval of $W$ gives a visible split.  Conversely,
+every visible split separates complete connected components of $I(W)$.
+\end{lemma}
+
+\begin{proof}
+Let $A$ be the labels in such an interval.  Following the interval traverses
+only crossings of $A$, and following its complement traverses only crossings
+outside $A$.  Hence exactly the two boundary edges join $A$ to its
+complement.  Both induced projection subgraphs are connected: each is
+covered by the corresponding traversal segment.
+
+Take a small regular neighborhood of the connected subgraph on $A$ in the
+projection sphere.  Its boundary consists of disjoint circles crossing
+only the two boundary edges.  The connected complementary subgraph lies
+in one component of the neighborhood's complement, so both edges leave
+through that component's boundary circle.  This circle supplies the
+required visible split.  In the equivalent dual description, a two-edge
+bond is a two-edge cycle.  Its two edges border the same two faces, which
+are distinct because a connected Eulerian graph has no bridge.
+Closing either traversal segment along the curve yields
+a spherical one-component diagram; the crossing rotations and over/under
+data on its side are preserved.
+
+Conversely, traversal meets a visible splitting curve twice.  Between those
+meetings it stays on one side, and the complementary traversal stays on the
+other.  Both visits to each crossing lie on the same side.  The two sets of
+labels therefore form closed intervals, so labels on opposite sides cannot
+alternate.  No connected component of $I(W)$ can cross the partition.
+\end{proof}
+
+\begin{theorem}[Canonical visible factors]
+\label{thm:interlace-factors}
+Let $C_1,\ldots,C_k$ be the connected components of $I(W)$.  Every complete
+recursive visible factorization has these atomic crossing sets.  The factor
+$D[C_i]$ is specified by the induced cyclic traversal on $C_i$ and the
+crossing rotations and under/over information inherited from $D$.  In
+particular,
+\begin{equation}
+\label{eq:interlace-connected-sum}
+K(D)=K(D[C_1])\mathbin{\#}\cdots\mathbin{\#}K(D[C_k]).
+\end{equation}
+The crossing sets and inherited factor diagrams are independent of the
+chosen sequence of visible splits, up to edge labels and traversal choices.
+\end{theorem}
+
+\begin{proof}
+If $k>1$, choose a component whose first-to-last interval contains no strictly
+nested component interval.  Lemma~\ref{lem:interlace-gaps} shows that every
+endpoint in this interval belongs to the chosen component.  It is a closed
+proper interval, so Lemma~\ref{lem:closed-visible-cut} splits it off.  Deleting
+these endpoints leaves all relative orders among the remaining endpoints
+unchanged, hence leaves all remaining interlacement components unchanged.
+Induction produces exactly the stated factors.
+
+Conversely, Lemma~\ref{lem:closed-visible-cut} prevents any visible split
+from dividing a connected interlacement component.  Once a factor has only
+one component, no further visible split is possible.  Reconnection after
+a split deletes the other traversal interval and introduces no crossing.
+Thus any sequence ending with crossing set $C_i$ has the same induced
+cyclic traversal and the same original crossing ports.  These determine its
+PD incidences and rotation system.  The splitting curve gives a decomposing
+sphere after thickening its disk in the ambient three-sphere, yielding
+\eqref{eq:interlace-connected-sum} at every step.
+\end{proof}
+
+This is uniqueness for a fixed input diagram, including its rotations.
+A Gauss word by itself need not determine all its planar realizations
+\cite{courcelle}.  Nor does connectedness of $I(W)$ assert that the represented
+knot is prime: a composite knot may have a diagram with no visible split.
+Singleton interlacement components close to one-crossing curl factors.
+The crossing-free circle, excluded from the preceding notation, is returned
+as one factor.
+
+\begin{remark}[Nested factors]
+The realizable word
+\[
+a\,b\,c\,d\,b\,c\,d\,a\,e\,e
+\]
+has components $\{a\}$, $\{b,c,d\}$, and $\{e\}$.  The middle component is a
+triangle of interlacement edges.  Its entire word lies in one gap of the
+two endpoints of $a$.  One first removes that middle block and obtains
+$a\,a\,e\,e$.  The atomic crossing sets are therefore not generally the
+consecutive blocks of the original word.  The component computation handles
+this nesting without recursively rebuilding diagrams.
+\end{remark}
+
+\subsection{Sparse discovery and its invariant}
+
+Constructing $I(W)$ explicitly would lose the desired bound: the word
+$(0\,1\,\cdots\,n-1)^2$ gives a complete graph.  The implementation instead
+discovers only enough edges to certify the components.
+
+\begin{theorem}[Implemented component algorithm]
+\label{thm:interlace-stack}
+For a double-occurrence word on $n$ normalized labels, the implemented
+component stack computes its interlacement components and a spanning forest
+of actual interlacement edges in $O(n\alpha(n))$ time and $O(n)$ space on a
+RAM with word-sized indices.  This combinatorial assertion does not require
+the word to be realizable in the sphere.
+\end{theorem}
+
+\begin{proof}
+Scan endpoints from left to right.  A chord is open between its first and
+second endpoints.  Maintain disjoint sets with union by size and path
+compression.  Maintain also a stack of components containing open chords,
+and a circular doubly linked list of the open chords in each such component.
+On a first endpoint, push its singleton component.  On the second endpoint
+of $x$, merge its component with each component above it on the stack.
+For each merger record $(x,y)$, where $y$ is any currently open chord of
+the other component.  Concatenate their linked lists, remove $x$ from the
+resulting list, and pop the component if no open chord remains.
+
+To prove correctness, consider the graph consisting of all opened vertices
+and all interlacement edges whose earlier second endpoint has already been
+processed.  Its components containing open chords partition those open
+chords into consecutive blocks in the order of their first endpoints.
+The stack stores exactly those blocks.  This is the invariant.
+
+Initially the assertion is empty.  A first endpoint adds a singleton at
+the end and exposes no edge.  When $x$ closes, precisely the still-open
+chords that started after $x$ give newly exposed edges incident with $x$.
+In the block order they form a suffix of its own block together with every
+block above it.  Their components are therefore exactly the components
+merged by the algorithm.  Removing $x$ preserves block contiguity.  If
+the merged block becomes empty, there can be no block above it, since all
+such blocks were merged and each contained an open chord.  It is therefore
+correct to pop it.  A component with no open chord cannot acquire a later
+undiscovered incident edge: every possible alternating pair involving one
+of its chords has already had its earlier second endpoint processed.
+Induction proves the invariant and the final component partition.
+
+The representative $y$ chosen during a merger satisfies
+$p_x<p_y<q_x<q_y$, so every recorded edge really interlaces.  Each merger
+joins previously distinct components, making the recorded edges acyclic.
+They span the final components and number exactly $n-k$.
+
+Each singleton stack entry is pushed once and eventually popped once.
+There are at most $n-1$ mergers.  Circular lists concatenate in constant
+time by changing their boundary links, and remove a specified chord in
+constant time using its two neighbors.  Thus there are $O(n)$ elementary
+list operations and $O(n)$ disjoint-set operations.  Union by size with
+path compression gives the stated inverse-Ackermann bound; all stored
+arrays, stack entries, and witnesses have total size $O(n)$.
+\end{proof}
+
+The bound describes this short implementation.  It does not claim an
+improvement over the strongest known abstract overlap-component algorithms
+\cite{schmidt}; its purpose is to avoid the quadratic graph and to supply
+simple, reviewable witnesses inside the existing recognizer.
+
+\subsection{Independent verification and reconstruction}
+
+\begin{proposition}[Certificate verification]
+\label{prop:interlace-verifier}
+A proposed crossing partition and $n-k$ proposed forest edges admit an
+$O(n\alpha(n))$-time, $O(n)$-space verifier which accepts exactly when they
+certify the connected components of $I(W)$.
+\end{proposition}
+
+\begin{proof}
+First check that the component lists are nonempty and partition the labels.
+Locate every endpoint, verify \eqref{eq:interlacement} for each witness edge,
+and check that each stays within its assigned component.  A fresh disjoint-set
+structure rejects cycles and verifies that the forest spans each part.
+This certifies internal connectedness.
+
+For separation, scan the word's component labels with a different stack.
+At the first occurrence of a component, push its label.  Every occurrence
+must equal the current top label; after its $2|C|$ occurrences have been
+seen, pop it.  Acceptance means that each component nested inside another
+finishes entirely between two consecutive occurrences of the outer one;
+different siblings occupy disjoint intervals.  Consequently, endpoints
+from different assigned components cannot alternate.  Thus no
+interlacement edge joins two parts, proving sufficiency together with the
+forest checks.  Necessity follows from Lemma~\ref{lem:interlace-gaps} and
+the existence of a spanning tree in each component.  The endpoint and stack
+passes are linear, and the forest checks use $O(n)$ disjoint-set operations.
+\end{proof}
+
+This verifier does not rerun component discovery.  It proves a statement
+about the word; the original PD validator remains responsible for the
+spherical one-component hypothesis needed by
+Theorem~\ref{thm:interlace-factors}.
+
+\begin{proposition}[Construction of all factor PD codes]
+\label{prop:interlace-reconstruction}
+Given the component partition and the original traversal darts, all factor
+PD codes can be produced in $O(n)$ additional time and space.  Including the
+implemented component algorithm and default upstream validation of every
+output factor gives the conservative bound $O(n\log(n+1))$.
+\end{proposition}
+
+\begin{proof}
+Group the crossing rows by component, retaining their original row order.
+For each $C$, count its visits as they occur in the single original traversal.
+At its $j$th visit, starting with $j=0$, write edge label $j$ into the original
+incoming port and $j+1$ into the opposite outgoing port.  At the last visit
+replace its outgoing label by $0$.  Each port is written once, apart from
+this closing update, and all crossing rotations and under/over roles remain
+unchanged.  The resulting strand follows exactly the induced cyclic word
+on $C$.  Theorem~\ref{thm:interlace-factors} proves that this is the spherical
+closure of the corresponding visible summand.
+
+Every edge label then occurs twice, and all factors together contain exactly
+$n$ crossings.  The construction is linear.  The default checked path calls
+the upstream \code{Diagram.from\_pd} constructor on each output.  Its label
+sorting and validation give the conservative total estimate
+\[
+O\!\left(n\alpha(n)+\sum_C |C|\log(|C|+1)\right)
+=O(n\log(n+1)).
+\]
+The optional direct constructor uses the proved validated-input precondition
+and retains the $O(n\alpha(n))$ bound.  The primary engineering comparison
+uses the checked path.
+\end{proof}
+
+\subsection{An exact quadratic-work family in the baseline}
+
+Let $D_k$ be the cyclic connected sum of $k$ identically oriented standard
+trefoil diagrams, formed by concatenating their traversal words and retaining
+all crossing rotations.  With normalized labels its word is
+\[
+(0\,1\,2\,0\,1\,2)
+(3\,4\,5\,3\,4\,5)\cdots.
+\]
+There are $3k$ crossings and $k$ connector edges between consecutive blocks.
+The supplied deterministic generator constructs precisely this embedding.
+
+\begin{theorem}[Baseline crossing-work lower bound]
+\label{thm:quadratic-factor-family}
+On $D_k$, the archived \code{split\_once} implementation always separates
+one three-crossing factor from the remaining $3(k-1)$ crossings.  The total
+number of crossings in its internal recursive calls is exactly
+\begin{equation}
+\label{eq:quadratic-factor-work}
+\sum_{j=2}^{k}3j
+=3\left(\frac{k(k+1)}2-1\right).
+\end{equation}
+Its crossing-scanning work is therefore $\Omega(n^2)$ on this family.
+\end{theorem}
+
+\begin{proof}
+Each trefoil block has connected interlacement graph.  By
+Theorem~\ref{thm:interlace-factors}, every visible split separates complete
+blocks.  Its two boundary edges must consequently be connector edges.
+Conversely, any two distinct connector edges bound a nonempty proper
+sequence of complete blocks and hence give a visible split.  Their dual
+edges form a two-cycle.  All connector edges therefore border a common
+pair of faces, and no nonconnector edge belongs to a candidate two-edge cut.
+
+The archived implementation groups edges by their incident face pair,
+sorts each group's positions in the knot traversal, and tests only consecutive
+positions, including the wraparound pair.  Consecutive connector positions
+enclose exactly one trefoil.  Thus every tested nontrivial split has crossing
+sizes $3$ and $3(k-1)$, irrespective of the tie-breaking rule.  Reconnection
+of the larger side produces the same cyclic construction $D_{k-1}$.
+Induction gives internal sizes $3k,3(k-1),\ldots,6$ and proves
+\eqref{eq:quadratic-factor-work}.  Each internal call scans its entire
+current crossing set, establishing the lower bound independently of timing.
+\end{proof}
+
+The new factorizer reads the original word once, outputs $k$ constant-size
+factors, and never materializes those progressively smaller intermediate
+diagrams.  The exact work identity is checked by the supplied verification
+tool; later experiments measure the integrated implementation.  A braid-chain
+sum can expose balanced cuts and is a different benchmark embedding.
+Finally, this improvement concerns preprocessing: a diagram with one large
+interlacement component remains one large input to the terminal recognizer.

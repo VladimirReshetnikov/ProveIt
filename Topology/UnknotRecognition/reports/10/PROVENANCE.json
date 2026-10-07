@@ -1,0 +1,60 @@
+{
+  "audit_date": "2026-10-07",
+  "repository": "https://github.com/VladimirReshetnikov/ProveIt",
+  "scope": "Selected source files reviewed through GitHub connector. Exact blob hashes, not a full local checkout or tested commit.",
+  "audited_blobs": {
+    "Topology/UnknotRecognition/README.md": "07831d556017eb415d5df866e05a166094bc7a44",
+    "Topology/UnknotRecognition/fast/README.md": "0892ce015b4840f3aa2dec76bbca3316f6b98e51",
+    "Topology/UnknotRecognition/fast/fastunknot/planar.py": "1078526e7e7dbaf0b7267728105d870d94136769",
+    "Topology/UnknotRecognition/fast/fastunknot/scan_fast.py": "2c1ad52d14296b109376af19668ae0eebb4c6fdd",
+    "Topology/UnknotRecognition/fast/fastunknot/algebra.py": "d6d28604ac39c29145aa52f91074539a5aeac949"
+  },
+  "reference_excerpt": "tests/reference_planar.py retains numerical algorithms from planar.py, with other methods omitted; this is not an unmodified full file.",
+  "executed": [
+    "python tools/run_tests.py",
+    "python tools/benchmark.py"
+  ],
+  "not_executed": [
+    "complete fastunknot unit suite",
+    "full recognizer benchmark",
+    "Rust port or Rust suite",
+    "integration/check_repository.py against a checkout"
+  ],
+  "primary_literature": [
+    {
+      "author": "Marc Lackenby",
+      "title": "Incompressible surfaces, hierarchies and unknot recognition",
+      "version": "arXiv:2607.23350v1; 25 July 2026",
+      "url": "https://people.maths.ox.ac.uk/lackenby/algorithm-incompressible-250726.pdf",
+      "sections_reviewed": [
+        "3.4",
+        "9",
+        "10",
+        "11",
+        "14"
+      ]
+    },
+    {
+      "authors": "Andreas Bjorklund; Thore Husfeldt; Petteri Kaski; Mikko Koivisto",
+      "title": "Fourier meets Mobius: fast subset convolution",
+      "url": "https://arxiv.org/abs/cs/0611101"
+    },
+    {
+      "author": "Dror Bar-Natan",
+      "title": "Fast Khovanov Homology Computations",
+      "url": "https://arxiv.org/abs/math/0606318"
+    },
+    {
+      "author": "Dror Bar-Natan",
+      "title": "Khovanov's homology for tangles and cobordisms",
+      "url": "https://arxiv.org/abs/math/0410495"
+    },
+    {
+      "authors": "P. B. Kronheimer; T. S. Mrowka",
+      "title": "Khovanov homology is an unknot-detector",
+      "url": "https://arxiv.org/abs/1005.4346"
+    }
+  ],
+  "priority": "The application, implementation, and proofs here are contributions for ProveIt. First-in-literature priority has not been established.",
+  "third_party_papers_included": false
+}

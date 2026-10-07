@@ -1,0 +1,262 @@
+\section{Mixed-radix hierarchy budgets and a conditional complexity contract}
+\label{sec:hierarchy}
+
+A hierarchy algorithm can terminate by repeatedly simplifying an early surface
+and rebuilding the later surfaces.  Lexicographic descent proves finiteness,
+but the quantitative question is how many such rebuilds occur and how much
+work each requires.  We refine the abstract accounting to unequal per-level
+budgets and give an exact formula for suffix reconstruction.  These are
+combinatorial results about a stated transition model.  An implementation must
+separately establish that its geometric operations satisfy that model.
+
+\subsection{Uniform per-level caps}
+
+\begin{definition}[A bounded hierarchy epoch]
+An epoch has a fixed maximum length $L$ and integer caps $g_i\geq0$,
+$1\leq i\leq L$.  Whenever its construction phase returns, it records a
+completed, zero-padded vector $x=(x_1,\ldots,x_L)$ with $0\leq x_i\leq g_i$.
+Every nonterminal rollback produces a strictly smaller vector at the next
+return, in lexicographic order with the first coordinate most significant.
+The caps hold uniformly over every allowed suffix reconstruction in the
+epoch.
+\end{definition}
+
+Let $r_i=g_i+1$, let $P=\prod_{i=1}^L r_i$, and define the mixed-radix rank
+\begin{equation}
+ \Phi(x)=\sum_{i=1}^L x_i\prod_{h=i+1}^L r_h.
+ \label{eq:hierarchy-rank}
+\end{equation}
+Empty products equal one.  A radix equal to one represents a coordinate fixed
+at zero; it is allowed throughout the exact counting statements.
+
+\begin{proposition}[Mixed-radix descent]
+\label{prop:mixed-radix}
+Within a bounded hierarchy epoch there are at most $P-1$ strictly decreasing
+transitions between completed vectors.  This bound is sharp for the abstract
+model.
+\end{proposition}
+
+\begin{proof}
+The rank lies between zero and $P-1$.  If coordinate $j$ is the first to
+decrease, its contribution drops by at least $\prod_{h>j}r_h$.  The maximum
+possible increase of all later coordinates is
+\[
+ \sum_{i>j}(r_i-1)\prod_{h>i}r_h
+   =\prod_{h>j}r_h-1.
+\]
+Earlier contributions are unchanged, so $\Phi$ drops by at least one.  The
+ordinary mixed-radix countdown from the largest vector to zero attains all
+$P$ ranks and has $P-1$ transitions.
+\end{proof}
+
+For equal caps this recovers the familiar product $(g+1)^L$ appearing in the
+iteration analysis of Lackenby's hierarchy algorithm~\cite{lackenby2026}.
+Unequal caps matter because an early level may permit many simplifications
+while a later level permits few.  Replacing every cap by the largest one can
+discard useful information.  Nevertheless, an observed maximum from one
+successful run is not a uniform cap: rebuilding an earlier prefix can expose
+larger complexity at a later level.
+
+A guaranteed decrement can also improve the ranking.  Suppose coordinate $i$
+drops by at least an integer $d_i\geq1$ whenever it is the first changed
+coordinate.  Replacing it by $\lfloor x_i/d_i\rfloor$ gives a strict decrease
+with radix $1+\lfloor g_i/d_i\rfloor$.  This replacement requires a decrement
+guarantee for every relevant transition, including those following rebuilt
+suffixes; a typical decrement or an empirical average is insufficient.
+
+\subsection{The exact cost of rebuilding affected suffixes}
+
+The crude estimate charges $L$ visits after every decrease.  If a rollback
+first changing coordinate $j$ only requires revisiting levels $j,\ldots,L$,
+one can count the charged visits more accurately.  This remains meaningful
+even when some coordinates have radix one, because a fixed coordinate may
+still represent a physical construction step.
+
+\begin{theorem}[Sharp suffix reconstruction budget]
+\label{thm:suffix-budget}
+Let $r_1,\ldots,r_L$ be arbitrary positive integer radices and set
+\[
+ R_0=1,\qquad R_i=\prod_{h=1}^i r_h,\qquad P=R_L.
+\]
+Give initial construction charge at most $L$.  Give a strict lexicographic
+decrease whose first changed coordinate is $j$ charge at most $L-j+1$.
+Every decreasing trace then has total charge at most
+\begin{equation}
+ W=\sum_{i=1}^L R_i
+  =L+\sum_{j=1}^L(L-j+1)(r_j-1)R_{j-1}.
+ \label{eq:exact-suffix-budget}
+\end{equation}
+The full mixed-radix countdown with all allowed charges attains equality.
+If every $r_i\geq2$, then $W<2P$.  Without that additional condition,
+$W\leq LP$ always holds.
+\end{theorem}
+
+\begin{proof}
+Consider a jump from vector $x$ to a smaller vector $y$, first changing
+coordinate $j$.  The consecutive countdown transitions between their ranks
+include a transition first changing that same coordinate: their earlier
+coordinates agree and their $j$th coordinates differ.  Select one such
+transition.  Jumps in a strictly decreasing trace occupy disjoint rank
+intervals, so the selected countdown transitions are distinct.  Each selected
+transition has charge $L-j+1$, at least the charge assigned to its jump.
+Therefore the trace is dominated by the full countdown, including the same
+initial construction allowance.
+
+For each assignment of the first $j-1$ digits, the full countdown decreases
+digit $j$ exactly $r_j-1$ times while keeping those earlier digits fixed.
+There are $R_{j-1}$ such assignments.  Hence the number of transitions whose
+first changed digit is $j$ is
+$(r_j-1)R_{j-1}=R_j-R_{j-1}$.  This proves the second expression in
+\eqref{eq:exact-suffix-budget}.  Telescoping gives the first expression:
+\[
+ L+\sum_{j=1}^L(L-j+1)(R_j-R_{j-1})=\sum_{i=1}^L R_i.
+\]
+When all radices are at least two, $R_i\leq P/2^{L-i}$ and a finite
+geometric sum is strictly less than $2P$.  In general $R_i\leq P$, giving
+$W\leq LP$.  The full countdown realizes the counted transitions, proving
+sharpness.
+\end{proof}
+
+For example, radices $(3,1,2)$ give $P=6$ and $W=3+3+6=12$.
+The exact budget equals $2P$, so a strict $2P$ estimate would be false here.
+If all radices are one, there is a single state but initial construction still
+costs $L$.  Removing fixed digits from the rank does not automatically remove
+their work from the algorithm.
+
+\begin{corollary}[Unequal costs per level]
+\label{cor:weighted-suffix}
+Let level $i$ have a nonnegative charge allowance $a_i$.  If initialization
+costs at most $\sum_i a_i$ and a jump first changing $j$ costs at most
+$\sum_{i=j}^L a_i$, then the total charge is at most
+\begin{equation}
+ \sum_{i=1}^L a_iR_i.
+ \label{eq:weighted-suffix}
+\end{equation}
+This is also sharp in the abstract model.
+\end{corollary}
+
+\begin{proof}
+Use the same disjoint-interval injection into the countdown.  Its total is
+\[
+ \sum_{i=1}^L a_i+
+ \sum_{j=1}^L(R_j-R_{j-1})\sum_{i=j}^L a_i
+ =\sum_{i=1}^L a_iR_i.
+\]
+The countdown with every allowance charged attains equality.
+\end{proof}
+
+This weighted form isolates another optimization target: reducing the cost of
+late levels can matter more because they are reconstructed more frequently.
+The statement applies only when the supplied allowances bound the entire
+work assigned to a visit, rather than the cost of one selected subroutine.
+
+\subsection{A conditional theorem with explicit implementation obligations}
+
+\begin{theorem}[Conditional recognition complexity]
+\label{thm:conditional-qp}
+Suppose a sound and complete recognizer on inputs of size $n$ satisfies the
+following conditions:
+\begin{enumerate}[label=(\roman*)]
+\item It has at most $E(n)$ epochs, each with length at most $L(n)$ and
+uniform caps bounded by $g_i(n)$, and satisfies
+Proposition~\ref{prop:mixed-radix} in each epoch.
+\item All initialization and rollback work can be assigned to charged level
+visits as in Theorem~\ref{thm:suffix-budget}.  Each visit has total bit-cost
+at most $C(n)$, including repeated calls, surface searches, normalization,
+geometric updates, and necessary bookkeeping.
+\item Work outside those visits has total cost at most $T_0(n)$.  All stored
+geometric data and metadata have a specified bit-size bound $B(n)$ under
+which the preceding operation bounds hold.
+\end{enumerate}
+Put $r_i(n)=g_i(n)+1$ and $P(n)=\prod_i r_i(n)$.  Then
+\begin{equation}
+ T(n)\leq T_0(n)+O\!\left(E(n)C(n)\sum_{i=1}^{L(n)}
+                       \prod_{h=1}^i r_h(n)\right).
+ \label{eq:conditional-runtime}
+\end{equation}
+In particular this is at most $T_0+O(ECLP)$, and at most
+$T_0+O(ECP)$ if all radices are at least two.  If $E,C,L,B,T_0$ are
+polynomially bounded and
+\begin{equation}
+ H(n):=\sum_{i=1}^{L(n)}\log(g_i(n)+1)=O(\log^2 n),
+ \label{eq:entropy-contract}
+\end{equation}
+then the recognizer runs in $n^{O(\log n)}$ time.
+\end{theorem}
+
+\begin{proof}
+Apply Theorem~\ref{thm:suffix-budget} to each epoch and multiply the visit
+count by the total cost allowance.  Sum over epochs and add $T_0$.  Finally,
+$P=\exp H$; polynomial prefactors contribute only $O(\log n)$ to the
+logarithm of the runtime.
+\end{proof}
+
+If only Proposition~\ref{prop:mixed-radix} is known, the conservative $LP$
+estimate still follows provided each rollback and initial construction has
+total cost at most $LC$.  Either formulation must control complete work,
+not merely one primitive's runtime.  A polynomial-time routine called an
+unbounded number of times does not satisfy the theorem by itself.
+
+The sum $H$, rather than maximum hierarchy depth alone, is the relevant
+budget.  A logarithmic number of levels with polynomial caps gives
+$H=O(\log^2 n)$.  A squared-logarithmic number of levels with polynomial
+caps gives only $H=O(\log^3 n)$ and therefore
+$2^{O(\log^3 n)}$ time.  Squared-logarithmic depth with uniformly bounded
+caps would again give the sharper $n^{O(\log n)}$ target.  Both displayed
+time classes are quasi-polynomial; the exponent of the logarithm distinguishes
+the stronger target.  Removing a multiplicative $L$ through amortized suffix
+accounting does not itself change that exponent when $L$ is polynomial.
+
+\subsection{Relation to the published hierarchy description}
+
+Lackenby's February 2021 slides announce $n^{O(\log n)}$
+time~\cite{lackenbyfeb}.  The March Oxford slides instead state
+$2^{O(\log^3 n)}$, with a squared-logarithmic multisurface-depth
+bound~\cite{lackenbymarch}.  These should be recorded as distinct quantitative
+announcements.
+
+The July 2026 preprint gives a full hierarchy algorithm but does not state a
+quasi-polynomial runtime theorem.  Its Proposition~9.1 gives the
+$L(g+1)^L$ iteration bound; Proposition~10.2 bounds the refined ordinary
+hierarchy length by $4c_q(H)$; Theorem~14.1 gives polynomially encoded and
+verifiable essential hierarchies.  Section~9 explicitly leaves some primitive
+running times unspecified~\cite{lackenby2026}.  A short certificate and a
+verification procedure do not bound deterministic search for that certificate.
+
+At source level, Step~15 discards the surfaces following the one being
+simplified.  Steps~12--14 also transport and modify a violating disc while
+moving through the hierarchy~\cite{lackenby2026}.  Suffix deletion therefore
+motivates our accounting model, but is not a proof that every geometric cost
+fits it.  Theorem~\ref{thm:conditional-qp} deliberately retains that
+obligation.  Additional outer restarts would likewise need their own epoch
+bound, rather than inheriting one from the inner rank.
+
+Compressed representations are central to the bit-cost condition.  A normal
+surface can have many disks while its coordinates have short binary encodings.
+The Agol--Hass--Thurston orbit-counting method supplies polynomial algorithms
+in the logarithm of represented interval sizes, including compressed normal
+surface component counting~\cite{aht}.  Expanding every represented disk or
+parallel component would destroy that advantage.  A complete implementation
+must specify the representations passed between primitives and show that
+cutting, normalization, and disc transport preserve their certified size
+bounds.
+
+\subsection{An independently executable finite audit}
+
+The program \path{tools/hierarchy_budget.py} contains no geometric backend.
+For a small radix tuple it constructs the directed acyclic graph containing
+every strict lexicographic transition, assigns each edge its affected-suffix
+charge, and computes a maximum-weight path.  This calculation does not assume
+that consecutive countdown transitions are optimal.  It checks that the
+computed maximum, the explicit full-countdown charge, and
+$\sum_iR_i$ agree.  For very small state spaces it also enumerates every
+nonempty decreasing sequence directly.
+
+The supplied audit covers all 364 radix tuples of length at most five over
+$\{1,2,3\}$.  It checks 284,932 possible strict transitions and explicitly
+enumerates 17,021 decreasing sequences in its smallest cases; all agree with
+the theorem.  Results appear in \path{data/hierarchy_budget_audit.json}.
+These finite checks support reproducibility and catch indexing or unit-radix
+mistakes.  The proof above establishes the unrestricted combinatorial result;
+neither the proof nor the program supplies the missing topological charging
+or search bounds.
