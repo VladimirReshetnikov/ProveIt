@@ -13,8 +13,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 665 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 4,284 public Gowers theorems and found only propext,
+  All 674 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 4,324 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 113 exact
   companion proofs and 7 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -869,8 +869,9 @@ Unconditional cubic discrepancy and five-term iteration
   This proves the end-to-end five-term argument through the constructed
   cubic inverse theorem. It does not establish the source's numerical
   five-term bound, nor the exact general Theorem 18.1 exponent. The original
-  modulus threshold is still qualitative, and the Section 16 induction
-  needed for arbitrary degrees remains open. The catalogue stays 113/120.
+  modulus threshold in this older interface is qualitative; the explicit
+  interface below removes that limitation. The Section 16 induction needed
+  for arbitrary degrees remains open. The catalogue stays 113/120.
 
 Explicit geometric thresholds in Section 13
   Proofs13ExplicitPowerThreshold defines max(1,max(1,C/D)^(1/e)) and proves
@@ -889,8 +890,38 @@ Explicit geometric thresholds in Section 13
   Proofs13ExplicitGeometricThreshold assembles these formulas into a fully
   explicit density-uniform common-step bilinear square extraction theorem.
   Its input is the actual Section13Context, not an assumed square or scale
-  package. The Fourier-graph and downstream cubic thresholds still need
-  to be propagated into the explicit quantitative interface.
+  package. The explicit Fourier and cubic interfaces below propagate this
+  geometric threshold through the full five-term argument.
+
+Explicit Fourier, cubic inverse, and five-term thresholds
+  Proofs13ExplicitFejerPurification exposes the actual finite Fejer scale
+  M=ceil(2^34/(rho*eta)) and threshold
+  max(2*M,ceil(2^131*M^63/(rho*eta*delta^15))). It proves both the
+  purification and density conclusions above this displayed bound.
+  Proofs13ExplicitFrequencyGraph instantiates these formulas on the
+  constructed prepared graph. Proofs13ExplicitFourierThreshold combines
+  that bound with the explicit geometric threshold. The resulting square
+  has side at least N^((1/2)^((2/alpha)^(2^53))) and relative density at
+  least (alpha/2)^(2^42). The source-style weaker exponents 88 and 76
+  are also exported by proved monotone comparisons at the same threshold.
+  Proofs13ExplicitOddSquare and Proofs17ExplicitCubicLocalization retain
+  properness, common cell lengths, the sqrt(N) upper bound, and the actual
+  cubic twist and quadratic nonuniformity. All rounding budgets are explicit.
+  Proofs18ExplicitCubicCellModels selects all needed prime models above
+  a prescribed threshold with the actual pullback function and modulus
+  at most N/2. Proofs18ExplicitCubicTwistedDiscrepancy assembles their
+  quadratic inverse partitions. Proofs18ExplicitCubicDiscrepancy removes
+  the phase and absorbs the fixed refinement constant with a displayed
+  positive-power threshold, giving FunctionDiscrepancyBound at
+  cubicInverseThreshold(alpha), with no existential modulus parameter.
+  Proofs18ExplicitFiveTerm defines fiveTermThreshold(delta) by the closed
+  density-iteration formula with this explicit cubic input and proves that
+  every subset of [1,N] of density at least delta has a five-term progression
+  above that bound, for every 0 < delta <= 1. The threshold is a finite
+  expression involving powers, exponentials, floors, ceilings, and a finite
+  maximum; no eventual-growth witness is chosen in its definition.
+  Comparison with the paper's numerical five-term bound is not yet proved.
+  This does not close the general numbered Theorems 18.1 or 18.2.
 
 Cubic obstruction in a strictly smaller prime model
   Proofs17LocalizedPhaseRemoval now exports proposition_17_7_with_upper:
