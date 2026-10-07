@@ -294,6 +294,7 @@ import GowersSzemeredi.Proofs14ZeroProductArrangements
 import GowersSzemeredi.Proofs15LowerDensityRestriction
 import GowersSzemeredi.Proofs15ZeroDensityRestriction
 import GowersSzemeredi.Proofs16StructuredExtraction
+import GowersSzemeredi.Proofs16BaseCaseZero
 
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
