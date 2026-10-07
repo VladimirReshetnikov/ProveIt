@@ -1,0 +1,67 @@
+import OAI.Combinatorics.Progressions.Estimates.SymmetricSquarefreeMonotonicity
+
+namespace OAI
+
+section
+
+namespace Erdos3.RationalFilteredNilmanifold.MultidegreeStructure
+
+open scoped TensorProduct NNReal
+
+variable {σ : Type} {L I : Type*} [Fintype σ] [LieRing L] [LieAlgebra ℚ L] [Fintype I]
+  {s d r : ℕ} {D : RationalFilteredNilmanifold L s d} {bound : σ → ℕ}
+  [TopologicalSpace (ℝ ⊗[ℚ] L)] [IsTopologicalAddGroup (ℝ ⊗[ℚ] L)]
+  [ContinuousSMul ℝ (ℝ ⊗[ℚ] L)] [T2Space (ℝ ⊗[ℚ] L)]
+  (M : D.MultidegreeStructure bound) {p q v : ℝ}
+  [TopologicalSpace (ℝ ⊗[ℚ] M.filtration.SquarefreeAlgebra (fun j : ReplicatedIndex bound => j.1))]
+  [IsTopologicalAddGroup (ℝ ⊗[ℚ] M.filtration.SquarefreeAlgebra (fun j : ReplicatedIndex bound => j.1))]
+  [ContinuousSMul ℝ (ℝ ⊗[ℚ] M.filtration.SquarefreeAlgebra (fun j : ReplicatedIndex bound => j.1))]
+  [T2Space (ℝ ⊗[ℚ] M.filtration.SquarefreeAlgebra (fun j : ReplicatedIndex bound => j.1))]
+  (V : D.UnitVerticalObservable (D.filtration.realification.subgroup s) I v)
+  (U : M.SymmetricSquarefreeUnitData p V.frequency q)
+  (E : RationalFilteredNilmanifold
+    (M.filtration.comparisonSubalgebra (fun j : ReplicatedIndex bound => j.1))
+    (max s (Fintype.card (ReplicatedIndex bound))) r)
+  (hEL : E.lattice = M.comparisonLattice p U.grid U.grid_pos U.stable)
+  [TopologicalSpace (ℝ ⊗[ℚ] M.filtration.comparisonSubalgebra (fun j : ReplicatedIndex bound => j.1))]
+  [IsTopologicalAddGroup (ℝ ⊗[ℚ] M.filtration.comparisonSubalgebra (fun j : ReplicatedIndex bound => j.1))]
+  [ContinuousSMul ℝ (ℝ ⊗[ℚ] M.filtration.comparisonSubalgebra (fun j : ReplicatedIndex bound => j.1))]
+  [T2Space (ℝ ⊗[ℚ] M.filtration.comparisonSubalgebra (fun j : ReplicatedIndex bound => j.1))]
+
+theorem comparisonVerticalProduct_lipschitz {R : ℝ} (hR : 0 ≤ R)
+    (hD : D.GeometryComplexityLE R)
+    (hQ : (M.squarefreeModel p U.grid U.grid_pos U.stable).GeometryComplexityLE R)
+    (hE : E.GeometryComplexityLE R)
+    (hfirst : ∀ j k, rationalLogHeight (D.basis.repr (E.basis j).val.1 k) ≤ R)
+    (hsecond : ∀ j k, rationalLogHeight ((M.squarefreeFinBasis p).repr (E.basis j).val.2 k) ≤ R)
+    (ε : D.RealGroup) (A : ℝ≥0)
+    (hε : letI := D.metricSpace; LipschitzWith A (fun x : D.Space => ε • x))
+    (a : Fin (multidegreeFactorial bound) → I)
+    (k : SymmetricEvaluationIndex (Fintype.card (ReplicatedPermutation bound)) (Fin U.coordinateCount)) :
+    letI := E.metricSpace
+    let P : ℝ≥0 := ⟨Real.exp ((R + 3) ^ 2), (Real.exp_pos _).le⟩
+    LipschitzWith ((V.tensorPower (multidegreeFactorial bound)).lipBound * (A * P) +
+      U.observable.lipBound * P) (M.comparisonVerticalProduct V U E hEL ε a k) := by
+  let := D.metricSpace
+  let := (M.squarefreeModel p U.grid U.grid_pos U.stable).metricSpace
+  let := E.metricSpace
+  have h₁ := ((V.tensorPower (multidegreeFactorial bound)).lipschitz a).comp
+    (hε.comp (M.comparisonFirstSpace_lipschitz p U.grid U.grid_pos U.stable E hEL hR hD hE hfirst))
+  have h₂ := (U.observable.lipschitz k).comp
+    (M.comparisonSecondSpace_lipschitz p U.grid U.grid_pos U.stable E hEL hR hQ hE hsecond)
+  have h := lipschitz_mul_star_of_bounds
+      (fun x => (V.tensorPower (multidegreeFactorial bound)).observable a
+        (ε • M.comparisonFirstSpace p U.grid U.grid_pos U.stable E hEL x))
+      (fun x => U.observable.observable k (M.comparisonSecondSpace p U.grid U.grid_pos U.stable E hEL x))
+      (Bf := 1) (Bg := 1) h₁ h₂
+      (fun x => (V.tensorPower (multidegreeFactorial bound)).norm a _) (fun x => U.observable.norm k _)
+  simp only [one_mul] at h
+  rw [add_comm] at h
+  convert h using 1
+  rfl
+
+end Erdos3.RationalFilteredNilmanifold.MultidegreeStructure
+
+end
+
+end OAI

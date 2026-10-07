@@ -20,8 +20,8 @@ Scope
   checkpoints; the current catalogue count is stated here and in the ledger.
 
 Verification at this checkpoint
-  All 768 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 4,900 public Gowers theorems and found only propext,
+  All 769 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 4,903 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 114 exact
   companion proofs and 6 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -36,6 +36,23 @@ Verification at this checkpoint
   proof now reduces the local let definitions before introducing the two
   cover hypotheses. The repaired statement and all quantitative bounds
   are unchanged. The full combined build and axiom scan now pass.
+
+Conditional quantitative density bridge and dependency port
+  Proofs01QuantitativeDensityBridge proves the exact Theorem 1.3 from
+  OAI.Erdos3.QuantitativeDensityTheorem. An elementary exponential estimate
+  gives a sufficiently large N0 for its existential positive constants.
+  This implication is checked in the full audit, but its quantitative
+  premise is not yet proved by the compiled vendored subset. No exact
+  companion is added and the six open catalogue statements remain open.
+  The pinned Results.Conclusions import closure is being backported:
+  4,136 upstream modules, including 128 previously present, add 4,008 files.
+  These new sources are outside the current Gowers import closure, and
+  the complete quantitative dependency build has not yet passed.
+  lib/openai-math/quantitative-port-manifest.json records original hashes;
+  its README documents the port status. LICENSE.provenance records the
+  source and copyright-notice status beside the unchanged Apache license.
+  The upstream constants are existential: even after successful porting,
+  this route alone will not give Theorem 18.2's explicit all-N threshold.
 
 All-scale integer geometry for Section 13
   Proofs07AllScalesStepSpan retains a common positive integer step ratio
