@@ -302,7 +302,10 @@ matter; the dated notes; Section 31; and two remarks with proofs.
   constant-word blocks, each a simple pole, visited at most once by a strict
   Boolean chain, so its order is at most two, and the proof of Theorem 27.2
   gives `lim (1−(h+1)z)² F_h(z) ≥ 1`: the factor `1 − (h+1)z` has exponent
-  exactly two at every height.
+  exactly two at every height. (Qualified after the independent check of 7
+  October 2026: this is a reading of Theorem 27.2, Wilf's dominant term with
+  `α_h ≥ 1`, which already forces exponent two; the remark adds no new
+  result.)
 
 ## Kotěšovec's book and the OEIS conjecture
 
@@ -355,7 +358,13 @@ disclaim priority.
   `b137432.txt`), and the entry also links Matsuo's `a(1)..a(800)` file. The
   field therefore names the wrong file for the two largest terms, unless the
   b-file was longer on 3 October; which file the recorded SHA-256 belongs to
-  was not determined (the write fetched neither). The write's only check of the
+  was not determined (the write fetched neither). (Added after the
+  independent check of 7 October 2026, which fetched all three files: the
+  recorded SHA-256 `a05d926f…ced88` is that of Matsuo's GitHub table
+  `b137432.txt`, `n = 1, …, 800`, and the entry's `a137432.txt` is
+  byte-identical to it; the b-file has another hash and agrees with the table
+  on `1 ≤ n ≤ 384`; all fourteen fixture terms equal the table's entries. Only
+  the `source_url` names the wrong file.) The write's only check of the
   large terms is indirect: the residuals `R_2(n)`, `R_3(n)` recomputed from the
   fixture reproduce Part II's printed `R_2(800) = 538.86987220110762…` and
   `R_3(800) = −29969.50647515447…`, and `R_2 = 381.7, 455.3, 507.0, 538.9` at
@@ -380,7 +389,8 @@ Part III's `w_0(y)` (25) of the Lambert core `p0:thm:lambert-core` after the
 shift `X = x + β/α` and a logarithm (`a_vol = log(h+1)`, `b_vol = 1`); Part
 III's threshold statements of Theorem 28.1 of `p0:thm:staircase` items (1) and
 (2), with the real extension `f_h` on `[n_1, ∞)` as the admissible
-interpolation. Analogues: the one-step corrections (10.5), (10.8), (18.3), (30)
+interpolation (for targets `y ≥ P_h(n_1)`; the article's range "above
+`P_h(n_1−1)`" was corrected after the independent check of 7 October 2026). Analogues: the one-step corrections (10.5), (10.8), (18.3), (30)
 are exactly the first-order term of `p0:eq:operator-series` about the
 respective cores, with the Parts' own error bounds. Not instances: Part I's
 Theorem 10.1 and Part II's bracket (11.5), proved directly at the integers
@@ -404,6 +414,42 @@ finite-input inverse; the large terms not recomputed; residuals uncertified.
 bound, no cancellation criterion; existential constants; Alekseyev's argument
 not recovered. **All packages**: finite checks prove no asymptotic statement;
 manifests detect changes and authenticate nothing.
+
+## Independent check of the write (7 October 2026)
+
+An adversarial check made by the intake after the write (`3625d8199`), with
+its own code, after fetching again the OEIS entries A137432 (revision #62 and
+its revision history), A194644, A194647, A195656, A061593, A061594, the b-file,
+the entry's `a137432.txt` and Matsuo's table.
+
+- **Remark 20.1**: the proof holds; the bounds and both equality cases hold for
+  all 64 rectangles `h, w ≤ 8` (the encoding itself checked against a direct
+  row-mask count), the per-word bound for `h ≤ 7`, `w ≤ 5`, and the square
+  bounds for `a(1), …, a(18)`. Part I's 6 × 6 table and `a_1, …, a_12`
+  reproduced.
+- **Remark 25.2**: the proof holds, but it is a reading of Theorem 27.2
+  (Wilf's `α_h ≥ 1`); qualified in the article. An exact Berlekamp–Massey
+  reduction of `P_h(w)` for `h ≤ 5` gives exponent two for `1 − (h+1)z`, the
+  denominator degrees 2, 4, 7, 17, 31 and the per-degree maximal exponents of
+  Table 1, and `(α_h, β_h)` equal to the package's certificate.
+- **The A137432 conjecture**: first in revision #19 (Kotesovec, 31 August 2011,
+  the first version under the present name, on a recycled number), proved as
+  stated.
+- **Coefficients**: Part I's operator and explicit `c_1(λ)`, `c_2(λ)` agree
+  identically; at `λ = 1` they are Part II's `c_1`, `c_2`, and Part II's short
+  forms agree (SymPy). **Correction**: the write said every printed digit of
+  `C, c_1, c_2, c_3, G(0), H(0), J(0)` agrees; the last printed digit of the
+  delivered `c_1` (16.5), `c_3` (16.7) and `H(0)` (7.13) is rounded, not
+  truncated (notes added; delivered digits kept). The values in this README are
+  truncations.
+- **Fixture**: its SHA-256 identified (Matsuo's table, above); `R_2`, `R_3` at
+  `n = 100, …, 800` reproduced at 3000 digits.
+- **Transseries volume**: every instance and analogue re-derived; the range of
+  the staircase reading corrected to `y ≥ P_h(n_1)`.
+- **Provenance**: archive sizes, file counts, line and page counts and bundle
+  index times confirmed. Kotěšovec's book was not read at the check either.
+
+No other defect was found. The check is recorded at the end of Section 31.
 
 ## Further questions, and the standing rule
 
@@ -545,7 +591,9 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
 pdfLaTeX (MiKTeX), in a scratch copy of `article.tex` (no other inputs);
-commit only `article.pdf`. The build (70 pages): no errors, no undefined or
+commit only `article.pdf`. The build (70 pages at the write; 71 after the
+independent check of 7 October 2026, label numbers unchanged, aux files
+compared): no errors, no undefined or
 multiply defined references or citations, no duplicate destinations, no
 overfull or underfull boxes, no warnings. The log carries one "Infinite glue
 shrinkage found in box being split" message, from the notation longtable
