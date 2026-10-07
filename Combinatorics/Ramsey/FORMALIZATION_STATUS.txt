@@ -12,8 +12,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 584 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 3,767 public Gowers theorems and found only propext,
+  All 587 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 3,782 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 112 exact
   companion proofs and 8 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -23,6 +23,16 @@ Verification at this checkpoint
   the exact Theorems 1.2, 7.1, and 7.2 companions. Their dependencies pass
   the transitive axiom check. The earlier workstation-only validation of
   Theorem 1.2 is now confirmed by the full repository audit.
+
+All-scale integer geometry for Section 13
+  Proofs07AllScalesStepSpan retains a common positive integer step ratio
+  and d*(cell.length-1) < parent.length in the universal affine partition,
+  including every short-scale branch. Proofs13AllScalesStepSpan propagates
+  this information through Lemma 13.7, including empty critical heights.
+  Proofs13AllScalesCoefficientSpan retains it in bilinear coefficient
+  extraction without a large-scale assumption. These strengthen existing
+  constructions; Corollary 13.10 remains open while the shorter-parent
+  localization and its original length target are reconciled.
 
 Threshold-free simultaneous quadratic localization
   Proofs05QuadraticFamily iterates the finite quadratic localization theorem

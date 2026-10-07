@@ -420,6 +420,8 @@ import GowersSzemeredi.Proofs13SmallRowScale
 import GowersSzemeredi.Proofs13FiniteRowBudgets
 import GowersSzemeredi.Proofs13FiniteRowExtraction
 import GowersSzemeredi.Proofs13ImprovedSquareExtraction
+import GowersSzemeredi.Proofs13AllScalesStepSpan
+import GowersSzemeredi.Proofs13AllScalesCoefficientSpan
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 
