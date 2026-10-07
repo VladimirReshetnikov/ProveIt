@@ -13,8 +13,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 659 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 4,249 public Gowers theorems and found only propext,
+  All 665 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 4,284 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 113 exact
   companion proofs and 7 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -871,6 +871,26 @@ Unconditional cubic discrepancy and five-term iteration
   five-term bound, nor the exact general Theorem 18.1 exponent. The original
   modulus threshold is still qualitative, and the Section 16 induction
   needed for arbitrary degrees remains open. The catalogue stays 113/120.
+
+Explicit geometric thresholds in Section 13
+  Proofs13ExplicitPowerThreshold defines max(1,max(1,C/D)^(1/e)) and proves
+  C <= D*N^e above that bound for positive D,e. No existential witness is
+  used in the definition. Proofs13ExplicitRoundedBudgets combines three
+  such bounds to construct the ceiling integer satisfying the recurrence,
+  square-root, and Bohr-radius budgets, uniformly over all actual parameters.
+  Proofs13ExplicitRecurrenceThreshold makes the Stage 13.5 recurrence and
+  endpoint-deletion bounds explicit, including both floor-length cases.
+  A finite maximum of ceiling thresholds handles all permitted spectrum
+  sizes uniformly over actual densities above delta.
+  Proofs13ExplicitDensityBudgets carries the rounded construction through
+  Stage 13.6 with the actual-density conclusions and upper length retained.
+  Proofs13ExplicitSquareScale supplies finite bounds for the final row,
+  coefficient-width, affine, and rounded power conditions.
+  Proofs13ExplicitGeometricThreshold assembles these formulas into a fully
+  explicit density-uniform common-step bilinear square extraction theorem.
+  Its input is the actual Section13Context, not an assumed square or scale
+  package. The Fourier-graph and downstream cubic thresholds still need
+  to be propagated into the explicit quantitative interface.
 
 Cubic obstruction in a strictly smaller prime model
   Proofs17LocalizedPhaseRemoval now exports proposition_17_7_with_upper:
