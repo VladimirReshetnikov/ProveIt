@@ -1,24 +1,24 @@
-\section{The two saddle variables and their tails}\label{sec:saddles}
+\section{The two saddle variables and their tails}\label{spm:sec:saddles}
 \subsection{The complex involution contour}
 Let
-\begin{equation}\label{eq:r}
+\begin{equation}\label{spm:eq:r}
  r=r_n(v)=\sqrt{n+v^2/4}-v/2,\qquad r^2+vr=n,
 \end{equation}
 where $r/\sqrt n\to1$. Even when $r$ is complex, $x=re^{\ii\theta}$ parametrizes a permissible circle around the origin. Relative to $\theta=0$, the coefficient exponent is
-\begin{equation}\label{eq:Phi}
+\begin{equation}\label{spm:eq:Phi}
  \Phi_n(\theta)=vr(e^{\ii\theta}-1)
  +\frac{r^2}{2}(e^{2\ii\theta}-1)-\ii n\theta.
 \end{equation}
 Its first derivative at zero vanishes exactly.
 
-\begin{lemma}[Uniform angular localization]\label{lem:involution}
+\begin{lemma}[Uniform angular localization]\label{spm:lem:involution}
 For a sufficiently small fixed complex neighborhood of $v=1$ and $0<\delta<1/6$,
-\begin{equation}\label{eq:angulartail}
+\begin{equation}\label{spm:eq:angulartail}
  \int_{|\theta|>n^{-1/2+\delta}}|e^{\Phi_n(\theta)}|\,\dd\theta
  =O\bigl(n^{-1/2}e^{-c n^{2\delta}}\bigr).
 \end{equation}
 The full absolute integral is $O(n^{-1/2})$. The signed integral is asymptotic to $\sqrt{\pi/n}$, uniformly, and hence
-\begin{equation}\label{eq:involutioncomparability}
+\begin{equation}\label{spm:eq:involutioncomparability}
  |I_n(v)|\asymp
  \frac{n!}{\sqrt n}\left|r^{-n}e^{vr+r^2/2}\right|.
 \end{equation}
@@ -32,32 +32,32 @@ Using $r^2=n-vr$, rewrite the exponent as
 \]
 Its leading real part is $-n\sin^2\theta$. Near zero the expression multiplying $vr$ is $O(\theta^2)$, and $vr=O(\sqrt n)$, so $\Re\Phi_n\leq-cn\theta^2$ on a fixed small neighborhood. No spurious linear error remains.
 
-Near $\pi$ or $-\pi$, put $\theta=\pi+\phi$ modulo $2\pi$. The constant term is $-2vr$, with $\Re(vr)\geq c\sqrt n$. The remaining terms are bounded by $C\sqrt n|\phi|-c'n\phi^2$. Completing the square shows that this saddle has height at most $-c\sqrt n+O(1)$ and Gaussian width $O(n^{-1/2})$. For complex $v$ its maximum may be displaced by $O(n^{-1/2})$; this changes the height only by $O(1)$. Away from both angular neighborhoods the bound is $-cn$. These three bounds prove \eqref{eq:angulartail} and the absolute-integral estimate.
+Near $\pi$ or $-\pi$, put $\theta=\pi+\phi$ modulo $2\pi$. The constant term is $-2vr$, with $\Re(vr)\geq c\sqrt n$. The remaining terms are bounded by $C\sqrt n|\phi|-c'n\phi^2$. Completing the square shows that this saddle has height at most $-c\sqrt n+O(1)$ and Gaussian width $O(n^{-1/2})$. For complex $v$ its maximum may be displaced by $O(n^{-1/2})$; this changes the height only by $O(1)$. Away from both angular neighborhoods the bound is $-cn$. These three bounds prove \eqref{spm:eq:angulartail} and the absolute-integral estimate.
 
-On $\theta=w/\sqrt n$, Taylor expansion gives $\Phi_n=-w^2+o(1)$ uniformly on each bounded interval. The preceding tails give an integrable majorant, so the signed integral is $\sqrt{\pi/n}(1+o(1))$. The Cauchy formula proves \eqref{eq:involutioncomparability}. Expanding $r=\sqrt n-v/2+O(n^{-1/2})$ gives the size estimates used in Section~\ref{sec:envelope}, independently of its conclusions.
+On $\theta=w/\sqrt n$, Taylor expansion gives $\Phi_n=-w^2+o(1)$ uniformly on each bounded interval. The preceding tails give an integrable majorant, so the signed integral is $\sqrt{\pi/n}(1+o(1))$. The Cauchy formula proves \eqref{spm:eq:involutioncomparability}. Expanding $r=\sqrt n-v/2+O(n^{-1/2})$ gives the size estimates used in Section~\ref{spm:sec:envelope}, independently of its conclusions.
 \end{proof}
 
 \subsection{The gamma variable over its whole range}
 For sufficiently large $k$ relative to $\sqrt n$, factor the scaled generating function as
-\begin{equation}\label{eq:factor}
+\begin{equation}\label{spm:eq:factor}
  (1-vx/k)^{-k}(1-x^2/k^2)^{-(k^2-k)/2}
  =e^{vx+x^2/2}e^{B(x,k,v)},
 \end{equation}
 where the convergent logarithmic correction is
-\begin{align}\label{eq:B}
+\begin{align}\label{spm:eq:B}
  B(x,k,v)={}&\sum_{m\geq2}\frac{v^m x^m}{m k^{m-1}}
  +\sum_{m\geq2}\frac{x^{2m}}{2m k^{2m-2}}
  -\sum_{m\geq1}\frac{x^{2m}}{2m k^{2m-1}}.
 \end{align}
-For $t\geq\eps n$, $k=t/L$, and $|x|=|r_n(v)|$, this correction is uniformly bounded in modulus. On that range \eqref{eq:gammaexact} becomes
-\begin{equation}\label{eq:mainintegral}
+For $t\geq\eps n$, $k=t/L$, and $|x|=|r_n(v)|$, this correction is uniformly bounded in modulus. On that range \eqref{spm:eq:gammaexact} becomes
+\begin{equation}\label{spm:eq:mainintegral}
  L^{-n-1}\int e^{-t}t^n
  [x^n]e^{vx+x^2/2+B(x,t/L,v)}\,\dd t.
 \end{equation}
 This is first an identity for a fixed coefficient polynomial, not an exchange with a divergent full generating-function integral.
 
-The absolute angular bound and \eqref{eq:involutioncomparability} show that the coefficient inside the integral has absolute value at most $C|I_n(v)|/n!$. Thus, relative to $I_n(v)L^{-n-1}$, the mass outside
-\begin{equation}\label{eq:gammawindow}
+The absolute angular bound and \eqref{spm:eq:involutioncomparability} show that the coefficient inside the integral has absolute value at most $C|I_n(v)|/n!$. Thus, relative to $I_n(v)L^{-n-1}$, the mass outside
+\begin{equation}\label{spm:eq:gammawindow}
  |t-n|\leq n^{1/2+\delta}
 \end{equation}
 is $O(e^{-c n^{2\delta}})$ on $t\geq\eps n$. The gamma estimate follows directly from
@@ -67,7 +67,7 @@ is $O(e^{-c n^{2\delta}})$ on $t\geq\eps n$. The gamma estimate follows directly
 \]
 The rate function $x-1-\log x$ is at least a positive constant times $(x-1)^2$ on a fixed interval about $1$ and is bounded away from zero off that interval, with sufficient growth to integrate the tails.
 
-On $0\leq t<\eps n$, use Lemma~\ref{lem:envelope}, monotonicity, and the endpoint estimate from Lemma~\ref{lem:gammabound}. Dividing by \eqref{eq:involutioncomparability} gives
+On $0\leq t<\eps n$, use Lemma~\ref{spm:lem:envelope}, monotonicity, and the endpoint estimate from Lemma~\ref{spm:lem:gammabound}. Dividing by \eqref{spm:eq:involutioncomparability} gives
 \[
  O\bigl((e\eps)^n e^{C\sqrt n}\operatorname{poly}(n)\bigr),
 \]
@@ -77,12 +77,12 @@ Together these arguments localize the product gamma/angular integral with absolu
 
 \subsection{Real auxiliary and diagonal concentration}
 The preceding bounds also explain the two scales in elementary probabilistic terms. For positive real $u,v$ in a fixed compact neighborhood, give the auxiliary integer $K$ probability proportional to $e^{-Lk}f_n(k,v)$. Uniformly for $cn\leq k\leq Cn$ and real $w$ near $v$, the same angular saddle yields
-\begin{equation}\label{eq:centralcomparison}
+\begin{equation}\label{spm:eq:centralcomparison}
  \frac{f_n(k,w)}{k^n I_n(w)/n!}
  =e^{B(r_n(w),k,w)}(1+O(n^{-1/2})).
 \end{equation}
 The multiplier is positive and bounded away from zero. Its change on the angular scale is $O(n^{-1/2})(1+|w_{\rm ang}|)$, which proves the error after Gaussian integration. For $k\geq\eps n$ the corresponding upper bound holds on the entire range. A central interval supplies a matching lower normalization. Comparison of the unimodal kernel $e^{-Lk}k^n$ with adjacent integrals then gives
-\begin{equation}\label{eq:Ktail}
+\begin{equation}\label{spm:eq:Ktail}
  \PP\{|K-n/L|>n^{1/2+\delta}\}
  \leq C e^{-c n^{2\delta}},\qquad 0<\delta<1/6.
 \end{equation}
@@ -93,13 +93,30 @@ For the reference involution distribution, let $\Lambda$ have probabilities prop
  \frac{v^\ell}{\ell!2^j j!},\qquad \ell+2j=n.
 \]
 The one-dimensional saddle, expanded with uniform derivatives, gives for real small $s$
-\begin{equation}\label{eq:reference-mgf}
+\begin{equation}\label{spm:eq:reference-mgf}
  \log\frac{I_n(ve^s)}{I_n(v)}
  =v(e^s-1)\sqrt n-\frac{v^2(e^{2s}-1)}4+O(n^{-1/2}).
 \end{equation}
 Chernoff's inequality with $s$ proportional to $n^{-1/4+\delta}$ therefore yields
-\begin{equation}\label{eq:fixedpointtail}
+\begin{equation}\label{spm:eq:fixedpointtail}
  \PP\{|\Lambda-v\sqrt n|>n^{1/4+\delta}\}
  \leq C e^{-c n^{2\delta}},\qquad 0<\delta<1/4.
 \end{equation}
-This is not merely a reference-distribution bound. By \eqref{eq:centralcomparison}, the tilted diagonal generating-function ratio for actual matrices at each $cn\leq k\leq Cn$ is at most a constant times $I_n(ve^s)/I_n(v)$. Hence their diagonal sum obeys the same bound, with changed constants. This explicitly controls the rising-factorial reweighting that could otherwise invalidate a fixed-point moment argument. The complex-marker proof above does not depend on these probabilistic comparisons.
+This is not merely a reference-distribution bound. By \eqref{spm:eq:centralcomparison}, the tilted diagonal generating-function ratio for actual matrices at each $cn\leq k\leq Cn$ is at most a constant times $I_n(ve^s)/I_n(v)$. Hence their diagonal sum obeys the same bound, with changed constants. This explicitly controls the rising-factorial reweighting that could otherwise invalidate a fixed-point moment argument. The complex-marker proof above does not depend on these probabilistic comparisons.
+
+\begin{writenote}[Added 6 October 2026, batch~108: the passage to packed matrices]
+The last step, from the auxiliary $k\times k$ matrices to the packed ones,
+rests on the following exact identity in law, implicit in the proof of
+Proposition~\ref{spm:prop:transform}. For real $u,v>0$ let $K$ have the
+law above, and given $K=k$ let $M'$ be a symmetric $k\times k$ matrix with
+nonnegative entries and total $n$ (zero lines allowed), chosen with
+probability proportional to $v^{T(M')}$. Deleting the zero lines of $M'$
+gives a packed matrix $M$ whose law is proportional to $u^{D(M)}v^{T(M)}$
+on $\mathcal A_n$, the law of the marked count $A_n(u,v)$. \emph{Proof.} A
+packed $M$ of dimension $d$ arises from exactly $\binom kd$ matrices $M'$
+of each size $k\ge d$, all with $T(M')=T(M)$; so its total weight is
+$v^{T(M)}\sum_{k\ge d}q^k\binom kd=v^{T(M)}u^d/(1-q)$, by the identity in
+that proof. \qed\ Since deletion preserves the diagonal sum, the tail
+bound for $T$ under $M'$, uniform over $cn\le k\le Cn$, and the tail
+bound~\eqref{spm:eq:Ktail} for $K$ give the stated bound for $T(M)$.
+\end{writenote}

@@ -1,8 +1,8 @@
-\section{Further questions}\label{sec:outlook}
+\section{Further questions}\label{spm:sec:outlook}
 The marked expansion settles all fixed algebraic orders in the stated parameter domain, but it leaves several concrete problems.
 
 \paragraph{Effective constants and certified thresholds.}
-The proof separates a nonreal-pole bound, a small-dimension envelope, a gamma tail, an angular tail, and an integrable Taylor remainder. Making each constant explicit would turn Theorem~\ref{thm:ceilings} into a finite-input threshold certificate. The main challenge is to avoid constants so large that the result is unusable. A floating residual table alone cannot certify an onset or a remainder.
+The proof separates a nonreal-pole bound, a small-dimension envelope, a gamma tail, an angular tail, and an integrable Taylor remainder. Making each constant explicit would turn Theorem~\ref{spm:thm:ceilings} into a finite-input threshold certificate. The main challenge is to avoid constants so large that the result is unusable. A floating residual table alone cannot certify an onset or a remainder.
 
 \paragraph{The trace parity transition.}
 The theorem assumes $v$ near $1$, where the opposite involution saddle is smaller by $e^{-c\sqrt n}$. When $v$ approaches zero on the scale $n^{-1/2}$, that suppression disappears. A uniform two-saddle treatment should describe the transition between even and odd total weights while maintaining absolute control of the gamma and pole errors. The zero collision markers treated here do not cross this trace-marker boundary.
@@ -14,7 +14,7 @@ The exact relation $T_n\equiv n\pmod2$ suggests a joint local limit on the corre
 The present compact domains are fixed independently of $n$. Allowing $u$ to approach zero or infinity changes the auxiliary-dimension saddle, and allowing collision markers to grow with $n$ can favor an atypically large population of repeated cells. Determining the boundaries of these regimes requires a new balance of the generating-function terms, rather than substitution into a fixed-compact error estimate.
 
 \paragraph{Higher collision corrections and positive approximations.}
-Corollary~\ref{cor:massall} supplies every fixed signed polynomial correction in $\ell^1$. It would be useful to organize these polynomials efficiently and determine when a positive compound-Poisson or mixed-Poisson approximation can match more than the first correction. The adjusted independent Poisson law in \eqref{eq:adjustedmeans} achieves order $n^{-1}$ without claiming optimality. Counts of cells of entry at least $3$, extra units rather than repeated cells, and the maximum entry invite related but distinct markings.
+Corollary~\ref{spm:cor:massall} supplies every fixed signed polynomial correction in $\ell^1$. It would be useful to organize these polynomials efficiently and determine when a positive compound-Poisson or mixed-Poisson approximation can match more than the first correction. The adjusted independent Poisson law in \eqref{spm:eq:adjustedmeans} achieves order $n^{-1}$ without claiming optimality. Counts of cells of entry at least $3$, extra units rather than repeated cells, and the maximum entry invite related but distinct markings.
 
 \paragraph{Exponentially small sectors and high orders.}
 The proof identifies suppressed opposite-saddle and nonreal-pole effects only through bounds. A finite algebraic truncation has an error larger than those effects, so it does not by itself isolate their amplitudes. Separately controlled sector definitions, high-order coefficient growth, and an optimal-truncation analysis would be needed for a transseries theory. None is asserted by the present all-fixed-order expansion.
@@ -23,3 +23,42 @@ The proof identifies suppressed opposite-saddle and nonreal-pole effects only th
 Unlabeled symmetric matrices, prescribed dimension, fixed trace, and decreasing-margin variants require their own exact transform and source comparison. Even when involution numbers reappear, the normalization and the collision rates can change. A systematic classification of which conventions preserve this coupled gamma/involution mechanism would be more informative than transferring formulas between superficially similar sequences.
 
 The central analytic point is reusable: control the entire coefficient polynomial with a positive envelope, retain both local normalizers, and prove compact-marker estimates on the domain actually needed for the probabilistic conclusion. Here that combination yields a complete fixed-order theory for the count, two fluctuation scales, a summable collision law, and an inverse with its integer uncertainty kept explicit.
+
+\section{Further questions and research}\label{spm:sec:further}
+\begin{writenote}[Added 6 October 2026, batch~108]
+Following Vladimir Reshetnikov's standing rule of 4~October 2026, every
+claim of the source, or of the write, that is not proved in full is stated
+here as an open question, with its source, the argument offered and what
+is missing; the source's own seven questions are those of
+Section~\ref{spm:sec:outlook}, which stay as printed. The intake and the
+write found no false statement in the source and narrowed none of its
+claims; the write supplied one step that Section~\ref{spm:sec:saddles}
+leaves implicit (the note at its end). The source imports no published
+theorem, so there is no unchecked input.
+\end{writenote}
+\begin{enumerate}
+\item\label{spm:q:third} \textbf{The third coefficient} (added by the
+ write; Remark~\ref{spm:rem:third}). The value
+ $C_3(L,1)=-L^2(50L^4+324L^2-1755)/6480$ comes from one SymPy evaluation
+ of~\eqref{spm:eq:algorithm} by the write, which reproduces $C_1$ and $C_2$
+ and is consistent with the exact counts through $n=500$ (table there),
+ which certify nothing. \emph{Missing:} a
+ second, independent derivation, for instance by the factorial-degree
+ moments that the delivered \file{code/symbolic_coefficients.py} uses for
+ $C_1$ and $C_2$, and the marked coefficient $C_3(L,v)$ away from $v=1$.
+ The source computes the coefficients only through $C_2$ and claims
+ nothing about $C_3$.
+\item\label{spm:q:priority} \textbf{The literature boundary} (source:
+ Section~\ref{spm:sec:model} and \file{SOURCES.md}). The source reports a
+ bounded search that found no earlier asymptotic for A138178 and credits
+ every prior result it found (Jovovic's transform,
+ Cameron--Prellberg--Stark's binary equivalent and collision precedent);
+ the write confirmed that neither OEIS entry states an asymptotic and that
+ the two credited statements are as quoted (Remark~\ref{spm:rem:oeis}).
+ \emph{Open:} whether the related matrix-composition and
+ Burge-polynomial literature \cite{matrixcomp,caylerian}, which neither the
+ write nor this report relies on, or work on normal semistandard tableaux,
+ contains an asymptotic for the nonnegative symmetric count or its marked
+ versions. The source claims no priority; what is missing is a search
+ beyond the bounded one, and the write did not read those two papers.
+\end{enumerate}

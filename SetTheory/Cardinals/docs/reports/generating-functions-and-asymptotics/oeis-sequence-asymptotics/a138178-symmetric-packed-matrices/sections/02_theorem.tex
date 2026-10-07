@@ -1,29 +1,29 @@
-\section{The all fixed order marked expansion}\label{sec:theorem}
+\section{The all fixed order marked expansion}\label{spm:sec:theorem}
 Write
 \begin{align}
- S(L,v)&=\frac{(v^2-1)L}{2}+\frac{L^2}{4},\label{eq:S}\\
- C_1(L,v)&=-\frac{v(v^2-1)L}{2}+\frac{v(2v^2-3)L^2}{6},\label{eq:C1}\\
+ S(L,v)&=\frac{(v^2-1)L}{2}+\frac{L^2}{4},\label{spm:eq:S}\\
+ C_1(L,v)&=-\frac{v(v^2-1)L}{2}+\frac{v(2v^2-3)L^2}{6},\label{spm:eq:C1}\\
  D_2(L,v)&=\frac{v^2(v^2-1)(L+L^3)}4
-          +\frac{(-5v^4+6v^2-3)L^2}{8}+\frac{L^4}{24},\label{eq:D2}\\
- C_2(L,v)&=D_2(L,v)+\frac12C_1(L,v)^2.\label{eq:C2}
+          +\frac{(-5v^4+6v^2-3)L^2}{8}+\frac{L^4}{24},\label{spm:eq:D2}\\
+ C_2(L,v)&=D_2(L,v)+\frac12C_1(L,v)^2.\label{spm:eq:C2}
 \end{align}
 Here $D_2$ is the coefficient of $n^{-1}$ in the logarithm of the normalized expansion, which makes several subsequent formulas shorter.
 
-\begin{theorem}[Uniform marked expansion]\label{thm:main}
+\begin{theorem}[Uniform marked expansion]\label{spm:thm:main}
 There is a complex neighborhood $U$ of $(1,1)$ such that, for every fixed integer $J\geq0$, uniformly on compact subsets of $U$,
-\begin{equation}\label{eq:main}
+\begin{equation}\label{spm:eq:main}
  A_n(u,v)=\frac{I_n(v)e^{S(L,v)}}{(1+u)L^{n+1}}
  \left(\sum_{j=0}^{J}C_j(L,v)n^{-j/2}
        +O_J(n^{-(J+1)/2})\right).
 \end{equation}
-The coefficients $C_j$ are polynomials in $L,v$ with rational coefficients, $C_0=1$, and the first two are \eqref{eq:C1}--\eqref{eq:C2}. A finite Gaussian-moment prescription for every $C_j$ is given in \eqref{eq:algorithm}. On a smaller compact set, every fixed derivative of the normalized holomorphic remainder obeys the same order bound.
+The coefficients $C_j$ are polynomials in $L,v$ with rational coefficients, $C_0=1$, and the first two are \eqref{spm:eq:C1}--\eqref{spm:eq:C2}. A finite Gaussian-moment prescription for every $C_j$ is given in \eqref{spm:eq:algorithm}. On a smaller compact set, every fixed derivative of the normalized holomorphic remainder obeys the same order bound.
 \end{theorem}
 
 The assertion is local in the dimension and trace markers. In particular it does not extend the trace marker through $v=0$, where an exact parity boundary and a second comparable involution saddle arise. The order $J$ is fixed independently of $n$; no uniform estimate in a growing order is asserted.
 
-\begin{corollary}[Unmarked expansion]\label{cor:unmarked}
+\begin{corollary}[Unmarked expansion]\label{spm:cor:unmarked}
 With $L=\log2$,
-\begin{equation}\label{eq:unmarked}
+\begin{equation}\label{spm:eq:unmarked}
  A_n=\frac{e^{L^2/4}I_n(1)}{2L^{n+1}}
  \left(1-\frac{L^2}{6\sqrt n}
  +\frac{-L^2/4+L^4/18}{n}+O(n^{-3/2})\right).
@@ -31,7 +31,7 @@ With $L=\log2$,
 The factor $1/(2L^{n+1})$ can be replaced by $P_n/n!$ with exponentially small relative error.
 \end{corollary}
 \begin{proof}
-Substitute $u=v=1$ in the theorem. The ordered Bell exponential generating function is $(2-e^z)^{-1}$; its poles are $L+2\pi\ii m$. The pole at $L$ gives $P_n/n!=1/(2L^{n+1})$ up to an exponentially small relative error. Equivalently, apply the exact moment formula in \eqref{eq:poles} to $\frac12\sum_{k\geq0}2^{-k}k^n$.
+Substitute $u=v=1$ in the theorem. The ordered Bell exponential generating function is $(2-e^z)^{-1}$; its poles are $L+2\pi\ii m$. The pole at $L$ gives $P_n/n!=1/(2L^{n+1})$ up to an exponentially small relative error. Equivalently, apply the exact moment formula in \eqref{spm:eq:poles} to $\frac12\sum_{k\geq0}2^{-k}k^n$.
 \end{proof}
 
-The proof has three necessary parts. First an everywhere-positive coefficient envelope controls the entire nonreal-pole error, including low polynomial degrees. Next a gamma variable and a complex involution contour are localized with absolute estimates over their full ranges. Only then is the local expansion integrated, with \emph{both} normalizing factors retained. The collision extension in Section~\ref{sec:collision} uses the same three parts rather than a formal continuation of the final formula.
+The proof has three necessary parts. First an everywhere-positive coefficient envelope controls the entire nonreal-pole error, including low polynomial degrees. Next a gamma variable and a complex involution contour are localized with absolute estimates over their full ranges. Only then is the local expansion integrated, with \emph{both} normalizing factors retained. The collision extension in Section~\ref{spm:sec:collision} uses the same three parts rather than a formal continuation of the final formula.

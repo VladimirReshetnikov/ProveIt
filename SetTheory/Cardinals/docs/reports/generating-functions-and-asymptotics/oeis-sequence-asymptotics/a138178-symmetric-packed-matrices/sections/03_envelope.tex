@@ -1,6 +1,6 @@
-\section{A positive envelope and all nonreal poles}\label{sec:envelope}
+\section{A positive envelope and all nonreal poles}\label{spm:sec:envelope}
 Choose $U$ small enough that $\Re L>c>0$, $|L|<1$, $\Re v>c>0$, and $|v|\leq V$ for a fixed real $V$. Fix a real radius $R$ satisfying
-\begin{equation}\label{eq:R}
+\begin{equation}\label{spm:eq:R}
  \sup_U|L|<R<\inf_{U,\,m\ne0}|L+2\pi\ii m|;
 \end{equation}
 for example $R=2$ is possible after shrinking $U$.
@@ -11,9 +11,9 @@ Write $f_n(k,v)=\sum_{j=1}^n b_{nj}(v)k^j$ for $n>0$. These coefficients need no
 \]
 In particular positivity would fail for real $0<v<1$. The following replacement is valid coefficient by coefficient.
 
-\begin{lemma}[Positive majorant]\label{lem:envelope}
+\begin{lemma}[Positive majorant]\label{spm:lem:envelope}
 Define $g_n(k,V)$ by
-\begin{equation}\label{eq:envelope}
+\begin{equation}\label{spm:eq:envelope}
  \sum_{n\geq0}g_n(k,V)z^n
  =(1-Vz)^{-k}(1-z^2)^{-(k^2+k)/2}.
 \end{equation}
@@ -24,24 +24,24 @@ All coefficients $g_{nj}=[k^j]g_n(k,V)$ are nonnegative, and
 \]
 \end{lemma}
 \begin{proof}
-The logarithm of \eqref{eq:fn} is
+The logarithm of \eqref{spm:eq:fn} is
 \[
  -k\log(1-vz)+\frac{k}{2}\log(1-z^2)
  -\frac{k^2}{2}\log(1-z^2).
 \]
-Take absolute values coefficientwise in $k,z$. Its coefficients are bounded by those of the logarithm of \eqref{eq:envelope}; exponentiation preserves the coefficientwise bound. The majorant has nonnegative coefficients, so $g_n(t,V)$ is also increasing for $t\geq0$.
+Take absolute values coefficientwise in $k,z$. Its coefficients are bounded by those of the logarithm of \eqref{spm:eq:envelope}; exponentiation preserves the coefficientwise bound. The majorant has nonnegative coefficients, so $g_n(t,V)$ is also increasing for $t\geq0$.
 \end{proof}
 
 For every integer $j\geq1$ and $\Re L>0$, the absolutely convergent partial-fraction identity is
-\begin{equation}\label{eq:poles}
+\begin{equation}\label{spm:eq:poles}
  \sum_{k\geq0}e^{-Lk}k^j
  =j!\sum_{m\in\mathbb Z}(L+2\pi\ii m)^{-j-1}.
 \end{equation}
 One obtains it by differentiating the partial-fraction expansion of $(e^L-1)^{-1}$; one derivative removes the possible constant term and makes the series absolutely convergent. Separating the $m=0$ contribution therefore gives the \emph{finite polynomial} identity
 \begin{align}
- \sum_{k\geq0}e^{-Lk}f_n(k,v)&=M_n(L,v)+E_n(L,v),\label{eq:mainpluserror}\\
+ \sum_{k\geq0}e^{-Lk}f_n(k,v)&=M_n(L,v)+E_n(L,v),\label{spm:eq:mainpluserror}\\
  M_n(L,v)&=L^{-1}\int_0^\infty e^{-t}f_n(t/L,v)\,\dd t.
- \label{eq:gammaexact}
+ \label{spm:eq:gammaexact}
 \end{align}
 No integral of an untruncated infinite generating function has been interchanged here.
 
@@ -51,24 +51,24 @@ The nonreal terms admit a degree-independent bound. Indeed, if $d_m=|L+2\pi\ii m
  \leq R^{-j-1}\sum_{m\ne0}(R/d_m)^2
  \leq C R^{-j-1}.
 \]
-Thus Lemma~\ref{lem:envelope} yields
-\begin{equation}\label{eq:allpolebound}
+Thus Lemma~\ref{spm:lem:envelope} yields
+\begin{equation}\label{spm:eq:allpolebound}
  |E_n|\leq C\sum_{j=1}^n g_{nj}j!R^{-j-1}
  =C\int_0^\infty e^{-Rk}g_n(k,V)\,\dd k.
 \end{equation}
 This bound includes degrees $1$ and $2$, rather than incorrectly attaching an $n$th power of a pole ratio to each low-degree monomial.
 
-\begin{lemma}[Global gamma and Cauchy bound]\label{lem:gammabound}
+\begin{lemma}[Global gamma and Cauchy bound]\label{spm:lem:gammabound}
 For fixed positive $R,V$,
-\begin{equation}\label{eq:majorantintegral}
+\begin{equation}\label{spm:eq:majorantintegral}
  \int_0^\infty e^{-Rk}g_n(k,V)\,\dd k
  \leq C\sqrt n\,I_n(V)R^{-n-1}.
 \end{equation}
 The analogous estimate is uniform when the nonzero scale parameter ranges over a fixed compact complex set and its absolute value is used in the envelope.
 \end{lemma}
 \begin{proof}
-Put $k=t/|\lambda|$, where $\lambda$ stays in a fixed compact subset of $\C\setminus\{0\}$. For $t\geq\eps n$, take $|x|=\sqrt n$ and $z=x/k$. For sufficiently large $n$, all logarithmic series converge. After removing $Vx+x^2/2$ from the logarithm of \eqref{eq:envelope}, the remaining terms are bounded by a constant depending on $\eps$ and the compact set. The largest types are $x^2/k$ and $x^4/k^2$, both $O(1)$. Cauchy's coefficient estimate gives
-\begin{equation}\label{eq:largekbound}
+Put $k=t/|\lambda|$, where $\lambda$ stays in a fixed compact subset of $\C\setminus\{0\}$. For $t\geq\eps n$, take $|x|=\sqrt n$ and $z=x/k$. For sufficiently large $n$, all logarithmic series converge. After removing $Vx+x^2/2$ from the logarithm of \eqref{spm:eq:envelope}, the remaining terms are bounded by a constant depending on $\eps$ and the compact set. The largest types are $x^2/k$ and $x^4/k^2$, both $O(1)$. Cauchy's coefficient estimate gives
+\begin{equation}\label{spm:eq:largekbound}
  g_n(t/|\lambda|,V)
  \leq C_\eps(t/|\lambda|)^n n^{-n/2}e^{n/2+V\sqrt n}.
 \end{equation}
@@ -79,23 +79,23 @@ For $0\leq t<\eps n$, use coefficient monotonicity before making any substitutio
  \int_0^{\eps n}e^{-t}g_n(t/|\lambda|,V)\,\dd t
  \leq \eps n\,g_n(\eps n/|\lambda|,V).
 \]
-Apply \eqref{eq:largekbound} at the endpoint. Relative to
+Apply \eqref{spm:eq:largekbound} at the endpoint. Relative to
 $n!|\lambda|^{-n}n^{-n/2}e^{n/2+V\sqrt n}$, the ratio is bounded by a polynomial in $n$ times $(e\eps)^n$. Taking $\eps<e^{-2}$ makes it exponentially small. This covers $k=0$ and arbitrarily small positive $k$.
 
-The involution saddle established independently in Lemma~\ref{lem:involution} below gives
+The involution saddle established independently in Lemma~\ref{spm:lem:involution} below gives
 \[
  I_n(V)\asymp n!n^{-n/2}e^{n/2+V\sqrt n}/\sqrt n.
 \]
-Comparing with the preceding bound and setting $\lambda=R$ proves \eqref{eq:majorantintegral}. The factor $\sqrt n$ is harmless here and need not be optimized away.
+Comparing with the preceding bound and setting $\lambda=R$ proves \eqref{spm:eq:majorantintegral}. The factor $\sqrt n$ is harmless here and need not be optimized away.
 \end{proof}
 
 The same saddle gives, uniformly near $v=1$,
 \[
  |I_n(v)|\geq c\,n!n^{-n/2}e^{n/2+\Re(v)\sqrt n}/\sqrt n.
 \]
-Consequently \eqref{eq:allpolebound} implies
-\begin{equation}\label{eq:poleerror}
+Consequently \eqref{spm:eq:allpolebound} implies
+\begin{equation}\label{spm:eq:poleerror}
  |E_n|\leq C e^{-c_1 n}|I_n(v)L^{-n-1}|.
 \end{equation}
 Indeed its relative upper bound is a polynomial times
-$e^{C\sqrt n}(|L|/R)^{n+1}$, exponentially small by \eqref{eq:R}. This is the required simultaneous control of every polynomial degree.
+$e^{C\sqrt n}(|L|/R)^{n+1}$, exponentially small by \eqref{spm:eq:R}. This is the required simultaneous control of every polynomial degree.

@@ -17,6 +17,13 @@
 \newtheorem{theorem}{Theorem}[section]\newtheorem{lemma}[theorem]{Lemma}\newtheorem{proposition}[theorem]{Proposition}\newtheorem{corollary}[theorem]{Corollary}
 \theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
 \theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+% Added by the ProveIt write phase (batch 108, 6 October 2026): dated notes
+% marked [write] and a macro for file, label and declaration names.
+\newcommand{\file}[1]{\nolinkurl{#1}}
+\expandafter\def\expandafter\UrlBreaks\expandafter{\UrlBreaks\do\-\do\_\do\.}
+\newenvironment{writenote}[1][]{\par\smallskip\begingroup\small
+ \noindent\textbf{[write]}\if\relax\detokenize{#1}\relax\else~\textbf{#1.}\fi\ }%
+ {\par\endgroup\smallskip}
 \newcommand{\E}{\mathbb E}\newcommand{\PP}{\mathbb P}\newcommand{\R}{\mathbb R}\newcommand{\C}{\mathbb C}\newcommand{\N}{\mathbb N}\newcommand{\ii}{\mathrm i}\newcommand{\dd}{\mathrm d}\newcommand{\eps}{\varepsilon}\newcommand{\ceil}[1]{\left\lceil #1\right\rceil}\newcommand{\TV}{d_{\mathrm{TV}}}\newcommand{\Pois}{\operatorname{Pois}}\newcommand{\Var}{\operatorname{Var}}\newcommand{\Cov}{\operatorname{Cov}}\newcommand{\Law}{\operatorname{Law}}
 \begin{document}
 \begin{center}
@@ -34,6 +41,31 @@ Let $A_n$ count symmetric nonnegative integer matrices of total entry sum $n$ wi
 \]
 and construct every fixed subsequent order. The proof is uniform for complex dimension and trace markers near one. It controls all polynomial degrees in the geometric transform, the full auxiliary-dimension range, and both angular saddles before expanding a normalized pair of Gaussian integrals. Dimension and trace have independent Gaussian limits on the respective scales $n^{1/2}$ and $n^{1/4}$. A further theorem, uniform on every fixed compact set of collision markers including zero, gives independent Poisson counts of repeated diagonal and off-diagonal cells, their joint independence from the Gaussian pair, a sharp leading total-variation constant, and an $O(n^{-1})$ corrected Poisson approximation. We also give an all-fixed-order Lambert-$W$ inverse with rounding-safe two-ceiling bounds. The geometric transform is attributed to Jovovic in OEIS; the leading symmetric binary equivalent and a related nonsymmetric collision mechanism are prior results of Cameron, Prellberg, and Stark. No global priority, complete transseries, or effective numerical onset is asserted.
 \end{abstract}
+
+\begin{writenote}[Status and trust boundary, added 6 October 2026, batch~108]
+This is bundle Report~238 of an external AI-assisted research session,
+filed in ProveIt as the single-source research report
+\file{a138178-symmetric-packed-matrices} (provenance, the sources as the
+write read them, relation to the repository, reading conventions and the
+collected non-claims in Section~\ref{spm:sec:provenance}). It is
+unrefereed and not formalized; its author line and PDF author field read
+``Report 238''. \emph{What rests on what.} The proofs import no published
+theorem: the exact transform (Proposition~\ref{spm:prop:transform}) is
+proved here although its unmarked case is Jovovic's (OEIS), and the
+analytic estimates use classical tools only (Cauchy's formula and
+coefficient estimates, the partial-fraction expansion~\eqref{spm:eq:poles},
+Stirling's formula, Taylor's theorem with remainder, Gaussian integrals
+and Chernoff's inequality). Cameron--Prellberg--Stark's binary equivalent is recovered
+as a consistency check (Section~\ref{spm:sec:collision}), not used. No
+proof uses a floating-point computation. The write added
+Remark~\ref{spm:rem:oeis} (the OEIS entries, with all 501 terms of the
+A138178 b-file compared), Remark~\ref{spm:rem:third} (the third
+coefficient at $u=v=1$, computed by the write from the source's
+prescription), Remark~\ref{spm:rem:transseries}
+(Section~\ref{spm:sec:inverse} against the transseries volume), notes in
+Section~\ref{spm:sec:computation} and Section~\ref{spm:sec:further} (open
+questions); no theorem, proof or number of the source was changed.
+\end{writenote}
 \setcounter{tocdepth}{1}
 \begingroup\small\setlength{\parskip}{0pt}
 \makeatletter\renewcommand\l@section[2]{\@dottedtocline{1}{0em}{2em}{#1}{#2}}\makeatother

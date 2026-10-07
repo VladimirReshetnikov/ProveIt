@@ -1,4 +1,4 @@
-\section{The model and its exact transform}\label{sec:model}
+\section{The model and its exact transform}\label{spm:sec:model}
 A matrix is \emph{packed} if it has no zero row or column. Let $\mathcal A_n$ be the set of symmetric packed matrices with nonnegative integer entries and total entry sum $n$. The dimension is allowed to vary. Rows and columns are ordered, and simultaneous permutations are not identified. The empty matrix is the sole object of weight zero. For $n>0$, the dimension is at most $n$, so the set is finite. An off-diagonal entry of value $m$ contributes $2m$ to the total sum, while a diagonal entry contributes its value once.
 
 Put $A_n=|\mathcal A_n|$. The first values are
@@ -12,19 +12,19 @@ For $M\in\mathcal A_n$, let $D(M)$ be its actual dimension and $T(M)$ its diagon
  A_n(u,v)=\sum_{M\in\mathcal A_n}u^{D(M)}v^{T(M)},\qquad A_0(u,v)=1.
 \]
 The auxiliary quantities
-\begin{equation}\label{eq:notation}
+\begin{equation}\label{spm:eq:notation}
  q=\frac{u}{1+u},\qquad L=L(u)=\log(1+1/u),\qquad
  I_n(v)=n![x^n]e^{vx+x^2/2}
 \end{equation}
 use the branch of the logarithm positive at $u=1$. In particular $L(1)=\log2$, and $I_n(1)$ is the involution number. Define the coefficient polynomial
-\begin{equation}\label{eq:fn}
+\begin{equation}\label{spm:eq:fn}
  f_n(k,v)=[z^n](1-vz)^{-k}(1-z^2)^{-(k^2-k)/2}.
 \end{equation}
 For integer $k\geq0$, this counts all symmetric $k\times k$ matrices, with zero lines allowed, marking their diagonal sum. For every fixed $n>0$, it is a polynomial in $k$ of degree at most $n$ with zero constant term.
 
-\begin{proposition}[Exact geometric transform]\label{prop:transform}
+\begin{proposition}[Exact geometric transform]\label{spm:prop:transform}
 For $u,v$ in a complex neighborhood of $(1,1)$,
-\begin{equation}\label{eq:transform}
+\begin{equation}\label{spm:eq:transform}
  A_n(u,v)=\frac1{1+u}\sum_{k\geq0}q^k f_n(k,v).
 \end{equation}
 The series converges absolutely for fixed $n$. The marker $u$ records the actual packed dimension, not the auxiliary index $k$.
@@ -35,16 +35,239 @@ Deleting simultaneous zero rows and columns from a $k\times k$ matrix leaves a u
  (1-q)\sum_{k\geq d}q^k\binom{k}{d}
  =\left(\frac{q}{1-q}\right)^d=u^d.
 \]
-The diagonal sum is unchanged by insertion of zero lines. Summing over the finite family of packed matrices proves the identity. The polynomial degree assertion follows by expanding the logarithm of \eqref{eq:fn}: every atom $k^a z^b$ has $a\leq b$.
+The diagonal sum is unchanged by insertion of zero lines. Summing over the finite family of packed matrices proves the identity. The polynomial degree assertion follows by expanding the logarithm of \eqref{spm:eq:fn}: every atom $k^a z^b$ has $a\leq b$.
 \end{proof}
 
 The unmarked geometric generating-function transform is already recorded in OEIS, credited to Vladeta Jovovic in December 2009~\cite{oeis138178}. Its use here, and the short marked extension above, must not be mistaken for a newly discovered unmarked identity.
 
 \subsection{Prior results and the boundary of the model}
 Cameron, Prellberg, and Stark~\cite{cps}, Proposition 4.2, prove the leading equivalent for the symmetric \emph{binary} companion $B_n$, OEIS A135588~\cite{oeis135588}:
-\begin{equation}\label{eq:priorbinary}
+\begin{equation}\label{spm:eq:priorbinary}
  B_n\sim e^{-L-L^2/4}\frac{I_n(1)P_n}{n!},\qquad L=\log2,
 \end{equation}
 where $P_n$ is the ordered Bell number. Their Section 2 also obtains a Poisson collision limit in a nonsymmetric incidence-matrix argument based on pairs of random preorders. The collision mechanism therefore has substantial precedent. The present treatment concerns the nonnegative symmetric model, uniform marked expansions to every fixed order, and quantitative refinements of its joint collision law.
 
 Rectangular packed matrices, matrices with decreasing margins, and matrices considered up to row or column permutations are different counting models. Related rectangular and Burge-polynomial frameworks appear in \cite{matrixcomp,caylerian}. Their familiar names and related generating functions do not identify their sequences with $A_n$. A bounded check of relevant public sources and existing reports found no duplicate of the result assembled here; it is not a certificate of worldwide novelty. The source notes accompanying this report describe the public attributions and the limits of that check.
+
+\begin{writenote}[Added 6 October 2026, batch~108: the rectangular counterpart]
+The rectangular counterpart of this model on the diagonal of total weight
+$2N$ with $N$ rows (OEIS A261784; bundle Report~169, which the source notes
+name among the reports they read) is Part~IV (Sections~34--44, labels
+\file{mxc:pm:}) of the collection's report
+\file{a261781-matrix-compositions}. It uses the devices of this report on a
+different model: a geometric weighting of dummy columns that erases zero
+lines, the pole of the ordered Bell generating function at $\log(1+1/u)$,
+an expansion to every fixed order uniform for complex markers of the
+columns and of the cells with entry at least~$2$ (its
+Theorem~\file{mxc:pm:thm:marked}, on $|\omega-1|\le2.1$, $|u-1|\le0.02$),
+and a joint limit in which the number of such cells is Poisson of mean
+$r\log2=1.1046\ldots$, $r=2+W_0(-2e^{-2})$, independent of the Gaussian
+column count (Theorem~\file{mxc:pm:thm:joint}). There the expansion is in
+powers of $N^{-1}$; here it is in powers of $n^{-1/2}$ around an
+involution saddle, and the repeated cells split into diagonal and
+off-diagonal ones with means $\log2$ and $(\log2)^2/2$
+(Theorem~\ref{spm:thm:joint}). No theorem is shared, and neither report
+uses the other. The collection's report
+\file{a260700-parabolic-double-cosets} extracts the same ordered Bell pole
+at $\log2$ for a different sequence, and the exact pole-lattice formula
+for the ordered Bell numbers is Theorem~\file{q2:thm:fubini} of the
+transseries volume
+\path{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex}:
+the last sentence of Corollary~\ref{spm:cor:unmarked} is its one-pole
+truncation, and~\eqref{spm:eq:poles} at $L=\log2$, $j=n$, multiplied
+by~$\tfrac12$, is its first equality.
+\end{writenote}
+
+\begin{remark}[{[write]} The OEIS entries and the data, 6~October 2026]\label{spm:rem:oeis}
+The live entry A138178 \cite{oeis138178} (revision~\#39 of 18~December
+2022, the revision the source inspected; read 6~October 2026) is named,
+verbatim, ``Number of symmetric matrices with nonnegative integer entries
+and without zero rows or columns such that sum of all entries is equal to
+n.'' Its offset is~$0$; its 25 data terms $A_0,\ldots,A_{24}$ equal the
+source's transcription (the delivered receipt
+\file{data/count_receipt.json}), the first eleven being those displayed
+above. The entry has two generating functions: an unattributed
+inclusion--exclusion form, which is the generating function
+of~\eqref{spm:eq:deletion} at $u=v=1$, and Jovovic's
+$\sum_{k\ge0}2^{-k-1}(1-x)^{-k}(1-x^2)^{-\binom k2}$ of 9~December 2009,
+which is~\eqref{spm:eq:transform} at $u=v=1$ (then $q=\tfrac12$). Its
+comments give Wiseman's normal semistandard tableaux (2018) and
+examples; it has no asymptotic statement, so Corollary~\ref{spm:cor:unmarked}
+is the only asymptotic for A138178 in the entry or in the repository.
+Heinz's b-file lists $A_0,\ldots,A_{500}$. The source's retrieval failed
+(\file{SOURCES.md}), and it claims no comparison
+(Section~\ref{spm:sec:computation}); the write fetched it on
+6~October 2026 and computed $A_0,\ldots,A_{500}$ exactly by an
+implementation of its own (the recurrence~\eqref{spm:eq:exactrecurrence}
+at $v=1$ and $\tfrac12\sum_{k\ge0}2^{-k}k^j=P_j$ for the ordered Bell
+numbers): all 501 terms agree. The binary companion A135588
+\cite{oeis135588} (revision~\#17 of 22~January 2024) has 26 data terms
+$B_0,\ldots,B_{25}$; an inclusion--exclusion count of the write's
+(binomial cell factors, as in Section~\ref{spm:sec:computation}) gives
+all 26. It has no asymptotic statement either. Nothing in either entry is
+corrected, and nothing was submitted to the OEIS. The leading formula and
+its corrections are compared with the exact counts in
+Remark~\ref{spm:rem:third}.
+
+\emph{The binary precedent.} The write read Cameron--Prellberg--Stark
+\cite{cps} (arXiv version~2 of 4~April 2006). Their
+Proposition~4.2 (printed p.~14, proof pp.~14--15) states $S_{11}(n)\sim C_sI(n)P(n)/n!$ with
+$C_s=\tfrac12e^{-(\log2)^2/4}\approx0.44341$, where $S_{11}(n)$ counts
+the symmetric incidence matrices with $n$ ones (A135588, here $B_n$),
+$I(n)$ the involutions and $P(n)$ the preorders, that is the ordered Bell
+numbers. Since $\tfrac12=e^{-\log2}$, this is~\eqref{spm:eq:priorbinary}.
+Their Section~2 (the first proof of their Theorem~2.1, pp.~6--9) shows by
+the method of moments that the number $W$ of pairs of points lying in a
+common block of both of two independent uniform random preorders converges
+to a Poisson$((\log2)^2/2)$ law, so that $\PP(W=0)\to e^{-(\log2)^2/2}$
+(their~(8), p.~9):
+the nonsymmetric collision precedent the source credits. The source's
+account of both is accurate.
+\end{remark}
+
+\subsection{Provenance, sources and reading conventions}\label{spm:sec:provenance}
+\begin{writenote}[Added 6 October 2026, batch~108]
+\emph{Provenance.} This report is Report~238 of the session bundle that
+ProveIt's \file{docs/incoming} intake processed as batch~108: the archive
+\file{Report238.zip} (604{,}411 bytes, SHA-256
+\file{255ba5ee21d1...5f6eac3b}, 30 files in a wrapper directory
+\file{Report238/}), arrival commit \file{60f54ea06}, placed in
+\file{602e5bd0f}. The text is the delivered \file{article.tex} with its
+twelve files \file{sections/*.tex} (952 lines in all, dated 5~October
+2026), shipped under the same names. The delivered 22-page PDF and the
+checksum manifest \file{MANIFEST.sha256} (29 entries, verified at
+placement and again by the write) are not shipped, and the delivered
+README is replaced by the report README; all three are retrievable from
+the arrival commit. The package records no ProveIt commit; its
+\file{SOURCES.md} describes a bounded look at existing reports, naming
+the matrix-composition report and bundle Reports~169 and~177 (now Part~IV
+of \file{a261781-matrix-compositions} and the batch-109 report
+\file{a262810-diagonal-alignments}). The phrase ``private review'' does
+not occur in it; the PDF author field is ``Report 238''. It is a
+single-source report, so no merge choice was made. The write prefixed
+the 110 delivered labels with \file{spm:} and updated the 93 references
+to them; it added this subsection, the notes marked [write],
+Remarks~\ref{spm:rem:oeis}, \ref{spm:rem:third}
+and~\ref{spm:rem:transseries} and Section~\ref{spm:sec:further}. Apart
+from the label prefixes no theorem, proof or number of the source was
+changed: the added statements are the last of their sections, the added
+section comes after the last numbered one, and the added displays are
+unnumbered, so every theorem, section and equation keeps its delivered
+number.
+
+\emph{The sources, as the write read them} (6~October 2026).
+\begin{itemize}\raggedright
+\item OEIS A138178 (revision~\#39), its b-file, and A135588
+ (revision~\#17) (Remark~\ref{spm:rem:oeis}).
+\item Cameron--Prellberg--Stark \cite{cps}, arXiv:math/0510155v2:
+ Proposition~4.2 and its proof (pp.~14--15) and the first proof of their
+ Theorem~2.1 in Section~2 (pp.~6--9), as in Remark~\ref{spm:rem:oeis}.
+\item The transseries volume
+ \path{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex}:
+ \file{p0:def:core}, \file{p0:prop:factorial-core},
+ \file{p0:thm:core-reversion} with \file{p0:rem:core-instances},
+ \file{p0:def:three-inverses}, \file{p0:thm:staircase},
+ \file{plt:thm:lw-template} and \file{q2:thm:fubini}, read for
+ Remark~\ref{spm:rem:transseries} and the note above.
+\item Part~IV of \file{a261781-matrix-compositions}, at the statements
+ named in the note above.
+\item Not read by the write: Munarini--Poneti--Rinaldi \cite{matrixcomp}
+ and Cerbai--Claesson \cite{caylerian}. What is said about them (related
+ models, not the transpose-symmetric count) is the source's.
+\end{itemize}
+
+\emph{What was checked at intake and by the write.} The batch-108 dossier
+read the manuscript and found no error; it checked by hand the
+total-variation constant of Theorem~\ref{spm:thm:TV} from the first mean
+corrections, and reran the package on a copy (Windows, Python~3.14.4,
+SymPy~1.14.0, mpmath~1.3.0): \file{build.py} with \verb|--verify-only|
+verified 29 files; \file{exact_counts.py} (to $n=640$),
+\file{symbolic_coefficients.py} and \file{diagnostics.py} reproduced the
+three delivered receipts; \file{guard_tests.py} stops on Windows at its
+own path guard; the PDF and ZIP rebuilds were not run. The write reran the
+three mathematical programs from the shipped files (README, Route~B):
+their outputs equal the receipts byte for byte. It re-derived by hand,
+and in part with SymPy, $C_1$ and $\mathcal B_1$, $G_1$, $H_1$ of
+Section~\ref{spm:sec:allorders}, the agreement of~\eqref{spm:eq:D2} with
+the delivered symbolic receipt, the cumulants of
+Proposition~\ref{spm:prop:cumulants} and the residue~\eqref{spm:eq:trace-residue},
+the coefficients~\eqref{spm:eq:Sstar}, \eqref{spm:eq:C1star}
+and~\eqref{spm:eq:binaryS}--\eqref{spm:eq:binaryprob}, the mass
+correction~\eqref{spm:eq:masscorrection} and the constant
+of~\eqref{spm:eq:sharpTV}, the constants~\eqref{spm:eq:cbd}, and the
+coefficients~\eqref{spm:eq:alpha}--\eqref{spm:eq:gamma} (also by the
+triangular recurrence of the transseries volume,
+Remark~\ref{spm:rem:transseries}); and it confirmed the monotonicity
+argument of Section~\ref{spm:sec:inverse}. Finite computations are
+observations, not certificates.
+
+\emph{Relation to the repository.} Before batch~108 no file of the
+repository mentioned A138178, A135588 or symmetric packed matrices. No
+statement of this report is formalized in Lean or Rocq, and its place in
+the collection confers no formal status. The ordered Bell numbers used in
+Corollary~\ref{spm:cor:unmarked} are defined in Lean as
+\file{Fabius.fubini}, with their exponential generating function
+(\file{Fabius.two_sub_exp_mul_egfA_fubini}), in
+\path{Analysis/FabiusFunction/Lean/FabiusFunction/OrderedBell.lean}; no
+asymptotic statement about them is formalized there. The neighbouring
+reports are named in the note above and in the report README.
+\end{writenote}
+\begin{writenote}[What is not claimed, collected from the source]
+The unmarked geometric transform is Jovovic's (OEIS, 2009) and ``must not
+be mistaken for a newly discovered unmarked identity''; the binary leading
+equivalent is Cameron--Prellberg--Stark's, ``recovered here as a
+consistency check'', and the Poisson collision mechanism ``has substantial
+precedent''. The expansions are local in the dimension and trace markers:
+the trace marker is not carried through $v=0$, the order $J$ is fixed
+independently of $n$, and ``no uniform estimate in a growing order is
+asserted''. The diagnostics at $(u,v)=(2,2)$ and $(1,\tfrac12)$ are ``not
+an enlargement'' of the neighbourhood of Theorem~\ref{spm:thm:main}. No
+span-one local limit of $T_n$, and no total-variation approximation of
+$T_n$ by an unrestricted Poisson law, is asserted. The signed corrections
+are ``not claimed positive''; the adjusted Poisson law is not claimed
+optimal, and neither the $O(n^{-1})$ constant nor a starting index is
+effective. The inverse is ``the inverse of the specified smooth
+approximation, not a definition of a noninteger combinatorial count'';
+\eqref{spm:eq:rounding} ``does not claim that the ceiling of the bare
+displayed truncation is always correct''; Theorem~\ref{spm:thm:ceilings}
+gives no numerical constants and ``is an asymptotic bound, not a certified
+finite-input inverse program''. The bounded source check ``is not a
+certificate of worldwide novelty'', and no global priority, complete
+transseries or effective onset is asserted. The exact checks have hard caps
+that are implementation boundaries, ``not a range restriction on the
+mathematical theorems''; the symbolic checks ``do not constitute a
+machine-checked proof''; the decimal outputs are noncertified; and
+reproducibility is claimed for the recorded toolchain only.
+\end{writenote}
+\medskip\noindent\begin{minipage}{\textwidth}
+\emph{Reading conventions} (letters the manuscript reuses, with the
+tempting false readings; no symbol of the source was renamed; symbols of
+the transseries volume carry the subscript ``vol'' in
+Remark~\ref{spm:rem:transseries}).\par
+\smallskip
+\begingroup\small\renewcommand{\arraystretch}{1.1}
+\noindent\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.75in}>{\raggedright\arraybackslash}p{3.45in}>{\raggedright\arraybackslash}p{1.95in}@{}}
+\toprule
+Symbol & Meaning here (where) & Not to be read as\\
+\midrule
+$L$ & $\log(1+1/u)$, so $\log2$ at $u=1$ and throughout Sections~\ref{spm:sec:TV}--\ref{spm:sec:inverse} & the volume's target $L_{\rm vol}$\\
+$q$ & $u/(1+u)=e^{-L}$ & a Poisson mean\\
+$w$ & collision marker (Section~\ref{spm:sec:collision}); Gaussian angular variable $w$, $W$ (Section~\ref{spm:sec:allorders}); $W(2y/(eL^2))$ (Section~\ref{spm:sec:inverse}) & each other\\
+$D(M)$, $D_n$ & dimension of a matrix, of a uniform one & $D_2$, the $n^{-1}$ log-coefficient~\eqref{spm:eq:D2}; the exponent $D_J$ in~\eqref{spm:eq:taylorbound}\\
+$S(L,v)$, $S_*$; $S(M)$, $S_n$ & amplitude exponents \eqref{spm:eq:S}, \eqref{spm:eq:Sstar}; repeated off-diagonal cells & each other\\
+$R$, $R_n$, $R_j$ & pole-separating radius~\eqref{spm:eq:R}; repeated diagonal cells; inverse coefficients~\eqref{spm:eq:inverseall} & each other\\
+$K$ & auxiliary integer (Section~\ref{spm:sec:saddles}); compact marker set (Theorem~\ref{spm:thm:collision}) & each other; not the dimension $D$\\
+$B$, $B_n$, $B_J$ & correction~\eqref{spm:eq:B}; binary count (A135588); remainder constant (Theorem~\ref{spm:thm:ceilings}) & each other\\
+$a$, $b$, $c$, $d$ & in Section~\ref{spm:sec:inverse} the constants~\eqref{spm:eq:cbd}; elsewhere $a=(v^2-1)/2$ or~\eqref{spm:eq:C1star}, $c=(2\zeta-1)/4$, $a=\log u$, $b=\log v$ (Section~\ref{spm:sec:fluctuations}), $b_{nj}$, $d_m$, $d_n(k)$, and generic constants $c$, $C$ & each other; $a_{\rm vol}$, $b_{\rm vol}$, $d_{\rm vol}$\\
+$h$, $H$, $H_j$, $H_\pm$ & $n^{-1/2}$; angular exponent~\eqref{spm:eq:H}; Charlier-type corrections~\eqref{spm:eq:Charlier}; envelopes in the proof of Theorem~\ref{spm:thm:ceilings} & each other; $h_{\rm vol}$\\
+$Q$, $Q_j$ & $w+1$ in~\eqref{spm:eq:Wseed}; normalized collision polynomials~\eqref{spm:eq:Qpolynomials} & each other; the integer polynomials $Q_n$ of \file{COMPUTATION.md}\\
+$N$ & Lambert seed~\eqref{spm:eq:Wseed}; also the bound $N\ge|\zeta-1|$ in~\eqref{spm:eq:collision-envelope} & each other; $N_\ast^{\rm vol}$\\
+$M$, $M_n$ & a matrix, the bound $M\ge|w-1|$; the main term~\eqref{spm:eq:gammaexact} & each other\\
+$P_n$, $P_j(u)$, $P_1$, $P_2$ & ordered Bell numbers; ordered-Bell transforms (Section~\ref{spm:sec:computation}); Poisson variables & each other\\
+$\lambda$, $\mu$, $\kappa$, $\rho$ & Poisson means $L$, $L^2/2$, $\kappa=L+L^2$; $\rho(h)$ of~\eqref{spm:eq:scaling} and the radius $\rho>1$ of Section~\ref{spm:sec:TV}; $\lambda$ is also a scale in Lemma~\ref{spm:lem:gammabound} & each other; $\Lambda$ is the involution law of Section~\ref{spm:sec:saddles}, not $\Lambda_{\rm vol}$\\
+$E_n$, $\mathcal E$ & pole error~\eqref{spm:eq:mainpluserror}, generating-function remainder (Section~\ref{spm:sec:TV}); Gaussian functional & each other; $\E$\\
+$r$, $s$, $t$ & radius~\eqref{spm:eq:r}, Poisson arguments, gamma variable; also markers in proofs & each other\\
+\bottomrule
+\end{tabular}
+\endgroup
+\end{minipage}\par

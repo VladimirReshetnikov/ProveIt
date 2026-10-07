@@ -1,17 +1,17 @@
-\section{Elementary growth and controlled inversion}\label{sec:inverse}
-Combining \eqref{eq:logI} and \eqref{eq:unmarked}, with $L=\log2$, gives
-\begin{equation}\label{eq:logA}
+\section{Elementary growth and controlled inversion}\label{spm:sec:inverse}
+Combining \eqref{spm:eq:logI} and \eqref{spm:eq:unmarked}, with $L=\log2$, gives
+\begin{equation}\label{spm:eq:logA}
  \log A_n=\frac n2\log\frac{n}{eL^2}+\sqrt n+c
                  +\frac b{\sqrt n}+\frac d n+O(n^{-3/2}),
 \end{equation}
 where
-\begin{equation}\label{eq:cbd}
+\begin{equation}\label{spm:eq:cbd}
  c=\frac{L^2-1}{4}-\log(2\sqrt2 L),\quad
  b=\frac7{24}-\frac{L^2}{6},\quad
  d=-\frac7{48}-\frac{L^2}{4}+\frac{L^4}{24}.
 \end{equation}
 Thus the elementary leading equivalent is
-\begin{equation}\label{eq:elementary}
+\begin{equation}\label{spm:eq:elementary}
  A_n\sim\frac{e^{(L^2-1)/4}}{2\sqrt2 L}
        n^{n/2}(eL^2)^{-n/2}e^{\sqrt n}.
 \end{equation}
@@ -19,26 +19,26 @@ The all-order algorithm and the involution saddle provide every further logarith
 
 \subsection{A Lambert W seed and its corrections}
 For $X\to\infty$, let $y=\log X$, and define
-\begin{equation}\label{eq:Wseed}
+\begin{equation}\label{spm:eq:Wseed}
  w=W\left(\frac{2y}{eL^2}\right),\qquad N=\frac{2y}{w},\qquad Q=w+1,
 \end{equation}
 where $W$ is the positive real branch of the Lambert function. Then
 $F_0(N)=y$ for $F_0(x)=(x/2)\log(x/(eL^2))$. Set
 \begin{align}
- \alpha&=-\frac2Q,\label{eq:alpha}\\
- \beta&=-\frac{2c}{Q}+\frac2{Q^2}-\frac2{Q^3},\label{eq:beta}\\
+ \alpha&=-\frac2Q,\label{spm:eq:alpha}\\
+ \beta&=-\frac{2c}{Q}+\frac2{Q^2}-\frac2{Q^3},\label{spm:eq:beta}\\
  \gamma&=-\frac{2b}{Q}
  +c\left(\frac2{Q^2}-\frac4{Q^3}\right)
- -\frac1{Q^3}+\frac{14}{3Q^4}-\frac4{Q^5}.\label{eq:gamma}
+ -\frac1{Q^3}+\frac{14}{3Q^4}-\frac4{Q^5}.\label{spm:eq:gamma}
 \end{align}
 
-\begin{proposition}[Controlled smooth inverse]\label{prop:inverse}
+\begin{proposition}[Controlled smooth inverse]\label{spm:prop:inverse}
 Let $\nu(X)$ be the eventual unique real solution of
 \[
  \frac x2\log\frac{x}{eL^2}+\sqrt x+c+bx^{-1/2}+dx^{-1}=\log X.
 \]
 Then
-\begin{equation}\label{eq:inverse}
+\begin{equation}\label{spm:eq:inverse}
  \nu(X)=N+\alpha\sqrt N+\beta+\frac\gamma{\sqrt N}
                      +O\left(\frac1{NQ}\right).
 \end{equation}
@@ -50,11 +50,11 @@ The left side of the defining equation has positive derivative for all sufficien
  F_0'(N)=Q/2,\qquad F_0''(N)=1/(2N),\qquad
  F_0'''(N)=-1/(2N^2).
 \]
-Substitute $x=N+\alpha\sqrt N+\beta+\gamma/\sqrt N$, expand $F_0$, $\sqrt x$ and $x^{-1/2}$, and cancel successively the coefficients of $\sqrt N$, $1$, and $N^{-1/2}$. This gives \eqref{eq:alpha}--\eqref{eq:gamma}. The remaining residual is $O(N^{-1})$; division by a derivative comparable to $Q$ gives the stated error. In particular the $d/x$ term first changes the root at the retained error scale.
+Substitute $x=N+\alpha\sqrt N+\beta+\gamma/\sqrt N$, expand $F_0$, $\sqrt x$ and $x^{-1/2}$, and cancel successively the coefficients of $\sqrt N$, $1$, and $N^{-1/2}$. This gives \eqref{spm:eq:alpha}--\eqref{spm:eq:gamma}. The remaining residual is $O(N^{-1})$; division by a derivative comparable to $Q$ gives the stated error. In particular the $d/x$ term first changes the root at the retained error scale.
 \end{proof}
 
-The same procedure constructs all fixed orders. Given enough terms in \eqref{eq:logA}, the resulting smooth inverse has, for every fixed $J\geq0$, the form
-\begin{equation}\label{eq:inverseall}
+The same procedure constructs all fixed orders. Given enough terms in \eqref{spm:eq:logA}, the resulting smooth inverse has, for every fixed $J\geq0$, the form
+\begin{equation}\label{spm:eq:inverseall}
  N+\sum_{j=0}^J N^{(1-j)/2}R_j(Q)
        +O_J\left(\frac{N^{-J/2}}{Q}\right),
 \end{equation}
@@ -67,46 +67,123 @@ Define the eventual threshold
 \]
 The sequence is strictly increasing for $n\geq1$. Adding $1$ to the first diagonal entry is an injection from $\mathcal A_n$ into $\mathcal A_{n+1}$. The identity matrix of dimension $n+1$ is outside its image, since a packed matrix of total sum $n$ has dimension at most $n$.
 
-A rounding-safe shorthand for \eqref{eq:inverse} is
-\begin{equation}\label{eq:rounding}
+A rounding-safe shorthand for \eqref{spm:eq:inverse} is
+\begin{equation}\label{spm:eq:rounding}
  m(X)=\ceil{N+\alpha\sqrt N+\beta+\gamma/\sqrt N
                     +O(1/(NQ))}.
 \end{equation}
 Its meaning is that a perturbation of the indicated size exists \emph{before} the ceiling is taken. It does not claim that the ceiling of the bare displayed truncation is always correct. The target $X$ can lie arbitrarily close to a sequence value.
 
-To justify the shorthand directly, apply \eqref{eq:logA} at the consecutive integers $m(X)-1,m(X)$. The smooth root lies between
-$m(X)-1-O(n^{-3/2}/\log n)$ and $m(X)+O(n^{-3/2}/\log n)$, with $n\asymp m(X)$. A perturbation on that scale makes its ceiling equal to $m(X)$. Combining with \eqref{eq:inverse} gives \eqref{eq:rounding}. In particular the real approximation determines $m(X)$ up to $O(1)$; away from the integer-boundary error band it determines the ceiling.
+To justify the shorthand directly, apply \eqref{spm:eq:logA} at the consecutive integers $m(X)-1,m(X)$. The smooth root lies between
+$m(X)-1-O(n^{-3/2}/\log n)$ and $m(X)+O(n^{-3/2}/\log n)$, with $n\asymp m(X)$. A perturbation on that scale makes its ceiling equal to $m(X)$. Combining with \eqref{spm:eq:inverse} gives \eqref{spm:eq:rounding}. In particular the real approximation determines $m(X)$ up to $O(1)$; away from the integer-boundary error band it determines the ceiling.
 
-\begin{theorem}[Two-ceiling threshold bounds]\label{thm:ceilings}
+\begin{theorem}[Two-ceiling threshold bounds]\label{spm:thm:ceilings}
 For every fixed $J\geq0$, write the all-order logarithmic approximation as
 \[
  F_J(x)=\frac x2\log\frac{x}{eL^2}+\sqrt x+c
                  +\sum_{j=1}^J b_jx^{-j/2},\qquad p=(J+1)/2.
 \]
 There exist $B_J>0$ and $n_J$ such that
-\begin{equation}\label{eq:logbounds}
+\begin{equation}\label{spm:eq:logbounds}
  F_J(n)-B_Jn^{-p}\leq\log A_n\leq F_J(n)+B_Jn^{-p}
  \qquad(n\geq n_J).
 \end{equation}
 Let $\ell_J(y)$ and $r_J(y)$ be the eventual roots of
-\begin{equation}\label{eq:bracketroots}
+\begin{equation}\label{spm:eq:bracketroots}
  F_J(\ell_J)+B_J\ell_J^{-p}=y,\qquad
  F_J(r_J)-B_Jr_J^{-p}=y.
 \end{equation}
 For sufficiently large $X$,
-\begin{equation}\label{eq:ceilings}
+\begin{equation}\label{spm:eq:ceilings}
  \ceil{\ell_J(\log X)}\leq m(X)\leq\ceil{r_J(\log X)}.
 \end{equation}
 If $x_J$ solves $F_J(x_J)=\log X$, then
-\begin{equation}\label{eq:rootwidth}
+\begin{equation}\label{spm:eq:rootwidth}
  r_J(\log X)-\ell_J(\log X)
  =O_J\left(x_J^{-(J+1)/2}/\log x_J\right).
 \end{equation}
 \end{theorem}
 \begin{proof}
-The constants in \eqref{eq:logbounds} exist by the proved fixed-order remainder. Both functions $H_\pm(x)=F_J(x)\pm B_Jx^{-p}$ are eventually strictly increasing. Their roots satisfy $\ell_J\leq r_J$. Every sufficiently large integer $n<\ell_J$ has
+The constants in \eqref{spm:eq:logbounds} exist by the proved fixed-order remainder. Both functions $H_\pm(x)=F_J(x)\pm B_Jx^{-p}$ are eventually strictly increasing. Their roots satisfy $\ell_J\leq r_J$. Every sufficiently large integer $n<\ell_J$ has
 $\log A_n\leq H_+(n)<\log X$, while $n=\ceil{r_J}$ satisfies
-$\log A_n\geq H_-(n)\geq\log X$. For $X$ sufficiently large all smaller exceptional indices are also below the threshold. This proves \eqref{eq:ceilings}. The derivative is comparable to $\log x_J$, so the mean value theorem applied to the perturbations $\pm B_Jx^{-p}$ proves \eqref{eq:rootwidth}.
+$\log A_n\geq H_-(n)\geq\log X$. For $X$ sufficiently large all smaller exceptional indices are also below the threshold. This proves \eqref{spm:eq:ceilings}. The derivative is comparable to $\log x_J$, so the mean value theorem applied to the perturbations $\pm B_Jx^{-p}$ proves \eqref{spm:eq:rootwidth}.
 \end{proof}
 
 When the two ceilings agree, their common value is the exact threshold. Otherwise they isolate the ambiguity caused by an integer boundary. This theorem proves the existence of the remainder constants and starting indices, but supplies no numerical values for them. It is an asymptotic bound, not a certified finite-input inverse program. Producing such a program requires effective versions of the global and local remainder estimates.
+
+\begin{remark}[{[write]} This section against the transseries volume, 6~October 2026]\label{spm:rem:transseries}
+The volume is
+\path{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex};
+its symbols carry the subscript ``vol'' here (its target $L_{\rm vol}$ is
+$y=\log X$, not $L=\log2$).
+
+(1)~\emph{The threshold is the staircase} (an instance). $A_0=A_1=1$, and
+the source's injection proves $A_{n+1}>A_n$ for every $n\ge1$ (for $n\ge1$
+a packed matrix has a first diagonal entry; at $n=0$ the empty matrix has
+none). Hence $m(X)$ is exactly the integer staircase $N_\ast^{\rm vol}(X)$
+of \file{p0:def:three-inverses}(1) with $n_0=0$, $n_1=1$.
+
+(2)~\emph{The seed is the factorial core} (an instance). With
+$\kappa_{\rm vol}=\tfrac12$ and $d_{\rm vol}=-\tfrac12-\log L$,
+$F_0(x)=x(\kappa_{\rm vol}\log x+d_{\rm vol})$ is the core of
+\file{p0:prop:factorial-core}. For $L_{\rm vol}=y>0$ that proposition gives
+$v_{\rm vol}=W_0\bigl((y/\kappa_{\rm vol})e^{d_{\rm vol}/\kappa_{\rm vol}}\bigr)
+=W\bigl(2y/(eL^2)\bigr)=w$ and
+$X_{\rm vol}=\exp(v_{\rm vol}-d_{\rm vol}/\kappa_{\rm vol})=eL^2e^{w}=2y/w=N$,
+with slope $\kappa_{\rm vol}(v_{\rm vol}+1)=Q/2$: the seed~\eqref{spm:eq:Wseed}
+and the derivatives in the proof of Proposition~\ref{spm:prop:inverse}. (The
+volume's double-factorial normalization, \file{p0:rem:factorial-core}, has
+$d_{\rm vol}=-\tfrac12$; here the shift $-\log L$ is extra.) The core
+equation alone is also an instance of \file{plt:thm:lw-template}: with
+$Z=\log x$ it reads $Z+\log Z-\log2+\log\bigl(1-(1+2\log L)Z^{-1}\bigr)=\log y$,
+data $(\rho,\mu,\beta,B)=(1,1,-\log2,\log(1-(1+2\log L)t))$; the terms
+$\sqrt x$, $c$, $bx^{-1/2}$, $dx^{-1}$ of the full equation are not of the
+form its hypothesis~(H3) allows in that chart (relative to the core they
+are of order $e^{-Z/2}/Z$, not powers of $t=Z^{-1}$), so the template does
+not cover Proposition~\ref{spm:prop:inverse}.
+
+(3)~\emph{The corrections are a core reversion} (an instance after a change
+of variables, formal part only). Put $x=N(1+E)$ and $t_{\rm vol}=N^{-1/2}$.
+Since $\log(N/(eL^2))=w$, one has
+$F_0(N(1+E))-F_0(N)=\tfrac N2\bigl[QE+(1+E)\log(1+E)-E\bigr]$ exactly, so
+dividing the defining equation of $\nu(X)$ by $N/2$ gives
+\[
+ QE+h_{\rm vol}(E)+f_{\rm vol}(t_{\rm vol},E)=0,\qquad
+ h_{\rm vol}(E)=(1+E)\log(1+E)-E,
+\]
+\[
+ f_{\rm vol}(t,E)=2t(1+E)^{1/2}+2ct^2+2bt^3(1+E)^{-1/2}+2dt^4(1+E)^{-1},
+\]
+which is \file{p0:eq:core-master} with $\Lambda_{\rm vol}=Q$, the same
+$h_{\rm vol}$ as in the volume's double-factorial instance
+(\file{p0:rem:core-instances}), and $f_{\rm vol}\in t\,R_{\rm vol}[[t,E]]$
+over $R_{\rm vol}=\mathbb Q[Q,Q^{-1},c,b,d]$. Its unique solution
+$E=\sum_{n\ge1}e_n^{\rm vol}t_{\rm vol}^n$ has $e_1^{\rm vol}=\alpha$,
+$e_2^{\rm vol}=\beta$, $e_3^{\rm vol}=\gamma$ of
+\eqref{spm:eq:alpha}--\eqref{spm:eq:gamma}, so
+$N(1+E)=N+\alpha\sqrt N+\beta+\gamma/\sqrt N+\cdots$ is the expansion
+\eqref{spm:eq:inverse} without its remainder (checked by the write in
+SymPy from the triangular recurrence \file{p0:eq:core-triangular}, together
+with the displayed identity for $F_0$). The volume's Bell formula
+\file{p0:eq:core-bell} does not apply verbatim, because $(1+E)^{1/2}$ is not
+a negative integer power of $1+E$; the recurrence does. The recurrence also
+shows what~\eqref{spm:eq:inverseall} states as ``rational in $Q$, with
+possible poles only at $Q=0$'': each $e_n^{\rm vol}$ is $-Q^{-1}$ times a
+polynomial in $Q^{-1}$ and the coefficients, that is, a polynomial in
+$Q^{-1}$ without constant term (for the four-term model the write checked
+degree at most $2n-1$ for $n\le5$, and that $d$ enters first at
+$e_4^{\rm vol}$, the $N^{-1}$ term, as the proof of
+Proposition~\ref{spm:prop:inverse} says). The volume's theorem is formal:
+the analytic remainder $O(1/(NQ))$ is the source's mean-value argument.
+
+(4)~\emph{Analogues only.} Theorem~\ref{spm:thm:ceilings} and the rounding
+shorthand~\eqref{spm:eq:rounding} are not instances of
+\file{p0:thm:staircase}: $F_J$ is an approximation of $\log A_n$ with the
+error bound~\eqref{spm:eq:logbounds}, not an interpolation of the sequence
+(nothing gives $F_J(n)=\log A_n$), and the two ceilings come from the
+envelopes $F_J\pm B_Jx^{-p}$ at the integers, not from an interpolated
+inverse. Their conclusions have the shape of the separation condition
+\file{p0:thm:staircase}(2): when the two ceilings of~\eqref{spm:eq:ceilings}
+coincide, $m(X)$ is their common value, as the source says. No novelty is
+claimed for the inversions.
+\end{remark}
