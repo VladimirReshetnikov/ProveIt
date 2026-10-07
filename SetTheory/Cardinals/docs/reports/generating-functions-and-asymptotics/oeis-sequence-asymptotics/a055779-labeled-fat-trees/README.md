@@ -1,114 +1,214 @@
-# Report203
+# Labeled Fat Trees (OEIS A055779, A295623)
 
-## Uniform asymptotics and inverses for labeled fat trees
+**Uniform asymptotics and inverses for labeled fat trees: explicit
+coefficients and a Poisson deficit window.**
 
-This package supplies the complete article, editable TeX, compiled PDF, and
-reproducible code for the weighted fat-tree sequence A055779 and its relation
-to A295623. The main expansion holds to every **fixed** order uniformly over
-real M >= 1. The Lambert-centered inverse fixes M. A separate elementary
-appendix proves finite-n Poisson-deficit bounds and all fixed correction
-orders for bounded lambda = n/M.
+A single-source report: bundle Report 203 of one external research session
+(the session bundle of Reports 1–243, arrival commit `60f54ea06`), placed by
+`f79c9bef1` (batch 112) and written on 7 October 2026. The title block and
+the PDF author field read "Report 203"; the manuscript names no person, tool
+or addressee.
 
-The exact multiplicity formula is Zaslavsky's prior work. The leading prefactor
-is closely implicit in the later A162695 formula, and standard saddle/assembly
-methods have substantial prior. No first-prefactor, new general method,
-convergent-series, effective-onset, maximal-Poisson-range, or exhaustive-novelty
-claim is made. Source details and qualifications are in the article.
+| Source | Archive | Placed | Shipped as |
+|---|---|---|---|
+| *Uniform asymptotics and inverses for labeled fat trees: Explicit coefficients and a Poisson deficit window* ("Report 203", 4 October 2026) | `Report203.zip` (537,766 bytes, 20 files in `Report203/`; `Report203.tex`, 688 lines, 19 pp.) | `f79c9bef1` | `article.tex` |
 
-## Contents
+The package records no ProveIt commit, so no pin is recorded.
 
-- `Report203.pdf`: complete 19-page article
-- `Report203.tex`: self-contained editable LaTeX source
-- `code/`: exact arithmetic, symbolic coefficient/inverse checks, separate
-  high-precision diagnostics, and expected recomputed data
-- `build.py`: strict whole-package validation, replay, PDF build, and fixed ZIP
-- `test_guards.py`: explicit malformed-input, tampering, and article-to-data checks
-- `manifests/`: source and whole-package SHA-256 and byte-count manifests
+**Status:** AI-assisted, unrefereed, not formalized: no Lean or Rocq
+declaration exists for any statement of this report, and its place in the
+collection confers no formal status.
 
-No third-party papers, source-page images, private notes, external notebooks,
-or private path dependencies are redistributed. The bibliography links to
-primary public sources. No network access is used by the reproduction scripts.
+## What the report proves
 
-## Requirements
+`A_n(M)` is the edge-weighted number of fat trees on `n` labeled vertices
+(a set partition plus original-vertex edges whose contraction is a tree),
+edge weight `M`; `A_n(1)` is A055779. With `r = r(M)` the root of
+`M r (1+r) e^r = 1`, `b = (1+3r+r²)/(1+r)`, `q = M e^{H(r)}`,
+`C = 1/(M√b)`:
 
-The recorded reference toolchain is:
+- **Theorem 1.1:** for every fixed `J`, `A_n(M) = C q^n n^{n−2}
+  {Σ_{j≤J} c_j(r) n^{−j} + O_J(n^{−J−1})}` **uniformly for all real
+  `M ≥ 1`**, with rational `c_j` regular on `[0, r_1]`, `c_j(0) = 0`, a finite
+  coefficient engine (4.3)–(4.5) and a second engine (4.10), `c_1` (1.6) and
+  `c_2` (4.9) explicit.
+- Corollary 6.1: the uniform logarithmic expansion with `d_j` (6.1)–(6.2), `d_2`
+  explicit.
+- **Theorem 7.1:** for fixed `M`, with `Y = log y`, `w = W(qY)`, `t = Y/w`,
+  `L = w + 1`, recursive centres `X_J = t + Σ p_k t^{−k}` and
+  `⌈X_J − K t^{−J−1}/L⌉ ≤ N_M(y) ≤ ⌈X_J + K t^{−J−1}/L⌉` (existential `K`).
+- Section 8: the specializations to A055779, A295623 (`A295623(n) =
+  n² A055779(n)`) and A162695, with Kotěšovec's parameter.
+- Appendix A (block deficit `D = n − K`, `λ = n/M`): an exact tilted
+  Poisson law, Theorem A.2 (explicit finite bounds, total variation
+  `≤ min{1, (3λ²+2λ)/(2n)}` to `Pois(λ)`), and Theorem A.3 (every fixed order
+  for bounded `λ`).
 
-- CPython 3.12.14
-- SymPy 1.14.0 and mpmath 1.3.0, pinned in `requirements.txt`
-- `pdfTeX 3.141592653-2.6-1.40.26 (TeX Live 2025/dev/Debian)`
-- Installed `pdflatex`, `pdftex`, `kpsewhich`, and the LaTeX packages named in
-  `Report203.tex`, including Latin Modern, microtype, AMS, geometry, hyperref,
-  enumitem, fancyhdr, xcolor and booktabs
+(Section, statement and equation numbers are those of the committed PDF.)
 
-The standard-library exact checks run without SymPy or mpmath:
+## What the report does not claim
 
-```sh
-python -B code/check.py --exact
+The exact formula is Zaslavsky's (re-proved, not new); the leading amplitude
+is implicit in Kotěšovec's 2014 A162695 formula; saddle-point and Poisson
+assembly methods are standard (Arratia–DeSalvo credited). No first-prefactor,
+global novelty, convergent-series, uniformity-in-`J`, optimal-truncation,
+effective-onset or optimized-constant claim; the inverse is for fixed `M` only,
+with no computable `K_{J,M}` and no single-ceiling rule; the deficit appendix
+gives no rate to `Pois(1/τ)`, no maximal range, no tier theorem; the
+block-count scales of Appendix C are motivation; the prior-source check was
+bounded; numerical output is diagnostic.
+
+## The write's findings
+
+- **Remark 1.2 (OEIS):** A055779 (#42, Zaslavsky), A295623 (#15, Gutkovskiy)
+  and A162695 (#19, Hanna; Kotěšovec's 2014 formula) quoted; the finite sum
+  checked against all 100 b-file terms of A055779, the relation to A295623
+  against all 360 of its b-file terms (`n ≥ 1`), and A162695's logarithm
+  relation for `n ≤ 60`; the attributions of Section 2 match. **False
+  readings recorded:** the "r" of A055779's limit formula is Kotěšovec's
+  `p = 1/(1 + r_1) = 0.6925…`, and the "r" of A162695's formula is the
+  report's `ρ`. No OEIS conjecture exists here.
+- **Two decimals corrected** (note at the end of Section 8.1): `q(1)` and
+  `c_1(r_1)` are printed rounded where "…" asks for truncation; the
+  truncations are `q(1) = 1.65548791299153430662521161862…` and
+  `c_1(r_1) = −0.07357275810351076496294030050…`. The other three constants
+  and all eight diagnostic-table entries recompute correctly.
+- **Remark 7.2 (transseries volume):** the centre `t` is an exact instance of
+  `p0:prop:factorial-core` (`κ = 1`, `d = log q`, target `Y`); the
+  corrections `p_k` are, formally, an instance of `p0:thm:core-reversion`
+  (`Λ = L`, `h = 0`, after the shift by `p_0`); the two-ceiling bracket is an
+  analogue of `p0:thm:staircase`(2), proved directly; the forward expansion is
+  outside `p0:def:model`.
+- Recomputed: `κ_1…κ_4`, `s_1`, `s_2` from the multi-index formula, `c_1`,
+  `c_2`, `d_2`, `p_0…p_2`, (7.7), the Appendix's `E A(Z)`, `E A(Z)²`,
+  `e_2(d)` and the second coefficient of (A.11).
+
+## Further questions, and the standing rule
+
+Appendix C (the source's own section, with a dated note under Vladimir's
+standing rule of 4 October 2026) holds every open question: effective
+constants, late terms and exponentially small corrections, the block-count
+crossover (a formal differentiation offered as motivation; missing an
+analytic-marking proof), sharper Poisson and component results; and, from
+the non-claims, a uniform-in-`M` inverse, a computable `K_{J,M}`, a rate to
+`Pois(1/τ)`. No claim of the source was found false; nothing is refuted.
+
+## Relation to the repository
+
+No other file of the repository names A055779, A295623 or A162695. Nearest
+by object: `a242375-many-color-rooted-trees`, `a244407-high-outdegree-rooted-trees`
+(batch 112, different models); by method: `a277364-bell-asymptotics`,
+`a064856-stirling-catalan-transforms`. No shared result, so no reciprocal
+note. No Lean or Rocq development treats these sequences.
+
+## Labels and numbering
+
+All labels carry the prefix `fat:`: the 70 delivered labels, prefixed before
+anything cited them (48 references updated), and the write's three
+(`fat:rem:oeis`, `fat:sec:provenance`, `fat:rem:transseries`); 73 in all. The
+write's remarks are the last statements of their sections and its additions
+contain no numbered display, so every section, statement and equation keeps
+its delivered number (checked against the `.aux` of a build of the delivered
+text: 70 labels, 0 differences). Section 1.1 is the write's.
+
+## Notation
+
+No symbol was renamed. Letters with several senses (the front-matter table
+in Section 1.1): `D` (deficit, and the operator `z d/dz`), `A`, `r`/`p`/`ρ`/`s`
+(with the two OEIS false readings above), `c`, `a`, `B` (also Bernoulli
+numbers), `T`, `t`/`w`/`L`, `E`/`P`/`Q`, `K`.
+
+## The write's additions
+
+The status note after the abstract, Remark 1.2, Section 1.1 (provenance,
+sources read, checks, relation to the repository, collected non-claims,
+reading conventions), Remark 7.2, the dated notes in Section 8.1 and
+Appendix C, the label prefixes, the bibliography entry `TSvol`, and the
+`\file` macro and `writenote` environment in the preamble. Everything else is
+delivered text.
+
+## Files
+
+```text
+README.md                                     this guide (replaces the delivered README.md)
+article.tex                                   the report (delivered Report203.tex, written)
+article.pdf                                   compiled report, 22 pages
+code-README.md                                the delivered code/README.md (programs, toolchain, provenance)
+code/build.py                                 whole-package validation, replay, PDF and ZIP builder (delivered root build.py)
+code/check.py                                 replay runner, normal and -O (delivered code/)
+code/coefficients.py                          coefficient engine: cumulants, c_1, c_2, d_2 (delivered code/)
+code/exact_checks.py                          exact audit: enumeration, recurrences, inverse recursion (delivered code/)
+code/numerical_diagnostics.py                 mpmath diagnostics, labelled DIAGNOSTICS ONLY (delivered code/)
+code/symbolic_checks.py                       SymPy checks of the formulas (delivered code/)
+code/test_guards.py                           malformed-input, tampering and article-to-data tests (delivered root test_guards.py)
+data/code-.python-version                     recorded Python version (delivered code/.python-version)
+data/code-expected-coefficients.json          expected output of coefficients.py
+data/code-expected-exact_checks.json          expected output of exact_checks.py
+data/code-expected-numerical_diagnostics.json expected output of numerical_diagnostics.py
+data/code-expected-symbolic_checks.json       expected output of symbolic_checks.py
+data/code-requirements.txt                    pinned SymPy and mpmath (delivered code/requirements.txt)
+data/manifests-source_manifest.json           source manifest with PDF engine banner and build epoch (delivered manifests/)
+data/requirements.txt                         the same pins (delivered root requirements.txt; equal to the code copy)
 ```
 
-Install the two pinned Python dependencies into your chosen environment before
-running all checks. The package never installs software itself:
+Every file except `README.md`, `article.tex` and `article.pdf` is
+byte-identical to its delivery. Not shipped (retrievable from `60f54ea06`):
+the delivered PDF (19 pages), the pure checksum manifest
+`manifests/package_manifest.json` (19 entries; verified at the write, as were
+the 17 entries of the shipped source manifest), and the delivered README,
+replaced by this guide.
 
 ```sh
-python -m pip install -r requirements.txt
-python -B code/check.py --all
+git show 60f54ea06:docs/incoming/Report203.zip > <scratch>/r203.zip
 ```
 
-All checks use explicit exceptions and remain active with `python -O`. The
-code runner executes the programs in normal and optimized modes, compares every
-output byte with its expected fixture, and rejects optimization-sensitive
-assert statements in the selected computational source. See `code/README.md`
-for exact finite sample counts and implementation provenance. The package tests also
-compare the article's small-n polynomials, first six values, and every numerical
-table cell against the replayed exact and diagnostic data. Numerical output
-is diagnostic, not interval-certified and not a premise of any theorem.
+**Delivered text that names the delivery layout.** The programs read
+`expected/*.json` beside them; `build.py` and `test_guards.py` check the
+closed delivered inventory (`Report203.tex`, the PDF, `manifests/`), so they
+run only in a re-extracted archive; `code-README.md` and the source manifest
+use delivered paths; Appendix B describes the delivered archive.
 
-## Whole-package deterministic replay
+## Rerunning the checks (on scratch copies)
 
-Extract the actual release ZIP into a fresh location and enter its `Report203`
-directory. Place build outputs outside that directory and use paths that do
-not already exist:
+Never run the programs in place. From this directory (Git Bash; SymPy 1.14.0
+and mpmath 1.3.0 installed for the last three):
 
 ```sh
-python -B build.py --validate-only
-python -B build.py --output ../rebuild-normal --archive ../normal.zip
-python -B -O build.py --output ../rebuild-optimized --archive ../optimized.zip
-cmp ../normal.zip ../optimized.zip
+T=$(mktemp -d); mkdir -p "$T/code/expected"
+for f in coefficients exact_checks symbolic_checks numerical_diagnostics check; do cp "code/$f.py" "$T/code/"; done
+for f in data/code-expected-*; do b=$(basename "$f"); cp "$f" "$T/code/expected/${b#code-expected-}"; done
+cd "$T/code"
+for p in coefficients exact_checks symbolic_checks numerical_diagnostics; do
+  py -B $p.py | tr -d '\r' | cmp - expected/$p.json && echo "same $p"
+done
 ```
 
-Also compare each rebuilt ZIP with the original distributed ZIP. With the
-recorded dependencies and TeX toolchain, every public member and the entire
-ZIP must be byte-identical. The builder validates the complete fixed member
-allowlist before work, replays all exact/symbolic/diagnostic outputs, compiles
-TeX in a fresh temporary environment, verifies both manifests, and compares
-all rebuilt members to the extracted package. It reports the rebuilt PDF and
-ZIP SHA-256 hashes on stdout. Maintained sources and fixtures are not changed.
+At the write (7 October 2026, Windows, Python 3.14.4) all four outputs
+equalled the recorded ones, in normal and `-O` mode. The delivered runner
+`check.py --all` stops at its first comparison on Windows, because it compares
+bytes and the programs' output there carries carriage returns (the intake
+recorded the same). The builder and the guard tests were not run.
 
-The TeX build disables shell escape and uses a fixed `SOURCE_DATE_EPOCH`;
-creation dates, trailer IDs and path-bearing pdfTeX metadata are suppressed.
-The ZIP has fixed timestamps, permissions, member order and no compression,
-avoiding compression-library variation. Fixed manifests explicitly omit the
-package manifest's own hash to avoid a circular self-hash; the whole ZIP hash
-is reported externally by the build. The source manifest records the PDF
-engine banner. Hashes detect changes relative to this package; they are not a
-signature or external proof of authorship.
+## Build
 
-Byte-identical PDF output across arbitrary TeX distributions or package versions
-is not promised. Exact and symbolic formulas are portable within the stated
-Python dependencies; reproducing the release PDF bytes requires the recorded
-TeX toolchain. A mismatched engine is rejected explicitly rather than silently
-certified.
+pdfLaTeX (lmodern, microtype, geometry, amsmath, amssymb, amsthm, mathtools,
+booktabs, array, xcolor, enumitem, fancyhdr, hyperref). In a scratch copy:
 
-For intentional source edits, maintainers may use `--initialize` with fresh
-output/archive paths to regenerate manifests. That is a new release build,
-not validation of the original. Review all changed claims, data and rendered
-pages before distribution.
+```sh
+B=$(mktemp -d); cp article.tex "$B/"; cd "$B"
+latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+```
 
-## Mathematical and source scope
+The committed PDF was built this way with MiKTeX pdfLaTeX (7 October 2026):
+22 pages; no errors or warnings, no undefined references, no multiply defined
+labels, no duplicate destinations, no overfull or underfull boxes. The
+delivered text, built the same way, gives 19 pages with no warnings.
 
-The report proves fixed-order uniform forward asymptotics and a fixed-M
-integer inverse directly, without assuming linear interpolation or a universal
-single-ceiling rule. The appendix concerns block deficit D = n-K, not edges or
-nonsingleton blocks. Its O(1/n) total-variation bound is to the moving Poisson
-parameter; a rate to a limiting parameter needs a separate convergence rate.
-Finite tests and diagnostics cannot establish any asymptotic or priority claim.
+## Provenance
+
+- Batch 112 of `docs/incoming`: bundle Report 203 (arrival `60f54ea06`),
+  placed unprefixed by `f79c9bef1`; written 7 October 2026.
+- Sources cited by the report: Zaslavsky, *Perpendicular dissections of
+  space* (2002; arXiv:1001.4435); OEIS A055779, A295623, A162695; Kotěšovec's
+  2012 note; Arratia–DeSalvo (arXiv:1606.04642v2); DLMF §5.11; and the
+  repository's transseries volume (added by the write).
