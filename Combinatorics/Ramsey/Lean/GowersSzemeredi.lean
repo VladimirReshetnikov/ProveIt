@@ -274,6 +274,10 @@ import GowersSzemeredi.Proofs18DensityIterationPowerBound
 import GowersSzemeredi.Proofs18QuadraticDoubleExponential
 import GowersSzemeredi.Proofs08FourTermTheorem
 import GowersSzemeredi.Proofs08FourTermColoring
+import GowersSzemeredi.Proofs16CoordinateFaces
+import GowersSzemeredi.Proofs16FaceInduction
+import GowersSzemeredi.Proofs16ParallelFaces
+import GowersSzemeredi.Proofs16ParallelFaceInduction
 
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
