@@ -449,6 +449,7 @@ import GowersSzemeredi.Proofs13ExplicitGeometricThreshold
 import GowersSzemeredi.Proofs18ExplicitFiveTerm
 import GowersSzemeredi.Proofs18FejerFiveTerm
 import GowersSzemeredi.Proofs18FejerCubicImprovement
+import GowersSzemeredi.Proofs13SquareThresholdSpectralBound
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 
