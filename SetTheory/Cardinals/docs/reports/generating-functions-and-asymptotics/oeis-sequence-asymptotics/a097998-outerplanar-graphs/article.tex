@@ -30,6 +30,14 @@
 \newcommand{\Pois}{\operatorname{Poisson}}
 \newcommand{\TV}{d_{\mathrm{TV}}}
 \newcommand{\ceil}[1]{\left\lceil #1\right\rceil}
+% Added by the ProveIt write phase (batch 109, 6 October 2026): dated notes
+% marked [write], a macro for file, label and declaration names, enumitem.
+\usepackage{enumitem}
+\newcommand{\file}[1]{\nolinkurl{#1}}
+\expandafter\def\expandafter\UrlBreaks\expandafter{\UrlBreaks\do\-\do\_\do\.}
+\newenvironment{writenote}[1][]{\par\smallskip\begingroup\small
+ \noindent\textbf{[write]}\if\relax\detokenize{#1}\relax\else~\textbf{#1.}\fi\ }%
+ {\par\endgroup\smallskip}
 \title{Labeled outerplanar graph expansions\\\large Exact coefficients component refinements and safe inversion}
 \author{Report 170}
 \date{3 October 2026}
@@ -68,11 +76,50 @@ refinement, without a worldwide-priority claim. Decimal evaluations are
 not certified intervals; inverse error constants and starting thresholds
 are existential rather than evaluated.
 \end{abstract}
+
+\begin{writenote}[Status and trust boundary, added 6 October 2026, batch~109]
+This is bundle Report~170 of an external AI-assisted research session,
+filed in ProveIt as the single-source research report
+\file{a097998-outerplanar-graphs} (provenance, the sources as the write
+read them, what was checked, relation to the repository, the collected
+non-claims and the reading conventions are in
+Section~\ref{lop:sec:provenance}). It is unrefereed and not formalized. Its
+author line reads ``Report 170'' and its PDF author field is empty: it
+names no person or tool. \emph{What rests on what.}
+Proposition~\ref{lop:prop:marked} (Lagrange inversion and one coefficient
+identity) and Theorem~\ref{lop:thm:main} (an exact contour integral, global
+dominance from the nonnegative coefficients of $b$, and a Taylor remainder
+kept inside the Gaussian integral) have conventional proofs;
+Theorem~\ref{lop:thm:TV}, Corollary~\ref{lop:cor:moments} and
+Theorem~\ref{lop:thm:inverse} follow from Theorem~\ref{lop:thm:main} by
+Cauchy estimates, Stirling's series and the mean value theorem. No proof
+uses a computation. The values $d_2(0)$, $d_3$, $d_4$ and the field
+formula~\eqref{lop:eq:fieldd} are outputs of the finite
+rule~\eqref{lop:eq:finitesum}, computed by the shipped programs; $d_1(v)$
+and the shape of $d_2(v)$ are also derived by hand. Every decimal is a
+diagnostic. The leading equivalents and the shifted-Poisson limit are
+Bodirsky, Gim\'enez, Kang and Noy's (BGKN), the block decomposition is
+Bodirsky and Kang's, and fixed-order expansions exist by the subcritical
+framework of Drmota, Fusy, Kang, Kraus and Ru\'e. \emph{A correction of the
+literature.} The amplitude $h\approx0.018216$ printed in BGKN's
+Theorem~5.1 is wrong: the true value is
+$e^\nu A=0.0080960474\ldots$, and the printed decimal is $\tfrac94e^\nu A$
+to its six places (Section~\ref{lop:sec:sources}); the write proves this in
+Remark~\ref{lop:rem:bgkn}, with an elementary bound and an
+interval-arithmetic enclosure, and records the other versions, the
+introduction's exponent and decimals, and the same factor in BGKN's
+Theorem~7.1 in Remark~\ref{lop:rem:versions}. The write also adds
+Remark~\ref{lop:rem:oeis} (the OEIS entries quoted),
+Remarks~\ref{lop:rem:onset} and~\ref{lop:rem:transseries} (the onset of
+monotonicity, and the inverse against the transseries volume), dated notes,
+and three questions in Section~\ref{lop:sec:questions}. No statement, proof
+or number of the source was changed.
+\end{writenote}
 \clearpage
 \tableofcontents
 \bigskip
 
-\section{Objects conventions and scope}
+\section{Objects conventions and scope}\label{lop:sec:scope}
 
 An outerplanar graph is an abstract simple graph that admits a planar
 embedding with all its vertices on the unbounded face. We count each
@@ -92,7 +139,7 @@ g_n&1&1&2&8&63&893
 The OEIS connected sequence conventionally prepends $1$ at index zero.
 That convention is not used in the connected exponential generating
 function (EGF):
-\begin{equation}\label{eq:egfs}
+\begin{equation}\label{lop:eq:egfs}
  C(z)=\sum_{n\geq1}c_n\frac{z^n}{n!},\qquad
  G(z)=\sum_{n\geq0}g_n\frac{z^n}{n!}=e^{C(z)}.
 \end{equation}
@@ -116,16 +163,232 @@ $n$ tends to infinity. No convergence of the resulting infinite formal
 series is asserted. Uniformity in a marker means uniformity on each
 fixed compact subset of $\CC$, not for markers growing with $n$.
 
-\section{Exact block and marked identities}
+\begin{remark}[{[write]} The OEIS entries, quoted, 6~October 2026]\label{lop:rem:oeis}
+The entries were read on 6~October 2026 in the OEIS internal format; the
+quotations are verbatim.
+\begin{enumerate}[label=(\alph*)]\raggedright
+\item A097998~\cite{oeisconn} (revision \#12, 12~February 2021) is named
+ \begin{center}\small
+ \parbox{0.92\textwidth}{\raggedright\texttt{Number of connected outerplanar graphs on n labeled nodes.}}
+ \end{center}
+ with offset $0$ and data $1, 1, 1, 4, 37, 602, 14436, 458062, \dots$;
+ its edit line reads ``\texttt{a(0)=1 prepended and terms a(17) and beyond
+ from \_Andrew Howroyd\_, Feb 12 2021}'', the prepended term that
+ Section~\ref{lop:sec:scope} excludes from $C$. Its only formula is
+ ``\texttt{Recurrence known, see Bodirsky and Kang.}'', and its PARI program
+ (Howroyd) is
+ \begin{center}\small
+ \parbox{0.92\textwidth}{\raggedright\texttt{seq(n)=\{Vec(serlaplace(1 + intformal(serreverse(x/exp((1 + 5*x -}\\\texttt{\ \ sqrt(1 - 6*x + x\^{}2 + O(x\^{}n)))/8))/x)))\}}}
+ \end{center}
+ that is, $T$ as the compositional inverse of $ue^{-b(u)}$ and
+ $C=\int_0^z T(s)\,\dd s/s$: the rooted equation~\eqref{lop:eq:rooted} with
+ the block function~\eqref{lop:eq:block}, plus the prepended $1$.
+\item A098000~\cite{oeisall} (revision \#14, 12~February 2021) is named
+ ``\texttt{Number of outerplanar graphs on n labeled nodes.}'', with offset
+ $0$, data $1, 1, 2, 8, 63, 893, 19714, \dots$, the formulas
+ ``\texttt{Recurrence known, see Bodirsky and Kang.}'' and
+ ``\texttt{Exponential transform of A097998. - \_Andrew Howroyd\_, Feb 12
+ 2021}'', and the same program with \texttt{exp(\dots)} in place of
+ \texttt{1 + \dots}.
+\item A097999~\cite{oeisblocks} (revision \#42, 30~May 2026), ``\texttt{Number
+ of 2-connected outerplanar graphs on n labeled nodes.}'', offset~$3$: its
+ eighteen printed terms are $(n-1)!\,[u^{n-1}]b(u)$ for $3\le n\le20$, by the
+ write's own computation from $S=1+uS+uS^2$, so~\eqref{lop:eq:blockseries} is
+ the derivative of its exponential generating function plus $u$, the edge
+ $K_2$.
+ It links the extended abstract~\cite{eurocomb} and Finch's
+ note~\cite{finch}.
+\end{enumerate}
+Neither A097998 nor A098000 states an asymptotic formula or a constant.
+Both b-files (Howroyd, $0\le n\le200$), fetched on 6~October 2026, are
+byte-identical to the shipped fixtures (SHA-256 \file{b150fb8f...56bb66} and
+\file{ceb4c0e1...ac50b}). With its own code the write recomputed every
+$c_n$, $1\le n\le200$, from~\eqref{lop:eq:connexact} and every $g_n$,
+$0\le n\le200$, from $G=e^C$, in exact rational arithmetic: all $401$ terms
+agree with the b-files. Nothing was submitted to the OEIS.
+\end{remark}
+
+\subsection{Provenance, sources and reading conventions}\label{lop:sec:provenance}
+\begin{writenote}[Added 6 October 2026, batch~109]
+\emph{Provenance.} This report is Report~170 of the session bundle that
+ProveIt's \file{docs/incoming} intake processed as batch~109: the archive
+\file{Labeled_Outerplanar_Graphs_Expansions_and_Inverses_Source.zip}
+($553{,}249$ bytes, SHA-256 \file{bfdcc45dce2d...ee19e154abb6f45}, 29 files,
+no wrapper directory), arrival commit \file{60f54ea06}, placed in
+\file{f7e9e5c2f}. The text is the delivered \file{Report170.tex} (921 lines,
+dated 3~October 2026), shipped as \file{article.tex}. The companion programs
+are shipped as \file{code/companion-*.py}, the root \file{build_pdf.py},
+\file{make_zip.py} and \file{release_tools.py} under \file{code/}, the
+fixtures and recorded results as \file{data/companion-fixtures-*} and
+\file{data/companion-results-*}, \file{SOURCE_PROVENANCE.json} under
+\file{data/}, and the companion README as \file{companion-README.md} (the
+report README maps every name). Not shipped, and retrievable from the
+arrival commit: the delivered 15-page PDF, the checksum manifests
+\file{SHA256SUMS} (28 entries) and \file{companion/results/SHA256SUMS}
+(5 entries), both verified at placement, the byte-identical second copy
+\file{companion/release_tools.py}, and the delivered README, replaced by the
+report README. The package records no ProveIt commit and names no
+repository path; it carries no ``prepared for private review'' line and no
+personal data. It is a single-source report, so no merge choice was made.
+The write prefixed the 49 delivered labels with \file{lop:} and updated the
+37 references to them; it added labels to the ten sections and to
+Section~\ref{lop:sec:formal}, and added this subsection, the notes marked
+[write], Remarks~\ref{lop:rem:oeis}, \ref{lop:rem:onset},
+\ref{lop:rem:transseries}, \ref{lop:rem:bgkn} and~\ref{lop:rem:versions},
+three questions in Section~\ref{lop:sec:questions} and two bibliography
+entries. The added statements are the last of their sections, this
+subsection follows the last delivered text of Section~\ref{lop:sec:scope},
+and the added displays are unnumbered, so every theorem, section and
+equation of the source keeps its delivered number.
+
+\emph{The sources, as the write read them} (6~October 2026).
+\begin{itemize}\raggedright
+\item OEIS A097998, A098000 with their b-files, and A097999, in the
+ internal format (Remark~\ref{lop:rem:oeis}).
+\item BGKN, published version~\cite{bgkn} (the author-hosted PDF the source
+ names; text extracted, and the pages of Theorems~5.1 and~6.1 and of the
+ introduction rendered): the introduction (pp.~2092--2093),
+ Section~5 with Theorem~5.1 (p.~2102), Theorem~6.1 (p.~2103), Section~7
+ with Theorems~7.1 and~7.3 (p.~2104), the table of p.~2105, and, for the
+ normalization, Theorems~3.6 and~3.7 (pp.~2099--2100).
+\item BGKN, arXiv:math/0512435~\cite{bgknpreprint}: the abstract page lists
+ only version~1 (19~December 2005); its Theorems~5.1, 6.1 and~7.1 and its
+ introduction were read.
+\item Kang's habilitation thesis~\cite{kang}: Theorems~5.2.1 and~5.3.2 as
+ stated in the overview (p.~9) and Section~5.2 (p.~55).
+\item The extended abstract of BGKN at EuroComb~2005~\cite{eurocomb} (the
+ copy cached at A097999): its Theorem~3.
+\item The transseries volume
+ \path{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex}:
+ \file{p0:def:core}, \file{p0:prop:factorial-core},
+ \file{p0:thm:core-reversion}, \file{p0:prop:operator-form},
+ \file{p0:def:three-inverses}, \file{p0:thm:staircase},
+ \file{plt:def:lw-monomial-log-datum} and \file{plt:thm:lw-template}, read
+ for Remark~\ref{lop:rem:transseries}.
+\item Not read by the write: Bodirsky and Kang~\cite{bk}, the subcritical
+ framework~\cite{subcritical}, Finch's note~\cite{finch} and the unlabelled
+ study~\cite{unlabelled}; the source's account of them is reported, not
+ confirmed.
+\end{itemize}
+
+\emph{What was checked at intake.} The batch-109 dossier read the
+manuscript in full, found no error, and checked the proof of
+Section~\ref{lop:sec:proof}. Independently of the delivered code (its own
+Schr\"oder and Lagrange route, 50 digits) it found the relative residual of
+$c_n$ after the four corrections of~\eqref{lop:eq:conna} to be
+$1.71\cdot10^{-7}$ at $n=60$ and $5.27\cdot10^{-9}$ at $n=120$ (ratio
+$32.5\approx2^5$); it read BGKN's Theorem~5.1 and introduction, and it reran
+the four computations of the companion on copies through a Windows driver
+(the delivered \file{build.py} needs POSIX \texttt{O\_NOFOLLOW}): all four
+result files byte-identical. \emph{What the write checked.} Every proof line
+by line, with no error found: Proposition~\ref{lop:prop:marked} (the
+coefficient identity and $\psi'=1-ub'$); the contour
+formula~\eqref{lop:eq:contour} (the factors $\tau\rho^{-n}$, $e^{v\nu}$ and
+$e^{i\theta}$, and $uQ'$ written through $K'$); the global
+bound~\eqref{lop:eq:global}; the derivative formula for $\partial_s^rS$, the
+degree count $r+2r$ in~\eqref{lop:eq:uderiv} and the
+remainder~\eqref{lop:eq:remainder}; the arc estimates; the parity and degree
+arguments of Section~\ref{lop:sec:proof}; the finite
+sum~\eqref{lop:eq:finitesum} (the powers of $i$ and $\kappa_2$, and $q$
+even); $d_1(v)$ from $[t]M_v$, $[t^2]M_v$ by hand; the variance as
+$(\log P_n)''(1)+(\log P_n)'(1)$ and the connectivity coefficient
+$-h+da+a^2-k$; $\ell_1,\dots,\ell_4$ against Stirling's series; the
+injections of Section~\ref{lop:sec:inverse}; and the test points, the
+choice $K_m=8C_m$ and the mean value step of the proof of
+Theorem~\ref{lop:thm:inverse}. With its own code (mpmath~1.3.0 at 80 digits,
+SymPy~1.14.0) it recomputed $\tau$, $\rho$, $\nu$, $A$, $e^\nu A$ and
+$\kappa_2,\dots,\kappa_{14}$ (with $\kappa_1=1$), the identity
+$\sqrt{1-6\tau+\tau^2}=\tau(3-\tau)/(8-5\tau)$, the
+formulas~\eqref{lop:eq:d1} and~\eqref{lop:eq:fieldd}, $d_1(v)$ and $d_2(v)$
+at $v=1,2$, all eight entries of the table of
+Section~\ref{lop:sec:corrections} (each correctly rounded) from the finite
+sum, the constants of Section~\ref{lop:sec:components}, and the residuals
+(notes at the ends of Sections~\ref{lop:sec:generator},
+\ref{lop:sec:components} and~\ref{lop:sec:checks}). The four companion
+computations were rerun from the shipped files (README, Route~B):
+byte-identical results. Finite and floating computations are observations,
+not certificates; the interval enclosure of Remark~\ref{lop:rem:bgkn} is
+mpmath interval arithmetic.
+
+\emph{Relation to the repository.} Before batch~109 no file of the
+repository named A097998, A098000 or A097999, and no report counted
+outerplanar graphs. No statement of this report is
+formalized in Lean or Rocq, and its place in the collection confers no
+formal status. The nearest reports are the graph-class enumerations in the
+same directory
+\file{SetTheory/Cardinals/docs/reports/generating-functions-and-asymptotics/oeis-sequence-asymptotics/}:
+\file{a005975-interval-graphs}, \file{a156808-circle-graphs} and
+\file{a123448-permutation-graphs}. They count unlabelled graphs, by
+different methods, and share no result with this report. The inverse of
+Section~\ref{lop:sec:inverse} is compared with the transseries volume in
+Remark~\ref{lop:rem:transseries}.
+\end{writenote}
+\begin{writenote}[What is not claimed, collected from the source]
+No worldwide priority is claimed: the leading equivalents, the limiting
+shifted-Poisson law and the general machinery are prior, the existence of
+fixed-order expansions follows from the subcritical theory, and the source
+``does not announce a new leading constant''; its novelty statement is ``a
+source coverage statement, not proof of worldwide novelty''. Every
+expansion is for a fixed order; no convergence of the formal series is
+asserted; uniformity in the marker holds on fixed compact sets only, not for
+markers growing with $n$. Decimal evaluations are not certified intervals.
+The inverse constants and starting thresholds are existential;
+Theorem~\ref{lop:thm:inverse} is not a certified finite-input algorithm,
+and the enclosure cannot be replaced by $N(X)=\ceil{r_m(X)}$. The formal
+singular route of Section~\ref{lop:sec:formal} is an independent coefficient
+check, not a second analytic ($\Delta$-domain) proof. The cause of the BGKN
+discrepancy is not established. Numerical tables and finite agreement are
+diagnostics; they do not prove convergence, bound the constants in
+$O(\cdot)$ or certify an inverse. The write adds: its own checks are
+floating, finite or interval computations; Remark~\ref{lop:rem:bgkn}
+corrects a published decimal but finds no error in its exponent or in its
+radius; Remark~\ref{lop:rem:versions}(d) is an observation, not a theorem;
+Remark~\ref{lop:rem:transseries} claims no novelty for any inversion.
+\end{writenote}
+\medskip
+\begingroup\small
+\noindent\emph{Reading conventions} (letters the source reuses, with the
+tempting false readings; no symbol of the source was renamed; symbols of the
+transseries volume carry the subscript ``vol'' in
+Remark~\ref{lop:rem:transseries}).\par\smallskip
+\renewcommand{\arraystretch}{1.1}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.95in}>{\raggedright\arraybackslash}p{3.3in}>{\raggedright\arraybackslash}p{1.85in}@{}}
+\toprule
+Symbol & Meaning here (where) & Not to be read as\\
+\midrule
+\endhead
+$a$ & $\sqrt{\kappa_2}$ in Section~\ref{lop:sec:proof}; $5\tau/2$ in~\eqref{lop:eq:aq} and after & each other\\
+$e$ & $d_2(0)$ in Section~\ref{lop:sec:components}; elsewhere Euler's number ($e^\nu$, $e^{-\nu}$) & each other\\
+$h$ & the analytic factor of $R_3=t^3h$ (Section~\ref{lop:sec:proof}); the $v$-coefficient of $d_2$ (Section~\ref{lop:sec:components}); the inverse displacement (Section~\ref{lop:sec:inverse}); BGKN's amplitude, which is $e^\nu A$ (Remark~\ref{lop:rem:bgkn}) & each other; the volume's $h_{\mathrm{vol}}$\\
+$k$, $k_*$ & a summation index; the $v^2$-coefficient $\tfrac{35}8\tau^2$ of $d_2$; $\log(A_*\sqrt{2\pi})$ & each other\\
+$q$, $Q$ & the moment constant~\eqref{lop:eq:aq}; $\ell+\sum km_k$ in~\eqref{lop:eq:finitesum}; coefficients $q_{n,k}$ and the comparison PGF $Q_n$ (proof of Theorem~\ref{lop:thm:TV}); the germ $Q(t)$~\eqref{lop:eq:Q} & each other\\
+$S$ & the Schr\"oder series (Section~\ref{lop:sec:identities}); the phase $S(s,x)$ (Section~\ref{lop:sec:proof}) & each other\\
+$A$, $A_v$, $A_*$ & the amplitude~\eqref{lop:eq:constants}; $e^{v\psi}$ (proof of Proposition~\ref{lop:prop:marked}); $A$ or $e^\nu A$ (Section~\ref{lop:sec:inverse}) & BGKN's dissection series $A(x,y)$\\
+$E$, $\EE$ & $e^{nb(u)}$ (proof of Proposition~\ref{lop:prop:marked}); remainders $E_n$, $E_m$; the Gaussian moment operation and expectation & each other\\
+$K$, $\mathcal K$, $K_n$, $K_m$ & the germ~\eqref{lop:eq:K}; a compact set of markers; the number of components; the constant of Theorem~\ref{lop:thm:inverse} & each other\\
+$C$, $C_j$ & the connected EGF; the singular coefficients~\eqref{lop:eq:formalC}; $C$, $C_r$, $C_m$ are also generic constants & each other\\
+$T$, $T_k$, $t_2$ & the rooted EGF; $[X^k]T$~\eqref{lop:eq:formalT}; the constant~\eqref{lop:eq:t2} & $t$, the germ variable\\
+$W$ & $W(t)$ of Section~\ref{lop:sec:formal}; Lambert's function in~\eqref{lop:eq:Lambert} & each other\\
+$X$, $L$ & $\sqrt{1-z/\rho}$ in Section~\ref{lop:sec:formal}; the threshold and $L=\log X$ in Section~\ref{lop:sec:inverse} & each other; the volume's $X_{\mathrm{vol}}$, $L_{\mathrm{vol}}$\\
+$r$, $r_m$, $N$ & a real radius $r>1$ (proof of Theorem~\ref{lop:thm:TV}); the model root, $r=r_m(X)$ (Section~\ref{lop:sec:inverse}); $N=2J+2$ (Section~\ref{lop:sec:proof}) and $N(X)$ & each other\\
+$R$, $R_3$ & $3-2\sqrt2$; the cubic remainder of $K$ & Kang's $R$, which is $\rho$\\
+$B$, $b$; $d$, $d_j$; $\kappa_j$ & the block EGF and its derivative; $d_1(0)$ and the marker polynomials; $(D^jb)(\tau)$ & the volume's $B_{\mathrm{vol}}$, $d_{\mathrm{vol}}$, $\kappa_{\mathrm{vol}}$\\
+$\tau$, $\rho$, $\nu$ & the saddle, the radius, $\psi(\tau)$ & BGKN's $\tau$, $\rho$ (but $\sigma$ in its introduction), $\xi$; Kang's $u_1$, $x_1=R=\gamma^{-1}$, $C(R)$; the volume's $\rho_{\mathrm{vol}}$\\
+$A$, $e^\nu A$ & connected and all-graph amplitudes & Kang's $\alpha_1$, $\alpha_0$ (also his $c_1$); BGKN's $h$ is meant to be $e^\nu A$\\
+\bottomrule
+\end{longtable}
+\endgroup
+
+\section{Exact block and marked identities}\label{lop:sec:identities}
 
 \subsection{Block generating function}
 Let $B$ be the block EGF and write $b=B'$. The classical polygon-dissection
 normalization gives
-\begin{equation}\label{eq:block}
+\begin{equation}\label{lop:eq:block}
  b(u)=\frac{1+5u-\sqrt{1-6u+u^2}}8,\qquad B(u)=\int_0^u b(t)\dd t.
 \end{equation}
 The square root is the branch equal to $1$ at zero. In particular,
-\begin{equation}\label{eq:blockseries}
+\begin{equation}\label{lop:eq:blockseries}
  b(u)=u+\frac{u^2}{2}+\frac{3u^3}{2}
           +\frac{11u^4}{2}+\frac{45u^5}{2}+O(u^6).
 \end{equation}
@@ -142,14 +405,14 @@ For an independent recurrence formulation, let
 \]
 The branch with constant term $1$ is
 $S=(1-u-\sqrt{1-6u+u^2})/(2u)$, and
-$b=u+u(S-1)/4$. This also checks \eqref{eq:blockseries}. For example,
+$b=u+u(S-1)/4$. This also checks \eqref{lop:eq:blockseries}. For example,
 there are nine 2-connected outerplanar graphs on four labels, so the
 coefficient of $u^3$ in $b$ is $9/3!=3/2$.
 
 \subsection{Rooting and integration}
 Define the vertex-rooted connected EGF $T=zC'(z)$. The rooted block
 set decomposition and subsequent integration give
-\begin{equation}\label{eq:rooted}
+\begin{equation}\label{lop:eq:rooted}
  T=z\exp(b(T)),\qquad C(z)=\psi(T(z)),\qquad
  \psi(u)=u-ub(u)+B(u).
 \end{equation}
@@ -157,21 +420,21 @@ Indeed $\psi'(u)=1-ub'(u)$, and
 $\dd z/z=(1/u-b'(u))\dd u$ under $z=u e^{-b(u)}$.
 Both sides of $C=\psi(T)$ vanish at zero. Lagrange inversion applied
 to $T$ therefore gives the exact connected coefficient identity
-\begin{equation}\label{eq:connexact}
+\begin{equation}\label{lop:eq:connexact}
  \frac{c_n}{n!}=\frac1{n^2}[u^{n-1}]e^{nb(u)},\qquad n\geq1.
 \end{equation}
 
 The component-marked polynomial is
-\begin{equation}\label{eq:fn}
+\begin{equation}\label{lop:eq:fn}
  f_n(v)=n![z^n]e^{vC(z)}.
 \end{equation}
 For $n\geq1$, $f_n(1)=g_n$, $f_n(0)=0$, and $f_n'(0)=c_n$.
 For a uniformly chosen graph counted by $g_n$, the probability generating
 function (PGF) of its number $K_n$ of components is $f_n(v)/g_n$.
 
-\begin{proposition}[Exact marked cancellation]\label{prop:marked}
+\begin{proposition}[Exact marked cancellation]\label{lop:prop:marked}
 For every $n\geq1$ and every complex $v$,
-\begin{equation}\label{eq:marked}
+\begin{equation}\label{lop:eq:marked}
  \frac{f_n(v)}{n!}=\frac{v}{n^2}[u^{n-1}]
  e^{v\psi(u)}\bigl(1+vu\psi'(u)\bigr)e^{nb(u)}.
 \end{equation}
@@ -190,7 +453,7 @@ Rearranging, and using $A_v'=v\psi'A_v$, gives
  [u^{n-1}]A_vE(1-ub')
    =\frac1n[u^{n-1}]A_vE(1+vu\psi').
 \]
-Since $\psi'=1-ub'$, this proves \eqref{eq:marked}.
+Since $\psi'=1-ub'$, this proves \eqref{lop:eq:marked}.
 \end{proof}
 
 The cancellation removes an amplitude that vanishes at the saddle.
@@ -198,25 +461,25 @@ Keeping its exact extra factor $1/n$ is essential for the unrooted
 exponent $n^{-5/2}$ and its amplitude. No asymptotic approximation has
 been used in these identities.
 
-\section{Saddle constants and exact coefficient generator}
+\section{Saddle constants and exact coefficient generator}\label{lop:sec:generator}
 
 Let $R=3-2\sqrt2$, the positive branch singularity of $b$.
 The nonnegative coefficients of $b$ show that $ub'(u)$ is strictly
 increasing from zero to infinity on $(0,R)$. There is a unique
 $\tau\in(0,R)$ with
-\begin{equation}\label{eq:saddle}
+\begin{equation}\label{lop:eq:saddle}
  \tau b'(\tau)=1.
 \end{equation}
 Equivalently, it is the root in $(0.17076,0.17077)$ of
-\begin{equation}\label{eq:quartic}
+\begin{equation}\label{lop:eq:quartic}
  3\tau^4-28\tau^3+70\tau^2-58\tau+8=0
 \end{equation}
-that satisfies the unsquared equation \eqref{eq:saddle}. The unsquared
+that satisfies the unsquared equation \eqref{lop:eq:saddle}. The unsquared
 condition fixes the radical branch; merely squaring an equation is not
 a root-selection rule.
 
 Put
-\begin{equation}\label{eq:constants}
+\begin{equation}\label{lop:eq:constants}
  \rho=\tau e^{-b(\tau)},\quad \nu=\psi(\tau),\quad
  D=u\frac{\dd}{\dd u},\quad \kappa_j=(D^jb)(\tau),\quad
  A=\frac{\tau}{\sqrt{2\pi\kappa_2}}.
@@ -233,7 +496,7 @@ Then $\kappa_1=1$ and $\kappa_2>0$. Useful approximate values are
 \end{aligned}
 \]
 These are numerical evaluations, not certified decimal intervals.
-The exact definitions are \eqref{eq:saddle}--\eqref{eq:constants}.
+The exact definitions are \eqref{lop:eq:saddle}--\eqref{lop:eq:constants}.
 
 At the selected root,
 \[
@@ -247,19 +510,19 @@ an algebraic number.
 
 Define formal analytic germs at $t=0$ by
 \begin{align}
- K(t)&=b(\tau e^t)=\sum_{j\geq0}\frac{\kappa_j}{j!}t^j,\label{eq:K}\\
+ K(t)&=b(\tau e^t)=\sum_{j\geq0}\frac{\kappa_j}{j!}t^j,\label{lop:eq:K}\\
  Q(t)&=\psi(\tau e^t)-\nu,\qquad
- Q'(t)=\tau e^t(1-K'(t)),\quad Q(0)=0,\label{eq:Q}\\
- M_v(t)&=e^{t+vQ(t)}(1+vQ'(t)).\label{eq:M}
+ Q'(t)=\tau e^t(1-K'(t)),\quad Q(0)=0,\label{lop:eq:Q}\\
+ M_v(t)&=e^{t+vQ(t)}(1+vQ'(t)).\label{lop:eq:M}
 \end{align}
 Here $Q(t)=O(t^2)$ and $M_v(0)=1$.
 Let $\EE$ denote the formal Gaussian moment operation on polynomials
 in $x$, determined by
 $\EE x^{2h}=(2h-1)!!$ and $\EE x^{2h+1}=0$, with $(-1)!!=1$.
 
-\begin{theorem}[All fixed orders with a complex marker]\label{thm:main}
+\begin{theorem}[All fixed orders with a complex marker]\label{lop:thm:main}
 For every fixed $J\geq0$ and every compact $\mathcal K\subset\CC$,
-\begin{equation}\label{eq:main}
+\begin{equation}\label{lop:eq:main}
  \frac{f_n(v)}{v e^{v\nu}A n!\rho^{-n}n^{-5/2}}
  =\sum_{j=0}^{J}\frac{d_j(v)}{n^j}
        +O_{\mathcal K,J}(n^{-J-1}),
@@ -267,7 +530,7 @@ For every fixed $J\geq0$ and every compact $\mathcal K\subset\CC$,
 uniformly for $v\in\mathcal K$, with the removable value used at $v=0$.
 Here $d_0=1$, $d_j\in\QQ(\tau)[v]$, $\deg_v d_j\leq j$, and the exact
 finite coefficient rule is
-\begin{equation}\label{eq:generator}
+\begin{equation}\label{lop:eq:generator}
  d_j(v)=[\epsilon^{2j}]\EE\left[
  M_v\left(\frac{i\epsilon x}{\sqrt{\kappa_2}}\right)
  \exp\left\{\sum_{k\geq3}
@@ -278,9 +541,9 @@ Only $k\leq2j+2$ and amplitude powers at most $2j$ are needed.
 In particular,
 \begin{align}
  c_n&=A n!\rho^{-n}n^{-5/2}
- \left(\sum_{j=0}^{J}\frac{d_j(0)}{n^j}+O_J(n^{-J-1})\right),\label{eq:conna}\\
+ \left(\sum_{j=0}^{J}\frac{d_j(0)}{n^j}+O_J(n^{-J-1})\right),\label{lop:eq:conna}\\
  g_n&=e^\nu A n!\rho^{-n}n^{-5/2}
- \left(\sum_{j=0}^{J}\frac{d_j(1)}{n^j}+O_J(n^{-J-1})\right).\label{eq:alla}
+ \left(\sum_{j=0}^{J}\frac{d_j(1)}{n^j}+O_J(n^{-J-1})\right).\label{lop:eq:alla}
 \end{align}
 \end{theorem}
 
@@ -291,7 +554,7 @@ integers $m_k$, $3\leq k\leq2j+2$, satisfying
  \ell+\sum_{k=3}^{2j+2}(k-2)m_k=2j.
 \]
 If $q=\ell+\sum k m_k$, then
-\begin{equation}\label{eq:finitesum}
+\begin{equation}\label{lop:eq:finitesum}
  d_j(v)=\sum
  \frac{a_\ell(v)(-1)^{q/2}(q-1)!!}{\kappa_2^{q/2}}
  \prod_{k=3}^{2j+2}\frac{(\kappa_k/k!)^{m_k}}{m_k!}.
@@ -299,12 +562,30 @@ If $q=\ell+\sum k m_k$, then
 The constraint makes $q$ even. This is a finite algebraic formula for
 every coefficient and makes no reference to fitted count data.
 
-\section{Complete uniform saddle proof}
+\begin{writenote}[The decimals of this section, 6 October 2026]
+Recomputed by the write (mpmath, 80 digits, own code; $\kappa_1=1$ to
+working precision). Of the six values printed above with ``$\ldots$'', four
+are truncations ($\tau$, $\rho$, $\rho^{-1}$, $A$) and two are rounded in the
+last printed digit: $\nu=0.14888674268735885755774476454361\ldots$ (the
+display ends $\ldots764544$) and
+$e^\nu A=0.00809604747608070499620425650040521\ldots$ (the display ends
+$\ldots650041$); both displayed values are correct to within one unit of
+their last digit. Mpmath interval arithmetic from the sign change of
+$ub'(u)-1$ at the two ends of
+\[\tau\in[0.17076498681262902340813979199814,\ 0.17076498681262902340813979199815]\]
+encloses
+\[e^\nu A\in[0.00809604747608070499620425650036,\ 0.00809604747608070499620425650046]\]
+(Remark~\ref{lop:rem:bgkn}). The source's bracket $(0.17076,0.17077)$
+for~$\tau$ is confirmed the same way ($ub'(u)-1=-0.00277\ldots$ and
+$+0.00281\ldots$ at its ends), and $\kappa_2=95.3658927155668778\ldots$.
+\end{writenote}
+
+\section{Complete uniform saddle proof}\label{lop:sec:proof}
 
 \subsection{Exact contour and the unique dominant point}
 Cauchy's formula on $u=\tau e^{i\theta}$ transforms
-Proposition~\ref{prop:marked} into the exact identity
-\begin{equation}\label{eq:contour}
+Proposition~\ref{lop:prop:marked} into the exact identity
+\begin{equation}\label{lop:eq:contour}
  f_n(v)=\frac{n!v\tau e^{v\nu}\rho^{-n}}{n^2}
  \frac1{2\pi}\int_{-\pi}^{\pi}M_v(i\theta)e^{n\Phi(\theta)}\dd\theta,
 \end{equation}
@@ -312,11 +593,11 @@ where
 \[
  \Phi(\theta)=K(i\theta)-K(0)-i\theta.
 \]
-Every power of $n$ and $\tau$ in \eqref{eq:contour} is exact. The extra
+Every power of $n$ and $\tau$ in \eqref{lop:eq:contour} is exact. The extra
 $e^{i\theta}$ from extracting $[u^{n-1}]$ is the factor $e^t$ in $M_v$.
 
 Write $b(u)=\sum_{k\geq1}b_ku^k$. Since $b_k\geq0$ and $b_1=1$,
-\begin{equation}\label{eq:global}
+\begin{equation}\label{lop:eq:global}
  \Rea\Phi(\theta)
  =\sum_{k\geq1}b_k\tau^k(\cos(k\theta)-1)
  \leq\tau(\cos\theta-1).
@@ -352,7 +633,7 @@ where $h$ is analytic in a fixed neighborhood of zero, and define
 \end{align*}
 The value at $s=0$ is understood by analytic continuation. After leading
 normalization, the central integral is
-\begin{equation}\label{eq:central}
+\begin{equation}\label{lop:eq:central}
  \frac1{\sqrt{2\pi}}
  \int_{|x|\leq\epsilon^{-1/5}}e^{-x^2/2}U_v(\epsilon,x)\dd x.
 \end{equation}
@@ -373,7 +654,7 @@ The factor $s|w|$ is uniformly bounded. Similarly,
 $|\partial_s^rM_v(isx/a)|\leq C_{\mathcal K,r}|x|^r$.
 The product rule and the finite Bell-polynomial formula for derivatives
 of an exponential now imply
-\begin{equation}\label{eq:uderiv}
+\begin{equation}\label{lop:eq:uderiv}
  |\partial_s^r U_v(s,x)|\leq C_{\mathcal K,r}(1+|x|)^{3r},
  \qquad 0\leq r\leq N.
 \end{equation}
@@ -385,9 +666,9 @@ Taylor's theorem in the real parameter $s$, with its integral remainder,
 therefore gives
 \begin{align}
  U_v(\epsilon,x)&=\sum_{k=0}^{2J+1}p_k(v,x)\epsilon^k+E_n(v,x),
- \label{eq:taylor}\\
+ \label{lop:eq:taylor}\\
  |E_n(v,x)|&\leq C_{\mathcal K,J}\epsilon^{2J+2}(1+|x|)^{6J+6}.
- \label{eq:remainder}
+ \label{lop:eq:remainder}
 \end{align}
 Keeping the polynomial inside the Gaussian integral yields
 \[
@@ -410,8 +691,8 @@ intermediate arc contributes at most a constant times
 and the distant arc contributes
 $O_{\mathcal K}(\epsilon^{-1}e^{-c''/\epsilon^2})$ after leading
 normalization. Both are smaller than every fixed power. Equations
-\eqref{eq:central}--\eqref{eq:remainder} prove \eqref{eq:main}, with
-\eqref{eq:generator} obtained by the finite Taylor multiplication.
+\eqref{lop:eq:central}--\eqref{lop:eq:remainder} prove \eqref{lop:eq:main}, with
+\eqref{lop:eq:generator} obtained by the finite Taylor multiplication.
 
 \subsection{Algebraic coefficients and marker degree}
 Since $Q'=\tau e^t(1-K')$ and $Q(0)=0$, all Taylor coefficients of $Q$
@@ -424,32 +705,32 @@ $e^{vQ}(1+vQ')$ starts at degree at least $2h-1$ in $t$, because
 $Q=O(t^2)$ and $Q'=O(t)$. Multiplication by $e^t$ does not lower that
 degree. To contribute to $\epsilon^{2j}$ requires $2h-1\leq2j$,
 which for integer $h$ gives $h\leq j$. This proves the degree bound.
-The proof of Theorem~\ref{thm:main} is complete.
+The proof of Theorem~\ref{lop:thm:main} is complete.
 
-\section{Four corrections and independent coefficient checks}
+\section{Four corrections and independent coefficient checks}\label{lop:sec:corrections}
 
 Set $d=d_1(0)$ and define
 \begin{align}
  d&=-\frac1{2\kappa_2}+\frac{\kappa_3}{2\kappa_2^2}
       +\frac{\kappa_4}{8\kappa_2^2}
-      -\frac{5\kappa_3^2}{24\kappa_2^3},\label{eq:d1}\\
+      -\frac{5\kappa_3^2}{24\kappa_2^3},\label{lop:eq:d1}\\
  t_2&=\tau\left(\frac1{\kappa_2}-\frac{\kappa_3}{3\kappa_2^2}\right).
- \label{eq:t2}
+ \label{lop:eq:t2}
 \end{align}
 Then the first two complete marker polynomials are
 \begin{align}
- d_1(v)&=d+\frac{5\tau}{2}v,\label{eq:d1v}\\
+ d_1(v)&=d+\frac{5\tau}{2}v,\label{lop:eq:d1v}\\
  d_2(v)&=d_2(0)+\left(\frac72\tau d-\frac{35}8t_2\right)v
-                     +\frac{35}8\tau^2v^2.\label{eq:d2v}
+                     +\frac{35}8\tau^2v^2.\label{lop:eq:d2v}
 \end{align}
-Here \eqref{eq:generator} at $j=2,v=0$ is a short exact definition of
+Here \eqref{lop:eq:generator} at $j=2,v=0$ is a short exact definition of
 $d_2(0)$; no decimal is needed to specify the theorem. For example,
 \[
  [t]M_v=1-v\tau\kappa_2,\qquad
  [t^2]M_v=\frac12-\frac{v\tau}{2}(5\kappa_2+\kappa_3).
 \]
-Substitution in \eqref{eq:finitesum} gives \eqref{eq:d1v} directly.
-The analogous finite algebra gives \eqref{eq:d2v}.
+Substitution in \eqref{lop:eq:finitesum} gives \eqref{lop:eq:d1v} directly.
+The analogous finite algebra gives \eqref{lop:eq:d2v}.
 
 \begin{center}
 \begin{tabular}{crr}
@@ -469,8 +750,8 @@ $1,\tau,\tau^2,\tau^3$ of
 \[
  \QQ[t]/(3t^4-28t^3+70t^2-58t+8),
 \]
-with the real root selected by \eqref{eq:saddle}. As one readable example,
-\begin{equation}\label{eq:fieldd}
+with the real root selected by \eqref{lop:eq:saddle}. As one readable example,
+\begin{equation}\label{lop:eq:fieldd}
  d=\frac{146018067}{47538652}
  -\frac{892831981}{178269945}\tau
  +\frac{834955523}{356539890}\tau^2
@@ -479,7 +760,7 @@ with the real root selected by \eqref{eq:saddle}. As one readable example,
 The finite generator is a more compact exact presentation of higher
 orders than expanding every large rational coefficient in print.
 
-\subsection{An independent formal singular expansion}
+\subsection{An independent formal singular expansion}\label{lop:sec:formal}
 This subsection checks coefficients independently; the analytic proof
 is already complete. Put $X=\sqrt{1-z/\rho}$ and
 $t=\log(T/\tau)$. Then
@@ -488,12 +769,12 @@ $t=\log(T/\tau)$. Then
  W(t)=\frac{1-\exp(t-K(t)+K(0))}{t^2},\quad W(0)=\kappa_2/2.
 \]
 The physical branch is $X=-t\sqrt{W(t)}$. Formal Lagrange inversion gives
-\begin{equation}\label{eq:formalT}
+\begin{equation}\label{lop:eq:formalT}
  T_k:=[X^k]T
  =\frac{\tau(-1)^k}{k}[t^{k-1}]e^tW(t)^{-k/2},\qquad k\geq1,
 \end{equation}
 with $T_0=\tau$. Termwise integration of $zC'=T$ gives
-\begin{equation}\label{eq:formalC}
+\begin{equation}\label{lop:eq:formalC}
  C_0=\nu,\quad C_1=0,\qquad
  C_j=-\frac2j\sum_{\substack{r\geq0\\j-2-2r\geq0}}T_{j-2-2r}
  \quad(j\geq2).
@@ -504,7 +785,7 @@ In particular,
  \quad C_3=\frac23\tau\sqrt{2/\kappa_2},\quad C_4=-\frac{\tau+t_2}{2}.
 \]
 Since $\Gamma(-3/2)=4\sqrt\pi/3$,
-\begin{equation}\label{eq:normalization}
+\begin{equation}\label{lop:eq:normalization}
  \frac{C_3}{\Gamma(-3/2)}=A,\qquad
  \frac{[X^3]e^{C}}{\Gamma(-3/2)}=e^\nu A.
 \end{equation}
@@ -536,29 +817,29 @@ coefficient is
  C_7+v(C_2C_5+C_3C_4)+\frac{v^2}2C_2^2C_3.
 \]
 The Gamma ratios $-5/2$ and $35/4$ then recover
-\eqref{eq:d1v}--\eqref{eq:d2v}. To promote these formal local calculations
+\eqref{lop:eq:d1v}--\eqref{lop:eq:d2v}. To promote these formal local calculations
 to a separate analytic coefficient proof one must supply suitable
 $\Delta$-domain continuation and transfer remainder hypotheses, as in
 the established subcritical theory \cite{subcritical}. That additional
 route is not silently assumed here.
 
-\section{Component law moments and connectivity}
+\section{Component law moments and connectivity}\label{lop:sec:components}
 
 Put
-\begin{equation}\label{eq:aq}
+\begin{equation}\label{lop:eq:aq}
  a=\frac{5\tau}{2},\qquad
  q=\tau d-\frac{35}8t_2+\frac52\tau^2.
 \end{equation}
 Dividing the marker expansion by its value at $1$ gives, uniformly on
 fixed compact sets,
-\begin{equation}\label{eq:pgffirst}
+\begin{equation}\label{lop:eq:pgffirst}
  P_n(v):=\EE v^{K_n}
  =ve^{\nu(v-1)}\left(1+\frac{a(v-1)}n+O(n^{-2})\right).
 \end{equation}
 In particular, the classical limit is $1+\Pois(\nu)$ \cite{bgkn}.
 The next statement strengthens the approximation at finite $n$.
 
-\begin{theorem}[Total variation refinement]\label{thm:TV}
+\begin{theorem}[Total variation refinement]\label{lop:thm:TV}
 For $\lambda_n=\nu+5\tau/(2n)$,
 \[
  \TV\bigl(\mathcal L(K_n),\mathcal L(1+\Pois(\lambda_n))\bigr)
@@ -567,7 +848,7 @@ For $\lambda_n=\nu+5\tau/(2n)$,
 \end{theorem}
 \begin{proof}
 The parameter is positive. Fix a real $r>1$. The comparison PGF is
-$Q_n(v)=v\exp(\lambda_n(v-1))$. Equation~\eqref{eq:pgffirst}, proved
+$Q_n(v)=v\exp(\lambda_n(v-1))$. Equation~\eqref{lop:eq:pgffirst}, proved
 complex-uniformly on the circle $|v|=r$, gives
 \[
  \sup_{|v|=r}|P_n(v)-Q_n(v)|\leq C_r n^{-2}
@@ -600,7 +881,7 @@ gives
  \log P_n(v)
  &=\log v+\nu(v-1)+\frac{a(v-1)}n \nonumber\\
  &\quad+\frac{q(v-1)+(5\tau^2/4)(v-1)^2}{n^2}+O(n^{-3}).
- \label{eq:logPGF}
+ \label{lop:eq:logPGF}
 \end{align}
 Indeed the second-order polynomial before simplification is
 $(h-da)(v-1)+(k-a^2/2)(v^2-1)$ and
@@ -608,15 +889,15 @@ $k-a^2/2=5\tau^2/4$.
 The error is analytic and uniformly $O(n^{-3})$ on a slightly larger
 disk, so Cauchy estimates justify differentiating it.
 
-\begin{corollary}[Moments and connectivity]\label{cor:moments}
+\begin{corollary}[Moments and connectivity]\label{lop:cor:moments}
 The component mean and variance satisfy
 \begin{align}
- \EE K_n&=1+\nu+\frac an+\frac q{n^2}+O(n^{-3}),\label{eq:mean}\\
+ \EE K_n&=1+\nu+\frac an+\frac q{n^2}+O(n^{-3}),\label{lop:eq:mean}\\
  \Var K_n&=\nu+\frac an+
-           \frac{q+5\tau^2/2}{n^2}+O(n^{-3}).\label{eq:variance}
+           \frac{q+5\tau^2/2}{n^2}+O(n^{-3}).\label{lop:eq:variance}
 \end{align}
 The probability of connectivity satisfies
-\begin{equation}\label{eq:connectivity}
+\begin{equation}\label{lop:eq:connectivity}
  \frac{c_n}{g_n}=e^{-\nu}\left[
  1-\frac{5\tau}{2n}
  +\frac{-\tau d+(35/8)t_2+(15/8)\tau^2}{n^2}
@@ -626,10 +907,10 @@ The probability of connectivity satisfies
 \begin{proof}
 The first derivative of $\log P_n$ at $1$ is the mean; its second
 derivative plus its first derivative is the variance. Apply these
-identities to \eqref{eq:logPGF}. Dividing \eqref{eq:conna} by
-\eqref{eq:alla} gives the second coefficient
+identities to \eqref{lop:eq:logPGF}. Dividing \eqref{lop:eq:conna} by
+\eqref{lop:eq:alla} gives the second coefficient
 $-h+da+a^2-k=-\tau d+(35/8)t_2+(15/8)\tau^2$ in
-\eqref{eq:connectivity}.
+\eqref{lop:eq:connectivity}.
 \end{proof}
 
 Numerically,
@@ -648,17 +929,32 @@ below to first order. All higher fixed-order component and connectivity
 corrections can be obtained by algebraic operations on the same marked
 generator.
 
-\section{Logarithmic expansion and a safe threshold inverse}
+\begin{writenote}[The decimals of this section, 6 October 2026]
+Recomputed by the write from~\eqref{lop:eq:d1}, \eqref{lop:eq:t2}
+and~\eqref{lop:eq:aq}, and the connectivity coefficient also as the ratio of
+the two expansions of Theorem~\ref{lop:thm:main} ($d_2(0)-d_2(1)-d_1(1)(d_1(0)-d_1(1))$,
+agreeing to $10^{-75}$). All five displayed values are rounded in the last
+printed digit, not truncated: $a=0.4269124670315725585203494799\ldots$,
+$q=1.2821309612014827034154838364\ldots$,
+$q+5\tau^2/2=1.3550326630042761140938219799\ldots$, the connectivity
+coefficient $-1.1545529830465942347283920852\ldots$ and
+$e^{-\nu}=0.86166669942754276\ldots$; each display is correct to within one
+unit of its last digit. BGKN's Theorem~6.1 prints $0.14889$ and $0.86166$
+for $\nu$ and $e^{-\nu}$, and Kang's Theorem~5.3.2 the connectivity limit
+$0.861666$ (Remark~\ref{lop:rem:versions}).
+\end{writenote}
+
+\section{Logarithmic expansion and a safe threshold inverse}\label{lop:sec:inverse}
 
 Take either $a_n=c_n$ or $a_n=g_n$. Write $A_*=A$ or $e^\nu A$,
 respectively, and $e_j=d_j(0)$ or $d_j(1)$. Combining
-Theorem~\ref{thm:main} with Stirling's expansion gives, for every fixed
+Theorem~\ref{lop:thm:main} with Stirling's expansion gives, for every fixed
 integer $m\geq0$,
-\begin{equation}\label{eq:logcount}
+\begin{equation}\label{lop:eq:logcount}
  \log a_n=F_m(n)+O(n^{-m-1}),
 \end{equation}
 where
-\begin{equation}\label{eq:F}
+\begin{equation}\label{lop:eq:F}
  F_m(x)=x\left(\log\frac{x}{\rho}-1\right)-2\log x
        +\log(A_*\sqrt{2\pi})+\sum_{j=1}^m\frac{\ell_j}{x^j}.
 \end{equation}
@@ -684,7 +980,7 @@ for sufficiently large real $X$.
 
 Let $L=\log X$. A convenient explicit starting point for a continuous
 inverse is
-\begin{equation}\label{eq:Lambert}
+\begin{equation}\label{lop:eq:Lambert}
  x_0=\frac{L}{W(L/(e\rho))},
 \end{equation}
 where $W$ is the positive real Lambert function. It solves
@@ -695,7 +991,7 @@ and the derivative is asymptotic to $\log x_0$, $r_m=x_0+O(1)$.
 One bounded correction is also explicit. Set
 $k_*=\log(A_*\sqrt{2\pi})$ and $\Lambda_0=\log(x_0/\rho)$. For every
 fixed $m\geq0$,
-\begin{equation}\label{eq:inverseshift}
+\begin{equation}\label{lop:eq:inverseshift}
  r_m=x_0+\frac{2\log x_0-k_*}{\Lambda_0}
            +O\!\left(\frac1{x_0\Lambda_0}\right).
 \end{equation}
@@ -704,28 +1000,28 @@ $2$. Expanding $F_m(x_0+h)-L$ gives
 $\Lambda_0h-2\log x_0+k_*+O(x_0^{-1})=O(x_0^{-1})$.
 The curvature of the leading term, the change in $-2\log x$, and any
 retained inverse-power terms are all $O(x_0^{-1})$. Division by
-$F_m'(x)\sim\Lambda_0$ gives \eqref{eq:inverseshift}. Thus $r_m-x_0\to2$;
+$F_m'(x)\sim\Lambda_0$ gives \eqref{lop:eq:inverseshift}. Thus $r_m-x_0\to2$;
 this is a statement about the continuous comparison root.
 
 Newton iteration uses the explicit derivative
-\begin{equation}\label{eq:Newton}
+\begin{equation}\label{lop:eq:Newton}
  F_m'(x)=\log(x/\rho)-\frac2x
              -\sum_{j=1}^m\frac{j\ell_j}{x^{j+1}}.
 \end{equation}
 
-\begin{theorem}[Integer-safe inverse]\label{thm:inverse}
+\begin{theorem}[Integer-safe inverse]\label{lop:thm:inverse}
 For each fixed $m\geq0$ there is $K_m>0$ such that, for all sufficiently
 large $X$, with $r=r_m(X)$ and
 \[
  \delta=\frac{K_m r^{-m-1}}{\log r},
 \]
 one has
-\begin{equation}\label{eq:inverse}
+\begin{equation}\label{lop:eq:inverse}
  \ceil{r-\delta}\ \leq\ N(X)\ \leq\ \ceil{r+\delta}.
 \end{equation}
 \end{theorem}
 \begin{proof}
-Write the error in \eqref{eq:logcount} as $E_m(n)$, with
+Write the error in \eqref{lop:eq:logcount} as $E_m(n)$, with
 $|E_m(n)|\leq C_mn^{-m-1}$ beyond a fixed integer threshold. Increase
 that threshold so that for $|x-r|\leq2$,
 \[
@@ -747,7 +1043,7 @@ $n_+\geq r+\delta$. The mean value theorem gives
 Allowing for $E_m$ shows $a_{n_-}<X$ and $a_{n_+}\geq X$.
 Eventual monotonicity, together with $X$ exceeding the finitely many
 earlier values, proves $n_-+1\leq N(X)\leq n_+$, which is
-\eqref{eq:inverse}.
+\eqref{lop:eq:inverse}.
 \end{proof}
 
 The two ceilings agree except in a shrinking neighborhood of an integer.
@@ -756,11 +1052,116 @@ $N(X)=\ceil{r_m(X)}$. Exact-threshold inputs $X=a_n$ are particularly
 sensitive: even a tiny positive error $r_m(X)-n$ makes the latter ceiling
 wrong. The companion can exhibit this numerically, but such diagnostics
 are not proofs of a remainder constant or of a finite-input enclosure.
-Theorem~\ref{thm:inverse} is an asymptotic existence result. A certified
+Theorem~\ref{lop:thm:inverse} is an asymptotic existence result. A certified
 finite-input algorithm would additionally require evaluated error
 constants, a starting threshold, and interval evaluation of the root.
 
-\section{Reproducibility and the meaning of the checks}
+\begin{remark}[{[write]} The onset of monotonicity, 6~October 2026]\label{lop:rem:onset}
+The injections above give $g_{n+1}>g_n$ for every $n\ge1$ and
+$c_{n+1}>c_n$ for every $n\ge2$, while $g_0=g_1=1$ and $c_1=c_2=1$.
+\emph{Proof.} For $n\ge1$, adding $n+1$ as an isolated vertex is injective
+(delete it again) and keeps outerplanarity (draw the new vertex in the outer
+face); the graph on $[n+1]$ whose only edge is $\{1,n+1\}$ is outerplanar and
+outside the image. For $n\ge2$, adding $n+1$ with the single edge
+$\{1,n+1\}$ is injective and keeps connectivity and outerplanarity (vertex
+$1$ lies on the outer face, and the pendant edge can be drawn there); every
+image has $n+1$ of degree one, while the tree with edges $\{1,n+1\}$,
+$\{n+1,2\}$ and $\{2,j\}$ for $3\le j\le n$ (a path $1,n+1,2$ when $n=2$) is
+connected, outerplanar like every tree, and has $n+1$ of degree two. The
+equalities are the data of Remark~\ref{lop:rem:oeis}. \emph{Consequence.}
+For every $X>1$, $N(X)=\min\{n\ge n_1:a_n\ge X\}$ with $n_1=1$ for $g$ and
+$n_1=2$ for $c$, a minimum over a strictly increasing sequence; the phrase
+``$X$ exceeding the finitely many earlier values'' in the proof of
+Theorem~\ref{lop:thm:inverse} is then automatic, and only the threshold of
+the error bound remains existential.
+\end{remark}
+
+\begin{remark}[{[write]} The inverse and the transseries volume, 6~October 2026]\label{lop:rem:transseries}
+Compared, statement by statement, with
+\path{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex};
+symbols of the volume carry the subscript ``vol''.
+\begin{enumerate}[label=(\alph*)]
+\item \emph{Instance.} By Remark~\ref{lop:rem:onset}, for $X>1$ the
+ threshold $N(X)$ is the integer staircase $N_\ast$ of
+ \file{p0:def:three-inverses} with $A_n=a_n$ and $n_1=1$ (for $g$) or $2$
+ (for $c$), so \file{p0:thm:staircase}(1) gives $N(X)=\ceil{\nu_{\mathcal
+ A}(X)}$ for every admissible interpolation $\mathcal A$. The source does not
+ use this.
+\item \emph{Theorem~\ref{lop:thm:inverse}: an analogue as stated and
+ proved; also a consequence of \file{p0:thm:staircase}(1) once an
+ interpolation is supplied.} The source proves the bracket directly, by the
+ mean value theorem at two integer test points, about the root $r_m$ of the
+ model $F_m$, which does not interpolate the counts ($F_m(n)\neq\log a_n$ in
+ general); its conclusion has the form of \file{p0:thm:staircase}(2). A
+ second route (added by the write): let $\tilde E$ be the piecewise-linear
+ interpolation of the integer errors $E_m(n)=\log a_n-F_m(n)$ and put
+ $\log\mathcal A=F_m+\tilde E$. On each $[n,n+1]$, $|\tilde E'|=
+ |E_m(n+1)-E_m(n)|\le2C_mn^{-m-1}$ while $F_m'(x)\sim\log x$, so there is
+ $n_1'$ beyond which $\mathcal A$ is continuous, strictly increasing and
+ equal to $a_n$ at the integers: an admissible interpolation. Let
+ $\nu=\nu_{\mathcal A}(X)$, so that $F_m(\nu)-F_m(r)=-\tilde E(\nu)$. Since
+ $|\tilde E(x)|\le\max(|E_m(\lfloor x\rfloor)|,|E_m(\lceil x\rceil)|)\to0$
+ and $F_m'$ is eventually at least $1$ on the segment between $\nu$ and
+ $r$, eventually $|\nu-r|\le1$; then, with the threshold of the source's
+ proof, $|\tilde E(\nu)|\le2C_mr^{-m-1}$ and $F_m'\ge\frac12\log r$ on
+ that segment, so $|\nu-r|\le4C_mr^{-m-1}/\log r\le\delta$ (the source's
+ $K_m=8C_m$). Now \file{p0:thm:staircase}(1) and the monotonicity of the
+ ceiling give $\ceil{r-\delta}\le N(X)=\ceil{\nu}\le\ceil{r+\delta}$ for
+ all large $X$, which is~\eqref{lop:eq:inverse}.
+\item \emph{Instance.} The Lambert start~\eqref{lop:eq:Lambert} is
+ \file{p0:prop:factorial-core} with $\kappa_{\mathrm{vol}}=1$ and
+ $d_{\mathrm{vol}}=-(1+\log\rho)$: there $v=W_0(Le^{d_{\mathrm{vol}}})=
+ W_0(L/(e\rho))$ and $X_{\mathrm{vol}}=e^{v-d_{\mathrm{vol}}}=e\rho e^v=L/v$,
+ which is $x_0$. Its large-$L$ expansion is a formal instance of
+ \file{plt:thm:lw-template}: with $\xi_{\mathrm{vol}}=\log L$ and
+ $Z_{\mathrm{vol}}=\log x_0$ the equation $x_0(\log(x_0/\rho)-1)=L$ reads
+ $Z+\log Z+\log(1-(1+\log\rho)/Z)=\xi$, data
+ $(\rho_{\mathrm{vol}},\mu_{\mathrm{vol}},\beta_{\mathrm{vol}},B_{\mathrm{vol}})
+ =(1,1,0,\log(1-(1+\log\rho)t))$, $t=1/Z$, over $\mathbb R$; it returns
+ $x_0=(L/\log L)\exp(\sum_{n\ge1}q_n(\log\log L)(\log L)^{-n})$.
+\item \emph{Formal instance after a change of variable.} Put
+ $x=x_0(1+E)$, $t=1/x_0$ and $\Lambda_0=\log(x_0/\rho)$. Using
+ $x_0(\Lambda_0-1)=L$, the equation $F_m(x)=L$ divided by $x_0$ becomes
+ \[
+ \Lambda_0E+h_{\mathrm{vol}}(E)+f_{\mathrm{vol}}(t,E)=0,\qquad
+ h_{\mathrm{vol}}(u)=(1+u)\log(1+u)-u,
+ \]
+ \[
+ f_{\mathrm{vol}}(t,u)=t\bigl(k_*-2\log x_0-2\log(1+u)\bigr)
+ +\sum_{j=1}^m\ell_jt^{j+1}(1+u)^{-j},
+ \]
+ which is \file{p0:thm:core-reversion} with $\Lambda_{\mathrm{vol}}=\Lambda_0$,
+ in a coefficient ring containing $\Lambda_0^{-1}$ and
+ $\log x_0=\Lambda_0+\log\rho$. Its first coefficient
+ $e_1=(2\log x_0-k_*)/\Lambda_0$ gives $x-x_0=x_0e_1t+\dots=e_1+\dots$, the
+ displacement displayed in~\eqref{lop:eq:inverseshift}. Up to the terms
+ $\ell_jx_0^{-j}/\Lambda_0$, it is also the $m=1$ term of
+ \file{p0:prop:operator-form}, since the core slope of
+ $x(\log(x/\rho)-1)$ is exactly $\Lambda_0$. The instance is formal only;
+ the remainder $O(1/(x_0\Lambda_0))$ is the source's own analytic estimate.
+\item \emph{Not shown to be an instance of \file{plt:thm:lw-template}.} The
+ full model equation $F_m(x)=L$ is not of monomial--logarithmic type in the
+ two charts the write tested: with $Z_{\mathrm{vol}}=x$ the balance $x\log
+ x$ is not $\rho_{\mathrm{vol}}Z+\mu_{\mathrm{vol}}\log Z$ with constant
+ $\rho_{\mathrm{vol}},\mu_{\mathrm{vol}}$; with $\xi_{\mathrm{vol}}=\log L$,
+ $Z_{\mathrm{vol}}=\log x$, the terms $-2\log x+k_*+\sum_j\ell_jx^{-j}$
+ contribute $Ze^{-Z}$ and $e^{-Z}$ to the equation, which are not in
+ $t\,\mathbb R[\log Z][[t]]$, $t=1/Z$ (hypothesis (H3) fails). The write
+ does not claim that no other change of variables makes it one; only the
+ leading balance~(c) is shown to be an instance.
+\item The reversion~\eqref{lop:eq:formalT} of Section~\ref{lop:sec:formal}
+ is ordinary power-series reversion. Formally it is the case
+ $\mu_{\mathrm{vol}}=0$ of \file{plt:thm:lw-template}: with
+ $\xi_{\mathrm{vol}}=-1/X$ and $Z_{\mathrm{vol}}=1/t$ one has
+ $-1/X=Z\,W(1/Z)^{-1/2}=\rho_{\mathrm{vol}}Z+\beta_{\mathrm{vol}}+B_{\mathrm{vol}}(Z)$,
+ $\rho_{\mathrm{vol}}=\sqrt{2/\kappa_2}$, $B_{\mathrm{vol}}\in t\,\mathbb
+ R[[t]]$. The source uses Lagrange inversion directly and needs nothing
+ from the volume.
+\end{enumerate}
+No novelty is claimed for any of these inversions.
+\end{remark}
+
+\section{Reproducibility and the meaning of the checks}\label{lop:sec:checks}
 
 The companion is self-contained after its documented Python dependencies
 are installed. No network access is needed for its tests. It contains
@@ -773,7 +1174,7 @@ The checks are deliberately separated by what they establish:
 \begin{enumerate}
 \item Exact block coefficients are computed from the square-root identity
 and independently from $S=1+uS+uS^2$. Integer Bell recurrences implement
-\eqref{eq:connexact}, and the exponential formula computes $g_n$.
+\eqref{lop:eq:connexact}, and the exponential formula computes $g_n$.
 All 200 positive-index terms of each included OEIS b-file agree.
 The connected index-zero convention is checked separately.
 \item Literal enumeration visits each simple edge set through $n=5$.
@@ -785,7 +1186,7 @@ It reproduces $c_1,\ldots,c_5=1,1,4,37,602$ and
 $g_1,\ldots,g_5=1,2,8,63,893$.
 \item Exact arithmetic in $\QQ(\tau)$ implements the finite Gaussian
 rule through four corrections and checks the marked identities
-\eqref{eq:d1v}--\eqref{eq:d2v}, as well as the moment and connectivity
+\eqref{lop:eq:d1v}--\eqref{lop:eq:d2v}, as well as the moment and connectivity
 algebra. Stored rational-basis certificates are compared exactly.
 \item A separately coded ordinary-Taylor implicit inversion and
 central-binomial transfer checks the coefficient values at high
@@ -811,12 +1212,31 @@ provenance file. Output directories must be new; an existing output is
 rejected rather than silently overwritten. The release manifest records
 the bytes actually delivered.
 
-\section{Source normalization and attribution}
+\begin{writenote}[Reruns in the repository, 6 October 2026]
+The companion's README, its provenance file and the release manifest are
+shipped as \file{companion-README.md},
+\file{data/companion-fixtures-provenance.json} and
+\file{data/companion-results-manifest.json}; the checksum manifests are not
+shipped, and the report README gives the retrieval of the delivered package
+and a route that rebuilds the companion's layout from the shipped files.
+The delivered \file{build.py} and \file{tests.py} need POSIX
+\texttt{O\_NOFOLLOW} and do not run on Windows; the four computations they
+drive were rerun by the dossier and again by the write (Route~B, about
+11~s): all four result files byte-identical to the shipped ones, and all 15
+input hashes of the shipped manifest equal to the shipped files. The
+residuals behind the corroboration in Remark~\ref{lop:rem:bgkn}, multiplied
+by $n^5$, are $138.3$, $133.3$, $131.1$, $130.3$ for $c_n$ and $333.1$,
+$321.0$, $315.8$, $313.9$ for $g_n$ at $n=30,60,120,200$: consistent with
+a remainder of order $n^{-5}$ in~\eqref{lop:eq:conna}--\eqref{lop:eq:alla}
+at $J=4$, and diagnostics only.
+\end{writenote}
+
+\section{Source normalization and attribution}\label{lop:sec:sources}
 
 The leading outerplanar theorem in published BGKN
 \cite[Theorem 5.1, pp.~2102--2103]{bgkn} uses the same unrooted labeled
-normalization as \eqref{eq:alla}. It prints the all-graph amplitude as
-$0.018216$. Equations \eqref{eq:constants} and \eqref{eq:normalization}
+normalization as \eqref{lop:eq:alla}. It prints the all-graph amplitude as
+$0.018216$. Equations \eqref{lop:eq:constants} and \eqref{lop:eq:normalization}
 give instead
 \[
  e^\nu A=0.008096047476080704996204256500405217\ldots,
@@ -852,7 +1272,7 @@ sampling paper, the subcritical graph-class framework, and Finch's
 outerplanar growth-constant note \cite{finch}. Finch's block convention
 excludes $K_2$ from his block function and compensates with an extra
 linear term in the rooted equation; combining them yields
-\eqref{eq:block}. Unlabelled outerplanar graph work \cite{unlabelled}
+\eqref{lop:eq:block}. Unlabelled outerplanar graph work \cite{unlabelled}
 concerns different sequences and constants.
 
 No explicit first-four correction table, two-order component-moment
@@ -861,14 +1281,130 @@ in the inspected source portions and bounded searches. This is a source
 coverage statement, not proof of worldwide novelty. The leading theorem,
 the shifted-Poisson limit, and the general machinery remain prior work.
 
-\section{Further questions}
+\begin{remark}[{[write]} BGKN's Theorem~5.1 corrected, with proof, 6~October 2026]\label{lop:rem:bgkn}
+The published Theorem~5.1 of~\cite{bgkn} (p.~2102, read on the rendered
+page) states:
+\begin{center}\small
+\parbox{0.92\textwidth}{\emph{The number $h_n$ of outerplanar graphs is
+asymptotically $h_n\sim h\cdot n^{-5/2}\cdot\rho^{-n}n!$ where
+$\rho\approx0.13659$ and $h\approx0.018216$.}}
+\end{center}
+Its $h_n$ is $g_n$ here, and its $\rho$ is $\rho$ here: on the same page
+BGKN's $B'(x,1)$ is $b$ of~\eqref{lop:eq:block}, its $\Psi_1(u)=ue^{-B'(u,1)}$,
+its $\tau\approx0.17076$ is a root of~\eqref{lop:eq:quartic}, and
+$\rho=\Psi_1(\tau)$.
+\emph{Claim.} The limit $\lim_n g_n/(n^{-5/2}\rho^{-n}n!)$ exists and equals
+$e^\nu A=0.0080960474760807049962\ldots<0.0084$. So the exponent $-5/2$ and
+the radius are right, and the printed amplitude $h\approx0.018216$ is
+wrong; it agrees, to its six printed decimals, with
+$\tfrac94e^\nu A=0.0182161068211815862414\ldots$ (and
+$0.018216/(e^\nu A)=2.24998\ldots$).
+
+\emph{Proof.} (i) Theorem~\ref{lop:thm:main} with $J=0$ and $v=1$,
+that is~\eqref{lop:eq:alla}, gives
+$g_n=e^\nu A\,n!\rho^{-n}n^{-5/2}(1+O(n^{-1}))$; so the limit exists, equals
+$e^\nu A$, and any $h$ with $g_n\sim h\,n^{-5/2}\rho^{-n}n!$ equals $e^\nu A$.
+(ii) An elementary bound. Differentiating
+$b'(u)=\bigl(5-(u-3)(1-6u+u^2)^{-1/2}\bigr)/8$ gives
+$b''(u)=(1-6u+u^2)^{-3/2}$, so by~\eqref{lop:eq:saddle}
+$\kappa_2=\tau b'(\tau)+\tau^2b''(\tau)=1+\tau^2(1-6\tau+\tau^2)^{-3/2}$. The
+root lies in $(0.17076,0.17077)$ (Section~\ref{lop:sec:generator}; the sign
+change is confirmed in the note there). On this interval $1-6u+u^2$ is
+decreasing and lies between $0.004542$ and $0.004600$, so
+$(1-6\tau+\tau^2)^{3/2}<0.000312$ and $\kappa_2>1+0.17076^2/0.000312>94.4$;
+hence $A=\tau/\sqrt{2\pi\kappa_2}<0.17077/\sqrt{2\pi\cdot94.4}<0.007012$.
+Since $b$ has nonnegative coefficients, it is nonnegative and increasing on
+$[0,\tau]$, so $0\le B(\tau)\le\tau b(\tau)$ and
+$\nu=\psi(\tau)=\tau-\tau b(\tau)+B(\tau)\le\tau<0.17077$; thus
+$e^\nu<1.1863$ and $e^\nu A<0.00832<0.0084$. As $0.018216>2\cdot0.0084$, the
+printed value exceeds the true amplitude by more than a factor of two.
+(iii) An enclosure. On $[0,R]$ the function
+$F(u)=\tfrac{u-3}2\sqrt{1-6u+u^2}-4\log\bigl(3-u-\sqrt{1-6u+u^2}\bigr)$ is an
+antiderivative of $\sqrt{1-6u+u^2}$ (differentiate), so
+$B(\tau)=(\tau+\tfrac52\tau^2)/8-(F(\tau)-F(0))/8$, and $\nu$, $\kappa_2$
+and $A$ are elementary in~$\tau$. Mpmath interval arithmetic at 40 digits,
+from the enclosure of $\tau$ in the note at the end of
+Section~\ref{lop:sec:generator}, gives
+\[e^\nu A\in[0.00809604747608070499620425650036,\ 0.00809604747608070499620425650046],\]
+\[\tfrac94e^\nu A\in[0.01821610682118158624145957712583,\ 0.01821610682118158624145957712603],\]
+whose six-decimal rounding is $0.018216$.\qquad$\square$
+
+\emph{Corroboration, not part of the proof.} From the exact b-file values,
+$g_n/(0.018216\,n!\rho^{-n}n^{-5/2})=0.48866$, $0.46548$, $0.45472$,
+$0.45055$ at $n=30,60,120,200$, decreasing towards
+$e^\nu A/0.018216=0.44444\ldots$, while the relative residual of $g_n$
+after the four corrections of~\eqref{lop:eq:alla} is $1.37\cdot10^{-5}$,
+$4.13\cdot10^{-7}$, $1.27\cdot10^{-8}$, $9.81\cdot10^{-10}$ (and of $c_n$
+after those of~\eqref{lop:eq:conna}: $5.69\cdot10^{-6}$, $1.71\cdot10^{-7}$,
+$5.27\cdot10^{-9}$, $4.07\cdot10^{-10}$). \emph{The introduction of the same
+article} (pp.~2092--2093) prints $h_n\sim h\cdot n^{-3/2}\sigma^{-n}n!$ with
+$\sigma\approx0.13659$, a shifted Poisson parameter $\xi=0.14840$ and the
+connectivity limit $e^{-\xi}=0.86208$. These are wrong as well: by~(i),
+$g_n n^{3/2}\rho^n/n!\sim e^\nu A/n\to0$, so no positive $h$ satisfies the
+introduction's formula; and Theorem~\ref{lop:thm:TV} with $\lambda_n\to\nu$
+gives the limit law $1+\mathrm{Poisson}(\nu)$, $\nu=0.1488867426\ldots$, so
+$0.14840$ is wrong in its fourth decimal and $0.86208$ (which is
+$e^{-0.14840}=0.862086\ldots$ truncated) differs from
+$e^{-\nu}=0.8616666\ldots$. BGKN's own Theorem~6.1 (p.~2103) has the right
+values $\xi\approx0.14889$ and $e^{-\xi}\approx0.86166$, and its table
+(p.~2105) $0.1489$ and $0.8616$. Section~\ref{lop:sec:sources} states all of
+this; the write has read the pages and supplied the proof. No cause is
+established (question~\ref{lop:q:cause} of Section~\ref{lop:sec:questions}).
+\end{remark}
+
+\begin{remark}[{[write]} Other versions and BGKN's Theorem~7.1, 6~October 2026]\label{lop:rem:versions}
+\begin{enumerate}[label=(\alph*)]\raggedright
+\item \emph{The preprint}~\cite{bgknpreprint} (version~1, 19~December 2005,
+ the only version listed). Its Theorem~5.1 has the same form with
+ ``$\rho\approx0.13659$ and $h\approx0.017657$'': wrong by the proof of
+ Remark~\ref{lop:rem:bgkn}, being $2.18094\ldots$ times $e^\nu A$ (not
+ $\tfrac94$). Its Theorem~6.1 prints the parameter $0.14840$ and the limit
+ $0.86208$, the values that the published introduction retains, and its
+ introduction has the exponent $-3/2$. Its Theorem~7.1 prints
+ $s\approx0.013961$ (item~(d)).
+\item \emph{The EuroComb~2005 extended abstract}~\cite{eurocomb}: its
+ Theorem~3 gives $h_n$ with exponent $-3/2$ and the radius $0.136593$, and
+ no value of the amplitude.
+\item \emph{Kang's thesis}~\cite{kang}. Section~5.2 (p.~55) gives
+ $C(R)\doteq0.148886$ and $\alpha_1\doteq0.006976$ (truncations of $\nu$ and
+ $A$), the relation $\alpha_0=\alpha_1e^{C(R)}$ for the all-graph amplitude,
+ and ``$\alpha_0=\alpha_1e^{C(R)}\doteq0.008095$''; Theorem~5.2.1 (stated on
+ p.~9) prints $c_1\doteq0.008095$ and $\gamma\doteq7.32098$, and
+ Theorem~5.3.2 the connectivity limit $0.861666$ (a truncation of
+ $e^{-\nu}$). So, as Section~\ref{lop:sec:sources} says, the thesis has the
+ correct analytic normalization, and its decimal $0.008095$ is neither the
+ rounding nor the truncation of $e^\nu A=0.0080960\ldots$ (both are
+ $0.008096$). The product of its two printed values,
+ $0.006976\,e^{0.148886}=0.0080959318\ldots$, truncates to $0.008095$;
+ whether the printed value arose that way is not known.
+\item \emph{BGKN's Theorem~7.1} (graphs with no $K_{2,3}$ minor, p.~2104)
+ reads ``$s_n\sim s\cdot n^{-5/2}\cdot\rho^{-n}n!$ where $\rho\approx0.13648$
+ and $s\approx0.018288$''. By BGKN's own description its block function is
+ $b(u)+u^3/6$ (the outerplanar blocks and the single labelled $K_4$). The
+ write evaluated the same constants for this block function: the saddle
+ $0.1707605103918\ldots$, the radius $0.1364804209511\ldots$,
+ $\nu'=0.1487804550899\ldots$ and the amplitude
+ $e^{\nu'}A'=0.0081282385507081\ldots$. Then $0.018288=2.24993\ldots\times
+ e^{\nu'}A'$: it is $\tfrac94e^{\nu'}A'=0.0182885367\ldots$ truncated to six
+ decimals, the same factor as in Theorem~5.1, while its Theorem~7.3 values
+ $0.14879$ and $0.86175$ agree with $\nu'$ and $e^{-\nu'}=0.861758\ldots$ to
+ within one unit of their last digits.
+ Exact counts of this class from~\eqref{lop:eq:connexact} with $b+u^3/6$
+ (the write's own code; $s_1,\dots,s_6=1,2,8,64,918,20284$) give
+ $s_n/(e^{\nu'}A'\,n!\rho'^{-n}n^{-5/2})=1.0735$, $1.0354$, $1.0175$ at
+ $n=40,80,159$. This is an observation, not a theorem of this report:
+ Theorem~\ref{lop:thm:main} is stated for $b$ only (question~\ref{lop:q:k23}).
+\end{enumerate}
+\end{remark}
+
+\section{Further questions}\label{lop:sec:questions}
 
 Several next steps would add information beyond merely printing more
 terms from the same generator.
 \begin{enumerate}
 \item Evaluate explicit remainder constants and starting thresholds,
 then combine them with interval arithmetic to turn
-Theorem~\ref{thm:inverse} into a finite-input certified algorithm.
+Theorem~\ref{lop:thm:inverse} into a finite-input certified algorithm.
 \item Determine the growth of $d_j(v)$ as $j$ increases. The fixed-order
 proof does not address optimal truncation, divergence, or exponentially
 small corrections.
@@ -878,6 +1414,46 @@ finite-order distributional approximation requires care.
 \item Extend the marked exact cancellation to edge statistics jointly
 with components, retaining complex uniformity and the abstract-graph
 normalization. The leading edge-count limit theory is already classical.
+\end{enumerate}
+
+\begin{writenote}[Added 6 October 2026, under Vladimir's standing rule of 4 October 2026]
+The source's four questions stand; Remark~\ref{lop:rem:onset} makes the
+monotonicity onset of question~1 explicit ($n_1=1$ for $g$, $2$ for $c$),
+leaving the remainder constants and the error threshold. Three questions are
+added; the first two come from Section~\ref{lop:sec:sources} and
+Remark~\ref{lop:rem:versions}, the third from the non-claim of
+Section~\ref{lop:sec:formal}.
+\end{writenote}
+\begin{enumerate}[start=5]
+\item\label{lop:q:cause} \emph{The cause of BGKN's factor.} Find the step
+that makes BGKN's printed amplitudes $\tfrac94$ times the true ones
+(Remark~\ref{lop:rem:bgkn}; the source: ``No cause of that discrepancy is
+established here''), and decide whether BGKN's series--parallel constants
+$c\approx0.0067912$ and $g\approx0.0076388$ (its Theorem~3.7, computed by
+$c=3C_3/(4\sqrt\pi)$, $g=\exp(C_0)c$) are affected. The recurrence of the
+same factor in its Theorem~7.1 (Remark~\ref{lop:rem:versions}(d)) suggests
+a slip common to the two outerplanar-type computations; the write has not
+located it. Missing: a recomputation of the series--parallel constants from
+BGKN's implicit equations, and the preprint's different value $0.017657$
+explained.
+\item\label{lop:q:k23} \emph{Graphs with no $K_{2,3}$ minor.} Prove
+Theorem~\ref{lop:thm:main} for the block function $b(u)+u^3/6$ and so turn
+Remark~\ref{lop:rem:versions}(d) into a correction of BGKN's Theorem~7.1
+($s=e^{\nu'}A'=0.0081282\ldots$, not $0.018288$). Sketch: the proofs of
+Sections~\ref{lop:sec:identities}--\ref{lop:sec:proof} use of $b$ only that
+its coefficients are nonnegative, that $b_1=1$, that $ub'(u)$ increases to
+infinity on $(0,R)$ and that the saddle lies inside the disc of
+analyticity, and $u^3/6$ preserves all four. Missing: the restatement and
+the check that no step uses the special form of~\eqref{lop:eq:block} (the
+field $\QQ(\tau)$ and the quartic~\eqref{lop:eq:quartic} change).
+\item\label{lop:q:singular} \emph{A second analytic route.} Promote the
+formal singular expansion of Section~\ref{lop:sec:formal} to a proof: the
+source says one ``must supply suitable $\Delta$-domain continuation and
+transfer remainder hypotheses, as in the established subcritical theory'',
+and that ``that additional route is not silently assumed here''. Sketch:
+the subcritical framework~\cite{subcritical} applied to $T=ze^{b(T)}$.
+Missing: the continuation of $T$ to a $\Delta$-domain and the transfer of
+each fixed order, uniformly in the marker.
 \end{enumerate}
 
 \clearpage
@@ -917,5 +1493,14 @@ OEIS-hosted author note,
 \bibitem{unlabelled} M. Bodirsky, \'E. Fusy, M. Kang, and S. Vigerske,
 \emph{Enumeration and asymptotic properties of unlabeled outerplanar graphs},
 \url{https://arxiv.org/abs/math/0511422}.
+\bibitem{oeisblocks} OEIS Foundation Inc.,
+\emph{A097999: Number of 2-connected outerplanar graphs on $n$ labeled nodes},
+\url{https://oeis.org/A097999}. Read 6 October 2026 (added by the write).
+\bibitem{eurocomb} M. Bodirsky, O. Gim\'enez, M. Kang, and M. Noy,
+\emph{On the number of series parallel and outerplanar graphs (extended
+abstract)}, title as printed on the copy cached at
+\url{https://oeis.org/A097999/a097999_1.pdf}; A097999 gives it as
+Proceedings of EuroComb~05, DMTCS Proceedings Volume AE, pp.~383--388
+(added by the write).
 \end{thebibliography}
 \end{document}
