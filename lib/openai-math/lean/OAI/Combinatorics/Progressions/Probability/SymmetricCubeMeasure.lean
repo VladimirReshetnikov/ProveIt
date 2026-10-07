@@ -1,3 +1,5 @@
+/- Modified for ProveIt: use Set.preimage_setOf_eq for predicate
+preimages on Mathlib v4.32.0. Mathematical statements unchanged. -/
 import Mathlib.MeasureTheory.Constructions.Pi
 import OAI.Combinatorics.Progressions.Estimates.SymmetricScalarSublevel
 import OAI.Combinatorics.Progressions.Polynomial.PolynomialCoordinateSlice
@@ -43,7 +45,7 @@ theorem symmetricCubeMeasure_sublevel_succ {n : ℕ}
   have hs : MeasurableSet {x | |MvPolynomial.eval x p| ≤ u} :=
     (isClosed_le p.continuous_eval.abs continuous_const).measurableSet
   have h := (symmetricCubeMeasure_cons n).measureReal_preimage hs.nullMeasurableSet
-  simpa only [Set.preimage_ofPred_eq, polynomialCoordinateSlice_eval] using h.symm
+  simpa only [Set.preimage_setOf_eq, polynomialCoordinateSlice_eval] using h.symm
 
 theorem symmetricCubeMeasure_sublevel_step {n d : ℕ}
     (p : MvPolynomial (Fin (n + 1)) ℝ) (hd : 0 < d) (hp : p.degreeOf 0 ≤ d)

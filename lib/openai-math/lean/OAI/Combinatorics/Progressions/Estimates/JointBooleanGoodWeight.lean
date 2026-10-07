@@ -1,5 +1,5 @@
 /- Modified for ProveIt: import Lean 4.32 compatibility declarations.
-Statements and proofs are unchanged from the pinned upstream source. -/
+Mathematical statements unchanged. Use Set.preimage_setOf_eq for predicate preimages. -/
 import OAI.Compat.Measurable
 import OAI.Combinatorics.Progressions.Dynamics.ScalarCubeBoundaryLogBudget
 import OAI.Combinatorics.Progressions.Estimates.BoundedInequalityGoodCutoff
@@ -457,7 +457,7 @@ theorem booleanMinorDeterminant_sublevel_marginal {B O F α : Type*}
       measurable_const
   have hm := (restrictBlockParameters_cube_measurePreserving (F := F) (α := α) block hblock).measureReal_preimage
     hs.nullMeasurableSet
-  simpa only [Set.preimage_ofPred_eq, ← booleanMinorDeterminant_restrict] using hm
+  simpa only [Set.preimage_setOf_eq, ← booleanMinorDeterminant_restrict] using hm
 
 end Erdos3
 
