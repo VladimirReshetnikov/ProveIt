@@ -5,7 +5,7 @@ Scope
   bound is claimed. Smaller four- and five-term thresholds are proved below.
   The source catalogue contains all 120 unique numbered theorem, lemma,
   proposition, and corollary headings in sz-thm-gowers-proof.tex.
-  There are 113 checked exact companion proofs and 7 open statements.
+  There are 114 checked exact companion proofs and 6 open statements.
   The JSON ledger records every statement, its TeX heading lines, its Lean
   definition, and related results. Conditional implications, restricted cases,
   and counterexamples are not counted as proofs of the full statement.
@@ -2671,6 +2671,36 @@ Exact source threshold and a smaller explicit bound for four terms
   exact displayed threshold. This is a restricted instance, not a proof
   of Theorem 18.2 for all lengths, and the 113/120 count does not change.
 
+Repaired Lemma 16.10 with an exact companion
+  The printed encoding is renamed lemma_16_10_printed_unit_encoding. Its
+  formal negation, lemma_16_10_packaged_premises_counterexample, now
+  targets that name with unchanged content. The catalogue lemma_16_10 now
+  states what the printed proof actually establishes from the same two
+  packaged inputs (final-coordinate cross-sections and the Lemma 16.9 line
+  covers). For every loss rho in (0,1], every m and every proper box P of
+  width at least m, there are a set H of at least (1-rho)|P| points, a
+  partition of P into proper boxes, and multilinear maps covering phi_1 on
+  B_1 inside H. Writing sigma = rho/4, l for the Lemma 16.9 width at sigma,
+  s = gamma^-2*s(2^-(k+2)*theta,gamma,k) for the cross-section parameter and
+  r = ceil(6*max(1,qGamma)/sigma) for the number of sampled anchor slices,
+    b = q((r*s)^-1*sigma,gamma,k)^(r*s),  e = c((r*s)^-1*sigma,gamma,k)^(r*s),
+  the graph count is at most max(b, choose(r,2)*b^2), and every cell has
+  width at least sqrt((floor(l)/8)^e)/4. As in the migrated Lemmas 16.6 and
+  16.9, the prime modulus and k >= 1 are explicit. Section16.lean names the
+  controls section16Lemma10Samples, -SliceQ, -SliceC, -GraphBound and -Width.
+  Proofs16Lemma10 proves lemma_16_10_holds from
+  Section16AllBoxLineCovers.explicit_multilinear_cover, using the proved
+  reserve s >= 2 (section16_face_parameter_lift_reserve).
+  This repairs the statement in the same way as Corollary 16.11, which
+  already records the exponent its proof yields. The printed
+  (gamma,1)-multiple linearity needs the closing comparison with
+  q(rho,gamma,k+1) and m^c(rho,gamma,k+1), and that comparison fails: r, and
+  hence the refinement count r*s, grows like a power of 1/rho, so b and 1/e
+  are exponential in a power of 1/rho. The repaired lemma therefore does not
+  supply the unit-parameter piece used by the printed proof of Theorem 16.2.
+  That theorem stays open, together with Corollary 16.11, Theorems 18.1, 18.2
+  and 1.3, and Corollary 18.7. Count: 114/120.
+
 Reproducible checks (from repository root)
   python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.Audit
   python3 Combinatorics/Ramsey/scripts/gowers_status.py
@@ -2699,9 +2729,11 @@ Next substantial obligations
      statements, and resolve the documented Corollary 16.11 bound.
      Its one-dimensional base case, Lemma 16.3, the inductive extraction
      Lemma 16.4, and migrated Lemmas 16.6 and 16.9 are now proved.
-     Lemma 16.10 and the closing induction remain. Source 50
+     Lemma 16.10 is now proved in repaired form (explicit controls; see
+     above); the closing induction remains. Source 50
      (ramsey_branch_cover_obstructions) of local-quantitative-refinements
-     shows the catalogued lemma_16_10 is false as encoded: at
+     shows the printed lemma_16_10 encoding (now
+     lemma_16_10_printed_unit_encoding) is false: at
      k = theta = gamma = 1, for every prime above an explicit bound, both
      packaged premises hold but at most 5p^2/16 of the required p^2/2
      points can be covered (checked against Section16.lean at intake,
@@ -2709,9 +2741,16 @@ Next substantial obligations
      repaired statements: source 49's acyclic cover theorem and source 50's
      repair interface. The finite-alphabet affine/multilinear cover bound
      and its 5/16 box-partition consequence, balanced-word existence,
-     both packaged premises, and the literal negation of lemma_16_10
-     are now formalized. Preserve that predicate while developing a
-     faithful contextual repair; the false abstraction cannot be proved.
+     both packaged premises, and the literal negation of the printed
+     encoding are formalized; that predicate is preserved under its new name.
+     The exact Theorem 16.2 needs a lifting step whose controls are
+     polynomial in the inner loss rho. The trivial small-width regime does
+     not help: the target cell width P.width^(c(rho/R,gamma,k)^R), with
+     R = gamma^-2*s(theta,gamma,k), stays at least 2 for every
+     rho >= (R/gamma)*(log 2/log N)^(1/(A*R)), where A = 2^(2^(k+8)). Down to
+     that bound, controls exponential in a power of 1/rho exceed the
+     polynomial target once N is large. This is a heuristic about the
+     sampling route, not a formal impossibility.
      The exact induction now has a proved reduction from the existential
      Section16SelectedLiftAt obligation, allowing sufficient-mass selection
      inside a chosen common-base domain. Its finite-global-candidate case
