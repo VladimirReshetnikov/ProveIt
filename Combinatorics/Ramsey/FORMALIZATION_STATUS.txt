@@ -12,8 +12,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 261 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 2,364 public Gowers theorems and found only propext,
+  All 263 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 2,392 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 101 exact
   companion proofs and 19 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -745,8 +745,9 @@ Terminal Fourier correlation of the actual interval function
   than sqrt(beta/216) times its length. Here e and beta are as above. The
   quadratic character remains in the original modulus and the linear
   character in the new prime modulus; no equality of these phases is assumed.
-  Turning this bias into an untwisted density increment and iterating with
-  explicit thresholds are separate outstanding obligations.
+  The global construction below now proves an untwisted quadratic density
+  increment without changing modulus. Explicit-threshold iteration remains
+  outstanding.
 
 Global terminal Fourier bias and variable polynomial phase removal
   Proofs18PartitionFourierBias bounds a supported function's degree-one
@@ -761,6 +762,27 @@ Global terminal Fourier bias and variable polynomial phase removal
   Proofs18TwistedPartitionDiscrepancy combines these results, adding the
   selected linear character to each cell's polynomial phase. This is the
   terminal global refinement needed for a quantitative density increment.
+
+Unconditional quadratic discrepancy and density increment
+  Proofs18QuadraticDiscrepancy applies the global terminal refinement to the
+  constructed quadratic localization. For each fixed 0<alpha<=1 and large
+  enough prime N, any disc-valued function failing quadratic uniformity has
+  a proper progression partition with average size at least N^sigma and
+  total untwisted discrepancy at least tau*N, where
+    sigma = 2^-26*(alpha/2)^24718,
+    tau   = 2^-20*alpha^2*(alpha/2)^12359.
+  The proof uses K=2048 for quadratic polynomial refinement and explicitly
+  absorbs the fixed count constant into half the available exponent.
+  Proofs18QuadraticDensityIncrement specializes to the balanced indicator
+  and applies the proved Lemma 5.15. It constructs a proper progression P
+  with size at least (tau/4)*N^sigma and density at least density(A)+tau/4.
+  No Theorem 18.1, conditional inverse theorem, or prime-model density
+  preservation is assumed. The reusable balanced-real facts in
+  Proofs18QuantitativeSzemeredi are now public, and the new generic
+  discrepancy-to-density interface allows separate size and bias parameters.
+  The large-N threshold is still existential. Theorem 8.2's explicit
+  double-exponential bound requires quantitative thresholds and iteration;
+  the all-degree Section 18 induction and headline bounds also remain open.
 
 Reproducible checks (from repository root)
   python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.Audit

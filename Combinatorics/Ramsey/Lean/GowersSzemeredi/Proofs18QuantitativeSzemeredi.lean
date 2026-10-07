@@ -75,18 +75,18 @@ def section18_cyclic_dichotomy : Prop :=
             (density A + section18ActualIncrement alpha (k - 2)) *
                 P.carrier.card ≤ (A ∩ P.carrier).card
 
-private def section18BalancedReal {N : Nat} [NeZero N]
+def section18BalancedReal {N : Nat} [NeZero N]
     (A : Finset (ZMod N)) (x : ZMod N) : Real :=
   (if x ∈ A then 1 else 0) - density A
 
-private lemma section18_balanced_eq_real {N : Nat} [NeZero N]
+lemma section18_balanced_eq_real {N : Nat} [NeZero N]
     (A : Finset (ZMod N)) (x : ZMod N) :
     balanced A x = (section18BalancedReal A x : Complex) := by
   classical
   by_cases hx : x ∈ A <;>
     simp [balanced, indicator, section18BalancedReal, hx]
 
-private lemma section18_density_bounds {N : Nat} [NeZero N]
+lemma section18_density_bounds {N : Nat} [NeZero N]
     (A : Finset (ZMod N)) : 0 ≤ density A ∧ density A ≤ 1 := by
   have hcard : A.card ≤ N := by
     calc
@@ -100,7 +100,7 @@ private lemma section18_density_bounds {N : Nat} [NeZero N]
     rw [div_le_one hN]
     exact_mod_cast hcard
 
-private lemma section18_balancedReal_abs_le_one {N : Nat} [NeZero N]
+lemma section18_balancedReal_abs_le_one {N : Nat} [NeZero N]
     (A : Finset (ZMod N)) (x : ZMod N) :
     |section18BalancedReal A x| ≤ 1 := by
   classical
@@ -113,7 +113,7 @@ private lemma section18_balancedReal_abs_le_one {N : Nat} [NeZero N]
     rw [abs_of_nonneg hd0]
     exact hd1
 
-private lemma section18_balancedReal_sum_zero {N : Nat} [NeZero N]
+lemma section18_balancedReal_sum_zero {N : Nat} [NeZero N]
     (A : Finset (ZMod N)) :
     ∑ x : ZMod N, section18BalancedReal A x = 0 := by
   classical
@@ -129,7 +129,7 @@ private lemma section18_balancedReal_sum_zero {N : Nat} [NeZero N]
   field_simp
   ring
 
-private lemma section18_balancedReal_sum_inter {N : Nat} [NeZero N]
+lemma section18_balancedReal_sum_inter {N : Nat} [NeZero N]
     (A S : Finset (ZMod N)) :
     ∑ x ∈ S, section18BalancedReal A x =
       ((A ∩ S).card : Real) - density A * S.card := by
@@ -147,7 +147,7 @@ private lemma section18_balancedReal_sum_inter {N : Nat} [NeZero N]
   rw [hindicator]
   simp [mul_comm]
 
-private lemma section18_partition_index_nonempty {N M : Nat} [NeZero N]
+lemma section18_partition_index_nonempty {N M : Nat} [NeZero N]
     (P : Fin M → Finset (ZMod N)) (hP : IsPartition P Finset.univ) :
     0 < M := by
   by_contra hM

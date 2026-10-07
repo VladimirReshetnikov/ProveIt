@@ -240,6 +240,9 @@ import GowersSzemeredi.Proofs18PartitionFourierBias
 import GowersSzemeredi.Proofs05VariablePhaseRefinement
 import GowersSzemeredi.Proofs18TwistedPartitionDiscrepancy
 
+import GowersSzemeredi.Proofs18QuadraticDiscrepancy
+import GowersSzemeredi.Proofs18QuadraticDensityIncrement
+
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 
