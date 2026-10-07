@@ -1,0 +1,19 @@
+PYTHON ?= python3
+PDFLATEX ?= pdflatex
+ARTICLE := arrangement_degeneracy
+
+.PHONY: all pdf verify clean
+
+all: pdf verify
+
+pdf:
+	$(PDFLATEX) -interaction=nonstopmode -halt-on-error $(ARTICLE).tex
+	$(PDFLATEX) -interaction=nonstopmode -halt-on-error $(ARTICLE).tex
+	$(PDFLATEX) -interaction=nonstopmode -halt-on-error $(ARTICLE).tex
+
+verify:
+	$(PYTHON) code/verify.py
+	$(PYTHON) code/compare_cutoffs.py
+
+clean:
+	rm -f $(ARTICLE).aux $(ARTICLE).log $(ARTICLE).out $(ARTICLE).toc
