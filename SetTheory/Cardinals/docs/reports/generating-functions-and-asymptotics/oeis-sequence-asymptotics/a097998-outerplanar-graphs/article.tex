@@ -1436,6 +1436,29 @@ a slip common to the two outerplanar-type computations; the write has not
 located it. Missing: a recomputation of the series--parallel constants from
 BGKN's implicit equations, and the preprint's different value $0.017657$
 explained.
+\textup{(Added after the independent check of 7~October 2026; numerical,
+not a proof.) \emph{A candidate cause.} BGKN's Theorem~3.6 (p.~2099)
+prints $C_3=-\tfrac32F_1$, while the display in its own proof,
+$F=(-C_2-\tfrac32C_3X)(1-X^2)+O(X^2)$, gives $F_1=-\tfrac32C_3$, that is
+$C_3=-\tfrac23F_1$ (the relation of~\eqref{lop:eq:formalC}). Using the
+printed relation multiplies $C_3$, hence every amplitude, by
+$(3/2)/(2/3)=\tfrac94$, the factor of Theorems~5.1 and~7.1; whether BGKN's
+computation took this route is not known. \emph{The series--parallel
+constants.} The check computed the labelled series--parallel graphs from
+BGKN's equations (2.1)--(2.2) (exact Gauss--Legendre integration in~$y$ of
+$(1+D)/(1+y)$, whose $x$-coefficients are polynomials in $y$; then the
+Lagrange route of Section~\ref{lop:sec:identities} with this block
+function), for $n\le110$; a brute-force reduction test gives the same
+$g_5,g_6,g_7=913$, $21544$, $729222$. Richardson extrapolation gives
+$\rho=0.11021334668\ldots$ (BGKN: $0.11021$) and the amplitudes
+$c=0.0012771776\ldots$ and $g=0.0014365879\ldots$, with
+$g/c=1.124815=e^{0.117614}$ as BGKN's Theorem~6.1 requires. BGKN's
+$c\approx0.0067912$ and $g\approx0.0076388$ are $5.31735$ and $5.31732$
+times these, that is $3\sqrt\pi=5.31736\ldots$ to their printed precision
+($3\sqrt\pi=\tfrac94\Gamma(-\tfrac32)$). So the series--parallel constants
+appear to be affected too, by a different factor. Still missing: a proof
+(Theorem~\ref{lop:thm:main} is stated for $b$ only) and an account of
+BGKN's computation.)}
 \item\label{lop:q:k23} \emph{Graphs with no $K_{2,3}$ minor.} Prove
 Theorem~\ref{lop:thm:main} for the block function $b(u)+u^3/6$ and so turn
 Remark~\ref{lop:rem:versions}(d) into a correction of BGKN's Theorem~7.1
@@ -1446,6 +1469,13 @@ infinity on $(0,R)$ and that the saddle lies inside the disc of
 analyticity, and $u^3/6$ preserves all four. Missing: the restatement and
 the check that no step uses the special form of~\eqref{lop:eq:block} (the
 field $\QQ(\tau)$ and the quartic~\eqref{lop:eq:quartic} change).
+\textup{(Added after the independent check of 7~October 2026: a brute-force
+count gives $s_5=918$ and $g_5=893$; from exact counts of the class to
+$n=260$ (the check's own code), Richardson extrapolation of
+$s_n/(n!\rho'^{-n}n^{-5/2})$ gives $0.0081282385507081\ldots$, equal to
+$e^{\nu'}A'=0.0081282385507081599\ldots$ to fourteen significant digits, and the ratios
+$1.0735$, $1.0354$, $1.0175$ at $n=40,80,159$ were reproduced. Strong
+numerical evidence; the proof is still missing.)}
 \item\label{lop:q:singular} \emph{A second analytic route.} Promote the
 formal singular expansion of Section~\ref{lop:sec:formal} to a proof: the
 source says one ``must supply suitable $\Delta$-domain continuation and
@@ -1455,6 +1485,44 @@ the subcritical framework~\cite{subcritical} applied to $T=ze^{b(T)}$.
 Missing: the continuation of $T$ to a $\Delta$-domain and the transfer of
 each fixed order, uniformly in the marker.
 \end{enumerate}
+\begin{writenote}[Independent check of the write, 7 October 2026]
+An adversarial check made by the intake after the write (commit
+\file{20fa679b0}) re-derived the statements marked [write] with its own
+code, after fetching again A097998 (revision~\#12), A098000 (\#14) and
+their b-files (byte-identical to the fixtures), A097999 (\#42), BGKN's
+published paper and preprint (Theorems~3.6, 3.7, 5.1, 6.1, 7.1 and the
+introductions read; pp.~2093 and~2099 rendered), Kang's thesis (pp.~9
+and~55) and the EuroComb abstract. \emph{Remark~\ref{lop:rem:bgkn}.} Checked
+the hardest. Independently of the source's theory, the check computed
+$c_n$ and $g_n$ to $n=260$ by its own series route (agreeing with all
+$400$ b-file terms) and extrapolated $g_n/(n!\rho^{-n}n^{-5/2})$ by
+Richardson's method: $0.0080960474760807\ldots$ (and
+$0.0069760945071231\ldots$ for $c_n$), equal to $e^\nu A$ (and $A$) to
+sixteen digits; BGKN's $0.018216$ is therefore wrong, and the exponent and
+the radius are right. Its own interval computation (sign certificates for
+$ub'(u)-1$, the antiderivative $F$ checked against quadrature) encloses
+$e^\nu A$ in an interval of width $7\cdot10^{-44}$ inside the write's; every
+number of the elementary bound~(ii), the ratios $2.24998\ldots$ and
+$2.18094\ldots$, the corroborating ratios and residuals, the quotations of
+BGKN (published and preprint), of the EuroComb abstract and of Kang's thesis,
+and the product $0.0080959318\ldots$ were confirmed.
+\emph{Remark~\ref{lop:rem:versions}}(d) and question~\ref{lop:q:k23}:
+confirmed and strengthened numerically (note there). \emph{Question~\ref{lop:q:cause}.}
+A candidate cause in BGKN's Theorem~3.6, and evidence that its
+series--parallel constants are also wrong, by the factor $3\sqrt\pi$ (note
+there). \emph{Remarks~\ref{lop:rem:oeis}, \ref{lop:rem:onset},
+\ref{lop:rem:transseries}.} Quotations verbatim; the eighteen terms of
+A097999 equal $(n-1)![u^{n-1}]b(u)$; both injections and the two
+complementary graphs right; the factorial-core and core-reversion
+instances, the $\mathrm{lw}$-template chart of~(c) with data
+$(1,1,0,\log(1-(1+\log\rho)t))$, and the second route of~(b) (admissibility of
+$\log\mathcal A=F_m+\tilde E$, $|\nu-r|\le4C_mr^{-m-1}/\log r$) re-derived.
+\emph{Notes on decimals.} The truncation or rounding status of all thirteen
+values of Sections~\ref{lop:sec:generator}, \ref{lop:sec:components}
+and~\ref{lop:sec:sources} confirmed. \emph{Provenance.} Archive facts, the
+manifests' entry counts and the 49 delivered label numbers (aux of a build
+of the delivered text) confirmed. No defect was found in the write.
+\end{writenote}
 
 \clearpage
 \begin{thebibliography}{10}

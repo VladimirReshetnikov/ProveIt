@@ -192,6 +192,38 @@ truncated, and exact counts of that class to `n = 159` approach
 `e^{ν'}A' n! ρ'^{−n} n^{−5/2}` (ratio 1.0175 at `n = 159`). That is an
 observation, not a theorem here (Question 6).
 
+## Independent check of the write (7 October 2026)
+
+An adversarial check made by the intake after the write (`20fa679b0`), with
+its own code, after fetching again the three OEIS entries and both b-files
+(byte-identical to the fixtures), BGKN published and preprint, Kang's thesis
+and the EuroComb abstract.
+
+- **The BGKN correction (Remark 9.1), checked hardest.** Without the
+  source's theory: `c_n`, `g_n` to `n = 260` by the check's own series route
+  (all 400 b-file terms agree); Richardson extrapolation of
+  `g_n/(n! ρ⁻ⁿ n^{−5/2})` gives `0.0080960474760807…` and of the connected
+  ratio `0.0069760945071231…`, i.e. `e^ν A` and `A` to sixteen digits. So
+  `h ≈ 0.018216` is wrong and the exponent and radius are right. The
+  check's own interval enclosure of `e^ν A` (width `7·10⁻⁴⁴`) lies inside the
+  write's; every number of the hand bound, the ratios `2.24998…`,
+  `2.18094…`, the corroborating residuals and all quotations (BGKN p. 2093,
+  2099, 2102–2105; preprint Theorems 5.1, 6.1, 7.1; EuroComb Theorem 3; Kang
+  pp. 9, 55) confirmed.
+- **Theorem 7.1 (no `K_{2,3}` minor)**: brute force `s_5 = 918`; Richardson to
+  `n = 260` agrees with `e^{ν'}A'` to fourteen significant digits (still
+  numerical; Question 6).
+- **New, for Question 5**: BGKN's Theorem 3.6 prints `C_3 = −(3/2)F_1`, its
+  proof gives `−(2/3)F_1`, which accounts for `9/4` exactly (a candidate
+  cause); and the series–parallel constants of Theorem 3.7 appear to be
+  `3√π` times too large (`c = 0.0012771776…`, `g = 0.0014365879…` from exact
+  counts to `n = 110`, brute-force checked for `n ≤ 7`). Numerical evidence,
+  recorded in the article as a dated note.
+- Remarks 1.1, 7.2, 7.3, the notes on decimals (thirteen values) and the
+  provenance confirmed. **No defect was found in the write.**
+
+The check is recorded at the end of Section 10.
+
 ## What is not claimed
 
 From the source, kept in the article (collected in Section 1.1):
@@ -227,10 +259,21 @@ edge/component marking) and adds, under Vladimir's standing rule of
    and decide whether the series–parallel constants `c ≈ 0.0067912`,
    `g ≈ 0.0076388` (Theorem 3.7) are affected. Missing: a recomputation from
    BGKN's implicit equations; the preprint's `0.017657` explained.
+   (Added after the independent check of 7 October 2026; numerical, not a
+   proof: BGKN's Theorem 3.6 prints `C_3 = −(3/2)F_1`, whereas its own proof
+   gives `C_3 = −(2/3)F_1`; the printed relation produces exactly the factor
+   `9/4`, a candidate cause. Labelled series–parallel graphs recomputed from
+   BGKN's (2.1)–(2.2) to `n = 110` (brute force agrees for `n = 5, 6, 7`)
+   give `ρ = 0.1102133466…`, `c = 0.0012771776…`, `g = 0.0014365879…`;
+   BGKN's `c ≈ 0.0067912`, `g ≈ 0.0076388` are `3√π = 5.31736…` times
+   these, so the series–parallel constants appear to be affected too.)
 6. **Graphs with no `K_{2,3}` minor** (`lop:q:k23`): restate Theorem 3.1 for
    `b + u³/6` (the proof uses only nonnegative coefficients, `b_1 = 1`,
    monotone `u b'(u)` and the saddle inside the disc) to turn Remark 9.2(d)
-   into a correction of BGKN's Theorem 7.1.
+   into a correction of BGKN's Theorem 7.1. (Added after the independent
+   check of 7 October 2026: brute force gives `s_5 = 918`; Richardson
+   extrapolation of exact counts to `n = 260` agrees with `e^{ν'}A'` to
+   fourteen significant digits. Numerical; the proof is still missing.)
 7. **A second analytic route** (`lop:q:singular`): promote Section 5.1 to a
    proof by `Δ`-continuation and transfer, as the source says one "must
    supply".
@@ -448,7 +491,9 @@ B=$(mktemp -d); cp article.tex "$B/"; cd "$B"
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The committed PDF was built this way with MiKTeX on 6 October 2026: 24
+The committed PDF was built this way with MiKTeX on 6 October 2026 (24
+pages), and rebuilt after the independent check of 7 October 2026 (label
+numbers unchanged, aux files compared): 25
 pages; no errors or warnings, no undefined references or citations, no
 multiply defined labels, no duplicate PDF destinations, no overfull or
 underfull boxes (the delivered text also builds without any, 15 pages). The

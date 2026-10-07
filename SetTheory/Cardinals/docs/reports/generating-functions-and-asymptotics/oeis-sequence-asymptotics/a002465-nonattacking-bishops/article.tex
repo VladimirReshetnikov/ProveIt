@@ -254,7 +254,12 @@ its delivered number.
  says; Theorem~3 is the Stirling formula, ``first obtained by Arshon [\dots]
  and then refined by Kot\v e\v sovec'' (book, p.~248), for which Santos
  provides ``an alternative proof''; Theorem~6 is the convolution
- \eqref{bsh:eq:conv} of the two colours. Santos attributes the exact
+ \eqref{bsh:eq:conv} of the two colours. \textup{(Corrected after the
+ independent check of 7~October 2026, which read the paper again: Theorem~6
+ is the closed double Stirling sum (Santos's (5)) for $k$ bishops, which at
+ $k=n$ is the form~\eqref{bsh:eq:stirling}; the colour
+ convolution~\eqref{bsh:eq:conv} is the identity (6) of its one-line proof.)}
+ Santos attributes the exact
  period~$2$ for every fixed $k\ge3$ to Chaiken, Hanusa and Zaslavsky
  (\cite{period}, Theorem~1.1), the period-two theorem the source cites.
 \item The transseries volume
@@ -965,6 +970,36 @@ questions, with what is missing.
  (Remark~\ref{bsh:rem:transseries}(c)). Missing: that proof written out,
  with its onset.
 \end{enumerate}
+\end{writenote}
+\begin{writenote}[Independent check of the write, 7 October 2026]
+An adversarial check made by the intake after the write (commit
+\file{e1db00e99}) re-derived the statements marked [write] with its own
+code, after fetching again A002465 (revision~\#95) with its b-file, A238260
+(\#6), A238258 (\#10), A256500 (\#36), A226775 (\#38) and Santos's paper.
+\emph{Remark~\ref{bsh:rem:oeis}.} The quotations are verbatim; at 160 digits
+$b$, $q$, $r$ and $-w_0$ agree with all 105 printed digits of A238260,
+A238258, A256500 and A226775; the 110 printed decimals of $b$ are its
+truncation; the three Lambert identities hold, and
+$W_{-1}(-2e^{-2})=-2$ is the inadmissible root; the table of
+Section~\ref{bsh:sec:main} is correctly rounded. All 376 b-file terms agree
+with the rook recurrences and the convolution~\eqref{bsh:eq:conv}, the
+Stirling form~\eqref{bsh:eq:stirling} agrees for $n\le40$ and six large $n$,
+and a direct cell enumeration gives $B_0,\dots,B_6$.
+\emph{Proposition~\ref{bsh:prop:doubling}.} The proof holds; every inequality
+in it was checked for $1\le n<120$, the vanishing facts for $n\le375$, and
+$B_{n+1}/B_n\ge4$ for $1\le n\le374$. \emph{Remark~\ref{bsh:rem:transseries}.}
+Items (a)--(d) hold; for (e) the master equation was re-derived from the
+Stirling form of $\Phi_J$ (identically, SymPy) and the triangular recurrence
+gives $e_1^{\mathrm{vol}}=h$ and
+$e_2^{\mathrm{vol}}=-((h^2-h)/2+1/12+c_1)/A$. \emph{Section~\ref{bsh:sec:provenance}.}
+The archive facts, the 49 delivered label numbers (aux of a build of the
+delivered text), the scaled residuals at $n=200,\dots,375$, the polynomial
+check at $n=4000,4001$ ($0.0649$, $-0.3835$, $0.5434$) and the order-4
+extrapolation ($8.1154$, $6.7763$; through three points $8.115677$,
+$6.776466$, closer still to the receipt) were reproduced; the source's book
+address again answers 404. One statement was inaccurate: the description of
+Santos's Theorem~6, corrected there with a dated note. No other defect was
+found.
 \end{writenote}
 
 \appendix
