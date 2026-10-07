@@ -349,6 +349,12 @@ import GowersSzemeredi.Proofs13FejerCoefficientBox
 import GowersSzemeredi.Proofs13FejerFeatureLine
 import GowersSzemeredi.Proofs13FejerArrangementParameters
 import GowersSzemeredi.Proofs13FejerArrangementVertices
+import GowersSzemeredi.Proofs13FejerArrangementCounts
+import GowersSzemeredi.Proofs13FejerArrangementRegularity
+import GowersSzemeredi.Proofs13FejerArrangementSelection
+import GowersSzemeredi.Proofs13FejerQuantitative
+import GowersSzemeredi.Proofs13FejerUniformPurification
+import GowersSzemeredi.Proofs13FejerPurifiedDensity
 
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue

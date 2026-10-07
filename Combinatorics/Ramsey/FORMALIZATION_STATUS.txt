@@ -12,8 +12,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 504 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 3,338 public Gowers theorems and found only propext,
+  All 510 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 3,364 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 108 exact
   companion proofs and 12 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -1217,8 +1217,9 @@ Prepared frequency graph and reusable restriction score
   into a shared module. The seeded score theorem selects one actual subset
   and the positive-score corollary simultaneously retains good mass and
   bounds the bad/good ratio. The original Lemma 12.5 uses the shared proof.
-  These are inputs to source 57's improved purification route to Theorem
-  13.12; neither Fejer purification nor its near-maximal endpoint is yet proved.
+  These are inputs to source 57's improved route to Theorem 13.12. The
+  Fejer purification is now proved below with explicit elementary constants;
+  its graph propagation and the near-maximal endpoint remain to be proved.
 
 Finite Fejer survival foundations
   Five Proofs13Fejer modules establish a normalized nonnegative kernel in
@@ -1233,8 +1234,8 @@ Finite Fejer survival foundations
   This proves a weaker signal estimate than source 57's sharp integral
   estimate; its numerical constants must be carried through separately.
   The coefficient-box argument is now checked, as described below. Transport
-  of selection counts, assembled quantitative purification, and endpoint
-  rigidity remain open.
+  of selection counts and quantitative purification are now checked below.
+  Propagation into square extraction and endpoint rigidity remain open.
 
 Quadratic feature classification and exceptional parameter counts
   Proofs13FeatureRelations eliminates the final horizontal coordinate in
@@ -1251,9 +1252,8 @@ Quadratic feature classification and exceptional parameter counts
   from Fin-indexed variables to arbitrary finite nonempty variable types.
   Each unintended relation has at most 2*N^31 zeros in the 32-variable
   specialization; a finite family has the corresponding union bound.
-  These are unconditional algebraic/counting foundations. They do not yet
-  assemble the final purification theorem. The coefficient box and catalogue
-  DArrangement encoding are now checked below.
+  These unconditional algebraic/counting foundations feed the coefficient
+  box, catalogue encoding, and assembled purification checked below.
 
 Fejer regularity and subset-selection assembly
   Proofs13FejerRegularity proves that if every short feature relation lies
@@ -1267,8 +1267,8 @@ Fejer regularity and subset-selection assembly
   an explicit exceptional-cardinality error. Its structural Fejer version
   returns an actual subset retaining the requested good mass and limiting
   bad/good ratio whenever the displayed score budget holds. This is a
-  conditional assembly theorem; the arrangement-specific hypotheses and
-  numerical budget have not yet been discharged.
+  conditional assembly theorem; its arrangement-specific hypotheses and
+  numerical budget are discharged by the subsequent modules below.
   Proofs13FejerNumerics chooses L=2*M in the 32-label shifted-pair estimate.
   The signal is exactly 2^(-64)*M^(-31), and its ratio to the bad baseline
   is M/2^32. The comparison theorem carries this constant without rounding.
@@ -1289,8 +1289,36 @@ Bounded coefficients and exact arrangement parameterization
   catalogue endpoints. Carrier containment is exactly IsIn, signed phase
   vanishing is exactly IsRespected, and the feature xy has zero signed sum.
   These bridges include all degenerate arrangements. Selection-count
-  transport and the arrangement-specific numerical budget remain to be
-  assembled before claiming the quantitative purification result.
+  transport and the quantitative purification are now checked below.
+
+Uniform quantitative Fejer purification
+  Proofs13FejerArrangementCounts transports the exceptional bound and
+  selected good/bad counts to the exact catalogue counts. Restricting the
+  selected carrier to S recovers exactly the counts inside S.
+  Proofs13FejerArrangementRegularity discharges the structural hypotheses
+  for catalogue arrangements outside the exceptional set. The following
+  ArrangementSelection module assembles actual subset selection with an
+  explicit scalar score budget and no remaining structural hypotheses.
+  Proofs13FejerQuantitative pays that budget at kernel length 2*M whenever
+  2^34 <= rho*eta*M and 2^131*M^63 <= rho*eta*beta^15*N, with 2*M<=N.
+  Its output retains good mass 2^-65*rho*M^-31*beta^15*N^32 and has
+  total arrangement count at most (1+eta) times the respected count.
+  Proofs13FejerUniformPurification chooses M=ceil(2^34/(rho*eta)). For
+  positive rho,eta<=1 and any fixed positive lower density delta, its
+  threshold is uniform over actual densities beta>=delta. It retains
+  good mass at least 2^-1150*rho^32*eta^31*beta^15*N^32.
+  Proofs13FejerPurifiedDensity combines this mass with the sharp upper
+  arrangement count. The selected set has density at least
+  2^-77*rho^3*eta^3*beta and respected fraction at least 1-eta.
+  These are complete purification theorems with their stated quantitative
+  hypotheses. They do not yet close the numbered Theorem 13.12.
+  Next arithmetic candidate (not yet a Lean theorem): take a=alpha/2,
+  delta=a^14409429, rho=delta^97*a^336, eta=2^-44. The new density bound
+  suggests a^4207554485. Exact integer arithmetic gives
+  4207554485*2^21+2^20+4=8823881304375300 < 2^53, and
+  137+704*4207554485=2962118357577 < 2^42. Thus the weaker constants
+  still leave room for the source 57 length comparison away from alpha=1.
+  Graph propagation and the near-maximal endpoint remain unproved.
 
 Reproducible checks (from repository root)
   python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.Audit
@@ -1320,8 +1348,9 @@ Next substantial obligations
      extraction and treats alpha near 1 separately. Its intake (dossier,
      batch 125) checked that Lean's theorem_13_12 follows from it and
      re-derived its 25 exponent steps in exact integers; the new formal
-     inputs would be the Fejer purification, the exponent arithmetic and
-     the near-maximal U^4 step. Source 53 (Report281) gives an explicit
+     Fejer purification is now formalized with a weaker elementary constant.
+     Remaining steps are graph propagation, exponent arithmetic, and the
+     near-maximal U^4 argument. Source 53 (Report281) gives an explicit
      threshold and side length N^(3 gamma(a)) for the uniform square
      extraction; source 51 shows Corollary1310Grid does not follow from the
      retained chain data; source 52 shows the preserved encodings
