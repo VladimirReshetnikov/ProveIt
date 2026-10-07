@@ -372,6 +372,10 @@ import GowersSzemeredi.Proofs13EndpointBilinearCorrection
 
 
 
+import GowersSzemeredi.Proofs13EndpointCharacterApproximation
+import GowersSzemeredi.Proofs13EndpointCharacterOrthogonality
+import GowersSzemeredi.Proofs13EndpointCocycleTest
+import GowersSzemeredi.Proofs13EndpointFrequencyAddition
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 

@@ -12,8 +12,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 526 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 3,481 public Gowers theorems and found only propext,
+  All 530 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 3,513 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 108 exact
   companion proofs and 12 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -1375,8 +1375,8 @@ Near-maximal frequency selection and finite additive correction
   theta/(1-2*theta), hence at most 2*theta. The proof uses the increment
   cocycle and a quantitative averaged distance bound.
   All five modules pass the full axiom audit. Connecting Fourier
-  concentration to the addition test and assembling the endpoint square
-  remain necessary.
+  concentration to the addition test is completed below; assembly of
+  the endpoint square remains necessary.
   Proofs13EndpointRowCorrection corrects arbitrary cyclic rows with loss
   six times their addition-test failure, including large-failure rows.
   Proofs13EndpointSymmetricRankOne gives a pivot proof over finite fields:
@@ -1385,6 +1385,21 @@ Near-maximal frequency selection and finite additive correction
   its zero-row assumption. Proofs13EndpointBilinearCorrection combines
   these results: a symmetric table has distance at most 18 times its
   averaged addition-test failure from some scalar bilinear map.
+
+Near-maximal Fourier addition tests
+  Proofs13EndpointCharacterApproximation proves that a unit function's
+  dominant scalar character has squared mean error exactly
+  2-2|normalized Fourier coefficient|, at most twice its second cube defect.
+  Proofs13EndpointCharacterOrthogonality proves exact distance two between
+  distinct unit characters, translation/product identities, and a
+  three-term squared-error bound.
+  Proofs13EndpointCocycleTest proves the exact derivative cocycle and
+  charges frequency-addition failure to 3/2 times the three character
+  approximation errors. Proofs13EndpointFrequencyAddition averages it:
+  the symmetric frequency table's averaged row failure is at most
+  9*(1-Q4(g)). Bilinear correction gives a scalar frequency c*h*k at
+  disagreement at most 162*(1-Q4(g)). No inverse theorem or large-modulus
+  threshold is assumed. All four modules pass the full axiom audit.
 
 Reproducible checks (from repository root)
   python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.Audit
@@ -1408,8 +1423,8 @@ Next substantial obligations
      near-maximal U^4 argument. Unit-modulus normalization and uniform
      derivative/Fourier transfer, dominant-frequency concentration, and
      finite additive correction, and symmetry-based bilinear correction
-     are now proved. The Fourier addition-test estimate and assembly of
-     the ambient square remain unproved.
+     and the Fourier addition-test estimate are now proved. Assembly of
+     the ambient square remains unproved.
      The weaker constants in the formal purification still yield the same
      2^53 length top power and an improved 2^42 density top power.
      Source 53 (Report281) gives an explicit
