@@ -12,8 +12,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 231 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 2,124 public Gowers theorems and found only propext,
+  All 233 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 2,138 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 101 exact
   companion proofs and 19 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -583,6 +583,22 @@ Complete large-N common-step square extraction
   catalogue statements, and the quantitative comparison/analytic input for
   Theorem 13.12 remain unresolved; no final Szemeredi bound is claimed.
 
+All-density square extraction
+  Proofs13DenseEdgeModels removes the alpha<=1/6 restriction without weakening
+  the Section 13 constants. For edge density beta>1/6 it applies Theorem 10.13
+  with fibre cap ceil(6*beta)*N and normalized density beta/ceil(6*beta).
+  That density lies between 1/12 and 1/6. Its selected mass still exceeds
+  2^-43*alpha^224*N^2, and monotonicity recovers the same common Fourier
+  cutoff and Bohr radius. Smaller edge densities use the existing argument.
+  Proofs13AllDensityExtraction supplies Stage 13.6 at every density allowed
+  by Section13Context. section13_complete_square_extraction_all_densities
+  now proves the complete common-step square theorem for every fixed
+  0<alpha<=1, with unchanged explicit exponent and density bound.
+  The earlier small-density theorem remains as a specialization.
+  For the Fourier inverse application, actual densities vary with N above a
+  known lower bound. A threshold uniform over that density interval remains
+  to be proved; pointwise existence of N0(alpha) does not establish it.
+
 Reproducible checks (from repository root)
   python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.Audit
   python3 Combinatorics/Ramsey/scripts/gowers_status.py
@@ -601,11 +617,11 @@ Next substantial obligations
   1. Resolve Corollary 5.8's missing common-target scale assumptions. Its
      scale-qualified repair is proved, but does not establish the unrepaired
      catalogue statement.
-  2. Extend the complete large-N common-step square extraction beyond
-     alpha<=1/6, reconcile the unrestricted catalogue hypotheses, and connect
-     the explicit square exponent to the inverse theorem's analytic input
-     and printed quantitative target. The actual extraction now constructs
-     the integer geometry; the old catalogue antecedents still omit it.
+  2. Make the all-density common-step square threshold uniform for densities
+     above a specified positive lower bound. Reconcile the unrestricted
+     catalogue hypotheses and compare the explicit exponent with the inverse
+     theorem's analytic input and printed target. The actual extraction now
+     constructs integer geometry; the old catalogue antecedents omit it.
   3. Complete the higher-dimensional Section 16 induction using the migrated
      proper-box predicates, propagate properness through the remaining box
      statements, and resolve the documented Corollary 16.11 bound.

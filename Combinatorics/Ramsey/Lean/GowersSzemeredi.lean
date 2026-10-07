@@ -162,6 +162,8 @@ import GowersSzemeredi.Proofs13CommonStepSelection
 import GowersSzemeredi.Proofs13EdgeModels
 import GowersSzemeredi.Proofs13EdgeDensity
 import GowersSzemeredi.Proofs13UniformEdgeModels
+import GowersSzemeredi.Proofs13DenseEdgeModels
+import GowersSzemeredi.Proofs13AllDensityExtraction
 import GowersSzemeredi.Proofs13BilinearExtraction
 import GowersSzemeredi.Proofs13ExponentMargins
 import GowersSzemeredi.Proofs13IntegerBudgets

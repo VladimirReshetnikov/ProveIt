@@ -1,4 +1,5 @@
 import GowersSzemeredi.Proofs13SquareScale
+import GowersSzemeredi.Proofs13AllDensityExtraction
 
 /-! A direct large-N common-step bilinear square theorem from the original
 Section 13 context, retaining an explicit positive power of N. -/
@@ -31,12 +32,12 @@ theorem section13SquareExponent_formula (alpha : Real) :
   norm_num [zpow_neg]
   ring
 
-/-- At each fixed density at most 1/6, sufficiently large prime moduli admit
+/-- At each fixed density at most one, sufficiently large prime moduli admit
 a proper equal-length common-step square, a dense subset of the original
 domain on that square, and a bilinear formula there. All intermediate data,
 integer step geometry, partitions, and scale budgets are constructed. -/
-theorem section13_complete_square_extraction {alpha : Real}
-    (hα : 0 < alpha) (hαsixth : alpha ≤ 1 / 6) :
+theorem section13_complete_square_extraction_all_densities {alpha : Real}
+    (hα : 0 < alpha) (hαone : alpha ≤ 1) :
     ∃ N₀ : Nat, ∀ (N : Nat) [Fact N.Prime] (S : Section13Context N),
       S.alpha = alpha → N₀ ≤ N →
       ∃ V W : ModAP N, ∃ B : Finset (Pair N),
@@ -56,13 +57,13 @@ theorem section13_complete_square_extraction {alpha : Real}
   have hf : 0 < f := mul_pos (zpow_pos (by norm_num) _) (pow_pos hα _)
   have hg : 0 < g := by dsimp [g, cor711Exponent]; positivity
   obtain ⟨N₁, hN₁⟩ := lemma_13_5_large_N hα hθ
-  obtain ⟨N₂, hN₂⟩ := lemma_13_6_large_N hα hαsixth
+  obtain ⟨N₂, hN₂⟩ := lemma_13_6_large_N_all_densities hα hαone
   obtain ⟨N₃, hN₃⟩ := square_scales_above_power_lower_bound
     (W := (2 : Real) ^ 135 * alpha ^ (-(704 : Int))) hc he hf hg
   obtain ⟨N₄, hN₄⟩ := eventually_atTop.mp (eventually_square_power_lower hc he hf hg)
   refine ⟨max N₁ (max N₂ (max N₃ N₄)), fun N _ S hS hN => ?_⟩
   obtain ⟨D, hD⟩ := lemma_13_4_holds N S theta (Fact.out : N.Prime) hθ
-    (by simpa only [hS] using section13_lambda_le_initial_threshold hα (hαsixth.trans (by norm_num)))
+    (by simpa only [hS] using section13_lambda_le_initial_threshold hα hαone)
   obtain ⟨E, hE⟩ := hN₁ N S D hS (by omega) hD
   have hD' : IsStage134Data S (section10Lambda (S.alpha ^ 32 / 16)) D := by
     simpa only [hS] using hD
@@ -87,5 +88,19 @@ theorem section13_complete_square_extraction {alpha : Real}
   · change (N : Real) ^ (e * f * g / 4) ≤ V.length
     linarith only [hNpower, hpower, hsize']
   · simpa only [hS] using hmass
+
+/-- The earlier small-density API remains a specialization of the full
+range theorem, with identical quantitative output. -/
+theorem section13_complete_square_extraction {alpha : Real}
+    (hα : 0 < alpha) (hαsixth : alpha ≤ 1 / 6) :
+    ∃ N₀ : Nat, ∀ (N : Nat) [Fact N.Prime] (S : Section13Context N),
+      S.alpha = alpha → N₀ ≤ N →
+      ∃ V W : ModAP N, ∃ B : Finset (Pair N),
+        V.step != 0 ∧ V.step = W.step ∧ V.IsProper ∧ W.IsProper ∧ V.length = W.length ∧
+        (N : Real) ^ section13SquareExponent alpha ≤ V.length ∧
+        B ⊆ S.A ∧ B ⊆ V.carrier.product W.carrier ∧
+        (2 : Real) ^ (-(137 : Int)) * alpha ^ 704 * V.length * W.length ≤ B.card ∧
+        BilinearOn B S.phi := by
+  exact section13_complete_square_extraction_all_densities hα (hαsixth.trans (by norm_num))
 
 end LeanProofs.GowersSzemeredi
