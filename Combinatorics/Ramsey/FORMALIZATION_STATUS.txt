@@ -13,8 +13,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 655 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 4,224 public Gowers theorems and found only propext,
+  All 659 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 4,249 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 113 exact
   companion proofs and 7 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -799,8 +799,8 @@ Positive mass of local uniformity obstructions
   2^-59*alpha^2*(alpha/2)^(2^76), and the quadratic parameter in every prime
   model is 2^-71*alpha^2*(alpha/2)^(2^76). All local primes can simultaneously
   exceed any prescribed real threshold while remaining at most N/2.
-  The original modulus threshold is qualitative here. This does not yet
-  assemble local discrepancy into a global cubic discrepancy partition.
+  The original modulus threshold is qualitative here. Global assembly is
+  now proved by the full cubic discrepancy theorem below.
 
 Interior discrepancy on cubic localization cells
   Proofs18SupportedBoundaryDiscrepancy extends the boundary argument to
@@ -820,9 +820,9 @@ Interior discrepancy on cubic localization cells
   boundary scale requirement are discharged by the constructed choice.
   This particular interior-family interface does not cover its supporting
   interval. The complete interval partition and original-modulus transport
-  are now constructed separately below. Global cubic assembly and phase
-  removal remain. Carrier-injective modular properness alone does not
-  supply the no-wrap geometry; the small-arc construction supplies it.
+  are now constructed separately below, and the global cubic theorem uses
+  that full construction. Carrier-injective modular properness alone does
+  not supply no-wrap geometry; the small-arc construction supplies it.
 
 Full interval completion and discrepancy transport
   Proofs18NaturalClipping constructs exact intersections of ordinary
@@ -844,6 +844,33 @@ Full interval completion and discrepancy transport
   sum, and the count budget. No boundary mass is discarded and the old
   modulus need not be prime. This closes the missing local interval
   geometry without conflating injectivity with absence of modular wraps.
+
+Unconditional cubic discrepancy and five-term iteration
+  Proofs18SelectedRefinement assembles refinements on any selected family
+  with unrefined complementary cells, summing count budgets and discrepancy.
+  The count inequalities x^(1-t) <= x/l^t for x >= l > 0 and
+  1 <= x/l^t for x >= l >= 1, t <= 1 let all budgets sum by exact mass.
+  Proofs18CubicTwistedDiscrepancy constructs a full global partition for a
+  cubic twist. Its count is at most D*N/l^t, where l >= N^e/12,
+  e=cubicLocalizationExponent(alpha), and
+  t=quadraticDiscrepancyExponent(a)/16 with a=cubicLocalQuadraticParameter(alpha).
+  Its discrepancy is at least mu*quadraticDiscrepancyParameter(a)*N,
+  where mu=cubicLocalizedMassParameter(alpha). All local quadratic inverse
+  hypotheses and prime-model thresholds are discharged by construction.
+  Proofs18CubicDiscrepancy removes the cubic phase and proves an unconditional
+  function inverse theorem for degree three, for every 0 < alpha <= 1.
+  Its positive average-size exponent is e*quadraticDiscrepancyExponent(a)
+  divided by 32*polynomialPartitionConstant(3). Its discrepancy parameter
+  is mu*quadraticDiscrepancyParameter(a)/2. Fixed count constants are
+  absorbed by increasing a threshold depending only on alpha.
+  Proofs18CubicIteration exports the actual FunctionDiscrepancyBound with
+  an existential threshold T and discharges the full five-term density
+  iteration, retaining T inside the proved closed iteration threshold.
+  This proves the end-to-end five-term argument through the constructed
+  cubic inverse theorem. It does not establish the source's numerical
+  five-term bound, nor the exact general Theorem 18.1 exponent. The original
+  modulus threshold is still qualitative, and the Section 16 induction
+  needed for arbitrary degrees remains open. The catalogue stays 113/120.
 
 Cubic obstruction in a strictly smaller prime model
   Proofs17LocalizedPhaseRemoval now exports proposition_17_7_with_upper:
@@ -2085,12 +2112,12 @@ Next substantial obligations
      from an explicit function discrepancy bound are already proved for
      arbitrary progression lengths. Discharge the higher-degree inverse
      input and its numerical budget, rather than repeating those reductions.
-     The cubic construction yields local models on a positive mass of
-     cells, and full interval completion and transport are now proved.
-     Assemble the local refinements with the unselected cells, control the
-     global count, remove the cubic phase, and make the original modulus
-     threshold explicit. Keep the interval geometry distinct from
-     carrier-injective modular properness.
+     The cubic inverse theorem, full global assembly, phase removal, and
+     five-term iteration are now proved with explicit positive parameters
+     and an existential original modulus threshold. Make that threshold
+     explicit and compare its numerical budget to the intended source
+     bound. For arbitrary degrees, supply the Section 16 structural input
+     and propagate the now-proved interval transport and assembly steps.
   4. Close Theorem 18.2 and its headline consequences; then investigate tighter
      final bounds without treating improved auxiliary statements as a proved
      improvement of the full Szemeredi estimate.
