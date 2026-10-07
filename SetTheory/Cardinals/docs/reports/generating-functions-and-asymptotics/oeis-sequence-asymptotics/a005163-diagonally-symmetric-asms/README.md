@@ -335,7 +335,11 @@ wording was replaced:
   `192 ≤ n ≤ 195`).
 - Notes in Sections 42 and 49: Part II proves **weak** cross-size interlacing
   (with multiplicities, (II.21)); strict interlacing remains open with root
-  simplicity.
+  simplicity. *[Dated note, 7 October 2026: the merged abstract still said
+  "cross-size interlacing" for Part II; it now says "weak cross-size
+  interlacing", with a dated note in the abstract. The same words in the
+  delivered texts (Reports 128 and 124, and Report 121's title) stay as
+  printed; the two notes above cover them.]*
 - Note in Section 40: the comparison values 0.352, 0.455, 0.485, 0.499 are
   `ν([0, x])`, whose finite part has mass ½, not values of its normalized
   finite part; the note adds that Part II's proof of (II.121) is locally
@@ -530,6 +534,11 @@ of Section 9 add two pages), no errors, no warnings, no undefined or multiply
 defined references or citations, no duplicate destinations, no overfull or
 underfull boxes; all 386 labels keep their numbers (`.aux` compared with a
 build of the committed text; page numbers from the end of the front matter on move by at most two).
+
+Rebuilt on 7 October 2026 (cleanup pass, "weak" in the abstract with its
+dated note) with three pdfLaTeX passes: 106 pages, equally clean; all 386
+labels keep their numbers and pages (`.aux` compared with a build of the
+committed text); page 1 rendered and inspected.
 
 ## Delivered path → shipped path
 
