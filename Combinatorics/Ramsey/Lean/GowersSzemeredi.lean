@@ -332,6 +332,12 @@ import GowersSzemeredi.Proofs05FiniteLocalizationScale
 import GowersSzemeredi.Proofs05FiniteLocalizationPhaseError
 import GowersSzemeredi.Proofs05FiniteChunkLocalization
 import GowersSzemeredi.Proofs05ThresholdFreeLocalization
+import GowersSzemeredi.Proofs12BernoulliSelection
+import GowersSzemeredi.Proofs13FejerKernel
+import GowersSzemeredi.Proofs13FejerRelations
+import GowersSzemeredi.Proofs13FejerSurvival
+import GowersSzemeredi.Proofs13FejerDiagonal
+import GowersSzemeredi.Proofs13FejerSignal
 
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
