@@ -107,7 +107,7 @@ private lemma lemma156_constant_base_exponent (k : Nat) :
     _ ≤ 2 ^ (3 * k + 7) :=
       Nat.pow_le_pow_right (by norm_num) (by omega)
 
-private lemma lemma156_beta_total_exponent (k : Nat) (hk : 1 ≤ k) :
+lemma lemma156_beta_total_exponent (k : Nat) (hk : 1 ≤ k) :
     7 * 4 ^ (k + 1) * arrangementSelectionExponent k + 15 ≤
       2 ^ (2 ^ (k + 5)) := by
   let S := arrangementSelectionExponent k
@@ -125,13 +125,13 @@ private lemma lemma156_beta_total_exponent (k : Nat) (hk : 1 ≤ k) :
     _ ≤ R * S := Nat.mul_le_mul_right S hbase
     _ ≤ 2 ^ (2 ^ (k + 5)) := lemma156_scale_ratio_bound k
 
-private lemma lemma156_gamma_total_exponent (k : Nat) :
+lemma lemma156_gamma_total_exponent (k : Nat) :
     21 * k * 4 ^ (k + 1) * arrangementSelectionExponent k ≤
       2 ^ (2 ^ (k + 5)) := by
   exact (Nat.mul_le_mul_right _ (lemma156_gamma_base_exponent k)).trans
     (lemma156_scale_ratio_bound k)
 
-private lemma lemma156_constant_total_exponent (k : Nat) :
+lemma lemma156_constant_total_exponent (k : Nat) :
     46 * arrangementSelectionExponent k ≤ 2 ^ (2 ^ (k + 5)) := by
   exact (Nat.mul_le_mul_right _ (lemma156_constant_base_exponent k)).trans
     (lemma156_scale_ratio_bound k)

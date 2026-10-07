@@ -548,7 +548,9 @@ private lemma selection_arrangement_count_le_card_pow {N k : Nat} [NeZero N]
       rw [← pow_add]
       ring_nf
 
-private lemma selection_arrangement_real_upper {N k : Nat} [NeZero N]
+/-- The arrangement upper bound in terms of the actual density, also used
+for thresholds uniform over sets with a prescribed density lower bound. -/
+lemma selection_arrangement_real_upper {N k : Nat} [NeZero N]
     (beta : Real) (B : Finset (Point N (k + 1)))
     (hBcard : (B.card : Real) = beta * (N : Real) ^ (k + 1)) :
     (generalArrangementCount 8 B : Real) ≤
@@ -3014,7 +3016,9 @@ private theorem selection_scale_estimate_of_exceptional_bound
     have halpha_gt : 1 < alpha := lt_of_not_ge halpha_one
     nlinarith
 
-private theorem selection_scale_estimate
+/-- Random restriction with a prescribed upper scale for the arrangement
+count. Taking scale one makes the threshold independent of the exact density. -/
+theorem selection_scale_estimate
     (k : Nat) (alpha scale eta : Real) (hk : 1 ≤ k)
     (halpha : 0 < alpha) (hscale : 0 < scale)
     (heta : 0 < eta) (heta_one : eta ≤ 1) :
@@ -3041,6 +3045,32 @@ private theorem selection_scale_estimate
   refine ⟨N0, ?_⟩
   intro N _ hN hprime hodd
   exact hN0 N hN ⟨hprime, hodd⟩
+
+set_option maxHeartbeats 1000000 in
+/-- The height-zero selection estimate with an arbitrary prescribed scale.
+It permits density-lower-bound applications with scale one. -/
+theorem selection_scale_estimate_zero
+    (alpha scale eta : Real) (halpha : 0 < alpha) (hscale : 0 < scale)
+    (heta : 0 < eta) (heta_one : eta ≤ 1) :
+    ∃ N0 : Nat, ∀ (N : Nat) [NeZero N], N0 ≤ N →
+      ∀ (B : Finset (Point N 1)) (phi : Point N 1 → ZMod N),
+        (generalArrangementCount 8 B : Real) ≤ scale * (N : Real) ^ 15 →
+        alpha * scale * (N : Real) ^ 15 ≤ respectedGeneralArrangementCount 8 B phi →
+        ∃ B' : Finset (Point N 1), B' ⊆ B ∧
+          (alpha * eta / 4) ^ arrangementSelectionExponent 0 * scale * (N : Real) ^ 15 ≤
+            generalArrangementCount 8 B' ∧
+          (1 - eta) * generalArrangementCount 8 B' ≤
+            respectedGeneralArrangementCount 8 B' phi := by
+  obtain ⟨N0, hN0⟩ := selection_scale_estimate_of_exceptional_bound
+    (fun _ => True) 0 alpha scale eta halpha hscale heta heta_one
+    (fun delta hdelta => by
+      obtain ⟨Nsmall, hsmall⟩ := selectionDegenerate_real_small_zero scale delta hscale hdelta
+      refine ⟨Nsmall, ?_⟩
+      intro N _ hN _
+      simpa only [Nat.mul_zero, zero_add] using hsmall N hN)
+  refine ⟨N0, ?_⟩
+  intro N _ hN B phi hu hl
+  exact hN0 N hN trivial B phi hu hl
 
 set_option maxHeartbeats 1000000 in
 /-- The height-zero specialization of the random restriction.  Unlike the

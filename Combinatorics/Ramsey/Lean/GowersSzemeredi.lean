@@ -286,6 +286,13 @@ import GowersSzemeredi.Proofs16PermutedCovers
 import GowersSzemeredi.Proofs16CoordinateDirections
 import GowersSzemeredi.Proofs16AllFaceInduction
 import GowersSzemeredi.Proofs16HalfDensityFaces
+import GowersSzemeredi.Proofs16CoverParameterMonotonicity
+import GowersSzemeredi.Proofs16ZeroDimensionalFaces
+import GowersSzemeredi.Proofs16UniformFaceParameter
+import GowersSzemeredi.Proofs14ZeroProductArrangements
+import GowersSzemeredi.Proofs15LowerDensityRestriction
+import GowersSzemeredi.Proofs15ZeroDensityRestriction
+import GowersSzemeredi.Proofs16StructuredExtraction
 
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
