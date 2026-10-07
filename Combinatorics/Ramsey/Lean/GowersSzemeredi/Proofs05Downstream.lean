@@ -357,7 +357,7 @@ private lemma downstream_centeredAbs_neg_natCast_le {N i : Nat} [NeZero N] :
   rw [centeredAbs, ZMod.natAbs_valMinAbs_neg]
   exact downstream_centeredAbs_natCast_le
 
-private lemma downstream_phase_close_of_mem_interval {N d : Nat} [NeZero N]
+lemma downstream_phase_close_of_mem_interval {N d : Nat} [NeZero N]
     (a y : ZMod N) (hy : y ∈ (modInterval N a (d + 1)).carrier) :
     ‖exponential (-y) - exponential (-a)‖ ≤
       2 * Real.pi * d / N := by

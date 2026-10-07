@@ -31,10 +31,24 @@ theorem polynomialPartitionConstant_ge_four {k : Nat} (hk : 1 ≤ k) :
     exact (by norm_num : (4 : Nat) = 2 ^ 2) ▸ Nat.pow_le_pow_right (by omega : 1 ≤ 2) he
   exact hp.trans (Nat.le_mul_of_pos_left _ (by omega))
 
-theorem corollary_5_8_holds_of_threshold_free_localization
-    (hloc : ∀ k, 1 ≤ k → ThresholdFreePolynomialLocalization k) : corollary_5_8 := by
+/-- The full Corollary 5.8 interface in one fixed positive degree. -/
+def Corollary58At (k : Nat) : Prop :=
+  ∀ (N M : Nat) [NeZero N] (A : Finset (ZMod N))
+      (P : Fin M → ModAP N) (phi : Fin M → ZMod N → ZMod N) (delta alpha : Real),
+    0 < M → 0 < alpha → (A.card : Real) = delta * N →
+    (∀ i, (P i).IsProper ∧ PolynomialOn k Finset.univ (phi i)) →
+    (∀ x, x ∈ A → ∃ i, x ∈ (P i).carrier) →
+    (∀ i j, i != j → Disjoint (P i).carrier (P j).carrier) →
+    (∀ i j, (P i).carrier.card ≤ 2 * (P j).carrier.card) →
+    alpha * N ≤ ∑ i, ‖∑ s ∈ (P i).carrier, balanced A s * exponential (-(phi i s))‖ →
+    ∃ Q : ModAP N, Q.IsProper ∧
+      ((N : Real) / M) ^ (polynomialPartitionConstant k : Real)⁻¹ / 8 ≤ Q.carrier.card ∧
+      (delta + alpha / 16) * Q.carrier.card ≤ (A ∩ Q.carrier).card
+
+theorem corollary58At_of_threshold_free_localization (k : Nat) (hk : 1 ≤ k)
+    (hloc : ThresholdFreePolynomialLocalization k) : Corollary58At k := by
   classical
-  intro N k M _ A P phi delta alpha hk hM ha hA hdata hcover hdis hcomp hcor
+  intro N M _ A P phi delta alpha hM ha hA hdata hcover hdis hcomp hcor
   have hNr : (0 : Real) < N := by exact_mod_cast NeZero.pos N
   have hMr : (0 : Real) < M := by exact_mod_cast hM
   have hdelta : delta = density A := by
@@ -114,7 +128,7 @@ theorem corollary_5_8_holds_of_threshold_free_localization
     have hr := threshold_free_parent_large hK hL hM (NeZero.pos N) hscaleK hp
     exact hr.le.trans (hdata i).1.le
   choose m R z hR hshape using fun i =>
-    hloc k hk N (P i) (phi i) L (hdata i).1 (hdata i).2 hL2 (hlarge i)
+    hloc N (P i) (phi i) L (hdata i).1 (hdata i).2 hL2 (hlarge i)
   have hRcell : ∀ i j, 0 < (R i j).carrier.card := by
     intro i j
     rw [(hshape i j).1]
@@ -127,5 +141,10 @@ theorem corollary_5_8_holds_of_threshold_free_localization
     exact_mod_cast ((hshape i j).2.1.trans_eq (hshape i j).1.symm)
   · apply mul_le_mul_of_nonneg_right _ (by positivity)
     linarith
+
+theorem corollary_5_8_holds_of_threshold_free_localization
+    (hloc : ∀ k, 1 ≤ k → ThresholdFreePolynomialLocalization k) : corollary_5_8 := by
+  intro N k M _ A P phi delta alpha hk
+  exact corollary58At_of_threshold_free_localization k hk (hloc k hk) N M A P phi delta alpha
 
 end LeanProofs.GowersSzemeredi

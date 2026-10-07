@@ -12,8 +12,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 460 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 2,954 public Gowers theorems and found only propext,
+  All 462 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 2,969 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 107 exact
   companion proofs and 13 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -1105,10 +1105,18 @@ Arbitrary-modulus progression moments for Corollary 5.8
   hypothesis. The explicitly stated localization input asks for proper
   cells of length >= L and phase error <= 1/(4L), whenever the proper
   parent has length >= (2L)^(K_k/2).
-  Corollary 5.8 remains open until this analytic input is proved in every
-  degree. Report277 supplies a stronger written localization budget; the
-  affine base can also use Lemma 2.3 directly at a new diameter scale.
-  The conditional assembly does not count as an exact catalogue companion.
+  Proofs05AffineLocalizationScale chooses the integer diameter near
+  N/(64L), accounting for the ceiling and the exact Lemma 2.3 length
+  bound. Proofs05AffineLocalization constructs proper affine phase cells
+  of length >= L and error <= 1/(4L) from parent length >= 1024*L^3.
+  It discharges ThresholdFreePolynomialLocalization 1 within the required
+  eighth-power budget. The assembly is now also available in a fixed
+  degree as Corollary58At, and corollary_5_8_degree_one proves the entire
+  degree-one specialization with no added scale hypothesis.
+  Corollary 5.8 remains open until the analytic input is proved for every
+  degree >= 2. Report277 supplies a stronger written localization budget.
+  The fixed-degree result and conditional assembly do not count as exact
+  companions for the all-degree catalogue statement.
 
 Reproducible checks (from repository root)
   python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.Audit
