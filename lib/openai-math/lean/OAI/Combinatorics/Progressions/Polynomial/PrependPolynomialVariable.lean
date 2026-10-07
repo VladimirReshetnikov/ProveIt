@@ -1,5 +1,6 @@
 /- Modified for ProveIt: use Finsupp.mapDomain_apply for injective
-reindexing on Mathlib v4.32.0. Mathematical statements unchanged. -/
+reindexing on Mathlib v4.32.0. Mathematical statements unchanged.
+Use Finsupp.mapDomain_notin_range for indices outside the image. -/
 import OAI.Combinatorics.Progressions.Estimates.StrideProductBounds
 
 namespace OAI
@@ -21,7 +22,7 @@ theorem degreeOf_rename_missing {I J : Type*} (P : MvPolynomial I ℝ)
   apply Finset.sup_le
   intro d hd
   obtain ⟨a,_,rfl⟩ := Finset.mem_image.mp hd
-  exact le_of_eq (Finsupp.mapDomain_of_notMem_range a j hj)
+  exact le_of_eq (Finsupp.mapDomain_notin_range a j hj)
 
 theorem prependPolynomialVariable_degree {n : ℕ} (P : MvPolynomial (Fin n) ℝ)
     (hP : ∀ i, P.degreeOf i ≤ 1) (j : Fin (n+1)) :
@@ -55,7 +56,7 @@ theorem prependPolynomialVariable_top {n : ℕ} (P : MvPolynomial (Fin n) ℝ) :
     ext j
     refine Fin.cases ?_ (fun i => ?_) j
     · simp only [SquarefreeIndex.ofFinset_apply, Finset.mem_univ, ite_true,
-        Finsupp.add_apply, Finsupp.single_eq_same, Finsupp.mapDomain_of_notMem_range _ 0 hz, add_zero]
+        Finsupp.add_apply, Finsupp.single_eq_same, Finsupp.mapDomain_notin_range _ 0 hz, add_zero]
     · simp [SquarefreeIndex.ofFinset_apply, Finsupp.mapDomain_apply (Fin.succ_injective n),
         Fin.succ_ne_zero]
   rw [he, prependPolynomialVariable, MvPolynomial.coeff_X_mul,

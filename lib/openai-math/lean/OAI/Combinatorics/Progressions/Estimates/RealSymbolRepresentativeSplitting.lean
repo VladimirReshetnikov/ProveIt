@@ -1,11 +1,15 @@
 /- Modified for ProveIt: import Lean 4.32 compatibility declarations.
-Statements and proofs are unchanged from the pinned upstream source. -/
+Build the representative map by composition of its existing linear maps
+and close reflexive coordinate conversion goals on Lean 4.32.
+Mathematical statements and underlying coordinate function are unchanged. -/
 import OAI.Compat.Core
 import OAI.Compat.TensorProduct
 import Mathlib.LinearAlgebra.Basis.VectorSpace
 import Mathlib.LinearAlgebra.Quotient.Basic
 import OAI.Combinatorics.Progressions.Linear.DualAdjointFiltration
 import OAI.Combinatorics.Progressions.Polynomial.RealGradedSymbolPolynomial
+
+set_option maxRecDepth 2048
 
 namespace OAI
 
@@ -197,17 +201,10 @@ variable {σ ι L : Type*} [LieRing L] [LieAlgebra ℚ L] {s : ℕ}
   (w : σ → ℕ)
 
 noncomputable def realSymbolRepresentative :
-    F.RealPolynomialSymbol w →ₗ[ℚ] VectorPolynomial σ ℚ (ℝ ⊗[ℚ] L) where
-  toFun x := ofSupportedCoordinates (b.baseChange ℝ)
-    {z : (σ →₀ ℕ) × ι | Finsupp.weight w z.1 = ω z.2}
-      (((F.polynomialSymbolBasis b ω hlayers w).baseChange ℝ).repr x)
-  map_add' x y := by simp only [map_add]
-  map_smul' a x := by
-    have h := (((F.polynomialSymbolBasis b ω hlayers w).baseChange ℝ).repr.restrictScalars ℚ).map_smul a x
-    change ((F.polynomialSymbolBasis b ω hlayers w).baseChange ℝ).repr (a • x) =
-      a • ((F.polynomialSymbolBasis b ω hlayers w).baseChange ℝ).repr x at h
-    rw [h, map_smul]
-    rfl
+    F.RealPolynomialSymbol w →ₗ[ℚ] VectorPolynomial σ ℚ (ℝ ⊗[ℚ] L) :=
+  (ofSupportedCoordinates (R := ℚ) (b.baseChange ℝ)
+    {z : (σ →₀ ℕ) × ι | Finsupp.weight w z.1 = ω z.2}).comp
+      (((F.polynomialSymbolBasis b ω hlayers w).baseChange ℝ).repr.restrictScalars ℚ).toLinearMap
 
 noncomputable def realSymbolOfPolynomial :
     VectorPolynomial σ ℚ (ℝ ⊗[ℚ] L) →ₗ[ℚ] F.RealPolynomialSymbol w :=
@@ -220,23 +217,17 @@ noncomputable def realSymbolOfPolynomial :
     (b.baseChange ℝ).repr
       (coefficients (F.realSymbolRepresentative b ω hlayers w x) z.val.1) z.val.2 =
       ((F.polynomialSymbolBasis b ω hlayers w).baseChange ℝ).repr x z := by
-  dsimp only [realSymbolRepresentative, LinearMap.coe_mk, AddHom.coe_mk]
-  generalize ((F.polynomialSymbolBasis b ω hlayers w).baseChange ℝ).repr x = c
-  have hc := ofSupportedCoordinates_apply (σ := σ) (ι := ι) (R := ℚ) (S := ℝ) (V := ℝ ⊗[ℚ] L) (b.baseChange ℝ)
-        {z : (σ →₀ ℕ) × ι | Finsupp.weight w z.1 = ω z.2}
-        c z
-  convert hc using 2
+  convert ofSupportedCoordinates_apply (R := ℚ) (b.baseChange ℝ)
+    {z : (σ →₀ ℕ) × ι | Finsupp.weight w z.1 = ω z.2}
+    (((F.polynomialSymbolBasis b ω hlayers w).baseChange ℝ).repr x) z using 1 <;> rfl
 
 theorem realSymbolRepresentative_coefficient_of_ne
     (x : F.RealPolynomialSymbol w) (α : σ →₀ ℕ) (i : ι)
     (h : Finsupp.weight w α ≠ ω i) :
     (b.baseChange ℝ).repr (coefficients (F.realSymbolRepresentative b ω hlayers w x) α) i = 0 := by
-  dsimp only [realSymbolRepresentative, LinearMap.coe_mk, AddHom.coe_mk]
-  generalize ((F.polynomialSymbolBasis b ω hlayers w).baseChange ℝ).repr x = c
-  have hc := ofSupportedCoordinates_apply_of_not_mem (σ := σ) (ι := ι) (R := ℚ) (S := ℝ) (V := ℝ ⊗[ℚ] L) (b.baseChange ℝ)
-        {z : (σ →₀ ℕ) × ι | Finsupp.weight w z.1 = ω z.2}
-        c α i h
-  convert hc using 2
+  convert ofSupportedCoordinates_apply_of_not_mem (R := ℚ) (b.baseChange ℝ)
+    {z : (σ →₀ ℕ) × ι | Finsupp.weight w z.1 = ω z.2}
+    (((F.polynomialSymbolBasis b ω hlayers w).baseChange ℝ).repr x) α i h using 1 <;> rfl
 
 @[simp] theorem realSymbolOfPolynomial_coordinate
     (p : VectorPolynomial σ ℚ (ℝ ⊗[ℚ] L)) (z : SymbolBasisIndex w ω) :
