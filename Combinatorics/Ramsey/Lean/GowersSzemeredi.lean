@@ -418,6 +418,7 @@ import GowersSzemeredi.Proofs13PhaseSelection
 import GowersSzemeredi.Proofs13FiniteRecurrence
 import GowersSzemeredi.Proofs13SmallRowScale
 import GowersSzemeredi.Proofs13FiniteRowBudgets
+import GowersSzemeredi.Proofs13FiniteRowExtraction
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 

@@ -12,8 +12,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 576 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 3,720 public Gowers theorems and found only propext,
+  All 580 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 3,735 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 111 exact
   companion proofs and 9 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -1656,9 +1656,29 @@ Improved large-case Lemma 13.5 and finite inputs for Lemma 13.6
   larger-scale case. For target t=c*N^e>=1, coefficient inequalities
   6c^2<=d^v and 2c^2<=z*d^w, exponent inequalities 2e<=uv, 2e<=uw,
   2e<=1, and 2c<=1 give all three row length and Bohr-radius budgets.
-  The required coefficient estimates for the Section 13 constants are
-  not yet proved. These are restricted and conditional results for
-  Lemma 13.6; its full numbered statement stays open.
+  The required coefficient estimates are discharged by the finite
+  construction below. This generic budget theorem remains conditional
+  as a reusable interface.
+
+All-scale row construction from the preceding Section 13 data
+  Proofs13FiniteCoefficientBounds proves the actual spectrum bound equals
+  section13K(alpha), keeps its ceiling in the corrected Bohr radius, and
+  bounds that radius below by
+    2^(-229K-227) * alpha^(576K+576).
+  The initial length coefficient d is at least
+    2^-672418 * alpha^2011584.
+  Since K>=2^114, these imply 12c^2<=d and 4c^2<=z*d for the actual
+  c=section13Zeta(alpha)/2 and z=section10Zeta(alpha^32/16).
+  Proofs13FiniteFloorBudgets accounts for the floor and possible one-point
+  loss in Stage 13.4. Proofs13FiniteStageBudgets instantiates all integer
+  budgets whenever the target length is at least one, with no asymptotic
+  threshold and no coefficient hypotheses left over.
+  Proofs13FiniteRowExtraction combines this with the checked singleton
+  column branch to construct Stage 13.6 for every prime modulus and every
+  positive context density, from Stages 13.4 and 13.5 with theta=lambda.
+  Its large-case theorem retains |R|<=|Q|. The current catalogue's omitted
+  preceding data and prime convention still need contextual repair before
+  this is counted as the exact numbered companion.
 
 Reproducible checks (from repository root)
   python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.Audit
