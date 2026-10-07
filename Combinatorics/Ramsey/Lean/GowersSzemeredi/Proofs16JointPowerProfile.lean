@@ -1,5 +1,6 @@
 import GowersSzemeredi.Proofs16PowerCoverUniformUnion
 import GowersSzemeredi.Proofs16PowerCoverProfile
+import GowersSzemeredi.Proofs16CommonBasePieceBudget
 
 /-! Explicit uniform parameters for the common cover of the extracted
 Section 16 pieces. Every parameter depends only on density, product constant,
@@ -8,8 +9,9 @@ set_option autoImplicit false
 noncomputable section
 namespace LeanProofs.GowersSzemeredi
 
+/-- Round up the actual common-base extraction count. -/
 def section16PowerPieceBudget (theta gamma : Real) (k : Nat) : Nat :=
-  Nat.ceil (gamma ^ (-(2 : Int)) * multipleS theta gamma (k + 1))
+  Nat.ceil (section16CommonBasePieceBound theta gamma k)
 
 def section16PowerSliceBudget (theta gamma : Real) (k : Nat) : Real :=
   gamma ^ (-(2 : Int)) * multipleS ((2 : Real) ^ (-(k + 2 : Real)) * theta) gamma k
@@ -77,7 +79,7 @@ theorem section16_joint_power_profile_of_pieces {N k q : Nat} [NeZero N]
     (hg : 0 < gamma) (hg1 : gamma ≤ 1)
     (G : Fin q → Finset (Point N (k + 1) × ZMod N))
     (hG : ∀ i, Section16PowerCoverProfile theta gamma k (G i))
-    (hq : (q : Real) ≤ gamma ^ (-(2 : Int)) * multipleS theta gamma (k + 1)) :
+    (hq : (q : Real) ≤ section16CommonBasePieceBound theta gamma k) :
     Section16JointPowerCoverProfile theta gamma k (section16FinsetUnion G) := by
   intro rho hr hr1
   let eta := section16JointPowerLoss rho theta gamma k

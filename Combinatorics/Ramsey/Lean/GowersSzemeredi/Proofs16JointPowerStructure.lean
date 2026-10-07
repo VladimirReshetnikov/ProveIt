@@ -1,5 +1,6 @@
 import GowersSzemeredi.Proofs16JointPowerProfile
-import GowersSzemeredi.Proofs16PowerDecomposition
+import GowersSzemeredi.Proofs16SharpPowerExtraction
+import GowersSzemeredi.Proofs16BaseCaseEndpoint
 
 /-! The contextual lift and finite extraction give a genuine structural
 cover with their actual quantitative controls. This large-box assertion
@@ -21,7 +22,7 @@ theorem section16_joint_power_structure_of_dimension_induction {k : Nat} (hk : 1
         ∃ J : Finset (Point N (k + 1)),
           (1 - theta) * (N : Real) ^ (k + 1) ≤ J.card ∧
           Section16JointPowerCoverProfile theta gamma k (restrictRelation Gamma J) := by
-  obtain ⟨N0, hN0⟩ := section16_power_decomposition_of_dimension_induction hk hth
+  obtain ⟨N0, hN0⟩ := section16_sharp_power_decomposition_of_dimension_induction hk hth
     theta gamma ht ht1 hg hg1
   refine ⟨N0, fun N _ _ hN Gamma hcard hprod => ?_⟩
   obtain ⟨q, G, J, hG, hq, hJ, hc⟩ := hN0 N hN Gamma hcard hprod

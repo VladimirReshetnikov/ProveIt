@@ -13,8 +13,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 739 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 4,709 public Gowers theorems and found only propext,
+  All 742 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 4,724 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 113 exact
   companion proofs and 7 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -2325,7 +2325,8 @@ Joint structural cover with uniform power controls
   use exponent min(e,1)^R, and take the iteration threshold after R steps.
   Monotonicity of the threshold and parameter weakening are proved.
   Proofs16JointPowerProfile specializes this to the extracted pieces. Set
-    R = ceil(gamma^-2*s(theta,gamma,k+1)), eta = rho/(R+1).
+    R = ceil(gamma^-2/theta2), eta = rho/(R+1),
+    theta2 = section16ThetaTwo(section16ThetaOne(theta,gamma,k)).
   The single-piece controls at loss eta give a joint graph budget R*C,
   exponent min(e,1)^R, and a finite explicit starting width, all independent
   of the actual piece count and the relation. The exponent is strictly
@@ -2349,6 +2350,35 @@ Joint structural cover with uniform power controls
   it does not invalidate the checked large-box controls above, nor claim
   to refute Theorem 16.2. Keep the universal contract unasserted pending
   formal verification of this stronger obstruction.
+
+Retaining the common-base mass in the extraction count
+  Proofs16SharpPowerExtraction retains the actual mass of the translated
+  good graph, theta2*N^(k+1), rather than weakening it to N^(k+1)/s.
+  The same structured extraction, common-base construction, and cover
+  profile therefore give a decomposition with at most gamma^-2/theta2
+  pieces. The selected base set still has mass (1-theta)*N^(k+1), and the
+  pieces retain the same quantified covers, independent of parent box/loss.
+  Proofs16CommonBasePieceBudget proves that this actual real count is at
+  most gamma^-2*s(theta,gamma,k), already a whole source dimension below
+  the older ambient-dimensional budget gamma^-2*s(theta,gamma,k+1).
+  It is strictly smaller throughout 0<theta,gamma<=1.
+  Proofs16PieceBudgetImprovement gives the exact closed formula
+    gamma^-2/theta2 = 2^32 * gamma^-2 *
+      (4/(theta*gamma))^(8*2^(2^(k+5))).
+  It proves the actual budget is at least one and the source s increases
+  by at least a factor two per dimension. Consequently the rounded-up
+  natural-number count is strictly smaller than the old rounded count too.
+  The canonical section16PowerPieceBudget now uses this actual mass budget.
+  Proofs16JointPowerStructure uses the sharper extraction theorem, and the
+  revised count is propagated through its cover parameters, Fourier-box
+  selection, polynomial localization, full inverse induction, balanced-set
+  inverse, and natural-interval density iteration. The earlier looser
+  decomposition theorems remain valid and available.
+  The strict comparison proved here concerns the extraction/refinement
+  count. The other resulting parameters are checked with their revised
+  formulas; no unproved simultaneous monotonicity or improvement of the
+  final all-length Szemeredi bound is inferred from this count comparison.
+  No exact catalogue companion is closed by this strengthening.
 
 Fourier localization and inverse induction from the joint power cover
   Proofs16PowerCoverDenseBox selects a dense multilinear graph from any

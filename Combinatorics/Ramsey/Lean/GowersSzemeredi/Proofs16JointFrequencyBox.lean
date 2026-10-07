@@ -20,8 +20,7 @@ theorem section16JointPowerGraphBudget_pos {rho theta gamma : Real} (k : Nat)
     0 < section16JointPowerGraphBudget rho theta gamma k := by
   have hR : 0 < section16PowerPieceBudget theta gamma k := by
     apply Nat.ceil_pos.mpr
-    unfold multipleS
-    positivity
+    exact section16CommonBasePieceBound_pos k ht hg
   have hRreal : (0 : Real) < section16PowerPieceBudget theta gamma k := by exact_mod_cast hR
   have heta := section16JointPowerLoss_pos (theta := theta) (gamma := gamma) k hr
   have hs := section16PowerSliceBudget_pos k ht hg

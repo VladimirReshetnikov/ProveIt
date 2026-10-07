@@ -461,6 +461,7 @@ import GowersSzemeredi.Proofs16CompressedLiftImprovement
 import GowersSzemeredi.Proofs16PowerDecomposition
 import GowersSzemeredi.Proofs16JointPowerStructure
 import GowersSzemeredi.Proofs18JointInverseConsequences
+import GowersSzemeredi.Proofs16PieceBudgetImprovement
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 
