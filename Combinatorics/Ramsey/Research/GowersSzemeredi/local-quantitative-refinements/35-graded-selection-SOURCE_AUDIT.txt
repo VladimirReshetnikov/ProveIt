@@ -1,0 +1,156 @@
+SOURCE AUDIT AND MATHEMATICAL SCOPE
+=================================
+
+This record accompanies the manuscript dated 6 October 2026. It identifies
+the comparison baseline and the distinction between proved contributions,
+inherited statements and proposed further work.
+
+PINNED REPOSITORY
+----------------
+
+https://github.com/VladimirReshetnikov/ProveIt/tree/12da356730b12cb73c276a258aaadf3223e3662b/Combinatorics/Ramsey
+
+The corrected source is:
+Combinatorics/Ramsey/Papers/sz-thm-gowers-proof/sz-thm-gowers-proof.tex
+Git blob: 41085a0efde8c1932e86e80c791984f52841c22e
+
+The inspected merged article is:
+Combinatorics/Ramsey/Research/GowersSzemeredi/local-quantitative-refinements/article.tex
+Git blob: 3adb2722cddc65cb8aecddba96d548021b871cdb
+
+The programme's ledger is:
+Combinatorics/Ramsey/gowers-proof-status.json
+Git blob: 812e9d29287f1f01a4dba6dc349a270c1147bd9d
+
+The mathematical comparisons use the corrected transcription, not an
+unqualified assertion that every wording in the 2001 printed paper is
+identical. In particular the corrected Lemma 15.5 states its largeness
+hypothesis explicitly.
+
+PRINCIPAL PRIOR RESEARCH SOURCES
+-------------------------------
+
+All report titles below are repository research manuscripts, not asserted
+to be externally refereed publications.
+
+* Local Quantitative Refinements of Gowers's Proof of Szemeredi's Theorem.
+  Merged article above, printing sources 01-10. Used for earlier centered
+  cube expansions, real U3/U2 comparison, and the quantitative interfaces.
+
+* One-stage Fejer selection for Gowers arrangements.
+  docs/incoming/fejer-arrangement-selection.zip at the source pin.
+  Git blob: 44036f557a4d017e4c198d35830c72ef3190e061
+  Inner manuscript: fejer-arrangement-selection/fejer-arrangement-selection.tex
+  Inherited: normalized positive Fejer kernel, one-stage selection, and
+  retained-count powers alpha^s eta^(s-1). New here: simultaneous weighted
+  degree balances and codimension, with the resulting field threshold.
+
+* Degree Filtrations in Gowers' Ramsey Framework (source 22).
+  docs/incoming/gowers_degree_stratification.zip, recoverable at arrival
+  commit 26908b3b6, placed before the source pin.
+  Inherited: degree-sensitive certificate geometry. Reproved here for
+  arbitrary field coefficients, then combined with the actual Fourier law.
+
+* Logarithmic Selection, Local Freiman Models, and Higher Uniformity.
+  docs/incoming/gowers_logarithmic_selection.zip at the source pin.
+  Git blob: 22cd54f629d936e7fa924d8e3d9eafaabce4528e
+  Inherited: cosine dual identity, prior higher-order norm gap, and the
+  rational comparison example for c_4.
+
+* Further Quantitative Refinements of Gowers's Szemeredi Argument:
+  higher norm comparisons, joint quadratic rigidity, and restriction
+  by affine rank.
+  docs/incoming/gowers_moments_stability_restriction.zip at the source pin.
+  Git blob: 9ac19afc66fa3d8aeb85f8758c8e925a09652218
+  Inherited: coefficient 35/8 at U4 and central-binomial higher-order bounds.
+  The present coefficient 5 improves U4. At orders d>=5 the earlier moment
+  bounds are stronger than simple monotonic propagation of coefficient 5.
+
+* Higher-Order Cube Expansions and Sharp Degeneracy Bounds in Gowers'
+  Szemeredi Framework (source 18).
+  docs/incoming/gowers_cubes_degeneracy_partitions.zip, recoverable at
+  f7efeb4f5a7250876ac6fed4116d5fb9ebecd543, placed before the source pin.
+  Inherited: polynomial endpoint/volume obstruction. New here: an explicit
+  rational construction forcing step divisibility at every initial point.
+
+* Sharp Thresholds and Extremal Constants in Gowers's Szemeredi Framework
+  (source 23).
+  docs/incoming/gowers_sharp_thresholds.zip, recoverable at arrival commit
+  26908b3b6, placed before the source pin.
+  Inherited: linear conductor obstruction and numerical-semigroup formulas.
+  Its higher-degree divisibility construction question is resolved here.
+
+Additional placed archives (sources 11-23) and the remaining relevant Gowers
+incoming archives were inspected to avoid repeating already obtained local
+constants or treating their research questions as still unanswered. The
+article's references identify the sources directly used for each comparison.
+
+WHAT THE NEW CLAIMS DO AND DO NOT SAY
+-----------------------------------
+
+Selection:
+  The exact score theorem includes both degree-one diagonal events and the
+  survival correction for repeated physical vertices. The fair comparison
+  has three levels:
+      earlier unweighted one-monomial Fejer exponent: 2s;
+      weighted unstratified full-feature comparison: (s-1)/2;
+      degree-weighted exponent: E_(k,m) ~ 2s/k.
+  The middle bound is proved in this article. For k>=2 the final bound is
+  strictly stronger. These are sufficient exponents, not intrinsic lower
+  bounds for every conceivable selection method.
+
+Norms:
+  The new energy inequality retains additional repeated-entry additive
+  quadruples. The cosine identities are credited and reproved. The scalar
+  certificate is analytic and uses exact rational comparisons; no numerical
+  optimization is needed to prove coefficient 5. Strict inequality for each
+  nonzero f does not by itself determine the infimum or classify extremizers.
+
+Partitions:
+  The exact threshold D*C(S) belongs to the constructed phase family.
+  It yields a lower bound on a universal threshold for arbitrary phases.
+  The exponent corollary assumes a guarantee for every sufficiently large R
+  and every target 2<=L<=cR^a, with nonnegative tolerance exponents. It does
+  not assert the same conclusion for a guarantee restricted to only the
+  single target floor(cR^a). The exact obstruction at D*C(S)-1 does not imply
+  that every smaller length is bad; the packing formula describes that issue.
+
+  The exact periodic realization may use composite modulus N=R+1. Transfer
+  to a prime modulus uses an explicitly larger N>2R with a coefficient
+  approximation bound. It does not resolve the prime regime N asymp R.
+
+LITERATURE CONTEXT
+------------------
+
+W. T. Gowers, A new proof of Szemeredi's theorem, GAFA 11 (2001), 465-588.
+https://doi.org/10.1007/s00039-001-0332-9
+
+J. Leng, A. Sah, M. Sawhney, Improved Bounds for Szemeredi's Theorem.
+https://arxiv.org/abs/2402.17995
+
+B. Green, T. Tao, The quantitative behaviour of polynomial orbits on
+nilmanifolds, Annals of Mathematics 175 (2012), 465-540.
+https://doi.org/10.4007/annals.2012.175.2.2
+
+T. Eisner, T. Tao, Large values of the Gowers-Host-Kra seminorms.
+https://arxiv.org/abs/1012.3509
+
+V. Kovac, K. M. Rogers, Estimates for L^p variants of Gowers norms.
+https://arxiv.org/abs/2609.08916v1
+
+Kovac-Rogers Theorem 1.1 concerns nonnegative functions and groups without
+compact open subgroups, so that strict log-convexity statement excludes
+finite groups. It is distinguished from the present signed centered odd
+finite-group U4/U2 comparison. This scope check is not a complete priority
+search. No contribution in the package is labeled a new global Szemeredi
+bound or a resolution of a famous open problem.
+
+REVIEW AND FORMAL STATUS
+------------------------
+
+The three arguments were cross-checked through separate derivations during
+preparation. Exact finite checks were rerun from the packaged programs and
+matched the recorded results. The typeset PDF was rendered and inspected.
+These steps do not constitute external peer review or proof-assistant
+certification. No Lean source, repository ledger, or existing theorem was
+modified by this delivery.

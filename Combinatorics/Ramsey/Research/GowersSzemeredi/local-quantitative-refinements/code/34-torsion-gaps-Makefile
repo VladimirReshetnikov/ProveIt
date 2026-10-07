@@ -1,0 +1,38 @@
+PYTHON ?= python3
+LATEXMK ?= latexmk
+PDFLATEX ?= pdflatex
+DOC := gowers_cube_structure
+
+.DEFAULT_GOAL := pdf
+.PHONY: pdf verify verify-torsion verify-gadgets verify-norm regenerate-torsion clean
+
+pdf: $(DOC).pdf
+
+$(DOC).pdf: $(DOC).tex
+	@if command -v "$(LATEXMK)" >/dev/null 2>&1; then \
+		$(LATEXMK) -pdf -interaction=nonstopmode -halt-on-error $(DOC).tex; \
+	else \
+		$(PDFLATEX) -interaction=nonstopmode -halt-on-error $(DOC).tex && \
+		$(PDFLATEX) -interaction=nonstopmode -halt-on-error $(DOC).tex; \
+	fi
+
+verify: verify-torsion verify-gadgets verify-norm
+
+verify-torsion:
+	$(PYTHON) code/verify_torsion.py
+
+verify-gadgets:
+	@mkdir -p data
+	@$(PYTHON) code/verify_determinant_gadgets.py > data/determinant_gadget_verification.json.tmp && \
+		mv data/determinant_gadget_verification.json.tmp data/determinant_gadget_verification.json
+	@echo "Determinant certificates written to data/determinant_gadget_verification.json"
+
+verify-norm:
+	$(PYTHON) code/verify_odd_fourth_gap.py
+
+regenerate-torsion:
+	$(PYTHON) code/verify_torsion.py --regenerate
+
+clean:
+	rm -f $(DOC).aux $(DOC).log $(DOC).out $(DOC).toc $(DOC).fls $(DOC).fdb_latexmk $(DOC).synctex.gz
+	@rm -f data/determinant_gadget_verification.json.tmp

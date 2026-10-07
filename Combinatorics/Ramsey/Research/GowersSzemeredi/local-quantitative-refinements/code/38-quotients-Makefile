@@ -1,0 +1,24 @@
+PYTHON ?= python3
+LATEXMK ?= latexmk
+ARTICLE = gowers_quotients_rigidity
+
+.PHONY: all pdf verify figures clean
+
+all: pdf
+
+pdf: $(ARTICLE).pdf
+
+$(ARTICLE).pdf: $(ARTICLE).tex figures/asymptotic_coefficients.pdf
+	$(LATEXMK) -pdf -interaction=nonstopmode -halt-on-error -file-line-error $(ARTICLE).tex
+
+verify:
+	$(PYTHON) code/run_checks.py
+
+figures:
+	$(PYTHON) code/make_figures.py
+
+figures/asymptotic_coefficients.pdf: code/make_figures.py
+	$(PYTHON) code/make_figures.py
+
+clean:
+	$(LATEXMK) -c $(ARTICLE).tex
