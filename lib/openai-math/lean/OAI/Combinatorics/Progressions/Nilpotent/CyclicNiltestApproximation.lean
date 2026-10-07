@@ -1,6 +1,7 @@
 /- Modified for ProveIt: import Lean 4.32 compatibility declarations.
 Mathematical statements are unchanged from the pinned upstream source.
-Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
+Use IsModuleTopology.topologicalAddGroup on Lean 4.32.
+Construct the option Lie ring and Lie algebra instances by explicit cases. -/
 import OAI.Compat.BigOperators
 import OAI.Combinatorics.Progressions.Estimates.ProductOrbitCongruence
 import OAI.Combinatorics.Progressions.Estimates.RealificationModuleTopology
@@ -226,13 +227,16 @@ def optionLieSpace {ι : Type v} (L₀ : Type u) (L : ι → Type u) : Option ι
   | some i => L i
 
 instance optionLieRing {ι : Type v} {L₀ : Type u} {L : ι → Type u}
-    [LieRing L₀] [∀ i, LieRing (L i)] (i : Option ι) : LieRing (optionLieSpace L₀ L i) := by
-  cases i <;> dsimp [optionLieSpace] <;> infer_instance
+    [h₀ : LieRing L₀] [h : ∀ i, LieRing (L i)] :
+    (i : Option ι) → LieRing (optionLieSpace L₀ L i)
+  | none => h₀
+  | some i => h i
 
 instance optionLieAlgebra {ι : Type v} {L₀ : Type u} {L : ι → Type u}
-    [LieRing L₀] [∀ i, LieRing (L i)] [LieAlgebra ℚ L₀] [∀ i, LieAlgebra ℚ (L i)]
-    (i : Option ι) : LieAlgebra ℚ (optionLieSpace L₀ L i) := by
-  cases i <;> dsimp [optionLieSpace] <;> infer_instance
+    [LieRing L₀] [∀ i, LieRing (L i)] [h₀ : LieAlgebra ℚ L₀] [h : ∀ i, LieAlgebra ℚ (L i)] :
+    (i : Option ι) → LieAlgebra ℚ (optionLieSpace L₀ L i)
+  | none => h₀
+  | some i => h i
 
 def optionDimension {ι : Type v} (d₀ : ℕ) (d : ι → ℕ) : Option ι → ℕ
   | none => d₀
