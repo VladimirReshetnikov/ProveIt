@@ -30,6 +30,14 @@
 \newcommand{\ch}{c_{\mathrm{hi}}}
 \DeclareMathOperator{\Res}{Res}
 \DeclareMathOperator{\ord}{ord}
+% Added by the ProveIt write phase (batch 110, 7 October 2026): dated notes
+% marked [write], a macro for file, label and declaration names, longtable.
+\usepackage{longtable}
+\newcommand{\file}[1]{\nolinkurl{#1}}
+\expandafter\def\expandafter\UrlBreaks\expandafter{\UrlBreaks\do\-\do\_\do\.}
+\newenvironment{writenote}[1][]{\par\smallskip\begingroup\small
+ \noindent\textbf{[write]}\if\relax\detokenize{#1}\relax\else~\textbf{#1.}\fi\ }%
+ {\par\endgroup\smallskip}
 \hypersetup{pdftitle={Report183 Certified asymptotics for tableau defect clusters A394326},pdfauthor={Research report},pdfsubject={Signed Fredholm determinants, certified dominant pole, spectral expansions and threshold inverses}}
 \title{Report183\\[5pt]Certified asymptotics for tableau defect clusters\\[3pt]OEIS A394326}
 \author{A mathematical and computational reproducibility report}
@@ -46,13 +54,43 @@ $0.1838102868<c<0.1838120734$. Meromorphic continuation throughout the open unit
 \end{abstract}
 
 \paragraph{Provenance and scope.}
-The sequence and its extraction are due to Morten Brydensholt in the OEIS record; Sean A. Irvine's jOEIS translation supplies the inspected executable specification~\cite{oeis,joeis}. The report gives target-specific proofs and reproducible certificates. The methods of ballot paths, renewal, Fredholm determinants, complex coefficient extraction, and Lagrange inversion are classical. The bounded source screen described in Section~\ref{sec:sources} is not a worldwide priority determination. No publication or external record edit is part of this work.
+The sequence and its extraction are due to Morten Brydensholt in the OEIS record; Sean A. Irvine's jOEIS translation supplies the inspected executable specification~\cite{oeis,joeis}. The report gives target-specific proofs and reproducible certificates. The methods of ballot paths, renewal, Fredholm determinants, complex coefficient extraction, and Lagrange inversion are classical. The bounded source screen described in Section~\ref{tdc:sec:sources} is not a worldwide priority determination. No publication or external record edit is part of this work.
+
+\begin{writenote}[Status and trust boundary, added 7 October 2026, batch~110]
+This is bundle Report~183 of an external AI-assisted research session, filed
+in ProveIt as the single-source research report
+\file{a394326-tableau-defect-clusters} (provenance, the sources as the write
+read them, what was checked, relation to the repository, the collected
+non-claims and the reading conventions are in
+Section~\ref{tdc:sec:provenance}). It is unrefereed and not formalized. Its
+author line reads ``A mathematical and computational reproducibility
+report'' and its PDF author field ``Research report'': it names no person or
+tool. \emph{What rests on what.} The identification of the source extraction
+(Section~\ref{tdc:sec:model}), the operator construction and the analytic
+arguments are conventional proofs. Theorem~\ref{tdc:thm:main} also rests on
+a computer certificate: an exact integer rational-circle computation
+(Section~\ref{tdc:sec:global}) and outward dyadic interval linear algebra
+with frozen proposals (Section~\ref{tdc:sec:local}), replayed by the shipped
+standard-library programs; these are not proof-assistant checked.
+Corollary~\ref{tdc:cor:empirical}, Theorem~\ref{tdc:thm:inverse} and the
+monotone threshold $Y_0$ inherit that trust boundary.
+Theorems~\ref{tdc:thm:spectral} and~\ref{tdc:thm:marker} are existential
+beyond the dominant pole. \emph{A correction of the OEIS record.} The two
+asymptotic formulas of A394326, $a(n)\sim A\phi^n$ and
+$a(n)\sim a(n-1)+a(n-2)$, are false; the source proves this
+(Corollary~\ref{tdc:cor:empirical}), and the write records it with the
+quotations and an explicit proof in Remark~\ref{tdc:rem:refuted}. The write
+also adds Remark~\ref{tdc:rem:oeis} (the OEIS entries quoted),
+Remark~\ref{tdc:rem:transseries} (the inverses against the transseries
+volume) and dated notes. No statement, proof or number of the source was
+changed.
+\end{writenote}
 
 \tableofcontents
 \newpage
 
 \section{Results and how to use them}
-\label{sec:main}
+\label{tdc:sec:main}
 Let $a_n$ be A394326 for $n\ge1$, extend it by $a_0=0$, and put
 \[
  C(q)=\sum_{n\ge0}a_nq^n,\qquad R=\frac{63}{100},\qquad M=2500.
@@ -61,41 +99,41 @@ The first terms, starting at $n=1$, are
 \[
  1,2,1,1,3,5,6,7,15,27,39,57,97,161,257,405,659,1076.
 \]
-Section~\ref{sec:model} gives a complete definition independent of this prefix. In particular, the later asymptotic statements apply to the exact source extraction, not to a fitted recurrence.
+Section~\ref{tdc:sec:model} gives a complete definition independent of this prefix. In particular, the later asymptotic statements apply to the exact source extraction, not to a fitted recurrence.
 
-\begin{theorem}[Certified dominant pole]\label{thm:main}
+\begin{theorem}[Certified dominant pole]\label{tdc:thm:main}
 The series $C$ has a meromorphic continuation to $|q|<1$. There exist real constants $\rho,c$ with
 \begin{align}
  \rhol:=0.6180397469174016&<\rho<0.6180397783636036=:\rhoh,
- \label{eq:rho}\\
+ \label{tdc:eq:rho}\\
  \cl:=0.1838102868&<c<0.1838120734=:\ch
- \label{eq:c}
+ \label{tdc:eq:c}
 \end{align}
 such that $q=\rho$ is the only singularity of $C$ in $|q|\le R$. It is a simple pole, with principal term $c/(1-q/\rho)$. For every integer $n\ge0$,
-\begin{equation}\label{eq:error}
+\begin{equation}\label{tdc:eq:error}
  \left|a_n-c\rho^{-n}\right|\le MR^{-n}.
 \end{equation}
 Equivalently, $a_n=c\rho^{-n}\{1+O((\rho/R)^n)\}$. The growth constant $\lambda=\rho^{-1}$ satisfies
-\begin{equation}\label{eq:lambda}
+\begin{equation}\label{tdc:eq:lambda}
  1.6180188314<\lambda<1.6180189139<\frac{1+\sqrt5}{2}.
 \end{equation}
-The constants are defined exactly by the operators in Section~\ref{sec:operator}:
-\begin{equation}\label{eq:exactconstants}
+The constants are defined exactly by the operators in Section~\ref{tdc:sec:operator}:
+\begin{equation}\label{tdc:eq:exactconstants}
  D(q)=\det(\Id-K(\sqrt q)),\quad N(q)=\det(\Id-L(\sqrt q)),
  \quad N(\rho)=0,\quad c=\frac{D(\rho)}{\rho N'(\rho)}.
 \end{equation}
 There is exactly one zero of $N$ in $|q|<R$, counted with multiplicity, and $N$ has no boundary zero. This zero is $\rho$ and $D(\rho)\ne0$.
 \end{theorem}
 
-All decimal endpoints in \eqref{eq:rho}--\eqref{eq:c} denote exact terminating decimals. They are deliberately wider than the raw dyadic enclosures. Numerical refinements
+All decimal endpoints in \eqref{tdc:eq:rho}--\eqref{tdc:eq:c} denote exact terminating decimals. They are deliberately wider than the raw dyadic enclosures. Numerical refinements
 \[
  \rho\approx0.6180397634035489,\qquad c\approx0.183811179648135
 \]
 are useful diagnostics only; the extra displayed digits are not certified here.
 
-\begin{corollary}[Growth and the empirical equivalents]\label{cor:empirical}
+\begin{corollary}[Growth and the empirical equivalents]\label{tdc:cor:empirical}
 For every $n\ge600$, $a_{n+1}>a_n>0$. If $\phi=(1+\sqrt5)/2$, then
-\begin{equation}\label{eq:empirical}
+\begin{equation}\label{tdc:eq:empirical}
  \frac{a_n}{\phi^n}\longrightarrow0,\qquad
  \frac{a_n-a_{n-1}-a_{n-2}}{a_n}\longrightarrow1-\rho-\rho^2
  \in(-0.00001295,-0.00001287).
@@ -104,13 +142,229 @@ Thus neither a nonzero golden-ratio equivalent nor the strict equivalent
 $a_n\sim a_{n-1}+a_{n-2}$ holds. The source's looser observed absolute relative residual below $0.0002$ is not contradicted.
 \end{corollary}
 
-The stronger structural conclusions have different scopes. Theorem~\ref{thm:spectral} supplies a finite-pole expansion at every fixed zero-free radius below one; it does not numerically locate later poles. Theorem~\ref{thm:inverse} gives an explicit large-threshold inverse enclosure. Its two real bounding roots have convergent small-parameter expansions to every fixed order. For finer spectral inverses, the horizontal error exponent tends to one from below, not to arbitrarily large values. Theorem~\ref{thm:marker} describes a local complex span marker without asserting a probability law.
+The stronger structural conclusions have different scopes. Theorem~\ref{tdc:thm:spectral} supplies a finite-pole expansion at every fixed zero-free radius below one; it does not numerically locate later poles. Theorem~\ref{tdc:thm:inverse} gives an explicit large-threshold inverse enclosure. Its two real bounding roots have convergent small-parameter expansions to every fixed order. For finer spectral inverses, the horizontal error exponent tends to one from below, not to arbitrarily large values. Theorem~\ref{tdc:thm:marker} describes a local complex span marker without asserting a probability law.
 
 \paragraph{Proof map.}
-The source identification comes first. It justifies evaluating the span variable at one and determines the exact signed operator. Trace class gives meromorphic continuation. A finite exact determinant and a rational contour give a global zero count; separate real signs and a numerator test locate a genuine pole. A nonsingular resolvent differentiates the first-return quotient to find its residue. Finally, a boundary resolvent bound and Cauchy's estimate give \eqref{eq:error}. None of these steps can be replaced by observing a stable sequence of numerical roots.
+The source identification comes first. It justifies evaluating the span variable at one and determines the exact signed operator. Trace class gives meromorphic continuation. A finite exact determinant and a rational contour give a global zero count; separate real signs and a numerator test locate a genuine pole. A nonsingular resolvent differentiates the first-return quotient to find its residue. Finally, a boundary resolvent bound and Cauchy's estimate give \eqref{tdc:eq:error}. None of these steps can be replaced by observing a stable sequence of numerical roots.
+
+\begin{remark}[{[write]} The OEIS entries, quoted, 7~October 2026]\label{tdc:rem:oeis}
+The entries were read on 7~October 2026 in the OEIS internal format; the
+quotations are verbatim.
+\begin{enumerate}[label=(\alph*)]\raggedright
+\item A394326~\cite{oeis} (revision \#15, 6~April 2026), offset $1$, author
+ line ``\texttt{\_Morten Brydensholt\_, Mar 16 2026}'', is named
+ \begin{center}\small
+ \parbox{0.92\textwidth}{\raggedright\texttt{Total number of connected defect cluster types of weight n in the span-stratified cluster expansion for the row-word inversion statistic on standard Young tableaux of shape (m,m,m).}}
+ \end{center}
+ It prints forty terms, $1,2,1,1,3,5,\dots,25987091,42047032$, links a b-file
+ ``\texttt{Table of n, a(n) for n = 1..100}'' (Sean A. Irvine) and
+ Brydensholt's Python program, and has the two formula lines
+ \begin{center}\small
+ \parbox{0.92\textwidth}{\raggedright\texttt{a(n) \textasciitilde{} A * phi\^{}n where phi = (1+sqrt(5))/2, verified to 4 significant figures for n = 30..40.}\\[2pt]
+ \texttt{a(n) \textasciitilde{} a(n-1) + a(n-2) for large n (empirical).}}
+ \end{center}
+ and the comment
+ \begin{center}\small
+ \parbox{0.92\textwidth}{\raggedright\texttt{The Fibonacci residual |a(n) - a(n-1) - a(n-2)|/a(n) < 0.0002 for n >= 30, confirmed by Hankel determinant analysis showing 2-state asymptotic dynamics.}}
+ \end{center}
+ Its first comment line states the hard-rod recursion of
+ Section~\ref{tdc:sec:model} with $a(n)=\sum_{s\ge1}c(n,s)$.
+\item A393486 (revision \#28) and A393487 (revision \#34), both by
+ Brydensholt, 16~March 2026, are triangles of ``excess-tail polynomials'' of
+ the same row-word inversion clusters; this report does not treat them.
+\end{enumerate}
+The b-file, fetched on 7~October 2026, agrees in all $100$ terms with the
+write's own exact generator (Remark~\ref{tdc:rem:refuted}(d)). OEIS content is
+published under CC~BY-SA~4.0. Nothing was submitted to the OEIS.
+\end{remark}
+
+\begin{remark}[{[write]} The two OEIS asymptotic formulas are false, 7~October 2026]\label{tdc:rem:refuted}
+This records, under Vladimir's standing rule of 4~October 2026, the
+source's refutation (Corollary~\ref{tdc:cor:empirical}) of the two formula
+lines quoted in Remark~\ref{tdc:rem:oeis}(a), with its proof made explicit.
+Write $\phi=(1+\sqrt5)/2$ and $\lambda=\rho^{-1}$.
+\begin{enumerate}[label=(\alph*)]
+\item \emph{``$a(n)\sim A\phi^n$'' is false for every constant $A$.} Since
+ $a_n>0$ for $n\ge1$, the formula requires $A>0$ and $a_n/\phi^n\to A$. By
+ Theorem~\ref{tdc:thm:main}, $a_n=c\rho^{-n}\{1+O((\rho/R)^n)\}$ with
+ $c>0$, and $\rho>\rhol>0.618034>1/\phi$ (the second inequality is a
+ comparison of decimals; the third is
+ $0.618034^2+0.618034-1=6289/(25\cdot10^{10})>0$, Section~\ref{tdc:sec:inverse}).
+ Hence $\rho\phi>1$ and $a_n/\phi^n=c(\rho\phi)^{-n}\{1+o(1)\}\to0$, so no
+ $A>0$ works. Quantitatively $\lambda/\phi<1.6180189139/\phi<0.9999907$.
+\item \emph{``$a(n)\sim a(n-1)+a(n-2)$'' is false.} Read as
+ $(a_{n-1}+a_{n-2})/a_n\to1$ (equivalently, the residual is $o(a_n)$): by
+ Theorem~\ref{tdc:thm:main}, $a_{n-j}/a_n\to\rho^j$, so the ratio tends to
+ $\rho+\rho^2$, and by~\eqref{tdc:eq:empirical}
+ $1.00001287<\rho+\rho^2<1.00001295$; it is not one.
+\item \emph{What the observations were.} The OEIS observation is right as
+ an observation and wrong as a law: $a_n/\phi^n$ decreases, but so slowly
+ that $(\lambda/\phi)^{10}>0.99990$, invisible at four significant figures
+ over $30\le n\le40$ (the write's exact terms give $a_n/\phi^n=0.18384\ldots$
+ at $n=30$, $0.18375\ldots$ at $n=40$, $0.18329\ldots$ at $n=300$). The
+ comment ``$|a(n)-a(n-1)-a(n-2)|/a(n)<0.0002$ for $n\ge30$'' is compatible
+ with the theorem: the limit is $1-\rho-\rho^2=-0.0000129\ldots$; the write's
+ exact terms give a largest value $0.000163\ldots$ (at $n=33$) over
+ $30\le n\le300$; for all large $n$ it follows from the limit, but the
+ range between is not certified here (Section~\ref{tdc:sec:open}). The
+ ``Hankel determinant analysis'' is not assessed.
+\item \emph{Trust boundary and corroboration.} (a) and (b) rest on the
+ certified bracket~\eqref{tdc:eq:rho}, hence on the computer certificate of
+ Sections~\ref{tdc:sec:global}--\ref{tdc:sec:local}, which the intake
+ replayed (all certificates equal to the delivered ones). Independently of
+ that certificate, the write computed $a_1,\dots,a_{300}$ exactly with its own
+ code (the first-return walk of~\eqref{tdc:eq:edgesraw}, truncated by height;
+ enlarging the truncation changes nothing) and $C=1-1/I$: the first forty
+ equal the OEIS data and all $100$ b-file terms agree;
+ $a_{300}/a_{299}=1.61801887065161\ldots$, inside~\eqref{tdc:eq:lambda}, and
+ the residual at $n=300$ is $-1.29125514\ldots\cdot10^{-5}$, inside the band
+ of~\eqref{tdc:eq:empirical}. This is corroboration, not proof.
+\end{enumerate}
+No claim of the source is refuted: the source itself states both failures.
+\end{remark}
+
+\subsection{Provenance, sources and reading conventions}\label{tdc:sec:provenance}
+\begin{writenote}[Added 7 October 2026, batch~110]
+\emph{Provenance.} This report is Report~183 of the session bundle that
+ProveIt's \file{docs/incoming} intake processed as batch~110: the archive
+\file{Tableau_Defect_Clusters_Certified_Asymptotics_Source.zip}
+($2{,}104{,}583$ bytes, SHA-256 \file{442b90dea28f...95aef9676d04fb},
+39 files, no wrapper directory), arrival commit \file{60f54ea06}, placed in
+\file{8622ca7e5}. The text is the delivered \file{Report183.tex} (835 lines,
+dated 3~October 2026; the delivered PDF has 21 pages), shipped as
+\file{article.tex}. The programs are shipped under \file{code/} (the
+delivered root \file{build.py}, \file{reproduce.py} and
+\file{verify_manifest.py} among them), the certificates as
+\file{data/certificates-*.json}, the generated summaries as
+\file{data/generated-*.json}, the frozen data
+(\file{N_H8.json}, \file{adjugate_H8.json}, \file{exact_coefficients.json} and
+the $1{,}125{,}229$-byte \file{inverse_proposals.json}, an input of the
+mandatory certificate) under \file{data/}, and \file{README_REPRODUCIBILITY.md}
+at the report root (the report README maps every name). Not shipped, and
+retrievable from the arrival commit: the delivered PDF, the checksum manifest
+\file{SHA256SUMS.json} (38 entries, verified at placement), the delivered
+README, replaced by the report README, and \file{certificates/coefficients.json},
+a byte copy of \file{data/exact_coefficients.json}. The package records no
+ProveIt commit; it cites one ProveIt report by its GitHub path and blob
+(\cite{clustercomparison}). It carries no ``prepared for private review'' line
+and no personal data. It is a single-source report, so no merge choice was
+made. The write prefixed the 71 delivered labels with \file{tdc:} and
+updated the 59 references to them; it added this subsection, labels on it and
+on the subsection ``Useful directions left open''
+(Section~\ref{tdc:sec:open}), the notes marked [write],
+Remarks~\ref{tdc:rem:oeis}, \ref{tdc:rem:refuted}
+and~\ref{tdc:rem:transseries}, and dated notes. The added remarks are the
+last statements of their sections, this subsection follows the last delivered
+text of Section~\ref{tdc:sec:main}, and the added displays are unnumbered, so
+every theorem, section and equation of the source keeps its delivered number.
+
+\emph{The sources, as the write read them} (7~October 2026).
+\begin{itemize}\raggedright
+\item OEIS A394326 with its b-file, and the names and authors of A393486 and
+ A393487, in the internal format (Remark~\ref{tdc:rem:oeis}).
+\item The transseries volume
+ \path{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex}:
+ \file{p0:thm:lambert-core}, \file{p0:thm:core-reversion},
+ \file{p0:def:three-inverses} and \file{p0:thm:staircase}, read for
+ Remark~\ref{tdc:rem:transseries}.
+\item The ProveIt report the source compares with,
+ \path{SetTheory/Cardinals/docs/reports/log-concavity-and-unimodality/cluster-variable-log-concavity-counterexample/}:
+ it concerns cluster variables of a cluster algebra, an unrelated use of the
+ word ``cluster'', as the source says.
+\item Not read by the write: the jOEIS program~\cite{joeis}, Brydensholt's
+ Python program, Bornemann~\cite{bornemann,bornemannerratum},
+ Simon~\cite{simon} and the ribbon-tableau manuscript~\cite{ribboncomparison};
+ the source's account of them is reported, not confirmed.
+\end{itemize}
+
+\emph{What was checked at intake.} The batch-110 dossier read the
+manuscript and found no error. The delivered \file{run_all.py} fails on
+Windows only inside its two subprocess unit tests (CRLF text-mode output
+compared with LF bytes); a driver running the same chain in-process
+reproduced every certificate (global, local, remainder, inverse,
+coefficients, independent global check, polynomial regeneration, local
+tests) equal to the delivered files, in 22~s; \file{generate_proposals.py}
+(mpmath~1.3.0) regenerated \file{inverse_proposals.json} in 19~s, identical
+modulo CRLF. \emph{What the write checked} (Python~3.14.4, mpmath~1.3.0, own
+code). Every proof was read line by line, with no error found; in exact
+rational arithmetic it rechecked the bounds~\eqref{tdc:eq:lambda} from the
+endpoints of~\eqref{tdc:eq:rho}, the value $6289/(25\cdot10^{10})$, the band
+of~\eqref{tdc:eq:empirical} at both endpoints, $Q_{600}<0.138$ and
+$Q_{600}(1+R^{-1})<0.356406<\rhoh^{-1}-1$ of~\eqref{tdc:eq:growthgate}, and
+all $125$ digits of $Y_0$~\eqref{tdc:eq:Y0}. Its own exact generator
+(Remark~\ref{tdc:rem:refuted}(d)) gives $\rho=0.618039763403548969\ldots$ and
+$c\approx0.183811179648135$, agreeing with the source's diagnostic
+refinements, and shows $a_{n+1}>a_n$ for $4\le n<300$. The write did not rerun
+the certificate.
+
+\emph{Relation to the repository.} Before batch~110 no file of the
+repository named A394326, A393486 or A393487, and no report treated
+tableau inversion clusters. No statement of this report is formalized in
+Lean or Rocq, and its place in the collection confers no formal status. The
+cluster-variable report cited by the source shares only the word
+``cluster''; no neighbouring report shares a result, so no reciprocal note is
+proposed. The inverses are compared with the transseries volume in
+Remark~\ref{tdc:rem:transseries}.
+\end{writenote}
+
+\begin{writenote}[What is not claimed, collected from the source]
+The sequence, its extraction and the hard-rod recursion are Brydensholt's;
+ballot paths, renewal, Fredholm determinants, coefficient extraction and
+Lagrange inversion are classical; the bounded source screen ``is not a
+worldwide priority determination''. The identification of the model does not
+prove that every cluster coefficient is nonnegative. No infinite diagonal
+gauge is claimed bounded, and no positive-operator (Perron--Frobenius)
+argument is used for the signed operator. The numerical refinements of
+$\rho$ and $c$ beyond~\eqref{tdc:eq:rho}--\eqref{tdc:eq:c} are not
+certified; $M=2500$ is a transparent rather than sharp envelope. Only the
+dominant pole is certified: Theorem~\ref{tdc:thm:spectral} gives no
+convergent pole sum, no uniformity as $r\uparrow1$ and no simplicity of later
+zeros. The Lagrange series expand bounding roots, not the step function; the
+spectral inverse constants are existential and do not give errors
+$O(y^{-K})$, $K>1$. Theorem~\ref{tdc:thm:marker} certifies no marker radius,
+derivative or variance, and implies no probability law. The certificates are
+not a machine-checked proof; hashes are not mathematical evidence. The write
+adds: its checks are exact finite or floating computations; it claims no
+novelty for any inversion.
+\end{writenote}
+
+\medskip
+\begingroup\small
+\noindent\emph{Reading conventions} (letters the source reuses, with the
+tempting false readings; no symbol of the source was renamed; symbols of the
+transseries volume carry the subscript ``vol'' in
+Remark~\ref{tdc:rem:transseries}).\par\smallskip
+\renewcommand{\arraystretch}{1.1}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.95in}>{\raggedright\arraybackslash}p{3.3in}>{\raggedright\arraybackslash}p{1.85in}@{}}
+\toprule
+Symbol & Meaning here (where) & Not to be read as\\
+\midrule
+\endhead
+$C$ & $C(q)=\sum a_nq^n$; the bivariate cluster series $C(t,q)$ (Sections~\ref{tdc:sec:model}, \ref{tdc:sec:marker}); $C_0$ a block of~\eqref{tdc:eq:blocks} & each other\\
+$c$, $c_{w,s}$, $c(t)$ & the amplitude~\eqref{tdc:eq:c}; cluster coefficients; the marked amplitude & each other\\
+$K$, $L$, $L$ & the three-step operator; the corrected operator~\eqref{tdc:eq:Landdet}; but $L=\log\lambda$ in Section~\ref{tdc:sec:inverse} & each other; the volume's $L_{\mathrm{vol}}$\\
+$D$, $N$, $N_8$, $n$ & the determinants~\eqref{tdc:eq:Landdet} (also $D(t,q)$, $N(t,q)$); the degree-161 core polynomial; an index & each other\\
+$R$, $\Res$, $r$, $r_*$ & the radius $63/100$; a residue; a fixed spectral radius, or $|z|$; $4/5$ & each other\\
+$M$, $M_r$ & $2500$; the constant of Theorem~\ref{tdc:thm:spectral} & each other\\
+$A$, $B$, $E$ & states $(1,0)$, $(0,1)$, $(0,2)$; but $A_0$, $B_0$, $C_0$ blocks, $A_8$, $B_8$ core matrices, $B$ an inverse proposal, $A_n(t)$ marked coefficients, $A_r(t)$ a spectral carrier, $E_{r,n}$ a remainder & each other; the volume's $A_n$, $\mathcal A_{\mathrm{vol}}$\\
+$I$, $\Id$, $J$, $F$, $F_m$, $Z$ & the first-return series $J(1,q)$; the identity; first returns; the deficit series; the deficit polynomial; the source's $Z_n$ & each other\\
+$G$, $g$, $g_0$ & the potential $G(a,b,c)$, but $G=C-c/(1-q/\rho)$ in Section~\ref{tdc:sec:error}; the gauge $g(x,y)$; the vector~\eqref{tdc:eq:Cresolvent} & each other\\
+$h$, $H_\zeta$, $H_r$ & the vector $e_A+z^3e_E$, but the height $x+y$ in Lemma~\ref{tdc:lem:trace}; the local factors and remainder of Theorem~\ref{tdc:thm:spectral} & each other\\
+$\kappa$, $\delta$, $\tau$, $\eta$ & the inverse bound and Schur constants of Section~\ref{tdc:sec:global}; $\eta=\kappa\delta$ & the volume's $\kappa_{\mathrm{vol}}$\\
+$\lambda$, $\rho$, $\phi$ & $\rho^{-1}$; the pole; the golden ratio & the volume's $\rho_{\mathrm{vol}}$\\
+$\alpha$, $\beta$, $\mu$, $x_0$, $x_\pm$ & the inverse parameters~\eqref{tdc:eq:inverseparams}; the bounding roots & the volume's $\mu_{\mathrm{vol}}$\\
+$x$, $y$ & gap coordinates (also $x=0.618034$); but $x$ real and $y$ a threshold in Section~\ref{tdc:sec:inverse} & each other\\
+$u$, $v$, $w$ & nodes $u_j$, and $u(z)$; $v=z^3e_E$, but $v=e^{L(x-x_0)}$ in the proof of Proposition~\ref{tdc:prop:lagrange}; a weight, and $w=v-1$ & each other\\
+$t$, $\epsilon$, $\varepsilon$ & the span marker; $\pm1$ in the proof of Proposition~\ref{tdc:prop:lagrange}, a marker radius in Theorem~\ref{tdc:thm:marker}; a residual & the volume's $t$\\
+$S$, $\Sigma$, $\mathcal T_s$, $T_0$ & the state set; the Schur complement; the homotopy operator; a tail block & each other\\
+$P_j$, $\PP_r$, $Q_n$ & $\binom{t+j-1}{j-1}$; the set of poles; $(M/\cl)(\rhoh/R)^n$ & each other\\
+\bottomrule
+\end{longtable}
+\endgroup
+
 
 \section{From the source extraction to a first-return quotient}
-\label{sec:model}
+\label{tdc:sec:model}
 \subsection{The inversion deficit as a nonnegative path weight}
 A standard Young tableau of shape $(m,m,m)$ is encoded by reading its entries $1,\ldots,3m$ and recording their row labels. Its row word contains $m$ copies of each of $1,2,3$; every prefix has counts $a\ge b\ge c$. Conversely, each such ballot word gives exactly one standard tableau by placing the labels successively in their indicated rows.
 
@@ -120,7 +374,7 @@ The inversion statistic in the source increases by $b+c$ on appending a $1$, by 
  x=a-b,\quad y=b-c.
 \]
 Subtracting the inversion increment from the increment of $G$ gives the following weighted gap walk in $\NN^2$:
-\begin{equation}\label{eq:edgesraw}
+\begin{equation}\label{tdc:eq:edgesraw}
 \begin{array}{c|c|c}
  \text{letter}&\text{new gap state}&\text{deficit cost}\\ \hline
  1&(x+1,y)&0\\
@@ -136,12 +390,12 @@ Let
  F(t,q)=\sum_{m\ge0}F_m(q)t^m,\qquad
  J(t,q)=\sum_{\text{primitive returns}}t^m q^W.
 \]
-A primitive return leaves $(0,0)$ and does not revisit it before its final step; $m$ is its common final letter count and $W$ its deficit. Concatenating balanced blocks adds deficit. This follows either from \eqref{eq:edgesraw} or from the fact that two blocks of sizes $m_1,m_2$ create $3m_1m_2$ cross inversions, exactly the cross term of $3\binom{m_1+m_2}2$. The unique decomposition at successive returns therefore gives
-\begin{equation}\label{eq:renewal}
+A primitive return leaves $(0,0)$ and does not revisit it before its final step; $m$ is its common final letter count and $W$ its deficit. Concatenating balanced blocks adds deficit. This follows either from \eqref{tdc:eq:edgesraw} or from the fact that two blocks of sizes $m_1,m_2$ create $3m_1m_2$ cross inversions, exactly the cross term of $3\binom{m_1+m_2}2$. The unique decomposition at successive returns therefore gives
+\begin{equation}\label{tdc:eq:renewal}
  F=\frac1{1-J}.
 \end{equation}
 
-\begin{lemma}[The span bound]\label{lem:span}
+\begin{lemma}[The span bound]\label{tdc:lem:span}
 A primitive return of size $m$ has deficit $W\ge m-1$. Thus
 \[
  J(t,q)/t=1+\sum_{w\ge1}\sum_{1\le s\le w}j_{w,s}q^w t^s.
@@ -168,7 +422,7 @@ Consequently, with $Z(t,q)=\sum_{n\ge0}Z_n(q)t^n$,
  Z=\frac1{1-t-C}.
 \]
 Eliminating $Z$ gives the exact identity
-\begin{equation}\label{eq:sourcequotient}
+\begin{equation}\label{tdc:eq:sourcequotient}
  C(t,q)=1-\frac{t}{J(t,q)}.
 \end{equation}
 This also explains the source's sequential finite extraction. Suppose the cluster coefficients of weights less than $w$ have been inserted into the recursion, and denote the resulting series by $Z_{<w}$. Since $C$ has no weight-zero term,
@@ -177,23 +431,23 @@ This also explains the source's sequential finite extraction. Suppose the cluste
  C_w(t)=[q^w]C(t,q).
 \]
 If $r_n=[t^nq^w](Z-Z_{<w})$, two backward differences recover
-$c_{w,s}=r_s-2r_{s-1}+r_{s-2}$, with negative subscripts interpreted as zero. This is precisely the inspected implementation's residual, first-difference, and cluster update. Lemma~\ref{lem:span} proves $c_{w,s}=0$ for $s>w$, so stopping its span sum at $s=w$ loses nothing. The code's integer storage details are an implementation, not a restriction on this mathematical definition.
+$c_{w,s}=r_s-2r_{s-1}+r_{s-2}$, with negative subscripts interpreted as zero. This is precisely the inspected implementation's residual, first-difference, and cluster update. Lemma~\ref{tdc:lem:span} proves $c_{w,s}=0$ for $s>w$, so stopping its span sum at $s=w$ loses nothing. The code's integer storage details are an implementation, not a restriction on this mathematical definition.
 
 All these identities first hold formally in the two variables. The support lemma makes every coefficient of $q^w$ in $J/t$ and $C$ a polynomial in $t$. Thus specialization at $t=1$ is legitimate coefficient by coefficient. Write $I(q)=J(1,q)$. Then
-\begin{equation}\label{eq:CfromI}
+\begin{equation}\label{tdc:eq:CfromI}
  C(q)=1-\frac1{I(q)},\qquad I(0)=1.
 \end{equation}
 This establishes the model for all indices, beyond any finite agreement test. It does not prove that every extracted cluster coefficient is nonnegative. Although the initial first-return coefficients are nonnegative, a zero of its meromorphic continuation need not lie in the disk of convergence of that positive series.
 
 \section{The signed trace-class determinant}
-\label{sec:operator}
+\label{tdc:sec:operator}
 \subsection{A finite-path gauge and period-three compression}
 Delete the origin from the gap graph. Set $q=z^2$ and
 \[
  g(x,y)=x^2+xy+y^2-2x-2y.
 \]
 On each remaining edge $u\to v$, multiply $q^d$ by $z^{g(v)-g(u)}$. Its exponent becomes, for letters $1,2,3$ respectively,
-\begin{equation}\label{eq:gauged}
+\begin{equation}\label{tdc:eq:gauged}
  2x+y-1,\qquad x+y-1,\qquad x+2y-1.
 \end{equation}
 These exponents are nonnegative on every allowed edge off the origin. The gauge factors telescope along a finite path. We use this path identity; we do not claim that an infinite diagonal gauge is bounded or that it gives a bounded similarity of infinite operators.
@@ -206,28 +460,28 @@ Each step advances $x+2y$ by one modulo three. Define
 Let $K(z)$ be the three-step transition matrix on $S$ in the origin-deleted graph. Rows are starting states and columns are ending states. Every entry sums the monomial weights of all three-step paths, including multiplicities.
 
 A primitive word begins with $1$ and ends with $3$. Its outer two gauge exponents are $-1$ and $1$, so cancel. The intervening path runs from $A$ to $B$. Its last step comes either from $A$ with weight one, or from $E$ with weight $z^3$. A primitive size-$m$ path consists of $m-1$ compressed moves followed by that last step. Therefore, near zero,
-\begin{equation}\label{eq:resolventI}
+\begin{equation}\label{tdc:eq:resolventI}
  I(z^2)=e_A^{\mathsf T}(\Id-K(z))^{-1}h(z),\qquad
  h(z)=e_A+z^3e_E.
 \end{equation}
 The convergence justification follows below; formally the identity is already the first-return enumeration.
 
 \subsection{Trace class and removal of the square-root branch}
-\begin{lemma}\label{lem:trace}
+\begin{lemma}\label{tdc:lem:trace}
 For $|z|<1$, $K(z)$ is trace class on $\ell^2(S)$ and is holomorphic in trace norm. Its principal height sections converge locally uniformly in trace norm. Moreover $K(0)=0$.
 \end{lemma}
 \begin{proof}
-Put $h=x+y$. Every one-step exponent in \eqref{eq:gauged} is at least $h-1$, and height falls by at most one per step. Hence each three-step exponent from height $h$ is at least $3h-6$. There are at most $27$ such paths. For each fixed $0<r<1$, the entrywise absolute sum over states of height at least two is bounded by
-\begin{equation}\label{eq:nuclear}
+Put $h=x+y$. Every one-step exponent in \eqref{tdc:eq:gauged} is at least $h-1$, and height falls by at most one per step. Hence each three-step exponent from height $h$ is at least $3h-6$. There are at most $27$ such paths. For each fixed $0<r<1$, the entrywise absolute sum over states of height at least two is bounded by
+\begin{equation}\label{tdc:eq:nuclear}
  \sum_{h\ge2}27(h+1)r^{3h-6}<\infty.
 \end{equation}
 There are at most $h+1$ states at height $h$, and the height-one contribution is finite. Expanding in rank-one matrix units, each of trace norm one, proves trace class and locally uniform trace-norm convergence. The polynomial matrix-unit series is normally convergent, giving trace-norm holomorphy. Equivalently, Cauchy estimates on a slightly larger subdisk control its derivatives. Removing all entries outside a principal height section has trace norm tending to zero by the same absolute sum.
 
-For height at least three the bound on exponents is positive. The only lower states in $S$ are $A,E$; direct enumeration shows their three-step exponents are all positive. Thus $K(0)=0$. In particular its norm is less than one sufficiently near zero, which justifies the analytic Neumann series in \eqref{eq:resolventI}.
+For height at least three the bound on exponents is positive. The only lower states in $S$ are $A,E$; direct enumeration shows their three-step exponents are all positive. Thus $K(0)=0$. In particular its norm is less than one sufficiently near zero, which justifies the analytic Neumann series in \eqref{tdc:eq:resolventI}.
 \end{proof}
 
 Set $\OO=S\setminus\{A\}$ and $v=z^3e_E$ on this space, and use $A/\OO$ blocks. Define
-\begin{equation}\label{eq:Landdet}
+\begin{equation}\label{tdc:eq:Landdet}
  L(z)=K_{\OO\OO}(z)-vK_{A\OO}(z),\qquad
  D(z^2)=\det(\Id-K(z)),\quad N(z^2)=\det(\Id-L(z)).
 \end{equation}
@@ -239,13 +493,13 @@ For each gauged path the parity of its exponent is $g(v)-g(u)$. The diagonal ope
 \]
 The correction has the same parity since $g(A)=-1$, $g(E)=0$. Determinant invariance under bounded similarity makes both determinants even and holomorphic in $z$. Their even power series define holomorphic functions $D,N$ of $q=z^2$ on $|q|<1$, independently of any square-root branch; $D(0)=N(0)=1$.
 
-\begin{proposition}[Exact determinant quotient]\label{prop:quotient}
+\begin{proposition}[Exact determinant quotient]\label{tdc:prop:quotient}
 The meromorphic continuation of the source cluster series is
-\begin{equation}\label{eq:detquotient}
+\begin{equation}\label{tdc:eq:detquotient}
  I(q)=\frac{N(q)}{D(q)},\qquad C(q)=1-\frac{D(q)}{N(q)}\qquad(|q|<1).
 \end{equation}
 All rows of $L$ except the $E$ row are those of $K_{\OO\OO}$. The exceptional nonzero entries are
-\begin{equation}\label{eq:exceptional}
+\begin{equation}\label{tdc:eq:exceptional}
  L_{E,E}=z^8,\quad L_{E,(3,2)}=z^9,\quad
  L_{E,(1,3)}=z^5+z^7,\quad L_{E,(4,0)}=-z^{12}.
 \end{equation}
@@ -255,19 +509,19 @@ In a finite principal section, replace column $A$ of $\Id-K$ by $h=e_A+v$. The r
 \[
  \begin{pmatrix}1&-K_{A\OO}\\v&\Id-K_{\OO\OO}\end{pmatrix}.
 \]
-Subtract $v$ times its first row from the other rows. Its determinant becomes $\det(\Id-K_{\OO\OO}+vK_{A\OO})=\det(\Id-L)$. Cramer's rule proves the first identity in a neighborhood of zero. The finite operators and determinants converge in trace norm and locally uniformly, while resolvents converge near zero by their Neumann series. Passing to the limit proves the identity there. Equation~\eqref{eq:CfromI} proves the second one, and the identity theorem gives the meromorphic continuation. Finally, enumerating the at most $27$ three-step paths from $E$ and subtracting $z^3$ times the $A$ row gives \eqref{eq:exceptional}.
+Subtract $v$ times its first row from the other rows. Its determinant becomes $\det(\Id-K_{\OO\OO}+vK_{A\OO})=\det(\Id-L)$. Cramer's rule proves the first identity in a neighborhood of zero. The finite operators and determinants converge in trace norm and locally uniformly, while resolvents converge near zero by their Neumann series. Passing to the limit proves the identity there. Equation~\eqref{tdc:eq:CfromI} proves the second one, and the identity theorem gives the meromorphic continuation. Finally, enumerating the at most $27$ three-step paths from $E$ and subtracting $z^3$ times the $A$ row gives \eqref{tdc:eq:exceptional}.
 \end{proof}
 
-The negative entry in \eqref{eq:exceptional} is essential. A positive-operator Perron--Frobenius argument for $L$ would not be justified. The poles of $I=N/D$ can also disappear when forming $C=1-D/N$; its relevant singularities come from zeros of $N$ that survive cancellation with $D$.
+The negative entry in \eqref{tdc:eq:exceptional} is essential. A positive-operator Perron--Frobenius argument for $L$ would not be justified. The poles of $I=N/D$ can also disappear when forming $C=1-D/N$; its relevant singularities come from zeros of $N$ that survive cancellation with $D$.
 
 \paragraph{Classical analytic facts used.}
-For trace-class operators, the determinant is continuous under trace-norm approximation, is holomorphic for a trace-norm holomorphic family, is invariant under bounded similarity, and is nonzero exactly when the identity minus the operator is invertible. Its multiplicativity supplies the Schur factorization below. These are the general determinant facts in Bornemann~\cite[Sections 2--4]{bornemann}, especially equations (3.1)--(3.5) and the general perturbation inequality (4.1); see also Simon~\cite{simon}. The target's trace-class hypothesis has been proved directly in Lemma~\ref{lem:trace}. No positive self-adjoint estimate is used for this signed operator.
+For trace-class operators, the determinant is continuous under trace-norm approximation, is holomorphic for a trace-norm holomorphic family, is invariant under bounded similarity, and is nonzero exactly when the identity minus the operator is invertible. Its multiplicativity supplies the Schur factorization below. These are the general determinant facts in Bornemann~\cite[Sections 2--4]{bornemann}, especially equations (3.1)--(3.5) and the general perturbation inequality (4.1); see also Simon~\cite{simon}. The target's trace-class hypothesis has been proved directly in Lemma~\ref{tdc:lem:trace}. No positive self-adjoint estimate is used for this signed operator.
 
 \section{An exact global zero count}
-\label{sec:global}
+\label{tdc:sec:global}
 \subsection{Schur bounds and the two normed spaces}
 Take a finite height core and split either $\Id-K$ or $\Id-L$ as
-\begin{equation}\label{eq:blocks}
+\begin{equation}\label{tdc:eq:blocks}
  \begin{pmatrix}A_0&-B_0\\-C_0&\Id-T_0\end{pmatrix}.
 \end{equation}
 Here $A_0$ denotes the finite identity-minus-core matrix. Suppose the induced $\ell^\infty$ row norms obey
@@ -276,14 +530,14 @@ Here $A_0$ denotes the finite identity-minus-core matrix. Suppose the induced $\
  \quad\norm{T_0}_\infty\le\tau<1.
 \]
 These are not estimates of the $\ell^2$ operator norm. Nevertheless they give the required determinant calculation on $\ell^2$. A vector in $\ell^2$ is bounded, so a nonzero $\ell^2$ kernel vector of $\Id-T_0$ would contradict its $\ell^\infty$ Neumann inverse. Since $T_0$ is compact on $\ell^2$, the Fredholm alternative gives invertibility on $\ell^2$. For a square-summable right side, its inverse agrees with the unique bounded Neumann-series solution. Therefore
-\begin{equation}\label{eq:schur}
+\begin{equation}\label{tdc:eq:schur}
  \Sigma=B_0(\Id-T_0)^{-1}C_0,
  \qquad\norm{\Sigma}_\infty\le\delta:=\frac{bd}{1-\tau}
 \end{equation}
 is valid for the finite Schur complement.
 
-If $\norm{A_0^{-1}}_\infty\le\kappa$ and $\kappa\delta<1$, then $A_0-s\Sigma$ is invertible for $0\le s\le1$. Scaling the upper-right block in \eqref{eq:blocks} by $s$ gives
-\begin{equation}\label{eq:fredholmschur}
+If $\norm{A_0^{-1}}_\infty\le\kappa$ and $\kappa\delta<1$, then $A_0-s\Sigma$ is invertible for $0\le s\le1$. Scaling the upper-right block in \eqref{tdc:eq:blocks} by $s$ gives
+\begin{equation}\label{tdc:eq:fredholmschur}
  \det(\Id-\mathcal T_s)=\det(\Id-T_0)\det(A_0-s\Sigma),
 \end{equation}
 where $\mathcal T_s$ denotes the entire trace-class block operator being subtracted from the identity, not just its tail block. The factorization follows by block triangular elimination and determinant multiplicativity; the triangular factors differ from the identity by finite-rank off-diagonal operators and have determinant one. On a complex boundary this homotopy preserves the zero count. At a real point it preserves the sign. The real tail determinant is positive because scaling the tail itself from zero to $T_0$ preserves nonvanishing and starts at one.
@@ -295,12 +549,12 @@ Use $\OO_8=\{u\in\OO:x+y\le8\}$, ordered by increasing height and then increasin
  &(5,1),(1,6),(4,3),(7,0),(0,8),(3,5),(6,2).
 \end{align*}
 Let $A_8(z)=\Id-L_8(z)$. The supplied integer polynomial $N_8(q)$ has degree $161$. The exact verifier checks the complete state list, reconstructs every matrix entry from the transition rules, and checks the full polynomial identity
-\begin{equation}\label{eq:adjugate}
+\begin{equation}\label{tdc:eq:adjugate}
  A_8(z)\operatorname{Adj}_8(z)=N_8(z^2)\Id_{14}.
 \end{equation}
 This identity is not used alone to identify the determinant: an extraneous common polynomial factor could multiply both the proposed adjugate and denominator.
 
-For an independent determinant check, construct the ungauged $q$-matrix from \eqref{eq:edgesraw}, compress three steps, and subtract the correction $q^2e_E K^{\mathrm{raw}}_{A\OO}$. Write its identity-minus-core matrix as $B_8(q)$. The correction exponent is correct because
+For an independent determinant check, construct the ungauged $q$-matrix from \eqref{tdc:eq:edgesraw}, compress three steps, and subtract the correction $q^2e_E K^{\mathrm{raw}}_{A\OO}$. Write its identity-minus-core matrix as $B_8(q)$. The correction exponent is correct because
 \[
  2\cdot2+g(A)-g(E)=3.
 \]
@@ -317,7 +571,7 @@ Each division is explicitly checked to have zero remainder; row swaps track thei
 
 \subsection{Rational parametrization of the whole circle}
 Set $m_*=2048$ and, for $0\le j<m_*$, define
-\begin{equation}\label{eq:rationalmesh}
+\begin{equation}\label{tdc:eq:rationalmesh}
  u_j=\frac{2j+1}{2m_*},\qquad
  q_j=R\frac{1-u_j^2+2iu_j}{1+u_j^2}.
 \end{equation}
@@ -335,7 +589,7 @@ For a node $(a+ib)/d$, integer Horner evaluation represents a polynomial partial
  (X,Y,D)\longmapsto(Xa-Yb+pDd,\ Xb+Ya,\ Dd).
 \]
 The final denominator is $d^{161}$. At each node the certificate verifies
-\begin{equation}\label{eq:nodemod}
+\begin{equation}\label{tdc:eq:nodemod}
  625(X_j^2+Y_j^2)>D_j^2,\qquad Y_j\ne0,
 \end{equation}
 so $|N_8(q_j)|>1/25$ and no image vertex lies on the real axis.
@@ -349,7 +603,7 @@ The image of any successive circle arc stays within distance
  24\frac{2R}{m_*}=\frac{189}{12800}
 \]
 of its first image vertex. Therefore, on the entire circle,
-\begin{equation}\label{eq:wholecircle}
+\begin{equation}\label{tdc:eq:wholecircle}
  |N_8(q)|>\frac1{25}-\frac{189}{12800}
  =\frac{323}{12800}>\frac2{125}.
 \end{equation}
@@ -357,7 +611,7 @@ Both the image arc and its straight chord lie in the same convex disk avoiding z
 
 \subsection{The polygon winds once}
 For adjacent image values $(X_1+iY_1)/D_1$ and $(X_2+iY_2)/D_2$, opposite signs of $Y_1,Y_2$ characterize a real-axis crossing. Its intercept is
-\begin{equation}\label{eq:crossing}
+\begin{equation}\label{tdc:eq:crossing}
  x_{\mathrm{cross}}=
  \frac{X_1Y_2-X_2Y_1}{Y_2D_1-Y_1D_2}.
 \end{equation}
@@ -380,34 +634,34 @@ The positive-ray total is $4-3=1$. The closing edge is included. By the argument
 All following coefficient majorants use $|z|\le r_*=4/5$, which contains the lifted boundary since $R<r_*^2$. Enumerate the exact signed polynomial rows through height $22$. A three-step transition changes height by at most three; hence no tail-to-core row beyond height $11$ contributes. For all unenumerated rows, of height $h\ge23$, the decreasing bound $27r_*^{3h-6}$ applies. The exceptional row is in the core and was checked separately. The exact maxima satisfy
 \begin{align}
  b&=\frac{194073697907113984}{7450580596923828125}<\frac{27}{1000},\notag\\
- d&=\frac{147844731517272064}{7450580596923828125}<\frac{21}{1000},\label{eq:tailnumerics}\\
+ d&=\frac{147844731517272064}{7450580596923828125}<\frac{21}{1000},\label{tdc:eq:tailnumerics}\\
  \tau&=\frac{34489026312519942504710144}{1818989403545856475830078125}
  <\frac1{50}.\notag
 \end{align}
-The adjugate coefficient majorant is $\norm{\operatorname{Adj}_8(z)}_\infty<63/10$. Equations~\eqref{eq:adjugate} and \eqref{eq:wholecircle} give the conservative bound
-\begin{equation}\label{eq:kappadelta}
+The adjugate coefficient majorant is $\norm{\operatorname{Adj}_8(z)}_\infty<63/10$. Equations~\eqref{tdc:eq:adjugate} and \eqref{tdc:eq:wholecircle} give the conservative bound
+\begin{equation}\label{tdc:eq:kappadelta}
  \kappa=\frac{1575}{4},\qquad \delta=\frac{81}{140000},
  \qquad \kappa\delta=\frac{729}{3200}<1.
 \end{equation}
-The stronger circle lower bound also permits $\kappa=80640/323$, but retaining \eqref{eq:kappadelta} simplifies the subsequent certified estimates.
+The stronger circle lower bound also permits $\kappa=80640/323$, but retaining \eqref{tdc:eq:kappadelta} simplifies the subsequent certified estimates.
 
-Apply the Schur homotopy on $|z|=\sqrt R$. At $s=0$ its determinant is $N_8(z^2)$ times a zero-free tail determinant; it therefore has two $z$ zeros. No member of the homotopy has a boundary zero. Parity persists when a cross block is scaled, and the determinant has constant term one. Thus the full determinant has two $z$ zeros, equivalently one $q$ zero, counted with multiplicity. Real coefficients make the latter real and multiplicity one makes it simple. This proves the global zero-count part of Theorem~\ref{thm:main}; positive location and noncancellation still require the next section.
+Apply the Schur homotopy on $|z|=\sqrt R$. At $s=0$ its determinant is $N_8(z^2)$ times a zero-free tail determinant; it therefore has two $z$ zeros. No member of the homotopy has a boundary zero. Parity persists when a cross block is scaled, and the determinant has constant term one. Thus the full determinant has two $z$ zeros, equivalently one $q$ zero, counted with multiplicity. Real coefficients make the latter real and multiplicity one makes it simple. This proves the global zero-count part of Theorem~\ref{tdc:thm:main}; positive location and noncancellation still require the next section.
 
 \section{Real location and the residue}
-\label{sec:local}
+\label{tdc:sec:local}
 \subsection{What the local interval arithmetic certifies}
 Use height $20$, with $76$ states for $L$ and $77$ for $K$, and the exact real endpoints
-\begin{equation}\label{eq:zinterval}
+\begin{equation}\label{tdc:eq:zinterval}
  z_-=0.78615504,\qquad z_+=0.78615506.
 \end{equation}
-Their squares are precisely $\rhol,\rhoh$ in \eqref{eq:rho}. Each local interval has endpoints that are integers divided by $2^{220}$. Addition is exact; products and quotients are rounded outward by integer floor and ceiling. Division rejects intervals containing zero. Exponentiation uses interval multiplication.
+Their squares are precisely $\rhol,\rhoh$ in \eqref{tdc:eq:rho}. Each local interval has endpoints that are integers divided by $2^{220}$. Addition is exact; products and quotients are rounded outward by integer floor and ceiling. Division rejects intervals containing zero. Exponentiation uses interval multiplication.
 
 For a finite interval matrix $A_0$, an exact dyadic proposal $B$ for its inverse is accepted only after the outward residual proves
 \[
  \varepsilon=\norm{\Id-BA_0}_\infty<1.
 \]
 Then the finite-dimensional Neumann argument proves
-\begin{equation}\label{eq:inversecertificate}
+\begin{equation}\label{tdc:eq:inversecertificate}
  \norm{A_0^{-1}}_\infty\le\frac{\norm B_\infty}{1-\varepsilon}.
 \end{equation}
 The proposal is not assumed to enclose the inverse. Interval Gaussian elimination separately certifies determinant signs, rejecting any pivot that is not separated from zero. Proposed pivot choices affect efficiency only, never acceptance. The public package freezes exact dyadic proposals, so replay uses only standard-library integer arithmetic; optional high-precision numerical generation of proposals is outside the proof's trust requirement.
@@ -432,13 +686,13 @@ Near the bracket, $\Id-K$ stays invertible. Define
  u(z)=(\Id-K(z))^{-1}h(z),\qquad I(z^2)=u_A(z).
 \]
 Differentiate the exact operator equation:
-\begin{equation}\label{eq:du}
+\begin{equation}\label{tdc:eq:du}
  u'(z)=(\Id-K(z))^{-1}\{K'(z)u(z)+h'(z)\}.
 \end{equation}
 This avoids differentiating a nearly singular determinant or any asymptotic remainder.
 
-Here are the explicit tail estimates used to certify \eqref{eq:du}. Let $b_1,d_1,\tau_1$ bound the derivatives of the three blocks in \eqref{eq:blocks}. Differentiating the Schur correction gives
-\begin{equation}\label{eq:deltaslope}
+Here are the explicit tail estimates used to certify \eqref{tdc:eq:du}. Let $b_1,d_1,\tau_1$ bound the derivatives of the three blocks in \eqref{tdc:eq:blocks}. Differentiating the Schur correction gives
+\begin{equation}\label{tdc:eq:deltaslope}
  \norm{\Sigma'}_\infty\le\delta_1:=%
  \frac{b_1d}{1-\tau}+\frac{b\tau_1d}{(1-\tau)^2}
  +\frac{bd_1}{1-\tau}.
@@ -448,12 +702,12 @@ These derivative majorants sum $|p|e r^{e-1}$ for each monomial $pz^e$. Beyond t
 Let $u_f,u_f'$ denote the exact finite-core solutions, enclosed by residual-certified interval solves. Put $\eta=\kappa\delta<1$ and let $u_c,u_c'$ denote the full solution restricted to the core. The tail right side is zero because $h$ is supported on $A,E$. The finite and full Schur equations imply
 \begin{align}
  \norm{u_c-u_f}_\infty&\le
- \frac{\kappa\delta}{1-\eta}\norm{u_f}_\infty=:e_0,\label{eq:uerror}\\
+ \frac{\kappa\delta}{1-\eta}\norm{u_f}_\infty=:e_0,\label{tdc:eq:uerror}\\
  \norm{u_c'-u_f'}_\infty&\le\frac{\kappa}{1-\eta}
  \bigl(\delta\norm{u_f'}_\infty+
  \norm{K_{\mathrm{core}}'}_\infty e_0+
  \delta_1(\norm{u_f}_\infty+e_0)\bigr).
- \label{eq:duerror}
+ \label{tdc:eq:duerror}
 \end{align}
 For completeness, subtracting $(A_0-\Sigma)u_c=h$ from $A_0u_f=h$ gives the first estimate. Differentiating and subtracting the two equations yields
 \[
@@ -464,21 +718,21 @@ which proves the second one. The certified derivative tail error is below $8.259
 
 Combining these bounds with the finite solve gives, at $z=\sqrt\rho$,
 \begin{align}
- 13.8403718617&<\frac{d}{dz}I(z^2)<13.8405060269,\label{eq:Iz}\\
- 8.8025712521&<I'(\rho)<8.8026568060.\label{eq:Iq}
+ 13.8403718617&<\frac{d}{dz}I(z^2)<13.8405060269,\label{tdc:eq:Iz}\\
+ 8.8025712521&<I'(\rho)<8.8026568060.\label{tdc:eq:Iq}
 \end{align}
 Since $I(\rho)=0$ and $C=1-1/I$, its residue and normalized amplitude are
-\begin{equation}\label{eq:amplitude}
+\begin{equation}\label{tdc:eq:amplitude}
  \Res_{q=\rho}C=-\frac1{I'(\rho)},\qquad
  c=\frac1{\rho I'(\rho)}
  =\frac{2}{\sqrt\rho\,\frac{d}{dz}I(z^2)|_{z=\sqrt\rho}}>0.
 \end{equation}
-Outward evaluation proves \eqref{eq:c}. Differentiating $I=N/D$ at its zero also gives $I'(\rho)=N'(\rho)/D(\rho)$, agreeing with \eqref{eq:exactconstants}.
+Outward evaluation proves \eqref{tdc:eq:c}. Differentiating $I=N/D$ at its zero also gives $I'(\rho)=N'(\rho)/D(\rho)$, agreeing with \eqref{tdc:eq:exactconstants}.
 
 \section{A uniform and explicit coefficient error}
-\label{sec:error}
+\label{tdc:sec:error}
 A second block identity is particularly effective for estimating $C$ on the global circle:
-\begin{equation}\label{eq:Cresolvent}
+\begin{equation}\label{tdc:eq:Cresolvent}
  C=K_{AA}+K_{A\OO}(\Id-L)^{-1}g_0,
  \qquad g_0=K_{\OO A}+z^3e_E(1-K_{AA}).
 \end{equation}
@@ -486,9 +740,9 @@ To derive it near zero, divide the $\OO$ block of the equation
 $(\Id-K)u=h$ by $u_A=I$. If $x=u_{\OO}/u_A$, then
 $C=K_{AA}+K_{A\OO}x$ and
 $(\Id-K_{\OO\OO})x=K_{\OO A}+v(1-C)$.
-Substitution gives $(\Id-L)x=g_0$. Analytic continuation proves \eqref{eq:Cresolvent} wherever $\Id-L$ is invertible.
+Substitution gives $(\Id-L)x=g_0$. Analytic continuation proves \eqref{tdc:eq:Cresolvent} wherever $\Id-L$ is invertible.
 
-Solve the full block system for $\Id-L$ on $|q|=R$. If the right side has row norm at most one, \eqref{eq:schur} gives
+Solve the full block system for $\Id-L$ on $|q|=R$. If the right side has row norm at most one, \eqref{tdc:eq:schur} gives
 \begin{align*}
  \norm{x_{\mathrm{core}}}_\infty
  &\le\frac{\kappa}{1-\kappa\delta}
@@ -499,20 +753,20 @@ Solve the full block system for $\Id-L$ on $|q|=R$. If the right side has row no
  =\frac{1483000}{121079}<525,
 \end{align*}
 where the equalities use the conservative rational bounds
-$b=27/1000$, $d=21/1000$, $\tau=1/50$ and \eqref{eq:kappadelta}.
-The bounded inverse constructed in this way agrees on square-summable vectors with the Hilbert-space inverse as in Section~\ref{sec:global}.
+$b=27/1000$, $d=21/1000$, $\tau=1/50$ and \eqref{tdc:eq:kappadelta}.
+The bounded inverse constructed in this way agrees on square-summable vectors with the Hilbert-space inverse as in Section~\ref{tdc:sec:global}.
 
 At $|z|\le4/5$, direct polynomial coefficient majorants give
-\begin{equation}\label{eq:Cingredients}
+\begin{equation}\label{tdc:eq:Cingredients}
  |K_{AA}|\le\frac{656}{625}<1.05,\quad
  \norm{K_{A\OO}}_1\le\frac{5386644}{1953125}<2.76,\quad
  \norm{g_0}_\infty\le\frac{123968}{78125}<1.59.
 \end{equation}
-The last calculation is finite: a state reaching $A$ in three steps has height at most four, and the other contribution is supported at $E$. Equations~\eqref{eq:Cresolvent}--\eqref{eq:Cingredients} imply
+The last calculation is finite: a state reaching $A$ in three steps has height at most four, and the other contribution is supported at $E$. Equations~\eqref{tdc:eq:Cresolvent}--\eqref{tdc:eq:Cingredients} imply
 \[
  |C(q)|<1.05+2.76\cdot525\cdot1.59<2400\qquad(|q|=R).
 \]
-On the same circle, \eqref{eq:rho}--\eqref{eq:c} give
+On the same circle, \eqref{tdc:eq:rho}--\eqref{tdc:eq:c} give
 \[
  \left|\frac c{1-q/\rho}\right|
  \le\frac{c\rho}{R-\rho}
@@ -520,15 +774,15 @@ On the same circle, \eqref{eq:rho}--\eqref{eq:c} give
  =\frac{14237}{1375}<10.355.
 \]
 The function $G(q)=C(q)-c/(1-q/\rho)$ is holomorphic on a neighborhood of the closed disk: the only pole inside was removed, and the boundary is zero-free for $N$. Its boundary modulus is below $2500$. Cauchy's coefficient estimate yields
-$|[q^n]G|\le2500R^{-n}$ for every $n\ge0$, completing Theorem~\ref{thm:main}.
+$|[q^n]G|\le2500R^{-n}$ for every $n\ge0$, completing Theorem~\ref{tdc:thm:main}.
 
 The error constant was chosen for transparency rather than sharpness. It is a global rigorous envelope, not a claim of a high-accuracy numerical approximation at small $n$.
 
 \section{Every fixed finite spectral order}
-\label{sec:spectral}
+\label{tdc:sec:spectral}
 Meromorphic continuation contains more information than the first exponential term. The correct higher orders are contributions from further poles, potentially multiplied by polynomials and oscillations. An arbitrary series in $1/n$ would obscure this structure.
 
-\begin{theorem}[Finite spectral expansion]\label{thm:spectral}
+\begin{theorem}[Finite spectral expansion]\label{tdc:thm:spectral}
 Fix $0<r<1$ such that $N$ has no zero on $|q|=r$. Let $\PP_r$ consist of the nonremovable poles of $C$ in that circle. For $\zeta\in\PP_r$, set
 \[
  k_\zeta=\ord_\zeta N,\quad d_\zeta=\ord_\zeta D,
@@ -536,12 +790,12 @@ Fix $0<r<1$ such that $N$ has no zero on $|q|=r$. Let $\PP_r$ consist of the non
  \quad H_\zeta(q)=(1-q/\zeta)^{m_\zeta}C(q).
 \]
 Here $\ord_\zeta D=0$ when $D(\zeta)\ne0$. Define
-\begin{equation}\label{eq:bcoeff}
+\begin{equation}\label{tdc:eq:bcoeff}
  b_{\zeta,j}=\frac{(-\zeta)^{m_\zeta-j}}{(m_\zeta-j)!}
  H_\zeta^{(m_\zeta-j)}(\zeta),\qquad1\le j\le m_\zeta.
 \end{equation}
 There is a finite constant $M_r$ such that, for every $n\ge0$,
-\begin{equation}\label{eq:spectral}
+\begin{equation}\label{tdc:eq:spectral}
  a_n=\sum_{\zeta\in\PP_r}\sum_{j=1}^{m_\zeta}
  b_{\zeta,j}\binom{n+j-1}{j-1}\zeta^{-n}+E_{r,n},
  \qquad |E_{r,n}|\le M_r r^{-n}.
@@ -554,48 +808,48 @@ One may take $M_r=\max_{|q|=r}|H_r(q)|$, where
 For $r=R$, the sole term is $c\rho^{-n}$ and $M_R=2500$ is valid.
 \end{theorem}
 \begin{proof}
-The function $N$ is holomorphic in the unit disk, not identically zero because $N(0)=1$. Its zeros in the fixed closed disk are finite. At each zero, the quotient $D/N$ has exactly the surviving pole order $k_\zeta-d_\zeta$ when positive, and otherwise is removable. Taylor-expanding the analytic function $H_\zeta$ about $\zeta$ yields \eqref{eq:bcoeff}. Subtracting these finite principal parts removes every singularity in a neighborhood of the closed disk. The elementary coefficient identity
+The function $N$ is holomorphic in the unit disk, not identically zero because $N(0)=1$. Its zeros in the fixed closed disk are finite. At each zero, the quotient $D/N$ has exactly the surviving pole order $k_\zeta-d_\zeta$ when positive, and otherwise is removable. Taylor-expanding the analytic function $H_\zeta$ about $\zeta$ yields \eqref{tdc:eq:bcoeff}. Subtracting these finite principal parts removes every singularity in a neighborhood of the closed disk. The elementary coefficient identity
 \[
  [q^n](1-q/\zeta)^{-j}=\binom{n+j-1}{j-1}\zeta^{-n}
 \]
-and Cauchy's estimate for $H_r$ prove \eqref{eq:spectral}.
+and Cauchy's estimate for $H_r$ prove \eqref{tdc:eq:spectral}.
 \end{proof}
 
 This is an all-orders statement at every \emph{fixed spectral accuracy}: select a fixed zero-free radius below one and include all its surviving poles. It allows repeated poles, conjugate pairs, and numerator cancellations. It neither says that an infinite pole sum converges nor gives uniform estimates as $r\uparrow1$. Only the dominant pole and $M_R$ have been numerically certified here. No simplicity assumption is made for later zeros.
 
-For the single leading carrier, \eqref{eq:error} implies
-$a_n/(c\rho^{-n})=1+o(n^{-J})$ for every fixed $J$. Thus every nonconstant coefficient of any relative algebraic $1/n$ expansion around that carrier is zero. The nontrivial higher information is the additional exponential spectral terms in \eqref{eq:spectral}.
+For the single leading carrier, \eqref{tdc:eq:error} implies
+$a_n/(c\rho^{-n})=1+o(n^{-J})$ for every fixed $J$. Thus every nonconstant coefficient of any relative algebraic $1/n$ expansion around that carrier is zero. The nontrivial higher information is the additional exponential spectral terms in \eqref{tdc:eq:spectral}.
 
 \section{Strict growth and threshold inversion}
-\label{sec:inverse}
+\label{tdc:sec:inverse}
 \subsection{The two empirical statements and the effective growth gate}
 For the exact rational $x=0.618034$,
 \[
  x^2+x-1=\frac{6289}{250000000000}>0.
 \]
 Since the positive zero of $x^2+x-1$ is $1/\phi$, this proves
-$1/\phi<x<\rhol<\rho$, and hence $\lambda<\phi$. Equation~\eqref{eq:error} gives $a_n/\phi^n\to0$ and
-$a_{n-j}/a_n\to\rho^j$ for each fixed $j$. The signed residual therefore tends to $1-\rho-\rho^2$. This function decreases on the positive real line; evaluating its endpoints with exact rational arithmetic gives \eqref{eq:empirical}. In particular $(a_{n-1}+a_{n-2})/a_n$ tends to $\rho+\rho^2\ne1$.
+$1/\phi<x<\rhol<\rho$, and hence $\lambda<\phi$. Equation~\eqref{tdc:eq:error} gives $a_n/\phi^n\to0$ and
+$a_{n-j}/a_n\to\rho^j$ for each fixed $j$. The signed residual therefore tends to $1-\rho-\rho^2$. This function decreases on the positive real line; evaluating its endpoints with exact rational arithmetic gives \eqref{tdc:eq:empirical}. In particular $(a_{n-1}+a_{n-2})/a_n$ tends to $\rho+\rho^2\ne1$.
 
 To make eventual positivity and growth effective, set
 \[
  Q_n=\frac M\cl\left(\frac{\rhoh}{R}\right)^n.
 \]
 Exact rational comparisons at $n=600$ give
-\begin{equation}\label{eq:growthgate}
+\begin{equation}\label{tdc:eq:growthgate}
  Q_{600}<0.138<1,\qquad
  Q_{600}(1+R^{-1})<0.356406<\rhoh^{-1}-1.
 \end{equation}
-The left sides decrease with $n$. Equation~\eqref{eq:error} consequently gives $a_n>0$ and
+The left sides decrease with $n$. Equation~\eqref{tdc:eq:error} consequently gives $a_n>0$ and
 \begin{align*}
  a_{n+1}-a_n
  &\ge c\rho^{-n}(\rho^{-1}-1)-MR^{-n}(1+R^{-1})>0
  \qquad(n\ge600).
 \end{align*}
-This proves Corollary~\ref{cor:empirical} without assuming positivity at any uncomputed earlier index.
+This proves Corollary~\ref{tdc:cor:empirical} without assuming positivity at any uncomputed earlier index.
 
 Define the exact integer
-\begin{equation}\label{eq:Y0}
+\begin{equation}\label{tdc:eq:Y0}
  Y_0=\left\lceil\ch\rhol^{-600}+MR^{-600}\right\rceil.
 \end{equation}
 For clarity, its decimal expansion is the concatenation of the following five successive blocks of $25$ digits:
@@ -616,14 +870,14 @@ Put $\lambda=\rho^{-1}$ and $L=\log\lambda$. For $y>Y_0$ let
 \]
 It exists because the sequence is eventually strictly increasing and unbounded.
 
-\begin{theorem}[Explicit threshold enclosure]\label{thm:inverse}
+\begin{theorem}[Explicit threshold enclosure]\label{tdc:thm:inverse}
 For each $y>Y_0$, there are unique roots $x_-(y),x_+(y)>600$ of
 \begin{align}
- c\lambda^{x_-}+MR^{-x_-}&=y,\label{eq:upperroot}\\
- c\lambda^{x_+}-MR^{-x_+}&=y.\label{eq:lowerroot}
+ c\lambda^{x_-}+MR^{-x_-}&=y,\label{tdc:eq:upperroot}\\
+ c\lambda^{x_+}-MR^{-x_+}&=y.\label{tdc:eq:lowerroot}
 \end{align}
 They satisfy the pointwise integer enclosure
-\begin{equation}\label{eq:twoceil}
+\begin{equation}\label{tdc:eq:twoceil}
  \left\lceil x_-(y)\right\rceil\le n(y)\le
  \left\lceil x_+(y)\right\rceil.
 \end{equation}
@@ -636,14 +890,14 @@ $0<\log(1/R)<L$. The minus envelope is positive and its derivative
 \[
  c\lambda^x L-MR^{-x}\log(1/R)>0.
 \]
-Both envelopes tend to infinity and have value below $y$ at $600$, by \eqref{eq:Y0}. Thus their stated roots exist and are unique. Any integer $n>600$ below $x_-$ has upper envelope below $y$, so $a_n<y$. All earlier indices were already excluded. At $n=\lceil x_+\rceil$, the lower envelope is at least $y$, so $a_n\ge y$. This proves \eqref{eq:twoceil}, including the case when a root is exactly an integer.
+Both envelopes tend to infinity and have value below $y$ at $600$, by \eqref{tdc:eq:Y0}. Thus their stated roots exist and are unique. Any integer $n>600$ below $x_-$ has upper envelope below $y$, so $a_n<y$. All earlier indices were already excluded. At $n=\lceil x_+\rceil$, the lower envelope is at least $y$, so $a_n\ge y$. This proves \eqref{tdc:eq:twoceil}, including the case when a root is exactly an integer.
 \end{proof}
 
 A single ceiling around an expression with an unspecified $O$-term would not give a pointwise result near integers. Keeping the two ceilings is essential. Even when the horizontal interval is short, it can straddle an integer.
 
 \subsection{All orders for the two bounding roots}
 Define
-\begin{equation}\label{eq:inverseparams}
+\begin{equation}\label{tdc:eq:inverseparams}
  x_0=\frac{\log y-\log c}{L},\quad
  \alpha=\frac{\log(1/R)}{L}\in(0,1),\quad
  \beta=1-\alpha=\frac{\log(R/\rho)}{L}>0,\quad
@@ -652,15 +906,15 @@ Define
 Generalized binomial coefficients have their polynomial meaning,
 $\binom{v}{j}=v(v-1)\cdots(v-j+1)/j!$ for $j\ge1$, and value one for $j=0$.
 
-\begin{proposition}[Lagrange expansions]\label{prop:lagrange}
+\begin{proposition}[Lagrange expansions]\label{tdc:prop:lagrange}
 For every fixed integer $K\ge1$, as $y\to\infty$,
 \begin{align}
  x_-(y)&=x_0+\frac1L\sum_{k=1}^K
  \frac{(-1)^k}{k}\binom{\alpha k-1}{k-1}\mu^k
- +O_K(\mu^{K+1}),\label{eq:minusseries}\\
+ +O_K(\mu^{K+1}),\label{tdc:eq:minusseries}\\
  x_+(y)&=x_0+\frac1L\sum_{k=1}^K
  \frac1k\binom{\alpha k-1}{k-1}\mu^k
- +O_K(\mu^{K+1}).\label{eq:plusseries}
+ +O_K(\mu^{K+1}).\label{tdc:eq:plusseries}
 \end{align}
 These series converge for sufficiently small $|\mu|$. Their first terms are
 \[
@@ -686,7 +940,7 @@ Multiplying by $1/L$ proves the formulas and their fixed-order analytic remainde
 These are expansions of exact \emph{bounding roots}, not asymptotic equalities for the integer-valued step function $n(y)$. Adding terms to either Lagrange series improves its evaluation but does not reduce the sequence's underlying $O(y^{-\beta})$ horizontal uncertainty. Improving that width requires a sharper coefficient error or further spectral information.
 
 \subsection{Inversion at each fixed spectral accuracy}
-Fix $\rho<r<1$ as in Theorem~\ref{thm:spectral}. Its finite spectral carrier has a real smooth interpolation $A_r(t)$ that must be specified, since arbitrary complex powers would otherwise be ambiguous. Put
+Fix $\rho<r<1$ as in Theorem~\ref{tdc:thm:spectral}. Its finite spectral carrier has a real smooth interpolation $A_r(t)$ that must be specified, since arbitrary complex powers would otherwise be ambiguous. Put
 \[
  P_j(t)=\binom{t+j-1}{j-1}.
 \]
@@ -695,48 +949,84 @@ $b_{\zeta,j}P_j(t)|\zeta|^{-t}\cos(\pi t)$. For each conjugate pair choose the u
 \[
  2\Re\bigl(b_{\zeta,j}P_j(t)|\zeta|^{-t}e^{-i\theta t}\bigr).
 \]
-Summing these terms defines $A_r(t)$ and agrees exactly with the carrier in \eqref{eq:spectral} at integers. Real coefficients of $C$ ensure the required conjugacy of Laurent coefficients.
+Summing these terms defines $A_r(t)$ and agrees exactly with the carrier in \eqref{tdc:eq:spectral} at integers. Real coefficients of $C$ ensure the required conjugacy of Laurent coefficients.
 
 Every nonleading pole has modulus greater than $\rho$. Its interpolated term and derivative are therefore exponentially smaller than $c\lambda^t$, even after fixed polynomial factors. Hence
 \[
  A_r(t)\sim c\lambda^t,\qquad A_r'(t)\sim cL\lambda^t.
 \]
 The two functions $A_r(t)\pm M_r r^{-t}$ are eventually strictly increasing and unbounded. For sufficiently large $y$, their respective large roots $x_{r,-},x_{r,+}$ give
-\begin{equation}\label{eq:spectralinverse}
+\begin{equation}\label{tdc:eq:spectralinverse}
  \lceil x_{r,-}(y)\rceil\le n(y)\le\lceil x_{r,+}(y)\rceil.
 \end{equation}
-One excludes the finitely many earlier indices before applying the same argument as for \eqref{eq:twoceil}. This exclusion and the finer constants are existential here, rather than additional certified numerical tables.
+One excludes the finitely many earlier indices before applying the same argument as for \eqref{tdc:eq:twoceil}. This exclusion and the finer constants are existential here, rather than additional certified numerical tables.
 
 Both roots equal $x_0+o(1)$. The derivative of the smooth carrier near them is asymptotic to $Ly$, whereas the vertical separation of the two envelopes is $O(r^{-x_0})$. The mean value theorem gives
-\begin{equation}\label{eq:betar}
+\begin{equation}\label{tdc:eq:betar}
  x_{r,+}(y)-x_{r,-}(y)=O(y^{-\beta_r}),\qquad
  \beta_r=\frac{\log(r/\rho)}{\log(1/\rho)}\in(0,1).
 \end{equation}
 There are zero-free radii approaching one because zeros are discrete in the open disk, and along such radii $\beta_r\uparrow1$. Meromorphic continuation confined to $|q|<1$ does not supply arbitrary inverse errors $O(y^{-K})$ for $K>1$. Further implicit expansions may use the explicit finite carrier; at no point is the discrete unknown remainder $E_{r,n}$ differentiated.
 
+\begin{remark}[{[write]} The inverses against the transseries volume, 7~October 2026]\label{tdc:rem:transseries}
+The volume is
+\path{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex};
+its symbols carry the subscript ``vol''. Statement by statement:
+\begin{enumerate}[label=(\alph*)]
+\item \emph{Instance.} For $y>Y_0$, $n(y)$ is the integer staircase of
+ \file{p0:def:three-inverses}(1) with $A_n=a_n$ and
+ $n_{1,\mathrm{vol}}=600$: by Corollary~\ref{tdc:cor:empirical} the sequence
+ is strictly increasing from $n=600$, and by~\eqref{tdc:eq:Y0} no earlier
+ index reaches $y$. So \file{p0:thm:staircase}(1) gives
+ $n(y)=\lceil\nu_{\mathcal A}(y)\rceil$ for every admissible interpolation
+ $\mathcal A_{\mathrm{vol}}$.
+\item \emph{Analogue.} Theorem~\ref{tdc:thm:inverse} is a direct two-ceiling
+ bracket at the integers about the roots of two explicit envelopes, which do
+ not interpolate the sequence: an analogue of \file{p0:thm:staircase}(2), not
+ an instance, with fully explicit constants. The same holds
+ for~\eqref{tdc:eq:spectralinverse}, whose carrier $A_r$ interpolates the
+ spectral carrier, not $a_n$.
+\item \emph{Instances.} The centre $x_0$ of~\eqref{tdc:eq:inverseparams} is the
+ case $b_{\mathrm{vol}}=0$ of \file{p0:thm:lambert-core}
+ ($a_{\mathrm{vol}}=L$, target $\log y-\log c$). In the proof of
+ Proposition~\ref{tdc:prop:lagrange}, the equation $w=\epsilon\mu(1+w)^\alpha$
+ is a formal instance of \file{p0:thm:core-reversion} with
+ $\Lambda_{\mathrm{vol}}=1$, $h_{\mathrm{vol}}=0$,
+ $f_{\mathrm{vol}}(t,u)=-\epsilon t(1+u)^\alpha$ and $t=\mu$ (over a ring
+ containing $\alpha$); the source's coefficient formula is the
+ Lagrange--B\"urmann formula for $\log(1+w)$, and its convergence (analytic
+ implicit function theorem) is the source's own.
+\end{enumerate}
+No novelty is claimed for any of these inversions. The staircase arithmetic
+is formalized generically (for an arbitrary strictly monotone function) as
+\file{Fabius.staircase_ceil} in
+\path{Analysis/FabiusFunction/Lean/FabiusFunction/StaircaseInversion.lean};
+nothing about $a_n$ is formalized.
+\end{remark}
+
 \section{A local analytic span marker}
-\label{sec:marker}
-The exact span variable from Section~\ref{sec:model} can be retained. It leads to a signed analytic extension, independently of any probability interpretation. A primitive size-$m$ path has $m-1$ compressed transitions, so
+\label{tdc:sec:marker}
+The exact span variable from Section~\ref{tdc:sec:model} can be retained. It leads to a signed analytic extension, independently of any probability interpretation. A primitive size-$m$ path has $m-1$ compressed transitions, so
 \[
  J(t,q)=t e_A^{\mathsf T}(\Id-tK(z))^{-1}h(z),\qquad q=z^2.
 \]
 Cramer's replacement column is still $h=e_A+z^3e_E$. Its row elimination now gives
 $\Id-tK_{\OO\OO}+tz^3e_EK_{A\OO}=\Id-tL$. Thus
-\begin{equation}\label{eq:markeridentity}
+\begin{equation}\label{tdc:eq:markeridentity}
  C(t,q)=1-\frac{D(t,q)}{N(t,q)},\quad
  D(t,q)=\det(\Id-tK(\sqrt q)),\quad
  N(t,q)=\det(\Id-tL(\sqrt q)).
 \end{equation}
-These determinants are jointly holomorphic for $t\in\mathbb C$, $|q|<1$: the trace-norm series converges uniformly on compact marker sets, and parity removes the square-root branch as before. Their values at $q=0$ are one. For each fixed bounded marker set, \eqref{eq:markeridentity} agrees with the source formal series in a sufficiently small common $q$ neighborhood.
+These determinants are jointly holomorphic for $t\in\mathbb C$, $|q|<1$: the trace-norm series converges uniformly on compact marker sets, and parity removes the square-root branch as before. Their values at $q=0$ are one. For each fixed bounded marker set, \eqref{tdc:eq:markeridentity} agrees with the source formal series in a sufficiently small common $q$ neighborhood.
 
-\begin{theorem}[Local marker continuation]\label{thm:marker}
+\begin{theorem}[Local marker continuation]\label{tdc:thm:marker}
 There is an $\epsilon>0$ and analytic functions $\rho(t),c(t)$ for $|t-1|<\epsilon$, extending $\rho,c$, such that $N(t,q)$ has exactly one zero in $|q|<R$, simple and equal to $\rho(t)$, and $D(t,\rho(t))\ne0$. With
 \[
  c(t)=\frac{D(t,\rho(t))}{\rho(t)\,\partial_q N(t,\rho(t))},
  \qquad A_n(t)=[q^n]C(t,q),
 \]
 one has, on every sufficiently small closed marker disk,
-\begin{equation}\label{eq:markerexpansion}
+\begin{equation}\label{tdc:eq:markerexpansion}
  A_n(t)=c(t)\rho(t)^{-n}+O(R^{-n})
 \end{equation}
 uniformly in $t$. Each fixed marker derivative has the derivative of the displayed leading carrier plus an $O(R^{-n})$ error, uniformly on any still smaller closed marker disk.
@@ -744,13 +1034,13 @@ uniformly in $t$. Each fixed marker derivative has the derivative of the display
 \begin{proof}
 At $t=1$ the denominator has a simple zero at $\rho$ and no zero on $|q|=R$. The analytic implicit-function theorem gives a local simple-zero branch. Uniform continuity on the compact boundary preserves its nonvanishing after shrinking the marker disk; the argument principle preserves the count one. The numerator stays nonzero at this branch by continuity. After a further shrink, $\rho(t)$ stays away from both zero and the boundary and $c(t)$ stays nonzero.
 
-Subtract $c(t)/(1-q/\rho(t))$ from \eqref{eq:markeridentity}. Its apparent singularity on the simple-zero branch is jointly removable. The resulting function is jointly holomorphic inside the circle and uniformly bounded on its boundary over a closed smaller marker disk. Cauchy's coefficient estimate proves \eqref{eq:markerexpansion}. For derivatives, first establish that bound on an intermediate closed marker disk and apply Cauchy's formula in $t$ on circles contained in it. This proves the derivative bounds on a still smaller disk with derivative-dependent constants.
+Subtract $c(t)/(1-q/\rho(t))$ from \eqref{tdc:eq:markeridentity}. Its apparent singularity on the simple-zero branch is jointly removable. The resulting function is jointly holomorphic inside the circle and uniformly bounded on its boundary over a closed smaller marker disk. Cauchy's coefficient estimate proves \eqref{tdc:eq:markerexpansion}. For derivatives, first establish that bound on an intermediate closed marker disk and apply Cauchy's formula in $t$ on circles contained in it. This proves the derivative bounds on a still smaller disk with derivative-dependent constants.
 \end{proof}
 
 No numerical value of $\epsilon$, marker derivatives, or variance is certified. The support lemma makes each $A_n(t)$ a polynomial, but no general coefficientwise positivity, probability law, central limit theorem, or probabilistic nondegeneracy follows from this signed determinant argument alone.
 
 \section{Reproducibility and the boundary of the claims}
-\label{sec:repro}
+\label{tdc:sec:repro}
 \subsection{What the accompanying code proves}
 The accompanying archive contains this \LaTeX{} source, the PDF, exact finite polynomial and adjugate data, frozen dyadic numerical proposals, independently written coefficient generation, and all acceptance checks. The code reconstructs the operators from their stated transition rules; it does not execute or redistribute the third-party jOEIS implementation. No third-party paper is included.
 
@@ -768,40 +1058,67 @@ The key checks are as follows.
 \item Verify the boundary resolvent estimate, $M=2500$, the exact golden-ratio separation, residual limit bounds, strict-growth inequalities, and the full integer $Y_0$.
 \item Generate $65$ exact cluster coefficients independently from the deficit paths. The first $40$ agree with the displayed OEIS terms inspected in the source screen; terms beyond $40$ are generated values, not a claimed b-file comparison.
 \end{enumerate}
-The finite coefficient check is supplementary. The proof of source identity in Section~\ref{sec:model} is what identifies the model at every index.
+The finite coefficient check is supplementary. The proof of source identity in Section~\ref{tdc:sec:model} is what identifies the model at every index.
 
-Positive arithmetic tests compare independent algorithms. Negative tests alter states, coefficients, adjugate entries, common polynomial factors, circle nodes, crossings, local proposals, interval conditions, and coefficient data. In particular, multiplying both the adjugate and its proposed denominator by $1+z^2$ preserves \eqref{eq:adjugate} but must fail the genuine-determinant test. A closing-chord test is accurately described as deleting a vertex so that the new chord crosses the origin; actual loop closure is also exercised by the independent negative-ray winding calculation. Tests run under both normal Python and \texttt{-O}.
+Positive arithmetic tests compare independent algorithms. Negative tests alter states, coefficients, adjugate entries, common polynomial factors, circle nodes, crossings, local proposals, interval conditions, and coefficient data. In particular, multiplying both the adjugate and its proposed denominator by $1+z^2$ preserves \eqref{tdc:eq:adjugate} but must fail the genuine-determinant test. A closing-chord test is accurately described as deleting a vertex so that the new chord crosses the origin; actual loop closure is also exercised by the independent negative-ray winding calculation. Tests run under both normal Python and \texttt{-O}.
 
 Hashes bind files and help detect accidental change. They are not mathematical evidence in place of the checks. Stored \texttt{PASS} outputs are convenient records, but the reproducibility command recomputes them rather than treating them as axioms. Deterministic builds and negative tests reduce implementation risk; they do not claim a machine-checked proof in a formal theorem prover.
 
 \subsection{Source identification and bounded comparison}
-\label{sec:sources}
-The OEIS entry~\cite{oeis} identifies the row-word inversion cluster sequence, its hard-rod recursion, the displayed prefix, and empirical golden-ratio and Fibonacci comparisons. The golden-ratio form was described there as checked to four significant figures over indices $30$--$40$. Its separate observation of a small relative Fibonacci residual is quantitatively consistent with \eqref{eq:empirical}, despite the failure of a strict equivalent.
+\label{tdc:sec:sources}
+The OEIS entry~\cite{oeis} identifies the row-word inversion cluster sequence, its hard-rod recursion, the displayed prefix, and empirical golden-ratio and Fibonacci comparisons. The golden-ratio form was described there as checked to four significant figures over indices $30$--$40$. Its separate observation of a small relative Fibonacci residual is quantitatively consistent with \eqref{tdc:eq:empirical}, despite the failure of a strict equivalent.
 
 The original Python attachment linked from the record was not accessible through the attempted permitted route. The entire jOEIS translation~\cite{joeis}, explicitly crediting Brydensholt's Python, was inspected. The inspected content has Git blob identifier
 \begin{center}\texttt{e59ad7a42e0c96f832b97b6457ea9b5cb1d4a851}.
 \end{center}
 Its full source is not bundled. The live OEIS record was separately inspected in a browser; a cached primary-source search rendition was also checked. The source screen was performed on 3 October 2026. The linked $1$--$100$ b-file was not independently used to verify all those terms.
 
+\begin{writenote}[Added 7 October 2026]
+The write fetched the b-file (Irvine, $1\le n\le100$) on 7~October 2026: all
+$100$ terms agree with its own exact generator, and terms $1$--$65$ with the
+shipped \file{data/exact_coefficients.json}
+(Remark~\ref{tdc:rem:refuted}(d)).
+\end{writenote}
+
 Targeted searches of the exact sequence identifier, author, row-word inversion, and defect-cluster terminology did not locate a directly covering asymptotic theorem in the sources checked. Related OEIS entries A393486 and A393487 concern the surrounding span/weight model. A seemingly related cluster-algebra report concerns a different annular cluster-variable problem~\cite{clustercomparison}. An inspected 2026 Fibonacci ribbon-tableau manuscript uses a different shape, ballot condition, and enumerated statistic~\cite{ribboncomparison}. Its opening theorem/model comparison does not amount to a full proof audit. These bounded negative and model-comparison results do not establish worldwide novelty or exhaustive duplicate clearance.
 
 For the classical determinant background, relevant portions of Bornemann's primary preprint, Sections 2--4, were inspected~\cite{bornemann}. The general trace-class facts are sufficient here. Its separate erratum corrects a specialized positive self-adjoint lemma~\cite{bornemannerratum}; that lemma is not applied to $L$. Simon's 1977 paper~\cite{simon} is a classical reference, but only its publisher abstract was available in this source screen, so no unverified theorem-number attribution is made to it.
 
-\subsection{Useful directions left open}
+\subsection{Useful directions left open}\label{tdc:sec:open}
 \begin{enumerate}
 \item \textbf{Sharper certified numerics.} Larger cores or optimized rational contours could narrow the pole and amplitude brackets, reduce $M$, and bring the guaranteed monotonicity and inverse thresholds closer to observed behavior. This requires new global and tail certificates, rather than merely a more precise floating root.
-\item \textbf{Subdominant poles.} Locate and certify the next nonremovable poles, their orders, and residues. Theorem~\ref{thm:spectral} then turns them directly into useful oscillatory corrections and tighter inverse enclosures. Numerator cancellation must be tested at each candidate.
+\item \textbf{Subdominant poles.} Locate and certify the next nonremovable poles, their orders, and residues. Theorem~\ref{tdc:thm:spectral} then turns them directly into useful oscillatory corrections and tighter inverse enclosures. Numerator cancellation must be tested at each candidate.
 \item \textbf{Finite-index positivity.} Determine whether every source cluster coefficient is nonnegative, and whether it admits a positive combinatorial interpretation. The signed rank-one formulation proves neither assertion. Eventual positivity of the univariate coefficients already follows from the present estimate.
-\item \textbf{Span statistics.} Certify a quantitative marker disk and marker derivatives. A probability or central limit theorem additionally requires a positive model and suitable nondegeneracy, beyond Theorem~\ref{thm:marker}.
+\item \textbf{Span statistics.} Certify a quantitative marker disk and marker derivatives. A probability or central limit theorem additionally requires a positive model and suitable nondegeneracy, beyond Theorem~\ref{tdc:thm:marker}.
 \item \textbf{The unit circle.} Determine whether continuation through any part of $|q|=1$ is possible, whether poles accumulate there, or whether a natural boundary occurs. The present trace-class estimate only applies strictly inside that circle.
 \item \textbf{Exact structure.} Seek further identities for the determinant quotient or its growth constants, without assuming an algebraic value suggested by numerical proximity. The strict inequality $\lambda<\phi$ illustrates the importance of separating a near match from an exact asymptotic law.
 \end{enumerate}
+
+\begin{writenote}[Added 7 October 2026, under Vladimir's standing rule of 4 October 2026]
+The six directions above are the source's open questions, credited to it and
+kept as stated. The write found no unproved claim of the source outside them
+and no wrong one; the two OEIS formula lines are refuted in
+Remark~\ref{tdc:rem:refuted}. It adds two finite questions that its own
+computations leave open.
+\begin{enumerate}[label=\arabic*.,start=7]
+\item \emph{Monotonicity below $600$.} The write's exact terms show
+ $a_{n+1}>a_n$ for $4\le n<300$ (and $a_1<a_2>a_3=a_4$);
+ Corollary~\ref{tdc:cor:empirical} gives it for $n\ge600$. Missing: the exact
+ terms for $300\le n\le600$ (a longer run of the same generator), which would
+ give $a_{n+1}>a_n$ for every $n\ge4$.
+\item \emph{The OEIS residual comment for every $n\ge30$.} It holds for
+ $30\le n\le300$ by exact computation and for all large $n$ by the limit; the
+ explicit envelope~\eqref{tdc:eq:error} makes it effective only for $n$
+ near $1000$ or beyond. Missing: exact terms up to that range, or a sharper
+ envelope (direction~1).
+\end{enumerate}
+\end{writenote}
 
 \begin{thebibliography}{9}
 \raggedright
 \bibitem{oeis}
 Morten Brydensholt, \emph{A394326}, sequence record on connected tableau defect-cluster types, The On-Line Encyclopedia of Integer Sequences.
-\url{https://oeis.org/A394326}. Source screen: 3 October 2026.
+\url{https://oeis.org/A394326}. Source screen: 3 October 2026 (read by the write on 7~October 2026, revision \#15, with its b-file).
 
 \bibitem{joeis}
 Sean A. Irvine, \emph{A394326.java}, jOEIS, based on Morten Brydensholt's Python program.
