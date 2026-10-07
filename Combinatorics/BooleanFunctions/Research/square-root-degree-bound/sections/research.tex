@@ -1,0 +1,349 @@
+\section{Interpretation, integration, and further research}
+\label{sec:research}
+
+\subsection{What a positive power separation already follows from}
+\label{subsec:composition}
+
+It is useful to isolate a short logical consequence of the prior
+arbitrary-factor result. This prevents a quantitative refinement from
+being mistaken for the first proof of a qualitative statement.
+
+\begin{proposition}[Power separation from a balanced seed]
+\label{prop:composition}
+Suppose a Boolean function \(f\) satisfies
+\(L_{\mathrm{abs}}(f)>\sqrt{\deg f+1}\). Then there is a balanced
+Boolean function \(g\), of some degree \(d>1\), such that
+\(L(g)>\sqrt d\). Its iterated block compositions \(g_j\) satisfy
+\[
+ \deg g_j=d^j,\qquad L(g_j)=L(g)^j
+ =(\deg g_j)^{\alpha},\qquad
+ \alpha=\frac{\log L(g)}{\log d}>\frac12.
+\]
+\end{proposition}
+
+\begin{proof}
+Changing coordinate signs makes every singleton coefficient of \(f\)
+nonnegative. If its mean is negative, replace it by \(-f(-x)\);
+this changes the sign of the mean while preserving those nonnegative
+singleton coefficients. We may therefore suppose that \(\E f\ge0\)
+and \(L(f)=L_{\mathrm{abs}}(f)\).
+Define
+\[
+ g(z,x)=z f(zx).
+\]
+On a Walsh monomial \(\chi_S(x)\), this transformation gives
+\(z^{|S|+1}\chi_S(x)\), whose total degree is odd and at most
+\(|S|+1\). Thus \(g\) is odd under simultaneous sign reversal,
+is balanced, and has degree \(d\le\deg f+1\).
+The old singleton coefficients are unchanged and the new \(z\)
+coefficient is \(\E f\). Hence
+\[
+ L(g)=L(f)+\E f>\sqrt{\deg f+1}\ge\sqrt d.
+\]
+The linear upper bound \(L(g)\le d\) implies \(d>1\).
+
+Balanced block composition multiplies first-level signed Fourier sums
+\cite[Fact 2.7]{BlaisTanWan2015}. To see it directly, expand the outer
+function in Walsh characters of its independent, balanced inner
+outputs. A singleton input coefficient can only come from a singleton
+outer term and a singleton coefficient in that inner block; summing
+these products multiplies the two singleton sums.
+Degree is multiplicative as well: maximal-degree outer and inner
+monomials yield a nonzero monomial on their disjoint blocks, and
+different outer supports cannot cancel it. Induction proves the two
+identities for \(g_j\) and hence the power law.
+\end{proof}
+
+The arbitrary-factor theorem of \cite{OpenAI2026} supplies the
+hypothesis of Proposition~\ref{prop:composition}. The normal-transfer
+sections of this article instead give one entirely specified route
+to a positive exponent, with no stage-dependent existence choice for
+the averaging size. Both routes are finite, but their useful outputs
+are different: the first is a short qualitative deduction; the second
+records explicit construction parameters, moment bounds, and dimension
+estimates.
+
+\begin{corollary}[A power lower bound for the retention profile]
+\label{cor:profile-power}
+Use the fixed-count construction with an admissible gain
+\(0<\eta<1\), and put
+\[
+ r=\frac m{m+1},\qquad q=\frac{m+\eta}{m+1},\qquad
+ \alpha=\frac{\log q}{\log r}\in(0,1).
+\]
+Then the profile from Proposition~\ref{prop:profile} satisfies
+\[
+ \Phi(\rho)\ge q\rho^\alpha\qquad(0<\rho\le1).
+\]
+In particular, \(\Phi(\rho)/\rho\to\infty\) as \(\rho\downarrow0\).
+\end{corollary}
+
+\begin{proof}
+At stage \(k\), the construction has
+\[
+ N_k=((m+1)M)^k,\qquad
+ D_k=(mM)^k=r^kN_k,\qquad
+ v(F_k)\ge[M(m+\eta)]^k=q^kN_k.
+\]
+The supremum formula for \(\Phi\) therefore gives
+\(\Phi(r^k)\ge q^k=(r^k)^\alpha\).
+If \(0<\rho<1\), choose \(k\ge1\) with
+\(r^k\le\rho<r^{k-1}\).
+Monotonicity yields
+\(\Phi(\rho)\ge(r^k)^\alpha\ge(r\rho)^\alpha
+=q\rho^\alpha\). At \(\rho=1\) the assertion follows from
+\(\Phi(1)=1\). Since \(\alpha<1\), the quotient diverges.
+\end{proof}
+
+The averaging count cancels from this profile bound. Its role is to
+make each finite stage valid, while the retained fraction and degree
+fraction determine the profile exponent.
+
+\subsection{What the certificates establish}
+
+The proof of the codimension threshold is analytic and exact. Its
+finite counterexample is checked in two ways: the displayed selector
+formula and direct summation over the \(5^5=3125\) block-sum tuples,
+weighted by the exact numbers of sign strings in each tuple.
+The grouped calculation is a complete calculation on the twenty-bit
+cube because every rule and score is constant on each such tuple.
+No sampling is used.
+
+The degree certificate has two independent ingredients. The
+cancellation identity gives a pointwise upper bound for every cell.
+A nonzero Fourier coefficient gives the matching lower bound for the
+exceptional cell. The readout's degree is certified by a separate
+nonzero coefficient. The full score law and its second, third, and
+fourth moments are recomputed in exact fractions.
+
+The optional exhaustive search uses rational event probabilities and
+conditional moments. Its sign tests use integer arithmetic or exact
+fractions, so no floating-point tolerance determines whether a gain
+is positive. The six-bit, two-leaf row was also computed with an
+independently written integer cross-multiplication implementation.
+This checks the stated finite search domain; it does not convert a
+restricted search into a proof about all partitions.
+
+The explicit Gaussian certificate verifies rational inequalities used
+to bound the analytic constants. It does not numerically integrate
+tens of millions of tiny intervals or construct the final enormous
+Boolean function. The Gaussian density and tail bounds are proved
+symbolically in the article. Dyadic constants whose denominators would
+have billions of bits are stored by their integer exponents.
+
+\subsection{A proposed ProveIt integration}
+
+The package is a self-contained report directory with a main
+\texttt{fourier\_codimension.tex}, its section files, the compiled PDF,
+figures, Python certificates, data outputs, and a provenance record.
+It can be placed alongside the repository's existing mathematical
+reports without importing or modifying the earlier source manuscripts.
+The source uses ordinary \LaTeX{} packages and an inline bibliography.
+The exact certificates use Python's standard library; only figure
+regeneration requires Matplotlib.
+
+A formalization can be developed in layers.
+\begin{enumerate}
+\item Establish general finite Walsh orthogonality, support
+complementation under multiplication by top parity, and degree
+bookkeeping for indicators. The inspected declarations
+\texttt{sum\_neg\_one\_pow\_binaryWeight\_land} and
+\texttt{sum\_thueMorseSign\_mul\_walsh} in the existing
+Thue--Morse development provide related finite identities
+\cite{ProveItWalsh}; additional abstraction is required.
+\item Formalize the interlacing-lattice variance lemma and the
+two-point total-variation projection. These are finite sums or
+elementary expectations and are independent of asymptotic probability.
+\item Derive the cell theorem and its equality and stability
+consequences. Careful parity and affine-change conventions make this
+layer reusable.
+\item Encode the twenty-bit rule by its five block sums. Prove the
+indicator identity symbolically, then check the rational moment table
+with kernel-verifiable finite arithmetic.
+\item Add the finite selector formula and tensorization. The optional
+enumeration can later be turned into a reflected decision procedure
+or an independently checkable certificate format.
+\item Formalize the quantitative amplifier separately, reusing a
+Berry--Esseen theorem if an appropriate library result is available.
+This layer needs measure-theoretic conditional expectation and a
+normal-approximation bound, and is substantially larger.
+\end{enumerate}
+These are proposed tasks, not names of modules already present.
+No Lean build or kernel verification of the new theorems is claimed.
+
+\subsection{Further research questions}
+
+The following problems distinguish structural classification,
+quantitative improvement, and formal verification. Several have small
+finite first cases, while others concern a genuine asymptotic limit.
+
+\begin{question}[Global minimum dimension]
+What is the least \(N\) for which there is any observation \(F\) with
+\(v(F)>D(F)\)? Is it twenty? The present minimality theorem only
+covers the binomial-block reporting family. A complete search must
+allow unrelated cell geometries and enforce that the chosen cells
+form a partition.
+\end{question}
+
+A promising first step is to search for a single low-degree cell with
+small residual variance, then determine whether its complement can
+be partitioned at the same degree cost. These two tasks should be
+kept separate: a good isolated cell need not admit a useful low-cost
+completion.
+
+\begin{question}[The exact codimension-four infimum]
+Determine
+\[
+ a_4=\inf_{\substack{N\ge4,\ C\ne\varnothing\\
+                    \deg\1_C\le N-4}}\Var(H_N\mid C).
+\]
+The results here give \(3\le a_4\le1147/289<4\).
+Does the full cube constraint force a gap above three, or can actual
+cells approach the abstract alternating-moment infimum?
+\end{question}
+
+The lower endpoint is not attained by a cell: equality at three
+would force a translated three-sign law, which violates the fourth
+alternating cancellation. Any sequence of actual cells approaching
+three must therefore have unbounded dimension.
+
+\begin{question}[Higher-codimension moment minima]
+For \(k\ge5\), determine
+\[
+ b_k=\inf\left\{\Var(Y):
+  Y\in\Z,\ \E|Y|^{k-1}<\infty,\
+  \E[(-1)^YY^j]=0\ (0\le j<k)\right\}.
+\]
+We prove \(b_1=1/4\), \(b_2=1/2\), and \(b_3=b_4=3/4\),
+with nonattainment at \(k=4\). Does \(b_k\) remain bounded,
+or must it eventually grow? Which moment extremizers can be realized
+as conditional Hamming-weight laws of low-degree cells?
+\end{question}
+
+The last realizability condition includes nonradial Walsh constraints
+that the one-dimensional moment problem discards. Positivity of a
+Hamming-weight distribution is therefore only the beginning of a
+cube construction.
+
+\begin{question}[Geometry of equality cells]
+Classify the cells of degree at most \(N-k\), for \(k=1,2,3\),
+whose conditional sum law is a translated \(k\)-sign sum.
+Which are coordinate subcubes, which are not, and what additional
+assumptions force a geometric classification?
+\end{question}
+
+Natural extra assumptions include invariance under selected
+coordinate permutations, monotonicity, bounded numbers of cell
+values under restriction, or prescribed affine symmetries.
+The distributional equality theorem alone does not choose among
+those hypotheses.
+
+\begin{question}[Optimal stability for actual cube cells]
+Are the sharp local total-variation moduli in the abstract
+alternating-moment class also sharp for uniform cube cells?
+Can the constants in the averaged joint-law theorem be improved
+using compatibility among the different cells of a partition?
+\end{question}
+
+An exact stability optimizer in the moment class need not have
+probabilities realizable as integer counts within the available
+Hamming layers of a cube cell.
+Approximating its weights while preserving all the high-degree
+Fourier cancellations is a substantive issue.
+
+\begin{question}[The retained-variance surface]
+Determine the extremal function \(V(N,D)\), or its asymptotic
+profile \(\Phi\) from Proposition~\ref{prop:profile}.
+How close is the tensor lower bound
+\[
+ D+\frac9{34816}
+ \min\left\{\left\lfloor D/16\right\rfloor,
+             \left\lfloor(N-D)/4\right\rfloor\right\}
+\]
+to the optimum? Are there finite seeds with much larger advantage
+per bit, per degree, or per exceptional-cell probability?
+\end{question}
+
+\begin{question}[Sharper finite reporters]
+Optimize the exact selector formula under non-singleton tests,
+unequal block sizes, nonidentical input laws, or more than one
+exceptional tag. Can one prove finite-dimensional dual bounds
+that replace exhaustive enumeration?
+\end{question}
+
+The arbitrary-event formula separates a squared mean mismatch from
+within-test variances. This suggests convex relaxations for fixed
+tests and exact dynamic programming for the selector. Any relaxation
+should retain an exact rational certificate for its final candidate.
+
+\begin{question}[A direct discrete amplifier]
+Can a small finite score law, perhaps the explicit twenty-bit law,
+be iterated with a fixed small number of copies while preserving a
+strict multiplicative variance advantage? A proof would avoid the
+very large Gaussian grid and might produce an explicit Boolean
+counterexample that is practical to tabulate.
+\end{question}
+
+The score-law perturbation formula gives a finite state space for
+testing such a mechanism. An invariant family of distributions or a
+Lyapunov inequality could replace uniform closeness to the normal law.
+
+\begin{question}[Useful numerical exponents]
+What explicit exponent \(\varepsilon>0\) can be certified in
+\[
+ L_{\mathrm{abs}}(f)\ge c(\deg f)^{1/2+\varepsilon}
+\]
+with moderate construction parameters? Our numerical exponent is
+deliberately conservative. The central density-ratio estimate,
+interval probabilities, and generic Berry--Esseen transfer each
+offer distinct places for improvement.
+\end{question}
+
+An optimization should track the resulting dimension and
+description length as well as the exponent. A better asymptotic
+number can still correspond to a much harder finite object to
+construct.
+
+\begin{question}[Limits of first-moment readout]
+What additional conditions on an observation guarantee that a
+retained-variance excess produces a comparably strong first absolute
+moment? Can one classify rare-event perturbations that increase
+variance while leaving the majority first moment unchanged, as in
+\eqref{eq:witness-score-law}?
+\end{question}
+
+This question distinguishes optimizing \(v(F)/D(F)\) from optimizing
+the final Boolean Fourier quantity. Bounds using fourth moments are
+robust, but may lose information that a sharper distributional
+comparison could preserve.
+
+\begin{question}[Weighted coordinate sums]
+For \(H_w=\sum_iw_iX_i\), what replaces the codimension threshold and
+its equality laws? Coordinate sign changes handle \(w_i\in\{-1,1\}\),
+but arbitrary magnitudes destroy the common interlacing lattice.
+Are there sharp bounds in terms of the smallest weights, subset sums,
+or arithmetic structure of \(w\)?
+\end{question}
+
+\begin{question}[Query models and observation degree]
+When can a low-degree reporter be implemented by a shallow coordinate
+or parity decision tree, and what lower bound on query cost follows
+from a retained-variance advantage? Relate the present partitions to
+the query and spectral-sample statements already present in ProveIt,
+without identifying polynomial degree with query depth.
+\end{question}
+
+\begin{question}[A compact formal certificate]
+Can the twenty-bit witness, the codimension obstruction, and the
+scoped minimality search be packaged into a small Lean development
+whose trusted base consists only of the kernel and standard finite
+arithmetic? A particularly useful deliverable would check both the
+degree upper bound and all exact cell moments from one compact
+description of the reporting rule.
+\end{question}
+
+The immediate priorities are the global minimum-dimension problem,
+the codimension-four infimum, and a practical discrete amplifier.
+They directly test whether the structural boundary found here is the
+beginning of a broader classification or the first member of a much
+larger collection of efficient constructions.

@@ -1,0 +1,118 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[margin=27mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array,longtable}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black]{hyperref}
+\hypersetup{pdftitle={Sharp Codimension Thresholds and Uniform Amplification on the Boolean Cube},pdfauthor={Research manuscript prepared with ChatGPT for ProveIt},pdfsubject={Boolean Fourier analysis, conditional variance, stability, exact certificates}}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Pbb}{\mathbb P}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\1}{\mathbf 1}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\Law}{\mathcal L}
+\newcommand{\TV}{d_{\mathrm{TV}}}
+\newcommand{\degc}{\operatorname{cdeg}}
+\newcommand{\sgn}{\operatorname{sign}}
+\newcommand{\Bin}{\operatorname{Bin}}
+\newcommand{\Inf}{\operatorname{Inf}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\dist}{\operatorname{dist}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{claim}[theorem]{Claim}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{question}[theorem]{Question}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\numberwithin{equation}{section}
+\setlist{topsep=5pt,itemsep=3pt,parsep=0pt}
+\setlength{\parskip}{3pt}
+\setlength{\emergencystretch}{2em}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Sharp codimension thresholds on the Boolean cube}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\title{\textbf{Sharp Codimension Thresholds and Uniform\\
+Amplification on the Boolean Cube}\\[8pt]
+\large A twenty-bit witness, distributional rigidity,\\
+and exact research certificates}
+\author{Research manuscript prepared for the ProveIt repository\\
+\small Generated with ChatGPT (GPT-6 Astra Pro)}
+\date{7 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+For a finite observation \(F\) of \(N\) independent uniform signs, let
+\(D(F)\) be the largest Fourier degree of one of its cell indicators and
+\(v(F)=\Var(\E[H_N\mid F])\), where \(H_N\) is the coordinate sum.
+Building on the observation framework in the OpenAI manuscript
+\emph{Unbounded Violations of the Square-Root Degree Bound}, we determine
+the first Fourier codimension at which \(v(F)\le D(F)\) can fail.
+If every cell has degree at most \(N-k\), with \(k=1,2,3\), then every
+conditional coordinate-sum variance is at least \(k\). Equality holds
+exactly for translated \(k\)-sign-sum laws. We prove quantitative
+total-variation stability, including sharp local moduli in the associated
+alternating-moment class.
+
+At codimension four, an explicit partition of the twenty-dimensional cube
+has 622 cells, exact cell degree 16, and retained variance
+\(16+9/34816\). Its exceptional cell has 8704 points and conditional
+variance \(4-9/289\). All values are certified by exact rational
+arithmetic. Tensor products yield additive gaps growing linearly with
+the number of copies. An exhaustive certificate also proves twenty-bit
+minimality within a precisely specified binomial-block reporting family.
+
+Finally, we quantify the source manuscript's normal-approximation
+amplifier: one fixed averaging count works at every stage, and explicit
+degree and dimension bounds follow. A rational Gaussian parameter choice
+gives a positive, albeit extremely small, numerical exponent. The
+existence of a power separation itself is already a consequence of the
+source result and balanced Boolean composition; the quantitative
+construction is distinguished from that prior consequence.
+The article includes complete proofs, reproducible certificates, a
+repository integration plan, and a further research agenda.
+\end{abstract}
+\vspace{5pt}
+\noindent\textbf{Keywords.}
+Boolean Fourier analysis; conditional expectation; polynomial degree;
+binomial laws; stability; exact computation.
+
+\noindent\textbf{Verification status.}
+The proofs are mathematical arguments accompanied by exact finite
+certificates. They have not been formalized or checked by Lean.
+Priority claims are limited to comparison with the inspected sources.
+\clearpage
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\newpage
+\input{sections/context}
+\input{sections/observations}
+\input{sections/codimension}
+\input{sections/reporter}
+\input{sections/witness}
+\input{sections/minimality}
+\input{sections/quantitative}
+\input{sections/explicit_gaussian}
+\input{sections/research}
+\input{sections/references}
+\end{document}

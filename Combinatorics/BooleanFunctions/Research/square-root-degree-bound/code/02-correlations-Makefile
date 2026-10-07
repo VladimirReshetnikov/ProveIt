@@ -1,0 +1,16 @@
+.PHONY: all pdf verify clean
+
+all: pdf
+
+pdf: article.pdf
+
+article.pdf: article.tex
+	latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+
+verify:
+	python3 code/verify_binomial_reporter.py > data/binomial_reporter_certificate.json
+	python3 code/verify_bias_transfer.py > data/bias_transfer_certificate.json
+	python3 code/verify_restriction_transfer.py
+
+clean:
+	latexmk -c article.tex

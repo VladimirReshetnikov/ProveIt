@@ -1,0 +1,114 @@
+\section{Finite observations and exact degree bookkeeping}
+\label{sec:observations}
+
+The probability measure on \(\{-1,1\}^N\) is uniform. For
+\(S\subseteq[N]\), put \(\chi_S(x)=\prod_{i\in S}x_i\). Every real
+function \(g\) has the expansion
+\[
+ g=\sum_{S\subseteq[N]}\widehat g(S)\chi_S,\qquad
+ \widehat g(S)=\E[g\chi_S],
+\]
+and its Fourier degree is the largest \(|S|\) with
+\(\widehat g(S)\ne0\). Nonzero constant functions have degree zero;
+zero indicators can be discarded throughout.
+
+\begin{definition}
+A finite observation is a function \(F:\{-1,1\}^N\to\mathcal A\) with
+finite range. Its cells are the nonempty sets \(C_a=\{F=a\}\). Define
+\[
+ D(F)=\degc(F)=\max_{\Pbb(F=a)>0}\deg\1_{C_a},\quad
+ T_F=\E[H_N\mid F],\quad
+ v(F)=\E T_F^2.
+\]
+The quantity \(N-D(F)\) is the \emph{Fourier codimension} of the
+observation. It is a deficit of polynomial degree, not the geometric
+codimension of its cells.
+\end{definition}
+
+Since \(\E H_N=0\), the score \(T_F\) is centered. Orthogonal projection,
+or a direct cellwise expansion of the square, gives
+\begin{equation}\label{eq:total-variance}
+ N=v(F)+\E\Var(H_N\mid F).
+\end{equation}
+In particular \(0\le v(F)\le N\).
+
+\begin{lemma}[Observation calculus]\label{lem:observation-calculus}
+Every function of \(F\) has degree at most \(D(F)\). If \(F_i\) are
+observations on disjoint blocks with degrees \(D_i\), then every
+function of their tuple has degree at most \(\sum_iD_i\).
+For the tuple itself, its exact cell degree is \(\sum_iD_i\), and its
+retained variance is \(\sum_iv(F_i)\).
+\end{lemma}
+
+\begin{proof}
+Expand a function of \(F\) as
+\(\sum_a g(a)\1_{C_a}\). On disjoint blocks, a cell of the tuple is a
+product of cell indicators, so its degree is at most the sum of the
+degrees. Conversely, choose in each factor a cell of maximal degree
+and a nonzero coefficient of that degree. Their product is a nonzero
+coefficient on the disjoint union of the corresponding supports.
+Hence the sum is attained. Independence gives
+\[
+ \E[H_{\mathrm{tot}}\mid(F_i)_i]=\sum_iT_{F_i}.
+\]
+The scores are independent and centered, proving variance additivity.
+\end{proof}
+
+If \(Q\) is any coarsening of the tuple, the tower property gives
+\begin{equation}\label{eq:tower-scores}
+ \E[H_{\mathrm{tot}}\mid Q]=
+ \E\left[\sum_i T_{F_i}\,\middle|\,Q\right].
+\end{equation}
+Score collisions cause no degree difficulty: merging labels merely
+adds their indicators.
+
+\begin{lemma}[Boolean readout and the surviving linear bound]
+\label{lem:readout}
+Let \(v(F)>0\), put \(\kappa(F)=\E T_F^4/v(F)^2\), and define
+\(f=\sgn(T_F)\), with \(\sgn(0)=1\). Then
+\[
+ \deg f\le D(F),\qquad
+ L(f)=\E|T_F|\ge\sqrt{\frac{v(F)}{\kappa(F)}}.
+\]
+For every Boolean function \(g\),
+\begin{equation}\label{eq:linear-bound}
+ L_{\mathrm{abs}}(g)\le I(g)\le\deg g,
+\end{equation}
+where \(I(g)\) is total influence.
+\end{lemma}
+
+\begin{proof}
+The degree assertion is Lemma~\ref{lem:observation-calculus}. Since
+\(f\) is a function of \(F\),
+\[
+ L(f)=\E[fH_N]=\E[fT_F]=\E|T_F|.
+\]
+Hölder's inequality applied to
+\(|T|^2=|T|^{2/3}|T|^{4/3}\) gives
+\[
+ \E T^2\le(\E|T|)^{2/3}(\E T^4)^{1/3},
+\]
+which rearranges to the desired bound.
+
+For the last assertion define the discrete derivative
+\[
+ \partial_i g(x_{\ne i})
+ =\frac{g(x_{\ne i},1)-g(x_{\ne i},-1)}2.
+\]
+It takes values in \(\{-1,0,1\}\), has mean
+\(\widehat g(\{i\})\), and has second moment \(\Inf_i(g)\).
+Thus \(|\widehat g(\{i\})|\le\Inf_i(g)\).
+Orthogonality gives
+\[
+ I(g)=\sum_S|S|\widehat g(S)^2
+ \le(\deg g)\sum_S\widehat g(S)^2=\deg g.
+\]
+This familiar inequality is also recorded in
+\cite{NisanSzegedy1994,ODonnell2012}.
+\end{proof}
+
+A retained-variance excess \(v(F)>D(F)\) is therefore an intermediate
+structural fact. It alone does not ensure that the sign readout
+violates \(L(f)\le\sqrt{\deg f}\), because the first absolute moment
+depends on the shape of the score distribution. Our twenty-bit example
+makes this distinction concrete.
