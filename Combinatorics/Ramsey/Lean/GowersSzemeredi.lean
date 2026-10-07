@@ -450,6 +450,7 @@ import GowersSzemeredi.Proofs18ExplicitFiveTerm
 import GowersSzemeredi.Proofs18FejerFiveTerm
 import GowersSzemeredi.Proofs18FejerCubicImprovement
 import GowersSzemeredi.Proofs13SquareThresholdSpectralBound
+import GowersSzemeredi.Proofs13FourierThresholdEnvelope
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 

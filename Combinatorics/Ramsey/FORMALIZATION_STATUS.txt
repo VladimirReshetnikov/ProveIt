@@ -13,8 +13,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 687 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 4,400 public Gowers theorems and found only propext,
+  All 692 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 4,430 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 113 exact
   companion proofs and 7 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -971,9 +971,35 @@ Numerical envelopes for the explicit Section 13 thresholds
   actual geometric parameters. Both final square thresholds are at
   most exp(exp(112*section13Q(delta))). At the Fejer graph density
   delta=(alpha/2)^4207554485, this is at most
-  exp(exp((2/alpha)^(2^54))). The earlier recurrence and integer-budget
-  thresholds still need numerical envelopes before this conventional
-  form can be asserted for the entire geometric or five-term threshold.
+  exp(exp((2/alpha)^(2^54))). The complete geometric and Fourier bounds
+  below now include the earlier recurrence and integer-budget thresholds.
+
+Complete conventional Section 13 modulus bound
+  Proofs13RecurrenceParameterBudgets bounds the actual theta-one reciprocal
+  by Q, the initial length coefficient reciprocal by Q^2, the clipped
+  coefficient reciprocal by Q^3, and the recurrence exponent reciprocal
+  by Q^4. The last inequality includes q=0, which occurs in the finite
+  maximum even though actual nonempty spectra have q>0.
+  Proofs13IntegerThresholdEnvelope bounds each actual integer-budget
+  threshold by exp(exp(18*Q)) and its finite maximum of ceilings by
+  exp(exp(19*Q)). Proofs13RecurrenceThresholdEnvelope bounds simultaneous
+  quadratic partition thresholds uniformly, then the recurrence length
+  threshold by exp(exp(14*Q)), the initial recurrence threshold by
+  exp(exp(21*Q)), and the full finite recurrence maximum by exp(exp(22*Q)).
+  The proof keeps enormous natural powers symbolic; it does not replace
+  the genuine polynomial partition threshold or omit the zero-frequency
+  and rounding cases.
+  Proofs13GeometricThresholdEnvelope now bounds the whole constructed
+  geometric threshold by exp(exp(112*Q(delta))). After the Fejer density
+  substitution this is at most exp(exp((2/alpha)^(2^54))).
+  Proofs13FourierThresholdEnvelope includes the polynomial frequency-graph
+  threshold and proves the same bound for the full Fourier construction.
+  theorem_13_12_fejer_double_exponential exports the actual proper
+  common-step bilinear square, with side exponent 53 and density exponent
+  42, above this conventional threshold. The odd-square threshold needed
+  for cubic localization also satisfies the same numerical bound.
+  The complete five-term threshold still needs the subsequent prime-model,
+  quadratic-inverse, cubic phase-removal, and iteration budget comparisons.
 
 Cubic obstruction in a strictly smaller prime model
   Proofs17LocalizedPhaseRemoval now exports proposition_17_7_with_upper:
@@ -2217,10 +2243,10 @@ Next substantial obligations
      input and its numerical budget, rather than repeating those reductions.
      The cubic inverse theorem, full global assembly, phase removal, and
      five-term iteration are now proved with a fully specified modulus
-     threshold, including the stronger Fejer parameters. The frequency-graph
-     and final-square components now have numerical envelopes. Bound the
-     recurrence and integer-budget components, then compare the full closed
-     iteration threshold with the intended source bound. For arbitrary degrees, supply the Section 16 structural input
+     threshold, including the stronger Fejer parameters. The entire Section
+     13 Fourier and odd-square threshold is now bounded by a conventional
+     double exponential. Bound the remaining cubic inverse and full closed
+     iteration threshold and compare it with the intended source bound. For arbitrary degrees, supply the Section 16 structural input
      and propagate the now-proved interval transport and assembly steps.
   4. Close Theorem 18.2 and its headline consequences; then investigate tighter
      final bounds without treating improved auxiliary statements as a proved
