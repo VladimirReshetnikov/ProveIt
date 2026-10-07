@@ -12,8 +12,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 276 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 2,516 public Gowers theorems and found only propext,
+  All 278 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 2,541 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 101 exact
   companion proofs and 19 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -858,6 +858,23 @@ Boundary refinement and a progression inside the original interval
   contained in [0,L), with the same explicit bounds. The relative-balanced
   uniform stopping case and quantitative iteration remain open before any
   claim of Theorem 8.2 or an improved headline bound.
+
+Four-factor symmetries and relative uniform counting
+  Proofs03FourFactorSymmetry proves that the four-factor progression average
+  is unchanged by reversal and by the linear change of variables
+    (s,r) -> (3*s-6*r,2*s-3*r).
+  The latter map squares to multiplication by -3 and is invertible in every
+  prime modulus N>=4. It moves factor one to the final position with its
+  argument unchanged. Combined with reversal, this proves the four-term
+  von Neumann bound when any one factor is quadratic-uniform, using the
+  existing Theorem 3.2 and without a new higher-degree hypothesis.
+  Proofs18RelativeProgressionCount telescopes four factors and obtains
+    |AP4(A)-delta^4*AP4(S)| <= 4*alpha^(1/8)*N^2
+  from uniformity of 1_A-delta*1_S, for A contained in S and 0<=delta<=1.
+  Here AP4 denotes the complex indicator sum, including constant progressions.
+  This addresses the analytic obstruction in the relative uniform case.
+  An explicit interval-support count and removal of constant progressions
+  are still needed to complete the quantitative stopping condition.
 
 Reproducible checks (from repository root)
   python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.Audit

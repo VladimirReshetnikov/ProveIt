@@ -258,6 +258,8 @@ import GowersSzemeredi.Proofs18IntervalBoundaryBand
 import GowersSzemeredi.Proofs18IntervalBoundarySelection
 import GowersSzemeredi.Proofs18IntervalQuadraticIncrement
 import GowersSzemeredi.Proofs18NaturalIntervalIncrement
+import GowersSzemeredi.Proofs03FourFactorSymmetry
+import GowersSzemeredi.Proofs18RelativeProgressionCount
 
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
