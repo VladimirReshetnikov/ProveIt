@@ -345,6 +345,10 @@ import GowersSzemeredi.Proofs13FeatureZeroCount
 import GowersSzemeredi.Proofs13FejerRegularity
 import GowersSzemeredi.Proofs13FejerNumerics
 import GowersSzemeredi.Proofs13FejerSelection
+import GowersSzemeredi.Proofs13FejerCoefficientBox
+import GowersSzemeredi.Proofs13FejerFeatureLine
+import GowersSzemeredi.Proofs13FejerArrangementParameters
+import GowersSzemeredi.Proofs13FejerArrangementVertices
 
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue

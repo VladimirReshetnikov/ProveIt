@@ -12,8 +12,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 500 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 3,300 public Gowers theorems and found only propext,
+  All 504 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 3,338 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 108 exact
   companion proofs and 12 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -1232,9 +1232,9 @@ Finite Fejer survival foundations
   intended relations whenever 2*M<=L and both signed sums vanish.
   This proves a weaker signal estimate than source 57's sharp integral
   estimate; its numerical constants must be carried through separately.
-  The bounded coefficient-box argument, transport of exceptional counts
-  to catalogue arrangements, assembled purification, and endpoint rigidity
-  remain open. The universal polynomial classification is now checked below.
+  The coefficient-box argument is now checked, as described below. Transport
+  of selection counts, assembled quantitative purification, and endpoint
+  rigidity remain open.
 
 Quadratic feature classification and exceptional parameter counts
   Proofs13FeatureRelations eliminates the final horizontal coordinate in
@@ -1252,9 +1252,8 @@ Quadratic feature classification and exceptional parameter counts
   Each unintended relation has at most 2*N^31 zeros in the 32-variable
   specialization; a finite family has the corresponding union bound.
   These are unconditional algebraic/counting foundations. They do not yet
-  assemble the bounded integer coefficient box, the catalogue DArrangement
-  encoding, or the final purification theorem. The short-relation interface
-  for repeated-vertex exclusion is checked below.
+  assemble the final purification theorem. The coefficient box and catalogue
+  DArrangement encoding are now checked below.
 
 Fejer regularity and subset-selection assembly
   Proofs13FejerRegularity proves that if every short feature relation lies
@@ -1262,7 +1261,7 @@ Fejer regularity and subset-selection assembly
   simultaneous relations (for L<=N). With at least three labels, L>=2,
   and nonzero intended coefficients, the same line condition forces the
   physical vertices to be distinct. Thus repeated vertices can be charged
-  to the exceptional family once the coefficient-box bridge is supplied.
+  to the exceptional family via the coefficient-box bridge checked below.
   Proofs13FejerSelection combines the existing seed/Bernoulli machinery
   with a good-edge signal lower bound, a regular bad-edge baseline, and
   an explicit exceptional-cardinality error. Its structural Fejer version
@@ -1273,6 +1272,25 @@ Fejer regularity and subset-selection assembly
   Proofs13FejerNumerics chooses L=2*M in the 32-label shifted-pair estimate.
   The signal is exactly 2^(-64)*M^(-31), and its ratio to the bad baseline
   is M/2^32. The comparison theorem carries this constant without rounding.
+
+Bounded coefficients and exact arrangement parameterization
+  Proofs13FejerCoefficientBox encodes every difference of two Fin L
+  frequencies in Fin(2*L), and counts unintended polynomial zero sets over
+  that box. The 32-variable exceptional bound is (2*L)^32*(2*N^31).
+  This bound does not require the box itself to inject into the field.
+  Proofs13FejerFeatureLine proves that outside this explicit exceptional
+  set every short feature relation lies on the intended line. It then
+  discharges the distinct-vertex and bad-phase diagonal conditions for
+  the balanced parameter model, with their stated kernel-length bounds.
+  Proofs13FejerArrangementParameters gives an exact equivalence between
+  32 field parameters and catalogue order-eight arrangements satisfying
+  horizontal additivity. Their total count is exactly N^32.
+  Proofs13FejerArrangementVertices identifies the endpoint labels with
+  catalogue endpoints. Carrier containment is exactly IsIn, signed phase
+  vanishing is exactly IsRespected, and the feature xy has zero signed sum.
+  These bridges include all degenerate arrangements. Selection-count
+  transport and the arrangement-specific numerical budget remain to be
+  assembled before claiming the quantitative purification result.
 
 Reproducible checks (from repository root)
   python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.Audit
