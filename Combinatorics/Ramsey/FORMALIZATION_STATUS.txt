@@ -13,8 +13,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 762 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 4,872 public Gowers theorems and found only propext,
+  All 764 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 4,877 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 113 exact
   companion proofs and 7 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -1113,13 +1113,17 @@ Conventional numerical threshold for the complete cubic inverse
   constants and proves its local threshold is at most
   exp((2/alpha)^(2^323)). The entire prime-model and twisted discrepancy
   threshold is at most exp(exp((2/alpha)^(2^324))).
+  Proofs18LogarithmicPowerEnvelope proves x^(2^n) <= exp(x^(n+1))
+  for x>=2. Applying this before assembling the outer threshold,
+  Proofs18FejerSharperPrimeThreshold improves the unchanged twisted
+  threshold bound to exp(exp((2/alpha)^(2^55))).
   Proofs18CubicRefinementConstantBounds controls the fixed constants through
   degree three, the actual boundary-refinement constant, and the twisted
   count constant. Proofs18FejerInverseThresholdEnvelope then proves that
   the variable cubic phase-refinement constant is at most
   (2/alpha)^(2^1085), while the reciprocal average-size exponent is at most
   exp((2/alpha)^(2^61)). Consequently the full cubic inverse threshold is
-  at most exp(exp((2/alpha)^(2^1086))) for every 0 < alpha <= 1.
+  at most exp(exp((2/alpha)^(2^62))) for every 0 < alpha <= 1.
   fejer_cubic_function_discrepancy_bound_double_exp exports the actual
   FunctionDiscrepancyBound at this conventional threshold, retaining both
   previously proved strict parameter improvements. There is no assumed
@@ -1139,14 +1143,18 @@ Explicit improved five-term Szemeredi bound
   alpha<=delta^5 and 2/alpha<=(2/delta)^512.
   Proofs18FiveTermIterationEnvelope bounds every stopping threshold and
   the full iteration, obtaining
-    fejerFiveTermThreshold(delta) <= exp(exp((2/delta)^(2^1097)))
+    fejerFiveTermThreshold(delta) <= exp(exp((2/delta)^(2^73)))
   for every 0<delta<=1. No unspecified multiplicative constant or eventual
   threshold remains. Proofs18FiveTermSourceThreshold converts this to
-    N >= 2^(2^(delta^(-(2^1100))))
+    N >= 2^(2^(delta^(-(2^76))))
   for 0<delta<=1/2 and proves that every subset of [1,N] of density at
   least delta contains a nonconstant five-term arithmetic progression.
-  The displayed threshold is proved strictly smaller than the source's
-  five-term bound, whose innermost exponent is 2^16384.
+  This improves the previously checked inner exponent 2^1100 to 2^76
+  without changing the constructed threshold or its hypotheses. Fixed
+  partition constants are now absorbed in logarithmic budgets before
+  the outer exponentials are formed. The displayed threshold is proved
+  strictly smaller than the source's five-term bound, whose innermost
+  exponent is 2^16384.
   theorem_18_2_five_holds consequently proves the exact five-term instance
   of Theorem 18.2. This is a restricted instance; the catalogue count stays
   113/120, and the general all-length quantitative theorem remains open.

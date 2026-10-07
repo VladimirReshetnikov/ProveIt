@@ -1,4 +1,5 @@
 import GowersSzemeredi.Proofs18CubicRefinementConstantBounds
+import GowersSzemeredi.Proofs18FejerSharperPrimeThreshold
 import GowersSzemeredi.Proofs18FejerCubicDiscrepancy
 
 /-! A conventional double-exponential threshold for the full improved
@@ -101,40 +102,41 @@ set_option exponentiation.threshold 2048 in
 conventional double exponential, with all constants independent of alpha. -/
 theorem fejerCubicInverseThreshold_le_double_exp {alpha : Real}
     (hα : 0 < alpha) (hαone : alpha ≤ 1) :
-    fejerCubicInverseThreshold alpha ≤ Real.exp (Real.exp ((2 / alpha) ^ ((2 : Nat) ^ 1086))) := by
+    fejerCubicInverseThreshold alpha ≤ Real.exp (Real.exp ((2 / alpha) ^ ((2 : Nat) ^ 62))) := by
   let x := 2 / alpha
-  let A := x ^ ((2 : Nat) ^ 1085)
+  let A := x ^ ((2 : Nat) ^ 61)
   have hx : 2 ≤ x := (le_div_iff₀ hα).mpr (by linarith only [hαone])
   have hx1 : 1 ≤ x := by linarith only [hx]
   have hA0 : 0 ≤ A := pow_nonneg (by linarith only [hx]) _
-  have hAexp : A ≤ Real.exp A := by have h := Real.add_one_le_exp A; linarith only [h]
   have hC : fejerCubicPhaseRefinementConstant alpha ≤ Real.exp (1 * A) := by
     rw [one_mul]
-    exact (fejerCubicPhaseRefinementConstant_le_power hα hαone).trans hAexp
+    exact (fejerCubicPhaseRefinementConstant_le_power hα hαone).trans
+      ((pow_two_pow_le_exp_pow_succ hx 1085).trans (Real.exp_le_exp.mpr
+        (pow_le_pow_right₀ hx1 (by norm_num : (1086 : Nat) ≤ (2 : Nat) ^ 61))))
   have hD : (1 : Real)⁻¹ ≤ Real.exp (1 * A) := by
     simpa only [one_mul, inv_one] using Real.one_le_exp_iff.mpr hA0
   have heI : (fejerCubicDiscrepancyExponent alpha)⁻¹ ≤ Real.exp (1 * A) := by
     rw [one_mul]
     exact (fejerCubicDiscrepancyExponent_inv_le_exp hα hαone).trans
-      (Real.exp_le_exp.mpr (pow_le_pow_right₀ hx1 (by norm_num : (2 : Nat) ^ 61 ≤ (2 : Nat) ^ 1085)))
+      (Real.exp_le_exp.mpr (pow_le_pow_right₀ hx1 (by norm_num : (2 : Nat) ^ 61 ≤ (2 : Nat) ^ 61)))
   have hp := positivePowerThreshold_le_double_exp zero_lt_one
     (fejerCubicDiscrepancyExponent_pos hα hαone).le hA0
     (by norm_num : (0 : Real) ≤ 1) (by norm_num : (0 : Real) ≤ 1) hC hD heI
   norm_num only [show (1 + 1 + 1 : Real) = 3 by norm_num] at hp
-  have hinner : 3 * A ≤ x ^ ((2 : Nat) ^ 1086) := by
+  have hinner : 3 * A ≤ x ^ ((2 : Nat) ^ 62) := by
     have hx2 : (3 : Real) ≤ x ^ (2 : Nat) := by
       have h := pow_le_pow_left₀ (by norm_num : (0 : Real) ≤ 2) hx 2
       norm_num at h
       linarith only [h]
     calc
-      _ ≤ x ^ (2 : Nat) * x ^ ((2 : Nat) ^ 1085) := mul_le_mul_of_nonneg_right hx2 hA0
-      _ = x ^ (2 + (2 : Nat) ^ 1085) := (pow_add _ _ _).symm
-      _ ≤ _ := pow_le_pow_right₀ hx1 (by norm_num : 2 + (2 : Nat) ^ 1085 ≤ (2 : Nat) ^ 1086)
+      _ ≤ x ^ (2 : Nat) * x ^ ((2 : Nat) ^ 61) := mul_le_mul_of_nonneg_right hx2 hA0
+      _ = x ^ (2 + (2 : Nat) ^ 61) := (pow_add _ _ _).symm
+      _ ≤ _ := pow_le_pow_right₀ hx1 (by norm_num : 2 + (2 : Nat) ^ 61 ≤ (2 : Nat) ^ 62)
   unfold fejerCubicInverseThreshold
   apply max_le
-  · exact (fejerCubicTwistedThreshold_le_double_exp hα hαone).trans
+  · exact (fejerCubicTwistedThreshold_le_double_exp_sharp hα hαone).trans
       (Real.exp_le_exp.mpr (Real.exp_le_exp.mpr (pow_le_pow_right₀ hx1
-        (by norm_num : (2 : Nat) ^ 324 ≤ (2 : Nat) ^ 1086))))
+        (by norm_num : (2 : Nat) ^ 55 ≤ (2 : Nat) ^ 62))))
   · exact hp.trans (Real.exp_le_exp.mpr (Real.exp_le_exp.mpr hinner))
 
 /-- The complete improved cubic inverse interface at its conventional
@@ -143,7 +145,7 @@ theorem fejer_cubic_function_discrepancy_bound_double_exp {alpha : Real}
     (hα : 0 < alpha) (hαone : alpha ≤ 1) :
     FunctionDiscrepancyBound 3 alpha (fejerCubicDiscrepancyParameter alpha)
       (fejerCubicDiscrepancyExponent alpha)
-      (Real.exp (Real.exp ((2 / alpha) ^ ((2 : Nat) ^ 1086)))) := by
+      (Real.exp (Real.exp ((2 / alpha) ^ ((2 : Nat) ^ 62)))) := by
   intro N _ _ hN f hf hnot
   exact fejer_cubic_function_discrepancy_bound hα hαone N
     ((fejerCubicInverseThreshold_le_double_exp hα hαone).trans hN) f hf hnot
