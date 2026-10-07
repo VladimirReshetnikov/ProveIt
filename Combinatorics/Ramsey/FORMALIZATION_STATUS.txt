@@ -12,8 +12,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 242 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 2,180 public Gowers theorems and found only propext,
+  All 246 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 2,222 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 101 exact
   companion proofs and 19 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -645,6 +645,25 @@ Explicit tower form of the verified Fourier bound
   bound, and the same bilinear Fourier conclusion. This weaker explicit
   version is recorded separately; the printed exponent and its open catalogue
   status are unchanged. It is not an improved final Szemeredi bound.
+
+Constructed cubic phase localization
+  Proofs13OddFourierSquare trims the verified Fourier square to a positive
+  odd side m<=sqrt(N), retaining m>=N^e/2 and a quarter of the relative mass,
+  where e=(1/2)^((2/alpha)^(2^88)). The common step and properness are retained.
+  Proofs13FourierBoxTransport checks the reversed coordinate convention of
+  cubeDifference, transports bilinear polynomials to IsMultilinear, constructs
+  the two-dimensional box, and derives its Fourier second-moment lower bound.
+  Proofs17CubicLocalization then applies the proved Proposition 17.7 directly:
+  every disc-valued function failing cubic alpha-uniformity has a cubic
+  polynomial twist failing quadratic uniformity on a proper progression
+  partition, with cell lengths l or l+1 and l>=N^e/12. The surviving parameter
+  is 2^-58*alpha^2*(alpha/2)^(2^76). No square or geometry is assumed as input.
+  Proofs17PartitionEnergy preserves disc bounds under twisting and restriction,
+  and extracts an individual nonuniform cell with the exact ambient factor
+  ((l+1)/N)^4. The cubic localization exports that individual-cell consequence.
+  This is a proved analytic connection between Sections 13 and 17. It does not
+  transfer local uniformity to a new prime modulus, complete the higher-degree
+  induction, or establish the density-increment theorem's headline bounds.
 
 Reproducible checks (from repository root)
   python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.Audit

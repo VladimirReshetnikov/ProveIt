@@ -167,6 +167,8 @@ import GowersSzemeredi.Proofs13UniformSquareExtraction
 import GowersSzemeredi.Proofs13FourierSquareExtraction
 import GowersSzemeredi.Proofs13PrintedExponentComparison
 import GowersSzemeredi.Proofs13ExplicitFourierExponent
+import GowersSzemeredi.Proofs13OddFourierSquare
+import GowersSzemeredi.Proofs13FourierBoxTransport
 import GowersSzemeredi.Proofs13CommonStepSelection
 import GowersSzemeredi.Proofs13EdgeModels
 import GowersSzemeredi.Proofs13EdgeDensity
@@ -209,6 +211,8 @@ import GowersSzemeredi.Proofs16Union
 import GowersSzemeredi.Proofs17Phase
 import GowersSzemeredi.Proofs17PhaseRemoval
 import GowersSzemeredi.Proofs17LocalizedPhaseRemoval
+import GowersSzemeredi.Proofs17PartitionEnergy
+import GowersSzemeredi.Proofs17CubicLocalization
 import GowersSzemeredi.Proofs17FinitePatterns
 import GowersSzemeredi.Proofs17Regions
 import GowersSzemeredi.Proofs18Consequences
