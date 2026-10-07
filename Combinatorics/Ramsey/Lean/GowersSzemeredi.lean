@@ -267,6 +267,8 @@ import GowersSzemeredi.Proofs18NaturalReindex
 import GowersSzemeredi.Proofs18QuadraticIterationStep
 import GowersSzemeredi.Proofs18DensityIteration
 import GowersSzemeredi.Proofs18QuadraticIteration
+import GowersSzemeredi.Proofs18DensityIterationGrowth
+import GowersSzemeredi.Proofs18QuadraticClosedBound
 
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
