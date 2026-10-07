@@ -12,8 +12,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 233 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 2,138 public Gowers theorems and found only propext,
+  All 237 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 2,161 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 101 exact
   companion proofs and 19 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -598,6 +598,20 @@ All-density square extraction
   For the Fourier inverse application, actual densities vary with N above a
   known lower bound. A threshold uniform over that density interval remains
   to be proved; pointwise existence of N0(alpha) does not establish it.
+
+
+Density-uniform recurrence and integer budgets
+  Proofs13UniformDensityParameters proves monotonicity of the spectral bound,
+  Bohr prefactor, initial cutoff, and final square exponent. It also proves
+  the stronger factor-two recurrence exponent margin 2*e < u*v.
+  Proofs13UniformRoundedBudgets uses that margin to choose one ceiling-budget
+  threshold for variable exponents and coefficients above fixed positive
+  lower bounds. All integer, recurrence, and radius inequalities are proved.
+  Proofs13UniformDensityRecurrence and Proofs13UniformDensityBudgets apply
+  this uniformly over alpha>=delta>0 and all permitted finite spectrum sizes.
+  Stages 13.5 and 13.6 now have thresholds depending only on delta, while the
+  constructed progression retains its actual-alpha length estimate.
+  Transport through the final square scales is the remaining uniformity step.
 
 Reproducible checks (from repository root)
   python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.Audit
