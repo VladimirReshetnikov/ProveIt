@@ -12,8 +12,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 246 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 2,222 public Gowers theorems and found only propext,
+  All 249 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 2,271 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 101 exact
   companion proofs and 19 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -664,6 +664,23 @@ Constructed cubic phase localization
   This is a proved analytic connection between Sections 13 and 17. It does not
   transfer local uniformity to a new prime modulus, complete the higher-degree
   induction, or establish the density-increment theorem's headline bounds.
+
+Exact cube-energy transfer between cyclic models
+  Proofs18IntervalCubeGeometry constructs a bijection between supported
+  d-dimensional cubes modulo N and modulus-independent integer cube patterns
+  in [0,L), under the explicit no-wrap condition (d+1)*L<=N. Every vertex
+  equation is lifted as an equality of bounded nonnegative integer sums.
+  Proofs18IntervalCubeEnergy extends interval functions by zero and proves
+  that their full complex cube forms are independent of the sufficiently
+  large modulus. Unnormalized degree-k uniformity energy is therefore
+  identical when (k+2)*L is at most both moduli. The normalized parameter
+  changes by exactly (N/M)^(k+2), not by an assumed density-preserving map.
+  Proofs18AffineCubeEnergy proves affine invariance and the exact support
+  identity for an indexed progression with nonzero step in a prime modulus.
+  It transfers a restricted function to its interval model in any sufficiently
+  large new modulus with the same energy and explicit normalization.
+  Applying this to the cubic-localization cells still requires retaining
+  their upper length bound and selecting a comparable new prime modulus.
 
 Reproducible checks (from repository root)
   python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.Audit

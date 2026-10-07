@@ -219,6 +219,9 @@ import GowersSzemeredi.Proofs18Consequences
 import GowersSzemeredi.Proofs18QuantitativeSzemeredi
 import GowersSzemeredi.Proofs18IntervalTransfer
 import GowersSzemeredi.Proofs18AffineTransfer
+import GowersSzemeredi.Proofs18IntervalCubeGeometry
+import GowersSzemeredi.Proofs18IntervalCubeEnergy
+import GowersSzemeredi.Proofs18AffineCubeEnergy
 import GowersSzemeredi.Proofs18UniformInterval
 
 /-!
