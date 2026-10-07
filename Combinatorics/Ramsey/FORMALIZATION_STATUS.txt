@@ -12,8 +12,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 220 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 2,019 public Gowers theorems and found only propext,
+  All 221 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 2,033 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 101 exact
   companion proofs and 19 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -491,7 +491,17 @@ Scale-qualified quadratic recurrence
   when |P| exceeds the repaired polynomial threshold, X=|P|^(2^(-12q))>=8,
   and alpha^32*X>=160+2*alpha^32. These explicit conditions address both the
   printed threshold mismatch and its unsupported endpoint-deletion claim.
-  They are additional assumptions, so the catalogue lemma is still open.
+  Proofs13LargeScaleRecurrence proves that one N0 depending only on alpha
+  and theta makes these conditions automatic for every valid Stage 13.4
+  output. Thus lemma_13_5_large_N constructs Stage 13.5 uniformly at large
+  prime moduli. It uses no free recurrence partition or endpoint budget.
+  section13_bilinear_extraction_from_context combines this result with the
+  proved initial progression and extraction theorems: for each fixed
+  0<alpha<=1/6, sufficiently large prime N admits the complete Stage 13.4--13.9
+  chain directly from Section13Context. All intermediate data are produced.
+  This is an asymptotic result with an existential threshold. The unrestricted
+  catalogue lemmas remain open, as do the larger-density case, square-grid
+  geometry for Corollary 13.10, and the final quantitative inverse theorem.
 
 Verified Section 13 exponent margins
   Proofs13ExponentMargins identifies the common Fourier cutoff exactly as
@@ -501,7 +511,8 @@ Verified Section 13 exponent margins
   permitted positive integer q. This preserves the paper's target exponent
   and supplies room to absorb constants and integer rounding at large N.
   The large-scale budget theorem uses this margin to discharge the numerical
-  assumptions for sufficiently large N, but does not construct Stage 13.5.
+  assumptions for sufficiently large N; the recurrence module independently
+  constructs Stage 13.5 at that scale.
   No catalogue obligation is newly counted by these estimates.
 
 Reproducible checks (from repository root)
@@ -522,7 +533,8 @@ Next substantial obligations
   1. Resolve Corollary 5.8's missing common-target scale assumptions. Its
      scale-qualified repair is proved, but does not establish the unrepaired
      catalogue statement.
-  2. Complete extraction stages 13.5--13.6 and 13.9; repaired Lemmas 13.7--13.8 are proved.
+  2. Extend the complete large-N Stage 13.4--13.9 chain beyond alpha<=1/6
+     and resolve the missing standing hypotheses in the catalogue versions.
      Corollary 13.10 requires compatibility and grid inputs; do not silently
      discharge them by citing the paper.
   3. Complete the higher-dimensional Section 16 induction using the migrated

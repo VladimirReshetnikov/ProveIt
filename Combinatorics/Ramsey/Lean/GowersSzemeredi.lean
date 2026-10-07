@@ -157,6 +157,7 @@ import GowersSzemeredi.Proofs13BilinearExtraction
 import GowersSzemeredi.Proofs13ExponentMargins
 import GowersSzemeredi.Proofs13IntegerBudgets
 import GowersSzemeredi.Proofs13LargeScaleBudgets
+import GowersSzemeredi.Proofs13LargeScaleRecurrence
 import GowersSzemeredi.Proofs14Fourier
 import GowersSzemeredi.Proofs14Configurations
 import GowersSzemeredi.Proofs14Arrangements
