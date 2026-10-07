@@ -1,0 +1,273 @@
+\section{Audit, integration, and further research}
+\label{sec:research}
+
+\subsection{Dependency and claim audit}
+
+The proof is finite and self-contained apart from standard real and
+integer arithmetic and the finiteness of the usual van der Waerden
+numbers used to name \(W_r(k)\). The lower-bound construction itself
+does not use a quantitative upper-bound theorem.
+The indispensable chain is:
+\begin{enumerate}
+ \item \Cref{lem:prime-estimates,lem:dilation,lem:mesh} give the
+       cyclic coordinates, a controlled dilation, and stable mesh
+       neighborhoods.
+ \item \Cref{lem:global,lem:local} bound global words and local
+       patterns through a specified literal label.
+ \item \Cref{prop:outer-tests} applies a finite local lemma to
+       distinct-label rows, residual light sets, and local patterns.
+ \item \Cref{lem:return,lem:short,thm:dichotomy} convert repeated
+       labels into either a global affine lift or near-uniformity.
+ \item \Cref{lem:multiplicity,lem:signature,thm:abstract} control
+       repeated keys and both kinds of bad event.
+ \item \Cref{thm:cyclic} checks every parameter loss, and
+       \cref{prop:product,prop:periodic,prop:palette} supply the
+       uniform all-color conclusions.
+\end{enumerate}
+
+Several mathematical boundaries deserve explicit recording.
+The key-count argument uses separation of the actual \(q\)-adic
+embedding, not a generic assertion about thin annuli.
+The affine event count preserves key identities; a count only up to
+renaming keys would be insufficient.
+The local lemma uses independent variables attached to labels, while
+the final perturbation uses a separate independent family attached to
+keys. Independence is never asserted between progressions.
+The three-color result controls distance from a constant word and
+does not imply occurrence of all three colors.
+Finally, the mixed-radix product works even when its moduli share
+prime factors, because it uses a divisibility chain, not the Chinese
+remainder theorem.
+
+\begin{center}
+\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{.29\textwidth}>{\raggedright\arraybackslash}p{.27\textwidth}>{\raggedright\arraybackslash}p{.34\textwidth}@{}}
+\toprule
+Quantity&Displayed source choice&Choice or bound here\\
+\midrule
+Dimension&\(\cl{k^{1/10}}\)&\(\cl{k^{1/3}(\log k)^{-2/3}}\)\\
+Small-prime cutoff&\(D^2\)&\(\cl{AD(\log k)^3}\)\\
+Outer binary balance&at least \(k/100\) of each&at least
+\((1/2-4/\log k)k\) of each, or affine\\
+Key multiplicity&at most four&at most two\\
+Perturbation probability&\(k^{-1/20}\)&
+\(Bk^{-1/3}(\log k)^{5/3}\)\\
+Binary \(k\log k\) coefficient&\(10^{-5}\)&\(1/24\)\\
+Color products&binary digits&optimized binary and ternary digits\\
+Distance guarantee&nonmonochromatic&order
+\(k^{2/3}(\log k)^{5/3}\)\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{What the companion computation establishes}
+
+The accompanying \texttt{verify.py} uses exact rational arithmetic for
+the palette and probability checks. It verifies the two coefficient
+cancellations in \eqref{eq:cancellations}, the correction polynomials
+in \eqref{eq:reversion}, the palette optimization over a finite
+validation range, and exact mixed-radix floor identities for small
+noncoprime and mixed bases. It also checks finite increment spaces
+against the rich-event estimate with repeated keys, including
+incompatible prescriptions. Its report records the ranges and counts.
+
+These checks are useful for catching algebra, ceiling, carry, and
+shared-variable errors. They do not numerically construct the enormous
+colorings at the eventual threshold or validate an infinite theorem
+by enumeration. The proofs above, including the asymptotic domination
+estimates and the local lemma, are the mathematical justification.
+The figure is generated from the exact linear inequalities
+\eqref{eq:power-ledger}, not from experimental estimates of
+van der Waerden numbers.
+
+\subsection{Suggested placement and formalization route}
+
+This package is intended for a distinct research subdirectory under
+\texttt{Combinatorics/}\allowbreak\texttt{Ramsey/}\allowbreak\texttt{Research/},
+since its new claims are lower
+bounds and robustness properties, rather than exact replacements of
+the Gowers upper-bound interfaces.
+It need not alter the existing 120-statement Gowers ledger.
+The source citations are pinned in \texttt{SOURCE\_PROVENANCE.json};
+the new article, bibliography, verification program, figure, and build
+instructions form a standalone package.
+
+A formalization can be staged at precise mathematical boundaries:
+\begin{enumerate}
+ \item Prove the norm-band lemma for finite separated subsets of a
+       real affine line and then apply the cyclic coordinate
+       separation lemma.
+ \item Formalize \cref{thm:abstract} for a finite indexed family of
+       configurations. This part is independent of the torus meshes.
+ \item Formalize the mixed-radix transfer and the exact integer
+       palette formula. These are likewise independent of the
+       asymptotic analytic estimates.
+ \item Formalize mesh-width and neighborhood estimates, arrangement
+       sign counts including equality, and the amended residual
+       event family.
+ \item Assemble the return dichotomy and the endpoint domination
+       inequalities, with constants fixed in the stated order.
+\end{enumerate}
+The new statements should acquire formal status only after those proofs
+are actually checked in the selected prover. The existing source's
+formalized coefficient \(10^{-5}\) does not transfer formal status to
+coefficient \(1/24\) by citation.
+
+\subsection{Further research questions}
+
+\begin{question}[Reduce global label entropy]\label{q:global}
+Can the actual global words of the \(q\)-adic embedding be counted
+more efficiently than by treating all scalar starts and steps
+independently?
+\end{question}
+
+The proof currently pays \(D\log\lambda\), of size
+\(D^2\) times logarithmic factors.
+The scalar homomorphisms are strongly dependent, so their independent
+product count may be wasteful.
+For orientation, if a valid replacement gave a power-scale cost
+\(D^u\), while leaving the quadratic cost \(k/D\) and other steps
+intact, the same exponent calculation would permit a binary
+coefficient approaching \(1/[8(u+1)]\).
+This conditional calculation identifies what an improved count would
+buy; it does not supply the count.
+Conditioning the word count on a closest return or on a common
+carry pattern is a concrete first direction.
+
+\begin{question}[Exploit repeated-key structure]\label{q:keys}
+Do nonaffine progressions with many double keys necessarily have
+smaller signature complexity, or many incompatible outer-color
+prescriptions?
+\end{question}
+
+The general two-point geometric bound is best possible, but the final
+union bound uses it in every rich progression.
+A double key requires the corresponding line segment to meet opposite
+sides of a norm minimum. A structural theorem making extensive pairing
+either compressible or incompatible with the desired target color
+could increase the forced-increment count without changing the mesh.
+Proving an average statement is insufficient unless it controls all
+remaining bad events.
+
+\begin{question}[Improve the logarithmic correction]\label{q:log}
+Can the coefficient \(5/24\) of \(k\log\log k\) in the binary bound
+be reduced while retaining the leading coefficient \(1/24\)?
+\end{question}
+
+The present value comes from the anchored count, a shrinking balance
+tolerance, and the two signature bounds.
+A sharper treatment of local dependencies or an entropy bound using
+the distribution of anchor widths may change it.
+The optimization discussion establishes neither a lower bound on
+actual entropy nor a universal second-order obstruction.
+
+\begin{question}[A larger robustness scale]\label{q:robust}
+Can one obtain \(N\ge\exp(c k\log k)\), with fixed \(c>0\), while
+forcing every \(k\)-term progression to contain a fixed positive
+fraction of both colors?
+\end{question}
+
+The fixed-power result \cref{thm:tradeoff} reaches every
+\(k^\theta\), \(2/3<\theta<1\), at the price of a smaller coefficient,
+but its permitted \(c\) tends to zero as \(\theta\to1\).
+The endpoint result attains the largest coefficient supported by the
+current ledger and a logarithmic enhancement of \(k^{2/3}\).
+Whether this tradeoff reflects the problem or just the perturbation
+method is not settled by the report.
+
+\begin{question}[Construct and certify the succinct tables]\label{q:algorithm}
+Can successful tables from \cref{cor:description} be found and
+certified in time polynomial in their description length?
+\end{question}
+
+An outer local-lemma algorithm is only part of the task.
+The eligible patterns must be enumerated or separated effectively,
+and the rich progression failures in the second stage must also be
+controlled.
+An acceptable certificate should establish coverage of every
+configuration rather than merely test a large random sample.
+The algebraic form of the mesh endpoints makes exact comparisons
+possible, so the problem is combinatorial and quantitative, not an
+obstruction from noncomputable real parameters.
+
+\begin{question}[Explicit onset and finite constructions]\label{q:onset}
+What explicit numerical constants and onset can be extracted, and
+which simplifications help at feasible values of \(k\)?
+\end{question}
+
+The current proof deliberately separates existence from numerical
+optimization. Tracking an explicit arrangement constant, local
+incident weight, and prime-count constant would give an effective
+but potentially enormous threshold.
+Such a calculation should be compared with direct finite coloring
+constructions; the large asymptotic coefficient alone is not evidence
+of a better small-\(k\) record.
+
+\begin{question}[Asymmetric progression lengths]\label{q:offdiag}
+Can the balanced-or-affine construction be optimized when different
+colors forbid different progression lengths?
+\end{question}
+
+Biased outer color probabilities and nonuniform increment probabilities
+would lead to a multiobjective version of
+\cref{thm:abstract}.
+The central issue is that the geometric period and mesh parameters
+would need to handle several lengths simultaneously.
+An exact asymmetric optimization should distinguish a color's
+extinction event from proximity to a constant word, a distinction
+already essential in the ternary case here.
+
+\begin{question}[Other arithmetic configuration families]\label{q:patterns}
+Which systems beyond linear progressions admit simultaneously
+bounded key multiplicity and a small literal exceptional-signature
+space?
+\end{question}
+
+\Cref{thm:abstract} already applies to arbitrary finite configuration
+families once those two inputs are supplied.
+For polynomial configurations a norm evaluated along the lifted path
+has higher degree, but a degree bound by itself does not supply the
+separation geometry used in \cref{lem:multiplicity}.
+A valid extension must prove the new geometric multiplicity lemma,
+rather than assume that the line argument transfers.
+
+\begin{question}[Compare small- and large-palette methods]\label{q:palettes}
+Can the present small-palette construction be combined with the
+Fox--Hunter shifted-product method to improve the transition where
+the number of colors is polylogarithmic in \(k\)?
+\end{question}
+
+The direct binary--ternary product loses efficiency as a function of
+\(\log r\), whereas Fox--Hunter is substantially stronger once its
+large-palette hypothesis holds.
+A useful combination would need to preserve quantitative defect
+information through each shifted product, with every density loss
+recorded. The robust cyclic theorem supplies such an input, but no
+improvement in that transition regime is claimed here.
+
+\begin{question}[Kernel-checked constants and proof interfaces]
+\label{q:formal}
+Can the strengthened finite interfaces, their asymptotic assembly,
+and the explicit exponent \(1/24\) be formalized without importing
+the stronger endpoint as an assumption?
+\end{question}
+
+The return argument, residual-set definition, and shared-key random
+variables make useful audit targets.
+Their exact quantifiers are more informative than a theorem wrapper
+asserting only the final existence of constants.
+A successful formalization would both verify this report and provide
+reusable lower-bound interfaces beside ProveIt's existing
+upper-bound formalization program.
+
+\subsection{Scope of the outcome}
+
+The report proves a substantial quantitative refinement of the selected
+repository construction, with an explicit leading coefficient,
+logarithmic correction, robustness guarantee, inverse form, and exact
+palette optimization.
+It does not determine the true asymptotic growth of \(W_2(k)\), prove
+optimality of the new constants, claim the best estimate for every
+color regime, or provide a formalized proof of the strengthened
+theorems. Those boundaries specify what the next research and
+verification steps must address.

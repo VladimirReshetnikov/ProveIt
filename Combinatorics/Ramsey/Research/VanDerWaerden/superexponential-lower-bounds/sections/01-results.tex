@@ -1,0 +1,271 @@
+\begin{abstract}
+We refine the cyclic construction in OpenAI Math family 160,
+\emph{Quantitative Superexponential Bounds for van der Waerden Numbers}.
+For absolute constants \(C,K>0\) and every integer \(k\ge K\), we prove
+\[
+ \log W_2(k)>
+ \frac{k}{24}\bigl(\log k-5\log\log k\bigr)-Ck .
+\]
+The construction supplies more than nonmonochromaticity: every \(k\)-term
+progression differs from every constant coloring in at least
+\(\fl{b k^{2/3}(\log k)^{5/3}}\) positions, for an absolute \(b>0\).
+A direct three-color version has leading coefficient \(1/18\).
+Combining the two cyclic constructions gives a uniform all-color
+bound with an exactly optimized binary--ternary coefficient.
+The improvements come from a two-point norm-band bound, balancing
+the light positions left outside heavy blocks, an elementary estimate
+for the small-prime dilation, and a joint optimization of two distinct
+signature costs.
+We give the entire ordinary mathematical argument, including the
+geometric and probabilistic ingredients inherited from the source.
+This is a quantitative strengthening of that repository result, not a
+new claim to have first resolved the underlying superexponential-growth
+problem. No Lean formalization of the strengthened statements is claimed.
+\end{abstract}
+
+\section{Results, provenance, and the selected research problem}
+\label{sec:results}
+
+\subsection{What is being estimated}
+
+Write \(W_r(k)\) for the least integer \(n\) such that every coloring of
+\([n]=\{1,\ldots,n\}\) with at most \(r\) colors has a monochromatic
+arithmetic progression of length \(k\) and positive common difference.
+Unless a base is displayed, logarithms are natural. All asymptotic
+statements below concern \(k\to\infty\).
+
+For a coloring \(c\) and a \(k\)-term progression \(P=(x_j)_{j<k}\),
+define its distance from monochromaticity by
+\begin{equation}\label{eq:distance}
+ d_{\rm mono}(c,P)
+ =\min_b \#\{j<k:c(x_j)\ne b\}
+ =k-\max_b\#\{j<k:c(x_j)=b\}.
+\end{equation}
+Thus \(d_{\rm mono}(c,P)\ge t\) says that at least \(t\) positions
+must be recolored to make \(P\) monochromatic. For two colors, it says
+that each color appears at least \(t\) times. For more colors it is a
+statement about distance from \emph{each constant word}; it does not
+say that every available color occurs.
+
+\begin{theorem}[Two-color bound with robustness]\label{thm:main-two}
+There are absolute constants \(C,b>0\) and an integer \(K\) such that,
+for every integer \(k\ge K\), there is a cyclic group \(\Z/N_2\Z\) and
+a two-coloring \(c\) satisfying
+\begin{align}
+ \log N_2&\ge
+ \frac{k}{24}\bigl(\log k-5\log\log k\bigr)-Ck,
+ \label{eq:main-two-size}\\
+ d_{\rm mono}(c,P)&\ge
+ \fl{b k^{2/3}(\log k)^{5/3}}
+ \label{eq:main-distance}
+\end{align}
+for every nonzero-step \(k\)-term cyclic progression \(P\).
+The same robustness holds on an integer interval of length
+\((k-1)N_2\). In particular,
+\[
+ W_2(k)>(k-1)
+ \exp\!\left\{\frac{k}{24}
+       \bigl(\log k-5\log\log k\bigr)-Ck\right\},
+ \qquad
+ \liminf_{k\to\infty}\frac{\log W_2(k)}{k\log k}\ge\frac1{24}.
+\]
+\end{theorem}
+
+The loss \(5k\log\log k/24\) is part of the proved bound. Its optimality
+is not asserted. Neither \(C\) nor the numerical onset \(K\) is optimized;
+the proof fixes them by explicit inequalities between absolute
+constants and elementary functions.
+
+\begin{theorem}[Uniform palette improvement]\label{thm:main-many}
+For an integer \(r\ge2\), set
+\begin{equation}\label{eq:palette-coefficient}
+ m=\fl{\log_2 r},\qquad
+ e(r)=
+ \begin{cases}
+ 1,&r\ge3\cdot2^{m-1},\\
+ 0,&r<3\cdot2^{m-1},
+ \end{cases}
+ \qquad
+ \Lambda(r)=\frac{m}{24}+\frac{e(r)}{72}.
+\end{equation}
+There are absolute \(C,b,K>0\), independent of \(r\), such that
+for all integers \(k\ge K\) and \(r\ge2\),
+\begin{equation}\label{eq:main-many}
+ W_r(k)>(k-1)\exp\!\left\{
+ \Lambda(r)k\bigl(\log k-5\log\log k\bigr)-Cmk
+ \right\}.
+\end{equation}
+There is an \(r\)-coloring of an interval at least this long for which
+every \(k\)-term progression has distance at least the quantity in
+\eqref{eq:main-distance} from every monochromatic word.
+\end{theorem}
+
+The coefficient has a small but exact palette effect:
+\begin{center}
+\begin{tabular}{@{}c c c@{}}
+\toprule
+Available colors \(r\)&Digits used&\(\Lambda(r)\)\\
+\midrule
+2&one binary&\(1/24\)\\
+3&one ternary&\(1/18\)\\
+4--5&two binary&\(1/12\)\\
+6--7&one binary, one ternary&\(7/72\)\\
+8--11&three binary&\(1/8\)\\
+12--15&two binary, one ternary&\(5/36\)\\
+\bottomrule
+\end{tabular}
+\end{center}
+The uniformity in \(r\) comes from constructing just two fixed
+palettes before taking digit products.
+
+\subsection{Repository review and choice of direction}
+
+The review was anchored to the public OpenAI release commit
+\href{https://github.com/openai/math/commit/adc7f1241b42e322a6451854ab7e4b4c146bf78a}{\texttt{adc7f1241b42}}
+(6 October 2026) and the ProveIt checkpoint
+\href{https://github.com/VladimirReshetnikov/ProveIt/commit/bbde2b873b2dc7b48af1730926452bdda18bf9c8}{\texttt{bbde2b873b2d}}
+(7 October 2026). The source inventory includes the full commit identifiers.
+The OpenAI catalog describes 722 manuscripts in 372 families and
+explicitly distinguishes different verification stages
+\cite{openaiReadme,openaiContents}.
+The review here is a targeted comparison of the arithmetic-progression
+families and the active ProveIt Ramsey work, rather than a certification
+of every result in either repository.
+
+\begin{center}
+\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{.19\textwidth}>{\raggedright\arraybackslash}p{.35\textwidth}>{\raggedright\arraybackslash}p{.37\textwidth}@{}}
+\toprule
+Source&Relevant result or status&Consequence for this project\\
+\midrule
+OpenAI family 159&
+Claims \(r_k(N)\le C_kN\) \(\exp[-c_k(\log N)^{\varepsilon_k}]\);
+the described comparator emphasizes the reciprocal-sum consequence
+\cite{openai159,openai159Scope}.&
+A strong density-theorem overlap, but its paper already contains
+several natural weighted and coloring consequences.\\
+\addlinespace
+OpenAI family 160&
+Proves the displayed bound
+\(W_r(k)>k^{10^{-5}k\lfloor\log_2r\rfloor}\);
+the scope file records this formalized endpoint
+\cite{openai160,openai160Scope}.&
+An elementary, sufficiently explicit construction whose quantitative
+losses can be inspected and improved.\\
+\addlinespace
+ProveIt Ramsey&
+The inspected checkpoint records 113 of 120 exact Gowers statements,
+with seven open; recent intake includes sharp hereditary-energy
+results and failures of universal lifting interfaces
+\cite{proveitStatus,proveitIntake}.&
+Motivates exact bookkeeping, careful quantifiers, and a complete
+proof boundary. A lower-bound project avoids duplicating the large
+existing collection of local upper-bound refinements.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The same ProveIt status file records 137 vendored OpenAI Lean modules
+in its build, an exact qualitative Szemer\'edi statement proved by a
+route distinct from the original Gowers argument, and completed
+Freiman and Balog--Szemer\'edi interfaces using OpenAI modules
+\cite{proveitStatus}. Thus the intersection is already concrete:
+arithmetic-progression research is being assembled with explicit
+theorem interfaces and a record of which claims are checked.
+These are statements of the inspected repository checkpoint; this
+report did not independently run that Lean build.
+
+The direct research question selected was:
+\emph{how far can the coefficient in family 160 be increased while
+retaining a fully justified growing-dimensional construction, and can
+the resulting colorings be made quantitatively resistant to
+monochromaticity?}
+The answer is \cref{thm:main-two,thm:main-many}.
+
+\subsection{The precise increment over prior work}
+
+The underlying cyclic embedding, adaptive mesh, anchored counting
+argument, local lemma, and norm-indexed perturbation are due to
+OpenAI's source manuscript \cite{openai160}.
+They are reconstructed below with the changed hypotheses visible.
+The new quantitative steps established in this report are:
+\begin{enumerate}
+ \item A norm-band key has at most \emph{two} occurrences on a
+ progression, improving the source's upper bound of four.
+ \item The local lemma simultaneously balances residual light sets
+ after heavy blocks are removed. This yields a
+ \((1/2-o(1))\)-balanced-or-affine dichotomy in two colors; balancing
+ the entire light set alone would not justify this conclusion.
+ \item The short-period cutoff can be chosen of order
+ \(D(\log k)^3\) at balance accuracy \(1/\log k\), and
+ \(\log\lambda=O(D(\log k)^3)\) follows from an elementary prime-count
+ estimate. This replaces the much larger power-scale cutoff in
+ the source and avoids an unnecessary logarithmic loss.
+ \item Global label entropy and quadratic-signature entropy are
+ optimized together. Their balance gives
+ \(D\asymp k^{1/3}(\log k)^{-2/3}\) and
+ \(p\asymp k^{-1/3}(\log k)^{5/3}\), and hence the coefficient \(1/24\).
+ \item A bounded-variable lower-tail argument and an exception-set
+ count give the robustness estimate. A three-color construction and
+ an optimized mixed-radix product give \(\Lambda(r)\).
+\end{enumerate}
+The finite periodic extension factor \(k-1\) is an existing observation,
+used explicitly by Campos--Fox--Schildkraut
+\cite[Lemma 2]{camposFoxSchildkraut2026}; it is credited and proved
+again in the robust setting.
+
+These are quantitative improvements to a result already present in
+the release, rather than a second claim of priority for
+superexponential growth. A bounded search of the inspected ProveIt
+Ramsey material and then-current incoming reports found no report
+containing these refinements. That observation is not a proof of
+global bibliographic novelty.
+
+\subsection{Comparison with the contemporary literature}
+
+Fox and Hunter prove three-color superexponential growth, including
+\(W_3(k)>2^{k\log^*k/4}\) for large \(k\)
+\cite[Theorem 1]{foxHunter2026}.
+Campos, Fox, and Schildkraut prove
+\(W_2(k)\ge(1-o(1))k2^{k-1}\)
+\cite[Theorem 1]{camposFoxSchildkraut2026}.
+The source paper \cite{openai160} subsequently supplies the
+two-color \(k^{ck}\) construction used here.
+The displayed two-color leading coefficient in this report is
+\((1/24)/10^{-5}=12500/3\) times the displayed source coefficient.
+This compares asymptotic exponents, not practical lower bounds for
+small numerical values of \(k\).
+
+Our uniform all-color bound is useful down to two and three colors.
+It is not the strongest known estimate in every growing-color regime.
+For each fixed \(0<\varepsilon<1\), Fox--Hunter
+\cite[Theorem 2]{foxHunter2026} prove
+\[
+ W_r(k)\ge r^{(1-\varepsilon)k\log k}
+ \quad\text{when }\
+ k\ge k_0(\varepsilon),\qquad
+ r\ge(\log k)^{3/\varepsilon}.
+\]
+For example, their choice \(\varepsilon=1/2\) is stronger than our
+leading coefficient once its hypotheses apply.
+Both bounds can simply be retained in the appropriate regime.
+
+\subsection{Proof conventions and status}
+
+All probabilistic spaces used below are finite. Equality at every mesh
+boundary is handled by a fixed half-open convention; key identities
+retain their actual labels and are never renamed when events are
+identified. Constants denoted \(C_0,C_1,\ldots\) are absolute, and
+subscripts such as \(C_A\) indicate dependence on a previously fixed
+absolute choice. The choice order is
+\[
+  \text{geometric constants}\quad\longrightarrow\quad A
+  \quad\longrightarrow\quad B\quad\longrightarrow\quad C
+  \quad\longrightarrow\quad K .
+\]
+The proof of the strengthened results is an ordinary mathematical
+proof presented in this report. Source scope files are not a substitute
+for running a prover; no build of the OpenAI or ProveIt Lean library
+was performed here. The exact-arithmetic companion checks finite
+identities and the palette optimization, and is not represented as a
+certificate of the asymptotic existence theorem.

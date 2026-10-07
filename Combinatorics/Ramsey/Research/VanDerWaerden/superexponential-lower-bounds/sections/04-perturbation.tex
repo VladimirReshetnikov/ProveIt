@@ -1,0 +1,328 @@
+\section{A robust perturbation theorem and the optimized endpoint}
+\label{sec:perturbation}
+
+\subsection{A general finite perturbation principle}
+
+The probabilistic step can be separated from the arithmetic geometry.
+It applies whenever the exceptional configurations have few
+\emph{literal} signatures.
+
+\begin{theorem}[Robust perturbation with bounded key multiplicity]
+\label{thm:abstract}
+Let \(k,\mu\ge1\) be integers, and let \(\mathcal P\) be a finite
+family of ordered \(k\)-tuples of
+distinct vertices in a finite set \(X\). Suppose
+\(c_0:X\to\Z/s\Z\), \(s\ge2\), and \(\kappa:X\to\cK\) are fixed,
+and each key occurs at most \(\mu\) times in any tuple.
+Assume each tuple is either:
+\begin{enumerate}
+ \item rich: for every \(b\in\Z/s\Z\), at least \(\gamma k\)
+       entries have outer color different from \(b\); or
+ \item exceptional: its literal word
+       \(((c_0(x_j),\kappa(x_j)))_{j<k}\) belongs to a family
+       of at most \(T\) signatures.
+\end{enumerate}
+Let \(0<p\le1/2\) and \(t=\fl{pk/2}<\gamma k\). If
+\begin{equation}\label{eq:abstract-criterion}
+ s|\mathcal P|
+ \left(\sum_{j=0}^t\binom kj\right)
+ \left(\frac p{s-1}\right)^{(\gamma k-t)/\mu}
+ +sT e^{-pk/(8\mu)}<1,
+\end{equation}
+there is a coloring \(c:X\to\Z/s\Z\) with
+\(d_{\rm mono}(c,P)\ge t\) for every \(P\in\mathcal P\).
+\end{theorem}
+
+\begin{proof}
+For each key take an independent increment \(E_\kappa\in\Z/s\Z\)
+with distribution
+\[
+ \Prb(E_\kappa=0)=1-p,\qquad
+ \Prb(E_\kappa=u)=p/(s-1)\quad(u\ne0),
+\]
+and put \(c(x)=c_0(x)+E_{\kappa(x)}\).
+All occurrences of a key use the same increment.
+
+Fix a target \(b\). For a rich tuple let
+\(I_b=\{j:c_0(x_j)\ne b\}\), so \(|I_b|\ge\gamma k\).
+If the final tuple has fewer than \(t\) positions different from \(b\),
+there is a set \(F\subseteq I_b\), \(|F|\le t\), outside which
+every position in \(I_b\) changes to \(b\).
+This prescribes a particular nonzero increment on at least
+\((\gamma k-t)/\mu\) distinct keys.
+Incompatible prescriptions on a shared key give probability zero;
+compatible prescriptions have probability at most
+\((p/(s-1))^{(\gamma k-t)/\mu}\).
+There are at most \(\sum_{j=0}^t\binom kj\) choices of \(F\).
+Union over tuples and targets gives the first term in
+\eqref{eq:abstract-criterion}.
+
+For an exceptional tuple, write
+\(S_b=\#\{j:c(x_j)\ne b\}\).
+It is a sum of independent contributions \(X_\kappa\in[0,\mu]\).
+At a position whose outer color is \(b\), the probability of lying
+outside \(b\) is \(p\); at any other position it is
+\(1-p/(s-1)\ge p\). Hence
+\(\E S_b\ge pk\).
+
+For completeness, if independent \(Y_i\in[0,1]\) have total mean
+\(\nu\), convexity gives
+\[
+ \E e^{-uY_i}\le1-(1-e^{-u})\E Y_i.
+\]
+Multiplying and using \(1-v\le e^{-v}\) shows that
+\(\Prb(\sum Y_i\le\nu/2)\le e^{-\nu/8}\):
+take \(u=\log2\), for which the exponent is
+\(-\nu(1-\log2)/2\le-\nu/8\).
+Apply this to \(Y_\kappa=X_\kappa/\mu\).
+The event \(S_b<t\) is contained in
+\(\{S_b\le(\E S_b)/2\}\), and so has probability at most
+\(e^{-pk/(8\mu)}\).
+
+Two tuples with the same literal signature give exactly the same
+event on the same independent increments. They need be counted only
+once for each target. The second term of
+\eqref{eq:abstract-criterion} therefore bounds all exceptional failures.
+If their sum is less than one, a successful choice exists.
+\end{proof}
+
+This theorem concerns distance from constant words. For \(s=3\) it does
+not guarantee a positive count of every color separately. The distinction
+allows the coefficient \(1/18\) below.
+
+\subsection{The exact two-point geometric bound}
+
+On our cyclic group define
+\begin{equation}\label{eq:keys}
+ f(n)=\norm{q\widetilde y(n)}_2^2,\qquad
+ \kappa(n)=\left((V(y_i(n)))_{i=1}^D,\ \fl{f(n)}\right).
+\end{equation}
+The key remembers a specific box and a specific integer squared-norm
+band.
+
+\begin{lemma}[Key multiplicity at most two]\label{lem:multiplicity}
+Every key occurs at most twice on any nonzero-step \(k\)-term cyclic
+progression.
+\end{lemma}
+
+\begin{proof}
+Restrict to visits to one second-system box. By
+\cref{lem:box-affine}, their centered representatives lie on one real
+affine line, even if the visit indices are not consecutive.
+Any two distinct samples become separated by Euclidean distance at
+least one after multiplication by \(q\).
+Indeed, choose a nonzero integer representative \(z\) of
+\(\lambda(n_j-n_{j'})\) modulo \(q^D\), and write \(z=q^a u\)
+with \(a<D\), \(q\nmid u\).
+In coordinate \(a+1\) the circle displacement is \(u/q\) modulo one,
+whose distance from zero is at least \(1/q\).
+Real representative differences are at least circle distances.
+Thus
+\begin{equation}\label{eq:separation}
+ \norm{q\widetilde y(n_j)-q\widetilde y(n_{j'})}_2\ge1.
+\end{equation}
+The argument only requires \(q\nmid u\), not that \(u\) be a unit
+modulo \(q\).
+
+Parameterize the line at unit speed from its nearest point to the
+origin. The squared norm has form \(t^2+c\).
+If two sample parameters on the same side satisfy \(0\le t_1<t_2\)
+and belong to one half-open band \([m,m+1)\), then
+\[
+ (t_2-t_1)^2\le t_2^2-t_1^2<1.
+\]
+This contradicts \eqref{eq:separation}.
+There is at most one sample on each side, hence at most two in the
+band. A sample at \(t=0\) can only reduce this count.
+\end{proof}
+
+The half-open outer boundary makes the last inequality strict.
+Replacing it by a closed interval and retaining only its diameter
+loses this useful factor of two.
+The bound is optimal for arbitrary separated points on a line in a
+norm band (take parameters \(-1/2,1/2\) in the band \([0,1)\)).
+No claim of attainment by an actual key of our arithmetic embedding
+is needed.
+
+\subsection{Affine signatures have two separate entropy costs}
+
+Call a progression affine when all of its centered second-coordinate
+representatives have one expression \(A_0+jB_0\) in \(\R^D\).
+Its signature is the complete word
+\[
+ ((c_0(n_j),\kappa(n_j)))_{j<k}.
+\]
+
+\begin{lemma}[Affine-signature count]\label{lem:signature}
+If \(T_{\rm aff}\) is the number of such signatures, then
+\begin{align}
+ T_{\rm aff}&\le
+ C_3T_{\rm glob}\bigl(k(Dq^2+2)\bigr)^3,
+ \label{eq:signature-count}\\
+ \log\max\{1,T_{\rm aff}\}
+ &\le C_A k^{2/3}L^{5/3}
+ \label{eq:signature-entropy}
+\end{align}
+for a fixed constant \(C_A\) after \(A\) is chosen.
+The bound holds uniformly for \(s=2,3\), \(B\), and positive \(C\)
+in \eqref{eq:target}, after increasing the onset in \(k\).
+\end{lemma}
+
+\begin{proof}
+On an affine progression,
+\[
+ f(n_j)=q^2\norm{A_0+jB_0}_2^2
+       =\theta_0+\theta_1j+\theta_2j^2,\qquad
+ 0\le f(n_j)\le Dq^2/4.
+\]
+Compare these \(k\) values with every relevant integer boundary.
+There are at most \(k(Dq^2+2)\) affine hyperplanes in the three
+parameters \(\theta_0,\theta_1,\theta_2\).
+Their joint signs determine all integer parts, including exact
+integer values. The arrangement bound gives the cubic factor in
+\eqref{eq:signature-count}.
+The full-label word determines both the specific \(V\)-boxes and all
+outer colors, because \(c_*\) has already been fixed.
+Multiplying the two upper counts proves \eqref{eq:signature-count};
+no independence between them is being asserted.
+
+Taking logarithms gives
+\[
+ \log\max\{1,T_{\rm aff}\}
+ \le \log T_{\rm glob}+6\log q+O(\log k+\log D).
+\]
+Use \eqref{eq:global-entropy} and \eqref{eq:q-rounding}.
+For the stated uniformity, \(B\) is absent from these counts, and the
+negative term \(-Ck\) only decreases the upper bound for \(\log q\).
+Both \(a_2,a_3\) are bounded absolute constants.
+\end{proof}
+
+It is essential to retain \emph{both} \(\log T_{\rm glob}\) and
+\(6\log q\). Optimizing only the quadratic part would permit an
+unjustified larger exponent.
+
+\subsection{Checking the two failure probabilities}
+
+\begin{theorem}[The robust cyclic endpoint]\label{thm:cyclic}
+For common absolute constants \(B,C,K>0\), all integers \(k\ge K\),
+and \(s\in\{2,3\}\), there is a coloring of a cyclic group
+\(\Z/N_s\Z\) such that
+\begin{align}
+ \log N_s&\ge
+ \frac{s-1}{12s}k(L-5\log L)-Ck,\label{eq:cyclic-size}\\
+ d_{\rm mono}(c,P)&\ge
+ \fl{\frac B2 k^{2/3}L^{5/3}}
+ \quad\text{for every nonzero-step \(k\)-term progression \(P\)}.
+ \label{eq:cyclic-robust}
+\end{align}
+\end{theorem}
+
+\begin{proof}
+Choose \(A\) so that \cref{prop:outer-tests} applies, then obtain
+\(C_A\) from \cref{lem:signature}.
+Fix \(B>32(C_A+1)\), increasing it if necessary to have \(B>2\).
+Put \(E_k=k^{2/3}L^{5/3}\); then \(pk=BE_k\).
+We will choose \(C\) below and then take \(k\) sufficiently large.
+
+There are fewer than \(N_s^2\) nonzero-step cyclic progressions.
+By \cref{thm:dichotomy}, every one is affine or rich with
+\[
+ \gamma_s=g_s-4/L,\qquad g_s=1-1/s.
+\]
+By \cref{lem:multiplicity}, key multiplicity is at most two.
+Since \(p\to0\) and \(\gamma_s\to g_s>0\), we also have
+\(t=\fl{pk/2}<\gamma_s k\) for all sufficiently large \(k\).
+Apply \cref{thm:abstract} with \(t=\fl{pk/2}\) and \(T=T_{\rm aff}\).
+The affine term is at most
+\[
+ sT_{\rm aff}e^{-pk/16}
+ \le \exp\!\left[\log3+(C_A-B/16)E_k\right]=o(1).
+\]
+In particular \(B\) is a fixed constant chosen to dominate entropy;
+there is no need for that entropy to be \(o(pk)\).
+
+For the rich term, let
+\(\mathcal B_k(t)=\sum_{j=0}^t\binom kj\).
+For \(1\le t<k\), the elementary estimate
+\[
+ \mathcal B_k(t)\le (t+1)(ek/t)^t
+\]
+holds because \(\binom kj\le(ek/j)^j\) and the latter expression
+increases with \(j\le k\).
+It follows that
+\begin{equation}\label{eq:exception-entropy}
+ \log\mathcal B_k(t)=O(k^{2/3}L^{8/3})=o(k),
+ \qquad
+ t\,\abs{\log(p/(s-1))}=o(k).
+\end{equation}
+Thus the logarithm of the rich term is at most
+\begin{equation}\label{eq:rich-log}
+ \log s+2\log N_s+\log\mathcal B_k(t)
+ +\frac{\gamma_s k-t}{2}\log\frac p{s-1}.
+\end{equation}
+By the prime-power rounding bound,
+\(\log N_s=Q_s(k)+o(k)\), and
+\[
+ \log\frac p{s-1}
+ =-\frac L3+\frac53\log L+\log\frac B{s-1}.
+\]
+Since \(a_s=g_s/12\), the terms of size \(kL\) and \(k\log L\)
+in \eqref{eq:rich-log} cancel exactly:
+\begin{align}
+ 2a_s-\frac{g_s}{6}&=0,&
+ -10a_s+\frac{5g_s}{6}&=0.\label{eq:cancellations}
+\end{align}
+The remaining upper bound is
+\begin{equation}\label{eq:rich-linear}
+ \left[-2C+\frac{g_s}{2}\log\frac B{s-1}
+                 +\frac23+o(1)\right]k.
+\end{equation}
+The term \(2/3\) comes from the loss \(4/L\) in the rich proportion.
+The exception terms and rounding are \(o(k)\) by
+\eqref{eq:exception-entropy}.
+For example, choosing \(C=2+\frac14\log B\) makes the coefficient
+negative for both \(s=2,3\). The rich term is consequently \(o(1)\).
+
+For all sufficiently large \(k\), the two failure bounds sum to less
+than one. \Cref{thm:abstract} supplies the coloring.
+Finally \(D\log q\ge Q_s(k)\), giving \eqref{eq:cyclic-size}.
+Every choice of constant preceded the final threshold, and only the
+two palettes were involved, so a common absolute \(K\) suffices.
+\end{proof}
+
+\subsection{A finite description of the colorings}
+
+\begin{corollary}[Subpower description size]\label{cor:description}
+The cyclic colorings in \cref{thm:cyclic} have descriptions of length
+\[
+ \exp\!\left(O(k^{2/3}(\log k)^{5/3})\right)=N_s^{o(1)}
+\]
+bits, allowing the outer-color table, the increment table, and the
+integer parameters of the construction.
+\end{corollary}
+
+\begin{proof}
+There are
+\(|\cL|=|U|^D|V|^D\) outer labels, with
+\(\log|\cL|=O_A(E_k)\).
+There are at most \(|V|^D(\fl{Dq^2/4}+1)\) possible keys, also with
+logarithm \(O_A(E_k)\).
+Store their colors and increments in a fixed lexicographic ordering,
+using a fixed dummy value on unused entries.
+Even storing an explicit index for each used entry changes the
+exponential bound only by a polynomial factor in the logarithmic
+parameters.
+The finite mesh is specified by its integer \(J_0\) and rational
+\(\alpha\): indeed
+\[
+ a_j=\alpha\left[
+ \left(1+\frac1{2\alpha}\right)^{j/J_0}-1\right].
+\]
+Its endpoints therefore have finite algebraic descriptions.
+Since \(\log N_s=\Theta(kL)\) and \(E_k=o(kL)\), the claimed
+\(N_s^{o(1)}\) relation follows.
+\end{proof}
+
+This is a bound on description length. It does not provide an efficient
+algorithm for finding successful tables or for certifying all local
+tests.

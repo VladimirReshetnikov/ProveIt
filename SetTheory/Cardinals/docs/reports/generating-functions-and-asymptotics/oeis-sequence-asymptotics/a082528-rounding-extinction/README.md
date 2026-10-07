@@ -16,8 +16,8 @@ PDF author field reads "Research report".
 | Source | Manuscript | Archive | Pin | Placed | Printed as |
 |---|---|---|---|---|---|
 | 01 | batch 85, manuscript 05 | `Rounding_Extinction_OEIS.zip` (wrapper directory `Rounding_Extinction/`, 1,632,826 bytes), arrival commit `317c1ce2e`; main file `article.tex` with its `\input` files `body.tex`, `extensions.tex`, `computation.tex`, `questions.tex`, `bibliography.tex` | `ce37e13f4` (`ce37e13f4aa16819c87c3ccc611362d15758f2ac`, quoted in Section 2.3 and in the bibliography entry for ProveIt) | `713149ded` | Part I (Sections 1–10, Appendices A–B) |
-| 02 | batch 110, bundle Report 188 | `Sequential_Power_Rounding_Gamma_Constants_and_Inverses_Source.zip` (20 files, 564,257 bytes), arrival commit `60f54ea06` (session bundle of Reports 1–243); main file `Report188.tex` (709 lines, dated 4 October 2026) | none (names no ProveIt commit and does not cite this report) | `8622ca7e5` | Part II (Sections 11–23), `rates.tex` |
-| 03 | batch 110 (held from batch 114) | `Periodic_Rounding_Extinction.zip` (23 files in `periodic_rounding_extinction/`, 1,681,098 bytes), arrival commit `e4d5dcf9e`; main file `periodic_rounding_extinction.tex` (1,901 lines, dated 5 October 2026) | `52d8ca404` (`52d8ca404b076c38eb7c513569592ebd8c479115`, quoted in its Section 25.2 and in `03-schedules-SOURCE_AUDIT.txt`) | `8622ca7e5` | Part III (Sections 24–39), `schedules.tex` |
+| 02 | batch 110, bundle Report 188 | `Sequential_Power_Rounding_Gamma_Constants_and_Inverses_Source.zip` (20 files, 566,521 bytes; 564,257 bytes unpacked), arrival commit `60f54ea06` (session bundle of Reports 1–243); main file `Report188.tex` (709 lines, dated 4 October 2026) | none (names no ProveIt commit and does not cite this report) | `8622ca7e5` | Part II (Sections 11–23), `rates.tex` |
+| 03 | batch 110 (held from batch 114) | `Periodic_Rounding_Extinction.zip` (23 files in `periodic_rounding_extinction/`, 1,129,393 bytes; 1,681,098 bytes unpacked), arrival commit `e4d5dcf9e`; main file `periodic_rounding_extinction.tex` (1,901 lines, dated 5 October 2026) | `52d8ca404` (`52d8ca404b076c38eb7c513569592ebd8c479115`, quoted in its Section 25.2 and in `03-schedules-SOURCE_AUDIT.txt`) | `8622ca7e5` | Part III (Sections 24–39), `schedules.tex` |
 
 **Status:** AI-assisted, unrefereed, not formalized: no Lean or Rocq
 declaration exists for any statement of this report. Part I says its proofs
@@ -209,8 +209,9 @@ For batch 110 (6–7 October 2026): an independent backward recursion
 reproduced Report 188's first ten thresholds for `p = 2, 3`, its table
 values `B_2(1000) = 201388916`, `B_2(10^4) = 201457639236`,
 `B_3(1000) = 148522784144`, `B_3(10^4) = 1478758856906056`, and bounded
-normalized remainders `(B − K k^s)/k^(s²/(s+1))` between 0.003 and 0.18 for
-`p = 1, 2, 3`; Part III's exact thresholds give `T/(K w_K) = 0.1591535`
+normalized remainders `(B − K k^s)/k^(s²/(s+1))` for `p = 1, 2, 3` (the band
+0.003 to 0.18 that the dossier reported does not reproduce; see the
+independent check below); Part III's exact thresholds give `T/(K w_K) = 0.1591535`
 (`ε = 0`) and `0.3927036` (`ε = 10^−4`) at `K = 10^5`, against `1/(2π)` and
 `π/8`; the two-phase constant lies in an independently computed certificate
 `[0.33185619, 0.33193915]` at `z = 2000`. The write evaluated `c_2`, `c_3`,
@@ -221,6 +222,47 @@ numerically, confirmed the five Git blob identities of
 A082528 and A002491 entries (7 October 2026). Report 188's quoted OEIS
 revision numbers were not re-checked. The delivered programs passed on
 scratch copies (see "Rerun the checks").
+
+## Independent check of the write (7 October 2026)
+
+An independent adversarial check of the batch-110 write (`7fe078b25`)
+reconstructed its additions from the commit's diff and checked each one
+against the delivered sources, the live OEIS entries (A082528 #6, A082527 #8,
+A073047 #15, A002491 #109, equal to Report 188's quoted revisions and to its
+342 fixture terms), Part I and its own computations.
+
+- **Confirmed:** the four `[write]` remarks (12.2, 16.4, 19.2, 24.1), re-derived
+  line by line (P_r = t_r, t U_p = y_m, H_p = f_m, Proposition 16.3 as the
+  integral of (5.4), the retention limit from Part I's Theorems 1.1–1.2, the
+  one-type law δ_(m,1) with its certificate and loss density, the block
+  weights as the case a = 0); every printed number (c_2, c_3 to 20 decimals;
+  the Section 21 ratios 0.76, 0.70, 0.59, 0.55; the twenty thresholds and the
+  four table values by an independent integer recursion that also equals the
+  53 terms of A002491; the two- and three-phase constants
+  0.33189767362899860… and 0.32927650881086035…; `r² ×` remainder of (35.8)
+  0.0625 and 0.0278; the z = 2000 certificate; `T/(K w_K)` at `K = 10^5`);
+  the sixteen Part I notes; the five blob identities; Knuth's A002491 comment;
+  the 35 staged files of Parts II and III (byte-identical); the label counts
+  (Part I's 99 unchanged, Report 188's 88 and the manuscript's 119 all present,
+  15 and 20 added). Report 188's checker and Part III's program reproduce
+  their records on copies; Report 188's `reproduce.py` fails on Windows only
+  through the CRLF stdout, as stated.
+- **Corrected (dated notes):** the archive sizes in Sections 11.1 and 24.1
+  and in the table above (the write printed the unpacked totals); the
+  intake's remainder band 0.003–0.18, which does not reproduce (−0.0446 at
+  `p = 1, k = 1200` to 0.2216 at `p = 3, k = 100`; both signs for `p = 1`);
+  and the note at the end of Section 23, which applied Theorem 31.2 to
+  perturbations of `j^p`: that theorem perturbs repeated weights, and a
+  proof added there shows that perturbations of `k^p` smaller than every
+  inverse power leave the constant `L_p`.
+- **Recorded:** the numbering changes against the delivered PDFs (Report
+  188's equations (1)–(63) are (12.1)–(21.4); Part III's sections, figures,
+  tables and questions shift), the two hypotheses (`m > 0`, `w_1 = 1`) that
+  two Part I notes leave out, the "as Part I's do" wording, and the PNG
+  previews now listed under Files.
+
+The check's record is at the end of Section 11.3. Its code and outputs are
+outside the repository.
 
 ## Relation to the repository
 
@@ -322,7 +364,7 @@ questions.tex                     Part I, Section 10 and Appendices A-B; \inputs
 rates.tex                         Part II (Report 188), Sections 11-23, written by the batch-110 write
 schedules.tex                     Part III (Periodic_Rounding_Extinction), Sections 24-39, written by the batch-110 write
 bibliography.tex                  the twelve references, \input by body.tex
-article.pdf                       compiled report, 80 pages
+article.pdf                       compiled report, 81 pages
 VERIFICATION_NOTES.txt            Part I: the package's review and build notes (as delivered)
 02-rates-DATA_SOURCES.md          Part II: sources and attribution (delivered DATA_SOURCES.md)
 02-rates-README_REPRODUCIBILITY.md Part II: reproduction and packaging (delivered README_REPRODUCIBILITY.md)
@@ -369,10 +411,14 @@ data/03-schedules-run_log.txt               Part III: console output of the reco
 figures/normalized_thresholds.png Part I: Figure 1
 figures/backward_profiles.png     Part I: Figure 2
 figures/forward_paths.png         Part I: Figure 3
-figures/03-schedules-constant_discontinuity.pdf  Part III: Figure 4 (PNG preview beside it)
-figures/03-schedules-weak_phase_density.pdf      Part III: Figure 5 (PNG preview beside it)
-figures/03-schedules-normalized_thresholds.pdf   Part III: Figure 6 (PNG preview beside it)
-figures/03-schedules-drift_and_profiles.pdf      Part III: Figure 7 (PNG preview beside it)
+figures/03-schedules-constant_discontinuity.pdf  Part III: Figure 4
+figures/03-schedules-constant_discontinuity.png  Part III: PNG preview of Figure 4 (not included by the article)
+figures/03-schedules-weak_phase_density.pdf      Part III: Figure 5
+figures/03-schedules-weak_phase_density.png      Part III: PNG preview of Figure 5 (not included by the article)
+figures/03-schedules-normalized_thresholds.pdf   Part III: Figure 6
+figures/03-schedules-normalized_thresholds.png   Part III: PNG preview of Figure 6 (not included by the article)
+figures/03-schedules-drift_and_profiles.pdf      Part III: Figure 7
+figures/03-schedules-drift_and_profiles.png      Part III: PNG preview of Figure 7 (not included by the article)
 ```
 
 Every file except `README.md`, `article.tex`, `body.tex`, `extensions.tex`,
@@ -533,7 +579,8 @@ B=$(mktemp -d); cp -r *.tex data figures "$B/"; cd "$B"
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The committed PDF was built this way with MiKTeX on 7 October 2026: 80 pages;
+The committed PDF was rebuilt this way with MiKTeX after the independent
+check (7 October 2026): 81 pages (the write's build had 80);
 no errors or warnings, no undefined references or citations, no multiply
 defined labels, no duplicate PDF destinations, no overfull or underfull boxes.
 A build of the batch-85 text gives 27 pages, also without warnings.

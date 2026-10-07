@@ -1,0 +1,339 @@
+\section{Cyclic geometry and an economical short-period dilation}
+\label{sec:geometry}
+
+Fix a palette size \(s\in\{2,3\}\). The same estimates will work for
+both choices. Set
+\begin{equation}\label{eq:parameters}
+\begin{gathered}
+ L=\log k,\qquad \zeta=L^{-1},\qquad
+ D=\cl{k^{1/3}L^{-2/3}},\qquad M=\cl{k^{3/4}},\\
+ h_0=\cl{A D L^3},\qquad H=k^{-2},\qquad
+ \eta=\frac{\zeta}{100D},\qquad
+ p=B k^{-1/3}L^{5/3}.
+\end{gathered}
+\end{equation}
+Here \(A\) and then \(B\) are sufficiently large absolute constants.
+They will be fixed in the local-lemma and perturbation arguments.
+All assertions in this section hold for sufficiently large \(k\)
+after those constants are fixed. In particular,
+\[
+ 1\ll D<h_0<2M<k,\qquad p<1/2,\qquad 2kH<1.
+\]
+The relatively generous choice \(M=k^{3/4}+O(1)\) separates the
+global local-lemma tests from the signature costs.
+
+\subsection{The elementary prime estimates actually needed}
+
+\begin{lemma}\label{lem:prime-estimates}
+For some absolute \(C_\pi\), the number \(\pi(x)\) of primes at most
+\(x\) satisfies \(\pi(x)\le C_\pi x/\log x\) for \(x\ge2\).
+For every sufficiently large integer \(k\), a prime \(P\) exists with
+\(k<P\le2k^2\).
+\end{lemma}
+
+\begin{proof}
+Every prime in \((n,2n]\) divides \(\binom{2n}{n}\), and
+\(\binom{2n}{n}\le4^n\). Therefore
+\(\sum_{n<\ell\le2n,\ \ell\ {\rm prime}}\log\ell\le2n\log2\).
+Summing at powers of two proves
+\(\vartheta(x)=\sum_{\ell\le x}\log\ell\le C_\vartheta x\)
+with an absolute constant. Primes exceeding \(\sqrt{x}\) each
+contribute at least \(\frac12\log x\), so
+\[
+ \pi(x)\le \sqrt{x}+\frac{2\vartheta(x)}{\log x}
+ \le C_\pi \frac{x}{\log x},
+\]
+after increasing the constant to cover the bounded initial range.
+This is the elementary Chebyshev upper estimate.
+
+For the second assertion put \(n=k^2\). The factorial formula gives
+\[
+ v_\ell\binom{2n}{n}
+ =\sum_{a\ge1}
+ \left(\fl{\frac{2n}{\ell^a}}-2\fl{\frac n{\ell^a}}\right)
+ \le\fl{\log_\ell(2n)} .
+\]
+If all prime divisors were at most \(k\), then
+\(\binom{2n}{n}\le(2n)^k\).
+But the largest binomial coefficient is at least \(4^n/(2n+1)\),
+which exceeds \((2n)^k\) for \(n=k^2\) and large \(k\).
+A prime divisor exceeding \(k\) therefore exists, and it is at most
+\(2n\).
+\end{proof}
+
+Choose the dilation
+\begin{equation}\label{eq:dilation}
+ \lambda=
+ \prod_{\substack{\ell\le h_0\\\ell\ {\rm prime}}}
+ \ell^{\fl{\log(2M)/\log\ell}} .
+\end{equation}
+
+\begin{lemma}[Period removal and dilation cost]\label{lem:dilation}
+If \(1\le h\le2M\), every primary factor of \(h\) at a prime at most
+\(h_0\) divides \(\lambda\). Consequently
+\[
+ h\le h_0\ \Longrightarrow\ h\mid\lambda,\qquad
+ \frac{h}{\gcd(h,\lambda t)}\in\{1\}\cup(h_0,\infty)
+ \quad(t\in\Z).
+\]
+For the choices \eqref{eq:parameters},
+\begin{equation}\label{eq:dilation-cost}
+ \log\lambda=O(h_0),\qquad
+ D\log\lambda=O_A(k^{2/3}L^{5/3}).
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+If \(\ell^a\mid h\le2M\), then
+\(a\le\fl{\log(2M)/\log\ell}\).
+After division by \(\gcd(h,\lambda t)\), all remaining prime
+divisors therefore exceed \(h_0\). This proves the period statements.
+Every factor of the product \eqref{eq:dilation} is at most \(2M\).
+By \cref{lem:prime-estimates},
+\[
+ \log\lambda\le\pi(h_0)\log(2M)
+ \le C_\pi h_0\frac{\log(2M)}{\log h_0}=O(h_0),
+\]
+since the ratio of logarithms tends to \(9/4\).
+Finally \(D h_0=O_A(D^2L^3)=O_A(k^{2/3}L^{5/3})\).
+\end{proof}
+
+The bound \(\log\lambda=O(h_0)\), rather than the cruder
+\(O(h_0\log M)\), is responsible for the improved logarithmic correction
+in the final theorem. No prime number theorem or primes in short
+intervals is required.
+
+\subsection{The cyclic embedding and its scales}
+
+Let
+\begin{equation}\label{eq:target}
+ a_s=\frac{s-1}{12s},\qquad
+ Q_s(k)=a_s k(L-5\log L)-Ck,
+\end{equation}
+where \(C>0\) will be fixed last among the constants.
+Choose a prime \(P\) from \cref{lem:prime-estimates}, and let \(q\)
+be the smallest positive power of \(P\) satisfying
+\(q\ge\exp(Q_s(k)/D)\). Then
+\begin{equation}\label{eq:q-rounding}
+ Q_s(k)\le D\log q\le Q_s(k)+D\log(2k^2),
+ \qquad
+ \log q=O(k^{2/3}L^{5/3}).
+\end{equation}
+The rounding error \(D\log(2k^2)\) is \(o(k)\).
+For large \(k\), \(P>k>h_0\), so \(\lambda\) is invertible modulo
+every power of \(q\).
+
+Put \(N=q^D\), \(G=\Z/N\Z\), and \(\T=\R/\Z\). Use the homomorphisms
+\begin{equation}\label{eq:coordinates}
+ x_i(n)=n/q^i\pmod1,\qquad
+ y_i(n)=\lambda n/q^i\pmod1,\qquad 1\le i\le D.
+\end{equation}
+We denote the representatives of the two vectors by
+\(\widehat{x}(n)\in[0,1)^D\) and
+\(\widetilde{y}(n)\in[-1/2,1/2)^D\).
+Every nonzero element of \(G\) has order at least \(P>k\).
+Thus a nonzero-step \(k\)-term cyclic progression always has distinct
+terms.
+
+Set
+\[
+ H_x=H/\lambda,\qquad \alpha=q^{-(D+1)},\qquad
+ \rho(Y)=\dist_\T(Y,1/2).
+\]
+The function \(\rho\) is \(1\)-Lipschitz and takes values in
+\([0,1/2]\).
+Partition \([0,1)\) into intervals of length \(H_x\); this gives a
+partition \(U\) with exactly \(k^2\lambda\) intervals.
+For the second coordinate system put
+\begin{equation}\label{eq:adaptive-mesh}
+ R=\log(1+(2\alpha)^{-1}),\quad
+ J_0=\cl{k^2R},\quad
+ a_j=\alpha\bigl(e^{jR/J_0}-1\bigr)\quad(0\le j\le J_0).
+\end{equation}
+The partition \(V\) of \([-1/2,1/2)\) consists of
+\[
+ [-1/2+a_j,-1/2+a_{j+1}),\quad
+ [1/2-a_{j+1},1/2-a_j)
+ \qquad(0\le j<J_0).
+\]
+In particular, zero is assigned to the interval on its right, and the
+cut is assigned to the interval beginning at \(-1/2\).
+All interval labels retain the identities and locations of their
+intervals. Write
+\begin{equation}\label{eq:labels}
+ \cL=U^D\times V^D,\qquad
+ L(n)=\bigl((U(x_i(n)))_{i=1}^D,(V(y_i(n)))_{i=1}^D\bigr).
+\end{equation}
+For arbitrary \(X,Y\in\T^D\), the notation \(L(X,Y)\) has the analogous
+meaning.
+
+\begin{lemma}[Adaptive-mesh estimates]\label{lem:mesh}
+For \(I\in V\), \(Y\in\overline I\), and sufficiently large \(k\),
+\begin{equation}\label{eq:mesh-width}
+ \frac H4(\rho(Y)+\alpha)\le |I|
+ \le2H(\rho(Y)+\alpha)\le2H,\qquad |V|=O(k^3L).
+\end{equation}
+If \(w=|I|\) and
+\(\mathcal N(I)=\{Y:\dist_\T(Y,\overline I)\le w\}\), every
+mesh interval whose closure meets \(\mathcal N(I)\) has length at
+least \(w/16\). There are at most \(49\) mesh endpoints in
+\(\mathcal N(I)\).
+
+Define \(V_\eta(Y)=V(Y)\) when \(\rho(Y)\ge\eta\), and
+\(V_\eta(Y)=*\) otherwise. On any circle arc of length at most \(4H\),
+this function has at most \(C_0D/\zeta\) breakpoints, with an absolute
+\(C_0\). At a breakpoint the output is fixed by the stated conventions.
+\end{lemma}
+
+\begin{proof}
+Write \(\theta=R/J_0\). For large \(k\), \(H/2\le\theta\le H\).
+On a mesh interval, \(\rho(Y)+\alpha\) ranges between
+\(b=\alpha e^{j\theta}\) and \(be^\theta\), whereas its length is
+\(b(e^\theta-1)\). The inequalities
+\[
+ \theta/2\le1-e^{-\theta}
+ \le\frac{|I|}{\rho(Y)+\alpha}
+ \le e^\theta-1\le2\theta
+\]
+give \eqref{eq:mesh-width}. Since
+\(R\le(D+1)\log q=O(kL)\), we have \(2J_0=O(k^3L)\).
+
+Fix \(Y_0\in\overline I\) and \(r_0=\rho(Y_0)+\alpha\).
+A point in \(\mathcal N(I)\) has distance at most \(2w\) from \(Y_0\).
+Therefore its value of \(\rho+\alpha\) is at least
+\(r_0-2w\ge(1-4H)r_0\ge r_0/2\).
+Applying the lower width estimate to a point of
+\(\overline J\cap\mathcal N(I)\) gives
+\(|J|\ge Hr_0/8\ge w/16\).
+The arc \(\mathcal N(I)\) has length \(3w<1\).
+Consecutive endpoints in it enclose a complete mesh interval of
+length at least \(w/16\), so their number is at most \(49\).
+
+On an arc of length \(4H\), the portion with \(\rho\ge\eta\) has at
+most two components. Consecutive mesh endpoints within a component
+are separated by at least \(H\eta/4\). There are at most
+\(16/\eta+2\) such endpoints, and at most two more threshold points
+where \(\rho=\eta\). As \(\eta=\zeta/(100D)\), this is
+\(O(D/\zeta)\). The other portions have the single dummy output.
+\end{proof}
+
+\subsection{Small boxes force real affinity}
+
+\begin{lemma}[Affinity on the visits to one box]\label{lem:box-affine}
+Let \(z_j=a+jb\) in \(\T^e\), \(0\le j<k\), and let \(J\) be a
+set of indices. Suppose the chosen real representatives \(Z_j\),
+\(j\in J\), all lie in one box of coordinate widths at most \(2H\).
+If \(2kH<1\), there are \(A_0,B_0\in\R^e\) such that
+\(Z_j=A_0+jB_0\) for \(j\in J\).
+\end{lemma}
+
+\begin{proof}
+For \(j_1<j_2<j_3\) in \(J\), the vector
+\[
+ (j_3-j_2)(Z_{j_2}-Z_{j_1})
+ -(j_2-j_1)(Z_{j_3}-Z_{j_2})
+\]
+is integral because it is zero modulo \(\Z^e\).
+Each coordinate has absolute value at most
+\(2H(j_3-j_1)<1\), so the vector is zero.
+Interpolation between the extreme visits now gives the result.
+The cases \(|J|\le2\) require only direct interpolation.
+\end{proof}
+
+Fix a cyclic progression \(n_j=n_0+jd\), \(d\ne0\).
+A label is \emph{heavy} if it occurs more than \(k/M\) times on this
+whole progression, and \emph{light} otherwise. Positions are
+designated by their labels; the designations do not change on passing
+to a block.
+
+\begin{lemma}[A heavy label determines a rational return]\label{lem:return}
+If a heavy label occurs \(m_*>k/M\) times, there are
+\(1\le h\le2M\), \(t\in\{0,\ldots,h-1\}^D\), and \(u,v\in\R^D\)
+such that
+\begin{align}
+ x(n_j)&=x(n_0)+\frac jh(t+u),&
+ y(n_j)&=y(n_0)+\frac jh(\lambda t+v)
+ \quad\text{in }\T^D,\label{eq:return-path}\\
+ |u_i|&\le\frac{2MH_x}{k},&
+ |v_i|&\le\frac{4MH}{k},\qquad v=\lambda u.
+ \label{eq:return-drift}
+\end{align}
+Moreover \(\gcd(t_1,\ldots,t_D,h)=1\).
+Incongruent indices modulo \(h\) have different full labels.
+For every heavy position \(j_*\), not just one of the initially chosen
+label, the stronger estimate
+\begin{equation}\label{eq:heavy-relative}
+ |v_i|\le\frac{2M}{k}\,|V(y_i(n_{j_*}))|
+\end{equation}
+holds.
+\end{lemma}
+
+\begin{proof}
+Let \(J\) be the occurrences of the chosen heavy label, and let \(h\)
+be its smallest positive gap, attained at \(j'\) and \(j'+h\).
+If \(j_-=\min J\), \(j_+=\max J\), then
+\[
+ h\le\frac{j_+-j_-}{m_*-1}\le2M,\qquad
+ m_*-1\ge k/(2M).
+ \]
+Apply \cref{lem:box-affine} to both coordinate systems together.
+The real differences \(u,v\) between these two closest visits are
+\(h/(j_+-j_-)\) times the endpoint differences. Their coordinate
+widths are \(H_x,2H\), which proves \eqref{eq:return-drift}.
+Since \(v-\lambda u\) is integral and has coordinates of absolute
+value at most \(6MH/k<1\), it is zero.
+The relation \(h x(d)=u\) in the torus gives an integral vector
+\(t'=h\widehat{x}(d)-u\); reduce it modulo \(h\) to obtain \(t\).
+This proves \eqref{eq:return-path}.
+
+If an integer \(e>1\) divides \(h\) and every \(t_i\), the point
+at \(j'+h/e\) is represented by the convex combination with weight
+\(1/e\) of the representatives at \(j'\) and \(j'+h\).
+It is in the same product of half-open intervals, contradicting the
+minimal gap \(h\). Thus the gcd is one.
+For indices incongruent modulo \(h\), the rational displacement has
+some coordinate at circle distance at least \(1/h\) from zero.
+The drift subtracts at most \(2MH_x/h\).
+The resulting distance is at least
+\((1-2MH)/(2M)>H_x\), so their \(U\)-labels differ.
+
+Finally take any heavy label, of multiplicity \(m'>k/M\), with
+extreme visits \(j_-,j_+\). All its visits are in one residue class
+modulo \(h\), so \(j_+-j_-=a h\), where \(a\ge m'-1\) and \(a<k/h\).
+Let \(L_i=|V(y_i(n_{j_*}))|\). The real endpoint difference
+\(\Delta_i\) has absolute value at most \(L_i\) and is congruent to
+\(av_i\) modulo one. The bounds
+\[
+ |av_i|\le4MH/h,\qquad
+ |\Delta_i-av_i|\le2H+4MH/h<1
+\]
+show that \(\Delta_i=av_i\).
+Dividing by \(a\ge m'-1\ge k/(2M)\) proves
+\eqref{eq:heavy-relative}.
+\end{proof}
+
+\begin{lemma}[Short returns have one global lift]\label{lem:short}
+In \cref{lem:return}, if \(h\le h_0\), then
+\(\widetilde y(n_j)=A_0+jB_0\) in \(\R^D\) for all \(0\le j<k\).
+\end{lemma}
+
+\begin{proof}
+Since \(h\mid\lambda\), the rational part of the second path
+vanishes in the torus. Its real drift step is \(w=v/h\), with
+\(k|w_i|\le4MH/h<1/2\).
+Also \(w_i\in q^{-i}\Z\), since \(w_i\) represents \(y_i(d)\);
+if it is nonzero then \(|w_i|\ge q^{-D}\ge\alpha\).
+
+If the centered representatives fail to follow the single real
+segment \(\widetilde y_i(n_0)+\tau w_i\), that segment meets a
+representative cut in some coordinate with \(w_i\ne0\).
+Every sample then has \(\rho(y_i(n_j))\le k|w_i|\), including
+endpoint cut hits. By \eqref{eq:mesh-width},
+\[
+ |V(y_i(n_j))|\le2H(k+1)|w_i|<|w_i|.
+\]
+Yet any two samples have circle separation
+\(|j-j'|\,|w_i|\ge |w_i|\), since their total motion is less than
+\(1/2\). No two can share a \(V\)-interval. This contradicts the
+heavy label, and proves the claim.
+\end{proof}

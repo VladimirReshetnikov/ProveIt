@@ -133,6 +133,36 @@ convergence and the hierarchy are the Parts' own. Report 191's "supplied
 manuscript" *Transseries for Mere Mortals* is one of the tutorials merged into
 the volume's Part Q0.
 
+## Independent check of the write (7 October 2026)
+
+An independent adversarial check of the write (`d30bfb2a3`) reconstructed its
+additions from the commit's diff, rebuilt both delivered manuscripts and diffed
+them against the Parts, and read A094926 (#27), A094925 (#20), A258639 (#4)
+and A078510 (#21) again.
+
+- **Confirmed, checked hardest:** the write's proof that Scheucher's heuristic
+  form `a(n) = (a(n-1)+a(n-2))/(1-c*d^(-sqrt(n)))` cannot hold with constants
+  (re-derived from (12), (14), (17)). Numerically, both sequences generated
+  from the six-side delay formula to `n = 40000` (equal to the OEIS data) give
+  an excess ratio of exactly `0.3819660113 = φ⁻²` from the row before each final
+  corner to the corner (stages 20, 60, 115), and `1.0` between non-corner rows.
+- **Confirmed:** that Scheucher's two equivalents are proved as stated; the
+  same terms reproduce all 106 digits of A258639 and all 77 of A094925 (`C_1/φ`);
+  the quoted OEIS texts; the transseries identifications (`p0:thm:staircase`(1)
+  for Theorem 9.2 and (127); `p0:thm:lambert-core` with `a = 1`, `b = 2` for
+  `V = 2W_0(√(2L))`; `p0:thm:lambert-centered` for the germ, whose six
+  printed coefficients the check recomputed); both pins and the Guide path;
+  the *Mere Mortals* identification; the numbering table (Part I unchanged,
+  Part II shifted by 11 sections and 66 equations; 88 + 103 + 20 labels); the
+  37 staged files; both mandatory checkers (outputs equal to the records).
+- **Clarified (dated note):** the two pin dates in "Provenance and merge
+  decisions" are of different kinds (Report 190's comparison date and
+  `9ba11eaf7`'s commit date); both commits were made on 3 October 2026
+  (−0700), 39 minutes apart.
+
+The check's record is the last paragraph of the front-matter section "What was
+checked, and what was not". Its code and outputs are outside the repository.
+
 ## Relation to the repository
 
 No other placed report treats A094926, A094925, A258639, A078510, A265409,
@@ -185,7 +215,7 @@ Everything else is delivered text.
 ```text
 README.md                                  this guide (replaces Report 190's delivered README)
 article.tex                                the merged report (delivered Report190.tex, merged with Report191.tex)
-article.pdf                                compiled report, 41 pages
+article.pdf                                compiled report, 42 pages
 190-hex-DATA_SOURCES.md                    Part I: sources and attribution (delivered DATA_SOURCES.md)
 190-hex-README_REPRODUCIBILITY.md          Part I: reproduction and packaging (delivered README_REPRODUCIBILITY.md)
 190-hex-code-README.md                     Part I: the exact code (delivered code/README.md)
@@ -294,7 +324,8 @@ B=$(mktemp -d); cp article.tex "$B/"; cd "$B"
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The committed PDF was built this way with MiKTeX: 41 pages; no errors or
+The committed PDF was rebuilt this way with MiKTeX after the independent check
+(7 October 2026): 42 pages (the write's build had 41); no errors or
 warnings, no undefined references or citations, no multiply defined labels,
 no duplicate PDF destinations, no overfull or underfull boxes. The delivered
 sources, built the same way, give 15 and 19 pages.

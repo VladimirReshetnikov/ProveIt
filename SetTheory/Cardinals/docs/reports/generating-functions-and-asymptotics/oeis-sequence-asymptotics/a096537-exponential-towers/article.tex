@@ -302,6 +302,41 @@ manuscripts' proofs, not an independent verification; Bender--Vinson, Poland
 and Chapoton were not read by the write; Part~II's 562-panel interval
 certificate was rerun by the intake but not by the write.
 
+\paragraph{Independent check of the write (7 October 2026).} An independent
+adversarial check of the write, made the same day, rebuilt both delivered
+manuscripts and diffed each against its Part. The write's changes are the
+front matter, the two remarks, nine dated notes, Section~\ref{xtw:sec:further},
+the label prefixes and the merged bibliography. The seven shared entries keep
+both Parts' details; for \texttt{dlmf9}, Report~193's wording is subsumed by
+Report~192's more specific Section~9.9(i). The \texttt{.aux} files confirm the
+numbering stated in the Guide: Part~I's 135 labels, including every number
+of Sections~1 and~13, are unchanged, and Part~II's 136 move exactly by 14
+sections and 109 equations; 19 labels were added. The check read both
+entries again (A096537 \#8, A096542 \#11); the quoted formula lines are
+verbatim.
+
+The hardest checks were the two refutations. The check computed $a_n$ and the
+rows of A096542 by its own recurrence,
+$P_{n+1}(y)=y\sum_k\binom nk(k+1)P_k(y+1)P_{n-k}(y)$, and recovered $T(n,k)$
+by exact interpolation in~$y$. The 15 terms and 39 triangle entries shown
+live agree. $T(n,1)=n\,a_{n-1}$ holds for $n\le11$, and $T(n,1)=n\,a_n$ only
+at $n=1$, as Remark~\ref{xtw:airy:rem:oeis542} proves for every $n$. Stirling's
+formula turns Theorem~\ref{xtw:airy:thm:main} into the limit $2\sqrt{2\pi/\rho}$;
+$\sqrt{2/(\pi\rho)}=1.003552515326411079545\ldots$ confirms both the truncation
+and the rounding stated in Remark~\ref{xtw:airy:rem:oeis537}. Fits of the
+check's own values to $n=600$ in powers of $n^{-1/3}$ give $c_0=1.00356$ and
+$c_1=-0.437$, inside Part~II's enclosure $(-0.61,-0.25)$; the values at $n=100$
+and $400$ are the intake's $0.9144$ and $0.9462$.
+
+The check confirmed the Lambert base as a factorial-core instance
+($\kappa_\vol=2$, $d_\vol=-(2+\log\rho)$, $X_\vol=L/(2v_\vol)$). Both exact
+checkers and Part~II's interval tests reproduce their records on copies. The
+three uncopied certificate files are byte copies as stated, and the 49
+shipped files equal delivered blobs.
+
+One explanatory sentence of Remark~\ref{xtw:airy:rem:oeis537} is qualified
+there by a dated note. No error was found in either manuscript.
+
 \section*{Relation to neighbouring reports and formal projects}\phantomsection\label{xtw:sec:neighbours}
 \addcontentsline{toc}{section}{Relation to neighbouring reports and formal projects}
 No other placed report treats A096537, A096542, continued exponentials or
@@ -506,6 +541,18 @@ $c_1\approx-0.4365$, the normalized value at $n=2000$ is about $0.969$, about
 $3.5\,\%$ below its limit, which is why a short-range fit could not have
 distinguished the two amplitudes. No correction has been submitted to the
 OEIS.
+
+[Added 7 October 2026, independent check of the write: the last explanation
+needs a qualification. It holds for fits that omit the scale $n^{-1/3}$, not
+for every short-range fit. The check computed $a_n$ independently, from
+$P_{n+1}(y)=y\sum_{k=0}^n\binom nk(k+1)P_k(y+1)P_{n-k}(y)$, which follows
+from $F_y=\exp(xyF_{y+1})$. On $30\le n\le100$, a least-squares fit
+$c_0+\sum_{j=1}^6c_jn^{-j/3}$ already gives $c_0=1.0036$. Fits in powers of
+$1/n$ or of $n^{-1/2}$ give $c_0$ between $0.95$ and $0.99$, rising with the
+range, on every range up to $n=300$. So it is the fractional scale, not the
+length of the range, that separates the two amplitudes. At $n=2000$ the value
+$0.9695$ found at intake is $3.4\,\%$ below the limit; the first-order
+estimate $C+c_1n^{-1/3}$ gives $0.9689$.]
 \end{remark}
 
 \section{Exact coefficients and weighted trees}\label{xtw:airy:sec:exact}

@@ -296,7 +296,12 @@ and Report~191 names \texttt{9ba11eaf7c1b6a27ccfc0bab63e22f97768cb704}
 (\file{Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/lambert-w/Lambert_W_Guide/});
 both commits exist and contain those files. They arrived in commit
 \texttt{60f54ea06} and were placed by \texttt{8622ca7e5} (batch~110, cluster
-110-SPIRAL).
+110-SPIRAL). [Added 7 October 2026, independent check of the write: the two
+dates in parentheses above are of different kinds. ``4~October 2026'' is the
+date on which Report~190 says it made its comparison; ``3~October 2026'' is
+the commit date of \texttt{9ba11eaf7}. Both commits were made on the evening
+of 3~October 2026 ($-0700$), 39 minutes apart: \texttt{6bf7f30d0} at 17:30
+and \texttt{9ba11eaf7} at 18:09, that is 4~October 00:30 and 01:09 UTC.]
 \begin{itemize}
 \item \textbf{Part~I}, bundle Report~190, archive
 \file{Hexagonal_Spiral_Fibonacci_Asymptotics_and_Inverses_Source.zip}
@@ -340,6 +345,43 @@ are the manuscripts' proofs, not an independent verification; Kundr\'at's,
 Appleby--Buckwar's and Ryde's texts, Fernandez's page and the Lambert~W Guide
 were not re-read; the optional floating-point diagnostics and the release
 builders were not run.
+
+\paragraph{Independent check of the write (7 October 2026).} An independent
+adversarial check of the write, made the same day, rebuilt both delivered
+manuscripts and diffed each against its Part. The write's changes are the
+front matter, the \texttt{\textbackslash partsource} blocks, Section~\ref{sfb:sec:further},
+eleven dated notes (ten in the Parts and the note above on Scheucher's form),
+the label prefixes and the merged bibliography. The \texttt{.aux} files
+confirm the numbering stated in the Guide: Part~I's 88 labels are unchanged,
+Part~II's 103 move exactly by 11 sections and 66 equations, and 20 labels
+were added. The check read the four OEIS entries again (A094926 \#27,
+A094925 \#20, A258639 \#4, A078510 \#21), with the quoted formula fields and
+Scheucher's comment verbatim, and found the shipped fixtures equal to the
+live data.
+
+The hardest check was the note on Scheucher's heuristic form, re-derived
+from \eqref{sfb:hex:eq:recurrence}, \eqref{sfb:hex:eq:Etable} and
+\eqref{sfb:hex:eq:etavalues}. It is also confirmed numerically. The check
+generated both sequences from the six-side delay formula to $n=40000$; they
+agree with the OEIS data. At the final corners of stages $20$, $60$ and $115$,
+the ratio of the excess $a_n/(a_{n-1}+a_{n-2})-1$ to the previous row's is
+$0.3819660113$, which is $\phi^{-2}$, for both seeds. For two non-corner rows
+of the same side the ratio is $1.0$.
+
+The same terms give $a_n\phi^{-n}$ agreeing with all 106 digits of A258639,
+and $a^{(1)}_n\phi^{-n-1}$ with all 77 digits of A094925; $n=30000$ and
+$n=40000$ agree to about 124 digits. Both identifications with the volume
+were checked against its statements. \file{p0:thm:lambert-core} with $a=1$,
+$b=2$ gives $2W_0(\sqrt{2L})$. In \file{p0:thm:lambert-centered} the centred
+ansatz $x=X+U(1/X)$ is $w_0=V+\delta(1/V)$, and its fixed-point equation is
+\eqref{sfb:sq:eq:implicit}; all six coefficients of
+\eqref{sfb:sq:eq:deltaseries} follow from it. Both mandatory checkers
+reproduce their records on copies, and the 37 shipped files equal delivered
+blobs.
+
+One sentence was clarified by a dated note: the two pin dates in
+``Provenance and merge decisions''. No error was found in either manuscript
+or in the write's mathematics.
 
 \section*{Relation to neighbouring reports and formal projects}\phantomsection\label{sfb:sec:neighbours}
 \addcontentsline{toc}{section}{Relation to neighbouring reports and formal projects}

@@ -46,6 +46,15 @@ the live entries: A082528 still states the general-$m$ law as
 summed error of Broline and Loeb's argument is $O(n^{3/2})$; summing over
 part of the range recovers $O(n^{4/3})$).
 
+[Added 7 October 2026, independent check of the batch-110 write: the
+figure 564,257 bytes above is the total size of the archive's twenty
+members; the archive itself has 566,521 bytes. Part~I's provenance, like
+the other reports of the collection, gives archive sizes. The rest of
+this paragraph was confirmed: the line and page counts, the title, the
+author field, the four revision numbers and dates (equal to the live
+entries on 7~October 2026, as are the 342 fixture terms), A082528's
+``Conjecture'' and Knuth's comment.]
+
 Report~188's abstract and its scope paragraph read as follows.
 
 \begin{quote}\small
@@ -207,6 +216,36 @@ ranges for $p=1,2,3$. The write recomputed the ten thresholds, $B_2(1000)$
 and $B_3(1000)$ with exact integers, and $c_2$, $c_3$ to forty digits
 (the last digits of Report~188's decimal displays are wrong;
 \cref{rex:qt:rem:decimals}).
+
+[Added 7 October 2026, independent check of the batch-110 write: the band
+$[0.003,0.18]$ quoted above from the intake dossier could not be
+reproduced. The dossier, which named the sampled ranges, is lost, and on
+the check's own sample $k=100,200,\dots,2000,5000,10^4$ the normalized
+remainder $(B_p(k)-K_pk^s)/k^{s^2/(s+1)}$ runs from $-0.0446$ ($p=1$,
+$k=1200$) to $0.2216$ ($p=3$, $k=100$); for $p=1$ it takes both signs. It
+stays bounded on these samples, as \eqref{rex:qt:eq:Bmain} requires, but
+the quoted band is not a property of the thresholds, and nothing rests
+on it. The check's thresholds equal the 53 terms of A002491, Part~I's
+\path{data/threshold_table.csv}, the twenty thresholds of
+\cref{rex:qt:sec:reverse} and the table of \cref{rex:qt:sec:checks}.]
+
+\paragraph{Independent check of the write (7 October 2026).} An
+independent adversarial check of the batch-110 write re-derived each
+remark marked \textsf{[write]} and each dated note of Parts~I--III. It
+recomputed every number they print (the two constants, the expansions of
+\cref{rex:qt:sec:parameter}, the Gamma products and certificate of
+Part~III, the thresholds) and read the live OEIS entries. It reran
+Report~188's checker and Part~III's program on copies (outputs equal to
+the records). It found no error in \cref{rex:qt:rem:decimals,rex:qt:rem:identify,rex:qt:rem:retention,rex:sch:rem:parts}.
+It corrected the archive sizes in
+\cref{rex:qt:sec:provenance,rex:sch:sec:provenance}, the band above, and
+one sentence of the note at the end of \cref{rex:qt:sec:questions}, by
+dated notes there. It also recorded the numbering changes in
+\cref{rex:sch:sec:provenance}. One omission is noted here: the dated notes
+at \cref{rex:sec:results} and at Research question~\ref{rex:q:schedules}
+describe Part~III's class without two of its hypotheses, the positive
+mean slope $m=\int\beta\,d\mu>0$ and $w_1=1$ (\cref{rex:sch:def:law},
+\eqref{rex:sch:eq:forward}).
 
 \section{The model and the conclusions}\label{rex:qt:sec:main}
 Fix a real number $p>0$. For an integer $n\ge0$, define
@@ -1033,3 +1072,26 @@ power of the index can change the constant
 are Part~I's Research question~\ref{rex:q:moving}, open, and rates for
 perturbed grids are Part~III's question~\ref{rex:sch:q:quant}, open.
 Question~\ref{rex:qt:q:certificates} is open.]
+
+[Added 7 October 2026, independent check of the batch-110 write: the
+clause on \cref{rex:sch:thm:flat-perturbation} above concerns perturbations
+of the repeated weights $\lceil k/2\rceil$, not of the power grid $j^p$
+that question~\ref{rex:qt:q:varying} asks about. The mechanism there is
+that the perturbation makes zero increments active. The grid $j^p$ has no
+zero increments, and perturbations of it smaller than every inverse power
+cannot change the constant. Indeed, let $w_1=1$ and $w_k=k^p+e_k>0$ with
+$e_k=o(k^{-N})$ for every $N$, and put
+$\Delta_k=e_k(k-1)^p-e_{k-1}k^p$. Then
+\[
+ k\Bigl(\frac{w_k}{w_{k-1}}-1\Bigr)
+ =k\Bigl(\Bigl(\frac{k}{k-1}\Bigr)^p-1\Bigr)
+  +\frac{k\,\Delta_k}{(k-1)^p\,w_{k-1}}
+ \longrightarrow p,
+\]
+because $|\Delta_k|\le(|e_k|+|e_{k-1}|)k^p=o(k^{p-1})$ and
+$(k-1)^pw_{k-1}\asymp k^{2p}$. So Part~I's \cref{rex:thm:weights-main}
+applies (no monotonicity is needed) and gives $T_w(K)\sim L_pKw_K\sim
+L_pK^{p+1}$; for nondecreasing $w$ the augmented law is $\delta_{(p,1)}$.
+The same holds whenever the relative perturbation of the successive ratios
+is $o(1/k)$. Which larger perturbations of $j^p$ keep the constant, and
+with what rate, remains open, as stated.]
