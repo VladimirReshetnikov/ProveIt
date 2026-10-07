@@ -1,4 +1,4 @@
-import GowersSzemeredi.Proofs05Lemma9Induction
+import GowersSzemeredi.Proofs05DiameterReserve
 
 /-!
 # The quantitative scale schedule for Lemma 5.9
@@ -293,8 +293,20 @@ private theorem section5FinalTarget_of_quarterInvariant
 /-- Quantitative induction with a movable ideal scale `x`.  In the recursive
 call `x` becomes `x^(1/K)`; the final-root hypothesis and the global scale are
 definitionally transported by the three composition lemmas above. -/
+private theorem section5LocalDiameter_with_reserve (quarter : Bool)
+    {x : Real} (hx : 0 ≤ x) {t K q : Nat} (hK : 2 ≤ K) (hq : 1 ≤ q)
+    (hlarge : 16 ≤ x ^ ((K ^ (q - 1) : Nat) : Real)⁻¹) (hlower : x / 4 ≤ t)
+    (hboost : quarter = true → 16 ≤ x ^ ((K : Real) ^ q)⁻¹) :
+    (t : Real) ^ (-(2 * (K : Real)⁻¹)) ≤
+      (if quarter then x ^ (-((K : Real) ^ q)⁻¹) / 4 else x ^ (-((K : Real) ^ q)⁻¹)) := by
+  cases quarter with
+  | false => exact section5LocalDiameter_of_quarterInvariant hx hK hq hlarge hlower
+  | true =>
+    have hx16 := section5Sixteen_le_of_iteratedRoot hx (by omega : 1 ≤ K) hlarge
+    exact section5_local_diameter_quarter (by linarith) hK hq (hboost rfl) hlower
+
 private theorem section5MaximalTargets_schedule_aux
-    (k : Nat) (hk : 1 <= k) :
+    (k : Nat) (hk : 1 <= k) (quarter : Bool) :
     forall (q t v : Nat) (x : Real),
       1 <= q -> 0 <= x ->
       polynomialPartitionIteratedRoundingThreshold
@@ -302,17 +314,18 @@ private theorem section5MaximalTargets_schedule_aux
           (q - 1) < t ->
       16 <= x ^
         (((polynomialPartitionConstant k) ^ (q - 1) : Nat) : Real)⁻¹ ->
+      (quarter = true -> 16 <= x ^ ((polynomialPartitionConstant k : Real) ^ q)⁻¹) ->
       x / 4 <= t ->
       1 <= v ->
       (v : Real) <=
         x ^ (2 * (polynomialPartitionConstant k : Real) ^ q)⁻¹ ->
       section5StrongRefinementSchedule k
-        (x ^ (-((polynomialPartitionConstant k : Real) ^ q)⁻¹)) t
+        (if quarter then x ^ (-((polynomialPartitionConstant k : Real) ^ q)⁻¹) / 4 else x ^ (-((polynomialPartitionConstant k : Real) ^ q)⁻¹)) t
         (section5MaximalTargets (polynomialPartitionConstant k) q t v) := by
   intro q
   induction q using Nat.strong_induction_on with
   | h q ih =>
-      intro t v x hq hx hthreshold hlarge hlower hv hvupper
+      intro t v x hq hx hthreshold hlarge hboost hlower hv hvupper
       let K := polynomialPartitionConstant k
       let T := polynomialPartitionThreshold k
       have hKSixteen : 16 <= K := by
@@ -340,13 +353,13 @@ private theorem section5MaximalTargets_schedule_aux
           have hdiameter :
               (t : Real) ^
                   (-(2 * (polynomialPartitionConstant k : Real)⁻¹)) <=
-                x ^ (-(polynomialPartitionConstant k : Real)⁻¹) := by
+                (if quarter then x ^ (-(polynomialPartitionConstant k : Real)⁻¹) / 4 else x ^ (-(polynomialPartitionConstant k : Real)⁻¹)) := by
             simpa only [pow_one] using
-              section5LocalDiameter_of_quarterInvariant hx hKSq
-                (by norm_num) hlarge hlower
+              section5LocalDiameter_with_reserve quarter hx hKSq
+                (by norm_num) hlarge hlower hboost
           simpa only [section5MaximalTargets, pow_one] using
             (show section5StrongRefinementSchedule k
-                (x ^ (-(polynomialPartitionConstant k : Real)⁻¹)) t [v] from
+                (if quarter then x ^ (-(polynomialPartitionConstant k : Real)⁻¹) / 4 else x ^ (-(polynomialPartitionConstant k : Real)⁻¹)) t [v] from
               ⟨hthresholdHead, hv, htarget, hdiameter, trivial, trivial⟩)
       | n + 2 =>
           let y : Real := (t : Real) ^ (K : Real)⁻¹
@@ -408,28 +421,35 @@ private theorem section5MaximalTargets_schedule_aux
             simpa only [K] using hvupper
           have htail :
               section5StrongRefinementSchedule k
-                (x' ^ (-((K : Real) ^ (n + 1))⁻¹)) (u - 1)
+                (if quarter then x' ^ (-((K : Real) ^ (n + 1))⁻¹) / 4 else x' ^ (-((K : Real) ^ (n + 1))⁻¹)) (u - 1)
                 (section5MaximalTargets K (n + 1) (u - 1) v) := by
             apply ih (n + 1) (by omega) (u - 1) v x'
             · omega
             · exact Real.rpow_nonneg hx _
             · simpa only [T, K, Nat.add_sub_cancel] using hchildThreshold
             · simpa only [K, Nat.add_sub_cancel] using hx'Large
+            · intro hquarter
+              dsimp only [x']
+              rw [← Real.rpow_mul hx]
+              convert hboost hquarter using 1
+              congr 1
+              simp only [K, pow_succ, mul_inv_rev]
             · exact hchildLower
             · exact hv
             · simpa only [K] using hchildV
           have htailGlobal :
               section5StrongRefinementSchedule k
-                (x ^ (-((K : Real) ^ (n + 2))⁻¹)) (u - 1)
+                (if quarter then x ^ (-((K : Real) ^ (n + 2))⁻¹) / 4 else x ^ (-((K : Real) ^ (n + 2))⁻¹)) (u - 1)
                 (section5MaximalTargets K (n + 1) (u - 1) v) := by
             rw [← section5Root_globalExponent x hx K (n + 1) hKPos]
             exact htail
           have hdiameter :
               (t : Real) ^ (-(2 * (K : Real)⁻¹)) <=
-                x ^ (-((K : Real) ^ (n + 2))⁻¹) := by
-            apply section5LocalDiameter_of_quarterInvariant hx hKSq (by omega)
+                (if quarter then x ^ (-((K : Real) ^ (n + 2))⁻¹) / 4 else x ^ (-((K : Real) ^ (n + 2))⁻¹)) := by
+            apply section5LocalDiameter_with_reserve quarter hx hKSq (by omega)
             · exact hlarge'
             · exact hlower
+            · exact hboost
           have hschedule := section5StrongRefinementSchedule_cons_of_min
             hthresholdHead hu (by simpa only [u, y, K] using hyUpper)
             (by simpa only [K] using hdiameter) htailGlobal
@@ -471,10 +491,11 @@ theorem lemma_5_9_maximal_target_bounds_holds :
   have hlower : (r : Real) / 4 <= r := by
     have hrNonneg : (0 : Real) <= r := by positivity
     nlinarith
-  apply section5MaximalTargets_schedule_aux k hk q r v (r : Real) hq
+  apply section5MaximalTargets_schedule_aux k hk false q r v (r : Real) hq
     (by positivity)
   · simpa only [T, K] using hexact
   · simpa only [K] using hfinalRootLarge
+  · intro h; cases h
   · exact hlower
   · exact hv
   · exact hvupper
@@ -484,5 +505,53 @@ engine. -/
 theorem lemma_5_9_scale_schedule_holds : lemma_5_9_scale_schedule :=
   lemma_5_9_scale_schedule_holds_of_maximal_target_bounds
     lemma_5_9_maximal_target_bounds_holds
+
+/-- The same target schedule retains a factor-four diameter reserve once
+its final ideal root is at least sixteen. The threshold is independent of
+any density or point weights used after the partition. -/
+theorem lemma_5_9_quarter_scale_schedule (k q r v : Nat)
+    (hk : 1 ≤ k) (hq : 1 ≤ q) (hthreshold : simultaneousPolynomialThreshold k q < r)
+    (hv : 1 ≤ v) (hvupper : (v : Real) ≤
+      (r : Real) ^ (2 * (polynomialPartitionConstant k : Real) ^ q)⁻¹)
+    (hboost : 16 ≤ (r : Real) ^ ((polynomialPartitionConstant k : Real) ^ q)⁻¹) :
+    section5StrongRefinementSchedule k
+      ((r : Real) ^ (-((polynomialPartitionConstant k : Real) ^ q)⁻¹) / 4)
+      r (section5MaximalTargets (polynomialPartitionConstant k) q r v) := by
+  let T := polynomialPartitionThreshold k
+  let K := polynomialPartitionConstant k
+  have hTSixteen : 16 <= T := by
+    simpa only [T] using section5PolynomialPartitionThreshold_ge_sixteen hk
+  have hKSixteen : 16 <= K := by
+    simpa only [K] using section5PolynomialPartitionConstant_ge_sixteen hk
+  have hrounding :
+      polynomialPartitionIteratedRoundingThreshold T K (q - 1) + 3 <=
+        simultaneousPolynomialThreshold k q := by
+    apply polynomialPartitionIteratedRoundingThreshold_le_roundingSafe
+    · simpa only [T] using (show 3 <= T by omega)
+    · simpa only [K] using (show 3 <= K by omega)
+  have hexact :
+      polynomialPartitionIteratedRoundingThreshold T K (q - 1) < r := by
+    omega
+  have hclosed : (2 * T) ^ (K ^ (q - 1)) < r := by
+    simpa only [simultaneousPolynomialThreshold, T, K] using hthreshold
+  have hfinalRootStrict :
+      (2 * T : Nat) < (r : Real) ^ ((K ^ (q - 1) : Nat) : Real)⁻¹ :=
+    section5ClosedThreshold_lt_finalRoot (by omega) hclosed
+  have hfinalRootLarge :
+      16 <= (r : Real) ^ ((K ^ (q - 1) : Nat) : Real)⁻¹ := by
+    have hbase : (16 : Real) <= ((2 * T : Nat) : Real) := by
+      exact_mod_cast (show 16 <= 2 * T by omega)
+    exact hbase.trans hfinalRootStrict.le
+  have hlower : (r : Real) / 4 <= r := by
+    have hrNonneg : (0 : Real) <= r := by positivity
+    nlinarith
+  apply section5MaximalTargets_schedule_aux k hk true q r v (r : Real) hq
+    (by positivity)
+  · simpa only [T, K] using hexact
+  · simpa only [K] using hfinalRootLarge
+  · intro _; exact hboost
+  · exact hlower
+  · exact hv
+  · exact hvupper
 
 end LeanProofs.GowersSzemeredi

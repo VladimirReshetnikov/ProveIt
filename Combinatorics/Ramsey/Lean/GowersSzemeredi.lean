@@ -403,6 +403,13 @@ import GowersSzemeredi.Proofs16AlphabetPackagedCover
 import GowersSzemeredi.Proofs16FullGoodDomain
 import GowersSzemeredi.Proofs16PackagedPremisesCounterexample
 import GowersSzemeredi.Proofs16PackagedExplicitCover
+import GowersSzemeredi.Proofs05DiameterReserve
+import GowersSzemeredi.Proofs05QuarterDiameterBudget
+import GowersSzemeredi.Proofs05QuarterDiameterPartition
+import GowersSzemeredi.Proofs13QuadraticEndpoints
+import GowersSzemeredi.Proofs13UntrimmedSelection
+import GowersSzemeredi.Proofs13UntrimmedRecurrence
+import GowersSzemeredi.Proofs13DensityIndependentRecurrence
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 

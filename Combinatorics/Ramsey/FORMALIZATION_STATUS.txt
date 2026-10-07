@@ -12,8 +12,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 557 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 3,595 public Gowers theorems and found only propext,
+  All 564 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 3,635 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 110 exact
   companion proofs and 10 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -1557,6 +1557,29 @@ Positive cover interface retaining the proved quantitative bounds
   The result holds at every natural scale, including zero. It is a proved
   positive interface for further induction work, not an exact companion
   to the refuted catalogue claim. The full audit includes this module.
+
+Stronger simultaneous diameter and endpoint-preserving quadratic selection
+  Proofs05DiameterReserve and the extended maximal-target schedule retain
+  a factor-four reserve in the polynomial diameter. Proofs05QuarterDiameterBudget
+  proves that the existing simultaneous threshold already supplies the
+  necessary final-root bound, at every positive degree and family size.
+  Proofs05QuarterDiameterPartition therefore strengthens Lemma 5.9's
+  diameter by a factor of four with the same threshold and target lengths.
+  Proofs13QuadraticEndpoints proves the forward three-point quadratic
+  identity and controls the affine expression at every point of a cell,
+  including its endpoints. Proofs13UntrimmedSelection keeps the whole
+  selected cell and retains strong-height density alpha^32/16 rather
+  than alpha^32/20. No endpoint-deletion mass assumption is needed.
+  Proofs13UntrimmedRecurrence constructs this improved Stage 13.5 under
+  the existing polynomial threshold and the weaker scale condition
+  L^(1/2^(12q))>=4. The former separate condition involving alpha^32*L
+  disappears. Proofs13DensityIndependentRecurrence consequently gives
+  one ambient-modulus threshold depending only on the Fourier cutoff,
+  uniformly over all positive context densities. These seven new modules
+  and the modified schedule pass the complete dependency and axiom audit.
+  This does not close the live all-scale Lemma 13.5: its small and
+  intermediate scales and missing standing assumptions require separate
+  treatment. No numbered companion or final Szemeredi-bound claim changes.
 
 Reproducible checks (from repository root)
   python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.Audit
