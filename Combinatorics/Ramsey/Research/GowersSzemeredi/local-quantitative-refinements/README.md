@@ -2,12 +2,12 @@
 
 **Density transfer and phase-flat partitions; energies, restriction and dependent random choice; cube and progression counts; floor patterns and the Proposition 17.7 phase extraction**
 
-This is a research report built on 6 October 2026 from twenty research
+This is a research report built on 6 October 2026 from twenty-seven research
 manuscripts, all dated 6 October 2026. Sources 01–05 were merged in the first write
 (batch 115, `18507e2b2`); sources 06–10 were added in a second write the same day
-(`9f83dbe0f`), sources 11–14 (batch 116) in a third (`b16ce380d`), and sources 15–20
-(batches 117–118) in a fourth, each time as dated additions that renumber and
-relabel nothing printed before. Each source
+(`9f83dbe0f`), sources 11–14 (batch 116) in a third (`b16ce380d`), sources 15–20
+(batches 117–118) in a fourth (`eae64ceca`), and sources 21–27 (batches 119–120) in a
+fifth, each time as dated additions that renumber and relabel nothing printed before. Each source
 sharpens local estimates of W. T. Gowers, *A new proof of Szemerédi's theorem*,
 GAFA 11 (2001), 465–588, and compares its statements with the *corrected*
 statements of ProveIt's formal project beside this directory: the edited
@@ -21,7 +21,7 @@ The report is filed under `Combinatorics/Ramsey/Research/` by Vladimir's directi
 Every manuscript spans several themes, so the article is arranged in five
 **thematic Parts**, with each source's sections printed whole inside them:
 
-- **Part I — density transfer and phase-flat partitions** (sources 01, 02, 03, 05; 06, 10; 13; 16, 18, 19).
+- **Part I — density transfer and phase-flat partitions** (sources 01, 02, 03, 05; 06, 10; 13; 16, 18, 19; 23, 26).
   - A sharp one-sided density–mass bound `P(X > t) ≥ ((a+t)T − at)/(a(b−t))`,
     proved independently in six sources (01, 02, 03, 05, 06, 10).
   - A sharp one-cell phase envelope `C² ≤ (1−ρ²)F² + ρ²L²`.
@@ -49,7 +49,19 @@ Every manuscript spans several themes, so the article is arranged in five
     (19) — conditional on Maynard's published theorem; this **answers 13's
     Question 3**. Volume obstructions `(qk(k+1)/2+1)a + kqb ≤ 1` and
     `(S+1)a + Db ≤ 1`.
-- **Part II — the inverse step** (02, 03, 04; 07, 10; 11, 12, 14; 15, 17, 18, 19).
+  - 23: prescribed-length simultaneous linear partitions are governed by the
+    conductor of the semigroup of allowed lengths; for lengths `L, L+1` the
+    threshold is `L^{q+2}/∏εᵢ (1+o(1))` (leading constant one), and a mixed-radix
+    obstruction, valid even with cell-dependent steps, shows that the frontier
+    `(q+2)a + qb = 1` is optimal — this **answers 13's Question 1** (13's exponent
+    `1/(3q+2)` is optimal). Exact packing and almost-partitions.
+  - **The chapter "Corollary 5.8 without a scale threshold" (I.40; source 26):** at
+    degree one, gain `α/3` at length `(N/M)^{1/3}/8` on every cyclic group, against
+    `α/16` and `(N/M)^{1/16}/8` in the open formal `corollary_5_8`; it implies that
+    statement's degree-one instance, which holds trivially (a singleton) whenever
+    `N/M ≤ 2^48` (proved at the write). Its degree-two sibling, source 32, is placed
+    and belongs in this chapter.
+- **Part II — the inverse step** (02, 03, 04; 07, 10; 11, 12, 14; 15, 17, 18, 19; 22–25, 27).
   - A mixed, weighted extension of Proposition 6.1 on every finite abelian
     group, with coefficient one.
   - Lemma 7.4 with `7δ³n/(3√6)`, and two elementary Propositions 7.3,
@@ -92,7 +104,25 @@ Every manuscript spans several themes, so the article is arranged in five
     `λp ≥ k + 2,585,445` (18); common sampling with `⌈qd/σ⌉ − 1` anchors, an exact
     minimax, the sharp constant `φ³e^{−φ} = 0.83996…`, shared-slice interpolation
     and a local replacement in Lemma 16.10, which itself stays unproved (19).
-- **Part III — cube and progression counts** (03, 04; 06, 08, 09, 10; 13, 14; 16, 18, 20).
+  - **Source 24's chapter (Section 7):** mostly second routes to 03 and 10 (the cubic
+    certificate and scalar optimum of 03; 10's fibre extraction and modern-input
+    corollary), with weaker constants where they differ (`2⁻²⁹⁵γ¹⁰³` against 10's
+    `2⁻²⁰⁹γ¹⁰³`); new: an extraction for codomains `𝔽_p^d` independent of `d`, which
+    beats 10's torsion budget there when `Q_k ≤ p^{d−1}`, `k ≥ 2` (proved at the
+    write), and a parameterized selector. Proposition 7.3 "in every abelian group"
+    is already formal (`proposition_7_3_group_holds`).
+  - **Sources 22, 25, 27 on Lemma 15.4 and 23 on Lemma 16.10 (guide II.81):** 18's
+    leading coefficient `k + C_d` re-derived independently by 25 (with the
+    codimension-one classification over prime-power fields and a selection theorem
+    for every `d`) and 27 (every characteristic, core directions, a cubic
+    remainder); 22's degree-stratified finite bound and **`d = 1`: `(k²+3k)/p`**;
+    **27's second coefficient `(k²+21k−6)/2` for `d = 2`**, answering 18's first
+    question, and an exact count `5/q + 8/q² + 40/q³ − 367/q⁴ + 563/q⁵ − 248/q⁶` for
+    `k = 1`, `d = 2`; 22's thresholds gain nothing over 18's at Lemma 15.5 at
+    leading order. 23: a common base partition with width `(m/3)^A` and exact
+    transport, without an inherited-coordinate hypothesis (a formalization
+    candidate).
+- **Part III — cube and progression counts** (03, 04; 06, 08, 09, 10; 13, 14; 16, 18, 20; 21, 22, 23).
   - The exact fourth-order term of the centered cube count on every finite
     abelian group (03, 08, 09), and the exact fifth-order term with Stirling
     multiplicities and order-two and order-three torsion statistics (09).
@@ -119,6 +149,14 @@ Every manuscript spans several themes, so the article is arranged in five
     `|Λ_k(1_A) − δ^k| ≤ B_k(δ)u²` with a coefficient **strictly below 06's**
     (proved at the write); the exponent 2 is sharp for indicator sets of density
     near 1/2 on `𝔽₂₉^{2m}` (new).
+  - **Source 21's chapter (exponent five), with 23's second route:** on every group
+    of exponent five `Q₃(δ+f) ≤ δ⁸ + 6√2δ⁴u⁴ + (2^{3/4}/3)δ²u⁶ + Cu⁸` for `u ≤ cδ`,
+    absolute constants, sharp — this **answers 14's Question 1**; the phase
+    envelope, rigidity, the next coefficient **20/9 on ℤ/5ℤ**, indicator sharpness.
+  - **Source 22's chapter (polynomial colourings):** the exact pointwise pattern
+    minimum `q^{max(n−B,0)}` for every pattern and degree; the quintic budget eight
+    is sharp at a prescribed centre; no independent additive extension of the norm
+    colouring.
 - **Part IV — floor patterns** (01, 04; 06; 16).
   - `|F(r)| = (∏ 2rᵢ) C_k`, with `2^{k(k−1)/2} ≤ C_k ≤ R(H_k, k)`; general
     coefficient families and modular counts (06).
@@ -136,7 +174,7 @@ Every manuscript spans several themes, so the article is arranged in five
     (06) and 1,458 (formal).
 - **Part V — formal interface, ledger crosswalk, research questions.** The
   writes' crosswalk to the ledger, the deduplicated list of the sources'
-  215 questions, iteration bookkeeping (03, 06, 10), and each source's
+  289 questions, iteration bookkeeping (03, 06, 10), and each source's
   formalization plan, questions, conclusions and appendices.
 
 | No. | Delivered title | Archive (bytes, files) | Manuscript | Pin | Placed | Printed in |
@@ -161,6 +199,13 @@ Every manuscript spans several themes, so the article is arranged in five
 | 18 | *Higher-Order Cube Expansions and Sharp Degeneracy Bounds in Gowers' Szemerédi Framework: simultaneous polynomial partitions, exact constants, and quantitative obstructions* | `gowers_cubes_degeneracy_partitions.zip` (685,030 B, 10) | `gowers_cubes_degeneracy_partitions.tex`, 2,672 lines, 35 pp. | `dca9f0638` | `58aa0c493` | F.23; I.32–I.33; II.65 (guide, with 19), II.66; III.40; V.75–V.79 |
 | 19 | *Efficient Interpolation in Gowers' Szemerédi Framework: exact sampling losses, shared refinements, and simultaneous polynomial recurrence* | `gowers_interpolation_article.zip` (752,841 B, 13) | `gowers_interpolation.tex`, 2,505 lines, 32 pp. | `dca9f0638` | `58aa0c493` | F.24; I.34; II.67–II.71; V.80–V.82 |
 | 20 | *Quadratic Counting Errors and Sharp Directional Bounds in Gowers's Szemerédi Argument: two-function uniformity, torsion-sensitive constants, and a sharp three-term obstruction* | `gowers_quadratic_counting.zip` (483,898 B, 10) | `article.tex`, 1,535 lines, 21 pp. | none (observed checkpoint `1bd57e91c`) | `58aa0c493` | F.25; III.41 (guide), III.42–III.48; V.83–V.86 |
+| 21 | *Sharp Characteristic-Five Cube Bounds in Gowers's Framework: optimal sixth-order correction, phase rigidity, and an eighth-order extremal term* | `gowers_characteristic_five.zip` (815,428 B, 19) | `gowers_characteristic_five.tex`, 1,775 lines, 24 pp. | `43306653a` | `a902613c9` | F.26; III.49 (guide), III.50–III.57; V.87–V.90 |
+| 22 | *Degree Filtrations in Gowers' Ramsey Framework: sharper degeneracy bounds, exact polynomial pattern thresholds, and obstructions to extending norm constructions* | `gowers_degree_stratification.zip` (391,101 B, 14) | `gowers_degree_stratification.tex`, 2,071 lines, 30 pp. | `43306653a` | `a902613c9` | F.27; II.82–II.85; III.60 (guide), III.61–III.65; V.91–V.92 |
+| 23 | *Sharp Thresholds and Extremal Constants in Gowers's Szemerédi Framework: numerical semigroups, characteristic-five cube asymptotics, and common partitions for affine fibres* | `gowers_sharp_thresholds.zip` (832,508 B, 17) | `gowers_sharp_thresholds.tex`, 2,320 lines, 33 pp. | `65f4e039f` | `a902613c9` | F.28; I.35–I.39; II.103; III.58–III.59; V.93–V.95 |
+| 24 | *Sharper local structure in Gowers's Szemerédi argument: moment-sensitive dependent random choice, small difference sets, and vertical-fibre compression* | `gowers_section7_refinements.zip` (484,922 B, 7) | `gowers_section7_refinements.tex`, 1,711 lines, 22 pp. | `2e0553b0c` | `79d9075b9` | F.29; II.72 (guide), II.73–II.80; V.96–V.101 |
+| 25 | *The Codimension-One Degeneracies of Gowers Arrangements: an asymptotically sharp replacement for Lemma 15.4 and explicit random-selection thresholds* | `gowers_arrangement_degeneracy.zip` (444,249 B, 10) | `arrangement_degeneracy.tex`, 1,207 lines, 17 pp. | `568d1802e` | `79d9075b9` | F.30; II.81 (guide, with 22, 27, 23), II.86–II.92; V.102–V.104 |
+| 26 | *Threshold free affine density increments on cyclic groups* (Report275) | `Report275_Threshold_Free_Affine_Density_Increments.zip` (405,485 B, 9) | `article.tex`, 494 lines, 12 pp. | `c94998a5d` | `79d9075b9` | F.31; I.40 (guide), I.41–I.44; V.105–V.106 |
+| 27 | *Sharp Degeneracy Bounds for Gowers Arrangements: hyperplane obstructions, second-order structure, and an exact finite-field count* | `gowers_arrangement_degeneracy (2).zip` (518,856 B, 9) | `article.tex`, 1,824 lines, 28 pp. | none (blob ids only) | `79d9075b9` | F.32; II.93–II.102; V.107–V.110 |
 
 The first five archives arrived in `66f24b0d0` ("New research reports", 6 October
 2026) and survive there (`git show 66f24b0d0:docs/incoming/<archive> > <archive>`);
@@ -188,7 +233,18 @@ two batches, so 18 and 19 arrived between 15 and 16. Source 15's pin predates ev
 placement here; the pins of 16–19 and 20's checkpoint contain source 04's
 manuscript as `article.tex` (placed sources 01–10) but not the first write. Every
 overlap involving 15–20 is at most 1.06 %; 18 and 19 prove the same partition
-theorem independently.
+theorem independently. Sources 21–23 arrived in `26908b3b6` (the merge
+`f7efeb4f5` dropped them; `e3125e698` restored byte-identical copies), 24 in
+`e2bf630b0`, 25 in `d7c4aa399`, 26 in `7e827c6f3` and 27 in `6078f6e16`;
+`a902613c9` ("Place batch 119") staged 21–23 and `79d9075b9` ("Place batch 120")
+24–27 and retired their archives; intake records `dossier119_GOWERS` and
+`dossier120_GOWERS`. 21–23 are numbered in ASCII order of archive name, 24–27 by
+arrival. Archive 27, `gowers_arrangement_degeneracy (2).zip`, is an independent
+manuscript, not an edition of 25 (0.57 % shared text). 24's pin predates every
+placement here; 21–23, 25 and 26 saw the first write; 27 records blob ids only. No
+two of 21–27 share more than 1.53 % (21 and 23, which prove the same theorem
+independently); 25 and 27 re-derive 18's leading coefficient without having seen
+18.
 
 **Status.** Unrefereed; nothing proved here has been checked by a proof
 assistant. The one exception, a lifting lemma, was formalized before the sources
@@ -229,19 +285,42 @@ arrived (below). **Authorship disclosures:**
   repository. Nothing in the report rests on them.
 - Source 14 cites sources 04 and 10 of this report as "earlier unpublished
   project reports" (its Companion2026 and CompanionColoring2026).
+- **Sources 21, 22, 24 and 25 credit ChatGPT**: 21's title page reads
+  "Mathematical research report prepared by ChatGPT" (PDF author field "ChatGPT;
+  prepared for Vladimir Reshetnikov"), and its shipped
+  `mathematical_review.txt` records an "AI-assisted" review, not peer review;
+  22 is a "Research report developed with ChatGPT"; 24 a "Research draft prepared
+  with ChatGPT"; 25 has "Mathematical development and computational checks with
+  ChatGPT".
+- **Source 27 is "An AI-assisted research draft"** (title page and PDF author
+  field), naming no system.
+- Source 23 ("Research article prepared for integration into the ProveIt
+  repository") and source 26 ("Research report prepared for Vladimir") contain no AI
+  statement; none is invented here.
+- Sources 21, 22 and 23 cite manuscripts of sources 14, 18 and 13 as earlier
+  project reports, by their file names.
 
-Every result, proof, example, remark, question and limitation of the twenty
+Every result, proof, example, remark, question and limitation of the twenty-seven
 manuscripts is printed. No proof was replaced by a pointer.
 
-**Further sources, not yet written in.** Sources 21–23 (`a902613c9`), 24–27
-(`79d9075b9`) and 28–33 (`c5513046e`; the last two placed while the fourth write was
-in progress) are in this directory as prefixed files (listed under Files). The
-article does not use them yet; later writes will add them as dated additions without
-renumbering anything here. Their placements record findings that bear on this text:
-21 answers 14's exponent-five question; 22, 25 and 27 re-derive or extend 18's
-degeneracy count (27 answers 18's second-order question for `d = 2`); 23 answers 13's
-Question 1; 28 and 29 bound `c_d^odd` for `d ≥ 4`; 29 adds a restriction theorem
-beside 04's and 17's; 33 continues the arrangement material of 14 and 15. V.2 still
+**Further sources, not yet written in.** Sources 28–33 (`c5513046e`), 34–39
+(`bf2fe146d`) and 40–46 (`2dfe46f44`; both placed while the fifth write was in
+progress) are in this directory as
+prefixed files (listed under Files). The article does not use them yet; later writes
+will add them as dated additions without renumbering anything here. Their placements
+record findings that bear on this text: 28, 29 and 34 bound `c_d^odd` for `d ≥ 4`; 29
+adds a restriction theorem beside 04's and 17's; 32 (Report276) proves Corollary 5.8
+at degree two without a scale threshold and belongs in 26's chapter; 33 continues the
+arrangement material of 14 and 15; 34 answers 07's Question 1 and 09's question on
+the prime-onset function; 35 answers 23's question on polynomial phases; 38 reduces
+the exponent-five problem to `ℤ/5ℤ` at small `u/δ`, answering three of 21's
+questions; 39 re-derives 19's sampling minimax; 40 replaces the repeated Riesz
+products of Lemma 15.5 by one Fejér kernel; 41 (Report277) proves the whole of
+Corollary 5.8 in every degree with no scale premise, extending 32, and 42 (Report278)
+replaces 26's cube-root length cap by a square root, both for 26's chapter; 43 and 46
+continue 36 in characteristic two; 44 computes the second Whitney coefficient of the
+cross-section arrangement in every dimension, answering two of 27's questions; 45
+improves the upper bound for `c_4^odd` and extends 14's coset envelope. V.2 still
 states those questions as open.
 
 ## Why thematic Parts, and how they are filled
@@ -268,7 +347,15 @@ and II.8–II.9; 18 and 19 on Sections 15–16 (II.65); 20 (III.41), beside 06's
 Section III.5; and 16 (IV.10), the strongest of the four Proposition 17.7
 coefficients in Part IV. Source 16 is split over four Parts; 18's Section 6
 (quantitative consequences) is in Part V, like 04's Section 9; 19's Section 8 (worked
-comparisons) stays with its Section 16 chapter.
+comparisons) stays with its Section 16 chapter. The fifth write adds five
+guides: the Part I chapter on Corollary 5.8 without a scale threshold (I.40, 26;
+planned for 26, its degree-two sibling 32, and 41 and 42); 24's Section 7 chapter (II.72), which
+logically follows 03's Sections II.5–II.6 and 10's II.20–II.21; a guide to 22, 25 and
+27 on Lemma 15.4 and 23 on Lemma 16.10 (II.81), continuing 18's II.66 and 19's
+chapter; 21's exponent-five chapter (III.49), with 23's Section 7 and Appendix A as a
+credited second route, after 14's III.35; and 22's colouring chapter (III.60), after
+10's III.30 and 14's III.36. 23's partition sections (I.35–I.39) logically follow
+13's I.26.
 
 **Results proved by several sources** are printed in each source's own form,
 because the forms and hypotheses differ and the proofs are independent. Examples:
@@ -302,15 +389,21 @@ route:
   through order five (09, 16, 18) and set sharpness (03, 04, 09, 16, 18), the
   active-pattern bound at Proposition 17.7 (04, 16), two-function counting (06,
   20), polynomial partitions (18, 19) and their obstructions (13, 05, 18, 19).
+- added in the fifth write: the exponent-five coefficient (21, 23; 23 is the second
+  route), the leading degeneracy coefficient and the single-certificate bound (18
+  first; 22 with credit; 25 and 27 independently), the case `k = d = 1` (22, 27),
+  the prescribed-length upper threshold (13, generalized by 23), the cubic DRC
+  certificate and the scalar optimum (03, 24), the fibre extraction and the
+  modern-input corollary (10, 24), sampling with an add-one argument (19, 23).
 
 ## Files
 
-The directory holds 289 files: 20 at the root, 111 in `code/`, 128 in `data/`, 30 in
+The directory holds 418 files: 41 at the root, 158 in `code/`, 187 in `data/`, 32 in
 `figures/`. Of these, 38 were placed with sources 01–05 (besides the base's
 `article.tex` and `README.md`, which the first write replaced), 46 with sources
-06–10, 39 with sources 11–14, 42 with sources 15–20, and 121 with later sources not
-yet written in (below); `article.pdf` was added by the first write and rebuilt by
-the second, third and fourth.
+06–10, 39 with sources 11–14, 42 with sources 15–20, 60 with sources 21–27, and 190
+with later sources not yet written in (below); `article.pdf` was added by the first
+write and rebuilt by the second to fifth.
 
 **Report files**, written in the writes:
 
@@ -669,24 +762,20 @@ data/20-quadratic-counting-validation_summary.json
 data/20-quadratic-counting-verification_report.json
 ```
 
-**Sources 21–23, placed by `a902613c9`, write pending** (38 files; not used in the
-article):
+**Source 21, prefix `21-characteristic-five-`** (16 files). `code/`: the order-five
+certificate verifier and the profile verifier (standard library), the figure script
+(Matplotlib, `decimal`), the delivered Makefile. `data/`: the 34-monomial Fourier
+certificate (CSV, CRLF line ends kept by `.gitattributes`), the two verification
+logs and the profile results, the coefficient-convergence data, the AI-assisted
+review record, `package_validation.json` (SHA-256 of the unshipped `.tex` and PDF)
+and `source_manifest.json` (pin and blob ids). `figures/`: the phase-envelope and
+convergence figures of Sections III.53 and III.55.
 
 ```
 code/21-characteristic-five-Makefile
 code/21-characteristic-five-make_figures.py
 code/21-characteristic-five-verify_order5.py
 code/21-characteristic-five-verify_profiles.py
-code/22-degree-filtrations-Makefile
-code/22-degree-filtrations-verify_certificates.py
-code/22-degree-filtrations-verify_norm_obstruction.py
-code/22-degree-filtrations-verify_polynomial_patterns.py
-code/22-degree-filtrations-verify_two_cubes.py
-code/23-sharp-thresholds-Makefile
-code/23-sharp-thresholds-check_fifth.py
-code/23-sharp-thresholds-make_figure.py
-code/23-sharp-thresholds-verify_prescribed_partitions.py
-code/23-sharp-thresholds-verify_section16_gluing.py
 data/21-characteristic-five-coefficient_convergence.csv
 data/21-characteristic-five-mathematical_review.txt
 data/21-characteristic-five-order5_cube_fourier_certificate.csv
@@ -695,48 +784,103 @@ data/21-characteristic-five-package_validation.json
 data/21-characteristic-five-profile_validation_results.json
 data/21-characteristic-five-profile_verification.txt
 data/21-characteristic-five-source_manifest.json
+figures/21-characteristic-five-coefficient_convergence.pdf
+figures/21-characteristic-five-coefficient_convergence.png
+figures/21-characteristic-five-phase_envelope.pdf
+figures/21-characteristic-five-phase_envelope.png
+```
+
+**Source 22, prefix `22-degree-filtrations-`** (10 files). `code/`: four exact
+verifiers (standard library) and the delivered Makefile. `data/`: their four
+recorded outputs and `SOURCE_LEDGER.json` (pin, paths and SHA-256 of the inspected
+files, each of the pinned content plus one appended newline, and claim-status lists).
+
+```
+code/22-degree-filtrations-Makefile
+code/22-degree-filtrations-verify_certificates.py
+code/22-degree-filtrations-verify_norm_obstruction.py
+code/22-degree-filtrations-verify_polynomial_patterns.py
+code/22-degree-filtrations-verify_two_cubes.py
 data/22-degree-filtrations-SOURCE_LEDGER.json
 data/22-degree-filtrations-certificate_verification.json
 data/22-degree-filtrations-norm_obstruction_verification.json
 data/22-degree-filtrations-polynomial_pattern_verification.json
 data/22-degree-filtrations-two_cube_verification.json
+```
+
+**Source 23, prefix `23-sharp-thresholds-`** (12 files). `code/`: the partition,
+fifth-order and Section 16 verifiers (standard library), the figure script (NumPy,
+Matplotlib), the delivered Makefile. `data/`: the three recorded outputs,
+`source_manifest.json` (pin, blob ids) and `build_validation.json`. `figures/`: the
+threshold figure of Section I.38. Its `data/latex_build.log` (a TeX Live log) is
+not shipped.
+
+```
+code/23-sharp-thresholds-Makefile
+code/23-sharp-thresholds-check_fifth.py
+code/23-sharp-thresholds-make_figure.py
+code/23-sharp-thresholds-verify_prescribed_partitions.py
+code/23-sharp-thresholds-verify_section16_gluing.py
 data/23-sharp-thresholds-build_validation.json
 data/23-sharp-thresholds-fifth_checks.txt
 data/23-sharp-thresholds-gluing_checks.json
 data/23-sharp-thresholds-partition_checks.json
 data/23-sharp-thresholds-source_manifest.json
-figures/21-characteristic-five-coefficient_convergence.pdf
-figures/21-characteristic-five-coefficient_convergence.png
-figures/21-characteristic-five-phase_envelope.pdf
-figures/21-characteristic-five-phase_envelope.png
 figures/23-sharp-thresholds-phase_thresholds.pdf
 figures/23-sharp-thresholds-phase_thresholds.png
 ```
 
-**Sources 24–27, placed by `79d9075b9`, write pending** (22 files; not used in the
-article):
+**Source 24, prefix `24-section7-compression-`** (4 files). At the root, the
+provenance note (pin, blob ids). `code/`: the exact verifier (standard library) and
+the delivered build script. `data/`: the recorded results.
 
 ```
 24-section7-compression-PROVENANCE.md
-25-codimension-one-SOURCE_AUDIT.md
-26-threshold-free-affine-SOURCES.md
-27-degeneracy-second-order-FORMALIZATION.md
-27-degeneracy-second-order-SOURCE_AUDIT.md
 code/24-section7-compression-build.sh
 code/24-section7-compression-verify.py
+data/24-section7-compression-verification_results.json
+```
+
+**Source 25, prefix `25-codimension-one-`** (7 files). At the root, the source
+audit. `code/`: the verifier, the cutoff comparison (standard library) and the
+delivered Makefile. `data/`: their recorded outputs and `build_summary.json` (SHA-256
+of the unshipped PDF).
+
+```
+25-codimension-one-SOURCE_AUDIT.md
 code/25-codimension-one-Makefile
 code/25-codimension-one-compare_cutoffs.py
 code/25-codimension-one-verify.py
+data/25-codimension-one-build_summary.json
+data/25-codimension-one-cutoff_comparison.json
+data/25-codimension-one-verification.json
+```
+
+**Source 26, prefix `26-threshold-free-affine-`** (5 files; delivered as
+`build.py`, `companion/exact_checks.py`, `tests/…`). At the root, `SOURCES.md` (the
+pinned interface and four SHA-256 fingerprints, each of the pinned file plus one
+appended newline). `code/`: the exact companion, its regression tests, and the
+Linux-only builder with its tests. No recorded output is delivered.
+
+```
+26-threshold-free-affine-SOURCES.md
 code/26-threshold-free-affine-build.py
 code/26-threshold-free-affine-exact_checks.py
 code/26-threshold-free-affine-test_build.py
 code/26-threshold-free-affine-test_companion.py
+```
+
+**Source 27, prefix `27-degeneracy-second-order-`** (6 files). At the root, the
+formalization plan and the source audit (blob ids). `code/`: the verifier (standard
+library; NumPy for `--subset`) and the delivered Makefile. `data/`: the exact
+rational certificate (delivered as `code/exact_certificate.json`) and the
+verification report (delivered at the package root).
+
+```
+27-degeneracy-second-order-FORMALIZATION.md
+27-degeneracy-second-order-SOURCE_AUDIT.md
 code/27-degeneracy-second-order-Makefile
 code/27-degeneracy-second-order-verify.py
-data/24-section7-compression-verification_results.json
-data/25-codimension-one-build_summary.json
-data/25-codimension-one-cutoff_comparison.json
-data/25-codimension-one-verification.json
 data/27-degeneracy-second-order-exact_certificate.json
 data/27-degeneracy-second-order-verification.json
 ```
@@ -808,17 +952,160 @@ figures/29-moment-stability-norm_bounds.pdf
 figures/29-moment-stability-norm_bounds.png
 ```
 
+**Sources 34–39, placed by `bf2fe146d`, write pending** (77 files; not used in the
+article):
+
+```
+35-graded-selection-SOURCE_AUDIT.txt
+36-symmetry-certification-FORMALIZATION_PLAN.md
+36-symmetry-certification-SOURCE_AUDIT.md
+37-missing-intervals-INTEGRATION.md
+37-missing-intervals-SOURCE_AUDIT.md
+39-shared-anchor-FORMALIZATION_PLAN.md
+39-shared-anchor-SOURCE_AUDIT.md
+code/34-torsion-gaps-Makefile
+code/34-torsion-gaps-verify_determinant_gadgets.py
+code/34-torsion-gaps-verify_odd_fourth_gap.py
+code/34-torsion-gaps-verify_torsion.py
+code/35-graded-selection-Makefile
+code/35-graded-selection-verify_all.py
+code/35-graded-selection-verify_graded_selection.py
+code/35-graded-selection-verify_norm_gap.py
+code/35-graded-selection-verify_polynomial_obstruction.py
+code/36-symmetry-certification-Makefile
+code/36-symmetry-certification-verify.py
+code/37-missing-intervals-Makefile
+code/37-missing-intervals-verify.py
+code/38-quotients-Makefile
+code/38-quotients-make_figures.py
+code/38-quotients-run_checks.py
+code/38-quotients-verify_odd_cube_expansion.py
+code/38-quotients-verify_odd_rigidity.py
+code/38-quotients-verify_quotient.py
+code/38-quotients-verify_six_ap_defect.py
+code/38-quotients-verify_twelfth_order.py
+code/39-shared-anchor-Makefile
+code/39-shared-anchor-anchor_selection.py
+code/39-shared-anchor-poisson_constants.py
+code/39-shared-anchor-verify.py
+code/39-shared-anchor-verify_balanced.py
+data/34-torsion-gaps-build_verification.json
+data/34-torsion-gaps-determinant_gadget_verification.json
+data/34-torsion-gaps-no_seven_vertex_torsion_mod_11.json
+data/34-torsion-gaps-no_seven_vertex_torsion_mod_13.json
+data/34-torsion-gaps-odd_fourth_gap_certificates.json
+data/34-torsion-gaps-requirements.txt
+data/34-torsion-gaps-small_prime_matrices.json
+data/34-torsion-gaps-source_ledger.json
+data/34-torsion-gaps-torsion_verification.json
+data/35-graded-selection-README.txt
+data/35-graded-selection-graded_selection_checks.json
+data/35-graded-selection-norm_gap_checks.json
+data/35-graded-selection-polynomial_obstruction_results.json
+data/36-symmetry-certification-claims.json
+data/36-symmetry-certification-requirements.txt
+data/36-symmetry-certification-results.json
+data/37-missing-intervals-requirements.txt
+data/37-missing-intervals-verification_results.json
+data/37-missing-intervals-verification_run.txt
+data/38-quotients-SOURCE_LEDGER.json
+data/38-quotients-VALIDATION.json
+data/38-quotients-environment.json
+data/38-quotients-figure_numerics.json
+data/38-quotients-five_point_coefficient_convergence.csv
+data/38-quotients-odd_cube_expansion_checks.json
+data/38-quotients-odd_rigidity_checks.json
+data/38-quotients-quotient_checks.json
+data/38-quotients-qutrit_coefficient_convergence.csv
+data/38-quotients-requirements.txt
+data/38-quotients-six_ap_defect_checks.json
+data/38-quotients-twelfth_order_checks.json
+data/38-quotients-verification_run.json
+data/38-quotients-verify_odd_cube_expansion_run.txt
+data/38-quotients-verify_odd_rigidity_run.txt
+data/38-quotients-verify_quotient_run.txt
+data/38-quotients-verify_six_ap_defect_run.txt
+data/38-quotients-verify_twelfth_order_run.txt
+data/39-shared-anchor-balanced_verification.json
+data/39-shared-anchor-build_validation.json
+data/39-shared-anchor-exact_profiles.csv
+data/39-shared-anchor-poisson_constants.csv
+data/39-shared-anchor-verification.json
+figures/38-quotients-asymptotic_coefficients.pdf
+figures/38-quotients-asymptotic_coefficients.png
+```
+
+**Sources 40–46, placed by `2dfe46f44`, write pending** (52 files; not used in the
+article):
+
+```
+40-fejer-selection-PROOF_AUDIT.md
+41-all-degree-increments-SOURCES.md
+42-quadratic-scale-SOURCES.md
+43-boolean-phase-FORMALIZATION.md
+44-grid-core-FORMALIZATION.md
+44-grid-core-SOURCE_AUDIT.md
+45-rigidity-gaps-review_applications.md
+45-rigidity-gaps-review_cosets.md
+45-rigidity-gaps-review_energy.md
+45-rigidity-gaps-review_integration.md
+45-rigidity-gaps-review_research.md
+45-rigidity-gaps-review_u4.md
+46-polarization-barriers-FORMALIZATION.md
+46-polarization-barriers-SOURCE_AUDIT.md
+code/40-fejer-selection-Makefile
+code/40-fejer-selection-verify_fejer_selection.py
+code/41-all-degree-increments-build.py
+code/41-all-degree-increments-exact_checks.py
+code/41-all-degree-increments-test_build.py
+code/41-all-degree-increments-test_companion.py
+code/42-quadratic-scale-build.py
+code/42-quadratic-scale-exact_checks.py
+code/42-quadratic-scale-test_build.py
+code/42-quadratic-scale-test_companion.py
+code/43-boolean-phase-Makefile
+code/43-boolean-phase-verify.py
+code/44-grid-core-Makefile
+code/44-grid-core-verify.py
+code/45-rigidity-gaps-Makefile
+code/45-rigidity-gaps-verify_all.py
+code/45-rigidity-gaps-verify_cosets.py
+code/45-rigidity-gaps-verify_energy.py
+code/45-rigidity-gaps-verify_u4.py
+code/46-polarization-barriers-Makefile
+code/46-polarization-barriers-verify.py
+data/40-fejer-selection-verification-results.json
+data/43-boolean-phase-build_report.json
+data/43-boolean-phase-source_audit.json
+data/43-boolean-phase-verification.json
+data/44-grid-core-grid_certificate.json
+data/44-grid-core-normals_d2.json
+data/44-grid-core-normals_d3.json
+data/44-grid-core-normals_d4.json
+data/44-grid-core-run_output.txt
+data/44-grid-core-verification.json
+data/45-rigidity-gaps-build_report.json
+data/45-rigidity-gaps-coset_checks.json
+data/45-rigidity-gaps-energy_checks.json
+data/45-rigidity-gaps-source_manifest.json
+data/45-rigidity-gaps-u4_certificate.json
+data/45-rigidity-gaps-verification_run.txt
+data/46-polarization-barriers-validation.json
+```
+
 **Not shipped**, all retrievable from the arrival commits (`66f24b0d0` for 01–05,
 `62e21161f` for 06–10, `08ab4187e` for 11–13, `d179062cc` for 14, and those named
-above for 15–20):
-- the twenty PDFs;
-- the manuscripts of sources 01, 02, 03, 05 and 06–20, which are printed in the
+above for 15–27):
+- the twenty-seven PDFs;
+- the manuscripts of sources 01, 02, 03, 05 and 06–27, which are printed in the
   article;
-- the delivery READMEs of 01, 02, 03, 05 and 06–20 (their limitations are carried
+- the delivery READMEs of 01, 02, 03, 05 and 06–27 (their limitations are carried
   below);
+- 23's `data/latex_build.log` (a TeX Live build log);
 - the checksum manifests of 04 (`SHA256SUMS.txt`, 13/13), 12 (`SHA256SUMS.txt`,
   11/11), 14 (`SHA256SUMS`, 13/13), 16 (`SHA256SUMS.txt`, 14/14), 18 (9/9), 19
-  (12/12) and 20 (9/9), all verified at intake (repository policy drops checksum
+  (12/12), 20 (9/9), 22 (`SHA256SUMS`, 13/13), 23 (`SHA256SUMS`, 16/16) and 26
+  (`MANIFEST.sha256`, 8/8), all verified at intake (repository policy drops checksum
   manifests).
 
 **Delivery names.** A shipped file is its delivered path, flattened, behind its
@@ -869,9 +1156,21 @@ labels in Part V: **2,061 labels**, all distinct. A comparison of the `.aux` wit
 build of `b16ce380d` found every one of its 1,423 labels with the same printed
 number. Source 15 uses the sub-prefixes `gsr:en:15:` and `gsr:fz:15:`; 16 uses
 `gsr:dt:16:`, `gsr:cc:16:`, `gsr:fp:16:` and `gsr:fz:16:`, so its `cub:` labels do not
-meet 04's.
+meet 04's. The fifth write added the 511 delivered labels of 21–27 (21: 68, 22:
+63, 23: 72, 24: 83, 25: 67, 26: 42, 27: 116), a label on each of their 85 delivered
+sections, the five chapter guides (`gsr:dt:sec:cor58`, `gsr:en:sec:section7`,
+`gsr:en:sec:degeneracy`, `gsr:cc:sec:charfive`, `gsr:cc:sec:colourings`), four labels
+on statements delivered without one (`gsr:en:22:thm:twocube`,
+`gsr:en:22:cor:secondupper`, `gsr:en:22:cor:sharpscale`, `gsr:cc:23:prop:indicator`)
+and 8 item labels in Part V: **2,674 labels**, all distinct. A comparison of the
+`.aux` with a build of `eae64ceca` found every one of its 2,061 labels with the same
+printed number, and a comparison with separate builds of the seven delivered `.tex`
+files found every statement and equation index of 21–27 unchanged. 27's label
+`sec:d2` (its Section 7) has the form of this report's section labels and is
+`gsr:en:27:sec:dtwo`. 22 uses `gsr:en:22:` and `gsr:cc:22:`; 23 uses `gsr:dt:23:`,
+`gsr:cc:23:` and `gsr:en:23:`.
 
-**Numbering.** Sections restart in each Part and carry its numeral (I.9; F.1–F.25
+**Numbering.** Sections restart in each Part and carry its numeral (I.9; F.1–F.32
 in the front matter). Statements and equations are numbered within sections. A
 delivered statement or equation `k.j` keeps its index `j`; the exceptions are the
 equations of sources 02, 03, 06, 11, 12 and 13, which numbered them through the whole
@@ -879,9 +1178,9 @@ manuscript, and the appendices, which now carry Part numbers. Tables and figures
 of sources 06–10 are numbered within their sections (Figure IV.9.1), so that the
 global table and figure numbers of 01–05 do not move; the write's remark on the
 false quartic bound is Remark W1; the third write's remarks have their own counter and
-are W2–W4 (the fourth write needed none). Source 16 numbers its equations by
+are W2–W4 (the fourth and fifth writes needed none). Source 16 numbers its equations by
 explicit tags `(k.j)`, kept as delivered; source 20's Questions, numbered on their
-own counter there, are numbered within their section here and keep their indices. Source 04's tags (M1)–(M7), (R1)–(R32),
+own counter there, are numbered within their section here and keep their indices. So are 25's Questions 1–8; 22's and 23's explicit equation tags ((D1.1)–(D1.7), (F1)–(F13)) are kept. Source 04's tags (M1)–(M7), (R1)–(R32),
 (A1)–(A14), (Q1), (Q2) and (∗) are kept. **Bare numbers such as "Lemma 5.15"
 refer to Gowers's paper**, as in the sources; this report's own numbers always
 carry a Part numeral or an F. Section F.1 holds the full concordance of delivered
@@ -928,6 +1227,16 @@ reading-conventions tables (one for 01–05, one for 06–10). The main collisio
   arrangements. Six macros renamed (16's `\conj`, `\BB`; 17's `\code`; 18's `\T`;
   19's `\commit`; 20's `\U`), printing as delivered; 19's `question` is "Research
   question", 20's "Question".
+- **Sources 21–27**: one number under four names — 18's `C_d`, 22's `C_d`, 25's
+  `H_d`, 27's `L_d` (`C₈ = 2,585,444`; 27's `R_{2,2} = 2,585,419` is a different
+  number); 21's and 23's `C₅ = 2^{3/4}/3` (14's), 21's `C₆, C₇` (vertex sums) and
+  23's `C₆` (one of three forms) differ; 23's `κ = 2^{1/4}/6` is 21's `β₅`; 22's `𝖩`
+  (balanced classes) is not 18's `J_{k,d}`; 24's `Q_k` is 10's `h_k`, its `κ` is 10's
+  `γ`; 25's `n = 2d2^k` is 27's `m`; 22's `q` is `2d` in Sections 2–5 and the field
+  size in 6–10. Three macros renamed (23's `\snapshot`, 24's `\code`, 25's `\card`),
+  printing as delivered; 22's and 27's `question` is "Research question", 21's, 24's
+  and 25's "Question"; 27's `\cref` written out as its own `\crefname` settings print
+  them.
 
 ## What the report claims
 
@@ -1065,6 +1374,33 @@ length propagation.
   quadratic counting with `B_k(δ)`; the sharp pair correction `√(m−1)`;
   supersaturation; exponent 2 sharp at density near 1/2 on `𝔽₂₉^{2m}`.
 
+**Sources 21–27 (fifth write).**
+- 21: `Q₃(δ+f) ≤ δ⁸ + 6√2δ⁴u⁴ + C₅δ²u⁶ + Cu⁸`, `C₅ = 2^{3/4}/3`, `u ≤ cδ`, absolute
+  constants, sharp on every exponent-five group; the phase envelope
+  `C₅(cos θ)₊²/(1+cos²φ)`; rigidity; `20/9` next on `ℤ/5ℤ`; indicator sharpness
+  through `u⁸`; a projection consequence of cube Cauchy–Schwarz.
+- 22: the degree-stratified finite degeneracy bound (`𝖩_{k,2} = 30k⁴+204k³+111k²+114k`);
+  `δ_{k,1}(p) = (k²+3k)/p + O(p⁻²)`, exactly `4/p − 3/p²` for `k = 1`; the exact
+  fixed-centre pattern minimum `q^{max(n−B,0)}`, symmetric and monochromatic budgets
+  in every degree, the quadratic classification, no additive extension, norm-line
+  excess.
+- 23: the semigroup thresholds `C ∏Mᵢ ≤ T ≤ CB`; `L^{q+2}/∏εᵢ (1+o(1))` for
+  `{L, L+1}`; optimality of `(q+2)a + qb = 1`; exact packing; almost-partitions; the
+  exponent-five theorem again (second route); the common base partition with width
+  `(m/3)^A`, exact transport and affine gluing (conditional on slice covers).
+- 24: Lemma 7.4 with `7δ³n/(3√6)` and the scalar optimum (as 03);
+  `(κ/8, 2¹⁵κ⁻⁵, 2¹⁷κ⁻⁶)`; `|B|/(kQ_k)` (as 10, weaker prefactor); `|B|/p^{⌈log_p Q_k⌉}`
+  for `𝔽_p^d` (new); `2⁻⁽³⁴ᵏ⁺²⁰⁾γ¹²ᵏ⁺⁷/k` (weaker than 10).
+- 25: `L q^{D−1} − C(L,2)q^{D−2} ≤ Z ≤ L q^{D−1} + U q^{D−2}`, `L = k + H_d`, over fields
+  of characteristic `> 2d` (first order as 18); codimension-one components; the
+  residual lower bound; selection for every `d ≥ 2`.
+- 26: gain `α/3` at length `min{(r(1−δ)/(128μ))^{1/3}, (N/8)^{1/3}}`, or
+  `(N/M)^{1/3}/8`; the square-root alternative; the integer-box almost-cover and the
+  obstruction to exact long partitions.
+- 27: first order in every characteristic; the `S_{k,d}` core directions and a cubic
+  remainder; `Δ_{k,2}(q) = (k+4)/q + (k²+21k−6)/(2q²) + O(q⁻³)`; the exact
+  eight-vertex count (finite rational certificate); `Δ_{1,1}(q) = 4/q − 3/q²` (as 22).
+
 **Proved in the first write** (dated notes, each with its proof; listed in F.1):
 1. **01's increment is at least 3/2 times 05's** (and 03's at `λ = 1/2`) at the
    stated parameters. With `κ = η/(2δb)`, the ratio is
@@ -1146,6 +1482,32 @@ length propagation.
     `2^d S(d+1,5)`; `C₂ = φ³e^{−φ}` and the worked example of 19 (199 against 1000
     anchors). Script and output: not shipped (the write's scratch record).
 
+**Proved or checked in the fifth write** (dated notes, each with its argument):
+23. **The degree-one formal `corollary_5_8` holds trivially when `N/M ≤ 2^48`** (a
+    singleton of `A`: density 1 ≥ `δ + α/16` since `α ≤ 2δ(1−δ)`, and
+    `(N/M)^{1/16}/8 ≤ 1`), and 26's Corollary 2.3 implies that instance in general
+    (`M ≤ N`, `(N/M)^{1/3} ≥ (N/M)^{1/16}`); 26's bound exceeds 1 only for
+    `N/M > 512`.
+24. **27's second coefficient** `S_{k,2} − C(k,2) − 4k − 3 = (k²+21k−6)/2`
+    (`S_{k,2} = k² + 14k`, `b_{2,2,p} = 3`): 8, 20, 33, 47 for `k = 1, …, 4`.
+25. **No gain at Lemma 15.5 at leading order for 22**: its `𝒜_{k,8}(λ)` has 18's
+    leading term `(k+C₈)/λ`, its `𝒫_{k,8}(λ) ≥ (k+1)(k+C₈)/λ`.
+26. **22, 25 and 27 lie below the formal `lemma_15_4`** in their ranges (22 via 18's
+    bound; 25: `L + U/q < k3^n`; 27: `A + S/q + R/q² < k3^m`).
+27. **24 against 10**: weaker by exactly `2^{10k+6}` (86 bits at `k = 8`); 24's `C₃`
+    is 03's `κ*²` and `C₂` is 03's `2h − h²`; on `𝔽_p^d` 24's extraction beats 10's
+    torsion budget whenever `Q_k ≤ p^{d−1}`, `k ≥ 2` (a multiple of `p` costs `p^d − 1`
+    in 10's budget, so its retention is below `p^{1−d}`).
+28. **25's power-form exponent**: `K_n/E_k → log 2` against the formal
+    `arrangementSelectionExponent` (0.693147 already at `k = 1, …, 4`).
+29. **23's sampling lemma against 19's theorem**: the same add-one argument; a
+    different loss (sampled points retained, hence the factor `1 − r/n`); its stated
+    sample size is one more than its own inequality and 19's need.
+30. Checked: 21's `C₅` optimization and the identities between 21's and 23's rigidity
+    statements (`2^{−3/4}κ² = C₅/24`); `L_{3,5} = 57`; `R_{2,2} = H₈ − 25`; 23's
+    `t`-interval and the conductor `(v−1)(v−2)`; 26's remark (`11/108` against
+    `1/36`). Script and output: not shipped (the write's scratch record).
+
 Recomputed independently at the second write: the `ℤ/11` counterexample (exact
 enumeration of all `11⁴` frequency choices, and direct summation over all cubes);
 09's determinant-5 configuration (`det B = −5`, `M_S r = (10,5,5,5,5,5)`, Smith form
@@ -1157,9 +1519,10 @@ not shipped (the write's scratch record).
 
 ## What the report does not claim
 
-No source claims a new bound for `r_k(N)`. All cite Leng–Sah–Sawhney's
-`r_k(N) ≪ N exp(−(log log N)^{c_k})`, `k ≥ 5`, as the benchmark (10 also
-Raghavan's 2026 `r₃` bound and Green–Tao's `r₄`). No source claims literature
+No source claims a new bound for `r_k(N)`. Sources 01–15, 17–21, 23 and 24 cite
+Leng–Sah–Sawhney's `r_k(N) ≪ N exp(−(log log N)^{c_k})`, `k ≥ 5`, as the benchmark
+(10 also Raghavan's 2026 `r₃` bound and Green–Tao's `r₄`); 16 cites no global
+benchmark, and 22 and 25–27 state that their results are local. No source claims literature
 priority or an exhaustive priority search, Lean compilation, or kernel
 verification. Further limitations, kept in place and collected in Section V.2:
 - sharpness in the weighted model, not for arithmetic characters (01);
@@ -1209,6 +1572,25 @@ verification. Further limitations, kept in place and collected in Section V.2:
   completed; Maynard's theorem is imported;
 - 20: not a substitute for the asymmetric Corollary 3.3; `B_k` not claimed sharp for
   `k ≥ 4`; indicator sharpness only on `𝔽₂₉^{2m}`;
+- 21: the universal `u⁸` coefficient is undetermined, `20/9` is for the fixed
+  `ℤ/5ℤ`; indicator sharpness is a lower example; its review is AI-assisted, not
+  peer review;
+- 22: class counts are not success loci; the second coefficient is not determined;
+  the equal-allocation threshold is not claimed to dominate; global quintic
+  avoidance is open; 7,810,000 is a lower bound;
+- 23: the Section 16 closing comparison is not proved; the gluing is conditional on
+  slice covers; no integer-representative fidelity; the threshold is eventual and
+  universal;
+- 24: not a new BSG record; the scalar sharpness concerns the relaxation only; its
+  hashing theorem is outside its suite; its modern-input corollary imports
+  Reiher–Schoen;
+- 25: no full census and no selection simulation; `d ≥ 2` and characteristic `> 2d`
+  are substantive;
+- 26: no higher-degree result; its Appendix A is not the Section 16 interface;
+  constants not optimal; its builder is Linux-only;
+- 27: the exact formula rests on a finite certificate not checked by a proof
+  assistant; the cubic bound is a union bound; nothing propagated through
+  Lemma 15.5;
 - finite and numerical checks prove nothing general (all).
 
 From the delivery READMEs:
@@ -1230,13 +1612,35 @@ paragraphs of 10, as 28 new items or dated sentences in existing items. The thir
 write adds the 45 questions of 11–14 (11: 9, 12: 12, 13: 12, 14: 12) as 17 new items
 or dated sentences — 141 questions. The fourth write adds the 74 questions of 15–20
 (15: 9, 16: 14, 17: 10, 18: 12, 19: 12 plus five at the end of its Section 6, 20: 12)
-as 17 new items or dated sentences — **215 questions in all**:
-- **I**, density transfer: 17 items, 40 questions;
-- **II**, the inverse step: 41 items, 68 questions and one paragraph, plus three
+as 17 new items or dated sentences — 215 questions. The fifth write adds the 74
+questions of 21–27 (21: 11, 22: 15, 23: 12, 24: 10, 25: 8, 26: 6, 27: 12) as 8 new items
+or dated sentences — **289 questions in all**:
+- **I**, density transfer: 19 items, 49 questions;
+- **II**, the inverse step: 45 items, 104 questions and one paragraph, plus three
   marked questions of the intake (below);
-- **III**, cubes and progressions: 26 items, 60 questions and one paragraph;
+- **III**, cubes and progressions: 28 items, 79 questions and one paragraph;
 - **IV**, floor patterns: 7 items, 17 questions;
-- **V**, integration and formalization: 3 items, 30 questions.
+- **V**, integration and formalization: 3 items, 40 questions.
+
+- **Answered or advanced in the fifth write** (dated notes at the questions):
+  - **14's Question 1 is answered** by 21 and 23: `C₅ = 2^{3/4}/3`, uniformly.
+  - **13's Question 1 is answered** by 23: the prescribed-length frontier is
+    `(q+2)a + qb = 1`, even with cell-dependent steps.
+  - **18's first question is answered for `d = 2`** by 27 (and with it 22's and 25's
+    first questions); **18's question on `d = 1`** is answered in its leading
+    coefficient by 22, which also answers 27's single-pair question to that extent;
+    the first-order count in small characteristic (25's Question 4) is 27's.
+  - 19's Question 6 is advanced by 23; 14's Question 7 is advanced and its Question 8
+    has a first instance by 22; 04's and 10's Questions 6 are advanced for `𝔽_p^d`
+    codomains by 24.
+- **Fifth write:** no claim of 21–27 was found wrong or unproved. Corrected in dated
+  notes: framing (22's "direct Section 15 improvement" gains nothing at Lemma 15.5 at
+  leading order; 24 presents 03's and 10's results as contributions, some weaker, and
+  its "every abelian group" form of Proposition 7.3 is already formal; 25 and 27
+  present 18's leading coefficient as their own; 27's remark on the research
+  directory overlooks 18 and 22), and the intake's "weaker version" for 23's sampling
+  lemma (made precise). Kept as evidence: the intake's convergence to 20/9, its exact
+  `δ_{k,1}(p)` for `k ≤ 3`, its Monte Carlo for 27 at `k = 2`.
 
 - **Answered or advanced in the fourth write** (dated notes at the questions):
   - **13's Question 3 is answered** by 18 and 19, conditionally on Maynard's
@@ -1351,6 +1755,27 @@ only in one floating-point error field each (`1.73·10⁻¹⁷` against `2.08·1
 `6.8·10⁻²¹` against `1.36·10⁻²⁰`); the figure scripts of 16, 18 and 19 regenerated
 their figures on copies (the shipped figures are unchanged).
 
+**At the fifth write:** every comparison of 21–27 with the formal project was
+checked at HEAD `2dfe46f44` (Section V.1, fifth table; every cited file and line read
+there; every Lean file the sources cite has the same blob as at their pins), and the
+references of the four earlier tables were re-read at the same HEAD (all correct
+except `proposition_17_7_holds`, printed at line 2900 of
+`Proofs17LocalizedPhaseRemoval.lean`, which is at line 2941 since `c2975a00d`
+inserted `proposition_17_7_with_upper` above it; the dated tables keep their
+numbers). The statements above
+were proved or checked by the write's script (exact arithmetic where possible); merge
+fidelity was checked word by word against the delivered sections, and statement and
+equation indices against separate builds of the seven manuscripts. The suites of
+21–27 were rerun on copies by the routes below (Windows, Python 3.14.4, NumPy and
+Matplotlib through `uv`): 22, 23, 24, 25 and 27 reproduce the shipped outputs (25 and
+27 up to the Python version and timing fields; 27's certificate is rebuilt
+identically); 21's order-five log and certificate are identical (but the absolute
+certificate path it prints and its float-discrepancy line), its profile results agree
+to relative `10⁻⁹` except last-ulp error fields (`1.7310914·10⁻¹³` against
+`1.7310866·10⁻¹³`); 26's companion passes its 20 tests in normal and `-O` mode; the
+figure scripts of 21 and 23 regenerated their figures on copies. 26's builder and its
+tests need Linux (`/proc/self/fd`) and were not run.
+
 **Independent check of the write for sources 01–05 (6 October 2026).** An
 adversarial check made by the intake after the first write (`18507e2b2`) rebuilt
 that text (167 pages, byte-identical to its PDF), re-derived the four statements
@@ -1398,7 +1823,9 @@ and 1,805 audited public theorems (06 quotes 140 and 1,365 from its pin); at the
 third write (HEAD `e1db00e99`) 100 and 20 (`lemma_13_8` closed), 206 modules and
 1,879 theorems (12 quotes 154 and 1,508 from its pin); at the fourth write (HEAD
 `0b4890a1c`) 101 and 19 (`lemma_13_7` closed), 233 modules and 2,138 theorems (16 and
-19 quote 98/22 and 169/1,658 from `dca9f0638`). Each source's comparison
+19 quote 98/22 and 169/1,658 from `dca9f0638`); at the fifth write (HEAD `2dfe46f44`) still
+101 and 19, 267 modules and 2,424 theorems (sources 21–27 quote no counts; at their pins
+the ledger recorded 99/21, at 24's pin 97/23). Each source's comparison
 with a corrected statement is accurate at HEAD except stale claims, which the
 article corrects in dated notes:
 - source 02 calls its partition input `PP(K,R₀)`, i.e. Corollary 5.6, "not … Lean-verified". It is now
@@ -1464,6 +1891,22 @@ Lemma 13.5 (16's own-step interface) the development now proves the `1/16`
 pre-trimming density and the statement at large prime `N` (`lemma_13_5_large_N`);
 the catalogue `lemma_13_5` is still open.
 
+**Sources 21–27.** No statement of theirs is formalized. Two formalization
+candidates are recorded, not claimed: 26's Corollary 2.3 is a written proof of the
+degree-one instance of the open `corollary_5_8` (`Section05.lean`, line 242), which is
+trivial for `N/M ≤ 2^48`; the ledger does not change because the statement
+quantifies over every degree (the repository proves only
+`corollary_5_8_with_scale_holds`, `Proofs05FullPartition.lean`, line 94). 23's
+common base partition would remove the square-root width loss of
+`section16_local_affine_lift_sqrt` (`Proofs16LiftWidth.lean`, line 31), if the formal
+Section 16 interface accepts its long final axes (not checked). 24's Proposition 7.3
+in every abelian group is already `proposition_7_3_group_holds`
+(`Proofs07BalogSzemeredi.lean`, line 854). 22, 25 and 27 imply the bound of
+`lemma_15_4` in their ranges; 25's selection theorem improves the leading factor of
+`arrangementSelectionExponent` (`Sections14_15.lean`, line 409) by `log 2`. 21 leaves
+`lemma_3_10` (`Sections01_03.lean`, line 340; companion `Proofs03CubeUpper.lean`,
+line 82) unchanged.
+
 **Nothing else here is formalized, and the report gains no formal status.**
 Pointers for `FORMALIZATION_STATUS.txt` are left to the session that maintains
 the Lean development.
@@ -1517,6 +1960,26 @@ and the source paper in `Papers/sz-thm-gowers-proof`.
   - 20's `verify.py` takes `--output` (`-S` for the exact part, NumPy for
     `--gauss`); its Makefile names `article.tex` and an unshipped
     `exact_verification_report.json`.
+  - **21's `verify_order5.py` and `make_figures.py` resolve the package root as
+    their parent's parent and write unprefixed `data/…` and `figures/…`**; run them
+    only on a copy. `verify_order5.py` prints the absolute path of its certificate
+    (the shipped log has the sandbox path `/workspace/scratch/…`);
+    `verify_profiles.py` takes `--output`.
+  - **22's `verify_certificates.py` and `verify_two_cubes.py` overwrite
+    `ROOT/data/*.json` under unprefixed names**; `verify_polynomial_patterns.py`
+    prints its JSON; `verify_norm_obstruction.py --output` defaults to its own
+    directory.
+  - 23's verifiers print to standard output (its Makefile redirects into `data/`);
+    its `make_figure.py` writes `ROOT/figures/`.
+  - 24's `verify.py --output` defaults to the current directory.
+  - **25's `verify.py` and `compare_cutoffs.py` write `parents[1]/data/…` under
+    unprefixed names**, which in the shipped layout is this directory's `data/`: run
+    them only on a copy.
+  - 26's `test_companion.py` loads `ROOT/companion/exact_checks.py`; its `build.py`
+    checks an exact inventory of the delivered tree and is Linux-only.
+  - **27's `verify.py` reads `ROOT/code/exact_certificate.json`** (shipped as
+    `data/27-…-exact_certificate.json`) and with `--write` writes `ROOT/verification.json`
+    and `ROOT/code/exact_certificate.json`; run it on a copy with the delivered layout.
 
   Rerun on copies (below).
 - **Source defects**, disclosed and not fixed in the delivered files:
@@ -1552,6 +2015,15 @@ and the source paper in `Papers/sz-thm-gowers-proof`.
     "new" column uses the first form of its bound (0.40 dex above the abstract's).
   - 19's source audit and README quote 98/22 and 169/1,658 from its pin (dated notes
     in the article); 19 and 20's READMEs (not shipped) say `python3`.
+  - 21's README (not shipped) says `make pdf`, its Makefile runs two pdflatex
+    passes; its Section III.55 names `verify_order5.py` without `code/`. 21's, 22's,
+    23's, 25's and 27's Makefiles and 24's and 26's READMEs use `python3`.
+  - 22's `SOURCE_LEDGER.json` and 26's `SOURCES.md` give SHA-256 values of the pinned
+    files with one appended newline (a retrieval artifact; the byte counts are one
+    larger), not of the blobs themselves.
+  - 23's small obstruction uses `R = 1331`, not `DC − 1`; any gap value works.
+  - 27's Table II.95.1 lists `R_{2,2} = 2,585,419`, which is not `H₈ = 2,585,444`
+    (dated note); both are correct.
 - **Delivery names inside shipped text.**
   - 04's and 07's and 10's `source_manifest.json`, 03's `SOURCE_NOTES.txt`, 06's
     `provenance.json` and `README_VERIFICATION.txt`, 08's `source_provenance.json`,
@@ -1566,6 +2038,11 @@ and the source paper in `Papers/sz-thm-gowers-proof`.
     `provenance.json` and `integration.md`, 16's `pdf_review.txt`, 17's and 20's
     `source_manifest.json`, 18's `provenance.json`, 19's `source-audit.json` and 20's
     `BUILD_REPORT.txt` and `validation_summary.json`.
+  - 21's `source_manifest.json` and `package_validation.json`, 22's
+    `SOURCE_LEDGER.json`, 23's `source_manifest.json` and `build_validation.json`,
+    24's `PROVENANCE.md`, 25's `SOURCE_AUDIT.md` and `build_summary.json`, 26's
+    `SOURCES.md` and 27's `SOURCE_AUDIT.md` and `FORMALIZATION.md` name delivered
+    files.
 - **Edits of delivered text in the article**, listed in F.1:
   - prefixed labels and unified citation keys;
   - source tags on headings;
@@ -1586,6 +2063,13 @@ and the source paper in `Papers/sz-thm-gowers-proof`.
     numbered within its section; 19's `\cref` written out; three figure paths; the
     title-page statements of 17–20 printed in their front-matter sections; 16's
     explicit equation tags kept.
+  - fifth write: three macros renamed (23's `\snapshot`, 24's `\code`, 25's
+    `\card`); 22's and 27's `question` set as "Research question", 21's, 24's and
+    25's as "Question" (25's numbered within its section); 27's `\cref` written out
+    as its own `\crefname` settings print them; 27's label `sec:d2` prefixed as
+    `sec:dtwo`; four labels added to unlabelled statements (22: three, 23: one); three
+    figure paths; the title-page statements of 21, 23, 24 and 27 printed in their
+    front-matter sections; 22's and 23's equation tags kept.
 
 ## Rerunning the checks
 
@@ -1704,6 +2188,46 @@ mkdir -p "$T/r20" && cp "$R/code/20-quadratic-counting-verify.py" "$T/r20/verify
   $PY verify.py --gauss --output full_rerun.json > /dev/null)   # NumPy for --gauss
 ```
 
+Sources 21–27 (added in the fifth write; same variables):
+
+```sh
+mkdir -p "$T/r21/code" "$T/r21/data" "$T/r21/figures"
+for f in verify_order5 verify_profiles make_figures; do cp "$R/code/21-characteristic-five-$f.py" "$T/r21/code/$f.py"; done
+(cd "$T/r21" && $PY code/verify_order5.py > data/order5_verification.txt &&
+  cmp data/order5_cube_fourier_certificate.csv "$OLDPWD/$R/data/21-characteristic-five-order5_cube_fourier_certificate.csv" &&
+  $PY code/verify_profiles.py --output data/profile_validation_results.json > data/profile_verification.txt &&
+  $PY code/make_figures.py)    # Matplotlib; writes data/ and figures/ inside the copy only
+mkdir -p "$T/r22/code" "$T/r22/data"
+for f in verify_certificates verify_two_cubes verify_polynomial_patterns verify_norm_obstruction; do
+  cp "$R/code/22-degree-filtrations-$f.py" "$T/r22/code/$f.py"; done
+(cd "$T/r22" && $PY code/verify_certificates.py && $PY code/verify_two_cubes.py &&
+  $PY code/verify_polynomial_patterns.py > data/polynomial_pattern_verification.json &&
+  $PY code/verify_norm_obstruction.py --output data/norm_obstruction_verification.json)
+  # compare data/*.json with data/22-degree-filtrations-*.json (parsed; CRLF on Windows)
+mkdir -p "$T/r23/code" "$T/r23/data" "$T/r23/figures"
+for f in verify_prescribed_partitions check_fifth verify_section16_gluing make_figure; do
+  cp "$R/code/23-sharp-thresholds-$f.py" "$T/r23/code/$f.py"; done
+(cd "$T/r23" && $PY code/verify_prescribed_partitions.py > data/partition_checks.json &&
+  $PY code/check_fifth.py > data/fifth_checks.txt &&
+  same data/fifth_checks.txt "$OLDPWD/$R/data/23-sharp-thresholds-fifth_checks.txt" &&
+  $PY code/verify_section16_gluing.py > data/gluing_checks.json &&
+  $PY code/make_figure.py)     # NumPy and Matplotlib; writes figures/ inside the copy
+mkdir -p "$T/r24" && cp "$R/code/24-section7-compression-verify.py" "$T/r24/verify.py"
+(cd "$T/r24" && $PY verify.py --output rerun.json > /dev/null)
+mkdir -p "$T/r25/code" "$T/r25/data"
+for f in verify compare_cutoffs; do cp "$R/code/25-codimension-one-$f.py" "$T/r25/code/$f.py"; done
+(cd "$T/r25" && $PY code/verify.py && $PY code/compare_cutoffs.py)   # writes $T/r25/data/
+mkdir -p "$T/r26/companion" "$T/r26/tests"
+cp "$R/code/26-threshold-free-affine-exact_checks.py" "$T/r26/companion/exact_checks.py"
+cp "$R/code/26-threshold-free-affine-test_companion.py" "$T/r26/tests/test_companion.py"
+(cd "$T/r26" && $PY -B companion/exact_checks.py && $PY -B companion/exact_checks.py --full &&
+  $PY -B tests/test_companion.py && $PY -B -O tests/test_companion.py)
+mkdir -p "$T/r27/code" && cp "$R/code/27-degeneracy-second-order-verify.py" "$T/r27/code/verify.py"
+cp "$R/data/27-degeneracy-second-order-exact_certificate.json" "$T/r27/code/exact_certificate.json"
+(cd "$T/r27" && $PY code/verify.py &&
+  $PY code/verify.py --subset --write)   # NumPy; rewrites code/exact_certificate.json and verification.json in the copy
+```
+
 Requirements and run times:
 - 02 and 10 need NumPy; 05's `verify.py` needs mpmath (even for `--part exact`);
   09's `verify_lattices.py` needs SymPy (1.14.0 was used); 12's
@@ -1711,6 +2235,10 @@ Requirements and run times:
   and 14's `verify_results.py` need NumPy; the figure scripts of 12, 13 and 14 need
   Matplotlib. 16's `verify_localization.py`, 17's `verify.py` and 20's `--gauss`
   need NumPy; the figure scripts of 16, 18 and 19 need Matplotlib.
+- 23's `make_figure.py` needs NumPy and Matplotlib, 21's `make_figures.py`
+  Matplotlib; 27's `--subset` needs NumPy. 25's and 27's JSON record the Python
+  version and timings; compare parsed JSON. 26's `test_build.py` and `build.py` need
+  Linux.
 - 13's cube and Fourier summaries record floating-point error magnitudes and the
   NumPy version; compare them field by field, not byte by byte.
 - Do not run Python with `-O`: the 02, 05 and 06 checkers rely on assertions (06's
@@ -1723,8 +2251,8 @@ Requirements and run times:
   bytes.
 
 At the first write the 01–05 block, at the second write the 06–10 block, at the
-third write the 11–14 block and at the fourth write the 15–20 block (with NumPy and
-Matplotlib through `uv`) run verbatim from the repository root (Git Bash on Windows, `PY=py`; 09 and 10 through
+third write the 11–14 block, at the fourth write the 15–20 block and at the fifth
+write the 21–27 block (with NumPy and Matplotlib through `uv`) run verbatim from the repository root (Git Bash on Windows, `PY=py`; 09 and 10 through
 `uv run --no-project --with sympy==1.14.0` and `--with numpy`), completed all
 comparisons. The longer checks also run on these copies:
 - 01: `check_refinements.py` (NumPy, SymPy);
@@ -1743,7 +2271,7 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
 Use pdfLaTeX (MiKTeX or TeX Live), in a scratch copy that contains `figures/`.
-The build gives 647 pages, with no LaTeX warnings, no undefined references, no
+The build gives 837 pages, with no LaTeX warnings, no undefined references, no
 duplicate destinations and no overfull boxes. Packages: amsmath, amssymb, amsthm,
 mathtools, lmodern, geometry, microtype, graphicx, booktabs, longtable, tabularx,
 array, enumitem, needspace, placeins, xcolor, hyperref, xurl, bookmark, tikz
