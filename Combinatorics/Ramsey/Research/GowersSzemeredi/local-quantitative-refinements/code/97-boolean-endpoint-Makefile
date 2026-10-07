@@ -1,0 +1,17 @@
+PYTHON ?= python3
+LATEXMK ?= latexmk
+ARTICLE := boolean_endpoint_rigidity
+
+.PHONY: all check pdf clean
+all: check pdf
+
+check:
+	$(PYTHON) code/verify.py --output data/verification.json
+	$(PYTHON) -O code/verify.py --output data/verification_optimized.json
+	cmp data/verification.json data/verification_optimized.json
+
+pdf:
+	$(LATEXMK) -pdf -interaction=nonstopmode -halt-on-error $(ARTICLE).tex
+
+clean:
+	$(LATEXMK) -c $(ARTICLE).tex

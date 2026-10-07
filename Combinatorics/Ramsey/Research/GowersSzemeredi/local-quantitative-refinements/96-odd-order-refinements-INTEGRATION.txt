@@ -1,0 +1,107 @@
+INTEGRATION GUIDE
+
+Destination
+-----------
+Combinatorics/Ramsey/Research/GowersSzemeredi/
+local-quantitative-refinements/
+
+Use the repository's normal intake process to assign a source number.
+The article is compared against commit:
+0ef37201dea1237390e59d0960c1058aaeaa3572
+
+The .tex is a complete standalone document. To include it in the
+combined article, retain the mathematical body, prefix its labels and
+citation keys, and remove the standalone preamble, title, table of
+contents, bibliography wrapper, and final end-of-document marker.
+The PGFPlots figure is inline and requires no external assets.
+
+Thematic placement
+------------------
+Affine remainder and cubic:
+  Beside sources 11, 14, 38, and 59.
+  thm:affine-remainder
+  thm:affine-cubic
+  cor:affine-endpoint
+  prop:affine-endpoint-stability
+  cor:affine-endpoint-gap
+  cor:affine-near-equality
+  thm:affine-weighted
+
+Odd-target arrangement repair:
+  Beside source 33.
+  thm:arr-odd
+  thm:arr-prime-obstruction
+  eq:arr-prime-bracket
+  eq:arr-eight-bracket
+
+Erasure-sensitive repair:
+  Beside source 33's partial-domain theorem.
+  thm:arr-erasure
+  cor:arr-full-row-profile
+  prop:arr-thin-sharp
+
+Uniformity comparison:
+  Beside sources 45 and 49.
+  norm:profile
+  norm:retuned
+  norm:phase-certificate
+  norm:dual-profile
+  norm:main             Clean 42/5 bound
+  norm:optional-843     Stronger proved 843/100 bound
+  The optional-843 label is retained to match the certificate key;
+  its result is part of the final article, not a conjecture.
+
+Counting application:
+  Beside the quartic expansion of sources 03, 04, 08, and 09.
+  cube:quartic-expansion
+  cube:improved-quartic
+  cor:gowers-cube
+
+Earlier full-product decoder:
+  Appendix boot:sec:decoder.
+  This is reproduced prior work, not a new theorem of this package.
+  The final appendix subsection also proves the classical 2/9
+  correction threshold used for the derived endpoint consequences.
+
+Attribution to preserve
+----------------------
+Gowers: the uniformity framework and Gowers--Cauchy--Schwarz.
+Blum--Luby--Rubinfeld and Ben-Or--Coppersmith--Luby--Rubinfeld:
+classical homomorphism correction.
+Source 59: signed graph identity and earlier affine analysis.
+Source 33: the full-product arrangement decoder and its activation range.
+Sources 29, 34, 45, and 49: prior moment/face methods and scalar ingredients.
+Source 49: the face-split finite enumeration and earlier dual test.
+Sources 03 and 04: the quartic cube expansion and parallelogram count.
+
+The new affine ingredient is the retained negative completion term and
+its coupled support/label remainder. The new arrangement ingredients
+are the odd-target cancellation estimate, the stronger common-prime
+construction, and direct accounting of observed errors. The new norm
+ingredients are the simultaneous moment profile, the retuned test, and
+the order-five phase certificate.
+
+Conditions that must remain explicit
+------------------------------------
+All affine and arrangement probabilities include repeated inputs.
+The affine theorem refers to a specified affine reference.
+Affine oddness is a target condition; norm oddness is a domain condition.
+Energy sums are unnormalized in the affine proof.
+Fourier and Gowers averages are normalized in the norm proof.
+Arrangement s is the number of vertical edges; s=16 is eight-arrangements.
+The exact arrangement model is a(x)+B(x,y)+ell(y), including arbitrary a.
+The erasure theorem assumes a near-full domain and uses ambient distance.
+Conditional failure eta, validity lambda, and theta=lambda*eta are distinct.
+The weighted affine theorem draws labels independently at occurrences.
+The thin-row sharpness assertions concern the explicitly stated limits.
+The finite row-profile envelope is optimal for its relaxation, not
+claimed attainable by every arrangement-labeling problem.
+
+Verification and formal status
+-----------------------------
+Store code/ and data/ beside the integrated research source. The runner
+regenerates the exact reports with no third-party Python dependencies.
+Do not infer a Lean proof status from the Python results or this article.
+No new global Szemeredi estimate is asserted.
+The exact common-prime second coefficient and optimal norm constant
+remain unresolved.
