@@ -13,8 +13,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 742 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 4,724 public Gowers theorems and found only propext,
+  All 746 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 4,742 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 113 exact
   companion proofs and 7 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -2380,6 +2380,45 @@ Retaining the common-base mass in the extraction count
   final all-length Szemeredi bound is inferred from this count comparison.
   No exact catalogue companion is closed by this strengthening.
 
+Selected-domain repair of the remaining exact lifting obligation
+  Proofs16SelectedDomainTransport defines Section16SelectedUnitDomain D:
+  choose C inside the actual good domain of a common-base witness D, with
+  |C| >= N^(k+1)/s(theta,gamma,k+1), and prove the unit MultiplyLinearFunction
+  cover only on C. Translation gives a subrelation of the original input
+  with exactly |C| points and the same cover parameter. All fields of D
+  remain unchanged; no claim that arbitrary thinning preserves those fields
+  is needed. A unit cover on the entire good domain implies this selection
+  property, using the proved mass budget.
+  Proofs16SelectedLiftInduction introduces the unasserted existential
+  Section16SelectedLiftAt k: every structured product-property input above
+  one uniform threshold admits a common-base witness D with this successful
+  selection. It proves the exact large-piece theorem and exact structural
+  induction from this obligation, using the already proved zero- and
+  one-dimensional bases. The extraction and selection thresholds suffice;
+  a separate threshold for choosing an arbitrary common base is unnecessary.
+  The older universal lifting contract implies this selected contract when
+  common-base construction is supplied, but no converse is asserted.
+  Proofs16SelectedCandidateDomain proves a concrete selection case. If the
+  good-domain function is covered by q global multilinear maps and
+    q <= theta2*s(theta,gamma,k+1),
+  a finite averaging argument selects one map on a subdomain of the exact
+  required mass. That map's graph is unit multiply-linear. A finite value
+  set is the constant-map special case; the entire original good domain
+  need not have a unit cover.
+  Proofs16SelectionReserve proves the displayed candidate allowance is at
+  least theta^-1, and proves that every good-domain value is a value of the
+  original partial function on B. Consequently every common-base witness
+  admits a successful selected domain whenever |phi(B)| <= theta^-1. This
+  verifies the finite-range selection mechanism relevant to the reported
+  universal-witness obstructions, without claiming to have formalized all
+  hypotheses or the full counterexample from Report 299.
+  The general selected-lifting theorem remains unproved. Existing large-box
+  power covers provide local candidate families on a partition, not the
+  single bounded global family assumed in the selection case. The new
+  conditional induction and special case do not prove Lemma 16.10 or close
+  any of the seven exact source companions. The false older packaged lemma
+  and the unasserted universal contract remain unchanged.
+
 Fourier localization and inverse induction from the joint power cover
   Proofs16PowerCoverDenseBox selects a dense multilinear graph from any
   large-box cover at half the initial density. It keeps the exact width
@@ -2608,6 +2647,10 @@ Next substantial obligations
      both packaged premises, and the literal negation of lemma_16_10
      are now formalized. Preserve that predicate while developing a
      faithful contextual repair; the false abstraction cannot be proved.
+     The exact induction now has a proved reduction from the existential
+     Section16SelectedLiftAt obligation, allowing sufficient-mass selection
+     inside a chosen common-base domain. Its finite-global-candidate case
+     is proved; the general selection is still the substantive gap.
   3. Prove Theorem 18.1 with explicit thresholds strong enough for iteration.
      The existing Section 18 cyclic dichotomy is conditional on that theorem.
      General relative counting, uniform stopping, and density iteration
