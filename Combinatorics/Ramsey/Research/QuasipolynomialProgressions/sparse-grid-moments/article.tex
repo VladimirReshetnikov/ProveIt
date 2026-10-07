@@ -1,0 +1,1546 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=25mm,headheight=14pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,booktabs,array,longtable,enumitem}
+\usepackage{xcolor,hyperref,fancyhdr}
+\definecolor{linkink}{HTML}{164F63}
+\hypersetup{colorlinks=true,linkcolor=linkink,citecolor=linkink,urlcolor=linkink,
+ pdftitle={Sparse Grid Moments and Quadratic Closure},
+ pdfauthor={Research draft prepared with ChatGPT for the ProveIt project},
+ pdfsubject={Exact finite-field laws, sharp obstructions, and cube rank enumerators}}
+\setlength{\emergencystretch}{2em}
+\setlength{\parskip}{3pt}
+\setlist{itemsep=2pt,topsep=4pt}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{question}[theorem]{Question}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\F}{\mathbb F}
+\newcommand{\E}{\mathbb E}
+\newcommand{\PP}{\mathbb P}
+\newcommand{\1}{\mathbf 1}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\Span}{\operatorname{span}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\cl}{\operatorname{cl}}
+\newcommand{\TV}{\operatorname{TV}}
+\newcommand{\Law}{\mathcal L}
+\newcommand{\Mat}{\operatorname{Mat}}
+\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\Tr}{\operatorname{Tr}}
+\newcommand{\ip}[2]{\langle #1,#2\rangle}
+\newcommand{\abs}[1]{\lvert #1\rvert}
+\newcommand{\norm}[1]{\lVert #1\rVert}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Sparse Grid Moments and Quadratic Closure}
+\fancyhead[R]{\small Research draft}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\title{\textbf{Sparse Grid Moments and Quadratic Closure}\\[5pt]
+\large Exact finite-field laws, sharp obstructions,\\
+and a complete cube rank enumerator}
+\author{Research draft prepared for the ProveIt project}
+\date{7 October 2026}
+
+\begin{document}
+\maketitle
+\thispagestyle{plain}
+\begin{abstract}
+A grid-moment lemma in the recent \texttt{openai/math} arithmetic-progression
+manuscript asserts independence for sampling patterns with at most as many
+axes as the degree of the chart polynomial. We study the exact algebraic
+boundary of this mechanism in a self-contained finite-field model. A matrix
+of low-order coordinate margins determines every relation among the sampled
+polynomial values. For independent sums of degree-$d$ product blocks, the
+joint law converges to the uniform measure on the orthogonal complement of
+this relation code, with optimal exponential rate
+$1-(1-Q^{-1})^{d-1}$ over a field of order $Q$. Normalized zero-level moments
+therefore converge to $Q^{\dim K_d(S)}$, not automatically to one.
+
+For quadratic blocks we prove a finer statement: the first relative
+correction is $(Q-1)(|\cl_2(S)|-|S|)Q^{-n}$, where $\cl_2$ is closure in a
+concrete represented matroid. We then determine the entire rank enumerator
+of the seven-dimensional matrix space attached to the binary three-cube,
+over every finite field, with separate odd- and even-characteristic
+formulas. This gives exact finite-$n$ moments for both the seven-site
+punctured cube and the full eight-site cube. For arbitrary two-axis
+patterns, we prove that the exact convergence exponent is the graph girth
+minus two; forests have exact independence, and all even cycles admit a
+closed finite-dimensional formula. We also prove the sharp
+$2^{d+1}$ minimum-support obstruction and a sharp variance lower bound for
+arbitrary nonnegative cutoffs on the first obstructed cube. The arguments
+use elementary algebra, finite Fourier analysis, and explicit counting;
+none assumes the headline arithmetic-progression theorem in the source
+repository.
+\end{abstract}
+
+\noindent\textbf{Status.} Written proofs and exact-arithmetic checks are supplied.
+The manuscript was generated in an interactive ChatGPT research session and
+has not been independently refereed or Lean-verified. The closure correction,
+graph-girth law, and complete cube enumerator are the principal proposed original
+contributions; their priority is not established. Classical ingredients are
+identified explicitly.
+
+\vspace{5pt}
+\noindent\textbf{Keywords.} Relative counting; polynomial factors; finite fields;
+grid margins; trades; matroid closure; rank enumerators; quadratic forms.
+
+\newpage
+\tableofcontents
+\newpage
+
+\section{Research target, source review, and scope}
+\label{gm:sec:context}
+
+\subsection{The intersection of the repositories}
+The \texttt{openai/math} release inspected for this work contains a catalogue
+of 722 manuscripts in 372 families, and explicitly distinguishes different
+stages of verification. Its family 159 concerns claimed quasipolynomial
+bounds for arithmetic progressions. The present work focuses on a single
+local ingredient of that family, not on certification of its global
+conclusion: the bounded-grid-moment argument in
+\texttt{03-relative-detection.tex}, with source label
+\texttt{ap:path:grid} \cite{oa,oa-grid}.
+
+The relevant ProveIt research overview is
+\emph{Local Quantitative Refinements of Gowers's Proof of Szemer\'edi's
+Theorem}. It organizes local work on density transfer, polynomial phase
+partitions, inverse steps, moment estimates, and progression or cube
+counts. It also explicitly distinguishes a research manuscript's placement
+from formal status \cite{proveit}. This makes a precise, independently
+proved interface theorem more useful than an unexamined invocation of a
+headline result. The broader classical setting is Gowers's quantitative
+proof of Szemer\'edi's theorem \cite{gowers}.
+
+In the selected OpenAI source, the polynomial layer has degree $j$, and the
+sampling pattern has $q\leq j$ axes. The variables $x_{a,b}$ are independent,
+and a site $\alpha$ is evaluated at $\sum_a x_{a,\alpha_a}$. The proof isolates
+a Fourier coefficient by extracting a mixed monomial involving every
+axis. The same section uses the resulting moments in a densification
+argument. The relative-counting framework of Conlon, Fox, and Zhao requires
+control of a finite collection of enlarged patterns and their subproducts,
+not merely control of one-point densities \cite[\S\S2.2,6.2--6.3]{cfz}.
+
+Our finite-field model exposes the exact relations that the coefficient
+extraction is detecting. It also answers what happens when the number of
+axes exceeds the degree, or when one removes a small number of sites from
+an obstructed pattern.
+
+\subsection{Precise questions and answers}
+We address five local questions suggested by these sources.
+\begin{enumerate}[label=(\roman*)]
+\item Which relations among sites survive arbitrarily many independent
+polynomial blocks? They are exactly the vectors with all coordinate
+margins of order at most $d$ equal to zero
+(Theorem~\ref{gm:thm:relations}).
+\item What replaces the assertion that every normalized grid moment is
+$1+o(1)$? The exact limiting constant is
+$Q^{\dim K_d(S)}$, with an explicit, sharp exponential mixing rate for
+product blocks (Theorems~\ref{gm:thm:mixing} and~\ref{gm:thm:moments}).
+\item Does marginal normalization always remove the leading quadratic
+error? No. Its remaining coefficient counts sites in the quadratic closure
+that were not sampled (Theorem~\ref{gm:thm:closure}).
+\item What determines the exact error rate within the two-axis regime?
+It is the girth minus two, unless the pattern is a forest and the error
+vanishes identically (Theorem~\ref{gm:thm:girth}).
+\item Can the first quadratic obstruction be evaluated completely, at
+finite dimension and in small characteristic? Yes: its full rank
+enumerator is given in Theorem~\ref{gm:thm:cube-enumerator}.
+\end{enumerate}
+These are research questions formulated here, not claims that every one
+was previously advertised as open in the literature.
+
+\subsection{What is inherited, and what is proposed as new}
+The principle that tensor relations govern polynomial configurations is
+part of the true-complexity viewpoint of Gowers and Wolf \cite{gw}.
+Coordinate-margin kernels are closely related to trades and low-degree
+codes. In particular, the familiar minimum trade volume $2^d$ corresponds
+to a support size $2^{d+1}$ when the positive and negative parts are
+counted together; see Ghorbani, Kamali, Khosrovshahi, and Krotov
+\cite{trades}. We prove the field-valued version needed here rather than
+presenting this threshold as an unprecedented discovery. Fourier inversion,
+convolution mixing, and quadratic character-sum evaluation are also
+standard tools.
+
+The main proposed contribution is the combination of an exact relation
+criterion, sharp block-mixing estimates, and a geometric correction after
+marginal normalization. The graph-girth theorem determines an exact convergence exponent for
+every two-axis pattern, while the explicit odd- and even-characteristic cube
+rank enumerators strengthen the asymptotic obstruction to a complete
+finite-dimensional formula. Targeted literature searches did not locate
+these specific closure, girth-law, and enumerator formulas; that limited search is
+not a proof of novelty. The mathematical claims below stand on their
+written proofs, independently of any priority claim.
+
+\subsection{Limits of the comparison}
+The source lemma explicitly assumes $q\leq j$. Our counterexamples beyond
+that range do \emph{not} refute it. Nor does a finite-field proof establish
+the source's torus-chart estimates, nilsequence complexity bounds, or
+quasipolynomial progression theorem. We do not claim an improved global
+bound for $r_k(N)$, a new proof of Szemer\'edi's theorem, or a completed Lean
+formalization. The repository review was selective: the catalogue,
+verification notices, the indicated grid argument, and the relevant
+ProveIt overview were inspected, not all manuscripts or formal proofs.
+
+\section{The coordinate-margin relation code}
+\label{gm:sec:relations}
+
+Let $\F$ be a finite field of order $Q$ and characteristic $p$. Fix a
+nontrivial additive character $\psi:\F\to\mathbb C^\times$. All expectations
+are uniform unless specified otherwise. Let $q\geq1$ be the number of axes,
+let $A_1,\ldots,A_q$ be finite nonempty label sets, and write
+\[
+ \Omega=\prod_{a=1}^q A_a,\qquad m_a=|A_a|.
+\]
+A sampling pattern is a nonempty set $S\subseteq\Omega$, of size $s$.
+For independent vectors $x_{a,b}$ in a fixed vector space over $\F$, set
+\begin{equation}\label{gm:eq:site-form}
+ L_\alpha(x)=\sum_{a=1}^q x_{a,\alpha_a}\qquad(\alpha\in S).
+\end{equation}
+Distinctness concerns the formal labels $\alpha$, not the random values of
+$L_\alpha$. Actual collisions are included in every average.
+
+\begin{definition}[Margin matrix and relation code]
+For $d\geq0$, the matrix $M_d(S)$ has columns indexed by $S$. Its rows are
+indexed by a set $I\subseteq[q]$, $|I|\leq d$, and a label tuple
+$\beta\in\prod_{i\in I}A_i$. The entry in row $(I,\beta)$ and column $\alpha$
+is $\1_{\alpha_I=\beta}$. The empty set contributes the all-one row. Define
+\begin{equation}\label{gm:eq:code}
+ K_d(S)=\ker_\F M_d(S),\quad r_d(S)=\rank_\F M_d(S),\quad
+ H_d(S)=K_d(S)^\perp\subseteq\F^S.
+\end{equation}
+Thus $\lambda\in K_d(S)$ precisely when
+\begin{equation}\label{gm:eq:margins}
+ \sum_{\alpha\in S:\,\alpha_I=\beta}\lambda_\alpha=0
+ \quad\text{for every }|I|\leq d\text{ and every }\beta.
+\end{equation}
+The orthogonal complement uses the ordinary $\F$-bilinear dot product.
+\end{definition}
+
+When no ambiguity is possible we write $K,r,H$ and $k=s-r=\dim K$.
+The definition is finite linear algebra; it contains no asymptotic
+hypothesis or analytic rank parameter.
+
+\begin{definition}[$p$-reduced polynomial]
+A polynomial in coordinates $z_1,\ldots,z_e$ is $p$-reduced if each
+coordinate exponent in each monomial is less than $p$.
+\end{definition}
+Over a prime field this is the usual unique reduced representative of a
+polynomial function. Over an extension field the condition is stronger
+than having exponents less than $Q$; it is stated explicitly to exclude
+Frobenius aliasing in the coefficient argument. Products of distinct
+coordinates satisfy it over every finite field.
+
+\begin{theorem}[Exact polynomial relations]\label{gm:thm:relations}
+Let $P\in\F[z_1,\ldots,z_e]$ be $p$-reduced and of exact total degree
+$d\geq1$. For $\lambda\in\F^S$, the following are equivalent:
+\begin{enumerate}[label=(\alph*)]
+\item $\lambda\in K_d(S)$;
+\item $\sum_{\alpha\in S}\lambda_\alpha P(L_\alpha(x))$ is identically zero;
+\item the degree-$d$ homogeneous component of this sum is zero.
+\end{enumerate}
+Identities may be read either as polynomial identities or as identities
+of functions on the indicated finite vector spaces. If $\lambda\notin K_d(S)$,
+the sum has exact degree $d$, rather than merely being nonconstant.
+\end{theorem}
+
+\begin{proof}
+First expand a monomial of $P$ after substitution
+\eqref{gm:eq:site-form}. A resulting monomial involves variables from at
+most $d$ axes. If these axes form $I$, and the labels used on them are
+$\beta$, its coefficient in the sum over $\alpha$ is its coefficient for a
+single site multiplied by the margin in \eqref{gm:eq:margins}. At a given
+axis there cannot be two different labels in the same site expansion.
+Thus all coefficients vanish when $\lambda\in K_d(S)$, including the
+constant coefficient because the empty margin vanishes.
+
+For the converse, choose a nonzero top-degree monomial
+$c z_1^{b_1}\cdots z_e^{b_e}$, where $\sum_j b_j=d$ and $0\leq b_j<p$.
+Fix a nonempty $I\subseteq[q]$ with $|I|\leq\min(d,q)$, and prescribed labels
+$\beta_i$ on $I$. Distribute the $d$ coordinate units among the axes of
+$I$, using each axis at least once. Write the resulting nonnegative
+integers as $b_{i,j}$, so that $\sum_{i\in I}b_{i,j}=b_j$.
+The coefficient of
+\[
+ \prod_{i\in I}\prod_{j=1}^e x_{i,\beta_i,j}^{b_{i,j}}
+\]
+in the degree-$d$ part of the sum is
+\begin{equation}\label{gm:eq:coefficient-extraction}
+ c\prod_{j=1}^e\frac{b_j!}{\prod_{i\in I}b_{i,j}!}
+ \sum_{\alpha\in S:\,\alpha_I=\beta}\lambda_\alpha.
+\end{equation}
+The multiplier is nonzero in $\F$: all factorial arguments are less than
+$p$. No other original monomial contributes, since the total exponent in
+base coordinate $j$ recovers $b_j$. Vanishing of the top component
+therefore forces every nonempty margin of order at most $d$ to vanish.
+Summing the singleton margins on any one axis gives the empty margin.
+
+Finally, substitution does not increase the degree of any single
+variable beyond the corresponding $b_j<p\leq Q$. A polynomial whose
+individual degrees are less than $Q$ is zero as a function on $\F^N$ only
+if all its coefficients vanish: apply the univariate root bound
+successively to the variables. This proves the function version too.
+\end{proof}
+
+\begin{remark}
+The argument uses products of coordinate factorials, not a division by
+$d!$. It therefore remains valid when the total degree $d$ is at least the
+characteristic, provided the stated coordinatewise hypothesis holds.
+Without that hypothesis the margin degree need not be the displayed
+formal degree. For example $P(z)=z^p$ is additive and has the relation
+structure of degree one.
+\end{remark}
+
+\begin{proposition}[Full-grid rank]\label{gm:prop:full-rank}
+For the full product $\Omega$,
+\begin{equation}\label{gm:eq:full-rank}
+ r_d(\Omega)=\sum_{\substack{I\subseteq[q]\\|I|\leq d}}
+                      \prod_{i\in I}(m_i-1).
+\end{equation}
+In particular, $K_d(S)=0$ for every $S$ when $q\leq d$.
+\end{proposition}
+
+\begin{proof}
+Choose a distinguished label in each $A_i$. The constant function and the
+indicators of the other $m_i-1$ labels form a basis of the function space on
+$A_i$. Tensor products of these bases form a basis of the function space
+on $\Omega$. The row span of $M_d(\Omega)$ is exactly the span of those
+tensors that use a nonconstant factor in at most $d$ coordinates. Counting
+this subset of the basis proves \eqref{gm:eq:full-rank}. If $q\leq d$, the
+rows with $I=[q]$ already isolate each site, including after restriction
+to $S$.
+\end{proof}
+
+This proof does not divide by $m_i$, and hence remains valid when the
+characteristic divides an axis size. An equivalent description of the
+kernel uses the decomposition
+\[
+ \F^{A_i}=\F\delta_{b_i}\oplus
+       \{u:\textstyle\sum_{a\in A_i}u(a)=0\}.
+\]
+Tensor products using a zero-sum factor on more than $d$ axes form a basis
+of $K_d(\Omega)$. Indeed every margin of order at most $d$ sums out at
+least one such factor, and the dimension is the complement of
+\eqref{gm:eq:full-rank}.
+
+\section{The first possible obstruction and its equality case}
+\label{gm:sec:support}
+
+\begin{theorem}[Sharp support threshold]\label{gm:thm:support}
+Every nonzero vector in $K_d(\Omega)$ has at least $2^{d+1}$ nonzero
+coordinates. Consequently,
+\begin{equation}\label{gm:eq:small-independent}
+ |S|<2^{d+1}\quad\Longrightarrow\quad K_d(S)=0.
+\end{equation}
+Whenever at least $d+1$ axes have two labels, the bound is attained.
+\end{theorem}
+
+\begin{proof}
+We induct on $d$. For $d=0$, a nonzero vector with zero total sum has at
+least two nonzero entries. For $d\geq1$, a nonzero kernel vector cannot be
+supported at just one site. Choose an axis on which its support has at
+least two different labels, and slice along that axis. Every nonzero
+slice has all margins of order at most $d-1$ equal to zero on the remaining
+axes, because these are margins of the original vector with the sliced
+axis included. The induction hypothesis gives at least $2^d$ nonzero
+entries in each such slice, and there are at least two slices.
+
+Extend a vector on $S$ by zero to obtain the stated consequence. To attain
+the bound, choose two labels on each of $d+1$ axes, hold all other axes
+fixed, and assign the coefficient
+\[
+ \lambda_\varepsilon=(-1)^{\varepsilon_1+\cdots+\varepsilon_{d+1}}
+ \qquad(\varepsilon\in\{0,1\}^{d+1}).
+\]
+Every margin involving at most $d$ axes sums over at least one of the
+chosen pairs and vanishes. In characteristic two the two signs are equal,
+but their sum is still zero.
+\end{proof}
+
+\begin{theorem}[Extremizers with exactly $d+1$ axes]
+\label{gm:thm:extremizers}
+Suppose $q=d+1$. Every nonzero vector in $K_d(\Omega)$ with support
+$2^{d+1}$ is a nonzero scalar multiple of
+\begin{equation}\label{gm:eq:extreme-tensor}
+ (\delta_{a_1}-\delta_{b_1})\otimes\cdots\otimes
+ (\delta_{a_q}-\delta_{b_q}),\qquad a_i\ne b_i.
+\end{equation}
+There are $\prod_i\binom{m_i}{2}$ such projective kernel vectors, or
+$(Q-1)\prod_i\binom{m_i}{2}$ nonzero vectors.
+\end{theorem}
+
+\begin{proof}
+In this case the kernel consists of arrays with every line sum zero, or
+equivalently the tensor product of the $q$ zero-sum spaces. Slice along
+the last axis. Every nonzero slice belongs to the corresponding kernel
+on $q-1$ axes and has support at least $2^{q-1}$. Equality in the total
+support bound forces exactly two slices. The last-axis line sums force
+these slices to be negatives of one another, point by point. Induction
+from $q=1$ proves \eqref{gm:eq:extreme-tensor}. Unordered pairs determine
+the support, and all changes in the ordering of the pairs only change
+the overall scalar.
+\end{proof}
+
+The support threshold is a trade-type bound, not an assertion of a new
+minimum-distance phenomenon. Its use here is to give an exact,
+characteristic-independent testing threshold for polynomial grid moments.
+For more than $d+1$ axes, a complete classification of minimum-support
+relations requires additional work; Theorem~\ref{gm:thm:extremizers} does
+not assert that classification.
+
+\section{Product blocks: exact limiting law and sharp mixing}
+\label{gm:sec:mixing}
+
+For $d,n\geq1$, define
+\begin{equation}\label{gm:eq:product-block}
+ B_{d,n}(z)=\sum_{\ell=1}^n\prod_{j=1}^d z_{j,\ell},
+ \qquad z\in\F^{d n}.
+\end{equation}
+Apply the same polynomial at every site:
+\[
+ Y_n=\bigl(B_{d,n}(L_\alpha(x))\bigr)_{\alpha\in S}\in\F^S.
+\]
+The $n$ coordinate blocks are independent, so $Y_n$ is the sum of $n$
+independent copies of $Y_1$. Fix $K=K_d(S)$, $H=H_d(S)$, and $r=\dim H$.
+
+\begin{lemma}[Nonvanishing probability for multilinear maps]
+\label{gm:lem:multilinear}
+A nonzero $t$-linear map from a product of finite-dimensional $\F$-vector
+spaces to another such space is nonzero on independent uniform inputs
+with probability at least $(1-Q^{-1})^t$.
+\end{lemma}
+
+\begin{proof}
+For $t=0$ the claim means that a fixed nonzero vector is nonzero. For the
+induction step, fix vectors in the last $t-1$ inputs and a linear
+functional on the output that witness a nonzero linear functional of the
+first input. With probability $1-Q^{-1}$ this functional is nonzero, so
+the contraction in the remaining $t-1$ inputs is a nonzero multilinear
+map. Conditional on each such first input, apply the induction hypothesis.
+\end{proof}
+
+\begin{lemma}[One-block Fourier spectrum]\label{gm:lem:block-spectrum}
+Put
+\begin{equation}\label{gm:eq:theta}
+ \theta=\theta_{Q,d}=1-(1-Q^{-1})^{d-1}.
+\end{equation}
+For $\lambda\in\F^S$, define
+\[
+ b_\lambda=\E\psi\!\left(\sum_{\alpha\in S}
+                  \lambda_\alpha B_{d,1}(L_\alpha(x))\right).
+\]
+Then $b_\lambda=1$ on $K$, while $0\leq b_\lambda\leq\theta$ off $K$.
+Moreover $b_{t e_\alpha}=\theta$ for every site $\alpha$ and every
+$t\in\F^\times$.
+\end{lemma}
+
+\begin{proof}
+The phase polynomial is $d$-linear in the $d$ groups of variables indexed
+by the coordinate $j$ of the block. Theorem~\ref{gm:thm:relations} says
+that it is zero exactly for $\lambda\in K$. Otherwise, integrating over
+the last group gives the indicator that its vector of linear coefficients
+is zero. Thus $b_\lambda$ is real and nonnegative. This coefficient vector
+is a nonzero $(d-1)$-linear map; Lemma~\ref{gm:lem:multilinear} gives the
+upper bound $\theta$. For $d=1$ it is a nonzero constant vector and the
+bound is zero.
+
+For $t e_\alpha$, the phase is $t$ times the product of $d$ independent
+uniform scalars. The last scalar averages to zero unless one of the first
+$d-1$ scalars is zero. This event has probability $\theta$.
+\end{proof}
+
+\begin{theorem}[Exact support space and optimal exponential rate]
+\label{gm:thm:mixing}
+The random vector $Y_n$ takes values in $H$, and for $n\geq1$,
+\begin{equation}\label{gm:eq:tv}
+ (1-Q^{-1})\theta^n
+ \ \leq\ \norm{\Law(Y_n)-U_H}_{\TV}
+ \ \leq\ \frac12\sqrt{Q^r-1}\,\theta^n,
+\end{equation}
+where $U_H$ denotes uniform measure on $H$. Also, for every $y\in H$,
+\begin{equation}\label{gm:eq:pointwise}
+ \left|Q^r\PP(Y_n=y)-1\right|\leq(Q^r-1)\theta^n.
+\end{equation}
+For $d\geq2$, the maximum absolute value of a nontrivial one-block Fourier
+coefficient on $H$ is exactly $\theta$. For $d=1$, $Y_n$ is exactly uniform
+on $H$ for every $n\geq1$.
+\end{theorem}
+
+\begin{proof}
+Every relation in $K$ annihilates $Y_n$ by
+Theorem~\ref{gm:thm:relations}. Characters of $H$ are indexed by
+$\F^S/K$: two frequencies induce the same character precisely when their
+difference lies in $K$. To see this also for extension fields, if a dot
+product with an $\F$-linear space takes any nonzero value, scalar
+multiplication makes it range over all of $\F$, on which $\psi$ is
+nontrivial. Hence trace orthogonality and $\F$-orthogonality give the same
+annihilator here.
+
+Fourier inversion on $H$ gives
+\begin{equation}\label{gm:eq:inversion}
+ Q^r\PP(Y_n=y)=\sum_{\lambda\in\F^S/K}
+                  b_\lambda^n\psi(-\ip\lambda y).
+\end{equation}
+The upper pointwise bound follows by the triangle inequality. Parseval
+and Cauchy--Schwarz give the upper total-variation bound.
+
+The coordinate projection $H\to\F$ at each site is surjective: otherwise
+it is zero, forcing the singleton frequency $e_\alpha$ into $K$, contrary
+to the empty-margin equation. Thus $U_H(Y_\alpha=0)=Q^{-1}$. The last
+clause of Lemma~\ref{gm:lem:block-spectrum} gives the exact marginal
+\begin{equation}\label{gm:eq:marginal}
+ \PP(Y_{n,\alpha}=0)=Q^{-1}\bigl(1+(Q-1)\theta^n\bigr).
+\end{equation}
+The difference on this event is $(1-Q^{-1})\theta^n$, proving the lower
+bound and optimality of the exponential rate. The same spectral argument
+with $\theta=0$ proves the degree-one assertion.
+\end{proof}
+
+Define the zero-level weight and its exact mean by
+\begin{equation}\label{gm:eq:weights}
+ \nu_n(z)=Q\1_{B_{d,n}(z)=0},\qquad
+ \mu_n=\E\nu_n=1+(Q-1)\theta^n,\qquad
+ \bar\nu_n=\nu_n/\mu_n.
+\end{equation}
+Write $M_S(n)=\E\prod_{\alpha\in S}\nu_n(L_\alpha)$ and
+$\bar M_S(n)=\E\prod_{\alpha\in S}\bar\nu_n(L_\alpha)$.
+
+\begin{theorem}[Exact limiting moment and effective error]
+\label{gm:thm:moments}
+With $k=s-r$,
+\begin{align}
+ M_S(n)&=\sum_{\lambda\in\F^S}b_\lambda^n
+       =Q^k\sum_{\lambda\in\F^S/K}b_\lambda^n,
+       \label{gm:eq:raw-moment}\\
+ Q^k&\leq M_S(n)\leq Q^k\bigl(1+(Q^r-1)\theta^n\bigr),
+       \label{gm:eq:raw-bound}\\
+ \left|\frac{\bar M_S(n)}{Q^k}-1\right|
+     &\leq\bigl(Q^r-1+s(Q-1)\bigr)\theta^n.
+       \label{gm:eq:normalized-bound}
+\end{align}
+In particular,
+\begin{equation}\label{gm:eq:limiting-moment}
+ \lim_{n\to\infty}\bar M_S(n)=Q^{\dim K_d(S)}.
+\end{equation}
+Thus the limit is one if and only if $K_d(S)=0$.
+\end{theorem}
+
+\begin{proof}
+Expand each factor $Q\1_{u=0}=\sum_{t\in\F}\psi(tu)$ and use independence
+of the $n$ blocks. All Fourier coefficients are nonnegative, so the
+trivial quotient frequency supplies the lower bound. The upper bound is
+Lemma~\ref{gm:lem:block-spectrum}. Finally, with $a=(Q-1)\theta^n$,
+\[
+ 0\leq1-(1+a)^{-s}\leq sa.
+\]
+Divide \eqref{gm:eq:raw-bound} by $(1+a)^s$ and bound the two deviations
+from one separately to obtain \eqref{gm:eq:normalized-bound}.
+\end{proof}
+
+\begin{corollary}[A finite family of tests]
+\label{gm:cor:family}
+Let $\mathcal S$ be a finite family of sampling patterns with
+$K_d(S)=0$ for every $S\in\mathcal S$. For $d\geq2$, all their normalized
+moments are within $\varepsilon$ of one whenever
+\[
+ n\geq
+ \max_{S\in\mathcal S}
+ \frac{\log\bigl((Q^{|S|}-1+|S|(Q-1))/\varepsilon\bigr)}{-\log\theta}.
+\]
+Integer rounding upward is understood. Every subpattern of an independent
+pattern is independent, so this also controls all its subproducts.
+\end{corollary}
+
+\begin{proof}
+Apply \eqref{gm:eq:normalized-bound} to each pattern. A dependence on a
+subpattern would extend by zero to a dependence on the original pattern.
+\end{proof}
+
+\subsection{A genuinely sparse parameter regime}
+At fixed $Q$, the level set has limiting density $Q^{-1}$; sparsity can be
+made arbitrarily strong by allowing $Q$ to grow. The estimates remain
+explicit in that regime. Since $r\geq1$ and
+$\theta\leq(d-1)/Q$ for $d\geq2$,
+\begin{equation}\label{gm:eq:large-field}
+ \left|\frac{\bar M_S(n)}{Q^{s-r}}-1\right|
+ \leq (s+1)(d-1)^n Q^{r-n}.
+\end{equation}
+For quadratics this becomes $(s+1)Q^{r-n}$. Consequently, for any fixed
+independent pattern with $s$ sites, $n>s$ product blocks suffice for
+asymptotic independence as $Q\to\infty$, while the density tends to zero.
+This is a transparent model of a sparse testing problem. It is not a
+claim that the constants in the torus-chart source become independent of
+all chart parameters.
+
+\section{Universality for other independent polynomial blocks}
+\label{gm:sec:general-polynomial}
+
+The product model gives sharp, positive Fourier coefficients. A weaker
+but explicit universality statement holds for any $p$-reduced block.
+
+\begin{lemma}[An elementary polynomial-bias bound]
+\label{gm:lem:polynomial-bias}
+Let $F$ be a $p$-reduced polynomial of exact degree $d\geq2$ over $\F$.
+Then
+\begin{equation}\label{gm:eq:xi}
+ \left|\E_x\psi(F(x))\right|
+ \leq \xi_{Q,d}:=
+ \bigl(1-(1-Q^{-1})^{d-1}\bigr)^{1/2^{d-1}}<1.
+\end{equation}
+For a nonconstant affine polynomial the bias is zero.
+\end{lemma}
+
+\begin{proof}
+The $d$-fold additive derivative of the top component is a nonzero
+$d$-linear form $T$. For completeness, if a nonzero monomial is
+$c z_1^{b_1}\cdots z_e^{b_e}$, take $b_j$ derivative vectors in the $j$th
+coordinate direction. Its coefficient in $T$ is
+$c\prod_j b_j!\ne0$. Distinct original monomials are separated by these
+coordinate multiplicities.
+
+After $d-1$ additive derivatives, the polynomial is affine in the base
+variable $x$, with linear part $T(x,h_1,\ldots,h_{d-1})$. Repeated
+Cauchy--Schwarz, equivalently the inequality between the mean and the
+$(d-1)$st Gowers seminorm, gives
+\[
+ \left|\E_x\psi(F(x))\right|^{2^{d-1}}
+ \leq \E_{h_1,\ldots,h_{d-1}}
+       \left|\E_x\psi(\Delta_{h_1}\cdots\Delta_{h_{d-1}}F(x))\right|.
+\]
+The inner absolute value is the indicator that the linear part is zero.
+Lemma~\ref{gm:lem:multilinear} bounds the probability of this event by
+$1-(1-Q^{-1})^{d-1}$. Orthogonality proves the affine case.
+\end{proof}
+
+\begin{theorem}[Block universality]\label{gm:thm:universality}
+Let $P$ be as in Theorem~\ref{gm:thm:relations}, and let
+$P_n=\sum_{\ell=1}^n P(z^{(\ell)})$ on independent coordinate blocks.
+The vector $(P_n(L_\alpha))_{\alpha\in S}$ converges to $U_{H_d(S)}$.
+For $d\geq2$, its total-variation distance is at most
+\[
+ \frac12\sqrt{Q^{r_d(S)}-1}\,\xi_{Q,d}^n.
+\]
+For $d=1$ the distribution is exactly uniform after one block.
+\end{theorem}
+
+\begin{proof}
+Theorem~\ref{gm:thm:relations} identifies the trivial characters and says
+that every other phase has exact degree $d$. It is still $p$-reduced in
+the site variables. Apply Lemma~\ref{gm:lem:polynomial-bias} and repeat the
+Fourier--Parseval proof of Theorem~\ref{gm:thm:mixing}. A constant term in
+$P$ does not alter the support space: every vector in $K_d(S)$ has zero
+total coefficient.
+\end{proof}
+
+The exact relation space, rather than a special symmetry of product
+blocks, therefore determines the limiting law throughout this class.
+Only the sharp rate, positivity, and the later rank-enumerator formulas
+are specific to the product model.
+
+\section{Cutoff-independent obstructions on the first cube}
+\label{gm:sec:cutoffs}
+
+For $w:\F\to\mathbb C$, use the normalized transform
+\[
+ \widehat w(t)=Q^{-1}\sum_{u\in\F}w(u)\psi(-tu).
+\]
+For the product-block vector of Section~\ref{gm:sec:mixing}, Fourier
+expansion immediately yields the following more general statement.
+
+\begin{proposition}[Arbitrary test functions]\label{gm:prop:weighted}
+For functions $w_\alpha:\F\to\mathbb C$,
+\begin{align}
+ \lim_{n\to\infty}\E\prod_{\alpha\in S}w_\alpha(Y_{n,\alpha})
+ &=\E_{y\in H_d(S)}\prod_{\alpha\in S}w_\alpha(y_\alpha)\notag\\
+ &=\sum_{\lambda\in K_d(S)}\prod_{\alpha\in S}\widehat w_\alpha(\lambda_\alpha).
+ \label{gm:eq:weighted-limit}
+\end{align}
+The absolute difference from the limit is at most
+\begin{equation}\label{gm:eq:weighted-error}
+ \theta^n\sum_{\lambda\notin K_d(S)}
+       \prod_{\alpha\in S}|\widehat w_\alpha(\lambda_\alpha)|
+ \leq\theta^n\prod_{\alpha\in S}\norm{\widehat w_\alpha}_{\ell^1}.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Insert Fourier inversion for every function. The expectation of the
+resulting character is $b_\lambda^n$, which is one on the kernel and at
+most $\theta^n$ in absolute value elsewhere. Uniform measure on $H_d(S)$
+has exactly the same trivial characters.
+\end{proof}
+
+\begin{theorem}[A sharp variance obstruction]\label{gm:thm:variance}
+Let $S=\{0,1\}^{d+1}$ and let $w:\F\to\mathbb R$ have mean one. Put
+$V=\E(w-1)^2$ and $m=2^d$. Then
+\begin{equation}\label{gm:eq:cube-cutoff}
+ \lim_{n\to\infty}\E\prod_{\alpha\in S}w(Y_{n,\alpha})
+   =1+\sum_{t\ne0}|\widehat w(t)|^{2m}
+   \geq1+(Q-1)^{1-m}V^m.
+\end{equation}
+Equality in the inequality holds precisely when the nonzero Fourier
+magnitudes are all equal. In the class of nonnegative mean-one $w$, the
+lower bound is attained for every $0\leq V\leq Q-1$.
+\end{theorem}
+
+\begin{proof}
+Proposition~\ref{gm:prop:full-rank} gives a one-dimensional relation
+space, spanned by $\varepsilon_\alpha=(-1)^{|\alpha|}$. There are $m$ plus
+and $m$ minus coefficients. Since $w$ is real,
+$\widehat w(-t)=\overline{\widehat w(t)}$. Thus
+\eqref{gm:eq:weighted-limit} is the asserted sum of $2m$th powers. In
+characteristic two the coefficients coincide and the Fourier coefficients
+of real $w$ are real, so the same formula holds.
+
+Parseval gives $V=\sum_{t\ne0}|\widehat w(t)|^2$. The power-mean
+inequality for $Q-1$ nonnegative numbers proves the bound and the equality
+criterion. For $0\leq V\leq Q-1$, set
+\begin{equation}\label{gm:eq:cutoff-extremizer}
+ w(u)=1+a\bigl(Q\1_{u=0}-1\bigr),\qquad
+ a=\sqrt{V/(Q-1)}.
+\end{equation}
+This is nonnegative and has every nonzero Fourier coefficient equal to
+$a$. It has variance $V$ and attains the lower bound. Conversely,
+nonnegative mean-one functions satisfy $\E w^2\leq Q$, since their
+nonnegative values sum to $Q$, so $V\leq Q-1$ is the full possible range.
+\end{proof}
+
+Thus a nonconstant real cutoff cannot restore independence on this first
+obstructed cube by increasing the number of blocks. Its variance forces
+a positive excess. For the zero-level cutoff $w=Q\1_0$, the limit is $Q$.
+Marginal normalization of $w(B_{d,n})$ does not change this limiting value,
+since its marginal mean tends to $\E w=1$.
+
+\section{Quadratic closure and the first normalized correction}
+\label{gm:sec:closure}
+
+Now set $d=2$. Put $N=\sum_a m_a$, and represent each site by its one-hot
+vector $v_\alpha\in\F^N$: in the block indexed by axis $a$, it has a one
+at label $\alpha_a$ and zeros elsewhere. Define
+\begin{equation}\label{gm:eq:matrix-space}
+ A_\lambda=\sum_{\alpha\in S}\lambda_\alpha v_\alpha v_\alpha^{\mathsf T},
+ \qquad
+ \mathcal V_S=\Span_\F\{v_\alpha v_\alpha^{\mathsf T}:\alpha\in S\}.
+\end{equation}
+These are symmetric matrices, but the character sum is bilinear in two
+\emph{independent} groups of variables. No division by two occurs.
+
+\begin{lemma}[The matrix representation]\label{gm:lem:matrix-representation}
+The kernel of $\lambda\mapsto A_\lambda$ is $K_2(S)$, so
+$\dim\mathcal V_S=r_2(S)$. For one quadratic block,
+\begin{equation}\label{gm:eq:rank-bias}
+ b_\lambda=Q^{-\rank A_\lambda}.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Diagonal entries of $A_\lambda$ are singleton margins, off-diagonal
+entries from distinct axes are pair margins, and off-diagonal entries
+within one axis are zero. The empty margin is the sum of the singleton
+margins on any axis. This proves the kernel assertion. The phase of a
+single block is $x^{\mathsf T}A_\lambda y$ with independent uniform
+$x,y\in\F^N$. Averaging over $x$ gives $\1_{A_\lambda y=0}$, whose mean
+is $Q^{-\rank A_\lambda}$.
+\end{proof}
+
+\begin{definition}[Quadratic closure and rank enumerator]
+With the ambient full grid $\Omega$ fixed, put
+\begin{align}
+ \cl_2(S)&=\{\beta\in\Omega:v_\beta v_\beta^{\mathsf T}\in\mathcal V_S\},
+                 \label{gm:eq:closure-definition}\\
+ R_S(z)&=\sum_{A\in\mathcal V_S}z^{\rank A}.
+                 \label{gm:eq:rank-enumerator}
+\end{align}
+The first is the ordinary closure operation of the matroid represented by
+the site matrices. Write $c=|\cl_2(S)|$.
+\end{definition}
+
+\begin{theorem}[Rank-one rigidity]\label{gm:thm:rank-one}
+Every nonzero rank-one matrix in $\mathcal V_\Omega$ has the form
+$t v_\beta v_\beta^{\mathsf T}$ for a unique $\beta\in\Omega$ and unique
+$t\in\F^\times$. Consequently $\mathcal V_S$ has exactly $(Q-1)c$
+rank-one matrices.
+\end{theorem}
+
+\begin{proof}
+A nonzero symmetric rank-one matrix over any field is $tww^{\mathsf T}$
+with $t\ne0$ and $w\ne0$. Indeed writing it as an outer product and using
+symmetry makes its two factors proportional. Inside any axis block, the
+off-diagonal entries vanish. Hence $w$ has at most one nonzero coordinate
+in each block.
+
+Let $u_a$ be the indicator vector of the entire axis-$a$ block. Every
+site matrix satisfies
+$(v_\alpha v_\alpha^{\mathsf T})u_a=v_\alpha$, independently of $a$.
+Therefore $A u_a$ is independent of $a$ for every $A\in\mathcal V_\Omega$.
+For $A=tww^{\mathsf T}$, this says that the coordinate sum of $w$ in each
+block is the same scalar $h$. If $h=0$, the at-most-one-nonzero-coordinate
+property forces all blocks to be zero, a contradiction. Thus each block
+has exactly one nonzero coordinate, and its value is $h$. It follows that
+$w=h v_\beta$ for a unique site $\beta$. Absorbing $h^2$ into $t$ proves
+the assertion. The converse is the definition of closure.
+\end{proof}
+
+\begin{theorem}[Exact moment and closure correction]\label{gm:thm:closure}
+Let $s=|S|$, $r=r_2(S)$, $k=s-r$, $c=|\cl_2(S)|$, and $z=Q^{-n}$.
+Then for every $n\geq1$,
+\begin{equation}\label{gm:eq:rank-moment}
+ M_S(n)=Q^k R_S(z),\qquad
+ \bar M_S(n)=Q^k\frac{R_S(z)}{(1+(Q-1)z)^s}.
+\end{equation}
+As $n\to\infty$ with $Q,S$ fixed,
+\begin{equation}\label{gm:eq:closure-correction}
+ \frac{\bar M_S(n)}{Q^k}
+   =1+(Q-1)(c-s)Q^{-n}+O_{Q,S}(Q^{-2n}).
+\end{equation}
+An explicit remainder bound, valid for every $0\leq z\leq1$, is
+\begin{equation}\label{gm:eq:closure-remainder}
+ \left|\frac{R_S(z)}{(1+az)^s}-1-a(c-s)z\right|
+ \leq C_{Q,S}z^2,\qquad a=Q-1,
+\end{equation}
+where one may take
+\[
+ C_{Q,S}=Q^r-1-ac+a^2cs+	frac12(1+ac)s(s+1)a^2.
+\]
+\end{theorem}
+
+\begin{proof}
+Every matrix in $\mathcal V_S$ has $Q^k$ frequency preimages. Substitute
+\eqref{gm:eq:rank-bias} in \eqref{gm:eq:raw-moment}; the marginal mean is
+$1+(Q-1)Q^{-n}$. This proves the exact formula.
+Theorem~\ref{gm:thm:rank-one} gives
+\[
+ R_S(z)=1+ac z+T(z),\qquad
+ 0\leq T(z)\leq(Q^r-1-ac)z^2\quad(0\leq z\leq1).
+\]
+Taylor's theorem applied to $(1+az)^{-s}$ gives
+\[
+ (1+az)^{-s}=1-sa z+E(z),\qquad
+ 0\leq E(z)\leq\tfrac12s(s+1)a^2z^2.
+\]
+Multiply the two expressions, use $(1+az)^{-s}\leq1$, and bound
+$1+ac z\leq1+ac$. The cross term has magnitude $a^2csz^2$.
+This gives \eqref{gm:eq:closure-remainder}, and the asymptotic statement
+follows.
+\end{proof}
+
+The coefficient is nonnegative because $S\subseteq\cl_2(S)$. It is not a
+function of $r$ and $s$ alone: the locations of unsampled rank-one points
+in the span matter. In particular, the first correction vanishes exactly
+when $S$ is quadratically closed in the chosen ambient grid.
+
+\begin{corollary}[Six sites versus seven]\label{gm:cor:six-seven}
+Every pattern with at most six sites is quadratically independent and
+closed. Its normalized moment is $1+O_{Q,S}(Q^{-2n})$.
+A seven-site pattern can be independent but not closed: deleting one
+vertex from the binary three-cube gives $r=s=7$ and $c=8$, hence
+\[
+ \bar M_S(n)=1+(Q-1)Q^{-n}+O_Q(Q^{-2n}).
+\]
+For the full eight-site cube, $r=7$, $k=1$, and $c=s=8$, so
+$\bar M_S(n)=Q+O_Q(Q^{1-2n})$.
+\end{corollary}
+
+\begin{proof}
+If a hidden site belongs to the closure of a pattern of size at most six,
+there is a dependence on at most seven sites, contradicting
+Theorem~\ref{gm:thm:support} with $d=2$. The same theorem gives independence.
+The full binary three-cube has rank $1+3+3=7$ and one relation, all of whose
+eight coefficients are nonzero. Deleting any vertex leaves seven
+independent columns spanning the same space. Theorem~\ref{gm:thm:closure}
+now applies.
+\end{proof}
+
+\section{Two-axis patterns: the exact rate is determined by girth}
+\label{gm:sec:girth}
+
+For $q=2$, regard $S\subseteq A_1\times A_2$ as the edge set of a simple
+bipartite graph $G$. Every such pattern is quadratically independent and
+closed, because a pair margin already isolates an edge. Nevertheless,
+the normalized error need not have order $Q^{-2n}$. The graph determines
+its exact order.
+
+Let $s=|E(G)|$, $a=Q-1$, and $z=Q^{-n}$. Write $g(G)$ for the length of a
+shortest cycle when $G$ contains a cycle. A bipartite graph has even girth
+$g\geq4$. Vertices of degree zero may be discarded.
+
+\begin{theorem}[Girth law for quadratic grid moments]
+\label{gm:thm:girth}
+If $G$ is a forest, then $\bar M_G(n)=1$ for every $n\geq1$.
+If $G$ contains a cycle and has girth $g$, then $\bar M_G(n)>1$ for every
+$n\geq1$, and there is a positive integer $C_{G,Q}$ such that
+\begin{equation}\label{gm:eq:girth-asymptotic}
+ \bar M_G(n)=1+C_{G,Q}Q^{-(g-2)n}
+                +O_{G,Q}(Q^{-(g-1)n}).
+\end{equation}
+Let $c_g(G)$ be the number of unoriented simple cycles of length $g$, and
+put
+\begin{equation}\label{gm:eq:cycle-zero-count}
+ N_{g,Q}=\frac{(Q-1)^g+(Q-1)}{Q}.
+\end{equation}
+Then $C_{G,Q}\geq c_g(G)N_{g,Q}>0$. More explicitly, for every $n\geq1$,
+\begin{equation}\label{gm:eq:girth-finite-bounds}
+ \frac{c_g(G)N_{g,Q}z^{g-2}(1-z^2)}{(1+az)^s}
+ \leq\bar M_G(n)-1\leq Q^s z^{g-2}.
+\end{equation}
+Thus the exponent $g-2$ is exact, rather than merely a permissible upper
+bound for the error.
+\end{theorem}
+
+\begin{proof}
+Change the signs on the coordinates in the second bipartition class.
+This congruence sends a site matrix to
+$(e_u-e_v)(e_u-e_v)^{\mathsf T}$. Hence the matrix $A_\lambda$ becomes the
+weighted graph Laplacian
+\[
+ \mathcal L_\lambda=D\diag(\lambda)D^{\mathsf T},
+\]
+where $D$ is an oriented incidence matrix. The orientation of an edge
+does not change its outer product. For a frequency $\lambda$, let
+$F=\supp\lambda$ and $t=|F|$.
+
+If $F$ is a forest, its incidence columns are independent, as follows by
+removing leaves. Since all retained weights are nonzero,
+$\rank\mathcal L_\lambda=t$. If $F$ contains a cycle, its incidence rank
+is $|V(F)|-c(F)<t$, where $c(F)$ counts nonempty connected components.
+Thus $\rank\mathcal L_\lambda<t$ in this case. Consequently
+\begin{equation}\label{gm:eq:girth-difference}
+ R_G(z)-(1+az)^s
+  =\sum_{\lambda:\,\supp\lambda\text{ contains a cycle}}
+      \left(z^{\rank\mathcal L_\lambda}-z^{|\supp\lambda|}\right).
+\end{equation}
+Each summand is positive for $0<z<1$. This already proves the forest
+assertion and strict positivity for cyclic graphs.
+
+For a lower bound on the rank of a cyclic frequency, take a shortest
+cycle in its support, of length $h\geq g$. This cycle is chordless within
+the support. The corresponding $h\times h$ principal submatrix of
+$\mathcal L_\lambda$ has nonzero entries along the cycle edges and arbitrary
+diagonal entries. A vector in its kernel is determined by its first two
+coordinates: the successive internal row equations determine the third
+coordinate, then the fourth, and so on. Thus its nullity is at most two,
+and
+\begin{equation}\label{gm:eq:girth-rank-bound}
+ \rank\mathcal L_\lambda\geq h-2\geq g-2.
+\end{equation}
+The upper finite bound now follows from \eqref{gm:eq:girth-difference},
+with at most $Q^s$ frequencies and denominator $(1+az)^s\geq1$.
+
+To attain rank $g-2$, support the weights on a fixed shortest cycle.
+Orient its edges cyclically. The equation $\mathcal L_\lambda y=0$ says
+that the currents $\lambda_i(y_i-y_{i+1})$ are all equal. Thus its kernel
+has dimension two exactly when
+\begin{equation}\label{gm:eq:cycle-reciprocal}
+ \sum_{i=1}^{g}\lambda_i^{-1}=0;
+\end{equation}
+otherwise its kernel has dimension one. All weights are required to be
+nonzero. Inversion permutes $\F^\times$, and additive-character
+orthogonality counts the solutions of \eqref{gm:eq:cycle-reciprocal} as
+\[
+ Q^{-1}\left((Q-1)^g+(Q-1)(-1)^g\right)=N_{g,Q}.
+\]
+Here $g$ is even, so this number is positive over every finite field.
+Different shortest cycles give different frequency supports. Their
+contribution to \eqref{gm:eq:girth-difference} is at least
+$c_g(G)N_{g,Q}(z^{g-2}-z^g)$, proving the lower finite bound.
+
+Finally, no negative term on the right of
+\eqref{gm:eq:girth-difference} has degree below $g$. Its coefficient of
+$z^{g-2}$ is precisely the number of cyclic-support frequencies of rank
+$g-2$; call this positive integer $C_{G,Q}$. Dividing by $(1+az)^s$, whose
+constant term is one, gives \eqref{gm:eq:girth-asymptotic}.
+\end{proof}
+
+The leading coefficient need not count only shortest-cycle-supported
+frequencies; larger supports may also yield rank $g-2$. The theorem makes
+no assertion excluding them. Its exact coefficient description is
+\[
+ C_{G,Q}=\#\{\lambda\in\F^{E(G)}:\supp\lambda\text{ is cyclic and }
+                              \rank\mathcal L_\lambda=g-2\}.
+\]
+
+\begin{corollary}[Every even cycle, exactly]\label{gm:cor:cycle-exact}
+For the cycle $C_\ell$ of even length $\ell\geq4$, let
+$N=N_{\ell,Q}=((Q-1)^\ell+(Q-1))/Q$. Then
+\begin{align}
+ R_{C_\ell}(z)
+   &=(1+az)^\ell+N z^{\ell-2}+(a^\ell-N)z^{\ell-1}-a^\ell z^\ell,
+          \label{gm:eq:cycle-enumerator}\\
+ \bar M_{C_\ell}(n)
+   &=1+\frac{N z^{\ell-2}+(a^\ell-N)z^{\ell-1}-a^\ell z^\ell}
+                  {(1+az)^\ell}.
+          \label{gm:eq:cycle-moment}
+\end{align}
+In particular, $C_{C_\ell,Q}=N$. The exact convergence exponent can be
+arbitrarily large as the cycle length grows.
+\end{corollary}
+
+\begin{proof}
+Every proper edge subset is a forest and contributes the baseline rank
+equal to its size. Among the $a^\ell$ full-support frequencies, exactly
+$N$ have rank $\ell-2$, by \eqref{gm:eq:cycle-reciprocal}; the rest have
+rank $\ell-1$. Replace the baseline full-support term
+$a^\ell z^\ell$ accordingly and normalize.
+\end{proof}
+
+For a rectangular four-cycle this gives
+\[
+ R_{C_4}(z)=1+4az+a(Q^2+3Q-3)z^2+Qa(Q^2-2)z^3,
+\]
+and the first normalized correction is
+$a(Q^2-3Q+3)Q^{-2n}$. For a six-cycle it starts at $Q^{-4n}$, not
+$Q^{-2n}$. Over $\F_2$, the exact cycle formula simplifies to
+\[
+ \bar M_{C_\ell}(n)
+    =1+\frac{z^{\ell-2}(1-z)}{(1+z)^{\ell-1}}.
+\]
+For example, at $n=1$ the four-cycle moment is $28/27$ and the six-cycle
+moment is $244/243$. The two-axis source regime therefore contains a
+whole hierarchy of exact convergence rates, even though every pattern
+has the same independent limiting law.
+
+\section{A complete cube rank enumerator over every finite field}
+\label{gm:sec:enumerator}
+
+Let $\Omega=\{0,1\}^3$. The full cube and each one-vertex-deleted cube
+span the same seven-dimensional matrix space. It is convenient to replace
+the six-coordinate one-hot vector by
+\[
+ w_\alpha=(1,\alpha_1,\alpha_2,\alpha_3)^{\mathsf T}.
+\]
+There is a $6\times4$ matrix of full column rank carrying $w_\alpha$ to
+$v_\alpha$. Therefore the replacement preserves ranks of the corresponding
+matrix sums. Their space is
+\begin{equation}\label{gm:eq:cube-space}
+ \mathcal C_Q=
+ \left\{
+ \begin{pmatrix}
+ a&b&c&d\\ b&b&e&f\\ c&e&c&g\\ d&f&g&d
+ \end{pmatrix}: a,b,c,d,e,f,g\in\F
+ \right\}.
+\end{equation}
+Indeed the seven functions $1,\alpha_i,\alpha_i\alpha_j$ are linearly
+independent on the Boolean cube over every field. Thus all seven
+parameters occur independently.
+
+\begin{theorem}[Full rank distribution]\label{gm:thm:cube-enumerator}
+Write
+\[
+ R_Q(z)=\sum_{A\in\mathcal C_Q}z^{\rank A}
+        =1+a_1z+a_2z^2+a_3z^3+a_4z^4.
+\]
+In every characteristic, $a_1=8(Q-1)$. In odd characteristic,
+\begin{align}
+ a_2&=(Q-1)(Q^3+7Q^2+Q-7),\notag\\
+ a_3&=Q^2(Q-1)(Q^3+Q^2+7Q-13),\label{gm:eq:odd-enumerator}\\
+ a_4&=Q^2(Q-1)(Q^4-7Q+7).\notag
+\end{align}
+In characteristic two,
+\begin{align}
+ a_2&=(Q-1)(Q^3+8Q^2+Q-7),\notag\\
+ a_3&=Q^2(Q-1)(Q^3+Q^2+8Q-14),\label{gm:eq:even-enumerator}\\
+ a_4&=Q^2(Q-1)^2(Q^3+Q^2+Q-7).\notag
+\end{align}
+These formulas hold for every finite field, not just prime fields.
+\end{theorem}
+
+We give a counting proof rather than interpolation from numerical data.
+The rank-one count follows from Theorem~\ref{gm:thm:rank-one}. Two
+additional counts determine the remaining coefficients: a rank-two Gram
+count and a first kernel moment.
+
+\subsection{Why Gram counting counts each matrix exactly once}
+A rank-two symmetric $4\times4$ matrix can be represented as
+\[
+ A_{ij}=B(u_i,u_j),\qquad u_0,u_1,u_2,u_3\in\F^2,
+\]
+where $B$ is a nondegenerate symmetric bilinear form and the four vectors
+span $\F^2$. To construct this representation, quotient $\F^4$ by the
+radical of its matrix form. Two spanning tuples give the same matrix
+exactly when an isometry carries one tuple to the other: the map on their
+spans is well defined because the kernels of the two Gram maps agree.
+The isometry action on spanning tuples is free. Consequently one counts
+spanning tuples for each isometry type and divides by its isometry-group
+order.
+
+\subsection{Rank two in odd characteristic}
+When $Q$ is odd, replace $w_\alpha$ by
+$(1,2\alpha_1-1,2\alpha_2-1,2\alpha_3-1)$. This is an invertible change of
+coordinates. The transformed space consists exactly of symmetric
+$4\times4$ matrices with all four diagonal entries equal. Hence the Gram
+vectors must all have a common norm $t$.
+
+A nondegenerate plane has two isometry types. The split type may be written
+with norm $xy$; it has $2Q-1$ vectors of norm zero and $Q-1$ of each nonzero
+norm. Its isometry group has order $2(Q-1)$. The anisotropic type is a
+nonzero scalar multiple of the norm of $\F_{Q^2}/\F_Q$; it has one vector
+of norm zero and $Q+1$ of each nonzero norm, and its isometry group has
+order $2(Q+1)$. These assertions follow directly as follows. In the split
+case the zero set is the union of the two isotropic lines, and an isometry
+scales these lines reciprocally or interchanges them. In the anisotropic
+case the norm map on the cyclic multiplicative group has kernel of order
+$Q+1$; after choosing the image of a unit vector, an isometry fixing it is
+identity or conjugation. These two cases exhaust nondegenerate planes by
+diagonalization and whether a nonzero isotropic vector exists.
+
+For nonzero $t$, if the norm fiber has $N_t$ vectors, each line meets it
+in zero or two points. The number of ordered quadruples in that fiber
+which fail to span the plane is therefore $8N_t$. In the split zero
+fiber, the nonspanning count is $2Q^4-1$, the union of the two isotropic
+lines counted with their shared zero tuple corrected. In the anisotropic
+zero fiber there are no spanning tuples. It follows that
+\begin{align*}
+ a_2={}&\frac{(2Q-1)^4-2Q^4+1+(Q-1)((Q-1)^4-8(Q-1))}{2(Q-1)}\\
+ &+\frac{(Q-1)((Q+1)^4-8(Q+1))}{2(Q+1)}\\
+ ={}&(Q-1)(Q^3+7Q^2+Q-7).
+\end{align*}
+This proves the odd-characteristic rank-two formula.
+
+\subsection{Rank two in characteristic two}
+Use the original space \eqref{gm:eq:cube-space}. The Gram constraints are
+\begin{equation}\label{gm:eq:even-gram-constraint}
+ B(u_i,u_i)=B(u_0,u_i),\qquad 1\leq i\leq3.
+\end{equation}
+A nondegenerate symmetric bilinear plane in characteristic two has two
+isometry types: alternating, and nonalternating. For the latter, an
+orthogonal basis and the existence of square roots in a finite field
+identify the form with the identity matrix. Their isometry-group orders
+are respectively $Q(Q^2-1)$ and $Q$. The first is
+$|\operatorname{SL}_2(\F)|$; for the second, a unit column $(a,b)$ satisfies
+$a+b=1$ and determines its orthogonal unit companion $(b,a)$, giving $Q$
+choices.
+
+For the alternating plane, when $u_0\ne0$, condition
+\eqref{gm:eq:even-gram-constraint} forces every $u_i$ into the line
+$u_0^\perp=\F u_0$, so no tuple spans. When $u_0=0$, the last three vectors
+are arbitrary. The nonspanning triples are the zero triple and the
+nonzero triples contained in one of the $Q+1$ lines. The contribution is
+\begin{equation}\label{gm:eq:alternating-count}
+ \frac{Q^6-1-(Q+1)(Q^3-1)}{Q(Q^2-1)}=Q^3-1.
+\end{equation}
+
+For the nonalternating plane, choose coordinates $(u,t)$ with
+\[
+ B((U,T),(u,t))=Ut+Tu+Tt,\qquad B((u,t),(u,t))=t^2.
+\]
+Fix $u_0=(U,T)$. If $T\ne0$, the equation
+$t^2=Tu+(U+T)t$ has exactly $Q$ solutions. Its intersection with the line
+$\F u_0$ consists of $0$ and $u_0$. Thus there are $Q^3-8$ choices of
+$(u_1,u_2,u_3)$ which span with $u_0$, and $Q(Q-1)$ such $u_0$.
+If $T=0$ and $U\ne0$, the solution set consists of the two parallel lines
+$t=0$ and $t=U$. Its intersection with $\F u_0$ is one entire line, giving
+$(2Q)^3-Q^3=7Q^3$ spanning triples. There are $Q-1$ such $u_0$.
+For $u_0=0$, all allowed vectors lie on the isotropic line, so there is
+no contribution. Dividing by the isometry-group order $Q$, and adding
+\eqref{gm:eq:alternating-count}, gives
+\begin{align*}
+ a_2&=(Q^3-1)
+    +\frac{Q(Q-1)(Q^3-8)+(Q-1)7Q^3}{Q}\\
+    &=(Q-1)(Q^3+8Q^2+Q-7).
+\end{align*}
+
+\subsection{A kernel moment determines ranks three and four}
+For any seven-dimensional matrix space $\mathcal C$,
+\begin{equation}\label{gm:eq:kernel-double-count}
+ \sum_{A\in\mathcal C}|\ker A|
+     =\sum_{x\in\F^4}Q^{7-\rho(x)},
+ \qquad \rho(x)=\rank(A\mapsto Ax).
+\end{equation}
+We compute $\rho(x)$ by finding the annihilator of the image.
+
+In odd characteristic use the equal-diagonal model. A vector $y$ is in
+this annihilator exactly when
+\[
+ \sum_i x_i y_i=0,\qquad x_i y_j+x_j y_i=0\quad(i<j).
+\]
+If $x$ has at least three nonzero coordinates, the ratios $y_i/x_i$
+on its support have pairwise sums zero, forcing them all to vanish;
+coordinates off the support vanish too. A one-coordinate support also
+has zero annihilator. For a two-coordinate support, the annihilator is
+one-dimensional exactly when the two nonzero coordinates have equal
+squares. There are $\binom42\cdot2(Q-1)=12(Q-1)$ such nonzero $x$.
+Thus $\rho(x)=3$ on these vectors and is $4$ on all other nonzero vectors.
+
+In characteristic two use \eqref{gm:eq:cube-space}. Write
+$x=(x_0,x_1,x_2,x_3)$ and similarly for $y$. The annihilator equations are
+\begin{align*}
+ x_0y_0&=0,\\
+ x_i y_0+(x_0+x_i)y_i&=0\quad(1\leq i\leq3),\\
+ x_i y_j+x_j y_i&=0\quad(1\leq i<j\leq3).
+\end{align*}
+If $x_0\ne0$, then $y_0=0$. A nonzero annihilator exists exactly when the
+tail is a nonempty vector with entries in $\{0,x_0\}$; it is then
+one-dimensional. If $x_0=0$, the last equations make the tail of $y$
+proportional to the nonzero tail of $x$. The remaining equations permit
+a nonzero proportionality factor exactly when all nonzero tail entries
+of $x$ are equal. Again the annihilator is one-dimensional. There are
+$7(Q-1)$ vectors of each kind, for a total of $14(Q-1)$. Every other
+nonzero vector has zero annihilator.
+
+Set $\eta=12$ in odd characteristic and $\eta=14$ in characteristic two.
+Equation~\eqref{gm:eq:kernel-double-count} becomes
+\begin{equation}\label{gm:eq:kernel-moment-value}
+ T_Q=Q^7+\eta(Q-1)Q^4+\bigl(Q^4-1-\eta(Q-1)\bigr)Q^3.
+\end{equation}
+On the other hand,
+\[
+ T_Q=Q^4+a_1Q^3+a_2Q^2+a_3Q+a_4,
+ \qquad Q^7=1+a_1+a_2+a_3+a_4.
+\]
+Consequently
+\begin{equation}\label{gm:eq:solve-rank-three}
+ (Q-1)a_3=T_Q-Q^7-(Q^4-1)-(Q^3-1)a_1-(Q^2-1)a_2.
+\end{equation}
+Substitution of the two rank-two formulas and then use of the total count
+proves \eqref{gm:eq:odd-enumerator} and \eqref{gm:eq:even-enumerator}.
+This completes the proof of Theorem~\ref{gm:thm:cube-enumerator}.
+\qed
+
+\section{Exact seven- and eight-site moments and consequences}
+\label{gm:sec:consequences}
+
+Let $S_8=\{0,1\}^3$ and $S_7=S_8\setminus\{\alpha_0\}$ for any vertex
+$\alpha_0$. In the quadratic product-block model, put $z=Q^{-n}$.
+
+\begin{corollary}[Finite-dimensional formulas]\label{gm:cor:exact-seven-eight}
+For every finite field and every $n\geq1$,
+\begin{equation}\label{gm:eq:seven-eight}
+ \bar M_{S_7}(n)=\frac{R_Q(z)}{(1+(Q-1)z)^7},\qquad
+ \bar M_{S_8}(n)=\frac{Q R_Q(z)}{(1+(Q-1)z)^8},
+\end{equation}
+where $R_Q$ is the explicit polynomial of
+Theorem~\ref{gm:thm:cube-enumerator}. In particular,
+\begin{equation}\label{gm:eq:seven-eight-ratio}
+ \bar M_{S_8}(n)=\frac{Q\bar M_{S_7}(n)}{1+(Q-1)Q^{-n}}.
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+Both patterns span $\mathcal C_Q$. Their relation dimensions are zero and
+one respectively. Apply \eqref{gm:eq:rank-moment}.
+\end{proof}
+
+Define
+\begin{equation}\label{gm:eq:second-coefficient}
+ b_Q=a_2-28(Q-1)^2
+ =\begin{cases}
+ (Q-1)(Q^3+7Q^2-27Q+21),&Q\text{ odd},\\
+ (Q-1)(Q^3+8Q^2-27Q+21),&Q\text{ even}.
+ \end{cases}
+\end{equation}
+Expanding the exact rational expressions gives
+\begin{align}
+ \bar M_{S_7}(n)&=1+(Q-1)Q^{-n}+b_QQ^{-2n}+O_Q(Q^{-3n}),
+                  \label{gm:eq:seven-expansion}\\
+ Q^{-1}\bar M_{S_8}(n)&=1+b_QQ^{-2n}+O_Q(Q^{-3n}).
+                  \label{gm:eq:eight-expansion}
+\end{align}
+The coefficient $b_Q$ is positive for every prime power $Q\geq2$, as is
+immediate from the displayed polynomials (the odd case starts at $Q=3$).
+Thus the error orders shown here are genuinely attained, not merely
+upper bounds.
+
+\begin{table}[ht]
+\centering
+\caption{Exact cube rank counts; the last column is the coefficient in
+\eqref{gm:eq:second-coefficient}. Each row was also checked by exhaustive
+finite-field matrix enumeration.}
+\label{gm:tab:ranks}
+\begin{tabular}{rrrrrrr}
+\toprule
+$Q$&$a_0$&$a_1$&$a_2$&$a_3$&$a_4$&$b_Q$\\
+\midrule
+2&1&8&35&56&28&7\\
+3&1&16&172&792&1,206&60\\
+4&1&24&567&4,704&11,088&315\\
+5&1&32&1,192&17,200&59,700&744\\
+7&1&48&4,116&125,832&693,546&3,108\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+For example,
+\[
+ R_2(z)=1+8z+35z^2+56z^3+28z^4.
+\]
+At $n=1$ one obtains $\bar M_{S_7}=320/243$ and
+$\bar M_{S_8}=1280/729$, as checked independently by direct counting.
+The eight-site value is below its limiting value $2$, whereas
+\eqref{gm:eq:eight-expansion} places it above $2$ for all sufficiently
+large $n$. Thus monotonicity in $n$ does not hold in this example.
+There is no contradiction: the expansion describes the neighborhood of
+$z=0$, not the whole interval $0<z\leq1/2$.
+
+\subsection{Larger grids}
+For a binary $q$-axis grid,
+\begin{equation}\label{gm:eq:binary-limit}
+ \lim_{n\to\infty}\bar M_{\{0,1\}^q}(n)
+   =Q^{\,2^q-\sum_{i=0}^{\min(d,q)}\binom qi}.
+\end{equation}
+For quadratic blocks, the four-axis and five-axis limits are respectively
+$Q^5$ and $Q^{16}$. These excesses are algebraic and persist even as the
+nontrivial block biases tend to zero. A condition that asks all of these
+moments to approach one is therefore incompatible with this model.
+
+Conversely, the number of axes alone is not decisive for a partial grid:
+Theorem~\ref{gm:thm:support} guarantees independence below $2^{d+1}$ sites,
+however many axes are used. The exact matrix $M_d(S)$ decides all remaining
+cases. This refines a sufficient condition based only on $q\leq d$ into
+an if-and-only-if criterion for the present model.
+
+\subsection{What this contributes to a densification audit}
+For any finite collection of distinct-site patterns generated by a
+Cauchy--Schwarz or densification argument, one can first compute their
+margin ranks. An independent pattern passes the product-block test, with
+the explicit error in \eqref{gm:eq:normalized-bound}. A dependent pattern
+has a known limiting excess, and Theorem~\ref{gm:thm:variance} can rule out
+repair by merely choosing a smoother nonconstant cutoff on the first
+cube. At quadratic degree, closure distinguishes whether marginal
+normalization improves the error from $Q^{-n}$ to $Q^{-2n}$.
+
+This is an algebraic diagnostic and an exact model calculation. It does
+not replace the analytic estimates needed for arbitrary sparse
+majorants. In particular, it is not enough to check the original
+configuration if the proof later creates other patterns; all patterns
+actually required by that proof must be tested.
+
+\section{Reproducibility, proof dependencies, and integration}
+\label{gm:sec:repro}
+
+\subsection{The computational checks}
+The supplied \texttt{verify.py} uses Python's standard library and exact
+finite-field arithmetic. It does not use numerical ranks, floating-point
+character sums, random sampling, or a computer algebra oracle. The
+recorded run includes:
+\begin{enumerate}[label=(\roman*)]
+\item exhaustive enumeration of all $Q^7$ matrices in
+\eqref{gm:eq:cube-space} for $Q=2,3,4,5,7$, including extension-field
+arithmetic for $\F_4$;
+\item all 255 nonempty subsets of the binary three-cube over each of
+those fields, checking their ranks and closures;
+\item full-grid margin ranks on four grid shapes at every degree up to
+the number of axes, and agreement of the margin and symmetric-matrix
+representations on selected $2\times3\times2$ patterns;
+\item independent direct counting of the seven- and eight-site zero
+moments at $n=1$ over $\F_2$ and $\F_3$;
+\item formal coefficient expansions for several reduced polynomial
+blocks, comparing their full and top-degree coefficient kernels with the
+margin kernels; and exhaustive binary checks of the support bound in
+three small cases;
+\item 28,970 exhaustive weighted-Laplacian frequency checks over
+$\F_2$ and $\F_3$, covering four-, six-, and eight-cycles, $K_{2,3}$,
+$K_{3,3}$, and a five-edge path. These check the girth exponent, the cycle
+formulas, forest equality, and the positive leading coefficients.
+\end{enumerate}
+The field $\F_4$ is represented by $\F_2[t]/(t^2+t+1)$; the optional
+$\F_8$ implementation uses $t^3+t+1$. Prime-field arithmetic uses modular
+inverses. The general rank-enumerator theorem is proved by counting in
+Section~\ref{gm:sec:enumerator}, not inferred from these finite checks.
+
+\subsection{Dependency structure}
+The coefficient-extraction theorem and the support bound are purely
+algebraic. The sharp mixing theorem uses them and the elementary
+multilinear nonvanishing bound. The closure theorem uses only the
+quadratic matrix representation, rank-one rigidity, and finite Fourier
+inversion. The graph-girth theorem uses weighted incidence matrices, a two-coordinate
+recurrence on a shortest cycle, and an exact reciprocal-weight count.
+The cube enumerator additionally uses elementary classification
+and counting of nondegenerate bilinear planes, followed by a kernel
+incidence count. No proof uses a claimed theorem from the recent
+\texttt{openai/math} release as a black box.
+
+\subsection{Suggested integration}
+A suitable standalone location is
+\begin{quote}\ttfamily\small
+Combinatorics/Ramsey/Research/GowersSzemeredi/\\
+sparse-grid-moments-quadratic-closure/
+\end{quote}
+The article's labels have the prefix \texttt{gm:}. The package includes a
+source register, theorem-status ledger, build instructions, exact check
+outputs, and a checksum manifest. It does not modify existing repository
+files, assign itself a source number in the merged report, or alter a
+formalization ledger.
+
+A natural Lean development would begin with finite label types and
+\texttt{Matrix} over a finite field, proving equality of the margin kernel
+and the polynomial-relation kernel. Next would come the one-hot matrix
+representation and rank-one rigidity. Those finite algebraic interfaces
+can be formalized independently of probability and Fourier analysis.
+The supplied Python tests are not a substitute for such proofs.
+The graph-girth result provides another independent finite algebraic target:
+weighted Laplacian ranks on forests and cycles can be verified before
+introducing the moment interpretation.
+
+\section{Further research questions}
+\label{gm:sec:questions}
+
+\begin{question}[Closure for larger and irregular patterns]
+Can $\cl_2(S)$ be described combinatorially without Gaussian elimination,
+for arbitrary partial Cartesian grids? In particular, characterize those
+patterns for which every rank-one point in their span is already a sampled
+site. Theorem~\ref{gm:thm:closure} shows that precisely this property removes
+the first normalized correction.
+\end{question}
+An efficient structural characterization would turn a quantitative error
+question into a local combinatorial test. The seven-site cube demonstrates
+that independence alone is insufficient.
+
+\begin{question}[Second corrections beyond the cube]
+For a quadratically closed pattern, determine the number of rank-two
+matrices in $\mathcal V_S$ from geometric invariants of the site set.
+More generally, develop formulas for the coefficients of $R_S$ in terms
+of low-rank strata of the span.
+\end{question}
+Theorem~\ref{gm:thm:girth} already determines the first nonzero order for
+all two-axis patterns; its leading coefficient for a general graph remains
+an explicit rank count rather than a closed graph formula.
+The normalized second coefficient for a general pattern is
+\[
+ [z^2]R_S(z)-s(Q-1)^2c+\frac{s(s+1)}2(Q-1)^2.
+\]
+Thus rank-two geometry is the next exact obstacle. It is not determined
+by the count of hidden rank-one sites alone.
+
+\begin{question}[Higher-degree extremal Fourier modes]
+For $d\geq3$, classify the frequencies off $K_d(S)$ for which
+$b_\lambda=\theta_{Q,d}$. Is there a useful analogue of quadratic closure
+which controls the first correction after normalization by the one-site
+mean?
+\end{question}
+The proof of the sharp upper bound identifies an equality problem for
+multilinear contraction maps. A classification could give higher-degree
+versions of Theorem~\ref{gm:thm:closure}, with correction rates that need
+not be integral powers of $Q^{-n}$.
+
+\begin{question}[Minimum-support relations with extra axes]
+Classify all field-valued relations of support $2^{d+1}$ when $q>d+1$,
+and determine their dependence on the characteristic and axis sizes.
+\end{question}
+The tensor description for $q=d+1$ is complete, but the induction proving
+the lower bound does not classify all equality configurations with extra
+coordinates. Connections with the trade literature should be checked
+before asserting new classifications.
+
+\begin{question}[Beyond $p$-reduced blocks]
+What replaces $M_d(S)$ for arbitrary polynomial functions over extension
+fields, where Frobenius powers can lower additive degree? Can a matrix of
+Frobenius-labelled margins express the exact relation space uniformly in
+small characteristic?
+\end{question}
+The example $z^p$ shows why one cannot simply retain formal degree. A
+correct replacement should recover both additive-polynomial relations and
+Theorem~\ref{gm:thm:relations} as special cases.
+
+\begin{question}[From block models to general polynomial factors]
+Which quantitative high-rank hypotheses imply equidistribution on exactly
+$H_d(S)$ for a general family of polynomial factors, with an error governed
+by the same relation matrix and with explicit dependence on sparsity?
+\end{question}
+Theorem~\ref{gm:thm:universality} settles independent copies of one
+$p$-reduced block, not arbitrary factors. Extending this to general factors
+would connect the model more directly to inverse theorems and relative
+counting.
+
+\begin{question}[The torus-chart interface]
+Can the exact relation criterion be transferred to the buffered torus
+charts in the selected OpenAI source, retaining its stated separation of
+rank, cutoff, and approximation costs? Which relation spaces arise under
+the actual cloned patterns in that argument?
+\end{question}
+This requires checking the analytic and geometric hypotheses of that
+source; the finite-field calculation alone does not settle it. It is the
+most direct route from the present local result back to the motivating
+arithmetic-progression program.
+
+\begin{question}[Formal verification and generated certificates]
+Can a proof assistant check a finite pattern certificate consisting of
+$M_d(S)$, its row reduction, and the hidden-site witnesses, and then invoke
+general theorems to certify the corresponding limiting law and quadratic
+first correction?
+\end{question}
+Such a checker would preserve ProveIt's distinction between external
+computation and trusted proof. The explicit matrices and identities here
+provide a small algebraic starting point before the more demanding
+Fourier-probability formalization.
+
+\section*{Conclusion}
+\addcontentsline{toc}{section}{Conclusion}
+The source condition ``number of axes at most polynomial degree'' is one
+visible instance of a more precise finite-field principle: low-order
+margin relations determine the limiting configuration law. A dependent
+pattern does not become independent merely because the number of blocks
+grows. Conversely, many partial grids beyond the axis threshold remain
+independent, and their exact status is decidable by a finite matrix.
+Quadratic closure adds information that rank alone omits, controlling the
+first error remaining after marginal normalization. The graph-girth theorem gives the exact convergence rate throughout the
+two-axis regime, and the complete cube
+rank enumerator makes this distinction exact in every dimension and
+every finite field. These are local results with explicit interfaces and
+written proofs, rather than an assertion that the global progression
+problem has been settled by this manuscript.
+
+\begin{thebibliography}{9}
+\addcontentsline{toc}{section}{References}
+\raggedright
+\bibitem{gowers}
+W.~T. Gowers, \emph{A new proof of Szemer\'edi's theorem},
+Geom. Funct. Anal. \textbf{11} (2001), 465--588.
+\href{https://doi.org/10.1007/s00039-001-0332-9}{doi:10.1007/s00039-001-0332-9}.
+
+\bibitem{gw}
+W.~T. Gowers and J. Wolf, \emph{The true complexity of a system of linear
+equations}, Proc. Lond. Math. Soc. (3) \textbf{100} (2010), 155--176.
+\href{https://arxiv.org/abs/0711.0185}{arXiv:0711.0185};
+\href{https://doi.org/10.1112/plms/pdp019}{doi:10.1112/plms/pdp019}.
+
+\bibitem{cfz}
+D. Conlon, J. Fox, and Y. Zhao, \emph{A relative Szemer\'edi theorem},
+Geom. Funct. Anal. \textbf{25} (2015), 733--762.
+\href{https://arxiv.org/abs/1305.5440}{arXiv:1305.5440};
+\href{https://doi.org/10.1007/s00039-015-0324-9}{doi:10.1007/s00039-015-0324-9}.
+The inspected PDF is arXiv version 2; in particular Definition 2.8 and
+Sections 6.2--6.3.
+
+\bibitem{trades}
+E. Ghorbani, S. Kamali, G.~B. Khosrovshahi, and D.~S. Krotov,
+\emph{On the volumes and affine types of trades},
+Electron. J. Combin. \textbf{27} (2020), no.~1, P1.29.
+\href{https://arxiv.org/abs/1810.02296}{arXiv:1810.02296};
+\href{https://doi.org/10.37236/8367}{doi:10.37236/8367}.
+
+\bibitem{oa}
+OpenAI, \emph{Mathematical manuscript collection}, repository README and
+research catalogue, release inspected 7 October 2026.
+Commit \texttt{adc7f1241b42e322a6451854ab7e4b4c146bf78a}.
+\href{https://github.com/openai/math/tree/adc7f1241b42e322a6451854ab7e4b4c146bf78a}{Pinned repository}.
+Catalogue claims are not used as theorems in this article.
+
+\bibitem{oa-grid}
+OpenAI, \emph{Quasipolynomial Bounds for Arithmetic Progressions},
+manuscript directory dated 23 September 2026, source section
+\emph{Detection independent of the current width},
+\texttt{build/sections/03-relative-detection.tex},
+Lemma with source label \texttt{ap:path:grid}.
+\href{https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Quasipolynomial-Bounds-for-Arithmetic-Progressions-September-23-2026/build/sections/03-relative-detection.tex}{Pinned source}.
+Blob \texttt{ca82af70203a4d9d18371266741b8b7210e658d9}.
+
+\bibitem{proveit}
+V. Reshetnikov and contributors, \emph{ProveIt},
+\emph{Local Quantitative Refinements of Gowers's Proof of Szemer\'edi's
+Theorem}, research overview inspected 7 October 2026.
+Repository snapshot \texttt{fb9602e556560a15704b4feb176ba6de08378665}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/fb9602e556560a15704b4feb176ba6de08378665/Combinatorics/Ramsey/Research/GowersSzemeredi/local-quantitative-refinements/README.md}{Pinned research overview}.
+Research placement does not imply formal verification.
+\end{thebibliography}
+\end{document}
