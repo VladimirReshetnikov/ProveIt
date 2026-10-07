@@ -154,13 +154,52 @@ could be used for higher exact-mode remainders", not used) to Question 1.
   byte-identical, normal = optimized, 9 s). The optional Gaussian-line
   diagnostics were not rerun.
 
+## Independent check of the write (7 October 2026)
+
+An adversarial check made by the intake after the write (`6ec1f3f92`), with
+its own code, after fetching again A326805 (#16) and A336293.
+
+- **Remark 1.4.** Every quotation, revision, date and author line confirmed,
+  the 35 terms and the table line for `n = 17`; the check's 70-digit sums give
+  all 35 floors, and the smallest distance to an integer is at `n = 17`,
+  `0.00169001377462648414…` (the smallest fractional part alone is at
+  `n = 22`, `0.00317…`).
+- **The conjecture, checked hardest.** The proof chain of Corollary 1.2
+  re-read; Theorem 1.3 with `M = 0` already gives `D(x) = O(x^{1/8+ε})` and so
+  `a(n) ~ 2ne^n`. Its exact foundation (Lemma 3.1 with (17)) tested
+  numerically: `S(x) − 2xe^x = −2N_1(x) + 1/2 − 2∫ Im F_x(it)/(e^{2πt} − 1) dt`
+  to `10⁻²³` at `x = 3, 10, 25`, confirming the endpoint constant `+1/2`. The
+  first row of the Gaussian-line table recomputed by direct quadrature on the
+  ray: at `log x = 40`, `2 Re J_1 = −72.5984597595149`, normalized error
+  `−4.47274633408·10⁻⁵`, as printed.
+- **Coefficients.** `d_{1,1}, d_{1,2}, d_{1,3}, d_{2,1}, d_{2,2}` from (46) and
+  (45) by SymPy series: all equal the shipped certificate; `B_2(1/8) = 11/192`;
+  `C_* = 0.436768551345747…`; the second-order terms of (59) and the arc
+  constant (28) re-derived.
+- **Remark 10.2.** (a)–(e) re-derived against the volume (in (e) only the term
+  `m = n` of `p0:eq:core-lagrange` survives, giving (57) exactly); **one
+  correction**: the Lean declarations for (b) and (c) are
+  `Fabius.staircase_separation` and `Fabius.staircase_separation_fails`, not
+  `Fabius.staircase_ceil` (dated note in the article; "Relation to the
+  repository" below).
+- **Provenance.** Archive facts, staged bytes, the `DATA_SOURCES.md` sentence,
+  the three cited expositions, the 89 delivered label numbers and 69
+  references, Route B (three certificates byte-identical, normal = optimized,
+  5 s) confirmed. No error found in the source's proofs.
+
+The check is recorded at the end of Section 13.
+
 ## Relation to the repository
 
 **Formal status.** No statement is formalized, and placement in the
 collection confers no formal status. The staircase arithmetic of Remark
-10.2(a)–(b) is formalized generically as `Fabius.staircase_ceil` in
-`Analysis/FabiusFunction/Lean/FabiusFunction/StaircaseInversion.lean`;
-nothing about `S` or `a(n)` is.
+10.2 is formalized generically in
+`Analysis/FabiusFunction/Lean/FabiusFunction/StaircaseInversion.lean`: (a)
+as `Fabius.staircase_ceil`, (b) as `Fabius.staircase_separation`, and the
+abstract failure mode that (c) realizes as
+`Fabius.staircase_separation_fails`; nothing about `S` or `a(n)` is.
+(Corrected after the independent check of 7 October 2026: the write named
+only `Fabius.staircase_ceil`, for (a)–(b).)
 
 **The transseries volume**
 (`Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/`,
@@ -318,7 +357,9 @@ B=$(mktemp -d); cp article.tex "$B/"; cd "$B"
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The committed PDF was built this way with MiKTeX on 7 October 2026: 25 pages;
+The committed PDF was built this way with MiKTeX on 7 October 2026, and
+rebuilt after the independent check of the same day (label numbers
+unchanged, aux files compared): 25 pages;
 no errors or warnings, no undefined references or citations, no multiply
 defined labels, no duplicate PDF destinations, no overfull or underfull boxes
 (the delivered text also builds without any, 20 pages). The article keeps the

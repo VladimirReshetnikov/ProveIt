@@ -15,7 +15,7 @@ report 180": it names no person, tool or addressee. The package carries no
 
 | Source | Bundle report | Archive | Pin | Placed | Printed as |
 |---|---|---|---|---|---|
-| 01 | Report 180 (batch 110) | `Modified_Entringer_Asymptotics_and_Spectral_Limits_Source.zip` (34 files, no wrapper directory, 789,613 bytes, SHA-256 `23d6b43bbad1…e089a7f571f95f`), arrival commit `60f54ea06`; main file `Report180.tex` (1,018 lines, 22 pp.) | none: the package names no ProveIt commit; `SOURCE_AUDIT.md` names three neighbouring reports by their GitHub paths | `8622ca7e5` (batch 110) | the whole report |
+| 01 | Report 180 (batch 110) | `Modified_Entringer_Asymptotics_and_Spectral_Limits_Source.zip` (34 files, no wrapper directory, 789,613 bytes, SHA-256 `23d6b43bbad1…e089a7f571f95f`), arrival commit `60f54ea06`; main file `Report180.tex` (1,018 lines, 22 pp.) | none: the package names no ProveIt commit; `SOURCE_AUDIT.md` names three neighbouring reports, one of them (A125054) by its GitHub path and two by title (corrected after the independent check of 7 October 2026) | `8622ca7e5` (batch 110) | the whole report |
 
 **Status:** AI-assisted, unrefereed, not formalized: no Lean or Rocq
 declaration exists for any statement of this report.
@@ -171,6 +171,46 @@ correction `c_1 λ^{−1/2}` with `c_1 ≈ 0.0278`. **Nothing was refuted.**
   1.000695 at `λ = 25, 100, 400, 1600` (`√λ` times the excess: 0.02756,
   0.02776, 0.02780, 0.02781). Route B below was run: verifier and regeneration
   pass, output byte-identical to the dossier's.
+
+## Independent check of the write (7 October 2026)
+
+An adversarial check made by the intake after the write (`e378a2d67`), with
+its own code, after fetching again A386363 (#24), A386381 (#27) and its
+b-file.
+
+- **Remark 1.1.** Every quotation, revision, date and author line confirmed,
+  and row 8 of the triangle. The two divisibility conjectures are unsigned
+  lines of A386381, so by OEIS convention its author's (Kurkov's). All 265
+  b-file terms and the 21 displayed terms recomputed; `d_{N+2} = (N!)² [z^N] EA`
+  checked for `N < 40` from the Taylor recurrences (7), a second route.
+- **Recomputations.** By its own symbolic expansion, with (18) checked against
+  the operator (16) itself: `[t⁴]H_1`, `L_0(1), …, L_4(1)`, `s_1, …, s_4`, the
+  six corrections (29), `Q_1, Q_2, Q_3`, (52), (53), (54) and the coefficients
+  of (38); `P_10` from (8), its Sturm chain (the displayed signs, 7 − 1 = 6 real
+  roots) and gcd 1; `δ_420 = 5.6973·10⁻⁴⁸`. `C(1)` by the midpoint formula
+  (the same 70 digits at `z/ρ = 0.4, 0.5, 0.6`) and, by a route independent of
+  the Wronskian, from the exact `d_802` and the twelve-term carrier (28), to 28
+  digits: all agree, and every truncation claim of the Section 6 note holds.
+  `𝒜 = 4.2586174557058935695…` is a truncation.
+- **Large-mark diagnostic.** The four ratios and four products reproduced.
+  Continued to `λ = 6400, 25600`: `√λ` times the excess is 0.0278067,
+  0.0278052; a first-order Liouville–Green computation (heuristic, not a
+  proof) gives `c_1 = ½∫_0^𝒜 (Q + 1/(4x²) − 3/(4(𝒜−x)²)) dx − 1/(4𝒜) =
+  0.027803…`. So `c_1 ≈ 0.0278` stands.
+- **Remark 7.2.** (a)–(d) re-derived against the volume's statements: the
+  instance claims hold (`κ_vol = 2` with `d_vol = −(2 + log ρ)` and
+  `2 log(2/(e𝒜))` reproduce both `x_0` exactly), and the interpolation argument
+  of (b) has no gap. `Fabius.staircase_ceil` is as described.
+- **Provenance.** Archive facts, the staged files (byte-identical), the 102
+  delivered label numbers and 73 references, the neighbouring reports and the
+  Route B rerun (verifier normal and `-O`, regeneration comparison) confirmed,
+  **except** that the write said `SOURCE_AUDIT.md` names three neighbouring
+  reports by their GitHub paths: it links only A125054 and names A205497 and
+  A122399 by title (corrected by a dated note in Section 1.1 and in the table
+  above).
+- The check read the source's proofs as well and found no error.
+
+The check is recorded at the end of Section 13.
 
 ## Relation to the repository
 
@@ -359,7 +399,9 @@ B=$(mktemp -d); cp article.tex "$B/"; cd "$B"
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The committed PDF was built this way with MiKTeX on 7 October 2026: 27 pages;
+The committed PDF was built this way with MiKTeX on 7 October 2026, and
+rebuilt after the independent check of the same day (label numbers
+unchanged, aux files compared): 27 pages;
 no errors or warnings, no undefined references or citations, no multiply
 defined labels, no duplicate PDF destinations, no overfull or underfull boxes
 (the delivered text also builds without any, 22 pages). The article keeps the

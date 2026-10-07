@@ -995,7 +995,14 @@ No novelty is claimed for any of these inversions. The staircase arithmetic
 is formalized generically (for an arbitrary strictly monotone function) as
 \file{Fabius.staircase_ceil} in
 \path{Analysis/FabiusFunction/Lean/FabiusFunction/StaircaseInversion.lean};
-nothing about $S$ or $a(n)$ is formalized.
+nothing about $S$ or $a(n)$ is formalized. (Corrected after the independent
+check of 7~October 2026: \file{Fabius.staircase_ceil} is the arithmetic of
+\file{p0:thm:staircase}(1), used in~(a). The separation step of~(b),
+\file{p0:thm:staircase}(2), is \file{Fabius.staircase_separation} in the
+same file, and the abstract failure mode that~(c) realizes is
+\file{Fabius.staircase_separation_fails}, which exhibits, for every
+$\varepsilon>0$, data with $0<\eta<\varepsilon$ violating the separation
+condition; Theorem~\ref{srf:thm:failure} itself is not formalized.)
 \end{remark}
 
 \section{Further structural consequences}\label{srf:sec:consequences}
@@ -1111,6 +1118,42 @@ stated. The write found no unproved claim of the source outside them and no
 wrong one. The remark after the proof of Theorem~\ref{srf:thm:sector} that
 ``the same pairing could be used for higher exact-mode remainders'' is not
 used and not proved here; it belongs to Question~1.
+\end{writenote}
+
+\begin{writenote}[Independent check of the write, 7 October 2026]
+An adversarial check made by the intake after the write (commit
+\file{6ec1f3f92}) re-derived the statements marked [write] with its own code,
+after fetching again A326805 (revision~\#16) and A336293.
+\emph{Remark~\ref{srf:rem:oeis}.} Every quotation, revision, date and author
+line confirmed, including the 35 terms and the table line for $n=17$; the
+check's own 70-digit sums give all 35 floors, and the smallest distance to an
+integer is at $n=17$, $0.00169001377462648414\ldots$ (the smallest fractional
+part alone is at $n=22$, $0.00317\ldots$). \emph{The conjecture} (checked
+hardest). The proof chain of Corollary~\ref{srf:cor:sharp} re-read; already
+Theorem~\ref{srf:thm:finite} with $M=0$ gives $D(x)=\OO(x^{1/8+\eps})$ and
+hence $a(n)\sim2ne^n$. Its exact foundation, Lemma~\ref{srf:lem:abel}
+with~\eqref{srf:eq:continuous}, was tested numerically:
+$S(x)-2xe^x=-2N_1(x)+\tfrac12-2\int_0^\infty\Im F_x(\ii t)/(e^{2\pi t}-1)\dd t$
+holds to $10^{-23}$ at $x=3$, $10$, $25$ (direct summation against two
+quadratures), which confirms in particular the endpoint constant $+\tfrac12$.
+The first row of the Gaussian-line table recomputed by direct quadrature on
+the ray: at $\log x=40$, $2\Re J_1=-72.5984597595149$ and normalized error
+$-4.47274633408\cdot10^{-5}$, as printed. \emph{Coefficients.} $d_{1,1}$,
+$d_{1,2}$, $d_{1,3}$, $d_{2,1}$, $d_{2,2}$ re-derived from~\eqref{srf:eq:H}
+and~\eqref{srf:eq:G} by SymPy series: all equal the shipped certificate;
+$B_2(1/8)=11/192$; $C_*=0.436768551345747\ldots$; the second-order terms
+of~\eqref{srf:eq:inv2} and the arc constant~\eqref{srf:eq:arc} re-derived.
+\emph{Remark~\ref{srf:rem:transseries}.} (a)--(e) re-derived against the
+volume: the instance claims hold, and in~(e) only the term $m=n$ of
+\file{p0:eq:core-lagrange} survives, giving~\eqref{srf:eq:lagrange} exactly;
+one correction, made by a dated note there: the Lean declarations for~(b)
+and~(c) are \file{Fabius.staircase_separation} and
+\file{Fabius.staircase_separation_fails}, not \file{Fabius.staircase_ceil}.
+\emph{Provenance.} Archive facts, the staged files (byte-identical), the
+\file{DATA_SOURCES.md} sentence, the three cited expositions, the 89
+delivered label numbers and 69 references (aux of a build of the delivered
+text, 20 pages) and Route~B (three certificates byte-identical, normal equal
+to optimized, 5~s) confirmed. No error was found in the source's proofs.
 \end{writenote}
 
 \begin{thebibliography}{9}

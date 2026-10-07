@@ -208,6 +208,18 @@ Write $\phi=(1+\sqrt5)/2$ and $\lambda=\rho^{-1}$.
  $30\le n\le300$; for all large $n$ it follows from the limit, but the
  range between is not certified here (Section~\ref{tdc:sec:open}). The
  ``Hankel determinant analysis'' is not assessed.
+ \textup{(Added after the independent check of 7~October 2026: the range
+ between is now closed. The check's exact terms $a_1,\dots,a_{1250}$ give
+ $|a_n-a_{n-1}-a_{n-2}|/a_n<0.0002$ for $30\le n\le1250$ (largest value at
+ $n=33$, as above), and the envelope~\eqref{tdc:eq:error} with the bounds
+ \eqref{tdc:eq:rho}--\eqref{tdc:eq:c} gives it for every $n\ge982$, since
+ with $t_n=(M/\cl)(\rhoh/R)^n$ the residual is at most
+ $\{|1-\rho-\rho^2|+t_n(1+R+R^2)\}/(1-t_n)$, which is below $0.0002$ from
+ $n=982$ on and decreases. So the comment's inequality holds for every
+ $n\ge30$, resting on Theorem~\ref{tdc:thm:main} for $n\ge982$. Likewise
+ $a_n/\phi^n$ decreases strictly for every $n\ge30$: exactly for
+ $30\le n\le1250$, and from $n=1137$ on because
+ $a_{n+1}/a_n\le\rho^{-1}(1+t_n\rho/R)/(1-t_n)<\phi$ there.)}
 \item \emph{Trust boundary and corroboration.} (a) and (b) rest on the
  certified bracket~\eqref{tdc:eq:rho}, hence on the computer certificate of
  Sections~\ref{tdc:sec:global}--\ref{tdc:sec:local}, which the intake
@@ -295,7 +307,12 @@ all $125$ digits of $Y_0$~\eqref{tdc:eq:Y0}. Its own exact generator
 (Remark~\ref{tdc:rem:refuted}(d)) gives $\rho=0.618039763403548969\ldots$ and
 $c\approx0.183811179648135$, agreeing with the source's diagnostic
 refinements, and shows $a_{n+1}>a_n$ for $4\le n<300$. The write did not rerun
-the certificate.
+the certificate. (Added after the independent check of 7~October 2026: this
+sentence disagrees with the report README and the write's commit message,
+which record a Route~B replay at the write, all eight certificates and
+\file{N_H8.json} equal, in 45~s. Either way the chain has been replayed
+independently of the write: at placement and again by the check, with the
+same result; see the note before the bibliography.)
 
 \emph{Relation to the repository.} Before batch~110 no file of the
 repository named A394326, A393486 or A393487, and no report treated
@@ -1112,6 +1129,62 @@ computations leave open.
  near $1000$ or beyond. Missing: exact terms up to that range, or a sharper
  envelope (direction~1).
 \end{enumerate}
+\end{writenote}
+
+\begin{writenote}[Added after the independent check, 7 October 2026]
+Questions~7 and~8 are settled, both resting on the computer certificate of
+Theorem~\ref{tdc:thm:main} for their tails. The check computed
+$a_1,\dots,a_{1250}$ exactly with its own weight-ordered generator (the
+walk~\eqref{tdc:eq:edgesraw} without a step count or height truncation, states
+pruned only by the gauge bound $2W\ge g(u)+1$ on the deficit still needed to
+return; it equals the b-file in all $100$ terms and the write's terms). It
+finds $a_{n+1}>a_n$ for $4\le n<1250$, which with
+Corollary~\ref{tdc:cor:empirical} gives $a_{n+1}>a_n$ for every $n\ge4$
+(Question~7); and $|a_n-a_{n-1}-a_{n-2}|/a_n<0.0002$ for $30\le n\le1250$,
+which with the envelope bound for $n\ge982$ given in
+Remark~\ref{tdc:rem:refuted}(c) proves the OEIS comment's inequality for
+every $n\ge30$ (Question~8).
+\end{writenote}
+
+\begin{writenote}[Independent check of the write, 7 October 2026]
+An adversarial check made by the intake after the write (commit
+\file{5d3107954}) re-derived the statements marked [write] with its own code,
+after fetching again A394326 (revision~\#15) and its b-file, A393486
+(\#28) and A393487 (\#34). \emph{Remark~\ref{tdc:rem:oeis}.} Every
+quotation, revision, date and author line confirmed. \emph{The refutation}
+(Remark~\ref{tdc:rem:refuted}), checked hardest. The certificate chain
+replayed from the shipped files (Route~B of the README: global, local,
+remainder, inverse, coefficients, independent global check, local tests and
+the regeneration of $N_8$, all equal to the delivered records, \texttt{PASS},
+49~s). Independently of the certificate: the exceptional row
+\eqref{tdc:eq:exceptional} re-derived symbolically; the zero of
+height-truncated $N$ computed at heights $14$, $20$, $26$ by floating
+determinants, $0.6180397634035489691315\ldots$ each time (with
+$N_H(1/\phi)>0$ and $D_{20}=-0.43190569\ldots$ there, inside the source's
+interval); and the ratio $a_{n-1}/a_n$ of the exact terms equal to the same
+value to $60$ digits at $n=1100$ (consecutive errors falling by about
+$10^{-9}$ per $100$ indices, so the next pole has modulus near $0.755$). This
+is corroboration, not proof; it sits inside the certified
+bracket~\eqref{tdc:eq:rho}, $5.77\ldots\cdot10^{-6}$ above $1/\phi$. The proof of~(a) and~(b), the
+exact rationals ($6289/(25\cdot10^{10})$, \eqref{tdc:eq:lambda}, the band
+of~\eqref{tdc:eq:empirical}, \eqref{tdc:eq:growthgate}, all $125$ digits of
+$Y_0$, and $a_{601}$ the first term above $Y_0$), $\lambda/\phi<0.9999907$,
+$(\lambda/\phi)^{10}>0.99990$ and every exact value printed in~(c) and~(d)
+confirmed (truncations). The ``(empirical)'' Fibonacci line is refuted in
+its natural reading, as stated. Two additions, by dated notes: the comment's
+inequality and the decrease of $a_n/\phi^n$ for every $n\ge30$
+(Remark~\ref{tdc:rem:refuted}(c)), and Questions~7 and~8 settled (above).
+\emph{Remark~\ref{tdc:rem:transseries}.} (a)--(c) re-derived against the
+volume: $n_{1,\mathrm{vol}}=600$ is admissible ($a_n<y$ for $n\le600$ by the
+definition of $Y_0$); \file{p0:thm:lambert-core}(1) with $b=0$; and
+\file{p0:thm:core-reversion} with $\Lambda=1$, $h=0$, $f=-\epsilon
+t(1+u)^\alpha$ is a formal instance as stated. \emph{Provenance.} Archive
+facts, the staged files (byte-identical), the 71 delivered label numbers and
+59 references (aux of a build of the delivered text, 21 pages) and the
+comparison report's blob confirmed. One inconsistency, recorded by a dated
+note in Section~\ref{tdc:sec:provenance}: the sentence that the write did not
+rerun the certificate contradicts the README and the write's commit message.
+No error was found in the source's proofs.
 \end{writenote}
 
 \begin{thebibliography}{9}

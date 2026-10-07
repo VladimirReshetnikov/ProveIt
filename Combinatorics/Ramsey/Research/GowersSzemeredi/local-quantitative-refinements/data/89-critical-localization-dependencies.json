@@ -1,0 +1,157 @@
+{
+  "status": "Written proofs with finite checks; no formal verification",
+  "main_degree": "d=p+1",
+  "theorems": [
+    {
+      "label": "lem:top",
+      "role": "top symbol",
+      "depends_on": [
+        "commuting finite differences"
+      ]
+    },
+    {
+      "label": "lem:energy",
+      "role": "energy identity and gauge invariance",
+      "depends_on": [
+        "lem:top",
+        "finite Fourier square expansion"
+      ]
+    },
+    {
+      "label": "lem:p-lowering",
+      "role": "characteristic lowers degree",
+      "depends_on": [
+        "finite difference binomial identity",
+        "nilpotent operator inversion"
+      ]
+    },
+    {
+      "label": "lem:small-integration",
+      "role": "integration through degree p",
+      "depends_on": [
+        "lem:lifts",
+        "invertible individual factorials"
+      ]
+    },
+    {
+      "label": "thm:integration",
+      "role": "critical explicit primitive and defect criterion",
+      "depends_on": [
+        "lem:top",
+        "lem:p-lowering",
+        "lem:lifts",
+        "classical residual integration"
+      ],
+      "priority_note": "Known criterion; constructive proof given here"
+    },
+    {
+      "label": "thm:normal",
+      "role": "normal form and minimum support",
+      "depends_on": [
+        "thm:integration",
+        "symplectic elimination",
+        "canonical block computation"
+      ]
+    },
+    {
+      "label": "thm:critical",
+      "role": "optimal restriction and maximal repair count",
+      "depends_on": [
+        "thm:integration",
+        "symplectic linear algebra"
+      ]
+    },
+    {
+      "label": "thm:localization",
+      "role": "lossless quotient moment localization",
+      "depends_on": [
+        "face integration hypothesis",
+        "vertex phase decomposition",
+        "Gowers-Cauchy-Schwarz",
+        "lem:young-cube",
+        "Jensen"
+      ],
+      "critical_specialization": [
+        "thm:critical",
+        "lem:small-integration"
+      ]
+    },
+    {
+      "label": "lem:young-cube",
+      "role": "sharp cube-to-moment inequality",
+      "depends_on": [
+        "Gowers derivative recursion",
+        "normalized Young inequality"
+      ]
+    },
+    {
+      "label": "cor:quantile",
+      "role": "many good cosets",
+      "depends_on": [
+        "thm:localization",
+        "bounded random-variable threshold estimate"
+      ]
+    },
+    {
+      "label": "thm:mixed",
+      "role": "mixed localization",
+      "depends_on": [
+        "face integration hypothesis",
+        "vertex phase decomposition",
+        "Gowers-Cauchy-Schwarz",
+        "lem:young-cube"
+      ]
+    },
+    {
+      "label": "thm:all-degree",
+      "role": "higher-degree extension",
+      "depends_on": [
+        "Tidor 2022 Proposition 3.5 and necessary condition",
+        "thm:localization",
+        "greedy common isotropy",
+        "sequential symplectic restriction"
+      ],
+      "external_theorem_import": true
+    },
+    {
+      "label": "thm:test",
+      "role": "rank-exact defect test",
+      "depends_on": [
+        "bilinearity of critical defect",
+        "radical size"
+      ]
+    },
+    {
+      "label": "prop:allcounts",
+      "role": "all isotropic dimensions",
+      "depends_on": [
+        "ordered isotropic basis counting",
+        "Gaussian binomial coefficients"
+      ]
+    },
+    {
+      "label": "prop:random",
+      "role": "uniform random defect distribution",
+      "depends_on": [
+        "thm:normal",
+        "finite symplectic group counting"
+      ]
+    },
+    {
+      "label": "prop:blockenergy",
+      "role": "canonical block lower bound",
+      "depends_on": [
+        "finite Fourier orthogonality",
+        "zero-coordinate census"
+      ]
+    }
+  ],
+  "not_established": [
+    "energy-to-defect-rank bound",
+    "odd-prime canonical-block maximum for arbitrary bounded functions",
+    "general approximate symmetrization",
+    "cyclic local-domain version",
+    "global quantitative inverse or Ramsey bound"
+  ],
+  "finite_checks_are_not_dependencies_of_general_theorems": true
+}

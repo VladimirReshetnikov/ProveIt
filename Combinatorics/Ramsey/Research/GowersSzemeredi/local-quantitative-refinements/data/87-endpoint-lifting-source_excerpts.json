@@ -1,0 +1,230 @@
+{
+  "commit": "130fca9b1131fd983bd0af27565d36e8dfd2865a",
+  "excerpts": [
+    {
+      "end_line": 27,
+      "file": "Proofs16ContextualInduction.lean",
+      "sha256": "6b6ba218bb8f009fca6ca0af3cdba70223239fff545d97fd71c10c23b5949fb6",
+      "start_line": 15,
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/130fca9b1131fd983bd0af27565d36e8dfd2865a/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16ContextualInduction.lean#L15-L27",
+      "utf8": "/-- The outstanding contextual lifting step. The threshold is uniform in\nthe partial function, and the full upstream product property is explicit.\nThis is an unasserted proposition, not a replacement proof of Lemma 16.10. -/\ndef Section16ContextualLiftAt (k : Nat) : Prop :=\n  ∀ theta gamma : Real, 0 < theta → theta ≤ 1 → 0 < gamma → gamma ≤ 1 →\n    ∃ N0 : Nat, ∀ (N : Nat) [NeZero N] [Fact N.Prime], N0 ≤ N →\n      ∀ (B : Finset (Point N (k + 1))) (phi : Point N (k + 1) → ZMod N),\n        HasProductProperty B phi gamma → Section16StructuredPair theta gamma B phi →\n        ∀ D : Section16CommonBaseData theta gamma B phi,\n          MultiplyLinearFunction gamma 1 (section16GoodDomain B (D.H ∩ D.J) D.Y D.x0)\n            (section16PhiOne phi D.x0)\n\n/-- A supported relation has no more projected points than its support. -/\n"
+    },
+    {
+      "end_line": 69,
+      "file": "Proofs16ContextualInduction.lean",
+      "sha256": "0a87f33238294dfb3ae68cfa36b4f18220b173f828b485419cb637ded184db44",
+      "start_line": 37,
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/130fca9b1131fd983bd0af27565d36e8dfd2865a/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16ContextualInduction.lean#L37-L69",
+      "utf8": "theorem section16_large_piece_of_contextual_lift {k : Nat}\n    (hth : ∀ l : Nat, 1 ≤ l → l ≤ k → Theorem162At l)\n    (hlift : Section16ContextualLiftAt k) (hk : 1 ≤ k) :\n    Section16LargePieceAt (k + 1) := by\n  intro gamma theta hg hg1 ht ht1\n  obtain ⟨Ns, hNs⟩ := lemma_16_4_extraction k theta gamma ht ht1 hg hg1 hth\n  obtain ⟨Nc, hNc⟩ := (hth k hk le_rfl).common_base_data theta gamma ht ht1 hg hg1\n  obtain ⟨Nl, hNl⟩ := hlift theta gamma ht ht1 hg hg1\n  refine ⟨max 3 (max Ns (max Nc Nl)), fun N _ _ hN Gamma _hcard hprod hlarge => ?_⟩\n  have hN3 : 3 ≤ N := (le_max_left _ _).trans hN\n  have hNs' : Ns ≤ N := (le_max_left Ns _).trans ((le_max_right _ _).trans hN)\n  have hNc' : Nc ≤ N := (le_max_left Nc Nl).trans\n    ((le_max_right Ns _).trans ((le_max_right _ _).trans hN))\n  have hNl' : Nl ≤ N := (le_max_right Nc Nl).trans\n    ((le_max_right Ns _).trans ((le_max_right _ _).trans hN))\n  have ho : Odd N := (Fact.out : N.Prime).odd_of_ne_two (by omega)\n  rcases hNs N hNs' ho Gamma hprod with hsmall | ⟨B, phi, hgraph, hstructured⟩\n  · obtain ⟨H, hH, hsupp⟩ := hsmall\n    have hp : ((relationProjection Gamma).card : Real) ≤ H.card :=\n      Nat.cast_le.mpr (Finset.card_le_card hsupp.projection_subset)\n    linarith\n  · obtain ⟨D⟩ := hNc N hNc' B phi hstructured\n    have hunit := hNl N hNl' B phi (hprod B phi hgraph) hstructured D\n    exact section16_large_piece_of_common_base theta gamma ht ht1 hg hg1 Gamma B phi\n      (D.H ∩ D.J) D.Y D.x0 hgraph D.good_mass hunit\n\n/-- The exact fixed-dimension induction step, with the unresolved lifting\nstatement isolated and all other construction and iteration work proved. -/\ntheorem theorem_16_2_step_of_contextual_lift {k : Nat} (hk : 1 ≤ k)\n    (hth : ∀ l : Nat, 1 ≤ l → l ≤ k → Theorem162At l)\n    (hlift : Section16ContextualLiftAt k) : Theorem162At (k + 1) :=\n  theorem_16_2_of_large_piece (section16_large_piece_of_contextual_lift hth hlift hk)\n\n"
+    },
+    {
+      "end_line": 78,
+      "file": "Proofs16ContextualInduction.lean",
+      "sha256": "bcedc87dfd6eb472995e96692dfeb230e94c1ce83212c4fa7315b90edd11479a",
+      "start_line": 75,
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/130fca9b1131fd983bd0af27565d36e8dfd2865a/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16ContextualInduction.lean#L75-L78",
+      "utf8": "  intro n\n  induction n using Nat.strong_induction_on with\n  | h n ih =>\n    rcases n with _ | k\n"
+    },
+    {
+      "end_line": 54,
+      "file": "Proofs16CommonBaseAssembly.lean",
+      "sha256": "653d3e7c91b844d528e3ce3ac3893f77c83180eabbd3dcaeaf4c642cc6de27c2",
+      "start_line": 30,
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/130fca9b1131fd983bd0af27565d36e8dfd2865a/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16CommonBaseAssembly.lean#L30-L54",
+      "utf8": "/-- The actual common-base witnesses; all fields are constructed before\nasking for any multiply-linearity conclusion about the all-ones graph. -/\nstructure Section16CommonBaseData {N k : Nat} [NeZero N]\n    (theta gamma : Real) (B : Finset (Point N (k + 1)))\n    (phi : Point N (k + 1) → ZMod N) where\n  H : Finset (Point N k)\n  J : Finset (Point N k)\n  Y : (h : Point N k) → Finset (Section16CubeElement B h)\n  phiPrime : Point N k → ZMod N → ZMod N\n  x0 : Point N k\n  Hmass : section16ThetaOne theta gamma k / 4 * (N : Real) ^ k ≤ H.card\n  intersect_mass : section16ThetaOne theta gamma k / 8 * (N : Real) ^ k ≤ (H ∩ J).card\n  cube_mass : ∀ h ∈ H, section16ThetaOne theta gamma k / 4 * (N : Real) ^ (k + 1) ≤\n    (section16CubeDomain B h).card\n  selected_mass : ∀ h ∈ H, (2 : Real) ^ (-(27 : Real)) * (section16ThetaOne theta gamma k) ^ 6 *\n    (section16CubeDomain B h).card ≤ (Y h).card\n  selection : Section16InducedSelection B phi H Y\n    (fun h => section16LargeSpectrum B h (section16Delta (section16ThetaOne theta gamma k)))\n    (section16Zeta theta gamma k) phiPrime\n  spectrum : MultiplyLinear (section16Delta (section16ThetaOne theta gamma k))\n    (section16T (section16Delta (section16ThetaOne theta gamma k)) (section16ThetaOne theta gamma k) k)\n    (restrictRelation (section16SpectrumRelation B (section16Delta (section16ThetaOne theta gamma k))) J)\n  good_mass : section16ThetaTwo (section16ThetaOne theta gamma k) * (N : Real) ^ (k + 1) ≤\n    section16GoodInducedPairCount B (H ∩ J) Y x0\n  identity : Section16PhiOneIdentity (section16GoodDomain B (H ∩ J) Y x0) phi x0 phiPrime\n"
+    },
+    {
+      "end_line": 65,
+      "file": "Proofs16CommonBaseAssembly.lean",
+      "sha256": "58aa67765b9380afb536bde8f24b471bceae83947266d53137c89fe7d597d67e",
+      "start_line": 58,
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/130fca9b1131fd983bd0af27565d36e8dfd2865a/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16CommonBaseAssembly.lean#L58-L65",
+      "utf8": "theorem Theorem162At.common_base_data {k : Nat} (hth : Theorem162At k)\n    (theta gamma : Real) (ht : 0 < theta) (ht1 : theta ≤ 1) (hg : 0 < gamma) (hg1 : gamma ≤ 1) :\n    ∃ N0 : Nat, ∀ (N : Nat) [NeZero N] [Fact N.Prime], N0 ≤ N →\n      ∀ (B : Finset (Point N (k + 1))) (phi : Point N (k + 1) → ZMod N),\n        Section16StructuredPair theta gamma B phi → Nonempty (Section16CommonBaseData theta gamma B phi) := by\n  classical\n  obtain ⟨N0, hN0⟩ := hth.restrict_spectrum theta gamma ht ht1 hg hg1\n  refine ⟨N0, fun N _ _ hN B phi hB => ?_⟩\n"
+    },
+    {
+      "end_line": 33,
+      "file": "Section16.lean",
+      "sha256": "17c25c63050d84cf7fcd5b92a2f18df2cec414125381cf7bba2c90527161b2bf",
+      "start_line": 23,
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/130fca9b1131fd983bd0af27565d36e8dfd2865a/Combinatorics/Ramsey/Lean/GowersSzemeredi/Section16.lean#L23-L33",
+      "utf8": "def multipleC (theta gamma : Real) (k : Nat) : Real :=\n  (gamma * theta) ^ ((2 : Nat) ^ ((2 : Nat) ^ (k + 8)))\n\n/-- The quantitative graph-count function `q(theta,gamma,k)`. -/\ndef multipleQ (theta gamma : Real) (k : Nat) : Real :=\n  (multipleC theta gamma k)⁻¹\n\n/-- The quantitative iteration-count function `s(theta,gamma,k)`. -/\ndef multipleS (theta gamma : Real) (k : Nat) : Real :=\n  (2 / (theta * gamma)) ^ ((2 : Nat) ^ ((2 : Nat) ^ (k + 6)))\n\n"
+    },
+    {
+      "end_line": 69,
+      "file": "Section16.lean",
+      "sha256": "364a51ca2fea0ba6a80e82840c1d65e4b731430d6e258e79e7186bf215c58dfc",
+      "start_line": 46,
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/130fca9b1131fd983bd0af27565d36e8dfd2865a/Combinatorics/Ramsey/Lean/GowersSzemeredi/Section16.lean#L46-L69",
+      "utf8": "bounded by the real-valued control function, avoiding the article's informal\nuse of real numbers as cardinalities. Boxes have proper axes, and the loss\nparameter lies in `(0,1]`; these conditions prevent inflated formal widths\nand out-of-range loss parameters from changing the geometric assertion. -/\ndef MultiplyLinear {N k : Nat} [NeZero N] (gamma r : Real)\n    (Gamma : Finset (Point N k × ZMod N)) : Prop :=\n  ∀ theta : Real, 0 < theta → theta ≤ 1 → ∀ P : Box N k, P.IsProper →\n    ∃ M q : Nat, ∃ H : Finset (Point N k),\n      ∃ Q : Fin M → Box N k,\n        ∃ mu : Fin M → Fin q → Point N k → ZMod N,\n          H ⊆ P.carrier ∧ (1 - theta) * P.carrier.card ≤ H.card ∧\n          IsBoxPartition Q P ∧ (∀ j, (Q j).IsProper) ∧\n          (q : Real) ≤ (multipleQ (r⁻¹ * theta) gamma k) ^ r ∧\n          (∀ j, (P.width : Real) ^\n              ((multipleC (r⁻¹ * theta) gamma k) ^ r) ≤ (Q j).width) ∧\n          (∀ j i, IsMultilinear (mu j i)) ∧\n          ∀ j x, x ∈ (Q j).carrier → x ∈ H → ∀ y,\n            (x, y) ∈ Gamma → ∃ i, y = mu j i x\n\n/-- Multiple multilinearity for a partial function means the property for its\ngraph. -/\ndef MultiplyLinearFunction {N k : Nat} [NeZero N] (gamma r : Real)\n    (B : Finset (Point N k)) (phi : Point N k → ZMod N) : Prop :=\n  MultiplyLinear gamma r (partialGraph B phi)\n"
+    },
+    {
+      "end_line": 119,
+      "file": "Section16.lean",
+      "sha256": "762dda659957b04ab369c848ce67dfc2fa3b9e22c009fcbd40a1da93a3aa3590",
+      "start_line": 114,
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/130fca9b1131fd983bd0af27565d36e8dfd2865a/Combinatorics/Ramsey/Lean/GowersSzemeredi/Section16.lean#L114-L119",
+      "utf8": "    GraphContained B phi Gamma → HasProductProperty B phi gamma\n\nnoncomputable def relationProjection {N k : Nat}\n    (Gamma : Finset (Point N k × ZMod N)) : Finset (Point N k) := by\n  classical\n  exact Gamma.image Prod.fst\n"
+    },
+    {
+      "end_line": 148,
+      "file": "Section16.lean",
+      "sha256": "b764dab5fec844fe614b6e63f7b366d6ea75b80bcb71ed052b85b9966313c12e",
+      "start_line": 132,
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/130fca9b1131fd983bd0af27565d36e8dfd2865a/Combinatorics/Ramsey/Lean/GowersSzemeredi/Section16.lean#L132-L148",
+      "utf8": "      ∀ (N : Nat) [NeZero N] [Fact N.Prime], N0 ≤ N →\n        ∀ Gamma : Finset (Point N k × ZMod N),\n          (Gamma.card : Real) ≤ gamma ^ (-(2 : Int)) * (N : Real) ^ k →\n          RelationProductProperty gamma Gamma →\n          ∃ J : Finset (Point N k),\n            (1 - theta) * (N : Real) ^ k ≤ J.card ∧\n            MultiplyLinear gamma (gamma ^ (-(2 : Int)) * multipleS theta gamma k)\n              (restrictRelation Gamma J)\n\n/-- **Theorem 16.2.** -/\ndef theorem_16_2 : Prop :=\n  ∀ k : Nat, Theorem162At k\n\n/-- **Lemma 16.3.** The base case of Theorem 16.2. -/\ndef lemma_16_3 : Prop :=\n  Theorem162At 1\n\n"
+    },
+    {
+      "end_line": 207,
+      "file": "Section16.lean",
+      "sha256": "0c0476dd06ec190cf84026afe81872e6aa06ee522f61a13edd7c4a8313b5e32d",
+      "start_line": 174,
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/130fca9b1131fd983bd0af27565d36e8dfd2865a/Combinatorics/Ramsey/Lean/GowersSzemeredi/Section16.lean#L174-L207",
+      "utf8": "multilinearity control. -/\ndef ProperCrossSectionsMultiplyLinear {N d : Nat} [NeZero N]\n    (gamma r : Real) (B : Finset (Point N d))\n    (phi : Point N d → ZMod N) : Prop :=\n  ∀ l : Nat, l < d → ∀ F : CoordinateFace N d l,\n    MultiplyLinearFunction gamma r (F.domain B) (F.pullback phi)\n\n/-- A relation is supported over the displayed set of base points. -/\ndef RelationSupportedOn {N d : Nat}\n    (Gamma : Finset (Point N d × ZMod N)) (H : Finset (Point N d)) : Prop :=\n  ∀ z, z ∈ Gamma → z.1 ∈ H\n\n/-- The arrangement-density parameter denoted by `theta_1` in Section 16.\nThe proof first passes to a set of density at least `theta/2`; Lemma 15.6 then\ncontributes its own factor `1/2`.  Thus the mechanically justified parameter\nis `(theta*gamma/4)^E`, not either the printed `(theta*gamma)^E` or the\nintermediate `(theta*gamma/2)^E` written later in the proof. -/\ndef section16ThetaOne (theta gamma : Real) (k : Nat) : Real :=\n  (theta * gamma / 4) ^ ((2 : Nat) ^ ((2 : Nat) ^ (k + 5)))\n\n/-- The three conclusions imposed on `(B,phi)` in Lemma 16.4. -/\ndef Section16StructuredPair {N k : Nat} [NeZero N]\n    (theta gamma : Real) (B : Finset (Point N (k + 1)))\n    (phi : Point N (k + 1) → ZMod N) : Prop :=\n  ProperCrossSectionsMultiplyLinear gamma\n      (gamma ^ (-(2 : Int)) *\n        multipleS ((2 : Real) ^ (-(k + 2 : Real)) * theta) gamma k)\n      B phi ∧\n    section16ThetaOne theta gamma k * (N : Real) ^ (17 * k + 15) ≤\n      generalArrangementCount 8 B ∧\n    (1 - (2 : Real) ^ (-(44 : Real))) * generalArrangementCount 8 B ≤\n      respectedGeneralArrangementCount 8 B phi\n\n/-! ### Cube domains and their induced maps -/\n"
+    },
+    {
+      "end_line": 271,
+      "file": "Section16.lean",
+      "sha256": "e43c52915aa5a79f4065b477c3100bd36f8b9509295e127d238aececc879fced",
+      "start_line": 252,
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/130fca9b1131fd983bd0af27565d36e8dfd2865a/Combinatorics/Ramsey/Lean/GowersSzemeredi/Section16.lean#L252-L271",
+      "utf8": "    (phi : Point N (k + 1) → ZMod N) (h : Point N k) : Nat :=\n  countWhere fun R : GeneralArrangement N k d =>\n    R.IsIn B ∧ R.side = h ∧ R.IsRespected phi\n\n/-- The parameter `delta=2^-37*(theta_1/4)^(11/2)`. -/\ndef section16Delta (theta1 : Real) : Real :=\n  (2 : Real) ^ (-(37 : Real)) * (theta1 / 4) ^ ((11 : Real) / 2)\n\n/-- The Bohr radius `zeta=2^-s(theta,gamma,k)`. -/\ndef section16Zeta (theta gamma : Real) (k : Nat) : Real :=\n  (2 : Real) ^ (-multipleS theta gamma k)\n\n/-- Large Fourier frequencies `K_h` of the cube-counting function. -/\nnoncomputable def section16LargeSpectrum {N k : Nat} [NeZero N]\n    (B : Finset (Point N (k + 1))) (h : Point N k) (delta : Real) :\n    Finset (ZMod N) := by\n  classical\n  exact Finset.univ.filter fun r =>\n    delta * (N : Real) ^ (k + 1) ≤\n      ‖fourier (higherCubeCorrelation (section16PointIndicator B) h) r‖\n"
+    },
+    {
+      "end_line": 391,
+      "file": "Section16.lean",
+      "sha256": "cded4d10e319d9a3401b0290626267f2a4f34bc5a731b95cb31ff6347a7a9f04",
+      "start_line": 362,
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/130fca9b1131fd983bd0af27565d36e8dfd2865a/Combinatorics/Ramsey/Lean/GowersSzemeredi/Section16.lean#L362-L391",
+      "utf8": "    (phi : Point N (k + 1) → ZMod N) (H : Finset (Point N k))\n    (Y : (h : Point N k) → Finset (Section16CubeElement B h))\n    (K : Point N k → Finset (ZMod N)) (zeta : Real)\n    (phiPrime : Point N k → ZMod N → ZMod N) : Prop :=\n  (∀ h, h ∈ H → ∀ C, C ∈ Y h →\n      phiPrime h C.1.2 = section16InducedCubeMap B h phi C) ∧\n    ∀ h, h ∈ H → ∀ m : Nat, 0 < m → ∀ d : ZMod N,\n      d ∈ bohr (K h) (zeta / m) → ∀ I : ModAP N,\n        I.step = d → I.length ≤ m →\n        LinearOn (I.carrier.filter fun x =>\n          (h, x) ∈ section16InducedDomain B H Y) (phiPrime h)\n\n/-- The parameter `t=delta^-2*s(theta_1/8,delta,k)`. -/\ndef section16T (delta theta1 : Real) (k : Nat) : Real :=\n  delta ^ (-(2 : Int)) * multipleS (theta1 / 8) delta k\n\n/-- The natural number of multilinear graphs used in Lemma 16.6 is bounded\nby this real quantity. -/\ndef section16Lemma6QBound (sigma delta theta1 : Real) (k : Nat) : Real :=\n  let t := section16T delta theta1 k\n  (multipleQ (sigma / t) delta k) ^ t\n\n/-- Corrected width in Lemma 16.6.  The denominator is\n`2*K^(2^(k+1)*q)`, not the flattened OCR expression. -/\ndef section16Lemma6Width (m q k : Nat) (sigma delta theta1 zeta : Real) : Real :=\n  let t := section16T delta theta1 k\n  (zeta / 2) * (m : Real) ^\n    (((multipleC (sigma / t) delta k) ^ t) /\n      (2 * (section16K k : Real) ^ ((2 : Nat) ^ (k + 1) * q)))\n\n"
+    },
+    {
+      "end_line": 506,
+      "file": "Section16.lean",
+      "sha256": "dcb3bf0159f50da6433898fd3fb84da2c7195a8e52c8e25cd8f00765cc57cb8c",
+      "start_line": 480,
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/130fca9b1131fd983bd0af27565d36e8dfd2865a/Combinatorics/Ramsey/Lean/GowersSzemeredi/Section16.lean#L480-L506",
+      "utf8": "\n/-- The corrected density parameter in Lemma 16.7, after propagating the\nproof-supported size in Lemma 16.5. -/\ndef section16ThetaTwo (theta1 : Real) : Real :=\n  (2 : Real) ^ (-(32 : Real)) * theta1 ^ 8\n\n/-- The alternating value of the cube with base `x0`, sidelength `h`, and\nfinal cross-section `x`. -/\ndef section16CubeValueAtBase {N k : Nat} [NeZero N]\n    (phi : Point N (k + 1) → ZMod N) (x0 h : Point N k) (x : ZMod N) :\n    ZMod N :=\n  ∑ e : Fin k → Bool, (-1 : ZMod N) ^ boolWeight e *\n    phi (appendCoordinate (fun i => x0 i + if e i then h i else 0) x)\n\n/-- A pair `(h,x)` for which `Y_h(x)` contains the cube based at `x0`. -/\ndef Section16GoodInducedPair {N k : Nat} [NeZero N]\n    (B : Finset (Point N (k + 1))) (H : Finset (Point N k))\n    (Y : (h : Point N k) → Finset (Section16CubeElement B h))\n    (x0 : Point N k) (z : Point N k × ZMod N) : Prop :=\n  z.1 ∈ H ∧ ∃ C, C ∈ Y z.1 ∧ C.1.1.base = x0 ∧ C.1.2 = z.2\n\n/-- Number of good `(h,x)` pairs for a fixed cube base. -/\ndef section16GoodInducedPairCount {N k : Nat} [NeZero N]\n    (B : Finset (Point N (k + 1))) (H : Finset (Point N k))\n    (Y : (h : Point N k) → Finset (Section16CubeElement B h))\n    (x0 : Point N k) : Nat :=\n  countWhere (Section16GoodInducedPair B H Y x0)\n"
+    },
+    {
+      "end_line": 641,
+      "file": "Section16.lean",
+      "sha256": "9282436ef986bbe233502bfe9596b0917f73b6dfec39b5f84d64b1f736567e05",
+      "start_line": 589,
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/130fca9b1131fd983bd0af27565d36e8dfd2865a/Combinatorics/Ramsey/Lean/GowersSzemeredi/Section16.lean#L589-L641",
+      "utf8": "/-- The translated cube-vertex function `phi_epsilon(h,x)`. -/\ndef section16TranslatedVertex {N k : Nat}\n    (phi : Point N (k + 1) → ZMod N) (x0 : Point N k)\n    (e : Fin k → Bool) (z : Point N (k + 1)) : ZMod N :=\n  phi (appendCoordinate\n    (fun i => x0 i + if e i then section16Init z i else 0)\n    (section16Last z))\n\n/-- The all-ones vertex map `phi_1(h,x)=phi(x_0+h,x)`.  This is the corrected\nindexing used in Lemmas 16.9--16.10. -/\ndef section16PhiOne {N k : Nat}\n    (phi : Point N (k + 1) → ZMod N) (x0 : Point N k)\n    (z : Point N (k + 1)) : ZMod N :=\n  phi (appendCoordinate (fun i => x0 i + section16Init z i) (section16Last z))\n\n/-- The partial domain `B_1` of good `(h,x)` pairs obtained in Lemma 16.7. -/\nnoncomputable def section16GoodDomain {N k : Nat} [NeZero N]\n    (B : Finset (Point N (k + 1))) (H : Finset (Point N k))\n    (Y : (h : Point N k) → Finset (Section16CubeElement B h))\n    (x0 : Point N k) : Finset (Point N (k + 1)) := by\n  classical\n  exact Finset.univ.filter fun z =>\n    Section16GoodInducedPair B H Y x0 (section16Init z, section16Last z)\n\n/-- Lift `phiPrime(h,x)` to a function of a `(k+1)`-dimensional point. -/\ndef section16PhiPrimeLift {N k : Nat}\n    (phiPrime : Point N k → ZMod N → ZMod N)\n    (z : Point N (k + 1)) : ZMod N :=\n  phiPrime (section16Init z) (section16Last z)\n\n/-- The sum of the other `2^k-1` translated vertices, with the parity signs\nobtained by solving the cube identity for its all-ones vertex. -/\ndef section16PhiRemainder {N k : Nat} [NeZero N]\n    (phi : Point N (k + 1) → ZMod N) (x0 : Point N k)\n    (z : Point N (k + 1)) : ZMod N :=\n  -∑ e ∈ (Finset.univ.filter fun e : Fin k → Bool => e ≠ fun _ => true),\n    (-1 : ZMod N) ^ (k + boolWeight e) * section16TranslatedVertex phi x0 e z\n\n/-- The corrected alternating identity\n`phi_1=(-1)^k phi' + phi''` on `B_1`. -/\ndef Section16PhiOneIdentity {N k : Nat} [NeZero N]\n    (B1 : Finset (Point N (k + 1)))\n    (phi : Point N (k + 1) → ZMod N) (x0 : Point N k)\n    (phiPrime : Point N k → ZMod N → ZMod N) : Prop :=\n  ∀ z, z ∈ B1 →\n    section16PhiOne phi x0 z =\n      (-1 : ZMod N) ^ k * section16PhiPrimeLift phiPrime z +\n        section16PhiRemainder phi x0 z\n\n/-- The parameter called `r` in Lemma 16.9. -/\ndef section16Lemma9R (theta gamma : Real) (k : Nat) : Real :=\n  ((2 ^ k - 1 : Nat) : Real) * gamma ^ (-(2 : Int)) *\n    multipleS ((2 : Real) ^ (-(k + 2 : Real)) * theta) gamma k\n"
+    },
+    {
+      "end_line": 63,
+      "file": "Sections14_15.lean",
+      "sha256": "6d38f332b0a94bbb831708d493c78a037a22904b3dfb5b33324c7a7b32530187",
+      "start_line": 42,
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/130fca9b1131fd983bd0af27565d36e8dfd2865a/Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections14_15.lean#L42-L63",
+      "utf8": "noncomputable def weightedSimultaneousAdditiveEnergy {N p : Nat} [NeZero N]\n    (E : Finset (ZMod N)) (theta : ZMod N → Real)\n    (psi : Fin p → ZMod N → ZMod N) : Real := by\n  classical\n  exact ∑ q : Fin 4 → ZMod N,\n    if (∀ t, q t ∈ E) ∧ IsAdditiveQuadruple q ∧\n        ∀ i, IsAdditiveQuadruple (fun t => psi i (q t)) then\n      ∏ t, theta (q t)\n    else 0\n\n/-- A partial function has the product property with parameter `gamma` when\nevery finite family of parallel coordinate restrictions has the weighted\nsimultaneous-additivity lower bound from Section 14. -/\ndef HasProductProperty {N k : Nat} [NeZero N]\n    (B : Finset (Point N k)) (phi : Point N k → ZMod N) (gamma : Real) : Prop :=\n  ∀ (p : Nat) (j : Fin k) (y : Fin p → Point N k)\n      (E : Finset (ZMod N)) (theta : ZMod N → Real),\n    (∀ x, 0 ≤ theta x) →\n    (∀ i x, x ∈ E → replaceCoordinate (y i) j x ∈ B) →\n    gamma ^ (8 * p) * (N : Real)⁻¹ * (∑ x ∈ E, theta x) ^ 4 ≤\n      weightedSimultaneousAdditiveEnergy E theta\n        (fun i => coordinateRestriction phi (y i) j)\n"
+    },
+    {
+      "end_line": 88,
+      "file": "Sections14_15.lean",
+      "sha256": "bc6496f147d374e20b5474171736da3711e0bc8b6a2aa02251e4606017f47ad1",
+      "start_line": 76,
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/130fca9b1131fd983bd0af27565d36e8dfd2865a/Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections14_15.lean#L76-L88",
+      "utf8": "/-- The higher-dimensional function `f_h(y)` preceding Lemma 14.3. -/\ndef higherCubeCorrelation {N k : Nat} [NeZero N]\n    (f : Point N (k + 1) → Complex) (h : Point N k) (y : ZMod N) : Complex :=\n  ∑ x : Point N k, ∏ e : Fin k → Bool,\n    let z := f (appendCoordinate (fun i => x i + if e i then h i else 0) y)\n    if Even (boolWeight e + k) then z else star z\n\n/-- **Proposition 14.1.** Weighted simultaneous additivity for the Fourier\ncoefficients of the functions `f_h`. -/\ndef proposition_14_1 : Prop :=\n  ∀ (N p : Nat) [NeZero N] (lambda : ZMod N → Real)\n      (f : Fin p → Pair N → Complex) (sigma : Fin p → ZMod N → ZMod N)\n      (alpha : Real),\n"
+    },
+    {
+      "end_line": 238,
+      "file": "Sections14_15.lean",
+      "sha256": "08a2d509d47ad2d5ae7381892f46aef149c66ebb06cda2a9b65e73f66f325f61",
+      "start_line": 172,
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/130fca9b1131fd983bd0af27565d36e8dfd2865a/Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections14_15.lean#L172-L238",
+      "utf8": "    phi (C.vertex (Function.update e j false) (Function.update u j false)) +\n        phi (C.vertex (Function.update e j true) (Function.update u j true)) =\n      phi (C.vertex (Function.update e j true) (Function.update u j false)) +\n        phi (C.vertex (Function.update e j false) (Function.update u j true))\n\n/-- Number of configurations in `B` respected by `phi`. -/\ndef respectedConfigurationCount {N k : Nat} [NeZero N]\n    (B : Finset (Point N k)) (phi : Point N k → ZMod N) : Nat :=\n  countWhere fun C : CubeConfiguration N k => C.IsIn B ∧ C.IsRespected phi\n\n/-- Number of congruent cube pairs in `B` with equal alternating value. -/\ndef respectedCubePairCount {N k : Nat} [NeZero N]\n    (B : Finset (Point N k)) (phi : Point N k → ZMod N) : Nat :=\n  countWhere fun P : AxisCube N k × AxisCube N k =>\n    P.1.IsIn B ∧ P.2.IsIn B ∧ P.1.IsCongruent P.2 ∧\n      P.1.value phi = P.2.value phi\n\n/-- A potential `d`-arrangement: `2d` axis-parallel cubes with one common\nsidelength vector, their individual bases, and their last-coordinate\ncross-sections.  The additive relation and containment are imposed by `IsIn`. -/\nabbrev GeneralArrangement (N k d : Nat) :=\n  Point N k × (Fin (2 * d) → Point N k) × (Fin (2 * d) → ZMod N)\n\ndef GeneralArrangement.side {N k d : Nat}\n    (R : GeneralArrangement N k d) : Point N k := R.1\ndef GeneralArrangement.base {N k d : Nat}\n    (R : GeneralArrangement N k d) : Fin (2 * d) → Point N k := R.2.1\ndef GeneralArrangement.crossSection {N k d : Nat}\n    (R : GeneralArrangement N k d) : Fin (2 * d) → ZMod N := R.2.2\n\n/-- The `j`th constituent cube of an arrangement. -/\ndef GeneralArrangement.cube {N k d : Nat} (R : GeneralArrangement N k d)\n    (j : Fin (2 * d)) : AxisCube N k :=\n  (R.base j, R.side)\n\n/-- A vertex of an arrangement, including its final cross-section coordinate. -/\ndef GeneralArrangement.vertex {N k d : Nat} (R : GeneralArrangement N k d)\n    (e : Fin k → Bool) (j : Fin (2 * d)) : Point N (k + 1) :=\n  appendCoordinate ((R.cube j).vertex e) (R.crossSection j)\n\n/-- A genuine `d`-arrangement has additive cross-sections and lies in `B`. -/\ndef GeneralArrangement.IsIn {N k d : Nat} (R : GeneralArrangement N k d)\n    (B : Finset (Point N (k + 1))) : Prop :=\n  IsAdditiveTuple R.crossSection ∧ ∀ e j, R.vertex e j ∈ B\n\n/-- The alternating value of the `j`th constituent cube. -/\ndef GeneralArrangement.cubeValue {N k d : Nat} [NeZero N]\n    (R : GeneralArrangement N k d) (phi : Point N (k + 1) → ZMod N)\n    (j : Fin (2 * d)) : ZMod N :=\n  ∑ e : Fin k → Bool, (-1 : ZMod N) ^ boolWeight e * phi (R.vertex e j)\n\n/-- The image relation saying that `phi` respects a `d`-arrangement. -/\ndef GeneralArrangement.IsRespected {N k d : Nat} [NeZero N]\n    (R : GeneralArrangement N k d) (phi : Point N (k + 1) → ZMod N) : Prop :=\n  IsAdditiveTuple fun j => R.cubeValue phi j\n\n/-- Number of `d`-arrangements contained in `B`. -/\ndef generalArrangementCount {N k : Nat} [NeZero N] (d : Nat)\n    (B : Finset (Point N (k + 1))) : Nat :=\n  countWhere fun R : GeneralArrangement N k d => R.IsIn B\n\n/-- Number of contained `d`-arrangements respected by `phi`. -/\ndef respectedGeneralArrangementCount {N k : Nat} [NeZero N] (d : Nat)\n    (B : Finset (Point N (k + 1)))\n    (phi : Point N (k + 1) → ZMod N) : Nat :=\n  countWhere fun R : GeneralArrangement N k d => R.IsIn B ∧ R.IsRespected phi\n\n"
+    },
+    {
+      "end_line": 96,
+      "file": "Definitions.lean",
+      "sha256": "a24ac13f483225a9407ada58189b421e32749353c5bc4dd87849950e321bf600",
+      "start_line": 83,
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/130fca9b1131fd983bd0af27565d36e8dfd2865a/Combinatorics/Ramsey/Lean/GowersSzemeredi/Definitions.lean#L83-L96",
+      "utf8": "  start : ZMod N\n  step : ZMod N\n  length : Nat\n\n/-- The finite set underlying a modular arithmetic progression. -/\nnoncomputable def ModAP.carrier {N : Nat} (P : ModAP N) : Finset (ZMod N) := by\n  classical\n  exact Finset.univ.image (fun i : Fin P.length => P.start + (i : Nat) * P.step)\n\n/-- A modular progression is proper when it does not wrap or repeat. -/\ndef ModAP.IsProper {N : Nat} (P : ModAP N) : Prop :=\n  P.carrier.card = P.length\n\n/-- A modular interval beginning at `a`, of the given length. -/\n"
+    },
+    {
+      "end_line": 137,
+      "file": "Definitions.lean",
+      "sha256": "0e923ceb9136d032d775998f89b271ff947d84d4081acac70878a0bb8796e2df",
+      "start_line": 135,
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/130fca9b1131fd983bd0af27565d36e8dfd2865a/Combinatorics/Ramsey/Lean/GowersSzemeredi/Definitions.lean#L135-L137",
+      "utf8": "/-- Gowers's unnormalized discrete Fourier transform. -/\ndef fourier {N : Nat} [NeZero N] (f : ZMod N -> Complex) : ZMod N -> Complex :=\n  ZMod.dft f\n"
+    },
+    {
+      "end_line": 270,
+      "file": "Definitions.lean",
+      "sha256": "b7ebb96594b734f107c59a06a0405ec836179eb4c3cf3b311494acaeb5fc51e3",
+      "start_line": 228,
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/130fca9b1131fd983bd0af27565d36e8dfd2865a/Combinatorics/Ramsey/Lean/GowersSzemeredi/Definitions.lean#L228-L270",
+      "utf8": "def LinearOn {N : Nat} (A : Finset (ZMod N)) (f : ZMod N -> ZMod N) : Prop :=\n  exists a b : ZMod N, ∀ x, x ∈ A → f x = a * x + b\n\n/-- A multilinear polynomial in `k` variables, including its constant term. -/\ndef IsMultilinear {N k : Nat} (mu : Point N k -> ZMod N) : Prop :=\n  exists c : (Fin k -> Bool) -> ZMod N, ∀ x,\n    mu x = ∑ e, c e * ∏ i, if e i then x i else 1\n\n/-- A function agrees with a multilinear polynomial on a specified domain. -/\ndef MultilinearOn {N k : Nat} (A : Finset (Point N k))\n    (f : Point N k -> ZMod N) : Prop :=\n  exists mu : Point N k -> ZMod N, IsMultilinear mu /\\ ∀ x, x ∈ A → f x = mu x\n\n/-- A box is a product of modular arithmetic progressions with common difference. -/\nstructure Box (N k : Nat) where\n  axis : Fin k -> ModAP N\n  commonDiff : ZMod N\n  axis_step : ∀ i, (axis i).step = commonDiff\n\n/-- Each axis is represented injectively, so its length equals its cardinality. -/\ndef Box.IsProper {N k : Nat} (P : Box N k) : Prop :=\n  ∀ i, (P.axis i).IsProper\n\n/-- The set of points in a box. -/\nnoncomputable def Box.carrier {N k : Nat} [NeZero N]\n    (P : Box N k) : Finset (Point N k) := by\n  classical\n  exact Finset.univ.filter (fun x => ∀ i, x i ∈ (P.axis i).carrier)\n\n/-- The width of a box is the least axis length (zero in dimension zero). -/\nnoncomputable def Box.width {N k : Nat} (P : Box N k) : Nat := by\n  classical\n  exact if h : k = 0 then 0\n    else by\n      let i : Fin k := ⟨0, Nat.pos_of_ne_zero h⟩\n      have hu : (Finset.univ : Finset (Fin k)).Nonempty := ⟨i, Finset.mem_univ i⟩\n      exact (Finset.univ.image fun j : Fin k => (P.axis j).length).min'\n        (hu.image fun j : Fin k => (P.axis j).length)\n\n/-- A family of boxes partitions a box. -/\ndef IsBoxPartition {N k m : Nat} [NeZero N]\n    (Q : Fin m -> Box N k) (P : Box N k) : Prop :=\n  IsPartition (fun i => (Q i).carrier) P.carrier\n"
+    },
+    {
+      "end_line": 14,
+      "file": "Proofs16GoodDomainTransport.lean",
+      "sha256": "0dd4fd85b2c4c34f5a6fbd1a0c35a0878971c1ef9dffa2ff47f8620e824e7ee3",
+      "start_line": 10,
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/130fca9b1131fd983bd0af27565d36e8dfd2865a/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16GoodDomainTransport.lean#L10-L14",
+      "utf8": "theorem section16GoodDomain_card {N k : Nat} [NeZero N]\n    (B : Finset (Point N (k + 1))) (H : Finset (Point N k))\n    (Y : (h : Point N k) → Finset (Section16CubeElement B h)) (x0 : Point N k) :\n    (section16GoodDomain B H Y x0).card = section16GoodInducedPairCount B H Y x0 := by\n  classical\n"
+    },
+    {
+      "end_line": 77,
+      "file": "Proofs16GoodDomainTransport.lean",
+      "sha256": "f6333d9587730d7d2dc174cc1934744a106f7e11b648c51a22b8961d63388e1e",
+      "start_line": 55,
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/130fca9b1131fd983bd0af27565d36e8dfd2865a/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16GoodDomainTransport.lean#L55-L77",
+      "utf8": "    section16PhiOne phi x0 z = phi (z + appendCoordinate x0 0) := by\n  unfold section16PhiOne\n  apply congrArg phi\n  rw [appendCoordinate_eq_snoc, appendCoordinate_eq_snoc]\n  funext i\n  refine Fin.lastCases ?_ (fun i => ?_) i\n  · simp [section16Last]\n  · simp [section16Init, add_comm]\n\n/-- A multiply-linear all-ones graph on the good domain yields a subrelation\nof the original input with the same mass and the same cover parameter. -/\ntheorem section16_good_domain_subrelation {N k : Nat} [NeZero N] [Fact N.Prime]\n    (Gamma : Finset (Point N (k + 1) × ZMod N))\n    (B : Finset (Point N (k + 1))) (phi : Point N (k + 1) → ZMod N)\n    (H : Finset (Point N k)) (Y : (h : Point N k) → Finset (Section16CubeElement B h))\n    (x0 : Point N k) {gamma r delta : Real}\n    (hgraph : GraphContained B phi Gamma)\n    (hmass : delta * (N : Real) ^ (k + 1) ≤ section16GoodInducedPairCount B H Y x0)\n    (hML : MultiplyLinearFunction gamma r (section16GoodDomain B H Y x0)\n      (section16PhiOne phi x0)) :\n    ∃ D ⊆ Gamma, delta * (N : Real) ^ (k + 1) ≤ D.card ∧ MultiplyLinear gamma r D := by\n  classical\n  let t := appendCoordinate x0 (0 : ZMod N)\n"
+    },
+    {
+      "end_line": 25,
+      "file": "Proofs16CommonBaseLineCovers.lean",
+      "sha256": "2d10d6ef411c59e867f63d4c99a3e9c13e54bad03753c9065789d45609de8490",
+      "start_line": 13,
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/130fca9b1131fd983bd0af27565d36e8dfd2865a/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16CommonBaseLineCovers.lean#L13-L25",
+      "utf8": "premise follows from the proper-face covers rather than an extra assumption. -/\ntheorem Section16CommonBaseData.all_box_line_covers\n    {N k : Nat} [NeZero N] [Fact N.Prime] {theta gamma : Real}\n    {B : Finset (Point N (k + 1))} {phi : Point N (k + 1) → ZMod N}\n    (D : Section16CommonBaseData theta gamma B phi)\n    (h : Section16StructuredPair theta gamma B phi) (hk : 1 ≤ k)\n    (ht : 0 < theta) (ht1 : theta ≤ 1) (hg : 0 < gamma) (hg1 : gamma ≤ 1) :\n    Section16AllBoxLineCovers theta gamma (section16GoodDomain B (D.H ∩ D.J) D.Y D.x0)\n      (section16PhiOne phi D.x0) := by\n  exact section16_all_box_line_covers N k hk theta gamma ht ht1 hg hg1\n    B phi D.H D.J (D.H ∩ D.J) D.Y D.phiPrime D.x0 rfl\n    D.spectrum D.selection D.identity\n    (h.good_domain_remainder_cover hk ht ht1 hg hg1 (D.H ∩ D.J) D.Y D.x0)\n"
+    },
+    {
+      "end_line": 44,
+      "file": "Proofs16CommonBaseLineCovers.lean",
+      "sha256": "0a8d8e3e557b483d62dd80f8017e1a7ccb6c3e772b2f7e4ffc40717ad474e8a4",
+      "start_line": 29,
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/130fca9b1131fd983bd0af27565d36e8dfd2865a/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16CommonBaseLineCovers.lean#L29-L44",
+      "utf8": "an independent obligation; the unrestricted packaged lemma is not used. -/\ntheorem Section16CommonBaseData.lifting_cover_inputs\n    {N k : Nat} [NeZero N] [Fact N.Prime] {theta gamma : Real}\n    {B : Finset (Point N (k + 1))} {phi : Point N (k + 1) → ZMod N}\n    (D : Section16CommonBaseData theta gamma B phi)\n    (h : Section16StructuredPair theta gamma B phi) (hk : 1 ≤ k)\n    (ht : 0 < theta) (ht1 : theta ≤ 1) (hg : 0 < gamma) (hg1 : gamma ≤ 1) :\n    FinalCoordinateSectionsMultiplyLinear gamma\n      (gamma ^ (-(2 : Int)) * multipleS ((2 : Real) ^ (-(k + 2 : Real)) * theta) gamma k)\n      (section16GoodDomain B (D.H ∩ D.J) D.Y D.x0) (section16PhiOne phi D.x0) ∧\n    Section16AllBoxLineCovers theta gamma (section16GoodDomain B (D.H ∩ D.J) D.Y D.x0)\n      (section16PhiOne phi D.x0) :=\n  ⟨h.good_domain_final_sections (D.H ∩ D.J) D.Y D.x0,\n    D.all_box_line_covers h hk ht ht1 hg hg1⟩\n\nend LeanProofs.GowersSzemeredi\n"
+    },
+    {
+      "end_line": 18,
+      "file": "Proofs16BalancedFieldWord.lean",
+      "sha256": "79f7ba8ced95f3c101ee7a2736ddf8de0c28c699854005b5f83734031102273c",
+      "start_line": 1,
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/130fca9b1131fd983bd0af27565d36e8dfd2865a/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16BalancedFieldWord.lean#L1-L18",
+      "utf8": "import GowersSzemeredi.Proofs16AlphabetLargeModulus\n\n/-! Embed a finite uniform alphabet into the cyclic field without changing\nsymbol counts. The balance conclusion is quantified over all field values. -/\nset_option autoImplicit false\nnoncomputable section\nnamespace LeanProofs.GowersSzemeredi\n\ntheorem alphabet_natCast_injective {N R : Nat} [NeZero N] (hRN : R ≤ N) :\n    Function.Injective (fun c : Fin R => (c.val : ZMod N)) := by\n  intro c d h\n  apply Fin.ext\n  have hv := congrArg ZMod.val h\n  simpa only [ZMod.val_natCast_of_lt (c.isLt.trans_le hRN),\n    ZMod.val_natCast_of_lt (d.isLt.trans_le hRN)] using hv\n\ntheorem balanced_word_embed {N R : Nat} [NeZero N] (hRN : R ≤ N)\n    (w : ZMod N → Fin R) (L beta : Real) (hbeta : 0 ≤ beta)\n"
+    },
+    {
+      "end_line": 25,
+      "file": "Proofs16FiniteAlphabetBoxCover.lean",
+      "sha256": "ec37aa7ac762d736efff75f86e2f5e15d9dbadfa4ee80a28e01ad271b99f307f",
+      "start_line": 1,
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/130fca9b1131fd983bd0af27565d36e8dfd2865a/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16FiniteAlphabetBoxCover.lean#L1-L25",
+      "utf8": "import GowersSzemeredi.Proofs16FiniteAlphabetMultilinear\n\n/-! Finite-alphabet coverage bounds on boxes and their partitions.\nUnder the explicit balance and width conditions, no such cover can retain\nhalf of a nonempty box. -/\nset_option autoImplicit false\nnoncomputable section\nopen scoped BigOperators\nnamespace LeanProofs.GowersSzemeredi\n\ntheorem finiteAlphabet_box_cover_bound {N k q : Nat} [NeZero N] [Fact N.Prime]\n    (P : Box N (k + 1)) (S : Finset (ZMod N)) (H : Finset (Point N (k + 1)))\n    (f : ZMod N → ZMod N) (hf : ∀ y, f y ∈ S)\n    (mu : Fin q → Point N (k + 1) → ZMod N) (hmu : ∀ i, IsMultilinear (mu i))\n    (beta : Real) (hbeta : 0 ≤ beta)\n    (hbalanced : ∀ c : ZMod N,\n      (((P.axis (Fin.last k)).carrier.filter (fun y => f y = c)).card : Real) ≤\n        beta * (P.axis (Fin.last k)).carrier.card)\n    (hsub : H ⊆ P.carrier)\n    (hcover : ∀ x ∈ H, ∃ i : Fin q, f (section16Last x) = mu i x)\n    (hsmall : (q : Real) * beta ≤ 9 / 32)\n    (hwidth : (q : Real) * S.card ≤ ((P.axis (Fin.last k)).carrier.card : Real) / 32) :\n    (H.card : Real) ≤ (5 / 16 : Real) * P.carrier.card := by\n  have he : P.carrier = lastProductSet (boxInit P).carrier (P.axis (Fin.last k)).carrier :=\n    (boxInit_last_product P).1\n"
+    },
+    {
+      "end_line": 53,
+      "file": "Proofs16SpectrumInduction.lean",
+      "sha256": "71a22ff00850e8f25f973238ec2f1f46f81eb44190724c6ab5959ce86d38a56f",
+      "start_line": 10,
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/130fca9b1131fd983bd0af27565d36e8dfd2865a/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16SpectrumInduction.lean#L10-L53",
+      "utf8": "namespace LeanProofs.GowersSzemeredi\n\ntheorem section16_large_spectrum_card {N k : Nat} [NeZero N]\n    (B : Finset (Point N (k + 1))) (h : Point N k) {delta : Real} (hd : 0 < delta) :\n    ((section16LargeSpectrum B h delta).card : Real) ≤ delta ^ (-(2 : Int)) := by\n  classical\n  let f := higherCubeCorrelation (section16PointIndicator B) h\n  let K := section16LargeSpectrum B h delta\n  have hN : (0 : Real) < N := by exact_mod_cast NeZero.pos N\n  have hf (x : ZMod N) : ‖f x‖ ≤ (N : Real) ^ k := by\n    dsimp only [f]\n    rw [section16_cube_correlation_eq_fibreCount]\n    simp only [domainFibreCountFunction, Complex.norm_natCast]\n    have hc := countWhere_le_card (fun y : Point N k =>\n      ∀ e, appendCoordinate (AxisCube.vertex (y, h) e) x ∈ B)\n    rw [section16_cube_fibre_card]\n    exact_mod_cast (by simpa [Point, ZMod.card] using hc)\n  have hl : (K.card : Real) * (delta * (N : Real) ^ (k + 1)) ^ 2 ≤\n      ∑ r : ZMod N, ‖fourier f r‖ ^ 2 := by\n    calc\n      _ = ∑ _r ∈ K, (delta * (N : Real) ^ (k + 1)) ^ 2 := by simp\n      _ ≤ ∑ r ∈ K, ‖fourier f r‖ ^ 2 := by\n        apply Finset.sum_le_sum\n        intro r hr\n        apply (sq_le_sq₀ (by positivity) (norm_nonneg _)).mpr\n        exact (Finset.mem_filter.mp hr).2\n      _ ≤ _ := Finset.sum_le_sum_of_subset_of_nonneg (Finset.subset_univ _)\n        (fun _ _ _ => sq_nonneg _)\n  have hu : (∑ r : ZMod N, ‖fourier f r‖ ^ 2) ≤ ((N : Real) ^ (k + 1)) ^ 2 := by\n    rw [identity_2_3_holds]\n    calc\n      _ ≤ (N : Real) * ∑ _x : ZMod N, ((N : Real) ^ k) ^ 2 := by\n        apply mul_le_mul_of_nonneg_left _ hN.le\n        exact Finset.sum_le_sum (fun x _ =>\n          (sq_le_sq₀ (norm_nonneg _) (by positivity)).mpr (hf x))\n      _ = _ := by simp [pow_succ]; ring\n  have hb : (K.card : Real) * delta ^ 2 ≤ 1 := by\n    apply (mul_le_mul_iff_left₀ (show 0 < ((N : Real) ^ (k + 1)) ^ 2 by positivity)).mp\n    calc\n      _ = (K.card : Real) * (delta * (N : Real) ^ (k + 1)) ^ 2 := by ring\n      _ ≤ ((N : Real) ^ (k + 1)) ^ 2 := hl.trans hu\n      _ = _ := by ring\n  rw [zpow_neg, zpow_ofNat]\n  simpa only [one_div] using (le_div_iff₀ (sq_pos_of_pos hd)).mpr hb\n"
+    },
+    {
+      "end_line": 86,
+      "file": "ProofInfrastructure.lean",
+      "sha256": "fb616dda96ae94ee26d904fcceedfc6689dafd58293c0c0a6431b685d716e3e2",
+      "start_line": 57,
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/130fca9b1131fd983bd0af27565d36e8dfd2865a/Combinatorics/Ramsey/Lean/GowersSzemeredi/ProofInfrastructure.lean#L57-L86",
+      "utf8": "\ntheorem IsPartition.cell_subset {X : Type*} [DecidableEq X] {m : Nat}\n    {P : Fin m → Finset X} {S : Finset X} (hP : IsPartition P S) (i : Fin m) :\n    P i ⊆ S := by\n  intro x hx\n  exact (hP.1 x).2 ⟨i, hx⟩\n\ntheorem IsPartition.pairwise_disjoint {X : Type*} [DecidableEq X] {m : Nat}\n    {P : Fin m → Finset X} {S : Finset X} (hP : IsPartition P S) :\n    Set.Pairwise (Set.univ : Set (Fin m)) fun i j ↦ Disjoint (P i) (P j) := by\n  intro i _ j _ hij\n  exact hP.2 i j (bne_iff_ne.mpr hij)\n\n/-- The cells of a finite partition account for the cardinality of the set\nexactly once. -/\ntheorem IsPartition.sum_card {X : Type*} [DecidableEq X] {m : Nat}\n    {P : Fin m → Finset X} {S : Finset X} (hP : IsPartition P S) :\n    ∑ i, (P i).card = S.card := by\n  classical\n  have hdisj :\n      ((Finset.univ : Finset (Fin m)) : Set (Fin m)).PairwiseDisjoint P := by\n    intro i _ j _ hij\n    exact hP.2 i j (bne_iff_ne.mpr hij)\n  have hunion : Finset.univ.biUnion P = S := by\n    ext x\n    simp only [mem_biUnion, mem_univ, true_and]\n    exact (hP.1 x).symm\n  rw [← hunion, Finset.card_biUnion hdisj]\n\n@[simp] theorem sum_indicator {N : Nat} [NeZero N] (A : Finset (ZMod N)) :\n"
+    }
+  ],
+  "schema_version": 1
+}

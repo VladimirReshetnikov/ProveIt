@@ -1,0 +1,591 @@
+{
+  "commit": "af74fb522c24a6331886b11db76942642a6a0e42",
+  "excerpts": [
+    {
+      "end_line": 674,
+      "excerpt_sha256": "02f37e157992adfc7a5ea29b39e4e30c9c11e3e355564956195ccb4fa4fd6d68",
+      "name": "section5LocalRefinementConstant",
+      "repository_path": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05Downstream.lean",
+      "source_sha256": "9e8c679f3a000d53b6bbc746802c9367780b4ee681608be8909fb7f11f4c42eb",
+      "start_line": 670,
+      "text": "def section5LocalRefinementConstant (k : Nat) (eta : Real) : Real :=\n  max\n      (max (polynomialPartitionThreshold k : Real)\n        ((4 * Real.pi / eta) ^ polynomialPartitionConstant k))\n      ((4 : Real) ^ polynomialPartitionConstant k) + 4\n",
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/af74fb522c24a6331886b11db76942642a6a0e42/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05Downstream.lean#L670-L674"
+    },
+    {
+      "end_line": 1077,
+      "excerpt_sha256": "2fd4e77e9ecf4a3023616e3903f90f6b9702a2b128a8db2e9058bdd10bf18a5a",
+      "name": "cor711Exponent",
+      "repository_path": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs07SimultaneousLinearity.lean",
+      "source_sha256": "ab4cefeb015b94cfed096ed2b585e7be1dbf9ccc0b7d1f6606765c9fb4c41f4e",
+      "start_line": 1076,
+      "text": "def cor711Exponent (alpha : Real) (q : Nat) : Real :=\n  (2 : Real) ^ (-(14 : Real)) * alpha ^ 2 * (q : Real)⁻¹\n",
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/af74fb522c24a6331886b11db76942642a6a0e42/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs07SimultaneousLinearity.lean#L1076-L1077"
+    },
+    {
+      "end_line": 14,
+      "excerpt_sha256": "768e9ec01678c141fb8a745643497fe940587e787ad018f2e0b2b648fd76ed86",
+      "name": "section13IntegerBudgetThreshold",
+      "repository_path": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs13ExplicitDensityBudgets.lean",
+      "source_sha256": "73add25fc5412269d1591a73c1f9c99b4bb43f9379a27c74351ff96fbcdd429f",
+      "start_line": 9,
+      "text": "def section13IntegerBudgetThreshold (delta : Real) (q : Nat) : Real :=\n  let theta := section10Lambda (delta ^ 32 / 16)\n  let d₀ := section13ThetaOne theta / (64 * Real.pi)\n  max (uniformRoundedPowerThreshold (section13Zeta delta / 2) (min 1 (d₀ / 2))\n    (section10Zeta (delta ^ 32 / 16)) ((1 : Real) / (2 : Real) ^ (13 * section13Q delta)))\n    (positivePowerThreshold 4 d₀ (section13ThetaOne theta ^ 2 / (16 * (q : Real))))\n",
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/af74fb522c24a6331886b11db76942642a6a0e42/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs13ExplicitDensityBudgets.lean#L9-L14"
+    },
+    {
+      "end_line": 126,
+      "excerpt_sha256": "df189329d39c9e14acbadc93072eb1997d513997a31151e7e947a51f5a52c25d",
+      "name": "section13DensityIntegerThreshold",
+      "repository_path": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs13ExplicitDensityBudgets.lean",
+      "source_sha256": "73add25fc5412269d1591a73c1f9c99b4bb43f9379a27c74351ff96fbcdd429f",
+      "start_line": 124,
+      "text": "def section13DensityIntegerThreshold (delta : Real) : Nat :=\n  (Finset.range (Nat.floor (section13QBound (section10Lambda (delta ^ 32 / 16))) + 1)).sup\n    (fun q => Nat.ceil (section13IntegerBudgetThreshold delta q))\n",
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/af74fb522c24a6331886b11db76942642a6a0e42/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs13ExplicitDensityBudgets.lean#L124-L126"
+    },
+    {
+      "end_line": 11,
+      "excerpt_sha256": "f4be074cd04eb3d5b1fbfab3fbcbe4154db950c261d61bba523b6619c43bed99",
+      "name": "fejerPurificationThreshold",
+      "repository_path": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs13ExplicitFejerPurification.lean",
+      "source_sha256": "c0c5d4d7308e40f7374906b61248f0ffe973de163f8dea479b7e03cb2a8efaee",
+      "start_line": 9,
+      "text": "def fejerPurificationThreshold (delta rho eta : Real) : Nat :=\n  let M := Nat.ceil ((2 : Real) ^ 34 / (rho * eta))\n  max (2 * M) (Nat.ceil ((2 : Real) ^ 131 * (M : Real) ^ 63 / (rho * eta * delta ^ 15)))\n",
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/af74fb522c24a6331886b11db76942642a6a0e42/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs13ExplicitFejerPurification.lean#L9-L11"
+    },
+    {
+      "end_line": 13,
+      "excerpt_sha256": "42399cac07fda9d4025f2f0b262d991acd62cce72321583dce311ab7b3374180",
+      "name": "section13FourierThreshold",
+      "repository_path": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs13ExplicitFourierThreshold.lean",
+      "source_sha256": "5a1d8c87a664b3b4e5b7bdb1fb5446980803cf3158bad33bb443690c5cd910e5",
+      "start_line": 11,
+      "text": "def section13FourierThreshold (alpha : Real) : Real :=\n  max (section13FrequencyGraphThreshold alpha)\n    (section13GeometricThreshold ((alpha / 2) ^ (4207554485 : Nat)))\n",
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/af74fb522c24a6331886b11db76942642a6a0e42/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs13ExplicitFourierThreshold.lean#L11-L13"
+    },
+    {
+      "end_line": 12,
+      "excerpt_sha256": "07c2873727d78c01af1c76242c17d0f0195ab03cdea9f895b63421688b27d097",
+      "name": "section13FrequencyGraphThreshold",
+      "repository_path": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs13ExplicitFrequencyGraph.lean",
+      "source_sha256": "f49daaf08307bf48a6a1cd23856d97b1244fa1fbc1e34876ca48fc85705a1882",
+      "start_line": 9,
+      "text": "def section13FrequencyGraphThreshold (alpha : Real) : Nat :=\n  let a := alpha / 2\n  let delta := a ^ (14409429 : Nat)\n  fejerPurificationThreshold delta (delta ^ 97 * a ^ 336) ((1 / 2 : Real) ^ 44)\n",
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/af74fb522c24a6331886b11db76942642a6a0e42/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs13ExplicitFrequencyGraph.lean#L9-L12"
+    },
+    {
+      "end_line": 20,
+      "excerpt_sha256": "e1f7e33be60683a4280df3a423d914f9edd784c3c69e84ffd3819d6c18b35539",
+      "name": "section13GeometricThreshold",
+      "repository_path": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs13ExplicitGeometricThreshold.lean",
+      "source_sha256": "55ec97bac1f817cfa8283ca4be484afb3b35e76c7039fe53b14c37e7de5be102",
+      "start_line": 12,
+      "text": "def section13GeometricThreshold (delta : Real) : Real :=\n  let c := section13Zeta delta / 2\n  let e := (1 : Real) / (2 : Real) ^ (13 * section13Q delta)\n  let f := (2 : Real) ^ (-(100 : Int)) * delta ^ 448\n  let g := cor711Exponent ((2 : Real) ^ (-(135 : Int)) * delta ^ 704) 1\n  max 1 (max (section13DensityRecurrenceThreshold delta)\n    (max (section13DensityIntegerThreshold delta)\n      (max (squareScaleThreshold c e f g ((2 : Real) ^ 135 * delta ^ (-(704 : Int))))\n        (squarePowerThreshold c e f g))))\n",
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/af74fb522c24a6331886b11db76942642a6a0e42/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs13ExplicitGeometricThreshold.lean#L12-L20"
+    },
+    {
+      "end_line": 11,
+      "excerpt_sha256": "311ae62322aa377e2dc5ec6fe42424c0f00c631c1955a86f36f54011e2227165",
+      "name": "positivePowerThreshold",
+      "repository_path": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs13ExplicitPowerThreshold.lean",
+      "source_sha256": "3e3546d58a66e22bdde3e797f0e20c2872b38f625c704b366ad2e7b40dc2c221",
+      "start_line": 10,
+      "text": "def positivePowerThreshold (C D e : Real) : Real :=\n  max 1 ((max 1 (C / D)) ^ e⁻¹)\n",
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/af74fb522c24a6331886b11db76942642a6a0e42/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs13ExplicitPowerThreshold.lean#L10-L11"
+    },
+    {
+      "end_line": 14,
+      "excerpt_sha256": "ba20e5f0ed8b91093dc9790469d46ba85968d6f7ce94ecbade151a83c498501a",
+      "name": "section13RecurrenceLengthThreshold",
+      "repository_path": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs13ExplicitRecurrenceThreshold.lean",
+      "source_sha256": "42f2f92246abc2decd7b00e264832d98ad9c9c9243451a538f02228b01f47aba",
+      "start_line": 10,
+      "text": "def section13RecurrenceLengthThreshold (alpha : Real) (q : Nat) : Real :=\n  max (simultaneousPolynomialThreshold 2 q + 1 : Nat)\n    (max (positivePowerThreshold 8 1 ((1 : Real) / (2 : Real) ^ (12 * q)))\n      (positivePowerThreshold (160 + 2 * alpha ^ 32) (alpha ^ 32)\n        ((1 : Real) / (2 : Real) ^ (12 * q))))\n",
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/af74fb522c24a6331886b11db76942642a6a0e42/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs13ExplicitRecurrenceThreshold.lean#L10-L14"
+    },
+    {
+      "end_line": 32,
+      "excerpt_sha256": "dd1737d0e8abf678dcb2697367a1ce6bb37dc04462dafbacce8c88c13b3aeb5e",
+      "name": "section13InitialRecurrenceThreshold",
+      "repository_path": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs13ExplicitRecurrenceThreshold.lean",
+      "source_sha256": "42f2f92246abc2decd7b00e264832d98ad9c9c9243451a538f02228b01f47aba",
+      "start_line": 29,
+      "text": "def section13InitialRecurrenceThreshold (delta : Real) (q : Nat) : Real :=\n  positivePowerThreshold (section13RecurrenceLengthThreshold delta q + 2)\n    (section13ThetaOne (section10Lambda (delta ^ 32 / 16)) / (64 * Real.pi))\n    (section13ThetaOne (section10Lambda (delta ^ 32 / 16)) ^ 2 / (16 * (q : Real)))\n",
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/af74fb522c24a6331886b11db76942642a6a0e42/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs13ExplicitRecurrenceThreshold.lean#L29-L32"
+    },
+    {
+      "end_line": 74,
+      "excerpt_sha256": "1acc577e1fdc10e20c20931615b0a66f8aee610f09efa8f7c6ee7004e3b57f9d",
+      "name": "section13DensityRecurrenceThreshold",
+      "repository_path": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs13ExplicitRecurrenceThreshold.lean",
+      "source_sha256": "42f2f92246abc2decd7b00e264832d98ad9c9c9243451a538f02228b01f47aba",
+      "start_line": 72,
+      "text": "def section13DensityRecurrenceThreshold (delta : Real) : Nat :=\n  max 3 ((Finset.range (Nat.floor (section13QBound (section10Lambda (delta ^ 32 / 16))) + 1)).sup\n    (fun q => Nat.ceil (section13InitialRecurrenceThreshold delta q)))\n",
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/af74fb522c24a6331886b11db76942642a6a0e42/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs13ExplicitRecurrenceThreshold.lean#L72-L74"
+    },
+    {
+      "end_line": 12,
+      "excerpt_sha256": "219b83f1736ced9309df0fdef2db82cb1e0f005fa9f55117f77f4bde43037bd2",
+      "name": "uniformRoundedPowerThreshold",
+      "repository_path": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs13ExplicitRoundedBudgets.lean",
+      "source_sha256": "12e3b11141657e0b54de6b068ecbc18742345eefaa8db6f0918925e47bd83057",
+      "start_line": 10,
+      "text": "def uniformRoundedPowerThreshold (c d z e : Real) : Real :=\n  max (positivePowerThreshold 1 c e)\n    (max (positivePowerThreshold 4 d e) (positivePowerThreshold 1 (z * d) e))\n",
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/af74fb522c24a6331886b11db76942642a6a0e42/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs13ExplicitRoundedBudgets.lean#L10-L12"
+    },
+    {
+      "end_line": 13,
+      "excerpt_sha256": "4aca39d075bf8fd02d922d642d93ff9636973e55efb859b9d19a016cc5063cc6",
+      "name": "squareLengthThreshold",
+      "repository_path": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs13ExplicitSquareScale.lean",
+      "source_sha256": "8407ec07c7c49294c1ee885a6308318b8af59ac8ae96bc51b1d6284d1eb370ea",
+      "start_line": 10,
+      "text": "def squareLengthThreshold (f g W : Real) : Real :=\n  max (positivePowerThreshold 8 1 f)\n    (max (positivePowerThreshold W 1 f)\n      (positivePowerThreshold 8 ((1 / 4 : Real) ^ g) (f * g)))\n",
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/af74fb522c24a6331886b11db76942642a6a0e42/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs13ExplicitSquareScale.lean#L10-L13"
+    },
+    {
+      "end_line": 36,
+      "excerpt_sha256": "18bf267dc41b4a413b0e925c83149c4647fc1dfc059a630d84b5cee119bab1b2",
+      "name": "squareScaleThreshold",
+      "repository_path": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs13ExplicitSquareScale.lean",
+      "source_sha256": "8407ec07c7c49294c1ee885a6308318b8af59ac8ae96bc51b1d6284d1eb370ea",
+      "start_line": 35,
+      "text": "def squareScaleThreshold (c e f g W : Real) : Real :=\n  positivePowerThreshold (squareLengthThreshold f g W) c e\n",
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/af74fb522c24a6331886b11db76942642a6a0e42/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs13ExplicitSquareScale.lean#L35-L36"
+    },
+    {
+      "end_line": 48,
+      "excerpt_sha256": "b82f953ad56395b9d60a01f07c411dc95a1bdc4356422024850f480d2fa9f8d4",
+      "name": "squarePowerThreshold",
+      "repository_path": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs13ExplicitSquareScale.lean",
+      "source_sha256": "8407ec07c7c49294c1ee885a6308318b8af59ac8ae96bc51b1d6284d1eb370ea",
+      "start_line": 46,
+      "text": "def squarePowerThreshold (c e f g : Real) : Real :=\n  max (positivePowerThreshold 4 (c ^ f) (e * f))\n    (positivePowerThreshold 2 ((c ^ f / 4) ^ (g / 2)) (e * f * g / 4))\n",
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/af74fb522c24a6331886b11db76942642a6a0e42/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs13ExplicitSquareScale.lean#L46-L48"
+    },
+    {
+      "end_line": 22,
+      "excerpt_sha256": "9b8df2b10d3f8c744d863344224d09de8ddd54144be50e8618efaa3f9d755560",
+      "name": "section13FejerOddSquareThreshold",
+      "repository_path": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs13FejerOddSquare.lean",
+      "source_sha256": "3f304a56de0b8bc188f04385c3c5d6192661fb2e22912f2f990b4ff59c6f7665",
+      "start_line": 20,
+      "text": "def section13FejerOddSquareThreshold (alpha : Real) : Real :=\n  max (section13FourierThreshold alpha)\n    (positivePowerThreshold 4 1 ((1 / 2 : Real) ^ ((2 / alpha) ^ ((2 : Nat) ^ 53))))\n",
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/af74fb522c24a6331886b11db76942642a6a0e42/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs13FejerOddSquare.lean#L20-L22"
+    },
+    {
+      "end_line": 13,
+      "excerpt_sha256": "830b9ec65d35455f6bae4fc0750c8b76f3c87ef264cdd87802dee89dcb2d3064",
+      "name": "boundaryRefinementConstant",
+      "repository_path": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18BoundaryRefinement.lean",
+      "source_sha256": "6f9d90d66780726ca6b58d60e31886274014d06a2b312b5c4b8b13a5620505ad",
+      "start_line": 12,
+      "text": "def boundaryRefinementConstant (epsilon : Real) : Real :=\n  section5LocalRefinementConstant 1 (4 * Real.pi * epsilon)\n",
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/af74fb522c24a6331886b11db76942642a6a0e42/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18BoundaryRefinement.lean#L12-L13"
+    },
+    {
+      "end_line": 47,
+      "excerpt_sha256": "0432d7a0b8b19adf70d1b0b9e285be32fafb2c9688161f124a0489898e1c925a",
+      "name": "densityIterationClosedThreshold",
+      "repository_path": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18DensityIterationGrowth.lean",
+      "source_sha256": "123946bacbeb8cd25075ed87ba3b697a646085f64c0d611abe40fac84af1ce0c",
+      "start_line": 46,
+      "text": "def densityIterationClosedThreshold (T c rho : Real) (n : Nat) : Real :=\n  Real.exp ((1 + Real.log (max 1 T) + |Real.log c|) * (2 * max 1 rho⁻¹) ^ n)\n",
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/af74fb522c24a6331886b11db76942642a6a0e42/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18DensityIterationGrowth.lean#L46-L47"
+    },
+    {
+      "end_line": 15,
+      "excerpt_sha256": "0cc34cb52cf510ac25d616246809d247276233564cc261ba154d7cd5dd1337b9",
+      "name": "fejerCubicPrimeModelThreshold",
+      "repository_path": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FejerCubicCellModels.lean",
+      "source_sha256": "c272cb1115fc4b40d6909149d6e548864471eb20a94dd1780fc41e5ad0d7a291",
+      "start_line": 12,
+      "text": "def fejerCubicPrimeModelThreshold (alpha T : Real) : Real :=\n  max 256 (max (section13FejerOddSquareThreshold alpha)\n    (positivePowerThreshold (12 * max 2 T) 1\n      ((1 / 2 : Real) ^ ((2 / alpha) ^ ((2 : Nat) ^ 53)))))\n",
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/af74fb522c24a6331886b11db76942642a6a0e42/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FejerCubicCellModels.lean#L12-L15"
+    },
+    {
+      "end_line": 14,
+      "excerpt_sha256": "eea11bb76e48ba2f9e68da45225f85436dcb8bf5369181377ad4c7dfaf688614",
+      "name": "fejerCubicInverseThreshold",
+      "repository_path": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FejerCubicDiscrepancy.lean",
+      "source_sha256": "5199c27bfd5b6c6286426afa5675c15cf2a746501ffbff5680587e3e732c626e",
+      "start_line": 11,
+      "text": "def fejerCubicInverseThreshold (alpha : Real) : Real :=\n  max (fejerCubicTwistedThreshold alpha)\n    (positivePowerThreshold (fejerCubicPhaseRefinementConstant alpha) 1\n      (fejerCubicDiscrepancyExponent alpha))\n",
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/af74fb522c24a6331886b11db76942642a6a0e42/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FejerCubicDiscrepancy.lean#L11-L14"
+    },
+    {
+      "end_line": 11,
+      "excerpt_sha256": "5446c68b056e9e80f3cc9b68c9f20745f68f65e583df4e51fff21f02ca42a36d",
+      "name": "fejerCubicLocalizedMassParameter",
+      "repository_path": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FejerCubicParameters.lean",
+      "source_sha256": "dd843ba940100fc2ab4dd40a7adfe52890d7c04fadae46722aeb589f5d6ee149",
+      "start_line": 10,
+      "text": "def fejerCubicLocalizedMassParameter (alpha : Real) : Real :=\n  (2 : Real) ^ (-(59 : Int)) * alpha ^ 2 * (alpha / 2) ^ ((2 : Nat) ^ 42)\n",
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/af74fb522c24a6331886b11db76942642a6a0e42/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FejerCubicParameters.lean#L10-L11"
+    },
+    {
+      "end_line": 15,
+      "excerpt_sha256": "5dbffa4b3482cb755b442423998be6ae1f26ab7f09dd2aa2f632c47be5f3199e",
+      "name": "fejerCubicLocalQuadraticParameter",
+      "repository_path": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FejerCubicParameters.lean",
+      "source_sha256": "dd843ba940100fc2ab4dd40a7adfe52890d7c04fadae46722aeb589f5d6ee149",
+      "start_line": 14,
+      "text": "def fejerCubicLocalQuadraticParameter (alpha : Real) : Real :=\n  (2 : Real) ^ (-(71 : Int)) * alpha ^ 2 * (alpha / 2) ^ ((2 : Nat) ^ 42)\n",
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/af74fb522c24a6331886b11db76942642a6a0e42/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FejerCubicParameters.lean#L14-L15"
+    },
+    {
+      "end_line": 32,
+      "excerpt_sha256": "c43a968da2e74194ff25687cd91c04b11e64eb8e357e97e255fc5a6da642dfbf",
+      "name": "fejerCubicLocalizationExponent",
+      "repository_path": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FejerCubicParameters.lean",
+      "source_sha256": "dd843ba940100fc2ab4dd40a7adfe52890d7c04fadae46722aeb589f5d6ee149",
+      "start_line": 31,
+      "text": "def fejerCubicLocalizationExponent (alpha : Real) : Real :=\n  (1 / 2 : Real) ^ ((2 / alpha) ^ ((2 : Nat) ^ 53))\n",
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/af74fb522c24a6331886b11db76942642a6a0e42/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FejerCubicParameters.lean#L31-L32"
+    },
+    {
+      "end_line": 35,
+      "excerpt_sha256": "e1e97247f0ec4784bfa27ea535f65b5e390317ed8ff4e723d7a0f71ca253fd73",
+      "name": "fejerCubicLocalCountExponent",
+      "repository_path": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FejerCubicParameters.lean",
+      "source_sha256": "dd843ba940100fc2ab4dd40a7adfe52890d7c04fadae46722aeb589f5d6ee149",
+      "start_line": 34,
+      "text": "def fejerCubicLocalCountExponent (alpha : Real) : Real :=\n  quadraticDiscrepancyExponent (fejerCubicLocalQuadraticParameter alpha) / 16\n",
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/af74fb522c24a6331886b11db76942642a6a0e42/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FejerCubicParameters.lean#L34-L35"
+    },
+    {
+      "end_line": 38,
+      "excerpt_sha256": "d76ed77465cbba44d599c96924ea3cc0c3a1a9b6a77c8f868e74146eda3c7447",
+      "name": "fejerCubicLocalCountConstant",
+      "repository_path": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FejerCubicParameters.lean",
+      "source_sha256": "dd843ba940100fc2ab4dd40a7adfe52890d7c04fadae46722aeb589f5d6ee149",
+      "start_line": 37,
+      "text": "def fejerCubicLocalCountConstant (alpha : Real) : Real :=\n  max 1 (2 * boundaryRefinementConstant (1 / 16) * (8 : Real) ^ (1 - fejerCubicLocalCountExponent alpha))\n",
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/af74fb522c24a6331886b11db76942642a6a0e42/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FejerCubicParameters.lean#L37-L38"
+    },
+    {
+      "end_line": 41,
+      "excerpt_sha256": "173100f9e71a04d04a05202d4baf2f6beb39732eef018aa7ccde288f2ac69494",
+      "name": "fejerCubicTwistedDiscrepancyParameter",
+      "repository_path": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FejerCubicParameters.lean",
+      "source_sha256": "dd843ba940100fc2ab4dd40a7adfe52890d7c04fadae46722aeb589f5d6ee149",
+      "start_line": 40,
+      "text": "def fejerCubicTwistedDiscrepancyParameter (alpha : Real) : Real :=\n  fejerCubicLocalizedMassParameter alpha * quadraticDiscrepancyParameter (fejerCubicLocalQuadraticParameter alpha)\n",
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/af74fb522c24a6331886b11db76942642a6a0e42/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FejerCubicParameters.lean#L40-L41"
+    },
+    {
+      "end_line": 53,
+      "excerpt_sha256": "d833d2f2ccae017d63afdda6b123add8176085d06b5277b53a0e24d326def07c",
+      "name": "fejerCubicDiscrepancyExponent",
+      "repository_path": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FejerCubicParameters.lean",
+      "source_sha256": "dd843ba940100fc2ab4dd40a7adfe52890d7c04fadae46722aeb589f5d6ee149",
+      "start_line": 51,
+      "text": "def fejerCubicDiscrepancyExponent (alpha : Real) : Real :=\n  fejerCubicLocalizationExponent alpha * fejerCubicLocalCountExponent alpha /\n    (2 * (polynomialPartitionConstant 3 : Real))\n",
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/af74fb522c24a6331886b11db76942642a6a0e42/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FejerCubicParameters.lean#L51-L53"
+    },
+    {
+      "end_line": 56,
+      "excerpt_sha256": "678eced270f50212e52f44b440d422e7132e15f89973a2820b7bcf6ddf881917",
+      "name": "fejerCubicDiscrepancyParameter",
+      "repository_path": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FejerCubicParameters.lean",
+      "source_sha256": "dd843ba940100fc2ab4dd40a7adfe52890d7c04fadae46722aeb589f5d6ee149",
+      "start_line": 55,
+      "text": "def fejerCubicDiscrepancyParameter (alpha : Real) : Real :=\n  fejerCubicTwistedDiscrepancyParameter alpha / 2\n",
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/af74fb522c24a6331886b11db76942642a6a0e42/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FejerCubicParameters.lean#L55-L56"
+    },
+    {
+      "end_line": 59,
+      "excerpt_sha256": "cb7c4ae0df8fdbb4b0960138e5815ee603cb5658afc03d2981e20a44837855ae",
+      "name": "fejerCubicTwistedCountConstant",
+      "repository_path": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FejerCubicParameters.lean",
+      "source_sha256": "dd843ba940100fc2ab4dd40a7adfe52890d7c04fadae46722aeb589f5d6ee149",
+      "start_line": 58,
+      "text": "def fejerCubicTwistedCountConstant (alpha : Real) : Real :=\n  fejerCubicLocalCountConstant alpha * (12 : Real) ^ fejerCubicLocalCountExponent alpha\n",
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/af74fb522c24a6331886b11db76942642a6a0e42/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FejerCubicParameters.lean#L58-L59"
+    },
+    {
+      "end_line": 63,
+      "excerpt_sha256": "421166a66cf8cec77a64b8d71cd980b33f8d26d1b49818a38e853475b0d131d7",
+      "name": "fejerCubicPhaseRefinementConstant",
+      "repository_path": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FejerCubicParameters.lean",
+      "source_sha256": "dd843ba940100fc2ab4dd40a7adfe52890d7c04fadae46722aeb589f5d6ee149",
+      "start_line": 61,
+      "text": "def fejerCubicPhaseRefinementConstant (alpha : Real) : Real :=\n  section5LocalRefinementConstant 3 (fejerCubicTwistedDiscrepancyParameter alpha) *\n    (fejerCubicTwistedCountConstant alpha) ^ (polynomialPartitionConstant 3 : Real)⁻¹\n",
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/af74fb522c24a6331886b11db76942642a6a0e42/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FejerCubicParameters.lean#L61-L63"
+    },
+    {
+      "end_line": 13,
+      "excerpt_sha256": "15b9da049637f129e789cc5724fa4aab1e0b65a4bbe95382e97e70afcba10e15",
+      "name": "fejerCubicTwistedThreshold",
+      "repository_path": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FejerCubicTwistedDiscrepancy.lean",
+      "source_sha256": "4fcb7a8a7f965b691b73064d78875df424acbc702e8ff1b77e38ac4f22113cc9",
+      "start_line": 11,
+      "text": "def fejerCubicTwistedThreshold (alpha : Real) : Real :=\n  fejerCubicPrimeModelThreshold alpha\n    (max 4 (quadraticExponentialThreshold (fejerCubicLocalQuadraticParameter alpha)))\n",
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/af74fb522c24a6331886b11db76942642a6a0e42/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FejerCubicTwistedDiscrepancy.lean#L11-L13"
+    },
+    {
+      "end_line": 14,
+      "excerpt_sha256": "16dfdb18becd07202496a3c8c43e4ea9d5a827a88b3cb38c3a91c2ea018cec4d",
+      "name": "fejerFiveTermThreshold",
+      "repository_path": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FejerFiveTerm.lean",
+      "source_sha256": "d346f67b685f7ec4e0526c332f99e8894c771fb03b7fba01903abb6e113ae277",
+      "start_line": 10,
+      "text": "def fejerFiveTermThreshold (delta : Real) : Real :=\n  intervalDiscrepancyClosedThreshold 5 delta\n    (fejerCubicDiscrepancyParameter (intervalUniformityParameter delta 5))\n    (fejerCubicDiscrepancyExponent (intervalUniformityParameter delta 5))\n    (fejerCubicInverseThreshold (intervalUniformityParameter delta 5))\n",
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/af74fb522c24a6331886b11db76942642a6a0e42/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FejerFiveTerm.lean#L10-L14"
+    },
+    {
+      "end_line": 27,
+      "excerpt_sha256": "fb8b76eb08ee0cf39b37849ed930804b52a713c21d230bf7e99dc6dc1db7b5b2",
+      "name": "natural_five_term_fejer",
+      "repository_path": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FejerFiveTerm.lean",
+      "source_sha256": "d346f67b685f7ec4e0526c332f99e8894c771fb03b7fba01903abb6e113ae277",
+      "start_line": 18,
+      "text": "theorem natural_five_term_fejer (delta : Real)\n    (hδ : 0 < delta) (hδone : delta ≤ 1)\n    (N : Nat) (hN : fejerFiveTermThreshold delta ≤ (N : Real))\n    (A : Finset Nat) (hA : A ⊆ Finset.Icc 1 N) (hcard : delta * N ≤ A.card) :\n    HasNatAP A 5 := by\n  have hα := intervalUniformityParameter_pos (k := 5) hδ (by omega)\n  have hαone := intervalUniformityParameter_le_one (k := 5) hδ.le hδone (by omega)\n  exact (fejer_cubic_function_discrepancy_bound hα hαone).natural_szemeredi_closed\n    (by omega) hδ (fejerCubicDiscrepancyParameter_pos hα)\n    (fejerCubicDiscrepancyExponent_pos hα hαone) N hN A hA hcard\n",
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/af74fb522c24a6331886b11db76942642a6a0e42/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FejerFiveTerm.lean#L18-L27"
+    },
+    {
+      "end_line": 116,
+      "excerpt_sha256": "e44f232c0abf78faa7f392ff1dcde849b3f4b83734622f4f7107d8842b731d55",
+      "name": "intervalUniformityParameter",
+      "repository_path": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18GeneralIntervalStopping.lean",
+      "source_sha256": "38e2892e93a1f93ffcfae8e2399b47a5c25f40283b795c8afd05919925a5e754",
+      "start_line": 115,
+      "text": "def intervalUniformityParameter (delta : Real) (k : Nat) : Real :=\n  (delta ^ k / (512 * (k : Real) ^ 3)) ^ ((2 : Nat) ^ (k - 1))\n",
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/af74fb522c24a6331886b11db76942642a6a0e42/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18GeneralIntervalStopping.lean#L115-L116"
+    },
+    {
+      "end_line": 13,
+      "excerpt_sha256": "202e980d06b0c082c3e89942afff380e2630b7ff986bacad2dc599a43f5246b5",
+      "name": "intervalDiscrepancyClosedThreshold",
+      "repository_path": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18GeneralIteration.lean",
+      "source_sha256": "3dced00269489ef989fc6224209c6f1b34b0a360cffa01d8736de8169d4a05d7",
+      "start_line": 11,
+      "text": "def intervalDiscrepancyClosedThreshold (k : Nat) (delta beta sigma T : Real) : Real :=\n  densityIterationClosedThreshold (intervalDiscrepancyStepThreshold k delta beta T)\n    (beta / (8 * boundaryRefinementConstant (beta / 64))) (sigma / 16) ⌈(beta / 8)⁻¹⌉₊\n",
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/af74fb522c24a6331886b11db76942642a6a0e42/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18GeneralIteration.lean#L11-L13"
+    },
+    {
+      "end_line": 15,
+      "excerpt_sha256": "cc2ef10cc22952c91858387c0e34fe81c752791a056190101ec6d3f51a1cbcaf",
+      "name": "intervalDiscrepancyStepThreshold",
+      "repository_path": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18GeneralIterationStep.lean",
+      "source_sha256": "1c762f8f0023db9296dd924d8c3898c06860f61756bb09c2ac94f6fff823d2fb",
+      "start_line": 14,
+      "text": "def intervalDiscrepancyStepThreshold (k : Nat) (delta beta T : Real) : Real :=\n  max (k : Real) (max T (max (32 / beta) ((512 * (k : Real) ^ 2 + 1) / delta ^ k)))\n",
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/af74fb522c24a6331886b11db76942642a6a0e42/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18GeneralIterationStep.lean#L14-L15"
+    },
+    {
+      "end_line": 12,
+      "excerpt_sha256": "0b78b3494846237fdb3af6046bda418fb2dd5f34a71e62fb48e1e891de57ea79",
+      "name": "quadraticExponentialThreshold",
+      "repository_path": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18QuadraticDichotomy.lean",
+      "source_sha256": "6f7961a1545bee3894e1fa52a83522e1e6f60cf09eb32ee9c19d7ec79bdb06b7",
+      "start_line": 10,
+      "text": "def quadraticExponentialThreshold (alpha : Real) : Real :=\n  Real.exp ((4 + 6 * section5LocalRefinementConstant 2 1) *\n    (2 / alpha) ^ (12380 * 2048 + 24744 : Nat))\n",
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/af74fb522c24a6331886b11db76942642a6a0e42/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18QuadraticDichotomy.lean#L10-L12"
+    },
+    {
+      "end_line": 14,
+      "excerpt_sha256": "93017717f43e001558152fb9cc6943ea44f8a5cffe4bf9987dabaab3fb3836e8",
+      "name": "quadraticDiscrepancyExponent",
+      "repository_path": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18QuadraticDiscrepancy.lean",
+      "source_sha256": "1930dc7f841ed8bf8552effed80860d9cafe73208923af07a840363719b9b4c7",
+      "start_line": 13,
+      "text": "def quadraticDiscrepancyExponent (alpha : Real) : Real :=\n  cor711Exponent ((alpha / 2) ^ (12359 : Nat)) 1 / 4096\n",
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/af74fb522c24a6331886b11db76942642a6a0e42/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18QuadraticDiscrepancy.lean#L13-L14"
+    },
+    {
+      "end_line": 18,
+      "excerpt_sha256": "607aff8ac408da2f27ba7b3c10bb517659e1e3b52654529c7451921de39b3d69",
+      "name": "quadraticDiscrepancyParameter",
+      "repository_path": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18QuadraticDiscrepancy.lean",
+      "source_sha256": "1930dc7f841ed8bf8552effed80860d9cafe73208923af07a840363719b9b4c7",
+      "start_line": 17,
+      "text": "def quadraticDiscrepancyParameter (alpha : Real) : Real :=\n  (2 : Real) ^ (-(20 : Int)) * alpha ^ 2 * (alpha / 2) ^ (12359 : Nat)\n",
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/af74fb522c24a6331886b11db76942642a6a0e42/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18QuadraticDiscrepancy.lean#L17-L18"
+    },
+    {
+      "end_line": 46,
+      "excerpt_sha256": "032ffe6499520f3a69bc07fd940be2f1791b6c8b0075419270e593aaf4edacea",
+      "name": "polynomialPartitionConstant",
+      "repository_path": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Section05.lean",
+      "source_sha256": "cede89413bd9e431e4018a7e18b5a3388d51755bb38b9a2add5b73ac2fa6b07a",
+      "start_line": 45,
+      "text": "def polynomialPartitionConstant (k : Nat) : Nat :=\n  (Nat.factorial k) ^ 2 * 2 ^ ((k + 1) ^ 2)\n",
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/af74fb522c24a6331886b11db76942642a6a0e42/Combinatorics/Ramsey/Lean/GowersSzemeredi/Section05.lean#L45-L46"
+    },
+    {
+      "end_line": 51,
+      "excerpt_sha256": "c7a8bd8f447c33fb57c02627841336170a97d0011608c49f97ca06f69da6c963",
+      "name": "weylThreshold",
+      "repository_path": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Section05.lean",
+      "source_sha256": "cede89413bd9e431e4018a7e18b5a3388d51755bb38b9a2add5b73ac2fa6b07a",
+      "start_line": 50,
+      "text": "def weylThreshold (k : Nat) : Nat :=\n  2 ^ (2 ^ (40 * k ^ 3))\n",
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/af74fb522c24a6331886b11db76942642a6a0e42/Combinatorics/Ramsey/Lean/GowersSzemeredi/Section05.lean#L50-L51"
+    },
+    {
+      "end_line": 56,
+      "excerpt_sha256": "9a7fd1a7845ba478a1db494ff6c5da8c79812017bad15a84325cd15d8a40de06",
+      "name": "polynomialPartitionThreshold",
+      "repository_path": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Section05.lean",
+      "source_sha256": "cede89413bd9e431e4018a7e18b5a3388d51755bb38b9a2add5b73ac2fa6b07a",
+      "start_line": 55,
+      "text": "def polynomialPartitionThreshold (k : Nat) : Nat :=\n  weylThreshold k ^ 2\n",
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/af74fb522c24a6331886b11db76942642a6a0e42/Combinatorics/Ramsey/Lean/GowersSzemeredi/Section05.lean#L55-L56"
+    },
+    {
+      "end_line": 63,
+      "excerpt_sha256": "53865eee2fbfcf5e86453e8446678eb13b8862f48748e9991c9e10b8ccdafed8",
+      "name": "simultaneousPolynomialThreshold",
+      "repository_path": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Section05.lean",
+      "source_sha256": "cede89413bd9e431e4018a7e18b5a3388d51755bb38b9a2add5b73ac2fa6b07a",
+      "start_line": 61,
+      "text": "def simultaneousPolynomialThreshold (k q : Nat) : Nat :=\n  (2 * polynomialPartitionThreshold k) ^\n    (polynomialPartitionConstant k ^ (q - 1))\n",
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/af74fb522c24a6331886b11db76942642a6a0e42/Combinatorics/Ramsey/Lean/GowersSzemeredi/Section05.lean#L61-L63"
+    },
+    {
+      "end_line": 436,
+      "excerpt_sha256": "bcf039c55db4ed522451ce83f88c0feda4bc62ffb6db6bed17a05bb411a239ac",
+      "name": "section10Lambda",
+      "repository_path": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Section10.lean",
+      "source_sha256": "8b63d784485ba8291b614a9153399cae216d2adaf37c9770344521083523cb2d",
+      "start_line": 435,
+      "text": "def section10Lambda (alpha : Real) : Real :=\n  (2 : Real) ^ (-(37 : Real)) * alpha ^ ((11 : Real) / 2)\n",
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/af74fb522c24a6331886b11db76942642a6a0e42/Combinatorics/Ramsey/Lean/GowersSzemeredi/Section10.lean#L435-L436"
+    },
+    {
+      "end_line": 440,
+      "excerpt_sha256": "caec618304eded536b925300a265a0a07053ae41fe86ef72b1cdd6d7d16f46e6",
+      "name": "section10SpectrumBound",
+      "repository_path": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Section10.lean",
+      "source_sha256": "8b63d784485ba8291b614a9153399cae216d2adaf37c9770344521083523cb2d",
+      "start_line": 439,
+      "text": "def section10SpectrumBound (alpha : Real) : Real :=\n  (2 : Real) ^ (74 : Nat) * alpha ^ (-(10 : Real))\n",
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/af74fb522c24a6331886b11db76942642a6a0e42/Combinatorics/Ramsey/Lean/GowersSzemeredi/Section10.lean#L439-L440"
+    },
+    {
+      "end_line": 445,
+      "excerpt_sha256": "1265fb8aa36752f7145b5dde5a5cc8304a4f76bf1c989784bfbc29e71cf0e3f6",
+      "name": "section10SpectrumParameter",
+      "repository_path": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Section10.lean",
+      "source_sha256": "8b63d784485ba8291b614a9153399cae216d2adaf37c9770344521083523cb2d",
+      "start_line": 444,
+      "text": "def section10SpectrumParameter (alpha : Real) : Nat :=\n  Nat.ceil (section10SpectrumBound alpha)\n",
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/af74fb522c24a6331886b11db76942642a6a0e42/Combinatorics/Ramsey/Lean/GowersSzemeredi/Section10.lean#L444-L445"
+    },
+    {
+      "end_line": 454,
+      "excerpt_sha256": "59f134ec31a0568c7ac43e50fd2b1e2d612043782d889f15f09980ac9bfe9e81",
+      "name": "section10Zeta",
+      "repository_path": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Section10.lean",
+      "source_sha256": "8b63d784485ba8291b614a9153399cae216d2adaf37c9770344521083523cb2d",
+      "start_line": 452,
+      "text": "def section10Zeta (alpha : Real) : Real :=\n  let k := section10SpectrumParameter alpha\n  (2 : Real) ^ (-(155 : Real) * k) * alpha ^ (18 * k) / k\n",
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/af74fb522c24a6331886b11db76942642a6a0e42/Combinatorics/Ramsey/Lean/GowersSzemeredi/Section10.lean#L452-L454"
+    },
+    {
+      "end_line": 334,
+      "excerpt_sha256": "5eac7697d248d8f38e3e0f10410669ae513d69dd7e643c964245fc25aaa293ae",
+      "name": "section13ThetaOne",
+      "repository_path": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections12_13.lean",
+      "source_sha256": "c1257fa64bfd9aa9fbef7ea7d64a8666c8281eedb1ee99fcf1526d45c268ed27",
+      "start_line": 333,
+      "text": "def section13ThetaOne (theta : Real) : Real :=\n  (2 : Real) ^ (-(1882 : Int)) * theta ^ 10477\n",
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/af74fb522c24a6331886b11db76942642a6a0e42/Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections12_13.lean#L333-L334"
+    },
+    {
+      "end_line": 337,
+      "excerpt_sha256": "0475a4a07074166e83133465c2d8bb3dcc4e7631b567b5a1b94cece7afd2f8cd",
+      "name": "section13QBound",
+      "repository_path": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections12_13.lean",
+      "source_sha256": "c1257fa64bfd9aa9fbef7ea7d64a8666c8281eedb1ee99fcf1526d45c268ed27",
+      "start_line": 336,
+      "text": "def section13QBound (theta : Real) : Real :=\n  (2 : Real) ^ 1882 * theta ^ (-(10479 : Int))\n",
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/af74fb522c24a6331886b11db76942642a6a0e42/Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections12_13.lean#L336-L337"
+    },
+    {
+      "end_line": 432,
+      "excerpt_sha256": "ed3f9bef4c76dd6a6765df451de891b472c686488c40c60f89a2ebdc3abf0628",
+      "name": "section13K",
+      "repository_path": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections12_13.lean",
+      "source_sha256": "c1257fa64bfd9aa9fbef7ea7d64a8666c8281eedb1ee99fcf1526d45c268ed27",
+      "start_line": 431,
+      "text": "def section13K (alpha : Real) : Real :=\n  (2 : Real) ^ 114 * alpha ^ (-(320 : Int))\n",
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/af74fb522c24a6331886b11db76942642a6a0e42/Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections12_13.lean#L431-L432"
+    },
+    {
+      "end_line": 436,
+      "excerpt_sha256": "78a6c92f27a91a48eda03b763497ed0191df545429f76fa1a308ed1b545ba401",
+      "name": "section13Zeta",
+      "repository_path": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections12_13.lean",
+      "source_sha256": "c1257fa64bfd9aa9fbef7ea7d64a8666c8281eedb1ee99fcf1526d45c268ed27",
+      "start_line": 434,
+      "text": "def section13Zeta (alpha : Real) : Real :=\n  (2 : Real) ^ (-(228 * section13K alpha)) *\n    alpha ^ (576 * section13K alpha)\n",
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/af74fb522c24a6331886b11db76942642a6a0e42/Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections12_13.lean#L434-L436"
+    },
+    {
+      "end_line": 440,
+      "excerpt_sha256": "bb36d70aabbfa233c0e3f9888b0090e8bec8c6217d89c018391cb774fb89d097",
+      "name": "section13Q",
+      "repository_path": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections12_13.lean",
+      "source_sha256": "c1257fa64bfd9aa9fbef7ea7d64a8666c8281eedb1ee99fcf1526d45c268ed27",
+      "start_line": 438,
+      "text": "def section13Q (alpha : Real) : Real :=\n  (2 : Real) ^ ((2 : Nat) ^ 20) *\n    alpha ^ (-((2 : Real) ^ (21 : Nat)))\n",
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/af74fb522c24a6331886b11db76942642a6a0e42/Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections12_13.lean#L438-L440"
+    },
+    {
+      "end_line": 187,
+      "excerpt_sha256": "4bdd7f07de263cd43ca2e26509f5c2d0f1a30f5884165a9be844013ee4304556",
+      "name": "szemerediThreshold",
+      "repository_path": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections17_18.lean",
+      "source_sha256": "74027961cd05b94022c2e298ae96bc5ddd5b17425143725c2ba2fbc24c68922f",
+      "start_line": 184,
+      "text": "def szemerediThreshold (delta : Real) (k : Nat) : Real :=\n  (2 : Real) ^\n    ((2 : Real) ^\n      (delta⁻¹ ^ ((2 : Real) ^ ((2 : Real) ^ (k + 9 : Nat)))))\n",
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/af74fb522c24a6331886b11db76942642a6a0e42/Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections17_18.lean#L184-L187"
+    },
+    {
+      "end_line": 194,
+      "excerpt_sha256": "cabe218e0cd9a0b5f7103bc0c9027ac8797b6128c36f419dad22def8764ffc1f",
+      "name": "theorem_18_2",
+      "repository_path": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections17_18.lean",
+      "source_sha256": "74027961cd05b94022c2e298ae96bc5ddd5b17425143725c2ba2fbc24c68922f",
+      "start_line": 190,
+      "text": "def theorem_18_2 : Prop :=\n  ∀ (delta : Real) (k N : Nat), 0 < delta → delta ≤ 1 / 2 → 0 < k →\n    szemerediThreshold delta k ≤ N →\n    ∀ A : Finset Nat, A ⊆ Finset.Icc 1 N → delta * N ≤ A.card →\n      HasNatAP A k\n",
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/af74fb522c24a6331886b11db76942642a6a0e42/Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections17_18.lean#L190-L194"
+    },
+    {
+      "end_line": 106,
+      "excerpt_sha256": "65b4eef82340dfe4f499b01935032cba175f6321fa3b0875c854816f691f5333",
+      "name": "HasNatAP",
+      "repository_path": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Definitions.lean",
+      "source_sha256": "17241a9ffa53e2c6b335eb326920952a7f3da25e5e5a601a7aca5606462f5e4b",
+      "start_line": 105,
+      "text": "def HasNatAP (A : Finset Nat) (k : Nat) : Prop :=\n  exists a d : Nat, 0 < d /\\ ∀ i, i < k → a + i * d ∈ A\n",
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/af74fb522c24a6331886b11db76942642a6a0e42/Combinatorics/Ramsey/Lean/GowersSzemeredi/Definitions.lean#L105-L106"
+    }
+  ],
+  "hash_scope": "Excerpt SHA-256 covers exact UTF-8 source bytes including final LF; inclusive source line ranges. Source SHA-256 identifies the unbundled complete source file.",
+  "paper_formula_spans": [
+    {
+      "end_byte_exclusive": 218,
+      "name": "paper_right_association_formula",
+      "repository_path": "Combinatorics/Ramsey/Papers/sz-thm-gowers-proof/sz-thm-gowers-proof.tex",
+      "source_line": 3838,
+      "source_sha256": "5fbd02f8383b0c7c5f2261afc0f9d347a8e943bab6543ef2b84a535925884613",
+      "span_sha256": "667c3c410ef07c4d9925e4e616496e134bd0b87374f7007c84dcd80afbd5022a",
+      "start_byte_zero_based": 194,
+      "text": "a \\uparrow(b \\uparrow c)",
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/af74fb522c24a6331886b11db76942642a6a0e42/Combinatorics/Ramsey/Papers/sz-thm-gowers-proof/sz-thm-gowers-proof.tex#L3838"
+    },
+    {
+      "end_byte_exclusive": 165,
+      "name": "paper_theorem_18_2_tower",
+      "repository_path": "Combinatorics/Ramsey/Papers/sz-thm-gowers-proof/sz-thm-gowers-proof.tex",
+      "source_line": 3840,
+      "source_sha256": "5fbd02f8383b0c7c5f2261afc0f9d347a8e943bab6543ef2b84a535925884613",
+      "span_sha256": "d0c3a10a37722f893808e3718d70a4b3218af635f31dd70c2faeb0ab796d4d8f",
+      "start_byte_zero_based": 96,
+      "text": "2 \\uparrow 2 \\uparrow \\delta^{-1} \\uparrow 2 \\uparrow 2 \\uparrow(k+9)",
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/af74fb522c24a6331886b11db76942642a6a0e42/Combinatorics/Ramsey/Papers/sz-thm-gowers-proof/sz-thm-gowers-proof.tex#L3840"
+    }
+  ],
+  "schema_version": 1
+}

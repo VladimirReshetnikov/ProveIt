@@ -1,0 +1,21 @@
+PYTHON ?= python3
+PAPER := gowers_spectral_uniformity_affine
+
+.PHONY: all pdf verify figures clean
+
+all: pdf
+
+pdf:
+	latexmk -pdf -interaction=nonstopmode -halt-on-error $(PAPER).tex
+
+verify:
+	$(PYTHON) verification/fourier_verify.py --output verification/fourier_verification_results.json
+	$(PYTHON) verification/norm_verify_rate.py --output verification/norm_rate_certificates.json
+	$(PYTHON) verification/norm_verify_prime.py --output verification/norm_prime_certificates.json
+	$(PYTHON) verification/rigidity_checks.py
+
+figures:
+	$(PYTHON) make_figures.py
+
+clean:
+	latexmk -c $(PAPER).tex

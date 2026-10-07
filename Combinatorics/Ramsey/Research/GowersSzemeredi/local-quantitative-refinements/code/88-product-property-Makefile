@@ -1,0 +1,16 @@
+ARTICLE := gowers_product_property_refinements
+
+.PHONY: all pdf verify clean
+
+all: pdf
+
+pdf:
+	latexmk -pdf -interaction=nonstopmode -halt-on-error $(ARTICLE).tex
+
+verify:
+	python3 code/verify_rank.py > data/rank_checks.json
+	python3 code/verify_counting.py --output data/counting_checks.json
+	python3 code/verify_parameters.py --output data/parameter_checks.json
+
+clean:
+	latexmk -c $(ARTICLE).tex

@@ -1,0 +1,17 @@
+.PHONY: all verify regenerate explore clean
+all: article.pdf
+
+article.pdf: article.tex
+	latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+
+verify:
+	python3 verify_exact.py
+
+regenerate:
+	python3 verify_exact.py --write
+
+explore:
+	python3 explore_ternary.py --starts 30 --seed 1729
+
+clean:
+	latexmk -c article.tex
