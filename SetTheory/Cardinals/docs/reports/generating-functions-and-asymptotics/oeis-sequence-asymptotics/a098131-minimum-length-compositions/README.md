@@ -143,6 +143,38 @@ in the source. **Nothing was refuted.**
   significant digits at `n = 10^6` and `4·10^6` (`s = 0, 1, 2`; table in the
   note at the end of Section 6); the 21,001 b-file terms; Route B below.
 
+## Independent check of the write (7 October 2026)
+
+An adversarial check made by the intake after the write (`89b899bf3`), with
+its own code, after fetching again A098131 (#23), A098132 (#23), A098133 (#20)
+and their b-files.
+
+- **Remark 1.2.** Every quotation, revision, date and author line confirmed,
+  and that no entry states an asymptotic formula or conjecture (the formula
+  lines are the generating functions only). The 10001 + 10000 + 1000 b-file
+  terms recomputed by a second route, coefficient extraction from the
+  generating functions (and the exact sum for `n ≤ 300`): all agree.
+- **Coefficients.** Directly from the definition (30) of `K` by SymPy series
+  in `ε`, not through the printed `q_r`: `q_1, …, q_4` equal (47)–(51),
+  `B_{s,1}`, `B_{s,2}` equal (23), `C_{s,1}` equals (9) symbolically in `s`
+  and `v`, and `C_{s,2}` has the common denominator `4608 D^6` with
+  `C_{s,2} = v²/4608 + O_s(v)`; also `Q_2 = 2D`, `Q_3 = 2E`, `Q_4 = 2F`, the
+  derivative formula (45) for `r ≤ 5`, (60), and the `O_s(v^{−2})` remainder of
+  (49).
+- **The numerical test** (end of Section 6) reproduced in every entry with the
+  check's own `C_{s,2}`, and the dossier's ratios 0.99978, 0.99971, 1.00205 at
+  `n = 4·10^5`.
+- **Remark 9.2.** (a), (b) and the Lambert instance of (c) re-derived against
+  the volume; **one correction**: (74) is an admissible core in the sense of
+  `p0:def:core`, so "not a core of the volume" is wrong as stated (dated note
+  in the article; "Relation to the repository" below).
+- **Provenance.** Archive facts, staged bytes, the 100 delivered label numbers
+  and 68 references, Route B (`check_exact.py` normal and `-O` byte-identical
+  to the recorded output, 12,366 checks, 87 rejections) confirmed. No error
+  found in the source's proofs.
+
+The check is recorded at the end of Section 11.
+
 ## Relation to the repository
 
 **Formal status.** No statement is formalized, and placement in the
@@ -159,7 +191,12 @@ staircase of `p0:def:three-inverses`(1), so `p0:thm:staircase`(1) applies;
 (the source itself states its failure mode); (c) the coarse Lambert
 equivalent (79) inverts its leading balance `v + 2 log v = log(2L)` as an
 **instance** of `p0:thm:lambert-core` (`a = 1`, `b = 2`); the exact equation
-(74) for `v_0` is not a core of the volume.
+(74) for `v_0` is not a core of the volume. (Corrected after the independent
+check of 7 October 2026: its right side, as a function of `v_0`, is not one of
+the two explicit cores `p0:eq:two-cores` that the volume inverts by Lambert
+W, but it is an admissible dominant core in the sense of `p0:def:core` on a
+half-line, with core solution `v_0`; whether Theorem 9.1's correction is an
+instance of `p0:thm:core-reversion` is not shown.)
 
 **Neighbouring reports.** No report of the collection treats compositions
 with a length-dependent minimum, so no reciprocal note is proposed.
@@ -196,7 +233,7 @@ text of Section 1, and the added displays are unnumbered.
 ```text
 README.md                            this guide (replaces the delivery README)
 article.tex                          the report (delivered Report189.tex; labels prefixed, [write] additions)
-article.pdf                          compiled report, 19 pages
+article.pdf                          compiled report, 20 pages
 DATA_SOURCES.md                      delivered data-source and attribution notes
 README_REPRODUCIBILITY.md            delivered reproducibility guide (delivered names)
 code-README.md                       delivered guide to the code (delivered code/README.md)
@@ -294,7 +331,9 @@ B=$(mktemp -d); cp article.tex "$B/"; cd "$B"
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The committed PDF was built this way with MiKTeX on 7 October 2026: 19 pages;
+The committed PDF was built this way with MiKTeX on 7 October 2026 (19
+pages), and rebuilt after the independent check of the same day (label
+numbers unchanged, aux files compared): 20 pages;
 no errors or warnings, no undefined references or citations, no multiply
 defined labels, no duplicate PDF destinations, no overfull or underfull boxes
 (the delivered text also builds without any, 16 pages). The article keeps the

@@ -845,6 +845,16 @@ $s$:
  $v\sim2W(\sqrt{L/2})$. The exact equation~\eqref{mlc:eq:v0} for $v_0$ is not a
  core of the volume (it carries $\tfrac12e^vv$ and $\log D$ terms), and
  Theorem~\ref{mlc:thm:shift} linearizes about its root directly.
+ \textup{(Corrected after the independent check of 7~October 2026: the
+ right-hand side of~\eqref{mlc:eq:v0}, as a function of $v_0$, is not one of
+ the two explicit cores of \file{p0:eq:two-cores} that the volume inverts
+ exactly by Lambert~$W$, but it is an admissible dominant core in the sense of
+ \file{p0:def:core} on a half-line, since its derivative
+ $e^{v}D/2-\beta_s-(2v+3)/(2D)$ is eventually positive, increasing and
+ unbounded; $v_0$ is its core solution. Whether
+ Theorem~\ref{mlc:thm:shift}'s correction is an instance of the volume's
+ reversion about such a core, \file{p0:thm:core-reversion}, is not shown
+ here.)}
 \end{enumerate}
 No novelty is claimed for any of these inversions. The staircase arithmetic
 is formalized generically (for an arbitrary strictly monotone function) as
@@ -884,6 +894,39 @@ one; the OEIS entries state no asymptotic claim.
 \end{writenote}
 
 The current results settle none of these extensions. They provide a fixed-parameter foundation with full Fourier control, exact correction algebra, and inverse statements that retain the unavoidable integer ambiguity.
+
+\begin{writenote}[Independent check of the write, 7 October 2026]
+An adversarial check made by the intake after the write (commit
+\file{89b899bf3}) re-derived the statements marked [write] with its own code,
+after fetching again A098131 (revision~\#23), A098132 (\#23), A098133
+(\#20) and their b-files. \emph{Remark~\ref{mlc:rem:oeis}.} Every quotation,
+revision, date and author line confirmed, and that no entry states an
+asymptotic formula or a conjecture (their formula lines are the generating
+functions only). The $10001+10000+1000$ b-file terms recomputed by a second
+route, coefficient extraction from the generating functions
+of~\eqref{mlc:eq:exact} (and the exact sum for $n\le300$): all agree.
+\emph{Coefficients.} Directly from the definition~\eqref{mlc:eq:K} of the
+Gaussian-removed integrand, by SymPy series in $\eps$ (not through the
+printed $q_r$): $q_1,\dots,q_4$ equal~\eqref{mlc:eq:q1}--\eqref{mlc:eq:q4},
+$B_{s,1}$, $B_{s,2}$ equal~\eqref{mlc:eq:B12}, $C_{s,1}$
+equals~\eqref{mlc:eq:C1} symbolically in $s$ and $v$, and $C_{s,2}$ has the
+common denominator $4608D^6$ with $C_{s,2}=v^2/4608+\OO_s(v)$; also
+$Q_2=2D$, $Q_3=2E$, $Q_4=2F$, the derivative formula~\eqref{mlc:eq:Qderiv}
+for $r\le5$, \eqref{mlc:eq:deltaone}, and that
+$v^2\{C_{s,1}+v/48-(s-\tfrac12)^2/4\}$ has a finite limit, so the remainder
+in~\eqref{mlc:eq:C1large} is $\OO_s(v^{-2})$. \emph{The numerical test} at the
+end of Section~\ref{mlc:sec:coefficients} reproduced in every entry with the
+check's own $C_{s,2}$, and the dossier's ratios $0.99978$, $0.99971$, $1.00205$
+at $n=4\cdot10^5$. \emph{Remark~\ref{mlc:rem:transseries}.} (a), (b) and the
+Lambert instance of~(c) re-derived against the volume; one correction, made
+by a dated note there: the equation~\eqref{mlc:eq:v0} is an admissible core in
+the sense of \file{p0:def:core}, so it should not be called ``not a core of
+the volume''. \emph{Provenance.} Archive facts, the staged files
+(byte-identical), the 100 delivered label numbers and 68 references (aux of a
+build of the delivered text, 16 pages) and Route~B (\file{check_exact.py}
+normal and optimized byte-identical to the recorded output, $12{,}366$ checks,
+$87$ rejections) confirmed. No error was found in the source's proofs.
+\end{writenote}
 
 \begin{thebibliography}{9}
 \bibitem{oeis131}
