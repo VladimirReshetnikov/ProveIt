@@ -329,15 +329,16 @@ theorem stage135_sectionC_upper {N : Nat} [NeZero N]
       simp [stage135AtHeightCode]
       ring
 
-private lemma stage135_critical_count_of_weight {N : Nat} [NeZero N]
+/-- Weighted height mass supplies the stronger pre-trimming density 1/16. -/
+theorem stage135_critical_count_of_weight {N : Nat} [NeZero N]
     (S : Section13Context N) (D : Stage134Data N) (Q : ModAP N)
     (hQproper : Q.IsProper)
     (hweight : S.alpha ^ 32 * (N : Real) ^ 31 * Q.length / 8 ≤
       (goodHeightWeight S (Q.carrier ∩ D.H) : Real)) :
-    S.alpha ^ 32 * Q.length / 20 ≤
+    S.alpha ^ 32 * Q.length / 16 ≤
       (criticalHeights S D ⟨Q⟩).card := by
   classical
-  change S.alpha ^ 32 * Q.length / 20 ≤
+  change S.alpha ^ 32 * Q.length / 16 ≤
     (((Q.carrier ∩ D.H).filter (IsStrongHeight S)).card : Real)
   let G := (Q.carrier ∩ D.H).filter (IsGoodHeight S)
   let K := G.filter fun h =>
@@ -417,12 +418,7 @@ private lemma stage135_critical_count_of_weight {N : Nat} [NeZero N]
     simp only [K, G, Finset.mem_filter, IsStrongHeight]
     tauto
   rw [← hKcritical]
-  have hlengthNonneg : (0 : Real) ≤ Q.length := by positivity
-  calc
-    S.alpha ^ 32 * Q.length / 20 ≤
-        S.alpha ^ 32 * Q.length / 16 := by
-      nlinarith [mul_nonneg halphaNonneg hlengthNonneg]
-    _ ≤ (K.card : Real) := hKlower
+  exact hKlower
 
 /-- The weighted-selection part of Lemma 13.5.  Any recurrence argument which
 produces `Stage135CandidateFamily` immediately yields the exact live output. -/
@@ -438,7 +434,11 @@ theorem lemma_13_5_of_candidate_family {N : Nat} [NeZero N]
   let E : Stage135Data N := ⟨F.Q j⟩
   refine ⟨E, F.step_ne_zero j, F.proper j, F.subset j,
     F.length_lower j, F.small_affine j, ?_⟩
-  exact stage135_critical_count_of_weight S D (F.Q j) (F.proper j) hj
+  have hcount := stage135_critical_count_of_weight S D (F.Q j) (F.proper j) hj
+  have hnonneg : 0 ≤ S.alpha ^ 32 * ((F.Q j).length : Real) :=
+    mul_nonneg (pow_nonneg S.alpha_pos.le _) (Nat.cast_nonneg _)
+  change S.alpha ^ 32 * ((F.Q j).length : Real) / 20 ≤ _
+  linarith only [hcount, hnonneg]
 
 /-- A recurrence construction producing the certified family for every live
 input immediately discharges the exact proposition `lemma_13_5`. -/

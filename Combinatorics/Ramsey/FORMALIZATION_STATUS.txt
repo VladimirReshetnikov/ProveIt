@@ -12,8 +12,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 218 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 1,986 public Gowers theorems and found only propext,
+  All 220 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 2,019 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 101 exact
   companion proofs and 19 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -476,6 +476,22 @@ New Section 18 infrastructure
   Proofs18UniformInterval:
     Corollary 3.6 now supplies both an integer-interval uniform stopping case
     and a uniform stopping case in a fresh cyclic model of a proper progression.
+
+Scale-qualified quadratic recurrence
+  Proofs13EndpointDeletion proves properness, containment, and preservation
+  of the common step when deleting the two endpoints of a modular progression.
+  The strong-height count decreases by at most two. If alpha^32*|Q'|>=160,
+  its pre-deletion density 1/16 supplies the required post-deletion density
+  1/20. Quadratic diameter control gives affine smallness at every interior
+  point using the same common step.
+  Proofs13QuadraticPartition transports the checked simultaneous polynomial
+  partition to P and preserves the good-height weight exactly. It selects
+  a cell of sufficient weight and trims its endpoints.
+  lemma_13_5_with_scale constructs Stage 13.5 from Stage 13.4 for odd prime N
+  when |P| exceeds the repaired polynomial threshold, X=|P|^(2^(-12q))>=8,
+  and alpha^32*X>=160+2*alpha^32. These explicit conditions address both the
+  printed threshold mismatch and its unsupported endpoint-deletion claim.
+  They are additional assumptions, so the catalogue lemma is still open.
 
 Verified Section 13 exponent margins
   Proofs13ExponentMargins identifies the common Fourier cutoff exactly as

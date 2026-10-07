@@ -135,6 +135,8 @@ import GowersSzemeredi.Proofs13ContextExtraction
 import GowersSzemeredi.Proofs13InitialProgression
 import GowersSzemeredi.Proofs13LargeSpectrumCover
 import GowersSzemeredi.Proofs13QuadraticRecurrence
+import GowersSzemeredi.Proofs13EndpointDeletion
+import GowersSzemeredi.Proofs13QuadraticPartition
 import GowersSzemeredi.Proofs13BilinearRestriction
 import GowersSzemeredi.Proofs13RowCoefficients
 import GowersSzemeredi.Proofs13RowSelection
