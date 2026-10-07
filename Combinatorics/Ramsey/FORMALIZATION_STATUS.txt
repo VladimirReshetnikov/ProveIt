@@ -5,12 +5,12 @@ Scope
   bound is claimed. Smaller four- and five-term thresholds are proved below.
   The source catalogue contains all 120 unique numbered theorem, lemma,
   proposition, and corollary headings in sz-thm-gowers-proof.tex.
-  The current Lean catalogue declares 114 exact companion proofs and 6
-  open statements. This includes the repaired Lemma 16.10, whose explicit
+  The current Lean catalogue has 114 kernel-checked exact companion proofs
+  and 6 open statements. This includes the repaired Lemma 16.10, whose explicit
   cover conclusion is weaker than the printed unit-parameter claim.
-  It must not be counted as a proof of that printed claim. The repaired
-  companion now compiles with all 130 reachable dependency modules; the
-  merged development is undergoing a new full axiom and catalogue audit.
+  It must not be counted as a proof of that printed claim. The full merged
+  development, including the repaired companion and the preserved printed
+  encoding counterexample, passes the axiom and catalogue audit.
   The JSON ledger records every statement, its TeX heading lines, its Lean
   definition, and related results. Conditional implications, restricted cases,
   and counterexamples are not counted as proofs of the full statement.
@@ -20,10 +20,10 @@ Scope
   checkpoints; the current catalogue count is stated here and in the ledger.
 
 Verification at this checkpoint
-  All 765 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 4,881 public Gowers theorems and found only propext,
-  Classical.choice, and Quot.sound. The audit independently counted 113 exact
-  companion proofs and 7 open catalogue statements from Lean's theorem types.
+  All 766 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 4,884 public Gowers theorems and found only propext,
+  Classical.choice, and Quot.sound. The audit independently counted 114 exact
+  companion proofs and 6 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
   errors remain in this build. The JSON ledger reproduces exactly and has no
   unmatched numbered TeX headings or unmatched catalogue entries.
@@ -31,12 +31,11 @@ Verification at this checkpoint
   the exact Theorems 1.2, 7.1, and 7.2 companions. Their dependencies pass
   the transitive axiom check. The earlier workstation-only validation of
   Theorem 1.2 is now confirmed by the full repository audit.
-  That completed audit predates the Lemma 16.10 repair below, and its
-  113/7 count is the pre-repair count. The first merged audit checked the
-  retargeted counterexample but found a binder-introduction error in
-  Proofs16Lemma10. Its proof now unfolds the local let definitions before
-  introducing the two cover hypotheses. The unchanged repaired statement
-  and all 130 dependencies compile; the full combined audit is running.
+  This audit also includes the incoming Lemma 16.10 repair. The first
+  merged audit found a binder-introduction error in Proofs16Lemma10; its
+  proof now reduces the local let definitions before introducing the two
+  cover hypotheses. The repaired statement and all quantitative bounds
+  are unchanged. The full combined build and axiom scan now pass.
 
 All-scale integer geometry for Section 13
   Proofs07AllScalesStepSpan retains a common positive integer step ratio
