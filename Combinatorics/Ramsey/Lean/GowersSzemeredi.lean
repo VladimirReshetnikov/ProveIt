@@ -303,6 +303,10 @@ import GowersSzemeredi.Proofs05CoverMass
 import GowersSzemeredi.Proofs05WeightedPhaseTransfer
 import GowersSzemeredi.Proofs05HighCorrelationAssembly
 import GowersSzemeredi.Proofs05HighCorrelationScale
+import GowersSzemeredi.Proofs05ThresholdFreeScale
+import GowersSzemeredi.Proofs05ThresholdFreeCorollary
+import GowersSzemeredi.Proofs05AffineLocalizationScale
+import GowersSzemeredi.Proofs05AffineLocalization
 
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
