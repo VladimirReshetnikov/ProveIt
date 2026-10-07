@@ -447,7 +447,7 @@ theorem lemma_13_5_holds_of_candidate_families
         (theta : Real) (D : Stage134Data N),
       IsStage134Data S theta D → Nonempty (Stage135CandidateFamily S D)) :
     lemma_13_5 := by
-  intro N _ S theta D hD
+  intro N _ S theta D _hprime hD
   obtain ⟨F⟩ := hcert N S theta D hD
   exact lemma_13_5_of_candidate_family S D F
 

@@ -405,12 +405,22 @@ def IsStage135Data {N : Nat} [NeZero N] (S : Section13Context N)
         (-((1 : Real) / (2 : Real) ^ (11 * D.q))) * N) ∧
   S.alpha ^ 32 * E.Q.length / 20 ≤ (criticalHeights S D E).card
 
-/-- **Lemma 13.5.** The lower bound for `C(h)` uses `N^31`; the `N^15`
+/-- The earlier unrestricted-modulus encoding, preserved separately. The
+paper's standing prime convention was omitted here; this stronger statement
+is not asserted by the prime-modulus companion. -/
+def lemma_13_5_without_prime_assumption : Prop :=
+  ∀ (N : Nat) [NeZero N] (S : Section13Context N) (theta : Real)
+      (D : Stage134Data N),
+    IsStage134Data S theta D →
+    ∃ E : Stage135Data N, IsStage135Data S D E
+
+/-- **Lemma 13.5.** Primality makes the paper's standing convention explicit,
+as in Lemma 13.4. The lower bound for `C(h)` uses `N^31`; the `N^15`
 appearing in the following prose is an OCR error. -/
 def lemma_13_5 : Prop :=
   ∀ (N : Nat) [NeZero N] (S : Section13Context N) (theta : Real)
       (D : Stage134Data N),
-    IsStage134Data S theta D →
+    Nat.Prime N → IsStage134Data S theta D →
     ∃ E : Stage135Data N, IsStage135Data S D E
 
 /-- Data produced by Lemma 13.6. -/

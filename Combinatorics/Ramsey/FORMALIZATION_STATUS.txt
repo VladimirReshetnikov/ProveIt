@@ -4,7 +4,7 @@ Scope
   The goal remains open. No improvement to the final Szemeredi bound is claimed.
   The source catalogue contains all 120 unique numbered theorem, lemma,
   proposition, and corollary headings in sz-thm-gowers-proof.tex.
-  There are 110 checked exact companion proofs and 10 open statements.
+  There are 111 checked exact companion proofs and 9 open statements.
   The JSON ledger records every statement, its TeX heading lines, its Lean
   definition, and related results. Conditional implications, restricted cases,
   and counterexamples are not counted as proofs of the full statement.
@@ -12,10 +12,10 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 570 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 3,691 public Gowers theorems and found only propext,
-  Classical.choice, and Quot.sound. The audit independently counted 110 exact
-  companion proofs and 10 open catalogue statements from Lean's theorem types.
+  All 572 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 3,706 public Gowers theorems and found only propext,
+  Classical.choice, and Quot.sound. The audit independently counted 111 exact
+  companion proofs and 9 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
   errors remain in this build. The JSON ledger reproduces exactly and has no
   unmatched numbered TeX headings or unmatched catalogue entries.
@@ -35,8 +35,8 @@ Threshold-free simultaneous quadratic localization
   its diameter interfaces. Proofs13PhaseSelection converts quadratic phase
   clusters into affine smallness N/(2U) on every cell point, including
   endpoints, and preserves critical-height density alpha^32/16.
-  These are checked inputs toward the remaining Lemma 13.5 range, not an
-  exact companion proof of that numbered statement.
+  These inputs are used by the complete prime-modulus Lemma 13.5 proof
+  described at the end of this checkpoint.
 
 Completed Theorem 1.2 (Szemeredi, qualitative) by a non-Gowers route
   Proofs01SzemerediFixedDensity proves theorem_1_2 with its exact catalogue
@@ -1592,9 +1592,9 @@ Stronger simultaneous diameter and endpoint-preserving quadratic selection
   one ambient-modulus threshold depending only on the Fourier cutoff,
   uniformly over all positive context densities. These seven new modules
   and the modified schedule pass the complete dependency and axiom audit.
-  This does not close the live all-scale Lemma 13.5: the small branch
-  is now proved below, while intermediate scales and missing standing
-  assumptions require separate treatment. No numbered companion or final Szemeredi-bound claim changes.
+  This threshold-qualified result was an intermediate step. The finite
+  recurrence argument below now removes the threshold for prime moduli.
+  No improvement of the final Szemeredi bound follows from this step alone.
 
 The full printed singleton-scale branch of Lemma 13.5
   Proofs13SmallRecurrenceScale handles half-modulus affine tolerance and
@@ -1606,7 +1606,8 @@ The full printed singleton-scale branch of Lemma 13.5
   Applied at a strong height with e=1/2^(11q), this proves Stage 13.5
   whenever L^(1/2^(12q))<=2. A separate companion verifies the paper's
   integer cutoff L<=2^(2^(12q)), including equality. Both modules pass
-  the full axiom audit. The remaining interval is characterized below.
+  the full axiom audit. The formerly remaining interval is characterized
+  below and then closed by finite simultaneous localization.
 
 Verified overlap of the two Lemma 13.5 branches
   Proofs13RecurrenceRange proves that the repaired polynomial threshold
@@ -1618,13 +1619,25 @@ Verified overlap of the two Lemma 13.5 branches
   counterexample over a prime modulus must have q<311 and
     2^(2^(12q)) < L <= simultaneousPolynomialThreshold(2,q).
   This is a necessary condition for failure, not an assertion that such
-  counterexamples exist. The full all-scale numbered statement remains
-  open. A possible next route is to use the existing finite quadratic
-  Weyl/recurrence results (quadratic_recurrence has sample bound
-  2^256*R^16 without an asymptotic threshold) to improve the quadratic
-  partition threshold in this remaining interval. No claim about that
-  route is counted as a proof. The complete audit includes the new range
-  theorem and the strengthened threshold-only selection proof.
+  counterexamples exist. This was the last unresolved range before the
+  finite recurrence proof below. The range theorem is retained as a
+  checked quantitative comparison of the earlier two methods.
+
+Complete all-scale Lemma 13.5 in its prime-modulus context
+  Proofs05QuadraticFamilyScale proves that the explicit finite-family budget
+  fits at U=floor(L^(1/2048^q)) whenever L^(1/4096^q)>2. Its proof uses
+  4F(q,U)<=(4U)^(1024^q), the root comparison X^2<=W, and floor bounds.
+  There is no asymptotic Weyl threshold, density restriction, endpoint mass
+  budget, or restriction on q. The small branch, including empty P, was
+  already proved by the simultaneous small-multiples construction.
+  Proofs13FiniteRecurrence combines these branches into lemma_13_5_prime
+  and the exact lemma_13_5_holds companion. The catalogue and TeX now make
+  the paper's standing prime convention (Section 2, also explicit in
+  Lemma 13.4) explicit here. The former stronger arbitrary-modulus predicate
+  is preserved as lemma_13_5_without_prime_assumption and is not claimed.
+  The finite proof retains every point of the selected progression, and
+  does not rely on the printed assertion that the singleton cutoff already
+  implies the repaired Lemma 5.9 threshold for every q.
 
 Reproducible checks (from repository root)
   python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.Audit
@@ -1643,7 +1656,7 @@ Next substantial obligations
   are proved (Proofs07FreimanClosure). The quadratic four-term theorem 8.2
   and Corollary 8.3 are now proved with their exact catalogue types.
   1. Theorem 13.12 is now complete. Resolve the remaining intermediate
-     Section 13 statements (13.5, 13.6, and 13.10), preserving the
+     Section 13 statements (13.6 and 13.10), preserving the
      distinction between their source hypotheses and existing encodings.
      The global endpoint and improved Fejer extraction are proved; the
      auxiliary bounds do not yet improve the final Szemeredi estimate.
