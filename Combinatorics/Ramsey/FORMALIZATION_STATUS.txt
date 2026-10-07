@@ -12,8 +12,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 538 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 3,527 public Gowers theorems and found only propext,
+  All 542 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 3,539 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 110 exact
   companion proofs and 10 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -1453,6 +1453,28 @@ Contextual Lemma 13.9 and a checked missing-geometry counterexample
   This validates the missing-context repair; it is not a counterexample
   to the contextual lemma in the paper.
 
+Finite-alphabet bounds for the Section 16 cover obstruction
+  Proofs16FiniteAlphabetCover proves that a nonconstant affine function
+  agrees with an S-valued function at at most |S| points. Unions of affine
+  graphs are charged to actual constant-fibre masses and nonconstant
+  alphabet costs. If every fibre on T has mass at most beta*|T|, a family
+  of q graphs covers at most q*(beta*|T|+|S|) points.
+  Proofs16FiniteAlphabetFibres sums this bound over an arbitrary finite
+  base. If q*beta<=9/32 and q*|S|<=|T|/32, at most 5/16 of the product
+  can be covered, even when affine coefficients vary arbitrarily with
+  the base point.
+  Proofs16FiniteAlphabetMultilinear transports the result to the actual
+  appended-coordinate maps and IsMultilinear predicate. The proof uses
+  the checked affine representation of each final-coordinate fibre.
+  Proofs16FiniteAlphabetBoxCover applies the estimate to boxes and sums
+  it over a box partition with a common graph budget. The retained set
+  has mass at most 5/16 of the parent under the explicit balance and width
+  conditions. All four modules pass the full axiom audit.
+  This proves the deterministic counting part of source 50's proposed
+  counterexample to the current lemma_16_10 encoding. The balanced-word
+  existence argument, the two packaged-premise witnesses, and the final
+  negation of that encoding remain unproved. No source-lemma count changes.
+
 Reproducible checks (from repository root)
   python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.Audit
   python3 Combinatorics/Ramsey/scripts/gowers_status.py
@@ -1494,8 +1516,12 @@ Next substantial obligations
      points can be covered (checked against Section16.lean at intake,
      batch 124). It does not refute Gowers's lemma in context. Candidate
      repaired statements: source 49's acyclic cover theorem and source 50's
-     repair interface. No formal status changes until a counterexample is
-     formalized.
+     repair interface. The finite-alphabet affine/multilinear cover bound
+     and its 5/16 box-partition consequence are now formalized. Balanced-word
+     existence and witnesses for the packaged hypotheses remain necessary
+     before claiming a formal counterexample. Mathlib provides the relevant
+     Hoeffding tools in Probability/Moments/SubGaussian.lean, including
+     hasSubgaussianMGF_of_mem_Icc and measure_sum_ge_le_of_iIndepFun.
   3. Prove Theorem 18.1 with explicit thresholds strong enough for iteration.
      The existing Section 18 cyclic dichotomy is conditional on that theorem.
      Extend the relative-balance, boundary refinement, uniform stopping,

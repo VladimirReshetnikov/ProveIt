@@ -384,6 +384,10 @@ import GowersSzemeredi.Proofs13ImprovedPrintedEndpoint
 import GowersSzemeredi.Proofs13ImprovedPrintedBounds
 import GowersSzemeredi.Proofs13ContextualBilinear
 import GowersSzemeredi.Proofs13MissingGeometryCounterexample
+import GowersSzemeredi.Proofs16FiniteAlphabetCover
+import GowersSzemeredi.Proofs16FiniteAlphabetFibres
+import GowersSzemeredi.Proofs16FiniteAlphabetMultilinear
+import GowersSzemeredi.Proofs16FiniteAlphabetBoxCover
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 
