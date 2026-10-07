@@ -7,13 +7,13 @@
 \usepackage[dvipsnames]{xcolor}
 \usepackage{enumitem,fancyhdr}
 \usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue,breaklinks=true]{hyperref}
-\hypersetup{pdftitle={Report 197: Distinct positive multiplicity values in integer partitions},pdfauthor={Report 197},pdfsubject={Matched asymptotics and shrinking inverse for OEIS A373271}}
+\hypersetup{pdftitle={Distinct multiplicity values in integer partitions (OEIS A373271 and A373273)},pdfauthor={Research report},pdfsubject={Merged report a373271-distinct-multiplicity-values (batch 111): the number of distinct multiplicity values (Report 197) and their sum (Report 198)}}
 \pdfinfoomitdate=1
 \pdftrailerid{}
 \pdfsuppressptexinfo=15
 \pagestyle{fancy}\fancyhf{}
-\fancyhead[L]{\small Distinct positive multiplicity values}
-\fancyhead[R]{\small Report 197}\fancyfoot[C]{\thepage}
+\fancyhead[L]{\small Distinct multiplicity values}
+\fancyhead[R]{\small Reports 197 and 198}\fancyfoot[C]{\thepage}
 \setlength{\headheight}{14pt}
 \setlength{\parskip}{4pt}
 \setlength{\parindent}{1.2em}
@@ -25,6 +25,7 @@
 \newtheorem{corollary}[theorem]{Corollary}
 \theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
 \theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+% Report 197 (Part I)
 \newcommand{\N}{\mathbb N}
 \newcommand{\E}{\mathbb E}
 \newcommand{\Prob}{\mathbb P}
@@ -32,12 +33,295 @@
 \newcommand{\ee}{\mathrm e}
 \DeclareMathOperator{\Rea}{Re}
 \newcommand{\code}[1]{\texttt{\detokenize{#1}}}
-\title{\LARGE\bfseries Distinct positive multiplicity values\\in integer partitions\\[8pt]\large Matched asymptotics and a shrinking inverse for OEIS A373271}
-\author{Report 197}
-\date{4 October 2026}
+% Report 198 (Part II): the same macros, and
+\DeclareMathOperator{\Ima}{Im}
+\DeclareMathOperator{\Res}{Res}
+% Added in the merge (batch 111, 7 October 2026).
+\usepackage{longtable}
+\newcommand{\file}[1]{\nolinkurl{#1}}
+\expandafter\def\expandafter\UrlBreaks\expandafter{\UrlBreaks\do\-\do\_\do\.\do\:}
+\newcommand{\vol}{\mathrm{vol}}
+\newenvironment{writenote}[1][]{\par\smallskip\begingroup\small
+ \noindent\textbf{[write]}\if\relax\detokenize{#1}\relax\else~\textbf{#1.}\fi\ }%
+ {\par\endgroup\smallskip}
+\newenvironment{partabstract}{\begin{quote}\small\noindent\textbf{Abstract of this Part (as delivered).}\ }{\end{quote}}
+\newcommand{\partsource}[1]{\par\noindent\begin{minipage}{\textwidth}\small #1\end{minipage}\par\medskip}
+\title{\LARGE\bfseries Distinct multiplicity values in integer partitions\\[4pt]\large (OEIS A373271 and A373273)\\[8pt]
+\normalsize Part I: the number of distinct multiplicity values, matched asymptotics and a shrinking inverse\\[2pt]
+Part II: the sum of distinct multiplicity values, five asymptotic scales and a shrinking inverse}
+\author{Two research reports of one external research session\\(bundle Reports 197 and 198), bound into one ProveIt report}
+\date{Both Parts: 4 October 2026\quad merged: 7 October 2026}
 \begin{document}
+\hypersetup{pageanchor=false}
 \maketitle
 \begin{abstract}
+For a partition $\lambda=(1^{M_1}2^{M_2}\cdots)$ of $n$, consider the set of positive values taken by the multiplicities $M_j$. Part~I counts this set: $a(n)=\sum_{\lambda\vdash n}D(\lambda)$ is OEIS A373271, and it proves $a(n)/p(n)=(6n)^{1/4}-\tfrac{23}{16}+Kn^{-1/4}+O(n^{-1/2})$ with an explicit $K$, the constant $-\tfrac{23}{16}$ needing an exact telescoping tail $-\tfrac12$ that a local expansion misses; it derives two relative corrections for $a(n)$, eventual strict increase and a two-ceiling inverse whose width before rounding tends to zero. Part~II sums the set: $a_n=\sum_{\lambda\vdash n}W(\lambda)$ is OEIS A373273, and it proves an expansion of $a_n/p(n)$ through the five scales $\sqrt n\log n$, $\sqrt n$, $n^{1/4}$, $\log n$, $1$ with error $O(n^{-1/4})$, the leading term being $\sqrt{6n}\log n/(4\pi)$; there the square of a nonlocal correction and a finite-difference tail enter the constant, and zeta derivatives cancel. Both Parts rest on one exact identity, $\sum_na_nq^n=P(q)\sum_{m\ge1}w(m)(1-Q_m(q))$ with $w=1$ and $w(m)=m$, on a whole-circle bound for positive products that forbid one multiplicity, and on local saddle transfer. Part~II answers the case $w(m)=m$ of Part~I's question on weighted occupied values; other weights remain open. The write adds the OEIS entries, the b-file of A373271 that Part~I could not open (all 200 terms agree), and a comparison of the inverses with the repository's transseries volume. The report is unrefereed, and nothing in it is formalized.
+\end{abstract}
+\hypersetup{pageanchor=true}
+{\small\setcounter{tocdepth}{1}\setlength{\parskip}{0pt}\tableofcontents}
+\newpage
+
+\section*{Guide to this report}\phantomsection\label{dmv:sec:guide}
+\addcontentsline{toc}{section}{Guide to this report}
+The two Parts are two manuscripts of the session bundle of Reports 1--243
+(arrival commit \file{60f54ea06}), placed in this directory by commit
+\file{d451ef3d8} (batch~111).
+\begin{center}
+\small
+\begin{tabular}{@{}l l >{\raggedright\arraybackslash}p{0.5\textwidth} l@{}}
+\toprule
+Part & Bundle report & Delivered title & Labels\\
+\midrule
+I & 197 (base) & Distinct positive multiplicity values in integer partitions: Matched asymptotics and a shrinking inverse for OEIS A373271 (4~October 2026) & \file{dmv:cnt:}\\
+II & 198 & The sum of distinct multiplicity values in integer partitions: Five asymptotic scales and a shrinking inverse for OEIS A373273 (4~October 2026) & \file{dmv:sum:}\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\emph{One identity, two weights.} Write $N_m(\lambda)$ for the number of part
+sizes of $\lambda$ with multiplicity exactly~$m$. Part~I studies
+$D=\sum_{m\ge1}\mathbf 1_{\{N_m>0\}}$ and Part~II studies
+$W=\sum_{m\ge1}m\,\mathbf 1_{\{N_m>0\}}$. Both start from the same exact
+identity,
+\[
+\sum_{n\ge0}a_nq^n=P(q)\sum_{m\ge1}w(m)\bigl(1-Q_m(q)\bigr),\qquad
+Q_m(q)=\prod_{j\ge1}\bigl(1-(1-q^j)q^{mj}\bigr),
+\]
+with $w\equiv1$ in Proposition~\ref{dmv:cnt:prop:gf} and $w(m)=m$
+in~\eqref{dmv:sum:eq:gf}, and both control the coefficient circle through
+the positive products $P_m=PQ_m$ that forbid one multiplicity. The OEIS
+records the link: A373271 comments that summing the distinct multiplicities
+instead gives A373273 (Remark~\ref{dmv:cnt:rem:oeis}).
+\begin{center}
+\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.17\textwidth}>{\raggedright\arraybackslash}p{0.37\textwidth}>{\raggedright\arraybackslash}p{0.37\textwidth}@{}}
+\toprule
+& Part I (Report 197) & Part II (Report 198)\\
+\midrule
+Statistic & $D$, the number of distinct multiplicity values (A373271) & $W$, their sum (A373273)\\
+Mean & $(6n)^{1/4}-\tfrac{23}{16}+Kn^{-1/4}+O(n^{-1/2})$ & five scales $\sqrt n\log n,\sqrt n,n^{1/4},\log n,1$; error $O(n^{-1/4})$\\
+Radial expansion & $\sqrt\pi\,t^{-1/2}-\tfrac{23}{16}+\sqrt\pi d\,t^{1/2}+O(|t|)$ (Theorem~\ref{dmv:cnt:thm:radial}) & $(\tfrac12\log\tfrac1t+c)/t-\tfrac{7\sqrt\pi}{16\sqrt t}+\tfrac1{24}\log\tfrac1t+K+O(\sqrt{|t|})$ (Proposition~\ref{dmv:sum:prop:radial})\\
+Decisive tail & the telescoping $\sum\delta_m=-\tfrac12$ & the delta square $E$ and the finite-difference tail $-\tfrac1{16}$; $\zeta'(-1)$ cancels\\
+Tools & matched sums, Euler--Maclaurin profiles & the same, plus Mellin continuation and convergent regularization\\
+Transfer & $J_s/p(n)$ for real $s$ (Lemma~\ref{dmv:cnt:lem:transfer}) & the same formula, analytic in $s$, differentiated for logarithms\\
+Inverse & two ceilings about $Z(Y)$, width $O(x_0^{-1/2})$ & two ceilings about $x_Y^2+\frac1{24}$, width $O((\log Y)^{-1/2}/\log\log Y)$\\
+Exact range & $n\le2000$ & $n\le2500$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\emph{Why one report, and how the Parts relate.} The two manuscripts treat
+one family of statistics by one method. Report~198's package was adapted
+from Report~197's (its README: the infrastructure ``adapted from the
+preceding Report197 reproducibility package''), and Report~198 answers, for
+the weight $w(m)=m$, the question on weighted occupied values that Part~I
+leaves open (Section~\ref{dmv:cnt:sec:sources}, Question~4); the general
+weight $m^\alpha$ stays open (Part~II, Question~2), and dated notes in both
+question lists say so. \textbf{Neither Part uses a theorem of the other.}
+Report~198's README states that ``No A373271 theorem or coefficient is used
+as a mathematical premise'', and the write confirmed that Part~II cites
+nothing of Part~I. The constants differ, so neither result is a special
+case of the other.
+
+\emph{Arrangement and duplication.} The base of the merge is Report~197:
+its \file{Report197.tex} was staged as this \file{article.tex}, it arrived
+first, and Report~198 builds on its package; it is printed first, as
+Part~I. Report~198 is printed second, as Part~II. Part~II re-derives, for
+its weighted sums, machinery that Part~I also proves: the zero-free sector,
+the power-sum and small-multiplicity estimates (its Section~\ref{dmv:sum:sec:sector}
+against Part~I's Sections~\ref{dmv:cnt:sec:sector} and~\ref{dmv:cnt:sec:sum}),
+the whole-circle bound (Section~\ref{dmv:sum:sec:circle} against
+Section~\ref{dmv:cnt:sec:localization}) and the monomial transfer
+(Section~\ref{dmv:sum:sec:transfer} against
+Lemma~\ref{dmv:cnt:lem:transfer}). These are kept, each with a dated note
+naming Part~I's counterpart, because Part~II's later statements cite them by
+their own labels and because they are stated for the weighted sums (the
+weight changes the polynomial factor in the whole-circle bound and the
+transfer is extended to complex $s$); no result is printed twice in the same
+form for the same object.
+
+\emph{Numbering.} Sections are numbered continuously; statements and
+equations are numbered within sections, as delivered. Part~I keeps all its
+numbers. Report~198's Section~$k$ is Section~$k+11$ here; its statements and
+equations move with their sections, and its Table~1 keeps its number. The
+labels of the two Parts carry the prefixes \file{dmv:cnt:} and
+\file{dmv:sum:}; the labels added by the write carry the Part prefix, or
+\file{dmv:} for this Guide. The bibliography is merged at the end: the two
+OEIS entries are \file{oeisA373271} and \file{oeisA373273} (both delivered
+as \file{oeis}), and the four shared entries (Ralaivaosaona; Grabner,
+Knopfmacher and Wagner; Corteel, Pittel, Savage and Wilf; Lugo) are printed
+once, with each Part's own note on what it inspected.
+
+\begin{writenote}[Provenance, added 7 October 2026, batch~111]
+This report was built from two manuscripts. \emph{Part~I}: Report~197,
+archive \file{Report197_TeX_and_Reproducible_Code.zip} ($793{,}611$ bytes,
+SHA-256 \file{192aeca1a0b8...bc038875d653adc}, 14 files, no wrapper
+directory); text \file{Report197.tex} (759 lines, 18 pages as delivered).
+\emph{Part~II}: Report~198, archive
+\file{Report198_TeX_and_Reproducible_Code.zip} ($909{,}536$ bytes, SHA-256
+\file{8d10255b48c3...8eacce24e871492}, 17 files, no wrapper directory); text
+\file{Report198.tex} (663 lines, 17 pages as delivered). Both are dated
+4~October 2026, arrived in \file{60f54ea06} and were placed in
+\file{d451ef3d8}. Their author lines and PDF author fields read ``Report 197''
+and ``Report 198'': they name no person, tool or addressee; neither package
+carries a ``prepared for private review'' line, an e-mail address or personal
+data, and neither records a ProveIt commit. Each Part's programs are shipped
+under \file{code/} and its data and recorded outputs under \file{data/}, with
+the prefixes \file{197-count-} and \file{198-sum-}; Report~197's delivered
+\file{README.txt} was staged as the report README and is replaced by it. Not
+shipped, and retrievable from the arrival commit: the two delivered PDFs,
+Report~198's \file{Report198.tex} and \file{README.txt} (the former is
+Part~II of this file), and the four checksum manifests (Report~197:
+\file{MANIFEST.json} 13 entries, \file{SOURCE_MANIFEST.json} 7; Report~198:
+16 and 9), all verified at the write. Where the merge had to choose: the
+base and the order of the Parts; the two OEIS citation keys; the merged
+bibliography; keeping Part~II's re-derivations (above). The write prefixed
+the 89 labels of Report~197 and the 78 of Report~198 and updated the 50 and
+44 references to them (36 and 38 \verb|\eqref|, 14 and 6 \verb|\ref|); it
+added this Guide, the two Part headers, Remarks~\ref{dmv:cnt:rem:oeis},
+\ref{dmv:cnt:rem:transseries}, \ref{dmv:sum:rem:oeis}
+and~\ref{dmv:sum:rem:transseries}, and the notes marked [write]. The added
+remarks are the last statements of their sections and the added displays
+are unnumbered, so every delivered number of Part~I, and every delivered
+number of Part~II up to the shift by eleven sections, is unchanged (label
+tables of builds of the two delivered texts and of this one compared).
+
+\emph{The sources, as the write read them} (7~October 2026). OEIS A373271
+and its b-file, A373273 (in the internal format) and its synthesized
+b-file, and the comment lines of A373272 and A373269
+(Remarks~\ref{dmv:cnt:rem:oeis} and~\ref{dmv:sum:rem:oeis}); the
+transseries volume
+\path{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex}
+(\file{p0:def:model}, \file{p0:def:core}, \file{p0:thm:lambert-core},
+\file{p0:thm:lambert-centered}, \file{p0:prop:two-grid},
+\file{p0:thm:backward-error}, \file{p0:def:three-inverses},
+\file{p0:thm:staircase}). Not read by the write: Ralaivaosaona, Grabner,
+Knopfmacher and Wagner, Corteel, Pittel, Savage and Wilf, Lugo, Archibald
+et al., Fill, Janson and Ward; the Parts' accounts of what they inspected
+are reported, not confirmed.
+
+\emph{What was checked at intake.} The batch-111 dossier (7~October 2026)
+read both manuscripts, found no error, and reran both delivered suites on
+copies: their outputs reproduce, the only failures being Windows artifacts
+(line-ending bytes in hashed outputs, a recorded Python version string, a
+console code page), none mathematical. \emph{What the write checked.} Every
+proof of both Parts line by line, with no error found; in particular, by
+hand: Part~I's table of contributions (constant $-1-\tfrac12+\tfrac1{16}=
+-\tfrac{23}{16}$, and $\tfrac1{16}+\tfrac1{12}+\tfrac1{162}-\tfrac3{1024}=
+\tfrac{12365}{82944}$), the centered profiles~\eqref{dmv:cnt:eq:center-T},
+the transfer correction $5/(16A)$ and its conversion to $K$, the total-sequence
+constants~\eqref{dmv:cnt:eq:totalconstants} and both forms
+of~\eqref{dmv:cnt:eq:b2check}, the inverse~\eqref{dmv:cnt:eq:rootexpand}
+and $Z(Y)$; Part~II's leading terms ($L$ and $C_0$ by their Mellin poles,
+including $Z(0)=\tfrac16$ and the residue $-\tfrac14$), the rational
+constant $\tfrac14+\tfrac16+\tfrac{19}{144}-\tfrac3{32}+\tfrac1{81}-\tfrac1{256}
+=\tfrac{9607}{20736}$, the profile integrals of $H_2$, $H_3$, $H_{22}$, the
+logarithmic transfer~\eqref{dmv:sum:eq:logtransfer}, the mean, the absolute
+expansion and the initializer~\eqref{dmv:sum:eq:initializer}. Numerically
+(mpmath at 40 digits) it confirmed the two regularized integrals
+$\int_0^\infty yb'(y)^2\,dy=-\tfrac{13}{72}-2\zeta'(-1)-\tfrac\gamma6
+=0.05408412102842415943\ldots$ and $R_D=-\zeta'(-1)-\tfrac\gamma{12}
+=0.11731983829198985749\ldots$ (25 digits each), and
+$\int_0^\infty yb''(2y)\,dy=-\tfrac18$; it recomputed $K$ of Part~I
+($0.680582149566835918851\ldots$; the printed digits are a truncation), every
+entry of Part~I's table of $T(n)$ and of Part~II's Table~\ref{dmv:sum:tab:diagnostic}
+from the shipped exact data (all printed digits agree), and the residuals
+$(a(n)/p(n)-\text{three terms})/\tau=-0.068$, $-0.061$, $-0.066$ (Part~I, at
+$n=500$, $1000$, $2000$) and $(a_n/C_N-\text{bracket})/\sqrt\tau=-0.055$,
+$-0.052$, $-0.052$ (Part~II, at $n=500$, $1000$, $2500$), which are bounded
+as the theorems require. With its own code it enumerated all partitions of
+$n\le55$ by multiplicity vectors and computed both statistics (all agree with
+the shipped tables), checked the shipped partition numbers against Euler's
+pentagonal recurrence to $2500$, and found both tables strictly increasing
+from $n=1$. The delivered verifiers and symbolic checks of both Parts were
+rerun from the shipped files: all receipts and term tables byte-identical,
+except the sector Boltzmann rows of Part~II's floating diagnostics, whose
+15 residual values agree with the record only to about ten significant
+digits (floating library and platform; its README promises no
+cross-platform identity for floating bytes; the other diagnostic rows are
+identical). Finite and floating
+computations are observations, not certificates.
+
+\emph{Relation to the repository.} Before batch~111 no file of the
+repository named A373271 or A373273. No statement of this report is
+formalized in Lean or Rocq, and its place in the collection confers no
+formal status. The nearest reports are in the same directory
+\file{SetTheory/Cardinals/docs/reports/generating-functions-and-asymptotics/oeis-sequence-asymptotics/}:
+\file{a239964-sizes-equal-max-multiplicity} (batch~111: the number of
+distinct sizes equal to the maximum multiplicity; the placement kept it
+apart because that event is not an occupied-value functional) and
+\file{a239950-maximal-schreier-supports} (batch~111: least part equal to the
+number of distinct sizes). They share the Boltzmann occupancy setting and
+the whole-circle damping argument, not a result, so no reciprocal note is
+proposed. The inverses are compared with the transseries volume in
+Remarks~\ref{dmv:cnt:rem:transseries} and~\ref{dmv:sum:rem:transseries}.
+\end{writenote}
+\begin{writenote}[What is not claimed, collected from both Parts]
+\emph{Part~I.} The result is finite-order: no all-orders expansion, no
+explicit numerical remainder constants or onset, no variance or fluctuation
+theorem, no central limit theorem, no exact single-ceiling inverse (the two
+ceilings can differ by one; no values of $C_1$, $Y_0$), no interpolation of
+$a(n)$ assumed and no error asserted for piecewise-linear interpolation, and
+no absolute novelty, complete-library coverage, global absence or historical
+priority: the leading mean is ``naturally suggested by the Poisson
+transition'' of Ralaivaosaona and the transfer mechanism is classical (Grabner,
+Knopfmacher and Wagner); Corteel, Pittel, Savage and Wilf was read only at
+the abstract level and Lugo's thesis only at targeted passages, so overlap
+with them is not excluded. The b-file comparison was not made by the source.
+Finite checks support the implementation, not the analytic remainders.
+\emph{Part~II.} No explicit numerical onset, certified error constant,
+all-orders expansion, distributional theorem, single exact ceiling for every
+$Y$, numerical $X,M,n_0$, exponentially small final coefficient remainder,
+new general saddle-transfer theorem or absolute novelty; the comparisons with
+Archibald et al., Fill--Janson--Ward, Corteel--Pittel--Savage--Wilf and Lugo
+distinguish the objects and are not exclusion certificates; the numerical
+residuals prove no next coefficient; the diagnostics and the inverse root
+calculation are not interval-certified. \emph{The write adds:} its checks are
+floating, finite or hand computations; Remarks~\ref{dmv:cnt:rem:transseries}
+and~\ref{dmv:sum:rem:transseries} claim no novelty for any inversion; the
+merge claims no result relating the two statistics beyond the shared
+identity.
+\end{writenote}
+\medskip
+\begingroup\small
+\noindent\emph{Reading conventions} (letters that the two Parts use
+differently, or reuse inside one Part, with the tempting false readings; no
+symbol of either source was renamed; symbols of the transseries volume carry
+the subscript ``vol'' in the two transseries remarks).\par\smallskip
+\renewcommand{\arraystretch}{1.1}
+\renewcommand{\theHtable}{dmvguide.\arabic{table}}% no clash with Part II's Table 1
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.75in}>{\raggedright\arraybackslash}p{2.55in}>{\raggedright\arraybackslash}p{2.55in}@{}}
+\toprule
+Symbol & Part I & Part II\\
+\midrule
+\endhead
+$a(n)$, $a_n$ & $\sum_\lambda D(\lambda)$ (A373271) & $\sum_\lambda W(\lambda)$ (A373273)\\
+$D$, $W$ & $D(\lambda)$, the statistic & $D(t)$, the linear delta correction~\eqref{dmv:sum:eq:pieces}; $W(\lambda)$ the statistic; $W_{-1}$ (Part~I) is Lambert's\\
+$K$ & the $n^{-1/4}$ coefficient~\eqref{dmv:cnt:eq:meann} & $\tfrac{9607}{20736}-\tfrac\gamma{24}$~\eqref{dmv:sum:eq:notation}\\
+$d$, $c$, $k$ & $d=\tfrac{12365}{82944}$; $c$ a generic constant & $d=\tfrac1{24}+\tfrac1{4A}$; $c=\tfrac32-\tfrac\gamma2$; $k=\sqrt A$ (and a summation index)\\
+$B$, $\mathcal B$ & $B=2\sqrt A$; $\mathcal B(z)=(e^z-1)^{-1}$ & $B(z)=(e^z-1)^{-1}$ in Sections~\ref{dmv:sum:sec:sector}--\ref{dmv:sum:sec:collisions}; $B=2k$ in Section~\ref{dmv:sum:sec:inverse}\\
+$C$, $C_N$ & $C=6^{1/4}/(4\sqrt3)$, the total constant; $C_1$ the inverse constant & $C=1/(8\sqrt3k)$ in Section~\ref{dmv:sum:sec:inverse}; $C_N$ the absolute scale; $C_0(t)$ a matched sum\\
+$\nu$, $N$ & $\nu=n-\tfrac1{24}$; $N(Y)$ the threshold; $N$ a cutoff (Section~\ref{dmv:cnt:sec:computation}); $N_m$ in Section~\ref{dmv:cnt:sec:sources} & $N=n-\tfrac1{24}$; $\nu(Y)$ the threshold; $N_m$ in Section~\ref{dmv:sum:sec:sources}\\
+$\ell$ & $\ell_1,\ell_2$, logarithmic coefficients & $\ell=\log(1/\tau)$\\
+$\Phi$, $H_\pm$ & $\Phi(x)$ a template for $\log a(n)$; $H_\pm=\Phi\pm Mx^{-3/2}$ & $\Phi(x)$ a template for $a_n$ itself; $H_\pm=\log\Phi\pm Mx^{-3/2}/\log x$; $H_2,H_3,H_{22}$ matched sums\\
+$x$, $x_0$, $x_\pm$ & $x=\sqrt{n-1/24}$; $x_0(Y)$ the Lambert root; $x_\pm$ envelope roots & $x_n$, $x_Y$, $x_\pm(Y)$; $x=hm$ in Section~\ref{dmv:sum:sec:collisions}\\
+$Z$ & $Z(Y)$ the inverse centre; $Z_m(z)$ a factor & $Z(u)$ the Dirichlet series~\eqref{dmv:sum:eq:Cmellin}; $Z_{m,j}$ a factor\\
+$L$, $L_m$ & $L_m=-\log Q_m$; $L=\log(1/\tau)$ & $L(t)=\sum_mB(tm)$\\
+$E$ & $E_{2,m}$, $E_{3,m}$ regular parts & $E(t)$, the delta square; $E_{2,m}$; $E_1$ the exponential integral\\
+$G$, $F$ & $G(t)$ the main exponential sum; $F_n$ & $G=F^2-2F/y^2$, $F(y)=e^y/(e^y-1)^2$; $F_n$\\
+$T$ & $T_{2,m}$, $T_{3,m}$; $T(n)$ the diagnostic & $T_{2,m}$; $T_n$ the template; $T$ a cutoff\\
+$M$, $X$, $Y$ & $M$ a fixed cutoff and the envelope constant; $M_j$ multiplicities & the same $M$, $M_j$; $X>1$ a constant (not the volume's $X_{\rm vol}$)\\
+$a$, $\beta$, $s$ & $\beta=s+\tfrac12$ in Lemma~\ref{dmv:cnt:lem:transfer} & $a=s+\tfrac12$ in Section~\ref{dmv:sum:sec:transfer} (not $a_n$, not $a_{\rm vol}$)\\
+$h$, $r$, $\tau$, $A_m$ & the same in both Parts: $h=\sqrt t$, $r=|t|$, $\tau=\sqrt{A/(n-1/24)}$, $A_m=1/(tm(m+1))$ & (same)\\
+\bottomrule
+\end{longtable}
+\addtocounter{table}{-1}% the uncaptioned longtable must not consume a table number
+\endgroup
+\clearpage
+
+\part{Distinct positive multiplicity values in integer partitions: matched asymptotics and a shrinking inverse for OEIS A373271}\label{dmv:cnt:part}
+\partsource{Bundle Report~197, archive \file{Report197_TeX_and_Reproducible_Code.zip}, delivered as \file{Report197.tex} (18 pages), the base of the merge. Delivered title block ``Distinct positive multiplicity values in integer partitions / Matched asymptotics and a shrinking inverse for OEIS A373271 / Report 197 / 4 October 2026''. Printed as delivered, with \textbf{[write]} notes and remarks; section, statement and equation numbers are those of the delivery, and its labels carry the prefix \file{dmv:cnt:}. Its citation key \file{oeis} is \file{oeisA373271} here. This Part is self-contained.}
+\begin{partabstract}
 For a partition $\lambda$, let $D(\lambda)$ be the number of different positive integers that occur as multiplicities of its part sizes. If $a(n)=\sum_{\lambda\vdash n}D(\lambda)$ and $p(n)$ is the partition number, we prove
 \[
 \frac{a(n)}{p(n)}=(6n)^{1/4}-\frac{23}{16}
@@ -45,36 +329,33 @@ For a partition $\lambda$, let $D(\lambda)$ be the number of different positive 
 +O(n^{-1/2}).
 \]
 The constant correction requires matching the entire multiplicity range: an exact telescoping tail contributes $-1/2$, which a purely local expansion misses. A zero-free sector argument, explicit summed remainder bounds, and centered Euler--Maclaurin summation give the radial expansion. A uniform whole-circle bound for positive generating functions that forbid one multiplicity then permits coefficient extraction; the saddle monomials are used only locally. We derive two relative quarter-power corrections for the total sequence, eventual strict increase, and an integer inverse bracket whose width before rounding tends to zero. The accompanying code recomputes exact terms through $2000$ and checks independent models at smaller cutoffs. The result is finite-order; no explicit numerical remainder constants or onset are supplied. No all-orders expansion, fluctuation theorem, or absolute novelty claim is asserted.
-\end{abstract}
-\clearpage
-{\setcounter{tocdepth}{1}\small\tableofcontents}
-\newpage
+\end{partabstract}
 
-\section{The statistic and the main results}\label{sec:main}
+\section{The statistic and the main results}\label{dmv:cnt:sec:main}
 Write a partition of $n$ as $\lambda=(1^{M_1}2^{M_2}\cdots)$, so that $M_j\ge0$ and $\sum_jjM_j=n$. Define
-\begin{equation}\label{eq:def}
+\begin{equation}\label{dmv:cnt:eq:def}
 D(\lambda)=\#\{m\ge1:\ M_j=m\text{ for some }j\ge1\},\qquad
  a(n)=\sum_{\lambda\vdash n}D(\lambda).
 \end{equation}
-The empty partition has $D=0$, hence $a(0)=0$. This is OEIS A373271 \cite{oeis}. For example, $\lambda=(5,5,3,3,3,1)$ has positive multiplicities $2,3,1$, so $D=3$; the partition $(5,5,3,3,1)$ has positive multiplicities $2,2,1$, so $D=2$. Repeated multiplicity values are counted once. Zero multiplicity is never counted.
+The empty partition has $D=0$, hence $a(0)=0$. This is OEIS A373271 \cite{oeisA373271}. For example, $\lambda=(5,5,3,3,3,1)$ has positive multiplicities $2,3,1$, so $D=3$; the partition $(5,5,3,3,1)$ has positive multiplicities $2,2,1$, so $D=2$. Repeated multiplicity values are counted once. Zero multiplicity is never counted.
 
 Thus $D$ is neither the number of occupied part sizes, nor the maximum multiplicity, nor an indicator that all nonzero multiplicities are different. If $\lambda$ is uniform among the $p(n)$ ordinary partitions, then $a(n)/p(n)=\E_nD$.
 
 Throughout the report, put
-\begin{equation}\label{eq:constants}
+\begin{equation}\label{dmv:cnt:eq:constants}
  A=\frac{\pi^2}{6},\qquad d=\frac{12365}{82944},\qquad
  \nu=n-\frac1{24},\qquad \tau=\sqrt{\frac A\nu}.
 \end{equation}
 The symbol $O$ has its usual asymptotic meaning, with a fixed implied constant once a sector or a derivative order has been fixed. In complex estimates, $O(t^\alpha)$ always means a bound in modulus by a constant times $|t|^\alpha$.
 
-\begin{theorem}[Three-term mean]\label{thm:mean}
+\begin{theorem}[Three-term mean]\label{dmv:cnt:thm:mean}
 As $n\to\infty$,
-\begin{equation}\label{eq:meantau}
+\begin{equation}\label{dmv:cnt:eq:meantau}
 \frac{a(n)}{p(n)}=\sqrt\pi\,\tau^{-1/2}-\frac{23}{16}
  +\sqrt\pi\left(d+\frac5{16A}\right)\tau^{1/2}+O(\tau).
 \end{equation}
 Equivalently,
-\begin{equation}\label{eq:meann}
+\begin{equation}\label{dmv:cnt:eq:meann}
 \frac{a(n)}{p(n)}=(6n)^{1/4}-\frac{23}{16}+K n^{-1/4}+O(n^{-1/2}),
 \quad
 K=\frac\pi{6^{1/4}}\left(\frac{12365}{82944}+\frac{15}{8\pi^2}\right).
@@ -84,21 +365,21 @@ Numerically, $K=0.68058214956683591885\ldots$.
 
 The quarter-power scale is consistent with the classical transition for the number of part sizes with one prescribed multiplicity \cite{ralaivaosaona}. The new work of the proof presented here is the complete whole-range matching and justified coefficient extraction for this occupied-value statistic; no historical priority claim is attached to that description.
 
-\begin{theorem}[Total sequence]\label{thm:total}
+\begin{theorem}[Total sequence]\label{dmv:cnt:thm:total}
 Let
-\begin{equation}\label{eq:totalconstants}
+\begin{equation}\label{dmv:cnt:eq:totalconstants}
  x=\sqrt{n-\tfrac1{24}},\qquad B=2\sqrt A,\qquad
  C=\frac{6^{1/4}}{4\sqrt3},\qquad
  b_1=-\frac{23}{16\,6^{1/4}},\qquad
  b_2=\sqrt A\,d-\frac3{16\sqrt A}.
 \end{equation}
 Then
-\begin{equation}\label{eq:totalx}
+\begin{equation}\label{dmv:cnt:eq:totalx}
 a(n)=C\ee^{Bx}x^{-3/2}
 \left(1+b_1x^{-1/2}+b_2x^{-1}+O(x^{-3/2})\right).
 \end{equation}
 In unshifted variables this is
-\begin{equation}\label{eq:totaln}
+\begin{equation}\label{dmv:cnt:eq:totaln}
 a(n)=C n^{-3/4}\ee^{B\sqrt n}
 \left(1+b_1n^{-1/4}+\left(b_2-\frac B{48}\right)n^{-1/2}
  +O(n^{-3/4})\right).
@@ -106,19 +387,19 @@ a(n)=C n^{-3/4}\ee^{B\sqrt n}
 The sequence $a(n)$ is eventually strictly increasing.
 \end{theorem}
 
-\begin{theorem}[Shrinking integer inverse]\label{thm:inverse}
+\begin{theorem}[Shrinking integer inverse]\label{dmv:cnt:thm:inverse}
 Set $\ell_1=b_1$ and $\ell_2=b_2-b_1^2/2$. For large positive $Y$, define
-\begin{align}\label{eq:inverse}
+\begin{align}\label{dmv:cnt:eq:inverse}
 x_0(Y)&=-\frac3{2B}W_{-1}\left(-\frac{2B}{3}(C/Y)^{2/3}\right),\\
 Z(Y)&=x_0^2-\frac{2\ell_1}{B}x_0^{1/2}-\frac{2\ell_2}{B}+\frac1{24}.
 \nonumber
 \end{align}
 Here $W_{-1}$ is the real branch of the Lambert function with values at most $-1$. There are constants $C_1>0$ and $Y_0$ such that the actual integer threshold
-\begin{equation}\label{eq:threshold}
+\begin{equation}\label{dmv:cnt:eq:threshold}
 N(Y)=\min\{n\ge0:a(n)\ge Y\}
 \end{equation}
 satisfies, for $Y\ge Y_0$,
-\begin{equation}\label{eq:ceiling}
+\begin{equation}\label{dmv:cnt:eq:ceiling}
 \left\lceil Z(Y)-C_1x_0^{-1/2}\right\rceil
 \ \le N(Y)\le\
 \left\lceil Z(Y)+C_1x_0^{-1/2}\right\rceil.
@@ -127,30 +408,52 @@ satisfies, for $Y\ge Y_0$,
 
 The width $2C_1x_0^{-1/2}$ before rounding tends to zero. The two ceilings can nevertheless differ by one; this theorem is not an eventual exact single-ceiling formula. No explicit numerical values for $C_1$ or $Y_0$ are supplied. The proof does not assume an interpolation of $a(n)$, nor assert an error estimate for piecewise-linear interpolation.
 
-\section{An exact occupancy generating function}\label{sec:exact}
+\begin{remark}[{[write]} The OEIS entry, quoted, 7~October 2026]\label{dmv:cnt:rem:oeis}
+OEIS A373271, read on 7~October 2026 in the internal format, is at revision
+\#15 (2~June 2024), author Olivier G\'erard (29~May 2024), offset~1. Its name
+is ``a(n) = sum for all integer partitions of n of the number of distinct
+multiplicities in each partition.''; its comments give it as the row sums of
+A373269 and A373270 and add ``If all distinct multiplicities of all parts of
+all integer partitions are summed, one gets A373273 (1, 3, 5, 11, 18, 29, 48,
+74, 107, 161, ...).'' (the statistic of Part~II); it has an example at
+$n=20$ (``contributes 3 to a(20) = 1358''), G\'erard's Mathematica program,
+and a b-file by Alois P.~Heinz for $1\le n\le200$. It states no generating
+function, asymptotic formula or conjecture. The source could not open the
+b-file (Section~\ref{dmv:cnt:sec:computation}); the write fetched it
+(SHA-256 \file{b30df65d4321...ae401d}), and all 200 terms agree with the
+shipped table \file{data/197-count-exact_A373271.txt}, as do the 45 data
+terms. The write's own enumeration of all partitions of $n\le55$ by
+multiplicity vectors agrees with the table. The name quoted in the
+bibliography entry~\cite{oeisA373271}, ``Sum of number of distinct
+multiplicities over all partitions of $n$.'', is a paraphrase, not the
+entry's name at the revision the write saw; the delivered text is kept.
+Nothing was submitted to the OEIS.
+\end{remark}
+
+\section{An exact occupancy generating function}\label{dmv:cnt:sec:exact}
 Let
-\begin{equation}\label{eq:P}
+\begin{equation}\label{dmv:cnt:eq:P}
 P(q)=\prod_{j\ge1}(1-q^j)^{-1}=\sum_{n\ge0}p(n)q^n,\qquad |q|<1.
 \end{equation}
 For each positive integer $m$, define
-\begin{equation}\label{eq:Q}
+\begin{equation}\label{dmv:cnt:eq:Q}
 Q_m(q)=\prod_{j\ge1}\bigl(1-(1-q^j)q^{mj}\bigr),\qquad
 P_m(q)=P(q)Q_m(q).
 \end{equation}
 The product
-\begin{equation}\label{eq:forbidden}
+\begin{equation}\label{dmv:cnt:eq:forbidden}
 P_m(q)=\prod_{j\ge1}\left(\frac1{1-q^j}-q^{mj}\right)
       =\prod_{j\ge1}\sum_{\substack{k\ge0\\k\ne m}}q^{jk}
 \end{equation}
 counts the partitions in which no part size has multiplicity $m$. In particular, its coefficients are nonnegative and no greater than the corresponding coefficients of $P$.
 
-\begin{proposition}[Exact identity]\label{prop:gf}
+\begin{proposition}[Exact identity]\label{dmv:cnt:prop:gf}
 As a formal power series and for $|q|<1$,
-\begin{equation}\label{eq:gf}
+\begin{equation}\label{dmv:cnt:eq:gf}
 \sum_{n\ge0}a(n)q^n=P(q)\sum_{m\ge1}(1-Q_m(q)).
 \end{equation}
 For each fixed $n$, the finite generating function
-\begin{equation}\label{eq:Fn}
+\begin{equation}\label{dmv:cnt:eq:Fn}
 F_n(q)=\sum_{m=1}^n\bigl(P(q)-P_m(q)\bigr)
 \end{equation}
 satisfies $[q^n]F_n(q)=a(n)$ exactly.
@@ -165,18 +468,18 @@ The associated products and sums therefore converge absolutely and locally unifo
 \end{proof}
 
 Put $q=\ee^{-t}$ and abbreviate
-\begin{equation}\label{eq:g}
+\begin{equation}\label{dmv:cnt:eq:g}
 g(t)=\sum_{m\ge1}\left(1-Q_m(\ee^{-t})\right).
 \end{equation}
 At real $t>0$, independent geometric random variables $M_j$ with
-\begin{equation}\label{eq:boltzmann}
+\begin{equation}\label{dmv:cnt:eq:boltzmann}
 \Prob_t\{M_j=m\}=(1-\ee^{-tj})\ee^{-tmj},\qquad m\ge0,
 \end{equation}
 give the usual Boltzmann distribution on partitions. Accordingly $g(t)=\E_tD$ and $Q_m(\ee^{-t})$ is the probability that the value $m$ is absent. This probabilistic interpretation motivates the analytic products, but complex $t$ will be handled by explicit estimates.
 
-\section{Uniform sector estimates and the small-multiplicity range}\label{sec:sector}
+\section{Uniform sector estimates and the small-multiplicity range}\label{dmv:cnt:sec:sector}
 Fix a sufficiently small closed sector $|\arg t|\le\theta_0$, initially with $\theta_0\le\pi/12$, and let $t\to0$ within it. Write
-\begin{equation}\label{eq:sectornotation}
+\begin{equation}\label{dmv:cnt:eq:sectornotation}
 r=|t|,\quad h=\sqrt t\text{ on the principal branch},\quad
 p_{jm}=(1-\ee^{-tj})\ee^{-tmj},\quad
 S_{k,m}=\sum_{j\ge1}p_{jm}^k,\quad \mu_m=S_{1,m}.
@@ -190,14 +493,14 @@ For $z$ in the sector,
 \qquad |1-\ee^{-z}|\le|z|.
 \]
 Consequently
-\begin{equation}\label{eq:zero-free}
+\begin{equation}\label{dmv:cnt:eq:zero-free}
 |(1-\ee^{-z})\ee^{-mz}|
 \le |z|\ee^{-m\Rea z}\le\frac1{em\cos\theta_0}<1.
 \end{equation}
 This supplies one uniform disk of radius strictly less than $1$ for all $p_{jm}$. The power-series logarithm $-\log(1-p)$ is therefore analytic and single-valued here, agrees with the principal logarithm, and encounters no zero of $1-p$.
 
 For every fixed integer $k\ge1$,
-\begin{equation}\label{eq:Sbound}
+\begin{equation}\label{dmv:cnt:eq:Sbound}
 |S_{k,m}|\le \sum_{j\ge1}(rj)^k\ee^{-kmj\Rea t}
 \le\frac{C_k}{r m^{k+1}},\qquad
 \sup_j|p_{jm}|\le \frac Cm.
@@ -206,12 +509,12 @@ To see that the exponential-sum bound holds over the entire range of $m$, note t
 
 \subsection{The matched first moment}
 Use the notation
-\begin{equation}\label{eq:b}
+\begin{equation}\label{dmv:cnt:eq:b}
 \mathcal B(z)=\frac1{\ee^z-1},\qquad b(z)=\mathcal B(z)-\frac1z,\qquad
 A_m=\frac1{tm(m+1)},\qquad \delta_m=\mu_m-A_m.
 \end{equation}
 The different symbols $\mathcal B$ and $B=2\sqrt A$ distinguish the Bose factor from the exponential-growth constant. Geometric summation gives
-\begin{equation}\label{eq:mu}
+\begin{equation}\label{dmv:cnt:eq:mu}
 \mu_m=\mathcal B(tm)-\mathcal B(t(m+1)),\qquad
 \delta_m=-t\int_0^1b'(t(m+u))\,du.
 \end{equation}
@@ -220,43 +523,43 @@ The removable singularity of $b$ at zero has expansion
 b(z)=-\frac12+\frac z{12}+O(z^3).
 \]
 For each fixed $\ell\ge1$, analyticity on a bounded sector and $b(z)=-z^{-1}+O(\ee^{-\Rea z})$ at infinity show that
-\begin{equation}\label{eq:bderivative}
+\begin{equation}\label{dmv:cnt:eq:bderivative}
 |b^{(\ell)}(z)|\le\frac{C_\ell}{1+|z|^{\ell+1}}.
 \end{equation}
 It follows that
-\begin{equation}\label{eq:delta}
+\begin{equation}\label{dmv:cnt:eq:delta}
 |\delta_m|\le\frac{Cr}{1+(rm)^2},\qquad
 \delta_m=-\frac t{12}+O(r^3m^2)\quad(rm\le1).
 \end{equation}
 In particular,
-\begin{equation}\label{eq:deltal1}
+\begin{equation}\label{dmv:cnt:eq:deltal1}
 \sum_{m\ge1}|\delta_m|=O(1),\qquad
 \sum_{m\ge1}|\delta_m|^2=O(r).
 \end{equation}
 Most importantly, exact telescoping before expansion gives
-\begin{equation}\label{eq:deltatel}
+\begin{equation}\label{dmv:cnt:eq:deltatel}
 \sum_{m\ge1}\delta_m=\mathcal B(t)-\frac1t=-\frac12+O(r).
 \end{equation}
 The global $O(1)$ mass in this identity cannot be recovered by summing only the pointwise approximation $\delta_m\approx-t/12$ near $m\asymp r^{-1/2}$.
 
 \subsection{Why fixed small multiplicities are harmless}
 Let
-\begin{equation}\label{eq:L}
+\begin{equation}\label{dmv:cnt:eq:L}
 L_m=-\log Q_m(\ee^{-t})=\sum_{j\ge1}f_m(jt),\qquad
 f_m(z)=-\log\bigl(1-(1-\ee^{-z})\ee^{-mz}\bigr).
 \end{equation}
 Here $-\log Q_m$ denotes the sum of the factor logarithms; it need not be the principal logarithm of the full product. For fixed $m$, $f_m$ is analytic on the sector, is $O(z)$ at zero, and decays exponentially at infinity. Its derivatives of every fixed order are integrable along each ray, uniformly in the closed angular interval. Euler--Maclaurin along a ray, using $f_m(0)=0$, yields
-\begin{equation}\label{eq:smallm}
+\begin{equation}\label{dmv:cnt:eq:smallm}
 L_m=\frac1t\int_{\arg z=\arg t}f_m(z)\,dz+O(r)=\frac{I_m}{t}+O(r),
 \quad I_m=\int_0^\infty f_m(y)\,dy>0.
 \end{equation}
 For the contour deformation, the small circular arc contributes $O(\epsilon^2)$ because $f_m(z)=O(z)$, and the large arc tends to zero exponentially. No positivity off the real axis is needed. Since $\Rea(1/t)\ge\cos\theta_0/r$, for each fixed finite range of $m$ there is $c>0$ with $\Rea L_m\ge c/r$ for small $r$. Thus $Q_m=\ee^{-L_m}$ is exponentially small uniformly on that range. The same is true of $\ee^{-A_m}$ times any fixed power of $r^{-1}$. This will justify removing finitely many small $m$ in the algebraic expansions below.
 
-\section{A summed logarithmic expansion with controlled remainder}\label{sec:sum}
+\section{A summed logarithmic expansion with controlled remainder}\label{dmv:cnt:sec:sum}
 The following elementary estimate records the effective scale of multiplicities:
-\begin{lemma}[Weighted power sums]\label{lem:powersum}
+\begin{lemma}[Weighted power sums]\label{dmv:cnt:lem:powersum}
 For $k>1$ and $c>0$,
-\begin{equation}\label{eq:powerweight}
+\begin{equation}\label{dmv:cnt:eq:powerweight}
 \sum_{m\ge1}m^{-k}\exp\left(-\frac{c}{rm^2}\right)
 =O\bigl(r^{(k-1)/2}\bigr).
 \end{equation}
@@ -265,18 +568,18 @@ For $k>1$ and $c>0$,
 The integral has the asserted order after $m=u/\sqrt r$. The summand is unimodal on the positive real axis, so its sum is bounded by its integral plus a constant times its maximum. The maximum is $O(r^{k/2})$, smaller than the displayed bound for $r\le1$.
 \end{proof}
 
-Choose a sufficiently large fixed $M$. For $m\ge M$, \eqref{eq:Sbound} and the convergent logarithm give
-\begin{equation}\label{eq:logexpand}
+Choose a sufficiently large fixed $M$. For $m\ge M$, \eqref{dmv:cnt:eq:Sbound} and the convergent logarithm give
+\begin{equation}\label{dmv:cnt:eq:logexpand}
 L_m=\mu_m+\frac12S_{2,m}+\frac13S_{3,m}+R_{4,m},\qquad
 |R_{4,m}|\le\frac{C}{rm^5}.
 \end{equation}
-Indeed, the tail of the logarithm is bounded by $C\sum_j|p_{jm}|^4$, and \eqref{eq:Sbound} applies also to the sum of absolute powers. The whole correction $H_m=L_m-\mu_m$ obeys $|H_m|\le C/(rm^3)$. On the other hand $\Rea A_m\ge c/(rm^2)$. Enlarging $M$ makes $|H_m|$ a fixed small fraction of $\Rea A_m$.
+Indeed, the tail of the logarithm is bounded by $C\sum_j|p_{jm}|^4$, and \eqref{dmv:cnt:eq:Sbound} applies also to the sum of absolute powers. The whole correction $H_m=L_m-\mu_m$ obeys $|H_m|\le C/(rm^3)$. On the other hand $\Rea A_m\ge c/(rm^2)$. Enlarging $M$ makes $|H_m|$ a fixed small fraction of $\Rea A_m$.
 
 The first-moment error $\delta_m$ need not be relatively small compared with $A_m$ when $m\gg r^{-1}$, but its global absolute bound $|\delta_m|\le Cr$ suffices. Every exponential remainder is consequently dominated by a fixed multiple of $\exp(-c'/(rm^2))$ times its polynomial estimate.
 
-\begin{proposition}[Whole-range matched identity]\label{prop:matched}
+\begin{proposition}[Whole-range matched identity]\label{dmv:cnt:prop:matched}
 Uniformly in the fixed sector,
-\begin{align}\label{eq:matched}
+\begin{align}\label{dmv:cnt:eq:matched}
 g(t)={}&G(t)+\sum_m\delta_m+\sum_m\delta_m(\ee^{-A_m}-1)
  +\frac12\sum_m\ee^{-A_m}S_{2,m}\nonumber\\
  &+\frac13\sum_m\ee^{-A_m}S_{3,m}
@@ -287,11 +590,11 @@ Every unqualified sum in this identity runs over all positive integers $m$.
 \end{proposition}
 \begin{proof}
 Expand $1-\ee^{-\mu_m-H_m}$ through $S_{3,m}$ and $S_{2,m}^2$. Terms from the logarithmic tail, the mixed quadratic term, higher quadratic products and the cubic exponential remainder are bounded, after summing, by a constant times
-\begin{equation}\label{eq:sumremainder}
+\begin{equation}\label{dmv:cnt:eq:sumremainder}
 \sum_m\ee^{-c/(rm^2)}
 \left(\frac1{rm^5}+\frac1{r^2m^7}+\frac1{r^3m^9}\right)=O(r),
 \end{equation}
-by Lemma~\ref{lem:powersum}. Expanding $\mu_m=A_m+\delta_m$ adds a second-order error $O(\sum|\delta_m|^2)=O(r)$. Its linear term is written in the exactly summable form
+by Lemma~\ref{dmv:cnt:lem:powersum}. Expanding $\mu_m=A_m+\delta_m$ adds a second-order error $O(\sum|\delta_m|^2)=O(r)$. Its linear term is written in the exactly summable form
 \[
 \sum_m\ee^{-A_m}\delta_m
 =\sum_m\delta_m+\sum_m\delta_m(\ee^{-A_m}-1).
@@ -300,12 +603,12 @@ Replacing $\ee^{-\mu_m}$ by $\ee^{-A_m}$ in the retained nonlinear terms costs a
 \[
 Cr\sum_m\ee^{-c/(rm^2)}\bigl(|S_{2,m}|+|S_{3,m}|+|S_{2,m}|^2\bigr)=O(r).
 \]
-All these estimates were established for $m\ge M$. On the finitely many omitted $m$, the original absence probabilities and each weighted approximation term are exponentially small by \eqref{eq:smallm}. This completes the genuinely summed expansion.
+All these estimates were established for $m\ge M$. On the finitely many omitted $m$, the original absence probabilities and each weighted approximation term are exponentially small by \eqref{dmv:cnt:eq:smallm}. This completes the genuinely summed expansion.
 \end{proof}
 
-\section{Evaluation of the matched sums}\label{sec:evaluation}
+\section{Evaluation of the matched sums}\label{dmv:cnt:sec:evaluation}
 We use centered coordinates
-\begin{equation}\label{eq:center}
+\begin{equation}\label{dmv:cnt:eq:center}
 y=h(m+\tfrac12),\qquad
 A_m=(y^2-h^2/4)^{-1}.
 \end{equation}
@@ -319,7 +622,7 @@ For completeness, Euler--Maclaurin with four derivatives bounds the unscaled sum
 C|h|^3\int_0^\infty |f^{(4)}(ue^{\ii\arg h})|\,du.
 \]
 All boundary corrections on the full midpoint grid vanish, because the odd positive-order endpoint derivatives vanish. Its integral is initially along the same ray as $h$. Rotating it to the positive axis is legitimate: the small arc is exponentially small for the weighted profiles and $O(\epsilon)$ for $f_0$, and the large arc tends to zero by rational decay. Therefore
-\begin{align}\label{eq:EM}
+\begin{align}\label{dmv:cnt:eq:EM}
 \sum_{m\ge1}f_0(h(m+\tfrac12))
  &=h^{-1}\int_0^\infty f_0(y)\,dy-1+O(|h|^3),\\
 \sum_{m\ge1}f(h(m+\tfrac12))
@@ -328,7 +631,7 @@ All boundary corrections on the full midpoint grid vanish, because the odd posit
 for each of the weighted profiles. The $-1$ in the first line is the omitted midpoint $h/2$, whose value is $1$ up to an exponentially small error. The omitted midpoint is exponentially small for the other profiles. Applying more derivatives would strengthen these summation errors, but is unnecessary here.
 
 The elementary integrals are
-\begin{equation}\label{eq:profileintegrals}
+\begin{equation}\label{dmv:cnt:eq:profileintegrals}
 \int_0^\infty(1-\ee^{-1/y^2})\,dy=\sqrt\pi,\qquad
 \int_0^\infty y^{-k}\ee^{-1/y^2}\,dy
 =\frac12\Gamma\left(\frac{k-1}{2}\right)\quad(k>1).
@@ -336,7 +639,7 @@ The elementary integrals are
 The second follows from $u=y^{-2}$; the first follows from integration by parts.
 
 \subsection{The main exponential sum}
-For $m\ge M$, expansion of the rational function in \eqref{eq:center} gives
+For $m\ge M$, expansion of the rational function in \eqref{dmv:cnt:eq:center} gives
 \[
 A_m=y^{-2}+\frac{h^2}{4y^4}+O(|h|^4|y|^{-6}).
 \]
@@ -344,41 +647,41 @@ The error in expanding $1-\ee^{-A_m}$ through the displayed correction is bounde
 \[
 C\ee^{-c/|y|^2}|h|^4(|y|^{-6}+|y|^{-8}).
 \]
-After summing, Lemma~\ref{lem:powersum} bounds this by $O(|h|^3)$, hence by $O(r)$. The finitely many small $m$ are exponentially harmless as before. Equations~\eqref{eq:EM}--\eqref{eq:profileintegrals} yield
-\begin{equation}\label{eq:G}
+After summing, Lemma~\ref{dmv:cnt:lem:powersum} bounds this by $O(|h|^3)$, hence by $O(r)$. The finitely many small $m$ are exponentially harmless as before. Equations~\eqref{dmv:cnt:eq:EM}--\eqref{dmv:cnt:eq:profileintegrals} yield
+\begin{equation}\label{dmv:cnt:eq:G}
 G(t)=\frac{\sqrt\pi}{h}-1+\frac{\sqrt\pi}{16}h+O(r).
 \end{equation}
 
 \subsection{The weighted first-moment correction}
 Uniformly in $m$,
-\begin{equation}\label{eq:weightdelta}
+\begin{equation}\label{dmv:cnt:eq:weightdelta}
 |\ee^{-A_m}-1|\le C\min\left(1,\frac1{rm^2}\right).
 \end{equation}
-For $m\le r^{-1}$ the error in replacing $\delta_m$ by $-t/12$ is bounded by \eqref{eq:delta}. Splitting once more at $r^{-1/2}$, its weighted sum is at most
-\begin{equation}\label{eq:deltabelow}
+For $m\le r^{-1}$ the error in replacing $\delta_m$ by $-t/12$ is bounded by \eqref{dmv:cnt:eq:delta}. Splitting once more at $r^{-1/2}$, its weighted sum is at most
+\begin{equation}\label{dmv:cnt:eq:deltabelow}
 Cr^3\sum_{m\le r^{-1}}m^2\min(1,(rm^2)^{-1})=O(r).
 \end{equation}
 For $m>r^{-1}$, $|\delta_m+t/12|\le Cr$ and the same weight gives $O(\sum_{m>r^{-1}}m^{-2})=O(r)$. Thus the replacement is valid over the whole range, and
-\begin{equation}\label{eq:weighted-delta}
+\begin{equation}\label{dmv:cnt:eq:weighted-delta}
 \sum_m\delta_m(\ee^{-A_m}-1)=\frac t{12}G(t)+O(r)
 =\frac{\sqrt\pi}{12}h+O(r).
 \end{equation}
-This weighted correction is separate from the unweighted $-1/2$ in \eqref{eq:deltatel}.
+This weighted correction is separate from the unweighted $-1/2$ in \eqref{dmv:cnt:eq:deltatel}.
 
 \subsection{The nonlinear occupancy terms}
 Expanding $(1-\ee^{-tj})^k$ and summing in $j$ gives the exact finite-difference formula
-\begin{equation}\label{eq:finite-difference}
+\begin{equation}\label{dmv:cnt:eq:finite-difference}
 S_{k,m}=\sum_{i=0}^k(-1)^i\binom ki\mathcal B\bigl(t(km+i)\bigr).
 \end{equation}
 For $k=2,3$, separate the rational pole and regular part:
-\begin{align}\label{eq:T2T3}
+\begin{align}\label{dmv:cnt:eq:T2T3}
 S_{2,m}&=T_{2,m}+E_{2,m},&
 T_{2,m}&=\frac1{2tm(m+1)(2m+1)},\\
 S_{3,m}&=T_{3,m}+E_{3,m},&
 T_{3,m}&=\frac6{t(3m)(3m+1)(3m+2)(3m+3)}.\nonumber
 \end{align}
-The regular finite differences can be represented as integrals of $t^2b''$ and $-t^3b'''$ over unit cubes. Hence \eqref{eq:bderivative} implies
-\begin{equation}\label{eq:Ebounds}
+The regular finite differences can be represented as integrals of $t^2b''$ and $-t^3b'''$ over unit cubes. Hence \eqref{dmv:cnt:eq:bderivative} implies
+\begin{equation}\label{dmv:cnt:eq:Ebounds}
 |E_{2,m}|\le\frac{Cr^2}{1+(rm)^3},\qquad
 |E_{3,m}|\le\frac{Cr^3}{1+(rm)^4}.
 \end{equation}
@@ -386,18 +689,18 @@ In particular $\sum|E_{2,m}|=O(r)$ and $\sum|E_{3,m}|=O(r^2)$. The $E_2$ error i
 $O(r^2)\sum_m\ee^{-c/(rm^2)}|T_{2,m}|=O(r^2)$, and $\sum|E_{2,m}|^2=O(r^3)$.
 
 In the centered coordinate $y=h(m+1/2)$,
-\begin{equation}\label{eq:center-T}
+\begin{equation}\label{dmv:cnt:eq:center-T}
 T_{2,m}=\frac{h}{4y^3}+O(|h|^3|y|^{-5}),\qquad
 T_{3,m}=\frac{2h^2}{27y^4}+O(|h|^4|y|^{-6}).
 \end{equation}
-These estimates hold for $m\ge M$; the corresponding weighted remainders sum to the required order by Lemma~\ref{lem:powersum}. There is no $h^2$ term in $T_2$ and no term of order $h$ in $A_m-y^{-2}$. Therefore there can be no $h$ correction after summing $\ee^{-A_m}S_{2,m}/2$; explicitly,
-\begin{equation}\label{eq:S2result}
+These estimates hold for $m\ge M$; the corresponding weighted remainders sum to the required order by Lemma~\ref{dmv:cnt:lem:powersum}. There is no $h^2$ term in $T_2$ and no term of order $h$ in $A_m-y^{-2}$. Therefore there can be no $h$ correction after summing $\ee^{-A_m}S_{2,m}/2$; explicitly,
+\begin{equation}\label{dmv:cnt:eq:S2result}
 \frac12\sum_m\ee^{-A_m}S_{2,m}
 =\frac18\int_0^\infty y^{-3}\ee^{-1/y^2}\,dy+O(r)
 =\frac1{16}+O(r).
 \end{equation}
 Similarly,
-\begin{align}\label{eq:S3square}
+\begin{align}\label{dmv:cnt:eq:S3square}
 \frac13\sum_m\ee^{-A_m}S_{3,m}
 &=\frac{2h}{81}\int_0^\infty y^{-4}\ee^{-1/y^2}\,dy+O(r)
 =\frac{\sqrt\pi}{162}h+O(r),\\
@@ -407,10 +710,10 @@ Similarly,
 \end{align}
 
 \subsection{The sector expansion and its essential tail}
-Combining Proposition~\ref{prop:matched} with \eqref{eq:deltatel}, \eqref{eq:G}, \eqref{eq:weighted-delta}, \eqref{eq:S2result} and \eqref{eq:S3square} proves the following.
-\begin{theorem}[Uniform radial expansion]\label{thm:radial}
+Combining Proposition~\ref{dmv:cnt:prop:matched} with \eqref{dmv:cnt:eq:deltatel}, \eqref{dmv:cnt:eq:G}, \eqref{dmv:cnt:eq:weighted-delta}, \eqref{dmv:cnt:eq:S2result} and \eqref{dmv:cnt:eq:S3square} proves the following.
+\begin{theorem}[Uniform radial expansion]\label{dmv:cnt:thm:radial}
 In a fixed sufficiently small closed sector about the positive real axis,
-\begin{equation}\label{eq:radial}
+\begin{equation}\label{dmv:cnt:eq:radial}
 g(t)=\sqrt\pi\,t^{-1/2}-\frac{23}{16}+\sqrt\pi\,d\,t^{1/2}+O(|t|),
 \qquad d=\frac{12365}{82944}.
 \end{equation}
@@ -430,32 +733,32 @@ Total & $-23/16$ & $12365/82944$\\\bottomrule
 \end{tabular}
 \end{center}
 In the third column, the entry $c$ means a contribution $c\sqrt\pi h$.
-A calculation confined to $m\asymp t^{-1/2}$ and omitting \eqref{eq:deltatel} would give $-15/16$. That value is incorrect: the missing $-1/2$ is a whole-range tail effect. This is why pointwise occupancy limits are not enough for the constant term.
+A calculation confined to $m\asymp t^{-1/2}$ and omitting \eqref{dmv:cnt:eq:deltatel} would give $-15/16$. That value is incorrect: the missing $-1/2$ is a whole-range tail effect. This is why pointwise occupancy limits are not enough for the constant term.
 
-\section{Whole-circle localization from forbidden-value products}\label{sec:localization}
+\section{Whole-circle localization from forbidden-value products}\label{dmv:cnt:sec:localization}
 A radial expansion alone does not prove a coefficient asymptotic. We now establish a full-torus bound without assuming a global growth hypothesis for $g$.
 
-Take $q=\ee^{-\tau+\ii\theta}$ with $|\theta|\le\pi$, where $\tau$ is defined in \eqref{eq:constants}. A factor in \eqref{eq:forbidden} is
+Take $q=\ee^{-\tau+\ii\theta}$ with $|\theta|\le\pi$, where $\tau$ is defined in \eqref{dmv:cnt:eq:constants}. A factor in \eqref{dmv:cnt:eq:forbidden} is
 \[
 Z_m(z)=\sum_{\substack{k\ge0\\k\ne m}}z^k.
 \]
 For $j\in[\tau^{-1},2\tau^{-1}]$, put $\rho_j=\ee^{-\tau j}\in[\ee^{-2},\ee^{-1}]$. The normalized coefficients of $Z_m(\rho_j z)/Z_m(\rho_j)$ form a probability distribution. Every fixed permitted value $k$ has a probability bounded below uniformly in $m,j$, because $Z_m(\rho_j)\le(1-\rho_j)^{-1}$.
 
 If $m\ne1$, the permitted values $0$ and $1$ form an adjacent pair. If $m=1$, use $2$ and $3$. A characteristic function $\phi(\alpha)=\sum_k\pi_k\ee^{\ii k\alpha}$ satisfies
-\begin{equation}\label{eq:characteristic}
+\begin{equation}\label{dmv:cnt:eq:characteristic}
 |\phi(\alpha)|^2
 =1-4\sum_{k<\ell}\pi_k\pi_\ell\sin^2\bigl((k-\ell)\alpha/2\bigr).
 \end{equation}
 Keeping the appropriate adjacent pair and using $\sqrt{1-u}\le\ee^{-u/2}$ gives
-\begin{equation}\label{eq:factor-damping}
+\begin{equation}\label{dmv:cnt:eq:factor-damping}
 \frac{|Z_m(\ee^{-\tau j+\ii j\theta})|}{Z_m(\ee^{-\tau j})}
 \le\exp\bigl(-c\sin^2(j\theta/2)\bigr),
 \end{equation}
 uniformly in $m$. The unrestricted geometric factors satisfy the same estimate, using their values $0,1$.
 
-\begin{lemma}[Consecutive-block damping]\label{lem:block}
+\begin{lemma}[Consecutive-block damping]\label{dmv:cnt:lem:block}
 For all sufficiently small $\tau>0$ and $|\theta|\le\pi$,
-\begin{equation}\label{eq:block}
+\begin{equation}\label{dmv:cnt:eq:block}
 \sum_{j=\lceil1/\tau\rceil}^{\lfloor2/\tau\rfloor}\sin^2(j\theta/2)
 \ge\frac c\tau\min\left(1,(\theta/\tau)^2\right).
 \end{equation}
@@ -469,8 +772,8 @@ When $|\theta|\le a\tau$ for a fixed small $a>0$, the small-angle lower bound fo
 Since $\sin^2(j\theta/2)=(1-\cos(j\theta))/2$, a sufficiently large fixed $C$ makes the block-length term dominate this geometric-sum error. These three ranges cover the torus.
 \end{proof}
 
-All normalized factors outside the block have modulus at most $1$. Also $P_m(\ee^{-\tau})\le P(\ee^{-\tau})$. From \eqref{eq:Fn}, \eqref{eq:factor-damping} and Lemma~\ref{lem:block},
-\begin{equation}\label{eq:global}
+All normalized factors outside the block have modulus at most $1$. Also $P_m(\ee^{-\tau})\le P(\ee^{-\tau})$. From \eqref{dmv:cnt:eq:Fn}, \eqref{dmv:cnt:eq:factor-damping} and Lemma~\ref{dmv:cnt:lem:block},
+\begin{equation}\label{dmv:cnt:eq:global}
 |F_n(\ee^{-\tau+\ii\theta})|
 \le2nP(\ee^{-\tau})
 \exp\left[-\frac c\tau\min\left(1,(\theta/\tau)^2\right)\right].
@@ -478,31 +781,31 @@ All normalized factors outside the block have modulus at most $1$. Also $P_m(\ee
 The same damping estimate holds for $P$, without the factor $2n$.
 
 Let
-\begin{equation}\label{eq:central}
+\begin{equation}\label{dmv:cnt:eq:central}
 L=\log(1/\tau),\qquad \theta_*=\tau^{3/2}L.
 \end{equation}
-On the complementary arc $\theta_*\le|\theta|\le\pi$, the exponential factor in \eqref{eq:global} is at most $\ee^{-cL^2}$. Since the classical partition saddle has scale
-\begin{equation}\label{eq:partition-scale}
+On the complementary arc $\theta_*\le|\theta|\le\pi$, the exponential factor in \eqref{dmv:cnt:eq:global} is at most $\ee^{-cL^2}$. Since the classical partition saddle has scale
+\begin{equation}\label{dmv:cnt:eq:partition-scale}
 p(n)\asymp \ee^{n\tau}P(\ee^{-\tau})\tau^{3/2},
 \end{equation}
-and $n=O(\tau^{-2})$, the outer Cauchy integral for $F_n$ is $p(n)$ times a quantity smaller than every fixed power of $\tau$. Equation~\eqref{eq:partition-scale} also follows directly from the local saddle calculation in the next section combined with this same bound for $P$.
+and $n=O(\tau^{-2})$, the outer Cauchy integral for $F_n$ is $p(n)$ times a quantity smaller than every fixed power of $\tau$. Equation~\eqref{dmv:cnt:eq:partition-scale} also follows directly from the local saddle calculation in the next section combined with this same bound for $P$.
 
-On the central arc $|\theta|\le\theta_*$, put $t=\tau-\ii\theta$. Then $t$ lies in the fixed sector of Theorem~\ref{thm:radial} for small $\tau$. For $m>n$,
+On the central arc $|\theta|\le\theta_*$, put $t=\tau-\ii\theta$. Then $t$ lies in the fixed sector of Theorem~\ref{dmv:cnt:thm:radial} for small $\tau$. For $m>n$,
 \[
 \sum_j|p_{jm}|\le2\sum_j\ee^{-\tau mj}=O(\ee^{-\tau m}),
 \qquad |1-Q_m|=O(\ee^{-\tau m}).
 \]
 The sum over $m>n$ is $O(\tau^{-1}\ee^{-\tau n})=O(\ee^{-c\tau n})$ after reducing $c>0$. As $\tau n\asymp\tau^{-1}$, replacing the finite $F_n$ by $P(\ee^{-t})g(t)$ only on this arc causes an exponentially small relative coefficient error, even after the harmless polynomial factors from integration. The finite truncation is exact globally; the infinite extension is justified locally. No mild global bound on $g$ has been presumed.
 
-\section{Local saddle transfer and the mean}\label{sec:transfer}
+\section{Local saddle transfer and the mean}\label{dmv:cnt:sec:transfer}
 The classical modular expansion of the partition product is
-\begin{equation}\label{eq:modular}
+\begin{equation}\label{dmv:cnt:eq:modular}
 P(\ee^{-t})=\left(\frac{t}{2\pi}\right)^{1/2}
 \exp\left(\frac At-\frac t{24}\right)
 \left(1+O(\ee^{-c/\tau})\right)
 \end{equation}
 on the shrinking central arc. It follows, for example, from the Dedekind eta transformation and the absolutely convergent transformed product. The same formula gives
-\begin{equation}\label{eq:central-gauss}
+\begin{equation}\label{dmv:cnt:eq:central-gauss}
 |P(\ee^{-t})|\le CP(\ee^{-\tau})\exp(-c\theta^2/\tau^3)
 \quad (|\theta|\le\theta_*).
 \end{equation}
@@ -510,22 +813,22 @@ Indeed, $\Rea(A/t)-A/\tau=-A\theta^2/(\tau(\tau^2+\theta^2))$ and $\theta/\tau=o
 
 \subsection{A local monomial lemma}
 For any fixed real $s$, define the local integral
-\begin{equation}\label{eq:Js}
+\begin{equation}\label{dmv:cnt:eq:Js}
 J_s=\frac{\ee^{n\tau}}{2\pi}
 \int_{-\theta_*}^{\theta_*}\ee^{-\ii n\theta}
 P(\ee^{-\tau+\ii\theta})(\tau-\ii\theta)^s\,d\theta.
 \end{equation}
 It is important that $J_s$ is defined by a local contour integral. We do not regard $(-\log q)^s$ as a globally analytic generating function at $q=0$.
 
-\begin{lemma}[Normalized monomial transfer]\label{lem:transfer}
+\begin{lemma}[Normalized monomial transfer]\label{dmv:cnt:lem:transfer}
 For each fixed real $s$,
-\begin{equation}\label{eq:transfer}
+\begin{equation}\label{dmv:cnt:eq:transfer}
 \frac{J_s}{p(n)}=\tau^s\left(1-\frac{s(s+3)}{4A}\tau+O(\tau^2)\right).
 \end{equation}
 \end{lemma}
 \begin{proof}
-Set $\lambda=A/\tau=\nu\tau$ and change orientation if necessary so that $t=\tau(1+\ii v/\sqrt\lambda)$. The new interval is symmetric with $|v|\le\sqrt A L$. The amplitude exponent in \eqref{eq:modular} is $\beta=s+1/2$. Uniform Taylor expansion gives
-\begin{align}\label{eq:saddleexp}
+Set $\lambda=A/\tau=\nu\tau$ and change orientation if necessary so that $t=\tau(1+\ii v/\sqrt\lambda)$. The new interval is symmetric with $|v|\le\sqrt A L$. The amplitude exponent in \eqref{dmv:cnt:eq:modular} is $\beta=s+1/2$. Uniform Taylor expansion gives
+\begin{align}\label{dmv:cnt:eq:saddleexp}
 \nu t+A/t&=2\lambda-v^2+\frac{\ii v^3}{\sqrt\lambda}
 +\frac{v^4}{\lambda}+\cdots,\\
 (1+\ii v/\sqrt\lambda)^\beta
@@ -535,7 +838,7 @@ Set $\lambda=A/\tau=\nu\tau$ and change orientation if necessary so that $t=\tau
 Odd terms have zero integral on the symmetric interval. Expanding through degree $\lambda^{-3/2}$, the remaining integrated error is $O(\lambda^{-2})$: on the logarithmic interval, analytic Taylor remainders are bounded by $\lambda^{-2}$ times fixed polynomials in $v$, multiplied by $\ee^{-c v^2}$ after slightly weakening the Gaussian. These polynomials have finite Gaussian moments. Extending the moments to the real line costs $O(\ee^{-cL^2})$.
 
 Under the normalized density $\ee^{-v^2}/\sqrt\pi$, the moments needed at order $\lambda^{-1}$ are $\E v^2=1/2$, $\E v^4=3/4$, and $\E v^6=15/8$. The first correction is therefore
-\begin{align}\label{eq:c-beta}
+\begin{align}\label{dmv:cnt:eq:c-beta}
 c(\beta)&=\frac34-\frac{15}{16}-\frac{3\beta}{4}
 -\frac{\beta(\beta-1)}4\\
 &=-\frac{4(\beta+1)^2-1}{16}.\nonumber
@@ -544,25 +847,25 @@ For $s=0$, $\beta=1/2$ and $c(1/2)=-1/2$. The already proved outer bound for $P$
 \[
 c(s+1/2)-c(1/2)=-\frac{s(s+3)}4
 \]
-gives \eqref{eq:transfer}, since $\lambda^{-1}=\tau/A$.
+gives \eqref{dmv:cnt:eq:transfer}, since $\lambda^{-1}=\tau/A$.
 \end{proof}
 
-This is the first-order form of the classical Bessel-ratio transfer mechanism; see Grabner, Knopfmacher and Wagner \cite{gkw}. Their global hypothesis is not imported without verification. Section~\ref{sec:localization} supplies the necessary independent outer-arc argument for the present statistic.
+This is the first-order form of the classical Bessel-ratio transfer mechanism; see Grabner, Knopfmacher and Wagner \cite{gkw}. Their global hypothesis is not imported without verification. Section~\ref{dmv:cnt:sec:localization} supplies the necessary independent outer-arc argument for the present statistic.
 
 \subsection{Completion of the mean proof}
-Apply Theorem~\ref{thm:radial} only in the central integral. Section~\ref{sec:localization} treats the complementary integral and the extension of the finite $m$ sum. Equation~\eqref{eq:central-gauss} transfers the radial $O(|t|)$ remainder to $O(\tau)p(n)$. Thus
+Apply Theorem~\ref{dmv:cnt:thm:radial} only in the central integral. Section~\ref{dmv:cnt:sec:localization} treats the complementary integral and the extension of the finite $m$ sum. Equation~\eqref{dmv:cnt:eq:central-gauss} transfers the radial $O(|t|)$ remainder to $O(\tau)p(n)$. Thus
 \[
 a(n)=\sqrt\pi J_{-1/2}-\frac{23}{16}J_0+\sqrt\pi dJ_{1/2}+O(\tau p(n)).
 \]
-In Lemma~\ref{lem:transfer}, $s=-1/2$ supplies the extra $5\tau/(16A)$; the correction for $s=1/2$ is already below the retained order. This proves \eqref{eq:meantau}. Since
+In Lemma~\ref{dmv:cnt:lem:transfer}, $s=-1/2$ supplies the extra $5\tau/(16A)$; the correction for $s=1/2$ is already below the retained order. This proves \eqref{dmv:cnt:eq:meantau}. Since
 \[
 \sqrt\pi\tau^{-1/2}=6^{1/4}(n-1/24)^{1/4},
 \]
-replacing $n-1/24$ by $n$ changes the leading term by $O(n^{-3/4})$, smaller than the claimed remainder. The corresponding changes in later terms are even smaller. This proves Theorem~\ref{thm:mean}.
+replacing $n-1/24$ by $n$ changes the leading term by $O(n^{-3/4})$, smaller than the claimed remainder. The corresponding changes in later terms are even smaller. This proves Theorem~\ref{dmv:cnt:thm:mean}.
 
-\section{Total asymptotics and eventual strict increase}\label{sec:total}
+\section{Total asymptotics and eventual strict increase}\label{dmv:cnt:sec:total}
 The same $s=0$ saddle calculation, including its leading normalization, gives
-\begin{equation}\label{eq:partition-asymp}
+\begin{equation}\label{dmv:cnt:eq:partition-asymp}
 p(n)=\frac{\ee^{Bx}}{4\sqrt3\,x^2}
 \left(1-\frac1{Bx}+O(x^{-2})\right),\qquad x=\sqrt{n-1/24}.
 \end{equation}
@@ -574,21 +877,21 @@ For clarity, the leading saddle factor before substituting $\tau=\sqrt A/x$ is
 \]
 which equals $\ee^{Bx}/(4\sqrt3 x^2)$. Also $-1/(2\lambda)=-1/(Bx)$.
 
-Inserting $\tau=\sqrt A/x$ into \eqref{eq:meantau}, multiplying by \eqref{eq:partition-asymp}, and factoring the leading term yields \eqref{eq:totalx}. The coefficient arithmetic is
-\begin{equation}\label{eq:b2check}
+Inserting $\tau=\sqrt A/x$ into \eqref{dmv:cnt:eq:meantau}, multiplying by \eqref{dmv:cnt:eq:partition-asymp}, and factoring the leading term yields \eqref{dmv:cnt:eq:totalx}. The coefficient arithmetic is
+\begin{equation}\label{dmv:cnt:eq:b2check}
 b_2=\sqrt A\left(d+\frac5{16A}\right)-\frac1{2\sqrt A}
 =\sqrt A\,d-\frac3{16\sqrt A}
 =\frac\pi{\sqrt6}\left(d-\frac9{8\pi^2}\right).
 \end{equation}
-The relative mean error is $O(x^{-3/2})$, so all omitted cross terms fall within that error. Expanding $x=\sqrt n-1/(48\sqrt n)+O(n^{-3/2})$ gives \eqref{eq:totaln}; the exponential contributes $-B/48$ to the $n^{-1/2}$ coefficient.
+The relative mean error is $O(x^{-3/2})$, so all omitted cross terms fall within that error. Expanding $x=\sqrt n-1/(48\sqrt n)+O(n^{-3/2})$ gives \eqref{dmv:cnt:eq:totaln}; the exponential contributes $-B/48$ to the $n^{-1/2}$ coefficient.
 
 To prove eventual strict increase without differentiating an unknown remainder, put
-\begin{equation}\label{eq:Phi}
+\begin{equation}\label{dmv:cnt:eq:Phi}
 \Phi(x)=Bx-\frac32\log x+\log C+\ell_1x^{-1/2}+\ell_2x^{-1},
 \quad \ell_1=b_1,\quad\ell_2=b_2-b_1^2/2.
 \end{equation}
-Taking logarithms in \eqref{eq:totalx}, there are $M>0$ and $n_0$ such that
-\begin{equation}\label{eq:logerror}
+Taking logarithms in \eqref{dmv:cnt:eq:totalx}, there are $M>0$ and $n_0$ such that
+\begin{equation}\label{dmv:cnt:eq:logerror}
 \log a(n)=\Phi(x_n)+R_n,\qquad
 x_n=\sqrt{n-1/24},\qquad |R_n|\le Mx_n^{-3/2}
 \quad(n\ge n_0).
@@ -597,19 +900,19 @@ Since $x_{n+1}-x_n=1/(2x_n)+O(x_n^{-3})$,
 \[
 \Phi(x_{n+1})-\Phi(x_n)=\frac B{2x_n}+O(x_n^{-2}).
 \]
-The two independent remainder bounds give $|R_{n+1}-R_n|=O(x_n^{-3/2})=o(x_n^{-1})$. The adjacent logarithmic increment is therefore positive for all sufficiently large $n$. This proves the last statement of Theorem~\ref{thm:total}.
+The two independent remainder bounds give $|R_{n+1}-R_n|=O(x_n^{-3/2})=o(x_n^{-1})$. The adjacent logarithmic increment is therefore positive for all sufficiently large $n$. This proves the last statement of Theorem~\ref{dmv:cnt:thm:total}.
 
-\section{A rigorous two-ceiling inverse}\label{sec:inverse}
-We prove Theorem~\ref{thm:inverse} using monotone logarithmic envelopes, so no unspecified smooth interpolation enters the argument.
+\section{A rigorous two-ceiling inverse}\label{dmv:cnt:sec:inverse}
+We prove Theorem~\ref{dmv:cnt:thm:inverse} using monotone logarithmic envelopes, so no unspecified smooth interpolation enters the argument.
 
 For large $Y$, the leading logarithmic equation
-\begin{equation}\label{eq:x0eq}
+\begin{equation}\label{dmv:cnt:eq:x0eq}
 Bx_0-\frac32\log x_0+\log C=\log Y
 \end{equation}
-has a unique large solution. Rearranging $x_0\ee^{-2Bx_0/3}=(C/Y)^{2/3}$ gives exactly the $W_{-1}$ expression in \eqref{eq:inverse}. The argument tends to $0$ from below, so the branch is real and $x_0\to\infty$.
+has a unique large solution. Rearranging $x_0\ee^{-2Bx_0/3}=(C/Y)^{2/3}$ gives exactly the $W_{-1}$ expression in \eqref{dmv:cnt:eq:inverse}. The argument tends to $0$ from below, so the branch is real and $x_0\to\infty$.
 
-With $M$ as in \eqref{eq:logerror}, define
-\begin{equation}\label{eq:envelopes}
+With $M$ as in \eqref{dmv:cnt:eq:logerror}, define
+\begin{equation}\label{dmv:cnt:eq:envelopes}
 H_+(x)=\Phi(x)+Mx^{-3/2},\qquad
 H_-(x)=\Phi(x)-Mx^{-3/2}.
 \end{equation}
@@ -621,20 +924,20 @@ Consider
 \[
 \widehat x=x_0-\frac{\ell_1}{B}x_0^{-1/2}-\frac{\ell_2}{B}x_0^{-1}.
 \]
-Substitution using \eqref{eq:x0eq} gives $H_\pm(\widehat x)-\log Y=O(x_0^{-3/2})$. For example, the logarithmic change is $O((\widehat x-x_0)/x_0)=O(x_0^{-3/2})$, while the leading correction terms have already been canceled. The derivative lower bound and the mean-value theorem prove
-\begin{equation}\label{eq:rootexpand}
+Substitution using \eqref{dmv:cnt:eq:x0eq} gives $H_\pm(\widehat x)-\log Y=O(x_0^{-3/2})$. For example, the logarithmic change is $O((\widehat x-x_0)/x_0)=O(x_0^{-3/2})$, while the leading correction terms have already been canceled. The derivative lower bound and the mean-value theorem prove
+\begin{equation}\label{dmv:cnt:eq:rootexpand}
 x_\pm=x_0-\frac{\ell_1}{B}x_0^{-1/2}-\frac{\ell_2}{B}x_0^{-1}
 +O(x_0^{-3/2}).
 \end{equation}
 Squaring gives
-\begin{equation}\label{eq:squareroots}
+\begin{equation}\label{dmv:cnt:eq:squareroots}
 x_\pm^2+\frac1{24}
 =x_0^2-\frac{2\ell_1}{B}x_0^{1/2}-\frac{2\ell_2}{B}+\frac1{24}
 +O(x_0^{-1/2})=Z(Y)+O(x_0^{-1/2}).
 \end{equation}
 The square of the correction is $O(x_0^{-1})$, which is smaller than the stated error.
 
-Choose $Y$ larger than all exceptional early values $a(n)$ for which \eqref{eq:logerror} is unavailable. If an integer $n<x_+^2+1/24$, then
+Choose $Y$ larger than all exceptional early values $a(n)$ for which \eqref{dmv:cnt:eq:logerror} is unavailable. If an integer $n<x_+^2+1/24$, then
 \[
 \log a(n)\le H_+(x_n)<\log Y.
 \]
@@ -643,19 +946,56 @@ If $n\ge x_-^2+1/24$, then
 \log a(n)\ge H_-(x_n)\ge\log Y.
 \]
 It follows, including equality cases at integral endpoints, that
-\begin{equation}\label{eq:root-ceilings}
+\begin{equation}\label{dmv:cnt:eq:root-ceilings}
 \left\lceil x_+^2+\frac1{24}\right\rceil
 \le N(Y)\le
 \left\lceil x_-^2+\frac1{24}\right\rceil.
 \end{equation}
-A single fixed $C_1$ dominating the errors in \eqref{eq:squareroots} yields \eqref{eq:ceiling}. This is a genuine shrinking error bound for the threshold location before integer rounding. At values of $Y$ for which $Z(Y)$ is very near an integer, the theorem alone need not decide between the two adjacent possibilities.
+A single fixed $C_1$ dominating the errors in \eqref{dmv:cnt:eq:squareroots} yields \eqref{dmv:cnt:eq:ceiling}. This is a genuine shrinking error bound for the threshold location before integer rounding. At values of $Y$ for which $Z(Y)$ is very near an integer, the theorem alone need not decide between the two adjacent possibilities.
 
-\section{Exact computation, diagnostics, and reproducibility}\label{sec:computation}
+\begin{remark}[{[write]} The inverse and the transseries volume, 7~October 2026]\label{dmv:cnt:rem:transseries}
+Statement by statement, against the volume named in the Guide (its symbols
+carry the subscript ``vol'').
+\begin{enumerate}[label=(\alph*),leftmargin=*]
+\item \emph{Instance.} For $Y$ beyond the finitely many early values
+excluded in the proof, $N(Y)$ of~\eqref{dmv:cnt:eq:threshold} is the integer
+staircase $N_*(Y)$ of \file{p0:def:three-inverses} with $A_n=a(n)$ and
+$n_1$ the monotonicity onset, so \file{p0:thm:staircase}(1) applies. In the
+shipped table $a(n+1)>a(n)$ for $1\le n<2000$; that is a finite observation,
+not a proof of the onset.
+\item \emph{Instance.} The root $x_0(Y)$ of~\eqref{dmv:cnt:eq:x0eq} is
+\file{p0:thm:lambert-core}(3), case $b_\vol<0$, in the variable
+$X_\vol=x=\sqrt{n-1/24}$: $a_\vol=B$, $b_\vol=-\tfrac32$,
+$L_\vol=\log(Y/C)$, and the large solution
+$(|b_\vol|/a_\vol)(-W_{-1}(-(a_\vol/|b_\vol|)e^{-L_\vol/|b_\vol|}))$ is
+exactly~\eqref{dmv:cnt:eq:inverse}; it exists once $L_\vol$ exceeds the fold
+value $L_c$.
+\item \emph{Formal instance, and an instance of the residual step.} The
+envelopes $H_\pm$ of~\eqref{dmv:cnt:eq:envelopes} are exactly of
+exponential--power type in $x$ (\file{p0:def:model}) with data
+$(C,B,1,-\tfrac32,\tfrac12,\ell_1t+\ell_2t^2\pm Mt^3)$, so $\delta_\vol=\tfrac12$.
+Their formal reversion about $x_0$ is \file{p0:prop:two-grid} with
+$\delta_\vol=\tfrac12$, whose terms through $X_\vol^{-1}$ are
+$-(\ell_1/B)x_0^{-1/2}-(\ell_2/B)x_0^{-1}$, the centre
+of~\eqref{dmv:cnt:eq:rootexpand}. The volume states its analytic reversion
+(\file{p0:thm:lambert-centered}(5)) for $\delta_\vol=1$ only, so the
+remainder in~\eqref{dmv:cnt:eq:rootexpand} is the source's own; its
+residual-over-slope step (residual $O(x_0^{-3/2})$, slopes above $B/2$) is
+\file{p0:thm:backward-error}. $Z(Y)$ then follows by squaring.
+\item \emph{Analogues.} The brackets~\eqref{dmv:cnt:eq:ceiling}
+and~\eqref{dmv:cnt:eq:root-ceilings} are, as stated and proved, analogues of
+\file{p0:thm:staircase}(2): two-ceiling brackets proved directly at the
+integers from smooth envelopes, not deduced from an admissible interpolation.
+\end{enumerate}
+No novelty is claimed for any of these inversions.
+\end{remark}
+
+\section{Exact computation, diagnostics, and reproducibility}\label{dmv:cnt:sec:computation}
 The code archive is an executable companion to the proof, not a numerical substitute for its analytic estimates. It contains the TeX source, pinned exact data, exact verification code, a deterministic builder, adversarial path-safety tests, and source and artifact manifests. See its \code{README.txt} for exact commands and toolchain requirements.
 
 \subsection{An exact signed-product algorithm}
 For a cutoff $N$, work in $\mathbb Z[q]/(q^{N+1})$. Compute $p(0),\ldots,p(N)$ by ordinary partition dynamic programming. For each $1\le m\le N$, form
-\begin{equation}\label{eq:exact-truncate}
+\begin{equation}\label{dmv:cnt:eq:exact-truncate}
 Q_m(q)\equiv\prod_{j=1}^{\lfloor N/m\rfloor}
 (1-q^{mj}+q^{(m+1)j})\pmod{q^{N+1}}.
 \end{equation}
@@ -668,7 +1008,7 @@ All arithmetic is exact integer arithmetic. No coefficient of the asymptotic exp
 
 \subsection{Independent finite models}
 An independent positive dynamic program computes $[q^n]P_m$ directly from the permitted multiplicities. If $c_j(n)$ counts choices for part sizes at most $j$ avoiding $m$, then
-\begin{equation}\label{eq:positiveDP}
+\begin{equation}\label{dmv:cnt:eq:positiveDP}
 c_j(n)=\sum_{\substack{k\ge0,\ jk\le n\\k\ne m}}c_{j-1}(n-jk).
 \end{equation}
 The unrestricted inner sum is implemented by the usual unbounded-knapsack recurrence, followed by subtraction of the single forbidden contribution from the previous row. This neither constructs $Q_m$ nor uses its convolution with $P$. Summing $p(n)-[q^n]P_m$ for $1\le m\le n$ agrees with every exact term through $n=400$.
@@ -689,7 +1029,7 @@ Let
 \[
 T(n)=n^{1/4}\left(\frac{a(n)}{p(n)}-(6n)^{1/4}+\frac{23}{16}\right).
 \]
-Theorem~\ref{thm:mean} proves $T(n)=K+O(n^{-1/4})$. Values from exact integers, rounded for display, are
+Theorem~\ref{dmv:cnt:thm:mean} proves $T(n)=K+O(n^{-1/4})$. Values from exact integers, rounded for display, are
 \begin{center}
 \begin{tabular}{@{}rrr@{}}\toprule
 $n$ & $a(n)/p(n)$ & $T(n)$\\\midrule
@@ -705,7 +1045,7 @@ These moderate-size values are consistent with the theorem; they neither establi
 
 The verification scripts check exact rational identities for $-23/16$, $d$, the centered cancellation, the normalized saddle coefficients, and the total-sequence coefficient algebra. They use explicit exceptions rather than Python \code{assert}, so correctness checks remain active under \code{python3 -O}. Rebuilding requires the same documented toolchain for byte-identical PDFs; the runtime versions are recorded. Exact integer results and the mathematical claims do not depend on byte-level PDF reproducibility. The manifests verify file completeness and hashes, not the truth of a theorem.
 
-\section{Prior work, scope, and further questions}\label{sec:sources}
+\section{Prior work, scope, and further questions}\label{dmv:cnt:sec:sources}
 \subsection{What the source screen establishes}
 Ralaivaosaona \cite{ralaivaosaona} studies the number of part sizes with a prescribed multiplicity. Theorem~1 is a fixed-multiplicity count limit theorem, while Theorem~2 gives the transition at multiplicities of order $n^{1/4}$ between Gaussian, Poisson, and vanishing regimes. The occupied-value sum $D=\sum_m{\bf1}_{\{N_m>0\}}$ is a different statistic. Its leading mean is naturally suggested by the Poisson transition and can be obtained after a suitable tail bound; no independent new Poisson phenomenon is claimed here. The matched constant and next mean term require the whole-range calculations above.
 
@@ -725,35 +1065,768 @@ The inspected OEIS entry gave the definition, elementary examples, and brute-for
 \item \textbf{Weighted occupied values.} For a specified weight $w(m)$, analyze $\sum_{m\ge1}w(m){\bf1}_{\{N_m>0\}}$. The weight can change the tail scale, and the present unweighted theorem cannot simply be multiplied by $w$ or transferred term by term without new bounds.
 \item \textbf{Complete the literature comparison.} Obtain and inspect the full 1999 article and trace subsequent work on occupied multiplicity values and distinct Ferrers gaps. This is necessary for a stronger priority assessment, separate from checking the present proof.
 \end{enumerate}
+\begin{writenote}[7 October 2026]
+Question~4 is answered for the weight $w(m)=m$ by Part~II (Report~198), whose
+Theorem~\ref{dmv:sum:thm:mean} gives the five-scale mean of
+$\sum_m m\,\mathbf 1_{\{N_m>0\}}$; as this question warns, the weight changes
+the tail scale (a leading $\sqrt n\log n$ instead of $n^{1/4}$). Other weights,
+in particular $w(m)=m^\alpha$, remain open; Part~II's Question~2 asks for that
+family. Under Vladimir's standing rule of 4~October 2026 (unproved claims are
+moved to questions, wrong ones are refuted on the record), the write found no
+claim of this Part that is unproved as stated and none that is wrong, so
+nothing was moved here or refuted. For Question~3 note only that the shipped
+table increases strictly for $1\le n<2000$, which proves no onset.
+\end{writenote}
 
 \subsection{Summary of established and unestablished claims}
 Established here are the exact occupancy generating function, its uniform three-term radial expansion with $O(|t|)$ error, the full-torus localization, the three-term mean, two relative corrections for the total sequence, eventual strict increase, and the shrinking two-ceiling inverse. Finite exact checks support the implementation and the identification of the sequence. Not established are all fixed asymptotic orders, a variance theorem, a central limit theorem, explicit error constants or onset, an exact single-ceiling inverse, or absolute novelty.
 
-\begin{thebibliography}{9}
-\bibitem{oeis}
+
+\part{The sum of distinct multiplicity values in integer partitions: five asymptotic scales and a shrinking inverse for OEIS A373273}\label{dmv:sum:part}
+\partsource{Bundle Report~198, archive \file{Report198_TeX_and_Reproducible_Code.zip}, delivered as \file{Report198.tex} (17 pages). Delivered title block ``The sum of distinct multiplicity values in integer partitions / Five asymptotic scales and a shrinking inverse for OEIS A373273 / Report 198 / 4 October 2026''. Printed as delivered, with \textbf{[write]} notes and remarks; Report~198's Section~$k$ is Section~$k+11$ here, its statements move with their sections, and its equation~($k.m$) is equation~($k{+}11.m$); its Table~1 keeps its number. Its labels carry the prefix \file{dmv:sum:}, and its citation key \file{oeis} is \file{oeisA373273} here. This Part is self-contained: its package states that no A373271 theorem or coefficient is used as a premise.}
+\begin{partabstract}
+For an integer partition, sum each positive multiplicity value once, however many part sizes have that multiplicity. Let $a_n$ be the total of this statistic over the partitions of $n$, and let $p(n)$ be the partition number. We prove an expansion of $a_n/p(n)$ through its five scales $\sqrt n\log n$, $\sqrt n$, $n^{1/4}$, $\log n$, and $1$, with error $O(n^{-1/4})$. A weighted matched decomposition is essential: the square of a nonlocal correction and a finite-difference tail both contribute to the constant. Mellin continuation evaluates the logarithmic leading terms; convergent regularized integrals produce constants whose zeta derivatives cancel. A positive-product estimate localizes the full coefficient integral on the entire circle, and local analytic differentiation of saddle monomials transfers logarithmic amplitudes. An explicit smooth template gives eventual strict increase and two ceiling bounds for the first crossing of a large threshold, with pre-rounding uncertainty $O((\log Y)^{-1/2}/\log\log Y)$. Exact computations through $2500$, independent positive dynamic programming through $450$, and partition enumeration through $43$ accompany the proof. These finite checks do not certify asymptotic error constants. No explicit numerical onset, all-orders expansion, distributional theorem, or absolute novelty assertion is supplied.
+\end{partabstract}
+
+\section{The statistic and the results}\label{dmv:sum:sec:results}
+Write $\lambda=(1^{M_1}2^{M_2}\cdots)$ for a partition of $n$, where $\sum_j jM_j=n$. Define
+\begin{equation}\label{dmv:sum:eq:def}
+ W(\lambda)=\sum_{\substack{m\ge1:\ M_j=m\text{ for some }j}}m,
+ \qquad a_n=\sum_{\lambda\vdash n}W(\lambda),\qquad a_0=0.
+\end{equation}
+This is OEIS A373273 \cite{oeisA373273}. For example, $(5,5,3,3,3,1)$ has multiplicity values $2,3,1$, so $W=6$, whereas $(5,5,3,3,1)$ has values $2,2,1$, so $W=3$. Zero is excluded, and repeated positive values are summed only once. Thus $W$ is different from the number of distinct multiplicities and from the total number of parts. Under the uniform measure on partitions of $n$, $\E_nW=a_n/p(n)$.
+
+Use the constants and scaled variables
+\begin{equation}\label{dmv:sum:eq:notation}
+ A=\frac{\pi^2}{6},\quad N=n-\frac1{24},\quad
+ \tau=\sqrt{\frac A N},\quad \ell=\log\frac1\tau,
+ \quad c=\frac32-\frac\gamma2,\quad K=\frac{9607}{20736}-\frac\gamma{24},
+\end{equation}
+where $\gamma$ is Euler's constant. All asymptotic statements concern $n\to\infty$ or $t\to0$ in a specified fixed sector. Complex error terms are bounds in modulus. Implied constants exist but are not assigned numerical values here.
+
+\begin{theorem}[Five-scale mean]\label{dmv:sum:thm:mean}
+With \eqref{dmv:sum:eq:notation},
+\begin{equation}\label{dmv:sum:eq:mean}
+\begin{split}
+\frac{a_n}{p(n)}={}&\frac{\ell/2+c}{\tau}-\frac{7\sqrt\pi}{16\sqrt\tau}
+ +\left(\frac1{24}+\frac1{4A}\right)\ell\\
+ &+K+\frac{7/8-\gamma/4}{A}+O(\sqrt\tau).
+\end{split}
+\end{equation}
+Equivalently, putting $k=\sqrt A$ and $d=1/24+1/(4A)$,
+\begin{equation}\label{dmv:sum:eq:mean-n}
+\begin{split}
+\frac{a_n}{p(n)}={}&\frac{\sqrt n}{4k}\log n
+ +\frac{\sqrt n}{k}\left(c-\frac12\log k\right)
+ -\frac{7\sqrt\pi}{16\sqrt k}n^{1/4}+\frac d2\log n\\
+ &+K+\frac{7/8-\gamma/4}{A}-d\log k+O(n^{-1/4}).
+\end{split}
+\end{equation}
+\end{theorem}
+Replacing $N$ by $n$ in \eqref{dmv:sum:eq:mean-n} changes the first term by $O(n^{-1/2}\log n)$, which is smaller than the stated error. In particular the leading mean is $\sqrt{6n}\log n/(4\pi)$.
+
+\begin{theorem}[Absolute expansion]\label{dmv:sum:thm:absolute}
+Let $C_N=\ee^{2A/\tau}/(4\sqrt3 N)$. Then
+\begin{equation}\label{dmv:sum:eq:absolute}
+ a_n=C_N\left[\frac{\ell/2+c}{\tau}-\frac{7\sqrt\pi}{16\sqrt\tau}
+                 +\frac\ell{24}+K+\frac1{8A}+O(\sqrt\tau)\right].
+\end{equation}
+The sequence $(a_n)$ is eventually strictly increasing.
+\end{theorem}
+
+The entire constant in \eqref{dmv:sum:eq:absolute}, including $1/(8A)$, is retained for the inverse error rate stated below. To state the inverse precisely, let
+\begin{equation}\label{dmv:sum:eq:phi}
+\begin{split}
+\Phi(x)=\frac{\ee^{2kx}}{4\sqrt3 x^2}\bigg[
+ &\frac{x}{k}\left(\frac12\log\frac{x}{k}+c\right)
+ -\frac{7\sqrt\pi}{16\sqrt k}\sqrt x\\
+ &+\frac1{24}\log\frac{x}{k}+K+\frac1{8A}\bigg].
+\end{split}
+\end{equation}
+This is positive and strictly increasing for sufficiently large real $x$.
+
+\begin{theorem}[Shrinking first-crossing bracket]\label{dmv:sum:thm:inverse}
+For large $Y>0$, let $x_Y$ be the unique large solution of $\Phi(x_Y)=Y$, and put $v_Y=x_Y^2+1/24$. There exist constants $X>1$, $M>0$, and an integer $n_0$ such that the following construction is valid. Set
+\begin{equation}\label{dmv:sum:eq:H}
+ H_\pm(x)=\log\Phi(x)\pm M\frac{x^{-3/2}}{\log x}\qquad(x\ge X).
+\end{equation}
+Both functions are strictly increasing, and for all sufficiently large $Y$ the roots
+\begin{equation}\label{dmv:sum:eq:roots}
+ H_+(x_-(Y))=\log Y,\qquad H_-(x_+(Y))=\log Y
+\end{equation}
+exist beyond $\sqrt{n_0-1/24}$. Then, for $\nu(Y)=\min\{n\ge0:a_n\ge Y\}$,
+\begin{equation}\label{dmv:sum:eq:ceiling}
+ \left\lceil x_-(Y)^2+\frac1{24}\right\rceil\le\nu(Y)
+ \le\left\lceil x_+(Y)^2+\frac1{24}\right\rceil,
+\end{equation}
+where each unrounded endpoint is
+\begin{equation}\label{dmv:sum:eq:width}
+ v_Y+O\!\left(\frac{(\log Y)^{-1/2}}{\log\log Y}\right).
+\end{equation}
+The two ceilings are eventually equal or adjacent. The statement does not specify numerical $X,M,n_0$, and does not assert a single exact ceiling for every $Y$.
+\end{theorem}
+
+\begin{remark}[{[write]} The OEIS entry, quoted, 7~October 2026]\label{dmv:sum:rem:oeis}
+OEIS A373273, read on 7~October 2026 in the internal format, is still at
+revision \#14 (1~June 2024), the revision the source read; its text is
+identical, line for line, to the shipped record
+\file{data/198-sum-A373273.seq}. Author Olivier G\'erard (29~May 2024),
+offset~1; name ``a(n) = sum of all distinct multiplicities in every integer
+partition of n.''; one comment, ``Sum of the rows of triangle A373272.'';
+G\'erard's Mathematica program; 43 data terms (its b-file is synthesized from
+them). It states no formula, asymptotic or conjecture. All 43 terms agree
+with the shipped table \file{data/198-sum-exact_A373273.txt}, and the
+write's own enumeration of all partitions of $n\le55$ by multiplicity vectors
+agrees with the table. A373271 (Part~I) points to this entry
+(Remark~\ref{dmv:cnt:rem:oeis}). Nothing was submitted to the OEIS.
+\end{remark}
+
+\section{Exact generating functions and finite models}\label{dmv:sum:sec:model}
+Let $P(q)=\prod_{j\ge1}(1-q^j)^{-1}=\sum_{n\ge0}p(n)q^n$. Under the Boltzmann partition measure at real $q\in(0,1)$, the $M_j$ are independent with
+\begin{equation}
+ \Prob_q(M_j=m)=(1-q^j)q^{mj}.
+\end{equation}
+For $q=\ee^{-t}$ define
+\begin{equation}\label{dmv:sum:eq:Q}
+ p_{jm}=(1-\ee^{-tj})\ee^{-tmj},\qquad
+ Q_m(q)=\prod_{j\ge1}(1-(1-q^j)q^{mj}).
+\end{equation}
+Thus $Q_m$ is the probability that multiplicity $m$ is absent. Linearity of expectation, applied to $W=\sum_{m\ge1}m\,1_{\{M_j=m\text{ for some }j\}}$, gives
+\begin{equation}\label{dmv:sum:eq:gf}
+ \sum_{n\ge0}a_nq^n=P(q)w(t),\qquad w(t)=\sum_{m\ge1}m(1-Q_m(\ee^{-t})).
+\end{equation}
+The identity also holds formally: the $m$th summand starts in degree $m$. On a compact subset of $\Rea t>0$, $\sum_{m,j}m|p_{jm}|<\infty$, and
+\[
+ |1-Q_m|\le\left(\sum_j|p_{jm}|\right)\exp\left(\sum_j|p_{jm}|\right),
+\]
+which proves local absolute convergence and analyticity.
+
+The product
+\begin{equation}\label{dmv:sum:eq:avoid}
+ P_m(q)=P(q)Q_m(q)=\prod_{j\ge1}\left(\frac1{1-q^j}-q^{mj}\right)
+\end{equation}
+has nonnegative coefficients: it counts partitions avoiding the multiplicity $m$. Hence
+\begin{equation}\label{dmv:sum:eq:finite}
+ F_n(q)=\sum_{m=1}^n m(P(q)-P_m(q)),\qquad [q^n]F_n(q)=a_n.
+\end{equation}
+This positive interpretation later controls the full coefficient circle without imposing a global hypothesis on $w$.
+
+For a cutoff $T$, an exact integer algorithm first computes $p(0),\ldots,p(T)$, then for each $1\le m\le T$ multiplies the finite factors
+\begin{equation}\label{dmv:sum:eq:polynomial}
+ Q_m(q)\equiv\prod_{1\le j\le T/m}(1-q^{mj}+q^{(m+1)j})\pmod{q^{T+1}}.
+\end{equation}
+Terms of degree greater than $T$ are discarded. Form the polynomial $w=\sum_{m=1}^T m(1-Q_m)$ and convolve with $p$. Descending coefficient updates, or separate old and new arrays, avoid accidentally reusing a factor. The construction uses integer arithmetic only. Its straightforward upper cost is $O(T^2\log T)$ arithmetic operations for the products plus $O(T^2)$ for the final convolution; this counts integer operations, not bit complexity.
+
+A genuinely different check constructs each $P_m$ by positive allowed-occupancy dynamic programming: for part size $j$, convolve with $\sum_{r\ge0,\ r\ne m}q^{rj}$, truncated at the cutoff. This never computes $Q_m$ or a signed collision correction. A third check enumerates descending partitions and sums the set of positive adjacent gaps, including the last part minus zero. Under Ferrers conjugation these gaps are the positive multiplicities of the conjugate partition; summing over all partitions therefore gives the same total. The accompanying computations compare these models in Section~\ref{dmv:sum:sec:computation}.
+
+\section{Uniform estimates in a zero-free sector}\label{dmv:sum:sec:sector}
+Fix the closed sector $|\arg t|\le\theta_0=\pi/12$, and write $r=|t|$, $h=\sqrt t$. All powers and $\log t$ use their principal branches in this sector. Define
+\begin{align}\label{dmv:sum:eq:basic}
+ B(z)&=(\ee^z-1)^{-1},& b(z)&=B(z)-z^{-1},\\
+ A_m&=\frac1{tm(m+1)},&
+ \mu_m&=B(tm)-B((m+1)t),& \delta_m&=\mu_m-A_m,\nonumber\\
+ S_{k,m}&=\sum_{j\ge1}p_{jm}^k.&&\nonumber
+\end{align}
+Regularity at zero and exponential decay of $B$ at sector infinity give
+\begin{equation}\label{dmv:sum:eq:bder}
+ b'(0)=\frac1{12},\quad b''(z)=O(z)\ (z\to0),\qquad
+ |b^{(k)}(z)|\le\frac{C_k}{1+|z|^{k+1}}\quad(k\ge1).
+\end{equation}
+In particular,
+\begin{equation}\label{dmv:sum:eq:delta}
+\begin{split}
+ \delta_m&=-t\int_0^1b'(t(m+u))\,du,\qquad
+ |\delta_m|\le\frac{Cr}{1+(rm)^2},\\
+ \delta_m&=-tb'(tm)+O\!\left(\frac{r^2}{1+(rm)^3}\right).
+\end{split}
+\end{equation}
+For $z$ in the sector, integration of $\ee^{-vz}$ over $0\le v\le1$ yields
+\begin{equation}\label{dmv:sum:eq:zerofree}
+ |(1-\ee^{-z})\ee^{-mz}|\le |z|\ee^{-m\Rea z}
+ \le\frac1{em\cos\theta_0}<1.
+\end{equation}
+Thus each factor has a logarithm given by its convergent power series. The sum of these factor logarithms defines an analytic logarithm of $Q_m$. It need not coincide with the principal logarithm of the whole product; no such identification is used.
+
+For fixed $k\ge1$, the bound $|p_{jm}|\le rj\ee^{-mj\Rea t}$ and boundedness of $a^{k+1}\sum_{j\ge1}j^k\ee^{-aj}$ imply
+\begin{equation}\label{dmv:sum:eq:Sbound}
+ |S_{k,m}|\le\frac{C_k}{rm^{k+1}},\qquad \sup_j|p_{jm}|\le C/m.
+\end{equation}
+We repeatedly use, for $k>1$ and fixed $c_1>0$,
+\begin{equation}\label{dmv:sum:eq:sumest}
+ \sum_{m\ge1}m^{-k}\ee^{-c_1/(rm^2)}=O(r^{(k-1)/2}).
+\end{equation}
+An integral comparison after $m=x/\sqrt r$ proves this; the mesh-end pieces satisfy the same bound.
+
+For each of finitely many small $m$, put
+\[
+ f_m(z)=-\log(1-(1-\ee^{-z})\ee^{-mz}).
+\]
+Its chosen logarithm is analytic by \eqref{dmv:sum:eq:zerofree}. The function vanishes at zero, decays at infinity, and has integrable derivatives on the sector rays. Ray Euler--Maclaurin summation, followed by rotation to the positive ray, gives
+\begin{equation}\label{dmv:sum:eq:smallm}
+ -\log Q_m=I_m/t+O(r),\qquad I_m=\int_0^\infty f_m(y)\,dy>0.
+\end{equation}
+Hence $Q_m$ and the approximants $\ee^{-A_m}$ times fixed inverse powers of $r$ are exponentially small for fixed $m$. This disposes of the range where a nonlinear exponential expansion alone is not uniformly small.
+
+\begin{writenote}[Part~I's counterpart, 7 October 2026]
+This section repeats, for the same products $Q_m$, estimates that Part~I
+proves in Section~\ref{dmv:cnt:sec:sector} and Lemma~\ref{dmv:cnt:lem:powersum}:
+\eqref{dmv:sum:eq:zerofree} is~\eqref{dmv:cnt:eq:zero-free},
+\eqref{dmv:sum:eq:Sbound} is~\eqref{dmv:cnt:eq:Sbound},
+\eqref{dmv:sum:eq:sumest} is~\eqref{dmv:cnt:eq:powerweight},
+\eqref{dmv:sum:eq:smallm} is~\eqref{dmv:cnt:eq:smallm}, and the first line
+of~\eqref{dmv:sum:eq:delta} is~\eqref{dmv:cnt:eq:mu}--\eqref{dmv:cnt:eq:delta};
+the second-order form $\delta_m=-tb'(tm)+O(r^2/(1+(rm)^3))$ and the bound on
+$b''$ near zero are new here. It is kept because the later sections of this
+Part cite these displays by their own labels; the two proofs are the same
+argument.
+\end{writenote}
+
+\section{A convergent weighted matched decomposition}\label{dmv:sum:sec:match}
+Define the seven separately convergent sums
+\begin{align}\label{dmv:sum:eq:pieces}
+ L(t)&=\sum_{m\ge1}B(tm),&
+ C_0(t)&=\sum_{m\ge1}m(1-\ee^{-A_m}-A_m),\nonumber\\
+ D(t)&=\sum_{m\ge1}m\delta_m(\ee^{-A_m}-1),&
+ E(t)&=-\frac12\sum_{m\ge1}m\ee^{-A_m}\delta_m^2,\\
+ H_2(t)&=\frac12\sum_{m\ge1}m\ee^{-A_m}S_{2,m},&
+ H_3(t)&=\frac13\sum_{m\ge1}m\ee^{-A_m}S_{3,m},\nonumber\\
+ H_{22}(t)&=-\frac18\sum_{m\ge1}m\ee^{-A_m}S_{2,m}^2.&&\nonumber
+\end{align}
+The individual sum $\sum m\delta_m$ diverges and is never separated from its convergent combinations.
+
+\begin{lemma}[Weighted matching]\label{dmv:sum:lem:matching}
+Uniformly in the fixed sector,
+\begin{equation}\label{dmv:sum:eq:matched}
+ w=L+C_0+D+E+H_2+H_3+H_{22}+O(\sqrt r).
+\end{equation}
+\end{lemma}
+\begin{proof}
+The absolutely convergent telescoping identity $\sum_m m\mu_m=\sum_m B(tm)=L$ makes $L+C_0$ the convergent sum $\sum_m m(1-\ee^{-A_m}+\delta_m)$. Adding $D$ changes the linear delta contribution to its exponentially damped version.
+
+For $m$ above a fixed sufficiently large $M$, logarithmic expansion gives
+\[
+ -\log Q_m=A_m+\delta_m+\tfrac12S_{2,m}+\tfrac13S_{3,m}
+                  +O((rm^5)^{-1}).
+\]
+The nonlinear logarithmic part is $O((rm^3)^{-1})$, at most a small fixed fraction of $\Rea A_m$ for large $M$. The delta part is $O(r)$ absolutely; it need not be relatively small compared with $A_m$ in the far tail. Thus integral Taylor remainders of the exponential are dominated by a polynomial prefactor times $\ee^{-c_1/(rm^2)}$. Retain the linear delta, $S_2/2$, and $S_3/3$ terms, and the negative half-squares of delta and $S_2/2$. They give exactly \eqref{dmv:sum:eq:pieces}.
+
+Here is the weighted accounting for all omitted terms:
+\begin{align*}
+ \text{logarithmic tail: }&
+ Cr^{-1}\sum_m m^{-4}\ee^{-c_1/(rm^2)}=O(\sqrt r),\\
+ \text{quadratic nonlinear cross terms: }&
+ Cr^{-2}\sum_m m^{-6}\ee^{-c_1/(rm^2)}=O(\sqrt r),\\
+ \text{cubic nonlinear terms: }&
+ Cr^{-3}\sum_m m^{-8}\ee^{-c_1/(rm^2)}=O(\sqrt r),\\
+ \text{delta--}S_2\text{ term: }&
+ Cr\cdot r^{-1}\sum_m m^{-2}\ee^{-c_1/(rm^2)}=O(\sqrt r).
+\end{align*}
+Extra delta factors or replacement of $S_2$ by $S_3$ only improve these estimates. The pure delta-cubic remainder is bounded by
+\[
+ C\sum_m m|\delta_m|^3\le Cr^3\sum_m\frac{m}{(1+(rm)^2)^3}=O(r).
+\]
+Higher terms are bounded by these same expressions through the Taylor integral remainder and the damping just established. Finally \eqref{dmv:sum:eq:smallm} handles the finite range $m<M$ exponentially. All bounds refer to convergent combinations, not a rearrangement of $\sum m\delta_m$.
+\end{proof}
+
+\section{Mellin evaluation of the leading terms}\label{dmv:sum:sec:mellin}
+The classical Mellin kernel of $L$ is $\Gamma(s)\zeta(s)^2$. Its double pole at $s=1$ and simple pole at zero give
+\begin{equation}\label{dmv:sum:eq:L}
+ L(t)=\frac{\log(1/t)+\gamma}{t}+\frac14+O(r).
+\end{equation}
+For instance, moving to $\Rea s=-3/2$ crosses also the residue $-t/144$, while the new line is $O(r^{3/2})$. Gamma decay dominates the polynomial vertical growth of zeta uniformly in our sector.
+
+For $C_0$, the Mellin transform of $1-\ee^{-x}-x$ is $-\Gamma(s)$ on $-2<\Rea s<-1$. Consequently
+\begin{equation}\label{dmv:sum:eq:Cmellin}
+ C_0(t)=\frac1{2\pi\ii}\int_{(a)}[-\Gamma(-u)]Z(u)t^{-u}\,du,
+ \quad Z(u)=\sum_{m\ge1}\frac{m}{[m(m+1)]^u},\quad 1<a<2.
+\end{equation}
+Absolute convergence justifies the initial interchange. We spell out the continuation needed for moving this contour, because formal expansion of $Z$ at zero would give a wrong constant.
+
+Separate $m=1$ and expand $(1+1/m)^{-u}$ to $J$ terms:
+\begin{equation}\label{dmv:sum:eq:Zcont}
+ Z(u)=2^{-u}+\sum_{j=0}^{J-1}\frac{(-1)^j(u)_j}{j!}
+                [\zeta(2u+j-1)-1]+R_J(u).
+\end{equation}
+The Taylor remainder is obtained from
+\begin{equation}\label{dmv:sum:eq:Zrem}
+\begin{split}
+ &(1+x)^{-u}-\sum_{j<J}\frac{(-1)^j(u)_j}{j!}x^j\\
+ &\hspace{1em}=\frac{(-1)^J(u)_Jx^J}{(J-1)!}
+            \int_0^1(1-v)^{J-1}(1+vx)^{-u-J}\,dv.
+\end{split}
+\end{equation}
+Here $x=1/m$ is positive real. Its modulus has no exponential dependence on $\Ima u$. Hence $R_J$ converges normally for $\Rea u>(2-J)/2$ and has polynomial vertical growth on closed substrips. Taking $J=4$ permits the line $\Rea u=-3/4$. Gamma decay, even after multiplication by $t^{-u}$, is $\ee^{-(\pi/2-\theta_0)|\Ima u|}$ up to polynomial factors; the shifted integral is $O(r^{3/4})$.
+
+At $u=1$ the finite part is
+\[
+ Z(u)=\frac1{2(u-1)}+\gamma-1+O(u-1).
+\]
+Indeed subtracting $\zeta(2u-1)$ leaves at $u=1$ the convergent sum $\sum_m(1/(m+1)-1/m)=-1$. Combining this with
+$-\Gamma(-u)=-1/(u-1)+1-\gamma+O(u-1)$ gives the contribution
+\[
+ t^{-1}\left[\tfrac12\log t+\tfrac32(1-\gamma)\right].
+\]
+At $u=1/2$, the residue of $Z$ is $-1/4$, producing $-\sqrt\pi/(2\sqrt t)$. At zero,
+\[
+ Z(0)=\zeta(-1)+\frac14=\frac16.
+\]
+The $1/4$ is the removable value of $(u)_2\zeta(2u+1)/2$; it cannot be dropped by substituting $u=0$ termwise into the original divergent series. The pole of $-\Gamma(-u)$ thus contributes $1/6$. Finally at $u=-1/2$ the residue of $Z$ is $1/32$, producing $-\sqrt\pi\sqrt t/32$, inside our retained error. We have proved
+\begin{equation}\label{dmv:sum:eq:C0}
+ C_0(t)=\frac{-\tfrac12\log(1/t)+\tfrac32(1-\gamma)}{t}
+            -\frac{\sqrt\pi}{2\sqrt t}+\frac16+O(\sqrt r).
+\end{equation}
+
+\section{Nonlocal matching and convergent regularization}\label{dmv:sum:sec:nonlocal}
+\subsection{The linear delta correction}
+In $D$, replace $\delta_m$ by $-tb'(tm)$. The error is $O(r\log(1/r))$, by \eqref{dmv:sum:eq:delta} and
+\[
+ |1-\ee^{-A_m}|\le C\min(1,(rm^2)^{-1}),
+\]
+splitting the sum at $r^{-1/2}$ and $r^{-1}$. The replacement of $A_m$ by $(tm^2)^{-1}$ next has error bounded by
+\[
+ C\sum_m m^{-2}\ee^{-c_1/(rm^2)}=O(\sqrt r).
+\]
+Set $f_t(y)=yb'(y)(1-\ee^{-t/y^2})$. We obtain
+\begin{equation}\label{dmv:sum:eq:Dint}
+ D(t)=\sum_{m\ge1}f_t(tm)+O(\sqrt r)
+     =\frac1t\int_0^\infty yb'(y)(1-\ee^{-t/y^2})\,dy+O(\sqrt r).
+\end{equation}
+The integral initially runs along the $t$ ray. Its rotation to the positive axis is valid: $b'$ has no intervening poles, $\arg(t/y^2)$ stays in $[-\theta_0,\theta_0]$, and the small and large arcs vanish.
+
+Here is a uniform mesh-error justification. The profile $f_t$ vanishes at both endpoints and $\int|f_t''(y)|\,|dy|=O(1)$ along the sector ray. Split at $|y|=\sqrt r$ and $1$. Transition derivatives contain $r|y|^{-3}\ee^{-cr/|y|^2}$ and $r^2|y|^{-5}\ee^{-cr/|y|^2}$, each with bounded integral. On $\sqrt r\le|y|\le1$, the worst term is $O(r|y|^{-3})$, again with bounded integral. At infinity it is $O(r|y|^{-5})$; the remaining terms use $b''(y)=O(y)$ at zero. Second-order Euler--Maclaurin therefore bounds the mesh error by $O(r)$.
+
+Let $b_0=1/12$. On the principal sector branch, define the exponential integral by
+\[
+ E_1(t)=-\gamma-\log t-\sum_{j\ge1}\frac{(-t)^j}{j\,j!}.
+\]
+For positive $t$, this equals $\int_t^\infty \ee^{-u}\,du/u$. The singular part is explicitly integrable:
+\begin{equation}\label{dmv:sum:eq:E1}
+ \frac1t\int_0^1y(1-\ee^{-t/y^2})\,dy
+ =\frac12\left(\frac{1-\ee^{-t}}t+E_1(t)\right)
+ =\frac12[\log(1/t)+1-\gamma]+O(r).
+\end{equation}
+After subtracting $b_0$ on $(0,1)$, replace the kernel $y(1-\ee^{-t/y^2})/t$ by $1/y$. The error is $O(r\log(1/r))$: its difference is bounded by $C\min(|y|^{-1},r|y|^{-3})$, while $b'(y)-b_0=O(y^2)$ at zero. The remaining convergent integral is
+\begin{equation}\label{dmv:sum:eq:RD}
+ R_D=\int_0^1\frac{b'(y)-1/12}{y}\,dy+\int_1^\infty\frac{b'(y)}y\,dy
+       =-\zeta'(-1)-\frac\gamma{12}.
+\end{equation}
+To justify this value without integrating divergent pieces, set $F(y)=\ee^y/(\ee^y-1)^2$. The transform of $-F$ is $-\Gamma(s)\zeta(s-1)$ initially on $\Rea s>2$. Its singular-subtraction continuation is
+\[
+ \int_0^1y^{s-1}b'(y)\,dy-\int_1^\infty y^{s-1}F(y)\,dy-\frac1{s-2}.
+\]
+For $0<\Rea s<2$, the last term equals $\int_1^\infty y^{s-3}\,dy$, so this is the convergent Mellin transform of $b'$. The expansion
+\[
+ -\Gamma(s)\zeta(s-1)=\frac1{12s}-\zeta'(-1)-\frac\gamma{12}+O(s)
+\]
+then gives \eqref{dmv:sum:eq:RD} as its finite part at zero. Consequently,
+\begin{equation}\label{dmv:sum:eq:D}
+ D(t)=\frac1{24}\log(1/t)+\frac1{24}-\frac\gamma8-\zeta'(-1)+O(\sqrt r).
+\end{equation}
+
+\subsection{The delta square cannot be discarded}
+Replacing $\delta_m$ by $-tb'(tm)$ in $E$ costs $O(r)$. Replacing $\ee^{-A_m}$ by $1$ costs $O(r\log(1/r))$, bounded by
+\[
+ Cr^2\sum_m\frac{m}{(1+(rm)^2)^2}\min(1,(rm^2)^{-1}).
+\]
+A ray Riemann sum and rotation yield
+\begin{equation}\label{dmv:sum:eq:Eint}
+ E(t)=-\frac12\int_0^\infty yb'(y)^2\,dy+O(r\log(1/r)).
+\end{equation}
+This integral is absolutely convergent, since $b'$ is bounded at zero and $O(y^{-2})$ at infinity. Its Mellin identity is
+\begin{equation}\label{dmv:sum:eq:bsquare}
+ \int_0^\infty y^{s-1}b'(y)^2\,dy
+ =\frac{\Gamma(s)}6[\zeta(s-3)-\zeta(s-1)]-2\Gamma(s-2)\zeta(s-3),
+\end{equation}
+for $0<\Rea s<4$, with removable values interpreted by continuation. For a convergent proof let $G=F^2-2F/y^2$. The expansion
+\[
+ F(y)^2=\sum_{j\ge1}\frac{j^3-j}{6}\ee^{-jy}
+\]
+proves that the right side is the transform of $G$ for $\Rea s>4$. At zero $G=-y^{-4}+O(1)$; the $y^{-2}$ terms cancel. Its continuation is
+\[
+ \int_0^1y^{s-1}(G+y^{-4})\,dy+\int_1^\infty y^{s-1}G\,dy-\frac1{s-4}.
+\]
+For $0<\Rea s<4$ this is exactly the convergent transform of $G+y^{-4}=b'^2$, proving \eqref{dmv:sum:eq:bsquare}. At $s=2+\epsilon$, the two right-hand terms respectively equal
+\[
+ -\frac1{6\epsilon}-\frac{13}{72}+O(\epsilon),\qquad
+ \frac1{6\epsilon}-2\zeta'(-1)-\frac\gamma6+O(\epsilon).
+\]
+Therefore
+\begin{equation}\label{dmv:sum:eq:E}
+ \int_0^\infty yb'(y)^2\,dy=-\frac{13}{72}-2\zeta'(-1)-\frac\gamma6,
+ \qquad
+ E(t)=\frac{13}{144}+\zeta'(-1)+\frac\gamma{12}+O(r\log(1/r)).
+\end{equation}
+The $\zeta'(-1)$ terms cancel between $D$ and $E$, and their combined gamma contribution is $-\gamma/24$. This constant-order square term is particular to the weighted calculation.
+
+\section{Collision terms and the far-tail constant}\label{dmv:sum:sec:collisions}
+\subsection{The quadratic collision term}
+Finite differences give the exact decomposition
+\begin{align}\label{dmv:sum:eq:S2}
+ S_{2,m}&=T_{2,m}+E_{2,m},&
+ T_{2,m}&=\frac1{2tm(m+1)(2m+1)},\nonumber\\
+ E_{2,m}&=b(2tm)-2b((2m+1)t)+b((2m+2)t)\\
+ &=t^2b''(2tm)+O\!\left(\frac{r^3}{1+(rm)^4}\right).\nonumber
+\end{align}
+Its weighted remainder sums to $O(r)$. Replacing $\ee^{-A_m}$ by $1$ in its leading finite-difference term also costs $O(r)$, using $b''(y)=O(y)$ near zero and $O(y^{-3})$ at infinity, with the usual splits at $r^{-1/2}$ and $r^{-1}$. Thus
+\begin{equation}\label{dmv:sum:eq:tail16}
+ \frac12\sum_m m\ee^{-A_m}E_{2,m}
+ =\frac12\int_0^\infty yb''(2y)\,dy+O(r)=-\frac1{16}+O(r).
+\end{equation}
+Indeed this integral is $\frac18\int_0^\infty ub''(u)\,du=-\frac18[b(\infty)-b(0)]=-1/16$. The rational approximation $T_{2,m}$ alone misses this constant.
+
+For its rational part use the centered coordinate $z=h(m+1/2)$. Exactly,
+\begin{equation}\label{dmv:sum:eq:center}
+ \frac12mT_{2,m}\ee^{-A_m}
+ =\ee^{-1/(z^2-h^2/4)}\left[\frac1{8(z^2-h^2/4)}-
+                       \frac h{16z(z^2-h^2/4)}\right].
+\end{equation}
+For the required summed precision this is
+\[
+ \ee^{-1/z^2}\left(\frac1{8z^2}-\frac h{16z^3}\right)
+ +O\!\left(|h|^2\ee^{-c_1/|z|^2}(|z|^{-4}+|z|^{-6})\right).
+\]
+One first separates finitely many small $m$ as in \eqref{dmv:sum:eq:smallm}; elsewhere Taylor remainders preserve the damping. The last expression sums to $O(|h|)$. The profiles and all derivatives vanish at zero and have integrable tails. Ray Euler--Maclaurin gives their integral divided by $h$; the half-step displacement has no constant endpoint correction. Since
+\[
+ \int_0^\infty z^{-2}\ee^{-1/z^2}\,dz=\frac{\sqrt\pi}2,
+ \qquad \int_0^\infty z^{-3}\ee^{-1/z^2}\,dz=\frac12,
+\]
+the rational part is $\sqrt\pi/(16\sqrt t)-1/32+O(\sqrt r)$. Together with \eqref{dmv:sum:eq:tail16},
+\begin{equation}\label{dmv:sum:eq:H2}
+ H_2(t)=\frac{\sqrt\pi}{16\sqrt t}-\frac3{32}+O(\sqrt r).
+\end{equation}
+
+\subsection{The remaining local constants}
+The third finite difference similarly yields
+\begin{equation}\label{dmv:sum:eq:S3}
+ S_{3,m}=\frac6{t(3m)(3m+1)(3m+2)(3m+3)}
+           +O\!\left(\frac{r^3}{1+(rm)^4}\right).
+\end{equation}
+The weighted error sums to $O(r)$. With $x=hm$, the leading rational profiles are
+\begin{equation}\label{dmv:sum:eq:profiles}
+ \frac m3S_{3,m}=\frac{2h}{81x^3}+O(|h|^2|x|^{-4}),\qquad
+ -\frac m8T_{2,m}^2=-\frac h{128x^5}+O(|h|^2|x|^{-6}),
+\end{equation}
+where the first expansion refers to the rational part after its already bounded finite-difference error. In $H_{22}$ the replacement of $S_2$ by $T_2$ has weighted error $O(r^2\log(1/r))$: use
+\[
+ |E_{2,m}|\le Cr^2\min(rm,(rm)^{-3})
+\]
+with comparable bounds near $rm=1$, then split at $r^{-1}$ and use exponential damping below it. This is smaller than the required error.
+
+Applying the same damped Euler--Maclaurin argument to \eqref{dmv:sum:eq:profiles} gives
+\begin{equation}\label{dmv:sum:eq:H3H22}
+ H_3(t)=\frac1{81}+O(\sqrt r),\qquad
+ H_{22}(t)=-\frac1{256}+O(\sqrt r).
+\end{equation}
+All profile integrals follow from
+\[
+ \int_0^\infty x^{-j}\ee^{-1/x^2}\,dx=\frac12\Gamma\left(\frac{j-1}2\right),\qquad j>1.
+\]
+Ray rotation is harmless since $|\arg h|\le\pi/24$, where the zero-end exponential decays.
+
+\begin{proposition}[Sector expansion]\label{dmv:sum:prop:radial}
+Uniformly for $|\arg t|\le\pi/12$ as $t\to0$,
+\begin{equation}\label{dmv:sum:eq:radial}
+ w(t)=\frac{\tfrac12\log(1/t)+c}{t}-\frac{7\sqrt\pi}{16\sqrt t}
+                     +\frac1{24}\log(1/t)+K+O(\sqrt{|t|}).
+\end{equation}
+\end{proposition}
+\begin{proof}
+Combine \eqref{dmv:sum:eq:matched}, \eqref{dmv:sum:eq:L}, \eqref{dmv:sum:eq:C0}, \eqref{dmv:sum:eq:D}, \eqref{dmv:sum:eq:E}, \eqref{dmv:sum:eq:H2}, and \eqref{dmv:sum:eq:H3H22}. The rational part of the constant is exactly
+\[
+ \frac14+\frac16+\frac{19}{144}-\frac3{32}+\frac1{81}-\frac1{256}
+       =\frac{9607}{20736}.
+\]
+The zeta derivatives cancel, and the surviving gamma term is $-\gamma/24$.
+\end{proof}
+
+\section{Localization on the whole coefficient circle}\label{dmv:sum:sec:circle}
+A sector expansion alone does not justify a coefficient asymptotic. We localize the actual finite function $F_n$ in \eqref{dmv:sum:eq:finite}. Put $\rho=\ee^{-\tau}$ and $q=\rho\ee^{\ii\theta}$. For part sizes $j$ with $1\le\tau j\le2$, the normalized $j$th factor of $P_m$ is the characteristic function of a geometric variable with its value $m$ excluded.
+
+When $m\ne1$, its probabilities at $0$ and $1$ have a uniform positive lower bound. When $m=1$, use instead the adjacent values $2$ and $3$. The normalization is at most $(1-\ee^{-1})^{-1}$, so the bounds are uniform in both $m$ and $j$. Squaring a characteristic function and retaining the contribution of this adjacent pair proves
+\begin{equation}\label{dmv:sum:eq:atom}
+ |Z_{m,j}(\theta)|\le\exp[-c_2\sin^2(j\theta/2)].
+\end{equation}
+The same estimate holds for unrestricted geometric factors in $P$.
+
+For the consecutive block of these $j$, we have
+\begin{equation}\label{dmv:sum:eq:block}
+ \sum_{j=\lceil1/\tau\rceil}^{\lfloor2/\tau\rfloor}\sin^2(j\theta/2)
+ \ge\frac{c_3}\tau\min(1,(\theta/\tau)^2),\qquad |\theta|\le\pi.
+\end{equation}
+For small $|\theta|/\tau$ use the small-angle estimate. On a fixed compact range of $|\theta|/\tau$ away from zero, the limiting integral over $[1,2]$ is strictly positive. For $|\theta|\ge C\tau$, the geometric-series bound gives $\sum\cos(j\theta)=O(1/|\sin(\theta/2)|)$, smaller than half the block length for large enough $C$. These ranges cover the whole circle, including rational angles.
+
+Since $P_m(\rho)\le P(\rho)$ and $\sum_{m\le n}m=n(n+1)/2$, we conclude that
+\begin{equation}\label{dmv:sum:eq:global}
+ |F_n(\rho\ee^{\ii\theta})|\le n(n+1)P(\rho)
+       \exp\left[-\frac{c_4}\tau\min(1,(\theta/\tau)^2)\right].
+\end{equation}
+Take the central arc $|\theta|\le\tau^{3/2}\log(1/\tau)$. Outside it, the integral is smaller than every fixed power of $\tau$ relative to the partition saddle scale, since the factor $n(n+1)=O(\tau^{-4})$ is only polynomial. The same unrestricted bound and the positive leading saddle term below show
+\[
+ p(n)\asymp\ee^{n\tau}P(\ee^{-\tau})\tau^{3/2}.
+\]
+On the central arc $t=\tau-\ii\theta$ lies in our fixed sector. Extending the $m$ sum from $m\le n$ to all $m$ costs exponentially little: for $m>n$, $\sum_j|p_{jm}|\le C\ee^{-\tau m}$, whence
+\begin{equation}\label{dmv:sum:eq:mextend}
+ \sum_{m>n}m|1-Q_m|\le C(n/\tau+\tau^{-2})\ee^{-\tau n}.
+\end{equation}
+Here $\tau n\sim A/\tau$. We therefore use \eqref{dmv:sum:eq:radial} only on the central arc and control its complement directly by \eqref{dmv:sum:eq:global}.
+
+\begin{writenote}[Part~I's counterpart, 7 October 2026]
+This whole-circle argument is Part~I's Section~\ref{dmv:cnt:sec:localization}
+(the adjacent-pair damping~\eqref{dmv:cnt:eq:factor-damping} and
+Lemma~\ref{dmv:cnt:lem:block}) applied to the weighted finite sum: the only
+change is the polynomial factor $n(n+1)$ in~\eqref{dmv:sum:eq:global} in place
+of $2n$ in~\eqref{dmv:cnt:eq:global}, and the weighted tail
+bound~\eqref{dmv:sum:eq:mextend}. It is kept because this Part's later
+sections cite it by its own labels.
+\end{writenote}
+
+\section{Saddle transfer and analytic parameter differentiation}\label{dmv:sum:sec:transfer}
+The modular transformation of the partition product gives, on the shrinking central arc,
+\begin{equation}\label{dmv:sum:eq:modular}
+ P(\ee^{-t})=\sqrt{\frac t{2\pi}}\exp(A/t-t/24)
+                        (1+O(\ee^{-c_5/\tau})).
+\end{equation}
+This classical partition saddle method, including logarithmic amplitudes, is substantial prior work; see Grabner, Knopfmacher, and Wagner \cite{gkw}. We give the needed local calculation explicitly rather than assuming their global multiplier hypothesis for $w$.
+
+Put $\eta=\tau^{3/2}\log(1/\tau)$ and define the normalized central coefficient integral
+\begin{equation}\label{dmv:sum:eq:Jsdef}
+ J_s=\frac{\ee^{n\tau}}{2\pi}\int_{-\eta}^{\eta}
+ P(\ee^{-\tau+\ii\theta})(\tau-\ii\theta)^s\ee^{-\ii n\theta}\,d\theta.
+\end{equation}
+Here $t=\tau-\ii\theta$ and $t^s$ uses the sector logarithm. This integral is analytic in complex $s$ on every fixed compact set. Write
+\[
+ t=\tau(1+\ii\sqrt{\tau/A}\,u),\qquad a=s+\tfrac12.
+\]
+The sign of $u$ is immaterial. Since $N=A/\tau^2$,
+\[
+ Nt+A/t=2A/\tau-u^2+\ii\sqrt{\tau/A}\,u^3+(\tau/A)u^4+\cdots.
+\]
+Combining this expansion with $(1+\ii\sqrt{\tau/A}\,u)^a$, the first relative integrated correction is
+\begin{align}\label{dmv:sum:eq:gaussian}
+ \frac\tau A\left[-\frac{a(a-1)}2\langle u^2\rangle
+ +(1-a)\langle u^4\rangle-\frac12\langle u^6\rangle\right]
+ =-\frac{(s+1)(s+2)}{4A}\tau,
+\end{align}
+where the Gaussian moments are $1/2,3/4,15/8$. To control the remainder, expand through the odd third order; its integral vanishes on the symmetric arc. The fourth-order remainder is bounded by a fixed polynomial times $\ee^{-c u^2}$ and has integrated size $O(\tau^2)$, uniformly on a slightly larger compact $s$ set. Gaussian tails past logarithmic width are smaller than every power. The leading normalization evaluates to $C_N$, so
+\begin{equation}\label{dmv:sum:eq:Jsabs}
+ J_s=C_N\tau^s\left[1-\frac{(s+1)(s+2)}{4A}\tau+O(\tau^2)\right].
+\end{equation}
+At $s=0$, with the excluded partition arcs already controlled,
+\begin{equation}\label{dmv:sum:eq:partition}
+ p(n)=C_N[1-\tau/(2A)+O(\tau^2)].
+\end{equation}
+Dividing gives the local monomial transfer
+\begin{equation}\label{dmv:sum:eq:Jsmean}
+ \frac{J_s}{p(n)}=\tau^s\left[1-\frac{s(s+3)}{4A}\tau+O(\tau^2)\right].
+\end{equation}
+No global definition of a multiplier $t(q)^s$ is needed.
+
+Analyticity and uniformity on the larger compact set permit Cauchy differentiation of the normalized remainder in $s$. Since $t^s\log(1/t)=-\partial_st^s$, we obtain
+\begin{align}\label{dmv:sum:eq:logtransfer}
+ J_{-1}/p(n)&=\tau^{-1}+1/(2A)+O(\tau),\nonumber\\
+ -\left.\partial_s(J_s/p(n))\right|_{s=-1}
+ &=\tau^{-1}\ell+\ell/(2A)+1/(4A)+O(\tau\ell).
+\end{align}
+Differentiating $\tau^s$ accounts for the extra logarithm. The first transfer correction of $t^{-1/2}$ is $O(\sqrt\tau)$; the omitted corrections for the remaining logarithm and constant are $O(\tau\ell)$.
+
+The error in \eqref{dmv:sum:eq:radial} needs no differentiated bound. On the central arc, $|t|\asymp\tau$ and
+\[
+ |P(\ee^{-t})\ee^{nt}|\le CP(\ee^{-\tau})\ee^{n\tau}
+                                  \ee^{-c\theta^2/\tau^3}.
+\]
+An absolute Gaussian integral therefore transfers its $O(\sqrt{|t|})$ bound to $O(\sqrt\tau)p(n)$. Combining this fact, \eqref{dmv:sum:eq:radial}, and \eqref{dmv:sum:eq:logtransfer} proves Theorem~\ref{dmv:sum:thm:mean}.
+
+Finally multiplication by \eqref{dmv:sum:eq:partition} cancels the canonical $\ell/(4A)$ and $c/(2A)$ contributions, leaving the constant $1/(8A)$ in \eqref{dmv:sum:eq:absolute}. The dropped relative $O(\tau^2)$ partition factor contributes $O(\tau\ell)$ inside that bracket, smaller than $O(\sqrt\tau)$. This proves the absolute expansion. The logarithmic-width localization yields superpolynomially small omitted arcs; no exponentially small final coefficient remainder is asserted.
+
+\begin{writenote}[Part~I's counterpart, 7 October 2026]
+The normalized transfer~\eqref{dmv:sum:eq:Jsmean} is the same formula as
+Part~I's Lemma~\ref{dmv:cnt:lem:transfer}, \eqref{dmv:cnt:eq:transfer}. It is
+reached here by a second route: the absolute integral~\eqref{dmv:sum:eq:Jsabs},
+with first correction $-(s+1)(s+2)\tau/(4A)$, is divided by the case $s=0$,
+whereas Part~I computes $c(\beta)$ in~\eqref{dmv:cnt:eq:c-beta} and subtracts
+$c(1/2)$; and here it is proved uniformly for complex $s$ on compact sets,
+which the logarithmic transfer~\eqref{dmv:sum:eq:logtransfer} needs and
+Part~I does not state. Both are kept.
+\end{writenote}
+
+\section{Monotonicity and inversion with integer endpoints}\label{dmv:sum:sec:inverse}
+Put $x_n=\sqrt{n-1/24}$ and $B=2k$. Equation~\eqref{dmv:sum:eq:absolute} says
+\begin{equation}\label{dmv:sum:eq:relative}
+ a_n=\Phi(x_n)\left[1+O\!\left(\frac{x_n^{-3/2}}{\log x_n}\right)\right],
+ \qquad (\log\Phi)'(x)=B+O(1/x).
+\end{equation}
+The logarithm has the same error, because the relative error tends to zero. The template gap between successive integers is
+\[
+ \log\Phi(x_{n+1})-\log\Phi(x_n)=\frac B{2x_n}+O(x_n^{-2}).
+\]
+The sum of the two pointwise error bounds is $O(x_n^{-3/2}/\log x_n)=o(x_n^{-1})$. Thus $a_{n+1}>a_n$ eventually. This does not differentiate an arbitrary error sequence.
+
+Choose $X>1$, $n_0$ with $x_{n_0}\ge X$, and $M>0$ large enough that
+\[
+ H_-(x_n)\le\log a_n\le H_+(x_n)\qquad(n\ge n_0)
+\]
+holds for \eqref{dmv:sum:eq:H}. Increasing $X,n_0$ if necessary makes both $H_\pm$ strictly increasing: their derivatives equal $B+O(1/x)$, since the envelope derivative is $O(x^{-5/2}/\log x)$. Choose $Y$ large enough that both roots in \eqref{dmv:sum:eq:roots} lie beyond $x_{n_0}$ and that
+\begin{equation}\label{dmv:sum:eq:prefix}
+ Y>\max\{a_n:0\le n<n_0\}.
+\end{equation}
+All finite early crossings are now excluded. Monotonicity gives $x_-(Y)\le x_Y\le x_+(Y)$, and the mean-value theorem gives
+\begin{equation}\label{dmv:sum:eq:rooterror}
+ x_\pm(Y)-x_Y=O\!\left(\frac{x_Y^{-3/2}}{\log x_Y}\right),\quad
+ x_\pm(Y)^2+\frac1{24}=v_Y+O\!\left(\frac{x_Y^{-1/2}}{\log x_Y}\right).
+\end{equation}
+
+For completeness check the ceiling endpoints directly. An integer below $\lceil x_-^2+1/24\rceil$ is strictly below $x_-^2+1/24$, even when the latter is an integer. Its upper envelope is strictly below $\log Y$, so it cannot cross the threshold. At the right ceiling, the integer is at least $x_+^2+1/24$; its lower envelope is at least $\log Y$, including equality. Together with \eqref{dmv:sum:eq:prefix}, this proves \eqref{dmv:sum:eq:ceiling} for the first crossing, not just some later crossing.
+
+The leading template is
+\[
+ \Phi(x)\sim C\ee^{Bx}\frac{\log x}{x},\qquad C=\frac1{8\sqrt3 k}.
+\]
+Thus $x_Y\sim(\log Y)/B$, and \eqref{dmv:sum:eq:rooterror} proves \eqref{dmv:sum:eq:width}. The unrounded interval tends to zero, so its endpoint ceilings are eventually equal or adjacent. Near integer boundaries it need not select one universal ceiling. An asymptotic initializer for solving the explicit template equation is
+\begin{equation}\label{dmv:sum:eq:initializer}
+ Bx_Y=\log Y+\log\log Y-\log\log\log Y+\log(4\sqrt3)+o(1).
+\end{equation}
+It follows by taking logarithms of $C\ee^{Bx}\log x/x$; $BC=1/(4\sqrt3)$. The finite initializer by itself does not establish the shrinking horizontal error. That statement uses the full equation \eqref{dmv:sum:eq:phi} and the envelopes.
+
+\begin{remark}[{[write]} The inverse and the transseries volume, 7~October 2026]\label{dmv:sum:rem:transseries}
+Statement by statement, against the volume named in the Guide (its symbols
+carry the subscript ``vol'').
+\begin{enumerate}[label=(\alph*),leftmargin=*]
+\item \emph{Instance.} For $Y$ as in~\eqref{dmv:sum:eq:prefix}, $\nu(Y)$ is
+the integer staircase $N_*(Y)$ of \file{p0:def:three-inverses} with
+$A_n=a_n$ and $n_1=n_0$, so \file{p0:thm:staircase}(1) applies. In the
+shipped table $a_{n+1}>a_n$ for $1\le n<2500$ (a finite observation).
+\item \emph{Not shown to be an instance.} The template $\Phi$
+of~\eqref{dmv:sum:eq:phi} is not of exponential--power type as
+\file{p0:def:model} defines it: $\log\Phi(x)=Bx-\log x+\log\log x+O(1)$
+contains $\log\log x$, which that model does not have, and the write knows no
+substitution that removes it. $\log\Phi$ is an admissible core in the sense
+of \file{p0:def:core} (its slope tends to $B$), and $x_Y$ is its core
+solution, but that is only the definition; the volume's exact Lambert
+solutions (\file{p0:thm:lambert-core}, \file{p0:prop:factorial-core}) do not
+apply, and the initializer~\eqref{dmv:sum:eq:initializer}, with its
+$\log\log\log Y$, is not shown to be an instance of
+\file{p0:thm:flattening}, whose terms carry no iterated logarithm.
+\item \emph{Instance of the residual step.} The estimate
+$x_\pm(Y)-x_Y=O(x_Y^{-3/2}/\log x_Y)$ of~\eqref{dmv:sum:eq:rooterror} is
+\file{p0:thm:backward-error} applied to $f=H_\pm$ at $x_*=x_Y$, with residual
+$\pm Mx_Y^{-3/2}/\log x_Y$ and slopes $B+O(1/x)$.
+\item \emph{Analogue.} The bracket~\eqref{dmv:sum:eq:ceiling} is, as stated
+and proved, an analogue of \file{p0:thm:staircase}(2): a two-ceiling bracket
+proved directly at the integers from smooth envelopes.
+\end{enumerate}
+No novelty is claimed for any of these inversions.
+\end{remark}
+
+\section{Exact computations and reproducibility}\label{dmv:sum:sec:computation}
+The supplied source package implements \eqref{dmv:sum:eq:polynomial} using exact integers through $n=2500$. It checks the $43$ terms listed in the official OEIS-maintained record, whose offset is $1$, and sets $a_0=0$ from the empty-partition definition. The first values are
+\[
+ a_0,\ldots,a_{15}=0,1,3,5,11,18,29,48,74,107,161,237,324,471,648,876.
+\]
+Independent positive allowed-occupancy dynamic programming agrees through $450$. Independent Ferrers-gap partition enumeration agrees through $43$. Partition numbers are cross-checked using Euler's pentagonal recurrence. These are finite, exact statements; they do not prove the analytic remainders.
+
+Table~\ref{dmv:sum:tab:diagnostic} compares exact means with the full right side of \eqref{dmv:sum:eq:mean} without its error term, denoted $T_n$. Decimal values are diagnostics, not interval certificates.
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{r r r r}
+\toprule
+$n$ & $a_n/p(n)$ & $T_n$ & $(a_n/p(n)-T_n)/\sqrt\tau$\\
+\midrule
+50   & 10.7127593940 & 10.7724626585 & $-0.1401564021$\\
+100  & 16.5055108669 & 16.5632491277 & $-0.1612060461$\\
+200  & 25.3069546171 & 25.3611729887 & $-0.1800297270$\\
+500  & 44.1895677291 & 44.2349179157 & $-0.1893544028$\\
+1000 & 66.9921915478 & 67.0321177419 & $-0.1982514012$\\
+2000 &101.1162136596 &101.1516724945 & $-0.2093835578$\\
+2500 &115.3459918779 &115.3799955168 & $-0.2123104961$\\
+\bottomrule
+\end{tabular}
+\caption{Finite diagnostics for the five-scale canonical approximation.}\label{dmv:sum:tab:diagnostic}
+\end{table}
+
+The computation also checks the rational constant and Gaussian-moment identities using exact rational arithmetic. Floating evaluations of the smooth inverse and sector Boltzmann sums are explicitly separated from those exact tests. In particular, observed inverse errors are not used to choose a certified $M$ or onset for Theorem~\ref{dmv:sum:thm:inverse}.
+
+The code archive contains the TeX source, the frozen official sequence record, a complete exact table, and programs that regenerate the arithmetic, diagnostic, and PDF outputs. Its builder requires a fresh destination and refuses to overwrite an existing path. It records runtime and tool versions, verifies its inputs, and writes SHA-256 manifests. The archive itself is deterministic in a fixed tool environment: timestamps and PDF metadata are normalized. The accompanying README gives exact commands, dependencies, output meanings, and the distinction between finite tests and analytic proof. Normal and optimized Python runs are checked; validation uses explicit exceptions and is not removed by \code{python -O}.
+
+\section{Relation to prior work and the scope of the claims}\label{dmv:sum:sec:sources}
+The official A373273 data record \cite{oeisA373273}, authored by Olivier G\'erard in May 2024 and inspected at revision 14 dated 1 June 2024, directly supplies the definition and $43$ terms. Its Mathematica formulation sums the union of positive partition run lengths. A373272 \cite{triangle} groups the same weighted statistic by number of parts and lists A373273 as its row sums. The inspected A373273 record contains no formula or asymptotic section. This is a statement about that record, not the whole literature.
+
+Ralaivaosaona \cite{ralaivaosaona} studies $N_m$, the number of part sizes with a prescribed multiplicity $m$, including a fixed-$m$ central limit theorem and a Poisson transition when $m$ has order $n^{1/4}$. Those results motivate the transition scale in the present matching calculation, but do not directly yield the weighted occupancy functional $\sum_m m1_{\{N_m>0\}}$. Weighting makes a local-only tail treatment insufficient.
+
+Grabner, Knopfmacher, and Wagner \cite{gkw} provide a general asymptotic scheme for partition statistics, including Bessel and logarithmic-amplitude transfer. Their Section 1.5 concerns prescribed multiplicities; their general transfer theorem is substantial prior for the method. We claim no new general saddle-transfer theorem. Section~\ref{dmv:sum:sec:circle} supplies a separate whole-circle bound for the present weighted positive-product sum, instead of assuming their global multiplier condition.
+
+The inspected material of Archibald et al.\ \cite{archibald} concerns multiplicities and sums associated with largest parts. Fill, Janson, and Ward \cite{fill} count partitions whose nonzero part multiplicities are pairwise different, a different restriction from averaging \eqref{dmv:sum:eq:def} over all ordinary partitions. These comparisons distinguish the objects; they are not exhaustive theorem-by-theorem exclusion certificates. The related Corteel--Pittel--Savage--Wilf article \cite{cpsw} was checked at the publisher-abstract level, but its full text was not obtained in this source screen. Lugo's thesis \cite{lugo}, Section 6.1, was checked at targeted passages concerning fixed multiplicities and finite allowed multiplicity sets. Neither limited check excludes overlap with every theorem in those works.
+
+Targeted sequence, phrase, and related-statistic searches, and bounded checks of available report and artifact records, located no exact earlier instance of this expansion. Their coverage was finite and cannot establish worldwide novelty or absence from every previous artifact. The mathematical conclusions of this report are the stated finite-order asymptotics, eventual increase, and existential two-ceiling inverse. No distributional conclusion, arbitrary-order expansion, explicit numerical onset, certified error constant, or historical priority claim follows from the computation or the bounded source search.
+
+\section{Further questions}\label{dmv:sum:sec:further}
+The finite-order proof leaves several concrete questions open.
+\begin{enumerate}[leftmargin=1.5em]
+\item \textbf{The next matched order.} Can the $O(\sqrt t)$ sector remainder be expanded with a uniform smaller error? Additional collision terms and the nonlocal delta corrections must be retained together; possible logarithmic resonances require a fresh convergence analysis. The numerical residuals are not a proof of a next coefficient or an arbitrary-order scheme.
+\item \textbf{Other multiplicity weights.} For $\sum_m m^\alpha1_{\{N_m>0\}}$, how do the leading scale and the matching constants change as $\alpha$ passes the logarithmic transition represented here by $\alpha=1$? This asks for a new family of estimates, rather than extrapolating the present coefficients.
+\item \textbf{Explicit inverse certification.} Can the sector, localization, and saddle bounds be made numerical with a practical onset, so that $M$ and the finite-prefix threshold in Section~\ref{dmv:sum:sec:inverse} are computable and useful? The current floating checks do not answer this.
+\item \textbf{Weighted fluctuations.} What are the variance and limiting law of $W$ under the uniform partition measure? Marginal results for one prescribed multiplicity do not alone settle the dependence in this weighted occupied-value sum.
+\item \textbf{A fuller source comparison.} A complete reading of the unavailable or partially inspected related sources and their successors is needed for a stronger assessment of priority, independently of the correctness of this proof.
+\end{enumerate}
+\begin{writenote}[7 October 2026]
+Question~2 contains Part~I's case: $\alpha=0$ is the unweighted count of
+Part~I (Theorem~\ref{dmv:cnt:thm:mean}, leading scale $n^{1/4}$) and
+$\alpha=1$ is this Part (leading scale $\sqrt n\log n$); so this Part
+answers Part~I's Question~4 for $w(m)=m$ only, and the family $m^\alpha$
+remains open. Under Vladimir's standing rule of
+4~October 2026, the write found no claim of this Part that is unproved as
+stated and none that is wrong, so nothing was moved here or refuted. For
+Question~3 note only that the shipped table increases strictly for
+$1\le n<2500$, which proves no onset.
+\end{writenote}
+
+
+\begin{writenote}[The merged bibliography, 7 October 2026]
+The two delivered bibliographies are merged, and every detail of the delivered entries is kept; where both Parts cite the same work, the entry is printed once and
+each Part's own note on what it inspected is kept, marked ``Part~I'' or
+``Part~II''. The two OEIS entries, both delivered under the key
+\file{oeis}, are \file{oeisA373271} (Part~I) and \file{oeisA373273}
+(Part~II).
+\end{writenote}
+\begin{thebibliography}{99}
+\bibitem{oeisA373271}
 OEIS Foundation Inc., \emph{The On-Line Encyclopedia of Integer Sequences}, entry A373271, ``Sum of number of distinct multiplicities over all partitions of $n$.''
-\url{https://oeis.org/A373271}. Entry inspected 4 October 2026. Related partition-level array: \url{https://oeis.org/A373269}.
+\url{https://oeis.org/A373271}. Entry inspected 4 October 2026. Related partition-level array: \url{https://oeis.org/A373269}. [Part~I]
+
+\bibitem{oeisA373273}
+O. G\'erard, OEIS A373273, \emph{Sum of all distinct multiplicities in every integer partition of $n$}, OEIS Foundation, 2024. Official maintained record, inspected 4 October 2026:\\
+\url{https://github.com/oeis/oeisdata/blob/main/seq/A373/A373273.seq}. [Part~II]
+
+\bibitem{triangle}
+O. G\'erard, OEIS A373272, weighted distinct multiplicity sums by number of parts, OEIS Foundation. \url{https://oeis.org/A373272}. [Part~II]
 
 \bibitem{ralaivaosaona}
 D.~Ralaivaosaona, \emph{On the distribution of multiplicities in integer partitions}, Annals of Combinatorics \textbf{16} (2012), 871--889.
 \href{https://doi.org/10.1007/s00026-012-0165-2}{doi:10.1007/s00026-012-0165-2}.
-Full author text: \url{https://su-plus.strathmore.edu/bitstreams/fd5051ed-a369-4cdd-ba34-91599a8ec9b5/download}.
+Part~I: full author text: \url{https://su-plus.strathmore.edu/bitstreams/fd5051ed-a369-4cdd-ba34-91599a8ec9b5/download}.
 
 \bibitem{gkw}
 P.~J.~Grabner, A.~Knopfmacher and S.~Wagner,
 \emph{A general asymptotic scheme for the analysis of partition statistics}, Combinatorics, Probability and Computing, published online 8 September 2014.
 \href{https://doi.org/10.1017/S0963548314000418}{doi:10.1017/S0963548314000418}.
-Author version: \url{https://math.sun.ac.za/swagner/PartitionStatistics.pdf}.
+Author version: \url{https://math.sun.ac.za/swagner/PartitionStatistics.pdf}. (Part~I gives the online date; Part~II prints the same title in title case and calls the author copy an ``Author manuscript''.)
 
 \bibitem{cpsw}
 S.~Corteel, B.~Pittel, C.~D.~Savage and H.~S.~Wilf,
-\emph{On the multiplicity of parts in a random partition}, Random Structures \& Algorithms \textbf{14} (1999), 185--197.
+\emph{On the multiplicity of parts in a random partition}, Random Structures \& Algorithms \textbf{14}(2) (1999), 185--197.
 \href{https://doi.org/10.1002/(SICI)1098-2418(199903)14:2<185::AID-RSA4>3.0.CO;2-F}{Publisher DOI link}.
-Publisher abstract inspected; full text unavailable during this source screen.
+Part~I: ``Publisher abstract inspected; full text unavailable during this source screen.'' Part~II: ``Publisher abstract inspected; full-text overlap check incomplete.''
 
 \bibitem{lugo}
-M.~Lugo, \emph{Profiles of Large Combinatorial Structures}, Ph.D. thesis, University of Pennsylvania, 2010, Section~6.1.
+M.~T.~Lugo, \emph{Profiles of Large Combinatorial Structures}, Ph.D. thesis, University of Pennsylvania, 2010, Section~6.1.
 \url{https://www2.math.upenn.edu/~pemantle/papers/Student-theses/Lugo100407.pdf}.
-Targeted passages inspected; no full-thesis exclusion claimed.
+Both Parts: ``Targeted passages inspected; no full-thesis exclusion claimed.'' (Part~I prints the author as ``M.~Lugo''.)
+
+\bibitem{archibald}
+M. Archibald, A. Blecher, C. Brennan, A. Knopfmacher, and T. Mansour, \emph{Partitions according to multiplicities and part sizes}, Australasian Journal of Combinatorics \textbf{66}(1) (2016), 104--119.
+\url{https://ajc.maths.uq.edu.au/pdf/66/ajc_v66_p104.pdf}. [Part~II]
+
+\bibitem{fill}
+J. A. Fill, S. Janson, and M. D. Ward, \emph{Partitions with Distinct Multiplicities of Parts: On An Unsolved Problem Posed By Herbert Wilf}, Electronic Journal of Combinatorics \textbf{19}(2) (2012), P18.
+\url{https://doi.org/10.37236/2128}; \url{https://arxiv.org/abs/1203.2670}. [Part~II]
 \end{thebibliography}
 \end{document}
