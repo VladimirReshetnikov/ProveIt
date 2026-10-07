@@ -396,6 +396,12 @@ import GowersSzemeredi.Proofs16AlphabetLargeModulus
 import GowersSzemeredi.Proofs16BalancedFieldWord
 import GowersSzemeredi.Proofs16BalancedWordObstruction
 import GowersSzemeredi.Proofs16NonMultiplyLinearWords
+import GowersSzemeredi.Proofs16GlobalGraphCover
+import GowersSzemeredi.Proofs16AlphabetLineCover
+import GowersSzemeredi.Proofs16AlphabetCoverParameters
+import GowersSzemeredi.Proofs16AlphabetPackagedCover
+import GowersSzemeredi.Proofs16FullGoodDomain
+import GowersSzemeredi.Proofs16PackagedPremisesCounterexample
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 

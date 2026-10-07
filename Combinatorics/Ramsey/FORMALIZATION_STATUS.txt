@@ -12,8 +12,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 550 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 3,570 public Gowers theorems and found only propext,
+  All 556 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 3,594 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 110 exact
   companion proofs and 10 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -1472,9 +1472,8 @@ Finite-alphabet bounds for the Section 16 cover obstruction
   conditions. All four modules pass the full axiom audit.
   This proves the deterministic counting part of source 50's proposed
   counterexample to the current lemma_16_10 encoding. Balanced-word
-  existence is now proved below. The packaged-premise witnesses and the
-  final negation of that encoding remain unproved. No source-lemma count
-  changes.
+  existence, packaged-premise witnesses, and the final negation are now
+  proved below. No source-lemma count changes.
 
 Concentration and finite-family balanced-word existence
   Proofs16AlphabetConcentration proves the Hoeffding upper tail
@@ -1506,7 +1505,7 @@ Balanced words on every long proper modular progression
   No primality is required for this existence theorem. All three modules
   pass the full axiom audit. This discharges the balanced-word existence
   step of source 50; the target cover obstruction is now proved below.
-  Verifying the two packaged premises remains necessary.
+  The two packaged premises are now verified below.
 
 Finite-valued functions failing the target multiple-linearity conclusion
   Proofs16BalancedWordObstruction applies the deterministic 5/16 bound to
@@ -1519,8 +1518,32 @@ Finite-valued functions failing the target multiple-linearity conclusion
   there is therefore an R-valued function of the last coordinate that is
   not MultiplyLinearFunction 1 1 on the full domain. The alphabet size
   satisfies R<=8*multipleQ(1/2) 1 (k+1). Both modules pass the full audit.
-  This proves the negative conclusion needed for source 50, but does not
-  yet negate lemma_16_10: its two packaged premises still need witnesses.
+  This supplies the negative conclusion for the complete encoding
+  counterexample proved below.
+
+Formal counterexample to the current two-premise Lemma 16.10 encoding
+  Proofs16PackagedPremisesCounterexample proves the literal negation of
+  the unchanged lemma_16_10 predicate. The witness has k=theta=gamma=1,
+  a sufficiently large prime modulus, full input and sidelength domains,
+  every cube selected, and zero anchor. Proofs16FullGoodDomain verifies
+  that the named good domain is full and the all-ones translated map is
+  the same function of the final coordinate.
+  Proofs16GlobalGraphCover proves that a global multilinear graph has
+  every admissible cover parameter; fixed-final-coordinate sections of
+  the witness are constant. Proofs16AlphabetLineCover uses the identity
+  partition and one constant line per alphabet symbol. The parameter
+  lemmas verify the actual gamma-side count, the separate delta-side
+  count qDelta=1, and the width requirement, including width zero.
+  Proofs16AlphabetPackagedCover therefore discharges the second premise
+  whenever |S|<=8*multipleQ(1/2) 1 2, exactly the alphabet bound already
+  provided by the balanced-word construction. The target conclusion is
+  impossible by the checked 5/16-versus-1/2 mass contradiction.
+  All six modules pass the full axiom audit. This is a disproof of the
+  current abstraction, not of the paper's lemma with all its upstream
+  structural assumptions. The numbered result remains open: it needs
+  a faithful contextual repair and a positive proof. The existing global
+  affine lift retains explicit graph counts and widths without the false
+  closing comparison.
 
 Reproducible checks (from repository root)
   python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.Audit
@@ -1564,10 +1587,10 @@ Next substantial obligations
      batch 124). It does not refute Gowers's lemma in context. Candidate
      repaired statements: source 49's acyclic cover theorem and source 50's
      repair interface. The finite-alphabet affine/multilinear cover bound
-     and its 5/16 box-partition consequence, balanced-word existence, and
-     failure of the target conclusion are now formalized. Witnesses for
-     the packaged hypotheses remain necessary before claiming a formal
-     counterexample to the implication.
+     and its 5/16 box-partition consequence, balanced-word existence,
+     both packaged premises, and the literal negation of lemma_16_10
+     are now formalized. Preserve that predicate while developing a
+     faithful contextual repair; the false abstraction cannot be proved.
   3. Prove Theorem 18.1 with explicit thresholds strong enough for iteration.
      The existing Section 18 cyclic dichotomy is conditional on that theorem.
      Extend the relative-balance, boundary refinement, uniform stopping,
