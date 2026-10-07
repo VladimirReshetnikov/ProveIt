@@ -88,7 +88,12 @@ recorded in its Table 2: Part I's Theorem 3.1 (in logarithmic form), the
 near-arc bound (3.9) of Lemma 3.2, Corollary 4.1 (`e^(1/(4c))`), the first
 A238608 correction `-61/288`, and the `a_1` term; and the Szekeres leading
 constants `u`, `C` of `a097356-sqrt-restricted-partitions`. Dated notes in
-Part I and in Part II point to each.
+Part I and in Part II point to each. *[Dated note, 7 October 2026: the
+writenote after Theorem 14.1 (`rpc:cx:thm:uniform`) said that
+`a097356-sqrt-restricted-partitions` "uses the same regularized logarithm
+h". It does not: Part II's `h(z) = log(z/(2 sinh(z/2)))`, while that report's
+(its Proposition 4.1) is `log(z/(1 − e^{−z})) = h(z) + z/2`. A dated note
+there corrects the clause.]*
 
 The write added two `[write]` remarks: **Remark 18.1** completes the
 condensed proof of Theorem 14.1 (the circle at the continuum saddle, the
@@ -354,7 +359,13 @@ pages, no errors, no warnings, no undefined references or citations, no
 multiply defined labels, no duplicate PDF destinations, no overfull boxes;
 its four underfull-box notices, in the two bibliography entries with long
 repository paths (the transseries volume and `a097356`), are those of the
-batch-74 build of the same entries.
+batch-74 build of the same entries. Rebuilt on 7 October 2026 (cleanup
+pass, the dated note after Theorem 14.1) with three pdfLaTeX passes: still
+53 pages, the same four underfull-box notices and one "Infinite glue
+shrinkage found in box being split" message, exactly as in a build of the
+committed text, and nothing else; all 188 labels keep their numbers and pages
+(`.aux` compared with a build of the committed text); page 31 rendered and
+inspected.
 
 ## Provenance
 
