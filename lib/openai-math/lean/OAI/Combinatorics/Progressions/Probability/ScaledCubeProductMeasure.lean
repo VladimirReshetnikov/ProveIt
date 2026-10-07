@@ -1,3 +1,5 @@
+/- Modified for ProveIt: construct mapped probability-measure instances
+explicitly from measurable scalar multiplication. Statements unchanged. -/
 import Mathlib.MeasureTheory.Integral.Pi
 import OAI.Combinatorics.Progressions.Estimates.ScalarCubeFaceSlab
 
@@ -139,7 +141,7 @@ theorem scaledScalarCubeMeasure_eq_map {α : Type*} [Fintype α] [DecidableEq α
 theorem scaledScalarCubeMeasure_probability {α : Type*} [Fintype α] [DecidableEq α]
     {T : ℝ} (hT : 0 < T) : IsProbabilityMeasure (scaledScalarCubeMeasure α T) := by
   rw [scaledScalarCubeMeasure_eq_map hT]
-  infer_instance
+  exact Measure.isProbabilityMeasure_map (measurable_const_smul T).aemeasurable
 
 theorem scaledScalarCubeMeasure_normalize {α : Type*} [Fintype α] [DecidableEq α]
     {T : ℝ} (hT : 0 < T) :
@@ -292,7 +294,7 @@ theorem scaledCubeProductMeasure_eq_map {I α : Type*} [Fintype I] [Fintype α]
     scaledCubeProductMeasure α T =
       (scalarCubeProductMeasure I α).map (fun x i => T i • x i) := by
   let : ∀ i, IsProbabilityMeasure ((scalarCubeMeasure α).map (T i • ·)) :=
-    fun _ => inferInstance
+    fun i => Measure.isProbabilityMeasure_map (measurable_const_smul (T i)).aemeasurable
   rw [scalarCubeProductMeasure, Measure.pi_map_pi
     (fun i => (measurable_const_smul (T i)).aemeasurable)]
   unfold scaledCubeProductMeasure
