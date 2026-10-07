@@ -12,8 +12,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 241 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 2,175 public Gowers theorems and found only propext,
+  All 242 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 2,180 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 101 exact
   companion proofs and 19 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -635,6 +635,16 @@ Complete Fourier square extraction and the printed exponent gap
   This compares estimates, not counterexamples to the printed theorem. The
   full numbered Theorem 13.12 remains open: a stronger construction or an
   independently justified correction is needed. Its exponent was not changed.
+
+Explicit tower form of the verified Fourier bound
+  Proofs13ExplicitFourierExponent proves gamma(delta)>=2^(-15*Q(delta))
+  for every 0<delta<=1, absorbing both polynomial and fixed prefactors.
+  After substituting delta=(alpha/2)^(2^66), it proves
+  15*Q(delta)<=(2/alpha)^(2^88). Thus the full Fourier square theorem holds
+  with length at least N^((1/2)^((2/alpha)^(2^88))), the same printed density
+  bound, and the same bilinear Fourier conclusion. This weaker explicit
+  version is recorded separately; the printed exponent and its open catalogue
+  status are unchanged. It is not an improved final Szemeredi bound.
 
 Reproducible checks (from repository root)
   python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.Audit
