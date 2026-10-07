@@ -12,8 +12,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 237 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 2,161 public Gowers theorems and found only propext,
+  All 241 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 2,175 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 101 exact
   companion proofs and 19 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -579,9 +579,9 @@ Complete large-N common-step square extraction
   phi is bilinear and |B| >= 2^-137*alpha^704*|V|*|W|.
   Here gamma = 2^-386*alpha^1856 / 2^(13*section13Q(alpha)) > 0.
   All intermediate data and numerical budgets are constructed. The threshold
-  remains existential. The larger-density case, the unrestricted numbered
-  catalogue statements, and the quantitative comparison/analytic input for
-  Theorem 13.12 remain unresolved; no final Szemeredi bound is claimed.
+  remains existential. The later all-density and Fourier results below extend
+  this construction. The unrestricted numbered catalogue statements and the
+  printed Theorem 13.12 exponent remain open; no final Szemeredi bound is claimed.
 
 All-density square extraction
   Proofs13DenseEdgeModels removes the alpha<=1/6 restriction without weakening
@@ -596,8 +596,8 @@ All-density square extraction
   0<alpha<=1, with unchanged explicit exponent and density bound.
   The earlier small-density theorem remains as a specialization.
   For the Fourier inverse application, actual densities vary with N above a
-  known lower bound. A threshold uniform over that density interval remains
-  to be proved; pointwise existence of N0(alpha) does not establish it.
+  known lower bound. The uniform theorem below now supplies one threshold
+  over that interval; it is not inferred from pointwise existence of N0(alpha).
 
 
 Density-uniform recurrence and integer budgets
@@ -611,7 +611,30 @@ Density-uniform recurrence and integer budgets
   this uniformly over alpha>=delta>0 and all permitted finite spectrum sizes.
   Stages 13.5 and 13.6 now have thresholds depending only on delta, while the
   constructed progression retains its actual-alpha length estimate.
-  Transport through the final square scales is the remaining uniformity step.
+  The final square-scale transport is completed below.
+
+
+Complete Fourier square extraction and the printed exponent gap
+  Proofs13UniformSquareScale transports the row, width, coefficient, and
+  rounded square bounds as the actual density increases. The theorem in
+  Proofs13UniformSquareExtraction now has the correct quantifier order:
+  for each delta>0 there is one N0 such that every sufficiently large prime
+  N and every Section13Context with alpha>=delta admit a common-step proper
+  square of length at least N^gamma(delta) and relative mass
+  2^-137*delta^704. All intermediate data and budgets are constructed.
+  Proofs13FourierSquareExtraction combines this with the proved Lemma 13.11,
+  using the actual normalized domain cardinality to construct the context.
+  Failure of cubic alpha-uniformity yields a global bilinear frequency formula
+  on a square and a subset of relative density at least (alpha/2)^(2^76),
+  with Fourier norm at least alpha*N/2 there. The verified length exponent is
+  gamma((alpha/2)^(2^66)), where gamma is given explicitly above.
+  Proofs13PrintedExponentComparison proves that this exponent is strictly
+  smaller than (1/2)^((1/alpha)^(2^70)) for every 0<alpha<=1. The density
+  substitution already gives a spectral parameter at least
+  (1/alpha)^(2^70), before the additional denominator and prefactor losses.
+  This compares estimates, not counterexamples to the printed theorem. The
+  full numbered Theorem 13.12 remains open: a stronger construction or an
+  independently justified correction is needed. Its exponent was not changed.
 
 Reproducible checks (from repository root)
   python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.Audit
@@ -631,11 +654,11 @@ Next substantial obligations
   1. Resolve Corollary 5.8's missing common-target scale assumptions. Its
      scale-qualified repair is proved, but does not establish the unrepaired
      catalogue statement.
-  2. Make the all-density common-step square threshold uniform for densities
-     above a specified positive lower bound. Reconcile the unrestricted
-     catalogue hypotheses and compare the explicit exponent with the inverse
-     theorem's analytic input and printed target. The actual extraction now
-     constructs integer geometry; the old catalogue antecedents omit it.
+  2. Resolve the printed Theorem 13.12 length exponent: the complete Fourier
+     extraction is proved with a uniform threshold and an explicit exponent,
+     but that exponent is strictly smaller than the printed target. Reconcile
+     the unrestricted catalogue hypotheses as well; the actual extraction
+     constructs integer geometry that the old catalogue antecedents omit.
   3. Complete the higher-dimensional Section 16 induction using the migrated
      proper-box predicates, propagate properness through the remaining box
      statements, and resolve the documented Corollary 16.11 bound.
