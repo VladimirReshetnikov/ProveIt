@@ -1,0 +1,84 @@
+Report200 reproducibility code
+=============================
+
+From the package root, run:
+
+    python3 code/check.py --output-dir data
+
+Python 3.9 or newer is required. Full mode additionally needs SymPy 1.14.0
+and mpmath 1.3.0; tested versions are pinned in code/requirements.txt.
+If needed, install them in a virtual environment with:
+
+    python3 -m pip install -r code/requirements.txt
+
+All exact enumerations, rational amplitude coefficients, finite-tail checks,
+and exhaustive small-table checks are standard-library only:
+
+    python3 code/check.py --exact-only --output-dir data_exact
+
+Validation uses explicit exceptions, not assertion statements. Reproduce
+under optimization in a separate directory and compare the emitted files:
+
+    python3 -O code/check.py --output-dir data_optimized
+    diff -r data data_optimized
+
+Outputs are deterministic for the pinned dependency versions. No timestamps,
+absolute paths, network requests, secret data, or private inputs are used.
+The output directory should be empty, or contain only outputs from the same
+mode; exact-only mode does not delete optional outputs from an earlier run.
+
+Files
+-----
+code/magma.py: portable exact arithmetic and input validation
+code/check.py: independent route comparisons and deterministic data writer
+code/symbolic.py: independent SymPy series and inverse-cancellation checks
+code/diagnostics.py: separate 100/160-digit mpmath diagnostics
+code/requirements.txt: optional pinned dependencies
+
+Full mode emits:
+  data/counts.json                 Counts n=0..24 and 12 displayed OEIS terms
+  data/counts.txt                  Plain-text exact counts
+  data/fixed_counts.json           All cycle types n=0..24, fixed counts/orbits
+  data/sectors.json                All 11 sectors through defect 4, p0..p5
+  data/sector_coefficients.tsv     Compact exact sector coefficient table
+  data/finite_tails.json           62 exact finite-tail checks, including odd n
+  data/exhaustive_tables.json      Every labeled table n=0..3 and class totals
+  data/validation.json             Coverage and malformed-input tests
+  data/symbolic_checks.json        Independent CAS checks and inverse identities
+  data/diagnostics.json            High-precision diagnostics, explicitly not proof
+  data/summary.txt                 Human-readable check summary
+  data/manifest.json               SHA-256 of emitted data files
+
+The exact data use integer decimal strings for large counts and rational
+strings for fractions, so a JSON consumer need not use binary floating point.
+Small indices and orbit counts remain JSON integers.
+
+Independent methods
+-------------------
+1. Walk the pair orbits of a concrete permutation, including diagonal pairs.
+2. Invert fixed-point traces on unordered pairs by Moebius inversion.
+3. Group within-cycle and cross-cycle pair orbits by cycle lengths.
+4. Factor fixed-fixed, fixed-moved, and moved-moved input pairs by support.
+The first three routes each yield a separate exact Burnside sum through n=24.
+
+The 11 amplitude expansions are checked with rational Laurent arithmetic
+and two independent exponential-series constructions. Full mode additionally
+expands the original logarithmic factors using SymPy. No displayed coefficient
+is inferred from floating fitting.
+
+The analytic tail B_D(n) can involve fractional powers. Finite checks compare
+R_D against a rational LOWER bound on B_D obtained by flooring its fractional
+exponents. Passing this stronger finite inequality safely implies R_D<=B_D;
+it is not an assertion that this rational lower bound works for every n.
+
+Scope
+-----
+These finite checks support the proofs in the report; they do not prove the
+infinite-n statements. High-precision inverse and sector-ordering values are
+kept apart from exact data. They neither certify an eventual cutoff nor justify
+rounding a smooth inverse to one ceiling. The real inverse interval can shrink
+while its two rounded endpoints still differ by one.
+
+The only external reference values embedded in the package are the 12 terms
+displayed on https://oeis.org/A001425, checked 2026-10-04. No b-file or third-party
+PDF is redistributed. Values n=12..24 are computed rather than externally seeded.

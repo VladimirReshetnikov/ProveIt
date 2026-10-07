@@ -1,0 +1,149 @@
+{
+  "all_checks_passed": true,
+  "mode": "regenerate",
+  "scope": {
+    "direct_walk_enumeration_max_k": 8,
+    "independent_python_recurrence_max_k": 16,
+    "cpp_fresh_generation_max_k": 256,
+    "input_consistency_max_k": 256,
+    "public_table_exact_regeneration_checked": true,
+    "complete256_prefix_digests_checked": true,
+    "higher_rows_are_not_independently_regenerated_by_a_second_algorithm": true
+  },
+  "normal_and_optimized_positive_outputs_identical": true,
+  "deliberate_corruption_cases_per_harness_run": 44,
+  "cli_failure_cases_per_regeneration_run": 15,
+  "python_version": "3.12.14",
+  "cpp_source_sha256": "93ec21265e949d9eb2b6502c37fc0193581f6d4278d7be533f71d8ccff008367",
+  "input_sha256": {
+    "moments_exact.tsv": "f42586f0cd8de40f0049dab77447cecbb9b86420170be2f0dae1d1c12f8634d2",
+    "root_counts_exact.tsv": "7895bcc92d33cc75cc8de3fd61e09bd4cc24d1293d53e13561a634c04e934efa"
+  },
+  "table_reference_sha256": "e935cffd444dba35555ae1066aa31f88c87f9d3b78ea07303a4e8ba6c4251714",
+  "commands": [
+    [
+      "g++",
+      "--version"
+    ],
+    [
+      "g++",
+      "-O3",
+      "-std=c++17",
+      "{ROOT}/code/moments.cpp",
+      "-lgmpxx",
+      "-lgmp",
+      "-o",
+      "{WORK}/moments"
+    ],
+    [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "{ROOT}/code/verify_cli_guards.py",
+      "--binary",
+      "{WORK}/moments",
+      "--output",
+      "{WORK}/cli_guard_checks.json"
+    ],
+    [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "-O",
+      "{ROOT}/code/verify_cli_guards.py",
+      "--binary",
+      "{WORK}/moments",
+      "--output",
+      "{WORK}/cli_guard_checks_optimized.json"
+    ],
+    [
+      "{WORK}/moments",
+      "256"
+    ],
+    [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "{ROOT}/code/independent_audit_checks.py",
+      "--data-dir",
+      "{WORK}/regenerated256",
+      "--expected-max",
+      "256",
+      "--data-kind",
+      "fresh-generation",
+      "--output",
+      "{WORK}/audit.json"
+    ],
+    [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "-O",
+      "{ROOT}/code/independent_audit_checks.py",
+      "--data-dir",
+      "{WORK}/regenerated256",
+      "--expected-max",
+      "256",
+      "--data-kind",
+      "fresh-generation",
+      "--output",
+      "{WORK}/audit_optimized.json"
+    ],
+    [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "{ROOT}/code/diagnostics.py",
+      "--data-dir",
+      "{WORK}/regenerated256",
+      "--expected-max",
+      "256",
+      "--data-kind",
+      "fresh-generation",
+      "--output",
+      "{WORK}/diagnostics.json"
+    ],
+    [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "-O",
+      "{ROOT}/code/diagnostics.py",
+      "--data-dir",
+      "{WORK}/regenerated256",
+      "--expected-max",
+      "256",
+      "--data-kind",
+      "fresh-generation",
+      "--output",
+      "{WORK}/diagnostics_optimized.json"
+    ],
+    [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "{ROOT}/code/verify_guard_failures.py",
+      "--output",
+      "{WORK}/guard_failure_checks.json"
+    ],
+    [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "-O",
+      "{ROOT}/code/verify_guard_failures.py",
+      "--output",
+      "{WORK}/guard_failure_checks_optimized.json"
+    ],
+    [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "{ROOT}/code/make_tables.py",
+      "--data-dir",
+      "{WORK}/regenerated256",
+      "--expected-max",
+      "256",
+      "--compare",
+      "{ROOT}/tables/table_values.json",
+      "--output-dir",
+      "{WORK}/tables"
+    ],
+    [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "-O",
+      "{ROOT}/code/make_tables.py",
+      "--data-dir",
+      "{WORK}/regenerated256",
+      "--expected-max",
+      "256",
+      "--compare",
+      "{ROOT}/tables/table_values.json",
+      "--output-dir",
+      "{WORK}/tables_optimized"
+    ]
+  ],
+  "elapsed_seconds": 33.366
+}

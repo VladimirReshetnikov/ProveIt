@@ -1,0 +1,1128 @@
+\def\DoNotLoadEpstopdf{}
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,booktabs,longtable,array}
+\usepackage[hidelinks]{hyperref}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\pdfinfoomitdate=1
+\pdftrailerid{}
+\pdfsuppressptexinfo=15
+\hypersetup{pdftitle={Many color rooted trees and their symmetries},pdfauthor={Report 222},pdfsubject={Uniform asymptotics, Poisson symmetry laws, and exact computation}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Many color rooted trees}
+\fancyhead[R]{\small Report 222}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\parskip}{3pt}
+\setlist{nosep}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Aut}{\operatorname{Aut}}
+\newcommand{\Cay}{C}
+\newcommand{\Prob}{\mathbb P}
+\newcommand{\Exp}{\mathbb E}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\dd}{\mathrm d}
+\newcommand{\NN}{\mathbb N}
+\newcommand{\OO}{\mathcal O}
+\newcommand{\classB}{\mathcal B}
+\newcommand{\coeff}[2]{[#1^{#2}]}
+\newcommand{\aexp}{a}
+\title{Many color rooted trees and their symmetries\\[5pt]\large Uniform asymptotics, Poisson laws, and exact inverses}
+\author{Report 222}
+\date{4 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We study rooted unordered colored trees with an uncolored root, comparing all colored isomorphism classes with those having trivial color-preserving automorphism group. With $N$ total vertices and $q$ distinguishable colors, we establish a common complex singularity domain for the paired family in $u=1/q$. Classical uniform singularity analysis then gives every fixed coefficient order relative to the exact Cayley baseline, with a remainder $O_M(q^{-1}N^{-M})$ uniformly for integer $q\ge40$. Explicit palette expansions yield the asymmetry crossover $\exp(-1/(e^2\alpha))$ when $q/N\to\alpha>0$, including rounding-sensitive corrections. A separate marked argument on $|t|\le1$ proves a Poisson law for same-colored leaf-sibling pairs. With probability $1-O(N^{-1})$, all automorphisms are independent swaps of such pairs; the sharp defect coefficient is $(e^{-3}+e^{-4})/\alpha^2$. We also give diagonal corrections for OEIS A242375 and A255523, real-palette inversion, a global eventual integer threshold, and guarded exact computation. Enumeration, generic uniform transfer, fixed-model all-order analysis, and the posted diagonal leading constants are credited to prior work. No worldwide priority or effective numerical onset is claimed. The symmetry laws are distributional: positive exponential moments of the leaf-pair count diverge in the crossover regime.
+\end{abstract}
+\tableofcontents
+\newpage
+
+\section{Scope and prior results}
+The arrays motivating this report are OEIS A242249 and A255517, with diagonals A242375 and A255523 \cite{oeisall,oeisid,oeisdiagall,oeisdiagid}. The root is uncolored; every other vertex has one of $q$ distinguishable colors. Rooted isomorphisms must preserve colors. The adjective \emph{identity} means that this colored object has trivial automorphism group. It does not require its underlying uncolored tree to be asymmetric.
+
+The main analytic issue is simultaneous growth of size and palette. A fixed-$q$ asymptotic formula with constants depending arbitrarily on $q$, or a fixed-$N$ expansion in $q^{-1}$, does not settle the regime $q\asymp N$. We supply concrete common-domain estimates and carry them through coefficient transfer, marked distributions, and inverse questions.
+
+The mathematical tools have a substantial history. Riordan \cite{riordan} gives the ordinary colored rooted-tree equation and color-polynomial recursions. Labelle's asymmetry-index theory \cite{labelle1991,labelle1992} supplies weighted asymmetric enriched-tree enumeration; its specialization gives the identity equation used here. The accessible 1991 precursor was checked, but the full 1992 article was not accessible in the source review. We therefore make no claim that the latter contains no relevant asymptotic result. Foissy's typed decorated rooted trees \cite{foissy} give another exact product specialization via the equivalence between colors on nonroot vertices and types on their incoming edges.
+
+Harary, Robinson, and Schwenk \cite{hrs} describe the fixed-model characteristic-point and square-root analysis, including identity trees. Bell, Burris, and Yeats \cite{bby} establish a broad universal law for positive recursive constructions; their automatic theorem does not cover the signed PSET operator. This matters for the identity class and is why we prove its analytic closure directly. Genitrini \cite{genitrini} gives explicit all-order P\'olya-structure expansions. Generic parameter-uniform singularity transfer is also classical: Flajolet and Sedgewick's Lemma IX.2 and the movable-singularity proof around Theorem IX.12 \cite{fs} already provide the relevant method. We use those analytic ingredients, not the Gaussian conclusion of that theorem.
+
+Olsson and Wagner \cite{ow} study fixed-model automorphism laws and explain the positive-moment obstruction caused by stars. Bartholdi and Diaconis \cite{bd} give exact fixed-permutation counts in their published 2026 article, another possible Burnside route to ordinary colored enumeration. Their result is not a growing-palette theorem. The leading diagonal constants below were already posted on OEIS by V\'aclav Kot\v e\v sovec. General asymptotic inversion is likewise established machinery. The present report's claim is a self-contained family-specific analysis and its explicit consequences, not a new general enumeration, transfer, or inversion calculus.
+
+A bounded comparison with the ProveIt repository, including the then-current 61 listed transseries arrivals and the separate incoming ZIPs, found no direct statement of this complete colored-tree theorem. Such a comparison is not a worldwide novelty certificate. A distinct recent plane-tree coloring-matrix model \cite{dfhtw} has Catalan rather than P\'olya enumeration and must not be conflated with this one.
+
+\section{Objects and exact enumeration}\label{sec:exact}
+Let $A_+(N,q)$ count all colored rooted isomorphism classes with $N\ge1$ total vertices. Let $A_-(N,q)$ count the identity subclass. Initially $q$ is a positive integer. Put
+\[
+ T_\sigma(x,q)=\sum_{N\ge1}A_\sigma(N,q)x^N,
+ \qquad \eps_j^+=1,\quad \eps_j^-=(-1)^{j-1}.
+\]
+Coloring the root as well would multiply both counts by $q$ and would not change their ratio. For example,
+\[
+ A_\pm(1,q)=1,\quad A_\pm(2,q)=q,\quad
+ A_\pm(3,q)=\frac{3q^2\pm q}{2}.
+\]
+The two-leaf star with different leaf colors is an identity object; a monochromatic two-leaf star is not.
+
+\begin{proposition}[Classical multiset and set equations]\label{prop:recurrence}
+The exact generating equations and products are
+\begin{align}
+ T_\sigma(x,q)&=x\exp\left(q\sum_{j\ge1}\frac{\eps_j^\sigma}{j}T_\sigma(x^j,q)\right),\label{eq:T}\\
+ T_+(x,q)&=x\prod_{m\ge1}(1-x^m)^{-qA_+(m,q)},\label{eq:mset}\\
+ T_-(x,q)&=x\prod_{m\ge1}(1+x^m)^{qA_-(m,q)}.\label{eq:pset}
+\end{align}
+Starting with $A_\sigma(1,q)=1$, their coefficients satisfy
+\begin{equation}\label{eq:recurrence}
+ (N-1)A_\sigma(N,q)=q\sum_{j=1}^{N-1}A_\sigma(N-j,q)
+       \sum_{d\mid j}\eps_{j/d}^\sigma d A_\sigma(d,q).
+\end{equation}
+\end{proposition}
+\begin{proof}
+A child type consists of its root color and a rooted subtree whose root is otherwise uncolored. There are $qA_+(m,q)$ ordinary child types of size $m$, and the root has a multiset of them. An identity tree must have identity child subtrees, and no two colored child types may coincide; conversely these conditions force every rooted color-preserving automorphism to be trivial. This gives the two products. Expanding their formal logarithms gives \eqref{eq:T}. Logarithmic differentiation of $T_\sigma/x$ shows that the coefficient of $x^{j-1}$ in its logarithmic derivative is $q\sum_{d\mid j}\eps_{j/d}^\sigma dA_\sigma(d,q)$. Multiplication by $T_\sigma/x$ proves the recurrence. All these operations are formal, with only finitely many contributions at a fixed degree.
+\end{proof}
+
+\subsection{Normalization and the exact Cayley baseline}
+Write $u=1/q$ and introduce the polynomial continuation
+\begin{equation}\label{eq:Fdef}
+ F_\sigma(z,u)=qT_\sigma(z/q,q)=\sum_{N\ge1} f_{\sigma,N}(u)z^N,
+ \qquad f_{\sigma,N}(u)=q^{1-N}A_\sigma(N,q).
+\end{equation}
+The recurrence becomes
+\begin{equation}\label{eq:frec}
+ (N-1)f_{\sigma,N}(u)=\sum_{j=1}^{N-1}f_{\sigma,N-j}(u)
+       \sum_{d\mid j}\eps_{j/d}^\sigma d f_{\sigma,d}(u)u^{j-d}.
+\end{equation}
+Thus every $f_{\sigma,N}$ is a rational-coefficient polynomial. In particular the continuation in $u$ is exact, not an asymptotic definition. The equation is
+\begin{align}
+ F_\sigma(z,u)&=z\exp(F_\sigma(z,u)+R_\sigma(z,u)),\label{eq:F}\\
+ R_\sigma(z,u)&=\sum_{j\ge2}\frac{\eps_j^\sigma}{j}
+          F_\sigma(z^ju^{j-1},u).\label{eq:R}
+\end{align}
+The palette parameter in each recursive term remains $u$; it is not replaced by $u^j$.
+At $u=0$ the solution is the Cayley function
+\[
+ \Cay(z)=z e^{\Cay(z)},\qquad
+ t_N=[z^N]\Cay(z)=\frac{N^{N-1}}{N!}.
+\]
+Our baseline is the exact quantity
+\begin{equation}\label{eq:L}
+ L(N,q)=q^{N-1}t_N=\frac{q^{N-1}N^{N-2}}{(N-1)!}.
+\end{equation}
+The second expression is interpreted separately at $N=1$, where $L=1$.
+
+\begin{proposition}[First fixed-size palette coefficient]\label{prop:firstpalette}
+For $N\ge3$,
+\begin{align}
+ f'_{\sigma,N}(0)&=\sigma\frac{(N-2)^{N-2}}{2(N-2)!},\label{eq:firstexact}\\
+ \frac{f'_{\sigma,N}(0)}{t_N}
+ &=\frac{\sigma(N-1)}2\left(1-\frac2N\right)^{N-2}.
+\end{align}
+\end{proposition}
+\begin{proof}
+Differentiate \eqref{eq:F} at $u=0$. Only the $j=2$ singleton term contributes to $R_u$, so $R_u(z,0)=\sigma z^2/2$. Therefore
+\[
+ F_{\sigma,u}(z,0)=\frac{\sigma z^2\Cay(z)}{2(1-\Cay(z))}
+ =\frac{\sigma z^3\Cay'(z)}2.
+\]
+Coefficient extraction gives both identities.
+\end{proof}
+This coefficient also follows from classical asymmetry-index enumeration. Its asymptotic value is $\sigma e^{-2}N/2$, so the scale $e^{-2}$ is already latent in the old exact formulas. The fixed-$N$ error in the resulting ratio expansion cannot be substituted into $q\asymp N$ without a uniform argument.
+
+\section{A common complex domain}\label{sec:domain}
+Throughout, set $a=e^{-1}$. We prove the analytic hypotheses for both signs with identical bounds. Decimal constants in this section are finite terminating rationals; their inequalities are rigorous. Appendix~\ref{app:cert} gives a rational verification method, separately from convergence diagnostics.
+
+\subsection{A small disk contraction}
+Consider jointly holomorphic functions on the interiors of $|z|\le r_0=1/5$, $|u|\le U=1/20$, continuous on the closed bidisk, vanishing at $z=0$. Give this complete space the norm $\|F\|=\sup|F(z,u)/z|$, using the removable value at zero. Define
+\[
+ \Phi_\sigma(F)=z\exp\left(\sum_{j\ge1}\frac{\eps_j^\sigma}{j}
+ F(z^ju^{j-1},u)\right).
+\]
+On the norm-$2$ ball every substitution lies in the bidisk, and
+\[
+ A=\sum_{j\ge1}\frac{r_0^jU^{j-1}}j
+   =-\frac{\log(1-r_0U)}U<0.202.
+\]
+Hence $\|\Phi_\sigma(F)\|\le e^{2A}<1.499<2$. For two functions in the ball, integrate the exponential derivative along the straight segment between their exponent values. That segment has modulus at most $2A$, giving the Lipschitz bound
+\[
+ \|\Phi_\sigma(F)-\Phi_\sigma(G)\|
+ \le A e^{2A}\|F-G\|<0.303\|F-G\|.
+\]
+Banach's theorem gives a unique fixed point in the ball. Uniform iteration from zero proves joint holomorphy; recursive formal uniqueness identifies it with \eqref{eq:frec}. In particular $|F_\sigma(w,u)|\le2|w|$.
+
+\subsection{The auxiliary exponent on a larger disk}
+For $|z|\le Z=9/20$ and $|u|\le U$, all arguments in \eqref{eq:R} lie in the small disk, since
+\[
+ |z^ju^{j-1}|\le Z^2U=0.010125\qquad(j\ge2).
+\]
+The sum is normally convergent. Write $F(w,u)=wG(w,u)$ with $|G|\le2$. Cauchy's estimate gives, for $|w|\le0.010125$,
+\[
+ |F_w(w,u)|\le2+\frac{2|w|}{r_0-|w|}
+ \le\frac{2r_0}{r_0-0.010125}<\frac{11}{5}.
+\]
+It follows that
+\begin{align}
+ |R_\sigma|&\le2\sum_{j\ge2}\frac{Z^jU^{j-1}}j<0.011,\label{eq:Rbound}\\
+ |R_{\sigma,z}|&\le\frac{11}{5}\frac{ZU}{1-ZU}<0.051.
+\end{align}
+Put $\zeta_\sigma(z,u)=z\exp(R_\sigma(z,u))$. Then
+\begin{align}
+ |\zeta_\sigma-z|&\le Z(e^{0.011}-1)<0.005,\label{eq:zetabounds}\\
+ |\zeta_{\sigma,z}-1|&\le e^{0.011}-1+Ze^{0.011}(0.051)<0.04.
+\end{align}
+For $z_1,z_2$ in the convex disk, integration along their segment gives
+\begin{equation}\label{eq:deltageometry}
+ \zeta_\sigma(z_2,u)-\zeta_\sigma(z_1,u)
+  =(z_2-z_1)(1+\delta),\qquad |\delta|<0.04.
+\end{equation}
+Thus $\zeta_\sigma$ is univalent there.
+
+On $|z-a|=0.01$, the perturbation bound in \eqref{eq:zetabounds} is smaller than $|z-a|$. Rouch\'e's theorem gives exactly one solution $r_\sigma(u)$ to
+\begin{equation}\label{eq:radius}
+ \zeta_\sigma(r_\sigma(u),u)=a,\qquad |r_\sigma(u)-a|<0.01.
+\end{equation}
+The nonvanishing derivative and uniqueness show that this root is holomorphic in $u$. Its values avoid zero.
+
+\subsection{The normalized cut geometry}
+The principal Cayley branch is analytic on the plane cut along $[a,\infty)$ and agrees with its power series at zero. Locally the counting solution is
+\begin{equation}\label{eq:composition}
+ F_\sigma(z,u)=\Cay(\zeta_\sigma(z,u)).
+\end{equation}
+We verify a common continuation domain. If $z=r_\sigma(u)w$ and $|w|<1.1$, then
+\[
+ |z|<1.1(a+0.01)<1.1(3/8+0.01)<0.45.
+\]
+Equation~\eqref{eq:deltageometry} yields
+\[
+ \zeta_\sigma(r_\sigma w,u)-a=r_\sigma(w-1)(1+\delta),
+ \qquad |\delta|<0.04.
+\]
+If the left side is nonnegative real, a principal argument of $w-1$ has absolute value at most the sum of the absolute arguments of $r_\sigma$ and $1+\delta$. Since $1/3<a<3/8$,
+\[
+ |\arg r_\sigma|\le\frac{0.01}{1/3-0.01},\qquad
+ |\arg(1+\delta)|\le\frac{0.04}{1-0.04}.
+\]
+Their sum is less than $1/10<\pi/6$. Consequently the common domain
+\begin{equation}\label{eq:Delta}
+ \mathcal D=\{w:|w|<1.1,\ w\ne1,\ |\arg(w-1)|>\pi/6\}
+\end{equation}
+is mapped away from the Cayley cut for every $|u|\le1/20$. Formula~\eqref{eq:composition} continues the original germ throughout this domain after scaling by $r_\sigma(u)$. Transfer contours may use any fixed outer radius strictly between $1$ and $1.1$ and any fixed cone angle strictly between $\pi/6$ and $\pi/2$, leaving uniform margins.
+
+Define the holomorphic quantities
+\begin{equation}\label{eq:SHb}
+ S_\sigma(u)=-\log(e r_\sigma(u)),\qquad
+ b_\sigma(u)=1+r_\sigma(u)R_{\sigma,z}(r_\sigma(u),u),\qquad
+ H_\sigma(u)=\sqrt{b_\sigma(u)},
+\end{equation}
+with branches $S_\sigma(0)=0$, $H_\sigma(0)=1$. The bounds keep $b_\sigma$ close to $1$, so these branches are well defined. For positive real $u$, uniqueness and conjugation make $r_\sigma$ real positive. The local square-root coefficient is nonzero, while every other point of $|w|=1$ lies in the continuation domain. Thus $r_\sigma$ is the unique dominant singularity for either counting branch. This conclusion has been checked for the signed equation, not inferred from a positive-operator theorem.
+
+\section{Uniform all fixed order coefficient expansions}\label{sec:uniform}
+\begin{theorem}\label{thm:uniform}
+For either sign and every fixed integer $M\ge1$, there are holomorphic functions $d_{\sigma,j}$ near $|u|\le1/40$, $1\le j<M$, satisfying $d_{\sigma,j}(0)=0$, such that
+\begin{equation}\label{eq:uniform}
+ \frac{A_\sigma(N,q)}{L(N,q)}
+ =e^{NS_\sigma(1/q)}H_\sigma(1/q)
+ \left(1+\sum_{j=1}^{M-1}\frac{d_{\sigma,j}(1/q)}{N^j}
+       +O_M\!\left(\frac{1}{qN^M}\right)\right)
+\end{equation}
+uniformly for all integers $q\ge40$ as $N\to\infty$.
+The same statement holds with $q^{-1}$ replaced by complex $u$, $|u|\le1/40$, and with error $O_M(|u|N^{-M})$. The implied constant and an eventual onset in $N$ depend on $M$, not on $q$. The theorem does not allow $M$ to grow with $N$, and it supplies no numerical onset.
+\end{theorem}
+\begin{proof}
+For clarity we detail both the classical transfer step and the parameter cancellation. Write $X=1-z/r_\sigma(u)$. Taylor expansion of $\zeta_\sigma$ at its critical point and the convergent Puiseux expansion of $\Cay$ give
+\[
+ F_\sigma(r_\sigma(u)(1-X),u)
+ =1-\sqrt{2b_\sigma(u)}X^{1/2}+\sum_{k\ge2}c_{\sigma,k}(u)X^{k/2}.
+\]
+On a sufficiently small fixed $X$ disk, the series and any fixed truncation remainder are uniform for $|u|\le0.04$. This follows either from uniform analytic inversion at the nondegenerate quadratic fold or by composing the convergent Cayley series with the local Taylor series whose leading coefficient stays away from zero. All coefficients are holomorphic in $u$.
+
+For a nonintegral exponent $\beta$, exact coefficient extraction gives
+\begin{equation}\label{eq:transfergamma}
+ [w^N](1-w)^\beta
+ =\frac{\Gamma(N-\beta)}{\Gamma(-\beta)\Gamma(N+1)}.
+\end{equation}
+The gamma ratio has an expansion in integral powers of $N^{-1}$ to any fixed depth, with error uniform for the finite set of exponents used. Integer powers in the local expansion are analytic at $w=1$ and make no algebraic singular contribution. Transfer of a sufficiently deep remainder on the common domain \eqref{eq:Delta} is uniform: a Hankel-type contour near $1$, scaled by $N^{-1}$, bounds its contribution by the corresponding power of $N^{-1}$, while the portion bounded away from $1$ is exponentially small. Strictly smaller outer radii and strictly larger cone angles provide uniform contour margins. This is the classical uniform singularity-analysis argument of \cite[Lemma IX.2]{fs}; its finite coefficient implementation is treated in \cite{genitrini}.
+
+It follows that
+\[
+ f_{\sigma,N}(u)=\frac{H_\sigma(u)r_\sigma(u)^{-N}}{\sqrt{2\pi}N^{3/2}}
+ \left(1+\sum_{j=1}^{M-1}\frac{k_{\sigma,j}(u)}{N^j}
+                  +O_M(N^{-M})\right)
+\]
+uniformly on $|u|\le0.04$, with holomorphic coefficient functions. Divide by the \emph{exact} $t_N$, using Stirling's fixed-order expansion only to identify the coefficients. Define the exact holomorphic function
+\begin{equation}\label{eq:BN}
+ B_{\sigma,N}(u)=
+ \frac{r_\sigma(u)^N f_{\sigma,N}(u)}{a^N t_N H_\sigma(u)}.
+\end{equation}
+Then
+\[
+ B_{\sigma,N}(u)=1+\sum_{j=1}^{M-1}d_{\sigma,j}(u)N^{-j}+E_{\sigma,N}(u),
+ \qquad |E_{\sigma,N}(u)|\le C_MN^{-M}
+\]
+on $|u|\le0.04$. At $u=0$, $B_{\sigma,N}(0)=1$ exactly. Uniqueness of asymptotic coefficients, successively multiplying by powers of $N$ and taking limits, gives $d_{\sigma,j}(0)=0$. Hence $E_{\sigma,N}(0)=0$ exactly, including the exponentially small contour contribution. The quotient $E_{\sigma,N}(u)/u$ is removable at zero. The maximum-modulus principle on $|u|\le0.04$ yields
+\[
+ |E_{\sigma,N}(u)|\le25C_M|u|N^{-M}\qquad(|u|\le0.025).
+\]
+Since $(a/r_\sigma)^N=e^{NS_\sigma}$, this is \eqref{eq:uniform}.
+\end{proof}
+
+\subsection{An explicit transfer coefficient}
+With all derivatives evaluated at $z=r_\sigma(u)$, put
+\[
+ c_\sigma=r_\sigma^2(R_{\sigma,z}^2+R_{\sigma,zz})+2r_\sigma R_{\sigma,z}.
+\]
+Then the first normalized coefficient is
+\begin{equation}\label{eq:d1}
+ d_{\sigma,1}=\frac{11(1-b_\sigma)}{24}+\frac{3c_\sigma}{8b_\sigma}.
+\end{equation}
+Indeed,
+\[
+ 1-e\zeta_\sigma(z,u)=b_\sigma X-\tfrac12c_\sigma X^2+O(X^3),
+\]
+and the Cayley terms at powers $X^{1/2}$ and $X^{3/2}$ have coefficient ratio
+$-c_\sigma/(4b_\sigma)+11b_\sigma/36$. Their gamma-ratio contributions give the raw correction
+$3/8+3c_\sigma/(8b_\sigma)-11b_\sigma/24$. The raw Cayley correction is $-1/12$; dividing it out proves \eqref{eq:d1}. In particular,
+\begin{equation}\label{eq:d1leading}
+ d_{\sigma,1}(u)=\sigma\frac{2a^2}{3}u+O(u^2).
+\end{equation}
+
+\section{Finite coefficient construction and palette expansions}\label{sec:jets}
+The construction is finite at every requested order. For $K\ge1$,
+\begin{equation}\label{eq:finiteR}
+ R_\sigma(z,u)=\sum_{j\ge2,m\ge1}\frac{\eps_j^\sigma}{j}
+ f_{\sigma,m}(u)z^{jm}u^{m(j-1)}.
+\end{equation}
+Only pairs satisfying $m(j-1)\le K$ can affect the coefficient of $u^K$. Compute the needed $f_{\sigma,m}$ by \eqref{eq:frec} and truncate after $u^K$. Then solve
+\begin{equation}\label{eq:Simplicit}
+ S_\sigma(u)=R_\sigma(ae^{-S_\sigma(u)},u)
+\end{equation}
+coefficient by coefficient. Every term on the right has positive $u$ degree, so its coefficient at order $k$ depends only on coefficients of $S$ below $k$. The coefficients obtained are the Taylor coefficients of the holomorphic solution already constructed; they are not merely formal guesses.
+
+Derivatives of the finite $R$ polynomial give $b,c,\log H$, and $d_1$. Higher size corrections are finite too. For an explicit universal recipe, write $\Cay=1-v$ and $Z=1-e\zeta$. The identity
+\[
+ Z=1-(1-v)e^v=\sum_{k\ge2}\frac{k-1}{k!}v^k
+\]
+recursively determines $v$ as a convergent series in $\sqrt Z$, with leading coefficient $\sqrt2$. Substitute the Taylor series of $Z$ in $X=1-z/r$, retain the finitely many half-integer powers needed at the chosen size order, apply \eqref{eq:transfergamma}, and divide by the exact-Cayley Stirling expansion. Gamma-ratio coefficients are obtained, for example, from the finite Bernoulli-polynomial expansion of $\log\Gamma(N-\beta)-\log\Gamma(N+1)$. This is the classical finite Puiseux/transfer construction, specialized here to analytic palette coefficients.
+
+\begin{proposition}\label{prop:jets}
+The convergent Taylor expansions at zero begin
+\begin{align}
+ S_+(u)&=\frac{a^2}{2}u+\frac{a^3}{3}u^2
+       +\left(\frac{a^4}{4}-\frac{5a^5}{6}\right)u^3+O(u^4),\label{eq:Splus}\\
+ S_-(u)&=-\frac{a^2}{2}u+\left(\frac{a^3}{3}-a^4\right)u^2
+       +\left(-\frac{a^4}{4}+\frac{5a^5}{6}-3a^6\right)u^3+O(u^4),\label{eq:Sminus}\\
+ \log H_+(u)&=\frac{a^2}{2}u+\left(\frac{a^3}{2}+\frac{a^4}{4}\right)u^2+O(u^3),\\
+ \log H_-(u)&=-\frac{a^2}{2}u+\left(\frac{a^3}{2}-\frac{7a^4}{4}\right)u^2+O(u^3).
+\end{align}
+\end{proposition}
+\begin{proof}
+The finite auxiliary expansions through third order are
+\begin{align*}
+ R_+(z,u)&=\frac{z^2}2u+\left(\frac{z^3}3+\frac{z^4}2\right)u^2
+ +\left(\frac{z^4}4+\frac{3z^6}4\right)u^3+O(u^4),\\
+ R_-(z,u)&=-\frac{z^2}2u+\left(\frac{z^3}3-\frac{z^4}2\right)u^2
+ +\left(-\frac{z^4}4-\frac{3z^6}4\right)u^3+O(u^4).
+\end{align*}
+These use $f_1=f_2=1$ and $f_{\sigma,3}=(3+\sigma u)/2$; the $u$ part of $f_3$ first enters $R$ at order four. Substitute $z=ae^{-S}$ and match three coefficients in \eqref{eq:Simplicit}; then substitute the same radius into $\frac12\log(1+zR_z)$. Direct algebra yields the displayed expressions. The included optional symbolic program performs this finite construction through any guarded order at most six, with order four used in the recorded test.
+\end{proof}
+
+The exponential growth bases in the original size variable are $D_\sigma(q)=q/r_\sigma(1/q)$. Hence
+\begin{align}
+ D_+(q)&=eq+\frac1{2e}+\left(\frac1{3e^2}+\frac1{8e^3}\right)q^{-1}+O(q^{-2}),\\
+ D_-(q)&=eq-\frac1{2e}+\left(\frac1{3e^2}-\frac7{8e^3}\right)q^{-1}+O(q^{-2}).
+\end{align}
+In particular $D_\pm(q)\sim eq$. Such leading growth-base statements and the posted diagonal constants are consequences of the theorem, not a claim of discovery of their constants.
+
+\section{The asymmetry crossover}\label{sec:crossover}
+Only for positive integer $q$ does
+\[
+ p(N,q)=\frac{A_-(N,q)}{A_+(N,q)}
+\]
+represent a probability. Here and through Section~\ref{sec:group}, the distribution is uniform over \emph{colored rooted isomorphism classes}. It is not uniform sampling of labeled Cayley trees followed by independent colors.
+
+\begin{theorem}\label{thm:crossover}
+Uniformly as $N,q\to\infty$ through integers,
+\begin{equation}\label{eq:logp}
+ \log p(N,q)=-a^2\frac Nq-a^4\frac N{q^2}-\frac{a^2}q
+ +O\left(\frac N{q^3}+\frac1{q^2}+\frac1{Nq}\right).
+\end{equation}
+Consequently:
+\begin{enumerate}
+\item If $q/N\to\alpha\in(0,\infty)$, then $p(N,q)\to e^{-a^2/\alpha}$.
+\item If $q/N\to\infty$, then $p(N,q)\to1$.
+\item If $q\to\infty$ and $q/N\to0$, then $\log p(N,q)\sim-a^2N/q$ and $p(N,q)\to0$.
+\end{enumerate}
+If $\alpha_N=q/N$ stays in a compact subinterval of $(0,\infty)$, then
+\begin{equation}\label{eq:pfirst}
+ p(N,q)=e^{-a^2/\alpha_N}
+ \left[1-\frac{a^2/\alpha_N+a^4/\alpha_N^2}{N}+O(N^{-2})\right].
+\end{equation}
+\end{theorem}
+\begin{proof}
+Take logarithms in Theorem~\ref{thm:uniform} with $M=1$ (or $M=2$ to identify the first transfer term). The normalized factors stay near one uniformly for large $N$, so their logarithms have error $O(1/(Nq))$. Subtract the two $S$ expansions and two $\log H$ expansions of Proposition~\ref{prop:jets}; this gives \eqref{eq:logp}. In the off-critical regimes divide its error by $N/q$: the resulting bounds are $O(q^{-2}+(Nq)^{-1}+N^{-2})$, which tend to zero. In the critical regime substitute $q=\alpha_NN$ and exponentiate; compactness makes the remaining error uniformly $O(N^{-2})$.
+\end{proof}
+For an alternative rounding convention, if $q=\alpha N+\beta_N$ with bounded $\beta_N$, then
+\begin{equation}\label{eq:rounding}
+ p(N,q)=e^{-a^2/\alpha}\left[1+\frac1N
+ \left(\frac{a^2\beta_N}{\alpha^2}-\frac{a^2}{\alpha}-\frac{a^4}{\alpha^2}\right)
+ +O(N^{-2})\right].
+\end{equation}
+Thus inserting $\lfloor\alpha N\rfloor$ into a formula derived for exactly $q=\alpha N$ changes the first correction. Formula~\eqref{eq:pfirst} avoids that ambiguity.
+
+\section{Leaf pairs and the marked Poisson law}\label{sec:marked}
+For an object $\tau$, let
+\[
+ J(\tau)=\sum_{v}\sum_{c=1}^q\binom{m_{v,c}}2,
+\]
+where $m_{v,c}$ is the number of leaf children of color $c$ at vertex $v$. A monochromatic triple contributes three pairs. Let $A_N(q,t)=\sum_\tau t^{J(\tau)}$, and set $T(x,q,t)=\sum_{N\ge1}A_N(q,t)x^N$. Adopt $0^0=1$.
+
+\subsection{The exact marked equation}
+Define
+\[
+ \mathcal L(v,t)=\sum_{m\ge0}t^{\binom m2}v^m.
+\]
+In the ordinary multiset product, the leaf type of each color has factor $(1-x)^{-1}$. Marking pairs replaces it by $\mathcal L(x,t)$. A repeated nonleaf subtree repeats its internal pair count, explaining the necessary substitutions $t\mapsto t^j$. Thus
+\begin{equation}\label{eq:markedT}
+ T=x\exp\left(q\sum_{j\ge1}\frac{T(x^j,q,t^j)}j
+                   +q\log((1-x)\mathcal L(x,t))\right).
+\end{equation}
+With $F(z,u,t)=qT(z/q,q,t)$, this is
+\begin{align}
+ F(z,u,t)&=z\exp(F(z,u,t)+R(z,u,t)),\label{eq:markedF}\\
+ R(z,u,t)&=\sum_{j\ge2}\frac{F(z^ju^{j-1},u,t^j)}j+D(z,u,t),\\
+ D(z,u,t)&=\frac1u\log((1-zu)\mathcal L(zu,t)).\label{eq:D}
+\end{align}
+At $t=1$, $D=0$ and this is the ordinary class. At $t=0$, $\mathcal L(v,0)=1+v$ and $D=u^{-1}\log(1-z^2u^2)$, forbidding equal-colored leaf siblings but allowing repeated nonleaf types. At small sizes,
+\begin{align*}
+ A_3(q,t)&=\frac{3q^2-q}{2}+qt,\\
+ A_4(q,t)&=\frac{8q^3}{3}-q^2+\frac q3+(2q^2-q)t+qt^3.
+\end{align*}
+These provide useful checks on the distinction between a pair count and a count of doubled colors.
+
+\subsection{Analytic bounds up to the marking boundary}
+We work on the \emph{closed} disk $|t|\le1$. Functions are continuous there and holomorphic for $|t|<1$; no holomorphic neighborhood of $t=1$ is claimed. All $z,u$ estimates below are uniform up to that boundary.
+
+Set $h(v,t)=(1-v)\mathcal L(v,t)$ and $\eta(s)=2s^2/(1-s)$. Since
+\[
+ h(v,t)=1+\sum_{m\ge2}\left(t^{\binom m2}-t^{\binom{m-1}2}\right)v^m,
+\]
+for $|v|\le s<1$, $|t|\le1$,
+\begin{equation}\label{eq:hbound}
+ |h-1|\le\eta(s),\qquad |h_v|\le\frac{2s(2-s)}{(1-s)^2}.
+\end{equation}
+When $\eta(s)<1$, the logarithm selected near $h=1$ satisfies
+\[
+ |\log h|\le\frac{\eta(s)}{1-\eta(s)},\qquad
+ |D(z,u,t)|\le\frac{2|z|^2|u|}{(1-s)(1-\eta(s))},\quad s=|zu|.
+\]
+In particular $D$ has a removable continuation at $u=0$.
+
+Use $r_0=1/5$ and the smaller palette disk $U=1/100$. The same Banach space as before, now with supremum also over $|t|\le1$, is complete. The fixed-point map uses $t^j$, which stays in that disk. On the norm-$2$ ball,
+\[
+ A=\sum_{j\ge1}\frac{r_0^jU^{j-1}}j<0.201,
+ \qquad |D|<0.000802,
+\]
+so its norm is at most $e^{2A+0.000802}<1.5$ and its Lipschitz constant is at most $Ae^{2A+0.000802}<0.302$. The fixed point is unique, holomorphic in $z,u$ and interior $t$, and uniformly continuous at the marking boundary.
+
+On $|z|\le Z=0.45$, the largest recursive argument is $W=Z^2U=0.002025$. Cauchy's estimate gives $|F_w|<2.1$. With $s=ZU=0.0045$ and $\eta(s)<0.000041$,
+\begin{align*}
+ |R-D|&\le\frac{Z^2U}{1-s}<0.002035,&
+ |(R-D)_z|&\le\frac{2.1s}{1-s}<0.0095,\\
+ |D|&\le\frac{2Z^2U}{(1-s)(1-\eta(s))}<0.004069,&
+ |D_z|&\le\frac{2s(2-s)}{(1-s)^2(1-\eta(s))}<0.0182.
+\end{align*}
+Therefore $|R|<0.0062$, $|R_z|<0.028$. For $\zeta=ze^R$ we obtain
+\[
+ |\zeta-z|<0.0028,\qquad |\zeta_z-1|<0.02.
+\]
+Rouch\'e again gives a unique $r(u,t)$ with $|r-a|<0.01$, holomorphic in $u$ and interior $t$, continuous at $|t|=1$. The segment identity now has $|\delta|<0.02$. The rational argument bounds
+\[
+ \frac{0.01}{1/3-0.01}+\frac{0.02}{1-0.02}<\frac1{10}<\frac\pi6
+\]
+prove that \eqref{eq:Delta} is a common domain for all $|u|\le0.01$, $|t|\le1$. The Cayley composition continues the counting germ there. For real $u>0$ and $0\le t\le1$, the positive real root is the unique dominant singularity, with nonzero square-root coefficient.
+
+\subsection{Uniform transfer and the law}
+Define $S(u,t)=-\log(er(u,t))$ and $H(u,t)=\sqrt{1+rR_z(r,u,t)}$, taking their values $0,1$ at $u=0$. The proof of Theorem~\ref{thm:uniform} applies with the compact marking parameter set. Holomorphy past its boundary is not required for uniform coefficient transfer. It gives, uniformly on $|u|\le0.005$, $|t|\le1$,
+\begin{equation}\label{eq:markedtransfer}
+ [z^N]F(z,u,t)=t_N e^{NS(u,t)}H(u,t)\bigl(1+O(|u|/N)\bigr).
+\end{equation}
+To justify the improved error precisely, normalize the exact coefficient by $t_Ne^{NS}H$ as in \eqref{eq:BN}. Its difference from one is holomorphic in $u$, uniformly $O(N^{-1})$ on a larger closed $u$ disk, and exactly zero at $u=0$ for every $t$. Divide by $u$ and apply the maximum-modulus principle. Higher fixed orders follow by the same argument, but are not needed for the law.
+
+The leaf replacement alone starts as $D=(t-1)z^2u+O(u^2)$. The recursive part contributes $z^2u/2+O(u^2)$. Hence the \emph{whole} auxiliary exponent and singularity shift start as
+\begin{equation}\label{eq:markedleading}
+ R=(t-\tfrac12)z^2u+O(u^2),\quad
+ S=a^2(t-\tfrac12)u+O(u^2),\quad H=1+O(u),
+\end{equation}
+uniformly on the closed marking disk.
+
+\begin{theorem}[Leaf pairs]\label{thm:poisson}
+If $q/N\to\alpha\in(0,\infty)$ through positive integer palettes, then under the uniform colored-isomorphism-class model,
+\[
+ J\ \Longrightarrow\ \operatorname{Poisson}(\lambda),\qquad
+ \lambda=\frac{1}{e^2\alpha}.
+\]
+The probability mass functions converge in total variation. More precisely, for all integers $q\ge200$, the pgf satisfies uniformly on $|t|\le1$,
+\begin{equation}\label{eq:pgfest}
+ G_{N,q}(t)=\frac{A_N(q,t)}{A_N(q,1)}
+ =\exp\left(a^2(t-1)\frac Nq+O(N/q^2)\right)
+       \left(1+O(q^{-1}+(Nq)^{-1})\right).
+\end{equation}
+\end{theorem}
+\begin{proof}
+Divide \eqref{eq:markedtransfer} at $t$ by its value at $1$, then use \eqref{eq:markedleading}. This proves \eqref{eq:pgfest} and its uniform limit $e^{\lambda(t-1)}$. On any fixed circle $|t|=\rho<1$, Cauchy's coefficient formula gives convergence of every fixed coefficient to $e^{-\lambda}\lambda^k/k!$. These nonnegative limiting masses sum to one. Given $\epsilon>0$, retain a finite initial set with limiting mass above $1-\epsilon$; convergence on that set bounds the tails, proving convergence in total variation and hence in distribution. No differentiation at $t=1$ is used.
+\end{proof}
+
+\subsection{First marked correction and symmetry without leaf pairs}
+A second palette order follows directly from the exact equation:
+\begin{align}
+ R(z,u,t)&=(t-\tfrac12)z^2u+
+ \left((t^3-t+\tfrac13)z^3+\tfrac12z^4\right)u^2+O(u^3),\\
+ S(u,t)&=a^2(t-\tfrac12)u+
+ \left(a^3(t^3-t+\tfrac13)+2a^4t(1-t)\right)u^2+O(u^3),\\
+ \log H(u,t)&=a^2(t-\tfrac12)u+O(u^2).
+\end{align}
+Thus, with $\alpha_N=q/N$ in a compact positive interval,
+\begin{align}\label{eq:markedcorrection}
+ \log G_{N,q}(t)
+ &=\frac{a^2(t-1)}{\alpha_N}\notag\\
+ &\quad+\frac1N\left[
+ \frac{a^2(t-1)}{\alpha_N}+
+ \frac{a^3(t^3-t)+2a^4t(1-t)}{\alpha_N^2}\right]+O(N^{-2})
+\end{align}
+uniformly for $|t|\le1$. The logarithm is the branch continued from $u=0$; the transfer formula ensures nonvanishing in this regime.
+Every same-colored leaf pair can be transposed. Therefore identity implies $J=0$, and exactly
+\[
+ \Prob(\Aut\ne1,\ J=0)=G_{N,q}(0)-p(N,q).
+\]
+Comparison of \eqref{eq:markedcorrection} at zero with \eqref{eq:pfirst} proves
+\begin{equation}\label{eq:gap}
+ \Prob(\Aut\ne1,\ J=0)
+ =e^{-a^2/\alpha_N}\frac{a^4}{\alpha_N^2N}+O(N^{-2}).
+\end{equation}
+This controls the event with no leaf pairs. On its own it does not describe the whole automorphism group; that requires the following recursive subclass.
+
+
+\section{Quantitative and all fixed order Poisson approximation}\label{sec:tv}
+Fix a compact interval $I\subset(0,\infty)$ and write
+\[
+ \alpha_N=q/N\in I,\qquad \lambda_N=a^2/\alpha_N,
+ \qquad p_k(\lambda)=e^{-\lambda}\lambda^k/k!,
+\]
+with $p_k=0$ for negative $k$. The comparison parameter is moving. Without a rate for $\alpha_N\to\alpha$, a rate to the fixed-parameter Poisson law does not follow.
+
+\subsection{A coefficient cutoff lemma}
+\begin{lemma}\label{lem:cutoff}
+Let $G(t)=\sum_{k\ge0}g_kt^k$ be a pgf. Let $B(t)=\sum_{k\ge0}b_kt^k$ have absolutely summable real coefficients and total mass one, without requiring $b_k\ge0$. If
+$\sup_{|t|\le1}|G(t)-B(t)|\le\epsilon$, then for every integer $K\ge0$,
+\[
+ \sum_{k\ge0}|g_k-b_k|
+ \le2(K+1)\epsilon+2\sum_{k>K}|b_k|.
+\]
+\end{lemma}
+\begin{proof}
+Cauchy's formula on $|t|=r<1$ bounds each coefficient difference by $\epsilon r^{-k}$; let $r\uparrow1$. The head sum is at most $(K+1)\epsilon$. Equality of total masses gives
+\[
+ \sum_{k>K}g_k=\sum_{k>K}b_k-\sum_{k\le K}(g_k-b_k).
+\]
+Since $g_k\ge0$, the absolute tail error is at most $2\sum_{k>K}|b_k|+(K+1)\epsilon$. Adding the head proves the result.
+\end{proof}
+For a fixed-degree polynomial $Q(t;\alpha)=\sum_{j=0}^d q_j(\alpha)t^j$ with coefficients bounded on $I$,
+\[
+ [t^k]e^{\lambda(t-1)}Q(t;\alpha)=\sum_{j=0}^d q_j(\alpha)p_{k-j}(\lambda),
+ \qquad \lambda=a^2/\alpha.
+\]
+Its coefficient $\ell^1$ norm is at most $\sum_j|q_j(\alpha)|$. If $\Lambda=\max_{\alpha\in I}a^2/\alpha$, then
+\[
+ \Prob(\operatorname{Poisson}(\lambda)\ge m)
+ \le\sum_{k\ge m}\frac{\Lambda^k}{k!}
+ \le e^\Lambda\frac{\Lambda^m}{m!},
+\]
+using $(m+\ell)!\ge m!\ell!$. The absolute tails of these signed Poisson-polynomial sequences are therefore uniformly factorially small. For $K=\lfloor\sqrt N\rfloor$, they are smaller than every fixed inverse power of $N$. This bound concerns the explicit comparison sequence; it evaluates no actual marked tree pgf at $t>1$.
+
+\subsection{Finite polynomial corrections to every fixed order}
+\begin{theorem}\label{thm:allTV}
+For each fixed $R\ge0$ there are finite polynomials $P_r(t;\alpha)$, $1\le r\le R$, with coefficients bounded on $I$ and $P_r(1;\alpha)=0$, such that
+\begin{equation}\label{eq:allTV}
+ \sum_{k\ge0}\left|
+ \Prob(J=k)-[t^k]e^{\lambda_N(t-1)}
+ \left(1+\sum_{r=1}^R\frac{P_r(t;\alpha_N)}{N^r}\right)
+ \right|=O_{I,R}(N^{-R-1}).
+\end{equation}
+The first polynomial is
+\begin{equation}\label{eq:P1}
+ P_1(t;\alpha)=\frac{a^2(t-1)}{\alpha}
+ +\frac{a^3(t^3-t)+2a^4t(1-t)}{\alpha^2}.
+\end{equation}
+Each order is fixed before the limit is taken. The comparison is a signed sequence; the infinite expansion is not asserted to converge.
+\end{theorem}
+\begin{proof}
+We prove the finite-polynomial property and the arbitrary-order analytic estimate before applying the cutoff lemma. Write $F(z,u,t)=\sum f_n(u,t)z^n$ in \eqref{eq:markedF}. Every $f_n$ is a finite polynomial in $u,t$ with nonnegative $u$ exponents. Indeed, the leaf exponent is a sum over $m\ge2$ of $z^mu^{m-1}$ times a polynomial in $t$. To determine $f_n$, the exponential needs only exponent coefficients through $z^{n-1}$. Its $j=1$ term uses earlier $f_d$, and its $j\ge2$ terms use $jd\le n-1$, with nonnegative multiplier $u^{d(j-1)}$. Induction from $f_1=1$ proves the assertion. At $u=0$ all these equations reduce to $F=ze^F$ independently of $t$.
+
+For a coefficient $[u^m]R$, a recursive contribution from the $u^s$ term of $f_n$ satisfies $n(j-1)+s=m$. Thus $j\le m+1$ and $n\le m/(j-1)$: only finitely many contributions occur. The leaf contribution is
+\[
+ z^{m+1}[v^{m+1}]\log((1-v)\mathcal L(v,t)).
+\]
+Hence every $R_m(z,t)=[u^m]R$ is a finite polynomial in $z,t$. The equation $S=R(ae^{-S},u,t)$, whose right side has no $u$-constant term, now shows that every finite palette coefficient of $S$ is a polynomial in $t$. The same is true of $r,b,H$ and their inverses or square roots with the chosen nonzero constant terms.
+
+Every local Puiseux coefficient is obtained by substituting the Taylor series of $1-e\zeta(rw)$ into the universal Cayley series. At each fixed order this uses finitely many derivatives of $R$ at $r$ and the preceding algebraic operations. Therefore all its finite palette coefficients are polynomials in $t$. The common closed-marking-disk domain in Section~\ref{sec:marked} gives transfer to arbitrary \emph{fixed} depth, exactly as in Theorem~\ref{thm:uniform}:
+\begin{align}\label{eq:markedalltransfer}
+ [z^N]F(z,u,t)=t_Ne^{NS(u,t)}H(u,t)
+ \left(1+\sum_{h=1}^L\frac{Q_h(u,t)}{N^h}+O_L(N^{-L-1})\right).
+\end{align}
+Each $Q_h$ is holomorphic in $u$, uniformly continuous on $|t|\le1$, and each of its finite $u$ coefficients is polynomial in $t$. At $u=0$, uniqueness of asymptotic coefficients gives $Q_h(0,t)=0$. One may also improve the remainder by $|u|$, but arbitrarily many fixed orders suffice here. For a requested relative order, take enough terms of the convergent local expansion so that the transferred remainder has strictly smaller order; integer analytic powers have no algebraic singular contribution, and distant contour pieces are uniformly exponentially small.
+
+Set $u=1/(\alpha_NN)$ in \eqref{eq:markedalltransfer}, choose sufficiently large fixed $L$, and divide by its value at $t=1$. Uniform Taylor expansion in the fixed $u$ disk is valid for $\alpha_N\in I$. In the exponent,
+\[
+ N(S(u,t)-S(u,1))=\lambda_N(t-1)
+ +\sum_{m\ge2}\frac{S_m(t)-S_m(1)}{\alpha_N^mN^{m-1}}.
+\]
+Finite products and exponentiation of this series, the amplitude ratio, and the transfer ratio yield for every fixed $M$,
+\begin{equation}\label{eq:allpgf}
+ G_{N,q}(t)=e^{\lambda_N(t-1)}
+ \left(1+\sum_{r=1}^M\frac{P_r(t;\alpha_N)}{N^r}\right)
+ +O_{I,M}(N^{-M-1})
+\end{equation}
+uniformly for $|t|\le1$. The coefficients are bounded on $I$ and polynomial in $t$. Normalization at $t=1$ gives $P_r(1;\alpha)=0$. Formula~\eqref{eq:markedcorrection} gives \eqref{eq:P1}.
+
+To prove \eqref{eq:allTV}, use \eqref{eq:allpgf} one order deeper, with $M=R+1$, and apply Lemma~\ref{lem:cutoff} to that signed comparison with $K=\lfloor\sqrt N\rfloor$. Its tail is uniformly factorially small, so the $\ell^1$ error is $O(N^{-R-3/2})$. Removing its final retained term costs only $O(N^{-R-1})$, because its coefficient $\ell^1$ norm is uniformly bounded. This proves the theorem using only the closed marking disk.
+\end{proof}
+
+\subsection{The sharp total variation constant}
+Use the convention $d_{\rm TV}(\mu,\nu)=\frac12\|\mu-\nu\|_1$ for discrete laws. Let
+\[
+ c_k(\alpha)=[t^k]e^{\lambda(t-1)}P_1(t;\alpha),\qquad
+ \mathcal C(\alpha)=\tfrac12\sum_{k\ge0}|c_k(\alpha)|,\quad \lambda=a^2/\alpha.
+\]
+Theorem~\ref{thm:allTV} with $R=1$ and the reverse triangle inequality give
+\begin{equation}\label{eq:sharpTV}
+ d_{\rm TV}(\mathcal L(J),\operatorname{Poisson}(\lambda_N))
+ =\frac{\mathcal C(\alpha_N)}N+O_I(N^{-2}).
+\end{equation}
+Here $\mathcal L(J)$ denotes the probability law, rather than the leaf series $\mathcal L(v,t)$.
+An explicit form is useful. Since $a^3/\alpha^2=e\lambda^2$ and $a^4/\alpha^2=\lambda^2$,
+\[
+ P_1=-\lambda+[\lambda+(2-e)\lambda^2]t-2\lambda^2t^2+e\lambda^2t^3.
+\]
+For $Z\sim\operatorname{Poisson}(\lambda)$ and falling factorials $(Z)_j$,
+\begin{equation}\label{eq:TVconstant}
+ \mathcal C(\alpha)=\frac12\Exp\left|
+ -\lambda+[1+(2-e)\lambda]Z-2(Z)_2+\frac e\lambda(Z)_3
+ \right|.
+\end{equation}
+Indeed $p_{k-j}=p_k(k)_j/\lambda^j$. The correction has total mass zero, while $c_0=-\lambda e^{-\lambda}<0$; therefore
+\begin{equation}\label{eq:Cpositive}
+ \mathcal C(\alpha)\ge\lambda e^{-\lambda}>0.
+\end{equation}
+Uniform factorial tails show that $\mathcal C$ is finite, continuous, and bounded on $I$, and \eqref{eq:Cpositive} bounds it away from zero there. Thus the moving-Poisson total-variation distance is genuinely of order $N^{-1}$. Against the fixed limiting parameter $a^2/\alpha$, one may add $|\lambda_N-a^2/\alpha|$ by coupling Poisson variables through an independent increment. No $O(N^{-1})$ fixed-parameter rate is claimed without a corresponding parameter-convergence rate.
+
+\section{The limiting automorphism group}\label{sec:group}
+\begin{definition}
+The recursive class $\classB$ consists of trees for which, at every vertex, every nonleaf colored child-subtree type occurs at most once, every leaf color occurs at most twice, and every child subtree itself belongs to $\classB$.
+\end{definition}
+Let $F_B(z,u,t)$ be its normalized generating function, marking the same $J$. The PSET product already permits each child type once. Its leaf factor $1+x$ must be replaced by $1+x+tx^2$. Thus
+\begin{align}
+ F_B(z,u,t)&=z\exp\left(\sum_{j\ge1}\frac{(-1)^{j-1}}j
+ F_B(z^ju^{j-1},u,t^j)+D_B(z,u,t)\right),\label{eq:B}\\
+ D_B(z,u,t)&=\frac1u\log\frac{1+zu+tz^2u^2}{1+zu}.
+\end{align}
+The substitutions $t^j$ are required by the weighted PSET logarithm. At $t=0$ this is exactly the identity class. At $t=1$,
+\begin{equation}\label{eq:Bleaf}
+ D_B(z,u,1)=\frac1u\left(\log(1-(zu)^3)-\log(1-(zu)^2)\right).
+\end{equation}
+
+\begin{lemma}\label{lem:Bgroup}
+Every object in $\classB$ satisfies $\Aut(\tau)\cong(C_2)^{J(\tau)}$.
+\end{lemma}
+\begin{proof}
+At a vertex, the automorphism group decomposes over colored child types into factors $\Aut(\text{child})\wr S_m$, where $m$ is that type's multiplicity. A nonleaf type in $\classB$ has $m\le1$, so there is no permutation of whole nonleaf subtrees. A leaf type has trivial internal group and multiplicity at most two, giving either the trivial group or $S_2=C_2$. Inducting down the tree leaves exactly one independent factor for each doubled leaf color. These swaps have disjoint supports and commute. Each such doubled type contributes one to $J$.
+\end{proof}
+
+\begin{theorem}\label{thm:B}
+Uniformly when $\alpha_N=q/N$ stays in a compact subinterval of $(0,\infty)$,
+\begin{equation}\label{eq:Bprob}
+ \Prob(\classB)=1-\frac{a^3+a^4}{\alpha_N^2N}+O(N^{-2}).
+\end{equation}
+If $q/N\to\alpha>0$, then for every fixed integer $k\ge0$,
+\begin{equation}\label{eq:grouplaw}
+ \Prob(\Aut\cong(C_2)^k)\longrightarrow
+ e^{-\lambda}\frac{\lambda^k}{k!},\qquad \lambda=a^2/\alpha.
+\end{equation}
+In particular $\log_2|\Aut|\Longrightarrow\operatorname{Poisson}(a^2/\alpha)$.
+\end{theorem}
+\begin{proof}
+Set $h_B(v,t)=1+tv^2/(1+v)$. For $|v|\le s<1$, $|t|\le1$,
+\[
+ |h_B-1|\le\frac{s^2}{1-s},\qquad
+ |(h_B)_v|\le\frac{s(2+s)}{(1-s)^2}.
+\]
+For the small values of $s$ used in Section~\ref{sec:marked}, these are smaller than \eqref{eq:hbound}. The PSET signs have absolute value one. Thus the same fixed point, large disk, Rouch\'e construction, cut geometry, and transfer estimate all apply with $|u|\le0.01$, $|t|\le1$, and strengthened coefficient error $O(|u|/N)$ on $|u|\le0.005$.
+
+The full auxiliary exponent expands as
+\[
+ R_B(z,u,t)=(t-\tfrac12)z^2u+\left((\tfrac13-t)z^3-\tfrac12z^4\right)u^2+O(u^3).
+\]
+For an exponent $b_0z^2u+K(z)u^2+O(u^3)$, the equation $S=R(ae^{-S},u)$ gives
+\[
+ S=b_0a^2u+(K(a)-2b_0^2a^4)u^2+O(u^3).
+\]
+At $t=1$, therefore,
+\[
+ S_B=\frac{a^2}2u+\left(-\frac{2a^3}3-a^4\right)u^2+O(u^3),
+ \qquad S_B-S_+=-(a^3+a^4)u^2+O(u^3).
+\]
+The first-order auxiliary terms agree, so $H_B/H_+=1+O(u^2)$. Coefficient transfer now gives
+\[
+ \Prob(\classB)=\exp\left(-(a^3+a^4)N/q^2+O(N/q^3)\right)
+           \left(1+O(q^{-2}+(Nq)^{-1})\right),
+\]
+which proves \eqref{eq:Bprob}. On $\classB$, Lemma~\ref{lem:Bgroup} identifies the group. Consequently
+\[
+ \left|\Prob(\Aut\cong(C_2)^k)-\Prob(J=k)\right|\le\Prob(\classB^c)=O(N^{-1}).
+\]
+Theorem~\ref{thm:poisson} proves \eqref{eq:grouplaw}. The same coupling gives the law of $\log_2|\Aut|$: it equals $J$ outside an event whose probability tends to zero, even though on that exceptional event its value need not be an integer.
+\end{proof}
+The same coupling gives a quantitative bound. If $Z_N\sim\operatorname{Poisson}(\lambda_N)$, then
+\begin{align}\label{eq:groupTV}
+ d_{\rm TV}\bigl(\mathcal L(\Aut),\mathcal L((C_2)^{Z_N})\bigr)
+ \le \frac{\mathcal C(\alpha_N)+(a^3+a^4)/\alpha_N^2}{N}+O_I(N^{-2}).
+\end{align}
+Indeed the tree's group and $(C_2)^J$ disagree only outside $\classB$, while the injective map $k\mapsto(C_2)^k$ preserves the Poisson-comparison total variation. The same upper bound holds for the laws of $\log_2|\Aut|$ and $Z_N$ as measures on the real line. This is an upper bound, not an exact leading constant for either group observable.
+
+The defect in \eqref{eq:Bprob} measures failure of the recursive subclass. It is not asserted to equal the probability that the group fails to be an elementary abelian $2$-group; some objects outside $\classB$ may still have such a group. Formula~\eqref{eq:grouplaw} is distributional, with no moment-convergence assertion.
+
+\section{Labeled sampling and the positive moment obstruction}\label{sec:labeled}
+\subsection{An independent labeled Poisson proof}
+Fix root label $1$, take a uniform Cayley tree on $[N]$, and independently color its $N-1$ nonroot vertices uniformly from $q$ colors. The following group statements concern the colored rooted object \emph{after forgetting vertex labels}. A fully label-preserving automorphism would trivially fix every vertex.
+
+For distinct nonroot vertices $a,b$ and a possible parent $p$, let $I_{\{a,b\};p}$ indicate that $a,b$ are leaf children of $p$ with the same color. Then $J=\sum I_{\{a,b\};p}$. Removing two prescribed leaves leaves an arbitrary tree on $N-2$ labels. Hence, for $N\ge3$,
+\begin{equation}\label{eq:labeledmean}
+ \Exp J=\frac{(N-1)(N-2)^{N-2}}{2qN^{N-2}}
+ \sim\frac{N}{2e^2q}.
+\end{equation}
+At $N=3$, the tree on one remaining vertex is counted as one, as usual.
+
+\begin{theorem}[Labeled contrast]\label{thm:labeled}
+In this labeled sampling model, if $q/N\to\alpha>0$ then
+\[
+ J\Longrightarrow\operatorname{Poisson}\left(\frac{1}{2e^2\alpha}\right).
+\]
+\end{theorem}
+\begin{proof}
+Fix $k\ge1$ and expand the falling factorial $(J)_k$ over ordered $k$ distinct pair indicators. Terms whose $2k$ leaf endpoints are all distinct have exactly $(N-1)_{2k}/2^k$ ordered endpoint choices. Each of the $k$ parents may be any of the remaining $N-2k$ labels, with repetitions allowed. Removing the leaves leaves a Cayley tree on those labels; the probability of the $k$ independent color equalities is $q^{-k}$. Thus the leaf-disjoint contribution, for sufficiently large $N$, is exactly
+\begin{equation}\label{eq:disjoint}
+ \frac{(N-1)_{2k}(N-2k)^{N-k-2}}{2^kq^kN^{N-2}}
+ \longrightarrow\left(\frac{1}{2e^2\alpha}\right)^k.
+\end{equation}
+We bound overlapping terms explicitly. In a compatible configuration, form the graph on the distinct leaf endpoints whose edges are the specified pairs. Let it have $v$ vertices and $c$ connected components. Each component must have one common parent because a leaf cannot have two parents. A parent cannot be one of the leaf endpoints. The same pair with different parents contributes zero.
+
+For fixed $k$ only finitely many abstract endpoint patterns occur. A pattern has $O_k(N^v)$ endpoint labelings and at most $N^c$ parent choices. Removing its $v$ leaves shows that the tree-event probability is
+\[
+ \frac{(N-v)^{N-v-2}}{N^{N-2}}=O_k(N^{-v}).
+\]
+Its color-equality probability is exactly $q^{-(v-c)}$. Its total contribution is therefore $O_k(N^cq^{-(v-c)})=O_{k,\alpha}(N^{2c-v})$. Every component has at least two vertices; any overlap forces one to have at least three, so $v\ge2c+1$. All overlapping terms together are $O_{k,\alpha}(N^{-1})$.
+
+Thus every fixed factorial moment converges to the corresponding Poisson moment. Ordinary moments are finite linear combinations of factorial moments. The first moment gives tightness, and bounded higher moments give uniform integrability for each lower moment of a subsequential limit. The Poisson law is moment-determinate, since its moment-generating function exists near zero. Every subsequential limit is that law, proving the result. This argument does not require a moment-generating function uniformly analytic for the varying finite-$N$ models.
+\end{proof}
+
+\subsection{Why the means differ}
+A colored rooted class $\tau$ has exactly $(N-1)!/|\Aut(\tau)|$ labelings with the root label fixed. Orbit-stabilizer gives
+\begin{equation}\label{eq:orbit}
+ \sum_\tau\frac1{|\Aut(\tau)|}=L(N,q).
+\end{equation}
+The labeled model assigns class $\tau$ probability proportional to $1/|\Aut(\tau)|$, with normalization $L(N,q)$. Uniform isomorphism-class sampling instead weights each class equally. In particular,
+\[
+ \Prob_{\mathrm{labeled}}(\Aut=1)=\frac{A_-(N,q)}{L(N,q)}
+ \longrightarrow e^{-1/(2e^2\alpha)}
+\]
+by Theorem~\ref{thm:uniform}. The factor two in the Poisson means is therefore consistent with exact orbit-size weighting, not an ambiguity about rootedness.
+
+\subsection{Why positive exponential moments do not converge}
+For fixed integer $q\ge1$ and real $t>1$, the $q$ monochromatic stars alone contribute
+\[
+ A_N(q,t)\ge q\,t^{(N-1)(N-2)/2}.
+\]
+The ordinary generating series in size has radius zero, even after the $q$ normalization. Therefore a proof that extends the full marked series to a neighborhood of $t=1$ on both sides would be invalid.
+
+There is a stronger warning along $q/N\to\alpha>0$. Every isomorphism class has at least one labeling, so
+\[
+ A_+(N,q)\le q^{N-1}N^{N-2}.
+\]
+Its logarithm is $O(N\log N)$, while the star weight has logarithm a positive constant times $N^2$. Hence
+\begin{equation}\label{eq:momentdivergence}
+ \Exp_{\mathrm{classes}}[t^J]\ge
+ \frac{q\,t^{(N-1)(N-2)/2}}{A_+(N,q)}\longrightarrow\infty
+ \qquad(t>1).
+\end{equation}
+Weak convergence to Poisson, even total-variation convergence of the mass functions, does not imply convergence of unbounded positive exponential moments. No such conclusion is attached to the group law either.
+
+\section{The OEIS diagonals and their inverses}\label{sec:diagonal}
+The diagonal index is the number of \emph{nonroot} vertices:
+\[
+ b_+(n)=A_+(n+1,n)=\text{A242375}(n),\qquad
+ b_-(n)=A_-(n+1,n)=\text{A255523}(n).
+\]
+For $n=0$, both conventions give $b_\sigma(0)=1$ separately. The main formulas below are for $n\to\infty$.
+
+\begin{theorem}[Diagonal corrections]\label{thm:diagonal}
+Put
+\[
+ K_\sigma=\frac{\exp(1+\sigma a^2/2)}{\sqrt{2\pi}}.
+\]
+Then
+\begin{equation}\label{eq:diagonal}
+ \log\frac{b_\sigma(n)}{K_\sigma e^n n^{n-3/2}}
+ =\frac{\ell_{\sigma,1}}n+\frac{\ell_{\sigma,2}}{n^2}+O(n^{-3}),
+\end{equation}
+where
+\begin{align}
+ \ell_{+,1}&=-\frac{19}{12}+a^2+\frac{a^3}{3},\\
+ \ell_{-,1}&=-\frac{19}{12}-a^2+\frac{a^3}{3}-a^4,\\
+ \ell_{+,2}&=\frac56+\frac{2a^2}{3}+\frac{5a^3}{6}+\frac{a^4}{2}-\frac{5a^5}{6},\\
+ \ell_{-,2}&=\frac56-\frac{2a^2}{3}+\frac{5a^3}{6}-3a^4+\frac{5a^5}{6}-3a^6.
+\end{align}
+Every further fixed order follows from the finite construction in Section~\ref{sec:jets}. The relative second coefficient is $\ell_{\sigma,2}+\ell_{\sigma,1}^2/2$.
+\end{theorem}
+\begin{proof}
+Set $N=n+1$, $q=n$ in Theorem~\ref{thm:uniform}. Stirling's formula for the exact baseline gives
+\begin{align*}
+ \log\frac{L(n+1,n)}{e^{n+1}n^{n-3/2}/\sqrt{2\pi}}
+ &=-\frac32\log(1+1/n)-\frac{1}{12(n+1)}+O(n^{-3})\\
+ &=-\frac{19}{12n}+\frac{5}{6n^2}+O(n^{-3}).
+\end{align*}
+Add $(n+1)S_\sigma(1/n)$, $\log H_\sigma(1/n)$, and the logarithm of the normalized transfer factor. Its first term is
+\[
+ \frac{d_{\sigma,1}(1/n)}{n+1}=\frac{2\sigma a^2}{3n^2}+O(n^{-3}).
+\]
+The constant singularity shift is $\sigma a^2/2$, absorbed into $K_\sigma$. Substitution of Proposition~\ref{prop:jets} yields the stated coefficients. At any higher fixed order the same finite substitution is valid with a deeper fixed uniform expansion.
+\end{proof}
+The leading equivalents $b_\sigma(n)\sim K_\sigma e^n n^{n-3/2}$, including their constants, were already posted by Kot\v e\v sovec on OEIS \cite{oeisdiagall,oeisdiagid}. The theorem provides a unified proof and corrections while preserving that attribution.
+
+\subsection{A smooth asymptotic inverse}
+For a large target $y$, define
+\[
+ L_y=\log(y/K_\sigma),\quad
+ X=\frac{L_y}{W(eL_y)},\quad h=\log X+2,\quad
+ \delta=\frac{3\log X}{2h},
+\]
+where $W$ is the positive real Lambert function for positive arguments. The identity $X\log X+X=L_y$ follows immediately.
+
+\begin{proposition}\label{prop:inverse}
+An asymptotic solution of the diagonal logarithmic model is
+\begin{equation}\label{eq:explicitinverse}
+ x=X+\delta-
+ \frac{\delta^2/2-3\delta/2+\ell_{\sigma,1}}{Xh}
+ +O\left(\frac1{X^2h}\right).
+\end{equation}
+If $x_y$ is the eventually increasing-branch solution of
+\begin{equation}\label{eq:smoothmodel}
+ y=K_\sigma e^x x^{x-3/2}
+       \exp(\ell_{\sigma,1}/x+\ell_{\sigma,2}/x^2),
+\end{equation}
+then at a range point $y=b_\sigma(n)$,
+\[
+ x_y-n=O(n^{-3}/\log n).
+\]
+\end{proposition}
+\begin{proof}
+Let $g(x)=x\log x+x$, so $g'(X)=h$, $g''(X)=1/X$. Since $\delta=O(1)$, Taylor expansion of
+$g(x)-\tfrac32\log x+\ell_{\sigma,1}/x+\ell_{\sigma,2}/x^2=L_y$
+at $x=X$ first cancels $-\frac32\log X$ with $h\delta$. At order $X^{-1}$ the residual is
+$(\delta^2/2-3\delta/2+\ell_{\sigma,1})/X$, canceled by the next displacement in \eqref{eq:explicitinverse}. The remaining logarithmic residual is $O(X^{-2})$; division by a derivative asymptotic to $h$ proves its error term. For \eqref{eq:smoothmodel}, Theorem~\ref{thm:diagonal} gives logarithmic residual $O(n^{-3})$ at $x=n$, while the derivative is asymptotic to $\log n$. The mean-value theorem gives the asserted range-point error. Repeated fixed-depth residual cancellation yields higher inverse orders.
+\end{proof}
+This is a specialization of standard asymptotic reversion, not a new general inverse method. The model's real root is not itself an exact inverse of a discrete sequence.
+
+\subsection{Exact thresholds and rounding}
+Both diagonals are nondecreasing: add a unary root, color the old root with a fixed color from the enlarged palette, and retain all old colors. Removing the unary root recovers the old class. For the identity class no new automorphism arises. The leading asymptotics show that adjacent ratios tend to infinity, so the sequences are eventually strictly increasing.
+
+At exact range points, the error in Proposition~\ref{prop:inverse} eventually permits nearest-integer recovery. For an arbitrary threshold $y$, an asymptotic real inverse can be arbitrarily close to an integer; a truncated expansion cannot be unconditionally put inside a ceiling. One must use a proved enclosure or compare the exact adjacent values. The supplied exact diagonal inverse uses the combinatorial monotonicity and bounded binary search, with exact integer comparisons throughout. It reports absence within the requested finite search range rather than claiming a global negative answer.
+
+\section{Palette sizing and global eventual thresholds}\label{sec:palette}
+\subsection{The real continuation}
+For real $q>0$ sufficiently large, define
+\[
+ P_N(q)=\frac{f_{-,N}(1/q)}{f_{+,N}(1/q)}.
+\]
+This is an analytic continuation, not a probability for noninteger $q$. Its denominator is nonzero in the many-color range for all sufficiently large $N$, by Theorem~\ref{thm:uniform}.
+
+\begin{proposition}\label{prop:paletteroot}
+There is a constant $Q_0$ and an eventual onset in $N$ such that $P_N(q)$ is positive and strictly increasing for real $q\ge Q_0$. For every fixed $p_0\in(0,1)$, there is eventually a unique root $q_*(N)\ge Q_0$ of $P_N(q_*)=p_0$, and, writing $\lambda_0=-\log p_0$,
+\begin{equation}\label{eq:paletteinverse}
+ q_*(N)=\frac{a^2N}{\lambda_0}+a^2\left(1+\frac1{\lambda_0}\right)+O(N^{-1}).
+\end{equation}
+All onsets in this proposition are existential, not numerical certificates.
+\end{proposition}
+\begin{proof}
+The normalized coefficient factors in Theorem~\ref{thm:uniform} are uniformly close to one on a fixed complex $u$ disk for large $N$; hence they admit holomorphic logarithms. Cauchy estimates on a strictly smaller disk permit differentiation of the uniform remainder. Thus
+\[
+ \frac{\dd}{\dd u}\log P_N(1/u)
+ =N(S'_-(u)-S'_+(u))+(\log H_-(u)-\log H_+(u))'+O(N^{-1}).
+\]
+At zero $S'_--S'_+=-a^2$. Choose $u_0>0$ small enough that this derivative difference is at most $-a^2/2$ on $[0,u_0]$. The bounded remaining terms imply strict negativity for all sufficiently large $N$. Since $u=1/q$ decreases with $q$, this proves monotonicity on $q\ge Q_0=1/u_0$, with positivity from the transfer formula. As $q\to\infty$, $P_N(q)\to1$ exactly. At fixed $Q_0$ in this interval, $S_-(1/Q_0)-S_+(1/Q_0)<0$, so $P_N(Q_0)\to0$. The root exists and is unique eventually.
+
+Substitute $q=cN+d+O(N^{-1})$ in \eqref{eq:logp}, whose analytic proof applies to the real continuation. The constant term is $-a^2/c$, giving $c=a^2/\lambda_0$. At order $N^{-1}$ one obtains
+\[
+ \frac{a^2d}{c^2}-\frac{a^4}{c^2}-\frac{a^2}{c}=0,
+\]
+so $d=a^2+c$. In a compact positive interval of $q/N$ containing $c$, the derivative of $\log P_N$ with respect to $q$ is of order $N^{-1}$ and stays bounded below by a positive constant times $N^{-1}$. The uniform logarithmic residual is $O(N^{-2})$, giving root error $O(N^{-1})$. Higher fixed orders follow by the same uniform implicit inversion with Cauchy derivative control.
+\end{proof}
+The $q\ge40$ range in the core theorem is not an asserted numerical range of monotonicity. The possibly larger $Q_0$, the marked range $q\ge200$, and all eventual onsets serve different purposes and must not be interchanged.
+
+\subsection{Fixed palettes are excluded globally}
+To turn the many-color real root into a \emph{global} least integer palette, small fixed palettes must be ruled out. We supply that argument rather than assuming finite-$N$ monotonicity for all $q$.
+
+\begin{lemma}\label{lem:fixedq}
+For each fixed positive integer $q$, $p(N,q)$ tends to zero exponentially up to a polynomial prefactor.
+\end{lemma}
+\begin{proof}
+Let $\rho_+,\rho_-$ be the radii of $T_+,T_-$ in the original $x$ variable. Colored plane trees give
+$A_+(N,q)\le q^{N-1}\operatorname{Cat}_{N-1}$. Orbit-stabilizer, or the elementary bound that an orbit contains at most $(N-1)!$ labeled objects, gives $A_+(N,q)\ge L(N,q)$. Therefore
+\[
+ \frac1{4q}\le\rho_+\le\frac1{eq}<1.
+\]
+Set $D_+(x)=q\sum_{j\ge2}T_+(x^j,q)/j$. It is analytic for $|x|<\sqrt{\rho_+}$: finitely many composed arguments lie inside the original radius, while the tail is normally convergent because $T_+(w)=O(w)$ near zero. Differentiating $T_+=x e^{qT_++D_+}$ for $0<x<\rho_+$ gives
+\[
+ T_+'(x)(1-qT_+(x))=T_+(x)(x^{-1}+D_+'(x))>0.
+\]
+Thus $qT_+(x)<1$, and the finite radial limit $\tau=T_+(\rho_+)$ satisfies $q\tau\le1$. If $q\tau<1$, the implicit function theorem extends $T_+$ through the positive radius, contradicting Pringsheim's theorem for nonnegative coefficients. Hence $qT_+(\rho_+)=1$.
+
+The fold is nondegenerate because $1+\rho_+D_+'(\rho_+)>0$. Equivalently set $V=qT_+$ and write $V=\Cay(qxe^{D_+(x)})$. This gives a nonzero square-root singularity. At a different point of $|x|=\rho_+$, absolute convergence and the positive coefficients at every consecutive size imply $|qT_+(x)|<1$: equality in the triangle inequality would force the phases of both the first and second terms, and hence $x$, to be positive real. The implicit function theorem extends through all those other points. A finite-cover argument around the circle, together with the local slit continuation at the positive point, gives a fixed-$q$ Delta-domain. Consequently
+\[
+ A_+(N,q)\sim c_q\rho_+^{-N}N^{-3/2},\qquad c_q>0.
+\]
+
+Coefficientwise $T_-\le T_+$, so $\rho_-\ge\rho_+$. The strict difference at size three is $A_+(3,q)-A_-(3,q)=q$. Both series converge at $\rho_+$, and
+\[
+ qT_-(\rho_+)\le1-q^2\rho_+^3<1.
+\]
+The signed term $D_-(x)=q\sum_{j\ge2}(-1)^{j-1}T_-(x^j,q)/j$ is analytic for $|x|<\sqrt{\rho_+}$ by the same absolute normal convergence. Its implicit equation has nonzero derivative $1-qT_-$ at $\rho_+$, so $T_-$ extends through that positive point. If $\rho_-=\rho_+$, this contradicts Pringsheim applied to the nonnegative identity counts. Thus $\rho_->\rho_+$.
+
+Choose any real $R$ with $\rho_+<R<\rho_-$. Positivity gives $A_-(N,q)\le T_-(R,q)R^{-N}$. Division by the ordinary asymptotic yields
+\[
+ p(N,q)=O_q\left(N^{3/2}(\rho_+/R)^N\right),
+\]
+which proves the lemma.
+\end{proof}
+
+\begin{corollary}\label{cor:globalpalette}
+For each fixed $p_0\in(0,1)$, the global least positive integer palette attaining $p(N,q)\ge p_0$ satisfies, for all sufficiently large $N$,
+\begin{equation}\label{eq:globalceiling}
+ q_{\min}(N,p_0)=\lceil q_*(N)\rceil,
+\end{equation}
+where $q_*$ is the exact real-continuation root from Proposition~\ref{prop:paletteroot}.
+\end{corollary}
+\begin{proof}
+Choose an integer $Q_0$ in the proven real monotonicity range. There are only finitely many smaller positive integer palettes. By Lemma~\ref{lem:fixedq}, each gives probability below $p_0$ eventually; take the maximum of their finitely many onsets. The same is true at $Q_0$, whereas $P_N(q)\to1$ as $q\to\infty$. Above $Q_0$ the continuation is increasing, so its first successful integer is exactly the ceiling of its unique root.
+\end{proof}
+Equation~\eqref{eq:globalceiling} contains the exact root. It does not justify putting a truncated expansion from \eqref{eq:paletteinverse} inside a ceiling. An uncertainty interval can straddle an integer; exact adjacent probability comparisons or certified root enclosures are then required. No numerical global monotonicity or onset claim is made. For modest finite searches the portable code exhaustively scans palettes, so it does not assume a finite-$N$ monotonicity theorem.
+
+\section{Exact computation and reproducibility}\label{sec:compute}
+The companion archive contains this TeX source, its rendered PDF, a standard-library exact implementation, optional symbolic and high-precision programs, and generated results. It contains no source-paper PDFs or private working material. All programs are offline.
+
+\subsection{What the exact programs establish}
+The principal recurrence implements four classes: all trees, identity trees, trees with $J=0$, and $\classB$. If
+\[
+ (N-1)A_N=q\sum_{j=1}^{N-1}A_{N-j}b_j,
+\]
+the divisor sums for the first two are those in \eqref{eq:recurrence}. For $J=0$, use the ordinary sum and subtract $2\mathbf1_{2\mid j}$, from $\log(1-x^2)$. For $\classB$, use the signed sum and add
+$2\mathbf1_{2\mid j}-3\mathbf1_{3\mid j}$, from \eqref{eq:Bleaf}. Every recurrence division is checked for exact divisibility, and every resulting coefficient is checked for nonnegativity.
+
+The full marked polynomial routine uses the exact logarithmic derivative of the leaf factor, with integral polynomial arithmetic. The large-size marked-prefix routine truncates only nonnegative powers of $t$; thus every retained coefficient is exact. The unmarked total is computed separately, giving the \emph{exact omitted probability mass} even when the distribution within that tail is not computed.
+
+Independent finite checks include:
+\begin{itemize}
+\item Rebuilding Euler products, rather than the divisor recurrence, for all four classes through $N=11$ and $q=1,2,3,5,40$.
+\item Enumerating every Pr\"ufer code and every nonroot coloring for $N\le6$, $q=1,2,3$, then quotienting by a canonical rooted colored form. These 18 cases compare entire marked polynomials, all four scalar counts, the labeled expectation, orbit-stabilizer, and the group-order identity on $\classB$. The largest case has $314\,928$ labeled samples and $3\,144$ colored classes.
+\item Comparing both diagonal prefixes at every $n=0,\ldots,35$ with the supplied attributed OEIS b-file excerpts.
+\item Testing the exact bounded diagonal inverse and exhaustive palette threshold, including the repeated initial diagonal value one.
+\item Verifying the rational analytic inequalities in Appendix~\ref{app:cert}.
+\end{itemize}
+For example, the first class-$\classB$ exclusions at $N=4$ are the $q$ monochromatic three-leaf stars. At $N=5$, the first $J=0$ nonidentity objects are the $q^2$ roots carrying two equal colored two-vertex branches.
+
+\input{tables.tex}
+
+\subsection{Numerical diagnostics are separate}
+The optional programs use SymPy for exact palette jets and mpmath for high-precision numerical comparisons. Palette coefficients through order four, including the first fixed-$N$ palette identity and the Poisson-correction algebra, are checked exactly. The numerical program records crossover residuals and the two symmetry defects through $N=640$ at $q/N=1/2,1,2$, diagonal inverse residuals through $n=320$, and total-variation diagnostics through $N=320$. At $q=N$, the sharp constant in \eqref{eq:sharpTV} is $\mathcal C(1)=0.1368398313909987\ldots$; at $N=320$, the computed value of $N d_{\rm TV}$ is approximately $0.1373570360595942$.
+
+For instance, at $q=N$ the predicted limit of $N\Prob(\classB^c)$ is
+\[
+ a^3+a^4=0.0681027072565981\ldots,
+\]
+while exact counts followed by high-precision division give
+\[
+\begin{array}{c|rrrr}
+N&80&160&320&640\\ \hline
+N\Prob(\classB^c)&0.0692447897&0.0686644128&0.0683812861&0.0682414355 .
+\end{array}
+\]
+For total variation, exact coefficients through mark $16$ are combined with the exact omitted mass and explicit Poisson or signed-Poisson tails. Displayed numerical brackets are still high-precision diagnostics, not directed-rounding interval certificates. They must not be used to claim an effective theorem onset, a finite universal monotonicity range, or a safe asymptotic ceiling.
+
+\subsection{Guards and portable execution}
+The exact module requires Python 3.10 or later and no third-party packages. Public input limits are deliberately finite: total size at most $2000$, palette at most $10^6$, full marked polynomial size at most $12$, and bounded marked-prefix resources. User-supplied decimal thresholds are limited to $600$ ASCII digits. These are implementation safeguards, not mathematical restrictions on the theorems.
+
+No program disables Python's decimal conversion guard, changes the global recursion limit, or changes a caller's permanent precision. Trusted computed integers are serialized in base-$10^9$ chunks; user input is not given an unrestricted conversion path. A regression actually computes and prints $A_+(640,640)$, a $2067$-digit integer, under the minimum configurable decimal guard of $640$ in both ordinary and optimized Python modes. Invalid threshold inputs are rejected in both modes. Verification uses explicit exceptions rather than \texttt{assert}, so \texttt{python -O} retains the checks.
+
+From the archive root, representative commands are:
+\begin{quote}\small\ttfamily
+python3 code/test\_exact.py\\
+python3 -O code/test\_exact.py\\
+python3 code/certify\_bounds.py\\
+python3 code/colored\_trees.py count 640 640\\
+python3 code/colored\_trees.py diagonal 35 --kind identity\\
+python3 code/colored\_trees.py inverse 1000000 --max-n 100\\
+python3 code/colored\_trees.py palette 10 9 10 --max-q 100\\
+python3 code/palette\_jets.py --order 4\\
+python3 code/diagnostics.py --tv
+\end{quote}
+The final two commands need SymPy and mpmath, respectively. They are optional and separate from the portable exact core. The archive records which programs were run and includes the resulting outputs; missing optional dependencies produce a clear error, not a silently omitted check. The local validation environment supported these diagnostics, so no environment-dependent diagnostic omission was required.
+
+\section{Further questions and limits}\label{sec:questions}
+The common-domain proof opens several concrete directions without settling them.
+\begin{enumerate}
+\item \textbf{Effective onsets.} Extract explicit constants in the transfer contours and palette Taylor remainders, then combine them with interval arithmetic to certify finite-$N$ error bounds and safe inverse enclosures.
+\item \textbf{All-palette monotonicity.} The proof gives eventual monotonicity of a real continuation in a sufficiently large-palette range and a global eventual integer threshold. It does not prove that $p(N,q)$ is increasing in every integer $q$ at every finite size.
+\item \textbf{Exceptional automorphism groups.} The class-$\classB$ defect has a sharp first term, but it is only an upper bound for failure of an elementary abelian group. A first signed distribution over the exceptional groups could determine an exact group total-variation constant.
+\item \textbf{Other local repetitions.} Marking repeated nonleaf branches should resolve the mechanism behind the $J=0$ symmetry gap. Any such analysis must distinguish the full marked disk from finite-order coefficient calculations.
+\item \textbf{Moments and large deviations.} The Poisson and all-fixed-order signed-law results coexist with divergence of every fixed positive exponential moment of $J$. Which unbounded observables remain uniformly integrable requires a separate analysis of rare high-symmetry trees.
+\item \textbf{Orders growing with size.} Nothing here proves a convergent infinite inverse-size expansion, Gevrey control, optimal truncation, or uniformity for expansion depth growing with $N$. Finite coefficient algorithms do not imply any of those properties.
+\end{enumerate}
+The probability convention, $N=n+1$ diagonal shift, integer-palette restriction, moving Poisson parameter, and rounding safeguards are part of the results, not optional implementation details. The numerical evidence supports checks and illustrations; the proofs are the analytic arguments above. Priority statements remain bounded by the source coverage described in Section~1.
+
+\appendix
+\section{Rational verification of the domain estimates}\label{app:cert}
+All constants required in the analytic construction can be certified with rational arithmetic. For $0\le x<3$,
+\begin{equation}\label{eq:expbound}
+ e^x\le1+x+\frac{x^2}{2(1-x/3)},
+\end{equation}
+because $k!\ge2\cdot3^{k-2}$ for $k\ge2$. Similarly, for $rU<1$,
+\begin{equation}\label{eq:Abound}
+ \sum_{j\ge1}\frac{r^jU^{j-1}}j
+ \le r+\frac{r^2U}{2(1-rU)}.
+\end{equation}
+The positive exponential series gives $e>8/3$, while \eqref{eq:expbound} at $x=1$ gives $e<11/4<3$. Thus $1/3<a<3/8$, sufficient for every root-circle and disk-containment estimate.
+
+For the unmarked construction, apply \eqref{eq:Abound} at $r=1/5$, $U=1/20$, then \eqref{eq:expbound} at twice its rational upper bound. This certifies the ball and contraction constants. At $Z=9/20$ use
+\[
+ |R|\le\frac{Z^2U}{1-ZU},\qquad
+ |R_z|\le\frac{11}{5}\frac{ZU}{1-ZU},
+\]
+and apply \eqref{eq:expbound} with $x=11/1000$ to certify both bounds for $\zeta$.
+
+For the marked construction, use $U=1/100$ and the rational functions of $s=rU$ or $s=ZU$ in \eqref{eq:hbound}. Apply \eqref{eq:expbound} first to $2A+D$ on the small disk and then to $62/10000$ on the large disk. The class-$\classB$ leaf bounds are dominated by the marked leaf bounds at these $s$. Finally,
+\[
+ \frac{1/100}{1/3-1/100}+\frac{1/25}{1-1/25}<\frac1{10}<\frac\pi6
+\]
+certifies the wider of the two cut-angle estimates. The marked estimate uses $1/50$ in place of $1/25$ and is smaller. The last inequality uses only $\pi>3$.
+
+The program \texttt{certify\_bounds.py} evaluates these rational expressions as exact fractions and checks every strict comparison in the proof. Its output is an elementary inequality certificate. It is not a certificate for constants or onset thresholds hidden in asymptotic $O$ notation.
+
+\section{Public source notes}\label{app:sources}
+The source list deliberately distinguishes direct prior results from what was not fully checked. Riordan's exact equations, Labelle's accessible 1991 asymmetry-index formulas, the fixed-model analyses of Harary--Robinson--Schwenk and Genitrini, and the classical uniform transfer lemma are foundational inputs or precedents. The full Labelle 1992 article remained inaccessible; the bibliographic citation is supplied without a claim to have excluded overlap with its full contents. The published 2026 Bartholdi--Diaconis version, rather than only its earlier preprint, was included in the comparison. The Dimitrov--Fox--Hadaway--Tharp--Wagner paper was screened for model separation, not audited theorem by theorem. Repository and OEIS checks were bounded, date-specific comparisons, not proofs of novelty.
+
+\begin{thebibliography}{99}
+\bibitem{riordan}
+J. Riordan, The numbers of labeled colored and chromatic trees,
+\emph{Acta Mathematica} \textbf{97} (1957), 211--225.
+\href{https://archive.ymsc.tsinghua.edu.cn/pacm_download/117/5849-11511_2006_Article_BF02392398.pdf}{Primary scan}.
+Theorem 2 and equations (12)--(14).
+
+\bibitem{labelle1991}
+G. Labelle, Sur la sym\'etrie et l'asym\'etrie des structures combinatoires,
+\emph{FPSAC 1991}, 3--19.
+\url{https://fpsac-archive.github.io/FPSAC91/ARTICLES/Labelle_proc.pdf}.
+Definitions and enriched-tree asymmetry-index formulas.
+
+\bibitem{labelle1992}
+G. Labelle, Counting asymmetric enriched trees,
+\emph{Journal of Symbolic Computation} \textbf{14} (1992), 211--242.
+\url{https://doi.org/10.1016/0747-7171(92)90037-5}.
+Full text not available in the source review.
+
+\bibitem{hrs}
+F. Harary, R. W. Robinson, and A. J. Schwenk,
+Twenty-step algorithm for determining the asymptotic number of trees of various species,
+\emph{Journal of the Australian Mathematical Society} \textbf{20} (1975), 483--503.
+\url{https://doi.org/10.1017/S1446788700016190}.
+
+\bibitem{bby}
+J. P. Bell, S. N. Burris, and K. A. Yeats,
+Counting rooted trees: the universal law $t(n)\sim C\rho^{-n}n^{-3/2}$,
+\emph{Electronic Journal of Combinatorics} \textbf{13} (2006), R63.
+\href{https://www.combinatorics.org/ojs/index.php/eljc/article/download/v13i1r63/pdf/}{Primary article}.
+Theorem 75 and the signed SET/PSET caveat in Sections 6.1--6.2.
+
+\bibitem{genitrini}
+A. Genitrini, Full asymptotic expansion for P\'olya structures,
+arXiv:1605.00837v2 (2016).
+\url{https://arxiv.org/abs/1605.00837}.
+Theorems 2--3 and the identity-tree example.
+
+\bibitem{fs}
+P. Flajolet and R. Sedgewick, \emph{Analytic Combinatorics},
+Cambridge University Press, 2009.
+\url{https://ac.cs.princeton.edu/home/AC.pdf}.
+Lemma IX.2, p.~668, and the movable-singularity proof around Theorem IX.12,
+pp.~676--678; see also the singularity-analysis and gamma-ratio methods.
+
+\bibitem{foissy}
+L. Foissy, Algebraic structures on typed decorated rooted trees,
+arXiv:1811.07572v2 (2021).
+\url{https://arxiv.org/abs/1811.07572}.
+Section 1.2, equations (1)--(2).
+
+\bibitem{ow}
+C. Olsson and S. Wagner, The distribution of the number of automorphisms of random trees,
+\emph{La Matematica} \textbf{2} (2023), 743--771.
+\url{https://doi.org/10.1007/s44007-023-00064-z}.
+Preprint: \url{https://arxiv.org/abs/2211.12801}.
+
+\bibitem{bd}
+L. Bartholdi and P. Diaconis,
+An algorithm for uniform generation of unlabeled (P\'olya) trees,
+\emph{Forum of Mathematics, Sigma} \textbf{14} (2026), e76,
+published 14 May 2026.
+\url{https://doi.org/10.1017/fms.2026.10218}.
+Theorem 3.3 gives exact fixed-permutation counts.
+
+\bibitem{dfhtw}
+Dimitrov, Fox, Hadaway, Tharp, and Wagner, Counting colored trees,
+arXiv:2602.16055v1 (2026).
+\url{https://arxiv.org/abs/2602.16055}.
+An ordered/plane-tree coloring-matrix model.
+
+\bibitem{oeisall}
+OEIS Foundation Inc., A242249, colored rooted trees.
+\url{https://oeis.org/A242249}. Accessed 4 October 2026.
+
+\bibitem{oeisid}
+OEIS Foundation Inc., A255517, colored rooted identity trees.
+\url{https://oeis.org/A255517}. Accessed 4 October 2026.
+
+\bibitem{oeisdiagall}
+OEIS Foundation Inc., A242375.
+\url{https://oeis.org/A242375}.
+Leading asymptotic formula attributed to V\'aclav Kot\v e\v sovec;
+entry revision checked: 18 March 2024. Accessed 4 October 2026.
+
+\bibitem{oeisdiagid}
+OEIS Foundation Inc., A255523.
+\url{https://oeis.org/A255523}.
+Leading asymptotic formula attributed to V\'aclav Kot\v e\v sovec;
+entry revision checked: 16 February 2026. Accessed 4 October 2026.
+
+\bibitem{proveit}
+V. Reshetnikov, ProveIt repository.
+\url{https://github.com/VladimirReshetnikov/ProveIt}.
+Bounded comparison made 4 October 2026, including report-tree material,
+the transseries arrivals inventory, and the separate incoming directory.
+\end{thebibliography}
+\end{document}

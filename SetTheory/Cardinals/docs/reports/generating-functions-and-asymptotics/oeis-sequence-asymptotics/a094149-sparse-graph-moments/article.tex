@@ -1,0 +1,1051 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,mathtools,booktabs,array}
+\usepackage[margin=1in]{geometry}
+\usepackage[colorlinks=true,linkcolor=black,citecolor=black,urlcolor=blue]{hyperref}
+\usepackage{fancyhdr}
+\pdfinfoomitdate=1\pdfsuppressptexinfo=15\pdftrailerid{}
+\hypersetup{pdftitle={Report214 Fixed collision orders and smooth inverse centers for A094149},pdfauthor={}}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small Report214}\fancyhead[R]{\small Fixed collision orders for A094149}\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}\setlength{\parskip}{4pt}\setlength{\parindent}{0pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}\newtheorem{proposition}[theorem]{Proposition}\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Wc}{\mathcal W}\newcommand{\Uc}{\mathcal U}\newcommand{\Part}{\operatorname{Part}}
+\newcommand{\Cat}{\operatorname{Cat}}\newcommand{\E}{\mathbb E}\newcommand{\Prob}{\mathbb P}\newcommand{\ind}{\mathbf 1}
+\newcommand{\Poi}{\operatorname{Poisson}}\newcommand{\Bin}{\operatorname{Bin}}
+\newcommand{\fall}[2]{(#1)_{#2}}\newcommand{\rise}[2]{#1^{\overline{#2}}}
+\newcommand{\Stir}[2]{\left\{\begin{matrix}#1\\#2\end{matrix}\right\}}
+\title{\textbf{Fixed collision orders and smooth inverse centers for A094149}\\[6pt]\large Report214}
+\author{}\date{4 October 2026}
+\begin{document}
+\maketitle\thispagestyle{fancy}
+\begin{abstract}
+For the normalized time-rooted closed tree walks counted by A094149, write $a_k=M_{2k}$ and let $B_k$ be the Bell numbers. We construct explicit finite Bell transforms $A_j(k)$ such that, for every fixed $p\ge1$,
+\[
+ \frac{a_k}{2B_{k+1}}=1+\sum_{j=1}^{p}A_j(k)
+       +O_p\!\left(\frac{\log^{10p+6}k}{k^{p+1}}\right),\qquad
+ A_j(k)\sim\frac{W(k)^{3j}}{2^j j!k^j}.
+\]
+The coefficients use finitely many child-return rows, through half-length $j+1$. A marked P\'olya-urn argument controls arbitrary depth, repeated branches, and signed Newton coefficients. The first relative correction is $W(k)^3/(2k)$; after subtracting its exact Bell transform, the next leading correction is $W(k)^6/(8k^2)$. A finite Poisson interpolation gives smooth inverse centers with an existential two-ceiling error of order $\log^{10p+5}x/x^{p+1}$. The superpolynomial complement theorem from Report213 is stated precisely and its required proof is recalled in an appendix, including its credited Bauer--Golinelli input. Every order is fixed before the index tends to infinity. No effective onset, growing-order expansion, exponential resummation, or historical priority claim is made.
+\end{abstract}
+
+\section{The sequence and the result}\label{sec:main}
+A normalized closed tree walk of length $2k$ is a sequence
+$w=(v_0,v_1,\ldots,v_{2k-1},v_0)$ whose traversed unordered pairs form a tree and whose consecutive vertices differ. Vertex names are assigned in first-appearance order. Two walks are identified only by a vertex bijection preserving time order; time zero is distinguished. Rotation can therefore give a different normalized walk. Write $\Wc_k$ for this set and $a_k=M_{2k}=|\Wc_k|$, with $a_0=1$. The positive-order terms are OEIS A094149~\cite{oeis}.
+
+Let $F_{k,n}$ count walks whose initial vertex has $n$ departures. Set $F_{0,0}=1$ and impossible entries to zero. Then $a_k=\sum_{n=1}^kF_{k,n}$ for $k\ge1$. If edge $e$ is traversed $m_e$ times in each direction, the departure count at $v$ is
+\begin{equation}\label{eq:visits}
+ d_w(v)=\sum_{e\ni v}m_e,\qquad \sum_e m_e=k,\qquad
+ \sum_vd_w(v)=2k.
+\end{equation}
+These are walk departure counts, not graph degrees. The Bell numbers have $B_0=1$. All logarithms are natural and $W(x)>0$ satisfies $W(x)e^{W(x)}=x$.
+
+For an integer $h\ge0$, write $(x)_h=x(x-1)\cdots(x-h+1)$ and $x^{\overline h}=x(x+1)\cdots(x+h-1)$; empty products equal one. On nonnegative integers $(s)_H=0$ for $H>s$. Any term with such a vanishing factor is set to zero before other potentially invalid indices are evaluated.
+
+\begin{theorem}\label{thm:main}
+The explicitly defined transforms $A_j(k)$ in \eqref{eq:Aj} are independent of the chosen truncation order. For every fixed integer $p\ge1$,
+\begin{equation}\label{eq:expansion}
+ \frac{a_k}{2B_{k+1}}=1+\sum_{j=1}^{p}A_j(k)
+      +O_p\!\left(\frac{\log^{10p+6}k}{k^{p+1}}\right).
+\end{equation}
+For each fixed $j\ge1$,
+\begin{equation}\label{eq:Ajleading}
+ A_j(k)\sim\frac{W(k)^{3j}}{2^j j!k^j}.
+\end{equation}
+In particular, for each fixed $p\ge1$,
+\begin{equation}\label{eq:exactsubtract}
+ \frac{a_k}{2B_{k+1}}-1-\sum_{j=1}^{p-1}A_j(k)
+ \sim\frac{W(k)^{3p}}{2^p p!k^p}.
+\end{equation}
+\end{theorem}
+The lower transforms in \eqref{eq:exactsubtract} must be retained exactly. Replacing them by their individual leading scales in \eqref{eq:Ajleading} is not justified at the smaller residual scale. Constants and onsets depend on the fixed order; none is certified numerically here.
+
+The first transform has the concrete form
+\begin{equation}\label{eq:T1}
+ A_1(k)=\frac{T_k}{B_{k+1}},\qquad
+ T_k=\sum_{s=2}^{k-1}\binom ks\binom s2
+ \frac{(k-s-1)B_{k-s-1}+4B_{k-s}}{k-s+1}.
+\end{equation}
+Thus
+\begin{align}
+ \frac{a_k}{2B_{k+1}}&=1+\left(\frac12+o(1)\right)\frac{W(k)^3}{k},\label{eq:firstscale}\\
+ \frac{a_k}{2B_{k+1}}-1-\frac{T_k}{B_{k+1}}
+ &=\left(\frac18+o(1)\right)\frac{W(k)^6}{k^2}.\label{eq:secondscale}
+\end{align}
+The second assertion does not follow merely by subtracting $W(k)^3/(2k)$.
+
+\paragraph{Dependencies and organization.}
+The new argument refines the full equivalent $a_k\sim2B_{k+1}$ and the superpolynomial complement theorem proved in Report213~\cite{r213}. Section~\ref{sec:reduction} isolates exactly the inherited reduction. Appendix~\ref{sec:complement} recalls a complete proof of the complement estimate needed here, so that the required dependency can be read without the companion report. Its external counting input is the coefficientwise comparison of Bauer--Golinelli~\cite{bg}; that theorem is not attributed to this article. The branch construction, weighted collision estimates, coefficient formulas, and leading scales are proved below. Smooth interpolation and the inverse consequences are treated separately, without differentiating any integer-index error term.
+
+\section{Exact branch decomposition and urn representation}\label{sec:branches}
+For $t\ge0$ and $q\ge1$ define
+\begin{equation}\label{eq:E}
+ E_{t,q}=\sum_{\ell=0}^tF_{t,\ell}\binom{\ell+q-1}{\ell},\qquad
+ R(q,t)=\frac{E_{t,q}}{\binom{q+t-1}{t}}.
+\end{equation}
+A child-rooted walk with $\ell$ excursions is divided into $q$ ordered, possibly empty closed segments in $\binom{\ell+q-1}{\ell}$ ways. Cuts occur only at returns to the child root. Consequently $E_{t,q}$ counts all such divided child walks, including arbitrary repeated edges and depth.
+
+\begin{proposition}\label{prop:partition}
+For $n\ge1$, $s\ge0$,
+\begin{equation}\label{eq:partition}
+ F_{n+s,n}=\sum_{\pi\in\Part[n]}
+    \sum_{\substack{t_b\ge0\ (b\in\pi)\\\sum_b t_b=s}}
+       \prod_{b\in\pi}E_{t_b,|b|}.
+\end{equation}
+Moreover,
+\begin{equation}\label{eq:Ebds}
+ \binom{q+t-1}{t}\le E_{t,q}
+ \le a_t\binom{q+t-1}{t},\qquad
+ a_t\le\Cat_t t!\le4^{t-1}t!\quad(t\ge1).
+\end{equation}
+\end{proposition}
+\begin{proof}
+Partition the $n$ root-excursion positions according to their first child. A block of size $q$ specifies $q$ visits to one branch. Concatenating the interiors gives a child walk of half-length $t_b$ divided into $q$ closed segments. Different branches have disjoint vertex sets, since the traversed graph is a tree. Conversely, interleave these segments in the block positions and assign global first-appearance labels. This reconstruction is unique even when visits to different children interleave; no labeling factorial is missing.
+
+The lower bound takes the one child walk with $t$ distinct fresh leaf excursions; the upper bound uses $\ell\le t$ in \eqref{eq:E}. To bound $a_t$, encode a walk by its root-distance Dyck path and its outward child choices. There are $\Cat_t$ paths. At the $i$th outward step at most $i$ choices are available, including a newly discovered child; inward steps are forced. The encoding is injective, so there are at most $\Cat_t t!$ walks. Finally $\Cat_1=1$ and $\Cat_{t+1}/\Cat_t<4$.
+\end{proof}
+Choose a uniform partition $\pi$ of $[n]$ with block sizes $q_b$, and a P\'olya urn with initial populations $q_b$. After $s$ draws let $T_b$ be the numbers of selections. Its exact occupancy law is
+\[
+ \Prob(T_b=t_b\ (b\in\pi)\mid\pi)
+ =\frac{\prod_b\binom{q_b+t_b-1}{t_b}}{\binom{n+s-1}{s}},
+ \qquad \sum_b t_b=s.
+\]
+Dividing \eqref{eq:partition} by its fresh normalization gives
+\begin{equation}\label{eq:exacturn}
+ \frac{F_{n+s,n}}{\binom{n+s-1}{s}B_n}
+   =\E_\pi\E_{\rm urn}\prod_bR(q_b,T_b).
+\end{equation}
+Put $w_0=w_1=1$ and $w_t=4^{t-1}t!$ for $t\ge1$. Then
+\begin{equation}\label{eq:Rrough}
+ 1\le R(q,t)\le w_t,\qquad R(q,0)=R(q,1)=1.
+\end{equation}
+The return refinement matters: $E_{t,q}$ is determined by the whole row $(F_{t,\ell})_{\ell=0}^t$, not by the scalar total $a_t$ alone.
+
+\section{Reduction to a logarithmic deficit window}\label{sec:reduction}
+For the rest of the expansion proof take
+\[
+ S=\lceil\log^2k\rceil,\qquad n=k-s,\qquad 0\le s\le S.
+\]
+Let $\Uc_{k,S}$ be the walks with some vertex having at least $k-S$ departures. The inherited complement theorem is
+\begin{equation}\label{eq:complementinput}
+ |\Wc_k\setminus\Uc_{k,S}|=o(k^{-D}B_{k+1})
+ \quad\hbox{for every fixed }D>0.
+\end{equation}
+Report213 proves this more generally whenever $S/\log k\to\infty$ and $S=o(k^{1/3})$. Appendix~\ref{sec:complement} supplies the proof needed at the present choice of $S$; the stronger weighted middle-return theorem is not required here.
+
+\begin{lemma}\label{lem:reduction}
+For every fixed $D>0$,
+\begin{equation}\label{eq:reduction}
+ \frac{a_k}{2B_{k+1}}=
+ \frac1{B_{k+1}}\sum_{s=0}^S\frac{k}{k-s}F_{k,k-s}+o(k^{-D}).
+\end{equation}
+\end{lemma}
+\begin{proof}
+For any set $I$ of departure counts, exact weighted rotation gives
+\begin{equation}\label{eq:generalrotation}
+ \sum_{m\in I}\frac{2k}{m}F_{k,m}
+ =\sum_{w\in\Wc_k}|\{v:d_w(v)\in I\}|.
+\end{equation}
+Indeed a vertex of count $m$ appears as root at exactly $m$ of the $2k$ indexed rotations. If a rotation orbit has $d$ distinct normalized words, each occurs $2k/d$ times among indexed rotations. Dividing by that multiplicity proves the identity even for periodic walks and rotations inducing relabelings.
+
+Two vertices with departure count above $k/2$ must be adjacent: otherwise their incident-edge sets are disjoint and their counts sum to at most $k$. There are at most two, because a tree has no triangle. Let $D_k$ count walks with two qualifying vertices. Then \eqref{eq:generalrotation} gives
+\[
+ \sum_{s=0}^S\frac{2k}{k-s}F_{k,k-s}=|\Uc_{k,S}|+D_k.
+\]
+The edge joining the two hubs has multiplicity $q\ge k-2S$, since their departure counts sum to at most $k+q$. Rotate to a crossing of that edge and remove its traversals. The two sides are $q$-segmented child walks of total half-length at most $2S$. By \eqref{eq:Ebds}, $E_{t,q}\le(4k)^t$ when $t+q\le k$, including $t=0$. Overcounting all origins therefore gives
+\begin{equation}\label{eq:Dsmall}
+ D_k\le2k(2S+1)^2(4k)^{2S}=\exp(O(\log^3k)).
+\end{equation}
+Since $\log B_{k+1}\sim k\log k$, this and \eqref{eq:complementinput} are smaller than $k^{-D}B_{k+1}$ for every fixed $D$. Rearrangement proves the lemma.
+\end{proof}
+The cancellation
+\begin{equation}\label{eq:rotationcancel}
+ \frac{k}{k-s}\binom{k-1}{s}=\binom ks
+\end{equation}
+is kept exact at every order. Replacing the rotation weight by a rough $1+O(S/k)$ estimate would hide part of the correction.
+
+\begin{lemma}[Fresh deficit law]\label{lem:deficit}
+The numbers $p_k(s)=\binom ksB_{k-s}/B_{k+1}$, $0\le s\le k$, are probabilities. If $Z$ has this law, then for every fixed integer $h\ge0$,
+\begin{equation}\label{eq:factorialmom}
+ \E(Z)_h=(k)_h\frac{B_{k+1-h}}{B_{k+1}}\sim W(k)^h.
+\end{equation}
+For every fixed $D>0$ and $r\ge0$,
+\begin{equation}\label{eq:deficittail}
+ \sum_{s>S} s^r p_k(s)=o(k^{-D}).
+\end{equation}
+\end{lemma}
+\begin{proof}
+The Bell recurrence normalizes $p_k$. Equivalently, start with $X\sim\Poi(1)$, tilt its law by $(X+1)^k/B_{k+1}$, and conditionally take $Z\sim\Bin(k,1/(X+1))$. Expanding gives the stated masses and factorial moments. Under this tilt $X+1$ has probabilities proportional to $y^{k+1}/y!$. The Bell concentration lemma in Appendix~\ref{sec:bell} puts $X\asymp k/W(k)$ except with exponentially small probability. On $X\ge(k+1)/(2W(k+1))$, the conditional binomial mean is $O(\log k)$; Chernoff bounds the probability of $Z>S$ by $(C\log k/S)^S$. Both errors are smaller than every negative power of $k$. As $s\le k$, fixed power weights are absorbed by strengthening that power first. Fixed-shift Bell ratios prove \eqref{eq:factorialmom}.
+\end{proof}
+The endpoint $s=k$, which would give $n=0$, has mass $1/B_{k+1}$. Thus the exact sum restricted to $s\le k-1$ equals $1-1/B_{k+1}$; its missing endpoint is superpolynomially small.
+
+\section{A weighted marked collision estimate}\label{sec:marked}
+Fix a partition and write $A=\max_bq_b$. A draw is a collision if its color has already appeared among earlier draws. After $j$ draws define
+\[
+ C_j=j-|\{b:T_b>0\}|,\qquad Z_j=\prod_bw_{T_b}.
+\]
+Thus $C_s=\sum_b(T_b-1)_+$ counts the collision excess.
+
+\begin{lemma}\label{lem:marked}
+Conditional on the partition, for every integer $d\ge1$,
+\begin{align}
+ \E_{\rm urn}[Z_su^{C_s}]&\preceq\prod_{j=0}^{s-1}(1+b_ju),
+ &b_j&=\frac{8(Aj+j^2)}n,\label{eq:marked}\\
+ \E_{\rm urn}[Z_s;C_s\ge d]&\le\frac{\Lambda^d}{d!}e^\Lambda,
+ &\Lambda&=\sum_{j<s}b_j\le\frac{4s^2(A+s)}n.\label{eq:colltail}
+\end{align}
+Here $\preceq$ is coefficientwise comparison of polynomials in $u$.
+\end{lemma}
+\begin{proof}
+A new color has weight multiplier one. A previously drawn color with count $t\ge1$ has multiplier $w_{t+1}/w_t=4(t+1)$. Conditional on any history of length $j$, the total probability-weighted multiplier of collision transitions is at most
+\[
+ \sum_{b:T_b>0}\frac{q_b+T_b}{n+j}4(T_b+1)
+ \le\frac{8Aj+4j^2+4j}{n}\le b_j.
+\]
+For $j=0$ this is zero. For $j\ge1$ use at most $j$ occupied colors, $\sum T_b=j$, and $\sum T_b^2\le j^2$. The total new-color multiplier is at most one. Each weighted history therefore extends by a factor $\alpha+\beta u$ with $0\le\alpha\le1$, $0\le\beta\le b_j$. Induction proves the coefficientwise bound. The coefficient of $u^r$ in the product is at most $\Lambda^r/r!$; summing over $r\ge d$ gives the second assertion.
+\end{proof}
+An additional conditional estimate will control atypical partitions:
+\begin{equation}\label{eq:Zbound}
+ \E_{\rm urn}Z_s\le e^{\tau A+\gamma},\qquad
+ \tau=\frac{7s(s-1)}{2n},\qquad
+ \gamma=\frac{7s(s-1)(2s-1)}{6n}.
+\end{equation}
+Indeed the one-step multiplier is
+$1+\sum_{T_b>0}(q_b+T_b)(4T_b+3)/(n+j)$, at most
+$1+7(Aj+j^2)/(n+j)$ because $4t+3\le7t$. Iterate and use $1+u\le e^u$.
+
+\begin{lemma}[Tilted partition tail]\label{lem:partitiontail}
+Put $L=\lceil\log^2 k\rceil$. Uniformly for $n=k-s$, $s\le S$, and $\tau$ from \eqref{eq:Zbound},
+\begin{equation}\label{eq:partitiontail}
+ \E_\pi[e^{\tau A};A>L]=o(k^{-D})
+ \quad\hbox{for every fixed }D>0.
+\end{equation}
+\end{lemma}
+\begin{proof}
+The expected number of blocks of size $q$ is $\binom nqB_{n-q}/B_n$. Since a block realizes the maximum,
+\[
+ \E[e^{\tau A};A>L]\le\sum_{q>L}e^{\tau q}\binom nq\frac{B_{n-q}}{B_n}.
+\]
+Here $\tau=O(\log^4k/k)=o(1)$. For $q\le n/2$, adjacent Bell-ratio bounds make a summand at most $(Ce^\tau\log n/q)^q$. Its sum beyond $L$ is bounded by $\exp[-cL\log(L/\log n)]$: beyond that point the ratio of successive upper bounds is eventually below $1/2$. For $q>n/2$, retain the first $\lfloor n/2\rfloor$ adjacent ratios and use Bell monotonicity for the rest. This part is at most
+\[
+ (1+e^\tau)^n(C\log n/n)^{\lfloor n/2\rfloor}
+ =\exp[-\Omega(n\log n)].
+\]
+Both bounds imply the claim uniformly. In particular an untilted rare-event estimate has not been substituted for the required weighted tail.
+\end{proof}
+
+\section{Finite coefficients from Newton differences}\label{sec:coefficients}
+For $h\ge0$ set
+\begin{align}
+ c_h(q)&=\sum_{t=0}^h(-1)^{h-t}\binom htR(q,t),\label{eq:ch}\\
+ d_h(q)&=\frac{q^{\overline h}}{h!}c_h(q)
+ =\sum_{t=0}^h(-1)^{h-t}E_{t,q}
+          \frac{(q+t)^{\overline{h-t}}}{(h-t)!}.\label{eq:dh}
+\end{align}
+Then $c_0=d_0=1$ and $c_1=d_1=0$. The second expression in \eqref{eq:dh} shows that $d_h$ is a polynomial in $q$ of degree at most $h$. For $h\ge1$ it has zero constant term: $E_{t,q}$ for $t\ge1$ is divisible by $q$, and the $t=0$ term also vanishes at $q=0$.
+
+For $j\ge1$, $n\ge1$, $s\ge0$ define
+\begin{equation}\label{eq:Gj}
+ G_j(n,s)=\sum_{r=1}^j\frac1{r!}
+ \sum_{\substack{h_1,\ldots,h_r\ge2\\\sum_i(h_i-1)=j}}
+ \frac{(s)_H}{n^{\overline H}}
+ \E_\pi\!\sum_{\substack{b_1,\ldots,b_r\in\pi\\\text{ordered and distinct}}}
+       \prod_{i=1}^rd_{h_i}(q_{b_i}),\qquad H=\sum_i h_i=j+r.
+\end{equation}
+An empty ordered-block sum is zero. These sums are finite; $H\le2j$ and $h_i\le j+1$. The correction transform is
+\begin{equation}\label{eq:Aj}
+ A_j(k)=\frac1{B_{k+1}}\sum_{s=0}^{k-1}\binom ksB_{k-s}G_j(k-s,s).
+\end{equation}
+Only child-return rows through half-length $j+1$ are needed. No unknown large-index scalar moment appears in the coefficient construction.
+
+\begin{proposition}\label{prop:newton}
+For a fixed integer $p\ge1$, define on an urn history
+\begin{equation}\label{eq:Lp}
+ L_p(T)=1+\sum_{j=1}^p\sum_{r=1}^j\frac1{r!}
+ \sum_{\substack{h_i\ge2\\\sum_i(h_i-1)=j}}
+ \sum_{\substack{b_1,\ldots,b_r\in\pi\\\text{ordered and distinct}}}
+       \prod_{i=1}^rc_{h_i}(q_{b_i})\binom{T_{b_i}}{h_i}.
+\end{equation}
+Then $\prod_bR(q_b,T_b)=L_p(T)$ whenever $C_s\le p$. For all histories,
+\begin{equation}\label{eq:Lbound}
+ |L_p(T)|\le K_p(1+s)^{2p},
+\end{equation}
+for a constant depending only on $p$. Also
+\begin{equation}\label{eq:averageL}
+ \E_\pi\E_{\rm urn}L_p=1+\sum_{j=1}^pG_j(n,s).
+\end{equation}
+\end{proposition}
+\begin{proof}
+Finite binomial inversion gives $R(q,t)=\sum_{h=0}^tc_h(q)\binom th$. Multiply these identities over colors. Every nonunit term has $h\ge2$ since $c_1=0$. A nonzero term with marked colors $b_i$ has $h_i\le T_{b_i}$, and hence $\sum_i(h_i-1)\le C_s$. It follows that \eqref{eq:Lp} omits no term when $C_s\le p$. The $r!$ denominator removes the ordering of marked blocks without assuming their $h_i$ are different.
+
+By \eqref{eq:Rrough}, $|c_h(q)|\le\sum_{t=0}^h\binom ht w_t$, uniformly in $q$. Moreover
+\[
+ \sum_{\text{distinct ordered }b_i}\prod_i\binom{T_{b_i}}{h_i}
+ \le\frac{(s)_H}{\prod_i h_i!}.
+\]
+The left side selects disjoint groups of draw positions of specified distinct colors; dropping those color restrictions gives the right side. There are only finitely many fixed configurations, with $H\le2p$, proving \eqref{eq:Lbound}.
+
+Finally the urn factorial-moment identity is
+\[
+ \E_{\rm urn}\prod_i\binom{T_{b_i}}{h_i}
+ =\frac{(s)_H}{n^{\overline H}}\prod_i\frac{q_{b_i}^{\overline{h_i}}}{h_i!}
+\]
+for distinct colors. Choose $H$ distinct draw indices and use exchangeability to prove it. Substitution into \eqref{eq:Lp} gives \eqref{eq:averageL} exactly.
+\end{proof}
+
+\section{The remainder at every fixed collision order}\label{sec:remainder}
+On the event $C_s\le p$, Proposition~\ref{prop:newton} has no error. On its complement, $\prod R\le Z_s$, $Z_s\ge1$, and \eqref{eq:Lbound} give
+\begin{equation}\label{eq:conditionalerror}
+ \left|\E_{\rm urn}\prod_bR(q_b,T_b)-\E_{\rm urn}L_p\right|
+ \le K'_p(1+s)^{2p}\frac{\Lambda^{p+1}}{(p+1)!}e^\Lambda.
+\end{equation}
+Thus every longer branch and every arrangement of repeated, nested, or separate collisions is paid for in a weighted remainder; no positivity of the Newton coefficients is assumed.
+
+On $A\le L$ and $s\le S$, \eqref{eq:colltail} has $\Lambda=O(\log^6k/k)$. Equation~\eqref{eq:conditionalerror} is consequently
+\[
+ O_p\!\left(\log^{4p}k\left(\frac{\log^6k}{k}\right)^{p+1}\right)
+ =O_p\!\left(\frac{\log^{10p+6}k}{k^{p+1}}\right).
+\]
+On $A>L$ use the pre-averaged bound $\prod R\le Z_s$, \eqref{eq:Zbound}, and \eqref{eq:Lbound}. Lemma~\ref{lem:partitiontail} bounds their contribution by
+\[
+ e^\gamma\E[e^{\tau A};A>L]
+ +K_p(1+S)^{2p}\Prob(A>L)=o(k^{-D})
+\]
+for every fixed $D$. Therefore \eqref{eq:exacturn} and \eqref{eq:averageL} imply the uniform expansion
+\begin{equation}\label{eq:rootexpansion}
+ \frac{F_{k,k-s}}{\binom{k-1}{s}B_{k-s}}
+ =1+\sum_{j=1}^pG_j(k-s,s)
+ +O_p\!\left(\frac{\log^{10p+6}k}{k^{p+1}}\right),\qquad 0\le s\le S.
+\end{equation}
+Each homogeneous collision part of \eqref{eq:Lp} obeys the same polynomial history bound, so $|G_j(n,s)|\le K_j(1+s)^{2j}$ for every $n\ge1$. Lemma~\ref{lem:deficit} therefore extends the $G_j$ sums from $s\le S$ to $s\le k-1$ at superpolynomial cost. Apply Lemma~\ref{lem:reduction}, use the exact cancellation \eqref{eq:rotationcancel}, and sum the uniform error against probabilities $p_k(s)$. The fresh sum is $1-1/B_{k+1}$. This proves \eqref{eq:expansion}.
+
+One can already check that the coefficients have successive polynomial orders:
+\begin{equation}\label{eq:crudeAj}
+ A_j(k)=O_j(\log^{6j}k/k^j).
+\end{equation}
+Indeed $|d_h(q)|\le K_hq^h$. For a configuration with $r$ marked blocks and $H-r=j$, on $A\le L$,
+\[
+ \sum_{\text{distinct ordered }b_i}\prod_iq_{b_i}^{h_i}
+ \le A^j\Big(\sum_bq_b\Big)^r=A^jn^r.
+\]
+The urn prefactor in \eqref{eq:Gj} then gives $O_j(S^{2j}L^j/n^j)$. The large-block and deficit tails are again superpolynomial. The more precise leading constants require the finite Bell reduction next.
+
+\section{Bell polynomial evaluation and the first two transforms}\label{sec:Bellcoefficients}
+Expand $d_h(q)=\sum_{u=1}^h\alpha_{h,u}(q)_u$. Since $\E(X)_u=z^u$ for $X\sim\Poi(z)$, define
+\begin{equation}\label{eq:Ph}
+ P_h(z)=\sum_{u=1}^h\alpha_{h,u}z^u,\qquad
+ D_h(z)=\sum_{q\ge1}d_h(q)\frac{z^q}{q!}=e^zP_h(z).
+\end{equation}
+The coefficients are explicitly $\alpha_{h,u}=\Delta^ud_h(0)/u!$. Thus computing $P_h$ uses finite rational arithmetic.
+
+The labeled-partition exponential formula gives
+\begin{equation}\label{eq:markedEGF}
+ \E_\pi\sum_{\text{distinct ordered }b_i}\prod_i d_{h_i}(q_{b_i})
+ =\frac{n!}{B_n}[z^n]\exp(e^z-1+rz)\prod_iP_{h_i}(z).
+\end{equation}
+For $X\sim\Poi(1)$ and $N\ge0$,
+\begin{equation}\label{eq:Bellshift}
+ N![z^N]\exp(e^z-1+rz)=\E(X+r)^N
+ =\E[(X)_rX^N]=\sum_{v=0}^r\mathfrak{s}(r,v)B_{N+v},
+\end{equation}
+where $\mathfrak{s}(r,v)$ are signed Stirling numbers of the first kind. The middle equality is the exact Poisson factorial shift. The $r=0$ version is $B_N$. Consequently each $G_j(n,s)$ has a fixed finite rational expression in Bell numbers at fixed shifts of $n$. The transforms $A_j(k)$ are then the finite convolutions in \eqref{eq:Aj}. Thus every coefficient is explicitly computable by finite rational arithmetic, with no unresolved infinite coefficient extraction.
+
+The first rows give
+\[
+ d_2(q)=\frac{q(q+3)}2,\qquad
+ d_3(q)=\frac{q(q+4)(q+5)}6,
+\]
+\begin{equation}\label{eq:P23}
+ P_2(z)=\frac{z^2+4z}{2},\qquad
+ P_3(z)=\frac{z^3+12z^2+30z}{6}.
+\end{equation}
+For $j=1$, \eqref{eq:Gj} has one marked block and $h_1=2$. Counting pairs in a uniform partition gives
+\[
+ \E_\pi\sum_bq_b(q_b+3)=n(n-1)\frac{B_{n-1}}{B_n}+4n.
+\]
+Hence
+\begin{equation}\label{eq:G1}
+ G_1(n,s)=\binom s2\phi_n,\qquad
+ \phi_n=\frac{(n-1)B_{n-1}/B_n+4}{n+1}.
+\end{equation}
+This proves \eqref{eq:T1}, including its empty-sum convention.
+
+For $j=2$ the only configurations are one $h=3$ block or two $h=2$ blocks. Writing out \eqref{eq:markedEGF}--\eqref{eq:Bellshift},
+\begin{align}\label{eq:G2}
+ G_2(n,s)={}&\frac{(s)_3}{6n^{\overline3}B_n}
+ \big[(n)_3B_{n-2}+12(n)_2B_{n-1}+30nB_n\big]\nonumber\\
+ &+\frac{(s)_4}{8n^{\overline4}B_n}
+ \big[(n)_4(B_{n-2}-B_{n-3})\nonumber\\
+ &\hspace{43mm}+8(n)_3(B_{n-1}-B_{n-2})
+       +16(n)_2(B_n-B_{n-1})\big].
+\end{align}
+If $n<d$, a term carrying $(n)_d$ is zero before its Bell subscripts are evaluated. Thus \eqref{eq:G2} is valid even at $n=1,2$. Inserting it into \eqref{eq:Aj} supplies an explicit second transform with remainder $O(\log^{26}k/k^3)$.
+
+\section{The leading scale of every fixed transform}\label{sec:leading}
+Fix $j$ and consider one configuration in \eqref{eq:Gj} with $r$ marked blocks and $H=j+r$. The polynomial $\prod_iP_{h_i}$ has degree at most $H$. A monomial $z^u$ contributes to its partition average
+\begin{equation}\label{eq:monomialcontrib}
+ \frac{(n)_u}{B_n}\sum_{v=0}^r\mathfrak{s}(r,v)B_{n-u+v}.
+\end{equation}
+Uniformly for $n=k-s$, $s\le S$, the fixed-shift Bell ratios are
+\[
+ \frac{B_{n-u+v}}{B_n}\sim\left(\frac{W(n)}n\right)^{u-v}.
+\]
+With $w=W(k)$, each fixed monomial in \eqref{eq:monomialcontrib} is $O(n^rw^{H-r})=O(n^rw^j)$. To see this also when $u<v$, its individual order is $n^vw^{u-v}$, and the ratio to $n^rw^j$ is $(w/n)^{r-v}w^{u-H}$, which is bounded. Multiplying by the urn prefactor and averaging over the fresh deficit law, whose $H$th factorial moment is asymptotic to $w^H$, gives
+\begin{equation}\label{eq:configscale}
+ O(w^{H+j}/k^j)=O(w^{2j+r}/k^j).
+\end{equation}
+All configurations with $r<j$ are therefore smaller than $w^{3j}/k^j$.
+
+The only configuration with $r=j$ has every $h_i=2$. By \eqref{eq:P23}, its polynomial has leading monomial $z^{2j}/2^j$. Its partition average is
+\[
+ \frac{(n)_{2j}B_{n-j}}{2^jB_n}(1+o(1))
+ \sim\frac{n^jw^j}{2^j}.
+\]
+A one-degree polynomial loss costs a factor $1/w$; a one-unit signed-Stirling shift loss costs $w/n$. Include the $1/j!$ factor in \eqref{eq:Gj}, the urn factor $(s)_{2j}/n^{\overline{2j}}$, and $\E(Z)_{2j}\sim w^{2j}$. All tails are controlled as before. The result is
+\[
+ A_j(k)\sim\frac{w^{3j}}{2^jj!k^j},
+\]
+proving \eqref{eq:Ajleading}. Finally the remainder in \eqref{eq:expansion} at order $p$ is $o(w^{3p}/k^p)$, which proves \eqref{eq:exactsubtract} and completes Theorem~\ref{thm:main}.
+
+For the explicit second transform, the one-$h=3$ contribution is asymptotic to $w^5/(6k^2)$ and the two-$h=2$ contribution to $w^6/(8k^2)$. This explains the leading coefficient $1/8$ in \eqref{eq:secondscale}. It does not evaluate all logarithmic suborders of the full coefficient at scale $k^{-2}$.
+
+\section{A finite smooth interpolation of the corrections}\label{sec:interpolation}
+An integer-index asymptotic does not by itself specify a useful real interpolation, and its remainder cannot simply be differentiated. We instead construct one from finitely many explicit Poisson expectations.
+
+For one ordered branch list $h_1,\ldots,h_b\ge2$ put
+\[
+ j=\sum_i(h_i-1),\qquad H=j+b,\qquad
+ \prod_iP_{h_i}(z)=\sum_{u=b}^H p_u z^u.
+\]
+The unnormalized contribution of its monomial $z^u$ to $B_{k+1}A_j(k)$, before multiplying by $p_u/b!$, is
+\begin{equation}\label{eq:monomialtransform}
+ \sum_{n=1}^k\binom kn\frac{(k-n)_H(n)_u}{n^{\overline H}}
+       \E(X+b)^{n-u},\qquad X\sim\Poi(1).
+\end{equation}
+Terms with $n<u$ or $k-n<H$ vanish before their exponents are evaluated. Put $m=n-u$ and $v=u+H-1$. Exact factorial cancellation gives
+\begin{equation}\label{eq:cancellation}
+ \binom kn\frac{(k-n)_H(n)_u}{n^{\overline H}}
+       =k\binom{k-1}{m+v}(m+1)^{\overline{u-1}}.
+\end{equation}
+For $Z=X+b\ge1$ define the monic polynomial
+\[
+ Q_{u,H}(\ell)=(\ell-v+1)^{\overline{u-1}}
+       =\sum_{t=0}^{u-1}q_{u,H,t}(\ell)_t.
+\]
+The coefficients in its finite falling-factorial expansion are again obtained by finite differences. Define, for real $x>0$,
+\begin{align}\label{eq:Ireal}
+ \mathcal I_{b,H,u}(x)={}&x\sum_{t=0}^{u-1}q_{u,H,t}(x-1)_t
+       \E\!\left[Z^{t-v}(Z+1)^{x-1-t}\right]\nonumber\\
+ &-x\sum_{\ell=0}^{v-1}\binom{x-1}{\ell}Q_{u,H}(\ell)
+                   \E Z^{\ell-v}.
+\end{align}
+Generalized binomials mean falling-factorial polynomials divided by $\ell!$. Because $Z\ge1$, the negative powers are well defined. All Poisson series and their real derivatives converge locally uniformly: factorial decay dominates every fixed power of $Z$ and $\log(Z+1)$.
+
+\begin{proposition}\label{prop:interpolation}
+The smooth functions
+\begin{equation}\label{eq:Treal}
+ \mathcal T_j(x)=\sum_{b=1}^j\frac1{b!}
+ \sum_{\substack{h_1,\ldots,h_b\ge2\\\sum_i(h_i-1)=j}}
+       \sum_{u=b}^H p_u\mathcal I_{b,H,u}(x)
+\end{equation}
+satisfy $\mathcal T_j(k)=B_{k+1}A_j(k)$ at every positive integer $k$.
+\end{proposition}
+\begin{proof}
+By \eqref{eq:cancellation}, \eqref{eq:monomialtransform} equals
+\[
+ k\E\!\left[Z^{-v}\sum_{\ell=v}^{k-1}
+              \binom{k-1}{\ell}Q_{u,H}(\ell)Z^\ell\right].
+\]
+For every nonnegative integer $t$, the differentiated binomial identity gives
+\[
+ \sum_{\ell=0}^{k-1}\binom{k-1}{\ell}(\ell)_tZ^\ell
+       =(k-1)_t Z^t(1+Z)^{k-1-t}.
+\]
+If $t>k-1$, both sides vanish; the right side is zero times a finite quantity. Expand $Q$ in this basis and subtract the finitely many terms with $\ell<v$. This is exactly \eqref{eq:Ireal} at $x=k$. The argument also covers $k<v+1$, because binomial coefficients with $\ell>k-1$ vanish and the remaining full and boundary sums cancel. Summing configurations proves the assertion.
+\end{proof}
+This construction requires only finite child-return rows through half-length $j+1$ and explicitly specified Poisson expectations. It contains neither the unknown full sequence $a_k$ at large indices nor an arbitrary interpolation of its errors.
+
+\section{Real concentration and derivative bounds}\label{sec:derivatives}
+For real $N>0$ define
+\[
+ \mathcal B(N)=e^{-1}\sum_{y\ge1}\frac{y^N}{y!},\qquad
+ \mu_N(y)=\frac{e^{-1}y^N}{y!\mathcal B(N)},\qquad
+ y_* =\frac{N}{W(N)}.
+\]
+At positive integers $\mathcal B(n)=B_n$; no equality at $n=0$ is asserted. The mass-ratio proof in Appendix~\ref{sec:bell} works for real $N$ without change, giving exponential concentration outside every fixed relative neighborhood of $y_*$. For each fixed $d>0$ it follows that
+\begin{align}
+ \E_{\mu_N}Y^{-d}&=O(y_*^{-d}),&
+ \E_{\mu_N}[Y^{-d}\log Y]&=O(y_*^{-d}\log N),\label{eq:negmom}\\
+ \frac{\mathcal B'(N)}{\mathcal B(N)}&=\E_{\mu_N}\log Y\sim\log N.\label{eq:realderivative}
+\end{align}
+For the negative moments, split at $Y=y_*/2$: below it the bounded summands have exponentially small probability; above it their bounds are at most constant multiples of the stated scales. Relative concentration gives the lower logarithmic estimate, and Jensen with $\E Y=O(y_*)$ gives the upper one. This controls derivatives directly, without differentiating an asymptotic equivalent.
+
+For a full-sum expectation in \eqref{eq:Ireal}, write
+\[
+ F(x)=\E[Z^{t-v}(Z+1)^{x-1-t}],\qquad N=x+1.
+\]
+Reindex $y=Z+1=X+b+1$ and put
+\[
+ K_t(Y)=(Y)_{b+1}(Y-1)^{t-v}Y^{-t-2}.
+\]
+The exact Poisson reindexing gives the pair of identities
+\begin{align}
+ \frac{F(x)}{\mathcal B(x+1)}
+   &=\E_{\mu_{x+1}}[K_t(Y);Y\ge b+1],\label{eq:kernel}\\
+ \frac{F'(x)}{\mathcal B(x+1)}
+   &=\E_{\mu_{x+1}}[K_t(Y)\log Y;Y\ge b+1].\label{eq:kerneldiff}
+\end{align}
+The second line is the raw derivative $F'$ divided by $\mathcal B$, not the derivative of $F/\mathcal B$.
+
+Since $t\le u-1$, $v=u+H-1$, and $H=j+b$, the kernel is nonnegative and bounded by $C Y^{-(u+j)}$ on $Y\ge b+1\ge2$. Equations~\eqref{eq:negmom}--\eqref{eq:kerneldiff} bound $F/\mathcal B$ and $F'/\mathcal B$ by
+\[
+ O((W(x)/x)^{u+j}),\qquad
+ O((W(x)/x)^{u+j}\log x),
+\]
+respectively. The prefactor $x(x-1)_t$ is $O(x^{t+1})$, and its derivative is $O(x^t)$. Since $t+1\le u\le H\le2j$, every full-sum term, and hence their finite signed sum, satisfies
+\begin{align}
+ \mathcal T_j(x)&=O_j\!\left(\mathcal B(x+1)\frac{W(x)^{3j}}{x^j}\right),\label{eq:Tbound}\\
+ \mathcal T_j'(x)&=O_j\!\left(\mathcal B(x+1)\frac{W(x)^{3j}\log x}{x^j}\right).\label{eq:Tdifference}
+\end{align}
+The boundary subtraction in \eqref{eq:Ireal} is a fixed-degree polynomial in $x$ with finite constant coefficients; it and its derivative are negligible on these scales.
+
+For each fixed $p\ge0$ put
+\begin{equation}\label{eq:gp}
+ g_p(x)=2\left[\mathcal B(x+1)+\sum_{j=1}^p\mathcal T_j(x)\right],
+\end{equation}
+with empty sum when $p=0$. Then
+\begin{equation}\label{eq:gpderivative}
+ \frac{g_p(x)}{2\mathcal B(x+1)}=1+O_p(W(x)^3/x),\qquad
+ \frac{g_p'(x)}{g_p(x)}\sim\log x.
+\end{equation}
+In particular $g_p$ is positive, strictly increasing, and unbounded on some eventual interval. For sufficiently large $L$, define $x_p(L)$ to be the unique solution there of $g_p(x_p(L))=L$.
+
+\section{Two ceilings and displacement of the centers}\label{sec:inverse}
+Define the discrete threshold
+\[
+ N(L)=\min\{k\ge1:a_k\ge L\}.
+\]
+Appending a fresh root-leaf excursion injects walks of half-length $k$ into walks of half-length $k+1$. Deleting the last two steps recovers the source. The repeated single-edge walk is outside the image for $k\ge1$, so $a_k$ is strictly increasing in that range.
+
+\begin{theorem}\label{thm:inverse}
+For every fixed integer $p\ge1$ there is a constant $C_p>0$ such that, for all sufficiently large $L$, with $x=x_p(L)$,
+\begin{equation}\label{eq:ceilings}
+ \left\lceil x-\delta_p(x)\right\rceil
+ \le N(L)\le\left\lceil x+\delta_p(x)\right\rceil,
+ \qquad \delta_p(x)=C_p\frac{\log^{10p+5}x}{x^{p+1}}.
+\end{equation}
+The two ceilings are eventually equal or adjacent. The constant and onset are existential.
+\end{theorem}
+\begin{proof}
+Theorem~\ref{thm:main} and Proposition~\ref{prop:interpolation} imply
+\[
+ \log\frac{a_k}{g_p(k)}=O_p(\epsilon_p(k)),\qquad
+ \epsilon_p(x)=\frac{\log^{10p+6}x}{x^{p+1}}.
+\]
+This uses $g_p(k)/(2B_{k+1})\to1$ before taking the logarithm. Since $\epsilon_p$ is eventually decreasing and $\epsilon_p(x/2)=O_p(\epsilon_p(x))$, all integer log errors with $k\ge x/2$ are bounded by $C'_p\epsilon_p(x)$.
+
+On $[x-\delta,x+\delta]$, \eqref{eq:gpderivative} gives $(\log g_p)'\ge\tfrac12\log x$ eventually. Choose $C_p$ large enough that $\delta_p(x)\log x/2>2C'_p\epsilon_p(x)$. Integration shows
+\[
+ g_p(x-\delta)<Le^{-2C'_p\epsilon_p(x)},\qquad
+ g_p(x+\delta)>Le^{2C'_p\epsilon_p(x)}.
+\]
+Eventual monotonicity extends these comparisons to all integers on the corresponding sides with $k\ge x/2$. After the integer log errors are included, $a_k<L$ for $k\le x-\delta$ and $a_k>L$ for $k\ge x+\delta$ in that range. For $k<x/2$, monotonicity of $a_k$, the established leading equivalent, and the Bell derivative estimate show $a_k<L$ as well, since $B_{\lfloor x/2\rfloor+1}/\mathcal B(x+1)\to0$. Taking ceilings gives \eqref{eq:ceilings}; at an exact lower integer boundary the argument is slightly stronger than the displayed conservative lower bound. Finally $2\delta_p(x)<1$ eventually.
+\end{proof}
+Even at high fixed order, \eqref{eq:ceilings} is an asymptotic enclosure, not a certified finite-threshold numerical procedure. It does not identify a single ceiling at exact sequence thresholds.
+
+\begin{proposition}[Real leading scales]\label{prop:realscales}
+For each fixed $j\ge1$, as real $x\to\infty$,
+\begin{equation}\label{eq:realscale}
+ \frac{\mathcal T_j(x)}{\mathcal B(x+1)}
+ \sim\frac{W(x)^{3j}}{2^j j!x^j}.
+\end{equation}
+\end{proposition}
+\begin{proof}
+For fixed indices in \eqref{eq:kernel},
+$K_t(Y)=Y^{-(u+j)}(1+O(1/Y))$ as $Y\to\infty$. The real Bell concentration and negative-moment bound imply
+\[
+ \E_{\mu_{x+1}}[K_t(Y);Y\ge b+1]\sim
+       ((x+1)/W(x+1))^{-(u+j)}.
+\]
+For completeness, below half the saddle the kernel is bounded and the probability exponentially small; above it the normalized kernel is uniformly bounded and converges to one in tilted probability. Thus the leading constant is one.
+
+The monic polynomial $Q_{u,H}$ has highest falling-basis coefficient $q_{u,H,u-1}=1$. Its highest-$t$ full-sum term in \eqref{eq:Ireal}, divided by $\mathcal B(x+1)$, is therefore asymptotic to $W(x)^{u+j}/x^j$. Every lower-$t$ prefactor has smaller polynomial degree and loses at least $1/x$ with the same kernel exponent. The boundary polynomial is negligible. In \eqref{eq:Treal}, configurations with $b<j$ have $u\le j+b\le2j-1$, so are $O(W(x)^{3j-1}/x^j)$. The unique all-pair configuration $b=j$, $h_i=2$, has highest monomial $z^{2j}/2^j$ and ordering factor $1/j!$. Its leading coefficient is positive and cannot cancel. This proves \eqref{eq:realscale} directly for real arguments.
+\end{proof}
+
+\begin{corollary}\label{cor:displacements}
+For every fixed $p\ge1$,
+\begin{equation}\label{eq:firstdisplacement}
+ x_p(L)-x_0(L)\sim
+ -\frac{W(x_0)^3}{2x_0\log x_0}
+ \sim-\frac{W(x_0)^2}{2x_0},\qquad x_0=x_0(L).
+\end{equation}
+For successive fixed-order centers, with $y=x_{p-1}(L)$,
+\begin{equation}\label{eq:successivedisplacement}
+ x_p(L)-x_{p-1}(L)\sim
+ -\frac{W(y)^{3p}}{2^p p!y^p\log y}.
+\end{equation}
+\end{corollary}
+\begin{proof}
+At the uncorrected center, Proposition~\ref{prop:realscales} gives
+\[
+ \log\frac{g_p(x_0)}L\sim\frac{W(x_0)^3}{2x_0}=:\eta_0>0.
+\]
+All fixed higher corrections are negligible relative to the first. The logarithmic derivative of $g_p$ is between $\tfrac12\log x_0$ and $2\log x_0$ in a unit neighborhood for large $L$. Monotonicity first brackets $x_p$ within $O(\eta_0/\log x_0)$ to the left of $x_0$. Integrating the sharper equivalent \eqref{eq:gpderivative} over this shrinking interval gives $(x_0-x_p)\log x_0\sim\eta_0$, proving \eqref{eq:firstdisplacement}. For \eqref{eq:successivedisplacement}, use $g_{p-1}(y)=L$ and $g_p(y)=L+2\mathcal T_p(y)$, so
+\[
+ \log\frac{g_p(y)}L\sim\frac{W(y)^{3p}}{2^p p!y^p}.
+\]
+The same bracketing and integration applies. This retains the full previous corrected center and does not subtract unrelated estimates for the integer inverse.
+\end{proof}
+The negative sign concerns smooth centers at sufficiently large arguments. It is not a finite-$k$ lower-bound claim for a walk subclass. Neither displacement formula narrows the two-ceiling uncertainty to a single rounding rule.
+
+
+\section{Exact finite checks and reproduction}\label{sec:reproduction}
+The child-return rows are computable from the exact first-edge recurrence
+\begin{equation}\label{eq:recurrence}
+ F_{k,m}=\sum_{q=1}^m\binom{m-1}{q-1}
+                 \sum_{a+b=k-q}E_{a,q}F_{b,m-q}.
+\end{equation}
+The child used by the first excursion is used $q$ times. Choose its other positions among the remaining $m-1$ excursions, remove its cut interior walk, and retain the walk formed by all other root excursions. All recursive half-lengths are smaller than $k$. This is the Bauer--Golinelli departure-refined recurrence after summing out the distinct-edge count~\cite[Section 5.4]{bg}; it is recalled for reproducibility, not claimed as a new recurrence.
+
+\begin{table}[htbp]
+\centering\small
+\caption{Small exact child-return rows with zeros in impossible positions}
+\label{tab:rows}\input{tables/rows.tex}
+\end{table}
+\begin{table}[htbp]
+\centering\small\setlength{\tabcolsep}{5pt}
+\caption{Finite correction diagnostics, rounded from exact rational values}
+\label{tab:corrections}\input{tables/table.tex}
+\end{table}
+The last column of Table~\ref{tab:corrections} is the exact rational residual $a_k/(2B_{k+1})-1-A_1(k)-A_2(k)$, displayed in decimal form. These small indices need not be in the asymptotic range. In particular a sign, ratio, or apparent fit in this table is not an onset estimate.
+
+The public code uses only the Python standard library for exact finite arithmetic. It freshly generates rows through $k=32$ and independently enumerates normalized walks through $k=7$, by following a discovered neighbor or discovering the next vertex. That enumeration does not use the recurrence, partitions, or stored moments to generate walks. The checks compare all enumerated root-return rows, reconstruct finite differences and Bell polynomials, test Newton exactness on low-collision histories, compare urn factorial moments, and check the explicit $G_1,G_2$ reductions and finite interpolation identities. The small scope and exact check counts are recorded in the regenerated data; no large arrays are shipped.
+
+The release includes editable \TeX, this PDF, compact exact results, source links, and a reproduction driver. Explicit exception guards remain active under \texttt{python3 -O}. The finite harness runs normal and optimized modes, compares all output bytes, and exercises deliberate mathematical and validation failures. The outer driver verifies the source manifest, regenerates the finite outputs, rebuilds the PDF to stable bytes using a private format and installed font maps, and verifies actual archive members. With the original archive supplied, it compares the entire rebuilt ZIP byte for byte. These are same-toolchain reproducibility claims, not claims that arbitrary \TeX\ installations produce identical PDF bytes. No private reports, reviews, third-party full texts, or compiled binaries are included.
+
+\section{Sources and further directions}\label{sec:sources}
+Bauer--Golinelli~\cite{bg} supply the original sparse-moment tree-walk framework, the departure-refined first-edge recurrence, and the coefficientwise Stirling--Catalan comparison used in the inherited complement theorem. Report213~\cite{r213} establishes the full relative equivalent and superpolynomial complement reduction refined here. This article includes the needed complement argument for accessibility and preserves the distinction between that inherited theorem and the collision expansion.
+
+The same-count literature also includes Khorunzhy--Vengerovsky~\cite{kv}, whose equations (6a,b) give a departure-refined recurrence and whose remarks give rough moment bounds. Bauer--Golinelli's equation (13) gives $I(k,\ell)\sim2\Stir k\ell$ for fixed $\ell\ge2$. That fixed-$\ell$ statement cannot be summed through the growing Bell saddle without a uniform error estimate. Spiridonov's thesis~\cite[Section 3.3]{spiridonov} records Bell--Catalan bounds and a historical conjecture of a Catalan--Stirling upper bound; the latter is already implied by Bauer--Golinelli's coefficientwise theorem and is not a current open input.
+
+Hainzl--de Panafieu~\cite{hdp} organize tree-walk generating functions at fixed excess and obtain large-mean-degree expansions of fixed moments. Their inspected Theorems 3 and 4 use different limiting regimes. Hainzl~\cite{hainzl} proves asymptotics for hypergraph Catalan numbers, counting tours that cross every edge exactly $2\kappa$ times with $\kappa$ fixed while tree size tends to infinity. Her Theorem 1 and Proposition 1 identify stars or star-like trees and quantify a defect expansion. This is directly relevant methodological context for dominant-hub and defect arguments. Here edge multiplicities are unrestricted and summed over at fixed total walk half-length; neither the objects nor the asymptotic parameter agrees with the fixed-$\kappa$ tour problem.
+
+Condensation results for fixed-size weighted planar trees and allocations, including the factorial-weight partition-function equivalents in Janson--Jonsson--Stef\'ansson~\cite{jjs} and Janson~\cite{janson}, are related background rather than identities for unrestricted time-rooted walk counts.
+
+The source record is a bounded comparison of specific inspected statements, not a worldwide literature classification. Full-text gaps include Khorunzhy--Shcherbina--Vengerovsky (2004), Rodgers--Bray (1988), and the 2026 journal version of Hainzl--de Panafieu; the ledger gives their links and distinguishes them from inspected preprints. No claim is made that these asymptotics were historically unknown or that the further directions below are globally open. The reproducibility file \texttt{SOURCES.txt} lists the public links and the precise inspection scope.
+
+\paragraph{Concrete next directions.}
+First, reducing the deliberately generous logarithmic remainder powers would improve practical inverse radii, but requires sharper weighted collision and partition estimates. Second, effective constants for the complement and local errors would turn the existential two-ceiling enclosure into a certified finite-threshold procedure. Third, computing lower logarithmic suborders of each fixed Bell transform would give an evaluated $W$-coefficient expansion; exact lower transforms must still be retained until their errors are below the target scale. Fourth, a uniform analysis for $p=p(k)$ would require quantitative control of coefficient growth and collision tails; the factor $1/j!$ in the fixed-$j$ leading term alone does not justify exponential resummation. Fifth, fixed general mean degree introduces weighted Bell or Touchard structures and calls for its own uniform proof. These are specific continuations of the present method, not conclusions already established by it.
+
+\appendix
+\section{Elementary Bell estimates}\label{sec:bell}
+This appendix establishes every Bell asymptotic needed above. Dobinski's identity follows from exponential generating functions:
+\[
+ e^{-1}\sum_{y\ge0}\frac{e^{zy}}{y!}
+ =\exp(e^z-1)=\sum_{N\ge0}B_N\frac{z^N}{N!},\qquad
+ B_N=e^{-1}\sum_{y\ge0}\frac{y^N}{y!}.
+\]
+For $N\ge1$, put $\rho=W(N)$, $x=N/\rho=e^\rho$, and $a_y=y^N/y!$ for $y\ge1$. Let $Y_N$ have probabilities proportional to $a_y$.
+
+\begin{lemma}\label{lem:Bell}
+For every fixed $\varepsilon\in(0,1)$, there is $c_\varepsilon>0$ such that, for all sufficiently large $N$,
+\begin{equation}\label{eq:Bellconcentration}
+ \Prob(|Y_N/x-1|>\varepsilon)\le e^{-c_\varepsilon N}.
+\end{equation}
+For every fixed positive integer $p$, $\E(Y_N/x)^p\to1$. In particular,
+\begin{equation}\label{eq:Bellratio}
+ \frac{B_{N+1}}{B_N}\sim\frac{N}{W(N)},\qquad
+ \frac{B_{N-1}}{B_N}=O(\log N/N).
+\end{equation}
+\end{lemma}
+\begin{proof}
+The consecutive mass ratio
+\[
+ \frac{a_{y+1}}{a_y}=\frac{(1+1/y)^N}{y+1}
+\]
+is decreasing in $y$. Uniformly for $y=tx+O(1)$, with $t$ in a fixed compact subset of $(0,\infty)$,
+\begin{equation}\label{eq:ratiolog}
+ \log\frac{a_{y+1}}{a_y}=\rho(1/t-1)-\log t+o(1),
+\end{equation}
+since $N/y^2=O(\rho^2/N)=o(1)$.
+On the interval between $(1-\varepsilon)x$ and $(1-\varepsilon/2)x$, these logarithms are at least a positive constant times $\rho$. Multiplying a positive constant times $x$ successive ratios produces a factor $\exp(cN)$. Every earlier term is bounded by the exterior endpoint mass, by ratio monotonicity, and there are $O(x)$ such terms. Thus the lower tail is exponentially negligible relative to an interior mass.
+
+Across the interval between $(1+\varepsilon/2)x$ and $(1+\varepsilon)x$, the log ratios are at most a negative constant times $\rho$. This loses a factor $\exp(cN)$. Beyond that interval monotonicity bounds the remaining tail by a geometric series of ratio at most $e^{-c'\rho}$. This proves \eqref{eq:Bellconcentration} after changing constants.
+
+The upper-tail argument still works when the summands are multiplied by a fixed power $(y/x)^p$: successive polynomial factors have ratio $(1+1/y)^p$, uniformly tending to one there, while the mass ratio tends to zero. On the central interval, $(Y_N/x)^p$ is between $(1-\varepsilon)^p$ and $(1+\varepsilon)^p$. Letting $\varepsilon\downarrow0$ proves convergence of moments. Finally $\E Y_N=B_{N+1}/B_N$, proving \eqref{eq:Bellratio}; apply it at adjacent indices and use $W(N)\sim\log N$ for the second bound.
+\end{proof}
+The shifted law used in Lemma~\ref{lem:deficit} is exact. Under weight $(X+1)^k$ with $X\sim\Poi(1)$, put $y=X+1$ to obtain
+\[
+ \frac{(X+1)^k}{X!}=\frac{y^{k+1}}{y!}.
+\]
+Thus $X+1$ has the law of $Y_{k+1}$. In particular, with $x_k=(k+1)/W(k+1)$, $X/x_k\to1$, and for large $k$, $X<x_k/2$ implies $X+1<3x_k/4$. This gives the exponential low-tail estimate used in the fresh-term binomial mixture.
+
+\begin{lemma}\label{lem:singlesaddle}
+For integers $N\ge1$ and $r=W(N)$,
+\begin{equation}\label{eq:singleterm}
+ N!r^{-N}\exp(e^r-1)\le B_N\exp(O(\log(N+1))).
+\end{equation}
+Furthermore,
+\begin{equation}\label{eq:Belllog}
+ \log B_N=N\log N-N\log\log N-N+o(N),\qquad
+ B_N^{-1/N}\le C\frac{\log(N+1)}N
+\end{equation}
+for one fixed $C$ and all $N\ge1$.
+\end{lemma}
+\begin{proof}
+Put $y=e^r=N/r$ and let $q$ be a nearest positive integer to $y$. In the single Dobinski term $e^{-1}q^N/q!$, use Stirling's formula. The real exponent
+\[
+ f(u)=N\log u-u\log u+u
+\]
+has $f'(y)=0$ and $f''(u)=-N/u^2-1/u$. Rounding changes $f$ by $O((r+1)/y)$. Consequently
+\[
+ \log B_N\ge N\log N-N\log r-N+y-O(\log N).
+\]
+Stirling applied to $N!r^{-N}e^{y-1}$ gives the same main expression with $O(\log N)$ error, proving \eqref{eq:singleterm}.
+
+For the logarithmic equivalent, \eqref{eq:Bellratio} gives
+$\log(B_{j+1}/B_j)=\log j-\log\log j+o(1)$. Sum over $j$, treating finitely many small indices separately. Integral comparison gives
+$\sum_{j<N}\log j=N\log N-N+O(\log N)$ and
+$\sum_{2\le j<N}\log\log j=N\log\log N+o(N)$. The Ces\`aro mean of the $o(1)$ error is $o(1)$. This proves the first formula in \eqref{eq:Belllog}; exponentiation and enlargement of $C$ give the second.
+\end{proof}
+
+
+\section{The inherited superpolynomial complement theorem}\label{sec:complement}
+This appendix recalls the part of Report213~\cite{r213} used in \eqref{eq:complementinput}. Its purpose is to make the dependency independently readable. The coefficientwise counting theorem below is credited to Bauer--Golinelli; the complement proof is inherited from the preceding report, not a consequence of the new collision expansion.
+
+\begin{theorem}[Complement estimate]\label{thm:complement}
+For an integer window $S=S_k$ satisfying
+\begin{equation}\label{eq:window}
+ S_k/\log k\longrightarrow\infty,\qquad S_k=o(k^{1/3}),
+\end{equation}
+let $\Uc_{k,S}=\{w\in\Wc_k:\max_vd_w(v)\ge k-S\}$. Then, for every fixed $D>0$,
+\[
+ |\Wc_k\setminus\Uc_{k,S}|=o(k^{-D}B_{k+1}).
+\]
+\end{theorem}
+The proof uses a low-maximum estimate, an intermediate root-return estimate, and a near-hub shoulder estimate. The root-distance encoding and weighted rotation have already been proved in the main text.
+
+\subsection{The counting input and the moment envelope}
+Let $I(t,\ell)$ count walks with $\ell$ distinct edges. Bauer--Golinelli~\cite[Section 5.5, equation (9)]{bg} prove the coefficientwise comparison
+\begin{equation}\label{eq:BG}
+ \Stir t\ell\le I(t,\ell)\le\Cat_\ell\Stir t\ell.
+\end{equation}
+This is the essential external counting theorem. It is stronger than the scalar Bell--Catalan bounds. The star-rooted subclass independently gives $a_t\ge B_t$.
+
+To get a rough upper envelope, define the Touchard polynomial
+$T_t(c)=\sum_\ell\Stir t\ell c^\ell$, with exponential generating function
+$\exp(c(e^z-1))$. Since $\Cat_\ell\le4^\ell$, positivity and a positive-radius coefficient bound at $r=W(t)$ give
+\[
+ a_t\le T_t(4)\le t!r^{-t}\exp(4(e^r-1)).
+\]
+The single-saddle bound in Appendix~\ref{sec:bell} compares this with $B_t$, so for one fixed constant $D_0$ and all integers $t\ge1$,
+\begin{equation}\label{eq:envelope}
+ a_t\le B_t\exp\left(\frac{D_0t}{\log(t+1)}\right).
+\end{equation}
+Indeed the logarithmic ratio is at most $3t/W(t)+O(\log t)$; enlarge $D_0$ over finitely many small indices.
+
+We also need an exact moment interpolation inequality
+\begin{equation}\label{eq:holder}
+ a_t\le a_s^{t/s}\qquad(s\ge1,\ 0\le t\le s).
+\end{equation}
+For clarity, it does not require interchanging a graph-size limit with a growing moment. Let $A_N$ be the adjacency matrix of $G(N,1/N)$. At each fixed $t$, the normalized trace expansion has finitely many connected patterns. A pattern with $v$ vertices and $e$ edges contributes $(N)_vN^{-e-1}$. Since $e\ge v-1$, exactly the tree patterns survive, each with limit one. Thus
+\[
+ \lim_{N\to\infty}\frac1N\E\operatorname{tr}(A_N^{2t})=a_t.
+\]
+This is the fixed-moment identification in Bauer--Golinelli~\cite[Section 5.3]{bg}. Push the expected empirical spectral measure under $\lambda\mapsto\lambda^2$ and apply H\"older, then take the fixed-index limits. This proves \eqref{eq:holder} for every integer pair; it can subsequently be used at indices depending on $k$.
+
+\subsection{A finite positive coefficient majorant}\label{sec:majorant}
+The exact branch decomposition \eqref{eq:partition} and its upper cut bound give, for $m\ge1$, $s\ge0$,
+\[
+ F_{m+s,m}\le\sum_{\pi\in\Part[m]}\ \sum_{\sum_b t_b=s}
+       \prod_{b\in\pi}a_{t_b}\binom{|b|+t_b-1}{t_b}.
+\]
+For a fixed target $s$, truncate each block's interior half-length to $0\le t\le s$ \emph{before} evaluating any series. The labeled-partition exponential formula and coefficient positivity imply, for every $x,z>0$,
+\begin{align}
+ F_{m+s,m}
+ &\le m![x^mz^s]\exp\left(e^x-1+\sum_{t=1}^s a_tz^t\mathcal A_t(x)\right)\label{eq:coeffmajorant}\\
+ &\le m!x^{-m}z^{-s}\exp\left(e^x-1+\sum_{t=1}^s a_tz^t\mathcal A_t(x)\right),\label{eq:cauchy}
+\end{align}
+where, for $t\ge1$,
+\begin{equation}\label{eq:At}
+ \mathcal A_t(x)=\sum_{q\ge1}\frac{x^q}{q!}\binom{q+t-1}{t}
+       =e^x\sum_{j=1}^t\binom{t-1}{j-1}\frac{x^j}{j!}.
+\end{equation}
+In the coefficient expression $x,z$ are formal variables; in the next line they are positive evaluation points. The exponent contains only finitely many moment indices. Terms $t>s$ cannot affect the desired coefficient, so this is a finite-majorant argument, not an assumption that an ordinary moment generating function converges.
+
+The identity in \eqref{eq:At} follows from
+\[
+ \binom{q+t-1}{t}=\sum_{j=1}^t\binom{t-1}{j-1}\binom qj
+\]
+and $\sum_{q\ge j}\binom qj x^q/q!=e^xx^j/j!$. Two bounds will handle different ranges of $t$:
+\begin{equation}\label{eq:Atbounds}
+ \mathcal A_t(x)\le e^xx(1+x)^{t-1},\qquad
+ \mathcal A_t(x)\le e^x\exp(2\sqrt{tx}).
+\end{equation}
+For the first, discard $1/j!$ in the finite sum. For the second, use
+$\binom{t-1}{j-1}\le\binom tj\le t^j/j!$ and extend to $j\ge0$. The inequality
+\[
+ \sum_{j\ge0}\frac{u^j}{(j!)^2}\le e^{2\sqrt u}
+\]
+follows by comparing to the even powers on the right: $\binom{2j}{j}\le4^j$. Both estimates hold for every $t\ge1$ and $x>0$.
+
+\subsection{Bell entropy with cancellation preserved}\label{sec:entropy}
+Define
+\[
+ H(m,s)=(m+s)\log(m+s)-m\log m-s\log s.
+\]
+This is positive when $m,s>0$. In particular,
+\begin{equation}\label{eq:Hlower}
+ H(m,s)\ge\min(m,s)\log2,\qquad H(m,s)\ge\frac{2ms}{m+s}.
+\end{equation}
+The second follows from $-\log u\ge1-u$ applied to $u=m/(m+s)$ and $1-u$. More precisely $H(m,s)\ge p\log(k/p)$ for $p=\min(m,s)$ and $k=m+s$.
+
+\begin{lemma}\label{lem:entropy}
+Uniformly over integers $m+s=k$ with $\min(m,s)\ge k^{0.49}$,
+\begin{equation}\label{eq:entropy}
+ \log\frac{B_mB_s}{B_k}=-(1+o(1))H(m,s).
+\end{equation}
+The notation means that the ratio of the left side to $-H(m,s)$ tends uniformly to one.
+\end{lemma}
+\begin{proof}
+Appendix~\ref{sec:bell} proves the adjacent ratio and hence
+\[
+ \log\frac{B_{j+1}}{B_j}=\log j-\log\log j+o(1),\qquad
+ \log B_p=p\log p-p\log\log p-p+o(p).
+\]
+Put $p=\min(m,s)$ and $q=k-p\ge k/2$. The adjacent-ratio errors are uniformly $o(1)$ on $j\ge q$, so their sum over $q\le j<k$ is $o(p)$. Also
+\begin{align*}
+ \sum_{j=q}^{k-1}\log j&=k\log k-q\log q-p+O(\log k),\\
+ \sum_{j=q}^{k-1}\log\log j
+ &=p\log\log k+O\left(\frac{p^2}{k\log k}\right).
+\end{align*}
+The first error is $o(p)$ under $p\ge k^{0.49}$; so is the second. Subtracting this \emph{short sum of adjacent ratios} gives
+\[
+ \log\frac{B_pB_q}{B_k}
+ =-H(m,s)+p\log\frac{\log k}{\log p}+o(p).
+\]
+Finally
+\[
+ 0\le\log\frac{\log k}{\log p}
+ \le\frac{\log(k/p)}{\log p},\qquad H(m,s)\ge p\log(k/p)\ge p\log2.
+\]
+Thus the remaining terms are $o(H)$ uniformly. Subtracting three separate coarse $o(k)$ Bell estimates would not preserve the required cancellation near the small-part endpoint; the adjacent-ratio argument does.
+\end{proof}
+
+\subsection{The intermediate return range}\label{sec:intermediate}
+Set
+\begin{equation}\label{eq:cuts}
+ h=\left\lfloor\frac{k}{64\log k}\right\rfloor,
+ \qquad L=\frac1{20}\sqrt{k\log k}.
+\end{equation}
+The letter $L$ here is a real cutoff, distinct from the largest-block cutoff in the main text. Eventually $h>L>k^{0.49}$.
+
+\begin{proposition}\label{prop:intermediate}
+Uniformly for integers $m+s=k$, $m\ge h$, and $s\ge L$, for all sufficiently large $k$,
+\begin{equation}\label{eq:intermediate}
+ \frac{F_{k,m}}{B_{k+1}}\le\exp\{-H(m,s)/2\}.
+\end{equation}
+\end{proposition}
+\begin{proof}
+In \eqref{eq:cauchy} choose
+\begin{equation}\label{eq:choices}
+ x=W(m),\quad\epsilon=\frac{m}{8k},\quad\eta=1-\epsilon,
+ \quad z=\eta a_s^{-1/s},\quad
+ T=\left\lceil\frac{64\log k}{\epsilon^2}\right\rceil.
+\end{equation}
+The star subclass gives $a_s\ge B_s$, and Appendix~\ref{sec:bell} gives
+\[
+ z\le C\frac{\log(s+1)}s,\qquad x\le\log k,
+ \qquad \frac c{\log k}\le\epsilon\le\frac18.
+\]
+Uniformly in the stated range,
+\begin{equation}\label{eq:splitcontrol}
+ \frac{\epsilon^2s}{(\log k)^3}\longrightarrow\infty,
+ \qquad T<s,\qquad T(1+x)z=o(1).
+\end{equation}
+Indeed if $m\ge k/2$, then $\epsilon^2s\ge s/256\ge L/256$; if $m<k/2$, then $s\ge k/2$ and $\epsilon^2s\ge m^2/(128k)\ge c'k/\log^2k$. Both dominate $\log^3k$. The last conclusion follows from
+$T(1+x)z\le C\log^3k/(\epsilon^2s)$, with the harmless ceiling absorbed.
+
+\textbf{Large interior half-lengths.}
+For $T<t\le s$, \eqref{eq:holder} yields
+$a_tz^t\le\eta^t\le e^{-\epsilon t}$. Since $T\ge64x/\epsilon^2$, one has $2\sqrt{tx}\le\epsilon t/2$. The second bound in \eqref{eq:Atbounds} now gives
+\begin{equation}\label{eq:highsplit}
+ \sum_{t>T}^s a_tz^t\mathcal A_t(x)
+ \le e^x\sum_{t>T}e^{-\epsilon t/2}=O(k^{-10}).
+\end{equation}
+For an explicit comparison of scales, $e^x\le k$,
+$(1-e^{-\epsilon/2})^{-1}=O(\log k)$, and
+$\epsilon T/2\ge32\log k/\epsilon\ge256\log k$.
+
+\textbf{Small interior half-lengths.}
+Use the rough walk bound \eqref{eq:Ebds}, the first bound in \eqref{eq:Atbounds}, and $xe^x=m$:
+\begin{align}
+ \sum_{t=1}^T a_tz^t\mathcal A_t(x)
+ &\le mz\sum_{t=1}^T4^{t-1}t![(1+x)z]^{t-1}\nonumber\\
+ &=mz\{1+O((1+x)z)\}=mz(1+o(1)).\label{eq:lowsplit}
+\end{align}
+The first term of the inner sum is one, the second is $8(1+x)z$, and each successive ratio is $4(t+1)(1+x)z=o(1)$ uniformly by \eqref{eq:splitcontrol}. The exact value $a_1=1$ prevents any loss in its leading term.
+
+Combining \eqref{eq:cauchy}, \eqref{eq:singleterm}, and the two splits gives
+\begin{align}
+ \log\frac{F_{k,m}}{B_{k+1}}
+ &\le\log\frac{B_ma_s}{B_k}-s\log\eta
+       +O(\log k)+(1+o(1))mz.\label{eq:masterentropy}
+\end{align}
+Replacing $B_{k+1}$ by the smaller $B_k$ only weakens the upper bound. We compare every remaining term to $H=H(m,s)$.
+
+First, \eqref{eq:envelope} and Lemma~\ref{lem:entropy} show
+\[
+ \log\frac{B_ma_s}{B_k}\le-(1-o(1))H+\frac{D_0s}{\log(s+1)}.
+\]
+The positive error is $o(H)$. If $s\le k/2$, use $H\ge s\log2$ and $s\to\infty$. If $s>k/2$, then $h\le m<k/2$ and
+\[
+ H\ge m\log(k/m)\ge c\frac{k\log\log k}{\log k},
+ \qquad \frac{s}{\log(s+1)}=O(k/\log k).
+\]
+The lower bound follows by the endpoints and the sole interior maximum of $m\log(k/m)$ on $[h,k/2]$.
+
+Second, since $\epsilon\le1/8$,
+\begin{equation}\label{eq:etaloss}
+ -s\log\eta\le\frac{s\epsilon}{1-\epsilon}
+ \le\frac{ms}{7k}\le\frac H{14}.
+\end{equation}
+Third, $mz=o(H)$. For $s>k/2$, divide $mz\le Cm\log(s+1)/s$ by $H\ge m\log2$. For $L\le s\le k/2$, divide by $H\ge s\log(k/s)$ to get
+\[
+ \frac{mz}{H}\le\frac{Ck\log(s+1)}{s^2\log(k/s)}.
+\]
+If $s\le k^{3/4}$ this is at most $Ck/s^2=O(1/\log k)$; if $s\ge k^{3/4}$ it is $O(\log k/\sqrt k)$. Both tend uniformly to zero.
+
+Finally, $\min(m,s)\ge L>k^{0.49}$ eventually and $H\ge L\log2$, so $\log k=o(H)$. Equation~\eqref{eq:masterentropy} is therefore at most $-(13/14-o(1))H$, proving the weaker convenient bound \eqref{eq:intermediate}.
+\end{proof}
+There are at most $k$ entries in this range and their rotation weights are at most $2k/h=O(\log k)$. Since $L/\log k\to\infty$, their weighted sum is $o(k^{-p}B_{k+1})$ for every fixed $p>0$.
+
+\subsection{The high root shoulder with a growing tilt}\label{sec:shoulder}
+The main-text collision argument treated a small largest-block tilt. The shoulder between that window and $L$ requires a separate estimate that permits the tilt to grow.
+
+\begin{lemma}\label{lem:growingtilt}
+For the largest block $A$ of a uniform partition of $[n]$, there is a fixed $C$ such that, uniformly for $0\le\tau\le0.02\log n$ and all sufficiently large $n$,
+\begin{equation}\label{eq:growingtilt}
+ \log\E e^{\tau A}\le Ce^\tau\log n.
+\end{equation}
+\end{lemma}
+\begin{proof}
+The expected number of $j$-blocks is $\binom njB_{n-j}/B_n$. For $j\le n/2$, adjacent Bell ratios on $[n/2,n]$ give
+\[
+ \binom nj\frac{B_{n-j}}{B_n}\le\frac{(C\log n)^j}{j!}.
+\]
+Since $e^{\tau A}$ is bounded by one plus the sum of $e^{\tau|b|}$ over the blocks, summing these terms costs at most $\exp(Ce^\tau\log n)$. For $j>n/2$, retain the first $\lfloor n/2\rfloor$ adjacent ratios and use Bell monotonicity for the remainder. The total is at most
+\[
+ (1+e^\tau)^n\left(\frac{C\log n}{n}\right)^{\lfloor n/2\rfloor}
+ \le\exp(-c n\log n).
+\]
+Indeed its logarithm is at most $(0.02-1/2+o(1))n\log n$. Taking a logarithm of the whole upper bound and enlarging $C$ proves the assertion uniformly.
+\end{proof}
+
+\begin{proposition}\label{prop:shoulder}
+For any $S=S_k$ satisfying \eqref{eq:window}, uniformly over integers $S\le s\le L$,
+\begin{equation}\label{eq:shoulder}
+ \frac{F_{k,k-s}}{B_{k+1}}
+ \le\exp\left\{-\tfrac12s\log(s/\log k)\right\}
+\end{equation}
+for all sufficiently large $k$.
+\end{proposition}
+\begin{proof}
+Put $n=k-s$ and $\tau=7s(s-1)/(2n)$. The conditional urn estimate \eqref{eq:Zbound} holds for arbitrary $s$, without a small-tilt assumption. Therefore
+\begin{equation}\label{eq:shoulderurn}
+ F_{k,k-s}\le\binom{k-1}s B_{k-s}
+ \exp\left\{\frac{7s(s-1)(2s-1)}{6n}\right\}\E e^{\tau A}.
+\end{equation}
+Here $n\ge k/2$, and
+\[
+ \tau\le\frac{7s^2}k\le0.0175\log k<0.02\log n
+\]
+eventually. Lemma~\ref{lem:growingtilt} applies. The other urn exponent is at most $(14/3)s^3/k$.
+
+Adjacent Bell ratios on $[k-s,k+1]$ and $\binom{k-1}s\le(ek/s)^s$ give fixed constants $C,C'$ with
+\begin{equation}\label{eq:freshshoulder}
+ \binom{k-1}s\frac{B_{k-s}}{B_{k+1}}
+ \le\frac{C\log k}k\left(\frac{C'\log k}s\right)^s.
+\end{equation}
+Set $J(s)=s\log(s/\log k)$. Uniformly for $S\le s\le L$, one has $J(s)/\log k\to\infty$ and $O(s)=o(J(s))$, since $S/\log k\to\infty$.
+The cubic error obeys
+\begin{equation}\label{eq:cubicshoulder}
+ \frac{(14/3)s^3/k}{J(s)}\le0.03
+\end{equation}
+for all sufficiently large $k$. To check the constant uniformly, $s^2/\log(s/\log k)$ is increasing once $\log(s/\log k)>1/2$, so the maximum occurs at $s=L$. Its limit there is
+\[
+ \frac{28}{3}\left(\frac1{20}\right)^2=\frac7{300}<0.03.
+\]
+
+The largest-block cost is also negligible: $Ce^\tau\log n=o(J(s))$ uniformly. For $s\le k^{0.1}$, $\tau=o(1)$, so it is $O(\log k)=o(J)$. For $s>k^{0.1}$, $e^\tau\le k^{0.02}$ while $J(s)\ge c k^{0.1}\log k$. Taking logarithms of \eqref{eq:shoulderurn} and using \eqref{eq:freshshoulder}--\eqref{eq:cubicshoulder} gives $-J+0.03J+o(J)$, which proves \eqref{eq:shoulder}.
+\end{proof}
+The weighted sum over this shoulder is at most
+\[
+ 4kB_{k+1}\exp\{-\tfrac12S\log(S/\log k)\}.
+\]
+It is $o(k^{-p}B_{k+1})$ for every fixed $p>0$, because
+$S\log(S/\log k)/\log k\to\infty$. All walks in the shoulder are covered, including unrestricted depth and repeated secondary edges.
+
+\subsection{The maximum departure split}\label{sec:lowmaximum}
+Fix any admissible $S$. A walk outside $\Uc_{k,S}$ either has maximum departure count at most $h$, or has a vertex with count strictly between $h$ and $k-S$.
+
+In the first class, every vertex has at most $h$ used incident edges. The Dyck-path discovery encoding from Proposition~\ref{prop:partition} has at most $h$ choices at each outward step. In detail, when fewer than $h$ children have been discovered, existing choices plus the next fresh child give at most $h$ choices. If $h$ children already exist, a further fresh child is forbidden in this class. There is no hidden $h+1$ factor. The number of walks is at most
+\[
+ \Cat_kh^k\le(4h)^k.
+\]
+Appendix~\ref{sec:bell} gives $\log B_k=k\log k-k\log\log k-k+o(k)$. With the cutoff \eqref{eq:cuts},
+\begin{equation}\label{eq:lowmaximum}
+ \frac{(4h)^k}{B_{k+1}}
+ \le\exp\{-(\log16-1+o(1))k\}.
+\end{equation}
+This is exponentially negligible since $\log16>1$.
+
+By the exact rotation identity \eqref{eq:generalrotation}, the second class is covered by
+\begin{equation}\label{eq:covercomplement}
+ \sum_{h<m<k-S}\frac{2k}{m}F_{k,m}.
+\end{equation}
+Write $s=k-m>S$. If $s\ge L$, Proposition~\ref{prop:intermediate} applies. If $s<L$, Proposition~\ref{prop:shoulder} applies, since $S<L$ eventually. The two ranges leave no gap. Their weighted sums are smaller than every fixed negative power of $k$ on the $B_{k+1}$ scale. Together with \eqref{eq:lowmaximum}, this proves
+\begin{equation}\label{eq:complementproved}
+ |\Wc_k\setminus\Uc_{k,S}|=o(k^{-p}B_{k+1})\qquad\text{for every fixed }p>0.
+\end{equation}
+This proves Theorem~\ref{thm:complement}. In particular the window $S=\lceil\log^2k\rceil$ used in the main text satisfies its hypotheses. The result is superpolynomial on the $B_{k+1}$ scale and is independent of all collision-order refinements.
+
+\begin{thebibliography}{9}
+\bibitem{bg} Michel Bauer and Olivier Golinelli.
+\emph{Random incidence matrices: moments of the spectral density}.
+Journal of Statistical Physics \textbf{103} (2001), 301--337.
+\href{https://doi.org/10.1023/A:1004879905284}{doi:10.1023/A:1004879905284}.
+Primary preprint: \href{https://arxiv.org/abs/cond-mat/0007127v2}{arXiv:cond-mat/0007127v2}.
+\bibitem{kv} A. Khorunzhy and V. Vengerovsky.
+\emph{On asymptotic solvability of random graph's laplacians}.
+\href{https://arxiv.org/abs/math-ph/0009028}{arXiv:math-ph/0009028} (2000).
+\bibitem{spiridonov} Alexey Spiridonov.
+\emph{Spectra of sparse graphs and matrices}. Senior thesis.
+\href{https://alexey.im/papers/sparse-random-graphs-senior-thesis.pdf}{Author-hosted primary text}.
+\bibitem{hdp} Eva-Maria Hainzl and \'Elie de Panafieu.
+\emph{Tree walks and the spectrum of random graphs}.
+\href{https://arxiv.org/abs/2405.08347v1}{arXiv:2405.08347v1} (2024).
+Conference version: \href{https://doi.org/10.4230/LIPIcs.AofA.2024.11}{LIPIcs AofA 2024, Article 11}.
+Journal record: \href{https://doi.org/10.1016/j.ejc.2026.104386}{doi:10.1016/j.ejc.2026.104386}.
+\bibitem{hainzl} Eva-Maria Hainzl.
+\emph{Formulas and asymptotics of hypergraph Catalan numbers}.
+\href{https://arxiv.org/abs/2508.08865v2}{arXiv:2508.08865v2}, 23 March 2026.
+\bibitem{jjs} Svante Janson, Thordur Jonsson, and Sigurdur O. Stef\'ansson.
+\emph{Random trees with superexponential branching weights}.
+\href{https://arxiv.org/abs/1104.2810}{arXiv:1104.2810} (2011).
+\href{https://doi.org/10.1088/1751-8113/44/48/485002}{doi:10.1088/1751-8113/44/48/485002}.
+\bibitem{janson} Svante Janson.
+\emph{Simply generated trees, conditioned Galton--Watson trees, random allocations and condensation}.
+Probability Surveys \textbf{9} (2012), 103--252.
+\href{https://doi.org/10.1214/11-PS188}{doi:10.1214/11-PS188}.
+\bibitem{r213} \emph{The full sparse graph moment equivalent}.
+Report213, 4 October 2026. Companion report, circulated as a PDF and reproducibility package.
+The required complement theorem is recalled with proof in Appendix~\ref{sec:complement} here.
+\bibitem{oeis} OEIS Foundation Inc.
+\emph{The On-Line Encyclopedia of Integer Sequences},
+\href{https://oeis.org/A094149}{A094149}, contributed by Alexey Spiridonov.
+Positive-order normalization checked 4 October 2026.
+\end{thebibliography}
+
+\end{document}

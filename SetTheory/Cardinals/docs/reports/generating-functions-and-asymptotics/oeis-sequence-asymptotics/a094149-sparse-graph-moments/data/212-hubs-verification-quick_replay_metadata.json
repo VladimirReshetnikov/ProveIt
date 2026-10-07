@@ -1,0 +1,89 @@
+{
+  "all_checks_passed": true,
+  "mode": "quick",
+  "scope": {
+    "direct_walk_enumeration_max_k": 8,
+    "independent_python_recurrence_max_k": 16,
+    "cpp_fresh_generation_max_k": null,
+    "input_consistency_max_k": 32,
+    "public_table_exact_regeneration_checked": false,
+    "complete256_prefix_digests_checked": false,
+    "higher_rows_are_not_independently_regenerated_by_a_second_algorithm": true
+  },
+  "normal_and_optimized_positive_outputs_identical": true,
+  "deliberate_corruption_cases_per_harness_run": 44,
+  "cli_failure_cases_per_regeneration_run": null,
+  "python_version": "3.12.14",
+  "cpp_source_sha256": "93ec21265e949d9eb2b6502c37fc0193581f6d4278d7be533f71d8ccff008367",
+  "input_sha256": {
+    "moments_exact.tsv": "82df668f9ffe98bbd7c27f6501da078b7cf21e8170ef13979c5eb03ac7e733f4",
+    "root_counts_exact.tsv": "d1f8498de21a47e575d1ac042bd464a2335ef0456a20f78faf0d2f2e3ea452a0"
+  },
+  "table_reference_sha256": "e935cffd444dba35555ae1066aa31f88c87f9d3b78ea07303a4e8ba6c4251714",
+  "commands": [
+    [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "{ROOT}/code/independent_audit_checks.py",
+      "--data-dir",
+      "{ROOT}/data/fixture32",
+      "--expected-max",
+      "32",
+      "--data-kind",
+      "fixture",
+      "--output",
+      "{WORK}/audit.json"
+    ],
+    [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "-O",
+      "{ROOT}/code/independent_audit_checks.py",
+      "--data-dir",
+      "{ROOT}/data/fixture32",
+      "--expected-max",
+      "32",
+      "--data-kind",
+      "fixture",
+      "--output",
+      "{WORK}/audit_optimized.json"
+    ],
+    [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "{ROOT}/code/diagnostics.py",
+      "--data-dir",
+      "{ROOT}/data/fixture32",
+      "--expected-max",
+      "32",
+      "--data-kind",
+      "fixture",
+      "--output",
+      "{WORK}/diagnostics.json"
+    ],
+    [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "-O",
+      "{ROOT}/code/diagnostics.py",
+      "--data-dir",
+      "{ROOT}/data/fixture32",
+      "--expected-max",
+      "32",
+      "--data-kind",
+      "fixture",
+      "--output",
+      "{WORK}/diagnostics_optimized.json"
+    ],
+    [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "{ROOT}/code/verify_guard_failures.py",
+      "--output",
+      "{WORK}/guard_failure_checks.json"
+    ],
+    [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "-O",
+      "{ROOT}/code/verify_guard_failures.py",
+      "--output",
+      "{WORK}/guard_failure_checks_optimized.json"
+    ]
+  ],
+  "elapsed_seconds": 17.396
+}
