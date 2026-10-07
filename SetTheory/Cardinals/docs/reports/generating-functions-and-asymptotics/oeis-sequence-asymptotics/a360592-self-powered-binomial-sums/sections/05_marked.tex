@@ -1,7 +1,7 @@
 \section{The inactive vertex distribution}
-\label{sec:marked}
+\label{spb:ep:sec:marked}
 This entire section assumes fixed $p\ge2$.
-Let $R_n$ be the inactive-vertex count from Section~\ref{sec:exact}, let
+Let $R_n$ be the inactive-vertex count from Section~\ref{spb:ep:sec:exact}, let
 $a\equiv n\pmod q$, and let $Q_{\nu,a}$ be the distribution of
 $\Pois(\nu)$ conditioned on the residue class $a$ modulo $q$.
 For probability measures on this lattice we use
@@ -9,21 +9,21 @@ For probability measures on this lattice we use
  \TV(P,Q)=\frac12\sum_r|P(r)-Q(r)|.
 \]
 The exact Poisson identity shows that the mass of $R_n$ is proportional to
-\begin{equation}\label{eq:markedweight}
+\begin{equation}\label{spb:ep:eq:markedweight}
  \frac{\lambda^r}{r!}e^{\Delta_n(r)},
  \qquad 0\le r\le n,\quad r\equiv a\pmod q.
 \end{equation}
 All constants $A,b,\gamma_1,\gamma_2,\gamma_3$ retain the meanings in
-\eqref{eq:firstuniv} and \eqref{eq:D2}.
+\eqref{spb:ep:eq:firstuniv} and \eqref{spb:ep:eq:D2}.
 
 \subsection{The two Poisson references}
-\begin{theorem}\label{thm:markedmain}
+\begin{theorem}\label{spb:ep:thm:markedmain}
 There is a unique positive solution $\mu$ to
-\begin{equation}\label{eq:mu}
+\begin{equation}\label{spb:ep:eq:mu}
  \log(\mu/\lambda)=-\frac{2A\mu+b}{n}.
 \end{equation}
 In terms of the principal positive branch of the Lambert function,
-\begin{equation}\label{eq:muW}
+\begin{equation}\label{spb:ep:eq:muW}
  \mu=\frac{n}{2A}W\left(\frac{2A\lambda}{n}e^{-b/n}\right)
  =\lambda-\frac{2A\lambda^2+b\lambda}{n}
                    +O_p(\lambda^3/n^2).
@@ -31,28 +31,28 @@ In terms of the principal positive branch of the Lambert function,
 The mean and variance satisfy
 \begin{align}
  \E R_n&=\lambda-\frac{2A\lambda^2+b\lambda}{n}
-                      +O_p(\lambda^3/n^2),\label{eq:mean}\\
+                      +O_p(\lambda^3/n^2),\label{spb:ep:eq:mean}\\
  \Var R_n&=\lambda-\frac{4A\lambda^2+b\lambda}{n}
-                      +O_p(\lambda^3/n^2).\label{eq:variance}
+                      +O_p(\lambda^3/n^2).\label{spb:ep:eq:variance}
 \end{align}
 Moreover,
 \begin{align}
  \TV(\mathcal L(R_n),Q_{\lambda,a})
-       &\sim A\sqrt{2/\pi}\,\frac{\lambda^{3/2}}{n},\label{eq:TVlambda}\\
+       &\sim A\sqrt{2/\pi}\,\frac{\lambda^{3/2}}{n},\label{spb:ep:eq:TVlambda}\\
  \TV(\mathcal L(R_n),Q_{\mu,a})
-       &\sim A\sqrt{2/(\pi e)}\,\frac{\mu}{n}.\label{eq:TVmu}
+       &\sim A\sqrt{2/(\pi e)}\,\frac{\mu}{n}.\label{spb:ep:eq:TVmu}
 \end{align}
 The estimates and equivalents hold uniformly over the residue classes.
 \end{theorem}
 
-Uniqueness in \eqref{eq:mu} follows because
+Uniqueness in \eqref{spb:ep:eq:mu} follows because
 $\log\mu+2A\mu/n$ is strictly increasing from $-\infty$ to $+\infty$.
-Equation \eqref{eq:muW} follows from $W(z)e^{W(z)}=z$;
+Equation \eqref{spb:ep:eq:muW} follows from $W(z)e^{W(z)}=z$;
 its expansion uses $\lambda/n\to0$.
-Since $\lambda^2/n\to0$, the remainder in \eqref{eq:mean} and
-\eqref{eq:variance} is smaller even than the displayed $\lambda/n$ terms.
+Since $\lambda^2/n\to0$, the remainder in \eqref{spb:ep:eq:mean} and
+\eqref{spb:ep:eq:variance} is smaller even than the displayed $\lambda/n$ terms.
 In particular,
-\begin{equation}\label{eq:fano}
+\begin{equation}\label{spb:ep:eq:fano}
  \frac{\Var R_n}{\E R_n}
        =1-\frac{2A\lambda}{n}+O_p(\lambda^2/n^2).
 \end{equation}
@@ -66,40 +66,40 @@ therefore different assertions.
 
 \subsection{A density expansion with weighted remainder}
 Define the monic second Poisson--Charlier polynomial by
-\begin{equation}\label{eq:charlier}
+\begin{equation}\label{spb:ep:eq:charlier}
  \mathcal C_2(r;\mu)=(r-\mu)^2-r.
 \end{equation}
 This normalization is $\mu^2$ times the degree-two Charlier polynomial
 in the generating-function convention of DLMF 18.23.5~\cite{dlmf}.
 Let
-\begin{equation}\label{eq:K2}
+\begin{equation}\label{spb:ep:eq:K2}
  K_2(r;\mu)=D_2(r)+\frac{A^2}{2}\mathcal C_2(r;\mu)^2.
 \end{equation}
 Write $\E_\mu$ for ordinary Poisson expectation and $\E_Q$ for expectation
 under $Q_{\mu,a}$.
 
-\begin{theorem}\label{thm:weighted}
+\begin{theorem}\label{spb:ep:thm:weighted}
 On the support of $Q_{\mu,a}$ define
 $g_n(r)=\Pp(R_n=r)/Q_{\mu,a}(r)$, taking $g_n(r)=0$ for $r>n$.
 Then
-\begin{align}\label{eq:secondensity}
+\begin{align}\label{spb:ep:eq:secondensity}
  g_n(r)={}&1-\frac{A}{n}\mathcal C_2(r;\mu)\nonumber\\
  &+\frac{K_2(r;\mu)-\E_\mu K_2(X;\mu)}{n^2}
    +\epsilon_n(r),
 \end{align}
 where, for $s=0,1,2$,
-\begin{equation}\label{eq:weightedrem}
+\begin{equation}\label{spb:ep:eq:weightedrem}
  \E_Q[|X-\mu|^s|\epsilon_n(X)|]
                        =O_p(\mu^{4+s/2}/n^3).
 \end{equation}
 Consequently,
-\begin{equation}\label{eq:firstdensity}
+\begin{equation}\label{spb:ep:eq:firstdensity}
  \E_Q\left|g_n(X)-1+\frac A n\mathcal C_2(X;\mu)\right|
                           =O_p(\mu^{5/2}/n^2).
 \end{equation}
 For each fixed $L>0$, uniformly at allowed points with
 $|r-\mu|\le L\sqrt\mu$,
-\begin{equation}\label{eq:localdensity}
+\begin{equation}\label{spb:ep:eq:localdensity}
  g_n(r)=1-\frac A n\mathcal C_2(r;\mu)
                          +O_{p,L}(\mu^{5/2}/n^2).
 \end{equation}
@@ -108,9 +108,9 @@ $|r-\mu|\le L\sqrt\mu$,
 \begin{proof}
 Write $\beta_0=\log(\mu/\lambda)=-(2A\mu+b)/n$.
 Changing the reference Poisson parameter subtracts $\beta_0r$ from the
-exponent in \eqref{eq:markedweight}, up to a normalizing constant.
+exponent in \eqref{spb:ep:eq:markedweight}, up to a normalizing constant.
 The identity $q/2+b=A$ gives the exact cancellation
-\begin{equation}\label{eq:cancel}
+\begin{equation}\label{spb:ep:eq:cancel}
  \frac{D_1(r)}n-\beta_0r
        =\frac{A\mu^2}{n}-\frac A n\mathcal C_2(r;\mu).
 \end{equation}
@@ -122,7 +122,7 @@ Taylor expansion gives
 \]
 Since $\mu/\lambda\to1$ and $\mu^2/n\to0$, the residual exponent is
 uniformly $o(1)$ on this interval:
-\begin{equation}\label{eq:residualV}
+\begin{equation}\label{spb:ep:eq:residualV}
  V(r)=-\frac A n\mathcal C_2(r;\mu)
               +\frac{D_2(r)}{n^2}+O_p(r^4/n^3).
 \end{equation}
@@ -161,29 +161,29 @@ $\E_\mu\mathcal C_2=0$ and
 $\E_\mu\mathcal C_2^2=2\mu^2$ give
 $\E_\mu K_2=O_p(\mu^3)$.
 The fixed-polynomial residue correction is exponentially small by
-\eqref{eq:filter}. Dividing by the normalizer subtracts
+\eqref{spb:ep:eq:filter}. Dividing by the normalizer subtracts
 $\E_\mu K_2/n^2$ at second order. Its cross term with
 $\mathcal C_2/n$ has weighted size
 $O(\mu^{4+s/2}/n^3)$, and the normalizer-square terms have size
 $O(\mu^{6+s/2}/n^4)$, again absorbed by the same bound.
-This proves \eqref{eq:secondensity}--\eqref{eq:weightedrem}.
+This proves \eqref{spb:ep:eq:secondensity}--\eqref{spb:ep:eq:weightedrem}.
 
 Finally, $D_2-\E_\mu D_2$ has $L^1$ norm $O_p(\mu^{5/2})$,
 while $\mathcal C_2^2-\E_\mu\mathcal C_2^2$ has $L^1$ norm
 $O(\mu^2)$. These follow by expanding in $Y$ and using its central moments.
-They prove \eqref{eq:firstdensity}; its third-order remainder is smaller
+They prove \eqref{spb:ep:eq:firstdensity}; its third-order remainder is smaller
 because $\mu^{3/2}/n\to0$.
 On $|r-\mu|\le L\sqrt\mu$, the corresponding pointwise centered bounds
 hold, and the normalized third-order remainder is
 $O_{p,L}(\mu^4/n^3)=o(\mu^{5/2}/n^2)$.
-This proves \eqref{eq:localdensity}.
+This proves \eqref{spb:ep:eq:localdensity}.
 \end{proof}
 
 \subsection{Moments and their second correction}
 The polynomial identities needed to extract the moments are
 \begin{align}
  \E_\mu\mathcal C_2&=0,&
- \E_\mu[(X-\mu)\mathcal C_2]&=0,\label{eq:charlierorth}\\
+ \E_\mu[(X-\mu)\mathcal C_2]&=0,\label{spb:ep:eq:charlierorth}\\
  \E_\mu[((X-\mu)^2-\mu)\mathcal C_2]&=2\mu^2,&
  \E_\mu[(X-\mu)\mathcal C_2^2]&=4\mu^2,\nonumber\\
  \E_\mu[((X-\mu)^2-\mu)\mathcal C_2^2]
@@ -192,30 +192,30 @@ The polynomial identities needed to extract the moments are
 They can be verified directly by the factorial moment rule.
 More generally, Poisson summation by parts gives for any polynomial $f$
 \begin{align}
- \Cov_\mu(X,f(X))&=\mu\E_\mu[f(X+1)-f(X)],\label{eq:parts1}\\
+ \Cov_\mu(X,f(X))&=\mu\E_\mu[f(X+1)-f(X)],\label{spb:ep:eq:parts1}\\
  \Cov_\mu((X-\mu)^2,f(X))
   &=\mu\E_\mu[f(X+1)-f(X)]\nonumber\\
-  &\quad+\mu^2\E_\mu[f(X+2)-2f(X+1)+f(X)].\label{eq:parts2}
+  &\quad+\mu^2\E_\mu[f(X+2)-2f(X+1)+f(X)].\label{spb:ep:eq:parts2}
 \end{align}
 For example, $\E[Xf(X)]=\mu\E f(X+1)$ gives the first identity;
 using $\E[(X)_2f(X)]=\mu^2\E f(X+2)$ gives the second.
 
-Multiply \eqref{eq:secondensity} by $X-\mu$ or $(X-\mu)^2$.
+Multiply \eqref{spb:ep:eq:secondensity} by $X-\mu$ or $(X-\mu)^2$.
 The second-order polynomial terms are $O_p(\mu^3/n^2)$ by
-\eqref{eq:charlierorth}--\eqref{eq:parts2}.
+\eqref{spb:ep:eq:charlierorth}--\eqref{spb:ep:eq:parts2}.
 The weighted errors are $O_p(\mu^{9/2}/n^3)$ and
 $O_p(\mu^5/n^3)$, respectively, both $o(\mu^3/n^2)$.
 The small centered mean squared is absorbed in the variance error.
 Consequently
-\begin{equation}\label{eq:meanmu}
+\begin{equation}\label{spb:ep:eq:meanmu}
  \E R_n=\mu+O_p(\mu^3/n^2),\qquad
  \Var R_n=\mu-\frac{2A\mu^2}{n}+O_p(\mu^3/n^2).
 \end{equation}
-Substitution of \eqref{eq:muW} proves \eqref{eq:mean} and
-\eqref{eq:variance}.
+Substitution of \eqref{spb:ep:eq:muW} proves \eqref{spb:ep:eq:mean} and
+\eqref{spb:ep:eq:variance}.
 
 A useful second-order form is obtained by setting $\theta=z\,d/dz$ and
-\begin{align}\label{eq:L2}
+\begin{align}\label{spb:ep:eq:L2}
  L_2(z)={}&(\gamma_3+2A^2)z^3
  +(3\gamma_3-\gamma_2+A^2+2Ab)z^2\nonumber\\
  &+(\gamma_3-\gamma_2-\gamma_1+b^2/2)z.
@@ -224,10 +224,10 @@ Then the same weighted calculation, retaining its polynomial terms, gives
 \begin{align}
  \E R_n={}&\lambda-\frac{2A\lambda^2+b\lambda}{n}
             +\frac{(\theta L_2)(\lambda)}{n^2}
-            +O_p(\lambda^{9/2}/n^3),\label{eq:mean2}\\
+            +O_p(\lambda^{9/2}/n^3),\label{spb:ep:eq:mean2}\\
  \Var R_n={}&\lambda-\frac{4A\lambda^2+b\lambda}{n}
             +\frac{(\theta^2L_2)(\lambda)}{n^2}
-            +O_p(\lambda^5/n^3).\label{eq:var2}
+            +O_p(\lambda^5/n^3).\label{spb:ep:eq:var2}
 \end{align}
 These are conservative weighted remainder bounds.
 An independent way to verify the coefficient is to write
@@ -237,7 +237,7 @@ $D_1=-A(X)_2-bX$ and use
  \Var((X)_2)=4\lambda^3+2\lambda^2,\quad
  \Cov((X)_2,X)=2\lambda^2.
 \]
-It yields exactly \eqref{eq:L2}. In the two highlighted cases,
+It yields exactly \eqref{spb:ep:eq:L2}. In the two highlighted cases,
 \begin{align*}
  p=2:\quad &L_2(z)=12z^3+\frac{44}{3}z^2+\frac43z,\\
  p=3:\quad &L_2(z)=\frac{4967}{96}z^3
@@ -245,14 +245,14 @@ It yields exactly \eqref{eq:L2}. In the two highlighted cases,
 \end{align*}
 
 \subsection{Sharp total variation constants}
-\begin{proof}[Proof of \eqref{eq:TVlambda} and \eqref{eq:TVmu}]
+\begin{proof}[Proof of \eqref{spb:ep:eq:TVlambda} and \eqref{spb:ep:eq:TVmu}]
 Expansion at the original reference and division by its normalizer give
-\begin{equation}\label{eq:originaldensity}
+\begin{equation}\label{spb:ep:eq:originaldensity}
  \frac{\Pp(R_n=r)}{Q_{\lambda,a}(r)}
  =1+\frac{D_1(r)-\E_{Q_{\lambda,a}}D_1}{n}+\rho_n(r),
  \qquad \E_{Q_{\lambda,a}}|\rho_n|=O_p(\lambda^4/n^2).
 \end{equation}
-The same local expansion and global tail proof as in Section~\ref{sec:subcritical}
+The same local expansion and global tail proof as in Section~\ref{spb:ep:sec:subcritical}
 justifies this $L^1$ statement, including the cutoff.
 Under $Q_{\lambda,a}$, write $Z_\lambda=(X-\lambda)/\sqrt\lambda$.
 Then $Z_\lambda$ converges to a standard normal $Z$, uniformly over residues,
@@ -269,7 +269,7 @@ Expansion of $D_1$ about $\lambda$ now gives
 \]
 in distribution and in absolute first moment, by uniform integrability.
 Since $\lambda^{5/2}/n\to0$ for $p\ge2$, the error in
-\eqref{eq:originaldensity} is negligible relative to
+\eqref{spb:ep:eq:originaldensity} is negligible relative to
 $\lambda^{3/2}/n$. Thus
 \[
  \TV(\mathcal L(R_n),Q_{\lambda,a})
@@ -277,7 +277,7 @@ $\lambda^{3/2}/n$. Thus
      =A\sqrt{2/\pi}\,\frac{\lambda^{3/2}}n.
 \]
 
-For the tilted reference, \eqref{eq:firstdensity} gives
+For the tilted reference, \eqref{spb:ep:eq:firstdensity} gives
 \[
  \TV(\mathcal L(R_n),Q_{\mu,a})
  =\frac{A}{2n}\E_{Q_{\mu,a}}|\mathcal C_2(X;\mu)|
@@ -292,9 +292,9 @@ $2A\phi(1)=A\sqrt{2/(\pi e)}$.
 \end{proof}
 
 \subsection{All fixed marked orders and graph consequences}
-The finite polynomials $U_j$ in \eqref{eq:U} give an algebraic logarithm
+The finite polynomials $U_j$ in \eqref{spb:ep:eq:U} give an algebraic logarithm
 by the recurrence
-\begin{equation}\label{eq:Lrec}
+\begin{equation}\label{spb:ep:eq:Lrec}
  L_j(z)=U_j(z)-\frac1j\sum_{k=1}^{j-1}kL_k(z)U_{j-k}(z).
 \end{equation}
 Equivalently, as a formal series in $w$,
@@ -303,7 +303,7 @@ Equivalently, as a formal series in $w$,
                       =\sum_{j\ge1}L_j(z)w^j.
 \]
 The formal coefficient of the $h$th cumulant of $R_n$ is then
-\begin{equation}\label{eq:cumulants}
+\begin{equation}\label{spb:ep:eq:cumulants}
  \lambda+\sum_{j\ge1}\frac{(\theta^hL_j)(\lambda)}{n^j}.
 \end{equation}
 This is an effective all-fixed-order generator, with the following precise
@@ -316,7 +316,7 @@ weighted error is bounded by
 \]
 For a desired fixed algebraic order, take $J$ sufficiently large and then
 collect powers after setting $\lambda=c_p n^{1/q}$.
-This procedure justifies \eqref{eq:cumulants} to that order without
+This procedure justifies \eqref{spb:ep:eq:cumulants} to that order without
 assuming any general degree cancellation in $L_j$, and without
 differentiating an uncontrolled asymptotic remainder.
 
@@ -331,7 +331,7 @@ Its finite derivatives explain the operator $\theta$ in the coefficient
 rule. The error control is supplied by the weighted argument above.
 
 Finally, if $K_n$ and $V_n$ are the numbers of active and total vertices,
-\eqref{eq:rdef} gives the exact relations
+\eqref{spb:ep:eq:rdef} gives the exact relations
 \[
  \E K_n=\frac{n-\E R_n}{q},\quad
  \Var K_n=\frac{\Var R_n}{q^2},\quad

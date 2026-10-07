@@ -1,14 +1,14 @@
 \section{Exact counting and Poisson reduction}
-\label{sec:exact}
+\label{spb:ep:sec:exact}
 \subsection{A formal generating function and a graph model}
 Expanding the finite binomial at each $m$ gives the formal identity
-\begin{equation}\label{eq:ogf}
+\begin{equation}\label{spb:ep:eq:ogf}
  \sum_{n\ge0}a_p(n)x^n
        =\sum_{m\ge0}x^m\bigl(1+(mx)^p\bigr)^m.
 \end{equation}
 Indeed, the term indexed by $k$ on the right is
 $\binom mk m^{pk}x^{m+pk}$. Setting $m=n-pk$ gives
-\eqref{eq:counts}, and $k\le m$ becomes $qk\le n$.
+\eqref{spb:ep:eq:counts}, and $k\le m$ becomes $qk\le n$.
 Every coefficient receives only finitely many contributions, so no analytic
 convergence is being claimed. In fact, the coefficients have superexponential
 growth.
@@ -24,10 +24,10 @@ $\binom mk m^{pk}$ such structures. The size statistic is
 \]
 The disjoint union over the possible $m$ therefore has size $a_p(n)$.
 This is a labeled model with a nonstandard size statistic;
-\eqref{eq:ogf} is not an ordinary unlabeled-digraph generating function.
+\eqref{spb:ep:eq:ogf} is not an ordinary unlabeled-digraph generating function.
 
 The number of inactive vertices is
-\begin{equation}\label{eq:rdef}
+\begin{equation}\label{spb:ep:eq:rdef}
  r=m-k=n-qk,\qquad
  k=\frac{n-r}{q},\qquad m=\frac{n+pr}{q}.
 \end{equation}
@@ -43,11 +43,11 @@ For an allowed $r$, use $\binom mk=\binom mr$ to get
   =\frac{m^{pk+r}}{r!}\prod_{h=0}^{r-1}\left(1-\frac hm\right).
 \]
 Since $pk+r=(pn+r)/q$ and $m=N(1+pr/n)$, this becomes
-\begin{equation}\label{eq:exactterm}
+\begin{equation}\label{spb:ep:eq:exactterm}
  m^{pk}\binom mk=B\frac{\lambda^r}{r!}e^{\Delta_n(r)},
 \end{equation}
 where
-\begin{equation}\label{eq:Delta}
+\begin{equation}\label{spb:ep:eq:Delta}
  \Delta_n(r)=\frac{pn+r}{q}\log(1+pr/n)-\frac{p^2r}{q}
       +\sum_{h=0}^{r-1}\log\left(1-\frac{qh}{n+pr}\right).
 \end{equation}
@@ -58,7 +58,7 @@ The same expression defines a real function at every integer in this range,
 not only those satisfying the congruence.
 
 If $X\sim\Pois(\lambda)$, summation gives the exact identity
-\begin{equation}\label{eq:exactpoisson}
+\begin{equation}\label{spb:ep:eq:exactpoisson}
  q e^{-\lambda}\frac{a_p(n)}{B}
   =q\E\left[e^{\Delta_n(X)}\1_{\{X\le n\}}
                     \1_{\{X\equiv n\ (q)\}}\right].
@@ -70,7 +70,7 @@ not come from a Stirling approximation; no approximation has yet been used.
 
 \subsection{Poisson polynomial identities}
 Let $T_j$ denote the Touchard polynomial,
-\begin{equation}\label{eq:touchard}
+\begin{equation}\label{spb:ep:eq:touchard}
  T_j(z)=\sum_{\ell=0}^j\left\{\begin{matrix}j\\\ell\end{matrix}\right\}z^\ell,
  \qquad \E X^j=T_j(\lambda).
 \end{equation}
@@ -83,7 +83,7 @@ $\E X^j=O_j((1+\lambda)^j)$.
 Put $\omega=e^{2\pi\ii/q}$ and
 $\kappa_q=1-\cos(2\pi/q)>0$.
 For any integer residue $a$ and any nonnegative integer $j$,
-\begin{equation}\label{eq:filter}
+\begin{equation}\label{spb:ep:eq:filter}
  q\E[X^j\1_{\{X\equiv a\ (q)\}}]
   =\sum_{\ell=0}^{q-1}\omega^{-a\ell}
        e^{\lambda(\omega^\ell-1)}T_j(\lambda\omega^\ell).
@@ -99,14 +99,14 @@ This statement concerns polynomial averages. It does not identify a
 relative secondary exponential sector of the full nonpolynomial sum.
 
 \subsection{Exact monotonicity}
-\begin{proposition}\label{prop:monotone}
+\begin{proposition}\label{spb:ep:prop:monotone}
 For every $p\ge1$,
 \[
  a_p(0)=\cdots=a_p(p)=1,\qquad a_p(p+1)=2,
 \]
 and $a_p(n+1)>a_p(n)$ for every $n\ge p$.
 Consequently, for each real $y>1$ the threshold
-\begin{equation}\label{eq:threshold}
+\begin{equation}\label{spb:ep:eq:threshold}
  T_p(y)=\min\{n\ge0:a_p(n)\ge y\}
 \end{equation}
 is well-defined.
@@ -117,5 +117,5 @@ $m=n-pk\ge k$. Both $m^{pk}$ and $\binom mk$ are nondecreasing in $m$,
 and all newly allowed summands are positive. At the first step $n=p$,
 the new $k=1$ term gives strictness. Thereafter the common $k=1$ term
 $(n-p)^{p+1}$ strictly increases. It also proves unboundedness.
-The initial equalities are immediate from \eqref{eq:counts}.
+The initial equalities are immediate from \eqref{spb:ep:eq:counts}.
 \end{proof}

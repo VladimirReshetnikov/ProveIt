@@ -1,0 +1,112 @@
+\section{Exact deformation and uniform tail control}\label{spb:ml:sec:exact}
+\begin{lemma}[Exact Poisson reduction]\label{spb:ml:lem:exact}
+For each permitted $r$ in \eqref{spb:ml:eq:law},
+\begin{align}
+W_n(r)&=(n/2)^{n/2}\frac{\lambda^r}{r!}e^{\Delta_n(r)},\label{spb:ml:eq:exact}\\
+\Delta_n(r)&=\frac{n+r}{2}\log(1+r/n)-\frac r2
+ +\sum_{h=0}^{r-1}\log\left(1-\frac{2h}{n+r}\right).\label{spb:ml:eq:Delta}
+\end{align}
+Furthermore, on the entire finite support,
+\begin{equation}\label{spb:ml:eq:globalbound}
+ \Delta_n(r)\le\frac{1-(r-1)^2}{4n}\le\frac1{4n}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Put $m=(n+r)/2$, $k=(n-r)/2=m-r$. Then
+$\binom mk=m(m-1)\cdots(m-r+1)/r!$. Extracting $m^r$ and multiplying by $m^k$ gives $m^{(n+r)/2}/r!$ times the product in \eqref{spb:ml:eq:Delta}. Since $\lambda=\sqrt{en/2}$, all remaining powers cancel to give \eqref{spb:ml:eq:exact}.
+
+% [write] the second paragraph of this proof is printed once, in Part I (note).
+\begin{writenote}[Printed once, 7 October 2026]
+The rest of Report~235's proof, the bound~\eqref{spb:ml:eq:globalbound}, is
+Part~I's proof of Lemma~\ref{spb:ep:lem:criticalbound} (the same convexity
+bound $F(r)\le r^2/(4n)$ and the same bound $\log(1-x)\le-x$ for the sum),
+together with the remarks that every logarithm argument is positive at $r=n$
+and that $\Delta_n(1)>0$; it is printed there.
+\end{writenote}
+\end{proof}
+
+\begin{lemma}[Finite defect expansion]\label{spb:ml:lem:defects}
+For $j\ge1$, define the rational polynomial
+\begin{equation}\label{spb:ml:eq:Dj}
+D_j(r)=(-1)^{j+1}\left\{\frac{r^{j+1}}{2j(j+1)}
+ +\frac1j\sum_{h=0}^{r-1}\bigl((r-2h)^j-r^j\bigr)\right\}.
+\end{equation}
+The power sum means its polynomial continuation. Its degree is at most $j+1$, and for each fixed $L$, uniformly for $0\le r\le C\sqrt n$ with fixed $C$,
+\begin{equation}\label{spb:ml:eq:defectremainder}
+\Delta_n(r)=\sum_{j=1}^L\frac{D_j(r)}{n^j}
+ +O_L(r^{L+2}/n^{L+1}).
+\end{equation}
+The first three polynomials are
+\begin{equation}\label{spb:ml:eq:D123}
+ D_1=-\frac34r^2+r,\qquad D_2=\frac14r^3-\frac r3,
+ \qquad D_3=-\frac7{24}r^4+\frac13r^3.
+\end{equation}
+\end{lemma}
+% [write] the proof of this lemma is printed once, in Part I (note).
+\begin{writenote}[Printed once, 7 October 2026]
+Report~235's proof of this lemma is Part~I's verification
+of~\eqref{spb:ep:eq:criticalDrem}, printed there: the defect is rewritten as
+$\frac{n-r}2\log(1+r/n)-\frac r2+\sum_{h<r}\log(1+(r-2h)/n)$, the first
+logarithm is expanded through degree $L+1$ and each summed one through degree
+$L$, and the remainders give $O_L(r^{L+2}/n^{L+1})$; the range
+$0\le r\le C\sqrt n$ is covered because the logarithm arguments stay within
+$O(n^{-1/2})$ of one. Direct evaluation gives~\eqref{spb:ml:eq:D123}, the
+first three entries of Part~I's list after~\eqref{spb:ep:eq:Dcrit}.
+\end{writenote}
+
+Here and below, constants may depend on fixed orders or on a compact positive interval for the marking parameter. They are uniform in $a\in\{0,1\}$. We use the following elementary probabilistic facts, supplying details to fix all tail and parity inputs.
+
+\begin{lemma}[Poisson estimates with parity]\label{spb:ml:lem:Poisson}
+For $X\sim\Pois(\eta)$ with $\eta\to\infty$, every fixed real $s\ge0$ satisfies
+\[
+ \E|X-\eta|^s=O_s(\eta^{s/2}).
+\]
+The same bound holds after conditioning on either parity. Polynomially weighted tails outside $|X-\eta|\le\eta^{3/4}$ are smaller than every inverse power of $\eta$. Under $Q_{\eta,a}$,
+\[
+ (X-\eta)/\sqrt\eta\ \Longrightarrow\ N(0,1),
+\]
+with convergence of every fixed absolute polynomial moment.
+\end{lemma}
+\begin{proof}
+From $\E e^{z(X-\eta)}=\exp(\eta(e^z-1-z))$, the $d$th centered moment is
+\begin{equation}\label{spb:ml:eq:centeredmoments}
+ \E(X-\eta)^d=\sum_{k=0}^{\lfloor d/2\rfloor}B_{d,k}^{\ge2}\eta^k,
+\end{equation}
+where $B_{d,k}^{\ge2}$ counts partitions into $k$ blocks of size at least two. Its recurrence is
+\[
+ B_{d,k}^{\ge2}=kB_{d-1,k}^{\ge2}+(d-1)B_{d-2,k-1}^{\ge2},\qquad B_{0,0}^{\ge2}=1,
+\]
+with inadmissible entries zero. This follows either by inserting the last element into an existing block or making its block a pair; equivalently it follows by differentiating the exponential generating function. Even moments and H\"older's inequality prove the real absolute moment bound.
+
+The exponential Markov inequality, optimized at $z=\log(1+x/\eta)$ for the upper tail and its negative counterpart for the lower tail, gives
+\begin{equation}\label{spb:ml:eq:Chernoff}
+ \PP(|X-\eta|\ge x)\le2\exp\{-x^2/(2(\eta+x))\}.
+\end{equation}
+At $x=\eta^{3/4}$ this is $O(e^{-d\sqrt\eta})$. Cauchy--Schwarz with higher even moments proves every weighted version. Conditioning costs a bounded factor because $\PP(X\equiv a)=\frac12(1+(-1)^ae^{-2\eta})$.
+
+The conditional characteristic function at $z/\sqrt\eta$, centered at $\eta$, is
+\[
+ e^{-\ii z\sqrt\eta}
+ \frac{e^{\eta(e^{\ii z/\sqrt\eta}-1)}+
+ (-1)^ae^{\eta(-e^{\ii z/\sqrt\eta}-1)}}{1+(-1)^ae^{-2\eta}}.
+\]
+The first term tends to $e^{-z^2/2}$; the second is exponentially small for bounded $z$. The characteristic function criterion proves the limit. Higher even moment bounds give uniform integrability for each requested absolute polynomial moment.
+\end{proof}
+\begin{writenote}[7 October 2026]
+Kept because later labels depend on it. Its parts are Part~I's
+\eqref{spb:ep:eq:centralmoment} and~\eqref{spb:ep:eq:assocStirling} (centered
+moments), \eqref{spb:ep:eq:criticaltail} (the tail at $\eta^{3/4}$), and the
+conditional central limit theorem used in the proof of
+Theorem~\ref{spb:ep:thm:markedmain}, here written out for parity.
+\end{writenote}
+
+For $X\sim Q_{\lambda,a}$, \eqref{spb:ml:eq:defectremainder} on its central window implies $\Delta_n(X)\to-Ac^2$ in probability. The global bound \eqref{spb:ml:eq:globalbound}, together with Lemma~\ref{spb:ml:lem:Poisson}, therefore gives
+\begin{equation}\label{spb:ml:eq:normlimit}
+ Z_n:=\E_{Q_{\lambda,a}}[e^{\Delta_n(X)}\1_{X\le n}]
+ \longrightarrow e^{-Ac^2}>0.
+\end{equation}
+This is also uniform for $c$ in a fixed compact positive interval. In particular, every polynomially weighted tail of the exact law is bounded by a fixed multiple of the corresponding $Q_{\lambda,a}$ tail. Since $\mu-\lambda=O(1)$, the window
+\begin{equation}\label{spb:ml:eq:window}
+ \mathcal W_n=\{r:|r-\mu|\le\mu^{3/4}\}
+\end{equation}
+has negligible tails for both the exact law and $Q_{\mu,a}$, with any fixed polynomial weight. It lies below $n$ for large $n$. This proves the finite support control used throughout.

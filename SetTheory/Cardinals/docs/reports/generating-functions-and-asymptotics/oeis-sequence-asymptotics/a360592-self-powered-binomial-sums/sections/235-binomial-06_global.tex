@@ -1,0 +1,138 @@
+\section{Global localization including rare parity events}\label{spb:ml:sec:global}
+We first obtain estimates valid for the \emph{entire} conditioned binomial family, even when the conditioning probability is tiny. They do not assume parameters close to the proposed construction.
+
+\begin{lemma}[Uniform conditioned binomial bounds]\label{spb:ml:lem:rare}
+Let $X\sim\Bin(M,q)$, $\nu=Mq$, and $v=Mq(1-q)$. For either defined parity conditional law $X_a$, there is an absolute constant $C$ such that
+\begin{equation}\label{spb:ml:eq:rare_bounds}
+ |\E X_a-\nu|\le1,\qquad \Var X_a\le8(v+1),\qquad
+ \max_k\PP(X_a=k)\le\frac{C}{\sqrt{v+1}}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+If $M\le1$ or $q\in\{0,1\}$, any defined conditioned law is deterministic, and the assertions follow directly. Otherwise put $z=1-2q$, $\rho=|z|<1$, and $\sigma=(-1)^a$. Differentiating $(1-q+qs)^M$ at $s=-1$ gives the exact identities
+\begin{align}
+ \PP(X\equiv a)&=(1+\sigma z^M)/2,\nonumber\\
+ \E[(X-\nu)(-1)^X]&=-2v z^{M-1},\label{spb:ml:eq:signedmoments}\\
+ \E[(X-\nu)^2(-1)^X]&=v(4v-1)z^{M-2}.\nonumber
+\end{align}
+These are polynomial identities at $z=0$, including $M=2$. In particular,
+\[
+ |\E X_a-\nu|\le\frac{2v\rho^{M-1}}{1-\rho^M}
+ =\frac{M(1-\rho^2)\rho^{M-1}}{2(1-\rho^M)}\le\frac{1+\rho}{2}\le1,
+\]
+because $1-\rho^M\ge M(1-\rho)\rho^{M-1}$. The case $\rho=0$ is interpreted directly or by continuity.
+
+Since $\log\rho\le(\rho^2-1)/2$, we have
+$\rho^M\le e^{-2v}$ and $\rho^{M-2}\le e^{1-2v}$. From \eqref{spb:ml:eq:signedmoments},
+\[
+ \E[(X_a-\nu)^2]
+ \le\frac{v+v|4v-1|\rho^{M-2}}{1-\rho^M}.
+\]
+For $0<v\le1$, use $|4v-1|\le3$, $\rho^{M-2}\le1$, and
+$1-e^{-2v}\ge(1-e^{-2})v$ to bound this by $4/(1-e^{-2})<5$.
+For $v\ge1$, use $|4v-1|\le4v$ and $4v e^{1-2v}\le4/e$ to bound it by
+$v(1+4/e)/(1-e^{-2})<3v$. Variance about the conditional mean is no larger, proving the displayed variance bound with room to spare.
+
+Ordinary Fourier inversion and $|1-q+qe^{\ii s}|^M\le\exp(-2v\sin^2(s/2))$ give
+\[
+ \max_k\PP(X=k)\le\frac1{2\pi}\int_{-\pi}^{\pi}
+       e^{-2v\sin^2(s/2)}\,ds\le C_0/\sqrt v.
+\]
+The last estimate follows from $\sin(|s|/2)\ge|s|/\pi$ for $|s|\le\pi$ and the Gaussian integral. If $v\ge1$, conditioning costs at most $2/(1-e^{-2})$. If $v<1$, the trivial atom bound one suffices after enlarging $C$. This proves \eqref{spb:ml:eq:rare_bounds} uniformly, including rare parity events.
+\end{proof}
+
+\begin{lemma}[Coarse localization from TV convergence]\label{spb:ml:lem:coarse}
+If $B_n\in\mathcal B_a$ and $\TV(\Law(R_n),B_n)\to0$, then their ordinary parameters satisfy
+\begin{equation}\label{spb:ml:eq:coarse}
+ \frac{\nu_n-\mu}{\sqrt\mu}\to0,\qquad \frac{v_n}{\mu}\to1,
+ \qquad q_n\to0.
+\end{equation}
+\end{lemma}
+\begin{proof}
+The target has a standard normal limit on the $\sqrt\mu$ scale by Corollary~\ref{spb:ml:cor:Poisson}. In particular it has vanishing concentration on any interval of length $o(\sqrt\mu)$, uniformly in the interval's center. To justify the uniformity, its standardized distribution functions converge uniformly to the continuous normal distribution function: prove this using a finite grid on a compact interval and tightness outside it. The probability of an interval is then bounded by two uniform errors plus the normal modulus of continuity.
+
+If $v_n/\mu\to\infty$ along a subsequence, the atom bound in \eqref{spb:ml:eq:rare_bounds} implies that $B_n$ places vanishing mass in every fixed window $[\mu-K\sqrt\mu,\mu+K\sqrt\mu]$. This contradicts target normal convergence and small TV. If $v_n/\mu\to0$, its conditional variance is $O(v_n+1)$. Chebyshev's inequality places probability tending to one in an interval of half width $((v_n+1)\mu)^{1/4}=o(\sqrt\mu)$ about its conditional mean, again contradicting the target concentration bound. These two exclusions imply $v_n/\mu$ is bounded above and bounded away from zero.
+
+The mean displacement in \eqref{spb:ml:eq:rare_bounds} and Chebyshev's inequality then imply $(\nu_n-\mu)/\sqrt\mu$ is bounded. Indeed, if the centers separate by an unbounded number of $\sqrt\mu$ units while conditional variance remains $O(\mu)$, the competitor's mass in every fixed target window tends to zero.
+
+Take an arbitrary convergent subsequence of these standardized coordinates, with limits $x\in\R$ and $y\in(0,\infty)$. Ordinary binomial standardized characteristic functions converge to the normal characteristic function whenever $v\to\infty$. This can be checked without a uniform moment assumption beyond Bernoulli variables: their centered third absolute moment sum is at most $v$, so finite Taylor expansion of the product at frequency $u/\sqrt v$ gives log characteristic function $-u^2/2+O_u(v^{-1/2})$.
+
+Parity conditioning preserves this weak limit. Its exact characteristic function is
+\begin{equation}\label{spb:ml:eq:conditionalCF}
+ \frac{(1-q+qe^{\ii s})^M+\sigma(1-q-qe^{\ii s})^M}
+                  {1+\sigma(1-2q)^M}.
+\end{equation}
+At $s=u/\sqrt v$, the second numerator has modulus at most
+$\exp(-2v\cos^2(s/2))$, whereas $|(1-2q)^M|\le e^{-2v}$. Both disappear as $v\to\infty$. Thus $(B_n-\mu)/\sqrt\mu$ tends along this subsequence to $N(x,y)$. TV convergence forces it also to tend to $N(0,1)$, so $x=0,y=1$. Every subsequential limit is the same, proving the first two assertions. They imply $\nu_n\sim\mu$ and $q_n=1-v_n/\nu_n\to0$.
+
+This argument does not claim that conditional and unconditional binomials are close in TV; they generally are not.
+\end{proof}
+
+\begin{proposition}[Fine localization by an exact derivative map]\label{spb:ml:prop:fine}
+If $\TV(\Law(R_n),B_n)=O(\eps_n)$, then \eqref{spb:ml:eq:competitive} holds.
+\end{proposition}
+\begin{proof}
+Theorem~\ref{spb:ml:thm:cubic} gives $\TV(\Law(R_n),B_{M_0,\nu_0,a})=O(\eps_n)$. By the triangle inequality,
+\begin{equation}\label{spb:ml:eq:baselineTV}
+ \TV(B_n,B_{M_0,\nu_0,a})=O(\eps_n).
+\end{equation}
+Let $v_0=\nu_0(1-\nu_0/M_0)$ be the \emph{actual} ordinary variance after rounding; it is not set equal to $v_+$. Introduce coordinates
+\begin{equation}\label{spb:ml:eq:xy}
+ x=(\nu-\nu_0)/\sqrt\mu,\qquad y=(v-v_0)/\mu.
+\end{equation}
+By Lemma~\ref{spb:ml:lem:coarse}, $x,y\to0$. Fix a real $u\ne0$, say $u=1$, and let $\Psi_n(\nu,v)$ be \eqref{spb:ml:eq:conditionalCF} at frequency $s=u/\sqrt\mu$, centered by $\nu_0$.
+
+In the local region $\nu>v>0$, substitute $q=1-v/\nu$ and the real trial count $M=\nu^2/(\nu-v)=\nu/q$. Use consistent analytic logarithms to extend this expression smoothly to noninteger $M$. This extension is only a differentiable formula, not a probability law for real $M$. The actual endpoints remain integer trial laws. The segment between baseline and competitor lies in the convex region $\nu>v>0$; along it $q=o(1)$ and the standardized coordinates are uniformly $o(1)$. All log bases are in a fixed neighborhood of the positive real axis for large $n$.
+
+Put $w=e^{\ii s}-1$ and
+\begin{equation}\label{spb:ml:eq:exactderivatives}
+ f(q)=\frac{\log(1+qw)}q,\quad L(\nu,v)=\nu f(q),\quad
+ \partial_\nu L=f+(1-q)f',\quad \partial_vL=-f'.
+\end{equation}
+The singularity at $q=0$ is removable. Finite power expansion, uniform for small $q$, gives
+\begin{align}
+ f+(1-q)f'&=w-w^2/2+O(|w|^3)=\ii s+O(|s|^3),\label{spb:ml:eq:derasymp}\\
+ -f'&=w^2/2+O(|w|^3)=-s^2/2+O(|s|^3).\nonumber
+\end{align}
+The centered first root tends uniformly along the segment to $e^{-u^2/2}$. The other root has exponent
+$\nu\log(1-q(1+e^{\ii s}))/q$, whose real part is at most $-d\nu$ for small $q$. Its quotient and first $q$ derivative are bounded at $q=0$. Applying the same exact differentiation rules shows that its first $\nu,v$ derivatives are bounded multiples of $e^{-d\nu}$. The parity denominator and its derivatives have analogous estimates. They remain negligible after multiplication by $\sqrt\mu$ or $\mu$.
+
+It follows from \eqref{spb:ml:eq:derasymp} that, uniformly along the segment,
+\[
+ \partial_x\Psi_n\to\ii u e^{-u^2/2},\qquad
+ \partial_y\Psi_n\to-\tfrac12u^2e^{-u^2/2}.
+\]
+As a real matrix mapping $(x,y)$ to $(\Re\Psi,\Im\Psi)$, this is
+\begin{equation}\label{spb:ml:eq:Jacobian}
+ J_\infty=e^{-u^2/2}
+ \begin{pmatrix}0&-u^2/2\\u&0\end{pmatrix},\qquad
+ s_{\min}(J_\infty)=e^{-u^2/2}\min(|u|,u^2/2)>0.
+\end{equation}
+Integrating the exact derivatives along the segment therefore gives
+\[
+ \Psi_n(\nu,v)-\Psi_n(\nu_0,v_0)
+      =J_\infty(x,y)+o(\sqrt{x^2+y^2}).
+\]
+The same limiting matrix is uniform on the entire segment; hence there is no cancellation of rotating derivative directions. For large $n$ this yields the inverse bound
+\begin{equation}\label{spb:ml:eq:inverseCF}
+ |x|+|y|\le C_u|\Psi_n(\nu,v)-\Psi_n(\nu_0,v_0)|.
+\end{equation}
+Crucially, the error is multiplicative in displacement, not an additive central limit error. Bounded characteristic function test values differ by at most twice TV. Equations \eqref{spb:ml:eq:baselineTV} and \eqref{spb:ml:eq:inverseCF} now prove
+\begin{equation}\label{spb:ml:eq:meanvarfine}
+ |\nu-\nu_0|=O(\eps_n\sqrt\mu),\qquad
+ |v-v_0|=O(\eps_n\mu).
+\end{equation}
+
+Finally $d_0=\nu_0-v_0=\nu_0^2/M_0\sim2A\mu^2/n$, a positive quantity bounded away from zero. The relative change of $d=\nu-v$ is $O(\sqrt\mu/n)=o(1)$. In $M=\nu^2/d$, the numerator change is $O(\mu|\nu-\nu_0|)$ and the reciprocal denominator change is $O(|d-d_0|/d_0^2)$. Substitution of \eqref{spb:ml:eq:meanvarfine} gives $M-M_0=O(\sqrt\mu)$; its numerator contribution is smaller. The mean bound is $O(\mu^2/n^2)$. This proves \eqref{spb:ml:eq:competitive} for all competitors, including those initially in extreme or rare parity regimes.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{spb:ml:thm:global}]
+The explicit tuned law gives the required upper bound by Theorem~\ref{spb:ml:thm:sensitivity} and Lemma~\ref{spb:ml:lem:median}. For each $n$, choose a competitor within $o(\eps_n)$ of the infimum. Such an approximate minimizer exists by the definition of infimum; attainment is unnecessary. The upper bound makes it $O(\eps_n)$ competitive, so Proposition~\ref{spb:ml:prop:fine} applies. Its coordinates
+\[
+ \alpha_n=\frac{(\nu_n-\nu_0)n^2}{\gamma\mu^2},\qquad
+ \beta_n=\frac{9(M_n-M_0)}{5\sqrt\mu}
+\]
+are bounded. These definitions reproduce the integer $M_n$ exactly in \eqref{spb:ml:eq:localfamily}; no rounding ambiguity remains. Every subsequence has a convergent further parameter subsequence. The uniform local theorem on that subsequence gives a limiting scaled error at least $\frac\gamma2\min J=\gamma\log2\sqrt{2/\pi}$. This proves the global lower bound and hence \eqref{spb:ml:eq:global}.
+
+For any asymptotically optimal sequence, the same boundedness and compactness hold. Uniqueness of the minimizer in Lemma~\ref{spb:ml:lem:median} forces every parameter limit to be $(2\log2-3,0)$, yielding \eqref{spb:ml:eq:optimalparams}. Conversely those relations put the parameters in a compact local set and force exactly that limit, so Theorem~\ref{spb:ml:thm:sensitivity} proves asymptotic optimality. All conclusions are uniform in the two parities.
+\end{proof}

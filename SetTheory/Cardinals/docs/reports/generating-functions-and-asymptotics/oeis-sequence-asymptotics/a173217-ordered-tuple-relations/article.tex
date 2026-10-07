@@ -10,6 +10,7 @@
 \usepackage{booktabs,longtable,array}
 \usepackage{xcolor}
 \usepackage{hyperref}
+\usepackage{etoolbox}\AtBeginEnvironment{thebibliography}{\raggedright}% [write] removes the two underfull bibliography lines of the delivered build
 \hypersetup{colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black,pdftitle={Report220: Exact pole sectors and integer recovery for ordered tuple relations},pdfauthor={Research report}}
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{lemma}[theorem]{Lemma}
@@ -29,6 +30,11 @@
 \newcommand{\urlsmall}[1]{{\small\url{#1}}}
 \allowdisplaybreaks[2]
 \setlength{\emergencystretch}{2em}
+% Added in the write (batch 113, 7 October 2026).
+\newcommand{\file}[1]{\nolinkurl{#1}}
+\newenvironment{writenote}[1][]{\par\smallskip\begingroup\small
+ \noindent\textbf{[write]}\if\relax\detokenize{#1}\relax\else~\textbf{#1.}\fi\ }%
+ {\par\endgroup\smallskip}
 \title{\textbf{Exact pole sectors and integer recovery\\for ordered tuple relations}\\[5pt]\large All-fixed-order collision kernels and shrinking inverse enclosures\\[6pt]\normalsize Report220: OEIS A173217, A301466 and A301468}
 \author{Research report}
 \date{4 October 2026}
@@ -37,11 +43,30 @@
 \begin{abstract}
 Let $H_d(n)$ count sets of $n$ distinct ordered $d$-tuples on an active ordered vertex set, with repeated entries allowed inside a tuple and with $d\ge2$ fixed. The geometric-binomial enumeration, signed-Stirling transform, Fubini pole identity and leading equivalents are known. We give a self-contained treatment of the remainder after that $n$-dependent transform: exact polynomial amplitudes have a uniform global tail bound, yielding exponentially separated finite pole sectors and a justified growing cutoff. A separate small-cycle composition estimate proves absolute integer recovery from $O_d(n^{1-1/d})$ exact pole terms; rational interval evaluation makes that assertion effective. This stronger estimate is distinguished from a coarser normalized bound that cannot certify rounding. A constructive collision kernel supplies all fixed algebraic orders, uniformly on compact complex sets, and leads to eventual shrinking two-ceiling enclosures for inverse thresholds. The source appendix corrects three local statements in a precisely pinned Fubini discussion without changing its positive-degree pole identity. Exact and certified finite checks, a standalone recovery algorithm, editable source and deterministic build instructions accompany the article. No worldwide priority claim or claim to solve neighboring enumeration problems is made.
 \end{abstract}
+\begin{writenote}[Status and trust boundary, added 7 October 2026, batch~113]
+This is bundle Report~220 of an external AI-assisted research session, filed
+in ProveIt as the single-source research report
+\file{a173217-ordered-tuple-relations} (provenance, the sources as the write
+read them, what was checked, relation to the repository, the collected
+non-claims and the reading conventions are in
+Section~\ref{otr:sec:provenance}). It is unrefereed and not formalized. Its
+author line and PDF author field read ``Research report'': it names no person
+or tool. \emph{What rests on what.} Every theorem has a conventional proof in
+the text: exact inclusion--exclusion and Stirling transforms, a Fourier proof
+of the Fubini pole identity, positive-coefficient majorants, cycle generating
+functions, Cauchy coefficient estimates, Stirling's formula and the mean value
+theorem. No proof uses a computation; the exact and interval checks
+corroborate finite claims, and the recovery theorem is proved for every input.
+The write adds Remarks~\ref{otr:rem:transseries} and~\ref{otr:rem:oeis} and
+dated notes, among them the notes in Appendix~\ref{otr:app:corrections} that
+confirm the source's three corrections to the repository's transseries volume;
+no statement, proof or number of the source was changed.
+\end{writenote}
 \begingroup\small\setcounter{tocdepth}{1}\tableofcontents\endgroup
 \newpage
 
 \section{The model, the result, and its source boundary}
-\label{sec:model}
+\label{otr:sec:model}
 For integers $d\ge2$ and $n\ge0$, consider pairs $([v],E)$, where $[v]=\{1,\ldots,v\}$, $E\subseteq[v]^d$ has size $n$, and every element of $[v]$ appears as a coordinate of some tuple in $E$. The set of edges $E$ is unordered and has no duplicates; the coordinates of each edge are ordered and may repeat. The vertex order is retained, and $v$ is allowed to vary. Set
 \[
  H_d(n)=\sum_{v=0}^{dn}\#\{E\subseteq[v]^d:|E|=n,\text{ every vertex is used}\}.
@@ -66,21 +91,181 @@ The exact geometric-binomial formula and signed-first-kind-Stirling transform ar
 The positive-degree Fubini pole identity is explicitly recorded in A000670, credited there to Dean Hickerson \cite{oeisfubini}. The pinned ProveIt Fubini discussion \cite{transseries} gives this identity and untransformed pole-tail bounds. Its neighboring reports on A260700 and A261781 \cite{pdc,mc} contain all-configuration defect estimates and compact-complex Stirling kernels. Those reports are AI-assisted, unrefereed research sources; we use them for attribution and comparison, not as a formal certificate. The exact $H_d$ pole representation is an elementary combination of known formulas. The specific issue developed here is control of the tail \emph{after} the $n$-dependent transform, together with the associated kernel and the stronger small-cycle recovery estimates. A bounded inspection of these sources establishes neither historical priority nor exhaustive absence elsewhere.
 
 \paragraph{How to read the error claims.}
-There are three distinct approximations. Exact polynomial amplitudes can be retained at finitely many poles with an exponentially small omitted-pole error. At a fixed pole, the amplitude itself has an all-fixed-order algebraic expansion. Finally, a stronger absolute tail estimate, retaining exact amplitudes at growing poles, permits integer recovery. These statements are not interchangeable. In particular the normalized growing-cutoff estimate of Section~\ref{sec:coarse} alone does not imply rounding, and a finite algebraic approximation to the principal amplitude generally hides every nonreal pole sector.
+There are three distinct approximations. Exact polynomial amplitudes can be retained at finitely many poles with an exponentially small omitted-pole error. At a fixed pole, the amplitude itself has an all-fixed-order algebraic expansion. Finally, a stronger absolute tail estimate, retaining exact amplitudes at growing poles, permits integer recovery. These statements are not interchangeable. In particular the normalized growing-cutoff estimate of Section~\ref{otr:sec:coarse} alone does not imply rounding, and a finite algebraic approximation to the principal amplitude generally hides every nonreal pole sector.
+
+\subsection{Provenance, sources and reading conventions}\label{otr:sec:provenance}
+\begin{writenote}[Added 7 October 2026, batch~113]\raggedright
+\emph{Provenance.} This report is Report~220 of the session bundle that
+ProveIt's \file{docs/incoming} intake processed as batch~113: the archive
+\file{Report220-reproducibility.zip} ($688{,}477$ bytes, 26 files, wrapper
+directory \file{Report220/}), arrival commit \file{60f54ea06}, placed in
+\file{a4186a946}. The text is the delivered \file{Report220.tex} (758 lines,
+18 pages, dated 4~October 2026), shipped as \file{article.tex}. The programs
+are shipped under \file{code/} (the outer driver, delivered at the root as
+\file{reproduce.py}, as \file{code/outer-reproduce.py}); the reference data,
+recorded results, requirements, \file{PROVENANCE.json} and
+\file{SOURCE_FILES.txt} under \file{data/}; \file{SOURCES.txt} and the code
+guide (\file{code-README.md}) at the top level. Not shipped, and retrievable
+from the arrival commit: the delivered \file{Report220.pdf}; the delivered
+\file{README.txt}, which was staged as the report README and is replaced by
+it; the pure checksum manifests \file{MANIFEST.json} (25 entries) and
+\file{code/SHA256SUMS.txt} (17 entries), both verified at the write; and
+\file{code/results/hierarchy_coefficients.json}, a byte copy of the shipped
+\file{data/hierarchy_reference.json}. The package carries no ``prepared for
+private review'' line and no personal data. \emph{Pin.} The package records a
+ProveIt commit, \file{c744ff67d} (4~October 2026), an ancestor of the
+placement; the write verified the three Git blobs and the SHA-256 that
+Appendix~\ref{otr:app:corrections} and \file{SOURCES.txt} give, and the
+quoted line ranges. The transseries volume is unchanged at the write (same
+blob); the reports \file{a260700-parabolic-double-cosets} and
+\file{a261781-matrix-compositions} have since received dated notes. It is a
+single-source report, so no merge choice was made. The write prefixed the 74
+delivered labels with \file{otr:} and updated the references to them
+(31 \verb|\eqref|, 19 \verb|\ref|); it labelled Appendix~B (\file{otr:app:scope}) and added this
+subsection, the notes marked [write] and
+Remarks~\ref{otr:rem:transseries} and~\ref{otr:rem:oeis}, each the last
+statement of its section, and inserted nothing before a delivered display,
+statement or table, so every theorem, section and equation of the source
+keeps its delivered number. One preamble line sets the bibliography ragged
+right (\texttt{etoolbox}), which removes the two underfull lines of the
+delivered build (both in the long entry \texttt{transseries}).
+
+\emph{The sources, as the write read them} (7~October 2026): OEIS A173217,
+A301466, A301468, A000670, A173219, A121251 and A104209 in the internal
+format, with the b-files of the first three (Remark~\ref{otr:rem:oeis}); the
+transseries volume
+\path{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex}
+at the pinned and the current commit (\file{q2:thm:fubini},
+\file{q2:thm:pole-tail}, \file{q2:prop:budget}, \file{q2:thm:weighted},
+\file{q2:rem:weighted}, \file{p0:def:model}, \file{p0:thm:lambert-core},
+\file{p0:def:three-inverses}, \file{p0:thm:staircase},
+\file{plt:def:lw-monomial-log-datum}, \file{plt:thm:lw-template}); the reports
+\file{a260700-parabolic-double-cosets} (its Question~3) and
+\file{a261781-matrix-compositions}. Not read by the write: the cited
+literature (Novelli--Thibon--Thi\'ery, Cameron--Prellberg--Stark,
+Bender--Canfield--McKay); the source's account of it (Section~\ref{otr:sec:model}
+and Appendix~\ref{otr:app:scope}) is reported, not confirmed.
+
+\emph{What was checked at intake.} The batch-113 dossier read the manuscript,
+found no demonstrably wrong claim inside it, confirmed the two defects of the
+transseries volume that Appendix~\ref{otr:app:corrections} reports (the
+volume correction is a separate commit), noted that the report does not
+resolve the two-transform question of \file{a260700-parabolic-double-cosets},
+and reran the delivered suite on a copy (it reproduces; the negative controls
+compare a Windows CRLF standard output with file bytes, a Windows-only
+failure). \emph{What the write checked.} It read every proof and found no
+error. With its own code (Python 3.14.4, exact integers; SymPy 1.14.0; mpmath
+1.3.0 at 40--1040 digits), not importing the delivered programs, it
+\begin{itemize}\raggedright
+\item computed $H_d(n)$ by the Stirling--Fubini formula, equal to the OEIS
+b-files of A173217 ($n\le100$), A301466 ($n\le60$) and A301468 ($n\le10$), and
+by inclusion--exclusion~\eqref{otr:eq:enum} for $n\le8$; counted relations by
+brute force ($H_2(n)$, $n\le3$; $H_3(n)$, $n\le2$); confirmed the table of
+Section~\ref{otr:sec:model}, and $H_d(n+1)>H_d(n)$ for $d\le5$, $n<60$;
+\item checked the bound~\eqref{otr:eq:tail} (both forms) and the
+majorant~\eqref{otr:eq:majorant} on samples and grids ($d\le6$, $n\le30$),
+$K_{d,M}/R_M\le0.3184<13/36$ for $d<30$, $M<200$, the log-$2$
+bounds~\eqref{otr:eq:logbounds} for $N\le11$, the minimization of
+$\kappa(d,a)$ and the constant $2-\log2$ of~\eqref{otr:eq:coarselimit};
+\item recomputed the table of cutoffs in Section~\ref{otr:sec:recovery} by
+exact integer arithmetic, and for $21$ inputs ($2\le d\le5$ and $(12,10)$,
+$n\le100$) evaluated $T_{d,n,M}$ at both cutoffs at high precision: every error
+is below its bound and rounds to $H_d(n)$;
+\item rederived $C_{d,1}$ of~\eqref{otr:eq:C1} for $d=2,\ldots,5$ and $c_1$,
+$c_2$ of~\eqref{otr:eq:A2} by its own implementation
+of~\eqref{otr:eq:E}--\eqref{otr:eq:C} (SymPy, zero differences), and
+\eqref{otr:eq:A3}, \eqref{otr:eq:A4} by a direct expansion of the
+definition~\eqref{otr:eq:amplitude} with the Stirling polynomials
+$e_\ell(n)$, independently of the kernel; checked numerically that
+$n^3\bigl(\e^{z^2/8}A_{2,n}(z)-1-c_1/n-c_2/n^2\bigr)$ is stable for
+$n=250,500,1000$ at three points $z$, including a nonreal one;
+\item confirmed \eqref{otr:eq:lead2}, \eqref{otr:eq:leadd} and
+$b_{d,1}$ of~\eqref{otr:eq:b1} against the exact counts ($d=2,3,4$, $n=50,100$:
+$n^2(\log(H_d(n)/\text{equivalent})-b_{d,1}/n)$ stable) and the Lambert
+formula~\eqref{otr:eq:Lambert} to $10^{-58}$;
+\item checked~\eqref{otr:eq:firstpair} at $d=2$, $n=20,\ldots,320$ with exact
+amplitudes (the left side over the first pair is $1.017$ at $n=20$ and is
+within $10^{-11}$ of $1$ from $n=40$ on), and the amplitude
+$\e^{z_1^2/8}A_{2,n}(z_1)\to1$ behind~\eqref{otr:eq:cosine};
+\item checked Appendix~\ref{otr:app:corrections} (notes there).
+\end{itemize}
+It reran, on a fresh copy of the shipped programs, \file{derive_hierarchy.py},
+\file{check_hypergraph.py}, \file{rational_checks.py suite} and
+\file{rational_checks.py recover 2 25} (normal and \texttt{-O}): each output
+equals the shipped file after removing carriage returns. On Windows the
+driver \file{code/reproduce.py} stops at \file{negative_controls.py}, whose
+regression compares the console output (with CRLF line ends) with the saved
+file; this is the Windows-only failure the intake recorded. The outer PDF/ZIP
+driver was not run. Floating computations are observations, not certificates.
+
+\emph{Relation to the repository.} Before batch~113 no file of the repository
+named A173217, A301466 or A301468. The report cites three repository sources
+at the pinned commit: the transseries volume, whose Fubini chapter it
+corrects in three places (Appendix~\ref{otr:app:corrections}, notes there),
+\file{a260700-parabolic-double-cosets} and
+\file{a261781-matrix-compositions}. Its exact nonreal pole sectors through
+one signed-Stirling transform bear on, but do not answer, Question~3 of
+\file{a260700-parabolic-double-cosets} (the nonreal Fubini poles through
+\emph{both} of that report's defect sums); a reciprocal note there is
+proposed with this write. \file{a386374-first-block-maximum} (batch~113) uses
+the same Fubini pole for a different statistic. No Lean or Rocq file treats
+these sequences; no statement of this report is formalized, and its place in
+the collection confers no formal status. The inverse and the pole theorems are
+compared with the transseries volume in Remark~\ref{otr:rem:transseries}.
+\end{writenote}
+\begin{writenote}[What is not claimed, collected from the source]
+The geometric-binomial enumeration, the signed-Stirling transform, the Fubini
+pole identity (Hickerson, in A000670) and the leading equivalents (OEIS) are
+prior; Novelli--Thibon--Thi\'ery give context and Cameron--Prellberg--Stark the
+collision methods; the repository reports are method precedents, not formal
+certificates; no worldwide priority claim, and no claim to solve the
+neighbouring A260700 or matrix-composition questions. The coarse growing
+cutoff does not certify rounding; the cutoffs and constants are not claimed
+optimal; the pole count is neither a bit-complexity nor a floating-point
+stability statement; compact-$w$ uniformity does not reach the recovery scale,
+and fixed-pole asymptotics cannot replace the exact amplitudes on the whole
+lattice; the inverse constants and onset are existential, with no universal
+single-ceiling formula; the decimal diagnostics are not interval
+certificates. \emph{The write adds:} its checks are exact or floating
+computations; its transseries remark claims no novelty for any inversion.
+\end{writenote}
+\medskip
+\begingroup\small
+\noindent\emph{Reading conventions} (letters the source uses in more than one
+sense, with the tempting false readings; no symbol was renamed).\par\smallskip
+\renewcommand{\arraystretch}{1.1}
+\noindent\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.8in}>{\raggedright\arraybackslash}p{5.1in}@{}}
+\toprule
+Symbol & Meanings\\
+\midrule
+$\lam$, $\rho$ & $\lam=\log2$ throughout the text; Appendix~\ref{otr:app:corrections} follows the volume and writes $\rho=\log2$ and $\rho_x=\log(1+1/x)$.\\
+$H_d$, $h$ & $H_d(n)$ the counts. $h=\sum_{k<n}1/k$ (Section~\ref{otr:sec:recovery}); $h$ a summation index. \emph{False reading:} $H_d(n)$ is not a harmonic number.\\
+$A$, $B$ & $A_{d,n}(z)$, $A^+_{d,n}(R)$ the amplitudes; $B_{d,n}$ the normalizer; $B_{2k}$ Bernoulli numbers in~\eqref{otr:eq:Bernoulli}.\\
+$S$, $s$ & $S_{d,n,M}$ the normalized finite pole sum; $S_q(x)$ Faulhaber polynomials; $s(n,j)$ signed Stirling numbers of the first kind.\\
+$T$, $F$ & $T_{d,n,M}$ the unnormalized finite sum; $T_r(x)$ in Appendix~\ref{otr:app:corrections}. $F_r$ the Fubini numbers, $F_r(x)$ their weighted version; $F_{d,R}(x)$ the smooth inverse models.\\
+$C$ & $C_d=\e^d/(2d^d)$; $C_{d,r}(w)$ the kernel polynomials; $c_1(z)$, $c_2(z)$; $C$, $C_R$ constants.\\
+$E$, $e$, $D$ & $e_\ell(n)$ elementary symmetric functions; $E_r(u)$ and $E_n(u)$ (Section~\ref{otr:sec:kernel}); $D_{d,r}(L)$ the factorial-ratio polynomials.\\
+$K$, $M$, $R$ & $K_{d,M}$ the tail factor and $K$ a compact set; $M$ the cutoff, $M_n$, $M_h$; $R_M=|z_M|$, $R\ge0$ the argument of $A^+$, and $R$ the fixed expansion order.\\
+$q$, $L$ & $q=d^dn^{d-1}/R^d$ in the recovery proof and $q$ a summation index; $L$ the variable of $D_{d,r}$, $L_n=\floor{n^{1/4}}$, $L_N$ the log-$2$ bounds.\\
+$w$, $z$, $\Theta$, $\theta$ & $w$ the collision variable; $z$ a complex argument and $z_m=\lam+2\pi\ii m$ the poles; $\Theta=w\,d/dw$; $\theta=\arg z_1$.\\
+$p$, $\beta$, $\gamma$ & $p=d-1$; $\beta_d$, $\gamma_d$ the inverse constants~\eqref{otr:eq:betagamma}; $b_{d,r}$ the inverse coefficients.\\
+\bottomrule
+\end{tabular}
+\endgroup
 
 \section{Exact enumeration and the pole identity}
-\label{sec:exact}
+\label{otr:sec:exact}
 Let $g_v$ denote the summand in the definition of $H_d(n)$. Every edge set on $[k]$ has a unique active subset, which can be transported increasingly to an initial segment. Therefore
-\begin{equation}\label{eq:newton}
+\begin{equation}\label{otr:eq:newton}
  \binom{k^d}{n}=\sum_{v=0}^{dn}\binom{k}{v}g_v.
 \end{equation}
 Here and below a binomial coefficient with a nonnegative upper integer smaller than its lower integer is zero. The identity
 $\sum_{k\ge v}\binom{k}{v}2^{-k-1}=1$ gives
-\begin{equation}\label{eq:enum}
+\begin{equation}\label{otr:eq:enum}
  H_d(n)=\sum_{k\ge0}\frac{\binom{k^d}{n}}{2^{k+1}}
  =\sum_{v=0}^{dn}\sum_{k=0}^{v}(-1)^{v-k}\binom vk\binom{k^d}{n}.
 \end{equation}
-Only finitely many $v$ occur, so the first interchange is harmless; the second equality is binomial inversion in \eqref{eq:newton}.
+Only finitely many $v$ occur, so the first interchange is harmless; the second equality is binomial inversion in \eqref{otr:eq:newton}.
 
 Write $s(n,j)=(-1)^{n-j}\St nj$ for the signed Stirling number of the first kind. If $F_r$ denotes the ordered Bell (Fubini) number, then for $r\ge1$,
 \[
@@ -93,15 +278,15 @@ Put $\lam=\log2$ and $z_m=\lam+2\pi\ii m$. For $n\ge1$, define
 \begin{align}
  e_\ell(n)&=e_\ell(0,1,\ldots,n-1)=\St n{n-\ell},\nonumber\\
  A_{d,n}(z)&=\sum_{\ell=0}^{n-1}(-1)^\ell e_\ell(n)
-              \frac{(dn-d\ell)!}{(dn)!}z^{d\ell},\label{eq:amplitude}\\
+              \frac{(dn-d\ell)!}{(dn)!}z^{d\ell},\label{otr:eq:amplitude}\\
  A^+_{d,n}(R)&=\sum_{\ell=0}^{n-1}e_\ell(n)
               \frac{(dn-d\ell)!}{(dn)!}R^{d\ell},\qquad R\ge0,\nonumber\\
  B_{d,n}&=\frac{(dn)!}{2n!\lam^{dn+1}}.\nonumber
 \end{align}
 
-\begin{lemma}[Classical positive-degree Fubini pole identity]\label{lem:fubini}
+\begin{lemma}[Classical positive-degree Fubini pole identity]\label{otr:lem:fubini}
 For every integer $r\ge1$,
-\begin{equation}\label{eq:fubini}
+\begin{equation}\label{otr:eq:fubini}
  \sum_{k\ge1}k^r\e^{-\lam k}=r!\sum_{m\in\Z}z_m^{-r-1}.
 \end{equation}
 The sum on the right is absolutely convergent.
@@ -112,12 +297,12 @@ Let $f(x)=x^r\e^{-\lam x}$ for $x\ge0$ and $f(x)=0$ for $x<0$. Its $1$-periodiza
  \widehat f(m)=\int_0^\infty x^r\e^{-(\lam+2\pi\ii m)x}\,dx
  =r!z_m^{-r-1}.
 \]
-These coefficients are absolutely summable since $r+1\ge2$. Their uniformly convergent Fourier series equals the continuous periodization, by uniqueness of Fourier coefficients. Evaluation at zero yields \eqref{eq:fubini}. This proof avoids the constant-term convention in a Mittag--Leffler expansion; see Appendix~\ref{app:corrections}.
+These coefficients are absolutely summable since $r+1\ge2$. Their uniformly convergent Fourier series equals the continuous periodization, by uniqueness of Fourier coefficients. Evaluation at zero yields \eqref{otr:eq:fubini}. This proof avoids the constant-term convention in a Mittag--Leffler expansion; see Appendix~\ref{otr:app:corrections}.
 \end{proof}
 
-\begin{theorem}[Exact amplitude pole decomposition]\label{thm:exact}
+\begin{theorem}[Exact amplitude pole decomposition]\label{otr:thm:exact}
 For $d\ge2$ and $n\ge1$,
-\begin{equation}\label{eq:exactpoles}
+\begin{equation}\label{otr:eq:exactpoles}
  \frac{H_d(n)}{B_{d,n}}
  =\sum_{m\in\Z}\left(\frac{\lam}{z_m}\right)^{dn+1}A_{d,n}(z_m).
 \end{equation}
@@ -125,8 +310,8 @@ The series is absolutely convergent, and its summands are
 $O_{d,n}(|m|^{-d-1})$ as $|m|\to\infty$.
 \end{theorem}
 \begin{proof}
-Insert Lemma~\ref{lem:fubini} with $r=dj$ into the finite signed-Stirling formula:
-\begin{equation}\label{eq:rawpoles}
+Insert Lemma~\ref{otr:lem:fubini} with $r=dj$ into the finite signed-Stirling formula:
+\begin{equation}\label{otr:eq:rawpoles}
  H_d(n)=\frac1{2n!}\sum_{j=1}^{n}s(n,j)(dj)!
                          \sum_{m\in\Z}z_m^{-dj-1}.
 \end{equation}
@@ -134,12 +319,12 @@ All inner sums are absolutely convergent; a finite interchange is permitted. Put
 \end{proof}
 
 \section{A global remainder after the Stirling transform}
-\label{sec:tail}
+\label{otr:sec:tail}
 The order of estimation matters: one must sum each pole power before applying the global collision bound. Applying a rapidly growing amplitude envelope separately to every pole would not produce a summable majorant.
 
-\begin{lemma}[Global amplitude majorant]\label{lem:majorant}
+\begin{lemma}[Global amplitude majorant]\label{otr:lem:majorant}
 For all integers $n\ge1$, $d\ge2$ and all $R\ge0$,
-\begin{equation}\label{eq:majorant}
+\begin{equation}\label{otr:eq:majorant}
  A^+_{d,n}(R)\le\exp\!\left(C_dR^dn^{2-d}(1-1/n)\right),
  \qquad C_d=\frac{\e^d}{2d^d}.
 \end{equation}
@@ -152,11 +337,11 @@ Consequently
 \[
  \frac{(N-r)!}{N!}\le(\e/N)^r.
 \]
-Apply this with $N=dn$ and $r=d\ell$ and sum the exponential series. The $\ell=0$ term is one. For $n=1$ both sides of \eqref{eq:majorant} are exactly one.
+Apply this with $N=dn$ and $r=d\ell$ and sum the exponential series. The $\ell=0$ term is one. For $n=1$ both sides of \eqref{otr:eq:majorant} are exactly one.
 \end{proof}
 
 For integers $M\ge1$ write
-\begin{equation}\label{eq:RM}
+\begin{equation}\label{otr:eq:RM}
  R_M=|z_M|=\sqrt{\lam^2+4\pi^2M^2},\qquad
  K_{d,M}=1+\frac{R_M^2}{4\pi^2M(d-1)}
 \end{equation}
@@ -166,11 +351,11 @@ and set
 \]
 This is real, since opposite poles have conjugate amplitudes.
 
-\begin{theorem}[Uniform transformed tail]\label{thm:tail}
+\begin{theorem}[Uniform transformed tail]\label{otr:thm:tail}
 For every $d\ge2$, $n\ge1$ and $M\ge1$,
 \begin{align}
  \left|\frac{H_d(n)}{B_{d,n}}-S_{d,n,M}\right|
- &\le2K_{d,M}(\lam/R_M)^{dn+1}A^+_{d,n}(R_M)\label{eq:tail}\\
+ &\le2K_{d,M}(\lam/R_M)^{dn+1}A^+_{d,n}(R_M)\label{otr:eq:tail}\\
  &\le2K_{d,M}(\lam/R_M)^{dn+1}
        \exp\!\left(C_dR_M^dn^{2-d}(1-1/n)\right).\nonumber
 \end{align}
@@ -184,15 +369,15 @@ For $s>2$, monotonicity and integral comparison imply
  &\le R_M^{-s}\left(1+\frac{R_M^2}{4\pi^2M(s-2)}\right).
 \end{align*}
 The last inequality uses
-$\lam^2+4\pi^2x^2\ge R_M^2+8\pi^2M(x-M)$ for $x\ge M$ and integrates the resulting linear denominator exactly. In \eqref{eq:rawpoles}, $s=dj+1$ and $s-2\ge d-1$. Taking absolute values in the finite transform gives, after division by $B_{d,n}$,
+$\lam^2+4\pi^2x^2\ge R_M^2+8\pi^2M(x-M)$ for $x\ge M$ and integrates the resulting linear denominator exactly. In \eqref{otr:eq:rawpoles}, $s=dj+1$ and $s-2\ge d-1$. Taking absolute values in the finite transform gives, after division by $B_{d,n}$,
 \[
  \frac{2K_{d,M}\lam^{dn+1}}{(dn)!}
        \sum_{j=1}^n\St nj(dj)!R_M^{-dj-1}.
 \]
-Changing from $j$ to $\ell=n-j$ is exactly the first bound in \eqref{eq:tail}. Lemma~\ref{lem:majorant} gives the second.
+Changing from $j$ to $\ell=n-j$ is exactly the first bound in \eqref{otr:eq:tail}. Lemma~\ref{otr:lem:majorant} gives the second.
 \end{proof}
 
-\begin{corollary}[Exponentially separated fixed sectors]\label{cor:fixed}
+\begin{corollary}[Exponentially separated fixed sectors]\label{otr:cor:fixed}
 For fixed $d\ge2$ and fixed $M\ge1$,
 \[
  \frac{H_d(n)}{B_{d,n}}=S_{d,n,M}
@@ -201,14 +386,14 @@ For fixed $d\ge2$ and fixed $M\ge1$,
 Each successive fixed cutoff reveals the exact conjugate pair at $\pm M$ with the strictly smaller error base $\lam/R_{M+1}$.
 \end{corollary}
 \begin{proof}
-The exponential in \eqref{eq:majorant} remains bounded for $d=2$ and tends to one for $d>2$, at fixed $R_M$.
+The exponential in \eqref{otr:eq:majorant} remains bounded for $d=2$ and tends to one for $d>2$, at fixed $R_M$.
 \end{proof}
 
 \section{The coarse growing cutoff and its rounding limitation}
-\label{sec:coarse}
-\begin{theorem}[Normalized growing-cutoff bound]\label{thm:coarse}
+\label{otr:sec:coarse}
+\begin{theorem}[Normalized growing-cutoff bound]\label{otr:thm:coarse}
 Fix $d\ge2$ and $a>0$, and put $M_n=\ceil{a n^{1-1/d}}$. Then
-\begin{equation}\label{eq:growing}
+\begin{equation}\label{otr:eq:growing}
  \left|\frac{H_d(n)}{B_{d,n}}-S_{d,n,M_n}\right|
  \le\exp\left(-(d-1)n\log n+\kappa(d,a)n
                +O_{d,a}(n^{1/d}+\log n)\right),
@@ -223,7 +408,7 @@ Let $\alpha=1-1/d$. Then
  \log R_{M_n}&=\log(2\pi a)+\alpha\log n+O_{d,a}(n^{-\alpha}),\\
  R_{M_n}^dn^{2-d}&=(2\pi a)^dn+O_{d,a}(n^{1/d}).
 \end{align*}
-Take logarithms in the second bound of \eqref{eq:tail}. The factor $1-1/n$ changes the exponent by $O_{d,a}(1)$. These estimates give \eqref{eq:growing}. The $n^{1/d}$ error accounts for the integer ceiling and cannot generally be replaced by $O(\log n)$ without further argument.
+Take logarithms in the second bound of \eqref{otr:eq:tail}. The factor $1-1/n$ changes the exponent by $O_{d,a}(1)$. These estimates give \eqref{otr:eq:growing}. The $n^{1/d}$ error accounts for the integer ceiling and cannot generally be replaced by $O(\log n)$ without further argument.
 \end{proof}
 
 The coefficient $\kappa(d,a)$ is minimized, for this particular bound, at
@@ -239,31 +424,31 @@ Stirling's formula gives
  [d\log d-(d-1)-d\log\lam]n+O_d(1).
 \]
 Multiplication of the optimized normalized bound by $B_{d,n}$ therefore yields only
-\begin{equation}\label{eq:coarselimit}
+\begin{equation}\label{otr:eq:coarselimit}
  \exp\left((2-\log2)n+O_d(n^{1/d}+\log n)\right).
 \end{equation}
-The leading $n\log n$ terms cancel and the displayed absolute bound grows. This does not show that the actual error grows; it shows that this estimate cannot certify an error below $1/2$. Absolute integer recovery requires a genuinely stronger argument, supplied next. Both growing-cutoff theorems retain the exact polynomials \eqref{eq:amplitude}; compact fixed-pole asymptotics do not cover their full pole ranges.
+The leading $n\log n$ terms cancel and the displayed absolute bound grows. This does not show that the actual error grows; it shows that this estimate cannot certify an error below $1/2$. Absolute integer recovery requires a genuinely stronger argument, supplied next. Both growing-cutoff theorems retain the exact polynomials \eqref{otr:eq:amplitude}; compact fixed-pole asymptotics do not cover their full pole ranges.
 
 \section{Absolute recovery with a growing number of exact poles}
-\label{sec:recovery}
+\label{otr:sec:recovery}
 Define the unnormalized finite sum
-\begin{equation}\label{eq:T}
+\begin{equation}\label{otr:eq:T}
  T_{d,n,M}=B_{d,n}S_{d,n,M}
  =\frac1{2n!}\sum_{j=1}^{n}s(n,j)(dj)!
        \sum_{|m|<M}z_m^{-dj-1}.
 \end{equation}
-The exact Stirling coefficients are retained throughout this section. The bound from Theorem~\ref{thm:tail}, written in absolute units, is
-\begin{equation}\label{eq:absolutetail}
+The exact Stirling coefficients are retained throughout this section. The bound from Theorem~\ref{otr:thm:tail}, written in absolute units, is
+\begin{equation}\label{otr:eq:absolutetail}
  |H_d(n)-T_{d,n,M}|
  \le\frac{K_{d,M}}{n!}\sum_{j=1}^{n}\St nj(dj)!R_M^{-dj-1}.
 \end{equation}
-The two signs of each omitted pole cancel the factor $1/2$ in \eqref{eq:rawpoles}. No factorial normalization has been suppressed.
+The two signs of each omitted pole cancel the factor $1/2$ in \eqref{otr:eq:rawpoles}. No factorial normalization has been suppressed.
 
-\begin{lemma}[Two small-cycle coefficient bounds]\label{lem:smallcycles}
+\begin{lemma}[Two small-cycle coefficient bounds]\label{otr:lem:smallcycles}
 For $1\le j\le n$ and $h=\sum_{k=1}^{n-1}1/k$,
 \begin{align}
- \frac1{n!}\St nj&\le\frac1{j!}\binom{n-1}{j-1},\label{eq:composition}\\
- \St nj&\le(n-1)!\frac{h^{j-1}}{(j-1)!}.\label{eq:harmonic}
+ \frac1{n!}\St nj&\le\frac1{j!}\binom{n-1}{j-1},\label{otr:eq:composition}\\
+ \St nj&\le(n-1)!\frac{h^{j-1}}{(j-1)!}.\label{otr:eq:harmonic}
 \end{align}
 The second inequality is used only when $n\ge2$.
 \end{lemma}
@@ -285,16 +470,16 @@ since there are $\binom{n-1}{j-1}$ positive ordered compositions and each recipr
 \[
  x(x+1)\cdots(x+n-1)=(n-1)!x\prod_{k=1}^{n-1}(1+x/k).
 \]
-The elementary symmetric coefficient of degree $j-1$ is at most $h^{j-1}/(j-1)!$, as in Lemma~\ref{lem:majorant}.
+The elementary symmetric coefficient of degree $j-1$ is at most $h^{j-1}/(j-1)!$, as in Lemma~\ref{otr:lem:majorant}.
 \end{proof}
 
-\begin{theorem}[No-logarithm pole cutoff for integer recovery]\label{thm:recover}
+\begin{theorem}[No-logarithm pole cutoff for integer recovery]\label{otr:thm:recover}
 Let $d\ge2$ and $n\ge2$ be integers and set
-\begin{equation}\label{eq:cutoff}
+\begin{equation}\label{otr:eq:cutoff}
  M=\ceil{\frac d6(2n^{d-1})^{1/d}}.
 \end{equation}
 Then
-\begin{equation}\label{eq:recoverybound}
+\begin{equation}\label{otr:eq:recoverybound}
  |H_d(n)-T_{d,n,M}|<\frac{13}{18n^{d-1}}\le\frac{13}{36}<\frac12.
 \end{equation}
 Consequently $H_d(n)$ is the unique nearest integer to $T_{d,n,M}$. If a rational $a$ satisfies $|a-T_{d,n,M}|\le1/8$, it has the same unique nearest integer, because
@@ -309,15 +494,15 @@ Abbreviate $R=R_M$, $K=K_{d,M}$. The multinomial theorem gives $(dj)!\le d^{dj}(
  \binom{n-1}{j-1}\le\frac{n^{j-1}}{(j-1)!},\qquad
  j!\le n^{j-1}\quad(1\le j\le n).
 \]
-For $d\ge2$ the exponent $d-2$ is nonnegative, including the boundary value zero. Lemma~\ref{lem:smallcycles} therefore implies
+For $d\ge2$ the exponent $d-2$ is nonnegative, including the boundary value zero. Lemma~\ref{otr:lem:smallcycles} therefore implies
 \begin{align*}
  \frac1{n!}\St nj(dj)!
  &\le d^{dj}(j!)^{d-1}\frac{n^{j-1}}{(j-1)!}\\
  &=j d^{dj}(j!)^{d-2}n^{j-1}\\
  &\le j d^d\bigl(d^dn^{d-1}\bigr)^{j-1}.
 \end{align*}
-Put $q=d^dn^{d-1}/R^d$. From \eqref{eq:absolutetail}, for $q<1$,
-\begin{equation}\label{eq:qbound}
+Put $q=d^dn^{d-1}/R^d$. From \eqref{otr:eq:absolutetail}, for $q<1$,
+\begin{equation}\label{otr:eq:qbound}
  |H_d(n)-T_{d,n,M}|
  \le\frac{Kd^d}{R^{d+1}}\sum_{j=1}^{n}j q^{j-1}
  \le\frac{Kd^d}{R^{d+1}(1-q)^2}.
@@ -327,12 +512,12 @@ The elementary facts $0<\lam<1$ and $\pi>3$ imply $R>6M$. The chosen $M$ satisfi
  \frac KR
  &=\frac1R+\frac R{4\pi^2M(d-1)}\nonumber\\
  &<\frac1{6M}+\frac1{6(d-1)}+\frac1{36M(d-1)}
- \le\frac{13}{36}.\label{eq:KR}
+ \le\frac{13}{36}.\label{otr:eq:KR}
 \end{align}
-Since $d^d/R^d<1/(2n^{d-1})$, \eqref{eq:qbound} is strictly smaller than $2K/(n^{d-1}R)$, proving \eqref{eq:recoverybound}. The remaining assertions follow from $n^{d-1}\ge2$ and the ceiling bound.
+Since $d^d/R^d<1/(2n^{d-1})$, \eqref{otr:eq:qbound} is strictly smaller than $2K/(n^{d-1}R)$, proving \eqref{otr:eq:recoverybound}. The remaining assertions follow from $n^{d-1}\ge2$ and the ceiling bound.
 \end{proof}
 
-\begin{corollary}[Harmonic cutoff with a smaller universal error]\label{cor:harmonic}
+\begin{corollary}[Harmonic cutoff with a smaller universal error]\label{otr:cor:harmonic}
 Let $d,n\ge2$, $h=\sum_{k=1}^{n-1}1/k$, and
 \[
  M_h=\ceil{\frac d6(2n^{d-1}h)^{1/d}}.
@@ -344,12 +529,12 @@ Then
 A rational approximation within $1/4$ of this finite sum can be rounded safely. The pole count here is $O_d(n^{1-1/d}(\log n)^{1/d})$.
 \end{corollary}
 \begin{proof}
-Use \eqref{eq:harmonic} and
+Use \eqref{otr:eq:harmonic} and
 \[
  \frac{(dj)!}{(j-1)!}\le j d^{dj}(j!)^{d-1}
  \le j d^d(d^dn^{d-1})^{j-1}
 \]
-in \eqref{eq:absolutetail}. With $q_h=d^dn^{d-1}h/R_{M_h}^d<1/2$, the result is
+in \eqref{otr:eq:absolutetail}. With $q_h=d^dn^{d-1}h/R_{M_h}^d<1/2$, the result is
 \[
  |H_d(n)-T_{d,n,M_h}|
  \le\frac{K_{d,M_h}d^d}{nR_{M_h}^{d+1}(1-q_h)^2}
@@ -369,7 +554,7 @@ $d$&$n$&$M$&$M_h$&no-log poles&harmonic poles\\\midrule
 \end{tabular}
 \end{center}
 Here each pole count is $2M-1$ for the indicated cutoff. These are examples,
-not optimized minima. Both estimates are distinct from the coarse absolute bound \eqref{eq:coarselimit}; none asserts that its cutoff or constant is optimal.
+not optimized minima. Both estimates are distinct from the coarse absolute bound \eqref{otr:eq:coarselimit}; none asserts that its cutoff or constant is optimal.
 
 \subsection{A certified algorithm using rational intervals}
 The no-logarithm cutoff is chosen without evaluating a real root: it is the least positive integer $M$ with
@@ -380,7 +565,7 @@ Doubling followed by binary search finds it with integer arithmetic. For the har
 $b(6M)^d\ge2d^dn^{d-1}a$.
 
 For $N\ge1$, rational bounds for $\log2$ are
-\begin{equation}\label{eq:logbounds}
+\begin{equation}\label{otr:eq:logbounds}
  L_N=2\sum_{k=0}^{N-1}\frac1{(2k+1)3^{2k+1}},\qquad
  L_N<\log2<L_N+\frac3{4(2N+1)9^N}.
 \end{equation}
@@ -390,14 +575,14 @@ They follow from the positive atanh series at $1/3$, bounding the omitted denomi
 \]
 together with consecutive alternating partial sums encloses $\pi$ rationally. The identity itself follows from the tangent addition formula and the angles' locations, not from a floating-point test.
 
-Pair conjugate poles in \eqref{eq:T} and evaluate
-\begin{equation}\label{eq:paired}
+Pair conjugate poles in \eqref{otr:eq:T} and evaluate
+\begin{equation}\label{otr:eq:paired}
  \frac1{2n!}\sum_{j=1}^{n}s(n,j)(dj)!
  \left[\lam^{-dj-1}+2\sum_{m=1}^{M-1}
                     \Rea(\lam+2\pi\ii m)^{-dj-1}\right].
 \end{equation}
 All operations can be performed on dyadic intervals with integer endpoints, rounding every multiplication, reciprocal and rational scaling outwards. Inversion uses
-$(\lam+\ii y)^{-1}=(\lam-\ii y)/(\lam^2+y^2)$; every reciprocal denominator is bounded away from zero. For any fixed input $(d,n,M)$ the expression is finite and continuous in the two constants and all intermediate arithmetic values. As input-interval widths and dyadic rounding errors tend to zero, the output width tends to zero. Therefore successive precision doubling eventually supplies an interval $[L,U]$ of width at most $1/4$. Its rational midpoint is within $1/8$ of $T_{d,n,M}$ and Theorem~\ref{thm:recover} proves exact recovery by nearest-integer rounding. For the harmonic variant width at most $1/2$ suffices.
+$(\lam+\ii y)^{-1}=(\lam-\ii y)/(\lam^2+y^2)$; every reciprocal denominator is bounded away from zero. For any fixed input $(d,n,M)$ the expression is finite and continuous in the two constants and all intermediate arithmetic values. As input-interval widths and dyadic rounding errors tend to zero, the output width tends to zero. Therefore successive precision doubling eventually supplies an interval $[L,U]$ of width at most $1/4$. Its rational midpoint is within $1/8$ of $T_{d,n,M}$ and Theorem~\ref{otr:thm:recover} proves exact recovery by nearest-integer rounding. For the harmonic variant width at most $1/2$ suffices.
 
 The standalone recovery algorithm uses only the requested finite sum and its interval width for stopping. It does not obtain $H_d(n)$ by another method to decide when to stop. A separate validation routine may compare the recovered integer with the exact signed-Stirling/Fubini count, or refine further to certify the observed tail against the analytic bound; that is a cross-check, not the recovery algorithm. Endpoints are returned separately as $H_d(0)=1$ and $H_d(1)=F_d$, avoiding a nonexistent harmonic expression at $n=1$.
 
@@ -405,36 +590,36 @@ The standalone recovery algorithm uses only the requested finite sum and its int
 For fixed $d$, sequential evaluation costs $O_d(nM)$ coefficient/power steps, in addition to forming coefficients and large integers. Precision and cancellation can dominate cost. The output has order $n\log n$ bits; the pole-count theorem is neither a bit-complexity theorem nor an assertion of asymptotically optimal computation. It gives no stability guarantee for ordinary floating-point evaluation.
 
 \section{A universal compact-complex collision kernel}
-\label{sec:kernel}
+\label{otr:sec:kernel}
 Define the polynomial
-\begin{equation}\label{eq:G}
+\begin{equation}\label{otr:eq:G}
  G_{d,n}(w)=\sum_{\ell=0}^{n-1}
  \frac{e_\ell(n)}{n^{2\ell}}
  \frac{(dn)^{d\ell}(dn-d\ell)!}{(dn)!}\,w^\ell.
 \end{equation}
 It separates the universal collision variable from the pole scale:
-\begin{equation}\label{eq:AfromG}
+\begin{equation}\label{otr:eq:AfromG}
  A_{d,n}(z)=G_{d,n}\left(-\frac{z^d n^{2-d}}{d^d}\right).
 \end{equation}
 Let $S_q(x)=\sum_{h=0}^{x-1}h^q$ denote its Faulhaber polynomial, and let $t$ be a formal indeterminate. Define polynomial families $E_r(u)$ and $D_{d,r}(L)$ by
 \begin{align}
  \sum_{r\ge0}E_r(u)t^r
  &=\exp\left(\sum_{q\ge1}\frac{(-1)^{q-1}u^q}{q}
-                        t^{2q}S_q(1/t)-u/2\right),\label{eq:E}\\
+                        t^{2q}S_q(1/t)-u/2\right),\label{otr:eq:E}\\
  \sum_{r\ge0}D_{d,r}(L)t^r
  &=\exp\left(\sum_{q\ge1}\frac{t^qS_q(dL)}{q d^q}\right).
- \label{eq:D}
+ \label{otr:eq:D}
 \end{align}
 Every coefficient is a finite calculation: the $q$th summand in the first exponent begins at order $t^{q-1}$, and its sole constant is canceled by $-u/2$. Thus $E_0=D_{d,0}=1$, and for $r\ge1$ both polynomial degrees are at most $2r$. Write $\Theta=w\,d/dw$ and define
-\begin{equation}\label{eq:C}
+\begin{equation}\label{otr:eq:C}
  C_{d,r}(w)=\e^{-w/2}\sum_{a+b=r}
      D_{d,b}(\Theta)\bigl[\e^{w/2}E_a(w)\bigr].
 \end{equation}
 Conjugation changes $\Theta$ into $w\,d/dw+w/2$, so these are polynomials. Their degrees are at most $2r$, $C_{d,0}=1$, and $C_{d,r}(0)=0$ for $r\ge1$.
 
-\begin{theorem}[All fixed orders, uniformly on compact complex sets]\label{thm:kernel}
+\begin{theorem}[All fixed orders, uniformly on compact complex sets]\label{otr:thm:kernel}
 Fix $d\ge2$, an integer $R\ge0$ and a compact set $K\subset\C$. Uniformly for $w\in K$ as $n\to\infty$,
-\begin{equation}\label{eq:Gexp}
+\begin{equation}\label{otr:eq:Gexp}
  G_{d,n}(w)=\e^{w/2}\sum_{r=0}^{R}\frac{C_{d,r}(w)}{n^r}
                     +O_{d,R,K}(n^{-R-1}).
 \end{equation}
@@ -444,8 +629,8 @@ The expansion can be differentiated any fixed number of times with respect to $w
 Choose a disk $|w|\le W$ containing $K$ and put $L_n=\floor{n^{1/4}}$. We prove a coefficientwise summable remainder rather than expanding a factorial ratio all the way to $\ell=n-1$.
 
 \emph{Step 1: discard large defects by a global bound.}
-Lemma~\ref{lem:majorant}'s two coefficient estimates give
-\begin{equation}\label{eq:coeffmajorant}
+Lemma~\ref{otr:lem:majorant}'s two coefficient estimates give
+\begin{equation}\label{otr:eq:coeffmajorant}
  \frac{e_\ell(n)}{n^{2\ell}}
  \frac{(dn)^{d\ell}(dn-d\ell)!}{(dn)!}
  \le\frac{(\e^d/2)^\ell}{\ell!}.
@@ -468,23 +653,23 @@ $O_R(n^{-R-1}|u|^{R+2})$: indeed $S_q(n)\le n^{q+1}$ and $|u|/n\le1/2$. The fini
  E_n(u)=\e^{u/2}\sum_{a=0}^{R}E_a(u)n^{-a}
  +O_R\bigl(&n^{-R-1}(1+|u|)^{2R+2}\nonumber\\
             &{}\cdot\exp(|u|/2+C_R|u|^2/n)\bigr).
- \label{eq:Ecauchy}
+ \label{otr:eq:Ecauchy}
 \end{align}
 On the chosen circles, the extra factor $\exp(C_R|u|^2/n)$ is uniformly bounded, since $|u|\le2n^{1/4}$ (apart from the harmless $\ell=0$ circle). Cauchy coefficient extraction, for $\ell\ge1$, bounds the error by
-\begin{equation}\label{eq:Eerror}
+\begin{equation}\label{otr:eq:Eerror}
  C_R n^{-R-1}(1+\ell)^{2R+2}\left(\frac{\e}{2\ell}\right)^\ell.
 \end{equation}
 For $\ell=0$ the coefficient is exactly one. The same Cauchy argument bounds every fixed expansion coefficient by a factorial-decaying expression times a fixed polynomial in $\ell$.
 
 \emph{Step 3: expand the factorial-ratio factor.}
 For $\ell\le L_n$ its logarithm is
-\begin{equation}\label{eq:Dlog}
+\begin{equation}\label{otr:eq:Dlog}
  \log\frac{(dn)^{d\ell}(dn-d\ell)!}{(dn)!}
  =\sum_{q\ge1}\frac{S_q(d\ell)}{q(dn)^q}.
 \end{equation}
 This follows by summing $-\log(1-h/(dn))$ for $0\le h<d\ell$. The tail with $q\ge R+1$ is
 $O_{d,R}(n^{-R-1}(1+\ell)^{R+2})$ by a geometric comparison. Its total logarithm is $O_d(\ell^2/n)$, uniformly bounded on the retained range. Exponentiation gives
-\begin{equation}\label{eq:Derror}
+\begin{equation}\label{otr:eq:Derror}
  \frac{(dn)^{d\ell}(dn-d\ell)!}{(dn)!}
  =\sum_{b=0}^{R}D_{d,b}(\ell)n^{-b}
    +O_{d,R}\bigl(n^{-R-1}(1+\ell)^{2R+2}\bigr).
@@ -500,70 +685,70 @@ After multiplication by $W^\ell$ this is summable uniformly in $n$. The finite-o
 \[
  \sum_{\ell\ge0}w^\ell Q(\ell)[u^\ell]F(u)=Q(\Theta)F(w).
 \]
-This identifies the order-$r$ sum as $\e^{w/2}C_{d,r}(w)$ from \eqref{eq:C}. Together with Step~1 it proves \eqref{eq:Gexp}. For derivatives, apply Cauchy's formula to the analytic remainder on a slightly larger disk. Every constant depends on the fixed order, disk and $d$; no growing-order uniformity is claimed.
+This identifies the order-$r$ sum as $\e^{w/2}C_{d,r}(w)$ from \eqref{otr:eq:C}. Together with Step~1 it proves \eqref{otr:eq:Gexp}. For derivatives, apply Cauchy's formula to the analytic remainder on a slightly larger disk. Every constant depends on the fixed order, disk and $d$; no growing-order uniformity is claimed.
 \end{proof}
 
-The Cauchy-coefficient and collision proof architecture has close precedents in \cite{cps,pdc,mc}. The particular factorial ratio in \eqref{eq:G} and its interaction with the $H_d$ pole-tail estimate are the features required here.
+The Cauchy-coefficient and collision proof architecture has close precedents in \cite{cps,pdc,mc}. The particular factorial ratio in \eqref{otr:eq:G} and its interaction with the $H_d$ pole-tail estimate are the features required here.
 
 \subsection{Explicit coefficients and collision regimes}
 The first polynomial is
-\begin{equation}\label{eq:C1}
+\begin{equation}\label{otr:eq:C1}
  C_{d,1}(w)=\frac{d-3}{4}w+\frac{3d-4}{24}w^2.
 \end{equation}
 For $d=2$, fixed $z$ corresponds to $w=-z^2/4$, so
 \begin{align}
  A_{2,n}(z)&=\e^{-z^2/8}
-       \left(1+\frac{c_1(z)}n+\frac{c_2(z)}{n^2}+O_z(n^{-3})\right),\label{eq:A2}\\
+       \left(1+\frac{c_1(z)}n+\frac{c_2(z)}{n^2}+O_z(n^{-3})\right),\label{otr:eq:A2}\\
  c_1(z)&=\frac{z^2}{16}+\frac{z^4}{192},\nonumber\\
  c_2(z)&=\frac{z^2(z^6-24z^4-144z^2+2304)}{73728}.\nonumber
 \end{align}
 For every fixed $d\ge3$ and fixed $z$,
-\begin{equation}\label{eq:Ad}
+\begin{equation}\label{otr:eq:Ad}
  A_{d,n}(z)=1-\frac{z^d}{2d^d}n^{2-d}
                      +O_{d,z}(n^{1-d}+n^{4-2d}).
 \end{equation}
 Particular coefficients can cancel. For example,
 \begin{align}
  A_{3,n}(z)&=1-\frac{z^3}{54n}+\frac{z^6}{5832n^2}
- -\frac{z^3(z^6-270z^3-3888)}{944784n^3}+O_z(n^{-4}),\label{eq:A3}\\
- A_{4,n}(z)&=1-\frac{z^4}{512n^2}-\frac{z^4}{1024n^3}+O_z(n^{-4}).\label{eq:A4}
+ -\frac{z^3(z^6-270z^3-3888)}{944784n^3}+O_z(n^{-4}),\label{otr:eq:A3}\\
+ A_{4,n}(z)&=1-\frac{z^4}{512n^2}-\frac{z^4}{1024n^3}+O_z(n^{-4}).\label{otr:eq:A4}
 \end{align}
-The companion generator constructs coefficients through order four by exact rational symbolic algebra using \eqref{eq:E}--\eqref{eq:C}. The theorem permits any fixed order; the shipped finite order is only a reproducible sample.
+The companion generator constructs coefficients through order four by exact rational symbolic algebra using \eqref{otr:eq:E}--\eqref{otr:eq:C}. The theorem permits any fixed order; the shipped finite order is only a reproducible sample.
 
-For $d>2$, compact-$w$ uniformity covers $|z|\le c n^{1-2/d}$ for each fixed $c$. This is smaller than the scale $n^{1-1/d}$ of the growing cutoffs in Sections~\ref{sec:coarse}--\ref{sec:recovery}. The exact amplitude polynomial must be used outside the former uniformity range.
+For $d>2$, compact-$w$ uniformity covers $|z|\le c n^{1-2/d}$ for each fixed $c$. This is smaller than the scale $n^{1-1/d}$ of the growing cutoffs in Sections~\ref{otr:sec:coarse}--\ref{otr:sec:recovery}. The exact amplitude polynomial must be used outside the former uniformity range.
 
 \section{Interpreting the exponentially small sectors}
-\label{sec:sectors}
-Retaining the first nonprincipal pair in Corollary~\ref{cor:fixed} gives
-\begin{equation}\label{eq:firstpair}
+\label{otr:sec:sectors}
+Retaining the first nonprincipal pair in Corollary~\ref{otr:cor:fixed} gives
+\begin{equation}\label{otr:eq:firstpair}
  \frac{H_d(n)}{B_{d,n}}-A_{d,n}(\lam)
  =2\Rea\left[(\lam/z_1)^{dn+1}A_{d,n}(z_1)\right]
  +O_d\bigl((\lam/|z_2|)^{dn+1}\bigr).
 \end{equation}
-The principal term on the left is the \emph{exact} amplitude. Each retained fixed amplitude can separately be expanded with Theorem~\ref{thm:kernel}, but a fixed algebraic truncation of the principal amplitude leaves an error much larger than the first nonreal sector. The two error budgets must therefore be stated separately.
+The principal term on the left is the \emph{exact} amplitude. Each retained fixed amplitude can separately be expanded with Theorem~\ref{otr:thm:kernel}, but a fixed algebraic truncation of the principal amplitude leaves an error much larger than the first nonreal sector. The two error budgets must therefore be stated separately.
 
-For $d=2$, put $\theta=\arg(\lam+2\pi\ii)$. From \eqref{eq:A2}, the first pair is
-\begin{equation}\label{eq:cosine}
+For $d=2$, put $\theta=\arg(\lam+2\pi\ii)$. From \eqref{otr:eq:A2}, the first pair is
+\begin{equation}\label{otr:eq:cosine}
  2\e^{(4\pi^2-\lam^2)/8}(\lam/|z_1|)^{2n+1}
  \left[\cos\bigl((2n+1)\theta+\pi\lam/2\bigr)+O(n^{-1})\right].
 \end{equation}
-The separate omitted-pair error is still that in \eqref{eq:firstpair}. This is an absolute oscillatory estimate; division by the cosine near a zero would not give a valid uniform relative estimate.
+The separate omitted-pair error is still that in \eqref{otr:eq:firstpair}. This is an absolute oscillatory estimate; division by the cosine near a zero would not give a valid uniform relative estimate.
 
 There is a direct obstruction to replacing every amplitude on the infinite lattice by its fixed-pole leading term. For $d=2$ the surrogate terms obtained with $\e^{-z_m^2/8}$ have magnitudes proportional, at fixed $n$, to
 \[
  \e^{\pi^2m^2/2}|z_m|^{-2n-1}.
 \]
-They do not even tend to zero as $|m|\to\infty$. The exact polynomial-amplitude series converges absolutely by Theorem~\ref{thm:exact}; this infinite fixed-pole surrogate diverges. The valid result is an exact-amplitude finite-sector hierarchy, not an unrestricted termwise summation of fixed-pole amplitude asymptotics.
+They do not even tend to zero as $|m|\to\infty$. The exact polynomial-amplitude series converges absolutely by Theorem~\ref{otr:thm:exact}; this infinite fixed-pole surrogate diverges. The valid result is an exact-amplitude finite-sector hierarchy, not an unrestricted termwise summation of fixed-pole amplitude asymptotics.
 
 \section{Known leading equivalents and inverse thresholds}
-\label{sec:inverse}
-Stirling's formula and Theorem~\ref{thm:kernel} recover the already recorded equivalents
+\label{otr:sec:inverse}
+Stirling's formula and Theorem~\ref{otr:thm:kernel} recover the already recorded equivalents
 \begin{align}
  H_2(n)&\sim\frac{\e^{-\lam^2/8}}{\sqrt2\lam}
-              \left(\frac4{\e\lam^2}\right)^n n^n,\label{eq:lead2}\\
+              \left(\frac4{\e\lam^2}\right)^n n^n,\label{otr:eq:lead2}\\
  H_d(n)&\sim\frac{\sqrt d}{2\lam}
        \left(\frac{d^d}{\e^{d-1}\lam^d}\right)^n n^{(d-1)n},
-       \qquad d\ge3.\label{eq:leadd}
+       \qquad d\ge3.\label{otr:eq:leadd}
 \end{align}
 These are credited to the OEIS sources \cite{oeis2,oeis3,oeis4}; they are not asserted as new leading terms. The inverse consequence below is useful but routine and logically separate from the exponentially accurate exact-amplitude sector theorem.
 
@@ -571,22 +756,22 @@ Put $p=d-1$ and define
 \begin{align}
  \beta_d&=d\log d-(d-1)-d\log\lam,\nonumber\\
  \gamma_d&=\tfrac12\log d-\log2-\log\lam
-                    -\mathbf1_{d=2}\lam^2/8.\label{eq:betagamma}
+                    -\mathbf1_{d=2}\lam^2/8.\label{otr:eq:betagamma}
 \end{align}
 There are explicit real coefficients $b_{d,r}$ such that, for every fixed $R\ge0$,
 \begin{align}
- \log H_d(n)&=F_{d,R}(n)+O_{d,R}(n^{-R-1}),\label{eq:logH}\\
+ \log H_d(n)&=F_{d,R}(n)+O_{d,R}(n^{-R-1}),\label{otr:eq:logH}\\
  F_{d,R}(x)&=p x\log x+\beta_d x+\gamma_d
-                  +\sum_{r=1}^{R}b_{d,r}x^{-r}.\label{eq:F}
+                  +\sum_{r=1}^{R}b_{d,r}x^{-r}.\label{otr:eq:F}
 \end{align}
 To construct them, use the compact-kernel expansion at $z=\lam$ to the desired order, take its formal logarithm (its leading value is positive), and add the Stirling series
-\begin{equation}\label{eq:Bernoulli}
+\begin{equation}\label{otr:eq:Bernoulli}
  \log B_{d,n}\sim p n\log n+\beta_d n
  +\tfrac12\log d-\log2-\log\lam
  +\sum_{k\ge1}\frac{B_{2k}(d^{1-2k}-1)}{2k(2k-1)n^{2k-1}}.
 \end{equation}
 Here $B_{2k}$ are Bernoulli numbers. The nonprincipal poles are exponentially small and are absorbed at each fixed order. The principal amplitude tends to $\e^{-\lam^2/8}>0$ for $d=2$ and to one for $d\ge3$, so taking the real logarithm is legitimate eventually. In particular,
-\begin{equation}\label{eq:b1}
+\begin{equation}\label{otr:eq:b1}
  b_{d,1}=\begin{cases}
  \lam^2/16+\lam^4/192-1/24,&d=2,\\
  -\lam^3/54-1/18,&d=3,\\
@@ -595,7 +780,7 @@ Here $B_{2k}$ are Bernoulli numbers. The nonprincipal poles are exponentially sm
 \end{equation}
 The functions $F_{d,R}$ are explicitly chosen smooth approximating models. They do not define a canonical continuation of the finite-$n$ amplitude polynomial.
 
-\begin{lemma}[Strict monotonicity]\label{lem:mono}
+\begin{lemma}[Strict monotonicity]\label{otr:lem:mono}
 For every $d\ge2$, the sequence $H_d(n)$ is strictly increasing.
 \end{lemma}
 \begin{proof}
@@ -608,11 +793,11 @@ Define the integer inverse threshold
 \]
 For each fixed $R$, let $x_R(X)$ be the unique sufficiently large solution of
 $F_{d,R}(x)=\log X$. It exists for sufficiently large $X$, since
-\begin{equation}\label{eq:deriv}
+\begin{equation}\label{otr:eq:deriv}
  F'_{d,R}(x)=p\log x+\beta_d+p+O_{d,R}(x^{-2})>0
 \end{equation}
 eventually and $F_{d,R}(x)\to\infty$. For $R=0$ the solution is explicit:
-\begin{equation}\label{eq:Lambert}
+\begin{equation}\label{otr:eq:Lambert}
  x_0(X)=\frac{Y}{pW\bigl(\e^{\beta_d/p}Y/p\bigr)},
  \qquad Y=\log X-\gamma_d,
 \end{equation}
@@ -620,9 +805,9 @@ where $W$ is the positive real Lambert branch. Indeed, substituting
 $y=\e^{\beta_d/p}x$ turns the equation into
 $y\log y=\e^{\beta_d/p}Y/p$. This derivation also fixes the branch in the eventual range $Y>0$.
 
-\begin{corollary}[Eventual shrinking two-ceiling enclosure]\label{cor:inverse}
+\begin{corollary}[Eventual shrinking two-ceiling enclosure]\label{otr:cor:inverse}
 Fix $d\ge2$ and $R\ge0$. There exist constants $C,X_0>0$ such that, for $X\ge X_0$,
-\begin{equation}\label{eq:inverse}
+\begin{equation}\label{otr:eq:inverse}
  \ceil{x_R(X)-\epsilon_R(X)}\le N_d(X)
  \le\ceil{x_R(X)+\epsilon_R(X)},\qquad
  \epsilon_R(X)=\frac{C x_R(X)^{-R-1}}{\log x_R(X)}.
@@ -630,7 +815,7 @@ Fix $d\ge2$ and $R\ge0$. There exist constants $C,X_0>0$ such that, for $X\ge X_
 The real enclosure shrinks to zero; eventually the two ceilings differ by at most one. The assertion supplies neither an effective starting threshold nor a universal exact single-ceiling formula.
 \end{corollary}
 \begin{proof}
-Fix $d,R$. By \eqref{eq:logH}, choose $A,N_0$ with
+Fix $d,R$. By \eqref{otr:eq:logH}, choose $A,N_0$ with
 $|\log H_d(n)-F_{d,R}(n)|\le A n^{-R-1}$ for $n\ge N_0$.
 Write $x=x_R(X)$. For all sufficiently large $x$, on $[x-2,x+2]$ we have
 $F'_{d,R}(t)\ge c\log x$ and $t^{-R-1}\le2x^{-R-1}$ for some fixed $c>0$. Choose $C>2A/c$ and set $\epsilon=Cx^{-R-1}/\log x$, eventually less than one.
@@ -643,39 +828,93 @@ $x-2<q<x-\epsilon$ and $x+\epsilon\le u<x+2$, and both integers are eventually a
  \log H_d(u)&\ge F_{d,R}(u)-2Ax^{-R-1}\\
  &\ge F_{d,R}(x)+c\epsilon\log x-2Ax^{-R-1}>\log X.
 \end{align*}
-Strict monotonicity implies $q<N_d(X)\le u$, which is \eqref{eq:inverse}. This argument also handles exact integer boundaries of $x\pm\epsilon$. Since $2\epsilon\to0$, the two ceilings eventually differ by at most one.
+Strict monotonicity implies $q<N_d(X)\le u$, which is \eqref{otr:eq:inverse}. This argument also handles exact integer boundaries of $x\pm\epsilon$. Since $2\epsilon\to0$, the two ceilings eventually differ by at most one.
 \end{proof}
 
 The constants and onset in this corollary are existential. Its fixed-order bracket is not exponentially accurate and is not a finite-input certified inverse algorithm. It is independent of the forward rounding theorem, which is effective for every stated integer input. Near integer boundaries an arbitrarily small real error can still change a ceiling.
 
+\begin{remark}[{[write]} The pole theorems, the inverse and the transseries volume, 7~October 2026]\label{otr:rem:transseries}
+Compared statement by statement with the repository's transseries
+volume~\cite{TSvol}; the volume's symbols are not used here.
+\begin{enumerate}\raggedright
+\item \emph{The pole identity.} Lemma~\ref{otr:lem:fubini} is the first
+equality of \file{q2:thm:fubini} (the left side is twice the Fubini number),
+the same statement for $r\ge1$, proved independently by Fourier series. The
+volume's proof has the defect recorded in Appendix~\ref{otr:app:corrections};
+its statement does not.
+\item \emph{The tails.} Theorem~\ref{otr:thm:tail} is an analogue of
+\file{q2:thm:pole-tail} after the $n$-dependent Stirling transform, and
+Theorem~\ref{otr:thm:recover} an analogue of \file{q2:prop:budget} (whose pole
+budget for the Fubini numbers themselves is linear in $n$); neither is an
+instance, since the transformed sum is not a single Fubini number.
+\item \emph{The growth.} $\log H_d(n)=(d-1)n\log n+\beta_dn+\gamma_d+O(1/n)$
+contains the term $n\log n$, so it is not of the exponential--power form of
+\file{p0:def:model}; no instance of the volume's model is claimed.
+\item \emph{The order-zero inverse.} With $y=\e^{\beta_d/p}x$ and then
+$w=\log y$, the equation $F_{d,0}(x)=\log X$ becomes
+$w+\log w=\log(\e^{\beta_d/p}Y/p)$: the volume's dominant block
+\file{p0:thm:lambert-core} with unit slope and unit logarithmic coefficient,
+whose positive-coefficient branch gives exactly~\eqref{otr:eq:Lambert}. An
+exact instance.
+\item \emph{The higher models.} For $R\ge1$, in the chart of the logarithm of
+the unknown the leading balance of $F_{d,R}(x)=\log X$ is a
+monomial--logarithmic datum (\file{plt:def:lw-monomial-log-datum}), but the
+terms $b_{d,r}x^{-r}$ enter, relative to $p\,x\log x$, as exponentially small
+functions of that chart variable, outside the series the template requires;
+the write has not shown $x_R$ to be an instance of \file{plt:thm:lw-template}.
+\item \emph{The thresholds.} $N_d(X)$ is the volume's staircase
+(\file{p0:def:three-inverses}(1)) of the strictly increasing sequence
+$H_d(n)$ (Lemma~\ref{otr:lem:mono}); $F_{d,R}$ is not an interpolation of
+$\log H_d(n)$ (it differs by the vertical error of~\eqref{otr:eq:logH}), so
+Corollary~\ref{otr:cor:inverse} is an analogue of \file{p0:thm:staircase}(2),
+proved directly, and the paragraph after it states that theorem's caution.
+\end{enumerate}
+\end{remark}
+
 \section{Reproducibility and the limits of finite checks}
-\label{sec:repro}
+\label{otr:sec:repro}
 The accompanying portable package contains this editable \LaTeX{} article, the rendered PDF, exact symbolic and rational programs, regenerated data, source references, dependency versions, a deterministic build driver and a SHA-256 manifest. It contains no third-party source-paper PDFs. The mathematical arguments above are self-contained relative to the explicitly credited classical identities; no neighboring report or private file is needed to run the package.
 
 The calculation layers have deliberately different meanings:
 \begin{enumerate}
-\item \textbf{Exact finite enumeration.} Fubini numbers and signed Stirling coefficients give integer $H_d(n)$. Vertex inclusion--exclusion from \eqref{eq:enum} independently checks small cases. The first nine values for each of $d=2,3,4$ are compared with the primary sequence entries.
-\item \textbf{Exact symbolic construction.} Rational symbolic algebra constructs the kernel coefficients by \eqref{eq:E}--\eqref{eq:C}, then substitutes \eqref{eq:AfromG}. The shipped fixed-pole coefficients extend through order four.
+\item \textbf{Exact finite enumeration.} Fubini numbers and signed Stirling coefficients give integer $H_d(n)$. Vertex inclusion--exclusion from \eqref{otr:eq:enum} independently checks small cases. The first nine values for each of $d=2,3,4$ are compared with the primary sequence entries.
+\item \textbf{Exact symbolic construction.} Rational symbolic algebra constructs the kernel coefficients by \eqref{otr:eq:E}--\eqref{otr:eq:C}, then substitutes \eqref{otr:eq:AfromG}. The shipped fixed-pole coefficients extend through order four.
 \item \textbf{High-precision diagnostics.} Finite pole sums test the positive-polynomial bound and fixed-pole expansions. These are high-precision numerical diagnostics, not interval certificates; ordinary floating-point differences would be insufficient to resolve the smallest sectors.
-\item \textbf{Certified integer recovery.} Standard-library integer and rational arithmetic enclose constants and perform outward-rounded dyadic operations in \eqref{eq:paired}. Recovery uses interval width alone. Separate exact-count comparisons and certified tail checks test representative inputs. They supplement the proof of the all-input theorem rather than replace it.
+\item \textbf{Certified integer recovery.} Standard-library integer and rational arithmetic enclose constants and perform outward-rounded dyadic operations in \eqref{otr:eq:paired}. Recovery uses interval width alone. Separate exact-count comparisons and certified tail checks test representative inputs. They supplement the proof of the all-input theorem rather than replace it.
 \item \textbf{Guard and portability checks.} Correctness guards raise explicit exceptions and remain active under Python optimization. Negative controls reject invalid domains, invalid intervals or contexts, and corrupted data. Clean runs from unrelated working directories compare newly generated JSON byte-for-byte under normal and optimized Python. The full driver rebuilds the PDF to byte stability, checks actual archive member bytes and optionally compares the complete rebuilt ZIP with the original ZIP.
 \end{enumerate}
 The README and machine-readable receipts give the exact finite ranges and control counts for the delivered version. Numerical results are not presented as proofs beyond those ranges. Reproducible PDF bytes require the stated TeX and font toolchain; exact integer/rational computations do not depend on TeX, and the certified recovery module uses only the Python standard library. Symbolic and diagnostic layers additionally require the specified SymPy and mpmath versions. The deterministic ZIP uses fixed ordering, timestamps, permissions and stored members, avoiding compressor-version dependence. Build logs and local rendering images are not public package inputs.
+\begin{writenote}[The shipped files, 7 October 2026]\raggedright
+In ProveIt the PDF, \file{MANIFEST.json} and \file{code/SHA256SUMS.txt} are
+not shipped; the programs are \file{code/*.py} (the outer driver as
+\file{code/outer-reproduce.py}), the reference data and the recorded results
+are under \file{data/} (the results as \file{data/results-*.json}). The
+programs read their reference data next to themselves, and both drivers
+expect the delivered layout, so the report README gives commands that rerun
+the programs in a scratch copy with the delivered names restored.
+\end{writenote}
 
 \section{Questions for further work}
-\label{sec:questions}
+\label{otr:sec:questions}
 \begin{enumerate}
 \item \textbf{Sharper cutoffs.} Optimize the sufficient constant in $M\sim a_dn^{1-1/d}$ and seek necessary conditions. The optimal cutoff for the absolute-value tail majorant may differ from the actual oscillatory-tail recovery threshold. Neither optimality of the current constant nor minimality of its order is proved here.
 \item \textbf{Precision and bit complexity.} Quantify the interval precision needed by a stable evaluation strategy, exploit structured polynomial evaluation, and compare total bit cost with exact recurrence or inclusion--exclusion methods. A small number of poles alone need not imply a faster algorithm.
 \item \textbf{Growing complex arguments.} Extend the compact-$w$ collision theorem toward the recovery scale, or identify transition regimes where a different uniform approximation is required. The divergent $d=2$ infinite fixed-pole surrogate is an explicit warning against an unqualified extension.
-\item \textbf{Effective inverse thresholds.} Replace the existential constants and onset in Corollary~\ref{cor:inverse} by computable bounds, possibly combining exact recovery with a certified search near a smooth center. Uniform control near integer boundaries is essential.
+\item \textbf{Effective inverse thresholds.} Replace the existential constants and onset in Corollary~\ref{otr:cor:inverse} by computable bounds, possibly combining exact recovery with a certified search near a smooth center. Uniform control near integer boundaries is essential.
 \item \textbf{Other edge models.} Analyze distinct unordered set-edges, multiedges, or several separately ordered coordinate classes. Their transforms differ, so the current proof does not automatically give their sectors. In particular it does not resolve the additional inner-transform problem for A260700 or the matrix-composition sector problem discussed in \cite{pdc,mc}.
 \end{enumerate}
+\begin{writenote}[Added 7 October 2026, under Vladimir's standing rule of 4 October 2026]
+Every open question of the source is in this list. The write adds from the
+non-claims a version of Corollary~\ref{otr:cor:inverse} with explicit
+constants (also item~4), and an interval certificate for the decimal
+diagnostics. No claim of the source was found false; its three corrections
+to the transseries volume are confirmed (Appendix~\ref{otr:app:corrections}).
+\end{writenote}
 
 \appendix
 \section{Three corrections to a pinned Fubini source}
-\label{app:corrections}
-This appendix identifies local defects in a source proof and its weighted-parameter discussion. It does not claim that other source results fail, and it does not modify the source. The positive-degree Fubini pole formula remains valid and was proved independently in Lemma~\ref{lem:fubini}.
+\label{otr:app:corrections}
+This appendix identifies local defects in a source proof and its weighted-parameter discussion. It does not claim that other source results fail, and it does not modify the source. The positive-degree Fubini pole formula remains valid and was proved independently in Lemma~\ref{otr:lem:fubini}.
 
 \paragraph{Exact source pin.}
 The source is VladimirReshetnikov/ProveIt, commit
@@ -688,6 +927,13 @@ Its Git blob is
 The full-source SHA-256 is
 \begin{center}\small\texttt{4afb0dd996eb5a1facca9fc43bfcbb87a5c64d9a97b66cd8c5f079f15b983398}.\end{center}
 All locations below refer to this immutable version, not a moving branch.
+\begin{writenote}[The pin checked, 7 October 2026]
+The commit exists in ProveIt and is an ancestor of the placement; the file's
+Git blob and SHA-256 are as stated, and the lines quoted below are those of
+that blob. The volume at the current commit has the same blob: none of the
+three passages has been changed yet. The correction of the volume itself is a
+separate commit of the owner's; this report does not edit the volume.
+\end{writenote}
 
 \subsection{The symmetric Mittag--Leffler constant}
 The proof labeled \texttt{q2:thm:fubini}, at
@@ -695,13 +941,22 @@ The proof labeled \texttt{q2:thm:fubini}, at
 \begin{align}
  \frac1{2-\e^z}
  &=\frac14-\frac12\lim_{M\to\infty}
-                \sum_{k=-M}^{M}\frac1{z-\zeta_k}\label{eq:ML}\\
+                \sum_{k=-M}^{M}\frac1{z-\zeta_k}\label{otr:eq:ML}\\
  &=\frac14-\frac14\coth\left(\frac{z-\rho}{2}\right).\nonumber
 \end{align}
 The symmetric identity $\sum_k(z-\rho-2\pi\ii k)^{-1}
 =\tfrac12\coth((z-\rho)/2)$ follows from the classical partial fraction expansion of $\coth$. The last expression also equals $1/(2-\e^z)$ directly. The entire part in this summation convention is $1/4$.
 
 At $z=0$, the pole part is $3/4$ while the full function is one. As $\Rea z\to-\infty$, the pole part tends to $1/4$ and the full function tends to $1/2$. Thus that limiting argument cannot remove the constant. The additional constant has no positive-degree coefficient, so coefficient extraction for $r\ge1$ and the source's exact Fubini formula survive. Extending the absolutely convergent positive-degree formula to $r=0$ without a convention would be unjustified.
+\begin{writenote}[Confirmed, 7 October 2026: \file{q2:thm:fubini}]
+The volume's proof sets the entire part of the symmetric expansion to zero
+``by the decay of both sides as $\Re z\to-\infty$''; but $1/(2-\e^z)\to1/2$
+there, and the identity~\eqref{otr:eq:ML} holds with the constant $1/4$
+(checked numerically at a nonreal point: residual $0$ at 40 digits; the
+symmetric pole part is $3/4$ at $z=0$). Coefficient extraction in positive
+degree is unaffected, so the statement of \file{q2:thm:fubini}, for every
+$n\ge1$, stands; only its proof drops the constant $1/4$.
+\end{writenote}
 
 \subsection{Compact-weight uniform bounds use the maximum}
 In \texttt{q2:rem:weighted},
@@ -711,7 +966,7 @@ In \texttt{q2:rem:weighted},
  \qquad F_r(x)=\sum_{j=0}^r j!\left\{\genfrac{}{}{0pt}{}{r}{j}\right\}x^j,
 \]
 the displayed coarse tail bound is
-\begin{equation}\label{eq:weighted}
+\begin{equation}\label{otr:eq:weighted}
  |T_r(x)-1|\le\frac{\rho_x^2}{12}
  \le\frac{(\max_{y\in I}\rho_y)^2}{12}\qquad(r\ge1).
 \end{equation}
@@ -725,6 +980,18 @@ For a concrete counterexample to the minimum, take $I=[1,10]$, $r=1$ and $x=1$. 
  |T_1(1)-1|=1-2(\log2)^2>0.02,
 \]
 using $\log2<0.7$. But $\min_I\rho_x=\log(1.1)<0.1$ would produce a purported upper bound less than $1/1200$. The two inequalities are incompatible.
+\begin{writenote}[Confirmed, 7 October 2026: \file{q2:rem:weighted}, the compact-interval bound]
+The volume suggests replacing $\rho$ in \file{q2:thm:pole-tail} by
+$\min_x\rho_x$; it needs $\max_x\rho_x$. The write's numbers: $T_1(1)=2(\log2)^2=0.9609\ldots$,
+$|T_1(1)-1|=0.0390\ldots$, while $(\log1.1)^2/12=0.000757\ldots$; and
+$|T_3(x)-1|\le\rho_x^2/12$ at $x=0.001,0.1,1,10,100$ (from the exact pole sum
+of~\file{q2:eq:weighted}, which the write also checked against the weighted
+Fubini polynomial at $r=3$, $x=2$: both $74$). \emph{The write adds} that the
+bound~\eqref{otr:eq:weighted} needs no restriction on $\rho_x$, whereas the
+volume's own proof of the uniform bound, by monotonicity in $n$ of
+$2(\rho/2\pi)^{n+1}\zeta(n+1)$, transfers to the weighted family only while
+$\rho_x\le2\pi$, that is for $x\ge1/(\e^{2\pi}-1)$.
+\end{writenote}
 
 \subsection{Large weights improve principal-pole dominance}
 In the same remark,
@@ -733,13 +1000,43 @@ In the same remark,
  \left|\frac{\rho_x}{\rho_x+2\pi\ii k}\right|\longrightarrow0.
 \]
 Thus the nonprincipal sectors shrink relative to the principal pole; the leading-pole approximation improves. The coarse normalized bound $\rho_x^2/12$ also tends to zero. Fixed nonzero-$k$ modulus ratios approach one in the opposite limit $x\downarrow0$, when $\rho_x\to\infty$.
+\begin{writenote}[Confirmed, 7 October 2026: \file{q2:rem:weighted}, the large-weight direction]
+The volume says that as $x\to\infty$ ``the sectors become comparable in size
+and the leading-pole approximation degrades''; the direction is reversed. The
+first modulus ratio $\rho_x/|\rho_x+2\pi\ii|$ is $0.740$, $0.357$, $0.110$,
+$0.0152$, $0.00158$ at $x=0.001,0.1,1,10,100$: it tends to $0$ as
+$x\to\infty$ and to $1$ only as $x\downarrow0$.
+\end{writenote}
 
-\section{Source scope and neighboring sequences}
+\section{Source scope and neighboring sequences}\label{otr:app:scope}% [write] label added
 The $H_d$ sequences must not be silently identified with superficially similar graph or hypergraph families. A173219 uses $k(k+1)/2$ in place of $k^2$, and equals $2$A121251 for positive indices, not at zero. A121251 uses $\binom{k}{2}$ and concerns simple undirected graphs; its asymptotics belong to the Bender--Canfield--McKay setting \cite{bcm}. A104209 instead permits directed multiedges. Ordinary fixed-cardinality set-edge hypergraphs use $\binom{k}{d}$, not $k^d$.
 
-The comparison with \cite{pdc,mc,transseries} was made against the pinned commit stated in Appendix~\ref{app:corrections}. The A260700 source contains exact cycle-type expansions and a uniform all-configuration defect bound, but explicitly leaves propagation of nonreal Fubini poles through both of its transforms as a further question. The A261781 source contains entire-kernel compact-complex asymptotics and differential coefficient constructions, but for different factorial ratios and a different enumeration. These are substantial method precedents, not proofs of the present transformed-tail bound and not problems resolved merely by stating it.
+The comparison with \cite{pdc,mc,transseries} was made against the pinned commit stated in Appendix~\ref{otr:app:corrections}. The A260700 source contains exact cycle-type expansions and a uniform all-configuration defect bound, but explicitly leaves propagation of nonreal Fubini poles through both of its transforms as a further question. The A261781 source contains entire-kernel compact-complex asymptotics and differential coefficient constructions, but for different factorial ratios and a different enumeration. These are substantial method precedents, not proofs of the present transformed-tail bound and not problems resolved merely by stating it.
 
 The inspected primary OEIS material identifies the models, formulas and leading equivalents. Some A301466/A301468 checks used indexed primary-site text when direct exports were unavailable; no claim of a permanently live export or exhaustive literature survey is made. The package includes citations and metadata sufficient to identify the sources, rather than copying third-party full texts.
+
+\begin{remark}[{[write]} The OEIS entries, 7~October 2026]\label{otr:rem:oeis}
+The write read the entries in the internal format on 7~October 2026.
+\emph{A173217}, revision \#30 (3 May 2018), by Paul D.\ Hanna (5 March 2010),
+``G.f.: A(x) = Sum\_\{n>=0\} (1 + x)\^{}(n\^{}2) / 2\^{}(n+1).'', with David
+Bevan's comment (22 April 2013) that it counts labeled digraphs with $n$ edges,
+no vertex of degree zero, loops permitted and no duplicate edges, a b-file by
+Hanna ($n=0,\ldots,100$), and the leading equivalent signed by V\'aclav
+Kote\v{s}ovec, 21 March 2018, which is~\eqref{otr:eq:lead2} (its factor
+$2^{-\log(2)/8}$ is $\e^{-\lam^2/8}$). \emph{A301466}, revision \#10 (22 March
+2018), and \emph{A301468}, revision \#4 (21 March 2018), both by Kote\v{s}ovec
+(21 March 2018), with the leading equivalents for $d=3$ and $d=4$ and, in
+A301468, the comment giving the general $m>2$ equivalent, which
+is~\eqref{otr:eq:leadd}; A301466 has a b-file ($n=0,\ldots,175$), A301468 only
+its eleven displayed terms. \emph{A000670} (revision \#913, 2 October 2026)
+has the pole formula of Lemma~\ref{otr:lem:fubini} credited to Dean
+Hickerson. A173219 (\#9), A121251 (\#21) and A104209 (\#25) are as
+Appendix~\ref{otr:app:scope} describes them: $(1+x)^{n(n+1)/2}$, the relation
+$a(n)=2\,$A121251$(n)$ for $n>0$ (Andrew Howroyd, 2020), simple graphs with
+$\binom m2$, and directed multigraphs. None of the entries has a conjecture.
+\emph{Checks.} The write's counts equal the three b-files in the ranges
+stated in Section~\ref{otr:sec:provenance}. No OEIS edit is part of this work.
+\end{remark}
 
 \begin{thebibliography}{99}
 \bibitem{oeis2} OEIS Foundation Inc., \emph{The On-Line Encyclopedia of Integer Sequences}, A173217, directed graphs with $n$ edges and no isolated vertices, allowing loops. Formula and leading-asymptotic entries, including the 2018 contribution of V. Kot\v e\v sovec. \url{https://oeis.org/A173217}.
@@ -750,8 +1047,9 @@ The inspected primary OEIS material identifies the models, formulas and leading 
 \bibitem{cps} P. J. Cameron, T. Prellberg and D. Stark, Asymptotic enumeration of incidence matrices, \emph{J. Phys.: Conf. Ser.} \textbf{42} (2006), 59--70. \href{https://doi.org/10.1088/1742-6596/42/1/007}{doi:10.1088/1742-6596/42/1/007}. Author version: \url{https://arxiv.org/abs/math/0511008}.
 \bibitem{cpsclasses} P. J. Cameron, T. Prellberg and D. Stark, Asymptotics for incidence matrix classes, \emph{Electron. J. Combin.} \textbf{13} (2006), R85. \href{https://doi.org/10.37236/1111}{doi:10.37236/1111}. Author version: \url{https://arxiv.org/abs/math/0510155}.
 \bibitem{bcm} E. A. Bender, E. R. Canfield and B. D. McKay, The asymptotic number of labeled graphs with $n$ vertices, $q$ edges and no isolated vertices, \emph{J. Combin. Theory Ser. A} \textbf{80} (1997), 124--150. Author copy: \url{https://users.cecs.anu.edu.au/~bdm/papers/nip3.pdf}.
-\bibitem{transseries} VladimirReshetnikov/ProveIt, \emph{Transseries and inversion}, source file identified in Appendix~\ref{app:corrections}, pinned commit \texttt{c744ff67d111bf02d1daf2caaabeec7aaa4c7617}. Fubini theorem \texttt{q2:thm:fubini}, tail theorem \texttt{q2:thm:pole-tail}, weighted remark \texttt{q2:rem:weighted}. AI-assisted, unrefereed repository source. \href{https://github.com/VladimirReshetnikov/ProveIt/blob/c744ff67d111bf02d1daf2caaabeec7aaa4c7617/Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex}{Immutable source link}.
+\bibitem{transseries} VladimirReshetnikov/ProveIt, \emph{Transseries and inversion}, source file identified in Appendix~\ref{otr:app:corrections}, pinned commit \texttt{c744ff67d111bf02d1daf2caaabeec7aaa4c7617}. Fubini theorem \texttt{q2:thm:fubini}, tail theorem \texttt{q2:thm:pole-tail}, weighted remark \texttt{q2:rem:weighted}. AI-assisted, unrefereed repository source. \href{https://github.com/VladimirReshetnikov/ProveIt/blob/c744ff67d111bf02d1daf2caaabeec7aaa4c7617/Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex}{Immutable source link}.
 \bibitem{pdc} VladimirReshetnikov/ProveIt, \emph{A260700: parabolic double cosets}, article source at the same pinned commit. Git blob \texttt{1ffc7c38d8951a6035829be3df81c1636d5fb13b}. AI-assisted, unrefereed repository source. \href{https://github.com/VladimirReshetnikov/ProveIt/blob/c744ff67d111bf02d1daf2caaabeec7aaa4c7617/SetTheory/Cardinals/docs/reports/generating-functions-and-asymptotics/oeis-sequence-asymptotics/a260700-parabolic-double-cosets/article.tex}{Immutable source link}.
 \bibitem{mc} VladimirReshetnikov/ProveIt, \emph{A261781/A261784: matrix compositions}, article source at the same pinned commit. Git blob \texttt{3a3b585bd1f571f3b3ccf228eb8efde131b1cc49}. AI-assisted, unrefereed repository source. \href{https://github.com/VladimirReshetnikov/ProveIt/blob/c744ff67d111bf02d1daf2caaabeec7aaa4c7617/SetTheory/Cardinals/docs/reports/generating-functions-and-asymptotics/oeis-sequence-asymptotics/a261781-matrix-compositions/article.tex}{Immutable source link}.
+\bibitem{TSvol} ProveIt, \emph{Transseries and inversion}, \file{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex} at the current commit (the same blob as \cite{transseries}); Part~0 (\file{p0:def:model}, \file{p0:thm:lambert-core}, \file{p0:def:three-inverses}, \file{p0:thm:staircase}), the chapter on the Lambert template (\file{plt:def:lw-monomial-log-datum}, \file{plt:thm:lw-template}) and the Fubini chapter (\file{q2:thm:fubini}, \file{q2:thm:pole-tail}, \file{q2:prop:budget}). [Added in the write.]
 \end{thebibliography}
 \end{document}
