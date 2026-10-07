@@ -11,7 +11,7 @@ the pipeline repeats the structural check before matrix filters. Cancelling
 pairs can expose homogeneity. Evidence under `seifert_after_reduction` describes
 the reduced diagram: replay `reidemeister_trace` with `fastunknot.simplify.replay`
 before passing that certificate to `verify_seifert_certificate`. An unchanged
-diagram is not checked twice. The integrated suite now has 71 passing tests.
+diagram is not checked twice. The integrated suite now has 73 passing tests.
 
 ```bash
 python3 -m fastunknot recognize examples/trefoil.json
@@ -28,6 +28,11 @@ A capped count of three means “at least three”; it is never an exact rank.
 An early Euler result uses `rank_lower_bound_capped`, distinct from final
 `rank_capped`. Exhausting the optional inference budget continues complete
 saturated scanning; object/time exhaustion returns `UNKNOWN`.
+Suffix geometry is prepared lazily only for states admitted by the inference
+budget; `euler_stats.prepared_stages` records the number of prepared stages.
+`python benchmark_euler_setup.py --output results/euler_setup_local.json`
+measures this setup separately from full recognition, with allocation peaks
+measured outside the timing samples.
 
 Shared backends require minimum-fill pivots, bit algebra, no tail contraction,
 and no racing. Incompatible options are rejected. `khovanov --shared` cannot

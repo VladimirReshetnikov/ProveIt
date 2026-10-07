@@ -89,7 +89,8 @@ PDFs in `docs/arXiv-2607.23350v1/`.
 Report 07 is integrated into the Python implementation: a linear Seifert-graph
 certificate stage and optional exact, saturated, and Euler-assisted shared
 scanners. A follow-up repeats the structural check when RI/RII removes crossings,
-with replayable evidence tied to the reduced diagram. All 71 integrated tests
+with replayable evidence tied to the reduced diagram. Euler geometry is now
+prepared within its inference budget. All 73 integrated tests
 pass on CPython 3.13.14. The Rust port retains
 the earlier pipeline. The maintained theory article is
 [`synthesis/report.pdf`](synthesis/report.pdf), with the new analysis in

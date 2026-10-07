@@ -42,6 +42,10 @@ separate from the authors' archive data and from end-to-end CLI timings.
 The post-reduction certificate extension is also described there; all 71 tests
 pass. Its isolated comparison is `../fast/benchmark_reduction.py`, with paired
 samples in `../fast/results/reduction_structural_20261007.json`.
+The next extension prepares suffix-Euler geometry lazily within the inference
+budget; the current suite has 73 passing tests. Setup-only measurements and
+separate allocation peaks are in `../fast/results/lazy_euler_setup_20261007.json`,
+reproduced by `../fast/benchmark_euler_setup.py`.
 
 ## Historical experiment status (18 September 2026)
 

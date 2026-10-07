@@ -41,25 +41,31 @@ class SuffixEuler:
             raise ValueError("Euler max_states must be a nonnegative integer or None")
         self.max_states = max_states
         self.deadline = deadline
-        self.algebras = []
-        points = frozenset()
-        for index in order:
-            algebra = Planar(shape_cache=False)
-            algebra.stage(points, pd[index])
-            self.algebras.append(algebra)
-            points = algebra.new_points()
+        self.crossings = [pd[index] for index in order]
+        self.algebras = {}
+        points = set()
+        for slots in self.crossings:
+            self._check()
+            # A label is on the frontier exactly when seen an odd number of
+            # times. Toggle occurrences separately to handle loop edges.
+            for label in slots:
+                if label in points:
+                    points.remove(label)
+                else:
+                    points.add(label)
         if points:
             raise ValueError("the suffix must end with empty boundary")
         self.cache = {}
         self.pending = {}
-        self.stats = dict(states=0, evaluations=0, max_coefficient_bits=0)
+        self.stats = dict(states=0, evaluations=0, max_coefficient_bits=0,
+                          prepared_stages=0)
 
     def _check(self):
         if self.deadline is not None and monotonic() > self.deadline:
             raise ScanLimit("time budget exhausted in suffix Euler computation")
 
     def evaluate(self, stage, pairs):
-        if not 0 <= stage <= len(self.algebras):
+        if not 0 <= stage <= len(self.crossings):
             raise ValueError("invalid suffix stage")
         self.stats["evaluations"] += 1
         root = (stage, tuple(pairs))
@@ -75,14 +81,23 @@ class SuffixEuler:
                 if self.max_states is not None and self.stats["states"] >= self.max_states:
                     raise EulerBudget("suffix Euler state budget exhausted")
                 self.stats["states"] += 1
-                if i == len(self.algebras):
+                if i == len(self.crossings):
                     if matching:
                         raise ArithmeticError("a terminal Euler matching is nonempty")
                     self.cache[key] = 1
                     self.stats["max_coefficient_bits"] = max(1, self.stats["max_coefficient_bits"])
                     stack.pop()
                     continue
-                algebra = self.algebras[i]
+                algebra = self.algebras.get(i)
+                if algebra is None:
+                    # Every matching at a fixed stage uses the same frontier.
+                    # Build its geometry only after a state passes the budget,
+                    # rather than allocating a Planar object for every crossing.
+                    algebra = Planar(shape_cache=False)
+                    points = frozenset(label for pair in matching for label in pair)
+                    algebra.stage(points, self.crossings[i])
+                    self.algebras[i] = algebra
+                    self.stats["prepared_stages"] += 1
                 m = algebra.intern(matching)
                 m0, c0, _ = algebra.glue(m, 0)
                 m1, c1, _ = algebra.glue(m, 1)

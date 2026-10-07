@@ -247,3 +247,45 @@ for them. Raw samples are in
 All 71 integrated tests pass, including mirrors, independent certificate
 replay on the reduced diagram, and a regression asserting that the
 matrix filter is not entered on this family.
+
+\subsection{Preparing suffix geometry within the inference budget}
+The delivered Euler engine eagerly constructed a separate geometry object
+for every crossing, retaining all intermediate frontier sets. This cost
+was incurred even with a zero-state budget, or if scanning finished
+without attempting an Euler inference. The maintained implementation
+instead constructs a stage's geometry only after registering a state
+within the budget. The complete matching of that state supplies the
+frontier. All matchings at a fixed suffix index have the same boundary
+labels, so a single cached geometry object serves every visit to that
+stage. This changes preparation, not the Euler recurrence or its values.
+
+Construction still checks closure in $O(n)$ word operations by toggling
+each of the four label occurrences at every crossing. Occurrences must
+be toggled individually: a loop label appearing twice in one crossing
+does not remain on the frontier. The pass keeps only the current boundary
+set and checks the time deadline throughout. The crossing list occupies
+$O(n)$ references. For a budget of $B$ registered states, at most
+$\min(n,B)$ stage geometries are prepared; their frontier storage is
+$O(\min(n,B)w)$. Thus the geometry preparation storage is
+$O(n+\min(n,B)w)$ rather than $O(nw)$, before accounting for the separately
+budgeted memo and gluing entries. This is especially useful when the
+optional inference is disabled or rejected immediately. It does not
+change the worst-case complexity theorem.
+
+The additional statistic \code{prepared\_stages} reports actual geometry
+construction. Tests check zero- and one-state budgets on a 1201-crossing
+diagram, deadline exhaustion during construction, the existing exact
+suffix comparisons against independent generic-algebra continuation,
+and the long-order case. All 73 tests pass on CPython 3.13.14.
+
+\code{fast/benchmark\_euler\_setup.py} isolates construction and the
+first budget-exhausted evaluation against commit \code{9765612b8}, with
+seven paired rounds and A/A controls. On 1201 crossings, budgets zero
+and one reduced traced allocation peaks from about 2.87 MB to 12.0 and
+16.5 kB; on 4801 crossings they reduced approximately 11.02 MB to 43.7
+and 48.4 kB. Setup time improved by 33--43 times, with A/A ratios
+0.979--0.994. Allocation peaks were measured separately from timing,
+using Python's \code{tracemalloc}; they are not process resident memory.
+The raw data are in \code{fast/results/lazy\_euler\_setup\_20261007.json}.
+These measurements concern optional inference setup only, and make no
+claim of an equivalent speedup for full recognition.

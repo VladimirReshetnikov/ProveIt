@@ -33,6 +33,24 @@ def random_diagrams(count, seed):
 
 
 class EulerTests(unittest.TestCase):
+    def test_small_budget_prepares_only_visited_suffix_geometry(self):
+        # Constructor work must not allocate full geometry for a long order,
+        # even when optional inference is disabled or has a one-state budget.
+        diagram = Diagram.from_braid(2, [1] * 1201)
+        for budget in (0, 1):
+            engine = SuffixEuler(diagram.pd, list(range(1201)), max_states=budget)
+            self.assertEqual(engine.stats["prepared_stages"], 0)
+            with self.assertRaises(EulerBudget):
+                engine.evaluate(0, ())
+            self.assertEqual(engine.stats["prepared_stages"], budget)
+            self.assertEqual(engine.stats["states"], budget)
+
+    def test_suffix_preparation_honors_deadline(self):
+        from fastunknot.geometry import ScanLimit
+        diagram = Diagram.from_braid(2, [1, 1, 1])
+        with self.assertRaises(ScanLimit):
+            SuffixEuler(diagram.pd, [0, 1, 2], deadline=0)
+
     def test_suffix_matches_generic_algebra_continuation(self):
         checked = 0
         for diagram, order in random_diagrams(40, 1260107):
