@@ -1,5 +1,6 @@
 /- Modified for ProveIt: import Lean 4.32 compatibility declarations.
-Statements and proofs are unchanged from the pinned upstream source. -/
+Use MvPolynomial.coeff_add explicitly in the homogeneous split on Lean 4.32.
+Mathematical statements are unchanged. -/
 import OAI.Compat.Core
 import Mathlib.LinearAlgebra.FiniteDimensional.Lemmas
 import OAI.Combinatorics.Progressions.Estimates.RationalApproximationScaling
@@ -539,7 +540,7 @@ theorem samplingRankCut_homogeneous_split {I J : Type*} [Fintype J]
   have hrow : integerRowPolynomial a p =
       MvPolynomial.homogeneousComponent (h + 1) (integerRowPolynomial a p) + l := by
     ext α
-    simp only [l, integerRowPolynomial, AddMonoidAlgebra.coeff_add, Finsupp.add_apply,
+    simp only [l, integerRowPolynomial, MvPolynomial.coeff_add,
       MvPolynomial.coeff_homogeneousComponent, coeff_coordinate, map_sub,
       Finsupp.sub_apply, coefficients_homogeneousPart]
     split_ifs <;> simp
