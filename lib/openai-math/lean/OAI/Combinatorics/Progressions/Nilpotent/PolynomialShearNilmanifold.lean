@@ -1,3 +1,5 @@
+/- Modified for ProveIt: rewrite the supported-submodule basis at default
+transparency on Lean 4.32. Mathematical statements unchanged. -/
 import OAI.Combinatorics.Progressions.Estimates.RationalPowerHeight
 import OAI.Combinatorics.Progressions.Polynomial.PolynomialPatchShearOrbit
 
@@ -21,7 +23,8 @@ theorem polynomialShearLayerBasis_height (r : ℕ)
     (i : {j : Fin (Fintype.card (PolynomialShearIndex w)) // r ≤ polynomialShearOrderedWeight w j}) (j) :
     RationalHeightLE ((polynomialShearOrderedBasis w).repr
       (polynomialShearLayerBasis w r i).val j) 1 := by
-  rw [polynomialShearLayerBasis, supportedSubmoduleBasis_coe]
+  rw [polynomialShearLayerBasis]
+  erw [supportedSubmoduleBasis_coe]
   exact basis_repr_height_one (polynomialShearOrderedBasis w) _ _
 
 noncomputable def polynomialShearLayerIndexEquiv (r : ℕ) :

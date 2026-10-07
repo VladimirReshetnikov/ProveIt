@@ -1,4 +1,5 @@
-/- Modified for ProveIt: Use MvPolynomial coefficient lemmas explicitly on Lean 4.32; statements unchanged. -/
+/- Modified for ProveIt: Use explicit MvPolynomial coefficient lemmas and homogeneous-submodule
+subtraction on Lean 4.32; mathematical statements unchanged. -/
 import Mathlib.LinearAlgebra.Finsupp.Defs
 import Mathlib.RingTheory.MvPolynomial.WeightedHomogeneous
 import OAI.Combinatorics.Progressions.Estimates.WeightedAxisScaling
@@ -392,13 +393,14 @@ theorem majorTranslationJointPolynomial_top_homogeneous (w : B → ℕ)
     (majorTranslationJointPolynomial D (majorTranslationTopCoordinates w A)).IsWeightedHomogeneous
       (Sum.elim (fun _ : U => 1) w) d := by
   rw [majorTranslationJointPolynomial_eq_sub_aeval]
-  apply hD.sub
+  apply (weightedHomogeneousSubmodule ℝ _ d).sub_mem hD
   apply aeval_isWeightedHomogeneous _ _ _ _ hD
   intro i
   cases i with
   | inl i => exact isWeightedHomogeneous_zero ℝ _ _
   | inr j =>
-      exact (isWeightedHomogeneous_X (R := ℝ) (Sum.elim (fun _ : U => 1) w) (Sum.inr j)).sub
+      exact (weightedHomogeneousSubmodule ℝ _ (w j)).sub_mem
+        (isWeightedHomogeneous_X (R := ℝ) (Sum.elim (fun _ : U => 1) w) (Sum.inr j))
         (majorParameterRename_homogeneous (fun _ => 1) w
           (majorTranslationTopCoordinates_homogeneous w A j))
 

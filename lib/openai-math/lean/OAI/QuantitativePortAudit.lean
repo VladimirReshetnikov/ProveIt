@@ -1,6 +1,6 @@
 /-
 Added for ProveIt (not an upstream file; distributed under Apache-2.0).
-Incremental axiom audit of the first 500 modules listed in
+Incremental axiom audit of the first 600 modules listed in
 quantitative-port-manifest.json, plus the added compatibility declarations.
 This does not import or certify Results.Conclusions. Extend this checkpoint
 as the remaining quantitative dependency port compiles.
@@ -505,12 +505,114 @@ import OAI.Combinatorics.Progressions.Fourier.TorusCircleActions
 import OAI.Combinatorics.Progressions.Lattices.LatticeMetricGapBudget
 import OAI.Combinatorics.Progressions.Geometry.QuotientCoordinateRadius
 import OAI.Combinatorics.Progressions.Nilpotent.BCHUniformQuotientCharts
+import OAI.Combinatorics.Progressions.Estimates.SquarefreeAdaptedLieAlgebra
+import OAI.Combinatorics.Progressions.Geometry.SquarefreeAlgebraCoordinates
+import OAI.Combinatorics.Progressions.Polynomial.SquarefreePolynomialPermutation
+import OAI.Combinatorics.Progressions.Geometry.SquarefreeSupportPermutation
+import OAI.Combinatorics.Progressions.Nilpotent.SquarefreeSupportBracket
+import OAI.Combinatorics.Progressions.Linear.FiniteSpanSum
+import OAI.Combinatorics.Progressions.Polynomial.BinomialPolynomial
+import OAI.Combinatorics.Progressions.Polynomial.PolynomialSmooth
+import OAI.Combinatorics.Progressions.Polynomial.AdaptedBinomialFactorization
+import OAI.Combinatorics.Progressions.Estimates.MultilinearFirstOrder
+import OAI.Combinatorics.Progressions.Geometry.LieTreeSupport
+import OAI.Combinatorics.Progressions.Estimates.FilteredLieTree
+import OAI.Combinatorics.Progressions.Polynomial.DegreeRankLayers
+import OAI.Combinatorics.Progressions.Nilpotent.DegreeRankLieBrackets
+import OAI.Combinatorics.Progressions.Estimates.LieTreeMultidegree
+import OAI.Combinatorics.Progressions.Linear.FurstenbergWeissProjection
+import OAI.Combinatorics.Progressions.Polynomial.DegreeRankSunflower
+import OAI.Combinatorics.Progressions.Geometry.RealSquarefreeCoordinates
+import OAI.Combinatorics.Progressions.Polynomial.RealBlockPolynomialEval
+import OAI.Combinatorics.Progressions.Polynomial.SquarefreeTotalDegree
+import OAI.Combinatorics.Progressions.Estimates.SquarefreePermutationFiltration
+import OAI.Combinatorics.Progressions.Linear.SquarefreeBasisPermutation
+import OAI.Combinatorics.Progressions.Nilpotent.SquarefreeBracketHeight
+import OAI.Combinatorics.Progressions.Estimates.ImageRepresentatives
+import OAI.Combinatorics.Progressions.Dynamics.NativeHorizontalLiftBudget
+import OAI.Combinatorics.Progressions.Dynamics.ReconstructionConstantBudget
+import OAI.Combinatorics.Progressions.Nilpotent.FactorwiseBCHCovers
+import OAI.Combinatorics.Progressions.Estimates.ControlledProductReconstruction
+import OAI.Combinatorics.Progressions.Nilpotent.DegreeRankBCH
+import OAI.Combinatorics.Progressions.Linear.CanonicalRankCompatibility
+import OAI.Combinatorics.Progressions.Geometry.ConjugationCoordinates
+import OAI.Combinatorics.Progressions.Dynamics.ConjugationDenominatorBudget
+import OAI.Combinatorics.Progressions.Lattices.ConjugatedLatticeGrids
+import OAI.Combinatorics.Progressions.Sampling.RealGridRationalLift
+import OAI.Combinatorics.Progressions.Nilpotent.RationalBCHProducts
+import OAI.Combinatorics.Progressions.Linear.RealDualRationalBounds
+import OAI.Combinatorics.Progressions.Estimates.FourBalancedRelations
+import OAI.Combinatorics.Progressions.Estimates.AdaptedTranslation
+import OAI.Combinatorics.Progressions.Geometry.RealifiedTripleCoordinates
+import OAI.Combinatorics.Progressions.Estimates.RealifiedTripleLayers
+import OAI.Combinatorics.Progressions.Geometry.CoordinateSubstitutionAlgebra
+import OAI.Combinatorics.Progressions.Polynomial.WeightedPolynomialRestriction
+import OAI.Combinatorics.Progressions.Estimates.QuotientInducedMark
+import OAI.Combinatorics.Progressions.Linear.RealifiedTripleProjections
+import OAI.Combinatorics.Progressions.Estimates.LowerStepSquare
+import OAI.Combinatorics.Progressions.Estimates.ShiftedAdaptedIdeal
+import OAI.Combinatorics.Progressions.Polynomial.ShiftedPolynomialIdeals
+import OAI.Combinatorics.Progressions.Polynomial.ShiftedPolynomialBasis
+import OAI.Combinatorics.Progressions.Estimates.WeightedOrbitNormalization
+import OAI.Combinatorics.Progressions.Geometry.MultidegreeCoordinateFreezing
+import OAI.Combinatorics.Progressions.Linear.QuotientProjectionCoordinates
+import OAI.Combinatorics.Progressions.Linear.RankHorizontalSymbol
+import OAI.Combinatorics.Progressions.Nilpotent.LinearBCHAbelian
+import OAI.Combinatorics.Progressions.Polynomial.RankPolynomialFactorization
+import OAI.Combinatorics.Progressions.Estimates.SquareGradedRelative
+import OAI.Combinatorics.Progressions.Linear.CoordinateProjectionBounds
+import OAI.Combinatorics.Progressions.Linear.RescaledLieBasis
+import OAI.Combinatorics.Progressions.Estimates.SymbolAbsorptionBounds
+import OAI.Combinatorics.Progressions.Polynomial.RealGradedSymbolPolynomial
+import OAI.Combinatorics.Progressions.Estimates.PetalComparisonTree
+import OAI.Combinatorics.Progressions.Estimates.RealSymbolRepresentativeSplitting
+import OAI.Combinatorics.Progressions.Polynomial.RealAdaptedPolynomialGroup
+import OAI.Combinatorics.Progressions.Polynomial.ScaledPolynomialDualBounds
+import OAI.Combinatorics.Progressions.Estimates.OrbitBasepointNormalization
+import OAI.Combinatorics.Progressions.Estimates.ContinuousCosetMap
+import OAI.Combinatorics.Progressions.Lattices.RealifiedSubgroupLattice
+import OAI.Combinatorics.Progressions.Dynamics.RationalLieQuotientBudget
+import OAI.Combinatorics.Progressions.Nilpotent.ChosenBCHGrids
+import OAI.Combinatorics.Progressions.Estimates.RationalRealSubgroup
+import OAI.Combinatorics.Progressions.Lattices.RealifiedFiltrationLattices
+import OAI.Combinatorics.Progressions.Nilpotent.RealifiedBCHFiniteAtlas
+import OAI.Combinatorics.Progressions.Nilpotent.NiltestBasepointNormalization
+import OAI.Combinatorics.Progressions.Polynomial.SquarefreeTopDegree
+import OAI.Combinatorics.Progressions.Estimates.SubmoduleSupRestriction
+import OAI.Combinatorics.Progressions.Polynomial.AdditiveTriplePolynomialRestriction
+import OAI.Combinatorics.Progressions.Polynomial.DilationPairPolynomial
+import OAI.Combinatorics.Progressions.Geometry.MultidegreeCoordinateSplit
+import OAI.Combinatorics.Progressions.Polynomial.MultiaffineTriplePolynomial
+import OAI.Combinatorics.Progressions.Estimates.MultidegreePredecessor
+import OAI.Combinatorics.Progressions.Polynomial.MultidegreeDilationDegree
+import OAI.Combinatorics.Progressions.Estimates.PolarizedCoefficientPermutation
+import OAI.Combinatorics.Progressions.Polynomial.TotalDegreeSplitDownsets
+import OAI.Combinatorics.Progressions.Estimates.ReplicatedLieAction
+import OAI.Combinatorics.Progressions.Linear.AdaptedBasisGeometry
+import OAI.Combinatorics.Progressions.Estimates.RationalPowerHeight
+import OAI.Combinatorics.Progressions.Polynomial.MajorTranslationPolynomialSymbolDegree
+import OAI.Combinatorics.Progressions.Polynomial.PolynomialPatchShearOrbit
+import OAI.Combinatorics.Progressions.Nilpotent.PolynomialShearNilmanifold
+import OAI.Combinatorics.Progressions.Estimates.WeightedLoweringTriangular
+import OAI.Combinatorics.Progressions.Polynomial.PolynomialDerivationIntertwine
+import OAI.Combinatorics.Progressions.Polynomial.PolynomialShearWeightedOrbitCoordinates
+import OAI.Combinatorics.Progressions.Polynomial.PolynomialPatchShearOrbitConverse
+import OAI.Combinatorics.Progressions.Polynomial.PolynomialShearParameterBudget
+import OAI.Combinatorics.Progressions.Polynomial.HomogenizingMonomial
+import OAI.Combinatorics.Progressions.Estimates.VectorHomogenization
+import OAI.Combinatorics.Progressions.Polynomial.TranslationTopDegree
+import OAI.Combinatorics.Progressions.Lattices.AlgebraicMajorWeightedAffineTopPullback
+import OAI.Combinatorics.Progressions.Polynomial.PolynomialRationalApproximationMono
+import OAI.Combinatorics.Progressions.Estimates.RationalApproximationScaling
+import OAI.Combinatorics.Progressions.Estimates.VectorCoefficientScaling
 import OAI.Compat.Set
 import OAI.Compat.Isometry
 import OAI.Compat.FinsetInj
 import OAI.Compat.MatrixInjective
 import OAI.Compat.ExteriorPower
 import OAI.Compat.ContinuousLinearMap
+import OAI.Compat.Stirling
+import OAI.Compat.FinsuppWeight
 import Lean.Util.CollectAxioms
 
 set_option maxHeartbeats 0
@@ -525,7 +627,7 @@ run_cmd do
         unless allowed.contains axiomName do
           throwError "{name} depends on unapproved axiom {axiomName}"
       checked := checked + 1
-  for name in #[``Set.mem_ofPred_eq, ``Isometry.lipschitzWith, ``Finset.sum_le_sum_of_injOn, ``Matrix.mulVec_injective_of_det_ne_zero, ``Matrix.gram_eq_one_iff_orthonormal, ``exteriorPower.inner_ιMulti_ιMulti, ``exteriorPower.inner_ιMulti_self, ``OrthonormalBasis.exteriorPower, ``OrthonormalBasis.toBasis_exteriorPower, ``ContinuousLinearMap.lipschitzWith] do
+  for name in #[``Finsupp.weight_eq_sum, ``Nat.pow_eq_sum_stirlingSecond_mul_descFactorial, ``Set.mem_ofPred_eq, ``Isometry.lipschitzWith, ``Finset.sum_le_sum_of_injOn, ``Matrix.mulVec_injective_of_det_ne_zero, ``Matrix.gram_eq_one_iff_orthonormal, ``exteriorPower.inner_ιMulti_ιMulti, ``exteriorPower.inner_ιMulti_self, ``OrthonormalBasis.exteriorPower, ``OrthonormalBasis.toBasis_exteriorPower, ``ContinuousLinearMap.lipschitzWith] do
     for axiomName in (← collectAxioms name) do
       unless allowed.contains axiomName do
         throwError "{name} depends on unapproved axiom {axiomName}"
@@ -541,3 +643,7 @@ run_cmd do
 #print axioms OrthonormalBasis.exteriorPower
 #print axioms OrthonormalBasis.toBasis_exteriorPower
 #print axioms ContinuousLinearMap.lipschitzWith
+
+#print axioms Nat.pow_eq_sum_stirlingSecond_mul_descFactorial
+
+#print axioms Finsupp.weight_eq_sum
