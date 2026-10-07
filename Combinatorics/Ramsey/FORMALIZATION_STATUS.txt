@@ -13,8 +13,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 764 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 4,877 public Gowers theorems and found only propext,
+  All 765 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 4,881 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 113 exact
   companion proofs and 7 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -2704,9 +2704,16 @@ General density iteration from an explicit discrepancy input
 Exact source threshold and a smaller explicit bound for four terms
   Proofs18QuadraticNumericalConstant bounds the fixed quadratic iteration
   prefactor by 2^(2^322), using only the degree-one and degree-two local
-  refinement constants. Proofs18QuadraticSourceThreshold then proves
-  quadraticIntervalClosedThreshold(delta) <= 2^(2^((delta^-1)^(2^323)))
-  for 0<delta<=1/2. The natural-interval theorem with this threshold follows
+  refinement constants. Proofs18QuadraticSharperEnvelope bounds the
+  logarithmic iteration budget by exp((2/alpha)^324) and the iteration
+  base by exp((2/alpha)^16). The same full density iteration consequently
+  satisfies exp(exp((2/alpha)^12402)), or exp(exp((2/delta)^1500642)),
+  uniformly for 0<delta<=1, with no unspecified prefactor. On delta<=1/2,
+  the exact uniformity substitution also gives 2/alpha<=(delta^-1)^153.
+  Proofs18QuadraticSourceThreshold then proves
+  quadraticIntervalClosedThreshold(delta) <= 2^(2^((delta^-1)^(2^21)))
+  for 0<delta<=1/2, improving the previously checked exponent 2^323.
+  The natural-interval theorem with this threshold follows
   from the completed quadratic density iteration and exact interval transfer.
   This threshold is proved strictly smaller than szemerediThreshold(delta,4),
   whose corresponding innermost exponent is 2^8192. In particular,
