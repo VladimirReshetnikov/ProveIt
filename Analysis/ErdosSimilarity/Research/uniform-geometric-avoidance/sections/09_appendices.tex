@@ -1,0 +1,137 @@
+\section{Exact checks and the scope of computational evidence}
+\label{sec:checks}
+
+The package includes a standard-library Python program,
+\texttt{verification/verify\_exact.py}, and its machine-readable output,
+\texttt{verification/results.json}. Running the program performs
+91,759 exact checks using integer and rational arithmetic. It does
+not use floating-point calculations or Monte Carlo trials. The
+principal checks are summarized below.
+
+\begin{center}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.31\textwidth}>{\raggedright\arraybackslash}p{0.61\textwidth}@{}}
+\toprule
+Check & Coverage and purpose\\
+\midrule
+Synchronization & 4,008 ratio--level cases across three compact bands;
+24 exact equality-jump cases. Checks envelopes, the original-index
+bound, monotonicity, and strict separation.\\[3pt]
+Positive mixtures & Five rational normalized mixtures through 24
+levels; includes a zero coefficient and a repeated base.\\[3pt]
+Preorder geometry & 162 parameter configurations, 3,312 edge instances;
+checks window spans and the exact affine formula for $B(r_0)$.\\[3pt]
+Grid invariants & 1,800 rational point configurations and explicit
+half-open boundary cases; checks separation and preservation of
+previous keys.\\[3pt]
+Adaptive routing & Exhaustive finite selector/terminal models,
+including one with 262,144 complete assignments and 16 joint outcomes
+at three rational terminal probabilities.\\[3pt]
+Periodicity and budgets & Exact signed contraction densities,
+rectangular tail identities, and 350 signed scale normalizations.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+In the larger routing model the four local tests have failure
+probabilities
+\[
+ \begin{array}{c|ccc}
+ p&1/3&2/5&1/2\\\hline
+ \Prob(\text{all four fail})&625/1296&256/625&81/256
+ \end{array}
+\]
+which equal $(1-p/2)^4$. The model permits shared internal selectors
+and gate-dependent choices of terminal leaves. Thus it tests the
+conditioning issue identified in \cref{lem:failure}, rather than
+assuming unrelated routes from the outset.
+
+As an intentional negative control, two tests are forced to share one
+terminal entry. The all-fail probability becomes $1-3p/4$ instead of
+$(1-p/2)^2$, exceeding the latter by $p(1-p)/4$. This correctly
+exposes why distinct terminal addresses are an essential hypothesis.
+
+These checks establish the reported finite identities and invariant
+examples. They do not prove the universal theorem, construct its
+full infinite set, or certify all real parameter values by a finite
+sample. The universal quantifiers are handled by the arguments in
+the article. The figure is an explanatory plot, not a certificate.
+
+\clearpage
+\section{A compact audit of potential failure points}
+\label{sec:audit}
+
+The following table records the points on which the proof would fail
+if an unjustified simplification were made.
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.34\textwidth}>{\raggedright\arraybackslash}p{0.58\textwidth}@{}}
+\toprule
+Issue & Resolution in the proof\\
+\midrule\endhead
+One set for uncountably many ratios & All random tables and grids are
+fixed independently of $q$; only the indices $\nu_j(q)$ depend on it.\\[3pt]
+Selections at equality jumps & Every jump is a singleton parameter
+stratum. The first-crossing rule uses its stated weak inequality.\\[3pt]
+Points on grid boundaries & Keys are half-open. Line faces and
+polynomial sign vectors include zero signs.\\[3pt]
+Adaptive terminal choices & Condition on all selectors before checking
+distinct terminal addresses, then average over the independent active
+selector bits.\\[3pt]
+Representatives depending on random outcomes & Representatives depend
+only on deterministic key vectors and the exposed first-default
+vertex, before any remaining entries are revealed.\\[3pt]
+Using the wrong finest grid & A local test uses only its edge and its
+own descendant subtree; the local span is at most twice its window
+length.\\[3pt]
+A circular size choice & $M$, tree height, and gap are fixed before
+$r_0$. Then $B(r_0)$ is affine, and exponential failure beats its
+polynomial contribution.\\[3pt]
+Closedness after discontinuous sampling & Residual centers are defined
+using every original exponent through $TB$, which depends continuously
+on the parameters.\\[3pt]
+Forgetting the density cost of contractions & A dyadic contraction
+has the same density per unit interval. The budget pays for every
+contracted and reflected component.\\[3pt]
+Degree-dependent constants in algebraic families & The finite bound
+in \cref{lem:signs} is uniform in degree; a fixed-degree asymptotic
+is not used.\\[3pt]
+Effective set versus computable distance & Only effective closedness
+and computable measure are concluded; Hausdorff computability is
+not inferred.\\
+\bottomrule
+\end{longtable}
+
+\section{Repository provenance and integration}
+\label{sec:provenance}
+
+The source review was conducted on 7 October 2026. The OpenAI
+repository revision was
+\begin{center}\small\texttt{adc7f1241b42e322a6451854ab7e4b4c146bf78a}.\end{center}
+The geometric manuscript's directory is
+\begin{quote}\small\ttfamily\raggedright
+preprints/The-geometric-case-of-the-Erdos-similarity-conjecture-October-5-2026/
+\end{quote}
+Its six inspected source sections are the introduction and history,
+periodic reduction, windows, routing, and normalized-scale completion.
+The inherited construction is attributed at the points where it is
+used. The inspected OpenAI source is licensed under Apache~2.0; the package retains
+the license and a separate attribution notice.
+
+\Needspace{6\baselineskip}
+The sampled ProveIt revision was
+\begin{center}\small\texttt{39beb65f2322d6190300fcd23f009f04420b4cb3}.\end{center}
+The repository overview was read at that revision. The relevant
+formalization and research-index statuses were subsequently checked
+at the same revision. Some initial search results used the service's
+default-branch index; the separate \texttt{SOURCE\_AUDIT.md} records
+that distinction. None of those repository status claims is a
+mathematical assumption in the proof. No repository Lean build was
+rerun, and the present theorems are not described as formalized.
+
+The LaTeX source is organized into a single main file and section
+files. The supplied PDF and all auxiliary files required to rebuild
+it are in the package. A suggested integration location is a new
+analysis research directory devoted to the Erd\H{o}s similarity
+problem; the package does not modify either remote repository.
+Build instructions and the exact-check command are in the accompanying
+\texttt{README.txt}. Existing repository instructions remain relevant
+to any later integration performed there.

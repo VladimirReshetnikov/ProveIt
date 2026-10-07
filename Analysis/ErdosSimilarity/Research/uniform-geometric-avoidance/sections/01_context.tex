@@ -1,0 +1,154 @@
+\section{The question, the results, and their provenance}
+\label{sec:context}
+
+Throughout the paper $m$ is Lebesgue measure and $\N=\{1,2,\ldots\}$.
+For a measurable $1$-periodic set $H$ write
+\[
+ \rho(H)=m(H\cap[0,1)).
+\]
+A nontrivial affine copy of a set $A\subset\R$ has the form $x+sA$,
+where $x\in\R$ and $s\ne0$. Put $G_q=\{q^n:n\ge1\}$ for $0<q<1$.
+The distinction between one fixed $q$ and the entire continuum of ratios
+is central to the results.
+
+\subsection{A published question with different quantifiers}
+
+The Erd\H{o}s similarity conjecture asks whether every infinite subset of
+$\R$ has a positive-measure set avoiding all its nontrivial affine copies.
+Burgin, Goldberg, Keleti, MacMahon, and Wang posed the following separate
+question in \cite[Question~1]{BGKMW}: must every measurable set of positive
+measure contain $\{x+sq^n:n\ge1\}$ for \emph{some} triple $(x,s,q)$ with
+$s\ne0$ and $0<q<1$? A negative answer requires a single set that excludes
+all three parameters at once.
+
+Theorem~1.1 of their paper constructs a compact set having zero as a density
+point but containing no unshifted progression $\{sq^n:n\ge1\}$. That result
+does not exclude progressions converging to another center. Their
+almost-everywhere avoidance statement also leaves exceptional parameter
+values. The survey \cite{JLM} provides the historical context; it predates
+the October 2026 manuscript used below.
+
+The OpenAI manuscript \cite[Theorem~1.1]{OpenAI84} proves that for each
+\emph{fixed} $q$ there are compact subsets of $[0,1]$ of measure arbitrarily
+close to one avoiding all affine copies of $G_q$. Its introduction explicitly
+permits the avoiding set to depend on $q$. Summable intersections therefore
+handle any specified countable collection of ratios. They do not by
+themselves handle every real ratio. This paper supplies that missing
+uniform argument.
+
+\begin{theorem}[Uniform geometric avoidance]\label{thm:main}
+For every $0<\eps<1$ there exists a closed, symmetric, $1$-periodic set
+$F_\eps\subset\R$ such that
+\begin{equation}\label{eq:main-density}
+ m(F_\eps\cap[u,u+1])\ge1-\frac\eps2>1-\eps
+ \qquad(u\in\R),
+\end{equation}
+and, for every $x\in\R$, $s\in\R\setminus\{0\}$, and $q\in(0,1)$,
+\begin{equation}\label{eq:main-avoidance}
+ x+sq^n\notin F_\eps\quad\text{for infinitely many }n\ge1.
+\end{equation}
+Consequently $K_\eps=F_\eps\cap[0,1]$ is compact, has measure greater
+than $1-\eps$, and answers \cite[Question~1]{BGKMW} negatively.
+\end{theorem}
+
+The conclusion is stronger than avoidance at a prescribed limit point.
+Every point, every signed dilation, and every contracting ratio are covered
+by the same set. Periodicity in \cref{thm:main} is possible because passing
+to a tail of a geometric progression reduces its scale. The construction
+only needs dyadic contractions of periodic sets.
+
+\begin{theorem}[All finite positive exponential mixtures]\label{thm:mixtures}
+For every $0<\eps<1$ there is a closed, symmetric, $1$-periodic set
+$F^*_\eps\subset\R$ satisfying \eqref{eq:main-density} and the following
+property. For every finite $d\ge1$, every $q_1,\ldots,q_d\in(0,1)$,
+every $c_1,\ldots,c_d\ge0$ with $\sum_i c_i>0$, every $x\in\R$, and
+every $s\ne0$, infinitely many terms of
+\begin{equation}\label{eq:mixture-orbit}
+ x+s\sum_{i=1}^d c_iq_i^n,\qquad n\ge1,
+\end{equation}
+lie outside $F^*_\eps$. All choices, including the number $d$ of
+components, are simultaneous.
+\end{theorem}
+
+The terms in \eqref{eq:mixture-orbit} are synchronized sums: the exponent
+$n$ is the same in every summand. This is a different pattern from the
+sumset in which all component exponents vary independently. Repeated
+bases and zero coefficients are allowed. The proof is an application of
+a general theorem for finite-dimensional polynomial families in
+\cref{sec:algebraic}. That section also proves a stronger extension to
+all nonzero real exponential polynomials with positive real bases,
+allowing signed coefficients, and deduces the corresponding theorem
+for homogeneous constant-coefficient real recurrences with roots in $(0,1)$.
+
+\begin{theorem}[Effective compact sets and finite margins]\label{thm:effective-intro}
+For rational $0<\eps<1$, the compact sets in \cref{thm:main,thm:mixtures}
+can be chosen effectively closed, uniformly in $\eps$, with computable
+Lebesgue measure. More precisely, they have nested approximations $K_N$
+by finite unions of closed rational intervals such that
+\begin{equation}\label{eq:effective-rate-intro}
+ K=\bigcap_{N\ge1}K_N,
+ \qquad 0\le m(K_N)-m(K)\le\eps\,2^{-N}.
+\end{equation}
+For any rational compact parameter box contained in the admissible domain,
+with the dilation bounded away from zero, one can algorithmically obtain a finite index bound and a
+positive rational avoidance margin. The precise certificate is given in
+\cref{thm:certificates}.
+\end{theorem}
+
+Effectively closed here means that the open complement can be enumerated
+as a union of rational open intervals. It does not assert decidable
+membership, or computability in the Hausdorff representation of compact
+sets. The finite search procedures proved to terminate below are not
+claimed to be efficient.
+
+\subsection{What was reviewed and what is new}
+
+The repository review used the revisions recorded in \cref{sec:provenance}.
+The OpenAI catalogue contains manuscripts at different verification stages;
+its own README makes that distinction \cite{OpenAICatalog}. We inspected
+the actual source of the geometric similarity manuscript, not just its
+catalogue description. In ProveIt we reviewed the repository overview,
+Ramsey refinement status, and selected matching and analysis material
+\cite{ProveIt}. The large collection of existing Gowers refinements made
+another minor local refinement a less attractive target. The present
+question offers a precise published target and a useful connection to
+ProveIt's work on exact certificates, polynomial decision procedures, and
+exponential sequences.
+
+\begin{center}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.30\textwidth}>{\raggedright\arraybackslash}p{0.62\textwidth}@{}}
+\toprule
+Ingredient & Status in this article\\
+\midrule
+Ordered-tree routing; selector and terminal tables & Adapted, with full
+attribution, from the fixed-ratio proof in \cite{OpenAI84}. The probability
+argument is reproduced in our notation and checked directly.\\[3pt]
+Common-scale subsequence for varying $q$ & New uniformization step:
+$\nu_j(q)=\min\{n:q^n\le Q^j\}$. The random set is independent of $q$.\\[3pt]
+Two-parameter cell count & New use of lines in logarithmic coordinates,
+including jump points, edges, and vertices.\\[3pt]
+Polynomial-family extension & New application of the classical
+sign-condition bound \cite{BPR}; yields \cref{thm:mixtures}.\\[3pt]
+Periodic global assembly and effective certificates & Developed here;
+uses tail closure, summable budgets, and real quantifier elimination.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The principal theorem is proved with finite probability and elementary
+measure theory. The general polynomial-family extension additionally uses
+a stated classical theorem of real algebraic geometry. The effective
+results use decidability of real polynomial inequalities. No flagship
+claim elsewhere in either repository is an unproved hypothesis of these
+arguments.
+
+\subsection{Road map}
+
+We first synchronize all ratios in a compact interval to one family of
+spatial scales. A finite tree gives independent opportunities for a hit
+while keeping the mean measure small. The first default choice in the
+route of a fixed center identifies the relevant tests. A line arrangement
+then replaces the continuum of ratio--dilation parameters by finitely many
+representatives. Compactness repairs the remaining centers. Finally,
+countable summable assembly covers all ratios and scales. The same scheme
+with polynomial sign conditions handles exponential mixtures.

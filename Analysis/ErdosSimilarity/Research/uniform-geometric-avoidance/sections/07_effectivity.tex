@@ -1,0 +1,182 @@
+\section{Effective closed sets and finite avoidance certificates}
+\label{sec:effective}
+
+The existence proof uses finite but extremely large random tables.
+It also uses real parameters and an open-neighborhood repair.
+Nevertheless, the resulting compact sets can be made effective by
+searching directly for finite certificates. This route avoids having
+to implement the entire probabilistic construction.
+
+\subsection{A finite rational normalized certificate}
+
+A \emph{rational periodic open set} is a finite union of rational open
+arcs on $\R/\Z$, lifted periodically to $\R$. Its density is a
+computable rational number, obtained by merging the arcs on one period.
+An arc crossing zero is represented by an interval $(a,b)$ with
+$0\le a<1$ and $a<b\le a+1$, together with its integer translates.
+Dyadic rational endpoints suffice.
+
+\begin{proposition}[Terminating search for normalized blockers]\label{prop:effective-H}
+Given rational $0<\alpha<\beta<1$ and rational $0<p<1$, there is an algorithm
+that returns a rational periodic open set $H$ and an integer $N\ge1$
+such that $\rho(H)<6p$ and
+\begin{equation}\label{eq:finite-H}
+ \forall x\in[0,1]\ \forall t\in[1,2]\ \forall q\in[\alpha,\beta]
+ \quad \bigvee_{n=1}^{N}(x+tq^n\in H).
+\end{equation}
+The analogous statement holds for a rational semialgebraic compact
+parameter set and a computably given sequence of rational polynomials
+satisfying \cref{thm:poly-family}. These hypotheses are promises;
+the algorithm need not decide them from an arbitrary infinite sequence.
+\end{proposition}
+
+\begin{proof}
+Enumerate pairs $(H,N)$ consisting of finite dyadic open arc unions
+and positive integers, in an order eventually reaching every pair.
+Discard candidates with density at least $6p$. For each remaining
+candidate, decide \eqref{eq:finite-H} by quantifier elimination in
+the ordered real field. The expressions $x+tq^n$ are polynomials with
+rational coefficients. They lie in $[0,3]$, so membership in $H$
+is a finite disjunction over only finitely many integer translates
+of its arcs. The entire formula is therefore a first-order sentence
+about rational polynomial inequalities. Real quantifier elimination
+is effective; see, for example, \cite{PerrucciRoy}.
+
+To prove termination, apply \cref{prop:normalized} with $p/2$,
+obtaining an open periodic $H_0$ of density at most $3p$.
+For each point of the compact parameter box there is a witnessing
+integer $n$ and a small open interval, with dyadic endpoints, containing
+the witnessing value and contained in $H_0$. By continuity of the
+original expression, the same interval and exponent work on a
+neighborhood of that parameter point. Finitely many of these
+neighborhoods cover the compact box. Their finitely many witnessing
+intervals project to a rational periodic open subset $H$ of $H_0$;
+let $N$ be the largest witnessing exponent. Then
+$\rho(H)\le3p<6p$ and \eqref{eq:finite-H} holds. Hence the search
+must encounter a valid pair.
+
+For polynomial families, replace $q^n$ by $f_n(z)$ and include the
+rational semialgebraic formula defining $\Theta$ in the quantified
+domain. Continuity, compactness, and effective real polynomial
+arithmetic give the same proof.
+\end{proof}
+
+This is a proof of a total algorithm on the stated inputs, not a
+reported computation of the full hitting set. The certificate search
+may be enormous. A more direct implementation could enumerate the
+finite tables, eliminate the residual-center quantifiers, and isolate
+algebraic endpoints, but no such implementation is required for the
+effective existence result.
+
+\subsection{A computable measure modulus}
+
+Use \cref{prop:effective-H} for every normalized family in the global
+assembly. Index the families by $\ell\ge1$: this can mean the intervals
+$I_\ell$ for the geometric theorem, the pairs $(d,j)$ for mixtures,
+or the tuples used in \cref{cor:exp-polynomial,thm:signed-exp-poly}. In each case there
+is a computable enumeration of rational semialgebraic families with
+computably given rational polynomials. Use
+\[
+ p_{\ell,k}=\frac\eps{24}2^{-\ell}2^{-(k+1)}
+ \quad(\ell\ge1,\ k\ge0).
+\]
+For $N\ge1$, let $C_N$ contain precisely the signed contractions with
+$1\le\ell\le N$ and $0\le k<N$, and set
+\begin{equation}\label{eq:KN}
+ K_N=[0,1]\setminus C_N.
+\end{equation}
+The set $K_N$ is a computable finite union of closed rational intervals,
+and the sequence is nested. The omitted density budget is bounded by
+\begin{align}
+ m(K_N)-m(K)
+ &\le12\sum_{\ell>N\ \mathrm{or}\ k\ge N}p_{\ell,k}\notag\\
+ &=\frac\eps2\left[1-(1-2^{-N})^2\right]
+ \le\eps\,2^{-N}.
+ \label{eq:measure-modulus}
+\end{align}
+Here the sums are over the union of the two omitted index ranges;
+the overlap is not counted twice. This proves
+\eqref{eq:effective-rate-intro}. Since $m(K_N)$ is rational and its
+error has the computable bound \eqref{eq:measure-modulus}, $m(K)$
+is a computable real. The same enumeration of rational intervals
+shows that $K$ is effectively closed relative to $[0,1]$, and hence
+as a compact subset of $\R$ after including its exterior in the
+open complement.
+
+A different rational accuracy can be computed independently. No
+uniform operation on an unspecified noncomputable real $\eps$ is
+asserted. For a nonrational positive accuracy, the existence statements
+follow by choosing a smaller rational accuracy.
+
+\subsection{Finite prefixes with a positive distance margin}
+
+\begin{theorem}[Effective robust certificates]\label{thm:certificates}
+Let $F$ be the effectively constructed periodic set from
+\cref{thm:main}, and let $C=\R\setminus F$. Given rational parameters
+\[
+ R_0>0,\quad 0<\sigma<S_0,\quad 0<\alpha<\beta<1,
+\]
+and an integer $J\ge1$, there is an algorithm returning integers
+$L,N\ge1$, $N\ge J$, and a rational $\delta>0$, together with a
+finite rational interval description of $C_L$ modulo one, such that
+\begin{equation}\label{eq:robust-certificate}
+ \forall |x|\le R_0\ \forall s\in[-S_0,-\sigma]\cup[\sigma,S_0]
+ \ \forall q\in[\alpha,\beta]
+ \quad \max_{J\le n\le N}\dist(x+sq^n,F)\ge\delta.
+\end{equation}
+More precisely, one of these terms has its open $\delta$-neighborhood
+contained in $C_L\subset C$.
+The same assertion holds for $F^*_\eps$ and a fixed normalized
+mixture family \eqref{eq:mixture-family}, with $q^n$ replaced by
+$f_n(w,q)$.
+\end{theorem}
+
+\begin{proof}
+Every orbit in the compact parameter domain has a hit in $C$ at an
+index $n\ge J$, by the infinitely-many-hits property. That hit
+belongs to some finite stage $C_L$. As $C_L$ is open, the point has
+a positive distance from its complement. Continuity of the original
+polynomial in the orbit parameters preserves a smaller positive
+margin on a neighborhood of those parameters. Compactness gives
+finitely many such neighborhoods. Take the largest stage and index
+needed and a positive rational margin smaller than all their margins.
+This proves existence of a finite certificate.
+
+For effectivity enumerate $(L,N,\delta)$ with $N\ge J$ and positive
+rational $\delta\le1$. On the bounded range of possible orbit values,
+compute the finite list of rational open interval components of $C_L$,
+using enough integer translates to include their $1$-neighborhoods.
+A sufficient certificate is the sentence asserting that for every
+parameter tuple some $J\le n\le N$ and some component $(a,b)$ satisfy
+\[
+ a+\delta<x+sq^n<b-\delta.
+\]
+It is decidable by real quantifier elimination. The existence argument
+shows that a candidate eventually passes. The shrunken-interval
+condition proves \eqref{eq:robust-certificate}. For normalized
+mixtures the domain is compact semialgebraic and the terms are again
+rational polynomials in the parameters, so the same reasoning applies.
+\end{proof}
+
+The strict shrunken-interval certificate is slightly stronger than a
+bare distance inequality and easier to verify. It is finite,
+polynomial, and independent of the infinite tail of the construction.
+It therefore supplies a natural interface for eventual formalization.
+
+\subsection{An interface suitable for ProveIt}
+
+A formal development can separate three layers. The first is finite
+combinatorics and probability: windows, key nesting, selectors, and the
+conditional failure identity. The second is the finite geometric
+certificate that all parameters in a box have a hit. The third is
+Lebesgue measure and countable assembly, with the explicit tail bound
+\eqref{eq:measure-modulus}. A proof assistant need not trust a floating-point
+plot, an informal random sample, or a claim that an infinite list was
+searched. Each finite certificate is a quantified polynomial statement
+with exact rational data.
+
+The present package supplies ordinary mathematical proofs and exact
+Python checks. It does not include a Lean proof, an implementation of
+real quantifier elimination, or an explicitly materialized full avoiding
+set. These are distinct deliverables from the effective existence and
+termination theorems proved above.
