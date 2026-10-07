@@ -315,6 +315,16 @@ import GowersSzemeredi.Proofs05QuadraticWeyl
 import GowersSzemeredi.Proofs05RecurrenceFourierScale
 import GowersSzemeredi.Proofs05RecurrenceFourierWitness
 import GowersSzemeredi.Proofs05QuadraticRecurrence
+import GowersSzemeredi.Proofs05ModularPartitionTransport
+import GowersSzemeredi.Proofs05QuadraticPhaseError
+import GowersSzemeredi.Proofs05QuadraticChunkLocalization
+import GowersSzemeredi.Proofs05QuadraticLocalization
+import GowersSzemeredi.Proofs05FiniteWeylNormalization
+import GowersSzemeredi.Proofs05FiniteRecurrenceTransfer
+import GowersSzemeredi.Proofs05FiniteRecurrenceBudget
+import GowersSzemeredi.Proofs05FiniteRecurrence
+import GowersSzemeredi.Proofs05FiniteWeylRootBudget
+import GowersSzemeredi.Proofs05FiniteRecurrenceScale
 
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
