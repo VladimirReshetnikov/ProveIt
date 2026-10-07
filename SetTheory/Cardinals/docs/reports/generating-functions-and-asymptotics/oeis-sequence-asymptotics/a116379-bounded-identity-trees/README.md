@@ -220,6 +220,15 @@ A116379, A116380 or A004111. Related material, none of it a shared theorem:
 - `a333497-historic-trees` and the other batch-77 tree reports share only
   generic singularity analysis; `a000571-tournament-score-sequences` shares
   only the delivered PDF build script (byte-identical `code/build_pdf.sh`).
+- `generating-functions-and-asymptotics/oeis-sequence-asymptotics/a089479-fixed-permanent-matrices`
+  (batch 108; see also, added 7 October 2026) names this report as related by
+  method only: like Part II here it certifies its asymptotic constants by
+  exact rational interval enclosures with explicit tail bounds (there the
+  simple zero `ρ = 1.48807…` of an entire function and the coefficients of
+  the polynomial prefactors `P_2, P_3, P_4`), and it derives smooth and
+  integer threshold inverses. A different class and a different singularity
+  (a pole there, a square-root point here); neither report uses a result of
+  the other. README only; the article and PDF are unchanged.
 
 *Dated note (5 October 2026, batch 103).* Until this write this paragraph read
 "None: no other repository report treats identity trees, A116379, A116380 or
