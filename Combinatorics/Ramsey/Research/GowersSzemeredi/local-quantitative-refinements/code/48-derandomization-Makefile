@@ -1,0 +1,20 @@
+PYTHON ?= python3
+LATEXMK ?= latexmk
+
+.PHONY: all pdf check examples clean
+all: pdf check
+
+pdf:
+	$(LATEXMK) -pdf -interaction=nonstopmode -halt-on-error article.tex
+
+check:
+	$(PYTHON) code/verify.py --output data/verification_results.json
+
+examples:
+	$(PYTHON) code/energy_inventory.py examples/bernoulli.json --output data/bernoulli_example.json
+	$(PYTHON) code/energy_inventory.py examples/fixed_size.json --output data/fixed_size_example.json
+	$(PYTHON) code/energy_inventory.py examples/affine_core.json --output data/affine_core_example.json
+	$(PYTHON) code/fejer_search.py examples/fejer.json --output data/fejer_example.json
+
+clean:
+	$(LATEXMK) -c article.tex

@@ -1,0 +1,21 @@
+LATEXMK ?= latexmk
+PYTHON ?= python3
+ARTICLE = gowers_rank_dual_refinements
+
+.PHONY: all pdf verify numeric clean
+all: pdf verify
+
+pdf:
+	$(LATEXMK) -pdf -interaction=nonstopmode -halt-on-error $(ARTICLE).tex
+
+verify:
+	$(PYTHON) code/verify_rank_two.py
+	$(PYTHON) code/verify_dimension_three.py
+	$(PYTHON) code/verify_dual_gap.py
+
+numeric:
+	$(PYTHON) code/check_dual_numeric.py
+
+clean:
+	$(LATEXMK) -c $(ARTICLE).tex
+
