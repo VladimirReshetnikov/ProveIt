@@ -136,7 +136,12 @@ Row 1 is A002426 (central trinomial coefficients). The argument is classical,
 no novelty is claimed, and it is a fixed-dimension statement: Theorem 9.1's
 compact-ratio regime excludes fixed `D`, and the source's "not an unresolved
 problem being solved by this proportional-dimensional argument" stays
-accurate.
+accurate. (Added after the independent check of 7 October 2026: the proof
+re-derived and correct; the `1/N` term is `−3D/16`, from the quartic term of
+`log φ` averaged against the Gaussian, and Richardson extrapolation of the
+exact counts from `N = 200, 400` gives `−0.1875002, −0.375001, −0.562508`.
+Numerical corroboration of the standard Edgeworth term, not a proved
+second-order theorem.)
 
 ## What is not claimed
 
@@ -173,6 +178,11 @@ stay open. **Nothing in the source was found to be wrong.** Recorded with a
 dated note: the printed `r`, `b` and `p` are rounded, not truncated, in their
 last digit (truncations `r = 0.804139735863439633472418654…`,
 `b = 1.586562859178089847374174938…`, `p = 0.431494883273705551403382959…`).
+(Scope clarified after the independent check of 7 October 2026: the note's
+"every printed digit except these three is a truncation" concerns the seven
+values printed with "…"; the six table entries of Section 5 and the two mean
+offsets of Theorem 7.1, printed without it, are correctly rounded, five of
+them not truncations.)
 
 ## Checks made at intake
 
@@ -202,6 +212,37 @@ last digit (truncations `r = 0.804139735863439633472418654…`,
   as at intake.
 - Sources read by the write: the OEIS entries and the A328716 b-file; the
   transseries volume. Not read: Gessel–Weinstein–Wilf, Flajolet–Sedgewick.
+
+## Independent check of the write (7 October 2026)
+
+An adversarial check made by the intake after the write (`f3fb85cb6`), with
+its own code, after fetching again A328716 (#38), A328718 (#35), A002426 and
+the A328716 b-file.
+
+- **Remark 9.2, checked hardest**: the reduction to `P(S_N = 0)`, the
+  Fourier inversion, `φ = 1` only at `0`, `φ > −1` (`1 + 2Σcos θ_i ≥ 1 − 2D`),
+  the local bound and the Gaussian integral re-derived; the conjecture's row
+  index is the dimension. Exact counts at `N = 400` by Miller's power
+  recurrence for `F^D` (a route distinct from the source's two) give the three
+  printed values; row 1 = A002426 on all its data terms. **Strengthened**:
+  the `1/N` coefficient is `−3D/16` (dated note above).
+- **Remark 1.1**: quotations, revisions and dates confirmed; all 399 b-file
+  terms agree with Miller's recurrence modulo two primes, 45 of them exactly;
+  Kotěšovec's `d` and both `c` are truncations.
+- **Constants note (Section 3)**: at 70 digits `r`, `b`, `p` end in rounded
+  digits with the stated truncations and next digits; `d`, `C_±`, `τ²` are
+  truncations. **Scope clarified** (dated note; see above).
+- **Section 10 notes**: every diagnostics-table entry reproduced;
+  `E K_n − np = n(1 − A_{n,n−1}(1)/a_n) − np = −0.070931, −0.313069,
+  −0.071086, −0.312368` at `n = 60, 61, 120, 121`, as stated.
+- **Remark 8.2**: (a)–(e) re-derived against the volume (staircase (4) with
+  `p0:rem:parity-instances`, `p0:prop:factorial-core` with `κ = 1`,
+  `d_vol = log d`, the template chart, the core-reversion form).
+- Provenance, the pin `83befe707`, the neighbouring reports named, and the 72
+  delivered label numbers and 65 references confirmed. Apart from the scope
+  of one sentence, **no defect was found in the write.**
+
+The check is recorded at the end of Section 12.
 
 ## Relation to the repository
 
@@ -369,8 +410,9 @@ B=$(mktemp -d); cp article.tex "$B/"; cd "$B"
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The committed PDF was built this way with MiKTeX on 7 October 2026: 22
-pages; no errors or warnings, no undefined references or citations, no
+The committed PDF was built this way with MiKTeX on 7 October 2026, and
+rebuilt after the independent check of the same day (label numbers
+unchanged, aux files compared): 22 pages; no errors or warnings, no undefined references or citations, no
 multiply defined labels, no duplicate PDF destinations, no overfull or
 underfull boxes (the delivered text also builds without any, 16 pages). The
 delivered byte-identity claims (fixed source date, suppressed PDF metadata)
