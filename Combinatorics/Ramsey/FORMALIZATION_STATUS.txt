@@ -1,10 +1,10 @@
-Gowers Szemeredi formalization checkpoint — 2026-10-06
+Gowers Szemeredi formalization checkpoint — 2026-10-07
 
 Scope
   The goal remains open. No improvement to the final Szemeredi bound is claimed.
   The source catalogue contains all 120 unique numbered theorem, lemma,
   proposition, and corollary headings in sz-thm-gowers-proof.tex.
-  There are 109 checked exact companion proofs and 11 open statements.
+  There are 110 checked exact companion proofs and 10 open statements.
   The JSON ledger records every statement, its TeX heading lines, its Lean
   definition, and related results. Conditional implications, restricted cases,
   and counterexamples are not counted as proofs of the full statement.
@@ -12,10 +12,10 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 536 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 3,523 public Gowers theorems and found only propext,
-  Classical.choice, and Quot.sound. The audit independently counted 109 exact
-  companion proofs and 11 open catalogue statements from Lean's theorem types.
+  All 538 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 3,527 public Gowers theorems and found only propext,
+  Classical.choice, and Quot.sound. The audit independently counted 110 exact
+  companion proofs and 10 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
   errors remain in this build. The JSON ledger reproduces exactly and has no
   unmatched numbered TeX headings or unmatched catalogue entries.
@@ -453,10 +453,10 @@ Universal maps and the coefficient selection for Lemma 13.9
   lemma_13_9_of_length_comparison proves the current Stage 13.9 conclusion
   from the actual Stage 13.6--13.8 data, properness of Q, and |S| <= |Q|.
   Including Stage 13.5 reduces the remaining input to |R| <= |Q|, the
-  assertion printed before Lemma 13.9. That upper length bound is not recorded
-  in Stage 13.6 and has not been derived from its current catalogue antecedent.
-  Lemma 13.9 therefore remains open; no conditional result is counted as an
-  exact companion. The proved modular natural-multiple step relation does
+  assertion printed before Lemma 13.9. The earlier catalogue omitted that
+  contextual upper bound and the preceding Stage 13.5--13.6 data. The
+  contextual statement and a counterexample to the old encoding are now
+  proved below. The proved modular natural-multiple step relation does
   not provide the integer step and translation control needed for the later
   square-grid argument. A separate necessary-condition theorem shows that
   Stage 13.9 forces enough distinct points in Q, not just a large formal length.
@@ -1415,8 +1415,8 @@ Completed Theorem 13.12 with its exact printed bounds
   common-step progressions for alpha>1023/1024. Together with the checked
   Fejer extraction away from one, theorem_13_12_holds proves the exact
   catalogue type for all 0<alpha<=1, including both printed bounds and
-  every structural condition. The full axiom audit now counts 109 exact
-  companion proofs and 11 open catalogue statements.
+  every structural condition. At that checkpoint the full axiom audit
+  counted 109 exact companion proofs and 11 open catalogue statements.
 
 Improved printed bounds for Theorem 13.12
   Proofs13ImprovedPrintedComparison uses the overlap alpha<=332/333.
@@ -1437,6 +1437,22 @@ Improved printed bounds for Theorem 13.12
   Theorem 13.12; propagation through the remaining Sections 16 and 18 is
   still required before claiming an improved final Szemeredi bound.
 
+Contextual Lemma 13.9 and a checked missing-geometry counterexample
+  The paragraph at TeX line 2813 explicitly retains the preceding proper
+  progressions and says that R is smaller than Q. The catalogue now keeps
+  Stages 13.5--13.8, prime modulus, and |R|<=|Q| as hypotheses. The target
+  Stage 13.9 conclusion and every quantitative bound are unchanged.
+  Proofs13ContextualBilinear proves lemma_13_9_holds from the existing
+  coefficient-partition construction. The old context-free statement is
+  preserved as lemma_13_9_without_preceding_geometry.
+  Proofs13MissingGeometryCounterexample proves that old statement false
+  already over ZMod 2. Its domain is the singleton (0,0), density 1/4,
+  and phi=0. A singleton Q and two-point column progression satisfy the
+  retained Stage 13.7--13.8 conditions. Any Stage 13.9 output would need
+  more than one point inside Q, contradicting properness and containment.
+  This validates the missing-context repair; it is not a counterexample
+  to the contextual lemma in the paper.
+
 Reproducible checks (from repository root)
   python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.Audit
   python3 Combinatorics/Ramsey/scripts/gowers_status.py
@@ -1454,7 +1470,7 @@ Next substantial obligations
   are proved (Proofs07FreimanClosure). The quadratic four-term theorem 8.2
   and Corollary 8.3 are now proved with their exact catalogue types.
   1. Theorem 13.12 is now complete. Resolve the remaining intermediate
-     Section 13 statements (13.5, 13.6, 13.9, and 13.10), preserving the
+     Section 13 statements (13.5, 13.6, and 13.10), preserving the
      distinction between their source hypotheses and existing encodings.
      The global endpoint and improved Fejer extraction are proved; the
      auxiliary bounds do not yet improve the final Szemeredi estimate.

@@ -581,13 +581,27 @@ def IsStage139Data {N : Nat} [NeZero N] (S : Section13Context N)
     J.D.card ∧
   BilinearOn J.D S.phi
 
-/-- **Lemma 13.9.** Propagating the corrected preceding densities changes the
-progression-size exponent to `2^-284 * alpha^1408`. -/
-def lemma_13_9 : Prop :=
+/-- Earlier Stage 13.9 encoding omitting the standing prime modulus and
+the preceding progression geometry. Kept for comparison, not asserted. -/
+def lemma_13_9_without_preceding_geometry : Prop :=
   ∀ (N : Nat) [NeZero N] (S : Section13Context N) (D : Stage134Data N)
       (E : Stage135Data N) (F : Stage136Data N) (G : Stage137Data N)
       (H : Stage138Data N),
     IsStage137Data S D E F G → IsStage138Data S D E G H →
+    ∃ J : Stage139Data N, IsStage139Data S E G H J
+
+/-- **Lemma 13.9.** The paragraph immediately before the lemma retains
+proper progressions from Stages 13.5--13.6 and states that `R` is smaller
+than `Q`. These contextual hypotheses, and the standing prime modulus,
+are explicit here. Propagating the corrected preceding densities changes
+the progression-size exponent to `2^-284 * alpha^1408`. -/
+def lemma_13_9 : Prop :=
+  ∀ (N : Nat) [Fact N.Prime] (S : Section13Context N) (D : Stage134Data N)
+      (E : Stage135Data N) (F : Stage136Data N) (G : Stage137Data N)
+      (H : Stage138Data N),
+    IsStage135Data S D E → IsStage136Data S D E F →
+    IsStage137Data S D E F G → IsStage138Data S D E G H →
+    F.R.length ≤ E.Q.length →
     ∃ J : Stage139Data N, IsStage139Data S E G H J
 
 /-- **Corollary 13.10.** -/
