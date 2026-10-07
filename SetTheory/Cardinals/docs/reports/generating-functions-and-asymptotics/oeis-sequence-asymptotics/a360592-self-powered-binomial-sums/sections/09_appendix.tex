@@ -1,0 +1,96 @@
+\appendix
+\section{Coefficient and discrepancy reference}
+\label{app:discrepancies}
+For quick comparison, ``observed minus proved'' means the coefficient in the
+normalized observed multiplier of Section~\ref{sec:sources} minus the
+corresponding coefficient in this article. The parameter $c$ is always the
+one belonging to the indicated $p$.
+For $p=1$ the sole displayed difference is
+\[
+ [t]:\quad \frac1{8c}.
+\]
+For $p=2$ the differences through $t^3$ are
+\begin{align*}
+ [t]:&\quad \frac1{8c},\\
+ [t^2]:&\quad \frac{67}{384c^2}-\frac{13c}{48},\\
+ [t^3]:&\quad \frac{3929}{2304}+\frac{497}{3072c^3}
+                                      +\frac{169c^3}{576}.
+\end{align*}
+For $p=3$ the differences through $t^4$ are
+\begin{align*}
+ [t]:&\quad \frac1{8c},\\
+ [t^2]:&\quad \frac{67}{384c^2},\\
+ [t^3]:&\quad \frac{497}{3072c^3}-\frac{37c}{64},\\
+ [t^4]:&\quad \frac{10721}{3072}+\frac{218831}{1474560c^4}.
+\end{align*}
+These comparisons are about intended refinements, not the validity of
+leading equivalence under the literal symbol $\sim$.
+
+\section{Reproduction guide}
+\label{app:reproduce}
+The archive contains this PDF, editable TeX sources, the exact-arithmetic
+code, optional high-precision diagnostics, checked outputs, a source guide,
+and a SHA-256 manifest. No network access is needed for reproduction.
+
+From an extracted archive, the standard-library exact checks are run with
+\begin{verbatim}
+python3 -B code/selftest.py
+python3 -B -O code/selftest.py
+python3 -B code/endpoint.py coefficients --p 2 --order 4
+python3 -B code/endpoint.py coefficients --p 3 --order 6
+python3 -B code/endpoint.py critical --order 4
+python3 -B code/endpoint.py marked --p 3 --order 3 --cumulant 2
+\end{verbatim}
+The core never infers coefficients by fitting numerical values.
+The rational-polynomial results can also be requested as JSON.
+The ordinary selftest itself launches a separate optimized-Python guard
+check; invoking the whole test under \texttt{-O} additionally checks that
+its correctness tests do not depend on removable assertions.
+
+With the optional dependency in \texttt{code/requirements-optional.txt},
+run
+\begin{verbatim}
+python3 -B code/selftest.py --numerical
+python3 -B code/diagnostics.py suite --deep
+\end{verbatim}
+The deep suite reproduces the complete $n=10000$ sums and the marked
+$n=10^9$ diagnostics, together with finite Newton experiments.
+Its JSON explicitly labels all transcendental values uncertified and
+records the $p=3$ preasymptotic warning.
+
+To verify the frozen file inventory and rebuild the document, use
+\begin{verbatim}
+python3 -B build.py --verify-only
+python3 -B build.py --output ../rebuilt
+python3 -B -O build.py --output ../rebuilt-optimized --numerical
+\end{verbatim}
+A PDF build needs \texttt{pdflatex} with the standard packages listed in
+\texttt{article.tex}. The output directory must lie outside the extracted
+package, preserving its frozen inventory. The build runs exact checks,
+compiles in a disposable directory, and writes a PDF, deterministic ZIP,
+and check summary to the chosen output directory. With \texttt{--numerical},
+it also reproduces and compares the supplied high-precision diagnostics.
+
+Deterministic timestamps and archive metadata are used. Byte-identical
+PDF rebuilding is checked on the documented TeX toolchain; another TeX
+release can produce different PDF bytes even when the mathematical content
+is identical. The source manifest still verifies the original frozen
+files independently. The build distinguishes content verification from
+claims about universal cross-toolchain PDF identity.
+
+\subsection*{Useful exact recurrences}
+The public code uses only elementary rational polynomial operations.
+For the power sums $S_j(r)=\sum_{h=0}^{r-1}h^j$, telescoping
+$r^{j+1}=\sum_{h=0}^{r-1}((h+1)^{j+1}-h^{j+1})$ gives
+\[
+ S_j(r)=\frac1{j+1}\left(r^{j+1}
+                -\sum_{i=0}^{j-1}\binom{j+1}{i}S_i(r)\right).
+\]
+The Touchard recurrence is
+$T_{d+1}(z)=z(T_d(z)+T_d'(z))$, with $T_0=1$.
+Together with \eqref{eq:Dgeneral}, \eqref{eq:Hrec}, \eqref{eq:Lrec}, and
+\eqref{eq:assocStirling}, these determine every displayed coefficient.
+
+The public implementation caps resources to keep accidental requests from
+creating unbounded computations. Extending those caps is a programming
+choice; it is not evidence of an asymptotic theorem with growing order.

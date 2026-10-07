@@ -1,0 +1,81 @@
+\section{Source and duplicate search boundaries}\label{sec:sources}
+\subsection{Sequence identification and freshness}
+The source reconnaissance dated 5 October 2026 obtained the complete indexed OEIS record for A368246, including its definition, offset, data, formula, examples, program, and cross-reference to A143946. It identifies the cycle-minimum diagonal, $a_0=1$, and the initial values used here. Direct fresh requests for A368246 and its internal entry were unsuccessful, including an HTTP 403 response. A newly verified live revision timestamp was therefore not obtained.
+
+The related primary entry A143946 was retrieved and gives the record-position triangle and its row polynomial
+\[
+z(z^2+1)(z^3+2)\cdots(z^n+n-1).
+\]
+The primary papers also ground the statistic independently of the indexed entry. The exact counting proof in Section~\ref{sec:counting} provides a further check that the normalization and index agree with this definition.
+
+The indexed record includes a historical conjecture attributing the constant $\ee^{-\gamma}$ to V\'aclav Kot\v e\v sovec on 29 December 2023. That is a statement about the inspected record, not evidence that the leading asymptotic remains open. As explained in Section~\ref{sec:counting}, the 2013 local limit theorem already implies it. No current OEIS claim of an unresolved leading constant is made here.
+
+\subsection{The inspected mathematical literature}
+Louchard \cite[Eq.~(1)]{Louchard} explicitly supplies the finite polynomial, and Eq.~(2) gives its probability normalization. His introductory local-limit discussion and Eq.~(4) connect the statistic to the Dickman distribution and credit earlier work. Kortchemski \cite{Kortchemski} treats permutation records and a different large-deviation regime. Neither the known finite polynomial nor the elementary infinite-product reduction is presented here as a novelty.
+
+Giuliano, Szewczak and Weber \cite[Theorem~2.1]{GSW} provide the exact local limit statement used above. Their theorem, rather than a heuristic density argument, proves the leading constant on the diagonal. The stronger quantitative local estimates in de la Bret\`eche and Tenenbaum \cite[Eqs.~(2.14), (3.1)]{BT} were also inspected. Their displayed diagonal error is too large to identify the $n^{-2}$ correction in $b_n$ established here. A related oscillatory term in a total-variation analysis cannot simply be read as this sequence's coefficient.
+
+Flajolet, Fusy, Gourdon, Panario and Pouyanne \cite[Theorems~1--2, Section~3]{FFGPP} supply the classical hybrid framework. Their worked product is
+\[
+\prod_{j\geq1}\left(1+\frac{z^j}{j}\right),
+\]
+whereas ours has exponent $j+1$. The unshifted example has a nonzero smooth correction sector; copying those coefficients would give the wrong answer for A368246. The use of Gamma products, local root expansions, and a natural boundary is part of that established method. The calculation specific to the shifted product is the identity \eqref{eq:exactcancel} and its consequences.
+
+\subsection{Bounded duplicate checking}
+Current repository catalogues and exact-number searches were checked during reconnaissance. Actual near-match article sources on two Fourier peaks, path-forest expansions, partition orientation sums, a level-seven Gamma constant, and a cubic restricted-partition boundary were inspected rather than relying only on titles. Their models differ from the shifted record product. Exact-number searches for A368246 returned no matching article in the searched repository.
+
+Searches in the available document collection also used the sequence number and semantic terms such as record positions, cycle minima, and Dickman asymptotics. Returned near matches were opened and identified as different models, including deterministic record walks and diagonal alignment counts. Search results were sometimes fuzzy. These checks support only the statement that no duplicate was found among the inspected material. They do not establish exhaustive absence from the collection, the internet, unpublished work, or the broader literature.
+
+The editable \texttt{SOURCES.md} records source URLs and the scope of these checks. It deliberately omits private document identifiers and working-audit files. The result is a self-contained mathematical report with a bounded source ledger, not a certificate of priority.
+
+\section{Further research questions}\label{sec:questions}
+The fixed-order theorem leaves several concrete questions. They are proposed directions rather than results proved by this report.
+
+\paragraph{Effective constants and onset.}
+The tail majorants in Section~\ref{sec:tail} are explicit, but the proof does not assemble numerical bounds for all local jets, their complementary arcs, and the final Fourier norm. Carrying out that assembly could produce certified constants and onsets in \eqref{eq:main}. Combined with interval evaluation of the finite real model, it could turn the asymptotic envelope into a practical finite threshold certificate. At present, the exact count comparison remains necessary whenever a numerical inverse is used without such bounds.
+
+\paragraph{Certified higher amplitudes.}
+The finite prescription in Section~\ref{sec:transfer} determines every fixed coefficient. A reusable implementation could construct the actual higher $P_j$, rigorously bound derivatives of the smooth tail, collect the minimal periods, and expose cancellations among root amplitudes. It would be useful to determine which constants admit Gamma or other standard special-function expressions and which are most naturally represented by convergent series. The public code here implements exact tree jets and transfer checks, with the full sequence model displayed only through order three.
+
+\paragraph{More general exponent patterns and weights.}
+A natural extension is to products with periodic, nonconstant perturbations of the exponent $j+1$, or with controlled periodic weights. The question is which patterns cause complete or partial cancellation of the positive-root logarithmic sector, and how they alter the root frequencies. The constant-shift case alone is not an unresolved characterization: for
+\[
+F_d(z)=\prod_{j\geq1}(1+z^{j+d}/j),\qquad d\in\Z_{\geq0},
+\]
+the positive logarithmic coefficient is $-T(s\ee^{-ds})/s=-1-(1-d)s+O(s^2)$. Its pole coefficient is again $A$, so already the first smooth correction, in coefficient index $m$, is $A(1-d)/m$. Thus full cancellation among constant nonnegative integer shifts can occur only at $d=1$, the case proved here. More varied exponent patterns require additional analysis.
+
+\paragraph{Large order and optimal truncation.}
+Nothing in the fixed-$K$ proof controls the growth of $P_j$ or of its remainder constants as $j\to\infty$. Establishing that growth could address optimal truncation, interactions among increasing root orders, and the scale of the error beyond all retained algebraic terms. The natural boundary makes these questions especially sensitive to uniformity. No convergent infinite transseries, optimal truncation rule, or exponentially small remainder is asserted in this report.
+
+\begin{thebibliography}{9}
+\bibitem{OEIS368246}
+The OEIS Foundation Inc., \emph{The On-Line Encyclopedia of Integer Sequences}, A368246, permutations whose cycle minima sum to their size.\newline
+\url{https://oeis.org/A368246}
+
+\bibitem{OEIS143946}
+The OEIS Foundation Inc., \emph{The On-Line Encyclopedia of Integer Sequences}, A143946, triangle of sums of record positions.\newline
+\url{https://oeis.org/A143946}
+
+\bibitem{Kortchemski}
+I. Kortchemski, \emph{Asymptotic behavior of permutation records}, Journal of Combinatorial Theory, Series A \textbf{116} (2009), 1154--1166.\newline
+\url{https://arxiv.org/abs/0804.0446}
+
+\bibitem{Louchard}
+G. Louchard, \emph{Sum of positions of records in random permutations: asymptotic analysis}, Online Journal of Analytic Combinatorics \textbf{9} (2014), Paper 1, 20 pp.\newline
+\url{https://doi.org/10.61091/ojac-901}\newline
+\url{https://guy.louchard.web.ulb.be/louchard.papers/srecn3.pdf}
+
+\bibitem{GSW}
+R. Giuliano, Z. Szewczak, and M. Weber, \emph{Almost sure local limit theorem for the Dickman distribution}, arXiv:1309.1578, 2013.\newline
+\url{https://arxiv.org/abs/1309.1578}
+
+\bibitem{BT}
+R. de la Bret\`eche and G. Tenenbaum, \emph{On strong and almost sure local limit theorems for a probabilistic model of the Dickman distribution}, arXiv:2012.00528, version 4, 8 March 2021.\newline
+\url{https://arxiv.org/abs/2012.00528}
+
+\bibitem{FFGPP}
+P. Flajolet, \'E. Fusy, X. Gourdon, D. Panario, and N. Pouyanne,
+\emph{A hybrid of Darboux's method and singularity analysis in combinatorial asymptotics}, Electronic Journal of Combinatorics \textbf{13} (2006), R103, 35 pp.\newline
+\url{https://doi.org/10.37236/1129}\newline
+\url{https://monge.univ-eiffel.fr/~fusy/Articles/FlFuGoPaPo06.pdf}
+\end{thebibliography}

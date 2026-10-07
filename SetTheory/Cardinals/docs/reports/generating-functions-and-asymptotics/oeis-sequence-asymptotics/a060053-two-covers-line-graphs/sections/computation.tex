@@ -1,0 +1,64 @@
+\section{Exact computation and reproducibility}
+\subsection{Three distinct levels of evidence}
+The analytic theorems establish the fixed-order limits. Exact algebra verifies the displayed coefficient identities, while finite enumeration checks the models and indexing. High-precision floating-point residuals illustrate convergence but are not interval certificates. In particular, none of the decimal diagnostics supplies an effective constant or starting index for the asymptotic error bounds.
+
+The standard-library program \texttt{code/exact\_counts.py} implements equation \eqref{eq:bell_exact}. It builds Bell numbers with the Bell triangle, multiplies the integer polynomials recursively, and applies each exponential multiplier with exact rational arithmetic. For $p_j=[x^j]e^{P(x)}$, it uses
+\[
+p_0=1,\qquad p_j=\frac1j\sum_{k=1}^j k[x^k]P(x)\,p_{j-k}.
+\]
+The resulting coefficient identity is the finite convolution from Theorem S3. Integer outputs for $V,U,L,O$ are checked explicitly. The public exact-computation range is $0\le n\le640$. This is a software limit; the theorems have no index cap. Local chunked decimal conversion avoids changing Python's process-wide integer-string safety limit.
+
+\texttt{code/test\_exact.py} compares all five models with an independently generated exact fixture through index $80$, all downloaded terms of A060053 and A014500 through $100$, and all 18 terms of the legacy A132219 series. It also verifies $U_n=\sum_{k=0}^n\binom nk V_k$ across the entire requested computation range. Failures use explicit exceptions rather than Python assertions, so the tests remain active under optimized Python.
+
+\texttt{code/endpoint\_check.py} independently enumerates set partitions of the $2n$ labelled endpoints. It rejects loop and repeated-edge partitions; the sorted incident-label blocks canonically identify roots, and shared endpoints determine their labelled line graphs. The fixture through $n=6$ was freshly reproduced. The default build reruns through $n=5$; the more expensive $n=6$ check is available separately. This approach does not use the corrected line-graph multiplier to generate its objects.
+
+\subsection{Symbolic coefficients and numerical diagnostics}
+The optional SymPy program \texttt{code/generate\_coefficients.py} directly implements (C3)--(C6). Its supported and tested order range is $0\le J\le3$. Frozen outputs include all four model coefficient arrays, the Bell array and the exact-Bell normalized $V$ array through order three. The separate verifier checks the two displayed $v_j$, the leading term of $v_3$, the third-order line-graph separation, the cross-order identities and an independent first-order Gaussian calculation.
+
+The latter calculation is short enough to state. Writing $E=hE_1+h^2E_2+\cdots$ gives
+\begin{align*}
+E_1&=\frac{2r+1}{6}y^3+\frac{r^2+r-1}{2}y,\\
+E_2&=-\frac{3r+1}{12}y^4+
+ \left(\frac14-\frac r2-\frac{3r^2}{4}\right)y^2
+ -\frac1{12}+\frac r4-\frac{r^2}{4}-\frac{r^3}{12}.
+\end{align*}
+For $p_1=[z]P(z)$, the coefficient is
+\[
+a_{P,1}=\frac r2\E\left(E_2+\frac12E_1^2+p_1r\right),
+\quad \E y^{2j}=\frac{(2j-1)!!}{(1+r)^j}.
+\]
+This independently reproduces the first coefficients for $H,V,U,L$.
+
+The optional mpmath program \texttt{code/check\_saddle.py} solves the strictly concave saddle equation and evaluates the positive defining sum using log-gamma expressions. Concavity gives a geometric upper-tail formula, which is evaluated in floating point. That evaluated bound, including its roundoff, is a diagnostic and is not advertised as a rigorous interval. The supported parameters are $2\le n\le10000$, $0\le K\le3$, and $40$ through $200$ decimal digits. The lower bound $n=2$ ensures that the adjacent positive sum also has positive index.
+
+At $n=1000$ the observed relative errors, in the convention approximation divided by the defining sum minus one, are
+\begin{center}
+\begin{tabular}{c r r}
+\toprule
+$K$ & relative error & $n^{K+1}$ times error\\
+\midrule
+0&$-1.46915\cdot10^{-5}$&$-0.0146915$\\
+1&$-1.17884\cdot10^{-9}$&$-0.00117884$\\
+2&$+6.29179\cdot10^{-13}$&$+0.000629179$\\
+3&$+2.36925\cdot10^{-16}$&$+0.000236925$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The normalized ratio $(H_{n-1}/H_n)/(r^2/n^2)$ is about $0.501922$, consistent with the proved limiting value $1/2$. These observations do not replace the uniform derivative, lattice or tail estimates.
+
+\subsection{Rebuilding and integer inverse queries}
+The accompanying README gives complete commands. The exact tests need Python 3.11 or later and no third-party library. Building the PDF additionally needs a TeX Live installation with the packages loaded in \texttt{src/report224.tex}. SymPy and mpmath are optional. The build uses a private TeX format, fixed PDF metadata, a sorted uncompressed ZIP with fixed timestamps, and an output directory outside the source tree. It verifies a source manifest before running and checks that no source bytes changed. Byte reproducibility is claimed for the same toolchain, not across arbitrary TeX or library versions.
+
+The exact threshold command scans a finite computed sequence in order and returns its first value at least the specified positive integer threshold. It does not assume monotonicity at small indices. If no crossing occurs, it says only that no crossing was found in the checked range. Threshold input and output use bounded chunked decimal conversion. It must not be described as an unbounded exact inverse oracle.
+
+A full package reproduction consists of ordinary and optimized cap-$640$ builds, comparison of the actual member names and bytes and the entire ZIP, plus visual inspection of every PDF page. A matching ZIP certifies reproducible bytes, not mathematical truth; the proof review and visual checks remain separate.
+
+\section{Further research questions}
+\begin{enumerate}
+\item \textbf{Effective enclosures.} Can the strict-concavity and derivative bounds be made explicit enough to give practical constants and starting indices for each fixed order? This would turn model-root estimates into certified threshold searches beyond the exact software cap.
+\item \textbf{Growing orders.} The present constants depend on a fixed order. What is the growth of the exact-saddle contraction coefficients and of the Lambert rational functions as the order grows? An optimal-truncation theorem requires information absent from a fixed-order expansion.
+\item \textbf{Exponential lattice corrections.} The lattice error is smaller than every fixed algebraic order. Can its leading oscillatory dependence on the noninteger saddle be extracted, and how does it compare with other exponentially small corrections?
+\item \textbf{Further graph observables.} Marking finitely many connected components leads to multivariate polynomial perturbations. A useful extension would give joint local limits or conditioned expansions while retaining the signed-tail controls used here.
+\item \textbf{Uniform inverse computation.} Can an interval implementation of the positive sum, exact-saddle derivatives and inverse correction bridge small exact counts to asymptotic enclosures with an explicit guarantee? Floating-point residuals alone do not settle this.
+\item \textbf{Source history and coverage.} The obsolete line-graph multiplier remains in the retrieved A132219 data, while the corrected author manuscript is clear. A comprehensive bibliographic study could determine which higher-order formulas or inverse techniques have appeared elsewhere. This report makes no inference of novelty from the absence of such formulas in the checked sources.
+\end{enumerate}

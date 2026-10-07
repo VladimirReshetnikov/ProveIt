@@ -1,0 +1,51 @@
+\section{Saddle scales and control of every Fourier arc}\label{sec:fourier}
+The same estimates will be used for several connected EGFs. In this section let $G=H+Q$ for a fixed real polynomial $Q$, with nonnegative power-series coefficients, and suppose $a=\De G(r)\sim n$. This includes $C$, $C-z$, the exceptional-component deletion, and any other fixed deletion retaining nonnegative coefficients. Terms of polynomial degree larger than four change only harmless polynomial bounds below.
+
+\begin{lemma}[Cumulant scales]\label{lem:scales}
+For each fixed $j\ge1$,
+\begin{equation}\label{eq:scales}
+ \De^jG(r)\sim H(r)r^j\sim nr^{j-1},\qquad
+ b_G:=\De^2G(r)\sim nr,\qquad r\sim\log n.
+\end{equation}
+Every fixed power of $r$ is $o(n^a)$ for every $a>0$.
+\end{lemma}
+\begin{proof}
+Define polynomials $P_j$ by
+\begin{equation}\label{eq:P}
+ P_0(z)=1,\qquad P_{j+1}(z)=(z+2)P_j(z)+zP'_j(z).
+\end{equation}
+Then $\De^jH=HP_j$, and $P_j$ is monic of degree $j$. Fixed polynomial perturbations are negligible compared with $H$. In particular
+\[
+ a=\frac{e^rr^2(r+2)}2+O(r^q)
+\]
+for a fixed $q$. Since $a\sim n$, we have $\log a=\log n+o(1)$, and logarithms give $r+3\log r-\log2+o(1)=\log n$. This proves all assertions.
+\end{proof}
+
+For the Boltzmann total size $N_G$, independent Poisson component counts have cumulant generating function $G(re^t)-G(r)$. Its centered characteristic function is
+\[
+ \chi_G(\theta)=\exp\{G(re^{\ii\theta})-G(r)-\ii\theta\De G(r)\}.
+\]
+\begin{lemma}[Full-arc domination]\label{lem:arcs}
+There are $c,c_0>0$, valid for all sufficiently large $r$, such that
+\begin{align}
+ |\chi_G(\theta)|&\le e^{-cb_G\theta^2}
+       &&(|\theta|\le c_0/r),\label{eq:inner}\\
+ |\chi_G(\theta)|&\le e^{-cn/r^2}
+       &&(c_0/r\le|\theta|\le\pi).\label{eq:outer}
+\end{align}
+\end{lemma}
+\begin{proof}
+Under the weights of $H$, component size has distribution $m=2+\Pois(r)$. The sizes $m\in[r/2,2r]$ carry $1-o(1)$ of both its mass and its weighted second moment. To see the exponential tail estimate directly, apply Markov's inequality to $e^{t\Pois(r)}$, whose expectation is $\exp(r(e^t-1))$, with a suitable fixed positive or negative $t$. Multiplying by any fixed power of $m$ does not change exponential decay.
+
+Choose $c_0$ small enough that $|m\theta|\le1$ on this size window. The loss in the real part of the exponent is the sum of nonnegative terms $\lambda_m(1-\cos m\theta)$. Keeping just this window and using $1-\cos u\ge c u^2$ gives \eqref{eq:inner}. The finitely many polynomial modifications lie outside the window for large $r$.
+
+For the outer arc, regardless of the phase of $H(re^{\ii\theta})$,
+\begin{equation}\label{eq:radial}
+ \Re\{H(re^{\ii\theta})-H(r)\}
+ \le-H(r)\{1-e^{-r(1-\cos\theta)}\}.
+\end{equation}
+On $[-\pi,\pi]$, use $1-\cos\theta\ge2\theta^2/\pi^2$ and
+$1-e^{-x}\ge c\min(x,1)$. For $|\theta|\ge c_0/r$, the right side is at most $-cH(r)/r\asymp-n/r^2$. The polynomial change contributes $O(r^q)$, which is absorbed for large $r$.
+\end{proof}
+
+Thus no secondary lattice arcs are being omitted. In particular, removal of sizes one or two does not invalidate the proof: every sufficiently large consecutive size is present. The point is stronger than a statement of aperiodicity; it supplies the exponentially small bound required after coefficient extraction and conditioning.

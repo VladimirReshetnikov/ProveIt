@@ -1,0 +1,185 @@
+\section{Inversion and threshold
+certification}\label{inversion-and-threshold-certification}
+
+\subsection{Inversion on the sequence
+range}\label{inversion-on-the-sequence-range}
+
+Let \(Y\) denote the target value. Define
+
+\[
+ \Phi(x)=2x(r-1+1/r)-x\log2,
+ \qquad r=W(2x),
+\]
+
+\[
+ h_0(r)=r^2/4+r/2+1+\tfrac12\log(1+r).
+\]
+
+Direct differentiation using \(r'=r/[x(1+r)]\) gives
+
+\[
+ \Phi'(x)=2r-\log2=:q(r),\qquad
+ \Phi''(x)=\frac{2r}{x(1+r)}.
+ \tag{C17}\label{eq:C17}
+\]
+
+From (C2),
+
+\[
+ \log A_P(n)=\Phi(n)-h_0(r)+a_{P,1}(r)/n+O_{P}(r^8/n^2).
+ \tag{C18}\label{eq:C18}
+\]
+
+For large \(Y\), let \(x_0\) be the unique large real solution of
+\(\Phi(x_0)=\log Y\) and let \(r_0=W(2x_0)\). If \(Y=A_P(N)\) for an
+integer \(N\) tending to infinity, then
+
+\[
+ N=x_0+\frac{h_0(r_0)}{2r_0-\log2}
+ +O_P(r_0^3/x_0).
+ \tag{C19}\label{eq:C19}
+\]
+
+This is an absolute index error, not a relative one. To see the scale,
+the leading displacement is \(O(r_0)\); inserting that displacement in
+(C18) leaves \(O(r_0^4/x_0)\), which is divided by \(\Phi'\) asymptotic
+to \(2r_0\).
+
+One additional explicit correction is available. Write
+
+\[
+ d_0(r)=h_0(r)/q(r),\quad
+ d_1(r)=\frac{\frac r{1+r}h_0'(r)d_0(r)
+ -\frac r{1+r}d_0(r)^2-a_{P,1}(r)}{q(r)}.
+\]
+
+A Taylor expansion of (C18), now retaining its \(O(r^8/n^2)\) error,
+gives
+
+\[
+ N=x_0+d_0(r_0)+d_1(r_0)/x_0+O_P(r_0^7/x_0^2).
+ \tag{C20}\label{eq:C20}
+\]
+
+For details of the second correction, let $x=x_0$, $r=W(2x)$ and
+$G(t)=\Phi(t)-h_0(W(2t))+a_{P,1}(W(2t))/t$.
+For a displacement $d=O(r)$, finite Taylor expansion gives
+\[
+G(x+d)-\log Y=q(r)d-h_0(r)
+ +\frac{\frac r{1+r}d^2-\frac r{1+r}h_0'(r)d+a_{P,1}(r)}{x}
+ +O_P(r^8/x^2).
+\]
+Indeed $a_{P,1}=O(r^4)$ and its rational derivative is $O(r^3)$;
+all higher Taylor terms are smaller than the displayed error.
+Taking $d=d_0+d_1/x$ cancels the constant and $x^{-1}$ terms.
+Equation (C18) at the true integer $N$, followed by the mean value theorem
+for the explicit $G$ with $G'(t)\sim2W(2t)$, proves (C20).
+The preliminary localization $N=x_0+O(r_0)$ follows first from (C18)
+and $\Phi'(x)\asymp r_0$ in a fixed relative neighborhood of $x_0$.
+No smooth continuation of the unknown error is used.
+
+For arbitrary fixed \(J\), set
+
+\[
+ F_J(x)=\Phi(x)-h_0(W(2x))
+ +\log\left(\sum_{j=0}^J a_{P,j}(W(2x))/x^j\right).
+ \tag{C21}\label{eq:C21}
+\]
+
+The logarithm has positive argument eventually, and direct
+differentiation of the finite rational formula shows
+\(F_J'(x)\ge W(2x)\) eventually. If \(x_J\) is its large root
+\(F_J(x_J)=\log Y\) and \(Y=A_P(N)\), then
+
+\[
+ |x_J-N|=O_{P,J}\!\left((1+r_N)^{4J+3}/N^{J+1}\right).
+ \tag{C22}\label{eq:C22}
+\]
+
+No differentiation of the unknown asymptotic remainder is used: apply
+(C2) only at the integer \(N\), and apply the mean value theorem to the
+explicit smooth \(F_J\).
+
+\subsection{Lambert seed and its
+limitation}\label{lambert-seed-and-its-limitation}
+
+Set
+
+\[
+ a=1+\tfrac12\log2,\qquad b=1-a^2/4,
+\]
+
+\[
+ w=2W\!\left(\tfrac12\sqrt{\log Y}\,e^{-a/4}\right).
+\]
+
+The equation \(\Phi(x_0)=\log Y\) is exactly
+
+\[
+ e^{r_0}(r_0^2-ar_0+1)=\log Y.
+\]
+
+Writing \(r_0=w+a/2+\delta\) reduces it to
+
+\[
+ e^\delta((w+\delta)^2+b)=w^2,
+\]
+
+so
+
+\[
+ \delta=-\frac{b}{w(w+2)}+O(w^{-4}).
+ \tag{C23}\label{eq:C23}
+\]
+
+This provides a useful initial seed for solving the exact scalar
+equation for \(r_0\), then \(x_0=r_0e^{r_0}/2\). The defining Lambert
+relation and branch convention are standard; see
+\href{https://dlmf.nist.gov/4.13}{DLMF §4.13}.
+
+A fixed finite truncation of this \(1/w\) seed does \textbf{not} retain
+the fine absolute accuracy in (C19), (C20), or (C22). An \(r_0\) error
+\(O(w^{-K})\) produces an \(x_0\) error \(O(x_0w^{-K})\), enormously
+larger than the desired \(O(r_0^3/x_0)\). Refine the exact scalar
+equation numerically to the needed precision, or keep the seed error
+explicitly in the final error bound.
+
+\subsection{Arbitrary thresholds require a true-sequence
+enclosure}\label{arbitrary-thresholds-require-a-true-sequence-enclosure}
+
+The asymptotic \(A_P(n)/H_n\to1\) and \(H_{n+1}/H_n\to\infty\) imply
+\(A_P(n)\) is positive and strictly increasing eventually. For large
+targets exceeding the maximum of the finite exceptional prefix, let
+\(N_Y\) be the least integer with \(A_P(N_Y)\ge Y\).
+If $n_*$ is an index beyond which positivity and monotonicity hold, this
+least index lies in the increasing tail once
+$Y>\max_{0\le k<n_*}A_P(k)$.
+Equation (C22), as stated, concerns targets on the sequence range. For
+arbitrary \(Y\), simply rounding a root of \(F_J\) does not
+automatically certify \(N_Y\).
+
+After the exceptional prefix has been excluded, a rigorous threshold
+bracket requires either adjacent exact counts in the increasing tail, or a
+proved bound
+
+\[
+ |\log A_P(k)-F_J(k)|\le E_J(k)
+\]
+
+with an explicit applicable constant and starting index. Integers
+\(k_-\) and \(k_+\), both in that certified increasing tail, then certify
+
+\[
+ F_J(k_-)+E_J(k_-)<\log Y,\qquad
+ F_J(k_+)-E_J(k_+)\ge\log Y
+\]
+
+and hence \(k_-<N_Y\le k_+\). A numerical bracket for the model root
+alone does not provide those inequalities for the true sequence. The
+theorem's existence of an \(O\)-constant is not an implemented
+certified error bound.
+
+For $V,U,L$ within the public exact range, a finite scan checks all earlier
+indices instead of relying on an unimplemented monotonicity onset. Outside
+that range, the present asymptotic theorem alone supplies no effective
+certificate for a particular arbitrary threshold.

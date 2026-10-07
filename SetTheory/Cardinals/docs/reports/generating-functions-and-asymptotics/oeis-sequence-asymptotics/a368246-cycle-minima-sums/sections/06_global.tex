@@ -1,0 +1,101 @@
+\section{From local jets to a global coefficient remainder}\label{sec:global}
+The next argument is the analytic step that distinguishes a coefficient theorem from a radial heuristic. We fix a target order and verify the boundary regularity required for Fourier integration by parts.
+
+\subsection{Choice of finite cutoffs}
+Fix $K\geq2$, and set
+\begin{equation}\label{eq:cutoffs}
+M=K+2,\qquad L=K+6,\qquad d=L-1=K+5=M+3.
+\end{equation}
+By Lemma~\ref{lem:tail}, $Q_L$ has bounded continuous complex derivatives through order $d$. Let $Z_L$ be the finite set of roots of unity with exact order at most $L$. This is the singular set of the finite factor $P_L$ on the unit circle. It is not the full singular set of $F$.
+
+At each nontrivial $\zeta\in Z_L$, use \eqref{eq:rootform}. Expand its analytic factor in Taylor series, replace $Q_L$ by its Taylor polynomial of degree $d-1$, and expand the exponential of $-B_{q,L}\log s$. Retain every nonanalytic term that becomes
+\begin{equation}\label{eq:jetmonomial}
+ c_{\zeta,p,h}\left(1-\frac z\zeta\right)^p
+ \log^h\left(1-\frac z\zeta\right),\qquad
+ 0\leq p\leq M-1,\quad h\geq1,
+\end{equation}
+after the analytic change from $s$ to $t=1-z/\zeta$. There are only finitely many such terms. The minimum degree in $B_{q,L}$ is $q-1\geq1$, so a power $(\log s)^h$ from the exponential has degree at least $h(q-1)$ before the possible extra zero. This ensures finiteness without assigning a cutoff in logarithm degree separately.
+
+The coefficients $c_{\zeta,p,h}$ are defined by this finite-jet operation. They do not depend on increasing $L$ once sufficient differentiability and Taylor depth are available: two valid expansions with controlled higher-order remainders have identical lower-order nonanalytic jets. Their values can include convergent derivatives of $Q_L$, rather than only elementary constants. The Gamma products are their leading amplitudes.
+
+\subsection{Remainders at the nontrivial selected roots}
+We record why each step in this local construction remains valid after $M$ derivatives. For a fixed integer $p\geq M$ and $h\geq0$,
+\begin{equation}\label{eq:monomialderivatives}
+\frac{\mathrm d^M}{\mathrm ds^M}\bigl(s^p\log^h s\bigr)
+=O\!\left(|s|^{p-M}(1+|\log s|)^h\right)
+\end{equation}
+on the relevant punctured neighborhood. Derivatives of lower orders have the analogous extra positive powers. In particular, when $p=M$, the $M$th derivative is locally integrable on a boundary arc, and derivatives through order $M-1$ tend to zero for this remainder.
+
+The exponential in \eqref{eq:rootform} is expanded to enough terms that its first omitted power has $s$-degree at least $M$. Its usual Taylor formula, applied to the small quantity $B_{q,L}(s)\log s$, yields the same differentiated bounds. Truncating analytic factors is equally harmless after choosing their Taylor depth beyond $M$.
+
+The only nonanalytic object not represented by a convergent power-log expansion is $Q_L$. Lemma~\ref{lem:taylor} gives, in the $s$ coordinate,
+\begin{equation}\label{eq:Qremainder}
+\left(Q_L(\zeta\ee^{-s})-T(s)\right)^{(h)}
+=O(|s|^{d-h})\qquad(0\leq h\leq d),
+\end{equation}
+for a Taylor polynomial $T$ of degree $d-1$. Derivatives of $P_L$ of order $v\leq M$ consist of bounded analytic contributions and terms bounded by
+\[
+O\!\left(|s|^{\varepsilon_\zeta+q-1-v}
+ (1+|\log s|)^{c_v}\right)
+\]
+for fixed finite exponents $c_v$. The Leibniz rule applied to $P_L(Q_L-T)$ now gives positive powers of $|s|$ after $M$ derivatives. For the singular part the exponent is at least
+\[
+d+\varepsilon_\zeta+q-1-M\geq4,
+\]
+and the bounded analytic part gives at least $d-M=3$. All these terms are locally integrable, with lower derivatives continuous at the root. This explicitly checks the tail remainder rather than treating it as an analytic function across the boundary.
+
+The analytic change $s=-\log(1-t)$ preserves these bounds: $s/t$ is analytic and nonzero near zero, and
+\[
+\log s=\log t+\log(s/t)
+\]
+adds only an analytic factor. Differentiation along the boundary angular coordinate also preserves the local integrability and continuity properties, since it is a nonsingular smooth coordinate change.
+
+\subsection{The remainder at the positive root}
+At $1$, equation \eqref{eq:positiveform} gives
+\[
+F(\ee^{-s})=s^{-1}U_L(s)Q_L(\ee^{-s})
+ \exp\bigl(D_L(s)\log s\bigr),\qquad D_L(s)=O(s^L).
+\]
+The first logarithmic term, including the pole, has degree $L-1$. Its $M$th derivative is bounded by
+\begin{equation}\label{eq:positiveerror}
+O\!\left(|s|^{L-1-M}(1+|\log s|)^c\right)
+=O\!\left(|s|^3(1+|\log s|)^c\right).
+\end{equation}
+The remainder from replacing $Q_L$ by its degree-$(d-1)$ Taylor polynomial and dividing by $s$ has $M$th derivative
+\begin{equation}\label{eq:positiveQerror}
+O(|s|^{d-M-1})=O(|s|^2).
+\end{equation}
+After the pole $A/(1-z)$ is subtracted, everything else up to these remainders is analytic near $1$. Equations \eqref{eq:positiveerror}--\eqref{eq:positiveQerror} therefore give the same required boundary regularity there.
+
+\subsection{A single analytic subtraction in the disk}
+For each $\zeta\in\partial\D$, the function $\log(1-z/\zeta)$ has its usual analytic branch in $\D$, since $1-z/\zeta$ has positive real part there. Let $J_\zeta$ be the finite sum \eqref{eq:jetmonomial} at the nontrivial root $\zeta$. Define
+\begin{equation}\label{eq:G}
+G(z)=F(z)-\frac{A}{1-z}-\sum_{\zeta\in Z_L\setminus\{1\}}J_\zeta(z).
+\end{equation}
+Every subtraction is analytic in the open disk. At a different selected root, a fixed $J_\zeta$ is locally analytic. Subtracting it may change ordinary Taylor coefficients but cannot change a nonanalytic jet at that other root. Thus all of the local estimates above hold simultaneously for $G$.
+
+Away from the finite set $Z_L$, the finite factor $P_L$ continues analytically and $Q_L$ has $d$ bounded boundary derivatives. The high-order roots not in $Z_L$ are included in that smooth tail. They do not create an unexamined exceptional set in the argument. A finite covering of the circle by selected-root neighborhoods and their complement gives a global conclusion.
+
+\begin{lemma}[Boundary regularity and Fourier estimate]\label{lem:Fourier}
+The function $G$ in \eqref{eq:G} extends continuously to $\overline\D$. Its boundary trace $g(\theta)=G(\ee^{\ii\theta})$ has continuous derivatives through order $M-1$, these derivatives are absolutely continuous, and $g^{(M)}\in L^1[0,2\pi]$. Consequently
+\begin{equation}\label{eq:globalremainder}
+[z^m]G(z)=O_K(m^{-M})=O_K(m^{-K-2}).
+\end{equation}
+\end{lemma}
+\begin{proof}
+The local remainders have continuous derivatives through order $M-1$ by the estimates just established. On each punctured arc they possess an ordinary $M$th derivative that is integrable, since all powers of $|\log |\theta-\theta_0||$ are locally integrable. The lower-order derivatives have matching limits from either side. The fundamental theorem of calculus on truncated arcs, followed by the integrable limit, proves absolute continuity across the removed point. A finite partition then proves global absolute continuity. This also verifies the asserted regularity of all lower derivatives.
+
+Since $G$ is continuous on the compact closed disk, its radial boundary values converge uniformly. Cauchy's coefficient formula therefore identifies its Taylor coefficients with the Fourier coefficients of $g$. Repeated integration by parts, with periodic boundary terms canceling, gives for $m\geq1$
+\begin{equation}\label{eq:Fourier}
+[z^m]G(z)=\frac{(\ii m)^{-M}}{2\pi}
+\int_0^{2\pi}g^{(M)}(\theta)\ee^{-\ii m\theta}\dd\theta.
+\end{equation}
+The $L^1$ norm proves \eqref{eq:globalremainder}. The Riemann--Lebesgue lemma would strengthen this to a little-oh estimate at the same power, but is not needed.
+\end{proof}
+
+\subsection{Relationship to the published hybrid theorem}
+This is a direct boundary proof within the classical Darboux and hybrid framework \cite{FFGPP}. To invoke their Theorem~2 literally instead, one can choose the larger cutoff $L=2K+6$ and boundary regularity $s=2K+5$. The singular factor has global order $a=-1$, because \eqref{eq:globalbound} holds and $Q_L^{-1}$ is bounded. Their exponent is
+\[
+u_0=\left\lfloor\frac{s+\lfloor a\rfloor}{2}\right\rfloor=K+2.
+\]
+The finite polylogarithms continue into a common indented domain at the finitely many roots and have arbitrarily deep power-log expansions, so the remaining hypotheses can be met by choosing their local expansion depth $t_0>u_0$. Their conclusion gives the required coefficient remainder. The smaller cutoff $L=K+6$ in \eqref{eq:cutoffs} is justified by the direct derivative argument above; it is not obtained by silently substituting into the published exponent formula.

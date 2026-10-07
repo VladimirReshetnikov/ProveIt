@@ -1,0 +1,543 @@
+\section{Exact saddle expansion and polynomial
+perturbations}\label{exact-saddle-expansion-and-polynomial-perturbations}
+
+\subsection{Definitions and statement}\label{definitions-and-statement}
+
+Put
+
+\[
+ M(t)=\frac{t(t-1)}2,\qquad
+ H_n=e^{-1}\sum_{m\ge0}\frac{(M(m))_n}{m!},\qquad H_0=1,
+\]
+
+where \((u)_n=u(u-1)\cdots(u-n+1)\). For each fixed \(n\), this
+numerical sum converges absolutely, since its numerator is a polynomial
+of degree \(2n\) in \(m\). Because \(M(m)\) is a nonnegative integer,
+terms with \(M(m)<n\) vanish. For \(n\ge1\), define
+
+\[
+ a_j=\frac{1+\sqrt{1+8j}}2,\quad b_j=1-a_j,
+ \quad f_n(t)=\sum_{j=0}^{n-1}\log(M(t)-j)-\log\Gamma(t+1)
+ \quad(t>a_{n-1}).
+\]
+
+There is a unique maximum \(\tau=\tau_n\) of \(f_n\). Define
+
+\[
+ r=W(2n),\quad s=\frac{2n}{r}=e^r,\quad
+ \sigma^2=-\frac1{f_n''(\tau)},\quad
+ \lambda_j=f_n^{(j)}(\tau)\sigma^j\quad(j\ge3).
+\]
+
+For \(\ell\ge0\), let
+
+\[
+ C_\ell=\sum_{\substack{k_3,\ldots,k_{2\ell+2}\ge0\\
+               \sum_{j=3}^{2\ell+2}(j-2)k_j=2\ell}}
+ \left(\sum_j jk_j-1\right)!!
+ \prod_{j=3}^{2\ell+2}\frac{(\lambda_j/j!)^{k_j}}{k_j!},
+\]
+
+with the empty summand giving \(C_0=1\) and \((-1)!!=1\).
+
+\textbf{Theorem S1.} For every fixed integer \(K\ge0\),
+
+\[
+ H_n=e^{f_n(\tau)-1}\sqrt{2\pi}\,\sigma
+       \left(\sum_{\ell=0}^K C_\ell+O_K(n^{-K-1})\right).
+ \tag{S1}
+\]
+
+Moreover,
+
+\[
+ \tau=s+O(r),\qquad
+ \sigma^2=\frac{s}{r+1}\left(1+O(r^2/n)\right),\qquad
+ \lambda_j=O_j(n^{1-j/2}),\qquad C_\ell=O_\ell(n^{-\ell}).
+ \tag{S2}
+\]
+
+In particular the error in (S1) has no unreported positive power of
+\(r\).
+
+The first two corrections are
+
+\[
+ C_1=\frac{\lambda_4}{8}+\frac{5\lambda_3^2}{24},
+\]
+
+\[
+ C_2=\frac{\lambda_6}{48}+\frac{7\lambda_3\lambda_5}{48}
+ +\frac{35\lambda_4^2}{384}+\frac{35\lambda_3^2\lambda_4}{64}
+ +\frac{385\lambda_3^4}{1152}.
+ \tag{S3}
+\]
+
+These coefficients use derivatives at the exact saddle; replacing the
+saddle by \(s\) without expanding all accompanying factors changes the
+coefficients.
+
+\subsection{Strict concavity, localization, and derivative
+scale}\label{strict-concavity-localization-and-derivative-scale}
+
+The factorization
+
+\[
+ M(t)-j=\tfrac12(t-a_j)(t-b_j)
+\]
+
+gives
+
+\[
+ f_n'(t)=\sum_{j<n}\left(\frac1{t-a_j}+\frac1{t-b_j}\right)-\psi(t+1),
+\]
+
+\[
+ f_n''(t)=-\sum_{j<n}\left(\frac1{(t-a_j)^2}+\frac1{(t-b_j)^2}\right)
+ -\psi'(t+1)<0. \tag{S4}
+\]
+
+The trigamma function is positive on this interval. Also
+\(f_n'(t)\to+\infty\) at the lower endpoint and \(f_n'(t)\to-\infty\) at
+infinity. This proves existence and uniqueness of \(\tau\), with no
+assumption about the local approximation.
+
+Uniformly for \(t\asymp s\), Taylor expansion of the rational factors
+and the usual positive-real digamma estimates yield
+
+\[
+ f_n'(t)=\frac{2n}{t}-\log t
+     +O\left(\frac{n}{t^2}+\frac{n^2}{t^3}+\frac1t\right), \tag{S5}
+\]
+
+\[
+ f_n''(t)=-\frac{2n}{t^2}-\frac1t
+     +O\left(\frac{n}{t^3}+\frac{n^2}{t^4}+\frac1{t^2}\right). \tag{S6}
+\]
+
+Here \(\max_j|a_j|+|b_j|=O(\sqrt n)=o(s)\). At \(s/2\) and \(2s\), the
+leading part of (S5) has opposite signs and size comparable to \(r\),
+while the error is \(o(r)\). Hence \(\tau\in(s/2,2s)\). At \(s\), the
+leading part vanishes and
+
+\[
+ f_n'(s)=O(r^3/n),\qquad |f_n''(t)|\asymp n/s^2\asymp r^2/n
+\]
+
+on the interval joining \(s\) to \(\tau\). The mean value theorem gives
+\(\tau-s=O(r)\). Substituting this into (S6) gives the variance estimate
+in (S2).
+
+More generally, for each fixed \(q\ge2\),
+
+\[
+ f_n^{(q)}(t)=(-1)^{q-1}(q-1)!
+ \sum_{j<n}\left((t-a_j)^{-q}+(t-b_j)^{-q}\right)
+ -\psi^{(q-1)}(t+1). \tag{S7}
+\]
+
+The polygamma series bounds its last term by \(O_q(t^{1-q})\). Thus,
+uniformly on \(I_n=[\tau/2,3\tau/2]\),
+
+\[
+ |f_n^{(q)}(t)|\le C_q n/s^q,\qquad
+ -f_n''(t)\asymp n/s^2\asymp\sigma^{-2}. \tag{S8}
+\]
+
+Since \(s(r+1)\asymp n\), multiplying (S8) by \(\sigma^q\) gives
+
+\[
+ \sup_{t\in I_n}|f_n^{(q)}(t)|\sigma^q
+ \le C_q n^{1-q/2}. \tag{S9}
+\]
+
+This is the uniform derivative estimate responsible for the absence of
+logarithmic leakage. It also proves \(C_\ell=O(n^{-\ell})\): each
+monomial has order \(n^{-\frac12\sum(j-2)k_j}=n^{-\ell}\).
+
+\subsection{Global tails and a smooth lattice
+cutoff}\label{global-tails-and-a-smooth-lattice-cutoff}
+
+Integrating (S8) twice from the saddle gives, for \(t\in I_n\),
+
+\[
+ f_n(t)-f_n(\tau)\le-c(t-\tau)^2/\sigma^2. \tag{S10}
+\]
+
+In particular, at \(3\tau/4\) and \(5\tau/4\), the loss is at least
+\(c n\), because \(\tau^2/\sigma^2\asymp n\). To the left, concavity and
+monotonicity bound the entire remaining interval by the left boundary
+value. To the right of \(3\tau/2\), concavity gives the tangent bound
+
+\[
+ f_n(t)\le f_n(3\tau/2)-c(n/\tau)(t-3\tau/2),\quad t\ge3\tau/2. \tag{S11}
+\]
+
+Here (S8), integrated once, shows \(f_n'(3\tau/2)\le-cn/\tau\).
+Equations (S10) and (S11) show that both the integral and the integer
+sum outside \([3\tau/4,5\tau/4]\) are
+
+\[
+ O\left((1+\tau)e^{f_n(\tau)-cn}\right). \tag{S12}
+\]
+
+For the sum in the far right tail, sum the exponential tangent majorant
+as a geometric series; the far left contains \(O(\tau)\) integer points.
+This supplies a global argument, rather than extending a local quadratic
+estimate beyond its domain.
+
+Choose a fixed smooth cutoff \(\chi\), equal to one on \([3/4,5/4]\),
+supported in \((1/2,3/2)\), with \(0\le\chi\le1\), and put
+
+\[
+ g_n(t)=\chi(t/\tau)e^{f_n(t)},
+\]
+
+extended by zero to \(\mathbb R\). For every fixed integer \(L\ge0\),
+
+\[
+ \|g_n^{(L)}\|_1\le C_L e^{f_n(\tau)}\sigma^{1-L}. \tag{S13}
+\]
+
+To see this, write \(x=(t-\tau)/\sigma\). On the support, (S8) and
+\(f_n'(\tau)=0\) imply
+
+\[
+ |f_n'(t)|\le C\sigma^{-1}|x|,\qquad
+ |f_n^{(q)}(t)|\le C_q\sigma^{-q}\quad(q\ge2).
+\]
+
+The derivative formula for \(e^{f_n}\) therefore bounds its \(L\)-th
+derivative by \(C_L\sigma^{-L}(1+|x|)^L e^{f_n(t)}\). The cutoff
+derivatives cost only \(O(\tau^{-q})=O(\sigma^{-q})\). Integrating the
+resulting polynomial times the Gaussian majorant (S10) proves (S13).
+
+For even \(L\ge2\), the compact-support Euler--Maclaurin remainder gives
+
+\[
+ \left|\sum_{m\in\mathbb Z}g_n(m)-\int_{\mathbb R}g_n(t)\,dt\right|
+ \le\frac{2\zeta(L)}{(2\pi)^L}\|g_n^{(L)}\|_1. \tag{S14}
+\]
+
+Dividing by \(e^{f_n(\tau)}\sigma\) leaves \(O_L(\sigma^{-L})\). For the
+expansion through \(n^{-K}\), take
+
+\[
+ L=2K+4.
+\]
+
+Then
+
+\[
+ \sigma^{-L}=O\left(r^{2K+4}n^{-K-2}\right)=O_K(n^{-K-1}), \tag{S15}
+\]
+
+since every fixed power of \(\log n\) is \(O(n)\). Taking only
+\(L=2K+2\) would leave \(r^{2K+2}n^{-K-1}\), which does \textbf{not}
+justify the claimed remainder. Together with (S12), (S14)--(S15)
+rigorously replace the lattice sum by the continuous integral at the
+required accuracy.
+
+\subsection{Integrated Taylor expansion to every fixed
+order}\label{integrated-taylor-expansion-to-every-fixed-order}
+
+Set \(\eta=n^{-1/2}\) and \(Q=2K+1\). Taylor's theorem and (S9), through
+derivative order \(2K+4\), give
+
+\[
+ f_n(\tau+\sigma x)-f_n(\tau)
+ =-x^2/2+h(\eta,x)+R_n(x),
+\]
+
+\[
+ h(u,x)=\sum_{j=3}^{2K+3}a_j u^{j-2}x^j/j!,\qquad
+ a_j=\lambda_j/\eta^{j-2}=O_j(1),
+\]
+
+\[
+ |R_n(x)|\le C_K\eta^{2K+2}|x|^{2K+4}. \tag{S16}
+\]
+
+These estimates hold throughout \(|x|\le\delta/\eta\), with a
+sufficiently small fixed \(\delta>0\) chosen so the associated
+\(t\)-interval lies inside the region where the cutoff is one. Reducing
+\(\delta\) if necessary, uniformly for \(0\le u\le\eta\),
+
+\[
+ |h(u,x)|\le x^2/8,\qquad |R_n(x)|\le x^2/8. \tag{S17}
+\]
+
+Indeed each term of \(h\) is bounded by a constant times
+\(x^2(\eta|x|)^{j-2}\), and the remainder by a constant times
+\(x^2(\eta|x|)^{2K+2}\).
+
+For fixed \(x\), expand \(e^{h(u,x)}\) at \(u=0\) through degree \(Q\).
+The coefficients are precisely the monomials indexed by
+\(\sum(j-2)k_j\le Q\). The derivative of order \(Q+1\) with respect to
+\(u\) is, by repeated differentiation, \(e^{h(u,x)}\) times a polynomial
+in derivatives of \(h\). Because all \(a_j\) are bounded and
+\(0\le u\le\eta\le1\), this is bounded by
+
+\[
+ C_K(1+|x|)^{D_K}e^{x^2/8}
+\]
+
+for a finite fixed \(D_K\). The Taylor remainder is therefore bounded by
+that expression times \(\eta^{Q+1}\). Also, (S16)--(S17) and the mean
+value bound for the exponential imply
+
+\[
+ |e^{h(\eta,x)+R_n(x)}-e^{h(\eta,x)}|
+ \le C_K\eta^{2K+2}|x|^{2K+4}e^{x^2/4}.
+\]
+
+Multiplication by \(e^{-x^2/2}\) gives an integrable polynomial times a
+fixed Gaussian. Hence the \textbf{integrated} total remainder is
+\(O_K(\eta^{2K+2})=O_K(n^{-K-1})\), without enlarging the error by the
+length of the central interval.
+
+Outside \(|x|\le\delta/\eta\), (S10) bounds the cutoff integral by
+\(e^{-c_K n}\) times its leading scale. We may likewise extend each of
+the finitely many polynomial-Gaussian integrals to all of \(\mathbb R\),
+with an exponentially small error. A monomial indexed by \(k_j\) has
+ordinary degree \(D=\sum jk_j\) and weighted degree \(w=\sum(j-2)k_j\).
+Their parities agree. All odd weighted degrees therefore integrate to
+zero. For \(w=2\ell\), the normalized Gaussian moment is \((D-1)!!\),
+giving precisely \(C_\ell\).
+
+Thus
+
+\[
+ \int g_n(t)\,dt=e^{f_n(\tau)}\sqrt{2\pi}\sigma
+ \left(\sum_{\ell=0}^K C_\ell+O_K(n^{-K-1})\right).
+\]
+
+Combining this with (S12)--(S15) and the defining factor \(e^{-1}\)
+proves Theorem S1.
+
+\subsection{Growth and an adjacent-ratio bound from
+positivity}\label{growth-and-an-adjacent-ratio-bound-from-positivity}
+
+\textbf{Proposition S2.}
+
+\[
+ \log H_m=2m\log m-2m\log\log m+O(m), \tag{S18}
+\]
+
+and, for all sufficiently large \(m\),
+
+\[
+ \frac{H_{m-1}}{H_m}\le C\left(\frac{\log m}{m}\right)^2. \tag{S19}
+\]
+
+For (S18), set \(r=W(2m)\), \(s=2m/r\), and evaluate the exponent at
+\(s\). Since \(m/s^2=o(1)\),
+
+\[
+ \sum_{j<m}\log(M(s)-j)=2m\log s-m\log2+O(r^2).
+\]
+
+Stirling's estimate, \(s\log s=2m\), and \(\tau-s=O(r)\) give
+
+\[
+ f_m(\tau)=2m\log s-m\log2-2m+s+O(r^2+\log m).
+\]
+
+Theorem S1 contributes only \(O(\log m)\) to the logarithm. Finally
+\(\log s=\log m-\log\log m+O(1)\), giving (S18).
+
+For the ratio, define the positive probability law
+
+\[
+ \mathbb P_k(X=m)=\frac{(M(m))_k}{eH_k m!}
+\]
+
+on the integers with \(M(m)\ge k\). The exact falling-factorial identity
+gives
+
+\[
+ \frac{H_{k+1}}{H_k}=\mathbb E_k[M(X)-k]. \tag{S20}
+\]
+
+The global tail estimates and the leading case of Theorem S1 show
+\(\mathbb P_k(\tau_k/2\le X\le3\tau_k/2)=1-O(e^{-c k})\), after harmless
+polynomial factors are absorbed into the exponential. On this interval,
+
+\[
+ M(X)-k\ge c\tau_k^2\ge c'k^2/(\log k)^2
+\]
+
+for large \(k\). Hence (S20) is at least this size, proving (S19) with
+\(m=k+1\). This argument does not subtract two \(O(m)\) logarithmic
+errors, which would not establish an adjacent-ratio estimate.
+
+For a more precise conclusion, fix any \(0<\varepsilon<1/2\). Equation
+(S10) makes the probability outside \(|X-\tau_k|\le\varepsilon\tau_k\),
+but inside \([\tau_k/2,3\tau_k/2]\), exponentially small. Its
+contribution to \(\mathbb E_k X^2\) is also exponentially small relative
+to \(\tau_k^2\). For \(X>3\tau_k/2\), multiply the exponential tangent
+majorant (S11) by \(X^2\) and sum the resulting geometric series and its
+first two derivatives; this bounds the second-moment tail by a
+polynomial in \(\tau_k\) times \(e^{-ck}\), after normalization. The
+left tail is bounded similarly since \(X^2\le\tau_k^2\) there. Thus the
+central interval gives
+\((1-\varepsilon)^2\le\liminf\mathbb E_kX^2/\tau_k^2\le\limsup\mathbb E_kX^2/\tau_k^2\le(1+\varepsilon)^2\).
+Letting \(\varepsilon\downarrow0\), and using \(k=o(\tau_k^2)\), (S20)
+gives \(H_{k+1}/H_k\sim\tau_k^2/2\). Consequently
+
+\[
+ H_{n-1}/H_n\sim r^2/(2n^2). \tag{S21}
+\]
+
+Only the upper bound (S19) is needed below.
+
+A useful explicitly normalized consequence is the following. Define
+
+\[
+ S_n=\frac{\exp\{2n\log s-n\log2-2n+s-r^2/4-r/2-1\}}{\sqrt{r+1}}.
+\]
+
+Then
+
+\[
+ H_n=S_n\left(1+O(r^4/n)\right). \tag{S21a}
+\]
+
+Indeed, with \(u_j=1/s+2j/s^2\),
+
+\[
+ \sum_{j<n}\log(1-u_j)
+ =-\frac ns-\frac{n(n-1)}{s^2}+O\left(\sum_{j<n}u_j^2\right)
+ =-r/2-r^2/4+O(r^4/n).
+\]
+
+Here \(\max u_j=O(r^2/n)=o(1)\) and \(\sum u_j^2=O(r^4/n)\).
+Positive-real Stirling expansion therefore gives
+
+\[
+ f_n(s)=2n\log s-n\log2-2n+s-r^2/4-r/2
+       -\tfrac12\log(2\pi s)+O(r^4/n).
+\]
+
+The estimates \(f_n'(s)=O(r^3/n)\), \(\tau-s=O(r)\), and (S8) imply
+\(f_n(\tau)-f_n(s)=O(r^4/n)\). Finally combine the leading case of (S1)
+with the variance estimate in (S2). Since \(r^4/n\to0\), exponentiating
+the resulting logarithmic error proves (S21a).
+
+\subsection{Arbitrary fixed real polynomial
+perturbations}\label{arbitrary-fixed-real-polynomial-perturbations}
+
+Let \(P(x)\) be a fixed real polynomial with \(P(0)=0\), and set
+
+\[
+ p_j=[x^j]e^{P(x)},\qquad
+ A_P(n)=\sum_{j=0}^n(n)_j p_j H_{n-j}.
+\]
+
+This is a finite coefficient identity for formal exponential generating
+functions. Neither \(\sum H_n x^n/n!\) nor its product by \(e^{P(x)}\)
+is being evaluated at positive \(x\). Equation (S18), together with
+Stirling's estimate for \(n!\), shows the former has radius of
+convergence zero.
+
+\textbf{Theorem S3.} For each fixed integer \(K\ge0\),
+
+\[
+ A_P(n)=\sum_{j=0}^K(n)_j p_jH_{n-j}
+       +O_{P,K}\left(H_n(r^2/n)^{K+1}\right). \tag{S22}
+\]
+
+If \(P\ne0\) has degree \(d\ge1\), the signed far tail admits the
+absolute bound
+
+\[
+ \frac1{H_n}\sum_{j>n/2}\left|(n)_j p_jH_{n-j}\right|
+ \le\exp\left[-\frac{1+1/d}{2}n\log n+n\log\log n+O_P(n)\right]. \tag{S23}
+\]
+
+It also satisfies the weaker bound with leading term \(-n\log n/(2d)\).
+For \(P=0\), the tail is identically zero.
+
+\textbf{Proof.} For \(j\le n/2\), multiply (S19) over the indices
+\(n-j+1,\ldots,n\):
+
+\[
+ \frac{H_{n-j}}{H_n}\le\left(C\frac{\log^2n}{n^2}\right)^j.
+\]
+
+Since \((n)_j\le n^j\), these summands are at most \(|p_j|z_n^j\), where
+\(z_n=C\log^2n/n\). Write \(P(x)=\sum_{\ell=1}^dc_\ell x^\ell\). The
+nonnegative coefficients of \(\exp(\sum |c_\ell|x^\ell)\) majorize
+\(|p_j|\). Their series is entire, so, for fixed \(K\),
+
+\[
+ \sum_{j\ge K+1}|p_j|z_n^j=O_{P,K}(z_n^{K+1}). \tag{S24}
+\]
+
+This bounds the entire part \(K<j\le n/2\).
+
+For the far tail, Cauchy's coefficient inequality on \(|z|=j^{1/d}\)
+gives
+
+\[
+ |p_j|\le\exp\left[-(j/d)\log j+O_P(j)\right]. \tag{S25}
+\]
+
+For completeness, this follows since
+\(\max_{|z|=R}|e^{P(z)}|\le\exp(\sum|c_\ell|R^\ell)\), and at
+\(R=j^{1/d}\) the last exponent is \(O_P(j)\).
+
+Equation (S18) implies the uniform upper bound
+
+\[
+ \log H_k\le2k(\log n-\log\log n)+O(n)\quad(0\le k\le n), \tag{S26}
+\]
+
+because \(\log x-\log\log x\) is increasing for \(x>e\), while finitely
+many small \(k\) can be absorbed into the constant. Its lower bound at
+\(n\), together with \((n)_j\le n^j\), gives, for \(k=n-j\),
+
+\[
+ \log\frac{(n)_jH_{n-j}}{H_n}
+ \le-j\log n+2j\log\log n+O(n). \tag{S27}
+\]
+
+For \(j>n/2\), \(\log j\ge\log n-\log2\), so (S25) and (S27) bound the
+logarithm of the absolute normalized summand by
+
+\[
+ -(1+1/d)j\log n+2j\log\log n+O_P(n).
+\]
+
+The explicit part is decreasing in \(j\) for large \(n\). At \(j=n/2\)
+it equals the exponent in (S23); summing at most \(n\) terms only adds
+\(O(\log n)\). This proves (S23), which is smaller than every fixed
+negative power of \(n\), and (S24) proves (S22), since
+\(r\asymp\log n\).
+
+The proof uses an absolute majorant and therefore applies unchanged when
+coefficients of \(P\), or the coefficients \(p_j\), have mixed signs. In
+particular (S22) with \(K=0\) shows \(A_P(n)/H_n=1+O_P(r^2/n)\), so
+\(A_P(n)>0\) for all sufficiently large \(n\), even for signed
+perturbations. Consequently its formal exponential generating function
+also has radius of convergence zero.
+
+\subsection{A pure power error for the perturbed exact saddle formula}
+For $m\ge1$, let
+\[
+\mathcal H_{m,K}=e^{f_m(\tau_m)-1}\sqrt{2\pi}\,\sigma_m
+                   \sum_{\ell=0}^{K}C_{m,\ell}
+\]
+be the exact-saddle expression truncated at level $K$. For every fixed
+$K\ge0$ and fixed $P$, the preceding theorems imply
+\[
+A_P(n)=\sum_{j=0}^{K+1}(n)_jp_j\mathcal H_{n-j,K}
+       +O_{P,K}(H_n n^{-K-1}).
+\]
+Here $n>K+1$, as is automatic in the limit. Indeed, Theorem S3 with
+$K+1$ leaves $O(H_n(r^2/n)^{K+2})=O(H_nn^{-K-1})$, since a fixed
+power of $r$ is $o(n)$. On the finitely many retained shifts, Theorem S1
+and the adjacent-ratio bound show that the total error of replacing
+$H_{n-j}$ by $\mathcal H_{n-j,K}$ is also $O(H_nn^{-K-1})$.
+This obtains a pure power error by retaining one extra fixed shift. It
+does not turn the same fixed Lambert truncation into a pure power error.

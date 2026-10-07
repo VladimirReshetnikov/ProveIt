@@ -1,0 +1,54 @@
+\section{An explicit expansion to every fixed order}\label{sec:coefficients}
+Write $\kappa_j=\De^jC(r)$ and $b=\kappa_2$ at the exact saddle \eqref{eq:saddle}. For $\ell\ge0$ define
+\begin{equation}\label{eq:Eell}
+ E_\ell(r)=\sum_{\substack{k_3,\ldots,k_{2\ell+2}\ge0\\
+                 \sum_{j=3}^{2\ell+2}(j-2)k_j=2\ell}}
+ (-1)^{M/2}(M-1)!!
+ \prod_{j=3}^{2\ell+2}\frac1{k_j!}
+       \left(\frac{\kappa_j}{j!b^{j/2}}\right)^{k_j},
+ \qquad M=\sum_jjk_j.
+\end{equation}
+The sum is finite, $M=2\ell+2\sum k_j$ is even, and the convention $(-1)!!=1$ gives $E_0=1$. Thus this is an executable finite coefficient rule, not an implicit existence statement. Put $S_J=\sum_{\ell=0}^JE_\ell$.
+
+\begin{theorem}[Complete fixed-order expansion]\label{thm:coeff}
+For every fixed integer $J\ge0$,
+\begin{equation}\label{eq:coeff}
+ A_n=\frac{n!e^{C(r)}}{r^n\sqrt{2\pi b}}
+ \left\{S_J(r)+O_J\left(\left(\frac rn\right)^{J+1}\right)\right\}.
+\end{equation}
+Each $E_\ell=O_\ell((r/n)^\ell)$, so the error is relative as well as additive inside the braces. The first two corrections are
+\begin{align}
+ E_1&=\frac{\kappa_4}{8b^2}-\frac{5\kappa_3^2}{24b^3},\label{eq:E1}\\
+ E_2&=-\frac{\kappa_6}{48b^3}
+  +\frac{7\kappa_3\kappa_5}{48b^4}
+  +\frac{35\kappa_4^2}{384b^4}
+  -\frac{35\kappa_3^2\kappa_4}{64b^5}
+  +\frac{385\kappa_3^4}{1152b^6}.\label{eq:E2}
+\end{align}
+Replacing $C$ by $C-z$ and using its own exact saddle gives the same theorem for $B_n$.
+\end{theorem}
+\begin{proof}
+Cauchy's formula on $|z|=r$ reduces the coefficient to the integral of
+\[
+ \exp\{C(re^{\ii\theta})-C(r)-\ii n\theta\}.
+\]
+Set $t=\theta\sqrt b$. By \eqref{eq:scales}, its degree-$j$ centered phase term, for $j\ge3$, is
+\[
+ V_j(t)=\frac{\ii^j\kappa_jt^j}{j!b^{j/2}}
+       =O_J(\eps^{(j-2)/2}|t|^j).
+\]
+Taylor expansion through degree $2J+3$ gives phase remainder
+$O_J(\eps^{J+1}|t|^{2J+4})$. This bound follows from the all-real Taylor remainder for $e^{\ii u}$ after summing the nonnegative component weights, so it does not require an unproved complex-neighborhood derivative estimate.
+
+Assign weight $j-2$ to $V_j$. On $|t|\le\eps^{-\alpha}$, choose a sufficiently small fixed $\alpha>0$ depending only on $J$, and expand $\exp(\sum V_j)$ through weighted degree $2J+1$. To justify the integrated remainder, first take the ordinary exponential Taylor expansion through total degree $2J+1$ and then discard terms of higher weighted degree. Every discarded finite monomial has weight at least $2J+2$. The remaining infinite Taylor remainder has the same factor $\eps^{J+1}$ times a fixed polynomial in $|t|$, because every phase term has positive weight and the sum of their absolute values is bounded on the chosen window. The phase remainder is controlled the same way. Multiplication by $e^{-t^2/2}$ therefore gives an $L^1(\dd t)$ error $O_J(\eps^{J+1})$.
+
+Between this window and $c_0\sqrt b/r$, Lemma~\ref{lem:arcs} gives a Gaussian tail smaller than every fixed power of $\eps$. The outer arc has bound $e^{-cn/r^2}$, also negligible after its normalization. Gaussian-polynomial tails allow all retained integrals to be extended to the real line. Odd powers of $t$ integrate to zero. A term of weight $2\ell$ integrates to its standard Gaussian moment $(M-1)!!$ times the sign $\ii^M=(-1)^{M/2}$, giving \eqref{eq:Eell}.
+
+The size estimate for each monomial is the product of the factors $O(\eps^{(j-2)k_j/2})$, hence $O(\eps^\ell)$. The same argument applies to $C-z$, whose fixed polynomial change preserves every Fourier estimate.
+\end{proof}
+
+All $\kappa_j$ needed in \eqref{eq:Eell} are computed by the polynomial recurrence \eqref{eq:P}, followed by adding $\De^jU(r)$. There is no need to repeatedly differentiate exponential expressions symbolically. At each fixed order the expansion is finite, and its validity does not assert convergence as $J\to\infty$ with $n$ fixed.
+
+\begin{remark}[Why the exact saddle is retained]
+The logarithmic approximation $r\sim\log n$ is adequate for describing scales, but replacing $r$ by a coarse approximation inside $e^{C(r)}r^{-n}$ need not preserve relative count accuracy. Formula \eqref{eq:coeff} always means the exact solution of \eqref{eq:saddle}. Likewise, the fact that deleting $z$ is exponentially small compared with $H(z)$ does not make $A_n$ and $B_n$ asymptotically equal.
+\end{remark}

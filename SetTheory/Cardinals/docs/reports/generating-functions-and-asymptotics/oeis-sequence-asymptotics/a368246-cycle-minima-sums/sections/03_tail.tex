@@ -1,0 +1,69 @@
+\section{A uniformly differentiated tail on the closed disk}\label{sec:tail}
+\subsection{Why the first factor is separated}
+The logarithmic power series for $\log(1+w)$ is well behaved uniformly for $|w|\leq1/2$. In \eqref{eq:Fintro}, this applies to every factor with $j\geq2$ but not to $j=1$. In fact $1+z^2$ vanishes at $\pm\ii$. Hiding that factor in an infinite logarithmic tail would destroy the asserted arbitrary boundary smoothness precisely where it is needed.
+
+For an integer $L\geq1$, define
+\begin{align}\label{eq:HL}
+H_L(z)&=\sum_{r=1}^{L}\frac{(-1)^{r+1}}r\,
+ z^r\bigl(\Li_r(z^r)-z^r\bigr),\\
+R_L(z)&=\sum_{r>L}\sum_{j\geq2}
+ \frac{(-1)^{r+1}}{rj^r}\,z^{r(j+1)},\notag\\
+P_L(z)&=(1+z^2)\exp H_L(z),\qquad Q_L(z)=\exp R_L(z).\notag
+\end{align}
+Here $\Li_r(w)=\sum_{j\geq1}w^j/j^r$ for $|w|<1$. Absolute convergence on compact subsets, or direct summation over $j\geq2$, gives the exact factorization
+\begin{equation}\label{eq:factorization}
+F=P_LQ_L\quad\hbox{in }\D.
+\end{equation}
+
+We use $C^d(\overline\D)$ to mean that the analytic function and its complex derivatives through order $d$ extend continuously to the closed disk. This entails $C^d$ regularity of its boundary trace as a function of the angular variable. It does not entail analytic continuation outside the disk.
+
+\begin{lemma}[Uniform differentiated tail]\label{lem:tail}
+For $0\leq d\leq L-1$, the series defining $R_L$ and all of its complex derivatives through order $d$ converge absolutely and uniformly on $\overline\D$. In particular $Q_L,Q_L^{-1}\in C^d(\overline\D)$, and their derivatives through order $d$ are bounded there.
+\end{lemma}
+\begin{proof}
+For an integer $0\leq h\leq d$, differentiating a summand at most $h$ times gives, for $|z|\leq1$,
+\begin{align*}
+\left|\frac{\mathrm d^h}{\mathrm dz^h}
+\frac{z^{r(j+1)}}{rj^r}\right|
+&\leq r^{h-1}\frac{(j+1)^h}{j^r}\\
+&\leq\left(\frac32\right)^h r^{h-1}j^{h-r}.
+\end{align*}
+The same inequality covers $h=0$, with $r^{h-1}=r^{-1}$. Since $r\geq L+1$ and $h\leq L-1$, we have $u=r-h\geq2$. Monotonicity and an integral comparison yield
+\[
+\sum_{j\geq2}j^{-u}
+\leq2^{-u}+\int_2^\infty x^{-u}\dd x
+=2^{-u}\left(1+\frac2{u-1}\right)
+\leq3\,2^{-u}.
+\]
+Therefore the double sum of derivative bounds is at most
+\begin{equation}\label{eq:tailbound}
+3\left(\frac32\right)^h
+\sum_{r>L}r^{h-1}2^{h-r}<\infty.
+\end{equation}
+The Weierstrass criterion supplies uniform absolute convergence, and termwise differentiation follows first in the disk and then by continuity at the boundary. Composition with the exponential gives the asserted regularity of $Q_L$ and its reciprocal. Their boundedness follows from compactness; neither exponential can vanish.
+\end{proof}
+
+\subsection{Boundary Taylor expansion with a differentiated remainder}
+The following elementary point prevents a radial expansion from being mistaken for a boundary estimate.
+\begin{lemma}\label{lem:taylor}
+Let $Q\in C^d(\overline\D)$ with $d\geq1$, and let $\zeta\in\partial\D$. If $T_{d-1}$ is the Taylor polynomial of degree $d-1$ formed from the boundary derivatives of $Q$ at $\zeta$, then
+\begin{equation}\label{eq:taylor}
+(Q-T_{d-1})^{(h)}(z)=O(|z-\zeta|^{d-h})
+\quad(0\leq h\leq d),\qquad z\in\overline\D.
+\end{equation}
+The bound for $h=d$ means boundedness, not convergence to zero.
+\end{lemma}
+\begin{proof}
+The closed disk is convex. For $h<d$, integrate $Q^{(d)}$ repeatedly along the line segment from $\zeta$ to $z$, obtaining
+\[
+(Q-T_{d-1})^{(h)}(z)
+=\frac{(z-\zeta)^{d-h}}{(d-h-1)!}
+ \int_0^1(1-u)^{d-h-1}Q^{(d)}(\zeta+u(z-\zeta))\dd u.
+\]
+The boundedness of $Q^{(d)}$ proves \eqref{eq:taylor}. For $h=d$ the derivative of $T_{d-1}$ vanishes and the conclusion is immediate. Boundary segments follow by continuity from segments inside the disk.
+\end{proof}
+
+Near a fixed $\zeta$, use $z=\zeta\ee^{-s}$ with the branch satisfying $s=0$ at $z=\zeta$. The change of variable is analytic with nonzero derivative. The bounds \eqref{eq:taylor} remain valid with $|s|$ and $s$-derivatives, after changing constants. Inside the disk $\Rea s\geq0$; along a short unit-circle arc $s$ is purely imaginary. Thus the same differentiated estimate controls both approaches.
+
+\subsection{What the finite factor contributes}
+Only the finite sum $H_L$ can introduce a nonsmooth local contribution at the roots whose orders are at most $L$. Away from that finite set, every $\Li_r(z^r)$ in $H_L$ continues analytically across the circle. Near a selected root, the integer polylogarithm expansion in Section~\ref{sec:positive} expresses it as an analytic function plus an analytic function times $\log s$. The first factor $1+z^2$ is retained explicitly. Combined with Lemma~\ref{lem:taylor}, this gives finite power-log expansions with the differentiated remainders needed later. It does not replace the full product by a globally analytic finite product.

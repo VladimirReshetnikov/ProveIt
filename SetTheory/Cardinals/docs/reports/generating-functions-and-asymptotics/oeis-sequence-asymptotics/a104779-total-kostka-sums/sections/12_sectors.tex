@@ -1,0 +1,154 @@
+\section{An exact dominant and alternating sector decomposition}\label{sec:sectors}
+The fixed-order expansion can be refined without claiming a complete transseries or resurgence theory. The normal-moment representation of involution numbers admits an exact split over the two half axes. Each half has its own fixed-order asymptotic expansion, and the global support method transfers those separate expansions to the Kostka sum.
+
+\subsection{Exact sector definitions}
+For $\sigma\in\{+1,-1\}$, define
+\begin{equation}\label{eq:halfaxis}
+\mathcal M_m^\sigma=\frac{e^{-1/2}}{\sqrt{2\pi}}
+ \int_0^\infty x^m e^{-x^2/2+\sigma x}\,\dd x,
+\qquad m\geq0.
+\end{equation}
+If $X$ is normal with mean $1$ and variance $1$, its moment generating function is $e^{z+z^2/2}$. Thus
+\begin{equation}\label{eq:exactIsplit}
+I_m=\E X^m=\mathcal M_m^++(-1)^m\mathcal M_m^-.
+\end{equation}
+Write
+\[
+w_{n,s}=\sum_{\substack{\rho\vdash s\\\min\rho\geq2}}
+                \alpha_{1^{n-s}\rho}r(\rho),
+\qquad
+\mathcal A_n^\sigma=\sum_{s=0}^n\sigma^s w_{n,s}\mathcal M_{n-s}^\sigma.
+\]
+The empty type is included. Each $w_{n,s}$ is nonnegative, but $\mathcal A_n^-$ is defined by a signed sum. Inserting \eqref{eq:exactIsplit} in \eqref{eq:schwob} gives the exact identity
+\begin{equation}\label{eq:exactasplit}
+a_n=\mathcal A_n^++(-1)^n\mathcal A_n^-\qquad(n\geq0).
+\end{equation}
+The two sectors are canonical relative to this specified half-axis split; no positivity of every recessive-sector summand is asserted.
+
+Let
+\[
+B_\sigma(n)=\frac1{\sqrt2}\left(\frac ne\right)^{n/2}
+                          e^{\sigma\sqrt n-1/4},
+\qquad
+\mathcal K(t)=\sum_{j\geq0}k_jt^j
+\]
+be the formal full Kostka series normalized by $CB_+(n)$. Its coefficients through $k_6$ are those in \eqref{eq:amultiplier}; in particular $k_0=1$, $k_1=7/24$, and $k_2=-119/1152$.
+
+\begin{theorem}\label{thm:sectors}
+For every fixed $S\geq0$ and either sign,
+\begin{equation}\label{eq:sectorsupport}
+\mathcal A_n^\sigma
+ =C\sum_{s=0}^{S}\sigma^sH_s\mathcal M_{n-s}^\sigma
+  +O_S\bigl(\mathcal M_n^\sigma n^{-(S+1)/2}\bigr).
+\end{equation}
+For every fixed $K\geq0$, the separate sector expansions are
+\begin{equation}\label{eq:sectorseries}
+\mathcal A_n^\sigma=CB_\sigma(n)
+ \left(\sum_{j=0}^{K}k_j\sigma^j n^{-j/2}
+                    +O_K(n^{-(K+1)/2})\right).
+\end{equation}
+In particular, $\mathcal A_n^-$ is eventually positive, and
+\begin{equation}\label{eq:sectorratio}
+\frac{\mathcal A_n^-}{\mathcal A_n^+}
+ =e^{-2\sqrt n}\left(1-\frac7{12\sqrt n}
+                         +\frac{49}{288n}+O(n^{-3/2})\right).
+\end{equation}
+\end{theorem}
+
+The exact half-axis representation is a specialization of classical parabolic-cylinder integrals. In the notation of DLMF \cite[(12.5.1)]{DLMF},
+\begin{equation}\label{eq:parabolic}
+\mathcal M_n^\sigma
+  =\frac{n!e^{-1/4}}{\sqrt{2\pi}}U(n+\tfrac12,-\sigma).
+\end{equation}
+Olver's separate large-order expansions cover these two branches \cite[\S11]{Olver}. The purpose of the elementary proof below is the transfer through the Kostka support weights, with precise normalization and remainder scope; it is not a novelty claim for the classical involution sectors.
+
+\subsection{Uniform half axis moment ratios}
+Let $R_k^\sigma=\mathcal M_k^\sigma/\mathcal M_{k-1}^\sigma$ for $k\geq1$. Moment log-convexity from Cauchy--Schwarz and integration by parts give
+\begin{equation}\label{eq:momentrec}
+R_{k+1}^\sigma\geq R_k^\sigma,\qquad
+R_{k+1}^\sigma=\sigma+\frac{k}{R_k^\sigma}\quad(k\geq1).
+\end{equation}
+For the minus sign, these imply $(R_k^-)^2+R_k^-\leq k$, hence $R_k^-\leq\sqrt k$. For $k\geq2$ the recurrence then yields
+\[
+R_k^-\geq\sqrt{k-1}-1\geq\tfrac12\sqrt k\quad(k\geq9).
+\]
+The finitely many earlier ratios are strictly positive. For the plus sign, $(R_k^+)^2-R_k^+\leq k$ gives $R_k^+\leq1+\sqrt k$, and hence
+\[
+R_k^+\geq1+\frac{k-1}{1+\sqrt{k-1}}\geq\sqrt{k-1}
+\quad(k\geq2).
+\]
+Together with the positive first ratios, there is an absolute $c_*>0$ such that $R_k^\sigma\geq c_*\sqrt k$ for both signs and all $k\geq1$. Therefore
+\begin{equation}\label{eq:momentbound}
+\frac{\mathcal M_{n-s}^\sigma}{\mathcal M_n^\sigma}
+ \leq c_*^{-s}\fall ns^{-1/2}
+ \leq\left(\frac{\sqrt e}{c_*\sqrt n}\right)^s.
+\end{equation}
+Using \eqref{eq:Bns} and \eqref{eq:rootbound}, even the absolute signed-sector support contribution is bounded by
+\[
+w_{n,s}\frac{\mathcal M_{n-s}^\sigma}{\mathcal M_n^\sigma}
+ \leq C_0\left(4\sqrt{2e}\,c_*^{-1}n^{-1/4}\right)^s.
+\]
+The tail from $T$ is $O_T(n^{-T/4})$. Fixed-support stabilization still gives $w_{n,s}=CH_s+O_{s,R}(R^{-n})$. Splitting omitted supports at $T=2S+2$ proves \eqref{eq:sectorsupport}, exactly as in Section~\ref{sec:support}, without relying on cancellation.
+
+\subsection{A real saddle and coefficient parity}
+Set $N=\sqrt n$, $t=1/N$, and substitute $x=N+y$ in \eqref{eq:halfaxis}. Exact simplification gives
+\begin{align}
+\frac{\mathcal M_n^\sigma}{B_\sigma(n)}
+ &=\frac1{\sqrt\pi}\int_{-N}^{\infty}
+     e^{-(y-\sigma/2)^2}e^{\Psi_N(y)}\,\dd y,\label{eq:realmoment}\\
+\Psi_N(y)&=N^2\log(1+y/N)-Ny+y^2/2.\notag
+\end{align}
+Locally, for $|ty|<1$,
+\[
+\Psi_N(y)=\sum_{m\geq1}t^m v_m(y),\qquad
+v_m(y)=\frac{(-1)^{m+1}y^{m+2}}{m+2}.
+\]
+Let $V_0(y)=1$ and $V_j(y)=j^{-1}\sum_{m=1}^jmv_m(y)V_{j-m}(y)$. Then the half-axis coefficients are the rational Gaussian moments
+\begin{equation}\label{eq:sectorcoeff}
+\alpha_j^\sigma=\frac1{\sqrt\pi}
+       \int_\R e^{-(y-\sigma/2)^2}V_j(y)\,\dd y.
+\end{equation}
+Every $v_m$ has parity $m$, so $V_j(-y)=(-1)^jV_j(y)$. Reflection gives
+\begin{equation}\label{eq:sectorparity}
+\alpha_j^-=(-1)^j\alpha_j^+.
+\end{equation}
+The plus Gaussian moments are computed by replacing $y^d$ with
+\[
+\sum_{r=0}^{\lfloor d/2\rfloor}
+  \binom d{2r}(1/2)^{d-2r}\frac{(2r-1)!!}{2^r},
+\]
+so this is again a finite rational algorithm at each fixed order.
+
+For completeness, the local expansion has a controlled remainder. Put
+$f_N(y)=N^2\log(1+y/N)-Ny-y^2/2$, for $y>-N$. Then
+$f_N(0)=f_N'(0)=0$ and
+\[
+f_N''(y)=-\frac{N^2}{(N+y)^2}-1\leq-1,
+\qquad f_N(y)\leq-y^2/2.
+\]
+Consequently the exact normalized integrand outside $|y|\leq N^\eps$ is bounded by a Gaussian tail after absorbing the linear term $\sigma y$, for fixed $0<\eps<1/3$. On the central interval, Taylor's theorem through order $K$ bounds the remainder by $t^{K+1}$ times a fixed polynomial in $|y|$ times $e^{\delta y^2}$, for arbitrarily small fixed $\delta>0$ once $N$ is large. Here $|ty|=o(1)$, fixed derivatives are polynomially bounded, and the perturbation is $O(t|y|^3)\leq\delta y^2$. Gaussian integration and extension of the polynomial integrals to $\R$ give
+\begin{equation}\label{eq:momentexpansion}
+\mathcal M_n^\sigma=B_\sigma(n)
+ \left(\sum_{j=0}^{K}\alpha_j^\sigma n^{-j/2}
+                 +O_K(n^{-(K+1)/2})\right).
+\end{equation}
+The leading terms show $\mathcal M_n^-/\mathcal M_n^+\sim e^{-2\sqrt n}$. By \eqref{eq:exactIsplit} and uniqueness of the dominant Poincar\'e expansion, $\alpha_j^+$ are exactly the coefficients $\alpha_j$ in \eqref{eq:Ialpha}.
+
+\subsection{Composition and the separate remainders}
+Let $\mathcal I(t)=\sum_{j\geq0}\alpha_jt^j$, and define
+\[
+E_s(t)=\frac{t^{-2}-s}{2}\log(1-st^2)+\frac s2
+                        +\frac{\sqrt{1-st^2}-1}{t}.
+\]
+The apparent singularities are removable. For the plus sector, the coefficient rule is
+\begin{equation}\label{eq:sectorcomposition}
+\mathcal K(t)=\sum_{s\geq0}H_st^s e^{E_s(t)}
+                    \mathcal I\left(\frac{t}{\sqrt{1-st^2}}\right).
+\end{equation}
+Only $s\leq K$ enters a coefficient of degree $K$, so this is finite at every requested order. In the minus sector, the signed support weight $(-1)^s$, the reversed sign in the square-root exponential, and \eqref{eq:sectorparity} combine to replace $t$ by $-t$ in \eqref{eq:sectorcomposition}. Using \eqref{eq:sectorsupport} at $S=K$ and the finitely many shifted versions of \eqref{eq:momentexpansion} proves \eqref{eq:sectorseries}, with its separate relative error for each sector. Dividing the two expansions gives \eqref{eq:sectorratio}, since
+\[
+\frac{\mathcal K(-t)}{\mathcal K(t)}
+ =1-2k_1t+2k_1^2t^2+O(t^3).
+\]
+
+This proves an exact alternating contribution $(-1)^n\mathcal A_n^-$ with its own all-fixed-order expansion. A fixed finite dominant truncation provides only a remainder bound of order $B_+(n)n^{-(K+1)/2}$, which is larger than $B_-(n)$. That available bound does not isolate the recessive term by subtraction from $a_n$; it is not a lower bound on every actual truncation error. The theorem neither classifies all smaller effects inside the exact sectors nor establishes optimal truncation, Stokes multipliers, or global resurgence.

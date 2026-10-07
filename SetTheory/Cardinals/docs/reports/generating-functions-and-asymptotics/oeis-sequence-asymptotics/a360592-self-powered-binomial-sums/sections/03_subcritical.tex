@@ -1,0 +1,221 @@
+\section{Every fixed order for the small deformation regime}
+\label{sec:subcritical}
+Throughout this section $p\ge2$ is a fixed integer. Thus
+$\lambda\asymp_p n^{1/q}$ and
+\begin{equation}\label{eq:small}
+ \lambda^2/n\asymp_p n^{-(p-1)/q}\longrightarrow0.
+\end{equation}
+This is the small parameter that makes an ordinary exponential expansion
+of the defect valid after Poisson averaging.
+
+\subsection{Global domination and tails}
+\begin{lemma}\label{lem:sign}
+For every integer $0\le r\le n$, $\Delta_n(r)\le0$.
+Consequently
+\begin{equation}\label{eq:globalR}
+ 0<\Rcal_p(n)\le q\Pp(X\equiv n\pmod q)
+             =1+O_p(e^{-\kappa_q\lambda}).
+\end{equation}
+\end{lemma}
+\begin{proof}
+Let
+\[
+ F(r)=\frac{pn+r}{q}\log(1+pr/n)-\frac{p^2r}{q}.
+\]
+Direct differentiation gives $F(0)=F'(0)=0$ and
+\begin{equation}\label{eq:Fsecond}
+ F''(r)=\frac{p(2-p^2+pr/n)}{qn(1+pr/n)^2}.
+\end{equation}
+For $0\le r\le n$, its numerator is at most
+$p(2-p^2+p)\le0$. Hence $F(r)\le0$.
+Every logarithm in the sum in \eqref{eq:Delta} is nonpositive.
+This proves the sign. Now apply \eqref{eq:exactpoisson} and
+\eqref{eq:filter} with $j=0$.
+\end{proof}
+
+The right side of \eqref{eq:globalR} need not be identically one:
+residue probabilities may have exponentially small oscillations.
+Nevertheless it already excludes a positive algebraic first correction.
+In particular, a positive $n^{-1/4}$ coefficient for $p=3$ is impossible.
+
+The Poisson moment generating function gives, with
+$h=2\log2-1>0$,
+\begin{equation}\label{eq:tail}
+ \Pp(X>2\lambda)\le e^{-h\lambda}.
+\end{equation}
+Indeed, exponential Markov with parameter $\log2$ bounds the probability
+by $\exp(\lambda(2-1)-2\lambda\log2)$.
+For each fixed integer $d\ge0$, Cauchy--Schwarz yields
+\begin{equation}\label{eq:weightedtail}
+ \E[X^d\1_{\{X>2\lambda\}}]
+   \le (\E X^{2d})^{1/2}\Pp(X>2\lambda)^{1/2}
+   =O_d((1+\lambda)^d e^{-h\lambda/2}).
+\end{equation}
+By Lemma~\ref{lem:sign}, the exact normalized contribution outside
+$X\le2\lambda$ is bounded by the same unweighted tail, up to $q$.
+For large $n$, $2\lambda<n$, so the original cutoff at $n$ causes no
+additional difficulty. These are global estimates, including the far
+endpoint $r=n$.
+
+\subsection{Defect polynomials and a uniform analytic remainder}
+For $j\ge1$ define
+\begin{equation}\label{eq:Dgeneral}
+ D_j(r)=(-1)^{j+1}\left\{
+  \frac{p^j}{q}\left(\frac1j-\frac{p^2}{j+1}\right)r^{j+1}
+  +\frac1j\sum_{h=0}^{r-1}\bigl[(pr-qh)^j-(pr)^j\bigr]\right\}.
+\end{equation}
+The finite sum is interpreted as its polynomial in $r$, obtained for
+example from Faulhaber sums or interpolation in the falling-factorial
+basis. Thus $D_j\in\Q[r]$, $D_j(0)=0$, and
+$\deg D_j\le j+1$.
+Define
+\begin{equation}\label{eq:Hrec}
+ H_0(r)=1,\qquad
+ H_j(r)=\frac1j\sum_{s=1}^j sD_s(r)H_{j-s}(r).
+\end{equation}
+Formal differentiation of an exponential shows that
+\[
+ \exp\left(\sum_{j\ge1}D_j(r)z^j\right)
+        =\sum_{j\ge0}H_j(r)z^j.
+\]
+Induction gives $\deg H_j\le2j$ and $H_j(0)=0$ for $j\ge1$.
+
+\begin{lemma}\label{lem:cauchy}
+For each fixed $S\ge0$, uniformly over integers $0\le r\le2\lambda$,
+\begin{equation}\label{eq:pointrem}
+ e^{\Delta_n(r)}=\sum_{j=0}^S H_j(r)n^{-j}
+       +O_{p,S}\bigl((r+1)^{2S+2}n^{-S-1}\bigr).
+\end{equation}
+\end{lemma}
+\begin{proof}
+For an integer $r\ge1$ consider the analytic germ
+\begin{equation}\label{eq:G}
+ G_r(z)=e^{-p^2r/q}
+       (1+prz)^{p/(qz)-pr/q}
+       \prod_{h=0}^{r-1}(1+(pr-qh)z),
+\end{equation}
+using logarithmic branches at $z=0$. The apparent singularity at zero is
+removable and $G_r(0)=1$. Recombining the denominators in
+\eqref{eq:Delta} gives $G_r(1/n)=e^{\Delta_n(r)}$.
+
+Choose a small constant $\eta_p>0$ and put
+$\rho_r=\eta_p/(r+1)^2$. For $|z|\le\rho_r$, every logarithm argument in
+\eqref{eq:G} lies in a fixed disk about one excluding zero. After its
+constant $p^2r/q$ is subtracted, the expression
+$(p/(qz))\log(1+prz)$ is $O_p(r^2|z|)$.
+The remaining logarithm term and the sum of the $r$ product logarithms
+are also $O_p(r^2|z|)$. Therefore
+\[
+ |\log G_r(z)|\le C_p r^2|z|\le C'_p,
+ \qquad |G_r(z)|\le e^{C'_p},
+\]
+uniformly in $r$.
+Expanding its logarithm gives exactly \eqref{eq:Dgeneral}; exponentiation
+gives \eqref{eq:Hrec}.
+
+Cauchy's coefficient estimate on $|z|=\rho_r$ and a geometric tail give
+\[
+ \left|G_r(1/n)-\sum_{j=0}^S H_j(r)n^{-j}\right|
+  \le C_{p,S}(r+1)^{2S+2}n^{-S-1}
+\]
+whenever $(r+1)^2/n\le\eta_p/2$.
+This condition holds uniformly for $r\le2\lambda$ by \eqref{eq:small}.
+For $r=0$, $G_0=1$ and the conclusion is immediate.
+\end{proof}
+
+\subsection{The coefficient theorem}
+Define the Poisson transform of $H_j$ by
+\begin{equation}\label{eq:U}
+ H_j(r)=\sum_d h_{j,d}r^d,
+ \qquad U_j(z)=\sum_d h_{j,d}T_d(z).
+\end{equation}
+Thus $U_0=1$, $U_j(0)=0$ for $j\ge1$, and $\deg U_j\le2j$.
+
+\begin{theorem}\label{thm:allp}
+For every fixed $S\ge0$,
+\begin{equation}\label{eq:allH}
+ \Rcal_p(n)=\sum_{j=0}^S n^{-j}U_j(\lambda)
+   +O_{p,S}\left(\frac{(1+\lambda)^{2S+2}}{n^{S+1}}
+                              +e^{-c_{p,S}\lambda}\right)
+\end{equation}
+for some $c_{p,S}>0$. In particular the exponential term can be absorbed
+into the algebraic remainder. Setting $t=n^{-1/q}$ and $\lambda=c_p/t$,
+for every fixed $K\ge0$ this implies \eqref{eq:overviewfixed}, with
+\begin{equation}\label{eq:Cextract}
+ C_{p,k}(c)=[t^k]\sum_{j=0}^{\lfloor K/(p-1)\rfloor}
+                         t^{qj}U_j(c/t),\qquad 0\le k\le K.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Apply \eqref{eq:pointrem} in the exact expectation on $X\le2\lambda$.
+The expectation of the remainder is at most a constant times
+$n^{-S-1}\E(X+1)^{2S+2}$, giving the algebraic term in \eqref{eq:allH}.
+The exact tail is controlled by \eqref{eq:tail} and the sign lemma.
+The tails of the finitely many polynomials $H_j$ are controlled by
+\eqref{eq:weightedtail}. Remove their residue restrictions using
+\eqref{eq:filter}. All resulting exponential terms, including fixed
+polynomial factors, can be combined into $O(e^{-c_{p,S}\lambda})$.
+
+A monomial $n^{-j}\lambda^d$ becomes $c^dt^{qj-d}$, with
+$1\le d\le2j$ when $j\ge1$. Its possible exponent lies in
+\begin{equation}\label{eq:bands}
+ [(p-1)j,\ qj-1].
+\end{equation}
+Take $S=\lfloor K/(p-1)\rfloor$.
+The remainder in \eqref{eq:allH} starts at order
+$t^{(p-1)(S+1)}=O(t^{K+1})$.
+Discarding finitely many polynomial terms with exponent larger than $K$
+also gives $O(t^{K+1})$. This proves \eqref{eq:Cextract} and the theorem.
+\end{proof}
+
+Formula \eqref{eq:bands} gives a structural exclusion of low powers.
+It does not imply that every exponent inside an allowed band has a
+nonzero coefficient. In particular, the absence of
+$t,t^2,\ldots,t^{p-2}$ requires no symbolic computation.
+
+\subsection{Explicit corrected terms}
+The first two defect polynomials are
+\begin{align}
+ D_1(r)&=-Ar^2+\frac q2r,\label{eq:D1}\\
+ D_2(r)&=\gamma_3r^3-\gamma_2r^2-\gamma_1r,\label{eq:D2}\\
+ \gamma_3&=\frac{p^3}{3}-\frac1{6q},\qquad
+ \gamma_2=\frac{p^2-1}{4},\qquad \gamma_1=\frac{q^2}{12}.\nonumber
+\end{align}
+Since $U_1(\lambda)=\E D_1(X)=-A\lambda^2-b\lambda$,
+Theorem~\ref{thm:allp} gives \eqref{eq:firstuniv}.
+For $p=2$, write $c=e^{4/3}/3^{1/3}$ and $t=n^{-1/3}$. Then
+\begin{align}\label{eq:p2}
+ \Rcal_2(n)={}&1-\frac{13c^2}{6}t
+ +\left(\frac{169c^4}{72}-\frac{2c}{3}\right)t^2\nonumber\\
+ &+\left(\frac{121c^3}{9}-\frac{2197c^6}{1296}\right)t^3
+ +O(t^4).
+\end{align}
+One additional coefficient is
+\[
+ C_{2,4}(c)=\frac{134c^2}{9}-\frac{2977c^5}{108}
+                         +\frac{28561c^8}{31104}.
+\]
+For $p=3$, write $c=e^{9/4}/\sqrt2$ and $t=n^{-1/4}$. Then
+\begin{align}\label{eq:p3}
+ \Rcal_3(n)={}&1-\frac{37c^2}{8}t^2-\frac{21c}{8}t^3
+        +\frac{1369c^4}{128}t^4+O(t^5)\nonumber\\
+ ={}&1-\frac{37e^{9/2}}{16}n^{-1/2}
+       -\frac{21e^{9/4}}{8\sqrt2}n^{-3/4}
+       +\frac{1369e^9}{512}n^{-1}+O(n^{-5/4}).
+\end{align}
+The next coefficients are
+\[
+ C_{3,5}(c)=\frac{12265c^3}{192},\qquad
+ C_{3,6}(c)=\frac{9471c^2}{128}-\frac{50653c^6}{3072}.
+\]
+All these identities are rational-polynomial outputs of the finite
+recurrence, not numerical coefficient fits.
+
+\begin{remark}[Formal order and useful numerical accuracy]
+The theorem is asymptotic for each fixed truncation. It does not say that
+larger order improves every finite-$n$ approximation. The constants in
+\eqref{eq:p3} are large. At $n=10000$, even the fractional-power
+truncation through $t^{12}$ has relative error about $-0.662$.
+Section~\ref{sec:numerics} gives the complete-sum diagnostic and contrasts
+it with another legitimate finite truncation of \eqref{eq:allH}.
+\end{remark}

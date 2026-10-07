@@ -1,0 +1,196 @@
+\section{Computation and source comparison}
+\subsection{Exact arithmetic and independent checks}
+The accompanying package separates three kinds of evidence:
+\begin{enumerate}[leftmargin=*,itemsep=3pt]
+ \item Integer and rational identities are checked with Python integers and
+ \texttt{Fraction}. These include exact counts, defect polynomials,
+ Poisson transforms, marked coefficients, and critical coefficients.
+ \item Transcendental evaluations use optional \texttt{mpmath} arithmetic.
+ They corroborate the theorems and expose finite-$n$ limitations; they
+ are not certified interval enclosures.
+ \item The proofs above provide asymptotic remainders and quantifiers.
+ Neither fitted coefficients nor numerical agreement replaces those proofs.
+\end{enumerate}
+The exact core requires no symbolic algebra package. It computes finite
+power sums by telescoping, the $H_j$ recurrence by rational polynomial
+arithmetic, and Poisson transforms by the Touchard recurrence.
+The critical generator separately performs weighted polynomial truncation
+and exact centered-moment substitution.
+
+Independent checks reconstruct polynomial expectations in the
+falling-factorial basis. If a polynomial $H$ has degree at most $d$, then
+\begin{equation}\label{eq:diffbasis}
+ H(r)=\sum_{j=0}^d\Delta^jH(0)\binom rj,
+ \qquad \E H(X)=\sum_{j=0}^d\Delta^jH(0)\frac{\lambda^j}{j!},
+\end{equation}
+where $\Delta H(r)=H(r+1)-H(r)$.
+This is a distinct route from converting ordinary powers through Touchard
+polynomials. Extra integer samples check the interpolated identities.
+The public tests also multiply the formal generating function independently
+at small sizes, check every residue for $p=1,2,3,4$ in numerical identity
+tests, and test active input guards under optimized Python.
+
+Program limits are deliberately finite resource safeguards, not restrictions
+of the theorems. For example, the public generator caps the formal $H$ order
+at 16, fractional order at 32 subject to that cap, and critical order at 8.
+All guards use ordinary conditionals and exceptions, so Python's
+\texttt{-O} flag cannot remove them. The precise limits and commands are
+listed in the code README.
+
+\subsection{Complete sums and a visible preasymptotic warning}
+\label{sec:numerics}
+For the complete-sum diagnostic, the original expression
+\eqref{eq:counts} is evaluated as an exact integer. Its normalization uses
+90-digit arithmetic. Independently, the transformed expression sums
+\emph{every} allowed $r$ from zero through $n$, using logarithms and
+log-gamma evaluations. No Poisson window and no asymptotic coefficients
+enter either finite-sum comparison.
+
+For $p\ge2$ let
+\[
+ A_K(n)=\sum_{k=0}^K C_{p,k}(c_p)n^{-k/q},\qquad
+ S_J(n)=\sum_{j=0}^J U_j(\lambda)n^{-j}.
+\]
+These are different finite approximations. In particular, $S_{12}$ retains
+many fractional powers beyond those in $A_{12}$.
+Table~\ref{tab:counts} reports relative errors as approximation divided by
+$\Rcal_p(n)$ minus one. The number of printed digits is deliberately smaller
+than the working precision.
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{@{}crrrr@{}}
+\toprule
+$p$ & $n$ & $\Rcal_p(n)$ & $A_{12}/\Rcal_p-1$ & $S_{12}/\Rcal_p-1$\\
+\midrule
+2 & 10000 & $0.5075173547743$ & $-9.64017\cdot10^{-9}$ & $+6.40647\cdot10^{-10}$\\
+3 & 10000 & $0.1416076329487$ & $-0.6615364472$ & $+0.0012291163$\\
+\bottomrule
+\end{tabular}
+\caption{Complete-sum diagnostics. Both parameterizations are asymptotically
+valid at fixed order, but have sharply different errors here.}
+\label{tab:counts}
+\end{table}
+
+The original and transformed evaluations agree to about 86 decimal places
+in these cases. Such agreement checks the exact transformation numerically;
+it does not certify the final transcendental digits by outward rounding.
+Most importantly, the $p=3$ fractional truncation is still wrong by about
+$66\%$ at $n=10000$. The shorter $t^2$ and $t^4$ approximations are worse.
+Large constants such as $e^{9/2}$ delay the useful asymptotic regime.
+The smaller error of $S_{12}$ at this input does not establish a general
+optimal truncation principle.
+
+For the critical case, the complete count at $n=10000$ gives
+\[
+ a_1(n)/M_1(n)\approx1.02446126439771172897.
+\]
+The half-power truncation through $C_{1,4}$ has relative error
+approximately $-2.32029\cdot10^{-9}$.
+The companion odd input $n=10001$ gives an error of the same size,
+consistent with the common algebraic coefficients for both parities.
+
+\subsection{Marked and inverse diagnostics}
+At $n=10^9$ the reported TV distances divided by their proved leading
+equivalents are approximately
+\begin{center}
+\begin{tabular}{@{}crr@{}}
+\toprule
+$p$ & Original conditioned reference & Tilted conditioned reference\\
+\midrule
+2 & $1.000111734$ & $1.000214479$\\
+3 & $1.000578191$ & $0.999189636$\\
+\bottomrule
+\end{tabular}
+\end{center}
+These computations use central windows, with the window endpoints and
+number of lattice points included in the machine-readable output.
+Chernoff bounds control the difference between the window-normalized TV
+and complete-law TV. Their high-precision evaluated bounds are tiny, but
+are still not interval certificates. The moment outputs are explicitly
+window diagnostics; a TV bound alone does not control unbounded moment
+errors.
+
+The Newton diagnostic has two modes. By default it sets $Y=F_K(n)$, so the
+finite model root is known exactly to be $n$; this isolates iteration error.
+An optional exact-target mode instead uses $Y=\log a_p(n)$ and therefore
+includes model truncation error. The program makes exactly the requested
+finite number of Newton steps and checks numerical domain conditions at
+each step. Neither mode supplies a certified convexity onset or certifies
+threshold rounding. These distinctions matter when interpreting a tiny
+printed residual.
+
+\subsection{Observed primary formulas}
+\label{sec:sources}
+The exact finite sums and the three displayed OEIS expressions were
+observed in primary-entry text on 5 October 2026.
+The A360479 ordinary page was retrieved directly; A360592 and A360747
+were obtained through indexed primary OEIS text when direct opening was
+unreliable. Independent retrievals corroborated the mathematical formulas.
+No verified sequence revision identifier or complete history export was
+obtained. Global page footers and indexed modification dates do not
+establish the current sequence revision.
+
+A360592 identifies V\'aclav Kote\v{s}ovec as the sequence author, dated
+13 February 2023. A360479 and A360747 identify Seiichi Manyama as sequence
+author, dated 19 February 2023; their refinement formulas are attributed
+to Kote\v{s}ovec on 19 and 20 February 2023 respectively.
+These are observed source attributions, not a reconstructed publication
+history. The inspected entry links were numerical tables or graphs rather
+than proof articles.
+
+Using the normalizations of this article, the observed critical multiplier
+was
+\[
+ 1+\left(\frac c4+\frac{11c^3}{8}+\frac1{8c}\right)t,
+ \qquad c=\sqrt{e/2},\quad t=n^{-1/2}.
+\]
+For $p=2$, it was
+\begin{align*}
+ 1&+\left(-\frac{13c^2}{6}+\frac1{8c}\right)t\\
+  &+\left(\frac{169c^4}{72}-\frac{15c}{16}
+                               +\frac{67}{384c^2}\right)t^2\\
+  &+\left(-\frac{2197c^6}{1296}+\frac{7913c^3}{576}
+                +\frac{3929}{2304}+\frac{497}{3072c^3}\right)t^3,
+\end{align*}
+with $c=e^{4/3}/3^{1/3}$ and $t=n^{-1/3}$.
+For $p=3$, it was
+\begin{align*}
+ 1&+\frac{t}{8c}
+ +\left(-\frac{37c^2}{8}+\frac{67}{384c^2}\right)t^2\\
+  &+\left(-\frac{205c}{64}+\frac{497}{3072c^3}\right)t^3\\
+  &+\left(\frac{1369c^4}{128}+\frac{10721}{3072}
+                      +\frac{218831}{1474560c^4}\right)t^4,
+\end{align*}
+with $c=e^{9/4}/\sqrt2$ and $t=n^{-1/4}$.
+Each appeared as part of a formula using $\sim$.
+Every one of these multipliers tends to one, so the formulas remain
+correct if read solely as leading equivalents. Their intended refined
+coefficients differ from \eqref{eq:critC1}, \eqref{eq:p2}, and
+\eqref{eq:p3}. Appendix~\ref{app:discrepancies} lists the differences explicitly.
+No explanation of how the discrepancies arose is assumed.
+
+\subsection{Bounded historical scope}
+The source comparison establishes a specific coefficient audit, not a
+universal priority result. Exact-number and formula-oriented searches did
+not locate a proof of the observed refinements. Two inspected default-branch
+catalogues in the public ProveIt repository and exact code searches did
+not identify this endpoint family. Those are bounded negative checks;
+they cannot rule out an unnamed general theorem or material elsewhere.
+
+A potentially relevant 2013 note by Kote\v{s}ovec,
+\emph{Interesting asymptotic formulas for binomial sums}, was bibliographically
+identified at
+\url{https://www.kotesovec.cz/math_articles/kotesovec_interesting_asymptotic_formulas.pdf},
+but retrieval timed out and its theorem content was not compared.
+Likewise the latest OEIS histories were not verified.
+Consequently no assertion that all prior relevant work has been excluded
+is made here. The correction follows from the exact finite sums and the
+self-contained proofs, regardless of broader historical priority.
+
+For classical background, the DLMF inverse-function and Charlier generating
+function entries were checked directly. The Lambert-$W$ reference was
+verified bibliographically and at its definition-level abstract; we do
+not attribute an uninspected theorem in that paper to the present family.
+The analytic inverse estimates needed here are proved in
+Section~\ref{sec:inverse}.

@@ -1,0 +1,21 @@
+\section{Reproducible computations and their limits}\label{sec:computation}
+The accompanying source package contains the complete \LaTeX\ article, the PDF, bounded Python programs, exact receipts, a dependency list, public source notes, and a build-and-replay guide. Computations serve three distinct roles.
+
+\subsection{Exact arithmetic checks}
+The finite cycle-index product \eqref{eq:F}, evaluated with rational coefficients, yields the exact values of all three sequences through $n=20$. The three weightings are respectively $r(\nu)$, $z_\nu$, and $(-1)^{n-\ell(\nu)}z_\nu$. They agree with the stated OEIS prefixes: A104779 and A321652 at $n=0,\ldots,20$, and A068313 at $n=1,\ldots,20$. The binary $n=0$ value is labelled as an extension.
+
+An independent symmetric-matrix recursion checks the Kostka total by prescribed margins. Choose a row of least positive margin, enumerate its off-diagonal entries within the remaining capacities, and place its unused margin on the diagonal. Recurse on the residual symmetric matrix. Equal residual margins are grouped for speed, with multinomial factors restoring every labelled assignment; matrices are never identified under permutation. Summing over partitions of $n$ produces an independent exact count. Two useful normalization identities are
+\begin{equation}\label{eq:fixedmarginchecks}
+M(2,1^{n-2})=\frac{I_n}{2},\qquad
+M(3,1^{n-3})=\frac{I_n+2I_{n-3}}6,
+\end{equation}
+in their natural ranges $n\geq2$ and $n\geq3$. They also follow immediately from the Young-subgroup formula for $S_2$ and $S_3$.
+
+Exact finite multivariate coefficients independently recover \eqref{eq:H3}--\eqref{eq:H6}. The certificate program computes rational approximants at $J=70$, adds the proved rational tail bounds, and uses integer floors and ceilings to print the enclosing intervals. Exact symbolic calculations verify the saddle coefficients, logarithmic and multiplicative conversions, shifted ratios, and inverse reversion displayed in the article. These checks do not substitute for the global support estimate, analytic stabilization, saddle remainder, or mean-value arguments.
+
+\subsection{Diagnostics and safe reproduction}
+Floating-point evaluations are kept separate from deterministic exact receipts. A long decimal output or a small numerical residual is a diagnostic, not a directed interval certificate. In particular, comparison against exact involution integers at large finite $n$ cannot certify a uniform remainder constant or an onset for inverse rounding.
+
+The public interfaces are intentionally bounded. Their parameter and path checks raise explicit exceptions, including when Python is run with optimization enabled. No correctness check relies on an assertion. The integer-to-string conversion limit remains enabled, including tests at a cap of $640$ digits; large exact integers are not dumped into receipts. Child Python processes use the no-bytecode option. The build uses an exclusive external output directory, leaves the source tree unchanged, and disables shell escape during \TeX\ format preparation and compilation. The actual ZIP replay checks member names and metadata, the manifest, regenerated exact receipts, and the reproduced PDF under both ordinary and optimized execution. The package guide states the precise tested commands and ranges.
+
+The bounded programs illustrate and verify the mathematical algorithms at stated orders; they are not advertised as unrestricted arbitrary-order software. The mathematical effectivity assertion in Proposition~\ref{prop:tails} is broader: any \emph{fixed} target weight and precision admit a finite computation with a proved stopping rule. No third-party paper PDF is redistributed.

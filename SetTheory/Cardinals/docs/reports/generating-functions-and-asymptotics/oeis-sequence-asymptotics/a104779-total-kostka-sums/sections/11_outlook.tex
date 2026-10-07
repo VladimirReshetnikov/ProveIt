@@ -1,0 +1,19 @@
+\section{Further questions}\label{sec:outlook}
+The support method leaves several concrete directions open.
+
+\paragraph{Effective asymptotic remainders.}
+The coefficient tails are explicit, but the global support and analytic stabilization estimates have not been optimized into useful numerical bounds on $|\log a_n-F_K(n)|$. Obtaining such bounds, with a practical starting index, would turn the two-ceiling theorem into a certified finite-input inverse algorithm. A leading numerical fit or a high-precision constant table is insufficient for this purpose.
+
+\paragraph{Beyond fixed algebraic order.}
+Appendix~\ref{sec:sectors} supplies an exact two-sector decomposition, with a separately controlled recessive series smaller by $e^{-2\sqrt n}$. It does not describe optimal truncation or all exponentially small effects within either sector. Singularities governing coefficient stabilization may create additional smaller scales. A complete transseries treatment would require further sector definitions and sharper error estimates. The available remainder bound from a fixed finite dominant truncation is larger than the recessive scale, so that bound alone cannot isolate the smaller contribution numerically.
+
+\paragraph{Higher profile corrections.}
+The first signed density correction is the simple statistic $T_3-H_3$. Further fixed supports should produce explicit polynomial statistics of the independent geometric margin variables. A systematic $L^1$ expansion would refine probabilities of profile events, while moment convergence for the dimension deficit requires its own uniform-integrability argument.
+
+\paragraph{The cost of high order.}
+The truncated multivariate product provides a finite coefficient algorithm, but partition growth makes a direct implementation expensive. Recurrences exploiting the logarithm of the product, weighted partition structure, and the root-count factorization may substantially reduce the cost. Sharp growth estimates for $H_s$ and $J_s^\pm$ would also clarify the useful range of truncation.
+
+\paragraph{Other matrix conventions.}
+Removing weak margin order, prescribing the number of rows, or identifying equal-margin permutations changes the count and can change its scale. Those models require their own source identities and normalization checks. In particular, the binary-subset probability in \eqref{eq:binaryprob} belongs only to the common variable-dimension sorted-margin universe specified here.
+
+The central mechanism is robust: isolate the unit-cycle pole, prove convergence of each fixed marked coefficient, and control the entire moving-support tail separately. Its strength here is that it yields a rigorous expansion for an aggregate with unbounded dimension while keeping coefficient computation and inverse uncertainty explicit.

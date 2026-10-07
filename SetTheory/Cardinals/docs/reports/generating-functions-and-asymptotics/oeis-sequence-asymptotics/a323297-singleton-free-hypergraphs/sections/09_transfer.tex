@@ -1,0 +1,34 @@
+\section{Transfer to the no-isolate model}\label{sec:transfer}
+Let $C_B=C-z$, and let $r_B$ solve $\De C_B(r_B)=n$. Every result has a no-isolate version at this saddle. The distinction between using the same leading scale and using the same saddle is essential: \eqref{eq:BA} shows $B_n/A_n\sim e^{-r}$, far from one.
+
+\begin{theorem}[The A323296 versions]\label{thm:B}
+For the uniform model counted by $B_n$, replace $C$ by $C_B$, $r$ by $r_B$, and $\kappa_j,b$ by the corresponding cumulants. Theorem~\ref{thm:coeff} and the inverse theorems remain valid. Delete $S$ from the exceptional vector and use
+\begin{align*}
+ \lambda_3&=r_B^4/6,&\lambda_4&=r_B^4/24,& W&=4T_3+4T_4,\\
+ \mu&=5r_B^4/6,& v&=10r_B^4/3,\\
+ d&=r_B^4/4,&\tau^2&=r_B^4/3,&\eta&=r_B^4.
+\end{align*}
+The size-squared defect sum also loses its isolate term:
+\[
+ \sum_\alpha d_\alpha m_\alpha^2\lambda_\alpha=4r_B^4,
+ \qquad
+ \E_{B,n}\defect=d+\frac{\eta\kappa_3}{2b^2}
+                  -\frac{4r_B^4}{2b}+O(r_B^5/n^2).
+\]
+With these replacements, the likelihood, sharp total-variation, deletion, projected Gaussian, hybrid independence, and fixed-defect moment conclusions hold. In particular,
+\[
+ \TV\!\left(\Law_{B,n}(T_3,T_4),
+       \Pois(r_B^4/6)\otimes\Pois(r_B^4/24)\right)
+ \sim\frac{10}{3}\phi(1)\frac{r_B^3}{n},
+\]
+and the exact residual is $E+2K-n=T_3+2T_4$. Its Gaussian scale is $r_B^2/\sqrt3$, independently of the component-count scale $\sqrt n/r_B$.
+\end{theorem}
+\begin{proof}
+The connected EGF is still $H$ plus a fixed polynomial with nonnegative coefficients and all sufficiently large consecutive sizes present. Thus the cumulant and full-arc proofs apply verbatim. The exceptional polynomial becomes $5z^4/24$; its compound-Poisson moments have the same leading orders and the same dominant variance $10r_B^4/3$. Every step of the summable likelihood argument and its sharp constant is unchanged. The defect, covariance, projection, and hybrid proofs use only the displayed component sums and the same $H$-dominated ordinary types, so the replacements give the claimed statements.
+
+Removing $z$ affects the reduced inverse calculation only by exponentially small terms in $r$, below every fixed inverse-logarithmic order. Therefore the coefficients in \eqref{eq:reverse} and its recursion are unchanged. For the fine inverse one must instead use $C_B$ in \eqref{eq:F}. Finally the coefficient formula at adjacent integers gives
+\[
+ \frac{B_{n+1}}{B_n}\sim\frac{n}{r_{B,n}}\longrightarrow\infty,
+\]
+so the sequence is eventually strictly increasing and the two-ceiling proof applies beyond its finite initial segment.
+\end{proof}

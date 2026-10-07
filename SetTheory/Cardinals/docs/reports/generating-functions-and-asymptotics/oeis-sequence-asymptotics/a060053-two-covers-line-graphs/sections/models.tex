@@ -1,0 +1,76 @@
+\section{Models and exact counting identities}
+\subsection{Objects counted and notation}
+A two-cover of $[n]=\{1,\ldots,n\}$ is an unordered multiset of \emph{nonempty} subsets, called blocks, in which each label occurs in exactly two block occurrences. It is restricted if distinct block occurrences intersect in at most one label. It is proper if no block is repeated. The only repetitions possible in a restricted cover are repeated singleton blocks. Write $U_n$ for all restricted covers and $V_n$ for proper restricted covers. The empty cover has index zero and count one. The sequences are respectively A014500 and A060053 \cite{oeisU,oeisV}.
+
+Turn each block occurrence into a vertex and each label into an edge between the two blocks containing it. This gives a simple graph with labelled edges, unlabelled vertices and no isolated vertices. Conversely the incident edge-label sets at its vertices recover the cover. A repeated singleton is exactly an isolated-edge component. Thus $V_n$ forbids isolated edges and $U_n$ permits them. A \emph{root graph} of a line graph means a graph whose line graph is the specified graph; no vertex is distinguished by this terminology.
+
+Let $L_n$ count simple line graphs with vertex set $[n]$. Their root graphs have labelled edges and unlabelled nonisolated vertices. Different roots, and different edge labellings on the same unlabelled root, can give the same labelled line graph. This matters in the small connected exceptions discussed below.
+
+All capital-letter generating series in this report are formal exponential generating series. In particular, $H(x)=\sum H_nx^n/n!$ is not an analytic function at positive $x$. The individual sums defining its coefficients do converge.
+
+\subsection{The positive Poisson sum}
+Put $M(t)=t(t-1)/2$ and use $(z)_n=z(z-1)\cdots(z-n+1)$ for a falling factorial, with $(z)_0=1$. Define
+\begin{equation}\label{eq:poisson}
+H_n=e^{-1}\sum_{m\ge0}\frac{(M(m))_n}{m!}.
+\end{equation}
+At integer $m$, any term with $M(m)<n$ is zero. There is no sign cancellation in this sum. Its convergence follows from the factorial denominator and the polynomial numerator. For $n=0$ it equals one.
+
+If a root graph $G$ has $v$ vertices and $k$ isolated-edge components, its edge-label-preserving automorphism group has order $2^k$. Indeed, a vertex incident with at least two distinct labelled edges is fixed because it is their unique common endpoint. Adjacent leaves are then fixed; the only remaining freedom is to interchange the endpoints of each isolated edge. Among graphs on $m$ labelled vertices, the number of embeddings of $G$ is $(m)_v/2^k$. As $(M(m))_n$ counts ordered choices of $n$ distinct edges of $K_m$, summing over $m$ gives
+\[
+e^{-1}\sum_{m\ge v}\frac{(m)_v}{2^k m!}=2^{-k}.
+\]
+Consequently $H_n$ is the sum of the weights $2^{-k}$ over all the $U_n$ roots. Decomposing into isolated edges and the remaining proper cover proves
+\begin{equation}\label{eq:VU}
+H(x)=e^{x/2}V(x),\qquad U(x)=e^xV(x)=e^{x/2}H(x).
+\end{equation}
+These are also the exact identities in \cite[Proposition 3 and equation (18)]{cps}. This argument explains why $H_n$ is generally rational, whereas $U_n$ and $V_n$ are integers.
+
+There is a useful exact finite alternative to the infinite sum. If
+\[
+\prod_{j=0}^{n-1}(t^2-t-2j)=\sum_{k=0}^{2n}c_{n,k}t^k,
+\]
+then the Poisson moment identity for the Bell numbers $B_k$ gives
+\begin{equation}\label{eq:bell_exact}
+H_n=2^{-n}\sum_{k=0}^{2n}c_{n,k}B_k.
+\end{equation}
+Both the polynomial multiplication and Bell numbers can be evaluated using integers. Equation \eqref{eq:bell_exact} is an exact algorithm, not an asymptotic replacement.
+
+\subsection{The corrected line graph multiplier}
+The corrected Proposition 5 of Cameron, Prellberg and Stark \cite[p.~6]{cps}, using the Whitney--Sabidussi line-graph results, gives
+\begin{align}
+L(x)&=\exp\left(-\frac{x^3}{6}-\frac{x^4}{4}-\frac{x^5}{8}-\frac{x^6}{48}\right)U(x)\label{eq:linecorrect}\\
+&=\exp\left(\frac{x}{2}-\frac{x^3}{6}-\frac{x^4}{4}-\frac{x^5}{8}-\frac{x^6}{48}\right)H(x).\nonumber
+\end{align}
+We use their classification of the exceptions as a known theorem. Here is the labelled-count calculation that explains the four coefficients. At three edges the triangle and the three-edge star give two roots with one common labelled line image, a difference of one. The remaining exceptional connected roots are the paw ($K_4$ minus two adjacent edges), $K_4$ minus one edge, and $K_4$. Their root and line-image counts are respectively $12$ and $6$, $30$ and $15$, and $30$ and $15$. The differences $1,6,15,15$, divided by $3!,4!,5!,6!$, are the four exponents in \eqref{eq:linecorrect}. The exponential formula passes from the connected differences to all graphs. Completeness of this list is the cited structural theorem, not an inference from small computations.
+
+The original arXiv version \cite[p.~6]{cpsv1} omitted the last three terms. Its formula
+\[
+O(x)=e^{-x^3/6}U(x)
+\]
+will be called the \emph{legacy} series. The A132219 snapshot retrieved on 5 October 2026 matches this legacy formula in all 18 available terms, indexed $1$ through $18$, rather than the corrected count. The corrected author manuscript explicitly records the correction and acknowledges the referee's observation. We have not independently retrieved the typeset journal PDF, so source-page locators here refer to the author manuscripts.
+
+\begin{center}
+\begin{tabular}{r r r r r r}
+\toprule
+$n$ & $2^nH_n$ & $V_n$ & $U_n$ & $L_n$ & $O_n$\\
+\midrule
+0&1&1&1&1&1\\
+1&1&0&1&1&1\\
+2&5&1&2&2&2\\
+3&53&5&9&8&8\\
+4&873&43&70&60&66\\
+5&20457&518&794&729&774\\
+6&634541&8186&12055&11600&11885\\
+\bottomrule
+\end{tabular}
+\end{center}
+Already $O_4=66$ exceeds the $2^{\binom42}=64$ labelled simple graphs on four vertices. Thus it cannot count line graphs as defined here. Independent enumeration of partitions of the $2n$ labelled edge endpoints verifies the weighted endpoint count $2^nH_n$ and the counts $U_n,V_n,L_n$ through $n=6$.
+
+\subsection{Prior results and the scope of the refinement}
+Write $r=W(2n)$ for the positive Lambert function, so $re^r=2n$. The leading equivalent
+\begin{equation}\label{eq:known}
+V_n\sim U_n\sim L_n\sim H_n\sim 2^{-n}B_{2n}\exp(-r^2/4-r/2)
+\end{equation}
+is already contained in the analysis of \cite[pp.~17--19, equations (21)--(27)]{cps}. Their Theorem 1 states an equivalent logarithmic form. The leading equivalent, Poisson identity and exact graph multipliers are prior results. Our purpose is to give a self-contained fixed-order saddle analysis, computable explicit refinements and inverse error control. Historical coverage is not exhaustive enough to support a worldwide novelty claim.
+
+The main distinctions are substantive. An exact-saddle remainder can be $O(n^{-K-1})$ because the local derivatives already incorporate the logarithmic scale. An explicit Lambert expansion instead has coefficients growing in $r$, and its displayed remainder retains that growth. A signed polynomial convolution has a third error scale. We prove each estimate in its own normalization rather than transfer a remainder by notation alone.
