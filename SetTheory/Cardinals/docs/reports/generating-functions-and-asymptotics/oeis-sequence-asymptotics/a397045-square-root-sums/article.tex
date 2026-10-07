@@ -4,8 +4,13 @@
 \usepackage{lmodern,microtype}
 \usepackage{amsmath,amssymb,amsthm,mathtools,booktabs,array,longtable}
 \usepackage{xcolor}
+% ProveIt write phase (batch 109, 6 October 2026): float is loaded before
+% hyperref (the delivered text loaded it after hyperref, together with
+% enumitem and fancyhdr); with MiKTeX the delivered order gives duplicate
+% PDF destinations table.1 and table.2.  No other preamble change.
+\usepackage{float}
 \usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black]{hyperref}
-\usepackage{enumitem,fancyhdr,float}
+\usepackage{enumitem,fancyhdr}
 \hypersetup{pdftitle={Report 172 Distinct sums of square roots},pdfsubject={Quantitative real partition asymptotics, inverse indices and zeta zero obstruction}}
 \pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small Report 172}\fancyhead[R]{\small Distinct sums of square roots}\fancyfoot[C]{\thepage}
 \setlength{\headheight}{14pt}
@@ -27,6 +32,13 @@
 \newcommand{\Pp}{\mathbb P}
 \DeclareMathOperator{\Ree}{Re}
 \DeclareMathOperator{\Imm}{Im}
+% Added by the ProveIt write phase (batch 109, 6 October 2026): dated notes
+% marked [write] and a macro for file, label and declaration names.
+\newcommand{\file}[1]{\nolinkurl{#1}}
+\expandafter\def\expandafter\UrlBreaks\expandafter{\UrlBreaks\do\-\do\_\do\.}
+\newenvironment{writenote}[1][]{\par\smallskip\begingroup\small
+ \noindent\textbf{[write]}\if\relax\detokenize{#1}\relax\else~\textbf{#1.}\fi\ }%
+ {\par\endgroup\smallskip}
 \title{\textbf{Distinct sums of square roots}\\[0.5em]
 \large Quantitative asymptotics and inverse indices for A397045\\[0.6em]\normalsize Report 172}
 \author{}
@@ -36,6 +48,34 @@
 \begin{abstract}
 Let $a(n)$ count the distinct values in $[n,n+1)$ representable as finite sums of square roots of positive integers. We identify it exactly with a cumulative partition count over the real part sizes $\sqrt d$, for squarefree $d\ge2$. This proves the logarithmic conjecture for OEIS A397045, with error $\Oh(n^{1/3})$ and constant $(81\zeta(3)/\pi^2)^{1/3}$. A first Edgeworth comparison gives an exact-product saddle approximation with relative error $\Oh(n^{-1/3})$, valid at atomic endpoints, and an implicit inverse with additive error $\Oh(1)$. An uncancelled pole at a least-positive-height zeta zero rules out every equivalent $C n^\beta\exp(Kn^{2/3})$, unconditionally and without a simplicity assumption. The leading law and qualitative exact-saddle theory are classical; our scope is a self-contained quantitative specialization, endpoint-sensitive inversion and the stated obstruction. The reproducible companion uses rational root enclosures and separates bounded exact verification from noncertified floating-point diagnostics.
 \end{abstract}
+\begin{writenote}[Status and trust boundary, added 6 October 2026, batch~109]
+This is bundle Report~172 of an external AI-assisted research session, filed
+in ProveIt as the single-source research report
+\file{a397045-square-root-sums} (provenance, the sources as the write read
+them, what was checked, relation to the repository, the collected non-claims
+and the reading conventions are in Section~\ref{srs:sec:provenance}). It is
+unrefereed and not formalized. Its author line and its PDF author field are
+empty, and the title block reads ``Report 172'': it names no person or tool.
+\emph{What rests on what.} Theorems~\ref{srs:thm:log}, \ref{srs:thm:saddle},
+\ref{srs:thm:inverse} and~\ref{srs:thm:obstruction} have complete
+conventional proofs in the text: linear independence of square roots of
+squarefree integers, M\"obius counting, Rankin and Chebyshev bounds, a
+smoothing lemma for a signed comparator with a first Edgeworth term, and a
+Mellin argument at a zeta zero of least positive height, which uses only
+standard facts about the zeros of $\zeta$ (their existence, and no zero on
+the real segment of the critical strip). No proof uses a computation. The
+leading law is a specialization of Kohlbecker's 1958 theorem and the
+qualitative saddle equivalent is Ingham's, as the source says
+(Section~\ref{srs:sec:classical}). The exact values $a(n)$, $n\le35$, come
+from a bounded enumeration with rational root enclosures, rerun at intake
+and by the write; every decimal is a diagnostic. The write adds
+Remarks~\ref{srs:rem:oeis}, \ref{srs:rem:comment}
+and~\ref{srs:rem:transseries} (the OEIS entry quoted, with its conjecture
+proved; the entry's cumulative comment corrected, with a counterexample and
+an exact count of the model it names; the inverses against the transseries
+volume) and dated notes. No statement, proof or number of the source was
+changed.
+\end{writenote}
 \setcounter{tocdepth}{1}
 \begingroup
 \small
@@ -44,7 +84,7 @@ Let $a(n)$ count the distinct values in $[n,n+1)$ representable as finite sums o
 \endgroup
 \clearpage
 
-\section{Results and their scope}\label{sec:results}
+\section{Results and their scope}\label{srs:sec:results}
 The sequence \href{https://oeis.org/A397045}{A397045} begins
 \[
 3,7,17,35,76,148,295,564,1068,1965,\ldots
@@ -54,21 +94,21 @@ with index origin $n=1$. Its entry records a June 2026 conjecture about $\log a(
  c=\frac1{\zeta(2)},\qquad A=\frac{2\zeta(3)}{\zeta(2)},\qquad
  K=3\left(\frac A4\right)^{1/3}
    =\left(\frac{81\zeta(3)}{\pi^2}\right)^{1/3}
-   =2.1447175229\ldots .\label{eq:constants}
+   =2.1447175229\ldots .\label{srs:eq:constants}
 \end{equation}
 Let $\Sf$ denote the squarefree integers $d\ge2$, and let
 \begin{equation}
  N(x)=\#\left\{(m_d)_{d\in\Sf}:m_d\in\Z_{\ge0},\quad
-       \sum_{d\in\Sf}m_d\sqrt d<x\right\}.\label{eq:N}
+       \sum_{d\in\Sf}m_d\sqrt d<x\right\}.\label{srs:eq:N}
 \end{equation}
 All vectors have finite support, and the zero vector is included when $x>0$.
 We put $N(x)=0$ for $x\le0$, and write $N_{\le}(x)$ for the weak-inequality version.
 
-\begin{theorem}[Exact identity and logarithmic law]\label{thm:log}
+\begin{theorem}[Exact identity and logarithmic law]\label{srs:thm:log}
 For every integer $n\ge1$,
 \begin{equation}
  a(n)=N(n+1)=N_{\le}(n+1),\qquad
- \log a(n)=K(n+1)^{2/3}+\Oh(n^{1/3}).\label{eq:loglaw}
+ \log a(n)=K(n+1)^{2/3}+\Oh(n^{1/3}).\label{srs:eq:loglaw}
 \end{equation}
 In particular $\log a(n)\sim Kn^{2/3}$, proving the conjectured constant.
 \end{theorem}
@@ -76,67 +116,281 @@ In particular $\log a(n)\sim Kn^{2/3}$, proving the conjectured constant.
 For real $t>0$ define the convergent logarithm of a product
 \begin{equation}
  F(t)=-\sum_{d\in\Sf}\log(1-e^{-t\sqrt d}),\qquad Z(t)=e^{F(t)}.
- \label{eq:F}
+ \label{srs:eq:F}
 \end{equation}
 There is a unique $t=t(x)>0$ satisfying $-F'(t)=x$ for every $x>0$.
 
-\begin{theorem}[Quantitative exact-product saddle]\label{thm:saddle}
+\begin{theorem}[Quantitative exact-product saddle]\label{srs:thm:saddle}
 As real $x\to\infty$, with $t=t(x)$,
 \begin{equation}
  N(x)=\frac{\exp(F(t)+tx)}{t\sqrt{2\pi F''(t)}}
  \{1+\Oh(t)\},
- \qquad t\sim (2A/x)^{1/3}.\label{eq:saddle}
+ \qquad t\sim (2A/x)^{1/3}.\label{srs:eq:saddle}
 \end{equation}
 The same formula holds for $N_{\le}(x)$, including at an atom. Its relative remainder is $\Oh(x^{-1/3})$.
 \end{theorem}
-The exact scalar information is kept inside $F$ and its derivatives. Formula~\eqref{eq:saddle} is not a power-series coefficient extraction, since the support of the measure is real and atomic.
+The exact scalar information is kept inside $F$ and its derivatives. Formula~\eqref{srs:eq:saddle} is not a power-series coefficient extraction, since the support of the measure is real and atomic.
 
-\begin{theorem}[Inverse indices]\label{thm:inverse}
+\begin{theorem}[Inverse indices]\label{srs:thm:inverse}
 For $y\to\infty$, put $J(y)=\min\{n\ge1:a(n)\ge y\}$. Then
 \begin{equation}
  J(y)=\left(\frac{\log y}{K}\right)^{3/2}+\Oh(\log y).
- \label{eq:explicitinverse}
+ \label{srs:eq:explicitinverse}
 \end{equation}
 For the more accurate implicit inverse, set
 \begin{equation}
- H(x)=F(t(x))+t(x)x-\log t(x)-\tfrac12\log(2\pi F''(t(x))).\label{eq:H}
+ H(x)=F(t(x))+t(x)x-\log t(x)-\tfrac12\log(2\pi F''(t(x))).\label{srs:eq:H}
 \end{equation}
 The function $H$ is eventually strictly increasing. If $X(y)$ is its eventually unique solution to $H(X)=\log y$, then
 \begin{equation}
  J(y)+1=X(y)+\Oh(1).
- \label{eq:implicitinverse}
+ \label{srs:eq:implicitinverse}
 \end{equation}
 These are asymptotic brackets, not exact floor or ceiling rules.
 \end{theorem}
 
-\begin{theorem}[Obstruction to a pure equivalent]\label{thm:obstruction}
+\begin{theorem}[Obstruction to a pure equivalent]\label{srs:thm:obstruction}
 There are no constants $C>0$ and $\beta\in\R$ such that
 \begin{equation}
- a(n)\sim C n^\beta\exp(Kn^{2/3}).\label{eq:forbidden}
+ a(n)\sim C n^\beta\exp(Kn^{2/3}).\label{srs:eq:forbidden}
 \end{equation}
 This assertion is unconditional. It uses neither the Riemann hypothesis nor simple zeta zeros.
 \end{theorem}
 
 \paragraph{Attribution.}
-Kohlbecker's 1958 theorem applies to arbitrary positive real parts and already implies the leading logarithmic equivalent \cite[Main Theorem and Corollary 1]{Kohlbecker}. Ingham's Laplace--Stieltjes theory gives a qualitative exact-saddle equivalent; Section~\ref{sec:classical} checks the required complex bound rather than inferring it from positivity. A modern conceptual precedent is the squarefree integer-partition work of Dong, Robles, Zaharescu and Zeindler \cite[Section 6]{DRZZ}, where zeta-zero terms are retained in an implicit saddle. Their integer part spectrum is different. The present report claims neither a new general partition theorem nor exhaustive literature priority. Its stronger content is the quantitative specialization, inverse error, and the precise impossibility result above.
+Kohlbecker's 1958 theorem applies to arbitrary positive real parts and already implies the leading logarithmic equivalent \cite[Main Theorem and Corollary 1]{Kohlbecker}. Ingham's Laplace--Stieltjes theory gives a qualitative exact-saddle equivalent; Section~\ref{srs:sec:classical} checks the required complex bound rather than inferring it from positivity. A modern conceptual precedent is the squarefree integer-partition work of Dong, Robles, Zaharescu and Zeindler \cite[Section 6]{DRZZ}, where zeta-zero terms are retained in an implicit saddle. Their integer part spectrum is different. The present report claims neither a new general partition theorem nor exhaustive literature priority. Its stronger content is the quantitative specialization, inverse error, and the precise impossibility result above.
 
-\section{Canonical vectors and endpoint conventions}\label{sec:canonical}
+\begin{remark}[{[write]} The OEIS entry, quoted, 6~October 2026]\label{srs:rem:oeis}
+The entry was read on 6~October 2026 in the OEIS internal format (revision
+\#27, 17~June 2026); the quotations are verbatim.
+\begin{itemize}\raggedright
+\item Name: ``\texttt{Number of distinct values in the interval [n,n+1) that
+ can be represented as a sum of square roots of positive integers.}'',
+ offset~$1$, by Ali Sada (14~June 2026); data
+ $3,7,17,35,76,\dots,428363342$ (35 terms; $a(11)$--$a(13)$ from Stefano
+ Spezia, $a(14)$--$a(35)$ from Charles R Greathouse~IV).
+\item A comment: ``\texttt{Number of distinct values in the interval [0,n+1)
+ that can be represented as a sum of square roots of integers (or
+ equivalently, squarefree integers) k > 1. - \_Charles R Greathouse IV\_, Jun
+ 15 2026}'' (corrected in Remark~\ref{srs:rem:comment}).
+\item A formula line: ``\texttt{Conjecture: log a(n) \textasciitilde{}
+ k*n\^{}(2/3). Possibly k = (81*zeta(3)/Pi\^{}2)\^{}(1/3) = 2.1447.... -
+ \_Charles R Greathouse IV\_, Jun 15 2026}''.
+\item A b-file, ``\texttt{Table of n, a(n) for n = 1..75}'' (Greathouse).
+\end{itemize}
+\begin{enumerate}[label=(\alph*)]
+\item \emph{The conjecture is proved.} It is literally the statement
+ $\log a(n)\sim Kn^{2/3}$ with the constant $K$ of~\eqref{srs:eq:constants},
+ and Theorem~\ref{srs:thm:log} proves it with the error $\Oh(n^{1/3})$;
+ $K=2.144717522977472648\ldots$, so the source's $2.1447175229\ldots$ is a
+ correct truncation. As the source says, the law with this constant was
+ already a consequence of classical theory: the write read Kohlbecker's Main
+ Theorem and Corollary~1~\cite{Kohlbecker}, pp.~362--363, which allow any set
+ of positive real part sizes; with $n(u)=B(u)\sim cu^2$ (his $\alpha=2$,
+ $L=c$) his saddle relation is $u=4c\zeta(3)s_u^{-3}$ and his conclusion is
+ $\log P(u)\sim\frac32 us_u=\frac32(4c\zeta(3))^{1/3}u^{2/3}=Ku^{2/3}$ for the
+ cumulative count $P$ of his introduction, which is $N$ here up to the
+ endpoint convention. The entry still states a conjecture; nothing was
+ submitted to the OEIS.
+\item \emph{The b-file.} The write retrieved the b-file (75 terms). Its first
+ 35 terms equal the data and the source's fixture, and it is strictly
+ increasing (as it must be, Remark~\ref{srs:rem:comment}(c)). Its
+ terms $a(36),\dots,a(75)$, which the source did not retrieve, were not
+ recomputed; they are used only in the diagnostic note at the end of
+ Section~\ref{srs:sec:computation}.
+\end{enumerate}
+\end{remark}
+
+\subsection{Provenance, sources and reading conventions}\label{srs:sec:provenance}
+\begin{writenote}[Added 6 October 2026, batch~109]
+\emph{Provenance.} This report is Report~172 of the session bundle that
+ProveIt's \file{docs/incoming} intake processed as batch~109: the archive
+\file{Distinct_Square_Root_Sums_Asymptotics_and_Inverses_Source.zip}
+($565{,}603$ bytes, SHA-256 \file{0b71479e336a...cf0efbec3d08}, 23 files, no
+wrapper directory), arrival commit \file{60f54ea06}, placed in
+\file{f7e9e5c2f}. The text is the delivered \file{Report172.tex} (869 lines,
+dated 3~October 2026), shipped as \file{article.tex}. The programs are
+shipped under \file{code/} (the root \file{build.py} as
+\file{code/build.py}), the fixtures and generated outputs as
+\file{data/fixtures-*} and \file{data/generated-*},
+\file{BUILD-INFO.json} and \file{requirements.txt} under \file{data/},
+\file{sources/source_provenance.json} as
+\file{data/sources-source_provenance.json}, and the access record
+\file{sources/REFERENCES.md} at the root as \file{sources-REFERENCES.md}
+(the report README maps every name). The fixture-hash file
+\file{fixtures/SHA256.json} is shipped as \file{data/fixtures-SHA256.json}
+because the companion reads it. Not shipped, and retrievable from the arrival
+commit: the delivered 20-page PDF, the checksum manifest
+\file{SHA256SUMS.json} (22 entries, verified at placement) and the delivered
+README, replaced by the report README. The package records no ProveIt commit
+and names no repository path; it carries no ``prepared for private review''
+line and no personal data. It is a single-source report, so no merge choice
+was made. The write prefixed the 90 delivered labels with \file{srs:} and
+updated the 84 references to them; it added this subsection, the notes
+marked [write] and Remarks~\ref{srs:rem:oeis}, \ref{srs:rem:comment}
+and~\ref{srs:rem:transseries}, each the last statement of its section, and
+inserted nothing before a delivered display, table or statement, so every
+theorem, section, equation and table of the source keeps its delivered
+number. In the preamble it loads \file{float} before \file{hyperref}, which
+removes two duplicate PDF destinations that a MiKTeX build of the delivered
+text reports.
+
+\emph{The sources, as the write read them} (6~October 2026).
+\begin{itemize}\raggedright
+\item OEIS A397045 in the internal format, and its b-file
+ (Remark~\ref{srs:rem:oeis}).
+\item Kohlbecker~\cite{Kohlbecker}, the publisher's PDF (the source read a
+ transcription): the introduction, pp.~346--347, and the Main Theorem and
+ Corollaries~1 and~1*, pp.~362--363.
+\item Bringmann, Jennings-Shaffer and Mahlburg~\cite{BJM}, arXiv:1910.03036v3,
+ Section~4: Theorem~4.1, Ingham's theorem with hypotheses (a)--(d) on the
+ phase and multiplier and (i)--(ii) on the transform, the conclusion having
+ the factor $1/(\beta(x)\sqrt{2\pi\phi''(\beta(x))})$; and Theorem~4.2. These
+ are the hypotheses Section~\ref{srs:sec:classical} checks, with
+ $\phi=F$, $\lambda=1$, $\beta=t(x)$: (b) and (c) are its display after
+ \eqref{srs:eq:sector}, (d) follows from~\eqref{srs:eq:sector}, (i) holds
+ because $Z-1\sim Z=e^F$ on the narrow wedge, and (ii) is the radial
+ bound~\eqref{srs:eq:radial} on every fixed sector.
+\item Dong, Robles, Zaharescu and Zeindler~\cite{DRZZ}, arXiv:2412.20101v1,
+ Section~6: the Mellin integrand $\Gamma(s)\zeta(s+1)\zeta(s)/\zeta(2s)$ of
+ their (6.10) for partitions into squarefree parts, the explicit formula over
+ the zeta zeros of Lemma~6.2 (stated, ``for notational ease'', for simple
+ zeros; their Remark~6.1 says the assumption can be relaxed) and the saddle
+ formula of Lemma~6.8. The source's account of them in
+ Section~\ref{srs:sec:sources} is accurate.
+\item The transseries volume
+ \path{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex}:
+ \file{p0:def:three-inverses}, \file{p0:thm:staircase},
+ \file{p0:thm:lambert-core}, \file{p0:prop:factorial-core},
+ \file{plt:def:lw-monomial-log-datum} and \file{plt:thm:lw-template}, read for
+ Remark~\ref{srs:rem:transseries}.
+\item Not read by the write: Ingham's 1941 paper, Agarwala and
+ Auluck~\cite{AA}, the entry A000333 and the DLMF page~\cite{DLMF}; the
+ source's account of them is reported, not confirmed.
+\end{itemize}
+
+\emph{What was checked at intake.} The batch-109 dossier read the manuscript
+and found no error; it checked the Mellin factor~\eqref{srs:eq:Mellin} and
+the pole argument of Lemma~\ref{srs:lem:pole}, the two values below~$3$ by
+which the entry's comment fails (Remark~\ref{srs:rem:comment}), and $K$, and
+it reran the companion on copies: \file{exact} and \file{cpp --n 20}
+identical to the delivered outputs, the optional full \file{cpp --n 35
+--allow-full} run (3.6~s, status \file{PASS}, $428{,}363{,}342$ vectors, 788
+generators, no ambiguous comparison, all 35 terms equal to the fixture), and
+\file{diagnostics} equal up to the last binary64 digits; \file{test\_companion.py}
+and \file{test\_build.py} fail on Windows at their symlink guards.
+\emph{What the write checked.} Every proof line by line, with no
+mathematical error found: the decomposition $k=b^2d$ and~\eqref{srs:eq:unit};
+the bound $|E(u)|\le4u$ of~\eqref{srs:eq:B} (and, numerically, at every jump
+$u=\sqrt d$, $d<4\cdot10^5$, where $|E(u)|/u\le0.86$); \eqref{srs:eq:Fbound}
+and the three kernel integrals of Lemma~\ref{srs:lem:cumulants}, including
+the error bound~\eqref{srs:eq:cumerror}; the Rankin and Chebyshev bounds and
+the choice $t=t_0(1+Dt_0)$; the product formula behind~\eqref{srs:eq:sinbound},
+\eqref{srs:eq:moderateintegral} and $I(v)\to3c/2$; the removal of smoothing
+in Lemma~\ref{srs:lem:smoothing} (the inequality
+$(1-2p)V\le B_T+MC_a/T$); the central and tail ranges of
+Lemma~\ref{srs:lem:edgeworth}; the tilt identity~\eqref{srs:eq:tilt} and
+$I_0(a)$, $I_3(a)$; $H'$ in~\eqref{srs:eq:Hprime}; the saddle
+values~\eqref{srs:eq:Abeliansaddle} and the Laplace
+constant~\eqref{srs:eq:Abelian}; the Mellin continuation argument
+of Section~\ref{srs:sec:obstruction}; Kohlbecker's specialization; and the
+Gaussian route of Appendix~\ref{srs:sec:gaussian} (the exponent identity
+$-h^2/2=-10L$ and the tail bound~\eqref{srs:eq:tail3}). With its own code
+(Python 3.14.4, mpmath~1.3.0) it recomputed $A$ and $K$, the 35 terms of
+the first table against the b-file, the diagnostics table to every printed
+digit, and the integer-radicand counts of Remark~\ref{srs:rem:comment} by
+brute force; and it reran the companion from the shipped files (README,
+Route~B): \file{exact} and \file{cpp --n 20} byte-identical to the shipped
+outputs, \file{cpp --n 35 --allow-full} \file{PASS} in about 3~s (MinGW-w64
+g++ 16.1.0) with the counts above, \file{diagnostics} within
+$4\cdot10^{-15}$ of the shipped values, and \file{test\_companion.py} failing
+at its broken-symlink guard on Windows. Finite and floating computations are
+observations, not certificates.
+
+\emph{Relation to the repository.} Before batch~109 no file of the
+repository named A397045, and no report counted sums of square roots by
+value. In the same directory of the collection
+(\file{oeis-sequence-asymptotics/}), the reports \file{a097356-sqrt-restricted-partitions} and
+\file{a022629-distinct-partition-norms} use the same toolkit (an exact saddle
+with an Edgeworth term and integer inverses) for different integer-part
+products, and \file{a126764-lconvex-polyominoes} and
+\file{a022629-distinct-partition-norms} also cite Ingham's theorem; no result
+is shared, so no reciprocal note is proposed. No statement of this report is
+formalized in Lean or Rocq, and its place in the collection confers no formal
+status. The inverses of Section~\ref{srs:sec:inverse} are compared with the
+transseries volume in Remark~\ref{srs:rem:transseries}.
+\end{writenote}
+\begin{writenote}[What is not claimed, collected from the source]
+The leading logarithmic law is a specialization of Kohlbecker's theorem and
+the qualitative exact-saddle equivalent is Ingham's; no new general
+partition theorem and no exhaustive literature priority is claimed (``A
+bounded search did not locate an earlier treatment \dots{} This is not an
+exhaustive novelty claim''). Dong, Robles, Zaharescu and Zeindler are
+conceptual prior art for zeta zeros in implicit saddles, with a different
+spectrum. The inverse brackets are asymptotic: no numerical constant, finite
+threshold or exact rounding rule is supplied, and a numerical root of
+$H(X)=\log y$ is not a guaranteed rounding instruction. The truncation tail
+bound controls omitted terms only, not rounding, the root solve or their
+propagation; all floating diagnostics are noncertified. Section~\ref{srs:sec:obstruction}
+gives no pointwise formula over the zeta zeros, no RH-scale remainder and no
+transseries, and ``does not deny the weaker relation $F(t)\sim A/t^2$''. No
+exact data beyond $n=35$ are claimed (the source did not retrieve the
+b-file); fresh default coverage is claimed only to $n=20$. The source made no
+OEIS submission, publication, author contact or repository edit. The write
+adds: its own checks are floating or finite; Remark~\ref{srs:rem:comment}
+corrects a comment of the OEIS entry, not the source;
+Remark~\ref{srs:rem:transseries} claims no novelty for any inversion.
+\end{writenote}
+\medskip\noindent\begin{minipage}{\textwidth}
+\emph{Reading conventions} (letters the source reuses, with the tempting
+false readings; no symbol of the source was renamed; symbols of the
+transseries volume carry the subscript ``vol'' in
+Remark~\ref{srs:rem:transseries}).\par
+\smallskip
+\begingroup\small\renewcommand{\arraystretch}{1.1}
+\noindent\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.95in}>{\raggedright\arraybackslash}p{3.35in}>{\raggedright\arraybackslash}p{1.8in}@{}}
+\toprule
+Symbol & Meaning here (where) & Not to be read as\\
+\midrule
+$K$, $\mathcal K$, $K_T$ & the constant~\eqref{srs:eq:constants}; the smoothing kernel of Lemma~\ref{srs:lem:smoothing} and its scaling $\mathcal K_T$ & each other; the volume's $K_{\mathrm{vol}}$\\
+$A$, $\mathcal A$ & $2\zeta(3)/\zeta(2)$; a cumulative distribution function (Lemma~\ref{srs:lem:smoothing}) & each other\\
+$a$, $a(n)$ & $t\sqrt v$ (Section~\ref{srs:sec:smoothing}), also a fixed shift in the proof of Lemma~\ref{srs:lem:smoothing}; the counts & each other; the volume's $a_{\mathrm{vol}}$\\
+$H$, $H_3$ & the implicit-inverse function~\eqref{srs:eq:H}; the Hermite polynomial~\eqref{srs:eq:edge} & each other\\
+$m(t)$, $m_d$, $m_1$, $m$ & the tilted mean; multiplicities; the unit coefficient~\eqref{srs:eq:unit}; the multiplicity of the zero $\rho$ & each other\\
+$v(t)$, $v$, $u$ & the variance $F''$; the argument of $I(v)$ in~\eqref{srs:eq:moderateintegral}; the Fourier variable, also a radical size $u$ in $B(u)$ & each other\\
+$D$, $\mathcal D$ & a fixed constant (Section~\ref{srs:sec:log}); $\mathcal A-G$ (Lemma~\ref{srs:lem:smoothing}); an integer cutoff~\eqref{srs:eq:producttail}; $\mathcal D$ is the set of squarefree $d\ge2$ & each other\\
+$E$, $\E$ & the counting error~\eqref{srs:eq:B}; expectation & each other\\
+$R(t)$, $R_t(u)$ & the remainder in~\eqref{srs:eq:Fbound} and~\eqref{srs:eq:sector}; a Taylor remainder~\eqref{srs:eq:taylor} & each other\\
+$B(u)$, $B_0$, $B_T$ & the generator count; $4\zeta(2)$; a smoothed supremum~\eqref{srs:eq:smoothedbound} & each other; the volume's $B_{\mathrm{vol}}$\\
+$G$, $G(y)$, $g_t$ & a standard normal (Appendix~\ref{srs:sec:gaussian}); the comparator distribution function; the Edgeworth density & each other\\
+$\Delta$, $\delta$, $\delta(\cdot)$ & a sector parameter, also a CDF distance in~\eqref{srs:eq:weighted}; the smoothing width (Appendix~\ref{srs:sec:gaussian}); a point mass in~\eqref{srs:eq:atomicmeasure} & each other\\
+$h$, $h_1$, $h_2$, $L$ & $\sqrt{20L}$ and $L=\log(1/t)$ (Appendix~\ref{srs:sec:gaussian}); the kernels of Lemma~\ref{srs:lem:cumulants} & the volume's $L_{\mathrm{vol}}$, $h_{\mathrm{vol}}$\\
+$q$, $Q$, $Q_r$ & $\lfloor u\rfloor$ (Section~\ref{srs:sec:product}), also $e^{-t\lambda}$ (Section~\ref{srs:sec:characteristic}); the denominator $2^b$~\eqref{srs:eq:rootenclosures}; the angular function of Section~\ref{srs:sec:classical} & each other\\
+$c$, $c_0$, $c_*$, $c_1$ & $1/\zeta(2)$; the Chebyshev multiple; the kernel normalization; a Gaussian rate & each other\\
+$t$, $T$, $J$ & the saddle; a Fourier cutoff; the inverse index & each other; the volume's $t_{\mathrm{vol}}$\\
+$\rho$, $\nu$ & a zeta zero of least positive height; the atomic counting measure~\eqref{srs:eq:atomicmeasure} & the volume's $\rho_{\mathrm{vol}}$, $\nu_{\mathcal A}$\\
+\bottomrule
+\end{tabular}
+\endgroup
+\end{minipage}
+
+\section{Canonical vectors and endpoint conventions}\label{srs:sec:canonical}
 Every positive integer has a unique decomposition $k=b^2d$, with $d$ squarefree. Thus every represented value can be written as
 \begin{equation}
  m_1+\sum_{d\in\Sf}m_d\sqrt d,\qquad m_1,m_d\in\Z_{\ge0}.
- \label{eq:canonical}
+ \label{srs:eq:canonical}
 \end{equation}
 The radicals of distinct squarefree positive integers, including $\sqrt1=1$, are linearly independent over $\mathbb Q$. To recall the argument, collect the finitely many primes involved. In their multiquadratic field the products of distinct prime square roots form the character basis for the sign-change Galois group. Averaging a putative linear relation against each character extracts its coefficient. The coefficients all vanish.
 
-Consequently~\eqref{eq:canonical} is unique. Moreover a nonzero sum involving only $d\in\Sf$ is not rational. For each nonunit sum $s<n+1$, there is exactly one nonnegative unit coefficient placing it in $[n,n+1)$:
+Consequently~\eqref{srs:eq:canonical} is unique. Moreover a nonzero sum involving only $d\in\Sf$ is not rational. For each nonunit sum $s<n+1$, there is exactly one nonnegative unit coefficient placing it in $[n,n+1)$:
 \begin{equation}
- m_1=n-\lfloor s\rfloor.\label{eq:unit}
+ m_1=n-\lfloor s\rfloor.\label{srs:eq:unit}
 \end{equation}
-Conversely every shell value gives one such $s$. In particular $s=0$ corresponds to the integer $n$; the zero vector is essential. This proves the exact identity in Theorem~\ref{thm:log}.
+Conversely every shell value gives one such $s$. In particular $s=0$ corresponds to the integer $n$; the zero vector is essential. This proves the exact identity in Theorem~\ref{srs:thm:log}.
 
 There are finitely many vectors below a finite bound: only generators $\sqrt d$ below that bound can occur, and each multiplicity is bounded. Hence the counting measure
 \begin{equation}
- \nu=\sum_{(m_d)}\delta_{\sum m_d\sqrt d}\label{eq:atomicmeasure}
+ \nu=\sum_{(m_d)}\delta_{\sum m_d\sqrt d}\label{srs:eq:atomicmeasure}
 \end{equation}
 is locally finite, with every atom of mass one. Strict and weak counts differ by one at an atom, and agree otherwise. They agree at every positive integer, since no nonzero nonunit sum is an integer. At $x=0$, $N(0)=0$ and $N_{\le}(0)=1$. The measure $\nu$ does not depend on the continuity convention chosen for the cumulative count.
 
@@ -146,7 +400,53 @@ The cumulative comment in the retrieved entry allows all integer radicands $k>1$
 \paragraph{A different counting problem.}
 OEIS A000333 and the work of Agarwala and Auluck \cite{A000333,AA} count representations using all integer radicands. They distinguish, for example, one part $\sqrt4$ from two parts $\sqrt1$. Distinct values identify these representations. Neither their generating product nor their count can be substituted for the object here.
 
-\section{Elementary estimates for the exact product}\label{sec:product}
+\begin{remark}[{[write]} The entry's cumulative comment, corrected, 6~October 2026]\label{srs:rem:comment}
+Under Vladimir's standing rule of 4~October 2026 the source's correction of
+the comment quoted in Remark~\ref{srs:rem:oeis} stays on record, with an
+exact count of the model the comment names. Write $\mathcal I_n$ for the number
+of distinct values in $[0,n+1)$ of finite sums, the empty sum included, of
+$\sqrt k$ with integers $k>1$ (the comment's reading), and put $a(0)=1$.
+\begin{enumerate}[label=(\alph*)]
+\item For every $n\ge1$,
+ \begin{equation}
+  \mathcal I_n=a(n)+\sum_{i=0}^{n-2}a(i).\label{srs:eq:integermodel}
+ \end{equation}
+ \emph{Proof.} Write each $k>1$ as $b^2d$ with $d$ squarefree, so
+ $\sqrt k=b\sqrt d$. If $d\ge2$, the term adds $b$ to $m_d$; if $d=1$, then
+ $b\ge2$ and the term adds $b$ to $m_1$. Hence the values are exactly the
+ numbers $m_1+s$ with $s=\sum_{d\in\Sf}m_d\sqrt d$ a nonunit sum and $m_1$ a
+ sum of integers $\ge2$, that is, $m_1\in\{0,2,3,4,\dots\}$; every such pair
+ occurs (take $m_d$ copies of $\sqrt d$, and $\sqrt{m_1^2}$ when $m_1\ge2$).
+ By the uniqueness of~\eqref{srs:eq:canonical}, distinct pairs give distinct
+ values. A value lies in $[0,n+1)$ exactly when $m_1\le n$ and $s<n+1-m_1$,
+ so $\mathcal I_n=N(n+1)+\sum_{m=2}^{n}N(n+1-m)$. Finally $N(j+1)=a(j)$ for
+ $j\ge1$ by Theorem~\ref{srs:thm:log}, and $N(1)=1=a(0)$, because
+ $\sqrt d\ge\sqrt2>1$ leaves only the zero vector below~$1$. \qed
+\item Consequently $\mathcal I_1=a(1)=3$ and $\mathcal I_n>a(n)$ for every
+ $n\ge2$; the first values are $\mathcal I_n=3,8,21,46,104$ against
+ $a(n)=3,7,17,35,76$ ($n\le5$; the write also counted $\mathcal I_n$ by brute
+ force over all multisets of radicands, with the same result). At $n=2$ the
+ eighth value is $2=\sqrt4$, as the source says. Without the empty sum the
+ comment's model gives $\mathcal I_1-1=2\ne a(1)$. So under neither
+ convention for the empty sum is the integer-radicand reading equivalent to
+ the squarefree one, and the comment's ``(or equivalently, squarefree
+ integers)'' is false; with \emph{squarefree} radicands $k>1$ and the empty
+ sum retained, the comment is exactly Theorem~\ref{srs:thm:log}'s identity
+ $a(n)=N(n+1)$, and with \emph{nonsquare} radicands $k>1$ it is too, since
+ then $m_1=0$ always (the source's two correct alternatives).
+\item The same bookkeeping gives $a(n+1)-a(n)=N(n+2)-N(n+1)$, the number of
+ nonunit sums in $[n+1,n+2)$, and this is at least one for every $n\ge0$:
+ for $n\le6$ the data show it, and for $n+1\ge5\sqrt2$ the sums
+ $i\sqrt2+j\sqrt3$ with $i+j=M\ge5$ fill $[M\sqrt2,M\sqrt3]$ with steps
+ $\sqrt3-\sqrt2<\tfrac13$, and these intervals overlap for consecutive $M$
+ because $5(\sqrt3-\sqrt2)>\sqrt2$, so every interval of length one beyond
+ $5\sqrt2$ contains such a sum. Hence $a$ is strictly increasing from $n=0$.
+\end{enumerate}
+The comment belongs to the OEIS entry, not to the source, which proposes no
+edit; nothing was submitted to the OEIS.
+\end{remark}
+
+\section{Elementary estimates for the exact product}\label{srs:sec:product}
 Let
 \[
  B(u)=\#\{d\in\Sf:\sqrt d\le u\}.
@@ -159,43 +459,43 @@ M\"obius inversion gives
 With $v=u^2$ and $q=\lfloor u\rfloor$, the floor errors cost at most $u$, while the omitted reciprocal-square tail costs at most $u^2/q$. Removing $d=1$ costs one. For $u\ge2$ these are together below $4u$; the bounded interval is checked directly. Therefore
 \begin{equation}
  B(u)=cu^2+E(u),\qquad |E(u)|\le4u\quad(u\ge0).
- \label{eq:B}
+ \label{srs:eq:B}
 \end{equation}
 
 The atomic Laplace transform is exactly
 \begin{equation}
  Z(t)=\int_{[0,\infty)}e^{-ts}\nu(\dd s)
      =\prod_{d\in\Sf}(1-e^{-t\sqrt d})^{-1}.
- \label{eq:laplace}
+ \label{srs:eq:laplace}
 \end{equation}
 For complex $z$ with $\Ree z>0$ its logarithm is defined without a branch ambiguity by the absolutely convergent series
 \begin{equation}
  F(z)=\sum_{d\in\Sf}\sum_{r\ge1}\frac{e^{-rz\sqrt d}}r.
- \label{eq:positive}
+ \label{srs:eq:positive}
 \end{equation}
-It and its differentiated series converge locally uniformly in that half-plane. Expanding the finite products and then taking increasing limits proves~\eqref{eq:laplace}; the finite transform also shows that the tilted measure used below is a probability measure.
+It and its differentiated series converge locally uniformly in that half-plane. Expanding the finite products and then taking increasing limits proves~\eqref{srs:eq:laplace}; the finite transform also shows that the tilted measure used below is a probability measure.
 
 Stieltjes integration by parts gives
 \begin{equation}
  F(t)=\int_0^\infty B(u)\frac{t}{e^{tu}-1}\dd u
      =\frac A{t^2}+R(t),\qquad |R(t)|\le\frac{B_0}{t},
- \quad B_0=4\zeta(2).\label{eq:Fbound}
+ \quad B_0=4\zeta(2).\label{srs:eq:Fbound}
 \end{equation}
 Here $\int_0^\infty w^2/(e^w-1)\dd w=2\zeta(3)$ and
 $\int_0^\infty w/(e^w-1)\dd w=\zeta(2)$.
 
-\begin{lemma}[Mean variance and higher cumulants]\label{lem:cumulants}
+\begin{lemma}[Mean variance and higher cumulants]\label{srs:lem:cumulants}
 Put $m(t)=-F'(t)$, $v(t)=F''(t)$, and $\kappa_j(t)=(-1)^jF^{(j)}(t)$. Then
 \begin{align}
  \left|m(t)-\frac{2A}{t^3}\right|&\le\frac{B_0}{t^2},&
- \left|v(t)-\frac{6A}{t^4}\right|&\le\frac{2B_0}{t^3},\label{eq:mvbound}\\
- \kappa_j(t)&=(j+1)!A\,t^{-j-2}+\Oh_j(t^{-j-1})\quad(j\ge1),\label{eq:cumulants}\\
+ \left|v(t)-\frac{6A}{t^4}\right|&\le\frac{2B_0}{t^3},\label{srs:eq:mvbound}\\
+ \kappa_j(t)&=(j+1)!A\,t^{-j-2}+\Oh_j(t^{-j-1})\quad(j\ge1),\label{srs:eq:cumulants}\\
  |F^{(j)}(t+i\eta)|&\le\kappa_j(t)\quad(\eta\in\R,\ j\ge1).
- \label{eq:verticalbound}
+ \label{srs:eq:verticalbound}
 \end{align}
 \end{lemma}
 \begin{proof}
-For the mean integrate $h_1(u)=u/(e^{tu}-1)$ against $\dd B(u)$. It is decreasing, and $\int_0^\infty h_1(u)\dd u=\zeta(2)t^{-2}$. Integration against the error in~\eqref{eq:B} yields
+For the mean integrate $h_1(u)=u/(e^{tu}-1)$ against $\dd B(u)$. It is decreasing, and $\int_0^\infty h_1(u)\dd u=\zeta(2)t^{-2}$. Integration against the error in~\eqref{srs:eq:B} yields
 \[
  \left|\int h_1\dd E\right|\le4\int_0^\infty u|h_1'(u)|\dd u
  =4\int_0^\infty h_1(u)\dd u.
@@ -206,61 +506,61 @@ For general $j$, expand the kernel as $\sum_{r\ge1}r^{j-1}u^je^{-rtu}$. For $f(u
 \begin{equation}
  4\int_0^\infty u|f'(u)|\dd u
  \le 4\{j\Gamma(j+1)+\Gamma(j+2)\}(rt)^{-j-1}.
- \label{eq:cumerror}
+ \label{srs:eq:cumerror}
 \end{equation}
 Multiplication by $r^{j-1}$ and summation gives a convergent $\zeta(2)$ error. Integration against $2cu\dd u$ gives the main term
 $2c\Gamma(j+2)\zeta(3)t^{-j-2}=(j+1)!At^{-j-2}$.
-Finally~\eqref{eq:verticalbound} follows term by term from~\eqref{eq:positive}.
+Finally~\eqref{srs:eq:verticalbound} follows term by term from~\eqref{srs:eq:positive}.
 In particular none of these derivative statements comes from differentiating an unspecified real $\Oh$ term.
 \end{proof}
 
-Since $m'(t)=-v(t)<0$, $m$ is continuous and strictly decreasing. It tends to infinity at zero by~\eqref{eq:mvbound}, and to zero at infinity by dominated convergence. The unique saddle satisfies
+Since $m'(t)=-v(t)<0$, $m$ is continuous and strictly decreasing. It tends to infinity at zero by~\eqref{srs:eq:mvbound}, and to zero at infinity by dominated convergence. The unique saddle satisfies
 \begin{equation}
  t(x)=\left(\frac{2A}x\right)^{1/3}\{1+\Oh(x^{-1/3})\}.
- \label{eq:tsaddle}
+ \label{srs:eq:tsaddle}
 \end{equation}
 
-\section{An elementary proof of the logarithmic conjecture}\label{sec:log}
+\section{An elementary proof of the logarithmic conjecture}\label{srs:sec:log}
 The upper bound
 \begin{equation}
- N(x)\le \exp(F(t)+tx)\qquad(t>0)\label{eq:Rankin}
+ N(x)\le \exp(F(t)+tx)\qquad(t>0)\label{srs:eq:Rankin}
 \end{equation}
 holds atom by atom and also holds for $N_{\le}$. To obtain a lower bound, give a vector of sum $s$ probability $e^{-ts}/Z(t)$. Equivalently the multiplicities are independent geometric variables with parameters $e^{-t\sqrt d}$. Their total $S$ is finite almost surely: its finite expectation is $m(t)$. Its variance is $v(t)$.
 
-\begin{proposition}[Two sided finite bounds]\label{prop:finite}
+\begin{proposition}[Two sided finite bounds]\label{srs:prop:finite}
 If $c_0>1$ and $x>m(t)+c_0\sqrt{v(t)}$, then
 \begin{equation}
  N(x)\ge (1-c_0^{-2})
- \exp\{F(t)+t[m(t)-c_0\sqrt{v(t)}]\}.\label{eq:Chebyshev}
+ \exp\{F(t)+t[m(t)-c_0\sqrt{v(t)}]\}.\label{srs:eq:Chebyshev}
 \end{equation}
-Together with~\eqref{eq:Rankin}, this is a nonasymptotic pair of bounds.
+Together with~\eqref{srs:eq:Rankin}, this is a nonasymptotic pair of bounds.
 \end{proposition}
 \begin{proof}
 Chebyshev's inequality gives probability at least $1-c_0^{-2}$ to the interval $[m-c_0\sqrt v,m+c_0\sqrt v]$. It lies strictly below $x$. For each atom in it, converting probability to count multiplies by $e^{F+ts}$, at least $e^{F+t(m-c_0\sqrt v)}$. Summing proves the claim. The strict hypothesis prevents losing an upper-endpoint atom.
 \end{proof}
 
-Set $t_0=(2A/x)^{1/3}$. Equations~\eqref{eq:Fbound} and~\eqref{eq:Rankin} at $t_0$ give
+Set $t_0=(2A/x)^{1/3}$. Equations~\eqref{srs:eq:Fbound} and~\eqref{srs:eq:Rankin} at $t_0$ give
 \[
  \log N(x)\le 3A t_0^{-2}+\Oh(t_0^{-1})=Kx^{2/3}+\Oh(x^{1/3}).
 \]
-For the lower bound choose $t=t_0(1+Dt_0)$ with $D$ a sufficiently large fixed positive constant. Expansion of~\eqref{eq:mvbound} gives
+For the lower bound choose $t=t_0(1+Dt_0)$ with $D$ a sufficiently large fixed positive constant. Expansion of~\eqref{srs:eq:mvbound} gives
 \[
  m(t)=x-6ADt_0^{-2}+\Oh(t_0^{-2}),\qquad
  \sqrt{v(t)}\sim\sqrt{6A}\,t_0^{-2}.
 \]
-The error constant in the first formula can be bounded independently of the fixed $D$ for sufficiently small $t_0$, after separating the $\Oh(D^2t_0^{-1})$ Taylor term. Thus choose $D$ so that $x>m(t)+2\sqrt{v(t)}$ eventually. Proposition~\ref{prop:finite} then gives
+The error constant in the first formula can be bounded independently of the fixed $D$ for sufficiently small $t_0$, after separating the $\Oh(D^2t_0^{-1})$ Taylor term. Thus choose $D$ so that $x>m(t)+2\sqrt{v(t)}$ eventually. Proposition~\ref{srs:prop:finite} then gives
 \[
  \log N(x)\ge F(t)+tm(t)-2t\sqrt{v(t)}+\log(3/4)
  =3At^{-2}+\Oh(t^{-1})=Kx^{2/3}+\Oh(x^{1/3}).
 \]
-This proves Theorem~\ref{thm:log} independently of the relative approximation below. It also shows directly why the leading theorem is an application of ordinary real-part partition growth theory.
+This proves Theorem~\ref{srs:thm:log} independently of the relative approximation below. It also shows directly why the leading theorem is an application of ordinary real-part partition growth theory.
 
-\section{Characteristic control through a fixed small frequency}\label{sec:characteristic}
+\section{Characteristic control through a fixed small frequency}\label{srs:sec:characteristic}
 For the tilted sum $S$, put
 \[
  \varphi_t(\theta)=\mathbb E_t e^{i\theta S}=Z(t-i\theta)/Z(t).
 \]
-Only frequencies through a fixed sufficiently small $\theta_0>0$ require arithmetic control. The compactly supported Fourier smoothing kernel in Section~\ref{sec:smoothing} requires no further arithmetic bound. Appendix~\ref{sec:gaussian} gives a separate Gaussian route using $|\varphi_t|\le1$ at higher frequencies.
+Only frequencies through a fixed sufficiently small $\theta_0>0$ require arithmetic control. The compactly supported Fourier smoothing kernel in Section~\ref{srs:sec:smoothing} requires no further arithmetic bound. Appendix~\ref{srs:sec:gaussian} gives a separate Gaussian route using $|\varphi_t|\le1$ at higher frequencies.
 
 Restrict to generators $\lambda=\sqrt d$ in $[1/t,2/t]$. For them $q=e^{-t\lambda}\in[e^{-2},e^{-1}]$ and
 \begin{equation}
@@ -271,12 +571,12 @@ Uniform compact bounds on $q$ give an absolute $b>0$ such that
 \begin{equation}
  |\varphi_t(\theta)|\le
  \exp\left(-b\sum_{1/t\le\lambda\le2/t}\sin^2\frac{\theta\lambda}2\right).
- \label{eq:sinbound}
+ \label{srs:eq:sinbound}
 \end{equation}
-For example fix $\varepsilon=1/4$. If $|\theta|\le\varepsilon t$, the sine is bounded below by a constant times its argument in absolute value. Equation~\eqref{eq:B} gives order $t^{-2}$ roots in the block, each with $\lambda^2\asymp t^{-2}$. Hence
+For example fix $\varepsilon=1/4$. If $|\theta|\le\varepsilon t$, the sine is bounded below by a constant times its argument in absolute value. Equation~\eqref{srs:eq:B} gives order $t^{-2}$ roots in the block, each with $\lambda^2\asymp t^{-2}$. Hence
 \begin{equation}
  |\varphi_t(\theta)|\le e^{-b_1\theta^2/t^4}
- \quad(|\theta|\le\varepsilon t)\label{eq:smallchar}
+ \quad(|\theta|\le\varepsilon t)\label{srs:eq:smallchar}
 \end{equation}
 for some $b_1>0$ and sufficiently small $t$.
 
@@ -285,32 +585,32 @@ For larger $\theta$ in a fixed small interval, integrate $f(\lambda)=\sin^2(\the
  t^2\sum_{1/t\le\lambda\le2/t}\sin^2\frac{\theta\lambda}2
  =I(|\theta|/t)+\Oh(t+|\theta|),\quad
  I(v)=\int_1^2 2cu\sin^2(vu/2)\dd u.
- \label{eq:moderateintegral}
+ \label{srs:eq:moderateintegral}
 \end{equation}
 Indeed the two boundary error terms are $\Oh(t^{-1})$. Since $|f'|\le|\theta|/2$, the integrated error is $\Oh(|\theta|t^{-2})$. A possible atom at a block endpoint changes the sum by at most one and is absorbed.
 
-The continuous function $I(v)$ is positive for every $v>0$: the integrand cannot vanish identically on $[1,2]$. Integrating the cosine part by parts gives $I(v)\to3c/2$ as $v\to\infty$. Consequently $\inf_{v\ge\varepsilon}I(v)>0$. Choose $\theta_0$ sufficiently small relative to the absolute error constant in~\eqref{eq:moderateintegral}, then take $t$ sufficiently small. Equation~\eqref{eq:sinbound} yields
+The continuous function $I(v)$ is positive for every $v>0$: the integrand cannot vanish identically on $[1,2]$. Integrating the cosine part by parts gives $I(v)\to3c/2$ as $v\to\infty$. Consequently $\inf_{v\ge\varepsilon}I(v)>0$. Choose $\theta_0$ sufficiently small relative to the absolute error constant in~\eqref{srs:eq:moderateintegral}, then take $t$ sufficiently small. Equation~\eqref{srs:eq:sinbound} yields
 \begin{equation}
  |\varphi_t(\theta)|\le e^{-b_2/t^2}
- \quad(\varepsilon t\le|\theta|\le\theta_0)\label{eq:moderatechar}
+ \quad(\varepsilon t\le|\theta|\le\theta_0)\label{srs:eq:moderatechar}
 \end{equation}
 for a constant $b_2>0$.
 
 This is not a uniform nonlattice assertion at arbitrarily high frequencies. The restriction to $|\theta|\le\theta_0$ is an essential part of the proof.
 
-\section{A first Edgeworth comparison and the sharp saddle theorem}\label{sec:smoothing}
+\section{A first Edgeworth comparison and the sharp saddle theorem}\label{srs:sec:smoothing}
 An ordinary Berry--Esseen bound has absolute cumulative distribution function (CDF) error of order $t$, which is too large for the one-sided tilted expectation below: its main term is itself of order $t$. A first Edgeworth correction improves the CDF error to $\Oh(t^2)$. We prove the Fourier smoothing step for a signed comparator explicitly, because that correction need not be a probability density.
 
 \subsection{A smoothing lemma allowing signed comparators}
 We use the Fourier convention $\widehat\mu(u)=\int e^{iuy}\,\mu(dy)$.
-\begin{lemma}\label{lem:smoothing}
+\begin{lemma}\label{srs:lem:smoothing}
 Let $P$ be a probability measure on $\R$ with finite first absolute moment, characteristic function $f$, and right-continuous CDF $\mathcal A$. Let $g$ be an integrable, possibly signed, real function satisfying
 \[
  \int g(y)\,dy=1,\qquad \int |y|\,|g(y)|\,dy<\infty,
  \qquad \|g\|_\infty\le M.
 \]
 Set $G(y)=\int_{-\infty}^y g(z)\,dz$ and $\gamma(u)=\int e^{iuy}g(y)\,dy$. There is an absolute constant $C$ such that for every $T>0$,
-\begin{equation}\label{eq:smoothing}
+\begin{equation}\label{srs:eq:smoothing}
  \sup_y|\mathcal A(y)-G(y)|\le C\left\{\int_{-T}^T
  \left|\frac{f(u)-\gamma(u)}u\right|\,du+\frac MT\right\}.
 \end{equation}
@@ -328,7 +628,7 @@ The first-moment assumptions imply $D\in L^1(\R)$, since the positive and negati
  \widehat D(u)=-\frac{f(u)-\gamma(u)}{iu}.
 \]
 In addition $f(0)=\gamma(0)=1$ and finite first moments bound $(f-\gamma)/u$ near zero. Fourier inversion therefore gives
-\begin{equation}\label{eq:smoothedbound}
+\begin{equation}\label{srs:eq:smoothedbound}
  B_T:=\|D*\mathcal K_T\|_\infty
  \le\frac1{2\pi}\int_{-T}^T\left|\frac{f(u)-\gamma(u)}u\right|\,du.
 \end{equation}
@@ -347,47 +647,47 @@ If the positive supremum of $D$ equals $V$, take a sequence of $y$ approaching t
 \[
  (1-2p)V\le B_T+MC_a/T.
 \]
-If instead the negative supremum equals $V$, use $h\le0$, for which $D(y+h)\le D(y)+M|h|$, and evaluate at $y-a/T$. Evenness of $\mathcal K$ gives the identical bound. This proves \eqref{eq:smoothing}. Finally $G$ is continuous; taking left limits in the bound for $\mathcal A$ proves the bound for the strict CDF as well.
+If instead the negative supremum equals $V$, use $h\le0$, for which $D(y+h)\le D(y)+M|h|$, and evaluate at $y-a/T$. Evenness of $\mathcal K$ gives the identical bound. This proves \eqref{srs:eq:smoothing}. Finally $G$ is continuous; taking left limits in the bound for $\mathcal A$ proves the bound for the strict CDF as well.
 \end{proof}
 
 \subsection{The standardized first Edgeworth comparison}
-Retain the tilted probability distribution from Section~\ref{sec:log}
+Retain the tilted probability distribution from Section~\ref{srs:sec:log}
 \[
  \Pp_t(S=s)=e^{-ts-F(t)},\qquad
  x=-F'(t),\quad v=F''(t),\quad \kappa_j=(-1)^jF^{(j)}(t).
 \]
-Here the displayed atom formula is for each canonical vector, and Section~\ref{sec:canonical} proved uniqueness of its value. Define
+Here the displayed atom formula is for each canonical vector, and Section~\ref{srs:sec:canonical} proved uniqueness of its value. Define
 \[
  Y_t=\frac{S-x}{\sqrt v},\quad
  \lambda_3=\frac{\kappa_3}{v^{3/2}},\quad
  \lambda_4=\frac{\kappa_4}{v^2}.
 \]
-Lemma~\ref{lem:cumulants} gives
-\begin{equation}\label{eq:moments}
+Lemma~\ref{srs:lem:cumulants} gives
+\begin{equation}\label{srs:eq:moments}
  v\sim6At^{-4},\qquad \lambda_3=\Oh(t),\qquad
  \lambda_4=\Oh(t^2),\qquad
  |F^{(4)}(t+i\eta)|\le\kappa_4(t).
 \end{equation}
-Section~\ref{sec:characteristic} supplies constants $\varepsilon,\theta_0,b_1,b_2>0$ such that
+Section~\ref{srs:sec:characteristic} supplies constants $\varepsilon,\theta_0,b_1,b_2>0$ such that
 \begin{align}
  |\varphi_t(\theta)|&\le e^{-b_1\theta^2/t^4}
- &&(|\theta|\le\varepsilon t),\label{eq:small}\\
+ &&(|\theta|\le\varepsilon t),\label{srs:eq:small}\\
  |\varphi_t(\theta)|&\le e^{-b_2/t^2}
- &&(\varepsilon t\le|\theta|\le\theta_0),\label{eq:moderate}
+ &&(\varepsilon t\le|\theta|\le\theta_0),\label{srs:eq:moderate}
 \end{align}
 where $\varphi_t(\theta)=\E_t e^{i\theta S}$. No control at frequencies $|\theta|>\theta_0$ will be used.
 
 Let $\phi(y)=(2\pi)^{-1/2}e^{-y^2/2}$ and $H_3(y)=y^3-3y$. The first-Edgeworth signed density and its Fourier transform are
-\begin{equation}\label{eq:edge}
+\begin{equation}\label{srs:eq:edge}
  g_t(y)=\phi(y)\left(1+\frac{\lambda_3}{6}H_3(y)\right),\qquad
  \gamma_t(u)=e^{-u^2/2}\left(1+\frac{\lambda_3}{6}(iu)^3\right).
 \end{equation}
 Its integral is one, its first absolute moment is finite, and
-$\|g_t\|_\infty\le M$ for a constant $M$ independent of sufficiently small $t$. Although $g_t$ is in general negative in a far tail, Lemma~\ref{lem:smoothing} applies directly.
+$\|g_t\|_\infty\le M$ for a constant $M$ independent of sufficiently small $t$. Although $g_t$ is in general negative in a far tail, Lemma~\ref{srs:lem:smoothing} applies directly.
 
-\begin{lemma}\label{lem:edgeworth}
+\begin{lemma}\label{srs:lem:edgeworth}
 If $G_t(y)=\int_{-\infty}^y g_t(z)\,dz$, then, as $t\downarrow0$,
-\begin{equation}\label{eq:cdf}
+\begin{equation}\label{srs:eq:cdf}
  \sup_y\left|\Pp_t(Y_t\le y)-G_t(y)\right|=\Oh(t^2).
 \end{equation}
 The same holds with $<$ in place of $\le$.
@@ -397,8 +697,8 @@ Write $f_t(u)=\E_t e^{iuY_t}$. Its exact logarithm is
 \[
  F(t-iu/\sqrt v)-F(t)-iux/\sqrt v.
 \]
-Taylor's formula along the vertical segment and \eqref{eq:moments} give
-\begin{equation}\label{eq:taylor}
+Taylor's formula along the vertical segment and \eqref{srs:eq:moments} give
+\begin{equation}\label{srs:eq:taylor}
  \log f_t(u)=-u^2/2+\frac{\lambda_3}{6}(iu)^3+R_t(u),
  \qquad |R_t(u)|\le\frac{\lambda_4}{24}|u|^4.
 \end{equation}
@@ -410,14 +710,14 @@ Put $U=\log(1/t)$ and $T=\theta_0\sqrt v\asymp t^{-2}$. On $|u|\le U$ we have $|
  |e^b-1-b|\le |b|^2/2,
 \]
 which imply
-\begin{equation}\label{eq:centralbound}
+\begin{equation}\label{srs:eq:centralbound}
  |f_t(u)-\gamma_t(u)|
  \le C t^2\bigl(|u|^4+|u|^6\bigr)e^{-u^2/2}
  \qquad(|u|\le U).
 \end{equation}
 Dividing by $|u|$ and integrating gives $\Oh(t^2)$, with no logarithmic loss.
 
-For $U<|u|\le\varepsilon t\sqrt v$, estimate \eqref{eq:small} becomes $|f_t(u)|\le e^{-c_1u^2}$, since $vt^4$ stays bounded above and below by positive constants. Together with \eqref{eq:edge}, the integral of $|f_t-\gamma_t|/|u|$ over this region is smaller than every fixed power of $t$. For $\varepsilon t\sqrt v<|u|\le T$, estimate \eqref{eq:moderate} bounds the contribution of $f_t$ by
+For $U<|u|\le\varepsilon t\sqrt v$, estimate \eqref{srs:eq:small} becomes $|f_t(u)|\le e^{-c_1u^2}$, since $vt^4$ stays bounded above and below by positive constants. Together with \eqref{srs:eq:edge}, the integral of $|f_t-\gamma_t|/|u|$ over this region is smaller than every fixed power of $t$. For $\varepsilon t\sqrt v<|u|\le T$, estimate \eqref{srs:eq:moderate} bounds the contribution of $f_t$ by
 \[
  2e^{-b_2/t^2}\log\left(\frac{\theta_0}{\varepsilon t}\right),
 \]
@@ -425,26 +725,26 @@ while the contribution of $\gamma_t$ is again exponentially small. For small $t$
 \[
  \int_{-T}^T\frac{|f_t(u)-\gamma_t(u)|}{|u|}\,du=\Oh(t^2).
 \]
-Apply Lemma~\ref{lem:smoothing}: its cutoff cost is $M/T=\Oh(t^2)$. The finite first moment of $Y_t$ follows from $\E Y_t^2=1$.
+Apply Lemma~\ref{srs:lem:smoothing}: its cutoff cost is $M/T=\Oh(t^2)$. The finite first moment of $Y_t$ follows from $\E Y_t^2=1$.
 \end{proof}
 
 \subsection{The one sided weighted expectation and atomic endpoints}
 Put $a=t\sqrt v\asymp t^{-1}$. The exact tilt identity is
-\begin{equation}\label{eq:tilt}
+\begin{equation}\label{srs:eq:tilt}
  e^{-F(t)-tx}N(x)=\E_t[e^{aY_t}\mathbf 1_{\{Y_t<0\}}].
 \end{equation}
 For $N_{\le}(x)$ use $Y_t\le0$ instead.
 
 For completeness, if a probability CDF $\mathcal A$ and a signed comparator $G$ have uniform difference at most $\Delta$, and $G$ is continuous, then
-\begin{equation}\label{eq:weighted}
+\begin{equation}\label{srs:eq:weighted}
  \left|\int_{(-\infty,0)}e^{ay}\,d\mathcal A(y)
        -\int_{-\infty}^0e^{ay}\,dG(y)\right|\le2\Delta.
 \end{equation}
 Indeed, integration by parts writes the first term as
 $\mathcal A(0-)-a\int_{-\infty}^0e^{ay}\mathcal A(y)\,dy$, and the analogous expression for $G$ has $G(0)$ as its boundary value. The absolute error is at most $\Delta+a\Delta\int_{-\infty}^0e^{ay}\,dy=2\Delta$. For the weak convention the boundary value is $\mathcal A(0)$ and the same proof works. Equivalently the weighting function has total variation two. In particular no assumption that the endpoint is non-atomic is hidden here.
 
-By \eqref{eq:cdf} and \eqref{eq:weighted}, the right side of \eqref{eq:tilt} is
-\begin{equation}\label{eq:weightededge}
+By \eqref{srs:eq:cdf} and \eqref{srs:eq:weighted}, the right side of \eqref{srs:eq:tilt} is
+\begin{equation}\label{srs:eq:weightededge}
  \int_{-\infty}^0e^{ay}g_t(y)\,dy+\Oh(t^2).
 \end{equation}
 The Gaussian part, after putting $r=-ay$, is
@@ -460,35 +760,35 @@ The last error follows directly from $0\le1-e^{-z}\le z$. Likewise
  \left(\frac{3r}a-\frac{r^3}{a^3}\right)\,dr
  =\Oh(a^{-2}).
 \end{align}
-Thus $\lambda_3 I_3(a)/6=\Oh(t^3)$, and $I_0(a)=\phi(0)/a+\Oh(t^3)$. Combining this with \eqref{eq:weightededge}, we obtain uniformly for real $x\to\infty$, with the unique saddle $-F'(t)=x$,
-\begin{equation}\label{eq:sharpsaddle}
+Thus $\lambda_3 I_3(a)/6=\Oh(t^3)$, and $I_0(a)=\phi(0)/a+\Oh(t^3)$. Combining this with \eqref{srs:eq:weightededge}, we obtain uniformly for real $x\to\infty$, with the unique saddle $-F'(t)=x$,
+\begin{equation}\label{srs:eq:sharpsaddle}
  N(x)=\frac{e^{F(t)+tx}}{t\sqrt{2\pi F''(t)}}\{1+\Oh(t)\}.
 \end{equation}
 The identical estimate holds for $N_{\le}(x)$, including at atomic endpoints. Since $t\asymp x^{-1/3}$, the relative error is $\Oh(x^{-1/3})$.
-This proves Theorem~\ref{thm:saddle}.
+This proves Theorem~\ref{srs:thm:saddle}.
 The CDF error $\Oh(t^2)$ is an \emph{absolute} error in the normalized weighted expectation, whose main term has order $t$; this is why the final relative error is $\Oh(t)$, rather than $\Oh(t^2)$.
 
 
-\section{Inversion and usable bounds}\label{sec:inverse}
+\section{Inversion and usable bounds}\label{srs:sec:inverse}
 The saddle estimates imply
 \begin{align}
- F(t)+tx&=Kx^{2/3}+\Oh(x^{1/3}),\label{eq:saddlelog}\\
+ F(t)+tx&=Kx^{2/3}+\Oh(x^{1/3}),\label{srs:eq:saddlelog}\\
  -\log t-\tfrac12\log(2\pi v(t))&=\Oh(\log x),\nonumber\\
- \log N(x)&=H(x)+\Oh(t).\label{eq:logH}
+ \log N(x)&=H(x)+\Oh(t).\label{srs:eq:logH}
 \end{align}
-The first follows by inserting~\eqref{eq:tsaddle} in~\eqref{eq:Fbound}; the error from the saddle shift is harmless at this order. Replacing $x=n+1$ by $n$ in the leading logarithm changes it by $\Oh(n^{-1/3})$, smaller than the proved error.
+The first follows by inserting~\eqref{srs:eq:tsaddle} in~\eqref{srs:eq:Fbound}; the error from the saddle shift is harmless at this order. Replacing $x=n+1$ by $n$ in the leading logarithm changes it by $\Oh(n^{-1/3})$, smaller than the proved error.
 
 Differentiate the exact saddle equation. Since $m'=-v$ and $v_t=F'''=-\kappa_3$,
 \begin{equation}
  t'(x)=-\frac1v,\qquad
  H'(x)=t+\frac1{tv}-\frac{\kappa_3}{2v^2}
-       =t+\Oh(t^3)>0\quad\text{eventually}.\label{eq:Hprime}
+       =t+\Oh(t^3)>0\quad\text{eventually}.\label{srs:eq:Hprime}
 \end{equation}
 In particular $H$ is eventually increasing and unbounded. Let $X=X(y)$ solve $H(X)=\log y$ on that branch. For each fixed $C>0$, the saddle varies by a relative $o(1)$ on $[X-C,X+C]$, because $t'(x)=-1/v=\Oh(t^4)$. Consequently
 \[
  H(X\pm C)-H(X)=\pm C\,t(X)(1+o(1)).
 \]
-The error in~\eqref{eq:logH} is bounded by a fixed constant times $t(X)$. Choosing $C$ larger than that constant yields
+The error in~\eqref{srs:eq:logH} is bounded by a fixed constant times $t(X)$. Choosing $C$ larger than that constant yields
 \[
  N(X-C)<y<N(X+C)
 \]
@@ -496,97 +796,150 @@ for all sufficiently large $y$. Sampling at integers $x=n+1$ adds at most a boun
 \[
  J(y)+1=X(y)+\Oh(1),
 \]
-which proves~\eqref{eq:implicitinverse}. The bound is asymptotic; no numerical constant, finite threshold or exact rounding rule is supplied.
+which proves~\eqref{srs:eq:implicitinverse}. The bound is asymptotic; no numerical constant, finite threshold or exact rounding rule is supplied.
 
-For the explicit estimate set $x_0=(\log y/K)^{3/2}$. The derivative of the leading logarithm is $(2K/3)x^{-1/3}$; dividing the error $\Oh(x^{1/3})$ by it gives $\Oh(x^{2/3})=\Oh(\log y)$. Equivalently evaluate the logarithmic bounds at $x_0\pm C\log y$ and use monotonicity. This proves~\eqref{eq:explicitinverse} and Theorem~\ref{thm:inverse}.
+For the explicit estimate set $x_0=(\log y/K)^{3/2}$. The derivative of the leading logarithm is $(2K/3)x^{-1/3}$; dividing the error $\Oh(x^{1/3})$ by it gives $\Oh(x^{2/3})=\Oh(\log y)$. Equivalently evaluate the logarithmic bounds at $x_0\pm C\log y$ and use monotonicity. This proves~\eqref{srs:eq:explicitinverse} and Theorem~\ref{srs:thm:inverse}.
 
 \paragraph{What is computable and what is certified.}
-The positive product and its derivatives make $H$ numerically accessible. The asymptotic $\Oh$ constants here have not been converted into sharp numerical constants or a finite threshold, so a numerical root of $H(X)=\log y$ is an approximation, not a guaranteed rounding instruction. To certify finite inequalities one may enclose the product and moments and use Proposition~\ref{prop:finite} and~\eqref{eq:Rankin}. The supplied floating-point saddle routine does not perform that interval-certified step.
+The positive product and its derivatives make $H$ numerically accessible. The asymptotic $\Oh$ constants here have not been converted into sharp numerical constants or a finite threshold, so a numerical root of $H(X)=\log y$ is an approximation, not a guaranteed rounding instruction. To certify finite inequalities one may enclose the product and moments and use Proposition~\ref{srs:prop:finite} and~\eqref{srs:eq:Rankin}. The supplied floating-point saddle routine does not perform that interval-certified step.
 
-\section{Zeta poles and the impossibility of a pure equivalent}\label{sec:obstruction}
+\begin{remark}[{[write]} The inversions and the transseries volume, 6~October 2026]\label{srs:rem:transseries}
+Compared, statement by statement, with
+\path{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex};
+symbols of the volume carry the subscript ``vol''.
+\begin{enumerate}[label=(\alph*)]
+\item \emph{Instance.} The index $J(y)$ of Theorem~\ref{srs:thm:inverse} is
+ the integer staircase $N_\ast$ of \file{p0:def:three-inverses} with
+ $A_n=a(n)$ and $n_1=1$ ($a$ is strictly increasing,
+ Remark~\ref{srs:rem:comment}(c)), for $y\ge a(1)$; so
+ \file{p0:thm:staircase}(1) gives $J(y)=\lceil\nu_{\mathcal A}(y)\rceil$ for
+ every admissible interpolation $\mathcal A$. The source does not use this.
+\item \emph{Theorem~\ref{srs:thm:inverse}: not an instance.} Both brackets,
+ \eqref{srs:eq:explicitinverse} with error $\Oh(\log y)$ and
+ \eqref{srs:eq:implicitinverse} with error $\Oh(1)$, are direct estimates of
+ $J$, proved from the monotonicity of $N$ and the saddle formula; they are
+ not two-ceiling brackets, and an $\Oh(1)$ error does not determine $J$, so
+ neither has the form of \file{p0:thm:staircase}(2) or~(3); the source says
+ they are ``not exact floor or ceiling rules''. A second route to
+ \eqref{srs:eq:implicitinverse} through \file{p0:thm:staircase}(1) (added by
+ the write): let $\mathcal A(n+\theta)=a(n)^{1-\theta}a(n+1)^{\theta}$
+ ($n\ge1$, $0\le\theta\le1$), an admissible interpolation because $a$ is
+ strictly increasing, and $\nu=\nu_{\mathcal A}(y)$. By~\eqref{srs:eq:logH}
+ at $x=n+1$, $\log a(n)=H(n+1)+\Oh(t(n+1))$, and for a $C^1$ function
+ $(1-\theta)H(n+1)+\theta H(n+2)-H(n+1+\theta)=\theta(1-\theta)\{H'(\xi_2)-H'(\xi_1)\}$
+ with $\xi_1,\xi_2\in[n+1,n+2]$, which is $\Oh(t(n+1))$
+ by~\eqref{srs:eq:Hprime}. Hence $\log\mathcal A(x)=H(x+1)+\Oh(t(x+1))$, and
+ $H(\nu+1)-H(X)=\log\mathcal A(\nu)-\log y-\{\log\mathcal A(\nu)-H(\nu+1)\}=\Oh(t(\nu+1))$.
+ Since $H(x)=Kx^{2/3}+\Oh(x^{1/3})$ is eventually increasing, $\nu+1\sim X$,
+ so $t$ is $t(\nu+1)(1+o(1))$ between $\nu+1$ and $X$, where $H'=t(1+o(1))$
+ by~\eqref{srs:eq:Hprime}; the mean-value theorem gives $\nu+1-X=\Oh(1)$, and
+ $J=\lceil\nu\rceil\in[\nu,\nu+1)$ gives~\eqref{srs:eq:implicitinverse}. This
+ recovers the source's $\Oh(1)$, no more.
+\item \emph{A trivial formal instance.} The leading inverse
+ $(\log y/K)^{3/2}$ of~\eqref{srs:eq:explicitinverse} solves $Kx^{2/3}=\log y$,
+ which is \file{plt:thm:lw-template} with $Z_{\mathrm{vol}}=\log x$,
+ $\xi_{\mathrm{vol}}=\log\log y$ and data
+ $(\rho_{\mathrm{vol}},\mu_{\mathrm{vol}},\beta_{\mathrm{vol}},B_{\mathrm{vol}})=(2/3,0,\log K,0)$,
+ the degenerate case without logarithm or correction series; its answer is
+ the power inverse itself. No Lambert function occurs: the leading balance has
+ no logarithmic term, so neither \file{p0:thm:lambert-core} nor
+ \file{p0:prop:factorial-core} is involved.
+\item \emph{Not shown to be an instance.} The implicit equation
+ $H(X)=\log y$ of~\eqref{srs:eq:implicitinverse} is not shown to be an
+ instance of \file{plt:thm:lw-template} in any chart. $H$ is built from the
+ exact product $F$, and Corollary~\ref{srs:cor:finiteexpansion} shows that $F$
+ has no finite expansion in real powers and logarithms of $t$ with a bounded
+ remainder; whether $H$ itself admits an expansion of the template's form
+ (H3) is not decided here. The write does not claim that it lies outside
+ every chart.
+\end{enumerate}
+No novelty is claimed for any of these inversions.
+\end{remark}
+
+\section{Zeta poles and the impossibility of a pure equivalent}\label{srs:sec:obstruction}
 \subsection{The exact Mellin transform}
-For $\Ree s>2$, absolute convergence of~\eqref{eq:positive} gives
+For $\Ree s>2$, absolute convergence of~\eqref{srs:eq:positive} gives
 \begin{align}
  \mathcal M(s)&=\int_0^\infty F(t)t^{s-1}\dd t\nonumber\\
  &=\Gamma(s)\zeta(s+1)\sum_{d\in\Sf}d^{-s/2}\nonumber\\
  &=\Gamma(s)\zeta(s+1)
        \left(\frac{\zeta(s/2)}{\zeta(s)}-1\right).
- \label{eq:Mellin}
+ \label{srs:eq:Mellin}
 \end{align}
 The quotient is the squarefree Dirichlet series, and the subtraction removes $d=1$. Both features are essential; replacing this factor by $\zeta(s/2)$ discards the decisive singularities.
 
-\begin{lemma}[A surviving nonreal pole]\label{lem:pole}
-The meromorphic function in~\eqref{eq:Mellin} has a genuine pole in $0<\Ree s<1$.
+\begin{lemma}[A surviving nonreal pole]\label{srs:lem:pole}
+The meromorphic function in~\eqref{srs:eq:Mellin} has a genuine pole in $0<\Ree s<1$.
 \end{lemma}
 \begin{proof}
 Choose a nontrivial zeta zero $\rho$ with the least positive imaginary part. Such a minimum exists: there are nontrivial zeros, they are isolated, there are only finitely many in a bounded portion of the closed critical strip, and there is no accumulation on its real segment. For $0<s<1$ the alternating eta series is positive and $1-2^{1-s}<0$, so $\zeta(s)<0$; also $\zeta(0)\ne0$ and $s=1$ is a pole, not a zero. The standard zero-free boundary and existence facts are recalled in~\cite{DLMF}.
 
-Let the multiplicity of $\rho$ be $m\ge1$. Its half lies in the critical strip with strictly smaller positive height, so $\zeta(\rho/2)\ne0$. Furthermore $\Gamma(\rho)$ is finite and nonzero, and $\zeta(1+\rho)\ne0$ because $\Ree(1+\rho)>1$. Thus~\eqref{eq:Mellin} has a pole of order exactly $m$ at $\rho$; the subtractive constant cannot cancel its principal part. No numerical zero height, critical-line hypothesis or simplicity assumption was used.
+Let the multiplicity of $\rho$ be $m\ge1$. Its half lies in the critical strip with strictly smaller positive height, so $\zeta(\rho/2)\ne0$. Furthermore $\Gamma(\rho)$ is finite and nonzero, and $\zeta(1+\rho)\ne0$ because $\Ree(1+\rho)>1$. Thus~\eqref{srs:eq:Mellin} has a pole of order exactly $m$ at $\rho$; the subtractive constant cannot cancel its principal part. No numerical zero height, critical-line hypothesis or simplicity assumption was used.
 \end{proof}
 
 \subsection{What a hypothetical pure equivalent would imply}
-Suppose~\eqref{eq:forbidden} held. By the exact identity and monotonicity, for large real $x$,
+Suppose~\eqref{srs:eq:forbidden} held. By the exact identity and monotonicity, for large real $x$,
 \[
  a(\lfloor x\rfloor-1)\le N(x)\le a(\lfloor x\rfloor).
 \]
 For every fixed real $\beta$, the comparison $C x^\beta e^{Kx^{2/3}}$ changes by a factor tending to one under a bounded shift. Therefore
 \begin{equation}
  N(x)\sim Cx^\beta e^{Kx^{2/3}}\qquad(x\to\infty\text{ through real values}).
- \label{eq:hypreal}
+ \label{srs:eq:hypreal}
 \end{equation}
 Tonelli's theorem, or integration by parts with the atomic measure, gives the identity
 \begin{equation}
- Z(t)=t\int_0^\infty e^{-tx}N(x)\dd x.\label{eq:laplaceN}
+ Z(t)=t\int_0^\infty e^{-tx}N(x)\dd x.\label{srs:eq:laplaceN}
 \end{equation}
-Values at endpoints do not affect this Lebesgue integral. Fix a sufficiently large lower cutoff $x_*$. Replace $N(x)$ by its comparison only on $[x_*,\infty)$. This avoids any artificial divergence at zero if $\beta<0$; the bounded initial interval contributes only $\Oh(t)$ to~\eqref{eq:laplaceN}, negligible on the exponential scale.
+Values at endpoints do not affect this Lebesgue integral. Fix a sufficiently large lower cutoff $x_*$. Replace $N(x)$ by its comparison only on $[x_*,\infty)$. This avoids any artificial divergence at zero if $\beta<0$; the bounded initial interval contributes only $\Oh(t)$ to~\eqref{srs:eq:laplaceN}, negligible on the exponential scale.
 
 For completeness the real Laplace calculation is as follows. The exponent
 $g_t(x)=Kx^{2/3}-tx$ has unique maximum at
 \begin{equation}
  x_0=\frac{2A}{t^3},\qquad
  g_t(x_0)=\frac A{t^2},\qquad
- g_t''(x_0)=-\frac{t^4}{6A}.\label{eq:Abeliansaddle}
+ g_t''(x_0)=-\frac{t^4}{6A}.\label{srs:eq:Abeliansaddle}
 \end{equation}
 Put $x=x_0z$. Then $g_t(x)=At^{-2}(3z^{2/3}-2z)$, with a strict maximum at $z=1$. Standard Gaussian scaling there, and the strict decay away from it, yield
 \begin{equation}
  t\int_{x_*}^\infty Cx^\beta e^{g_t(x)}\dd x
  \sim C(2A)^\beta\sqrt{12\pi A}\,
- t^{-3\beta-1}e^{A/t^2}.\label{eq:Abelian}
+ t^{-3\beta-1}e^{A/t^2}.\label{srs:eq:Abelian}
 \end{equation}
-The relative comparison in~\eqref{eq:hypreal} is uniform for all sufficiently large $x$. Bounding it above and below by $1\pm\epsilon$, then sending $\epsilon\downarrow0$, justifies the same equivalent for $Z(t)$, including arbitrary real $\beta$. Taking logarithms gives
+The relative comparison in~\eqref{srs:eq:hypreal} is uniform for all sufficiently large $x$. Bounding it above and below by $1\pm\epsilon$, then sending $\epsilon\downarrow0$, justifies the same equivalent for $Z(t)$, including arbitrary real $\beta$. Taking logarithms gives
 \begin{equation}
  F(t)=\frac A{t^2}-(3\beta+1)\log t+C_1+o(1),\qquad
- F(t)-A/t^2=\Oh(1+|\log t|).\label{eq:hypF}
+ F(t)-A/t^2=\Oh(1+|\log t|).\label{srs:eq:hypF}
 \end{equation}
 
 \subsection{The analytic continuation contradiction}
-Under~\eqref{eq:hypF} the expression
+Under~\eqref{srs:eq:hypF} the expression
 \begin{equation}
  \int_0^1 [F(t)-A/t^2]t^{s-1}\dd t
  +\int_1^\infty F(t)t^{s-1}\dd t+\frac A{s-2}
- \label{eq:subtractedM}
+ \label{srs:eq:subtractedM}
 \end{equation}
 is meromorphic on $\Ree s>0$ with only a possible pole at $s=2$.
-The first integral is holomorphic there by locally uniform domination using~\eqref{eq:hypF}. The second is entire: for $t\ge1$, comparison of the positive series at $t$ and $1$ bounds $F(t)$ by $F(1)e^{-(t-1)\sqrt2}$.
+The first integral is holomorphic there by locally uniform domination using~\eqref{srs:eq:hypF}. The second is entire: for $t\ge1$, comparison of the positive series at $t$ and $1$ bounds $F(t)$ by $F(1)e^{-(t-1)\sqrt2}$.
 
-For $\Ree s>2$, expression~\eqref{eq:subtractedM} equals~\eqref{eq:Mellin}. Meromorphic uniqueness on the connected half-plane $\Ree s>0$ makes them identical there. This contradicts Lemma~\ref{lem:pole}, proving Theorem~\ref{thm:obstruction}.
+For $\Ree s>2$, expression~\eqref{srs:eq:subtractedM} equals~\eqref{srs:eq:Mellin}. Meromorphic uniqueness on the connected half-plane $\Ree s>0$ makes them identical there. This contradicts Lemma~\ref{srs:lem:pole}, proving Theorem~\ref{srs:thm:obstruction}.
 
-\begin{corollary}\label{cor:finiteexpansion}
+\begin{corollary}\label{srs:cor:finiteexpansion}
 There is no representation of $F(t)$ near zero as a finite sum of terms
 $c_{\alpha,k}t^{-\alpha}(\log t)^k$, with $\alpha\in\R$ and nonnegative integers $k$, plus a bounded remainder.
 \end{corollary}
 \begin{proof}
-Subtract the proposed terms in the small-$t$ Mellin integral. The bounded remainder gives a holomorphic function for $\Ree s>0$. Each subtracted term continues with poles only at its real exponent $\alpha$, of order at most $k+1$. The large-$t$ integral is entire as before. This cannot account for the nonreal pole in Lemma~\ref{lem:pole}.
+Subtract the proposed terms in the small-$t$ Mellin integral. The bounded remainder gives a holomorphic function for $\Ree s>0$. Each subtracted term continues with poles only at its real exponent $\alpha$, of order at most $k+1$. The large-$t$ integral is entire as before. This cannot account for the nonreal pole in Lemma~\ref{srs:lem:pole}.
 \end{proof}
-This does not supply a pointwise sum over all zeta zeros, an RH-scale remainder, or a full transseries. It explains why finite real-power and logarithm terms cannot replace $F$ in the exponential with an $o(1)$ error. This does not deny the weaker relation $F(t)\sim A/t^2$. Keeping the exact positive product in~\eqref{eq:saddle} retains the unresolved structure safely.
+This does not supply a pointwise sum over all zeta zeros, an RH-scale remainder, or a full transseries. It explains why finite real-power and logarithm terms cannot replace $F$ in the exponential with an $o(1)$ error. This does not deny the weaker relation $F(t)\sim A/t^2$. Keeping the exact positive product in~\eqref{srs:eq:saddle} retains the unresolved structure safely.
 
-\section{The classical exact saddle bridge}\label{sec:classical}
-This section documents why the qualitative part of Theorem~\ref{thm:saddle} should not be presented as a new general theorem. Ingham's 1941 theorem is available in the precise Laplace--Stieltjes form restated by Bringmann, Jennings-Shaffer and Mahlburg \cite[Theorem 4.1]{BJM}. It accommodates real atoms. Besides a saddle expansion it requires a radial complex majorant, which positivity alone does not establish.
+\section{The classical exact saddle bridge}\label{srs:sec:classical}
+This section documents why the qualitative part of Theorem~\ref{srs:thm:saddle} should not be presented as a new general theorem. Ingham's 1941 theorem is available in the precise Laplace--Stieltjes form restated by Bringmann, Jennings-Shaffer and Mahlburg \cite[Theorem 4.1]{BJM}. It accommodates real atoms. Besides a saddle expansion it requires a radial complex majorant, which positivity alone does not establish.
 
-On every fixed closed sector $|\arg z|\le\arctan\Delta<\pi/2$, integration of~\eqref{eq:B} gives
+On every fixed closed sector $|\arg z|\le\arctan\Delta<\pi/2$, integration of~\eqref{srs:eq:B} gives
 \begin{equation}
  F(z)=Az^{-2}+R(z),\qquad
- R^{(j)}(z)=\Oh_{j,\Delta}(|z|^{-1-j}).\label{eq:sector}
+ R^{(j)}(z)=\Oh_{j,\Delta}(|z|^{-1-j}).\label{srs:eq:sector}
 \end{equation}
 For $j=0$ this follows by splitting the integral into $|z|u\le1$ and $|z|u>1$ and using the positive real part of $z$; derivatives follow by differentiation or Cauchy's estimate in a slightly wider sector.
 
@@ -602,34 +955,34 @@ For $\epsilon\le|\theta|\le\arctan\Delta$,
 \]
 Thus, for sufficiently small $|z|$ in each such sector,
 \begin{equation}
- |Z(z)|\le Z(|z|).\label{eq:radial}
+ |Z(z)|\le Z(|z|).\label{srs:eq:radial}
 \end{equation}
 This is the needed radial comparison; $|Z(z)|\le Z(\Ree z)$ would be insufficient.
 
-Take a narrower wedge, for example $|\arg z|<\pi/8$, and set the phase equal to $F$ and the multiplier equal to 1. In that wedge $\Ree F(z)\to+\infty$. The distance $d(t)$ of $t>0$ to its boundary is a fixed multiple of $t$. Equation~\eqref{eq:sector} verifies the local derivative condition of Ingham's theorem, and
+Take a narrower wedge, for example $|\arg z|<\pi/8$, and set the phase equal to $F$ and the multiplier equal to 1. In that wedge $\Ree F(z)\to+\infty$. The distance $d(t)$ of $t>0$ to its boundary is a fixed multiple of $t$. Equation~\eqref{srs:eq:sector} verifies the local derivative condition of Ingham's theorem, and
 \begin{equation}
  -tF'(t)\sim2At^{-2}\to\infty,\qquad
  \frac{-d(t)F'(t)}{t\sqrt{F''(t)}}\asymp t^{-1}\to\infty.
 \end{equation}
-Remove the atom at zero by applying the theorem to the count of positive atoms, whose transform is $Z-1$. On the narrow wedge $Z-1\sim Z$ uniformly, and~\eqref{eq:radial} gives its radial bound with an immaterial constant. The positive-atom counting function starts at zero, as required. The theorem yields the qualitative equivalent in~\eqref{eq:saddle}; adding back one atom is negligible. The Edgeworth proof in Section~\ref{sec:smoothing} supplies the specific remainder and deals directly with both endpoint conventions; Appendix~\ref{sec:gaussian} provides an independent weaker quantitative proof.
+Remove the atom at zero by applying the theorem to the count of positive atoms, whose transform is $Z-1$. On the narrow wedge $Z-1\sim Z$ uniformly, and~\eqref{srs:eq:radial} gives its radial bound with an immaterial constant. The positive-atom counting function starts at zero, as required. The theorem yields the qualitative equivalent in~\eqref{srs:eq:saddle}; adding back one atom is negligible. The Edgeworth proof in Section~\ref{srs:sec:smoothing} supplies the specific remainder and deals directly with both endpoint conventions; Appendix~\ref{srs:sec:gaussian} provides an independent weaker quantitative proof.
 
 Kohlbecker's real-part logarithmic theorem specializes with part density $cu^2$ to
 \[
  \log N(x)\sim\frac32(4c\zeta(3))^{1/3}x^{2/3}=Kx^{2/3}.
 \]
-The use of that theorem here is an application, while the elementary proof in Section~\ref{sec:log} supplies the stated error without importing its general machinery.
+The use of that theorem here is an application, while the elementary proof in Section~\ref{srs:sec:log} supplies the stated error without importing its general machinery.
 
-\section{Exact computation and numerical interpretation}\label{sec:computation}
+\section{Exact computation and numerical interpretation}\label{srs:sec:computation}
 \subsection{Bounded exact verification}
 The companion enumerates canonical vectors with integer arithmetic. For a fixed denominator $Q=2^b$ it computes
 \begin{equation}
  \ell_d=\lfloor Q\sqrt d\rfloor=\operatorname{isqrt}(dQ^2),\qquad
  \frac{\ell_d}{Q}\le\sqrt d<\frac{\ell_d+1}{Q}
- \quad(d\in\Sf).\label{eq:rootenclosures}
+ \quad(d\in\Sf).\label{srs:eq:rootenclosures}
 \end{equation}
 A vector then has rational lower and upper sum bounds. An interval crossing a decision boundary causes an explicit ambiguity error, never a guessed membership decision. Equal algebraic endpoints are recognized by equality of their canonical coefficient vectors. This is also how strict and weak comparisons are tested at irrational atoms.
 
-A nondecreasing-generator recursion enumerates each vector once. Lower-bound pruning can omit only vectors already beyond the strict cutoff; a surviving ambiguous comparison aborts. A separate direct shell enumeration includes the unit generator with exact weight one and classifies values in $[n,n+1)$ independently of~\eqref{eq:unit}. Trial-division and sieve squarefreeness checks provide separate generator checks.
+A nondecreasing-generator recursion enumerates each vector once. Lower-bound pruning can omit only vectors already beyond the strict cutoff; a surviving ambiguous comparison aborts. A separate direct shell enumeration includes the unit generator with exact weight one and classifies values in $[n,n+1)$ independently of~\eqref{srs:eq:unit}. Trial-division and sieve squarefreeness checks provide separate generator checks.
 
 The bounded default suite freshly covers the nonunit cumulative counts through $n=20$ (458,000 vectors, 268 generators), the direct shell counts through $n=12$ (14,155 vectors), and strict/weak endpoints
 \[
@@ -655,6 +1008,18 @@ $n$ & $a(n)$ & Verification coverage\\\midrule
 \caption{Selected exact values. The auxiliary value $a(0)=1$ records the empty-vector convention and is not an additional OEIS positive-index term.}
 \end{table}
 
+\begin{writenote}[Rerun, 6 October 2026]
+The ``previously completed'' run through $n=35$ has since been repeated
+twice from the delivered program, on copies: at intake and by the write
+(\file{cpp --n 35 --allow-full}, about 3~s each with MinGW-w64 g++ on
+Windows): status \file{PASS}, $428{,}363{,}342$ vectors, 788 generators, no
+ambiguous comparison, all 35 terms equal to the fixture. So the rows
+$n=25,30,35$ of the table above, labelled ``Historical full-run fixture'',
+are now also freshly reproduced; the delivered text, which claims no fresh
+run beyond $n=20$, is kept as written. The OEIS b-file extends the data to
+$n=75$ (Remark~\ref{srs:rem:oeis}(b)); those terms were not recomputed.
+\end{writenote}
+
 \subsection{Positive truncation tails are not full numerical certificates}
 For an integer cutoff $D\ge1$, let $F_D(t)$ retain squarefree $d\le D$. Then
 \begin{align}
@@ -662,11 +1027,11 @@ For an integer cutoff $D\ge1$, let $F_D(t)$ retain squarefree $d\le D$. Then
  &\le\frac{1}{1-e^{-t\sqrt D}}\sum_{d>D}e^{-t\sqrt d}\nonumber\\
  &\le\frac{2e^{-t\sqrt D}}{1-e^{-t\sqrt D}}
        \left(\frac{\sqrt D}{t}+\frac1{t^2}\right).
- \label{eq:producttail}
+ \label{srs:eq:producttail}
 \end{align}
 The first bound uses $-\log(1-q)\le q/(1-q)$ and enlarges the squarefree set to all integers; the second integrates the decreasing function $e^{-t\sqrt u}$ over $[D,\infty)$. Analogous positive kernel tails can bound derivative truncation.
 
-Equation~\eqref{eq:producttail} controls omitted positive terms in exact arithmetic. It does not control floating-point rounding, the numerical saddle solution or the propagation of those errors through $H$. The numerical companion labels all such evaluations diagnostic. No finite-index guarantee or sharper cumulant expansion is inferred from them.
+Equation~\eqref{srs:eq:producttail} controls omitted positive terms in exact arithmetic. It does not control floating-point rounding, the numerical saddle solution or the propagation of those errors through $H$. The numerical companion labels all such evaluations diagnostic. No finite-index guarantee or sharper cumulant expansion is inferred from them.
 
 For scale, the companion gives the following rounded double-precision diagnostics. They illustrate the advantage of retaining the product but play no role in any proof.
 \begin{table}[H]
@@ -682,18 +1047,40 @@ $n$ & $\log a(n)$ & $K(n+1)^{2/3}$ & $H(n+1)$ & $e^{H}/a(n)-1$\\\midrule
 \end{table}
 The apparent smoothness of modest-$n$ diagnostics cannot override the Mellin obstruction. In particular a very small observed formal correction would not prove a full smooth transseries.
 
+\begin{writenote}[Rechecked, 6 October 2026]
+With its own code (binary64, the product truncated where
+$e^{-t\sqrt d}<10^{-30}$, the saddle by bisection) the write reproduced every
+entry of the table above to the printed digits. Extended with the b-file
+terms, $e^{H(n+1)}/a(n)-1$ is about $-0.00277$, $-0.00247$, $-0.00214$ at
+$n=50$, $60$, $75$ (rounded), and its ratio to the saddle $t(n+1)$ moves
+from $-0.040$ at $n=5$ through $-0.008$ at $n=35$ to $-0.006$ at $n=75$:
+small and slowly varying, as the relative error $\Oh(t)$ of
+Theorem~\ref{srs:thm:saddle} allows. These are observations, not a test of
+the theorem, and the b-file terms beyond $n=35$ were not recomputed.
+\end{writenote}
+
 \subsection{Reproducibility and build safety}
 The accompanying archive contains this PDF, its standalone \LaTeX{} source, exact and numerical code, fixtures, source provenance, generated verification outputs and a deterministic build script. The README specifies the bounded default commands and the separate optional full enumeration. Builds run in a fresh temporary workspace and refuse existing output destinations. They do not alter the source tree or silently overwrite prior results. Compilation checks reject unresolved references and overfull layout diagnostics; reproducibility is tested with independent clean builds. The package excludes third-party paper PDFs and private research notes.
 
-\section{Source provenance and further questions}\label{sec:sources}
+\begin{writenote}[The shipped layout, 6 October 2026]
+In ProveIt the ``accompanying archive'' is not shipped as such: the delivered
+PDF and checksum manifest are not shipped, the README is replaced by the
+report README, and the programs, fixtures and outputs are shipped under
+\file{code/} and \file{data/} with prefixed names
+(Section~\ref{srs:sec:provenance}); the delivered build and test scripts
+expect the delivered layout. The report README gives rerun routes that
+restore it on a copy.
+\end{writenote}
+
+\section{Source provenance and further questions}\label{srs:sec:sources}
 The consulted OEIS page, opened again on 3 October 2026, agrees with the shell definition, 35 displayed terms and conjectured constant used here. Its cached page metadata need not identify its newest uncached revision. A linked table extends to $n=75$, but it was not successfully retrieved in the source-gathering pass; this report makes no exact-data claim beyond the displayed 35-term prefix.
 
 The relevant source access has the following limits.
 \begin{itemize}[leftmargin=*]
 \item Kohlbecker's introduction and main theorem material, including pp.~362--363, were consulted through a transcription of the scan. The publisher PDF retrieval failed. The paper explicitly permits positive real parts; attribution does not depend on claiming a directly inspected publisher scan.
-\item Ingham's original 1941 scan was not retrieved. Its general theorem was checked through Bringmann--Jennings-Shaffer--Mahlburg, Section~4, Theorem~4.1. Section~\ref{sec:classical} verifies the specialized hypotheses rather than invoking only an informal real-axis version.
+\item Ingham's original 1941 scan was not retrieved. Its general theorem was checked through Bringmann--Jennings-Shaffer--Mahlburg, Section~4, Theorem~4.1. Section~\ref{srs:sec:classical} verifies the specialized hypotheses rather than invoking only an informal real-axis version.
 \item Agarwala--Auluck's 1951 scan and the discussion of formulas (26)--(28) were consulted. The count there is representation-based, and its discussion of nonintegral powers does not establish the multiplying factor required here.
-\item Dong--Robles--Zaharescu--Zeindler, Section~6, especially Lemmas~6.2 and 6.8, was consulted. Their squarefree integer-part Mellin factor is $\Gamma(s)\zeta(s+1)\zeta(s)/\zeta(2s)$, and they exhibit the relevance of zeta zeros to implicit saddles. This is conceptual prior art for the warning in Section~\ref{sec:obstruction}, not the same spectrum or a proof of our impossibility statement.
+\item Dong--Robles--Zaharescu--Zeindler, Section~6, especially Lemmas~6.2 and 6.8, was consulted. Their squarefree integer-part Mellin factor is $\Gamma(s)\zeta(s+1)\zeta(s)/\zeta(2s)$, and they exhibit the relevance of zeta zeros to implicit saddles. This is conceptual prior art for the warning in Section~\ref{srs:sec:obstruction}, not the same spectrum or a proof of our impossibility statement.
 \end{itemize}
 A bounded search did not locate an earlier treatment of this precise real squarefree-root spectrum with the present quantitative statements. This is not an exhaustive novelty claim, and the leading asymptotic remains classical regardless.
 
@@ -705,15 +1092,28 @@ The following questions remain open within this report.
 \item Can exact counting beyond the displayed prefix be accelerated without surrendering the ambiguity-abort guarantee? Meet-in-the-middle schemes would need equally careful treatment of irrational endpoints and duplicate canonical vectors.
 \end{enumerate}
 No OEIS submission, publication, author contact or public repository edit accompanies this report.
+\begin{writenote}[Added 6 October 2026, under Vladimir's standing rule of 4 October 2026]
+The four questions stand as the source states them; the write found no
+unproved claim of the source outside them, and no claim of the source that is
+wrong. On question~4: the OEIS b-file (Greathouse, $n\le75$,
+Remark~\ref{srs:rem:oeis}(b)) shows that exact counts well beyond $n=35$
+have been computed, by a method the entry does not state; the write did not
+verify those terms, so the question, which asks for faster counting with the
+ambiguity-abort guarantee, stays open. The OEIS page and the b-file were
+retrieved by the write (the source's ``A linked table \dots{} was not
+successfully retrieved'' describes 3~October 2026), and Kohlbecker's paper
+was read in the publisher's PDF (Section~\ref{srs:sec:provenance}). The
+entry's cumulative comment is corrected in Remark~\ref{srs:rem:comment}.
+\end{writenote}
 
 \appendix
-\section{An independent Gaussian smoothing proof}\label{sec:gaussian}
+\section{An independent Gaussian smoothing proof}\label{srs:sec:gaussian}
 This appendix gives an independent, slightly weaker relative estimate using Gaussian smoothing directly on the real atomic measure. With the same exact saddle $-F'(t)=x$, it proves
 \begin{equation}
  N(x)=\frac{e^{F(t)+tx}}{t\sqrt{2\pi F''(t)}}
- \{1+\Oh(t\log(1/t))\},\label{eq:gaussian-saddle}
+ \{1+\Oh(t\log(1/t))\},\label{srs:eq:gaussian-saddle}
 \end{equation}
-for both cumulative conventions. The proof displays the inversion identity, integrated central errors, high-frequency tail relative to the order-$t$ main term, and monotone removal of smoothing. The first Edgeworth argument in Section~\ref{sec:smoothing} removes the logarithmic loss.
+for both cumulative conventions. The proof displays the inversion identity, integrated central errors, high-frequency tail relative to the order-$t$ main term, and monotone removal of smoothing. The first Edgeworth argument in Section~\ref{srs:sec:smoothing} removes the logarithmic loss.
 
 \subsection{An exact inversion identity for the atomic measure}
 Let $G$ be standard normal, with distribution function $\Phi$, and take any $t,\delta>0$. For one atom at $s$,
@@ -722,16 +1122,16 @@ Let $G$ be standard normal, with distribution function $\Phi$, and take any $t,\
  \frac{\exp\{(t+i\theta)(y-s)+\delta^2(t+i\theta)^2/2\}}
  {t+i\theta}\dd\theta
  =\Phi\left(\frac{y-s}{\delta}\right).
- \label{eq:oneatom}
+ \label{srs:eq:oneatom}
 \end{equation}
 One proof differentiates in $y$, evaluates the Gaussian Fourier transform, and fixes the integration constant by the limit at $y\to-\infty$. The exponential factor $e^{t(y-s)}$ makes that limit zero.
 
-Define $N_\delta(y)=\mathbb E N(y+\delta G)$. The strict and weak conventions give the same function, since a Gaussian hits a countable set of endpoints with probability zero. Summing~\eqref{eq:oneatom} gives the exact formula
+Define $N_\delta(y)=\mathbb E N(y+\delta G)$. The strict and weak conventions give the same function, since a Gaussian hits a countable set of endpoints with probability zero. Summing~\eqref{srs:eq:oneatom} gives the exact formula
 \begin{equation}
  N_\delta(y)=\frac1{2\pi}\int_\R
  \frac{\exp\{F(t+i\theta)+(t+i\theta)y+\delta^2(t+i\theta)^2/2\}}
  {t+i\theta}\dd\theta.
- \label{eq:inversion}
+ \label{srs:eq:inversion}
 \end{equation}
 The interchange is absolutely justified. The sum of the integrals of absolute values is bounded by
 \[
@@ -745,53 +1145,53 @@ From now on let $x=m(t)$, $L=\log(1/t)$, and
 \begin{equation}
  \delta=\frac{\sqrt{20L}}{\theta_0},\qquad h=\sqrt{20L},\qquad
  y=x+u,\quad |u|\le h\delta=\frac{20L}{\theta_0}.
- \label{eq:smoothingchoice}
+ \label{srs:eq:smoothingchoice}
 \end{equation}
-Keep the same saddle $t=t(x)$ at every shifted $y$. After extracting $e^{F(t)+ty}$ in~\eqref{eq:inversion}, the integrand is
+Keep the same saddle $t=t(x)$ at every shifted $y$. After extracting $e^{F(t)+ty}$ in~\eqref{srs:eq:inversion}, the integrand is
 \begin{equation}
  \frac{\exp\{F(t+i\theta)-F(t)+i\theta x\}}
  {t+i\theta}
  \exp\{-\delta^2\theta^2/2+i\theta(u+\delta^2t)+\delta^2t^2/2\}.
- \label{eq:normalizedintegrand}
+ \label{srs:eq:normalizedintegrand}
 \end{equation}
-For $|\theta|\le t^2L$, Taylor's theorem and~\eqref{eq:verticalbound} give
+For $|\theta|\le t^2L$, Taylor's theorem and~\eqref{srs:eq:verticalbound} give
 \begin{equation}
  F(t+i\theta)-F(t)+i\theta x
  =-\tfrac12v\theta^2+\Oh(\kappa_3|\theta|^3),\quad
- v\sim6At^{-4},\quad \kappa_3=\Oh(t^{-5}).\label{eq:Taylor}
+ v\sim6At^{-4},\quad \kappa_3=\Oh(t^{-5}).\label{srs:eq:Taylor}
 \end{equation}
 The uniform Taylor remainder is $\Oh(tL^3)=o(1)$, so its exponential may be expanded with a uniform absolute bound. More importantly, its \emph{integrated relative} contribution is
 \begin{equation}
  \Oh\left(\kappa_3\frac{\int_\R |\theta|^3e^{-v\theta^2/2}\dd\theta}
  {\int_\R e^{-v\theta^2/2}\dd\theta}\right)
- =\Oh(\kappa_3v^{-3/2})=\Oh(t).\label{eq:integratedcubic}
+ =\Oh(\kappa_3v^{-3/2})=\Oh(t).\label{srs:eq:integratedcubic}
 \end{equation}
 Replacing $(t+i\theta)^{-1}$ by $t^{-1}$ costs relatively
 $\Oh((t\sqrt v)^{-1})=\Oh(t)$, since
 $|(t+i\theta)^{-1}-t^{-1}|\le|\theta|/t^2$.
-The three extra factors in~\eqref{eq:normalizedintegrand} cost, respectively,
+The three extra factors in~\eqref{srs:eq:normalizedintegrand} cost, respectively,
 \begin{equation}
  \Oh(\delta^2/v),\qquad
  \Oh((|u|+\delta^2t)/\sqrt v),\qquad
- \Oh(\delta^2t^2),\label{eq:extrafactors}
+ \Oh(\delta^2t^2),\label{srs:eq:extrafactors}
 \end{equation}
 all $o(t)$, uniformly over the allowed shifts. The discarded Gaussian tail past $t^2L$ is superpolynomially small because $\sqrt v\,t^2L\asymp L$. Thus the central integral is
 \begin{equation}
  \frac{e^{F(t)+ty}}{t\sqrt{2\pi v(t)}}\{1+\Oh(t)\}.
- \label{eq:central}
+ \label{srs:eq:central}
 \end{equation}
 The estimates use integrated Gaussian moments, not the weaker supremum $\Oh(tL^3)$ as a claimed final rate.
 
 \subsection{All complementary frequencies}
-Normalize the remaining integral by $e^{F(t)+ty}$ as before. From~\eqref{eq:smallchar}, the first range contributes at most
+Normalize the remaining integral by $e^{F(t)+ty}$ as before. From~\eqref{srs:eq:smallchar}, the first range contributes at most
 \begin{equation}
  \Oh\left(t\int_L^\infty e^{-b z^2}\dd z\right)
- \quad(t^2L<|\theta|\le\varepsilon t).\label{eq:tail1}
+ \quad(t^2L<|\theta|\le\varepsilon t).\label{srs:eq:tail1}
 \end{equation}
-From~\eqref{eq:moderatechar}, the second is
+From~\eqref{srs:eq:moderatechar}, the second is
 \begin{equation}
  \Oh(t^{-1}e^{-b_2/t^2})
- \quad(\varepsilon t\le|\theta|\le\theta_0).\label{eq:tail2}
+ \quad(\varepsilon t\le|\theta|\le\theta_0).\label{srs:eq:tail2}
 \end{equation}
 For $|\theta|\ge\theta_0$ use only $|Z(t+i\theta)|\le Z(t)$. Since
 $|t+i\theta|\ge|\theta|$,
@@ -799,22 +1199,22 @@ $|t+i\theta|\ge|\theta|$,
  \int_{|\theta|\ge\theta_0}
  \frac{e^{-\delta^2\theta^2/2}}{|t+i\theta|}\dd\theta
  &\le \frac{2e^{-\delta^2\theta_0^2/2}}{\delta^2\theta_0^2}
- =\Oh(t^{10}/L).\label{eq:tail3}
+ =\Oh(t^{10}/L).\label{srs:eq:tail3}
 \end{align}
-The harmless factor $e^{\delta^2t^2/2}$ is bounded. The normalized main term in~\eqref{eq:central} has order $1/(t\sqrt v)\asymp t$, so~\eqref{eq:tail3} has relative order $\Oh(t^9/L)$. All three complementary ranges are negligible relative to the central term. This proves~\eqref{eq:central} for the full smoothed integral, uniformly in $|u|\le h\delta$.
+The harmless factor $e^{\delta^2t^2/2}$ is bounded. The normalized main term in~\eqref{srs:eq:central} has order $1/(t\sqrt v)\asymp t$, so~\eqref{srs:eq:tail3} has relative order $\Oh(t^9/L)$. All three complementary ranges are negligible relative to the central term. This proves~\eqref{srs:eq:central} for the full smoothed integral, uniformly in $|u|\le h\delta$.
 
 An ordinary Berry--Esseen bound alone does not prove this estimate on the required shrinking normalized window. The argument above supplies the actual inversion, integrated central errors and high-frequency cutoff that are needed.
 
 \subsection{Monotone removal of smoothing at all endpoints}
 Monotonicity immediately gives
 \begin{equation}
- N(x)\le\frac{N_\delta(x+h\delta)}{\Phi(h)}.\label{eq:desmoothupper}
+ N(x)\le\frac{N_\delta(x+h\delta)}{\Phi(h)}.\label{srs:eq:desmoothupper}
 \end{equation}
-For the opposite direction, split the expectation defining $N_\delta(x-h\delta)$ at $G=h$. The part $G\le h$ is at most $N(x)$. For the other part apply~\eqref{eq:Rankin} and the Gaussian exponential-tail identity to obtain
+For the opposite direction, split the expectation defining $N_\delta(x-h\delta)$ at $G=h$. The part $G\le h$ is at most $N(x)$. For the other part apply~\eqref{srs:eq:Rankin} and the Gaussian exponential-tail identity to obtain
 \begin{equation}
  N_\delta(x-h\delta)\le N(x)+e^{F(t)+tx}
  e^{(t\delta)^2/2-t\delta h}\{1-\Phi(h-t\delta)\}.
- \label{eq:desmoothlower}
+ \label{srs:eq:desmoothlower}
 \end{equation}
 For small $t$, $h-t\delta>0$. The normal tail bound and the exact cancellation
 \begin{equation}
@@ -822,11 +1222,11 @@ For small $t$, $h-t\delta>0$. The normal tail bound and the exact cancellation
 \end{equation}
 show that the additive error, normalized by $e^{F+tx}$, is
 $\Oh(t^{10}/\sqrt L)$. Also $1-\Phi(h)=\Oh(t^{10}/\sqrt L)$.
-The main terms of~\eqref{eq:central} at the two shifted arguments differ from the unshifted one by
+The main terms of~\eqref{srs:eq:central} at the two shifted arguments differ from the unshifted one by
 \begin{equation}
  e^{\pm th\delta}=1+\Oh(tL).
 \end{equation}
-Since the unshifted normalized main term has order $t$, both inequalities prove~\eqref{eq:gaussian-saddle}. Every step holds for $N_{\le}$ as well. This proves~\eqref{eq:gaussian-saddle}, including at atoms and without rounding the endpoint.
+Since the unshifted normalized main term has order $t$, both inequalities prove~\eqref{srs:eq:gaussian-saddle}. Every step holds for $N_{\le}$ as well. This proves~\eqref{srs:eq:gaussian-saddle}, including at atoms and without rounding the endpoint.
 
 
 \clearpage
