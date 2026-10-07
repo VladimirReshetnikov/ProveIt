@@ -440,6 +440,7 @@ import GowersSzemeredi.Proofs16AmbientFaceCover
 import GowersSzemeredi.Proofs16CommonBaseLineCovers
 import GowersSzemeredi.Proofs18GeneralIntervalStopping
 import GowersSzemeredi.Proofs18FromFunctionDiscrepancy
+import GowersSzemeredi.Proofs18QuadraticSourceThreshold
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 

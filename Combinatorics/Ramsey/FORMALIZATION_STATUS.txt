@@ -1,7 +1,8 @@
 Gowers Szemeredi formalization checkpoint — 2026-10-07
 
 Scope
-  The goal remains open. No improvement to the final Szemeredi bound is claimed.
+  The goal remains open. No improvement to the general all-length Szemeredi
+  bound is claimed. A smaller four-term threshold is proved below.
   The source catalogue contains all 120 unique numbered theorem, lemma,
   proposition, and corollary headings in sz-thm-gowers-proof.tex.
   There are 113 checked exact companion proofs and 7 open statements.
@@ -12,8 +13,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 640 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 4,131 public Gowers theorems and found only propext,
+  All 642 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 4,153 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 113 exact
   companion proofs and 7 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -1962,6 +1963,19 @@ General density iteration from an explicit discrepancy input
   iteration threshold with szemerediThreshold. This does not infer an
   explicit threshold from Theorem 18.1's unspecified N0, and it is not an
   unconditional companion proof. The seven numbered statements remain open.
+
+Exact source threshold and a smaller explicit bound for four terms
+  Proofs18QuadraticNumericalConstant bounds the fixed quadratic iteration
+  prefactor by 2^(2^322), using only the degree-one and degree-two local
+  refinement constants. Proofs18QuadraticSourceThreshold then proves
+  quadraticIntervalClosedThreshold(delta) <= 2^(2^((delta^-1)^(2^323)))
+  for 0<delta<=1/2. The natural-interval theorem with this threshold follows
+  from the completed quadratic density iteration and exact interval transfer.
+  This threshold is proved strictly smaller than szemerediThreshold(delta,4),
+  whose corresponding innermost exponent is 2^8192. In particular,
+  theorem_18_2_four_holds proves the four-term instance with the source's
+  exact displayed threshold. This is a restricted instance, not a proof
+  of Theorem 18.2 for all lengths, and the 113/120 count does not change.
 
 Reproducible checks (from repository root)
   python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.Audit
