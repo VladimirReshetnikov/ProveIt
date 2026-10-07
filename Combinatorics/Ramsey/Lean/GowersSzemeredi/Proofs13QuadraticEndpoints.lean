@@ -35,16 +35,15 @@ theorem stage135Quadratic_forward_difference {N : Nat} [NeZero N]
   field_simp [htwo, hfour]
   ring
 
-theorem stage135_forward_small_affine {N : Nat} [NeZero N]
+theorem stage135_forward_small_affine_of_pairwise {N : Nat} [NeZero N]
     (hprime : N.Prime) (hodd : N != 2) (A : Finset (ZMod N)) (a b h d : ZMod N)
-    {s : Real} (hdiam : diameterAtMostReal (A.image (stage135AmbientQuadratic a b)) s)
+    {s : Real} (hpair : ∀ x ∈ A, ∀ y ∈ A,
+      (centeredAbs (stage135AmbientQuadratic a b x - stage135AmbientQuadratic a b y) : Real) ≤ s)
     (hh : h ∈ A) (h1 : h + d ∈ A) (h2 : h + 2 * d ∈ A) :
     (centeredAbs ((a * h + b) * d) : Real) ≤ 4 * s := by
   classical
-  have hd1 := hdiam.centeredAbs_sub_le (Finset.mem_image.mpr ⟨_, h1, rfl⟩)
-    (Finset.mem_image.mpr ⟨_, hh, rfl⟩)
-  have hd2 := hdiam.centeredAbs_sub_le (Finset.mem_image.mpr ⟨_, h1, rfl⟩)
-    (Finset.mem_image.mpr ⟨_, h2, rfl⟩)
+  have hd1 := hpair _ h1 _ hh
+  have hd2 := hpair _ h1 _ h2
   rw [stage135Quadratic_forward_difference hprime hodd]
   have htriangle : (centeredAbs (3 * (stage135AmbientQuadratic a b (h + d) -
       stage135AmbientQuadratic a b h) + (stage135AmbientQuadratic a b (h + d) -
@@ -56,10 +55,11 @@ theorem stage135_forward_small_affine {N : Nat} [NeZero N]
       (stage135AmbientQuadratic a b (h + d) - stage135AmbientQuadratic a b (h + 2 * d))
   linarith
 
-theorem stage135_full_cell_small_affine {N : Nat} [NeZero N]
+theorem stage135_full_cell_small_affine_of_pairwise {N : Nat} [NeZero N]
     (hprime : N.Prime) (hodd : N != 2) (Q : ModAP N) (hQ : 3 ≤ Q.length)
     (a b : ZMod N) {s : Real} (hs : 0 ≤ s)
-    (hdiam : diameterAtMostReal (Q.carrier.image (stage135AmbientQuadratic a b)) s)
+    (hpair : ∀ x ∈ Q.carrier, ∀ y ∈ Q.carrier,
+      (centeredAbs (stage135AmbientQuadratic a b x - stage135AmbientQuadratic a b y) : Real) ≤ s)
     {h : ZMod N} (hh : h ∈ Q.carrier) :
     (centeredAbs ((a * h + b) * Q.step) : Real) ≤ 4 * s := by
   classical
@@ -72,7 +72,7 @@ theorem stage135_full_cell_small_affine {N : Nat} [NeZero N]
     have h1 := hmem 1 (by omega)
     have h2 := hmem 2 (by omega)
     simp only [hi0, Nat.cast_zero, zero_mul, add_zero]
-    apply stage135_forward_small_affine hprime hodd Q.carrier a b Q.start Q.step hdiam
+    apply stage135_forward_small_affine_of_pairwise hprime hodd Q.carrier a b Q.start Q.step hpair
     · simpa using h0
     · simpa using h1
     · simpa using h2
@@ -87,8 +87,8 @@ theorem stage135_full_cell_small_affine {N : Nat} [NeZero N]
         rw [Nat.cast_sub (by omega : 2 ≤ i.val)]
         push_cast
         ring
-      have hb := stage135_forward_small_affine hprime hodd Q.carrier a b
-        (Q.start + (i.val : ZMod N) * Q.step) (-Q.step) hdiam (hmem i.val hi) hb1 hb2
+      have hb := stage135_forward_small_affine_of_pairwise hprime hodd Q.carrier a b
+        (Q.start + (i.val : ZMod N) * Q.step) (-Q.step) hpair (hmem i.val hi) hb1 hb2
       simpa only [mul_neg, centeredAbs_neg] using hb
     · have hInt : Q.start + (i.val : ZMod N) * Q.step ∈ Q.interior.carrier := by
         apply Finset.mem_image.mpr
@@ -97,6 +97,33 @@ theorem stage135_full_cell_small_affine {N : Nat} [NeZero N]
         rw [Nat.cast_sub (by omega : 1 ≤ i.val)]
         push_cast
         ring
-      exact (stage135_interior_small_affine hprime hodd Q a b s hdiam hInt).trans (by linarith)
+      obtain ⟨_, hp, hm⟩ := Q.interior_neighbors hInt
+      have hid := stage135Quadratic_symmetric_difference hprime hodd
+        (modInterval N 0 N) a b (Q.start + (i.val : ZMod N) * Q.step) Q.step
+      simp only [stage135Quadratic, stage135ModPoint, modInterval, mul_one, zero_add] at hid
+      change stage135AmbientQuadratic a b _ - stage135AmbientQuadratic a b _ = _ at hid
+      rw [← hid]
+      exact (hpair _ hp _ hm).trans (by linarith)
+
+ theorem stage135_forward_small_affine {N : Nat} [NeZero N]
+    (hprime : N.Prime) (hodd : N != 2) (A : Finset (ZMod N)) (a b h d : ZMod N)
+    {s : Real} (hdiam : diameterAtMostReal (A.image (stage135AmbientQuadratic a b)) s)
+    (hh : h ∈ A) (h1 : h + d ∈ A) (h2 : h + 2 * d ∈ A) :
+    (centeredAbs ((a * h + b) * d) : Real) ≤ 4 * s := by
+  classical
+  exact stage135_forward_small_affine_of_pairwise hprime hodd A a b h d
+    (fun x hx y hy => hdiam.centeredAbs_sub_le (Finset.mem_image.mpr ⟨x, hx, rfl⟩)
+      (Finset.mem_image.mpr ⟨y, hy, rfl⟩)) hh h1 h2
+
+theorem stage135_full_cell_small_affine {N : Nat} [NeZero N]
+    (hprime : N.Prime) (hodd : N != 2) (Q : ModAP N) (hQ : 3 ≤ Q.length)
+    (a b : ZMod N) {s : Real} (hs : 0 ≤ s)
+    (hdiam : diameterAtMostReal (Q.carrier.image (stage135AmbientQuadratic a b)) s)
+    {h : ZMod N} (hh : h ∈ Q.carrier) :
+    (centeredAbs ((a * h + b) * Q.step) : Real) ≤ 4 * s := by
+  classical
+  exact stage135_full_cell_small_affine_of_pairwise hprime hodd Q hQ a b hs
+    (fun x hx y hy => hdiam.centeredAbs_sub_le (Finset.mem_image.mpr ⟨x, hx, rfl⟩)
+      (Finset.mem_image.mpr ⟨y, hy, rfl⟩)) hh
 
 end LeanProofs.GowersSzemeredi

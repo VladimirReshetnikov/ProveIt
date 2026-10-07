@@ -12,8 +12,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 567 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 3,665 public Gowers theorems and found only propext,
+  All 570 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 3,691 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 110 exact
   companion proofs and 10 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -23,6 +23,20 @@ Verification at this checkpoint
   the exact Theorems 1.2, 7.1, and 7.2 companions. Their dependencies pass
   the transitive axiom check. The earlier workstation-only validation of
   Theorem 1.2 is now confirmed by the full repository audit.
+
+Threshold-free simultaneous quadratic localization
+  Proofs05QuadraticFamily iterates the finite quadratic localization theorem
+  for any q polynomials, using F(0,U)=U and F(q+1,U)=(2F(q,U))^1024.
+  Every cell has length at least U and phase error at most 1/(4U) for
+  every polynomial. The verified budget is 4F(q,U) <= (4U)^(1024^q).
+  Proofs05PhaseMetric proves the inverse chord bound
+  4*centeredAbs(x)/N <= |exp(x)-1| using Jordan's sine inequality.
+  Proofs13QuadraticEndpoints now exposes pairwise versions while preserving
+  its diameter interfaces. Proofs13PhaseSelection converts quadratic phase
+  clusters into affine smallness N/(2U) on every cell point, including
+  endpoints, and preserves critical-height density alpha^32/16.
+  These are checked inputs toward the remaining Lemma 13.5 range, not an
+  exact companion proof of that numbered statement.
 
 Completed Theorem 1.2 (Szemeredi, qualitative) by a non-Gowers route
   Proofs01SzemerediFixedDensity proves theorem_1_2 with its exact catalogue

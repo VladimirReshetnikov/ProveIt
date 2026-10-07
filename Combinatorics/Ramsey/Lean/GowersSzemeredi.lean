@@ -413,6 +413,8 @@ import GowersSzemeredi.Proofs13DensityIndependentRecurrence
 import GowersSzemeredi.Proofs13SmallRecurrenceScale
 import GowersSzemeredi.Proofs13SingletonRecurrence
 import GowersSzemeredi.Proofs13RecurrenceRange
+import GowersSzemeredi.Proofs05QuadraticFamily
+import GowersSzemeredi.Proofs13PhaseSelection
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 
