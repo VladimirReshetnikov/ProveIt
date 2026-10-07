@@ -1,0 +1,1570 @@
+diff --git a/Topology/UnknotRecognition/fast/LICENSE b/Topology/UnknotRecognition/fast/LICENSE
+new file mode 100644
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/LICENSE
+@@ -0,0 +1,16 @@
++MIT No Attribution License
++
++Copyright 2026 ProveIt Contributors
++
++Permission is hereby granted, free of charge, to any person obtaining a copy of this
++software and associated documentation files (the "Software"), to deal in the Software
++without restriction, including without limitation the rights to use, copy, modify,
++merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
++permit persons to whom the Software is furnished to do so.
++
++THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
++INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
++PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
++HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
++CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR
++THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+diff --git a/Topology/UnknotRecognition/fast/README.md b/Topology/UnknotRecognition/fast/README.md
+--- a/Topology/UnknotRecognition/fast/README.md
++++ b/Topology/UnknotRecognition/fast/README.md
+@@ -1,3 +1,51 @@
++# fastunknot 0.3.0: structural certificates and optional shared backends
++
++This research continuation adds a linear signed Seifert-graph certificate before
++the established recognition pipeline and three optional Khovanov backends.
++The new front end completely decides homogeneous input diagrams after validation.
++When inconclusive it continues the original stages. Disable it with `--no-seifert`
++or `use_seifert=False` to retain the previous stage order.
++
++```bash
++python3 -m fastunknot recognize examples/trefoil.json
++python3 -m fastunknot khovanov examples/conway_sum_8.json --shared
++python3 -m unittest discover -s tests -v
++```
++
++Recognition accepts `--backend standard|shared|saturated|euler`. The default is
++`standard`: sharing incurs overhead on prime examples that stay connected.
++`shared` retains exact ranks and raw homological-degree counts. `saturated`
++retains the final unreduced rank capped at three. `euler` adds an optional exact
++suffix-Euler lower bound, controlled by `--euler-max-states` (default 4096).
++A capped count of three means “at least three”; it is never an exact rank.
++An early Euler result uses `rank_lower_bound_capped`, distinct from final
++`rank_capped`. Exhausting the optional inference budget continues complete
++saturated scanning; object/time exhaustion returns `UNKNOWN`.
++
++Shared backends require minimum-fill pivots, bit algebra, no tail contraction,
++and no racing. Incompatible options are rejected. `khovanov --shared` cannot
++be combined with `--factor`. Backend selection only matters after enabled
++earlier stages have failed to decide; use the disabling flags in the companion
++article to isolate a backend deliberately.
++
++The new functions live in `fastunknot.seifert`, `fastunknot.component_scan`,
++and `fastunknot.euler_scan`. The Seifert APIs are also exported from `fastunknot`.
++Public PD scanner functions assume a validated classical one-component diagram.
++The permissive `Diagram(pd)` constructor does not validate this promise; use
++`Diagram.from_pd` or the command-line loader.
++
++The companion article proves exactness and a finite-type complexity bound in
++frontier size and actual connected-component size. **There is no general
++quasi-polynomial complexity guarantee.** All 69 unit tests passed in the
++recorded environment. The research archive includes proofs, raw timing samples,
++source provenance, and a patch against the pinned ProveIt baseline.
++
++## Inherited documentation and performance history
++
++The following version-0.2 documentation is retained as the record of the
++previous pipeline and measurements. Stage-order descriptions below predate
++the new optional and structural stages just described.
++
+ # fastunknot 0.2: exact unknot recognition with a scanning Khovanov backend
+ 
+ **Status: exact, complete, and exponential in the worst case. The `n^O(log n)`
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/__init__.py b/Topology/UnknotRecognition/fast/fastunknot/__init__.py
+--- a/Topology/UnknotRecognition/fast/fastunknot/__init__.py
++++ b/Topology/UnknotRecognition/fast/fastunknot/__init__.py
+@@ -6,8 +6,10 @@
+ from .filters import alexander_obstruction, jones_obstruction
+ from .recognize import Result, factored_khovanov_rank, recognize
+ from .scan import ScanLimit, khovanov_rank
++from .seifert import seifert_certificate, seifert_data, verify_seifert_certificate
+ 
+ __all__ = ["Diagram", "DiagramError", "Result", "ScanLimit", "alexander_obstruction",
+            "alexander_polynomial", "factored_khovanov_rank", "jones_obstruction", "khovanov_rank",
+-           "recognize", "visible_factors"]
+-__version__ = "0.2.0"
++           "recognize", "visible_factors", "seifert_certificate", "seifert_data",
++           "verify_seifert_certificate"]
++__version__ = "0.3.0"
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/__main__.py b/Topology/UnknotRecognition/fast/fastunknot/__main__.py
+--- a/Topology/UnknotRecognition/fast/fastunknot/__main__.py
++++ b/Topology/UnknotRecognition/fast/fastunknot/__main__.py
+@@ -33,6 +33,10 @@
+ # One table for both parsers.  (flag, type or None for a switch, default, choices, help)
+ OPTIONS = {
+     "recognize": [
++        ("--no-seifert", None, False, None, "disable the linear signed Seifert graph certificate"),
++        ("--backend", str, "standard", ("standard", "shared", "saturated", "euler"),
++         "Khovanov backend: standard, component sharing, saturated decision, or Euler bounds"),
++        ("--euler-max-states", int, 4096, None, "state budget for optional Euler continuation"),
+         ("--max-objects", int, None, None, "ceiling on objects of the scanning complex (UNKNOWN when exceeded)"),
+         ("--seconds", float, None, None, "cooperative time budget"),
+         ("--no-reduction", None, False, None, None),
+@@ -55,6 +59,7 @@
+         ("--output", str, None, None, "write the JSON result to this file"),
+     ],
+     "khovanov": [
++        ("--shared", None, False, None, "use exact component sharing (cannot combine with --factor)"),
+         ("--check-d2", None, False, None, None),
+         ("--factor", None, False, None, "multiply ranks over visible connected summands"),
+         ("--pivot", str, "minfill", ("minfill", "lifo"), None),
+@@ -150,7 +155,16 @@
+         print(f"invalid input: {exc}", file=sys.stderr)
+         return 2
+     if args.command == "recognize":
++        if args.euler_max_states < 0:
++            print("--euler-max-states must be nonnegative", file=sys.stderr)
++            return 2
++        if args.backend != "standard" and (args.pivot != "minfill" or args.algebra != "bits"
++                                            or args.tail != 0 or args.race != 1):
++            print("shared backends require minfill, bits, tail=0, and race=1", file=sys.stderr)
++            return 2
+         result = recognize(diagram, use_reduction=not args.no_reduction,
++                           use_seifert=not args.no_seifert, backend=args.backend,
++                           euler_max_states=args.euler_max_states,
+                            use_descending=not args.no_descending,
+                            use_alexander=not args.no_alexander, use_modular=not args.no_modular,
+                            use_exact_alexander=True if args.exact_alexander else None, use_r3=not args.no_r3,
+@@ -166,6 +180,14 @@
+         print(text)
+         return EXIT[result["status"]]
+     if args.command == "khovanov":
++        if args.shared:
++            if args.factor or args.pivot != "minfill" or args.algebra != "bits" or args.tail or args.race != 1:
++                print("--shared requires no --factor, minfill, bits, tail=0, and race=1", file=sys.stderr)
++                return 2
++            from .component_scan import compressed_khovanov_rank
++            result = compressed_khovanov_rank(diagram.pd, check_d_squared=args.check_d2)
++            print(json.dumps(result, indent=1))
++            return 0
+         options = dict(check_d_squared=args.check_d2, pivot=args.pivot, algebra=args.algebra, tail=args.tail,
+                        race=args.race, race_after=args.race_after)
+         result = factored_khovanov_rank(diagram, **options) if args.factor else khovanov_rank(diagram.pd, **options)
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/component_scan.py b/Topology/UnknotRecognition/fast/fastunknot/component_scan.py
+new file mode 100644
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/fastunknot/component_scan.py
+@@ -0,0 +1,246 @@
++"""Exact direct-sum sharing for the ungraded fastunknot F2 scanning category.
++
++This is an opt-in research backend.  It retains one explicitly serialized
++representative of each *observed* differential-graph component, up to a uniform
++homological shift.  Matching labels and every morphism coefficient are included
++in the key.  No graph-isomorphism oracle or hash-only identification is used.
++
++Repeated summands are weighted by polynomials in Z[z], never by F2 scalars.
++The standard scanner is imported and remains unchanged.  Add this directory to
++PYTHONPATH alongside the repository's fast/ directory to use the extension.
++"""
++from __future__ import annotations
++
++from collections import defaultdict
++from time import monotonic
++
++from fastunknot.scan_fast import FastScan
++from fastunknot.geometry import ScanLimit
++from fastunknot.ordering import best_scan_order, repeated_stages, validate_order
++
++
++def components(scan):
++    """Connected components of the undirected nonzero-differential graph.
++
++    Object order is inherited, then compacted.  Equal resulting serialization
++    gives an explicit chain isomorphism.  Unequal keys can still be isomorphic;
++    the algorithm simply forgoes that possible saving.
++    """
++    seen = bytearray(len(scan.mid))
++    for root, matching in enumerate(scan.mid):
++        if matching is None or seen[root]:
++            continue
++        seen[root] = 1
++        stack = [root]
++        group = []
++        while stack:
++            v = stack.pop()
++            group.append(v)
++            for w in scan.out[v]:
++                if not seen[w]:
++                    seen[w] = 1
++                    stack.append(w)
++            for w in scan.inc[v]:
++                if not seen[w]:
++                    seen[w] = 1
++                    stack.append(w)
++        group.sort()
++        yield group
++
++
++def component_key(scan, group):
++    """Return the exact serialized component and its uniform degree shift."""
++    local = {v: i for i, v in enumerate(group)}
++    shift = min(scan.deg[v] for v in group)
++    key = tuple(
++        (scan.mid[v], scan.deg[v] - shift,
++         tuple(sorted((local[w], value) for w, value in scan.out[v].items())))
++        for v in group
++    )
++    return key, shift
++
++
++class ComponentScan(FastScan):
++    """FastScan with multiplicity polynomials attached to component types."""
++
++    def __init__(self, *args, rank_cap=None, **kwargs):
++        super().__init__(*args, **kwargs)
++        if rank_cap is not None and (type(rank_cap) is not int or rank_cap < 1):
++            raise ValueError("rank_cap must be a positive integer or None")
++        self.rank_cap = rank_cap
++        self.weights = [{0: 1}]
++        self.owner = [0]
++        self.stage_history = []
++        self.stats.update(
++            component_merges=0,
++            max_component_objects=0,
++            max_representative_objects=1,
++            max_representative_components=1,
++            multiplicity_updates=0,
++        )
++        expanded_stat = ("max_expanded_after_elimination" if rank_cap is None else
++                         "max_expanded_after_elimination_lower_bound")
++        self.stats[expanded_stat] = 1
++
++    def add_crossing(self, slots, reduce_now=True):
++        if not reduce_now:
++            raise ValueError("ComponentScan requires elimination after every crossing")
++        old_mid, old_owner = self.mid, self.owner
++        super().add_crossing(slots, reduce_now=True)
++        # FastScan creates this contiguous block for each old live object.
++        # Its algebra still holds exactly this crossing's gluing cache.
++        ancestry = []
++        for v, matching in enumerate(old_mid):
++            if matching is not None:
++                closed0 = self.algebra.glue(matching, 0)[1]
++                closed1 = self.algebra.glue(matching, 1)[1]
++                count = (1 << closed0) + (1 << closed1)
++                ancestry.extend([old_owner[v]] * count)
++        if len(ancestry) != len(self.mid):
++            raise ArithmeticError("crossing ancestry did not match the scanner allocation")
++        self._compress(ancestry)
++
++    def _compress(self, ancestry):
++        # Dictionary equality verifies the complete key even on hash collision.
++        types = {}
++        encountered = largest = expanded = 0
++        weight_totals = [sum(weight.values()) for weight in self.weights]
++        for group in components(self):
++            self._check()
++            encountered += 1
++            largest = max(largest, len(group))
++            parent = ancestry[group[0]]
++            if any(ancestry[v] != parent for v in group):
++                raise ArithmeticError("a differential joined independent parent summands")
++            expanded += len(group) * weight_totals[parent]
++            key, shift = component_key(self, group)
++            weight = types.setdefault(key, defaultdict(int))
++            if self.rank_cap is None:
++                for h, count in self.weights[parent].items():
++                    weight[h + shift] += count
++                    self.stats["multiplicity_updates"] += 1
++            else:
++                # Evaluation z=1 followed by saturation is a semiring map.
++                # It may only be used for final rank decisions, not gradings.
++                weight[0] = min(self.rank_cap, weight[0] + weight_totals[parent])
++                self.stats["multiplicity_updates"] += 1
++
++        mid, deg, out, inc, owners, weights = [], [], [], [], [], []
++        for index, (key, weight) in enumerate(types.items()):
++            offset = len(mid)
++            for matching, degree, row in key:
++                mid.append(matching)
++                deg.append(degree)
++                out.append({offset + w: value for w, value in row})
++                inc.append(set())
++                owners.append(index)
++            weights.append(dict(weight))
++        for source, row in enumerate(out):
++            for target in row:
++                inc[target].add(source)
++        self.mid, self.deg, self.out, self.inc = mid, deg, out, inc
++        self.owner, self.weights, self.live = owners, weights, len(mid)
++        stats = self.stats
++        stats["component_merges"] += encountered - len(types)
++        stats["max_component_objects"] = max(stats["max_component_objects"], largest)
++        stats["max_representative_objects"] = max(stats["max_representative_objects"], len(mid))
++        stats["max_representative_components"] = max(stats["max_representative_components"], len(types))
++        expanded_stat = ("max_expanded_after_elimination" if self.rank_cap is None else
++                         "max_expanded_after_elimination_lower_bound")
++        stats[expanded_stat] = max(stats[expanded_stat], expanded)
++        self.stage_history.append(dict(
++            stage=len(self.stage_history) + 1,
++            encountered_components=encountered,
++            representative_components=len(types),
++            representative_objects=len(mid),
++            expanded_objects=expanded,
++            largest_component=largest,
++            expanded_objects_is_lower_bound=self.rank_cap is not None,
++        ))
++
++    def total_rank(self):
++        if self.points:
++            raise ValueError("the diagram is not closed yet")
++        if any(self.out):
++            raise ArithmeticError("minimal closed complex has a nonzero differential")
++        rank = sum(sum(self.weights[self.owner[v]].values())
++                   for v, matching in enumerate(self.mid) if matching is not None)
++        return rank if self.rank_cap is None else min(self.rank_cap, rank)
++
++    def ranks_by_degree(self):
++        if self.rank_cap is not None:
++            raise ValueError("absolute gradings were discarded by saturated multiplicities")
++        ranks = defaultdict(int)
++        for v, matching in enumerate(self.mid):
++            if matching is not None:
++                for shift, count in self.weights[self.owner[v]].items():
++                    ranks[self.deg[v] + shift] += count
++        return dict(sorted(ranks.items()))
++
++
++def compressed_khovanov_rank(pd, *, order=None, max_objects=None, seconds=None,
++                             check_d_squared=False, shape_cache=None):
++    """Same rank and raw homological grading as fastunknot.khovanov_rank.
++
++    ``pd`` must already have been validated as a knot diagram, as for the
++    baseline scanner.  The optional object ceiling concerns physically stored
++    representatives, not the potentially exponential virtual multiplicity.
++    """
++    pd = [tuple(crossing) for crossing in pd]
++    if order is not None:
++        order = validate_order(len(pd), order)
++    if not pd:
++        return dict(rank=2, reduced_rank=1, by_degree={0: 2}, stats={}, order=[],
++                    backend="component-sharing", stages=[])
++    deadline = None if seconds is None else monotonic() + seconds
++    if order is None:
++        order = best_scan_order(pd, tries=min(len(pd), 12))
++    if shape_cache is None:
++        shape_cache = len(order) >= 16 and 8 * repeated_stages(pd, order) >= len(order)
++    scan = ComponentScan(max_objects=max_objects, deadline=deadline, shape_cache=shape_cache)
++    for i in order:
++        scan.add_crossing(pd[i])
++        if check_d_squared:
++            scan.check_d_squared()
++    rank = scan.total_rank()
++    if rank % 2:
++        raise ArithmeticError("odd unreduced F2 rank for a knot")
++    stats = dict(scan.stats)
++    stats.update(scan.algebra.stats)
++    return dict(rank=rank, reduced_rank=rank // 2, by_degree=scan.ranks_by_degree(),
++                stats=stats, order=order, backend="component-sharing", stages=scan.stage_history)
++
++
++def compressed_khovanov_decide(pd, *, order=None, max_objects=None, seconds=None,
++                               check_d_squared=False, shape_cache=None):
++    """Exact unknot verdict with multiplicities in the saturated semiring S_3.
++
++    The diagram MUST be validated as one component before calling.  The result
++    gives min(3, unreduced rank), not an exact rank when this value is three.
++    No verdict is taken from a partial scan or a large virtual object count.
++    """
++    pd = [tuple(crossing) for crossing in pd]
++    if order is not None:
++        order = validate_order(len(pd), order)
++    if not pd:
++        return dict(status="UNKNOT", rank_capped=2, rank_cap=3, stats={}, order=[],
++                    backend="component-sharing-saturated", stages=[])
++    deadline = None if seconds is None else monotonic() + seconds
++    if order is None:
++        order = best_scan_order(pd, tries=min(len(pd), 12))
++    if shape_cache is None:
++        shape_cache = len(order) >= 16 and 8 * repeated_stages(pd, order) >= len(order)
++    scan = ComponentScan(max_objects=max_objects, deadline=deadline,
++                         shape_cache=shape_cache, rank_cap=3)
++    for i in order:
++        scan.add_crossing(pd[i])
++        if check_d_squared:
++            scan.check_d_squared()
++    capped = scan.total_rank()
++    if capped not in (2, 3):
++        raise ArithmeticError("a validated knot must have unreduced rank at least two")
++    stats = dict(scan.stats)
++    stats.update(scan.algebra.stats)
++    return dict(status="UNKNOT" if capped == 2 else "KNOTTED", rank_capped=capped,
++                rank_cap=3, stats=stats, order=order, backend="component-sharing-saturated",
++                stages=scan.stage_history)
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/euler_scan.py b/Topology/UnknotRecognition/fast/fastunknot/euler_scan.py
+new file mode 100644
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/fastunknot/euler_scan.py
+@@ -0,0 +1,185 @@
++"""Optional exact suffix-Euler certificates for component-sharing scans.
++
++The bounded Euler state computation may fail inconclusively; the exact capped
++scanner then continues.  Euler coefficients are signed integers and are NEVER
++saturated.  Only the final nonnegative homology-rank lower bound is capped.
++"""
++from __future__ import annotations
++
++from time import monotonic
++
++from fastunknot.geometry import ScanLimit
++from fastunknot.ordering import best_scan_order, repeated_stages, validate_order
++from fastunknot.planar import Planar
++
++if __package__:
++    from .component_scan import ComponentScan
++else:
++    from component_scan import ComponentScan
++
++
++class EulerBudget(Exception):
++    """A rejected Euler inference; this exception is not a knot verdict."""
++
++
++class SuffixEuler:
++    """Memoized exact Euler functional on suffixes of a fixed scan order.
++
++    State keys contain a suffix index and the complete matching pairs.  For a
++    crossing that creates c_s closed circles in smoothing s, the recurrence is
++
++        E_i(m) = 2**c_0 E_{i+1}(m_0) - 2**c_1 E_{i+1}(m_1).
++
++    Terminal E_n(empty)=1.  An iterative dependency stack avoids Python's
++    recursion limit on long diagrams.  At most max_states states are registered
++    over the lifetime of the object; budget exhaustion leaves all existing
++    exact values valid but the caller should stop using the optional inference.
++    """
++
++    def __init__(self, pd, order, *, max_states=4096, deadline=None):
++        if max_states is not None and (type(max_states) is not int or max_states < 0):
++            raise ValueError("Euler max_states must be a nonnegative integer or None")
++        self.max_states = max_states
++        self.deadline = deadline
++        self.algebras = []
++        points = frozenset()
++        for index in order:
++            algebra = Planar(shape_cache=False)
++            algebra.stage(points, pd[index])
++            self.algebras.append(algebra)
++            points = algebra.new_points()
++        if points:
++            raise ValueError("the suffix must end with empty boundary")
++        self.cache = {}
++        self.pending = {}
++        self.stats = dict(states=0, evaluations=0, max_coefficient_bits=0)
++
++    def _check(self):
++        if self.deadline is not None and monotonic() > self.deadline:
++            raise ScanLimit("time budget exhausted in suffix Euler computation")
++
++    def evaluate(self, stage, pairs):
++        if not 0 <= stage <= len(self.algebras):
++            raise ValueError("invalid suffix stage")
++        self.stats["evaluations"] += 1
++        root = (stage, tuple(pairs))
++        stack = [root]
++        while stack:
++            self._check()
++            key = stack[-1]
++            if key in self.cache:
++                stack.pop()
++                continue
++            i, matching = key
++            if key not in self.pending:
++                if self.max_states is not None and self.stats["states"] >= self.max_states:
++                    raise EulerBudget("suffix Euler state budget exhausted")
++                self.stats["states"] += 1
++                if i == len(self.algebras):
++                    if matching:
++                        raise ArithmeticError("a terminal Euler matching is nonempty")
++                    self.cache[key] = 1
++                    self.stats["max_coefficient_bits"] = max(1, self.stats["max_coefficient_bits"])
++                    stack.pop()
++                    continue
++                algebra = self.algebras[i]
++                m = algebra.intern(matching)
++                m0, c0, _ = algebra.glue(m, 0)
++                m1, c1, _ = algebra.glue(m, 1)
++                child0 = (i + 1, algebra.pairs[m0])
++                child1 = (i + 1, algebra.pairs[m1])
++                self.pending[key] = (child0, c0, child1, c1)
++            child0, c0, child1, c1 = self.pending[key]
++            if child0 not in self.cache:
++                stack.append(child0)
++                continue
++            if child1 not in self.cache:
++                stack.append(child1)
++                continue
++            value = (self.cache[child0] << c0) - (self.cache[child1] << c1)
++            self.cache[key] = value
++            self.stats["max_coefficient_bits"] = max(
++                self.stats["max_coefficient_bits"], abs(value).bit_length())
++            del self.pending[key]
++            stack.pop()
++        return self.cache[root]
++
++
++def component_euler_bound(scan, engine, stage, *, cap=None):
++    """Return the sum of absolute Euler characteristics of completed summands.
++
++    If the scan has capped weights, cap must be at most that weight cap.  The
++    returned Euler values themselves remain exact signed integers.
++    """
++    if scan.rank_cap is not None and (cap is None or cap > scan.rank_cap):
++        raise ValueError("the requested bound exceeds available saturated multiplicities")
++    values = {}
++    for matching in set(scan.mid):
++        if matching is not None:
++            values[matching] = engine.evaluate(stage, scan.algebra.pairs[matching])
++    chi = [0] * len(scan.weights)
++    for v, matching in enumerate(scan.mid):
++        if matching is not None:
++            value = values[matching]
++            chi[scan.owner[v]] += -value if scan.deg[v] % 2 else value
++    bound = sum(sum(weight.values()) * abs(value)
++                for weight, value in zip(scan.weights, chi))
++    if cap is not None:
++        bound = min(cap, bound)
++    return bound, chi
++
++
++def euler_compressed_khovanov_decide(pd, *, order=None, max_objects=None, seconds=None,
++                                    check_d_squared=False, shape_cache=None,
++                                    euler_max_states=4096):
++    """Exact decision, with optional early componentwise Euler lower bounds.
++
++    The input must already be validated as a classical one-component knot
++    diagram.  Euler-state exhaustion merely disables the optional certificate;
++    ordinary capped scanning continues.  Object/time exhaustion raises ScanLimit.
++    """
++    pd = [tuple(crossing) for crossing in pd]
++    if order is not None:
++        order = validate_order(len(pd), order)
++    if not pd:
++        return dict(status="UNKNOT", method="closed-rank", rank_capped=2, rank_cap=3,
++                    stage=0, crossings=0, stats={}, order=[], euler_stats={}, euler_exhausted=False)
++    deadline = None if seconds is None else monotonic() + seconds
++    if order is None:
++        order = best_scan_order(pd, tries=min(len(pd), 12))
++    if shape_cache is None:
++        shape_cache = len(order) >= 16 and 8 * repeated_stages(pd, order) >= len(order)
++    engine = SuffixEuler(pd, order, max_states=euler_max_states, deadline=deadline)
++    scan = ComponentScan(max_objects=max_objects, deadline=deadline,
++                         shape_cache=shape_cache, rank_cap=3)
++    exhausted = False
++    for stage, index in enumerate(order, 1):
++        scan.add_crossing(pd[index])
++        if check_d_squared:
++            scan.check_d_squared()
++        # One copy of one component has the whole knot's Euler magnitude, two.
++        # No inference work can help until an actual direct-sum split appears.
++        copies = sum(sum(weight.values()) for weight in scan.weights)
++        if not exhausted and stage < len(order) and copies > 1:
++            try:
++                bound, chi = component_euler_bound(scan, engine, stage, cap=3)
++            except EulerBudget:
++                exhausted = True
++            else:
++                if bound >= 3:
++                    stats = dict(scan.stats)
++                    stats.update(scan.algebra.stats)
++                    return dict(status="KNOTTED", method="component-euler", rank_cap=3,
++                                rank_lower_bound_capped=bound, stage=stage, crossings=len(order),
++                                euler_characteristics=chi,
++                                multiplicities_capped=[sum(w.values()) for w in scan.weights],
++                                stats=stats, order=order, euler_stats=dict(engine.stats),
++                                euler_exhausted=exhausted)
++    capped = scan.total_rank()
++    if capped not in (2, 3):
++        raise ArithmeticError("a validated knot must have unreduced rank at least two")
++    stats = dict(scan.stats)
++    stats.update(scan.algebra.stats)
++    return dict(status="UNKNOT" if capped == 2 else "KNOTTED", method="closed-rank",
++                rank_capped=capped, rank_cap=3, stage=len(order), crossings=len(order),
++                stats=stats, order=order, euler_stats=dict(engine.stats), euler_exhausted=exhausted)
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/recognize.py b/Topology/UnknotRecognition/fast/fastunknot/recognize.py
+--- a/Topology/UnknotRecognition/fast/fastunknot/recognize.py
++++ b/Topology/UnknotRecognition/fast/fastunknot/recognize.py
+@@ -1,23 +1,22 @@
+-"""The recognition pipeline (version 0.2).
+-
+-1. validate the diagram (one component, spherical rotation system);
+-2. crossing-decreasing Reidemeister I/II moves (polynomial);
+-3. descending-diagram test (linear; sufficient for UNKNOT);
+-4. split along visible two-edge cuts; a connected sum is trivial exactly when
+-   every summand is, so the summands are examined separately, smallest first,
+-   and the first knotted summand decides;
+-   for each summand:
+-5. Alexander minor in a prime field at t = -1 and t = 2 (cubic; KNOTTED or
+-   inconclusive);
+-6. Kauffman bracket at A = 2 in a prime field by a width-bounded scan
+-   (KNOTTED, inconclusive, or skipped when its budget is exhausted);
+-7. exact Alexander polynomial over Z[t] (KNOTTED or inconclusive);
+-8. reduced Khovanov rank over F2 by scanning (exact; UNKNOT iff rank 1).
+-
+-Every verdict is exact.  Filters 5-7 can only say KNOTTED; agreement with the
+-unknot's value is never evidence of triviality.  Optional ceilings turn a
+-too-expensive step 8 into UNKNOWN, never into a knot verdict.  Worst-case
+-running time is exponential in the crossing number; it is not quasi-polynomial.
++"""Exact recognition pipeline (version 0.3).
++
++Input is a validated classical one-component Diagram. The command-line loader
++performs that validation; constructing Diagram(pd) directly is a validity promise.
++
++The default first attempts a linear signed Seifert-graph certificate. When
++inconclusive, it follows the established pipeline: Reidemeister I/II reduction,
++descending test, visible connected-sum factorization, modular Alexander/Jones
++obstructions, optional exact Alexander, late Reidemeister III, and F2 Khovanov.
++
++The standard Khovanov scanner remains the default. Optional shared, saturated,
++and euler backends compress literal direct summands; saturated modes preserve
++only a capped rank or a certified lower bound, as named in their evidence.
++Filters never interpret agreement with the unknot invariant as triviality.
++Object/time exhaustion in the backend yields UNKNOWN. An exhausted optional
++Euler inference budget falls back to complete saturated scanning.
++
++The implementation retains an exponential worst-case upper bound. The new
++parameterized theorem is not a general quasi-polynomial guarantee.
+ """
+ from __future__ import annotations
+ 
+@@ -32,6 +31,7 @@
+ from .filters import FilterLimit, alexander_obstruction, jones_obstruction
+ from .ordering import best_scan_order
+ from .scan import ScanLimit, khovanov_rank
++from .seifert import seifert_certificate
+ from .simplify import descending_start, simplify
+ 
+ 
+@@ -69,7 +69,7 @@
+             "input_crossings": self.input_crossings, "reduced_crossings": self.reduced_crossings,
+             "seconds": round(self.seconds, 6), "evidence": self.evidence,
+             "quasipolynomial_guarantee": False,
+-            "worst_case": "2^O(n); filters are polynomial or width-bounded, the Khovanov scan is not",
++            "worst_case": "2^O(n) upper bound; no general quasi-polynomial guarantee for the Khovanov backends",
+         }
+ 
+ 
+@@ -162,17 +162,44 @@
+                 return "UNKNOT", "descending-diagram"
+             diagram, order = reduced, None
+     remaining = None if deadline is None else max(0.0, deadline - monotonic())
+-    kh = khovanov_rank(diagram.pd, order=order, max_objects=max_objects, seconds=remaining,
+-                       check_d_squared=check_d_squared, **scan_options)
++    backend = scan_options["backend"]
++    if backend == "euler":
++        from .euler_scan import euler_compressed_khovanov_decide
++        kh = euler_compressed_khovanov_decide(
++            diagram.pd, order=order, max_objects=max_objects, seconds=remaining,
++            check_d_squared=check_d_squared, euler_max_states=scan_options["euler_max_states"])
++        evidence["khovanov"] = {"field": "F2", **kh}
++        method = "component-euler-bound" if kh["method"] == "component-euler" else "khovanov-component-sharing-saturated"
++        return kh["status"], method
++    if backend == "saturated":
++        from .component_scan import compressed_khovanov_decide
++        kh = compressed_khovanov_decide(diagram.pd, order=order, max_objects=max_objects,
++                                       seconds=remaining, check_d_squared=check_d_squared)
++        evidence["khovanov"] = {"field": "F2", "rank_capped": kh["rank_capped"],
++                                "rank_cap": 3, "scan_stats": kh["stats"],
++                                "scan_order": kh["order"], "backend": kh["backend"]}
++        return kh["status"], "khovanov-component-sharing-saturated"
++    if backend == "shared":
++        from .component_scan import compressed_khovanov_rank
++        kh = compressed_khovanov_rank(diagram.pd, order=order, max_objects=max_objects,
++                                     seconds=remaining, check_d_squared=check_d_squared)
++    else:
++        standard_options = {key: value for key, value in scan_options.items()
++                            if key not in ("backend", "euler_max_states")}
++        kh = khovanov_rank(diagram.pd, order=order, max_objects=max_objects, seconds=remaining,
++                           check_d_squared=check_d_squared, **standard_options)
+     evidence["khovanov"] = {"field": "F2", "unreduced_rank": kh["rank"], "reduced_rank": kh["reduced_rank"],
+                             "unreduced_rank_by_cube_degree": kh["by_degree"], "scan_stats": kh["stats"],
+                             "scan_order": kh["order"]}
+     if "race_winner" in kh:
+         evidence["khovanov"]["race_winner"] = kh["race_winner"]
+-    return ("UNKNOT" if kh["reduced_rank"] == 1 else "KNOTTED"), "reduced-khovanov-F2-scan"
++    method = "reduced-khovanov-F2-shared" if backend == "shared" else "reduced-khovanov-F2-scan"
++    return ("UNKNOT" if kh["reduced_rank"] == 1 else "KNOTTED"), method
+ 
+ 
+ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: bool = True,
++              use_seifert: bool = True, backend: str = "standard",
++              euler_max_states: int | None = 4096,
+               use_factorization: bool = True, use_modular: bool = True, use_jones: bool = True,
+               use_alexander: bool = True, use_exact_alexander: bool | None = None, use_r3: bool = True,
+               jones_max_states: int | None = 4096,
+@@ -181,9 +208,21 @@
+               pivot: str = "minfill", algebra: str = "bits", tail: int = 0,
+               race: int = 1, race_after: float = 1.0) -> Result:
+     start = monotonic()
++    if backend not in ("standard", "shared", "saturated", "euler"):
++        raise ValueError("backend must be standard, shared, saturated, or euler")
++    if euler_max_states is not None and (type(euler_max_states) is not int or euler_max_states < 0):
++        raise ValueError("euler_max_states must be a nonnegative integer or None")
++    if backend != "standard" and (pivot != "minfill" or algebra != "bits" or tail != 0 or race != 1):
++        raise ValueError("shared backends require minfill pivots, bits algebra, tail=0, and race=1")
+     deadline = None if seconds is None else start + seconds
+     original = diagram
+     evidence: dict[str, Any] = {}
++    if use_seifert:
++        certificate = seifert_certificate(diagram)
++        if certificate is not None:
++            evidence["seifert_certificate"] = certificate
++            return Result(certificate["status"], certificate["criterion"], diagram.crossings,
++                          diagram.crossings, monotonic() - start, evidence)
+     if use_reduction:
+         diagram, trace = simplify(diagram, r3=False)      # Reidemeister III waits until the filters have failed
+         evidence["reidemeister_trace"] = [m.to_json() for m in trace]
+@@ -205,7 +244,9 @@
+                    use_descending=use_descending,
+                    jones_max_states=jones_max_states, jones_max_transitions=jones_max_transitions,
+                    max_objects=max_objects, deadline=deadline, check_d_squared=check_d_squared,
+-                   scan_options=dict(pivot=pivot, algebra=algebra, tail=tail, race=race, race_after=race_after))
++                   scan_options=dict(pivot=pivot, algebra=algebra, tail=tail, race=race,
++                                     race_after=race_after, backend=backend,
++                                     euler_max_states=euler_max_states))
+     method = "reduced-khovanov-F2-scan"
+     try:
+         if len(factors) == 1:
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/seifert.py b/Topology/UnknotRecognition/fast/fastunknot/seifert.py
+new file mode 100644
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/fastunknot/seifert.py
+@@ -0,0 +1,252 @@
++"""Linear-time, exact certificates from the signed Seifert graph.
++
++The input must be a validated classical one-component ``Diagram``.  Three
++criteria are used:
++
++* a genus-zero Seifert surface certifies the unknot;
++* a homogeneous diagram realizes knot genus (Cromwell);
++* the Kawamura--Lobb interval contains Rasmussen's s-invariant, so an interval
++  excluding zero certifies a nontrivial knot.
++
++Homogeneity is tested without block decomposition: Abe's criterion is
++``circles + 1 == positive_components + negative_components``.  Isolated
++vertices count as components in BOTH signed subgraphs.
++
++References:
++P. R. Cromwell, Homogeneous links, J. London Math. Soc. (2) 39 (1989), 535--552.
++A. Lobb, Computable bounds for Rasmussen's concordance invariant,
++    Compositio Math. 147 (2011), 661--668, Theorem 1.10; arXiv:0908.2745.
++T. Abe, The Rasmussen invariant of a homogeneous knot,
++    Proc. Amer. Math. Soc. 139 (2011), 2647--2656, Theorems 2.3 and 3.4;
++    arXiv:1003.5392.
++
++``verify_seifert_certificate`` independently reconstructs the orientation and
++uses disjoint sets instead of the production circle/graph traversals.  It
++does not trust cached orientation, signs, circle IDs, or component counts.
++It shares the input Diagram validation and cited mathematical theorems.
++"""
++from __future__ import annotations
++
++
++def _components(adjacency: list[list[int]]) -> int:
++    seen = bytearray(len(adjacency))
++    count = 0
++    for start in range(len(adjacency)):
++        if seen[start]:
++            continue
++        count += 1
++        seen[start] = 1
++        stack = [start]
++        while stack:
++            vertex = stack.pop()
++            for neighbor in adjacency[vertex]:
++                if not seen[neighbor]:
++                    seen[neighbor] = 1
++                    stack.append(neighbor)
++    return count
++
++
++def _summary(n: int, writhe: int, circles: int, positive: int, negative: int) -> dict:
++    twice_genus = n - circles + 1
++    defect = circles + 1 - positive - negative
++    lower = writhe - circles + 2 * positive - 1
++    upper = writhe + circles - 2 * negative + 1
++    if twice_genus < 0 or twice_genus % 2 or defect < 0 or upper - lower != 2 * defect:
++        raise ArithmeticError("inconsistent signed Seifert graph of a classical knot")
++    return {
++        "crossings": n,
++        "writhe": writhe,
++        "seifert_circles": circles,
++        "positive_components": positive,
++        "negative_components": negative,
++        "homogeneity_defect": defect,
++        "canonical_genus": twice_genus // 2,
++        "rasmussen_interval": [lower, upper],
++    }
++
++
++def seifert_data(diagram) -> dict:
++    """Return signed Seifert graph counts in O(n) word operations and memory.
++
++    A PD row is counterclockwise, with under ports 0,2 and over ports 1,3.
++    If u,o are the incoming ports, oriented smoothing pairs u with o+2 and
++    o with u+2 (all port arithmetic is modulo four).
++    """
++    n = diagram.crossings
++    if not n:
++        return _summary(0, 0, 1, 1, 1)
++    incoming = diagram.incoming_slots()
++    alpha = diagram.alpha()
++    smoothing = [0] * (4 * n)
++    signs = []
++    for crossing, (under, over) in enumerate(incoming):
++        base = 4 * crossing
++        for left, right in ((under, (over + 2) % 4), (over, (under + 2) % 4)):
++            smoothing[base + left] = base + right
++            smoothing[base + right] = base + left
++        signs.append(1 if (over - under) % 4 == 3 else -1)
++    owner = [-1] * (4 * n)
++    circles = 0
++    for start in range(4 * n):
++        if owner[start] != -1:
++            continue
++        dart = start
++        while owner[dart] == -1:
++            mate = smoothing[dart]
++            owner[dart] = owner[mate] = circles
++            dart = alpha[mate]
++        circles += 1
++    positive = [[] for _ in range(circles)]
++    negative = [[] for _ in range(circles)]
++    for crossing, ((under, over), sign) in enumerate(zip(incoming, signs)):
++        left, right = owner[4 * crossing + under], owner[4 * crossing + over]
++        adjacency = positive if sign > 0 else negative
++        adjacency[left].append(right)
++        adjacency[right].append(left)
++    return _summary(n, sum(signs), circles, _components(positive), _components(negative))
++
++
++def seifert_certificate(diagram) -> dict | None:
++    """Return an exact UNKNOT/KNOTTED certificate, or None if inconclusive.
++
++    A zero Rasmussen interval alone never certifies the unknot.  In
++    particular, homogeneous knots of positive genus with s=0 are KNOTTED.
++    """
++    data = seifert_data(diagram)
++    lower, upper = data["rasmussen_interval"]
++    if data["canonical_genus"] == 0:
++        status, criterion = "UNKNOT", "seifert-genus-zero"
++    elif data["homogeneity_defect"] == 0:
++        status, criterion = "KNOTTED", "homogeneous-seifert-genus"
++    elif lower > 0 or upper < 0:
++        status, criterion = "KNOTTED", "rasmussen-interval"
++    else:
++        return None
++    return {"version": 1, "status": status, "criterion": criterion, **data}
++
++
++def verify_seifert_certificate(diagram, certificate: dict) -> bool:
++    """Replay a certificate with a separate union-find implementation.
++
++    This is an independent implementation of the sufficient condition, not
++    a formal proof checker of the cited topological theorems.  Complexity is
++    O(n alpha(n)) word operations with union by size and path compression.
++    Malformed certificates return False.
++    """
++    if not isinstance(certificate, dict) or type(certificate.get("version")) is not int:
++        return False
++    if certificate["version"] != 1:
++        return False
++    n = len(diagram.pd)
++    if not n:
++        expected = {
++            "crossings": 0, "writhe": 0, "seifert_circles": 1,
++            "positive_components": 1, "negative_components": 1,
++            "homogeneity_defect": 0, "canonical_genus": 0,
++            "rasmussen_interval": [0, 0],
++        }
++    else:
++        positions = {}
++        paired = [0] * (4 * n)
++        for crossing, row in enumerate(diagram.pd):
++            for slot, label in enumerate(row):
++                dart = 4 * crossing + slot
++                other = positions.pop(label, None)
++                if other is None:
++                    positions[label] = dart
++                else:
++                    paired[dart], paired[other] = other, dart
++        if positions:
++            return False
++        # Start at an arbitrary incoming dart and follow the knot component.
++        enters = bytearray(4 * n)
++        dart = 0
++        for _ in range(2 * n):
++            if enters[dart]:
++                return False
++            enters[dart] = 1
++            opposite = 4 * (dart // 4) + ((dart % 4 + 2) % 4)
++            dart = paired[opposite]
++        if dart != 0:
++            return False
++
++        def disjoint_sets(size):
++            parent = list(range(size))
++            weights = [1] * size
++
++            def find(item):
++                while parent[item] != item:
++                    parent[item] = parent[parent[item]]
++                    item = parent[item]
++                return item
++
++            def union(left, right):
++                left, right = find(left), find(right)
++                if left == right:
++                    return
++                if weights[left] < weights[right]:
++                    left, right = right, left
++                parent[right] = left
++                weights[left] += weights[right]
++
++            return find, union
++
++        find, union = disjoint_sets(4 * n)
++        for dart, other in enumerate(paired):
++            union(dart, other)
++        under_ports, over_ports, signs = [], [], []
++        for crossing in range(n):
++            base = 4 * crossing
++            under = 0 if enters[base] else 2
++            over = 1 if enters[base + 1] else 3
++            if sum(enters[base:base + 4]) != 2:
++                return False
++            union(base + under, base + ((over + 2) % 4))
++            union(base + over, base + ((under + 2) % 4))
++            under_ports.append(base + under)
++            over_ports.append(base + over)
++            signs.append(1 if over == (under - 1) % 4 else -1)
++        roots = {find(dart) for dart in range(4 * n)}
++        circle_id = {root: index for index, root in enumerate(roots)}
++        circles = len(roots)
++        plus_find, plus_union = disjoint_sets(circles)
++        minus_find, minus_union = disjoint_sets(circles)
++        for under, over, sign in zip(under_ports, over_ports, signs):
++            left, right = circle_id[find(under)], circle_id[find(over)]
++            if sign > 0:
++                plus_union(left, right)
++            else:
++                minus_union(left, right)
++        positive = len({plus_find(vertex) for vertex in range(circles)})
++        negative = len({minus_find(vertex) for vertex in range(circles)})
++        writhe = sum(signs)
++        genus2 = n - circles + 1
++        defect = circles + 1 - positive - negative
++        if genus2 < 0 or genus2 % 2 or defect < 0:
++            return False
++        expected = {
++            "crossings": n, "writhe": writhe, "seifert_circles": circles,
++            "positive_components": positive, "negative_components": negative,
++            "homogeneity_defect": defect, "canonical_genus": genus2 // 2,
++            "rasmussen_interval": [writhe - circles + 2 * positive - 1,
++                                   writhe + circles - 2 * negative + 1],
++        }
++    for key, value in expected.items():
++        supplied = certificate.get(key)
++        if isinstance(value, int):
++            if type(supplied) is not int or supplied != value:
++                return False
++        elif type(supplied) is not list or len(supplied) != 2 or any(
++                type(entry) is not int for entry in supplied) or supplied != value:
++            return False
++    lower, upper = expected["rasmussen_interval"]
++    criterion = certificate.get("criterion")
++    status = certificate.get("status")
++    if criterion == "seifert-genus-zero":
++        return status == "UNKNOT" and expected["canonical_genus"] == 0
++    if criterion == "homogeneous-seifert-genus":
++        return (status == "KNOTTED" and expected["canonical_genus"] > 0
++                and expected["homogeneity_defect"] == 0)
++    if criterion == "rasmussen-interval":
++        return status == "KNOTTED" and (lower > 0 or upper < 0)
++    return False
+diff --git a/Topology/UnknotRecognition/fast/pyproject.toml b/Topology/UnknotRecognition/fast/pyproject.toml
+--- a/Topology/UnknotRecognition/fast/pyproject.toml
++++ b/Topology/UnknotRecognition/fast/pyproject.toml
+@@ -4,10 +4,10 @@
+ 
+ [project]
+ name = "fastunknot"
+-version = "0.1.0"
+-description = "Exact unknot recognition: polynomial filters plus a scanning Khovanov backend (exponential worst case, no quasi-polynomial claim)"
++version = "0.3.0"
++description = "Exact unknot recognition with structural certificates and optional component-sharing Khovanov backends"
+ requires-python = ">=3.10"
+-license = {text = "MIT"}
++license = {text = "MIT-0"}
+ dependencies = []
+ 
+ [project.scripts]
+diff --git a/Topology/UnknotRecognition/fast/tests/test_acceleration.py b/Topology/UnknotRecognition/fast/tests/test_acceleration.py
+--- a/Topology/UnknotRecognition/fast/tests/test_acceleration.py
++++ b/Topology/UnknotRecognition/fast/tests/test_acceleration.py
+@@ -20,6 +20,12 @@
+                                  simplify, simplify_reference)
+ 
+ EXAMPLES = os.path.join(ROOT, "examples")
++
++# Preserve the old method-level regression checks with the new front end off.
++_baseline_recognize = recognize
++def recognize(diagram, **options):
++    options.setdefault("use_seifert", False)
++    return _baseline_recognize(diagram, **options)
+ 
+ 
+ def load(name):
+diff --git a/Topology/UnknotRecognition/fast/tests/test_component_scan.py b/Topology/UnknotRecognition/fast/tests/test_component_scan.py
+new file mode 100644
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/tests/test_component_scan.py
+@@ -0,0 +1,128 @@
++"""Regression tests; run with the baseline fast/ directory on PYTHONPATH."""
++import json
++import os
++from pathlib import Path
++import random
++import unittest
++
++from fastunknot import Diagram
++from fastunknot.diagram import DiagramError
++from fastunknot.geometry import ScanLimit
++from fastunknot.scan import khovanov_rank
++from fastunknot.component_scan import (ComponentScan, component_key, compressed_khovanov_decide,
++                            compressed_khovanov_rank)
++
++
++class ComponentTests(unittest.TestCase):
++    def assert_same(self, diagram, order=None, reference=False):
++        old = khovanov_rank(diagram.pd, order=order, check_d_squared=True,
++                            **({"pivot": "lifo", "algebra": "sets"} if reference else {}))
++        new = compressed_khovanov_rank(diagram.pd, order=order, check_d_squared=True)
++        self.assertEqual(old["rank"], new["rank"])
++        self.assertEqual(old["reduced_rank"], new["reduced_rank"])
++        self.assertEqual(old["by_degree"], new["by_degree"])
++        decision = compressed_khovanov_decide(diagram.pd, order=order, check_d_squared=True)
++        self.assertEqual(decision["rank_capped"], min(3, old["rank"]))
++        self.assertEqual(decision["status"], "UNKNOT" if old["rank"] == 2 else "KNOTTED")
++
++    def test_crossing_free_circle(self):
++        self.assert_same(Diagram.from_pd([]))
++
++    def test_torus_knots_and_mirrors(self):
++        for strands, repeats in [(2, 3), (2, 9), (3, 4), (3, 8), (4, 3)]:
++            for sign in [1, -1]:
++                word = [sign * i for i in range(1, strands)] * repeats
++                self.assert_same(Diagram.from_braid(strands, word))
++
++    def test_random_closures_and_scan_orders(self):
++        rng = random.Random(260107)
++        accepted = 0
++        while accepted < 200:
++            strands = rng.randrange(2, 6)
++            length = rng.randrange(2, 14)
++            word = [rng.choice([-1, 1]) * rng.randrange(1, strands) for _ in range(length)]
++            try:
++                diagram = Diagram.from_braid(strands, word)
++            except DiagramError:
++                continue
++            order = list(range(length)) if accepted % 2 else None
++            if order is not None:
++                rng.shuffle(order)
++            self.assert_same(diagram, order=order, reference=accepted < 20)
++            accepted += 1
++
++    def test_multiplicities_are_integers(self):
++        scan = ComponentScan(shape_cache=False)
++        scan.mid = [0, 0, 0, 0]
++        scan.deg = [0, 1, 0, 1]
++        scan.out = [{}, {}, {}, {}]
++        scan.inc = [set(), set(), set(), set()]
++        scan.live = 4
++        scan._compress([0, 0, 0, 0])
++        self.assertEqual(scan.live, 1)
++        self.assertEqual(scan.weights, [{0: 2, 1: 2}])
++        self.assertEqual(scan.total_rank(), 4)
++        self.assertEqual(scan.ranks_by_degree(), {0: 2, 1: 2})
++
++    def test_existing_weights_are_shifted_and_added(self):
++        scan = ComponentScan(shape_cache=False)
++        scan.mid = [0, 0]
++        scan.deg = [2, 3]
++        scan.out = [{}, {}]
++        scan.inc = [set(), set()]
++        scan.live = 2
++        scan.weights = [{0: 5, 1: 7}, {0: 11}]
++        scan._compress([0, 1])
++        self.assertEqual(scan.weights, [{2: 5, 3: 18}])
++        self.assertEqual(scan.total_rank(), 23)
++
++    def test_saturated_weights_do_not_cancel_or_keep_grading(self):
++        scan = ComponentScan(shape_cache=False, rank_cap=3)
++        scan.mid = [0, 0, 0, 0]
++        scan.deg = [0, 1, 2, 3]
++        scan.out = [{}, {}, {}, {}]
++        scan.inc = [set(), set(), set(), set()]
++        scan.live = 4
++        scan._compress([0, 0, 0, 0])
++        self.assertEqual(scan.weights, [{0: 3}])
++        self.assertEqual(scan.total_rank(), 3)
++        with self.assertRaises(ValueError):
++            scan.ranks_by_degree()
++
++    def test_key_records_every_morphism(self):
++        scan = ComponentScan(shape_cache=False)
++        scan.mid = [1, 1, 1, 1]
++        scan.deg = [0, 1, 3, 4]
++        scan.out = [{1: 2}, {}, {3: 4}, {}]
++        scan.inc = [set(), {0}, set(), {2}]
++        key1, shift1 = component_key(scan, [0, 1])
++        key2, shift2 = component_key(scan, [2, 3])
++        self.assertNotEqual(key1, key2)
++        self.assertEqual((shift1, shift2), (0, 3))
++        scan.out[2][3] = 2
++        self.assertEqual(key1, component_key(scan, [2, 3])[0])
++
++    def test_invalid_order_and_limits(self):
++        pd = Diagram.from_braid(2, [1, 1, 1]).pd
++        with self.assertRaises(ValueError):
++            compressed_khovanov_rank(pd, order=[0, 1, 1])
++        with self.assertRaises(ScanLimit):
++            compressed_khovanov_rank(pd, max_objects=1)
++        with self.assertRaises(ScanLimit):
++            compressed_khovanov_rank(pd, seconds=0)
++
++    def test_large_visible_sum_with_exact_rank_formula(self):
++        # Geometric factoring is intentionally NOT used by this backend test.
++        examples = Path(os.environ.get("FASTUNKNOT_EXAMPLES", str(Path(__file__).resolve().parents[1] / "examples")))
++        source = examples / "conway_sum_8.json"
++        if not source.exists():
++            self.skipTest("set FASTUNKNOT_EXAMPLES to baseline/fast/examples for the large-sum check")
++        diagram = Diagram.from_pd(json.loads(source.read_text())["pd"])
++        result = compressed_khovanov_rank(diagram.pd, check_d_squared=True)
++        self.assertEqual(result["rank"], 2 * 33 ** 8)
++        self.assertLess(result["stats"]["max_representative_objects"], 1000)
++        self.assertGreater(result["stats"]["max_expanded_after_elimination"], 10 ** 12)
++
++
++if __name__ == "__main__":
++    unittest.main(verbosity=2)
+diff --git a/Topology/UnknotRecognition/fast/tests/test_euler_scan.py b/Topology/UnknotRecognition/fast/tests/test_euler_scan.py
+new file mode 100644
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/tests/test_euler_scan.py
+@@ -0,0 +1,137 @@
++"""Independent continuation checks and monotonicity tests for Euler inference."""
++import json
++import os
++from pathlib import Path
++import random
++import unittest
++
++from fastunknot import Diagram
++from fastunknot.diagram import DiagramError
++from fastunknot.ordering import best_scan_order
++from fastunknot.scan import ScanComplex, khovanov_rank
++from fastunknot.scan_fast import FastScan
++from fastunknot.component_scan import ComponentScan
++from fastunknot.euler_scan import (EulerBudget, SuffixEuler, component_euler_bound,
++                        euler_compressed_khovanov_decide)
++
++
++def random_diagrams(count, seed):
++    rng = random.Random(seed)
++    accepted = 0
++    while accepted < count:
++        strands = rng.randrange(2, 5)
++        length = rng.randrange(2, 11)
++        word = [rng.choice([-1, 1]) * rng.randrange(1, strands) for _ in range(length)]
++        try:
++            diagram = Diagram.from_braid(strands, word)
++        except DiagramError:
++            continue
++        order = list(range(length))
++        rng.shuffle(order)
++        accepted += 1
++        yield diagram, order
++
++
++class EulerTests(unittest.TestCase):
++    def test_suffix_matches_generic_algebra_continuation(self):
++        checked = 0
++        for diagram, order in random_diagrams(40, 1260107):
++            stage = len(order) // 2
++            scan = FastScan(shape_cache=False)
++            for index in order[:stage]:
++                scan.add_crossing(diagram.pd[index])
++            engine = SuffixEuler(diagram.pd, order, max_states=10000)
++            for matching in sorted({m for m in scan.mid if m is not None})[:3]:
++                pairs = scan.algebra.pairs[matching]
++                expected = ScanComplex(algebra="sets", pivot="lifo")
++                expected.objects = {0: (frozenset(pairs), 0)}
++                expected.next_id = 1
++                expected.points = scan.points
++                for index in order[stage:]:
++                    expected.add_crossing(diagram.pd[index])
++                    expected.check_d_squared()
++                chi = sum((-1) ** h * rank for h, rank in expected.ranks_by_degree().items())
++                self.assertEqual(engine.evaluate(stage, pairs), chi)
++                checked += 1
++        self.assertGreaterEqual(checked, 40)
++
++    def test_bound_is_monotone_and_finishes_at_full_rank(self):
++        for diagram, order in random_diagrams(50, 2260107):
++            rank = khovanov_rank(diagram.pd, order=order)["rank"]
++            scan = ComponentScan(shape_cache=False)
++            engine = SuffixEuler(diagram.pd, order, max_states=10000)
++            previous = 0
++            for stage, index in enumerate(order, 1):
++                scan.add_crossing(diagram.pd[index])
++                bound, _ = component_euler_bound(scan, engine, stage)
++                self.assertLessEqual(previous, bound)
++                self.assertLessEqual(bound, rank)
++                previous = bound
++            self.assertEqual(previous, rank)
++            verdict = euler_compressed_khovanov_decide(
++                diagram.pd, order=order, check_d_squared=True, euler_max_states=10000)
++            self.assertEqual(verdict["status"], "UNKNOT" if rank == 2 else "KNOTTED")
++
++    def test_zero_budget_is_inconclusive(self):
++        diagram = Diagram.from_braid(3, [1, 1, 1, 2, 2, 2])
++        result = euler_compressed_khovanov_decide(diagram.pd, euler_max_states=0)
++        self.assertEqual(result["status"], "KNOTTED")
++        self.assertEqual(result["method"], "closed-rank")
++        self.assertTrue(result["euler_exhausted"])
++        self.assertEqual(result["rank_capped"], 3)
++
++    def test_no_false_early_knot_on_unlinking_cancellations(self):
++        diagram = Diagram.from_braid(3, [1, 2, -2, -1, 1, 2])
++        self.assertEqual(khovanov_rank(diagram.pd)["rank"], 2)
++        result = euler_compressed_khovanov_decide(diagram.pd, check_d_squared=True)
++        self.assertEqual(result["status"], "UNKNOT")
++
++    def test_large_sum_has_early_certificate(self):
++        examples = Path(os.environ.get("FASTUNKNOT_EXAMPLES", str(Path(__file__).resolve().parents[1] / "examples")))
++        source = examples / "conway_sum_8.json"
++        if not source.exists():
++            self.skipTest("set FASTUNKNOT_EXAMPLES for the large-sum check")
++        diagram = Diagram.from_pd(json.loads(source.read_text())["pd"])
++        result = euler_compressed_khovanov_decide(diagram.pd, check_d_squared=True)
++        self.assertEqual(result["status"], "KNOTTED")
++        self.assertEqual(result["method"], "component-euler")
++        self.assertLess(result["stage"], len(diagram.pd))
++        self.assertEqual(result["rank_lower_bound_capped"], 3)
++        self.assertNotIn("rank", result)
++        self.assertNotIn("rank_capped", result)
++
++    def test_signed_euler_values_are_not_saturated(self):
++        diagram = Diagram.from_braid(2, [1, 1, 1])
++        order = list(range(3))
++        engine = SuffixEuler(diagram.pd, order, max_states=100)
++        self.assertEqual(engine.evaluate(0, ()), -2)
++        self.assertIn(4, engine.cache.values())
++        with self.assertRaises(EulerBudget):
++            SuffixEuler(diagram.pd, order, max_states=0).evaluate(0, ())
++
++    def test_mirror_pairs_follow_raw_scanner_grading(self):
++        rng = random.Random(3260107)
++        for strands, word in [(2, [1] * 5), (3, [1, 2] * 5),
++                              (3, [1, -2] * 4), (4, [1, 2, 3] * 3)]:
++            for sign in (-1, 1):
++                diagram = Diagram.from_braid(strands, [sign * g for g in word])
++                order = list(range(len(word)))
++                rng.shuffle(order)
++                result = khovanov_rank(diagram.pd, order=order)
++                expected = sum((-1) ** h * rank for h, rank in result["by_degree"].items())
++                engine = SuffixEuler(diagram.pd, order, max_states=20000)
++                self.assertEqual(engine.evaluate(0, ()), expected)
++                self.assertEqual(abs(expected), 2)
++                verdict = euler_compressed_khovanov_decide(diagram.pd, order=order)
++                self.assertEqual(verdict["status"], "KNOTTED")
++
++    def test_iterative_stack_handles_long_orders(self):
++        # A 1201-crossing two-strand torus knot gives a deep but narrow DAG.
++        diagram = Diagram.from_braid(2, [1] * 1201)
++        order = list(range(1201))
++        engine = SuffixEuler(diagram.pd, order, max_states=5000)
++        self.assertEqual(abs(engine.evaluate(0, ())), 2)
++
++
++if __name__ == "__main__":
++    unittest.main(verbosity=2)
+diff --git a/Topology/UnknotRecognition/fast/tests/test_fastunknot.py b/Topology/UnknotRecognition/fast/tests/test_fastunknot.py
+--- a/Topology/UnknotRecognition/fast/tests/test_fastunknot.py
++++ b/Topology/UnknotRecognition/fast/tests/test_fastunknot.py
+@@ -17,6 +17,13 @@
+ from fastunknot.simplify import apply_move, descending_start, legal_moves, simplify  # noqa: E402
+ 
+ EXAMPLES = os.path.join(ROOT, "examples")
++
++# Keep the historical pipeline tests focused on the inherited configuration.
++# The default 0.3 front end is exercised separately by test_integration.py.
++_baseline_recognize = recognize
++def recognize(diagram, **options):
++    options.setdefault("use_seifert", False)
++    return _baseline_recognize(diagram, **options)
+ 
+ 
+ def load(name):
+diff --git a/Topology/UnknotRecognition/fast/tests/test_integration.py b/Topology/UnknotRecognition/fast/tests/test_integration.py
+new file mode 100644
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/tests/test_integration.py
+@@ -0,0 +1,114 @@
++"""Public API and CLI integration checks for the structural/compressed release."""
++from __future__ import annotations
++
++import json
++from pathlib import Path
++import random
++import subprocess
++import sys
++import unittest
++
++from fastunknot import Diagram, recognize, verify_seifert_certificate
++
++
++EXAMPLES = Path(__file__).resolve().parents[1] / "examples"
++SCAN_ONLY = dict(use_seifert=False, use_reduction=False, use_descending=False,
++                 use_factorization=False, use_modular=False, use_jones=False,
++                 use_alexander=False, use_r3=False)
++
++
++def example(name):
++    return Diagram.from_json(json.loads((EXAMPLES / (name + ".json")).read_text()))
++
++
++class IntegrationTests(unittest.TestCase):
++    def test_default_structural_certificates_are_replayable(self):
++        cases = [(Diagram.from_pd([]), "UNKNOT"),
++                 (Diagram.from_braid(4, [1, -2, 3]), "UNKNOT"),
++                 (Diagram.from_braid(3, [1, -2] * 20), "KNOTTED"),
++                 (Diagram.from_braid(5, [1, 2, 3, 4] * 7), "KNOTTED")]
++        for diagram, status in cases:
++            result = recognize(diagram)
++            self.assertEqual(result.status, status)
++            self.assertTrue(verify_seifert_certificate(
++                diagram, result.evidence["seifert_certificate"]))
++            self.assertEqual(recognize(diagram, use_seifert=False).status, status)
++            self.assertFalse(result.to_json()["quasipolynomial_guarantee"])
++
++    def test_backends_preserve_verdicts_and_evidence_semantics(self):
++        for name, status in (("trefoil", "KNOTTED"), ("hard_unknot_8", "UNKNOT"),
++                             ("conway", "KNOTTED"), ("conway_sum_2", "KNOTTED")):
++            for backend in ("standard", "shared", "saturated", "euler"):
++                with self.subTest(name=name, backend=backend):
++                    result = recognize(example(name), backend=backend,
++                                       check_d_squared=True, **SCAN_ONLY)
++                    self.assertEqual(result.status, status)
++                    evidence = result.evidence["khovanov"]
++                    if backend in ("saturated", "euler"):
++                        self.assertNotIn("rank", evidence)
++                        self.assertNotIn("unreduced_rank", evidence)
++                        self.assertNotIn("reduced_rank", evidence)
++                        if "rank_capped" in evidence:
++                            self.assertEqual(evidence["rank_capped"],
++                                             2 if status == "UNKNOT" else 3)
++                        else:
++                            self.assertEqual(evidence["rank_lower_bound_capped"], 3)
++                            self.assertEqual(status, "KNOTTED")
++
++    def test_default_pipeline_matches_legacy_on_random_closures(self):
++        rng = random.Random(2026100717)
++        checked = 0
++        while checked < 100:
++            strands = rng.randrange(2, 5)
++            word = [rng.choice((-1, 1)) * rng.randrange(1, strands)
++                    for _ in range(rng.randrange(strands - 1, 12))]
++            try:
++                diagram = Diagram.from_braid(strands, word)
++            except ValueError:
++                continue
++            new = recognize(diagram)
++            old = recognize(diagram, use_seifert=False)
++            self.assertEqual(new.status, old.status, word)
++            if "seifert_certificate" in new.evidence:
++                self.assertTrue(verify_seifert_certificate(
++                    diagram, new.evidence["seifert_certificate"]))
++            checked += 1
++
++    def test_resource_limit_and_optional_inference_budget_differ(self):
++        for backend in ("shared", "saturated", "euler"):
++            result = recognize(example("conway"), backend=backend,
++                               max_objects=1, **SCAN_ONLY)
++            self.assertEqual(result.status, "UNKNOWN")
++            self.assertEqual(result.method, "resource-limit")
++        result = recognize(example("conway_sum_2"), backend="euler",
++                           euler_max_states=0, **SCAN_ONLY)
++        self.assertEqual(result.status, "KNOTTED")
++        self.assertTrue(result.evidence["khovanov"]["euler_exhausted"])
++        self.assertEqual(result.evidence["khovanov"]["rank_capped"], 3)
++
++    def test_invalid_options_and_cli_rank_fields(self):
++        diagram = example("trefoil")
++        for options in ({"backend": "missing"}, {"backend": "shared", "tail": 1},
++                        {"backend": "saturated", "algebra": "sets"},
++                        {"backend": "euler", "race": 2},
++                        {"euler_max_states": -1}, {"euler_max_states": True}):
++            with self.assertRaises(ValueError):
++                recognize(diagram, **options)
++        command = [sys.executable, "-m", "fastunknot", "recognize",
++                   str(EXAMPLES / "conway_sum_2.json"), "--no-seifert",
++                   "--no-reduction", "--no-descending", "--no-factor",
++                   "--no-alexander", "--no-jones", "--backend", "euler"]
++        completed = subprocess.run(command, text=True, capture_output=True)
++        self.assertEqual(completed.returncode, 0, completed.stderr)
++        evidence = json.loads(completed.stdout)["evidence"]["khovanov"]
++        self.assertEqual(evidence["rank_lower_bound_capped"], 3)
++        self.assertNotIn("rank", evidence)
++        self.assertNotIn("rank_capped", evidence)
++        invalid = subprocess.run(command + ["--tail", "1"],
++                                 text=True, capture_output=True)
++        self.assertEqual(invalid.returncode, 2)
++        self.assertNotIn("Traceback", invalid.stderr)
++
++
++if __name__ == "__main__":
++    unittest.main()
+diff --git a/Topology/UnknotRecognition/fast/tests/test_seifert.py b/Topology/UnknotRecognition/fast/tests/test_seifert.py
+new file mode 100644
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/tests/test_seifert.py
+@@ -0,0 +1,133 @@
++"""Cross-check structural certificates against independent topology computations.
++
++For an integrated tree, place this file in fast/tests and seifert.py in
++fast/fastunknot.  Standalone: set PYTHONPATH to baseline/fast and this folder.
++"""
++from __future__ import annotations
++
++from copy import deepcopy
++from pathlib import Path
++import json
++import random
++import unittest
++
++from fastunknot import Diagram, khovanov_rank
++
++try:
++    from fastunknot.seifert import seifert_data, seifert_certificate, verify_seifert_certificate
++except ImportError:
++    from seifert import seifert_data, seifert_certificate, verify_seifert_certificate
++
++
++class SeifertTests(unittest.TestCase):
++    def test_braid_graph_formula_and_relabeling(self):
++        rng = random.Random(2026100701)
++        checked = 0
++        while checked < 160:
++            strands = rng.randrange(2, 7)
++            word = [rng.choice((-1, 1)) * rng.randrange(1, strands)
++                    for _ in range(rng.randrange(strands - 1, 31))]
++            try:
++                diagram = Diagram.from_braid(strands, word)
++            except ValueError:
++                continue
++            data = seifert_data(diagram)
++            self.assertEqual(data["seifert_circles"], strands)
++            positive_indices = {g for g in word if g > 0}
++            negative_indices = {-g for g in word if g < 0}
++            self.assertEqual(data["homogeneity_defect"],
++                             len(positive_indices & negative_indices))
++            self.assertEqual(data["canonical_genus"], (len(word) - strands + 1) // 2)
++            # Half-turn individual PD rows and permute/relabel crossings and edges.
++            rows = [row[2:] + row[:2] if rng.randrange(2) else row for row in diagram.pd]
++            rng.shuffle(rows)
++            labels = list(range(2 * len(word)))
++            rng.shuffle(labels)
++            moved = Diagram.from_pd([[labels[e] for e in row] for row in rows])
++            self.assertEqual(seifert_data(moved), data)
++            mirror = seifert_data(diagram.mirror())
++            self.assertEqual(mirror["canonical_genus"], data["canonical_genus"])
++            self.assertEqual(mirror["homogeneity_defect"], data["homogeneity_defect"])
++            lower, upper = data["rasmussen_interval"]
++            self.assertEqual(mirror["rasmussen_interval"], [-upper, -lower])
++            for candidate in (diagram, moved, diagram.mirror()):
++                certificate = seifert_certificate(candidate)
++                if certificate is not None:
++                    self.assertTrue(verify_seifert_certificate(candidate, certificate))
++            checked += 1
++
++    def test_all_three_criteria_and_zero_interval(self):
++        cases = [
++            (Diagram.from_pd([]), "UNKNOT", "seifert-genus-zero"),
++            (Diagram.from_braid(4, [1, -2, 3]), "UNKNOT", "seifert-genus-zero"),
++            (Diagram.from_braid(3, [1, -2] * 2), "KNOTTED", "homogeneous-seifert-genus"),
++            (Diagram.from_braid(3, [1, 1, 1, 1, -1, 2]), "KNOTTED", "rasmussen-interval"),
++        ]
++        for diagram, status, criterion in cases:
++            certificate = seifert_certificate(diagram)
++            self.assertEqual((certificate["status"], certificate["criterion"]), (status, criterion))
++            self.assertTrue(verify_seifert_certificate(diagram, certificate))
++        figure_eight = seifert_certificate(Diagram.from_braid(3, [1, -2] * 2))
++        self.assertEqual(figure_eight["rasmussen_interval"], [0, 0])
++        self.assertEqual(figure_eight["status"], "KNOTTED")
++
++    def test_against_exact_khovanov(self):
++        rng = random.Random(2026100702)
++        checked = fired = 0
++        while checked < 60:
++            strands = rng.randrange(2, 5)
++            word = [rng.choice((-1, 1)) * rng.randrange(1, strands)
++                    for _ in range(rng.randrange(strands - 1, 11))]
++            try:
++                diagram = Diagram.from_braid(strands, word)
++            except ValueError:
++                continue
++            certificate = seifert_certificate(diagram)
++            if certificate is not None:
++                fired += 1
++                rank = khovanov_rank(diagram.pd)["reduced_rank"]
++                self.assertEqual(certificate["status"] == "UNKNOT", rank == 1, word)
++                self.assertTrue(verify_seifert_certificate(diagram, certificate))
++            checked += 1
++        self.assertGreater(fired, 20)
++
++    def test_unbounded_genus_unknots_with_defect_one(self):
++        for m in (2, 3, 8, 30):
++            diagram = Diagram.from_braid(2, [1] * m + [-1] * (m - 1))
++            data = seifert_data(diagram)
++            self.assertEqual(data["homogeneity_defect"], 1)
++            self.assertEqual(data["canonical_genus"], m - 1)
++            self.assertIsNone(seifert_certificate(diagram))
++            self.assertIsNone(seifert_certificate(diagram.mirror()))
++
++    def test_mutated_certificates_rejected(self):
++        diagram = Diagram.from_braid(3, [1, -2] * 4)
++        original = seifert_certificate(diagram)
++        self.assertTrue(verify_seifert_certificate(diagram, original))
++        for key in ("crossings", "writhe", "seifert_circles", "positive_components",
++                    "negative_components", "canonical_genus", "homogeneity_defect", "version"):
++            changed = deepcopy(original)
++            changed[key] += 1
++            self.assertFalse(verify_seifert_certificate(diagram, changed), key)
++        for key, value in (("status", "UNKNOT"), ("criterion", "seifert-genus-zero"),
++                           ("rasmussen_interval", [0, 2]), ("version", True)):
++            changed = {**original, key: value}
++            self.assertFalse(verify_seifert_certificate(diagram, changed), key)
++        self.assertFalse(verify_seifert_certificate(diagram, None))
++        self.assertFalse(verify_seifert_certificate(diagram, {}))
++
++    def test_existing_nonhomogeneous_examples_are_inconclusive(self):
++        import fastunknot
++        examples = Path(fastunknot.__file__).resolve().parent.parent / "examples"
++        for name in ("conway.json", "kinoshita_terasaka.json", "hard_unknot_8.json",
++                     "grid_scrambled_unknot.json"):
++            diagram = Diagram.from_json(json.loads((examples / name).read_text()))
++            certificate = seifert_certificate(diagram)
++            if name in ("hard_unknot_8.json", "grid_scrambled_unknot.json"):
++                self.assertTrue(certificate is None or certificate["status"] == "UNKNOT")
++            else:
++                self.assertIsNone(certificate)
++
++
++if __name__ == "__main__":
++    unittest.main()

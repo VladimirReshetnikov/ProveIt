@@ -12,9 +12,23 @@ modification times.
 | `04/` | `unknot_recognition_partial.zip` | `unknot` | Khovanov cube, Knot Atlas fixtures | dual-4-connectivity pattern test, potential | 62 |
 | `05/` | `unknot_recognition_partial_implementation (1).zip` | `unknot_recognition` | Reidemeister I/II traces, determinant, Khovanov cube | bond-enumeration pattern test, simplicial normal coordinates, pattern complexity | 58 |
 | `06/` | `unknot-recognition-implementation.zip` | `unknot` | Khovanov cube, 11-crossing fixtures, report verifier | bond-enumeration pattern test | 45 |
+| `07/` | `unknot_structural_compression.zip` | `fastunknot` 0.3.0 (`07/fast/`) | signed-Seifert-graph certificate stage, exact component-sharing Khovanov backend | Euler/component scans | not run |
 
-Every archive contains a README, a LaTeX report with PDF under `docs/`,
-examples, recorded results, and a standard-library-only Python package.
+Archives `01/`–`06/` each contain a README, a LaTeX report with PDF under
+`docs/`, examples, recorded results, and a standard-library-only Python package.
+
+`07/` (placed 7 October 2026) continues the project's own `../fast/` package
+rather than being an independent implementation. It contains:
+
+- the article (`paper/`);
+- the modified package (`fast/`);
+- the baseline it was made from (`reference/fast/`, pinned to ProveIt
+  `4e6fe879e`);
+- `integration.patch`, benchmarks and provenance.
+
+The patch is **not applied** to `../fast/`. By Vladimir's direction, reports on
+this topic are placed as delivered, without test runs or review. Their recorded
+results are the authors' own and are unchecked here.
 
 ## Test status (last observed 18 September 2026)
 

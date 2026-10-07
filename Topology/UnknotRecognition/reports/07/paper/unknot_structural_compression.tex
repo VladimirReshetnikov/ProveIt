@@ -1,0 +1,872 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,booktabs,longtable,tabularx,array}
+\usepackage{enumitem,xcolor,graphicx}
+\usepackage{listings,xurl,hyperref,bookmark}
+\usepackage{fancyhdr}
+\definecolor{ink}{HTML}{15324F}
+\definecolor{accent}{HTML}{14666B}
+\definecolor{muted}{HTML}{5A6570}
+\hypersetup{colorlinks=true,linkcolor=ink,citecolor=accent,urlcolor=accent,
+ pdftitle={Unknot Recognition by Structural Certificates and Compressed Chain Complexes},
+ pdfauthor={ProveIt research continuation}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\textcolor{muted}{ProveIt: unknot recognition}}
+\fancyhead[R]{\small\textcolor{muted}{Structural certificates and compression}}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\emergencystretch}{2em}
+\setlist{itemsep=3pt,topsep=5pt}
+\lstset{basicstyle=\small\ttfamily,breaklines=true,columns=fullflexible,
+ frame=single,rulecolor=\color{muted!35},backgroundcolor=\color{muted!3},
+ showstringspaces=false,keepspaces=true}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\F}{\mathbb F_2}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Kh}{\operatorname{Kh}}
+\newcommand{\rKh}{\widetilde{\operatorname{Kh}}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\capthree}{\operatorname{cap}_3}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\UNKNOT}{\textup{\textsc{unknot}}}
+\newcommand{\KNOTTED}{\textup{\textsc{knotted}}}
+\newcommand{\UNKNOWN}{\textup{\textsc{unknown}}}
+\newcommand{\pin}{\nolinkurl{4e6fe879e5238ec0b134b6d33fdca0b8c7c1c711}}
+\title{\textcolor{ink}{Unknot Recognition by Structural Certificates\newline
+and Compressed Chain Complexes}\\[6pt]
+\large Exact improvements and a finite-type route towards quasi-polynomial time}
+\author{Research continuation for the ProveIt project}
+\date{7 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We continue the ProveIt unknot-recognition implementation from a pinned,
+fully tested source snapshot. Two complementary improvements are developed.
+First, signed Seifert-graph certificates give a linear-time decision procedure
+(after validation, in the word-RAM model) on every homogeneous knot diagram and an additional one-sided obstruction
+on nonhomogeneous diagrams. Second, a scanning Khovanov complex is represented
+as a sum of distinct, explicitly serialized differential components with
+multiplicity polynomials. Repeated components are continued once, even when
+their virtual multiplicity is exponential. A decision-only specialization
+replaces those polynomials by the four-element semiring of nonnegative counts
+saturated at three; this preserves the final unreduced rank-two unknot test.
+An optional exact suffix-Euler calculation supplies monotone lower bounds on
+completed homology rank, sometimes deciding knottedness before closure.
+
+We prove preservation of the represented complex, the saturation theorem,
+and a quantitative finite-type bound. If $w$ is the maximum frontier size and
+$b$ the maximum connected differential-component size produced after
+elimination, the number of stored component types at any stage is at most
+$\sum_{s\le b}s^s((w-1)!!)^s2^{s^2 2^{w/2}}$. This yields the specific
+$n^{O(\log n)}$ target whenever $b^2 2^{w/2}=O(\log^2 n)$, with no restriction
+on the number of repeated copies. The hypothesis is an execution parameter,
+not a proved universal property of knot diagrams.
+
+The deliverable includes the implementation, independent certificate replay,
+regression tests, randomized comparisons, paired timing data, an unchanged
+reference implementation, and integration instructions. Explicit-basis
+homology computation can still require exponential time even for
+three-strand braids. We do not establish a general quasi-polynomial unknot
+recognizer. The new results isolate a concrete mechanism by which a complete
+implementation can avoid multiplicity growth, and identify the structural
+bounds still needed to turn that mechanism into a general complexity theorem.
+\end{abstract}
+\clearpage
+{\fontsize{9.5}{11}\selectfont\tableofcontents}
+\newpage
+
+\section{Results, scope, and source snapshot}
+\label{sec:scope}
+
+\subsection{What has been achieved}
+The objective is to improve the actual recognizer in
+\code{Topology/UnknotRecognition/fast}, with the target
+\begin{equation}\label{eq:target}
+ T(n)=n^{O(\log n)}=2^{O((\log n)^2)}
+\end{equation}
+for a diagram with $n$ crossings. The source snapshot used throughout is
+commit \pin\ of the ProveIt repository~\cite{proveit}. Forty source, test,
+example, and configuration files were retrieved and checked against their
+Git blob identifiers. The baseline's 41 unit tests pass in this environment.
+The supplied provenance manifest also records SHA-256 digests of those exact
+bytes. The reference copy is not an earlier acceleration proposal: it is the
+current Python implementation at the stated commit.
+
+The contributions have different logical statuses. Keeping those statuses
+separate is necessary for interpreting both the mathematics and the timing
+results.
+\begin{center}\small
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{.25\textwidth}Y>{\raggedright\arraybackslash}p{.23\textwidth}@{}}
+\toprule
+Contribution & Precise scope & Status\\
+\midrule
+Seifert certificates & Genus-zero canonical surfaces, homogeneous diagrams,
+and a Rasmussen interval excluding zero & Implemented; known topological
+inputs, proved algorithmic use\\
+Component sharing & Repeated actual differential components, identified by
+complete equality of serialized data up to homological shift & Implemented;
+correctness proved here\\
+Saturated decision weights & Counts capped at three, with no absolute grading
+information in the multiplicities & Implemented; correctness proved here\\
+Suffix-Euler certificates & Componentwise completed Euler characteristics
+as a monotone homology-rank lower bound & Implemented; correctness proved here\\
+Finite-type complexity & A bound in the actual frontier size $w$ and
+post-elimination component size $b$ & Proved sufficient condition\\
+General bound~\eqref{eq:target} & All valid classical knot diagrams & Open for
+this implementation\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The algebraic arguments are presented as research results of this
+continuation. We do not claim that direct-sum sharing, semiring quotients, or
+the underlying topological criteria are new concepts. The contribution is
+their precise, compatible realization for this scanner, the associated
+complexity accounting, and the tested implementation. No literature-wide
+priority claim is made for the general compression principles.
+
+\subsection{What the existing code already did}
+The pinned recognizer validates a one-component spherical PD diagram; applies
+incremental Reidemeister I/II reduction; tests whether a descending traversal
+exists; and splits visible connected sums. Each remaining factor is tested
+using modular Alexander and Jones obstructions. The exact Alexander
+polynomial is optional when the modular test has already run. A budgeted
+Reidemeister III search can unlock further reductions. The complete fallback
+computes Khovanov ranks over $\F$ by a Bar-Natan scan~\cite{bnfast}.
+
+This code already includes bit-packed cobordism coefficients, compiled
+composition and transfer plans, Markowitz pivot selection, shape caches,
+multiple scan orders, and optional races. Reimplementing those changes would
+not advance the current project. The new structural stage is placed before
+factorization and the matrix-based filters. The new compressed backends are
+optional, because their bookkeeping can cost time when few equal components
+occur. The ordinary optimized scanner remains the default fallback.
+
+\subsection{Current relation to the hierarchy programme}
+Lackenby's 2026 hierarchy preprint gives a constructive topological route and
+certification results. Its Proposition 9.1 bounds iterations in terms of
+hierarchy length $L$ and pattern complexity $g$ by $L(g+1)^L$; Proposition
+10.2 gives $L\le4c_q(\mathcal H)$ for a refined construction. The paper does
+not supply the end-to-end quasi-polynomial implementation bound needed here.
+The 2021 author slides announce a $2^{O((\log n)^3)}$ bound, which is
+quasi-polynomial but is a different exponent from~\eqref{eq:target}
+\cite{lackenby2026,lackenbytalk}.
+
+Our changes do not implement those missing geometric operations. They improve
+the existing exact algebraic route and supply a different, explicitly
+parameterized compression theorem. This distinction prevents an iteration
+bound, a fast special case, or a compressed data structure from being mistaken
+for a complete general complexity proof.
+
+\section{Input model and the exact rank threshold}
+\label{sec:model}
+
+\subsection{Diagrams, arithmetic, and promises}
+A nonempty PD diagram has $n$ ordered crossing rows. A row
+$(a,b,c,d)$ lists four counterclockwise ports, with the under-strand joining
+ports $0,2$ and the over-strand joining $1,3$. Every edge label occurs exactly
+twice. Validation checks the single component and the spherical rotation
+system. The empty PD code denotes one crossing-free circle, not the empty
+link. Braid and grid input are converted to this representation.
+
+The low-level scan routines, like the inherited routines, take a PD array
+under a validity promise. The public command line obtains it through
+\code{Diagram.from\_json}. An arbitrary direct call to the permissive
+\code{Diagram} constructor does not constitute validation. Every theorem
+asserting an unknot verdict in this report assumes a valid classical
+one-component diagram.
+
+The parameter $n$ refers to an explicitly listed diagram. After label
+normalization, its encoding uses $O(n\log(n+2))$ bits. An input containing
+very long integer labels necessarily incurs the cost of reading and
+normalizing those labels. Linear graph algorithms below use a word-RAM with
+$\Theta(\log(n+2))$-bit words; their bit costs gain the usual polynomial
+logarithmic factors. Homological multiplicities use arbitrary-precision
+nonnegative integers; morphisms use exact $\F$ coefficients.
+
+\subsection{Why unreduced rank two detects the unknot}
+We use total dimension, with the quantum grading forgotten. Define
+\[
+ r_2(K)=\dim_{\F}\Kh(K;\F),\qquad
+ \widetilde r_2(K)=\dim_{\F}\rKh(K;\F).
+\]
+Shumakovitch's splitting over $\F$ gives
+$r_2(K)=2\widetilde r_2(K)$, in fact degree by degree in the homological
+grading~\cite[Corollary 3.2.C]{shumakovitch}. The rational-rank consequence
+of Kronheimer--Mrowka says that every nontrivial knot has reduced rational
+Khovanov rank greater than one~\cite{km}. The universal coefficient theorem
+for the finite free integral reduced complex gives
+\[
+ \dim_{\Q}\rKh(K;\Q)\le\widetilde r_2(K).
+\]
+Therefore
+\begin{equation}\label{eq:rankcriterion}
+ K\text{ is the unknot}\quad\Longleftrightarrow\quad
+ \widetilde r_2(K)=1\quad\Longleftrightarrow\quad r_2(K)=2.
+\end{equation}
+For the forward implication, the reduced unknot complex has one generator.
+For the reverse implication, rational rank greater than one is impossible.
+One must not substitute the incorrect argument that dimension one over $\F$
+automatically excludes odd integral torsion. The rational-rank theorem is
+what makes the coefficient change sufficient.
+
+The normalized homological degree is obtained from cube degree by a uniform
+writhe-dependent shift. The existing scanner reports raw cube degrees.
+Uniform shifts do not affect total rank, and the new exact-rank backend
+preserves the same raw degree convention. No quantum-graded homology or
+integral torsion is claimed by the delivered API.
+
+\section{A linear structural decision stage}
+\label{sec:seifert}
+
+\subsection{Signed Seifert graphs}
+Apply the oriented smoothing at every crossing of an oriented diagram $D$.
+Let $s=s(D)$ be the number of resulting Seifert circles. The signed Seifert
+graph $G(D)$ has these circles as vertices and one signed edge for each
+crossing. Let $G_+$ and $G_-$ be its two spanning subgraphs obtained by keeping
+only the indicated sign, and put
+\[
+ c_+=\#\pi_0(G_+),\qquad c_-=\#\pi_0(G_-),\qquad
+ \delta(D)=s+1-c_+-c_-.
+\]
+Isolated vertices are counted in \emph{both} spanning subgraphs. Omitting them
+invalidates the formulas even on small examples.
+
+The canonical Seifert surface has $s$ discs and $n$ bands. Because a knot
+diagram is connected, that surface is connected and has one boundary
+component. Consequently its genus is
+\begin{equation}\label{eq:canonicalgenus}
+ g_D=\frac{n-s+1}{2}.
+\end{equation}
+This is an upper bound on knot genus for any diagram. Equality need not hold
+without an additional hypothesis.
+
+\begin{lemma}[A graph-theoretic interpretation of the defect]
+\label{lem:defect}
+Let $G$ be a loopless connected finite multigraph whose edges have signs $+$ or $-$,
+including possible parallel edges. Let $s$ be its number of vertices and
+$c_\pm$ the component counts of its signed spanning subgraphs. Then
+$\delta=s+1-c_+-c_-\ge0$. Moreover, $\delta=0$ if and only if every block of
+$G$ is monochromatic, equivalently, every simple cycle is monochromatic.
+\end{lemma}
+\begin{proof}
+Write $m,m_+,m_-$ for the edge counts. The $\F$ cycle spaces satisfy
+$Z(G_+)\oplus Z(G_-)\subseteq Z(G)$, with dimensions
+\[
+ \dim Z(G)=m-s+1,\quad
+ \dim Z(G_+)=m_+-s+c_+,\quad
+ \dim Z(G_-)=m_--s+c_-.
+\]
+Their codimension is precisely $s+1-c_+-c_-$, proving nonnegativity.
+If a simple cycle contains both signs, its positive edge set has nonzero
+boundary at a sign-change vertex. It therefore cannot be the sum of a
+positive cycle and a negative cycle. Thus a mixed simple cycle prevents
+codimension zero. Conversely, if every simple cycle is monochromatic, the
+usual generation of the cycle space by simple cycles shows that the two
+signed cycle spaces span $Z(G)$.
+
+A cycle lies in a block. Conversely, any two edges in a nontrivial
+2-connected block lie on a common cycle; a mixed block would therefore
+contain a mixed cycle. Bridges are one-edge blocks. These observations give
+the stated block formulation, also for parallel edges, whose two-edge
+cycles must be included.
+\end{proof}
+
+There is another useful realization of the same integer. Form a bipartite
+graph $B$ with one vertex for each component of $G_+$ and one for each
+component of $G_-$. Every vertex $v$ of $G$ gives an edge joining the two
+components containing $v$. The graph $B$ is connected, and
+\[
+ \beta_1(B)=s-(c_++c_-)+1=\delta.
+\]
+This interpretation also explains why a nearly homogeneous graph need not
+be small: a small cycle rank controls neither the number of edges nor the
+lengths of its paths.
+
+A diagram is called homogeneous when each block of its signed Seifert graph
+has a single sign. Lemma~\ref{lem:defect} is the graph mechanism behind
+Abe's criterion for homogeneous diagrams~\cite{abe}. Cromwell's theorem
+states that the canonical surface of a homogeneous diagram realizes link
+genus; we need its knot case~\cite{cromwell,manchon}.
+
+\subsection{The three exact certificates}
+Let $w$ be writhe in a consistent crossing-sign convention. The
+Kawamura--Lobb bounds give the interval
+\begin{equation}\label{eq:rasmussen}
+ L(D)=w-s+2c_+-1\ \le\ s_R(K)\ \le\
+ U(D)=w+s-2c_-+1,
+\end{equation}
+where $s_R$ denotes Rasmussen's invariant~\cite[Theorem 1.10]{lobb}.
+Its width is $U-L=2\delta$. The unknot has $s_R=0$.
+
+\begin{theorem}[Structural decision theorem]\label{thm:structural}
+For a valid knot diagram, the following rules are sound:
+\begin{enumerate}
+\item If $g_D=0$, return \UNKNOT.
+\item If $g_D>0$ and $\delta=0$, return \KNOTTED.
+\item If $L(D)>0$ or $U(D)<0$, return \KNOTTED.
+\end{enumerate}
+If no rule applies, return no certificate. All the necessary quantities can
+be computed in $O(n)$ word operations and $O(n)$ words of storage after
+validation. Thus this stage alone decides every homogeneous knot diagram in
+linear time.
+\end{theorem}
+\begin{proof}
+A connected orientable surface of genus zero with one boundary component is
+a disc. In the first case, the canonical embedded Seifert surface is such a
+disc, so its boundary is the unknot. In the second case, homogeneity and
+Cromwell's theorem identify $g_D$ with knot genus, which is positive. The
+third case contradicts the value zero of Rasmussen's invariant for the
+unknot, by~\eqref{eq:rasmussen}.
+
+For the complexity, orient the knot by one traversal. In a crossing with
+incoming under-port $u$ and incoming over-port $o$, oriented smoothing pairs
+$u$ with $o+2$ and $o$ with $u+2$, modulo four. Walking the smoothing
+involution alternately with edge pairing labels all Seifert circles in
+$O(n)$ steps. Each crossing now gives one signed edge. Two adjacency-list
+component traversals compute $c_+$ and $c_-$ in $O(n+s)$ operations; here
+$s\le n+1$. The arithmetic uses $O(\log(n+2))$-bit integers.
+\end{proof}
+
+The interval $[0,0]$ is not an unknot certificate. The figure-eight diagram,
+for example, is homogeneous with canonical genus one, yet its Rasmussen
+interval is $[0,0]$. It is decided by the genus rule.
+
+\paragraph{A sign convention carried over from the source.}
+The repository's PD sign function and its positive Artin-generator
+documentation use opposite global conventions on the standard braid
+fixtures. The delivered code retains the sign function used by the existing
+filters. A global sign reversal exchanges $c_+$ with $c_-$, replaces $w$ by
+$-w$, and reflects $[L,U]$ to $[-U,-L]$. Every verdict above is invariant
+under that reflection. Consequently no signed value of $s_R$ in an external
+convention is asserted by the witness without this qualification; the
+knottedness certificate is unaffected. The source's established Jones and
+scanner conventions are not silently changed.
+
+\subsection{Independent replay and placement in the pipeline}
+A certificate records $n,w,s,c_+,c_-,\delta,g_D,[L,U]$, the deciding rule,
+and the verdict. The replay function independently rebuilds the edge
+pairing and knot orientation, computes Seifert circles with union-find, and
+recomputes the signed component counts. It compares all recorded integers
+and then checks the indicated sufficient condition. Its cost is
+$O(n\alpha(n))$ word operations using path compression and union by size.
+It is an independent implementation of the combinatorial calculation, not
+a formal proof checker for the imported topological theorems.
+
+The new default calls the certificate on the original validated diagram,
+before reduction, factorization, or determinants. That location is necessary
+for the straightforward linear-time theorem for the entire homogeneous
+family: a superlinear preliminary routine would otherwise dominate it.
+There is a tradeoff on tiny diagrams. An inconclusive graph calculation adds
+work to cases the old pipeline settles almost immediately. The paired
+measurements report this overhead rather than hiding it in an aggregate.
+The option \code{--no-seifert} restores the old pipeline's stage order.
+
+\subsection{Braid specialization and a counterexample to an overstrong bound}
+\begin{proposition}\label{prop:braiddefect}
+Let $D$ be the closure diagram of a $t$-strand braid word with one component.
+Then $s(D)=t$. If $J_+$ and $J_-$ are the sets of Artin-generator indices
+occurring with the two signs, then
+\[
+ \delta(D)=|J_+\cap J_-|,
+ \qquad g_D=\frac{n-t+1}{2}.
+\]
+\end{proposition}
+\begin{proof}
+Oriented smoothing produces one circle per braid position. The underlying
+Seifert graph is the path on $t$ vertices with parallel crossing edges.
+A spanning subgraph of that path using the index set $J$ has $t-|J|$
+components, irrespective of repetitions. Connectivity of the braid
+projection gives $|J_+\cup J_-|=t-1$. Substitute these component counts into
+the definition of $\delta$. Equation~\eqref{eq:canonicalgenus} gives the
+second formula.
+\end{proof}
+
+\begin{example}[Defect one with arbitrarily large canonical genus]
+\label{ex:defectone}
+For $m\ge2$, consider the two-strand closure of
+$\sigma_1^m\sigma_1^{-(m-1)}$. The braid reduces to $\sigma_1$, so its closure
+is an unknot. Its displayed diagram has $2m-1$ crossings, two Seifert circles,
+$\delta=1$, and $g_D=m-1$. In particular, neither a lower bound
+$g(K)\ge g_D-\delta$ nor a bound on canonical genus in terms of defect alone
+can support a general algorithm.
+\end{example}
+
+The example is readily simplified by the existing Reidemeister engine. Its
+purpose is a mathematical obstruction to an invalid parameter argument,
+not a claim that these diagrams are difficult inputs.
+
+\input{defect_one_family}
+
+\section{Why compressed multiplicity matters}
+\label{sec:barrier}
+
+\subsection{A basis-size obstruction, not a decision lower bound}
+Kelom\"aki--Sch\"utz prove that explicit-basis scanning and divide-and-conquer
+Khovanov algorithms can take exponential time even on positive or alternating
+three-strand braids. Their paper also gives a polynomial-time method for the
+homology of closed three-strand braids using additional structure
+\cite{kelomaki}. Thus large homology dimension obstructs an explicit basis,
+not a short binary description of its dimensions.
+
+For a concrete illustration, let
+\[
+ W_m=\widehat{(\sigma_1\sigma_2^{-1})^m},\qquad 3\nmid m.
+\]
+Its permutation is a power of a three-cycle, so the closure is a knot.
+The diagram has $2m$ crossings, three Seifert circles, and $\delta=0$.
+For $m\ge2$, Theorem~\ref{thm:structural} certifies genus $m-1>0$ and hence
+knottedness in $O(m)$ operations. The determinant formula is
+\begin{equation}\label{eq:weavingdet}
+ d_m=\lambda^m+\lambda^{-m}-2,
+ \qquad \lambda=\frac{3+\sqrt5}{2},
+\end{equation}
+also expressible as $L_{2m}-2$ in Lucas numbers~\cite{weaving}.
+The graded Euler-characteristic identity for reduced Khovanov homology,
+evaluated at the unit-modulus argument corresponding to $V_K(-1)$, gives
+$|V_K(-1)|\le\dim_{\F}\rKh(K;\F)$ by the triangle inequality.
+Consequently an explicit unreduced homology basis has at least $2d_m$
+elements. This lower bound does not require an additional thinness theorem.
+
+One can avoid irrational arithmetic in this witness family. With
+\[
+ A=\begin{pmatrix}2&1\\1&1\end{pmatrix},\qquad
+ t_0=2,\quad t_1=3,\quad t_{m+1}=3t_m-t_{m-1},
+\]
+we have $t_m=\operatorname{tr}(A^m)$ and $d_m=t_m-2$. The two eigenvalues of
+$A$ are $\lambda,\lambda^{-1}$. The determinant identity can also be obtained
+from the reduced Burau closure formula~\cite{morton}. This supplies a simple
+exact recurrence for checking all displayed values.
+
+The growth $d_m=\Theta(\lambda^m)$ does not conflict with a linear-time
+\emph{decision} on this family. The baseline already rejects these knots
+through its polynomial filters. The new graph stage improves their
+preprocessing asymptotics; it does not solve an instance family that was
+previously undecidable by the code.
+
+\subsection{Three different notions of size}
+The scanner's state has at least three independently relevant sizes:
+\begin{enumerate}
+\item the frontier size, which controls the number and algebra of matching
+objects;
+\item the size of a connected component of the nonzero differential graph;
+\item the number of independent copies of equal components, possibly in
+many homological degrees.
+\end{enumerate}
+An optimized coefficient representation reduces the cost of one morphism.
+A good crossing order can reduce the frontier. Neither operation by itself
+prevents an exponential number of equal summands. Conversely, a direct-sum
+compression does not help a large indecomposable differential component.
+These distinctions determine both the theorem and the limitations below.
+
+\section{Exact component sharing in the scanner}
+\label{sec:sharing}
+
+\subsection{The algebraic state being represented}
+We work in the finite $\F$ matching-and-dot algebra already used by the
+validated scanner, with quantum grading forgotten. At a fixed frontier, an
+object is a matching. A differential matrix connects objects in consecutive
+homological degrees. Its entries are the complete dot-mask cobordism values;
+addition is XOR and composition is the existing exact composition operation.
+The relative correctness theorem assumes that the inherited extension,
+delooping, and composition routines implement the usual ungraded $\F$
+Bar--Natan category. The independent tests below support that implementation
+assumption; they are not a formal verification of the full category.
+
+The differential graph of a complex has one vertex per object and an
+undirected edge whenever the differential has a nonzero entry in either
+direction. Its connected components specify literal direct summands. This
+is a matrix-level decomposition, requiring no search for a basis change.
+A component may still decompose further after an undiscovered basis change;
+our method makes no claim to find indecomposable objects.
+
+\begin{definition}[Template and multiplicity polynomial]
+A template $T$ is a finite connected differential component with minimum
+homological degree normalized to zero, with numbered objects and all
+matching and differential data retained. For
+$p(z)=\sum_h p_hz^h\in\N[z]$, define
+\[
+ p\odot T=\bigoplus_h T[h]^{\oplus p_h}.
+\]
+A compressed state is a finite collection $(p_a,T_a)$ representing
+$\bigoplus_a p_a\odot T_a$.
+\end{definition}
+
+The polynomial coefficients are ordinary nonnegative integers. They are
+\emph{not} elements of $\F$. For example, two isolated copies of a generator
+represent a two-dimensional vector space; replacing their multiplicity by
+$2\bmod2=0$ would destroy the represented homology.
+
+\subsection{Equality by complete serialization}
+For a connected component, list its object indices in their inherited
+order and renumber them $0,\ldots,s-1$. Subtract the minimum degree $h_0$.
+The key is the ordered tuple
+\begin{equation}\label{eq:key}
+ \bigl(m_v,h_v-h_0,((u,d_{vu}))_{u:\,d_{vu}\ne0}\bigr)_{v=0}^{s-1},
+\end{equation}
+with each row sorted by its local target index. Matching identifiers refer
+to one shared \code{Planar} table, so equality means equality of the actual
+matching pairs at this stage. All coefficient masks appear in the key.
+
+Equal keys exhibit a chain isomorphism, by mapping the vertex in each local
+position to the same position. Unequal keys may describe isomorphic
+components in different vertex orders. Missing such a merger only loses a
+possible saving. No graph-isomorphism routine, probabilistic fingerprint,
+or canonical-form oracle is assumed. Python dictionaries use complete
+key equality after hashing; a hash collision does not identify unequal
+components.
+
+\subsection{One transition}
+At each crossing, the implementation performs the following operations on
+the stored representatives:
+\begin{enumerate}
+\item Attach the crossing and apply the same delooping and exact
+Gaussian elimination as the ordinary scanner.
+\item Track the parent representative of every newly allocated object.
+Every new differential component must belong to a single parent.
+\item Find its connected components, construct their keys, and normalize
+their degrees.
+\item If a child of parent $(p,T)$ has normalization shift $h_0$, add
+$z^{h_0}p(z)$ to the weight of its key. Keep one representative for each key.
+\end{enumerate}
+The child need not have the same graph as its parent. It may split into many
+components, vanish after contraction, or remain connected. Multiple children
+with the same key have their weights added, even when they arose from
+different parents.
+
+\begin{lemma}[Extension preserves independent summands]
+\label{lem:extension}
+For the crossing-extension operation $F$ in the $\F$ scanner,
+\[
+ F(C\oplus D)\cong F(C)\oplus F(D),\qquad F(C[h])\cong F(C)[h].
+\]
+Furthermore, unit Gaussian elimination can be performed inside each direct
+summand without changing the homotopy type of the whole complex.
+\end{lemma}
+\begin{proof}
+The crossing complex has two smoothings with a saddle between them.
+Tensoring and gluing are additive. Each old object produces its own two
+smoothing blocks, and each transferred old differential remains between
+objects belonging to the same old summand. The saddle also stays inside the
+block of one old object. This proves the first identity at the matrix level.
+Homological shifts commute with extension; the usual signs from a shift
+are immaterial in characteristic two.
+
+For a unit entry $\phi:C^h_b\to C^{h+1}_c$, cancellation changes the
+remaining differential by the Schur-complement term
+$\gamma\phi^{-1}\delta$. If the matrix is block diagonal by summands,
+both incoming and outgoing entries of this pivot are in its own block.
+The correction is therefore in that block. The standard cancellation
+is a chain homotopy equivalence, so doing it independently in each block
+preserves the direct-sum homotopy type.
+\end{proof}
+
+\begin{theorem}[Correctness of component sharing]\label{thm:sharing}
+After every crossing, the complex represented by the compressed state is
+chain-homotopy equivalent to the corresponding ordinary scanning complex.
+At final closure, the exact-weight backend returns the same unreduced rank,
+reduced rank, and raw homological-degree rank counts as the ordinary backend.
+\end{theorem}
+\begin{proof}
+For $n=0$, the explicit input convention returns the rank-two unknot
+complex directly. Assume $n>0$. Initially there is one monoidal empty
+matching in degree zero with weight one; its crossing extensions generate
+the closed-link complex.
+Assume the invariant before a crossing. By Lemma~\ref{lem:extension}, it is
+sufficient to extend one copy of each template and replicate the result by
+the old multiplicities and shifts. Elimination on the representative is a
+valid contraction for every copy. The resulting differential graph splits
+as the direct sum of its connected components. Degree normalization records
+exactly the removed shift, and equality of full keys is a chain isomorphism.
+The weight update therefore represents precisely the direct sum of all
+children, proving the inductive step.
+
+The fully closed matching is the empty one. Its endomorphism ring in the
+implemented algebra is $\F$, so a nonzero differential entry is a unit.
+After complete elimination no differential remains. Each surviving object
+then contributes one dimension in its recorded homological degree. Expanding
+the multiplicity polynomials recovers all those dimensions without
+materializing their generators. The inherited $\F$ splitting gives the
+reduced counts by division by two.
+\end{proof}
+
+The proof does not require the compressed scanner and the ordinary scanner
+to choose the same pivots or to have equal intermediate matrices. Compression
+renumbers objects and can change tie-breaking. Both calculations preserve
+the relevant chain-homotopy type. Tests compare final ranks and degree counts,
+with $d^2=0$ checks as an additional invariant.
+
+\subsection{Integer and degree bounds}
+\begin{lemma}\label{lem:weightbits}
+After $j$ crossings, the virtual expanded state associated with the
+compressed run has at most $8^j$ objects. Every multiplicity coefficient
+therefore has at most $3j+1$ bits, and every shift occurring in an exact
+multiplicity polynomial is between $0$ and $j$.
+\end{lemma}
+\begin{proof}
+Before extension, every object is a loopless matching. A closed circle newly
+created by a smoothing must contain at least one of that smoothing's two
+new arcs. Thus each smoothing creates at most two circles, and delooping
+creates at most four copies for that smoothing. Both smoothings together
+create at most eight objects per old one. Gaussian elimination only removes
+objects. Apply this bound inductively to the virtual expanded process in
+which the representative's valid contractions are copied on every summand.
+This process need not coincide with the baseline's pivot sequence.
+
+Each crossing changes the raw cube degree by zero or one. Absolute degrees
+remain in $[0,j]$. Normalization moves the minimum into the multiplicity
+shift without changing an object's absolute degree; every template contains
+an object of relative degree zero. Its shift is therefore also in $[0,j]$.
+\end{proof}
+
+The virtual rank can be exponential while its binary length is linear.
+The exact backend thus avoids an output-size obstruction to listing the
+basis, while retaining an explicit polynomial-length list of homological
+ranks. It does not output a basis, cycle representatives, or quantum gradings.
+
+\section{Decision-only multiplicities saturated at three}
+\label{sec:saturation}
+
+\begin{definition}
+Let $S_3=\{0,1,2,3\}$ with
+\[
+ a\oplus b=\min(3,a+b),\qquad
+ a\otimes b=\min(3,ab).
+\]
+The element $3$ means ``at least three''. It is not arithmetic modulo three.
+\end{definition}
+
+\begin{lemma}[Positive semiring quotient]\label{lem:semiring}
+The map
+\[
+ q:\N[z]\longrightarrow S_3,\qquad q(p)=\min(3,p(1)),
+\]
+is a semiring homomorphism. In particular, $q(z^h p)=q(p)$.
+\end{lemma}
+\begin{proof}
+Evaluation at one preserves addition and multiplication. For nonnegative
+integers $a,b$,
+\[
+ \min(3,a+b)=\min(3,\min(3,a)+\min(3,b))
+\]
+and
+\[
+ \min(3,ab)=\min(3,\min(3,a)\min(3,b)).
+\]
+For the product identity, a zero factor is immediate; if a positive factor
+has already reached three, both products saturate. Otherwise neither
+factor has changed. These identities also give associativity and
+distributivity by passage from $\N$.
+\end{proof}
+
+\begin{theorem}[Saturated unknot decision]\label{thm:saturation}
+Replace each exact multiplicity polynomial in the sharing algorithm by its
+image under $q$. Retain relative degrees, matching data, and differential
+entries in each template. Suppose that structural choices and pivot tests
+do not use the omitted counts or absolute shifts. At completed closure the
+reported count is exactly
+\[
+ \min\bigl(3,r_2(K)\bigr).
+\]
+A count of two certifies \UNKNOT, and a count of three certifies \KNOTTED.
+Counts zero and one violate the valid-knot promise or an implementation
+invariant and are not interpreted as knot verdicts.
+\end{theorem}
+\begin{proof}
+At every transition the exact weights change by addition of shifted
+nonnegative polynomials. Repeated identical children amount to
+multiplication by a nonnegative integer; more generally all such
+bookkeeping lies in $\N[z]$. Lemma~\ref{lem:semiring} shows inductively
+that the saturated weights are exactly the images of the exact weights.
+The same templates are produced because their transitions and equality keys
+are independent of multiplicities and absolute shifts. Their relative
+degrees still determine the differential.
+
+At closure, Theorem~\ref{thm:sharing} identifies the sum of the exact
+weights at one with the actual unreduced rank. Applying $q$ gives the stated
+capped count. The verdict now follows from~\eqref{eq:rankcriterion}. For a
+valid knot, the true rank is even, so a capped value of three actually means
+rank at least four.
+\end{proof}
+
+Only the multiplicity storage is saturated. In particular, one cannot cap
+entries of a differential, signed Euler sums, or intermediate values of a
+calculation using subtraction under this argument. Two copies of a complex
+which is later contractible contribute zero at closure, even if their
+current object count is very large. Thus the mere appearance of a
+multiplicity three does not authorize early termination.
+
+The decision API reports \code{rank\_capped=3} and \code{rank\_cap=3}; it
+does not label three as an exact homology rank. It discards absolute grading
+information by design, so it has no \code{by\_degree} result. Resource
+exhaustion still raises the scanner's limit exception; the recognition
+pipeline translates that exception to \UNKNOWN.
+
+\section{A finite-type complexity theorem}
+\label{sec:complexity}
+
+\subsection{The actual execution parameters}
+Fix the scan order and the implemented elimination rule. Let $w$ be the
+largest number of live boundary labels at any stage of the complete planned
+order, including the empty frontier. It is even. If Euler inference stops
+early, unvisited suffix frontiers still enter this definition; a reported
+visited-prefix maximum need not equal the theorem parameter. Let $b\ge1$ bound the number of objects in each
+connected differential component \emph{after that stage's elimination and
+before merging equal components}. Empty stages may be ignored.
+
+Neither parameter is a topological invariant. In particular, $b$ is not the
+size of the smallest indecomposable complex obtainable using arbitrary
+basis changes. It measures components produced by this actual finite
+algorithm. Observing a small $b$ on some inputs is not a proof of a bound
+on a family.
+
+\begin{lemma}[Number of explicitly serialized types]\label{lem:typecount}
+Set $M(0)=1$ and $M(w)=(w-1)!!$ for even positive $w$. At a fixed stage,
+the number of different template keys with at most $b$ objects is at most
+\begin{equation}\label{eq:typecount}
+ K(b,w)=\sum_{s=1}^{b}s^s M(w)^s 2^{s^2 2^{w/2}}.
+\end{equation}
+This is an overcount; many counted arrays do not square to zero or do not
+represent realizable tangles.
+\end{lemma}
+\begin{proof}
+There are at most $M(w)$ pairings of the frontier. Counting all perfect
+matchings avoids assuming that the scan region has one disc boundary or
+that numeric edge labels encode a suitable cyclic order. Choose a matching
+for each of $s$ numbered vertices, in at most $M(w)^s$ ways.
+
+A connected differential graph on $s$ vertices has normalized homological
+degrees in $\{0,\ldots,s-1\}$. Indeed, any two vertices are joined by a
+simple path of length at most $s-1$, and each edge changes degree by one.
+There are therefore at most $s^s$ degree assignments.
+
+For two matching objects, the overlay has at most $w/2$ circles. In the
+repository's finite dot-mask model, a morphism has one $\F$ coefficient
+for each subset of those circles. It thus requires at most $2^{w/2}$ bits
+and has at most $2^{2^{w/2}}$ possible values. Allowing an arbitrary value
+at each of the $s^2$ matrix positions gives the final factor. Multiply and
+sum over $s$.
+
+No extra permutation factor is required: the vertices were explicitly
+numbered, so all their ordered serializations are already counted. The
+implementation can miss isomorphic keys without violating this bound.
+\end{proof}
+
+The double exponential inside~\eqref{eq:typecount} matters. The quantity
+$2^{w/2}$ counts coefficient bits, not the number of possible morphisms.
+Replacing the latter by $2^{w/2}$ would give an unjustifiably stronger theorem.
+Also, the lemma is about the algebra used by this scanner; it is not a new
+classification theorem for embedded cobordisms in arbitrary punctured
+ambient surfaces.
+
+\begin{theorem}[Complexity with component sharing]\label{thm:complexity}
+For the finite matching algebra of the existing scanner, both exact-weight
+and saturated-weight sharing admit the conservative bit-complexity bound
+\begin{equation}\label{eq:parameterbound}
+ T(n;b,w)\le n^{O(1)}(bK(b,w))^{O(1)}2^{O(w)}.
+\end{equation}
+In particular,
+\begin{equation}\label{eq:exponentbound}
+ T(n;b,w)\le n^{O(1)}
+ \exp\!\left(O\!\left(b\log(b+1)+bw\log(w+1)+b^2 2^{w/2}\right)\right).
+\end{equation}
+The same expression gives a conservative space bound. Fixed $b,w$ give
+polynomial bit complexity, regardless of the virtual multiplicity.
+\end{theorem}
+\begin{proof}
+At any compressed stage there are at most $K(b,w)$ templates and at most
+$Q=bK(b,w)$ stored objects. Lemma~\ref{lem:weightbits} bounds the next
+allocation by $8Q$. Unit elimination uses polynomially many matrix and
+coefficient operations in this physical size: each pivot removes two
+objects, and a pivot updates at most quadratically many remaining entries.
+Maintaining or rescanning candidate lists is polynomial as well.
+
+A dot-mask has $2^{O(w)}$ bits. To compose, enumerate at most $2^{w/2}$ monomials per input, determine
+each gluing's connectivity by union-find, and expand at most $2^{w/2}$
+output decorations. This costs $2^{O(w)}$ bit operations times a polynomial
+in word lengths; it deliberately allows a less optimized calculation
+than the compiled implementation. A crossing adds only four local ports.
+The inherited compiled transfer operations are bounded by the same type of
+estimate. Graph decomposition, renumbering, and complete key construction
+are polynomial in the physical matrix and coefficient sizes.
+
+In exact mode, every weight has at most $n+1$ coefficient positions, each
+with $O(n)$ bits, by Lemma~\ref{lem:weightbits}. In saturated mode there is
+one constant-size weight per template. Matching identifiers and input
+labels require polynomially bounded bit lengths. Across $n$ stages, these
+observations give~\eqref{eq:parameterbound}. It does not rely on
+average-case hashing: even a quadratic worst-case sequence of key
+comparisons is polynomial in $K$ and the key length.
+
+Finally,
+\[
+ K(b,w)\le b\,b^b M(w)^b2^{b^2 2^{w/2}},\qquad
+ \log M(w)=O(w\log(w+1)).
+\]
+Substitution gives~\eqref{eq:exponentbound}. Persistent caches, including
+matching interning across stages, add at most polynomial factors in $n$
+and the same size parameters; they do not require expanding multiplicities.
+\end{proof}
+
+\begin{corollary}[A specific quasi-polynomial regime]\label{cor:qp}
+If a family admits scan orders for which the actual shared runs satisfy
+\begin{equation}\label{eq:qpcondition}
+ b^2 2^{w/2}=O\!\left((\log(n+2))^2\right),
+\end{equation}
+then exact homological ranks, and in particular unknot decisions, are
+computable along those runs in $n^{O(\log n)}$ bit operations. This statement
+includes the cost of multiplicity arithmetic.
+\end{corollary}
+\begin{proof}
+For integer $b\ge1$ and even $w\ge0$, the terms $b\log(b+1)$ and
+$bw\log(w+1)$ are bounded by a universal constant times $b^2 2^{w/2}$.
+Apply Theorem~\ref{thm:complexity}. A polynomial-time construction of the
+promised scan order can be included without changing the conclusion.
+Alternatively, the statement applies to an order supplied as part of the
+input. It does not assert that searching all orders is inexpensive.
+\end{proof}
+
+Examples of sufficient regimes are $w=O(1)$ with $b=O(\log n)$, and
+$b=O(1)$ with $w\le4\log_2\log(n+2)+O(1)$. A condition such as
+$b=(\log n)^a$, $w=c\log_2\log n+O(1)$ gives an exponential bound with
+logarithmic exponent at most $2a+c/2$, up to the displayed polynomial factor.
+It reaches the specific target~\eqref{eq:target} when $2a+c/2\le2$.
+More generally it gives some quasi-polynomial bound for fixed $a,c$.
+
+\subsection{What the theorem removes, and what it leaves}
+The theorem contains no upper bound on the number of repeated copies of
+one template. That quantity may be $2^{\Theta(n)}$. It replaces a bound on
+all explicit generators by a bound on the number of possible small
+components in a finite boundary algebra.
+
+There is no proved universal estimate~\eqref{eq:qpcondition}. Large
+connected components and large frontiers remain genuine obstructions.
+The safe sufficient condition is deliberately conservative; it counts
+all morphism masks and all matrices. A useful family may run rapidly even
+when this worst-case estimate is enormous. Conversely, a small observed
+frontier alone does not make the theorem apply.
+
+One must also distinguish an observed successful execution from a family
+algorithm. A theorem about a family needs a way to construct a suitable
+order and prove the component-size bound throughout every run. The measured
+values included in the artifact package are diagnostic data for this
+research problem, not substitutes for that proof.
+
+\input{continuation}
+\input{experiments}
+\input{research_agenda}
+\input{references}
+\end{document}

@@ -1,0 +1,99 @@
+\subsection{The defect obstruction persists after Reidemeister I and II}
+\label{sec:reduced-defect-one}
+
+The preceding cancellation example might suggest first performing all
+crossing-decreasing Reidemeister I and II moves, and then trying to bound
+surface complexity by the homogeneity defect.  The following explicit
+family rules out that repair as well.
+
+\begin{proposition}[Unbounded excess genus at defect one after I/II]
+For every $k\ge2$, the standard three-strand closure diagram $E_k$ of
+\[
+ \beta_k=\sigma_2^k\sigma_1\sigma_2\sigma_1^{-k}
+\]
+is an unknot diagram with $2k+2$ crossings.  It has no available
+crossing-decreasing Reidemeister I or II move, has homogeneity defect
+$\delta(E_k)=1$, and has diagram Seifert genus $g_{E_k}=k$.
+\end{proposition}
+
+\begin{proof}
+The braid relation gives
+\[
+ \sigma_2\sigma_1\sigma_2\sigma_1^{-1}
+   =\sigma_1\sigma_2.
+\]
+Therefore
+\[
+ \beta_k
+ =\sigma_2^{k-1}(\sigma_2\sigma_1\sigma_2)
+       \sigma_1^{-k}
+ =\sigma_2^{k-1}\sigma_1\sigma_2\sigma_1^{-(k-1)}
+ =\beta_{k-1}.
+\]
+Induction gives $\beta_k=\beta_0=\sigma_1\sigma_2$, whose closure
+is an unknot.  Each induction step consists of one braid Reidemeister
+III move and one inverse-pair Reidemeister II cancellation.
+
+The diagram has three Seifert circles.  Generator index $1$ appears
+with both signs and index $2$ with just one sign.  The braid graph
+formula gives $\delta=1$, and the surface formula gives
+$g_{E_k}=((2k+2)-3+1)/2=k$.
+
+For completeness, the assertion about local reductions can be checked
+uniformly rather than inferred from numerical examples.  Number the
+crossings by $0,\ldots,2k+1$ in braid order, and number the four
+counterclockwise ports at each crossing by $0,1,2,3$, with ports $0,2$
+under.  A PD code for this closure, on edge labels $0,\ldots,4k+3$, is
+\[
+\begin{array}{c|l}
+\text{crossing}&\text{PD row}\\\hline
+0 &(2k+3,4k+3,0,1)\\
+1\le i<k &(2i-1,2i-2,2i,2i+1)\\
+k &(2k-2,4k+2,2k,2k+1)\\
+k+1 &(2k-1,2k+1,2k+2,2k+3)\\
+k+2 &(2k,2k+4,2k+5,2k+2)\\
+k+3\le i\le2k+1 &(2i-2,2i,2i+1,2i-1).
+\end{array}
+\]
+Writing $(i,j)$ for a dart, the facial walks are precisely the
+following.  Increasing or decreasing ranges include both endpoints.
+\[
+\begin{array}{c|l}
+\text{length}&\text{facial walk}\\\hline
+k+1 &(0,0),(k+1,0),(k-1,0),\ldots,(1,0)\\
+k+2 &(0,1),(2k+1,3),(2k,3),\ldots,(k+1,3)\\
+k+2 &(0,2),(1,2),\ldots,(k-1,2),(k,1),(2k+1,2)\\
+3 &(k-1,3),(k+1,1),(k,0)\\
+k+1 &(k,2),(k+2,1),(k+3,1),\ldots,(2k+1,1)\\
+3 &(k,3),(k+1,2),(k+2,0)\\
+2 &(i,3),(i+1,1),\quad 0\le i\le k-2\\
+2 &(i,2),(i+1,0),\quad k+2\le i\le2k.
+\end{array}
+\]
+Pairing equal edge labels and advancing one counterclockwise port
+verifies each walk.  The listed walks use all $8k+8$ darts exactly
+once, so the list is exhaustive.  Their number is $2k+4=n+2$, as
+required for the spherical rotation system.
+
+There is no monogon.  Since $k\ge2$, the only digons are the last
+two families in the table.  Each lies within a run of crossings of
+the same Artin generator and the same sign.  A cancellable oriented
+Reidemeister II pair has opposite crossing signs.  Hence none of
+these digons can be cancelled, and no I or II move is available.
+\end{proof}
+
+The artifact \texttt{defect\_one\_family.py} supplies the closed-form
+PD rows and facial walks, verifies them against the existing braid
+converter and face traversal, checks the absence of local reductions,
+and checks the braid-word identity step.  It was run for every
+$2\le k\le100$, covering 99 examples with up to 202 crossings.
+These finite checks validate the implementation of the formulas;
+the displayed symbolic proof establishes the statement for all $k$.
+
+This family is not asserted to be difficult for the completed
+recognizer: the explicit sequence of III and II moves supplies a
+short reduction, and the existing late-III search can expose it.
+Its role is to show that $\delta$, even after all immediately
+available I/II reductions, does not control $g_D-g(K)$, and thus
+cannot by itself justify a genus-based bound on the scanner's
+remaining state complexity.
