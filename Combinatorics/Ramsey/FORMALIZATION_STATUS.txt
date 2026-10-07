@@ -12,8 +12,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 222 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 2,044 public Gowers theorems and found only propext,
+  All 224 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 2,056 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 101 exact
   companion proofs and 19 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -527,6 +527,21 @@ Constructed common-step square covers
   The full extraction still has to produce this bounded integer step ratio;
   a modular multiple alone does not prove that bound. Corollary 13.10 is
   therefore still open in the exact catalogue.
+
+Retained integer geometry in affine extraction
+  Proofs07IndexedPartition strengthens the large-scale universal affine
+  partition: all cells retain a positive integer step ratio d and the bound
+  d*(cell_length-1)<parent_length in the parent's actual index interval.
+  The existing universal modular API is now a wrapper around this stronger
+  theorem; it retains its previous statement and quantitative estimates.
+  Proofs13IndexedCoefficientPartition carries the integer ratio and span
+  through coefficient extraction. When the height parent has the same step
+  as the column progression and is no longer than it, the common-step square
+  fit follows. bilinear_square_from_short_parent constructs the equal-length
+  square, retains a subset of the original coefficient set, and proves width
+  at least parent_length^(cor711Exponent(delta,1)/2)-1 and density delta/4.
+  The remaining task is to construct suitably short height parents and
+  propagate their quantitative bounds through the full Section 13 chain.
 
 Reproducible checks (from repository root)
   python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.Audit
