@@ -465,6 +465,7 @@ import GowersSzemeredi.Proofs16PieceBudgetImprovement
 import GowersSzemeredi.Proofs16SelectedLiftInduction
 import GowersSzemeredi.Proofs16SelectionReserve
 import GowersSzemeredi.Proofs16IntervalSlabProduct
+import GowersSzemeredi.Proofs16SlabCommonBaseWitness
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 

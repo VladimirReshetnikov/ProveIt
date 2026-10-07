@@ -13,8 +13,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 750 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 4,761 public Gowers theorems and found only propext,
+  All 755 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 4,836 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 113 exact
   companion proofs and 7 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -2411,6 +2411,39 @@ Weighted graph-sum support and genuine unit-product slabs
   This is evidence relevant to the remaining lifting hypotheses, not a
   proof or refutation of the exact general Theorem 16.2. The seven source
   catalogue gaps remain unchanged.
+
+Exact slab arrangements, spectrum, and complete common-base witnesses
+  Proofs16SlabArrangements proves the exact count, for all d and k,
+    arrangements_d(F_N^k times A) = N^((2*d+1)*k)*additiveTupleCount(d,A).
+  For k>=1 the Boolean cube signs sum to zero, so every arrangement is
+  respected by an arbitrary function f of the last coordinate. No additive
+  regularity of f is required, and the result uses the source definitions.
+  Proofs16SlabCommonBaseGeometry identifies the fixed-side cube domain,
+  whose cardinality is N^k*|A|. Selecting all admissible cubes makes the
+  good domain at every common base exactly F_N^k times A and gives exactly
+  N^k*|A| good pairs. The induced values vanish; the full selection satisfies
+  Section16InducedSelection for every supplied spectrum and Bohr radius,
+  and the actual all-ones identity is proved.
+  Proofs16SlabSpectrum identifies the cube correlation as N^k times the
+  indicator of A. All sidelengths have the same large spectrum K, with
+  |K|<=delta^-2, and the actual spectrum relation is univ times K.
+  Proofs16GlobalFiniteCover proves the all-box MultiplyLinear property for
+  q global multilinear candidates whenever q<=r and r>=1, including the
+  source graph and width budgets. Its finite-value specialization and
+  proper-coordinate-face consequence use constant candidates. Applying
+  this theorem to K proves the exact spectrum cover with parameter
+  section16T(delta,theta1,k), without lower-dimensional induction.
+  Proofs16SlabCommonBaseWitness constructs Section16CommonBaseData itself
+  whenever k>=1, the usual theta/gamma ranges hold, and
+    (theta1/4)*N <= |A|.
+  The explicit witness has H=J=univ, all cubes selected, phiPrime=0, and any
+  chosen base x0. Every mass, selection, spectrum, and identity field is
+  checked. A theorem confirms its good domain is the entire original slab.
+  These results complete the geometric and common-base witness component
+  of Report 299. The balanced-word and structured-pair hypotheses and the
+  quantitative failure of the resulting unit cover still need to be joined
+  to this witness. No negation of Section16ContextualLiftAt, no exact new
+  catalogue companion, and no general final bound is asserted here.
 
 Selected-domain repair of the remaining exact lifting obligation
   Proofs16SelectedDomainTransport defines Section16SelectedUnitDomain D:
