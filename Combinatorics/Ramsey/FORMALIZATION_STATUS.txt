@@ -12,8 +12,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 510 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 3,364 public Gowers theorems and found only propext,
+  All 514 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 3,379 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 108 exact
   companion proofs and 12 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -1219,7 +1219,7 @@ Prepared frequency graph and reusable restriction score
   bounds the bad/good ratio. The original Lemma 12.5 uses the shared proof.
   These are inputs to source 57's improved route to Theorem 13.12. The
   Fejer purification is now proved below with explicit elementary constants;
-  its graph propagation and the near-maximal endpoint remain to be proved.
+  graph propagation is now checked below; the near-maximal endpoint remains.
 
 Finite Fejer survival foundations
   Five Proofs13Fejer modules establish a normalized nonnegative kernel in
@@ -1235,7 +1235,8 @@ Finite Fejer survival foundations
   estimate; its numerical constants must be carried through separately.
   The coefficient-box argument is now checked, as described below. Transport
   of selection counts and quantitative purification are now checked below.
-  Propagation into square extraction and endpoint rigidity remain open.
+  Propagation into square extraction is now checked below; endpoint rigidity
+  remains open.
 
 Quadratic feature classification and exceptional parameter counts
   Proofs13FeatureRelations eliminates the final horizontal coordinate in
@@ -1312,13 +1313,31 @@ Uniform quantitative Fejer purification
   2^-77*rho^3*eta^3*beta and respected fraction at least 1-eta.
   These are complete purification theorems with their stated quantitative
   hypotheses. They do not yet close the numbered Theorem 13.12.
-  Next arithmetic candidate (not yet a Lean theorem): take a=alpha/2,
-  delta=a^14409429, rho=delta^97*a^336, eta=2^-44. The new density bound
-  suggests a^4207554485. Exact integer arithmetic gives
-  4207554485*2^21+2^20+4=8823881304375300 < 2^53, and
-  137+704*4207554485=2962118357577 < 2^42. Thus the weaker constants
-  still leave room for the source 57 length comparison away from alpha=1.
-  Graph propagation and the near-maximal endpoint remain unproved.
+  The graph propagation and numerical comparisons listed below are now
+  checked; the near-maximal endpoint remains unproved.
+
+Improved Fourier extraction and the printed parameter range
+  Proofs13FejerFrequencyGraph propagates the new purification through the
+  exact prepared graph. With a=alpha/2, delta=a^14409429,
+  rho=delta^97*a^336 and eta=2^-44, it proves density at least
+  a^4207554485 while preserving separate Freiman structure, the required
+  respected fraction, and every Fourier lower bound.
+  Proofs13FejerFourierExtraction feeds this density into uniform square
+  extraction, extending the agreeing formula to the whole square. It
+  proves the raw square exponent and Fourier-set density a^(2^42).
+  Proofs13FejerExplicitExponent proves
+  4207554485*2^21+2^20+4=8823881304375300 < 2^53 and absorbs the
+  spectral prefactors. The resulting all-parameter side length is
+  N^((1/2)^((2/alpha)^(2^53))), improving the earlier checked 2^88
+  top power. The stronger a^(2^42) density holds simultaneously.
+  Proofs13FejerPrintedRange uses Bernoulli's inequality to compare that
+  length with the printed N^((1/2)^((1/alpha)^(2^70))) whenever
+  0<alpha<=1023/1024. theorem_13_12_away_from_one proves every printed
+  conclusion on this range, including the original density and Fourier
+  bounds. It is deliberately not an exact companion for theorem_13_12:
+  the interval 1023/1024<alpha<1 still needs the near-maximal argument.
+  The endpoint alpha=1 cannot satisfy strict nonuniformity, by the already
+  proved discValued_uniform_one. The catalogue count remains unchanged.
 
 Reproducible checks (from repository root)
   python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.Audit
@@ -1336,21 +1355,15 @@ Next substantial obligations
   quantitative dependency chain. The qualitative Freiman theorems 7.1--7.2
   are proved (Proofs07FreimanClosure). The quadratic four-term theorem 8.2
   and Corollary 8.3 are now proved with their exact catalogue types.
-  1. Resolve the printed Theorem 13.12 length exponent: the complete Fourier
-     extraction is proved with a uniform threshold and an explicit exponent,
-     but that exponent is strictly smaller than the printed target. Reconcile
-     the unrestricted catalogue hypotheses as well; the actual extraction
-     constructs integer geometry that the old catalogue antecedents omit.
-     Source 57 (gowers_research_proveit) of local-quantitative-refinements
-     is a written proof reaching the printed exponent, with density bound
-     (alpha/2)^(2^41) against the required (alpha/2)^(2^76): it applies
-     source 40's Fejer selection before the formal uniform square
-     extraction and treats alpha near 1 separately. Its intake (dossier,
-     batch 125) checked that Lean's theorem_13_12 follows from it and
-     re-derived its 25 exponent steps in exact integers; the new formal
-     Fejer purification is now formalized with a weaker elementary constant.
-     Remaining steps are graph propagation, exponent arithmetic, and the
-     near-maximal U^4 argument. Source 53 (Report281) gives an explicit
+  1. Complete Theorem 13.12 on 1023/1024<alpha<1. The complete improved
+     Fourier extraction and the printed conclusion for alpha<=1023/1024
+     are now proved. Source 57 (gowers_research_proveit) gives an explicit
+     near-maximal U^4 argument: normalize to unit modulus, correct dominant
+     Fourier frequencies using finite additive correction and symmetry,
+     and recover an ambient square. Those endpoint steps remain unproved.
+     The weaker constants in the formal purification still yield the same
+     2^53 length top power and an improved 2^42 density top power.
+     Source 53 (Report281) gives an explicit
      threshold and side length N^(3 gamma(a)) for the uniform square
      extraction; source 51 shows Corollary1310Grid does not follow from the
      retained chain data; source 52 shows the preserved encodings

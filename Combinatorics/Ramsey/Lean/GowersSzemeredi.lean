@@ -355,6 +355,10 @@ import GowersSzemeredi.Proofs13FejerArrangementSelection
 import GowersSzemeredi.Proofs13FejerQuantitative
 import GowersSzemeredi.Proofs13FejerUniformPurification
 import GowersSzemeredi.Proofs13FejerPurifiedDensity
+import GowersSzemeredi.Proofs13FejerFrequencyGraph
+import GowersSzemeredi.Proofs13FejerFourierExtraction
+import GowersSzemeredi.Proofs13FejerExplicitExponent
+import GowersSzemeredi.Proofs13FejerPrintedRange
 
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
