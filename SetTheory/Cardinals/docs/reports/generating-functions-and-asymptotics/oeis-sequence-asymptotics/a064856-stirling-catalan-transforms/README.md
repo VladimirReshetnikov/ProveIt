@@ -316,7 +316,12 @@ of 4 October 2026), with sources, sketches and what is missing:
    manuscripts of the same bundle, Reports 209, 210, 212, 213 and 214, still
    archives in `docs/incoming/` at this write, study `M_{2k}`; by its abstract
    Report 213 proves `M_{2k} ~ 2B_{k+1}` and Report 214 a fixed-order
-   expansion of `M_{2k}/(2B_{k+1})`. To be re-scoped when they are placed;
+   expansion of `M_{2k}/(2B_{k+1})`. Re-scoped 7 October 2026 (batch 112):
+   placed and written as `a094149-sparse-graph-moments`, whose Part II proves
+   `M_{2k} ~ 2B_{k+1}` and Part I its expansion to every fixed order; the
+   relative asymptotics are answered, `M_{2k}/a_k → 0` and
+   `M_{2k}/B_k ~ 2k/W(k) → ∞` hold unconditionally (neither comparison of
+   Corollary 6.1 is sharp); effective bounds remain open;
 4. higher total-variation terms (Part II d. 2);
 5. inverse-`n` sectors of the boundary law, coherence of the mixture (Part II
    d. 4);
@@ -360,10 +365,33 @@ nonzero `h(ρ)` of (7.10); it now reads `h_vol = 0` (likewise above). Added:
 `n_1 = 2` suffices in the staircase bullet. The record is a dated note at the
 end of Section 21.
 
+**Reciprocal note (batch 112, 7 October 2026).** Reports 209–214 are now
+placed and written as
+[`a094149-sparse-graph-moments`](../a094149-sparse-graph-moments/) (e4199e04f).
+Item 3 of Section 21 keeps its text and gains a dated note: that report's
+Part II (Report 213, its Theorem 14.1) proves `M_{2k} ~ 2B_{k+1}` with
+Bauer–Golinelli's coefficientwise comparison (Part I's (6.5) here, summed in
+Corollary 6.1) as its one stated external input, and its Part I (Report 214,
+its Theorem 1.1) gives `M_{2k}/(2B_{k+1})` to every fixed collision order.
+The note derives, from (1.8) and `B_{k+1}/B_k ~ k/W(k)`, that
+`M_{2k}/B_k ~ 2k/W(k) → ∞` and `M_{2k}/a_k → 0` (since
+`log(a_k/B_k) ~ (log 4)k/log k` outgrows `log k`), and records that on the
+moments `k ≤ 32` tabulated there `B_k ≤ M_{2k} ≤ a_k` holds and `M_{2k}/a_k`
+falls to `5.06·10⁻⁵` at `k = 32`. Two one-sentence dated pointers were added:
+after the status table (the abstract and the table are kept as delivered) and
+in the front matter's "Relation to neighbouring reports". No label added,
+renamed or removed (still 192); no earlier number changed.
+
 ## Relation to neighbouring reports
 
 - No other placed report treats A064856, A086662, A094149, Spiridonov's thesis
   or Bauer–Golinelli's moments (searched 6 October 2026).
+- [`a094149-sparse-graph-moments`](../a094149-sparse-graph-moments/) (batch
+  112, 7 October 2026): the moments `M_{2k}` of A094149 in five Parts (Reports
+  214, 213, 212, 210, 209), `M_{2k} ~ 2B_{k+1}` to every fixed collision
+  order, with Bauer–Golinelli's comparison (Part I's (6.5) and Corollary 6.1
+  here) as input; it answers item 3 of Section 21, and its front matter
+  names this report.
 - Method neighbours: `a277364-bell-asymptotics` (Bell numbers through
   `r = W₀(n)`; Part I's Lemma 4.1 at `c = 1`, `b = 0` is of the same
   Moser–Wyman type), `a088714-bell-scale-growth`,
@@ -470,7 +498,8 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 
 pdfLaTeX (MiKTeX), in a scratch copy containing `article.tex` and the four
 `data/205-second-tex-*.tex` files; commit only `article.pdf`. The build (47
-pages, also after the independent check): no errors, no undefined or multiply defined references or citations,
+pages, also after the independent check; 48 pages after the batch-112
+reciprocal note of 7 October 2026): no errors, no undefined or multiply defined references or citations,
 no duplicate destinations, no overfull or underfull boxes, no warnings. The
 log carries one "Infinite glue shrinkage found in box being split" message,
 from a longtable breaking across pages.
