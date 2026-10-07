@@ -5,19 +5,23 @@
 \documentclass[11pt]{article}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
-\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools,booktabs,array}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools,booktabs,array,longtable}
 \usepackage[margin=1in]{geometry}
 \usepackage{microtype}
 \usepackage[hidelinks]{hyperref}
+\usepackage{xurl}
 \usepackage{enumitem}
 \setlist{itemsep=3pt,topsep=5pt}
 \allowdisplaybreaks[2]
 \emergencystretch=2em
+\setcounter{tocdepth}{1}
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{proposition}[theorem]{Proposition}
 \newtheorem{corollary}[theorem]{Corollary}
 \theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+% Macros of the two sources. Names defined by both (\OO, \R, \Z, \Ai, \Bi, \E,
+% \Prb, \ceil, \floor) have the same definition in each.
 \newcommand{\OO}{\mathcal O}
 \newcommand{\R}{\mathbb R}
 \newcommand{\Z}{\mathbb Z}
@@ -27,13 +31,290 @@
 \newcommand{\Prb}{\mathbb P}
 \newcommand{\ceil}[1]{\left\lceil #1\right\rceil}
 \newcommand{\floor}[1]{\left\lfloor #1\right\rfloor}
-\hypersetup{pdftitle={Report192 Airy Limits and the Corrected Asymptotic of A096537},pdfauthor={Research report},pdfsubject={Critical continued exponential towers lattice local limits weighted trees and inversion}}
-\title{Report192\\[5pt]Airy Limits and the Corrected\\Asymptotic of A096537}
-\author{Critical exponential towers and depth weighted labeled trees}
-\date{4 October 2026}
+% Report 193 (Part II)
+\newcommand{\FP}{\operatorname{FP}}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\FF}{\mathcal F}
+\newcommand{\QQ}{\mathcal Q}
+\newcommand{\TT}{\mathcal T}
+\newcommand{\inv}{\mathcal I}
+% Added in the merge (batch 110).
+\newcommand{\file}[1]{\nolinkurl{#1}}
+\newcommand{\vol}{\mathrm{vol}}
+\newenvironment{writenote}[1][]{\par\smallskip\begingroup\small
+ \noindent\textbf{[write]}\if\relax\detokenize{#1}\relax\else~\textbf{#1.}\fi\ }%
+ {\par\endgroup\smallskip}
+\newenvironment{partabstract}{\begin{quote}\small\noindent\textbf{Abstract of this Part (as delivered).}\ }{\end{quote}}
+\newcommand{\partsource}[1]{\par\noindent\begin{minipage}{\textwidth}\small #1\end{minipage}\par\medskip}
+\hypersetup{pdftitle={Exponential towers (OEIS A096537 and A096542)},pdfauthor={Research report},pdfsubject={Merged report a096537-exponential-towers (batch 110): Airy limits and the corrected asymptotic of A096537 (Report 192); fractional corrections and Gamma laws (Report 193)}}
+\title{\textbf{Exponential towers\\ (OEIS A096537 and A096542)}\\[7pt]
+\large Airy limits and the corrected asymptotic of A096537;\\ fractional corrections and Gamma laws for the shifted family}
+\author{Two research reports of one external research session\\(bundle Reports 192 and 193), merged into one ProveIt report}
+\date{Both Parts: 4 October 2026\quad merged: 7 October 2026}
 \begin{document}
+\hypersetup{pageanchor=false}
 \maketitle
 \begin{abstract}
+Let $F_1(x)=\exp(x\exp(2x\exp(3x\cdots)))=\sum a_nx^n/n!$ (OEIS A096537), $F_y=\exp(xyF_{y+1})$ the shifted family whose coefficients $P_n(y)$ are the rows of A096542, and $\rho=1-e^{-1}$. This report prints two manuscripts, a theorem and its sequel. Part~I proves $a_n/(n!)^2\sim\sqrt{2/(\pi\rho)}\,\rho^{-n}n^{-1/2}$, that is $a_n\sim2\sqrt{2\pi/\rho}\,n^{2n+1/2}e^{-n}(e-1)^{-n}$, through the critical finite-height towers $H_h(1/(eh))\sim Kh^{1/6}e^{-(e-1)h}$, an Airy size law, positive-factorization minor arcs and a uniform lattice local limit; it also proves a Gaussian height law for depth-weighted labelled trees and a refined Lambert inverse. Part~II proves the first correction $a_n\rho^n\sqrt n/(n!)^2=C+c_1n^{-1/3}+o(n^{-1/3})$ with $C=\sqrt{2/(\pi\rho)}$ and $-0.61<c_1<-0.25$, $c_1$ an absolutely convergent Airy integral whose sign is certified by a real reduction and directed interval quadrature, and the Gamma prefactor $P_n(y)/(n!)^2\sim C\rho^{1-y}\rho^{-n}n^{y-3/2}/\Gamma(y)$ for every fixed $y>0$, which answers two of Part~I's open questions. The write records two refuted OEIS formulas, with proofs: the amplitude $2\pi$ conjectured by V\'aclav Kot\v{e}\v{s}ovec in A096537 is wrong (the correct amplitude is larger by the factor $\sqrt{2/(\pi\rho)}=1.00355\ldots$), and the A096542 formula $T(n,1)=n\,a_n$ should read $T(n,1)=n\,a_{n-1}$. Further coefficients, effective constants and onsets, extreme shifts and a complex Borel continuation remain open. The report is unrefereed, and nothing in it is formalized.
+\end{abstract}
+\hypersetup{pageanchor=true}
+{\small\setlength{\parskip}{0pt}\tableofcontents}
+\newpage
+
+\section*{Guide to this report}\phantomsection\label{xtw:sec:guide}
+\addcontentsline{toc}{section}{Guide to this report}
+The two Parts are two manuscripts of the session bundle of Reports 1--243
+(arrival commit \texttt{60f54ea06}), placed in this directory by commit
+\texttt{8622ca7e5} (batch~110, cluster 110-TOWER).
+\begin{center}
+\small
+\begin{tabular}{@{}l l >{\raggedright\arraybackslash}p{0.50\textwidth} l@{}}
+\toprule
+Part & Bundle report & Delivered title & Labels\\
+\midrule
+I & 192 (base) & Airy Limits and the Corrected Asymptotic of A096537: Critical exponential towers and depth weighted labeled trees (4~October 2026) & \texttt{xtw:airy:}\\
+II & 193 & Fractional Corrections and Gamma Laws for Exponential Towers: A sequel to the leading Airy asymptotic (4~October 2026) & \texttt{xtw:frac:}\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\emph{One object, a theorem and its sequel.} Both Parts study Hanna's
+continued exponential $F_1(x)=\exp(x\exp(2x\exp(3x\cdots)))$, the
+coefficients $a_n=n![x^n]F_1$ of OEIS A096537, and the shifted family
+$F_y=\exp(xyF_{y+1})$ whose coefficients $P_n(y)$ are the rows of A096542,
+with the same constants $\rho=1-e^{-1}$, $\alpha=e-1$ and the same weighted
+labelled trees. Part~I proves the leading equivalent
+$a_n/(n!)^2\sim\sqrt{2/(\pi\rho)}\,\rho^{-n}n^{-1/2}$ through critical
+finite-height towers, an Airy size law and a uniform lattice local limit; this
+\textbf{refutes the amplitude $2\pi$ conjectured in A096537}
+(Remark~\ref{xtw:airy:rem:oeis537}). Part~II is an explicit sequel. It cites
+Part~I for the leading theorem, restates the leading facts it uses
+(Section~\ref{xtw:frac:sec:input}), and answers two items of Part~I's list of
+open questions: it proves the first correction,
+$b_n\rho^n\sqrt n=C+c_1n^{-1/3}+o(n^{-1/3})$ with $-0.61<c_1<-0.25$
+(Theorem~\ref{xtw:frac:thm:correction}), and the Gamma prefactor for every
+fixed positive shift (Theorem~\ref{xtw:frac:thm:family}). At $y=1$ its
+Theorem~\ref{xtw:frac:thm:family} is Part~I's Theorem~\ref{xtw:airy:thm:main}
+with the correction added, and its inverse \eqref{xtw:frac:eq:y1inverse} is
+Part~I's $r(Y)$ of \eqref{xtw:airy:eq:Lambertintro} with one further term.
+
+\emph{Arrangement.} The base of the merge is Report~192; its
+\file{Report192.tex} was staged as this \file{article.tex}, and it is printed
+first, as Part~I, because Report~193 depends on it. Report~193 is printed
+second, as Part~II, in full: its proofs of the leading facts are part of a
+quantitative argument that also gives the correction, so nothing is removed
+as a duplicate; where it reproves a statement of Part~I, a dated note says so.
+
+\emph{Numbering.} Sections are numbered continuously; statements are numbered
+within sections and equations continuously through the report, as in both
+manuscripts. Part~I keeps Report~192's Sections~1--14, its
+equations~(1)--(109) and all its other numbers; the write's two remarks
+(Remarks~\ref{xtw:airy:rem:oeis537} and~\ref{xtw:airy:rem:oeis542}) are placed
+after the last numbered statement of their sections, so that no delivered
+number moves. Report~193's Section~$k$ is Section~$k+14$ here
+(Sections~15--28), its statements move with their sections (Report~193's
+Theorem~1.1 is Theorem~\ref{xtw:frac:thm:correction}), and its
+equation~($k$) is equation~($k+109$). Section~\ref{xtw:sec:further}, which
+gathers the open questions of both Parts under Vladimir's standing rule of
+4~October 2026, was added in the write.
+
+Notes added in the write are set in small type and tagged \textbf{[write]},
+with their date (7~October 2026). No delivered statement was changed and no
+delivered symbol was renamed.
+
+\section*{What is proved, and where}\phantomsection\label{xtw:sec:status}
+\addcontentsline{toc}{section}{What is proved, and where}
+\begin{center}
+\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.58\textwidth} >{\raggedright\arraybackslash}p{0.37\textwidth}@{}}
+\toprule
+Statement & Where\\
+\midrule
+\multicolumn{2}{@{}l}{\emph{The leading theory (Part I)}}\\
+Exact-height coefficients and depth-weighted labelled trees; $a_n\ge n^2a_{n-1}$ & Section~\ref{xtw:airy:sec:exact}, Lemma~\ref{xtw:airy:lem:monotonicity}\\
+$b_n=a_n/(n!)^2\sim\sqrt{2/(\pi\rho)}\,\rho^{-n}n^{-1/2}$, i.e.\ $a_n\sim2\sqrt{2\pi/\rho}\,n^{2n+1/2}e^{-n}(e-1)^{-n}$; \textbf{the OEIS amplitude $2\pi$ is refuted} & Theorem~\ref{xtw:airy:thm:main}, Remark~\ref{xtw:airy:rem:oeis537}\\
+Critical tower $H_h(1/(eh))\sim Kh^{1/6}e^{-\alpha h}$; uniform real Airy window & Theorems~\ref{xtw:airy:thm:critical} and~\ref{xtw:airy:thm:window}\\
+Airy size law with $p(0)=\Ai(0)^2/\beta$; uniform minor arcs; uniform lattice local limit & Theorems~\ref{xtw:airy:thm:limitsintro}, \ref{xtw:airy:thm:minor}, Section~\ref{xtw:airy:sec:local}\\
+Gaussian height limit of depth-weighted trees & Section~\ref{xtw:airy:sec:height}\\
+Refined Lambert inverse and shrinking integer sandwich & Theorem~\ref{xtw:airy:thm:inverseintro}, Section~\ref{xtw:airy:sec:inverse}\\
+$T(n,1)=n\,a_{n-1}$ in A096542; \textbf{the entry's formula $T(n,1)=n\,a_n$ is refuted} & Section~\ref{xtw:airy:sec:verification}, Remark~\ref{xtw:airy:rem:oeis542}\\
+\midrule
+\multicolumn{2}{@{}l}{\emph{The sequel (Part II)}}\\
+$b_n\rho^n\sqrt n=C+c_1n^{-1/3}+o(n^{-1/3})$, $-0.61<c_1<-0.25$, $c_1$ an absolutely convergent Airy integral & Theorems~\ref{xtw:frac:thm:correction}, \ref{xtw:frac:thm:realintegral}, Section~\ref{xtw:frac:sec:certificate}\\
+$b_n(y)\sim C\rho^{1-y}\rho^{-n}n^{y-3/2}/\Gamma(y)$ with the same relative correction, uniformly on compact $Y\subset(0,\infty)$; normal limit of root-ancestor choices & Theorem~\ref{xtw:frac:thm:family}, Section~\ref{xtw:frac:sec:ancestor}\\
+Local Gamma correction; positive real Borel boundary; threshold inverses at the fractional scale & Theorem~\ref{xtw:frac:thm:modpoisson}, Sections~\ref{xtw:frac:sec:borel} and~\ref{xtw:frac:sec:inverse}\\
+\midrule
+\multicolumn{2}{@{}l}{\emph{Open}}\\
+\multicolumn{2}{@{}p{0.96\textwidth}@{}}{The next coefficient scale; effective rates, onsets and certified inversion; sharper certified constants; shifts near $0$ or growing; larger tilt domains and rare heights; a complex Borel continuation; the full comparison with Bender--Vinson and Poland. See Section~\ref{xtw:sec:further}.}\\
+\bottomrule
+\end{tabular}
+\end{center}
+The finite computations (exact integers, rational checks, and Part~II's
+directed interval quadrature for the sign of $c_1$) check identities,
+normalizations and one finite enclosure; no asymptotic statement rests on
+them, and the interval certificate rests on the analytic reduction and tail
+bound proved in Part~II.
+
+\section*{The OEIS entries}\phantomsection\label{xtw:sec:oeis}
+\addcontentsline{toc}{section}{The OEIS entries}
+The write read both entries on 7~October 2026. \textbf{A096537}
+\cite{oeis537} (revision \#8 of 17~December 2019), by Paul D. Hanna
+(24~June 2004), has the formula field ``Conjecture: a(n) $\sim$ 2 * Pi *
+n\^{}(2*n + 1/2) / (exp(n) * (exp(1) - 1)\^{}n). - Vaclav Kotesovec, Dec 16
+2019''. This conjecture is \textbf{false}: Part~I's
+Theorem~\ref{xtw:airy:thm:main} gives the same expression with amplitude
+$2\sqrt{2\pi/\rho}$, and the two amplitudes differ because $\pi\rho<2$
+(Remark~\ref{xtw:airy:rem:oeis537}). The entry's other formula, ``a(n) =
+A096542(n+1, 1)/(n+1)'', is right. \textbf{A096542} \cite{oeis542} (revision
+\#11 of 19~December 2017), by Hanna (25~June 2004), has the formula line
+``T(n, 1) = n*A096537(n)''. This line is \textbf{false} at every $n\ge2$; the
+correct statement is $T(n,1)=n\,\mathrm{A096537}(n-1)$, and $n=2$ is a
+counterexample: the entry's own row~2 is $0,2,3$, so $T(2,1)=2=2\cdot
+\mathrm{A096537}(1)$, while $2\cdot\mathrm{A096537}(2)=10$
+(Remark~\ref{xtw:airy:rem:oeis542}). Both manuscripts record this index
+mismatch (Sections~\ref{xtw:airy:sec:verification}
+and~\ref{xtw:frac:sec:reproducibility}). Nothing was submitted to the OEIS;
+whether to propose the corrections is a decision for a human editor. The
+OEIS terms in \file{data/192-airy-oeis_fixtures.json} are OEIS content under
+CC~BY-SA~4.0; \file{data/192-airy-generated_coefficients_48.json} is
+generated by the package, not taken from the OEIS.
+
+\section*{The inverses and the transseries volume}\phantomsection\label{xtw:sec:inverses}
+\addcontentsline{toc}{section}{The inverses and the transseries volume}
+The repository's transseries volume \cite{tsvol} has a Part~0 apparatus for
+inverting rapidly growing functions; its symbols are subscripted ``vol''
+here. Statement by statement:
+\begin{itemize}
+\item Part~I's \eqref{xtw:airy:eq:ceilingexact}, $N(Y)=\lceil z(Y)\rceil$ with
+$z$ the inverse of the piecewise-linear interpolation $g$ of $\log a_n$, and
+Part~II's \eqref{xtw:frac:eq:exactceiling}, the same for $\log P_n(y)$: instances
+of item~(1) of \file{p0:thm:staircase}, with $A_n=\log a_n$ (resp.\ $\log
+P_n(y)$) on its eventually increasing part and the admissible interpolation
+$g$ (resp.\ $g_y$). The sandwiches \eqref{xtw:airy:eq:sandwichintro} and
+\eqref{xtw:frac:eq:ceilingsandwich} follow from item~(1) and the monotonicity
+of the ceiling, as item~(2) does; the real-inverse estimates that feed them
+are the Parts' own.
+\item The Lambert base $x=L/(2W_0(L/(2e\sqrt\rho)))$ of Part~I
+\eqref{xtw:airy:eq:Lambertintro} and Part~II \eqref{xtw:frac:eq:lambert} (where it
+is $X$), the root of $f(t)=2t\log(t/(e\sqrt\rho))=L$: an \emph{instance} of
+the factorial core \file{p0:prop:factorial-core} with $\kappa_\vol=2$,
+$d_\vol=-(2+\log\rho)$ and target $L$, which gives
+$v_\vol=W_0(L/(2e\sqrt\rho))$ and $X_\vol=e\sqrt\rho\,e^{v_\vol}=L/(2v_\vol)$.
+\item The refined inverses \eqref{xtw:airy:eq:inversefinal},
+\eqref{xtw:frac:eq:exactinverse}, \eqref{xtw:frac:eq:lambertinverse} and
+\eqref{xtw:frac:eq:y1inverse}: first-order (Newton) terms of the volume's
+perturbation-operator series \file{p0:eq:operator-series} about the core $f$,
+with error bounds proved by the Parts; \emph{analogues}, not instances of a
+theorem of the volume.
+\end{itemize}
+Neither Part claims novelty for the inversion mechanics.
+
+\section*{Notation across the two Parts}\phantomsection\label{xtw:sec:notation}
+\addcontentsline{toc}{section}{Notation across the two Parts}
+Common to both Parts with the same meaning: $F_y$, $P_n(y)$, $a_n$, $b_n$
+($=b_n(1)$ in Part~II), $\rho$, $\alpha$, $c_{n,h}$, $H_h$, $\Ai$, $\Bi$, and
+the Riccati objects $w$, $U$ (Part~II's $w_\lambda$, $U_\lambda$ reduce to
+Part~I's at $\lambda=0$). No symbol was renamed. The letters below change
+meaning:
+\begingroup\small
+\renewcommand{\theHtable}{notation.\arabic{table}}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.13\textwidth} >{\raggedright\arraybackslash}p{0.83\textwidth}@{}}
+\toprule
+Symbol & Meanings\\
+\midrule
+\endhead
+$\beta$, $a$ & Part~I: $\beta=2^{-1/3}$. Part~II: $a=2^{-1/3}$ is that constant, and $\beta=y-1$ is the shift offset (Section~\ref{xtw:frac:sec:input}). \emph{False reading:} Part~II's $\beta$ is not $2^{-1/3}$.\\
+$K$, $\kappa$ & Part~I: $K=2^{1/6}\sqrt e/(\sqrt\pi\Ai(0)^2)$ the critical constant. Part~II: $\kappa=2^{1/6}\sqrt{e/\pi}$, so $K=\kappa/\Ai(0)^2=\FF(0)$; $K$ an integer cutoff \eqref{xtw:frac:eq:cutoffs}; $K_n$ the root-ancestor statistic.\\
+$C$, $c_1$, $d$ & Part~I writes $\sqrt{2/(\pi\rho)}$ without a name. Part~II: $C=\sqrt{2/(\pi\rho)}$, $c_1$ the first correction, $d=c_1/C$; $d_y$ a Newton displacement. Part~I: no $C$.\\
+$\varepsilon$, $m$ & Part~I: $\varepsilon=1/(eh)$ the mesh, $m=h^{1/3}$. Part~II: $\epsilon=h^{-1/3}=1/m$. \emph{False reading:} the two epsilons are different scales.\\
+$p$, $f$ & Part~I: $p$ the Airy size density \eqref{xtw:airy:eq:pdensity}; $f(t)=2t\log(t/(e\sqrt\rho))$ in Section~\ref{xtw:airy:sec:inverse}. Part~II: $f(z)$ in Section~\ref{xtw:frac:sec:input} is $K\,p(z)$, Part~I's density times the critical constant, since $\FF(\ii t)=K\psi(t)$; so $f(0)=Kp(0)=\kappa/a$; $f$ is the same core as Part~I's in Section~\ref{xtw:frac:sec:inverse}. \emph{False reading:} Part~II's $f$ is not a probability density.\\
+$x$, $X$, $r$, $z$ & Part~I: $x$ the Lambert base, $r(Y)$ the refined inverse, $z(Y)$ the interpolated inverse. Part~II: $X$ is that base, $r_y$ a Newton point, $r(\lambda)=\Bi/\Ai$, $z_y(L)$ the interpolated inverse.\\
+$L_n$, $N$ & Part~I: $L_n$ the height of the weighted tree; $N_h$ the size variable; $N(Y)$ the threshold. Part~II: $L_n=\log(n/\rho)$; $N_y(Y_0)$ the threshold.\\
+$T$, $D$, $M$, $J$, $Q$ & Part~I: $T(z)$ the tree function, $D_i$ differences or factors, $J$ a divided difference or a compact set, $Q_j$ approximants. Part~II: $T=\epsilon M$ and $M$ cutoffs, $D_c(t)$, $D=2\log(X/\sqrt\rho)$, $J_c(\lambda)$, $\QQ(\lambda)$ the correction integrand, $M_y(t)$ the smooth log model.\\
+\bottomrule
+\end{longtable}
+\addtocounter{table}{-1}% the uncaptioned longtable must not consume a table number
+\endgroup
+
+\section*{Provenance and merge decisions}\phantomsection\label{xtw:sec:provenance}
+\addcontentsline{toc}{section}{Provenance and merge decisions}
+Two manuscripts of the session bundle of Reports 1--243, both dated
+4~October 2026. Their title blocks read ``Report192'' and ``Report193'', with
+the subtitles above in the author slot; both PDF author fields read
+``Research report''; neither names an author, a tool or an addressee,
+neither pins a repository commit, and neither carries ``prepared for private
+review'' wording. They arrived in commit \texttt{60f54ea06} and were placed by
+\texttt{8622ca7e5} (batch~110, cluster 110-TOWER).
+\begin{itemize}
+\item \textbf{Part~I}, bundle Report~192, archive
+\file{A096537_Corrected_Asymptotic_and_Airy_Limits_Source.zip} (662,864 bytes;
+23 files; \file{Report192.tex}, 1,502 lines, 24 pages); the base.
+\item \textbf{Part~II}, bundle Report~193, archive
+\file{A096537_Fractional_Corrections_and_Gamma_Laws_Source.zip} (1,008,394
+bytes; 37 files; \file{Report193.tex}, 1,965 lines, 29 pages). It cites
+Report~192 as \texttt{report192}; that bibliography entry now points to
+Part~I. Three of its generated files,
+\file{generated/certificate/coefficient.json}, \file{core.json} and
+\file{panels.json}, are byte copies of its fixtures
+\file{code/fixtures/*_reference.json} and are not shipped.
+\end{itemize}
+Where the merge had to choose:
+\begin{enumerate}
+\item \emph{Base and order.} Report~192 first (see the Guide).
+\item \emph{Repeated arguments.} Part~II re-derives the leading facts it
+uses inside a quantitative argument (the parabolic entrance with the forced
+logarithm, the positive factorization on minor arcs, the height averaging);
+each proof is needed for its own theorem, so both are printed in full, with
+dated notes in Part~II naming the Part~I counterparts.
+\item \emph{Front matter, numbering and bibliography.} The two title blocks
+and abstracts are printed at the heads of their Parts, with each manuscript's
+opening paragraph; one table of contents replaces two. The two
+bibliographies are merged: the seven shared keys (\texttt{oeis537},
+\texttt{oeis542}, \texttt{bv}, \texttt{poland}, \texttt{dlmf2},
+\texttt{dlmf7}, \texttt{dlmf9}) are single entries keeping both Parts'
+details, \texttt{report192} points to Part~I, and the write added the entry
+for the transseries volume.
+\item \emph{Write additions.} This front matter, Remarks~\ref{xtw:airy:rem:oeis537}
+and~\ref{xtw:airy:rem:oeis542}, Section~\ref{xtw:sec:further}, the dated notes
+and the label prefixes. Everything else is delivered text.
+\end{enumerate}
+
+\section*{What was checked, and what was not}\phantomsection\label{xtw:sec:trust}
+\addcontentsline{toc}{section}{What was checked, and what was not}
+The report is unrefereed and not formalized. At intake (dossier of batch~110,
+6~October 2026) both manuscripts were read and no mathematical error was
+found. An independent computation of the full-height tower coefficients
+reproduced $1,1,5,61,1377,49721,2625313,190735749,18246616321$ and gave
+$b_n\rho^n\sqrt n=0.9144$, $0.9462$, $0.9609$, $0.9695$ at $n=100$, $400$,
+$1000$, $2000$; least-squares fits $c_0+\sum_jc_jn^{-j/3}$ on the ranges
+$n\ge200$, $400$, $800$ gave $c_0$ between $1.00356$ and $1.00363$, against
+$\sqrt{2/(\pi\rho)}=1.0035525\ldots$ (the conjectured amplitude corresponds to
+$c_0=1$), and $c_1\approx-0.437$, inside Part~II's enclosure; exact rows of
+A096542 through $n=8$ confirmed $T(n,1)=n\,a_{n-1}$. These are numerical
+observations, not proofs. The delivered suites were rerun on copies (results
+in the README). The write (7~October 2026) read both OEIS entries, checked the
+inequality $\pi\rho<2$ and the rows of A096542 quoted in
+Remark~\ref{xtw:airy:rem:oeis542}, checked the identifications with the
+transseries volume above, and reran Part~I's exact checker and Part~II's exact
+checker and interval tests on copies. What was \emph{not} done: the analytic
+proofs were read and their displayed algebra spot-checked, but they are the
+manuscripts' proofs, not an independent verification; Bender--Vinson, Poland
+and Chapoton were not read by the write; Part~II's 562-panel interval
+certificate was rerun by the intake but not by the write.
+
+\section*{Relation to neighbouring reports and formal projects}\phantomsection\label{xtw:sec:neighbours}
+\addcontentsline{toc}{section}{Relation to neighbouring reports and formal projects}
+No other placed report treats A096537, A096542, continued exponentials or
+depth-weighted labelled trees (repository search, 6--7~October 2026). The
+transseries volume \cite{tsvol} is related to the inverses as stated above.
+Placement in the collection confers no formal status: no Lean or Rocq file in
+the repository treats these sequences, and no statement of this report is
+formalized.
+\clearpage
+
+\part{Airy limits and the corrected asymptotic of A096537: critical exponential towers and depth weighted labeled trees}\label{xtw:airy:part}
+\partsource{Bundle Report~192, archive \file{A096537_Corrected_Asymptotic_and_Airy_Limits_Source.zip}, delivered as \file{Report192.tex} (24 pages), the base of the merge. Delivered title block ``Report192 / Airy Limits and the Corrected Asymptotic of A096537 / Critical exponential towers and depth weighted labeled trees / 4 October 2026''. Printed as delivered, with \textbf{[write]} notes and two \textbf{[write]} remarks; section, statement and equation numbers are those of the delivery. The opening paragraph ``Attribution and scope'' is the manuscript's own.}
+\begin{partabstract}
 For the formal exponential generating function
 $F_1(x)=\exp(x\exp(2x\exp(3x\cdots)))=\sum a_nx^n/n!$, we prove
 \[
@@ -52,7 +333,7 @@ trees and a refined Lambert-function inverse with a shrinking integer sandwich.
 The report supplies self-contained proofs of these steps and exact reproducible
 finite checks. No effective asymptotic error, all-orders expansion, or claim of
 worldwide priority is made.
-\end{abstract}
+\end{partabstract}
 
 \paragraph{Attribution and scope.}
 The sequence and the entire shifted functional equation are prior constructions
@@ -61,16 +342,12 @@ General continued exponentials and their weighted tree interpretation are part
 of the earlier framework of Bender and Vinson \cite{bv}. The exact theorem scope
 of that paper and of Poland's continuation \cite{poland} remains unresolved in
 the available full-text comparison. We prove the formulas stated here; we do not
-infer their novelty from unsuccessful searches. Section~\ref{sec:literature}
+infer their novelty from unsuccessful searches. Section~\ref{xtw:airy:sec:literature}
 records the precise limits of the comparison.
 
-\newpage
-{\small\tableofcontents}
-\newpage
-
-\section{Results and proof structure}\label{sec:results}
+\section{Results and proof structure}\label{xtw:airy:sec:results}
 All logarithms are natural. Set
-\begin{equation}\label{eq:constants}
+\begin{equation}\label{xtw:airy:eq:constants}
  \alpha=e-1,\qquad \rho=\alpha/e=1-e^{-1},\qquad
  \beta=2^{-1/3},\qquad
  K=\frac{2^{1/6}\sqrt e}{\sqrt\pi\,\Ai(0)^2}.
@@ -78,51 +355,51 @@ All logarithms are natural. Set
 The Airy functions have their usual normalization as solutions of $y''=zy$.
 In particular $\Ai(0)=1/(3^{2/3}\Gamma(2/3))$.
 The functional equations
-\begin{equation}\label{eq:shiftfamily}
+\begin{equation}\label{xtw:airy:eq:shiftfamily}
  F_y(x)=\exp\bigl(xyF_{y+1}(x)\bigr),\qquad F_y(0)=1,
 \end{equation}
 define a unique family of formal series: the coefficient of degree $n$ on the
 right uses coefficients only through degree $n-1$ of the next series. We put
-\begin{equation}\label{eq:anbn}
+\begin{equation}\label{xtw:airy:eq:anbn}
  a_n=n![x^n]F_1(x),\qquad b_n=\frac{a_n}{(n!)^2}.
 \end{equation}
 No analytic convergence of the infinite tower is assumed or used. Every
 analytic evaluation in the proof is of a finite entire tower.
 
-\begin{theorem}[Corrected coefficient equivalent]\label{thm:main}
+\begin{theorem}[Corrected coefficient equivalent]\label{xtw:airy:thm:main}
 As $n\to\infty$,
 \begin{align}
- b_n&\sim\sqrt{\frac{2}{\pi\rho}}\,\rho^{-n}n^{-1/2},\label{eq:bnmain}\\
+ b_n&\sim\sqrt{\frac{2}{\pi\rho}}\,\rho^{-n}n^{-1/2},\label{xtw:airy:eq:bnmain}\\
  a_n&\sim 2\sqrt{\frac{2\pi}{\rho}}\,
- \frac{n^{2n+1/2}}{e^n(e-1)^n}.\label{eq:anmain}
+ \frac{n^{2n+1/2}}{e^n(e-1)^n}.\label{xtw:airy:eq:anmain}
 \end{align}
 Equivalently,
-\begin{equation}\label{eq:logmain}
+\begin{equation}\label{xtw:airy:eq:logmain}
  \log a_n=2n\log n-(1+\log(e-1))n
        +\frac12\log n+\log\!\left(2\sqrt{\frac{2\pi}{\rho}}\right)+o(1).
 \end{equation}
 \end{theorem}
 
 The retrieved A096537 entry attributes to V\'aclav Kote\v{s}ovec a conjecture,
-dated 16 December 2019, with the same expression as \eqref{eq:anmain} but
+dated 16 December 2019, with the same expression as \eqref{xtw:airy:eq:anmain} but
 amplitude $2\pi$ \cite{oeis537}. The corrected-to-conjectured ratio is
-\begin{equation}\label{eq:ratio}
+\begin{equation}\label{xtw:airy:eq:ratio}
  \sqrt{\frac{2}{\pi\rho}}=1.00355251532641107955\ldots>1.
 \end{equation}
 The strict inequality does not depend on decimal computation: $e<11/4$ gives
 $\rho<7/11$, whereas $\pi<22/7$, so $\pi\rho<2$. Thus
-Theorem~\ref{thm:main} disproves that particular amplitude conjecture.
+Theorem~\ref{xtw:airy:thm:main} disproves that particular amplitude conjecture.
 
 For $h\ge1$, define
-\begin{equation}\label{eq:towers}
+\begin{equation}\label{xtw:airy:eq:towers}
  A_{h+1,h}(x)=1,\qquad A_{i,h}(x)=\exp\bigl(ixA_{i+1,h}(x)\bigr)
  \quad(1\le i\le h),
 \end{equation}
 and write $A_{1,0}=1$ and $H_h=A_{1,h}-A_{1,h-1}$. These entire functions
 have nonnegative Taylor coefficients, with $H_h$ starting in degree $h$.
-Theorem~\ref{thm:window} below gives, uniformly for $\lambda$ in each compact
+Theorem~\ref{xtw:airy:thm:window} below gives, uniformly for $\lambda$ in each compact
 subset of $(-\infty,1]$,
-\begin{equation}\label{eq:windowintro}
+\begin{equation}\label{xtw:airy:eq:windowintro}
  H_h\!\left(\frac{1+\lambda h^{-2/3}}{eh}\right)
  \sim \frac{2^{1/6}\sqrt e}{\sqrt\pi\,\Ai(-\beta\lambda)^2}
        h^{1/6}e^{-\alpha h+\alpha\lambda h^{1/3}}.
@@ -130,26 +407,26 @@ subset of $(-\infty,1]$,
 The upper endpoint $1$ is a convenient sufficient restriction, not an assertion
 about the largest possible parameter domain.
 
-\begin{theorem}[Two different fluctuation laws]\label{thm:limitsintro}
+\begin{theorem}[Two different fluctuation laws]\label{xtw:airy:thm:limitsintro}
 Define $c_{n,h}=[x^n]H_h(x)$ and an integer variable $N_h$ by
-\begin{equation}\label{eq:sizeprobintro}
+\begin{equation}\label{xtw:airy:eq:sizeprobintro}
  \Prb(N_h=n)=\frac{c_{n,h}(eh)^{-n}}{H_h(1/(eh))}.
 \end{equation}
 Then $(N_h-\alpha h)/h^{2/3}$ converges to a law with bounded continuous density
 $p$ and characteristic function
-\begin{equation}\label{eq:psiintro}
+\begin{equation}\label{xtw:airy:eq:psiintro}
  \psi(t)=\frac{\Ai(0)^2}{\Ai(-\beta\mathrm i t)^2},\qquad
  p(0)=\frac{\Ai(0)^2}{\beta}.
 \end{equation}
 Moreover,
-\begin{equation}\label{eq:lltintro}
+\begin{equation}\label{xtw:airy:eq:lltintro}
  \sup_{n\in\Z}\left|h^{2/3}\Prb(N_h=n)
  -p\!\left(\frac{n-\alpha h}{h^{2/3}}\right)\right|\longrightarrow0.
 \end{equation}
 Separately, let $L_n$ be the height of a labeled tree on $\{0,\ldots,n\}$,
 rooted at $0$, chosen with probability proportional to the product of all
 nonroot depths. Then
-\begin{equation}\label{eq:cltintro}
+\begin{equation}\label{xtw:airy:eq:cltintro}
  \frac{L_n-n/\alpha}{\sqrt n/\alpha}\ \xrightarrow{d}\ \mathcal N(0,1).
 \end{equation}
 \end{theorem}
@@ -158,21 +435,21 @@ The finite-height amplitude $h^{1/6}$, the size fluctuation scale $h^{2/3}$,
 and the fixed-size height fluctuation scale $\sqrt n$ describe different objects.
 They must not be identified with one another.
 
-\begin{theorem}[Refined threshold inverse]\label{thm:inverseintro}
+\begin{theorem}[Refined threshold inverse]\label{xtw:airy:thm:inverseintro}
 Let $Y\to\infty$, $L=\log Y$, and
-\begin{equation}\label{eq:Lambertintro}
+\begin{equation}\label{xtw:airy:eq:Lambertintro}
  x=\frac{L}{2W_0\!\left(L/(2e\sqrt\rho)\right)},\qquad
  r(Y)=x-\frac14-\frac{\log(8\pi/\sqrt\rho)}{4\log(x/\sqrt\rho)}.
 \end{equation}
 Here $W_0$ is the positive real Lambert function. The inverse $z(Y)$ of the
 continuous piecewise-linear interpolation of $\log a_n$, on its eventually
 strictly increasing portion, satisfies
-\begin{equation}\label{eq:zintro}
+\begin{equation}\label{xtw:airy:eq:zintro}
  z(Y)=r(Y)+o(1/\log x).
 \end{equation}
 For $N(Y)=\min\{n:a_n\ge Y\}$ there exists $\epsilon(Y)>0$ tending to zero such
 that, for all sufficiently large $Y$,
-\begin{equation}\label{eq:sandwichintro}
+\begin{equation}\label{xtw:airy:eq:sandwichintro}
  \ceil{r(Y)-\frac{\epsilon(Y)}{\log x}}
  \le N(Y)\le
  \ceil{r(Y)+\frac{\epsilon(Y)}{\log x}}.
@@ -184,47 +461,74 @@ finite-target bound or a universally valid formula $N(Y)=\ceil{r(Y)}$.
 \subsection{Dependencies and the role of each argument}
 The proof has the following order.
 \begin{enumerate}
-\item Section~\ref{sec:exact} identifies the exact-height coefficients and the
+\item Section~\ref{xtw:airy:sec:exact} identifies the exact-height coefficients and the
 weighted-tree normalization, including the two factorials in $b_n$.
-\item Sections~\ref{sec:entrance}--\ref{sec:critical} derive the critical
+\item Sections~\ref{xtw:airy:sec:entrance}--\ref{xtw:airy:sec:critical} derive the critical
 entrance and its sensitivity, prove bulk product matching, and obtain $K$.
-\item Sections~\ref{sec:window}--\ref{sec:airyprob} establish the uniform real
+\item Sections~\ref{xtw:airy:sec:window}--\ref{xtw:airy:sec:airyprob} establish the uniform real
 window, complex characteristic-function limit by analytic continuation, and
 $p(0)$ by a Wronskian integral.
-\item Section~\ref{sec:minor} proves Fourier-tail bounds independently of the
-Airy approximation. Section~\ref{sec:local} then proves the uniform lattice
+\item Section~\ref{xtw:airy:sec:minor} proves Fourier-tail bounds independently of the
+Airy approximation. Section~\ref{xtw:airy:sec:local} then proves the uniform lattice
 local limit. Weak convergence alone would not suffice here.
-\item Section~\ref{sec:sum} obtains an all-height coefficient majorant and
+\item Section~\ref{xtw:airy:sec:sum} obtains an all-height coefficient majorant and
 performs the height sum. This is where the Airy constants cancel.
-\item Sections~\ref{sec:height} and \ref{sec:inverse} derive the height central
+\item Sections~\ref{xtw:airy:sec:height} and \ref{xtw:airy:sec:inverse} derive the height central
 limit theorem and the refined inverse.
 \end{enumerate}
 Every limiting matching argument first takes $h\to\infty$ at a fixed positive
 matching time, then sends that time to infinity. No unstated uniformity along a
-growing matching time is used. Exact computations in Section~\ref{sec:verification}
+growing matching time is used. Exact computations in Section~\ref{xtw:airy:sec:verification}
 check identities and normalizations; they do not replace any asymptotic proof.
 
-\section{Exact coefficients and weighted trees}\label{sec:exact}
+\begin{remark}[\textsf{[write]} The amplitude conjectured in A096537 is false]\label{xtw:airy:rem:oeis537}
+[Added 7 October 2026, batch~110.] The formula field of OEIS A096537
+(revision \#8, 17~December 2019, live on 7~October 2026) reads ``Conjecture:
+a(n) $\sim$ 2 * Pi * n\^{}(2*n + 1/2) / (exp(n) * (exp(1) - 1)\^{}n). -
+Vaclav Kotesovec, Dec 16 2019''. This conjecture is false. By
+Theorem~\ref{xtw:airy:thm:main},
+\[
+ \frac{a_n\,e^n(e-1)^n}{n^{2n+1/2}}\longrightarrow2\sqrt{\frac{2\pi}{\rho}}
+ =2\pi\sqrt{\frac{2}{\pi\rho}},
+\]
+whereas the conjecture asserts the limit $2\pi$. The two limits differ because
+$\pi\rho<2$: from $e<11/4$, $\rho=1-1/e<1-4/11=7/11$, and $\pi<22/7$, so
+$\pi\rho<2$, as shown after \eqref{xtw:airy:eq:ratio}. So the conjectured form
+$n^{2n+1/2}e^{-n}(e-1)^{-n}$ is right and only its amplitude is wrong, by the
+factor $\sqrt{2/(\pi\rho)}=1.00355251532641107954\ldots$ (the abstract and
+\eqref{xtw:airy:eq:ratio} print $\ldots07955\ldots$, a rounding; the
+truncation is $\ldots07954$). The intake's independent computation of $a_n$
+to $n=2000$, with fits in powers of $n^{-1/3}$, extrapolated
+$a_n\rho^n\sqrt n/(n!)^2$ to $1.0036$, not to $1$. The approach is slow because
+of the first correction $c_1n^{-1/3}$ proved in Part~II
+(Theorem~\ref{xtw:frac:thm:correction}): with Part~II's diagnostic value
+$c_1\approx-0.4365$, the normalized value at $n=2000$ is about $0.969$, about
+$3.5\,\%$ below its limit, which is why a short-range fit could not have
+distinguished the two amplitudes. No correction has been submitted to the
+OEIS.
+\end{remark}
+
+\section{Exact coefficients and weighted trees}\label{xtw:airy:sec:exact}
 Let $\mathcal T_n$ be the trees with vertex set $\{0,1,\ldots,n\}$ and root $0$.
 For $T\in\mathcal T_n$, let $d_T(v)$ be the distance from $0$ to $v$ and set
-\begin{equation}\label{eq:treeweight}
+\begin{equation}\label{xtw:airy:eq:treeweight}
  w_y(T)=\prod_{v=1}^n(y+d_T(v)-1),\qquad w(T)=w_1(T).
 \end{equation}
 The root has no weight. Decomposing the unordered collection of root branches
 and using the labeled exponential formula gives
-\begin{equation}\label{eq:treeidentity}
+\begin{equation}\label{xtw:airy:eq:treeidentity}
  F_y(x)=\sum_{n\ge0}\frac{x^n}{n!}\sum_{T\in\mathcal T_n}w_y(T).
 \end{equation}
 Indeed a branch has a root carrying $xy$ and descendants described by
 $F_{y+1}$; the unordered set of branches gives $\exp(xyF_{y+1})$.
 The same argument with maximum depth at most $h$ gives $A_{1,h}$ at $y=1$.
 Consequently
-\begin{equation}\label{eq:heightidentity}
+\begin{equation}\label{xtw:airy:eq:heightidentity}
  n!c_{n,h}=\sum_{\substack{T\in\mathcal T_n\\\operatorname{height}(T)=h}}w(T),
  \qquad a_n=\sum_{h=1}^n n!c_{n,h}\quad(n\ge1).
 \end{equation}
 In particular
-\begin{equation}\label{eq:bdecomp}
+\begin{equation}\label{xtw:airy:eq:bdecomp}
  b_n=\sum_{h=1}^n\frac{c_{n,h}}{n!}.
 \end{equation}
 
@@ -241,7 +545,7 @@ a chain alone gives $[x^n]F_1\ge n!$.
 For computational purposes, if
 $B(x)=\sum B_nx^n/n!$ and $A(x)=\exp(ixB(x))=\sum A_nx^n/n!$, differentiating
 $A$ yields the exact integer recurrence
-\begin{equation}\label{eq:coefficientrec}
+\begin{equation}\label{xtw:airy:eq:coefficientrec}
  A_0=1,\qquad
  A_n=\sum_{k=1}^n\binom{n-1}{k-1}kiB_{k-1}A_{n-k}.
 \end{equation}
@@ -252,7 +556,7 @@ The initial values are
  1,\ 1,\ 5,\ 61,\ 1377,\ 49721,\ 2625313,\ 190735749.
 \]
 
-\begin{lemma}[Monotonicity]\label{lem:monotonicity}
+\begin{lemma}[Monotonicity]\label{xtw:airy:lem:monotonicity}
 For $n\ge1$, $a_n\ge n^2a_{n-1}$, and hence $b_n\ge b_{n-1}$.
 In particular $a_n$ is strictly increasing for $n\ge2$.
 \end{lemma}
@@ -269,8 +573,8 @@ Apply this to every tree in $P_{n-1}(2)$ to obtain
 $P_{n-1}(2)\ge nP_{n-1}(1)$. Empty products cover $n=1$.
 \end{proof}
 
-\section{Critical entrance and sensitivity}\label{sec:entrance}
-Throughout Sections~\ref{sec:entrance}--\ref{sec:critical}, put
+\section{Critical entrance and sensitivity}\label{xtw:airy:sec:entrance}
+Throughout Sections~\ref{xtw:airy:sec:entrance}--\ref{xtw:airy:sec:critical}, put
 $x_h=1/(eh)$ and $m=h^{1/3}$. At this real argument let
 \[
  q_i^A=\log A_{i,h}(x_h),\qquad q_i^B=\log A_{i,h-1}(x_h),
@@ -278,7 +582,7 @@ $x_h=1/(eh)$ and $m=h^{1/3}$. At this real argument let
 where $q_h^A=1/e$ and $q_h^B=0$. Define
 $u_k^A=1-q_{h-k}^A$ and $u_k^B=1-q_{h-k}^B$, $0\le k\le h-1$.
 Both obey the exact recurrence
-\begin{equation}\label{eq:urec}
+\begin{equation}\label{xtw:airy:eq:urec}
  u_k=1-(1-k/h)e^{-u_{k-1}},\qquad
  u_0^A=\rho,\quad u_0^B=1.
 \end{equation}
@@ -286,22 +590,22 @@ Here $0<u_k\le1$. With $\phi(u)=1-e^{-u}$, the terminal states have the
 important relation $u_0^A=\phi(u_0^B)$. It will fix the sensitivity constant.
 
 Let $w$ solve
-\begin{equation}\label{eq:wode}
+\begin{equation}\label{xtw:airy:eq:wode}
  w''(t)=\tfrac12tw(t),\qquad w(0)=0,\quad w'(0)=1,
 \end{equation}
 and put $U=2w'/w$. Positive initial slope and $w''\ge0$ while $w\ge0$ imply
 $w,w'>0$ for $t>0$. Direct differentiation and a Taylor series at zero give
-\begin{equation}\label{eq:riccati}
+\begin{equation}\label{xtw:airy:eq:riccati}
  U'=t-\tfrac12U^2,\qquad U(t)=2/t+\OO(t^2)\quad(t\downarrow0).
 \end{equation}
 
-\begin{lemma}[Entrance with normalized sensitivity]\label{lem:entrance}
+\begin{lemma}[Entrance with normalized sensitivity]\label{xtw:airy:lem:entrance}
 Uniformly on each compact interval $0<d\le t\le L<\infty$,
 \begin{align}
  mu_{\floor{mt}}^A&\longrightarrow U(t),&
- mu_{\floor{mt}}^B&\longrightarrow U(t),\label{eq:entrance}\\
+ mu_{\floor{mt}}^B&\longrightarrow U(t),\label{xtw:airy:eq:entrance}\\
  m^2\bigl(u_{\floor{mt}}^B-u_{\floor{mt}}^A\bigr)
- &\longrightarrow\frac{2}{w(t)^2}.&&\label{eq:sensitivity}
+ &\longrightarrow\frac{2}{w(t)^2}.&&\label{xtw:airy:eq:sensitivity}
 \end{align}
 \end{lemma}
 \begin{proof}
@@ -311,32 +615,32 @@ For fixed $a\in(0,1]$, let $v_k=\phi^k(a)$. This sequence decreases to zero and
  \frac1{v_{k+1}}-\frac1{v_k}\longrightarrow\frac12.
 \]
 Ces\`aro summation gives $kv_k\to2$. Since $\phi$ is increasing and
-$1$-Lipschitz on $[0,1]$, comparison with \eqref{eq:urec}, using the same initial
+$1$-Lipschitz on $[0,1]$, comparison with \eqref{xtw:airy:eq:urec}, using the same initial
 state, gives
-\begin{equation}\label{eq:autocompare}
+\begin{equation}\label{xtw:airy:eq:autocompare}
  0\le u_k-v_k\le\sum_{j=1}^k j/h=\frac{k(k+1)}{2h}.
 \end{equation}
 For a small fixed $d>0$, this implies
-\begin{equation}\label{eq:entrysmall}
+\begin{equation}\label{xtw:airy:eq:entrysmall}
  mu_{\floor{dm}}=2/d+\OO(d^2)+o_h(1).
 \end{equation}
 On $d\le k/m\le L$, the scaled values $V_k=mu_k$ are bounded by the same
 comparison. Taylor expansion of the recurrence is uniform there and gives
-\begin{equation}\label{eq:euler}
+\begin{equation}\label{xtw:airy:eq:euler}
  V_k-V_{k-1}=m^{-1}\bigl(k/m-V_{k-1}^2/2\bigr)+\OO_{d,L}(m^{-2}).
 \end{equation}
 For fixed $d$, discrete Gronwall therefore compares this Euler scheme uniformly
 on $[d,L]$ to the exact ODE flow from its initial value. Two nonnegative
 Riccati solutions have difference $D$ satisfying
 $D'=-(U_1+U_2)D/2$, so the absolute difference contracts. Compare the flow
-started in \eqref{eq:entrysmall} to \eqref{eq:riccati}; take $h\to\infty$ and
+started in \eqref{xtw:airy:eq:entrysmall} to \eqref{xtw:airy:eq:riccati}; take $h\to\infty$ and
 then $d\downarrow0$. The discrepancy is $\OO(d^2)$ and tends to zero. This
-proves \eqref{eq:entrance}, including uniformity and harmless grid rounding.
+proves \eqref{xtw:airy:eq:entrance}, including uniformity and harmless grid rounding.
 
 For sensitivity use $v_k=\phi^k(1)$ and the autonomous pair $v_k,v_{k+1}$.
 Set $\Delta_k=u_k^B-u_k^A$ and $\delta_k=v_k-v_{k+1}$. Their initial
 differences agree. The exact divided difference
-\begin{equation}\label{eq:divdiff}
+\begin{equation}\label{xtw:airy:eq:divdiff}
  J(a,b)=\frac{\phi(b)-\phi(a)}{b-a}
        =\int_0^1e^{-(1-r)a-rb}\,dr
 \end{equation}
@@ -347,50 +651,50 @@ factor between $e^{-E}$ and $e^E$. Iterating the differences gives
  \Delta_k=\Delta_0\prod_{j=1}^k(1-j/h)J(u_{j-1}^A,u_{j-1}^B),\qquad
  \delta_k=\delta_0\prod_{j=1}^kJ(v_j,v_{j-1}).
 \]
-Use \eqref{eq:autocompare} on each endpoint. Uniformly for $k\le dm$ and large
+Use \eqref{xtw:airy:eq:autocompare} on each endpoint. Uniformly for $k\le dm$ and large
 $h$,
-\begin{equation}\label{eq:deltaentry}
+\begin{equation}\label{xtw:airy:eq:deltaentry}
  \left|\log\frac{\Delta_k}{\delta_k}\right|
  \le C(k^2/h+k^3/h)=\OO(d^3)+o_h(1).
 \end{equation}
 Since $kv_k\to2$, Taylor expansion of $v_k-\phi(v_k)$ gives
 $k^2\delta_k\to2$, so
-\begin{equation}\label{eq:smallDelta}
+\begin{equation}\label{xtw:airy:eq:smallDelta}
  m^2\Delta_{\floor{dm}}=\frac{2}{d^2}
        \exp\{\OO(d^3)+o_h(1)\}.
 \end{equation}
-On $d\le j/m\le L$, \eqref{eq:entrance} and \eqref{eq:divdiff} give
+On $d\le j/m\le L$, \eqref{xtw:airy:eq:entrance} and \eqref{xtw:airy:eq:divdiff} give
 \[
  \log J(u_{j-1}^A,u_{j-1}^B)=-U(j/m)/m+o_h(1/m)
 \]
 uniformly. Also $\sum_{j\le Lm}|\log(1-j/h)|=\OO_L(m^2/h)=o(1)$.
 Hence, for fixed $d\le t\le L$,
-\begin{equation}\label{eq:sensitivityprop}
+\begin{equation}\label{xtw:airy:eq:sensitivityprop}
  \frac{\Delta_{\floor{tm}}}{\Delta_{\floor{dm}}}
  \longrightarrow\exp\!\left(-\int_d^tU(r)\,dr\right)
  =\frac{w(d)^2}{w(t)^2}.
 \end{equation}
 Now $w(d)=d+\OO(d^4)$. Let $d\downarrow0$ in
-\eqref{eq:smallDelta}--\eqref{eq:sensitivityprop} to prove
-\eqref{eq:sensitivity}. The local logarithmic error used here is
+\eqref{xtw:airy:eq:smallDelta}--\eqref{xtw:airy:eq:sensitivityprop} to prove
+\eqref{xtw:airy:eq:sensitivity}. The local logarithmic error used here is
 $o_h(1/m)$, which is sufficient after summing; an unproved $\OO(m^{-2})$
 rate of entrance convergence is not needed.
 \end{proof}
 
-\section{Bulk matching and the endpoint product}\label{sec:bulk}
+\section{Bulk matching and the endpoint product}\label{xtw:airy:sec:bulk}
 Let $T(z)$ be the small real solution of $Te^{-T}=z$, for $0\le z\le1/e$.
 In particular $T(0)=0$ and $T(1/e)=1$. For $z<1/e$ define
-\begin{equation}\label{eq:Rdef}
+\begin{equation}\label{xtw:airy:eq:Rdef}
  R(z)=\frac{T(z)e^{T(z)}}{(1-T(z))^2}.
 \end{equation}
 We use an approximate solution with its first adiabatic correction; retaining
 this correction is necessary to recover the amplitude.
 
-\begin{lemma}[Bulk product matching]\label{lem:bulk}
+\begin{lemma}[Bulk product matching]\label{xtw:airy:lem:bulk}
 For $i=h-\floor{tm}$, write $\varepsilon=1/(eh)$,
 $z_j=j\varepsilon$, $T_j=T(z_j)$, and $v_i=1-T_i$. For either of the two
 critical towers,
-\begin{equation}\label{eq:bulk}
+\begin{equation}\label{xtw:airy:eq:bulk}
  \limsup_{h\to\infty}\left|
  \log\!\left(v_i\prod_{j=1}^{i-1}\frac{q_j}{T_j}\right)\right|
  =\OO(t^{-3/2})\qquad(t\to\infty).
@@ -403,7 +707,7 @@ Put $Q_j=T_j+\varepsilon R(z_j)$. Differentiation gives
  R'&=e^{2T}(1+2T-T^2)/(1-T)^4,&R&=T(T'+R).
 \end{align*}
 The last identity cancels the first-order residual. Taylor's theorem yields
-\begin{equation}\label{eq:residual}
+\begin{equation}\label{xtw:airy:eq:residual}
  E_j=Q_j-z_je^{Q_{j+1}},\qquad
  |E_j|\le C\varepsilon^2\frac{T_j}{(1-T_j)^4}\quad(j<i),
 \end{equation}
@@ -413,16 +717,16 @@ $v_j/v_{j+1}\le1+C\varepsilon/v_i^2$. Taylor bounds on the neighboring interval
 may therefore use $v_j$. The expansion of $Q_{j+1}$ is
 $T_j+\varepsilon(T'_j+R_j)+\OO(\varepsilon^2v_j^{-4})$;
 $z_je^{T_j}=T_j$, and the remaining exponential quadratic term is also
-$\OO(\varepsilon^2T_jv_j^{-4})$. This proves \eqref{eq:residual}, including
+$\OO(\varepsilon^2T_jv_j^{-4})$. This proves \eqref{xtw:airy:eq:residual}, including
 its factor $T_j$ at the left endpoint.
 
 The Airy function and derivative asymptotics, written explicitly in
-Section~\ref{sec:critical}, imply
-\begin{equation}\label{eq:Ularge}
+Section~\ref{xtw:airy:sec:critical}, imply
+\begin{equation}\label{xtw:airy:eq:Ularge}
  U(t)=\sqrt{2t}-\frac1{2t}+\OO(t^{-5/2}).
 \end{equation}
-The turning-point expansion of $Te^{-T}=z$ and Lemma~\ref{lem:entrance} then give
-\begin{equation}\label{eq:boundaryQ}
+The turning-point expansion of $Te^{-T}=z$ and Lemma~\ref{xtw:airy:lem:entrance} then give
+\begin{equation}\label{xtw:airy:eq:boundaryQ}
  mv_i\longrightarrow\sqrt{2t},\qquad
  m(q_i-Q_i)=\OO(t^{-5/2})+o_h(1).
 \end{equation}
@@ -439,19 +743,19 @@ The same bounds for both arguments in the mean-value theorem show
 For example the derivative is at most $z_i e^{M'}$ with
 $M'=\max(q_i,Q_i,T_i)\le1-cv_i$; its logarithm is at most $-cv_i$.
 Summing the geometric propagation therefore gives
-\begin{equation}\label{eq:sumdefect}
+\begin{equation}\label{xtw:airy:eq:sumdefect}
  \sum_{j=1}^i|q_j-Q_j|
  \le\frac C{v_i}\left(|q_i-Q_i|+\sum_{j=1}^{i-1}|E_j|\right).
 \end{equation}
-The monotonicity of the summand in \eqref{eq:residual}, followed by the
+The monotonicity of the summand in \eqref{xtw:airy:eq:residual}, followed by the
 substitution $dz=e^{-T}(1-T)dT$, gives
 \[
  \sum_{j<i}|E_j|\le C\bigl(h^{-1}v_i^{-2}+h^{-2}v_i^{-4}\bigr).
 \]
 Indeed its integral is bounded by $C v_i^{-2}$ and the last mesh cell costs
-$C\varepsilon^2v_i^{-4}$. Equations \eqref{eq:boundaryQ} and
-\eqref{eq:sumdefect} now give
-\begin{equation}\label{eq:sumdefectlimit}
+$C\varepsilon^2v_i^{-4}$. Equations \eqref{xtw:airy:eq:boundaryQ} and
+\eqref{xtw:airy:eq:sumdefect} now give
+\begin{equation}\label{xtw:airy:eq:sumdefectlimit}
  \limsup_{h\to\infty}\sum_{j=1}^i|q_j-Q_j|=\OO(t^{-3/2}).
 \end{equation}
 
@@ -466,17 +770,17 @@ Thus
  =\sum_{j=2}^i(q_j-T_j)+T_i-T_1.
 \]
 Replace $q_j-T_j$ by $\varepsilon R(z_j)$ using
-\eqref{eq:sumdefectlimit}. The Riemann-sum error is
+\eqref{xtw:airy:eq:sumdefectlimit}. The Riemann-sum error is
 $\OO(\varepsilon R(z_i))=o_h(1)$ for fixed $t$, and direct substitution gives
-\begin{equation}\label{eq:Rintegral}
+\begin{equation}\label{xtw:airy:eq:Rintegral}
  \int_0^{z_i}R(z)\,dz=-T_i-\log(1-T_i).
 \end{equation}
-As $T_1\to0$, these formulas prove \eqref{eq:bulk}.
+As $T_1\to0$, these formulas prove \eqref{xtw:airy:eq:bulk}.
 \end{proof}
 
-\begin{lemma}[Endpoint Riemann formula]\label{lem:endpoint}
+\begin{lemma}[Endpoint Riemann formula]\label{xtw:airy:lem:endpoint}
 If $f$ is absolutely continuous on $[0,1]$ with $f'\in L^1[0,1]$, then
-\begin{equation}\label{eq:riemann}
+\begin{equation}\label{xtw:airy:eq:riemann}
  \sum_{j=1}^h f(j/h)-h\int_0^1f(t)\,dt
  \longrightarrow\frac{f(1)-f(0)}2.
 \end{equation}
@@ -490,60 +794,60 @@ whole mesh cells, then for step functions, and finally use $L^1$
 approximation and $0\le\{ht\}\le1$.
 \end{proof}
 
-\begin{lemma}[Critical equilibrium product]\label{lem:product}
+\begin{lemma}[Critical equilibrium product]\label{xtw:airy:lem:product}
 With $T_j=T(j/(eh))$,
-\begin{equation}\label{eq:fullproduct}
+\begin{equation}\label{xtw:airy:eq:fullproduct}
  \prod_{j=1}^hT_j\sim\sqrt{2\pi e h}\,e^{-\alpha h}.
 \end{equation}
 For fixed $t>0$ and $i=h-\floor{tm}$,
-\begin{equation}\label{eq:tailproduct}
+\begin{equation}\label{xtw:airy:eq:tailproduct}
  \prod_{j=i}^hT_j\longrightarrow
  \exp\!\left(-\frac{2\sqrt2}{3}t^{3/2}\right).
 \end{equation}
 \end{lemma}
 \begin{proof}
 Since $T_j=z_je^{T_j}$, the product of $z_j$ is $h!/(eh)^h$ and is treated
-exactly by Stirling. Apply Lemma~\ref{lem:endpoint} to $f(t)=T(t/e)$.
+exactly by Stirling. Apply Lemma~\ref{xtw:airy:lem:endpoint} to $f(t)=T(t/e)$.
 Its derivative is integrable, as follows either by substituting $t/e=Te^{-T}$
 or by its square-root endpoint expansion, so
 \[
  \sum_{j=1}^hT(j/(eh))=h\int_0^1T(t/e)\,dt+\frac12+o(1).
 \]
 The identity
-\begin{equation}\label{eq:logTintegral}
+\begin{equation}\label{xtw:airy:eq:logTintegral}
  \int_0^1\log T(t/e)\,dt=-\alpha
 \end{equation}
 follows by substituting $t=eTe^{-T}$, or from the antiderivative
 $z\log T(z)+e^{-T(z)}$ of $\log T(z)$. The factorial and this integral give
-\eqref{eq:fullproduct}; the $1/2$ endpoint term accounts for $\sqrt e$.
+\eqref{xtw:airy:eq:fullproduct}; the $1/2$ endpoint term accounts for $\sqrt e$.
 Finally
 \[
  \log T((1-y)/e)=-\sqrt{2y}+\OO(y)\quad(y\downarrow0).
 \]
-Summing for $y=(h-j)/h\le t/m^2$ gives \eqref{eq:tailproduct} by a Riemann
+Summing for $y=(h-j)/h\le t/m^2$ gives \eqref{xtw:airy:eq:tailproduct} by a Riemann
 sum. The total $\OO(y)$ remainder is $\OO(t^2/m)=o_h(1)$.
 \end{proof}
 
-\section{Critical finite-height amplitude}\label{sec:critical}
-The normalized solution of \eqref{eq:wode} is exactly
-\begin{equation}\label{eq:airyw}
+\section{Critical finite-height amplitude}\label{xtw:airy:sec:critical}
+The normalized solution of \eqref{xtw:airy:eq:wode} is exactly
+\begin{equation}\label{xtw:airy:eq:airyw}
  w(t)=\frac\pi\beta\left[\Ai(0)\Bi(\beta t)-\Bi(0)\Ai(\beta t)\right].
 \end{equation}
 The Airy Wronskian $\Ai\Bi'-\Ai'\Bi=1/\pi$ verifies both initial conditions.
 The positive-real function and derivative expansions \cite{dlmf2,dlmf7} give
 \begin{align}
  w(t)&\sim\sqrt\pi\,\Ai(0)\beta^{-5/4}t^{-1/4}
-         e^{(\sqrt2/3)t^{3/2}},\label{eq:wlarge}\\
- \frac{2w'(t)}{w(t)}&=\sqrt{2t}-\frac1{2t}+\OO(t^{-5/2}).\label{eq:wderivative}
+         e^{(\sqrt2/3)t^{3/2}},\label{xtw:airy:eq:wlarge}\\
+ \frac{2w'(t)}{w(t)}&=\sqrt{2t}-\frac1{2t}+\OO(t^{-5/2}).\label{xtw:airy:eq:wderivative}
 \end{align}
-Equation \eqref{eq:wderivative} uses the separate expansion for $\Bi'$ as well
+Equation \eqref{xtw:airy:eq:wderivative} uses the separate expansion for $\Bi'$ as well
 as for $\Bi$; it is not obtained by differentiating a bare asymptotic
-equivalence. This supplies the input \eqref{eq:Ularge} in the bulk proof
+equivalence. This supplies the input \eqref{xtw:airy:eq:Ularge} in the bulk proof
 without using a finite-tower conclusion circularly.
 
-\begin{theorem}[Critical tower equivalent]\label{thm:critical}
+\begin{theorem}[Critical tower equivalent]\label{xtw:airy:thm:critical}
 As $h\to\infty$,
-\begin{equation}\label{eq:critical}
+\begin{equation}\label{xtw:airy:eq:critical}
  H_h(1/(eh))\sim K h^{1/6}e^{-\alpha h},\qquad
  K=\frac{2^{1/6}\sqrt e}{\sqrt\pi\,\Ai(0)^2}.
 \end{equation}
@@ -555,22 +859,22 @@ mean-value theorem at each level gives
  D_1=D_i\prod_{j=1}^{i-1}\widetilde q_j,
  \qquad q_j^B\le\widetilde q_j\le q_j^A.
 \]
-By squeezing, Lemma~\ref{lem:bulk} applies to the product of these intermediate
+By squeezing, Lemma~\ref{xtw:airy:lem:bulk} applies to the product of these intermediate
 factors. Also $q_1^A,q_1^B\to0$: for fixed large $t$, the bulk bounds keep
 $q_2$ bounded and $q_1=(eh)^{-1}e^{q_2}$. Therefore
-$H_h/D_1\to1$. Lemma~\ref{lem:entrance} gives
+$H_h/D_1\to1$. Lemma~\ref{xtw:airy:lem:entrance} gives
 $D_i\sim2/(m^2w(t)^2)$ at $i=h-\floor{tm}$.
-Using the bulk product, \eqref{eq:fullproduct}, \eqref{eq:tailproduct}, and
+Using the bulk product, \eqref{xtw:airy:eq:fullproduct}, \eqref{xtw:airy:eq:tailproduct}, and
 $mv_i\to\sqrt{2t}$, we find
-\begin{equation}\label{eq:criticalmatch}
+\begin{equation}\label{xtw:airy:eq:criticalmatch}
  \limsup_{h\to\infty}\left|
  \log\frac{H_h(1/(eh))e^{\alpha h}h^{-1/6}}
  {2\sqrt{\pi e}\,t^{-1/2}e^{(2\sqrt2/3)t^{3/2}}/w(t)^2}
  \right|=\OO(t^{-3/2}).
 \end{equation}
 The power is $h^{1/2}m^{-1}=h^{1/6}$, coming from the equilibrium product,
-sensitivity, and inverse gap. By \eqref{eq:wlarge}, the denominator in
-\eqref{eq:criticalmatch} tends to
+sensitivity, and inverse gap. By \eqref{xtw:airy:eq:wlarge}, the denominator in
+\eqref{xtw:airy:eq:criticalmatch} tends to
 \[
  \frac{2\sqrt{e/\pi}\,\beta^{5/2}}{\Ai(0)^2}
  =\frac{2^{1/6}\sqrt e}{\sqrt\pi\,\Ai(0)^2}=K.
@@ -580,17 +884,17 @@ let $h$ grow. Sending $t\to\infty$ proves the limit, rather than only a
 subsequential relation.
 \end{proof}
 
-\section{A uniform real critical window}\label{sec:window}
+\section{A uniform real critical window}\label{xtw:airy:sec:window}
 For $\lambda$ in a fixed compact set $J\subset(-\infty,1]$, put
-\begin{equation}\label{eq:windowx}
+\begin{equation}\label{xtw:airy:eq:windowx}
  x_h(\lambda)=\frac{1+\lambda/m^2}{eh},\qquad m=h^{1/3}.
 \end{equation}
 This is positive for all sufficiently large $h$, uniformly on $J$.
 All uniform statements in this section refer to such a fixed compact set.
 
-\begin{theorem}[Real critical window]\label{thm:window}
+\begin{theorem}[Real critical window]\label{xtw:airy:thm:window}
 Uniformly for $\lambda\in J$,
-\begin{equation}\label{eq:window}
+\begin{equation}\label{xtw:airy:eq:window}
  H_h(x_h(\lambda))\sim K(\lambda)h^{1/6}
              e^{-\alpha h+\alpha\lambda m},\qquad
  K(\lambda)=\frac{2^{1/6}\sqrt e}{\sqrt\pi\,\Ai(-\beta\lambda)^2}.
@@ -600,14 +904,14 @@ Uniformly for $\lambda\in J$,
 \subsection{Parameterized entrance and positive continuation}
 Define $q^A,q^B,u^A,u^B$ exactly as before but at $x_h(\lambda)$. Their
 recurrence is now
-\begin{equation}\label{eq:urectilt}
+\begin{equation}\label{xtw:airy:eq:urectilt}
  \begin{split}
  u_k&=1-(1+\lambda/m^2)(1-k/h)e^{-u_{k-1}},\\
  u_0^A&=1-(1+\lambda/m^2)/e,\qquad u_0^B=1.
  \end{split}
 \end{equation}
 Let
-\begin{equation}\label{eq:wlambda}
+\begin{equation}\label{xtw:airy:eq:wlambda}
  w_\lambda''=\tfrac12(t-\lambda)w_\lambda,\qquad
  w_\lambda(0)=0,\quad w_\lambda'(0)=1,
  \qquad U_\lambda=2w_\lambda'/w_\lambda.
@@ -623,30 +927,30 @@ $0<w_\lambda(r)\le r$, since $w_\lambda''\le0$, and
 \]
 a contradiction. Beyond $\lambda$, convexity preserves positivity. Therefore
 $U_\lambda$ is positive on $t>0$ and
-\begin{equation}\label{eq:Ulambdasmall}
+\begin{equation}\label{xtw:airy:eq:Ulambdasmall}
  U_\lambda'=t-\lambda-U_\lambda^2/2,\qquad
  U_\lambda(t)=2/t-(\lambda/3)t+\OO_J(t^2).
 \end{equation}
 
 We give the perturbation and continuation details because assuming discrete
-positivity in advance would be circular. Compare \eqref{eq:urectilt} up to
+positivity in advance would be circular. Compare \eqref{xtw:airy:eq:urectilt} up to
 $k\le dm$ with the autonomous pair $\phi^{k+1}(1),\phi^k(1)$.
 Stop at the first nonpositive discrete state. Before that time the derivative
 of the recurrence with respect to its state is at most $1+C_J/m^2$.
 The initial perturbation is $\OO_J(m^{-2})$; the step perturbation is
 $\OO_J(m^{-2}+k/h)$. Discrete Gronwall gives the endpoint error
-\begin{equation}\label{eq:tiltperturb}
+\begin{equation}\label{xtw:airy:eq:tiltperturb}
  \OO_J\!\left(m^{-2}+k/m^2+k^2/h\right).
 \end{equation}
 Uniformly for starting values in a compact subset of $(0,1]$, the autonomous
 iterate is at least $c/(k+1)$; this follows from $k\phi^k(a)\to2$, with
 finitely many initial indices absorbed in $c$. For $k\le dm$, the error in
-\eqref{eq:tiltperturb} is at most $C_J(m^{-2}+(d+d^2)/m)$ whereas the
+\eqref{xtw:airy:eq:tiltperturb} is at most $C_J(m^{-2}+(d+d^2)/m)$ whereas the
 smallest autonomous value is at least $c'/(dm)$. Choose fixed $d>0$ small
 enough. This rules out the first crossing, including the initially bounded
-indices, so \eqref{eq:tiltperturb} holds throughout the entrance segment.
+indices, so \eqref{xtw:airy:eq:tiltperturb} holds throughout the entrance segment.
 It follows that
-\begin{equation}\label{eq:tiltentry}
+\begin{equation}\label{xtw:airy:eq:tiltentry}
  mu_{\floor{dm}}=2/d+\OO_J(d+d^2)+o_h(1).
 \end{equation}
 
@@ -657,8 +961,8 @@ For bounded $V=mu$, the recurrence Taylor expansion is
 \]
 Fix $J$ and $L$. The functions $U_\lambda$ have a common positive lower bound
 on $(0,L]$, since they diverge uniformly at zero and are positive on compact
-subintervals. Choose $d$ so that the error in \eqref{eq:tiltentry} relative
-to \eqref{eq:Ulambdasmall} is less than one quarter of that lower bound.
+subintervals. Choose $d$ so that the error in \eqref{xtw:airy:eq:tiltentry} relative
+to \eqref{xtw:airy:eq:Ulambdasmall} is less than one quarter of that lower bound.
 The exact Riccati flow from the discrete entrance value cannot reach zero:
 until a hypothetical first zero, its difference from $U_\lambda$ contracts.
 It also stays in a bounded set on $[d,L]$. Standard bounded-interval Euler
@@ -666,13 +970,13 @@ stability now keeps the discrete trajectory close to that flow. Positivity
 and boundedness of the discrete trajectory are thus conclusions of a stopped
 comparison argument. First take $h\to\infty$, then $d\downarrow0$. Uniformly
 on compact positive $t$ intervals and on $J$,
-\begin{equation}\label{eq:tiltentrance}
+\begin{equation}\label{xtw:airy:eq:tiltentrance}
  mu_{\floor{mt}}^A\longrightarrow U_\lambda(t),\qquad
  mu_{\floor{mt}}^B\longrightarrow U_\lambda(t).
 \end{equation}
 
 For the sensitivity, use the same integral divided difference
-\eqref{eq:divdiff}. Summing \eqref{eq:tiltperturb} over $k\le dm$ changes its
+\eqref{xtw:airy:eq:divdiff}. Summing \eqref{xtw:airy:eq:tiltperturb} over $k\le dm$ changes its
 logarithmic product by $\OO_J(d^2+d^3)+o_h(1)$. The additional recurrence
 factor $1+\lambda/m^2$ contributes only $\OO_J(k/m^2)=o_h(1)$, and the
 initial difference ratio is $1+\lambda/m^2$. The autonomous normalization is
@@ -681,9 +985,9 @@ still $2$. Hence
  m^2\Delta_{\floor{dm}}=\frac2{d^2}
        \exp\{\OO_J(d^2+d^3)+o_h(1)\}.
 \]
-Propagate from $d$ to $t$ using \eqref{eq:tiltentrance}, with the uniform
+Propagate from $d$ to $t$ using \eqref{xtw:airy:eq:tiltentrance}, with the uniform
 $o_h(1/m)$ logarithmic error as before, and let $d\downarrow0$ to obtain
-\begin{equation}\label{eq:tiltsensitivity}
+\begin{equation}\label{xtw:airy:eq:tiltsensitivity}
  m^2\bigl(u_{\floor{mt}}^B-u_{\floor{mt}}^A\bigr)
        \longrightarrow\frac2{w_\lambda(t)^2}.
 \end{equation}
@@ -698,12 +1002,12 @@ The same approximation $Q_j=T_j+\varepsilon R(z_j)$ has the uniform residual
 \]
 Writing $v_i=1-T_i$, the entrance estimates give
 \begin{align}
- mv_i&\longrightarrow\sqrt{2(t-\lambda)},\label{eq:tiltgap}\\
+ mv_i&\longrightarrow\sqrt{2(t-\lambda)},\label{xtw:airy:eq:tiltgap}\\
  m(q_i-Q_i)&\longrightarrow\sqrt{2(t-\lambda)}-U_\lambda(t)
-                         -\frac1{2(t-\lambda)}.\label{eq:tiltboundary}
+                         -\frac1{2(t-\lambda)}.\label{xtw:airy:eq:tiltboundary}
 \end{align}
 The normalized Airy representation is
-\begin{equation}\label{eq:shiftairy}
+\begin{equation}\label{xtw:airy:eq:shiftairy}
  w_\lambda(t)=\frac\pi\beta\bigl[
  \Ai(-\beta\lambda)\Bi(\beta(t-\lambda))
  -\Bi(-\beta\lambda)\Ai(\beta(t-\lambda))\bigr].
@@ -716,38 +1020,38 @@ $\Ai(-\beta\lambda)>0$ for $\lambda\le1$, bounded away from zero on $J$.
 The positive-real function and derivative expansions give, uniformly on $J$,
 \begin{align}
  w_\lambda(t)&\sim\sqrt\pi\,\Ai(-\beta\lambda)\beta^{-5/4}
- (t-\lambda)^{-1/4}e^{(\sqrt2/3)(t-\lambda)^{3/2}},\label{eq:shiftairylarge}\\
+ (t-\lambda)^{-1/4}e^{(\sqrt2/3)(t-\lambda)^{3/2}},\label{xtw:airy:eq:shiftairylarge}\\
  U_\lambda(t)&=\sqrt{2(t-\lambda)}-\frac1{2(t-\lambda)}
-                         +\OO_J((t-\lambda)^{-5/2}).\label{eq:shiftUlarge}
+                         +\OO_J((t-\lambda)^{-5/2}).\label{xtw:airy:eq:shiftUlarge}
 \end{align}
-Thus \eqref{eq:tiltboundary} is $\OO_J((t-\lambda)^{-5/2})$.
+Thus \eqref{xtw:airy:eq:tiltboundary} is $\OO_J((t-\lambda)^{-5/2})$.
 Every residual, neighbor-gap, scalar contraction, and residual-sum estimate
-in the proof of Lemma~\ref{lem:bulk} applies on $[0,z_i]$, with uniform
+in the proof of Lemma~\ref{xtw:airy:lem:bulk} applies on $[0,z_i]$, with uniform
 constants on $J$. More explicitly, $v_i\asymp m^{-1}\sqrt{t-\lambda}$;
 the summed residual after division by $v_i$ is
 $\OO_J((t-\lambda)^{-3/2})+o_h(1)$ and the boundary error after that division
 is $\OO_J((t-\lambda)^{-3})+o_h(1)$. The exact product identity and
-\eqref{eq:Rintegral} are unchanged. We obtain
-\begin{equation}\label{eq:tiltbulk}
+\eqref{xtw:airy:eq:Rintegral} are unchanged. We obtain
+\begin{equation}\label{xtw:airy:eq:tiltbulk}
  v_i\prod_{j=1}^{i-1}(q_j/T_j)
  =\exp\{\OO_J(t^{-3/2})+o_h(1)\}
 \end{equation}
-in the same iterated-limit sense as \eqref{eq:bulk}. Squeezing also proves
+in the same iterated-limit sense as \eqref{xtw:airy:eq:bulk}. Squeezing also proves
 this for the intermediate divided-difference factors. No value of the real
 branch $T$ beyond $z_i$ is used.
 
 \subsection{A truncated equilibrium product}
 For $\lambda>0$ the real turning point occurs before level $h$, so we must
-not extend the full product of Lemma~\ref{lem:product} past that point.
+not extend the full product of Lemma~\ref{xtw:airy:lem:product} past that point.
 Put
-\begin{equation}\label{eq:Hreal}
+\begin{equation}\label{xtw:airy:eq:Hreal}
  \mathcal H=\frac h{1+\lambda/m^2}=h-\lambda m+\OO_J(m^{-1}),
  \qquad r=i-1,\qquad b=r/\mathcal H.
 \end{equation}
 Then $z_j=j/(e\mathcal H)$ and
 $1-b=(t-\lambda)/m^2+\OO_J(m^{-3})$.
 Factoring $T(z)=ze^{T(z)}$ and applying Stirling gives
-\begin{equation}\label{eq:truncatedlog}
+\begin{equation}\label{xtw:airy:eq:truncatedlog}
  \log\prod_{j=1}^{r}T(j/(e\mathcal H))
  =\mathcal H\int_0^b\log T(v/e)\,dv
      +\frac12\log(2\pi r)+\frac12T(b/e)+o_h(1).
@@ -759,16 +1063,16 @@ $\int_0^b f'(v)\{\mathcal H v\}\,dv$. Extend $f'\mathbf1_{[0,b]}$ by zero
 to $[0,1]$. These truncated derivatives tend to $f'$ in $L^1$, uniformly
 on $J$; the bounded fractional parts have the same weak limit $1/2$ for
 real $\mathcal H\to\infty$. This proves the $o_h(1)$ in
-\eqref{eq:truncatedlog}, including its moving endpoint.
+\eqref{xtw:airy:eq:truncatedlog}, including its moving endpoint.
 
-By \eqref{eq:logTintegral} and the square-root expansion at $1$,
+By \eqref{xtw:airy:eq:logTintegral} and the square-root expansion at $1$,
 \[
  \mathcal H\int_0^b\log T(v/e)\,dv
  =-\alpha\mathcal H+\frac{2\sqrt2}{3}(t-\lambda)^{3/2}+o_h(1).
 \]
 The $\OO(m^{-3})$ floor error costs $o_h(1)$ in this exponent.
 As $r/h\to1$ and $T(b/e)\to1$, we have proved
-\begin{equation}\label{eq:truncatedproduct}
+\begin{equation}\label{xtw:airy:eq:truncatedproduct}
  \prod_{j=1}^{i-1}T(j\varepsilon)
  \sim\sqrt{2\pi e h}\,
  e^{-\alpha h+\alpha\lambda m+(2\sqrt2/3)(t-\lambda)^{3/2}},
@@ -778,32 +1082,32 @@ uniformly on $J$ for fixed sufficiently large $t$.
 \subsection{Completion of the window theorem}
 The exact difference product still gives
 $H_h\sim D_i\prod_{j<i}\widetilde q_j$, because $q_1^A,q_1^B\to0$
-uniformly on $J$. Combine \eqref{eq:tiltsensitivity}, \eqref{eq:tiltgap},
-\eqref{eq:tiltbulk}, and \eqref{eq:truncatedproduct}. The ratio of
+uniformly on $J$. Combine \eqref{xtw:airy:eq:tiltsensitivity}, \eqref{xtw:airy:eq:tiltgap},
+\eqref{xtw:airy:eq:tiltbulk}, and \eqref{xtw:airy:eq:truncatedproduct}. The ratio of
 $H_h e^{\alpha h-\alpha\lambda m}h^{-1/6}$ to
 \[
  \frac{2\sqrt{\pi e}\,(t-\lambda)^{-1/2}
  e^{(2\sqrt2/3)(t-\lambda)^{3/2}}}{w_\lambda(t)^2}
 \]
 has limiting logarithmic error $\OO_J(t^{-3/2})$. By
-\eqref{eq:shiftairylarge} this last display tends uniformly on $J$ to
+\eqref{xtw:airy:eq:shiftairylarge} this last display tends uniformly on $J$ to
 $K(\lambda)$. Take $h\to\infty$ first and then $t\to\infty$.
-This proves Theorem~\ref{thm:window} with the asserted compact uniformity.
+This proves Theorem~\ref{xtw:airy:thm:window} with the asserted compact uniformity.
 
-\section{The Airy size law and its density}\label{sec:airyprob}
-Define $N_h$ by \eqref{eq:sizeprobintro}. Since $H_h$ is entire, positive at
+\section{The Airy size law and its density}\label{xtw:airy:sec:airyprob}
+Define $N_h$ by \eqref{xtw:airy:eq:sizeprobintro}. Since $H_h$ is entire, positive at
 $x_h=1/(eh)$, and has nonnegative coefficients, this is a probability law
 with support in the integers $n\ge h$. Set
 \[
  X_h=(N_h-\alpha h)/m^2.
 \]
 For real $\lambda$ near zero,
-\begin{equation}\label{eq:MGF}
+\begin{equation}\label{xtw:airy:eq:MGF}
  M_h(\lambda)=\E e^{\lambda X_h}
  =e^{-\alpha\lambda m}
  \frac{H_h(x_he^{\lambda/m^2})}{H_h(x_h)}.
 \end{equation}
-The effective parameter in Theorem~\ref{thm:window} is
+The effective parameter in Theorem~\ref{xtw:airy:thm:window} is
 \[
  \lambda_{\rm eff}=m^2(e^{\lambda/m^2}-1)
  =\lambda+\OO_J(m^{-2}).
@@ -811,7 +1115,7 @@ The effective parameter in Theorem~\ref{thm:window} is
 Even in the exponential factor the discrepancy vanishes:
 $\alpha m(\lambda_{\rm eff}-\lambda)=\OO_J(m^{-1})$.
 Uniformity of the window theorem therefore gives
-\begin{equation}\label{eq:MGFlimit}
+\begin{equation}\label{xtw:airy:eq:MGFlimit}
  M_h(\lambda)\longrightarrow
  M(\lambda)=\frac{\Ai(0)^2}{\Ai(-\beta\lambda)^2}
 \end{equation}
@@ -821,47 +1125,47 @@ continuity theorem implies weak convergence $X_h\xrightarrow d X$.
 \subsection{Analytic continuation to every imaginary argument}
 One still needs to identify the characteristic function for every real
 Fourier argument, not just near zero. Choose real $a<0<b<1$ inside the
-interval used in \eqref{eq:MGFlimit}. The complex MGFs are entire and, for
+interval used in \eqref{xtw:airy:eq:MGFlimit}. The complex MGFs are entire and, for
 $a\le\Re z\le b$,
-\begin{equation}\label{eq:vitalibound}
+\begin{equation}\label{xtw:airy:eq:vitalibound}
  |M_h(z)|\le M_h(\Re z)\le M_h(a)+M_h(b).
 \end{equation}
 The right-hand side is uniformly bounded. Vitali's theorem consequently gives
 local analytic convergence throughout the vertical strip to the analytic
-continuation of \eqref{eq:MGFlimit}. To spell out the uniqueness step,
+continuation of \eqref{xtw:airy:eq:MGFlimit}. To spell out the uniqueness step,
 normal-family compactness supplies a convergent subsequence on each compact
 subset; every such subsequential limit agrees on the real interval and hence,
 by the identity theorem, on the entire connected strip. Thus all subsequences
 have the same limit. The Airy function has only negative real zeros
-\cite{dlmf9}, and the positivity proved after \eqref{eq:shiftairy} excludes a
+\cite{dlmf9}, and the positivity proved after \eqref{xtw:airy:eq:shiftairy} excludes a
 zero of $\Ai(-\beta z)$ on the chosen real interval. The displayed candidate
 is therefore holomorphic on the strip. In particular
-\begin{equation}\label{eq:psi}
+\begin{equation}\label{xtw:airy:eq:psi}
  \E e^{\mathrm itX}=\psi(t)=\frac{\Ai(0)^2}{\Ai(-\beta\mathrm it)^2}
  \quad(t\in\R).
 \end{equation}
 
 The complex Airy asymptotic on the rays with arguments $\pm\pi/2$
 \cite{dlmf7} gives
-\begin{equation}\label{eq:psitail}
+\begin{equation}\label{xtw:airy:eq:psitail}
  |\Ai(-\beta\mathrm it)^{-2}|
  =\OO\!\left(|t|^{1/2}e^{-(2/3)|t|^{3/2}}\right)
  \quad(|t|\to\infty).
 \end{equation}
 Thus $\psi\in L^1(\R)$, and Fourier inversion gives the bounded continuous
 density
-\begin{equation}\label{eq:pdensity}
+\begin{equation}\label{xtw:airy:eq:pdensity}
  p(v)=\frac1{2\pi}\int_{\R}e^{-\mathrm itv}\psi(t)\,dt.
 \end{equation}
 
 \subsection{The exact density at zero}
 The Wronskian and the connection identity \cite{dlmf2} imply
 \begin{align}
- \left(\frac{\Bi}{\Ai}\right)'(z)&=\frac1{\pi\Ai(z)^2},\label{eq:ratioDerivative}\\
+ \left(\frac{\Bi}{\Ai}\right)'(z)&=\frac1{\pi\Ai(z)^2},\label{xtw:airy:eq:ratioDerivative}\\
  \Bi(z)&=\mathrm i\Ai(z)+2e^{-\mathrm i\pi/6}
-                      \Ai(ze^{-2\pi\mathrm i/3}).\label{eq:connection}
+                      \Ai(ze^{-2\pi\mathrm i/3}).\label{xtw:airy:eq:connection}
 \end{align}
-At $z=\mathrm iR$, the rotated Airy argument in \eqref{eq:connection} has
+At $z=\mathrm iR$, the rotated Airy argument in \eqref{xtw:airy:eq:connection} has
 angle $-\pi/6$. Its Airy function decays exponentially, while
 $\Ai(\mathrm iR)$ grows exponentially. Hence
 \[
@@ -869,35 +1173,35 @@ $\Ai(\mathrm iR)$ grows exponentially. Hence
 \]
 Complex conjugation gives the limit $-\mathrm i$ at $z=-\mathrm iR$.
 There are no Airy zeros on the imaginary axis. Integrating
-\eqref{eq:ratioDerivative} upward along it gives
-\begin{equation}\label{eq:verticalintegral}
+\eqref{xtw:airy:eq:ratioDerivative} upward along it gives
+\begin{equation}\label{xtw:airy:eq:verticalintegral}
  \int_{-\mathrm i\infty}^{\mathrm i\infty}\frac{dz}{\Ai(z)^2}
  =\pi\left[\frac{\Bi}{\Ai}\right]_{-\mathrm i\infty}^{\mathrm i\infty}
  =2\pi\mathrm i.
 \end{equation}
-The integral is absolutely convergent by \eqref{eq:psitail}. Under
+The integral is absolutely convergent by \eqref{xtw:airy:eq:psitail}. Under
 $z=-\beta\mathrm it$, the increasing real $t$ axis maps to the downward
 imaginary axis. Since $dt=\mathrm i\,dz/\beta$, reversing the orientation
-in \eqref{eq:verticalintegral} proves
-\begin{equation}\label{eq:pzero}
+in \eqref{xtw:airy:eq:verticalintegral} proves
+\begin{equation}\label{xtw:airy:eq:pzero}
  p(0)=\frac{\Ai(0)^2}{2\pi}\int_{\R}\frac{dt}{\Ai(-\beta\mathrm it)^2}
      =\frac{\Ai(0)^2}{\beta}>0.
 \end{equation}
 This calculation fixes the normalization exactly. It does not yet imply
 anything about the individual lattice probabilities $\Prb(N_h=n)$.
 
-\section{Fourier minor arcs from positive factorization}\label{sec:minor}
+\section{Fourier minor arcs from positive factorization}\label{xtw:airy:sec:minor}
 Let
-\begin{equation}\label{eq:phih}
+\begin{equation}\label{xtw:airy:eq:phih}
  \varphi_h(\theta)=\E e^{\mathrm i\theta N_h}
    =\frac{H_h(x_he^{\mathrm i\theta})}{H_h(x_h)},\qquad x_h=1/(eh).
 \end{equation}
 The argument in this section does not use the critical equivalent or the
 Airy window theorem.
 
-\begin{theorem}[Uniform minor-arc bound]\label{thm:minor}
+\begin{theorem}[Uniform minor-arc bound]\label{xtw:airy:thm:minor}
 There exist constants $c>0$, $A>0$, and $h_0$ such that, for $h\ge h_0$,
-\begin{equation}\label{eq:minor}
+\begin{equation}\label{xtw:airy:eq:minor}
  |\varphi_h(\theta)|\le
  \begin{cases}
  e^{-ch|\theta|^{3/2}},&Ah^{-2/3}\le|\theta|\le1/8,\\
@@ -921,7 +1225,7 @@ The exact difference identity is
  \Delta_h(z)=e^{hz}-1.
 \]
 Iteration gives an identity of entire functions,
-\begin{equation}\label{eq:factorization}
+\begin{equation}\label{xtw:airy:eq:factorization}
  H_h(z)=(e^{hz}-1)(h-1)!z^{h-1}
                  \prod_{i=1}^{h-1}B_i(z)D_i(z).
 \end{equation}
@@ -932,7 +1236,7 @@ Normalize each factor by its positive value at $x_h$ and apply the triangle
 inequality separately. The monomial has normalized modulus one, and all
 other normalized moduli are at most one. Dropping the terminal and $D_i$
 factors gives
-\begin{equation}\label{eq:dropfactors}
+\begin{equation}\label{xtw:airy:eq:dropfactors}
  |\varphi_h(\theta)|\le
  \prod_{i=1}^{h-1}\frac{|B_i(x_he^{\mathrm i\theta})|}{B_i(x_h)}.
 \end{equation}
@@ -942,13 +1246,13 @@ This remains true if a dropped factor vanishes on the circle.
 Write $Q_i(z)=izB_{i+1}(z)$, the globally defined entire exponent of $B_i$;
 no choice of logarithm is involved. All its coefficients are nonnegative.
 Define
-\begin{equation}\label{eq:homogeneous}
+\begin{equation}\label{xtw:airy:eq:homogeneous}
  T_0(z)=0,\qquad T_{j+1}(z)=ze^{T_j(z)},\qquad
  T(z)=\sum_{r\ge1}\frac{r^{r-1}}{r!}z^r.
 \end{equation}
 The final series follows from Lagrange inversion and is the same small
 solution $Te^{-T}=z$ used earlier. Coefficientwise,
-\begin{equation}\label{eq:homogeneouscompare}
+\begin{equation}\label{xtw:airy:eq:homogeneouscompare}
  Q_i(z)\succeq T_{h-i}(iz),\qquad T_L(z)\preceq T(z).
 \end{equation}
 The first comparison starts at $i=h-1$ with equality
@@ -956,16 +1260,16 @@ $Q_{h-1}(z)=(h-1)z=T_1((h-1)z)$. Descending induction uses that every deeper
 level parameter is at least $i$ and exponentiation preserves nonnegative
 coefficient inequalities.
 Put $z_i=ix_h=i/(eh)$ and
-\begin{equation}\label{eq:damping}
+\begin{equation}\label{xtw:airy:eq:damping}
  \mathcal D_L(z,\theta)
  =\sum_{r\ge1}[z^r]T_L(z)\,z^r(1-\cos(r\theta)).
 \end{equation}
-In \eqref{eq:damping} the coefficient notation refers to the power series
+In \eqref{xtw:airy:eq:damping} the coefficient notation refers to the power series
 before evaluating its argument; equivalently, if $T_L(z)=\sum t_{L,r}z^r$,
 then $\mathcal D_L=\sum t_{L,r}z^r(1-\cos(r\theta))$.
-Since $1-\cos(r\theta)\ge0$, applying \eqref{eq:homogeneouscompare} to the
-real-part loss of each exponent in \eqref{eq:dropfactors} is legitimate and yields
-\begin{equation}\label{eq:sumdamping}
+Since $1-\cos(r\theta)\ge0$, applying \eqref{xtw:airy:eq:homogeneouscompare} to the
+real-part loss of each exponent in \eqref{xtw:airy:eq:dropfactors} is legitimate and yields
+\begin{equation}\label{xtw:airy:eq:sumdamping}
  |\varphi_h(\theta)|\le
  \exp\!\left(-\sum_{i=1}^{h-1}\mathcal D_{h-i}(z_i,\theta)\right).
 \end{equation}
@@ -986,12 +1290,12 @@ $1-e^{-u}\le u-u^2/3$. Consequently
 The first inequality gives $d_j\le3/(j+3)$: its reciprocal increases by at
 least $1/3$, starting from $1/d_0\ge1$ (the zero case is immediate).
 Apply the second inequality after $j=\floor{L/2}$ to obtain
-\begin{equation}\label{eq:truncationtail}
+\begin{equation}\label{xtw:airy:eq:truncationtail}
  d_L\le\frac6L e^{-\epsilon L/2},\qquad
  d_L\le6\epsilon e^{-\epsilon L/2}\quad\hbox{if }\epsilon L\ge1.
 \end{equation}
 Positivity of $T-T_L$ and $0\le1-\cos\le2$ imply
-\begin{equation}\label{eq:truncationdamp}
+\begin{equation}\label{xtw:airy:eq:truncationdamp}
  \mathcal D_L(z,\theta)\ge\mathcal D_\infty(z,\theta)-2d_L,
  \quad
  \mathcal D_\infty(z,\theta)=
@@ -1018,7 +1322,7 @@ gives
 Indeed $\log(1-\delta)\ge-2\delta$ and $r\delta\le4$.
 The degree interval contains at least $7/(8\theta)$ integers, each with
 $r^{-3/2}\ge(\theta/2)^{3/2}$. Hence
-\begin{equation}\label{eq:dinflower}
+\begin{equation}\label{xtw:airy:eq:dinflower}
  \mathcal D_\infty(z_i,\theta)\ge c_0\sqrt\theta,
  \qquad c_0=\frac{7(1-\cos1)e^{-8}}{24\,2^{3/2}}>0.
 \end{equation}
@@ -1028,25 +1332,25 @@ Write $\epsilon_i=1-T(z_i)$. The exact gap identity is
         =\int_0^{\epsilon_i}v e^v\,dv.
 \]
 As $0\le\epsilon_i\le1$, it follows that
-\begin{equation}\label{eq:gapbounds}
+\begin{equation}\label{xtw:airy:eq:gapbounds}
  \sqrt{2/e}\sqrt\theta\le\epsilon_i\le2\sqrt\theta,
  \qquad\epsilon_iL\ge\sqrt{2/e}\,h\theta^{3/2}.
 \end{equation}
 Put $X=h\theta^{3/2}$. For a fixed sufficiently large $M$ and $X\ge M$,
-\eqref{eq:truncationtail} and \eqref{eq:gapbounds} yield
+\eqref{xtw:airy:eq:truncationtail} and \eqref{xtw:airy:eq:gapbounds} yield
 \[
  2d_L\le24\sqrt\theta\,e^{-\sqrt{2/e}X/2}
        \le(c_0/2)\sqrt\theta.
 \]
 Here choose $M$ so that $\sqrt{2/e}M\ge1$ and
 $24e^{-\sqrt{2/e}M/2}\le c_0/2$.
-Equations \eqref{eq:truncationdamp} and \eqref{eq:dinflower} then give
+Equations \eqref{xtw:airy:eq:truncationdamp} and \eqref{xtw:airy:eq:dinflower} then give
 $\mathcal D_L(z_i,\theta)\ge(c_0/2)\sqrt\theta$ for every selected level.
 Their number is at least $h\theta-1\ge h\theta/2$ after increasing $M$.
 All indices lie in $1\le k\le h-1$ for large $h$, because $k\le h/4$ and
 the lower cutoff makes $h\theta$ large. Substitution in
-\eqref{eq:sumdamping} gives
-\begin{equation}\label{eq:smallarcsfinal}
+\eqref{xtw:airy:eq:sumdamping} gives
+\begin{equation}\label{xtw:airy:eq:smallarcsfinal}
  |\varphi_h(\theta)|\le e^{-(c_0/4)h\theta^{3/2}}
  \quad\hbox{if }0<\theta\le1/8,\quad
  \theta\ge M^{2/3}h^{-2/3}.
@@ -1060,13 +1364,13 @@ at least
  ix_h(1-\cos\theta)\ge(4e)^{-1}(1-\cos(1/8))>0.
 \]
 There are a positive constant times $h$ such levels. Equation
-\eqref{eq:dropfactors} gives $|\varphi_h(\theta)|\le e^{-ch}$ uniformly.
-Together with \eqref{eq:smallarcsfinal}, this proves
-Theorem~\ref{thm:minor}. In particular no lattice resonance away from zero
+\eqref{xtw:airy:eq:dropfactors} gives $|\varphi_h(\theta)|\le e^{-ch}$ uniformly.
+Together with \eqref{xtw:airy:eq:smallarcsfinal}, this proves
+Theorem~\ref{xtw:airy:thm:minor}. In particular no lattice resonance away from zero
 is left untreated.
 
-\section{Uniform lattice transfer}\label{sec:local}
-We now combine the pointwise characteristic limit of Section~\ref{sec:airyprob}
+\section{Uniform lattice transfer}\label{xtw:airy:sec:local}
+We now combine the pointwise characteristic limit of Section~\ref{xtw:airy:sec:airyprob}
 with the separately proved Fourier bounds. For integration define
 \[
  \Phi_h(t)=e^{-\mathrm it\alpha h/h^{2/3}}
@@ -1075,10 +1379,10 @@ with the separately proved Fourier bounds. For integration define
 on $|t|\le\pi h^{2/3}$ and extend it by zero outside that interval.
 For each fixed $t$, $\Phi_h(t)\to\psi(t)$. On every fixed compact interval,
 dominated convergence applies because $|\Phi_h|\le1$. On
-$A\le|t|\le h^{2/3}/8$, Theorem~\ref{thm:minor} gives
+$A\le|t|\le h^{2/3}/8$, Theorem~\ref{xtw:airy:thm:minor} gives
 $|\Phi_h(t)|\le e^{-c|t|^{3/2}}$. On the remaining large arc the integral is
 at most $2\pi h^{2/3}e^{-ch}\to0$. Since $\psi$ is integrable,
-\begin{equation}\label{eq:Lone}
+\begin{equation}\label{xtw:airy:eq:Lone}
  \int_\R|\Phi_h(t)-\psi(t)|\,dt\longrightarrow0.
 \end{equation}
 The lattice inversion formula is
@@ -1087,27 +1391,27 @@ The lattice inversion formula is
  \int_{-\pi h^{2/3}}^{\pi h^{2/3}}
  e^{-\mathrm it(n-\alpha h)/h^{2/3}}\Phi_h(t)\,dt.
 \]
-Compare this with \eqref{eq:pdensity}; the absolute error, uniformly in every
-integer $n$, is at most $(2\pi)^{-1}$ times \eqref{eq:Lone}.
-We have proved the uniform local limit \eqref{eq:lltintro}. In particular,
+Compare this with \eqref{xtw:airy:eq:pdensity}; the absolute error, uniformly in every
+integer $n$, is at most $(2\pi)^{-1}$ times \eqref{xtw:airy:eq:Lone}.
+We have proved the uniform local limit \eqref{xtw:airy:eq:lltintro}. In particular,
 for some absolute $C$ and every integer $n$ and $h\ge1$,
-\begin{equation}\label{eq:atombound}
+\begin{equation}\label{xtw:airy:eq:atombound}
  \Prb(N_h=n)\le C h^{-2/3}.
 \end{equation}
 For sufficiently large $h$ this follows from the uniform local limit and
 boundedness of $p$; enlarge $C$ over finitely many smaller heights. It can
-also be obtained directly by integrating Theorem~\ref{thm:minor}, bounding
+also be obtained directly by integrating Theorem~\ref{xtw:airy:thm:minor}, bounding
 the central arc by its width.
 
-\section{All-height domination and the coefficient sum}\label{sec:sum}
+\section{All-height domination and the coefficient sum}\label{xtw:airy:sec:sum}
 The exact probability definition gives
-\begin{equation}\label{eq:exactcoefficient}
+\begin{equation}\label{xtw:airy:eq:exactcoefficient}
  \frac{c_{n,h}}{n!}=\frac{(eh)^n}{n!}
                  H_h(1/(eh))\Prb(N_h=n).
 \end{equation}
-Use the critical equivalent and \eqref{eq:atombound}, increasing a constant
+Use the critical equivalent and \eqref{xtw:airy:eq:atombound}, increasing a constant
 for the finitely many small $h$, to get the global bound
-\begin{equation}\label{eq:allheight}
+\begin{equation}\label{xtw:airy:eq:allheight}
  \frac{c_{n,h}}{n!}\le
  C\frac{e^n}{n!}h^{n-1/2}e^{-\alpha h}
  \quad(h\ge1,\ n\ge0).
@@ -1116,13 +1420,13 @@ The left side vanishes when $h>n$. This bound is available at every height;
 it does not extend a compact-window asymptotic into the tails.
 
 Let
-\begin{equation}\label{eq:heightwindow}
+\begin{equation}\label{xtw:airy:eq:heightwindow}
  \mathcal W_n=\{h\in\Z:|h-n/\alpha|\le n^{3/5}\}.
 \end{equation}
 On this window $h\sim n/\alpha$ and
 $(n-\alpha h)/h^{2/3}\to0$ uniformly. Continuity and positivity of $p(0)$,
 the uniform local limit, and the critical equivalent yield
-\begin{equation}\label{eq:centralcoeff}
+\begin{equation}\label{xtw:airy:eq:centralcoeff}
  \frac{c_{n,h}}{n!}
  =(Kp(0)+o(1))\frac{e^n}{n!}h^{n-1/2}e^{-\alpha h}
  \quad\hbox{uniformly for }h\in\mathcal W_n.
@@ -1131,9 +1435,9 @@ The window is wider than $\sqrt n$ and narrower than $n^{2/3}$; these two
 inequalities are the reason for the convenient exponent $3/5$.
 As $\alpha>1$, all its heights lie in $1\le h\le n$ for large $n$.
 
-\begin{lemma}[Discrete Laplace sum with tails]\label{lem:laplace}
+\begin{lemma}[Discrete Laplace sum with tails]\label{xtw:airy:lem:laplace}
 For $f_n(t)=t^{n-1/2}e^{-\alpha t}$ on $t>0$,
-\begin{equation}\label{eq:laplace}
+\begin{equation}\label{xtw:airy:eq:laplace}
  \sum_{h\ge1}f_n(h)\sim\int_0^\infty f_n(t)\,dt
  =\frac{\Gamma(n+1/2)}{\alpha^{n+1/2}}.
 \end{equation}
@@ -1150,7 +1454,7 @@ $t=(n-1/2)/\alpha$. Stirling gives
 \]
 Thus the relative error is $\OO(n^{-1/2})$.
 For the tails, write $t=(n/\alpha)(1+u)$. Relative to the central value,
-\begin{equation}\label{eq:laplaceexponent}
+\begin{equation}\label{xtw:airy:eq:laplaceexponent}
  \log\frac{f_n(t)}{f_n(n/\alpha)}
  =n\bigl(\log(1+u)-u\bigr)-\tfrac12\log(1+u).
 \end{equation}
@@ -1167,56 +1471,56 @@ integral by at most twice its boundary maximum, which satisfies the same
 bound. This proves that the omitted discrete mass is negligible.
 \end{proof}
 
-We can now prove Theorem~\ref{thm:main}. Sum \eqref{eq:centralcoeff} on
-$\mathcal W_n$ and use \eqref{eq:allheight} with Lemma~\ref{lem:laplace}
+We can now prove Theorem~\ref{xtw:airy:thm:main}. Sum \eqref{xtw:airy:eq:centralcoeff} on
+$\mathcal W_n$ and use \eqref{xtw:airy:eq:allheight} with Lemma~\ref{xtw:airy:lem:laplace}
 outside it. The latter contribution is negligible, so
 \begin{align}
  b_n&\sim Kp(0)\frac{e^n}{n!}
               \frac{\Gamma(n+1/2)}{\alpha^{n+1/2}}\notag\\
  &\sim\frac{Kp(0)}{\sqrt\alpha}\,\rho^{-n}n^{-1/2}.
- \label{eq:assembledconstant}
+ \label{xtw:airy:eq:assembledconstant}
 \end{align}
-By \eqref{eq:constants} and \eqref{eq:pzero},
-\begin{equation}\label{eq:cancelconstant}
+By \eqref{xtw:airy:eq:constants} and \eqref{xtw:airy:eq:pzero},
+\begin{equation}\label{xtw:airy:eq:cancelconstant}
  \frac{Kp(0)}{\sqrt\alpha}
  =\frac{2^{1/6}\sqrt e}{\sqrt\pi\,\beta\sqrt\alpha}
  =\sqrt{\frac{2}{\pi\rho}}.
 \end{equation}
 The two factors $\Ai(0)^2$ cancel only after the lattice extraction and
 height summation have both been justified. Multiplying by
-$(n!)^2\sim2\pi n(n/e)^{2n}$ proves \eqref{eq:anmain}, and taking logarithms
-proves \eqref{eq:logmain}. This completes the coefficient theorem.
+$(n!)^2\sim2\pi n(n/e)^{2n}$ proves \eqref{xtw:airy:eq:anmain}, and taking logarithms
+proves \eqref{xtw:airy:eq:logmain}. This completes the coefficient theorem.
 
-\section{Gaussian height fluctuations}\label{sec:height}
-For the weighted-tree law of Theorem~\ref{thm:limitsintro},
-\begin{equation}\label{eq:heightprob}
+\section{Gaussian height fluctuations}\label{xtw:airy:sec:height}
+For the weighted-tree law of Theorem~\ref{xtw:airy:thm:limitsintro},
+\begin{equation}\label{xtw:airy:eq:heightprob}
  \Prb(L_n=h)=\frac{n!c_{n,h}}{a_n}
             =\frac{c_{n,h}/n!}{b_n}.
 \end{equation}
-Equations \eqref{eq:centralcoeff}, \eqref{eq:assembledconstant}, and
-Lemma~\ref{lem:laplace} show that throughout $\mathcal W_n$ this law is
+Equations \eqref{xtw:airy:eq:centralcoeff}, \eqref{xtw:airy:eq:assembledconstant}, and
+Lemma~\ref{xtw:airy:lem:laplace} show that throughout $\mathcal W_n$ this law is
 uniformly asymptotic to the normalized positive kernel
 \[
  \frac{h^{n-1/2}e^{-\alpha h}}{\sum_{j\ge1}j^{n-1/2}e^{-\alpha j}}.
 \]
-Equation \eqref{eq:allheight} and the tail part of Lemma~\ref{lem:laplace}
+Equation \eqref{xtw:airy:eq:allheight} and the tail part of Lemma~\ref{xtw:airy:lem:laplace}
 show that both distributions give asymptotically vanishing mass to the
 complement of $\mathcal W_n$. It follows in particular that their total
 variation distance tends to zero.
 
 For fixed bounded $s$, set $h=n/\alpha+s\sqrt n/\alpha$, with grid spacing
 $\alpha/\sqrt n$ in the variable $s$. Taylor expansion of
-\eqref{eq:laplaceexponent} at $u=s/\sqrt n$ gives, uniformly on bounded
+\eqref{xtw:airy:eq:laplaceexponent} at $u=s/\sqrt n$ gives, uniformly on bounded
 $s$ intervals,
 \[
  \log\frac{f_n(h)}{f_n(n/\alpha)}=-s^2/2+o(1).
 \]
-The same quadratic bound used in Lemma~\ref{lem:laplace} gives uniformly
+The same quadratic bound used in Lemma~\ref{xtw:airy:lem:laplace} gives uniformly
 small normalized tails as $|s|$ becomes large, with the farther tails
 exponentially small. Riemann sums and the normalizing integral therefore
 imply convergence of this kernel to the standard normal density in the
 $s$ coordinate. Total variation comparison transfers the weak limit to
-$L_n$, proving \eqref{eq:cltintro}.
+$L_n$, proving \eqref{xtw:airy:eq:cltintro}.
 
 This statement centers at $n/\alpha$ and scales by $\sqrt n/\alpha$.
 We do not identify these with exact finite-$n$ mean and standard deviation,
@@ -1225,14 +1529,14 @@ argument say that the Airy law itself becomes Gaussian: that law describes
 size under a fixed-height Boltzmann measure, whereas this one describes
 height under the fixed-size tree measure.
 
-\section{Refined inversion and the integer threshold}\label{sec:inverse}
+\section{Refined inversion and the integer threshold}\label{xtw:airy:sec:inverse}
 Put
-\begin{equation}\label{eq:inversef}
+\begin{equation}\label{xtw:airy:eq:inversef}
  A=2\sqrt{2\pi/\rho},\qquad
  f(t)=2t\log\!\left(\frac{t}{e\sqrt\rho}\right).
 \end{equation}
-Because $2+\log\rho=1+\log(e-1)$, Theorem~\ref{thm:main} gives
-\begin{equation}\label{eq:loginverse}
+Because $2+\log\rho=1+\log(e-1)$, Theorem~\ref{xtw:airy:thm:main} gives
+\begin{equation}\label{xtw:airy:eq:loginverse}
  \log a_n=f(n)+\tfrac12\log n+\log A+o(1).
 \end{equation}
 Let $g$ be the continuous piecewise-linear interpolation through these
@@ -1240,7 +1544,7 @@ integer log values on the eventually increasing portion. The second
 derivative of $f(t)+\tfrac12\log t$ is $\OO(1/t)$. Linear interpolation
 therefore changes the smooth expression by $\OO(1/t)$, and the integer
 $o(1)$ error remains uniformly $o(1)$ after interpolation. Thus
-\begin{equation}\label{eq:g}
+\begin{equation}\label{xtw:airy:eq:g}
  g(t)=f(t)+\tfrac12\log t+\log A+o(1)
  \quad(t\to\infty,\ t\in\R).
 \end{equation}
@@ -1252,37 +1556,40 @@ The positive real solution of $f(x)=L=\log Y$ is
 To verify this, set $w=\log(x/(e\sqrt\rho))$; then
 $we^w=L/(2e\sqrt\rho)$ and $x=L/(2w)$.
 Also
-\begin{equation}\label{eq:fprime}
+\begin{equation}\label{xtw:airy:eq:fprime}
  f'(x)=2\log(x/\sqrt\rho),\qquad f''(x)=2/x.
 \end{equation}
-Let $z(Y)=g^{-1}(L)$. First $z\sim x$ follows from \eqref{eq:g} and the
+Let $z(Y)=g^{-1}(L)$. First $z\sim x$ follows from \eqref{xtw:airy:eq:g} and the
 leading term $2t\log t$. On the interval between $x$ and $z$, the derivative
-in \eqref{eq:fprime} is comparable to $\log x$. The correction in
-\eqref{eq:g} is $\OO(\log z)$, so the mean-value theorem improves this to
+in \eqref{xtw:airy:eq:fprime} is comparable to $\log x$. The correction in
+\eqref{xtw:airy:eq:g} is $\OO(\log z)$, so the mean-value theorem improves this to
 $z-x=\OO(1)$. Taylor expansion with that bounded displacement now yields
 \begin{align}
  z&=x-\frac{\tfrac12\log x+\log A}{2\log(x/\sqrt\rho)}
           +o(1/\log x)\notag\\
   &=x-\frac14-
     \frac{\log(8\pi/\sqrt\rho)}{4\log(x/\sqrt\rho)}
-          +o(1/\log x).\label{eq:inversefinal}
+          +o(1/\log x).\label{xtw:airy:eq:inversefinal}
 \end{align}
 For the algebra in the second line use $A^2=8\pi/\rho$.
 
-By Lemma~\ref{lem:monotonicity}, for all sufficiently large thresholds the
+By Lemma~\ref{xtw:airy:lem:monotonicity}, for all sufficiently large thresholds the
 integer inverse is exactly
-\begin{equation}\label{eq:ceilingexact}
+\begin{equation}\label{xtw:airy:eq:ceilingexact}
  N(Y)=\ceil{z(Y)}.
 \end{equation}
-Equation \eqref{eq:inversefinal} implies that some positive
+Equation \eqref{xtw:airy:eq:inversefinal} implies that some positive
 $\epsilon(Y)\to0$ bounds $|z(Y)-r(Y)|\log x$ from above. Monotonicity of the
-ceiling proves \eqref{eq:sandwichintro}, completing
-Theorem~\ref{thm:inverseintro}. The envelope is not explicitly estimated by
+ceiling proves \eqref{xtw:airy:eq:sandwichintro}, completing
+Theorem~\ref{xtw:airy:thm:inverseintro}. The envelope is not explicitly estimated by
 the proof. Thresholds may approach an integer crossing arbitrarily closely,
 so replacing this two-sided sandwich by one ceiling of $r(Y)$ would not be
 justified.
+\begin{writenote}[7 October 2026]
+In the transseries volume's terms (front matter, ``The inverses and the transseries volume''), \eqref{xtw:airy:eq:ceilingexact} is an instance of item~(1) of \file{p0:thm:staircase}, with the piecewise-linear $g$ as admissible interpolation, and the sandwich follows from it as item~(2) does; the Lambert base $x$ is an instance of \file{p0:prop:factorial-core}. Part~II carries $r(Y)$ one term further (\eqref{xtw:frac:eq:y1inverse}).
+\end{writenote}
 
-\section{Exact verification and reproducibility}\label{sec:verification}
+\section{Exact verification and reproducibility}\label{xtw:airy:sec:verification}
 The accompanying archive contains this TeX source and PDF, authored Python
 code, small attributed integer fixtures, generated verification receipts,
 and a deterministic offline builder. The core arithmetic and package checks
@@ -1290,7 +1597,7 @@ use only the Python standard library; optional arbitrary-precision Airy
 diagnostics are isolated from the exact verification.
 
 \subsection{Three finite descriptions of the coefficients}
-The primary coefficient computation uses \eqref{eq:coefficientrec} with
+The primary coefficient computation uses \eqref{xtw:airy:eq:coefficientrec} with
 exact integers. It recomputes all coefficients through $n=48$ and the
 exact-height decomposition, rather than importing a floating approximation.
 A triangular truncation of the same defining recurrence is a useful second
@@ -1304,20 +1611,20 @@ number of trees checked is
  \sum_{n=1}^7(n+1)^{n-1}=280392.
 \]
 It verifies every one of the $28$ positive-height cells in that range against
-\eqref{eq:heightidentity}. The one-vertex root object is checked separately.
+\eqref{xtw:airy:eq:heightidentity}. The one-vertex root object is checked separately.
 
 A further exact method sums by level populations. If the positive level
 sizes are $n_1,\ldots,n_h$ with sum $n$, then the labels can be assigned in
 $n!/\prod_jn_j!$ ways, and each vertex at level $j\ge2$ chooses one of the
 $n_{j-1}$ parents at the preceding level. For shift $y$, the total contribution
 of this profile is
-\begin{equation}\label{eq:profile}
+\begin{equation}\label{xtw:airy:eq:profile}
  \frac{n!}{\prod_{j=1}^h n_j!}
  \prod_{j=2}^h n_{j-1}^{n_j}
  \prod_{j=1}^h(y+j-1)^{n_j}.
 \end{equation}
 Every such assignment is a rooted tree and has exactly the prescribed levels,
-so summing \eqref{eq:profile} over positive compositions gives another
+so summing \eqref{xtw:airy:eq:profile} over positive compositions gives another
 independent finite formula. The package checks all height cells through
 $n=12$ using this formula. These checks confirm the weighting and
 normalization, not the limiting constants by numerical extrapolation.
@@ -1334,6 +1641,25 @@ The defining series and these rows imply
 $T(n,1)=n a_{n-1}$, in agreement with the cross-reference on A096537; the
 retrieved A096542 display $T(n,1)=na_n$ has an index mismatch. That display
 is not used as an input identity.
+
+\begin{remark}[\textsf{[write]} The A096542 formula for $T(n,1)$ is off by one index]\label{xtw:airy:rem:oeis542}
+[Added 7 October 2026, batch~110.] OEIS A096542 (revision \#11,
+19~December 2017, live on 7~October 2026), whose rows are $T(n,k)=[y^k]P_n(y)$,
+has the formula line ``T(n, 1) = n*A096537(n)''. The correct identity is
+\[
+ T(n,1)=n\,a_{n-1}\qquad(n\ge1).
+\]
+Proof: differentiating $F_y=\exp(xyF_{y+1})$ in $y$ at $y=0$ gives
+$[y]F_y=xF_1$, so $T(n,1)/n!=[x^n]\,xF_1(x)=a_{n-1}/(n-1)!$ (Part~II proves the
+same in Section~\ref{xtw:frac:sec:reproducibility}). The entry's line is false
+for every $n\ge2$, because $a_n\ge n^2a_{n-1}>a_{n-1}$ there
+(Lemma~\ref{xtw:airy:lem:monotonicity}). The entry's own rows show it: row~2
+is $0,2,3$, so $T(2,1)=2=2a_1$, while $2a_2=10$; likewise $T(3,1)=15=3\cdot5$,
+$T(4,1)=244=4\cdot61$ and $T(5,1)=6885=5\cdot1377$, against $3\cdot61$,
+$4\cdot1377$ and $5\cdot49721$. A096537's own line ``a(n) = A096542(n+1,
+1)/(n+1)'' is the correct identity. No correction has been submitted to the
+OEIS.
+\end{remark}
 
 These finite checks include coefficient nonnegativity, the all-path diagonal
 $n!c_{n,n}=(n!)^2$, and domain/fixture rejection tests. Supporting shifted or
@@ -1370,17 +1696,20 @@ byte-identical artifacts; different TeX or font versions may change PDF
 bytes. Hashes detect accidental modification, not replacement of both the
 software and its hashes by an adversary. Full command instructions and the
 precise manifest schema are in \texttt{README\_REPRODUCIBILITY.md}.
+\begin{writenote}[7 October 2026]
+In this report the package's programs are \file{code/192-airy-*.py}, its fixtures, generated coefficients and recorded outputs \file{data/192-airy-*}, and its \file{README_REPRODUCIBILITY.md}, \file{DATA_SOURCES.md}, \file{code/README.md} and \file{data/README.md} are \file{192-airy-*.md}. The delivered PDF, the package \file{README.md} (replaced by this report's) and \file{SHA256SUMS.json} are not shipped; the replay and build scripts check the closed delivered inventory, so they run only in a re-extracted archive. The report's README gives a route that runs the exact checker on a copy.
+\end{writenote}
 
 The optional \texttt{diagnose\_mpmath.py} evaluates finite towers and Airy
 expressions at chosen working precision. It supplies illustrations only,
 not interval certificates, certified decimal digits, effective remainders,
 or proof of any limiting assertion. In particular a short-range fit cannot
-establish the small amplitude difference in \eqref{eq:ratio}.
+establish the small amplitude difference in \eqref{xtw:airy:eq:ratio}.
 
-\section{Prior sources and remaining questions}\label{sec:literature}
+\section{Prior sources and remaining questions}\label{xtw:airy:sec:literature}
 \subsection{What is already part of the literature}
 Hanna's A096537 entry defines the linear continued exponential, and A096542
-explicitly gives the entire shifted equation \eqref{eq:shiftfamily}, not
+explicitly gives the entire shifted equation \eqref{xtw:airy:eq:shiftfamily}, not
 merely its specialization at $y=1$ \cite{oeis537,oeis542}. Neither the sequence
 nor that family is introduced here as new.
 
@@ -1408,7 +1737,7 @@ no summed coefficient asymptotic of the kind proved here was found in the
 inspected text. This is a statement about that paper, not its surrounding
 literature. Similarly named sequential depth-weighted attachment models
 should not be identified with the static probability proportional to
-\eqref{eq:treeweight} without a separate equivalence argument.
+\eqref{xtw:airy:eq:treeweight} without a separate equivalence argument.
 
 A bounded search using the sequence identifiers, the proposed corrected
 constant and decimal variants, and continued-exponential/Airy/depth-weighted
@@ -1452,8 +1781,1947 @@ The central distinction is between a formal Airy balance and a coefficient
 theorem. Here the normalized entrance, real-window continuation, separate
 minor arcs, uniform lattice inversion, and all-height domination provide
 the complete bridge. Further-order work must preserve all of those controls.
+\begin{writenote}[7 October 2026]
+Part~II (Report~193) answers the first-coefficient part of item~1, with $b_n\rho^n\sqrt n=C+c_1n^{-1/3}+o(n^{-1/3})$, $-0.61<c_1<-0.25$ (Theorem~\ref{xtw:frac:thm:correction}), and item~2 for every fixed positive shift, with the Gamma prefactor uniformly on compact sets of $y>0$ (Theorem~\ref{xtw:frac:thm:family}). Effective rates, further coefficients, shifts near $0$ or growing, and items~3--5 remain open; all are gathered in Section~\ref{xtw:sec:further}.
+\end{writenote}
 
-\begin{thebibliography}{9}
+\part{Fractional corrections and Gamma laws for exponential towers: a sequel to the leading Airy asymptotic}\label{xtw:frac:part}
+\partsource{Bundle Report~193, archive \file{A096537_Fractional_Corrections_and_Gamma_Laws_Source.zip}, delivered as \file{Report193.tex} (29 pages). Delivered title block ``Report193 / Fractional Corrections and Gamma Laws for Exponential Towers / A sequel to the leading Airy asymptotic / 4 October 2026''. Printed as delivered, with \textbf{[write]} notes; Report~193's Section~$k$ is Section~$k+14$ here and its statements move with their sections; its equation~($k$) is equation~($k+109$) here. The opening paragraph ``Prior constructions and scope'' is the manuscript's own. Its \texttt{Report192} is Part~I.}
+\begin{partabstract}
+For the known formal family $F_y(x)=\exp(xyF_{y+1}(x))$, put
+$P_n(y)=n![x^n]F_y(x)$ and $\rho=1-e^{-1}$. We prove that
+$P_n(1)\rho^n\sqrt n/(n!)^2=C+c_1n^{-1/3}+o(n^{-1/3})$, where
+$C=\sqrt{2/(\pi\rho)}$ and $-0.61<c_1<-0.25$.
+The coefficient is defined by an absolutely convergent Airy perturbation
+integral. Its strict sign follows from a real-Airy reduction, a proved
+positive-real tail bound, and reproducible directed interval quadrature.
+The discrete proof retains the parabolic entrance logarithm, controls a
+growing complex window, and cancels the larger overlap terms before Fourier
+inversion and height averaging. We also prove the same relative fractional correction uniformly on compact
+positive real $y$ sets, together with the Gamma prefactor
+$P_n(y)/(n!)^2\sim C\rho^{1-y}\rho^{-n}n^{y-3/2}/\Gamma(y)$,
+a normal limit for root-ancestor choices, and refined threshold inverses.
+The first correction gives eventual approach from below, but no effective
+finite-index onset or monotonicity of the normalized sequence. The report
+makes no all-orders, complex Borel-sector, or absolute-priority claim.
+\end{partabstract}
+
+\paragraph{Prior constructions and scope.}
+The shifted family and polynomial triangle are due to Paul D. Hanna as
+recorded in OEIS A096537 and A096542 \cite{oeis537,oeis542}. General continued
+exponentials and their tree interpretation belong to the earlier framework
+of Bender and Vinson \cite{bv}. A complete full-text theorem comparison with
+that paper and Poland's continuation \cite{poland} remains unresolved.
+The formulas proved here are not presented as a worldwide novelty claim.
+Report192 established the leading unshifted Airy coefficient theorem;
+Section~\ref{xtw:frac:sec:input} states exactly the leading input retained here.
+The new error estimates, sign reduction, and offset normalization are proved
+in the present text rather than inferred from fitted coefficients.
+
+\section{Statements and normalizations}\label{xtw:frac:sec:statements}
+All logarithms are natural. Set
+\begin{equation}\label{xtw:frac:eq:constants}
+ \alpha=e-1,\quad \rho=\alpha/e,\quad a=2^{-1/3},\quad
+ C=\sqrt{\frac2{\pi\rho}},\quad
+ \kappa=2^{1/6}\sqrt{\frac e\pi}.
+\end{equation}
+The equations
+\begin{equation}\label{xtw:frac:eq:family}
+ F_y(x)=\exp\bigl(xyF_{y+1}(x)\bigr),\qquad F_y(0)=1
+\end{equation}
+define a unique formal family: degree $n$ on the right needs degrees only
+through $n-1$ at the next level. We write
+\[
+ P_n(y)=n![x^n]F_y(x),\qquad b_n(y)=\frac{P_n(y)}{(n!)^2},
+ \qquad a_n=P_n(1),\quad b_n=b_n(1).
+\]
+No analytic convergence of an infinite positive-real tower is used.
+Every analytic tower evaluation below is finite and entire.
+
+\begin{theorem}[The first fractional correction]\label{xtw:frac:thm:correction}
+As $n\to\infty$,
+\begin{equation}\label{xtw:frac:eq:main}
+ b_n\rho^n\sqrt n=C+c_1n^{-1/3}+o(n^{-1/3}),
+ \qquad -0.61<c_1<-0.25.
+\end{equation}
+The constant $c_1$ is the absolutely convergent integral in
+\eqref{xtw:frac:eq:c1definition}, equivalently the real integral in
+\eqref{xtw:frac:eq:realconstant}. Thus $b_n\rho^n\sqrt n<C$ for all sufficiently
+large $n$, with a gap of order $n^{-1/3}$.
+\end{theorem}
+The bracket is a rigorous enclosure under the stated arithmetic trust
+boundary, not a certified decimal expansion. The ordinary numerical value
+$-0.43652529$ is only a diagnostic. No finite onset of the strict inequality,
+no monotonicity of $b_n\rho^n\sqrt n$, and no explicit numerical error bound at a specified finite $n$
+is asserted.
+
+\begin{theorem}[The Gamma prefactor]\label{xtw:frac:thm:family}
+For every compact $Y\subset(0,\infty)$,
+\begin{equation}\label{xtw:frac:eq:gammaprefactor}
+ \begin{gathered}
+ b_n(y)=C_y\rho^{-n}n^{y-3/2}\left[1+d n^{-1/3}+o_Y(n^{-1/3})\right],
+ \qquad y\in Y,\\
+ C_y=\frac{C\rho^{1-y}}{\Gamma(y)},\qquad d=\frac{c_1}{C}.
+ \end{gathered}
+\end{equation}
+The relative coefficient $d$ is independent of $y$. The same critical Airy
+size law applies to every fixed positive shift.
+For the root-ancestor statistic $K_n$ defined in
+Section~\ref{xtw:frac:sec:ancestor}, with $L_n=\log(n/\rho)$,
+\begin{equation}\label{xtw:frac:eq:pgfclt}
+ \frac{P_n(y)}{P_n(1)}=\frac{(n/\rho)^{y-1}}{\Gamma(y)}
+                   [1+o_Y(n^{-1/3})],
+ \qquad
+ \frac{K_n-L_n}{\sqrt{L_n}}\xrightarrow{d}\mathcal N(0,1).
+\end{equation}
+The ratio equivalent is uniform on every such $Y$.
+\end{theorem}
+Uniformity near $y=0$ and shifts growing with $n$ are outside the theorem.
+A separate quantitative local complex argument in Section~\ref{xtw:frac:sec:cumulants}
+justifies mean and variance constants; these are not obtained by
+differentiating a merely real asymptotic.
+\begin{writenote}[7 October 2026]
+At $y=1$, $C_y=C$ and Theorem~\ref{xtw:frac:thm:family} is Part~I's Theorem~\ref{xtw:airy:thm:main} with the correction of Theorem~\ref{xtw:frac:thm:correction} added. The theorem answers Part~I's question ``Fixed positive shifts'' (Section~\ref{xtw:airy:sec:literature}) for every fixed $y>0$.
+\end{writenote}
+
+\subsection{Definition of the correction without numerical fitting}
+For $\lambda\in\ii\R$ let
+\begin{align}
+ w_\lambda''(t)&=\tfrac12(t-\lambda)w_\lambda(t),
+ &w_\lambda(0)&=0,&w_\lambda'(0)&=1,\label{xtw:frac:eq:wode}\\
+ U_\lambda(t)&=2w_\lambda'(t)/w_\lambda(t),
+ &G_\lambda(t)&=\tfrac12-\tfrac12(t-\lambda)U_\lambda(t)
+                              -\tfrac1{12}U_\lambda(t)^3.
+\end{align}
+The nonvanishing needed here is proved in Section~\ref{xtw:frac:sec:complex}.
+For any constant $c$, define
+\begin{equation}\label{xtw:frac:eq:Vdefinition}
+ V_c(t)=\frac1{w_\lambda(t)^2}
+ \left\{c-\frac23\log t+
+ \int_0^t\left[w_\lambda(r)^2G_\lambda(r)+\frac2{3r}\right]dr\right\}.
+\end{equation}
+The integral is convergent, and $V_c'+U_\lambda V_c=G_\lambda$.
+Let $I_c'=V_c$ have the uniquely fixed finite-part normalization
+\begin{equation}\label{xtw:frac:eq:Idefinition}
+ I_c(t)-\frac{\frac23(\log t+1)-c}{t}\longrightarrow0
+ \quad(t\downarrow0),
+\end{equation}
+and set, with the principal square root,
+\begin{equation}\label{xtw:frac:eq:Jdefinition}
+ J_c(\lambda)=\lim_{T\to\infty}
+ \left[I_c(T)+\frac{(T-\lambda)^2}{3}
+                    -\frac43\sqrt{2(T-\lambda)}\right].
+\end{equation}
+Existence and polynomial growth on the imaginary axis are established below.
+Put
+\begin{equation}\label{xtw:frac:eq:FQ}
+ \FF(\lambda)=\frac{\kappa}{\Ai(-a\lambda)^2},\qquad
+ \QQ(\lambda)=\FF(\lambda)\left[\frac{\lambda^2}{2}-J_0(\lambda)\right].
+\end{equation}
+Then the exact first correction is
+\begin{equation}\label{xtw:frac:eq:c1definition}
+ c_1=\frac{\alpha^{-1/6}}{2\pi}\int_{\R}\QQ(\ii\tau)\,d\tau.
+\end{equation}
+Conjugation makes this integral real. The definition contains neither fitted
+finite-sequence data nor an arbitrary normalization constant.
+
+\section{Exact heights and the leading input}\label{xtw:frac:sec:input}
+For $y>0$, write $\beta=y-1$, $\ell_j=j+\beta$, and define
+\begin{equation}\label{xtw:frac:eq:finite}
+ A_{h+1,h;y}=1,\qquad
+ A_{j,h;y}(x)=\exp\bigl(\ell_jxA_{j+1,h;y}(x)\bigr),\qquad
+ E_{h,y}=A_{1,h;y}-A_{1,h-1;y}.
+\end{equation}
+The second tower is $1$ at level $h$; $A_{1,0;y}=1$.
+Every $E_{h,y}$ has nonnegative coefficients and least degree $h$:
+at the bottom the difference is $e^{\ell_hx}-1$, and each upward step
+multiplies the difference by $x$ before applying
+$e^u-e^v=e^v(e^{u-v}-1)$. Thus, with $c_{n,h;y}=[x^n]E_{h,y}$,
+\begin{equation}\label{xtw:frac:eq:heightsum}
+ b_n(y)=\sum_{h=1}^n\frac{c_{n,h;y}}{n!}\quad(n\ge1).
+\end{equation}
+For $y=1$ we abbreviate $E_{h,1}=H_h$ and $c_{n,h;1}=c_{n,h}$.
+
+\paragraph{Leading-input recap.}
+The unshifted leading result from Report192 is
+\begin{align}
+ H_h((eh)^{-1})&\sim\FF(0)h^{1/6}e^{-\alpha h},\label{xtw:frac:eq:leadingheight}\\
+ c_{n,h}/n!&\le B\frac{e^n}{n!}h^{n-1/2}e^{-\alpha h}
+                      \qquad(h\ge1,n\ge0),\label{xtw:frac:eq:allheight}
+\end{align}
+for an absolute $B$. The centered finite-height characteristic transform
+has a bound $B e^{-b|t|^{3/2}}$ beyond a fixed central interval under
+$\theta=h^{-2/3}t$, until the remote arc, whose contribution is exponentially
+small in $h$. The Airy inverse
+\[
+ f(z)=\frac1{2\pi}\int_\R e^{-\ii tz}\FF(\ii t)\,dt
+\]
+has bounded derivatives of every fixed order and
+$f(0)=\kappa/a=\sqrt{2e/\pi}$. This recap is a leading theorem, not a
+first-order remainder assumption. The present argument also recovers these
+leading facts from its quantitative window and the independent positive
+factorization below, so they can be read as orientation rather than
+separate assumptions. Sections~\ref{xtw:frac:sec:entrance}--\ref{xtw:frac:sec:transfer}
+prove the additional quantitative estimates needed for
+Theorem~\ref{xtw:frac:thm:correction}. For completeness, the positive-factor minor-arc
+argument and its shifted version are given in Section~\ref{xtw:frac:sec:minor};
+Sections~\ref{xtw:frac:sec:offset}--\ref{xtw:frac:sec:familytransfer} give the full normalization
+and height sum underlying Theorem~\ref{xtw:frac:thm:family}.
+\begin{writenote}[7 October 2026]
+Report192 is Part~I. The recap is Part~I's Theorem~\ref{xtw:airy:thm:critical} (with $\FF(0)=\kappa/\Ai(0)^2=K$), its all-height bound \eqref{xtw:airy:eq:allheight}, its minor-arc Theorem~\ref{xtw:airy:thm:minor} and its density, here as $f=K\,p$ with $p$ of \eqref{xtw:airy:eq:pdensity}. Where this Part re-derives these facts inside its quantitative argument, the proofs are printed in full, as their estimates are needed for the correction.
+\end{writenote}
+
+\paragraph{Airy facts used.}
+The Wronskian and connection identities \cite{dlmf2} give
+\begin{equation}\label{xtw:frac:eq:wairy}
+ w_\lambda(t)=\frac\pi a\left[
+ \Ai(-a\lambda)\Bi(a(t-\lambda))-
+ \Bi(-a\lambda)\Ai(a(t-\lambda))\right].
+\end{equation}
+We use the separate function and derivative sector expansions, with
+remainders, from \cite{dlmf7}; asymptotic equivalents are never
+differentiated without those derivative expansions. The zeros of $\Ai$
+are negative real \cite{dlmf9}. On the imaginary axis the function
+$\FF$, its fixed-order derivatives, and its products with fixed polynomials
+are bounded by a polynomial times $e^{-b|\tau|^{3/2}}$.
+Finally, if $r(\lambda)=\Bi(-a\lambda)/\Ai(-a\lambda)$, then
+\[
+ r'(\lambda)=-\frac a{\pi\kappa}\FF(\lambda),\quad
+ r(\ii\infty)=-\ii,\quad r(-\ii\infty)=\ii.
+\]
+Integrating the derivative upward proves $f(0)=\kappa/a$ and also shows
+that $r$ is bounded on the imaginary axis.
+
+\section{The normalized parabolic entrance}\label{xtw:frac:sec:entrance}
+Set $\epsilon=h^{-1/3}$ and evaluate at
+$x=e^{\lambda\epsilon^2}/(eh)$, where $\lambda=\ii\tau$.
+Use exponent variables $q_j^A=jxA_{j+1,h}(x)$ and
+$q_j^B=jxA_{j+1,h-1}(x)$, so no complex logarithm is needed to define them.
+With $u_k^p=1-q_{h-k}^p$, the exact branches are
+\begin{equation}\label{xtw:frac:eq:recurrence}
+ u_k^p=1-e^{\lambda\epsilon^2}(1-k/h)e^{-u_{k-1}^p},\quad
+ u_0^A=1-e^{\lambda\epsilon^2}/e,\quad u_0^B=1.
+\end{equation}
+Write $\bar u_k=(u_k^A+u_k^B)/2$ and
+$\Delta_k=u_k^B-u_k^A$.
+
+\begin{lemma}[Autonomous normalization]\label{xtw:frac:lem:fatou}
+Let $v_0=1$ and $v_{k+1}=1-e^{-v_k}$. There is a finite constant $c_*$ such that
+\begin{align}
+ v_k&=\frac2k-\frac{\frac23\log k+2c_*}{k^2}
+                       +\OO(\log^2k/k^3),\label{xtw:frac:eq:fatou}\\
+ \frac{v_k+v_{k+1}}2&=\frac2k-
+        \frac{\frac23\log k+2c_*+1}{k^2}+\OO(\log^2k/k^3),\\
+ v_k-v_{k+1}&=\frac2{k^2}-
+        \frac{\frac43\log k+4c_*+\frac43}{k^3}
+                     +\OO(\log^2k/k^4).
+\end{align}
+\end{lemma}
+\begin{proof}
+The decreasing positive sequence tends to zero. For $r_k=2/v_k$, Taylor's
+theorem gives $r_{k+1}=r_k+1+1/(3r_k)+\OO(r_k^{-3})$.
+First $r_k\sim k$, then summation gives $r_k=k+\OO(\log k)$.
+The increments of $r_k-k-\frac13\log k$ are therefore
+$\OO(\log k/k^2)$, an absolutely summable sequence. Its tail is
+$\OO(\log k/k)$, proving convergence to $c_*$ and \eqref{xtw:frac:eq:fatou}.
+For the difference use
+$v_k-v_{k+1}=v_k^2/2-v_k^3/6+\OO(v_k^4)$ rather than subtracting error
+terms. The midpoint follows by subtracting half this difference.
+\end{proof}
+
+Take the quantitative cutoffs
+\begin{equation}\label{xtw:frac:eq:cutoffs}
+ K=\ceil{\epsilon^{-3/5}},\quad t_0=\epsilon K,\quad
+ M=\ceil{\epsilon^{-11/8}},\quad T=\epsilon M,\quad i=h-M,
+\end{equation}
+and the growing Fourier window
+\begin{equation}\label{xtw:frac:eq:window}
+ |\tau|\le L_\epsilon=A\bigl(\log(1/\epsilon)\bigr)^{2/3}.
+\end{equation}
+Here $A$ is any fixed positive constant, chosen later large enough for the
+Fourier tails. In the remainder estimates below, a factor called
+$\operatorname{polylog}(1/\epsilon)$ means a fixed positive polynomial in
+$1+\log(1/\epsilon)$, with degree independent of $h,\lambda$.
+Every parameter-dependent constant is polynomial in $L_\epsilon$; no
+uncontrolled exponential of $L_\epsilon$ is allowed.
+
+\begin{lemma}[Early perturbation and separation]\label{xtw:frac:lem:early}
+Uniformly on \eqref{xtw:frac:eq:window},
+\begin{align}
+ \bar u_K&=\frac{v_K+v_{K+1}}2-\lambda\epsilon^2K/3
+       +\OO(L_\epsilon\epsilon^2\log K+\epsilon^3K^2
+                         +L_\epsilon^2\epsilon^4K^3),\label{xtw:frac:eq:earlyu}\\
+ \log\Delta_K&=\log2-2\log K
+       -\frac{\frac23\log K+2c_*+\frac23}{K}
+       +\frac{\lambda\epsilon^2K^2}{6}
+       +\OO(\epsilon^{6/5}\operatorname{polylog}(1/\epsilon)).
+                                                        \label{xtw:frac:eq:earlyD}
+\end{align}
+The logarithm is continued from the positive real value at $\lambda=0$.
+\end{lemma}
+\begin{proof}
+Put $v_k^B=v_k$, $v_k^A=v_{k+1}$, $d_k^p=u_k^p-v_k^p$, and
+$b_k^p=e^{-v_{k-1}^p}$. Lemma~\ref{xtw:frac:lem:fatou} gives the summable kernel
+\begin{equation}\label{xtw:frac:eq:earlykernel}
+ \prod_{r=j+1}^k b_r^p\le B\left(\frac{j+1}{k+1}\right)^2.
+\end{equation}
+Writing $a_k=e^{\lambda\epsilon^2}(1-k\epsilon^3)$, Taylor's theorem yields
+\[
+ d_k=b_k(d_{k-1}-(a_k-1))
+          +\OO(|a_k-1||d_{k-1}|+|d_{k-1}|^2).
+\]
+The kernel proves by bootstrap
+$|d_k|\le B(|\lambda|\epsilon^2(k+1)+\epsilon^3(k+1)^2)$ for $k\le K$:
+the nonlinear contribution relative to this bound is
+$\OO((1+|\lambda|)\epsilon^2K^2+\epsilon^3K^3)=o(1)$.
+The initial errors are $d_0^B=0$ and
+$d_0^A=-\lambda\epsilon^2/e+\OO(|\lambda|^2\epsilon^4)$.
+The linear response $l_k=b_k(l_{k-1}-1)$, with $l_0^B=0,l_0^A=-1/e$,
+satisfies $l_k=-k/3+\OO(\log(k+2))$: substituting $-k/3$ gives residual
+$\OO(\log(k+2)/(k+1))$, and \eqref{xtw:frac:eq:earlykernel} sums it.
+Subtract $\lambda\epsilon^2l_k$ and sum the remaining forcing to obtain
+\[
+ d_k=-\lambda\epsilon^2k/3+
+ \OO(|\lambda|\epsilon^2\log(k+2)+\epsilon^3(k+1)^2
+                  +|\lambda|^2\epsilon^4(k+1)^3).
+\]
+In particular $\sum_{k<K}\bar d_k=-\lambda\epsilon^2K(K-1)/6+
+\OO(\epsilon^{6/5}\operatorname{polylog})$.
+
+For $r(z)=\log(\sinh(z/2)/(z/2))$ the exact identity is
+\begin{equation}\label{xtw:frac:eq:exactD}
+ \log\Delta_K=\log\Delta_0+\sum_{j=1}^K\log a_j
+                   -\sum_{k=0}^{K-1}\bar u_k+\sum_{k=0}^{K-1}r(\Delta_k).
+\end{equation}
+Let $\Delta_k^*=v_k-v_{k+1}$. The same bootstrap gives
+$|\log(\Delta_k/\Delta_k^*)|\le
+ B(|\lambda|\epsilon^2(k+1)^2+\epsilon^3(k+1)^3)$.
+Since $r'(z)=\OO(|z|)$ in a fixed neighborhood of this trajectory and
+$\Delta_k^*=\OO((k+1)^{-2})$, the difference of the $r$ sums is at most
+$B(|\lambda|\epsilon^2+\epsilon^3\log(K+2))$.
+Subtract the autonomous identity in \eqref{xtw:frac:eq:exactD}. The initial
+logarithm and $\sum\log a_j$ cost only
+$\OO(|\lambda|\epsilon^2K+\epsilon^3K^2)$.
+The midpoint sum provides the displayed tilt; expanding
+$\log\Delta_K^*$ with Lemma~\ref{xtw:frac:lem:fatou} proves \eqref{xtw:frac:eq:earlyD}.
+All errors stated here have at least the $\epsilon^{6/5}$ margin up to
+fixed logarithmic factors.
+\end{proof}
+
+The forced entrance parameter is
+\begin{equation}\label{xtw:frac:eq:ch}
+ c_h=-\frac23\log(1/\epsilon)-2c_*-1.
+\end{equation}
+It is essential at finite height. Its eventual disappearance from the
+coefficient correction is proved by Fourier inversion, not assumed.
+
+\section{Complex stability and quantitative inner propagation}\label{xtw:frac:sec:complex}
+\begin{lemma}[Energy stability on the whole imaginary axis]\label{xtw:frac:lem:energy}
+For $\lambda=\ii\tau$, $\tau\in\R$, the solution $w_\lambda(t)$ is nonzero
+for $t>0$, and
+\begin{align}
+ \Re U_\lambda(t)&\ge2/t,&
+ \Re U_\lambda(t)&\ge c\sqrt t\quad(t\ge1),&
+ \Re U_\lambda(t)&\ge U_0(t),\label{xtw:frac:eq:energybounds}\\
+ |U_\lambda(t)-U_0(t)|&\le|\tau|t/3,&
+ |U_\lambda(t)-U_0(t)|&\le B|\tau|/\sqrt t\quad(t\ge1).
+                                                        \label{xtw:frac:eq:Udiff}
+\end{align}
+All constants are absolute.
+\end{lemma}
+\begin{proof}
+Integrate $w''\bar w$ and take real parts:
+\begin{equation}\label{xtw:frac:eq:energyidentity}
+ \Re(w'(t)\overline{w(t)})=
+ \int_0^t\left(|w'(s)|^2+\frac s2|w(s)|^2\right)ds.
+\end{equation}
+A positive zero would contradict $w'(0)=1$. Cauchy--Schwarz gives
+$\int_0^t|w'|^2\ge|w(t)|^2/t$, proving the first bound.
+For $t\ge2$, restrict the integral to $[t/2,t]$ and use the trace inequality
+\[
+ \int_A^B(|v'|^2+q^2|v|^2)\,ds
+       \ge q\tanh(q(B-A))|v(B)|^2.
+\]
+To prove it, subtract
+$v(B)\cosh(q(s-A))/\cosh(q(B-A))$ and integrate the cross term by parts;
+the remainder energy is nonnegative. Taking $q=\sqrt t/2$ proves the
+second bound; $1\le t\le2$ follows from the first.
+Write $U=R+\ii I$. Its Riccati equation gives
+\[
+ (R-U_0)'=-\tfrac12(R+U_0)(R-U_0)+\tfrac12I^2.
+\]
+Variation of constants from $\delta>0$ and then $\delta\downarrow0$
+proves $R\ge U_0$: the initial discrepancy is $\OO_\tau(\delta^3)$
+and its propagator is at most $(\delta/t)^2$.
+Lastly $D=U_\lambda-U_0$ satisfies
+\[
+ D(t)=-\ii\tau\int_0^t
+ \exp\left[-\frac12\int_s^t(U_\lambda(r)+U_0(r))dr\right]ds.
+\]
+The kernel modulus is at most $(s/t)^2$, giving $|\tau|t/3$.
+For $t\ge2$, split at $t/2$ and apply the square-root damping to bound its
+integral by $B/\sqrt t$. The compact remaining interval is immediate.
+\end{proof}
+Integration of $\Re U\ge2/t$ also gives $|w(t)|\ge t$.
+For the discrete towers, positivity of their exponent coefficients implies
+\begin{equation}\label{xtw:frac:eq:positivitycomplex}
+ |q_j(x_0e^{\ii\theta})|\le q_j(x_0),\qquad
+ \Re(1-q_j(x_0e^{\ii\theta}))\ge1-q_j(x_0),
+ \quad x_0=(eh)^{-1}.
+\end{equation}
+Thus a complex tilt does not produce an exponential Gronwall loss.
+
+\begin{lemma}[Summable inner error]\label{xtw:frac:lem:inner}
+With \eqref{xtw:frac:eq:cutoffs}--\eqref{xtw:frac:eq:ch}, set
+$a_k=\epsilon U_\lambda(\epsilon k)+\epsilon^2V_{c_h}(\epsilon k)$.
+Uniformly on \eqref{xtw:frac:eq:window},
+\begin{align}
+ \sum_{k=K}^M|\bar u_k-a_k|
+      &=\OO(\epsilon^{17/16}\operatorname{polylog}(1/\epsilon)),
+                                                        \label{xtw:frac:eq:innersum}\\
+ |\bar u_M-a_M|&=\OO(\epsilon^3T^{3/2}\operatorname{polylog}(1/\epsilon)),
+                                                        \label{xtw:frac:eq:innerend}\\
+ \log\Delta_M&=\log\frac{2\epsilon^2}{w_\lambda(T)^2}
+                    +\epsilon D_{c_h}(T)
+                    +\OO(\epsilon^{17/16}\operatorname{polylog}(1/\epsilon)),
+                                                        \label{xtw:frac:eq:innersep}\\
+ D_c(t)&=-I_c(t)-t^2/2+\lambda t+U_\lambda(t)/2.
+                                                        \label{xtw:frac:eq:Ddefinition}
+\end{align}
+The value $T=\epsilon M$ includes the integer rounding exactly.
+\end{lemma}
+\begin{proof}
+We give the residual and kernel estimates, since a fixed-cutoff $o(1)$ would
+not suffice. On $0<t\le1$, put $B_0=-(2/3)\log t/t^2$ and
+$d=U-2/t$. From Lemma~\ref{xtw:frac:lem:energy},
+$|d|\le B(1+|\tau|)t$. Expanding $U^3-8/t^3$ shows
+\[
+ |G-(B_0'+UB_0)|\le B(1+|\tau|)^3(1+|\log t|)/t.
+\]
+The linear $V$ kernel has modulus at most $(s/t)^2$, so
+$|V_0-B_0|\le B(1+|\tau|)^3(1+|\log t|)$.
+Add $c_h/w^2$. On $t\ge1$ the same kernel decays at least as
+$e^{-c(t^{3/2}-s^{3/2})}$ and $|G|\le P(1+|\tau|)t^{3/2}$.
+It follows that
+\begin{equation}\label{xtw:frac:eq:Vbound}
+ |V_{c_h}(t)|\le P(1+|\tau|)
+ \left[\frac{1+|c_h|+|\log t|}{t^2}+1+t\right].
+\end{equation}
+Here and below $P$ may change, but is a fixed polynomial. Finite
+differentiation of the exact differential equations gives
+\[
+ |U'''|\le P(1+|\tau|)t^{-4},\quad
+ |V''|\le P(1+|\tau|)(1+|c_h|+|\log t|)t^{-4}\quad(t\le1).
+\]
+For $t\ge1$, $U_0=\OO(\sqrt t)$ and $U_0'=\OO(1)$ follow from the
+separate Airy expansions and compactness. The difference equation gives
+$|U'|\le P(1+|\tau|)$, hence $|U'''|\le P(1+|\tau|)t$;
+the $V$ equation gives $|V'|\le P(1+|\tau|)(1+|c_h|)t^{3/2}$ and
+$|V''|\le P(1+|\tau|)(1+|c_h|)t^2$. The factor $1+|c_h|$
+is absorbed in the fixed polylogarithmic factor in every residual estimate.
+More precisely, the homogeneous term and its first two derivatives on
+$t\ge1$ are bounded by $|c_h|P(1+|\tau|)P(t)e^{-ct^{3/2}}$;
+this is also bounded by $|c_h|P(1+|\tau|)t^{-4}$ after enlarging
+constants, as needed in the displayed residual bound.
+
+Taylor expansion of $a_{k-1}$ through $\epsilon^3$ cancels the coefficients
+of $\epsilon^2$ and $\epsilon^3$, because
+\[
+ U'=t-\lambda-U^2/2,\qquad
+ V'+UV=U''/2-U^3/3=G.
+\]
+Thus the scalar recurrence residual at $t=\epsilon k$ is bounded by
+\begin{equation}\label{xtw:frac:eq:innerresidual}
+ P(1+|\tau|)\epsilon^4
+ \left[\frac{(1+|c_h|+|\log t|)^2}{t^4}+1+t^2\right].
+\end{equation}
+The exact midpoint recurrence adds a factor
+$\cosh(\Delta_{k-1}/2)$. Coefficient positivity and the more strongly
+contracted critical-real pair give
+$|\Delta_k(\ii\tau)|\le\Delta_k(0)\le v_k-v_{k+1}\le B/(k+1)^2$.
+Its extra residual is $\OO(\epsilon^4/t^4)$ and is already included.
+The same bound ensures that the sinh quotient defining the separation
+logarithm has no zero along the chosen continuation.
+
+For $K\le k\le\epsilon^{-1}$, the exact critical-real midpoint is at least
+$v_{k+1}\ge3/(2(k+1))$ for sufficiently large $K$. The approximation has
+the same lower real-part bound: \eqref{xtw:frac:eq:Vbound} gives
+$\epsilon|V|/\Re U=\OO(\epsilon^{3/5}\operatorname{polylog})$ on
+$[t_0,1]$. Future propagation kernels therefore have total mass $\OO(k)$.
+For later indices use the explicit barrier $b_k=\frac14\sqrt{k/h}$.
+For $0\le u\le1$ and $0\le s\le1$,
+\[
+ 1-(1-s)e^{-u}\ge u+s-su-u^2/2.
+\]
+For $k\ge\ceil{h^{1/3}}$ and $k\le M$, $b_k\le1/10$ eventually,
+so the right side at $u=b_{k-1},s=k/h$ exceeds
+$b_{k-1}+(4/5)k/h$. Since
+$b_k-b_{k-1}\le1/(4\sqrt{hk})\le k/(4h)$, this is a subsolution.
+The autonomous starting bound proves it for both exact real branches.
+Equation~\eqref{xtw:frac:eq:positivitycomplex} transfers it to their complex real
+parts. For the approximation,
+$\epsilon|V|/\Re U=\OO(\epsilon\sqrt T\operatorname{polylog})=o(1)$,
+so its real part has the same contraction scale. Future kernel mass at
+$t_k\ge1$ is $\OO((\epsilon\sqrt{t_k})^{-1})$.
+
+The early lemma and the small-$t$ expansions
+\begin{equation}\label{xtw:frac:eq:smallUV}
+ U=2/t-\lambda t/3+t^2/4+\OO(P(1+|\lambda|)t^3),\qquad
+ V_c=\frac{c-(2/3)\log t}{t^2}+\OO(P(1+|\lambda|)(1+|c|+|\log t|))
+\end{equation}
+give
+\[
+ K|\bar u_K-a_K|\le P(1+|\lambda|)
+ [\log^2K/K^2+\epsilon^2K\log(1/\epsilon)
+                      +\epsilon^3K^3+\epsilon^4K^4]
+ =\OO(\epsilon^{6/5}\operatorname{polylog}).
+\]
+Sum \eqref{xtw:frac:eq:innerresidual} against the kernel masses. The total error is
+at most this entrance error plus fixed polynomial factors times
+\[
+ \epsilon^2\int_{t_0}^1
+ (1+|c_h|+|\log t|)^2t^{-3}\,dt
+ +\epsilon^2\int_1^T(1+t^{3/2})dt.
+\]
+These are respectively $\OO(\epsilon^{6/5}\operatorname{polylog})$ and
+$\OO(\epsilon^2T^{5/2}\operatorname{polylog})
+=\OO(\epsilon^{17/16}\operatorname{polylog})$.
+For the endpoint, forcing before $T/2$ is superpolynomially damped, and
+the later residual divided by its local contraction gap is
+$\OO(\epsilon^3T^{3/2}\operatorname{polylog})$.
+
+Finally the exact multiplier is
+\[
+ \log(\Delta_k/\Delta_{k-1})=
+ \lambda\epsilon^2+\log(1-k/h)-\bar u_{k-1}+r(\Delta_{k-1}).
+\]
+The $r$ tail is $\OO(K^{-3})$; the quadratic log remainder sums to
+$\OO(\epsilon^3T^3)$, both $o(\epsilon)$. Replace the midpoint by $a_k$
+using \eqref{xtw:frac:eq:innersum}. Euler--Maclaurin yields its endpoint correction
+$+\epsilon U(T)/2$; the remainders are
+$\OO(\epsilon^2t_0^{-2}\operatorname{polylog}+\epsilon^2T)$.
+The leading integral is $2\log w$.
+At $t_0$, the early separation matches \eqref{xtw:frac:eq:Ddefinition}: its singular
+term is $[-(2/3)\log K-2c_*-2/3]/K$, and $w$ supplies
+$\lambda\epsilon^2K^2/6$.
+The omitted terms $t_0^3,\lambda^2t_0^4$, and
+$\epsilon t_0\operatorname{polylog}$ are $o(\epsilon)$ with the stated
+margin. This fixes the additive constant and proves \eqref{xtw:frac:eq:innersep}.
+As a check, $D_c'=-V_c-(t-\lambda)/2-U^2/4$ exactly.
+\end{proof}
+
+\section{Second outer correction and overlap cancellation}\label{xtw:frac:sec:outer}
+Let $\TT(z)e^{-\TT(z)}=z$ be the small tree branch and $v=1-\TT$.
+Write $\eta=e^{\lambda\epsilon^2}/(eh)$, $z_j=j\eta$, and define
+\begin{equation}\label{xtw:frac:eq:RS}
+ R=\frac{\TT e^{\TT}}{v^2},\qquad
+ S=\frac{\TT e^{2\TT}(5+v-v^2)}{2v^5},\qquad
+ Q_{\rm out}=\TT+\eta R+\eta^2S.
+\end{equation}
+Direct differentiation verifies
+\begin{equation}\label{xtw:frac:eq:Sidentity}
+ S=\frac{\TT}{v}\left[\frac{\TT''}{2}+R'
+                                      +\frac{(\TT'+R)^2}{2}\right].
+\end{equation}
+All derivatives here are in $z$. This is the second cancellation in
+$Q_{\rm out}(z)=ze^{Q_{\rm out}(z+\eta)}$.
+
+\begin{lemma}[Summed outer control]\label{xtw:frac:lem:outer}
+For either exact branch and $j\le i=h-M$,
+\begin{align}
+ |Q_{{\rm out},j}-z_je^{Q_{{\rm out},j+1}}|
+     &\le B|\eta|^3|\TT_j|/|v_j|^7,\label{xtw:frac:eq:outerresidual}\\
+ \sum_{j\le i}|q_j-Q_{{\rm out},j}|
+     &\le B\frac{|q_i-Q_{{\rm out},i}|}{|v_i|}
+                 +B|\eta|^2|v_i|^{-6}=o(\epsilon).
+                                                        \label{xtw:frac:eq:outercontrol}
+\end{align}
+The error is uniform on \eqref{xtw:frac:eq:window}.
+\end{lemma}
+\begin{proof}
+Positivity of $\TT$ and its derivative bound show
+\[
+ |\TT(z_j)-\TT(|z_j|)|
+       \le |\arg\eta|\,|z_j|\TT'(|z_j|).
+\]
+The relative perturbation of the real gap is $\OO(L_\epsilon/T)=o(1)$.
+Thus all gaps lie in a fixed narrow cone and are comparable to the real
+ones, while $|\eta|/|v_i|^3=\OO(T^{-3/2})$.
+Analytic Taylor's theorem, \eqref{xtw:frac:eq:Sidentity}, and the derivative bounds
+for rational functions of $\TT,v$ give \eqref{xtw:frac:eq:outerresidual}.
+The actual $q_i$ has modulus at most its real value, at most
+$1-c\epsilon\sqrt T$. The approximation lies in the same type of disk,
+since $\eta R/v=\OO(T^{-3/2})$ and $\eta^2S/v=\OO(T^{-3})$.
+Choose a radius $r$ between $\TT(|z_i|)$ and $1$ large enough for both.
+Then $|z_i|e^r\le r$, so the disk is invariant under descent; each
+mean-value derivative has modulus at most $1-c'|v_i|$.
+Summing the residuals along the ray, then the propagation kernel, gives
+\eqref{xtw:frac:eq:outercontrol}; the residual contribution is $\OO(T^{-3})$.
+The change of variable $dz=e^{-\TT}v\,d\TT$ justifies the powers in this
+integral estimate, and neighboring gaps are comparable because
+$|\eta|/|v_i|^2=o(1)$.
+
+For the incoming error put $s=T-\lambda$. The bounded connection ratio
+$r(\lambda)$ and the separate sector expansions give, uniformly,
+\begin{equation}\label{xtw:frac:eq:Ularge}
+ U(T)=\sqrt{2s}-\frac1{2s}-\frac5{8\sqrt2\,s^{5/2}}+\OO(s^{-4}),\qquad
+ V_{c_h}(T)=-2s/3+\OO(\operatorname{polylog}/\sqrt s).
+\end{equation}
+Expansion of $v_i-\eta R_i-\eta^2S_i$ gives exactly the three displayed
+$\epsilon U$ terms and the leading $\epsilon^2V$ term.
+Using \eqref{xtw:frac:eq:innerend}, the incoming discrepancy is bounded by
+\[
+ \operatorname{polylog}(1/\epsilon)
+ [\epsilon T^{-4}+\epsilon^2T^{-1/2}+\epsilon^3T^{3/2}].
+\]
+Division by $|v_i|\asymp\epsilon\sqrt T$ gives
+$\OO(\operatorname{polylog}[T^{-9/2}+\epsilon/T+\epsilon^2T])=o(\epsilon)$.
+The residual $T^{-3}=\OO(\epsilon^{9/8})$ is also $o(\epsilon)$.
+\end{proof}
+
+\subsection{The equilibrium product at a moving endpoint}
+Let $P=\prod_{j=1}^{i-1}\TT(z_j)$. The exact identity
+$\log(q_j/\TT_j)=q_{j+1}-\TT_j$ and Lemma~\ref{xtw:frac:lem:outer} imply
+\begin{equation}\label{xtw:frac:eq:ratioproduct}
+ \log\prod_{j<i}\frac{q_j}{\TT_j}
+   =-\log v_i+\eta\int_0^{z_i}S(z)dz+o(\epsilon).
+\end{equation}
+Indeed $\int R\,dz=-\TT-\log v$ cancels the endpoint $+\TT_i$;
+the lower endpoint is $\OO(\eta)$, the $R$ discretization error is
+$\OO(\epsilon/T)$, and the $S$ error is
+$\OO(\epsilon T^{-5/2})$. The separation at $i$ is exponentially small
+in $T^{3/2}$, so its divided-difference product has the same logarithm as
+either individual branch product to the required accuracy.
+
+An overlap term larger than the desired correction must be retained:
+\begin{align}
+ \eta\int_0^{z_i}S(z)dz
+   &=\frac5{6(2s)^{3/2}}+\OO(\epsilon/T+T^{-3}),\label{xtw:frac:eq:Soverlap}\\
+ \log w_\lambda(T)^{-2}
+   &=\log\frac{a^{5/2}}{\pi\Ai(-a\lambda)^2}
+       +\tfrac12\log s-\frac{2\sqrt2}{3}s^{3/2}
+       -\frac5{6(2s)^{3/2}}+\OO(T^{-3}).\label{xtw:frac:eq:woverlap}
+\end{align}
+Each $s^{-3/2}$ term has size $\epsilon^{9/16}$, greater than
+$\epsilon$. They cancel; discarding either would invalidate the proof.
+
+Put $\widehat H=he^{-\lambda\epsilon^2}$ and $r=i-1$. Isolating
+$\log\TT(z)=\log z+\TT(z)$ permits exact factorial summation at zero.
+Stirling and trapezoidal Euler--Maclaurin yield
+\begin{equation}\label{xtw:frac:eq:productEM}
+ \log P=\widehat H\int_0^{r/\widehat H}\log\TT(v/e)dv
+      +\tfrac12\log(2\pi r)+\tfrac12\TT(r/(e\widehat H))+o(\epsilon).
+\end{equation}
+For the smooth part the error is
+$\OO(|\eta|\int|\TT''|\,|dz|)=\OO(|\eta|/|v_i|)
+=\OO(\epsilon^2/\sqrt T)$, by gap-cone comparability.
+This is a moving-endpoint bound, stronger than a fixed-endpoint $o(1)$.
+Since
+\[
+ \int_0^1\log\TT(v/e)dv=-\alpha,\qquad
+ \log\TT((1-y)/e)=-\sqrt{2y}-y/3+\OO(y^{3/2}),
+\]
+and
+\[
+ 1-r/\widehat H=\epsilon^2s+\epsilon^3
+      +\epsilon^4(\lambda T-\lambda^2/2)+\OO(\epsilon^5\operatorname{polylog}),
+\]
+expansion of the removed endpoint integral gives
+\begin{align}
+ \log P={}&-\alpha h+\alpha\lambda/\epsilon
+    +\tfrac12\log(2\pi eh)+\frac{2\sqrt2}{3}s^{3/2}\notag\\
+ &+\epsilon\left[-\frac{\alpha\lambda^2}{2}
+                    +\frac{\sqrt{2s}}2+\frac{s^2}{6}\right]
+    +\OO(\epsilon^2T^{5/2}\operatorname{polylog}),\label{xtw:frac:eq:productexp}\\
+ -\log v_i={}&-\log\epsilon-\tfrac12\log(2s)
+                    +\epsilon\sqrt{2s}/3
+                    +\OO(\epsilon^2T\operatorname{polylog}).\label{xtw:frac:eq:gapexp}
+\end{align}
+The $\epsilon^3$ endpoint shift produces an essential order-$\epsilon$
+term. The term $-\alpha\lambda^2/2$ comes from the second term of
+$e^{-\lambda\epsilon^2}$ and is equally essential.
+
+\subsection{Completion of the finite-height correction}
+The difference at level $i$, its outer product, and the final outer
+exponential give $H_h$. That final exponential changes the logarithm by
+$\OO(h^{-1})$. Combining \eqref{xtw:frac:eq:innersep},
+\eqref{xtw:frac:eq:ratioproduct}--\eqref{xtw:frac:eq:gapexp} cancels the two larger overlap
+terms and gives leading factor $h^{1/6}\FF(\lambda)$.
+The remaining order-$\epsilon$ coefficient is
+\[
+ -\frac{\alpha\lambda^2}{2}+\frac{\lambda^2}{2}
+ -I_c(T)-\frac{s^2}{3}+\frac56\sqrt{2s}+\frac12U(T).
+\]
+The $V$ equation gives
+\begin{equation}\label{xtw:frac:eq:Ilarge}
+ I_c(T)=J_c(\lambda)-s^2/3+(4/3)\sqrt{2s}
+                                  +\OO(\operatorname{polylog}/T).
+\end{equation}
+Together with \eqref{xtw:frac:eq:Ularge}, all growing terms cancel.
+The Wronskian identity
+\[
+ \frac{d}{dt}\frac{\Ai(a(t-\lambda))}{w_\lambda(t)}
+          =-\frac{\Ai(-a\lambda)}{w_\lambda(t)^2}
+\]
+fixes the homogeneous finite part and proves
+\begin{equation}\label{xtw:frac:eq:gauge}
+ J_c-J_0=ca\frac{\Ai'(-a\lambda)}{\Ai(-a\lambda)},\qquad
+ -\FF(J_c-J_0)=-\frac c2\FF'(\lambda).
+\end{equation}
+Consequently
+\begin{equation}\label{xtw:frac:eq:windowcorrection}
+ \begin{split}
+ h^{-1/6}e^{\alpha h-\alpha\lambda/\epsilon}H_h(e^{\lambda\epsilon^2}/(eh))
+  ={}&\FF(\lambda)+\epsilon\left[
+       \QQ(\lambda)-\frac\alpha2\lambda^2\FF(\lambda)
+                          -\frac{c_h}{2}\FF'(\lambda)\right]\\
+   &+\OO(\epsilon^{17/16}\operatorname{polylog}(1/\epsilon)).
+ \end{split}
+\end{equation}
+The logarithmic correction after all cancellations is
+$\epsilon\operatorname{polylog}$; exponentiation costs only
+$\OO(\epsilon^2\operatorname{polylog})$. This proves an actual uniform
+expansion on the growing window, not a formal matching rule.
+
+\section{The Gamma factor on an offset grid}\label{xtw:frac:sec:offset}
+We now extend the quantitative proof, not merely its leading equivalent,
+to $y$ in a fixed compact $Y\subset(0,\infty)$. Set
+\[
+ \beta=y-1,\qquad H=h+\beta,\qquad \epsilon=H^{-1/3},\qquad
+ x=e^{\lambda\epsilon^2}/(eH),\qquad B_y=e^\beta/\Gamma(y).
+\]
+At terminal distance $k$, $\ell_{h-k}/H=1-k/H$ exactly. Therefore the
+shifted recurrence is exactly \eqref{xtw:frac:eq:recurrence}, with $H$ in place of
+$h$, up to its final integer index $h-1=H-y$. Its initial pair is unchanged.
+The inner cutoffs, ceilings of the real powers of $\epsilon$, lie far
+before $H-y$, uniformly on $Y$. Every proof in
+Sections~\ref{xtw:frac:sec:entrance}--\ref{xtw:frac:sec:complex} uses integer $k$ but never
+integrality of $H$. Positivity is preserved by $\ell_j>0$. Thus all inner
+bounds and the same $c_H$ hold uniformly on $Y$.
+
+The outer grid $z_j=(j+\beta)\eta$, $\eta=e^{\lambda\epsilon^2}/(eH)$,
+has spacing exactly $\eta$. At $i=h-M$, its endpoint weight is
+$\ell_i=H-M$, so the incoming gap and overlap calculations are identical.
+The residual retains its factor $\TT_j$ near the origin. Descending
+contraction uses only $|z_j|\le|z_i|$, hence is uniform also when $0<y<1$.
+The exact product identity is
+\[
+ \sum_{j<i}\log(q_j/\TT_j)
+       =\sum_{j=2}^i(q_j-\TT_j)+\TT_i-\TT_1.
+\]
+Near zero, $\TT,R,S=\OO(z)$. The missing lower intervals in the integrals
+have length $\OO_Y(|\eta|)$ and contribute $\OO_Y(|\eta|^2)$;
+the term $-\TT_1$ and final outer exponential contribute
+$\OO_Y(|\eta|)=\OO_Y(\epsilon^3)$, below first order.
+
+The product of the linear factors gives the new constant exactly. Put
+$r=i-1$, $R_*=r+\beta=H-M-1$, and $S_*=He^{-\lambda\epsilon^2}$.
+Then
+\begin{equation}\label{xtw:frac:eq:offsetexact}
+ \log\prod_{j=1}^r\TT(\ell_j/(eS_*))
+ =\log\Gamma(R_*+1)-\log\Gamma(y)-r\log(eS_*)
+                          +\sum_{j=1}^r\TT(\ell_j/(eS_*)).
+\end{equation}
+Apply the trapezoidal formula on the actual positive grid beginning at
+$y\eta$, not a fictitious grid continuing below zero. Its second-derivative
+integral is $\OO(1/|v_i|)$, so its remainder is
+$\OO(|\eta|/|v_i|)$. The lower-endpoint contribution, for example, is
+\[
+ \tfrac12\TT(y\eta)-\eta^{-1}\int_0^{y\eta}\TT(z)dz
+       =\tfrac12\eta y(1-y)+\OO_Y(|\eta|^2).
+\]
+Stirling at the real $R_*$ and \eqref{xtw:frac:eq:offsetexact} therefore give
+\begin{align}
+ \log\prod_{j=1}^r\TT(\ell_j/(eS_*))
+  ={}&S_*\int_0^{R_*/S_*}\log\TT(v/e)dv
+       +\beta\log(eS_*)-\log\Gamma(y)\notag\\
+    &+\tfrac12\log(2\pi R_*)+\tfrac12\TT(R_*/(eS_*))
+             +\OO_Y(|\eta|/|v_i|+|\eta|).\label{xtw:frac:eq:offsetEM}
+\end{align}
+The endpoint $R_*=H-M-1$ is exactly the endpoint used in
+\eqref{xtw:frac:eq:productexp}. The only new term is
+\begin{equation}\label{xtw:frac:eq:offsetnew}
+ \beta\log(eS_*)-\log\Gamma(y)
+ =\beta(1+\log H)-\log\Gamma(y)-\beta\lambda\epsilon^2.
+\end{equation}
+The first two terms give $B_yH^\beta$, and the last is
+$\OO_Y(\epsilon^2\operatorname{polylog})$. In particular it is not an
+additional order-$\epsilon$ tilt term. The error
+$|\eta|/|v_i|=\OO(\epsilon^2/\sqrt T)$ and all lower-endpoint errors
+also fit below the $\epsilon^{17/16}$ budget.
+
+We have proved the uniform shifted transform expansion
+\begin{equation}\label{xtw:frac:eq:shiftwindow}
+ \begin{split}
+ B_y^{-1}H^{-\beta-1/6}e^{\alpha H-\alpha\lambda/\epsilon}E_{h,y}(x)
+ ={}&\FF(\lambda)+\epsilon\left[
+ \QQ(\lambda)-\frac\alpha2\lambda^2\FF(\lambda)
+                         -\frac{c_H}{2}\FF'(\lambda)\right]\\
+ &+\OO_Y(\epsilon^{17/16}\operatorname{polylog}(1/\epsilon)).
+ \end{split}
+\end{equation}
+This proves the critical leading amplitude as well as its quantitative
+correction uniformly on $Y$. No complex-$y$ statement is used.
+
+\section{Fourier tails and the full first order remainder}\label{xtw:frac:sec:minor}
+\subsection{Positive factorization on every minor arc}
+Write the full and truncated shifted towers at a fixed height as $A_j,B_j$
+and $\Delta_j=A_j-B_j$, and put
+\[
+ D_j(w)=\int_0^1\exp(\ell_jws\Delta_{j+1}(w))ds.
+\]
+Repeated divided differences give the exact entire identity
+\begin{equation}\label{xtw:frac:eq:factorization}
+ E_{h,y}(w)=(e^{Hw}-1)w^{h-1}
+                  \prod_{j=1}^{h-1}\ell_j B_j(w)D_j(w).
+\end{equation}
+All nonmonomial factors have nonnegative Taylor coefficients. At
+$x_0=(eH)^{-1}$ this implies
+\begin{equation}\label{xtw:frac:eq:minorproduct}
+ \left|\frac{E_{h,y}(x_0e^{\ii\theta})}{E_{h,y}(x_0)}\right|
+ \le\prod_{j=1}^{h-1}\frac{|B_j(x_0e^{\ii\theta})|}{B_j(x_0)}.
+\end{equation}
+Let $T_0=0$, $T_{L+1}(z)=ze^{T_L(z)}$. The exponent
+$\ell_jwB_{j+1}(w)$ dominates $T_{h-j}(\ell_jw)$ coefficientwise,
+since every deeper weight is at least $\ell_j$. Hence its contribution
+to negative logarithmic modulus is at least
+\[
+ D_L(z,\theta)=\sum_{k\ge1}[z^k]T_L(z)\,z^k(1-\cos(k\theta)),\qquad
+ L=h-j,\quad z=\ell_j/(eH).
+\]
+For $\tau=\TT(z)$ and $\delta=1-\tau$, the deficit
+$d_L=\tau-T_L(z)$ satisfies
+\begin{equation}\label{xtw:frac:eq:treedeficit}
+ d_L\le(6/L)e^{-\delta L/2},\qquad
+ D_L(z,\theta)\ge D_\infty(z,\theta)-2d_L.
+\end{equation}
+Indeed $d_{j+1}=\tau(1-e^{-d_j})\le d_j-d_j^2/3$ first gives
+$d_j\le3/j$; use this through half the steps, then
+$d_{j+1}\le\tau d_j$ through the other half.
+
+For $0<|\theta|\le1/8$, choose integer terminal distances
+$k=h-j\in[H|\theta|,2H|\theta|]$. On them
+$\ell_j/H=1-k/H$ exactly, also for real noninteger $H$.
+The degree block $m\in[1/|\theta|,2/|\theta|]$ has
+$1-\cos(m\theta)\ge1-\cos1$.
+Using $[z^m]\TT(z)=m^{m-1}/m!$ and Stirling, the terms on this block
+are bounded below by a constant times $m^{-3/2}$: the extra factor
+$(1-k/H)^m$ is bounded below because $k/H\le2|\theta|$.
+Thus $D_\infty\ge c_0\sqrt{|\theta|}$.
+The gap identity
+$k/H=\int_0^\delta v e^v\,dv$ gives
+$\delta\asymp\sqrt{|\theta|}$ and
+$\delta L\ge cH|\theta|^{3/2}$.
+By \eqref{xtw:frac:eq:treedeficit}, the finite deficit is at most half this damping
+once $H|\theta|^{3/2}$ exceeds a fixed constant. There are at least
+$H|\theta|/2$ selected indices. Consequently
+\begin{equation}\label{xtw:frac:eq:minorbound}
+ \left|\frac{E_{h,y}(x_0e^{\ii\theta})}{E_{h,y}(x_0)}\right|
+ \le e^{-cH|\theta|^{3/2}}\qquad
+ A_0H^{-2/3}\le|\theta|\le1/8.
+\end{equation}
+For $1/8\le|\theta|\le\pi$, use levels with
+$\ell_j/H\in[1/4,1/2]$. Their degree-one terms alone give $e^{-cH}$.
+All constants are uniform on $Y$, because each chosen range contains the
+claimed number of valid levels for large $h$. These far arcs exclude any
+other lattice resonance.
+
+\subsection{Polynomial growth of the perturbation finite part}
+We justify \eqref{xtw:frac:eq:Jdefinition} and the global integrability required
+in inversion. At $t\le1$, the singular subtraction used in
+\eqref{xtw:frac:eq:Vbound} gives
+$|I_0(1)|+|V_0(1)|\le B(1+|\tau|)^3$.
+Set $S_0=\max(S_1,2(1+|\tau|))$ for a fixed sufficiently large $S_1$.
+On $[1,S_0]$, stable propagation gives
+$|V_0(t)|\le B(1+|\tau|)^3(1+t)$, hence
+$|I_0(S_0)|\le B(1+|\tau|)^5$.
+On $t\ge S_0$, the sector of $s=t-\ii\tau$ stays strictly inside
+$|\arg s|<\pi/3$. The bounded connection ratio in \eqref{xtw:frac:eq:wairy}
+ensures the $\Ai$ part is exponentially smaller than the $\Bi$ part,
+with absolute constants. Thus \eqref{xtw:frac:eq:Ularge} holds uniformly.
+Substitution of
+\[
+ V_{\rm as}(t)=-2s/3+(2\sqrt2/3)s^{-1/2}
+\]
+in the $V$ equation leaves residual $\OO(s^{-3/2})$ (leading magnitude
+$17/(12\sqrt2)$). Variation of constants, split at $t/2$, gives
+\[
+ |V_0(t)-V_{\rm as}(t)|\le Bt^{-2}
+ +B(1+|\tau|)^4 e^{-c(t^{3/2}-S_0^{3/2})}.
+\]
+Its integral converges. It proves \eqref{xtw:frac:eq:Ilarge} and, conservatively,
+\begin{equation}\label{xtw:frac:eq:Jpolynomial}
+ |J_0(\ii\tau)|\le B(1+|\tau|)^5.
+\end{equation}
+Accordingly $\QQ(\ii\tau)$ is absolutely integrable and has Airy
+exponential decay up to a polynomial. The same holds for $\FF'$ and
+$\lambda^2\FF$.
+
+\subsection{Full line error and the local limit}
+Extend the normalized centered transform
+\[
+ \Psi_{h,y}(t)=B_y^{-1}H^{-\beta-1/6}e^{\alpha H}
+ e^{-\ii\alpha H^{1/3}t}E_{h,y}(e^{\ii tH^{-2/3}}/(eH))
+\]
+by zero outside $|t|\le\pi H^{2/3}$.
+Its normalization at zero is bounded above and below uniformly on $Y$,
+by \eqref{xtw:frac:eq:shiftwindow}. Thus \eqref{xtw:frac:eq:minorbound} gives the bound
+$Be^{-c|t|^{3/2}}$ outside a fixed compact interval, plus the exponentially
+small remote arc. Choose the fixed $A$ in \eqref{xtw:frac:eq:window} large enough
+that $cA^{3/2}>1$ with a strict margin for all relevant decay constants.
+The tails of the finite transform and $\FF$ then have integral
+$o_Y(\epsilon)$. The tails of $\epsilon\QQ$ and
+$\epsilon c_H\FF'$ are also $o_Y(\epsilon)$, including
+$c_H=\OO(\log H)$.
+On the growing central window, the integrated error in
+\eqref{xtw:frac:eq:shiftwindow} is still
+$\OO_Y(\epsilon^{17/16}\operatorname{polylog})=o_Y(\epsilon)$.
+We have therefore proved
+\begin{equation}\label{xtw:frac:eq:L1}
+ \int_\R\left|\Psi_{h,y}(t)-\FF(\ii t)
+ -\epsilon\left[\QQ(\ii t)-\tfrac\alpha2(\ii t)^2\FF(\ii t)
+                              -\tfrac{c_H}2\FF'(\ii t)\right]\right|dt
+ =o_Y(\epsilon).
+\end{equation}
+This is the first-order $L^1$ estimate; a fixed Fourier cutoff could not
+prove it.
+
+In particular, define the integer Boltzmann size $N_{h,y}$ by
+\[
+ \Prb(N_{h,y}=n)=c_{n,h;y}x_0^n/E_{h,y}(x_0).
+\]
+The leading term of \eqref{xtw:frac:eq:L1} implies the uniform local limit
+\begin{equation}\label{xtw:frac:eq:llt}
+ \sup_{y\in Y}\sup_{n\in\Z}
+ \left|H^{2/3}\Prb(N_{h,y}=n)
+       -p\left(\frac{n-\alpha H}{H^{2/3}}\right)\right|\longrightarrow0,
+ \quad p=f/\FF(0).
+\end{equation}
+The limiting characteristic function is
+$\Ai(0)^2/\Ai(-a\ii t)^2$, and $p(0)=\Ai(0)^2/a$.
+The bound follows directly from the $L^1$ error in Fourier inversion;
+characteristic convergence and continuity at zero identify the probability
+law. For every height, after enlarging a compact-$Y$ constant to cover the
+finite initial heights,
+\begin{equation}\label{xtw:frac:eq:probmajorant}
+ \Prb(N_{h,y}=n)\le B_YH^{-2/3},\qquad
+ \frac{c_{n,h;y}}{n!}\le
+ B_Y\frac{e^n}{n!}H^{n+\beta-1/2}e^{-\alpha H}.
+\end{equation}
+For the finitely many initial heights this follows by continuity in $y$:
+$H$ is bounded above and away from zero on $Y$, and the finite entire
+tower evaluation divided by its stated positive amplitude has a finite
+maximum. Thus this is a genuinely all-height majorant.
+
+\section{Height averaging and the universal relative correction}\label{xtw:frac:sec:transfer}\label{xtw:frac:sec:familytransfer}
+Let $q$ be the inverse Fourier transform of $\QQ$, a continuous function,
+and put $z=(n-\alpha H)/H^{2/3}$. Inverting \eqref{xtw:frac:eq:L1} gives uniformly
+in integer $n$ and $y\in Y$
+\begin{equation}\label{xtw:frac:eq:coeffwindow}
+ \begin{split}
+ \frac{c_{n,h;y}}{n!}
+  ={}& B_y\frac{e^n}{n!}H^{n+\beta-1/2}e^{-\alpha H}\,
+ \left\{ f(z)+H^{-1/3}\left[q(z)-\frac\alpha2f''(z)
+                                      -\frac{c_H}{2}zf(z)\right]
+                            +o_Y(H^{-1/3})\right\}.
+ \end{split}
+\end{equation}
+Integration by parts sends $\FF'$ to $zf(z)$, while $\lambda^2\FF$
+transforms to $f''(z)$; the Airy tails remove all boundary terms.
+
+By \eqref{xtw:frac:eq:probmajorant}, heights outside
+$|H-n/\alpha|\le\sqrt n\log n$ are negligible relative to the full sum
+by more than any fixed inverse power. To check this uniformly, the logarithm
+of the positive weight $H^{n+\beta-1/2}e^{-\alpha H}$ has its maximum at
+$(n+\beta-1/2)/\alpha$ and second derivative of order $-1/n$ near that
+point. Outside a fixed proportional central interval the exponent loses
+$c n$, and in its central complement it loses
+$c(H-n/\alpha)^2/n$. Integral comparison on each monotone tail transfers
+these bounds to the shifted grid $H=y,y+1,\ldots$.
+The retained heights satisfy $h\le n$ for large $n$ because $\alpha>1$.
+
+The full shifted-grid weight sum is
+\begin{equation}\label{xtw:frac:eq:gammasum}
+ \sum_{h\ge1}(h+\beta)^{n+\beta-1/2}e^{-\alpha(h+\beta)}
+ =\frac{\Gamma(n+\beta+1/2)}{\alpha^{n+\beta+1/2}}
+                                      [1+\OO_Y(n^{-1/2})].
+\end{equation}
+Indeed a unimodal positive function differs in integral and grid sum by
+at most twice its maximum; the omitted interval $[0,y]$ is harmless.
+Uniform Stirling makes the maximum-to-integral ratio $\OO_Y(n^{-1/2})$.
+This grid error is below the $n^{-1/3}$ scale.
+
+Let $\E_w$ denote expectation under the normalized weight on the retained
+window. Direct Gamma integration and the same sum--integral comparison give
+\begin{align}
+ \E_wz&=\OO_Y(n^{-2/3}),&
+ \E_wz^2&=\alpha^{4/3}n^{-1/3}+o_Y(n^{-1/3}),\label{xtw:frac:eq:moments1}\\
+ \E_w|z|^3&=\OO_Y(n^{-1/2}),&
+ \E_wH^{-1/3}&=\alpha^{1/3}n^{-1/3}(1+o_Y(1)).\label{xtw:frac:eq:moments2}
+\end{align}
+For clarity, the continuous first two moments are exactly
+\begin{align}
+ &\alpha^{2/3}(1/6-\beta)
+       \frac{\Gamma(n+\beta-1/6)}{\Gamma(n+\beta+1/2)},\label{xtw:frac:eq:gammafirst}\\
+ &\alpha^{4/3}\left[n+\beta^2-\frac23\beta-\frac5{36}\right]
+       \frac{\Gamma(n+\beta-5/6)}{\Gamma(n+\beta+1/2)}.\label{xtw:frac:eq:gammasecond}
+\end{align}
+For the signed first moment, split $z$ times the weight at its zero and
+its finitely many extrema. Its maximum absolute value is
+$\OO_Y(n^{-1/6})$ times the weight maximum, so its normalized lattice
+error is $\OO_Y(n^{-2/3})$. The second-moment error is
+$\OO_Y(n^{-5/6})$. Gaussian rescaling gives the absolute third moment;
+deleting the already bounded tails changes none of these orders.
+This explicitly rules out an order-$n^{-1/3}$ lattice-phase displacement.
+
+Taylor expansion of $f$ through second order, using its bounded third
+derivative, yields
+\[
+ \E_w f(z)=f(0)+\tfrac12\alpha^{4/3}f''(0)n^{-1/3}
+                                      +o_Y(n^{-1/3}).
+\]
+On the shrinking $z$ window, continuity of $q,f''$ gives
+\[
+ \E_wH^{-1/3}[q(z)-\tfrac\alpha2f''(z)]
+ =\alpha^{1/3}[q(0)-\tfrac\alpha2f''(0)]n^{-1/3}
+                                      +o_Y(n^{-1/3}).
+\]
+The two $f''$ terms cancel exactly. The entrance contribution is bounded
+in absolute value by $\OO_Y(n^{-1/2}\log n)=o_Y(n^{-1/3})$.
+Thus the averaged braces in \eqref{xtw:frac:eq:coeffwindow} are
+\begin{equation}\label{xtw:frac:eq:averaged}
+ f(0)+\alpha^{1/3}q(0)n^{-1/3}+o_Y(n^{-1/3}).
+\end{equation}
+Finally, \eqref{xtw:frac:eq:gammasum}, \eqref{xtw:frac:eq:heightsum}, and uniform Stirling give
+\[
+ B_y\frac{e^n}{n!}
+       \frac{\Gamma(n+\beta+1/2)}{\alpha^{n+\beta+1/2}}
+ =B_y\alpha^{-\beta-1/2}\rho^{-n}n^{\beta-1/2}
+                                                  [1+\OO_Y(1/n)].
+\]
+Since
+\[
+ B_y\alpha^{-\beta-1/2}f(0)=C_y,\qquad
+ \frac{\alpha^{1/3}q(0)}{f(0)}=\frac{c_1}{C},
+\]
+this proves the asymptotic parts of Theorems~\ref{xtw:frac:thm:correction} and
+\ref{xtw:frac:thm:family}. The sign of $c_1$ is established next.
+
+\section{A real Airy integral for the correction}\label{xtw:frac:sec:signreduction}
+The complex perturbation integral is useful for deriving the coefficient;
+a different representation is better for certifying its sign.
+For $t>0$ define
+\begin{align}
+ A&=\Ai(at),&B&=\Bi(at),&p&=(\pi/a)A(B+\ii A),\notag\\
+ v&=2a\Ai'(at)/A,&
+ u&=2a\frac{\Bi'(at)+\ii\Ai'(at)}{B+\ii A},&
+ g_t(z)&=\tfrac12-tz/2-z^3/12.\label{xtw:frac:eq:realdefinitions}
+\end{align}
+All complex logarithms in the following formulas are principal:
+\begin{align}
+ \Psi&=\tfrac12g_t(v)p^2-(t+v^2/2)p-v\log p+2/(3p),\notag\\
+ \Phi&=\tfrac12g_t(u)p^2+(t+u^2/2)p-u\log p-2/(3p),\label{xtw:frac:eq:psiphi}\\
+ S(t)&=\frac{\Im\Psi}{\pi A^2},\notag\\
+ E(t)&=\frac1\pi\Im\left\{
+ \frac{\omega[4\overline\Phi-(4\pi\ii/3)\overline u-2t^2]}{(A+\ii B)^2}
+                      \right\},\qquad \omega=e^{2\pi\ii/3},\notag\\
+ K(t)&=E(t)-S(t)-\frac{2t}{3a}+\frac1{a\sqrt{2t}}.\label{xtw:frac:eq:realkernel}
+\end{align}
+Here $K(t)$ denotes a kernel and is unrelated to the entrance index $K$.
+
+\begin{theorem}[Real integral identity]\label{xtw:frac:thm:realintegral}
+The integral in the following formula converges absolutely:
+\begin{equation}\label{xtw:frac:eq:realconstant}
+ c_1=\alpha^{-1/6}\kappa\int_0^\infty K(t)dt.
+\end{equation}
+The substitution $t=z^2$ gives a continuous integrand at zero,
+\begin{equation}\label{xtw:frac:eq:transformedkernel}
+ 2zK(z^2)=\frac{\sqrt2}{a}
+           +2z\left[E(z^2)-S(z^2)-\frac{2z^2}{3a}\right],
+ \qquad (2zK(z^2))_{z=0}=2^{5/6}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+We include the branch and endpoint controls needed for the contour
+operations. Write $s=t-\lambda$, $A_s=\Ai(as)$,
+$v_s=2a\Ai'(as)/A_s$, and
+\[
+ P(t,\lambda)=\frac{A_sw_\lambda(t)}{\Ai(-a\lambda)}
+       =\frac\pi a A_s[\Bi(as)-r(\lambda)A_s],\quad
+ H(t,\lambda)=P(t,\lambda)g_s(U_\lambda(t)).
+\]
+The Wronskian gives
+\begin{equation}\label{xtw:frac:eq:Greenalgebra}
+ U=v_s+2/P,\qquad
+ (\partial_t+\partial_\lambda)P=A_s^2/\Ai(-a\lambda)^2.
+\end{equation}
+Polynomial division of the cubic gives
+\[
+ H=P g_s(v_s)-s-v_s^2/2-v_s/P-2/(3P^2).
+\]
+Therefore
+\begin{equation}\label{xtw:frac:eq:primitive}
+ \Psi_s(P)=\tfrac12g_s(v_s)P^2-(s+v_s^2/2)P-v_s\log P+2/(3P)
+\end{equation}
+is a primitive of $H$ with respect to $P$, at fixed $s$.
+
+\paragraph{The Green finite part.}
+Let $Y=w^2V_0$ and $b(\lambda)=a\Ai'(-a\lambda)/\Ai(-a\lambda)$.
+The Wronskian gives
+\[
+ L(t)=\frac{A_s}{\Ai(-a\lambda)w(t)}=\int_t^\infty w(r)^{-2}dr,
+ \qquad L'=-w^{-2}.
+\]
+Since $Y'=w^2G$, integration by parts yields
+$I_0(T)=\FP\int_0^T Hdt-L(T)Y(T)$.
+At zero,
+\[
+ Y=-(2/3)\log t+\OO(t^2),\quad L=t^{-1}+b+\OO(t),\quad
+ H=-2/(3t^2)-(2/3)b/t+14\lambda/9+\OO(t).
+\]
+These expansions define the finite part by adding
+$2/(3\delta)-(2/3)b\log\delta$ to the integral from $\delta$.
+At infinity, $L(T)Y(T)=P(T)V_0(T)=-\sqrt{2s}/3+o(1)$.
+Consequently
+\begin{equation}\label{xtw:frac:eq:GreenJ}
+ J_0(\lambda)=\lim_{T\to\infty}
+ \left[\FP\int_0^TH(t,\lambda)dt+(T-\lambda)^2/3
+                                      -\sqrt{2(T-\lambda)}\right].
+\end{equation}
+In particular, every finite constant is tied to
+\eqref{xtw:frac:eq:Idefinition}; none is absorbed into an unspecified finite part.
+
+\paragraph{Principal branches from resolvents.}
+Put $C_+(s)=\Bi(as)+\ii\Ai(as)=2e^{\ii\pi/6}\Ai(a\omega s)$
+and $P_+(s)=(\pi/a)A_sC_+(s)$; define $P_-$ by conjugation.
+For $\Im s<0$, consider $\mathcal L=-d^2/dx^2+x/2$ on $\R$ and
+spectral parameter $z=-s/2$.
+The right-decaying solution is $\Ai(a(x+s))$, and the left-decaying one
+is $C_+(x+s)$. The connection formula and sector expansions show left
+decay as a power times $e^{-c_s\sqrt{|x|}}$, $c_s>0$.
+Their Wronskian, in the order left then right, is $-a/\pi$.
+Thus the diagonal Green function is $P_+(s)$.
+Integrating its Green equation against its conjugate gives
+\begin{equation}\label{xtw:frac:eq:resolventpositive}
+ \Im P_+(s)=\Im z\int_\R|G_s(x,0)|^2dx>0.
+\end{equation}
+The endpoint terms and weighted integrals converge by the stated decays.
+Hence $P_+$ stays in the upper half-plane throughout the lower $s$
+half-plane; its logarithm is principal, including both rotation sectors.
+Nonvanishing alone would not establish this branch assertion.
+
+Similarly, $P(t,\lambda)$ is the diagonal Green function at $t$ for
+$\mathcal L$ on $[0,\infty)$ with Dirichlet boundary at zero and
+spectral parameter $\lambda/2$: the Wronskian of $w,A_s$ is
+$-\Ai(-a\lambda)$. For $\lambda=\ii\tau$, $\tau>0$, it has positive
+imaginary part. The left and right energy identities also give
+\begin{equation}\label{xtw:frac:eq:Pbounds}
+ \Re(1/P)\ge1/t,\qquad\Im(1/P)<0,\qquad |P|\le t.
+\end{equation}
+Indeed $1/P=(U-v_s)/2$, the left energy gives $\Re U\ge2/t$,
+and the right decaying energy gives $\Re(-v_s)\ge0$.
+Thus the actual $P$ is in the first quadrant. All branches in the
+primitive are compatible; the lower half-axis is obtained by conjugation.
+
+\paragraph{Normalized Fourier primitive.}
+The raw primitive need not decay at both Fourier ends. Normalize each half:
+\[
+ L_\pm(t,\lambda)=\frac\kappa{A_s^2}
+                    [\Psi_s(P(t,\lambda))-\Psi_s(P_\pm(s))],
+ \qquad \pm\Im\lambda>0.
+\]
+Because $(\partial_t+\partial_\lambda)s=0$, \eqref{xtw:frac:eq:Greenalgebra} gives
+$(\partial_t+\partial_\lambda)L_\pm=\FF H$.
+Let $\inv$ denote upward imaginary-axis inversion at coordinate zero,
+$\inv(R)=(2\pi\ii)^{-1}\int_{-\ii\infty}^{\ii\infty}R(\lambda)d\lambda$,
+and use $L$ piecewise. The jump at zero is
+$L_-(t,0)-L_+(t,0)=2\ii\kappa\Im\Psi_t(P_+(t))/A_t^2$.
+It follows that
+\begin{equation}\label{xtw:frac:eq:jump}
+ \inv(\FF H)=\partial_t\inv(L)+\kappa S(t).
+\end{equation}
+We next justify its integrated endpoints rather than taking pointwise
+limits under the integral.
+
+\paragraph{The origin endpoint uniformly in Fourier frequency.}
+For $0<t\le1$, Lemma~\ref{xtw:frac:lem:energy} gives
+$|U(t,\ii\tau)|\le B/t+B|\tau|t$, while
+$|v_{t-\ii\tau}|\le B(1+|\tau|)^{1/2}$.
+Together with \eqref{xtw:frac:eq:Pbounds} these give
+\[
+ |P|^{-1}\le B(t^{-1}+1+|\tau|),\quad
+ |\log P|\le B+|\log t|+\log(1+|\tau|).
+\]
+Uniformly on $0\le t\le1$, outside a fixed compact frequency interval,
+\[
+ |A_{t-\ii\tau}|^{-2}\le
+ B(1+|\tau|)^{1/2}e^{-c|\tau|^{3/2}}.
+\]
+Substitution in \eqref{xtw:frac:eq:primitive} bounds the raw primitive divided
+by $A_s^2$ by
+\begin{equation}\label{xtw:frac:eq:originenv}
+ B(t^{-1}+1+|\log t|)(1+|\tau|)^m e^{-c|\tau|^{3/2}}
+\end{equation}
+for a fixed $m$. The reference primitive has the same kind of bound
+without the $t^{-1}$ factor, since $P_+$ and its inverse are polynomially
+bounded at infinity and nonzero on the remaining compact set.
+Split at $|\tau|=t^{-1/4}$. In the inner part, Taylor expansion gives
+\begin{equation}\label{xtw:frac:eq:originexp}
+ \frac{\Psi_{t-\lambda}(P(t,\lambda))}{A_{t-\lambda}^2}
+ =\frac1{\Ai(-a\lambda)^2}
+     \left[\frac2{3t}-2b(1+\log t)\right]
+ +\OO\left(\frac{t(1+|\tau|)^m(1+|\log t|)}{|\Ai(-a\ii\tau)|^2}\right).
+\end{equation}
+For example, use $P=t+bt^2+\OO((1+|\tau|)t^3)$,
+$v_s=2b+\OO((1+|\tau|)t)$, and
+$A_s^{-2}/A_{-\lambda}^{-2}=1-2bt+\OO((1+|\tau|)t^2)$.
+The small parameters $t\sqrt{1+|\tau|}$ and $(1+|\tau|)t^2$
+are uniformly small on this interval. The integrated error is
+$\OO(t(1+|\log t|))$, using the Airy envelope. On the complementary
+interval, \eqref{xtw:frac:eq:originenv} is smaller than every fixed power of $t$
+after integration. The reference primitive converges by domination.
+Since $\FF'=2b\FF$, $\inv(\FF b)=0$. With $f_0=f(0)=\kappa/a$ and
+\[
+ k_{\rm ref}=\inv\left(
+       \frac{\kappa\Psi_{-\lambda}(P_\pm(-\lambda))}{\Ai(-a\lambda)^2}
+                         \right),
+\]
+we conclude
+\begin{equation}\label{xtw:frac:eq:originlimit}
+ \inv(L(t,\cdot))=2f_0/(3t)-k_{\rm ref}+o(1).
+\end{equation}
+
+\paragraph{The infinity endpoint including remote frequencies.}
+Take $\tau\ge0$, $s=T-\ii\tau$, $e(\tau)=r(\ii\tau)+\ii$,
+and $\zeta(s)=(\sqrt2/3)s^{3/2}$. Connection identities and the separate
+sector expansions give $|e(\tau)|\le Be^{-c\tau^{3/2}}$ and, uniformly
+on $-\pi/2\le\arg s\le0$,
+\[
+\begin{aligned}
+ P_+(s)&=(2s)^{-1/2}[1+\OO(|s|^{-3})],\\
+ H_+(s)&=P_+(s)g_s(2C_+'(s)/C_+(s))
+       =-2s/3+(2s)^{-1/2}+\OO(|s|^{-2}).
+\end{aligned}
+\]
+The exact relation $P=P_+(1-d)$ has
+$d=e(\tau)\Ai(as)/C_+(s)$.
+The global exponent difference satisfies
+\[
+ \begin{aligned}
+ 2\Re[\zeta(T-\ii\tau)-\zeta(-\ii\tau)]
+ &=\sqrt2\int_0^T\Re\sqrt{x-\ii\tau}\,dx\\
+ &\ge\int_0^T\sqrt{x+\tau}\,dx
+ \ge\frac{T}{2\sqrt2}\sqrt{T+\tau}.
+ \end{aligned}
+\]
+Enlarging constants on bounded frequencies therefore gives
+$|d|\le Be^{-cT\sqrt{T+\tau}}<1/2$ for all sufficiently large $T$,
+uniformly in $\tau$. The principal branches imply
+$\log P-\log P_+=\log(1-d)$ with no $2\pi\ii$ term.
+Taylor's theorem and
+$\Psi_s''(P)=g_s(v_s)+v_s/P^2+4/(3P^3)=\OO(|s|^{3/2})$
+give the uniform integrable expansion
+\begin{equation}\label{xtw:frac:eq:infinityL}
+ L_+(T,\ii\tau)=-\frac{\kappa\pi}{a}e(\tau)H_+(T-\ii\tau)
+ +\OO\bigl((T+\tau)|e(\tau)|e^{-cT\sqrt{T+\tau}}\bigr).
+\end{equation}
+The error integrates to $\OO((T+1)e^{-cT^{3/2}})$.
+The remaining nonpolynomial part of $H_++2s/3$ integrates to
+$\OO(T^{-1/2})$ against $e(\tau)$. This covers $\tau\gg T$ as well as
+bounded $\tau$ without separating exponentially large factors.
+For $m_j=\inv(\lambda^j\FF)$, integration by parts on each half-axis gives
+\[
+ \inv(r-r_\pm)=\frac a{\pi\kappa}m_1,\qquad
+ \inv(\lambda(r-r_\pm))=\frac a{2\pi\kappa}m_2,
+ \qquad r_+=-\ii,\ r_-=\ii.
+\]
+The origin boundary terms vanish because they are multiplied by $\lambda$
+or $\lambda^2$. Hence
+\begin{equation}\label{xtw:frac:eq:infinitylimit}
+ \inv(L(T,\cdot))=\frac23Tm_1-\frac13m_2+\OO(T^{-1/2}).
+\end{equation}
+
+\paragraph{Fubini and the two finite parts.}
+For each fixed $0<\delta<T<\infty$, the energy bounds make $H$ and the
+differentiated normalized primitive polynomial in $|\tau|$, while $\FF$
+supplies an exponential envelope. The integrations in
+\eqref{xtw:frac:eq:jump} may therefore be exchanged before taking limits.
+For the upper endpoint in \eqref{xtw:frac:eq:GreenJ}, define its truncated expression
+$J_T$. Splitting its $t$ integral at $2(1+|\tau|)$, the energy bounds on
+the initial part and the just-proved sector bounds on the remaining part
+give $|J_T(\ii\tau)|\le B(1+|\tau|)^m$ uniformly for $T\ge1$.
+Indeed on the latter part
+$H+2s/3-(2s)^{-1/2}=\OO(|s|^{-2})$ plus a damped connection term;
+if $T$ is smaller than the splitting point, its endpoint terms are themselves
+polynomial in $|\tau|$. Thus dominated convergence against $\FF$ is valid.
+Apply \eqref{xtw:frac:eq:jump}, \eqref{xtw:frac:eq:originlimit}, and
+\eqref{xtw:frac:eq:infinitylimit} in \eqref{xtw:frac:eq:GreenJ}. The elementary endpoint
+inversion is
+\[
+ f_0T^2/3-2Tm_1/3+m_2/3-f_0\sqrt{2T}+o(1).
+\]
+The $Tm_1,m_2$ terms cancel exactly, and $f_0=\kappa/a$ yields
+\begin{equation}\label{xtw:frac:eq:invertedJ}
+ \inv(\FF J_0)=k_{\rm ref}
+ +\kappa\int_0^\infty\left[S(t)+\frac{2t}{3a}
+                                  -\frac1{a\sqrt{2t}}\right]dt.
+\end{equation}
+This computation tracks both finite-part constants explicitly.
+
+\paragraph{Rotation to positive real Airy arguments.}
+In the lower $s$ half-plane,
+\[
+ k_{\rm ref}/\kappa=-\frac1\pi\Im
+          \int_0^{-\ii\infty}\frac{\Psi_s(P_+(s))}{\Ai(as)^2}ds.
+\]
+Rotate from $\arg s=-\pi/2$ to $-2\pi/3$. The sector expansions give
+$P_+(s)\asymp s^{-1/2}$, $v_s=\OO(|s|^{1/2})$, and
+$\Ai(as)^{-2}=\OO(|s|^{1/2}e^{-c|s|^{3/2}})$ throughout this closed
+wedge. The primitive quotient therefore has an exponential envelope times
+a fixed polynomial and logarithm. There are no poles: $\Ai$ has no zeros
+there and the rotated $\Ai(a\omega s)$ has argument in $[0,\pi/6]$.
+There is no singularity at zero. Both connecting arcs vanish.
+Equation~\eqref{xtw:frac:eq:resolventpositive} supplies the principal logarithm
+throughout, so no winding correction is omitted.
+At $s=\omega^2t$, the connection identities give
+\begin{align*}
+ \Ai(a\omega^2t)&=\tfrac12e^{-\ii\pi/3}(A+\ii B),&
+ C_+(\omega^2t)&=2e^{\ii\pi/6}A,\\
+ P_+(\omega^2t)&=e^{\ii\pi/3}\overline p,&
+ v_{\omega^2t}&=\omega\overline u,\\
+ \log P_+(\omega^2t)&=\overline{\log p}+\ii\pi/3,&
+ \Psi_{\omega^2t}(P_+)&=\omega[\overline\Phi-(\ii\pi/3)\overline u].
+\end{align*}
+Here $0<\arg p\le\pi/6$, which also checks the displayed logarithm
+directly. Including $ds=\omega^2dt$ gives
+\[
+ k_{\rm ref}/\kappa=-\frac1\pi\Im\int_0^\infty
+ \frac{4\omega[\overline\Phi-(\ii\pi/3)\overline u]}{(A+\ii B)^2}dt.
+\]
+The same rotation for $m_2/2$ gives
+$m_2/(2\kappa)=-(1/\pi)\Im\int_0^\infty
+2\omega t^2/(A+\ii B)^2dt$.
+Their difference is precisely $\int E$.
+Since $q(0)=m_2/2-\inv(\FF J_0)$, \eqref{xtw:frac:eq:invertedJ} proves
+\eqref{xtw:frac:eq:realconstant}. The following tail bounds prove its absolute
+convergence at infinity; at zero, $E,S$ are finite because their Airy
+denominators and $p$ are nonzero, proving \eqref{xtw:frac:eq:transformedkernel}.
+\end{proof}
+
+\section{An explicit tail bound and a certified sign}\label{xtw:frac:sec:certificate}
+\subsection{A positive real tail inequality}
+The following deliberately broad bound suffices to establish a strict sign:
+\begin{equation}\label{xtw:frac:eq:tail}
+ \int_{10}^\infty|K(t)|dt<0.141.
+\end{equation}
+Here is a full derivation from bounded Airy remainders. Write
+$r=t^{-3/2}$, $\xi=(\sqrt2/3)t^{3/2}$ and define scaled functions by
+\[
+ \Ai(at)=\frac{e^{-\xi}}{2\sqrt\pi(at)^{1/4}}x,\quad
+ \Bi(at)=\frac{e^\xi}{\sqrt\pi(at)^{1/4}}y,\quad
+ \Bi'(at)=\frac{(at)^{1/4}e^\xi}{\sqrt\pi}z.
+\]
+The real remainder inequalities of \cite{dlmf7} imply
+\begin{align}
+ x&=1-5r/(24\sqrt2)+e_A r^2,& |e_A|&\le385/2304<0.1672,\notag\\
+ y&=1+5r/(24\sqrt2)+e_B r^2,& |e_B|&\le4(385/2304)<0.6685,\notag\\
+ z&=1-7r/(24\sqrt2)+e_D r^2,& |e_D|&\le3(455/2304)<0.5925.
+                                                        \label{xtw:frac:eq:scaledairy}
+\end{align}
+For $\Bi$ the relevant multiplier is
+$\chi(13/6)+1<\chi(3)+1=3\pi/4+1<4$; for $\Bi'$ it is
+$\chi(2)+1=3$, where
+$\chi(x)=\sqrt\pi\Gamma(x/2+1)/\Gamma(x/2+1/2)$ is increasing.
+The $\Ai$ and $\Ai'$ remainders use the first omitted term.
+For $t\ge10$, $r<0.032$, and these three scaled functions and the
+similarly scaled $-\Ai'$ all belong to $[0.99,1.01]$.
+
+Set $p_0=(\pi/a)\Ai(at)\Bi(at)$ and
+$U_B=2a\Bi'(at)/\Bi(at)$. Then
+$p_0=xy/\sqrt{2t}$, $U_B=\sqrt{2t}\,z/y$, and
+$H_\infty=p_0g_t(U_B)$ satisfies the exact identity
+\[
+ \frac{H_\infty+2t/3-(2t)^{-1/2}}t
+ =h(r,x,y,z)=\frac23-\frac{xz}2-\frac{xz^3}{6y^2}
+                                  +\frac{r(xy-2)}{2\sqrt2}.
+\]
+On the stated box direct differentiation gives
+$|h_x|<0.70$, $|h_y|<0.37$, $|h_z|<1.04$.
+For the baselines $x_0,y_0,z_0$ obtained by deleting the remainders
+in \eqref{xtw:frac:eq:scaledairy}, exact simplification gives
+\[
+ \frac{h(r,x_0,y_0,z_0)}{r^2}
+ =-\frac{1875\sqrt2r^3+44680r^2+128256\sqrt2r+1594368}
+             {6912(5\sqrt2r+48)^2}.
+\]
+Its magnitude is below $0.101$ on $[0,0.032]$: bound the numerator
+at $0.032$ and the denominator below by $6912\cdot48^2$.
+The mean-value bound is therefore
+\[
+ |h|/r^2\le0.101+0.70(0.1672)+0.37(0.6685)+1.04(0.5925)
+                 =1.081585<1.1.
+\]
+Thus
+\begin{equation}\label{xtw:frac:eq:Htail}
+ |H_\infty+2t/3-(2t)^{-1/2}|\le1.1t^{-2}\qquad(t\ge10).
+\end{equation}
+This is an explicit inequality, not a remainder guessed from a formal series.
+
+To bound the difference from $S$, put $R=\Ai(at)/\Bi(at)>0$.
+The real formula for $S$, obtained by taking the imaginary part in
+\eqref{xtw:frac:eq:psiphi}, is
+\begin{equation}\label{xtw:frac:eq:realS}
+ S=\frac1a\left[g_t(v)p_0-t-v^2/2
+       -\frac v{p_0}\frac{\arctan R}{R}
+       -\frac2{3p_0^2(1+R^2)}\right].
+\end{equation}
+The Wronskian gives $U_B=v+2/p_0$, and hence exactly
+\[
+ S-H_\infty/a=\frac1a\left[
+ \frac v{p_0}\left(1-\frac{\arctan R}{R}\right)
+                  +\frac2{3p_0^2}\frac{R^2}{1+R^2}\right].
+\]
+Use $|1-\arctan R/R|\le R^2/3$ and the scaled bounds
+$p_0\ge0.69/\sqrt t$, $|v|\le1.5\sqrt t$,
+$R\le0.511e^{-2\xi}$. The resulting bracket is less than $3t$,
+and $3(0.511)^2<1$, so
+\begin{equation}\label{xtw:frac:eq:Stail}
+ |S-H_\infty/a|<t e^{-(4\sqrt2/3)t^{3/2}},
+ \qquad\int_{10}^\infty|S-H_\infty/a|dt<10^{-20}.
+\end{equation}
+For $E$, the same scaled bounds give
+\[
+ |p|\le0.74/\sqrt t,\quad |p|^{-1}\le1.45\sqrt t,\quad
+ |u|\le1.5\sqrt t,\quad |\log p|\le\log t.
+\]
+For the last inequality, use
+$|\log p|\le-\log|p|+|\arg p|
+\le\frac12\log t+\log1.45+10^{-12}<\log t$.
+Therefore $|g_t(u)|\le1.05t^{3/2}$ and
+$|\Phi|\le(2.83+1.5\log t)\sqrt t$. In particular
+\[
+ 4|\Phi-(\ii\pi/3)u|+2t^2
+ \le(17.64+6\log t)\sqrt t+2t^2\le3t^2.
+\]
+The final inequality follows at $t=10$ from
+$17.64+6\log10<10^{3/2}$, and its gap is increasing.
+Also $1/(\pi|A+\ii B|^2)\le1.02\sqrt t\,e^{-2\xi}$.
+Consequently
+\begin{equation}\label{xtw:frac:eq:Etail}
+ |E(t)|\le3.1t^{5/2}e^{-(2\sqrt2/3)t^{3/2}},
+ \qquad\int_{10}^\infty|E(t)|dt<10^{-9}.
+\end{equation}
+The logarithmic derivative of this majorant is at most $-4$ for $t\ge10$,
+so its integral is at most one fourth of its value at $10$.
+Combining \eqref{xtw:frac:eq:Htail}--\eqref{xtw:frac:eq:Etail} gives
+\[
+ \int_{10}^\infty|K(t)|dt
+ \le\frac{1.1}{10a}+10^{-9}+10^{-20}<0.141,
+\]
+proving \eqref{xtw:frac:eq:tail}.
+
+\subsection{Directed finite interval quadrature}
+The supplementary code evaluates \eqref{xtw:frac:eq:transformedkernel} on
+$0\le z\le3.2$, so $0\le t\le10.24$. It uses only the Python standard
+library. Its arithmetic assumptions are stated explicitly: the documented
+correctly rounded Decimal operations \cite{decimal} and the inspected
+program are trusted. This is not a proof-assistant formalization, an
+independent hardware verification, or a machine proof of the whole
+positive-real tail argument.
+
+Intervals have directed lower and upper contexts at 70 decimal digits.
+Inputs are exact integers, rational numbers, or finite decimal strings;
+ordinary binary floats are rejected. Exp, logarithm, and square root are
+rounded to nearest and widened by adjacent representable numbers. General
+Decimal power is not used. Integer powers use directed multiplication.
+Reciprocals reject intervals containing zero; elementary functions reject
+inputs outside their proved domains. The positive arctangent helper rejects
+negative arguments, rather than silently invoking an unproved branch.
+Constructors and powers reject unsupported usages, including nonfinite
+values. Guards use explicit exceptions, so optimization with Python
+\texttt{-O} cannot remove them.
+
+The Airy evaluator uses the convergent fundamental series for $f''=xf$,
+with starting terms $1$ and $x$. If the current term has degree $n$,
+its next term is multiplied by $x^3/((n+3)(n+2))$.
+Both value and derivative tails are bounded by geometric series once their
+explicit ratios are below one. It uses 64 steps on $0\le x\le9$, covering
+$az^2\le a(3.2)^2<9$. The initial values
+$\Ai(0)=1/(3^{2/3}\Gamma(2/3))$ and
+$\Ai'(0)=-1/(3^{1/3}\Gamma(1/3))$ are enclosed using positive-real
+log-Gamma Stirling remainders \cite{dlmfgamma}; the $\Bi$ values follow
+from the exact initial-value relations.
+The arithmetic starts with Machin's identity
+$\pi=16\arctan(1/5)-4\arctan(1/239)$ and exact rational alternating
+series remainders. For $x=1/3,2/3$, it evaluates $\log\Gamma(x+100)$
+with the eleven terms $B_{2k}/[2k(2k-1)(x+100)^{2k-1}]$,
+$1\le k\le11$, following the elementary Stirling main terms.
+The error lies between zero and the signed twelfth term. Subtracting
+$\sum_{j=0}^{99}\log(x+j)$ gives $\log\Gamma(x)$ before exponentiation.
+All Bernoulli numbers are generated as exact rationals.
+Endpoint monotonicity on $[0,\infty)$ encloses the Airy functions and
+first derivatives over each interval. Second derivatives and their chain
+rules follow directly from the Airy differential equation.
+
+Second-order interval jets carry the value, first derivative, and second
+derivative of the transformed kernel through all operations.
+For an interval $[l,h]$ with exact midpoint $m$, its integral is enclosed by
+\begin{equation}\label{xtw:frac:eq:midpointcertificate}
+ (h-l)\,[2mK(m^2)]
+   +\left[-\frac{(h-l)^3}{24}M_2,\frac{(h-l)^3}{24}M_2\right],
+ \qquad M_2\ge\sup_{l\le z\le h}|(2zK(z^2))''|.
+\end{equation}
+This is Taylor's theorem integrated about the midpoint, not an estimate
+from successive floating quadratures. The real formula
+\eqref{xtw:frac:eq:realS} avoids extracting an exponentially small imaginary part.
+Principal logarithms of first-quadrant numbers are evaluated by
+$\frac12\log(x^2+y^2)+\ii\arctan(y/x)$; arctangent is reduced by the
+half-angle identity before its alternating series remainder is enclosed.
+
+The deterministic adaptive calculation starts with the 64 intervals of
+width $1/20$ covering $[0,16/5]$ and bisects the interval of greatest
+enclosure width, with a fixed tie rule, until total width is at most
+$0.08$. It produces 562 terminal panels. The mandatory replay regenerates
+them, checks their exact rational coverage and shared endpoints, recomputes
+every panel, and adds their directed enclosures independently of the
+adaptive accumulator. Thus the certificate is reproducible arithmetic,
+not a pasted numerical receipt.
+The resulting outward-rounded enclosures are
+\begin{align}
+ \int_0^{10.24}K(t)dt&\in[-0.491128,-0.411312],\label{xtw:frac:eq:corebracket}\\
+ \alpha^{-1/6}\kappa&\in[0.9540289883031181,0.9540289883031182].
+                                                        \label{xtw:frac:eq:prefactorbracket}
+\end{align}
+The tail from $10.24$ is bounded by the larger tail from $10$ in
+\eqref{xtw:frac:eq:tail}. Using the full endpoints recorded in the replay gives
+\begin{equation}\label{xtw:frac:eq:certifiedc1}
+ c_1\in[-0.603067859400578,-0.257885944975658]
+                    \subset(-0.61,-0.25).
+\end{equation}
+The enclosure in \eqref{xtw:frac:eq:certifiedc1} is intentionally rounded outward.
+It completes the sign part of Theorem~\ref{xtw:frac:thm:correction}. It also proves
+$d=c_1/C<0$ for the entire compact-positive-shift family.
+A sign certificate for this constant is not an effective error bound for
+approximating any particular finite coefficient.
+
+\section{Ancestor choices and local Gamma laws}\label{xtw:frac:sec:ancestor}
+Let $\mathcal T_n$ be the labeled trees on $\{0,1,\ldots,n\}$ rooted at
+$0$, and let $d_T(v)$ be the distance from the root. The exact identity is
+\begin{equation}\label{xtw:frac:eq:treeidentity}
+ P_n(y)=\sum_{T\in\mathcal T_n}\prod_{v\ne0}(y+d_T(v)-1).
+\end{equation}
+Indeed the root has an unordered labeled set of branches. A branch root
+contributes $xy$, and its descendants have generating function $F_{y+1}$;
+the labeled exponential formula is precisely \eqref{xtw:frac:eq:family}.
+The finite tower restricts maximum depth, explaining the exact-height
+coefficients in \eqref{xtw:frac:eq:heightsum}. Formula~\eqref{xtw:frac:eq:treeidentity}
+also proves that each $P_n$ has nonnegative integer coefficients.
+
+Decorate each nonroot vertex $v$ by choosing one of its $d_T(v)$ strict
+ancestors. Give its choice of root $0$ weight $y$, and each other ancestor
+choice weight $1$. Summing decorations gives exactly the product in
+\eqref{xtw:frac:eq:treeidentity}. Choose uniformly from all such decorated trees at
+$y=1$, and let $K_n$ count vertices that chose root $0$. Its probability
+generating function is $P_n(y)/P_n(1)$.
+
+The universal relative correction cancels when the two coefficient
+expansions are divided. Thus
+\begin{equation}\label{xtw:frac:eq:rowpgf}
+ \E y^{K_n}=\frac{(n/\rho)^{y-1}}{\Gamma(y)}
+                                      [1+o_Y(n^{-1/3})]
+\end{equation}
+uniformly for compact positive real $y$ sets. For real fixed $t$ take
+$y=e^{t/\sqrt{L_n}}$, $L_n=\log(n/\rho)$. Then
+\[
+ \log\E e^{t(K_n-L_n)/\sqrt{L_n}}
+ =-t\sqrt{L_n}+L_n(e^{t/\sqrt{L_n}}-1)
+                         -\log\Gamma(e^{t/\sqrt{L_n}})+o(1)
+ \longrightarrow t^2/2.
+\]
+The real MGF continuity theorem proves the normal limit in
+\eqref{xtw:frac:eq:pgfclt}. No differentiation of an error term is needed for it.
+
+\subsection{Local complex control and fixed cumulants}\label{xtw:frac:sec:cumulants}
+A rate on a real interval plus positivity gives a further local result.
+Let $\gamma$ be Euler's constant and let $\zeta$ denote the Riemann zeta
+function.
+\begin{theorem}[Local Gamma correction to the Poisson transform]\label{xtw:frac:thm:modpoisson}
+Uniformly for complex $|z-1|\le1/16$,
+\begin{equation}\label{xtw:frac:eq:modpoisson}
+ \E z^{K_n}=\frac{e^{L_n(z-1)}}{\Gamma(z)}
+                                      [1+\OO(n^{-5/24})].
+\end{equation}
+For every fixed positive integer $r$, the ordinary cumulant satisfies
+\begin{equation}\label{xtw:frac:eq:cumulants}
+ \operatorname{cum}_r(K_n)=L_n+\gamma-
+ \sum_{k=2}^r\left\{\!\begin{matrix}r\\k\end{matrix}\!\right\}
+                 (-1)^k(k-1)!\zeta(k)+\OO_r(n^{-5/24}),
+\end{equation}
+where the braces are Stirling numbers of the second kind. In particular,
+\begin{equation}\label{xtw:frac:eq:meanvariance}
+ \E K_n=L_n+\gamma+\OO(n^{-5/24}),\qquad
+ \operatorname{Var}K_n=L_n+\gamma-\zeta(2)+\OO(n^{-5/24}).
+\end{equation}
+\end{theorem}
+\begin{proof}
+On $|z-1|\le1/4$ define the analytic residual
+\[
+ R_n(z)=\Gamma(z)e^{L_n(1-z)}P_n(z)/P_n(1)-1.
+\]
+There are no Gamma poles on this disk. On its real diameter,
+\eqref{xtw:frac:eq:rowpgf} gives $|R_n(y)|\le C_0n^{-1/3}$ for sufficiently
+large $n$, uniformly in $y\in[3/4,5/4]$.
+For the outer complex bound, positivity gives
+$|P_n(z)|\le P_n(|z|)$. The leading real family estimate and bounded
+compact Gamma factors therefore give
+\begin{equation}\label{xtw:frac:eq:outerresidualbound}
+ |R_n(z)|\le C_1n^{|z|-\Re z}+1\le C_2n^{1/24},
+ \qquad |z-1|\le1/4,
+\end{equation}
+since $\Re z\ge3/4$, $|\Im z|\le1/4$, and
+$|z|-\Re z=(\Im z)^2/(|z|+\Re z)\le1/24$.
+In particular a bounded outer normal family is not assumed.
+
+Set $w=4(z-1)$ and work in the upper half unit disk. The harmonic measure
+of its semicircular arc is
+\[
+ v(w)=\frac2\pi\Im\log\frac{1+w}{1-w}.
+\]
+The quotient has positive real and imaginary parts in the half disk,
+so the logarithm is unambiguous. Its boundary values are $0$ on the
+open diameter and $1$ on the open arc. At fixed $|w|$, the argument is
+maximal at $w=\ii|w|$, because its tangent is
+$2\Im w/(1-|w|^2)$. Hence for $|w|\le1/4$,
+\[
+ 0\le v(w)\le(4/\pi)\arctan(1/4)<1/3.
+\]
+Apply the subharmonic maximum principle to $\log|R_n|$, using the
+real-diameter bound and \eqref{xtw:frac:eq:outerresidualbound}. With
+$C=\max(C_0,C_2)$ it gives
+\[
+ \log|R_n(z)|\le\log C+
+     \left[-\frac13(1-v(w))+\frac1{24}v(w)\right]\log n
+ \le\log C-\frac5{24}\log n.
+\]
+Zeros of the residual are allowed for this subharmonic function.
+At the two corners, continuity of $R_n$ and the stronger endpoint real
+bound give nonpositive upper limits for its difference from the harmonic
+majorant; alternatively their harmonic measure is zero. Reflection gives
+the lower half disk, and the diameter already has the stronger bound.
+This proves \eqref{xtw:frac:eq:modpoisson}.
+
+For large $n$, $|R_n|<1/2$ on the smaller disk, so
+$\log(1+R_n)$ is analytic and $\OO(n^{-5/24})$ there, normalized to
+zero at $z=1$. Gamma also has a normalized analytic logarithm there.
+For $|t|\le1/32$,
+$|e^t-1|\le e^{1/32}-1\le1/31<1/16$. Therefore
+\[
+ \log\E e^{tK_n}=L_n(e^t-1)-\log\Gamma(e^t)
+                       +\log(1+R_n(e^t))
+\]
+is the analytic cumulant-generating function, with an analytic uniformly
+$\OO(n^{-5/24})$ error. Cauchy's formula bounds its $r$th error derivative
+by $r!32^r$ times this supremum for each fixed $r$.
+Finally, the Euler-operator identity gives
+\[
+ \left.\frac{d^r}{dt^r}\log\Gamma(e^t)\right|_{t=0}
+ =\sum_{k=1}^r\left\{\!\begin{matrix}r\\k\end{matrix}\!\right\}
+                         (\log\Gamma)^{(k)}(1).
+\]
+The convergent Gamma derivative identities \cite{dlmfgamma} are
+$(\log\Gamma)'(1)=-\gamma$ and
+$(\log\Gamma)^{(k)}(1)=(-1)^k(k-1)!\zeta(k)$ for $k\ge2$.
+Subtracting this contribution proves \eqref{xtw:frac:eq:cumulants} and
+\eqref{xtw:frac:eq:meanvariance}.
+\end{proof}
+For example the third constant is $\gamma-3\zeta(2)+2\zeta(3)$ and
+the fourth is $\gamma-7\zeta(2)+12\zeta(3)-6\zeta(4)$.
+The exponent $5/24$ is deliberately nonoptimal. This theorem is local near
+$z=1$; it is not a global complex-$y$ estimate, a lattice local limit for
+$K_n$, control of cumulants with growing order, or an explicit finite-$n$
+error certificate. The finite-height local limit in \eqref{xtw:frac:eq:llt}
+concerns a different random variable.
+
+\section{The positive real Borel boundary}\label{xtw:frac:sec:borel}
+Let $B(z)=\sum_{n\ge0}b_nz^n$. The coefficient theorem implies that its
+radius is $\rho$ and, as real $z\uparrow\rho$,
+\begin{equation}\label{xtw:frac:eq:borel}
+ B(z)=\sqrt{\frac2\rho}(1-z/\rho)^{-1/2}
+   +c_1\Gamma(1/6)(1-z/\rho)^{-1/6}
+   +o((1-z/\rho)^{-1/6}).
+\end{equation}
+To prove this, put $x=z/\rho$ and $s=-\log x$. For $0<\beta<1$,
+integral comparison for the positive decreasing function
+$t^{-\beta}e^{-st}$ gives
+\[
+ \sum_{n\ge1}n^{-\beta}e^{-sn}
+                 =\Gamma(1-\beta)s^{\beta-1}+\OO(1).
+\]
+Apply this at $\beta=1/2$ and $5/6$. Replacing
+$s=(1-x)+\OO((1-x)^2)$ by $1-x$ changes neither displayed term at the
+remainder scale. For a sequence $r_n=o(n^{-5/6})$, split the generating
+sum at a fixed $N$; its finite prefix is $\OO(1)$ and its tail is bounded
+by $\eta\sum n^{-5/6}x^n$ for all sufficiently large $N$. Letting
+$\eta\downarrow0$ gives the asserted little-$o$. Finally
+$C\Gamma(1/2)=\sqrt{2/\rho}$.
+This is a one-sided real Abelian conclusion. No complex sector or
+$\Delta$-domain Borel singular expansion is asserted.
+
+\section{Threshold inversion at the fractional scale}\label{xtw:frac:sec:inverse}
+Write
+\[
+ \nu_y=y-\tfrac12,\quad C_y=C\rho^{1-y}/\Gamma(y),\quad d=c_1/C,
+ \qquad
+ M_y(t)=2t\log\frac{t}{e\sqrt\rho}+\nu_y\log t+\log(2\pi C_y).
+\]
+The squared Stirling formula and Theorem~\ref{xtw:frac:thm:family} give
+\begin{equation}\label{xtw:frac:eq:logfamily}
+ \log P_n(y)=M_y(n)+d n^{-1/3}+o_Y(n^{-1/3})
+\end{equation}
+uniformly on compact positive $Y$. There is an exact useful lower bound:
+restrict the root to a single child in \eqref{xtw:frac:eq:treeidentity}, then use
+coefficient positivity in the shift to obtain
+\begin{equation}\label{xtw:frac:eq:monotone}
+ P_n(y)\ge nyP_{n-1}(y+1)\ge nyP_{n-1}(y).
+\end{equation}
+Thus $P_n(y)$ is strictly increasing once $ny>1$, with a common eventual
+index for $y\in Y$.
+Let $g_y$ be the piecewise-linear interpolation of $\log P_n(y)$ on that
+eventually increasing part. For sufficiently large $L$ define
+$z_y(L)=g_y^{-1}(L)$. The finitely many earlier values are bounded
+uniformly on $Y$, so they cannot create an earlier crossing of a large
+threshold. Hence exactly
+\begin{equation}\label{xtw:frac:eq:exactceiling}
+ N_y(Y_0):=\min\{n\ge0:P_n(y)\ge Y_0\}=\ceil{z_y(\log Y_0)}
+\end{equation}
+for sufficiently large $Y_0$.
+
+Let $x_y=x_y(L)$ be the unique large positive solution $M_y(x_y)=L$.
+Its derivative is
+$M_y'(t)=2\log(t/\sqrt\rho)+\nu_y/t$, positive uniformly on $Y$ for
+large $t$. Interpolation of $M_y$ contributes $\OO_Y(1/t)$ because
+$M_y''(t)=2/t-\nu_y/t^2$; interpolation of $dt^{-1/3}$ and the uniform
+little-$o$ sequence preserves the error in \eqref{xtw:frac:eq:logfamily}.
+First bounding $z_y-x_y$ by $\OO_Y(x_y^{-1/3}/\log x_y)$ and then
+Taylor expanding therefore proves
+\begin{equation}\label{xtw:frac:eq:exactinverse}
+ z_y(L)=x_y-\frac{d x_y^{-1/3}}{2\log(x_y/\sqrt\rho)}
+                    +o_Y(x_y^{-1/3}/\log x_y).
+\end{equation}
+Replacing $M_y'$ by the displayed denominator changes only a lower-order
+term. Since $d<0$, the fractional term increases the inverse relative to
+the smooth leading-log inverse.
+
+\subsection{An explicit common Lambert base}
+For the positive real Lambert function $W_0$, put
+\begin{equation}\label{xtw:frac:eq:lambert}
+ X=\frac{L}{2W_0(L/(2e\sqrt\rho))},\qquad
+ D=2\log(X/\sqrt\rho),\qquad
+ d_y=\frac{\nu_y\log X+\log(2\pi C_y)}{D},\qquad r_y=X-d_y.
+\end{equation}
+Here $d_y$ is a Newton displacement, distinct from the universal $d$.
+The number $X$ solves $f(X)=L$ for
+$f(t)=2t\log(t/(e\sqrt\rho))$; $f'(X)=D$ and $f''(t)=2/t$.
+Uniformly on $Y$, $d_y=\OO_Y(1)$, and Taylor's theorem gives explicitly
+\[
+ M_y(r_y)-L=(d_y^2-\nu_y d_y)/X+\OO_Y(X^{-2}).
+\]
+The linear cancellation is exact because
+$Dd_y=\nu_y\log X+\log(2\pi C_y)$.
+It follows that $x_y-r_y=\OO_Y(1/(X\log X))$, which is smaller than
+$X^{-1/3}/\log X$. Replacing $x_y$ by $X$ in the fractional correction
+also changes only a smaller term. Consequently
+\begin{equation}\label{xtw:frac:eq:lambertinverse}
+ z_y(L)=r_y-\frac{dX^{-1/3}}{2\log(X/\sqrt\rho)}
+                          +o_Y(X^{-1/3}/\log X).
+\end{equation}
+This accuracy is established by the controlled Newton residual, not
+inferred from a coarser leading inverse.
+At $y=1$ the expression simplifies to
+\begin{equation}\label{xtw:frac:eq:y1inverse}
+ z_1(L)=X-\frac14-\frac{\log(8\pi/\sqrt\rho)}{4\log(X/\sqrt\rho)}
+       -\frac{(c_1/C)X^{-1/3}}{2\log(X/\sqrt\rho)}
+                   +o(X^{-1/3}/\log X).
+\end{equation}
+
+Let $R_y(L)$ denote the displayed approximation in
+\eqref{xtw:frac:eq:lambertinverse}. For each compact $Y$ there is a positive
+$\eta(L)\to0$ such that, uniformly for $y\in Y$,
+\begin{equation}\label{xtw:frac:eq:ceilingsandwich}
+ \ceil{R_y(L)-\eta(L)X^{-1/3}/\log X}
+ \le N_y(e^L)\le
+ \ceil{R_y(L)+\eta(L)X^{-1/3}/\log X}.
+\end{equation}
+It follows from \eqref{xtw:frac:eq:exactceiling} and the uniform real inverse error.
+This is a shrinking-width asymptotic sandwich, not a computable error
+certificate. A universal single ceiling of $R_y$ is not justified:
+thresholds can lie arbitrarily close to integer crossings.
+\begin{writenote}[7 October 2026]
+\eqref{xtw:frac:eq:exactceiling} is an instance of item~(1) of the transseries volume's \file{p0:thm:staircase}, and \eqref{xtw:frac:eq:ceilingsandwich} follows from it as item~(2) does; $X$ is an instance of \file{p0:prop:factorial-core}; the Newton and fractional corrections are this Part's own (front matter, ``The inverses and the transseries volume''). At $y=1$, \eqref{xtw:frac:eq:y1inverse} is Part~I's $r(Y)$ of \eqref{xtw:airy:eq:Lambertintro} with the fractional term added.
+\end{writenote}
+
+\section{Reproducibility and source scope}\label{xtw:frac:sec:reproducibility}
+The supplementary archive contains the editable TeX, the PDF, exact
+finite checks, the directed interval certificate, regression fixtures,
+deterministic receipts, and an offline builder. The mathematical proofs are
+in this article. Finite checks support identities and normalizations;
+they do not prove an infinite asymptotic statement by testing examples.
+
+The mandatory replay checks polynomial rows through degree 30; independently
+enumerates 18,248 Pr\"ufer trees through six nonroot vertices; checks six
+positive rational shifts against independent finite-tower expansions;
+and checks 17 rational inequalities used after the analytic tail estimates.
+A separate arithmetic test suite performs 20,008 deterministic inclusion
+and normalization checks. Domain and file-integrity guards have 267 tests.
+Every test uses explicit failure conditions that remain active with
+Python \texttt{-O}. The certificate regenerates and independently
+reaggregates all 562 terminal panels in both modes. The panel verifier
+is independent of adaptive scheduling and running-total bookkeeping, but
+reuses the interval kernel and panel implementation; it is not a second
+implementation of the entire numerical method.
+
+The archive documents exact commands. A code-only run needs Python 3.12
+or later and its standard library; it requires no network, special-function
+package, or TeX. The full builder additionally needs an installed pdfLaTeX
+stack. It checks the source inventory, runs the mandatory replay, compiles
+with shell escape disabled and fixed metadata, and publishes only into a
+fresh output directory. The ZIP has a sorted explicit inventory and fixed
+entry metadata. Byte identity is intended for the same source and installed
+Python/TeX stack; cross-version PDF identity is not promised. Existing
+outputs, symlinked paths, unexpected files, and altered fixtures are
+rejected. No private research paths, timing logs, caches, or downloaded
+paper bodies are included.
+
+Hashes establish integrity relative to the received bundle; they do not
+authenticate an adversary's replacement of both code and hashes. The
+Python implementation, operating system, and source directory are trusted.
+The mathematical and arithmetic trust boundaries are distinct: the sign
+certificate depends on the proved real integral and tail inequality, and
+the interval code does not machine-formalize those proofs. Optional ordinary
+floating diagnostics are not part of the mandatory certificate or its inputs.
+\begin{writenote}[7 October 2026]
+In this report the package's programs are \file{code/193-frac-*.py}, its fixtures and provenance \file{data/193-frac-code-*}, its generated outputs \file{data/193-frac-generated-*}, and its \file{README_REPRODUCIBILITY.md}, \file{DATA_SOURCES.md}, \file{code/README.md} and \file{code/fixtures/README.md} are \file{193-frac-*.md}. \file{Report193.tex} (its text is this Part), the delivered PDF, the package \file{README.md}, \file{SHA256SUMS.json} and the three files \file{generated/certificate/coefficient.json}, \file{core.json} and \file{panels.json}, byte copies of the fixtures \file{code/fixtures/*_reference.json}, are not shipped. The programs find their fixtures and \file{PROVENANCE.json} by their delivered paths; the report's README rebuilds that layout on a copy.
+\end{writenote}
+
+\subsection{Attribution and the limit of the literature comparison}
+Hanna's OEIS entries explicitly record both the unshifted sequence and the
+entire shifted equation \eqref{xtw:frac:eq:family}. The broad continued-exponential
+and weighted-tree framework is prior work of Bender and Vinson.
+Their 1996 paper and Poland's 1998 continuation remain relevant; full-text
+theorem overlap has not been resolved, so no search failure is used as
+evidence of novelty. The present claims concern the displayed theorems and
+proofs, with those attributions retained.
+
+The retrieved A096542 entry has an indexing inconsistency in one formula
+line: it states $[y]P_n(y)=na_n$, whereas its rows and the formal equation
+give $[y]P_n(y)=na_{n-1}$. Indeed taking the coefficient of $y$ at $y=0$
+in $F_y=e^{xyF_{y+1}}$ gives $[y]F_y=xF_1$.
+For example $[y]P_3(y)=15=3a_2$. The reproducible checks use the defining
+formal equation and this independently derived indexing, not the
+inconsistent line.
+\begin{writenote}[7 October 2026]
+Part~I records the same mismatch (Section~\ref{xtw:airy:sec:verification}); Remark~\ref{xtw:airy:rem:oeis542} states the corrected formula with its proof and checks it against the entry's rows.
+\end{writenote}
+
+The primary analytic references are the standard Airy Wronskians,
+connection formulas, sector expansions, real remainder inequalities, and
+Gamma identities in the NIST DLMF. The discrete entrance, outer error,
+Fourier transfer, Green finite-part reduction, explicit tail estimates,
+and local complex continuation argument have been supplied here.
+There is no all-orders coefficient theorem, global complex row-PGF theorem,
+row-statistic local limit, effective asymptotic onset, or complex Borel-sector
+expansion in this report. Such statements require additional analysis.
+
+\subsection{Directions for further analysis}
+The estimates suggest several concrete next questions, which remain open here.
+\begin{enumerate}
+\item \textbf{The next coefficient scale.} Derive and justify the next
+modified Riccati equation and outer corrector, retaining any logarithmic
+entrance terms until after height averaging. This requires a new overlap
+budget and a second-order growing-window Fourier remainder. The present
+$\epsilon^{17/16}$ error does not justify a further coefficient.
+\item \textbf{Sharper certified constants and finite-index control.}
+A finer finite quadrature and additional rigorously bounded Airy tail terms
+could narrow the interval for $c_1$. An effective onset for approach from
+below would separately require explicit constants throughout the discrete
+remainder proof; improving the constant's decimal enclosure alone is
+insufficient.
+\item \textbf{Varying shifts and broader probability laws.}
+The regimes $y\downarrow0$ and $y\to\infty$ require uniform treatment of the
+lower endpoint and Gamma factor. A local limit for $K_n$ would require
+control of its full Fourier circle, beyond the local complex disk proved
+here. The existing finite-height minor arcs concern $N_{h,y}$ and cannot
+be transferred to $K_n$ without an additional argument.
+\item \textbf{Complex Borel continuation and effective inversion.}
+A sectorial Borel expansion needs analytic continuation and complex bounds,
+not just the positive-real Abelian estimate. A certified integer-threshold
+algorithm would need an effective coefficient remainder and explicit
+crossing tests before replacing a shrinking ceiling sandwich by a definite
+integer output.
+\item \textbf{The full prior-work comparison.}
+A page-level comparison with authorized full texts of Bender--Vinson and
+Poland would clarify the overlap in unbounded linear weights, critical
+finite depth and coefficient asymptotics. Until that comparison is complete,
+priority remains open.
+\end{enumerate}
+\begin{writenote}[7 October 2026]
+These directions are gathered with Part~I's questions in Section~\ref{xtw:sec:further}.
+\end{writenote}
+
+\section{Further questions and research}\label{xtw:sec:further}
+
+[Added 7 October 2026, batch~110.] This section gathers, under Vladimir's
+standing rule of 4~October 2026, the open questions of both manuscripts:
+Part~I's five ``Questions not settled by the present estimates''
+(Section~\ref{xtw:airy:sec:literature}) and Part~II's five ``Directions for
+further analysis'' (Section~\ref{xtw:frac:sec:reproducibility}), with what
+Part~II settles of Part~I's list. The delivered lists stay where they are.
+No claim of either manuscript was found to be false; the two refuted
+statements are OEIS formula lines (Remarks~\ref{xtw:airy:rem:oeis537}
+and~\ref{xtw:airy:rem:oeis542}).
+
+\begin{enumerate}
+\item\label{xtw:q:rates} \emph{Rates and further coefficients} (Part~I,
+item~1; Part~II, item~1). Part~II proves the first correction,
+$b_n\rho^n\sqrt n=C+c_1n^{-1/3}+o(n^{-1/3})$
+(Theorem~\ref{xtw:frac:thm:correction}), which settles the first-coefficient
+part of Part~I's item. Open: an effective rate, and the next coefficient
+scale, which needs a further modified Riccati equation and outer corrector, a
+new overlap budget and a second-order growing-window Fourier remainder; Part~II
+says its $\epsilon^{17/16}$ error ``does not justify a further coefficient''.
+\item\label{xtw:q:shifts} \emph{Fixed positive shifts} (Part~I, item~2;
+Part~II, item~3). Part~II proves the Gamma prefactor and the same relative
+correction uniformly on compact sets of shifts $y>0$
+(Theorem~\ref{xtw:frac:thm:family}), which answers Part~I's item for every
+fixed positive shift. Open: uniformity as $y\downarrow0$ or $y\to\infty$, and
+a local limit for the root-ancestor statistic $K_n$, which would need control
+of its full Fourier circle.
+\item\label{xtw:q:tilts} \emph{Larger tilt domains and rare heights}
+(Part~I, item~3). The real Airy window stops at the convenient bound
+$\lambda\le1$; extending it toward the Airy zeros, and large-deviation
+equivalents for the height away from the central range, need further
+analysis. Open.
+\item\label{xtw:q:effective} \emph{Effective inversion, sharper certified
+constants and onsets} (Part~I, item~4; Part~II, items~2 and~4). Both inverse
+sandwiches are asymptotic existence statements. A certified threshold
+algorithm needs explicit constants and onsets for the coefficient error and a
+crossing-aware integer comparison; a narrower enclosure of $c_1$ needs finer
+quadrature and more rigorously bounded Airy tail terms, and an effective onset
+of the approach from below needs explicit constants throughout the discrete
+remainder proof. Open.
+\item\label{xtw:q:borel} \emph{Complex Borel continuation} (Part~II,
+item~4). Part~II's Borel boundary \eqref{xtw:frac:eq:borel} is a one-sided
+real Abelian statement; a sectorial expansion needs analytic continuation and
+complex bounds. Open.
+\item\label{xtw:q:sources} \emph{The full prior-work comparison} (Part~I,
+item~5; Part~II, item~5). A page-level comparison with the full texts of
+Bender--Vinson and Poland, on unbounded linear weights, critical finite depth
+and coefficient asymptotics. Until then neither Part claims priority; the
+write did not read those papers either. Open.
+\end{enumerate}
+
+\clearpage
+\begin{thebibliography}{99}
 \bibitem{oeis537}
 P. D. Hanna, sequence A096537, \emph{The On-Line Encyclopedia of Integer
 Sequences}, created 24 June 2004; includes the amplitude conjecture attributed
@@ -1493,10 +3761,32 @@ NIST Digital Library of Mathematical Functions, Section 9.7,
 Airy asymptotic expansions; especially equations 9.7.5--9.7.8, including
 the separate function and derivative expansions.
 \url{https://dlmf.nist.gov/9.7}.
+Report~193 cites the same section for the real and complex error bounds.
 
 \bibitem{dlmf9}
 NIST Digital Library of Mathematical Functions, Section 9.9(i),
 location of the zeros of the Airy function.
 \url{https://dlmf.nist.gov/9.9}.
+
+\bibitem{report192}
+\emph{Report192: Airy Limits and the Corrected Asymptotic of A096537},
+4 October 2026. Companion leading-result report.
+The present report states its leading facts explicitly and supplies the
+quantitative estimates required for the sequel.
+[Printed as Part~I of this report.]
+
+\bibitem{dlmfgamma}
+NIST Digital Library of Mathematical Functions, Sections 5.2, 5.7 and 5.11,
+Gamma function, convergent psi series, and real Stirling remainders.
+\url{https://dlmf.nist.gov/5.2};
+\url{https://dlmf.nist.gov/5.7.E4};
+\url{https://dlmf.nist.gov/5.11.ii}.
+
+\bibitem{decimal}
+Python Software Foundation, \emph{Decimal fixed-point and floating-point
+arithmetic}, Python standard-library documentation.
+\url{https://docs.python.org/3/library/decimal.html}.
+
+\bibitem{tsvol} ProveIt, \emph{Transseries: the polynomial-logarithmic calculus, series reversal at infinity, and inversion}, the transseries volume, \file{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex}; Part~0, \file{p0:thm:staircase}, \file{p0:prop:factorial-core} and \file{p0:prop:operator-form}. Cited by the merge (batch 110).
 \end{thebibliography}
 \end{document}
