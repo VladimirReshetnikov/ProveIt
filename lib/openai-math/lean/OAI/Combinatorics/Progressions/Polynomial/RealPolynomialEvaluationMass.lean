@@ -1,5 +1,5 @@
-/- Modified for ProveIt: import Lean 4.32 compatibility declarations.
-Statements and proofs are unchanged from the pinned upstream source. -/
+/- Modified for ProveIt: import Lean 4.32 compatibility declarations and
+simplify polynomial coefficient addition explicitly. Statements unchanged. -/
 import OAI.Compat.BigOperators
 import OAI.Compat.MvPolynomial
 import Mathlib.Algebra.MvPolynomial.Basic
@@ -67,7 +67,7 @@ theorem realPolynomialMass_add_le {I : Type*} (p q : MvPolynomial I ℝ) :
     realPolynomialMass_eq_sum_of_support_subset q (p.support ∪ q.support) Finset.subset_union_right,
     ← Finset.sum_add_distrib]
   exact Finset.sum_le_sum (fun monomial _ => by
-    simpa only [AddMonoidAlgebra.coeff_add, Finsupp.add_apply] using
+    simpa only [MvPolynomial.coeff_add] using
       abs_add_le (p.coeff monomial) (q.coeff monomial))
 
 theorem realPolynomialMass_sum_le {I J : Type*} (s : Finset J) (p : J → MvPolynomial I ℝ) :

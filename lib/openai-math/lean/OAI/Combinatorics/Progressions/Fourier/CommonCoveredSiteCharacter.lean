@@ -1,3 +1,4 @@
+/- Modified for ProveIt: Use older set-comprehension and discrete-subgroup names; statements unchanged. -/
 import OAI.Combinatorics.Progressions.Estimates.CocycleHorizontalNormalization
 import OAI.Combinatorics.Progressions.Estimates.LinearQuotientCoverAverage
 import OAI.Combinatorics.Progressions.Lattices.NormalizedLatticeSheet
@@ -313,7 +314,7 @@ instance euclideanSubspaceLattice_discrete :
 
 instance euclideanSubspaceLattice_closed :
     IsClosed ((latticeSection (standardEuclideanLattice D) (euclideanSubspace U)).toAddSubgroup :
-      Set (euclideanSubspace U)) := AddSubgroup.isClosed_of_discreteTopology
+      Set (euclideanSubspace U)) := AddSubgroup.isClosed_of_discrete
 
 theorem euclideanSubspaceTorusEquiv_mk (x : euclideanSubspace U) :
     euclideanSubspaceTorusEquiv U (QuotientAddGroup.mk' _ x) =

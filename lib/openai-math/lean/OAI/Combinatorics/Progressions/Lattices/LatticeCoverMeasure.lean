@@ -1,3 +1,4 @@
+/- Modified for ProveIt: Use older set-comprehension and discrete-subgroup names; statements unchanged. -/
 import Mathlib.Algebra.Module.ZLattice.Basic
 import Mathlib.Analysis.Normed.Group.Quotient
 import Mathlib.MeasureTheory.Measure.Haar.Unique
@@ -30,7 +31,7 @@ theorem latticeCover_measurePreserving
     (μ : Measure (E ⧸ Λ.toAddSubgroup)) [IsProbabilityMeasure μ] [μ.IsAddLeftInvariant]
     (d : ℕ) (hd : 0 < d) :
     MeasurePreserving (quotientIntegerCover Λ.toAddSubgroup d) μ μ := by
-  let : IsClosed (Λ.toAddSubgroup : Set E) := AddSubgroup.isClosed_of_discreteTopology
+  let : IsClosed (Λ.toAddSubgroup : Set E) := AddSubgroup.isClosed_of_discrete
   let : CompactSpace (E ⧸ Λ.toAddSubgroup) := latticeQuotient_compact Λ
   let : BorelSpace (E ⧸ Λ.toAddSubgroup) := QuotientAddGroup.borelSpace
   let : μ.IsAddHaarMeasure :=

@@ -1,3 +1,4 @@
+/- Modified for ProveIt: Use older set-comprehension and discrete-subgroup names; statements unchanged. -/
 import Mathlib
 
 namespace OAI
@@ -158,7 +159,7 @@ theorem lattice_gaussian_summable (Λ : Submodule ℤ E) [DiscreteTopology Λ]
   let r : ℝ := -(Module.finrank ℤ Λ : ℝ) - 1
   have hr : r < -(Module.finrank ℤ Λ : ℝ) := by dsimp [r]; linarith
   have hs := ZLattice.summable_norm_sub_rpow Λ r hr x
-  have hc : IsClosed (Λ : Set E) := @AddSubgroup.isClosed_of_discreteTopology E _ _ _ _
+  have hc : IsClosed (Λ : Set E) := @AddSubgroup.isClosed_of_discrete E _ _ _ _
     Λ.toAddSubgroup (inferInstanceAs (DiscreteTopology Λ))
   have he : Topology.IsClosedEmbedding (fun m : Λ => (m : E) - x) := by
     exact (Homeomorph.subRight x).isClosedEmbedding.comp (Λ.isClosedEmbedding_subtype hc)

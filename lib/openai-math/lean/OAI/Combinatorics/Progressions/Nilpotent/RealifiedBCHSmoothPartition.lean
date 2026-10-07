@@ -1,3 +1,4 @@
+/- Modified for ProveIt: Use older set-comprehension and discrete-subgroup names; statements unchanged. -/
 import OAI.Combinatorics.Progressions.Geometry.MetricOpenCharts
 import OAI.Combinatorics.Progressions.Nilpotent.NiltestBasepointNormalization
 
@@ -86,7 +87,7 @@ theorem exists_realification_bilipschitz_charts_exp_bound (s a : ℕ) :
   have hqo : IsOpenMap q := QuotientGroup.isOpenMap_coe.comp
     ((Homeomorph.mulLeft z).isOpenMap.comp (NilpotentLieBCHGroup.basisHomeomorph (e.baseChange ℝ)).symm.isOpenMap)
   have hU : IsOpen {v : ι → ℝ | ∀ i, |v i| < r} := by
-    simp only [Set.ofPred_forall]
+    simp only [Set.setOf_forall]
     exact isOpen_iInter_of_finite (fun i => isOpen_lt (continuous_apply i).abs continuous_const)
   obtain ⟨φ, hφ, hsource, _, hLip, hInv⟩ := exists_openPartialHomeomorph_of_metric_bounds q hq hqo
     {v : ι → ℝ | ∀ i, |v i| < r} hU K

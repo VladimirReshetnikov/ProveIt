@@ -1,3 +1,4 @@
+/- Modified for ProveIt: Use older set-comprehension and discrete-subgroup names; statements unchanged. -/
 import Mathlib.Analysis.InnerProductSpace.Projection.Basic
 import Mathlib.GroupTheory.QuotientGroup.Defs
 import Mathlib.LinearAlgebra.Basis.Submodule
@@ -410,7 +411,7 @@ def standardLatticeSmallBox : Set (EuclideanSpace ℝ J) :=
 
 theorem standardLatticeSmallBox_isOpen : IsOpen (standardLatticeSmallBox J) := by
   unfold standardLatticeSmallBox
-  simp only [Set.ofPred_forall]
+  simp only [Set.setOf_forall]
   apply isOpen_iInter_of_finite
   intro i
   exact isOpen_lt (by fun_prop) continuous_const

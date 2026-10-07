@@ -1,3 +1,4 @@
+/- Modified for ProveIt: Use older set-comprehension and discrete-subgroup names; statements unchanged. -/
 import OAI.Combinatorics.Progressions.Estimates.OrthogonalBlockGram
 import OAI.Combinatorics.Progressions.Estimates.QuotientTranslatePartition
 import OAI.Combinatorics.Progressions.Linear.NormalHyperplaneProjection
@@ -301,7 +302,7 @@ theorem lattice_quotient_scaled_haar (Λ : Submodule ℤ E) [DiscreteTopology Λ
     ZLattice.isAddFundamentalDomain b volume
   have hop := additiveFundamentalDomain_op Λ.toAddSubgroup hF
   let : HasAddFundamentalDomain Λ.toAddSubgroup.op E volume := ⟨F, hop⟩
-  have hclosed : IsClosed (Λ.toAddSubgroup : Set E) := AddSubgroup.isClosed_of_discreteTopology
+  have hclosed : IsClosed (Λ.toAddSubgroup : Set E) := AddSubgroup.isClosed_of_discrete
   let : IsClosed (Λ.toAddSubgroup : Set E) := hclosed
   let c := ENNReal.ofReal (ZLattice.covolume Λ)
   let : IsFiniteMeasure (c • μ) := μ.smul_finite ENNReal.ofReal_ne_top
@@ -391,7 +392,7 @@ theorem lattice_quotient_haar_image (Λ : Submodule ℤ E) [DiscreteTopology Λ]
     μ ((QuotientAddGroup.mk : E → E ⧸ Λ.toAddSubgroup) '' A) =
       volume A / ENNReal.ofReal (ZLattice.covolume Λ) := by
   let : Countable Λ.toAddSubgroup := b.repr.injective.countable
-  let : IsClosed (Λ.toAddSubgroup : Set E) := AddSubgroup.isClosed_of_discreteTopology
+  let : IsClosed (Λ.toAddSubgroup : Set E) := AddSubgroup.isClosed_of_discrete
   have hq : Continuous (QuotientAddGroup.mk : E → E ⧸ Λ.toAddSubgroup) :=
     continuous_quotient_mk'
   have him := hAm.image_of_continuousOn_injOn hq.continuousOn hA
@@ -442,7 +443,7 @@ theorem lattice_quotient_haar_countable_sheets {T : Type*} [Countable T]
       ((fun x => (QuotientAddGroup.mk (x - v t) : E ⧸ Λ.toAddSubgroup)) '' A t))) :
     μ (⋃ t, (fun x => (QuotientAddGroup.mk (x - v t) : E ⧸ Λ.toAddSubgroup)) '' A t) =
       (∑' t, volume (A t)) / ENNReal.ofReal (ZLattice.covolume Λ) := by
-  let : IsClosed (Λ.toAddSubgroup : Set E) := AddSubgroup.isClosed_of_discreteTopology
+  let : IsClosed (Λ.toAddSubgroup : Set E) := AddSubgroup.isClosed_of_discrete
   rw [measure_iUnion hdisj (fun t => (hAm t).image_of_continuousOn_injOn
     (continuous_quotient_mk'.comp (continuous_id.sub continuous_const)).continuousOn (hA t))]
   simp_rw [lattice_quotient_haar_translated_image Λ b μ _ (hAm _) (hA _)]

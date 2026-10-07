@@ -1,5 +1,5 @@
 /- Modified for ProveIt: import Lean 4.32 compatibility declarations.
-Statements and proofs are unchanged from the pinned upstream source. -/
+ Use older set-comprehension and discrete-subgroup names; statements unchanged. -/
 import OAI.Compat.BigOperators
 import Mathlib.MeasureTheory.Measure.Prod
 import OAI.Combinatorics.Progressions.Estimates.LinearLiftSheetCompatibility
@@ -46,7 +46,7 @@ theorem translatedQuotientChart_measurable_image (Λ : Submodule ℤ E) [Discret
     (v : T → E) {S : Set (E × T)} (hS : MeasurableSet S)
     (hinj : InjOn (translatedQuotientChart Λ v) S) :
     MeasurableSet (translatedQuotientChart Λ v '' S) := by
-  let : IsClosed (Λ.toAddSubgroup : Set E) := AddSubgroup.isClosed_of_discreteTopology
+  let : IsClosed (Λ.toAddSubgroup : Set E) := AddSubgroup.isClosed_of_discrete
   rw [translatedQuotientChart_image]
   apply MeasurableSet.iUnion
   intro t

@@ -1,5 +1,5 @@
 /- Modified for ProveIt: import Lean 4.32 compatibility declarations.
-Statements and proofs are unchanged from the pinned upstream source. -/
+Mathematical statements unchanged. Use Set.setOf_mem_eq for set comprehension. Use older set-comprehension and discrete-subgroup names; statements unchanged. -/
 import OAI.Compat.Set
 import OAI.Compat.TensorProduct
 import Mathlib.LinearAlgebra.Basis.Basic
@@ -42,7 +42,7 @@ theorem exists_sorted_flag_basis_from_spanning_set [FiniteDimensional K V] {n : 
   obtain ⟨B, hBS, hBli, hBspan, T, hT, hTB, hTspan⟩ :=
     exists_nested_independent_spanning_sets n P S hP hspan
   have hsp : ⊤ ≤ Submodule.span K (Set.range ((↑) : B → V)) := by
-    simp only [Subtype.range_coe_subtype, Set.ofPred_mem_eq, hBspan, hS, le_refl]
+    simp only [Subtype.range_coe_subtype, Set.setOf_mem_eq, hBspan, hS, le_refl]
   let b : Basis B K V := Basis.mk hBli.linearIndependent_restrict hsp
   let : Finite B := Module.Finite.finite_basis b
   let : Fintype B := Fintype.ofFinite B
@@ -282,7 +282,7 @@ theorem layer_eq_span_of_weighted_flag {d : ℕ} (e : Basis (Fin d) ℚ L) (w : 
         apply top_unique
         rw [← F.one_eq_top]
         exact F.antitone (by omega)
-      simp only [hzero, Nat.zero_le, Set.ofPred_true, Set.image_univ, e.span_eq]
+      simp only [hzero, Nat.zero_le, Set.setOf_true, Set.image_univ, e.span_eq]
   | succ i =>
       by_cases hi : i < s + 1
       · simpa only [Nat.succ_le_iff] using hlayer ⟨i, hi⟩

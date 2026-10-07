@@ -1,5 +1,5 @@
-/- Modified for ProveIt: import Lean 4.32 compatibility declarations.
-Statements and proofs are unchanged from the pinned upstream source. -/
+/- Modified for ProveIt: import Lean 4.32 compatibility declarations and
+simplify polynomial coefficient addition explicitly. Statements unchanged. -/
 import OAI.Compat.Core
 import Mathlib.Analysis.Normed.Group.Basic
 import Mathlib.Data.Nat.Choose.Sum
@@ -418,7 +418,7 @@ theorem homogeneous_eq_rowPolynomial {σ R : Type*} [Fintype σ] [CommRing R]
       map_zero, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, ite_true]
   | zero => simp [rowPolynomial, polynomialLinearRow]
   | add P Q _ _ hP hQ =>
-    simpa only [rowPolynomial, polynomialLinearRow, AddMonoidAlgebra.coeff_add,
+    simpa only [rowPolynomial, polynomialLinearRow, MvPolynomial.coeff_add,
       Finsupp.add_apply, map_add, add_mul,
       Finset.sum_add_distrib] using congrArg₂ (fun a b => a + b) hP hQ
   | smul a P _ hP =>

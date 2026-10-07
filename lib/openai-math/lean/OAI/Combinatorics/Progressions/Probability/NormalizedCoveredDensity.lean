@@ -1,3 +1,4 @@
+/- Modified for ProveIt: Use older set-comprehension and discrete-subgroup names; statements unchanged. -/
 import OAI.Combinatorics.Progressions.Geometry.NormalizedCoveredChart
 
 namespace OAI
@@ -56,7 +57,7 @@ theorem normalizedCoveredChart_density_law
       ((normalizedLatticePoint W b ⁻¹' Ω) ×ˢ Set.univ) 1 f) := by
   let Λ := latticeSection (standardEuclideanLattice D) W
   let : DiscreteTopology Λ.toAddSubgroup := latticeSection_discrete (standardEuclideanLattice D) W
-  let : IsClosed (Λ.toAddSubgroup : Set W) := AddSubgroup.isClosed_of_discreteTopology
+  let : IsClosed (Λ.toAddSubgroup : Set W) := AddSubgroup.isClosed_of_discrete
   let : BorelSpace (W ⧸ Λ.toAddSubgroup) := QuotientAddGroup.borelSpace
   apply restrictedChartDensity_law _ (normalizedCoveredChart_continuous W b hb bW d).measurable
     ((hΩm.preimage (normalizedLatticePoint_continuous W b).measurable).prod MeasurableSet.univ)

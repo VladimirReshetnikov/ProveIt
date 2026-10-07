@@ -101,6 +101,9 @@ unchanged.
 - `Compat/MatrixInjective.lean` derives matrix-vector injectivity from a
   nonzero determinant using the older trivial-kernel theorem. It supports
   the integer-fiber and residue-refined-period modules in the next batch.
+- `Compat/ContinuousLinearMap.lean` supplies the newer `lipschitzWith` name
+  as an alias of the existing norm-controlled `lipschitz` theorem. It is
+  used by affine averaging and subsequent coordinate estimates.
 - `Compat/ExteriorPower.lean` is a Mathlib backport, with the original
   Justus Springer copyright and author notice retained. Its separate pinned
   source and license are recorded in [`LICENSE.provenance`](LICENSE.provenance)

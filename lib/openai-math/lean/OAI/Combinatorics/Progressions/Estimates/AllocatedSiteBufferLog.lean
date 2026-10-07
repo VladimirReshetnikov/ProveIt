@@ -1,5 +1,5 @@
 /- Modified for ProveIt: import Lean 4.32 compatibility declarations.
-Statements and proofs are unchanged from the pinned upstream source. -/
+ Use older set-comprehension and discrete-subgroup names; statements unchanged. -/
 import OAI.Compat.Core
 import OAI.Compat.Measurable
 import OAI.Combinatorics.Progressions.Estimates.PreparedScalarStructuralBasePower
@@ -256,7 +256,7 @@ theorem allocatedIdealSiteCoordinates_measurable :
 theorem allocatedIdealSiteSupport_measurable :
     MeasurableSet {z : AllocatedLongJetRows B U b S jets |
       ∀ s a, |allocatedIdealSiteCoordinates B U b S z s a| ≤ 2 * idealSiteBoxRadius α m} := by
-  simp only [Set.ofPred_forall]
+  simp only [Set.setOf_forall]
   apply MeasurableSet.iInter
   intro s
   apply MeasurableSet.iInter

@@ -1,3 +1,4 @@
+/- Modified for ProveIt: Use older set-comprehension and discrete-subgroup names; statements unchanged. -/
 import OAI.Combinatorics.Progressions.Fourier.CommonCoveredSiteCharacter
 import OAI.Combinatorics.Progressions.Linear.BooleanJetMatrixFactor
 
@@ -195,7 +196,7 @@ instance coefficientIntegerLattice_closed {K : Type*} [Fintype K] {m : ℕ}
     (U : ∀ j, Submodule ℝ (J j → ℝ)) :
     IsClosed (coefficientIntegerLattice (K := K) U : Set (CoefficientArray (K := K) U)) := by
   change IsClosed {x : CoefficientArray (K := K) U | ∀ s a, ∃ n : ℤ, (x s).val a = n}
-  simp only [Set.ofPred_forall]
+  simp only [Set.setOf_forall]
   apply isClosed_iInter
   intro s
   apply isClosed_iInter

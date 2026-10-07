@@ -1,3 +1,4 @@
+/- Modified for ProveIt: Use older set-comprehension and discrete-subgroup names; statements unchanged. -/
 import OAI.Combinatorics.Progressions.Estimates.CanonicalCoefficientCoverLift
 import OAI.Combinatorics.Progressions.Linear.KernelLiftChart
 
@@ -55,7 +56,7 @@ theorem normalizedCoveredChart_embedding
       (Set.univ : Set (R → ZMod d)) => normalizedCoveredChart W b hb bW d p.val) := by
   let Λ := latticeSection (standardEuclideanLattice D) W
   let : DiscreteTopology Λ.toAddSubgroup := latticeSection_discrete (standardEuclideanLattice D) W
-  let : IsClosed (Λ.toAddSubgroup : Set W) := AddSubgroup.isClosed_of_discreteTopology
+  let : IsClosed (Λ.toAddSubgroup : Set W) := AddSubgroup.isClosed_of_discrete
   let : BorelSpace (W ⧸ Λ.toAddSubgroup) := QuotientAddGroup.borelSpace
   exact ContinuousOn.measurableEmbedding
     ((hΩm.preimage (normalizedLatticePoint_continuous W b).measurable).prod MeasurableSet.univ)
