@@ -12,8 +12,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 587 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 3,782 public Gowers theorems and found only propext,
+  All 593 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 3,818 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 112 exact
   companion proofs and 8 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -31,8 +31,23 @@ All-scale integer geometry for Section 13
   this information through Lemma 13.7, including empty critical heights.
   Proofs13AllScalesCoefficientSpan retains it in bilinear coefficient
   extraction without a large-scale assumption. These strengthen existing
-  constructions; Corollary 13.10 remains open while the shorter-parent
-  localization and its original length target are reconciled.
+  constructions. Proofs07ModularBudgetSpan exposes prescribed integer cell
+  lengths with the same span certificate. Proofs07ShortParentBudget proves
+  that for L >= S/3 the direct budget supports ceil(S^g), where
+  g = 2^-14*alpha^2, once S^g >= 8. Its universal partition handles the
+  remaining scales whenever L >= 4, using short affine cells. The numerical
+  reserve uses 3^((23/6)g) <= 33/32 and 8^(11/6) >= 45.
+  Proofs13ShortParentFullLength and Proofs13SpanFullLength consequently
+  construct a bilinear square of side at least S^(g/2)-1, retaining density
+  delta/4, from the integer span geometry whenever S >= 8. This removes
+  both the previous floor(S/2) target loss and its affine-scale threshold.
+  Proofs13LocalizedCoefficientSpan retains a selected cell's step and span
+  in the original set after weighted parent localization.
+  Proofs13LocalizedStage139 proves the full Stage 13.9 conclusion together
+  with t*(U.length-1) < S.length for S.length >= 8 and the preceding integer
+  span certificate. The original length and density bounds are preserved.
+  Corollary 13.10 remains open: the short-column cases and faithful catalogue
+  propagation of these construction certificates have not yet been closed.
 
 Threshold-free simultaneous quadratic localization
   Proofs05QuadraticFamily iterates the finite quadratic localization theorem
