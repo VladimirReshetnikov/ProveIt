@@ -1,0 +1,10 @@
+.PHONY: all pdf test optional-test clean
+all: pdf test
+pdf:
+	latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+test:
+	python code/verify.py --output data/exact_checks.json
+optional-test:
+	python code/milp_check.py --orders 3 5 7 --output data/milp_results.json
+clean:
+	latexmk -c article.tex

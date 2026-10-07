@@ -1,0 +1,644 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=25mm,headheight=15pt]{geometry}
+\usepackage{microtype,mathtools,amssymb,amsthm,booktabs,array,longtable,enumitem}
+\usepackage{graphicx,xcolor,fancyhdr,needspace}
+\definecolor{ink}{HTML}{16354A}
+\definecolor{accent}{HTML}{167C80}
+\usepackage[colorlinks=true,linkcolor=ink,citecolor=accent,urlcolor=accent]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\hypersetup{pdftitle={A 5 by 5 Obstruction to Polynomial Ordered Matrix Removal},pdfauthor={Research draft for the ProveIt project}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\textsc{Ordered matrix removal}}
+\fancyhead[R]{\small Exact repair and sampling laws}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{3pt}
+\setlength{\parindent}{1.2em}
+\setlist{itemsep=3pt,topsep=5pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{question}[theorem]{Question}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\one}{\mathbf 1}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Prob}{\mathbb P}
+\newcommand{\dist}{\operatorname{dist}}
+\newcommand{\Poi}{\operatorname{Poisson}}
+\newcommand{\Cov}{\operatorname{Cov}}
+\newcommand{\var}{\operatorname{Var}}
+\newcommand{\Rset}{\mathsf R}
+\newcommand{\Cset}{\mathsf C}
+\newcommand{\crown}{\mathcal C}
+\newcommand{\dd}{\mathrm d}
+\newcommand{\fall}[2]{(#1)_{#2}}
+\title{\color{ink}\textbf{A \(5\times5\) Obstruction to Polynomial\\Ordered Matrix Removal}\\[7pt]
+\large Exact repair distance, copy packing, Poisson sampling,\\and an inverse logarithmic barrier}
+\author{Research draft for the ProveIt project}
+\date{7 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+The ordered binary matrix-removal construction in OpenAI's September 2026
+manuscript uses a fixed \(66\times66\) forbidden matrix. We prove that its
+anchor can be replaced by the three-by-three crown \(J_3-I_3\), giving an
+explicit \(5\times5\) obstruction. The main structural tool is a
+full-pattern pinning theorem: the body rows and columns resolve ambiguities
+that the smaller anchor alone cannot resolve. The theorem uses nested
+nonanchor traces, bounded anchor signatures, and a common mode order.
+For the resulting matrices \(A_h\), with
+\(m=2^h\) and \(n=(20h+2)m\), we determine three quantities exactly:
+the number of forbidden copies is \(2m^8\), the minimum number of cells
+meeting all existing copies is \(m\), and the minimum number of binary
+entry changes producing a forbidden-pattern-free matrix is \(m^2\).
+An explicit optimal repair changes one dummy-by-leaf rectangle; a
+separate structural argument proves that this repair creates no new copies.
+
+For independent uniform samples of \(q\) rows and \(q\) columns, the sharp
+scale is \(q=(20h+2)m^{2/3}\). At a limiting multiple \(c\) of this scale,
+the number of critical witnesses converges to \(\Poi(2c^3)\), and the
+detection probability tends to \(1-e^{-2c^3}\). We also determine the
+optimal order, and a variational leading constant, for entry queries using
+uniform rectangular samples. Exact Lambert \(W\) inversion converts the
+copy-transversal density into repair distance and gives a convergent
+all-orders expansion of the resulting inverse logarithmic barrier.
+A general bounded-signature theorem yields analogous constructions on
+regular trees of every branching number. All proofs are included;
+exhaustive finite checks and reproducible numerical illustrations accompany
+the article.
+\end{abstract}
+\vspace{4pt}
+\noindent\textbf{Keywords.} Ordered matrix removal; induced submatrices;
+property testing; pinning; copy transversals; Poisson limits; Lambert \(W\).
+\newpage
+\begingroup\small
+\tableofcontents
+\endgroup
+\newpage
+
+\section{Problem, provenance, and main results}
+\label{sec:intro}
+
+An ordered copy of a binary \(k\times k\) matrix \(H\) in a binary
+\(n\times n\) matrix \(A\) is a pair of strictly increasing maps
+\(r,c:[k]\to[n]\) such that \(A(r(i),c(j))=H(i,j)\) for every \(i,j\).
+Both zeros and ones are prescribed. Write \(N_H(A)\) for the number of
+these copies, with no quotient by a symmetry factor, and put
+\begin{equation}
+ \dist_H(A)=\frac{1}{n^2}\min_{B:\,N_H(B)=0}
+       |\{(x,y):A(x,y)\ne B(x,y)\}|.
+ \label{eq:distance-definition}
+\end{equation}
+Changes from zero to one and from one to zero are both permitted.
+
+The polynomial ordered binary matrix-removal question asks whether, for
+every fixed \(H\), constants \(c_H,C_H>0\) satisfy
+\begin{equation}
+ \dist_H(A)\ge\eps
+ \quad\Longrightarrow\quad
+ N_H(A)\ge c_H\eps^{C_H}n^{2k}.
+ \label{eq:polynomial-question}
+\end{equation}
+The finite-family form appears as Problem 1.4 of
+Alon--Ben-Eliezer~\cite{AB2020}; the singleton form is Conjecture 4.5
+of the first arXiv version of Gishboliner--Shapira~\cite{GS2025}.
+Qualitative removal, without polynomial dependence, follows from
+Alon--Ben-Eliezer--Fischer~\cite{ABF2017}. A related positive theorem says
+that a polynomial density of \emph{entry-disjoint existing copies}
+forces a polynomial total copy density~\cite[Theorem 1.2]{AB2020}.
+The difference between a transversal of existing copies and a successful
+binary repair is therefore central.
+
+\subsection{The source construction and the new contribution}
+
+OpenAI's manuscript \emph{Polynomial removal fails for ordered binary
+matrices}, dated 25 September 2026, constructs a fixed \(66\times66\)
+counterexample to \eqref{eq:polynomial-question}~\cite{OAI190}.
+Its host is built from two signed copies of a binary tree, dummy positions,
+and mode-specific anchors. The distance argument propagates incompatible
+root bits to a shared leaf. Its large anchor identifies the mode of every
+copy by combining density and a shattering block.
+
+We retain that tree construction and propagation mechanism, with full
+attribution, and replace the anchoring argument. A three-by-three crown
+suffices when its two body rows and columns are included in the pinning
+argument. The proof uses the absence of a nonanchor three-by-three crown,
+nested traces within variable classes, at most two anchor signatures per
+class, and the same mode order on both axes. The crown alone need not be
+pinned. The full-pattern argument also survives an explicit optimal repair.
+The resulting exact description of all copies then supports sharper
+counting and sampling results.
+
+The research selection also considered the asymptotic-reversion
+work in ProveIt~\cite{ProveIt}. The present subject
+has a finite combinatorial core suitable for independent checks, while
+the exact hitting-to-repair conversion produces a direct application of
+Lambert-centered asymptotic inversion. The proofs below depend on the
+explicit matrix definitions, rather than on any unverified broad claim
+elsewhere in either repository.
+
+\begin{table}[ht]
+\centering\small
+\begin{tabular}{p{.27\textwidth}p{.30\textwidth}p{.32\textwidth}}
+\toprule
+Feature & OpenAI source~\cite{OAI190} & This article\\
+\midrule
+Forbidden pattern & \(66\times66\) & Explicit \(5\times5\)\\
+Anchor & Dense \(64\times64\) matrix with shattering block & \(J_3-I_3\); full-pattern pinning\\
+Host size & \((386h+2)2^h\) & \((20h+2)2^h\)\\
+Repair distance & Lower bound from propagation & Exact value and optimal repair\\
+Original-copy structure & Every copy meets a leaf diagonal & Complete classification and exact count\\
+Balanced sample size & Necessary scale proportional to \(\sqrt m\) & Sharp scale proportional to \(m^{2/3}\)\\
+Additional conclusions & Nonpolynomial removal & Exact packing; Poisson clustering; rectangular optimum; inverse expansion\\
+\bottomrule
+\end{tabular}
+\caption{Comparison of the statements established in the specified source
+with the refinements proved here. Host-size factors accompany the sampling
+scales. The table does not assert a global minimal forbidden-pattern size.}
+\label{tab:comparison}
+\end{table}
+
+\subsection{An explicit obstruction}
+
+Let \(J_s\) denote the all-ones matrix and write \(\crown_s=J_s-I_s\).
+Our forbidden matrix is
+\begin{equation}
+ H=\begin{pmatrix}
+ 0&1&1&1&0\\
+ 1&0&1&0&1\\
+ 1&1&0&0&0\\
+ 1&0&0&1&0\\
+ 0&1&0&1&1
+ \end{pmatrix}
+ =\begin{pmatrix}
+ \crown_3&e_1&e_2\\ e_1^{\mathsf T}&1&0\\
+ e_2^{\mathsf T}&1&1
+ \end{pmatrix},
+ \qquad P=\begin{pmatrix}1&0\\1&1\end{pmatrix}.
+ \label{eq:H}
+\end{equation}
+Here \(e_1,e_2\) are the first two coordinate vectors of length three.
+
+\begin{theorem}[Exact obstruction]
+\label{thm:main}
+For every integer \(h\ge1\), let
+\[
+ m=2^h,\qquad d=d_h=20h+2,\qquad n=dm,\qquad \eps_h=d^{-2}.
+\]
+There is an explicitly specified binary \(n\times n\) matrix \(A_h\) with
+\begin{equation}
+ N_H(A_h)=2m^8,\qquad
+ \dist_H(A_h)=\eps_h.
+ \label{eq:exact-main}
+\end{equation}
+The minimum number of cells meeting every existing \(H\)-copy is exactly
+\(m\). There are \(m\) copies whose row sets are mutually disjoint and
+whose column sets are mutually disjoint. In particular the maximum number
+of entry-disjoint copies is also \(m\). Nevertheless, every successful
+binary repair changes at least \(m^2\) entries, and a repair with exactly
+\(m^2\) changes is given explicitly.
+\end{theorem}
+
+Thus the normalized copy density is exactly
+\begin{equation}
+ \delta_h:=\frac{N_H(A_h)}{n^{10}}
+ =2d^{-10}m^{-2}=2\eps_h^5 4^{-h}.
+ \label{eq:delta}
+\end{equation}
+For each fixed \(C>0\), \(\delta_h/\eps_h^C\to0\). This proves
+failure of polynomial ordered removal for the particular matrix \eqref{eq:H}.
+The smaller pattern is the main extremal refinement; the inverse-square
+depth dependence of the distance remains that of the source mechanism.
+
+\begin{theorem}[Balanced sampling law]
+\label{thm:main-sampling}
+Independently choose a uniform \(q_h\)-element row set and a uniform
+\(q_h\)-element column set of \(A_h\), and let \(D_h\) be the event that
+their intersection contains \(H\). If
+\[
+ \frac{q_h}{d_hm^{2/3}}\longrightarrow c\in(0,\infty),
+\]
+then a natural count \(X_h\) of leaf witnesses satisfies
+\begin{equation}
+ X_h\xrightarrow{\dd}\Poi(2c^3),\qquad
+ \Prob(D_h)\longrightarrow1-e^{-2c^3}.
+ \label{eq:main-poisson}
+\end{equation}
+Below this scale detection tends to zero; above it detection tends to one.
+For fixed \(0<\rho<1\), the least balanced sample size with detection
+probability at least \(\rho\) is
+\begin{equation}
+ q_{\rho,h}=d_hm^{2/3}
+ \left(\frac{-\log(1-\rho)}{2}\right)^{1/3}(1+o(1)).
+ \label{eq:quantile}
+\end{equation}
+\end{theorem}
+
+This theorem concerns uniform row and column samples of equal size.
+\Cref{sec:rectangles} treats unequal sizes and shows that allowing them
+changes the optimal number of entry queries. The distinction is part of
+the theorem's mathematical scope.
+
+\subsection{Reading guide and verification status}
+
+\Cref{sec:pinning} proves the general structural lemma;
+\cref{sec:construction,sec:structure} define the host and verify every
+hypothesis, including after repair. Exact copies and exact distance are
+proved in \cref{sec:copies,sec:distance}. Sampling, inverse asymptotics,
+and general branching are treated subsequently. The proofs are ordinary
+mathematical proofs. The accompanying Python program checks finite
+instances exactly; it is not a Lean formalization of the general theorems.
+The source versions, contribution boundary, and proposed formalization
+steps are recorded in \cref{sec:verification}.
+
+\section{A pinning theorem from bounded signatures}
+\label{sec:pinning}
+
+For a row, its \emph{trace} on a collection of columns is its binary
+restriction to those columns; column traces are defined in the same way.
+Traces are \emph{nested} if their sets of ones are linearly ordered by
+inclusion. This definition does not require the inclusion order to agree
+with the ambient order of positions.
+
+\begin{theorem}[Full-pattern pinning from bounded signatures]
+\label{thm:pinning}
+Let \(s\ge3\), let \(P\in\{0,1\}^{2\times2}\) satisfy \(P_{11}=1\),
+and set
+\begin{equation}
+ K_s(P)=\begin{pmatrix}
+ \crown_s&e_1&e_2\\
+ e_1^{\mathsf T}&P_{11}&P_{12}\\
+ e_2^{\mathsf T}&P_{21}&P_{22}
+ \end{pmatrix},
+ \label{eq:general-pattern}
+\end{equation}
+where the coordinate vectors have length \(s\). Consider an ordered
+binary matrix with an anchor prefix on each axis, partitioned into
+modes and then into \(s\) consecutive groups in the order
+\(1,\ldots,s\). The modes must occur in the same order on both axes.
+Assume the following properties on both axes.
+\begin{enumerate}[label=\textnormal{(\roman*)}]
+\item Within a mode the anchor blocks are the blow-up of \(\crown_s\);
+between different modes their entries are zero. Positions in the same
+anchor group have identical full traces.
+\item The nonanchor positions are partitioned into variable classes and
+an optional dummy class. Members of a dummy class have identical full
+traces.
+\item The nonanchor one-neighborhood of any anchor position is empty or
+is contained in one class of the partition in (ii).
+\item Against the anchor groups of a fixed mode, a nonanchor position has
+ones in at most one group.
+\item Within each variable class, traces on all opposite nonanchor
+positions are nested, and traces on all opposite anchor positions take
+at most \(s-1\) distinct values.
+\item The nonanchor submatrix contains no \(\crown_3\), even under
+separate permutations of three selected rows and columns.
+\end{enumerate}
+Then the first \(s\) rows and columns of every ordered \(K_s(P)\)-copy
+use exactly one position from each anchor group of a single mode.
+The last two positions on each axis are nonanchors, with the prescribed
+\(e_1,e_2\) signatures against that mode's anchor.
+\end{theorem}
+
+\begin{proof}
+Let \(r,c\in\{0,\ldots,s\}\) count the anchor positions among the
+first \(s\) selected rows and columns. They are prefix counts because
+every anchor precedes every nonanchor. The leading \(\crown_s\) has
+distinct row traces and distinct column traces, so (i) forbids repeating
+an anchor group among those rows or columns.
+
+First suppose \(r,c\ge2\). Let \(t_1\le t_2\) be the modes of
+the first two selected rows and \(u_1\le u_2\) those of the first
+two selected columns, using the common mode order. The entries at
+\((1,2)\) and \((2,1)\) are one, so (i) gives
+\(t_1=u_2\) and \(t_2=u_1\). Therefore
+\[
+ t_1\le t_2=u_1\le u_2=t_1,
+\]
+and all four modes coincide, say with \(t\). If \(c<s\), the first
+nonanchor column in the prefix has index \(c+1\ge3\), so it is one
+against both first anchor rows. Their groups are distinct, contradicting
+(iv). Hence \(c=s\), and the same argument on the other axis gives
+\(r=s\). Every remaining leading row and column has a positive entry
+against one of the first two opposite groups, which forces it into mode
+\(t\). Distinctness and order then give every group of \(t\) exactly once.
+
+Next suppose \(r,c\le1\). If \(r=c=0\), the leading prefix contains
+the nonanchor \(\crown_3\) excluded by (vi). If \(r=1\), the last
+two prefix columns are nonanchors and are both one against the first
+anchor row. By (iii) they belong to one class. A dummy class would give
+identical full column traces; a variable class would give nested traces
+on nonanchor rows. Both contradict the \(\crown_2\) at the intersection
+of the last two prefix rows and columns, all of which are nonanchors.
+The case \(r=0,c=1\) follows by the same argument with axes exchanged.
+
+In the remaining cases one of \(r,c\) is at most one and the other
+is at least two. It suffices to treat \(r\le1,c\ge2\): the hypotheses
+are symmetric in the axes, and transposition replaces \(K_s(P)\) by
+\(K_s(P^{\mathsf T})\), whose top-left body entry is still one.
+
+All selected rows numbered \(2,\ldots,s+2\) are nonanchors.
+The first anchor column has ones in rows \(2,\ldots,s,s+1\), and
+the second has ones in rows \(3,\ldots,s,s+2\). Their nonanchor
+one-neighborhoods intersect at row \(3\), so (ii)--(iii) place the
+union of these rows in a single class. This class cannot be the dummy
+class: rows \(2\) and \(3\) have different traces \(10\) and \(11\)
+on the first two anchor columns. Thus every row numbered
+\(2,\ldots,s+2\) lies in one variable class.
+
+If \(c<s\), put \(j=c+1\), so \(3\le j\le s\). Columns \(j\)
+and \(s+1\) are nonanchors. Row \(2\) has trace \((1,0)\) on
+these columns, whereas row \(s+1\) has trace \((0,1)\). Here the
+last one uses exactly the assumption \(P_{11}=1\). These incomparable
+traces contradict (v).
+
+If \(c=s\), the rows numbered \(2,\ldots,s,s+1\) have, on the
+first \(s\) anchor columns, the distinct rows \(2,\ldots,s\) of
+\(\crown_s\), followed by \(e_1^{\mathsf T}\). Because \(s\ge3\),
+the unit vector differs from all these crown rows. There are therefore
+\(s\) distinct anchor traces in one variable class, again contradicting
+(v). This excludes every unpinned case.
+
+Finally, a body row has signature \(e_1^{\mathsf T}\) or
+\(e_2^{\mathsf T}\) on the pinned anchor columns. An anchor row
+of another mode has signature zero, and one of the pinned mode has
+a crown-row signature with \(s-1\ge2\) ones. Thus both body rows
+are nonanchors. The column argument is identical, proving the claimed
+signatures on both axes.
+\end{proof}
+
+The body positions are essential to this statement. In particular,
+the theorem does not assert that every \(\crown_3\)-copy is pinned.
+Nested traces rule out a two-coordinate crossing within one variable
+class, bounded anchor signatures exclude too many distinct restrictions,
+and the common mode order resolves the case with two anchors on each axis.
+
+\section{The binary tree matrices}
+\label{sec:construction}
+
+This section restates the construction underlying~\cite{OAI190}, with
+the new main choice \(s=3\) and anchor \(\crown_3\). The roles, tree
+orders, and nonanchor entries are retained. We permit any fixed
+\(s\ge3\) to keep the later counting and sampling formulas uniform.
+When \(s\) is retained symbolically, \(H\) denotes \(K_s(P)\) with
+the fixed body \(P\) in \eqref{eq:H}; at \(s=3\) this is precisely
+the five-by-five pattern \eqref{eq:H}. We likewise suppress the fixed
+parameter \(s\) from the host notation \(A_h\). Stating the construction
+completely allows the subsequent proofs to be read independently of the source.
+
+\subsection{Positions and orders}
+
+Fix \(h\ge1\), set \(m=2^h\), and index the nodes at depth \(i\) by
+\(p\in\{0,\ldots,2^i-1\}\). For \(i<h\), attach two row blocks
+\(R_i^-(p),R_i^+(p)\) and two column blocks
+\(C_i^-(p),C_i^+(p)\), each of size \(m/2^i\). At a leaf identify
+the signs:
+\[
+ R_h^-(p)=R_h^+(p)=R_h(p),\qquad
+ C_h^-(p)=C_h^+(p)=C_h(p),
+\]
+and each such block has size one. All other blocks on the same axis are
+disjoint. Their elements are the variable positions. A \emph{variable
+class} is the union \(R_i^\sigma\) or \(C_i^\sigma\) over all nodes
+at fixed depth and sign, with the leaf class counted just once. Each
+class has size \(m\). For \(i\ge1\), a subscript \(d\in\{0,1\}\)
+denotes the subclass restricted to \(p\equiv d\pmod2\).
+
+Order variable rows recursively as: a node's minus block, its zero-child
+subtree, its one-child subtree, and its plus block. Order variable columns
+with the signs reversed: plus block, zero-child subtree, one-child subtree,
+minus block. At a leaf place the shared block once. Put a dummy row block
+\(R_*\), of size \(m\), after all variable rows, and a dummy column block
+\(C_*\), also of size \(m\), before all variable columns.
+
+Write \(\pi(p)=\lfloor p/2\rfloor\). Comparisons with the ordered
+parent-level subtrees give
+\begin{equation}
+\begin{aligned}
+ R_i^+(p)<R_{i-1}^+(a)&\iff\pi(p)\le a,&
+ R_{i-1}^-(a)<R_i^-(p)&\iff\pi(p)\ge a,\\
+ C_{i-1}^+(b)<C_i^+(q)&\iff\pi(q)\ge b,&
+ C_i^-(q)<C_{i-1}^-(b)&\iff\pi(q)\le b.
+\end{aligned}
+\label{eq:orders}
+\end{equation}
+These hold for \(1\le i\le h\); \(X<Y\) means that every element of
+the first block precedes every element of the second.
+
+\subsection{Modes and anchors}
+
+For each depth \(1\le i\le h\), introduce six modes, in the order
+\(V_i^+,V_i^-,W_{i,0}^+,W_{i,1}^+,W_{i,0}^-,W_{i,1}^-\).
+Their row and column roles are
+\begin{equation}
+\begin{array}{c|cc|cc}
+ t&\Rset_1(t)&\Rset_2(t)&\Cset_1(t)&\Cset_2(t)\\ \hline
+ V_i^+&R_i^+&R_{i-1}^+&C_*&C_{i-1}^+\\
+ V_i^-&R_{i-1}^-&R_i^-&C_*&C_{i-1}^-\\
+ W_{i,d}^+&R_{i,d}^+&R_*&C_{i-1}^+&C_{i,d}^+\\
+ W_{i,d}^-&R_{i,d}^-&R_*&C_{i,d}^-&C_{i-1}^-
+\end{array}
+\label{eq:roles}
+\end{equation}
+The two roles on each axis are disjoint. Membership in these sets does
+not by itself guarantee the ordering of the two selected body positions;
+their order is always required separately.
+
+Before all variable and dummy positions put the anchors, in the same
+mode order on both axes. Mode \(t\) has \(s\) successive row groups
+\(\widehat R_t(u)\) and \(s\) successive column groups
+\(\widehat C_t(v)\), \(1\le u,v\le s\), each of size \(m\).
+There are \(6sh\) anchor groups and \(2h+1\) disjoint variable classes
+on either axis, plus the dummy block. Therefore
+\begin{equation}
+ n=(6sh+2h+2)m=dm,\qquad d=(6s+2)h+2,
+ \qquad d=20h+2\quad(s=3).
+ \label{eq:n-size}
+\end{equation}
+
+\subsection{Every matrix entry}
+
+Between anchor groups set
+\[
+ A_h(\widehat R_t(u),\widehat C_{t'}(v))
+ =\one[t=t']\one[u\ne v].
+\]
+A nonanchor row in \(\Rset_j(t)\) has signature \(e_j^{\mathsf T}\)
+against the \(s\) anchor column groups of \(t\); if it lies in neither
+role its signature is zero. A nonanchor column in \(\Cset_j(t)\)
+has signature \(e_j\) against the anchor row groups; again the signature
+is zero outside the two roles.
+
+Between nonanchors, every entry with a dummy row or dummy column is one.
+The variable-by-variable entries not specified in the following table
+are zero:
+\begin{equation}
+\begin{array}{ccc|c}
+\text{row block}&\text{column block}&\text{depth range}&\text{entry}\\ \hline
+R_i^+(p)&C_i^+(q)&0\le i\le h&\one[p\le q]\\
+R_i^-(p)&C_i^-(q)&0\le i<h&\one[p<q]\\
+R_i^+(p)&C_{i-1}^+(q)&1\le i\le h&\one[\pi(p)\le q]\\
+R_i^-(p)&C_{i-1}^-(q)&1\le i\le h&\one[\pi(p)<q]
+\end{array}
+\label{eq:entries}
+\end{equation}
+The strict inequality in the second row stops at depth \(h-1\), so the
+shared leaf-by-leaf entry is \(\one[p\le q]\). In the final two rows
+the column depth is below \(h\), so the two column signs remain distinct.
+There are consequently no conflicting assignments in the table.
+
+Define also \(A_h^{\mathrm{rep}}\) by changing precisely the rectangle
+\begin{equation}
+ R_*\times C_h\quad\text{from one to zero},
+ \label{eq:repair}
+\end{equation}
+leaving every other entry unchanged. This rectangle contains \(m^2\)
+cells. Its freeness will be proved, rather than inferred merely from
+its meeting the original copies.
+
+\section{Structure of the nonanchor matrix, before and after repair}
+\label{sec:structure}
+
+\begin{lemma}[Nested traces and two signatures]
+\label{lem:signatures}
+Both \(A_h\) and \(A_h^{\mathrm{rep}}\) satisfy hypotheses
+\textnormal{(i)--(v)} of \cref{thm:pinning} for every \(s\ge3\).
+In fact each variable class has at most two anchor signatures.
+\end{lemma}
+\begin{proof}
+The same ordered list of modes is used on both axes. Identical traces
+within anchor groups and within dummy blocks follow from the entry rules.
+The one-neighborhood of a given anchor group is
+one of the individual role sets in \eqref{eq:roles}, or is empty.
+Each role is a single variable class, a parity subclass, or a dummy
+block. The unit-vector signatures prove (iv).
+
+For a fixed variable row class, increase its node index \(p\).
+All its nonconstant entries on nonanchor columns have the forms
+\[
+ \one[p\le q],\quad\one[p<q],\quad
+ \one[\lfloor p/2\rfloor\le q],\quad
+ \one[\lfloor p/2\rfloor<q].
+\]
+Each is nonincreasing in \(p\); other entries are constant. Thus the
+row traces are nested. For a fixed variable column class, increasing
+\(q\) makes the same thresholds nondecreasing, giving column nesting.
+In the repaired matrix the dummy-row value on the entire leaf column
+class changes uniformly to zero, so this nesting is preserved.
+
+Finally, the anchor signatures of a variable position depend on its
+depth, sign, and child parity. Only parity varies in a fixed class.
+For clarity, the complete lists of row-mode incidences are
+\begin{equation}
+\begin{array}{c|l}
+R_i^+(p),\ i<h &(V_i^+,1),(V_{i+1}^+,2),(W_{i,d}^+,1)\\
+R_i^-(p),\ i<h &(V_i^-,2),(V_{i+1}^-,1),(W_{i,d}^-,1)\\
+R_h(p)&(V_h^+,1),(V_h^-,2),(W_{h,d}^+,1),(W_{h,d}^-,1),
+\end{array}
+\label{eq:row-signatures}
+\end{equation}
+where an incidence \((t,j)\) denotes role \(j\) of mode \(t\),
+\(d=p\bmod2\), and undefined levels are omitted. Column incidences are
+\begin{equation}
+\begin{array}{c|l}
+C_i^+(p),\ i<h &(V_{i+1}^+,2),(W_{i+1,0}^+,1),(W_{i+1,1}^+,1),(W_{i,d}^+,2)\\
+C_i^-(p),\ i<h &(V_{i+1}^-,2),(W_{i+1,0}^-,2),(W_{i+1,1}^-,2),(W_{i,d}^-,1)\\
+C_h(p)&(W_{h,d}^+,2),(W_{h,d}^-,1).
+\end{array}
+\label{eq:column-signatures}
+\end{equation}
+At depth zero only the defined incidences occur. The shared leaf class
+has exactly the same parity restriction. No anchor signature changes
+under \eqref{eq:repair}. Thus there are at most two distinct signatures
+per variable class, which is at most \(s-1\) for every \(s\ge3\).
+\end{proof}
+
+\begin{lemma}[Crown exclusion survives the repair]
+\label{lem:crown}
+The nonanchor submatrices of \(A_h\) and \(A_h^{\mathrm{rep}}\)
+contain no \(\crown_3\), even under arbitrary permutations of the three
+selected rows and columns.
+\end{lemma}
+\begin{proof}
+Such a crown would require three rows whose traces on three columns
+are the three distinct two-element subsets. A dummy column is impossible:
+its entry on every nonanchor row is one in both matrices. Two columns
+in the same variable class are also impossible, since nesting excludes
+the two mixed patterns on that pair. Thus the columns lie in three
+distinct variable classes.
+
+Construct an auxiliary graph on the column classes, joining two classes
+when the support of some variable row can meet both. Nonleaf row classes
+give the two signed paths
+\[
+ C_0^\sigma-C_1^\sigma-\cdots-C_{h-1}^\sigma,
+ \qquad \sigma\in\{+,-\}.
+\]
+The leaf row class can meet just the three classes
+\begin{equation}
+ T=\{C_{h-1}^+,C_{h-1}^-,C_h\},
+ \label{eq:terminal-triangle}
+\end{equation}
+adding their three possible pair edges. In this containing graph, \(T\)
+is the only triangle. This statement uses a graph containing every
+possible support pair; it does not require every displayed pair to be
+realized at every small depth.
+
+In \(A_h\), the dummy row trace is \(111\), so all three required
+two-element traces must be supplied by variable rows. Their three pairs
+force the selected classes to be \(T\). Any variable row meeting two
+classes of \(T\) is a leaf row. On selected columns with indices
+\(q_+,q_-,q_0\), its trace is
+\begin{equation}
+ \bigl(\one[\lfloor p/2\rfloor\le q_+],
+       \one[\lfloor p/2\rfloor<q_-],
+       \one[p\le q_0]\bigr).
+ \label{eq:leaf-chain}
+\end{equation}
+These traces form a chain as \(p\) increases and cannot contain three
+incomparable two-element sets.
+
+For \(A_h^{\mathrm{rep}}\), if the selected columns do not include a
+leaf column, the dummy row is still \(111\), and the preceding argument
+applies. If a leaf column is selected, the dummy trace is \(110\),
+with the zero on the leaf column. The two pair traces containing the
+leaf column must therefore come from variable rows. Only leaf rows
+meet that column class, and their other possible classes are exactly
+the two parents in \(T\). Both remaining pair traces would have to
+occur in the chain \eqref{eq:leaf-chain}; they are incomparable. This
+is again impossible, regardless of whether a dummy row is actually
+selected. All cases have been excluded.
+\end{proof}
+
+\begin{corollary}[All copies have prescribed roles]
+\label{cor:roles}
+For every \(s\ge3\), in both matrices every ordered \(H=K_s(P)\)-copy
+has its first \(s\) rows and columns in the complete anchor of one
+mode. Its final rows and columns belong to the respective roles
+\(\Rset_1,\Rset_2,\Cset_1,\Cset_2\) of that mode.
+\end{corollary}
+\begin{proof}
+The common mode order is part of the construction, and
+\cref{lem:signatures,lem:crown} verify all six hypotheses of
+\cref{thm:pinning}. Since the fixed body has \(P_{11}=1\), that theorem
+pins the leading anchor and proves that the body positions are nonanchors.
+The signature of the first body row is \(e_1^{\mathsf T}\), which
+the entry rules give precisely on \(\Rset_1(t)\); the second signature
+similarly identifies \(\Rset_2(t)\). The column argument identifies
+\(\Cset_1(t)\) and \(\Cset_2(t)\). This reasoning applies without
+change to the repaired matrix.
+\end{proof}
+
+\input{sections/exact_and_sampling}
+\input{sections/rectangles_and_inversion}
+\input{sections/generalization_and_research}
+\bibliographystyle{plain}
+\begingroup\raggedright
+\bibliography{references}
+\endgroup
+\end{document}
