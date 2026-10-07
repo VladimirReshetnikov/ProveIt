@@ -966,4 +966,228 @@ theorem section5_efficient_local_phase_refinement_arbitrary_of_corollary_5_6
   · simpa only [section5Normalize_carrier] using hcount
   · simpa only [section5Normalize_carrier] using herror
 
+/-- Retain the diameter information in the local polynomial partition. -/
+theorem section5_local_diameter_refinement_of_corollary_5_6
+    (h56 : corollary_5_6) {N k v : Nat} [NeZero N]
+    (P : ModAP N) (phi : ZMod N → ZMod N) (eta : Real)
+    (hP : P.IsProper) (hk : 1 ≤ k)
+    (hphi : PolynomialOn k Finset.univ phi) (heta : 0 < eta)
+    (hlarge : max (polynomialPartitionThreshold k : Real)
+        ((4 * Real.pi / eta) ^ polynomialPartitionConstant k) < P.length)
+    (hv : 1 ≤ v)
+    (hvupper : (v : Real) ≤
+      (P.length : Real) ^ (polynomialPartitionConstant k : Real)⁻¹) :
+    ∃ L : Nat, ∃ R : Fin L → ModAP N,
+      IsPartition (fun j => (R j).carrier) P.carrier ∧
+      (∀ j, (R j).IsProper ∧ 0 < (R j).length ∧
+        ((R j).length = v - 1 ∨ (R j).length = v)) ∧
+      ∀ j, diameterAtMostReal ((R j).carrier.image phi) (eta * N / (4 * Real.pi)) := by
+  classical
+  have hrPos : 0 < P.length := by
+    have hzero : (0 : Real) ≤ polynomialPartitionThreshold k := by positivity
+    have : (0 : Real) < P.length := hzero.trans_lt
+      (lt_of_le_of_lt (le_max_left _ _) hlarge)
+    exact_mod_cast this
+  have hrN : P.length ≤ N := by
+    rw [ModAP.IsProper] at hP
+    rw [← hP]
+    simpa only [ZMod.card] using P.carrier.card_le_univ
+  have hthreshold : polynomialPartitionThreshold k < P.length := by
+    exact_mod_cast (lt_of_le_of_lt (le_max_left _ _) hlarge)
+  let pulledPhi : ZMod N → ZMod N :=
+    fun x => phi (section5ModIndexPoint P x)
+  have hpulled : PolynomialOn k Finset.univ pulledPhi :=
+    polynomialOn_section5ModIndexPoint P phi hphi
+  obtain ⟨L, S, hL, hpartition, hproper, hdiam⟩ :=
+    h56 N k P.length v pulledPhi hk hpulled hthreshold hrN hv hvupper
+  let R : Fin L → ModAP N := fun j => section5Transport P (S j)
+  have hrefine : IsPartition (fun j => (R j).carrier) P.carrier := by
+    exact section5Transport_partition P S hP hpartition
+  have hRproper (j : Fin L) :
+      (R j).IsProper ∧ 0 < (R j).length ∧
+        ((R j).length = v - 1 ∨ (R j).length = v) := by
+    have hsub := IsPartition.cell_subset hpartition j
+    refine ⟨section5Transport_isProper P (S j) hP (hproper j).1 hsub, ?_, ?_⟩
+    · simpa only [R, section5Transport_length] using (hproper j).2.1
+    · simpa only [R, section5Transport_length] using (hproper j).2.2
+  have hscale :
+      (P.length : Real) ^
+          (-(polynomialPartitionConstant k : Real)⁻¹) * N ≤
+        eta * N / (4 * Real.pi) := by
+    have hpolyLarge :
+        (4 * Real.pi / eta) ^ polynomialPartitionConstant k <
+          (P.length : Real) :=
+      lt_of_le_of_lt (le_max_right _ _) hlarge
+    have hbase := downstream_scale_le eta heta hpolyLarge
+    have hN : (0 : Real) ≤ N := by positivity
+    calc
+      _ = ((P.length : Real) ^
+          (-(polynomialPartitionConstant k : Real)⁻¹) * 1) * N := by ring
+      _ ≤ (eta / (4 * Real.pi)) * N :=
+        mul_le_mul_of_nonneg_right hbase hN
+      _ = eta * N / (4 * Real.pi) := by ring
+  refine ⟨L, R, hrefine, hRproper, fun j ↦ ?_⟩
+  have himage : (R j).carrier.image phi =
+      (S j).carrier.image (fun t : Nat ↦ pulledPhi (t : ZMod N)) := by
+    change (section5Transport P (S j)).carrier.image phi = _
+    rw [section5Transport_carrier, Finset.image_image]
+    rfl
+  rw [himage]
+  obtain ⟨d, hd, hdscale⟩ := hdiam j
+  exact ⟨d, hd, hdscale.trans hscale⟩
+
+/-- Efficient geometric refinement, retaining the same count constant as phase removal. -/
+theorem section5_efficient_diameter_refinement_of_corollary_5_6
+    (h56 : corollary_5_6) {N k : Nat} [NeZero N]
+    (P : ModAP N) (phi : ZMod N → ZMod N) (eta : Real)
+    (hP : P.IsProper) (hk : 1 ≤ k)
+    (hphi : PolynomialOn k Finset.univ phi) (heta : 0 < eta) :
+    ∃ L : Nat, ∃ R : Fin L → ModAP N,
+      IsPartition (fun j => (R j).carrier) P.carrier ∧
+      (∀ j, (R j).IsProper) ∧
+      (L : Real) ≤ section5LocalRefinementConstant k eta *
+        (P.carrier.card : Real) ^
+          (1 - (polynomialPartitionConstant k : Real)⁻¹) ∧
+      ∀ j, diameterAtMostReal ((R j).carrier.image phi) (eta * N / (4 * Real.pi)) := by
+  classical
+  let K := polynomialPartitionConstant k
+  let cutoff : Real := max
+    (max (polynomialPartitionThreshold k : Real)
+      ((4 * Real.pi / eta) ^ K)) ((4 : Real) ^ K)
+  by_cases hPempty : P.carrier = ∅
+  · refine ⟨0, Fin.elim0, ?_, ?_, ?_, ?_⟩
+    · constructor
+      · intro x
+        simp [hPempty]
+      · intro i
+        exact Fin.elim0 i
+    · intro j
+      exact Fin.elim0 j
+    · simpa only [Nat.cast_zero] using
+        mul_nonneg (section5LocalRefinementConstant_pos k eta).le
+          (Real.rpow_nonneg
+            (show (0 : Real) ≤ (P.carrier.card : Real) by exact_mod_cast
+              (Nat.zero_le P.carrier.card))
+            (1 - (polynomialPartitionConstant k : Real)⁻¹))
+    · intro j
+      exact Fin.elim0 j
+  have hr : 0 < P.length := by
+    have hPcard : P.carrier.card = P.length := hP
+    have hnonempty : P.carrier.Nonempty :=
+      Finset.nonempty_iff_ne_empty.mpr hPempty
+    have hcardPos : 0 < P.carrier.card := Finset.card_pos.mpr hnonempty
+    omega
+  by_cases hlarge : cutoff < P.length
+  · have hroot4strict :
+        4 < (P.length : Real) ^ (K : Real)⁻¹ := by
+      apply section5_rpow_root_ge_four
+      exact lt_of_le_of_lt (le_max_right _ _) hlarge
+    obtain ⟨v, hvTwo, hvupper, hvhalf⟩ :=
+      section5_floor_target
+        ((P.length : Real) ^ (K : Real)⁻¹) hroot4strict.le
+    have hmainLarge : max (polynomialPartitionThreshold k : Real)
+        ((4 * Real.pi / eta) ^ polynomialPartitionConstant k) < P.length := by
+      exact lt_of_le_of_lt (le_max_left _ _) hlarge
+    obtain ⟨L, R, hrefine, hproper, hdiam⟩ :=
+      section5_local_diameter_refinement_of_corollary_5_6 (v := v)
+        h56 P phi eta hP hk hphi
+        heta hmainLarge (by omega) (by simpa only [K] using hvupper)
+    have hlower (j : Fin L) : v - 1 ≤ (R j).length := by
+      rcases (hproper j).2.2 with h | h <;> omega
+    have hsumLengths : ∑ j, (R j).length = P.carrier.card := by
+      calc
+        ∑ j, (R j).length = ∑ j, (R j).carrier.card := by
+          apply Finset.sum_congr rfl
+          intro j _hj
+          exact (hproper j).1.symm
+        _ = P.carrier.card := IsPartition.sum_card hrefine
+    have hsumLower : ∑ _j : Fin L, (v - 1 : Nat) ≤ P.length := by
+      have : ∑ _j : Fin L, (v - 1 : Nat) ≤ ∑ j, (R j).length := by
+        exact Finset.sum_le_sum fun j _hj => hlower j
+      rw [hsumLengths, hP] at this
+      exact this
+    have hcount0 : (L : Real) ≤ 4 * (P.length : Real) ^
+        (1 - (K : Real)⁻¹) := by
+      exact section5_large_partition_count hr (by simpa only [K] using hvhalf)
+        (by simpa only [K] using hroot4strict.le) hsumLower
+    have hconstant : (4 : Real) ≤ section5LocalRefinementConstant k eta := by
+      exact section5LocalRefinementConstant_ge_four k eta
+    refine ⟨L, R, hrefine, fun j => (hproper j).1, ?_, hdiam⟩
+    rw [hP]
+    calc
+      (L : Real) ≤ 4 * (P.length : Real) ^
+          (1 - (K : Real)⁻¹) := hcount0
+      _ ≤ section5LocalRefinementConstant k eta *
+          (P.length : Real) ^
+            (1 - (polynomialPartitionConstant k : Real)⁻¹) := by
+        simpa only [K] using mul_le_mul_of_nonneg_right hconstant (by positivity)
+  · have hsmall : (P.length : Real) ≤ cutoff := le_of_not_gt hlarge
+    let S : Fin P.length → NatAP :=
+      fun i => section5SingletonNatAP i
+    let R : Fin P.length → ModAP N :=
+      fun i => section5Transport P (S i)
+    have hpartition : IsNatAPPartition S (Finset.range P.length) := by
+      exact section5SingletonNatAP_partition P.length
+    have hrefine : IsPartition (fun j => (R j).carrier) P.carrier :=
+      section5Transport_partition P S hP hpartition
+    have hproper (j : Fin P.length) : (R j).IsProper := by
+      exact section5Transport_isProper P (S j) hP
+        (section5SingletonNatAP_isProper j)
+        (IsPartition.cell_subset hpartition j)
+    have hrootPos : 0 < (P.length : Real) ^
+        (1 - (K : Real)⁻¹) := Real.rpow_pos_of_pos (by exact_mod_cast hr) _
+    have hK : (0 : Real) < K := by
+      dsimp only [K]
+      unfold polynomialPartitionConstant
+      positivity
+    have hKNat : 0 < K := by exact_mod_cast hK
+    have hfactor : (P.length : Real) ^ (K : Real)⁻¹ ≤ cutoff := by
+      calc
+        (P.length : Real) ^ (K : Real)⁻¹ ≤ (P.length : Real) := by
+          simpa only [Real.rpow_one] using
+            Real.rpow_le_rpow_of_exponent_le
+              (by exact_mod_cast hr : (1 : Real) ≤ P.length)
+              ((inv_le_one₀ hK).2 (by exact_mod_cast
+                (show 1 ≤ K by omega)))
+        _ ≤ cutoff := hsmall
+    have hdecomp : (P.length : Real) =
+        (P.length : Real) ^ (1 - (K : Real)⁻¹) *
+          (P.length : Real) ^ (K : Real)⁻¹ := by
+      rw [← Real.rpow_add (by exact_mod_cast hr : (0 : Real) < P.length)]
+      ring_nf
+      rw [Real.rpow_one]
+    have hcount0 : (P.length : Real) ≤ cutoff *
+        (P.length : Real) ^ (1 - (K : Real)⁻¹) := by
+      calc
+        (P.length : Real) = (P.length : Real) ^ (1 - (K : Real)⁻¹) *
+            (P.length : Real) ^ (K : Real)⁻¹ := hdecomp
+        _ ≤ (P.length : Real) ^ (1 - (K : Real)⁻¹) * cutoff :=
+          mul_le_mul_of_nonneg_left hfactor hrootPos.le
+        _ = cutoff * (P.length : Real) ^ (1 - (K : Real)⁻¹) := mul_comm _ _
+    have hcutoffConstant : cutoff ≤ section5LocalRefinementConstant k eta := by
+      unfold cutoff section5LocalRefinementConstant
+      linarith
+    have hcount : (P.length : Real) ≤ section5LocalRefinementConstant k eta *
+        (P.carrier.card : Real) ^
+          (1 - (polynomialPartitionConstant k : Real)⁻¹) := by
+      rw [hP]
+      calc
+        (P.length : Real) ≤ cutoff * (P.length : Real) ^
+            (1 - (K : Real)⁻¹) := hcount0
+        _ ≤ section5LocalRefinementConstant k eta *
+            (P.length : Real) ^
+              (1 - (polynomialPartitionConstant k : Real)⁻¹) := by
+          simpa only [K] using mul_le_mul_of_nonneg_right hcutoffConstant hrootPos.le
+    refine ⟨P.length, R, hrefine, hproper, hcount, ?_⟩
+    intro j
+    have hcard : (R j).carrier.card = 1 := by
+      rw [hproper j]
+      rfl
+    obtain ⟨x, hx⟩ := Finset.card_eq_one.mp hcard
+    rw [hx, Finset.image_singleton]
+    refine ⟨0, ⟨phi x, ?_⟩, ?_⟩
+    · simp [modInterval, ModAP.carrier]
+    · simp only [Nat.cast_zero]
+      positivity
+
 end LeanProofs.GowersSzemeredi
