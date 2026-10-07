@@ -1,0 +1,286 @@
+INTEGRATION GUIDE
+Sharp energy gaps and efficient restriction
+7 October 2026
+
+1. DESTINATION AND SOURCE CONVENTIONS
+
+Suggested destination: the research sequence under
+
+  Combinatorics/Ramsey/Research/GowersSzemeredi/
+    local-quantitative-refinements/
+
+The current-tree comparison uses commit
+  0d93c1eac2e20c313e7ed0cb7cb74ff705b00101.
+
+The consolidated article at that pin contains sources 01--39. Sources
+40--59 are separately placed material; the relevant records and the
+historical full manuscripts for 45, 58, and 59 were inspected separately.
+This contribution deliberately reserves no repository source number.
+Assign one through the existing intake process; do not infer a new number
+from the largest predecessor identifier mentioned here.
+
+The complete article is gowers_sharp_energy_restriction.tex. main.tex and
+sections/*.tex provide the same release in modular form. To merge into
+the thematic report, keep the mathematical text and proofs, prefix its
+labels and citation keys using the repository convention, and adapt the
+standalone preamble, title, contents, and bibliography wrappers. Prefix
+all labels, including already descriptive rf:, ff:, and uf: labels, to
+avoid conflicts with other sources. Preserve their internal cross-links.
+Do not silently replace or renumber previously integrated statements.
+
+2. ENERGY AND COSET MATERIAL: PRINCIPAL LABELS
+
+Place sections/energy.tex and sections/cosets.tex beside the Part II
+energy/coset stability material, particularly sources 14 and 45.
+
+  prop:mixed
+    Exact nonnegative mixed-set energy remainder. Keep a>=b>0 and the
+    counting-measure convention. The identity is stronger information
+    than the inequality obtained by discarding its two remainder terms.
+
+  thm:pointwise; thm:multilevel
+    Universal coefficient-one overlap gap and the refinement from an
+    attained difference-overlap spectrum. The truncation function uses
+    SUM multiplicities; its nodes are attained DIFFERENCE multiplicities.
+
+  thm:pointwise-equality
+    Complete positive-gap equality classification. Punctured subgroup
+    cosets include quotient index three. The separate two-coset family
+    uses quotient difference order at least four or infinite order;
+    allowing order three there duplicates the first family.
+
+  prop:weighted
+    Bounded-weight version using minimum overlap, not product overlap.
+    For weights bounded by M the defect is 1-E(f)/(M*(sum f)^3).
+    This proposition does not assert a weighted coset-distance theorem.
+
+  thm:coset; cor:outlier; thm:coset-equality
+    Canonical subgroup H={d:2*r_A(d)>|A|}, sharp quadratic distance
+    envelope for epsilon<=1/4, the retained occupancy loss, and all
+    canonical-envelope equality cases.
+
+  cor:unique; prop:threshold-sharp
+    Sharp threshold epsilon<2/9 for a unique closest subgroup coset,
+    and sharpness of the existence/closure threshold 1/4, respectively.
+    Uniqueness among cosets of the canonical H holds for epsilon<1/4;
+    uniqueness when the subgroup may vary stops at 2/9.
+
+Useful predecessor labels in the consolidated article are:
+  gsr:en:14:thm:energy-sharp-stability
+  gsr:en:14:thm:collision-sharp-stability
+  gsr:en:14:prop:collision-sharpness
+
+Coordinate splitting and labelled arrangement repair require their own
+hypotheses and arguments. The general-group coset theorem here should
+not be inserted as if it also resolved those Cartesian/label questions.
+
+3. PUNCTURE AND TRANSLATION MATERIAL
+
+Place sections/punctures.tex immediately after the coset theorem and
+alongside source 45's punctured-coset stability material.
+
+  prop:puncture-remainder; lem:puncture-budget
+    Exact missing-set identity and stronger outlier count. Source 45
+    supplies the missing-set framework; the sharper triple count is
+    already implicit in source 14. Retain those attributions.
+
+  thm:puncture; thm:puncture-equality
+    Repair with profile delta*tau(eta/delta^3), in the strict outer
+    epsilon<1/4 and strict inner eta/delta^3<1/4 range, with all equality
+    cases. The outer C is the canonical most occupied H-coset, which
+    need not be a globally closest coset above defect 2/9.
+
+  prop:translation-decomposition; thm:oriented-puncture
+    The actual one-translation gap theta_d supplies the same repair
+    profile and forces d outside the underlying subgroup of every
+    minimizing hole. The minimization keeps the outer C fixed.
+
+  prop:puncture-sharpness
+    Exact nested cyclic examples and optimal uniform asymptotic leading
+    constant one in the theta_d/delta^2 and eta/delta^2 scales.
+
+  prop:puncture-endpoint; ex:puncture-inner-endpoint
+    The inner normalized gap may equal 1/4. At that endpoint the missing
+    set is a union of two stabilizer cosets in the equality case, with
+    quotient difference order greater than two. Oriented equality also
+    requires K intersect (K+d) to be empty. The outer epsilon<1/4
+    hypothesis remains strict; the proposition gives a cyclic obstruction
+    at the outer endpoint. These endpoint statements must travel with
+    their additional equality classification.
+
+Hole uniqueness holds below the inner defect 2/9. Outer closest-coset
+uniqueness holds below the outer defect 2/9. They are separate tests.
+
+4. RESTRICTION MATERIAL AND THE CHANGED CONSTANT
+
+Place sections/restriction.tex and sections/filter.tex beside the
+single-relation restriction material of Gowers Lemma 9.3, Corollary 9.4,
+and sources 04, 17, and 58.
+
+  rf:thm:expectation
+    The repeated-filter expectation theorem is a PREDECESSOR RESULT
+    from source 58, reproved here to make the constant substitution
+    auditable. Its torsion and repeated-point errors decay with the
+    number of layers. Do not claim this theorem, its weighted coefficient
+    summation, or its signed first-moment selection as newly originated.
+
+  rf:thm:selection; rf:lem:finite-quotient
+    The exact selection certificate and finite-target reduction used
+    in the quantitative consequence. The finite quotient preserves only
+    the finitely many relevant discrepancies; it is not an embedding of
+    an arbitrary abelian target.
+
+  ff:prop:certificates; ff:thm:53; ff:cor:asymmetric
+    New rational degree-twelve filter, exact integer certificates,
+    common exponent 53, and stronger asymmetric powers. Preserve both
+    the explicit size hypothesis and the retained-count inequality.
+    Counts include all ordered tuples and all repetitions.
+
+  prop:moment-interface
+    Existing fourth-to-sixteenth moment lifting followed by the new
+    exponent-53 consequence. The moment implication itself is already
+    present in sources 04, 17, and 58.
+
+The improvement is from source 58's all-cyclic common exponent 54 to 53.
+The original Gowers exponent is 2^19. Sources 04 and 17 already have
+better powers in their different prime-field settings; the all-cyclic
+theorem here does not dominate those results. The general finite-domain
+expectation theorem retains a torsion factor. A dimension-independent
+uniform theorem on all bounded-exponent groups is not established.
+
+Useful predecessor labels:
+  gsr:en:04:rest:main
+  gsr:en:17:thm:main
+  gsr:en:17:prop:certificate
+
+5. PRINCIPAL FILTER COST
+
+Place sections/uniform.tex with the positive-filter method analysis
+following the source-58 fixed-order theorem.
+
+  uf:thm:uniform
+    Explicit bounds for every pair of integers m,a>=2. Keep the entire
+    admissible class: finite real even trigonometric polynomials,
+    0<=K<=1, K(0)=1, and nonnegative Fourier coefficients. Monotonicity
+    of the coefficients is NOT assumed for the universal lower bound.
+
+  uf:prop:concentration
+    The convolution-concentration input, proved using the classical
+    circle Riesz--Sobolev rearrangement inequality. Preserve the explicit
+    attribution to Christ--Iliopoulou, Theorem 1.1 and equation (1.8).
+
+  uf:cor:regimes
+    Polynomial-order, faster-growing-order, slower-growing-order, and
+    fixed-parameter consequences. Theta functions supply the limiting
+    calculation, but finite normalized Fejer means keep the upper bound
+    inside the stated finite-polynomial class.
+
+The principal quantity is -log(P_m)/log(P_m/Q_{m,a}). It controls a
+specified principal-spectrum certificate. Its lower bound also applies
+to independent heterogeneous scalar layers by weighted averaging. It
+does not lower-bound the performance on every particular input, every
+use of nonprincipal terms, or every conceivable selection method. The
+finite-degree error, collision cost, and torsion threshold are separate
+optimization problems. No exact value of I_{16,2}, sharp second-order
+asymptotic, or optimum common finite exponent is claimed.
+
+6. PROJECT QUESTIONS: EXACT STATUS CHANGES
+
+A. Source 45, question labelled q:pointwise, "A sharp pointwise
+   autocorrelation inequality": ANSWERED. The universal coefficient is
+   one, and every nontrivial equality case is classified.
+   New labels: thm:pointwise; thm:pointwise-equality.
+
+B. Source 45, "The largest envelope range": ANSWERED for the two
+   separately stated universal properties. Existence and canonical
+   subgroup closure hold through epsilon=1/4 and cannot be extended
+   uniformly; unique closest-coset recovery holds for epsilon<2/9 and
+   fails at 2/9. New labels: thm:coset; cor:unique;
+   prop:threshold-sharp; thm:coset-equality.
+
+C. Consolidated question gsr:fz:q:II:cosetrange: the general-group
+   coset-envelope range and the canonical equality examples are
+   ANSWERED by the preceding results. The same ledger item also mentions
+   coordinate splitting/Cartesian structure; those additional parts
+   remain open unless a separate argument supplies them. Do not close
+   the whole compound ledger item without retaining this distinction.
+
+D. Source 45, "The maximal range of nested-hole repair": ADVANCED TO
+   THE FULL REAL DOMAIN OF THE INNER QUADRATIC INVERSE, including
+   s=1/4, with canonical outer epsilon<1/4; the strict outer endpoint
+   has an explicit obstruction. The sharp finite profile and all inner
+   endpoint equality cases are supplied. Group/cardinality-dependent
+   improvements between available equality parameters remain open.
+   New labels: thm:puncture; prop:puncture-endpoint;
+   thm:puncture-equality; thm:oriented-puncture.
+
+E. Source 58, q:finite-optimum: its concrete request for an admissible
+   filter of principal cost below 52 and an audited smaller common
+   exponent is ANSWERED. The request to determine the exact optimum
+   I_{16,2} remains open. New labels: ff:prop:certificates; ff:thm:53.
+
+F. Source 58, q:second-order: the growing-a regime mentioned in the
+   discussion is ANSWERED at the leading scale by uf:thm:uniform and
+   uf:cor:regimes. The fixed-a error is improved. The exact next term
+   and the shapes of near-optimal filters remain open.
+
+The present twelve questions have labels:
+  q:discrete-envelope, q:transition, q:multilevel-equality,
+  q:weighted-coset, q:nonabelian, q:finite-filter, q:second-order,
+  q:degree, q:order-profile, q:beyond, q:systems, q:propagation.
+
+They should be integrated as continuations, with already answered
+subquestions removed or marked, rather than duplicating the old lists.
+Source 59 already supplies arbitrary-target character separation and
+Freiman extraction; those claims are not repeated here as unresolved.
+
+7. HISTORICAL ARCHIVES AND REPRODUCIBILITY
+
+Source 45 full manuscript:
+  docs/incoming/Gowers_Rigidity_Gaps_Research.zip
+  commit 8ed496b14e46aad80a50fa7c34ea50d3c66a9323
+  entry gowers_rigidity_gaps/gowers_rigidity_gaps.tex and sections/*.tex
+
+Source 58 full manuscript:
+  docs/incoming/gowers_torsion_uniform_restriction.zip
+  commit f8bc5e2ec281fcee02c0fc5ef717a775ee7e4442
+  entry gowers_torsion_uniform_restriction/
+          gowers_torsion_uniform_restriction.tex
+
+Source 59 full manuscript:
+  docs/incoming/gowers-character-affine-refinements.zip
+  commit f8bc5e2ec281fcee02c0fc5ef717a775ee7e4442
+  entry gowers-character-affine-refinements/
+          gowers-character-affine-refinements.tex
+
+Archive retrieval pins locate the inspected full manuscripts. Historical
+comparison pins written inside those older manuscripts describe their
+own source states; they do not replace this contribution's current-tree
+comparison pin. data/source_manifest.json gives paths, identities, and
+inspection scope in machine-readable form.
+
+Run "make check" for the supplementary exact finite checks. They require
+only ordinary Python 3.10+ with assertions enabled. The filter checker
+also gives independent exact-integer certificates of its finite
+constants; its decimal outputs are only diagnostics. The universal
+statements and infinite asymptotics rest on the written proofs.
+
+8. FORMAL STATUS AND LIMITS
+
+The proposed formalization order is in sections/research.tex. Relevant
+existing catalogue interfaces are lemma_3_10, lemma_9_3,
+corollary_9_4, additiveTupleCount, phiAdditiveTupleCount, and
+GammaHomOfOrder (order eight for the sixteen-variable restriction).
+Use separate theorem names for new strengthenings and retain the tuple
+normalizations and explicit thresholds when connecting these interfaces.
+
+This package contains no Lean implementation and makes no kernel-checked
+or fresh-compilation claim. The inspected proof-status catalogue reports
+the existing project, not formal certification of the new research.
+Research placement, a successful TeX build, and finite Python tests do
+not justify upgrading the proof-status ledger.
+
+The source comparison is targeted rather than an exhaustive literature
+priority search. No external peer review is claimed. No global bound for
+Szemeredi's theorem, progression-free sets, or Ramsey numbers follows
+from the local improvements without a new complete parameter propagation.

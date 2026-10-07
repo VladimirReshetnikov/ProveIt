@@ -1,0 +1,15 @@
+PYTHON ?= python3
+LATEXMK ?= latexmk
+
+.PHONY: all check pdf clean
+
+all: check pdf
+
+check:
+	$(PYTHON) code/verify.py
+
+pdf:
+	$(LATEXMK) -pdf -interaction=nonstopmode -halt-on-error article.tex
+
+clean:
+	$(LATEXMK) -c article.tex

@@ -1,0 +1,15 @@
+.PHONY: pdf verify figures clean
+
+pdf:
+	latexmk -pdf -interaction=nonstopmode -halt-on-error gowers_asymptotic_constants.tex
+
+verify:
+	python3 code/verify_bounded_norm.py
+	python3 code/verify_norm_limit.py
+	python3 code/verify_phase_face_cover.py
+
+figures:
+	python3 code/make_figures.py
+
+clean:
+	latexmk -c gowers_asymptotic_constants.tex
