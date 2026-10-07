@@ -352,13 +352,48 @@ sketches and what is missing:
 9. a complete reversion for the inverses (Parts I, II);
 10. the boundary sequence's OEIS identity and the unread full texts (Part II;
     still no OEIS entry);
-11. uncertified numerics (Part II's diagnostics; Part I's reference);
+11. uncertified numerics (Part II's diagnostics; Part I's reference; the
+    sources of its two quotations corrected after the independent check of
+    7 October 2026: "not outward-rounded" is Part II's package wording, in
+    `178-boundary-optional-README.md`, and "read without executing code" is
+    from Report 176's delivered, unshipped `README.md`, not from the cited
+    sections);
 12. literature and priority.
 
 **Re-scoped**: Part I's question 5. **Superseded, sentence kept** (dated note):
 Part I's "The remote b-file was not retrieved" (the write compared all 100
 terms). No claim of either manuscript was found wrong; no published result is
 corrected.
+
+## Independent check of the write (7 October 2026)
+
+An adversarial check made by the intake after the write (`8dacae7a7`), with
+its own code, after fetching A297487 (revision #18) and its b-file again.
+
+- **Counts**: a brute-force enumeration of maximal matchings, independent of
+  every formula, gives `A_0, …, A_3`, `M(2n,n,n)` for `n ≤ 3` and
+  `M(4+d,2,2)`, `−2 ≤ d ≤ 3`; (5) agrees with Howroyd's program (`n ≤ 100`),
+  the entry's Mathematica line (`n ≤ 40`), EGF extraction (`n ≤ 8`), the
+  certificate and all 100 b-file terms; Howroyd's summand `k` equals
+  `3t(n, n−2k)` exactly for `n ≤ 60`; the boundary prefix reproduced. The OEIS
+  again matches nothing for the boundary prefix (today's wording: "Sorry, but
+  the terms do not match anything in the table").
+- **Part II and Part I's question**: the edge populations satisfy the degree
+  equations; enumeration shows a single branch outside the triangle and on the
+  face (plus perfect matchings there), three inside.
+- **Balance, boundary coefficients, inverses**: the specializations
+  (`λ_i = λ`, `C_i = 3/8`, the softmax expansion), `c_1(2a) = 211a/216`, the
+  four `ℓ_k`, `−83/648`, and the factorial-core and operator-series identities
+  re-derived; the exact `log M(2n,n,n)` at `n = 500, …, 4000` matches (107)
+  through `n^{−4/3}` to below `10^{−3} n^{−5/3}`.
+- **Provenance**: archive sizes, counts, index times, the catalogue blobs and
+  the shared `verify_manifest.py` blob confirmed (that blob is now also in
+  `a262810-diagonal-alignments` and `a328716-lazy-closed-walks`).
+- **One defect**: Section 26, item 11 attributed two quotations to sections
+  that do not contain them; sources corrected with a dated note.
+
+Both delivered verifiers still pass against the corrected `article.tex` (on a
+copy, shipped names). The check is recorded at the end of Section 26.
 
 ## Relation to neighbouring reports
 
@@ -486,7 +521,9 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
 pdfLaTeX (MiKTeX), in a scratch copy of `article.tex` (no other inputs);
-commit only `article.pdf`. The build (46 pages): no errors, no undefined or
+commit only `article.pdf`. The build (46 pages at the write; 47 after the
+independent check of 7 October 2026, label numbers unchanged, aux files
+compared): no errors, no undefined or
 multiply defined references or citations, no duplicate destinations, no
 overfull or underfull boxes, no warnings. The log carries one "Infinite glue
 shrinkage found in box being split" message, from the notation longtable
