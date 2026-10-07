@@ -394,6 +394,8 @@ import GowersSzemeredi.Proofs16BalancedAlphabetExistence
 import GowersSzemeredi.Proofs16BalancedProgressionWord
 import GowersSzemeredi.Proofs16AlphabetLargeModulus
 import GowersSzemeredi.Proofs16BalancedFieldWord
+import GowersSzemeredi.Proofs16BalancedWordObstruction
+import GowersSzemeredi.Proofs16NonMultiplyLinearWords
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 

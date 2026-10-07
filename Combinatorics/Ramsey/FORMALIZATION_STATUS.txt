@@ -12,8 +12,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 548 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 3,563 public Gowers theorems and found only propext,
+  All 550 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 3,570 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 110 exact
   companion proofs and 10 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -1505,8 +1505,22 @@ Balanced words on every long proper modular progression
   every such progression bounded by (1/R+epsilon) times its length.
   No primality is required for this existence theorem. All three modules
   pass the full axiom audit. This discharges the balanced-word existence
-  step of source 50; applying the result to the target cover controls and
-  verifying the two packaged premises remain necessary.
+  step of source 50; the target cover obstruction is now proved below.
+  Verifying the two packaged premises remains necessary.
+
+Finite-valued functions failing the target multiple-linearity conclusion
+  Proofs16BalancedWordObstruction applies the deterministic 5/16 bound to
+  any claimed unit-parameter multiply-linear cover at loss 1/2. The full
+  proper box has positive mass, so the required retained half contradicts
+  the upper bound. Proofs16NonMultiplyLinearWords chooses K=ceil(Q), R=4K,
+  and epsilon=1/(32K), giving K*(1/R+epsilon)=9/32. The large-modulus
+  construction also ensures K*R<=N^delta/32, where delta=multipleC(1/2).
+  For each fixed dimension k+1 and every sufficiently large prime modulus,
+  there is therefore an R-valued function of the last coordinate that is
+  not MultiplyLinearFunction 1 1 on the full domain. The alphabet size
+  satisfies R<=8*multipleQ(1/2) 1 (k+1). Both modules pass the full audit.
+  This proves the negative conclusion needed for source 50, but does not
+  yet negate lemma_16_10: its two packaged premises still need witnesses.
 
 Reproducible checks (from repository root)
   python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.Audit
@@ -1550,11 +1564,10 @@ Next substantial obligations
      batch 124). It does not refute Gowers's lemma in context. Candidate
      repaired statements: source 49's acyclic cover theorem and source 50's
      repair interface. The finite-alphabet affine/multilinear cover bound
-     and its 5/16 box-partition consequence are now formalized. Balanced-word
-     existence and witnesses for the packaged hypotheses remain necessary
-     before claiming a formal counterexample. Mathlib provides the relevant
-     Hoeffding tools in Probability/Moments/SubGaussian.lean, including
-     hasSubgaussianMGF_of_mem_Icc and measure_sum_ge_le_of_iIndepFun.
+     and its 5/16 box-partition consequence, balanced-word existence, and
+     failure of the target conclusion are now formalized. Witnesses for
+     the packaged hypotheses remain necessary before claiming a formal
+     counterexample to the implication.
   3. Prove Theorem 18.1 with explicit thresholds strong enough for iteration.
      The existing Section 18 cyclic dichotomy is conditional on that theorem.
      Extend the relative-balance, boundary refinement, uniform stopping,
