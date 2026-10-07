@@ -195,6 +195,50 @@ The anchor lift does not have this shape, because of its small classes and
 missed anchors. The budgets are also where obstruction B bites: (2) asks
 `log(1/E) ≲ R·log R`, a polynomial in `1/θ`.
 
+## G. Why common-anchor lifts cannot have loss-independent controls (method obstruction)
+
+This obstruction is to the anchor method. It is not a counterexample to
+Theorem 16.2 or to a structure theorem with loss-independent losses.
+
+Assume the strengthened, loss-independent lower-dimensional inputs:
+
+- `φ''` is covered jointly in `(h,x)`;
+- `φ′(h,·)` is affine on each whole cell fibre.
+
+Then every fibre has one class, and the only role of the anchors is to supply
+two points of each fibre `D_h ∩ J` common to all `h` in the cell. Each anchor
+`x_a` contributes a cross-section cover of `h ↦ φ₁(h,x_a)` on its own
+partition. With r anchors these refinements are sequential, so the cell-width
+exponent is `c^(r·s)`.
+
+**Random domains defeat this.** Let `D` be a random subset of density α (the
+truth can be trivial here, e.g. `φ₁ = h·x`). A fixed set of r anchors in a
+cell misses the fibre `D_h ∩ J` for a `(1−α)^r` fraction of `h`. That is a
+constant loss, not one decaying in the width W. Driving it below `C·W^(−δ)`
+forces `r ≳ δ·log W/α`. Then `c^(r·s) = W^(−δ′)` for some δ′ > 0, and the cell
+widths `W^(W^(−δ′))` tend to 1.
+
+So no choice of anchor count gives covers whose losses are independent of θ′
+and power-small. Stacking anchors into one relation (the union of r
+cross-sections has the product property with `γ/√r`, which is proved by
+pigeonholing the branch vector along each line) removes the sequential
+compounding. It does not help, because the anchors must lie in each cell's
+own progression `J_u`, and global anchors almost never do.
+
+**Consequence.** A lift whose losses do not depend on θ′ needs a
+*family-uniform* structure theorem: one partition serving the cross-sections
+`φ₁(·,x)` for all x in a cell. Alternatively it needs direct additive
+structure in h of the slope functions `h ↦ ψ_h(d)`, which might come from
+8-arrangement respect. Neither is available, and both are research problems.
+
+**No fixed r helps either.** `MultiplyLinear γ r` needs controls polynomial in
+θ′ for every r. Controls that are exponential in a power of 1/θ′ (the proved
+`LargeBoxMultilinearCover` profiles) therefore never imply `MultiplyLinear`.
+At the nontrivial-regime boundary `1/θ′ ≈ (γ/r)(log W)^(1/(A r))`, they
+exceed the target `≈ log W` by a factor `exp((log W)^ε)`. Any all-dimension
+induction built on the proved lift must therefore replace `MultiplyLinear` by
+a predicate with general control functions (route 2 below).
+
 ## F. Routes
 
 1. **Quantitative repair (research).**
