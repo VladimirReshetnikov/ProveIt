@@ -1,5 +1,5 @@
-/- Modified for ProveIt: import Lean 4.32 compatibility declarations.
-Statements and proofs are unchanged from the pinned upstream source. -/
+/- Modified for ProveIt: import Lean 4.32 compatibility declarations and
+use Set.mem_setOf_eq for predicate membership. Statements are unchanged. -/
 import OAI.Compat.Core
 import OAI.Combinatorics.Progressions.Estimates.GowersWeightedDerivative
 
@@ -237,7 +237,7 @@ theorem supportedCubeSum_eq_tsum (j : ℕ) (Q : Finset A) (F : (Fin j → Bool) 
       convert! (tsum_subtype
         {p : (Fin j → A) × A | ∀ ω : Fin j → Bool, p.2 + cubeShift p.1 ω ∈ Q}
         (fun p ↦ mixedCubeProduct F p.1 p.2)) using 1
-      simp only [Set.indicator_apply, Set.mem_ofPred_eq]
+      simp only [Set.indicator_apply, Set.mem_setOf_eq]
     _ = _ := tsum_congr (fun p ↦ (mixedCubeProduct_restrictTo Q F p.1 p.2).symm)
 
 omit [DecidableEq A] in
