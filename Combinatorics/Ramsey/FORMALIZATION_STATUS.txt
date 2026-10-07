@@ -12,8 +12,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 227 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 2,104 public Gowers theorems and found only propext,
+  All 231 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 2,124 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 101 exact
   companion proofs and 19 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -561,8 +561,27 @@ Linear-budget short-parent localization
   and |S|. Weighted selection and coefficient extraction produce a bilinear
   square of density delta/4 and width at least
   floor(|S|/2)^(cor711Exponent(delta,1)/2)-1 at the displayed affine scale.
-  The integer span still has to be retained in the Stage 13.7 selection and
-  the remaining large-scale bounds propagated through the full chain.
+  The complete large-N square theorem below retains this span through
+  Stage 13.7 and discharges the remaining scale bounds.
+
+Complete large-N common-step square extraction
+  Proofs13IndexedRowExtraction retains a positive integer step ratio t and
+  t*(|S|-1)<|R| through the actual Stage 13.7 weighted row selection.
+  Since the Stage 13.6 construction retains |R|<=|Q|, this discharges the
+  short-parent span condition. Proofs13SquareExtraction constructs all row,
+  coefficient, parent, and square data, preserving original-domain support.
+  Proofs13SquareScale pays for the remaining row and coefficient scales,
+  floors, integer halving, and the final subtraction, uniformly at large N.
+  Proofs13CompleteSquareExtraction now proves directly from Section13Context:
+  for each fixed 0<alpha<=1/6 and sufficiently large prime N, there are proper
+  equal-length progressions V,W with the same nonzero step and length at
+  least N^gamma, and B contained in the original domain and V x W, on which
+  phi is bilinear and |B| >= 2^-137*alpha^704*|V|*|W|.
+  Here gamma = 2^-386*alpha^1856 / 2^(13*section13Q(alpha)) > 0.
+  All intermediate data and numerical budgets are constructed. The threshold
+  remains existential. The larger-density case, the unrestricted numbered
+  catalogue statements, and the quantitative comparison/analytic input for
+  Theorem 13.12 remain unresolved; no final Szemeredi bound is claimed.
 
 Reproducible checks (from repository root)
   python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.Audit
@@ -582,10 +601,11 @@ Next substantial obligations
   1. Resolve Corollary 5.8's missing common-target scale assumptions. Its
      scale-qualified repair is proved, but does not establish the unrepaired
      catalogue statement.
-  2. Extend the complete large-N Stage 13.4--13.9 chain beyond alpha<=1/6
-     and resolve the missing standing hypotheses in the catalogue versions.
-     Corollary 13.10 requires compatibility and grid inputs; do not silently
-     discharge them by citing the paper.
+  2. Extend the complete large-N common-step square extraction beyond
+     alpha<=1/6, reconcile the unrestricted catalogue hypotheses, and connect
+     the explicit square exponent to the inverse theorem's analytic input
+     and printed quantitative target. The actual extraction now constructs
+     the integer geometry; the old catalogue antecedents still omit it.
   3. Complete the higher-dimensional Section 16 induction using the migrated
      proper-box predicates, propagate properness through the remaining box
      statements, and resolve the documented Corollary 16.11 bound.
