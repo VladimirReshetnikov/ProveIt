@@ -137,3 +137,51 @@ $C_1$, $C_2$ and $C_3$ as $n$ grows, and the last stays between $-0.18$
 and $-0.23$ for $16\le n\le500$. These are observations on a finite range,
 consistent with the expansion; they certify no coefficient and no rate.
 \end{remark}
+\begin{writenote}[Independent check of the write, 6~October 2026]
+An adversarial check made by the intake after the write (commit
+\file{c569b0b98}) re-derived the statements marked [write] with its own
+code, after fetching again A138178, its b-file and A135588 (the revisions
+quoted) and Cameron--Prellberg--Stark's v2 (4~April 2006).
+\emph{Counts.} By a route different from the write's, the zero-line
+inclusion--exclusion~\eqref{spm:eq:deletion} with $f_n(j)$ from the
+first-order recurrence
+$(n+1)a_{n+1}=ja_n+(n-1+j+j(j-1))a_{n-1}$ of
+$(1-z)^{-j}(1-z^2)^{-j(j-1)/2}$, it computed $A_0,\ldots,A_{2000}$ exactly:
+all 501 b-file terms and the 25 data terms agree; binomial cell factors
+give all 26 terms of A135588. \emph{Remark~\ref{spm:rem:third}.} Every entry
+of the table was reproduced to the digits shown, and the receipt's row
+$n=32$ agrees. Richardson extrapolation in $h$ of
+$(\varrho_n-1-C_1h-C_2h^2)/h^3$ from the exact counts gives
+$0.1177251847$ (nodes $n=400,600,\ldots,2000$; the same ten digits from
+three other node sets of seven to thirteen points), against $C_3(\log2,1)=0.1177251846518\ldots$ from the
+write's formula; the same extrapolation of marked counts $A_n(u,1)$ to
+$n=1500$ gives $0.154285415$ at $u=\tfrac45$ and $0.087284579$ at
+$u=\tfrac54$, against $0.1542854152\ldots$ and $0.0872845791\ldots$ from the
+formula at $L=\log\tfrac94$ and $L=\log\tfrac95$. This is numerical
+confirmation at three values of $L$, independent of the Gaussian
+prescription; it is not a derivation (Question~\ref{spm:q:third}).
+$D_3=C_3-C_1C_2+\tfrac13C_1^3$ and $C_1(L,1)$, $C_2(L,1)$ were rechecked in
+SymPy. \emph{Remark~\ref{spm:rem:oeis}.} The entries' revisions, names,
+generating functions (the first is~\eqref{spm:eq:deletion} at $u=v=1$,
+Jovovic's is~\eqref{spm:eq:transform}), comments and the absence of an
+asymptotic are as quoted; Proposition~4.2 (p.~14, with $C_s\approx0.44341$)
+and the Poisson$((\log2)^2/2)$ limit with~(8) (p.~9) are in the preprint as
+described. \emph{Section~\ref{spm:sec:model}, note.} \file{q2:thm:fubini},
+Part~IV of \file{a261781-matrix-compositions} (Sections~34--44, the polydisc
+$|\omega-1|\le2.1$, $|u-1|\le0.02$, $P\sim\mathrm{Pois}(Lr)$ with
+$r\log2=1.1046161\ldots$) and the Lean names are as stated.
+\emph{Section~\ref{spm:sec:saddles}, note.} The identity in law was
+re-derived ($\sum_{k\ge d}q^k\binom kd=u^d/(1-q)$, and $K$ has the law
+proportional to $e^{-Lk}f_n(k,v)=q^kf_n(k,v)$ there).
+\emph{Remark~\ref{spm:rem:transseries}.} (1)~holds; (2)~the factorial core
+with $\kappa=\tfrac12$, $d=-\tfrac12-\log L$ gives $v_{\rm vol}=w$,
+$X_{\rm vol}=N$, slope $Q/2$, and the core equation alone has the
+\file{plt:thm:lw-template} data stated, the extra terms being of relative
+order $e^{-Z/2}/Z$; (3)~the identity for $F_0$ is exact, the triangular
+recurrence gives $e_1,e_2,e_3=\alpha,\beta,\gamma$, and
+$e_1,\dots,e_5$ are polynomials in $Q^{-1}$ without constant term, of
+degrees $1,3,5,7,9$, with $d$ first in $e_4$ (SymPy); (4)~is accurate.
+\emph{Provenance.} The archive facts (604{,}411 bytes, the SHA-256 quoted,
+30 files, 29 manifest entries, 952 delivered lines, 22 pages) and the counts
+of 110 labels and 93 references were confirmed. No defect was found.
+\end{writenote}
