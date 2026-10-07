@@ -277,7 +277,13 @@ the repository.
   repository". Limits of the check: Flajolet–Sedgewick's text was not
   consulted (only its section title), BFSS only through that account, and
   the announced companion paper on stable laws could not be checked
-  (Part III's further question F8).
+  (Part III's further question F8). [Independent check, 7 October 2026:
+  Flajolet–Sedgewick's Section IX.11 was then read, in the authors' online
+  edition (pp. 703–712 there). Its Theorem IX.16(ii), on semi-large powers,
+  gives the `σ = 0` count law in local form (with `H = Q`, exponent 3/2,
+  `h_1 = m`), so that law is in the textbook too; Section IX.11 has no
+  law of the largest component, no weight moving with `n` and no tempered
+  window. F8 stays open for BFSS's Theorem 12 and the companion paper.]
 - **Unproved claims of Part III, recorded as further questions** (Section
   31.1, items F1–F8, under the standing rule of 4 October 2026): the full
   tail expansion of Lemma 22.1 (F1) and the complex sector bound of Lemma
@@ -294,6 +300,31 @@ the repository.
   (F8). The manuscript's RQ1–RQ9 are printed as delivered. No claim of the
   manuscript was found false; its unproved "no continuous Gumbel limit at
   fixed `t`" is proved in Remark 29.2.
+- **Independent check of the batch-98 write (7 October 2026).** An
+  adversarial check by the intake after the write (`a763feee1`) isolated
+  every hand edit (by rebuilding the mechanical assembly from a fresh
+  extraction) and re-derived each added statement with its own code:
+  `N_n`, `S_n`, `I_n` to `n = 2000` agree with the OEIS b-files fetched
+  again (A000571 #154, A351822 #49, A145855 #55, none revised since the
+  manuscript's inspection) and a Landau enumeration gives the block-count
+  polynomials for `n ≤ 11`; the identifications of the provenance note
+  (`κ/m = 2/(3μ)`, `m = a_c`, `a_2 = e_2`, `β = −mℓ`, `d`, `Γ(5/2)/π`) hold
+  at 60 digits; `K_1(0) = −0.222493573879597` by formula, quadrature and the
+  check's own transfer expansion; the remainders `−0.0109`, `−0.0103`,
+  `−0.0101`, `−0.0100` after Proposition 3.2 and the F6 values `7.31`,
+  `7.09`, `6.95`, `6.84` were reproduced from exact coefficients; the F6
+  identity and the `K_0` closed form hold to `2·10^(−36)`; F3's
+  `E K_n = n/m_t + v_t/m_t² + O(e^(−nt/2))` holds with far smaller errors
+  at `t = 0.2, 0.5`; Remark 29.2, the RQ6 note, the transseries instances,
+  the provenance record and the accounts of Banderier–Kuba–Wallner and
+  Banderier–Kuba–Wagner–Wallner were confirmed. No mathematical error.
+  Corrected with the first wording kept: the front matter's "the rest is new
+  to the repository", which omitted the overlaps listed in the provenance
+  note. Dated additions: Flajolet–Sedgewick's Section IX.11 read (above);
+  the last digits of `κ` and `d` in (143) are rounded, not truncated; the
+  arXiv record of Grabchak's paper has a single version (v1, 5 September
+  2011), not the "revised version" the manuscript's bibliography mentions.
+  The check is recorded in a dated note at the end of Section 31.1.
 
 ## Relation to the repository
 
@@ -447,7 +478,7 @@ No statement, proof or number of any manuscript was changed.
 ```text
 README.md                                     this guide (replaces the three delivery READMEs)
 article.tex                                   the report (Part I delivered as report.tex; Part II as tournament_coexistence.tex; Part III as article.tex)
-article.pdf                                   compiled report, 81 pages
+article.pdf                                   compiled report, 82 pages
 02-coex-code-README.md                        Part II: delivered code README (algorithms, precision, outputs)
 03-supercrit-SOURCE_NOTES.md                  Part III: delivered source and provenance notes (pin, bounded literature check)
 code/run_checks.py                            Part I: one command for all checks; writes results/ beside scripts/ (see below)
@@ -688,10 +719,11 @@ From this directory:
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The committed PDF was built in a scratch directory with MiKTeX: 81 pages
+The committed PDF was built in a scratch directory with MiKTeX: 82 pages
 (title and front matter pages 1–3, contents 4–7, Part I pages 8–21, Part II
-pages 22–48, Part III pages 49–76, Part II's Appendices A–B pages 77–78,
-Part III's Appendices C–E pages 79–80, references pages 80–81), no errors,
+pages 22–48, Part III pages 49–77, Part II's Appendices A–B pages 78–79,
+Part III's Appendices C–E pages 80–81, references pages 81–82; 81 pages
+before the independent check of 7 October 2026), no errors,
 no LaTeX warnings,
 no undefined references or citations, no multiply defined labels, no
 duplicate PDF destinations, no overfull or underfull boxes. The log's pdfTeX
