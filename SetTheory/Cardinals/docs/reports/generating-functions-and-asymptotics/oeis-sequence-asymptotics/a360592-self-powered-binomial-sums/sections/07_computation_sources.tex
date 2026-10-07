@@ -19,7 +19,7 @@ and exact centered-moment substitution.
 
 Independent checks reconstruct polynomial expectations in the
 falling-factorial basis. If a polynomial $H$ has degree at most $d$, then
-\begin{equation}\label{eq:diffbasis}
+\begin{equation}\label{spb:ep:eq:diffbasis}
  H(r)=\sum_{j=0}^d\Delta^jH(0)\binom rj,
  \qquad \E H(X)=\sum_{j=0}^d\Delta^jH(0)\frac{\lambda^j}{j!},
 \end{equation}
@@ -38,9 +38,9 @@ All guards use ordinary conditionals and exceptions, so Python's
 listed in the code README.
 
 \subsection{Complete sums and a visible preasymptotic warning}
-\label{sec:numerics}
+\label{spb:ep:sec:numerics}
 For the complete-sum diagnostic, the original expression
-\eqref{eq:counts} is evaluated as an exact integer. Its normalization uses
+\eqref{spb:ep:eq:counts} is evaluated as an exact integer. Its normalization uses
 90-digit arithmetic. Independently, the transformed expression sums
 \emph{every} allowed $r$ from zero through $n$, using logarithms and
 log-gamma evaluations. No Poisson window and no asymptotic coefficients
@@ -53,7 +53,7 @@ For $p\ge2$ let
 \]
 These are different finite approximations. In particular, $S_{12}$ retains
 many fractional powers beyond those in $A_{12}$.
-Table~\ref{tab:counts} reports relative errors as approximation divided by
+Table~\ref{spb:ep:tab:counts} reports relative errors as approximation divided by
 $\Rcal_p(n)$ minus one. The number of printed digits is deliberately smaller
 than the working precision.
 
@@ -69,7 +69,7 @@ $p$ & $n$ & $\Rcal_p(n)$ & $A_{12}/\Rcal_p-1$ & $S_{12}/\Rcal_p-1$\\
 \end{tabular}
 \caption{Complete-sum diagnostics. Both parameterizations are asymptotically
 valid at fixed order, but have sharply different errors here.}
-\label{tab:counts}
+\label{spb:ep:tab:counts}
 \end{table}
 
 The original and transformed evaluations agree to about 86 decimal places
@@ -89,6 +89,20 @@ The half-power truncation through $C_{1,4}$ has relative error
 approximately $-2.32029\cdot10^{-9}$.
 The companion odd input $n=10001$ gives an error of the same size,
 consistent with the common algebraic coefficients for both parities.
+\begin{writenote}[The decimals recomputed, 7 October 2026]
+The write recomputed Table~\ref{spb:ep:tab:counts} and the critical values
+from the exact integers at 110 digits, with its own coefficients
+$C_{p,k}$, $k\le12$, and transforms $U_j$, $j\le12$: every printed value is
+the correct rounding of the recomputed one. Several are roundings rather than
+truncations; the truncations at the printed length are $\Rcal_2=0.5075173547742\ldots$,
+$A_{12}/\Rcal_2-1=-9.64016\ldots\cdot10^{-9}$,
+$S_{12}/\Rcal_2-1=+6.40646\ldots\cdot10^{-10}$,
+$\Rcal_3=0.1416076329486\ldots$, $A_{12}/\Rcal_3-1=-0.6615364471\ldots$,
+$S_{12}/\Rcal_3-1=+0.0012291162\ldots$, $a_1(n)/M_1(n)=1.02446126439771172896\ldots$
+and the relative error $-2.32028\ldots\cdot10^{-9}$ at $n=10000$
+($-2.31971\ldots\cdot10^{-9}$ at $n=10001$). The integer and transformed
+evaluations agree to $10^{-106}$ in the write's computation.
+\end{writenote}
 
 \subsection{Marked and inverse diagnostics}
 At $n=10^9$ the reported TV distances divided by their proved leading
@@ -119,9 +133,17 @@ finite number of Newton steps and checks numerical domain conditions at
 each step. Neither mode supplies a certified convexity onset or certifies
 threshold rounding. These distinctions matter when interpreting a tiny
 printed residual.
+\begin{writenote}[The marked ratios recomputed, 7 October 2026]
+With the exact law over a full central window (log-gamma values of the
+summands) and the residue-conditioned Poisson references, the write obtains
+the four ratios at $n=10^9$ as $1.00011173445\ldots$, $1.00021447898\ldots$
+($p=2$) and $1.00057819116\ldots$, $0.999189635789\ldots$ ($p=3$): the printed
+values are correct roundings (truncations $1.000214478$ and $0.999189635$ for
+the two that differ).
+\end{writenote}
 
 \subsection{Observed primary formulas}
-\label{sec:sources}
+\label{spb:ep:sec:sources}
 The exact finite sums and the three displayed OEIS expressions were
 observed in primary-entry text on 5 October 2026.
 The A360479 ordinary page was retrieved directly; A360592 and A360747
@@ -166,9 +188,15 @@ with $c=e^{9/4}/\sqrt2$ and $t=n^{-1/4}$.
 Each appeared as part of a formula using $\sim$.
 Every one of these multipliers tends to one, so the formulas remain
 correct if read solely as leading equivalents. Their intended refined
-coefficients differ from \eqref{eq:critC1}, \eqref{eq:p2}, and
-\eqref{eq:p3}. Appendix~\ref{app:discrepancies} lists the differences explicitly.
+coefficients differ from \eqref{spb:ep:eq:critC1}, \eqref{spb:ep:eq:p2}, and
+\eqref{spb:ep:eq:p3}. Appendix~\ref{spb:ep:app:discrepancies} lists the differences explicitly.
 No explanation of how the discrepancies arose is assumed.
+\begin{writenote}[7 October 2026]
+The write compared these three multipliers with the formulas of the current
+entries (revisions in Remark~\ref{spb:ep:rem:oeis}): after the normalizations
+of this article they are exactly the displayed expressions (checked
+symbolically, leading factors included).
+\end{writenote}
 
 \subsection{Bounded historical scope}
 The source comparison establishes a specific coefficient audit, not a
@@ -193,4 +221,38 @@ function entries were checked directly. The Lambert-$W$ reference was
 verified bibliographically and at its definition-level abstract; we do
 not attribute an uninspected theorem in that paper to the present family.
 The analytic inverse estimates needed here are proved in
-Section~\ref{sec:inverse}.
+Section~\ref{spb:ep:sec:inverse}.
+
+\begin{remark}[{[write]} The OEIS entries, 7~October 2026]\label{spb:ep:rem:oeis}
+The write read the three entries in the internal format on 7~October 2026.
+\emph{A360592}, revision \#28 (17 February 2023), by V\'aclav Kote\v{s}ovec
+(13 February 2023), ``G.f.: Sum\_\{k>=0\} (1 + k*x)\^{}k * x\^{}k.'', with the
+finite sum, a b-file by Kote\v{s}ovec for $n=0,\ldots,760$, and the unsigned
+formula line $a(n)\sim\exp(\exp(1/2)\sqrt{n/2}-3e/8)\,n^{n/2}/2^{n/2+1}\,
+(1+((e^{1/2}+e^{-1/2})/2^{5/2}+11e^{3/2}/2^{9/2})/\sqrt n)$.
+\emph{A360479}, revision \#40 (19 February 2023), by Seiichi Manyama
+(19 February 2023), with a b-file by Kote\v{s}ovec ($n=0,\ldots,635$), a graph
+of the asymptotic ratio, and the refinement through $n^{-1}$ signed by
+Kote\v{s}ovec, 19 February 2023. \emph{A360747}, revision \#22 (20 February
+2023), by Manyama (19 February 2023), with a b-file by Kote\v{s}ovec
+($n=0,\ldots,600$), a graph, and the refinement through $n^{-1}$ signed by
+Kote\v{s}ovec, 20 February 2023, ending ``see graph for more minor asymptotic
+terms''. These are the latest revisions, all from February 2023, so the
+formulas the source compared in Section~\ref{spb:ep:sec:sources} are those of
+the current entries, and its attributions are as stated there.
+\emph{Checks.} All terms of the three b-files equal the write's
+evaluation of~\eqref{spb:ep:eq:counts}. Rewritten in this article's
+normalizations, the three formula lines are exactly the multipliers displayed
+in Section~\ref{spb:ep:sec:sources}, with leading factors $M_1(n)$, $M_2(n)$,
+$M_3(n)$ (SymPy). The leading equivalents are therefore correct. The first
+corrections are wrong: by Theorems~\ref{spb:ep:thm:critical}
+and~\ref{spb:ep:thm:allp} the true first coefficients are $C_{1,1}$,
+$C_{2,1}=-13c^2/6$ and $C_{3,1}=0$, and each entry adds $1/(8c_p)$. Against
+the exact sums the write finds $(\text{entry multiplier}-a_p(n)/M_p(n))/t$
+equal to $0.10722073\ldots$ at $n=10^{14}$ ($p=1$; $1/(8c)=0.10722048\ldots$),
+$0.04752092\ldots$ at $n=10^{18}$ ($p=2$; $1/(8c_2)=0.04752160\ldots$) and
+$0.01863213\ldots$ at $n=10^{24}$ ($p=3$; $1/(8c_3)=0.01863212\ldots$), the
+full refined multipliers being used; so the entries' first corrections are
+refuted by the proofs of this Part and, numerically, by the exact sums. No OEIS
+edit is part of this work.
+\end{remark}

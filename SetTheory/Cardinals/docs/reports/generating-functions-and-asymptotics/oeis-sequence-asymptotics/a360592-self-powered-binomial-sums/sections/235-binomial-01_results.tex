@@ -1,0 +1,81 @@
+\section{The law and the global optimum}\label{spb:ml:sec:results}
+The ordinary generating function recorded for OEIS A360592 is
+\begin{equation}\label{spb:ml:eq:ogf}
+\sum_{n\ge0}a(n)x^n=\sum_{m\ge0}x^m(1+mx)^m,
+\qquad a(n)=\sum_{k=0}^{\lfloor n/2\rfloor}(n-k)^k\binom{n-k}{k}.
+\end{equation}
+These are formal series; no analytic convergence near the origin is required. Here is a direct interpretation of the weights. On the fixed vertex set $[m]$, choose $k$ active vertices and give each active vertex one image in $[m]$. Loops and repeated images are allowed. There are $\binom mk m^k$ such partial functions. Give an inactive vertex size one and an active vertex size two, so total size is $m+k=n$. The inactive count is $m-k=n-2k$. Thus a uniformly chosen object of size $n$ gives
+\begin{equation}\label{spb:ml:eq:law}
+\PP(R_n=r)=\frac{W_n(r)}{a(n)},\qquad
+W_n(r)=\left(\frac{n+r}{2}\right)^{(n-r)/2}
+\binom{(n+r)/2}{(n-r)/2},
+\end{equation}
+for $0\le r\le n$, $r\equiv n\pmod2$, and zero otherwise. The vertex set is fixed for each $m$; no additional labeling factor is inserted. This interpretation is derived here from the entry's generating function, not quoted as an OEIS combinatorial claim. We use $0^0=1$ for the empty object.
+
+Throughout the article, $n\to\infty$ through both parities, and
+\begin{equation}\label{spb:ml:eq:notation}
+ t=n^{-1/2},\quad c=\sqrt{e/2},\quad \lambda=c/t,\quad
+ A=\frac34,\quad b=-\frac14,\quad a=n\bmod2,\quad \gamma=\frac58.
+\end{equation}
+Let $Q_{\eta,a}$ be $\Pois(\eta)$ conditioned to parity $a$. Let $\mu>0$ solve
+\begin{equation}\label{spb:ml:eq:mu}
+\log(\mu/\lambda)=-\frac{2A\mu+b}{n},\qquad
+\mu=\frac{n}{2A}W\left(\frac{2A\lambda}{n}e^{-b/n}\right),
+\end{equation}
+where $W$ is the positive real Lambert function. The left side after moving all terms to the left is strictly increasing from $-\infty$ to $+\infty$, so the solution exists uniquely. Expansion of this equation gives $\mu=\lambda-\frac32c^2+O(t)$.
+
+For $M\in\N$ and $0<\nu<M$, write $B_{M,\nu,a}$ for $\Bin(M,\nu/M)$ conditioned to parity $a$. The parameter $\nu$ is its \emph{unconditioned} mean. Define the following explicit polynomials:
+\begin{align}
+\nu_0={}&\lambda-\frac32c^2+
+ \left(\frac c4+\frac{33c^3}{8}\right)t+
+ \left(\frac{15c^2}{8}-\frac{44c^4}{3}\right)t^2,\label{spb:ml:eq:nu0}\\
+v_+={}&\lambda-3c^2+
+ \left(\frac c4+\frac{99c^3}{8}\right)t+
+ \left(\frac{15c^2}{4}-\frac{176c^4}{3}\right)t^2.\label{spb:ml:eq:vplus}
+\end{align}
+Set
+\begin{equation}\label{spb:ml:eq:baseline}
+ M_0=\round\left(\frac{\nu_0^2}{\nu_0-v_+}\right),\qquad
+ \widehat\nu=\nu_0+\gamma(2\log2-3)\frac{\mu^2}{n^2},\qquad
+ \eps_n=\frac{\mu^{3/2}}{n^2}.
+\end{equation}
+Any nearest integer convention is allowed. All these probability distributions are well defined for sufficiently large $n$: $\nu_0-v_+\to\frac32c^2>0$, $M_0\sim2n/3$, and $0<\widehat\nu<M_0$. Formulas are asymptotic constructions, not claims of admissibility at every small $n$.
+
+\begin{theorem}[Global asymptotic optimum]\label{spb:ml:thm:global}
+Let $\mathcal B_a$ contain every $\Bin(M,q)$ conditioned to parity $a$, for $M\in\{0,1,2,\ldots\}$ and $q\in[0,1]$, whenever the conditioning event has positive probability. Then
+\begin{equation}\label{spb:ml:eq:global}
+\inf_{B\in\mathcal B_a}\TV(\Law(R_n),B)
+ \sim \gamma\log2\sqrt{2/\pi}\,\eps_n.
+\end{equation}
+The law $B_{M_0,\widehat\nu,a}$ attains this equivalent. Every sequence with error $O(\eps_n)$ has
+\begin{equation}\label{spb:ml:eq:competitive}
+ \nu-\nu_0=O(\mu^2/n^2),\qquad M-M_0=O(\sqrt\mu),
+\end{equation}
+where $\nu=Mq$. A sequence is asymptotically optimal if and only if
+\begin{equation}\label{spb:ml:eq:optimalparams}
+ \nu-\nu_0=\gamma(2\log2-3)\frac{\mu^2}{n^2}
+       +o(\mu^2/n^2),\qquad M-M_0=o(\sqrt\mu).
+\end{equation}
+For the sufficient direction, the laws must be defined; these parameter relations already ensure their eventual interior admissibility.
+\end{theorem}
+Here $\TV(P,Q)=\frac12\sum_r|P\{r\}-Q\{r\}|$. The infimum is global within the stated conditioned binomial family. Neither an exact finite $n$ minimizer nor optimality over all positive families is asserted.
+
+The moment matched baseline has the larger equivalent
+\begin{equation}\label{spb:ml:eq:matchedconstant}
+\TV(\Law(R_n),B_{M_0,\nu_0,a})
+\sim\frac5{16}\{2\phi(0)+8\phi(\sqrt3)\}\eps_n,
+\end{equation}
+where $\phi(z)=(2\pi)^{-1/2}e^{-z^2/2}$. The tuned constant is about $0.34566$, compared with $0.47188$ in \eqref{spb:ml:eq:matchedconstant}; their ratio is about $0.73251$. The improvement changes the mean by order $n^{-1}$, despite both means agreeing with the true mean at leading orders.
+
+\paragraph{Relation to the scalar predecessor.}
+Report 230~\cite{report230}, \emph{Corrected Poisson Endpoint Expansions}, established the scalar fixed order expansion of $a(n)$ at this critical endpoint and the broader fixed parameter family. It explicitly left the critical marked law outside its scope. We credit that scalar foundation and reprove all inputs needed here. The focus of the present article is the full inactive distribution and global positive approximation. All required inputs to Theorem~\ref{spb:ml:thm:global} are established below.
+\begin{writenote}[7 October 2026]
+Report~230 is Part~I of this report. Its Scope paragraph indeed asserts no
+critical marked-law theorem, and its Section~\ref{spb:ep:sec:marked} assumes
+$p\ge2$. The inputs this Part reproves are Part~I's at $p=1$: the reduction
+and bound of Lemma~\ref{spb:ml:lem:exact} are~\eqref{spb:ep:eq:exactterm} and
+Lemma~\ref{spb:ep:lem:criticalbound}, Lemma~\ref{spb:ml:lem:defects} is
+\eqref{spb:ep:eq:Dcrit}--\eqref{spb:ep:eq:criticalDrem}, and the scalar
+coefficients~\eqref{spb:ml:eq:C12} are~\eqref{spb:ep:eq:critC1}
+and~\eqref{spb:ep:eq:critC2}.
+\end{writenote}

@@ -1,0 +1,147 @@
+\section{Positive binomial approximants and the cubic remainder}\label{spb:ml:sec:binomial}
+The distributional theorem rests on a weighted density estimate, not on matching finitely many cumulants. We now prove that estimate relative to the \emph{common} reference $Q_{\mu,a}$. This reference has positive mass at every nonnegative point of the required parity, so it accommodates both finite supports.
+
+\subsection{Finite logarithmic expansion and centered bounds}
+For $r\le M$, the ordinary binomial to Poisson logarithmic ratio is exactly
+\begin{equation}\label{spb:ml:eq:H}
+ H_{M,\nu}(r)=\sum_{h=0}^{r-1}\log(1-h/M)
+                  +(M-r)\log(1-\nu/M)+\nu.
+\end{equation}
+If $r/M$ and $\nu/M$ are sufficiently small, finite Taylor expansion gives, for fixed $L$,
+\begin{align}
+ H_{M,\nu}(r)&=\sum_{j=1}^L\frac{B_j(r;\nu)}{M^j}
+ +O_L\left(\frac{r^{L+2}+\nu^{L+2}+r\nu^{L+1}}{M^{L+1}}\right),\label{spb:ml:eq:Bexp}\\
+ B_j(r;\nu)&=-\frac1j\sum_{h=0}^{r-1}h^j+
+                  \frac{r\nu^j}{j}-\frac{\nu^{j+1}}{j+1}.\label{spb:ml:eq:Bj}
+\end{align}
+To obtain the stated remainder, expand the first log terms through degree $L$, and $M\log(1-\nu/M)$ through degree $L+1$. Each finite geometric remainder is bounded uniformly on this range. In particular $B_1=-C_2(r;\nu)/2$ and
+\begin{align}
+ B_2&=-r^3/6+r^2/4-r/12+r\nu^2/2-\nu^3/3,\nonumber\\
+ B_3&=-r^4/12+r^3/6-r^2/12+r\nu^3/3-\nu^4/4.\label{spb:ml:eq:B23}
+\end{align}
+Centering at $y=r-\nu$ is essential. Direct substitution gives
+\begin{align}
+ B_2={}&\nu^2/4-\nu/12+(\nu/2-1/12)y
+                      +(-\nu/2+1/4)y^2-y^3/6,\label{spb:ml:eq:B2center}\\
+ B_3={}&\nu^3/6-\nu^2/12+(\nu^2/2-\nu/6)y\nonumber\\
+       &+(-\nu^2/2+\nu/2-1/12)y^2+(-\nu/3+1/6)y^3-y^4/12.\label{spb:ml:eq:B3center}
+\end{align}
+For $\nu-\mu=O(t)$, Lemma~\ref{spb:ml:lem:Poisson} now proves
+\begin{equation}\label{spb:ml:eq:Bbounds}
+ \E_Q[|X-\mu|^s|B_2(X;\nu)|]=O_s(\mu^{2+s/2}),\qquad
+ \E_Q[|X-\mu|^s|B_3(X;\nu)|]=O_s(\mu^{3+s/2}).
+\end{equation}
+If $M\asymp n$, the $B_3/M^3$ term is therefore $O_s(\mu^{s/2}t^3)$. The $L=3$ remainder of \eqref{spb:ml:eq:Bexp} has the same bound, since $\mu^5/M^4=O(t^3)$. An uncentered $O(\mu^4)$ estimate for $B_3$ would be too weak and is not used.
+
+\subsection{Parity, support, and rounding}
+For the binomial laws constructed here, $M\asymp n$, $\nu\sim\mu$, and $q=\nu/M\to0$. Their ordinary exponential moment satisfies
+\[
+ \E e^{zX}=(1+q(e^z-1))^M\le e^{\nu(e^z-1)}\qquad(z\in\R),
+\]
+so the upper and lower Chernoff bounds of the Poisson type apply. Fixed polynomial moments have polynomial growth, either by factorial moments or by differentiating this finite generating function. Cauchy--Schwarz then proves negligible weighted tails outside \eqref{spb:ml:eq:window}. Moreover
+\begin{equation}\label{spb:ml:eq:binparity}
+ \PP(X\equiv a)=\tfrac12\{1+(-1)^a(1-2\nu/M)^M\}
+                 =\tfrac12+O(e^{-d\mu}).
+\end{equation}
+Thus conditioning only changes the log density by an exponentially small constant in all these local constructions and costs a bounded factor in tail estimates. For large $n$, the common central window lies below both $M$ and $n$. Its complement includes the entire true mass above $M$, so no support contribution is discarded.
+
+Rounding $M^*$ by a bounded amount changes $1/M$ by $O(n^{-2})$. In $-C_2/(2M)$ this costs
+\begin{equation}\label{spb:ml:eq:rounding}
+ O_s(\mu^{1+s/2}/n^2)=O_s(\mu^{s/2}t^3)
+\end{equation}
+in weighted $L^1(Q)$. The $B_2/M^2$, $B_3/M^3$ terms and the Taylor remainder are smaller at this precision. The change of the ordinary variance is $O(\nu^2/M^2)=O(t^2)$. Accordingly, moment matching is exact only at the real trial count; it is not claimed exact after rounding.
+
+\begin{theorem}[Complete weighted cubic comparison]\label{spb:ml:thm:cubic}
+Let $h_0$ be the density of $B_{M_0,\nu_0,a}$ relative to $Q=Q_{\mu,a}$, extended by zero for $r>M_0$. For every fixed real $s\ge0$,
+\begin{equation}\label{spb:ml:eq:cubic}
+ \E_Q\left[|X-\mu|^s
+  \left|g_n(X)-h_0(X)-\frac{\gamma}{n^2}C_3(X;\mu)\right|\right]
+   =O_s(\mu^{s/2}n^{-3/2}).
+\end{equation}
+The same conclusion holds if the $t^2$ term in $v_+$ is omitted when forming $M_0$.
+\end{theorem}
+\begin{proof}
+Write $\theta=t\mu$ and $u=t(r-\mu)$. We retain monomials of weighted degree at most five. A monomial $t^iu^j$ of weight at least six has weighted expected absolute value $O_s(\mu^{s/2}t^3)$, by Lemma~\ref{spb:ml:lem:Poisson}. The finite Taylor bounds in Section~\ref{spb:ml:sec:marked} give the same conclusion for nonpolynomial remainders. All the following log identities are asserted on the common window \eqref{spb:ml:eq:window}, where both densities are positive.
+
+The exact relation between $c$ and $\theta$ is
+\begin{equation}\label{spb:ml:eq:cTheta}
+ c=\theta\exp(3\theta t/2-t^2/4).
+\end{equation}
+Substitute this into \eqref{spb:ml:eq:nu0}, \eqref{spb:ml:eq:vplus} to obtain
+\begin{align}
+ \nu_0&=\mu+\tfrac34\theta^3t+
+                  (\tfrac{21}{8}\theta^2-\tfrac{55}{24}\theta^4)t^2+O(t^3),\label{spb:ml:eq:nutheta}\\
+ v_+&=\mu-\tfrac32\theta^2+\tfrac92\theta^3t+O(t^2),\nonumber\\
+ M_0&=\frac2{3t^2}+\frac{5\theta}{3t}+O(1),\qquad
+ \frac1{M_0}=\tfrac32t^2-\tfrac{15}{4}\theta t^3+O(t^4).\label{spb:ml:eq:Mtheta}
+\end{align}
+The $O(1)$ in $M_0$ includes integer rounding. Its effect is covered by \eqref{spb:ml:eq:rounding}; omitting the $t^2$ variance term also changes $M_0$ only by $O(1)$. A mean error $O(t^3)$ changes the density in weighted $L^1$ by $O_s(\mu^{s/2}t^{7/2})$: the first Poisson likelihood term is the mean increment times $(r-\mu)/\mu$, and its remainder is smaller by the centered moment bounds.
+
+For clarity we give the actual polynomial identities rather than infer them from cumulants. Theorem~\ref{spb:ml:thm:density} at $K=2$, or substitution of $D_1,D_2,D_3$ and the centered moments, gives
+\begin{equation}\label{spb:ml:eq:logT}
+ \log T_n=\frac{\theta^3}{4}t+
+                \left(-\frac{7\theta^4}{24}+\frac{21\theta^2}{16}\right)t^2+O(t^3).
+\end{equation}
+One can verify the scalar normalization directly: the ordinary expectation of the weighted exponential through degree five is
+\[
+ 1+\frac{\theta^3}{4}t+
+ \left(\frac{\theta^6}{32}-\frac{7\theta^4}{24}
+                +\frac{21\theta^2}{16}\right)t^2+O(t^3);
+\]
+taking its logarithm cancels $\theta^6/32$. Parity corrections are exponential. Define
+\begin{align}
+ L_*={}&-\tfrac34u^2+\tfrac34\theta t
+ +(\tfrac34+\tfrac34\theta^2)tu+\tfrac34\theta tu^2
+ -\tfrac{21}{16}\theta^2t^2-\tfrac76\theta^3t^2u.\label{spb:ml:eq:Lstar}
+\end{align}
+Equations \eqref{spb:ml:eq:D123}, \eqref{spb:ml:eq:tiltcancel}, and \eqref{spb:ml:eq:logT} yield
+\begin{equation}\label{spb:ml:eq:logg}
+ \log g_n=L_*+\tfrac14tu^3+\mathcal R_g.
+\end{equation}
+For the binomial density add the Poisson mean shift
+$r\log(\nu_0/\mu)-(\nu_0-\mu)$ to \eqref{spb:ml:eq:H}. Use \eqref{spb:ml:eq:nutheta}, \eqref{spb:ml:eq:Mtheta}, $B_1,B_2$ and the controlled $B_3$ remainder. This gives the second explicit identity
+\begin{equation}\label{spb:ml:eq:logh}
+ \log h_0=L_*-\tfrac38tu^3+\tfrac{15}{8}\theta t^2u+\mathcal R_h.
+\end{equation}
+Both remainders have weighted $L^1$ norm $O_s(\mu^{s/2}t^3)$. To see that every omitted term is covered, the defect expansion through $D_3$ has raw error $O(r^5/n^4)$, hence averaged order $O(t^3)$; its retained lower degree terms and normalizer are controlled by the finite generator. The binomial $B_3$ and raw remainder were bounded in \eqref{spb:ml:eq:Bbounds}. Mean and inverse trial parameter errors were handled above. All remaining finite monomials have weight at least six.
+
+Subtracting \eqref{spb:ml:eq:logh} from \eqref{spb:ml:eq:logg} leaves
+\begin{equation}\label{spb:ml:eq:logdiff}
+ \tfrac58t(u^3-3\theta t u)+\mathcal R.
+\end{equation}
+Exponentiation preserves this degree five difference. Indeed the log densities have no term below weight two; multiplying the retained difference by a positive weight log term starts at weight seven. Finite exponential Taylor remainders on the window have the weighted estimates already proved in Theorem~\ref{spb:ml:thm:density}. They also bound products involving discarded terms, since the exponents are uniformly bounded there. Finally,
+\begin{equation}\label{spb:ml:eq:C3ident}
+ t^4C_3=tu^3-3\theta t^2u-3t^2u^2+2\theta t^3+2t^3u.
+\end{equation}
+The last three terms have weight at least six. Combining these identities proves \eqref{spb:ml:eq:cubic} on the central window. The weighted tail estimates for $g_n,h_0$ and the Charlier polynomial extend it to the whole common reference space, including both support cutoffs.
+\end{proof}
+
+Lemma~\ref{spb:ml:lem:Poisson} implies $C_3(X;\mu)/\mu^{3/2}\Longrightarrow H_3(Z)=Z^3-3Z$ with first absolute moment convergence. Splitting the Gaussian integral at $0,\pm\sqrt3$ gives
+\begin{equation}\label{spb:ml:eq:H3norm}
+ \E|H_3(Z)|=2\phi(0)+8\phi(\sqrt3).
+\end{equation}
+For example, integrate each polynomial times $\phi$ using $\phi'=-z\phi$; the antiderivative of $(z^3-3z)\phi(z)$ is $-(z^2-1)\phi(z)$. Since $n^{-3/2}=o(\eps_n)$, division of \eqref{spb:ml:eq:cubic} by two proves \eqref{spb:ml:eq:matchedconstant}.
+
+\subsection{The positive approximation hierarchy}
+There are useful less accurate positive laws between the two Poisson references and the moment matched binomial. Let $M_s=\round(2n/3)$ and $\nu_1=\mu+3\mu^3/(4n^2)$. Then
+\begin{align}
+ \TV(\Law(R_n),B_{M_s,\mu,a})
+   &\sim\tfrac38\sqrt{2/\pi}\,\mu^{5/2}/n^2,\label{spb:ml:eq:simpleTV}\\
+ \TV(\Law(R_n),B_{M_s,\nu_1,a})
+   &\sim\tfrac{15}{4}\phi(1)\,\mu^2/n^2.\label{spb:ml:eq:meanTV}
+\end{align}
+Here is a coefficient proof of both assertions. The centered binomial expansion gives
+$h_s=1-AC_2/n+O_{L^1}(t^2)$. Comparison with \eqref{spb:ml:eq:firstdensity} leaves $3\mu^2C_1/(4n^2)$; its absolute expectation is asymptotic to $\sqrt{2/\pi}\mu^{1/2}$. This proves \eqref{spb:ml:eq:simpleTV}.
+
+For the mean corrected law, the first mean shift adds $(3/4)\theta^2tu$, canceling the unmatched weight three term. The weight at most four log polynomials are, respectively,
+\begin{align*}
+ \log g_n={}&-\tfrac34u^2+\tfrac34\theta t+
+ (\tfrac34+\tfrac34\theta^2)tu+\tfrac34\theta tu^2
+       -\tfrac{21}{16}\theta^2t^2+\cdots,\\
+ \log h_{s,1}={}&-\tfrac34u^2+\tfrac34\theta t+
+ (\tfrac34+\tfrac34\theta^2)tu-\tfrac98\theta tu^2
+       +\tfrac9{16}\theta^2t^2+\cdots.
+\end{align*}
+Their difference is $(15/8)\theta t(u^2-\theta t)$, which equals $(15/8)\mu C_2/n^2$ modulo weight at least five. Products in exponentiation have still higher weight. The same Taylor and tail estimates prove an $O_{L^1}(t^{5/2})$ remainder. Since $\E_Q|C_2|\sim4\phi(1)\mu$, \eqref{spb:ml:eq:meanTV} follows.
+
+Thus the sharp error orders, in succession, are $n^{-1/4}$ for $Q_{\lambda,a}$, $n^{-1/2}$ for $Q_{\mu,a}$, $n^{-3/4}$ for the simple binomial, $n^{-1}$ after its first mean correction, and $n^{-5/4}$ after fitting both parameters. The final TV tuning preserves the last rate and reduces its constant. Every reference in this hierarchy is a genuine positive probability law.

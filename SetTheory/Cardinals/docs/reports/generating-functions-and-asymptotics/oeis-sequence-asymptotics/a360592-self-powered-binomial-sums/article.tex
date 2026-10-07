@@ -9,14 +9,15 @@
 \usepackage{booktabs,longtable,array}
 \usepackage[dvipsnames]{xcolor}
 \usepackage{enumitem}
-\usepackage[colorlinks=true,linkcolor=MidnightBlue,urlcolor=MidnightBlue,citecolor=MidnightBlue,bookmarksnumbered=true]{hyperref}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,urlcolor=MidnightBlue,citecolor=MidnightBlue,bookmarksnumbered=true,breaklinks=true]{hyperref}
+\usepackage{bookmark}
 \usepackage{fancyhdr}
 \pdfmapfile{+lm.map}\pdfmapfile{+cm.map}\pdfmapfile{+symbols.map}
-\hypersetup{pdftitle={Report 230 Corrected Poisson Endpoint Expansions},pdfauthor={Research report},pdfsubject={Fixed order counts, marked laws, and controlled inverses}}
+\hypersetup{pdftitle={Self-powered binomial sums (OEIS A360592, A360479, A360747)},pdfauthor={Research report},pdfsubject={Merged report a360592-self-powered-binomial-sums (batch 113): corrected Poisson endpoint expansions (Report 230), optimal positive binomial approximation for the critical inactive count (Report 235)}}
 \setlength{\headheight}{14pt}
 \pagestyle{fancy}\fancyhf{}
-\fancyhead[L]{\small Poisson endpoint expansions}
-\fancyhead[R]{\small Report 230}
+\fancyhead[L]{\small Self-powered binomial sums}
+\fancyhead[R]{\small a360592}
 \fancyfoot[C]{\thepage}
 \setlength{\parskip}{4pt}
 \setlength{\emergencystretch}{2em}
@@ -28,6 +29,7 @@
 \newtheorem{corollary}[theorem]{Corollary}
 \theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
 \theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+% Report 230 (Part I)
 \newcommand{\E}{\mathbb E}
 \newcommand{\Pp}{\mathbb P}
 \newcommand{\Pois}{\operatorname{Pois}}
@@ -40,12 +42,299 @@
 \newcommand{\Q}{\mathbb Q}
 \newcommand{\ii}{\mathrm i}
 \DeclareMathOperator{\Res}{Res}
-\title{Corrected Poisson Endpoint Expansions\\[4pt]\large Critical resummation, inactive vertices, and controlled index inverses\\for a family of self powered binomial sums}
-\author{Report 230}
-\date{5 October 2026}
+% Report 235 (Part II); its \E, \Var, \Pois, \TV, \1, \ii and \N are the above
+\newcommand{\PP}{\mathbb P}
+\newcommand{\Bin}{\operatorname{Bin}}
+\newcommand{\Law}{\mathcal L}
+\newcommand{\R}{\mathbb R}
+\newcommand{\wt}{\operatorname{wt}}
+\newcommand{\round}{\operatorname{round}}
+\newcommand{\eps}{\varepsilon}
+% Added in the merge (batch 113, 7 October 2026).
+\newcommand{\file}[1]{\nolinkurl{#1}}
+\newenvironment{writenote}[1][]{\par\smallskip\begingroup\small
+ \noindent\textbf{[write]}\if\relax\detokenize{#1}\relax\else~\textbf{#1.}\fi\ }%
+ {\par\endgroup\smallskip}
+\newenvironment{partabstract}{\begin{quote}\small\noindent\textbf{Abstract of this Part (as delivered).}\ }{\end{quote}}
+\newcommand{\partsource}[1]{\par\noindent\begin{minipage}{\textwidth}\small #1\end{minipage}\par\medskip}
+\title{Self-powered binomial sums\\[4pt]\large Corrected Poisson endpoint expansions and the optimal binomial law of the critical inactive count, for OEIS A360592, A360479 and A360747\\[8pt]
+\normalsize Part I: corrected Poisson endpoint expansions\\[2pt]
+Part II: optimal positive binomial approximation for the critical inactive count}
+\author{Two research reports of one external research session\\(bundle Reports 230 and 235), bound into one ProveIt report}
+\date{Both Parts: 5 October 2026\quad merged: 7 October 2026}
 \begin{document}
+\hypersetup{pageanchor=false}
 \maketitle
+\thispagestyle{empty}
 \begin{abstract}
+Two manuscripts on one family of exact finite sums, bound into one report:
+$a_p(n)=\sum_{0\le k\le n/(p+1)}(n-pk)^{pk}\binom{n-pk}{k}$, which for
+$p=1,2,3$ are OEIS A360592, A360479 and A360747. Part~I (Report~230, the base)
+proves every fixed algebraic order for every fixed $p\ge1$ from an exact
+residue-conditioned Poisson representation: a small deformation for $p\ge2$
+with explicit rational generators, and at the critical endpoint $p=1$ a
+centered resummation with half-power corrections only and first correction
+$c/4+11c^3/8$, $c=\sqrt{e/2}$; it identifies the first corrections of the three
+OEIS refinements as wrong (an extra $1/(8c_p)$ at $p=1,2$, a nonzero
+$n^{-1/4}$ term at $p=3$ whose true value is zero) while their leading
+equivalents stand; it proves, for $p\ge2$, weighted density expansions, moment
+refinements and sharp total-variation constants for the inactive-vertex count
+against two conditioned Poisson references, and controlled Newton and Lagrange
+inverses with a two-ceiling threshold envelope. Part~II (Report~235) answers
+Part~I's question on the critical marked law: for $p=1$ the globally optimal
+parity-conditioned binomial approximation of the inactive count has total
+variation $\sim\frac58\log2\sqrt{2/\pi}\,\mu^{3/2}/n^2$, attained by an
+explicit law, with every asymptotically optimal parameter sequence
+characterized. The write quotes the three OEIS entries with their revision
+numbers, checks the source's transcription of their formulas exactly and the
+refutation against the exact sums, recomputes every coefficient, polynomial
+identity and printed decimal of both Parts with its own code, compares the
+inverses with the repository's transseries volume, and gathers the open
+questions. The report is unrefereed, and nothing in it is formalized.
+\end{abstract}
+\begin{writenote}[Status and trust boundary, added 7 October 2026, batch~113]
+This report binds bundle Reports~230 and~235 of an external AI-assisted
+research session into the ProveIt research report
+\file{a360592-self-powered-binomial-sums}; the Guide below gives the
+provenance, the sources as the write read them, what was checked, the relation
+to the repository, the collected non-claims and the reading conventions.
+Report~230's title block reads ``Report~230'' (PDF author ``Research report''),
+Report~235's ``Report~235'' (PDF author ``Report 235''): they name no person or
+tool. \emph{What rests on what.} Every theorem has a conventional proof in the
+text: exact algebra, Poisson and binomial factorial-moment identities,
+root-of-unity filters, Chernoff and Cauchy estimates, Taylor's theorem with
+explicit weighted remainders, Charlier and Hermite polynomials, Lagrange
+inversion, the Lambert function, log-concavity and an exact characteristic
+function Jacobian. No proof uses a computation; the exact checks corroborate
+finite identities and every decimal is an uncertified diagnostic. The write
+adds Remarks~\ref{spb:ep:rem:transseries} and~\ref{spb:ep:rem:oeis} and dated
+notes, and prints three short proofs of Part~II only once (in Part~I, see the
+Guide); no statement or number of either source was changed.
+\end{writenote}
+\hypersetup{pageanchor=true}
+{\small\setcounter{tocdepth}{1}\tableofcontents}
+\clearpage
+\section*{Guide to this report}\phantomsection\label{spb:sec:guide}
+\addcontentsline{toc}{section}{Guide to this report}
+The two Parts are one chain. Part~I is bundle Report~230 (the base of the
+merge): it treats every fixed $p\ge1$ and leaves the marked law at $p=1$ open
+(its Scope paragraph and Section~\ref{spb:ep:sec:marked} assume $p\ge2$).
+Part~II is bundle Report~235, which calls Report~230 its ``scalar
+predecessor'' and settles the critical marked law for the inactive count;
+``Report~230'' in Part~II is Part~I. Part~II reproves at $p=1$ the inputs it
+uses. Its exact reduction (Lemma~\ref{spb:ml:lem:exact}), defect expansion
+(Lemma~\ref{spb:ml:lem:defects}), Poisson estimates
+(Lemma~\ref{spb:ml:lem:Poisson}) and scalar expansion
+(Proposition~\ref{spb:ml:prop:scalar}, which extends Part~I's
+Theorem~\ref{spb:ep:thm:critical} to a compact range of the marking parameter)
+carry labels that later parts of Part~II cite, so they are kept, each with a
+dated note naming its Part~I counterpart. Three passages of Part~II that only
+repeat a Part~I proof, and carry no label, are printed once, in Part~I: the
+proof of the global bound~\eqref{spb:ml:eq:globalbound} (Part~I's proof of
+Lemma~\ref{spb:ep:lem:criticalbound}), the proof of
+Lemma~\ref{spb:ml:lem:defects} (Part~I's verification
+of~\eqref{spb:ep:eq:criticalDrem}) and the direct check of the first scalar
+coefficient (Part~I's Section~\ref{spb:ep:sec:critical}.5). A dated note
+stands at each place. Part~II's Corollary~\ref{spb:ml:cor:Poisson} is the
+case $p=1$ of the two total-variation equivalents that Part~I's
+Theorem~\ref{spb:ep:thm:markedmain} proves for $p\ge2$, with the same
+constants; it is new, not a repetition.
+
+\emph{Numbering.} Part~I keeps every delivered number, including its
+Appendices~A and~B. Part~II continues the section counter: Report~235's
+Section~$k$ is Section~$k+8$ here, and since both texts number equations and
+statements within sections, its equation~($k.j$) is equation~($k+8.j$) and its
+Theorem~$k.j$ is Theorem~$k+8.j$ (its Theorem~1.1 is
+Theorem~\ref{spb:ml:thm:global}); its appendix keeps the letter~A (``Part~II's
+Appendix~A''). Labels carry \file{spb:ep:} (Part~I, ``endpoint'') and
+\file{spb:ml:} (Part~II, ``marked law''); the write's own labels carry the Part
+prefix, or \file{spb:} for this Guide. The bibliography is merged at the end;
+Part~II's key \texttt{oeis} for A360592 is Part~I's \texttt{oeis1}, and every
+detail of both entries is kept.
+
+\begin{writenote}[Provenance, added 7 October 2026, batch~113]\raggedright
+Both manuscripts are dated 5~October 2026; they arrived in \file{60f54ea06} and
+were placed in \file{a4186a946}. \emph{Part~I}: Report~230, archive
+\file{Report230.zip} ($630{,}758$ bytes, 22 files, wrapper directory
+\file{Report230/}); text \file{article.tex} (100 lines) with nine section files
+(1677 lines), 30 pages as delivered, staged as \file{article.tex} and
+\file{sections/01_overview.tex}--\file{09_appendix.tex}. \emph{Part~II}:
+Report~235, archive \file{Report235.zip} ($672{,}890$ bytes, 28 files, wrapper
+\file{Report235/}); text \file{article.tex} (49 lines) with ten section files
+(848 lines), 23 pages as delivered, not staged; the write ships its first nine
+section files as \file{sections/235-binomial-01_results.tex}--\file{09_coupling.tex}
+and folds its tenth, the bibliography, into the merged one. Neither package
+names a person, tool or addressee, carries a ``prepared for private review''
+line, an e-mail address or personal data, or records a ProveIt commit (so no
+pin is recorded). The programs are shipped under \file{code/} and the
+requirements and recorded outputs under \file{data/}, with the prefixes
+\file{230-endpoint-} and \file{235-binomial-}; the delivered root
+\file{build.py} of each is \file{code/2NN-*-build.py}; the source notes and
+guides are at the top level (\file{230-endpoint-SOURCES.md},
+\file{230-endpoint-code-README.md}, \file{235-binomial-SOURCES.md},
+\file{235-binomial-COMPUTATION.md}). Report~230's delivered \file{README.md}
+was staged as the report README and is replaced by it. Not shipped, and
+retrievable from the arrival commit: the two delivered PDFs; Report~235's
+\file{article.tex}, section files and \file{README.md} (its text is Part~II of
+this file); and the two pure checksum manifests \file{MANIFEST.sha256} (21 and
+27 entries), both verified at the write. \emph{Where the merge had to choose:}
+the base (Report~230, which treats every $p$; Report~235 is its $p=1$
+continuation and cites it); the order (the chain's order); keeping Part~II's
+restatements, each with a note, because later labels depend on them, and
+printing three unlabelled repeated proofs once; one merged bibliography; the
+preamble (the union of the two, which agree where they overlap; Report~235's
+global list spacing is not used, and the running heads are
+neutral). The write prefixed the
+229 delivered labels (127 and 102) and updated the references to them (Part~I:
+95 \verb|\eqref|, 26 \verb|\ref|; Part~II: 79 \verb|\eqref|, 40 \verb|\ref|), and added this Guide, the Part headers,
+Remarks~\ref{spb:ep:rem:transseries} and~\ref{spb:ep:rem:oeis} and the dated
+notes. The added remarks are the last statements of their sections and the
+added displays are unnumbered, so every delivered number is unchanged up to the
+stated shift (label tables of builds of the two delivered texts and of this one
+compared: 229 labels, 0 differences).
+
+\emph{The sources, as the write read them} (7~October 2026). OEIS A360592,
+A360479 and A360747 in the internal format with their b-files
+(Remark~\ref{spb:ep:rem:oeis}); the transseries volume
+\path{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex}
+(\file{p0:def:model}, \file{p0:thm:lambert-core}, \file{p0:def:three-inverses},
+\file{p0:thm:staircase}, \file{plt:def:lw-monomial-log-datum},
+\file{plt:thm:lw-template}). Not read by the write: the cited literature, in
+particular Kote\v{s}ovec's 2013 note, the DLMF and Corless et al.\ entries, and
+the binomial-approximation papers of Part~II (Soon; Barbour--Xia;
+\v{C}ekanavi\v{c}ius--Pek\"oz--R\"ollin--Shwartz; Barbour--Kowalski--Nikeghbali;
+Chhaibi--Delbaen--M\'eliot--Nikeghbali; M\'eliot--Nikeghbali--Visentin;
+Saumard--Wellner; D\"umbgen--M\"osching; Ehm). The Parts' accounts of what
+they inspected (Section~\ref{spb:ep:sec:sources} and the subsection after
+it, and Section~\ref{spb:ml:sec:context}) are reported, not confirmed.
+
+\emph{What was checked at intake.} The batch-113 dossier read both
+manuscripts, found no demonstrably wrong claim inside them, confirmed from the
+exact sums, independently of the package, that the first corrections of the
+OEIS refinements are wrong while the leading equivalents are right ($p=1$ to
+$n=32001$, $p=2$ to $n=240000$), and reran the delivered suites on copies (all
+reproduce; Report~235's guard tests reject Windows backslash paths, a
+Windows-only failure). \emph{What the write checked.} It read both manuscripts
+in full and found no error. With its own code (Python 3.14.4, exact integers;
+SymPy 1.14.0; mpmath 1.3.0 at 50--110 digits), not importing the delivered
+programs, it
+\begin{itemize}\raggedright
+\item computed $a_p(n)$ from~\eqref{spb:ep:eq:counts} and found it equal to
+all terms of the three OEIS b-files ($761$, $636$ and $601$ terms), to the
+coefficients of the formal series~\eqref{spb:ep:eq:ogf} through degree~40, and
+to Proposition~\ref{spb:ep:prop:monotone} for $p\le5$, $n<80$;
+\item checked~\eqref{spb:ep:eq:Dgeneral} against the Taylor coefficients of
+$\log G_r(z)$ for $r\le8$, $j\le5$, $p=1,2,3$; the general-$p$
+forms~\eqref{spb:ep:eq:D1}--\eqref{spb:ep:eq:D2}, $b=A-q/2$,
+\eqref{spb:ep:eq:Fsecond}, and the critical list $D_1,\ldots,D_5$;
+\item regenerated, by its own implementation of the recipes, every printed
+coefficient: \eqref{spb:ep:eq:p2}, $C_{2,4}$, \eqref{spb:ep:eq:p3}, $C_{3,5}$,
+$C_{3,6}$, the vanishing of $C_{p,1},\ldots,C_{p,p-2}$ for $p=4,5$ (the first
+nonzero coefficients are $-81c^2/10$ and $-151c^2/12$),
+\eqref{spb:ep:eq:critC1}--\eqref{spb:ep:eq:critC4}, $L_2$ for $p=2,3$
+and~\eqref{spb:ep:eq:L2}, the Charlier, falling-factorial and tilt
+identities~\eqref{spb:ep:eq:charlierorth}, \eqref{spb:ep:eq:cancel}; and in
+Part~II \eqref{spb:ml:eq:C12}, \eqref{spb:ml:eq:L12},
+\eqref{spb:ml:eq:nu0}, \eqref{spb:ml:eq:vplus}, the factorial cumulants of
+Section~\ref{spb:ml:sec:context}.1, \eqref{spb:ml:eq:nutheta},
+\eqref{spb:ml:eq:Mtheta} (the $O(1)$ term of $M_0$ is $7/6-8\theta^2/9$ before
+rounding), \eqref{spb:ml:eq:Bj}--\eqref{spb:ml:eq:B3center} (also against the
+series of $H_{M,\nu}$), the normalizer expansion and~\eqref{spb:ml:eq:logT},
+the two log-density identities~\eqref{spb:ml:eq:logg}
+and~\eqref{spb:ml:eq:logh} through weight five with zero residual,
+their difference~\eqref{spb:ml:eq:logdiff}, \eqref{spb:ml:eq:C3ident} and the
+orthogonality of $C_3$, the two hierarchy identities of
+Section~\ref{spb:ml:sec:binomial}.3, the signed moment
+identities~\eqref{spb:ml:eq:signedmoments} for $M\le8$, and the Gaussian
+constants~\eqref{spb:ml:eq:H3norm}, $\E|Z^2-1|=4\phi(1)$, the median and
+$\E|W-m|=m$ of Lemma~\ref{spb:ml:lem:median} (with $J$ evaluated numerically
+at and around its minimizer);
+\item confirmed the critical coefficients numerically against the exact sums:
+with its own $C_{1,5}$ and $C_{1,6}$, $(a_1(n)/M_1(n)-\sum_{j\le6}C_{1,j}t^j)/t^7$
+is $-5.50$, $-10.74$, $-11.30$, $-11.35$ at $n=10^4,10^6,10^8,10^{10}$; the
+analogous order-$t^{13}$ ratios for $p=2,3$ are stable (about $2.8\cdot10^9$
+and $1.2\cdot10^{12}$);
+\item recomputed every printed decimal of both Parts (notes in
+Section~\ref{spb:ep:sec:numerics} and the subsection after it, and in
+Section~\ref{spb:ml:sec:computation}), with the exact laws taken from log-gamma
+values of the summands, not from the delivered adjacent-ratio recurrence;
+\item checked the source's transcription of the three OEIS formulas
+symbolically and the refutation numerically (Remark~\ref{spb:ep:rem:oeis}).
+\end{itemize}
+It reran, on fresh copies of the shipped programs (prefixes removed),
+Report~230's \file{selftest.py} (normal, \texttt{-O}, and
+\texttt{-{}-numerical}: ``PASS: 89 checks (optimized Python)'', ``PASS: 653
+checks (ordinary Python)'', the recorded result) and \file{diagnostics.py
+suite -{}-deep}, and Report~235's \file{checks.py} (normal and \texttt{-O})
+and \file{numerics.py}: every output equals the shipped file. The guard suite
+and the PDF/ZIP builders were not run. Floating computations are observations,
+not certificates.
+
+\emph{Relation to the repository.} Before batch~113 no file of the repository
+named A360592, A360479 or A360747. Other reports of the collection use some of
+the same tools for other objects: Poisson--Charlier expansions
+(\file{a340021-distinguished-maximal-independent-sets},
+\file{a138178-symmetric-packed-matrices}, \file{a189281-path-forest-expansions})
+and a total-variation binomial approximation
+(\file{a182220-source-boundary}). No result is shared, so no reciprocal note is
+proposed. No Lean or Rocq file treats this family; no statement of this report
+is formalized, and its place in the collection confers no formal status. The
+inverses are compared with the transseries volume in
+Remark~\ref{spb:ep:rem:transseries}.
+\end{writenote}
+\begin{writenote}[What is not claimed, collected from both Parts]
+\emph{Part~I:} every asymptotic assertion keeps $p$ and the order fixed; no
+secondary exponential sector, optimal truncation, growing-$p$ limit, effective
+inverse onset, certified constant or critical marked-law theorem; the
+transcendental diagnostics are not interval-certified, and the $p=3$
+truncation through $t^{12}$ is still about $66\%$ wrong at $n=10^4$; the OEIS
+comparison concerns snapshots without verified revision histories, and no
+first-priority or exhaustive-search claim is made; the classical Poisson,
+Charlier, root-filter, Taylor, Newton, Lagrange and Lambert machinery is
+credited. \emph{Part~II:} the infimum is over the parity-conditioned binomial
+family only; no exact finite-$n$ minimizer, no optimality over all positive
+families, no effective error certificate, no claim for other $p$ or a growing
+modulus; positive binomial fitting, Charlier corrections and Hermite
+absolute-moment limits are credited to the literature it names, and the median
+minimization is called elementary $L^1$ projection; no worldwide priority claim
+and no claim of external review; the coupling appendix is supplementary and
+makes no global approximation claim. \emph{The write adds:} its checks are
+exact or floating computations; its transseries remark claims no novelty for
+any inversion.
+\end{writenote}
+\medskip
+\begingroup\small
+\noindent\emph{Reading conventions} (letters used in more than one sense,
+within or across the Parts, with the tempting false readings; no symbol was
+renamed).\par\smallskip
+\renewcommand{\arraystretch}{1.1}
+\noindent\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.75in}>{\raggedright\arraybackslash}p{5.45in}@{}}
+\toprule
+Symbol & Meanings\\
+\midrule
+\endhead
+$a$ & $a_p(n)$ the sums (Part~I); $a(n)=a_1(n)$ (Part~II); $a\equiv n\pmod q$ the residue (Part~I, Section~\ref{spb:ep:sec:marked}) and $a=n\bmod2$ (Part~II); a residue in~\eqref{spb:ep:eq:filter}.\\
+$q$ & $q=p+1$ (Part~I). Part~II: $q$ the success probability of $\Bin(M,q)$ (Sections~\ref{spb:ml:sec:results} and~\ref{spb:ml:sec:global}) and a modulus in its Appendix~A. \emph{False reading:} Part~II's $q$ is never $p+1$.\\
+$c$, $d$ & $c_p=\exp(p^2/q)q^{-1/q}$, $c=c_1=\sqrt{e/2}$; in Part~II $c$ also varies over a compact set (marking). $d=3e/8=3c^2/4$, $d_p$; in Part~II $d$ a positive constant in exponential bounds and $d_0=\nu_0-v_0$; $d$ a degree index.\\
+$M$, $N$ & $M_p(n)$, $M_p(x)$ the normalizations (Part~I); $M$ the binomial trial count, $M_0$, $M_s$, $M(\beta)$ (Part~II); $M$ the accuracy exponent of Corollary~\ref{spb:ep:cor:index}. $N=n/q$ (Section~\ref{spb:ep:sec:exact}); $N=N(Y)$ the Lambert core (Section~\ref{spb:ep:sec:inverse}); $N$ the support length in Part~II's Appendix~A.\\
+$B$, $\mathcal B$ & $B=N^{pn/q}$ (Part~I); $B^{\ge2}_{d,k}$ partition counts (both); $B_{M,\nu,a}$ conditioned binomials and $B_j(r;\nu)$ binomial log coefficients (Part~II); $\mathcal B_a$ the conditioned binomial family; $B_n$ a competitor.\\
+$C$ & $C_{p,j}(c)$ the coefficients (Part~I), $C_j(c)=C_{1,j}(c)$ (Part~II); $\mathcal C_2(r;\mu)$ the Charlier polynomial (Part~I) and $C_1,C_2,C_3(r;\mu)$ (Part~II); $\mathcal C_n$ the central event. \emph{False reading:} Part~II's $C_2(r;\mu)$ is Part~I's $\mathcal C_2$, not the coefficient $C_2(c)$; the arguments distinguish them.\\
+$\nu$ & $\nu_K=(K+1)/q$ an exponent (Section~\ref{spb:ep:sec:inverse}); in Part~II $\nu$ the unconditioned binomial mean, $\nu_0$, $\nu_1$, $\widehat\nu$, $\nu(\alpha)$.\\
+$\gamma$, $\theta$ & $\gamma_1,\gamma_2,\gamma_3$ the coefficients of $D_2$ (Part~I); $\gamma=5/8$ (Part~II). $\theta=z\,d/dz$ (Part~I); $\theta=t\mu$ (Part~II), with $\Theta=c\,d/dc$ there.\\
+$\alpha$, $\beta$, $\kappa$ & $\alpha=c_p$, $\beta=1/q$, $\kappa=p/q$ (Section~\ref{spb:ep:sec:inverse}); $\kappa_q=1-\cos(2\pi/q)$; $\beta_0=\log(\mu/\lambda)$ (both Parts); $\alpha$, $\beta$ the local mean and trial parameters and $\kappa_h$ cumulants (Part~II).\\
+$L$, $H$ & $L_j(z)$ the cumulant polynomials~\eqref{spb:ep:eq:Lrec} (Part~I) and $L_j(c)$ the logarithmic coefficients~\eqref{spb:ml:eq:L12} (Part~II); $L_*$; $L$ an order. $H_j(r)$ (Part~I), $H_N(z)$ (Lagrange), $H_{M,\nu}(r)$ the binomial log ratio and $H_1,H_2,H_3$ Hermite polynomials (Part~II).\\
+$U$, $V$, $T$ & $U_j(z)$ the Poisson transforms (Part~I) and $U=t(X-\lambda)$ the centered variable (both); $V_K$ the weighted exponents (both; different centerings), $V_n$, $V(r)$. $T_j$ Touchard polynomials, $T_p(y)$ the threshold (Part~I), $T_n$ a normalizer (Part~II).\\
+$W$, $Z$ & $W$ the Lambert function; $W_n(r)$ the weights and $\mathcal W_n$ the window (Part~II); $W=Z^2$ in Lemma~\ref{spb:ml:lem:median}. $Z$ a standard normal; $Z=Y+\log q+d_p$ (Section~\ref{spb:ep:sec:inverse}); $Z_n$, $Z_{K,a}$ normalizers.\\
+$\epsilon$, $\rho$, $h$ & $\epsilon_n(r)$ a remainder and $\varepsilon$ a radius (Part~I); $\eps_n=\mu^{3/2}/n^2$ the scale (Part~II). $\rho_n$, $\rho_r$ (Part~I), $\rho=|1-2q|$ (Part~II). $h=2\log2-1$, $h_{K,J}$ (Part~I); $h_0$, $h_{\alpha,\beta}$ densities (Part~II).\\
+$J$, $K$ & $J$ Newton steps (Part~I), $J(\alpha,\beta)$ the Gaussian criterion and $J_\infty$ the Jacobian (Part~II). $K$ an order; $K_n$ active vertices, $K_2$; $K_a$ quotients in Part~II's Appendix~A.\\
+\bottomrule
+\end{longtable}
+\addtocounter{table}{-1}% the reading-conventions table takes no number
+\endgroup
+
+\part{Corrected Poisson endpoint expansions}\label{spb:ep:part}
+\partsource{Bundle Report~230, archive \file{Report230.zip}, delivered as \file{article.tex} with nine section files (30 pages as delivered), the base of the merge. Delivered title block ``Corrected Poisson Endpoint Expansions / Critical resummation, inactive vertices, and controlled index inverses for a family of self powered binomial sums / Report 230 / 5 October 2026''. Printed as delivered, with \textbf{[write]} remarks and notes; its section, statement, equation and table numbers and its appendix letters are those of the delivery, and its labels carry \file{spb:ep:}. Its bibliography is merged into the one at the end of the report.}
+\begin{partabstract}
 For the exact sums
 \[
  a_p(n)=\sum_{0\le k\le n/(p+1)}(n-pk)^{pk}\binom{n-pk}{k},
@@ -63,11 +352,11 @@ Newton and convergent local Lagrange inverses, arbitrary fixed index accuracy,
 and a two-ceiling envelope for exact thresholds. The proofs include global
 tail bounds and never differentiate an unspecified discrete remainder.
 A self-contained exact-arithmetic package accompanies the article.
-\end{abstract}
+
 \noindent\textbf{Scope.} All asymptotic assertions keep $p$ and the requested order fixed.
 No secondary exponential sector, optimal truncation theorem, growing-$p$ limit,
 effective finite inverse onset, or critical marked-law theorem is asserted.
-\tableofcontents
+\end{partabstract}
 \input{sections/01_overview}
 \input{sections/02_exact}
 \input{sections/03_subcritical}
@@ -77,16 +366,41 @@ effective finite inverse onset, or critical marked-law theorem is asserted.
 \input{sections/07_computation_sources}
 \input{sections/08_questions}
 \input{sections/09_appendix}
-\begin{thebibliography}{9}
+\part{Optimal positive binomial approximation for the critical inactive count}\label{spb:ml:part}
+\partsource{Bundle Report~235, archive \file{Report235.zip}, delivered as \file{article.tex} with ten section files (23 pages). Delivered title block ``Report 235 / Optimal Positive Binomial Approximation for the Critical Inactive Count / A global total variation theorem connected to OEIS A360592 / 5 October 2026''. Printed as delivered, with \textbf{[write]} notes, except that three unlabelled proofs that repeat Part~I are printed once there (a note stands at each place). Report~235's Section~$k$ is Section~$k+8$ here, its equation~($k.j$) is~($k+8.j$) and its Theorem~$k.j$ is Theorem~$k+8.j$; its appendix keeps the letter~A. Its labels carry \file{spb:ml:}. ``Report 230'' in this Part is Part~I.}
+\begin{partabstract}
+Choose a term of $a(n)=\sum_k(n-k)^k\binom{n-k}{k}$ with probability proportional to its weight, and set $R_n=n-2k$. We determine the globally asymptotically best approximation of $R_n$ by a binomial distribution conditioned to the parity of $n$, with arbitrary integer trial count and arbitrary success probability whenever conditioning is defined. If $\mu\sim\sqrt{en/2}$ is the explicit tilted Poisson parameter, the optimal total variation error is
+\[
+\inf_B\TV(\Law(R_n),B)\sim
+\frac{5\log2}{8}\sqrt{\frac2\pi}\,\frac{\mu^{3/2}}{n^2}.
+\]
+An explicit positive construction attains this bound. Every asymptotically optimal parameter sequence has a uniquely determined mean adjustment at scale $n^{-1}$ and trial count localized to $o(n^{1/4})$. The proof supplies all fixed order marked expansions, a polynomially weighted common reference density comparison, support and rounding estimates, and a localization argument covering rare parity events. Its fine step uses an exact characteristic function Jacobian rather than inferring moment closeness from total variation. The classical Charlier, Hermite, and binomial fitting mechanisms are credited; the contribution is the complete model specific argument and its constants. Computation corroborates the proof and carries separate limitations.
+
+\end{partabstract}
+% [write] Part II continues the section counter after Part I's appendices (Report 235's Section k is Section k+8).
+\setcounter{section}{8}\renewcommand{\thesection}{\arabic{section}}\renewcommand{\theHsection}{\arabic{section}}
+\input{sections/235-binomial-01_results}
+\input{sections/235-binomial-02_exact}
+\input{sections/235-binomial-03_marked}
+\input{sections/235-binomial-04_binomial}
+\input{sections/235-binomial-05_local}
+\input{sections/235-binomial-06_global}
+\input{sections/235-binomial-07_context}
+\input{sections/235-binomial-08_computation}
+% [write] Part II's appendix keeps its letter.
+\appendix\renewcommand{\theHsection}{spbIIapp.\Alph{section}}
+\input{sections/235-binomial-09_coupling}
+\begin{thebibliography}{99}
 \bibitem{oeis1} The OEIS Foundation Inc., \emph{A360592},
 \url{https://oeis.org/A360592}. Indexed primary-entry formula observed 5 October 2026;
-see Section~\ref{sec:sources} for retrieval limitations.
+see Section~\ref{spb:ep:sec:sources} for retrieval limitations.
+[Part~II, as delivered with key \texttt{oeis}:] The OEIS Foundation Inc., \emph{A360592}, entry attributed to V. Kotesovec, 13 February 2023. Indexed primary page inspected 5 October 2026. \url{https://oeis.org/A360592}.
 \bibitem{oeis2} The OEIS Foundation Inc., \emph{A360479},
 \url{https://oeis.org/A360479}. Primary-entry formula observed 5 October 2026;
-see Section~\ref{sec:sources}.
+see Section~\ref{spb:ep:sec:sources}.
 \bibitem{oeis3} The OEIS Foundation Inc., \emph{A360747},
 \url{https://oeis.org/A360747}. Indexed primary-entry formula observed 5 October 2026;
-see Section~\ref{sec:sources}.
+see Section~\ref{spb:ep:sec:sources}.
 \bibitem{dlmf} NIST Digital Library of Mathematical Functions,
 \emph{Lagrange Inversion Theorem}, Section 1.10(vii),
 \url{https://dlmf.nist.gov/1.10.vii};
@@ -96,5 +410,17 @@ see Section~\ref{sec:sources}.
 D. J. Jeffrey, and D. E. Knuth, \emph{On the Lambert $W$ Function},
 Advances in Computational Mathematics \textbf{5} (1996), 329--359,
 \url{https://doi.org/10.1007/BF02124750}.
+\bibitem{report230} \emph{Corrected Poisson Endpoint Expansions: Critical resummation, inactive vertices, and controlled index inverses for a family of self powered binomial sums}, Report 230, 5 October 2026. Scalar predecessor; all inputs needed here are reproduced and proved in this article.
+[In this report: Part~I.]
+\bibitem{bkn} A. D. Barbour, E. Kowalski, and A. Nikeghbali, \emph{Mod-discrete expansions}. Author PDF, especially Proposition 3.3, Corollary 4.2, and Theorem 5.1; numbering differs in arXiv:0912.1886v1. \url{https://people.math.ethz.ch/~kowalski/mod-discrete.pdf}. DOI: \href{https://doi.org/10.1007/s00440-013-0498-8}{10.1007/s00440-013-0498-8}.
+\bibitem{bx} A. D. Barbour and A. Xia, \emph{Poisson perturbations}, ESAIM: Probability and Statistics \textbf{3} (1999), 131--150. \url{https://numdam.org/item/PS_1999__3__131_0.pdf}.
+\bibitem{soon} S. Y. T. Soon, \emph{Binomial approximation for dependent indicators}, Statistica Sinica \textbf{6} (1996), 703--714. \url{https://www3.stat.sinica.edu.tw/statistica/oldpdf/A6n314.pdf}.
+\bibitem{cprs} V. \v{C}ekanavi\v{c}ius, E. A. Pek\"oz, A. R\"ollin, and M. Shwartz, \emph{A three-parameter binomial approximation}, Journal of Applied Probability \textbf{46} (2009), 1073--1085. Inspected preprint arXiv:0906.2855v1. \url{https://arxiv.org/abs/0906.2855}.
+\bibitem{cdmn} R. Chhaibi, F. Delbaen, P.-L. M\'eliot, and A. Nikeghbali, \emph{Mod-$\phi$ convergence: Approximation of discrete measures and harmonic analysis on the torus}, Annales de l'Institut Fourier \textbf{70} (2020), 1115--1197. \url{https://www.numdam.org/item/10.5802/aif.3332.pdf}.
+\bibitem{mnv} P.-L. M\'eliot, A. Nikeghbali, and G. Visentin, \emph{Mod-Poisson approximation schemes and higher-order Chen--Stein inequalities}, arXiv:2210.13818v1 (2022). \url{https://arxiv.org/abs/2210.13818}.
+\bibitem{sw} A. Saumard and J. A. Wellner, \emph{Log-concavity and strong log-concavity: a review}, arXiv:1404.5886 (2014). \url{https://arxiv.org/abs/1404.5886}.
+\bibitem{dm} L. D\"umbgen and A. M\"osching, \emph{On stochastic orders and total positivity}, arXiv:2209.07868 (2022). \url{https://arxiv.org/abs/2209.07868}.
+\bibitem{ehm} W. Ehm, \emph{Binomial approximation to the Poisson binomial distribution}, Statistics \& Probability Letters \textbf{11} (1991), 7--16. Publisher abstract only inspected; no original theorem text used. \href{https://doi.org/10.1016/0167-7152(91)90170-V}{doi:10.1016/0167-7152(91)90170-V}.
+\bibitem{TSvol}{\raggedright ProveIt, \emph{Transseries and inversion}, \file{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex}; Part~0 (\file{p0:def:model}, \file{p0:thm:lambert-core}, \file{p0:def:three-inverses}, \file{p0:thm:staircase}) and the chapter on the Lambert template (\file{plt:def:lw-monomial-log-datum}, \file{plt:thm:lw-template}). [Added in the write.]\par}
 \end{thebibliography}
 \end{document}

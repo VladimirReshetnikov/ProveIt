@@ -1,0 +1,167 @@
+\section{Marked expansions and the tilted density}\label{spb:ml:sec:marked}
+\subsection{A finite scalar and cumulant foundation}
+To handle marking rigorously, temporarily let $c$ vary over a compact subset of $(0,\infty)$ and set $\lambda=c/t$, keeping $\Delta_n$ unchanged. Define
+\begin{equation}\label{spb:ml:eq:Fn}
+ F_n(c)=\sum_{\substack{0\le r\le n\\r\equiv a\ (2)}}
+ \frac{(c/t)^r}{r!}e^{\Delta_n(r)}.
+\end{equation}
+At the physical value $c=\sqrt{e/2}$, $(n/2)^{n/2}F_n(c)=a(n)$.
+
+\begin{proposition}[Scalar expansion with a finite generator]\label{spb:ml:prop:scalar}
+For every fixed integer $K\ge0$, there are computable polynomials $C_j(c)\in\mathbb Q[c]$ such that
+\begin{equation}\label{spb:ml:eq:scalar}
+ F_n(c)=\tfrac12 e^{c/t-Ac^2}
+ \left(\sum_{j=0}^K C_j(c)t^j+O_K(t^{K+1})\right),\qquad C_0=1.
+\end{equation}
+Give $t$ weight two and $u$ weight one. Form
+\[
+ V_K^{\mathrm{sc}}=Ac^2+\sum_{j=1}^{K+1}t^{2j}D_j((c+u)/t),
+ \qquad P_K^{\mathrm{sc}}=[e^{V_K^{\mathrm{sc}}}]_{\wt\le2K+1}.
+\]
+Replace every $u^d$ by
+\begin{equation}\label{spb:ml:eq:scaledmoments}
+ \sum_{k=0}^{\lfloor d/2\rfloor}B_{d,k}^{\ge2}c^kt^{d-k},
+\end{equation}
+and retain powers through $t^K$. This finite algorithm gives the coefficients in \eqref{spb:ml:eq:scalar}.
+\end{proposition}
+\begin{proof}
+Center now at $\lambda$: $U=t(X-\lambda)=tX-c$. The degree bound on $D_j$ implies that $V_K^{\mathrm{sc}}$ has no negative powers of $t$. At $t=0$ it equals $-2Acu-Au^2$, so every monomial has positive weight. The exponential truncation needs at most powers zero through $2K+1$.
+
+On $|X-\lambda|\le\lambda^{3/4}$, Lemma~\ref{spb:ml:lem:defects} with $L=K+1$ has remainder $O(t^{K+1})$, and $U=O(t^{1/4})$. Both exponents remain bounded. Apply ordinary multivariate Taylor's theorem to $\exp(V_K^{\mathrm{sc}}(s^2,u))$, with $s=\sqrt t$, through total degree $2K+1$. Its remainder is bounded by $C_K(\sqrt t+|u|)^{2K+2}$. Formula \eqref{spb:ml:eq:scaledmoments}, which is \eqref{spb:ml:eq:centeredmoments} after scaling, makes the averaged absolute remainder $O(t^{K+1})$. Lemma~\ref{spb:ml:lem:Poisson} and \eqref{spb:ml:eq:globalbound} remove all central tails, including the cutoff at $n$.
+
+For every polynomial $f$, the exact parity filter is
+\begin{equation}\label{spb:ml:eq:filter}
+ 2\E[f(X)\1_{X\equiv a}]=\E f(X)+(-1)^a\E[(-1)^Xf(X)].
+\end{equation}
+If $T_d$ denotes the $d$th Touchard polynomial, direct differentiation of $\E z^X=e^{\lambda(z-1)}$ yields
+$\E[(-1)^XX^d]=e^{-2\lambda}T_d(-\lambda)$. Hence a fixed polynomial in $t$ and $U$ has exponentially small parity correction. Replacing by the full ordinary expectation proves \eqref{spb:ml:eq:scalar}. Every exponent $i+d-k$ produced from $t^iu^d$ is integral. This also proves the absence of odd quarter powers in the scalar expansion.
+\end{proof}
+\begin{writenote}[7 October 2026]
+At the physical value of $c$ this is Part~I's
+Theorem~\ref{spb:ep:thm:critical} with the same finite generator; the
+uniformity over a compact range of $c$, which the marking argument needs, is
+the extension. The parity filter~\eqref{spb:ml:eq:filter} is the display in
+Part~I's proof of that theorem.
+\end{writenote}
+
+The first coefficients and logarithmic coefficients, obtained by these finite substitutions, are
+\begin{align}
+ C_1&=\frac c4+\frac{11c^3}{8},\qquad
+ C_2=\frac{31c^2}{32}-\frac{319c^4}{96}+\frac{121c^6}{128},\label{spb:ml:eq:C12}\\
+ L_1&=\frac c4+\frac{11c^3}{8},\qquad
+ L_2=C_2-C_1^2/2=\frac{15c^2}{16}-\frac{11c^4}{3},\label{spb:ml:eq:L12}
+\end{align}
+where $\log(\sum C_jt^j)=\sum_{j\ge1}L_jt^j$. 
+% [write] the direct check of C_1 is printed once, in Part I (note).
+\begin{writenote}[Printed once, 7 October 2026]
+Report~235 adds here the direct check of $C_1$ without the polynomial
+algorithm ($f(z)=e^{-3z^2/4}$, $\E U^2=ct$, giving $c+c^3/4+(c/2)(-3/2+9c^2/4)=c/4+11c^3/8$);
+it is printed once, as Part~I's Section~\ref{spb:ep:sec:critical}.5.
+\end{writenote}
+
+\begin{theorem}[All fixed order marked cumulants]\label{spb:ml:thm:cumulants}
+Let $\Theta=c\,d/dc$. For every fixed $h\ge1$, $K\ge0$, the $h$th cumulant of the law defined by \eqref{spb:ml:eq:Fn} satisfies
+\begin{equation}\label{spb:ml:eq:cumulants}
+ \kappa_h=\lambda-A2^hc^2+
+       \sum_{j=1}^K\Theta^hL_j(c)t^j+O_{h,K}(t^{K+1}).
+\end{equation}
+In particular, at the physical value of $c$,
+\begin{equation}\label{spb:ml:eq:meanvar}
+ \E R_n=\nu_0+O(t^3),\qquad \Var R_n=v_++O(t^3).
+\end{equation}
+\end{theorem}
+\begin{proof}
+We do not differentiate the remainder in \eqref{spb:ml:eq:scalar}. Instead construct the scalar centered polynomial at order $J=K+h$, multiply it by each required raw power $r^d$, $d\le h$, and average. On the central window $r^d=t^{-d}(c+U)^d$. The proof of Proposition~\ref{spb:ml:prop:scalar}, with additional fixed weights, gives raw moment error $O(t^{J+1-d})$, including division by the positive normalizer. The same argument controls all tails. In a moment to cumulant monomial of total degree $h$, the other raw moment factors have size at most $O(t^{-(h-d)})$. Thus replacing any one raw moment by its error costs $O(t^{J+1-h})=O(t^{K+1})$; terms with multiple errors are smaller.
+
+It remains to identify the resulting finite polynomial coefficients. Differentiation of the exact finite sum $F_n$ inserts $r$, and the polynomial identity for the ordinary Poisson expectation is
+\begin{equation}\label{spb:ml:eq:Thetaidentity}
+ \Theta\E P(c,t,tX-c)
+ =\E\left[(c\partial_c-c\partial_u+u/t)P(c,t,u)\right]_{u=tX-c}.
+\end{equation}
+It follows by differentiating the Poisson weights and the argument $u=tX-c$; the weight derivative is $X-\lambda=u/t$. Each operation lowers weighted degree by at most one. Hence each of the $h$ desired formal differentiations is determined by a finite longer truncation, and agrees with the raw moment calculation whose error was already proved. This identifies its coefficients with $\Theta^h\log F_n$ and proves \eqref{spb:ml:eq:cumulants}. Applying $\Theta$ and $\Theta^2$ to \eqref{spb:ml:eq:L12} gives exactly \eqref{spb:ml:eq:nu0}, \eqref{spb:ml:eq:vplus}.
+\end{proof}
+
+\subsection{All fixed order weighted density expansion}
+Return to the physical $c$, and let $g_n(r)=\PP(R_n=r)/Q_{\mu,a}\{r\}$, with $g_n=0$ for $r>n$. Define the first three monic Charlier polynomials by
+\begin{align}
+ C_1(r;\mu)&=r-\mu,\nonumber\\
+ C_2(r;\mu)&=(r-\mu)^2-r,\label{spb:ml:eq:charlier}\\
+ C_3(r;\mu)&=(r-\mu)^3-3(r-\mu)^2+(2-3\mu)(r-\mu)+2\mu.\nonumber
+\end{align}
+They are distinct from the scalar coefficients $C_j(c)$; the arguments distinguish the notation.
+Put $\beta_0=\log(\mu/\lambda)$, $\theta=t\mu$ and $u=t(r-\mu)$. The exact cancellation underlying the tilt is
+\begin{equation}\label{spb:ml:eq:tiltcancel}
+ D_1(r)/n-\beta_0r=A\mu^2/n-A C_2(r;\mu)/n.
+\end{equation}
+Thus $g_n=e^{V_n}/T_n$ on its support, where
+\[
+ V_n(r)=\Delta_n(r)-\beta_0r-A\mu^2/n,
+\]
+\begin{equation}\label{spb:ml:eq:Tn}
+ T_n=e^{\lambda-\mu-A\mu^2/n}
+ \frac{1+(-1)^ae^{-2\lambda}}{1+(-1)^ae^{-2\mu}}Z_n\longrightarrow1.
+\end{equation}
+The limit follows from $\lambda-\mu\to2Ac^2$, $A\mu^2/n\to Ac^2$, and \eqref{spb:ml:eq:normlimit}. This also controls the unnormalized weighted tails of $e^{V_n}$.
+
+\begin{theorem}[Weighted polynomial density generator]\label{spb:ml:thm:density}
+For $K\ge0$, define
+\begin{align*}
+ V_K(t,u;\theta)&=\sum_{j=1}^{K+1}t^{2j}D_j((\theta+u)/t)
+          +(2A\theta+bt)(\theta+u)-A\theta^2,\\
+ P_K(t,u;\theta)&=[e^{V_K(t,u;\theta)}]_{\wt\le2K+1},\\
+ Z_{K,a}&=\E_{Q_{\mu,a}}P_K(t,t(X-\mu);\theta).
+\end{align*}
+Then $Z_{K,a}=1+O(t)$ and, for every fixed real $s\ge0$,
+\begin{equation}\label{spb:ml:eq:weighteddensity}
+ \E_{Q_{\mu,a}}\left[|X-\mu|^s
+ \left|g_n(X)-\frac{P_K(t,t(X-\mu);\theta)}{Z_{K,a}}\right|\right]
+ =O_{K,s}(\mu^{s/2}t^{K+1}).
+\end{equation}
+The constants are uniform for $\theta$ in a fixed compact positive interval. At $s=0$ the weight is interpreted as one.
+\end{theorem}
+\begin{proof}
+By \eqref{spb:ml:eq:tiltcancel}, all monomials of $V_K$ have weighted degree at least two: its first defect contribution is $-Au^2+At(\theta+u)$, and all later defects have that property too. Consequently powers zero through $K$ suffice for the exponential truncation.
+
+On \eqref{spb:ml:eq:window}, Lemma~\ref{spb:ml:lem:defects} gives exponent error $O(t^{K+1})$. The exponents are bounded there. Taylor's theorem in $(\sqrt t,u)$ gives remainder $O((\sqrt t+|u|)^{2K+2})$. With $U=t(X-\mu)$, Lemma~\ref{spb:ml:lem:Poisson} gives $\E|U|^d=O_d(t^{d/2})$ for every fixed real $d\ge0$. Multiply the Taylor error by $|X-\mu|^s=t^{-s}|U|^s$ and average. The result is $O(t^{K+1-s/2})=O(\mu^{s/2}t^{K+1})$. The exponent error has the same weighted bound. All polynomial and exact density tails are negligible by \eqref{spb:ml:eq:Tn} and Section~\ref{spb:ml:sec:exact}; this includes $r>n$.
+
+The scalar expectation is $1+O(t)$. Its exact error is $O(t^{K+1})$, while the polynomial's weighted absolute moment is $O(\mu^{s/2})$. Dividing by these bounded away from zero normalizers preserves the weighted error. Formula \eqref{spb:ml:eq:filter} and the centered moment polynomial compute $Z_{K,a}$ exactly, with only exponentially small deviations from the ordinary Poisson expectation.
+\end{proof}
+
+For $K=1$, direct substitution gives
+\[
+ P_1=1-Au^2+t(A\theta+\theta^3/4)+t(A+3\theta^2/4)u,
+ \qquad Z_{1,a}=1+\theta^3t/4+O(e^{-d\mu}).
+\]
+Expanding its quotient proves the useful refinement
+\begin{equation}\label{spb:ml:eq:firstdensity}
+ g_n=1-\frac{A}{n}C_2+
+       \frac{3\mu^2}{4n^2}C_1+\eta_n,\qquad
+ \E_Q[|X-\mu|^s|\eta_n|]=O_s(\mu^{s/2}t^2).
+\end{equation}
+Here and in the sequel $Q=Q_{\mu,a}$. These polynomial approximants are signed; their nonnegativity at remote lattice points is neither required nor claimed.
+
+\begin{corollary}[Sharp Poisson comparisons]\label{spb:ml:cor:Poisson}
+Uniformly in parity,
+\begin{align}
+ \TV(\Law(R_n),Q_{\lambda,a})&\sim
+       A\sqrt{2/\pi}\,\lambda^{3/2}/n,\label{spb:ml:eq:originalTV}\\
+ \TV(\Law(R_n),Q_{\mu,a})&\sim
+       A\sqrt{2/(\pi e)}\,\mu/n.\label{spb:ml:eq:tiltedTV}
+\end{align}
+In particular $(R_n-\mu)/\sqrt\mu\Longrightarrow N(0,1)$.
+\end{corollary}
+\begin{proof}
+Lemma~\ref{spb:ml:lem:Poisson} gives $\E_Q|C_2|/\mu\to\E|Z^2-1|=4\phi(1)$, where $Z$ is standard normal. Equation \eqref{spb:ml:eq:firstdensity} has smaller remainder $O(\mu^{5/2}/n^2)$ after its linear term is included, proving \eqref{spb:ml:eq:tiltedTV}. For bounded $\delta$, the exact ratio of conditioned Poisson masses, Taylor expanded on the central window, is
+\[
+ \frac{Q_{\lambda+\delta,a}\{r\}}{Q_{\lambda,a}\{r\}}
+ =1+\delta(r-\lambda)/\lambda+\rho(r),\qquad
+ \E_{Q_{\lambda,a}}|\rho|=O(\lambda^{-1}).
+\]
+Indeed its logarithm is $r\log(1+\delta/\lambda)-\delta$ plus an exponentially small parity normalizer; quadratic centered moments bound the exponential Taylor remainder. The tails follow from Lemma~\ref{spb:ml:lem:Poisson}. For $\delta$ converging to a nonzero constant, the TV equivalent is $|\delta|/\sqrt{2\pi\lambda}$. Take $\delta=\mu-\lambda\to-2Ac^2$. The triangle and reverse triangle inequalities, using the $O(n^{-1/2})$ error in \eqref{spb:ml:eq:tiltedTV}, prove \eqref{spb:ml:eq:originalTV}. TV convergence to $Q_{\mu,a}$ transfers its central limit theorem.
+\end{proof}
+\begin{writenote}[7 October 2026]
+These are the equivalents~\eqref{spb:ep:eq:TVlambda}
+and~\eqref{spb:ep:eq:TVmu}, with the same constants, at $p=1$, where Part~I
+does not assert them. The write recomputed the two ratios for the table of
+Section~\ref{spb:ml:sec:computation} (note there).
+\end{writenote}

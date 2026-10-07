@@ -1,0 +1,84 @@
+\section{Uniform local sensitivity and the optimal Gaussian fit}\label{spb:ml:sec:local}
+Let $\alpha,\beta$ range over any fixed bounded subset of $\R^2$. Define
+\begin{equation}\label{spb:ml:eq:localfamily}
+ \nu(\alpha)=\nu_0+\gamma\alpha\frac{\mu^2}{n^2},\qquad
+ M(\beta)=\round\left(M_0+\frac59\beta\sqrt\mu\right),
+\end{equation}
+and let $h_{\alpha,\beta}$ be the density of $B_{M(\beta),\nu(\alpha),a}$ relative to $Q$. The mean and trial variations need not correspond to matching any two exact moments.
+
+\begin{theorem}[Uniform weighted sensitivity]\label{spb:ml:thm:sensitivity}
+For each fixed $s\ge0$, uniformly on bounded $(\alpha,\beta)$ sets,
+\begin{equation}\label{spb:ml:eq:sensitivity}
+\begin{split}
+ \E_Q\bigg[|X-\mu|^s\bigg|g_n-h_{\alpha,\beta}
+ -\frac{\gamma}{n^2}\{C_3-\alpha\mu C_1-\beta\sqrt\mu C_2\}\bigg|\bigg]
+ =O_s(\mu^{s/2}n^{-3/2}).
+\end{split}
+\end{equation}
+All Charlier polynomials here have argument $(X;\mu)$. Consequently
+\begin{equation}\label{spb:ml:eq:localTV}
+ \frac{\TV(\Law(R_n),B_{M(\beta),\nu(\alpha),a})}{\eps_n}
+ \longrightarrow\frac\gamma2 J(\alpha,\beta),
+\end{equation}
+uniformly on compact sets, where
+\begin{equation}\label{spb:ml:eq:J}
+ J(\alpha,\beta)=\E|H_3(Z)-\alpha H_1(Z)-\beta H_2(Z)|,
+ \quad H_1(z)=z,\quad H_2(z)=z^2-1,\quad H_3(z)=z^3-3z.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Let $\delta=\gamma\alpha\mu^2/n^2=O(t^2)$ and
+$D=M(\beta)-M_0=(5/9)\beta\sqrt\mu+O(1)$. In the Poisson mean shift part of the logarithm, replacing $\nu_0$ by $\nu_0+\delta$ has leading term $\delta(r-\mu)/\mu$. Its weighted expected absolute size is $O_s(\mu^{s/2}t^{5/2})$. Replacing $\nu_0$ by $\mu$ in this leading coefficient costs $O_s(\mu^{s/2}t^4)$ or smaller, since $\nu_0-\mu=O(t)$. Its quadratic log error is bounded by $O_s(\mu^{s/2}\delta^2/\mu)$, of order $t^5$ after removing the weight. The derivative of $-C_2(r;\nu)/(2M)$ with respect to $\nu$ adds $\delta(r-\nu)/M$, of weighted order $t^{7/2}$. The changes in $B_2/M^2$ and the already bounded higher terms are no larger at the required $t^3$ precision.
+
+The trial variation in the leading logarithm is
+\[
+ \frac{D}{2M_0^2}C_2(r;\mu)
+ =\frac{\gamma\beta\sqrt\mu}{n^2}C_2(r;\mu)
+                  +O_{L^1_s}(\mu^{s/2}t^3),
+\]
+where $O_{L^1_s}$ denotes the corresponding centered weighted norm. The coefficient follows from
+$\frac12(3/2)^2(5/9)=5/8$ and $M_0/n=2/3+O(t)$. The $O(1)$ rounding part contributes $O_s(\mu^{s/2}\mu/n^2)=O_s(\mu^{s/2}t^3)$. The quadratic trial increment contributes at most
+\[
+ O_s(\mu^{s/2}D^2\mu/M_0^3)
+     =O_s(\mu^{s/2}\mu^2/n^3)=O_s(\mu^{s/2}t^4).
+\]
+The change to $B_2/M^2$ has weighted size at most
+$O_s(\mu^{s/2}\mu^2M_0^{-2}|D|/M_0)
+=O_s(\mu^{s/2}t^{7/2})$. The explicit centered polynomials \eqref{spb:ml:eq:B2center}--\eqref{spb:ml:eq:B3center} give the same or smaller bounds for mean changes, mixed terms, and higher logarithms.
+
+Thus the log increment is
+\[
+ \frac{\gamma}{n^2}\{\alpha\mu C_1+\beta\sqrt\mu C_2\}
+          +O_{L^1_s}(\mu^{s/2}t^3).
+\]
+Its retained part has weight five. Products with the existing weight two density correction have weight at least seven, and squares of the increment have weight at least ten. Finite exponential Taylor estimates therefore turn this into the same density increment. The window, tail, support, and parity arguments of Section~\ref{spb:ml:sec:binomial} are uniform for these bounded variations. Subtracting from Theorem~\ref{spb:ml:thm:cubic} proves \eqref{spb:ml:eq:sensitivity}.
+
+By Lemma~\ref{spb:ml:lem:Poisson}, $C_j/\mu^{j/2}$ converge jointly to $H_j(Z)$ for $j=1,2,3$, with enough even moment control for uniform integrability. For fixed parameters this gives \eqref{spb:ml:eq:localTV}. Uniformity on compact parameter sets follows from the uniform remainder and the Lipschitz bound
+\[
+ |J_n(\alpha,\beta)-J_n(\alpha',\beta')|
+ \le |\alpha-\alpha'|\E_Q|C_1|/\sqrt\mu+
+        |\beta-\beta'|\E_Q|C_2|/\mu,
+\]
+whose right side is uniformly bounded by a fixed multiple of parameter distance. A finite net in each compact set completes the proof.
+\end{proof}
+
+\begin{lemma}[Unique Gaussian minimizer]\label{spb:ml:lem:median}
+The function $J$ in \eqref{spb:ml:eq:J} has the unique global minimizer
+\begin{equation}\label{spb:ml:eq:alphabetaopt}
+ \alpha_*=2\log2-3,\qquad \beta_*=0,
+ \qquad J(\alpha_*,0)=2\log2\sqrt{2/\pi}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Pair $z$ with $-z$. For odd $O(z)=H_3(z)-\alpha H_1(z)$ and even $E(z)=H_2(z)$,
+\[
+ \frac{|O-\beta E|+|O+\beta E|}{2}
+       =\max(|O|,|\beta E|)\ge|O|.
+\]
+If $\beta\ne0$, the inequality is strict on an interval about zero: $O(0)=0$ and $E(0)=-1$. Thus the unique best $\beta$ for each $\alpha$ is zero.
+
+At $\beta=0$, write
+$J(\alpha,0)=\E\{|Z|\,|Z^2-(3+\alpha)|\}$. Under the probability measure with density $|z|\phi(z)/\E|Z|$, the variable $W=Z^2$ has density $\frac12e^{-w/2}$ on $w>0$. Its unique median is $m=2\log2$. The absolute deviation function is uniquely minimized at a median: differentiating its finite integral gives $2\PP(W\le q)-1$ for $q>0$, while it is strictly decreasing for $q<0$. Hence $3+\alpha=m$ uniquely. Finally direct integration gives $\E|W-m|=m-2+4e^{-m/2}=m$. Multiplication by $\E|Z|=\sqrt{2/\pi}$ proves \eqref{spb:ml:eq:alphabetaopt}.
+\end{proof}
+
+Theorem~\ref{spb:ml:thm:sensitivity} and Lemma~\ref{spb:ml:lem:median} prove the claimed tuned construction and its optimality among bounded local parameter perturbations. To reach the global theorem, it remains to prove that every globally competitive binomial belongs to this local class. That step cannot follow from cumulant comparison alone: total variation controls bounded test functions and does not, without additional restrictions, force closeness of unbounded moments.
