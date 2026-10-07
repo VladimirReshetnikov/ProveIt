@@ -2,7 +2,7 @@ import GowersSzemeredi.Proofs18FejerCubicDiscrepancy
 import GowersSzemeredi.Proofs18GeneralIteration
 
 /-! A closed five-term Szemerédi threshold from the constructed cubic inverse theorem.
-No comparison with the paper's numerical five-term bound is asserted here. -/
+The numerical comparison with the source is proved in Proofs18FiveTermSourceThreshold. -/
 set_option autoImplicit false
 noncomputable section
 namespace LeanProofs.GowersSzemeredi

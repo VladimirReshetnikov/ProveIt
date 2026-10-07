@@ -2,7 +2,7 @@ Gowers Szemeredi formalization checkpoint — 2026-10-07
 
 Scope
   The goal remains open. No improvement to the general all-length Szemeredi
-  bound is claimed. A smaller four-term threshold is proved below.
+  bound is claimed. Smaller four- and five-term thresholds are proved below.
   The source catalogue contains all 120 unique numbered theorem, lemma,
   proposition, and corollary headings in sz-thm-gowers-proof.tex.
   There are 113 checked exact companion proofs and 7 open statements.
@@ -13,8 +13,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 696 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 4,451 public Gowers theorems and found only propext,
+  All 701 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 4,475 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 113 exact
   companion proofs and 7 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -867,8 +867,8 @@ Unconditional cubic discrepancy and five-term iteration
   an existential threshold T and discharges the full five-term density
   iteration, retaining T inside the proved closed iteration threshold.
   This proves the end-to-end five-term argument through the constructed
-  cubic inverse theorem. It does not establish the source's numerical
-  five-term bound, nor the exact general Theorem 18.1 exponent. The original
+  cubic inverse theorem. The later numerical comparison below establishes
+  the source five-term bound; the general Theorem 18.1 remains open. The original
   modulus threshold in this older interface is qualitative; the explicit
   interface below removes that limitation. The Section 16 induction needed
   for arbitrary degrees remains open. The catalogue stays 113/120.
@@ -920,7 +920,8 @@ Explicit Fourier, cubic inverse, and five-term thresholds
   above that bound, for every 0 < delta <= 1. The threshold is a finite
   expression involving powers, exponentials, floors, ceilings, and a finite
   maximum; no eventual-growth witness is chosen in its definition.
-  Comparison with the paper's numerical five-term bound is not yet proved.
+  The improved Fejer construction below now satisfies a strictly smaller
+  numerical threshold than the paper's five-term bound.
   This does not close the general numbered Theorems 18.1 or 18.2.
 
 Fejer improvements through the complete cubic inverse
@@ -943,8 +944,9 @@ Fejer improvements through the complete cubic inverse
   parameters strictly exceed the older 88/76 versions for every
   0 < alpha <= 1. This is a proved comparison of the actual partition
   guarantees, not merely a comparison of intermediate Fourier constants.
-  The full five-term starting thresholds have not yet been compared;
-  no improvement to the general all-length Szemeredi bound is claimed.
+  The Fejer starting threshold now has the conventional upper
+  envelope and compared with the source five-term bound. No improvement to
+  the general all-length Szemeredi bound is claimed.
 
 Numerical envelopes for the explicit Section 13 thresholds
   Proofs13FejerThresholdPolynomial proves a power bound for the actual
@@ -998,8 +1000,8 @@ Complete conventional Section 13 modulus bound
   common-step bilinear square, with side exponent 53 and density exponent
   42, above this conventional threshold. The odd-square threshold needed
   for cubic localization also satisfies the same numerical bound.
-  The subsequent inverse-theorem threshold is now bounded below. The
-  complete five-term closed iteration still needs its numerical comparison.
+  The subsequent inverse-theorem threshold and complete five-term closed
+  iteration now have the numerical envelopes and comparisons below.
 
 Conventional numerical threshold for the complete cubic inverse
   Proofs18FejerReciprocalBudgets bounds the reciprocals of the local
@@ -1021,9 +1023,32 @@ Conventional numerical threshold for the complete cubic inverse
   FunctionDiscrepancyBound at this conventional threshold, retaining both
   previously proved strict parameter improvements. There is no assumed
   phase-removal budget or remaining existential modulus in this interface.
-  The final five-term density iteration must still be bounded and compared
-  with the source's numerical threshold. This does not close the general
-  Theorems 18.1 or 18.2 or the Section 16 structural induction.
+  The final five-term density iteration is bounded and compared with the
+  source threshold below. This does not close the general Theorems 18.1
+  or 18.2 or the Section 16 structural induction.
+
+Explicit improved five-term Szemeredi bound
+  Proofs18DensityIterationExponentialBudget bounds the complete closed
+  density iteration when the reciprocal length exponent has a single
+  exponential bound. It includes the ceiling on the number of density
+  increments and the logarithm of the actual length coefficient.
+  Proofs18FejerIterationParameters supplies the cubic gain, coefficient,
+  and exponent budgets. Proofs18FiveTermUniformityParameters bounds the
+  substitution alpha=intervalUniformityParameter(delta,5), with
+  alpha<=delta^5 and 2/alpha<=(2/delta)^512.
+  Proofs18FiveTermIterationEnvelope bounds every stopping threshold and
+  the full iteration, obtaining
+    fejerFiveTermThreshold(delta) <= exp(exp((2/delta)^(2^1097)))
+  for every 0<delta<=1. No unspecified multiplicative constant or eventual
+  threshold remains. Proofs18FiveTermSourceThreshold converts this to
+    N >= 2^(2^(delta^(-(2^1100))))
+  for 0<delta<=1/2 and proves that every subset of [1,N] of density at
+  least delta contains a nonconstant five-term arithmetic progression.
+  The displayed threshold is proved strictly smaller than the source's
+  five-term bound, whose innermost exponent is 2^16384.
+  theorem_18_2_five_holds consequently proves the exact five-term instance
+  of Theorem 18.2. This is a restricted instance; the catalogue count stays
+  113/120, and the general all-length quantitative theorem remains open.
 
 Cubic obstruction in a strictly smaller prime model
   Proofs17LocalizedPhaseRemoval now exports proposition_17_7_with_upper:
@@ -2269,10 +2294,11 @@ Next substantial obligations
      five-term iteration are now proved with a fully specified modulus
      threshold, including the stronger Fejer parameters. The entire Section
      13 Fourier and odd-square threshold and the complete cubic inverse
-     threshold now have conventional double-exponential bounds. Bound the
-     full closed five-term iteration and compare it with the intended source
-     threshold. For arbitrary degrees, supply the Section 16 structural input
-     and propagate the now-proved interval transport and assembly steps.
+     threshold now have conventional double-exponential bounds. The full
+     five-term iteration now satisfies a strictly smaller numerical bound
+     than the source five-term instance. For arbitrary degrees, supply the
+     Section 16 structural input and propagate the now-proved interval
+     transport and assembly steps.
   4. Close Theorem 18.2 and its headline consequences; then investigate tighter
      final bounds without treating improved auxiliary statements as a proved
      improvement of the full Szemeredi estimate.
