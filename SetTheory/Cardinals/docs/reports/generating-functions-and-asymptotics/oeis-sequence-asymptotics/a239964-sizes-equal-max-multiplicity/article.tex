@@ -1,0 +1,943 @@
+\newcommand{\DoNotLoadEpstopdf}{}
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,booktabs,array}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{enumitem,fancyhdr}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue,breaklinks=true]{hyperref}
+\hypersetup{pdftitle={Report 196: Partitions whose distinct size count equals maximum multiplicity},pdfauthor={Report 196},pdfsubject={Exact diagonal transform and all fixed order asymptotics for OEIS A239964}}
+\pdfinfoomitdate=1
+\pdftrailerid{}
+\pdfsuppressptexinfo=15
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Distinct sizes and maximum multiplicity}
+\fancyhead[R]{\small Report 196}\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{1.2em}
+\emergencystretch=2em
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\N}{\mathbb N}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Prob}{\mathbb P}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\ee}{\mathrm e}
+\DeclareMathOperator{\Rea}{Re}
+\DeclareMathOperator{\Ima}{Im}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\title{\LARGE\bfseries Partitions whose distinct size count\\equals maximum multiplicity\\[8pt]\large Exact diagonal analysis of OEIS A239964}
+\author{Report 196}
+\date{4 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+Let $a(n)$ count the partitions of $n$ for which the number of distinct part sizes equals the largest multiplicity of any size. Writing
+\[
+H(z)=\prod_{j\ge1}(1-\ee^{-jz}),
+\]
+we prove
+\[
+a(n)\sim\frac{\pi H'(1)}{12\sqrt2}\,n^{-3/2}
+\exp\!\left(\pi\sqrt{\frac{2n}{3}}\right),
+\qquad
+\frac{a(n)}{p(n)}\sim\frac{\pi H'(1)}{\sqrt{6n}}.
+\]
+An exact inclusion--exclusion transform sums the full diagonal before taking limits. Uniform complex subset estimates and a direct whole-circle Fourier bound justify coefficient extraction at every fixed asymptotic order. We give four radial constants, the first three probability terms, and a constructive formula for all later coefficients. A local contour deformation has explicit connector bounds; its circular-arc amplitude is an exact terminating polynomial. The resulting forward expansion gives eventual strict increase, a Lambert $W_{-1}$ leading inverse, all fixed-order smooth corrections, and rigorous ceiling-envelope brackets for the integer threshold. Exact computation matches all 1001 published b-file terms; independent partition and subset checks cover smaller ranges. Source limitations, the non-effective nature of the remainder constants, and the distinction between asymptotic expansions and numerical certificates are stated explicitly.
+\end{abstract}
+\clearpage
+{\setcounter{tocdepth}{1}\small\tableofcontents}
+\newpage
+
+\section{The sequence and the main results}\label{sec:results}
+For a nonempty integer partition $\lambda$, let $D(\lambda)$ be the number of distinct positive part sizes and let $M(\lambda)$ be the largest multiplicity of any one size. Define
+\begin{equation}\label{eq:def}
+a(n)=\#\{\lambda\vdash n:D(\lambda)=M(\lambda)\},\qquad a(0)=0.
+\end{equation}
+This is OEIS A239964 \cite{oeis}. The empty partition is excluded by convention. The number of distinct sizes is different from the number of parts, and the maximum multiplicity is different from the multiplicity of the largest part. These distinctions matter for both the exact identity and the asymptotic scale.
+
+We use the ordinary partition generating function and the diagonal generating function
+\begin{equation}\label{eq:PF}
+P(q)=\prod_{j\ge1}(1-q^j)^{-1}=\sum_{n\ge0}p(n)q^n,
+\qquad F(q)=\sum_{n\ge0}a(n)q^n.
+\end{equation}
+Put
+\begin{equation}\label{eq:constants}
+A=\frac{\pi^2}{6},\quad B=2\sqrt A=\pi\sqrt{\frac23},\quad
+H(z)=\prod_{j\ge1}(1-\ee^{-jz}),\quad
+C=\frac{\pi H'(1)}{12\sqrt2}.
+\end{equation}
+The function $H$ and all its derivatives are analytic for $\Rea z>0$. Also
+\begin{equation}\label{eq:positive}
+H'(1)=H(1)\sum_{j\ge1}\frac{j}{\ee^j-1}>0.
+\end{equation}
+For coefficient asymptotics it is convenient to keep the classical $1/24$ shift:
+\begin{equation}\label{eq:saddlepar}
+\nu=n-\frac1{24},\qquad \tau=\sqrt{\frac A\nu},\qquad
+x=2\sqrt{A\nu}=\frac{2A}{\tau}.
+\end{equation}
+All asymptotic statements below are as $n\to\infty$, or as the specified real parameter tends to its indicated limit.
+
+\begin{theorem}[All fixed-order coefficient expansion]\label{thm:main}
+There are real constants $c_r$ given by the absolutely convergent subset formula \eqref{eq:cr}. For every fixed integer $R\ge1$,
+\begin{equation}\label{eq:mainbessel}
+a(n)=\frac1{\sqrt{2\pi}}\sum_{r=1}^{R}
+c_r\tau^{r+3/2}I_{-r-3/2}(x)
++O_R\!\left(\ee^x\tau^{R+3}\right),
+\end{equation}
+where $I_\alpha$ is the modified Bessel function. Equivalently, with
+\begin{equation}\label{eq:Qr}
+Q_r(\tau)=\sum_{j=0}^{r+1}
+\frac{(-1)^j(r+1+j)!}{j!(r+1-j)!}
+\left(\frac{\tau}{4A}\right)^j,
+\end{equation}
+one has the elementary polynomial form
+\begin{equation}\label{eq:mainpoly}
+a(n)=\frac{\ee^x}{2\pi\sqrt{2A}}
+\sum_{r=1}^{R}c_r\tau^{r+2}Q_r(\tau)
++O_R\!\left(\ee^x\tau^{R+3}\right).
+\end{equation}
+The first three radial coefficients are
+\begin{align}\label{eq:firstcr}
+c_1&=H'(1),& c_2&=\frac14H'''(1),\\
+c_3&=\frac1{12}H''(1)-\frac{23}{24}H'''(1)
++\frac1{36}H^{(4)}(1)+\frac1{32}H^{(5)}(1).\nonumber
+\end{align}
+In particular,
+\begin{equation}\label{eq:forwardn}
+a(n)=C n^{-3/2}\ee^{B\sqrt n}
+\left(1+d_1n^{-1/2}+O(n^{-1})\right),\qquad
+ d_1=\sqrt A\frac{c_2}{c_1}-\frac3B-\frac B{48}.
+\end{equation}
+For every fixed $J\ge1$ there are constructively determined $d_j$ such that
+\begin{equation}\label{eq:allforwardn}
+a(n)=C n^{-3/2}\ee^{B\sqrt n}
+\left(1+\sum_{j=1}^{J}d_jn^{-j/2}
++O_J(n^{-(J+1)/2})\right).
+\end{equation}
+\end{theorem}
+The leading term in \eqref{eq:mainbessel} has order $\ee^x\tau^3$, so its stated error is relative $O_R(\tau^R)$. The polynomial form avoids any need for special-function software. Terms retained in a particular $Q_r$ beyond the requested overall precision do not imply an improved remainder: omitted radial coefficients still determine that remainder.
+
+\begin{corollary}[Diagonal probability]\label{cor:prob}
+For a uniformly chosen ordinary partition of $n$,
+\begin{align}\label{eq:probability}
+\Prob\{D=M\}=\frac{a(n)}{p(n)}
+={}&c_1\tau+\left(c_2-\frac{c_1}{A}\right)\tau^2\\
+&+\left(c_3-\frac{5c_2}{2A}+\frac{c_1}{4A^2}\right)\tau^3
++O(\tau^4).\nonumber
+\end{align}
+The probability expansion continues to every fixed power of $\tau$.
+\end{corollary}
+For orientation, the constants are approximately
+\begin{align}\label{eq:numerics}
+c_1&=0.598555411703762341146171314808\ldots,\nonumber\\
+c_2&=0.076797344319009312021561055021\ldots,\nonumber\\
+c_3&=-1.184135136978472079040268115606\ldots,\\
+C&=0.110804651091708424586159594537\ldots,\nonumber\\
+d_1&=-1.058427881640711235980815635657\ldots.\nonumber
+\end{align}
+The relative $\tau$ correction in $a(n)/(p(n)c_1\tau)$ is
+$c_2/c_1-1/A=-0.47962261605811850894\ldots$.
+
+\begin{theorem}[Threshold inversion]\label{thm:inverseintro}
+The sequence $a(n)$ is eventually strictly increasing and unbounded. Let
+$N(X)=\min\{n\ge0:a(n)\ge X\}$. For large $X$, put
+\begin{equation}\label{eq:lambertintro}
+r(X)=\left[-\frac3B W_{-1}\!\left(-\frac B3(C/X)^{1/3}\right)\right]^2.
+\end{equation}
+Here $W_{-1}$ is the real lower branch of Lambert $W$. For each fixed $J\ge1$, there are explicitly determined constants $\delta_0,\ldots,\delta_{J-1}$ and two smooth roots $u_J(\log X)\le v_J(\log X)$ such that
+\begin{align}\label{eq:inverseintro}
+u_J(\log X),\ v_J(\log X)
+&=r(X)+\sum_{k=0}^{J-1}\delta_k r(X)^{-k/2}
++O_J(r(X)^{-J/2}),\\
+\lceil u_J(\log X)\rceil&\le N(X)\le\lceil v_J(\log X)\rceil,\nonumber\\
+0\le v_J(\log X)-u_J(\log X)&=O_J(r(X)^{-J/2}),\nonumber
+\end{align}
+where $\delta_0=-2d_1/B$. The roots and their remainder envelopes are defined precisely in Section~\ref{sec:inverse}.
+\end{theorem}
+The two ceiling values eventually differ by at most one. This does not assert that they always coincide, or that a finite smooth expansion determines the exact staircase at every threshold. No numerical remainder constants, effective onset for monotonicity, or certified finite-$X$ envelope is asserted.
+
+\subsection{Interpretation and scope}
+The leading probability is on the scale $n^{-1/2}$, but its proof is not a multiplication of marginal limit laws. Distinct-size counts and maximum multiplicities are functions of the same multiplicity vector. An exact diagonal transform removes the growing diagonal index before asymptotic analysis. Every subset size is covered, and the full Fourier circle is controlled. Thus no unproved joint local limit theorem, independence approximation, or final conditioning step is hidden in Theorem~\ref{thm:main}.
+
+An all fixed-order expansion is a Poincar\'e statement: for every prescribed finite order the remainder has the stated bound, with a constant depending on that order. Convergence of the infinite asymptotic series and uniformity as the order grows are neither claimed nor needed. Finite numerical accuracy is a separate matter.
+
+\section{Classical context and source limitations}\label{sec:prior}
+The exact occupancy-marked products for bounded multiplicities are elementary partition tools. The OEIS entry \cite{oeis} displays a coefficient-product formula credited to Seiichi Manyama, dated 13 March 2026. The cap-difference form used below is this same natural enumeration. Neither the definition nor that standard product construction is presented as new.
+
+Mutafchiev \cite{mutafchiev} proves that the maximum multiplicity, after scaling by $\pi/\sqrt{6n}$, has limiting distribution function $H(z)$ for every $0<z<\infty$. The author-version Theorem 1 was read directly; its domain was checked on the rendered page because text extraction corrupts the infinity symbol. The paper gives a marginal limit, not the diagonal probability in \eqref{eq:probability}. Its published marginal law is part of the background and is not a conclusion first established here.
+
+Goh and Schmutz \cite{goh} prove a central limit theorem for the number of distinct sizes of an ordinary random partition. Hwang \cite{hwang} develops central and local limit theorems and Cram\'er-type large deviations in a general Meinardus framework, using Mellin transforms and multidimensional saddles. The bounded source review for this article inspected publisher material and bibliographic records but did not retrieve both complete primary papers. Their full theorem scope, including any implications beyond their abstracts, has therefore not been excluded. Neither result is used as a premise of our proof.
+
+Ralaivaosaona \cite{rala} studies counts of sizes of a prescribed multiplicity and counts whose multiplicity is at least a prescribed threshold $d$. The inspected Theorem 10 includes, for $d$ of order $\sqrt n$, a limit given by a convergent sum of independent Bernoulli variables. This is substantial related prior. The statement inspected uses a prescribed threshold; it is not an assertion of equality of the number of occupied sizes with the random maximum. We make no novelty claim about those multiplicity regimes.
+
+The modular partition identity and Bessel saddle-transfer mechanism are classical. Grabner, Knopfmacher, and Wagner \cite{grabner} give a general asymptotic scheme for partition statistics, including the modular identity in their equation (1.3), transfer theorems under a global auxiliary-factor hypothesis, and a multiple-term extension. We use the same established analytic mechanism, with a direct Fourier bound for the actual $F$ in place of assuming their global hypothesis for $F/P$. Section~\ref{sec:transfer} gives a complete elementary local transfer proof with explicit connectors.
+
+The source review was bounded. The downloaded Mutafchiev text was an author version, not verified byte-identical to the final published typesetting. No claim of worldwide novelty, exhaustive literature coverage, or absence of a more general prior result follows from these checks. The aim of this report is a self-contained sequence-specific derivation, explicit constants, and reproducible verification.
+
+\section{Exact enumeration and the diagonal transform}\label{sec:exact}
+\subsection{The capped occupancy product}
+Let
+\begin{equation}\label{eq:capGF}
+G_{\le m}(q,u)=\prod_{j\ge1}\left(1+u\sum_{b=1}^{m}q^{jb}\right),
+\qquad G_{\le0}(q,u)=1.
+\end{equation}
+The variable $u$ counts occupied sizes and $q$ counts total size. Consequently
+\begin{equation}\label{eq:diagonalcap}
+F(q)=\sum_{m\ge1}[u^m]\bigl(G_{\le m}(q,u)-G_{\le m-1}(q,u)\bigr).
+\end{equation}
+At each degree in $q$ all sums are finite. The minimum size of a partition with $D=M=m$ is
+\begin{equation}\label{eq:minweight}
+\frac{m(m+1)}2+(m-1)=\frac{m^2+3m-2}{2}.
+\end{equation}
+It is achieved by taking size 1 exactly $m$ times and sizes $2,\ldots,m$ once each. This also gives the finite cap range for exact computation.
+
+\subsection{Summing the whole diagonal}
+For each finite nonempty set $S\subset\N$, write
+\begin{equation}\label{eq:sets}
+k=|S|,\qquad s=\sum_{j\in S}j,\qquad
+U_S(q)=q^{sk}\prod_{j\notin S}\bigl(1-(1-q^s)q^j\bigr).
+\end{equation}
+The variables $k$ and $s$ in a subset sum always refer to that set.
+
+\begin{proposition}[Exact diagonal transform]\label{prop:transform}
+As a coefficientwise finite formal identity, and analytically for $|q|<1$,
+\begin{equation}\label{eq:transform}
+\frac{F(q)}{P(q)}=
+\sum_{\substack{S\subset\N\text{ finite}\\S\ne\varnothing}}
+(-1)^{k+1}(1-q^s)U_S(q).
+\end{equation}
+\end{proposition}
+\begin{proof}
+The unrestricted occupancy product is
+\[
+G(q,u)=\prod_{j\ge1}\left(1+\frac{u q^j}{1-q^j}\right).
+\]
+For every $j\in S$, the event that its multiplicity is at least $m+1$ replaces the local factor by $u q^{(m+1)j}/(1-q^j)$. Dividing by the unrestricted local factor and applying inclusion--exclusion gives
+\begin{equation}\label{eq:IE}
+G_{\le m}(q,u)=G(q,u)
+\sum_{S\text{ finite}}
+\frac{(-1)^k u^kq^{(m+1)s}}
+{\prod_{j\in S}(1-(1-u)q^j)}.
+\end{equation}
+Subtract the formula with $m-1$ from that with $m$. The empty set cancels, while the numerator for $S\ne\varnothing$ becomes
+\[
+(-1)^ku^k(q^{(m+1)s}-q^{ms})
+=(-1)^{k+1}(1-q^s)u^kq^{ms}.
+\]
+For each nonempty $S$, its remaining series is divisible by $u^k$. Therefore the sum of occupancy coefficients may be extended to $m=0$. Applying
+$\sum_{m\ge0}v^m[u^m]J(u)=J(v)$ at $v=q^s$ gives
+\[
+\sum_{m\ge0}q^{ms}[u^m]
+\frac{u^kG(q,u)}{\prod_{j\in S}(1-(1-u)q^j)}
+=\frac{q^{sk}G(q,q^s)}{\prod_{j\in S}(1-(1-q^s)q^j)}.
+\]
+Finally,
+$G(q,q^s)=P(q)\prod_{j\ge1}(1-(1-q^s)q^j)$, proving the identity.
+The intermediate diagonals are formally legitimate because occupancy $m$ requires at least $m(m+1)/2$ total size. In the final formula each set contributes first at degree $sk$, and only finitely many sets satisfy $sk\le n$.
+
+For analytic convergence, it is useful to multiply by $P$. The exact factorization
+\begin{equation}\label{eq:positiveBS}
+B_S(q):=P(q)U_S(q)
+=q^{sk}\prod_{j\in S}(1-q^j)^{-1}
+\prod_{j\notin S}\left(1+\frac{q^{s+j}}{1-q^j}\right)
+\end{equation}
+has nonnegative coefficients. For $|q|\le r=\ee^{-t}<1$,
+\[
+|(1-q^s)B_S(q)|\le2P(r)U_S(r),\qquad
+U_S(r)\le\ee^{-tsk}.
+\]
+For every fixed $t>0$,
+\begin{equation}\label{eq:symmetric}
+\sum_{|S|=k}\ee^{-tk\sum S}
+\le\frac1{k!}\left(\sum_{j\ge1}\ee^{-tkj}\right)^k
+\le\frac{(tk)^{-k}}{k!}.
+\end{equation}
+The sum over $k$ converges. Thus the series for $F$ converges absolutely and locally uniformly; division by the nonzero analytic product $P$ finishes the proof.
+\end{proof}
+The nonnegativity in \eqref{eq:positiveBS} is a bound for $B_S$, not a positivity assertion about $U_S$ or the signed ratio $F/P$.
+
+\section{Subset tails and uniform complex expansion}\label{sec:local}
+\subsection{Absolute tails on the whole circle}
+Let $r=\ee^{-t}$, where $t>0$ is small, and let $a_s=1-r^s$. Since $0\le a_sr^j<1$, the logarithmic inequality $\log(1-z)\le-z$ gives
+\begin{align}\label{eq:radialtail}
+\log U_S(r)
+&\le-tsk-a_s\left(\frac1{\ee^t-1}-\sum_{j\in S}r^j\right)\nonumber\\
+&\le-\frac{a_s}{\ee^t-1}+k(a_s-ts)
+\le-\frac{a_s}{\ee^t-1}.
+\end{align}
+Fix a sufficiently small $\delta>0$. If $s\le\delta/t$, then
+$a_s/(\ee^t-1)\ge c_\delta s$ for small $t$ and a constant $c_\delta>0$.
+
+Let $d(s)$ count finite subsets of positive integers with sum $s$. An elementary partition estimate suffices throughout:
+\begin{equation}\label{eq:subsetcount}
+d(s)\le p(s)\le\exp(2\sqrt{As}).
+\end{equation}
+Indeed, for $u>0$,
+\[
+\log P(\ee^{-u})
+=\sum_{\ell\ge1}\frac1{\ell(\ee^{u\ell}-1)}\le\frac Au,
+\qquad p(s)\le\exp(us+A/u),
+\]
+and $u=\sqrt{A/s}$ yields the bound. In particular, a fixed polynomial in $s$ times $\ee^{-cs}$ is summable over all subsets whenever $c>0$.
+
+For $s>\delta/t$ retain the factor $\ee^{-tsk}$ in the first line of \eqref{eq:radialtail}. It gives
+\[
+U_S(r)\le\exp(-c_\delta/t)\ee^k\ee^{-tsk}.
+\]
+Using \eqref{eq:symmetric} and $k^k\ge k!$, we obtain
+\begin{align}\label{eq:largetail}
+\sum_{s>\delta/t}U_S(r)
+&\le\exp(-c_\delta/t)
+\sum_{k\ge1}\frac{(\ee/t)^k}{(k!)^2}\nonumber\\
+&\le\exp\left(-\frac{c_\delta}{t}+2\sqrt{\frac\ee t}\right).
+\end{align}
+For the last inequality use
+$\sum_{k\ge0}z^{2k}/(k!)^2\le(\sum_{k\ge0}z^k/k!)^2=\ee^{2z}$.
+By \eqref{eq:positiveBS} and $|1-q^s|\le2$, the corresponding contribution to $F(q)$ is bounded uniformly on $|q|=r$ by
+\begin{equation}\label{eq:largetailF}
+P(r)\exp(-c_\delta/t+O(t^{-1/2})).
+\end{equation}
+This controls all large sets, including ranges where a fixed-set expansion is invalid.
+
+\subsection{An exact normalized logarithm}
+Put $q=\ee^{-w}$ with $\Rea w>0$. Define
+\begin{equation}\label{eq:Qs}
+Q_s^*(w)=\prod_{j\ge1}\left(1-(1-\ee^{-sw})\ee^{-jw}\right).
+\end{equation}
+The asterisk distinguishes this product from the finite transfer polynomial $Q_r$ in \eqref{eq:Qr}. Dividing each deleted factor by $\ee^{-sw}$ gives the exact cancellation
+\begin{equation}\label{eq:factorU}
+U_S(\ee^{-w})=Q_s^*(w)
+\prod_{j\in S}\left[1+(\ee^{sw}-1)(1-\ee^{-jw})\right]^{-1}.
+\end{equation}
+In particular, the apparent linear dependence on the cardinality $k$ cancels; the finite-set factors still retain genuine dependence between the two partition statistics.
+
+Normalize by defining
+\begin{align}\label{eq:LS}
+L_S(w)={}&\log\frac{1-\ee^{-sw}}{sw}
+-\sum_{\ell\ge1}\frac{(1-\ee^{-sw})^\ell}{\ell(\ee^{\ell w}-1)}\nonumber\\
+&-\sum_{j\in S}\log\left[1+(\ee^{sw}-1)(1-\ee^{-jw})\right]+s.
+\end{align}
+All logarithmic branches are those continuous from small positive $w$. In the ranges used below every finite logarithm is near 1 and the infinite logarithmic series converges absolutely. Thus
+\begin{equation}\label{eq:normalized}
+(1-\ee^{-sw})U_S(\ee^{-w})=sw\ee^{-s}\exp(L_S(w)).
+\end{equation}
+
+\begin{lemma}[Uniform normalized expansion]\label{lem:uniformL}
+Fix a sufficiently small closed sector $|\arg w|\le\epsilon<\pi/2$. For every fixed integer $K\ge0$, uniformly for $s|w|\le\delta_K$ and $w\to0$ in that sector,
+\begin{equation}\label{eq:Lexpand}
+L_S(w)=\sum_{h=1}^{K}\ell_h(S)w^h
++O_K(|w|^{K+1}s^{K+2}),\qquad
+|\ell_h(S)|\le C_Ks^{h+1}.
+\end{equation}
+Each $\ell_h(S)$ is a rational polynomial in $s$ and the power sums
+$J_b(S)=\sum_{j\in S}j^b$. Also $|L_S(w)|\le C|w|s^2$ in a fixed sufficiently small such range.
+\end{lemma}
+\begin{proof}
+The sector makes $\Rea w$ comparable with $|w|$, and
+\begin{equation}\label{eq:denombound}
+|\ee^{\ell w}-1|\ge\ee^{\ell\Rea w}-1\ge\ell\Rea w.
+\end{equation}
+Moreover $|1-\ee^{-sw}|\le C s|w|$. If $s|w|$ is sufficiently small, truncating the $\ell$ series in \eqref{eq:LS} after $\ell=K+1$ leaves at most
+\[
+C_K|w|^{-1}\sum_{\ell\ge K+2}
+\frac{(Cs|w|)^\ell}{\ell^2}
+\le C_K|w|^{K+1}s^{K+2}.
+\]
+In the finitely many retained terms, expand the analytic functions
+$\ell w/(\ee^{\ell w}-1)$ and the exponential numerator. Their singularities stay a fixed distance from zero for this fixed $K$; $sw$ stays uniformly small. Taylor's theorem gives the same remainder bound and coefficients polynomial in $s$. The prefactor logarithm is an analytic function of $sw$ near zero and obeys a weaker bound of the same form.
+
+For the finite-set logarithms put $z=sw$ and $b_j=j/s$. Then
+$0<b_j\le1$ and $\sum_{j\in S}b_j=1$. The functions
+\[
+\log\left[1+(\ee^z-1)(1-\ee^{-b_jz})\right]
+\]
+are analytic in a common small disk; on a smaller disk their coefficients and Taylor remainders are bounded by a constant times $b_j$. This follows either from a uniformly convergent logarithmic series, or from $|1-\ee^{-b_jz}|\le Cb_j|z|$ and Cauchy's estimate. Summing in $j$ yields uniform bounds. The coefficient of degree $h$ in $w$ is $O_K(s^h)$, which is within the asserted $O_K(s^{h+1})$ bound; expanding the exponentials also proves the rational power-sum description.
+
+Finally, the $\ell=1$ term in \eqref{eq:LS} is
+$-s+O(|w|s^2+|w|s)$; the sum over $\ell\ge2$ is $O(|w|s^2)$. The finite-set logarithms contribute $O(|w|^2s^2)$, and the prefactor contributes $O(|w|s)$. Since $s\ge1$, adding $s$ gives the last assertion.
+\end{proof}
+
+\subsection{Exponentiation with a summable remainder}
+The following argument is important: a Taylor expansion at each fixed set would not by itself permit summing over all sets. For a fixed $K$, let
+$L_K(w)=\sum_{h=1}^{K}\ell_h(S)w^h$. Choose $\eta>0$, depending on $K$, sufficiently small. On the complex circle $|z|=\eta/s$,
+\[
+|L_K(z)|\le C_K\eta s.
+\]
+Cauchy's coefficient estimate for the entire function $\exp(L_K)$ bounds its Taylor tail after degree $K$, at $s|w|\le\eta/2$, by
+\begin{equation}\label{eq:expCauchy}
+C_K\left(\frac{|w|s}{\eta}\right)^{K+1}\exp(C_K\eta s).
+\end{equation}
+This Cauchy argument is applied only to the polynomial exponential, not to an assumed analytic continuation of the full infinite logarithmic series across the imaginary axis. Meanwhile Lemma~\ref{lem:uniformL} and
+$|L_S|,|L_K|\le C_K\eta s$ give
+\begin{equation}\label{eq:expdifference}
+|\exp L_S-\exp L_K|
+\le C_K|w|^{K+1}s^{K+2}\exp(C_K\eta s).
+\end{equation}
+Choose $\eta$ so that $C_K\eta<1/2$. Multiply by $|w|s\ee^{-s}$ in \eqref{eq:normalized} and set $K=R-1$. The error in retaining the first $R$ powers is then bounded termwise by
+\begin{equation}\label{eq:summableremainder}
+C_R|w|^{R+1}\mathcal P_R(s)\ee^{-c_Rs},
+\end{equation}
+for a fixed polynomial $\mathcal P_R$ and a positive constant $c_R$. This is summable by \eqref{eq:subsetcount}. The case $K=0$ uses $L_K=0$ and the bound on $L_S$ directly.
+
+Define the finite algebraic quantities
+\begin{equation}\label{eq:Tr}
+T_r(S)=[w^{r-1}]\exp\left(\sum_{h=1}^{r-1}\ell_h(S)w^h\right)
+\end{equation}
+and the constants
+\begin{equation}\label{eq:cr}
+c_r=\sum_{\substack{S\subset\N\text{ finite}\\S\ne\varnothing}}
+(-1)^{|S|+1}s\ee^{-s}T_r(S).
+\end{equation}
+For every fixed $r$, this is absolutely convergent. Indeed $J_b(S)\le s^b$, so $T_r(S)$ has at most polynomial growth in $s$, and \eqref{eq:subsetcount} applies. It is a constructive formula: expansion to any prescribed order uses finitely many elementary series operations, followed by an exponentially convergent subset sum. It does not assert that high-order constants simplify to derivatives of $H$ alone.
+
+\begin{proposition}[Uniform saddle-arc ratio]\label{prop:localratio}
+For every fixed integer $R\ge1$, uniformly on
+\begin{equation}\label{eq:majorarc}
+w=t+\ii y,\qquad |y|\le t^{3/2}\log(1/t),
+\end{equation}
+one has
+\begin{equation}\label{eq:localratio}
+\frac{F(\ee^{-w})}{P(\ee^{-w})}
+=\sum_{r=1}^{R}c_rw^r+O_R(t^{R+1}).
+\end{equation}
+\end{proposition}
+\begin{proof}
+On this arc $w/t\to1$. For $s\le\delta_R/t$, the preceding bounds apply after shrinking $\delta_R$. Sum \eqref{eq:summableremainder}; extending the coefficient sums from that cutoff to all sets costs only $\exp(-c_R/t)$ times a power of $t$.
+
+For the remaining sets, \eqref{eq:largetailF} bounds the contribution to $F$ uniformly on the whole circle. The classical modular identity \cite[eq.~(1.3)]{grabner} is
+\begin{equation}\label{eq:modular}
+P(\ee^{-w})=\sqrt{\frac w{2\pi}}
+\exp\left(\frac Aw-\frac w{24}\right)
+P(\ee^{-4\pi^2/w}),
+\qquad \Rea w>0,
+\end{equation}
+with the square root chosen positive on the positive axis. In any fixed closed right-half-plane sector it implies
+\begin{equation}\label{eq:modularapprox}
+P(\ee^{-w})=\sqrt{\frac w{2\pi}}
+\exp\left(\frac Aw-\frac w{24}\right)
+\left(1+O(\exp(-c/\Rea w))\right),
+\end{equation}
+since $\Rea(1/w)\ge c/\Rea w$ there. On \eqref{eq:majorarc}, it follows in particular that
+\[
+\frac{P(\ee^{-t})}{|P(\ee^{-w})|}
+\le\exp\bigl(O(\log^2(1/t))\bigr).
+\]
+The exponentially small large-set bound therefore remains exponentially small after division by $P(\ee^{-w})$. This proves \eqref{eq:localratio}. Allowing $\delta_R$ to depend on the fixed order is legitimate in a Poincar\'e theorem.
+\end{proof}
+
+\subsection{The first three constants}
+Expansion of \eqref{eq:LS}, including the finite-site factors, gives
+\begin{equation}\label{eq:Lfirst}
+L_S(w)=\frac{s^2}4w+
+\left(-\frac{s}{12}-\frac{23s^2}{24}-\frac{s^3}{36}\right)w^2
++O_S(w^3).
+\end{equation}
+For example, the finite-site factor starts with
+$-\sum_{j\in S}sjw^2=-s^2w^2$. Omitting it changes $c_3$; cancellation of $k$ in \eqref{eq:factorU} is not permission to remove the remaining dependence. Hence
+\begin{equation}\label{eq:Tfirst}
+T_1=1,\quad T_2=\frac{s^2}4,\quad
+T_3=-\frac{s}{12}-\frac{23s^2}{24}-\frac{s^3}{36}+\frac{s^4}{32}.
+\end{equation}
+The absolutely convergent Euler subset expansion is
+\[
+H(z)=\sum_{S\text{ finite}}(-1)^{|S|}\ee^{-s z},
+\qquad
+H^{(h)}(1)=\sum_{S\text{ finite}}(-1)^{|S|+h}s^h\ee^{-s}.
+\]
+Substitution into \eqref{eq:cr} gives exactly \eqref{eq:firstcr}, including its signs.
+
+\subsection{A fourth constant and a marked support sum}
+The next coefficient illustrates how a statistic of the support enters the finite-subset expansion. Write $J_2(S)=\sum_{j\in S}j^2$ and define the convergent Lambert series
+\begin{equation}\label{eq:L2Lambert}
+\mathcal L_2(z)=\sum_{j\ge1}\frac{j^2}{\ee^{jz}-1},\qquad \Rea z>0.
+\end{equation}
+Then
+\begin{equation}\label{eq:c4}
+\begin{split}
+c_4={}&\frac12(H\mathcal L_2)''(1)
++\frac{H^{(7)}(1)}{384}+\frac{H^{(6)}(1)}{144}
+-\frac{23H^{(5)}(1)}{96}\\
+&\quad+\frac{25H^{(4)}(1)}{48}-\frac{H'''(1)}{24}.
+\end{split}
+\end{equation}
+Here is a direct coefficient derivation, justified analytically by the already proved uniform remainder theorem at $R=4$. One finite deleted-site term has expansion
+\[
+-\log\left[1+(\ee^{sw}-1)(1-\ee^{-jw})\right]
+=-jsw^2+\frac{j^2s-js^2}{2}w^3+O_{s,j}(w^4).
+\]
+The base product and prefactor in \eqref{eq:LS} contribute $-s^2w^3/24$ at third order. Summing the finite-site terms therefore extends \eqref{eq:Lfirst} to
+\[
+[w^3]L_S(w)=-\frac{s^3}{2}-\frac{s^2}{24}+\frac{sJ_2(S)}2.
+\]
+Exponentiating, the coefficient of $w^4$ in the normalized term \eqref{eq:normalized} is
+\begin{equation}\label{eq:fourthjet}
+\ee^{-s}\left(\frac{s^7}{384}-\frac{s^6}{144}
+-\frac{23s^5}{96}-\frac{25s^4}{48}-\frac{s^3}{24}
++\frac{s^2J_2(S)}2\right).
+\end{equation}
+Marking one selected site in the Euler subset product gives the absolutely convergent identity
+\begin{equation}\label{eq:markedidentity}
+\sum_{S\ne\varnothing}(-1)^{|S|+1}J_2(S)\ee^{-z\sum S}
+=H(z)\mathcal L_2(z).
+\end{equation}
+Indeed the contribution of a selected site $j$ is
+$j^2\ee^{-jz}\prod_{h\ne j}(1-\ee^{-hz})$ on the right after factoring out $H$. Two derivatives in $z$ multiply the subset summand by $s^2$ without changing its sign. The remaining terms use
+$\sum_{S\ne\varnothing}(-1)^{|S|+1}s^m\ee^{-zs}=(-1)^{m+1}H^{(m)}(z)$ for $m\ge1$. Applying these identities to \eqref{eq:fourthjet} proves \eqref{eq:c4}.
+
+The statistic $J_2(S)$ first appears in this finite-subset jet at this order. This observation does not claim that some alternative identity involving only derivatives of $H$ could not simplify the final constant.
+
+\section{Whole-circle Fourier localization}\label{sec:fourier}
+A local expansion alone is insufficient for coefficients. We now bound the actual $F$ throughout the full lattice interval and rule out secondary peaks.
+
+Under the Boltzmann law at $r=\ee^{-t}$, let $Z_j$ be independent geometric random variables with
+\begin{equation}\label{eq:geom}
+\Prob(Z_j=b)=(1-r^j)r^{jb},\qquad b=0,1,2,\ldots.
+\end{equation}
+The random total size is $T=\sum_jjZ_j$, and the number of occupied coordinates is $D=\sum_j\mathbf1_{Z_j>0}$. Both are almost surely finite: $\sum_j\Prob(Z_j>0)=\sum_jr^j<\infty$, and there are then only finitely many finite geometric values. Also
+\begin{equation}\label{eq:Fexpect}
+\frac{F(r\ee^{\ii\theta})}{P(r)}
+=\E\bigl[\mathbf1_{D=M,\,D>0}\ee^{\ii\theta T}\bigr].
+\end{equation}
+
+For $i,j\ge1$, let $E_{i,j}$ be the event that $M=i$ and $j$ is the first size attaining it. Exactly,
+\begin{equation}\label{eq:firstattain}
+Z_j=i,\qquad Z_k\le i-1\ (k<j),\qquad Z_k\le i\ (k>j).
+\end{equation}
+These disjoint events exhaust the nonempty partitions. Conditional on $E_{i,j}$, the unforced coordinates remain independent truncated geometric variables. For $i\ge3$, every unforced coordinate allows multiplicities 1 and 2.
+
+Consider the consecutive block
+\begin{equation}\label{eq:block}
+\mathcal J_t=\{\lceil1/t\rceil,\ldots,\lfloor2/t\rfloor\}.
+\end{equation}
+For any unforced $k\in\mathcal J_t$ with cap $c\ge2$,
+\[
+\Prob(Z_k=b\mid Z_k\le c)
+=\frac{r^{kb}}{\sum_{a=0}^{c}r^{ka}}
+\ge(1-r^k)r^{kb},\qquad b=1,2.
+\]
+Thus the probabilities $p_1,p_2$ are uniformly bounded below by a positive constant for small $t$, independently of $i,j$. Let $\theta$ mark total size and $\phi$ mark occupancy. In the coordinate characteristic function $\psi_k(\theta,\phi)$, multiplicities 1 and 2 have phases $k\theta+\phi$ and $2k\theta+\phi$. The occupancy phase cancels in their difference. The squared modulus identity gives
+\begin{equation}\label{eq:coordbound}
+|\psi_k(\theta,\phi)|^2\le1-4p_1p_2\sin^2(k\theta/2),
+\qquad
+|\psi_k(\theta,\phi)|\le\exp(-c\sin^2(k\theta/2)).
+\end{equation}
+This bound is uniform in $\phi$.
+
+\begin{lemma}[Consecutive-block lattice estimate]\label{lem:block}
+For small $t>0$ and every $-\pi\le\theta\le\pi$,
+\begin{equation}\label{eq:blockbound}
+\sum_{k\in\mathcal J_t}\sin^2(k\theta/2)
+\ge c t^{-1}\min(1,\theta^2/t^2).
+\end{equation}
+\end{lemma}
+\begin{proof}
+For $|\theta|\le c_0t$, with $c_0$ small, use $\sin u$ comparable with $u$ and $\sum_{k\in\mathcal J_t}k^2$ comparable with $t^{-3}$. For $c_0t\le|\theta|\le C_0t$, set $\alpha=\theta/t$. The Riemann sums converge uniformly on the compact set $c_0\le|\alpha|\le C_0$ to
+\[
+\int_1^2\sin^2(\alpha v/2)\,dv,
+\]
+which is continuous and strictly positive there. For $|\theta|\ge C_0t$, the geometric sum satisfies
+\[
+\left|\sum_{k\in\mathcal J_t}\ee^{\ii k\theta}\right|
+\le\frac1{|\sin(\theta/2)|}\le\frac\pi{|\theta|}.
+\]
+Since the block contains order $t^{-1}$ consecutive sites, take $C_0$ sufficiently large and use $\sin^2 u=(1-\cos(2u))/2$. This covers the entire fundamental interval, including rational angles.
+\end{proof}
+Deleting the one forced site, if it belongs to the block, reduces the sum by at most 1. Its effect on the exponential bound is only an absolute factor.
+
+To impose $D=i$, Fourier inversion on the occupancy circle gives
+\[
+\E[\mathbf1_{D=i}\ee^{\ii\theta T}\mid E_{i,j}]
+=\frac1{2\pi}\int_{-\pi}^{\pi}\ee^{-\ii i\phi}
+\E[\ee^{\ii\theta T+\ii\phi D}\mid E_{i,j}]\,d\phi.
+\]
+Equations \eqref{eq:coordbound} and \eqref{eq:blockbound} apply uniformly inside the integral. Multiplying by $\Prob(E_{i,j})$ and summing over $i\ge3,j\ge1$ creates no cardinality loss, because these events are disjoint and their probabilities sum to at most 1.
+
+For $i=1,2$, the additional requirement $D=i$ permits at most two occupied sizes and multiplicities at most 2. The radial generating function of these exceptional objects is $O(t^{-2})$: it is bounded, for example, by a fixed combination of $\sum_{j\ge1}(r^j+r^{2j})$ and its square. We have proved the following bound.
+
+\begin{proposition}[Full-circle bound]\label{prop:global}
+There are positive constants $c,C$ such that uniformly for $-\pi\le\theta\le\pi$ and small $t>0$,
+\begin{equation}\label{eq:global}
+|F(\ee^{-t+\ii\theta})|
+\le C P(\ee^{-t})
+\exp\bigl(-c\min(t^{-1},\theta^2t^{-3})\bigr)+O(t^{-2}).
+\end{equation}
+\end{proposition}
+In particular, for $|\theta|\ge t^{3/2}\log(1/t)$, the first term is smaller than $P(\ee^{-t})$ times every fixed power of $t$. The polynomial exceptional term is exponentially smaller than $P(\ee^{-t})$. For $P$ itself, the same proof uses the unrestricted independent geometric coordinates on the block directly; no event decomposition or exceptional term is needed.
+
+\section{A complete local transfer argument}\label{sec:transfer}
+\subsection{The monomial saddle integral}
+The following lemma supplies all contour and endpoint estimates needed for the expansion. It does not identify a short saddle arc with a global Hankel contour.
+
+\begin{lemma}[Terminating monomial transfer]\label{lem:transfer}
+Let $A>0$, $\nu>0$, $\tau=\sqrt{A/\nu}$, $x=2A/\tau$, $L=\log(1/\tau)$, and $h=\tau^{3/2}L$. For a fixed integer $r\ge0$, with the principal branch in $\Rea w>0$, put
+\begin{equation}\label{eq:Jr}
+\mathcal J_r(\tau)=\frac1{2\pi\ii\sqrt{2\pi}}
+\int_{\tau-\ii h}^{\tau+\ii h}
+w^{r+1/2}\exp(A/w+\nu w)\,dw.
+\end{equation}
+The path is upward. For every fixed real $M$,
+\begin{equation}\label{eq:Jpoly}
+\mathcal J_r(\tau)=\frac{\ee^x\tau^{r+2}}{2\pi\sqrt{2A}}Q_r(\tau)
++O_{r,M}(\ee^x\tau^M),
+\end{equation}
+with $Q_r$ as in \eqref{eq:Qr}. Equivalently it is
+$\tau^{r+3/2}I_{-r-3/2}(x)/\sqrt{2\pi}+O_{r,M}(\ee^x\tau^M)$.
+\end{lemma}
+\begin{proof}
+Write $\epsilon=h/\tau=\sqrt\tau L$ and $\phi_0=\arctan\epsilon$. The vertical endpoints are
+$\tau(1\pm\ii\epsilon)=\tau\sec\phi_0\ee^{\pm\ii\phi_0}$.
+Deform the segment to the circular arc $w=\tau\ee^{\ii\phi}$,
+$-\phi_0\le\phi\le\phi_0$, together with the two radial connectors. The enclosed region lies in $\Rea w>0$, bounded away from zero. Hence the integrand is holomorphic there and no branch cut or singularity is crossed.
+
+\emph{Connector estimate.}
+On either connector let $w=\tau\rho\ee^{\pm\ii\phi_0}$,
+$1\le\rho\le\sec\phi_0$. Since $\rho+\rho^{-1}$ increases for $\rho\ge1$,
+\begin{align}\label{eq:connector}
+\Rea(A/w+\nu w)
+&=\frac A\tau(\rho+\rho^{-1})\cos\phi_0\nonumber\\
+&\le\frac A\tau(1+\cos^2\phi_0)
+=x-\frac A\tau\sin^2\phi_0
+=x-\frac{AL^2}{1+\tau L^2}.
+\end{align}
+Each connector has length $\tau(\sec\phi_0-1)=O(\tau^2L^2)$, and
+$|w^{r+1/2}|=O_r(\tau^{r+1/2})$. Their combined contribution is
+\begin{equation}\label{eq:connectorerror}
+O_r\!\left(\ee^x\tau^{r+5/2}L^2\ee^{-c_AL^2}\right)
+=O_{r,M}(\ee^x\tau^M)
+\end{equation}
+for every fixed $M$.
+
+\emph{Exact polynomial amplitude.}
+On the circular arc the phase is $x\cos\phi$ and $dw=\ii\tau\ee^{\ii\phi}d\phi$. Thus the arc integral is
+\[
+\frac{\ee^x\tau^{r+3/2}}{2\pi\sqrt{2\pi}}
+\int_{-\phi_0}^{\phi_0}\exp\bigl(x(\cos\phi-1)\bigr)
+\ee^{\ii(r+3/2)\phi}\,d\phi.
+\]
+The imaginary part vanishes by symmetry. Set $v=2\sin(\phi/2)$ and
+$v_0=2\sin(\phi_0/2)$. Then $\cos\phi=1-v^2/2$ and the real amplitude becomes
+\[
+G_{r+1}(v)=\frac{\cos((2r+3)\arcsin(v/2))}{\sqrt{1-v^2/4}}.
+\]
+For every integer $m\ge0$ this is exactly the polynomial
+\begin{equation}\label{eq:Gpoly}
+G_m(v)=\sum_{j=0}^{m}
+\frac{(-1)^j(m+j)!}{(m-j)!(2j)!}v^{2j}.
+\end{equation}
+To prove it, the cosine addition formula gives
+\[
+G_0=1,\qquad G_1=1-v^2,\qquad
+G_{m+1}=(2-v^2)G_m-G_{m-1}.
+\]
+The coefficients displayed in \eqref{eq:Gpoly} satisfy this recurrence, including the boundary terms, so induction applies. The first examples are
+$G_1=1-v^2$, $G_2=1-3v^2+v^4$, and
+$G_3=1-6v^2+5v^4-v^6$.
+
+\emph{Gaussian moments and endpoints.}
+The arc contribution has become
+\begin{equation}\label{eq:Gaussianintegral}
+\frac{\ee^x\tau^{r+3/2}}{2\pi\sqrt{2\pi}}
+\int_{-v_0}^{v_0}\ee^{-Av^2/\tau}G_{r+1}(v)\,dv.
+\end{equation}
+Here $v_0/\sqrt\tau\sim L$. Because $G_{r+1}$ is a fixed polynomial, extending this integral to the real line incurs an error smaller than every fixed power of $\tau$ after removal of $\ee^x$. For a direct bound, split the Gaussian into two equal factors, bound one by $\exp(-Av_0^2/(2\tau))$, and integrate the polynomial against the other. The result is a fixed power of $\tau$ times a polynomial in $L$ times $\ee^{-c_AL^2}$.
+
+Finally,
+\begin{equation}\label{eq:moments}
+\int_\R v^{2j}\ee^{-Av^2/\tau}\,dv
+=\sqrt\pi\frac{(2j)!}{4^j j!}
+\left(\frac\tau A\right)^{j+1/2}.
+\end{equation}
+Substituting \eqref{eq:Gpoly} into \eqref{eq:Gaussianintegral} gives \eqref{eq:Jpoly}, with the normalization shown there.
+
+The Bessel notation follows independently from the elementary half-integer formulas and recurrence for $I_\alpha$. The exponentially growing part of $I_{-r-3/2}(x)$ is
+\[
+\frac{\ee^x}{\sqrt{2\pi x}}
+\sum_{j=0}^{r+1}
+\frac{(-1)^j(r+1+j)!}{j!(r+1-j)!(2x)^j}.
+\]
+Its remaining part is $\ee^{-x}/\sqrt x$ times a fixed polynomial in $1/x$, negligible at every algebraic order here. This proves the equivalent form without a global contour assertion.
+\end{proof}
+
+\subsection{Applying the lemma to the generating function}
+By Cauchy's coefficient formula on $|q|=\ee^{-\tau}$,
+\begin{equation}\label{eq:Cauchy}
+a(n)=\frac1{2\pi}\int_{-\pi}^{\pi}
+F(\ee^{-\tau+\ii\theta})\ee^{n(\tau-\ii\theta)}\,d\theta.
+\end{equation}
+The change $w=\tau-\ii\theta$ gives an upward local $w$-integral after reversing endpoints. The modular approximation \eqref{eq:modularapprox} makes its phase
+$A/w+(n-1/24)w=A/w+\nu w$, explaining the shift in \eqref{eq:saddlepar}.
+
+On the local segment $w=\tau+\ii y$, $|y|\le h$, one has the exact phase identity
+\begin{equation}\label{eq:gaussiandecay}
+\Rea(A/w+\nu w)
+=x-\frac{Ay^2}{\tau(\tau^2+y^2)}
+\le x-c_Ay^2/\tau^3.
+\end{equation}
+Since $|w|$ is comparable with $\tau$, Proposition~\ref{prop:localratio} and \eqref{eq:modularapprox} show that the integrated ratio remainder is bounded by
+\begin{align}\label{eq:remainderintegral}
+C_R\ee^x\tau^{R+1}\tau^{1/2}
+\int_{-h}^{h}\ee^{-c_Ay^2/\tau^3}\,dy
+=O_R(\ee^x\tau^{R+3}).
+\end{align}
+The actual Gaussian width is $\tau^{3/2}$, so no logarithmic loss occurs. The modular error is exponentially smaller.
+
+On the complement $|\theta|\ge h$, Proposition~\ref{prop:global} gives a first term bounded by
+$CP(\ee^{-\tau})\ee^{-cL^2}$. After multiplication by $\ee^{n\tau}$ and integration, it is $O_M(\ee^x\tau^M)$ for every fixed $M$. The exceptional term contributes at most
+$O(\ee^{n\tau}\tau^{-2})$, which is also exponentially smaller than $\ee^x$ times any fixed power, because $n\tau=A/\tau+\tau/24$ while $x=2A/\tau$.
+
+We may therefore transfer each of the finitely many local monomials by Lemma~\ref{lem:transfer}. Equations \eqref{eq:mainbessel} and \eqref{eq:mainpoly} follow. This completes the proof of Theorem~\ref{thm:main} except for its elementary re-expansions, given next.
+
+\section{Forward coefficients and probability corrections}\label{sec:corrections}
+For ordinary partitions, the same argument with the local ratio equal to 1 and the unrestricted whole-circle bound gives, for every fixed real $M$,
+\begin{equation}\label{eq:partitionpoly}
+p(n)=\frac{\ee^x\tau^2}{2\pi\sqrt{2A}}
+\left(1-\frac{\tau}{2A}\right)+O_M(\ee^x\tau^M).
+\end{equation}
+Thus the denominator in the probability calculation is justified by the same modular input and contour argument; no separate unquoted coefficient theorem is required.
+
+The first transfer polynomials are
+\begin{align}\label{eq:smallQ}
+Q_0&=1-\frac\tau{2A},\nonumber\\
+Q_1&=1-\frac{3\tau}{2A}+\frac{3\tau^2}{4A^2},\\
+Q_2&=1-\frac{3\tau}{A}+\frac{15\tau^2}{4A^2}
+-\frac{15\tau^3}{8A^3}.\nonumber
+\end{align}
+To order $\tau^3$ after division by \eqref{eq:partitionpoly}, use
+\[
+c_1\tau Q_1+c_2\tau^2Q_2+c_3\tau^3Q_3,
+\qquad Q_3=1+O(\tau).
+\]
+Multiplication by $(1-\tau/(2A))^{-1}$ gives \eqref{eq:probability}. All higher probability coefficients follow by the same finite polynomial division.
+
+For an explicit coefficient algorithm, factor $c_1\tau^3$ from \eqref{eq:mainpoly}. The coefficient of $\tau^m$ in the remaining normalized series is
+\begin{equation}\label{eq:betam}
+\beta_m=\frac1{c_1}
+\sum_{r=1}^{m+1}c_r\,[\tau^{m-r+1}]Q_r(\tau),
+\qquad m\ge0.
+\end{equation}
+In particular,
+\begin{equation}\label{eq:beta12}
+\beta_0=1,\qquad
+\beta_1=\frac{c_2}{c_1}-\frac3{2A},\qquad
+\beta_2=\frac{c_3}{c_1}-\frac{3c_2}{Ac_1}+\frac3{4A^2}.
+\end{equation}
+For any fixed $J$, taking $R=J+1$ determines the normalized expansion through $\tau^J$ with relative error $O(\tau^{J+1})$. Substitute
+\[
+\tau=\sqrt A\,n^{-1/2}(1-1/(24n))^{-1/2},\quad
+x=B\sqrt n\,(1-1/(24n))^{1/2}
+\]
+and Taylor-expand to the chosen finite order. This constructs all $d_j$ in \eqref{eq:allforwardn} with ordinary Taylor remainders. The leading constant is
+\[
+\frac{c_1 A^{3/2}}{2\pi\sqrt{2A}}
+=\frac{c_1 A}{2\pi\sqrt2}=\frac{\pi c_1}{12\sqrt2}=C.
+\]
+The first correction is
+$\sqrt A\beta_1-B/48=\sqrt A(c_2/c_1)-3/B-B/48$, as stated.
+For completeness, the next coefficient can be written compactly as
+\begin{equation}\label{eq:d2}
+d_2=A\beta_2-\frac{B\sqrt A}{48}\beta_1
++\frac1{16}+\frac{B^2}{4608}.
+\end{equation}
+Here the $1/16$ comes from $\tau^3$ and the last term from expanding the exponential. This identity is finite algebra; the constructive formula \eqref{eq:betam} is the general prescription.
+
+The method has three logically distinct ingredients: the exact diagonal identity, a uniform complex expansion, and a global coefficient-localization estimate. A correct leading radial constant or a fit to finite data could not replace either of the latter two ingredients.
+
+\section{All fixed-order inversion and integer envelopes}\label{sec:inverse}
+\subsection{Logarithms and eventual increase}
+For every fixed $J\ge1$, Taylor expansion of the logarithm of \eqref{eq:allforwardn} gives
+\begin{equation}\label{eq:logforward}
+\log a(n)=f_0(n)+\sum_{j=1}^{J}\lambda_jn^{-j/2}
++O_J(n^{-(J+1)/2}),
+\end{equation}
+where
+\begin{equation}\label{eq:f0}
+f_0(z)=B\sqrt z-\frac32\log z+\log C,
+\quad \lambda_1=d_1,\quad \lambda_2=d_2-\frac12d_1^2.
+\end{equation}
+In general $\lambda_j$ is the finite polynomial obtained from
+$[z^j]\log(1+\sum_{m=1}^{j}d_mz^m)$.
+
+The first corrected forward expansion, with relative remainder $O(n^{-1})$, suffices to compare neighbors:
+\begin{equation}\label{eq:monotone}
+\frac{a(n+1)}{a(n)}=1+\frac B{2\sqrt n}+O(n^{-1}).
+\end{equation}
+Separately bounded relative errors of size $O(n^{-1})$ at consecutive integers are smaller than the positive leading difference of size $n^{-1/2}$. Thus eventual strict increase follows without differentiating an unknown remainder or assuming a smooth interpolation of the integer sequence. The leading equivalent also proves unboundedness.
+
+Choose $n_0$ beyond a monotonicity cutoff. The minimum over $n\ge n_0$ agrees with the global $N(X)$ once $X$ exceeds the finite maximum of $a(n)$ for $n<n_0$. All subsequent assertions are for sufficiently large $X$ in this sense.
+
+\subsection{The exact leading smooth root}
+Let $L=\log X$, and let $r=r(X)$ be the sufficiently large solution of $f_0(r)=L$. Since
+$f_0'(z)=B/(2\sqrt z)-3/(2z)>0$ when $\sqrt z>3/B$, that branch is unique. The equation is equivalent to
+\[
+\sqrt r\exp(-B\sqrt r/3)=(C/X)^{1/3},
+\]
+which gives \eqref{eq:lambertintro}. The branch $W_{-1}$ yields $r\to\infty$. The principal branch would give the small root and is not the inverse under study.
+
+For fixed $J\ge1$ define the actual smooth function
+\begin{equation}\label{eq:fJ}
+f_J(z)=f_0(z)+\sum_{j=1}^{J}\lambda_jz^{-j/2},
+\end{equation}
+and let $s_J(L)$ be its sufficiently large root $f_J(s_J)=L$. Its derivative is asymptotic to $B/(2\sqrt z)$, so that root is unique on the large branch.
+
+\begin{proposition}[Finite triangular inverse construction]\label{prop:inverse}
+For each fixed $J\ge1$, constants $\delta_0,\ldots,\delta_{J-1}$ determined by $B,\lambda_1,\ldots,\lambda_J$ satisfy
+\begin{equation}\label{eq:sJ}
+s_J(L)=r+\sum_{k=0}^{J-1}\delta_kr^{-k/2}+O_J(r^{-J/2}).
+\end{equation}
+The first three are
+\begin{align}\label{eq:deltas}
+\delta_0&=-\frac{2\lambda_1}{B},\qquad
+\delta_1=\frac{3\delta_0-2\lambda_2}{B},\nonumber\\
+\delta_2&=\frac{3\delta_1+(B/4)\delta_0^2+\lambda_1\delta_0-2\lambda_3}{B}
+=\frac{3\delta_1}{B}-\frac{\lambda_1^2}{B^2}-\frac{2\lambda_3}{B}.
+\end{align}
+\end{proposition}
+\begin{proof}
+Set $z=r^{-1/2}$ and $\Delta(z)=\sum_{k=0}^{J-1}\delta_kz^k$. Expand through degree $J$ the finite expression
+\begin{align}\label{eq:inverserecursion}
+&\frac Bz\left(\sqrt{1+z^2\Delta}-1\right)
+-\frac32\log(1+z^2\Delta)\nonumber\\
+&\hspace{25mm}+\sum_{j=1}^{J}\lambda_jz^j(1+z^2\Delta)^{-j/2}.
+\end{align}
+This is $f_J(r+\Delta)-f_0(r)$. At degree $z^m$, the new unknown $\delta_{m-1}$ occurs only as $(B/2)\delta_{m-1}$. Thus setting the coefficients of $z,\ldots,z^J$ to zero gives a uniquely solvable triangular system. Its first equations give \eqref{eq:deltas}.
+
+For this fixed truncation $z^2\Delta\to0$, so Taylor's theorem bounds the residual by $O_J(z^{J+1})$. The true root is in a bounded neighborhood of $r$: $f_J(r)-L=O(z)$ and the derivative there is comparable with $z$. More explicitly a sufficiently large fixed shift on either side of $r$ brackets the sign for small $z$. On this neighborhood $f_J'(x)\sim B/(2\sqrt r)$. The mean value theorem divides the residual by a slope of order $z$ and gives a root error $O_J(z^J)$, proving \eqref{eq:sJ}.
+\end{proof}
+This is a finite residual-over-slope argument at each order, not only a formal inverse series.
+
+\subsection{Exact ceiling inequalities from forward envelopes}
+For every fixed $J$, the proved forward remainder supplies constants $M_J>0$ and $x_J$ such that at every integer $n\ge x_J$,
+\begin{equation}\label{eq:envelopes}
+f_J(n)-M_Jn^{-(J+1)/2}
+\le\log a(n)\le
+f_J(n)+M_Jn^{-(J+1)/2}.
+\end{equation}
+Both smooth envelope functions are strictly increasing for sufficiently large real arguments. Define $u_J(L)$ and $v_J(L)$ as their large roots:
+\begin{align}\label{eq:uv}
+f_J(u_J)+M_Ju_J^{-(J+1)/2}&=L,\nonumber\\
+f_J(v_J)-M_Jv_J^{-(J+1)/2}&=L.
+\end{align}
+The upper log envelope reaches $L$ at the smaller size, hence $u_J\le v_J$. Their slopes are again asymptotic to $B/(2\sqrt r)$; the mean value theorem gives
+\begin{equation}\label{eq:uvwidth}
+u_J=s_J+O_J(r^{-J/2}),\quad
+v_J=s_J+O_J(r^{-J/2}),\quad
+0\le v_J-u_J=O_J(r^{-J/2}).
+\end{equation}
+Every integer below $u_J$ has upper log envelope strictly below $L$, and every integer at least $v_J$ has lower log envelope at least $L$. Once earlier integers have been passed, this proves
+\begin{equation}\label{eq:ceilbracket}
+\lceil u_J(\log X)\rceil\le N(X)\le\lceil v_J(\log X)\rceil.
+\end{equation}
+The inequalities remain valid at exact equality thresholds. Combining \eqref{eq:sJ} and \eqref{eq:uvwidth} proves Theorem~\ref{thm:inverseintro}. Since the real bracket width tends to zero, eventually its two ceilings differ by at most one. They need not agree: proximity to an integer cannot be excluded by a small real asymptotic error alone.
+
+The existence of $M_J$ and $x_J$ is proved, but their numerical values are not provided. Thus \eqref{eq:ceilbracket} is a rigorous asymptotic existence theorem, not an implemented certified answer for an arbitrary finite $X$. Exact counts or effective forward bounds would be required for the latter.
+
+\subsection{An elementary logarithmic form}
+Writing $K=\log(CB^3)$ and $y=B\sqrt n$, the first corrected logarithm is
+\[
+L=y-3\log y+K+Bd_1/y+O(y^{-2}).
+\]
+Substitution with Taylor's theorem gives the smooth threshold expansion
+\begin{equation}\label{eq:yloglog}
+y=L+3\log L-K+
+\frac{9\log L-3K-Bd_1}{L}
++O((\log L)^2/L^2).
+\end{equation}
+Squaring converts its smooth error into $O((\log L)^2/L)=o(1)$ in $n$. Integer rounding remains, and the correct discrete consequence is
+\begin{equation}\label{eq:Nloglog}
+N(X)=\frac1{B^2}\left\{L+3\log L-K+
+\frac{9\log L-3K-Bd_1}{L}\right\}^2+O(1).
+\end{equation}
+A statement replacing the final $O(1)$ by $o(1)$ for the unrounded staircase would not follow.
+
+\section{Exact computation and reproducibility}\label{sec:verification}
+\subsection{A positive integer recurrence}
+For a cap $c\ge0$, process possible sizes $j=1,\ldots,N$. Let $d_{k,n}$ count partitions of $n$ on the already processed sizes, with exactly $k$ occupied sizes and each multiplicity at most $c$. Initially $d_{0,0}=1$ and all other states vanish. Incorporating size $j$ gives
+\begin{equation}\label{eq:DP}
+d^{\rm new}_{k,n}=d_{k,n}+\sum_{b=1}^{c}d_{k-1,n-bj}.
+\end{equation}
+Negative indices contribute zero. Update the occupancy rows in descending order to preserve the old $(k-1)$-st row. For each residue class modulo $j$, the sum is a sliding window, so each row can be updated by additions and subtractions in linear time in $N$. Taking the difference of the $m$-occupancy row for caps $m$ and $m-1$, then summing over $m$ allowed by \eqref{eq:minweight}, computes $a(0),\ldots,a(N)$ exactly.
+
+The public verifier uses Python integers, so it has no fixed-width overflow assumption. An independently compiled development check also used signed 128-bit integers at $N=1000$. In that range every state and sliding-window intermediate counts a subclass of ordinary partitions; the temporary extra window term is still a count with one additional allowed multiplicity. The value
+\[
+p(1000)=24061467864032622473692149727991<2^{127}
+\]
+therefore justifies that separate fixed-width check. The public arbitrary-precision implementation does not depend on it.
+
+\subsection{Independent finite checks}
+The complete pinned OEIS b-file contains the consecutive entries $n=0,\ldots,1000$. Every one of these 1001 terms agrees with the exact capped-product computation. Two other checks test distinct parts of the argument:
+\begin{enumerate}[leftmargin=*,itemsep=3pt]
+\item Direct recursion over multiplicity vectors through $n=45$, tracking $D$ and $M$ without the capped-product recurrence or inclusion--exclusion. Its unrestricted totals also agree with ordinary partition numbers.
+\item Independent expansion of the positive product $B_S$ in \eqref{eq:positiveBS}, multiplied by $(-1)^{k+1}(1-q^s)$, through degree 55. The condition $|S|\sum S\le55$ leaves exactly 333 nonempty subsets; the resulting coefficients agree with the b-file.
+\end{enumerate}
+These are consistency checks and regression tests, not asymptotic proofs or extrapolations. Agreement at $n\le1000$ does not supply a numerical onset for the error terms. Adding an asymptotic term need not improve an approximation at every moderate $n$.
+
+The constants may also be checked efficiently using Euler's pentagonal expansion
+\begin{equation}\label{eq:pentagonal}
+H(z)=\sum_{m\in\mathbb Z}(-1)^m\exp(-g_mz),
+\qquad g_m=\frac{m(3m-1)}2.
+\end{equation}
+Differentiation at $z=1$ gives a rapidly convergent independent calculation of $H^{(h)}(1)$. For $0\le h\le5$, retaining $|m|\le20$ leaves an absolute tail below $10^{-175}$. For example $g_m\ge m^2$ and $g_m\le2m^2$ for $|m|\ge1$, so the tail is bounded by $2\sum_{m\ge21}(2m^2)^5\ee^{-m^2}$, whose terms decrease geometrically by a factor far below $1/2$. This is a truncation bound for the series; any claimed decimal certification must also control arithmetic roundoff. The displayed decimals were independently cross-checked with higher-precision evaluation and are illustrative approximations.
+
+\subsection{The accompanying package}
+The companion archive contains this editable \LaTeX\ source, the rendered PDF, the pinned b-file with provenance, exact verification code, deterministic result records, a strict complete hash manifest, and a fresh-destination builder. The exact verifier uses only the Python standard library. Its full-range mode recomputes every b-file entry rather than merely reading a saved result. The README specifies the commands, dependencies for PDF compilation, fast versus full verification scope, and deterministic rebuild behavior.
+
+The builder validates the complete inventory and hashes before building, rejects unsupported paths and symlinks, and requires a destination that does not already exist. It does not overwrite a prior release. Explicit exceptions enforce safety checks in both normal and optimized Python; correctness and path guards do not rely on \code{assert}. Guard tests and actual builds from freshly extracted archives accompany release validation. The manifest covers the packaged files except itself, whose hash is recorded externally; the archive's hash is likewise external to avoid a self-reference.
+
+Determinism means byte-for-byte rebuilding with the same declared toolchain and bundled inputs. It does not promise identical PDF bytes across arbitrary TeX distributions or future compiler versions. No network retrieval is required for the packaged exact checks or the PDF build once its stated tools are installed.
+
+\section{Further questions}\label{sec:questions}
+The argument suggests several concrete continuations. They are questions, not conclusions of this report.
+\begin{enumerate}[leftmargin=*,itemsep=5pt]
+\item \emph{Effective errors and thresholds.} Can the constants in the subset tails, Fourier bound, and local expansion be tracked sharply enough to give useful finite-$n$ forward bounds and certified numerical inverse envelopes? Existence of the present constants is insufficient for that task.
+\item \emph{Higher coefficient structure.} The formula \eqref{eq:cr} involves finite-site power sums at higher orders. Which coefficients can be reduced to derivatives of Euler products and Lambert series, and how quickly do the resulting constants grow with the order?
+\item \emph{Shifted and scaled diagonals.} What changes for $D=M+h$ with fixed integer $h$, or $M$ close to a fixed multiple of $D$? The exact substitution mechanism provides a starting point, but neither constants nor uniform remainders for those events are proved here.
+\item \emph{The conditional diagonal law.} What is the distribution of $D$ conditional on $D=M$? The current transform deliberately sums $D$ out. Recovering a local conditional law would require a suitable marked refinement and a new uniform analysis.
+\item \emph{Beyond every fixed algebraic order.} Can one obtain useful exponentially small corrections, uniform optimal truncation, or a convergent replacement for the formal expansion? The present all fixed-order theorem does not address these questions.
+\item \emph{Complete prior scope.} A full primary-text review of the unresolved general limit-theorem sources, and a wider search for diagonal statistics, would clarify the relation to earlier general results. The bounded review here cannot certify originality.
+\end{enumerate}
+
+\clearpage
+\begin{thebibliography}{9}
+\bibitem{oeis}
+OEIS Foundation Inc., \emph{The On-Line Encyclopedia of Integer Sequences}, A239964, partitions whose number of distinct part sizes equals their maximum multiplicity. Entry and linked b-file inspected 4 October 2026.
+\url{https://oeis.org/A239964};
+\url{https://oeis.org/A239964/b239964.txt}.
+The inspected entry credits Seiichi Manyama's coefficient-product formula to 13 March 2026.
+
+\bibitem{mutafchiev}
+L. R. Mutafchiev, On the maximal multiplicity of parts in a random integer partition, \emph{Ramanujan Journal} \textbf{9} (2005), 305--316.
+\href{https://doi.org/10.1007/s11139-005-1870-9}{doi:10.1007/s11139-005-1870-9}.
+Theorem 1 and proof were checked in the publicly available author version; the final typesetting was not independently compared.
+
+\bibitem{goh}
+W. M. Y. Goh and E. Schmutz, The number of distinct part sizes in a random integer partition, \emph{Journal of Combinatorial Theory, Series A} \textbf{69} (1995), 149--158.
+\href{https://doi.org/10.1016/0097-3165(95)90111-6}{doi:10.1016/0097-3165(95)90111-6}.
+Publisher material and an indexed first page were inspected; a complete primary-text scope review remains outstanding.
+
+\bibitem{hwang}
+H.-K. Hwang, Limit theorems for the number of summands in integer partitions, \emph{Journal of Combinatorial Theory, Series A} \textbf{96} (2001), 89--126.
+\href{https://doi.org/10.1006/jcta.2000.3170}{doi:10.1006/jcta.2000.3170}.
+Publisher abstract and the author's bibliography were inspected; the full primary paper was not retrieved in this review.
+
+\bibitem{rala}
+D. Ralaivaosaona, On the distribution of multiplicities in integer partitions, \emph{Annals of Combinatorics} \textbf{16} (2012), 871--889.
+\href{https://doi.org/10.1007/s00026-012-0165-2}{doi:10.1007/s00026-012-0165-2}.
+Theorems 1, 2 and 10 and the relevant generating functions were inspected in the institutional author manuscript.
+
+\bibitem{grabner}
+P. Grabner, A. Knopfmacher and S. Wagner, A general asymptotic scheme for the analysis of partition statistics, \emph{Combinatorics, Probability and Computing} \textbf{23} (2014), 1057--1086.
+\href{https://doi.org/10.1017/S0963548314000418}{doi:10.1017/S0963548314000418}.
+Published author copy:
+\url{https://www.math.tugraz.at/~grabner/Publications/PartitionStatistics.pdf}.
+\end{thebibliography}
+\end{document}

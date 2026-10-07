@@ -1,0 +1,671 @@
+\pdfinfoomitdate=1
+\pdftrailerid{}
+\pdfsuppressptexinfo=15
+\newcommand{\DoNotLoadEpstopdf}{}
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools,booktabs,array}
+\usepackage[margin=1in]{geometry}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\usepackage{enumitem}
+\setlist{itemsep=3pt,topsep=5pt}
+\allowdisplaybreaks[2]
+\emergencystretch=2em
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\OO}{\mathcal O}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\N}{\mathbb N}
+\newcommand{\R}{\mathbb R}
+\newcommand{\G}{\mathcal G}
+\hypersetup{pdftitle={Report189 Compositions with a Length Dependent Minimum},pdfauthor={Research report},pdfsubject={All fixed order asymptotics half powers rare excess probabilities and inverse envelopes}}
+\title{Report189\\[5pt]Compositions with a Length Dependent Minimum}
+\author{All fixed order asymptotics and error aware inversion}
+\date{4 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+Let $a_s(n)$ count ordered compositions of $n$ whose $k$ parts are all at least $k+s$, where the nonnegative integer $s$ is fixed. Define $v>0$ by $4n=e^{2v}v(v+2)$, put $t=e^{-v}$ and $D=v^2+3v+1$. We prove
+\[
+ a_s(n)=\frac{\exp\{e^v v(v+1)/2-(3+2s)v/4\}}{\sqrt D}
+ \left\{\sum_{j=0}^{J}t^jC_{s,j}(v)
+       +\OO_{s,J}\bigl(t^{J+1}(1+v)^{J+1}\bigr)\right\}
+\]
+for every fixed order $J$, with explicitly computable rational coefficients. We give $C_{s,1}$ in closed form and a finite exact formula for $C_{s,2}$. A global Fourier estimate excludes competing arcs, and a uniform Cauchy estimate controls the growing logarithmic remainder. Subtraction yields interlaced half-power expansions for exact-minimum compositions and rare fixed-excess probabilities. Monotone inverse envelopes give rigorous integer brackets. The leading smooth inverse misses a displacement $v/48+\OO(1)$; the first correction reduces the real inverse error to $o(1)$. The principal cases are OEIS A098131, A098132, and A098133.
+\end{abstract}
+
+\paragraph{Scope and attribution.}
+The exact generating functions, stars-and-bars counts, nonlinear Schreier interpretations, Gaussian Poisson summation, and saddle-point methods are prior work. Our purpose is to supply and prove the stated target-specific asymptotic and inverse formulas, with their restrictions explicit. A bounded source review found no matching asymptotic theorem in the sources discussed in Section~\ref{sec:prior}; it does not establish worldwide priority. The error constants and onset are not made effective. No statement is uniform in growing $s$.
+
+\newpage
+{\small\tableofcontents}
+\newpage
+
+\section{The counting problem and the main theorem}\label{sec:main}
+A composition of a positive integer $n$ is an ordered tuple $(x_1,\ldots,x_k)$ of positive integers with sum $n$. Fix $s\in\mathbb Z_{\ge0}$ and define
+\begin{align}
+ a_s(n)&=\#\{(x_1,\ldots,x_k):x_1+\cdots+x_k=n,\ x_i\ge k+s\},\label{eq:adef}\\
+ b_s(n)&=a_s(n)-a_{s+1}(n).\label{eq:bdef}
+\end{align}
+Thus $b_s(n)$ counts compositions whose smallest part is exactly $k+s$. We include an auxiliary empty composition by setting $a_s(0)=1$ for all $s$, so $b_s(0)=0$. The correspondence with the OEIS records is
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+Sequence & Interpretation & Index convention here\\
+\midrule
+A098131 & minimum at least the length & $a_0(n)$, $n\ge0$\\
+A098132 & minimum greater than the length & $a_1(n)$, $n\ge1$\\
+A098133 & minimum equal to the length & $b_0(n)$, $n\ge1$\\
+\bottomrule
+\end{tabular}
+\end{center}
+These exact interpretations and their generating functions are recorded in the OEIS \cite{oeis131,oeis132,oeis133}. For $n>0$, subtraction of $k+s$ from each part gives
+\begin{equation}\label{eq:exact}
+ a_s(n)=\sum_{\substack{k\ge1\\k(k+s)\le n}}
+       \binom{n-k(k+s)+k-1}{k-1},\qquad
+ F_s(q):=\sum_{n\ge0}a_s(n)q^n
+       =\sum_{k\ge0}\frac{q^{k^2+sk}}{(1-q)^k}.
+\end{equation}
+This is the usual weak-composition count. In particular, neither the exact formula nor the length-dependent family is introduced here as a discovery. The series defining $F_s$ converges absolutely for $|q|<1$.
+
+For every real $x>0$, the equation
+\begin{equation}\label{eq:vdef}
+ 4x=e^{2v}v(v+2)
+\end{equation}
+has a unique solution $v=v(x)>0$, since its right side increases from zero to infinity. Throughout, put
+\begin{align}
+ t&=e^{-v},&V&=1+v,&D&=v^2+3v+1,\label{eq:parameters}\\
+ E&=3v^2+11v+6,&F&=12v^2+50v+35,\notag\\
+ \alpha_s&=\frac{3-2s}{4},&\beta_s&=\frac{3+2s}{4},&
+ P_s(x)&=\frac{\exp\{e^v v(v+1)/2-\beta_s v\}}{\sqrt D}.
+ \label{eq:P}
+\end{align}
+All functions of $v$ in a formula at $x$ are evaluated at $v(x)$. Subscripts on $\OO$ indicate the parameters on which the implied constant may depend.
+
+\begin{theorem}[All fixed orders]\label{thm:all}
+For each fixed nonnegative integer $s$ and each fixed integer $J\ge0$, there are rational functions $C_{s,j}(v)$ such that, as $n\to\infty$ through integers,
+\begin{equation}\label{eq:main}
+ a_s(n)=P_s(n)\left\{\sum_{j=0}^{J}t^j C_{s,j}(v)
+             +\OO_{s,J}\bigl(t^{J+1}V^{J+1}\bigr)\right\}.
+\end{equation}
+Here $C_{s,0}=1$, each coefficient depends polynomially on $s$ over $\mathbb Q(v)$, its only possible finite poles in $v$ are zeros of $D$, and
+\begin{equation}\label{eq:Cgrowth}
+ C_{s,j}(v)=\OO_{s,j}(V^j)\qquad(v\to+\infty).
+\end{equation}
+An exact finite coefficient algorithm is given in Section~\ref{sec:coefficients}. In particular,
+\begin{align}
+ C_{s,1}(v)={}&\frac{(s-1/2)^2}{4}-\frac v{48}
+ -\frac{\alpha_s(\alpha_s+1)}D+\frac{\alpha_s E}{D^2}
+ +\frac F{4D^2}-\frac{5E^2}{12D^3}.\label{eq:C1}
+\end{align}
+\end{theorem}
+
+The leading equivalent is $a_s(n)\sim P_s(n)$. From \eqref{eq:vdef},
+\begin{equation}\label{eq:tscale}
+ t=\frac{\sqrt{v(v+2)}}{2\sqrt n},\qquad
+ v\sim\tfrac12\log n.
+\end{equation}
+Consequently the leading relative error is $\OO_s((\log n)^2/\sqrt n)$, and retaining $C_{s,1}$ gives relative error $\OO_s((\log n)^4/n)$. It is essential that $v$ in the leading exponential is the solution of \eqref{eq:vdef}; substituting only an equivalent for $v$ there need not preserve a multiplicative equivalent.
+
+The remaining sections prove the theorem and develop its consequences. The proof has two distinct localization steps: a bound on the entire Fourier complement and a uniform expansion on the surviving Gaussian arc. A local expansion alone would not establish the coefficient asymptotic.
+
+\section{Prior work and the scope of the contribution}\label{sec:prior}
+Chu, Irmak, Miller, Szalay, and Zhang \cite{chu} consider compositions in which the minimum exceeds a power of the number of parts. Their Proposition~1 supplies a stars-and-bars sum of the form
+\[
+ \sum_k\binom{n-k^{p+1}-1}{k-1}.
+\]
+At $p=1$ this is $a_1(n)$, and they identify A098132 explicitly. Their Theorem~4 and its surrounding discussion relate these counts to nonlinear Schreier conditions such as $\min S>|S|^p$. These are substantial exact combinatorial antecedents. No asymptotic theorem for the present diagonal minimum constraint is stated there.
+
+Knopfmacher and Munagi \cite{smallest} give exact counts for compositions of fixed length and specified smallest part. Their difference of two binomial coefficients specializes to the summands of $b_s(n)$ when the prescribed smallest part is $k+s$. Their fixed-smallest-part asymptotics use a dominant pole; their other asymptotic results concern unrestricted compositions and typical smallest parts. Those regimes do not directly give the moving diagonal $\min x_i\ge k+s$ treated here. Beanland and Chu \cite{beanland} give related exact connections with Schreier-type sets and compositions with a fixed lower bound on each part. Their composition theorem has a linear, fixed-bound condition, rather than this quadratic constraint on the total.
+
+The theta transformation underlying Gaussian completion is classical \cite{dlmfTheta}. So are Bernoulli expansions \cite{dlmfBernoulli}, Cauchy extraction, Gaussian moments, saddle expansions, and monotone inversion. The specific claims proved below are the normalization in \eqref{eq:P}, its rational all-fixed-order correction scheme with the remainder in \eqref{eq:main}, the resulting fixed-excess laws and half-power hierarchy, and the quantitative real inverse correction with rigorous integer brackets. These claims are deliberately narrower than a claim of global novelty. We do not derive an asymptotic contribution for an individual nonzero Poisson harmonic, a convergent transseries, a central limit theorem for length, or a growing-parameter theorem.
+
+\section{Gaussian completion near the positive axis}\label{sec:poisson}
+Take $q=e^{-z}$ and, on a right-half-plane neighborhood of the positive ray, define
+\begin{equation}\label{eq:L}
+ L_s(z)=-\log(1-e^{-z})-sz.
+\end{equation}
+All logarithms are the analytic branches agreeing with real logarithms on the positive axis. The generating function becomes
+\begin{equation}\label{eq:gaussiansum}
+ F_s(e^{-z})=\sum_{k\ge0}\exp\{-zk^2+L_s(z)k\}.
+\end{equation}
+Let $t\to0^+$ and $v=\log(1/t)$; the chosen major arc will be
+\begin{equation}\label{eq:major}
+ z=t-i\theta,\qquad |\theta|\le t^{4/3}.
+\end{equation}
+
+\begin{lemma}[Uniform completion]\label{lem:completion}
+For fixed $s$, uniformly on \eqref{eq:major},
+\begin{equation}\label{eq:completion}
+ F_s(e^{-z})=\sqrt{\frac\pi z}\,
+       \exp\!\left(\frac{L_s(z)^2}{4z}\right)
+       \left\{1+\OO_s(e^{-c/t})\right\}
+\end{equation}
+for some positive constant $c$ and all sufficiently small $t$.
+\end{lemma}
+\begin{proof}
+Complete the sum to all integers and use the classical Gaussian Poisson identity, with the square root continued from $z>0$:
+\begin{align}
+ \sum_{k\in\mathbb Z}e^{-zk^2+L_s(z)k}
+  &=\sqrt{\frac\pi z}\,e^{L_s(z)^2/(4z)}
+    \sum_{m\in\mathbb Z}
+       \exp\!\left(-\frac{\pi^2m^2}z+\frac{\pi i mL_s(z)}z\right).
+ \label{eq:poisson}
+\end{align}
+Changing $m$ to $-m$ gives the other customary sign convention. On the indicated arc,
+\begin{equation}\label{eq:harmonicbounds}
+ \Re(1/z)=\frac{1+o(1)}t,\qquad
+ \left|\Im\frac{L_s(z)}z\right|=\OO_s(vt^{-2/3}).
+\end{equation}
+For $m\ne0$ the second contribution to the real exponent, relative to the quadratic loss $m^2/t$, is $\OO_s(vt^{1/3}/|m|)=o(1)$, uniformly in $m$. The normalized sum of all nonzero harmonics is therefore $\OO_s(e^{-c/t})$.
+
+It remains to subtract the negative-index terms, not merely discard them. On the same arc $\Re L_s(z)=v+\OO_s(t^{2/3})$, so
+\begin{equation}\label{eq:negative}
+ \left|\sum_{j\ge1}e^{-zj^2-L_s(z)j}\right|
+ \le\sum_{j\ge1}e^{-tj^2-\Re L_s(z)j}=\OO_s(t).
+\end{equation}
+Meanwhile
+\[
+ \Re\frac{L_s(z)^2}{4z}=(1+o(1))\frac{v^2}{4t}.
+\]
+Thus the negative-index tail divided by the leading completed Gaussian is smaller than $e^{-c/t}$. Combining the two estimates proves the lemma.
+\end{proof}
+
+The analytic perturbation of the Gaussian core is conveniently made exact. Set
+\begin{align}
+ \ell(z)&=\log(1/z),& H(z)&=\frac{\ell(z)^2}{4z},\label{eq:H}\\
+ \psi_s(z)&=-\log\left(\frac{1-e^{-z}}z\right)-sz,&
+ a&=\frac12-s.\label{eq:psi}
+\end{align}
+The function $\psi_s$ is analytic on a fixed sufficiently small disk about zero and
+\begin{equation}\label{eq:psiseries}
+ \psi_s(z)=az-\frac{z^2}{24}+\frac{z^4}{2880}+\OO_s(z^6).
+\end{equation}
+Define the analytic-in-$z$ correction
+\begin{equation}\label{eq:R}
+ R_s(z,w)=\frac w2\left(\frac{\psi_s(z)}z-a\right)
+                   +\frac{\psi_s(z)^2}{4z}.
+\end{equation}
+The apparent divisions by $z$ are removable. Direct completion of the square gives the exact local identity
+\begin{equation}\label{eq:factor}
+ \sqrt{\frac\pi z}\,e^{L_s(z)^2/(4z)}
+    =\sqrt\pi\,z^{-\alpha_s}e^{H(z)}e^{R_s(z,\ell(z))}.
+\end{equation}
+Writing $R_s(z,w)=\sum_{r\ge1}z^rB_{s,r}(w)$, every $B_{s,r}$ is affine in $w$, and
+\begin{equation}\label{eq:B12}
+ B_{s,1}(w)=\frac{a^2}4-\frac w{48},\qquad
+ B_{s,2}(w)=-\frac a{48}.
+\end{equation}
+For $|z|$ in a fixed small disk, the bound
+\begin{equation}\label{eq:Rbound}
+ |R_s(z,w)|\le C_s(1+|w|)|z|
+\end{equation}
+follows immediately from \eqref{eq:R}. Notice that the second argument in \eqref{eq:factor} is the actual local logarithm $\ell(z)$, not the constant $\ell(t)$.
+
+\section{Suppression of the entire Fourier complement}\label{sec:global}
+The preceding completion only applies near the positive axis. To extract coefficients we must also bound all remaining angles, including potential rational-angle peaks. This is possible directly from the positive summands.
+
+\begin{lemma}[Global Fourier bound]\label{lem:global}
+For $q=e^{-t+i\theta}$, $-\pi\le\theta\le\pi$, let
+\begin{equation}\label{eq:h}
+ h_t(\theta)=\log\frac{|1-q|}{1-e^{-t}}
+   =\frac12\log\left(1+\frac{2e^{-t}(1-\cos\theta)}{(1-e^{-t})^2}\right).
+\end{equation}
+There is $c>0$ such that, for fixed $s$ and sufficiently small $t$,
+\begin{equation}\label{eq:global}
+ \frac{|F_s(e^{-t+i\theta})|}{F_s(e^{-t})}
+ \le \exp\!\left(-\frac{L_s(t)h_t(\theta)}{4t}\right)
+                         +\OO_s(e^{-cv^2/t})
+\end{equation}
+uniformly over the full interval. In particular, for $|\theta|\ge t^{4/3}$ the left side is $\OO_s(\exp\{-cv t^{-1/3}\})$.
+\end{lemma}
+\begin{proof}
+The termwise modulus of \eqref{eq:exact} is bounded by
+\[
+ \sum_{k\ge0}\exp\{-tk^2+L_s(t)k-kh_t(\theta)\}.
+\]
+Normalize the positive weights $e^{-tk^2+L_s(t)k}$ to a probability distribution on nonnegative integers. Completing the square centers this distribution at $L_s(t)/(2t)$. Its total mass below $L_s(t)/(4t)$ is $\OO_s(e^{-cv^2/t})$: the loss in the squared exponent there is at least a constant times $L_s(t)^2/t$, while the number-of-terms and Gaussian-normalization factors are polynomial and can be absorbed by reducing $c$. More explicitly, there are $\OO(v/t)$ terms below the cutoff, each losing at least $L_s(t)^2/(16t)$ relative to the continuous maximum, and an integer within $1/2$ of that maximum gives a denominator term within $e^{-t/4}$ of it. Above the cutoff the penalty is at most $e^{-L_s(t)h_t(\theta)/(4t)}$. This proves \eqref{eq:global}.
+
+For $|\theta|\ge t^{4/3}$, the inequality $1-\cos\theta\ge2\theta^2/\pi^2$ gives $h_t(\theta)\ge c t^{2/3}$. Since $L_s(t)\sim v$, the final conclusion follows.
+\end{proof}
+
+Cauchy's formula is
+\begin{equation}\label{eq:cauchy}
+ a_s(n)=\frac1{2\pi}\int_{-\pi}^{\pi}
+              e^{n(t-i\theta)}F_s(e^{-t+i\theta})\dd\theta.
+\end{equation}
+The natural central width is $\OO(t^{3/2}/v)$. Dividing the absolute estimate for the complementary integral by that width only incurs a factor of polynomial size in $1/t$ and $v$. Therefore Lemma~\ref{lem:global} makes the entire complementary integral smaller than the main coefficient scale times every fixed power of $t$. This global statement is what permits the local saddle calculation to determine the actual coefficients.
+
+\section{The moving logarithmic saddle}\label{sec:saddle}
+Differentiation of $H$ gives
+\begin{align}
+ H'(t)&=-\frac{v^2+2v}{4t^2},&
+ H''(t)&=\frac D{2t^3},\label{eq:Hderiv}\\
+ H'''(t)&=-\frac E{2t^4},&
+ H''''(t)&=\frac F{2t^5}.\notag
+\end{align}
+The equation $n+H'(t)=0$ is exactly \eqref{eq:vdef}. Thus the core saddle is solved exactly, rather than by a truncated logarithmic approximation. Introduce
+\begin{equation}\label{eq:gaussiancoords}
+ \eps=\sqrt t,\qquad \lambda=\sqrt{2/D},\qquad
+ \theta=t^{3/2}\lambda u,\qquad z=t(1+\delta),\quad
+ \delta=-i\eps\lambda u.
+\end{equation}
+Then the quadratic part of $n(z-t)+H(z)-H(t)$ is $-u^2/2$. The formal Gaussian-removed integrand is
+\begin{align}
+ K(\eps,u,v)={}&(1+\delta)^{-\alpha_s}
+  \exp\{n(z-t)+H(z)-H(t)+u^2/2\}\notag\\
+ &\hspace{16mm}\cdot\exp\{R_s(z,v-\log(1+\delta))\}.
+ \label{eq:K}
+\end{align}
+For the formal expansion, $v$ is regarded as an independent parameter and $t=\eps^2$. More precisely, the Gaussian-removed core exponent in \eqref{eq:K} is defined to be $\eps^{-2}\mathcal J(\delta,v)$, where $\mathcal J$ is given in \eqref{eq:coreJ}. This uses $nt^2=(v^2+2v)/4$ and the local logarithm $v-\log(1+\delta)$ during formal expansion. Equality with the actual coefficient integrand is restored after setting $\eps=e^{-v/2}$.
+
+The amplitude and Gaussian normalization are
+\begin{equation}\label{eq:prefactor}
+ \frac{\sqrt\pi\,t^{-\alpha_s}}{\sqrt{2\pi H''(t)}}
+   =\frac{t^{\beta_s}}{\sqrt D},\qquad
+ nt+H(t)=\frac{e^v v(v+1)}2.
+\end{equation}
+This proves the normalization $P_s$ once the normalized integral is shown to equal $1+o(1)$ and then expanded.
+
+\subsection{A uniform Cauchy remainder estimate}\label{subsec:remainder}
+The logarithmic parameter grows with $n$. An unspecified fixed-parameter saddle expansion would not by itself prove the particular factor $V^{J+1}$ in \eqref{eq:main}. The following estimate keeps that factor.
+
+\begin{lemma}[Uniform analytic disk]\label{lem:disk}
+Fix $s\ge0$, take $v\ge1$, and put $\zeta=\eps\sqrt V$. For every real $u$, the expression $K$ in \eqref{eq:K}, viewed as a function of the complex variable $\zeta$, extends analytically across $\zeta=0$ and is uniformly bounded on
+\begin{equation}\label{eq:disk}
+ |\zeta|\le\frac{c_s}{1+|u|^3}
+\end{equation}
+by a constant depending only on $s$. For each fixed $J$, its Taylor remainder after degree $2J+1$ is bounded by
+\begin{equation}\label{eq:Cauchyrem}
+ C_{s,J}|\zeta|^{2J+2}(1+|u|^3)^{2J+2}
+\end{equation}
+whenever $|\zeta|\le c_s/[2(1+|u|^3)]$.
+\end{lemma}
+\begin{proof}
+Since $D$ is comparable to $V^2$ for $v\ge1$,
+\begin{equation}\label{eq:deltabound}
+ |\delta|\le C\frac{|\zeta u|}{V^{3/2}}.
+\end{equation}
+Choose $c_s$ sufficiently small to ensure $|\delta|\le1/2$ on \eqref{eq:disk}. Then all logarithms and powers of $1+\delta$ are analytic with their branches at $1$. The core exponent after Gaussian removal equals $\eps^{-2}\mathcal J(\delta,v)$, where
+\begin{align}
+ \mathcal J(\delta,v)={}&
+ \frac{[v-\log(1+\delta)]^2}{4(1+\delta)}-\frac{v^2}4
+       +\frac{v^2+2v}4\delta-\frac D4\delta^2.
+ \label{eq:coreJ}
+\end{align}
+The constant, linear, and quadratic terms vanish. Taylor's theorem on $|\delta|\le1/2$ yields $|\mathcal J(\delta,v)|\le C V^2|\delta|^3$. It follows that
+\begin{equation}\label{eq:corebound}
+ |\eps^{-2}\mathcal J(\delta,v)|
+   \le C\frac{|\zeta||u|^3}{V^{3/2}}\le Cc_s.
+\end{equation}
+The apparent singularity in $\eps$ is removable, because $\mathcal J$ vanishes to third order.
+
+Also $z=\eps^2(1+\delta)=\zeta^2(1+\delta)/V$, and \eqref{eq:Rbound} implies
+\begin{equation}\label{eq:Rlocalbound}
+ |R_s(z,v-\log(1+\delta))|
+       \le C_s|\zeta|^2(1+|\delta|).
+\end{equation}
+Using $R_s(z,v)$ alone would omit the local-log change. Its exact difference from the required expression is
+\[
+ -\tfrac12\log(1+\delta)\left(\psi_s(z)/z-a\right),
+\]
+which is included in \eqref{eq:Rlocalbound}. The amplitude is bounded by \eqref{eq:deltabound}, and the two exponentials are bounded by \eqref{eq:corebound} and \eqref{eq:Rlocalbound}. This proves analyticity and the uniform bound. Cauchy's coefficient estimate and the geometric tail bound on the half-radius disk give \eqref{eq:Cauchyrem}.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:all}]
+In the central region $|u|\le|\zeta|^{-1/10}$, the half-radius condition in Lemma~\ref{lem:disk} holds for sufficiently small positive $\zeta$, because $|\zeta|(1+|u|^3)\to0$ uniformly there. Multiply \eqref{eq:Cauchyrem} by the standard Gaussian density and integrate. The polynomial Gaussian moments are finite, giving total remainder
+\begin{equation}\label{eq:intrem}
+ \OO_{s,J}(|\zeta|^{2J+2})
+              =\OO_{s,J}(t^{J+1}V^{J+1}).
+\end{equation}
+The symmetry
+\begin{equation}\label{eq:parity}
+ K(-\eps,u,v)=K(\eps,-u,v)
+\end{equation}
+implies that every odd Taylor coefficient integrates to zero on this symmetric region. Cauchy's estimate also bounds each coefficient by a fixed polynomial in $|u|$ times the appropriate power of $V^{1/2}$, so extending its Gaussian integral to all of $\R$ introduces an exponentially small error. The even integrated coefficient at $\eps^{2j}$ defines $C_{s,j}(v)$ and obeys \eqref{eq:Cgrowth}.
+
+To justify the remaining part of the major arc, Taylor's theorem applied to the real part of the core exponent gives, uniformly for $|\theta|/t\le t^{1/3}$,
+\begin{equation}\label{eq:gaussiandrop}
+ \Re\{n(z-t)+H(z)-H(t)\}
+             \le -\tfrac12u^2\{1+\OO(|\theta|/t)\}.
+\end{equation}
+Indeed the $r$th core derivative is $\OO_r(V^2t^{-r-1})$, so the cubic error divided by the quadratic size is $\OO(|\theta|/t)$, uniformly in large $v$. The amplitude has bounded modulus on this arc; \eqref{eq:Rbound} gives an additional exponent of size $\OO_s(tV)=o(1)$. Thus the portion with $|u|>|\zeta|^{-1/10}$ is bounded by a Gaussian tail, hence is smaller than every fixed power of $t$. The completion error from Lemma~\ref{lem:completion} is also smaller than every such power after normalization. Finally Lemma~\ref{lem:global} handles the entire exterior arc. Combining these estimates with \eqref{eq:prefactor} proves \eqref{eq:main}.
+
+The finite formal algorithm in the next section shows rationality, the restriction on poles, and polynomial dependence on $s$. Its first nontrivial coefficient yields \eqref{eq:C1}. No interchange of an infinite asymptotic series with the integral is required; for each $J$ only a finite Taylor expansion is used.
+\end{proof}
+
+\section{Exact correction coefficients}\label{sec:coefficients}
+Define a linear Gaussian moment operator on polynomials in $u$ by
+\begin{equation}\label{eq:G}
+ \G(u^{2m})=(2m-1)!!,\qquad \G(u^{2m+1})=0,\qquad(-1)!!=1.
+\end{equation}
+Equivalently, $\G$ is expectation under a standard real normal variable. Expand the logarithm of \eqref{eq:K} formally as
+\begin{equation}\label{eq:logK}
+ \log K(\eps,u,v)=\sum_{r\ge1}\eps^r q_r(u,v;s).
+\end{equation}
+If $K=\sum_{m\ge0}\eps^m p_m$, exponential-series differentiation gives the finite recurrence
+\begin{equation}\label{eq:exprec}
+ p_0=1,\qquad p_m=\frac1m\sum_{r=1}^{m}r q_rp_{m-r},\qquad
+ C_{s,j}(v)=\G(p_{2j}).
+\end{equation}
+All quantities needed for order $j$ are obtained by truncating the normalized integrand at $\eps^{2j}$; core derivatives through order $2j+2$ suffice. This is one exact finite recipe for every coefficient.
+
+For an explicit derivative recursion, set
+\begin{equation}\label{eq:Qrec}
+ Q_0(v)=v^2,\qquad Q_{r+1}(v)=(r+1)Q_r(v)+Q_r'(v).
+\end{equation}
+An induction gives
+\begin{equation}\label{eq:Qderiv}
+ H^{(r)}(t)=\frac{(-1)^rQ_r(v)}{4t^{r+1}},\qquad
+ Q_2=2D,\quad Q_3=2E,\quad Q_4=2F.
+\end{equation}
+The $r$th core derivative, for $r\ge3$, contributes
+\begin{equation}\label{eq:corecoefficient}
+ \frac{i^rQ_r(v)\lambda^ru^r}{4r!}\eps^{r-2}
+\end{equation}
+to \eqref{eq:logK}. Add the elementary expansions of $-\alpha_s\log(1-i\eps\lambda u)$ and $R_s(\eps^2(1-i\eps\lambda u),v-\log(1-i\eps\lambda u))$ to obtain all $q_r$.
+
+At order $m$, the total power of $\lambda$ in every term has the same parity as $m$. This is true in each of these three contributions and is preserved by products. After the odd Gaussian moments vanish, every surviving term at even order contains an even power of $\lambda$, and hence only integer powers of $2/D$. The remaining algebra is polynomial in $v$ and $s$ with rational coefficients. This proves the rationality and pole assertions in Theorem~\ref{thm:all}.
+
+\subsection{The first coefficient and its large parameter form}
+Write $B=B_{s,1}(v)=a^2/4-v/48$ and $\alpha=\alpha_s$. The first two log coefficients are
+\begin{align}
+ q_1&=i\alpha\lambda u-\frac{iE\lambda^3u^3}{12},\label{eq:q1}\\
+ q_2&=B-\frac{\alpha\lambda^2u^2}{2}
+                        +\frac{F\lambda^4u^4}{48}.\label{eq:q2}
+\end{align}
+Thus $C_{s,1}=\G(q_2+q_1^2/2)$, giving \eqref{eq:C1} by $\G(u^2)=1$, $\G(u^4)=3$, and $\G(u^6)=15$. In particular,
+\begin{equation}\label{eq:C1large}
+ -C_{s,1}(v)=\frac v{48}-\frac{(s-1/2)^2}{4}+\OO_s(v^{-2}).
+\end{equation}
+There is no $v^{-1}$ contribution, because every remaining term in \eqref{eq:C1} is $\OO_s(v^{-2})$.
+
+\subsection{A finite exact formula for the second coefficient}
+For completeness, the next two log coefficients are
+\begin{align}
+ q_3={}&-i\lambda u(B+1/48)
+       -\frac{i\alpha\lambda^3u^3}{3}
+       +\frac{iQ_5\lambda^5u^5}{480},\label{eq:q3}\\
+ q_4={}&-\frac a{48}-\frac{\lambda^2u^2}{96}
+       +\frac{\alpha\lambda^4u^4}{4}
+       -\frac{Q_6\lambda^6u^6}{2880}.\label{eq:q4}
+\end{align}
+Together with \eqref{eq:Qrec}, these yield the compact finite expression
+\begin{equation}\label{eq:C2}
+ C_{s,2}(v)=\G\left(q_4+q_1q_3+\frac{q_2^2}{2}
+                       +\frac{q_1^2q_2}{2}+\frac{q_1^4}{24}\right).
+\end{equation}
+This expression involves only finitely many polynomial products and the displayed double-factorial rule. It is therefore an explicit exact formula, not a limiting prescription or a numerical fitting rule. A common denominator is $4608D^6$, and
+\begin{equation}\label{eq:C2large}
+ C_{s,2}(v)=\frac{v^2}{4608}+\OO_s(v).
+\end{equation}
+The optional symbolic diagnostic in the code archive can expand the full numerator. The more compact form \eqref{eq:C2} makes the contribution of the local-log perturbation and the Gaussian moments easier to audit.
+
+\section{Exact minima and rare excess probabilities}\label{sec:probability}
+The ratio of leading factors is exact:
+\begin{equation}\label{eq:Pratio}
+ \frac{P_{s+1}(n)}{P_s(n)}=t^{1/2},\qquad
+ \frac{P_s(n)}{P_0(n)}=t^{s/2}.
+\end{equation}
+Subtraction therefore has a half-power hierarchy even though the expansion for each $a_s$ uses integer powers of $t$.
+
+\begin{corollary}[Interlaced half powers]\label{cor:half}
+For fixed $s,J\ge0$,
+\begin{align}
+ \frac{b_s(n)}{P_s(n)}={}&
+ \sum_{j=0}^{J}t^j C_{s,j}(v)
+   -t^{1/2}\sum_{j=0}^{J}t^j C_{s+1,j}(v)
+   +\OO_{s,J}(t^{J+1}V^{J+1}).\label{eq:bexp}
+\end{align}
+In particular,
+\begin{equation}\label{eq:bfirst}
+ \frac{b_s(n)}{P_s(n)}
+ =1-t^{1/2}+tC_{s,1}(v)-t^{3/2}C_{s+1,1}(v)
+                                  +\OO_s(t^2V^2).
+\end{equation}
+\end{corollary}
+\begin{proof}
+Apply Theorem~\ref{thm:all} separately to $a_s$ and $a_{s+1}$ and use \eqref{eq:Pratio}. Since $t^{1/2}\le1$ eventually, the second remainder is absorbed in the stated one.
+\end{proof}
+
+Choose a composition uniformly from those counted by $a_0(n)$ and define its excess
+\[
+ X_n=\min_i x_i-k.
+\]
+The event $X_n\ge s$ is counted by $a_s(n)$ exactly. Division of two first-corrected expansions gives the following law.
+
+\begin{corollary}[Fixed rare excess]\label{cor:rare}
+For each fixed nonnegative integer $s$,
+\begin{equation}\label{eq:survival}
+ \Pr(X_n\ge s)=t^{s/2}
+  \left\{1+t\bigl(C_{s,1}(v)-C_{0,1}(v)\bigr)
+                +\OO_s(t^2V^2)\right\}.
+\end{equation}
+If $\Delta_s(v)=C_{s,1}(v)-C_{0,1}(v)$, then
+\begin{align}
+ \Pr(X_n=s)=t^{s/2}\bigl\{&1-t^{1/2}
+       +t\Delta_s(v)-t^{3/2}\Delta_{s+1}(v)
+       +\OO_s(t^2V^2)\bigr\}.\label{eq:mass}
+\end{align}
+\end{corollary}
+
+For example, the probability of minimum strictly greater than the length is
+\begin{equation}\label{eq:strictprob}
+ \frac{a_1(n)}{a_0(n)}=t^{1/2}
+ \left\{1-t\left(\frac{v^2+5v+4}{2D^2}\right)
+                 +\OO(t^2V^2)\right\}.
+\end{equation}
+Indeed the constant terms in $B_{1,1}-B_{0,1}$ cancel, and the amplitude parameters are $\alpha_0=3/4$ and $\alpha_1=1/4$. Direct subtraction in \eqref{eq:C1} gives
+\begin{equation}\label{eq:deltaone}
+ C_{1,1}-C_{0,1}=\frac1D-\frac E{2D^2}
+                    =-\frac{v^2+5v+4}{2D^2}.
+\end{equation}
+
+Equations \eqref{eq:survival}--\eqref{eq:mass} describe fixed $s$ only. In particular $X_n=0$ with probability tending to one, while each positive fixed excess has a smaller scale. They do not imply a uniform tail bound for $s=s(n)$ or moment estimates obtained by summing over unbounded $s$.
+
+\section{Rigorous inverse envelopes}\label{sec:inverse}
+For real $y>1$, define the integer threshold functions
+\begin{equation}\label{eq:Ndef}
+ N_s(y)=\min\{n\in\mathbb Z_{\ge1}:a_s(n)\ge y\},\qquad
+ T_s(y)=\min\{n\in\mathbb Z_{\ge1}:b_s(n)\ge y\}.
+\end{equation}
+The asymptotics show that both sets are nonempty. Eventual monotonicity is enough for all following statements.
+
+\begin{lemma}[Eventual strict increase]\label{lem:monotonic}
+For $n\ge1$, $a_s(n)$ is nondecreasing, and it is strictly increasing for all sufficiently large $n$. The sequence $b_s(n)$ is also strictly increasing for all sufficiently large $n$.
+\end{lemma}
+\begin{proof}
+Increase the first part by one to inject the nonempty compositions counted by $a_s(n)$ into those counted by $a_s(n+1)$. The fixed-length $k=2$ term in \eqref{eq:exact} is a positive linear function once $n\ge4+2s$, so it supplies strict increase thereafter. The qualification $n\ge1$ matters: under the auxiliary convention $a_s(0)=1>a_s(1)=0$ when $s\ge1$.
+
+For $b_s$, the fixed-$k$ generating-function difference is
+\begin{equation}\label{eq:bgf}
+ q^{k^2+sk}\frac{1-q^k}{(1-q)^k}
+  =q^{k^2+sk}\frac{1+q+\cdots+q^{k-1}}{(1-q)^{k-1}}.
+\end{equation}
+For $k\ge2$ its coefficient sequence is nondecreasing, because it is a positive sum of shifts of binomial coefficient sequences. The $k=1$ term is the single spike at $n=s+1$, which is irrelevant eventually. The $k=3$ summand supplies strict increase for all sufficiently large $n$.
+\end{proof}
+
+Fix $J\ge0$ and introduce smooth approximations
+\begin{align}
+ A_{s,J}(x)&=\sum_{j=0}^{J}t(x)^j C_{s,j}(v(x)),\label{eq:Atrunc}\\
+ M_{s,J}(x)&=P_s(x)A_{s,J}(x),&
+ E_{s,J}(x)&=P_s(x)t(x)^{J+1}V(x)^{J+1}.\label{eq:Mtrunc}
+\end{align}
+The symbol $E_{s,J}$ here denotes an error scale and is unrelated to the polynomial $E$ in \eqref{eq:parameters}.
+
+\begin{theorem}[Integer brackets from smooth envelopes]\label{thm:brackets}
+For fixed $s,J$ there are $K>0$ and $x_*>0$ such that
+\begin{equation}\label{eq:envelopes}
+ M_{s,J}^{\pm}(x)=M_{s,J}(x)\pm K E_{s,J}(x)
+\end{equation}
+are positive and strictly increasing on $[x_*,\infty)$, and
+\begin{equation}\label{eq:envelopebound}
+ M_{s,J}^{-}(n)\le a_s(n)\le M_{s,J}^{+}(n)
+                      \qquad(n\ge x_*,\ n\in\mathbb Z).
+\end{equation}
+For sufficiently large $y$, let $r_\pm=(M_{s,J}^{\pm})^{-1}(y)$. Then
+\begin{equation}\label{eq:ceilbracket}
+ \left\lceil r_+\right\rceil\le N_s(y)
+                         \le\left\lceil r_-\right\rceil,
+\end{equation}
+and the real bracket width is
+\begin{equation}\label{eq:width}
+ r_--r_+=\OO_{s,J}\bigl(t^JV^{J+1}\bigr).
+\end{equation}
+Here $t,V$ may be evaluated at either endpoint or at $M_{s,J}^{-1}(y)$. In particular, when $J\ge1$ the width tends to zero, so the two integer endpoints are eventually equal or adjacent.
+\end{theorem}
+\begin{proof}
+Theorem~\ref{thm:all} supplies $K$ and the eventual inequalities at integer arguments. To justify the smooth inverse operations, differentiation of \eqref{eq:vdef} and \eqref{eq:P} gives
+\begin{align}
+ \frac{\dd x}{\dd v}&=\frac{e^{2v}D}{2},\label{eq:xprime}\\
+ \frac{\dd}{\dd x}\log P_s(x)
+   &=t-\left(2\beta_s+\frac{2v+3}{D}\right)\frac{t^2}{D}
+    =t\{1+\OO_s(t/v^2)\}.\label{eq:Pprime}
+\end{align}
+Every finite correction in \eqref{eq:Atrunc} is rational in $v$ times a fixed exponential, so its derivative is negligible relative to $t$ as a relative correction. The same holds for the relative envelope term $Kt^{J+1}V^{J+1}$. Hence both envelopes are eventually positive, strictly increasing, and have logarithmic derivative $t(1+o(1))$.
+
+If an integer $n<\lceil r_+\rceil$, then $n<r_+$ and $a_s(n)\le M^+_{s,J}(n)<y$ once $n$ is in the eventual range. Taking $y$ above all finitely many exceptional initial values excludes the remaining $n$. At $n=\lceil r_-\rceil$, one has $a_s(n)\ge M^-_{s,J}(n)\ge y$. This proves \eqref{eq:ceilbracket}.
+
+The relative vertical separation of the envelopes is $\OO(t^{J+1}V^{J+1})$. Their logarithmic derivatives are $t(1+o(1))$, so the mean value theorem gives \eqref{eq:width}. This estimate can first be obtained on a window of the claimed size centered at $M_{s,J}^{-1}(y)$: by \eqref{eq:xprime}, the change in $v$ across such a window tends to zero, so the scales and derivatives are comparable throughout. The same estimate then places both endpoints in that window. For $J\ge1$, $t^JV^{J+1}\to0$.
+\end{proof}
+
+This is an explicit integer-bracket formula in terms of eventual envelopes whose constants exist by the theorem. It is not an effective numerical enclosure with a specified $K$ and onset. Nor does a real interval of width $o(1)$ always produce a single integer ceiling: if it straddles an integer, the displayed ceilings can differ. A single-ceiling identity requires a separate pointwise separation check.
+
+For exact minima, retain the half-power leading factor. Define
+\begin{equation}\label{eq:bM}
+ \widetilde M_{s,J}(x)=M_{s,J}(x)-M_{s+1,J}(x)
+          =P_s(x)\{A_{s,J}(x)-t^{1/2}A_{s+1,J}(x)\}.
+\end{equation}
+Its leading term is $P_s(x)(1-t^{1/2})$. Corollary~\ref{cor:half} and the same derivative argument show that
+\begin{equation}\label{eq:benvelopes}
+ \widetilde M_{s,J}^{\pm}(x)=\widetilde M_{s,J}(x)
+                                      \pm\widetilde K E_{s,J}(x)
+\end{equation}
+are eventual positive increasing envelopes for $b_s(n)$. If $\widetilde r_\pm$ are their inverses, then
+\begin{equation}\label{eq:bbracket}
+ \lceil\widetilde r_+\rceil\le T_s(y)\le\lceil\widetilde r_-\rceil,
+ \qquad
+ \widetilde r_--\widetilde r_+=\OO_{s,J}(t^JV^{J+1}).
+\end{equation}
+Dropping $1-t^{1/2}$ before inverse approximation would discard a larger correction than the integer-power term and is not justified at this accuracy.
+
+\section{The divergent correction to the leading inverse}\label{sec:shift}
+The preceding brackets give a direct way to identify how far the leading inverse misses. Let $v_0$ be the sufficiently large solution of
+\begin{equation}\label{eq:v0}
+ \log y=\frac{e^{v_0}v_0(v_0+1)}2-\beta_s v_0
+                           -\frac12\log(v_0^2+3v_0+1),
+\end{equation}
+and put
+\begin{equation}\label{eq:x0}
+ x_0=\frac{e^{2v_0}v_0(v_0+2)}4,\qquad t_0=e^{-v_0},\quad V_0=1+v_0.
+\end{equation}
+Thus $P_s(x_0)=y$ exactly.
+
+\begin{theorem}[First real inverse correction]\label{thm:shift}
+Let $x_1=M_{s,1}^{-1}(y)$ be the eventual smooth inverse with the first correction included. Then
+\begin{equation}\label{eq:shift}
+ x_1=x_0-C_{s,1}(v_0)+\OO_s(t_0V_0^2).
+\end{equation}
+The two first-corrected envelope inverses $r_\pm$ satisfy the same formula. Consequently there is $K_s'>0$ such that, eventually,
+\begin{align}
+ \left\lceil x_0-C_{s,1}(v_0)-K_s't_0V_0^2\right\rceil
+ &\le N_s(y)\notag\\
+ &\le
+ \left\lceil x_0-C_{s,1}(v_0)+K_s't_0V_0^2\right\rceil.
+ \label{eq:correctedbracket}
+\end{align}
+In particular the omitted smooth displacement is
+\begin{equation}\label{eq:divergent}
+ x_1-x_0=\frac{v_0}{48}-\frac{(s-1/2)^2}{4}
+                       +\OO_s(v_0^{-2})+\OO_s(t_0V_0^2).
+\end{equation}
+It tends to positive infinity for every fixed $s$, while the real error after the full $-C_{s,1}(v_0)$ correction tends to zero.
+\end{theorem}
+\begin{proof}
+Near $x_0$, the logarithm of the first-corrected approximation is
+\[
+ \log M_{s,1}(x)=\log P_s(x)+tC_{s,1}(v)+\OO_s(t^2V^2).
+\]
+By \eqref{eq:Cgrowth} and \eqref{eq:Pprime}, balancing the added term against the derivative first locates $x_1$ within $\OO_s(V_0)$ of $x_0$. On this window, \eqref{eq:xprime} gives a change $\OO_s(t_0^2/V_0)$ in $v$. The variation of $tC_{s,1}(v)$ and the quadratic Taylor error in $\log P_s$ are both at most $\OO_s(t_0^2V_0^2)$. Also replacing $(\log P_s)'(x_0)$ by $t_0$ contributes no larger error. Solving the linearized logarithmic equation therefore yields
+\[
+ t_0(x_1-x_0)+t_0C_{s,1}(v_0)
+                        =\OO_s(t_0^2V_0^2),
+\]
+which is \eqref{eq:shift}. The width bound \eqref{eq:width} with $J=1$ transfers the same estimate to $r_\pm$. Increasing $K_s'$ gives the enclosing real endpoints in \eqref{eq:correctedbracket}, and monotonicity of the ceiling function preserves the integer inequalities. Finally use \eqref{eq:C1large}.
+\end{proof}
+
+The statement about a vanishing real inverse error does not assert that $N_s(y)$ differs from the corrected real expression by $o(1)$: integer rounding remains. The bracket is the precise conclusion. By contrast, the leading smooth inverse has a genuinely diverging error, which no fixed bounded rounding adjustment can repair.
+
+For a simpler but much coarser scale, let $L=\log y$ and let $W$ denote the positive real Lambert function, $W(z)e^{W(z)}=z$. Since
+\[
+ L\sim\frac12e^vv^2,\qquad
+ v\sim2W(\sqrt{L/2}),\qquad \sqrt x\sim\frac12e^vv,
+\]
+we obtain
+\begin{equation}\label{eq:Lambert}
+ N_s(y)\sim T_s(y)\sim
+           \left[\frac{L}{2W(\sqrt{L/2})}\right]^2.
+\end{equation}
+This is a relative equivalent only. It is not a rounding rule and does not replace \eqref{eq:v0} at the precision of Theorem~\ref{thm:shift}.
+
+\section{Reproduction and limitations}\label{sec:reproduction}
+The accompanying source archive contains this article, authored verification and coefficient code, small attributed integer fixtures, and an offline deterministic builder. It does not redistribute full OEIS records or third-party research papers. The required checks use only integer and rational arithmetic in the Python standard library. They compare the exact binomial formula with independent generating-function multiplication and check the all-order coefficient implementation against a separately organized derivative-polynomial recurrence. All guard conditions remain active under optimized Python; normal and optimized isolated runs must produce identical exact-check receipts.
+
+Optional diagnostics use \texttt{mpmath} for high-precision comparisons and \texttt{SymPy} for symbolic coefficient expansion. They are separate from the mandatory build. Floating-point agreement is useful for detecting mistakes but does not prove an asymptotic theorem or certify an interval. The general proofs are the analytic arguments in this article. The package documentation specifies the commands, dependencies, input domains, source attribution, and the limits of byte reproducibility. PDF byte identity is promised only for a fixed source and installed Python/TeX stack.
+
+Several restrictions deserve emphasis.
+\begin{enumerate}
+ \item Both $s$ and the requested truncation order $J$ are fixed. The constants may depend on them. No uniform estimate for growing $s$ or growing $J$ is asserted.
+ \item The coefficient expansion is an asymptotic expansion with the controlled remainder \eqref{eq:main}. No convergence, optimal truncation, or resurgent interpretation is claimed.
+ \item Nonzero Poisson harmonics are exponentially small on the generating-function major arc. Extracting the coefficient asymptotic of an individual harmonic would require its own complex saddle analysis and is not done here.
+ \item The inverse envelopes are eventual existence statements. Neither an effective onset nor a certified floating-point evaluation procedure for them is supplied.
+ \item No distributional limit for the number of parts, nor a uniform rare-event law extending \eqref{eq:survival} to a growing excess, has been proved in this report.
+\end{enumerate}
+
+\section{Further questions}\label{sec:questions}
+The exact formula suggests several extensions, each requiring additional analysis rather than a formal restatement of the present proof.
+\begin{enumerate}
+ \item Determine a useful explicit onset and constants for \eqref{eq:main}, then combine them with directed-rounding arithmetic to make the inverse brackets computationally certified.
+ \item Study the range of $s=s(n)$ for which the same core remains adequate. The perturbation $-sz$ and the displacement of the length distribution should eventually require a different uniform scaling.
+ \item Analyze the number of parts under the constrained composition measure, with appropriate centering, variance, and a local limit estimate. The completed-square length sum by itself does not prove a coefficient-conditioned limit law.
+ \item Extend the fixed-order analysis to minimum conditions of the form $\min x_i>k^p$ from the nonlinear Schreier literature, including the change in the dominant length and global Fourier localization.
+ \item Investigate nonzero Poisson coefficient sectors or optimal truncation only after identifying their relevant complex saddles and bounding the remaining contour contributions.
+\end{enumerate}
+The current results settle none of these extensions. They provide a fixed-parameter foundation with full Fourier control, exact correction algebra, and inverse statements that retain the unavoidable integer ambiguity.
+
+\begin{thebibliography}{9}
+\bibitem{oeis131}
+OEIS Foundation Inc., \emph{A098131: compositions of $n$ with least part at least the number of parts},
+\url{https://oeis.org/A098131}. Record revision 23, 23 January 2024; consulted 4 October 2026.
+\bibitem{oeis132}
+OEIS Foundation Inc., \emph{A098132: compositions of $n$ with least part greater than the number of parts},
+\url{https://oeis.org/A098132}. Record revision 23, 20 May 2024; consulted 4 October 2026.
+\bibitem{oeis133}
+OEIS Foundation Inc., \emph{A098133: compositions of $n$ with least part equal to the number of parts},
+\url{https://oeis.org/A098133}. Record revision 20, 13 March 2026; consulted 4 October 2026.
+\bibitem{chu}
+H.~V. Chu, N. Irmak, S.~J. Miller, L. Szalay, and S.~X. Zhang,
+\emph{Schreier Multisets and the $s$-step Fibonacci Sequences}, Integers \textbf{24A} (2024), A7.
+Published article: \url{https://math.colgate.edu/~integers/a7Proc23/a7Proc23.pdf}.
+Preprint: \url{https://arxiv.org/abs/2304.05409}.
+\bibitem{beanland}
+K. Beanland and H.~V. Chu, \emph{On Schreier-Type Sets, Partitions, and Compositions}, Journal of Integer Sequences \textbf{27} (2024).
+\url{https://cs.uwaterloo.ca/journals/JIS/VOL27/Beanland/bean4.pdf}.
+\bibitem{smallest}
+A. Knopfmacher and A.~O. Munagi, \emph{Smallest Parts in Compositions}, in \emph{Advances in Combinatorics}, Springer, 2013, pp.~197--207.
+\url{https://doi.org/10.1007/978-3-642-30979-3_11}.
+An author-hosted book proof was consulted; its minor typesetting differences are not treated as new mathematical results.
+\bibitem{dlmfTheta}
+NIST Digital Library of Mathematical Functions, Section~20.7(viii), modular transformations of theta functions, especially Eq.~20.7.32.
+\url{https://dlmf.nist.gov/20.7#E32}.
+\bibitem{dlmfBernoulli}
+NIST Digital Library of Mathematical Functions, Section~24.2, Bernoulli and Euler polynomial generating functions.
+\url{https://dlmf.nist.gov/24.2}.
+\end{thebibliography}
+\end{document}

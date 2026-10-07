@@ -1,0 +1,738 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,mathtools,booktabs,array,longtable}
+\usepackage[margin=1in]{geometry}
+\usepackage[colorlinks=true,linkcolor=black,citecolor=black,urlcolor=blue]{hyperref}
+\usepackage{fancyhdr}
+\pdfinfoomitdate=1\pdfsuppressptexinfo=15\pdftrailerid{}
+\hypersetup{pdftitle={Report216 Fixed slope partition extremes and inverse asymptotics},pdfauthor={}}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small Report216}\fancyhead[R]{\small Fixed slope partition extremes}\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}\setlength{\parskip}{4pt}\setlength{\parindent}{0pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}\newtheorem{proposition}[theorem]{Proposition}\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\ind}{\mathbf 1}\newcommand{\ee}{\mathrm e}\newcommand{\ceil}[1]{\left\lceil#1\right\rceil}
+\newcommand{\Ekb}{E_{k,b}}\newcommand{\Tkb}{T_{k,b}}
+\title{\textbf{Fixed slope partition extremes and inverse asymptotics}\\[6pt]\large Report216}
+\author{}\date{4 October 2026}
+\begin{document}
+\maketitle\thispagestyle{fancy}
+\begin{abstract}
+Fix integers $k\ge2$ and $b\ge0$. We count partitions of $n$ whose largest part $M$ and number of parts $L$ satisfy $M=kL+b$ or $M\ge kL+b$. Exact finite-product sieves give, for every fixed order, explicit expansions in powers of $(n-1/24)^{-1/2}$ relative to the principal partition scale. The leading coefficients are $k!$, with powers $k$ and $k-1$, respectively. The proof controls the discarded sieve terms on an entire Cauchy circle, including its $t^{-3/2}$ loss, then transfers each retained polynomial by a finite-shift form of the Rademacher formula. We give rational coefficient generators, the first four coefficients for A237753 and A237751, fixed-offset companions, and a triangular Lambert $W_{-1}$ inverse with shrinking two-ceiling uncertainty for the first index whose count is at least a target. Kot\v{e}\v{s}ovec's posted leading equality equivalent is credited; classical joint-extreme and general transfer results are compared in their actual parameter regimes. The claims concern fixed slope, fixed offset, and fixed order. Numerical diagnostics are not certified error bounds, and no historical priority, effective onset, or growing-order assertion is made.
+\end{abstract}
+
+\section{The statistics and the result}\label{sec:result}
+For a nonempty integer partition $\lambda$, let $M(\lambda)$ be its largest part and $L(\lambda)$ its number of positive parts. Throughout this article $k\ge2$ and $b\ge0$ are fixed integers. Define
+\begin{align}
+ E_{k,b}(n)&=\#\{\lambda\vdash n:M(\lambda)=kL(\lambda)+b\},\label{eq:Edef}\\
+ T_{k,b}(n)&=\#\{\lambda\vdash n:M(\lambda)\ge kL(\lambda)+b\}.\label{eq:Tdef}
+\end{align}
+The empty partition is excluded, so both counts are zero at $n=0$. Let $p(n)$ denote the unrestricted partition number, with $p(0)=1$ and $p(n)=0$ for negative integers $n$.
+
+Conjugation interchanges $M$ and $L$. It therefore identifies $E_{k,0}$ with column $k$ of OEIS A350879, whose displayed convention is $kM=L$. In particular,
+\begin{equation}\label{eq:OEIS}
+ E_{2,0}(n)=\mathrm{A237753}(n),\qquad
+ T_{2,1}(n)=\mathrm{A237751}(n).
+\end{equation}
+For the second identity, the OEIS condition $2M<L$ conjugates to $M>2L$, which is $M\ge2L+1$ on integers. The offset $1$ is essential for the lower-order coefficients.
+
+The leading equality equivalent
+\begin{equation}\label{eq:prior}
+ E_{k,0}(n)\sim k!\left(\frac{\pi}{\sqrt{6n}}\right)^k p(n)
+\end{equation}
+is already attributed to V\'{a}clav Kot\v{e}\v{s}ovec, 17 October 2024, in A350879 and its $k=2$ specialization~\cite{oeis350879,oeis237753}. The equality generating function at $b=0$ is also recorded there. Our purpose is a fully justified, explicit fixed-order expansion and inversion for both statistics with fixed offsets. We do not claim that the leading scale or the general idea of partition-product transfer is new. Section~\ref{sec:prior} explains the relationship with the relevant primary literature.
+
+Set
+\begin{equation}\label{eq:scale}
+ A=\frac{\pi^2}{6},\qquad N=n-\frac1{24},\qquad
+ t=\sqrt{\frac{A}{N}},\qquad
+ B(n)=\frac{\exp(2\sqrt{AN})}{4\sqrt3\,N}.
+\end{equation}
+The parameter $t$ is positive for integers $n\ge1$ and tends to zero. Write $X=E$ or $X=T$ for the kind of statistic and define
+\begin{equation}\label{eq:valuation}
+ \epsilon_E=1,\quad\epsilon_T=0,\qquad
+ s_E=k,\quad s_T=k-1.
+\end{equation}
+We sometimes write simply $s=s_X$ and $X_{k,b}$.
+
+For $j\ge1$ let
+\begin{equation}\label{eq:Dj}
+ D_j=D_j(k,b)=\frac{(2k+1)j^2+(2b-1)j}{2}.
+\end{equation}
+This is an integer: the numerator is even because $j^2-j$ is even. Define formal power series
+\begin{align}
+ G^E_{k,b}(z)&=\sum_{j\ge1}(-1)^{j-1}\ee^{-D_jz}
+                   \prod_{r=j}^{kj}(1-\ee^{-rz}),\label{eq:GE}\\
+ G^T_{k,b}(z)&=\sum_{j\ge1}(-1)^{j-1}\ee^{-D_jz}
+                   \prod_{r=j+1}^{kj}(1-\ee^{-rz}).\label{eq:GT}
+\end{align}
+The $j$th summand has valuation $(k-1)j+\epsilon_X$. Thus every coefficient uses finitely many terms; no convergence of the infinite series near $z=0$ is asserted or needed. Put $g_\ell=[z^\ell]G^X_{k,b}(z)$.
+
+Define terminating polynomials
+\begin{equation}\label{eq:Q}
+ Q_\ell(t)=\sum_{h=0}^{\ell+1}
+  \frac{(-1)^h(\ell+h+1)!}{(\ell+1-h)!\,h!}
+  \left(\frac{t}{4A}\right)^h\qquad(\ell\ge0),
+\end{equation}
+and define $c_m=c_m(k,b,X)$ by the formal identity
+\begin{equation}\label{eq:cgenerator}
+ \sum_{m\ge0}c_mt^m
+ =\frac1{k!t^s}\sum_{\ell\ge s}g_\ell t^\ell Q_\ell(t).
+\end{equation}
+Each $c_m$ is a polynomial in $A^{-1}$ with rational coefficients. This is also a finite algorithm: to compute $c_0,\ldots,c_R$, only $g_s,\ldots,g_{s+R}$ are required.
+
+\begin{theorem}[Every fixed order]\label{thm:forward}
+For every fixed nonnegative integer $R$,
+\begin{equation}\label{eq:main}
+ X_{k,b}(n)=k!\,B(n)t^s
+ \left(\sum_{m=0}^{R}c_m(k,b,X)t^m
+              +O_{k,b,R}(t^{R+1})\right).
+\end{equation}
+Here $c_0=1$, and the coefficients are the explicit rational polynomials defined by \eqref{eq:GE}--\eqref{eq:cgenerator}. In particular,
+\begin{align}
+ E_{k,b}(n)&\sim k!\left(\frac{\pi}{\sqrt{6n}}\right)^k p(n),\label{eq:Eleading}\\
+ T_{k,b}(n)&\sim k!\left(\frac{\pi}{\sqrt{6n}}\right)^{k-1}p(n).\label{eq:Tleading}
+\end{align}
+\end{theorem}
+These are fixed-depth asymptotic statements. The constants and the onset may depend on $k,b,R$. They do not permit $k$, $b$, or $R$ to grow with $n$, and do not imply convergence or a numerical error bound for the full formal series.
+
+The first relative coefficients are
+\begin{align}
+ c_1(k,b,E)&=-\frac{k(k+5)}4-b-12\ind_{\{k=2\}}
+                    -\frac{(k+1)(k+2)}{4A},\label{eq:c1E}\\
+ c_1(k,b,T)&=-\frac{k(k+5)-2}4-b-6\ind_{\{k=2\}}
+                    -\frac{k(k+1)}{4A}.\label{eq:c1T}
+\end{align}
+In particular the leading tail companion for A237751 is
+\begin{equation}\label{eq:A237751leading}
+ \mathrm{A237751}(n)\sim\frac{2\pi}{\sqrt{6n}}p(n).
+\end{equation}
+This is a consequence of the theorem, not a claim of historical firstness.
+
+\paragraph{A literal discrepancy in the posted equivalent.}
+At the source check on 4 October 2026, A350879 printed an alternative elementary exponential expression with $\exp(\sqrt{2\pi n/3})$, while its partition-normalized expression is \eqref{eq:prior}. The correct rate equivalent to \eqref{eq:prior} is $\exp(\pi\sqrt{2n/3})$. Indeed the usual equivalent for $p(n)$ gives
+\begin{equation}\label{eq:correctliteral}
+ E_{k,0}(n)\sim
+ \frac{k!\pi^k}{4\sqrt3\,6^{k/2}n^{1+k/2}}
+       \exp\!\left(\pi\sqrt{\frac{2n}{3}}\right).
+\end{equation}
+The discrepancy is a missing factor of $\pi$ under the square root in that alternative expression. It does not invalidate the already posted $p(n)$-normalized leading law. No OEIS edit is part of this work.
+
+\section{Exact finite product sieves}\label{sec:sieves}
+For $|q|<1$, write
+\[
+ (a;q)_m=\prod_{r=0}^{m-1}(1-aq^r),\qquad
+ (q;q)_m=\prod_{r=1}^m(1-q^r),\qquad
+ P(q)=\frac1{(q;q)_\infty}=\sum_{n\ge0}p(n)q^n.
+\]
+Empty finite products equal one.
+
+\begin{proposition}[Exact identities]\label{prop:sieve}
+As formal power series and as analytic functions for $|q|<1$,
+\begin{align}
+ F^E_{k,b}(q):=\sum_{n\ge0}E_{k,b}(n)q^n
+  &=P(q)\sum_{j\ge1}(-1)^{j-1}q^{D_j}
+                         \prod_{r=j}^{kj}(1-q^r),\label{eq:Esieve}\\
+ F^T_{k,b}(q):=\sum_{n\ge0}T_{k,b}(n)q^n
+  &=P(q)\sum_{j\ge1}(-1)^{j-1}q^{D_j}
+                         \prod_{r=j+1}^{kj}(1-q^r).\label{eq:Tsieve}
+\end{align}
+For every fixed coefficient $q^n$, only indices with $D_j\le n$ contribute.
+\end{proposition}
+\begin{proof}
+For a fixed length $l\ge1$, subtracting one from every part gives the unrestricted generating function $q^l/(q;q)_l$. If $M\le kl+b-1$, the remaining diagram fits a rectangle of height $l$ and width $kl+b-2$. Its generating function is
+\[
+ q^l\frac{(q^{kl+b-1};q)_l}{(q;q)_l}.
+\]
+The fixed-length tail is therefore
+\begin{equation}\label{eq:fixedlength}
+ F^T_{k,b}(q)=\sum_{l\ge1}\frac{q^l}{(q;q)_l}
+                      \bigl(1-(q^{kl+b-1};q)_l\bigr).
+\end{equation}
+Using the finite $q$-binomial identity in its explicit form
+\begin{equation}\label{eq:qbinomial}
+ (a;q)_l=\sum_{j=0}^l
+  \frac{(q;q)_l}{(q;q)_j(q;q)_{l-j}}
+                   (-a)^j q^{j(j-1)/2},
+\end{equation}
+the $j$th selected term in \eqref{eq:fixedlength} is
+\[
+ \frac{(-1)^{j-1}q^{l+(kl+b-1)j+j(j-1)/2}}
+      {(q;q)_j(q;q)_{l-j}}\qquad(1\le j\le l).
+\]
+Set $l=j+h$. The exponent becomes $D_j+(kj+1)h$, and Euler's identity gives
+\begin{equation}\label{eq:euler}
+ \sum_{h\ge0}\frac{q^{(kj+1)h}}{(q;q)_h}
+ =\frac1{(q^{kj+1};q)_\infty}=P(q)(q;q)_{kj}.
+\end{equation}
+After division by $(q;q)_j$ the remaining factors are $j+1,\ldots,kj$, proving \eqref{eq:Tsieve}. Finally
+\begin{equation}\label{eq:taildiff}
+ E_{k,b}(n)=T_{k,b}(n)-T_{k,b+1}(n),
+ \qquad D_j(k,b+1)=D_j(k,b)+j,
+\end{equation}
+so subtraction inserts the missing factor $1-q^j$ and gives \eqref{eq:Esieve}.
+
+All manipulations are coefficientwise legitimate: the exponents are nonnegative, and only finitely many length and sieve indices can affect a fixed degree; in particular $D_j\to\infty$ quadratically. The absolute bounds in Section~\ref{sec:circle} justify the analytic interchanges near the unit circle. Any smaller closed disk is dominated by a larger such radius, so they also establish the analytic assertions throughout the open disk.
+\end{proof}
+
+For the equality remainder it is advantageous to start from a different exact expression, instead of subtracting two separately bounded tails.
+\begin{lemma}[Equality rectangle]\label{lem:rectangle}
+One has
+\begin{equation}\label{eq:rectangle}
+ F^E_{k,b}(q)=\sum_{m\ge0}q^{(k+1)m+k+b}
+                   \frac{(q^{k(m+1)+b};q)_m}{(q;q)_m}.
+\end{equation}
+Expanding its numerator through elementary-symmetric degrees $i=0,\ldots,J-1$ and summing over $m$ gives precisely the terms $j=1,\ldots,J$ in \eqref{eq:Esieve}.
+\end{lemma}
+\begin{proof}
+Take $L=m+1$ and $M=k(m+1)+b$. Removing the first row and first column removes $M+L-1=(k+1)m+k+b$ cells. What remains is an arbitrary diagram in a rectangle of height $m$ and width $M-1$. Its Gaussian-binomial generating function is
+\[
+ \frac{(q^M;q)_m}{(q;q)_m},
+\]
+which proves \eqref{eq:rectangle}. Selecting degree $i$ in \eqref{eq:qbinomial} and then putting $m=i+h$, the $h$ coefficient in the exponent is $k(i+1)+1$. Applying \eqref{eq:euler} with $j=i+1$ leaves $(q;q)_{kj}/(q;q)_{j-1}$, namely the factors $j,\ldots,kj$, with exponent $D_j$. Thus the truncation indices agree exactly, including $i=0\leftrightarrow j=1$.
+\end{proof}
+
+\section{A remainder bound on the entire circle}\label{sec:circle}
+A radial expansion of $G^X_{k,b}(t)$ alone does not establish a coefficient asymptotic. We instead truncate before extracting coefficients and control the discarded terms at every angle on a full circle.
+
+Let $r=\ee^{-t}$, $\delta=1-r$, and $|q|=r$, with $t>0$ tending to zero. Then $\delta\sim t$. For complex numbers $x_1,\ldots,x_m$, put $S=\sum_i|x_i|$. If a product $\prod_i(1-x_i)$ is truncated before elementary-symmetric degree $J$, its remainder is bounded by
+\begin{equation}\label{eq:elementary}
+ \sum_{i\ge J}e_i(|x_1|,\ldots,|x_m|)
+ \le\sum_{i\ge J}\frac{S^i}{i!}
+ \le\frac{S^J\ee^S}{J!}.
+\end{equation}
+This follows from $i!e_i\le S^i$ and $(J+h)!\ge J!h!$. Also
+\begin{align}
+ \frac1{|(q;q)_m|}&\le\frac1{(r;r)_m}
+   =P(r)(r^{m+1};r)_\infty\notag\\
+ &\le P(r)\exp\!\left(-\frac{r^{m+1}}{\delta}\right),\label{eq:denombound}
+\end{align}
+using $\log(1-x)\le-x$ for $0<x<1$.
+
+\begin{lemma}[Geometric mesh]\label{lem:mesh}
+For fixed real numbers $a,c>0$, and $u_m=r^{m+1}$,
+\begin{equation}\label{eq:mesh}
+ \sum_{m\ge0}u_m^a\exp(-cu_m/\delta)
+      =O_{a,c}(\delta^a/t).
+\end{equation}
+\end{lemma}
+\begin{proof}
+The function $h(x)=\exp(-ax-c\ee^{-x}/\delta)$ is unimodal on $[0,\infty)$. Comparing each side of its maximum with the corresponding integral bounds its mesh sum by
+\[
+ \sum_{m\ge0}h(t(m+1))\le t^{-1}\int_0^\infty h(x)\,dx+2\sup_{x\ge0}h(x).
+\]
+With $u=\ee^{-x}$,
+\[
+ \int_0^\infty h(x)\,dx
+ =\int_0^1u^{a-1}\ee^{-cu/\delta}\,du
+ \le\Gamma(a)(\delta/c)^a.
+\]
+The maximum of $u^a\ee^{-cu/\delta}$ on $u>0$ is $(a\delta/(c\ee))^a$. Since $t\to0$, these bounds give \eqref{eq:mesh}.
+\end{proof}
+
+Write $F^X_{k,b,J}$ for \eqref{eq:Esieve} or \eqref{eq:Tsieve} with only $j=1,\ldots,J$ retained. For $J=0$ the truncated expression is zero.
+\begin{proposition}[Global finite-depth bound]\label{prop:global}
+For every fixed nonnegative integer $J$,
+\begin{align}
+ \sup_{|q|=r}|F^E_{k,b}(q)-F^E_{k,b,J}(q)|
+  &=O_{k,b,J}\!\left(P(r)t^{k+(k-1)J}\right),\label{eq:BE}\\
+ \sup_{|q|=r}|F^T_{k,b}(q)-F^T_{k,b,J}(q)|
+  &=O_{k,b,J}\!\left(P(r)t^{\,(k-1)(J+1)}\right).\label{eq:BT}
+\end{align}
+\end{proposition}
+\begin{proof}
+For equality, use \eqref{eq:rectangle} and set $u=r^{m+1}$. The sum of the numerator-factor moduli is
+\[
+ S_m=r^b u^k\frac{1-r^m}{\delta}
+       \le\frac{u^k(1-u)}{\delta}.
+\]
+Here $b\ge0$ and $r^m=u/r\ge u$. Since $k\ge2$,
+\begin{equation}\label{eq:quarter}
+ u^{k-1}(1-u)\le u(1-u)\le\frac14\qquad(0<u<1).
+\end{equation}
+Consequently $-u/\delta+S_m\le-3u/(4\delta)$. The exterior power in \eqref{eq:rectangle} has modulus $r^{b-1}u^{k+1}\le r^{-1}u^{k+1}$. Combining \eqref{eq:elementary} and \eqref{eq:denombound}, the error after degrees $0,\ldots,J-1$ is at most
+\[
+ \frac{P(r)r^{-1}}{J!\delta^J}
+      \sum_{m\ge0}u^{k+1+kJ}\exp\!\left(-\frac{3u}{4\delta}\right).
+\]
+The mesh lemma makes this
+\[
+ O\!\left(P(r)\frac{\delta^{k+1+(k-1)J}}t\right)
+   =O\!\left(P(r)t^{k+(k-1)J}\right).
+\]
+Lemma~\ref{lem:rectangle} identifies the retained terms, proving \eqref{eq:BE}.
+
+For the tail, use \eqref{eq:fixedlength} and put $u=r^{l+1}$. Now
+\[
+ S_l=r^{b-k-1}u^k\frac{1-u/r}{\delta}
+    \le r^{-k-1}\frac{u^k(1-u)}{\delta}.
+\]
+For $r$ sufficiently close to $1$, depending only on the fixed $k$, we have $r^{-k-1}\le2$. Thus \eqref{eq:quarter} gives
+\[
+ -u/\delta+S_l\le-u/(2\delta).
+\]
+The prefactor $r^l$ equals $r^{-1}u$. Retaining degrees $1,\ldots,J$ in $1-\prod(1-x_i)$ leaves degree at least $J+1$. Its error is bounded by a constant times
+\[
+ P(r)\delta^{-J-1}
+    \sum_{l\ge1}u^{1+k(J+1)}\exp(-u/(2\delta)).
+\]
+The mesh estimate gives the power
+\[
+ \delta^{-J-1}\frac{\delta^{1+k(J+1)}}t
+       =O\!\left(t^{(k-1)(J+1)}\right),
+\]
+proving \eqref{eq:BT}.
+
+The same bounds, with $J=0$ and the numerator absolute sum bounded by $\ee^{S_m}$ or $\ee^{S_l}$, prove absolute summability of the expanded products. For the tail one may also use $\ee^{S_l}-1\le S_l\ee^{S_l}$. This supplies the absolute interchange used in Proposition~\ref{prop:sieve}. Every inequality has been expressed in $r$, so the estimates hold on the entire circle, not only on its positive radius.
+\end{proof}
+
+\subsection{The Cauchy cost and the required depth}\label{sec:cauchy}
+The eta inversion formula~\cite[23.18.5--23.18.7]{dlmf} yields the exact identity
+\begin{equation}\label{eq:eta}
+ P(\ee^{-t})=\sqrt{\frac{t}{2\pi}}
+   \exp\!\left(\frac At-\frac t{24}\right)
+   P(\ee^{-4\pi^2/t}).
+\end{equation}
+For clarity, substituting $\tau=it/(2\pi)$ into
+$\eta(-1/\tau)=\sqrt{-i\tau}\,\eta(\tau)$ and using
+$\eta(\tau)=\ee^{\pi i\tau/12}\prod_{r\ge1}(1-\ee^{2\pi i r\tau})$
+gives precisely \eqref{eq:eta}. The last factor equals
+$1+O(\ee^{-4\pi^2/t})$ by its convergent power series at zero.
+
+Choose $t$ as in \eqref{eq:scale}. Because $Nt=A/t$,
+\begin{equation}\label{eq:cauchycost}
+ \frac{r^{-n}P(r)}{B(n)}
+   =\frac{4\sqrt3\,A}{\sqrt{2\pi}}t^{-3/2}
+       \left(1+O(\ee^{-4\pi^2/t})\right).
+\end{equation}
+Cauchy's coefficient inequality and Proposition~\ref{prop:global} therefore give remainders
+\begin{align*}
+ O\!\left(B(n)t^{k+(k-1)J-3/2}\right)&\quad\text{for equality},\\
+ O\!\left(B(n)t^{(k-1)(J+1)-3/2}\right)&\quad\text{for the tail}.
+\end{align*}
+Relative to $B(n)t^s$, both powers are $(k-1)J-3/2$. Thus the convenient integer choice
+\begin{equation}\label{eq:Jdepth}
+ J\ge\ceil{\frac{R+3}{k-1}}
+\end{equation}
+ensures a remainder $O(B(n)t^{s+R+1})$. In fact the left side of
+$(k-1)J\ge R+5/2$ is integral, so \eqref{eq:Jdepth} is the least depth guaranteed by this particular estimate. The loss $t^{-3/2}$ has been included; a merely radial valuation count would miss it.
+
+For this $J$, the retained expression is $P(q)$ times a fixed polynomial in $q$. Its asymptotic analysis requires only finitely many shifted partition numbers, which we now control separately.
+
+\section{Finite shift transfer from the partition formula}\label{sec:transfer}
+We use the Rademacher formula in Johansson's exact $U$-series normalization~\cite[(1.4)--(1.8)]{johansson}, rather than using a leading Hardy--Ramanujan equivalent as if it were an all-order error estimate.
+
+\begin{lemma}[One-term exponential gap]\label{lem:gap}
+Let
+\begin{equation}\label{eq:f}
+ f(N)=\frac{\exp(2\sqrt{AN})}{4\sqrt3\,N}
+                \left(1-\frac1{2\sqrt{AN}}\right).
+\end{equation}
+For positive integers $n$ tending to infinity,
+\begin{equation}\label{eq:p-gap}
+ p(n)=f(n-1/24)+O\!\left(\exp(\sqrt{A(n-1/24)})\right).
+\end{equation}
+The same estimate holds at each of finitely many fixed integer shifts of $n$.
+\end{lemma}
+\begin{proof}
+Put $w=2\sqrt{AN}$. The cited convergent series is
+\begin{equation}\label{eq:U}
+ p(n)=\frac1{2\sqrt3\,N}\sum_{a\ge1}
+       \frac{A_a(n)}{\sqrt a}\,U(w/a),\qquad
+ U(x)=\cosh x-\frac{\sinh x}{x}.
+\end{equation}
+Here $A_1(n)=1$, and $A_a(n)$ is a sum of at most $a$ unit-modulus terms, so $|A_a(n)|\le a$. For $x\ge0$,
+\[
+ U(x)=\frac1x\int_0^x u\sinh u\,du,
+ \qquad 0\le U(x)\le\frac{x^2\ee^x}{3},
+\]
+where at $x=0$ the formulas are understood by continuity. The bound follows from $\sinh u\le u\ee^u\le u\ee^x$. Hence the terms with $a\ge2$ have total absolute value at most a constant times
+\[
+ N^{-1}w^2\ee^{w/2}\sum_{a\ge2}a^{-3/2}=O(\ee^{w/2}),
+\]
+since $w^2/N=4A$. The $a=1$ term equals
+\[
+ \frac1{4\sqrt3\,N}
+       \left(\ee^w(1-w^{-1})+\ee^{-w}(1+w^{-1})\right).
+\]
+Its growing term is exactly \eqref{eq:f}, and its other term is exponentially small. This proves \eqref{eq:p-gap}. Finitely many fixed shifts change $w$ by $O(N^{-1/2})$, preserving the gap.
+\end{proof}
+
+\begin{lemma}[Exact derivative polynomials]\label{lem:Q}
+For every fixed $\ell\ge0$,
+\begin{equation}\label{eq:fderiv}
+ f^{(\ell)}(N)=B(N+1/24)t^\ell Q_\ell(t),\qquad t=\sqrt{A/N},
+\end{equation}
+where derivatives are with respect to the real variable $N$, and $Q_\ell$ is \eqref{eq:Q}.
+\end{lemma}
+\begin{proof}
+The case $\ell=0$ follows from $Q_0(t)=1-t/(2A)$. Direct differentiation gives
+\[
+ \frac{B'(N+1/24)}{B(N+1/24)}=t-\frac{t^2}A,
+ \qquad \frac{dt}{dN}=-\frac{t^3}{2A}.
+\]
+Thus \eqref{eq:fderiv} is equivalent to the recurrence
+\begin{equation}\label{eq:Qrec}
+ Q_{\ell+1}(t)=\left(1-\frac{(\ell+2)t}{2A}\right)Q_\ell(t)
+                     -\frac{t^2}{2A}Q_\ell'(t).
+\end{equation}
+To verify the terminating formula directly, write $Q_\ell(t)=\sum_hq_{\ell,h}t^h$ with coefficients outside $0\le h\le\ell+1$ set to zero. The recurrence is
+\[
+ q_{\ell+1,h}=q_{\ell,h}-\frac{\ell+h+1}{2A}q_{\ell,h-1}.
+\]
+Substituting the factorial expression in \eqref{eq:Q} satisfies this identity, including both endpoints. Induction proves the result.
+\end{proof}
+
+\begin{proposition}[Polynomial transfer]\label{prop:transfer}
+Let $H(q)=\sum_dh_dq^d$ be a fixed polynomial. For every fixed nonnegative integer $L$,
+\begin{equation}\label{eq:transfer}
+ [q^n]P(q)H(q)=B(n)\sum_{\ell=0}^{L}
+     [z^\ell]H(\ee^{-z})\,t^\ell Q_\ell(t)
+          +O_{H,L}(B(n)t^{L+1}).
+\end{equation}
+\end{proposition}
+\begin{proof}
+Coefficient extraction is the exact finite sum $\sum_dh_dp(n-d)$. For sufficiently large $n$, every $n-d$ in that sum is positive. Lemma~\ref{lem:gap} replaces $p(n-d)$ by $f(N-d)$ with an error exponentially smaller than $B(n)$ times any fixed power of $t$. Taylor's theorem at the finitely many bounded shifts $d$ gives
+\[
+ f(N-d)=\sum_{\ell=0}^{L}\frac{(-d)^\ell}{\ell!}f^{(\ell)}(N)
+            +O_{d,L}(B(n)t^{L+1}).
+\]
+Indeed Lemma~\ref{lem:Q} bounds $f^{(L+1)}(N-u)$ by $O(B(n)t^{L+1})$ uniformly for $u$ in the fixed interval containing these shifts. Summing and using
+\[
+ [z^\ell]H(\ee^{-z})=\sum_dh_d\frac{(-d)^\ell}{\ell!}
+\]
+proves \eqref{eq:transfer}. Only the explicit smooth function $f$ is differentiated; no asymptotic error for integer partition numbers is differentiated.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:forward}]
+Choose $J$ by \eqref{eq:Jdepth}, and let $H$ be the finite sieve polynomial consisting of the first $J$ terms in \eqref{eq:Esieve} or \eqref{eq:Tsieve}. Section~\ref{sec:cauchy} replaces $F^X_{k,b}$ by $P(q)H(q)$ with coefficient error $O(B(n)t^{s+R+1})$. Apply Proposition~\ref{prop:transfer} with $L=s+R$.
+
+The coefficients below degree $s$ in $H(\ee^{-z})$ vanish exactly. Also the omitted $j>J$ terms have valuation at least
+\[
+ (k-1)(J+1)+\epsilon_X=s+(k-1)J>s+R,
+\]
+so the coefficients through degree $s+R$ agree with those of $G^X_{k,b}$. Discarding total $t$-degrees beyond $s+R$ in \eqref{eq:transfer} gives precisely \eqref{eq:main} and \eqref{eq:cgenerator}. The $j=1$ product has leading coefficient $\prod_{r=1}^kr=k!$ for equality, and $\prod_{r=2}^kr=k!$ for the tail. All $j\ge2$ terms have strictly larger valuation. Therefore $g_s=k!$ and $c_0=1$.
+
+Finally \eqref{eq:p-gap} gives $p(n)=B(n)(1-t/(2A))$ plus an exponentially smaller term; $t\sim\pi/\sqrt{6n}$. This proves \eqref{eq:Eleading}--\eqref{eq:Tleading}.
+\end{proof}
+
+\section{Coefficients and fixed offset companions}\label{sec:coefficients}
+Formula \eqref{eq:cgenerator} can be written without formal-series notation as
+\begin{equation}\label{eq:cfinite}
+ c_m=\frac1{k!}\sum_{\substack{s\le\ell\le s+m\\0\le h=s+m-\ell\le\ell+1}}
+       g_\ell\frac{(-1)^h(\ell+h+1)!}
+                         {(\ell+1-h)!\,h!\,(4A)^h}.
+\end{equation}
+The constrained sum avoids any negative-factorial convention. The finite upper bound for a purely algebraic coefficient calculation is
+\begin{equation}\label{eq:Jformal}
+ j\le\left\lfloor\frac{s+R-\epsilon_X}{k-1}\right\rfloor
+\end{equation}
+when computing $g_0,\ldots,g_{s+R}$. This algebraic bound differs from the larger analytical depth \eqref{eq:Jdepth}; the latter proves the error bound and cannot be replaced by a radial valuation argument.
+
+\subsection{The first correction and the exceptional second term}
+For the $j=1$ term, $D_1=k+b$ and
+\[
+ \prod_{r\in I}(1-\ee^{-rz})
+   =\left(\prod_{r\in I}r\right)z^{|I|}
+             \left(1-\frac z2\sum_{r\in I}r+O(z^2)\right).
+\]
+For equality $I=\{1,\ldots,k\}$, giving a relative radial coefficient
+$-k(k+5)/4-b$. For the tail $I=\{2,\ldots,k\}$, it is
+$-[k(k+5)-2]/4-b$.
+
+The $j=2$ summand begins at relative degree $k-1$. It enters the first correction only for $k=2$. Its signed leading coefficients are $-(2\cdot3\cdot4)=-24$ for equality and $-(3\cdot4)=-12$ for the tail. Dividing by $k!=2$ gives the extra $-12$ and $-6$. Finally the coefficient of $t$ in $Q_s$ is $-(s+1)(s+2)/(4A)$. This proves \eqref{eq:c1E}--\eqref{eq:c1T}. In particular, retaining only one selected large part captures the leading equivalent but loses a first-order contribution at slope $2$.
+
+Normalizing instead by the exact partition number gives
+\begin{align}
+ \frac{E_{k,b}(n)}{k!t^kp(n)}
+  &=1-\left(\frac{k(k+5)}4+b+12\ind_{\{k=2\}}
+                  +\frac{k(k+3)}{4A}\right)t+O(t^2),\label{eq:Epfirst}\\
+ \frac{T_{k,b}(n)}{k!t^{k-1}p(n)}
+  &=1-\left(\frac{k(k+5)-2}4+b+6\ind_{\{k=2\}}
+                  +\frac{(k-1)(k+2)}{4A}\right)t+O(t^2).\label{eq:Tpfirst}
+\end{align}
+At all fixed orders the conversion is multiplication by the formal reciprocal of $1-t/(2A)$. The shift $N=n-1/24$ is kept throughout, so these formulas should not be mixed termwise with coefficients in powers of $n^{-1/2}$ without re-expanding that shift.
+
+The leading terms are independent of the fixed offset $b$, whereas the first relative coefficient changes by exactly $-b$. Identity \eqref{eq:taildiff} holds exactly. At higher orders the factors $\ee^{-bjz}$ in the sieve determine the offset dependence algorithmically. This is a fixed-offset statement; summing these expansions over a growing range of offsets would require a new uniform remainder analysis.
+
+\subsection{The two OEIS specializations}
+For A237753, corresponding to $(k,b,X)=(2,0,E)$, the radial coefficients begin
+\begin{equation}\label{eq:radE}
+ G^E_{2,0}(z)=2z^2-31z^3+\frac{2090}{3}z^4
+                 -\frac{79007}{4}z^5+\frac{30640414}{45}z^6+\cdots.
+\end{equation}
+Its first four normalized coefficients are
+\begin{align}
+ c_0&=1,\notag\\
+ c_1&=-\frac{31}{2}-\frac3A,\notag\\
+ c_2&=\frac{1045}{3}+\frac{155}{2A}+\frac{15}{4A^2},\label{eq:Ecoefs}\\
+ c_3&=-\frac{79007}{8}-\frac{5225}{2A}
+                    -\frac{1395}{8A^2}-\frac{15}{8A^3}.\notag
+\end{align}
+They multiply $2B(n)t^2$ in \eqref{eq:main}.
+
+For A237751, corresponding to $(k,b,X)=(2,1,T)$,
+\begin{equation}\label{eq:radT}
+ G^T_{2,1}(z)=2z-20z^2+\frac{931}{3}z^3
+                    -\frac{20270}{3}z^4+\frac{11331751}{60}z^5+\cdots,
+\end{equation}
+and the coefficients multiplying $2B(n)t$ are
+\begin{align}
+ c_0&=1,\notag\\
+ c_1&=-10-\frac3{2A},\notag\\
+ c_2&=\frac{931}{6}+\frac{30}{A}+\frac3{4A^2},\label{eq:Tcoefs}\\
+ c_3&=-\frac{10135}{3}-\frac{4655}{6A}-\frac{75}{2A^2}.\notag
+\end{align}
+The absence of an $A^{-3}$ term in the last line is consistent with the terminating degree of $Q_1$. These expansions are not obtained by merely substituting $k=2$ into a formula that discards the $j=2$ sieve term.
+
+\section{All fixed order inverse asymptotics}\label{sec:inverse}
+Fix one of the sequences in Theorem~\ref{thm:forward}. For real $n>1/24$ put
+\begin{equation}\label{eq:inverse-scale}
+ w=2\sqrt{A(n-1/24)},\quad d=s+2,\quad
+ D=\frac{k!\,2^s A^{s+1}}{\sqrt3}.
+\end{equation}
+Then $t=2A/w$ and the forward result is
+\begin{equation}\label{eq:w-forward}
+ X_{k,b}(n)=D\ee^ww^{-d}
+    \left(1+\sum_{j=1}^Rc_j\left(\frac{2A}{w}\right)^j
+                        +O(w^{-R-1})\right)
+\end{equation}
+on integer $n$. The expression outside the error is an explicit smooth function; the integer count is not being extended or differentiated.
+
+\subsection{Lambert core and triangular reversion}
+For sufficiently large real $y$, let
+\begin{equation}\label{eq:w0}
+ w_0=-d\,W_{-1}\!\left(-\frac1d\left(\frac Dy\right)^{1/d}\right).
+\end{equation}
+This is the large positive solution of
+\begin{equation}\label{eq:leading-inverse}
+ D\ee^{w_0}w_0^{-d}=y.
+\end{equation}
+The branch $W_{-1}$, not $W_0$, is required: if $y>D(\ee/d)^d$, then $w_0>d$ and $w_0\to\infty$ as $y\to\infty$.
+
+Let $H(v)=1+\sum_{j\ge1}c_jv^j$ be a formal series. Set $z=w_0^{-1}$, and seek
+\begin{equation}\label{eq:delta}
+ \Delta(z)=\sum_{j\ge1}u_jz^j
+\end{equation}
+so that substituting $w=w_0+\Delta(z)$ in the logarithm of the forward expression yields zero residual. Using \eqref{eq:leading-inverse}, the formal equation is
+\begin{equation}\label{eq:reversion}
+ \Delta-d\log(1+z\Delta)
+       +\log H\!\left(\frac{2Az}{1+z\Delta}\right)=0.
+\end{equation}
+All logarithms here are formal logarithms of series with constant term one.
+
+\begin{proposition}[Triangular inverse coefficients]\label{prop:inverse-coefs}
+Equation \eqref{eq:reversion} has a unique formal solution of the form \eqref{eq:delta}. For every $m\ge1$, its coefficient of $z^m$ equals $u_m$ plus a polynomial in $u_1,\ldots,u_{m-1}$ and $c_1,\ldots,c_m$, with coefficients rational in $A$ and $d$. Thus $u_m$ is determined by a finite triangular calculation. The first coefficients are
+\begin{align}
+ u_1&=-2Ac_1,\label{eq:u1}\\
+ u_2&=-2Adc_1-4A^2c_2+2A^2c_1^2,\label{eq:u2}\\
+ u_3&=-\frac{8A^3}{3}c_1^3+8A^3c_1c_2-8A^3c_3
+          +2A^2dc_1^2-4A^2c_1^2\notag\\
+     &\hspace{13mm}-4A^2dc_2-2Ad^2c_1.\label{eq:u3}
+\end{align}
+\end{proposition}
+\begin{proof}
+The direct term $\Delta$ contributes $u_m$ to degree $m$. In $z\Delta$, the same unknown first appears at degree $m+1$, and in the substitution into $H$ it can only appear at still higher degree. Therefore all other degree-$m$ terms depend only on earlier $u$'s. The constant term vanishes; solving degree by degree proves existence and uniqueness. Expanding the two formal logarithms through degrees one, two, and three gives \eqref{eq:u1}--\eqref{eq:u3}.
+\end{proof}
+
+For each fixed $M\ge1$ define the real center
+\begin{equation}\label{eq:xM}
+ \Delta_M=\sum_{j=1}^M\frac{u_j}{w_0^j},\qquad
+ x_M(y)=\frac1{24}+\frac{(w_0+\Delta_M)^2}{4A}.
+\end{equation}
+The square in this definition is retained in full, even though some terms lie beyond its promised order. Define also the Lambert-only center $x_0=1/24+w_0^2/(4A)$ for numerical comparison.
+
+\begin{lemma}[Error of the smooth inverse center]\label{lem:inverse-error}
+Let
+\begin{equation}\label{eq:smoothM}
+ \mathcal F_M(x)=D\ee^{w(x)}w(x)^{-d}
+           \left(1+\sum_{j=1}^Mc_j(2A/w(x))^j\right),
+ \qquad w(x)=2\sqrt{A(x-1/24)}.
+\end{equation}
+On its large positive branch this function is positive and strictly increasing. If $\widehat x_M$ is its large real solution of $\mathcal F_M(x)=y$, then
+\begin{equation}\label{eq:smooth-error}
+ \widehat x_M=x_M(y)+O(w_0^{-M}).
+\end{equation}
+\end{lemma}
+\begin{proof}
+The polynomial in parentheses tends to one and is positive for large $x$. Its logarithmic derivative with respect to $w$ is $O(w^{-2})$, so
+\begin{equation}\label{eq:log-deriv}
+ \frac{d}{dx}\log\mathcal F_M(x)
+    =\frac{2A}{w}\left(1-\frac dw+O(w^{-2})\right)
+    =t+O(t^2)>0
+\end{equation}
+for large $x$. This also gives a unique large root when $y$ is large. Substitution of $w_0+\Delta_M$ in the logarithmic equation leaves residual $O(w_0^{-M-1})$, by Proposition~\ref{prop:inverse-coefs}. The derivative of that equation with respect to $w$ is $1+O(w_0^{-1})$ in a bounded neighborhood. The mean value theorem therefore gives an error $O(w_0^{-M-1})$ in $w$. Since $dx/dw=w/(2A)=O(w_0)$, the error in $x$ is $O(w_0^{-M})$.
+\end{proof}
+
+In particular the first two index corrections, viewed as an expansion of the smooth inverse, are
+\begin{equation}\label{eq:indexcorr}
+ \widehat x_M=\frac1{24}+\frac{w_0^2}{4A}-c_1
+       +\frac{-dc_1-2Ac_2+Ac_1^2}{w_0}
+       +O(w_0^{-2})\qquad(M\ge2).
+\end{equation}
+For $M=1$ the constant correction $-c_1$ is valid with error $O(w_0^{-1})$. Thus this constant is $31/2+3/A$ for A237753 and $10+3/(2A)$ for A237751. These constants improve a real center, not a universal rounding prescription.
+
+\subsection{Integer thresholds and the two ceilings}\label{sec:threshold}
+Use the exact threshold convention
+\begin{equation}\label{eq:nu}
+ \nu_X(y)=\min\{n\ge0:X_{k,b}(n)\ge y\}.
+\end{equation}
+The inequality is weak; this matters at targets equal to a sequence value.
+
+\begin{lemma}[Eventual strict increase]\label{lem:monotone}
+Each sequence in Theorem~\ref{thm:forward} is positive, unbounded, and strictly increasing for all sufficiently large integers $n$.
+\end{lemma}
+\begin{proof}
+Write the expansion through relative order one with remainder $O(t^2)$. The ratio of successive smooth leading factors $B(n)t(n)^s$ is $1+t+O(t^2)$, by explicit differentiation or direct expansion of \eqref{eq:scale}. The factors $1+c_1t+O(t^2)$ at $n$ and $n+1$ have ratio $1+O(t^2)$ because $t(n+1)-t(n)=O(t^3)$. Consequently
+\begin{equation}\label{eq:ratio}
+ \frac{X_{k,b}(n+1)}{X_{k,b}(n)}=1+t+O(t^2)>1
+\end{equation}
+for all sufficiently large $n$. The leading equivalent proves eventual positivity and unboundedness. This argument compares two error bounds; it never differentiates an unknown integer-index error.
+\end{proof}
+
+\begin{theorem}[Shrinking threshold uncertainty]\label{thm:inverse}
+For every fixed $M\ge1$ there are constants $C_M>0$ and $y_M$ such that, for every real $y\ge y_M$,
+\begin{equation}\label{eq:ceilings}
+ \ceil{x_M(y)-C_Mw_0^{-M}}
+       \le\nu_X(y)\le
+ \ceil{x_M(y)+C_Mw_0^{-M}}.
+\end{equation}
+The constants may depend on the fixed $k,b,X,M$. They are not computed effectively here.
+\end{theorem}
+\begin{proof}
+Let $\widehat x_M$ be the root from Lemma~\ref{lem:inverse-error}, and put $h=Cw_0^{-M}$ with $C>0$ to be chosen. Set
+\[
+ n_- =\ceil{\widehat x_M-h}-1,
+ \qquad n_+=\ceil{\widehat x_M+h}.
+\]
+The first is strictly below $\widehat x_M-h$, and the second is at least $\widehat x_M+h$. Both are within a bounded distance of $\widehat x_M$, since $h\to0$. Their corresponding $w$ values are $w_0+O(w_0^{-1})$.
+
+By \eqref{eq:log-deriv}, the logarithmic change of $\mathcal F_M$ between its root and either test integer has the required sign and magnitude at least a fixed positive constant times $h/w_0=Cw_0^{-M-1}$. The forward theorem at order $M$ gives
+\[
+ X_{k,b}(n)=\mathcal F_M(n)\bigl(1+O(w_0^{-M-1})\bigr)
+\]
+uniformly at these two nearby integers; the factor in \eqref{eq:smoothM} is bounded away from zero there. Choose $C$ large enough to dominate the two relative errors. Then
+\[
+ X_{k,b}(n_-)<y\le X_{k,b}(n_+)
+\]
+for large $y$. Eventual monotonicity excludes every integer at most $n_-$ in the eventual increasing segment and includes $n_+$. The finite initial segment is below $y$ once $y$ exceeds its maximum. Thus
+\[
+ \ceil{\widehat x_M-h}\le\nu_X(y)\le\ceil{\widehat x_M+h}.
+\]
+Finally \eqref{eq:smooth-error} lets us enlarge the constant and replace $\widehat x_M$ by $x_M$. This proves \eqref{eq:ceilings} with the exact weak threshold convention \eqref{eq:nu}.
+\end{proof}
+For sufficiently large $y$ the interval in \eqref{eq:ceilings} has width less than one, so the two ceilings are equal or adjacent. When they agree they identify the threshold exactly. When $x_M$ lies too close to an integer, an unconditional assertion $\nu_X(y)=\lceil x_M(y)\rceil$ is not justified. The theorem states an existential asymptotic bracket, not a certified finite-$y$ enclosure. In particular numerical errors in a few examples cannot be used to select a valid universal $C_M$.
+
+\section{Exact checks and numerical diagnostics}\label{sec:checks}
+The companion package separates exact arithmetic checks from floating-point illustrations. The former verify finite identities and coefficient implementations; the analytic remainder and threshold theorems rest on the proofs above.
+
+\subsection{Independent finite paths}
+The public exact core uses Python's standard library, including arbitrary-precision integers and rational fractions. Partition numbers can be generated by Euler's pentagonal recurrence. For exact statistic values, each sieve summand is formed as a finite product and convolved with that partition sequence. It retains all $j$ for which $D_j\le n_{\max}$, so no asymptotic approximation enters these counts.
+
+A separate bounded-part, exact-length dynamic program supplies an independent counting path. Before adding part size $M$, its entries count partitions with all parts less than $M$. The ordinary unbounded coin-change update adds partitions whose maximum is exactly $M$, keeping the length coordinate. Each newly added contribution is assigned to every selected relation $M=kL+b$ or $M\ge kL+b$. Summing over all maxima and lengths recovers an independently computed unrestricted partition sequence. This checks the sieve without reusing its inclusion--exclusion identity.
+
+For coefficient checks, one path multiplies truncated exponential series with rational coefficients. A different path first constructs the finite polynomial $H(q)=\sum_dh_dq^d$, then computes moments $\sum_dh_d(-d)^\ell/\ell!$. The transfer is also checked by comparing the terminating factorial formula with the differential recurrence \eqref{eq:Qrec}. The inverse generator verifies its formal residual to the requested order. All guards are explicit exceptions and remain active with Python's \texttt{-O} flag.
+
+The saved exact checks compare all 98 parameter and kind combinations with $2\le k\le8$, $0\le b\le6$, and $0\le n\le160$, totaling 15,778 integer comparisons. They check 72 moment, transfer, and inverse cases through relative order six, the $Q_\ell$ recurrence through $\ell=20$, and 690 sufficient-depth combinations. There are 23 invalid-input and poisoned-receipt rejection controls, with an additional 26 package-integrity rejection controls. These figures describe finite checks, not the scope of the theorem. The independent algorithms were adapted from separate research-stage calculations; no claim of clean-room authorship or independent proof is made.
+
+\subsection{How to read the diagnostics}
+For a forward truncation order $R$, define
+\[
+ \mathcal A_R(n)=k!B(n)t^s\sum_{m=0}^Rc_mt^m,
+ \qquad \operatorname{relerr}_R(n)=\frac{\mathcal A_R(n)}{X_{k,b}(n)}-1.
+\]
+For inverse order $M$, the diagnostic is $x_M(X_{k,b}(n))-n$, using the real center \eqref{eq:xM}. Order zero uses the Lambert-only center. These are signed errors, not rigorous enclosures. The integer target is generated exactly; the subsequent transcendental evaluations use optional high-precision arithmetic. The diagnostic code records the precision and library version. At each of the 16 displayed targets $y=X_{k,b}(n)$, a scan of every exact count from zero through $n$, together with adjacent comparisons, verifies $\nu_X(y)=n$. This is a finite verification of these particular thresholds, independent of the asymptotic inverse errors.
+
+\input{tables/forward_table.tex}
+\input{tables/inverse_table.tex}
+
+Large alternating coefficients make these fixed-order expansions numerically demanding. At a moderate index, increasing the truncation order may make an approximation worse. Such behavior does not conflict with Theorem~\ref{thm:forward}, which fixes the order before $n$ tends to infinity, and does not establish an optimal truncation or resummation rule. The package includes fixed-offset and slope-$3$ companions to check that the implementation is not specialized only to the two named sequences.
+
+\section{Relation to prior partition asymptotics}\label{sec:prior}
+This section records a bounded comparison of the cited source statements, their parameters, and their errors. It is not an exhaustive historical survey or a priority certificate. The principal analytic inputs in the proof are classical eta inversion and the exact Rademacher series. The model-specific argument is the finite-product sieve with its global finite-depth remainder and its explicit fixed-slope coefficients and inverse.
+
+\subsection{Joint extreme counts and rectangles}
+Szekeres's \emph{Asymptotic distribution of partitions by number and size of parts}~\cite{szekeres} uses $p(n;r,k)$ for the \emph{exact} joint count with length $r$ and largest part $k$. Its Theorem~1 sets $c=\pi/\sqrt6$, $\lambda=ck/\sqrt n$, and $\mu=cr/\sqrt n$, and assumes
+\[
+ \frac14\log n<\lambda,\mu<\frac{n^{1/4}}{\log n}.
+\]
+The resulting leading equivalent contains correlation terms in the exponent. A corollary on printed page 530 gives an independent-extreme simplification under narrower assumptions. The proof on printed pages 532--537 keeps an $o(1)$ exponential remainder. Thus both the broad correlated theorem and the narrower independent-extreme law are relevant prior work. The original exact-count definition matters; a later paper's cumulative notation should not be substituted for it. These leading joint asymptotics do not themselves provide the arbitrary fixed-order diagonal sum and offset calculus proved here.
+
+Jiang and Wang~\cite{jiangwang} give a generalized Hardy--Ramanujan formula for cumulative rectangular restrictions. Their Theorem~1 and Remarks~1.2--1.3 allow both cutoffs to be at least $4\sqrt n$, with unbounded normalized cutoffs, and have relative error $O(n^{-1/4+\varepsilon})$. This range overlaps the $\sqrt n\log n$ cutoff sizes relevant to fixed-slope extreme events. It would be incorrect to dismiss their theorem as confined to bounded multiples of $\sqrt n$. Its stated error, however, does not justify taking the rare diagonal differences and sums to every algebraic order.
+
+Melczer, Panova, and Pemantle~\cite{mpp} treat partitions inside a rectangle. Their Theorems~1--2 require the normalized parameters $(\ell/m,n/m^2)$ to remain in a compact subset of $x\ge2y>0$. For $m$ of order $\sqrt n\log n$, the second coordinate tends to zero, outside that compact regime. Their refined consecutive-$n$ differences also hold the rectangle fixed. These are important rectangle results, but their particular compact-uniform theorem does not directly cover the full dominant fixed-slope sum.
+
+Richmond~\cite{richmond} treats central extreme coordinates and extended one-sided cumulative ranges. The central window $|x_i|\le(\log n)/5$ has a displayed error $O(n^{-1/10}\log n)$. Equation~(10) also treats exact joint counts, so the work should not be described as cumulative-only. It includes successive-rank questions. Its stated leading-error framework does not supply the all-fixed-order slope-coupled expansion or inverse threshold result here.
+
+\subsection{Sieve and transfer antecedents}
+Hwang~\cite{hwang} develops an analytic sieve for partitions with many summands. Theorem~1 compares $p(n,m)$ with $p(n-m)$ in a large-length regime, with a stated relative power error; Proposition~1 gives a general finite sieve with a controlled remainder. Later theorems extend to restricted part sets and length laws. This is a substantive methodological antecedent. It does not state the summed $M=kL+b$ or $M\ge kL+b$ expansion and inverse treated here.
+
+Ngo and Rhoades~\cite{ngorhoades} establish arbitrary-order expansions for partition statistics in a quantum-modular framework, with general amplitude-transfer results and polynomial and logarithmic variants. Therefore a claim that partition-product amplitudes admit arbitrary-order expansions would be too broad as a novelty claim. Our elementary finite-shift transfer makes the particular coefficient normalization transparent, while the substantive analytic obligation is the global remainder for this fixed-slope amplitude.
+
+Johansson~\cite{johansson} provides the exact Rademacher normalization used in Lemma~\ref{lem:gap}, including a truncation estimate that tends to zero. We proved the one-term exponential gap from that source's convergent formula, rather than merely quoting a leading equivalent. The classical original is Rademacher~\cite{rademacher}; the directly inspected and used formula is Johansson's. Eta inversion is taken in the normalization recorded by the DLMF~\cite{dlmf}.
+
+\subsection{Rank terminology and the excluded slope}
+At $k=1$, $M-L$ is Dyson's ordinary rank. Dyson's exact alternating identities and subsequent rank literature are prior work~\cite{dyson}. The finite-depth gain in Proposition~\ref{prop:global} is $k-1$, which vanishes at that slope. No $k=1$ asymptotic conclusion is claimed here.
+
+The named $k$-rank discussed by Berkovich and Garvan~\cite[equations (6.1) and (6.2)]{berkovichgarvan} is defined using successive Durfee squares, selected columns, and rows. It is not the statistic $M-kL$. We use the descriptive phrase ``fixed-slope extreme statistic'' to avoid identifying these different notions. A finite search of rank terminology cannot exclude an unindexed treatment of the same diagonal event elsewhere.
+
+\section{Reproducibility and scope of the package}\label{sec:package}
+The compact archive contains the editable \LaTeX{} manuscript, its PDF, standard-library exact code, selected generated rational coefficients and exact counts, optional numerical diagnostics, the generated tables, source references, and a checksum manifest. It does not redistribute source papers. No third-party source PDF is required to rerun the exact finite checks, and no network access is required for regeneration.
+
+The exact core and its tests remain usable without the optional numerical library. The full PDF-and-archive build additionally needs the documented \TeX{} toolchain and the optional library for the diagnostic tables. The entry-point README gives commands for a fresh output directory, normal and optimized execution, byte-level verification of regenerated artifacts, and package guard tests. Same-toolchain byte stability is a reproducibility property of these files; it is not a claim that different \TeX{}, font, Python, or numerical-library versions necessarily emit identical bytes.
+
+Finite tests cover only the ranges explicitly recorded in their receipts. Agreement of independently generated finite counts supports the implementation and the exact identities, but cannot prove the asymptotic remainder. Numerical diagnostics support neither effective constants in \eqref{eq:main} nor a certified finite-target enclosure in \eqref{eq:ceilings}. The latter remain theorem statements with existential constants.
+
+\section{Further directions}\label{sec:directions}
+Several extensions would require additional arguments rather than a change of notation.
+\begin{enumerate}
+\item An effective version of the global bounds, the Rademacher tail estimate, and the finite-shift remainder could in principle produce explicit constants and an onset for a chosen $k,b,R$. That work would turn the inverse bracket into a computable enclosure. It is not supplied by the present diagnostic tables.
+\item Allowing $b$ or $k$ to vary with $n$ changes the uniformity of the numerator bounds and the finite polynomial retained in the transfer. In particular a growing shift is no longer a bounded Taylor shift. The fixed-parameter theorem cannot simply be reused.
+\item The coefficients grow rapidly in the slope-$2$ examples. Understanding optimal truncation, large-order coefficient behavior, and exponentially small corrections would be a distinct problem. No convergent resummation follows from the all-fixed-order expansion.
+\item The boundary $k=1$ belongs to the ordinary rank problem, with no positive sieve-valuation gain. A uniform transition towards that regime would need a different analytic organization and a careful comparison with existing rank asymptotics.
+\item Similar finite-product identities may arise for other coupled diagram boundaries. Each model would need its own entire-circle majorant; a formal radial series is not a substitute for that bound.
+\end{enumerate}
+
+\appendix
+\section{Exact algorithms in finite arithmetic}\label{app:algorithms}
+This appendix records the finite calculations independently of any particular programming language.
+
+\paragraph{Exact sequence values.}
+To compute $X_{k,b}(0),\ldots,X_{k,b}(n_{\max})$, first compute $p(0),\ldots,p(n_{\max})$. For each $j$ with $D_j\le n_{\max}$, start with the truncated coefficient list of $P(q)$. Multiply it successively by $1-q^r$ for $r=j,\ldots,kj$ in the equality case, or $r=j+1,\ldots,kj$ for the tail. For a single factor, update coefficients in descending index order by $a_m\leftarrow a_m-a_{m-r}$. Shift by $D_j$, multiply by $(-1)^{j-1}$, and add to the output. All arithmetic is integral. Descending order is essential: ascending order would implement a different operation.
+
+\paragraph{Rational forward coefficients.}
+For the requested relative order $R$, set $L=s+R$. For each $j$ allowed by \eqref{eq:Jformal}, multiply the truncated series
+\[
+ \ee^{-D_jz}=\sum_{a=0}^{L}\frac{(-D_j)^a}{a!}z^a+O(z^{L+1}),
+ \qquad
+ 1-\ee^{-rz}=-\sum_{a=1}^{L}\frac{(-r)^a}{a!}z^a+O(z^{L+1}).
+\]
+Add the signed product to obtain $g_0,\ldots,g_L$. Then use \eqref{eq:cfinite}. Every operation is rational, and $A^{-1}$ is an indeterminate until numerical evaluation is explicitly requested. This exact construction also verifies $g_0=\cdots=g_{s-1}=0$ and $g_s=k!$.
+
+\paragraph{Independent coefficient moments.}
+Build the finite sieve polynomial $H(q)$ in integer arithmetic instead. If $H(q)=\sum_dh_dq^d$, then
+\[
+ g_\ell=\frac1{\ell!}\sum_dh_d(-d)^\ell\qquad(0\le\ell\le L).
+\]
+Compute $Q_\ell$ by \eqref{eq:Qrec}, rather than by its factorial formula. This path compares two different finite constructions of both the radial and transfer coefficients.
+
+\paragraph{Triangular inverse.}
+Suppose $u_1,\ldots,u_{m-1}$ have been found. Set $u_m=0$, substitute the truncated $\Delta$ into the left side of \eqref{eq:reversion}, and extract its degree-$m$ coefficient $r_m$. Then set $u_m=-r_m$. Formal multiplication, reciprocal, and logarithm are all truncated at degree $m$. The inverse coefficients can be stored as rational Laurent polynomials in $A$, since the forward coefficients are rational polynomials in $A^{-1}$. The residual through the requested degree must vanish exactly. A negative control that changes one coefficient must fail that residual test.
+
+\begin{thebibliography}{99}
+\bibitem{oeis350879} OEIS Foundation Inc., \emph{The On-Line Encyclopedia of Integer Sequences}, A350879, triangle of partitions with $k$ times greatest part equal to length; includes the 17 October 2024 equivalent attributed to V. Kot\v{e}\v{s}ovec. \url{https://oeis.org/A350879}. Checked 4 October 2026.
+\bibitem{oeis237753} OEIS Foundation Inc., A237753, partitions with twice the greatest part equal to the number of parts. \url{https://oeis.org/A237753}. Source-listed definition and terms checked 4 October 2026.
+\bibitem{oeis237751} OEIS Foundation Inc., A237751, partitions with twice the greatest part less than the number of parts. \url{https://oeis.org/A237751}. Source-listed definition and terms checked 4 October 2026.
+\bibitem{szekeres} G. Szekeres, \emph{Asymptotic distribution of partitions by number and size of parts}, in \emph{Number Theory}, Colloquia Mathematica Societatis J\'{a}nos Bolyai 51, proceedings of Budapest 1987, North-Holland, 1990, pp. 527--538. Digitized original volume: \url{https://www.mek.oszk.hu/24100/24107/pdf/24107_1.pdf}.
+\bibitem{jiangwang} T. Jiang and K. Wang, \emph{A generalized Hardy--Ramanujan formula for the number of restricted integer partitions}, Journal of Number Theory \textbf{201} (2019), 322--353. \href{https://doi.org/10.1016/j.jnt.2019.02.006}{doi:10.1016/j.jnt.2019.02.006}. \url{https://arxiv.org/html/1805.06108}.
+\bibitem{mpp} S. Melczer, G. Panova, and R. Pemantle, \emph{Counting partitions inside a rectangle}, SIAM Journal on Discrete Mathematics \textbf{34} (2020), 2388--2410. \href{https://doi.org/10.1137/20M1315828}{doi:10.1137/20M1315828}. \url{https://arxiv.org/html/1805.08375}.
+\bibitem{richmond} L. B. Richmond, \emph{A George Szekeres Formula for Restricted Partitions}, arXiv:1803.08548 (2018). \url{https://arxiv.org/abs/1803.08548}.
+\bibitem{hwang} H.-K. Hwang, \emph{Distribution of integer partitions with large number of summands}, Acta Arithmetica \textbf{78} (1997), 351--365. \url{https://matwbn.icm.edu.pl/ksiazki/aa/aa78/aa7844.pdf}.
+\bibitem{ngorhoades} H. T. Ngo and R. C. Rhoades, \emph{Integer partitions, probabilities and quantum modular forms}, Research in the Mathematical Sciences \textbf{4}, article 17 (2017). \href{https://doi.org/10.1186/s40687-017-0102-4}{doi:10.1186/s40687-017-0102-4}.
+\bibitem{johansson} F. Johansson, \emph{Efficient implementation of the Hardy--Ramanujan--Rademacher formula}, LMS Journal of Computation and Mathematics \textbf{15} (2012), 341--359. \href{https://doi.org/10.1112/S1461157012001088}{doi:10.1112/S1461157012001088}. \url{https://arxiv.org/html/1205.5991}.
+\bibitem{rademacher} H. Rademacher, \emph{A convergent series for the partition function $p(n)$}, Proceedings of the National Academy of Sciences \textbf{23} (1937), 78--84. \href{https://doi.org/10.1073/pnas.23.2.78}{doi:10.1073/pnas.23.2.78}. Bibliographic citation to the original; the normalization used here is read from Johansson~\cite{johansson}.
+\bibitem{dlmf} NIST Digital Library of Mathematical Functions, Section 23.18, modular transformations, equations 23.18.5--23.18.7. \url{https://dlmf.nist.gov/23.18#E5}. Checked 4 October 2026.
+\bibitem{dyson} F. J. Dyson, \emph{A new symmetry of partitions}, Journal of Combinatorial Theory \textbf{7} (1969), 56--61. Primary paper: \url{https://www.mi.uni-koeln.de/NumberTheory/teaching/Seminare/Partitionen/pages/vortragS12.pdf}.
+\bibitem{berkovichgarvan} A. Berkovich and F. G. Garvan, \emph{Some observations on Dyson's new symmetries of partitions}, author's version, especially equations (6.1) and (6.2). \url{https://qseries.org/fgarvan/papers/dyson.pdf}.
+\end{thebibliography}
+\end{document}

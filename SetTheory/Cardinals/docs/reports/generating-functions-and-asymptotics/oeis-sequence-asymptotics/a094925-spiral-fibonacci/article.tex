@@ -1,0 +1,660 @@
+\pdfinfoomitdate=1
+\pdftrailerid{}
+\pdfsuppressptexinfo=15
+\newcommand{\DoNotLoadEpstopdf}{}
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools,booktabs,array}
+\usepackage[margin=1in]{geometry}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\usepackage{enumitem}
+\setlist{itemsep=3pt,topsep=5pt}
+\allowdisplaybreaks[2]
+\emergencystretch=2em
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\OO}{\mathcal O}
+\newcommand{\N}{\mathbb N}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\one}{\boldsymbol 1}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\Fib}{\operatorname{Fib}}
+\newcommand{\ceil}[1]{\left\lceil #1\right\rceil}
+\hypersetup{pdftitle={Report190 Hexagonal Spiral Fibonacci Asymptotics},pdfauthor={Research report},pdfsubject={Certified amplitudes sharp square root phase and all fixed order feedback corrections}}
+\title{Report190\\[5pt]Hexagonal Spiral Fibonacci Asymptotics}
+\author{Certified amplitudes and all fixed order feedback corrections}
+\date{4 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+The hexagonal spiral Fibonacci sequences A094926 and A094925 satisfy $a_n\sim C\phi^n$, proving the two leading equivalents conjectured in their OEIS records in 2015. We derive their exact six-side delay recurrence, prove convergence by a positive Perron projection, and give algebraic amplitude bounds that certify 120 truncated fractional digits. After normalization, both seed choices share a universal expansion at every fixed stretched-exponential order. Its coefficients are exact iterates of a geometry-defined operator; the finite corner layers are retained. The leading relative deficit is
+\[
+ \sqrt n\,e^{-2\sqrt3\log(\phi)\sqrt n}
+ \left\{\frac{\phi^{4+\theta}(\phi^2-\theta)}{\sqrt{15}}
+       +\OO(n^{-1/2})\right\},\qquad \theta=\{\sqrt{12n}\},
+\]
+with a continuous periodic phase factor and explicit sharp lower and upper envelopes. Every higher sector has a nonzero leading profile. We also give fixed-order real inverse estimates and pointwise ceiling brackets. The uncorrected logarithmic ceiling is too small by one infinitely often, even for integer targets. An exact standard-library verifier and a deterministic offline build accompany the proofs.
+\end{abstract}
+
+\paragraph{Scope and attribution.}
+The sequences, the predicted golden-ratio growth, the square-root delay motivation, and the previously displayed amplitudes are prior work. Binet's formula, variation of constants, positive product bounds, and monotone interpolation are classical. This report supplies the target-specific proofs, uniform correction hierarchy, phase envelopes, and certificates below. All expansion orders are fixed; no convergent infinite expansion, effective asymptotic onset, globally exact rounded inverse, or worldwide priority is asserted. Source scope is recorded in Section~\ref{sec:sources}.
+
+\newpage
+{\small\tableofcontents}
+\newpage
+
+\section{Conventions and main conclusions}\label{sec:main}
+Put
+\begin{equation}\label{eq:constants}
+ \phi=\frac{1+\sqrt5}{2},\qquad Q=\phi^{-6},\qquad
+ \rho=-\phi^{-2},\qquad \alpha=\frac\phi{\sqrt5},\qquad
+ \beta=\frac1{\phi\sqrt5}.
+\end{equation}
+The letter $Q$ is a positive stage ratio; $\rho$ is the negative stable Fibonacci root after normalization. Two sequences use the same geometric recurrence but different central seeds:
+\begin{equation}\label{eq:seeds}
+ a^{(0)}_0=0,\quad a^{(0)}_1=1;\qquad
+ a^{(1)}_0=a^{(1)}_1=1.
+\end{equation}
+Their relation to the original OEIS indices is
+\begin{equation}\label{eq:oeisindex}
+ \mathrm{A094926}(n)=a^{(0)}_n,\qquad
+ \mathrm{A094925}(m)=a^{(1)}_{m-1}\quad(m\ge1).
+\end{equation}
+Accordingly, if $C_\sigma=\lim_n a^{(\sigma)}_n\phi^{-n}$, the amplitude multiplying $\phi^m$ in A094925 is $C_1/\phi$, not $C_1$. We suppress the superscript when a statement applies to either seed.
+
+The recurrence is defined precisely in Section~\ref{sec:geometry}. Its stage endpoints and index function are
+\begin{align}
+ L_r&=3r^2-2r+2,& U_r&=3r^2+4r+2\quad(r\ge1),\label{eq:stages}\\
+ r(n)&=\left\lfloor\frac{1+\sqrt{3n-5}}3\right\rfloor\quad(n\ge3),&
+ r(n)&=0\quad(0\le n\le2).\label{eq:r}
+\end{align}
+Thus $L_r\le n\le U_r$ exactly when $r(n)=r$.
+
+\begin{theorem}[Amplitudes and fixed orders]\label{thm:main}
+For both sequences in \eqref{eq:seeds}, a finite constant $C>0$ exists and $a_n\sim C\phi^n$. Define $F_0(n)=1$ and $F_{k+1}=SF_k$, where the operator $S$ in \eqref{eq:S} is explicit and depends only on the spiral geometry. For every fixed integer $J\ge0$,
+\begin{equation}\label{eq:allorder}
+ \frac{a_n}{C\phi^n}
+ =\sum_{k=0}^J F_k(n)
+  +\OO_J\!\left((1+r(n))^{J+1}Q^{(J+1)r(n)}\right).
+\end{equation}
+All defining series are absolutely convergent. The functions $F_k$ are the same for both seed choices, are computable to arbitrary prescribed absolute accuracy, and have the nonzero profiles in Theorem~\ref{thm:profiles}. The theorem is a finite-order asymptotic statement, not a claim of convergence as $J\to\infty$.
+\end{theorem}
+
+\begin{theorem}[Sharp square-root phase]\label{thm:phaseintro}
+Extend
+\begin{equation}\label{eq:G}
+ G(\theta)=\frac{\phi^{4+\theta}(\phi^2-\theta)}{\sqrt{15}},
+ \qquad 0\le\theta\le1,
+\end{equation}
+continuously and periodically to $\R$. For either normalized seed,
+\begin{equation}\label{eq:phase}
+ 1-\frac{a_n}{C\phi^n}
+ =\sqrt n\,e^{-2\sqrt3\log(\phi)\sqrt n}
+   \left\{G(\{\sqrt{12n}\})+\OO(n^{-1/2})\right\}.
+\end{equation}
+The normalized expression
+\[
+ D_n=\frac{1-a_n/(C\phi^n)}{\sqrt n\,e^{-2\sqrt3\log(\phi)\sqrt n}}
+\]
+has the sharp envelopes
+\begin{equation}\label{eq:envelopes}
+ \liminf D_n=\frac{\phi^6}{\sqrt{15}},\qquad
+ \limsup D_n=\frac{\phi^{4+\phi^2}}{e\sqrt{15}\log\phi}.
+\end{equation}
+In particular, $a_n<C\phi^n$ eventually, and $C\phi^n-a_n\to+\infty$.
+\end{theorem}
+
+Section~\ref{sec:inverse} proves that the intrinsic integer inverse lies eventually in two adjacent logarithmic-ceiling candidates and that both candidates occur infinitely often. Higher corrections give narrower real-index brackets; they do not remove the need to check an integer rounding boundary. Exact amplitude certificates, unlike those asymptotic inverse estimates, have a fully specified finite stage and no unknown onset.
+
+\section{The exact spiral and its delay table}\label{sec:geometry}
+Represent the triangular lattice by the six neighbor vectors
+\begin{equation}\label{eq:directions}
+ D_0=(-1,-1),\quad D_1=(-2,0),\quad D_2=(-1,1),\quad
+ D_3=(1,1),\quad D_4=(2,0),\quad D_5=(1,-1).
+\end{equation}
+The Euclidean regular triangular lattice is obtained by a fixed linear rescaling; adjacency is unchanged. Start with $v_0=(0,0)$ and $v_1=(2,0)$. Stage $r\ge1$ takes these directions in order, with lengths
+\begin{equation}\label{eq:lengths}
+ \ell_t(r)=r+\one_{\{t=4\}},\qquad 0\le t\le5.
+\end{equation}
+At each new index $n$, the rule adds $a_{n-1}$ to the values at all earlier neighbors of $v_{n-1}$. The path predecessor contributes $a_{n-2}$; the other earlier neighbor indices form $E_n$. Thus
+\begin{equation}\label{eq:recurrence}
+ a_n=a_{n-1}+a_{n-2}+\sum_{j\in E_n}a_j\quad(n\ge2),
+ \qquad E_0=E_1=E_2=\varnothing.
+\end{equation}
+This is the adjacency rule in the original records \cite{oeis926,oeis925}.
+
+\begin{proposition}[Six-side delay formula]\label{prop:geometry}
+On side $t$ of stage $r$, the recurrence indices start at
+$L_r+tr+\one_{\{t=5\}}$, have length $\ell_t(r)$, and have delay parameter
+\begin{equation}\label{eq:d}
+ d_{r,t}=6r-4+t.
+\end{equation}
+For the first $\ell_t(r)-1$ indices and for the final index, respectively,
+\begin{equation}\label{eq:Etable}
+ E_n=\{n-d_{r,t}-1,n-d_{r,t}\},\qquad
+ E_n=\{n-d_{r,t}-1\}.
+\end{equation}
+The one-neighbor case at every side endpoint is essential.
+\end{proposition}
+\begin{proof}
+Set $\tau_r=3r^2-2r$ and $s_t(r)=tr+\one_{\{t=5\}}$. Stage $r$ starts at vertex index $\tau_r$ and coordinate $(2r,0)$. The vertex with side position $1\le h\le\ell_t(r)$ has index $\tau_r+s_t(r)+h$. The complete coordinate list is
+\begin{center}
+\begin{tabular}{ccll}
+\toprule
+$t$ & $\ell_t(r)$ & Side-start coordinate & Coordinate at position $h$\\
+\midrule
+0 & $r$ & $(2r,0)$ & $(2r-h,-h)$\\
+1 & $r$ & $(r,-r)$ & $(r-2h,-r)$\\
+2 & $r$ & $(-r,-r)$ & $(-r-h,-r+h)$\\
+3 & $r$ & $(-2r,0)$ & $(-2r+h,h)$\\
+4 & $r+1$ & $(-r,r)$ & $(-r+2h,r)$\\
+5 & $r$ & $(r+2,r)$ & $(r+2+h,r-h)$\\
+\bottomrule
+\end{tabular}
+\end{center}
+For a displayed vertex, its path predecessor is obtained in direction $-D_t$. The two possible inward neighbors are in directions $D_{t+2}$ and $D_{t+1}$, subscripts taken modulo six. Substitution in the coordinate list identifies them as preceding-stage side positions $h-1$ and $h$, with indices
+\begin{equation}\label{eq:innerindices}
+ \tau_{r-1}+s_t(r-1)+h-1,\qquad
+ \tau_{r-1}+s_t(r-1)+h.
+\end{equation}
+The second exists only for $h<\ell_t(r)$: that preceding side is shorter by one. The remaining three direction tests in \eqref{eq:directions} give either unvisited points of the current path or points outside the occupied spiral. These six substitutions account for every possible earlier neighbor. At $r=1$, the preceding stage is the degenerate stage zero, with lengths $0,0,0,0,1,0$, joining $v_0$ to $v_1$; the same tests apply, including its zero-length sides.
+
+The recurrence row for this vertex is $n=\tau_r+s_t(r)+h+1$. Since
+\[
+ \tau_r-\tau_{r-1}=6r-5,\qquad s_t(r)-s_t(r-1)=t,
+\]
+subtraction gives \eqref{eq:Etable}. The first row is $\tau_r+2=L_r$, and the last is $\tau_{r+1}+1=U_r$, proving the stage convention as well.
+\end{proof}
+
+In particular, each extra delay lies between $6r-4$ and $6r+2$. If $n$ belongs to stage $r$, its extra indices have recurrence stages $r-1$ or $r-2$, apart from the harmless initial convention $r(j)=0$. The geometric inward stage is always the preceding stage; the possible second shift is caused by the two-index offset between vertex stages and recurrence stages. Only a bounded number of side-start or corner positions per stage have this exception. This distinction matters in the profile induction below.
+
+For reference, the first values in the two conventions are
+\begin{align*}
+ a^{(0)}_n&: 0,1,1,2,3,5,8,14,23,38,63,102,168,272,445,\ldots,\\
+ a^{(1)}_n&: 1,1,2,4,7,12,20,34,55,90,148,240,394,638,1043,\ldots.
+\end{align*}
+The verifier independently walks the coordinates and compares the earlier-neighbor sets with the delay table. Agreement with finitely many rows or listed integer terms supplements the geometric proof; it cannot replace it.
+
+\section{Exact forcing weights and geometric tails}\label{sec:weights}
+Define the normalized geometric forcing weight
+\begin{equation}\label{eq:eta}
+ \eta_n=\sum_{j\in E_n}\phi^{j-n},\qquad \eta_0=\eta_1=\eta_2=0.
+\end{equation}
+Using $1+\phi^{-1}=\phi$ in \eqref{eq:Etable} gives
+\begin{equation}\label{eq:etavalues}
+ \eta_n=\begin{cases}
+ Q^r\phi^{5-t},&\text{at a non-corner on side }t,\\
+ Q^r\phi^{3-t},&\text{at its final corner}.
+ \end{cases}
+\end{equation}
+Summing the six sides yields
+\begin{align}
+ W_r:=\sum_{n=L_r}^{U_r}\eta_n&=Q^r(Ar+B),\label{eq:W}\\
+ A&=12\phi+8=\phi^7(1-Q),&
+ B&=-7\phi-4=\phi^2-\phi^6.\label{eq:AB}
+\end{align}
+Indeed, a side contributes $Q^r\{\ell_t(r)\phi^{5-t}-\phi^{4-t}\}$, since $\phi^{5-t}-\phi^{3-t}=\phi^{4-t}$. Summing these six elementary expressions proves \eqref{eq:W} in $\Q(\phi)$.
+
+Write $T_n=\sum_{m>n}\eta_m$. The sums of $Q^s$ and $sQ^s$ give the exact complete-stage tail
+\begin{equation}\label{eq:Tstage}
+ T_{U_R}=Q^{R+1}\left\{\phi^7(R+1)-\phi^6+\frac{2\phi}{1-Q}\right\}
+ \quad(R\ge1).
+\end{equation}
+For a row at side $t$, position $h$, $1\le h\le\ell_t(r)$, one also has the exact partial-stage formula
+\begin{align}
+ T_n=Q^r\biggl\{& (\ell_t(r)-h)\phi^{5-t}
+       -\one_{\{h<\ell_t(r)\}}\phi^{4-t}\notag\\
+       &+\sum_{u=t+1}^5\bigl(\ell_u(r)\phi^{5-u}-\phi^{4-u}\bigr)\biggr\}
+       +T_{U_r}.\label{eq:Tpartial}
+\end{align}
+Thus $T_n\in\Q(\phi)$ is exactly computable for every $n$. In particular,
+\begin{equation}\label{eq:Tbound}
+ \sum_n\eta_n<\infty,\qquad T_n=\OO((1+r(n))Q^{r(n)}).
+\end{equation}
+The weight sum, rather than a ratio heuristic, is what controls the amplitude.
+
+\section{Proof and exact certification of the amplitudes}\label{sec:amplitudes}
+Let $b_n=a_n\phi^{-n}$ and $d_n=\sum_{j\in E_n}\phi^{j-n}b_j$. Define the positive Perron projection
+\begin{equation}\label{eq:c}
+ c_n=\frac{\phi^{1-n}}{\sqrt5}
+       \bigl(a_n+\phi^{-1}a_{n-1}\bigr)\quad(n\ge1).
+\end{equation}
+Direct substitution of \eqref{eq:recurrence} gives
+\begin{equation}\label{eq:cincrement}
+ c_n-c_{n-1}=\alpha d_n\ge0\quad(n\ge2).
+\end{equation}
+Also, for $j\ge1$, $b_j\le(\sqrt5/\phi)c_j$. Every extra endpoint is at least one for $n\ge10$, so monotonicity gives
+\begin{equation}\label{eq:cproduct}
+ c_n\le(1+\eta_n)c_{n-1}\quad(n\ge10).
+\end{equation}
+The finite prefix is positive, and \eqref{eq:Tbound} bounds the subsequent product. Consequently $c_n$ increases to some finite $C>0$. There is no appeal to an undefined $c_0$.
+
+The definition of $c_n$ also yields
+\begin{equation}\label{eq:stable}
+ b_n+\phi^{-2}b_{n-1}=(1+\phi^{-2})c_n.
+\end{equation}
+Subtracting the corresponding identity for the constant $C$ and iterating a stable scalar recurrence proves $b_n\to C$, since $|\rho|<1$. This proves the leading equivalents in Theorem~\ref{thm:main} for both seeds. The same argument works for nonnegative $a_0$ and positive $a_1$.
+
+\begin{theorem}[Finite algebraic certificates]\label{thm:cert}
+For $N=U_R$, $R\ge1$,
+\begin{equation}\label{eq:cert}
+ c_N\le C\le c_N e^{T_N}.
+\end{equation}
+If $T_N<1$, then the purely algebraic bounds
+\begin{equation}\label{eq:algcert}
+ c_N\le C\le\frac{c_N}{1-T_N}
+\end{equation}
+are valid. All quantities in \eqref{eq:algcert} belong to $\Q(\phi)$ and are obtained from exact integers and the delay geometry.
+\end{theorem}
+\begin{proof}
+Every future row after $U_R\ge9$ has extra endpoints at least one. Iterating \eqref{eq:cproduct} and using $1+x\le e^x$ gives \eqref{eq:cert}. For $0\le t<1$, comparison of the exponential and geometric power series gives $e^t\le(1-t)^{-1}$, proving \eqref{eq:algcert}.
+\end{proof}
+
+These bounds are effective at the specified finite index. Their width tends to zero because $T_N\to0$ and $c_N\le C$. No asymptotic error constant or unknown onset is used in a certificate.
+
+\subsection{Rational evaluation and certified digits}
+For exact arithmetic, represent $u+v\phi$ by $(u,v)\in\Q^2$, use $\phi^2=\phi+1$, and invert by its norm
+\[
+ (u+v\phi)^{-1}=\frac{u+v-v\phi}{u^2+uv-v^2}.
+\]
+At $R=100$, $N=30402$, take $P=2N+512$ and
+\begin{equation}\label{eq:phibracket}
+ z=\left\lfloor\sqrt{5\cdot2^{2P}}\right\rfloor,\qquad
+ p_-=\frac{2^P+z}{2^{P+1}},\qquad
+ p_+=\frac{2^P+z+1}{2^{P+1}}.
+\end{equation}
+Then $p_-<\phi<p_+$. The sign of $v$ chooses the outward endpoint for $u+v\phi$. If $[c_-,c_+]$ and $[t_-,t_+]$ are such rational enclosures for $c_N$ and $T_N$, the interval
+\begin{equation}\label{eq:rationalcert}
+ \left[c_-,\frac{c_+}{1-t_+}\right]
+\end{equation}
+is a rigorous enclosure for $C$, provided $0\le t_+<1$. To enclose $C_1/\phi$, divide its lower endpoint by $p_+$ and its upper endpoint by $p_-$. The code also recomputes the certificate in the independent basis $u+v\sqrt5$.
+
+For readability, the following bounds are rounded outward to 110 fractional places. Spaces split long strings into blocks and carry no numerical meaning. Within each pair the last block alone differs:
+\begin{center}\small
+\begin{tabular}{ll}
+\toprule
+Quantity & Outward decimal endpoints, continued over lines\\
+\midrule
+$C_0$ lower & $0.54172002195814443386932280287176743847770577173050013512373$\\
+& $\phantom{0.}119279413708701041825302581487910167435096508609105$\\
+$C_0$ upper & $0.54172002195814443386932280287176743847770577173050013512373$\\
+& $\phantom{0.}119279413708701041825302581487910167435096508609106$\\[3pt]
+$C_1$ lower & $1.27063670814838696022586698316380373738117229438866227263872$\\
+& $\phantom{1.}100585311783758622656587107702549959717913615220765$\\
+$C_1$ upper & $1.27063670814838696022586698316380373738117229438866227263872$\\
+& $\phantom{1.}100585311783758622656587107702549959717913615220766$\\[3pt]
+$C_1/\phi$ lower & $0.78529667298898361017570049509486675274402985275383398273772$\\
+& $\phantom{0.}345738007479334754040183932006451774593289056517183$\\
+$C_1/\phi$ upper & $0.78529667298898361017570049509486675274402985275383398273772$\\
+& $\phantom{0.}345738007479334754040183932006451774593289056517184$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The underlying rational intervals are much narrower. For each of $C_0$, $C_1$, and $C_1/\phi$, the verifier checks equality of the two exact integers $\lfloor10^{120}L\rfloor$ and $\lfloor10^{120}U\rfloor$, with $L,U$ the rational endpoints, certifying at least 120 truncated fractional digits. The displayed decimal pairs share only 109 fractional digits; they alone do not certify 120. Independently, the exact bounds reproduce all 106 supplied digits of A258639 and all 77 amplitude digits displayed in the A094925 record. Those published digits and approximate amplitudes predate this report; no new-digit priority is claimed.
+
+\section{An exact geometry-defined correction operator}\label{sec:operator}
+For a sequence $f=(f_n)_{n\ge0}$, define
+\begin{equation}\label{eq:D}
+ (D_mf)=\sum_{j\in E_m}\phi^{j-m}f_j.
+\end{equation}
+For the classes considered below, define
+\begin{equation}\label{eq:S}
+ (Sf)_n=-\alpha\sum_{\substack{m>n\\m\ge2}}D_mf
+        +\beta\sum_{m=2}^n\rho^{n-m}D_mf\quad(n\ge0).
+\end{equation}
+The second sum is empty for $n=0,1$. The first is an absolutely convergent future tail. This is a specified linear operator involving only $E_m$, $\phi$, and its two root weights; neither the target sequence nor its unknown amplitude enters its definition.
+
+\begin{lemma}[Exact variation of constants]\label{lem:variation}
+Let $b_n=a_n\phi^{-n}$. Then
+\begin{equation}\label{eq:identity}
+ b=C\one+Sb+B_0(\rho^n)_{n\ge0},
+ \qquad B_0=\frac{\phi a_0-a_1}{\sqrt5},
+\end{equation}
+and
+\begin{equation}\label{eq:Cseries}
+ C=A_0+\alpha\sum_{m=2}^{\infty}d_m,
+ \qquad A_0=\frac{a_1+\phi^{-1}a_0}{\sqrt5},\qquad d_m=D_mb.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Let $e_m=\sum_{j\in E_m}a_j$. Ordinary Fibonacci numbers satisfy $\Fib_0=0$, $\Fib_1=1$, and their Binet formula gives the exact recurrence solution
+\begin{equation}\label{eq:binet}
+ a_n=A_0\phi^n+B_0(-\phi^{-1})^n
+       +\sum_{m=2}^n\Fib_{n-m+1}e_m.
+\end{equation}
+After division by $\phi^n$, the last term equals
+\[
+ \alpha\sum_{m=2}^n d_m+\beta\sum_{m=2}^n\rho^{n-m}d_m.
+\]
+The plus sign on the second sum follows from the negative second Fibonacci root. The already proved boundedness of $b$, together with $|d_m|\le\|b\|_\infty\eta_m$, shows absolute summability. The finite stable convolution tends to zero. Taking limits proves \eqref{eq:Cseries}; splitting its dominant-root sum at $n$ then proves \eqref{eq:identity}, including $n=0,1$.
+\end{proof}
+
+The first exact coefficient has a particularly short formula. Put
+\begin{equation}\label{eq:H}
+ H_0=0,\qquad H_n=\rho H_{n-1}+\eta_n\quad(n\ge1).
+\end{equation}
+Then
+\begin{equation}\label{eq:F1}
+ F_1(n)=S\one(n)=-\alpha T_n+\beta H_n.
+\end{equation}
+Both terms are exactly computable in $\Q(\phi)$, using \eqref{eq:Tpartial}. The stable filter $H_n$ keeps the alternating side and corner transition layers. Dropping it, or keeping only a leading stage profile, is generally incompatible with a claimed error as small as the second entire stretched-exponential sector.
+
+\section{Mapping bounds and the proof at every fixed order}\label{sec:mapping}
+For a fixed integer $k\ge0$, let $X_k$ be the space of real sequences with finite weighted norm
+\begin{equation}\label{eq:X}
+ \|f\|_k=\sup_{n\ge0}
+ \frac{|f_n|}{(1+r(n))^kQ^{kr(n)}}.
+\end{equation}
+The constants in all ensuing bounds may depend on the fixed order, but not on the index or phase.
+
+\begin{lemma}[One-order improvement]\label{lem:mapping}
+The operator $S$ maps $X_k$ boundedly into $X_{k+1}$. Its stable backward part alone satisfies the sharper estimate
+\begin{equation}\label{eq:backbound}
+ \sum_{m=2}^n\rho^{n-m}D_mf
+ =\OO_k\!\left(\|f\|_k(1+r(n))^kQ^{(k+1)r(n)}\right).
+\end{equation}
+\end{lemma}
+\begin{proof}
+If $m$ is in stage $s\ge1$, its extra indices have stages between $\max(0,s-2)$ and $s$. From \eqref{eq:etavalues},
+\begin{equation}\label{eq:Dnorm}
+ |D_mf|\le A_k\|f\|_k(1+s)^kQ^{(k+1)s},
+ \qquad A_k=\phi^5Q^{-2k}.
+\end{equation}
+There are $6s+1\le7(1+s)$ rows in stage $s$. For $r=r(n)$, a tail therefore has absolute value at most
+\begin{equation}\label{eq:tailnorm}
+ 7A_k\|f\|_k\sum_{s\ge r}(1+s)^{k+1}Q^{(k+1)s}
+ \le7A_k Z_k\|f\|_k(1+r)^{k+1}Q^{(k+1)r},
+\end{equation}
+where $Z_k=\sum_{h\ge0}(1+h)^{k+1}Q^{(k+1)h}<\infty$.
+
+For the backward sum, $m\le n$ implies $s=r(m)\le r=r(n)$. Moreover
+\begin{equation}\label{eq:stagedistance}
+ r-s\le\sqrt{n-m}.
+\end{equation}
+To check this, when $t=r-s\ge1$ the smallest possible difference is at least
+\[
+ L_r-U_s=3t^2-2t+6s(t-1)\ge t^2.
+\]
+The same inequality holds for $s=0$, $m\le2$, using $U_0=2$; the case $r=s$ is immediate. Hence, with $h=n-m$, \eqref{eq:Dnorm} bounds the absolute backward sum by
+\begin{equation}\label{eq:Vbound}
+ A_k\|f\|_k(1+r)^kQ^{(k+1)r}
+ \sum_{h\ge0}|\rho|^hQ^{-(k+1)\sqrt h}.
+\end{equation}
+The series converges: its logarithmic summand is a negative linear function of $h$ plus a positive multiple of $\sqrt h$. This proves \eqref{eq:backbound}, absolute convergence, and the full mapping statement.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+The amplitude assertion was proved in Section~\ref{sec:amplitudes}. Divide \eqref{eq:identity} by $C$ and substitute it into itself finitely many times. For every fixed $J\ge0$, the exact remainder identity is
+\begin{equation}\label{eq:finiteiteration}
+ \frac bC=\sum_{k=0}^JF_k+S^{J+1}\!\left(\frac bC\right)
+   +\frac{B_0}{C}\sum_{k=0}^JS^k(\rho^n)_{n\ge0}.
+\end{equation}
+Since $b$ is bounded, the first remainder belongs to $X_{J+1}$ by Lemma~\ref{lem:mapping}. The sequence $(\rho^n)$ belongs to every $X_M$, because $n=3r(n)^2+\OO(r(n))$. Each of its fixed $S$-iterates also belongs to every $X_M$, by applying the mapping lemma from a sufficiently strong input space and using the nesting of these spaces. Thus the entire transient remainder is beyond every fixed order. Equation~\eqref{eq:allorder} follows. Only finite substitution was used.
+\end{proof}
+
+\begin{corollary}[Seed independence beyond every fixed order]\label{cor:seed}
+For every fixed integer $M\ge0$,
+\begin{equation}\label{eq:seedindependence}
+ \frac{a^{(0)}_n/C_0}{a^{(1)}_n/C_1}
+ =1+\OO_M\!\left((1+r(n))^M Q^{Mr(n)}\right).
+\end{equation}
+\end{corollary}
+\begin{proof}
+Subtract the normalized expansions to a sufficiently high fixed order and use that both normalized sequences tend to one. This is asymptotic indistinguishability at the stated scales, not an equality of the two sequences.
+\end{proof}
+
+\subsection{Constructive meaning and truncation scope}\label{sec:computability}
+The mapping proof provides explicit finite norm bounds, so the word ``computable'' in Theorem~\ref{thm:main} need not be interpreted formally. For example replace the series in \eqref{eq:Vbound} by the larger algebraic bound
+\begin{equation}\label{eq:Vexplicit}
+ V_k^*=\sum_{h=0}^{M_k-1}|\rho|^hQ^{-(k+1)\lceil\sqrt h\rceil}
+          +\frac{\phi^{-M_k}}{1-\phi^{-1}},
+ \qquad M_k=144(k+1)^2.
+\end{equation}
+For $h\ge M_k$, the inequality $6(k+1)\lceil\sqrt h\rceil\le h$ implies
+$|\rho|^hQ^{-(k+1)\lceil\sqrt h\rceil}\le\phi^{-h}$, proving the bound. The sum $Z_k$ in \eqref{eq:tailnorm} is rational in $Q^{k+1}$, as follows by repeated application of $q\,d/dq$ to $(1-q)^{-1}$. Therefore
+\begin{equation}\label{eq:opnorm}
+ \|Sf\|_{k+1}\le A_k(7\alpha Z_k+\beta V_k^*)\|f\|_k
+\end{equation}
+is a fully specified algebraic norm estimate. Starting from $\|F_0\|_0=1$ yields explicit bounds for every fixed $F_k$.
+
+For fixed $n\le U_R$, truncating the future sum defining $SF_k(n)$ after $U_R$ loses at most
+\begin{equation}\label{eq:truncation}
+ \alpha A_k\|F_k\|_k
+ \sum_{s>R}(6s+1)(1+s)^kQ^{(k+1)s}.
+\end{equation}
+This is a computable polynomial-geometric tail tending to zero. The remaining sum has finitely many arguments of $F_k$; recursive evaluation with outward rational arithmetic and prescribed error budgets terminates at $F_0=1$. Bounds \eqref{eq:opnorm}--\eqref{eq:truncation} justify such an interval algorithm for each fixed order and argument. They make no practical complexity claim.
+
+The shipped mandatory checker certifies the amplitudes and finite identities, including exact $F_1$ identities. Its optional higher-order numerical diagnostic uses a finite cutoff and high-precision floating arithmetic; it does not implement this general interval algorithm or certify the asymptotic inverse constants. Those distinctions keep exact certificates, theoretical computability, and floating diagnostics separate.
+
+\section{Nonzero profiles in every correction sector}\label{sec:profiles}
+For $n$ in stage $r$, define
+\begin{equation}\label{eq:xphase}
+ x_n=\frac{n-L_r}{r}\in[0,6].
+\end{equation}
+The extra vertex on side four changes an actual side coordinate by only $\OO(1/r)$. Define a continuous positive piecewise-linear function $P$ on $[0,6]$ by
+\begin{equation}\label{eq:Pprofile}
+ P(t+\theta)=(\phi^2-\theta)\phi^{5-t},
+ \qquad 0\le t\le5,\quad 0\le\theta\le1.
+\end{equation}
+Adjacent formulas agree because $\phi^2-1=\phi$. Write $w(x)=\phi^{5-t}$ for $t<x<t+1$. Then
+\begin{equation}\label{eq:Pidentities}
+ P'=-w\ \text{off the side boundaries},\qquad
+ P(0)=\phi^7,\qquad P(6)=\phi=QP(0).
+\end{equation}
+
+\begin{theorem}[Leading profile of each exact coefficient]\label{thm:profiles}
+For every fixed $k\ge1$, uniformly over the whole stage,
+\begin{equation}\label{eq:profile}
+ F_k(n)=\gamma_k r^kQ^{kr}P(x_n)^k
+       +\OO_k(r^{k-1}Q^{kr}),\qquad
+ \gamma_k=\frac{(-\alpha)^kQ^{-k(k-1)/2}}{k!}.
+\end{equation}
+In particular the coefficients have alternating, nonzero leading signs and
+$F_{k+1}(n)/F_k(n)=\OO_k(rQ^r)\to0$ uniformly in stage phase.
+\end{theorem}
+\begin{proof}
+For $k=0$, the starting profile is exactly one. Suppose the profile statement holds at order $k$. Except for a bounded number of side-start and corner rows in a stage $s$, each inward recurrence index has stage $s-1$ and phase $x_m+\OO(1/s)$. The profiles $P^k$ are uniformly Lipschitz on $[0,6]$. For these ordinary non-corner rows, \eqref{eq:etavalues} and the induction hypothesis therefore give
+\begin{align}
+ D_mF_k={}&\gamma_k Q^{-k}s^kQ^{(k+1)s}w(x_m)P(x_m)^k\notag\\
+ &+\OO_k(s^{k-1}Q^{(k+1)s}).\label{eq:profileforcing}
+\end{align}
+At exceptional rows, the inward recurrence stage may be $s-2$; the corner also has a different weight. Their individual contribution is bounded by $\OO_k(s^kQ^{(k+1)s})$. There are only $\OO(1)$ such rows per stage. They thus affect the entire or partial stage sum at one lower power of $s$ than its leading $s^{k+1}$ size. They cannot be ignored in an exact coefficient, but do not change its leading profile.
+
+Uniform Riemann summation over a partial stage, allowing its finitely many boundaries, approximates $wP^k$ with error one power of $s$ smaller. Summing complete future stages has geometric ratio $Q^{k+1}$. Replacing $(r+h)^{k+1}$ there by $r^{k+1}$ has total error $\OO_k(r^k)$ after geometric weighting, since
+\[
+ |(r+h)^{k+1}-r^{k+1}|
+ \le C_k r^k(1+h)^{k+1}\quad(r\ge1,h\ge0).
+\]
+Lemma~\ref{lem:mapping} makes the stable backward filter one power of $r$ smaller too. The leading new profile is consequently
+\begin{align}
+ -\alpha\gamma_k Q^{-k}\biggl\{
+  \int_x^6 w(u)P(u)^k\,du
+  +\frac{Q^{k+1}}{1-Q^{k+1}}\int_0^6w(u)P(u)^k\,du
+ \biggr\}.\label{eq:profilemap}
+\end{align}
+Since $P'=-w$ and $P(6)=QP(0)$, the expression in braces is exactly $P(x)^{k+1}/(k+1)$. Hence
+\[
+ \gamma_{k+1}=-\frac{\alpha Q^{-k}}{k+1}\gamma_k,
+\]
+which gives \eqref{eq:profile}. Positivity and a positive minimum of $P$ make the relative leading-profile error $\OO_k(1/r)$ uniformly. This proves the nonvanishing and ratio assertions.
+\end{proof}
+
+The first three profile coefficients are
+\[
+ \gamma_1=-\alpha,\qquad \gamma_2=\frac{\alpha^2}{2Q},\qquad
+ \gamma_3=-\frac{\alpha^3}{6Q^3}.
+\]
+The functions in Theorem~\ref{thm:main} must remain the exact $F_k=S^k\one$. Replacing $F_k$ by only the leading term in \eqref{eq:profile} discards $\OO(r^{k-1}Q^{kr})$, which is larger than the next whole sector $r^{k+1}Q^{(k+1)r}$. Thus leading profiles describe the hierarchy but do not themselves form the claimed all-fixed-order expansion. The factors $Q^{-k(k-1)/2}$ also underscore why the theorem provides no uniform control in growing $k$.
+
+\section{The square-root phase and its exact envelopes}\label{sec:phaseproof}
+The fixed-order theorem with $J=1$, together with Theorem~\ref{thm:profiles}, gives
+\begin{equation}\label{eq:firstdeficit}
+ 1-\frac{b_n}{C}=\alpha rQ^rP(x_n)+\OO(Q^r).
+\end{equation}
+The next-sector error $\OO(r^2Q^{2r})$ is absorbed here into $\OO(Q^r)$. From the exact definition of $x=x_n$,
+\begin{equation}\label{eq:nphase}
+ n=3r^2+(x-2)r+2,
+\end{equation}
+so uniformly for $0\le x\le6$,
+\begin{equation}\label{eq:sqrtphase}
+ \sqrt{n/3}=r+\frac{x-2}{6}+\OO(1/r),\qquad
+ \sqrt{12n}=6r+x-2+\OO(1/r).
+\end{equation}
+Combining \eqref{eq:firstdeficit} with these relations yields
+\begin{equation}\label{eq:Dphase}
+ D_n=\frac{\alpha}{\sqrt3}\phi^{x_n-2}P(x_n)+\OO(1/r).
+\end{equation}
+If $x=t+\theta$, \eqref{eq:Pprofile} collapses the side label and gives precisely $G(\theta)$ from \eqref{eq:G}. Its endpoint values agree:
+\[
+ G(0)=\frac{\phi^6}{\sqrt{15}}=G(1).
+\]
+The periodic extension is globally Lipschitz, so the $\OO(1/r)$ phase perturbation in \eqref{eq:sqrtphase} changes $G$ by only $\OO(1/r)$ even at a fractional-part wrap. This proves the uniform formula \eqref{eq:phase}.
+
+To find the extrema, differentiate on $(0,1)$:
+\begin{equation}\label{eq:Gderivative}
+ \frac{d}{d\theta}\log G(\theta)
+ =\log\phi-\frac1{\phi^2-\theta}.
+\end{equation}
+It decreases strictly and vanishes at
+\begin{equation}\label{eq:thetamax}
+ \theta_* =\phi^2-\frac1{\log\phi}\in(0,1).
+\end{equation}
+The interval assertion follows without decimal estimates from
+$\phi^{-2}<\log\phi<\phi^{-1}$, which is the usual inequality
+$(z-1)/z<\log z<z-1$ at $z=\phi$. Thus $G$ has its unique maximum at $\theta_*$ and its equal minima at the endpoints. Substitution gives \eqref{eq:envelopes}. Every phase is approached along the within-side grids of mesh $1/r$ as $r\to\infty$, so these are attained subsequential envelopes, rather than merely pointwise bounds. In fact the whole interval between them is the set of subsequential limits of $D_n$.
+
+Since $G$ is bounded below by a positive constant, the relative deficit is eventually positive. Multiplication by $C\phi^n$ gives
+\[
+ C\phi^n-a_n
+ =\Theta\!\left(\sqrt n\,\exp\{n\log\phi-2\sqrt3\log\phi\sqrt n\}\right)
+ \longrightarrow+\infty.
+\]
+The relative error nevertheless tends to zero faster than every inverse power of $n$. This finishes the proof of Theorem~\ref{thm:phaseintro}.
+
+For A094925 in the original index $m$, replace $n$ by $m-1$ and $C$ by its zero-based value $C_1$. Equivalently, the same leading phase formula and envelope constants apply with $m$ and the original-index amplitude $C_1/\phi$: the unit shift changes the phase and the scaled prefactor by $\OO(m^{-1/2})$. For higher-order accuracy, retain the exact shift $F_k(m-1)$ rather than replacing it by $F_k(m)$.
+
+\section{Inverse brackets and the rounding obstruction}\label{sec:inverse}
+For the chosen seed, define the intrinsic inverse
+\begin{equation}\label{eq:N}
+ N(y)=\min\{n\ge0:a_n\ge y\},\qquad
+ x=\log_\phi(y/C).
+\end{equation}
+The recurrence is strictly increasing after its finite initial repeated terms, and $a_n\to\infty$, so this is well defined for positive $y$.
+
+\begin{theorem}[Two candidates and infinitely many failures]\label{thm:rounding}
+For all sufficiently large $y$,
+\begin{equation}\label{eq:twocandidates}
+ N(y)\in\{\lceil x\rceil,\lceil x\rceil+1\}.
+\end{equation}
+Each alternative occurs infinitely often even when $y$ is required to be an integer.
+\end{theorem}
+\begin{proof}
+The eventual strict deficit $a_n<C\phi^n$ excludes every sufficiently large $n<x$ as a crossing index; small indices are excluded when $y$ is large. Hence $N(y)\ge\lceil x\rceil$. Uniformly in the fractional part of $x$,
+\[
+ \frac{a_{\lceil x\rceil+1}}y
+ =\phi^{\lceil x\rceil+1-x}(1+o(1))>1
+\]
+eventually, proving the upper bound.
+
+For integer $y=a_n$, convergence and the negative relative correction imply $n-1<x<n$ eventually, so $\lceil x\rceil=n=N(y)$. For $y=a_n+1$, the divergence $C\phi^n-a_n\to\infty$ implies again $n-1<x<n$ eventually. But strict eventual increase and integrality give $N(a_n+1)=n+1$. The uncorrected ceiling therefore misses by exactly one infinitely often.
+\end{proof}
+
+\subsection{Real interpolation that preserves the fixed-order precision}
+For fixed $J\ge0$, set
+\begin{equation}\label{eq:UJ}
+ U_J(n)=\sum_{k=0}^JF_k(n),\qquad f_J(n)=C\phi^nU_J(n).
+\end{equation}
+These values are eventually positive and $f_J(n+1)/f_J(n)\to\phi$. Let $L$ be the piecewise-linear interpolation of $\log a_n$, and let $L_J$ be the piecewise-linear interpolation of $\log f_J(n)$, both restricted to a sufficiently late half-line. Their slopes tend to $\log\phi$, and hence are eventually at least $(\log\phi)/2$. Denote their increasing inverses by $X=L^{-1}$ and $X_J=L_J^{-1}$.
+
+\begin{theorem}[All fixed-order inverse envelopes]\label{thm:inverse}
+Extend $r(t)=\lfloor(1+\sqrt{3t-5})/3\rfloor$ to real $t\ge3$. For each fixed $J\ge0$,
+\begin{equation}\label{eq:realinverse}
+ |X(\log y)-X_J(\log y)|
+ =\OO_J\!\left((1+r(x))^{J+1}Q^{(J+1)r(x)}\right).
+\end{equation}
+Consequently, for some sufficiently large fixed $K_J>0$ and all sufficiently large $y$, put
+\begin{equation}\label{eq:delta}
+ \delta_J(y)=K_J(1+r(x))^{J+1}Q^{(J+1)r(x)}.
+\end{equation}
+Then the pointwise integer bounds are
+\begin{equation}\label{eq:ceilbounds}
+ \ceil{X_J(\log y)-\delta_J(y)}
+ \le N(y)\le
+ \ceil{X_J(\log y)+\delta_J(y)}.
+\end{equation}
+Their real bracket width tends to zero; the integer endpoints are equal or adjacent eventually.
+\end{theorem}
+\begin{proof}
+Since $U_J(n)\to1$, the logarithm is uniformly Lipschitz on the eventual range of both normalized approximations. Theorem~\ref{thm:main} therefore gives
+\[
+ |\log a_n-\log f_J(n)|
+ =\OO_J((1+r(n))^{J+1}Q^{(J+1)r(n)}).
+\]
+Linear interpolation preserves this bound between integers: adjacent stage weights differ by at most a constant depending only on $J$, even at a stage boundary. Also $L(t)=\log C+t\log\phi+o(1)$ and the same holds for $L_J(t)$. Thus
+\[
+ X(\log y)=x+o(1),\qquad X_J(\log y)=x+o(1).
+\]
+The stage weights near these two roots and at $x$ are comparable by a fixed factor. At one root, the vertical discrepancy between $L$ and $L_J$ has the stated order; dividing by the lower slope bound for the other interpolation controls the horizontal discrepancy. This proves \eqref{eq:realinverse} without assuming differentiability across an integer.
+
+On the eventual increasing half-line, $N(y)=\lceil X(\log y)\rceil$ exactly. Monotonicity of the ceiling gives \eqref{eq:ceilbounds}. Its real width $2\delta_J(y)$ is eventually less than one, which proves the final assertion.
+\end{proof}
+
+The constants $K_J$ and the onsets in this theorem are asymptotic existence statements, not numerical interval certificates supplied by the package. If an independently justified numerical bracket stays within one ceiling cell, the common endpoint determines $N(y)$ exactly. Without such separation, an unconditional rounded-root formula is unwarranted, however small the real error. This is an application of classical monotone interpolation and prior staircase/error-transport methodology \cite{proveit}; it is not a new general inversion principle. For the original index of A094925, add one to the zero-based inverse throughout.
+
+\section{Verification and reproducible deliverables}\label{sec:verification}
+The public package separates mandatory exact checks from optional numerical diagnostics. Its exact computations use only Python integers and \texttt{fractions.Fraction}; no third-party Python module, network, or TeX installation is required to run them. The core commands are
+\begin{quote}\ttfamily\small
+python3 -I -S -B code/check\_exact.py\\
+python3 -I -S -B -O code/check\_exact.py
+\end{quote}
+The normal and optimized modes must produce byte-identical canonical JSON. Explicit exceptions implement the input and consistency guards; correctness checks do not depend on Python assertions that optimization could remove. The replay script runs both modes in isolated environments and verifies their agreement.
+
+The checks include independent coordinate and delay-table generation through 1162 recurrence rows, the 79 listed integer terms across the two OEIS records, exact stage-weight identities, and the stage-100 amplitude certificates. A separately implemented $\Q(\sqrt5)$ arithmetic route cross-checks the main $\Q(\phi)$ arithmetic. Fixture integrity, type and domain errors, and relevant corruption cases are rejected. The receipt states each actually executed finite test and its scope. General asymptotic statements remain theorems of this manuscript, not deductions from a finite test count.
+
+The optional \texttt{code/diagnose\_float.py} evaluates exact-coefficient formulas with finite-tail truncation using \texttt{mpmath}. Higher-order residuals at a sample late stage illustrate the alternating hierarchy. They are noninterval diagnostics, with a specified precision and cutoff, and neither certify digits nor prove remainder constants. The mandatory build never runs them.
+
+To reproduce the exact results and build the complete release from a source tree or intact extracted archive, use the documented commands in \texttt{README\_REPRODUCIBILITY.md}. The builder creates fresh outputs, runs normal and optimized tests, compiles three isolated pdfLaTeX passes with shell escape disabled, and rejects final warnings, unresolved references, missing glyphs, and overfull or underfull boxes. The source inventory and generated manifest are closed and hash-checked. Archive entry order, timestamps, permissions, and storage mode are fixed. With the same installed Python/TeX stack, two fresh extracted builds must reproduce the PDF, TeX, ZIP, and external receipt byte for byte. Cross-version identity is not promised.
+
+The archive contains the authored article and code, bounded attributed integer and digit fixtures, and generated verification products. It excludes full OEIS exports, third-party full text, private research or audit material, transient logs, and unrelated files. SHA-256 manifests detect modification; they are not cryptographic publisher signatures. Reproduction is an offline tool for this authored package, not a sandbox for arbitrary hostile TeX or Python.
+
+\section{Sources and the limits of the comparison}\label{sec:sources}
+Yasutoshi Kohmoto's OEIS records define the two hexagonal adjacency sequences \cite{oeis926,oeis925}. The explicit leading equivalents and the square-root-delay motivation are credited there to Manfred Scheucher on 3 June 2015. A258639 credits its amplitude digits to Scheucher and V\'aclav Kot\v e\v sovec \cite{oeis639}. The source fixtures in this package are bounded excerpts: 41 and 38 integer terms, 106 amplitude digits, and the separate 77-digit A094925 amplitude string. They are attributed and checked exactly. The source records inspected were revisions 27, 20, and 4, respectively. The linked Sage scripts and full b-files were not accessible in the source review, so no claim is made to have inspected or verified their entire contents.
+
+Fernandez's \emph{Spiro-Fibonacci Sequences} \cite{fernandez}, last modified 11 January 2003, develops neighboring spiral constructions, including the square-spiral model and seed linearity. That construction differs from the present hexagonal rule, which adds all earlier neighbors of the preceding vertex. The actual text and the neighboring OEIS records A078510, A079421, and A079422 were considered; they supply context, not the hexagonal all-order theorem proved here.
+
+The ProveIt transseries and inversion material \cite{proveit} already treats real-argument Fibonacci continuations, exponential-oscillatory inversion, and staircase/error transport. Those general inverse methods are antecedents. Here the model has geometric delays of order $\sqrt n$, stage-scale corrections $e^{-2\sqrt3\log(\phi)\sqrt n}$, and discrete corner layers. The present target-specific contribution is the exact delay reduction, the amplitude proof and certificates, the fixed-order operator hierarchy with nonzero profiles, and the sharp periodic phase. A bounded search of the selected identifiers, amplitude constants, and spiral-growth terminology found no directly matching proof in the sources inspected. This is a statement of search scope, not exhaustive clearance or a claim of worldwide novelty.
+
+No closed elementary expression for either amplitude is claimed. No convergence in growing correction order, uniform seed-parameter theorem, effective inverse onset, or universal exact rounding rule is asserted. All external source activity was read-only; the report does not imply an OEIS submission or other publication.
+
+\begin{thebibliography}{9}
+\small
+\raggedright
+\setlength{\itemsep}{3pt}
+\setlength{\parsep}{0pt}
+\bibitem{oeis926}
+The OEIS Foundation, \emph{A094926, A hexagonal spiral Fibonacci sequence}. Sequence by Yasutoshi Kohmoto; asymptotic conjecture and comments by Manfred Scheucher, 3 June 2015. Revision 27, 19 April 2016.
+\url{https://oeis.org/A094926}.
+
+\bibitem{oeis925}
+The OEIS Foundation, \emph{A094925, A hexagonal spiral Fibonacci sequence}. Sequence by Yasutoshi Kohmoto; asymptotic conjecture by Manfred Scheucher, 3 June 2015. Revision 20, 4 May 2021.
+\url{https://oeis.org/A094925}.
+
+\bibitem{oeis639}
+Manfred Scheucher and V\'aclav Kot\v e\v sovec, \emph{A258639, Decimal expansion of a constant related to A094926}. The OEIS Foundation, 6 June 2015, revision 4.
+\url{https://oeis.org/A258639}.
+
+\bibitem{fernandez}
+Neil Fernandez, \emph{Spiro-Fibonacci Sequences}, last modified 11 January 2003.
+\url{https://borve.org/primeness/spirofib.html}.
+
+\bibitem{proveit}
+Vladimir Reshetnikov, \emph{ProveIt}, Analysis/Transseries, volume \emph{Transseries and Inversion}; real-argument Fibonacci and staircase/error-transport material. Read-only comparison at revision \texttt{6bf7f30d0352f7596e70928b3d4f304914075907}, 4 October 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt}.
+\end{thebibliography}
+\end{document}
