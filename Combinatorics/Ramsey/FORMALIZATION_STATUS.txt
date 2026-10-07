@@ -5,13 +5,19 @@ Scope
   bound is claimed. Smaller four- and five-term thresholds are proved below.
   The source catalogue contains all 120 unique numbered theorem, lemma,
   proposition, and corollary headings in sz-thm-gowers-proof.tex.
-  There are 114 exact companion proofs and 6 open statements. 113 of the
-  companions are kernel-checked; Lemma 16.10's awaits the next full audit.
+  The current Lean catalogue declares 114 exact companion proofs and 6
+  open statements. This includes the repaired Lemma 16.10, whose explicit
+  cover conclusion is weaker than the printed unit-parameter claim.
+  It must not be counted as a proof of that printed claim. Of these current
+  companions, 113 were kernel-checked before the incoming repair; the
+  merged development is undergoing a new full audit.
   The JSON ledger records every statement, its TeX heading lines, its Lean
   definition, and related results. Conditional implications, restricted cases,
   and counterexamples are not counted as proofs of the full statement.
   Matching headings does not establish mathematical fidelity: several source
   statements and shared definitions have documented repairs or unresolved gaps.
+  Counts in the historical checkpoint sections below describe those earlier
+  checkpoints; the current catalogue count is stated here and in the ledger.
 
 Verification at this checkpoint
   All 765 modules reachable from GowersSzemeredi.Audit compiled successfully.
@@ -2000,7 +2006,7 @@ Finite-alphabet bounds for the Section 16 cover obstruction
   has mass at most 5/16 of the parent under the explicit balance and width
   conditions. All four modules pass the full axiom audit.
   This proves the deterministic counting part of source 50's proposed
-  counterexample to the current lemma_16_10 encoding. Balanced-word
+  counterexample to the printed two-premise encoding. Balanced-word
   existence, packaged-premise witnesses, and the final negation are now
   proved below. No source-lemma count changes.
 
@@ -2050,9 +2056,10 @@ Finite-valued functions failing the target multiple-linearity conclusion
   This supplies the negative conclusion for the complete encoding
   counterexample proved below.
 
-Formal counterexample to the current two-premise Lemma 16.10 encoding
+Formal counterexample to the printed two-premise Lemma 16.10 encoding
   Proofs16PackagedPremisesCounterexample proves the literal negation of
-  the unchanged lemma_16_10 predicate. The witness has k=theta=gamma=1,
+  lemma_16_10_printed_unit_encoding, the original two-premise predicate
+  retained under a new name. The witness has k=theta=gamma=1,
   a sufficiently large prime modulus, full input and sidelength domains,
   every cube selected, and zero anchor. Proofs16FullGoodDomain verifies
   that the named good domain is full and the all-ones translated map is
@@ -2068,9 +2075,9 @@ Formal counterexample to the current two-premise Lemma 16.10 encoding
   provided by the balanced-word construction. The target conclusion is
   impossible by the checked 5/16-versus-1/2 mass contradiction.
   All six modules pass the full axiom audit. This is a disproof of the
-  current abstraction, not of the paper's lemma with all its upstream
-  structural assumptions. The numbered result remains open: it needs
-  a faithful contextual repair and a positive proof. The existing global
+  two-premise abstraction, not of the paper's lemma with all its upstream
+  structural assumptions. The weaker repaired catalogue result is proved
+  below; it does not establish the printed unit-parameter claim. The existing global
   affine lift retains explicit graph counts and widths without the false
   closing comparison.
 
@@ -2608,7 +2615,7 @@ Historical conditional induction from universal contextual lifting
   contextual lifting statements. The proof combines Lemma 16.4, compatible
   common-base data, exact graph transport and mass budget, finite extraction,
   and the proved zero- and one-dimensional bases. It never invokes the
-  refuted two-premise lemma_16_10 predicate. Its universal premise is now
+  refuted two-premise lemma_16_10_printed_unit_encoding predicate. Its universal premise is now
   refuted for every k>=1, so these conditional implications do not provide
   a route to the exact theorem. Use the selected-domain reduction instead;
   its remaining obligation is not refuted by the slab examples.
