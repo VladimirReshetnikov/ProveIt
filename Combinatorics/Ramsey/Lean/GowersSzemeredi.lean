@@ -429,6 +429,7 @@ import GowersSzemeredi.Proofs13SquareExponentLimit
 import GowersSzemeredi.Proofs16DenseMultilinearBox
 import GowersSzemeredi.Proofs16CorollaryFromInduction
 import GowersSzemeredi.Proofs16MultilinearProduct
+import GowersSzemeredi.Proofs16InductionAssembly
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 
