@@ -1,0 +1,81 @@
+# Supporting verification scope
+
+Run successfully with Python's standard library:
+
+`python verify_selection.py --output selection_checks.json`
+
+All exact sections use integers and `Fraction`; only the explicitly named
+actual-logarithms section uses floating-point arithmetic. The fixed seed is
+20261006. The files are supporting checks of proof mechanisms and constants,
+not a Lean formalization or exhaustive verification of the structure theorem.
+
+## Exact checks
+
+- **Abstract logarithmic window probabilities:** 648 membership cases,
+  including 200 exact core probabilities and 192 clipped noncore cases;
+  10,368 boundary probability bounds, including 6,272 positive boundaries.
+- **Weighted selection functional:** exact cell integration in four examples,
+  totaling 1,483 constant-membership cells. In each example the selected-core
+  mass is at least one half of total mass and the error bound is imposed; the
+  integral proves the expected lower bound and the maximum cell meets it.
+  These abstract coordinate weights are not claimed to arise from a cyclic
+  domain.
+- **Physical fibre windows:** three cyclic integer profiles, 84 proper windows,
+  22 with both nonempty interior and boundary; 14,376 exact shifted-interior
+  fibre checks. There are 168 actual exits from the selected set before the
+  boundary is removed, so the escape checks are not entirely vacuous. These
+  tests use rational multiplicative buffers that conservatively dominate the
+  logarithmic perturbation bounds. They check geometric escape and weighted
+  cardinality comparison, not the small final homomorphism error assumption.
+- **Modes:** all 314,721 ordered pairs of the 561 probability distributions on
+  three symbols with denominator 32. Fifteen pairs meet the required agreement
+  threshold, twelve involving a nonconstant distribution.
+- **Coupled transport:** 234 point-mass bounds and 228 two-path checks;
+  114 paths include positive label error and 96 include outside-set mass.
+  Both paths use a single shared endpoint.
+- **Longer stopped paths:** exact unnormalized surviving-prefix laws at path
+  lengths 2, 3, 5, and 7, plus shared-endpoint long-path couplings. The JSON
+  records the exact counts. These explicitly test killing on wrong labels and
+  exits; no claim is made about the normalized conditional-on-survival law.
+- **Constants:** exact checks at `eta = 2^-21`, including direction holes
+  `15/256`, pullback overlap lower bound `65/128`, extension budget `237/256`,
+  and the order-fifteen criterion
+
+  `4222187282107575 / 4362862139015168 < 1`.
+
+  Ten parameter cases check all algebraic identities using a proved rational
+  bracket for natural log 2 of width `1/884569308258492`.
+
+## Actual natural logarithms
+
+Three additional fibre profiles test the window probabilities and integrated
+functional using actual natural logarithms at `eta = 2^-21`. They cover 1,205
+cells. The maximum discrepancy between cell integration and direct probability
+summation is approximately `1.49e-11`, with integration tolerance `2e-9`.
+The largest positive probability-bound discrepancy is approximately `1.80e-17`,
+with probability tolerance `5e-15`. These profiles need not be invariant at the
+tiny final sigma, and this section expressly does not test the full theorem.
+
+## Independent mathematical audit conclusions
+
+The original selected-mass cancellation is valid; the later localized weighted
+boundary argument and the logarithmic windows yield the stronger audited
+selection. The original Lemma 10.6's extra sigma condition is unnecessary once
+shifted-fibre comparison is proved directly. The direct majority and transport
+module is sound at `eta = 2^-21`; the correct four-edge union bound is
+`6/31 + 2 eta`. The higher-order path criterion is sound for the unnormalized
+surviving sublaw. Order fifteen on the dense direction set consequently yields
+order seven for the induced difference map, because a relation among seven
+differences expands to one among fourteen source points on each side.
+
+
+
+EXACT UNIFORMITY-NORM VERIFICATION
+
+verify_u4.py uses Python standard-library integers and Fraction throughout.
+It reproduces the dual-function counts, generic and order-seven polynomials,
+five-point derivative energies and direct cube check, seven-point direct
+cyclotomic cube check, rational upper-bound comparisons, the b=-1/7 witness,
+and explicit one-third-harmonic assignments in dimensions 4 through 8.
+General statements are proved in the article; the finite checks are not
+an exhaustive verification, a Lean proof, or a numerical optimization.

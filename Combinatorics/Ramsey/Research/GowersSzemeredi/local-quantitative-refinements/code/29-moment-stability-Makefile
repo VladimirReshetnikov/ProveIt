@@ -1,0 +1,23 @@
+PYTHON ?= python3
+LATEXMK ?= latexmk
+TEX = gowers_moments_stability_restriction.tex
+PDF = gowers_moments_stability_restriction.pdf
+
+.PHONY: all verify figures clean
+
+all: $(PDF)
+
+$(PDF): $(TEX) figures/norm_bounds.pdf
+	$(LATEXMK) -pdf -interaction=nonstopmode -halt-on-error $(TEX)
+
+verify:
+	$(PYTHON) code/verify_moments.py --output data/moment_verification.json
+	$(PYTHON) code/verify_coefficients.py --output data/coefficients.json
+	$(PYTHON) code/verify_rank_restriction.py --output data/rank_verification.json
+	$(PYTHON) code/verify_joint_rigidity.py --output data/joint_verification.json
+
+figures:
+	$(PYTHON) code/make_figures.py
+
+clean:
+	$(LATEXMK) -c $(TEX)

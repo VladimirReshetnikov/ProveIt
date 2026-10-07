@@ -1,0 +1,21 @@
+PYTHON ?= python3
+LATEX ?= pdflatex
+
+.PHONY: all pdf check example clean
+all: pdf
+pdf: article.pdf
+
+article.pdf: article.tex
+	$(LATEX) -interaction=nonstopmode -halt-on-error article.tex
+	$(LATEX) -interaction=nonstopmode -halt-on-error article.tex
+	$(LATEX) -interaction=nonstopmode -halt-on-error article.tex
+
+check:
+	$(PYTHON) code/verify.py --extended
+	$(PYTHON) code/verify_erasures.py
+
+example:
+	$(PYTHON) code/arrangements.py data/example.json --orders 4 16 --output data/example_result.json
+
+clean:
+	rm -f article.aux article.log article.out article.toc

@@ -1,0 +1,18 @@
+PYTHON ?= python3
+LATEXMK ?= latexmk
+MAIN := gowers_weighted_spectrum_rigidity
+
+.PHONY: all pdf verify clean
+
+all: pdf
+
+pdf:
+	$(LATEXMK) -pdf -interaction=nonstopmode -halt-on-error $(MAIN).tex
+
+verify:
+	$(PYTHON) code/verify_spectral_rigidity.py
+	$(PYTHON) code/verify_weighted_extraction.py --output data/weighted_extraction_results.json
+	$(PYTHON) code/verify_weight_defects.py --output data/weight_defect_verification.json
+
+clean:
+	$(LATEXMK) -c $(MAIN).tex
