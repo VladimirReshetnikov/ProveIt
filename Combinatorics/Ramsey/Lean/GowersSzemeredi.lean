@@ -469,6 +469,7 @@ import GowersSzemeredi.Proofs16IntervalSlabProduct
 import GowersSzemeredi.Proofs16SlabCommonBaseWitness
 import GowersSzemeredi.Proofs16ContextualLiftCounterexample
 import GowersSzemeredi.Proofs16BudgetedLiftInduction
+import GowersSzemeredi.Proofs01QuantitativeDensityBridge
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 
