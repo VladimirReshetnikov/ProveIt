@@ -42,7 +42,7 @@ theorem section16_product_recovered_good_set {N k q r : Nat} [Fact N.Prime]
     (hcover : ∀ h ∈ A, ∀ x ∈ J, appendCoordinate h x ∈ D →
       ∃ t, phi (appendCoordinate h x) = ell h t x)
     (τ : ℝ) (hq : 0 < q) (hτ : 0 < τ) (hτ1 : τ ≤ 1)
-    (hr : 6 * (q : ℝ) ≤ (r : ℝ) * τ ^ 2) :
+    (hr : 6 * (q : ℝ) ≤ (r : ℝ) * τ) :
     ∃ (sample : Fin r → ZMod N) (F : Finset (Point N (k + 1))),
       (∀ i, sample i ∈ J) ∧ F ⊆ lastProductSet A J ∧
       (1 - 2 * τ) * ((lastProductSet A J).card : ℝ) ≤ F.card ∧
@@ -83,7 +83,7 @@ theorem section16_box_recovered_good_set {N k q r : Nat} [Fact N.Prime]
     (hcover : ∀ h ∈ T.carrier, ∀ x ∈ J.carrier, appendCoordinate h x ∈ D →
       ∃ t, phi (appendCoordinate h x) = ell h t x)
     (τ : ℝ) (hq : 0 < q) (hτ : 0 < τ) (hτ1 : τ ≤ 1)
-    (hr : 6 * (q : ℝ) ≤ (r : ℝ) * τ ^ 2) :
+    (hr : 6 * (q : ℝ) ≤ (r : ℝ) * τ) :
     ∃ (sample : Fin r → ZMod N) (F : Finset (Point N (k + 1))),
       (∀ i, sample i ∈ J.carrier) ∧ F ⊆ S.carrier ∧
       (1 - 2 * τ) * (S.carrier.card : ℝ) ≤ F.card ∧

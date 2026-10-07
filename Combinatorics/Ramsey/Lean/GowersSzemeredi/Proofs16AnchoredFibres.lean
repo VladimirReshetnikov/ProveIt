@@ -20,7 +20,7 @@ theorem section16_affine_cover_anchored_good_set {N q r : Nat} [Fact N.Prime]
     (hcover : ∀ h x, x ∈ B h → ∃ t, f h x = ell h t (coord x))
     (σ : ℝ) (hq : 0 < q) (hσ : 0 < σ)
     (hlong : 2 * (q : ℝ) ≤ σ * Fintype.card α)
-    (hr : 6 * (q : ℝ) ≤ (r : ℝ) * σ ^ 2) :
+    (hr : 6 * (q : ℝ) ≤ (r : ℝ) * σ) :
     ∃ (sample : Fin r → α) (E : Finset (β × α)),
       (1 - 2 * σ) * (Fintype.card β : ℝ) * Fintype.card α ≤ E.card ∧
       ∀ h x, (h, x) ∈ E → x ∈ B h →

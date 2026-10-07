@@ -29,7 +29,7 @@ theorem section16_box_anchored_good_set {N k q r : Nat} [Fact N.Prime]
       ∃ t, phi (appendCoordinate h x) = ell h t x)
     (τ : ℝ) (hq : 0 < q) (hτ : 0 < τ)
     (hlong : 2 * (q : ℝ) ≤ τ * J.carrier.card)
-    (hr : 6 * (q : ℝ) ≤ (r : ℝ) * τ ^ 2) :
+    (hr : 6 * (q : ℝ) ≤ (r : ℝ) * τ) :
     ∃ (sample : Fin r → ZMod N) (F : Finset (Point N (k + 1))),
       (∀ i, sample i ∈ J.carrier) ∧ F ⊆ S.carrier ∧
       (1 - 2 * τ) * (S.carrier.card : ℝ) ≤ F.card ∧ Section16AnchoredOn D phi sample F := by
@@ -46,7 +46,7 @@ theorem Section16LineCover.anchored_cells {N k q r : Nat} [Fact N.Prime]
     {phi : Point N (k + 1) → ZMod N} {σ l : ℝ}
     (hline : Section16LineCover P B1 phi σ l q)
     (τ : ℝ) (hq : 0 < q) (hτ : 0 < τ)
-    (hr : 6 * (q : ℝ) ≤ (r : ℝ) * τ ^ 2) :
+    (hr : 6 * (q : ℝ) ≤ (r : ℝ) * τ) :
     ∃ (E : Finset (Point N (k + 1))) (M : Nat)
       (S : Fin M → Box N (k + 1)) (T : Fin M → Box N k) (J : Fin M → ModAP N),
       E ⊆ P.carrier ∧ (1 - σ) * (P.carrier.card : ℝ) ≤ E.card ∧

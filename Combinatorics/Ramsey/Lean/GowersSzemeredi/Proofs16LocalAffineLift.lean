@@ -22,7 +22,7 @@ theorem section16_local_affine_lift {N k q r m v : Nat} [Fact N.Prime]
       ∃ i, phi (appendCoordinate h x) = ell h i x)
     (τ ε : ℝ) (hq : 0 < q) (hτ : 0 < τ) (hτ1 : τ ≤ 1)
     (hε : 0 < ε) (hε1 : ε ≤ 1)
-    (hr : 6 * (q : ℝ) ≤ (r : ℝ) * τ ^ 2) (hv : 1 ≤ v)
+    (hr : 6 * (q : ℝ) ≤ (r : ℝ) * τ) (hv : 1 ≤ v)
     (hvscale : (v : ℝ) ^ 2 + 1 ≤ ((m : ℝ) / 8) ^
       ((multipleC (((r : ℝ) * s)⁻¹ * ε) gamma k) ^ ((r : ℝ) * s))) :
     ∃ (p : Nat) (G : Finset (Point N (k + 1))) (L : Nat) (S : Fin L → Box N (k + 1))

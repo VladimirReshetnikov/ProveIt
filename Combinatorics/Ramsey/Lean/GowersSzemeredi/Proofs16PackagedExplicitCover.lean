@@ -24,7 +24,7 @@ theorem Section16AllBoxLineCovers.explicit_multilinear_cover {N k : Nat} [Fact N
       (qGamma : Real) ≤ section16Lemma9QBound sigma theta gamma k ∧
       (qDelta : Real) ≤ section16Lemma9DeltaQBound sigma delta theta1 k ∧
       let l := section16Lemma9Width m qDelta k sigma theta gamma delta theta1 zeta
-      let r := Nat.ceil (6 * (max 1 qGamma : Real) / sigma ^ 2)
+      let r := Nat.ceil (6 * (max 1 qGamma : Real) / sigma)
       let b := (multipleQ (((r : Real) * s)⁻¹ * sigma) gamma k) ^ ((r : Real) * s)
       ∃ (n : Nat) (H : Finset (Point N (k + 1))) (L : Nat)
         (Q : Fin L → Box N (k + 1)) (mu : Fin L → Fin n → Point N (k + 1) → ZMod N),

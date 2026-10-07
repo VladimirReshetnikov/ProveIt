@@ -13,8 +13,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 709 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 4,545 public Gowers theorems and found only propext,
+  All 710 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 4,560 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 113 exact
   companion proofs and 7 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -338,7 +338,8 @@ Corrected distinct-anchor sampling estimate
   every nonempty surviving class has at least two elements. For q classes
   per base point with total mass at most |T|*n, pruning and sampling together
   discard at most 2*sigma*|T|*n points, in the sum-of-class-sizes formulation.
-  Proofs16ClassDeletion now transports these counts to an actual good subset
+  The earlier pruning estimate remains available. Proofs16ClassDeletion
+  now uses the stronger weighted estimate below to construct a good subset
   of the ambient product. Its intersection with each original class is the
   retained class; points outside the class family are preserved. Both sampled
   anchors remain in that good subset.
@@ -388,7 +389,7 @@ Corrected distinct-anchor sampling estimate
   With b=multipleQ(epsilon/(r*s),gamma,k)^(r*s), the global graph count is at
   most r*b+r*r*b*b; the width remains sqrt((m/8)^a)/4 for m<=l.
   Proofs16GlobalLiftParameters pads the line-cover graph count to max(1,q),
-  chooses r=ceil(6*max(1,q)/tau^2), and takes m=floor(l) for l>=0. This handles
+  chooses r=ceil(6*max(1,q)/tau), and takes m=floor(l) for l>=0. This handles
   zero graph counts and removes the auxiliary integer choices from assembly.
   Proofs16ClosingComparison proves that the transcription's same-dimensional
   closing graph comparison is false throughout its stated positive range:
@@ -402,6 +403,30 @@ Corrected distinct-anchor sampling estimate
   The newly received gowers_interpolation_article.zip proposes sampling
   without replacement and singleton recovery for a sharper local bound. Its
   argument has been inspected, but is not a checked Lean result at this stage.
+
+Linear inverse-loss sampling budget in the complete affine lift
+  Proofs16WeightedSamplingBudget proves that a class C with at least two
+  elements in an n-point column space contributes at most 6*n/r expected
+  lost points under r independent draws. The proof weights the distinct-pair
+  failure probability by |C| before averaging; it requires no lower bound
+  on the individual class density. The same sample serves every class.
+  Classes of size zero or one are discarded separately, costing at most one
+  point per class. When 2*q<=sigma*n, these singleton losses and the weighted
+  sampling losses total at most 2*sigma*|T|*n once r*sigma>=6*q.
+  The complementary short-column branch enumerates all columns within the
+  same linear budget, retaining directly sampled points without requiring
+  two distinct anchors. Thus the complete recovered-good-set theorem now
+  needs only r*tau>=6*q, instead of r*tau^2>=6*q.
+  This improvement propagates through affine-class selection, anchored
+  products, the synchronized local lift, its square-root width bound, the
+  all-scale construction, the global lift, and the positive packaged cover.
+  The rounded global sample count is now ceil(6*max(1,q)/tau). Lean also
+  proves that this never exceeds the former quadratic budget on 0<tau<=1.
+  Every retained-mass and geometric conclusion is preserved. The older
+  individual-class probability and pruning theorems remain available.
+  This improves the actual Section 16 construction; it does not establish
+  the still-unsupported comparison with the unit-parameter controls or
+  assert the refuted two-premise Lemma 16.10 predicate.
 
 Shared Section 16 migration
   Box.IsProper is now a shared definition. MultiplyLinear requires proper
@@ -1937,7 +1962,7 @@ Positive cover interface retaining the proved quantitative bounds
   Proofs16PackagedExplicitCover combines the two packaged premises at
   sigma=rho/4 with the verified global affine lift. It gives retained mass
   at least (1-rho)|P| and a proper box partition with genuine multilinear
-  graphs. If r=ceil(6*max(1,qGamma)/sigma^2), s is the section parameter,
+  graphs. If r=ceil(6*max(1,qGamma)/sigma), s is the section parameter,
   and b=multipleQ(((r*s)^-1)*sigma,gamma,k)^(r*s), then the graph count is
   at most r*b+r^2*b^2. The width is the checked square-root expression
   using floor(l), where l is the actual Lemma 16.9 width with its separate

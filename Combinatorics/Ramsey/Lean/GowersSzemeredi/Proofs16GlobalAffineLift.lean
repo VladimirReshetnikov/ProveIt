@@ -20,7 +20,7 @@ theorem Section16LineCover.global_affine_lift {N k q r m : Nat} [Fact N.Prime]
     (hk : 0 < k) (hg : 0 < gamma) (hg1 : gamma ≤ 1) (hs : 1 ≤ s)
     (hm : (m : ℝ) ≤ l) (τ ε : ℝ) (hq : 0 < q)
     (hτ : 0 < τ) (hτ1 : τ ≤ 1) (hε : 0 < ε) (hε1 : ε ≤ 1)
-    (hr : 6 * (q : ℝ) ≤ (r : ℝ) * τ ^ 2) :
+    (hr : 6 * (q : ℝ) ≤ (r : ℝ) * τ) :
     let b := (multipleQ (((r : ℝ) * s)⁻¹ * ε) gamma k) ^ ((r : ℝ) * s)
     ∃ (n : Nat) (H : Finset (Point N (k + 1))) (L : Nat)
       (Q : Fin L → Box N (k + 1)) (mu : Fin L → Fin n → Point N (k + 1) → ZMod N),
