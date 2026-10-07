@@ -1,0 +1,66 @@
+INTEGRATION INTO PROVEIT
+
+Suggested destination:
+Combinatorics/Ramsey/Research/GowersSzemeredi/local-quantitative-refinements/
+
+This package does not reserve a source number. Assign one through the
+repository's normal intake process.
+
+THEOREM PLACEMENT
+
+1. Beside Gowers Lemma 14.4 and Proofs14Configurations.lean:
+   rank:interpolation, rank:relation-basis, rank:fourstate,
+   rank:tests, and count:configuration.
+
+2. Beside Corollary 14.5 and source 15's collision lower bound:
+   rank:reference, count:gluing, count:cubepairs, count:indicator,
+   count:profiles, count:order, and arr:collision.
+
+3. Beside Lemmas 14.7--14.8 and source 15 Theorem 5.6:
+   arr:main and arr:eight.
+   The moment and collision coupling themselves remain attributed
+   to source 15; the stronger cube input is the new ingredient.
+
+4. Beside source 35's explicit selection and Lemma 15.6 substitution:
+   sel:prior-selector (attributed input), sel:new-output,
+   sel:comparison, and sel:k2.
+
+5. Sharpness and research agenda:
+   sharp:random-pattern, sharp:density, q:density-frontier,
+   q:frequency-frontier, and q:iteration.
+
+SOURCE FORMAT
+
+The .tex file contains the full article, including its bibliography.
+When adding it to the merged report, remove only the standalone
+preamble, title material, contents command, bibliography wrapper, and
+end-of-document marker. Prefix labels and citation keys using the
+repository convention. Preserve all hypotheses and normalizations.
+
+IMPORTANT MATHEMATICAL DISTINCTIONS
+
+- The exponent 8(4^k - 3^k) is for full configurations.
+- The stronger exponent 4(4^k - 2^k) is proved for cube pairs.
+- Cube-pair weights use the fractional moment E w^(2^(1-k)).
+- Repeated physical vertices retain their occurrence multiplicities.
+- The two orientation maps are injective separately. Their union is
+  not asserted to be injective; AM-GM is what gives the weighted bound.
+- The collision denominator is coupled before its lower bound is used.
+- The counting theorems have no characteristic restriction.
+- The imported finite-field selector has p > 2(L-1), separately from
+  its field-cardinality threshold. Large extension fields do not
+  automatically have large characteristic.
+- Exact local test-count optimality is not optimality of the final
+  frequency exponents. The configuration density exponent and leading
+  coefficient are separately proved optimal.
+
+FORMAL STATUS
+
+No Lean file is included. The exact Python programs are finite
+consistency checks, not formal proofs. Do not update a Lean proof-status
+ledger solely because this article has been integrated.
+
+Recommended first formalization: the indicator version of the direct
+cube-pair injection, then the exponent recurrence, then its use in the
+existing arrangement amplification. The weighted extension can follow
+as a separate theorem using nonnegative square roots and AM-GM.

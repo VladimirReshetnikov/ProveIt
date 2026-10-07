@@ -1,0 +1,693 @@
+{
+  "commit": "af74fb522c24a6331886b11db76942642a6a0e42",
+  "formulas": {
+    "analytic_envelopes": {
+      "boundary": "log(c_iter^(-1))<=x^65",
+      "common": "log(F(alpha))<=2^(x^(2^65))",
+      "density": "x<delta^(-337); 337*2^67<2^76",
+      "final": "log(log(H_f))<=x^(2^67)",
+      "geometric": "log(G(gamma))<=2^(16*(2/gamma)^(2^32))",
+      "iteration": "n*log(Q_iter)<=x^(2^58)",
+      "scope": "These real-variable inequalities are proved in provenance/PROOF.md; they are not certified by this script.",
+      "start": "log(S)<=2^(x^(2^65))",
+      "strict_chain": "H_f<2^(2^(delta^(-2^76)))<2^(2^(delta^(-2^16384)))"
+    },
+    "common_fourier": {
+      "D": "4207554485",
+      "F": "max{F_graph,G(x^(-D))}",
+      "F_graph": "max{2*M,ceil(2^175*M^63*x^(j+15*h))}",
+      "M": "ceil(2^78*x^j)",
+      "gamma": "x^(-D)",
+      "h": "14409429",
+      "j": "97*h+336",
+      "purification_parameters": "delta0=x^(-h); rho=x^(-j); eta=2^(-44)"
+    },
+    "conventions": {
+      "PP": "PP(C,D,e)=max{1,max{1,C/D}^(1/e)}; real division is totalized",
+      "finite_range": "q in {0,...,floor(Q_bound)}; natural supremum is a finite maximum",
+      "geometric_range": "0<gamma<=1; y=2/gamma>=2; B=y^(2^32)",
+      "log": "log denotes log base 2; ln denotes natural logarithm",
+      "natural_subtraction": "q-1 in the simultaneous threshold is natural subtraction",
+      "positive_range": "0<delta<=1/2; alpha=(delta^5/64000)^16; x=2/alpha>=2",
+      "q_zero": "u_0=theta_one^2/(16*0)=0; PP(C,D,0)=1"
+    },
+    "fejer": {
+      "A": "1+ln(max{1,S})+abs(ln(c_iter))",
+      "B0": "Bdry(1/16)",
+      "Bdry": "Bdry(epsilon)=L_1(4*pi*epsilon)",
+      "C": "L_3(w)*D_count^(1/P)",
+      "D_count": "K_count*12^t",
+      "E": "exp((4+6*L_2(1))*(2/a)^25378984)",
+      "H_f": "exp(A*Q_iter^n)",
+      "K_count": "max{1,2*B0*8^(1-t)}",
+      "L_j": "L_j(eta)=max{W_j,(4*pi/eta)^P_j,4^P_j}+4",
+      "O": "max{F,PP(4,1,e_f)}",
+      "P": "(3!)^2*2^16=2359296",
+      "P_j": "(j!)^2*2^((j+1)^2)",
+      "Q_iter": "2*max{1,16/sigma}",
+      "S": "max{5,T_local,32/beta,12801/delta^5}",
+      "T_local": "max{U,PP(C,1,sigma)}",
+      "U": "max{256,O,PP(12*max{2,max{4,E}},1,e_f)}",
+      "W_j": "2^(2^(40*j^3+1))",
+      "c_iter": "beta/(8*Bdry(beta/64))",
+      "d": "2^42",
+      "e_f": "2^(-x^(2^53))",
+      "n": "ceil(8/beta)",
+      "sigma": "e_f*t/(2*P)"
+    },
+    "geometry": {
+      "G": "max{1,density_recurrence,density_integer,square_scale,square_power}",
+      "I_q": "PP(R_q+2,d0,u_q)",
+      "J": "max{PP(8,1,f),PP(W,1,f),PP(8,(1/4)^g,f*g)}",
+      "R_q": "max{(2*W_2)^(2048^(q-1))+1,PP(8,1,v_q),PP(160+2*gamma^32,gamma^32,v_q)}",
+      "V": "max{PP(1,c,e),PP(4,d,e),PP(1,z*d,e)}",
+      "c": "2^(-228*K-1)*gamma^(576*K)",
+      "d": "min{1,d0/2}",
+      "d0": "theta_one/(64*pi)",
+      "density_integer": "max_(0<=q<=floor(Q_bound)) ceil(integer_budget_q)",
+      "density_recurrence": "max{3,max_(0<=q<=floor(Q_bound)) ceil(I_q)}",
+      "e": "2^(-13*Q)",
+      "integer_budget_q": "max{V,PP(4,d0,u_q)}",
+      "k": "ceil(K)",
+      "square_power": "max{PP(4,c^f,e*f),PP(2,(c^f/4)^(g/2),e*f*g/4)}",
+      "square_power_log_first": "(2/f+log(c^(-1)))/e",
+      "square_power_log_second": "(4/(f*g)+2*log(c^(-1))+4/f)/e",
+      "square_scale": "PP(J,c,e)",
+      "u_q": "theta_one^2/(16*q)",
+      "v_q": "2^(-12*q)",
+      "z": "2^(-155*k)*(gamma^32/16)^(18*k)/k"
+    }
+  },
+  "integer_checks": {
+    "B_minimum_degree_suffices": {
+      "left": 9,
+      "relation": "<",
+      "right": 4294967296
+    },
+    "B_minimum_exceeds_323": {
+      "left": 323,
+      "relation": "<",
+      "right": 512
+    },
+    "K_absorption": {
+      "left": 434,
+      "relation": "=",
+      "right": 434
+    },
+    "P1": {
+      "left": 16,
+      "relation": "=",
+      "right": 16
+    },
+    "P2": {
+      "left": 2048,
+      "relation": "=",
+      "right": 2048
+    },
+    "P3": {
+      "left": 2359296,
+      "relation": "=",
+      "right": 2359296
+    },
+    "P3_degree_limit": {
+      "left": 2359296,
+      "relation": "<",
+      "right": 4194304
+    },
+    "Q_absorption": {
+      "left": 3145728,
+      "relation": "<",
+      "right": 4194304
+    },
+    "Q_iter_log_degree": {
+      "left": 18014398509481985,
+      "relation": "<",
+      "right": 36028797018963968
+    },
+    "W1_outer_exponent_label": {
+      "left": 41,
+      "relation": "=",
+      "right": 41
+    },
+    "W2_outer_exponent_label": {
+      "left": 321,
+      "relation": "=",
+      "right": 321
+    },
+    "W3_outer_exponent_label": {
+      "left": 1081,
+      "relation": "=",
+      "right": 1081
+    },
+    "W_absorption": {
+      "left": 839,
+      "relation": "=",
+      "right": 839
+    },
+    "all_primitive_degrees": {
+      "left": 16777216,
+      "relation": "<",
+      "right": 4294967296
+    },
+    "beta_absorption": {
+      "left": 54368650971157718,
+      "relation": "=",
+      "right": 54368650971157718
+    },
+    "beta_coefficient": {
+      "left": 865346,
+      "relation": "=",
+      "right": 865346
+    },
+    "beta_degree": {
+      "left": 54368650970292372,
+      "relation": "=",
+      "right": 54368650970292372
+    },
+    "beta_degree_limit": {
+      "left": 54368650971157718,
+      "relation": "<",
+      "right": 72057594037927936
+    },
+    "boundary_beta_coefficient": {
+      "left": 1152921504606846976,
+      "relation": "=",
+      "right": 1152921504606846976
+    },
+    "boundary_c_log_degree": {
+      "left": 65,
+      "relation": "=",
+      "right": 65
+    },
+    "boundary_outer_add": {
+      "left": 63,
+      "relation": "=",
+      "right": 63
+    },
+    "boundary_small_sum": {
+      "left": 2305843009213694048,
+      "relation": "<",
+      "right": 4611686018427387904
+    },
+    "c_bracket_coefficient": {
+      "left": 690,
+      "relation": "=",
+      "right": 690
+    },
+    "c_bracket_power": {
+      "left": 690,
+      "relation": "<=",
+      "right": 1024
+    },
+    "c_log_degree": {
+      "left": 446,
+      "relation": "=",
+      "right": 446
+    },
+    "ceiling_16B_coefficient": {
+      "left": 16,
+      "relation": "=",
+      "right": 16
+    },
+    "d0_absorption": {
+      "left": 2463985,
+      "relation": "=",
+      "right": 2463985
+    },
+    "d0_degree_limit": {
+      "left": 2463985,
+      "relation": "<",
+      "right": 4194304
+    },
+    "d_degree_limit": {
+      "left": 4194305,
+      "relation": "<",
+      "right": 4294967296
+    },
+    "density_absorbed_degree": {
+      "left": 337,
+      "relation": "=",
+      "right": 337
+    },
+    "density_coefficient_degree": {
+      "left": 257,
+      "relation": "=",
+      "right": 257
+    },
+    "density_constant": {
+      "left": 64000,
+      "relation": "<",
+      "right": 65536
+    },
+    "density_denominator": {
+      "left": 64000,
+      "relation": "=",
+      "right": 64000
+    },
+    "density_final_degree": {
+      "left": 49732422022720951156736,
+      "relation": "<",
+      "right": 75557863725914323419136
+    },
+    "density_strict_degree": {
+      "left": 337,
+      "relation": "<",
+      "right": 512
+    },
+    "extra_interval_constant": {
+      "left": 12801,
+      "relation": "<",
+      "right": 16384
+    },
+    "f_inverse_absorption": {
+      "left": 548,
+      "relation": "=",
+      "right": 548
+    },
+    "final_loglog_degree": {
+      "left": 73786976294838206466,
+      "relation": "<",
+      "right": 147573952589676412928
+    },
+    "frequency_ceiling_coefficient": {
+      "left": 5153,
+      "relation": "=",
+      "right": 5153
+    },
+    "frequency_degree": {
+      "left": 89669903324,
+      "relation": "=",
+      "right": 89669903324
+    },
+    "frequency_degree_limit": {
+      "left": 89669903324,
+      "relation": "<",
+      "right": 137438953472
+    },
+    "frequency_first_branch": {
+      "left": 1397715029,
+      "relation": "<",
+      "right": 89669903324
+    },
+    "frequency_j": {
+      "left": 1397714949,
+      "relation": "=",
+      "right": 1397714949
+    },
+    "frequency_log_degree": {
+      "left": 38,
+      "relation": "=",
+      "right": 38
+    },
+    "g_coefficient": {
+      "left": 284,
+      "relation": "=",
+      "right": 284
+    },
+    "g_degree": {
+      "left": 1408,
+      "relation": "=",
+      "right": 1408
+    },
+    "g_inverse_absorption": {
+      "left": 1692,
+      "relation": "=",
+      "right": 1692
+    },
+    "geometric_B_degree": {
+      "left": 18446744073709551616,
+      "relation": "=",
+      "right": 18446744073709551616
+    },
+    "geometric_D": {
+      "left": 4207554486,
+      "relation": "<",
+      "right": 4294967296
+    },
+    "geometric_log_degree": {
+      "left": 18446744073709551620,
+      "relation": "<",
+      "right": 36893488147419103232
+    },
+    "interval_count": {
+      "left": 12801,
+      "relation": "=",
+      "right": 12801
+    },
+    "iteration_A_degree": {
+      "left": 36893488147419103233,
+      "relation": "<",
+      "right": 73786976294838206464
+    },
+    "iteration_Q_coefficient": {
+      "left": 32,
+      "relation": "=",
+      "right": 32
+    },
+    "iteration_ceiling_constant": {
+      "left": 9,
+      "relation": "<=",
+      "right": 16
+    },
+    "iteration_ceiling_degree": {
+      "left": 72057594037927940,
+      "relation": "<",
+      "right": 144115188075855872
+    },
+    "iteration_degree": {
+      "left": 180143985094819840,
+      "relation": "<",
+      "right": 288230376151711744
+    },
+    "k_ceiling_absorption": {
+      "left": 435,
+      "relation": "=",
+      "right": 435
+    },
+    "local_threshold_common_degree": {
+      "left": 36028797018963968,
+      "relation": "<",
+      "right": 36893488147419103232
+    },
+    "paper_label": {
+      "left": 16384,
+      "relation": "=",
+      "right": 16384
+    },
+    "paper_strict_degree_labels": {
+      "left": 76,
+      "relation": "<",
+      "right": 16384
+    },
+    "phase_C_degree": {
+      "left": 1083,
+      "relation": "=",
+      "right": 1083
+    },
+    "phase_C_localization_degree": {
+      "left": 1084,
+      "relation": "<",
+      "right": 18014398509481984
+    },
+    "phase_count_coefficient": {
+      "left": 192,
+      "relation": "=",
+      "right": 192
+    },
+    "phase_count_dyadic": {
+      "left": 192,
+      "relation": "<",
+      "right": 256
+    },
+    "phase_log_B0_degree": {
+      "left": 2199023255561,
+      "relation": "<",
+      "right": 4398046511104
+    },
+    "phase_max_degree": {
+      "left": 1082,
+      "relation": "=",
+      "right": 1082
+    },
+    "phase_small_product_degree": {
+      "left": 81,
+      "relation": "=",
+      "right": 81
+    },
+    "q_bound_absorption": {
+      "left": 2464447,
+      "relation": "<",
+      "right": 4194304
+    },
+    "quadratic_E_degree": {
+      "left": 25378984,
+      "relation": "=",
+      "right": 25378984
+    },
+    "quadratic_L2_dominance_label": {
+      "left": 14,
+      "relation": "<",
+      "right": 321
+    },
+    "quadratic_L2_other_bound": {
+      "left": 8192,
+      "relation": "<",
+      "right": 16384
+    },
+    "quadratic_L2_other_constant_degree": {
+      "left": 4096,
+      "relation": "=",
+      "right": 4096
+    },
+    "quadratic_L2_other_dyadic_degree": {
+      "left": 8192,
+      "relation": "=",
+      "right": 8192
+    },
+    "quadratic_a_degree": {
+      "left": 111617952038391525184,
+      "relation": "<",
+      "right": 295147905179352825856
+    },
+    "quadratic_localization_degree": {
+      "left": 324,
+      "relation": "<",
+      "right": 9007199254740992
+    },
+    "quadratic_loglog_degree": {
+      "left": 324,
+      "relation": "=",
+      "right": 324
+    },
+    "recurrence_12B_coefficient": {
+      "left": 12,
+      "relation": "=",
+      "right": 12
+    },
+    "recurrence_13B_coefficient": {
+      "left": 13,
+      "relation": "=",
+      "right": 13
+    },
+    "recurrence_shift_323": {
+      "left": 323,
+      "relation": "=",
+      "right": 323
+    },
+    "rounded_radius_coefficient": {
+      "left": 227,
+      "relation": "=",
+      "right": 227
+    },
+    "rounded_radius_degree": {
+      "left": 576,
+      "relation": "=",
+      "right": 576
+    },
+    "sigma_constant": {
+      "left": 4718592,
+      "relation": "<",
+      "right": 8388608
+    },
+    "sigma_small_degree": {
+      "left": 59,
+      "relation": "<",
+      "right": 9007199254740992
+    },
+    "sigma_small_sum_coefficient": {
+      "left": 288230376151711767,
+      "relation": "<",
+      "right": 576460752303423488
+    },
+    "sigma_sum_degree": {
+      "left": 9007199254740993,
+      "relation": "<",
+      "right": 18014398509481984
+    },
+    "spectrum_coefficient": {
+      "left": 620143,
+      "relation": "=",
+      "right": 620143
+    },
+    "spectrum_degree": {
+      "left": 1844304,
+      "relation": "=",
+      "right": 1844304
+    },
+    "square_first_inverse_f_coefficient": {
+      "left": 2,
+      "relation": "=",
+      "right": 2
+    },
+    "square_polynomial_absorption_seed": {
+      "left": 104,
+      "relation": "<=",
+      "right": 256
+    },
+    "square_polynomial_coefficient": {
+      "left": 8,
+      "relation": "=",
+      "right": 8
+    },
+    "square_second_inverse_f_coefficient": {
+      "left": 4,
+      "relation": "=",
+      "right": 4
+    },
+    "square_second_inverse_fg_coefficient": {
+      "left": 4,
+      "relation": "=",
+      "right": 4
+    },
+    "square_second_log_c_coefficient": {
+      "left": 2,
+      "relation": "=",
+      "right": 2
+    },
+    "t_absorption": {
+      "left": 108710913663248398,
+      "relation": "=",
+      "right": 108710913663248398
+    },
+    "t_coefficient": {
+      "left": 1730290,
+      "relation": "=",
+      "right": 1730290
+    },
+    "t_degree": {
+      "left": 108710913661518108,
+      "relation": "=",
+      "right": 108710913661518108
+    },
+    "t_degree_limit": {
+      "left": 108710913663248398,
+      "relation": "<",
+      "right": 144115188075855872
+    },
+    "theta_coefficient": {
+      "left": 59,
+      "relation": "=",
+      "right": 59
+    },
+    "theta_degree": {
+      "left": 176,
+      "relation": "=",
+      "right": 176
+    },
+    "theta_one_absorption": {
+      "left": 2463977,
+      "relation": "=",
+      "right": 2463977
+    },
+    "theta_one_coefficient": {
+      "left": 620025,
+      "relation": "=",
+      "right": 620025
+    },
+    "theta_one_degree": {
+      "left": 1843952,
+      "relation": "=",
+      "right": 1843952
+    },
+    "threshold_15B_coefficient": {
+      "left": 15,
+      "relation": "=",
+      "right": 15
+    },
+    "u_inverse_absorption": {
+      "left": 9122262,
+      "relation": "<",
+      "right": 16777216
+    },
+    "uniformity_degree": {
+      "left": 16,
+      "relation": "=",
+      "right": 16
+    },
+    "z_log_degree": {
+      "left": 447,
+      "relation": "=",
+      "right": 447
+    }
+  },
+  "monomials": {
+    "fejer_x": {
+      "a": [
+        -69,
+        -4398046511106
+      ],
+      "alpha": [
+        1,
+        -1
+      ],
+      "b": [
+        -865288,
+        -54364252923781266
+      ],
+      "beta": [
+        -865346,
+        -54368650970292372
+      ],
+      "mu": [
+        -57,
+        -4398046511106
+      ],
+      "t": [
+        -1730290,
+        -108710913661518108
+      ],
+      "w": [
+        -865345,
+        -54368650970292372
+      ]
+    },
+    "geometry_gamma": {
+      "K": [
+        114,
+        -320
+      ],
+      "Q": [
+        1048576,
+        -2097152
+      ],
+      "W": [
+        135,
+        -704
+      ],
+      "eta": [
+        -4,
+        32
+      ],
+      "f": [
+        -100,
+        448
+      ],
+      "g": [
+        -284,
+        1408
+      ],
+      "q_bound": [
+        620143,
+        -1844304
+      ],
+      "spectrum_bound": [
+        114,
+        -320
+      ],
+      "theta": [
+        -59,
+        176
+      ],
+      "theta_one": [
+        -620025,
+        1843952
+      ]
+    }
+  },
+  "pair_convention": "[u,v] denotes 2^u times gamma^v or x^v as labeled",
+  "proof_sha256": "967e1b57b5823d5eff3282e48420ec64a35bd3562ca5bdfa19a21081dcb2358c",
+  "report": 298,
+  "schema_version": 1,
+  "scope": "Finite symbolic identities and sufficient integer inequalities only; the full real-variable proof is in provenance/PROOF.md and Report298.tex.",
+  "tower_policy": "Only exponent labels and bounded integer coefficients are evaluated. No threshold, tower, real-power or floating-point values are evaluated."
+}
