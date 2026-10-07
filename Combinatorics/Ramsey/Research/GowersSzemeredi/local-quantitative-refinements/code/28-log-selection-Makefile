@@ -1,0 +1,16 @@
+MAIN = gowers_logarithmic_selection
+
+.PHONY: all verify figures clean
+
+all:
+	latexmk -pdf -interaction=nonstopmode -halt-on-error $(MAIN).tex
+
+verify:
+	python3 code/verify_selection.py --output data/selection_checks.json
+	python3 code/verify_u4.py --output data/u4_exact_results.json
+
+figures:
+	python3 code/make_figures.py
+
+clean:
+	latexmk -c $(MAIN).tex
