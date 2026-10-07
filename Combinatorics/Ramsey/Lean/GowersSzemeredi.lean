@@ -279,6 +279,11 @@ import GowersSzemeredi.Proofs16FaceInduction
 import GowersSzemeredi.Proofs16ParallelFaces
 import GowersSzemeredi.Proofs16ParallelFaceInduction
 import GowersSzemeredi.Proofs16FiniteFaceInduction
+import GowersSzemeredi.Proofs16CoordinatePermutations
+import GowersSzemeredi.Proofs16PermutedCovers
+import GowersSzemeredi.Proofs16CoordinateDirections
+import GowersSzemeredi.Proofs16AllFaceInduction
+import GowersSzemeredi.Proofs16HalfDensityFaces
 
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
