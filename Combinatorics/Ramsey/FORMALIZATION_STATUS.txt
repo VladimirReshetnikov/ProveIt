@@ -12,8 +12,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 267 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 2,424 public Gowers theorems and found only propext,
+  All 271 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 2,455 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 101 exact
   companion proofs and 19 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -807,6 +807,28 @@ Explicit starting threshold and quadratic cyclic dichotomy
   Iteration between interval and cyclic models must still preserve the
   original relative density. The explicit one-step threshold does not by
   itself prove Theorem 8.2 or its double-exponential headline bound.
+
+Relative balance, interval models, and exceptional-cell selection
+  Proofs18RelativeBalance uses 1_A-delta*1_S for A contained in a support S.
+  It proves the unit-disc bound, exact mean zero from |A|=delta*|S|, vanishing
+  outside S, and the cell identity |A intersect P|-delta*|S intersect P|.
+  Proofs18RelativeQuadraticIncrement applies the explicit quadratic theorem
+  to this function. It retains the original relative density on S intersect P,
+  with density increment gamma=tau/4, progression size >=gamma*N^sigma, and
+  support-intersection size >=gamma^2*N^sigma. The intersection is not claimed
+  to be a progression; further geometric extraction remains necessary.
+  Proofs18RelativeIntervalModel embeds Fin L into any modulus N>=L, preserves
+  set cardinalities, and identifies relative balance exactly with extension
+  by zero of the same finite function. Under the existing no-wrap cube bounds,
+  normalized uniformity changes only by (N/M)^(k+2); delta is unchanged.
+  Proofs18ExceptionalCellSelection proves a robust discrepancy selection:
+  exceptional cells of total mass <=beta*N/8 may be discarded while retaining
+  a cell with positive discrepancy >=(beta/8)*its size and size >=beta*N/(8M).
+  If every nonexceptional cell is contained in S or disjoint from S, the
+  selected cell lies inside S and has relative density at least delta+beta/8.
+  Constructing an interval partition with this exceptional-mass bound, and
+  establishing the relative-balanced uniform stopping case, remain necessary
+  before the density increment can be iterated on integer intervals.
 
 Reproducible checks (from repository root)
   python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.Audit

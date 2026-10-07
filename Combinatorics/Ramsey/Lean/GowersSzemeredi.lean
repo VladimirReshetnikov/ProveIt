@@ -248,6 +248,11 @@ import GowersSzemeredi.Proofs18QuadraticThreshold
 import GowersSzemeredi.Proofs18QuadraticThresholdGrowth
 import GowersSzemeredi.Proofs18QuadraticDichotomy
 
+import GowersSzemeredi.Proofs18RelativeBalance
+import GowersSzemeredi.Proofs18RelativeQuadraticIncrement
+import GowersSzemeredi.Proofs18RelativeIntervalModel
+import GowersSzemeredi.Proofs18ExceptionalCellSelection
+
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 
