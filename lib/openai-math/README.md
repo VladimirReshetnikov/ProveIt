@@ -54,11 +54,11 @@ verified.** The Gowers facade does not import the quantitative conclusion.
 [`quantitative-port-manifest.json`](quantitative-port-manifest.json) records
 the upstream source hashes, import closure, and initial compatibility imports.
 
-The first 100 manifest entries have compiled (106 modules including their
+The first 200 manifest entries have compiled (209 modules including their
 compatibility dependencies). The incremental `OAI.QuantitativePortAudit`
-imports this batch and the three new compatibility modules. Its axiom scan
-checks 2,928 public OAI theorems and reports only `propext`,
-`Classical.choice`, and `Quot.sound`; the three compatibility declarations
+imports this batch and the added compatibility modules. Its axiom scan
+checks 4,389 public OAI theorems and reports only `propext`,
+`Classical.choice`, and `Quot.sound`; the separately listed compatibility declarations
 also pass. This checkpoint does not certify `Results.Conclusions`.
 
 The quantitative statement has existential positive constants `C`, `c`, and
@@ -100,7 +100,7 @@ unchanged.
   local proofs under Apache-2.0, with no copied upstream proof text.
 - `Compat/MatrixInjective.lean` derives matrix-vector injectivity from a
   nonzero determinant using the older trivial-kernel theorem. It supports
-  the integer-fiber and residue-refined-period modules in the next batch.
+  integer-fiber and residue-refined-period modules.
 - `Compat/ContinuousLinearMap.lean` supplies the newer `lipschitzWith` name
   as an alias of the existing norm-controlled `lipschitz` theorem. It is
   used by affine averaging and subsequent coordinate estimates.
@@ -110,7 +110,7 @@ unchanged.
   and [`LICENSE.mathlib`](LICENSE.mathlib). It compiles with the local
   `Compat/GramMatrix.lean` characterization; the exported inner-product and
   orthonormal-basis declarations pass the three-axiom check. Its downstream
-  consumers remain outside the audited first-100 prefix.
+  consumers remain outside the audited first-200 prefix.
 - Imports of relocated Mathlib modules use their older paths. All directly
   imported Mathlib source paths now exist in the local checkout; this path
   check does not establish that all importing modules compile.

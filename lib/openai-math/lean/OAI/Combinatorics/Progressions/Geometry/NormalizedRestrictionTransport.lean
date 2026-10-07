@@ -1,3 +1,5 @@
+/- Modified for ProveIt: use the older unconditional Measure.map_smul
+API. Mathematical statements unchanged. -/
 import Mathlib.MeasureTheory.Measure.Lebesgue.EqHaar
 import Mathlib.MeasureTheory.Measure.Restrict
 
@@ -24,7 +26,7 @@ theorem normalizedRestriction_map_equiv {X Y : Type*}
     have h := e.restrict_map μ (e '' s)
     rw [hmap, Measure.restrict_smul, Set.preimage_image_eq _ e.injective] at h
     exact h.symm
-  rw [Measure.map_smul _ e.measurable.aemeasurable, hr, hm, smul_smul,
+  rw [Measure.map_smul, hr, hm, smul_smul,
     ENNReal.mul_inv (Or.inl hc) (Or.inl hcfin), mul_right_comm,
     ENNReal.inv_mul_cancel hc hcfin, one_mul]
 

@@ -1,3 +1,5 @@
+/- Modified for ProveIt: construct the mapped probability-measure instance
+explicitly from measurability in Mathlib v4.32.0. Statements unchanged. -/
 import OAI.Combinatorics.Progressions.Geometry.BoxImageComparison
 import OAI.Combinatorics.Progressions.Geometry.TwoBoxSmoothingComplex
 import OAI.Combinatorics.Progressions.Probability.PairedProductDensity
@@ -477,7 +479,7 @@ theorem fixedSpatialBlockDensity_image_law
   let source := μ.prod ((unitBoxMeasure X).prod (unitBoxMeasure X))
   let U := fun p : T × ((X → ℝ) × (X → ℝ)) => center + A p.2.1 + B p.2.2 + rest p.1
   have hU : Measurable U := by fun_prop
-  let : IsProbabilityMeasure (source.map U) := inferInstance
+  let : IsProbabilityMeasure (source.map U) := Measure.isProbabilityMeasure_map hU.aemeasurable
   let := fixedSpatialBlockDensity_probability μ center hrest A B
   change source.map U = _
   ext s hs
