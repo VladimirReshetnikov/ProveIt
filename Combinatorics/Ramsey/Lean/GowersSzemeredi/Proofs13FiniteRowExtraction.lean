@@ -1,6 +1,7 @@
 import GowersSzemeredi.Proofs13FiniteStageBudgets
 import GowersSzemeredi.Proofs13SmallRowScale
 import GowersSzemeredi.Proofs13AllDensityExtraction
+import GowersSzemeredi.Proofs13ImprovedRowLength
 
 /-! All-scale construction for Lemma 13.6 from the preceding extraction
 data, at the Fourier cutoff specified in the paper's proof. -/
@@ -27,11 +28,13 @@ theorem lemma_13_6_prime {N : Nat} [NeZero N] (hprime : N.Prime)
     (h134 : IsStage134Data S (section10Lambda (S.alpha ^ 32 / 16)) D)
     (h135 : IsStage135Data S D E) :
     ∃ F : Stage136Data N, IsStage136Data S D E F := by
-  letI : Fact N.Prime := ⟨hprime⟩
-  by_cases hs : section13Zeta S.alpha / 2 *
-      (N : Real) ^ ((1 : Real) / (2 : Real) ^ (13 * section13Q S.alpha)) ≤ 1
-  · exact lemma_13_6_small_row_scale S D E h135 hs
-  · obtain ⟨F, hF, _⟩ := lemma_13_6_prime_large_case S D E h134 h135 (lt_of_not_ge hs).le
-    exact ⟨F, hF⟩
+  obtain ⟨F, hF, _, _⟩ := lemma_13_6_improved_length hprime S D E h134 h135
+  exact ⟨F, hF⟩
+
+/-- Complete companion with the preceding hypotheses used by the paper. -/
+theorem lemma_13_6_holds : lemma_13_6 := by
+  intro N _ S D E hprime h134 h135
+  apply lemma_13_6_prime hprime S D E _ h135
+  simpa only [section13_lambda_formula S.alpha_pos] using h134
 
 end LeanProofs.GowersSzemeredi

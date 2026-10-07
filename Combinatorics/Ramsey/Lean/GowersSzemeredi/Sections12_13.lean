@@ -463,12 +463,25 @@ def IsStage136Data {N : Nat} [NeZero N] (S : Section13Context N)
   (2 : Real) ^ (-(48 : Int)) * S.alpha ^ 256 * E.Q.length * F.R.length * N ≤
     ∑ h ∈ criticalHeights S D E, (stage136RestrictedEdges F h).card
 
-/-- **Lemma 13.6.** The `2^-43*alpha^224` bounds propagate the
-proof-supported `alpha^6/20000` correction to Theorem 10.13; the stronger
-printed `2^-26*alpha^128` bounds rely on that theorem's inconsistent claim. -/
+/-- The earlier encoding, preserved without asserting it. It omitted both
+Stage 13.4 at the specified Fourier cutoff and the standing prime convention. -/
+def lemma_13_6_without_preceding_context : Prop :=
+  ∀ (N : Nat) [NeZero N] (S : Section13Context N) (D : Stage134Data N)
+      (E : Stage135Data N),
+    IsStage135Data S D E →
+    ∃ F : Stage136Data N, IsStage136Data S D E F
+
+/-- **Lemma 13.6.** The preceding Stage 13.4 data at `theta=lambda` and the
+standing prime-modulus convention are explicit. The printed proof invokes
+Lemmas 13.4 and 13.5 together at this cutoff to control the same step.
+The `2^-43*alpha^224` bounds propagate the proof-supported `alpha^6/20000`
+correction to Theorem 10.13; the stronger printed `2^-26*alpha^128` bounds
+rely on that theorem's inconsistent claim. -/
 def lemma_13_6 : Prop :=
   ∀ (N : Nat) [NeZero N] (S : Section13Context N) (D : Stage134Data N)
       (E : Stage135Data N),
+    Nat.Prime N →
+    IsStage134Data S ((2 : Real) ^ (-(59 : Int)) * S.alpha ^ 176) D →
     IsStage135Data S D E →
     ∃ F : Stage136Data N, IsStage136Data S D E F
 

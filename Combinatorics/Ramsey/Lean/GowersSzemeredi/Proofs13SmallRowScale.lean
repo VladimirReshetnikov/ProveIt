@@ -30,12 +30,12 @@ theorem section13_column_mass_selection {N : Nat} [NeZero N]
   obtain ⟨x, _, hx⟩ := Finset.exists_le_of_sum_le Finset.univ_nonempty hsum
   exact ⟨x, hx⟩
 
-theorem lemma_13_6_small_row_scale {N : Nat} [NeZero N]
+theorem lemma_13_6_small_row_scale_with_length {N : Nat} [NeZero N]
     (S : Section13Context N) (D : Stage134Data N) (E : Stage135Data N)
     (h135 : IsStage135Data S D E)
     (hscale : section13Zeta S.alpha / 2 *
       (N : Real) ^ ((1 : Real) / (2 : Real) ^ (13 * section13Q S.alpha)) ≤ 1) :
-    ∃ F : Stage136Data N, IsStage136Data S D E F := by
+    ∃ F : Stage136Data N, IsStage136Data S D E F ∧ F.R.length = 1 := by
   classical
   let delta : Real := (2 : Real) ^ (-(43 : Int)) * S.alpha ^ 224
   have hdelta : delta ≤ S.alpha ^ 32 / 16 := by
@@ -65,7 +65,7 @@ theorem lemma_13_6_small_row_scale {N : Nat} [NeZero N]
   have hmass : delta * F.R.length * N * (criticalHeights S D E).card ≤
       ∑ h ∈ criticalHeights S D E, ((stage136RestrictedEdges F h).card : Real) := by
     simpa only [F, R, Nat.cast_one, mul_one, hF, verticalEdgeFiberCount] using hx
-  refine ⟨F, rfl, h135.1, ?_, ?_, ?_, ?_, ?_⟩
+  refine ⟨F, ⟨rfl, h135.1, ?_, ?_, ?_, ?_, ?_⟩, rfl⟩
   · change R.carrier.card = 1
     rw [hR, Finset.card_singleton]
   · simpa only [F, R, Nat.cast_one] using hscale
@@ -88,5 +88,14 @@ theorem lemma_13_6_small_row_scale {N : Nat} [NeZero N]
       _ ≤ delta * F.R.length * N * (criticalHeights S D E).card :=
         mul_le_mul_of_nonneg_left hI (by dsimp [delta]; positivity)
       _ ≤ _ := hmass
+
+theorem lemma_13_6_small_row_scale {N : Nat} [NeZero N]
+    (S : Section13Context N) (D : Stage134Data N) (E : Stage135Data N)
+    (h135 : IsStage135Data S D E)
+    (hscale : section13Zeta S.alpha / 2 *
+      (N : Real) ^ ((1 : Real) / (2 : Real) ^ (13 * section13Q S.alpha)) ≤ 1) :
+    ∃ F : Stage136Data N, IsStage136Data S D E F  := by
+  obtain ⟨F, hF, _⟩ := lemma_13_6_small_row_scale_with_length S D E h135 hscale
+  exact ⟨F, hF⟩
 
 end LeanProofs.GowersSzemeredi
