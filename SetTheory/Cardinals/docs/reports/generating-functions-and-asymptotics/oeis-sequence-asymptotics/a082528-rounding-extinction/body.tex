@@ -1,3 +1,6 @@
+\part{Gamma constants and scaling limits for rounding extinction}
+\label{rex:part:one}
+
 \section{The problem and the principal results}\label{rex:sec:results}
 
 Repeated rounding is a simple deterministic operation with unexpectedly
@@ -129,6 +132,22 @@ Historical priority & No matching general power theorem was found in the targete
 
 All limits involving $m$ in the first three theorems hold for fixed $m>0$.
 They make no assertion uniform in a moving parameter $m=m(n)$.
+
+\begin{writenote}[Added 7 October 2026, batch~110]
+The table describes Part~I. Two of its rows have since been advanced by
+the later Parts. ``Quantitative discrete errors'': Part~II proves
+$T_m(K)=L_mK^{m+1}+O_m(K^{(m+1)^2/(m+2)})$ and
+$\tau_m(n)=(c_mn)^{1/(m+1)}+O_m(n^{1/((m+1)(m+2))})$, uniformly on compact
+$m$-sets, with an explicit enclosure at every index
+(\cref{rex:qt:thm:main,rex:qt:thm:envelope}); the bounded error of A073047
+remains unproved. ``Full trajectories and smooth weights'': Part~III proves
+the extinction law for every nondecreasing weight schedule whose bounded
+scaled increments have a convergent joint law with their activity, which
+contains \cref{rex:thm:weights-main} for nondecreasing weights
+(\cref{rex:sch:thm:main}, \cref{rex:sch:rem:parts}). The leading law of
+\cref{rex:thm:main} is not new in Part~II; it is proved there by a second
+route.
+\end{writenote}
 
 \section{Historical context and the ProveIt starting point}\label{rex:sec:history}
 
@@ -304,6 +323,19 @@ aliases to the preamble, so that a current \LaTeX{} prints ``lemma~3.2''
 rather than ``theorem~3.2'' as the delivered PDF did, and set the double
 hyphens of one command line in \cref{rex:sec:computation} as hyphens. No
 statement, proof or number of the manuscript was altered.
+\end{writenote}
+
+\begin{writenote}[Added 7 October 2026, batch~110]
+The note above describes Part~I as it was written in batch~85. Since
+batch~110 the report has two further Parts, from two later manuscripts
+(Part~II from Report~188, arrival \texttt{60f54ea06}; Part~III from
+\texttt{Periodic\_\allowbreak Rounding\_\allowbreak Extinction.zip}, arrival
+\texttt{e4d5dcf9e}; both placed in \texttt{8622ca7e5}); their provenance is
+in \cref{rex:qt:sec:provenance,rex:sch:sec:provenance}. Part~III's
+manuscript was written against this Part (pin \texttt{52d8ca404}); Report~188
+was written without it. They are the only repository material on this
+subject, and neither changes the statements above about the repository at
+the pin. Nothing in any Part is formalized.
 \end{writenote}
 
 \section{Exact reversal: extinction as a survival threshold}\label{rex:sec:duality}
@@ -646,6 +678,18 @@ and both endpoints are asymptotic to $L_mJ^{m+1}$. Thus
 $n\asym L_mJ^{m+1}$, which is \cref{rex:eq:main}.
 \end{proof}
 
+\begin{writenote}[Added 7 October 2026, batch~110]
+Part~II proves \cref{rex:thm:main} by a second route, through the monotone
+coordinate $I_p$ and dyadic telescoping in place of compactness, and obtains
+the rates $O_m(K^{(m+1)^2/(m+2)})$ for $T_m(K)$ and
+$O_m(n^{1/((m+1)(m+2))})$ for $\tau_m(n)$, uniformly on compact $m$-sets
+(\cref{rex:qt:thm:main}). Its profile $H_p$ is $f_m$, its products $P_r$ are
+the crossing times $t_r$, and its \cref{rex:qt:prop:profilebound} is the
+integral of~\eqref{rex:eq:f-derivative} at every $t$
+(\cref{rex:qt:rem:identify}); its \cref{rex:qt:thm:global} adds a rate to
+\eqref{rex:eq:backward-convergence}.
+\end{writenote}
+
 \subsection{The whole forward trajectory}
 
 \begin{proof}[Proof of \cref{rex:thm:forward-profile}]
@@ -681,6 +725,13 @@ $2\varepsilon$ throughout the interval. This proves
 The law describes the entire normalized loss curve, even at its early
 stages where the unweighted quotient $y_m(t)$ diverges. That endpoint
 is regular after multiplication by $t^m$.
+
+\begin{writenote}[Added 7 October 2026, batch~110]
+Part~II's retention limit~\eqref{rex:qt:eq:retentionlimit} is this theorem
+reparametrized by $\lambda=L_mt^{-(m+1)}$, and follows from it
+(\cref{rex:qt:rem:retention}). No rate for~\eqref{rex:eq:uniform-forward}
+is known (Research question~\ref{rex:q:trajectory}).
+\end{writenote}
 
 \input{extensions.tex}
 \input{computation.tex}

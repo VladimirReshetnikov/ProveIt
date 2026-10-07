@@ -5,34 +5,356 @@
 \documentclass[11pt]{article}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
-\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools,booktabs,array}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools,booktabs,array,longtable}
 \usepackage[margin=1in]{geometry}
 \usepackage{microtype}
 \usepackage[hidelinks]{hyperref}
+\usepackage{xurl}
 \usepackage{enumitem}
 \setlist{itemsep=3pt,topsep=5pt}
 \allowdisplaybreaks[2]
 \emergencystretch=2em
+\setcounter{tocdepth}{1}
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{proposition}[theorem]{Proposition}
 \newtheorem{corollary}[theorem]{Corollary}
 \theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+% Macros of the two sources. Names defined by both (\OO, \R, \one, \ceil) have
+% the same definition in each.
 \newcommand{\OO}{\mathcal O}
-\newcommand{\N}{\mathbb N}
 \newcommand{\R}{\mathbb R}
-\newcommand{\Q}{\mathbb Q}
 \newcommand{\one}{\boldsymbol 1}
+\newcommand{\ceil}[1]{\left\lceil #1\right\rceil}
+% Report 190 (Part I)
+\newcommand{\N}{\mathbb N}
+\newcommand{\Q}{\mathbb Q}
 \newcommand{\eps}{\varepsilon}
 \newcommand{\Fib}{\operatorname{Fib}}
-\newcommand{\ceil}[1]{\left\lceil #1\right\rceil}
-\hypersetup{pdftitle={Report190 Hexagonal Spiral Fibonacci Asymptotics},pdfauthor={Research report},pdfsubject={Certified amplitudes sharp square root phase and all fixed order feedback corrections}}
-\title{Report190\\[5pt]Hexagonal Spiral Fibonacci Asymptotics}
-\author{Certified amplitudes and all fixed order feedback corrections}
-\date{4 October 2026}
+% Report 191 (Part II)
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\floor}[1]{\left\lfloor #1\right\rfloor}
+% Added in the merge (batch 110).
+\newcommand{\file}[1]{\nolinkurl{#1}}
+\newcommand{\vol}{\mathrm{vol}}
+\newenvironment{writenote}[1][]{\par\smallskip\begingroup\small
+ \noindent\textbf{[write]}\if\relax\detokenize{#1}\relax\else~\textbf{#1.}\fi\ }%
+ {\par\endgroup\smallskip}
+\newenvironment{partabstract}{\begin{quote}\small\noindent\textbf{Abstract of this Part (as delivered).}\ }{\end{quote}}
+\newcommand{\partsource}[1]{\par\noindent\begin{minipage}{\textwidth}\small #1\end{minipage}\par\medskip}
+\hypersetup{pdftitle={Spiral Fibonacci sequences (OEIS A094926, A094925 and A078510)},pdfauthor={Research report},pdfsubject={Merged report a094925-spiral-fibonacci (batch 110): hexagonal spiral Fibonacci asymptotics (Report 190); square Spiro-Fibonacci growth and inversion (Report 191); two independent Parts}}
+\title{\textbf{Spiral Fibonacci sequences\\ (OEIS A094926, A094925 and A078510)}\\[7pt]
+\large Part I: hexagonal spiral Fibonacci asymptotics, certified amplitudes\\ and all fixed order corrections\\[3pt]
+Part II: square Spiro-Fibonacci growth and inversion\\[3pt]
+\normalsize Two independent studies of one construction family}
+\author{Two research reports of one external research session\\(bundle Reports 190 and 191), bound into one ProveIt report}
+\date{Both Parts: 4 October 2026\quad merged: 7 October 2026}
 \begin{document}
+\hypersetup{pageanchor=false}
 \maketitle
 \begin{abstract}
+This report binds two independent manuscripts on two sequences of the spiral-Fibonacci family, in which numbers are written along a planar spiral and each new cell adds values at earlier neighbouring cells. The Parts share this construction family and a method, but no theorem: neither uses, implies or re-proves the other. Part~I treats the hexagonal spiral sequences A094926 and A094925. It reduces the geometry to an exact recurrence with six-side delays of order $\sqrt n$, proves $a_n\sim C\phi^n$ for both seeds, which proves the equivalents conjectured by Manfred Scheucher in 2015 in both OEIS entries, certifies at least 120 digits of the amplitudes by exact algebraic bounds, expands $a_n/(C\phi^n)$ to every fixed stretched-exponential order with nonzero sector profiles, proves the sharp deficit $\sqrt n\,e^{-2\sqrt3\log(\phi)\sqrt n}G(\{\sqrt{12n}\})$ with exact envelopes, and brackets the integer inverse. Part~II treats the square Spiro-Fibonacci sequence A078510, whose recurrence $a_n=a_{n-1}+a_{t(n)}$ has the delay $n-t(n)=4\sqrt n+O(1)$. It proves $a_n=Ce^{H(n)}(1+O(w^3/\sqrt n))$ with $w=W_0(4\sqrt n)$ and $C>0$, by a periodic Bernoulli normalizer and a common-anchor contraction, inverts the threshold with absolute error $O(w^2)$, and gives every fixed inverse-logarithmic order. The write adds a proof that Scheucher's accompanying heuristic form $a(n)=(a(n-1)+a(n-2))/(1-c\,d^{-\sqrt n})$ cannot hold with constants, and places the inverses relative to the repository's transseries volume. The report is unrefereed, and nothing in it is formalized.
+\end{abstract}
+\hypersetup{pageanchor=true}
+{\small\setlength{\parskip}{0pt}\tableofcontents}
+\newpage
+
+\section*{Guide to this report}\phantomsection\label{sfb:sec:guide}
+\addcontentsline{toc}{section}{Guide to this report}
+The two Parts are two manuscripts of the session bundle of Reports 1--243
+(arrival commit \texttt{60f54ea06}), placed in this directory by commit
+\texttt{8622ca7e5} (batch~110, cluster 110-SPIRAL).
+\begin{center}
+\small
+\begin{tabular}{@{}l l >{\raggedright\arraybackslash}p{0.48\textwidth} l@{}}
+\toprule
+Part & Bundle report & Delivered title & Labels\\
+\midrule
+I & 190 (base) & Hexagonal Spiral Fibonacci Asymptotics: Certified amplitudes and all fixed order feedback corrections (4~October 2026) & \texttt{sfb:hex:}\\
+II & 191 & Square Spiro Fibonacci Growth and Inversion: Positive amplitude and quantitative asymptotics for A078510 (4~October 2026) & \texttt{sfb:sq:}\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\emph{Two independent Parts.} This report is two self-contained studies of
+two different sequences that belong to one construction family, the
+spiral-Fibonacci (``Spiro-Fibonacci'') sequences in the sense of Fernandez
+\cite{fernandez}: numbers are written along a planar spiral and each new
+cell adds values at earlier neighbouring cells. The Parts share that family
+and a method, and nothing else. \textbf{No theorem, lemma or constant of one
+Part is used in, implied by, or a special case of the other}, and neither
+Part re-proves anything of the other; each is complete with its own
+definitions, hypotheses and proofs, and is printed in full. They are bound
+in one report because they are the repository's only treatment of
+spiral-Fibonacci recurrences, because Report~191 calls Report~190 its ``prior
+companion report'', and because their methods run in parallel; the merge
+claims no more than that. The table shows how far the parallel goes.
+\begin{center}
+\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.17\textwidth}>{\raggedright\arraybackslash}p{0.37\textwidth}>{\raggedright\arraybackslash}p{0.37\textwidth}@{}}
+\toprule
+& Part I (hexagonal, Report 190) & Part II (square, Report 191)\\
+\midrule
+Lattice and rule & triangular lattice; add all earlier neighbours of the preceding vertex (Kohmoto) & square cells; add the two closest earlier centres (Fernandez)\\
+Sequences & A094926, A094925 (two seeds) & A078510\\
+Exact recurrence & $a_n=a_{n-1}+a_{n-2}+\sum_{j\in E_n}a_j$, extra delays $6r-4+t$, $r\approx\sqrt{n/3}$ & $a_n=a_{n-1}+a_{t(n)}$, $n-t(n)=4\sqrt n+O(1)$\\
+Growth & $a_n\sim C\phi^n$, deficit $\sqrt n\,e^{-2\sqrt3\log(\phi)\sqrt n}$ & $a_n=Ce^{H(n)}(1+O(w^3/\sqrt n))$, $\log a_n\sim\frac14\sqrt n\log n$\\
+Amplitude & exists; 120 certified digits & exists, $C>0$; no digits\\
+Expansion & every fixed stretched-exponential order & one relative error term only\\
+Mechanism & positive Perron projection; variation of constants & periodic Bernoulli normalizer; common-anchor contraction\\
+Inverse & two-ceiling envelopes at every fixed order & absolute error $O(w_0^2)$; inverse-logarithmic hierarchy\\
+\bottomrule
+\end{tabular}
+\end{center}
+Report~191 says so itself: Part~I's theorem ``cannot be obtained by changing
+a geometric constant'' into its own (Section~\ref{sfb:sq:sec:sources}). The
+square rule has no term $a_{n-2}$, so its growth is subexponential, not
+$C\phi^n$.
+
+\emph{Arrangement.} The base of the merge is Report~190; its
+\file{Report190.tex} was staged as this \file{article.tex}, and it is printed
+first, as Part~I, because Report~191 cites it as prior and because it settles
+two recorded OEIS conjectures. Report~191 is printed second, as Part~II.
+Nothing is printed twice.
+
+\emph{Numbering.} Sections are numbered continuously; statements are
+numbered within sections and equations continuously through the report, as
+in both manuscripts. Part~I keeps Report~190's Sections~1--11, its
+equations~(1)--(66) and all its other numbers. Report~191's Section~$k$
+is Section~$k+11$ here (Sections~12--22), its statements move with their
+sections (Report~191's Theorem~1.1 is Theorem~\ref{sfb:sq:thm:main}), and its
+equation~($k$) is equation~($k+66$). Section~\ref{sfb:sec:further}, which
+gathers the open questions of both Parts under Vladimir's standing rule of
+4~October 2026, was added in the write.
+
+Notes added in the write are set in small type and tagged \textbf{[write]},
+with their date (7~October 2026). No delivered statement was changed and no
+delivered symbol was renamed.
+
+\section*{What is proved, and where}\phantomsection\label{sfb:sec:status}
+\addcontentsline{toc}{section}{What is proved, and where}
+\begin{center}
+\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.58\textwidth} >{\raggedright\arraybackslash}p{0.37\textwidth}@{}}
+\toprule
+Statement & Where\\
+\midrule
+\multicolumn{2}{@{}l}{\emph{Hexagonal spiral, A094926 and A094925 (Part I)}}\\
+Six-side delay formula for the exact recurrence & Proposition~\ref{sfb:hex:prop:geometry}\\
+$a_n\sim C\phi^n$ for both seeds: \textbf{Scheucher's conjectured equivalents in A094926 and A094925 are proved}; every fixed stretched-exponential order & Theorem~\ref{sfb:hex:thm:main}, Sections~\ref{sfb:hex:sec:amplitudes}--\ref{sfb:hex:sec:mapping}\\
+Algebraic certificates for $C_0$, $C_1$, $C_1/\phi$ to at least 120 truncated digits & Theorem~\ref{sfb:hex:thm:cert}\\
+Seed independence beyond every fixed order; nonzero leading profile of every sector & Corollary~\ref{sfb:hex:cor:seed}, Theorem~\ref{sfb:hex:thm:profiles}\\
+Sharp square-root phase $G(\{\sqrt{12n}\})$ with exact envelopes & Theorem~\ref{sfb:hex:thm:phaseintro}, Section~\ref{sfb:hex:sec:phaseproof}\\
+The uncorrected logarithmic ceiling misses by one infinitely often; two-ceiling inverse envelopes at every fixed order & Theorems~\ref{sfb:hex:thm:rounding} and~\ref{sfb:hex:thm:inverse}\\
+\midrule
+\multicolumn{2}{@{}l}{\emph{Square spiral, A078510 (Part II)}}\\
+Occupied rectangles and the exact predecessor $t(n)$ & Lemma~\ref{sfb:sq:lem:rectangle}, Proposition~\ref{sfb:sq:prop:delay}\\
+$a_n=Ce^{H(n)}(1+O(w_n^3/r_n))$ with $C>0$, uniformly including corners & Theorem~\ref{sfb:sq:thm:main}\\
+The smooth normalizer has non-summable defects; the contraction product & Propositions~\ref{sfb:sq:prop:nonsum} and~\ref{sfb:sq:prop:product}\\
+Threshold inverse with absolute error $O(w_0^2)$; every fixed inverse-logarithmic order & Theorems~\ref{sfb:sq:thm:inverseintro} and~\ref{sfb:sq:thm:hierarchy}\\
+\midrule
+\multicolumn{2}{@{}l}{\emph{Open}}\\
+\multicolumn{2}{@{}p{0.96\textwidth}@{}}{Part~I: behaviour as the order grows, closed forms of the amplitudes, effective onsets, a uniform seed theorem. Part~II: certified digits of $C$, a sharper relative error, further sequence corrections, effective threshold recovery, general delayed models. See Section~\ref{sfb:sec:further}.}\\
+\bottomrule
+\end{tabular}
+\end{center}
+The finite computations of the two packages (exact integers and rationals,
+exact algebraic certificates in $\mathbb Q(\sqrt5)$) check identities,
+transcriptions and the amplitude digits of Part~I; no asymptotic statement
+rests on them.
+
+\section*{The OEIS entries}\phantomsection\label{sfb:sec:oeis}
+\addcontentsline{toc}{section}{The OEIS entries}
+The write read the four entries on 7~October 2026; the revisions are those
+the Parts cite. \textbf{A094926} \cite{oeis926} (revision \#27 of
+19~April 2016), by Yasutoshi Kohmoto, records in its formula field ``a(n)
+$\sim$ c*phi\^{}n with phi=1.61803... being the golden ratio and c = A258639
+= 0.54172002195814443386932... (conjectured). - Manfred Scheucher, Jun 03
+2015''. \textbf{A094925} \cite{oeis925} (revision \#20 of 4~May 2021), with
+offset~1, records ``a(n) $\sim$ c*phi\^{}n \dots\ c ='' followed by
+\begin{center}\small
+0.78529667298898361017570049509486675274402985275383398273772345738007479334754...
+\end{center}
+``(conjectured). Cf. A094926. - Manfred Scheucher, Jun 03 2015''.
+\textbf{A258639} \cite{oeis639} (revision \#4 of 6~June 2015), by Scheucher
+and Kot\v{e}\v{s}ovec, defines its constant as $\lim_n\mathrm{A094926}(n)/\phi^n$.
+Part~I's Theorem~\ref{sfb:hex:thm:main} proves $a_n\sim C\phi^n$ for both
+seeds, and its certificates (Theorem~\ref{sfb:hex:thm:cert}) agree with every
+printed digit: $C_0$ with A094926's and all 106 supplied digits of A258639,
+and $C_1/\phi$, the amplitude in A094925's own indexing, with all 77 digits
+in A094925. So both of Scheucher's conjectures are \textbf{proved} as stated,
+and the limit that A258639 presupposes exists. \textbf{A078510}
+\cite{oeis510} (revision \#21 of 11~September 2025), by Neil Fernandez
+(5~January 2003), records the delayed recurrence through A265409 (Antti
+Karttunen, 13~December 2015) and no asymptotic formula; Part~II's
+equivalent settles no OEIS conjecture, and Report~191 claims none.
+Nothing was submitted to the OEIS. The OEIS terms and digits in
+\file{data/190-hex-oeis_fixtures.json} and
+\file{data/191-square-oeis_fixtures.json} are OEIS content under
+CC~BY-SA~4.0.
+
+\begin{writenote}[7 October 2026; Scheucher's heuristic form]
+A094926 also carries Scheucher's comment of 3~June 2015, which reads in part
+``I believe that a(n) = (a(n-1)+a(n-2))/(1-c*d\^{}(-sqrt(n))) can be proofen
+properly''. This heuristic is offered as a route to the equivalent, which
+Part~I proves. Its literal form cannot hold with constants $c,d$, even
+asymptotically. Indeed, by \eqref{sfb:hex:eq:recurrence},
+$a_n/(a_{n-1}+a_{n-2})-1=\sum_{j\in E_n}a_j/(a_{n-1}+a_{n-2})$; since
+$a_j=C\phi^j(1+o(1))$, every $j\in E_n$ tends to infinity with $n$, $E_n$ has
+at most two elements, and $\phi^{n-1}+\phi^{n-2}=\phi^n$, this equals
+$\eta_n(1+o(1))$ with $\eta_n$ of \eqref{sfb:hex:eq:eta}. By
+\eqref{sfb:hex:eq:etavalues}, at the final corner of a side
+$\eta_n=Q^r\phi^{3-t}$, while at the row before it, on the same side and
+stage, $\eta_{n-1}=Q^r\phi^{5-t}$. So the ratio of consecutive excesses tends
+to $\phi^{-2}$ along the corner rows, whereas the form
+$c\,d^{-\sqrt n}/(1-c\,d^{-\sqrt n})$ would make it tend to $1$, because
+$\sqrt n-\sqrt{n-1}\to0$. The excess is $c_n d^{-\sqrt n}$ with
+$d=\phi^{2\sqrt3}$ only if $c_n$ is allowed to oscillate with the position on
+the spiral, as Part~I's phase theorem quantifies for $a_n$ itself
+(Theorem~\ref{sfb:hex:thm:phaseintro}). This bears only on the comment, not on
+the conjectured equivalent, which is proved.
+\end{writenote}
+
+\section*{The inverses and the transseries volume}\phantomsection\label{sfb:sec:inverses}
+\addcontentsline{toc}{section}{The inverses and the transseries volume}
+Both Parts compare their inversion with the repository's transseries volume
+\cite{tsvol}, Report~190 at revision \texttt{6bf7f30d0} and Report~191 at
+\texttt{9ba11eaf7}; both revisions exist, and the passages they name are
+there. Its symbols are subscripted ``vol'' here. Statement by statement:
+\begin{itemize}
+\item Part~I's Theorem~\ref{sfb:hex:thm:inverse}: its first step,
+$N(y)=\lceil X(\log y)\rceil$ with $X$ the inverse of the piecewise-linear
+interpolation $L$ of $\log a_n$ on a late half-line, is an \emph{instance} of
+item~(1) of \file{p0:thm:staircase}, with $A_n=\log a_n$ (strictly increasing
+there), the admissible interpolation $\mathcal A_\vol=L$ and target $\log y$.
+The bracket \eqref{sfb:hex:eq:ceilbounds} then follows from item~(1) and the
+monotonicity of the ceiling, as item~(2) does; the estimate
+\eqref{sfb:hex:eq:realinverse} that feeds it is Part~I's own.
+\item Part~I's Theorem~\ref{sfb:hex:thm:rounding}: proved directly from the
+sign and size of the deficit, without an interpolation; an \emph{analogue},
+which exhibits the failure mode of item~(2) for the bare leading chart.
+\item Part~II's \eqref{sfb:sq:eq:exactceiling}: an \emph{instance} of item~(1)
+of \file{p0:thm:staircase}, with $A_n=\log a_n$ for $n\ge7$ and the linear
+interpolation $\mathcal A$; the estimate of
+Theorem~\ref{sfb:sq:thm:inverseintro} is Part~II's own.
+\item Part~II's $V=2W_0(\sqrt{2L})$ in \eqref{sfb:sq:eq:Vgerm}, the root of
+$V^2e^V=8L$, that is of $V+2\log V=\log(8L)$: an \emph{instance} of
+\file{p0:thm:lambert-core} with $a_\vol=1$, $b_\vol=2$ and $L_\vol=\log(8L)$,
+which gives $X=2W_0(\tfrac12e^{\log(8L)/2})=2W_0(\sqrt{2L})$.
+\item Part~II's germ $\delta$ of Lemma~\ref{sfb:sq:lem:germ}: as a formal
+series, an \emph{instance} of \file{p0:thm:lambert-centered} with $R_\vol=\mathbb
+Q$, $a_\vol=1$, $b_\vol=2$, $Q_\vol(s)=\log(1-s+s^2)$ and $t=u=1/V$: putting
+$w_0=V(1+u\delta)$ in $w_0+2\log w_0+\log(1-1/w_0+1/w_0^2)=V+2\log V$, which
+is \eqref{sfb:sq:eq:w0} in logarithmic form, gives
+$\delta=-[2\log(1+u\delta)+Q_\vol(u/(1+u\delta))]$, the volume's fixed-point
+equation $U=\Psi(t,U)$, and this is \eqref{sfb:sq:eq:implicit}. The
+coefficients $1$, $-\frac52$ of \eqref{sfb:sq:eq:deltaseries} follow from it.
+The convergence of the germ, and the hierarchy of
+Theorem~\ref{sfb:sq:thm:hierarchy}, are Part~II's own.
+\end{itemize}
+Neither Part claims novelty for the inversion mechanics. Report~191 also
+cites \emph{Transseries for Mere Mortals} as a ``supplied manuscript''; that
+tutorial is one of the four sources merged into the volume's Part~Q0 (see the
+volume's Section ``Why'', label \file{q0:sec:why}).
+
+\section*{Notation across the two Parts}\phantomsection\label{sfb:sec:notation}
+\addcontentsline{toc}{section}{Notation across the two Parts}
+Since the Parts treat different sequences, most letters mean different things
+in each. No symbol was renamed; each Part fixes its own meanings. The ones a
+reader is most likely to carry over wrongly:
+\begingroup\small
+\renewcommand{\theHtable}{notation.\arabic{table}}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.13\textwidth} >{\raggedright\arraybackslash}p{0.83\textwidth}@{}}
+\toprule
+Symbol & Meanings\\
+\midrule
+\endhead
+$a_n$, $C$ & Part~I: either hexagonal sequence (seed superscript suppressed) and its amplitude $C=\lim a_n\phi^{-n}$; $C_1/\phi$ is A094925's amplitude in its own indexing. Part~II: A078510 and the amplitude of $e^{H(n)}$. \emph{False reading:} the two $C$ are unrelated numbers on different scales.\\
+$r$, $t$ & Part~I: $r=r(n)$ the stage of the hexagonal spiral \eqref{sfb:hex:eq:r}; $t$ a side label $0,\dots,5$. Part~II: $r=\sqrt x$; $t(n)$ the delayed predecessor \eqref{sfb:sq:eq:delay}. \emph{False reading:} Part~II's $t$ is an index function, not a side.\\
+$Q$, $\rho$, $\alpha$, $\beta$ & Part~I: $Q=\phi^{-6}$, $\rho=-\phi^{-2}$, $\alpha=\phi/\sqrt5$, $\beta=1/(\phi\sqrt5)$ \eqref{sfb:hex:eq:constants}. Part~II: $Q(u,\delta)$ in \eqref{sfb:sq:eq:Q}, $Q_0$; $\alpha_n$, $\beta_n$ convex weights \eqref{sfb:sq:eq:weights}.\\
+$H$, $F$, $D$ & Part~I: $H_n$ the stable filter \eqref{sfb:hex:eq:H}; $F_k$ the correction coefficients; $D_m$ the delay operator \eqref{sfb:hex:eq:D}, $D_n$ the normalized deficit. Part~II: $H=\Phi+\Psi$ the normalizer \eqref{sfb:sq:eq:H}; $F=H+\Xi$; $D_j$ memory diameters; $d(n)=n-t(n)$.\\
+$\theta$, $\Phi$, $\Psi$, $G$ & Part~I: $\theta=\{\sqrt{12n}\}$ and $G(\theta)$ the phase factor \eqref{sfb:hex:eq:G}. Part~II: $\theta(x)=\{2\sqrt x\}$; $\Phi$, $\Psi$ parts of $H$; $G(r)$ in Proposition~\ref{sfb:sq:prop:product}.\\
+$E$, $\eta$, $T$ & Part~I: $E_n$ the extra neighbour set, $\eta_n$ the forcing weight \eqref{sfb:hex:eq:eta}, $T_n$ its tail. Part~II: $E$ the exceptional corner indices \eqref{sfb:sq:eq:E}; $T_j$ an error tail.\\
+$L$, $U$, $N$, $X$, $K$ & Part~I: $L_r$, $U_r$ stage endpoints; $L$ an interpolation of $\log a_n$; $N(y)$ the threshold; $X$ its inverse; $K_J$ a constant. Part~II: $L=\log Y$; $N(Y)$ the threshold; $X(L)$; $K$, $K_*$, $K_J$ constants.\\
+$W$, $w$ & Part~I: $W_r$ the stage weight sum \eqref{sfb:hex:eq:W}; $w(x)$ a profile weight. Part~II: $W_0$ the Lambert function, $w=W_0(4\sqrt x)$.\\
+\bottomrule
+\end{longtable}
+\addtocounter{table}{-1}% the uncaptioned longtable must not consume a table number
+\endgroup
+
+\section*{Provenance and merge decisions}\phantomsection\label{sfb:sec:provenance}
+\addcontentsline{toc}{section}{Provenance and merge decisions}
+Two manuscripts of the session bundle of Reports 1--243, both dated
+4~October 2026. Their title blocks read ``Report190'' and ``Report191'', with
+the subtitles above in the author slot; both PDF author fields read
+``Research report''; neither names an author, a tool or an addressee, and
+neither carries ``prepared for private review'' wording. Report~190 names the
+ProveIt revision \texttt{6bf7f30d0352f7596e70928b3d4f304914075907}
+(4~October 2026) as the read-only comparison point for the transseries volume,
+and Report~191 names \texttt{9ba11eaf7c1b6a27ccfc0bab63e22f97768cb704}
+(3~October 2026) for the volume and the Lambert~W Guide
+(\file{Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/lambert-w/Lambert_W_Guide/});
+both commits exist and contain those files. They arrived in commit
+\texttt{60f54ea06} and were placed by \texttt{8622ca7e5} (batch~110, cluster
+110-SPIRAL).
+\begin{itemize}
+\item \textbf{Part~I}, bundle Report~190, archive
+\file{Hexagonal_Spiral_Fibonacci_Asymptotics_and_Inverses_Source.zip}
+(789,595 bytes; 22 files; \file{Report190.tex}, 660 lines, 15 pages); the
+base.
+\item \textbf{Part~II}, bundle Report~191, archive
+\file{Square_Spiro_Fibonacci_Growth_and_Inversion_Source.zip} (628,802 bytes;
+23 files; \file{Report191.tex}, 766 lines, 19 pages). It cites Report~190 as
+\texttt{report190}; that bibliography entry now points to Part~I.
+\end{itemize}
+Where the merge had to choose:
+\begin{enumerate}
+\item \emph{One report or two.} The intake's dossier offered both: one report
+in two Parts, or two single reports. The placement chose one report; the
+write keeps it, and states in this Guide that the Parts share a construction
+family and a method but no theorem.
+\item \emph{Base and order.} Report~190 first (see the Guide).
+\item \emph{Front matter, numbering and bibliography.} The two title blocks
+and abstracts are printed at the heads of their Parts, with each manuscript's
+opening scope paragraph; one table of contents replaces two. The two
+bibliographies are merged; the one shared key, \texttt{fernandez}, is one
+entry keeping both Parts' details, and the write added the entry for the
+transseries volume.
+\item \emph{Write additions.} This front matter, Section~\ref{sfb:sec:further},
+the dated notes and the label prefixes. Everything else is delivered text.
+\end{enumerate}
+
+\section*{What was checked, and what was not}\phantomsection\label{sfb:sec:trust}
+\addcontentsline{toc}{section}{What was checked, and what was not}
+The report is unrefereed and not formalized. At intake (dossier of batch~110,
+6~October 2026) both manuscripts were read and no mathematical error was
+found; both mandatory exact checkers were rerun on copies, in normal and
+optimized Python, and reproduced their recorded outputs byte for byte. The
+write (7~October 2026) read the four OEIS entries and compared every printed
+OEIS digit with Part~I's certified table; checked the identifications with
+the transseries volume above, including the first two coefficients of
+$\delta$; proved the note on Scheucher's heuristic form; and reran both exact
+checkers on copies (results in the README). What was \emph{not} done: the
+analytic proofs were read and their displayed algebra spot-checked, but they
+are the manuscripts' proofs, not an independent verification; Kundr\'at's,
+Appleby--Buckwar's and Ryde's texts, Fernandez's page and the Lambert~W Guide
+were not re-read; the optional floating-point diagnostics and the release
+builders were not run.
+
+\section*{Relation to neighbouring reports and formal projects}\phantomsection\label{sfb:sec:neighbours}
+\addcontentsline{toc}{section}{Relation to neighbouring reports and formal projects}
+No other placed report treats A094926, A094925, A258639, A078510, A265409,
+A265370, A265404 or spiral-Fibonacci recurrences (repository search,
+6--7~October 2026). The transseries volume \cite{tsvol} and the Lambert~W Guide
+are related to the inverses as stated above; Report~191's use of the Guide is
+motivational (a constant-delay Lambert balance). Placement in the collection
+confers no formal status: no Lean or Rocq file in the repository treats these
+sequences, and no statement of this report is formalized.
+\clearpage
+
+\part{Hexagonal spiral Fibonacci asymptotics: certified amplitudes and all fixed order feedback corrections}\label{sfb:hex:part}
+\partsource{Bundle Report~190, archive \file{Hexagonal_Spiral_Fibonacci_Asymptotics_and_Inverses_Source.zip}, delivered as \file{Report190.tex} (15 pages), the base of the merge. Delivered title block ``Report190 / Hexagonal Spiral Fibonacci Asymptotics / Certified amplitudes and all fixed order feedback corrections / 4 October 2026''. Printed as delivered, with \textbf{[write]} notes; section, statement and equation numbers are those of the delivery. The opening paragraph ``Scope and attribution'' is the manuscript's own. This Part is self-contained; it uses nothing from Part~II.}
+\begin{partabstract}
 The hexagonal spiral Fibonacci sequences A094926 and A094925 satisfy $a_n\sim C\phi^n$, proving the two leading equivalents conjectured in their OEIS records in 2015. We derive their exact six-side delay recurrence, prove convergence by a positive Perron projection, and give algebraic amplitude bounds that certify 120 truncated fractional digits. After normalization, both seed choices share a universal expansion at every fixed stretched-exponential order. Its coefficients are exact iterates of a geometry-defined operator; the finite corner layers are retained. The leading relative deficit is
 \[
  \sqrt n\,e^{-2\sqrt3\log(\phi)\sqrt n}
@@ -40,60 +362,56 @@ The hexagonal spiral Fibonacci sequences A094926 and A094925 satisfy $a_n\sim C\
        +\OO(n^{-1/2})\right\},\qquad \theta=\{\sqrt{12n}\},
 \]
 with a continuous periodic phase factor and explicit sharp lower and upper envelopes. Every higher sector has a nonzero leading profile. We also give fixed-order real inverse estimates and pointwise ceiling brackets. The uncorrected logarithmic ceiling is too small by one infinitely often, even for integer targets. An exact standard-library verifier and a deterministic offline build accompany the proofs.
-\end{abstract}
+\end{partabstract}
 
 \paragraph{Scope and attribution.}
-The sequences, the predicted golden-ratio growth, the square-root delay motivation, and the previously displayed amplitudes are prior work. Binet's formula, variation of constants, positive product bounds, and monotone interpolation are classical. This report supplies the target-specific proofs, uniform correction hierarchy, phase envelopes, and certificates below. All expansion orders are fixed; no convergent infinite expansion, effective asymptotic onset, globally exact rounded inverse, or worldwide priority is asserted. Source scope is recorded in Section~\ref{sec:sources}.
+The sequences, the predicted golden-ratio growth, the square-root delay motivation, and the previously displayed amplitudes are prior work. Binet's formula, variation of constants, positive product bounds, and monotone interpolation are classical. This report supplies the target-specific proofs, uniform correction hierarchy, phase envelopes, and certificates below. All expansion orders are fixed; no convergent infinite expansion, effective asymptotic onset, globally exact rounded inverse, or worldwide priority is asserted. Source scope is recorded in Section~\ref{sfb:hex:sec:sources}.
 
-\newpage
-{\small\tableofcontents}
-\newpage
-
-\section{Conventions and main conclusions}\label{sec:main}
+\section{Conventions and main conclusions}\label{sfb:hex:sec:main}
 Put
-\begin{equation}\label{eq:constants}
+\begin{equation}\label{sfb:hex:eq:constants}
  \phi=\frac{1+\sqrt5}{2},\qquad Q=\phi^{-6},\qquad
  \rho=-\phi^{-2},\qquad \alpha=\frac\phi{\sqrt5},\qquad
  \beta=\frac1{\phi\sqrt5}.
 \end{equation}
 The letter $Q$ is a positive stage ratio; $\rho$ is the negative stable Fibonacci root after normalization. Two sequences use the same geometric recurrence but different central seeds:
-\begin{equation}\label{eq:seeds}
+\begin{equation}\label{sfb:hex:eq:seeds}
  a^{(0)}_0=0,\quad a^{(0)}_1=1;\qquad
  a^{(1)}_0=a^{(1)}_1=1.
 \end{equation}
 Their relation to the original OEIS indices is
-\begin{equation}\label{eq:oeisindex}
+\begin{equation}\label{sfb:hex:eq:oeisindex}
  \mathrm{A094926}(n)=a^{(0)}_n,\qquad
  \mathrm{A094925}(m)=a^{(1)}_{m-1}\quad(m\ge1).
 \end{equation}
 Accordingly, if $C_\sigma=\lim_n a^{(\sigma)}_n\phi^{-n}$, the amplitude multiplying $\phi^m$ in A094925 is $C_1/\phi$, not $C_1$. We suppress the superscript when a statement applies to either seed.
 
-The recurrence is defined precisely in Section~\ref{sec:geometry}. Its stage endpoints and index function are
+The recurrence is defined precisely in Section~\ref{sfb:hex:sec:geometry}. Its stage endpoints and index function are
 \begin{align}
- L_r&=3r^2-2r+2,& U_r&=3r^2+4r+2\quad(r\ge1),\label{eq:stages}\\
+ L_r&=3r^2-2r+2,& U_r&=3r^2+4r+2\quad(r\ge1),\label{sfb:hex:eq:stages}\\
  r(n)&=\left\lfloor\frac{1+\sqrt{3n-5}}3\right\rfloor\quad(n\ge3),&
- r(n)&=0\quad(0\le n\le2).\label{eq:r}
+ r(n)&=0\quad(0\le n\le2).\label{sfb:hex:eq:r}
 \end{align}
 Thus $L_r\le n\le U_r$ exactly when $r(n)=r$.
 
-\begin{theorem}[Amplitudes and fixed orders]\label{thm:main}
-For both sequences in \eqref{eq:seeds}, a finite constant $C>0$ exists and $a_n\sim C\phi^n$. Define $F_0(n)=1$ and $F_{k+1}=SF_k$, where the operator $S$ in \eqref{eq:S} is explicit and depends only on the spiral geometry. For every fixed integer $J\ge0$,
-\begin{equation}\label{eq:allorder}
+\begin{theorem}[Amplitudes and fixed orders]\label{sfb:hex:thm:main}
+For both sequences in \eqref{sfb:hex:eq:seeds}, a finite constant $C>0$ exists and $a_n\sim C\phi^n$. Define $F_0(n)=1$ and $F_{k+1}=SF_k$, where the operator $S$ in \eqref{sfb:hex:eq:S} is explicit and depends only on the spiral geometry. For every fixed integer $J\ge0$,
+\begin{equation}\label{sfb:hex:eq:allorder}
  \frac{a_n}{C\phi^n}
  =\sum_{k=0}^J F_k(n)
   +\OO_J\!\left((1+r(n))^{J+1}Q^{(J+1)r(n)}\right).
 \end{equation}
-All defining series are absolutely convergent. The functions $F_k$ are the same for both seed choices, are computable to arbitrary prescribed absolute accuracy, and have the nonzero profiles in Theorem~\ref{thm:profiles}. The theorem is a finite-order asymptotic statement, not a claim of convergence as $J\to\infty$.
+All defining series are absolutely convergent. The functions $F_k$ are the same for both seed choices, are computable to arbitrary prescribed absolute accuracy, and have the nonzero profiles in Theorem~\ref{sfb:hex:thm:profiles}. The theorem is a finite-order asymptotic statement, not a claim of convergence as $J\to\infty$.
 \end{theorem}
 
-\begin{theorem}[Sharp square-root phase]\label{thm:phaseintro}
+\begin{theorem}[Sharp square-root phase]\label{sfb:hex:thm:phaseintro}
 Extend
-\begin{equation}\label{eq:G}
+\begin{equation}\label{sfb:hex:eq:G}
  G(\theta)=\frac{\phi^{4+\theta}(\phi^2-\theta)}{\sqrt{15}},
  \qquad 0\le\theta\le1,
 \end{equation}
 continuously and periodically to $\R$. For either normalized seed,
-\begin{equation}\label{eq:phase}
+\begin{equation}\label{sfb:hex:eq:phase}
  1-\frac{a_n}{C\phi^n}
  =\sqrt n\,e^{-2\sqrt3\log(\phi)\sqrt n}
    \left\{G(\{\sqrt{12n}\})+\OO(n^{-1/2})\right\}.
@@ -103,40 +421,44 @@ The normalized expression
  D_n=\frac{1-a_n/(C\phi^n)}{\sqrt n\,e^{-2\sqrt3\log(\phi)\sqrt n}}
 \]
 has the sharp envelopes
-\begin{equation}\label{eq:envelopes}
+\begin{equation}\label{sfb:hex:eq:envelopes}
  \liminf D_n=\frac{\phi^6}{\sqrt{15}},\qquad
  \limsup D_n=\frac{\phi^{4+\phi^2}}{e\sqrt{15}\log\phi}.
 \end{equation}
 In particular, $a_n<C\phi^n$ eventually, and $C\phi^n-a_n\to+\infty$.
 \end{theorem}
 
-Section~\ref{sec:inverse} proves that the intrinsic integer inverse lies eventually in two adjacent logarithmic-ceiling candidates and that both candidates occur infinitely often. Higher corrections give narrower real-index brackets; they do not remove the need to check an integer rounding boundary. Exact amplitude certificates, unlike those asymptotic inverse estimates, have a fully specified finite stage and no unknown onset.
+Section~\ref{sfb:hex:sec:inverse} proves that the intrinsic integer inverse lies eventually in two adjacent logarithmic-ceiling candidates and that both candidates occur infinitely often. Higher corrections give narrower real-index brackets; they do not remove the need to check an integer rounding boundary. Exact amplitude certificates, unlike those asymptotic inverse estimates, have a fully specified finite stage and no unknown onset.
 
-\section{The exact spiral and its delay table}\label{sec:geometry}
+\begin{writenote}[7 October 2026]
+Theorem~\ref{sfb:hex:thm:main} proves the two equivalents that Manfred Scheucher recorded as conjectures in A094926 and A094925 on 3~June 2015, and Theorem~\ref{sfb:hex:thm:cert} agrees with every digit printed there and in A258639 (front matter, ``The OEIS entries'', which also shows that Scheucher's accompanying heuristic form cannot hold with constants).
+\end{writenote}
+
+\section{The exact spiral and its delay table}\label{sfb:hex:sec:geometry}
 Represent the triangular lattice by the six neighbor vectors
-\begin{equation}\label{eq:directions}
+\begin{equation}\label{sfb:hex:eq:directions}
  D_0=(-1,-1),\quad D_1=(-2,0),\quad D_2=(-1,1),\quad
  D_3=(1,1),\quad D_4=(2,0),\quad D_5=(1,-1).
 \end{equation}
 The Euclidean regular triangular lattice is obtained by a fixed linear rescaling; adjacency is unchanged. Start with $v_0=(0,0)$ and $v_1=(2,0)$. Stage $r\ge1$ takes these directions in order, with lengths
-\begin{equation}\label{eq:lengths}
+\begin{equation}\label{sfb:hex:eq:lengths}
  \ell_t(r)=r+\one_{\{t=4\}},\qquad 0\le t\le5.
 \end{equation}
 At each new index $n$, the rule adds $a_{n-1}$ to the values at all earlier neighbors of $v_{n-1}$. The path predecessor contributes $a_{n-2}$; the other earlier neighbor indices form $E_n$. Thus
-\begin{equation}\label{eq:recurrence}
+\begin{equation}\label{sfb:hex:eq:recurrence}
  a_n=a_{n-1}+a_{n-2}+\sum_{j\in E_n}a_j\quad(n\ge2),
  \qquad E_0=E_1=E_2=\varnothing.
 \end{equation}
 This is the adjacency rule in the original records \cite{oeis926,oeis925}.
 
-\begin{proposition}[Six-side delay formula]\label{prop:geometry}
+\begin{proposition}[Six-side delay formula]\label{sfb:hex:prop:geometry}
 On side $t$ of stage $r$, the recurrence indices start at
 $L_r+tr+\one_{\{t=5\}}$, have length $\ell_t(r)$, and have delay parameter
-\begin{equation}\label{eq:d}
+\begin{equation}\label{sfb:hex:eq:d}
  d_{r,t}=6r-4+t.
 \end{equation}
 For the first $\ell_t(r)-1$ indices and for the final index, respectively,
-\begin{equation}\label{eq:Etable}
+\begin{equation}\label{sfb:hex:eq:Etable}
  E_n=\{n-d_{r,t}-1,n-d_{r,t}\},\qquad
  E_n=\{n-d_{r,t}-1\}.
 \end{equation}
@@ -159,17 +481,17 @@ $t$ & $\ell_t(r)$ & Side-start coordinate & Coordinate at position $h$\\
 \end{tabular}
 \end{center}
 For a displayed vertex, its path predecessor is obtained in direction $-D_t$. The two possible inward neighbors are in directions $D_{t+2}$ and $D_{t+1}$, subscripts taken modulo six. Substitution in the coordinate list identifies them as preceding-stage side positions $h-1$ and $h$, with indices
-\begin{equation}\label{eq:innerindices}
+\begin{equation}\label{sfb:hex:eq:innerindices}
  \tau_{r-1}+s_t(r-1)+h-1,\qquad
  \tau_{r-1}+s_t(r-1)+h.
 \end{equation}
-The second exists only for $h<\ell_t(r)$: that preceding side is shorter by one. The remaining three direction tests in \eqref{eq:directions} give either unvisited points of the current path or points outside the occupied spiral. These six substitutions account for every possible earlier neighbor. At $r=1$, the preceding stage is the degenerate stage zero, with lengths $0,0,0,0,1,0$, joining $v_0$ to $v_1$; the same tests apply, including its zero-length sides.
+The second exists only for $h<\ell_t(r)$: that preceding side is shorter by one. The remaining three direction tests in \eqref{sfb:hex:eq:directions} give either unvisited points of the current path or points outside the occupied spiral. These six substitutions account for every possible earlier neighbor. At $r=1$, the preceding stage is the degenerate stage zero, with lengths $0,0,0,0,1,0$, joining $v_0$ to $v_1$; the same tests apply, including its zero-length sides.
 
 The recurrence row for this vertex is $n=\tau_r+s_t(r)+h+1$. Since
 \[
  \tau_r-\tau_{r-1}=6r-5,\qquad s_t(r)-s_t(r-1)=t,
 \]
-subtraction gives \eqref{eq:Etable}. The first row is $\tau_r+2=L_r$, and the last is $\tau_{r+1}+1=U_r$, proving the stage convention as well.
+subtraction gives \eqref{sfb:hex:eq:Etable}. The first row is $\tau_r+2=L_r$, and the last is $\tau_{r+1}+1=U_r$, proving the stage convention as well.
 \end{proof}
 
 In particular, each extra delay lies between $6r-4$ and $6r+2$. If $n$ belongs to stage $r$, its extra indices have recurrence stages $r-1$ or $r-2$, apart from the harmless initial convention $r(j)=0$. The geometric inward stage is always the preceding stage; the possible second shift is caused by the two-index offset between vertex stages and recurrence stages. Only a bounded number of side-start or corner positions per stage have this exception. This distinction matters in the profile induction below.
@@ -181,13 +503,13 @@ For reference, the first values in the two conventions are
 \end{align*}
 The verifier independently walks the coordinates and compares the earlier-neighbor sets with the delay table. Agreement with finitely many rows or listed integer terms supplements the geometric proof; it cannot replace it.
 
-\section{Exact forcing weights and geometric tails}\label{sec:weights}
+\section{Exact forcing weights and geometric tails}\label{sfb:hex:sec:weights}
 Define the normalized geometric forcing weight
-\begin{equation}\label{eq:eta}
+\begin{equation}\label{sfb:hex:eq:eta}
  \eta_n=\sum_{j\in E_n}\phi^{j-n},\qquad \eta_0=\eta_1=\eta_2=0.
 \end{equation}
-Using $1+\phi^{-1}=\phi$ in \eqref{eq:Etable} gives
-\begin{equation}\label{eq:etavalues}
+Using $1+\phi^{-1}=\phi$ in \eqref{sfb:hex:eq:Etable} gives
+\begin{equation}\label{sfb:hex:eq:etavalues}
  \eta_n=\begin{cases}
  Q^r\phi^{5-t},&\text{at a non-corner on side }t,\\
  Q^r\phi^{3-t},&\text{at its final corner}.
@@ -195,14 +517,14 @@ Using $1+\phi^{-1}=\phi$ in \eqref{eq:Etable} gives
 \end{equation}
 Summing the six sides yields
 \begin{align}
- W_r:=\sum_{n=L_r}^{U_r}\eta_n&=Q^r(Ar+B),\label{eq:W}\\
+ W_r:=\sum_{n=L_r}^{U_r}\eta_n&=Q^r(Ar+B),\label{sfb:hex:eq:W}\\
  A&=12\phi+8=\phi^7(1-Q),&
- B&=-7\phi-4=\phi^2-\phi^6.\label{eq:AB}
+ B&=-7\phi-4=\phi^2-\phi^6.\label{sfb:hex:eq:AB}
 \end{align}
-Indeed, a side contributes $Q^r\{\ell_t(r)\phi^{5-t}-\phi^{4-t}\}$, since $\phi^{5-t}-\phi^{3-t}=\phi^{4-t}$. Summing these six elementary expressions proves \eqref{eq:W} in $\Q(\phi)$.
+Indeed, a side contributes $Q^r\{\ell_t(r)\phi^{5-t}-\phi^{4-t}\}$, since $\phi^{5-t}-\phi^{3-t}=\phi^{4-t}$. Summing these six elementary expressions proves \eqref{sfb:hex:eq:W} in $\Q(\phi)$.
 
 Write $T_n=\sum_{m>n}\eta_m$. The sums of $Q^s$ and $sQ^s$ give the exact complete-stage tail
-\begin{equation}\label{eq:Tstage}
+\begin{equation}\label{sfb:hex:eq:Tstage}
  T_{U_R}=Q^{R+1}\left\{\phi^7(R+1)-\phi^6+\frac{2\phi}{1-Q}\right\}
  \quad(R\ge1).
 \end{equation}
@@ -211,49 +533,49 @@ For a row at side $t$, position $h$, $1\le h\le\ell_t(r)$, one also has the exac
  T_n=Q^r\biggl\{& (\ell_t(r)-h)\phi^{5-t}
        -\one_{\{h<\ell_t(r)\}}\phi^{4-t}\notag\\
        &+\sum_{u=t+1}^5\bigl(\ell_u(r)\phi^{5-u}-\phi^{4-u}\bigr)\biggr\}
-       +T_{U_r}.\label{eq:Tpartial}
+       +T_{U_r}.\label{sfb:hex:eq:Tpartial}
 \end{align}
 Thus $T_n\in\Q(\phi)$ is exactly computable for every $n$. In particular,
-\begin{equation}\label{eq:Tbound}
+\begin{equation}\label{sfb:hex:eq:Tbound}
  \sum_n\eta_n<\infty,\qquad T_n=\OO((1+r(n))Q^{r(n)}).
 \end{equation}
 The weight sum, rather than a ratio heuristic, is what controls the amplitude.
 
-\section{Proof and exact certification of the amplitudes}\label{sec:amplitudes}
+\section{Proof and exact certification of the amplitudes}\label{sfb:hex:sec:amplitudes}
 Let $b_n=a_n\phi^{-n}$ and $d_n=\sum_{j\in E_n}\phi^{j-n}b_j$. Define the positive Perron projection
-\begin{equation}\label{eq:c}
+\begin{equation}\label{sfb:hex:eq:c}
  c_n=\frac{\phi^{1-n}}{\sqrt5}
        \bigl(a_n+\phi^{-1}a_{n-1}\bigr)\quad(n\ge1).
 \end{equation}
-Direct substitution of \eqref{eq:recurrence} gives
-\begin{equation}\label{eq:cincrement}
+Direct substitution of \eqref{sfb:hex:eq:recurrence} gives
+\begin{equation}\label{sfb:hex:eq:cincrement}
  c_n-c_{n-1}=\alpha d_n\ge0\quad(n\ge2).
 \end{equation}
 Also, for $j\ge1$, $b_j\le(\sqrt5/\phi)c_j$. Every extra endpoint is at least one for $n\ge10$, so monotonicity gives
-\begin{equation}\label{eq:cproduct}
+\begin{equation}\label{sfb:hex:eq:cproduct}
  c_n\le(1+\eta_n)c_{n-1}\quad(n\ge10).
 \end{equation}
-The finite prefix is positive, and \eqref{eq:Tbound} bounds the subsequent product. Consequently $c_n$ increases to some finite $C>0$. There is no appeal to an undefined $c_0$.
+The finite prefix is positive, and \eqref{sfb:hex:eq:Tbound} bounds the subsequent product. Consequently $c_n$ increases to some finite $C>0$. There is no appeal to an undefined $c_0$.
 
 The definition of $c_n$ also yields
-\begin{equation}\label{eq:stable}
+\begin{equation}\label{sfb:hex:eq:stable}
  b_n+\phi^{-2}b_{n-1}=(1+\phi^{-2})c_n.
 \end{equation}
-Subtracting the corresponding identity for the constant $C$ and iterating a stable scalar recurrence proves $b_n\to C$, since $|\rho|<1$. This proves the leading equivalents in Theorem~\ref{thm:main} for both seeds. The same argument works for nonnegative $a_0$ and positive $a_1$.
+Subtracting the corresponding identity for the constant $C$ and iterating a stable scalar recurrence proves $b_n\to C$, since $|\rho|<1$. This proves the leading equivalents in Theorem~\ref{sfb:hex:thm:main} for both seeds. The same argument works for nonnegative $a_0$ and positive $a_1$.
 
-\begin{theorem}[Finite algebraic certificates]\label{thm:cert}
+\begin{theorem}[Finite algebraic certificates]\label{sfb:hex:thm:cert}
 For $N=U_R$, $R\ge1$,
-\begin{equation}\label{eq:cert}
+\begin{equation}\label{sfb:hex:eq:cert}
  c_N\le C\le c_N e^{T_N}.
 \end{equation}
 If $T_N<1$, then the purely algebraic bounds
-\begin{equation}\label{eq:algcert}
+\begin{equation}\label{sfb:hex:eq:algcert}
  c_N\le C\le\frac{c_N}{1-T_N}
 \end{equation}
-are valid. All quantities in \eqref{eq:algcert} belong to $\Q(\phi)$ and are obtained from exact integers and the delay geometry.
+are valid. All quantities in \eqref{sfb:hex:eq:algcert} belong to $\Q(\phi)$ and are obtained from exact integers and the delay geometry.
 \end{theorem}
 \begin{proof}
-Every future row after $U_R\ge9$ has extra endpoints at least one. Iterating \eqref{eq:cproduct} and using $1+x\le e^x$ gives \eqref{eq:cert}. For $0\le t<1$, comparison of the exponential and geometric power series gives $e^t\le(1-t)^{-1}$, proving \eqref{eq:algcert}.
+Every future row after $U_R\ge9$ has extra endpoints at least one. Iterating \eqref{sfb:hex:eq:cproduct} and using $1+x\le e^x$ gives \eqref{sfb:hex:eq:cert}. For $0\le t<1$, comparison of the exponential and geometric power series gives $e^t\le(1-t)^{-1}$, proving \eqref{sfb:hex:eq:algcert}.
 \end{proof}
 
 These bounds are effective at the specified finite index. Their width tends to zero because $T_N\to0$ and $c_N\le C$. No asymptotic error constant or unknown onset is used in a certificate.
@@ -264,13 +586,13 @@ For exact arithmetic, represent $u+v\phi$ by $(u,v)\in\Q^2$, use $\phi^2=\phi+1$
  (u+v\phi)^{-1}=\frac{u+v-v\phi}{u^2+uv-v^2}.
 \]
 At $R=100$, $N=30402$, take $P=2N+512$ and
-\begin{equation}\label{eq:phibracket}
+\begin{equation}\label{sfb:hex:eq:phibracket}
  z=\left\lfloor\sqrt{5\cdot2^{2P}}\right\rfloor,\qquad
  p_-=\frac{2^P+z}{2^{P+1}},\qquad
  p_+=\frac{2^P+z+1}{2^{P+1}}.
 \end{equation}
 Then $p_-<\phi<p_+$. The sign of $v$ chooses the outward endpoint for $u+v\phi$. If $[c_-,c_+]$ and $[t_-,t_+]$ are such rational enclosures for $c_N$ and $T_N$, the interval
-\begin{equation}\label{eq:rationalcert}
+\begin{equation}\label{sfb:hex:eq:rationalcert}
  \left[c_-,\frac{c_+}{1-t_+}\right]
 \end{equation}
 is a rigorous enclosure for $C$, provided $0\le t_+<1$. To enclose $C_1/\phi$, divide its lower endpoint by $p_+$ and its upper endpoint by $p_-$. The code also recomputes the certificate in the independent basis $u+v\sqrt5$.
@@ -298,33 +620,33 @@ $C_1/\phi$ upper & $0.7852966729889836101757004950948667527440298527538339827377
 \end{center}
 The underlying rational intervals are much narrower. For each of $C_0$, $C_1$, and $C_1/\phi$, the verifier checks equality of the two exact integers $\lfloor10^{120}L\rfloor$ and $\lfloor10^{120}U\rfloor$, with $L,U$ the rational endpoints, certifying at least 120 truncated fractional digits. The displayed decimal pairs share only 109 fractional digits; they alone do not certify 120. Independently, the exact bounds reproduce all 106 supplied digits of A258639 and all 77 amplitude digits displayed in the A094925 record. Those published digits and approximate amplitudes predate this report; no new-digit priority is claimed.
 
-\section{An exact geometry-defined correction operator}\label{sec:operator}
+\section{An exact geometry-defined correction operator}\label{sfb:hex:sec:operator}
 For a sequence $f=(f_n)_{n\ge0}$, define
-\begin{equation}\label{eq:D}
+\begin{equation}\label{sfb:hex:eq:D}
  (D_mf)=\sum_{j\in E_m}\phi^{j-m}f_j.
 \end{equation}
 For the classes considered below, define
-\begin{equation}\label{eq:S}
+\begin{equation}\label{sfb:hex:eq:S}
  (Sf)_n=-\alpha\sum_{\substack{m>n\\m\ge2}}D_mf
         +\beta\sum_{m=2}^n\rho^{n-m}D_mf\quad(n\ge0).
 \end{equation}
 The second sum is empty for $n=0,1$. The first is an absolutely convergent future tail. This is a specified linear operator involving only $E_m$, $\phi$, and its two root weights; neither the target sequence nor its unknown amplitude enters its definition.
 
-\begin{lemma}[Exact variation of constants]\label{lem:variation}
+\begin{lemma}[Exact variation of constants]\label{sfb:hex:lem:variation}
 Let $b_n=a_n\phi^{-n}$. Then
-\begin{equation}\label{eq:identity}
+\begin{equation}\label{sfb:hex:eq:identity}
  b=C\one+Sb+B_0(\rho^n)_{n\ge0},
  \qquad B_0=\frac{\phi a_0-a_1}{\sqrt5},
 \end{equation}
 and
-\begin{equation}\label{eq:Cseries}
+\begin{equation}\label{sfb:hex:eq:Cseries}
  C=A_0+\alpha\sum_{m=2}^{\infty}d_m,
  \qquad A_0=\frac{a_1+\phi^{-1}a_0}{\sqrt5},\qquad d_m=D_mb.
 \end{equation}
 \end{lemma}
 \begin{proof}
 Let $e_m=\sum_{j\in E_m}a_j$. Ordinary Fibonacci numbers satisfy $\Fib_0=0$, $\Fib_1=1$, and their Binet formula gives the exact recurrence solution
-\begin{equation}\label{eq:binet}
+\begin{equation}\label{sfb:hex:eq:binet}
  a_n=A_0\phi^n+B_0(-\phi^{-1})^n
        +\sum_{m=2}^n\Fib_{n-m+1}e_m.
 \end{equation}
@@ -332,75 +654,75 @@ After division by $\phi^n$, the last term equals
 \[
  \alpha\sum_{m=2}^n d_m+\beta\sum_{m=2}^n\rho^{n-m}d_m.
 \]
-The plus sign on the second sum follows from the negative second Fibonacci root. The already proved boundedness of $b$, together with $|d_m|\le\|b\|_\infty\eta_m$, shows absolute summability. The finite stable convolution tends to zero. Taking limits proves \eqref{eq:Cseries}; splitting its dominant-root sum at $n$ then proves \eqref{eq:identity}, including $n=0,1$.
+The plus sign on the second sum follows from the negative second Fibonacci root. The already proved boundedness of $b$, together with $|d_m|\le\|b\|_\infty\eta_m$, shows absolute summability. The finite stable convolution tends to zero. Taking limits proves \eqref{sfb:hex:eq:Cseries}; splitting its dominant-root sum at $n$ then proves \eqref{sfb:hex:eq:identity}, including $n=0,1$.
 \end{proof}
 
 The first exact coefficient has a particularly short formula. Put
-\begin{equation}\label{eq:H}
+\begin{equation}\label{sfb:hex:eq:H}
  H_0=0,\qquad H_n=\rho H_{n-1}+\eta_n\quad(n\ge1).
 \end{equation}
 Then
-\begin{equation}\label{eq:F1}
+\begin{equation}\label{sfb:hex:eq:F1}
  F_1(n)=S\one(n)=-\alpha T_n+\beta H_n.
 \end{equation}
-Both terms are exactly computable in $\Q(\phi)$, using \eqref{eq:Tpartial}. The stable filter $H_n$ keeps the alternating side and corner transition layers. Dropping it, or keeping only a leading stage profile, is generally incompatible with a claimed error as small as the second entire stretched-exponential sector.
+Both terms are exactly computable in $\Q(\phi)$, using \eqref{sfb:hex:eq:Tpartial}. The stable filter $H_n$ keeps the alternating side and corner transition layers. Dropping it, or keeping only a leading stage profile, is generally incompatible with a claimed error as small as the second entire stretched-exponential sector.
 
-\section{Mapping bounds and the proof at every fixed order}\label{sec:mapping}
+\section{Mapping bounds and the proof at every fixed order}\label{sfb:hex:sec:mapping}
 For a fixed integer $k\ge0$, let $X_k$ be the space of real sequences with finite weighted norm
-\begin{equation}\label{eq:X}
+\begin{equation}\label{sfb:hex:eq:X}
  \|f\|_k=\sup_{n\ge0}
  \frac{|f_n|}{(1+r(n))^kQ^{kr(n)}}.
 \end{equation}
 The constants in all ensuing bounds may depend on the fixed order, but not on the index or phase.
 
-\begin{lemma}[One-order improvement]\label{lem:mapping}
+\begin{lemma}[One-order improvement]\label{sfb:hex:lem:mapping}
 The operator $S$ maps $X_k$ boundedly into $X_{k+1}$. Its stable backward part alone satisfies the sharper estimate
-\begin{equation}\label{eq:backbound}
+\begin{equation}\label{sfb:hex:eq:backbound}
  \sum_{m=2}^n\rho^{n-m}D_mf
  =\OO_k\!\left(\|f\|_k(1+r(n))^kQ^{(k+1)r(n)}\right).
 \end{equation}
 \end{lemma}
 \begin{proof}
-If $m$ is in stage $s\ge1$, its extra indices have stages between $\max(0,s-2)$ and $s$. From \eqref{eq:etavalues},
-\begin{equation}\label{eq:Dnorm}
+If $m$ is in stage $s\ge1$, its extra indices have stages between $\max(0,s-2)$ and $s$. From \eqref{sfb:hex:eq:etavalues},
+\begin{equation}\label{sfb:hex:eq:Dnorm}
  |D_mf|\le A_k\|f\|_k(1+s)^kQ^{(k+1)s},
  \qquad A_k=\phi^5Q^{-2k}.
 \end{equation}
 There are $6s+1\le7(1+s)$ rows in stage $s$. For $r=r(n)$, a tail therefore has absolute value at most
-\begin{equation}\label{eq:tailnorm}
+\begin{equation}\label{sfb:hex:eq:tailnorm}
  7A_k\|f\|_k\sum_{s\ge r}(1+s)^{k+1}Q^{(k+1)s}
  \le7A_k Z_k\|f\|_k(1+r)^{k+1}Q^{(k+1)r},
 \end{equation}
 where $Z_k=\sum_{h\ge0}(1+h)^{k+1}Q^{(k+1)h}<\infty$.
 
 For the backward sum, $m\le n$ implies $s=r(m)\le r=r(n)$. Moreover
-\begin{equation}\label{eq:stagedistance}
+\begin{equation}\label{sfb:hex:eq:stagedistance}
  r-s\le\sqrt{n-m}.
 \end{equation}
 To check this, when $t=r-s\ge1$ the smallest possible difference is at least
 \[
  L_r-U_s=3t^2-2t+6s(t-1)\ge t^2.
 \]
-The same inequality holds for $s=0$, $m\le2$, using $U_0=2$; the case $r=s$ is immediate. Hence, with $h=n-m$, \eqref{eq:Dnorm} bounds the absolute backward sum by
-\begin{equation}\label{eq:Vbound}
+The same inequality holds for $s=0$, $m\le2$, using $U_0=2$; the case $r=s$ is immediate. Hence, with $h=n-m$, \eqref{sfb:hex:eq:Dnorm} bounds the absolute backward sum by
+\begin{equation}\label{sfb:hex:eq:Vbound}
  A_k\|f\|_k(1+r)^kQ^{(k+1)r}
  \sum_{h\ge0}|\rho|^hQ^{-(k+1)\sqrt h}.
 \end{equation}
-The series converges: its logarithmic summand is a negative linear function of $h$ plus a positive multiple of $\sqrt h$. This proves \eqref{eq:backbound}, absolute convergence, and the full mapping statement.
+The series converges: its logarithmic summand is a negative linear function of $h$ plus a positive multiple of $\sqrt h$. This proves \eqref{sfb:hex:eq:backbound}, absolute convergence, and the full mapping statement.
 \end{proof}
 
-\begin{proof}[Proof of Theorem~\ref{thm:main}]
-The amplitude assertion was proved in Section~\ref{sec:amplitudes}. Divide \eqref{eq:identity} by $C$ and substitute it into itself finitely many times. For every fixed $J\ge0$, the exact remainder identity is
-\begin{equation}\label{eq:finiteiteration}
+\begin{proof}[Proof of Theorem~\ref{sfb:hex:thm:main}]
+The amplitude assertion was proved in Section~\ref{sfb:hex:sec:amplitudes}. Divide \eqref{sfb:hex:eq:identity} by $C$ and substitute it into itself finitely many times. For every fixed $J\ge0$, the exact remainder identity is
+\begin{equation}\label{sfb:hex:eq:finiteiteration}
  \frac bC=\sum_{k=0}^JF_k+S^{J+1}\!\left(\frac bC\right)
    +\frac{B_0}{C}\sum_{k=0}^JS^k(\rho^n)_{n\ge0}.
 \end{equation}
-Since $b$ is bounded, the first remainder belongs to $X_{J+1}$ by Lemma~\ref{lem:mapping}. The sequence $(\rho^n)$ belongs to every $X_M$, because $n=3r(n)^2+\OO(r(n))$. Each of its fixed $S$-iterates also belongs to every $X_M$, by applying the mapping lemma from a sufficiently strong input space and using the nesting of these spaces. Thus the entire transient remainder is beyond every fixed order. Equation~\eqref{eq:allorder} follows. Only finite substitution was used.
+Since $b$ is bounded, the first remainder belongs to $X_{J+1}$ by Lemma~\ref{sfb:hex:lem:mapping}. The sequence $(\rho^n)$ belongs to every $X_M$, because $n=3r(n)^2+\OO(r(n))$. Each of its fixed $S$-iterates also belongs to every $X_M$, by applying the mapping lemma from a sufficiently strong input space and using the nesting of these spaces. Thus the entire transient remainder is beyond every fixed order. Equation~\eqref{sfb:hex:eq:allorder} follows. Only finite substitution was used.
 \end{proof}
 
-\begin{corollary}[Seed independence beyond every fixed order]\label{cor:seed}
+\begin{corollary}[Seed independence beyond every fixed order]\label{sfb:hex:cor:seed}
 For every fixed integer $M\ge0$,
-\begin{equation}\label{eq:seedindependence}
+\begin{equation}\label{sfb:hex:eq:seedindependence}
  \frac{a^{(0)}_n/C_0}{a^{(1)}_n/C_1}
  =1+\OO_M\!\left((1+r(n))^M Q^{Mr(n)}\right).
 \end{equation}
@@ -409,48 +731,48 @@ For every fixed integer $M\ge0$,
 Subtract the normalized expansions to a sufficiently high fixed order and use that both normalized sequences tend to one. This is asymptotic indistinguishability at the stated scales, not an equality of the two sequences.
 \end{proof}
 
-\subsection{Constructive meaning and truncation scope}\label{sec:computability}
-The mapping proof provides explicit finite norm bounds, so the word ``computable'' in Theorem~\ref{thm:main} need not be interpreted formally. For example replace the series in \eqref{eq:Vbound} by the larger algebraic bound
-\begin{equation}\label{eq:Vexplicit}
+\subsection{Constructive meaning and truncation scope}\label{sfb:hex:sec:computability}
+The mapping proof provides explicit finite norm bounds, so the word ``computable'' in Theorem~\ref{sfb:hex:thm:main} need not be interpreted formally. For example replace the series in \eqref{sfb:hex:eq:Vbound} by the larger algebraic bound
+\begin{equation}\label{sfb:hex:eq:Vexplicit}
  V_k^*=\sum_{h=0}^{M_k-1}|\rho|^hQ^{-(k+1)\lceil\sqrt h\rceil}
           +\frac{\phi^{-M_k}}{1-\phi^{-1}},
  \qquad M_k=144(k+1)^2.
 \end{equation}
 For $h\ge M_k$, the inequality $6(k+1)\lceil\sqrt h\rceil\le h$ implies
-$|\rho|^hQ^{-(k+1)\lceil\sqrt h\rceil}\le\phi^{-h}$, proving the bound. The sum $Z_k$ in \eqref{eq:tailnorm} is rational in $Q^{k+1}$, as follows by repeated application of $q\,d/dq$ to $(1-q)^{-1}$. Therefore
-\begin{equation}\label{eq:opnorm}
+$|\rho|^hQ^{-(k+1)\lceil\sqrt h\rceil}\le\phi^{-h}$, proving the bound. The sum $Z_k$ in \eqref{sfb:hex:eq:tailnorm} is rational in $Q^{k+1}$, as follows by repeated application of $q\,d/dq$ to $(1-q)^{-1}$. Therefore
+\begin{equation}\label{sfb:hex:eq:opnorm}
  \|Sf\|_{k+1}\le A_k(7\alpha Z_k+\beta V_k^*)\|f\|_k
 \end{equation}
 is a fully specified algebraic norm estimate. Starting from $\|F_0\|_0=1$ yields explicit bounds for every fixed $F_k$.
 
 For fixed $n\le U_R$, truncating the future sum defining $SF_k(n)$ after $U_R$ loses at most
-\begin{equation}\label{eq:truncation}
+\begin{equation}\label{sfb:hex:eq:truncation}
  \alpha A_k\|F_k\|_k
  \sum_{s>R}(6s+1)(1+s)^kQ^{(k+1)s}.
 \end{equation}
-This is a computable polynomial-geometric tail tending to zero. The remaining sum has finitely many arguments of $F_k$; recursive evaluation with outward rational arithmetic and prescribed error budgets terminates at $F_0=1$. Bounds \eqref{eq:opnorm}--\eqref{eq:truncation} justify such an interval algorithm for each fixed order and argument. They make no practical complexity claim.
+This is a computable polynomial-geometric tail tending to zero. The remaining sum has finitely many arguments of $F_k$; recursive evaluation with outward rational arithmetic and prescribed error budgets terminates at $F_0=1$. Bounds \eqref{sfb:hex:eq:opnorm}--\eqref{sfb:hex:eq:truncation} justify such an interval algorithm for each fixed order and argument. They make no practical complexity claim.
 
 The shipped mandatory checker certifies the amplitudes and finite identities, including exact $F_1$ identities. Its optional higher-order numerical diagnostic uses a finite cutoff and high-precision floating arithmetic; it does not implement this general interval algorithm or certify the asymptotic inverse constants. Those distinctions keep exact certificates, theoretical computability, and floating diagnostics separate.
 
-\section{Nonzero profiles in every correction sector}\label{sec:profiles}
+\section{Nonzero profiles in every correction sector}\label{sfb:hex:sec:profiles}
 For $n$ in stage $r$, define
-\begin{equation}\label{eq:xphase}
+\begin{equation}\label{sfb:hex:eq:xphase}
  x_n=\frac{n-L_r}{r}\in[0,6].
 \end{equation}
 The extra vertex on side four changes an actual side coordinate by only $\OO(1/r)$. Define a continuous positive piecewise-linear function $P$ on $[0,6]$ by
-\begin{equation}\label{eq:Pprofile}
+\begin{equation}\label{sfb:hex:eq:Pprofile}
  P(t+\theta)=(\phi^2-\theta)\phi^{5-t},
  \qquad 0\le t\le5,\quad 0\le\theta\le1.
 \end{equation}
 Adjacent formulas agree because $\phi^2-1=\phi$. Write $w(x)=\phi^{5-t}$ for $t<x<t+1$. Then
-\begin{equation}\label{eq:Pidentities}
+\begin{equation}\label{sfb:hex:eq:Pidentities}
  P'=-w\ \text{off the side boundaries},\qquad
  P(0)=\phi^7,\qquad P(6)=\phi=QP(0).
 \end{equation}
 
-\begin{theorem}[Leading profile of each exact coefficient]\label{thm:profiles}
+\begin{theorem}[Leading profile of each exact coefficient]\label{sfb:hex:thm:profiles}
 For every fixed $k\ge1$, uniformly over the whole stage,
-\begin{equation}\label{eq:profile}
+\begin{equation}\label{sfb:hex:eq:profile}
  F_k(n)=\gamma_k r^kQ^{kr}P(x_n)^k
        +\OO_k(r^{k-1}Q^{kr}),\qquad
  \gamma_k=\frac{(-\alpha)^kQ^{-k(k-1)/2}}{k!}.
@@ -459,10 +781,10 @@ In particular the coefficients have alternating, nonzero leading signs and
 $F_{k+1}(n)/F_k(n)=\OO_k(rQ^r)\to0$ uniformly in stage phase.
 \end{theorem}
 \begin{proof}
-For $k=0$, the starting profile is exactly one. Suppose the profile statement holds at order $k$. Except for a bounded number of side-start and corner rows in a stage $s$, each inward recurrence index has stage $s-1$ and phase $x_m+\OO(1/s)$. The profiles $P^k$ are uniformly Lipschitz on $[0,6]$. For these ordinary non-corner rows, \eqref{eq:etavalues} and the induction hypothesis therefore give
+For $k=0$, the starting profile is exactly one. Suppose the profile statement holds at order $k$. Except for a bounded number of side-start and corner rows in a stage $s$, each inward recurrence index has stage $s-1$ and phase $x_m+\OO(1/s)$. The profiles $P^k$ are uniformly Lipschitz on $[0,6]$. For these ordinary non-corner rows, \eqref{sfb:hex:eq:etavalues} and the induction hypothesis therefore give
 \begin{align}
  D_mF_k={}&\gamma_k Q^{-k}s^kQ^{(k+1)s}w(x_m)P(x_m)^k\notag\\
- &+\OO_k(s^{k-1}Q^{(k+1)s}).\label{eq:profileforcing}
+ &+\OO_k(s^{k-1}Q^{(k+1)s}).\label{sfb:hex:eq:profileforcing}
 \end{align}
 At exceptional rows, the inward recurrence stage may be $s-2$; the corner also has a different weight. Their individual contribution is bounded by $\OO_k(s^kQ^{(k+1)s})$. There are only $\OO(1)$ such rows per stage. They thus affect the entire or partial stage sum at one lower power of $s$ than its leading $s^{k+1}$ size. They cannot be ignored in an exact coefficient, but do not change its leading profile.
 
@@ -471,18 +793,18 @@ Uniform Riemann summation over a partial stage, allowing its finitely many bound
  |(r+h)^{k+1}-r^{k+1}|
  \le C_k r^k(1+h)^{k+1}\quad(r\ge1,h\ge0).
 \]
-Lemma~\ref{lem:mapping} makes the stable backward filter one power of $r$ smaller too. The leading new profile is consequently
+Lemma~\ref{sfb:hex:lem:mapping} makes the stable backward filter one power of $r$ smaller too. The leading new profile is consequently
 \begin{align}
  -\alpha\gamma_k Q^{-k}\biggl\{
   \int_x^6 w(u)P(u)^k\,du
   +\frac{Q^{k+1}}{1-Q^{k+1}}\int_0^6w(u)P(u)^k\,du
- \biggr\}.\label{eq:profilemap}
+ \biggr\}.\label{sfb:hex:eq:profilemap}
 \end{align}
 Since $P'=-w$ and $P(6)=QP(0)$, the expression in braces is exactly $P(x)^{k+1}/(k+1)$. Hence
 \[
  \gamma_{k+1}=-\frac{\alpha Q^{-k}}{k+1}\gamma_k,
 \]
-which gives \eqref{eq:profile}. Positivity and a positive minimum of $P$ make the relative leading-profile error $\OO_k(1/r)$ uniformly. This proves the nonvanishing and ratio assertions.
+which gives \eqref{sfb:hex:eq:profile}. Positivity and a positive minimum of $P$ make the relative leading-profile error $\OO_k(1/r)$ uniformly. This proves the nonvanishing and ratio assertions.
 \end{proof}
 
 The first three profile coefficients are
@@ -490,44 +812,44 @@ The first three profile coefficients are
  \gamma_1=-\alpha,\qquad \gamma_2=\frac{\alpha^2}{2Q},\qquad
  \gamma_3=-\frac{\alpha^3}{6Q^3}.
 \]
-The functions in Theorem~\ref{thm:main} must remain the exact $F_k=S^k\one$. Replacing $F_k$ by only the leading term in \eqref{eq:profile} discards $\OO(r^{k-1}Q^{kr})$, which is larger than the next whole sector $r^{k+1}Q^{(k+1)r}$. Thus leading profiles describe the hierarchy but do not themselves form the claimed all-fixed-order expansion. The factors $Q^{-k(k-1)/2}$ also underscore why the theorem provides no uniform control in growing $k$.
+The functions in Theorem~\ref{sfb:hex:thm:main} must remain the exact $F_k=S^k\one$. Replacing $F_k$ by only the leading term in \eqref{sfb:hex:eq:profile} discards $\OO(r^{k-1}Q^{kr})$, which is larger than the next whole sector $r^{k+1}Q^{(k+1)r}$. Thus leading profiles describe the hierarchy but do not themselves form the claimed all-fixed-order expansion. The factors $Q^{-k(k-1)/2}$ also underscore why the theorem provides no uniform control in growing $k$.
 
-\section{The square-root phase and its exact envelopes}\label{sec:phaseproof}
-The fixed-order theorem with $J=1$, together with Theorem~\ref{thm:profiles}, gives
-\begin{equation}\label{eq:firstdeficit}
+\section{The square-root phase and its exact envelopes}\label{sfb:hex:sec:phaseproof}
+The fixed-order theorem with $J=1$, together with Theorem~\ref{sfb:hex:thm:profiles}, gives
+\begin{equation}\label{sfb:hex:eq:firstdeficit}
  1-\frac{b_n}{C}=\alpha rQ^rP(x_n)+\OO(Q^r).
 \end{equation}
 The next-sector error $\OO(r^2Q^{2r})$ is absorbed here into $\OO(Q^r)$. From the exact definition of $x=x_n$,
-\begin{equation}\label{eq:nphase}
+\begin{equation}\label{sfb:hex:eq:nphase}
  n=3r^2+(x-2)r+2,
 \end{equation}
 so uniformly for $0\le x\le6$,
-\begin{equation}\label{eq:sqrtphase}
+\begin{equation}\label{sfb:hex:eq:sqrtphase}
  \sqrt{n/3}=r+\frac{x-2}{6}+\OO(1/r),\qquad
  \sqrt{12n}=6r+x-2+\OO(1/r).
 \end{equation}
-Combining \eqref{eq:firstdeficit} with these relations yields
-\begin{equation}\label{eq:Dphase}
+Combining \eqref{sfb:hex:eq:firstdeficit} with these relations yields
+\begin{equation}\label{sfb:hex:eq:Dphase}
  D_n=\frac{\alpha}{\sqrt3}\phi^{x_n-2}P(x_n)+\OO(1/r).
 \end{equation}
-If $x=t+\theta$, \eqref{eq:Pprofile} collapses the side label and gives precisely $G(\theta)$ from \eqref{eq:G}. Its endpoint values agree:
+If $x=t+\theta$, \eqref{sfb:hex:eq:Pprofile} collapses the side label and gives precisely $G(\theta)$ from \eqref{sfb:hex:eq:G}. Its endpoint values agree:
 \[
  G(0)=\frac{\phi^6}{\sqrt{15}}=G(1).
 \]
-The periodic extension is globally Lipschitz, so the $\OO(1/r)$ phase perturbation in \eqref{eq:sqrtphase} changes $G$ by only $\OO(1/r)$ even at a fractional-part wrap. This proves the uniform formula \eqref{eq:phase}.
+The periodic extension is globally Lipschitz, so the $\OO(1/r)$ phase perturbation in \eqref{sfb:hex:eq:sqrtphase} changes $G$ by only $\OO(1/r)$ even at a fractional-part wrap. This proves the uniform formula \eqref{sfb:hex:eq:phase}.
 
 To find the extrema, differentiate on $(0,1)$:
-\begin{equation}\label{eq:Gderivative}
+\begin{equation}\label{sfb:hex:eq:Gderivative}
  \frac{d}{d\theta}\log G(\theta)
  =\log\phi-\frac1{\phi^2-\theta}.
 \end{equation}
 It decreases strictly and vanishes at
-\begin{equation}\label{eq:thetamax}
+\begin{equation}\label{sfb:hex:eq:thetamax}
  \theta_* =\phi^2-\frac1{\log\phi}\in(0,1).
 \end{equation}
 The interval assertion follows without decimal estimates from
 $\phi^{-2}<\log\phi<\phi^{-1}$, which is the usual inequality
-$(z-1)/z<\log z<z-1$ at $z=\phi$. Thus $G$ has its unique maximum at $\theta_*$ and its equal minima at the endpoints. Substitution gives \eqref{eq:envelopes}. Every phase is approached along the within-side grids of mesh $1/r$ as $r\to\infty$, so these are attained subsequential envelopes, rather than merely pointwise bounds. In fact the whole interval between them is the set of subsequential limits of $D_n$.
+$(z-1)/z<\log z<z-1$ at $z=\phi$. Thus $G$ has its unique maximum at $\theta_*$ and its equal minima at the endpoints. Substitution gives \eqref{sfb:hex:eq:envelopes}. Every phase is approached along the within-side grids of mesh $1/r$ as $r\to\infty$, so these are attained subsequential envelopes, rather than merely pointwise bounds. In fact the whole interval between them is the set of subsequential limits of $D_n$.
 
 Since $G$ is bounded below by a positive constant, the relative deficit is eventually positive. Multiplication by $C\phi^n$ gives
 \[
@@ -535,21 +857,21 @@ Since $G$ is bounded below by a positive constant, the relative deficit is event
  =\Theta\!\left(\sqrt n\,\exp\{n\log\phi-2\sqrt3\log\phi\sqrt n\}\right)
  \longrightarrow+\infty.
 \]
-The relative error nevertheless tends to zero faster than every inverse power of $n$. This finishes the proof of Theorem~\ref{thm:phaseintro}.
+The relative error nevertheless tends to zero faster than every inverse power of $n$. This finishes the proof of Theorem~\ref{sfb:hex:thm:phaseintro}.
 
 For A094925 in the original index $m$, replace $n$ by $m-1$ and $C$ by its zero-based value $C_1$. Equivalently, the same leading phase formula and envelope constants apply with $m$ and the original-index amplitude $C_1/\phi$: the unit shift changes the phase and the scaled prefactor by $\OO(m^{-1/2})$. For higher-order accuracy, retain the exact shift $F_k(m-1)$ rather than replacing it by $F_k(m)$.
 
-\section{Inverse brackets and the rounding obstruction}\label{sec:inverse}
+\section{Inverse brackets and the rounding obstruction}\label{sfb:hex:sec:inverse}
 For the chosen seed, define the intrinsic inverse
-\begin{equation}\label{eq:N}
+\begin{equation}\label{sfb:hex:eq:N}
  N(y)=\min\{n\ge0:a_n\ge y\},\qquad
  x=\log_\phi(y/C).
 \end{equation}
 The recurrence is strictly increasing after its finite initial repeated terms, and $a_n\to\infty$, so this is well defined for positive $y$.
 
-\begin{theorem}[Two candidates and infinitely many failures]\label{thm:rounding}
+\begin{theorem}[Two candidates and infinitely many failures]\label{sfb:hex:thm:rounding}
 For all sufficiently large $y$,
-\begin{equation}\label{eq:twocandidates}
+\begin{equation}\label{sfb:hex:eq:twocandidates}
  N(y)\in\{\lceil x\rceil,\lceil x\rceil+1\}.
 \end{equation}
 Each alternative occurs infinitely often even when $y$ is required to be an integer.
@@ -567,23 +889,23 @@ For integer $y=a_n$, convergence and the negative relative correction imply $n-1
 
 \subsection{Real interpolation that preserves the fixed-order precision}
 For fixed $J\ge0$, set
-\begin{equation}\label{eq:UJ}
+\begin{equation}\label{sfb:hex:eq:UJ}
  U_J(n)=\sum_{k=0}^JF_k(n),\qquad f_J(n)=C\phi^nU_J(n).
 \end{equation}
 These values are eventually positive and $f_J(n+1)/f_J(n)\to\phi$. Let $L$ be the piecewise-linear interpolation of $\log a_n$, and let $L_J$ be the piecewise-linear interpolation of $\log f_J(n)$, both restricted to a sufficiently late half-line. Their slopes tend to $\log\phi$, and hence are eventually at least $(\log\phi)/2$. Denote their increasing inverses by $X=L^{-1}$ and $X_J=L_J^{-1}$.
 
-\begin{theorem}[All fixed-order inverse envelopes]\label{thm:inverse}
+\begin{theorem}[All fixed-order inverse envelopes]\label{sfb:hex:thm:inverse}
 Extend $r(t)=\lfloor(1+\sqrt{3t-5})/3\rfloor$ to real $t\ge3$. For each fixed $J\ge0$,
-\begin{equation}\label{eq:realinverse}
+\begin{equation}\label{sfb:hex:eq:realinverse}
  |X(\log y)-X_J(\log y)|
  =\OO_J\!\left((1+r(x))^{J+1}Q^{(J+1)r(x)}\right).
 \end{equation}
 Consequently, for some sufficiently large fixed $K_J>0$ and all sufficiently large $y$, put
-\begin{equation}\label{eq:delta}
+\begin{equation}\label{sfb:hex:eq:delta}
  \delta_J(y)=K_J(1+r(x))^{J+1}Q^{(J+1)r(x)}.
 \end{equation}
 Then the pointwise integer bounds are
-\begin{equation}\label{eq:ceilbounds}
+\begin{equation}\label{sfb:hex:eq:ceilbounds}
  \ceil{X_J(\log y)-\delta_J(y)}
  \le N(y)\le
  \ceil{X_J(\log y)+\delta_J(y)}.
@@ -591,7 +913,7 @@ Then the pointwise integer bounds are
 Their real bracket width tends to zero; the integer endpoints are equal or adjacent eventually.
 \end{theorem}
 \begin{proof}
-Since $U_J(n)\to1$, the logarithm is uniformly Lipschitz on the eventual range of both normalized approximations. Theorem~\ref{thm:main} therefore gives
+Since $U_J(n)\to1$, the logarithm is uniformly Lipschitz on the eventual range of both normalized approximations. Theorem~\ref{sfb:hex:thm:main} therefore gives
 \[
  |\log a_n-\log f_J(n)|
  =\OO_J((1+r(n))^{J+1}Q^{(J+1)r(n)}).
@@ -600,14 +922,18 @@ Linear interpolation preserves this bound between integers: adjacent stage weigh
 \[
  X(\log y)=x+o(1),\qquad X_J(\log y)=x+o(1).
 \]
-The stage weights near these two roots and at $x$ are comparable by a fixed factor. At one root, the vertical discrepancy between $L$ and $L_J$ has the stated order; dividing by the lower slope bound for the other interpolation controls the horizontal discrepancy. This proves \eqref{eq:realinverse} without assuming differentiability across an integer.
+The stage weights near these two roots and at $x$ are comparable by a fixed factor. At one root, the vertical discrepancy between $L$ and $L_J$ has the stated order; dividing by the lower slope bound for the other interpolation controls the horizontal discrepancy. This proves \eqref{sfb:hex:eq:realinverse} without assuming differentiability across an integer.
 
-On the eventual increasing half-line, $N(y)=\lceil X(\log y)\rceil$ exactly. Monotonicity of the ceiling gives \eqref{eq:ceilbounds}. Its real width $2\delta_J(y)$ is eventually less than one, which proves the final assertion.
+On the eventual increasing half-line, $N(y)=\lceil X(\log y)\rceil$ exactly. Monotonicity of the ceiling gives \eqref{sfb:hex:eq:ceilbounds}. Its real width $2\delta_J(y)$ is eventually less than one, which proves the final assertion.
 \end{proof}
 
 The constants $K_J$ and the onsets in this theorem are asymptotic existence statements, not numerical interval certificates supplied by the package. If an independently justified numerical bracket stays within one ceiling cell, the common endpoint determines $N(y)$ exactly. Without such separation, an unconditional rounded-root formula is unwarranted, however small the real error. This is an application of classical monotone interpolation and prior staircase/error-transport methodology \cite{proveit}; it is not a new general inversion principle. For the original index of A094925, add one to the zero-based inverse throughout.
 
-\section{Verification and reproducible deliverables}\label{sec:verification}
+\begin{writenote}[7 October 2026]
+In the transseries volume's terms (front matter, ``The inverses and the transseries volume''), the identity $N(y)=\lceil X(\log y)\rceil$ used in the proof is an instance of item~(1) of \file{p0:thm:staircase}, with the piecewise-linear $L$ as admissible interpolation, and \eqref{sfb:hex:eq:ceilbounds} follows from it as item~(2) does. Theorem~\ref{sfb:hex:thm:rounding} is a direct argument, an analogue.
+\end{writenote}
+
+\section{Verification and reproducible deliverables}\label{sfb:hex:sec:verification}
 The public package separates mandatory exact checks from optional numerical diagnostics. Its exact computations use only Python integers and \texttt{fractions.Fraction}; no third-party Python module, network, or TeX installation is required to run them. The core commands are
 \begin{quote}\ttfamily\small
 python3 -I -S -B code/check\_exact.py\\
@@ -621,9 +947,13 @@ The optional \texttt{code/diagnose\_float.py} evaluates exact-coefficient formul
 
 To reproduce the exact results and build the complete release from a source tree or intact extracted archive, use the documented commands in \texttt{README\_REPRODUCIBILITY.md}. The builder creates fresh outputs, runs normal and optimized tests, compiles three isolated pdfLaTeX passes with shell escape disabled, and rejects final warnings, unresolved references, missing glyphs, and overfull or underfull boxes. The source inventory and generated manifest are closed and hash-checked. Archive entry order, timestamps, permissions, and storage mode are fixed. With the same installed Python/TeX stack, two fresh extracted builds must reproduce the PDF, TeX, ZIP, and external receipt byte for byte. Cross-version identity is not promised.
 
+\begin{writenote}[7 October 2026]
+In this report the package's programs are \file{code/190-hex-*.py} (those of its \file{code/} directory and its root scripts), its fixtures and recorded outputs \file{data/190-hex-*}, and its \file{README_REPRODUCIBILITY.md}, \file{DATA_SOURCES.md}, \file{code/README.md} and \file{data/README.md} are \file{190-hex-*.md}. The delivered PDF, the package \file{README.md} (replaced by this report's) and \file{SHA256SUMS.json} are not shipped; the replay and build scripts check the closed delivered inventory, so they run only in a re-extracted archive. The report's README gives a route that runs the mandatory checker on a copy.
+\end{writenote}
+
 The archive contains the authored article and code, bounded attributed integer and digit fixtures, and generated verification products. It excludes full OEIS exports, third-party full text, private research or audit material, transient logs, and unrelated files. SHA-256 manifests detect modification; they are not cryptographic publisher signatures. Reproduction is an offline tool for this authored package, not a sandbox for arbitrary hostile TeX or Python.
 
-\section{Sources and the limits of the comparison}\label{sec:sources}
+\section{Sources and the limits of the comparison}\label{sfb:hex:sec:sources}
 Yasutoshi Kohmoto's OEIS records define the two hexagonal adjacency sequences \cite{oeis926,oeis925}. The explicit leading equivalents and the square-root-delay motivation are credited there to Manfred Scheucher on 3 June 2015. A258639 credits its amplitude digits to Scheucher and V\'aclav Kot\v e\v sovec \cite{oeis639}. The source fixtures in this package are bounded excerpts: 41 and 38 integer terms, 106 amplitude digits, and the separate 77-digit A094925 amplitude string. They are attributed and checked exactly. The source records inspected were revisions 27, 20, and 4, respectively. The linked Sage scripts and full b-files were not accessible in the source review, so no claim is made to have inspected or verified their entire contents.
 
 Fernandez's \emph{Spiro-Fibonacci Sequences} \cite{fernandez}, last modified 11 January 2003, develops neighboring spiral constructions, including the square-spiral model and seed linearity. That construction differs from the present hexagonal rule, which adds all earlier neighbors of the preceding vertex. The actual text and the neighboring OEIS records A078510, A079421, and A079422 were considered; they supply context, not the hexagonal all-order theorem proved here.
@@ -632,11 +962,826 @@ The ProveIt transseries and inversion material \cite{proveit} already treats rea
 
 No closed elementary expression for either amplitude is claimed. No convergence in growing correction order, uniform seed-parameter theorem, effective inverse onset, or universal exact rounding rule is asserted. All external source activity was read-only; the report does not imply an OEIS submission or other publication.
 
-\begin{thebibliography}{9}
+\begin{writenote}[7 October 2026]
+The square-spiral model and A078510, named above as context, are the subject of Part~II, which proves its own growth theorem by a different argument; neither Part uses the other. The write read the live OEIS entries on 7~October 2026; the revisions cited above are current. Nothing was submitted to the OEIS.
+\end{writenote}
+
+\part{Square Spiro-Fibonacci growth and inversion: positive amplitude and quantitative asymptotics for A078510}\label{sfb:sq:part}
+\partsource{Bundle Report~191, archive \file{Square_Spiro_Fibonacci_Growth_and_Inversion_Source.zip}, delivered as \file{Report191.tex} (19 pages). Delivered title block ``Report191 / Square Spiro Fibonacci Growth and Inversion / Positive amplitude and quantitative asymptotics for A078510 / 4 October 2026''. Printed as delivered, with \textbf{[write]} notes; Report~191's Section~$k$ is Section~$k+11$ here and its statements move with their sections; its equation~($k$) is equation~($k+66$) here. The opening paragraph ``Attribution and scope'' is the manuscript's own. This Part is self-contained; it uses nothing from Part~I.}
+\begin{partabstract}
+The square Spiro-Fibonacci sequence A078510 adds the values at the two closest earlier cell centers along a square spiral. Its exact recurrence has a near-identity delayed index $t(n)=n-4\sqrt n+\OO(1)$. We prove the full equivalent
+\[
+ a_n=C\,\frac{\exp\!\left\{\frac{\sqrt n}{2}
+ \left(w-1+\frac1w\right)+\frac{w^2}{32}+\frac w2\right\}}
+ {\sqrt{1+w}}\left(1+\OO\!\left(\frac{w^3}{\sqrt n}\right)\right),
+ \qquad w=W_0(4\sqrt n),\quad C>0.
+\]
+An occupied-rectangle induction identifies the exact geometry. A periodic Bernoulli normalizer cancels a nonsummable local defect away from a sparse corner set. Positive products first bound the normalized sequence; a separate common-anchor contraction proves convergence and the error above. We quantify the divergent absolute defect of the uncorrected smooth normalizer and the homogeneous contraction product. Threshold inversion retains $\log C$ with absolute error $\OO(w^2)$; a separate analytic implicit-function argument yields every fixed inverse-logarithmic order, with an exact rational coefficient generator. No certified digits of $C$, sharp relative phase correction, or all-orders relative expansion of the sequence are asserted.
+\end{partabstract}
+
+\paragraph{Attribution and scope.}
+The spiral sequence, its seed convention, the quarter-square predecessor sequence A265409, and corner repetition are prior constructions \cite{fernandez,oeis510,oeis409,ryde}. Lambert balance, WKB normalization, positive comparison, implicit series, and inverse-error transport are established methods. The subject here is their detailed implementation for this specific recurrence, including the convergence mechanism and uniform error. The bounded literature comparison in Section~\ref{sfb:sq:sec:sources} is not a worldwide priority claim.
+
+\section{Main conclusions and conventions}\label{sfb:sq:sec:main}
+All logarithms are natural, and $W_0$ is the positive real Lambert function:
+$W_0(z)e^{W_0(z)}=z$ for $z>0$. For a real variable $x>0$, put
+\begin{align}
+ r&=\sqrt x,&w&=W_0(4r),\label{sfb:sq:eq:rw}\\
+ \Phi(x)&=\frac r2\left(w-1+\frac1w\right),&
+ \Psi(x)&=\frac{w^2}{32}+\frac w2-\frac12\log(1+w),\label{sfb:sq:eq:phipsi}\\
+ H(x)&=\Phi(x)+\Psi(x).&&\label{sfb:sq:eq:H}
+\end{align}
+At integer arguments, subscripts on $r_n,w_n$ may be omitted. Constants in $\OO$ bounds are independent of the integer index, including its position relative to a corner. Every asymptotic statement is at infinity. No effective starting index is supplied.
+
+The sequence starts with $a_0=0,a_1=1$. With distances measured between centers of unit-square cells, every subsequent cell receives the sum of the values at the two closest earlier centers. One is always its path predecessor. The other has index $t(n)$, so
+\begin{equation}\label{sfb:sq:eq:recurrence}
+ a_n=a_{n-1}+a_{t(n)}\quad(n\ge2).
+\end{equation}
+The prescribed seed $a_1$ is not an application of a two-predecessor rule. The convention $t(1)=0$ is only bookkeeping. The first terms are
+\[
+ 0,1,1,1,1,1,1,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,18.
+\]
+The exact formula for $t(n)$ is proved in Section~\ref{sfb:sq:sec:geometry}.
+
+\begin{theorem}[Full growth equivalent]\label{sfb:sq:thm:main}
+There is a finite strictly positive constant $C$ such that
+\begin{equation}\label{sfb:sq:eq:main}
+ a_n=C e^{H(n)}\left(1+\OO\!\left(\frac{w_n^3}{r_n}\right)\right).
+\end{equation}
+In particular,
+\begin{equation}\label{sfb:sq:eq:logleading}
+ \log a_n\sim\frac14\sqrt n\log n.
+\end{equation}
+The error in \eqref{sfb:sq:eq:main} is uniform over all integers, not only the interiors of long sides.
+\end{theorem}
+
+The existence of $C$ is the essential additional issue beyond finding a plausible exponent. A formal local balance identifies $w/(4r)$ as a logarithmic slope, but does not imply that any quotient has a limit. Likewise, summable residuals and positivity alone supply bounds in our proof, not convergence. Section~\ref{sfb:sq:sec:convergence} supplies the missing contraction argument.
+
+For a real target $Y>1$, define the integer threshold
+\begin{equation}\label{sfb:sq:eq:threshold}
+ N(Y)=\min\{n\ge0:a_n\ge Y\},\qquad L=\log Y.
+\end{equation}
+Let $w_0>0$ be the large-target solution of
+\begin{equation}\label{sfb:sq:eq:w0}
+ \frac{e^{w_0}}8(w_0^2-w_0+1)=L,
+ \qquad r_0=\frac{w_0e^{w_0}}4.
+\end{equation}
+
+\begin{theorem}[Quantitative threshold inverse]\label{sfb:sq:thm:inverseintro}
+As $Y\to\infty$,
+\begin{equation}\label{sfb:sq:eq:inverseintro}
+ \begin{split}
+ N(Y)={}&r_0^2-\frac{4r_0}{w_0}
+ \left(\frac{w_0^2}{32}+\frac{w_0}{2}
+       -\frac12\log(1+w_0)+\log C\right)
+       +\OO(w_0^2).
+ \end{split}
+\end{equation}
+Consequently,
+\begin{equation}\label{sfb:sq:eq:inverseleading}
+ N(Y)\sim\frac{4(\log Y)^2}{(\log\log Y)^2}.
+\end{equation}
+In addition, the threshold has the fixed-order inverse-logarithmic hierarchy stated in Theorem~\ref{sfb:sq:thm:hierarchy}. That hierarchy is distinct from an all-orders relative expansion of $a_n$.
+\end{theorem}
+
+The formula retains the amplitude even though its digits are not certified here. Dropping $\log C$ omits the term $-(4r_0/w_0)\log C$, which, unless $C=1$, is much larger than the stated $\OO(w_0^2)$ error. An asymptotic inverse with this error cannot in general be rounded once to obtain an exact integer threshold.
+
+\section{The square spiral and the exact predecessor}\label{sfb:sq:sec:geometry}
+We use the counterclockwise orientation
+\[
+\begin{array}{llll}
+ P_0=(0,0),&P_1=(1,0),&P_2=(1,1),&P_3=(0,1),\\
+ P_4=(-1,1),&P_5=(-1,0),&P_6=(-1,-1),&P_7=(0,-1),
+\end{array}
+\]
+followed by $P_8=(1,-1)$. Runs have directions east, north, west, south, repeating, with lengths $1,1,2,2,3,3,\ldots$. Reflection yields the clockwise orientation without changing any distances or selected indices.
+
+Set
+\begin{equation}\label{sfb:sq:eq:quarter}
+ q_k=\floor{k^2/4},\qquad A_k=\floor{k/2},\qquad
+ \ell_k=\floor{(k+1)/2}\quad(k\ge2).
+\end{equation}
+The corner $C_k=P_{q_k}$ begins a side of length
+$q_{k+1}-q_k=\ell_k$. Its outgoing unit vector is $v_k$, and its incoming unit vector is $z_k=v_{k-1}$. Thus $v_{k+1}=-z_k$. Directly from the path, if $k=4m+s$,
+\begin{center}
+\begin{tabular}{ccl}
+\toprule
+$s$ & $C_k$ & $v_k$\\
+\midrule
+$0$ & $(-m,m)$ & $(0,-1)$\\
+$1$ & $(-m,-m)$ & $(1,0)$\\
+$2$ & $(m+1,-m)$ & $(0,1)$\\
+$3$ & $(m+1,m+1)$ & $(-1,0)$\\
+\bottomrule
+\end{tabular}
+\end{center}
+In particular,
+\begin{equation}\label{sfb:sq:eq:sidecoords}
+ P_{q_k+j}=C_k+jv_k\quad(0\le j<\ell_k),\qquad
+ C_{k+1}=C_k+\ell_kv_k.
+\end{equation}
+For integer $n\ge1$, the unique side with $q_k\le n<q_{k+1}$ is selected by
+\begin{equation}\label{sfb:sq:eq:k}
+ k=k(n)=\floor{\sqrt{4n+1}}.
+\end{equation}
+Indeed $q_h\le n$ is equivalent to $h^2\le4n+1$; the equivalence follows by considering even and odd $h$ separately.
+
+\begin{lemma}[Complete occupied rectangle]\label{sfb:sq:lem:rectangle}
+Use local coordinates $(a,b)$ in the orthonormal basis $(z_k,v_k)$ with origin $C_k$. Immediately before index $q_k$ is placed, the set of all earlier centers is exactly
+\begin{equation}\label{sfb:sq:eq:rectangle}
+ \mathcal Q_k=\{(a,b)\in\Z^2:-A_k\le a\le-1,\ 0\le b\le\ell_k-1\}.
+\end{equation}
+Immediately before index $q_k+j$, where $0\le j<\ell_k$, the earlier set is
+$\mathcal Q_k\cup\{(0,h):0\le h<j\}$.
+\end{lemma}
+\begin{proof}
+For $k=2$, $C_2=(1,0)$, $z_2=(1,0)$, and $v_2=(0,1)$. The sole earlier center $P_0$ has local coordinate $(-1,0)$, as required. Adding all $\ell_k$ side cells fills the enlarged rectangle
+\[
+ -A_k\le a\le0,\qquad 0\le b\le\ell_k-1.
+\]
+Relative to the next corner $C_{k+1}$ and basis $(v_k,-z_k)$, its coordinates become
+\[
+ a'=b-\ell_k,\qquad b'=-a.
+\]
+They range over $-\ell_k\le a'\le-1$ and $0\le b'\le A_k$. Since $A_{k+1}=\ell_k$ and $\ell_{k+1}=A_k+1$, this is exactly \eqref{sfb:sq:eq:rectangle} at $k+1$. The within-side description follows by adding the already placed side points. In particular this is an equality of occupied sets, not only a bounding rectangle. Its cardinality $A_k\ell_k=q_k$ agrees with the number of earlier indices.
+\end{proof}
+
+\begin{proposition}[Exact delayed index]\label{sfb:sq:prop:delay}
+For every $n\ge2$, with $k=k(n)$,
+\begin{equation}\label{sfb:sq:eq:delay}
+ t(n)=n-2k+3+\one_{\{n=q_k\}}.
+\end{equation}
+This gives $t(n)=0$ for $2\le n\le7$ and $t(8)=1$. The selected earlier center other than the path predecessor is unique. Its distance is $\sqrt2$ at corners and $1$ at side interiors.
+\end{proposition}
+\begin{proof}
+At the corner $(0,0)$, the predecessor is $(-1,0)$ at distance $1$. For $k\ge3$, the unique next closest point in \eqref{sfb:sq:eq:rectangle} is $(-1,1)$ at squared distance $2$. Every remaining point has squared distance at least $4$. Thus there is no corner tie to resolve.
+
+At an interior point $(0,j)$ with $1\le j<\ell_k$, the predecessor is $(0,j-1)$. The unique rectangle point at distance $1$ is $(-1,j)$. Every other previously placed point is farther after the predecessor is removed. These cases cover every index $n\ge2$.
+
+For $k\ge6$, the corner table gives
+\begin{equation}\label{sfb:sq:eq:innercorner}
+ C_{k-4}=C_k-z_k+v_k,\quad v_{k-4}=v_k,
+ \quad \ell_{k-4}=\ell_k-2.
+\end{equation}
+Therefore the corner's selected center $(-1,1)$ has index $q_{k-4}$, and the interior selected center $(-1,j)$ has index $q_{k-4}+j-1$. This remains valid at $j=\ell_k-1$: it is then the next inner corner, since $j-1=\ell_{k-4}$. Finally,
+\begin{equation}\label{sfb:sq:eq:quarterdiff}
+ q_k-q_{k-4}=2k-4,
+\end{equation}
+so the two index formulas are precisely \eqref{sfb:sq:eq:delay}. Direct examination of $P_2,\ldots,P_8$ verifies the remaining cases.
+\end{proof}
+
+\begin{corollary}[Delay properties]\label{sfb:sq:cor:delay}
+The function $t$ is nondecreasing, unbounded, and has increments $0$ or $1$. It takes every nonnegative integer value. For sufficiently large $k$,
+\begin{equation}\label{sfb:sq:eq:triple}
+ t(q_k-1)=t(q_k)=t(q_k+1)=q_{k-4}.
+\end{equation}
+Moreover $t(n)<n$ and
+\begin{equation}\label{sfb:sq:eq:delayrough}
+ d(n):=n-t(n)=4\sqrt n+\OO(1).
+\end{equation}
+The sequence $a_n$ is positive for $n\ge1$ and strictly increasing from $a_7$ onward.
+\end{corollary}
+\begin{proof}
+The delay is $2k-4$ at the initial corner and $2k-3$ elsewhere on its side. The interior formula increases by $1$ except for the first step after a corner; the side transition gives the other equality in \eqref{sfb:sq:eq:triple}. The initial plateau is explicit. Unboundedness and increments in $\{0,1\}$ prove the range assertion. Equation~\eqref{sfb:sq:eq:k} implies \eqref{sfb:sq:eq:delayrough}. Finally, $t(n)\ge1$ for $n\ge8$, so the recurrence adds a positive value at each such step.
+\end{proof}
+
+The quarter-square plateau rule is already encoded by A265409 and its connection to A078510 \cite{oeis510,oeis409}. The closed expression above and the occupied-set proof make the geometric input to the asymptotics explicit; they do not introduce a new spiral model. The threefold corner use is also described in the existing implementation \cite{ryde}.
+
+\section{Constructing a useful normalizer}\label{sfb:sq:sec:normalizer}
+The following identities are exact, with derivatives taken in $x$:
+\begin{align}
+ w'&=\frac{w}{2r^2(1+w)},\label{sfb:sq:eq:wprime}\\
+ p:=\Phi'&=\frac{w}{4r}=e^{-w},&
+ p'&=-\frac{w^2}{8r^3(1+w)},\label{sfb:sq:eq:p}\\
+ s:=\Psi'&=\frac{w^2}{4r^2(1+w)}
+       \left(\frac18+\frac1{1+w}\right).\label{sfb:sq:eq:s}
+\end{align}
+For example $dw/dr=w/[r(1+w)]\le1/r$. Direct differentiation therefore gives the uniform estimates
+\begin{equation}\label{sfb:sq:eq:derivativeorders}
+ p=\OO(w/r),\quad p'=\OO(w/r^3),\quad p''=\OO(w/r^5),
+ \quad s=\OO(w/r^2),\quad s'=\OO(w/r^4).
+\end{equation}
+
+The formal leading balance for the recurrence is $p=e^{-dp}$ with $d\simeq4r$. It gives $4rp=W_0(4r)=w$. Integrating the exact choice $p=w/(4r)$ yields $\Phi$, up to an additive constant that can be absorbed in the final amplitude. This motivates the leading exponent, but it does not prove the theorem.
+
+The order $r^{-2}$ transport equation needs both the discrete backward-step term $-p^2/2$ and the side phase in the exact delay. We retain the former in the residual calculation below. It contributes to the $w^2/32$ part of $\Psi$; replacing the backward difference formally by a derivative discards that transport contribution. No theorem about a continuous-delay surrogate is used here.
+
+Let $B_2$ be the continuous periodic extension of
+\begin{equation}\label{sfb:sq:eq:bernoulli}
+ B_2(\theta)=\theta^2-\theta+\frac16\qquad(0\le\theta\le1).
+\end{equation}
+It is globally Lipschitz on the phase circle, although its derivative jumps at integers. Define
+\begin{equation}\label{sfb:sq:eq:Xi}
+ \theta(x)=\{2\sqrt x\},\qquad
+ \Xi(x)=\frac{w^2}{16r}B_2(\theta(x)),\qquad
+ F(x)=H(x)+\Xi(x),\quad f_n=e^{F(n)}.
+\end{equation}
+Here $\{\cdot\}$ denotes fractional part, and the values at wrap points are well defined by continuity. Uniformly,
+\begin{equation}\label{sfb:sq:eq:Xiorder}
+ \Xi(x)=\OO(w^2/r)=o(1).
+\end{equation}
+
+\paragraph{What the phase term means.}
+The correction $\Xi$ is a device for proving a summable residual. It is smaller than the final relative error $\OO(w^3/r)$ in Theorem~\ref{sfb:sq:thm:main}. Thus the theorem does not identify $\Xi$ as a sharp first oscillatory term in $a_n/(Ce^{H(n)})$. Section~\ref{sfb:sq:sec:refinements} quantifies its genuine role at the level of the normalizer's residual.
+
+\section{Uniform residual estimates including corners}\label{sfb:sq:sec:residual}
+Choose a sufficiently large fixed starting index and let $E$ be the set of indices
+\begin{equation}\label{sfb:sq:eq:E}
+ q_k\quad\hbox{and}\quad q_k+1
+\end{equation}
+thereafter. Enlarging $E$ by finitely many points has no effect. The real phase boundaries are $k^2/4$. If $k$ is even the boundary equals $q_k$, whereas if $k$ is odd it lies $1/4$ after $q_k$. Consequently $E$ covers both every unit interval that crosses a phase boundary and every index where the corner delay formula needs separate treatment. There are $\OO(1)$ elements of $E$ in every radius interval $j\le\sqrt n<j+1$.
+
+Define the normalized defect
+\begin{equation}\label{sfb:sq:eq:defect}
+ \mathcal D_n=\frac{f_n-f_{n-1}-f_{t(n)}}{f_n}.
+\end{equation}
+Only large $n$ with $t(n)\ge1$ are used in this definition; no value of $F(0)$ is required.
+
+\begin{lemma}[Local cancellation]\label{sfb:sq:lem:local}
+Uniformly as $n\to\infty$,
+\begin{equation}\label{sfb:sq:eq:local}
+ \mathcal D_n=\begin{cases}
+ \OO(w^3/r^3),&n\notin E,\\
+ \OO(w^2/r^2),&n\in E.
+ \end{cases}
+\end{equation}
+Moreover $1-\mathcal D_n>0$ exactly.
+\end{lemma}
+\begin{proof}
+Outside $E$ we have $k(n)=\floor{2r}$ and, with $\theta=\{2r\}$,
+\begin{equation}\label{sfb:sq:eq:delta}
+ d=n-t(n)=4r+\delta,\qquad\delta=-3-2\theta.
+\end{equation}
+There is no phase wrap on $[n-1,n]$. Differentiating the phase on that interval gives
+\begin{equation}\label{sfb:sq:eq:Xiunit}
+ \Xi(n)-\Xi(n-1)
+ =\frac{w^2}{16r^2}(2\theta-1)+\OO(w^2/r^3).
+\end{equation}
+Indeed the derivative of the amplitude is $\OO(w^2/r^3)$ and the second derivative on a phase-smooth interval is $\OO(w^2/r^3)$. At any index, including $E$, periodic Lipschitz continuity still gives the bound $\Xi(n)-\Xi(n-1)=\OO(w^2/r^2)$.
+
+The delay interval has length $\OO(r)$ and radius comparable with $r$. Taylor's theorem and \eqref{sfb:sq:eq:derivativeorders} yield
+\begin{align}
+ \Phi(n)-\Phi(n-d)&=dp-\frac{d^2}{2}p'+\OO(w/r^2),\label{sfb:sq:eq:Phidelay}\\
+ \Psi(n)-\Psi(n-d)&=ds+\OO(w/r^2).\label{sfb:sq:eq:Psidelay}
+\end{align}
+The phase correction must be handled by endpoints rather than a smooth Taylor expansion across its corners. Since
+\[
+ \sqrt{n-d}=r-2+\OO(1/r),
+\]
+the endpoint phases differ by $4+\OO(1/r)$, and the endpoint amplitudes in \eqref{sfb:sq:eq:Xi} differ by $\OO(w^2/r^2)$. Periodicity and Lipschitz continuity imply
+\begin{equation}\label{sfb:sq:eq:Xidelay}
+ \Xi(n)-\Xi(n-d)=\OO(w^2/r^2).
+\end{equation}
+This estimate remains valid when the interval crosses several phase boundaries.
+
+Put $U=F(n)-F(n-1)$ and $V=F(n)-F(t(n))$. Equations~\eqref{sfb:sq:eq:Xiunit}--\eqref{sfb:sq:eq:Xidelay} and \eqref{sfb:sq:eq:p} give, off $E$,
+\begin{align}
+ U&=p+s+\frac{w^2}{16r^2}(2\theta-1)+\OO(w^2/r^3),\label{sfb:sq:eq:U}\\
+ V&=w+\delta p+\frac{w^2}{r(1+w)}+4rs+\OO(w^2/r^2).\label{sfb:sq:eq:V}
+\end{align}
+In particular $U=p+\OO(w^2/r^2)$ and $V-w=\OO(w/r)$. Expanding both exponentials, and using $e^{-w}=p$, gives
+\begin{align}
+ 1-e^{-U}
+ &=p+s+\frac{w^2}{16r^2}(2\theta-1)-\frac{p^2}{2}
+   +\OO(w^3/r^3),\label{sfb:sq:eq:expU}\\
+ e^{-V}
+ &=p-\delta p^2-\frac{w^3}{4r^2(1+w)}-ws
+   +\OO(w^3/r^3).\label{sfb:sq:eq:expV}
+\end{align}
+For example the quadratic exponential remainder in $V-w$ is multiplied by $p$, and is therefore $p\,\OO(w^2/r^2)=\OO(w^3/r^3)$. The replacement of $U^2$ by $p^2$ has the same error order.
+
+Subtracting \eqref{sfb:sq:eq:expV} from \eqref{sfb:sq:eq:expU} yields
+\begin{equation}\label{sfb:sq:eq:resbalance}
+ \mathcal D_n=(1+w)s+
+ \left(2\theta-1+\delta-\frac12\right)\frac{w^2}{16r^2}
+ +\frac{w^3}{4r^2(1+w)}+\OO(w^3/r^3).
+\end{equation}
+By \eqref{sfb:sq:eq:delta}, the parenthesis is $-9/2$. The remaining exact identity is
+\begin{equation}\label{sfb:sq:eq:cancel}
+ \begin{split}
+ (1+w)s+\frac{w^3}{4r^2(1+w)}
+ &=\frac{w^2}{32r^2}+\frac{w^2}{4r^2(1+w)}
+                         +\frac{w^3}{4r^2(1+w)}\\
+ &=\frac{9w^2}{32r^2}.
+ \end{split}
+\end{equation}
+All displayed leading terms cancel. At indices in $E$, $d-4r$ and the phase difference coefficients are still bounded. The same estimates without the cancellation give $\OO(w^2/r^2)$. Finally,
+$1-\mathcal D_n=(f_{n-1}+f_{t(n)})/f_n>0$ by positivity.
+\end{proof}
+
+\begin{lemma}[Absolute tails and blocks]\label{sfb:sq:lem:tails}
+The defects are absolutely summable, with
+\begin{equation}\label{sfb:sq:eq:tail}
+ \sum_{l>n}|\mathcal D_l|=\OO(w_n^3/r_n).
+\end{equation}
+A block beginning near $n$ and having index length $4r_n+\OO(1)$ has
+\begin{equation}\label{sfb:sq:eq:block}
+ \sum_{l\text{ in block}}|\mathcal D_l|=\OO(w_n^3/r_n^2).
+\end{equation}
+\end{lemma}
+\begin{proof}
+The ordinary-index tail is bounded by a constant times
+\[
+ \int_r^\infty\frac{w(u)^3}{u^2}\,du
+ =\OO(w(r)^3/r),\qquad w(u)=W_0(4u).
+\]
+For completeness, integration by parts bounds the integral by its boundary term plus $(3/w(r))$ times itself, because $w'(u)\le1/u$ and $w$ is increasing. For $w(r)\ge6$ this is at most twice the boundary term. Exceptional indices have only $\OO(1)$ representatives per unit radius and contribute the smaller $\OO(w^2/r)$ tail. On a block of the stated length there are $\OO(r)$ ordinary indices and $\OO(1)$ exceptions, with comparable $r,w$ throughout. Their respective bounds are $\OO(w^3/r^2)$ and $\OO(w^2/r^2)$.
+\end{proof}
+
+\section{Positive bounds and convergence to one amplitude}\label{sfb:sq:sec:convergence}
+Set $b_n=a_n/f_n$ for $n\ge1$. Define
+\begin{equation}\label{sfb:sq:eq:weights}
+ \alpha_n=\frac{f_{n-1}}{f_{n-1}+f_{t(n)}},\qquad
+ \beta_n=1-\alpha_n.
+\end{equation}
+For large $n$ these are strictly positive and sum to $1$. The recurrence becomes exactly
+\begin{equation}\label{sfb:sq:eq:brecur}
+ b_n=(1-\mathcal D_n)
+       \bigl(\alpha_nb_{n-1}+\beta_nb_{t(n)}\bigr).
+\end{equation}
+
+\begin{lemma}[Positive bounded normalization]\label{sfb:sq:lem:bounded}
+There are constants $0<m\le M<\infty$ such that $m\le b_n\le M$ for all positive $n$.
+\end{lemma}
+\begin{proof}
+Take $N$ large enough that $t(n)\ge1$ and $|\mathcal D_n|\le1/2$ for $n\ge N$. Let $m_0,M_0$ be the minimum and maximum of the finite positive set $b_1,\ldots,b_{N-1}$. Induction in \eqref{sfb:sq:eq:brecur} gives
+\[
+ m_0\prod_{l=N}^n(1-|\mathcal D_l|)
+ \le b_n\le
+ M_0\prod_{l=N}^n(1+|\mathcal D_l|).
+\]
+At an earlier parent index the upper product is smaller, and the lower product larger, than the one at the current index, so the induction is valid for both parents. By absolute summability the upper product has a finite limit and the lower product has a strictly positive limit. Incorporating the initial finite segment proves the assertion.
+\end{proof}
+
+We can now rewrite \eqref{sfb:sq:eq:brecur} in additive form,
+\begin{equation}\label{sfb:sq:eq:additive}
+ b_n=\alpha_nb_{n-1}+\beta_nb_{t(n)}+e_n,
+ \qquad |e_n|\le M|\mathcal D_n|.
+\end{equation}
+In particular $\sum|e_n|<\infty$. We next prove convergence by an explicit mixing estimate instead of inferring it from this summability.
+
+Choose a sufficiently large $N_0$ and recursively define
+\begin{equation}\label{sfb:sq:eq:Nblocks}
+ N_{j+1}=\min\{n>N_j:t(n)=N_j\},\qquad
+ r_j=\sqrt{N_j},\quad w_j=W_0(4r_j).
+\end{equation}
+Corollary~\ref{sfb:sq:cor:delay} ensures existence. Since $t(N_{j+1})=N_j$,
+\begin{equation}\label{sfb:sq:eq:blocksize}
+ N_{j+1}-N_j=4r_j+\OO(1),\qquad
+ r_{j+1}-r_j=2+\OO(1/r_j).
+\end{equation}
+Indeed the first delay estimate initially gives $N_{j+1}-N_j=4r_{j+1}+\OO(1)$; solving the corresponding quadratic difference gives both forms in \eqref{sfb:sq:eq:blocksize}. In particular $r_j$ is comparable with $j$.
+
+Define the memory interval and its diameter by
+\begin{equation}\label{sfb:sq:eq:memory}
+ I_j=[t(N_j),N_j]\cap\Z,\qquad
+ D_j=\max_{i\in I_j}b_i-\min_{i\in I_j}b_i.
+\end{equation}
+The common-anchor weight is
+\begin{equation}\label{sfb:sq:eq:gamma}
+ \gamma_j=\prod_{l=N_j+1}^{N_{j+1}}\alpha_l.
+\end{equation}
+
+\begin{lemma}[Common-anchor contraction]\label{sfb:sq:lem:anchor}
+The memory diameters satisfy
+\begin{equation}\label{sfb:sq:eq:diameter}
+ D_{j+1}\le(1-\gamma_j)D_j
+       +2\sum_{N_j<l\le N_{j+1}}|e_l|.
+\end{equation}
+Moreover,
+\begin{equation}\label{sfb:sq:eq:gammaasy}
+ \gamma_j=e^{-w_j}\bigl(1+\OO(w_j^2/r_j)\bigr)
+ =\frac{w_j}{4r_j}+\OO(w_j^3/r_j^2).
+\end{equation}
+\end{lemma}
+\begin{proof}
+For $N_j<n\le N_{j+1}$, substitute \eqref{sfb:sq:eq:additive} repeatedly until all ancestors have indices at most $N_j$. Monotonicity of $t$ implies that none lies below $t(N_j)$. Thus $b_n$ is a convex combination of values in $I_j$, plus an error of absolute value at most $\sum_{N_j<l\le n}|e_l|$. The error bound follows by induction with convex weights; it does not add the same error with a total coefficient greater than $1$.
+
+The path using only immediate predecessors reaches $b_{N_j}$ with weight $\prod_{l=N_j+1}^{n}\alpha_l\ge\gamma_j$. The endpoint $n=N_j$ has weight $1$ at this same anchor. As
+\[
+ I_{j+1}=[N_j,N_{j+1}]\cap\Z,
+\]
+all new memory rows share mass at least $\gamma_j$ on the single value $b_{N_j}$. Remove that common mass from each row. Their remaining masses are $1-\gamma_j$, so their range is bounded by $(1-\gamma_j)D_j$. Adding the two possible endpoint errors proves \eqref{sfb:sq:eq:diameter}.
+
+From \eqref{sfb:sq:eq:defect} and \eqref{sfb:sq:eq:weights}, the product telescopes exactly:
+\begin{equation}\label{sfb:sq:eq:gammatelescope}
+ \gamma_j=\frac{f_{N_j}}{f_{N_{j+1}}}
+       \prod_{l=N_j+1}^{N_{j+1}}(1-\mathcal D_l)^{-1}.
+\end{equation}
+Integration of $H'=p+s$ over the block, using \eqref{sfb:sq:eq:blocksize}, gives its leading increment $w_j$. The endpoint estimate \eqref{sfb:sq:eq:Xiorder} is sufficient for the correction:
+\[
+ F(N_{j+1})-F(N_j)=w_j+\OO(w_j^2/r_j).
+\]
+By \eqref{sfb:sq:eq:block}, the logarithm of the product remaining in \eqref{sfb:sq:eq:gammatelescope} is $\OO(w_j^3/r_j^2)$. Exponentiation and $e^{-w_j}=w_j/(4r_j)$ prove \eqref{sfb:sq:eq:gammaasy}.
+\end{proof}
+
+\begin{lemma}[Diameter rate]\label{sfb:sq:lem:diameterrate}
+We have $D_j=\OO(w_j^2/r_j)$.
+\end{lemma}
+\begin{proof}
+The block defect bound reduces \eqref{sfb:sq:eq:diameter} to
+\begin{equation}\label{sfb:sq:eq:diameterforcing}
+ D_{j+1}\le(1-\gamma_j)D_j+K\frac{w_j^3}{r_j^2}
+\end{equation}
+for some fixed $K$. Use the positive barrier $B(r)=w(r)^2/r$. Its logarithmic derivative is
+\begin{equation}\label{sfb:sq:eq:barrier}
+ \frac{B'(r)}{B(r)}=\frac{1-w}{(1+w)r}.
+\end{equation}
+Consequently $B(r_j)-B(r_{j+1})=\OO(w_j^2/r_j^2)$, whereas
+$\gamma_jB(r_j)\sim w_j^3/(4r_j^2)$. For large enough $j$ there is $c>0$ such that
+\[
+ \gamma_jB(r_j)-\bigl(B(r_j)-B(r_{j+1})\bigr)
+ \ge c\frac{w_j^3}{r_j^2}.
+\]
+Choose $A\ge K/c$ and also large enough to dominate the finite starting diameter. Induction in \eqref{sfb:sq:eq:diameterforcing} gives $D_j\le AB(r_j)$.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{sfb:sq:thm:main}]
+The convex maximum principle applied to \eqref{sfb:sq:eq:additive} puts every future value, $n>N_j$, in
+\begin{equation}\label{sfb:sq:eq:futureinterval}
+ \left[\min_{i\in I_j}b_i-T_j,\quad
+       \max_{i\in I_j}b_i+T_j\right],
+ \qquad T_j=\sum_{l>N_j}|e_l|.
+\end{equation}
+This follows by induction: each new convex average stays between the previous extremes, and the accumulated absolute errors can enlarge them by at most their sum. Equations~\eqref{sfb:sq:eq:tail} and Lemma~\ref{sfb:sq:lem:diameterrate} show that the diameter of \eqref{sfb:sq:eq:futureinterval} is
+\[
+ D_j+2T_j=\OO(w_j^3/r_j)\longrightarrow0.
+\]
+Thus the full sequence $b_n$ is Cauchy and converges to some $C$. Lemma~\ref{sfb:sq:lem:bounded} gives $0<m\le C\le M<\infty$.
+
+If $N_j\le n\le N_{j+1}$, comparison with \eqref{sfb:sq:eq:futureinterval}, including its limiting value, yields
+\[
+ b_n=C+\OO(w_n^3/r_n).
+\]
+Since $e^{\Xi(n)}=1+\OO(w_n^2/r_n)$ and $C>0$, multiplying by $f_n=e^{H(n)+\Xi(n)}$ proves \eqref{sfb:sq:eq:main}. Finally $w\sim\log(4r)$, so $\Phi\sim r\log r/2$ and $\Psi=o(\Phi)$; this proves \eqref{sfb:sq:eq:logleading}.
+\end{proof}
+
+\section{Two refinements of the normalization argument}\label{sfb:sq:sec:refinements}
+These refinements quantify features of the proof. Neither supplies a sharper relative expansion of $a_n$.
+
+\subsection{Absolute defect of the smooth normalizer}
+Use $e^{H(n)}$ without $\Xi$ and define
+\begin{equation}\label{sfb:sq:eq:smoothdefect}
+ \mathcal D^H_n=
+ \frac{e^{H(n)}-e^{H(n-1)}-e^{H(t(n))}}{e^{H(n)}}.
+\end{equation}
+The same calculation as in Lemma~\ref{sfb:sq:lem:local}, now omitting the phase derivative, gives
+\begin{equation}\label{sfb:sq:eq:smoothleading}
+ \mathcal D^H_n=\frac{w^2}{16r^2}(1-2\{2r\})
+                  +\OO(w^3/r^3)\qquad(n\notin E),
+\end{equation}
+and $\mathcal D^H_n=\OO(w^2/r^2)$ on $E$.
+
+\begin{proposition}[Nonsummable smooth residual]\label{sfb:sq:prop:nonsum}
+For any fixed sufficiently large lower limit $n_*$, a finite constant $K_*$ exists such that
+\begin{equation}\label{sfb:sq:eq:divergence}
+ \sum_{n=n_*}^{N}|\mathcal D^H_n|
+ =\frac{w_N^3}{48}+\frac{w_N^2}{32}+K_*
+     +\OO(w_N^3/r_N).
+\end{equation}
+In particular the smooth normalizer has non-absolutely-summable defects.
+\end{proposition}
+\begin{proof}
+Let $g(\theta)=|1-2\theta|$ on $[0,1]$, continuously and periodically extended, and set
+\[
+ h(x)=\frac{w(x)^2}{16x}\,g(\{2\sqrt x\}).
+\]
+The inequality $||u|-|v||\le|u-v|$, \eqref{sfb:sq:eq:smoothleading}, and the exceptional-index estimates show that
+$\sum(|\mathcal D^H_n|-h(n))$ converges, with tail $\OO(w_N^3/r_N)$. The function $h$ is continuous and piecewise differentiable. Its derivative is absolutely integrable on a tail, and
+\[
+ \int_N^\infty|h'(x)|\,dx=\OO(w_N^2/r_N).
+\]
+For example differentiating the phase contributes $\OO(w^2/r^3)$ to $h'$; integrating with $dx=2r\,dr$ gives the stated order, and differentiating its amplitude gives a smaller term. Comparing the integral on each unit interval with its endpoint value now proves that $\sum h(n)-\int h(x)\,dx$ has a finite limit with the same tail order.
+
+With $x=r^2$, the integral becomes
+\[
+ \int\frac{w(r)^2}{8r}\,g(\{2r\})\,dr.
+\]
+The mean of $g$ is $1/2$. Its zero-mean part has a bounded periodic primitive, so integration by parts against $w^2/(8r)$ gives a convergent contribution with tail $\OO(w^2/r)$. The mean part integrates exactly, because $dr/r=(1+w)\,dw/w$:
+\[
+ \frac1{16}\int\frac{w^2}{r}\,dr
+ =\frac1{16}\int w(1+w)\,dw
+ =\frac{w^3}{48}+\frac{w^2}{32}.
+\]
+Combining the convergent differences proves \eqref{sfb:sq:eq:divergence}.
+\end{proof}
+
+Thus $\Xi=o(1)$ can be negligible at the scale of the final equivalent while remaining indispensable to this particular absolute-defect proof. The constant $K_*$ in \eqref{sfb:sq:eq:divergence} depends on the lower limit and is unrelated to the amplitude $C$.
+
+\subsection{The homogeneous contraction product}
+For fixed sufficiently large $J$, define
+\begin{equation}\label{sfb:sq:eq:contractionproduct}
+ P_{J,j}=\prod_{h=J}^{j-1}(1-\gamma_h).
+\end{equation}
+This is the product controlling the unforced diameter inequality; it is not a representation of $C$.
+
+\begin{proposition}[Quantitative contraction product]\label{sfb:sq:prop:product}
+There is a constant $K_J>0$ such that
+\begin{equation}\label{sfb:sq:eq:productasymptotic}
+ P_{J,j}=K_J\exp\!\left(-\frac{w_j^2}{16}-\frac{w_j}{8}\right)
+       \left(1+\OO(w_j^3/r_j)\right).
+\end{equation}
+In particular this product is smaller than every fixed inverse power of $r_j$ eventually, and $\sum_j\gamma_j=\infty$.
+\end{proposition}
+\begin{proof}
+Set $G(r)=w(r)^2/16+w(r)/8$. Its derivative is exactly
+$G'(r)=w(r)/(8r)$. Equation~\eqref{sfb:sq:eq:blocksize} gives
+\[
+ G(r_{j+1})-G(r_j)=\frac{w_j}{4r_j}+\OO(w_j/r_j^2).
+\]
+Using \eqref{sfb:sq:eq:gammaasy} and the quadratic error in $\log(1-\gamma_j)$, we obtain
+\[
+ \log(1-\gamma_j)+G(r_{j+1})-G(r_j)
+     =\OO(w_j^3/r_j^2).
+\]
+Because $r_j$ is comparable with $j$, this error is summable with tail $\OO(w_j^3/r_j)$. Summing and exponentiating proves \eqref{sfb:sq:eq:productasymptotic}, with a positive finite $K_J$. The leading estimate $\gamma_j\sim w_j/(4r_j)$ also shows divergence of its sum. Finally $w_j\sim\log r_j$, so the quadratic exponential in \eqref{sfb:sq:eq:productasymptotic} beats every fixed power.
+\end{proof}
+
+The forced error in \eqref{sfb:sq:eq:diameterforcing} explains why this very rapid homogeneous contraction does not by itself yield a comparably small remainder for $b_n-C$.
+
+\section{Threshold inversion with an absolute error}\label{sfb:sq:sec:inverse}
+By Corollary~\ref{sfb:sq:cor:delay}, linear interpolation of $\log a_n$ from $n=7$ onward gives a continuous strictly increasing function $\mathcal A(x)$. Denote its inverse by $X(L)$ for $L\ge0$. Then, for $Y>1$,
+\begin{equation}\label{sfb:sq:eq:exactceiling}
+ N(Y)=\ceil{X(\log Y)}.
+\end{equation}
+This identity follows from the definition of interpolation. It does not justify taking the ceiling of an approximation to $X$.
+
+\begin{writenote}[7 October 2026]
+This identity is item~(1) of the transseries volume's \file{p0:thm:staircase}, with $A_n=\log a_n$ for $n\ge7$ and the admissible interpolation $\mathcal A$; the estimate of Theorem~\ref{sfb:sq:thm:inverseintro} is this Part's own (front matter, ``The inverses and the transseries volume'').
+\end{writenote}
+
+The derivative of $e^w(w^2-w+1)$ is $e^w w(w+1)$, strictly positive for $w>0$. Thus \eqref{sfb:sq:eq:w0} has exactly one positive solution for $L>1/8$. Substituting $r_0=w_0e^{w_0}/4$ in \eqref{sfb:sq:eq:phipsi} shows that
+\begin{equation}\label{sfb:sq:eq:Phiinverse}
+ \Phi(r_0^2)=\frac{e^{w_0}}8(w_0^2-w_0+1)=L.
+\end{equation}
+
+\begin{proof}[Proof of Theorem~\ref{sfb:sq:thm:inverseintro}]
+Let
+\begin{equation}\label{sfb:sq:eq:x0}
+ Q_0=\Psi(r_0^2)+\log C,\qquad
+ x_0=r_0^2-\frac{4r_0}{w_0}Q_0.
+\end{equation}
+Since $Q_0=\OO(w_0^2)$, the shift is $x_0-r_0^2=\OO(r_0w_0)=o(r_0^2)$. Its linear contribution to $\Phi$ is exactly $-Q_0$. The quadratic remainder is
+\[
+ \OO\!\left((r_0w_0)^2\frac{w_0}{r_0^3}\right)
+ =\OO(w_0^3/r_0),
+\]
+and the change in $\Psi$ is $\OO(w_0^2/r_0)$ by \eqref{sfb:sq:eq:s}. Therefore
+\begin{equation}\label{sfb:sq:eq:x0residual}
+ H(x_0)+\log C=L+\OO(w_0^3/r_0).
+\end{equation}
+Theorem~\ref{sfb:sq:thm:main} gives
+$\log a_n=H(n)+\log C+\OO(w_n^3/r_n)$. Convex interpolation preserves this endpoint error. Moreover $H''=\OO(w/r^3)$, so its own interpolation error on a unit interval is $\OO(w/r^3)$. Hence, uniformly for real $x\to\infty$,
+\begin{equation}\label{sfb:sq:eq:interpolated}
+ \mathcal A(x)=H(x)+\log C+\OO(w^3/r).
+\end{equation}
+Near $x_0$, $H'$ is comparable with $w_0/r_0$. Evaluating \eqref{sfb:sq:eq:interpolated} at $x_0\pm A w_0^2$, with sufficiently large fixed $A$, makes the resulting change of $H$ dominate both errors in \eqref{sfb:sq:eq:x0residual} and \eqref{sfb:sq:eq:interpolated}. Monotonicity brackets $X(L)$ between these points. Thus
+$X(L)=x_0+\OO(w_0^2)$, and the ceiling in \eqref{sfb:sq:eq:exactceiling} changes this by at most $1$. This proves \eqref{sfb:sq:eq:inverseintro}.
+
+Finally $\Phi(r^2)\sim r\log r/2$ implies
+$r_0\sim2L/\log L$. The correction in \eqref{sfb:sq:eq:inverseintro} is $o(r_0^2)$, proving \eqref{sfb:sq:eq:inverseleading} with coefficient $4$.
+\end{proof}
+
+Equivalently, solving $H(x)+\log C=L$ implicitly has absolute horizontal error $\OO(w^2)$. This is the familiar conversion of a vertical residual into a root error by division by a positive local slope. The contribution specific to the present sequence is the justified residual size and the exact form of $H$.
+
+\section{Every fixed inverse logarithmic order}\label{sfb:sq:sec:germ}
+A finite inverse-logarithmic truncation is less precise in absolute terms than \eqref{sfb:sq:eq:inverseintro}, but it exposes the successive logarithmic scales without the unknown amplitude. Define
+\begin{equation}\label{sfb:sq:eq:Vgerm}
+ V=2W_0(\sqrt{2L}),\qquad u=V^{-1}.
+\end{equation}
+Then $V^2e^V=8L$. The exact inverse of $\Phi$ can be expressed through one analytic germ.
+
+\begin{lemma}[Analytic inverse germ]\label{sfb:sq:lem:germ}
+There is a unique analytic function $\delta(u)$ near $u=0$, with $\delta(0)=0$, satisfying
+\begin{align}
+ \delta+\log Q(u,\delta)&=0,\label{sfb:sq:eq:implicit}\\
+ Q(u,\delta)&=(1+u\delta)^2-u(1+u\delta)+u^2.\label{sfb:sq:eq:Q}
+\end{align}
+The logarithm is the analytic branch taking value $0$ at $Q=1$. For all sufficiently large $L$,
+\begin{equation}\label{sfb:sq:eq:w0germ}
+ w_0=V+\delta(1/V).
+\end{equation}
+\end{lemma}
+\begin{proof}
+The left side of \eqref{sfb:sq:eq:implicit} is analytic near $(u,\delta)=(0,0)$, vanishes there, and has derivative $1$ with respect to $\delta$ there. The analytic implicit-function theorem supplies a unique convergent germ. Exponentiating \eqref{sfb:sq:eq:implicit} gives
+\begin{equation}\label{sfb:sq:eq:expimplicit}
+ e^\delta Q(u,\delta)=1.
+\end{equation}
+Writing $w_0=V+\delta$ and dividing \eqref{sfb:sq:eq:w0} by $V^2e^V=8L$ yields exactly \eqref{sfb:sq:eq:expimplicit}. For small positive $u$, $V+\delta(u)>0$; the strict monotonicity established above identifies it with the positive solution.
+\end{proof}
+
+The first six coefficients are
+\begin{equation}\label{sfb:sq:eq:deltaseries}
+ \begin{split}
+ \delta(u)={}&u-\frac52u^2+\frac{10}{3}u^3-\frac{29}{12}u^4
+             -\frac{14}{5}u^5+\frac{403}{30}u^6+\OO(u^7).
+ \end{split}
+\end{equation}
+Define the analytic germ
+
+\begin{writenote}[7 October 2026]
+As a formal series, $\delta$ is the solution $U$ of the transseries volume's \file{p0:thm:lambert-centered} with $a=1$, $b=2$, $Q(s)=\log(1-s+s^2)$ and $t=u$, and $V=2W_0(\sqrt{2L})$ is the root given by its \file{p0:thm:lambert-core} for $V+2\log V=\log(8L)$; the convergence of the germ is this Part's own (front matter, ``The inverses and the transseries volume'').
+\end{writenote}
+\begin{equation}\label{sfb:sq:eq:Rgerm}
+ \mathcal R(u)=\frac{(1+u\delta(u))^2}{Q(u,\delta(u))^2}
+             =(1+u\delta(u))^2e^{2\delta(u)}.
+\end{equation}
+Since $r_0=2Lw_0/(w_0^2-w_0+1)$, we have the exact identity
+\begin{equation}\label{sfb:sq:eq:r0germ}
+ r_0^2=\frac{4L^2}{V^2}\mathcal R(1/V).
+\end{equation}
+Its first six nonconstant coefficients are
+\begin{equation}\label{sfb:sq:eq:Rseries}
+ \begin{split}
+ \mathcal R(u)={}&1+2u-u^2-3u^3+\frac{10}{3}u^4
+                 -\frac16u^5-\frac{389}{60}u^6+\OO(u^7).
+ \end{split}
+\end{equation}
+
+\begin{theorem}[Fixed inverse-logarithmic hierarchy]\label{sfb:sq:thm:hierarchy}
+Write $\mathcal R(u)=\sum_{j\ge0}R_ju^j$ near $0$. For every fixed integer $J\ge0$,
+\begin{equation}\label{sfb:sq:eq:hierarchy}
+ N(Y)=\frac{4L^2}{V^2}
+ \left(\sum_{j=0}^J R_jV^{-j}+\OO_J(V^{-J-1})\right),
+ \qquad L=\log Y,\quad V=2W_0(\sqrt{2L}).
+\end{equation}
+The coefficients are exactly computable rational numbers. This statement concerns every fixed truncation order as $Y\to\infty$.
+\end{theorem}
+\begin{proof}
+Analyticity gives the Taylor remainder $\OO_J(u^{J+1})$ for each fixed $J$. By \eqref{sfb:sq:eq:inverseintro}, $N(Y)-r_0^2=\OO(r_0w_0)=\OO(L)$, because
+$r_0w_0=2Lw_0^2/(w_0^2-w_0+1)$. Relative to $4L^2/V^2$, this is $\OO(V^2/L)$, smaller than every fixed inverse power of $V$ since $L=V^2e^V/8$. Combining this with \eqref{sfb:sq:eq:r0germ} proves the formula.
+\end{proof}
+
+\subsection{An exact coefficient generator}
+No symbolic algebra package is needed. Let $[u^m]$ denote coefficient extraction. Suppose $d_1,\ldots,d_{m-1}$ are known and set $D_{m-1}(u)=\sum_{i=1}^{m-1}d_i u^i$. Then
+\begin{equation}\label{sfb:sq:eq:generator}
+ d_m=-[u^m]\left(e^{D_{m-1}(u)}Q(u,D_{m-1}(u))-1\right).
+\end{equation}
+Indeed the as-yet unknown coefficient $d_m$ enters the coefficient of degree $m$ in $e^\delta Q-1$ with coefficient $1$: its occurrence through $u\delta$ is delayed to higher degree. This proves the triangular recursion and rationality. Having computed $\delta$ to the desired degree, \eqref{sfb:sq:eq:Rgerm} supplies $R_j$ by finite truncated multiplication.
+
+For an explicit rational implementation of an exponential, if $D(u)=\sum_{i\ge1}d_i u^i$ and $E(u)=e^{D(u)}=\sum_{m\ge0}e_m u^m$, then
+\begin{equation}\label{sfb:sq:eq:expcoeff}
+ e_0=1,\qquad m e_m=\sum_{i=1}^m i d_i e_{m-i}.
+\end{equation}
+Thus every operation in \eqref{sfb:sq:eq:generator} is on rational numbers. One can separately certify a computed list by checking $e^\delta Q-1=0$ to the desired degree and then checking
+\begin{equation}\label{sfb:sq:eq:independentR}
+ \mathcal R Q^2-(1+u\delta)^2=0
+\end{equation}
+with independent polynomial arithmetic. Such finite checks certify coefficients, not the analytic convergence of the germ; the latter was proved in Lemma~\ref{sfb:sq:lem:germ}.
+
+\paragraph{Separation of precision claims.}
+The germ itself has a positive convergence radius near $u=0$. Formula~\eqref{sfb:sq:eq:hierarchy} is nonetheless stated as a fixed-order asymptotic expansion for the actual integer threshold, because it omits the much smaller Newton/amplitude correction. No expansion of all relative orders for $a_n$ follows. Conversely, retaining $\Psi$ and $\log C$ in \eqref{sfb:sq:eq:inverseintro} gives much finer absolute precision than any fixed truncation of \eqref{sfb:sq:eq:hierarchy}.
+
+\section{Reproducible finite checks}\label{sfb:sq:sec:checks}
+The companion archive contains the authored manuscript, bounded attributed sequence fixtures, exact verification code, optional numerical diagnostics, and offline build tools. The mandatory verification path uses Python's standard library only. It runs in ordinary and optimized modes, using explicit exceptions rather than removable assertions, and requires byte-identical canonical receipts.
+
+The exact checks cover the following distinct questions:
+\begin{enumerate}
+\item An independent unit-step coordinate construction checks the closed delayed index through $n=250000$, including uniqueness and squared-distance class of the selected earlier center. Its local lattice search is exact because the successful candidate lies at squared distance $1$ or $2$, and no nonzero integer squared distance lies between these values.
+\item A separate global search compares every earlier point at all indices $2\le n\le4096$. Complete early pre-corner occupied rectangles are compared as sets. These tests supplement the all-index rectangle proof.
+\item Exact integer recurrence evaluation reproduces all $64$ supplied A078510 values at indices $0$ through $63$. Only this small attributed fixture is redistributed; no full OEIS export is included.
+\item Exact rational generation and independent coefficient identities verify the inverse germs, including the six displayed coefficients. The analytic implicit-function proof supplies the all-fixed-order assertion.
+\item Type and domain guards, fixture corruption checks, closed archive inventories, manifest hashes, and output no-clobber tests exercise the verification and release machinery itself.
+\end{enumerate}
+The documented full replay and build commands, precise check counts, and output safeguards are in the archive's reproducibility guide. A clean build produces the PDF, its matching TeX source, the code archive, and a release manifest. The PDF is compiled with fixed metadata and strict rejection of TeX warnings. The same four outputs must be byte-identical in two clean extracted builds under the same toolchain.
+
+Floating-point exploration is separate from these mandatory exact checks. Optional high-precision residual samples can illuminate the cancellation scales, and long logarithmic recurrence runs can suggest a numerical amplitude. Neither supplies a uniform error proof, a certified value of $C$, an effective onset, or a proof by sampling. No decimal digits of $C$ are certified in this report.
+
+\begin{writenote}[7 October 2026]
+In this report the package's programs are \file{code/191-square-*.py}, its fixtures and recorded outputs \file{data/191-square-*}, and its \file{README_REPRODUCIBILITY.md}, \file{DATA_SOURCES.md}, \file{code/README.md} and \file{data/README.md} are \file{191-square-*.md}. \file{Report191.tex} (its text is this Part), the delivered PDF, the package \file{README.md} and \file{SHA256SUMS.json} are not shipped; the replay and build scripts need the delivered inventory. The report's README gives a route that runs the mandatory checker on a copy.
+\end{writenote}
+
+\section{Source attribution and the bounds of the comparison}\label{sfb:sq:sec:sources}
+The sources distinguish the established model and general techniques from the recurrence-specific theorem proved here.
+
+\subsection{The prior sequence and geometric rule}
+Fernandez's account of Spiro-Fibonacci sequences \cite{fernandez} defines the closest-two-earlier-values square construction, gives sample terms and difference patterns, and discusses alternative seeds. Its inspected text supplies no growth theorem. The OEIS record A078510 \cite{oeis510} gives the delayed recurrence through A265409; it credits that recurrence connection to Antti Karttunen in December 2015. The quarter-square predecessor encoding is therefore explicitly prior work \cite{oeis409}. The inspected related records A265370 and A265404 concern binary length and summand counts and do not state the full equivalent proved above \cite{oeis370,oeis404}.
+
+Ryde's version-75 \texttt{Math::NumSeq::SpiroFibonacci} implementation and embedded documentation \cite{ryde} were read as source text. They implement side counters and a queue, explain the repeated inward value at corners, and discuss seeds. They do not give a growth formula. That program was not executed, and its full source is not redistributed in the companion archive.
+
+The metric matters. Our exact theorem uses Euclidean distances between cell centers, which gives the unique selection proved in Proposition~\ref{sfb:sq:prop:delay}. A different metric or literal distance between closed squares can create ties and does not alone define this same sequence.
+
+\subsection{Related delay theory and its hypotheses}
+Kundr\'at's 2005 paper \cite{kundrat05}, whose full text was inspected, studies a discretized pantograph equation of the form
+\[
+ \Delta x_n=-ahx_n+bhx_{\tau_n}.
+\]
+Its discrete comparison theorem assumes $0<ah<1$. The present recurrence has $a=0$ in that notation, so that result cannot be applied directly. The paper's continuous comparison theorem also has a decreasing-derivative condition on the delayed argument, whereas the derivative of $t-4\sqrt t$ increases.
+
+The 2006 proportional-delay paper \cite{kundrat06}, also inspected in full, assumes a fixed ratio $0<\lambda<1$ and a strict contraction condition $|1+a_{ii}|<1$ on its nondelayed matrix coefficient. Here $t(n)/n\to1$ and the nondelayed coefficient in the difference equation is zero, violating those hypotheses. These papers are relevant comparison methodology, rather than ready-made proofs of Theorem~\ref{sfb:sq:thm:main}.
+
+Appleby and Buckwar \cite{applebybuckwar} develop constructive comparisons for functional differential equations with unbounded delay. The publisher's full text was unavailable, but selected theorem statements were subsequently inspected in a publicly readable OCR reproduction, with the usual transcription limitations. Their displayed model is the continuous equation $x'(t)=-ax(t)+b x(t-\tau(t))$. Theorem~4 assumes $a>b>0$, while Theorem~8 and the growth case of Theorem~9 assume $b>a>0$. These positive-damping continuous statements do not directly establish the present zero-damping discrete equivalent. Theorem~8 gives a logarithmic-rate limit normalized by an integral of $1/\sigma$, while Theorem~9 uses an integral of $1/\tau$; neither of these conclusions is the amplitude equivalent proved here. This selected-statement comparison does not exclude every result in that article or replace a complete literature review.
+
+\subsection{Existing Lambert and inverse methods}
+Lambert characteristic balance, WKB-style logarithmic normalization, variation of constants, positive comparison, and analytic implicit inversion are established tools. The relevant existing Lambert guide \cite{lambertguide} treats exponential modes of constant-delay equations through $W$; this motivates a local balance but does not by itself handle the present variable delay, corner phases, or normalized convergence. Existing transseries material \cite{transseriesguide,inversionguide} also treats Lambert logarithmic expansions, formal versus analytic realization, and residual-to-root transport. The use of these mechanisms in Sections~\ref{sfb:sq:sec:normalizer} and \ref{sfb:sq:sec:inverse} is not a claim to a new general method.
+
+The supplied repository comparison was pinned to revision
+\begin{center}\texttt{9ba11eaf7c1b6a27ccfc0bab63e22f97768cb704}.\end{center} The inspected constant-delay and inversion statements, rather than absence of a sequence-name search hit, support this distinction. Inspection was bounded to relevant sections; it does not certify what might occur in uninspected files or later revisions.
+
+\begin{writenote}[7 October 2026]
+The pinned commit exists (3~October 2026) and contains both cited files. The ``supplied manuscript'' \emph{Transseries for Mere Mortals} is one of the four tutorials merged into the transseries volume's Part~Q0 (label \file{q0:sec:why}).
+\end{writenote}
+
+The earlier hexagonal report \cite{report190} concerns a different recurrence containing the additional path term $a_{n-2}$ and further neighbors. Its scale is $C\phi^n$, where $\phi=(1+\sqrt5)/2$. The present closest-two square rule lacks that term and has the subexponential scale in \eqref{sfb:sq:eq:main}. Its proof cannot be obtained by changing a geometric constant in the hexagonal theorem.
+
+\begin{writenote}[7 October 2026]
+Report190 is Part~I of this report. The two Parts share the construction family and the method, as this paragraph says, and no theorem; the Guide's table sets the two side by side.
+\end{writenote}
+
+\paragraph{Claim boundary.}
+No inspected passage states the particular full equivalent proved here. This is a bounded source finding, not an exhaustive novelty clearance. The contribution presented is the explicit square-rule analysis: transport including the discrete term, phase-corrected summable defects, genuine convergence to a positive amplitude, uniform quantitative error, and the ensuing sequence-specific inverse formulas. The methods and prior construction retain the attributions above.
+
+\section{Limitations and further questions}\label{sfb:sq:sec:questions}
+The following problems remain open within this report's scope.
+\begin{enumerate}
+\item \emph{Certified amplitude.} Construct computable two-sided bounds for $C$ with explicit finite cutoffs and constants. The present positive-product argument proves $C>0$ but does not certify decimal digits or a practical convergence threshold.
+\item \emph{Sharper relative error.} The rate $\OO(w^3/r)$ comes from an absolute tail of residuals. Additional signed cancellation or a higher transport normalization may improve it. Such an improvement is needed before treating $\Xi=\OO(w^2/r)$ as a resolved sequence-level phase correction.
+\item \emph{Further sequence corrections.} Determine whether there is a rigorous relative hierarchy with all side and corner layers, and what scale and phase structure it uses. The inverse-logarithmic germ proved here does not answer this question.
+\item \emph{Effective threshold recovery.} Combine certified amplitude bounds, explicit remainder constants, and finite exact recurrence checks to obtain practical integer-threshold certificates. Equation~\eqref{sfb:sq:eq:exactceiling} alone supplies no rounding guarantee for an approximate inverse.
+\item \emph{General delayed models and source closure.} Isolate assumptions on near-identity delays and phase geometry that reproduce the common-anchor argument, and compare with the unbounded-delay literature beyond the selected statements inspected here. Such a generalization would require its own proof and source review.
+\end{enumerate}
+These limitations do not weaken the full equivalent or the error estimates proved here; they separate those established statements from stronger numerical, asymptotic, or priority claims.
+
+\begin{writenote}[7 October 2026]
+These five questions are items~\ref{sfb:q:certified}--\ref{sfb:q:general} of Section~\ref{sfb:sec:further}; Part~I answers none of them.
+\end{writenote}
+
+\section{Further questions and research}\label{sfb:sec:further}
+
+[Added 7 October 2026, batch~110.] This section gathers, under Vladimir's
+standing rule of 4~October 2026, every question and every claim left
+unproved by the two manuscripts. Report~190 has no questions section; its
+limits are stated in its Scope paragraph, in
+Section~\ref{sfb:hex:sec:computability}, after
+Theorems~\ref{sfb:hex:thm:profiles} and~\ref{sfb:hex:thm:inverse}, and at the
+end of Section~\ref{sfb:hex:sec:sources}; the write states them as questions
+(items~\ref{sfb:q:order}--\ref{sfb:q:seeds}). Report~191's
+Section~\ref{sfb:sq:sec:questions} lists five (items~\ref{sfb:q:certified}--\ref{sfb:q:general}).
+The delivered texts stay where they are. The two lists are kept apart because
+the Parts share no theorem; no question of one Part is answered by the other.
+No claim of either manuscript was found to be false.
+
+\paragraph{Part I (hexagonal spiral).}
+\begin{enumerate}
+\item\label{sfb:q:order} \emph{Growing order.} Theorem~\ref{sfb:hex:thm:main}
+holds for every fixed $J$; it is ``not a claim of convergence as
+$J\to\infty$'', and the factors $Q^{-k(k-1)/2}$ in the profile constants
+$\gamma_k$ (Theorem~\ref{sfb:hex:thm:profiles}) show that the proof gives no
+control uniform in $k$. Does $\sum_kF_k$ converge, or is it only asymptotic,
+and what is the optimal truncation? Open.
+\item\label{sfb:q:closed} \emph{The amplitudes.} No closed elementary
+expression for $C_0$ or $C_1$ is claimed (Section~\ref{sfb:hex:sec:sources}).
+Is either expressible in known constants? The certificates of
+Theorem~\ref{sfb:hex:thm:cert} give 120 digits for any such test. Open.
+\item\label{sfb:q:effective} \emph{Effective onsets and certified inverse
+constants.} The constants $K_J$ and onsets of Theorem~\ref{sfb:hex:thm:inverse}
+and the error constants of Theorem~\ref{sfb:hex:thm:main} are existence
+statements. Section~\ref{sfb:hex:sec:computability} describes an interval
+algorithm for each fixed $F_k(n)$ with explicit norm bounds, but the package
+does not implement it, and no effective inverse onset is given. Open.
+\item\label{sfb:q:seeds} \emph{Other seeds.} Part~I notes that the amplitude
+argument ``works for nonnegative $a_0$ and positive $a_1$'' and proves seed
+independence beyond every fixed order for the two OEIS seeds
+(Corollary~\ref{sfb:hex:cor:seed}); a theorem uniform in a seed parameter is
+not asserted (Section~\ref{sfb:hex:sec:sources}). Open.
+\end{enumerate}
+
+\paragraph{Part II (square spiral).}
+\begin{enumerate}[resume]
+\item\label{sfb:q:certified} \emph{Certified amplitude} (Report~191,
+Section~\ref{sfb:sq:sec:questions}, item~1). Two-sided computable bounds for
+$C$ with explicit cutoffs; the positive-product argument proves $C>0$ and no
+digits. Open.
+\item\label{sfb:q:sharper} \emph{Sharper relative error} (item~2). The rate
+$O(w^3/r)$ comes from an absolute tail of residuals; signed cancellation or a
+higher transport normalization might improve it, which is needed before
+$\Xi=O(w^2/r)$ can be read as a phase correction of the sequence
+(Section~\ref{sfb:sq:sec:normalizer}, ``What the phase term means''). Open.
+\item\label{sfb:q:corrections} \emph{Further sequence corrections} (item~3).
+A rigorous relative hierarchy with all side and corner layers, its scales and
+phases. The inverse-logarithmic hierarchy of
+Theorem~\ref{sfb:sq:thm:hierarchy} does not answer it. Open.
+\item\label{sfb:q:threshold} \emph{Effective threshold recovery} (item~4).
+Certified amplitude bounds, explicit remainder constants and finite exact
+checks combined into integer-threshold certificates;
+\eqref{sfb:sq:eq:exactceiling} alone gives no rounding guarantee for an
+approximate inverse. Open.
+\item\label{sfb:q:general} \emph{General delayed models and source closure}
+(item~5). Assumptions on near-identity delays and phase geometry that
+reproduce the common-anchor argument, and a comparison with the
+unbounded-delay literature beyond the statements Report~191 inspected
+(Section~\ref{sfb:sq:sec:sources}). Open.
+\end{enumerate}
+A question common to both Parts, which neither manuscript states, is whether
+one framework covers spiral-Fibonacci rules on other lattices and with other
+neighbour sets; the two proofs share an outlook (exact delay reduction,
+normalization, inverse), not a theorem, and nothing is proved about such a
+framework.
+
+\clearpage
+\begin{thebibliography}{99}
 \small
 \raggedright
-\setlength{\itemsep}{3pt}
-\setlength{\parsep}{0pt}
 \bibitem{oeis926}
 The OEIS Foundation, \emph{A094926, A hexagonal spiral Fibonacci sequence}. Sequence by Yasutoshi Kohmoto; asymptotic conjecture and comments by Manfred Scheucher, 3 June 2015. Revision 27, 19 April 2016.
 \url{https://oeis.org/A094926}.
@@ -649,12 +1794,26 @@ The OEIS Foundation, \emph{A094925, A hexagonal spiral Fibonacci sequence}. Sequ
 Manfred Scheucher and V\'aclav Kot\v e\v sovec, \emph{A258639, Decimal expansion of a constant related to A094926}. The OEIS Foundation, 6 June 2015, revision 4.
 \url{https://oeis.org/A258639}.
 
-\bibitem{fernandez}
-Neil Fernandez, \emph{Spiro-Fibonacci Sequences}, last modified 11 January 2003.
-\url{https://borve.org/primeness/spirofib.html}.
-
 \bibitem{proveit}
 Vladimir Reshetnikov, \emph{ProveIt}, Analysis/Transseries, volume \emph{Transseries and Inversion}; real-argument Fibonacci and staircase/error-transport material. Read-only comparison at revision \texttt{6bf7f30d0352f7596e70928b3d4f304914075907}, 4 October 2026.
 \url{https://github.com/VladimirReshetnikov/ProveIt}.
+
+\bibitem{fernandez}
+Neil Fernandez, \emph{Spiro-Fibonacci Sequences}, last modified 11 January 2003.
+\url{https://borve.org/primeness/spirofib.html}. Report~191: square construction and seed discussion inspected 4 October 2026. [The two Parts' entries for this source, merged by the write.]
+
+\bibitem{oeis510} OEIS Foundation Inc., \emph{A078510, Spiro-Fibonacci numbers}, revision 21, 11 September 2025. \url{https://oeis.org/A078510}. Includes the delayed recurrence credit to Antti Karttunen, 13 December 2015.
+\bibitem{oeis409} OEIS Foundation Inc., \emph{A265409}, quarter-square plateau predecessor sequence. \url{https://oeis.org/A265409}.
+\bibitem{oeis370} OEIS Foundation Inc., \emph{A265370}, binary length of A078510. \url{https://oeis.org/A265370}.
+\bibitem{oeis404} OEIS Foundation Inc., \emph{A265404}, greedy Spironacci summand count. \url{https://oeis.org/A265404}.
+\bibitem{ryde} Kevin Ryde, \emph{Math::NumSeq::SpiroFibonacci}, Math-NumSeq version 75, Perl source and embedded documentation. \url{https://metacpan.org/pod/Math::NumSeq::SpiroFibonacci}. Version-75 source inspected as text only.
+\bibitem{kundrat05} Petr Kundr\'at, \emph{Asymptotic properties of the discretized pantograph equation}, Studia Universitatis Babe\c{s}--Bolyai Mathematica \textbf{50}(1) (2005), 77--84. \url{https://www.cs.ubbcluj.ro/journal/studia-mathematica/archive/2005-1/kundrat.pdf}.
+\bibitem{kundrat06} Petr Kundr\'at, \emph{On the asymptotics of the difference equation with a proportional delay}, Opuscula Mathematica \textbf{26}(3) (2006), 499--506. \url{https://www.opuscula.agh.edu.pl/vol26/3/art/opuscula_math_2638.pdf}.
+\bibitem{applebybuckwar} John A. D. Appleby and Evelyn Buckwar, \emph{A Constructive Comparison Technique for Determining the Asymptotic Behaviour of Linear Functional Differential Equations with Unbounded Delay}, Differential Equations and Dynamical Systems \textbf{18} (2010), 271--301; online 11 January 2011. \url{https://doi.org/10.1007/s12591-010-0057-z}. Publisher full text unavailable; selected statements on printed pp.~278 and 282 inspected in a \href{https://www.scribd.com/document/1006861920/Appleby-2010}{public OCR reproduction}, with transcription limitations.
+\bibitem{lambertguide} ProveIt project, \emph{Lambert W Guide}, subsection on characteristic exponents of a delay equation, in the ProveIt repository, revision cited in Section~\ref{sfb:sq:sec:sources}. \href{https://github.com/VladimirReshetnikov/ProveIt/blob/9ba11eaf7c1b6a27ccfc0bab63e22f97768cb704/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/lambert-w/Lambert_W_Guide/Lambert_W_Guide.tex}{Pinned guide source}. Relevant constant-delay sections inspected; no whole-repository coverage claimed.
+\bibitem{transseriesguide} \emph{Transseries for Mere Mortals}, supplied manuscript, relevant Lambert and WKB sections. Source comparison limited to the inspected sections.
+\bibitem{inversionguide} ProveIt project, \emph{Transseries and Inversion}, ProveIt repository, revision cited in Section~\ref{sfb:sq:sec:sources}; sections on analytic perturbed inversion, staircase recovery, and residual-to-root conversion. \href{https://github.com/VladimirReshetnikov/ProveIt/blob/9ba11eaf7c1b6a27ccfc0bab63e22f97768cb704/Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex}{Pinned inversion source}.
+\bibitem{report190} \emph{Report190, Hexagonal Spiral Fibonacci Asymptotics}, 4 October 2026. Prior companion report on A094926 and A094925, with a different hexagonal adjacency rule. [Printed as Part~I of this report.]
+\bibitem{tsvol} ProveIt, \emph{Transseries: the polynomial-logarithmic calculus, series reversal at infinity, and inversion}, the transseries volume, \file{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex}; Part~0, \file{p0:thm:staircase}, \file{p0:thm:lambert-core} and \file{p0:thm:lambert-centered}. Cited by the merge (batch 110); Report~190 cites it as \texttt{proveit}, Report~191 as \texttt{inversionguide}.
 \end{thebibliography}
 \end{document}

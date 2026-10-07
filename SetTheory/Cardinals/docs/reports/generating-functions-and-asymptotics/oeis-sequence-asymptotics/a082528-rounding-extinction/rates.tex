@@ -1,0 +1,1035 @@
+% Part II of a082528-rounding-extinction: Report 188 of the session bundle,
+% added by the ProveIt write of batch 110 (7 October 2026). \input by
+% questions.tex before Appendix A. Labels carry the prefix rex:qt:.
+\part{Sequential power rounding: quantitative thresholds, inverses, and global mass profiles}
+\label{rex:qt:part}
+
+\section{Provenance, scope and notation of Part II}\label{rex:qt:sec:front}
+
+[Added 7 October 2026, batch 110.] Part~II was added in the write of
+batch~110. It is built from Report~188 of a session bundle of research
+reports, which studies exactly the pure power process of Part~I and was
+written without sight of this report. Its leading law is
+\cref{rex:thm:main}, proved again by a different route; what it adds is
+a quantitative remainder, uniform on compact sets of exponents, which
+answers Research question~\ref{rex:q:rates}. Everything of Report~188 is
+printed below: its abstract and scope paragraph in this section, its
+twelve sections as \cref{rex:qt:sec:main} to \cref{rex:qt:sec:questions},
+with Report~188's own letters (\cref{rex:qt:sec:notation}). Statements
+that Part~I already proves are printed as marked second routes, with
+remarks of the write that identify them (\cref{rex:qt:tab:claims}).
+Bracketed notes beginning ``[Added 7 October 2026, batch~110'' and remarks
+marked \textsf{[write]} are the write's; all other text of Part~II is
+Report~188's.
+
+\subsection{The manuscript}\label{rex:qt:sec:provenance}
+
+Report~188 is the archive
+\nolinkurl{Sequential_Power_Rounding_Gamma_Constants_and_Inverses_Source.zip}
+(564,257 bytes; 20 files), which arrived in commit \texttt{60f54ea06} and
+was placed in this report by commit \texttt{8622ca7e5} (batch~110). Its
+article \texttt{Report188.tex} (709 lines; a 17-page PDF) is titled
+\emph{Report188: Sequential Power Rounding}, with the subtitle
+\emph{Exact Gamma constants, quantitative thresholds, inverses, and global
+mass profiles} printed in its author slot, and is dated 4~October 2026. Its
+PDF author field reads ``Research report''; it names no person, tool or
+addressee. It has no pin: it names no ProveIt commit and cites neither the
+repository nor Part~I, which was written on 3~October 2026 (commit
+\texttt{2b3b69b4b}) and which it does not know. It quotes the OEIS records
+as A082527 revision~8 (11~December 2025), A082528 revision~6
+(30~March 2012), A073047 revision~15 (7~June 2020) and A002491
+revision~109 (20~August 2026), inspected on 4~October 2026; the write
+did not re-check those revision numbers. On 7~October 2026 the write read
+the live entries: A082528 still states the general-$m$ law as
+``Conjecture'', and A002491 still carries D.~E.~Knuth's comment of
+8~June 2021 as Report~188 summarizes it in \cref{rex:qt:sec:history} (the
+summed error of Broline and Loeb's argument is $O(n^{3/2})$; summing over
+part of the range recovers $O(n^{4/3})$).
+
+Report~188's abstract and its scope paragraph read as follows.
+
+\begin{quote}\small
+Start with an integer mass $n$ and round it successively down to multiples of $2^p,3^p,\ldots$, where $p>0$ is any fixed real number. We prove that its first zero occurs at
+\[
+ A_p(n)=\bigl(p\Gamma(p/(p+1))^{p+1}n\bigr)^{1/(p+1)}
+       +\OO_p\!\left(n^{1/((p+1)(p+2))}\right).
+\]
+This identifies the constant in the all-real-power conjecture recorded in OEIS A082528, including the square-power sequence A082527. The proof uses an exact reverse ceiling recursion and a monotone integral coordinate. A dyadic telescoping argument controls the coordinate error without a logarithmic loss. We obtain explicit all-index threshold enclosures, an elementary piecewise mass profile with Gamma-product breakpoints, and a uniform positive-terminal-mass law with an explicit inverse curve. Exact integer algorithms cover every positive rational power. The accompanying offline source archive separates exact finite checks from optional floating-point diagnostics and includes a deterministic PDF builder.
+
+\paragraph{Scope and attribution.}
+The first-power threshold estimate is classical: Erd\H{o}s and Jabotinsky proved the relevant $k^2/\pi+\OO(k^{4/3})$ behavior in 1958. The Gamma-function identities, log-convexity bounds, and monotone inversion used here are standard. We do not claim a sharper first-power remainder, a bounded stopping-index error, an all-orders expansion of the discrete thresholds, or worldwide priority. A final section expands the exact constant as a function of $p$; this classical parameter expansion does not resolve the deterministic rounding fluctuations.
+\end{quote}
+
+\paragraph{Status and non-claims of Report~188, kept.} The first-power
+remainder is classical and credited to Erd\H{o}s and Jabotinsky; the Gamma
+identities, log-convexity bounds and monotone inversion are standard. It
+claims no sharper first-power remainder, no bounded stopping-index error, no
+all-orders expansion of the discrete thresholds, no uniformity as
+$p\to0$ or $p\to\infty$ (only on compact $p$-sets), and no worldwide
+priority; its targeted source check ``is not a worldwide novelty
+certification''. Its decimal displays are not certified intervals, its
+exact code covers rational $p$ only, the real-$p$ theorem being analytic,
+and its floating-point diagnostics are labelled as such. Its finite checks
+``do not constitute a formal proof of the asymptotic theorems''. Nothing in
+Part~II is formalized in Lean or Rocq.
+
+\paragraph{Stale wording, corrected here.} Report~188 was written without
+Part~I, so two of its sentences overstate what is new relative to this
+report. Its abstract says that it ``identifies the constant in the
+all-real-power conjecture recorded in OEIS A082528''; its
+\cref{rex:qt:sec:history} says that ``targeted source checks found no
+directly matching square- or cube-power theorem among the inspected
+material''. Part~I (\cref{rex:thm:main}, dated 3~October 2026) had already
+proved the leading law $T_m(K)\sim L_mK^{m+1}$ for every real $m>0$ and
+identified the square and cube constants. What Report~188 contributes
+relative to Part~I is listed in \cref{rex:qt:tab:claims}: chiefly the
+remainder, the explicit enclosure, the global profile with a rate and the
+positive-terminal law. Dated notes at both passages say so. Its novelty
+statement remains, as it says, bounded by a targeted search, and the write
+searched no further.
+
+\subsection{What Part II adds}\label{rex:qt:sec:adds}
+
+{\small
+\renewcommand{\arraystretch}{1.12}
+\setlength{\LTcapwidth}{\textwidth}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{.27\textwidth}>{\raggedright\arraybackslash}p{.27\textwidth}>{\raggedright\arraybackslash}p{.38\textwidth}@{}}
+\caption{Report~188 against Part~I. ``Second route'' means the same
+statement proved here by a different argument; ``same'' means the same
+statement by essentially the same argument.}\label{rex:qt:tab:claims}\\
+\toprule
+Report 188 (Part II) & Part I & Status here\\
+\midrule
+\endfirsthead
+\toprule
+Report 188 (Part II) & Part I & Status here\\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\Cref{rex:qt:prop:reverse,rex:qt:prop:inverse} & \cref{rex:lem:duality}, \cref{rex:cor:inverse} & same; Report~188 adds the terminal quotient $h$ and the no-overshoot path~\eqref{rex:qt:eq:forwardpath}\\
+\Cref{rex:qt:sec:algorithm} & \cref{rex:sec:computation}, \eqref{rex:eq:rational-root} & same integer-root method\\
+\Cref{rex:qt:lem:drift,rex:qt:lem:ratios}, \cref{rex:qt:thm:invariant} & --- & new: drift sandwich, uniform ratio bounds, dyadic telescoping\\
+\Cref{rex:qt:prop:cell}, \eqref{rex:qt:eq:Uexplicit} & \eqref{rex:eq:crossing-def}, \eqref{rex:eq:gamma-product}, \eqref{rex:eq:profile-def} & the same objects: $P_r=t_r$, $tU_p(t)=y_m(t)$, $H_p=f_m$ (\cref{rex:qt:rem:identify})\\
+\Cref{rex:qt:lem:gamma} & \eqref{rex:eq:crossing-asym} & two-sided bounds where Part~I proves the asymptotic\\
+\Cref{rex:qt:prop:profilebound} & \eqref{rex:eq:f-derivative}, proof of \cref{rex:prop:certificates} & the integral of~\eqref{rex:eq:f-derivative}, which Part~I evaluates at $t=t_j$, at every $t$\\
+\Cref{rex:qt:thm:envelope} & --- & new: an explicit enclosure at every index\\
+\Cref{rex:qt:thm:main}, leading terms & \cref{rex:thm:main} & second route (an integral coordinate instead of compactness)\\
+\Cref{rex:qt:thm:main}, remainders & Research question~\ref{rex:q:rates} & new; answers that question\\
+\Cref{rex:qt:thm:global} & \cref{rex:prop:profile}, \eqref{rex:eq:backward-convergence} & new: a rate, uniform over the whole minimal path\\
+\Cref{rex:qt:thm:terminal}, \eqref{rex:qt:eq:Phiinverse} & --- & new: positive terminal quotients and the inverse curve\\
+\eqref{rex:qt:eq:retentionlimit} & \cref{rex:thm:forward-profile} & the same limit object, reparametrized (\cref{rex:qt:rem:retention})\\
+\eqref{rex:qt:eq:p1} & \eqref{rex:eq:classical-error} & classical (Erd\H{o}s--Jabotinsky)\\
+\eqref{rex:qt:eq:constantseries}, \eqref{rex:qt:eq:smallplog} & \eqref{rex:eq:large-m-series}, \eqref{rex:eq:small-m} & same (classical Gamma expansions)\\
+\eqref{rex:qt:eq:largep}, \eqref{rex:qt:eq:smallp} & \eqref{rex:eq:large-m} & one further term at $p\to\infty$; the exponentiated form at $p\downarrow0$\\
+\end{longtable}
+}
+
+\paragraph{Questions of Part~I.} Research question~\ref{rex:q:rates} asks
+for exponents $\delta_m>0$ with $T_m(K)=L_mK^{m+1}+O_m(K^{m+1-\delta_m})$,
+and for a bound uniform on compact $m$-intervals. \Cref{rex:qt:thm:main}
+gives $\delta_m=(m+1)/(m+2)$, uniformly on compact sets, and
+\cref{rex:qt:thm:envelope} is an explicit all-index enclosure from which
+such a bound is read off; Report~188 prints no numerical value of the
+implied constant. The question is answered; whether $\delta_m$ can be
+enlarged is Report~188's own question~\ref{rex:qt:q:sharper}. Its global
+profile (\cref{rex:qt:thm:global}) gives a rate for the backward minimal
+path only, so the question ``Rates for the full trajectory and loss
+distribution'' (Research question~\ref{rex:q:trajectory}), which concerns
+the forward path and the loss measures, stays open. Research
+questions~\ref{rex:q:bounded} and~\ref{rex:q:fluct} reappear as its
+questions~\ref{rex:qt:q:bounded} and~\ref{rex:qt:q:fluct}, unanswered.
+Dated notes at those questions say so.
+
+\subsection{Notation of Part II}\label{rex:qt:sec:notation}
+
+Part~II keeps Report~188's symbols; no symbol is renamed and no
+normalization is changed. Report~188 writes $p$ for the exponent that
+Part~I calls $m$, and it indexes stages by $j$ up to a terminal level $k$,
+where Part~I indexes stages by $k$ up to $K$. Several of its letters mean
+something else in Parts~I and~III. \Cref{rex:qt:tab:notation} fixes the
+reading; wherever Part~II says $p$, read Part~I's $m$.
+
+{\small
+\renewcommand{\arraystretch}{1.1}
+\setlength{\LTcapwidth}{\textwidth}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{.17\textwidth}>{\raggedright\arraybackslash}p{.29\textwidth}>{\raggedright\arraybackslash}p{.15\textwidth}>{\raggedright\arraybackslash}p{.30\textwidth}@{}}
+\caption{Report~188's symbols in Part~II, their counterparts in Part~I,
+and the false readings they would have elsewhere in this
+report.}\label{rex:qt:tab:notation}\\
+\toprule
+Part II & Meaning & Part I & False reading elsewhere\\
+\midrule
+\endfirsthead
+\toprule
+Part II & Meaning & Part I & False reading elsewhere\\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+$p$ & the exponent & $m$ & in \cref{rex:sec:computation}, $p$ is the numerator of $m=p/q$; in Part~III, $p_s$ are frequencies and $p$ a period length\\
+$A,B$ in $p=A/B$ & numerator and denominator (\cref{rex:qt:sec:algorithm}) & $p,q$ & $A_p(n)$, $B_p(k)$ below; Part~III's bound $B$\\
+$s=p+1$ & & $m+1$ & Part~III: $s$ indexes phase types\\
+$a=1/s$ & Gamma exponent & $1-a$ & Part~I: $a=m/(m+1)$; Part~III: $a$ counts active zero phases\\
+$\beta=s/(s+1)$ & cutoff exponent & --- & Part~III: $\beta_k$ are scaled increments\\
+$K_p$, $c_p$ & threshold and extinction constants & $L_m$, $c_m$ & $K$ is Part~I's terminal stage\\
+$k$; $j$ & terminal level; stage index & $K$; $k$ & in Parts~I and~III, $k$ is a stage index\\
+$A_p(n)$ & first zero index & $\tau_m(n)$ & ---\\
+$B_p(k)$; $B_p(k,h)$ & survival threshold; terminal quotient at least $h$ & $T_m(K)$; --- & Part~III: $B$ bounds the increments\\
+$X_j$ & retained mass & $x_k$ & Part~I: $X_n(t)$ is the normalized forward path\\
+$q_j=q_j(k,h)$; $u_j=q_j/j$ & minimal reverse path; scaled quotient & $q_k^{(K)}$ ($h=1$); $z/m$ & Part~I: $Q_k$, $Q$ are forward quotients\\
+$c$; $m$ in \cref{rex:qt:prop:reverse,rex:qt:prop:inverse} and in the inverse proof of \cref{rex:qt:thm:main} & the ratio $((j+1)/j)^p$; an integer, resp.\ $\max\{k:B_p(k)\le n\}$ & --- & $c_m$ and the exponent $m$ of Part~I\\
+$f_p(u)=u+\lceil pu\rceil$, $f_p(0)=1$ & & $u+C(pu)$ & Part~I: $f_m=t^my_m$\\
+$I_p$ & integral coordinate & --- & Part~III: equals $H$ for the law $\delta_{(p,1)}$\\
+$R_j$; $Q_p$; $E_p$ & step ratio; ratio bound; dyadic constant & --- & Part~I: $Q_k$ forward quotients, $E_m(K)$ the threshold error of Research question~\ref{rex:q:rates}; Part~III: $E(z)$ residual drift; $R_k$ in~\eqref{rex:qt:eq:retentionlimit}\\
+$e_j$ & rounding defects in $[0,1)$ & --- & ---\\
+$P_r$ & Gamma products & $t_r$ & ---\\
+$U_p(t)$, $H_p(t)$ & inverse profile, mass profile & $y_m(t)/t$, $f_m(t)$ & Part~III: $H(z)$ is an integral in $z$; $U_p(k,J)$ in \cref{rex:qt:sec:thresholdproof} is an envelope endpoint\\
+$L_p(k,J)$, $U_p(k,J)$ & envelope endpoints & --- & $L_m$; the profile $U_p(t)$\\
+$\Phi_p$, $H_{p,v}$ & terminal-quotient cost; its profile & --- & ---\\
+$M_{k,j}$ & normalized retained mass & --- & Part~III: $M(t)=t^my(t)$\\
+$t$; $r$ & time in $(0,1]$; cell index & $t$; $j$ in $t_j$ & Part~III: $t(z)$; $r$ a period length\\
+$h$, $V$, $N_k$, $R_k$ & terminal quotient, its bound, initial masses, retained quotient & --- & Part~III: $h_j$ perturbation sizes, $h$ a block index\\
+\end{longtable}
+}
+
+\paragraph{Intake checks.} The dossier of the intake (6~October 2026)
+reran Report~188's mandatory checker on a copy: its outputs under normal
+and optimized Python are byte-identical to each other and to the recorded
+\path{data/02-rates-generated-exact_checks.json}; the package's replay
+script fails on Windows only because it compares text-mode output with
+CRLF line ends (\cref{rex:qt:sec:checks}; the README gives a rerun route).
+An independent backward recursion written at intake reproduced the first
+ten thresholds for $p=2,3$ printed in \cref{rex:qt:sec:reverse} and the
+four values of the table in \cref{rex:qt:sec:checks}, and found
+$(B_p(k)-K_pk^s)/k^{s^2/(s+1)}$ between $0.003$ and $0.18$ on the sampled
+ranges for $p=1,2,3$. The write recomputed the ten thresholds, $B_2(1000)$
+and $B_3(1000)$ with exact integers, and $c_2$, $c_3$ to forty digits
+(the last digits of Report~188's decimal displays are wrong;
+\cref{rex:qt:rem:decimals}).
+
+\section{The model and the conclusions}\label{rex:qt:sec:main}
+Fix a real number $p>0$. For an integer $n\ge0$, define
+\begin{equation}\label{rex:qt:eq:model}
+ X_1=n,\qquad
+ X_j=j^p\left\lfloor\frac{X_{j-1}}{j^p}\right\rfloor\quad(j\ge2),
+ \qquad A_p(n)=\min\{j\ge1:X_j=0\}.
+\end{equation}
+The retained masses need not be integers when $p$ is nonintegral. What matters is that $X_j/j^p$ is a nonnegative integer. Since $0\le X_j\le n$, a zero occurs no later than an index with $j^p>n$. At $n=0$ the convention is $A_p(0)=1$.
+
+The square- and cube-power cases are OEIS A082527 and A082528, respectively, introduced by Benoit Cloitre in 2003 \cite{oeis-square,oeis-cube}. The latter record conjectures an equivalent $(c(p)n)^{1/(p+1)}$ for every real $p>0$. The first-power sequence, beginning at $n=1$, is A073047 \cite{oeis-linear}. Define the survival threshold and, more generally, a terminal-quotient threshold by
+\begin{align}
+ B_p(k)&=\min\{n\in\mathbb Z_{\ge0}:X_k>0\},\label{rex:qt:eq:Bdef}\\
+ B_p(k,h)&=\min\{n\in\mathbb Z_{\ge0}:X_k\ge h k^p\},
+                  \qquad k,h\in\N.\label{rex:qt:eq:Bhdef}
+\end{align}
+Thus $B_p(k)=B_p(k,1)$. Throughout, $\N=\{1,2,\ldots\}$ and a subscript on $\OO$ specifies the allowed dependence of its constant.
+
+Use the parameters
+\begin{equation}\label{rex:qt:eq:params}
+ s=p+1,\qquad a=\frac1s,\qquad \beta=\frac{s}{s+1},\qquad
+ K_p=\frac1{p\Gamma(1-a)^s},\qquad c_p=\frac1{K_p}.
+\end{equation}
+The exponent $a$ governs Gamma products; $\beta$ is the cutoff exponent in the error estimates. They are different quantities.
+
+\begin{theorem}[Thresholds and first-zero indices]\label{rex:qt:thm:main}
+For every fixed real $p>0$, as $k,n\to\infty$ through integers,
+\begin{align}
+ B_p(k)&=K_p k^{p+1}+\OO_p\!\left(k^{(p+1)^2/(p+2)}\right),\label{rex:qt:eq:Bmain}\\
+ A_p(n)&=p^{1/(p+1)}\Gamma\!\left(\frac p{p+1}\right)n^{1/(p+1)}
+       +\OO_p\!\left(n^{1/((p+1)(p+2))}\right).\label{rex:qt:eq:Amain}
+\end{align}
+The implied constants can be chosen uniformly when $p$ ranges over a fixed compact subset of $(0,\infty)$.
+\end{theorem}
+
+In particular, the constants inside the OEIS equivalents are
+\begin{align}
+ c_2&=2\Gamma(2/3)^3,&
+ A_2(n)&=(c_2n)^{1/3}+\OO(n^{1/12}),\label{rex:qt:eq:p2}\\
+ c_3&=3\Gamma(3/4)^4,&
+ A_3(n)&=(c_3n)^{1/4}+\OO(n^{1/20}).\label{rex:qt:eq:p3}
+\end{align}
+Their diagnostic decimal values are $c_2\approx4.965917162430456$ and $c_3\approx6.764822981008765$. The exact Gamma expressions are the results; these decimal displays are not certified intervals.
+
+\begin{remark}[\textsf{[write]} The two decimal displays are wrong in their last digits]\label{rex:qt:rem:decimals}
+[Added 7 October 2026, batch~110.] The displays above are printed as
+delivered, and both are wrong. Evaluated to forty digits (mpmath),
+\begin{align*}
+ c_2&=2\Gamma(2/3)^3=4.96591716243045547322\ldots,\\
+ c_3&=3\Gamma(3/4)^4=6.76482298100876023357\ldots,
+\end{align*}
+in agreement with Part~I's \eqref{rex:eq:decimals}. Rounded to fifteen
+decimals they are $4.965917162430455$ and $6.764822981008760$; Report~188's
+$\ldots456$ and $\ldots765$ are neither these roundings nor truncations.
+The error is confined to the two diagnostic displays, which Report~188
+itself labels non-certified; no statement of Part~II uses them.
+\end{remark}
+
+The proof provides more than the equivalent. Define
+\begin{equation}\label{rex:qt:eq:QE}
+ Q_p=\max\{2^{p+1}+p+2,\,2^p(p+3)+1\},\qquad
+ E_p=2Q_p\log Q_p+2.
+\end{equation}
+For every pair of integers $1\le J\le k$, we will prove the effective enclosure
+\begin{equation}\label{rex:qt:eq:envelope_intro}
+ K_p k^s e^{-sE_p/J}-\frac{J^s}{s}
+ \ \le B_p(k)\le
+ K_p k^s e^{sE_p/J}+\frac{J^s}{s}.
+\end{equation}
+The constants are deliberately conservative. This is a rigorous real-valued inequality, not a claim that evaluating its endpoints with ordinary floating point produces a rigorous numerical enclosure.
+
+A globally uniform profile for all intermediate masses is proved in Section~\ref{rex:qt:sec:global}. Section~\ref{rex:qt:sec:terminal} gives positive-terminal-mass thresholds and their limiting inverse, including the important distinction between $h\ge1$ and $h=0$.
+
+\section{Exact reverse thresholds}\label{rex:qt:sec:reverse}
+The backward formulation removes the unknown stopping time from the recurrence.
+
+\begin{proposition}[Minimal reverse path]\label{rex:qt:prop:reverse}
+For $k,h\in\N$, define integers $q_j=q_j(k,h)$ by
+\begin{equation}\label{rex:qt:eq:reverse}
+ q_k=h,\qquad
+ q_j=\left\lceil\left(\frac{j+1}{j}\right)^p q_{j+1}\right\rceil
+          \quad(j=k-1,k-2,\ldots,1).
+\end{equation}
+Then $B_p(k,h)=q_1$. Starting the forward recurrence at $q_1$ realizes the entire reverse path:
+\begin{equation}\label{rex:qt:eq:forwardpath}
+ X_j=j^p q_j\qquad(1\le j\le k).
+\end{equation}
+\end{proposition}
+\begin{proof}
+To reach a prescribed mass $(j+1)^p q_{j+1}$ after the next floor operation, the preceding mass must be at least that value. Among the allowed masses at stage $j$, namely the nonnegative integer multiples of $j^p$, the least such mass is $j^p q_j$ from \eqref{rex:qt:eq:reverse}. Backward induction proves both necessity and attainability at the initial level $1^p=1$.
+
+There is no overshoot in the subsequent forward process. With $c=((j+1)/j)^p>1$ and an integer $m\ge1$,
+\[
+ m\le\frac{\lceil cm\rceil}{c}<m+\frac1c<m+1.
+\]
+Consequently the forward floor quotient of $q_j$ at level $j+1$ is exactly $q_{j+1}$. This proves \eqref{rex:qt:eq:forwardpath}, including its terminal value $X_k=h k^p$.
+\end{proof}
+
+\begin{proposition}[Exact discrete inverse]\label{rex:qt:prop:inverse}
+The sequence $B_p(k)$ is strictly increasing, $B_p(1)=1$, and for $n\ge1$,
+\begin{equation}\label{rex:qt:eq:discreteinverse}
+ A_p(n)=1+\max\{k\ge1:B_p(k)\le n\}.
+\end{equation}
+In particular, for every $k\ge1$,
+\begin{equation}\label{rex:qt:eq:adjacent}
+ A_p(B_p(k)-1)=k,\qquad A_p(B_p(k))=k+1.
+\end{equation}
+\end{proposition}
+\begin{proof}
+A reverse path ending at $k+1$ with quotient $1$ has quotient at least $2$ at level $k$. For $c>1$, the map $m\mapsto\lceil cm\rceil$ preserves an integral difference of at least one. Reversing the remaining levels shows $B_p(k+1)>B_p(k)$. Monotonicity of the forward floor maps shows that survival through level $k$ is equivalent to $n\ge B_p(k)$. Since zero is absorbing, \eqref{rex:qt:eq:discreteinverse} follows. At the two adjacent values it gives \eqref{rex:qt:eq:adjacent}; the case $k=1$ uses $A_p(0)=1$.
+\end{proof}
+
+For reference, the first ten survival thresholds are
+\begin{align*}
+ p=2:&\quad 1,4,12,20,36,72,84,136,216,244,\\
+ p=3:&\quad 1,8,32,88,136,272,520,920,1168,1816.
+\end{align*}
+These are thresholds indexed by $k$, rather than the OEIS first-zero sequences indexed by $n$.
+
+[Added 7 October 2026, batch~110: \cref{rex:qt:prop:reverse} at $h=1$
+and \cref{rex:qt:prop:inverse} are Part~I's survival duality
+(\cref{rex:lem:duality}) and exact inverse (\cref{rex:cor:inverse}),
+proved by the same backward induction; Report~188 adds a general terminal
+quotient $h$ and the observation~\eqref{rex:qt:eq:forwardpath} that the
+minimal input realizes the whole reverse path. The thresholds above are
+those of Part~I's example ($T_3(4)=88$); the write recomputed all twenty
+with exact integers.]
+
+\subsection{An integer algorithm for rational powers}\label{rex:qt:sec:algorithm}
+Let $p=A/B>0$ be rational, with positive coprime integers $A,B$. If the next reverse quotient is $q$, the preceding quotient is the least integer $r$ satisfying
+\begin{equation}\label{rex:qt:eq:exactceiling}
+ j^A r^B\ge (j+1)^A q^B.
+\end{equation}
+No algebraic or floating approximation to $j^p$ is needed. For the forward step from level $j$ to $j+1$, the quotient is the greatest nonnegative integer $r$ satisfying
+\begin{equation}\label{rex:qt:eq:exactfloor}
+ (j+1)^A r^B\le j^A q^B.
+\end{equation}
+Both are integer-root comparisons. To compute $\lfloor(U/V)^{1/B}\rfloor$, first set $w=\lfloor U/V\rfloor$ and find the largest $r$ with $r^B\le w$ by integer binary search. The ceiling equals this $r$ precisely when $V r^B=U$, and otherwise equals $r+1$. The equality test is essential at perfect powers.
+
+This algorithm proves exact computability for rational $p$; it does not restrict the real-$p$ theorem. An arbitrary real parameter has no implied finite exact input representation. The software accepts exact positive rational parameters and validates them before calculation.
+
+[Added 7 October 2026, batch~110: this is the integer-root method of
+Part~I, \eqref{rex:eq:rational-root} and~\eqref{rex:eq:forward-quotient},
+with the letters $A/B$ for Part~I's $p/q$.]
+
+\section{A monotone coordinate for the reverse path}\label{rex:qt:sec:coordinate}
+For $u>0$ define
+\begin{equation}\label{rex:qt:eq:fI}
+ f_p(u)=u+\lceil pu\rceil,\qquad f_p(0)=1,\qquad
+ I_p(u)=\int_0^u\frac{\dd v}{f_p(v)}.
+\end{equation}
+The value at zero is the right-hand limit. The function $f_p$ is positive and nondecreasing. The function $I_p$ is continuous, strictly increasing, locally absolutely continuous, and unbounded. Indeed,
+\begin{equation}\label{rex:qt:eq:fbounds}
+ \max\{1,su\}\le f_p(u)\le su+1\qquad(u\ge0),
+\end{equation}
+where the upper inequality is strict for $u>0$. Thus
+\begin{equation}\label{rex:qt:eq:Ibasic}
+ \frac1s\log(1+su)\le I_p(u)\le u.
+\end{equation}
+In particular the inverse $I_p^{-1}$ exists on $[0,\infty)$.
+
+Set $u_j=q_j/j$ for a reverse trajectory. These scaled quotients increase as $j$ decreases. The crucial fact is an exact drift sandwich, rather than an assumed average rounding error.
+
+\begin{lemma}[Drift sandwich]\label{rex:qt:lem:drift}
+For every $p>0$ and $1\le j<k$,
+\begin{equation}\label{rex:qt:eq:drift}
+ f_p(u_{j+1})\le j(u_j-u_{j+1})\le f_p(u_j).
+\end{equation}
+\end{lemma}
+\begin{proof}
+Write $u=u_{j+1}$, $x=1+1/j$, and $d=(j+1)(x^p-1)$. Integrality of $q_{j+1}=(j+1)u$ gives
+\begin{equation}\label{rex:qt:eq:exactdrift}
+ j(u_j-u)=u+\lceil du\rceil.
+\end{equation}
+By convexity of $x\mapsto x^{p+1}$ on $(0,\infty)$,
+\[
+ d=j(x^{p+1}-x)\ge p.
+\]
+The reverse ceiling also gives $u_j\ge x^{p+1}u$. Convexity of $x\mapsto x^{-p}$ gives $x^{-p}\ge1-p/j$, hence
+\[
+ \frac d{x^{p+1}}=j(1-x^{-p})\le p.
+\]
+Therefore $pu\le du\le pu_j$. Applying the monotonicity of the ceiling in \eqref{rex:qt:eq:exactdrift}, and then using $u\le u_j$, proves \eqref{rex:qt:eq:drift}. The argument does not require convexity of $x^p$ and remains valid when $0<p<1$.
+\end{proof}
+
+Let
+\begin{equation}\label{rex:qt:eq:R}
+ R_j=\frac{f_p(u_j)}{f_p(u_{j+1})}\ge1.
+\end{equation}
+Monotonicity of $f_p$, followed by \eqref{rex:qt:eq:drift}, yields
+\[
+ \frac1{jR_j}\le I_p(u_j)-I_p(u_{j+1})\le\frac{R_j}{j}.
+\]
+Consequently
+\begin{equation}\label{rex:qt:eq:localerror}
+ \left|I_p(u_j)-I_p(u_{j+1})-\frac1j\right|
+ \le\frac{R_j-1}{j}.
+\end{equation}
+The jumps of $f_p$ cause no difficulty: monotone endpoint bounds control the integral, and values at the finitely many cell endpoints in a bounded interval do not change that integral.
+
+\section{Dyadic control without a logarithmic loss}\label{rex:qt:sec:dyadic}
+A uniform bound on $R_j$ alone would only give a harmonic error when \eqref{rex:qt:eq:localerror} is summed. The logarithms of these ratios telescope, and a dyadic decomposition uses this additional structure.
+
+Define the exact rounding defects
+\begin{equation}\label{rex:qt:eq:defect}
+ e_j=q_j-\left(\frac{j+1}{j}\right)^p q_{j+1},\qquad 0\le e_j<1.
+\end{equation}
+Multiplication by $j^p$ gives the mass identity
+\begin{equation}\label{rex:qt:eq:massidentity}
+ j^p q_j=(j+1)^p q_{j+1}+j^p e_j.
+\end{equation}
+For any $1\le L\le H\le k$, it telescopes to
+\begin{equation}\label{rex:qt:eq:masstelescoping}
+ L^p q_L=H^p q_H+\sum_{j=L}^{H-1}j^p e_j.
+\end{equation}
+
+\begin{lemma}[Uniform ratio bounds]\label{rex:qt:lem:ratios}
+With $Q_p$ as in \eqref{rex:qt:eq:QE}, one has $1\le R_j\le Q_p$. If $1\le L\le H\le\min(2L,k)$, then
+\begin{equation}\label{rex:qt:eq:blockratio}
+ \frac{f_p(u_L)}{f_p(u_H)}\le Q_p.
+\end{equation}
+These bounds do not depend on the terminal quotient $h\ge1$.
+\end{lemma}
+\begin{proof}
+The ceiling recursion implies
+\[
+ u_j\le (1+1/j)^s u_{j+1}+1/j\le2^s u_{j+1}+1.
+\]
+Using \eqref{rex:qt:eq:fbounds} separately on each numerator term gives
+\[
+ R_j\le 2^s+s+1=2^{p+1}+p+2.
+\]
+For the block estimate, divide \eqref{rex:qt:eq:masstelescoping} by $L^s$ and bound the sum by $L(2L)^p$. Since $H/L\le2$,
+\[
+ u_L\le2^s u_H+2^p.
+\]
+It follows that
+\[
+ \frac{f_p(u_L)}{f_p(u_H)}
+ \le 2^s+s2^p+1=2^p(p+3)+1.
+\]
+Only positivity of $u_H$ and the defect bound were used, so the constants are independent of $h$.
+\end{proof}
+
+\begin{theorem}[Quantified integral invariant]\label{rex:qt:thm:invariant}
+For every real $p>0$, integers $k,h\ge1$, and $1\le J\le k$, the reverse path \eqref{rex:qt:eq:reverse} satisfies
+\begin{equation}\label{rex:qt:eq:invariant_h}
+ \left|I_p(u_J)-I_p(h/k)-\log(k/J)\right|\le\frac{E_p}{J}.
+\end{equation}
+For $h=1$ one also has
+\begin{equation}\label{rex:qt:eq:invariant}
+ \left|I_p(u_J)-\log(k/J)\right|\le\frac{E_p}{J}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+For $1\le R\le Q_p$,
+\[
+ R-1=\int_1^R\dd v\le Q_p\int_1^R\frac{\dd v}{v}=Q_p\log R.
+\]
+On a block $[L,H]$ with $H\le2L$, the ratio product telescopes, so
+\begin{align*}
+ \sum_{j=L}^{H-1}\frac{R_j-1}{j}
+ &\le\frac{Q_p}{L}\sum_{j=L}^{H-1}\log R_j\\
+ &=\frac{Q_p}{L}\log\frac{f_p(u_L)}{f_p(u_H)}
+ \le\frac{Q_p\log Q_p}{L}.
+\end{align*}
+Partition $[J,k]$ at $J,2J,4J,\ldots$, with its last endpoint truncated to $k$. The geometric sum of $1/L$ is at most $2/J$, giving
+\begin{equation}\label{rex:qt:eq:dyadicsum}
+ \sum_{j=J}^{k-1}\frac{R_j-1}{j}\le\frac{2Q_p\log Q_p}{J}.
+\end{equation}
+This is the step that removes a potential logarithmic loss.
+
+Sum \eqref{rex:qt:eq:localerror} and use $u_k=h/k$. The elementary integral comparison
+\[
+ 0\le\sum_{j=J}^{k-1}\frac1j-\log(k/J)\le\frac1J-\frac1k
+\]
+proves \eqref{rex:qt:eq:invariant_h}. When $h=1$, use $0\le I_p(1/k)\le1/k$ from \eqref{rex:qt:eq:Ibasic}. Its contribution together with the harmonic comparison is at most $1/J$, proving \eqref{rex:qt:eq:invariant}. The $+2$ in $E_p$ is a safe common allowance; these estimates would permit a slightly smaller constant. Empty sums when $J=k$ are covered by the same argument.
+\end{proof}
+
+All estimates so far are deterministic. In particular, the proof has imposed no randomness, independence, or equidistribution assumption on the defects $e_j$.
+
+\section{Gamma products and the continuous profile}\label{rex:qt:sec:gamma}
+The coordinate $I_p$ can be evaluated explicitly. Set
+\begin{equation}\label{rex:qt:eq:Pr}
+ P_0=1,\qquad
+ P_r=\prod_{m=1}^r\left(1-\frac a m\right)
+     =\frac{\Gamma(r+1-a)}{\Gamma(1-a)\Gamma(r+1)}\quad(r\ge1).
+\end{equation}
+The Gamma identity follows repeatedly from $\Gamma(z+1)=z\Gamma(z)$.
+
+\begin{proposition}[Exact cell formula]\label{rex:qt:prop:cell}
+For every integer $r\ge1$ and $(r-1)/p\le u\le r/p$,
+\begin{equation}\label{rex:qt:eq:cell}
+ e^{-I_p(u)}=P_{r-1}\frac{r+(r-1)/p}{r+u}.
+\end{equation}
+In particular, $e^{-I_p(r/p)}=P_r$.
+\end{proposition}
+\begin{proof}
+Inside this cell, $f_p(u)=u+r$, except possibly at its lower endpoint. Its integral contributes a logarithm. Starting from $I_p(0)=0$, the factor across a complete cell is
+\[
+ \frac{r+(r-1)/p}{r+r/p}
+ =\frac{sr-1}{sr}=1-\frac a r.
+\]
+Multiplying these factors over the preceding cells and then integrating the last partial cell gives \eqref{rex:qt:eq:cell}. Adjacent formulas agree at common endpoints by this same factor identity.
+\end{proof}
+
+\begin{lemma}[Gamma bounds and the constant]\label{rex:qt:lem:gamma}
+For $r\ge1$,
+\begin{equation}\label{rex:qt:eq:gammaineq}
+ \frac{(r+1-a)^{-a}}{\Gamma(1-a)}
+ \le P_r\le\frac{r^{-a}}{\Gamma(1-a)}.
+\end{equation}
+Consequently, as $u\to\infty$,
+\begin{equation}\label{rex:qt:eq:Iasymp}
+ e^{I_p(u)}=\Gamma(1-a)(pu)^a\bigl(1+\OO_p(u^{-1})\bigr).
+\end{equation}
+\end{lemma}
+\begin{proof}
+Here are the needed classical log-convexity estimates, included to specify every inequality. For $x>0$ and $0<t<1$, interpolation between $x$ and $x+1$ gives
+\[
+ \Gamma(x+t)\le x^t\Gamma(x).
+\]
+Interpolation between $x+t$ and $x+t+1$, at the point $x+1$, gives
+\[
+ \Gamma(x+1)\le(x+t)^{1-t}\Gamma(x+t).
+\]
+Together,
+\[
+ \left(\frac{x}{x+t}\right)^{1-t}
+ \le\frac{\Gamma(x+t)}{x^t\Gamma(x)}\le1.
+\]
+Taking $x=r$ and $t=1-a$ gives \eqref{rex:qt:eq:gammaineq}. These are Wendel-type bounds derived directly from log-convexity; standard Gamma inequalities are discussed in \cite[\S5.6]{dlmf}.
+
+The bounds imply $P_r=r^{-a}\Gamma(1-a)^{-1}(1+\OO_p(r^{-1}))$. On the $r$th cell, $r=pu+\OO(1)$ and the partial-cell factor in \eqref{rex:qt:eq:cell} is $1+\OO_p(r^{-1})$. Taking reciprocals proves \eqref{rex:qt:eq:Iasymp}.
+\end{proof}
+
+Define for $0<t\le1$
+\begin{equation}\label{rex:qt:eq:UH}
+ U_p(t)=I_p^{-1}(-\log t),\qquad H_p(t)=t^sU_p(t).
+\end{equation}
+Equation \eqref{rex:qt:eq:Iasymp} gives the finite limit
+\begin{equation}\label{rex:qt:eq:H0}
+ H_p(0):=\lim_{t\downarrow0}H_p(t)
+       =\frac1{p\Gamma(1-a)^s}=K_p.
+\end{equation}
+The profile is explicit at every positive $t$. On the interval $P_r\le t\le P_{r-1}$,
+\begin{equation}\label{rex:qt:eq:Uexplicit}
+ U_p(t)=\frac{(sr-1)P_{r-1}}{pt}-r,\qquad
+ H_p(t)=\frac{(sr-1)P_{r-1}}p\,t^p-r t^s.
+\end{equation}
+Thus the profile is a sequence of elementary arcs joined at Gamma-product breakpoints. In particular $U_p(1)=H_p(1)=0$. The limit at zero was proved independently of any numerical interpolation.
+
+\begin{proposition}[A signed global profile bound]\label{rex:qt:prop:profilebound}
+The function $H_p$ is continuous and nonincreasing on $[0,1]$, and
+\begin{equation}\label{rex:qt:eq:Hbound}
+ 0\le K_p-H_p(t)\le\frac{t^s}{s}\qquad(0\le t\le1).
+\end{equation}
+Equivalently, for every $u\ge0$,
+\begin{equation}\label{rex:qt:eq:Phiubound}
+ 0\le K_p e^{sI_p(u)}-u\le\frac1s.
+\end{equation}
+\end{proposition}
+\begin{proof}
+On every closed subinterval of $(0,1]$, the inverse coordinate and the profile are absolutely continuous. At almost every $t$,
+\[
+ tU_p'(t)=-f_p(U_p(t)),
+\]
+and hence
+\begin{equation}\label{rex:qt:eq:Hderivative}
+ H_p'(t)=t^p\bigl[pU_p(t)-\lceil pU_p(t)\rceil\bigr]
+            \in[-t^p,0].
+\end{equation}
+Integrate between $\delta$ and $t$, then let $\delta\downarrow0$ and use \eqref{rex:qt:eq:H0}. The derivative bound is integrable at zero, so the result is \eqref{rex:qt:eq:Hbound}; it also proves absolute continuity on $[0,1]$. Substituting $t=e^{-I_p(u)}$ and dividing by $t^s$ gives \eqref{rex:qt:eq:Phiubound}, including $u=0$ by continuity.
+\end{proof}
+
+The sign and the $1/s$ constant in \eqref{rex:qt:eq:Phiubound} are useful. Mere asymptotic equivalence from Gamma ratios would not by itself provide this all-$u$ interpolation bound.
+
+\begin{remark}[\textsf{[write]} The profile of this section is Part~I's]\label{rex:qt:rem:identify}
+[Added 7 October 2026, batch~110.] Take $p=m$, so that $s=m+1$ and
+$a=1/(m+1)$. The factor $1-a/r$ in~\eqref{rex:qt:eq:Pr} is then
+$1-1/((m+1)r)$, so $P_r=t_r$ for every $r\geq0$: the products of this
+section are the crossing times~\eqref{rex:eq:crossing-def} of Part~I, and
+\eqref{rex:qt:eq:Pr} is~\eqref{rex:eq:gamma-product}, because $1-a$ here is
+Part~I's $a=m/(m+1)$. On $P_r\le t\le P_{r-1}$, since $sr-1=(m+1)r-1$,
+formula~\eqref{rex:qt:eq:Uexplicit} gives
+\[
+ tU_p(t)=\frac{(m+1)r-1}{m}\,t_{r-1}-rt,
+\]
+which is $y_m(t)$ on $t_r\le t\le t_{r-1}$ by~\eqref{rex:eq:profile-def}.
+Hence $tU_p(t)=y_m(t)$ on $(0,1]$ and
+$H_p(t)=t^{m}\cdot tU_p(t)=t^my_m(t)=f_m(t)$, the function of
+\cref{rex:lem:weighted-limit}; \eqref{rex:qt:eq:H0} is~\eqref{rex:eq:weighted-limit},
+and $K_p=L_m$. With $z=my_m(t)/t=pU_p(t)$ as in the proof of
+\cref{rex:lem:weighted-limit}, \eqref{rex:qt:eq:Hderivative} is
+\eqref{rex:eq:f-derivative} in the form $f_m'(t)=t^m(z-C(z))$, for
+$pU_p(t)>0$, that is for $t<1$. Integrating it from $0$ to $t$ is
+\eqref{rex:qt:eq:Hbound}; Part~I performs the same integration at the
+crossing times in the proof of \cref{rex:prop:certificates}, and at
+$u=j/p$, where $e^{-I_p(u)}=P_j=t_j$, \eqref{rex:qt:eq:Phiubound}
+multiplied by $t_j^{m+1}$ is exactly Part~I's
+bracket~\eqref{rex:eq:L-brackets}. \Cref{rex:qt:prop:profilebound} is thus
+Part~I's estimate at every $t$ rather than at the crossing times, by the
+same argument. In Part~III the coordinate $I_p$ reappears as the integral
+$H$ of the one-type law $\delta_{(p,1)}$ (\cref{rex:sch:rem:parts}).
+\end{remark}
+
+\section{Effective thresholds and their inverse}\label{rex:qt:sec:thresholdproof}
+We now prove the all-index enclosure and Theorem~\ref{rex:qt:thm:main}.
+
+\begin{theorem}[All-index threshold enclosure]\label{rex:qt:thm:envelope}
+For every real $p>0$ and integers $1\le J\le k$, \eqref{rex:qt:eq:envelope_intro} holds.
+\end{theorem}
+\begin{proof}
+Use the reverse trajectory with $q_k=1$. The invariant \eqref{rex:qt:eq:invariant} implies
+\[
+ K_p(k/J)^s e^{-sE_p/J}
+ \le K_p e^{sI_p(u_J)}
+ \le K_p(k/J)^s e^{sE_p/J}.
+\]
+By \eqref{rex:qt:eq:Phiubound}, $u_J$ lies between the middle quantity minus $1/s$ and the middle quantity. Multiply by $J^s$ to bound $J^p q_J$.
+
+The exact tail of \eqref{rex:qt:eq:masstelescoping} gives
+\begin{equation}\label{rex:qt:eq:tail}
+ 0\le B_p(k)-J^p q_J
+     =\sum_{j=1}^{J-1}j^p e_j
+     \le\sum_{j=1}^{J-1}j^p\le\frac{J^s}{s}.
+\end{equation}
+The last bound follows by comparison with $\int_0^J x^p\dd x$, since $x^p$ is increasing. Combining the two inequalities gives the lower endpoint with $-J^s/s$ and the upper endpoint with $+J^s/s$.
+\end{proof}
+
+\begin{proof}[Proof of the threshold assertion in Theorem~\ref{rex:qt:thm:main}]
+Take $J=\max\{1,\lfloor k^\beta\rfloor\}$. As $k\to\infty$, $J$ is comparable to $k^\beta$, and
+\[
+ e^{\pm sE_p/J}=1+\OO_p(J^{-1}).
+\]
+Theorem~\ref{rex:qt:thm:envelope} therefore gives
+\[
+ B_p(k)=K_p k^s+\OO_p(k^s/J+J^s).
+\]
+The choice $\beta=s/(s+1)$ balances these two errors, because
+\[
+ s-\beta=s\beta=\frac{s^2}{s+1}.
+\]
+This is \eqref{rex:qt:eq:Bmain}. Bounded $k$ can be absorbed into the implied constant. The formulas for $Q_p,E_p,K_p$ are bounded on each compact positive $p$-interval, with $K_p$ bounded away from zero; all elementary estimates used above are uniform there. This proves the stated local uniformity.
+\end{proof}
+
+\begin{proof}[Proof of the inverse assertion in Theorem~\ref{rex:qt:thm:main}]
+Let $m=\max\{k:B_p(k)\le n\}$. Then
+\[
+ B_p(m)\le n<B_p(m+1).
+\]
+The threshold equivalent first gives $m\asymp_p n^{1/s}$. Apply \eqref{rex:qt:eq:Bmain} at $m$ and $m+1$. The change in the smooth main term is $\OO_p(m^{s-1})$, smaller than $m^{s-\beta}$ because $\beta<1$. It follows that
+\[
+ n=K_p m^s+\OO_p(m^{s-\beta}).
+\]
+Dividing by $K_p m^s$ and taking the $1/s$ power yields
+\[
+ m=K_p^{-1/s}n^{1/s}+\OO_p\!\left(n^{(1-\beta)/s}\right).
+\]
+Finally $A_p(n)=m+1$, and $1$ is absorbed because $(1-\beta)/s=1/(s(s+1))>0$. Since $K_p^{-1/s}=p^{1/s}\Gamma(p/s)$, this proves \eqref{rex:qt:eq:Amain}. Only the explicit smooth power $K_p x^s$ was expanded; no unknown discrete remainder was differentiated.
+\end{proof}
+
+[Added 7 October 2026, batch~110: the leading terms of
+\cref{rex:qt:thm:main} are Part~I's \cref{rex:thm:main}, here by a second
+route. Part~I obtains them by compactness of the rescaled backward arrays
+(\cref{rex:lem:compactness,rex:lem:ode}, \cref{rex:prop:profile}), which
+yields no rate; Report~188 obtains them through the coordinate $I_p$ and
+the explicit enclosure of \cref{rex:qt:thm:envelope}. The remainders are
+new. They answer Part~I's Research question~\ref{rex:q:rates}: with
+$m=p$, \eqref{rex:qt:eq:Bmain} is $E_m(K)=O_m(K^{m+1-\delta_m})$ with
+$\delta_m=(m+1)/(m+2)$, since
+$(m+1)-(m+1)^2/(m+2)=(m+1)/(m+2)$, and the implied constants are uniform
+on compact $m$-intervals, as that question asks. At $p=1$ the exponent
+$(p+1)^2/(p+2)$ is $4/3$, the classical Erd\H{o}s--Jabotinsky
+bound~\eqref{rex:eq:classical-error}, which is not improved
+(\cref{rex:qt:sec:history}).]
+
+\subsection{Using the enclosure for finite inverse bounds}
+The all-index formula also gives rigorous inverse tests without an asymptotic onset. For $1\le J\le k$ write
+\[
+ L_p(k,J)=K_p k^s e^{-sE_p/J}-J^s/s,\qquad
+ U_p(k,J)=K_p k^s e^{sE_p/J}+J^s/s.
+\]
+If $U_p(k,J)\le n$, then $B_p(k)\le n$ and $A_p(n)\ge k+1$. If $L_p(k,J)>n$, then $B_p(k)>n$ and $A_p(n)\le k$. One may optimize over the finite set of cutoffs $J$ to improve these sufficient tests. Exact rational-power thresholds from Section~\ref{rex:qt:sec:algorithm} give exact inverse answers. Ordinary floating evaluations of $L_p,U_p$ are useful diagnostics but do not certify either comparison.
+
+\section{The global minimal mass profile}\label{rex:qt:sec:global}
+For the reverse threshold path with $q_k=1$, normalize its actual retained mass as
+\begin{equation}\label{rex:qt:eq:Mnormalized}
+ M_{k,j}=\frac{j^p q_j}{k^s}=\left(\frac jk\right)^s u_j.
+\end{equation}
+A local inverse-function argument alone would only control $j$ away from zero. The exact mass tail extends the approximation across the entire trajectory.
+
+\begin{theorem}[Uniform trajectory profile]\label{rex:qt:thm:global}
+For every fixed $p>0$,
+\begin{equation}\label{rex:qt:eq:global}
+ \max_{1\le j\le k}\left|\frac{j^p q_j}{k^s}-H_p(j/k)\right|
+       =\OO_p(k^{-\beta}).
+\end{equation}
+For every fixed $\eps>0$, uniformly for $\eps k\le j\le k$,
+\begin{equation}\label{rex:qt:eq:localprofile}
+ \frac{q_j}{k}=\frac jk U_p(j/k)+\OO_{p,\eps}(k^{-1}).
+\end{equation}
+\end{theorem}
+\begin{proof}
+First we derive a location-dependent bound. For nonnegative $v,w$, \eqref{rex:qt:eq:fbounds} and integration imply
+\begin{equation}\label{rex:qt:eq:logcomparison}
+ \left|\log\frac{sv+1}{sw+1}\right|
+ \le s\left|I_p(v)-I_p(w)\right|.
+\end{equation}
+Let $t=j/k$ and $w=U_p(t)$. By \eqref{rex:qt:eq:invariant}, the right side with $v=u_j$ is at most $sE_p/j$. Also \eqref{rex:qt:eq:Ibasic} gives
+\begin{equation}\label{rex:qt:eq:weightbound}
+ t^s(sU_p(t)+1)\le1.
+\end{equation}
+Consequently
+\begin{align}
+ \left|t^s u_j-H_p(t)\right|
+ &\le\frac1s\left(e^{sE_p/j}-1\right)\notag\\
+ &\le\frac{e^{sE_p}-1}{sj}.
+ \label{rex:qt:eq:locationbound}
+\end{align}
+For the last inequality use convexity of $x\mapsto e^{sE_p x}$ on $[0,1]$, at $x=1/j$. This proof also works at $j=k$, where $U_p(1)=0$, and does not assume differentiability at that endpoint.
+
+Take $J=\max\{1,\lfloor k^\beta\rfloor\}$. For $j\ge J$, \eqref{rex:qt:eq:locationbound} is $\OO_p(J^{-1})$. For $j\le J$, \eqref{rex:qt:eq:masstelescoping} gives
+\[
+ 0\le M_{k,j}-M_{k,J}\le\frac{J^s}{s k^s}.
+\]
+The monotone profile bound, or direct integration of \eqref{rex:qt:eq:Hderivative}, similarly gives
+\[
+ 0\le H_p(j/k)-H_p(J/k)\le\frac{J^s}{s k^s}.
+\]
+Compare the two masses at $J$ using \eqref{rex:qt:eq:locationbound}; the triangle inequality then gives a uniform error
+\[
+ \OO_p\bigl(J^{-1}+(J/k)^s\bigr)=\OO_p(k^{-\beta}),
+\]
+since $s(1-\beta)=\beta$. This proves \eqref{rex:qt:eq:global}.
+
+If $j\ge\eps k$, the invariant bounds $I_p(u_j)$ uniformly, so $u_j$ and $U_p(j/k)$ belong to a fixed compact interval depending only on $p,\eps$. On such an interval $I_p^{-1}$ is Lipschitz, because its almost-everywhere derivative is the bounded function $f_p$. Their $I_p$ coordinates differ by $\OO_p(1/j)=\OO_{p,\eps}(1/k)$, hence the quotients themselves differ by that amount. Multiply by $j/k$ to obtain \eqref{rex:qt:eq:localprofile}.
+\end{proof}
+
+The function $H_p$ decreases from $K_p$ to zero. There is no conflict between $H_p(1)=0$ and survival at the final discrete level: the surviving terminal mass is $k^p$, which becomes $1/k$ after division by $k^s$. The theorem concerns the minimal surviving trajectory. An arbitrary initial condition should not be identified with this particular profile without specifying its terminal quotient.
+
+[Added 7 October 2026, batch~110: by \cref{rex:qt:rem:identify},
+$H_p=f_m$ and $U_p(t)=y_m(t)/t$, so~\eqref{rex:qt:eq:localprofile} is the
+convergence~\eqref{rex:eq:backward-convergence} of Part~I with a rate
+$O(1/k)$ on $[\varepsilon,1]$, and~\eqref{rex:qt:eq:global} extends it,
+after multiplication by $t^m$, to the whole interval with rate
+$O(k^{-\beta})$. Both concern the backward minimal path. They do not give
+a rate for the forward trajectories of \cref{rex:thm:forward-profile} or
+for the loss measures of \cref{rex:cor:losses}, so Part~I's Research
+question~\ref{rex:q:trajectory} stays open.]
+
+\section{Positive terminal mass and its inverse curve}\label{rex:qt:sec:terminal}
+Define
+\begin{equation}\label{rex:qt:eq:Phi}
+ \Phi_p(v)=K_p e^{sI_p(v)}\qquad(v\ge0).
+\end{equation}
+This is continuous and strictly increasing, with $\Phi_p(0)=K_p$ and $\Phi_p(v)\to\infty$. Proposition~\ref{rex:qt:prop:profilebound} gives the useful global bounds
+\begin{equation}\label{rex:qt:eq:Phibounds}
+ v\le\Phi_p(v)\le v+\frac1s.
+\end{equation}
+On $(r-1)/p\le v\le r/p$, its exact formula is
+\begin{equation}\label{rex:qt:eq:Phiexplicit}
+ \Phi_p(v)=K_p\left(\frac{r+v}
+ {P_{r-1}[r+(r-1)/p]}\right)^s.
+\end{equation}
+
+\begin{theorem}[Uniform terminal-mass law]\label{rex:qt:thm:terminal}
+For every real $p>0$, integers $k,h\ge1$, and $1\le J\le k$,
+\begin{align}
+ k^s\Phi_p(h/k)e^{-sE_p/J}-\frac{J^s}{s}
+ &\le B_p(k,h)\notag\\
+ &\le k^s\Phi_p(h/k)e^{sE_p/J}+\frac{J^s}{s}.
+ \label{rex:qt:eq:terminalenvelope}
+\end{align}
+For each fixed $V>0$, uniformly over integers $1\le h\le Vk$,
+\begin{equation}\label{rex:qt:eq:terminallaw}
+ B_p(k,h)=k^s\Phi_p(h/k)+\OO_{p,V}(k^{s-\beta}).
+\end{equation}
+\end{theorem}
+\begin{proof}
+Use \eqref{rex:qt:eq:invariant_h} rather than \eqref{rex:qt:eq:invariant}. It places $K_p e^{sI_p(u_J)}$ between
+\[
+ (k/J)^s\Phi_p(h/k)e^{-sE_p/J}
+ \quad\hbox{and}\quad
+ (k/J)^s\Phi_p(h/k)e^{sE_p/J}.
+\]
+Now apply \eqref{rex:qt:eq:Phiubound}, multiply by $J^s$, and add the same mass tail \eqref{rex:qt:eq:tail}. The defects still lie in $[0,1)$ and the invariant constants are independent of $h$, proving \eqref{rex:qt:eq:terminalenvelope} for every positive $h$. When $h/k\le V$, \eqref{rex:qt:eq:Phibounds} bounds the main coefficient by $V+1/s$. Choosing $J=\max\{1,\lfloor k^\beta\rfloor\}$ proves \eqref{rex:qt:eq:terminallaw}.
+\end{proof}
+
+\paragraph{The zero-terminal boundary is excluded.}
+If one extends the definition to $h=0$, then $B_p(k,0)=0$ exactly: no initial mass is required to retain at least zero. In contrast, $\Phi_p(0)=K_p>0$ describes the limiting cost of a \emph{positive} terminal quotient with $h/k\to0$. Thus neither \eqref{rex:qt:eq:terminalenvelope} nor \eqref{rex:qt:eq:terminallaw} is asserted for $h=0$. This is a genuine boundary discontinuity of the finite threshold problem. It cannot be removed by substituting $h=0$ into a formula proved only for $h\ge1$.
+
+\subsection{The limiting inverse}
+The inverse of $\Phi_p$ has domain $[K_p,\infty)$. If
+\begin{equation}\label{rex:qt:eq:inversecells}
+ \frac{K_p}{P_{r-1}^s}\le\lambda\le\frac{K_p}{P_r^s},
+\end{equation}
+then direct inversion of \eqref{rex:qt:eq:Phiexplicit} gives
+\begin{equation}\label{rex:qt:eq:Phiinverse}
+ \Phi_p^{-1}(\lambda)=P_{r-1}\left[r+\frac{r-1}{p}\right]
+                 \left(\frac\lambda{K_p}\right)^{1/s}-r.
+\end{equation}
+At adjacent endpoints these formulas coincide; at $\lambda=K_p$ they give zero. From \eqref{rex:qt:eq:Phibounds},
+\[
+ \max\{0,\lambda-1/s\}\le\Phi_p^{-1}(\lambda)\le\lambda
+                  \qquad(\lambda\ge K_p).
+\]
+The formula in \eqref{rex:qt:eq:Phiinverse} is an exact expression for the \emph{limiting curve}. It is not an exact finite-$k$ quotient obtained by a single floor or ceiling.
+
+For clarity, this curve has the following direct retention interpretation. Let $N_k$ be nonnegative integers with $N_k/k^s\to\lambda\ge0$, and let $R_k=X_k/k^p$ be the quotient retained from initial mass $N_k$. Then
+\begin{equation}\label{rex:qt:eq:retentionlimit}
+ \frac{R_k}{k}\longrightarrow
+ \begin{cases}
+ 0,&0\le\lambda\le K_p,\\
+ \Phi_p^{-1}(\lambda),&\lambda>K_p.
+ \end{cases}
+\end{equation}
+Indeed, $R_k\ge h$ is equivalent to $N_k\ge B_p(k,h)$ for each integer $h\ge1$. Fix any $v>0$ and take $h=\lceil vk\rceil$. By \eqref{rex:qt:eq:terminallaw}, $B_p(k,h)/k^s\to\Phi_p(v)$. Comparing $\lambda$ with $\Phi_p(v)$ bounds the upper and lower limits of $R_k/k$. If $\lambda>K_p$, take $v$ successively below and above the unique inverse value. If $\lambda\le K_p$, every positive $v$ has $\Phi_p(v)>\lambda$, forcing the limit to be zero. At $\lambda=K_p$ this proves only a zero \emph{normalized} quotient; the unnormalized quotient need not vanish.
+
+\begin{remark}[\textsf{[write]} The retention limit is Part~I's forward profile]\label{rex:qt:rem:retention}
+[Added 7 October 2026, batch~110.] Take $p=m$, so $K_p=L_m$, and let
+$\lambda>L_m$. Put $t=(L_m/\lambda)^{1/(m+1)}\in(0,1)$. Then
+$I_p(\Phi_p^{-1}(\lambda))=\frac1s\log(\lambda/K_p)=-\log t$, so
+$\Phi_p^{-1}(\lambda)=U_p(t)=y_m(t)/t$ by \cref{rex:qt:rem:identify}, and since
+$\lambda=L_mt^{-(m+1)}$ and $F_m=c_mt^my_m$,
+\[
+ \Phi_p^{-1}(\lambda)=\lambda F_m(t).
+\]
+Thus~\eqref{rex:qt:eq:retentionlimit} says that the mass $X_k=k^pR_k$ retained
+at stage~$k$ is the fraction $F_m(t)$ of $N_k$ in the limit, where
+$t=\lim k/\tau_m(N_k)$. This also follows from Part~I. Indeed $N_k\to\infty$,
+and \cref{rex:thm:main} gives $\tau_m(N_k)\sim(c_m\lambda)^{1/(m+1)}k$, so
+$k/\tau_m(N_k)\to t$. With $J=\tau_m(N_k)$ one has
+$X_k/N_k=X_{N_k}(k/J)$ in the notation of \cref{rex:thm:forward-profile}, and
+\[
+ \Bigl|\frac{X_k}{N_k}-F_m(t)\Bigr|
+ \le\sup_{0\le u\le1}|X_{N_k}(u)-F_m(u)|+|F_m(k/J)-F_m(t)|\longrightarrow0
+\]
+by~\eqref{rex:eq:uniform-forward} and the continuity of $F_m$; this is the
+case $\lambda>K_p$ of~\eqref{rex:qt:eq:retentionlimit}, because
+$R_k/k=(X_k/N_k)(N_k/k^s)$. If $0<\lambda<L_m$, then $k/\tau_m(N_k)\to t>1$, so
+eventually $k\ge\tau_m(N_k)$ and $R_k=0$. If $\lambda=L_m$, then for $k<J$ the
+same estimate gives $X_k/N_k\to F_m(1)=0$, and $R_k=0$ for $k\ge J$. If
+$\lambda=0$, then $R_k/k\le N_k/k^s\to0$. So the whole
+of~\eqref{rex:qt:eq:retentionlimit} is a consequence of
+\cref{rex:thm:main,rex:thm:forward-profile}, reparametrized; Report~188's proof
+through~\eqref{rex:qt:eq:terminallaw} is a second route. The positive-terminal
+law~\eqref{rex:qt:eq:terminallaw} itself, with its rate and its uniformity in
+$h\le Vk$, is new.
+\end{remark}
+
+\subsection{The associated terminal-mass profile}
+The same proof also controls the whole minimal trajectory for a prescribed positive terminal quotient. For $v\ge0$ put
+\begin{equation}\label{rex:qt:eq:terminalprofile}
+ H_{p,v}(t)=t^s I_p^{-1}(I_p(v)-\log t)\quad(0<t\le1),
+ \qquad H_{p,v}(0)=\Phi_p(v).
+\end{equation}
+It has terminal value $H_{p,v}(1)=v$. The Gamma asymptotic proves continuity at zero, and the derivative calculation in \eqref{rex:qt:eq:Hderivative} gives
+\begin{equation}\label{rex:qt:eq:terminalprofilebound}
+ 0\le\Phi_p(v)-H_{p,v}(t)\le t^s/s.
+\end{equation}
+For each fixed $V>0$, the reverse path with $q_k=h$ satisfies, uniformly over $1\le h\le Vk$,
+\begin{equation}\label{rex:qt:eq:terminalglobal}
+ \max_{1\le j\le k}\left|\frac{j^p q_j}{k^s}-H_{p,h/k}(j/k)\right|
+                  =\OO_{p,V}(k^{-\beta}).
+\end{equation}
+Here is the full reduction to the preceding proof. With $w=I_p^{-1}(I_p(v)-\log t)$, \eqref{rex:qt:eq:invariant_h} replaces \eqref{rex:qt:eq:invariant}. The logarithmic comparison \eqref{rex:qt:eq:logcomparison} is unchanged, while \eqref{rex:qt:eq:Ibasic} gives
+\[
+ t^s(sw+1)\le e^{sI_p(v)}\le e^{sI_p(V)}.
+\]
+Thus \eqref{rex:qt:eq:locationbound} acquires only a factor bounded in terms of $p,V$. The exact mass tail is unchanged, and \eqref{rex:qt:eq:terminalprofilebound} supplies its continuous counterpart. Splitting at $J=\lfloor k^\beta\rfloor$ proves \eqref{rex:qt:eq:terminalglobal}, with $J$ replaced by $1$ when necessary.
+
+\section{The classical first power and related models}\label{rex:qt:sec:history}
+For $p=1$, the constant simplifies to $K_1=1/\pi$, and our estimates become
+\begin{equation}\label{rex:qt:eq:p1}
+ B_1(k)=\frac{k^2}{\pi}+\OO(k^{4/3}),\qquad
+ A_1(n)=\sqrt{\pi n}+\OO(n^{1/6}).
+\end{equation}
+This threshold leading term and error order are classical, not a new first-power result. The connection to sieving and Tchoukaillon is described by Erd\H{o}s and Jabotinsky \cite{erdos-jabotinsky}, Broline and Loeb \cite{broline-loeb}, and the threshold record A002491 \cite{oeis-threshold}.
+
+It is important not to import a stronger historical remainder without its qualifications. The current A002491 record contains a June 2021 comment by Donald Knuth explaining a problem with the $\OO(k)$ remainder claimed by Broline and Loeb. The comment identifies an accumulation of local area errors that costs $\OO(k^{3/2})$ in that argument, and suggests that splitting the range recovers $\OO(k^{4/3})$. We rely on neither the disputed $\OO(k)$ assertion nor the conjectural bounded remainder $A_1(n)-\sqrt{\pi n}=\OO(1)$ recorded in A073047. The present proof supplies the safe estimate \eqref{rex:qt:eq:p1} independently.
+
+Several related generalizations deserve distinction at the level of their defining recurrence.
+\begin{itemize}
+ \item Erd\H{o}s and Jabotinsky's general sieve uses integer parameters in ratios of the form $b_j/(b_j-1)$. Its first-power specialization is historical groundwork for nested-ceiling analysis; the inspected theorem does not state the arbitrary power-grid result \eqref{rex:qt:eq:Amain}.
+ \item A 2023 generalized rounding problem \cite{lehericy} changes the selected multiple on each \emph{linear} grid. Its Gamma-ratio constant and piecewise-parabola argument concern a different parameterized model with quadratic growth. Gamma products and piecewise profile reasoning are established ideas, not inventions claimed here.
+ \item Li's 2026 paper \cite{li} studies a two-coordinate first-power Tchoukaillon array and proves an interior uniform estimate. Its two coordinates do not change the grid from $j$ to $j^p$. We do not claim to improve or correct that independent array theorem.
+\end{itemize}
+The result addressed here is the particular sequential $j^p$ grid for every fixed real $p>0$, together with its explicit constant, deterministic error control, and minimal-mass profiles. Targeted source checks found no directly matching square- or cube-power theorem among the inspected material. That bounded check is not a worldwide novelty certification.
+
+[Added 7 October 2026, batch~110: this sentence is stale relative to the
+repository. Part~I of this report, dated 3~October 2026 and written into
+the repository that day (commit \texttt{2b3b69b4b}), proves the leading law
+for the $j^p$ grid for every real $p>0$, with the constant $c_p$ and the
+square and cube cases (\cref{rex:thm:main}, \eqref{rex:eq:square},
+\eqref{rex:eq:cube}), and the minimal-mass profile without a rate
+(\cref{rex:prop:profile}). Report~188, dated a day later, did not know
+it. Relative to Part~I, what is new here is the deterministic quantitative
+remainder of \cref{rex:qt:thm:main}, the enclosure of
+\cref{rex:qt:thm:envelope}, the rates of \cref{rex:qt:thm:global} and the
+positive-terminal law of \cref{rex:qt:sec:terminal}
+(\cref{rex:qt:tab:claims}). The display~\eqref{rex:qt:eq:p1} is the
+classical bound~\eqref{rex:eq:classical-error} and its consequence printed
+in \cref{rex:sec:history}.]
+
+\section{Dependence of the exact constant on the power}\label{rex:qt:sec:parameter}
+This section concerns the smooth parameter function $c_p=p\Gamma(p/(p+1))^{p+1}$. It does not assert additional asymptotic orders in the integer threshold index $k$.
+
+Let $z=1/(p+1)$, so $0<z<1$. The classical convergent log-Gamma expansion \cite[Equation~5.7.3]{dlmf} gives
+\[
+ \log\Gamma(1-z)=\gamma z+\sum_{r=2}^{\infty}\frac{\zeta(r)}r z^r.
+\]
+Consequently
+\begin{equation}\label{rex:qt:eq:constantseries}
+ \log\frac{c_p}{p}
+ =\gamma+\sum_{r=2}^{\infty}\frac{\zeta(r)}{r(p+1)^{r-1}}.
+\end{equation}
+The series converges for each $p>0$. It supplies every fixed parameter order as $p\to\infty$; for example,
+\begin{align}
+ c_p=e^\gamma p\bigg[1&+\frac{\zeta(2)}{2(p+1)}\notag\\
+ &+\frac{\zeta(3)/3+\zeta(2)^2/8}{(p+1)^2}
+       +\OO((p+1)^{-3})\bigg].\label{rex:qt:eq:largep}
+\end{align}
+In particular $c_p\sim e^\gamma p$. At the other endpoint, the expansion of $\log\Gamma(x)$ at $x=0^+$ yields
+\begin{align}
+ \log c_p&=-p\log p+(1-\gamma)p+\OO(p^2),\label{rex:qt:eq:smallplog}\\
+ c_p&=1+p\bigl(\log(1/p)+1-\gamma\bigr)
+             +\OO(p^2\log^2 p),\qquad p\downarrow0.\label{rex:qt:eq:smallp}
+\end{align}
+To see \eqref{rex:qt:eq:smallplog} explicitly, use
+\[
+ \log\Gamma\!\left(\frac p{1+p}\right)
+ =-\log p+\log(1+p)-\gamma\frac p{1+p}+\OO(p^2)
+\]
+in $\log c_p=\log p+(1+p)\log\Gamma(p/(1+p))$. Thus $c_p\to1$ as $p\downarrow0$.
+
+These are attributed consequences of classical Gamma expansions once the exact constant is known. The proof of Theorem~\ref{rex:qt:thm:main} is uniform only on compact positive $p$-intervals; it supplies no joint $k,p$ regime approaching either endpoint. Expanding $c_p$ or the smooth arcs of $H_p$ cannot eliminate or characterize the remaining deterministic rounding defects.
+
+[Added 7 October 2026, batch~110: \eqref{rex:qt:eq:constantseries} and
+\eqref{rex:qt:eq:smallplog} are Part~I's \eqref{rex:eq:large-m-series} and
+\eqref{rex:eq:small-m} (\cref{rex:prop:parameter}), from the same Gamma
+expansion. \eqref{rex:qt:eq:largep} adds the term of order $(p+1)^{-2}$ to
+Part~I's~\eqref{rex:eq:large-m}, and \eqref{rex:qt:eq:smallp} is the
+exponentiated form of~\eqref{rex:eq:small-m}, where Part~I states only
+$c_m\to1$. The write checked both numerically to forty digits: at
+$p=10$ and $p=100$ the remainder of~\eqref{rex:qt:eq:largep}, divided by
+$e^\gamma p(p+1)^{-3}$, is $0.76$ and $0.70$; at $p=10^{-3}$ and
+$p=10^{-5}$ the remainder of~\eqref{rex:qt:eq:smallp}, divided by
+$(p\log p)^2$, is $0.59$ and $0.55$.]
+
+\section{Exact checks and reproducibility}\label{rex:qt:sec:checks}
+The source archive contains original Python standard-library code, the \LaTeX{} source, bounded attributed integer fixtures, and an offline deterministic builder. Its tests are finite mathematical checks, not a replacement for the proofs.
+
+\subsection{What is checked exactly}
+The mandatory checker uses only integers and exact rational arithmetic. It exercises the reverse recursion, independent forward threshold search, forward/reverse path agreement, adjacent threshold boundaries, the drift sandwich, integral-power mass-tail bounds, and Gamma-product interpolation identities at rational breakpoints. In particular, the quantity $e^{I_p(u)}$ is rational when $p,u$ are rational: formula \eqref{rex:qt:eq:cell} evaluates it using only rational products. Testing that formula does not require approximating $\Gamma$.
+
+The bounded fixtures contain a total of 342 terms from the official records A002491, A073047, A082527, and A082528, with their original offsets and source attribution. The first is tested as a survival-threshold sequence, while the other three are tested as first-zero sequences. This distinction catches a possible off-by-one convention error. Fixture integrity and malformed-input cases are checked explicitly. The archive contains no full OEIS exports or downloaded third-party papers.
+
+The package also checks the positive-terminal boundary $h\ge1$ and rejects invalid exact algorithm inputs. Its error checks use explicit exceptions rather than Python \texttt{assert} statements, so they remain active under optimized execution. The builder runs the mandatory checker both normally and with \texttt{-O}, requiring byte-identical deterministic JSON results. Independent algorithms reduce the risk of merely testing one implementation against itself; they do not prove statements for untested parameters.
+
+\subsection{Diagnostics are separate}
+Optional floating-point diagnostics evaluate exact thresholds against the smooth main term, using ordinary library Gamma values. These outputs are labeled as diagnostics. They do not certify real intervals, prove error bounds, or establish a threshold's exact integer value by rounding a Gamma approximation. For illustration, integer-only computations give
+\begin{center}
+\begin{tabular}{@{}rrr@{}}
+\toprule
+$p$ & $B_p(1000)$ & $B_p(10000)$\\
+\midrule
+2 & $201388916$ & $201457639236$\\
+3 & $148522784144$ & $1478758856906056$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The proofs apply to irrational real powers as well; the exact finite software tests intentionally use rational parameters.
+
+\subsection{Building and verifying the artifact}
+The top-level \texttt{README.md} and \texttt{README\_REPRODUCIBILITY.md} specify the precise offline commands and prerequisites. The builder uses an explicit closed source inventory, compiles in isolated temporary storage with fixed metadata, rejects \TeX{} warnings and bad boxes, and refuses to replace existing output. It runs package integrity and adversarial guard checks, including optimized execution. The output manifest describes every archive member by size and SHA-256; an external receipt records final output hashes without a self-referential ZIP hash.
+
+[Added 7 October 2026, batch~110: this section describes the delivered
+archive. In this report its programs are
+\path{code/02-rates-*.py}, its fixtures and recorded outputs
+\path{data/02-rates-*.json}, and its \texttt{README\_REPRODUCIBILITY.md},
+\texttt{DATA\_SOURCES.md}, \texttt{code/README.md} and
+\texttt{data/README.md} are shipped as \path{02-rates-*.md}; the top-level
+\texttt{README.md}, \texttt{Report188.tex}, the delivered PDF and the
+checksum manifest \texttt{SHA256SUMS.json} are not shipped and survive in
+the arrival commit. The replay, test and build scripts import one another
+by their delivered names and check the closed delivered inventory,
+including \texttt{Report188.tex} and \texttt{SHA256SUMS.json}, so they run
+only in a re-extracted archive; the report's \texttt{README.md} gives a
+route that runs the exact checker on a copy. The release receipt mentioned
+above is written by the builder; none was delivered.]
+
+Reproduction requires a compatible Python and \TeX{} toolchain already installed. No network access or downloaded code is needed for the build. Byte-for-byte reproduction is a claim about the same documented toolchain, not about arbitrary \TeX{} versions or font packages. The source tree is not modified during a build, and the archive can be extracted and rebuilt into a fresh destination.
+
+\section{Further questions}\label{rex:qt:sec:questions}
+The proof isolates several precise remaining problems.
+\begin{enumerate}
+ \item\label{rex:qt:q:sharper} \textbf{Sharper deterministic remainders.} Can the exponent $s^2/(s+1)$ in $B_p(k)-K_p k^s$ be reduced for a fixed $p$? The present cutoff balances an invariant error against a worst-case positive mass tail. Any improvement must exploit additional structure rather than assume cancellation.
+ \item\label{rex:qt:q:bounded} \textbf{Bounded inverse errors.} Does $A_p(n)-(c_p n)^{1/s}$ remain bounded for particular powers? This would require substantially finer threshold control. The first-power conjecture is not settled here.
+ \item\label{rex:qt:q:fluct} \textbf{Fluctuations and genuine discrete expansions.} Do normalized threshold errors have limiting distributions, deterministic oscillations, or large subsequential excursions? A formal expansion of the Gamma constant does not answer these questions. No all-orders discrete-$k$ expansion is asserted.
+ \item\label{rex:qt:q:varying} \textbf{Varying powers and perturbed grids.} Which joint regimes in $p$ and $k$ admit uniform estimates? Which perturbations of $j^p$, including regularly varying grids, preserve an explicit coordinate or profile? The exact drift sandwich uses the power grid and is not a theorem for arbitrary perturbations.
+ \item\label{rex:qt:q:certificates} \textbf{Sharper finite certificates.} The all-index enclosures are explicit but conservative. Better dyadic constants and independently certified Gamma/exponential intervals could make the finite inverse tests practically useful while retaining rigorous endpoints.
+\end{enumerate}
+The established conclusion is the all-real-positive-power leading law, with a deterministic quantitative remainder and explicit positive-mass profiles. The unresolved questions concern finer discrete fluctuations, additional uniform regimes, and extensions of the model.
+
+[Added 7 October 2026, batch~110: the ``established conclusion'' above is,
+for its leading law, Part~I's \cref{rex:thm:main}; the remainder and the
+profiles with rates are Report~188's (\cref{rex:qt:tab:claims}). On the
+five questions. Question~\ref{rex:qt:q:sharper} is open; it is the
+sharpening of Part~I's Research question~\ref{rex:q:rates}, which
+\cref{rex:qt:thm:main} answers. Question~\ref{rex:qt:q:bounded} is Part~I's
+Research question~\ref{rex:q:bounded}, and question~\ref{rex:qt:q:fluct}
+is Part~I's Research question~\ref{rex:q:fluct}; both are open. For
+question~\ref{rex:qt:q:varying}, Part~III answers the second half at
+leading order for one large class: for nondecreasing weights whose scaled
+increments are bounded and whose augmented empirical increment law
+converges, the coordinate $H$ of~\eqref{rex:sch:eq:H} and the
+profile~\eqref{rex:sch:eq:parametric-profile} are explicit, and $H=I_p$ for
+the one-type law $\delta_{(p,1)}$ (\cref{rex:sch:thm:main},
+\cref{rex:sch:rem:parts}). Part~III proves no rate and no uniformity in
+the parameter, and it shows that perturbations far smaller than every
+power of the index can change the constant
+(\cref{rex:sch:thm:flat-perturbation}); the joint regimes in $p$ and $k$
+are Part~I's Research question~\ref{rex:q:moving}, open, and rates for
+perturbed grids are Part~III's question~\ref{rex:sch:q:quant}, open.
+Question~\ref{rex:qt:q:certificates} is open.]

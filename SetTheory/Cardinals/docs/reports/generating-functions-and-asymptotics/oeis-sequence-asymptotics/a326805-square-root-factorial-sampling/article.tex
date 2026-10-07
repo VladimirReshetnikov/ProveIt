@@ -27,6 +27,14 @@
 \newcommand{\G}{\mathcal G}
 \newcommand{\B}{\mathcal B}
 \DeclareMathOperator{\Log}{Log}
+% Added by the ProveIt write phase (batch 110, 7 October 2026): dated notes
+% marked [write], a macro for file, label and declaration names, longtable.
+\usepackage{longtable}
+\newcommand{\file}[1]{\nolinkurl{#1}}
+\expandafter\def\expandafter\UrlBreaks\expandafter{\UrlBreaks\do\-\do\_\do\.}
+\newenvironment{writenote}[1][]{\par\smallskip\begingroup\small
+ \noindent\textbf{[write]}\if\relax\detokenize{#1}\relax\else~\textbf{#1.}\fi\ }%
+ {\par\endgroup\smallskip}
 \hypersetup{pdftitle={Report187 Hidden Oscillations in Square-Root Factorial Sampling},pdfauthor={Research report},pdfsubject={OEIS A326805 exact harmonics all fixed orders sharp oscillations and inverse thresholds}}
 \title{Report187\\[5pt]Hidden Oscillations in\\Square-Root Factorial Sampling}
 \author{OEIS A326805\\Exact harmonics, all fixed orders, and inverse thresholds}
@@ -44,13 +52,37 @@ we prove the OEIS conjecture $a(n)\sim2ne^n$ and resolve the much smaller, but u
 \paragraph{Scope and attribution.}
 The leading equivalent was conjectured by V\'aclav Kot\v e\v sovec in the OEIS record in 2019. Abel--Plana summation, complex Stirling expansions, the continuous Volterra--Ramanujan identity and analytic Lagrange inversion are classical inputs. The subject developed here is their target-specific application to the hidden sampling discrepancy, its harmonic hierarchy, and its inverse consequences. The expansion is additive on a positive envelope, never relative to a sine near its zeros. No uniform growing-harmonic expansion, convergent infinite asymptotic harmonic sum, effective asymptotic onset, interval certification of floating evaluations, or worldwide priority claim is made.
 
+\begin{writenote}[Status and trust boundary, added 7 October 2026, batch~110]
+This is bundle Report~187 of an external AI-assisted research session, filed
+in ProveIt as the single-source research report
+\file{a326805-square-root-factorial-sampling} (provenance, the sources as the
+write read them, what was checked, relation to the repository, the collected
+non-claims and the reading conventions are in
+Section~\ref{srf:sec:provenance}). It is unrefereed and not formalized. Its
+author line reads ``OEIS A326805, Exact harmonics, all fixed orders, and
+inverse thresholds'' and its PDF author field ``Research report'': it names
+no person or tool. \emph{What rests on what.} Every theorem has a
+conventional proof from classical inputs (Abel--Plana summation, complex
+Stirling, the Volterra--Ramanujan identity as stated by Garrappa and
+Mainardi, analytic Lagrange inversion); no proof uses a computation. The
+coefficients $d_{m,j}$ are exact finite computations of the shipped
+standard-library generator; the decimals of Section~\ref{srf:sec:verification}
+are floating diagnostics, not interval certificates. \emph{An OEIS conjecture
+proved.} Corollary~\ref{srf:cor:sharp} proves Kot\v{e}\v{s}ovec's conjecture
+$a(n)\sim2ne^n$ in A326805 (Remark~\ref{srf:rem:oeis}) and shows that the
+discrepancy is unbounded of exact order $n^{1/8}(\log n)^{3/8}$. The write
+also adds Remark~\ref{srf:rem:transseries} (the inverses against the
+transseries volume) and dated notes. No statement, proof or number of the
+source was changed.
+\end{writenote}
+
 \newpage
 {\small\tableofcontents}
 \newpage
 
-\section{The model and the main statements}\label{sec:main}
+\section{The model and the main statements}\label{srf:sec:main}
 For $x>0$ set
-\begin{equation}\label{eq:model}
+\begin{equation}\label{srf:eq:model}
  S(x)=\sum_{k=0}^{\infty}\frac{x^{\sqrt k}}{\Gamma(1+\sqrt k)},\qquad
  M(x)=2xe^x,\qquad D(x)=S(x)-M(x).
 \end{equation}
@@ -59,24 +91,24 @@ At zero set $S(0)=1$ by continuity. The integer sequence $a(n)=\lfloor S(n)\rflo
 1,\ 6,\ 29,\ 120,\ 436,\ 1484,\ 4841,\ 15352,\ 47695,\ 145855.
 \]
 The continuous integral suggested by the sampling density $\dd k=2u\dd u$ is
-\begin{equation}\label{eq:I}
+\begin{equation}\label{srf:eq:I}
  I(x)=2\int_0^\infty \frac{u x^u}{\Gamma(1+u)}\dd u.
 \end{equation}
 It differs from $M(x)$ by only $\OO((\log x)^{-2})$. Discrete sampling creates a substantially larger oscillatory error.
 
 Throughout, $W$ denotes the positive real Lambert function: $W(t)e^{W(t)}=t$ for $t>0$. Put $L=\log x$. For each positive integer $m$ define
 \begin{align}
- q_m&=4\pi m,& \alpha_m&=\frac1{8m},& \beta_m&=\frac12-\alpha_m,\label{eq:params}\\
+ q_m&=4\pi m,& \alpha_m&=\frac1{8m},& \beta_m&=\frac12-\alpha_m,\label{srf:eq:params}\\
  y_m(x)&=\frac{W(q_mx)}{q_m},&
- q_my_m+\log y_m&=L,\label{eq:saddle}\\
+ q_my_m+\log y_m&=L,\label{srf:eq:saddle}\\
  \theta_m(x)&=\frac{q_my_m^2}{2}+y_m-\frac{\pi}{32m},&
- A_m(x)&=\frac{4x^{\alpha_m}y_m^{\beta_m}}{\sqrt{q_m}}.\label{eq:phase}
+ A_m(x)&=\frac{4x^{\alpha_m}y_m^{\beta_m}}{\sqrt{q_m}}.\label{srf:eq:phase}
 \end{align}
 In a formula referring to one fixed mode we omit subscripts and write $q,\alpha,\beta,y,\theta,A$.
 
-\begin{theorem}[All fixed orders of the discrepancy]\label{thm:main}
+\begin{theorem}[All fixed orders of the discrepancy]\label{srf:thm:main}
 There are explicitly computable constants $d_{m,j}\in\mathbb Q(\ii)[\pi^{-1}]$ with $d_{m,0}=1$. For every fixed integer $K\ge1$,
-\begin{equation}\label{eq:main}
+\begin{equation}\label{srf:eq:main}
  D(x)=-A_1(x)\Im\left\{e^{\ii\theta_1(x)}
           \sum_{j=0}^{K-1}\frac{d_{1,j}}{y_1(x)^j}\right\}
        +\OO_K\left(A_1(x)y_1(x)^{-K}\right).
@@ -84,15 +116,15 @@ There are explicitly computable constants $d_{m,j}\in\mathbb Q(\ii)[\pi^{-1}]$ w
 The same formula holds at positive integers with $D(n)$ replaced by $a(n)-2ne^n$. In particular,
 \begin{align}
  d_{1,0}&=1,\notag\\
- d_{1,1}&=-\frac1{8\pi}+\frac{11\ii}{384},\label{eq:d123}\\
+ d_{1,1}&=-\frac1{8\pi}+\frac{11\ii}{384},\label{srf:eq:d123}\\
  d_{1,2}&=\frac3{128\pi^2}-\frac{2137}{294912}
                     +\frac{79\ii}{3072\pi}.\notag
 \end{align}
-The coefficient generator in Section~\ref{sec:coefficients} computes any prescribed fixed order by finite rational operations.
+The coefficient generator in Section~\ref{srf:sec:coefficients} computes any prescribed fixed order by finite rational operations.
 \end{theorem}
 
 The leading formula reads
-\begin{equation}\label{eq:leading}
+\begin{equation}\label{srf:eq:leading}
  D(x)=-A_1(x)\sin\theta_1(x)+\OO(A_1(x)/y_1(x)).
 \end{equation}
 For example, the first corrected bracket is
@@ -103,9 +135,9 @@ For example, the first corrected bracket is
 \]
 These are envelope estimates, including at every zero of the displayed sine. The error need not be small relative to the value of the oscillatory bracket.
 
-\begin{corollary}[Sharp oscillation and the OEIS conjecture]\label{cor:sharp}
+\begin{corollary}[Sharp oscillation and the OEIS conjecture]\label{srf:cor:sharp}
 Let
-\begin{equation}\label{eq:Cstar}
+\begin{equation}\label{srf:eq:Cstar}
  C_*=4(4\pi)^{-7/8}.
 \end{equation}
 The set of subsequential limits of
@@ -113,33 +145,33 @@ The set of subsequential limits of
  \frac{a(n)-2ne^n}{n^{1/8}(\log n)^{3/8}}
 \]
 is exactly $[-C_*,C_*]$. In particular the limsup is $C_*$, the liminf is $-C_*$, and both positive and negative discrepancies are unbounded. Nevertheless $a(n)\sim2ne^n$. More strongly, for every fixed $r>0$,
-\begin{equation}\label{eq:relative}
+\begin{equation}\label{srf:eq:relative}
  \frac{a(n)}{2ne^n}=1+o(n^{-r}).
 \end{equation}
 Thus all ordinary inverse-power relative corrections vanish; the informative next scale is the oscillatory absolute error.
 \end{corollary}
 
 The fixed-order expansion is accompanied by a distinct exact-mode theorem. Define the absolutely convergent integral
-\begin{equation}\label{eq:J}
+\begin{equation}\label{srf:eq:J}
  J_m(x)=\int_0^{\infty e^{\ii\pi/4}}
         \frac{2x^z}{\Gamma(z)}e^{2\pi\ii m z^2}\dd z.
 \end{equation}
 Since $1/\Gamma(z)$ is entire and vanishes at zero, this integral has no endpoint singularity. It equals the same integral over the positive real axis.
 
-\begin{theorem}[Finite exact harmonic resolution]\label{thm:finite}
+\begin{theorem}[Finite exact harmonic resolution]\label{srf:thm:finite}
 For every fixed integer $M\ge0$,
-\begin{equation}\label{eq:finite}
+\begin{equation}\label{srf:eq:finite}
  S(x)=M(x)-2N_1(x)+\frac12
            +2\Re\sum_{m=1}^M J_m(x)+R_{M+1}(x),
 \end{equation}
 where the sum is empty for $M=0$,
-\begin{equation}\label{eq:N1}
+\begin{equation}\label{srf:eq:N1}
  N_1(x)=-\int_0^\infty
        \frac{e^{-v}}{(\log v-\log x)^2+\pi^2}\dd v
        =\OO((\log x)^{-2}),
 \end{equation}
 and, for every fixed $\eps>0$,
-\begin{equation}\label{eq:tail}
+\begin{equation}\label{srf:eq:tail}
  R_{M+1}(x)=\OO_{M,\eps}
              \left(x^{1/(8(M+1))+\eps}\right).
 \end{equation}
@@ -148,20 +180,181 @@ For every fixed $m\ge1$ and $K\ge1$ the mode itself has the expansion
  2\Re J_m(x)
   ={}&-A_m(x)\Im\left\{e^{\ii\theta_m(x)}
                  \sum_{j=0}^{K-1}d_{m,j}y_m(x)^{-j}\right\}\notag\\
-     &+\OO_{m,K}(A_m(x)y_m(x)^{-K})+\OO_m(L^{-2}).\label{eq:mode}
+     &+\OO_{m,K}(A_m(x)y_m(x)^{-K})+\OO_m(L^{-2}).\label{srf:eq:mode}
 \end{align}
 \end{theorem}
 
-The parameters in \eqref{eq:tail} and \eqref{eq:mode} have different roles. The first controls the entire omitted tail after a fixed number of \emph{exact} modes. The second expands one fixed mode. Neither theorem asserts estimates uniform when $m$, $M$, or $K$ grows with $x$.
+The parameters in \eqref{srf:eq:tail} and \eqref{srf:eq:mode} have different roles. The first controls the entire omitted tail after a fixed number of \emph{exact} modes. The second expands one fixed mode. Neither theorem asserts estimates uniform when $m$, $M$, or $K$ grows with $x$.
 
-\section{Analytic preliminaries and the continuous contribution}\label{sec:prelim}
+\begin{remark}[{[write]} The OEIS entry, quoted, 7~October 2026]\label{srf:rem:oeis}
+A326805~\cite{oeis} was read on 7~October 2026 in the OEIS internal format
+(revision \#16, 21~March 2020; author line
+``\texttt{\_Paul D. Hanna\_, Sep 14 2019}''); the quotations are verbatim. It is
+named ``\texttt{a(n) = floor( Sum\_\{k>=0\} n\^{}sqrt(k) / Gamma(sqrt(k) + 1) ), where
+Gamma is Euler's gamma function.}'', prints $35$ terms ($0\le n\le34$), the
+formula line
+\begin{center}\small
+\parbox{0.92\textwidth}{\raggedright\texttt{Conjecture: a(n) \textasciitilde{} 2*n*exp(n). - \_Vaclav Kotesovec\_, Sep 16 2019}}
+\end{center}
+and a table of the sums for $0\le n\le20$, for instance
+\begin{center}\small
+\parbox{0.92\textwidth}{\raggedright\texttt{17 | 821268392.99830998622537351585444700214...}}
+\end{center}
+Corollary~\ref{srf:cor:sharp}
+proves the conjecture exactly as stated, and more:
+$a(n)/(2ne^n)=1+o(n^{-r})$ for every $r>0$, while $a(n)-2ne^n$ is unbounded in
+both directions. The write recomputed $S(n)$ for $0\le n\le34$ at 50 digits
+with its own code (direct summation until the terms fall below $10^{-45}$
+beyond $\sqrt k=n+5$; floating, not interval): all $35$ floors equal the OEIS
+data, and the distance of $S(n)$ to the nearest integer is smallest at
+$n=17$, $0.00169001377462648\ldots$, the value printed in
+Section~\ref{srf:sec:verification}. OEIS content is published under
+CC~BY-SA~4.0. Nothing was submitted to the OEIS.
+\end{remark}
+
+\subsection{Provenance, sources and reading conventions}\label{srf:sec:provenance}
+\begin{writenote}[Added 7 October 2026, batch~110]
+\emph{Provenance.} This report is Report~187 of the session bundle that
+ProveIt's \file{docs/incoming} intake processed as batch~110: the archive
+\file{Square_Root_Factorial_Sampling_Oscillations_and_Inverses_Source.zip}
+($708{,}567$ bytes, SHA-256 \file{75420111809b...cc206fbfbc4dbf}, 30 files,
+no wrapper directory), arrival commit \file{60f54ea06}, placed in
+\file{8622ca7e5}. The text is the delivered \file{Report187.tex} (888 lines,
+dated 3~October 2026; the delivered PDF has 20 pages), shipped as
+\file{article.tex}. The programs are shipped under \file{code/} (the
+delivered root \file{build.py}, \file{reproduce.py}, \file{test_build.py},
+\file{verify_manifest.py} and \file{verify_source_data.py} among them; the
+optional ones as \file{code/optional-*.py}), the certificates as
+\file{data/certificates-*.json}, the generated summaries as
+\file{data/generated-*.json}, the optional outputs as
+\file{data/optional-*.json}, the OEIS prefix and source hashes under
+\file{data/}, and \file{DATA_SOURCES.md}, \file{README_REPRODUCIBILITY.md} and
+\file{optional-README.md} at the report root (the report README maps every
+name). Not shipped, and retrievable from the arrival commit: the delivered
+PDF, the checksum manifest \file{SHA256SUMS.json} (29 entries, verified at
+placement) and the delivered README, replaced by the report README. The
+package records no ProveIt commit; it cites three ProveIt expositions by
+their GitHub paths (all exist). It carries no ``prepared for private
+review'' line and no personal data: its \file{DATA_SOURCES.md} says that
+``private review notes are excluded'', which is a statement about what was
+left out, not a review marking. It is a single-source report, so no merge
+choice was made. The write prefixed the 89 delivered labels with \file{srf:}
+and updated the 69 references to them; it added this subsection, the notes
+marked [write], Remarks~\ref{srf:rem:oeis} and~\ref{srf:rem:transseries}, and
+dated notes. The added remarks are the last statements of their sections,
+this subsection follows the last delivered text of
+Section~\ref{srf:sec:main}, and the added displays are unnumbered, so every
+theorem, section and equation of the source keeps its delivered number.
+
+\emph{The sources, as the write read them} (7~October 2026).
+\begin{itemize}\raggedright
+\item OEIS A326805 and the name of A336293, in the internal format
+ (Remark~\ref{srf:rem:oeis}).
+\item The transseries volume
+ \path{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex}:
+ \file{p0:thm:lambert-core}, \file{p0:thm:core-reversion},
+ \file{p0:def:three-inverses} and \file{p0:thm:staircase}, read for
+ Remark~\ref{srf:rem:transseries}.
+\item Not read by the write: Garrappa and Mainardi~\cite{gm}, the DLMF
+ sections~\cite{dlmfap,dlmfgamma}, and the two other ProveIt expositions the
+ source compares with~\cite{action,late} beyond their titles and the
+ sequence they treat (A336293 is
+ ``\texttt{a(n) = Sum\_\{k=0..n\} binomial(n,k)\^{}2 * binomial(2*k,k) * (n-k)!.}'',
+ a different object, as the source says).
+\end{itemize}
+
+\emph{What was checked at intake.} The batch-110 dossier read the
+manuscript and found no error. On copies, \file{reproduce.py} passed in
+4~s, the certificates were byte-identical to the shipped ones, and its
+result equal to \file{generated/verification.json} modulo CR.
+\emph{What the write checked} (Python~3.14.4, SymPy~1.14.0, mpmath~1.3.0,
+own code). Every proof was read line by line, with no error found; in
+particular the arc constant~\eqref{srf:eq:arc}, the cancellation
+identity~\eqref{srf:eq:cancellation} (from $L-qy=\log y$, $q\alpha=\pi/2$),
+the envelope constant $C_*=4(4\pi)^{-7/8}=0.4367685513\ldots$ of~\eqref{srf:eq:Cstar}
+from $A_1\sim4q^{-7/8}x^{1/8}L^{3/8}$, the second-order terms
+of~\eqref{srf:eq:inv2} (from $Q_w(0)=b_w^{-1}$, $Q_w'(0)=-c_wb_w^{-2}$), the
+four strict inequalities in the proof of Theorem~\ref{srf:thm:failure}, and
+$M(n)^2-M(n-1)M(n+1)=4e^{2n}$ in the proof of
+Proposition~\ref{srf:prop:logconcavity}. By a direct series expansion
+of~\eqref{srf:eq:H} and the moments~\eqref{srf:eq:G} (not through the
+recursion~\eqref{srf:eq:ell}--\eqref{srf:eq:Hrec}) it recomputed $d_{1,1}$
+and $d_{1,2}$ of~\eqref{srf:eq:d123} and $d_{1,3}$, $d_{2,1}$, $d_{2,2}$: all
+equal the shipped certificate. The 35 floors of Remark~\ref{srf:rem:oeis}.
+The optional Gaussian-line diagnostics of Section~\ref{srf:sec:verification}
+were not rerun.
+
+\emph{Relation to the repository.} Before batch~110 no file of the
+repository named A326805. No statement of this report is formalized in Lean
+or Rocq, and its place in the collection confers no formal status. The
+source compares its model with two expositions of the transseries volume's
+collection,
+\path{Analysis/Transseries/docs/series-and-transseries/Action_Accumulation_Nonlinear_Inversion/}
+and
+\path{Analysis/Transseries/docs/series-and-transseries/Late_Growth_Bessel_Counting_Coefficients/}
+(A336293); both treat different objects, and no question of either is
+answered here, so no reciprocal note is proposed. The inverses are compared
+with the transseries volume in Remark~\ref{srf:rem:transseries}.
+\end{writenote}
+
+\begin{writenote}[What is not claimed, collected from the source]
+The leading equivalent is Kot\v{e}\v{s}ovec's conjecture; Abel--Plana,
+complex Stirling, the Volterra--Ramanujan identity and analytic Lagrange
+inversion are classical, and ``No new general summation, Stirling,
+stationary-phase or inverse theorem is claimed''. No uniform growing-harmonic
+expansion, no convergent infinite asymptotic harmonic sum, no effective
+asymptotic onset, no interval certification of floating evaluations, and no
+worldwide priority; the overlap checks ``support a scoped description of the
+work, not an exhaustive literature or worldwide novelty determination''.
+Every expansion is additive on a positive envelope, never relative to a sine
+near its zeros, and fixed in $m$, $M$ and $K$. The infinite Stirling series
+is formal; the convergence of the Lagrange inverse concerns powers of the
+exact discrepancy only. The big-$O$ results give no effective constants and
+no certified finite-$Y$ threshold. The floating diagnostics are ``strong
+consistency evidence'' but ``not interval-certified''. The write adds: its
+checks are exact finite or floating computations; it claims no novelty for
+any inversion.
+\end{writenote}
+
+\medskip
+\begingroup\small
+\noindent\emph{Reading conventions} (letters the source reuses, with the
+tempting false readings; no symbol of the source was renamed; symbols of the
+transseries volume carry the subscript ``vol'' in
+Remark~\ref{srf:rem:transseries}).\par\smallskip
+\renewcommand{\arraystretch}{1.1}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.95in}>{\raggedright\arraybackslash}p{3.3in}>{\raggedright\arraybackslash}p{1.85in}@{}}
+\toprule
+Symbol & Meaning here (where) & Not to be read as\\
+\midrule
+\endhead
+$M(x)$, $M$ & the main term $2xe^x$; the number of exact modes in Theorem~\ref{srf:thm:finite} & each other\\
+$S$, $D$, $I$ & the sampler~\eqref{srf:eq:model}; the discrepancy $S-M$; the continuous integral~\eqref{srf:eq:I} & each other\\
+$K$, $K_p$, $K_m^-$ & a fixed order; the tail kernel~\eqref{srf:eq:hK}; the negative ray of Section~\ref{srf:sec:gaussian} & each other (the source says so)\\
+$A_m$, $C_*$, $C_r$, $C$ & the mode envelope~\eqref{srf:eq:phase}; $4(4\pi)^{-7/8}$; Stirling coefficients~\eqref{srf:eq:ell}; generic constants & each other\\
+$N_0$, $N_1$, $N(Y)$, $N$ & the Ramanujan integrals; the threshold~\eqref{srf:eq:N}; a Stirling order & each other\\
+$R_{M+1}$, $R_a$, $R$ & the exact tail~\eqref{srf:eq:Rexact}; a radius; a number of inverse terms & each other\\
+$W$, $w$ & Lambert's function (positive real branch); $w=W(Y/2)$ in Section~\ref{srf:sec:inverse} & each other\\
+$y_m$, $Y$ & the mode saddle~\eqref{srf:eq:saddle}; a threshold & each other\\
+$q$, $\alpha$, $\beta$ & $4\pi m$, $1/(8m)$, $1/2-1/(8m)$ & the volume's $\beta_{\mathrm{vol}}$\\
+$F_x$, $F_m$, $f_x$, $h_x$ & $f_x(\sqrt w)$; the completed line integral~\eqref{srf:eq:F}; $x^z/\Gamma(1+z)$; $2zf_x$ & each other; the volume's $h_{\mathrm{vol}}$, $f_{\mathrm{vol}}$\\
+$H$, $H_j$, $\G_q$ & the formal multiplier~\eqref{srf:eq:H} and its coefficients; the Gaussian functional & each other\\
+$E_w$, $Q_w$, $Q$, $b_w$, $c_w$ & the inverse quantities~\eqref{srf:eq:EQ},~\eqref{srf:eq:inv2}; the curvature $q+1/y$ in Section~\ref{srf:sec:coefficients} & each other\\
+$c$, $\mu$, $\delta$, $\eta$, $\rho$ & the contour abscissa; the decay margin; a sector angle and a cutoff exponent; a localization constant and an error bound; a small arc radius, the disk radius $1/4$, and the exponent of the general sampler (Question~4) & each other; the volume's $\mu_{\mathrm{vol}}$, $\rho_{\mathrm{vol}}$\\
+$L$, $X(Y)$, $\widehat X$ & $\log x$; the real inverse $S^{-1}$; an approximation & the volume's $L_{\mathrm{vol}}$, $X_{\mathrm{vol}}$\\
+$\theta_m$, $\Phi$ & the chirp phase~\eqref{srf:eq:phase}; the vertical phase~\eqref{srf:eq:Phi} & the volume's $\Phi_0$\\
+\bottomrule
+\end{longtable}
+\endgroup
+
+\section{Analytic preliminaries and the continuous contribution}\label{srf:sec:prelim}
 \subsection{Convergence and monotonicity}
 For $x$ in any compact subset of the slit plane $\C\setminus(-\infty,0]$, use the principal logarithm in $x^u=e^{u\Log x}$. Real Stirling estimates give, for large $u$,
 \[
  \frac{|x|^u}{\Gamma(1+u)}
  \le C\exp\{-u\log u+C_Ku\}.
 \]
-There are $\OO(u)$ indices $k$ with $u\le\sqrt k<u+1$. The series in \eqref{eq:model}, and the differentiated series on each compact set, therefore converge uniformly. Thus $S$ is holomorphic in that slit plane. On the positive axis it is strictly increasing, since each nonconstant summand increases. The same estimates, with $0<x\le1$, justify $S(x)\to1$ as $x\downarrow0$. Also $S(x)\ge1+x$, so $S(x)\to\infty$.
+There are $\OO(u)$ indices $k$ with $u\le\sqrt k<u+1$. The series in \eqref{srf:eq:model}, and the differentiated series on each compact set, therefore converge uniformly. Thus $S$ is holomorphic in that slit plane. On the positive axis it is strictly increasing, since each nonconstant summand increases. The same estimates, with $0<x\le1$, justify $S(x)\to1$ as $x\downarrow0$. Also $S(x)\ge1+x$, so $S(x)\to\infty$.
 
 \subsection{The classical Volterra identity}
 The Volterra function
@@ -169,39 +362,39 @@ The Volterra function
  \nu(x)=\int_0^\infty\frac{x^u}{\Gamma(1+u)}\dd u
 \]
 has the Ramanujan representation \cite[Theorem 3.1]{gm}
-\begin{equation}\label{eq:ramanujan}
+\begin{equation}\label{srf:eq:ramanujan}
  \nu(x)=e^x-N_0(x),\qquad
  N_0(x)=\int_0^\infty
  \frac{e^{-xr}}{r((\log r)^2+\pi^2)}\dd r.
 \end{equation}
 The integral is convergent at zero because $1/(r(\log r)^2)$ is integrable there. For positive $x$, differentiation under the integral is justified locally by domination. Hence
 \begin{align}
- I(x)=2x\nu'(x)&=2xe^x-2N_1(x),\label{eq:continuous}\\
+ I(x)=2x\nu'(x)&=2xe^x-2N_1(x),\label{srf:eq:continuous}\\
  N_1(x):=xN_0'(x)&=-x\int_0^\infty
                  \frac{e^{-xr}}{(\log r)^2+\pi^2}\dd r.
 \end{align}
-The substitution $v=xr$ gives \eqref{eq:N1} and the elementary global bound $|N_1(x)|\le\pi^{-2}$.
+The substitution $v=xr$ gives \eqref{srf:eq:N1} and the elementary global bound $|N_1(x)|\le\pi^{-2}$.
 
 For the sharper estimate, suppose $L=\log x>0$ and split the $v$ integral at $e^{L/2}$. On $0<v\le e^{L/2}$, $\log v-L\le-L/2$, and this part is at most $4L^{-2}$. The remaining part is at most $\pi^{-2}e^{-e^{L/2}}$. Thus
-\begin{equation}\label{eq:contsmall}
+\begin{equation}\label{srf:eq:contsmall}
  0<I(x)-2xe^x=-2N_1(x)=\OO(L^{-2}).
 \end{equation}
 No discrete oscillation is hidden in this continuous term. Its full inverse-logarithm asymptotics are part of the classical Volterra theory; see Garrappa--Mainardi and their discussion of Wyman--Wong \cite{gm}. The subsequent analysis addresses the difference between the integral and the square-root samples.
 
-\section{Abel Plana at the square root endpoint}\label{sec:abel}
+\section{Abel Plana at the square root endpoint}\label{srf:sec:abel}
 Set
 \[
  f_x(z)=\frac{x^z}{\Gamma(1+z)},\qquad F_x(w)=f_x(\sqrt w),
 \]
 with the principal square root in the right half-plane. Although $F_x$ is not analytic at zero, its expansion there is
-\begin{equation}\label{eq:endpoint}
+\begin{equation}\label{srf:eq:endpoint}
  F_x(w)=1+(L+\gamma)\sqrt w+\OO_x(w),
 \end{equation}
 where $\gamma$ is Euler's constant.
 
-\begin{lemma}[Endpoint Abel--Plana formula]\label{lem:abel}
+\begin{lemma}[Endpoint Abel--Plana formula]\label{srf:lem:abel}
 For real $x>0$,
-\begin{equation}\label{eq:abel}
+\begin{equation}\label{srf:eq:abel}
  S(x)=I(x)+\frac12
  -2\int_0^\infty
        \frac{\Im F_x(\ii t)}{e^{2\pi t}-1}\dd t.
@@ -230,38 +423,38 @@ For real $x$, the lower boundary value is the complex conjugate of the upper one
  \ii\int_0^\infty
  \frac{F_x(\ii t)-F_x(-\ii t)}{e^{2\pi t}-1}\dd t
 \]
-equals the last term in \eqref{eq:abel}. This completes the justification at the branch point.
+equals the last term in \eqref{srf:eq:abel}. This completes the justification at the branch point.
 \end{proof}
 
 The distinction in the lemma is essential. Since $F_x(\ii t)=1+\OO_x(\sqrt t)$, the individual complex integral has a logarithmically divergent real part at zero. Removing that divergent part after an unjustified interchange can change an endpoint constant.
 
-\section{Exact harmonics and the summed tail}\label{sec:tail}
+\section{Exact harmonics and the summed tail}\label{srf:sec:tail}
 \subsection{The exact kernel}
 Write
-\begin{equation}\label{eq:hK}
+\begin{equation}\label{srf:eq:hK}
  h_x(z)=2z f_x(z)=\frac{2x^z}{\Gamma(z)},\qquad
  K_p(z)=\frac{e^{2\pi\ii pz^2}}{1-e^{2\pi\ii z^2}}\quad(p\ge1).
 \end{equation}
-On the ray $\arg z=\pi/4$, put $z=\sqrt{\ii t}$, so $\dd t=-2\ii z\dd z$. The correction in \eqref{eq:abel} becomes
-\begin{equation}\label{eq:rayidentity}
+On the ray $\arg z=\pi/4$, put $z=\sqrt{\ii t}$, so $\dd t=-2\ii z\dd z$. The correction in \eqref{srf:eq:abel} becomes
+\begin{equation}\label{srf:eq:rayidentity}
  S(x)-I(x)-\frac12
  =2\lim_{\rho\downarrow0}\Re
     \int_{\rho e^{\ii\pi/4}}^{\infty e^{\ii\pi/4}}
            h_x(z)K_1(z)\dd z.
 \end{equation}
 The limit of the real part exists. Indeed, uniformly on a small angular sector,
-\begin{equation}\label{eq:singular}
+\begin{equation}\label{srf:eq:singular}
  h_x(z)=2z+\OO_x(z^2),\qquad
  h_x(z)K_p(z)=\frac{\ii}{\pi z}+\OO_x(1).
 \end{equation}
 A radial integral of the singular term is purely imaginary.
 
 For every finite $M$ the elementary identity
-\begin{equation}\label{eq:geometric}
+\begin{equation}\label{srf:eq:geometric}
  K_1(z)=\sum_{m=1}^M e^{2\pi\ii mz^2}+K_{M+1}(z)
 \end{equation}
-holds off the poles. Subtracting these finitely many absolutely convergent ray integrals proves \eqref{eq:finite}, with
-\begin{equation}\label{eq:Rexact}
+holds off the poles. Subtracting these finitely many absolutely convergent ray integrals proves \eqref{srf:eq:finite}, with
+\begin{equation}\label{srf:eq:Rexact}
  R_{M+1}(x)=2\lim_{\rho\downarrow0}\Re
  \int_{\rho e^{\ii\pi/4}}^{\infty e^{\ii\pi/4}}
                  h_x(z)K_{M+1}(z)\dd z.
@@ -270,13 +463,13 @@ No interchange of an infinite sum of singular endpoint integrals is involved.
 
 \subsection{Deformation and the origin constant}
 Fix $p=M+1$ and choose
-\begin{equation}\label{eq:cchoice}
+\begin{equation}\label{srf:eq:cchoice}
  \frac1{8p}<c<1.
 \end{equation}
 Deform the ray to the real segment $[0,c]$ followed by $c+\ii[0,\infty)$. The nonzero kernel poles satisfy $z^2\in\mathbb Z$ and lie on the real or imaginary axes. The real segment ends before the first positive real pole, and the vertical contour lies strictly to the right of the imaginary-axis poles. None is crossed.
 
 The small counterclockwise arc $z=\rho e^{\ii\phi}$, $0\le\phi\le\pi/4$, has limiting integral
-\begin{equation}\label{eq:arc}
+\begin{equation}\label{srf:eq:arc}
  \int_0^{\pi/4}\frac{\ii}{\pi\rho e^{\ii\phi}}
                   \ii\rho e^{\ii\phi}\dd\phi=-\frac14.
 \end{equation}
@@ -285,7 +478,7 @@ Moving this arc to the other side of the contour identity gives
  \lim_{\rho\downarrow0}\Re\int_{\rho e^{\ii\pi/4}}^{\infty e^{\ii\pi/4}}
                  h_xK_p\dd z
  ={}&\frac14+\lim_{\rho\downarrow0}\Re\int_\rho^c h_x(t)K_p(t)\dd t\notag\\
-    &+\Re\int_{c}^{c+\ii\infty}h_x(z)K_p(z)\dd z.\label{eq:deform}
+    &+\Re\int_{c}^{c+\ii\infty}h_x(z)K_p(z)\dd z.\label{srf:eq:deform}
 \end{align}
 The constant in $R_p$ is consequently $+1/2$, not $-1/2$ or zero.
 
@@ -300,34 +493,34 @@ Here one uses $T\le|u+\ii T|\le\sqrt2T$ and $\arg(u+\ii T)\le\pi/2$ in the logar
 \]
 This deformation concerns each fixed $x$; the uniform-in-$x$ estimate comes next from the resulting vertical contour.
 
-On the real segment, \eqref{eq:geometric} gives the nonsingular real part
-\begin{equation}\label{eq:realK}
+On the real segment, \eqref{srf:eq:geometric} gives the nonsingular real part
+\begin{equation}\label{srf:eq:realK}
  \Re K_p(t)=-\frac12-\sum_{m=1}^{p-1}\cos(2\pi mt^2),\qquad 0<t<c.
 \end{equation}
-Consequently \eqref{eq:deform} can be written entirely with ordinary convergent integrals:
+Consequently \eqref{srf:eq:deform} can be written entirely with ordinary convergent integrals:
 \begin{align}
  R_p(x)={}&\frac12-\int_0^c h_x(t)\dd t
        -2\sum_{m=1}^{p-1}\int_0^c h_x(t)\cos(2\pi mt^2)\dd t\notag\\
-       &+2\Re\int_0^\infty \ii h_x(c+\ii v)K_p(c+\ii v)\dd v.\label{eq:Rdeformed}
+       &+2\Re\int_0^\infty \ii h_x(c+\ii v)K_p(c+\ii v)\dd v.\label{srf:eq:Rdeformed}
 \end{align}
 This also verifies the sign of the arc constant without leaving any divergent integral in the final formula.
 
 \subsection{A bound for every omitted mode together}
-For $x\ge1$, the horizontal integrals in \eqref{eq:Rdeformed} are $\OO_{c,p}(x^c)$. On the vertical line, complex Stirling gives
-\begin{equation}\label{eq:hbound}
+For $x\ge1$, the horizontal integrals in \eqref{srf:eq:Rdeformed} are $\OO_{c,p}(x^c)$. On the vertical line, complex Stirling gives
+\begin{equation}\label{srf:eq:hbound}
  |h_x(c+\ii v)|\le C_cx^c(1+v)^{1/2-c}e^{\pi v/2}.
 \end{equation}
 The denominator of $K_p$ is bounded away from zero on that line. At $v=0$, $c^2\notin\mathbb Z$; for $v>0$ the exponential in the denominator has modulus $e^{-4\pi cv}<1$, and it tends to zero. Compactness on a bounded initial interval and this last observation prove a uniform lower bound. Hence
-\begin{equation}\label{eq:Kbound}
+\begin{equation}\label{srf:eq:Kbound}
  |K_p(c+\ii v)|\le C_c e^{-4\pi pcv}.
 \end{equation}
-The decay margin $4\pi pc-\pi/2$ is positive by \eqref{eq:cchoice}. Absolute integration proves
-\begin{equation}\label{eq:Rpower}
+The decay margin $4\pi pc-\pi/2$ is positive by \eqref{srf:eq:cchoice}. Absolute integration proves
+\begin{equation}\label{srf:eq:Rpower}
  R_p(x)=\OO_{c,p}(x^c).
 \end{equation}
-For a requested exponent $1/(8p)+\eps<1$, take that value as $c$; for a larger exponent choose a smaller admissible $c$. This proves \eqref{eq:tail}. Differentiating the deformed integrals any fixed number of times is also legitimate: the extra factors are polynomials in $c+\ii v$ times $x^{-r}$, still exponentially integrable. The constant term has derivative zero. Thus $R_p^{(r)}(x)=\OO_{c,p,r}(x^{c-r})$ for $r\ge1$.
+For a requested exponent $1/(8p)+\eps<1$, take that value as $c$; for a larger exponent choose a smaller admissible $c$. This proves \eqref{srf:eq:tail}. Differentiating the deformed integrals any fixed number of times is also legitimate: the extra factors are polynomials in $c+\ii v$ times $x^{-r}$, still exponentially integrable. The constant term has derivative zero. Thus $R_p^{(r)}(x)=\OO_{c,p,r}(x^{c-r})$ for $r\ge1$.
 
-\section{A full Gaussian line for each mode}\label{sec:gaussian}
+\section{A full Gaussian line for each mode}\label{srf:sec:gaussian}
 \subsection{Rotation and completion}
 Fix $m\ge1$, set $q=4\pi m$, and let $\omega=e^{\ii\pi/4}$. The positive-real representation
 \[
@@ -337,17 +530,17 @@ is absolutely convergent by real gamma decay. Rotation to $\omega[0,\infty)$ is 
 
 Complete the ray to the whole oriented line by defining
 \begin{align}
- F_m(x)&=\int_{\omega\R}\frac{2e^{Lz}}{\Gamma(z)}e^{\ii qz^2/2}\dd z,\label{eq:F}\\
+ F_m(x)&=\int_{\omega\R}\frac{2e^{Lz}}{\Gamma(z)}e^{\ii qz^2/2}\dd z,\label{srf:eq:F}\\
  K_m^-(x)&=\int_{\omega(-\infty,0]}\frac{2e^{Lz}}{\Gamma(z)}e^{\ii qz^2/2}\dd z.
 \end{align}
 Then $J_m=F_m-K_m^-$. The notation $K_m^-$ is unrelated to the tail kernel $K_p(z)$.
 
-\begin{lemma}[The added negative ray]\label{lem:negative}
+\begin{lemma}[The added negative ray]\label{srf:lem:negative}
 As $L\to+\infty$, $K_m^-(x)=\OO_m(L^{-2})$.
 \end{lemma}
 \begin{proof}
 The reciprocal gamma function is entire of order one and satisfies a global bound
-\begin{equation}\label{eq:globalgamma}
+\begin{equation}\label{srf:eq:globalgamma}
  |1/\Gamma(z)|\le\exp\{C(1+|z|)\log(2+|z|)\}.
 \end{equation}
 This follows, for example, from sectorial Stirling on the right and upper/lower sectors together with the reflection identity on the remaining sector. Its simple zero at zero and the domination of $s\log(2+s)$ by every positive multiple of $s^2$ imply, for fixed $q$, a finite constant $B_q$ such that
@@ -365,44 +558,44 @@ $|e^{\ii qz^2/2}|=e^{-qs^2/2}$. Therefore
 The added ray is negligible relative to $x^{\alpha_m}y_m^{\beta_m-K}$ at every fixed order. Completion avoids artificial endpoint errors that can arise when a short real segment and an unbounded vertical half-line are expanded separately.
 
 \subsection{Shifting to the saddle}
-Let $z_0=\alpha+\ii y$, with the parameters in \eqref{eq:params}--\eqref{eq:saddle}. The integrand of $F_m$ is entire, so the line may be shifted from $\omega\R$ to $z_0+\omega\R$. The quadratic Gaussian dominates \eqref{eq:globalgamma} on the connecting ends, proving that these vanish.
+Let $z_0=\alpha+\ii y$, with the parameters in \eqref{srf:eq:params}--\eqref{srf:eq:saddle}. The integrand of $F_m$ is entire, so the line may be shifted from $\omega\R$ to $z_0+\omega\R$. The quadratic Gaussian dominates \eqref{srf:eq:globalgamma} on the connecting ends, proving that these vanish.
 
 Writing $z=z_0+\omega r$, $r\in\R$, gives the exact identity
-\begin{equation}\label{eq:cancellation}
+\begin{equation}\label{srf:eq:cancellation}
  Lz+\frac{\ii qz^2}{2}
  =Lz_0+\frac{\ii qz_0^2}{2}
         +\omega\log(\ii y)r-\frac{qr^2}{2}.
 \end{equation}
 Indeed, $L-qy=\log y$ and $q\alpha=\pi/2$. The linear term is precisely the leading linear term of $\log\Gamma(z)$ near $z_0$.
 
-\begin{lemma}[Global localization]\label{lem:localization}
+\begin{lemma}[Global localization]\label{srf:lem:localization}
 After division by its value at $z_0$, the modulus of the shifted integrand is bounded by a fixed integrable Gaussian for $|r|\le\eta y$, where $\eta>0$ is sufficiently small and fixed. The integral over $|r|>\eta y$ is exponentially small in $y^2$ relative to $x^\alpha y^\beta$. Consequently, for any fixed $0<\delta<1/3$, restricting the integral to $|r|\le y^\delta$ loses an error smaller than $x^\alpha y^{\beta-K}$ for every fixed $K$.
 \end{lemma}
 \begin{proof}
 Choose $\eta$ so that $z_0+\omega r$ stays in a fixed closed sector away from the negative real axis and has modulus comparable with $y$ when $|r|\le\eta y$. Uniform Stirling and its differentiated form give
-\begin{equation}\label{eq:loggammadiff}
+\begin{equation}\label{srf:eq:loggammadiff}
  \log\Gamma(z_0+\omega r)-\log\Gamma(z_0)
    =\omega r\log(\ii y)+\OO_m((|r|+r^2)/y).
 \end{equation}
 For clarity, the derivative satisfies
-$\psi(z_0)-\log(\ii y)=\OO_m(y^{-1})$, and $\psi'(z)=\OO_m(y^{-1})$ throughout this segment; integrating these bounds proves \eqref{eq:loggammadiff}. Combining it with \eqref{eq:cancellation} bounds the normalized modulus by
+$\psi(z_0)-\log(\ii y)=\OO_m(y^{-1})$, and $\psi'(z)=\OO_m(y^{-1})$ throughout this segment; integrating these bounds proves \eqref{srf:eq:loggammadiff}. Combining it with \eqref{srf:eq:cancellation} bounds the normalized modulus by
 \[
  C_m\exp\left\{-\frac{qr^2}{2}+C_m\frac{|r|+r^2}{y}\right\}
  \le C'_m e^{-qr^2/4}
 \]
 for all sufficiently large $y$.
 
-For $|r|\ge\eta y$ we do not use sectorial Stirling on a contour that may cross the negative real axis. Use \eqref{eq:globalgamma} instead. The real part of the linear term in \eqref{eq:cancellation} is $\OO_m(|r|\log y)$. The value at $z_0$ has size comparable with $x^\alpha y^\beta$, by Stirling at $z_0$. Up to this scale the logarithm of a global majorant is
-\begin{equation}\label{eq:farglobal}
+For $|r|\ge\eta y$ we do not use sectorial Stirling on a contour that may cross the negative real axis. Use \eqref{srf:eq:globalgamma} instead. The real part of the linear term in \eqref{srf:eq:cancellation} is $\OO_m(|r|\log y)$. The value at $z_0$ has size comparable with $x^\alpha y^\beta$, by Stirling at $z_0$. Up to this scale the logarithm of a global majorant is
+\begin{equation}\label{srf:eq:farglobal}
  -\frac{qr^2}{2}
  +\OO_m\bigl(|r|\log y+(y+|r|)\log(2+y+|r|)\bigr).
 \end{equation}
-Uniformly for $|r|\ge\eta y$, the error divided by $r^2$ tends to zero as $y\to\infty$. Thus \eqref{eq:farglobal} is at most $-qr^2/4$ there for large $y$. Its integral is $\OO_m(e^{-c_my^2})$. On $y^\delta<|r|\le\eta y$ the previous local Gaussian gives $\OO_m(e^{-c_my^{2\delta}})$. Both estimates dominate any prescribed inverse power of $y$.
+Uniformly for $|r|\ge\eta y$, the error divided by $r^2$ tends to zero as $y\to\infty$. Thus \eqref{srf:eq:farglobal} is at most $-qr^2/4$ there for large $y$. Its integral is $\OO_m(e^{-c_my^2})$. On $y^\delta<|r|\le\eta y$ the previous local Gaussian gives $\OO_m(e^{-c_my^{2\delta}})$. Both estimates dominate any prescribed inverse power of $y$.
 \end{proof}
 
 This global step is what permits an all-orders conclusion. A formal stationary point calculation alone would not exclude other contour portions of comparable size.
 
-\section{Every fixed order and a finite coefficient generator}\label{sec:coefficients}
+\section{Every fixed order and a finite coefficient generator}\label{srf:sec:coefficients}
 \subsection{Uniform Stirling expansion near the saddle}
 For fixed real $\alpha$ and every fixed integer $N\ge1$, the shifted Stirling expansion is
 \begin{align}
@@ -411,7 +604,7 @@ For fixed real $\alpha$ and every fixed integer $N\ge1$, the shifted Stirling ex
        +\tfrac12\log(2\pi)\notag\\
  &+\sum_{r=1}^{N-1}
  \frac{(-1)^{r+1}B_{r+1}(\alpha)}{r(r+1)(\ii t)^r}
-       +\OO_{\alpha,N}(|t|^{-N}),\label{eq:shiftedstirling}
+       +\OO_{\alpha,N}(|t|^{-N}),\label{srf:eq:shiftedstirling}
 \end{align}
 uniformly in the fixed closed sectors used locally above \cite[Section 5.11]{dlmfgamma}. Here $B_j(\alpha)$ is the Bernoulli polynomial. The logarithm is the analytic branch inherited from that local sector. The same uniform control applies on a slightly larger sector, so derivatives needed for Taylor estimates follow by Cauchy's estimate.
 
@@ -422,13 +615,13 @@ In the vertical coordinate $z=\alpha+\ii t$, the cancellation $q\alpha=\pi/2$ yi
  \sim{}&\ii\sqrt{\frac2\pi}\,x^\alpha t^\beta
      e^{\ii(\Phi(t)+\pi/4-\pi/(32m))}\notag\\
  &\times\exp\left\{-\sum_{r\ge1}
-  \frac{(-1)^{r+1}B_{r+1}(\alpha)}{r(r+1)(\ii t)^r}\right\},\label{eq:verticalformal}\\
- \Phi(t)&=t(L-\log t+1)-\frac{qt^2}{2}.\label{eq:Phi}
+  \frac{(-1)^{r+1}B_{r+1}(\alpha)}{r(r+1)(\ii t)^r}\right\},\label{srf:eq:verticalformal}\\
+ \Phi(t)&=t(L-\log t+1)-\frac{qt^2}{2}.\label{srf:eq:Phi}
 \end{align}
-The infinite expression in \eqref{eq:verticalformal} is a \emph{formal asymptotic series}. At any use it is truncated at a fixed order and accompanied by the remainder in \eqref{eq:shiftedstirling}. No convergence of that infinite Stirling series is asserted.
+The infinite expression in \eqref{srf:eq:verticalformal} is a \emph{formal asymptotic series}. At any use it is truncated at a fixed order and accompanied by the remainder in \eqref{srf:eq:shiftedstirling}. No convergence of that infinite Stirling series is asserted.
 
 The saddle equation gives $\Phi'(y)=0$ and
-\begin{equation}\label{eq:phiexpand}
+\begin{equation}\label{srf:eq:phiexpand}
  \Phi(y)=\frac{qy^2}{2}+y,\qquad
  \Phi(y+v)-\Phi(y)
  =-\frac{qv^2}{2}
@@ -438,7 +631,7 @@ The latter Taylor expansion converges locally for $|v|<y$, though only finitely 
 
 \subsection{The Bernoulli and Gaussian algebra}
 Define a linear functional on polynomials by
-\begin{equation}\label{eq:G}
+\begin{equation}\label{srf:eq:G}
  \G_q(v^{2r})=(-\ii/q)^r(2r-1)!!,\qquad
  \G_q(v^{2r+1})=0,\qquad \G_q(1)=1.
 \end{equation}
@@ -448,10 +641,10 @@ These are the normalized moments of the Gaussian along $e^{-\ii\pi/4}\R$. Let $\
  &\times\exp\left\{-\sum_{r\ge1}
  \frac{(-1)^{r+1}B_{r+1}(\alpha)}{r(r+1)}
        \left(\frac{\eps}{\ii(1+\eps v)}\right)^r
- +\ii\sum_{r\ge2}\frac{(-1)^{r-1}\eps^{r-1}v^r}{r(r-1)}\right\}.\label{eq:H}
+ +\ii\sum_{r\ge2}\frac{(-1)^{r-1}\eps^{r-1}v^r}{r(r-1)}\right\}.\label{srf:eq:H}
 \end{align}
 Then the desired constants are
-\begin{equation}\label{eq:dgen}
+\begin{equation}\label{srf:eq:dgen}
  d_{m,j}=[\eps^j]\G_q(H(\eps,v)).
 \end{equation}
 This is well-defined formal algebra: for a fixed coefficient $\eps^j$, only finitely many summands and polynomial degrees are involved.
@@ -466,10 +659,10 @@ A direct expansion gives
  \ell_j(v)={}&\frac{\beta(-1)^{j+1}}j v^j
  -\sum_{r=1}^j C_r\ii^{-r}(-1)^{j-r}
                  \binom{j-1}{j-r}v^{j-r}
- +\frac{\ii(-1)^j}{j(j+1)}v^{j+1}.\label{eq:ell}
+ +\frac{\ii(-1)^j}{j(j+1)}v^{j+1}.\label{srf:eq:ell}
 \end{align}
 If $H=\sum_{j\ge0}H_j(v)\eps^j$, the exponential identity implies
-\begin{equation}\label{eq:Hrec}
+\begin{equation}\label{srf:eq:Hrec}
  H_0=1,\qquad H_j=\frac1j\sum_{r=1}^j r\ell_rH_{j-r},\qquad
  d_{m,j}=\G_q(H_j).
 \end{equation}
@@ -486,8 +679,8 @@ The base Gaussian integral is
  \int_{e^{-\ii\pi/4}\R}e^{-\ii qv^2/2}\dd v
        =e^{-\ii\pi/4}\sqrt{2\pi/q}.
 \]
-Combining it with the constant factors in \eqref{eq:verticalformal} gives
-\begin{equation}\label{eq:Fexpansion}
+Combining it with the constant factors in \eqref{srf:eq:verticalformal} gives
+\begin{equation}\label{srf:eq:Fexpansion}
  F_m(x)=\frac{2x^\alpha y^\beta}{\sqrt q}
           e^{\ii(\theta+\pi/2)}
        \left(\sum_{j=0}^{K-1}d_{m,j}y^{-j}
@@ -495,16 +688,16 @@ Combining it with the constant factors in \eqref{eq:verticalformal} gives
 \end{equation}
 We give the remainder justification rather than treating Gaussian moment manipulation as a proof.
 
-By Lemma~\ref{lem:localization}, restrict first to $|r|\le y^\delta$, for a fixed $0<\delta<1/3$. On this portion $|v|/y\to0$, and the finite Stirling remainder in \eqref{eq:shiftedstirling} is $\OO_{m,N}(y^{-N})$, uniformly. Expand the algebraic amplitude, the finite inverse-gamma correction, and the phase correction in powers of $1/y$ to order $K-1$, using a Stirling truncation with $N\ge K$ and, if necessary, a larger fixed $N$ for intermediate Taylor remainders. The logarithm of the non-Gaussian multiplier is $\OO_m((1+|r|+r^2)/y)$ on this cutoff. In particular it is uniformly bounded and tends to zero there.
+By Lemma~\ref{srf:lem:localization}, restrict first to $|r|\le y^\delta$, for a fixed $0<\delta<1/3$. On this portion $|v|/y\to0$, and the finite Stirling remainder in \eqref{srf:eq:shiftedstirling} is $\OO_{m,N}(y^{-N})$, uniformly. Expand the algebraic amplitude, the finite inverse-gamma correction, and the phase correction in powers of $1/y$ to order $K-1$, using a Stirling truncation with $N\ge K$ and, if necessary, a larger fixed $N$ for intermediate Taylor remainders. The logarithm of the non-Gaussian multiplier is $\OO_m((1+|r|+r^2)/y)$ on this cutoff. In particular it is uniformly bounded and tends to zero there.
 
 Taylor's theorem for the exponential and the rational/analytic factors now bounds the difference between the exact multiplier and its first $K$ formal coefficients by
 \[
  C_{m,K}y^{-K}P_{m,K}(|r|)
        \exp\{C_m(1+|r|+r^2)/y\},
 \]
-where $P_{m,K}$ is a fixed polynomial with nonnegative coefficients. This follows equally from the integral remainder of each finite Taylor expansion; derivatives of the analytic factors on $|v|/y\le1/2$ are polynomially bounded in $|r|$. The dominating Gaussian from Lemma~\ref{lem:localization} absorbs the last exponential for large $y$. Its polynomial moments are finite, so the integrated remainder is $\OO_{m,K}(y^{-K})$ after normalization. Extending each finitely many polynomial--Gaussian integral from the cutoff to the full line changes it by an exponentially small error. Their values are exactly \eqref{eq:G}. This proves \eqref{eq:Fexpansion} with a fixed-order remainder.
+where $P_{m,K}$ is a fixed polynomial with nonnegative coefficients. This follows equally from the integral remainder of each finite Taylor expansion; derivatives of the analytic factors on $|v|/y\le1/2$ are polynomially bounded in $|r|$. The dominating Gaussian from Lemma~\ref{srf:lem:localization} absorbs the last exponential for large $y$. Its polynomial moments are finite, so the integrated remainder is $\OO_{m,K}(y^{-K})$ after normalization. Extending each finitely many polynomial--Gaussian integral from the cutoff to the full line changes it by an exponentially small error. Their values are exactly \eqref{srf:eq:G}. This proves \eqref{srf:eq:Fexpansion} with a fixed-order remainder.
 
-Subtracting the negative ray from Lemma~\ref{lem:negative} and taking twice the real part gives \eqref{eq:mode}. The two uses of a contour are distinct: the vertical expression is a convenient coefficient formula; the actual estimates take place on a globally localized, decaying Gaussian line.
+Subtracting the negative ray from Lemma~\ref{srf:lem:negative} and taking twice the real part gives \eqref{srf:eq:mode}. The two uses of a contour are distinct: the vertical expression is a convenient coefficient formula; the actual estimates take place on a globally localized, decaying Gaussian line.
 
 \subsection{Independent low order expansion}
 For $m=1$, $\alpha=1/8$ and $\beta=3/8$. The first coefficient follows immediately from
@@ -512,7 +705,7 @@ For $m=1$, $\alpha=1/8$ and $\beta=3/8$. The first coefficient follows immediate
  H_1(v)=\beta v+\frac{\ii B_2(\alpha)}2-\frac{\ii v^2}2,
  \qquad d_{1,1}=-\frac1{2q}+\frac{\ii B_2(1/8)}2.
 \]
-Since $B_2(1/8)=11/192$ and $q=4\pi$, this is \eqref{eq:d123}.
+Since $B_2(1/8)=11/192$ and $q=4\pi$, this is \eqref{srf:eq:d123}.
 
 As an independent check of the next order, retain the exact local quadratic curvature $Q=q+1/y$. At the saddle the reciprocal-gamma correction is
 \[
@@ -530,21 +723,21 @@ Terms from the cubic phase begin at higher order here: its coefficient is $\OO(y
  \left.\hspace{26mm}+\frac1{y^2}
  \left(-\frac{2137}{294912}\sin\theta
              +\frac{15}{512\pi}\cos\theta\right)
- +\OO(y^{-3})\right]+\OO(L^{-2}).\label{eq:curvatureform}
+ +\OO(y^{-3})\right]+\OO(L^{-2}).\label{srf:eq:curvatureform}
 \end{align}
 Expanding
 \[
  \sqrt{q/Q}=1-\frac1{2qy}+\frac3{8q^2y^2}+\OO(y^{-3})
 \]
-recovers $d_{1,2}$ in \eqref{eq:d123}. This route checks the rational, real-curvature and imaginary-phase pieces separately.
+recovers $d_{1,2}$ in \eqref{srf:eq:d123}. This route checks the rational, real-curvature and imaginary-phase pieces separately.
 
-\section{From one mode to sharp integer oscillation}\label{sec:oscillation}
+\section{From one mode to sharp integer oscillation}\label{srf:sec:oscillation}
 \subsection{Proof of the main expansion}
-Take $M=1$ in Theorem~\ref{thm:finite}, and choose a fixed $c$ with $1/16<c<1/8$. The exact remainder is $\OO(x^c)$. For every fixed $K$,
+Take $M=1$ in Theorem~\ref{srf:thm:finite}, and choose a fixed $c$ with $1/16<c<1/8$. The exact remainder is $\OO(x^c)$. For every fixed $K$,
 \[
  x^c+1+L^{-2}=o\bigl(x^{1/8}y_1^{3/8-K}\bigr),
 \]
-because $y_1\sim L/(4\pi)$. Combining \eqref{eq:continuous}, \eqref{eq:finite} and \eqref{eq:mode} proves \eqref{eq:main}. The floor changes the result by a quantity in $(-1,0]$, also absorbed by that error. This proves Theorem~\ref{thm:main}.
+because $y_1\sim L/(4\pi)$. Combining \eqref{srf:eq:continuous}, \eqref{srf:eq:finite} and \eqref{srf:eq:mode} proves \eqref{srf:eq:main}. The floor changes the result by a quantity in $(-1,0]$, also absorbed by that error. This proves Theorem~\ref{srf:thm:main}.
 
 The equation $qy+\log y=L$ shows $y\sim L/q$ and gives, if desired, the familiar Lambert expansion
 \[
@@ -552,13 +745,13 @@ The equation $qy+\log y=L$ shows $y\sim L/q$ and gives, if desired, the familiar
                 +\OO\!\left(\frac{\log L}{L}\right)\right].
 \]
 Keeping $W(qx)$ exact is cleaner: a small phase error can matter more than a relative amplitude error. In particular,
-\begin{equation}\label{eq:envelope}
+\begin{equation}\label{srf:eq:envelope}
  A_1(x)\sim C_*x^{1/8}(\log x)^{3/8}.
 \end{equation}
-The claimed leading equivalent and \eqref{eq:relative} follow since this envelope is exponentially smaller than $M(x)$.
+The claimed leading equivalent and \eqref{srf:eq:relative} follow since this envelope is exponentially smaller than $M(x)$.
 
 \subsection{All subsequential limits}
-Implicit differentiation of \eqref{eq:saddle} gives
+Implicit differentiation of \eqref{srf:eq:saddle} gives
 \[
  \frac{\dd y_m}{\dd L}=\frac1{q_m+1/y_m},\qquad
  \frac{\dd\theta_m}{\dd L}=y_m,\qquad
@@ -573,29 +766,29 @@ and choose an integer $n_j$ nearest to $x_j$. By the mean value theorem,
  |\theta_1(n_j)-\theta_1(x_j)|
  \le\tfrac12\sup_{|t-x_j|\le1/2}\theta_1'(t)\longrightarrow0.
 \]
-The sequence $n_j$ tends to infinity and has a strictly increasing subsequence. Dividing \eqref{eq:leading} by $A_1(n_j)$ shows that the normalized discrepancy tends to $s$. Conversely, the same formula confines all subsequential limits to $[-1,1]$. Rescaling by \eqref{eq:envelope} proves Corollary~\ref{cor:sharp}.
+The sequence $n_j$ tends to infinity and has a strictly increasing subsequence. Dividing \eqref{srf:eq:leading} by $A_1(n_j)$ shows that the normalized discrepancy tends to $s$. Conversely, the same formula confines all subsequential limits to $[-1,1]$. Rescaling by \eqref{srf:eq:envelope} proves Corollary~\ref{srf:cor:sharp}.
 
 In particular, the discrepancy is not $\OO(n^{1/8-\delta})$ for any $\delta>0$, and $a(n)$ is not eventually $\lfloor2ne^n\rfloor$ or any uniformly bounded rounding modification of $2ne^n$. No equidistribution assertion is required for these conclusions.
 
-\section{Complex sector control}\label{sec:sector}
+\section{Complex sector control}\label{srf:sec:sector}
 A real-axis asymptotic estimate alone does not justify a convergent analytic inverse. We therefore prove the relevant complex bound for the exact discrepancy separately.
 
-\begin{theorem}[Analytic sector bound]\label{thm:sector}
+\begin{theorem}[Analytic sector bound]\label{srf:thm:sector}
 For every $a>1/8$, there are $\delta>0$, $C_a>0$ and $R_a>0$ such that $D$ is holomorphic and
-\begin{equation}\label{eq:sectorbound}
+\begin{equation}\label{srf:eq:sectorbound}
  |D(z)|\le C_a|z|^a
  \qquad(|z|\ge R_a,\ |\arg z|<\delta).
 \end{equation}
 For every fixed integer $r\ge0$ this implies
-\begin{equation}\label{eq:derivativebound}
+\begin{equation}\label{srf:eq:derivativebound}
  D^{(r)}(x)=\OO_{a,r}(x^{a-r})\qquad(x\to+\infty).
 \end{equation}
 \end{theorem}
 
 \begin{proof}
-Choose $c$ with $1/8<c<\min(a,1)$ and put $\mu=4\pi c-\pi/2>0$. Fix $0<\delta<\min(\mu/2,\pi/3)$. The defining series is holomorphic on the slit plane by Section~\ref{sec:prelim}. We construct a uniformly bounded continuation of the $M=0$ exact contour formula.
+Choose $c$ with $1/8<c<\min(a,1)$ and put $\mu=4\pi c-\pi/2>0$. Fix $0<\delta<\min(\mu/2,\pi/3)$. The defining series is holomorphic on the slit plane by Section~\ref{srf:sec:prelim}. We construct a uniformly bounded continuation of the $M=0$ exact contour formula.
 
-For a complex parameter $z$ write $h_z(\zeta)=2z^\zeta/\Gamma(\zeta)$. Pair the upper contour in \eqref{eq:deform} with its reflected lower contour. On the real horizontal segment their kernels sum to
+For a complex parameter $z$ write $h_z(\zeta)=2z^\zeta/\Gamma(\zeta)$. Pair the upper contour in \eqref{srf:eq:deform} with its reflected lower contour. On the real horizontal segment their kernels sum to
 \[
  K_1(t)+\overline{K_1(t)}=-1,
 \]
@@ -606,7 +799,7 @@ More explicitly, if $U(z)$ denotes the upper vertical integral, its partner is $
  |z^{c+\ii v}|=|z|^ce^{-v\arg z},\qquad
  |z^{c-\ii v}|=|z|^ce^{v\arg z}.
 \]
-The reciprocal gamma and kernel estimates \eqref{eq:hbound}--\eqref{eq:Kbound} leave $e^{-\mu v}$. Both integrals are bounded uniformly in the sector by
+The reciprocal gamma and kernel estimates \eqref{srf:eq:hbound}--\eqref{srf:eq:Kbound} leave $e^{-\mu v}$. Both integrals are bounded uniformly in the sector by
 \[
  C_c|z|^c\int_0^\infty
          (1+v)^{1/2-c}e^{-(\mu-\delta)v}\dd v
@@ -619,38 +812,38 @@ The continuous correction has the analytic representation
  I(z)-2ze^z=2z\int_0^\infty
             \frac{e^{-zr}}{(\log r)^2+\pi^2}\dd r,
 \]
-valid initially for positive real $z$ and analytically continued to $\Re z>0$. Its modulus is at most $2|z|/(\pi^2\Re z)$, which is uniformly bounded in our sector. Adding this term, the original Abel--Plana endpoint $1/2$, and the paired contour formula yields a holomorphic function equal to $D$ on the positive axis. The identity theorem identifies it with $D$ throughout the sector. The preceding estimates give $\OO(|z|^c)$, hence \eqref{eq:sectorbound}.
+valid initially for positive real $z$ and analytically continued to $\Re z>0$. Its modulus is at most $2|z|/(\pi^2\Re z)$, which is uniformly bounded in our sector. Adding this term, the original Abel--Plana endpoint $1/2$, and the paired contour formula yields a holomorphic function equal to $D$ on the positive axis. The identity theorem identifies it with $D$ throughout the sector. The preceding estimates give $\OO(|z|^c)$, hence \eqref{srf:eq:sectorbound}.
 
-For large real $x$, a disk of radius $\kappa x$ about $x$ lies in a slightly smaller sector, with a fixed $\kappa>0$. Cauchy's derivative estimate on that disk proves \eqref{eq:derivativebound}.
+For large real $x$, a disk of radius $\kappa x$ about $x$ lies in a slightly smaller sector, with a fixed $\kappa>0$. Cauchy's derivative estimate on that disk proves \eqref{srf:eq:derivativebound}.
 \end{proof}
 
-The same pairing could be used for higher exact-mode remainders. Only the $M=0$ case is needed below. In particular \eqref{eq:sectorbound} gives a uniform bound $|D(w+t)|\le C_aw^a$ on each sufficiently small fixed complex disk $|t|\le\rho$ about every large positive $w$.
+The same pairing could be used for higher exact-mode remainders. Only the $M=0$ case is needed below. In particular \eqref{srf:eq:sectorbound} gives a uniform bound $|D(w+t)|\le C_aw^a$ on each sufficiently small fixed complex disk $|t|\le\rho$ about every large positive $w$.
 
-\section{The continuous inverse and its convergent expansion}\label{sec:inverse}
+\section{The continuous inverse and its convergent expansion}\label{srf:sec:inverse}
 Since $S$ is continuous and strictly increasing from $1$ to infinity, its real inverse
 \[
  X(Y)=S^{-1}(Y)\qquad(Y>1)
 \]
 is well-defined. Put
-\begin{equation}\label{eq:w}
+\begin{equation}\label{srf:eq:w}
  w=W(Y/2),\qquad M(w)=Y,\qquad M'(w)=Y(1+1/w).
 \end{equation}
 We first state an exact-discrepancy inverse expansion. Its convergence concerns powers of the exact analytic function $D$, not the formal Stirling series or an infinite harmonic asymptotic sum.
 
-\begin{theorem}[Convergent Lagrange inverse]\label{thm:inverse}
+\begin{theorem}[Convergent Lagrange inverse]\label{srf:thm:inverse}
 Let
-\begin{equation}\label{eq:EQ}
+\begin{equation}\label{srf:eq:EQ}
  E_w(t)=e^t(1+t/w)-1,\qquad Q_w(t)=\frac{t}{E_w(t)},
  \qquad Q_w(0)=\frac1{1+1/w}.
 \end{equation}
 For all sufficiently large $Y$, the following series converges absolutely to the real inverse displacement:
-\begin{equation}\label{eq:lagrange}
+\begin{equation}\label{srf:eq:lagrange}
  X(Y)-w=\sum_{r=1}^\infty\frac{(-1)^r}{r!Y^r}
   \left.\frac{\dd^{r-1}}{\dd t^{r-1}}
       \bigl[D(w+t)^rQ_w(t)^r\bigr]\right|_{t=0}.
 \end{equation}
 For each fixed $a>1/8$ and integer $R\ge1$, the remainder after $R$ terms is
-\begin{equation}\label{eq:invrem}
+\begin{equation}\label{srf:eq:invrem}
  \OO_{a,R}\left((w^a/Y)^{R+1}\right).
 \end{equation}
 \end{theorem}
@@ -667,8 +860,8 @@ The exact equation $S(w+t)=Y$ is
  YE_w(t)+D(w+t)=0,
  \qquad t=-Y^{-1}D(w+t)Q_w(t).
 \]
-By Theorem~\ref{thm:sector}, $\sup_{|t|\le\rho}|D(w+t)Q_w(t)|\le C_aw^a$. Introduce a parameter $\lambda$ and apply Rouch\'e's theorem to
-$t+\lambda D(w+t)Q_w(t)$ on $|t|=\rho$. When $|\lambda|C_aw^a<\rho$, it has exactly one root, counted with multiplicity, inside the disk. The root is simple, is analytic in $\lambda$ near zero, and its local power series is the classical Lagrange--B\"urmann formula, namely \eqref{eq:lagrange} with $Y^{-1}$ replaced by $\lambda$. This is an application of standard analytic inversion, not a new inversion principle.
+By Theorem~\ref{srf:thm:sector}, $\sup_{|t|\le\rho}|D(w+t)Q_w(t)|\le C_aw^a$. Introduce a parameter $\lambda$ and apply Rouch\'e's theorem to
+$t+\lambda D(w+t)Q_w(t)$ on $|t|=\rho$. When $|\lambda|C_aw^a<\rho$, it has exactly one root, counted with multiplicity, inside the disk. The root is simple, is analytic in $\lambda$ near zero, and its local power series is the classical Lagrange--B\"urmann formula, namely \eqref{srf:eq:lagrange} with $Y^{-1}$ replaced by $\lambda$. This is an application of standard analytic inversion, not a new inversion principle.
 
 Cauchy's estimate bounds its $r$th term at $\lambda=1/Y$ by
 \begin{align*}
@@ -678,7 +871,7 @@ Cauchy's estimate bounds its $r$th term at $\lambda=1/Y$ by
  \le \frac{\rho}{r}
            \left(\frac{C_aw^a}{\rho Y}\right)^r.
 \end{align*}
-The right side is summable for large $w$, proving absolute convergence and the fixed-$R$ geometric tail estimate \eqref{eq:invrem}. At real $\lambda=1/Y$, the unique root is real by conjugation symmetry. Its equation is exactly $S(w+t)=Y$, so strict monotonicity identifies it with $X(Y)-w$.
+The right side is summable for large $w$, proving absolute convergence and the fixed-$R$ geometric tail estimate \eqref{srf:eq:invrem}. At real $\lambda=1/Y$, the unique root is real by conjugation symmetry. Its equation is exactly $S(w+t)=Y$, so strict monotonicity identifies it with $X(Y)-w$.
 \end{proof}
 
 For transparency the first two exact-discrepancy terms are
@@ -687,14 +880,14 @@ For transparency the first two exact-discrepancy terms are
  &+\frac1{Y^2}\left(
        \frac{D(w)D'(w)}{b_w^2}
        -\frac{D(w)^2c_w}{b_w^3}\right)
-       +\OO_a((w^a/Y)^3),\label{eq:inv2}\\
+       +\OO_a((w^a/Y)^3),\label{srf:eq:inv2}\\
  b_w&=1+1/w,\qquad c_w=1/2+1/w.\notag
 \end{align}
 Indeed $Q_w(0)=b_w^{-1}$ and $Q_w'(0)=-c_wb_w^{-2}$. Higher coefficients follow from the same finite differentiation rule once the exact analytic $D$ is supplied.
 
-\begin{corollary}[Oscillatory inverse displacement]\label{cor:invosc}
+\begin{corollary}[Oscillatory inverse displacement]\label{srf:cor:invosc}
 For every fixed $a>1/8$,
-\begin{equation}\label{eq:invfirst}
+\begin{equation}\label{srf:eq:invfirst}
  X(Y)=w-\frac{D(w)}{Y(1+1/w)}
                   +\OO_a(w^{2a}/Y^2).
 \end{equation}
@@ -703,47 +896,47 @@ For every fixed integer $K\ge1$,
  X(Y)={}&w+\frac{A_1(w)}{Y(1+1/w)}
        \Im\left\{e^{\ii\theta_1(w)}
                    \sum_{j=0}^{K-1}d_{1,j}y_1(w)^{-j}\right\}\notag\\
- &+\OO_K\left(\frac{A_1(w)y_1(w)^{-K}}Y\right).\label{eq:invosc}
+ &+\OO_K\left(\frac{A_1(w)y_1(w)^{-K}}Y\right).\label{srf:eq:invosc}
 \end{align}
 \end{corollary}
 \begin{proof}
-The $r=1$ term and the remainder of Theorem~\ref{thm:inverse} give \eqref{eq:invfirst}. Substitute Theorem~\ref{thm:main}. For a fixed choice of $a>1/8$, the quadratic inverse error $w^{2a}/Y^2$ is smaller than $A_1(w)y_1(w)^{-K}/Y$ for every fixed $K$, since $Y=2we^w$. This proves \eqref{eq:invosc}.
+The $r=1$ term and the remainder of Theorem~\ref{srf:thm:inverse} give \eqref{srf:eq:invfirst}. Substitute Theorem~\ref{srf:thm:main}. For a fixed choice of $a>1/8$, the quadratic inverse error $w^{2a}/Y^2$ is smaller than $A_1(w)y_1(w)^{-K}/Y$ for every fixed $K$, since $Y=2we^w$. This proves \eqref{srf:eq:invosc}.
 \end{proof}
 
-Thus the first inverse-displacement scale is exponentially small in $w$, but has all fixed logarithmic refinements. The convergent series \eqref{eq:lagrange} also resolves further exact-discrepancy powers. Substituting an asymptotic approximation for $D$ into it requires carrying its own error; it does not turn the fixed-order Stirling expansion into a convergent formula.
+Thus the first inverse-displacement scale is exponentially small in $w$, but has all fixed logarithmic refinements. The convergent series \eqref{srf:eq:lagrange} also resolves further exact-discrepancy powers. Substituting an asymptotic approximation for $D$ into it requires carrying its own error; it does not turn the fixed-order Stirling expansion into a convergent formula.
 
-\section{Exact integer thresholds and failure of a naive ceiling}\label{sec:thresholds}
+\section{Exact integer thresholds and failure of a naive ceiling}\label{srf:sec:thresholds}
 For an integer $Y\ge2$ define
-\begin{equation}\label{eq:N}
+\begin{equation}\label{srf:eq:N}
  N(Y)=\min\{n\ge0:a(n)\ge Y\}.
 \end{equation}
 The equivalence $\lfloor S(n)\rfloor\ge Y\iff S(n)\ge Y$ gives the exact identity
-\begin{equation}\label{eq:ceilexact}
+\begin{equation}\label{srf:eq:ceilexact}
  N(Y)=\lceil X(Y)\rceil.
 \end{equation}
 For a real threshold $Y>1$, first replace $Y$ by $\lceil Y\rceil$. If $Y\le1$, the threshold index is zero.
 
 A proved pointwise error $|\widehat X(Y)-X(Y)|\le\eta(Y)$ yields the reliable enclosure
-\begin{equation}\label{eq:ceilenclosure}
+\begin{equation}\label{srf:eq:ceilenclosure}
  \lceil\widehat X(Y)-\eta(Y)\rceil
        \le N(Y)\le
  \lceil\widehat X(Y)+\eta(Y)\rceil.
 \end{equation}
 When both ceilings agree, they determine $N(Y)$ exactly. Our asymptotic big-$O$ results do not supply effective numerical constants or an artificial uniform gap from integers; they do not by themselves provide certified finite-$Y$ values in this enclosure.
 
-\begin{theorem}[Both directions of ceiling failure]\label{thm:failure}
+\begin{theorem}[Both directions of ceiling failure]\label{srf:thm:failure}
 For large integer $Y$, $N(Y)$ and $\lceil W(Y/2)\rceil$ differ by at most one. Equality nevertheless fails infinitely often in each direction. More precisely, for infinitely many integers $n$,
 \begin{align}
  Y_n^+&=\lfloor M(n)\rfloor+1,&
- N(Y_n^+)&=n,& \lceil W(Y_n^+/2)\rceil&=n+1,\label{eq:failplus}\\
+ N(Y_n^+)&=n,& \lceil W(Y_n^+/2)\rceil&=n+1,\label{srf:eq:failplus}\\
  Y_n^-&=\lfloor M(n)\rfloor-1,&
- N(Y_n^-)&=n+1,& \lceil W(Y_n^-/2)\rceil&=n.\label{eq:failminus}
+ N(Y_n^-)&=n+1,& \lceil W(Y_n^-/2)\rceil&=n.\label{srf:eq:failminus}
 \end{align}
 \end{theorem}
 \begin{proof}
-Equation~\eqref{eq:invfirst} implies $X(Y)-W(Y/2)\to0$. For large $Y$ the difference has modulus less than one, and the ceilings of two real numbers at distance less than one differ by at most one.
+Equation~\eqref{srf:eq:invfirst} implies $X(Y)-W(Y/2)\to0$. For large $Y$ the difference has modulus less than one, and the ceilings of two real numbers at distance less than one differ by at most one.
 
-Corollary~\ref{cor:sharp} supplies infinitely many $n$ with $D(n)>2$, and infinitely many with $D(n)<-2$. For the former set, define $Y_n^+$ as in \eqref{eq:failplus}. Then
+Corollary~\ref{srf:cor:sharp} supplies infinitely many $n$ with $D(n)>2$, and infinitely many with $D(n)<-2$. For the former set, define $Y_n^+$ as in \eqref{srf:eq:failplus}. Then
 \[
  M(n)<Y_n^+\le M(n)+1<S(n).
 \]
@@ -751,19 +944,62 @@ The neighboring main-term gaps satisfy
 \[
  M(n)-M(n-1)\asymp ne^n,\qquad M(n+1)-M(n)\asymp ne^n,
 \]
-whereas $D(n)$ is polynomially bounded. Thus, for large such $n$, $S(n-1)<Y_n^+\le S(n)$ and $M(n)<Y_n^+<M(n+1)$. Strict monotonicity gives the two equalities in \eqref{eq:failplus}.
+whereas $D(n)$ is polynomially bounded. Thus, for large such $n$, $S(n-1)<Y_n^+\le S(n)$ and $M(n)<Y_n^+<M(n+1)$. Strict monotonicity gives the two equalities in \eqref{srf:eq:failplus}.
 
 For $D(n)<-2$, the number $Y_n^-\in(M(n)-2,M(n)-1]$ satisfies
 \[
  S(n)<Y_n^-<M(n).
 \]
-The same gap estimate gives $S(n)<Y_n^-\le S(n+1)$ and $M(n-1)<Y_n^-<M(n)$. This proves \eqref{eq:failminus}. The thresholds are positive and tend to infinity along either subsequence.
+The same gap estimate gives $S(n)<Y_n^-\le S(n+1)$ and $M(n-1)<Y_n^-<M(n)$. This proves \eqref{srf:eq:failminus}. The thresholds are positive and tend to infinity along either subsequence.
 \end{proof}
 
 A small real inverse error can therefore change a carefully placed integer threshold. The sign-changing, unbounded direct discrepancy is precisely what produces both families of counterexamples.
 
-\section{Further structural consequences}\label{sec:consequences}
-\begin{proposition}[Increase and eventual strict log concavity]\label{prop:logconcavity}
+\begin{remark}[{[write]} The inverses against the transseries volume, 7~October 2026]\label{srf:rem:transseries}
+The volume is
+\path{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex};
+its symbols carry the subscript ``vol''. Statement by statement:
+\begin{enumerate}[label=(\alph*)]
+\item \emph{Instance.} The identity~\eqref{srf:eq:ceilexact} is
+ \file{p0:thm:staircase}(1) for the strictly increasing real sequence
+ $A_n=S(n)$, $n_{1,\mathrm{vol}}=0$, with the admissible interpolation
+ $\mathcal A_{\mathrm{vol}}=S|_{[0,\infty)}$ (continuous, strictly increasing,
+ equal to $S(n)$ at the integers), so $\nu_{\mathcal A}=X$: for an integer
+ $Y$, $a(n)\ge Y$ if and only if $S(n)\ge Y$, so $N(Y)$ is the staircase of
+ $(S(n))$ at $Y$.
+\item \emph{Instance.} The enclosure~\eqref{srf:eq:ceilenclosure} follows from
+ $|\widehat X-X|\le\eta$ and the monotonicity of the ceiling; when its two
+ ceilings agree it is \file{p0:thm:staircase}(2) with $x_*=\widehat X$,
+ $\eta_{\mathrm{vol}}=\eta$ and $\nu=X$.
+\item \emph{An explicit realization of the failure mode named in
+ \file{p0:thm:staircase}(2).} In Theorem~\ref{srf:thm:failure} the
+ approximation $x_*=W(Y/2)$ has error $\eta=|X(Y)-W(Y/2)|\to0$ (exponentially
+ small by~\eqref{srf:eq:invfirst}), yet the separation condition fails
+ infinitely often, in both directions.
+\item \emph{Instances.} $w=W(Y/2)$ solves $w+\log w=\log(Y/2)$, which is
+ \file{p0:thm:lambert-core} with $a_{\mathrm{vol}}=b_{\mathrm{vol}}=1$ (the
+ branch rule for $b_{\mathrm{vol}}>0$ gives $W_0$); the mode saddle
+ $y_m=W(q_mx)/q_m$ of~\eqref{srf:eq:saddle} is the same theorem with
+ $a_{\mathrm{vol}}=q_m$, $b_{\mathrm{vol}}=1$, $L_{\mathrm{vol}}=L$.
+\item \emph{Formal instance.} For fixed large $w$, the equation
+ $t+Y^{-1}D(w+t)Q_w(t)=0$ of the proof of Theorem~\ref{srf:thm:inverse} is
+ \file{p0:thm:core-reversion} with $\Lambda_{\mathrm{vol}}=1$,
+ $h_{\mathrm{vol}}=0$, $t_{\mathrm{vol}}=1/Y$ and
+ $f_{\mathrm{vol}}(t,u)=tD(w+u)Q_w(u)$ (real coefficients
+ $[u^k]D(w+u)Q_w(u)$); its closed formula \file{p0:eq:core-lagrange} has only
+ the term $m=n$ and is exactly~\eqref{srf:eq:lagrange}. The convergence, by
+ Rouch\'e's theorem and Cauchy estimates with Theorem~\ref{srf:thm:sector},
+ is the source's own.
+\end{enumerate}
+No novelty is claimed for any of these inversions. The staircase arithmetic
+is formalized generically (for an arbitrary strictly monotone function) as
+\file{Fabius.staircase_ceil} in
+\path{Analysis/FabiusFunction/Lean/FabiusFunction/StaircaseInversion.lean};
+nothing about $S$ or $a(n)$ is formalized.
+\end{remark}
+
+\section{Further structural consequences}\label{srf:sec:consequences}
+\begin{proposition}[Increase and eventual strict log concavity]\label{srf:prop:logconcavity}
 The integer sequence $a(n)$ is strictly increasing for every $n\ge0$ and eventually satisfies
 \[
  a(n)^2>a(n-1)a(n+1).
@@ -787,9 +1023,9 @@ There is also a transparent hierarchy of scales. The $m$th mode has envelope
 \]
 Every fixed lower mode eventually dominates every fixed logarithmic correction to a higher-index mode in absolute envelope, whereas every fixed logarithmic correction of the first mode dominates the combined exact remainder after that mode, by the fixed-cutoff tail theorem. This is an envelope comparison, not a pointwise ordering of oscillatory values near their zeros.
 
-\section{Verification and reproducibility}\label{sec:verification}
+\section{Verification and reproducibility}\label{srf:sec:verification}
 \subsection{What the exact checks establish}
-The mandatory verification uses Python's standard library, integer arithmetic and rational complex pairs. It implements \eqref{eq:ell}--\eqref{eq:Hrec} and the Gaussian moments \eqref{eq:G}, generates $d_{m,0},\ldots,d_{m,6}$ for $m=1,2$, and checks the displayed coefficients exactly. Input guards reject unsupported or malformed parameters instead of silently computing a different model. Validation uses explicit exceptions, not assertions that disappear under optimized Python.
+The mandatory verification uses Python's standard library, integer arithmetic and rational complex pairs. It implements \eqref{srf:eq:ell}--\eqref{srf:eq:Hrec} and the Gaussian moments \eqref{srf:eq:G}, generates $d_{m,0},\ldots,d_{m,6}$ for $m=1,2$, and checks the displayed coefficients exactly. Input guards reject unsupported or malformed parameters instead of silently computing a different model. Validation uses explicit exceptions, not assertions that disappear under optimized Python.
 
 The accompanying corruption tests deliberately alter coefficient data, tail records and integrity metadata and require rejection. Running under both ordinary Python and \texttt{python -O} verifies that optimization does not remove these checks. These tests validate finite algebra and package behavior; the analytic estimates in this report remain mathematical proofs, not consequences of a finite numerical test.
 
@@ -809,20 +1045,20 @@ The same convexity shows $g_n$ is decreasing on $[T,\infty)$, since its logarith
  g_n(u)\le\frac{n^T}{T!}e^{-c(u-T)}.
 \]
 The integral test for the decreasing function $t\mapsto g_n(\sqrt t)$ therefore yields the exact bound
-\begin{equation}\label{eq:numerictail}
+\begin{equation}\label{srf:eq:numerictail}
  0<\sum_{k>T^2}\frac{n^{\sqrt k}}{\Gamma(1+\sqrt k)}
  \le2\frac{n^T}{T!}\left(\frac{T}{c}+\frac1{c^2}\right).
 \end{equation}
 Every quantity on the right is rational. For $n=1,\ldots,34$ and $T=4n+60$, exact comparison shows this bound is below $10^{-35}$. At $n=0$ the series is exactly one. The mandatory code checks these rational inequalities; it does not need an implementation of gamma, logarithms, or square roots.
 
 \subsection{Optional finite diagnostics}
-The optional high-precision replay sums through $k=T^2$ at both 55 and 75 decimal digits. All 35 recorded OEIS floors agree at both precisions, with the exact omitted-tail bound \eqref{eq:numerictail}. Among $n=1,\ldots,34$, the smallest observed floor margin is approximately $0.00169001377463$, at $n=17$. This is strong consistency evidence, but the floating summation and special-function evaluations are \emph{not interval-certified}; the exact tail bound alone does not certify the finite computed sum or its floor.
+The optional high-precision replay sums through $k=T^2$ at both 55 and 75 decimal digits. All 35 recorded OEIS floors agree at both precisions, with the exact omitted-tail bound \eqref{srf:eq:numerictail}. Among $n=1,\ldots,34$, the smallest observed floor margin is approximately $0.00169001377463$, at $n=17$. This is strong consistency evidence, but the floating summation and special-function evaluations are \emph{not interval-certified}; the exact tail bound alone does not certify the finite computed sum or its floor.
 
 A second optional route computes the completed Gaussian-line integrals directly, independently of the Abel--Plana kernel. Modes $1,2,3$ were examined for
 \[
  \log x=20,40,80,120,200,400,800.
 \]
-The following representative first-mode values compare with the three-term approximation from \eqref{eq:mode}. The normalized error is
+The following representative first-mode values compare with the three-term approximation from \eqref{srf:eq:mode}. The normalized error is
 $(2\Re J_1-\text{three-term approximation})/A_1$.
 \begin{center}
 \small
@@ -846,8 +1082,15 @@ The source archive contains the manuscript, original finite algebra and diagnost
 
 Reproducing the PDF requires the documented local TeX packages; no network access is needed. Mandatory algebra and tail checks require only a supported Python interpreter. Optional floating and symbolic diagnostics require their explicitly documented dependencies. Neither a successful build nor agreement of floating diagnostics supplies effective constants in the asymptotic big-$O$ terms.
 
-\section{Source scope and further questions}\label{sec:scope}
+\section{Source scope and further questions}\label{srf:sec:scope}
 The OEIS record attributes the sequence to Paul D. Hanna in September 2019 and the equivalent $a(n)\sim2ne^n$ to Kot\v e\v sovec two days later \cite{oeis}. The present argument proves that equivalent but concentrates on the unbounded oscillatory error concealed by it.
+
+\begin{writenote}[Added 7 October 2026]
+The live record (revision \#16, read 7~October 2026) still prints the line
+``\texttt{Conjecture: a(n) \textasciitilde{} 2*n*exp(n). - \_Vaclav Kotesovec\_, Sep 16 2019}'';
+Corollary~\ref{srf:cor:sharp} proves exactly that statement
+(Remark~\ref{srf:rem:oeis}).
+\end{writenote}
 
 The classical continuous model is explicitly treated by Garrappa and Mainardi \cite{gm}; their paper includes the Volterra functions, Ramanujan integrals and prior all-orders continuous asymptotics. Abel--Plana and Stirling are standard sources \cite{dlmfap,dlmfgamma}. The general use of analytic reversion, exact-discrepancy corrections and ceiling enclosures is established methodology. Related transseries and inversion work is collected in the ProveIt exposition \cite{inversion}. No new general summation, Stirling, stationary-phase or inverse theorem is claimed here.
 
@@ -862,10 +1105,18 @@ Several questions remain beyond the proved statements:
 \end{enumerate}
 These are proposed extensions, not consequences claimed from the present fixed-parameter analysis.
 
+\begin{writenote}[Added 7 October 2026, under Vladimir's standing rule of 4 October 2026]
+The four questions above are the source's, credited to it and kept as
+stated. The write found no unproved claim of the source outside them and no
+wrong one. The remark after the proof of Theorem~\ref{srf:thm:sector} that
+``the same pairing could be used for higher exact-mode remainders'' is not
+used and not proved here; it belongs to Question~1.
+\end{writenote}
+
 \begin{thebibliography}{9}
 \small\raggedright
 \bibitem{oeis}
-The OEIS Foundation, \emph{A326805}, sequence contributed by Paul D. Hanna, 14 September 2019; asymptotic conjecture by V\'aclav Kot\v e\v sovec, 16 September 2019. Record consulted 3 October 2026. \url{https://oeis.org/A326805}.
+The OEIS Foundation, \emph{A326805}, sequence contributed by Paul D. Hanna, 14 September 2019; asymptotic conjecture by V\'aclav Kot\v e\v sovec, 16 September 2019. Record consulted 3 October 2026 (and by the write on 7~October 2026, revision \#16). \url{https://oeis.org/A326805}.
 
 \bibitem{gm}
 R. Garrappa and F. Mainardi, \emph{On Volterra functions and Ramanujan integrals}, Analysis \textbf{36} (2016), 89--105. DOI: \href{https://doi.org/10.1515/anly-2015-5009}{10.1515/anly-2015-5009}. Author manuscript: \url{https://arxiv.org/abs/1610.01491}. In particular, Definition 1.1, Theorem 3.1 and Section 4.2.

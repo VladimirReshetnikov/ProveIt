@@ -23,6 +23,14 @@
 \newcommand{\R}{\mathbb R}
 \newcommand{\coef}[2]{[#1^{#2}]}
 \DeclareMathOperator{\Li}{Li}
+% Added by the ProveIt write phase (batch 110, 7 October 2026): dated notes
+% marked [write], a macro for file, label and declaration names, longtable.
+\usepackage{longtable}
+\newcommand{\file}[1]{\nolinkurl{#1}}
+\expandafter\def\expandafter\UrlBreaks\expandafter{\UrlBreaks\do\-\do\_\do\.}
+\newenvironment{writenote}[1][]{\par\smallskip\begingroup\small
+ \noindent\textbf{[write]}\if\relax\detokenize{#1}\relax\else~\textbf{#1.}\fi\ }%
+ {\par\endgroup\smallskip}
 \hypersetup{pdftitle={Report186 Rounded running means},pdfauthor={Research report},pdfsubject={OEIS A065094 and A065095 amplitude selection all orders asymptotics and inverses}}
 \title{Report186\\[5pt]Rounded running means\\[3pt]OEIS A065094 and A065095}
 \author{Exact amplitude selection and all order asymptotics}
@@ -40,17 +48,43 @@ We give an exact positive-weight formula for $A$, an exact pointwise optimal err
 \paragraph{Scope and attribution.}
 The unrounded Laguerre solution, already recorded in A376995, and the classical Perron expansion are established inputs. The numerical constants in the target entries are credited to V\'aclav Kot\v e\v sovec in October 2024. The contribution developed here is their rigorous selection and certification for the rounded recurrences, together with sharp bounded-forcing control and its consequences. No worldwide novelty determination, proof-assistant certification, effective asymptotic onset, or distributional assumption about rounding errors is claimed.
 
+\begin{writenote}[Status and trust boundary, added 7 October 2026, batch~110]
+This is bundle Report~186 of an external AI-assisted research session, filed
+in ProveIt as the single-source research report
+\file{a065094-rounded-running-means} (provenance, the sources as the write
+read them, what was checked, relation to the repository, the collected
+non-claims and the reading conventions are in
+Section~\ref{rrm:sec:provenance}). It is unrefereed and not formalized. Its
+author line reads ``Exact amplitude selection and all order asymptotics'' and
+its PDF author field ``Research report'': it names no person or tool.
+\emph{What rests on what.} Theorems~\ref{rrm:thm:shadow}
+and~\ref{rrm:thm:certificate} are proved by hand from exact identities, with
+the classical Perron expansion of $L_m(-1)$ (credited to
+Dea\~no--Huertas--Marcell\'an's statement) as the one special-function input;
+Theorem~\ref{rrm:thm:allorders}, Proposition~\ref{rrm:prop:logconcavity} and
+Theorems~\ref{rrm:thm:rangeinverse}, \ref{rrm:thm:threshold} follow by
+conventional arguments. The 70-place amplitude intervals of
+Section~\ref{rrm:sec:numerics} are exact rational computations of the
+shipped standard-library programs. \emph{Two OEIS conjectures proved.}
+Corollary~\ref{rrm:cor:oeis} proves the modified-Bessel growth asked for in
+A065094 and A065095 (Remark~\ref{rrm:rem:oeis}), and every decimal of
+Kot\v{e}\v{s}ovec's numerical constants there is confirmed as a truncation of
+the certified values. The write also adds Remark~\ref{rrm:rem:transseries}
+(the inverses against the transseries volume) and dated notes. No statement,
+proof or number of the source was changed.
+\end{writenote}
+
 \newpage
 {\small\tableofcontents}
 \newpage
 
-\section{Definitions and principal results}\label{sec:main}
+\section{Definitions and principal results}\label{rrm:sec:main}
 Let $a_n^-$ and $a_n^+$ denote the sequences in OEIS A065094 and A065095, respectively \cite{oeisfloor,oeisceil}. With $S_n^\pm=\sum_{j=1}^n a_j^\pm$, their definitions are
 \begin{align}
  a_1^-&=a_1^+=1,\notag\\
  a_{n+1}^-&=a_n^-+\left\lfloor\frac{S_n^-}{n}\right\rfloor,
  &a_{n+1}^+&=a_n^++\left\lceil\frac{S_n^+}{n}\right\rceil.
- \label{eq:rounded}
+ \label{rrm:eq:rounded}
 \end{align}
 The initial values are
 \[
@@ -63,7 +97,7 @@ n&1&2&3&4&5&6&7&8&9&10\\\hline
 All terms are positive integers, and both sequences are strictly increasing: every running mean is at least one, so every rounded increment is at least one.
 
 It is useful to treat a broader linear recurrence with arbitrary bounded forcing:
-\begin{equation}\label{eq:forced}
+\begin{equation}\label{rrm:eq:forced}
  a_1=\alpha,\qquad S_n=\sum_{j=1}^n a_j,\qquad
  a_{n+1}=a_n+\frac{S_n}{n}+\eps_n,\qquad \ell\le\eps_n\le u.
 \end{equation}
@@ -72,30 +106,30 @@ Here $\alpha,\ell,u\in\R$, $\ell\le u$, and no independence, periodicity, or lim
 Define the positive sequences
 \begin{align}
  P_n&=L_{n-1}(-1)=\sum_{j=0}^{n-1}\frac{\binom{n-1}{j}}{j!},
- &T_n&=\sum_{j=1}^n P_j,\label{eq:P}\\
+ &T_n&=\sum_{j=1}^n P_j,\label{rrm:eq:P}\\
  Q_n&=\int_0^\infty e^{-s}\frac{s^{n-1}}{(1+s)^n}\,ds,
- &w_n&=n(Q_n-Q_{n+1}).\label{eq:Q}
+ &w_n&=n(Q_n-Q_{n+1}).\label{rrm:eq:Q}
 \end{align}
 Set $H_1=0$ and $H_n=(n-1)P_{n-1}Q_n$ for $n\ge2$.
 
-\begin{theorem}[Exact amplitude and shadowing]\label{thm:shadow}
-For every trajectory \eqref{eq:forced}, the weights satisfy $w_n>0$ and $\sum_{n\ge1}w_n=1$. The absolutely convergent amplitude
-\begin{equation}\label{eq:A}
+\begin{theorem}[Exact amplitude and shadowing]\label{rrm:thm:shadow}
+For every trajectory \eqref{rrm:eq:forced}, the weights satisfy $w_n>0$ and $\sum_{n\ge1}w_n=1$. The absolutely convergent amplitude
+\begin{equation}\label{rrm:eq:A}
  A=\alpha+\sum_{k\ge1}w_k\eps_k
 \end{equation}
 satisfies the exact identity
-\begin{equation}\label{eq:shadow}
+\begin{equation}\label{rrm:eq:shadow}
  a_n-AP_n
  =Q_n\sum_{k<n}k\eps_k(P_{k+1}-P_k)
   -P_n\sum_{k\ge n}w_k\eps_k.
 \end{equation}
 Consequently, for every $n\ge1$,
-\begin{equation}\label{eq:sharp}
+\begin{equation}\label{rrm:eq:sharp}
  \ell H_n-u(H_n+1)\le a_n-AP_n
  \le uH_n-\ell(H_n+1).
 \end{equation}
 Each endpoint is attainable at a prescribed $n$ by some forcing sequence in $[\ell,u]$. Moreover $H_n\sim\sqrt n/2$, and therefore
-\begin{equation}\label{eq:Osqrt}
+\begin{equation}\label{rrm:eq:Osqrt}
  a_n=AP_n+\OO(\sqrt n),
 \end{equation}
 uniformly over all forcings in the fixed interval $[\ell,u]$.
@@ -103,113 +137,288 @@ uniformly over all forcings in the fixed interval $[\ell,u]$.
 
 The error bound does not depend on $\alpha$. Pointwise sharpness refers to arbitrary bounded forcing; the extremizing forcing can depend on the observation index. We do not claim that either specific rounded orbit attains an error of order $\sqrt n$.
 
-\begin{theorem}[Nested rational amplitude bounds]\label{thm:certificate}
+\begin{theorem}[Nested rational amplitude bounds]\label{rrm:thm:certificate}
 For every $N\ge1$,
-\begin{equation}\label{eq:bracket}
+\begin{equation}\label{rrm:eq:bracket}
  L_N:=\frac{S_N+N\ell}{T_N}\le A\le
  U_N:=\frac{S_N+Nu}{T_N}.
 \end{equation}
 The lower endpoints are nondecreasing, the upper endpoints are nonincreasing, and their exact width is
-\begin{equation}\label{eq:width}
+\begin{equation}\label{rrm:eq:width}
  U_N-L_N=\frac{N(u-\ell)}{T_N}
  \sim 2\sqrt\pi e^{1/2}(u-\ell)N^{3/4}e^{-2\sqrt N}
 \end{equation}
 when $u>\ell$. For $u=\ell$ the width is identically zero. Rational finite input gives a rational certificate.
 \end{theorem}
 
-\begin{corollary}[The two OEIS growth conjectures]\label{cor:oeis}
+\begin{corollary}[The two OEIS growth conjectures]\label{rrm:cor:oeis}
 There are positive constants $A_-$ and $A_+$ such that, for either choice of sign,
 \begin{align}
- a_n^\pm&=A_\pm P_n+\OO(\sqrt n),\label{eq:bothshadow}\\
+ a_n^\pm&=A_\pm P_n+\OO(\sqrt n),\label{rrm:eq:bothshadow}\\
  a_n^\pm&\sim C_\pm I_0(2\sqrt n)
- \sim c_\pm n^{-1/4}e^{2\sqrt n},\label{eq:bessel}
+ \sim c_\pm n^{-1/4}e^{2\sqrt n},\label{rrm:eq:bessel}
 \end{align}
 where
-\begin{equation}\label{eq:normalization}
+\begin{equation}\label{rrm:eq:normalization}
  C_\pm=A_\pm e^{-1/2},\qquad
  c_\pm=\frac{A_\pm e^{-1/2}}{2\sqrt\pi}.
 \end{equation}
-The published numerical constants are confirmed by exact rational enclosures in Section~\ref{sec:numerics}. Both sequences share every normalized algebraic correction from the classical Laguerre expansion.
+The published numerical constants are confirmed by exact rational enclosures in Section~\ref{rrm:sec:numerics}. Both sequences share every normalized algebraic correction from the classical Laguerre expansion.
 \end{corollary}
 
-The rest of the report proves these statements and makes the all-order and inverse conclusions precise. The only all-order special-function input is the classical Perron expansion, stated in Section~\ref{sec:perron}; all perturbation identities and amplitude bounds are proved directly.
+The rest of the report proves these statements and makes the all-order and inverse conclusions precise. The only all-order special-function input is the classical Perron expansion, stated in Section~\ref{rrm:sec:perron}; all perturbation identities and amplitude bounds are proved directly.
 
-\section{The growing and decaying solutions}\label{sec:fundamental}
+\begin{remark}[{[write]} The OEIS entries, quoted, 7~October 2026]\label{rrm:rem:oeis}
+The entries were read on 7~October 2026 in the OEIS internal format; the
+quotations are verbatim.
+\begin{enumerate}[label=(\alph*)]\raggedright
+\item A065094~\cite{oeisfloor} (revision \#19, 12~October 2024; author Ulrich
+ Schimke), ``\texttt{a(1) = 1, a(n+1) is the sum of a(n) and floor( arithmetic
+ mean of a(1) ... a(n) ).}'', has the unsigned comment
+ \begin{center}\small
+ \parbox{0.92\textwidth}{\raggedright\texttt{It seems that a(n) is asymptotic to C*BesselI(0,2*sqrt(n)) where C is a constant C = 0.44... and BesselI(b,x) is the modified Bessel function of the first kind. Can someone prove this?}}
+ \end{center}
+ followed by Kot\v{e}\v{s}ovec's comment (12~October 2024) ``\texttt{Numerically,
+ a(n) \textasciitilde{} c * exp(2*sqrt(n)) / n\^{}(1/4), where c =
+ 0.12571987512700920098166979884420897638511306007242...}'' and ``\texttt{C =
+ 0.445665353608456118285630970456186510059368576678...}''. Its comment
+ ``\texttt{A241772(n) = a(n+1) - a(n) = (Sum\_\{1..n\} a(k)) / n.}''
+ (Zumkeller) omits the floor; this is the transcription inconsistency named in
+ Section~\ref{rrm:sec:sources}.
+\item A065095~\cite{oeisceil} (revision \#20, 30~September 2026; Schimke),
+ the ceiling analogue, has the same unsigned question with ``\texttt{C =
+ 0.78...}'' and Kot\v{e}\v{s}ovec's ``\texttt{c =
+ 0.2214496835182522607818590241239262909281832289078...}'', ``\texttt{C =
+ 0.78501868866746800511978860290796656518270697588...}''. Its example
+ ``\texttt{a(5) = a(4) + ceiling((a(1)+a(2)+a(3)+a(4))/4) = 7 + ceiling((1+2+4+7)/4) = 7 + floor(14/4) = 7 + 4 = 11.}''
+ writes \texttt{floor} where the value is the ceiling.
+\item A376995~\cite{oeisunrounded} (revision \#16, Kot\v{e}\v{s}ovec) is
+ $\lfloor b(n)\rfloor$ for the unrounded recurrence; it gives
+ ``\texttt{a(n) \textasciitilde{} exp(-1/2) * BesselI(0, 2*sqrt(n))}'' and
+ ``\texttt{a(n) = floor(A160617(n-1)/A160618(n-1))}'', where A160617 and
+ A160618 are the numerator and denominator of $L_n(-1)$: so $b(n)=P_n$.
+\end{enumerate}
+\emph{What is proved.} Corollary~\ref{rrm:cor:oeis} proves the two unsigned
+statements exactly as asked: $a_n^\pm\sim C_\pm I_0(2\sqrt n)$ with
+$C_-=0.4456\ldots$ and $C_+=0.7850\ldots$, and Kot\v{e}\v{s}ovec's numerical
+equivalents $a_n^\pm\sim c_\pm e^{2\sqrt n}n^{-1/4}$. His four decimals (50,
+48, 49 and 47 places) are truncations of the certified values of
+Section~\ref{rrm:sec:numerics}, as are the source's 48-place
+values~\eqref{rrm:eq:decimalminus}--\eqref{rrm:eq:decimalplus}. Both b-files,
+fetched on 7~October 2026, are byte-identical to the shipped
+\file{data/b065094.txt} and \file{data/b065095.txt}, and the write's own
+integer recomputation of both orbits agrees with all $1000$ terms of each.
+OEIS content is published under CC~BY-SA~4.0. Nothing was submitted to the
+OEIS.
+\end{remark}
+
+\subsection{Provenance, sources and reading conventions}\label{rrm:sec:provenance}
+\begin{writenote}[Added 7 October 2026, batch~110]
+\emph{Provenance.} This report is Report~186 of the session bundle that
+ProveIt's \file{docs/incoming} intake processed as batch~110: the archive
+\file{Rounded_Running_Means_Bessel_Asymptotics_and_Inverses_Source.zip}
+($617{,}579$ bytes, SHA-256 \file{5a8332939ea7...8cea55487d0ef1},
+33 files, no wrapper directory), arrival commit \file{60f54ea06}, placed in
+\file{8622ca7e5}. The text is the delivered \file{Report186.tex} (760 lines,
+dated 3~October 2026; the delivered PDF has 19 pages), shipped as
+\file{article.tex}. The programs are shipped under \file{code/} (the
+delivered root \file{build.py}, \file{reproduce.py}, \file{test_build.py}
+and \file{verify_manifest.py} among them; the optional ones as
+\file{code/optional-*.py}), the certificates as
+\file{data/certificates-*.json}, the generated summaries as
+\file{data/generated-*.json}, the two OEIS b-files, the prefixes and the
+source hashes under \file{data/}, and \file{DATA_SOURCES.md} and
+\file{README_REPRODUCIBILITY.md} at the report root (the report README maps
+every name). Not shipped, and retrievable from the arrival commit: the
+delivered PDF, the checksum manifest \file{SHA256SUMS.json} (32 entries,
+verified at placement) and the delivered README, replaced by the report
+README. The package records no ProveIt commit and names no repository path;
+it carries no ``prepared for private review'' line and no personal data. It
+is a single-source report, so no merge choice was made. The write prefixed
+the 101 delivered labels with \file{rrm:} and updated the 63 references to
+them; it added this subsection, the notes marked [write],
+Remarks~\ref{rrm:rem:oeis} and~\ref{rrm:rem:transseries}, and dated notes.
+The added remarks are the last statements of their sections, this
+subsection follows the last delivered text of Section~\ref{rrm:sec:main},
+and the added displays are unnumbered, so every theorem, section and
+equation of the source keeps its delivered number.
+
+\emph{The sources, as the write read them} (7~October 2026).
+\begin{itemize}\raggedright
+\item OEIS A065094, A065095 with their b-files, A376995, and the names of
+ A160617 and A160618, in the internal format (Remark~\ref{rrm:rem:oeis}).
+\item The transseries volume
+ \path{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex}:
+ \file{p0:thm:lambert-core}, \file{p0:thm:core-reversion},
+ \file{p0:def:three-inverses} and \file{p0:thm:staircase}, read for
+ Remark~\ref{rrm:rem:transseries}.
+\item Not read by the write: Dea\~no, Huertas and Marcell\'an~\cite{dhm}
+ (the source's reading of its formula~(3) and formulas (24)--(27) is
+ reported, not confirmed; the write recomputed the two coefficients the
+ source takes from it, see below) and the DLMF~\cite{dlmf}.
+\end{itemize}
+
+\emph{What was checked at intake.} The batch-110 dossier read the
+manuscript and found no error. On copies, \file{reproduce.py --output-dir}
+passed in 13~s; the normal-mode certificates were byte-identical to the six
+recorded \file{certificates/*.json}, and its result equal to
+\file{generated/verification.json} modulo CR. \emph{What the write checked}
+(Python~3.14.4, SymPy~1.14.0, own code). Every proof was read line by line,
+with no error found; in particular the impulse response~\eqref{rrm:eq:G}
+(both initial values), the tail~\eqref{rrm:eq:tail}, the
+envelopes~\eqref{rrm:eq:floorenv}--\eqref{rrm:eq:ceilenv}, the positivity
+bound~\eqref{rrm:eq:positivity}, the width
+equivalent~\eqref{rrm:eq:width}, the ratio expansion~\eqref{rrm:eq:ratios},
+and the constant-forcing example of Section~\ref{rrm:sec:questions}. With its
+own SymPy code it rederived $c_1,\dots,c_6$ of~\eqref{rrm:eq:ctable} from
+the recurrence~\eqref{rrm:eq:recP} by the ansatz of~\eqref{rrm:eq:Pall}, the
+$b_j$ of~\eqref{rrm:eq:bvalues}, the five coefficients
+of~\eqref{rrm:eq:delta} from~\eqref{rrm:eq:deltagen}, and the
+range inverse~\eqref{rrm:eq:rangeinverse}; and it checked
+$c_1=d_1-1$, $c_2=d_2-d_1+3/4$ from the quoted $d_1=31/48$, $d_2=169/4608$:
+all agree. With exact integers it recomputed both orbits and, at $N=3000$,
+the brackets~\eqref{rrm:eq:floorcert}--\eqref{rrm:eq:ceilcert} with $T_N$ from
+the positive sum~\eqref{rrm:eq:positiveT}: they agree with the table of
+Section~\ref{rrm:sec:numerics} in all $40$ places printed by the check. The
+note at the end of Section~\ref{rrm:sec:questions} records a residual
+diagnostic. Floating computations are observations, not certificates.
+
+\emph{Relation to the repository.} Before batch~110 no file of the
+repository named A065094, A065095 or A376995. No statement of this report is
+formalized in Lean or Rocq, and its place in the collection confers no
+formal status. No neighbouring report treats rounded recurrences or Laguerre
+amplitudes, so no reciprocal note is proposed. The inverses are compared with
+the transseries volume in Remark~\ref{rrm:rem:transseries}.
+\end{writenote}
+
+\begin{writenote}[What is not claimed, collected from the source]
+The unrounded Laguerre solution (A376995), the classical Perron expansion and
+its coefficient methods, and the numerical constants (Kot\v{e}\v{s}ovec, 2024)
+are prior; the source claims ``No worldwide novelty determination,
+proof-assistant certification, effective asymptotic onset, or distributional
+assumption about rounding errors'', and its source review ``is not an
+exhaustive literature search and does not establish global priority''. The
+optimal envelope is sharp only for the whole bounded-forcing class: it is
+``not a lower bound on either actual rounded residual''. ``All orders'' means
+one theorem for each fixed order, with no convergence of the formal series
+and no uniformity in the order. Agreement with the published constants is a
+consistency check; the proof is the exact inequalities. Finite and floating
+observations are not onset certificates; no effective onset is given for the
+all-order remainder, log-concavity, nearest-integer recovery or the threshold
+comparison functions. The range inverse needs the exact amplitude; the
+threshold theorem is asymptotic, not an executable finite certificate, and a
+single ceiling of a truncation is not asserted to give the threshold. The
+write adds: its checks are exact finite or floating computations; it claims
+no novelty for any inversion.
+\end{writenote}
+
+\medskip
+\begingroup\small
+\noindent\emph{Reading conventions} (letters the source reuses, with the
+tempting false readings; no symbol of the source was renamed; symbols of the
+transseries volume carry the subscript ``vol'' in
+Remark~\ref{rrm:rem:transseries}).\par\smallskip
+\renewcommand{\arraystretch}{1.1}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.95in}>{\raggedright\arraybackslash}p{3.3in}>{\raggedright\arraybackslash}p{1.85in}@{}}
+\toprule
+Symbol & Meaning here (where) & Not to be read as\\
+\midrule
+\endhead
+$A$, $A_\pm$ & the amplitude~\eqref{rrm:eq:A} and its floor and ceiling values & the volume's $A_n$, $\mathcal A_{\mathrm{vol}}$\\
+$C_\pm$, $c_\pm$, $c_j$, $c$ & the Bessel and exponential constants~\eqref{rrm:eq:normalization}; the coefficients~\eqref{rrm:eq:ctable}; $c$ for $c_\pm$ in Sections~\ref{rrm:sec:inverse}--\ref{rrm:sec:threshold}; $C(h)$ the series of Section~\ref{rrm:sec:coefficients} & each other\\
+$L_m$, $L_N$, $L_M$ & Laguerre polynomials; the lower bracket~\eqref{rrm:eq:bracket}; the lower comparison function of Section~\ref{rrm:sec:threshold} & each other; a logarithm; the volume's $L_{\mathrm{vol}}$\\
+$U_N$, $U_M$ & the upper bracket; the upper comparison function & each other\\
+$P_n$, $Q_n$, $T_n$, $S_n$ & $L_{n-1}(-1)$; the minimal solution~\eqref{rrm:eq:Q}; $\sum_{j\le n}P_j$; partial sums of the orbit & each other\\
+$H_n$, $h$ & $(n-1)P_{n-1}Q_n$; $n^{-1/2}$ & each other\\
+$D$, $d_j$ & $c\sqrt2$~\eqref{rrm:eq:Dt}; the coefficients of the degree-$m$ Perron expansion~\eqref{rrm:eq:perrondegree} & each other; the volume's $d_{\mathrm{vol}}$\\
+$\delta$, $d_r$ & the displacement $t-t_0$; its coefficients & the volume's $e_n$\\
+$t$, $t_0$, $v$ & $2\sqrt n$; the Lambert root~\eqref{rrm:eq:tzero}; $1/t_0$ & the volume's $t$ (its $t$ plays the role of $v$ here)\\
+$E_1$, $E_m$, $R_m$ & the exponential integral; partial sums of $e^{1/2}$ and their remainders (Section~\ref{rrm:sec:numerics}) & each other\\
+$F_n$, $F_M$, $f_n$, $f_J$ & $(n-1)!P_n$; the carrier~\eqref{rrm:eq:carrier}; the integrand of $Q_n$; the truncated logarithmic forward function & each other\\
+$G_{n,k}$, $W_n$, $w_n$ & the impulse response; the Casoratian; the weights & each other; Lambert's $W_{-1}$\\
+$\beta_N$, $b_j$, $B_n$, $b_n$ & the determinant-like quantity~\eqref{rrm:eq:beta}; the logarithmic coefficients~\eqref{rrm:eq:bvalues}; shifted sums and terms in Section~\ref{rrm:sec:certproof} & each other; the volume's $b_{\mathrm{vol}}$\\
+$\kappa$, $\ell$, $u$, $r$ & $e^{-1/2}/(2\sqrt\pi)$; the forcing bounds; a constant shift & the volume's $\kappa_{\mathrm{vol}}$\\
+$N$, $N(Y)$, $M$, $K$ & a certificate index; the threshold~\eqref{rrm:eq:threshold}; a fixed order; the forward constant & each other\\
+\bottomrule
+\end{longtable}
+\endgroup
+
+\section{The growing and decaying solutions}\label{rrm:sec:fundamental}
 \subsection{The Laguerre solution}
 The classical Laguerre recurrence gives $P_1=1$, $P_2=2$, and
-\begin{equation}\label{eq:recP}
+\begin{equation}\label{rrm:eq:recP}
  nP_{n+1}-2nP_n+(n-1)P_{n-1}=0\qquad(n\ge2).
 \end{equation}
-For convenience at $n=1$ set $P_0=0$; then \eqref{eq:recP} also holds there. Writing $\Delta P_n=P_{n+1}-P_n$ gives
+For convenience at $n=1$ set $P_0=0$; then \eqref{rrm:eq:recP} also holds there. Writing $\Delta P_n=P_{n+1}-P_n$ gives
 \[
  n\Delta P_n-(n-1)\Delta P_{n-1}=P_n.
 \]
 Summing, with the initial value $P_2-P_1=1$, proves
-\begin{equation}\label{eq:T}
+\begin{equation}\label{rrm:eq:T}
  T_n=n(P_{n+1}-P_n).
 \end{equation}
-Thus $P_{n+1}=P_n+T_n/n$: $P$ is exactly the unrounded trajectory with initial value one. This identification is already part of the record A376995 \cite{oeisunrounded}. The finite sum in \eqref{eq:P} proves positivity directly. It also supplies an independent finite computation, separate from the recurrence.
+Thus $P_{n+1}=P_n+T_n/n$: $P$ is exactly the unrounded trajectory with initial value one. This identification is already part of the record A376995 \cite{oeisunrounded}. The finite sum in \eqref{rrm:eq:P} proves positivity directly. It also supplies an independent finite computation, separate from the recurrence.
 
 \subsection{The positive minimal solution}
-The integral \eqref{eq:Q} converges absolutely. Its integrand is positive, and multiplication by $s/(1+s)<1$ shows $0<Q_{n+1}<Q_n$. For $n\ge2$, differentiate
+The integral \eqref{rrm:eq:Q} converges absolutely. Its integrand is positive, and multiplication by $s/(1+s)<1$ shows $0<Q_{n+1}<Q_n$. For $n\ge2$, differentiate
 \[
  f_n(s)=e^{-s}\frac{s^{n-1}}{(1+s)^n}.
 \]
 The exact derivative is
-\begin{equation}\label{eq:derivative}
+\begin{equation}\label{rrm:eq:derivative}
  f_n'(s)=e^{-s}\frac{s^{n-2}}{(1+s)^{n+1}}
  \{n-1-2s-s^2\}.
 \end{equation}
 Both endpoint values of $f_n$ vanish. Combining the three integrands in the left side below produces the same numerator in braces, so integration gives
-\begin{equation}\label{eq:recQ}
+\begin{equation}\label{rrm:eq:recQ}
  nQ_{n+1}-2nQ_n+(n-1)Q_{n-1}=0\qquad(n\ge2).
 \end{equation}
 The special initial values are
-\begin{equation}\label{eq:Qinitial}
+\begin{equation}\label{rrm:eq:Qinitial}
  Q_1=eE_1(1),\qquad Q_2=2Q_1-1,
  \qquad E_1(1)=\int_1^\infty e^{-t}\frac{dt}{t}.
 \end{equation}
 For the second identity, integrate the derivative of $e^{-s}/(1+s)$ and use
 $s/(1+s)^2=1/(1+s)-1/(1+s)^2$. Also $Q_1<\int_0^\infty e^{-s}ds=1$.
 
-\begin{lemma}[Normalized Casoratian]\label{lem:casoratian}
+\begin{lemma}[Normalized Casoratian]\label{rrm:lem:casoratian}
 For every $n\ge1$,
-\begin{equation}\label{eq:casoratian}
+\begin{equation}\label{rrm:eq:casoratian}
  n(P_{n+1}Q_n-P_nQ_{n+1})=1.
 \end{equation}
 \end{lemma}
 \begin{proof}
-Put $W_n=P_{n+1}Q_n-P_nQ_{n+1}$. Substitution of the two recurrences gives $nW_n=(n-1)W_{n-1}$ for $n\ge2$. At $n=1$, \eqref{eq:Qinitial} gives $W_1=2Q_1-Q_2=1$. This proves the identity and linear independence.
+Put $W_n=P_{n+1}Q_n-P_nQ_{n+1}$. Substitution of the two recurrences gives $nW_n=(n-1)W_{n-1}$ for $n\ge2$. At $n=1$, \eqref{rrm:eq:Qinitial} gives $W_1=2Q_1-Q_2=1$. This proves the identity and linear independence.
 \end{proof}
 
 The adjective minimal will be justified by $Q_n/P_n\to0$ and a full leading equivalent below. It does not require a numerical backward recurrence, which would introduce avoidable stability questions into the certificate.
 
-\section{Positive weights and exact Green formula}\label{sec:green}
+\section{Positive weights and exact Green formula}\label{rrm:sec:green}
 \subsection{Mass and tails}
 Subtract the integrands for $Q_n$ and $Q_{n+1}$ to obtain
-\begin{equation}\label{eq:wint}
+\begin{equation}\label{rrm:eq:wint}
  w_n=n\int_0^\infty e^{-s}\frac{s^{n-1}}{(1+s)^{n+1}}\,ds>0.
 \end{equation}
 For $r=s/(1+s)$, the geometric derivative identity
 $\sum_{n\ge1}nr^{n-1}=(1-r)^{-2}$ and Tonelli's theorem give
-\begin{equation}\label{eq:mass}
+\begin{equation}\label{rrm:eq:mass}
  \sum_{n\ge1}w_n=\int_0^\infty e^{-s}\,ds=1.
 \end{equation}
 An integration by parts in $e^{-s}(s/(1+s))^n$ also gives
-\begin{equation}\label{eq:walt}
+\begin{equation}\label{rrm:eq:walt}
  w_n=\int_0^\infty e^{-s}\left(\frac{s}{1+s}\right)^n ds.
 \end{equation}
 Hence the series defining $A$ is absolutely convergent, and
-\begin{equation}\label{eq:roughA}
+\begin{equation}\label{rrm:eq:roughA}
  \alpha+\ell\le A\le\alpha+u.
 \end{equation}
 
 For $n\ge2$ two exact sums will be needed:
 \begin{align}
- \sum_{k<n}k(P_{k+1}-P_k)&=(n-1)P_{n-1},\label{eq:past}\\
- \sum_{k\ge n}w_k&=(n-1)Q_{n-1}.\label{eq:tail}
+ \sum_{k<n}k(P_{k+1}-P_k)&=(n-1)P_{n-1},\label{rrm:eq:past}\\
+ \sum_{k\ge n}w_k&=(n-1)Q_{n-1}.\label{rrm:eq:tail}
 \end{align}
-To prove \eqref{eq:past}, summation by parts gives $(n-1)P_n-T_{n-1}$, which is the claimed expression by \eqref{eq:T}. For \eqref{eq:tail}, Tonelli applied to \eqref{eq:walt} gives
+To prove \eqref{rrm:eq:past}, summation by parts gives $(n-1)P_n-T_{n-1}$, which is the claimed expression by \eqref{rrm:eq:T}. For \eqref{rrm:eq:tail}, Tonelli applied to \eqref{rrm:eq:walt} gives
 \[
  \sum_{k\ge n}w_k
  =\int_0^\infty e^{-s}\frac{s^n}{(1+s)^{n-1}}\,ds.
@@ -218,56 +427,56 @@ This equals $(n-1)Q_{n-1}$. Indeed the integral of the derivative of
 $e^{-s}s^{n-1}/(1+s)^{n-2}$ is zero; its numerator over $(1+s)^{n-1}$ is
 $(n-1)s^{n-2}-s^n$. The endpoint terms vanish for $n\ge2$. This argument establishes the tail without any unproved limiting cancellation.
 
-Equations \eqref{eq:past}, \eqref{eq:tail}, and the Casoratian at $n-1$ give
-\begin{equation}\label{eq:massdiff}
+Equations \eqref{rrm:eq:past}, \eqref{rrm:eq:tail}, and the Casoratian at $n-1$ give
+\begin{equation}\label{rrm:eq:massdiff}
  P_n\sum_{k\ge n}w_k-Q_n\sum_{k<n}k(P_{k+1}-P_k)=1.
 \end{equation}
-At $n=1$ it follows from $P_1=1$ and \eqref{eq:mass}. The positive past coefficient total is $H_n$ and the positive future coefficient total is $H_n+1$.
+At $n=1$ it follows from $P_1=1$ and \eqref{rrm:eq:mass}. The positive past coefficient total is $H_n$ and the positive future coefficient total is $H_n+1$.
 
 \subsection{An impulse with the correct initial jump}
-Eliminating $S_n$ from \eqref{eq:forced} yields, with $\eps_0=0$,
-\begin{equation}\label{eq:secondorder}
+Eliminating $S_n$ from \eqref{rrm:eq:forced} yields, with $\eps_0=0$,
+\begin{equation}\label{rrm:eq:secondorder}
  na_{n+1}-2na_n+(n-1)a_{n-1}
  =n\eps_n-(n-1)\eps_{n-1}.
 \end{equation}
 At $n=1$ the term involving $a_0$ vanishes. A unit error at time $k$ has zero response for $n\le k$. For $n>k$ define
-\begin{equation}\label{eq:G}
+\begin{equation}\label{rrm:eq:G}
  G_{n,k}=w_kP_n+k(P_{k+1}-P_k)Q_n.
 \end{equation}
-The same expression, if evaluated at $n=k$ and $n=k+1$, equals one in both cases by \eqref{eq:casoratian}. Its homogeneous extension consequently has
+The same expression, if evaluated at $n=k$ and $n=k+1$, equals one in both cases by \eqref{rrm:eq:casoratian}. Its homogeneous extension consequently has
 \[
  G_{k+2,k}=\frac{k+2}{k+1}.
 \]
-These are exactly the two actual initial response values: the error adds one to $a_{k+1}$ and to $S_{k+1}$, then the next running mean adds $1/(k+1)$. Thereafter the second-order recurrence is homogeneous. Thus \eqref{eq:G}, together with zero response through time $k$, is the correct impulse solution. This check is important: differencing the forcing creates the additional negative impulse at the next step in \eqref{eq:secondorder}.
+These are exactly the two actual initial response values: the error adds one to $a_{k+1}$ and to $S_{k+1}$, then the next running mean adds $1/(k+1)$. Thereafter the second-order recurrence is homogeneous. Thus \eqref{rrm:eq:G}, together with zero response through time $k$, is the correct impulse solution. This check is important: differencing the forcing creates the additional negative impulse at the next step in \eqref{rrm:eq:secondorder}.
 
 By finite superposition,
-\begin{equation}\label{eq:variation}
+\begin{equation}\label{rrm:eq:variation}
  a_n=\alpha P_n+\sum_{k<n}\eps_kG_{n,k}.
 \end{equation}
-Subtracting \eqref{eq:A} times $P_n$ proves \eqref{eq:shadow}. Only finite sums and the absolutely convergent amplitude tail are used.
+Subtracting \eqref{rrm:eq:A} times $P_n$ proves \eqref{rrm:eq:shadow}. Only finite sums and the absolutely convergent amplitude tail are used.
 
 \subsection{Sharpness of the envelope}
-Every coefficient of a past error in \eqref{eq:shadow} is positive, and every coefficient of a future error is negative. Their total magnitudes are $H_n$ and $H_n+1$. This proves \eqref{eq:sharp}. For the upper endpoint choose $\eps_k=u$ for $k<n$ and $\eps_k=\ell$ for $k\ge n$; reverse the choices for the lower endpoint. These are legitimate bounded forcings and prove exact pointwise optimality, including $n=1$.
+Every coefficient of a past error in \eqref{rrm:eq:shadow} is positive, and every coefficient of a future error is negative. Their total magnitudes are $H_n$ and $H_n+1$. This proves \eqref{rrm:eq:sharp}. For the upper endpoint choose $\eps_k=u$ for $k<n$ and $\eps_k=\ell$ for $k\ge n$; reverse the choices for the lower endpoint. These are legitimate bounded forcings and prove exact pointwise optimality, including $n=1$.
 
 A useful specialization is
 \begin{align}
- -H_n\le a_n^--A_-P_n&\le H_n+1,\label{eq:floorenv}\\
- -(H_n+1)\le a_n^+-A_+P_n&\le H_n.\label{eq:ceilenv}
+ -H_n\le a_n^--A_-P_n&\le H_n+1,\label{rrm:eq:floorenv}\\
+ -(H_n+1)\le a_n^+-A_+P_n&\le H_n.\label{rrm:eq:ceilenv}
 \end{align}
 The common order $\sqrt n$ is a theorem about the available uniform error envelope, not a lower bound on either actual rounded residual.
 
-\section{Classical asymptotics and bounded forcing transfer}\label{sec:perron}
+\section{Classical asymptotics and bounded forcing transfer}\label{rrm:sec:perron}
 \subsection{The classical input and the index shift}
 We use the outer Perron expansion of Laguerre polynomials, as stated in Dea\~no, Huertas, and Marcell\'an \cite[formula (3)]{dhm}. At fixed $z=-1$ and parameter zero, for each fixed integer $M\ge0$ it gives
-\begin{equation}\label{eq:perrondegree}
+\begin{equation}\label{rrm:eq:perrondegree}
  L_m(-1)=\frac{e^{-1/2}}{2\sqrt\pi}\,m^{-1/4}e^{2\sqrt m}
  \left\{\sum_{j=0}^M d_jm^{-j/2}
        +\OO_M(m^{-(M+1)/2})\right\},\quad d_0=1.
 \end{equation}
 The negative real point $-1$ lies in its permitted domain off the nonnegative real axis. This is an asymptotic theorem with a remainder for every fixed order; a formal recurrence alone would not establish it. The paper credits the classical result to Perron and Szeg\H{o}, and gives established coefficient constructions and checks.
 
-Our index is $n=m+1$. Expanding the elementary prefactor and the finite series in \eqref{eq:perrondegree} gives
-\begin{equation}\label{eq:Pall}
+Our index is $n=m+1$. Expanding the elementary prefactor and the finite series in \eqref{rrm:eq:perrondegree} gives
+\begin{equation}\label{rrm:eq:Pall}
  P_n=\kappa n^{-1/4}e^{2\sqrt n}
  \left\{\sum_{j=0}^M c_jn^{-j/2}
        +\OO_M(n^{-(M+1)/2})\right\},\qquad
@@ -276,11 +485,11 @@ Our index is $n=m+1$. Expanding the elementary prefactor and the finite series i
 Thus $P_n\sim\kappa n^{-1/4}e^{2\sqrt n}$ and $P_{n-1}/P_n\to1$. The degree-to-index shift matters: formula (27) in \cite{dhm} gives $d_1=31/48$ and $d_2=169/4608$, whereas the coefficients for $P_n$ are $c_1=-17/48$ and $c_2=649/4608$.
 
 \subsection{The minimal solution without a second special function theorem}
-Divide \eqref{eq:casoratian} by $nP_nP_{n+1}$ and sum. Since $0<Q_n\le Q_1$ and $P_n\to\infty$, the result is the exact positive tail
-\begin{equation}\label{eq:reductionorder}
+Divide \eqref{rrm:eq:casoratian} by $nP_nP_{n+1}$ and sum. Since $0<Q_n\le Q_1$ and $P_n\to\infty$, the result is the exact positive tail
+\begin{equation}\label{rrm:eq:reductionorder}
  \frac{Q_n}{P_n}=\sum_{j\ge n}\frac1{jP_jP_{j+1}}.
 \end{equation}
-The leading equivalent in \eqref{eq:Pall} implies, uniformly in all $j\ge n$ as $n\to\infty$,
+The leading equivalent in \eqref{rrm:eq:Pall} implies, uniformly in all $j\ge n$ as $n\to\infty$,
 \[
  \frac1{jP_jP_{j+1}}
  \sim\kappa^{-2}j^{-1/2}e^{-4\sqrt j}.
@@ -292,16 +501,16 @@ The positive function $f(x)=x^{-1/2}e^{-4\sqrt x}$ is decreasing and
  \int_n^\infty f(x)\,dx=\frac12 e^{-4\sqrt n},
  \qquad \frac{f(n)}{\int_n^\infty f(x)\,dx}=\frac2{\sqrt n}.
 \]
-Integral comparison and \eqref{eq:reductionorder} therefore give
-\begin{equation}\label{eq:Qasymp}
+Integral comparison and \eqref{rrm:eq:reductionorder} therefore give
+\begin{equation}\label{rrm:eq:Qasymp}
  Q_n\sim\frac1{2\kappa}n^{-1/4}e^{-2\sqrt n}
  =\sqrt\pi e^{1/2}n^{-1/4}e^{-2\sqrt n}.
 \end{equation}
 In particular $nQ_n\to0$, $Q_n/P_n\to0$, and
-\begin{equation}\label{eq:Hasymp}
+\begin{equation}\label{rrm:eq:Hasymp}
  H_n=(n-1)P_{n-1}Q_n\sim\frac{\sqrt n}{2}.
 \end{equation}
-Together with the exact interval, this finishes the proof of Theorem~\ref{thm:shadow}.
+Together with the exact interval, this finishes the proof of Theorem~\ref{rrm:thm:shadow}.
 
 \subsection{Positivity and the Bessel conjectures}
 For floor rounding, mass one rewrites the amplitude as
@@ -309,34 +518,34 @@ For floor rounding, mass one rewrites the amplitude as
  A_-=\sum_{k\ge1}w_k(1+\eps_k^-)>0.
 \]
 Every summand is nonnegative and $\eps_1^-=0$, so in fact
-\begin{equation}\label{eq:positivity}
+\begin{equation}\label{rrm:eq:positivity}
  A_-\ge w_1=1-Q_1=1-eE_1(1)>0.
 \end{equation}
 For ceiling rounding, $A_+\ge1$. Thus both leading amplitudes are genuinely nonzero; the generic inequality $\alpha+\ell\le A$ alone would not have proved this for floor rounding.
 
 For fixed $A\ne0$, the relative shadowing error is
-\begin{equation}\label{eq:relative}
+\begin{equation}\label{rrm:eq:relative}
  \frac{a_n-AP_n}{AP_n}=\OO\left(n^{3/4}e^{-2\sqrt n}\right).
 \end{equation}
 The standard leading modified-Bessel expansion \cite[10.40.1]{dlmf} is
-$I_0(x)\sim e^x/\sqrt{2\pi x}$ as $x\to+\infty$. Applying it at $x=2\sqrt n$ and comparing with \eqref{eq:Pall} proves Corollary~\ref{cor:oeis} with the constants in \eqref{eq:normalization}.
+$I_0(x)\sim e^x/\sqrt{2\pi x}$ as $x\to+\infty$. Applying it at $x=2\sqrt n$ and comparing with \eqref{rrm:eq:Pall} proves Corollary~\ref{rrm:cor:oeis} with the constants in \eqref{rrm:eq:normalization}.
 
-\begin{theorem}[Every fixed forward order]\label{thm:allorders}
+\begin{theorem}[Every fixed forward order]\label{rrm:thm:allorders}
 For either rounded sequence and each fixed $M\ge0$,
-\begin{equation}\label{eq:allorders}
+\begin{equation}\label{rrm:eq:allorders}
  a_n^\pm=c_\pm e^{2\sqrt n}n^{-1/4}
  \left\{\sum_{j=0}^M c_jn^{-j/2}
        +\OO_M(n^{-(M+1)/2})\right\}.
 \end{equation}
-The rational coefficients $c_j$ are identical for floor and ceiling rounding and coincide with those of $L_{n-1}(-1)$ in \eqref{eq:Pall}. The bounded-forcing relative error is smaller than every algebraic power.
+The rational coefficients $c_j$ are identical for floor and ceiling rounding and coincide with those of $L_{n-1}(-1)$ in \eqref{rrm:eq:Pall}. The bounded-forcing relative error is smaller than every algebraic power.
 \end{theorem}
 \begin{proof}
-The ratio in \eqref{eq:relative} is $o(n^{-B})$ for every fixed $B>0$, so it can be absorbed into the remainder in \eqref{eq:Pall} for any fixed $M$.
+The ratio in \eqref{rrm:eq:relative} is $o(n^{-B})$ for every fixed $B>0$, so it can be absorbed into the remainder in \eqref{rrm:eq:Pall} for any fixed $M$.
 \end{proof}
 
 All orders always means one theorem for each fixed truncation order. It does not mean that the infinite formal series converges or that the constants are uniform when the order grows with $n$.
 
-\section{A rational generator for every coefficient}\label{sec:coefficients}
+\section{A rational generator for every coefficient}\label{rrm:sec:coefficients}
 Let $h=n^{-1/2}$ and let $C(h)=\sum_{j\ge0}c_jh^j$ be a formal power series, normalized by $c_0=1$. For any formal series $C$, define
 \begin{align}
  \mathcal R[C](h)={}&
@@ -344,23 +553,23 @@ Let $h=n^{-1/2}$ and let $C(h)=\sum_{j\ge0}c_jh^j$ be a formal power series, nor
  C\left(\frac{h}{\sqrt{1+h^2}}\right)-2C(h)\notag\\
  &+(1-h^2)e^{2(\sqrt{1-h^2}-1)/h}(1-h^2)^{-1/4}
  C\left(\frac{h}{\sqrt{1-h^2}}\right).
- \label{eq:operator}
+ \label{rrm:eq:operator}
 \end{align}
-This is precisely \eqref{eq:recP} divided by $ne^{2\sqrt n}n^{-1/4}$. The apparent divisions by $h$ are harmless because $\sqrt{1\pm h^2}-1$ has order two. Binomial and exponential series therefore define every coefficient using finitely many rational operations.
+This is precisely \eqref{rrm:eq:recP} divided by $ne^{2\sqrt n}n^{-1/4}$. The apparent divisions by $h$ are harmless because $\sqrt{1\pm h^2}-1$ has order two. Binomial and exponential series therefore define every coefficient using finitely many rational operations.
 
 For $j\ge1$, expansion through the first nonzero order gives
-\begin{equation}\label{eq:triangular}
+\begin{equation}\label{rrm:eq:triangular}
  \mathcal R[h^j]=-jh^{j+3}+\OO(h^{j+4}),
 \end{equation}
 while $\mathcal R[1]$ begins at degree four. A direct way to see the $-j$ coefficient is to compare the two substitutions $h^j(1\pm h^2)^{-j/2}$: the order-$h^2$ contributions cancel between the two shifts, and their products with the opposite order-$h$ exponential terms total $-jh^{j+3}$. The common $j$-independent contribution at degree $j+3$ vanishes. Consequently
-\begin{equation}\label{eq:cgen}
+\begin{equation}\label{rrm:eq:cgen}
  c_j=\frac1j\coef{h}{j+3}
  \mathcal R\left[\sum_{r=0}^{j-1}c_rh^r\right],\qquad j\ge1.
 \end{equation}
 The asymptotic existence supplied by Perron's theorem and this triangular uniqueness show that the generated series is the actual coefficient series. Formal cancellation is used to identify coefficients, not to prove the analytic remainder theorem.
 
 The first seven coefficients are
-\begin{equation}\label{eq:ctable}
+\begin{equation}\label{rrm:eq:ctable}
 \begin{array}{c|r}
 j&c_j\\\hline
 0&1\\[2pt]
@@ -372,7 +581,7 @@ j&c_j\\\hline
 6&2719850722091/308210879692800
 \end{array}
 \end{equation}
-As an external normalization check, the first two coefficients in the degree-$m$ formula \eqref{eq:perrondegree} are obtained from \cite[formula (27)]{dhm}. The shift $m=n-1$ changes the elementary prefactor by
+As an external normalization check, the first two coefficients in the degree-$m$ formula \eqref{rrm:eq:perrondegree} are obtained from \cite[formula (27)]{dhm}. The shift $m=n-1$ changes the elementary prefactor by
 \[
  \frac{(n-1)^{-1/4}e^{2\sqrt{n-1}}}{n^{-1/4}e^{2\sqrt n}}
  =1-n^{-1/2}+\frac34n^{-1}+\OO(n^{-3/2}).
@@ -381,69 +590,69 @@ Thus $c_1=d_1-1=-17/48$ and $c_2=d_2-d_1+3/4=649/4608$, in agreement with the re
 
 The supplied mandatory implementation uses truncated arrays of rational numbers for addition, multiplication, substitution, exponential, logarithm, and rational binomial powers. Every fixed requested order is a finite computation. A separate logarithmic-ratio check verifies the displayed forward coefficients, and direct formal composition checks the displayed inverse coefficients. Optional symbolic-system scripts offer another route but are not required to reproduce the exact results.
 
-\section{Nested certificates from the finite trajectory}\label{sec:certproof}
-We now prove Theorem~\ref{thm:certificate} without evaluating $Q_n$ numerically. Fix a real constant $r$ and write
+\section{Nested certificates from the finite trajectory}\label{rrm:sec:certproof}
+We now prove Theorem~\ref{rrm:thm:certificate} without evaluating $Q_n$ numerically. Fix a real constant $r$ and write
 \[
  b_n=a_n+r,\qquad B_n=S_n+nr.
 \]
 Then $b_{n+1}=b_n+B_n/n+(\eps_n-r)$. Define the determinant-like quantity
-\begin{equation}\label{eq:beta}
+\begin{equation}\label{rrm:eq:beta}
  \beta_N(r)=T_N(a_N+r)-P_N(S_N+Nr).
 \end{equation}
 At $N=1$ it is zero. Subtracting the two first-order systems for $b$ and $P$ gives
-\begin{equation}\label{eq:betaupdate}
+\begin{equation}\label{rrm:eq:betaupdate}
  \beta_{N+1}(r)=\beta_N(r)+T_N(\eps_N-r).
 \end{equation}
-Hence, using \eqref{eq:T},
-\begin{equation}\label{eq:betasum}
+Hence, using \eqref{rrm:eq:T},
+\begin{equation}\label{rrm:eq:betasum}
  \beta_N(r)=\sum_{k<N}k(\eps_k-r)(P_{k+1}-P_k).
 \end{equation}
 A second direct subtraction gives
-\begin{equation}\label{eq:ratioupdate}
+\begin{equation}\label{rrm:eq:ratioupdate}
  \frac{B_{N+1}}{T_{N+1}}-\frac{B_N}{T_N}
  =\frac{\beta_N(r)+T_N(\eps_N-r)}{T_NT_{N+1}}.
 \end{equation}
 For $r=\ell$, all terms in the numerator are nonnegative; for $r=u$, they are nonpositive. This proves nestedness of the proposed endpoints.
 
-Their difference is exactly $N(u-\ell)/T_N$. To find its size, use the first two orders of \eqref{eq:Pall} in \eqref{eq:T} to obtain
-\begin{equation}\label{eq:Tasymp}
+Their difference is exactly $N(u-\ell)/T_N$. To find its size, use the first two orders of \eqref{rrm:eq:Pall} in \eqref{rrm:eq:T} to obtain
+\begin{equation}\label{rrm:eq:Tasymp}
  \frac{P_{N+1}}{P_N}=1+N^{-1/2}+\OO(N^{-1}),
  \qquad T_N\sim\sqrt N\,P_N.
 \end{equation}
-Therefore the width tends to zero and has the equivalent \eqref{eq:width} when $u>\ell$.
+Therefore the width tends to zero and has the equivalent \eqref{rrm:eq:width} when $u>\ell$.
 
-Both endpoints consequently tend to the same limit. To identify it, sum the exact shadowing estimate: $S_N=AT_N+\OO(N^{3/2})$. Since $T_N$ grows faster than every power, $S_N/T_N\to A$, and $Nr/T_N\to0$ for fixed $r$. Thus their common limit is exactly \eqref{eq:A}. Monotonicity then proves that every finite interval contains $A$, completing the theorem.
+Both endpoints consequently tend to the same limit. To identify it, sum the exact shadowing estimate: $S_N=AT_N+\OO(N^{3/2})$. Since $T_N$ grows faster than every power, $S_N/T_N\to A$, and $Nr/T_N\to0$ for fixed $r$. Thus their common limit is exactly \eqref{rrm:eq:A}. Monotonicity then proves that every finite interval contains $A$, completing the theorem.
 
 \subsection{The actual floor and ceiling brackets}
 For the two trajectories the bounds become
 \begin{align}
- \frac{S_N^--N}{T_N}&\le A_-\le\frac{S_N^-}{T_N},\label{eq:floorcert}\\
- \frac{S_N^+}{T_N}&\le A_+\le\frac{S_N^++N}{T_N}.\label{eq:ceilcert}
+ \frac{S_N^--N}{T_N}&\le A_-\le\frac{S_N^-}{T_N},\label{rrm:eq:floorcert}\\
+ \frac{S_N^+}{T_N}&\le A_+\le\frac{S_N^++N}{T_N}.\label{rrm:eq:ceilcert}
 \end{align}
 These certificates need only the integer trajectory and a positive rational Laguerre sum. They do not involve fitting an asymptotic curve, approximating $E_1$, iterating the decaying solution forward, or assuming that fractional parts are uniformly distributed.
 
 For an integer-only normalization put
-\begin{equation}\label{eq:Fdef}
+\begin{equation}\label{rrm:eq:Fdef}
  F_n=(n-1)!P_n.
 \end{equation}
 The recurrence becomes
-\begin{equation}\label{eq:Frec}
+\begin{equation}\label{rrm:eq:Frec}
  F_1=1,\quad F_2=2,\qquad
  F_{n+1}=2nF_n-(n-1)^2F_{n-1},
 \end{equation}
 and
-\begin{equation}\label{eq:Tinteger}
+\begin{equation}\label{rrm:eq:Tinteger}
  T_N=\frac{F_{N+1}-NF_N}{(N-1)!}.
 \end{equation}
-The main certificate uses \eqref{eq:Frec}. An independent replay uses the positive finite sums
+The main certificate uses \eqref{rrm:eq:Frec}. An independent replay uses the positive finite sums
 \begin{align}
- F_N&=(N-1)!\sum_{j=0}^{N-1}\frac{\binom{N-1}{j}}{j!},\label{eq:positiveP}\\
- (N-1)!T_N&=N!\sum_{j=1}^{N}\frac{\binom{N-1}{j-1}}{j!}.\label{eq:positiveT}
+ F_N&=(N-1)!\sum_{j=0}^{N-1}\frac{\binom{N-1}{j}}{j!},\label{rrm:eq:positiveP}\\
+ (N-1)!T_N&=N!\sum_{j=1}^{N}\frac{\binom{N-1}{j-1}}{j!}.\label{rrm:eq:positiveT}
 \end{align}
-The second identity follows by summing the finite formula for $P_n$ and using the hockey-stick binomial identity, or by expanding \eqref{eq:T}. Successive scaled terms are integers, so the replay can use exact integer divisions, explicitly checking every divisibility condition. This is a genuinely distinct computation of the normalization, rather than rerunning the same three-term recurrence under another name.
+The second identity follows by summing the finite formula for $P_n$ and using the hockey-stick binomial identity, or by expanding \eqref{rrm:eq:T}. Successive scaled terms are integers, so the replay can use exact integer divisions, explicitly checking every divisibility condition. This is a genuinely distinct computation of the normalization, rather than rerunning the same three-term recurrence under another name.
 
-\section{Certified constants and numerical interpretation}\label{sec:numerics}
-At $N=10000$, exact arithmetic in \eqref{eq:floorcert}--\eqref{eq:ceilcert} gives the following outward decimal intervals. Each displayed endpoint has 70 digits after the decimal point. To fit the page, each decimal is split after its first 35 fractional digits; the two strings on a line are to be concatenated.
+\section{Certified constants and numerical interpretation}\label{rrm:sec:numerics}
+At $N=10000$, exact arithmetic in \eqref{rrm:eq:floorcert}--\eqref{rrm:eq:ceilcert} gives the following outward decimal intervals. Each displayed endpoint has 70 digits after the decimal point. To fit the page, each decimal is split after its first 35 fractional digits; the two strings on a line are to be concatenated.
 
 \begin{center}\small
 \setlength{\tabcolsep}{3pt}
@@ -460,14 +669,14 @@ $A_+$&lower&\texttt{1.29427700990317613682377668104327275}&\texttt{4154153334204
 For readable full-precision records without line wrapping, the archive contains the exact generated certificate in JSON. The converted constants start as follows:
 \begin{align}
  C_-&=0.445665353608456118285630970456186510059368576678\ldots,\notag\\
- c_-&=0.125719875127009200981669798844208976385113060072\ldots,\label{eq:decimalminus}\\
+ c_-&=0.125719875127009200981669798844208976385113060072\ldots,\label{rrm:eq:decimalminus}\\
  C_+&=0.785018688667468005119788602907966565182706975887\ldots,\notag\\
- c_+&=0.221449683518252260781859024123926290928183228907\ldots.\label{eq:decimalplus}
+ c_+&=0.221449683518252260781859024123926290928183228907\ldots.\label{rrm:eq:decimalplus}
 \end{align}
 These values agree with Kot\v e\v sovec's 2024 numerical observations in the two OEIS records. Agreement is a consistency check; the proof is supplied by the exact inequalities.
 
 The common unrounded rational width $N/T_N$ is less than
-\begin{equation}\label{eq:tinywidth}
+\begin{equation}\label{rrm:eq:tinywidth}
  8.0967911913136482\times10^{-84}.
 \end{equation}
 Outward rounding to 70 places produces intervals of width $10^{-70}$. The displayed interval for $A_-$ certifies 69 common truncated fractional digits. The displayed $A_+$ endpoints cross a carry in the last two places and share only 68 fractional digits. A separate exact check of the narrower rational bounds verifies $\lfloor10^{69}L\rfloor=\lfloor10^{69}U\rfloor$ for each of the six constants $A_\pm,C_\pm,c_\pm$. Thus all six have 69 certified truncated fractional digits, as recorded in \texttt{certificates/common\_truncations.json}; that stronger statement uses the narrow bounds, not just the printed 70-place intervals.
@@ -479,7 +688,7 @@ The factor $e^{-1/2}$ and $\sqrt\pi$ are enclosed with rational arithmetic. For 
  R_m=\frac1{2^mm!}\frac{2(m+1)}{2(m+1)-1}.
 \]
 The omitted positive terms have successive ratios at most $1/[2(m+1)]$, so
-\begin{equation}\label{eq:expbound}
+\begin{equation}\label{rrm:eq:expbound}
  E_m<e^{1/2}<E_m+R_m.
 \end{equation}
 For $k>1$, the alternating expansion for $\arctan(1/k)$ places its value between the sum through index $m-1$ and that sum plus the first omitted term. Machin's exact identity
@@ -493,7 +702,7 @@ therefore gives a rational lower and upper bound on $\pi$. To enclose a positive
 Then $z/B\le\sqrt q<(z+1)/B$. This uses only integer square root and integer division.
 
 The implementation uses 160 exponential terms, 150 arctangent terms, and a square-root scale $10^{150}$. If $[A_L,A_U]$ is an amplitude enclosure, $[E_L,E_U]$ encloses $e^{1/2}$, and $[R_L,R_U]$ encloses $2\sqrt\pi$, then
-\begin{equation}\label{eq:convert}
+\begin{equation}\label{rrm:eq:convert}
  \frac{A_L}{E_U}\le C\le\frac{A_U}{E_L},\qquad
  \frac{A_L}{E_UR_U}\le c\le\frac{A_U}{E_LR_L}.
 \end{equation}
@@ -502,32 +711,32 @@ Every denominator is positive. Integer division rounds lower endpoints downward 
 \subsection{Finite observations are not asymptotic onset certificates}
 The package checks both complete displayed OEIS prefixes and all 1000 terms in each official b-file. It also checks finite Laguerre sums and exact Casoratians. Optional 120-digit diagnostics compare the six-correction forward approximation and the inverse with exact integer terms. Those floating results are evidence about selected indices, not interval proofs of an all-$n$ remainder or a smallest log-concavity onset.
 
-\section{Further consequences for the rounded sequences}\label{sec:consequences}
+\section{Further consequences for the rounded sequences}\label{rrm:sec:consequences}
 \subsection{Beyond all orders proportionality}
-Apply \eqref{eq:bothshadow} to both sequences and cancel $P_n$:
-\begin{equation}\label{eq:proportion}
+Apply \eqref{rrm:eq:bothshadow} to both sequences and cancel $P_n$:
+\begin{equation}\label{rrm:eq:proportion}
  a_n^+-\frac{A_+}{A_-}a_n^-=\OO(\sqrt n).
 \end{equation}
 Since $A_->0$, division by $a_n^-$ gives
-\begin{equation}\label{eq:ratioorbit}
+\begin{equation}\label{rrm:eq:ratioorbit}
  \frac{a_n^+}{a_n^-}=\frac{A_+}{A_-}
  +\OO\left(n^{3/4}e^{-2\sqrt n}\right).
 \end{equation}
 Thus the normalized rounded sequences agree to every algebraic asymptotic order despite having different discontinuous rounding errors at many steps.
 
 \subsection{Ratios and increments}
-Taking enough terms of \eqref{eq:allorders}, shifting $n$ to $n+1$, and dividing produces an expansion to each fixed order. In particular,
+Taking enough terms of \eqref{rrm:eq:allorders}, shifting $n$ to $n+1$, and dividing produces an expansion to each fixed order. In particular,
 \begin{align}
  \frac{a_{n+1}^\pm}{a_n^\pm}
- &=1+n^{-1/2}+\frac14n^{-1}+\OO(n^{-3/2}),\label{eq:ratios}\\
- a_{n+1}^\pm-a_n^\pm&\sim\frac{a_n^\pm}{\sqrt n}.\label{eq:increments}
+ &=1+n^{-1/2}+\frac14n^{-1}+\OO(n^{-3/2}),\label{rrm:eq:ratios}\\
+ a_{n+1}^\pm-a_n^\pm&\sim\frac{a_n^\pm}{\sqrt n}.\label{rrm:eq:increments}
 \end{align}
 For the stated ratio accuracy, using the forward theorem at a sufficiently deep fixed order controls the shifted remainders directly. One need not differentiate a big-$O$ expression.
 
 \subsection{Eventual strict log concavity}
-\begin{proposition}\label{prop:logconcavity}
+\begin{proposition}\label{rrm:prop:logconcavity}
 Both rounded sequences are strictly log-concave for all sufficiently large $n$:
-\begin{equation}\label{eq:logconcave}
+\begin{equation}\label{rrm:eq:logconcave}
  (a_n^\pm)^2>a_{n-1}^\pm a_{n+1}^\pm.
 \end{equation}
 No effective first such index is asserted.
@@ -539,7 +748,7 @@ Take the forward expansion through $c_3$, so the pointwise relative remainder is
  +q_1n^{-1/2}+q_2n^{-1}+q_3n^{-3/2}+\OO(n^{-2})
 \]
 for fixed rational $q_j$. The three shifted values of the last remainder still contribute only $\OO(n^{-2})$ to the central second difference. The explicitly written smooth terms can be differenced by Taylor's theorem; in particular the contribution of $2\sqrt n$ is $-1/(2n^{3/2})+\OO(n^{-7/2})$, and all other contributions are $\OO(n^{-2})$. Hence
-\begin{equation}\label{eq:secondlog}
+\begin{equation}\label{rrm:eq:secondlog}
  \log a_{n+1}^\pm-2\log a_n^\pm+\log a_{n-1}^\pm
  =-\frac1{2n^{3/2}}+\OO(n^{-2})<0
 \end{equation}
@@ -548,28 +757,28 @@ eventually. Exponentiating yields the claim.
 
 The proof uses a sufficiently small pointwise remainder before differencing. It does not assume that a nonsmooth rounding residual can itself be differentiated.
 
-\section{All fixed orders of the range inverse}\label{sec:inverse}
+\section{All fixed orders of the range inverse}\label{rrm:sec:inverse}
 Fix one of the two rounded sequences and suppress its sign. Write
-\begin{equation}\label{eq:Dt}
+\begin{equation}\label{rrm:eq:Dt}
  D=c\sqrt2=\frac{Ae^{-1/2}}{\sqrt{2\pi}},\qquad t=2\sqrt n.
 \end{equation}
-Then \eqref{eq:allorders} reads
-\begin{equation}\label{eq:tforward}
+Then \eqref{rrm:eq:allorders} reads
+\begin{equation}\label{rrm:eq:tforward}
  a_n=De^tt^{-1/2}
  \left\{1+\sum_{j=1}^M2^jc_jt^{-j}+\OO_M(t^{-M-1})\right\}.
 \end{equation}
 Taking the logarithm defines rational coefficients $b_j$ by
-\begin{equation}\label{eq:blog}
+\begin{equation}\label{rrm:eq:blog}
  \sum_{j\ge1}b_jz^j
  =\log\left(1+\sum_{j\ge1}2^jc_jz^j\right).
 \end{equation}
 For every fixed $M$,
-\begin{equation}\label{eq:logforward}
+\begin{equation}\label{rrm:eq:logforward}
  \log(a_n/D)=t-\frac12\log t+
  \sum_{j=1}^M b_jt^{-j}+\OO_M(t^{-M-1}),
 \end{equation}
 with
-\begin{equation}\label{eq:bvalues}
+\begin{equation}\label{rrm:eq:bvalues}
  b_1=-\frac{17}{24},\quad b_2=\frac5{16},\quad
  b_3=\frac{277}{1920},\quad b_4=\frac{21}{128},\quad
  b_5=\frac{85009}{107520}.
@@ -581,41 +790,41 @@ For sufficiently large $Y>0$, let $t_0$ be the large positive solution of $Y=De^
  (-2t_0)e^{-2t_0}=-\frac{2D^2}{Y^2},
 \]
 so
-\begin{equation}\label{eq:tzero}
+\begin{equation}\label{rrm:eq:tzero}
  t_0=-\frac12W_{-1}\left(-\frac{2D^2}{Y^2}\right).
 \end{equation}
 Here $W_{-1}$ is the real branch tending to $-\infty$ as its argument tends to zero from below. The principal real branch $W_0$ would give a small root tending to zero and is not the inverse relevant to $n\to\infty$. This branch selection is part of the formula.
 
 \subsection{Formal inversion and displayed coefficients}
-Put $t=t_0+\delta$ and $v=1/t_0$. Subtract the defining leading equation for $t_0$ from \eqref{eq:logforward}. The formal equation is
-\begin{equation}\label{eq:deltagen}
+Put $t=t_0+\delta$ and $v=1/t_0$. Subtract the defining leading equation for $t_0$ from \eqref{rrm:eq:logforward}. The formal equation is
+\begin{equation}\label{rrm:eq:deltagen}
  \delta-\frac12\log(1+v\delta)
  +\sum_{j\ge1}b_jv^j(1+v\delta)^{-j}=0.
 \end{equation}
-Its derivative with respect to $\delta$ at $(v,\delta)=(0,0)$ equals one. Consequently there is a unique formal solution $\delta\in v\mathbb Q[[v]]$. Explicitly, if $d_1,\ldots,d_{r-1}$ have been found and $\delta_{<r}=\sum_{j<r}d_jv^j$, then $d_r$ is the negative coefficient of $v^r$ in the left side of \eqref{eq:deltagen} after substituting $\delta_{<r}$. The unknown $d_r$ appears only with coefficient one at that order.
+Its derivative with respect to $\delta$ at $(v,\delta)=(0,0)$ equals one. Consequently there is a unique formal solution $\delta\in v\mathbb Q[[v]]$. Explicitly, if $d_1,\ldots,d_{r-1}$ have been found and $\delta_{<r}=\sum_{j<r}d_jv^j$, then $d_r$ is the negative coefficient of $v^r$ in the left side of \eqref{rrm:eq:deltagen} after substituting $\delta_{<r}$. The unknown $d_r$ appears only with coefficient one at that order.
 
 The first terms are
 \begin{align}
  \delta={}&\frac{17}{24t_0}+\frac1{24t_0^2}
  -\frac{3601}{5760t_0^3}-\frac{17}{90t_0^4}
  +\frac{223543}{967680t_0^5}+\OO(t_0^{-6}).
- \label{eq:delta}
+ \label{rrm:eq:delta}
 \end{align}
 Squaring $t/2$ gives the following inverse along the exact range.
 
-\begin{theorem}[Range inverse]\label{thm:rangeinverse}
-If $Y=a_n$ and $t_0$ is given by \eqref{eq:tzero} using the amplitude of that same sequence, then
+\begin{theorem}[Range inverse]\label{rrm:thm:rangeinverse}
+If $Y=a_n$ and $t_0$ is given by \eqref{rrm:eq:tzero} using the amplitude of that same sequence, then
 \begin{align}
  n={}&\frac{t_0^2}{4}+\frac{17}{48}+\frac1{48t_0}
  -\frac{539}{2880t_0^2}-\frac{51}{640t_0^3}
  -\frac{25517}{241920t_0^4}+\OO(t_0^{-5}).
- \label{eq:rangeinverse}
+ \label{rrm:eq:rangeinverse}
 \end{align}
-The procedure \eqref{eq:blog}--\eqref{eq:deltagen} gives a justified expansion to every fixed inverse order. In particular any truncation whose proved error is $o(1)$ recovers the integer $n$ by nearest-integer rounding for all sufficiently large values in the exact sequence range.
+The procedure \eqref{rrm:eq:blog}--\eqref{rrm:eq:deltagen} gives a justified expansion to every fixed inverse order. In particular any truncation whose proved error is $o(1)$ recovers the integer $n$ by nearest-integer rounding for all sufficiently large values in the exact sequence range.
 \end{theorem}
 
 \begin{proof}
-We give a remainder argument, since formal reversion by itself is insufficient. Truncate \eqref{eq:logforward} at a fixed order $J$ and denote the smooth function on its right, without its remainder, by
+We give a remainder argument, since formal reversion by itself is insufficient. Truncate \eqref{rrm:eq:logforward} at a fixed order $J$ and denote the smooth function on its right, without its remainder, by
 \[
  f_J(t)=t-\tfrac12\log t+\sum_{j=1}^Jb_jt^{-j}.
 \]
@@ -625,14 +834,14 @@ Then $f_J'(t)=1-1/(2t)+\OO_J(t^{-2})$, which is bounded below by $1/2$ for all s
 \]
 First, the leading relation shows $t\sim t_0$. Substitution of the recursively constructed finite series $t_0+\delta_J$ into $f_J$ leaves a residual of order $\OO(t_0^{-J-1})$. The mean-value theorem therefore bounds $t-(t_0+\delta_J)$ by that same order. Squaring loses one power because $t+t_0+\delta_J=\OO(t_0)$, yielding an $n$-error of order $\OO(t_0^{-J})$.
 
-With $J=5$, the coefficients \eqref{eq:bvalues} give \eqref{eq:delta}, and direct squaring gives \eqref{eq:rangeinverse}. Taking larger fixed $J$ proves every fixed inverse order. An error tending to zero is eventually less than $1/2$, which proves the nearest-integer statement on the exact range.
+With $J=5$, the coefficients \eqref{rrm:eq:bvalues} give \eqref{rrm:eq:delta}, and direct squaring gives \eqref{rrm:eq:rangeinverse}. Taking larger fixed $J$ proves every fixed inverse order. An error tending to zero is eventually less than $1/2$, which proves the nearest-integer statement on the exact range.
 \end{proof}
 
 The theorem uses the exact constant $D$. A decimal approximation held fixed while $Y\to\infty$ introduces an additional error; arbitrary-precision numerical evaluation must propagate the amplitude uncertainty if an executable inverse certificate is required. The all-order theorem does not identify an effective first index for nearest-integer recovery.
 
-\section{Arbitrary thresholds and the staircase obstruction}\label{sec:threshold}
+\section{Arbitrary thresholds and the staircase obstruction}\label{rrm:sec:threshold}
 For arbitrary real $Y$, define
-\begin{equation}\label{eq:threshold}
+\begin{equation}\label{rrm:eq:threshold}
  N(Y)=\min\{n\ge1:a_n\ge Y\}.
 \end{equation}
 The sequence is strictly increasing and unbounded, so $N(Y)$ is well defined for every $Y$. Along its exact range, $N(a_n)=n$. Between successive terms it is a staircase, not a smooth inverse.
@@ -641,11 +850,11 @@ A continuous function cannot approximate this staircase with a universally valid
 
 \subsection{Two monotone comparison functions}
 For fixed $M\ge0$, let
-\begin{equation}\label{eq:carrier}
+\begin{equation}\label{rrm:eq:carrier}
  F_M(x)=ce^{2\sqrt x}x^{-1/4}\sum_{j=0}^Mc_jx^{-j/2}.
 \end{equation}
 It is positive and increasing for all sufficiently large real $x$. The forward theorem supplies constants $K>0$ and $n_0$ such that for integers $n\ge n_0$,
-\begin{equation}\label{eq:carrierenvelope}
+\begin{equation}\label{rrm:eq:carrierenvelope}
  F_M(n)(1-Kn^{-(M+1)/2})\le a_n
  \le F_M(n)(1+Kn^{-(M+1)/2}).
 \end{equation}
@@ -656,14 +865,14 @@ The factors are positive and both comparison functions are increasing on a suffi
 \]
 Let $x_+(Y)=U_M^{-1}(Y)$ and $x_-(Y)=L_M^{-1}(Y)$ on these increasing branches; the subscripts refer to the sign of the forward error. In particular $x_+(Y)\le x_-(Y)$.
 
-\begin{theorem}[Two-ceiling threshold bounds]\label{thm:threshold}
+\begin{theorem}[Two-ceiling threshold bounds]\label{rrm:thm:threshold}
 For all sufficiently large $Y$,
-\begin{equation}\label{eq:ceilbounds}
+\begin{equation}\label{rrm:eq:ceilbounds}
  \left\lceil x_+(Y)\right\rceil\le N(Y)
  \le\left\lceil x_-(Y)\right\rceil,
 \end{equation}
 and
-\begin{equation}\label{eq:rootwidth}
+\begin{equation}\label{rrm:eq:rootwidth}
  x_-(Y)-x_+(Y)=\OO(t_0^{-M}).
 \end{equation}
 For each fixed $M\ge1$ the two ceilings therefore eventually differ by at most one. For $M=0$ the root width is only $\OO(1)$, which does not imply adjacent candidate integers.
@@ -675,18 +884,60 @@ The two forward logarithms differ by $\OO(x^{-(M+1)/2})$. Their derivatives with
 \end{proof}
 
 \subsection{What the comparison functions do to inverse coefficients}
-The logarithm of the additional factor $1\pm Kx^{-(M+1)/2}$ begins at order $t^{-(M+1)}$ after $t=2\sqrt x$. Its effect on the inverse $t$ begins at order $t_0^{-(M+1)}$, and its effect on $x=t^2/4$ begins at order $t_0^{-M}$. Therefore each root has its own formal inverse, obtained from \eqref{eq:deltagen} using the coefficients of that comparison function. The coefficients agree with the range inverse strictly before the first envelope-error order; the $\pm K$ terms can change coefficients at that order.
+The logarithm of the additional factor $1\pm Kx^{-(M+1)/2}$ begins at order $t^{-(M+1)}$ after $t=2\sqrt x$. Its effect on the inverse $t$ begins at order $t_0^{-(M+1)}$, and its effect on $x=t^2/4$ begins at order $t_0^{-M}$. Therefore each root has its own formal inverse, obtained from \eqref{rrm:eq:deltagen} using the coefficients of that comparison function. The coefficients agree with the range inverse strictly before the first envelope-error order; the $\pm K$ terms can change coefficients at that order.
 
-It is not valid to assign both roots all the same displayed range-inverse coefficients and append a smaller error. Nor does the theorem assert that taking one ceiling of a finite asymptotic truncation always gives the threshold. When actual forward constants $K,n_0$ are supplied and both computed ceilings coincide, \eqref{eq:ceilbounds} certifies the exact answer. Here their existence is proved but no numerical $K,n_0$ is certified, so the arbitrary-threshold statement is an asymptotic theorem rather than an executable finite threshold certificate.
+It is not valid to assign both roots all the same displayed range-inverse coefficients and append a smaller error. Nor does the theorem assert that taking one ceiling of a finite asymptotic truncation always gives the threshold. When actual forward constants $K,n_0$ are supplied and both computed ceilings coincide, \eqref{rrm:eq:ceilbounds} certifies the exact answer. Here their existence is proved but no numerical $K,n_0$ is certified, so the arbitrary-threshold statement is an asymptotic theorem rather than an executable finite threshold certificate.
 
-\section{Reproducibility and the meaning of the checks}\label{sec:repro}
+\begin{remark}[{[write]} The inverses against the transseries volume, 7~October 2026]\label{rrm:rem:transseries}
+The volume is
+\path{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex};
+its symbols carry the subscript ``vol''. Statement by statement, for either
+rounded sequence:
+\begin{enumerate}[label=(\alph*)]
+\item \emph{Instance.} $N(Y)$ of~\eqref{rrm:eq:threshold} is the integer
+ staircase of \file{p0:def:three-inverses}(1) with $A_n=a_n$ and
+ $n_{1,\mathrm{vol}}=1$ (the orbit is strictly increasing from $n=1$), so
+ \file{p0:thm:staircase}(1) gives $N(Y)=\lceil\nu_{\mathcal A}(Y)\rceil$ for
+ every admissible interpolation $\mathcal A_{\mathrm{vol}}$.
+\item \emph{Analogue.} Theorem~\ref{rrm:thm:threshold} is a direct
+ two-ceiling bracket at the integers about the roots of two comparison
+ functions that do not interpolate the sequence: an analogue of
+ \file{p0:thm:staircase}(2), not an instance.
+\item \emph{Instance.} The nearest-integer recovery in
+ Theorem~\ref{rrm:thm:rangeinverse} is \file{p0:thm:staircase}(3): its
+ hypothesis involves only $\nu_{\mathcal A}(a_n)=n$, true for every admissible
+ interpolation (the piecewise-linear one, say), and the truncated inverse
+ approximates $n$ within $1/2$ for large $n$.
+\item \emph{Instance, with the branch rule.} The Lambert root~\eqref{rrm:eq:tzero}
+ solves $t_0-\tfrac12\log t_0=\log(Y/D)$, which is \file{p0:thm:lambert-core}
+ with $a_{\mathrm{vol}}=1$, $b_{\mathrm{vol}}=-\tfrac12$ and
+ $L_{\mathrm{vol}}=\log(Y/D)$: there $z(L_{\mathrm{vol}})=-2e^{-2\log(Y/D)}=-2D^2/Y^2$,
+ and the branch rule for $b_{\mathrm{vol}}<0$ gives the large solution
+ $X=(b_{\mathrm{vol}}/a_{\mathrm{vol}})W_{-1}(z)$, which is~\eqref{rrm:eq:tzero}
+ with its $W_{-1}$ (for $\log(Y/D)>L_c=\tfrac12(1+\log2)$).
+\item \emph{Formal instance.} Equation~\eqref{rrm:eq:deltagen} is
+ \file{p0:thm:core-reversion} with $\Lambda_{\mathrm{vol}}=1$,
+ $h_{\mathrm{vol}}=0$, $t_{\mathrm{vol}}=v$, $E_{\mathrm{vol}}=\delta$ and
+ $f_{\mathrm{vol}}(t,u)=-\tfrac12\log(1+tu)+\sum_{j\ge1}b_jt^j(1+tu)^{-j}\in
+ t\mathbb Q[[t,u]]$; its triangular recurrence is the source's. The analytic
+ remainder argument in the proof of Theorem~\ref{rrm:thm:rangeinverse} is the
+ source's own.
+\end{enumerate}
+No novelty is claimed for any of these inversions. The staircase arithmetic
+is formalized generically (for an arbitrary strictly monotone function) as
+\file{Fabius.staircase_ceil} in
+\path{Analysis/FabiusFunction/Lean/FabiusFunction/StaircaseInversion.lean};
+nothing about $a_n^\pm$ is formalized.
+\end{remark}
+
+\section{Reproducibility and the meaning of the checks}\label{rrm:sec:repro}
 The companion archive contains this manuscript, the compiled report, documented Python source, the attributed official 1000-term b-files, and generated certificates. The mandatory computations use only Python's standard library. A TeX installation is needed only to rebuild the PDF.
 
 \subsection{Mandatory exact computations}
 \begin{enumerate}
-\item \texttt{code/certify\_amplitudes.py} generates both integer trajectories to $N=10000$, computes the growing normalization using \eqref{eq:Frec}, proves the rational amplitude enclosures, encloses the exponential and square-root conversion factors, and rounds the resulting endpoints outward.
+\item \texttt{code/certify\_amplitudes.py} generates both integer trajectories to $N=10000$, computes the growing normalization using \eqref{rrm:eq:Frec}, proves the rational amplitude enclosures, encloses the exponential and square-root conversion factors, and rounds the resulting endpoints outward.
 \item \texttt{code/check\_exact.py} replays both official 1000-term b-files and stored prefixes, checks the rational finite Laguerre sum against the recurrence through index 150, and checks exact Casoratians through index 150. For the latter, $Q_n$ is represented algebraically as $r_nQ_1+s_n$ with rational $r_n,s_n$; no transcendental approximation is necessary.
-\item \texttt{code/audit\_positive\_sum.py} independently computes the normalization at $N=10000$ from \eqref{eq:positiveP}--\eqref{eq:positiveT} and replays the trajectories with integer division and remainder. It checks the amplitude brackets and their width against the generated certificate.
+\item \texttt{code/audit\_positive\_sum.py} independently computes the normalization at $N=10000$ from \eqref{rrm:eq:positiveP}--\eqref{rrm:eq:positiveT} and replays the trajectories with integer division and remainder. It checks the amplitude brackets and their width against the generated certificate.
 \item \texttt{code/formal\_series.py} generates rational forward and inverse coefficients with finite truncated-series algorithms and verifies the displayed coefficient identities. These algebraic checks identify coefficients; Perron's theorem supplies the analytic existence and remainder bounds.
 \item \texttt{code/test\_mathematical\_guards.py} exercises meaningful corrupted inputs, so a broken prefix, interval, normalization, or coefficient cannot pass merely because a program runs to completion. Critical checks use explicit exceptions and remain active under optimized Python.
 \end{enumerate}
@@ -706,10 +957,16 @@ The package includes a detailed reproducibility guide with exact command options
 \subsection{Optional numerical and symbolic checks}
 Optional high-precision diagnostics use mpmath at 120 decimal digits to inspect shadow residuals, six-correction relative errors, and range-inverse errors. Optional SymPy scripts rederive coefficients independently. These are supplementary experiments. They are not inputs to the exact amplitude proof, and numerical agreement is not promoted to an interval theorem.
 
-\section{Attribution and bounded source review}\label{sec:sources}
+\section{Attribution and bounded source review}\label{rrm:sec:sources}
 The official defining records and b-files were inspected on 3 October 2026. The floor record was revision 19 dated 12 October 2024; the ceiling record was revision 20 dated 30 September 2026. Both records explicitly asked for a proof of the modified-Bessel equivalent at the time checked. The 2024 high-precision numerical constants are attributed in those records to V\'aclav Kot\v e\v sovec. Ulrich Schimke is the sequence author, and Harry J. Smith is credited for the linked 1000-term tables.
+\begin{writenote}[Added 7 October 2026]
+The write read the live records on 7~October 2026 (A065094 revision \#19,
+A065095 revision \#20, unchanged): the question ``Can someone prove this?''
+still stands in both, and Corollary~\ref{rrm:cor:oeis} answers it
+(Remark~\ref{rrm:rem:oeis}).
+\end{writenote}
 
-The definitions are unambiguous despite two ancillary transcription inconsistencies: one floor-record comment writes its increment without the floor, and one ceiling-record example writes a floor symbol while evaluating the ceiling. The defining names, formulas, and complete verified integer prefixes agree with \eqref{eq:rounded}. No external correction or edit was made.
+The definitions are unambiguous despite two ancillary transcription inconsistencies: one floor-record comment writes its increment without the floor, and one ceiling-record example writes a floor symbol while evaluating the ceiling. The defining names, formulas, and complete verified integer prefixes agree with \eqref{rrm:eq:rounded}. No external correction or edit was made.
 
 The unrounded sequence A376995 already identifies $L_{n-1}(-1)$ and its leading equivalent. We explicitly use that classical model. For the all-order input, the actual Dea\~no--Huertas--Marcell\'an paper was read at its normalization, Perron formula (3), negative-axis convention, Theorem 2, and formulas (24)--(27). Its all-order Laguerre expansion and coefficient methods are prior work. The first two coefficients were checked with its formula (27), including the degree shift. The standard modified-Bessel leading equivalent is also classical \cite{dlmf}.
 
@@ -717,7 +974,7 @@ A bounded search using the exact OEIS identifiers and rounded-mean, Laguerre-rec
 
 The self-contained content here is the positive minimal-solution construction, normalized Green identity, sharp bounded-forcing envelope, nested finite rational certificates, and their application to the two discontinuous recurrences. Classical results and observed constants are credited where used. The archive does not redistribute downloaded full third-party research papers.
 
-\section{Further questions and limitations}\label{sec:questions}
+\section{Further questions and limitations}\label{rrm:sec:questions}
 The exact formulas isolate several questions that remain outside the present results.
 \begin{enumerate}
 \item \emph{Actual residual scale.} The optimal uniform envelope is of order $\sqrt n$, but it is not known here whether either rounded residual $a_n^\pm-A_\pm P_n$ has that order, a smaller order, or a limiting normalized profile. The forcing extremes used to prove sharpness need not be rounded trajectories.
@@ -727,15 +984,28 @@ The exact formulas isolate several questions that remain outside the present res
 \item \emph{Zero amplitude and constant forcing.} If every error equals $r$, the exact identity gives $a_n=(\alpha+r)P_n-r$. In particular $r=-\alpha$ gives a constant trajectory and zero amplitude. This example checks both the mass-one normalization and the necessity of positivity assumptions in relative asymptotics.
 \item \emph{Dependence on errors.} For two forcings with the same initial value, $|A(\eps)-A(\eta)|\le\sup_k|\eps_k-\eta_k|$. If they agree through time $m-1$ and differ by at most $B$ afterward, the sharper bound is $|A(\eps)-A(\eta)|\le B(m-1)Q_{m-1}$ for $m\ge2$. These follow from the positive weights and exact tail; they quantify stability without a distributional model.
 \end{enumerate}
+\begin{writenote}[Added 7 October 2026, under Vladimir's standing rule of 4 October 2026]
+The six questions above are the source's, credited to it and kept as stated.
+The write found no unproved claim of the source outside them and no wrong
+one. For Question~1 it computed a diagnostic, not a theorem: with the
+certified 69-digit amplitudes, the actual residuals $r_n^\pm=a_n^\pm-A_\pm P_n$
+satisfy $|r_n^-|\le3.30$ (largest at $n=946$) and $|r_n^+|\le4.08$ (largest
+at $n=1528$) for $n\le2500$, while the envelope there is about
+$\sqrt n/2\approx25$; their averages over $(n/2,n]$ lie between $0.43$ and
+$0.69$ (floor) and between $-0.65$ and $-0.37$ (ceiling) for
+$n=100,500,1000,1500,2000,2500$. No growth rate is inferred
+from these values.
+\end{writenote}
+
 The central conclusion is that bounded rounding selects a scalar amplitude while preserving the complete classical algebraic asymptotic expansion. Its selection is both analytically explicit and certifiable from finite integer data.
 
 \begin{thebibliography}{9}
 \bibitem{oeisfloor}
-The OEIS Foundation Inc., \emph{A065094}, sequence contributed by Ulrich Schimke. Floor running-mean recurrence; numerical asymptotic constants credited to V\'aclav Kot\v e\v sovec, 12 October 2024. Definition and record checked 3 October 2026.
+The OEIS Foundation Inc., \emph{A065094}, sequence contributed by Ulrich Schimke. Floor running-mean recurrence; numerical asymptotic constants credited to V\'aclav Kot\v e\v sovec, 12 October 2024. Definition and record checked 3 October 2026 (and by the write on 7~October 2026, revision \#19).
 \url{https://oeis.org/A065094}.
 
 \bibitem{oeisceil}
-The OEIS Foundation Inc., \emph{A065095}, sequence contributed by Ulrich Schimke. Ceiling running-mean recurrence; numerical asymptotic constants credited to V\'aclav Kot\v e\v sovec, 12 October 2024. Definition and record checked 3 October 2026.
+The OEIS Foundation Inc., \emph{A065095}, sequence contributed by Ulrich Schimke. Ceiling running-mean recurrence; numerical asymptotic constants credited to V\'aclav Kot\v e\v sovec, 12 October 2024. Definition and record checked 3 October 2026 (and by the write on 7~October 2026, revision \#20).
 \url{https://oeis.org/A065095}.
 
 \bibitem{bfiles}
