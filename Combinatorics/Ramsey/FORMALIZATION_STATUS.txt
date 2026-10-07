@@ -13,8 +13,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 674 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 4,324 public Gowers theorems and found only propext,
+  All 682 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 4,373 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 113 exact
   companion proofs and 7 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -922,6 +922,29 @@ Explicit Fourier, cubic inverse, and five-term thresholds
   maximum; no eventual-growth witness is chosen in its definition.
   Comparison with the paper's numerical five-term bound is not yet proved.
   This does not close the general numbered Theorems 18.1 or 18.2.
+
+Fejer improvements through the complete cubic inverse
+  Proofs13FejerOddSquare retains the stronger Fourier side exponent
+  (1/2)^((2/alpha)^(2^53)) and density (alpha/2)^(2^42) when making
+  the square odd and short. Proofs17FejerCubicLocalization propagates
+  both improvements through polynomial localization, including the
+  upper lengths needed for genuine smaller prime models.
+  Proofs18FejerCubicParameters defines the improved mass and quadratic
+  parameters mu=2^-59*alpha^2*(alpha/2)^(2^42) and
+  a=2^-71*alpha^2*(alpha/2)^(2^42). The average-size exponent is
+  e*quadraticDiscrepancyExponent(a)/(32*polynomialPartitionConstant(3)),
+  where e=(1/2)^((2/alpha)^(2^53)); the discrepancy is
+  mu*quadraticDiscrepancyParameter(a)/2.
+  Proofs18FejerCubicCellModels, Proofs18FejerCubicTwistedDiscrepancy,
+  and Proofs18FejerCubicDiscrepancy construct the full proper untwisted
+  partition with these parameters and an explicit starting threshold.
+  Proofs18FejerFiveTerm gives the corresponding closed interval bound.
+  Proofs18FejerCubicImprovement proves that both final cubic inverse
+  parameters strictly exceed the older 88/76 versions for every
+  0 < alpha <= 1. This is a proved comparison of the actual partition
+  guarantees, not merely a comparison of intermediate Fourier constants.
+  The full five-term starting thresholds have not yet been compared;
+  no improvement to the general all-length Szemeredi bound is claimed.
 
 Cubic obstruction in a strictly smaller prime model
   Proofs17LocalizedPhaseRemoval now exports proposition_17_7_with_upper:

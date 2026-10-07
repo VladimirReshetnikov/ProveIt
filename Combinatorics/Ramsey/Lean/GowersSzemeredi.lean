@@ -447,6 +447,8 @@ import GowersSzemeredi.Proofs18LocalDiscrepancyTransport
 import GowersSzemeredi.Proofs18CubicIteration
 import GowersSzemeredi.Proofs13ExplicitGeometricThreshold
 import GowersSzemeredi.Proofs18ExplicitFiveTerm
+import GowersSzemeredi.Proofs18FejerFiveTerm
+import GowersSzemeredi.Proofs18FejerCubicImprovement
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 
