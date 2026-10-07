@@ -12,8 +12,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 583 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 3,748 public Gowers theorems and found only propext,
+  All 584 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 3,767 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 112 exact
   companion proofs and 8 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -1699,6 +1699,21 @@ Complete Lemma 13.6 with a stronger row-length exponent
   max(1,|Q|), hence at most |Q| whenever the preceding Q is nonempty.
   This improves 13Q to 10Q in Lemma 13.6 while preserving its prefactor.
   It does not by itself improve the final quantitative Szemeredi theorem.
+
+Propagated improvement to the complete bilinear-square construction
+  Proofs13ImprovedSquareExtraction uses the all-scale recurrence and row
+  constructions to obtain a proper equal-length common-step bilinear
+  square with the same retained density 2^-137*alpha^704. Its side-length
+  exponent is
+    2^-386 * alpha^1856 / 2^(10*section13Q(alpha)),
+  instead of the previous denominator 2^(13*section13Q(alpha)). The exact
+  ratio of new exponent to old exponent is 2^(3*section13Q(alpha)), and
+  strict improvement is proved for every positive alpha. All intermediate
+  data and integer step geometry are constructed. The remaining large-N
+  threshold comes from the downstream square scales and is existential.
+  This auxiliary bilinear-square improvement is not a final Szemeredi-bound
+  claim and does not discharge Corollary 13.10's distinct universal-data
+  geometry obligation.
 
 Reproducible checks (from repository root)
   python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.Audit
