@@ -13,8 +13,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 746 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 4,742 public Gowers theorems and found only propext,
+  All 750 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 4,761 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 113 exact
   companion proofs and 7 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -2379,6 +2379,38 @@ Retaining the common-base mass in the extraction count
   formulas; no unproved simultaneous monotonicity or improvement of the
   final all-length Szemeredi bound is inferred from this count comparison.
   No exact catalogue companion is closed by this strengthening.
+
+Weighted graph-sum support and genuine unit-product slabs
+  Proofs16WeightedCollision expresses weighted collision energy as the sum
+  of squared fibre-weight sums, and proves the support-cardinality
+  Cauchy--Schwarz bound. All weights may be arbitrary real numbers.
+  Proofs16WeightedGraphSums identifies the existing
+  weightedSimultaneousAdditiveEnergy exactly with collision energy of pair
+  sums in the simultaneous graph. The four-variable reindexing retains the
+  actual domain condition, all parallel additivity constraints, and every
+  weight. If the graph pair sums lie in a set of size at most M, then
+    (sum_E w)^4 <= M*weightedSimultaneousAdditiveEnergy(E,w,psi).
+  Proofs16SlabProductProperty applies this estimate to identical parallel
+  restrictions. If f(A) is contained in S and |A+A|*|S+S|<=N, any number of
+  copies of f on E subset A has the unit energy lower bound. Constant
+  parallel maps and the empty family are handled separately with ordinary
+  additive energy. Consequently f(last(z)) on F_N^k times A satisfies the
+  original HasProductProperty at gamma=1, with every coordinate direction,
+  every parallel-family size, and every required nonnegative weight.
+  This theorem does not assume primality or impose regularity on f beyond
+  its value set on A. It cannot be replaced by the already proved
+  full-domain unit-product/multilinearity equivalence.
+  Proofs16IntervalSlabProduct bounds an interval sumset by twice its length
+  and instantiates the slab theorem for domain length L and alphabet length
+  R under the explicit sufficient condition 4*L*R<=N. The graph also has
+  the actual RelationProductProperty used by structural extraction.
+  These results formalize the weighted-product mechanism in incoming
+  Report 299. Its balanced-word, structured-pair, spectrum, and common-base
+  witness assembly have not all been connected to the slab construction;
+  no negation of the universal contextual contract is asserted here.
+  This is evidence relevant to the remaining lifting hypotheses, not a
+  proof or refutation of the exact general Theorem 16.2. The seven source
+  catalogue gaps remain unchanged.
 
 Selected-domain repair of the remaining exact lifting obligation
   Proofs16SelectedDomainTransport defines Section16SelectedUnitDomain D:
