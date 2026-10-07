@@ -1,3 +1,4 @@
+/- Modified for ProveIt: Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
 import OAI.Combinatorics.Progressions.Estimates.UnitProductOrbitFamily
 import OAI.Combinatorics.Progressions.Nilpotent.RankInvariantNiltestBudget
 
@@ -150,7 +151,7 @@ theorem exists_lower_rank_family (s : ℕ) :
               U.ComplexityLE ((p + C) ^ C) ∧
               (letI := moduleTopology ℝ (ℝ ⊗[ℚ] (L ⧸ R.filtration.layerIdeal s (r + 1)))
                letI : IsTopologicalAddGroup (ℝ ⊗[ℚ] (L ⧸ R.filtration.layerIdeal s (r + 1))) :=
-                 IsModuleTopology.isTopologicalAddGroup ℝ _
+                 IsModuleTopology.topologicalAddGroup ℝ _
                letI := realification_moduleTopology_t2 Q.basis
                ∃ S : I → Q.Niltest w,
                  (∀ i, (S i).orbit = R.rankQuotientOrbit Q hQF g) ∧
@@ -189,7 +190,7 @@ theorem exists_lower_rank_family (s : ℕ) :
   refine ⟨n, hn, Q, U, hQF, hU, hQL, hUq.mono U hqC, ?_⟩
   let := moduleTopology ℝ (ℝ ⊗[ℚ] (L ⧸ R.filtration.layerIdeal s (r + 1)))
   let : IsTopologicalAddGroup (ℝ ⊗[ℚ] (L ⧸ R.filtration.layerIdeal s (r + 1))) :=
-    IsModuleTopology.isTopologicalAddGroup ℝ _
+    IsModuleTopology.topologicalAddGroup ℝ _
   let := realification_moduleTopology_t2 Q.basis
   have htests := fun i => hdescent R Q hQF hQL (V.coordinateNiltest g i) q hq
     ((V.coordinateNiltest_complexity g i hp hR.1).mono hp4q) hUq.1
@@ -227,7 +228,7 @@ def HasLowerRankUnitFamily {L I σ : Type*} [LieRing L] [LieAlgebra ℚ L] [Fint
       ∃ U : Q.DegreeRankStructure r, U.ComplexityLE p ∧
         (letI := moduleTopology ℝ (ℝ ⊗[ℚ] (L ⧸ R.filtration.layerIdeal s (r + 1)))
          letI : IsTopologicalAddGroup (ℝ ⊗[ℚ] (L ⧸ R.filtration.layerIdeal s (r + 1))) :=
-           IsModuleTopology.isTopologicalAddGroup ℝ _
+           IsModuleTopology.topologicalAddGroup ℝ _
          letI := realification_moduleTopology_t2 Q.basis
          ∃ a : Q.filtration.realification.PolynomialOrbit w,
            ∃ K : I → Q.Niltest w,
@@ -272,7 +273,7 @@ theorem uniform_lower_rank_family {L : Type u} {I : Type v} {σ : Type t}
             U.ComplexityLE ((p + C) ^ C) ∧
             (letI := moduleTopology ℝ (ℝ ⊗[ℚ] (L ⧸ R.filtration.layerIdeal s (r + 1)))
              letI : IsTopologicalAddGroup (ℝ ⊗[ℚ] (L ⧸ R.filtration.layerIdeal s (r + 1))) :=
-               IsModuleTopology.isTopologicalAddGroup ℝ _
+               IsModuleTopology.topologicalAddGroup ℝ _
              letI := realification_moduleTopology_t2 Q.basis
              ∃ S : I → Q.Niltest w,
                (∀ i, (S i).normBound = 1) ∧
@@ -294,7 +295,7 @@ theorem uniform_lower_rank_family {L : Type u} {I : Type v} {σ : Type t}
   refine ⟨n, hn, Q, U, hQF, hUF, hQL, hUc, ?_⟩
   let := moduleTopology ℝ (ℝ ⊗[ℚ] (L ⧸ R.filtration.layerIdeal s (r + 1)))
   let : IsTopologicalAddGroup (ℝ ⊗[ℚ] (L ⧸ R.filtration.layerIdeal s (r + 1))) :=
-    IsModuleTopology.isTopologicalAddGroup ℝ _
+    IsModuleTopology.topologicalAddGroup ℝ _
   let := realification_moduleTopology_t2 Q.basis
   obtain ⟨S, _, hSn, hSc, hSu, hSp, _⟩ := hS
   refine ⟨S, hSn, hSc, hSu, hSp, ?_⟩
@@ -320,7 +321,7 @@ def HasUniformLowerRankUnitFamily {L I σ : Type*} [LieRing L] [LieAlgebra ℚ L
       ∃ U : Q.DegreeRankStructure r, U.ComplexityLE p ∧
         (letI := moduleTopology ℝ (ℝ ⊗[ℚ] (L ⧸ R.filtration.layerIdeal s (r + 1)))
          letI : IsTopologicalAddGroup (ℝ ⊗[ℚ] (L ⧸ R.filtration.layerIdeal s (r + 1))) :=
-           IsModuleTopology.isTopologicalAddGroup ℝ _
+           IsModuleTopology.topologicalAddGroup ℝ _
          letI := realification_moduleTopology_t2 Q.basis
          ∃ K : I → Q.Niltest w,
            (∀ i, (K i).normBound = 1) ∧ (∀ i, (K i).ComplexityLE p) ∧
@@ -343,7 +344,7 @@ theorem HasUniformLowerRankUnitFamily.atOrbit {L I σ : Type*}
   refine ⟨n, hn, Q, U, hUc, ?_⟩
   let := moduleTopology ℝ (ℝ ⊗[ℚ] (L ⧸ R.filtration.layerIdeal s (r + 1)))
   let : IsTopologicalAddGroup (ℝ ⊗[ℚ] (L ⧸ R.filtration.layerIdeal s (r + 1))) :=
-    IsModuleTopology.isTopologicalAddGroup ℝ _
+    IsModuleTopology.topologicalAddGroup ℝ _
   let := realification_moduleTopology_t2 Q.basis
   obtain ⟨K, hKn, hKc, hKu, a, _, hKe⟩ := hK
   exact ⟨a g, (fun i => (K i).withOrbit (a g)), (fun _ => rfl), hKn,
@@ -368,7 +369,7 @@ theorem UnitVerticalObservable.hasUniformLowerRankUnitFamily
   refine ⟨n, hn, Q, U, hUc, ?_⟩
   let := moduleTopology ℝ (ℝ ⊗[ℚ] (L ⧸ R.filtration.layerIdeal s (r + 1)))
   let : IsTopologicalAddGroup (ℝ ⊗[ℚ] (L ⧸ R.filtration.layerIdeal s (r + 1))) :=
-    IsModuleTopology.isTopologicalAddGroup ℝ _
+    IsModuleTopology.topologicalAddGroup ℝ _
   let := realification_moduleTopology_t2 Q.basis
   obtain ⟨K, hKn, hKc, hKu, _, hKe⟩ := hK
   refine ⟨K, hKn, hKc, hKu, R.rankQuotientOrbit Q hQF, ?_, hKe⟩
@@ -394,7 +395,7 @@ def HasLowerRankOrbitFamily {L I σ τ : Type*} [LieRing L] [LieAlgebra ℚ L] [
       ∃ U : Q.DegreeRankStructure r, U.ComplexityLE p ∧
         (letI := moduleTopology ℝ (ℝ ⊗[ℚ] (L ⧸ R.filtration.layerIdeal s (r + 1)))
          letI : IsTopologicalAddGroup (ℝ ⊗[ℚ] (L ⧸ R.filtration.layerIdeal s (r + 1))) :=
-           IsModuleTopology.isTopologicalAddGroup ℝ _
+           IsModuleTopology.topologicalAddGroup ℝ _
          letI := realification_moduleTopology_t2 Q.basis
          ∃ K : I → Q.Niltest w,
            (∀ i, (K i).normBound = 1) ∧ (∀ i, (K i).ComplexityLE p) ∧
@@ -420,7 +421,7 @@ theorem HasUniformLowerRankUnitFamily.realizeFamily {L I σ τ : Type*}
   refine ⟨n, hn, Q, U, hUc, ?_⟩
   let := moduleTopology ℝ (ℝ ⊗[ℚ] (L ⧸ R.filtration.layerIdeal s (r + 1)))
   let : IsTopologicalAddGroup (ℝ ⊗[ℚ] (L ⧸ R.filtration.layerIdeal s (r + 1))) :=
-    IsModuleTopology.isTopologicalAddGroup ℝ _
+    IsModuleTopology.topologicalAddGroup ℝ _
   let := realification_moduleTopology_t2 Q.basis
   obtain ⟨K, hKn, hKc, hKu, a, ha0, hKe⟩ := hK
   exact ⟨K, hKn, hKc, hKu, (fun t => a (b t)),
@@ -448,7 +449,7 @@ theorem HasLowerRankOrbitFamily.mono {L I σ τ : Type*}
   refine ⟨n, hn, Q, U, hUc.mono U hpq, ?_⟩
   let := moduleTopology ℝ (ℝ ⊗[ℚ] (L ⧸ R.filtration.layerIdeal s (r + 1)))
   let : IsTopologicalAddGroup (ℝ ⊗[ℚ] (L ⧸ R.filtration.layerIdeal s (r + 1))) :=
-    IsModuleTopology.isTopologicalAddGroup ℝ _
+    IsModuleTopology.topologicalAddGroup ℝ _
   let := realification_moduleTopology_t2 Q.basis
   obtain ⟨K, hKn, hKc, hKu, a, ha0, hKe⟩ := hK
   exact ⟨K, hKn, (fun i => (hKc i).mono hpq), hKu, a, ha0, hKe⟩
@@ -469,12 +470,12 @@ theorem exists_lower_rank_product_family {ι σ τ : Type*}
           (letI : ∀ i, TopologicalSpace (ℝ ⊗[ℚ] (L i ⧸ (R i).filtration.layerIdeal s (r + 1))) :=
              fun _ => moduleTopology ℝ _
            letI : ∀ i, IsTopologicalAddGroup (ℝ ⊗[ℚ] (L i ⧸ (R i).filtration.layerIdeal s (r + 1))) :=
-             fun _ => IsModuleTopology.isTopologicalAddGroup ℝ _
+             fun _ => IsModuleTopology.topologicalAddGroup ℝ _
            letI : ∀ i, T2Space (ℝ ⊗[ℚ] (L i ⧸ (R i).filtration.layerIdeal s (r + 1))) :=
              fun i => realification_moduleTopology_t2 (Q i).basis
            letI := moduleTopology ℝ (ℝ ⊗[ℚ] (∀ i, L i ⧸ (R i).filtration.layerIdeal s (r + 1)))
            letI : IsTopologicalAddGroup (ℝ ⊗[ℚ] (∀ i, L i ⧸ (R i).filtration.layerIdeal s (r + 1))) :=
-             IsModuleTopology.isTopologicalAddGroup ℝ _
+             IsModuleTopology.topologicalAddGroup ℝ _
            letI := realification_moduleTopology_t2 (pi Q).basis
            ∃ K : (∀ i, I i) → (pi Q).Niltest w,
              (∀ j, (K j).normBound = 1) ∧
@@ -490,12 +491,12 @@ theorem exists_lower_rank_product_family {ι σ τ : Type*}
   let : ∀ i, TopologicalSpace (ℝ ⊗[ℚ] (L i ⧸ (R i).filtration.layerIdeal s (r + 1))) :=
     fun _ => moduleTopology ℝ _
   let : ∀ i, IsTopologicalAddGroup (ℝ ⊗[ℚ] (L i ⧸ (R i).filtration.layerIdeal s (r + 1))) :=
-    fun _ => IsModuleTopology.isTopologicalAddGroup ℝ _
+    fun _ => IsModuleTopology.topologicalAddGroup ℝ _
   let : ∀ i, T2Space (ℝ ⊗[ℚ] (L i ⧸ (R i).filtration.layerIdeal s (r + 1))) :=
     fun i => realification_moduleTopology_t2 (Q i).basis
   let := moduleTopology ℝ (ℝ ⊗[ℚ] (∀ i, L i ⧸ (R i).filtration.layerIdeal s (r + 1)))
   let : IsTopologicalAddGroup (ℝ ⊗[ℚ] (∀ i, L i ⧸ (R i).filtration.layerIdeal s (r + 1))) :=
-    IsModuleTopology.isTopologicalAddGroup ℝ _
+    IsModuleTopology.topologicalAddGroup ℝ _
   let := realification_moduleTopology_t2 (pi Q).basis
   choose K hKn hKc hKu a ha0 hKe using hK
   obtain ⟨_, V, hVn, hVc, hVu, hVa, hVe⟩ := exists_normalized_product_unit_family Q K U hp hι hUc
@@ -554,10 +555,10 @@ theorem exists_binary_lower_rank_unit_family
     optionLieSpace L₀ (fun _ : Unit => L₁) i ⧸ (R i).filtration.layerIdeal s (r + 1)
   let : ∀ i, TopologicalSpace (ℝ ⊗[ℚ] L i) := fun _ => moduleTopology ℝ _
   let : ∀ i, IsTopologicalAddGroup (ℝ ⊗[ℚ] L i) :=
-    fun _ => IsModuleTopology.isTopologicalAddGroup ℝ _
+    fun _ => IsModuleTopology.topologicalAddGroup ℝ _
   let : ∀ i, T2Space (ℝ ⊗[ℚ] L i) := fun i => realification_moduleTopology_t2 (Q i).basis
   let := moduleTopology ℝ (ℝ ⊗[ℚ] (∀ i, L i))
-  let : IsTopologicalAddGroup (ℝ ⊗[ℚ] (∀ i, L i)) := IsModuleTopology.isTopologicalAddGroup ℝ _
+  let : IsTopologicalAddGroup (ℝ ⊗[ℚ] (∀ i, L i)) := IsModuleTopology.topologicalAddGroup ℝ _
   let := realification_moduleTopology_t2 (pi Q).basis
   obtain ⟨V, hVn, hVc, hVu, a, ha, he⟩ := hfamily
   let e : (∀ i, K i) ≃ I × J := {

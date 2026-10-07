@@ -1,5 +1,6 @@
 /- Modified for ProveIt: import Lean 4.32 compatibility declarations.
-Statements and proofs are unchanged from the pinned upstream source. -/
+Mathematical statements are unchanged from the pinned upstream source.
+Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
 import OAI.Compat.TensorProduct
 import OAI.Combinatorics.Progressions.Estimates.CoveredQuotientCorrelation
 
@@ -576,7 +577,7 @@ theorem exists_native_model (s : ℕ) :
             (hM := D.filtration.lowerCentralSeries_eq_bot) (evaluation S B T.filtration hS)) ∧
           (letI := moduleTopology ℝ (ℝ ⊗[ℚ] Algebra S r)
            letI : IsTopologicalAddGroup (ℝ ⊗[ℚ] Algebra S r) :=
-             IsModuleTopology.isTopologicalAddGroup ℝ _
+             IsModuleTopology.topologicalAddGroup ℝ _
            letI := realification_moduleTopology_t2 E.basis
            ∃ V : E.UnitVerticalObservable (Q.realSubgroup s r) I ((p + C) ^ C),
              V.frequency = U.frequency.comp (evaluation S B T.filtration hS).toLinearMap ∧
@@ -607,7 +608,7 @@ theorem exists_native_model (s : ℕ) :
       (fun x => (B x.1 x.2).val) (fun x => hS x.1 (B x.1 x.2).property) K hK hcard
       (hT.mono T hpK) (fun x i => (hB x.1 x.2 i).trans hpK) (U.mono hpK)
   let := moduleTopology ℝ (ℝ ⊗[ℚ] Algebra S r)
-  let : IsTopologicalAddGroup (ℝ ⊗[ℚ] Algebra S r) := IsModuleTopology.isTopologicalAddGroup ℝ _
+  let : IsTopologicalAddGroup (ℝ ⊗[ℚ] Algebra S r) := IsModuleTopology.topologicalAddGroup ℝ _
   let := realification_moduleTopology_t2 E.basis
   obtain ⟨V, hfreq, hobs⟩ := hV
   exact ⟨E, Q, hQ, hQc.mono Q hbound, hcentral, ⟨frame.mono hbound⟩,

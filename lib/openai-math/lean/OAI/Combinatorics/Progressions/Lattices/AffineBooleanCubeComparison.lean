@@ -1,3 +1,5 @@
+/- Modified for ProveIt: prove finite regularity below infinity explicitly
+for the older ContDiff order API. Mathematical statements unchanged. -/
 import OAI.Combinatorics.Progressions.Estimates.JointBooleanStability
 import OAI.Combinatorics.Progressions.Lattices.AffineCubeMinorGoodMass
 
@@ -183,10 +185,10 @@ theorem jointAffineBoolean_selected_derivative_bound
       (jointAffineBooleanInjection block v sel L δ)) x‖ ≤ H := by
   apply sigmaAxisSampler_selected_fderiv_norm_le _
     (fun d => ((booleanSamplerMap_contDiff (c d) (sets d)).comp
-      (contDiff_const.add (L d).contDiff)).of_le (by norm_num)) _ x hH
+      (contDiff_const.add (L d).contDiff)).of_le (by first | exact WithTop.coe_le_coe.mpr le_top | norm_num)) _ x hH
   intro d
   have hd := selectedDerivative_affine_derivative_bound (booleanSamplerMap (c d) (sets d))
-    ((booleanSamplerMap_contDiff (c d) (sets d)).of_le (by norm_num)) (L d) (b d)
+    ((booleanSamplerMap_contDiff (c d) (sets d)).of_le (by first | exact WithTop.coe_le_coe.mpr le_top | norm_num)) (L d) (b d)
     (booleanSelectedInjection (block d) (v d) (sel d)) (hδ d) (fun i => x ⟨d, i⟩)
     ((boolean_selected_derivative_bound (c d) (sets d) (block d) (v d) (sel d)
       (hcard d) (b d + L d (fun i => x ⟨d, i⟩)) (hC d) le_rfl (hc d) (hx d)).trans (hcap d))
@@ -235,7 +237,7 @@ theorem jointAffineBoolean_c2_error_transport
   have hbx (s : JointBlockParameter B h α) : |(b₀ + L₀ x) s| ≤ 1 :=
     hbox s.1 (fun i => x ⟨s.1, i⟩) (fun i => hx ⟨s.1, i⟩) s.2
   have ht := affineSlice_c2_difference_bound V (jointBooleanSampler h c sets) hV
-    ((jointBooleanSampler_contDiff h c sets).of_le (by norm_num)) b₀ L₀ hnorm x (herr _ hbx)
+    ((jointBooleanSampler_contDiff h c sets).of_le (by first | exact WithTop.coe_le_coe.mpr le_top | norm_num)) b₀ L₀ hnorm x (herr _ hbx)
   have he : (fun y => jointBooleanSampler h c sets (b₀ + L₀ y)) =
       jointAffineBooleanSampler c sets L b := rfl
   rw [he] at ht
@@ -305,7 +307,7 @@ theorem affineBooleanCube_comparison
   let H₀ := productMinorDerivativeBound (Fintype.card (BlockParameter B (Fin h) α))
     (Fintype.card O) (Fintype.card α) h C 1
   have hH₀ : 0 ≤ H₀ := productMinorDerivativeBound_nonneg _ _ _ _ hC zero_le_one
-  have hU : ContDiff ℝ 2 U := (booleanSamplerMap_contDiff c sets).of_le (by norm_num)
+  have hU : ContDiff ℝ 2 U := (booleanSamplerMap_contDiff c sets).of_le (by first | exact WithTop.coe_le_coe.mpr le_top | norm_num)
   have hUs : ContDiff ℝ 2 Us := hU.comp (contDiff_const.add L.contDiff)
   have hJs : ‖Js‖ ≤ 1 := affineSelectedInjection_norm_le L J hδ.le hLinv
     (booleanSelectedInjection_norm_le block hblock v sel)

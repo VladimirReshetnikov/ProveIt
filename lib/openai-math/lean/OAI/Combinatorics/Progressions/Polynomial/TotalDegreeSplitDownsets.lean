@@ -1,3 +1,6 @@
+/- Modified for ProveIt: Import the finite-weight compatibility lemma for Lean 4.32.
+Mathematical statements and proof bodies are unchanged. -/
+import OAI.Compat.FinsuppWeight
 import Mathlib.Data.Fin.VecNotation
 import Mathlib.Order.UpperLower.Basic
 import OAI.Combinatorics.Progressions.Estimates.PolarizedCoefficientPermutation

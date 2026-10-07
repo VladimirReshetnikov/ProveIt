@@ -1,3 +1,4 @@
+/- Modified for ProveIt: Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
 import OAI.Combinatorics.Progressions.Estimates.AntisymmetricPartitionApproximation
 import OAI.Combinatorics.Progressions.Estimates.DiagramNativeExternalNetMonotone
 import OAI.Combinatorics.Progressions.Linear.RefiltrationLayerBasis
@@ -640,12 +641,12 @@ theorem exists_adapted_diagram_native_external_net (s k : ℕ) :
             (∀ i j, rationalLogHeight (Q.basis.repr
               (lieQuotientMap (E.filtration.layerIdeal (s + 1)) (E.basis j)) i) ≤ (p + C) ^ C) ∧
             (letI := moduleTopology ℝ (ℝ ⊗[ℚ] (D.filtration.gradedRefiltrationSubalgebra W))
-             letI := IsModuleTopology.isTopologicalAddGroup ℝ
+             letI := IsModuleTopology.topologicalAddGroup ℝ
                (ℝ ⊗[ℚ] (D.filtration.gradedRefiltrationSubalgebra W))
              letI := realification_moduleTopology_t2 E.basis
              letI := moduleTopology ℝ
                (ℝ ⊗[ℚ] ((D.filtration.gradedRefiltrationSubalgebra W) ⧸ E.filtration.layerIdeal (s + 1)))
-             letI := IsModuleTopology.isTopologicalAddGroup ℝ
+             letI := IsModuleTopology.topologicalAddGroup ℝ
                (ℝ ⊗[ℚ] ((D.filtration.gradedRefiltrationSubalgebra W) ⧸ E.filtration.layerIdeal (s + 1)))
              letI := realification_moduleTopology_t2 Q.basis
              DiagramNativeExternalNetConclusion.{u, uO, uR, uIO} s (s + 1) k E D Q F
@@ -683,10 +684,10 @@ theorem exists_adapted_diagram_native_external_net (s k : ℕ) :
     m, hm, Q, hQF, hQL, hQ.mono Q haC, (fun i j => (hproj i j).trans haC), ?_⟩
   let H := D.filtration.gradedRefiltrationSubalgebra W
   let := moduleTopology ℝ (ℝ ⊗[ℚ] H)
-  let := IsModuleTopology.isTopologicalAddGroup ℝ (ℝ ⊗[ℚ] H)
+  let := IsModuleTopology.topologicalAddGroup ℝ (ℝ ⊗[ℚ] H)
   let := realification_moduleTopology_t2 E.basis
   let := moduleTopology ℝ (ℝ ⊗[ℚ] (H ⧸ E.filtration.layerIdeal (s + 1)))
-  let := IsModuleTopology.isTopologicalAddGroup ℝ (ℝ ⊗[ℚ] (H ⧸ E.filtration.layerIdeal (s + 1)))
+  let := IsModuleTopology.topologicalAddGroup ℝ (ℝ ⊗[ℚ] (H ⧸ E.filtration.layerIdeal (s + 1)))
   let := realification_moduleTopology_t2 Q.basis
   have hmarked : ∀ a i j,
       rationalLogHeight ((F a).basis.repr

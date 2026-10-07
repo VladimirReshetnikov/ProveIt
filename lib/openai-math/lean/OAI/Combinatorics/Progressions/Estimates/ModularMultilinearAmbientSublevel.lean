@@ -1,5 +1,6 @@
 /- Modified for ProveIt: use Finsupp.mapDomain_apply for injective
-reindexing on Mathlib v4.32.0. Mathematical statements unchanged. -/
+reindexing on Mathlib v4.32.0. Mathematical statements unchanged.
+Use Finsupp.mapDomain_notin_range for indices outside the image. -/
 import Mathlib.Algebra.MvPolynomial.Equiv
 import OAI.Combinatorics.Progressions.Estimates.ModularMultilinearSublevelFiber
 import OAI.Combinatorics.Progressions.Estimates.ModularMultilinearSublevelNumerics
@@ -117,7 +118,7 @@ theorem fullShiftExponent_mapDomain [Fintype I] {r : ℕ} (f : Fin r → I)
   · obtain ⟨j, rfl⟩ := hi
     rw [Finsupp.mapDomain_apply hf, fullShiftExponent_apply]
     simp only [Finset.mem_image, Finset.mem_univ, true_and, exists_apply_eq_apply, ite_true]
-  · rw [Finsupp.mapDomain_of_notMem_range _ _ hi]
+  · rw [Finsupp.mapDomain_notin_range _ _ hi]
     have hn : i ∉ Finset.univ.image f := by simpa only [Finset.mem_image,
       Finset.mem_univ, true_and, Set.mem_range] using hi
     simp only [hn, ite_false]

@@ -1,3 +1,4 @@
+/- Modified for ProveIt: Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
 import OAI.Combinatorics.Progressions.Geometry.NativeIntervalCoordinate
 import OAI.Combinatorics.Progressions.Nilpotent.NativeNiltestPartition
 import OAI.Combinatorics.Progressions.Nilpotent.NiltestComplement
@@ -75,7 +76,7 @@ theorem mul {degree N : ℕ} [NeZero N] {p : ℝ} {f g : ZMod N → ℝ}
   let : FiniteDimensional ℚ (∀ b, K b) :=
     (RationalFilteredNilmanifold.productFinBasis D).finiteDimensional_of_finite
   let := moduleTopology ℝ (ℝ ⊗[ℚ] (∀ b, K b))
-  let : IsTopologicalAddGroup (ℝ ⊗[ℚ] (∀ b, K b)) := IsModuleTopology.isTopologicalAddGroup ℝ _
+  let : IsTopologicalAddGroup (ℝ ⊗[ℚ] (∀ b, K b)) := IsModuleTopology.topologicalAddGroup ℝ _
   let : T2Space (ℝ ⊗[ℚ] (∀ b, K b)) :=
     realification_moduleTopology_t2 (RationalFilteredNilmanifold.productFinBasis D)
   let S := RationalFilteredNilmanifold.piNiltest D U hp' hcard hUc

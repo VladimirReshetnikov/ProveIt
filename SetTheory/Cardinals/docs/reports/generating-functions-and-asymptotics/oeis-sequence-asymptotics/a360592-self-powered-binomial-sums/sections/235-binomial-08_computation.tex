@@ -1,0 +1,69 @@
+\section{Reproducible computation and its limits}\label{spb:ml:sec:computation}
+The accompanying source archive contains this full article, its PDF, public Python programs, dependency versions, immutable check receipts, and a manifest. The proofs above stand independently of the programs. This section states what the reproducible checks do and what they cannot certify.
+
+\subsection{Exact finite checks}
+The exact rational implementation constructs the defect polynomials, scalar coefficients, logarithmic marked coefficients, and tilted signed density polynomials. It checks the cubic logarithmic difference \eqref{spb:ml:eq:logdiff}, its identification with \eqref{spb:ml:eq:C3ident}, and the algebraic characteristic function derivative identities \eqref{spb:ml:eq:exactderivatives}. Small integer coefficient checks compare the finite sum with the coefficient construction from \eqref{spb:ml:eq:ogf}; marked weights and their recurrence are also checked. These finite algebraic identities are exactly checked, whereas the unbounded order remainder claims are proved in the article.
+
+The supplementary residue coupling is also checked with exact rational weights on a bounded deterministic collection of positive log concave laws, translated supports, and moduli $2,\ldots,7$. The tests compare all present residue pairs and all quantile constancy cells, including boundary values. These are finite examples supplementing the proof in Appendix~\ref{spb:ml:sec:coupling}, not a computational proof for arbitrary log concave laws.
+
+For numerical computation, the exact adjacent marked weight recurrence is particularly convenient. With $m=(n+r)/2$ and $k=(n-r)/2$,
+\begin{equation}\label{spb:ml:eq:weightrecurrence}
+ \frac{W_n(r+2)}{W_n(r)}
+ =\frac{k(1+1/m)^k}{(r+1)(r+2)}.
+\end{equation}
+Indeed $m$ increases by one and $k$ decreases by one, so division of the factorial formulas in \eqref{spb:ml:eq:law} gives this identity immediately. The program anchors at a central mass and propagates the relative weights. Reference Poisson and binomial masses have separate elementary recurrences. Normalizing the exact weights in a central window avoids summing through all $n$ lattice points.
+
+\subsection{Tail formulas and numerical evidence}
+For an ordinary Poisson or binomial law of mean $\eta$, exponential Markov bounds outside a retained interval $[\ell,h]$ use
+\[
+ \exp\{-\eta+x-x\log(x/\eta)\}
+\]
+at the applicable lower and upper endpoints $x$, provided the endpoint is on the corresponding side of the mean. Divide by the exact parity probability for each conditioned reference. For the exact law use \eqref{spb:ml:eq:globalbound}: its omitted unnormalized mass relative to $Q_{\lambda,a}$ is at most $e^{1/(4n)}$ times that reference tail. Dividing by the retained positive normalizer gives an upper bound for the omitted exact probability. If its omitted probability is at most $\tau$ and the reference omitted probability is at most $\rho$, the half $\ell^1$ discrepancy computed with the normalized exact window masses and unnormalized reference window masses differs from the true TV by at most $\tau+\rho/2$. The two contributions are exact window renormalization and the discarded tail sum.
+
+The formulas for these bounds are analytic. Their saved decimal evaluations and the computed probabilities use high precision floating point arithmetic, not directed interval arithmetic. In particular, a displayed extremely small tail value is not a bound on floating point roundoff. Numerical results are corroboration, not effective rigorous error certificates.
+
+The default numerical receipt uses 80 decimal digits and both parities near $10^4$, $10^6$, and $10^8$, with the variance polynomial $v_+$ through $t^2$. The following are ratios to the corresponding proved sharp equivalents.
+\begin{center}
+\begin{tabular}{rcc}
+\toprule
+$n$ & Moment matched ratio & TV tuned ratio\\
+\midrule
+$10^4$   & $0.709741899$ & $1.343673290$\\
+$10^4+1$ & $0.706720977$ & $1.329789806$\\
+$10^6$   & $0.961167258$ & $0.997326441$\\
+$10^6+1$ & $0.961020163$ & $0.997786129$\\
+$10^8$   & $0.996103638$ & $0.999555465$\\
+$10^8+1$ & $0.996032957$ & $0.999454510$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The tuned construction need not improve the finite $n$ error at every tested value; the first rows illustrate why the theorem is asymptotic. The weighted $O(n^{-3/2})$ remainder is smaller than the leading $n^{-5/4}$ error only by a relative $O(n^{-1/4})$ factor. The receipts also record the simpler hierarchy, normalized density remainders, and evaluated tail bounds. Optional bounded command line runs allow larger $n$; they do not change frozen fixtures.
+\begin{writenote}[The table recomputed, 7 October 2026]
+The write recomputed the twelve ratios, and the four of the simpler
+hierarchy, with its own code (exact law from log-gamma values over
+$|r-\lambda|\le40\sqrt\lambda$, conditioned references by direct masses, 50
+digits; $M_0$ by rounding half up). All agree with the table and with
+\file{data/235-binomial-numerical_receipt.json} in every printed digit. The
+printed values are roundings; the truncations that differ are $0.709741898$,
+$0.706720976$, $1.329789805$, $0.961167257$, $0.997326440$, $0.996103637$,
+$0.999555464$ and $0.996032956$. The constants of
+Section~\ref{spb:ml:sec:results} are $0.3456571460\ldots$,
+$0.4718790625\ldots$ and the ratio $0.7325121488\ldots$ (printed as roundings,
+``about $0.34566$'', $0.47188$, ``about $0.73251$'').
+\end{writenote}
+
+The rare parity check enumerates 205 defined cases over a finite grid of trial counts and success probabilities, including endpoint and very small parity probabilities. It verifies the signed moment identities and the mean and variance inequalities. Six characteristic function checks compare the exact derivative formulas with high precision differentiation and examine the least singular value and an $\eps_n$ scale displacement. These finite tests do not replace the uniform proofs of Lemma~\ref{spb:ml:lem:rare} and Proposition~\ref{spb:ml:prop:fine}.
+
+\subsection{Build and verification contract}
+The archive README gives complete commands. The public build verifies every manifest entry and the full source inventory, runs exact, numerical, and guard checks without updating receipts, and compiles a disposable copy of the TeX sources. Shell escape is disabled both for the private TeX format and for document compilation. Python child processes use the no bytecode flag; the integer string conversion cap is 640 digits. Preconditions use explicit exceptions, so optimized Python does not remove guards.
+
+Output paths must be new, outside the source tree, and free of symlink ancestors and traversal components. No existing output is overwritten. The ZIP is assembled deterministically with fixed member order, timestamps, modes, and stored compression. The actual archive replay extracts independently for normal and optimized Python, compares every member's bytes and metadata, rebuilds the PDF and receipts, and requires equality of the final ZIP bytes and unchanged source trees. This is byte reproducibility on the recorded toolchain, not a promise that a different TeX or symbolic algebra version will produce identical bytes. A manifest is an integrity record, not a digital signature or an independent proof of correctness.
+\begin{writenote}[The shipped files, 7 October 2026]
+In ProveIt the PDF, \file{MANIFEST.sha256}, the delivered README and the
+delivered TeX sources are not shipped (this Part is the text); the programs are
+\file{code/235-binomial-*.py}, the receipts and requirements
+\file{data/235-binomial-*}. The builder and the archive replay expect the
+delivered layout; the report README gives commands that rerun the checks in a
+scratch copy.
+\end{writenote}
+

@@ -1,5 +1,6 @@
 /- Modified for ProveIt: import Lean 4.32 compatibility declarations.
-Statements and proofs are unchanged from the pinned upstream source. -/
+Mathematical statements unchanged. Use Set.preimage_setOf_eq for predicate
+preimages and construct the mapped probability instance from measurability. -/
 import OAI.Compat.Measurable
 import OAI.Combinatorics.Progressions.Dynamics.ScalarCubeBoundaryLogBudget
 import OAI.Combinatorics.Progressions.Estimates.BoundedInequalityGoodCutoff
@@ -318,7 +319,7 @@ theorem scaledBlockCubeMeasure_probability {B F α : Type*} [Fintype B] [Fintype
     [Fintype α] [DecidableEq α] (T : B × F → ℝ) (hT : ∀ i, 0 < T i) :
     IsProbabilityMeasure (scaledBlockCubeMeasure (α := α) T) := by
   rw [scaledBlockCubeMeasure_eq_map T hT]
-  infer_instance
+  exact Measure.isProbabilityMeasure_map (blockCubeScale_measurable T).aemeasurable
 
 end Erdos3
 
@@ -457,7 +458,7 @@ theorem booleanMinorDeterminant_sublevel_marginal {B O F α : Type*}
       measurable_const
   have hm := (restrictBlockParameters_cube_measurePreserving (F := F) (α := α) block hblock).measureReal_preimage
     hs.nullMeasurableSet
-  simpa only [Set.preimage_ofPred_eq, ← booleanMinorDeterminant_restrict] using hm
+  simpa only [Set.preimage_setOf_eq, ← booleanMinorDeterminant_restrict] using hm
 
 end Erdos3
 

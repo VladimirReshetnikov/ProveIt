@@ -1,5 +1,6 @@
 /- Modified for ProveIt: import Lean 4.32 compatibility declarations.
-Statements and proofs are unchanged from the pinned upstream source. -/
+Mathematical statements are unchanged from the pinned upstream source.
+Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
 import OAI.Compat.Core
 import OAI.Combinatorics.Progressions.Estimates.FactoredPositiveShiftContradiction
 import OAI.Combinatorics.Progressions.Nilpotent.SimultaneousNiltestFactorization
@@ -613,7 +614,7 @@ theorem exists_common_product_factors (s : ℕ) (hs : 1 ≤ s) :
   let : FiniteDimensional ℚ (∀ i, B.anchoredLieSpace L M i) :=
     (productFinBasis T).finiteDimensional_of_finite
   let := moduleTopology ℝ (ℝ ⊗[ℚ] (∀ i, B.anchoredLieSpace L M i))
-  let := IsModuleTopology.isTopologicalAddGroup ℝ (ℝ ⊗[ℚ] (∀ i, B.anchoredLieSpace L M i))
+  let := IsModuleTopology.topologicalAddGroup ℝ (ℝ ⊗[ℚ] (∀ i, B.anchoredLieSpace L M i))
   let := realification_moduleTopology_t2 (pi T).basis
   let t := 2 * p + 4
   have hp0 : 0 ≤ p := by linarith
@@ -889,11 +890,11 @@ theorem exists_native_partner_pair_contradiction (s c : ℕ) (hc : 2 ≤ c)
   let : ∀ j, FiniteDimensional ℚ (Sq j) := fun _ => inferInstance
   let : ∀ j, FiniteDimensional ℚ (Qu j) := fun _ => inferInstance
   let : ∀ j, TopologicalSpace (ℝ ⊗[ℚ] Sq j) := fun j => moduleTopology ℝ (ℝ ⊗[ℚ] Sq j)
-  let : ∀ j, IsTopologicalAddGroup (ℝ ⊗[ℚ] Sq j) := fun _ => IsModuleTopology.isTopologicalAddGroup ℝ _
+  let : ∀ j, IsTopologicalAddGroup (ℝ ⊗[ℚ] Sq j) := fun _ => IsModuleTopology.topologicalAddGroup ℝ _
   let : ∀ j, ContinuousSMul ℝ (ℝ ⊗[ℚ] Sq j) := fun _ => inferInstance
   let : ∀ j, T2Space (ℝ ⊗[ℚ] Sq j) := fun j => realification_moduleTopology_t2 (Module.finBasis ℚ (Sq j))
   let : ∀ j, TopologicalSpace (ℝ ⊗[ℚ] Qu j) := fun j => moduleTopology ℝ (ℝ ⊗[ℚ] Qu j)
-  let : ∀ j, IsTopologicalAddGroup (ℝ ⊗[ℚ] Qu j) := fun _ => IsModuleTopology.isTopologicalAddGroup ℝ _
+  let : ∀ j, IsTopologicalAddGroup (ℝ ⊗[ℚ] Qu j) := fun _ => IsModuleTopology.topologicalAddGroup ℝ _
   let : ∀ j, ContinuousSMul ℝ (ℝ ⊗[ℚ] Qu j) := fun _ => inferInstance
   let : ∀ j, T2Space (ℝ ⊗[ℚ] Qu j) := fun j => realification_moduleTopology_t2 (Module.finBasis ℚ (Qu j))
   have hU (j) : (U j).ComplexityLE p := by

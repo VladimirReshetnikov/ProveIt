@@ -1,3 +1,4 @@
+/- Modified for ProveIt: Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
 import OAI.Combinatorics.Progressions.Lattices.FixedAffineEpochTransition
 
 namespace OAI
@@ -30,7 +31,7 @@ theorem exists_retained_affine_epoch_transition (s : ℕ) :
           let H := D.filtration.gradedRefiltrationSubalgebra W
           let N := H ⧸ E.filtration.layerIdeal (s + 1)
           let := moduleTopology ℝ (ℝ ⊗[ℚ] N)
-          let := IsModuleTopology.isTopologicalAddGroup ℝ (ℝ ⊗[ℚ] N)
+          let := IsModuleTopology.topologicalAddGroup ℝ (ℝ ⊗[ℚ] N)
           let := realification_moduleTopology_t2 Q.basis
           ∃ V : RationalFilteredNilmanifold N s n,
             V.filtration = Q.filtration ∧ V.lattice ≤ Q.lattice ∧ V.GeometryComplexityLE cost ∧

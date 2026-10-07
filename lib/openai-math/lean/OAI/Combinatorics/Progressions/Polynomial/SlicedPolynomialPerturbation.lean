@@ -1,5 +1,5 @@
 /- Modified for ProveIt: import Lean 4.32 compatibility declarations.
-Statements and proofs are unchanged from the pinned upstream source. -/
+Mathematical statements unchanged. Prove finite regularity below infinity explicitly. -/
 import OAI.Compat.FinsetInj
 import OAI.Combinatorics.Progressions.Estimates.JointBooleanStability
 
@@ -34,7 +34,7 @@ theorem parameterPolynomialMap_mass_c2_bounds
     rw [← polynomialParameterPoint_affine]
     exact hb.2.1.trans hdom.2.1
   · rw [he]
-    apply affineSlice_second_fderiv_norm_le _ ((polynomialVectorMap_contDiff p).of_le (by norm_num))
+    apply affineSlice_second_fderiv_norm_le _ ((polynomialVectorMap_contDiff p).of_le (by first | exact WithTop.coe_le_coe.mpr le_top | norm_num))
       _ _ x (polynomialParameterInjection_norm_le Z I)
     rw [← polynomialParameterPoint_affine]
     exact hb.2.2.trans hdom.2.2
@@ -84,9 +84,9 @@ theorem parameterPolynomialMap_mass_difference
     (fun o i => mvPolynomial_div_single_degreeOf_le (p o) none i (hd o i)) hC
     (fun o => (realPolynomialMass_divMonomial_le (p o) _).trans (hmass o)) ht z hz x hx
   exact factoredDifference_c2_bounds _ _ _ t
-    ((parameterPolynomialMap_contDiff p t z).of_le (by norm_num))
-    ((parameterPolynomialMap_contDiff p 0 z).of_le (by norm_num))
-    ((parameterPolynomialMap_contDiff q t z).of_le (by norm_num))
+    ((parameterPolynomialMap_contDiff p t z).of_le (by first | exact WithTop.coe_le_coe.mpr le_top | norm_num))
+    ((parameterPolynomialMap_contDiff p 0 z).of_le (by first | exact WithTop.coe_le_coe.mpr le_top | norm_num))
+    ((parameterPolynomialMap_contDiff q t z).of_le (by first | exact WithTop.coe_le_coe.mpr le_top | norm_num))
     (parameterPolynomialMap_sub_zero p t z) x hq.1 hq.2.1 hq.2.2
 
 end Erdos3
@@ -144,7 +144,7 @@ theorem slicedPolynomialScale_spec
     have hh := (le_div_iff₀ (by linarith : 0 < 1 + L)).mp hs
     nlinarith [abs_nonneg s]
   apply hε.2.2 c lower width b i hwidth hc hprincipal hw hlower
-    (parameterPolynomialMap p s z) ((parameterPolynomialMap_contDiff p s z).of_le (by norm_num))
+    (parameterPolynomialMap p s z) ((parameterPolynomialMap_contDiff p s z).of_le (by first | exact WithTop.coe_le_coe.mpr le_top | norm_num))
     _ φ hφ hφone
   intro x hx
   have herr := parameterPolynomialMap_mass_difference p hp hM hmass hs1 z hz x hx
@@ -179,8 +179,8 @@ theorem jointSlicedPrincipal_polynomial_tail_comparison
   classical
   let U := jointSlicedPrincipal c lower width
   let V := fun x => U x + t • polynomialVectorMap q x
-  have hU : ContDiff ℝ 2 U := (jointSlicedPrincipal_contDiff c lower width).of_le (by norm_num)
-  have hq : ContDiff ℝ 2 (polynomialVectorMap q) := (polynomialVectorMap_contDiff q).of_le (by norm_num)
+  have hU : ContDiff ℝ 2 U := (jointSlicedPrincipal_contDiff c lower width).of_le (by first | exact WithTop.coe_le_coe.mpr le_top | norm_num)
+  have hq : ContDiff ℝ 2 (polynomialVectorMap q) := (polynomialVectorMap_contDiff q).of_le (by first | exact WithTop.coe_le_coe.mpr le_top | norm_num)
   have hV : ContDiff ℝ 2 V := hU.add (hq.const_smul t)
   have hε := slicedPrincipalC2Tolerance_spec (B := B) (F := F) hdegree hC ha hδ hδone hη A hA
   have herr := hε.2.2 c lower width b i hwidth hc hprincipal hw hlower V hV

@@ -1,3 +1,5 @@
+/- Modified for ProveIt: prove finite regularity below infinity explicitly
+for the older ContDiff order API. Mathematical statements unchanged. -/
 import OAI.Combinatorics.Progressions.Estimates.BooleanMinorDimension
 import OAI.Combinatorics.Progressions.Estimates.FiniteInversePerturbation
 import OAI.Combinatorics.Progressions.Geometry.CutoffBoxImageComparison
@@ -490,7 +492,7 @@ theorem booleanSelectedDerivative_contDiff {B O F α : Type*}
     (c : B → ℝ) (sets : O → Finset α) (block : O → B) (v : F) (r : O → Option α) :
     ContDiff ℝ 1 (selectedDerivative (booleanSamplerMap c sets) (booleanSelectedInjection block v r)) := by
   have hU : ContDiff ℝ 2 (booleanSamplerMap (F := F) c sets) :=
-    (booleanSamplerMap_contDiff c sets).of_le (by norm_num)
+    (booleanSamplerMap_contDiff c sets).of_le (WithTop.coe_le_coe.mpr le_top)
   exact (hU.fderiv_right (by norm_num)).clm_comp contDiff_const
 
 def productMinorDerivativeBound (n j q h : ℕ) (C R : ℝ) : ℝ :=

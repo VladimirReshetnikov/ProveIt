@@ -1,0 +1,16 @@
+.PHONY: pdf verify numerical figures clean
+
+pdf:
+	latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+
+verify:
+	python3 code/verify.py
+
+numerical:
+	python3 code/verify.py --numerical
+
+figures:
+	python3 code/make_figures.py
+
+clean:
+	latexmk -c article.tex

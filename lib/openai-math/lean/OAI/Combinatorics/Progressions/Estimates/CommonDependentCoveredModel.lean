@@ -1,3 +1,4 @@
+/- Modified for ProveIt: Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
 import OAI.Combinatorics.Progressions.Fourier.CommonMarkedFrequencyModel
 
 namespace OAI
@@ -154,7 +155,7 @@ theorem exists_native_dependentQuotient_unit_model (s : ℕ) :
             (∀ z : G.RealGroup, z ∈ G.realLattice → ∃ a : ℤ, realifyFunctional ξ z.coord = a) ∧
             (letI := moduleTopology ℝ (ℝ ⊗[ℚ] D.DependentQuotient)
              letI : IsTopologicalAddGroup (ℝ ⊗[ℚ] D.DependentQuotient) :=
-               IsModuleTopology.isTopologicalAddGroup ℝ _
+               IsModuleTopology.topologicalAddGroup ℝ _
              letI := realification_moduleTopology_t2 G.basis
              ∃ k : ℕ, 0 < k ∧ (k : ℝ) ≤ Real.exp ((v + C) ^ C) ∧
                ∃ U : G.UnitVerticalObservable (S.realSubgroup s r) (Fin k) ((v + C) ^ C),
@@ -178,7 +179,7 @@ theorem exists_native_dependentQuotient_unit_model (s : ℕ) :
     (fun i j => (hproj i j).trans hAC), ξ, hξ, (fun i => (hξH i).trans hAC), hint, ?_⟩
   let := moduleTopology ℝ (ℝ ⊗[ℚ] D.DependentQuotient)
   let : IsTopologicalAddGroup (ℝ ⊗[ℚ] D.DependentQuotient) :=
-    IsModuleTopology.isTopologicalAddGroup ℝ _
+    IsModuleTopology.topologicalAddGroup ℝ _
   let := realification_moduleTopology_t2 G.basis
   obtain ⟨k, hk, hkbound, U, hU⟩ := hunit G hA hSc.1 ξ hξH hint
   refine ⟨k, hk, hkbound.trans (Real.exp_le_exp.mpr hUC),
@@ -235,7 +236,7 @@ def HasCoveredDependentComparison {s r N : ℕ} [NeZero N] {b p q P v : ℝ}
               (∀ i x, V₀.observable i (QuotientGroup.mk x) = V.observable i (QuotientGroup.mk x)) ∧
               (letI := moduleTopology ℝ (ℝ ⊗[ℚ] D.DependentQuotient)
                letI : IsTopologicalAddGroup (ℝ ⊗[ℚ] D.DependentQuotient) :=
-                 IsModuleTopology.isTopologicalAddGroup ℝ _
+                 IsModuleTopology.topologicalAddGroup ℝ _
                letI := realification_moduleTopology_t2 G.basis
                ∃ k : ℕ, 0 < k ∧ (k : ℝ) ≤ Real.exp Q ∧
                  ∃ U : G.UnitVerticalObservable (S.realSubgroup s (r + 1)) (Fin k) Q,
@@ -302,7 +303,7 @@ theorem exists_covered_dependentQuotient_comparison (s : ℕ) :
     hcoverT.mono _ hKC, hmap, V₀.mono hKC, hV₀, hVlip, hVobs, ?_⟩
   let := moduleTopology ℝ (ℝ ⊗[ℚ] D.DependentQuotient)
   let : IsTopologicalAddGroup (ℝ ⊗[ℚ] D.DependentQuotient) :=
-    IsModuleTopology.isTopologicalAddGroup ℝ _
+    IsModuleTopology.topologicalAddGroup ℝ _
   let := realification_moduleTopology_t2 G.basis
   obtain ⟨k, hk, hkbound, U, hU⟩ := hunit
   refine ⟨k, hk, hkbound.trans (Real.exp_le_exp.mpr hAC), U.mono hAC, ?_, ?_, ?_⟩

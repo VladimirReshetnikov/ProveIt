@@ -1,5 +1,6 @@
 /- Modified for ProveIt: import Lean 4.32 compatibility declarations.
-Statements and proofs are unchanged from the pinned upstream source. -/
+Use MvPolynomial coefficient additivity and discharge every conversion goal
+on Lean 4.32; mathematical statements are unchanged. -/
 import OAI.Compat.Core
 import Mathlib.Analysis.SpecialFunctions.Complex.CircleAddChar
 import Mathlib.LinearAlgebra.Multilinear.Basic
@@ -320,7 +321,7 @@ theorem polynomialIterDifference_linearRow_top_component (n : ℕ)
   have hsplit : P = homogeneousComponent (n + 1) P + Q := by dsimp [Q]; abel
   conv_lhs => rw [hsplit, polynomialIterDifference_add]
   funext i
-  simp only [polynomialLinearRow, AddMonoidAlgebra.coeff_add, Finsupp.add_apply]
+  simp only [polynomialLinearRow, MvPolynomial.coeff_add]
   have hi := congrFun hrowQ i
   change (polynomialIterDifference n Q u).coeff (Finsupp.single i 1) = 0 at hi
   rw [hi, add_zero]
@@ -362,7 +363,7 @@ theorem zmod_polynomial_phase_decay_of_top_rank (N : ℕ) [NeZero N]
   have hbound : ‖𝔼 x : I → ZMod N, ZMod.stdAddChar (eval x P)‖ ^ (2 ^ n) ≤
       p ^ (-C * B) := by
     apply h.trans
-    convert hrank using 1; first
+    convert hrank using 1 <;> first
     | rfl
     | (apply Finset.expect_congr rfl; intro u _; split_ifs <;> rfl)
   apply le_of_pow_le_pow_left₀ (by positivity : (2 ^ n : ℕ) ≠ 0)

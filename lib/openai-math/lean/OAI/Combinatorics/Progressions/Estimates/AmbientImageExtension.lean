@@ -1,3 +1,6 @@
+/- Modified for ProveIt: import predicate-membership compatibility for
+Lean 4.32. Statements and proof bodies are unchanged. -/
+import OAI.Compat.Set
 import OAI.Combinatorics.Progressions.Estimates.ImageCosetReconstruction
 import OAI.Combinatorics.Progressions.Estimates.LipschitzExtensionAlongMap
 import OAI.Combinatorics.Progressions.Estimates.LipschitzLocalLifts

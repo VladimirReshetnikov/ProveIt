@@ -1,0 +1,213 @@
+{
+  "date": "2026-10-07",
+  "ordinary_proof_status": "Complete arguments in the supplied manuscript; independent review remains appropriate.",
+  "peer_reviewed": false,
+  "lean_verified": false,
+  "new_axioms_added": false,
+  "numerical_optimizer_dependency": false,
+  "theorems": [
+    {
+      "id": "capacity",
+      "latex_label": "lem:capacity",
+      "statement": "Torus capacity t^d for every affine d-flat",
+      "proof_status": "Complete ordinary proof",
+      "novelty_scope": "Elementary ingredient; historical priority not asserted",
+      "dependencies": [],
+      "finite_check_scope": "All 7713 enumerated affine flats",
+      "theorem_number": "4.1",
+      "start_page": 6
+    },
+    {
+      "id": "capacity_rigidity",
+      "latex_label": "thm:capacity-equality",
+      "statement": "Equality classification and quantitative torus gap",
+      "proof_status": "Complete ordinary proof",
+      "novelty_scope": "Newly developed ingredient relative to the preceding project article",
+      "dependencies": [
+        "capacity"
+      ],
+      "finite_check_scope": "All 7713 enumerated affine flats, including F_4^3",
+      "theorem_number": "4.4",
+      "start_page": 7
+    },
+    {
+      "id": "saturating_enumeration",
+      "latex_label": "cor:enumeration",
+      "statement": "Stirling-number enumeration of all torus-saturating flats",
+      "proof_status": "Complete ordinary proof",
+      "novelty_scope": "Derived consequence; historical priority not asserted",
+      "dependencies": [
+        "capacity_rigidity"
+      ],
+      "finite_check_scope": "Gaussian/Stirling counts in all five enumerated spaces",
+      "theorem_number": "4.5",
+      "start_page": 7
+    },
+    {
+      "id": "defect_identity",
+      "latex_label": "thm:defect",
+      "statement": "Exact nonnegative torus/dimension defect identity",
+      "proof_status": "Complete ordinary proof",
+      "novelty_scope": "Proposed contribution",
+      "dependencies": [
+        "capacity"
+      ],
+      "finite_check_scope": "2535 weight cases and 9 actual partitions",
+      "theorem_number": "5.2",
+      "start_page": 8
+    },
+    {
+      "id": "relaxed_optimum",
+      "latex_label": "thm:LP",
+      "statement": "Exact optimum of the two-moment real linear program",
+      "proof_status": "Complete ordinary proof",
+      "novelty_scope": "Proposed contribution",
+      "dependencies": [
+        "defect_identity"
+      ],
+      "finite_check_scope": "Finite lower/upper consistency grid; convex hull proof not replaced by numerical optimization",
+      "theorem_number": "5.4",
+      "start_page": 9
+    },
+    {
+      "id": "matching_construction",
+      "latex_label": "thm:block",
+      "statement": "Hall support matching and exact constructive upper bound",
+      "proof_status": "Complete ordinary proof",
+      "novelty_scope": "Proposed all-arm extension",
+      "dependencies": [],
+      "finite_check_scope": "14 matchings and 9 actual partitions",
+      "theorem_number": "6.2",
+      "start_page": 10
+    },
+    {
+      "id": "sharp_fixed_product",
+      "latex_label": "thm:main-intro",
+      "statement": "P_{s,m}=s^(m-1)(s-ell) q^(m-r)+O(q^(m-r-1)), m=rs+ell",
+      "proof_status": "Complete ordinary proof",
+      "novelty_scope": "Main proposed contribution; resolves fixed-product leading growth relative to the prior article",
+      "dependencies": [
+        "defect_identity",
+        "matching_construction"
+      ],
+      "finite_check_scope": "540 finite lower/upper parameter checks corroborate finite inputs; asymptotic proof is symbolic",
+      "theorem_number": "1.1",
+      "start_page": 3
+    },
+    {
+      "id": "three_block_interval",
+      "latex_label": "thm:three",
+      "statement": "4q^2-5q+2 <= P_{2,3} <= 4q^2-3q; optimizers have no 3-flat for q>=5",
+      "proof_status": "Complete ordinary proof",
+      "novelty_scope": "Proposed finite refinement; NOT an exact three-block value",
+      "dependencies": [
+        "defect_identity",
+        "matching_construction"
+      ],
+      "finite_check_scope": "Exact rational formula and rounding checks for integer q=3,...,30",
+      "theorem_number": "7.1",
+      "start_page": 12
+    },
+    {
+      "id": "finite_stability",
+      "latex_label": "thm:finite-stability",
+      "statement": "Dimension-mass and nonsaturation-mass bounds in terms of defect",
+      "proof_status": "Complete ordinary proof",
+      "novelty_scope": "Proposed contribution",
+      "dependencies": [
+        "capacity_rigidity",
+        "defect_identity"
+      ],
+      "finite_check_scope": "Weight inequalities and capacity gaps checked exactly on stated finite ranges",
+      "theorem_number": "8.1",
+      "start_page": 13
+    },
+    {
+      "id": "asymptotic_rigidity",
+      "latex_label": "thm:rigidity",
+      "statement": "Almost all points in saturating dimensions r,r+1; proportions 1-ell/s and ell/s",
+      "proof_status": "Complete ordinary proof, including near-optimal variant",
+      "novelty_scope": "Proposed contribution; local geometry, not global edit-distance classification",
+      "dependencies": [
+        "finite_stability",
+        "sharp_fixed_product"
+      ],
+      "finite_check_scope": "Finite ingredients checked; no exhaustive enumeration of optimal partitions",
+      "theorem_number": "8.2",
+      "start_page": 13
+    },
+    {
+      "id": "rate_bounds",
+      "latex_label": "thm:rate-bounds",
+      "statement": "Explicit lower and upper bounds uniform in product length",
+      "proof_status": "Complete ordinary proof",
+      "novelty_scope": "Main proposed contribution",
+      "dependencies": [
+        "capacity",
+        "matching_construction"
+      ],
+      "finite_check_scope": "Convexity proof; displayed decimal table is only rounded evaluation",
+      "theorem_number": "9.2",
+      "start_page": 15
+    },
+    {
+      "id": "sharp_regularized",
+      "latex_label": "thm:rate-intro",
+      "statement": "rho_s(q)=s q^(1-1/s)(1+O(log(q)/q))",
+      "proof_status": "Complete ordinary proof",
+      "novelty_scope": "Main proposed contribution; sharp large-field scale, not exact fixed-q rate",
+      "dependencies": [
+        "rate_bounds"
+      ],
+      "finite_check_scope": "No finite search used to prove the limit",
+      "theorem_number": "1.2",
+      "start_page": 3
+    },
+    {
+      "id": "binomial_reduction",
+      "latex_label": "thm:binomial",
+      "statement": "A_m=sum_j binom(m,j)(q-1)^(2(m-j))P_{2,j}; full rate b+rho_2",
+      "proof_status": "Complete ordinary proof reproduced in manuscript",
+      "novelty_scope": "Previously established in the preceding project article",
+      "dependencies": [
+        "capacity"
+      ],
+      "finite_check_scope": "Geometric proof; not claimed as new",
+      "theorem_number": "10.2",
+      "start_page": 17
+    },
+    {
+      "id": "quadratic_rate_correction",
+      "latex_label": "cor:full-rate",
+      "statement": "Full-map rate (q-1)^2+2sqrt(q)+O(log(q)/sqrt(q))",
+      "proof_status": "Complete ordinary proof",
+      "novelty_scope": "New consequence relative to the prior article",
+      "dependencies": [
+        "sharp_regularized",
+        "binomial_reduction"
+      ],
+      "finite_check_scope": "Follows algebraically from proved limits",
+      "theorem_number": "10.3",
+      "start_page": 17
+    }
+  ],
+  "not_claimed": [
+    "An exact P_{2,3}(q) formula",
+    "An exact rho_s(q) at a fixed field",
+    "Global edit-distance stability",
+    "A new integer Szemeredi bound",
+    "Validity of all advertised global results in either repository",
+    "Exhaustive historical priority"
+  ],
+  "open_directions": [
+    "Exact three-block cost",
+    "Second-order fixed-product asymptotics",
+    "Exact fixed-field regularized rate",
+    "Global compatibility and edit distance",
+    "Heterogeneous arm counts",
+    "Higher-dimensional unions and overlapping quadratics",
+    "q=2, subfield cells, and phase tolerance",
+    "Length-preserving integer transfer",
+    "Stronger certified finite optimization and formal verification"
+  ]
+}

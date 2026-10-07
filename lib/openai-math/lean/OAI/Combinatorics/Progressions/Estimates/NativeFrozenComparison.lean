@@ -1,3 +1,4 @@
+/- Modified for ProveIt: Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
 import OAI.Combinatorics.Progressions.Estimates.UnconditionalStepDrop
 import OAI.Combinatorics.Progressions.Nilpotent.UnitComparisonNiltest
 
@@ -375,7 +376,7 @@ theorem exists_native_frozen_comparison (s : ℕ) :
   obtain ⟨E, hEF, _hEL, hE, hinc, orbit, horbit⟩ := hmodel D R hp (hT 0).1
   let := moduleTopology ℝ (ℝ ⊗[ℚ] D.filtration.gradedRefiltrationSubalgebra R.subalgebra)
   let : IsTopologicalAddGroup (ℝ ⊗[ℚ]
-      D.filtration.gradedRefiltrationSubalgebra R.subalgebra) := IsModuleTopology.isTopologicalAddGroup ℝ _
+      D.filtration.gradedRefiltrationSubalgebra R.subalgebra) := IsModuleTopology.topologicalAddGroup ℝ _
   let := realification_moduleTopology_t2 E.basis
   let t := p + (p + B) ^ B + 4
   have ht : 0 ≤ t := by dsimp [t]; positivity

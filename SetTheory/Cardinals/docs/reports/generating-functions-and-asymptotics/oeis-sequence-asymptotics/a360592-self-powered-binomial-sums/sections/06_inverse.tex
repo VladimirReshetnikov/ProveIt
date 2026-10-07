@@ -1,5 +1,5 @@
 \section{Finite smooth models and controlled inverses}
-\label{sec:inverse}
+\label{spb:ep:sec:inverse}
 This section covers every fixed integer $p\ge1$, using the counting theorem
 appropriate to that $p$. Its subject is inversion of explicit finite smooth
 models. We do not differentiate the discrete sequence, nor an unspecified
@@ -7,45 +7,45 @@ error in its asymptotic expansion.
 
 \subsection{Unified notation and model derivatives}
 Put
-\begin{equation}\label{eq:inverseparams}
+\begin{equation}\label{spb:ep:eq:inverseparams}
  \beta=1/q,\qquad \kappa=p/q,\qquad \alpha=c_p,\qquad
  d_p=\begin{cases}3e/8,&p=1,\\0,&p\ge2,\end{cases}
 \end{equation}
 and use the smooth positive function
-\begin{equation}\label{eq:smoothM}
+\begin{equation}\label{spb:ep:eq:smoothM}
  M_p(x)=q^{-1}(x/q)^{\kappa x}\exp(\alpha x^\beta-d_p),
  \qquad x>0.
 \end{equation}
 For a fixed $K\ge0$, define the finite sum
-\begin{equation}\label{eq:QK}
+\begin{equation}\label{spb:ep:eq:QK}
  Q_K(x)=\sum_{j=0}^K C_{p,j}(\alpha)x^{-j/q},\qquad
  \nu_K=(K+1)/q.
 \end{equation}
 For $p=1$, these are the separate critical coefficients from
-Theorem~\ref{thm:critical}. Both counting theorems give
-\begin{equation}\label{eq:modelvalue}
+Theorem~\ref{spb:ep:thm:critical}. Both counting theorems give
+\begin{equation}\label{spb:ep:eq:modelvalue}
  a_p(n)/M_p(n)=Q_K(n)+O_{p,K}(n^{-\nu_K}).
 \end{equation}
 Let
-\begin{equation}\label{eq:Fmodel}
+\begin{equation}\label{spb:ep:eq:Fmodel}
  F_K(x)=\kappa x\log(x/q)+\alpha x^\beta-\log q-d_p+\log Q_K(x)
 \end{equation}
 where $x$ is sufficiently large that $Q_K(x)>0$.
 
-\begin{lemma}\label{lem:model}
+\begin{lemma}\label{spb:ep:lem:model}
 For each fixed $p,K$, there exists $X_{p,K}>e$ such that for
 $x\ge X_{p,K}$,
-\begin{equation}\label{eq:modelderivative}
+\begin{equation}\label{spb:ep:eq:modelderivative}
  Q_K(x)>1/2,\qquad F_K'(x)\ge c_p'\log x>0,\qquad
              0<F_K''(x)\le C_{p,K}/x.
 \end{equation}
 The function $F_K$ has a unique smooth inverse $u_K$ on its eventual range,
 and at integers
-\begin{equation}\label{eq:logcomparison}
+\begin{equation}\label{spb:ep:eq:logcomparison}
  \log a_p(n)=F_K(n)+O_{p,K}(n^{-\nu_K}).
 \end{equation}
 For fixed $L\ge K$ and each fixed derivative order $h\ge0$,
-\begin{equation}\label{eq:coherentF}
+\begin{equation}\label{spb:ep:eq:coherentF}
  (F_L-F_K)^{(h)}(x)=O_{p,K,L,h}(x^{-\nu_K-h}).
 \end{equation}
 \end{lemma}
@@ -59,46 +59,46 @@ $(\log Q_K)^{(h)}=O(x^{-\delta-h})$.
 Thus
 \begin{align}
  F_K'(x)&=\kappa(\log(x/q)+1)+\alpha\beta x^{\beta-1}
-                                      +O(x^{-\delta-1}),\label{eq:Fprime}\\
+                                      +O(x^{-\delta-1}),\label{spb:ep:eq:Fprime}\\
  F_K''(x)&=\kappa/x+\alpha\beta(\beta-1)x^{\beta-2}
-                                      +O(x^{-\delta-2}).\label{eq:Fsecondmodel}
+                                      +O(x^{-\delta-2}).\label{spb:ep:eq:Fsecondmodel}
 \end{align}
 The positive $\kappa/x$ term dominates the second derivative, proving
-\eqref{eq:modelderivative}. Higher derivatives of order $h\ge2$ are
-$O_{p,K,h}(x^{1-h})$. Taking a logarithm in \eqref{eq:modelvalue}, using
-$Q_K>1/2$, proves \eqref{eq:logcomparison}.
+\eqref{spb:ep:eq:modelderivative}. Higher derivatives of order $h\ge2$ are
+$O_{p,K,h}(x^{1-h})$. Taking a logarithm in \eqref{spb:ep:eq:modelvalue}, using
+$Q_K>1/2$, proves \eqref{spb:ep:eq:logcomparison}.
 Finally $Q_L-Q_K$ is a finite sum starting at $x^{-\nu_K}$, so its
 fixed derivatives and those of the logarithmic difference have the stated
-bounds. This proves \eqref{eq:coherentF}.
+bounds. This proves \eqref{spb:ep:eq:coherentF}.
 \end{proof}
 
 \subsection{A Lambert core and finitely many Newton steps}
 Write $Y=\log y$ and set
-\begin{equation}\label{eq:Lambertcore}
+\begin{equation}\label{spb:ep:eq:Lambertcore}
  Z=Y+\log q+d_p,\qquad
  N=N(Y)=\frac{qZ}{pW(Z/p)},
 \end{equation}
 where $W$ is the positive real branch.
 This solves exactly
-\begin{equation}\label{eq:coreeq}
+\begin{equation}\label{spb:ep:eq:coreeq}
  \kappa N\log(N/q)=Z.
 \end{equation}
 Indeed, $N/q=\exp(W(Z/p))$ and $W(Z/p)e^{W(Z/p)}=Z/p$.
 For fixed $K,J$, begin at $x_0=N(Y)$ and make $J$ Newton steps
-\begin{equation}\label{eq:newton}
+\begin{equation}\label{spb:ep:eq:newton}
  x_{j+1}=x_j-\frac{F_K(x_j)-Y}{F_K'(x_j)},\qquad 0\le j<J.
 \end{equation}
 This is an explicit finite composition of $W$, real powers, logarithms,
 exponentials, and arithmetic. There is no hidden root solve in $x_J$.
 
-\begin{theorem}\label{thm:newton}
-For every fixed $p,K,J$, all iterates in \eqref{eq:newton} are well-defined
+\begin{theorem}\label{spb:ep:thm:newton}
+For every fixed $p,K,J$, all iterates in \eqref{spb:ep:eq:newton} are well-defined
 for sufficiently large $Y$, and
-\begin{equation}\label{eq:monotoneNewton}
+\begin{equation}\label{spb:ep:eq:monotoneNewton}
  u_K(Y)\le x_{j+1}\le x_j\le N(Y).
 \end{equation}
 Their error obeys
-\begin{equation}\label{eq:newtonerror}
+\begin{equation}\label{spb:ep:eq:newtonerror}
  0\le x_J-u_K(Y)
    \le C_{p,K,J}\,
        \frac{N^{1-(1-\beta)2^J}}{(\log N)^{2^{J+1}-1}}.
@@ -110,13 +110,13 @@ $F_K(N)-Y=\alpha N^\beta+\log Q_K(N)>0$ eventually.
 On the other hand $F_K(N/2)<Y$ for large $Y$, because the change in the
 core term is of order $N\log N$, much larger than $N^\beta$.
 Thus $u=u_K(Y)\in(N/2,N)$.
-By the mean-value theorem and \eqref{eq:modelderivative},
-\begin{equation}\label{eq:e0}
+By the mean-value theorem and \eqref{spb:ep:eq:modelderivative},
+\begin{equation}\label{spb:ep:eq:e0}
  e_0=N-u=O_{p,K}(N^\beta/\log N).
 \end{equation}
 On $[u,N]$, $F_K$ is increasing and convex. The tangent line at $x\ge u$
 meets the line of height $Y$ between $u$ and $x$; this proves the
-monotonicity and all domain assertions in \eqref{eq:monotoneNewton}.
+monotonicity and all domain assertions in \eqref{spb:ep:eq:monotoneNewton}.
 Taylor's theorem, expanded at $x_j$, gives
 \[
  e_{j+1}=\frac{F_K''(\xi_j)}{2F_K'(x_j)}e_j^2
@@ -124,68 +124,68 @@ Taylor's theorem, expanded at $x_j$, gives
 \]
 The power of $N$ therefore changes by $a\mapsto2a-1$ and the power in
 the denominator by $b\mapsto2b+1$. Starting from $(a,b)=(\beta,1)$ in
-\eqref{eq:e0} yields \eqref{eq:newtonerror}.
+\eqref{spb:ep:eq:e0} yields \eqref{spb:ep:eq:newtonerror}.
 \end{proof}
 
 The first Newton error is $O(N^{2\beta-1}/\log^3N)$.
 At criticality $\beta=1/2$, so the first two Newton errors are respectively
-\begin{equation}\label{eq:criticalNewton}
+\begin{equation}\label{spb:ep:eq:criticalNewton}
  O(\log^{-3}N),\qquad O(N^{-1}\log^{-7}N).
 \end{equation}
 The constant offset in the critical core is essential:
 $N=2(Y+\log2+3e/8)/W(Y+\log2+3e/8)$.
 
 \subsection{Arbitrary fixed index accuracy}
-\begin{corollary}\label{cor:index}
+\begin{corollary}\label{spb:ep:cor:index}
 Given any fixed $M>0$, choose integers $K,J\ge0$ with
-\begin{equation}\label{eq:chooseKJ}
+\begin{equation}\label{spb:ep:eq:chooseKJ}
  (K+1)/q\ge M,\qquad (1-\beta)2^J\ge M+1.
 \end{equation}
 Let $h_{K,J}(Y)=x_J(Y)$. Then on the exact range of the count sequence,
-\begin{equation}\label{eq:indexrecover}
+\begin{equation}\label{spb:ep:eq:indexrecover}
  h_{K,J}(\log a_p(n))=n+O_{p,K,J}(n^{-M}/\log n).
 \end{equation}
 In particular, its nearest integer is $n$ for all sufficiently large $n$.
 \end{corollary}
 \begin{proof}
-By \eqref{eq:logcomparison} and the derivative lower bound,
+By \eqref{spb:ep:eq:logcomparison} and the derivative lower bound,
 \[
  u_K(\log a_p(n))-n=O_{p,K}(n^{-\nu_K}/\log n).
 \]
 The leading growth also gives $N(\log a_p(n))\sim n$.
-Combine this comparison with \eqref{eq:newtonerror} and
-\eqref{eq:chooseKJ}. The logarithmic denominator in the Newton bound
-is at least $\log N$, giving \eqref{eq:indexrecover}.
+Combine this comparison with \eqref{spb:ep:eq:newtonerror} and
+\eqref{spb:ep:eq:chooseKJ}. The logarithmic denominator in the Newton bound
+is at least $\log N$, giving \eqref{spb:ep:eq:indexrecover}.
 Eventually its absolute error is less than $1/2$.
 \end{proof}
 
-The inverse models are coherent. From \eqref{eq:coherentF} and the
+The inverse models are coherent. From \eqref{spb:ep:eq:coherentF} and the
 mean-value theorem, for each fixed $L\ge K$,
-\begin{equation}\label{eq:inversecoherent}
+\begin{equation}\label{spb:ep:eq:inversecoherent}
  u_L(Y)-u_K(Y)=O_{p,K,L}(N(Y)^{-\nu_K}/\log N(Y)).
 \end{equation}
 Increasing the model order therefore cannot change already resolved inverse
 terms. All derivative bounds used here belong to explicit finite functions;
-none is inferred by differentiating \eqref{eq:logcomparison}.
+none is inferred by differentiating \eqref{spb:ep:eq:logcomparison}.
 
 \subsection{A convergent local Lagrange generator}
 For a fixed sufficiently large $N=N(Y)$, put
-\begin{equation}\label{eq:HN}
+\begin{equation}\label{spb:ep:eq:HN}
  v=F_K(N)-Y,\qquad
  H_N(z)=\frac{z}{F_K(N+z)-F_K(N)},\qquad H_N(0)=\frac1{F_K'(N)}.
 \end{equation}
 The local Lagrange formula is
-\begin{equation}\label{eq:Lagrange}
+\begin{equation}\label{spb:ep:eq:Lagrange}
  u_K(Y)=N+\sum_{m\ge1}\frac{(-v)^m}{m!}
        \left.\frac{d^{m-1}}{dz^{m-1}}H_N(z)^m\right|_{z=0}.
 \end{equation}
 We verify a convergence disk and a quantitative truncation bound, rather
 than using this as a merely formal identity.
 
-\begin{proposition}\label{prop:Lagrange}
+\begin{proposition}\label{spb:ep:prop:Lagrange}
 For fixed $p,K$ and all sufficiently large $Y$, series
-\eqref{eq:Lagrange} converges. After retaining $m=1,\ldots,L$ its remainder is
-\begin{equation}\label{eq:Lagrangerem}
+\eqref{spb:ep:eq:Lagrange} converges. After retaining $m=1,\ldots,L$ its remainder is
+\begin{equation}\label{spb:ep:eq:Lagrangerem}
  O_{p,K,L}\left(N\left(\frac{N^{\beta-1}}{\log N}\right)^{L+1}\right).
 \end{equation}
 \end{proposition}
@@ -227,27 +227,27 @@ Cauchy's bound and a geometric tail yield
 \[
  O\left(N\frac{(|v|/R_N)^{L+1}}{1-|v|/R_N}\right),
 \]
-which proves \eqref{eq:Lagrangerem} and convergence at $w=-v$.
+which proves \eqref{spb:ep:eq:Lagrangerem} and convergence at $w=-v$.
 \end{proof}
 
-The first two displacements in \eqref{eq:Lagrange} are
-\begin{equation}\label{eq:firstLagrange}
+The first two displacements in \eqref{spb:ep:eq:Lagrange} are
+\begin{equation}\label{spb:ep:eq:firstLagrange}
  -\frac v{F_K'(N)}-\frac{F_K''(N)v^2}{2F_K'(N)^3}.
 \end{equation}
 The first leading displacement alone is
-\begin{equation}\label{eq:firstdisplacement}
+\begin{equation}\label{spb:ep:eq:firstdisplacement}
  -\frac{\alpha N^\beta}{\kappa(\log(N/q)+1)}.
 \end{equation}
-Discarding terms to get \eqref{eq:firstdisplacement} also discards their
+Discarding terms to get \eqref{spb:ep:eq:firstdisplacement} also discards their
 accuracy. This shorter expression is not assigned the much smaller error
 of a multistep Newton approximation.
 
 \subsection{Exact integer thresholds and the rounding boundary}
-\begin{theorem}\label{thm:threshold}
-Fix $M>0$ and $K,J$ satisfying \eqref{eq:chooseKJ}.
+\begin{theorem}\label{spb:ep:thm:threshold}
+Fix $M>0$ and $K,J$ satisfying \eqref{spb:ep:eq:chooseKJ}.
 For $h=h_{K,J}(\log y)$ there are constants $C,Y_0$, depending only on
 $p,K,J$, such that for $y\ge e^{Y_0}$,
-\begin{equation}\label{eq:ceiling}
+\begin{equation}\label{spb:ep:eq:ceiling}
  \left\lceil h-C\frac{h^{-M}}{\log h}\right\rceil
        \le T_p(y)\le
  \left\lceil h+C\frac{h^{-M}}{\log h}\right\rceil.
@@ -259,7 +259,7 @@ leaves two adjacent possibilities.
 \begin{proof}
 First use the exact model inverse $u=u_K(Y)$, $Y=\log y$.
 For integers $m$ with $|m-u|\le2$, the error in
-\eqref{eq:logcomparison} is bounded by $C_1u^{-\nu_K}$ and
+\eqref{spb:ep:eq:logcomparison} is bounded by $C_1u^{-\nu_K}$ and
 $F_K'(x)\ge c_1\log u$ throughout this small neighborhood.
 Choose
 \[
@@ -271,19 +271,19 @@ $\log a_p(m_+)\ge Y$.
 For $m_-=\lceil u-\varepsilon\rceil-1$ one has strictly
 $m_-<u-\varepsilon$, even if $u-\varepsilon$ is itself an integer.
 It follows that $\log a_p(m_-)<Y$.
-Exact monotonicity from Proposition~\ref{prop:monotone} yields
+Exact monotonicity from Proposition~\ref{spb:ep:prop:monotone} yields
 \[
  \lceil u-\varepsilon\rceil\le T_p(y)
                          \le\lceil u+\varepsilon\rceil.
 \]
-Replacing $u$ by $h$ uses \eqref{eq:newtonerror}; $u\sim h\sim N$ and
-$\nu_K\ge M$ absorb both errors into the radius in \eqref{eq:ceiling}.
+Replacing $u$ by $h$ uses \eqref{spb:ep:eq:newtonerror}; $u\sim h\sim N$ and
+$\nu_K\ge M$ absorb both errors into the radius in \eqref{spb:ep:eq:ceiling}.
 Twice that radius is eventually less than one, so its endpoint ceilings
 can differ by at most one.
 \end{proof}
 
 \begin{remark}[Exact range versus arbitrary levels]
-Nearest-integer recovery in Corollary~\ref{cor:index} assumes the input
+Nearest-integer recovery in Corollary~\ref{spb:ep:cor:index} assumes the input
 is exactly $y=a_p(n)$. It does not give nearest-integer threshold recovery
 for an arbitrary $y$. Even an extremely short real interval can straddle
 an integer, in which case taking a ceiling cannot be settled by its width
@@ -300,3 +300,46 @@ experiments are diagnostics, not a certified finite-input algorithm.
 The critical count theorem transfers to these inverses because its finite
 models have the same derivative structure. It does not transfer the marked
 probability theorem to $p=1$.
+
+\begin{remark}[{[write]} The inverses and the transseries volume, 7~October 2026]\label{spb:ep:rem:transseries}
+Compared statement by statement with the repository's transseries
+volume~\cite{TSvol}; the volume's symbols are not used here.
+\begin{enumerate}\raggedright
+\item \emph{The growth.} $\log a_p(n)=\kappa n\log(n/q)+\alpha n^\beta+O(1)$
+contains the term $n\log n$, so it is not of the exponential--power form of
+\file{p0:def:model} (whose exponent is at most one, without a logarithmic
+factor); no instance of the volume's model is claimed.
+\item \emph{The Lambert core.} With the unknown replaced by its logarithm,
+$w=\log(N/q)$, the core equation~\eqref{spb:ep:eq:coreeq} becomes, after one
+more logarithm, $w+\log w=\log(Z/p)$: the volume's dominant block
+\file{p0:thm:lambert-core} with unit slope, unit logarithmic coefficient and
+target $\log(Z/p)$. Its positive-coefficient branch gives exactly
+$w=W(Z/p)$, that is $N=qZ/(pW(Z/p))$ of~\eqref{spb:ep:eq:Lambertcore}. So the
+core is an exact instance (an equation in $N$ for a given level). The tilt
+parameter~\eqref{spb:ep:eq:muW} is likewise an exact instance at fixed $n$:
+$\log\mu+(2A/n)\mu=\log\lambda-b/n$ has positive logarithmic coefficient, and
+its positive-branch solution is the displayed Lambert formula.
+\item \emph{The Newton iterates and the Lagrange series.} In the chart
+$\zeta=\log x$, with the logarithm of $Y+\log q+d_p$ as target, the leading
+balance of $F_K(x)=Y$ is a monomial--logarithmic datum
+(\file{plt:def:lw-monomial-log-datum}) with exponent one, logarithmic power
+one and constant $\log\kappa$, and the correction $\log(1-(\log q)/\zeta)$ is a
+power series in $1/\zeta$. But $F_K$ also contains $\alpha x^\beta$, which in
+that chart contributes a multiple of $e^{-(1-\beta)\zeta}/\zeta$: a term beyond
+every power of $1/\zeta$, so the hypothesis that the perturbation be a series
+in $1/\zeta$ with coefficients polynomial in $\log\zeta$ fails. The write
+therefore has not shown the iterates~\eqref{spb:ep:eq:newton} or the local
+series~\eqref{spb:ep:eq:Lagrange} to be instances of \file{plt:thm:lw-template};
+they are proved directly, with explicit Newton and Cauchy bounds.
+\item \emph{The thresholds.} $T_p(y)$ is the volume's staircase
+(\file{p0:def:three-inverses}(1)) of the eventually strictly increasing
+sequence $a_p(n)$ (Proposition~\ref{spb:ep:prop:monotone}). The smooth model
+$F_K$ is not an interpolation of $\log a_p(n)$ (it differs from it by the
+vertical error of~\eqref{spb:ep:eq:logcomparison}), so
+Theorem~\ref{spb:ep:thm:threshold} is proved directly: its two-ceiling
+envelope is an analogue of \file{p0:thm:staircase}(2), not an instance, and
+Corollary~\ref{spb:ep:cor:index} is an analogue of
+\file{p0:thm:staircase}(3); the remark after Theorem~\ref{spb:ep:thm:threshold}
+is the caution of that theorem.
+\end{enumerate}
+\end{remark}

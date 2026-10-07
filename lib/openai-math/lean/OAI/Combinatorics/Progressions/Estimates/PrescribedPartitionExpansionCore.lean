@@ -1,3 +1,4 @@
+/- Modified for ProveIt: Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
 import OAI.Combinatorics.Progressions.Dynamics.RefilteredExpansionErrorBudget
 import OAI.Combinatorics.Progressions.Estimates.ControlledRefilteredRecoveredExpansion
 import OAI.Combinatorics.Progressions.Estimates.PrescribedComplementInputPartition
@@ -29,10 +30,10 @@ noncomputable def SelectedRefilteredProductExpansionSpec (p : ℝ) (q r : ℕ) (
   let I₀ := {i : ι // i ≠ a}
   let Z₀ := pi (fun i : I₀ => D i.val)
   letI := moduleTopology ℝ (ℝ ⊗[ℚ] (H ⧸ E.filtration.layerIdeal (s + 1)))
-  letI := IsModuleTopology.isTopologicalAddGroup ℝ (ℝ ⊗[ℚ] (H ⧸ E.filtration.layerIdeal (s + 1)))
+  letI := IsModuleTopology.topologicalAddGroup ℝ (ℝ ⊗[ℚ] (H ⧸ E.filtration.layerIdeal (s + 1)))
   letI := realification_moduleTopology_t2 Q.basis
   letI := moduleTopology ℝ (ℝ ⊗[ℚ] (∀ i : I₀, L i.val))
-  letI := IsModuleTopology.isTopologicalAddGroup ℝ (ℝ ⊗[ℚ] (∀ i : I₀, L i.val))
+  letI := IsModuleTopology.topologicalAddGroup ℝ (ℝ ⊗[ℚ] (∀ i : I₀, L i.val))
   letI := realification_moduleTopology_t2 Z₀.basis
   ∃ P : ℕ, 0 < P ∧ (P : ℝ) ≤ Real.exp cost ∧
     ∃ Q' : RationalFilteredNilmanifold (H ⧸ E.filtration.layerIdeal (s + 1)) s n,
@@ -129,10 +130,10 @@ theorem selected_refiltered_product_expansion
   let I₀ := {i : ι // i ≠ a}
   let Z₀ := pi (fun i : I₀ => D i.val)
   let := moduleTopology ℝ (ℝ ⊗[ℚ] (H ⧸ E.filtration.layerIdeal (s + 1)))
-  let := IsModuleTopology.isTopologicalAddGroup ℝ (ℝ ⊗[ℚ] (H ⧸ E.filtration.layerIdeal (s + 1)))
+  let := IsModuleTopology.topologicalAddGroup ℝ (ℝ ⊗[ℚ] (H ⧸ E.filtration.layerIdeal (s + 1)))
   let := realification_moduleTopology_t2 Q.basis
   let := moduleTopology ℝ (ℝ ⊗[ℚ] (∀ i : I₀, L i.val))
-  let := IsModuleTopology.isTopologicalAddGroup ℝ (ℝ ⊗[ℚ] (∀ i : I₀, L i.val))
+  let := IsModuleTopology.topologicalAddGroup ℝ (ℝ ⊗[ℚ] (∀ i : I₀, L i.val))
   let := realification_moduleTopology_t2 Z₀.basis
   obtain ⟨P, hP, hPb, Q', hQF, hQb, hQle, hQ, Λ, hΛ, hchar, hnormal,
     hfinite, hindex, l, hl, hin, hout, hV, hbase⟩ := hbase
@@ -298,7 +299,7 @@ def PrescribedPartitionExpansionSpec (s r b₀ k₀ a B C : ℕ) : Prop :=
       RefilteredProductExpansionSpec T none W R Q₀ p q r cost →
       let H := (pi T).filtration.gradedRefiltrationSubalgebra W
       letI := moduleTopology ℝ (ℝ ⊗[ℚ] (H ⧸ R.filtration.layerIdeal (s + 1)))
-      letI := IsModuleTopology.isTopologicalAddGroup ℝ (ℝ ⊗[ℚ] (H ⧸ R.filtration.layerIdeal (s + 1)))
+      letI := IsModuleTopology.topologicalAddGroup ℝ (ℝ ⊗[ℚ] (H ⧸ R.filtration.layerIdeal (s + 1)))
       letI := realification_moduleTopology_t2 Q₀.basis
       ∃ Q' : RationalFilteredNilmanifold (H ⧸ R.filtration.layerIdeal (s + 1)) s dQ,
         Q'.filtration = Q₀.filtration ∧ Q'.basis = Q₀.basis ∧ Q'.lattice ≤ Q₀.lattice ∧
@@ -548,10 +549,10 @@ theorem prescribed_partition_expansion_from_partition (s r b₀ k₀ a B C B₀ 
   let I₀ := {i : Option (κ ⊕ ι) // i ≠ none}
   let Z₀ := pi (optionComplementFactors D₀ Z)
   let := moduleTopology ℝ (ℝ ⊗[ℚ] (H ⧸ R.filtration.layerIdeal (s + 1)))
-  let := IsModuleTopology.isTopologicalAddGroup ℝ (ℝ ⊗[ℚ] (H ⧸ R.filtration.layerIdeal (s + 1)))
+  let := IsModuleTopology.topologicalAddGroup ℝ (ℝ ⊗[ℚ] (H ⧸ R.filtration.layerIdeal (s + 1)))
   let := realification_moduleTopology_t2 Q₀.basis
   let := moduleTopology ℝ (ℝ ⊗[ℚ] (∀ i : I₀, optionLieSpace L₀ KL i.val))
-  let := IsModuleTopology.isTopologicalAddGroup ℝ (ℝ ⊗[ℚ] (∀ i : I₀, optionLieSpace L₀ KL i.val))
+  let := IsModuleTopology.topologicalAddGroup ℝ (ℝ ⊗[ℚ] (∀ i : I₀, optionLieSpace L₀ KL i.val))
   let := realification_moduleTopology_t2 Z₀.basis
   have hselected : SelectedRefilteredProductExpansionSpec T none W R Q₀ p q r cost :=
     selected_refiltered_product_expansion T none W R Q₀ hbase

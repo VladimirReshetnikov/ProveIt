@@ -1,0 +1,49 @@
+\section{Classical context and the precise scope of the result}\label{spb:ml:sec:context}
+\subsection{What the comparison adds}
+Positive binomial fitting, Charlier corrections, and Hermite absolute moment limits are established approximation mechanisms. Soon~\cite{soon} chooses an integer trial count near a mean squared divided by a second factorial moment quantity, then preserves the mean. Barbour and Xia~\cite{bx} discuss positive binomial fitting to a two cumulant reference; their Theorem 4.1, equation (4.2), already displays an error mechanism of size $q^2/\sqrt{Mq}$ in the small success probability regime. \v{C}ekanavi\v{c}ius, Pek\"oz, R\"ollin, and Shwartz~\cite{cprs} construct shifted binomial fits and explicitly treat rounding and support effects. We do not claim these general constructions as new.
+
+The rate $n^{-5/4}$ also has a classical cumulant explanation. If $f_2=\kappa_2-\kappa_1$ and $f_3=\kappa_3-3\kappa_2+2\kappa_1$ are factorial cumulants, Theorem~\ref{spb:ml:thm:cumulants} gives
+\[
+ f_2=-\tfrac32c^2+O(t),\qquad f_3=\tfrac{33}{4}c^3t+O(t^2).
+\]
+A binomial matched in mean and variance before rounding has $f_{3,B}=2(\nu-v)^2/\nu=\tfrac92c^3t+O(t^2)$. The leading discrepancy is $\tfrac{15}{4}c^3t$, which upon division by $3!\mu^3$ suggests the Charlier coefficient $5/(8n^2)$. This calculation predicts the scale and coefficient. It is not a proof of the TV equivalent: it does not exclude another rearrangement of probability mass at that scale. The weighted estimate in Theorem~\ref{spb:ml:thm:cubic} supplies exactly that missing distributional control, together with both support tails.
+
+Barbour, Kowalski, and Nikeghbali~\cite{bkn} give general mod discrete and Poisson--Charlier expansion methods, including positive approximants. Chhaibi, Delbaen, M\'eliot, and Nikeghbali~\cite{cdmn}, Theorem 3.11, give sharp total variation asymptotics governed by Gaussian derivatives and their absolute integrals under suitable global residue hypotheses. M\'eliot, Nikeghbali, and Visentin~\cite{mnv} develop higher order mod Poisson approximation schemes and a positive conversion. These are important general precedents for the final Hermite step. The short weighted median minimization in Lemma~\ref{spb:ml:lem:median} is elementary $L^1$ projection, not a new general optimization principle.
+
+There are specific reasons not to insert this law unchanged into an off the shelf ordinary Poisson or independent Bernoulli theorem. Its characteristic function has modulus one at frequency $\pi$, while an ordinary Poisson characteristic function there has modulus $e^{-2\mu}$. Thus its ordinary Poisson deconvolution residue is not uniformly bounded over the full Fourier interval. Also, a nondegenerate ordinary sum of independent Bernoulli variables has consecutive support after deterministic shifts; $R_n$ lives on one parity class. Reindexing the lattice or proving a conditioning transfer would require additional work. The common conditioned reference here resolves this directly.
+
+There is a second precision issue: the ordinary Poisson residual corresponding to $\gamma C_3/n^2$ has cubic coefficient $\gamma\mu^3/n^2$, which tends to zero. An unscaled sharp theorem with a limiting residual coefficient does not by itself yield a relative equivalent at this smaller scale. One must verify a suitably normalized, quantitative remainder. Finally, the full binomial infimum requires the global parameter localization of Section~\ref{spb:ml:sec:global}. It is not a consequence of three cumulants or a local fitting calculation.
+
+The article's asserted result is therefore the model specific weighted comparison, explicit coefficient and tuning, and global localization for all defined parity conditioned binomials. We make no worldwide priority claim and no claim of external peer review. The analytic proof is independent of the computational checks.
+
+\subsection{OEIS connection and source limits}
+The indexed primary entry A360592~\cite{oeis1} records \eqref{spb:ml:eq:ogf}, the finite sum, and initial terms
+\[
+ 1,1,2,5,14,44,149,543,2096,8539,36444,162380,\ldots.
+\]
+Its posted leading equivalent is $(n/2)^{n/2}e^{c\sqrt n-3c^2/4}/2$. The scalar result in Report 230, reproduced in Proposition~\ref{spb:ml:prop:scalar}, establishes this and gives first relative coefficient $c/4+11c^3/8$. The indexed entry's displayed intended refinement contains an additional $1/(8c)$. As a claim about that first correction it disagrees with the proved coefficient; interpreted only as a leading equivalence under $\sim$, the displayed formula remains true. This article does not depend on correcting the online entry and makes no assertion about the origin of that extra term.
+
+Primary sources were checked on 5 October 2026. The OEIS direct fetch was unavailable, so the entry information comes from its indexed primary page; its latest revision history was not independently verified. The bibliography identifies inspected primary documents and versions. Ehm's 1991 publisher abstract~\cite{ehm} was available, but its full original theorem was not inspected; no theorem level assertion from it is used. The named general papers above provide context, not black box proof inputs. A bounded source comparison cannot certify historical absence of a related exact constant or optimizer.
+\begin{writenote}[7 October 2026]
+The write read A360592 directly: revision \#28 of 17 February 2023, the
+latest, with the finite sum, the initial terms displayed here and the leading
+equivalent as stated, and with the refinement whose first correction carries
+the extra $1/(8c)$ (Remark~\ref{spb:ep:rem:oeis}).
+\end{writenote}
+
+\subsection{Further research directions}
+The following directions are outside the present theorem.
+\begin{enumerate}
+\item \textbf{Next order optimization and integer effects.} The theorem leaves bounded trial changes undetermined. A further weighted expansion could identify how the fractional part of the real trial count enters the next TV term, and whether it selects particular rounding choices. It would still require a separate argument to identify exact finite $n$ minimizers.
+\item \textbf{Larger positive families.} An additional even translation, a mixture, or another positive family may remove part of the cubic residual. Positivity, support, and the dimension of the limiting $L^1$ projection would need to be verified for each family.
+\item \textbf{Uniform parameter and modulus regimes.} Other fixed parameters in the self powered sum family lead to conditioning modulo more than two. Such extensions are outside this article. Uniform estimates when the modulus or model parameter grows with $n$ require substantially different root and tail control; no such uniformity follows from a fixed parameter expansion.
+\item \textbf{Effective error certificates.} The proof gives asymptotic $O$ estimates with unspecified constants. Explicit onset thresholds and interval arithmetic could turn the positive construction into a certified finite $n$ error bound, especially where the moment matched and tuned errors cross.
+\item \textbf{General deformed lattice laws.} It is useful to isolate hypotheses on a positive deformation that imply a weighted Charlier remainder together with a global two parameter localization principle. Such a theorem would need tail control and identifiability, not just a list of cumulants.
+\item \textbf{Beyond fixed order.} The marked generator works at every fixed order. It does not show convergence as the order grows, justify optimal truncation, or determine an exponentially small parity correction. Those questions need additional analysis.
+\end{enumerate}
+\begin{writenote}[Added 7 October 2026, under Vladimir's standing rule of 4 October 2026]
+Every open question of this Part is in this list. Its third item meets Part~I,
+which treats every fixed $p\ge2$ with residue conditioning modulo $p+1$ but
+proves only Poisson references there; the binomial optimization for $p\ge2$ is
+open. No claim of the source was found false.
+\end{writenote}

@@ -22,6 +22,11 @@
 \newcommand{\RR}{\mathcal R}
 \newcommand{\NN}{\mathbb N}
 \DeclareMathOperator{\nint}{nint}
+% Added in the write (batch 113, 7 October 2026).
+\newcommand{\file}[1]{\nolinkurl{#1}}
+\newenvironment{writenote}[1][]{\par\smallskip\begingroup\small
+ \noindent\textbf{[write]}\if\relax\detokenize{#1}\relax\else~\textbf{#1.}\fi\ }%
+ {\par\endgroup\smallskip}
 \title{Fixed couple m\'enage rows\\\large Exact differences, concavity, uniform expansions and inverse enclosures}
 \author{Report 221}
 \date{4 October 2026}
@@ -30,6 +35,23 @@
 \begin{abstract}
 We prove the adjacent-difference and row-unimodality conjectures displayed in OEIS A332709. A path-rook polynomial identity expresses every adjacent difference in terms of A127548, with a separate zero at the even central step. An explicit injection proves discrete concavity and determines every equality case, including the four-entry maximum plateau in even rows with $n\ge6$ and strict log-concavity in odd rows. An exact decomposition about the row mean yields an expansion to every fixed order, uniformly over all allowed first images. It separates the boundary layers from the interior, gives the fourth-column expansion A258667 through relative order ten, and yields an exact total-variation identity in every row and its sharp asymptotics. Finally, we distinguish exact-range recovery by a smooth asymptotic model from a threshold inverse, proving a two-candidate threshold enclosure with existential constants. The latter is not a certified numerical algorithm. Classical rook theory, the published fixed-couple factorization, ordinary m\'enage asymptotics and general inverse methods are credited. Historical checking is bounded, not an exhaustive novelty claim. A portable exact-arithmetic implementation and separate numerical diagnostics accompany the proofs.
 \end{abstract}
+\begin{writenote}[Status and trust boundary, added 7 October 2026, batch~113]
+This is bundle Report~221 of an external AI-assisted research session, filed
+in ProveIt as the single-source research report
+\file{a332709-fixed-couple-menage} (provenance, the sources as the write read
+them, what was checked, relation to the repository, the collected non-claims
+and the reading conventions are in Section~\ref{fcm:sec:provenance}). It is
+unrefereed and not formalized. Its author line and PDF author field read
+``Report 221'': it names no person or tool. \emph{What rests on what.} Every
+theorem has a conventional proof in the text: rook inclusion--exclusion and the
+Shevelev--Moses factorization, a polynomial identity for path matchings,
+explicit injections, an exact telescoping identity, factorial tail bounds, the
+classical Kaplansky--Riordan expansion with the Wyman--Moser rounding formula,
+and the mean value theorem. No proof uses a computation; the exact checks
+corroborate finite identities and the floating diagnostics are illustrations.
+The write adds Remarks~\ref{fcm:rem:transseries} and~\ref{fcm:rem:oeis} and
+dated notes; no statement, proof or number of the source was changed.
+\end{writenote}
 
 \section{The problem and the conclusions}
 For $n\ge3$ and $3\le k\le n$, let $T(n,k)$ count the permutations $\pi$ of $\{1,\ldots,n\}$ such that
@@ -37,7 +59,7 @@ For $n\ge3$ and $3\le k\le n$, let $T(n,k)$ count the permutations $\pi$ of $\{1
  \pi(i)\notin\{i,i+1\pmod n\}\quad(1\le i\le n),\qquad \pi(1)=k.
 \]
 The residue $0$ is represented by $n$. These are the fixed-first-image m\'enage counts in A332709 \cite{oeis332709}. We use the reindexing
-\begin{equation}\label{eq:notation}
+\begin{equation}\label{fcm:eq:notation}
  A(n,s)=T(n,s+2),\quad 1\le s\le n-2,\qquad
  h=\left\lfloor\frac{n-1}{2}\right\rfloor,\quad q=\min\{s,n-1-s\}.
 \end{equation}
@@ -54,17 +76,150 @@ The stronger row-shape conclusions are exact for every $n$. The asymptotic resul
 
 \subsection{A fourth-column consequence}
 For $a_n=\mathrm{A258667}(n)=A(n,4)$ when $n\ge6$,
-\begin{align}\label{eq:fourth}
+\begin{align}\label{fcm:eq:fourth}
  \frac{(n-2)a_n}{U_n}={}&1+\frac2{n^4}+\frac{16}{n^5}+\frac{90}{n^6}
  +\frac{456}{n^7}+\frac{2296}{n^8}\notag\\
  &+\frac{12051}{n^9}+\frac{67193}{n^{10}}+O(n^{-11}).
 \end{align}
-Thus the fourth-column count and the row average first differ at the fourth relative order. The leading equivalence posted in A258667 and proved in the linked Lean source remains correct \cite{oeis258667,lean}. Equation~\eqref{eq:fourth} supplies column-specific higher-order information while preserving that leading equivalence.
+Thus the fourth-column count and the row average first differ at the fourth relative order. The leading equivalence posted in A258667 and proved in the linked Lean source remains correct \cite{oeis258667,lean}. Equation~\eqref{fcm:eq:fourth} supplies column-specific higher-order information while preserving that leading equivalence.
+
+\subsection{Provenance, sources and reading conventions}\label{fcm:sec:provenance}
+\begin{writenote}[Added 7 October 2026, batch~113]\raggedright
+\emph{Provenance.} This report is Report~221 of the session bundle that
+ProveIt's \file{docs/incoming} intake processed as batch~113: the archive
+\file{Report221.zip} ($475{,}232$ bytes, 16 files, no wrapper directory),
+arrival commit \file{60f54ea06}, placed in \file{a4186a946}. The text is the
+delivered \file{Report221.tex} (591 lines, 16 pages, dated 4~October 2026),
+shipped as \file{article.tex}. The programs \file{menage.py},
+\file{check_exact.py} and \file{diagnostics.py} are shipped under
+\file{code/} with the delivered root \file{build.py}; the five receipts (the
+four byte-equal exact receipts of the normal, optimized and low-digit-cap
+runs, and the diagnostic receipt), the requirements and
+\file{source_pins.json} under \file{data/}; \file{README.md} and
+\file{SOURCES.md} were delivered at the root, and the delivered
+\file{README.md} was staged as the report README and is replaced by it. Not
+shipped, and retrievable from the arrival commit: the delivered
+\file{Report221.pdf} and the pure checksum manifest \file{MANIFEST.sha256}
+(15 entries, verified at the write). The package carries no ``prepared for
+private review'' line (the README's sentence on private review reports is an
+exclusion) and no personal data, and records no ProveIt commit; its source
+ledger pins the Git blobs of two repository files, which are the current ones
+(below). It is a single-source report, so no merge choice was made. The write
+prefixed the 60 delivered labels with \file{fcm:} and updated the references
+to them (36 \verb|\eqref|, 12 \verb|\ref|); it added this subsection, the notes marked [write] and
+Remarks~\ref{fcm:rem:transseries} and~\ref{fcm:rem:oeis}, each the last
+statement of its section, and inserted nothing before a delivered display,
+statement or table, so every theorem, section, equation and table of the
+source keeps its delivered number.
+
+\emph{The sources, as the write read them} (7~October 2026): OEIS A332709,
+A127548, A000179, A258664, A258665, A258666, A258667 and A258673 in the
+internal format, with the b-files of A332709, A127548, A000179 and A258667
+(Remark~\ref{fcm:rem:oeis}); the Lean file of the A258667 comment, at the
+current main branch of its repository (the source's pinned SHA-256 is that of
+the current file with one trailing newline added; the statements it quotes,
+\texttt{target\_theorem\_0}, \texttt{seq\_equiv} and \texttt{asymp\_term\_equiv},
+are \texttt{IsEquivalent} statements, as it says); the repository volumes
+\path{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex}
+and \path{Analysis/Transseries/docs/series-and-transseries/Combinatorial_Transseries_Inverses/Combinatorial_Transseries_Inverses.tex},
+whose current Git blobs are the ones the source pins. The first volume's title
+is ``Transseries / The polynomial--logarithmic calculus, series reversal at
+infinity, and the inversion of rapidly growing functions''; the source's
+\file{SOURCES.md} and bibliography shorten its subtitle to ``\dots\ and
+inversion''. Not read by the write: the cited literature (Shevelev--Moses,
+Wyman--Moser, Kaplansky--Riordan, Kagey, Gu--Zhao, Knuth's note); the
+source's account of it (Section~\ref{fcm:sec:sources} and \file{SOURCES.md})
+is reported, not confirmed. The source records that it did not obtain the full
+texts of Gu--Zhao and of Kagey's published version.
+
+\emph{What was checked at intake.} The batch-113 dossier read the manuscript,
+found no demonstrably wrong claim, confirmed that the two A332709 conjectures
+are still displayed, and reran the delivered suite on a copy (the four exact
+receipts are byte-equal and are staged as delivered records). \emph{What the
+write checked.} It read every proof and found no error. With its own code
+(Python 3.14.4, exact integers and fractions; SymPy 1.14.0; mpmath 1.3.0 at
+400 digits), not importing the delivered programs, it
+\begin{itemize}\raggedright
+\item computed $T(n,k)$ from the cofactor formula~\eqref{fcm:eq:cofactor} for
+$n\le160$; it equals all 1275 terms of the A332709 b-file (rows $3\le n\le52$),
+the entry's own double-sum formula ($n\le20$), and a brute-force count over all
+permutations ($n\le9$); the row sums equal the A000179 b-file, $L_m$ the
+A127548 b-file, and column four the A258667 terms;
+\item checked, for every $n\le160$, Theorem~\ref{fcm:thm:difference} at every
+column, the complete classification of Theorem~\ref{fcm:thm:shape} (maxima,
+concavity equalities, log-concavity equalities), the three identities of
+Theorem~\ref{fcm:thm:mean}, and the exact total-variation identity and sign
+pattern of Theorem~\ref{fcm:thm:TV}; and \eqref{fcm:eq:LU}, \eqref{fcm:eq:Lrec},
+\eqref{fcm:eq:Urec}, the line recurrence, Lemma~\ref{fcm:lem:injection}, the
+growth bounds and~\eqref{fcm:eq:Ltail} of Lemma~\ref{fcm:lem:TVgrowth}, and
+$U_{m-1}\le L_m$ in the same range;
+\item derived the coefficients of Table~\ref{fcm:tab:coeffs} by its own route
+(note after the table), confirmed them by exact residuals, and the
+total-variation coefficients of~\eqref{fcm:eq:TV};
+\item checked the Wyman--Moser rounding~\eqref{fcm:eq:round} for
+$2\le m\le160$, the expansion~\eqref{fcm:eq:log} and the inverse
+start~\eqref{fcm:eq:inverse-start} at exact range values (residuals of the
+stated orders), and the stronger reading of the A258667 conjecture
+(Remark~\ref{fcm:rem:oeis}).
+\end{itemize}
+It reran, on a fresh copy of the shipped programs, \file{check_exact.py} in
+its four modes (normal, \texttt{-O}, digit cap 640, both) and
+\file{diagnostics.py}: every output equals the shipped receipt after removing
+carriage returns. The builder was not run. Floating computations are
+observations, not certificates.
+
+\emph{Relation to the repository.} Before batch~113 no file of the repository
+named A332709, A127548, A258667 or the m\'enage numbers A000179. The source
+credits two repository volumes for its inverse distinctions; they are
+compared statement by statement in Remark~\ref{fcm:rem:transseries}. No
+result of another report is shared, so no reciprocal note is proposed. No
+Lean or Rocq file treats these sequences; no statement of this report is
+formalized (the Lean file above is external and concerns the leading
+equivalent of A258667 only), and its place in the collection confers no formal
+status.
+\end{writenote}
+\begin{writenote}[What is not claimed, collected from the source]
+The rook inclusion--exclusion, the Shevelev--Moses fixed-couple factorization
+and their observation of row unimodality, Kagey's prefix framework, the
+Kaplansky--Riordan expansion, the Wyman--Moser rounding formula and the
+repository's inverse distinctions are prior; no global historical-novelty or
+first-proof claim; the publisher texts of Kagey and of Gu--Zhao were not read,
+so non-overlap with them is not claimed. The asymptotic statements are fixed
+order; the inverse results concern a fixed column; the inverse constants and
+onsets are existential, with no certified threshold algorithm and no
+single-ceiling formula; the diagnostics are floating computations; the Lean
+proof was read, not rerun. \emph{The write adds:} its checks are exact or
+floating computations; its transseries remark claims no novelty for any
+inversion.
+\end{writenote}
+\medskip
+\begingroup\small
+\noindent\emph{Reading conventions} (letters the source uses in more than one
+sense, with the tempting false readings; no symbol was renamed).\par\smallskip
+\renewcommand{\arraystretch}{1.1}
+\noindent\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.8in}>{\raggedright\arraybackslash}p{5.4in}@{}}
+\toprule
+Symbol & Meanings\\
+\midrule
+$T$, $A$ & $T(n,k)$ the triangle (A332709), $3\le k\le n$; $A(n,s)=T(n,s+2)$. \emph{False reading:} $A(n,s)$ is not an OEIS A-number.\\
+$L$, $\mathcal L$ & $L_m$ the auxiliary counts (A127548, $L_0=1$); $\mathcal L(z)$ their generating function; $\mathcal L(S)$ the law of $S$ in~\eqref{fcm:eq:TV}. \emph{False reading:} the zero central difference is not $L_0$.\\
+$U$, $\mathcal U$, $u$ & $U_m$ the m\'enage numbers with the signed values $U_0,U_1,U_2=1,-1,0$; $\mathcal U(z)$; $u(n)=U_n/(e^{-2}n!)$.\\
+$R$, $\RR$ & $R_\ell(z)$ the path matching polynomials; $\RR(n,s)$ the relative row profile~\eqref{fcm:eq:relative}.\\
+$F$, $\mathcal F$, $\Phi$ & $\mathcal F(z)=\sum r!z^r$; $F_j$ the polynomials in the proof of Lemma~\ref{fcm:lem:poly}; $F_{s,M}$ the inverse model and $F_\pm$ its envelopes; $\Phi_N$ the rook functional.\\
+$S$, $E$ & $S_M(v)$ the ménage amplitude~\eqref{fcm:eq:SM}; $S=\pi(1)-2$ a random column; $\mathcal S_m$ permutation sets; $E_M(v)$ the line amplitude.\\
+$h$, $q$, $s$, $k$ & $h=\lfloor(n-1)/2\rfloor$; $q=\min\{s,n-1-s\}$ the distance from the nearer endpoint; $s$ and $k=s+2$ column indices.\\
+$m$, $N$, $M$ & $m$ the difference parameter $n-2k+4$ and an index; $N$ the degree in $\Phi_N$, an onset in Theorem~\ref{fcm:thm:threshold} and in $N_s(y)$ the threshold; $M$ an expansion order.\\
+$X$, $\ell$, $W$ & $X$, $\ell=\log X$ the Lambert scale~\eqref{fcm:eq:Lambert}; $\ell$ also a path length; $W$ the Lambert function and $W_{p,q}$ the polynomials in Lemma~\ref{fcm:lem:poly}.\\
+$x$, $c$, $C$ & $x=1/n$ in Table~\ref{fcm:tab:coeffs} and a real variable in Sections~8--9; $c=\frac12\log(2\pi)-2$ and $c_r(q)$ the coefficients; $C$ a constant.\\
+$a_n$, $D$, $J$, $K$ & $a_n=A(n,s)$ a fixed column (the fourth in~\eqref{fcm:eq:fourth}); $D(n,s)$ the deviation in Theorem~\ref{fcm:thm:TV}; $J$ a truncation depth; $K$ an expansion order.\\
+\bottomrule
+\end{tabular}
+\endgroup
 
 \section{Classical rook machinery and conventions}
 \subsection{Path polynomials and the fixed-couple factorization}
 Let $R_\ell(z)$ be the matching polynomial of a path with $\ell$ edges:
-\begin{equation}\label{eq:path}
+\begin{equation}\label{fcm:eq:path}
  R_\ell(z)=\sum_{j=0}^{\lfloor(\ell+1)/2\rfloor}
  \binom{\ell+1-j}{j}z^j,\qquad \ell\ge0.
 \end{equation}
@@ -73,33 +228,33 @@ A matching is a set of nonconsecutive edge positions; subtracting the mandatory 
  R_0=1,\quad R_1=1+z,\qquad R_\ell=R_{\ell-1}+zR_{\ell-2}\quad(\ell\ge2).
 \]
 For a polynomial $p$ of degree at most $N$, set
-\begin{equation}\label{eq:phi}
+\begin{equation}\label{fcm:eq:phi}
  \Phi_N(p)=\sum_j(-1)^j[z^j]p(z)(N-j)!.
 \end{equation}
 The rook inclusion-exclusion formula counts allowed permutations by applying $\Phi_N$ to the rook polynomial of the forbidden board. Indeed, a choice of $j$ nonattacking forbidden squares fixes $j$ row-column assignments and leaves $(N-j)!$ completions; all other choices are inconsistent and contribute zero.
 
 The forbidden row-column incidence graph for a circular m\'enage permutation is a cycle with $2n$ edges. Fixing $\pi(1)=k$ deletes row vertex $1$ and column vertex $k$. These vertices are nonadjacent when $3\le k\le n$. The remaining graph is the disjoint union of paths with $2k-5$ and $2n-2k+1$ edges. Rook polynomials multiply over components, so
-\begin{equation}\label{eq:cofactor}
+\begin{equation}\label{fcm:eq:cofactor}
  T(n,k)=\Phi_{n-1}\bigl(R_{2k-5}R_{2n-2k+1}\bigr),\qquad
  A(n,s)=\Phi_{n-1}\bigl(R_{2s-1}R_{2n-2s-3}\bigr).
 \end{equation}
 This is the known Shevelev--Moses factorization, equations (30)--(31) of \cite{sm}; the path-polynomial method also occurs in the general prefix framework of Kagey \cite{kagey}. Neither the factorization nor rook inclusion-exclusion is claimed as new.
 
 Swapping the two factors proves reflection:
-\begin{equation}\label{eq:sym}
+\begin{equation}\label{fcm:eq:sym}
  T(n,k)=T(n,n+3-k),\qquad A(n,s)=A(n,n-1-s).
 \end{equation}
 Every entry is positive: the cyclic shift $\pi(i)=i+k-1\pmod n$ is admissible and has first image $k$. Partitioning all m\'enage permutations by their first image gives
-\begin{equation}\label{eq:sum}\sum_{s=1}^{n-2}A(n,s)=U_n.\end{equation}
+\begin{equation}\label{fcm:eq:sum}\sum_{s=1}^{n-2}A(n,s)=U_n.\end{equation}
 
 \subsection{The auxiliary sequence}
 For $m\ge1$, let
-\begin{equation}\label{eq:L}
+\begin{equation}\label{fcm:eq:L}
  L_m=\Phi_m(R_{2m-2})
  =\sum_{j=0}^{m-1}(-1)^j\binom{2m-1-j}{j}(m-j)!.
 \end{equation}
 It counts permutations $\sigma$ of $[m]$ satisfying $\sigma(i)\notin\{i,i+1\}$ for $1\le i<m$, with the last row unrestricted. The forbidden graph is a path with $2m-2$ edges and an isolated row vertex. Consequently
-\begin{equation}\label{eq:Lbounds}
+\begin{equation}\label{fcm:eq:Lbounds}
  0\le L_m\le m!,\qquad (L_1,L_2,L_3,L_4,L_5)=(1,0,1,4,19).
 \end{equation}
 Writing $\mathcal F(z)=\sum_{r\ge0}r!z^r$ as a \emph{formal} series, the coefficient of $z^m$ in $\mathcal F(z/(1+z)^2)$ is, for $m\ge1$,
@@ -109,22 +264,22 @@ Writing $\mathcal F(z)=\sum_{r\ge0}r!z^r$ as a \emph{formal} series, the coeffic
 The substitution $j=m-r$ proves the equality. Thus $L_m$ is A127548, whose formal constant term is $L_0=1$ \cite{oeis127548}. No analytic convergence is being asserted.
 
 For generating-function algebra only, use the signed Touchard convention
-\begin{equation}\label{eq:signed}U_0=1,\qquad U_1=-1,\qquad U_2=0.\end{equation}
+\begin{equation}\label{fcm:eq:signed}U_0=1,\qquad U_1=-1,\qquad U_2=0.\end{equation}
 For $n\ge3$ these are the usual positive counts. The known ordinary generating function \cite{oeis179,wm} is
 \[
  \mathcal U(z)=\sum_{m\ge0}U_mz^m
  =\frac{1-z}{1+z}\mathcal F\left(\frac{z}{(1+z)^2}\right).
 \]
 Multiplication by $(1+z)/(1-z)$ gives the exact, classical relation
-\begin{equation}\label{eq:LU}
+\begin{equation}\label{fcm:eq:LU}
  L_m=U_m+2\sum_{r=0}^{m-1}U_r\quad(m\ge1).
 \end{equation}
-For $m\ge2$ the small signed terms cancel, and this can be written $L_m=U_m+2\sum_{r=3}^{m-1}U_r$ with the sum empty when appropriate. Using $U_1=0$ in \eqref{eq:LU} is incorrect, already at $m=2$.
+For $m\ge2$ the small signed terms cancel, and this can be written $L_m=U_m+2\sum_{r=3}^{m-1}U_r$ with the sum empty when appropriate. Using $U_1=0$ in \eqref{fcm:eq:LU} is incorrect, already at $m=2$.
 
 \section{Exact adjacent differences}
-\begin{lemma}\label{lem:poly}
+\begin{lemma}\label{fcm:lem:poly}
 For integers $a\ge0$ and $b\ge a+2$,
-\begin{equation}\label{eq:poly}
+\begin{equation}\label{fcm:eq:poly}
  R_{a+2}R_b-R_aR_{b+2}=(-z)^{a+2}R_{b-a-2}.
 \end{equation}
 \end{lemma}
@@ -133,37 +288,37 @@ Define $F_0=0$, $F_1=1$ and $F_{j+1}=F_j+zF_{j-1}$. Then $R_r=F_{r+2}$. For $q\g
 \[
  W_{p,q}=F_{p+1}F_q-F_pF_{q+1}.
 \]
-The recurrence gives $W_{p,q}=-zW_{p-1,q-1}$ for $p\ge1$, while $W_{0,q-p}=F_{q-p}$. Hence $W_{p,q}=(-z)^pF_{q-p}$. On using the recurrence once, the left side of \eqref{eq:poly} becomes
+The recurrence gives $W_{p,q}=-zW_{p-1,q-1}$ for $p\ge1$, while $W_{0,q-p}=F_{q-p}$. Hence $W_{p,q}=(-z)^pF_{q-p}$. On using the recurrence once, the left side of \eqref{fcm:eq:poly} becomes
 \[
  R_{a+1}R_b-R_aR_{b+1}=W_{a+2,b+2}=(-z)^{a+2}R_{b-a-2}.
 \]
 \end{proof}
 
-\begin{theorem}[All adjacent differences]\label{thm:difference}
+\begin{theorem}[All adjacent differences]\label{fcm:thm:difference}
 For $4\le k\le n$, put $m=n-2k+4$. Then
-\begin{equation}\label{eq:all-difference}
+\begin{equation}\label{fcm:eq:all-difference}
  T(n,k)-T(n,k-1)=
  \begin{cases} L_m,&m\ge1,\\0,&m=0,\\-L_{-m},&m\le-1.\end{cases}
 \end{equation}
 In particular, the adjacent-difference conjecture of A332709 holds on its full natural domain $4\le k\le n$, $n\ge2k-3$.
 \end{theorem}
 \begin{proof}
-First suppose $m\ge1$. In Lemma~\ref{lem:poly} set $a=2k-7$ and $b=2n-2k+1$. Its left side is the difference of the rook polynomials for $T(n,k)$ and $T(n,k-1)$. Since $a+2=2k-5$ is odd and $b-a-2=2m-2$, it equals $-z^{2k-5}R_{2m-2}$.
+First suppose $m\ge1$. In Lemma~\ref{fcm:lem:poly} set $a=2k-7$ and $b=2n-2k+1$. Its left side is the difference of the rook polynomials for $T(n,k)$ and $T(n,k-1)$. Since $a+2=2k-5$ is odd and $b-a-2=2m-2$, it equals $-z^{2k-5}R_{2m-2}$.
 
-From \eqref{eq:phi}, $\Phi_N(z^dp)=(-1)^d\Phi_{N-d}(p)$ whenever the degrees permit it. Applying $\Phi_{n-1}$ therefore cancels the minus sign and gives $\Phi_m(R_{2m-2})=L_m$, because $(n-1)-(2k-5)=m$.
+From \eqref{fcm:eq:phi}, $\Phi_N(z^dp)=(-1)^d\Phi_{N-d}(p)$ whenever the degrees permit it. Applying $\Phi_{n-1}$ therefore cancels the minus sign and gives $\Phi_m(R_{2m-2})=L_m$, because $(n-1)-(2k-5)=m$.
 
-If $m=0$, the two entries form the central reflected pair in an even row and are equal by \eqref{eq:sym}. If $m<0$, reflection takes the difference to the negative of the left-half difference at $k'=n+4-k$, whose parameter is $-m>0$. This proves all three cases.
+If $m=0$, the two entries form the central reflected pair in an even row and are equal by \eqref{fcm:eq:sym}. If $m<0$, reflection takes the difference to the negative of the left-half difference at $k'=n+4-k$, whose parameter is $-m>0$. This proves all three cases.
 \end{proof}
 \begin{remark}
 The $m=0$ case is essential. A127548 has $L_0=1$, whereas the center difference is zero. Similarly, $k=3$ has no predecessor column in the triangle. Neither case can be added to the positive-parameter formula by a zero-extension convention.
 \end{remark}
 For later use, the left-half form is
-\begin{equation}\label{eq:A-diff}
+\begin{equation}\label{fcm:eq:A-diff}
  A(n,s+1)-A(n,s)=L_{n-2s-2}\qquad(n\ge2s+3).
 \end{equation}
 
 \section{Concavity and all equality cases}
-\begin{lemma}\label{lem:injection}
+\begin{lemma}\label{fcm:lem:injection}
 For every $m\ge1$, $L_{m+2}\ge L_m$. Equality holds exactly when $m=1$. Also $L_m>0$ for every $m\ge1$ except $m=2$.
 \end{lemma}
 \begin{proof}
@@ -174,12 +329,12 @@ Let $\mathcal S_m$ be the permutations counted by $L_m$. For $\sigma\in\mathcal 
 \]
 These are distinct values and hence a permutation. The old restrictions remain valid. Row $m$ receives $m+2$, row $m+1$ receives a value at most $m$, and the last row is unrestricted. The original permutation is recovered from the first $m-1$ values and $\tau(m+1)$, proving injectivity.
 
-For $m\ge2$, the shift by three on $m+2\ge4$ letters is admissible and has value $1$ at row $m$. Every image of the injection has value $m+2$ there, so this shift lies outside the image. Hence the inequality is strict. Direct computation gives $L_1=L_3=1$. Finally, the shift by two is admissible in $\mathcal S_m$ for $m\ge3$, and the remaining cases are in \eqref{eq:Lbounds}.
+For $m\ge2$, the shift by three on $m+2\ge4$ letters is admissible and has value $1$ at row $m$. Every image of the injection has value $m+2$ there, so this shift lies outside the image. Hence the inequality is strict. Direct computation gives $L_1=L_3=1$. Finally, the shift by two is admissible in $\mathcal S_m$ for $m\ge3$, and the remaining cases are in \eqref{fcm:eq:Lbounds}.
 \end{proof}
 
-\begin{theorem}[Complete row shape]\label{thm:shape}
+\begin{theorem}[Complete row shape]\label{fcm:thm:shape}
 Every row of $T$ is positive, palindromic, unimodal and discretely concave:
-\begin{equation}\label{eq:concavity}
+\begin{equation}\label{fcm:eq:concavity}
  T(n,k+1)-2T(n,k)+T(n,k-1)\le0\quad(4\le k\le n-1).
 \end{equation}
 Its maxima are exactly as follows.
@@ -188,10 +343,10 @@ Its maxima are exactly as follows.
 \item For even $n\ge6$, precisely $k=n/2,n/2+1,n/2+2,n/2+3$ are maxima.
 \item For $n=4$, both existing entries are maxima.
 \end{enumerate}
-At internal columns, equality in \eqref{eq:concavity} holds exactly at $k=(n+1)/2,(n+5)/2$ for odd $n$ when those columns are internal, and at $k=n/2+1,n/2+2$ for even $n\ge6$. Every odd row is strictly log-concave at every internal column. For even $n\ge6$, equality in log-concavity holds exactly at the two interior columns of the four-entry plateau; for $n=4$ there are no internal columns.
+At internal columns, equality in \eqref{fcm:eq:concavity} holds exactly at $k=(n+1)/2,(n+5)/2$ for odd $n$ when those columns are internal, and at $k=n/2+1,n/2+2$ for even $n\ge6$. Every odd row is strictly log-concave at every internal column. For even $n\ge6$, equality in log-concavity holds exactly at the two interior columns of the four-entry plateau; for $n=4$ there are no internal columns.
 \end{theorem}
 \begin{proof}
-As $k$ increases by one, the parameter $m=n-2k+4$ decreases by two. Lemma~\ref{lem:injection} and \eqref{eq:all-difference} show that the successive differences are nonincreasing on each side. At the junction they have the forms
+As $k$ increases by one, the parameter $m=n-2k+4$ decreases by two. Lemma~\ref{fcm:lem:injection} and \eqref{fcm:eq:all-difference} show that the successive differences are nonincreasing on each side. At the junction they have the forms
 \[
  \begin{array}{ll}
  n\text{ odd}:&\ldots,1,1,-1,-1,\ldots,\\
@@ -202,7 +357,7 @@ with indices outside the row omitted. Thus they are nonincreasing across the who
 
 For odd $n$, every step toward the center is positive, the final one being $L_1=1$. For even $n$, exactly the final left step $L_2$, the reflected central step, and its right counterpart vanish. When $n\ge6$ this is a four-entry plateau; all steps outside it are strict. The short rows are checked directly.
 
-A second difference vanishes precisely when successive first differences agree. The sole positive-index equality $L_{m+2}=L_m$ is $L_3=L_1$, giving the two stated odd positions. The even equality positions are the two internal points of the zero-difference run. No other equality is possible by strictness in Lemma~\ref{lem:injection}.
+A second difference vanishes precisely when successive first differences agree. The sole positive-index equality $L_{m+2}=L_m$ is $L_3=L_1$, giving the two stated odd positions. The even equality positions are the two internal points of the zero-difference run. No other equality is possible by strictness in Lemma~\ref{fcm:lem:injection}.
 
 For positive consecutive entries $a,b,c$ with $2b\ge a+c$, one has
 \[
@@ -218,39 +373,39 @@ The first rows illustrate the distinct parity patterns:
  7&(115,116,117,116,115)\\8&(787,791,791,791,791,787).
 \end{array}
 \]
-The theorem concerns a fixed-$n$ row indexed by position. It is distinct in its variable from log-behavior of ordinary or straight m\'enage sequences indexed by $n$; the limited literature check of that subject is discussed in Section~\ref{sec:sources}.
+The theorem concerns a fixed-$n$ row indexed by position. It is distinct in its variable from log-behavior of ordinary or straight m\'enage sequences indexed by $n$; the limited literature check of that subject is discussed in Section~\ref{fcm:sec:sources}.
 
 \section{The exact mean decomposition and a uniform tail}
 Define the relative row profile
-\begin{equation}\label{eq:relative}
+\begin{equation}\label{fcm:eq:relative}
  \RR(n,s)=\frac{(n-2)A(n,s)}{U_n}.
 \end{equation}
 It has average one over the $n-2$ columns. The following identity is the bridge from exact differences to uniform asymptotics.
 
-\begin{theorem}\label{thm:mean}
+\begin{theorem}\label{fcm:thm:mean}
 For every $n\ge3$ and every allowed $s$,
-\begin{align}\label{eq:center}
+\begin{align}\label{fcm:eq:center}
  A(n,s)&=A(n,h)-\sum_{j=q}^{h-1}L_{n-2j-2},\\
- U_n&=(n-2)A(n,h)-2\sum_{j=1}^{h-1}jL_{n-2j-2},\label{eq:total-center}\\
+ U_n&=(n-2)A(n,h)-2\sum_{j=1}^{h-1}jL_{n-2j-2},\label{fcm:eq:total-center}\\
  \RR(n,s)&=1+\sum_{j=1}^{h-1}
- \left(2j-(n-2)\ind_{\{q\le j\}}\right)\frac{L_{n-2j-2}}{U_n}.\label{eq:mean}
+ \left(2j-(n-2)\ind_{\{q\le j\}}\right)\frac{L_{n-2j-2}}{U_n}.\label{fcm:eq:mean}
 \end{align}
 Empty sums apply to $n=3,4$.
 \end{theorem}
 \begin{proof}
-Telescope \eqref{eq:A-diff} from the nearer endpoint side to column $h$, then apply reflection. This gives \eqref{eq:center}. For fixed $j\le h-1$, the deficit term $L_{n-2j-2}$ occurs in precisely the $j$ leftmost and $j$ rightmost columns. These sets are disjoint for either parity of $n$. Summing \eqref{eq:center} proves \eqref{eq:total-center}; elimination of the central value proves \eqref{eq:mean}.
+Telescope \eqref{fcm:eq:A-diff} from the nearer endpoint side to column $h$, then apply reflection. This gives \eqref{fcm:eq:center}. For fixed $j\le h-1$, the deficit term $L_{n-2j-2}$ occurs in precisely the $j$ leftmost and $j$ rightmost columns. These sets are disjoint for either parity of $n$. Summing \eqref{fcm:eq:center} proves \eqref{fcm:eq:total-center}; elimination of the central value proves \eqref{fcm:eq:mean}.
 \end{proof}
 
-\begin{lemma}\label{lem:factorial}
+\begin{lemma}\label{fcm:lem:factorial}
 For every integer $N\ge2$, $\sum_{r=1}^N r!\le2N!$. The same upper bound therefore holds for a sum restricted to either parity.
 \end{lemma}
 \begin{proof}
 The case $N=2$ is immediate. If the inequality holds at $N$, then the next sum is at most $2N!+(N+1)!\le2(N+1)!$, since $N+1\ge2$.
 \end{proof}
 
-\begin{theorem}[Uniform fixed-depth truncation]\label{thm:uniform}
+\begin{theorem}[Uniform fixed-depth truncation]\label{fcm:thm:uniform}
 For each fixed integer $J\ge0$, as $n\to\infty$,
-\begin{equation}\label{eq:uniform}
+\begin{equation}\label{fcm:eq:uniform}
  \RR(n,s)=1+\sum_{j=1}^{J}
  \left(2j-(n-2)\ind_{\{q\le j\}}\right)\frac{L_{n-2j-2}}{U_n}
  +O_J(n^{-2J-3}),
@@ -258,7 +413,7 @@ For each fixed integer $J\ge0$, as $n\to\infty$,
 uniformly over all $1\le s\le n-2$.
 \end{theorem}
 \begin{proof}
-For large $n$ we have $h>J$. Each omitted weight in \eqref{eq:mean} has absolute value at most $n$, independently of $s$. The omitted indices are positive integers of one parity no larger than $N=n-2J-4$. By \eqref{eq:Lbounds} and Lemma~\ref{lem:factorial}, the omitted numerator is bounded in absolute value by $2nN!$. The classical equivalent $U_n\sim e^{-2}n!$, also proved by the expansion below, yields
+For large $n$ we have $h>J$. Each omitted weight in \eqref{fcm:eq:mean} has absolute value at most $n$, independently of $s$. The omitted indices are positive integers of one parity no larger than $N=n-2J-4$. By \eqref{fcm:eq:Lbounds} and Lemma~\ref{fcm:lem:factorial}, the omitted numerator is bounded in absolute value by $2nN!$. The classical equivalent $U_n\sim e^{-2}n!$, also proved by the expansion below, yields
 \[
  \frac{2n(n-2J-4)!}{U_n}=O_J(n^{-2J-3}).
 \]
@@ -269,15 +424,15 @@ This proof does not exchange an infinite asymptotic series with a growing sum. I
 \section{An all orders expansion engine}
 \subsection{The classical circular expansion}
 Write $\fall{v}{k}=v(v-1)\cdots(v-k+1)$ with $\fall{v}{0}=1$, and set
-\begin{equation}\label{eq:SM}
+\begin{equation}\label{fcm:eq:SM}
  S_M(v)=\sum_{k=0}^M\frac{(-1)^k}{k!\fall{v-1}{k}}.
 \end{equation}
 For every fixed $M\ge0$, the classical Kaplansky--Riordan expansion is
-\begin{equation}\label{eq:Uasymp}
+\begin{equation}\label{fcm:eq:Uasymp}
  U_m=e^{-2}m!\{S_M(m)+O_M(m^{-M-1})\}.
 \end{equation}
 For completeness, a rigorous remainder follows immediately from the stronger Wyman--Moser nearest-integer formula \cite[eq.~(3.23), p.~475]{wm}:
-\begin{equation}\label{eq:round}
+\begin{equation}\label{fcm:eq:round}
  U_m=\nint\left(e^{-2}m!\sum_{k=0}^{m-1}
        \frac{(-1)^k}{k!\fall{m-1}{k}}\right),\qquad m\ge2.
 \end{equation}
@@ -286,41 +441,41 @@ This formula is used only for $m\ge2$; the signed value $U_1=-1$ is separately d
  \frac{a_{m,k+1}}{a_{m,k}}=
  \frac1{(k+1)(m-1-k)}\le\frac1{m-1}.
 \]
-For fixed $M$ and sufficiently large $m$, the absolute tail after $M$ is at most $a_{m,M+1}/(1-1/(m-1))=O_M(m^{-M-1})$. The normalized rounding error is at most $e^2/(2m!)$, smaller than every fixed inverse power. This proves \eqref{eq:Uasymp} and its remainder, including $M=0$. The expansion and nearest-integer refinement are prior results, not contributions of this report.
+For fixed $M$ and sufficiently large $m$, the absolute tail after $M$ is at most $a_{m,M+1}/(1-1/(m-1))=O_M(m^{-M-1})$. The normalized rounding error is at most $e^2/(2m!)$, smaller than every fixed inverse power. This proves \eqref{fcm:eq:Uasymp} and its remainder, including $M=0$. The expansion and nearest-integer refinement are prior results, not contributions of this report.
 
 \subsection{The auxiliary amplitude and coefficient formula}
 Set
-\begin{equation}\label{eq:EM}
+\begin{equation}\label{fcm:eq:EM}
  E_M(v)=S_M(v)+2\sum_{r=1}^{M}\frac{S_M(v-r)}{\fall vr}.
 \end{equation}
 Then
-\begin{equation}\label{eq:Lasymp}
+\begin{equation}\label{fcm:eq:Lasymp}
  L_m=e^{-2}m!\{E_M(m)+O_M(m^{-M-1})\}.
 \end{equation}
-To see this, keep $U_m$ and the $M$ immediately preceding terms in \eqref{eq:LU}. The remaining unsigned count terms have sum at most a constant times $(m-M-1)!$ by $U_r\le r!$ and Lemma~\ref{lem:factorial}; the finitely many exceptional signed terms cancel or are bounded. Dividing by $m!$ makes this $O_M(m^{-M-1})$. Substituting \eqref{eq:Uasymp} in the finitely many retained terms proves \eqref{eq:Lasymp}. There is no derivative assumption on a remainder.
+To see this, keep $U_m$ and the $M$ immediately preceding terms in \eqref{fcm:eq:LU}. The remaining unsigned count terms have sum at most a constant times $(m-M-1)!$ by $U_r\le r!$ and Lemma~\ref{fcm:lem:factorial}; the finitely many exceptional signed terms cancel or are bounded. Dividing by $m!$ makes this $O_M(m^{-M-1})$. Substituting \eqref{fcm:eq:Uasymp} in the finitely many retained terms proves \eqref{fcm:eq:Lasymp}. There is no derivative assumption on a remainder.
 
 For fixed $d$ and a desired finite order, the coefficients of $L_{n-d}/U_n$ are consequently obtained by expanding
-\begin{equation}\label{eq:ratio-engine}
+\begin{equation}\label{fcm:eq:ratio-engine}
  \frac{E_M(n-d)}{\fall nd\,S_M(n)},
 \end{equation}
 with $M$ chosen sufficiently large. Each denominator tends to its nonzero leading value after the indicated power of $n$ is factored out, so ordinary finite rational-series algebra is legitimate.
 
-\begin{theorem}[Position-uniform all-orders expansion]\label{thm:allorders}
+\begin{theorem}[Position-uniform all-orders expansion]\label{fcm:thm:allorders}
 For every fixed integer $K\ge0$, there are explicitly computable functions $c_0(q),\ldots,c_K(q)$ such that
-\begin{equation}\label{eq:allorders}
+\begin{equation}\label{fcm:eq:allorders}
  \RR(n,s)=\sum_{r=0}^K c_r(q)n^{-r}+O_K(n^{-K-1})
 \end{equation}
 uniformly over all allowed positions. Each $c_r(q)$ depends on $q$ through finitely many indicators $\ind_{\{q\le j\}}$. It stabilizes at its interior value whenever $2q+1>r$. For fixed $q$, the first difference from the interior expansion is $-n^{-2q-1}$.
 \end{theorem}
 \begin{proof}
-Choose $J$ with $2J+3\ge K+1$ and apply Theorem~\ref{thm:uniform}. Expand each of the finitely many retained ratios by \eqref{eq:ratio-engine}, far enough to allow multiplication by the weight of size $O(n)$. These weights depend on the position only through bounded indicators, so the resulting remainder remains uniform.
+Choose $J$ with $2J+3\ge K+1$ and apply Theorem~\ref{fcm:thm:uniform}. Expand each of the finitely many retained ratios by \eqref{fcm:eq:ratio-engine}, far enough to allow multiplication by the weight of size $O(n)$. These weights depend on the position only through bounded indicators, so the resulting remainder remains uniform.
 
 The $j$th ratio starts with $n^{-2j-2}$, since both normalized amplitudes have leading value one. Its central-mean contribution $2jL_{n-2j-2}/U_n$ begins at degree $2j+2$, while its boundary subtraction $(n-2)L_{n-2j-2}/U_n$ begins at degree $2j+1$ with coefficient one. For fixed $q$, the first present boundary subtraction is $j=q$, proving the last two assertions.
 \end{proof}
 Here ``interior'' names the stabilized coefficient regime for a specified finite order; it does not require $q/n$ to stay away from zero. If $q=q(n)\to\infty$, it reaches that regime at every fixed order.
 
 \subsection{Explicit coefficients and the fourth column}
-Let $x=1/n$. Table~\ref{tab:coeffs} lists the coefficients at degrees $3$ through $10$ in $\RR$; the constant is one and the degree-one and degree-two coefficients vanish.
+Let $x=1/n$. Table~\ref{fcm:tab:coeffs} lists the coefficients at degrees $3$ through $10$ in $\RR$; the constant is one and the degree-one and degree-two coefficients vanish.
 \begin{table}[ht]
 \centering\small
 \begin{tabular}{c|rrrrrrrr}
@@ -334,24 +489,37 @@ $4$ & $0$ & $2$ & $16$ & $90$ & $456$ & $2296$ & $12051$ & $67193$\\
 $\ge5$ & $0$ & $2$ & $16$ & $90$ & $456$ & $2296$ & $12052$ & $67238$\\
 \bottomrule
 \end{tabular}
-\caption{Exact rational-series coefficients, in this case all integers. Each row has a uniform $O(n^{-11})$ remainder in its indicated position regime.}\label{tab:coeffs}
+\caption{Exact rational-series coefficients, in this case all integers. Each row has a uniform $O(n^{-11})$ remainder in its indicated position regime.}\label{fcm:tab:coeffs}
 \end{table}
 The supplied code computes these by exact fractions, keeping one extra degree before multiplication by $n-2=x^{-1}-2$. This guard is needed to avoid an incorrect last retained coefficient. It also checks the circular amplitude independently through the exact recurrence
-\begin{equation}\label{eq:Urec}
+\begin{equation}\label{fcm:eq:Urec}
  (n-2)U_n=(n^2-2n)U_{n-1}+nU_{n-2}-4(-1)^n\quad(n\ge3),
 \end{equation}
-and the line amplitude through $L_n-L_{n-1}=U_n+U_{n-1}$, both with exact rational series. Normalized by $e^{-2}n!$, the forcing in \eqref{eq:Urec} is smaller than every inverse power, giving
+and the line amplitude through $L_n-L_{n-1}=U_n+U_{n-1}$, both with exact rational series. Normalized by $e^{-2}n!$, the forcing in \eqref{fcm:eq:Urec} is smaller than every inverse power, giving
 \[
  u(n)=u(n-1)+\frac{u(n-2)}{(n-1)(n-2)}
 \]
 as a formal coefficient relation.
+\begin{writenote}[The table rederived, 7 October 2026]
+The write obtained the asymptotic series of $u(n)=U_n/(e^{-2}n!)$ from the
+recurrence~\eqref{fcm:eq:Urec} alone (order by order; it equals the expansion
+of $S_M$ in~\eqref{fcm:eq:SM}), the series of $L_m/(e^{-2}m!)$ from the line
+recurrence $L_m-L_{m-1}=U_m+U_{m-1}$, and the ratios $L_{n-d}/U_n$ from these,
+and inserted them in~\eqref{fcm:eq:uniform}: every entry of
+Table~\ref{fcm:tab:coeffs} is reproduced, with zero constant-free terms at
+degrees one and two. Against the exact counts,
+$n^{11}\bigl(\RR(n,s)-\sum_{r\le10}c_r(q)n^{-r}\bigr)$ is $2.5\cdot10^3$, $2.2\cdot10^3$, $2.1\cdot10^3$ for $q=1$, between $4.6\cdot10^3$ and $6.0\cdot10^3$ for $q=2$, and about $3.4$--$4.5\cdot10^5$ for $q=3,4,5$, at
+$n=60,100,140$ for $q=1,\ldots,5$ (bounded, as the uniform $O(n^{-11})$
+requires). This is an implementation of the same mathematics, not an
+independent proof.
+\end{writenote}
 
-For a fixed fourth column, $q=4$ eventually, so Table~\ref{tab:coeffs} gives \eqref{eq:fourth}. It also shows uniformly for $q\ge2$ that
-\begin{equation}\label{eq:interior-leading}
+For a fixed fourth column, $q=4$ eventually, so Table~\ref{fcm:tab:coeffs} gives \eqref{fcm:eq:fourth}. It also shows uniformly for $q\ge2$ that
+\begin{equation}\label{fcm:eq:interior-leading}
  \RR(n,s)=1+2n^{-4}+O(n^{-5}),
 \end{equation}
 while at either endpoint
-\begin{equation}\label{eq:endpoint}
+\begin{equation}\label{fcm:eq:endpoint}
  \RR(n,1)=1-n^{-3}-4n^{-4}-12n^{-5}+O(n^{-6}).
 \end{equation}
 The posted A258667 leading equivalent $e^{-2}(n-1)!$ agrees with these results because $U_n/(n-2)\sim e^{-2}(n-1)!$. The linked Lean file's concluding assertion is an equivalence statement, not equality of every coefficient. It was read for scope; its compilation was not rerun for this report.
@@ -359,12 +527,12 @@ The posted A258667 leading equivalent $e^{-2}(n-1)!$ agrees with these results b
 \section{Exact and sharp distance from the uniform distribution}
 Choose a circular m\'enage permutation uniformly, and put $S=\pi(1)-2$. Then $\Pr(S=s)=A(n,s)/U_n$. Let $\nu_n$ be the uniform law on $\{1,\ldots,n-2\}$, and define total variation by half the sum of absolute probability differences. We first establish its exact form for every row.
 
-\begin{lemma}[Auxiliary growth and parity tails]\label{lem:TVgrowth}
+\begin{lemma}[Auxiliary growth and parity tails]\label{fcm:lem:TVgrowth}
 For $m\ge3$,
-\begin{equation}\label{eq:Lrec}L_m=mL_{m-1}-U_{m-2}.
+\begin{equation}\label{fcm:eq:Lrec}L_m=mL_{m-1}-U_{m-2}.
 \end{equation}
 For every $m\ge2$, $L_{m+1}\ge mL_m$ and $L_{m+2}\ge m(m+1)L_m$. For every $N\ge1$,
-\begin{equation}\label{eq:Ltail}
+\begin{equation}\label{fcm:eq:Ltail}
  \sum_{\substack{1\le j\le N\\j\equiv N\ (\mathrm{mod}\ 2)}}L_j\le2L_N.
 \end{equation}
 \end{lemma}
@@ -379,15 +547,15 @@ Using $\mathcal U(z)=(1-z)\mathcal L(z)/(1+z)$ and rearranging gives
  \mathcal L(z)-1-z^2\mathcal L'(z)-z\mathcal L(z)
  =-z^2\mathcal U(z)-z^2.
 \]
-Coefficients of degree $m\ge3$ give \eqref{eq:Lrec}. At $m=2$ the extra term matters: $L_2=2L_1-U_0-1=0$. At $m=3$, the signed $U_1=-1$ gives $L_3=1$.
+Coefficients of degree $m\ge3$ give \eqref{fcm:eq:Lrec}. At $m=2$ the extra term matters: $L_2=2L_1-U_0-1=0$. At $m=3$, the signed $U_1=-1$ gives $L_3=1$.
 
-For $m\ge3$, append the fixed point $\sigma(m)=m$ to a circular m\'enage permutation on $[m-1]$. The first $m-2$ restrictions are unchanged. In row $m-1$ the old restriction excludes $m-1$ and $1$, whereas the new one excludes $m-1$ and $m$; the appended value $m$ was absent from the old image. Thus the result is counted by $L_m$, injectively, proving $U_{m-1}\le L_m$. Apply \eqref{eq:Lrec} at $m+1$ to obtain
+For $m\ge3$, append the fixed point $\sigma(m)=m$ to a circular m\'enage permutation on $[m-1]$. The first $m-2$ restrictions are unchanged. In row $m-1$ the old restriction excludes $m-1$ and $1$, whereas the new one excludes $m-1$ and $m$; the appended value $m$ was absent from the old image. Thus the result is counted by $L_m$, injectively, proving $U_{m-1}\le L_m$. Apply \eqref{fcm:eq:Lrec} at $m+1$ to obtain
 \[
  L_{m+1}=(m+1)L_m-U_{m-1}\ge mL_m\qquad(m\ge3).
 \]
 The $m=2$ case follows from $L_3=1$, $L_2=0$, and iteration gives the two-step inequality.
 
-For $N=1,2,3,4$, the parity sums in \eqref{eq:Ltail} are respectively $1,0,2,4$, so the bound holds. For $N\ge5$, induction and growth give
+For $N=1,2,3,4$, the parity sums in \eqref{fcm:eq:Ltail} are respectively $1,0,2,4$, so the bound holds. For $N\ge5$, induction and growth give
 \[
  \sum_{\substack{j\le N\\j\equiv N\ (2)}}L_j
  \le L_N+2L_{N-2}
@@ -396,9 +564,9 @@ For $N=1,2,3,4$, the parity sums in \eqref{eq:Ltail} are respectively $1,0,2,4$,
 There is no division by $L_2$; the zero case was handled separately.
 \end{proof}
 
-\begin{theorem}[Exact sign pattern and total variation]\label{thm:TV}
+\begin{theorem}[Exact sign pattern and total variation]\label{fcm:thm:TV}
 For $n=3,4,6$ the row law is uniform. For $n=5$ and every $n\ge7$, precisely the two endpoints have mass below $1/(n-2)$, and every interior entry has mass strictly above it. For every $n\ge3$,
-\begin{align}\label{eq:TV}
+\begin{align}\label{fcm:eq:TV}
  \TV(\mathcal L(S),\nu_n)
  &=2\left(\frac1{n-2}-\frac{A(n,1)}{U_n}\right)\notag\\
  &=\frac2{n^4}+\frac{12}{n^5}+\frac{48}{n^6}+O(n^{-7})\qquad(n\to\infty).
@@ -407,19 +575,19 @@ The distance has an expansion to every fixed order from the endpoint coefficient
 \end{theorem}
 \begin{proof}
 Let $D(n,s)=(n-2)A(n,s)-U_n$. For $n\ge5$, the exact mean decomposition at $q=2$ reads
-\begin{equation}\label{eq:D2}
+\begin{equation}\label{fcm:eq:D2}
  D(n,2)=2L_{n-4}-\sum_{j=2}^{h-1}(n-2-2j)L_{n-2j-2}.
 \end{equation}
-The subtracted coefficients are nonnegative and at most $n-6$. The indices run through one parity up to $n-6$. For $n\ge9$, Lemma~\ref{lem:TVgrowth} gives
+The subtracted coefficients are nonnegative and at most $n-6$. The indices run through one parity up to $n-6$. For $n\ge9$, Lemma~\ref{fcm:lem:TVgrowth} gives
 \begin{align*}
  D(n,2)&\ge2L_{n-4}-2(n-6)L_{n-6}\\
  &\ge2(n-6)^2L_{n-6}>0,
 \end{align*}
-since $n-6\ge3$. Formula~\eqref{eq:D2} gives $D(5,2)=2$, $D(7,2)=1$ and $D(8,2)=8$. The remaining rows $n=3,4,6$ are the constant rows already displayed.
+since $n-6\ge3$. Formula~\eqref{fcm:eq:D2} gives $D(5,2)=2$, $D(7,2)=1$ and $D(8,2)=8$. The remaining rows $n=3,4,6$ are the constant rows already displayed.
 
 Reflection and unimodality make every interior entry of a nonconstant row at least its second entry. All its interior deviations are therefore strictly positive. The deviations sum to zero, and the two endpoint deviations are equal, so both are strictly negative. Total variation equals the total negative mass, proving the exact identity. In the three constant rows both sides vanish; the singleton row $n=3$ is handled separately rather than counting two distinct endpoints.
 
-Finally, expand $2(1-\RR(n,1))/(n-2)$ using Table~\ref{tab:coeffs} and $(n-2)^{-1}=n^{-1}(1-2/n)^{-1}$. This proves the coefficients and all-orders extension.
+Finally, expand $2(1-\RR(n,1))/(n-2)$ using Table~\ref{fcm:tab:coeffs} and $(n-2)^{-1}=n^{-1}(1-2/n)^{-1}$. This proves the coefficients and all-orders extension.
 \end{proof}
 The exact sign classification requires no asymptotic onset. The numerical onset limitations for the inverse models below are separate and remain in force.
 
@@ -433,20 +601,20 @@ Fix an integer $s\ge1$, and define $a_n=A(n,s)$ for integers $n\ge s+2$. It is u
 \end{enumerate}
 They are different objects. In particular, an asymptotically tiny error in a real inverse does not permit a general-input ceiling formula, because an arbitrarily small error can cross an integer. These distinctions and the generic inverse machinery already occur in the repository's canonical and combinatorial transseries texts \cite{canonical,combinatorial}.
 
-Let $P_{s,M}(t)=\sum_{r=0}^M c_r(s)t^r$, the fixed-column relative polynomial from Theorem~\ref{thm:allorders}. Define the specified model
-\begin{equation}\label{eq:model}
+Let $P_{s,M}(t)=\sum_{r=0}^M c_r(s)t^r$, the fixed-column relative polynomial from Theorem~\ref{fcm:thm:allorders}. Define the specified model
+\begin{equation}\label{fcm:eq:model}
  F_{s,M}(x)=\frac{e^{-2}\Gamma(x+1)}{x-2}
  S_M(x)P_{s,M}(1/x)
 \end{equation}
 on a sufficiently large positive half-line. For $M=0$, both last factors are one. The factors approaching one are positive there, and their logarithmic derivatives are $O(x^{-2})$. The digamma expansion gives
-\begin{equation}\label{eq:derivative}
+\begin{equation}\label{fcm:eq:derivative}
  (\log F_{s,M})'(x)=\log x+O_{s,M}(x^{-1}).
 \end{equation}
 Thus the model is eventually strictly increasing and unbounded.
 
-\begin{theorem}[Recovery at exact range values]\label{thm:range}
+\begin{theorem}[Recovery at exact range values]\label{fcm:thm:range}
 For fixed $s,M$, the unique nearby real solution $x_n$ of $F_{s,M}(x_n)=a_n$ exists for all sufficiently large $n$, and
-\begin{equation}\label{eq:range}
+\begin{equation}\label{fcm:eq:range}
  x_n=n+O_{s,M}\left(\frac{n^{-M-1}}{\log n}\right).
 \end{equation}
 In particular, rounding $x_n$ to the nearest integer recovers $n$ eventually.
@@ -457,36 +625,36 @@ The forward expansions give
  a_n=F_{s,M}(n)\{1+O_{s,M}(n^{-M-1})\},\qquad
  \log a_n-\log F_{s,M}(n)=O_{s,M}(n^{-M-1}).
 \]
-By \eqref{eq:derivative}, the model's logarithm changes by order $\log n$ between $n$ and either endpoint of $[n-1,n+1]$. These endpoint values bracket $\log a_n$ for large $n$. Continuity and strict monotonicity give the unique root there. The mean value theorem, with derivative bounded below by a positive constant times $\log n$, proves \eqref{eq:range}. Its error is eventually less than one half.
+By \eqref{fcm:eq:derivative}, the model's logarithm changes by order $\log n$ between $n$ and either endpoint of $[n-1,n+1]$. These endpoint values bracket $\log a_n$ for large $n$. Continuity and strict monotonicity give the unique root there. The mean value theorem, with derivative bounded below by a positive constant times $\log n$, proves \eqref{fcm:eq:range}. Its error is eventually less than one half.
 \end{proof}
 The onset in this theorem is existential. The model is not an exact or canonical interpolation of the integer sequence. The accompanying floating-point roots are diagnostics, not certified round-off or remainder bounds.
 
 \subsection{A Lambert W starting point}
 Stirling's formula and the first forward coefficients give, for each fixed $s$,
-\begin{equation}\label{eq:log}
+\begin{equation}\label{fcm:eq:log}
  \log a_n=n(\log n-1)-\frac12\log n+c+\frac{13}{12n}+O_s(n^{-2}),
  \qquad c=\frac12\log(2\pi)-2.
 \end{equation}
 Indeed $\log\Gamma(n+1)$ contributes $1/(12n)$, $-\log(n-2)$ contributes $2/n$, and $\log S_M(n)$ contributes $-1/n$ when expanded to adequate order. The fixed-column relative correction starts only at order $n^{-3}$ or later.
 
 For $y$ large, let
-\begin{equation}\label{eq:Lambert}
+\begin{equation}\label{fcm:eq:Lambert}
  L=\log y-c,\qquad X=\frac{L}{W(L/e)},\qquad \ell=\log X,
 \end{equation}
 where $W$ is the positive real branch, so $X(\log X-1)=L$. At exact range values $y=a_n$,
-\begin{equation}\label{eq:inverse-start}
+\begin{equation}\label{fcm:eq:inverse-start}
  n=X+\frac12-\frac{23}{24X\ell}
        +O_s\left(\frac1{X^2\ell}\right).
 \end{equation}
-To prove this directly, substitute $n=X+\delta$ in the smooth main expression of \eqref{eq:log}. The term $\delta\ell-\tfrac12\ell$ forces $\delta_0=1/2$. The residual at order $1/X$ is
+To prove this directly, substitute $n=X+\delta$ in the smooth main expression of \eqref{fcm:eq:log}. The term $\delta\ell-\tfrac12\ell$ forces $\delta_0=1/2$. The residual at order $1/X$ is
 \[
  \frac{\delta_0^2}{2}-\frac{\delta_0}{2}+\frac{13}{12}
  =\frac18-\frac14+\frac{13}{12}=\frac{23}{24}.
 \]
-It is cancelled by $-23/(24X\ell)$. The remaining residual is $O(X^{-2})$, and division by a derivative of order $\ell$ proves \eqref{eq:inverse-start}. Higher orders follow by finite reversion of the explicit model with a correspondingly accurate forward expansion. This is a specialization of standard inversion, not a new Lambert-$W$ technique.
+It is cancelled by $-23/(24X\ell)$. The remaining residual is $O(X^{-2})$, and division by a derivative of order $\ell$ proves \eqref{fcm:eq:inverse-start}. Higher orders follow by finite reversion of the explicit model with a correspondingly accurate forward expansion. This is a specialization of standard inversion, not a new Lambert-$W$ technique.
 
 For a precise comparison, choose $M\ge4$, put $G_M(x)=e^{-2}\Gamma(x+1)S_M(x)/(x-2)$, and compare its inverse with that of $F_{4,M}$. Since $P_{4,M}(1/x)=1+2x^{-4}+O(x^{-5})$, the mean value theorem gives, at a common large target,
-\begin{equation}\label{eq:model-shift}
+\begin{equation}\label{fcm:eq:model-shift}
  F_{4,M}^{-1}(y)-G_M^{-1}(y)
  =-\frac{2}{X^4\log X}\{1+o(1)\}.
 \end{equation}
@@ -495,13 +663,13 @@ The positive fourth-column correction lowers the inverse. This compares the two 
 \section{A two candidate threshold enclosure}
 The smooth-model range theorem does not by itself solve the threshold problem. The following enclosure is the appropriate consequence when the remainder constants are retained.
 
-\begin{theorem}\label{thm:threshold}
+\begin{theorem}\label{fcm:thm:threshold}
 Fix $s\ge1$ and $M\ge0$, and write $F=F_{s,M}$. There are constants $C>0$ and an integer $N\ge s+2$ such that for every integer $n\ge N$,
-\begin{equation}\label{eq:envelope-data}
+\begin{equation}\label{fcm:eq:envelope-data}
  |\log a_n-\log F(n)|\le Cn^{-M-1},
 \end{equation}
 and $F_\pm(x)=F(x)\exp(\pm Cx^{-M-1})$ are strictly increasing for $x\ge N$. If
-\begin{equation}\label{eq:y-condition}
+\begin{equation}\label{fcm:eq:y-condition}
  y>F_+(N),\qquad y>\max_{s+2\le n<N}a_n,
 \end{equation}
 where the second restriction is vacuous for an empty prefix, define
@@ -509,37 +677,69 @@ where the second restriction is vacuous for an empty prefix, define
  x_+(y)=F_+^{-1}(y),\qquad x_-(y)=F_-^{-1}(y).
 \]
 Then the exact threshold satisfies
-\begin{equation}\label{eq:threshold}
+\begin{equation}\label{fcm:eq:threshold}
  \lceil x_+(y)\rceil\le N_s(y)\le\lceil x_-(y)\rceil,
 \end{equation}
 and
-\begin{equation}\label{eq:width}
+\begin{equation}\label{fcm:eq:width}
  0\le x_-(y)-x_+(y)
  =O_{s,M}\left(\frac{X^{-M-1}}{\log X}\right),
 \end{equation}
-where $X$ is from \eqref{eq:Lambert}. Thus, for sufficiently large $y$, the enclosure contains at most two consecutive integers. If it contains two, one exact comparison at the lower candidate determines the threshold.
+where $X$ is from \eqref{fcm:eq:Lambert}. Thus, for sufficiently large $y$, the enclosure contains at most two consecutive integers. If it contains two, one exact comparison at the lower candidate determines the threshold.
 \end{theorem}
 \begin{proof}
-Equation~\eqref{eq:envelope-data} follows from the forward relative remainder and positivity. Increase $N$ so that $F$ and both envelopes are increasing: their logarithmic derivatives are $\log x+O(x^{-1})$ by \eqref{eq:derivative}, since the extra derivative is $\mp C(M+1)x^{-M-2}$.
+Equation~\eqref{fcm:eq:envelope-data} follows from the forward relative remainder and positivity. Increase $N$ so that $F$ and both envelopes are increasing: their logarithmic derivatives are $\log x+O(x^{-1})$ by \eqref{fcm:eq:derivative}, since the extra derivative is $\mp C(M+1)x^{-M-2}$.
 
-The sequence itself is eventually strictly increasing. To prove this without differentiating an unknown remainder, write $\log a_n=\log F(n)+r_n$ where $r_n=O(n^{-M-1})$. Then $r_{n+1}-r_n=O(n^{-M-1})=O(n^{-1})$, and integration of \eqref{eq:derivative} gives
+The sequence itself is eventually strictly increasing. To prove this without differentiating an unknown remainder, write $\log a_n=\log F(n)+r_n$ where $r_n=O(n^{-M-1})$. Then $r_{n+1}-r_n=O(n^{-M-1})=O(n^{-1})$, and integration of \eqref{fcm:eq:derivative} gives
 \[
  \log a_{n+1}-\log a_n=\log n+O(n^{-1})>0
 \]
 for large $n$. Increase $N$ again if needed. The growth of $F$ and the remainder also make $a_n$ unbounded, so the threshold exists.
 
-The envelope inequality is $F_-(n)\le a_n\le F_+(n)$ for $n\ge N$. Conditions \eqref{eq:y-condition} exclude earlier indices and ensure that both roots lie above $N$. If $a_n\ge y$, then $F_+(n)\ge y$ and $n\ge x_+(y)$, proving the lower bound. Conversely, the integer $n=\lceil x_-(y)\rceil$ satisfies $F_-(n)\ge y$ and hence $a_n\ge y$, proving the upper bound.
+The envelope inequality is $F_-(n)\le a_n\le F_+(n)$ for $n\ge N$. Conditions \eqref{fcm:eq:y-condition} exclude earlier indices and ensure that both roots lie above $N$. If $a_n\ge y$, then $F_+(n)\ge y$ and $n\ge x_+(y)$, proving the lower bound. Conversely, the integer $n=\lceil x_-(y)\rceil$ satisfies $F_-(n)\ge y$ and hence $a_n\ge y$, proving the upper bound.
 
 Both roots are asymptotic to $X$, by the leading logarithm $x(\log x-1)$. At $x=x_+$,
 \[
  \log F_-(x_+)=\log y-2Cx_+^{-M-1}.
 \]
-At $x_-$ the same logarithm equals $\log y$. The mean value theorem and a logarithmic derivative of order $\log X$ prove \eqref{eq:width}. Eventually this width is less than one, so its ceiling endpoints are equal or consecutive. In the latter case, testing $a_\ell\ge y$ at the lower integer $\ell$ selects $\ell$ if true and $\ell+1$ otherwise, by the enclosure.
+At $x_-$ the same logarithm equals $\log y$. The mean value theorem and a logarithmic derivative of order $\log X$ prove \eqref{fcm:eq:width}. Eventually this width is less than one, so its ceiling endpoints are equal or consecutive. In the latter case, testing $a_\ell\ge y$ at the lower integer $\ell$ selects $\ell$ if true and $\ell+1$ otherwise, by the enclosure.
 \end{proof}
 \paragraph{Scope of certification.}
 The constants $C,N$ in this theorem exist by the proof, but no numerical certified values are supplied. The theorem is therefore not an executable certified threshold algorithm. No assertion is made that $N_s(y)=\lceil F^{-1}(y)\rceil$ for every sufficiently large input. A practical certified implementation would need explicit global bounds, finite-prefix handling and rigorous root enclosures; floating-point examples do not provide those ingredients.
 
-\section{Reproducibility and implementation safeguards}\label{sec:repro}
+\begin{remark}[{[write]} The inverses and the transseries volumes, 7~October 2026]\label{fcm:rem:transseries}
+Compared statement by statement with the repository's transseries
+volume~\cite{TSvol}; the volume's symbols are not used here.
+\begin{enumerate}\raggedright
+\item \emph{The growth.} $\log a_n=n(\log n-1)-\frac12\log n+c+O(1/n)$ contains
+$n\log n$, so it is not of the exponential--power form of \file{p0:def:model};
+no instance of the volume's model is claimed.
+\item \emph{The Lambert start.} With $w=\log X-1$ the equation
+$X(\log X-1)=L$ of~\eqref{fcm:eq:Lambert} becomes $w+\log w=\log(L/e)$: the
+volume's dominant block \file{p0:thm:lambert-core} with unit slope and unit
+logarithmic coefficient, whose positive-coefficient branch gives exactly
+$X=L/W(L/e)$. An exact instance.
+\item \emph{The refined start and the model inverse.} In the chart of the
+logarithm of the unknown the core $x(\log x-1)$ is a monomial--logarithmic
+datum (\file{plt:def:lw-monomial-log-datum}), but the terms
+$-\frac12\log x+c+\frac{13}{12x}$ of~\eqref{fcm:eq:log} enter, relative to
+it, as exponentially small functions of that chart variable, outside the
+series the template requires; so the write has not shown~\eqref{fcm:eq:inverse-start},
+the model inverse of Theorem~\ref{fcm:thm:range} or~\eqref{fcm:eq:model-shift}
+to be instances of \file{plt:thm:lw-template}. They are proved directly.
+\item \emph{Range recovery and thresholds.} $N_s(y)$ is the volume's
+staircase (\file{p0:def:three-inverses}(1)) of the eventually increasing
+column; $F_{s,M}$ is not an interpolation of $a_n$ (the source says so), so
+Theorem~\ref{fcm:thm:range} is an analogue of \file{p0:thm:staircase}(3) and
+Theorem~\ref{fcm:thm:threshold}, with its envelopes $F_\pm$, an analogue of
+\file{p0:thm:staircase}(2); neither is an instance. The companion volume's
+exact two-candidate rule (\file{t3:thm:two-candidate} of
+\file{Combinatorial_Transseries_Inverses.tex}) concerns another sequence; the
+write did not compare that volume further.
+\end{enumerate}
+\end{remark}
+
+\section{Reproducibility and implementation safeguards}\label{fcm:sec:repro}
 The accompanying ZIP contains this \LaTeX{} source, the PDF, a source ledger with version pins, deterministic exact code, optional high-precision diagnostics and a build script. It contains no copied source-paper PDFs, internal research notes or review reports.
 
 The exact core uses only the Python standard library. Its public functions check types and domains, rejecting booleans, floating indices and invalid columns. In particular, the adjacent-difference function distinguishes the center from $L_0$, and the circular count documents its signed small values. It exposes no routine advertised as a certified inverse.
@@ -549,8 +749,17 @@ The verification suite checks the path recurrence and polynomial identity, every
 Deliberately false values and invalid API calls are negative controls: a wrong signed $U_1$, a wrong center step, the interior coefficient substituted for the fourth-column coefficient, a wrong total-variation constant and invalid inputs must all be detected. Large computed integers can be serialized and parsed in bounded decimal chunks without changing the caller's Python digit limit; a 600-row example is tested with the limit set to 640. Checks use explicit exceptions rather than Python \texttt{assert}, so they remain active with \texttt{python -O}. The normal and optimized exact JSON receipts must agree byte for byte.
 
 Numerical diagnostics use \texttt{mpmath} at 100 decimal digits and write a separate JSON file marked diagnostic only. They compare exact counts with truncated ratios and solve the explicit models at exact range targets. They check numerical convergence and implementation consistency; they are not the proof of any asymptotic remainder or certified inverse onset. The build creates a deterministic ZIP by sorting members and fixing archive timestamps and file modes. Rebuilding the \LaTeX{} PDF also fixes its date-dependent metadata through \texttt{SOURCE\_DATE\_EPOCH} and pdf\TeX{} controls. The README specifies dependencies and commands.
+\begin{writenote}[The shipped files, 7 October 2026]\raggedright
+In ProveIt the PDF and \file{MANIFEST.sha256} are not shipped; the programs
+are \file{code/*.py} (the builder as \file{code/build.py}), the receipts
+\file{data/receipts-*.json}, and \file{requirements.txt} and
+\file{source_pins.json} are under \file{data/}. The builder expects the
+delivered layout and runs only in a re-extracted archive; the report README
+gives commands that rerun the exact suite and the diagnostics on a scratch
+copy.
+\end{writenote}
 
-\section{Source scope and historical limitations}\label{sec:sources}
+\section{Source scope and historical limitations}\label{fcm:sec:sources}
 The source ledger is bounded to the material actually checked on 4 October 2026. It is not an exhaustive priority search.
 \begin{itemize}[leftmargin=*]
 \item A332709's internal entry displayed revision \#33, 1 February 2021, with both conjectures. A site-wide footer date is not an entry revision. The full revision history was not audited.
@@ -563,6 +772,34 @@ The source ledger is bounded to the material actually checked on 4 October 2026.
 \end{itemize}
 Targeted identifier and keyword searches found no earlier resolution of the two displayed A332709 conjectures among the inspected sources. The mathematical proofs here stand independently of that bounded search. We claim the stated theorems, not global historical novelty or a complete clearance of all related literature.
 
+\begin{remark}[{[write]} The OEIS entries, 7~October 2026]\label{fcm:rem:oeis}
+The write read the entries in the internal format on 7~October 2026.
+\emph{A332709} is still at revision \#33 (1 February 2021), by Peter Kagey (20
+February 2020), with the two comments ``Conjecture: Rows are unimodal (i.e.,
+increasing, then decreasing).'' and ``Conjecture: T(n,k) - T(n,k-1) =
+A127548(n-2k+4) for n >= 2k - 3.'', the latter signed by Kagey, 22 January
+2021, and a b-file by Kagey for rows $3\le n\le52$. Theorems~\ref{fcm:thm:difference}
+and~\ref{fcm:thm:shape} prove both posted statements, the second on its
+natural domain $k\ge4$ (at $k=3$ the left side has no predecessor column).
+\emph{A258667}, revision \#79 (19 August 2026), by Vladimir Shevelev and Peter
+J.\ C.\ Moses (7 June 2015), states that ``it is natural to conjecture that
+a(n) $\sim$ e\^{}(-2)*n!/(n-2)*(1 + Sum\_\{k>=1\} (-1)\^{}k/(k!(n-1)\_k))'', and a
+comment of Ralf Stephan (30 June 2026) reports a proof by an autonomous AI agent
+in a linked Lean file, which establishes equivalence to $e^{-2}(n-1)!$. Read
+as a leading equivalence, which is what the Lean file formalizes (with the sum
+over $1\le k\le n-1$), the conjecture holds, as the source says.
+\emph{The write adds:} read as an asymptotic expansion in powers of $1/n$, it
+fails at the fourth relative order. Indeed, by~\eqref{fcm:eq:round} the
+displayed expression with the finite sum equals $(U_n+\vartheta_n)/(n-2)$
+with $|\vartheta_n|\le\frac12$, so by~\eqref{fcm:eq:fourth} $a(n)$ divided by
+it is $1+2n^{-4}+16n^{-5}+O(n^{-6})$, not $1+O(n^{-K})$ for every $K$.
+Numerically, $n^4$ times the ratio minus one is $3.10$, $2.46$, $2.22$, $2.10$ at $n=20,40,80,160$.
+The other column entries (A258664--A258666, A258673) post no asymptotic
+formula. A127548 (\#38, 20 September 2024) and A000179 are as the source
+describes them. \emph{Checks.} The write's counts equal the b-files named in
+Section~\ref{fcm:sec:provenance}. No OEIS edit is part of this work.
+\end{remark}
+
 \section{Further questions}
 Several natural next steps remain separate from the results proved above.
 \begin{enumerate}
@@ -572,6 +809,13 @@ Several natural next steps remain separate from the results proved above.
 \item Investigate stronger positivity or higher-difference properties. Ordinary discrete concavity alone does not imply arbitrary higher-order sign patterns.
 \item Complete the literature check of the inaccessible final publisher texts before making any historical-priority assertion.
 \end{enumerate}
+\begin{writenote}[Added 7 October 2026, under Vladimir's standing rule of 4 October 2026]
+Every open question of the source is in this list. The write adds from the
+non-claims a rerun of the Lean proof of the A258667 leading equivalent (read
+here, not compiled). The two A332709 conjectures are proved; the stronger,
+expansion reading of the A258667 conjecture is refuted at relative order
+$n^{-4}$ (Remark~\ref{fcm:rem:oeis}); no claim of the source was found false.
+\end{writenote}
 
 \begin{thebibliography}{99}
 \raggedright
@@ -587,5 +831,6 @@ Several natural next steps remain separate from the results proved above.
 \bibitem{lean} Google DeepMind, \emph{AlphaProof Nexus A258667 Lean source}, concluding \texttt{target\_theorem\_0}. \url{https://github.com/google-deepmind/alphaproof-nexus-results/blob/main/APNOutputs/OEIS/oeis_A258667_conjecture_0.lean}. Source SHA-256 in the supplement.
 \bibitem{canonical} V. Reshetnikov, \emph{Transseries: the polynomial-logarithmic calculus, series reversal at infinity, and inversion}, ProveIt repository, canonical source. Git blob \nolinkurl{26378ed517d4ed2e21add80faacfd8851f1fbd10}; inverse distinctions, range recovery and gamma inversion sections. \url{https://github.com/VladimirReshetnikov/ProveIt}. Exact path and SHA-256 in the supplement.
 \bibitem{combinatorial} V. Reshetnikov, \emph{Combinatorial Transseries and Their Inverses}, ProveIt repository source. Git blob \nolinkurl{17647298fa31d61c061d556a3b1e451a228ae20e}; inverse notions and interpolation discussion. \url{https://github.com/VladimirReshetnikov/ProveIt}. Exact path and SHA-256 in the supplement.
+\bibitem{TSvol} ProveIt, \emph{Transseries: the polynomial--logarithmic calculus, series reversal at infinity, and the inversion of rapidly growing functions}, \file{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex} (the source's \cite{canonical}); Part~0 (\file{p0:def:model}, \file{p0:thm:lambert-core}, \file{p0:def:three-inverses}, \file{p0:thm:staircase}) and the chapter on the Lambert template (\file{plt:def:lw-monomial-log-datum}, \file{plt:thm:lw-template}). [Added in the write.]
 \end{thebibliography}
 \end{document}

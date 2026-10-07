@@ -1,0 +1,146 @@
+SOURCE AUDIT -- 7 OCTOBER 2026
+
+Scope
+-----
+This was a targeted review of repository catalogues and the automata papers
+most relevant to an algebraic fixed-alphabet research extension. It was not
+a proof audit of every result in either repository. Repository reports are
+treated as research manuscripts, with their own stated formalization and
+review boundaries.
+
+OpenAI snapshot
+---------------
+Repository: https://github.com/openai/math
+Commit: adc7f1241b42e322a6451854ab7e4b4c146bf78a
+Commit date observed: 2026-10-06T21:58:50Z
+
+Primary inspected prefix:
+preprints/An-exponential-two-way-deterministic-state-lower-bound-for-one-way-liveness-September-25-2026/build/
+
+Relevant files and repository blob identifiers:
+  main.tex
+    1eb6b2913cd759cc4d55741dab17b24e156ddd5b
+  sections/introduction.tex
+    dfdb874773c1cbe0a5297416633424908c16c336
+  sections/machines.tex
+    f4a51079fd327b79fc339842dbbc6ebcce573a9c
+  sections/matching.tex
+    c4919c166883e82f6d983353c25c4c78f2f31f6c
+  sections/rank.tex
+    add2ea4679144df27b50038e7e5dd287c042adb0
+  sections/separation.tex
+    4f7b9feb631736f004273bbdb212adea3eee9d3a
+
+The introduction, machine representation, matching-corner reductions,
+rank amplification, and singleton-context separation were read. The source
+gives k >= 2^floor((h-2)/31), with k <= 4(s+1)^2 under initial acceptance.
+Its alternative convention uses one more normalization state.
+
+The main determinization theorem in the new article does not import that
+numerical lower bound: all required algebraic and representation arguments
+are reproved, with the changed budget and constants made explicit.
+
+Companion prefix:
+preprints/An-exponential-state-lower-bound-for-two-way-nondeterministic-complementation-September-25-2026/build/
+
+Relevant inspected sections: introduction.tex, automata.tex, diagrams.tex,
+amplification.tex, nesting.tex. The exact imported theorem is "Order-reversing
+image bound", source label amp:image. It states: for a submonoid of T_m
+surjecting multiplicatively and antitonically onto R_H, |H|=h>=2,
+2m >= 2^floor((h-2)/127). Identity preservation is not assumed.
+The new complementation section explicitly depends on this theorem.
+
+Formalization documentation:
+  lean/docs/129.md
+  blob dc34a9572574ac4fab4027a5a18a103e71e4021e
+The documentation was inspected as a scope statement for the upstream
+formalization. No Lean build, new theorem declaration, or formalization of
+the new corank budget or sparse compiler is claimed.
+
+License:
+  LICENSE
+  blob 261eeb9e9f8b2b4b0d119366dda99c6fd7d35c64
+The Apache 2.0 text is included unchanged in this package.
+
+ProveIt snapshot
+----------------
+Repository: https://github.com/VladimirReshetnikov/ProveIt
+Commit: 670a67d35eda2fc92f2483b1b3d643bad9173113
+Commit date observed: 2026-10-07T20:09:24Z
+
+Common prefix:
+SetTheory/Cardinals/docs/reports/automata-and-formal-languages/
+
+  shuffle-six-state-bound/README.md
+  blob 077d0777a3e5584a45d35ac6eaccd01be440606f
+  Read for its finite-to-infinite shuffle result and its careful distinction
+  between full transformation-pair reachability and fixed-three-letter
+  distinguishability. The report identifies its status as a research draft.
+
+  dfao-reversal-coloring-obstruction/README.md
+  blob 92fa1fc99ae2c96d6f1403be8920f32117c49e58
+  Read for the six-part sequence of binary DFAO reversal and coloring
+  results, including its improved threshold and recurrence questions.
+
+  constrained-crossover-closure/README.md
+  blob e8ff27d745c97ef96438936851eb1acc4c1b04b1
+  Read for the seven-part closure/stabilization/rank research series,
+  particularly the binary NFA finite-rank leading constant.
+
+These reports motivated the research direction and integration location.
+No result from them is an unproved premise of the new article.
+
+Primary literature and prior construction
+-----------------------------------------
+Dolinka et al., Enumeration of idempotents in diagram semigroups and algebras,
+JCTA 131 (2015), 119-152, arXiv:1408.2021v2. Theorem 5 and Proposition 17
+provide the classical component structure; the article supplies its own
+connector proof. The exact corank-budget application is not attributed
+as a theorem of that paper.
+
+East and Gray, Diagram monoids and Graham-Houghton graphs: Idempotents and
+generating sets of ideals, JCTA 146 (2017), 63-128, arXiv:1404.2359.
+A targeted inspection did not locate the explicit repeated-word
+sum-of-generator-coranks statement. This negative search is not a proof
+of novelty.
+
+Kapoutsis, Nondeterminism Is Essential in Small Two-Way Finite Automata with
+Few Reversals, Information and Computation 222 (2013), 208-227.
+The author's primary PDF was inspected, especially Section 8 on liveness
+encoding. The restricted-target results are not conflated with unrestricted
+determinization.
+
+Yan, Lower Bounds for Complementation of omega-Automata via the Full Automata
+Technique, arXiv:0802.1226. Cited for established alphabet-substitution
+methodology, not as a source for the new compiler's exact counts.
+
+TheoremDB R816:
+  https://www.theoremdb.org/records/R816/
+  "The one-way-liveness bound transfers to a fixed binary alphabet"
+  Inspected authored record says the reduction was written and audited
+  28 July 2026. It gives 3h four-letter states, a 9h binary decoder, and a
+  2s+2-state macro transfer independent of block length.
+  It identifies its evidence as self-reported and content as CC0-1.0.
+  Its stated quadratic lower bound imports Adeogun and Kapoutsis.
+  Alphabet transfer itself is therefore credited as prior work.
+
+Adeogun and Kapoutsis, A Quadratic Lower Bound for 2DFAs against One-Way
+Liveness, arXiv:2602.24279v2. Bibliographic details and the quoted theorem
+are also recorded by the inspected OpenAI source and TheoremDB record.
+The new proofs do not depend on this quadratic lower bound.
+
+Pighizzini, Two-Way Finite Automata: Old and Recent Results, EPTCS90 (2012),
+3-20, arXiv:1208.2755. Used as historical context, not as a current status
+determination in October 2026.
+
+Limits of the review
+--------------------
+No claim is made of exhaustive literature coverage, independent human peer
+review, priority certification, or new machine-checked formalization.
+The new article's theorem ledger distinguishes classical material,
+adapted arguments with new estimates, independently proved extensions,
+and the one imported algebraic premise.
+
+The source_manifest.json file records SHA256 hashes of the inspected local
+source snapshots, so the bibliography and path audit can be compared with
+later versions. Those upstream texts are not reproduced wholesale here.

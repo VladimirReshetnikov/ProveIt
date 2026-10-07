@@ -1,3 +1,4 @@
+/- Modified for ProveIt: Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
 import OAI.Combinatorics.Progressions.Dynamics.ComparisonEquivalenceBudget
 import OAI.Combinatorics.Progressions.Nilpotent.NativeFrozenMultidegreeNiltest
 import OAI.Combinatorics.Progressions.Polynomial.ZeroDegreeCoordinate
@@ -261,7 +262,7 @@ theorem exists_controlled_frozen_niltest (s : ℕ) :
           (ℝ ⊗[ℚ] M.filtration.weightedSubalgebra (retainedCoordinateWeight S))
         letI : IsTopologicalAddGroup
             (ℝ ⊗[ℚ] M.filtration.weightedSubalgebra (retainedCoordinateWeight S)) :=
-          IsModuleTopology.isTopologicalAddGroup ℝ _
+          IsModuleTopology.topologicalAddGroup ℝ _
         letI : T2Space (ℝ ⊗[ℚ] M.filtration.weightedSubalgebra (retainedCoordinateWeight S)) :=
           realification_moduleTopology_t2 E.basis
         ∃ T : E.Niltest (fun _ : S => 1), T.normBound = B ∧
@@ -300,7 +301,7 @@ theorem exists_controlled_frozen_niltest (s : ℕ) :
       (M.filtration.realification.polynomialOrbitEval (freezeCoordinates S b 0) g)
   refine ⟨E, hEF, hEL, ?_⟩
   let := moduleTopology ℝ (ℝ ⊗[ℚ] K)
-  let : IsTopologicalAddGroup (ℝ ⊗[ℚ] K) := IsModuleTopology.isTopologicalAddGroup ℝ _
+  let : IsTopologicalAddGroup (ℝ ⊗[ℚ] K) := IsModuleTopology.topologicalAddGroup ℝ _
   let : T2Space (ℝ ⊗[ℚ] K) := realification_moduleTopology_t2 E.basis
   let H := ⌈Real.exp (p + 1)⌉₊
   obtain ⟨T, hTnorm, hTlip, hTzero, hTeval⟩ := M.exists_frozen_niltest S E hEF hEL b g
@@ -356,7 +357,7 @@ theorem freezingExponent_control {σ : Type u} {L : Type v} [Fintype σ] [Decida
         (ℝ ⊗[ℚ] M.filtration.weightedSubalgebra (retainedCoordinateWeight S))
       letI : IsTopologicalAddGroup
           (ℝ ⊗[ℚ] M.filtration.weightedSubalgebra (retainedCoordinateWeight S)) :=
-        IsModuleTopology.isTopologicalAddGroup ℝ _
+        IsModuleTopology.topologicalAddGroup ℝ _
       letI : T2Space (ℝ ⊗[ℚ] M.filtration.weightedSubalgebra (retainedCoordinateWeight S)) :=
         realification_moduleTopology_t2 E.basis
       ∃ T : E.Niltest (fun _ : S => 1), T.normBound = B ∧
@@ -395,7 +396,7 @@ theorem exists_freezing_niltest {σ : Type u} [Fintype σ] [DecidableEq σ] (bou
             (ℝ ⊗[ℚ] W.multi.filtration.weightedSubalgebra (retainedCoordinateWeight S))
           letI : IsTopologicalAddGroup
               (ℝ ⊗[ℚ] W.multi.filtration.weightedSubalgebra (retainedCoordinateWeight S)) :=
-            IsModuleTopology.isTopologicalAddGroup ℝ _
+            IsModuleTopology.topologicalAddGroup ℝ _
           letI : T2Space
               (ℝ ⊗[ℚ] W.multi.filtration.weightedSubalgebra (retainedCoordinateWeight S)) :=
             realification_moduleTopology_t2 E.basis
@@ -455,7 +456,7 @@ theorem exists_second_expansion_budget (s : ℕ) :
     (by simpa only [NNReal.coe_one] using Real.one_le_exp hp)
   let K := (R.multi true).filtration.weightedSubalgebra (retainedCoordinateWeight S)
   let := moduleTopology ℝ (ℝ ⊗[ℚ] K)
-  let : IsTopologicalAddGroup (ℝ ⊗[ℚ] K) := IsModuleTopology.isTopologicalAddGroup ℝ _
+  let : IsTopologicalAddGroup (ℝ ⊗[ℚ] K) := IsModuleTopology.topologicalAddGroup ℝ _
   let : T2Space (ℝ ⊗[ℚ] K) := realification_moduleTopology_t2 E.basis
   obtain ⟨T, _, hT, _, hTeval⟩ := hE
   let U := T.affinePullback (fun _ (_ : Unit) => (1 : ℤ)) 0

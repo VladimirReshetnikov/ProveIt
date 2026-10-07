@@ -1,3 +1,4 @@
+/- Modified for ProveIt: Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
 import OAI.Combinatorics.Progressions.Estimates.PositiveShiftRefilteredExpansionSpec
 import OAI.Combinatorics.Progressions.Polynomial.ProductPolynomialMaps
 
@@ -31,10 +32,10 @@ theorem refiltered_product_expansion_of_recovered
   let I₀ := {i : ι // i ≠ a}
   let Z₀ := pi (fun i : I₀ => D i.val)
   let := moduleTopology ℝ (ℝ ⊗[ℚ] (H ⧸ E.filtration.layerIdeal (s + 1)))
-  let := IsModuleTopology.isTopologicalAddGroup ℝ (ℝ ⊗[ℚ] (H ⧸ E.filtration.layerIdeal (s + 1)))
+  let := IsModuleTopology.topologicalAddGroup ℝ (ℝ ⊗[ℚ] (H ⧸ E.filtration.layerIdeal (s + 1)))
   let := realification_moduleTopology_t2 Q.basis
   let := moduleTopology ℝ (ℝ ⊗[ℚ] (∀ i : I₀, L i.val))
-  let := IsModuleTopology.isTopologicalAddGroup ℝ (ℝ ⊗[ℚ] (∀ i : I₀, L i.val))
+  let := IsModuleTopology.topologicalAddGroup ℝ (ℝ ⊗[ℚ] (∀ i : I₀, L i.val))
   let := realification_moduleTopology_t2 Z₀.basis
   obtain ⟨P, hP, hPb, Q', hQF, hQb, hQle, hQ, Z, hZF, hZb, _, _, Λ,
     hΛ, hchar, hnormal, hfinite, hindex, l, hl, hin, hout, hV, hbase⟩ := hbase

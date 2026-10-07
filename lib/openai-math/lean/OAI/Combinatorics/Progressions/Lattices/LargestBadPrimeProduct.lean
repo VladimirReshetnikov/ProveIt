@@ -1,5 +1,5 @@
 /- Modified for ProveIt: import Lean 4.32 compatibility declarations.
-Use prod_le_prod' for generic product comparisons; mathematical statements are unchanged. -/
+Use the primed generic product and subset comparison lemmas; mathematical statements are unchanged. -/
 import OAI.Compat.Core
 import Mathlib.Data.Nat.Factorization.Basic
 import Mathlib.Data.Nat.Log
@@ -120,7 +120,7 @@ theorem prime_power_small_correction (S : Finset ℕ) (b : ℕ → ℕ) {Qs : �
   have hbase : (∏ p ∈ S, g p) ≤ smallPrimePowerCorrection Qs := by
     calc
       _ ≤ ∏ p ∈ S ∪ small, g p :=
-        Finset.prod_le_prod_of_subset_of_one_le Finset.subset_union_left (fun p hp _ => by
+        Finset.prod_le_prod_of_subset_of_one_le' Finset.subset_union_left (fun p hp _ => by
           apply hg
           rcases Finset.mem_union.mp hp with hp | hp
           · exact hprime p hp

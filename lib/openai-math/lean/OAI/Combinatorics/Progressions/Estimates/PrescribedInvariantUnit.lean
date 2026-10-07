@@ -1,3 +1,4 @@
+/- Modified for ProveIt: Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
 import Mathlib.Analysis.SpecialFunctions.Sqrt
 import OAI.Combinatorics.Progressions.Dynamics.UniformInvariantBudget
 import OAI.Combinatorics.Progressions.Linear.NativePrescribedProjection
@@ -414,7 +415,7 @@ theorem exists_canonical_prescribed_unit_with_budget (s : ℕ) :
       (∀ z : D.filtration.Group, z ∈ D.lattice → ∃ n : ℤ, η z.coord = n) →
       ∀ q : ℝ, (p + C) ^ C ≤ q →
       letI := moduleTopology ℝ (ℝ ⊗[ℚ] L)
-      letI : IsTopologicalAddGroup (ℝ ⊗[ℚ] L) := IsModuleTopology.isTopologicalAddGroup ℝ _
+      letI : IsTopologicalAddGroup (ℝ ⊗[ℚ] L) := IsModuleTopology.topologicalAddGroup ℝ _
       letI := realification_moduleTopology_t2 D.basis
       ∃ n : ℕ, 0 < n ∧ (n : ℝ) ≤ Real.exp q ∧
         ∃ V : D.UnitVerticalObservable (D.filtration.realification.subgroup s) (Fin n)
@@ -423,7 +424,7 @@ theorem exists_canonical_prescribed_unit_with_budget (s : ℕ) :
   refine ⟨C, hC, ?_⟩
   intro L _ _ d D p hp hD η hη hint q hq
   let := moduleTopology ℝ (ℝ ⊗[ℚ] L)
-  let : IsTopologicalAddGroup (ℝ ⊗[ℚ] L) := IsModuleTopology.isTopologicalAddGroup ℝ _
+  let : IsTopologicalAddGroup (ℝ ⊗[ℚ] L) := IsModuleTopology.topologicalAddGroup ℝ _
   let := realification_moduleTopology_t2 D.basis
   obtain ⟨n, hn, hnc, V, hV⟩ := hunit D hp hD η hη (D.realLattice_functional_integral η hint)
   exact ⟨n, hn, hnc.trans (Real.exp_le_exp.mpr hq), V.mono hq, hV⟩

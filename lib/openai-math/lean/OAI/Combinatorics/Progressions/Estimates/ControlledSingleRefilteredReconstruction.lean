@@ -1,3 +1,4 @@
+/- Modified for ProveIt: Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
 import OAI.Combinatorics.Progressions.Estimates.AdaptedDiagramNativeExternalNet
 
 namespace OAI
@@ -126,7 +127,7 @@ noncomputable def SingleRefilteredRecoveryFamily (p : ℝ) (q k : ℕ) (cost : �
   let H := D.filtration.gradedRefiltrationSubalgebra W
   let N := H ⧸ E.filtration.layerIdeal (s + 1)
   let := moduleTopology ℝ (ℝ ⊗[ℚ] N)
-  let := IsModuleTopology.isTopologicalAddGroup ℝ (ℝ ⊗[ℚ] N)
+  let := IsModuleTopology.topologicalAddGroup ℝ (ℝ ⊗[ℚ] N)
   let := realification_moduleTopology_t2 Q.basis
   let T := Q.raiseStep (Nat.le_succ s)
   ∃ Λ : Subgroup T.filtration.Group, Λ ≤ T.lattice ∧
@@ -195,10 +196,10 @@ theorem exists_uniform_single_refilteredRecoveryFamily (s k : ℕ) :
   let H := D.filtration.gradedRefiltrationSubalgebra W
   let N := H ⧸ E.filtration.layerIdeal (s + 1)
   let := moduleTopology ℝ (ℝ ⊗[ℚ] H)
-  let := IsModuleTopology.isTopologicalAddGroup ℝ (ℝ ⊗[ℚ] H)
+  let := IsModuleTopology.topologicalAddGroup ℝ (ℝ ⊗[ℚ] H)
   let := realification_moduleTopology_t2 E.basis
   let := moduleTopology ℝ (ℝ ⊗[ℚ] N)
-  let := IsModuleTopology.isTopologicalAddGroup ℝ (ℝ ⊗[ℚ] N)
+  let := IsModuleTopology.topologicalAddGroup ℝ (ℝ ⊗[ℚ] N)
   let := realification_moduleTopology_t2 Q.basis
   exact hrec D W E Q p hEF hp hE hD hQ hφ hψ q hq hqp
 
@@ -242,7 +243,7 @@ theorem SingleRefilteredRecoveryFamily.exists_fixed_child
     let H := D.filtration.gradedRefiltrationSubalgebra W
     let N := H ⧸ E.filtration.layerIdeal (s + 1)
     let := moduleTopology ℝ (ℝ ⊗[ℚ] N)
-    let := IsModuleTopology.isTopologicalAddGroup ℝ (ℝ ⊗[ℚ] N)
+    let := IsModuleTopology.topologicalAddGroup ℝ (ℝ ⊗[ℚ] N)
     let := realification_moduleTopology_t2 Q.basis
     let T := Q.raiseStep (Nat.le_succ s)
     ∃ Λ : Subgroup T.filtration.Group, Λ ≤ T.lattice ∧

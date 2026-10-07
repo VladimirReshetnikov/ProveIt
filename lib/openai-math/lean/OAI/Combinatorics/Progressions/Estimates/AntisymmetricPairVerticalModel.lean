@@ -1,3 +1,4 @@
+/- Modified for ProveIt: Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
 import OAI.Combinatorics.Progressions.Estimates.NativeFrozenComparison
 import OAI.Combinatorics.Progressions.Geometry.AntisymmetricPairCoordinateTest
 import OAI.Combinatorics.Progressions.Linear.AntisymmetricPairProjections
@@ -335,7 +336,7 @@ theorem exists_antisymmetric_pair_frozen_reduction :
     (le_add_of_nonneg_left hu).trans hsum
   let : TopologicalSpace (ℝ ⊗[ℚ] V.AntisymmetricPairAlgebra) := moduleTopology ℝ _
   let : IsTopologicalAddGroup (ℝ ⊗[ℚ] V.AntisymmetricPairAlgebra) :=
-    IsModuleTopology.isTopologicalAddGroup ℝ _
+    IsModuleTopology.topologicalAddGroup ℝ _
   let := realification_moduleTopology_t2 (pi V.antisymmetricPairModels).basis
   exact ⟨u, hu, huC, houter R hr,
     R.hasPairFrozenEquivalence_mono (hfrozen R hr hu) hBC⟩
@@ -488,7 +489,7 @@ theorem exists_antisymmetric_pair_local_approximation :
     (le_add_of_nonneg_left ht).trans hcost
   let : TopologicalSpace (ℝ ⊗[ℚ] V.AntisymmetricPairAlgebra) := moduleTopology ℝ _
   let : IsTopologicalAddGroup (ℝ ⊗[ℚ] V.AntisymmetricPairAlgebra) :=
-    IsModuleTopology.isTopologicalAddGroup ℝ _
+    IsModuleTopology.topologicalAddGroup ℝ _
   let := realification_moduleTopology_t2 (pi V.antisymmetricPairModels).basis
   let D := pi V.antisymmetricPairModels
   have hD : D.GeometryComplexityLE t :=
@@ -832,7 +833,7 @@ theorem exists_antisymmetric_anchor_equivalence :
   intro p q r u W N _ i j V R hr hu houter y z hy hz k l
   let := moduleTopology ℝ (ℝ ⊗[ℚ] V.AntisymmetricPairAlgebra)
   let : IsTopologicalAddGroup (ℝ ⊗[ℚ] V.AntisymmetricPairAlgebra) :=
-    IsModuleTopology.isTopologicalAddGroup ℝ _
+    IsModuleTopology.topologicalAddGroup ℝ _
   let := realification_moduleTopology_t2 (pi V.antisymmetricPairModels).basis
   have hp : 0 ≤ p := (Nat.cast_nonneg W.dim).trans W.complexity.1.1
   have hq : 0 ≤ q := (Nat.cast_nonneg V.dim).trans V.complexity.1.1

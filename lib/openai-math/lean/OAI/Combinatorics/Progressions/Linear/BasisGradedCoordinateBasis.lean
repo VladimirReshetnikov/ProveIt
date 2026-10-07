@@ -1,5 +1,6 @@
 /- Modified for ProveIt: import Lean 4.32 compatibility declarations.
-Statements and proofs are unchanged from the pinned upstream source. -/
+Prove the complement of a coordinate cutoff by extensionality on Lean 4.32.
+Mathematical statements are unchanged. -/
 import OAI.Compat.Core
 import Mathlib.Algebra.BigOperators.Group.Finset.Piecewise
 import Mathlib.Data.Finsupp.SMul
@@ -262,13 +263,21 @@ theorem BasisGradedSubmodule.below_mem (b : Basis ι K V) (w : ι → ℕ) (U : 
 
 theorem sub_basisBelowProjection_mem (b : Basis ι K V) (w : ι → ℕ) (j : ℕ) (x : V) :
     x - basisBelowProjection b w j x ∈ Submodule.span K (b '' {i | j ≤ w i}) := by
-  simpa only [basisBelowProjection, Set.compl_ofPred, not_lt] using
+  have hcut : {i | w i < j}ᶜ = {i | j ≤ w i} := by
+    ext i
+    change (¬ w i < j) ↔ j ≤ w i
+    exact not_lt
+  simpa only [basisBelowProjection, hcut] using
     sub_basisCoordinateProjection_mem b {i | w i < j} x
 
 theorem basisBelowProjection_eq_iff (b : Basis ι K V) (w : ι → ℕ) (j : ℕ) (x y : V) :
     basisBelowProjection b w j x = basisBelowProjection b w j y ↔
       x - y ∈ Submodule.span K (b '' {i | j ≤ w i}) := by
-  simpa only [basisBelowProjection, Set.compl_ofPred, not_lt] using
+  have hcut : {i | w i < j}ᶜ = {i | j ≤ w i} := by
+    ext i
+    change (¬ w i < j) ↔ j ≤ w i
+    exact not_lt
+  simpa only [basisBelowProjection, hcut] using
     basisCoordinateProjection_eq_iff b {i | w i < j} x y
 
 theorem BasisGradedSubmodule.below_mem_of_mem_sup (b : Basis ι K V) (w : ι → ℕ) (U : Submodule K V)

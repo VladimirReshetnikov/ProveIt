@@ -1,7 +1,7 @@
 \section{Results and reading guide}
-\label{sec:overview}
+\label{spb:ep:sec:overview}
 The family under consideration is defined for integers $p\ge1$ and $n\ge0$ by
-\begin{equation}\label{eq:counts}
+\begin{equation}\label{spb:ep:eq:counts}
  a_p(n)=\sum_{k=0}^{\lfloor n/q\rfloor}(n-pk)^{pk}\binom{n-pk}{k},
  \qquad q=p+1.
 \end{equation}
@@ -11,23 +11,23 @@ The cases $p=1,2,3$ are the exact finite sums in A360592, A360479, and
 A360747 respectively~\cite{oeis1,oeis2,oeis3}.
 
 The key parameter is
-\begin{equation}\label{eq:lambda}
+\begin{equation}\label{spb:ep:eq:lambda}
  c_p=\exp(p^2/q)q^{-1/q},\qquad
  \lambda=\lambda_p(n)=c_p n^{1/q}.
 \end{equation}
 For $p\ge2$, let
-\begin{equation}\label{eq:normalization}
+\begin{equation}\label{spb:ep:eq:normalization}
  M_p(n)=\frac1q(n/q)^{pn/q}e^\lambda,
  \qquad \Rcal_p(n)=\frac{a_p(n)}{M_p(n)}.
 \end{equation}
 The first polynomial perturbation has a particularly simple universal form:
-\begin{equation}\label{eq:firstuniv}
+\begin{equation}\label{spb:ep:eq:firstuniv}
  \Rcal_p(n)=1-\frac{A\lambda^2+b\lambda}{n}
        +O_p\!\left(\frac{\lambda^4}{n^2}\right),\qquad
  A=\frac{p^2+1/q}{2},\quad b=A-\frac q2=\frac{p(p^2-2)}{2q}.
 \end{equation}
 For every fixed $K\ge0$, the stronger expansion is
-\begin{equation}\label{eq:overviewfixed}
+\begin{equation}\label{spb:ep:eq:overviewfixed}
  \Rcal_p(n)=\sum_{j=0}^K C_{p,j}(c_p)n^{-j/q}
                   +O_{p,K}(n^{-(K+1)/q}),
 \end{equation}
@@ -36,15 +36,15 @@ $C_{p,0}=1$. The coefficients $C_{p,1},\ldots,C_{p,p-2}$ vanish.
 Every assertion is uniform over the finitely many residue classes of $n$ modulo $q$.
 
 At $p=1$ the quantity $\lambda^2/n$ is constant, so
-\eqref{eq:firstuniv} is not an asymptotic expansion around one. The correct
+\eqref{spb:ep:eq:firstuniv} is not an asymptotic expansion around one. The correct
 normalization is instead
-\begin{equation}\label{eq:criticalM}
+\begin{equation}\label{spb:ep:eq:criticalM}
  c=c_1=\sqrt{e/2},\quad d=3e/8=3c^2/4,\qquad
  M_1(n)=\frac12(n/2)^{n/2}\exp(c\sqrt n-d).
 \end{equation}
 Then $a_1(n)/M_1(n)$ has an expansion in $n^{-1/2}$ to every fixed
 order. There are no odd quarter powers. Its first correction is
-\begin{equation}\label{eq:criticalfirst}
+\begin{equation}\label{spb:ep:eq:criticalfirst}
  C_{1,1}(c)=\frac c4+\frac{11c^3}{8}.
 \end{equation}
 
@@ -58,8 +58,13 @@ by $1/(8c_p)$. For $p=3$ the observed coefficient of $n^{-1/4}$ is
 $1/(8c_3)$, whereas the true coefficient is zero.
 The first nonzero $p=3$ correction is negative and of order $n^{-1/2}$.
 These statements concern inspected or indexed source snapshots, not
-verified latest revision histories. Section~\ref{sec:sources} records the
+verified latest revision histories. Section~\ref{spb:ep:sec:sources} records the
 source scope explicitly.
+\begin{writenote}[7 October 2026]
+The three entries as the write read them, with their revision numbers, and
+the write's checks of the transcription and of the corrected coefficients
+against the exact sums, are in Remark~\ref{spb:ep:rem:oeis}.
+\end{writenote}
 
 \subsection{What the extra results add}
 The integer $r=n-qk$ has a useful combinatorial meaning: it counts inactive
@@ -77,12 +82,12 @@ ceilings. It can leave two adjacent possible thresholds; arbitrary tiny
 real error does not justify an unqualified rounding rule.
 
 \subsection{Proof architecture and classical ingredients}
-Section~\ref{sec:exact} obtains an exact Poisson representation by elementary
-algebra. Section~\ref{sec:subcritical} combines global domination, a local
-Cauchy estimate, and the root-of-unity filter. Section~\ref{sec:critical}
+Section~\ref{spb:ep:sec:exact} obtains an exact Poisson representation by elementary
+algebra. Section~\ref{spb:ep:sec:subcritical} combines global domination, a local
+Cauchy estimate, and the root-of-unity filter. Section~\ref{spb:ep:sec:critical}
 uses a different centered argument at $p=1$.
-Section~\ref{sec:marked} proves the marked laws with weighted remainders.
-Section~\ref{sec:inverse} treats finite smooth inverses.
+Section~\ref{spb:ep:sec:marked} proves the marked laws with weighted remainders.
+Section~\ref{spb:ep:sec:inverse} treats finite smooth inverses.
 
 The underlying tools are classical: Poisson factorial and central moments,
 finite-difference or Faulhaber polynomial calculus, root-of-unity filters,

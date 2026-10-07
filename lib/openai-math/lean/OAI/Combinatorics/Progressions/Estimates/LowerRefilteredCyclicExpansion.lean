@@ -1,3 +1,4 @@
+/- Modified for ProveIt: Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
 import OAI.Combinatorics.Progressions.Estimates.CappedDistanceReconstruction
 import OAI.Combinatorics.Progressions.Linear.SingleRefilteredKernel
 
@@ -512,7 +513,7 @@ noncomputable def RefilteredRecoveryFamily (p : ℝ) (q k : ℕ) (cost : ℝ) : 
     (((pi D).filtration.gradedRefiltrationSubalgebra W) ⧸ E.filtration.layerIdeal (s + 1))
     (fun i : {i : ι // i ≠ a} => L i.val) j
   letI := moduleTopology ℝ (ℝ ⊗[ℚ] N)
-  letI := IsModuleTopology.isTopologicalAddGroup ℝ (ℝ ⊗[ℚ] N)
+  letI := IsModuleTopology.topologicalAddGroup ℝ (ℝ ⊗[ℚ] N)
   letI := realification_moduleTopology_t2 T.basis
   ∃ Λ : Subgroup T.filtration.Group, Λ ≤ T.lattice ∧
     (Λ.subgroupOf T.lattice).Characteristic ∧ (Λ.subgroupOf T.lattice).Normal ∧
@@ -588,10 +589,10 @@ noncomputable def LowerRefilteredRecoveryFamily (p : ℝ) (q k : ℕ) (cost : �
   let I := {i : ι // i ≠ a}
   let Z₀ := pi (fun i : I => D i.val)
   letI := moduleTopology ℝ (ℝ ⊗[ℚ] (H ⧸ E.filtration.layerIdeal (s + 1)))
-  letI := IsModuleTopology.isTopologicalAddGroup ℝ (ℝ ⊗[ℚ] (H ⧸ E.filtration.layerIdeal (s + 1)))
+  letI := IsModuleTopology.topologicalAddGroup ℝ (ℝ ⊗[ℚ] (H ⧸ E.filtration.layerIdeal (s + 1)))
   letI := realification_moduleTopology_t2 Q.basis
   letI := moduleTopology ℝ (ℝ ⊗[ℚ] (∀ i : I, L i.val))
-  letI := IsModuleTopology.isTopologicalAddGroup ℝ (ℝ ⊗[ℚ] (∀ i : I, L i.val))
+  letI := IsModuleTopology.topologicalAddGroup ℝ (ℝ ⊗[ℚ] (∀ i : I, L i.val))
   letI := realification_moduleTopology_t2 Z₀.basis
   ∃ Q' : RationalFilteredNilmanifold (H ⧸ E.filtration.layerIdeal (s + 1)) s n,
     Q'.filtration = Q.filtration ∧ Q'.basis = Q.basis ∧ Q'.lattice ≤ Q.lattice ∧
@@ -675,10 +676,10 @@ theorem exists_uniform_refilteredRecoveryFamily (s k : ℕ) :
     (H ⧸ E.filtration.layerIdeal (s + 1)) (fun i : {i : ι // i ≠ a} => L i.val) j
   let T := nativeRefilteredTarget D a W E Q
   let := moduleTopology ℝ (ℝ ⊗[ℚ] H)
-  let := IsModuleTopology.isTopologicalAddGroup ℝ (ℝ ⊗[ℚ] H)
+  let := IsModuleTopology.topologicalAddGroup ℝ (ℝ ⊗[ℚ] H)
   let := realification_moduleTopology_t2 E.basis
   let := moduleTopology ℝ (ℝ ⊗[ℚ] N)
-  let := IsModuleTopology.isTopologicalAddGroup ℝ (ℝ ⊗[ℚ] N)
+  let := IsModuleTopology.topologicalAddGroup ℝ (ℝ ⊗[ℚ] N)
   let := realification_moduleTopology_t2 T.basis
   exact hrec D a W E Q p hEF hp hE hD hT hφ hψ q hq hqp
 
@@ -711,10 +712,10 @@ noncomputable def LowerRefilteredCyclicExpansionSpec
   let I₀ := {i : ι // i ≠ a}
   let Z₀ := pi (fun i : I₀ => D i.val)
   letI := moduleTopology ℝ (ℝ ⊗[ℚ] (H ⧸ E.filtration.layerIdeal (s + 1)))
-  letI := IsModuleTopology.isTopologicalAddGroup ℝ (ℝ ⊗[ℚ] (H ⧸ E.filtration.layerIdeal (s + 1)))
+  letI := IsModuleTopology.topologicalAddGroup ℝ (ℝ ⊗[ℚ] (H ⧸ E.filtration.layerIdeal (s + 1)))
   letI := realification_moduleTopology_t2 Q.basis
   letI := moduleTopology ℝ (ℝ ⊗[ℚ] (∀ i : I₀, L i.val))
-  letI := IsModuleTopology.isTopologicalAddGroup ℝ (ℝ ⊗[ℚ] (∀ i : I₀, L i.val))
+  letI := IsModuleTopology.topologicalAddGroup ℝ (ℝ ⊗[ℚ] (∀ i : I₀, L i.val))
   letI := realification_moduleTopology_t2 Z₀.basis
   ∃ Q' : RationalFilteredNilmanifold (H ⧸ E.filtration.layerIdeal (s + 1)) s n,
     Q'.filtration = Q.filtration ∧ Q'.basis = Q.basis ∧ Q'.lattice ≤ Q.lattice ∧
@@ -815,10 +816,10 @@ theorem exists_lower_refiltered_cyclic_expansion (s k : ℕ) :
   let I₀ := {i : ι // i ≠ a}
   let Z₀ := pi (fun i : I₀ => D i.val)
   let := moduleTopology ℝ (ℝ ⊗[ℚ] (H ⧸ E.filtration.layerIdeal (s + 1)))
-  let := IsModuleTopology.isTopologicalAddGroup ℝ (ℝ ⊗[ℚ] (H ⧸ E.filtration.layerIdeal (s + 1)))
+  let := IsModuleTopology.topologicalAddGroup ℝ (ℝ ⊗[ℚ] (H ⧸ E.filtration.layerIdeal (s + 1)))
   let := realification_moduleTopology_t2 Q.basis
   let := moduleTopology ℝ (ℝ ⊗[ℚ] (∀ i : I₀, L i.val))
-  let := IsModuleTopology.isTopologicalAddGroup ℝ (ℝ ⊗[ℚ] (∀ i : I₀, L i.val))
+  let := IsModuleTopology.topologicalAddGroup ℝ (ℝ ⊗[ℚ] (∀ i : I₀, L i.val))
   let := realification_moduleTopology_t2 Z₀.basis
   obtain ⟨Q', hQF, hQb, hQle, hQ, Z, hZF, hZb, hZle, hZ, hreconstruct⟩ := hrec
   refine ⟨Q', hQF, hQb, hQle, hQ, Z, hZF, hZb, hZle, hZ, ?_⟩

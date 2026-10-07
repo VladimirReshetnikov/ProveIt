@@ -1,5 +1,6 @@
 /- Modified for ProveIt: import Lean 4.32 compatibility declarations.
-Statements and proofs are unchanged from the pinned upstream source. -/
+Mathematical statements are unchanged from the pinned upstream source.
+Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
 import OAI.Compat.Core
 import OAI.Combinatorics.Progressions.Estimates.NativeCoveredCommonFactorization
 import OAI.Combinatorics.Progressions.Linear.CommonCoefficientBasisBudget
@@ -82,7 +83,7 @@ theorem exists_native_common_free_model (s : ℕ) :
             (hM := E.filtration.lowerCentralSeries_eq_bot) (B.freeEvaluation D)) ∧
           (letI := moduleTopology ℝ (ℝ ⊗[ℚ] D.CoefficientFreeLieAlgebra)
            letI : IsTopologicalAddGroup (ℝ ⊗[ℚ] D.CoefficientFreeLieAlgebra) :=
-             IsModuleTopology.isTopologicalAddGroup ℝ _
+             IsModuleTopology.topologicalAddGroup ℝ _
            letI := realification_moduleTopology_t2 F.basis
            ∃ V : F.UnitVerticalObservable (T.realSubgroup s r) I ((M + C) ^ C),
              V.frequency = U.frequency.comp (B.freeEvaluation D).toLinearMap ∧
@@ -121,7 +122,7 @@ theorem exists_native_common_free_model (s : ℕ) :
       (hcomplex.mono S hMK) hheight (U.mono hMK)
   let := moduleTopology ℝ (ℝ ⊗[ℚ] D.CoefficientFreeLieAlgebra)
   let : IsTopologicalAddGroup (ℝ ⊗[ℚ] D.CoefficientFreeLieAlgebra) :=
-    IsModuleTopology.isTopologicalAddGroup ℝ _
+    IsModuleTopology.topologicalAddGroup ℝ _
   let := realification_moduleTopology_t2 F.basis
   obtain ⟨V, hfreq, hobs⟩ := hV
   have heval : FreeDegreeRankLieAlgebra.lift S.filtration D.coefficientWeight
@@ -334,7 +335,7 @@ theorem exists_native_shared_free_family (s : ℕ) (hs : 2 ≤ s) :
             Nonempty (FreeCoordinateFrame E.basis ((p + C) ^ C)) ∧
             (letI := moduleTopology ℝ (ℝ ⊗[ℚ] D.CoefficientFreeLieAlgebra)
              letI : IsTopologicalAddGroup (ℝ ⊗[ℚ] D.CoefficientFreeLieAlgebra) :=
-               IsModuleTopology.isTopologicalAddGroup ℝ _
+               IsModuleTopology.topologicalAddGroup ℝ _
              letI := realification_moduleTopology_t2 E.basis
              ∃ V : E.UnitVerticalObservable (T.realSubgroup s r)
                  (Fin W.family.outputDim) ((p + C) ^ C),
@@ -407,7 +408,7 @@ theorem exists_native_shared_free_family (s : ℕ) (hs : 2 ≤ s) :
       (hRank.mono _ hAM) (Fin W.family.outputDim) (U.mono hAM)
   let := moduleTopology ℝ (ℝ ⊗[ℚ] D.CoefficientFreeLieAlgebra)
   let : IsTopologicalAddGroup (ℝ ⊗[ℚ] D.CoefficientFreeLieAlgebra) :=
-    IsModuleTopology.isTopologicalAddGroup ℝ _
+    IsModuleTopology.topologicalAddGroup ℝ _
   let := realification_moduleTopology_t2 E.basis
   obtain ⟨V, hVfreq, hVobs⟩ := hV
   have hdegree (d : Fin s) :

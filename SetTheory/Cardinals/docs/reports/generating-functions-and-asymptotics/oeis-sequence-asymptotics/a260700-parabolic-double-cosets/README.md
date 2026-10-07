@@ -145,6 +145,21 @@ contributions, so question 3 here is untouched. No theorem is shared; a
 dated note in Section 9 here (added 7 October 2026) records the pointer,
 and that report names this one in its Section 1.1 note.
 
+**A fifth neighbour (batch 113).** The collection report
+[`a173217-ordered-tuple-relations`](../a173217-ordered-tuple-relations/)
+(OEIS A173217, A301466, A301468; bundle Report 220) propagates every Fubini
+pole `ρ + 2πiℓ`, the nonreal ones included, through one n-dependent
+signed-Stirling transform of the Fubini numbers: an exact decomposition
+with polynomial amplitudes (its Theorem 2.2), a global tail bound after the
+transform that allows a number of poles growing with n (its Theorem 3.2),
+exponentially separated fixed sectors (its Corollary 3.3) and the first
+nonreal pair explicitly (its (38), and (39) for d = 2). That is one
+transform of a different sequence, not the two defect sums of question 3
+here: it does not answer question 3, but it is a precedent for one of its
+two steps, as that report itself says (its Section 1.1, Section 10 item 5
+and Appendix B). No theorem is shared; a dated note in Section 9 here
+(added 7 October 2026) records the pointer.
+
 ## Notation
 
 Symbols are printed as delivered. A table in the first `[write]` note
@@ -172,6 +187,10 @@ and the PDF stays at 19 pages. A batch-100 reciprocal note (5 October 2026) adde
 no label (still 64). A batch-108 reciprocal note (7 October 2026) added a
 sixth dated `[write]` note after that one and a sixth bibliography entry
 (`pdc-spm`); it adds no label (still 64), and the rebuilt PDF stays at 19
+pages with the same clean log. A batch-113 reciprocal note (7 October 2026)
+added a seventh dated `[write]` note after that one and a seventh
+bibliography entry (`pdc-otr`, printed as [16]); it adds no label (still
+64), no earlier label or citation number changed, and the rebuilt PDF has 20
 pages with the same clean log.
 
 ## Files
@@ -180,7 +199,7 @@ pages with the same clean log.
 README.md                             this guide (replaces the delivery README)
 SOURCES.md                            delivered primary-source attribution and scope (bounded search, 2 October 2026)
 article.tex                           the report (delivered as article.tex)
-article.pdf                           compiled report, 19 pages
+article.pdf                           compiled report, 20 pages
 code/coefficients.py                  exact fixed-order algorithm of Section 6 (SymPy); writes coefficients-order<M>.json to --output-dir
 code/validate.py                      Browning's finite formula by integer recurrences, actual coset enumeration (n ≤ 5), 259 cycle identities; writes exact-values.json, validation.json
 code/inverse.py                       Lambert-W/Newton inverse diagnostics and the rounding counterexample (150 digits); writes inverse-validation.json
@@ -269,7 +288,8 @@ this directory:
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The committed PDF was built in a scratch directory with MiKTeX: 19 pages,
+The committed PDF was built in a scratch directory with MiKTeX: 20 pages
+(19 before the batch-113 reciprocal note of 7 October 2026),
 no errors or warnings, no undefined references or citations, no multiply
 defined labels, no duplicate PDF destinations, no overfull or underfull
 boxes. (The delivered source built to 16 pages with the same clean log.)

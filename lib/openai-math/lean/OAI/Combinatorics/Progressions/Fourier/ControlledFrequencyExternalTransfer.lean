@@ -1,3 +1,4 @@
+/- Modified for ProveIt: Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
 import OAI.Combinatorics.Progressions.Linear.ExternalFamilyKernelProjectionQuantitative
 import OAI.Combinatorics.Progressions.Linear.NativeExternalKernelQuotientTransfer
 
@@ -135,7 +136,7 @@ theorem exists_external_marked_contractive_frequency_quotient_prefix (s : ℕ) :
            Q.GeometryComplexityLE ((p + 2) ^ C) ∧
            (∀ i j, rationalLogHeight (Q.basis.repr (lieQuotientMap I (D.basis j)) i) ≤ (p + 2) ^ C) ∧
            (letI := moduleTopology ℝ (ℝ ⊗[ℚ] (L ⧸ I))
-            letI : IsTopologicalAddGroup (ℝ ⊗[ℚ] (L ⧸ I)) := IsModuleTopology.isTopologicalAddGroup ℝ _
+            letI : IsTopologicalAddGroup (ℝ ⊗[ℚ] (L ⧸ I)) := IsModuleTopology.topologicalAddGroup ℝ _
             letI := realification_moduleTopology_t2 Q.basis
             ∃ descended : X → Q.Niltest w,
               (∀ x, (descended x).UnitIntervalValued) ∧
@@ -212,7 +213,7 @@ theorem exists_external_marked_contractive_frequency_quotient_prefix (s : ℕ) :
   refine ⟨hker, n, hn, Q, hQF, hQL, hQ.mono Q (hcq1.trans hqC),
     fun i j => (hmap j i).trans (hcq1.trans hqC), ?_⟩
   let := moduleTopology ℝ (ℝ ⊗[ℚ] (L ⧸ I))
-  let : IsTopologicalAddGroup (ℝ ⊗[ℚ] (L ⧸ I)) := IsModuleTopology.isTopologicalAddGroup ℝ _
+  let : IsTopologicalAddGroup (ℝ ⊗[ℚ] (L ⧸ I)) := IsModuleTopology.topologicalAddGroup ℝ _
   let := realification_moduleTopology_t2 Q.basis
   obtain ⟨descended, _, _, hpositive, hcomplex, _, hrec, _, hcontraction⟩ :=
     hdescent D I hI Q hQF hQL hK tests q1 hq1
@@ -280,7 +281,7 @@ theorem exists_external_marked_frequency_quotient_prefix (s : ℕ) :
            Q.GeometryComplexityLE ((p + 2) ^ C) ∧
            (∀ i j, rationalLogHeight (Q.basis.repr (lieQuotientMap I (D.basis j)) i) ≤ (p + 2) ^ C) ∧
            (letI := moduleTopology ℝ (ℝ ⊗[ℚ] (L ⧸ I))
-            letI : IsTopologicalAddGroup (ℝ ⊗[ℚ] (L ⧸ I)) := IsModuleTopology.isTopologicalAddGroup ℝ _
+            letI : IsTopologicalAddGroup (ℝ ⊗[ℚ] (L ⧸ I)) := IsModuleTopology.topologicalAddGroup ℝ _
             letI := realification_moduleTopology_t2 Q.basis
             ∃ descended : X → Q.Niltest w,
               (∀ x, (descended x).UnitIntervalValued) ∧
@@ -357,7 +358,7 @@ theorem exists_external_marked_frequency_quotient_prefix (s : ℕ) :
   refine ⟨hker, n, hn, Q, hQF, hQL, hQ.mono Q (hcq1.trans hqC),
     fun i j => (hmap j i).trans (hcq1.trans hqC), ?_⟩
   let := moduleTopology ℝ (ℝ ⊗[ℚ] (L ⧸ I))
-  let : IsTopologicalAddGroup (ℝ ⊗[ℚ] (L ⧸ I)) := IsModuleTopology.isTopologicalAddGroup ℝ _
+  let : IsTopologicalAddGroup (ℝ ⊗[ℚ] (L ⧸ I)) := IsModuleTopology.topologicalAddGroup ℝ _
   let := realification_moduleTopology_t2 Q.basis
   obtain ⟨descended, _, _, hpositive, hcomplex, _, hrec, _, hcontraction⟩ :=
     hdescent D I hI Q hQF hQL hK tests q1 hq1
@@ -408,7 +409,7 @@ theorem exists_controlled_frequency_external_transfer (s : ℕ) :
         (∀ i j, rationalLogHeight (Q.basis.repr (lieQuotientMap I (D.basis j)) i) ≤ (p + 2) ^ C) ∧
         (letI := moduleTopology ℝ (ℝ ⊗[ℚ] (L ⧸ I))
          let : IsTopologicalAddGroup (ℝ ⊗[ℚ] (L ⧸ I)) :=
-           IsModuleTopology.isTopologicalAddGroup ℝ _
+           IsModuleTopology.topologicalAddGroup ℝ _
          let := realification_moduleTopology_t2 Q.basis
          ∃ descended : X → Q.Niltest w,
            (∀ x, (descended x).UnitIntervalValued) ∧
@@ -467,7 +468,7 @@ theorem exists_controlled_frequency_external_transfer (s : ℕ) :
     fun i j => (he j i).trans (haq.trans hqC), ?_⟩
   let := moduleTopology ℝ (ℝ ⊗[ℚ] (L ⧸ I))
   let : IsTopologicalAddGroup (ℝ ⊗[ℚ] (L ⧸ I)) :=
-    IsModuleTopology.isTopologicalAddGroup ℝ _
+    IsModuleTopology.topologicalAddGroup ℝ _
   let := realification_moduleTopology_t2 Q.basis
   obtain ⟨descended, hpositive, hcomplex, hcontraction, hreturn⟩ :=
     htransfer D I hI Q hQF hQL hK tests qbudget hq0

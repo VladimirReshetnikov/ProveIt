@@ -1,3 +1,5 @@
+/- Modified for ProveIt: prove finite regularity below infinity explicitly
+for the older ContDiff order API. Mathematical statements unchanged. -/
 import OAI.Combinatorics.Progressions.Estimates.JointBooleanStability
 
 namespace OAI
@@ -53,8 +55,8 @@ theorem jointBoolean_polynomial_comparison {h : D → ℕ}
   let J := jointBooleanInjection block v sel
   let M := polynomialC2BoxBudget (Fintype.card (PolynomialParameter Z (JointBlockParameter B h α))) degree Cp
   have hM : 0 ≤ M := polynomialC2BoxBudget_nonneg _ _ hCp
-  have hU : ContDiff ℝ 2 U := (jointBooleanSampler_contDiff h c sets).of_le (by norm_num)
-  have hV : ContDiff ℝ 2 V := (parameterPolynomialMap_contDiff p t z).of_le (by norm_num)
+  have hU : ContDiff ℝ 2 U := (jointBooleanSampler_contDiff h c sets).of_le (by first | exact WithTop.coe_le_coe.mpr le_top | norm_num)
+  have hV : ContDiff ℝ 2 V := (parameterPolynomialMap_contDiff p t z).of_le (by first | exact WithTop.coe_le_coe.mpr le_top | norm_num)
   have hw := jointBooleanGoodWeight_spec c sets block v sel ψ hψ hrange hzero r hr κ hκ
   have herr (x) (hx : x ∈ tsupport w) :
       ‖V x - U x‖ ≤ t * M ∧ ‖fderiv ℝ V x - fderiv ℝ U x‖ ≤ t * M ∧

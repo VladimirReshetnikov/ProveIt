@@ -1,5 +1,6 @@
 /- Modified for ProveIt: import Lean 4.32 compatibility declarations.
-Statements and proofs are unchanged from the pinned upstream source. -/
+Mathematical statements are unchanged from the pinned upstream source.
+Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
 import OAI.Compat.Core
 import OAI.Combinatorics.Progressions.Estimates.MixedPairStepDrop
 import OAI.Combinatorics.Progressions.Lattices.CommonLocalAffineFamily
@@ -24,7 +25,7 @@ theorem HasLowerRankOrbitFamily.reindex {L I σ τ τ' : Type*}
   refine ⟨n, hn, Q, U, hUc, ?_⟩
   let := moduleTopology ℝ (ℝ ⊗[ℚ] (L ⧸ R.filtration.layerIdeal s (r + 1)))
   let : IsTopologicalAddGroup (ℝ ⊗[ℚ] (L ⧸ R.filtration.layerIdeal s (r + 1))) :=
-    IsModuleTopology.isTopologicalAddGroup ℝ _
+    IsModuleTopology.topologicalAddGroup ℝ _
   let := realification_moduleTopology_t2 Q.basis
   obtain ⟨K, hKn, hKc, hKu, a, ha0, ha⟩ := hK
   exact ⟨K, hKn, hKc, hKu, (fun t => a (j t)),
@@ -387,7 +388,7 @@ def NativeCorrelationStructure.HasLocalMarkedFamily
       Nonempty (FreeCoordinateFrame E.basis A) ∧
       (letI := moduleTopology ℝ (ℝ ⊗[ℚ] D.CoefficientFreeLieAlgebra)
        letI : IsTopologicalAddGroup (ℝ ⊗[ℚ] D.CoefficientFreeLieAlgebra) :=
-         IsModuleTopology.isTopologicalAddGroup ℝ _
+         IsModuleTopology.topologicalAddGroup ℝ _
        letI := realification_moduleTopology_t2 E.basis
        ∃ V : E.UnitVerticalObservable (T.realSubgroup s (r + 1)) (Fin W.family.outputDim) A,
          V.frequency = B.freeFrequency D ∧
@@ -441,7 +442,7 @@ theorem exists_native_local_marked_family (s : ℕ) (hs : 2 ≤ s) :
   have hZ : 0 ≤ Z := pow_nonneg (add_nonneg hp (Nat.cast_nonneg _)) _
   let := moduleTopology ℝ (ℝ ⊗[ℚ] D.CoefficientFreeLieAlgebra)
   let : IsTopologicalAddGroup (ℝ ⊗[ℚ] D.CoefficientFreeLieAlgebra) :=
-    IsModuleTopology.isTopologicalAddGroup ℝ _
+    IsModuleTopology.topologicalAddGroup ℝ _
   let := realification_moduleTopology_t2 E.basis
   obtain ⟨V, hfreq, ξ, hξ, hcommon, v, hv, hdep, out', H', q',
       hsub, hH', hshort', hdense, hAq', hq'Z, R', D', hcomp, htotal, hpair, hlower⟩ := hdata
@@ -594,7 +595,7 @@ def NativeCorrelationStructure.HasLocalInducedFamily
       Nonempty (FreeCoordinateFrame E.basis A) ∧
       (letI := moduleTopology ℝ (ℝ ⊗[ℚ] D.CoefficientFreeLieAlgebra)
        letI : IsTopologicalAddGroup (ℝ ⊗[ℚ] D.CoefficientFreeLieAlgebra) :=
-         IsModuleTopology.isTopologicalAddGroup ℝ _
+         IsModuleTopology.topologicalAddGroup ℝ _
        letI := realification_moduleTopology_t2 E.basis
        ∃ V : E.UnitVerticalObservable (T.realSubgroup s (r + 1)) (Fin W.family.outputDim) A,
          V.frequency = B.freeFrequency D ∧
@@ -650,7 +651,7 @@ theorem exists_native_local_induced_family (s : ℕ) (hs : 2 ≤ s) :
     hsource W hf ((Real.exp_le_exp.mpr haC).trans hN)
   let := moduleTopology ℝ (ℝ ⊗[ℚ] D.CoefficientFreeLieAlgebra)
   let : IsTopologicalAddGroup (ℝ ⊗[ℚ] D.CoefficientFreeLieAlgebra) :=
-    IsModuleTopology.isTopologicalAddGroup ℝ _
+    IsModuleTopology.topologicalAddGroup ℝ _
   let := realification_moduleTopology_t2 E.basis
   obtain ⟨V, hfreq, ξ, hξ, hcommon, v, hv, hdep, out', H', q', hsub, hH',
     hshort', hdense, hAq', hq'Z, R', D', hlocal, hchart, hpair, hlower⟩ := hdata
@@ -721,7 +722,7 @@ theorem exists_native_product_correlation (s : ℕ) (hs : 2 ≤ s) :
     hsource W hf ((Real.exp_le_exp.mpr hRC).trans hN)
   let := moduleTopology ℝ (ℝ ⊗[ℚ] D.CoefficientFreeLieAlgebra)
   let : IsTopologicalAddGroup (ℝ ⊗[ℚ] D.CoefficientFreeLieAlgebra) :=
-    IsModuleTopology.isTopologicalAddGroup ℝ _
+    IsModuleTopology.topologicalAddGroup ℝ _
   let := realification_moduleTopology_t2 E.basis
   obtain ⟨V, hfreq, ξ, hξ, hcommon, v, hv, hdep, out', H', q', hsub, hH',
     hshort', hdense, hAq', hq'Z, R', D', hlocal, hbound, hchart, hpair, hlower⟩ := hdata

@@ -1,3 +1,4 @@
+/- Modified for ProveIt: Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
 import OAI.Combinatorics.Progressions.Estimates.CommonPositivePartitionRefinement
 import OAI.Combinatorics.Progressions.Lattices.NativeIntegerAffinePullbackHom
 
@@ -67,7 +68,7 @@ theorem exists_positive_coordinate_product {σ : Type} [Fintype σ]
   let T := fun i => (R i).coordinateTest i
   let : FiniteDimensional ℚ (∀ i, (R i).L) := (productFinBasis D).finiteDimensional_of_finite
   let := moduleTopology ℝ (ℝ ⊗[ℚ] (∀ i, (R i).L))
-  let : IsTopologicalAddGroup (ℝ ⊗[ℚ] (∀ i, (R i).L)) := IsModuleTopology.isTopologicalAddGroup ℝ _
+  let : IsTopologicalAddGroup (ℝ ⊗[ℚ] (∀ i, (R i).L)) := IsModuleTopology.topologicalAddGroup ℝ _
   let : T2Space (ℝ ⊗[ℚ] (∀ i, (R i).L)) := realification_moduleTopology_t2 (productFinBasis D)
   have hp' : 0 ≤ raisedNiltestBudget p := hp.trans (le_raisedNiltestBudget p)
   have hσ' : (Fintype.card σ : ℝ) ≤ raisedNiltestBudget p := hσ.trans (le_raisedNiltestBudget p)

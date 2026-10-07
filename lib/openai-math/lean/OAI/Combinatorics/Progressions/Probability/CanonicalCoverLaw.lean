@@ -1,4 +1,4 @@
-/- Modified for ProveIt: Use older set-comprehension and discrete-subgroup names; statements unchanged. -/
+/- Modified for ProveIt: Use older set-comprehension and discrete-subgroup names; statements unchanged.  Construct mapped probability instances from measurability. -/
 import Mathlib.Analysis.Normed.Group.Quotient
 import Mathlib.MeasureTheory.Measure.Haar.Unique
 import OAI.Combinatorics.Progressions.Estimates.CanonicalCoefficientCoverLift
@@ -218,7 +218,7 @@ theorem exists_covered_coefficient_density {K S : Type*} [Fintype K] [Fintype S]
       (coefficientSiteResidual_cover_on_kernel U site q T) D x y hxy
   obtain ⟨g, hgc, hg⟩ := exists_continuous_image_factor E hE (fun x => f (C x)) (hfc.comp hC)
     hfiber
-  let _ : IsProbabilityMeasure (μ.map π) := inferInstance
+  let _ : IsProbabilityMeasure (μ.map π) := Measure.isProbabilityMeasure_map hπ.aemeasurable
   have hgb (y) : g y ∈ Set.Icc (0 : ℝ) B := by
     obtain ⟨x, hx⟩ := Set.rangeFactorization_surjective y
     rw [← hx, hg]

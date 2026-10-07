@@ -1,0 +1,325 @@
+\section{A two-register compiler and the binary lower bound}
+\label{comp:section}
+
+The relation alphabet has $2^{h^2}$ symbols. We now replace it by a
+single fixed binary alphabet while keeping the nondeterministic
+source linear in $h$. A direct monoid argument transfers the
+relation information; it avoids charging a deterministic target for
+remembering a position inside a long encoded block.
+
+\subsection{Four letters on two cyclic registers}
+
+For this section index the $h$ relation points by $\mathbb Z/h\mathbb Z$,
+using representatives $0,\ldots,h-1$. Relabeling has no effect on
+the results of Section~\ref{alg:section}. Take disjoint state sets
+\[
+ U=\{U_0,\ldots,U_{h-1}\},\qquad
+ V=\{V_0,\ldots,V_{h-1}\}.
+\]
+Define four relations on $U\cup V$:
+\begin{align}
+ a&=\{(U_i,U_{i+1}):i\in\mathbb Z/h\mathbb Z\}\cup\Id_V,
+       \label{comp:a}\\
+ b&=\Id_U\cup\{(V_j,V_{j+1}):j\in\mathbb Z/h\mathbb Z\},
+       \label{comp:b}\\
+ t&=\Id_{U\cup V}\cup\{(U_0,V_0)\},
+       \label{comp:t}\\
+ r&=\{(V_j,U_j):j\in\mathbb Z/h\mathbb Z\}.
+       \label{comp:r}
+\end{align}
+The letter $r$ is undefined on every state of $U$. Each of $a,b,r$
+is partial deterministic; the only extra branch is the edge
+$U_0\to V_0$ of $t$.
+
+For an $h$-point relation $R$, let $R(x,y)\in\bits$ be its matrix
+entry. Products below are read from left to right in the displayed
+increasing order. Define
+\begin{equation}\label{comp:four-code}
+ w(R)=
+ \left[
+  \prod_{i=0}^{h-1}
+   \left(
+    \left[\prod_{j=0}^{h-1} t^{\,R(-i,-j)}b\right]a
+   \right)
+ \right]r .
+\end{equation}
+Here $t^0$ means the empty word and $t^1$ means the one-letter word.
+The negative indices are reduced modulo $h$.
+
+\begin{theorem}[Exact two-register compilation]\label{comp:register}
+For every $x,y\in\mathbb Z/h\mathbb Z$, there is exactly one
+path from $U_x$ to $U_y$ labeled $w(R)$ if $(x,y)\in R$, and
+there is no such path otherwise. Every path starting in $U$
+and surviving the complete word ends in $U$.
+Furthermore,
+\begin{equation}\label{comp:length}
+ |w(R)|=h^2+h+1+|R|\le2h^2+h+1.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Before crossing to $V$, a path starting at $U_x$ is at $U_{x+i}$
+during row $i$: each completed row contributes one $a$, and all
+$b$ letters fix $U$. It can use the additional branch of $t$
+only in the unique row $i=-x$. Within that row it can cross at
+column $j$ exactly when the displayed exponent $R(-i,-j)$ is one.
+
+After crossing it is at $V_0$. The $b$ immediately following that
+$t$, and the remaining $b$ letters in the row, move it $h-j$
+places, leaving it at $V_{-j}$. Each later complete row contains
+$h$ copies of $b$, so those rows have no further net effect on
+its $V$ index; their $a$ letters fix $V$. All later $t$ letters
+also fix that state. The final $r$ sends it to $U_{-j}$.
+Thus a crossing in column $j=-y$ exists exactly when $R(x,y)=1$.
+
+The row and column of such a crossing are unique. At every other
+$t$ letter the path must choose the identity edge. There is
+therefore exactly one successful path for each entry equal to one.
+A path which never crosses stays in $U$ and is killed by $r$.
+No surviving path ends in $V$, since all edges of $r$ end in $U$.
+Finally the word has $h^2$ copies of $b$, $h$ copies of $a$,
+one $r$, and $|R|$ copies of $t$, proving \eqref{comp:length}.
+\end{proof}
+
+\begin{figure}[tb]
+\centering
+\begin{tikzpicture}[>=Stealth,node distance=15mm,
+  state/.style={draw=accent,rounded corners,minimum width=35mm,
+    minimum height=10mm,align=center}]
+\node[state] (U) {$U$ register\\row memory};
+\node[state,right=18mm of U] (V) {$V$ register\\column memory};
+\draw[->] (U) edge[bend left=18] node[above] {$t:\ U_0\to V_0$} (V);
+\draw[->] (V) edge[bend left=18] node[below] {$r:\ V_j\to U_j$} (U);
+\draw[->] (U) edge[loop left] node[left] {$a$ cycles} (U);
+\draw[->] (V) edge[loop right] node[right] {$b$ cycles} (V);
+\end{tikzpicture}
+\caption{The four fixed relations. Identity edges of $a,b,t$ are
+specified in \eqref{comp:a}--\eqref{comp:t}. The final $r$ has no
+edge out of $U$, forcing exactly one successful crossing per block.}
+\label{comp:register-figure}
+\end{figure}
+
+\begin{corollary}[Concatenations and multiplicity]\label{comp:products}
+On the boundary states $U$, the relation of
+$w(R_1)\cdots w(R_\ell)$ is exactly the Boolean product
+$R_1\cdots R_\ell$. More strongly, its matrix of numbers of paths
+between $U$ states is the ordinary nonnegative-integer matrix product
+of the zero-one matrices of the $R_i$.
+\end{corollary}
+
+\begin{proof}
+Theorem~\ref{comp:register} identifies each single-block path-count
+matrix on $U$ with the corresponding zero-one matrix. Every
+surviving path is in $U$ at each block boundary, so concatenation
+uses the usual sum over intermediate states. The empty
+concatenation gives the identity matrix. Taking the support of
+the integer product gives the Boolean product.
+\end{proof}
+
+The exact path-count statement is stronger than the language
+equivalence needed below. It provides a useful independent test:
+spurious duplicate branches cannot hide behind Boolean
+reachability. It also makes clear that the full NFA need not be
+unambiguous. Concatenations can have several intermediate-state
+paths between the same endpoints.
+
+\subsection{A complete binary language with \texorpdfstring{$6h+2$}{6h+2} states}
+\label{comp:binary}
+
+Use the fixed code
+\begin{equation}\label{comp:bit-code}
+ a\mapsto00,\qquad b\mapsto01,\qquad
+ t\mapsto10,\qquad r\mapsto11,
+\end{equation}
+and let $\enc(R)=\code(w(R))$.
+For each $q\in U\cup V$ take three decoder states
+\[
+ (q,\eps),\quad(q,0),\quad(q,1).
+\]
+From $(q,\eps)$ the first bit $d$ goes to $(q,d)$; from $(q,d)$
+the second bit $e$ executes the four-letter relation corresponding
+to $de$ and returns to a boundary state $(q',\eps)$.
+All these transitions move right.
+
+Add one initial state $q_{\mathrm{in}}$ and one accepting state
+$q_{\mathrm{acc}}$. On $\Lmark$, $q_{\mathrm{in}}$ guesses any
+$(U_i,\eps)$ and moves right. At $\Rmark$, each $(U_i,\eps)$
+has a stay move to $q_{\mathrm{acc}}$. All other endmarker
+transitions are undefined, and $q_{\mathrm{acc}}$ has no successors.
+No other state is accepting.
+
+This specifies a language $B_h$ on \emph{every} binary string.
+An odd-length string ends in a pending-bit state and rejects.
+An even-length string is decoded in consecutive two-bit groups;
+it accepts precisely when some resulting four-letter path starts
+and ends in $U$. There is no promise that the word consists of
+canonical relation blocks and no unstated treatment of malformed
+blocks. Some noncanonical even-length words may accept, according
+to this explicit transition table. The empty binary word accepts.
+
+\begin{proposition}[Binary state and length counts]\label{comp:binary-count}
+The specified automaton is a $6h+2$-state 1NFA and, for every
+finite sequence of $h$-point relations,
+\begin{equation}\label{comp:canonical-membership}
+ \enc(R_1)\cdots\enc(R_\ell)\in B_h
+ \quad\Longleftrightarrow\quad R_1\cdots R_\ell\ne0.
+\end{equation}
+The canonical block length is
+\[
+ |\enc(R)|=2(h^2+h+1+|R|)\le4h^2+2h+2.
+\]
+\end{proposition}
+
+\begin{proof}
+There are $2h$ relation states with three decoder copies each,
+plus the two explicitly added states. The decoder executes exactly
+one four-letter transition per two input bits. On a canonical
+concatenation, Corollary~\ref{comp:products} gives precisely the
+relation product on the $U$ boundary states. The initial and final
+rules test whether this relation has any pair. This includes
+$\ell=0$, since $\Id_U$ is nonempty. The length formula follows
+from Theorem~\ref{comp:register}.
+\end{proof}
+
+The order of the block length cannot be improved for an injective
+binary encoding of all relations. There are $2^{h^2}$ distinct
+relations, but only $2^{L+1}-1$ binary strings of length at most $L$.
+Thus the largest block length of any such encoding is at least
+$h^2$. In this sense the quadratic maximum length is optimal up
+to a constant factor. This counting observation does not imply
+optimality of the number of compiler states.
+
+\subsection{Singleton contexts force the full relation divisor}
+\label{comp:quotient-section}
+
+Let $\eta:\bits^*\to M$ be a monoid homomorphism into any monoid
+which recognizes $B_h$: assume there is a set $A\subseteq M$ such
+that $w\in B_h$ exactly when $\eta(w)\in A$. This includes
+recognition by ordinary-symbol matching diagrams, since the two
+endmarker diagrams and the test ports define the set $A$.
+
+Let $S\subseteq M$ be the submonoid generated by
+$\{\eta(\enc(R)):R\in\Rel{[h]}\}$. It contains the empty product,
+with the same identity as $M$. We only require a relation quotient
+on $S$, not on all of $M$.
+
+\begin{lemma}[Encoded context separation]\label{comp:quotient}
+There is a well-defined unital surjective homomorphism
+\[
+ \phi:S\twoheadrightarrow\Rel{[h]},\qquad
+ \eta(\enc(R_1)\cdots\enc(R_\ell))
+       \longmapsto R_1\cdots R_\ell .
+\]
+\end{lemma}
+
+\begin{proof}
+Suppose two canonical concatenations have the same element of
+$M$, but their relation products $R$ and $T$ differ. Choose
+$(i,j)$ in their symmetric difference and put
+$E_i=\{(i,i)\}$ and $E_j=\{(j,j)\}$. Then
+\[
+ E_i R E_j\ne0\quad\Longleftrightarrow\quad(i,j)\in R,
+\]
+and the corresponding equivalence holds for $T$.
+Surround each canonical concatenation by $\enc(E_i)$ on the left
+and $\enc(E_j)$ on the right. By
+\eqref{comp:canonical-membership}, precisely one resulting binary
+word belongs to $B_h$. Yet multiplicativity of $\eta$ makes their
+images equal, contradicting recognition. This proves
+well-definedness, including comparisons with an empty
+concatenation.
+
+Concatenating representatives proves multiplicativity. The empty
+word is sent to $\Id_{[h]}$, so the map is unital. Every relation
+is the image of its single canonical block, proving surjectivity.
+\end{proof}
+
+This is the usual singleton-context syntactic argument, specialized
+to the encoded submonoid; compare
+\cite{Pin1997,OpenAILiveness2026}. A decoder need not label every
+arbitrary binary word by an $h$-point relation in a multiplicative
+way. The narrower generated submonoid is both sufficient and
+necessary for the argument as stated.
+
+\subsection{Proof and quantitative comparison}
+\label{comp:main-proof}
+
+\begin{proof}[Proof of Theorem~\ref{intro:main}]
+Take the binary language from Proposition~\ref{comp:binary-count}
+and an equivalent $s$-state 2DFA. By
+Theorem~\ref{mach:representation}, its ordinary-symbol matching
+diagrams lie in $\Br{k}$ for some $k\le8s+2$ and recognize $B_h$
+with fixed endmarker diagrams and fixed test ports.
+Lemma~\ref{comp:quotient} supplies an identity-containing
+submonoid with a unital surjection onto $\Rel{[h]}$.
+Theorem~\ref{alg:divisor} therefore gives
+$8s+2\ge k\ge F(h)$, proving \eqref{intro:h-bound}.
+
+For $n\ge14$, put $h=\lfloor(n-2)/6\rfloor\ge2$. The source has
+$6h+2\le n$ states and may be padded with unreachable,
+nonaccepting states to reach exactly $n$. Integer floor
+arithmetic gives
+\[
+ \left\lfloor\frac{\lfloor(n-2)/6\rfloor-2}{9}\right\rfloor
+ =\left\lfloor\frac{n-14}{54}\right\rfloor.
+\]
+Solving \eqref{intro:h-bound} for $s$ proves
+\eqref{intro:n-bound}. The exponential asymptotic follows by
+absorbing the floor and fixed multiplicative factors into $O(1)$.
+\end{proof}
+
+The integer recurrence of Proposition~\ref{alg:finite-recurrence}
+gives the useful finite refinement
+\begin{equation}\label{comp:integer-bound}
+ s\ge
+ \max\left\{1,\left\lceil\frac{D(h)-1}{4}\right\rceil\right\}.
+\end{equation}
+The additional $1$ simply records that a recognizer has at least
+one state. The supplied recurrence script computes $D(h)$
+using exact integers; no floating-point rounding enters
+\eqref{comp:integer-bound}.
+
+\begin{table}[tb]
+\centering
+\small
+\begin{tabular}{p{0.26\textwidth}p{0.31\textwidth}p{0.31\textwidth}}
+\toprule
+Quantity & Inspected earlier construction & This article\\
+\midrule
+Relation-divisor degree
+& $2^{\lfloor(h-2)/31\rfloor}$
+& $2(5/2)^{\lfloor(h-2)/9\rfloor}$\\[3pt]
+2DFA matching degree
+& $4(s+1)^2$ for arbitrary alphabets
+& $2(a+2)s+2$ for $a$ letters\\[3pt]
+Binary matching degree
+& general bound $4(s+1)^2$
+& $8s+2$\\[3pt]
+Four-letter relation compiler
+& $3h$ states in R816's convention
+& $2h$ relation states\\[3pt]
+Binary source count
+& $9h$ states in R816's convention
+& $6h+2$ including our marker states\\[3pt]
+Binary conclusion
+& constant-factor transfer applies to an imported liveness bound
+& explicit bound \eqref{intro:n-bound}\\
+\bottomrule
+\end{tabular}
+\caption{Comparison with the source matching argument
+\cite{OpenAILiveness2026} and the earlier encoding record
+\cite{TheoremDBR816}. Machine conventions explain the two added
+marker states in the present source count. The general quadratic
+port bound can be preferable when the alphabet is very large.}
+\label{comp:comparison}
+\end{table}
+
+The leading exponential rate in the algebraic degree estimate
+increases from $1/31$ to $\log_2(5/2)/9$ when measured in $h$.
+The sparse matching representation then avoids taking a square
+root of that degree lower bound for a fixed alphabet. These
+are separate improvements; the binary encoding permits both
+to contribute to a bound measured in the number of source
+states. The lower bound concerns states, not running time,
+number of head reversals, or the length of a transition-table
+description.

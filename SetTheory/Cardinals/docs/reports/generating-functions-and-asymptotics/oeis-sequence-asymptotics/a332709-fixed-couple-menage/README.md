@@ -1,62 +1,230 @@
-# Report 221
+# Fixed-Couple Ménage Rows (OEIS A332709)
 
-**Fixed couple ménage rows: Exact differences, concavity, uniform expansions and inverse enclosures**
+**Proofs of both conjectures displayed in A332709 (adjacent differences equal
+A127548, row unimodality), discrete concavity and log-concavity with all
+equality cases, a position-uniform all-orders expansion of every row, an exact
+total-variation identity in every row, and fixed-column inverse models with a
+two-candidate threshold enclosure.**
 
-The PDF is the full article. It proves the two conjectures displayed in A332709, all discrete-concavity and log-concavity equality cases, a uniform all-orders row expansion, an exact all-row total-variation identity and sharp asymptotics, and carefully scoped inverse-model/range/threshold results.
+A single-source report: bundle Report 221 of one external research session
+(the session bundle of Reports 1–243, arrival commit `60f54ea06`), placed by
+`a4186a946` (batch 113) and written on 7 October 2026. The author line and
+the PDF author field read "Report 221"; the manuscript names no person, tool
+or addressee.
 
-The fourth-column A258667 refinement is compatible with its posted leading-equivalence theorem. No certified numerical onset for inverse rounding or inverse-envelope constants is provided. No global historical-novelty claim is made. SOURCES.md records the bounded literature checks and access limitations.
+| Source | Archive | Placed | Shipped as |
+|---|---|---|---|
+| *Fixed couple ménage rows: Exact differences, concavity, uniform expansions and inverse enclosures* ("Report 221", 4 October 2026) | `Report221.zip` (475,232 bytes, 16 files, no wrapper directory; `Report221.tex`, 591 lines, 16 pp.) | `a4186a946` | `article.tex` |
+
+The package records no ProveIt commit, so no pin is recorded; its source
+ledger pins the Git blobs of two repository files, which are the current ones.
+
+**Status:** AI-assisted, unrefereed, not formalized: no Lean or Rocq
+declaration in this repository exists for any statement of this report, and
+its place in the collection confers no formal status.
+
+## What the report proves
+
+`T(n,k)` (A332709, `3 ≤ k ≤ n`) counts ménage permutations of `[n]` with
+`π(1) = k`; `A(n,s) = T(n,s+2)`, `U_n` the ménage numbers (A000179, row sums),
+`L_m` A127548, `q = min(s, n−1−s)`.
+
+- Section 2: the Shevelev–Moses factorization (5) through path matching
+  polynomials (credited), reflection, `L_m = U_m + 2 Σ_{r<m} U_r` (11).
+- **Theorem 3.2:** `T(n,k) − T(n,k−1) = L_{n−2k+4}` for `4 ≤ k ≤ n`,
+  `n ≥ 2k−3` (with `0` at the even centre and the reflected negatives), the
+  A332709 difference conjecture.
+- **Theorem 4.2:** every row is positive, palindromic, unimodal and
+  discretely concave, with the exact maxima (a four-entry plateau for even
+  `n ≥ 6`), all concavity and log-concavity equality cases; the A332709
+  unimodality conjecture.
+- Theorem 5.1: an exact mean decomposition; Theorem 5.3: uniform truncation;
+  **Theorem 6.1:** a position-uniform all-orders expansion of
+  `(n−2)A(n,s)/U_n`, Table 1 through `n^{−10}`, and (2) for the fourth column
+  A258667: `1 + 2/n⁴ + 16/n⁵ + … `.
+- **Theorem 7.2:** the uniform-law total variation of a row is exactly
+  `2(1/(n−2) − A(n,1)/U_n)` for every `n`, `= 2/n⁴ + 12/n⁵ + 48/n⁶ + …`.
+- Theorem 8.1 (exact range recovery from smooth models), the Lambert start
+  (39)–(40), **Theorem 9.1** (a two-candidate threshold enclosure with
+  existential constants).
+
+(Section, statement and equation numbers are those of the committed PDF;
+equations are numbered consecutively, (1)–(45).)
+
+## What the report does not claim
+
+Rook inclusion–exclusion, the Shevelev–Moses factorization and their
+unimodality observation, Kagey's prefix framework, the Kaplansky–Riordan
+expansion, the Wyman–Moser rounding formula and the repository's inverse
+distinctions are prior; no global novelty or first-proof claim; the publisher
+texts of Kagey and Gu–Zhao were not read. Fixed orders, fixed columns for the
+inverses, existential constants and onsets, no certified threshold algorithm,
+no single-ceiling formula; floating diagnostics; the Lean proof was read, not
+rerun.
+
+## The write's findings
+
+- **The OEIS entries** (Remark 11.1): A332709 is still at revision #33
+  (1 February 2021, Peter Kagey) with both conjectures displayed; Theorems 3.2
+  and 4.2 prove both posted statements (the difference on its natural domain
+  `k ≥ 4`). All 1275 b-file terms (rows 3–52) equal the write's count.
+  **A258667** (#79, 19 August 2026, Shevelev–Moses) conjectures
+  `a(n) ~ e^{−2} n!/(n−2) (1 + Σ_{k≥1} (−1)^k/(k!(n−1)_k))`; Ralf Stephan's
+  comment (30 June 2026) reports an AI agent's Lean proof of the leading
+  equivalence. Read as a leading equivalence (as the Lean file formalizes it:
+  `target_theorem_0` is an `IsEquivalent` statement) the conjecture holds;
+  **read as an asymptotic expansion in powers of 1/n it fails at the fourth
+  relative order**: by (23) the displayed expression is `(U_n + ϑ_n)/(n−2)`
+  with `|ϑ_n| ≤ 1/2`, so by (2) `a(n)` divided by it is
+  `1 + 2/n⁴ + 16/n⁵ + O(n^{−6})` (numerically `n⁴(ratio − 1)` = 3.10, 2.46,
+  2.22, 2.10 at `n` = 20, 40, 80, 160). The source called its result
+  "compatible" with the leading equivalence; the write records the stronger
+  reading's failure. No OEIS edit.
+- **Recomputed with the write's own code:** `T(n,k)` for `n ≤ 160` against
+  the b-file, the entry's own formula and brute force (`n ≤ 9`); every exact
+  statement of Sections 2–7 for `n ≤ 160` (differences, the complete
+  shape classification, the mean identities, the TV identity and sign pattern,
+  the auxiliary recurrences and bounds); **Table 1 rederived** from the ménage
+  recurrence (28) and the line recurrence by exact power-series algebra, with
+  bounded exact residuals `n^{11}(R − Σ c_r n^{−r})` at `n = 60, 100, 140`;
+  the TV coefficients; the Wyman–Moser rounding for `2 ≤ m ≤ 160`; the log
+  expansion (38) and the inverse start (40) at exact range values.
+- **Sources:** the Lean file at the current main branch plus one trailing
+  newline reproduces the SHA-256 the source pins; the canonical volume's
+  subtitle is "… and the inversion of rapidly growing functions" (the source
+  shortens it to "… and inversion").
+- **Remark 9.2 (transseries volume):** growth outside `p0:def:model`; the
+  Lambert start (39) an exact instance of `p0:thm:lambert-core`; the refined
+  start, the model inverse and (41) not shown to be instances of
+  `plt:thm:lw-template`; Theorem 8.1 an analogue of `p0:thm:staircase`(3) and
+  Theorem 9.1 of (2).
+
+## Further questions, and the standing rule
+
+Section 12 (explicit inverse constants and onset, total-variation identities
+for other boards, several fixed couples, higher-difference signs, the
+inaccessible publisher texts), with a dated note under Vladimir's standing
+rule of 4 October 2026; added: a rerun of the Lean proof. The two A332709
+conjectures are proved; the expansion reading of the A258667 conjecture is
+refuted at relative order `n^{−4}`; no claim of the source was found false.
+
+## Relation to the repository
+
+No other file of the repository names A332709, A127548, A258667 or A000179.
+The source credits the transseries volume and `Combinatorial_Transseries_Inverses`
+for its inverse distinctions (compared in Remark 9.2). No result of another
+report is shared, so no reciprocal note. No Lean or Rocq development in this
+repository treats these sequences (the A258667 Lean file is external).
+
+## Labels and numbering
+
+All labels carry the prefix `fcm:`: the 60 delivered labels, prefixed before
+anything cited them (48 references updated: 36 `\eqref`, 12 `\ref`), and the
+write's three (`fcm:sec:provenance`, `fcm:rem:transseries`, `fcm:rem:oeis`);
+63 in all. The write's remarks are the last statements of their sections and
+its additions contain no numbered display or table, so every number is
+delivered (checked against the `.aux` of a build of the delivered text: 60
+labels, 0 differences). Section 1.2 is the write's.
+
+## Notation
+
+No symbol was renamed. Letters with several senses are tabulated in Section
+1.2 with the false readings: `T`/`A` (`A(n,s)` is not an A-number),
+`L`/`𝓛` (the centre difference is not `L_0`; `𝓛(S)` is a law), `U`/`𝓤`/`u`,
+`R`/`𝓡`, `F`/`𝓕`/`Φ`, `S`/`E`, `h`/`q`/`s`/`k`, `m`/`N`/`M`, `X`/`ℓ`/`W`,
+`x`/`c`/`C`, `a_n`/`D`/`J`/`K`.
+
+## The write's additions
+
+The status note after the abstract, Section 1.2 (provenance, sources read,
+checks, relation, collected non-claims, reading conventions), Remarks 9.2 and
+11.1, the dated notes after Table 1 and in Sections 10 and 12, the label
+prefixes, the bibliography entry `TSvol`, and the `\file` macro and
+`writenote` environment. Everything else is delivered text.
 
 ## Files
 
-- Report221.pdf and Report221.tex: article and editable source
-- code/menage.py: exact counts, exact rational coefficient engine, exact total variation, guarded public APIs and cap-independent integer serialization
-- code/check_exact.py: deterministic exact tests and negative controls
-- code/diagnostics.py: high-precision floating-point diagnostics, explicitly noncertifying
-- receipts/: exact normal/optimized/low-digit-cap receipts, separately labeled diagnostic receipt
-- source_pins.json and SOURCES.md: inspected-source fingerprints, URLs and historical scope
-- build.py, requirements.txt and MANIFEST.sha256: portable build and integrity information
+```text
+README.md                                     this guide (replaces the delivered README.md)
+SOURCES.md                                    the source's bounded source ledger
+article.tex                                   the report (delivered Report221.tex, written)
+article.pdf                                   compiled report, 19 pages
+code/build.py                                 the delivered builder (checks, PDF, manifests, ZIP; delivered root)
+code/check_exact.py                           deterministic exact tests and negative controls
+code/diagnostics.py                           100-digit diagnostics, explicitly noncertifying
+code/menage.py                                exact counts, rational coefficient engine, exact TV, guarded APIs
+data/receipts-diagnostics.json                output of diagnostics.py (delivered receipts/)
+data/receipts-exact.json                      output of check_exact.py (delivered receipts/)
+data/receipts-exact_low_digit_cap.json        the same with PYTHONINTMAXSTRDIGITS=640 (byte-equal)
+data/receipts-exact_low_digit_cap_optimized.json  the same under -O with the cap (byte-equal)
+data/receipts-exact_optimized.json            the same under -O (byte-equal)
+data/requirements.txt                         mpmath pin with comments (delivered root)
+data/source_pins.json                         fingerprints of the sources the author read (delivered root)
+```
 
-The ZIP contains no private notes, private review reports or third-party paper PDFs. It requires no network access for reproduction once dependencies are installed.
+Every file except `README.md`, `article.tex` and `article.pdf` is
+byte-identical to its delivery (the delivered root builder moved to `code/`,
+the receipts and root data files to `data/`). Not shipped (retrievable from
+`60f54ea06`): the delivered `Report221.pdf` (16 pages) and `README.md`
+(replaced by this guide), and the pure checksum manifest `MANIFEST.sha256`
+(15 entries, verified at the write).
 
-## Reproduce
+```sh
+git show 60f54ea06:docs/incoming/Report221.zip > <scratch>/r221.zip
+```
 
-Requirements: Python 3.10 or newer; for full reproduction, mpmath 1.3.0; TeX Live with pdfLaTeX and the standard packages used in Report221.tex (including Latin Modern, AMS, mathtools, geometry, microtype, booktabs, xurl, hyperref, enumitem and fancyhdr). Poppler is useful for optional visual inspection but is not needed for the build. The exact tests require only the Python standard library.
+**Delivered text that names the delivery layout.** `SOURCES.md`,
+`data/source_pins.json` and Section 10 of the report describe the delivered
+archive (`Report221.tex`, `receipts/`, `MANIFEST.sha256`, root `build.py`); a
+dated note in Section 10 says what is shipped. `code/build.py` expects that
+layout and runs only in a re-extracted archive.
 
-From the extracted directory:
+**Third-party data.** `code/check_exact.py` and `code/menage.py` contain no
+copied OEIS b-file; the receipts contain values the programs compute.
 
-    python3 code/check_exact.py
-    python3 -O code/check_exact.py
-    PYTHONINTMAXSTRDIGITS=640 python3 code/check_exact.py
-    PYTHONINTMAXSTRDIGITS=640 python3 -O code/check_exact.py
+## Rerunning the checks (on scratch copies)
 
-These four outputs must be identical. All correctness checks remain active under optimization. The 600-row integer serialization test exceeds 640 decimal digits and preserves the caller's global digit limit. Public functions return exact Python integers/Fractions; use integer_decimal, parse_integer_decimal and fraction_decimal when serializing large results independently of Python's configurable limit. parse_integer_decimal is intended for trusted computed output; it imposes no length limit, so callers must bound untrusted input separately.
+Never run the programs in place. From this directory (Git Bash):
 
-For the complete build:
+```sh
+T=$(mktemp -d); mkdir -p "$T/code"; cp code/menage.py code/check_exact.py code/diagnostics.py "$T/code/"
+D=$PWD/data; cd "$T"
+py -B code/check_exact.py > exact.json                                   # standard library only
+py -B -O code/check_exact.py > exact_optimized.json
+PYTHONINTMAXSTRDIGITS=640 py -B code/check_exact.py > exact_low_digit_cap.json
+PYTHONINTMAXSTRDIGITS=640 py -B -O code/check_exact.py > exact_low_digit_cap_optimized.json
+py -B code/diagnostics.py > diagnostics.json                             # mpmath 1.3.0
+for f in exact exact_optimized exact_low_digit_cap exact_low_digit_cap_optimized diagnostics; do
+  cmp <(tr -d '\r' < $f.json) <(tr -d '\r' < "$D/receipts-$f.json") && echo "same $f"; done
+```
 
-    python3 -m pip install -r requirements.txt
-    python3 build.py
+At the write (7 October 2026, Windows, Python 3.14.4) all five outputs
+equalled the shipped receipts after removing carriage returns (about 8 s in
+all). The builder was not run.
 
-The build runs all four exact test modes, regenerates the separate diagnostics, compiles the PDF to stable references, checks for unresolved references/missing glyphs/overfull boxes, writes SHA-256 manifests and creates Report221.zip. It makes only local output changes. It uses writable isolated TeX caches, no shell escape, a fixed epoch and fixed ZIP timestamps/modes.
+## Build
 
-Additional modes:
+pdfLaTeX (lmodern, inputenc, amsmath, amssymb, amsthm, mathtools, booktabs,
+array, longtable, geometry, microtype, xurl, hyperref, enumitem, fancyhdr). In
+a scratch copy:
 
-    python3 build.py --checks-only
-    python3 build.py --pdf-only
-    python3 build.py --package-only
+```sh
+B=$(mktemp -d); cp article.tex "$B/"; cd "$B"
+latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+```
 
-A full `python3 -O build.py` exercises the same workflow. To check relocation and reproducibility, extract Report221.zip into a fresh directory, rebuild there and compare the resulting PDF, ZIP and receipts with the originals. Exact receipts are platform-independent. Identical PDF bytes require the same TeX distribution/fonts; diagnostics use the pinned mpmath version. Archive determinism means identical member bytes yield identical archive bytes; it does not promise identical TeX output across different TeX installations.
+The committed PDF was built from this file with MiKTeX pdfLaTeX (three passes,
+7 October 2026): 19 pages; no errors or warnings, no undefined references, no
+multiply defined labels, no duplicate destinations, no overfull or underfull
+boxes. The delivered text gives 16 pages with the same clean log.
 
-## API domains and limits
+## Provenance
 
-- fixed_count(n,s): n >= 3, 1 <= s <= n-2
-- triangle_count(n,k): n >= 3, 3 <= k <= n
-- adjacent_difference(n,k): 4 <= k <= n; includes the separate zero center case
-- circular_count(n): n >= 0; signed values 1,-1,0 at n=0,1,2
-- line_count(m): m >= 0; line_count(0)=1 is not a center difference
-- row_series(order,distance): nonnegative order, positive distance q; distance=None selects the stabilized interior coefficient regime
-- circular_series, line_series and tv_series: nonnegative finite order
-- exact_total_variation(n): n >= 3, computed directly as a Fraction
-
-Boolean and floating-point indices are rejected. No finite upper domain is imposed, but runtime and memory grow with requested size/order. The default suite is deliberately finite. Numerical model evaluation in diagnostics.py is not a certified inverse API and may reject points outside its positive-factor domain.
-
-The proofs establish all finite-order asymptotic statements independently of the tests. Finite tests are corroboration and implementation checks, not universal mathematical proofs.
+- Batch 113 of `docs/incoming`: bundle Report 221 (arrival `60f54ea06`),
+  placed by `a4186a946`; written 7 October 2026.
+- Sources cited by the report: OEIS A332709, A127548, A000179, A258667;
+  Shevelev–Moses (2016); Kaplansky–Riordan (1946, through Wyman–Moser);
+  Wyman–Moser (1958); Kagey (arXiv 2023; DAM 2024 not read); Gu–Zhao (2021,
+  abstract only); the AlphaProof Nexus A258667 Lean file; the repository's two
+  transseries volumes; and the transseries volume as `TSvol` (added by the
+  write).

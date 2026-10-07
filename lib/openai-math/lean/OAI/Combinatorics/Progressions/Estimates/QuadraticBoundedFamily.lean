@@ -1,5 +1,6 @@
 /- Modified for ProveIt: import Lean 4.32 compatibility declarations.
-Statements and proofs are unchanged from the pinned upstream source. -/
+Mathematical statements are unchanged from the pinned upstream source.
+Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
 import OAI.Compat.Core
 import OAI.Combinatorics.Progressions.Geometry.NativeCorrelationCoordinates
 import OAI.Combinatorics.Progressions.Lattices.QuadraticMarkedAffine
@@ -172,7 +173,7 @@ def HasBoundedBinaryMultidegreeFamily
       ∃ g : M.filtration.realification.PolynomialOrbit,
         (letI := moduleTopology ℝ (ℝ ⊗[ℚ] (∀ i : Option Unit, optionLieSpace L₀ (fun _ : Unit => L₁) i))
          letI : IsTopologicalAddGroup (ℝ ⊗[ℚ] (∀ i : Option Unit, optionLieSpace L₀ (fun _ : Unit => L₁) i)) :=
-            IsModuleTopology.isTopologicalAddGroup ℝ _
+            IsModuleTopology.topologicalAddGroup ℝ _
          letI := realification_moduleTopology_t2 P.basis
          ∃ T : I × J → P.Niltest (fun _ : σ => 1),
            (∀ ij, (T ij).orbit = M.orbitToOrdinary g) ∧
@@ -227,7 +228,7 @@ theorem exists_bounded_binary_multidegree_family
       | some _ => inferInstanceAs (T2Space (ℝ ⊗[ℚ] L₁))
   let := moduleTopology ℝ (ℝ ⊗[ℚ] (∀ i : Option Unit, optionLieSpace L₀ (fun _ : Unit => L₁) i))
   let : IsTopologicalAddGroup (ℝ ⊗[ℚ] (∀ i : Option Unit, optionLieSpace L₀ (fun _ : Unit => L₁) i)) :=
-    IsModuleTopology.isTopologicalAddGroup ℝ _
+    IsModuleTopology.topologicalAddGroup ℝ _
   let := realification_moduleTopology_t2 P.basis
   let V : ∀ i : Option Unit, (I × J) → (D i).Space → ℂ
     | none => fun ij => V₀ ij.1
@@ -369,7 +370,7 @@ theorem exists_product_with_bounded_family
   let P := optionProduct W.model (fun _ : Unit => D)
   let := moduleTopology ℝ (ℝ ⊗[ℚ] (∀ i : Option Unit, optionLieSpace W.L (fun _ : Unit => L) i))
   let : IsTopologicalAddGroup (ℝ ⊗[ℚ] (∀ i : Option Unit, optionLieSpace W.L (fun _ : Unit => L) i)) :=
-    IsModuleTopology.isTopologicalAddGroup ℝ _
+    IsModuleTopology.topologicalAddGroup ℝ _
   let := realification_moduleTopology_t2 P.basis
   obtain ⟨T, hTo, hTn, hTc, hTe⟩ := htests
   let F : NativeBoundedMultidegreeFamily bound (Fin W.outputDim × J)
@@ -843,7 +844,7 @@ theorem exists_quadratic_bounded_family :
     simpa [X, P, q, Polynomial.eval₂_pow] using hbudget p hp0
   obtain ⟨η, hη, m, hm, _, d, D, _, M, hMF, hM, _, hlat, hG⟩ := hmodel hp t ht
   let := moduleTopology ℝ (ℝ ⊗[ℚ] QuadraticMarked.Algebra t)
-  let : IsTopologicalAddGroup (ℝ ⊗[ℚ] QuadraticMarked.Algebra t) := IsModuleTopology.isTopologicalAddGroup ℝ _
+  let : IsTopologicalAddGroup (ℝ ⊗[ℚ] QuadraticMarked.Algebra t) := IsModuleTopology.topologicalAddGroup ℝ _
   let := realification_moduleTopology_t2 D.basis
   let := D.metricSpace
   obtain ⟨G, hGn, hGL, hGe⟩ := hG

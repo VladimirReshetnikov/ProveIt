@@ -1,0 +1,415 @@
+\section{Other branching numbers and the limit of the small anchor}
+\label{sec:branching}
+
+\subsection{A family on regular rooted trees}
+
+The full-pattern pinning theorem separates the size of the anchor from
+the tree arithmetic. This gives a uniform extension to every fixed
+branching number.
+
+\begin{theorem}[Regular branching]
+\label{thm:branching}
+Fix an integer \(b\ge2\), put \(s=b+1\), and let
+\(H^{(b)}=K_{b+1}(P)\) with the body \(P\) in \eqref{eq:H}.
+Thus \(H^{(b)}\) has size \((b+3)\times(b+3)\). For every \(h\ge1\),
+there is an explicit binary matrix \(A_{b,h}\) with
+\begin{equation}
+ m=b^h,\quad D_b=2b^2+4b+4,\quad d_h=D_bh+2,\quad n=d_hm,
+ \label{eq:bary-size}
+\end{equation}
+such that
+\begin{equation}
+ N_{H^{(b)}}(A_{b,h})=b\,m^{2b+4},\qquad
+ \dist_{H^{(b)}}(A_{b,h})=d_h^{-2},\qquad
+ \tau_{H^{(b)}}(A_{b,h})=\nu_{H^{(b)}}(A_{b,h})=m.
+ \label{eq:bary-exact}
+\end{equation}
+There is an explicit optimal repair of \(m^2\) cells. For independent
+uniform balanced samples with \(q/(d_hm^{2/3})\to c\in(0,\infty)\),
+the leaf-witness count converges to \(\Poi(bc^3)\), and detection
+probability tends to \(1-e^{-bc^3}\).
+\end{theorem}
+\begin{proof}
+Replace the binary tree by the complete \(b\)-ary tree. A block at
+depth \(i\) has size \(m/b^i\); nodes are indexed from zero to
+\(b^i-1\), and \(\pi(p)=\lfloor p/b\rfloor\). Use the same
+recursive orders, placing all \(b\) child subtrees in increasing
+order between the two signed blocks. In \eqref{eq:roles}, retain
+the two \(V\) modes and use \(W_{i,r}^+,W_{i,r}^-\) for each
+residue \(r\in\{0,\ldots,b-1\}\). The same mode order is used
+on both axes. Use \(s=b+1\) anchor groups for each mode, with the
+same crown and unit-vector signatures. All variable entries are
+given by \eqref{eq:entries} with the new parent map.
+
+There are \((2+2b)h\) modes, \(2h+1\) variable classes, and one
+dummy class per axis. Their total gives
+\[
+ d_h=((2+2b)(b+1)+2)h+2=(2b^2+4b+4)h+2.
+\]
+Every full variable class still has size \(m\). Threshold traces
+remain nested, and the anchor signature of a member varies only
+with its residue modulo \(b\). Thus there are at most \(b=s-1\)
+signatures. The support-pair graph is still two signed paths joined
+by the terminal triangle. Its leaf traces remain a chain, now with
+\(\lfloor p/b\rfloor\) in place of \(\lfloor p/2\rfloor\).
+The crown-exclusion proof, including after the dummy-by-leaf repair,
+therefore applies verbatim. Every hypothesis of \cref{thm:pinning}
+is verified.
+
+The four order comparisons remain valid with the new parent map.
+The body classification uses only those comparisons and the fact
+that two child indices in the same residue class have the same
+relative order as their parents. It therefore excludes all modes
+except \(W_{h,p\bmod b}^-\), where the leaf row and column must
+have the same index and the other column belongs to their parent.
+That parent block now has \(b\) columns. There are \(m\) leaves,
+\(m\) dummy rows, and \(m^{2s}\) anchor choices, giving
+\(b m^{2s+2}=b m^{2b+4}\) copies.
+
+The leaf diagonal is an \(m\)-cell transversal. To obtain \(m\)
+copies with disjoint row and column sets, assign the \(b\) columns
+of each parent bijectively to its children and use distinct dummy
+and anchor representatives, as in \cref{thm:packing}. For the edit
+lower bound, a uniform leaf chooses its depth-\(i\) ancestor with
+probability \(b^{-i}\), so a uniform representative in that node's
+block is again uniform on its size-\(m\) class. All protected-cell
+probabilities are \(m^{-2}\). The same four propagation bodies
+force opposite values at the shared leaf. The explicit repair
+\(R_*\times C_h\) excludes every pinned final mode, proving the
+matching upper bound.
+
+For the sampling claim, let \(p=q/n\) and let \(X\) count leaves
+whose row, matching column, and at least one of their \(b\) parent
+columns are sampled. At Bernoulli retention probability \(p\), its
+exact generating function is
+\begin{equation}
+ \E z^X=\left[1-t_b+t_b(1-p^2+p^2z)^b\right]^{m/b},
+ \qquad t_b=1-(1-p)^b.
+ \label{eq:bary-pgf}
+\end{equation}
+For fixed-size samples, expand the \(r\)-th factorial moment by
+the number \(j\) of distinct parents of its \(r\) leaves.
+The distinct-parent tuples number \(m^r(1+O_{b,r}(m^{-1}))\).
+Their joint probability is
+\(b^r p^{3r}(1+O_{b,r}(p+q^{-1}))\), by inclusion-exclusion on
+the disjoint parent blocks. Their contribution tends to
+\((bc^3)^r\). Tuples with \(j<r\) parents number \(O_{b,r}(m^j)\)
+and have probability \(O_{b,r}(p^{2r+j})\); their contribution is
+\(O_{b,r}(m^{-2(r-j)/3})=o(1)\). The earlier factorial-moment
+argument gives \(X\Rightarrow\Poi(bc^3)\). All \(b\) final
+minus-mode anchors and the dummy row are covered except with
+probability at most \((2bs+1)e^{-q/d_h}=o(1)\), proving the
+detection limit.
+\end{proof}
+
+Put \(a_b=\log b/D_b\). The exact copy density for this family is
+\[
+ \frac{N_{H^{(b)}}(A_{b,h})}{n^{2b+6}}
+ =b\,d_h^{-2b-6}m^{-2}
+ =b e^{4a_b}\eps_h^{b+3}
+       \exp(-2a_b\eps_h^{-1/2}).
+\]
+For fixed \(b\), the exponential coefficient is \(2a_b\).
+
+\begin{proposition}[Binary branching optimizes this family]
+\label{prop:binary-optimal}
+Among integers \(b\ge2\), \(a_b=\log b/(2b^2+4b+4)\) has its
+unique maximum at \(b=2\).
+\end{proposition}
+\begin{proof}
+For real \(x\ge2\), the derivative of
+\(g(x)=\log x/(2x^2+4x+4)\) has the sign of
+\[
+ f(x)=2x+4+4/x-(4x+4)\log x.
+\]
+Its derivative is \(-2-4/x-4/x^2-4\log x<0\), and
+\(f(3)=34/3-16\log3<0\). Thus \(g\) decreases on \([3,\infty)\).
+The remaining comparison \(g(2)>g(3)\) is equivalent to
+\(17\log2>10\log3\), which follows from
+\(2^{17}=131072>59049=3^{10}\).
+\end{proof}
+
+This optimization concerns the displayed regular-tree family. It does
+not constrain constructions using different block weights, variable
+branching, different signatures, or another propagation mechanism.
+
+\subsection{Why simply removing another anchor group fails}
+
+The proof of \cref{thm:pinning} uses the body positions essentially;
+the three-by-three crown alone is not rigid. Decreasing to two anchor
+groups would give the pattern
+\begin{equation}
+ H_4=\begin{pmatrix}
+ 0&1&1&0\\1&0&0&1\\1&0&1&0\\0&1&1&1
+ \end{pmatrix}.
+ \label{eq:H4}
+\end{equation}
+The same host and repair no longer work.
+
+\begin{proposition}[A four-by-four copy surviving the proposed repair]
+\label{prop:H4-counterexample}
+Form the binary host at depth \(h=2\) using \(s=2\) anchor groups.
+Both this host and its dummy-by-leaf repair contain an unpinned copy
+of \(H_4\).
+\end{proposition}
+\begin{proof}
+Select, in order, the following four rows:
+\[
+ \widehat R_{V_2^+}(2),\quad
+ \widehat R_{W_{2,0}^-}(2),\quad R_2(2),\quad R_*.
+\]
+One arbitrary representative is chosen from each displayed block.
+Select columns from
+\[
+ \widehat C_{W_{2,0}^-}(1),\quad
+ C_1^+(0),\quad C_1^+(1),\quad C_1^-(1).
+\]
+The mode order gives the row order, and the recursive column order
+gives the stated column order. The first two rows have traces
+\(0110\) and \(1001\) by their anchor incidences. For leaf index
+\(2\), the parent index is \(1\), so its trace is \(1010\).
+The dummy row has trace \(0111\). These are exactly the rows of
+\(H_4\). There are no selected leaf columns, so the repair changes
+none of these entries. Only one selected column is an anchor,
+exhibiting the failure of full-pattern pinning.
+\end{proof}
+
+This is a counterexample to this particular two-group construction
+and repair argument. It neither proves polynomial removal for every
+four-by-four pattern nor excludes a different four-by-four obstruction.
+
+\section{Research questions suggested by the exact construction}
+\label{sec:questions}
+
+The preceding theorems settle concrete refinements of the reviewed
+source construction. The following questions identify further work;
+none is used as an assumption in the proofs.
+
+\begin{question}[Small forbidden matrices]
+What is the least \(k\) for which a binary \(k\times k\) pattern
+fails polynomial ordered removal? The present work gives \(k\le5\).
+Determine which patterns of orders two, three, and four admit
+polynomial removal. In particular, can one control the additional
+\(H_4\)-copies in \cref{prop:H4-counterexample} by a different repair
+and counting argument, or find a different small anchor-body pattern?
+\end{question}
+
+\begin{question}[The strength of the removal obstruction]
+For the explicit \(H\) in \eqref{eq:H}, determine the asymptotic
+order of \(\mathcal R_H(\eps)\). Can the construction be improved
+to give \(\mathcal R_H(\eps)\le\exp(-c\eps^{-\alpha})\) with
+\(\alpha>1/2\), or can a matching lower bound of stretched-exponential
+type be proved? Reducing the number of protected classes, allowing
+unequal block sizes, or sharing anchors across levels are concrete
+directions. \Cref{prop:binary-optimal} rules out an improvement of
+the exponential coefficient from changing only the regular branching
+number in the displayed family.
+\end{question}
+
+\begin{question}[Universal repair from a transversal]
+Define
+\[
+ \Gamma_H(t)=\sup\left\{\dist_H(A):
+         \tau_H(A)/n^2\le t,\quad A\in\{0,1\}^{n\times n},\ n\ge1\right\}.
+\]
+Does \(\Gamma_H(t)=O(\log^{-2}(1/t))\) hold for the five-by-five
+pattern, or can the gap between original-copy covering and binary
+repair be larger? The construction proves
+\(\liminf_{t\downarrow0}\Gamma_H(t)\log^2(1/t)\ge a^2\).
+A matching upper bound would turn the inverse logarithmic obstruction
+into a sharp structural theorem for all hosts.
+\end{question}
+
+\begin{question}[Structure and stability of optimal repairs]
+Classify all \(m^2\)-cell repairs of \(A_h\). More generally, what
+must an \(H\)-free matrix differing in at most \((1+\eta)m^2\)
+cells look like as \(\eta\downarrow0\)? Is there a finite collection
+of repair mechanisms near which every near-minimizer lies, or do
+many distributed repairs attain the same cost? Exact distance alone
+does not resolve the geometry of the minimizing edits.
+\end{question}
+
+\begin{question}[A quantitative Poisson approximation]
+Obtain explicit total-variation error bounds for the fixed-size
+witness law, uniformly when \(q/(d_hm^{2/3})\) ranges in a compact
+subset of \((0,\infty)\). Separate the correction to the mean,
+sibling dependence, and sampling without replacement. Determine the
+first finite-depth correction to the detection quantile, including
+the error from anchor coverage. The exact factorial moments and
+Bernoulli generating function provide independent starting points.
+\end{question}
+
+\begin{question}[Uniqueness and asymptotics of the optimal rectangle]
+Is \(\theta\mapsto\Phi_s(z,\theta)\) unimodal for every \(s\ge3\)
+and \(z>0\)? Determine the optimizer and \(z_{\rho,s}\) as
+\(\rho\downarrow0\), \(\rho\uparrow1\), or \(s\to\infty\).
+The interior-optimizer theorem does not imply uniqueness. It would
+also be useful to determine whether randomized sample budgets or
+several rectangles improve expected entry cost at a fixed detection
+probability.
+\end{question}
+
+\begin{question}[Adaptive information]
+What lower bounds survive when a tester may choose arbitrary entries
+adaptively? A fixed explicit host has copies at known locations, so
+uniform-sampling lower bounds alone cannot answer this. Construct
+distributions of ordered hosts that hide the relevant modes and leaf
+witnesses while preserving distance, and analyze one-sided and
+two-sided adaptive testers separately. The extension argument in
+\cref{prop:completion} suggests a precise information-completion
+criterion for partial observations beyond rectangles.
+\end{question}
+
+\begin{question}[Other witness exponents]
+Can related ordered constructions force a critical witness to use
+\(r\) rare sampled positions, for fixed \(r>3\), while retaining
+an exact repair theorem and a fixed forbidden pattern? With \(m\)
+potential witnesses, the heuristic scale would become
+\(q\asymp d_hm^{1-1/r}\). A proof must control overlapping witnesses
+and anchor coverage; the heuristic by itself supplies neither.
+\end{question}
+
+\begin{question}[General full-pattern pinning]
+Replace the crown and the two unit-vector signatures in
+\cref{thm:pinning} by other fixed binary patterns. Which combinatorial
+conditions on nested classes, signature counts, and the body force
+the prefix to lie in a single anchor mode? A classification could
+separate the part of an anchor that is rigid by itself from the
+additional rigidity supplied by the body, and provide smaller
+obstructions in other ordered induced-removal problems.
+\end{question}
+
+\section{Source record, verification, and integration}
+\label{sec:verification}
+
+\subsection{What was reviewed and what is proved here}
+
+The source review is fixed to the following repository snapshots,
+retrieved on 7 October 2026:
+\begin{itemize}
+\item \texttt{openai/math}, commit\\
+\texttt{adc7f1241b42e322a6451854ab7e4b4c146bf78a}.
+The selected item is Family 190, \emph{Polynomial removal fails for
+ordered binary matrices}, manuscript date 25 September 2026.
+The construction, original anchor argument, distance proof, counting
+argument, conclusion, and bibliography were read. Its formalization
+catalogue identifies a Lean comparator for the \(66\times66\)
+nonpolynomial-removal theorem~\cite{OAI190Lean}; that upstream project
+was not rebuilt during this work.
+\item \texttt{VladimirReshetnikov/ProveIt}, commit\\
+\texttt{fb9602e556560a15704b4feb176ba6de08378665}.
+The relevant sources are the transseries theorem
+\texttt{p0:thm:lambert-core} and the file
+\texttt{LinLogCoreInversion.lean}. The exact positive-parameter
+inversion and uniqueness statements were checked at the source level.
+Those existing Lean modules were not rebuilt here.
+\end{itemize}
+
+OpenAI's repository explicitly distinguishes results at different
+stages of verification~\cite{OAIRepo}. ProveIt's repository similarly
+distinguishes formal theorems, executable certificates, and exploratory
+research material~\cite{ProveIt}. These distinctions motivate the
+choice of a finite combinatorial construction whose essential steps
+can be written out and tested independently. This article is a focused
+research extension, not a certification of all results in either
+repository.
+
+The inherited ingredients are the signed-tree host, its role table and
+orders, its nonanchor threshold entries, and its protected-path
+propagation lower bound. The new refinements established here are the
+full-pattern pinning theorem and five-by-five obstruction; the repair
+that attains the lower bound and the proof that it creates no copies;
+the exact classification, count, packing, and transversal; the finite
+sampling identities and sharp limits; the optimal uniform-rectangle
+cost; the exact transversal-to-repair relation with its explicit
+convergent logarithmic expansion; and the stated regular-tree
+generalization. The standard Lambert inversion is credited separately.
+Novelty is asserted relative to the reviewed source results; no claim
+of a global minimum pattern size or an exhaustive priority search is
+made.
+
+\subsection{Reproducible finite and numerical checks}
+
+The companion program \texttt{code/verify.py} uses only Python's
+standard library, exact integers, and rational arithmetic. It implements
+the construction independently of the written pinning proof. Equal
+rows or columns inside a block are represented by one weighted
+position. Since every row and every column of \(H\) is distinct,
+an \(H\)-copy cannot choose two positions from one such twin block;
+weighted compressed enumeration therefore counts the expanded host
+exactly.
+
+The default checks include the following:
+\begin{itemize}
+\item Exhaustive searches for complete \(H\)-copies at depths one and
+two, in both the original and repaired hosts. The compressed orders
+are \(23\) and \(47\); the search examines all \(33{,}649\) and
+\(1{,}533{,}939\) row five-tuples, respectively, and all compatible
+column chains. Every original copy has its full prefix pinned.
+The exact expanded counts are \(512=2\cdot2^8\) and
+\(131{,}072=2\cdot4^8\); both repaired counts are zero.
+\item Structural nesting, signature, and nonanchor crown checks through
+depth six; explicit disjoint expanded copies; and weighted body
+enumeration in every designated mode. Completeness of the latter
+enumeration for arbitrary depth is justified by the written pinning
+theorem, not inferred from testing.
+\item An explicit \(H_4\)-copy surviving repair, as in
+\cref{prop:H4-counterexample}, and small-host checks of the failure
+of crown-only pinning.
+\item Exact Bernoulli formulas checked by enumerating all relevant
+leaf-row, leaf-column, and parent-column outcomes in small instances.
+The independent anchor and dummy events are integrated analytically.
+\item The fixed-size factorial-moment identity checked against every
+row and column sample in witness submodels \((m,n)=(2,6),(4,10)\),
+for all \(q\in\{0,\ldots,n\}\) and every order \(1\le r\le m\):
+\(58\) exact rational comparisons in total.
+\end{itemize}
+
+The output \texttt{code/verification\_results.json} records the
+parameters and outcomes. The checks use explicit exceptions, so they
+also run under Python's optimization flag. They check the repair's
+size and small-depth freeness; they do not search all possible edit
+sets or computationally prove the general \(m^2\) lower bound.
+
+The optional script \texttt{code/verify\_inversion.py} checks the
+first logarithmic coefficient polynomials symbolically when SymPy is
+installed, and evaluates
+the exact inverse and remainder estimates at high precision.
+\texttt{code/generate\_figures.py} reproduces the vector figures and
+the illustrative rectangular constants using NumPy, SciPy, and
+Matplotlib. Its probabilities are evaluations of exact formulas;
+the numerical optimizers are approximations, not certified interval
+enclosures. The analytic theorems do not rely on those optimizations.
+
+\subsection{A concrete route to formalization}
+
+The finite structural core offers a natural first integration target
+for ProveIt. A staged dependency order is preferable to treating
+the whole article as one formalization obligation:
+\begin{enumerate}
+\item Define ordered binary copies by increasing embeddings and prove
+the twin-block compression lemma and the completion lemma.
+\item Formalize \cref{thm:pinning} as an abstract finite theorem.
+Its proof uses order, distinct traces, set inclusion, and a bounded
+number of signatures; it does not require probability or limits.
+\item Define the signed tree positions and entries, then prove the
+four order comparisons, the signature bound, and nonanchor crown
+exclusion for the original and repaired hosts.
+\item Prove copy classification, exact count, the explicit packing,
+and repair freeness. These give finite identities for every \(h\).
+\item Formalize the arbitrary-edit lower bound by counting protected
+selections, or by finite probability. The shared-path dependence
+must remain explicit; the proof only uses independence for protected
+cells, not for arbitrary variable pairs.
+\item Add finite sampling identities. Poisson convergence and
+rectangular asymptotics can follow as separate analytic modules.
+For the inverse, reuse ProveIt's existing principal Lambert core
+and formalize the specialized combinatorial substitution and the
+analytic contraction remainder.
+\end{enumerate}
+
+The archive supplies the article, complete LaTeX build inputs, exact
+verification code, numerical scripts, and their receipts. It introduces
+no new axiom declarations or unproved Lean stubs. The new theorems are
+presented as mathematical proofs with supplementary checks, ready for
+independent review and subsequent formalization.

@@ -1,3 +1,4 @@
+/- Modified for ProveIt: Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
 import OAI.Combinatorics.Progressions.Estimates.CubicPairPartitionPrecision
 import OAI.Combinatorics.Progressions.Geometry.MixedPairCoordinateTest
 
@@ -166,7 +167,7 @@ theorem exists_mixed_pair_local_approximation (n : ℕ) :
     (le_add_of_nonneg_left ht).trans hcost
   let : TopologicalSpace (ℝ ⊗[ℚ] V.MixedPairAlgebra) := moduleTopology ℝ _
   let : IsTopologicalAddGroup (ℝ ⊗[ℚ] V.MixedPairAlgebra) :=
-    IsModuleTopology.isTopologicalAddGroup ℝ _
+    IsModuleTopology.topologicalAddGroup ℝ _
   let := realification_moduleTopology_t2 (pi V.mixedPairModels).basis
   let D := pi V.mixedPairModels
   have hD : D.GeometryComplexityLE t :=
@@ -277,7 +278,7 @@ theorem exists_mixed_pair_frozen_reduction (n : ℕ) :
     (le_add_of_nonneg_left hu).trans hsum
   let : TopologicalSpace (ℝ ⊗[ℚ] V.MixedPairAlgebra) := moduleTopology ℝ _
   let : IsTopologicalAddGroup (ℝ ⊗[ℚ] V.MixedPairAlgebra) :=
-    IsModuleTopology.isTopologicalAddGroup ℝ _
+    IsModuleTopology.topologicalAddGroup ℝ _
   let := realification_moduleTopology_t2 (pi V.mixedPairModels).basis
   exact ⟨u, hu, huC, houter (W := W.tensorPower m) (V := V) R hr,
     R.hasMixedPairFrozenEquivalence_mono (hfrozen (W := W) (V := V) R hr hu) hBC⟩

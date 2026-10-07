@@ -1,8 +1,8 @@
 \appendix
 \section{Coefficient and discrepancy reference}
-\label{app:discrepancies}
+\label{spb:ep:app:discrepancies}
 For quick comparison, ``observed minus proved'' means the coefficient in the
-normalized observed multiplier of Section~\ref{sec:sources} minus the
+normalized observed multiplier of Section~\ref{spb:ep:sec:sources} minus the
 corresponding coefficient in this article. The parameter $c$ is always the
 one belonging to the indicated $p$.
 For $p=1$ the sole displayed difference is
@@ -27,7 +27,7 @@ These comparisons are about intended refinements, not the validity of
 leading equivalence under the literal symbol $\sim$.
 
 \section{Reproduction guide}
-\label{app:reproduce}
+\label{spb:ep:app:reproduce}
 The archive contains this PDF, editable TeX sources, the exact-arithmetic
 code, optional high-precision diagnostics, checked outputs, a source guide,
 and a SHA-256 manifest. No network access is needed for reproduction.
@@ -88,9 +88,17 @@ $r^{j+1}=\sum_{h=0}^{r-1}((h+1)^{j+1}-h^{j+1})$ gives
 \]
 The Touchard recurrence is
 $T_{d+1}(z)=z(T_d(z)+T_d'(z))$, with $T_0=1$.
-Together with \eqref{eq:Dgeneral}, \eqref{eq:Hrec}, \eqref{eq:Lrec}, and
-\eqref{eq:assocStirling}, these determine every displayed coefficient.
+Together with \eqref{spb:ep:eq:Dgeneral}, \eqref{spb:ep:eq:Hrec}, \eqref{spb:ep:eq:Lrec}, and
+\eqref{spb:ep:eq:assocStirling}, these determine every displayed coefficient.
 
 The public implementation caps resources to keep accidental requests from
 creating unbounded computations. Extending those caps is a programming
 choice; it is not evidence of an asymptotic theorem with growing order.
+\begin{writenote}[The shipped files, 7 October 2026]
+In ProveIt the PDF and \file{MANIFEST.sha256} are not shipped; the programs
+are \file{code/230-endpoint-*.py} and their recorded outputs and requirements
+are \file{data/230-endpoint-*}. The programs import each other under their
+delivered names, so the report README gives commands that rerun them in a
+scratch copy with the prefix removed; the builder expects the delivered layout
+and runs only in a re-extracted archive.
+\end{writenote}

@@ -1,3 +1,4 @@
+/- Modified for ProveIt: Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
 import OAI.Combinatorics.Progressions.Estimates.UnitVerticalDifference
 
 namespace OAI
@@ -17,7 +18,7 @@ theorem HasUniformLowerRankUnitFamily.mono {L I σ : Type*} [LieRing L] [LieAlge
   refine ⟨n, hn, Q, S, hS.mono S hpq, ?_⟩
   let := moduleTopology ℝ (ℝ ⊗[ℚ] (L ⧸ R.filtration.layerIdeal s (r + 1)))
   let : IsTopologicalAddGroup (ℝ ⊗[ℚ] (L ⧸ R.filtration.layerIdeal s (r + 1))) :=
-    IsModuleTopology.isTopologicalAddGroup ℝ _
+    IsModuleTopology.topologicalAddGroup ℝ _
   let := realification_moduleTopology_t2 Q.basis
   obtain ⟨K, hKn, hKc, hKu, a, ha0, hKe⟩ := hK
   exact ⟨K, hKn, (fun i => (hKc i).mono hpq), hKu, a, ha0, hKe⟩

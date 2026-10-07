@@ -1,3 +1,4 @@
+/- Modified for ProveIt: Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
 import OAI.Combinatorics.Progressions.Estimates.RealTranslationEvaluationContinuity
 import OAI.Combinatorics.Progressions.Estimates.RealificationModuleTopology
 import OAI.Combinatorics.Progressions.Probability.RealificationRationalDensity
@@ -164,7 +165,7 @@ theorem bchRealTranslationHom_eval_potential
   let : Fintype (WeightedBasisIndex w d) := Fintype.ofFinite _
   let := moduleTopology ℝ (ℝ ⊗[ℚ] weightedSubalgebra w d)
   let : IsTopologicalAddGroup (ℝ ⊗[ℚ] weightedSubalgebra w d) :=
-    IsModuleTopology.isTopologicalAddGroup ℝ _
+    IsModuleTopology.topologicalAddGroup ℝ _
   let : T2Space (ℝ ⊗[ℚ] weightedSubalgebra w d) :=
     realification_moduleTopology_t2 (weightedBasis w d hw)
   exact bchRealTranslationHom_eval_potential_on_real_base_image

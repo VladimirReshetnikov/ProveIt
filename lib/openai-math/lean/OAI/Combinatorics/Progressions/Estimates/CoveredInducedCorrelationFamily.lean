@@ -1,3 +1,4 @@
+/- Modified for ProveIt: Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
 import OAI.Combinatorics.Progressions.Dynamics.InducedMarkedBudget
 import OAI.Combinatorics.Progressions.Estimates.CommonDependentCoveredModel
 import OAI.Combinatorics.Progressions.Lattices.MarkedShiftLattice
@@ -403,7 +404,7 @@ theorem exists_induced_marked_model (s u : ℕ) (hs : 1 ≤ s) :
                     D.filtration.Group) ∈ D.lattice) ∧
                 (letI := moduleTopology ℝ (ℝ ⊗[ℚ] MarkedShiftQuotient F v w marked t)
                  letI : IsTopologicalAddGroup (ℝ ⊗[ℚ] MarkedShiftQuotient F v w marked t) :=
-                   IsModuleTopology.isTopologicalAddGroup ℝ _
+                   IsModuleTopology.topologicalAddGroup ℝ _
                  letI := realification_moduleTopology_t2 D.basis
                  letI := D.metricSpace
                  ∃ G : J → D.Space → ℂ,
@@ -436,7 +437,7 @@ theorem exists_induced_marked_model (s u : ℕ) (hs : 1 ≤ s) :
     hM.mono M hPC, hmap, hint, hlat, ?_⟩
   let := moduleTopology ℝ (ℝ ⊗[ℚ] MarkedShiftQuotient F v w marked t)
   let : IsTopologicalAddGroup (ℝ ⊗[ℚ] MarkedShiftQuotient F v w marked t) :=
-    IsModuleTopology.isTopologicalAddGroup ℝ _
+    IsModuleTopology.topologicalAddGroup ℝ _
   let := realification_moduleTopology_t2 D.basis
   let := D.metricSpace
   let := E.metricSpace
@@ -491,7 +492,7 @@ theorem exists_native_induced_marked_model (s u : ℕ) (hs : 1 ≤ s) :
                     D.filtration.Group) ∈ D.lattice) ∧
                 (letI := moduleTopology ℝ (ℝ ⊗[ℚ] MarkedShiftQuotient F v w marked t)
                  letI : IsTopologicalAddGroup (ℝ ⊗[ℚ] MarkedShiftQuotient F v w marked t) :=
-                   IsModuleTopology.isTopologicalAddGroup ℝ _
+                   IsModuleTopology.topologicalAddGroup ℝ _
                  letI := realification_moduleTopology_t2 D.basis
                  letI := D.metricSpace
                  ∃ G : J → D.Space → ℂ,
@@ -553,7 +554,7 @@ theorem exists_native_induced_marked_model (s u : ℕ) (hs : 1 ≤ s) :
   · simpa only [Fintype.card_fin, finrank_eq_card_basis A.basis] using hdimd
   · let := moduleTopology ℝ (ℝ ⊗[ℚ] MarkedShiftQuotient F v w marked t)
     let : IsTopologicalAddGroup (ℝ ⊗[ℚ] MarkedShiftQuotient F v w marked t) :=
-      IsModuleTopology.isTopologicalAddGroup ℝ _
+      IsModuleTopology.topologicalAddGroup ℝ _
     let := realification_moduleTopology_t2 D.basis
     let := D.metricSpace
     obtain ⟨G, hGn, hGL, hGe⟩ := hobs
@@ -625,7 +626,7 @@ def Model (t : ℕ) (η : RationalTorus.BottomQuotient 1 →ₗ[ℚ] ℚ) (p : �
         (∀ a : Fin t → ℤ, (⟨(m : ℚ) • markedQuotientDirection
           filtration generators weights marked t (fun i => (a i : ℚ))⟩ : D.filtration.Group) ∈ D.lattice) ∧
         (letI := moduleTopology ℝ (ℝ ⊗[ℚ] Algebra t)
-         letI : IsTopologicalAddGroup (ℝ ⊗[ℚ] Algebra t) := IsModuleTopology.isTopologicalAddGroup ℝ _
+         letI : IsTopologicalAddGroup (ℝ ⊗[ℚ] Algebra t) := IsModuleTopology.topologicalAddGroup ℝ _
          letI := realification_moduleTopology_t2 D.basis
          letI := D.metricSpace
          ∃ G : D.Space → ℂ, (∀ x, ‖G x‖ ≤ 2) ∧
@@ -640,7 +641,7 @@ theorem Model.mono {t : ℕ} {η : RationalTorus.BottomQuotient 1 →ₗ[ℚ] �
   refine ⟨m, hm, hmp.trans (Real.exp_le_exp.mpr hpq), d, D, hd, M, hMF,
     hM.mono M hpq, hint, hlat, ?_⟩
   let := moduleTopology ℝ (ℝ ⊗[ℚ] Algebra t)
-  let : IsTopologicalAddGroup (ℝ ⊗[ℚ] Algebra t) := IsModuleTopology.isTopologicalAddGroup ℝ _
+  let : IsTopologicalAddGroup (ℝ ⊗[ℚ] Algebra t) := IsModuleTopology.topologicalAddGroup ℝ _
   let := realification_moduleTopology_t2 D.basis
   let := D.metricSpace
   obtain ⟨G, hn, hl, he⟩ := hG
@@ -689,7 +690,7 @@ theorem exists_model_from_seed :
   · norm_num only [Fintype.card_fin, Nat.reduceAdd, pow_one, one_mul] at hdim
     omega
   · let := moduleTopology ℝ (ℝ ⊗[ℚ] Algebra t)
-    let : IsTopologicalAddGroup (ℝ ⊗[ℚ] Algebra t) := IsModuleTopology.isTopologicalAddGroup ℝ _
+    let : IsTopologicalAddGroup (ℝ ⊗[ℚ] Algebra t) := IsModuleTopology.topologicalAddGroup ℝ _
     let := realification_moduleTopology_t2 D.basis
     let := D.metricSpace
     obtain ⟨G, hGnorm, hGLip, hGeq⟩ := hG
@@ -727,7 +728,7 @@ theorem exists_model :
     (⊥ : LieIdeal ℚ Seed) ∅ hspan
   let := moduleTopology ℝ (ℝ ⊗[ℚ] RationalTorus.BottomQuotient 1)
   let : IsTopologicalAddGroup (ℝ ⊗[ℚ] RationalTorus.BottomQuotient 1) :=
-    IsModuleTopology.isTopologicalAddGroup ℝ _
+    IsModuleTopology.topologicalAddGroup ℝ _
   let := realification_moduleTopology_t2 qb
   obtain ⟨e, E, hE, hproj, η, V, hη, hVLip, hVnorm, hVeq⟩ := hseed 1 0 hp0 (by simpa using hp)
   have hm : Model t η ((q + B) ^ B) := hmodel E η V (hp.trans hpq) t (ht.trans hpq)
@@ -789,7 +790,7 @@ def HasCommonInducedCorrelationFamily
                      D.coefficientFreeGenerator D.coefficientWeight D.coefficientIsDependent t)
                    letI : IsTopologicalAddGroup (ℝ ⊗[ℚ] MarkedShiftQuotient D.coefficientFreeFiltration
                      D.coefficientFreeGenerator D.coefficientWeight D.coefficientIsDependent t) :=
-                       IsModuleTopology.isTopologicalAddGroup ℝ _
+                       IsModuleTopology.topologicalAddGroup ℝ _
                    letI := realification_moduleTopology_t2 E.basis
                    letI := E.metricSpace
                    ∃ G : J → E.Space → ℂ,
@@ -863,7 +864,7 @@ theorem hasCommonInducedCorrelationFamily_of_model
         D.coefficientFreeGenerator D.coefficientWeight D.coefficientIsDependent t)
       letI : IsTopologicalAddGroup (ℝ ⊗[ℚ] MarkedShiftQuotient D.coefficientFreeFiltration
         D.coefficientFreeGenerator D.coefficientWeight D.coefficientIsDependent t) :=
-          IsModuleTopology.isTopologicalAddGroup ℝ _
+          IsModuleTopology.topologicalAddGroup ℝ _
       letI := realification_moduleTopology_t2 E.basis
       letI := E.metricSpace
       ∃ G : J → E.Space → ℂ, (∀ j z, ‖G j z‖ ≤ 2) ∧
@@ -884,7 +885,7 @@ theorem hasCommonInducedCorrelationFamily_of_model
     D.coefficientFreeGenerator D.coefficientWeight D.coefficientIsDependent t)
   let : IsTopologicalAddGroup (ℝ ⊗[ℚ] MarkedShiftQuotient D.coefficientFreeFiltration
     D.coefficientFreeGenerator D.coefficientWeight D.coefficientIsDependent t) :=
-      IsModuleTopology.isTopologicalAddGroup ℝ _
+      IsModuleTopology.topologicalAddGroup ℝ _
   let := realification_moduleTopology_t2 E.basis
   let := E.metricSpace
   obtain ⟨G, hGn, hGL, hGe⟩ := hobs
@@ -1014,7 +1015,7 @@ theorem HasCommonInducedCorrelationFamily.mono
     D.coefficientFreeGenerator D.coefficientWeight D.coefficientIsDependent t)
   let : IsTopologicalAddGroup (ℝ ⊗[ℚ] MarkedShiftQuotient D.coefficientFreeFiltration
     D.coefficientFreeGenerator D.coefficientWeight D.coefficientIsDependent t) :=
-      IsModuleTopology.isTopologicalAddGroup ℝ _
+      IsModuleTopology.topologicalAddGroup ℝ _
   let := realification_moduleTopology_t2 E.basis
   let := E.metricSpace
   obtain ⟨G, hGn, hGL, hcorr⟩ := hobs
@@ -1079,7 +1080,7 @@ def HasCoveredInducedCorrelationFamily (B : ℝ) : Prop :=
               (∀ i z, V₀.observable i (QuotientGroup.mk z) = V.observable i (QuotientGroup.mk z)) ∧
               (letI := moduleTopology ℝ (ℝ ⊗[ℚ] D.DependentQuotient)
                letI : IsTopologicalAddGroup (ℝ ⊗[ℚ] D.DependentQuotient) :=
-                 IsModuleTopology.isTopologicalAddGroup ℝ _
+                 IsModuleTopology.topologicalAddGroup ℝ _
                letI := realification_moduleTopology_t2 Q.basis
                ∃ k : ℕ, 0 < k ∧ (k : ℝ) ≤ Real.exp B ∧
                  ∃ U : Q.UnitVerticalObservable (S.realSubgroup s (r + 1)) (Fin k) B,
@@ -1151,7 +1152,7 @@ theorem exists_covered_induced_correlation_family (s : ℕ) (hs : 1 ≤ s) :
     hS.mono S hBC, hφ, V₀.mono hBC, hVfreq, hVobs, ?_⟩
   let := moduleTopology ℝ (ℝ ⊗[ℚ] D.DependentQuotient)
   let : IsTopologicalAddGroup (ℝ ⊗[ℚ] D.DependentQuotient) :=
-    IsModuleTopology.isTopologicalAddGroup ℝ _
+    IsModuleTopology.topologicalAddGroup ℝ _
   let := realification_moduleTopology_t2 Q.basis
   obtain ⟨k, hk, hkB, U, _, _, hcomparison⟩ := hcoeff
   refine ⟨k, hk, hkB.trans (Real.exp_le_exp.mpr hBC), U.mono hBC, ?_, ?_⟩

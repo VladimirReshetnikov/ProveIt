@@ -1,3 +1,5 @@
+/- Modified for ProveIt: simplify the multilinear identity before applying
+it, allowing full definitional reduction on Lean 4.32. Statements unchanged. -/
 import Mathlib.LinearAlgebra.Multilinear.Curry
 import OAI.Combinatorics.Progressions.Estimates.MultilinearFirstOrder
 import OAI.Combinatorics.Progressions.Geometry.LieTreeSupport
@@ -392,7 +394,8 @@ theorem exists_linear_lieTree_expansion {E : Type*} [AddCommGroup E] [Module R E
   change η (lieTreeOccurrenceMultilinear a ((fun i => x i + (y i : L)) ∘
       lieTreeOccurrenceLabel a)) =
     η (lieTreeOccurrenceMultilinear a (x ∘ lieTreeOccurrenceLabel a)) + A (diagonal y) at h
-  simpa only [lieTreeOccurrenceMultilinear_original, LinearMap.comp_apply] using h
+  simp only [lieTreeOccurrenceMultilinear_original] at h
+  exact h
 
 end Erdos3
 

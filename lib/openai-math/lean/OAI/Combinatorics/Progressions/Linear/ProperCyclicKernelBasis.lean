@@ -1,5 +1,6 @@
 /- Modified for ProveIt: import Lean 4.32 compatibility declarations.
-Statements and proofs are unchanged from the pinned upstream source. -/
+Use the older BlockTriangular id formulation of upper triangularity.
+Mathematical statements are unchanged. -/
 import OAI.Compat.BigOperators
 import OAI.Compat.Matrix
 import Mathlib.Algebra.Order.Round
@@ -333,7 +334,7 @@ def shearMatrix {n : ℕ} (t : Fin n → Fin n → ℤ) :
 
 theorem shearMatrix_isUpperTriangular {n : ℕ}
     (t : Fin n → Fin n → ℤ) :
-    (shearMatrix t).IsUpperTriangular := by
+    (shearMatrix t).BlockTriangular id := by
   intro i j hji
   change j < i at hji
   change shearMatrix t i j = 0
@@ -406,7 +407,7 @@ theorem shearBasis_apply_eq_add_Iio {n : ℕ} {M : Type*}
 noncomputable def basisOfUpperTriangularUnits {n : ℕ} {M : Type*}
     [AddCommGroup M] (b : Basis (Fin n) ℤ M)
     (A : Matrix (Fin n) (Fin n) ℤ)
-    (hupper : A.IsUpperTriangular) (hdiag : ∀ i, IsUnit (A i i)) :
+    (hupper : A.BlockTriangular id) (hdiag : ∀ i, IsUnit (A i i)) :
     Basis (Fin n) ℤ M := by
   have hdet : IsUnit A.det := by
     rw [Matrix.det_of_isUpperTriangular hupper]
@@ -416,7 +417,7 @@ noncomputable def basisOfUpperTriangularUnits {n : ℕ} {M : Type*}
 theorem basisOfUpperTriangularUnits_apply {n : ℕ} {M : Type*}
     [AddCommGroup M] (b : Basis (Fin n) ℤ M)
     (A : Matrix (Fin n) (Fin n) ℤ)
-    (hupper : A.IsUpperTriangular) (hdiag : ∀ i, IsUnit (A i i))
+    (hupper : A.BlockTriangular id) (hdiag : ∀ i, IsUnit (A i i))
     (i : Fin n) :
     basisOfUpperTriangularUnits b A hupper hdiag i = ∑ j, A j i • b j := by
   simp [basisOfUpperTriangularUnits, Matrix.toLinearEquiv_apply,
@@ -484,7 +485,7 @@ theorem centeredReductionMatrix_isUpperTriangular {n : ℕ}
     (b : Basis (Fin n) ℤ (IntegralPoint n))
     (t : (i : Fin n) → Fin i.val → ℤ)
     (hupper : ∀ i j, i < j → b.repr (x i) j = 0) :
-    (centeredReductionMatrix x b t).IsUpperTriangular := by
+    (centeredReductionMatrix x b t).BlockTriangular id := by
   intro i j hji
   change j < i at hji
   change centeredReductionMatrix x b t i j = 0
@@ -546,7 +547,7 @@ theorem exists_centeredReduction_of_rawFlagReduction {n : ℕ}
       hudiag_ne hudiag_le (u i) i
   choose t ht using hround
   let A : Matrix (Fin n) (Fin n) ℤ := centeredReductionMatrix x b t
-  have hAupper : A.IsUpperTriangular :=
+  have hAupper : A.BlockTriangular id :=
     centeredReductionMatrix_isUpperTriangular x b t hraw.2.2.1
   have hAdiag : ∀ i, IsUnit (A i i) :=
     centeredReductionMatrix_isUnit_diagonal x b t

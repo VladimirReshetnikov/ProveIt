@@ -1,3 +1,5 @@
+/- Modified for ProveIt: use MvPolynomial.coeff_zero in the weighted
+homogeneous-component proof on Lean 4.32. Statements unchanged. -/
 import Mathlib.Algebra.MvPolynomial.PDeriv
 import Mathlib.Algebra.MvPolynomial.Rename
 import OAI.Combinatorics.Progressions.Polynomial.JointPolynomialDilationGrid
@@ -192,7 +194,7 @@ theorem weightedHomogeneousComponent_eq_of_sub_lower (w : σ → ℕ)
   have hzero : weightedHomogeneousComponent w n (p - q) = 0 := by
     apply MvPolynomial.ext
     intro a
-    rw [coeff_weightedHomogeneousComponent, AddMonoidAlgebra.coeff_zero]
+    rw [coeff_weightedHomogeneousComponent, MvPolynomial.coeff_zero]
     split_ifs with ha
     · by_contra hc
       have hlt := hpq (mem_support_iff.mpr hc)

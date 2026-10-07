@@ -1,3 +1,4 @@
+/- Modified for ProveIt: Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
 import OAI.Combinatorics.Progressions.Estimates.NativeSquareRecovery
 import OAI.Combinatorics.Progressions.Estimates.RecoveryPrecision
 import OAI.Combinatorics.Progressions.Sampling.AnchoredObservationPartition
@@ -57,7 +58,7 @@ theorem exists_specified_square_recovery (s k : ℕ) :
   let D₂ := fun _ : Bool => D
   let : FiniteDimensional ℚ (Bool → L) := (productFinBasis D₂).finiteDimensional_of_finite
   let := moduleTopology ℝ (ℝ ⊗[ℚ] (Bool → L))
-  let : IsTopologicalAddGroup (ℝ ⊗[ℚ] (Bool → L)) := IsModuleTopology.isTopologicalAddGroup ℝ _
+  let : IsTopologicalAddGroup (ℝ ⊗[ℚ] (Bool → L)) := IsModuleTopology.topologicalAddGroup ℝ _
   let : T2Space (ℝ ⊗[ℚ] (Bool → L)) := realification_moduleTopology_t2 (productFinBasis D₂)
   let r := p + (p + 2) ^ 2 + 2
   have hpr : p ≤ r := by dsimp [r]; nlinarith [sq_nonneg (p + 2)]

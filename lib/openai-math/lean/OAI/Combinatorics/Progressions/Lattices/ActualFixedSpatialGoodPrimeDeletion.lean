@@ -1,5 +1,5 @@
-/- Modified for ProveIt: use Mathlib v4.32.0's generic prod_le_prod'
-for product comparisons. Mathematical statements unchanged. -/
+/- Modified for ProveIt: use Mathlib v4.32.0's primed generic product
+and subset comparison lemmas. Mathematical statements unchanged. -/
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import OAI.Combinatorics.Progressions.Lattices.InjectiveSmallPrimeProduct
 import OAI.Combinatorics.Progressions.Probability.ActualFixedSpatialUnchargedDensity
@@ -42,7 +42,7 @@ theorem retainedPrimeProduct_le_chargedProduct_mul_smallProduct
   calc
     (∏ l ∈ retained, p l) ≤ ∏ l ∈ retained, w l :=
       Finset.prod_le_prod' hpoint
-    _ ≤ ∏ l, w l := Finset.prod_le_prod_of_subset_of_one_le
+    _ ≤ ∏ l, w l := Finset.prod_le_prod_of_subset_of_one_le'
       (Finset.subset_univ _) (fun l _ _ => hw l)
     _ = ((∏ l, p l ^ b l) * (∏ l, p l ^ e l)) *
         ∏ l ∈ Finset.univ.filter (fun l => p l ≤ cutoff), p l := by

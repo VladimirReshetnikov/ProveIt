@@ -1,3 +1,4 @@
+/- Modified for ProveIt: Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
 import OAI.Combinatorics.Progressions.Estimates.SharedFreeCorrelatedFactorization
 
 namespace OAI
@@ -199,7 +200,7 @@ def NativeCorrelationStructure.HasCorrelatedAffineComparison
       Nonempty (FreeCoordinateFrame E.basis A) ∧
       (letI := moduleTopology ℝ (ℝ ⊗[ℚ] D.CoefficientFreeLieAlgebra)
        letI : IsTopologicalAddGroup (ℝ ⊗[ℚ] D.CoefficientFreeLieAlgebra) :=
-         IsModuleTopology.isTopologicalAddGroup ℝ _
+         IsModuleTopology.topologicalAddGroup ℝ _
        letI := realification_moduleTopology_t2 E.basis
        ∃ V : E.UnitVerticalObservable (T.realSubgroup s (r + 1)) (Fin W.family.outputDim) A,
          V.frequency = B.freeFrequency D ∧
@@ -247,7 +248,7 @@ theorem exists_native_correlated_affine_comparison (s : ℕ) (hs : 2 ≤ s) :
       ((Real.exp_le_exp.mpr hZC).trans hN)
   let := moduleTopology ℝ (ℝ ⊗[ℚ] D.CoefficientFreeLieAlgebra)
   let : IsTopologicalAddGroup (ℝ ⊗[ℚ] D.CoefficientFreeLieAlgebra) :=
-    IsModuleTopology.isTopologicalAddGroup ℝ _
+    IsModuleTopology.topologicalAddGroup ℝ _
   let := realification_moduleTopology_t2 E.basis
   obtain ⟨V, hfreq, ξ, hξ, hcommon, Hsource, _, hsourceW, hsource, _, hsourceDense,
       v, hv, hdep, hcorr, hnext⟩ := hdata
