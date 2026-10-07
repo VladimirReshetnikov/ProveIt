@@ -4,7 +4,7 @@ Scope
   The goal remains open. No improvement to the final Szemeredi bound is claimed.
   The source catalogue contains all 120 unique numbered theorem, lemma,
   proposition, and corollary headings in sz-thm-gowers-proof.tex.
-  There are 101 checked exact companion proofs and 19 open statements.
+  There are 103 checked exact companion proofs and 17 open statements.
   The JSON ledger records every statement, its TeX heading lines, its Lean
   definition, and related results. Conditional implications, restricted cases,
   and counterexamples are not counted as proofs of the full statement.
@@ -12,10 +12,10 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 287 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 2,617 public Gowers theorems and found only propext,
-  Classical.choice, and Quot.sound. The audit independently counted 101 exact
-  companion proofs and 19 open catalogue statements from Lean's theorem types.
+  All 292 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 2,637 public Gowers theorems and found only propext,
+  Classical.choice, and Quot.sound. The audit independently counted 103 exact
+  companion proofs and 17 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
   errors remain in this build. The JSON ledger reproduces exactly and has no
   unmatched numbered TeX headings or unmatched catalogue entries.
@@ -459,7 +459,7 @@ Constructed height models and the Stage 13.6--13.9 chain
   exponent. The threshold is existential, not an explicit headline bound.
   The preceding data, prime modulus, and density restriction are still
   hypotheses; this is not a proof of the unrepaired catalogue Lemma 13.6.
-  The catalogue remains at 101 exact companions and 19 open statements.
+  The current catalogue has 103 exact companions and 17 open statements.
   This chain does not supply the stronger integer step/translation geometry
   needed for Corollary 13.10, nor establish a final Szemeredi bound.
 
@@ -746,8 +746,8 @@ Terminal Fourier correlation of the actual interval function
   quadratic character remains in the original modulus and the linear
   character in the new prime modulus; no equality of these phases is assumed.
   The global construction below now proves an untwisted quadratic density
-  increment without changing modulus. Explicit-threshold iteration remains
-  outstanding.
+  increment without changing modulus. Explicit-threshold iteration is
+  completed in the later quadratic checkpoints below.
 
 Global terminal Fourier bias and variable polynomial phase removal
   Proofs18PartitionFourierBias bounds a supported function's degree-one
@@ -780,9 +780,9 @@ Unconditional quadratic discrepancy and density increment
   preservation is assumed. The reusable balanced-real facts in
   Proofs18QuantitativeSzemeredi are now public, and the new generic
   discrepancy-to-density interface allows separate size and bias parameters.
-  The threshold is made explicit in the next checkpoint. Theorem 8.2's
-  double-exponential bound still requires density-preserving iteration;
-  the all-degree Section 18 induction and headline bounds also remain open.
+  The threshold and density-preserving iteration are completed below,
+  culminating in Theorem 8.2. The all-degree Section 18 induction and
+  headline bounds remain open.
 
 Explicit starting threshold and quadratic cyclic dichotomy
   The odd-frequency, localized phase-removal, and discrepancy constructions
@@ -827,7 +827,7 @@ Relative balance, interval models, and exceptional-cell selection
   If every nonexceptional cell is contained in S or disjoint from S, the
   selected cell lies inside S and has relative density at least delta+beta/8.
   Subsequent checkpoints construct the geometric refinement and prove the
-  relative-balanced uniform stopping case. Quantitative iteration remains.
+  relative-balanced uniform stopping case and complete quadratic iteration.
 
 Boundary refinement and a progression inside the original interval
   The Section 5 local and efficient refinement interfaces now retain the
@@ -856,8 +856,8 @@ Boundary refinement and a progression inside the original interval
   relative density increment are unchanged. A finite-set interface takes the
   extension by zero of 1_B-delta on Fin L and returns a natural progression
   contained in [0,L), with the same explicit bounds. The relative-balanced
-  uniform stopping case is proved below. Quantitative iteration remains
-  open before any claim of Theorem 8.2 or an improved headline bound.
+  uniform stopping case and Theorem 8.2 are proved below. No improved
+  all-degree headline bound is claimed.
 
 Four-factor symmetries and relative uniform counting
   Proofs03FourFactorSymmetry proves that the four-factor progression average
@@ -899,8 +899,8 @@ Explicit relative stopping and an ordinary-interval dichotomy
   evaluated at the fixed alpha above. Both branches retain the original
   interval-relative density. Iterating this alternative with explicit
   prime choices, cardinality-preserving reindexing, and controlled shrinking
-  lengths is the remaining quadratic quantitative task. This checkpoint does
-  not prove Theorem 8.2 or improve any final headline bound.
+  lengths is carried out in the subsequent checkpoints. The one-step
+  theorem alone is not a proof of Theorem 8.2 or an improved headline bound.
 
 Finite quadratic iteration with an explicit recursive threshold
   Proofs18NaturalReindex pulls a set on a proper natural progression back to
@@ -922,8 +922,8 @@ Finite quadratic iteration with an explicit recursive threshold
   ordinary four-term progression. This is a full quantitative interval
   theorem with an explicit finite recursive threshold, not a conditional
   increment or qualitative existence result. The comparison with the exact
-  double-exponential form in Theorem 8.2 remains to be established, as do the
-  other open catalogue obligations; the exact-companion count is unchanged.
+  double-exponential form in Theorem 8.2 is established below. The recursive
+  theorem alone is not counted as an exact companion.
 
 Closed finite-iteration bound and cyclic conclusion
   Proofs18DensityIterationGrowth bounds the recursive threshold by
@@ -937,10 +937,32 @@ Closed finite-iteration bound and cyclic conclusion
   It also transfers the result to sets in ZMod N for every nonzero modulus,
   preserving cardinality and showing the positive natural step remains
   nonzero modulo N. The final modulus need not itself be prime.
-  The exact catalogue Theorem 8.2 still requires comparison of this closed
-  expression with exp(exp((1/delta)^C)) for one fixed positive C. No companion
-  proof is claimed until that quantitative comparison and its density edge
-  cases are proved.
+  The next checkpoint compares this expression with exp(exp((1/delta)^C))
+  for one fixed positive C and handles the density edge cases, thereby
+  proving the exact catalogue Theorem 8.2.
+
+Completed quadratic double-exponential theorem and coloring corollary
+  Proofs18QuadraticIterationParameters bounds the inverse parameters by
+  powers of u=2/alpha: tau^(-1)<=u^12381, gain^(-1)<=u^12384,
+  rho^(-1)<=u^24748, and c^(-1)<=8*C_1(1)*u^210541. It also proves c<=1
+  and 2/alpha<=(2/delta)^121 for the fixed interval uniformity parameter.
+  Proofs18DensityIterationPowerBound converts these estimates into a bound
+  for the entire iteration. Proofs18QuadraticDoubleExponential proves that
+  the closed length threshold is at most
+    exp(exp(K*(2/delta)^3070857064)),
+    K=4+6*C_2(1)+8231+8*C_1(1)>0,
+  uniformly for 0<delta<=1. The cyclic conclusion holds for every nonzero
+  modulus; the prime hypothesis is needed only for the intermediate models.
+  Proofs08FourTermTheorem absorbs K and the factor two into a single fixed
+  positive exponent C for delta<=3/4. For delta>3/4, a union bound on four
+  translates of the complement gives a progression with step -1 directly.
+  It exports theorem_8_2_holds with exactly the catalogue type, including
+  all positive densities and the stated double-exponential threshold.
+  Proofs08FourTermColoring discharges the previously proved conditional
+  coloring transfer and exports the exact corollary_8_3_holds.
+  The full axiom/type audit and source inventory agree: 103 exact companion
+  proofs, 17 open statements. This closes the four-term quantitative branch;
+  it does not claim an improvement to the final all-degree Szemeredi bound.
 
 Reproducible checks (from repository root)
   python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.Audit
@@ -956,7 +978,8 @@ Reproducible checks (from repository root)
 Next substantial obligations
   The JSON ledger is exhaustive; the sequence below highlights the main
   quantitative dependency chain. The qualitative Freiman theorems 7.1--7.2
-  and the quadratic inverse theorem 8.2 also remain open.
+  remain open. The quadratic four-term theorem 8.2 and Corollary 8.3 are
+  now proved with their exact catalogue types.
   1. Resolve Corollary 5.8's missing common-target scale assumptions. Its
      scale-qualified repair is proved, but does not establish the unrepaired
      catalogue statement.
@@ -972,9 +995,9 @@ Next substantial obligations
      16.9 are now proved. Lemma 16.10 and the inductive extraction remain.
   4. Prove Theorem 18.1 with explicit thresholds strong enough for iteration.
      The existing Section 18 cyclic dichotomy is conditional on that theorem.
-     Account for the epsilon/4 density increment and cell-size prefactor, and
-     for density loss in the prime model. The new transfers address the
-     combinatorial transport, not these quantitative estimates.
+     Extend the relative-balance, boundary refinement, uniform stopping,
+     and fixed-parameter iteration now completed for four-term progressions
+     to the higher-degree construction, retaining explicit thresholds.
   5. Close Theorem 18.2 and its headline consequences; then investigate tighter
      final bounds without treating improved auxiliary statements as a proved
      improvement of the full Szemeredi estimate.

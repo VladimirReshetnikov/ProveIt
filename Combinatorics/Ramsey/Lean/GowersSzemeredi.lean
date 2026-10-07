@@ -269,6 +269,11 @@ import GowersSzemeredi.Proofs18DensityIteration
 import GowersSzemeredi.Proofs18QuadraticIteration
 import GowersSzemeredi.Proofs18DensityIterationGrowth
 import GowersSzemeredi.Proofs18QuadraticClosedBound
+import GowersSzemeredi.Proofs18QuadraticIterationParameters
+import GowersSzemeredi.Proofs18DensityIterationPowerBound
+import GowersSzemeredi.Proofs18QuadraticDoubleExponential
+import GowersSzemeredi.Proofs08FourTermTheorem
+import GowersSzemeredi.Proofs08FourTermColoring
 
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
