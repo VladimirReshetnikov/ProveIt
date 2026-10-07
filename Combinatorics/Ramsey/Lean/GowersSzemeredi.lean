@@ -303,6 +303,8 @@ import GowersSzemeredi.Proofs05CoverMass
 import GowersSzemeredi.Proofs05WeightedPhaseTransfer
 import GowersSzemeredi.Proofs05HighCorrelationAssembly
 import GowersSzemeredi.Proofs05HighCorrelationScale
+import GowersSzemeredi.Proofs05ThresholdFreeScale
+import GowersSzemeredi.Proofs05ThresholdFreeCorollary
 
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue

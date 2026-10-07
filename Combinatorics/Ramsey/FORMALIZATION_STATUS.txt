@@ -12,8 +12,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 458 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 2,936 public Gowers theorems and found only propext,
+  All 460 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 2,954 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 107 exact
   companion proofs and 13 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -1095,9 +1095,20 @@ Arbitrary-modulus progression moments for Corollary 5.8
   alpha >= 3*(1-delta)/(2L). Its local partition assumptions are explicit.
   Proofs05HighCorrelationScale proves each comparable parent has positive
   cardinality and, in the strict high branch, 3*N < 8*L*M*|P_i|.
-  Corollary 5.8 remains open: the all-degree phase-localization estimates
-  and final target-length rounding still need formal proofs. The new
-  conditional assembly does not count as an exact catalogue companion.
+  Proofs05ThresholdFreeScale rounds the exact catalogue target up to L.
+  If L >= 2, it proves (4L)^K < N/M and L^3 < N/M, and shows that the
+  high-correlation parent bound pays for the local budget (2L)^(K/2).
+  Proofs05ThresholdFreeCorollary now proves the entire original Corollary
+  5.8 interface conditionally on ThresholdFreePolynomialLocalization in
+  every positive degree. Singleton, variance, and high-correlation cases
+  retain the catalogue length and density gain, with no added scale
+  hypothesis. The explicitly stated localization input asks for proper
+  cells of length >= L and phase error <= 1/(4L), whenever the proper
+  parent has length >= (2L)^(K_k/2).
+  Corollary 5.8 remains open until this analytic input is proved in every
+  degree. Report277 supplies a stronger written localization budget; the
+  affine base can also use Lemma 2.3 directly at a new diameter scale.
+  The conditional assembly does not count as an exact catalogue companion.
 
 Reproducible checks (from repository root)
   python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.Audit
