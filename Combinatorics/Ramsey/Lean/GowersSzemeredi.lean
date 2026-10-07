@@ -410,6 +410,8 @@ import GowersSzemeredi.Proofs13QuadraticEndpoints
 import GowersSzemeredi.Proofs13UntrimmedSelection
 import GowersSzemeredi.Proofs13UntrimmedRecurrence
 import GowersSzemeredi.Proofs13DensityIndependentRecurrence
+import GowersSzemeredi.Proofs13SmallRecurrenceScale
+import GowersSzemeredi.Proofs13SingletonRecurrence
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 
