@@ -143,6 +143,9 @@ Read on 6 October 2026 in the internal format; quoted verbatim.
   Kotěšovec's book. No closed form. The source's `b` gives one; at 150
   digits it agrees with all 105 printed digits, and continues
   `…3354635 57942…` (the write prints 110 decimals, truncated, in Remark 1.2).
+  (Corrected after the independent check of 7 October 2026: the printed
+  digits end `…33546355` and the constant continues `79420…`; the first
+  wording put the break one digit early.)
   **This is a closed form, not a correction. Nothing was submitted to the
   OEIS.**
 - **A238258** (revision #10): `q`, as "lim n->infinity
@@ -197,6 +200,35 @@ monotonicity onset explicit; on Question 5, that A002465 links Arshon's 1936
 paper and cites Ahrens (1921), neither read, and that Kotěšovec's book was
 unreachable at the source's address. **Nothing in the source was found to be
 wrong.**
+
+## Independent check of the write (7 October 2026)
+
+An adversarial check made by the intake after the write (`e1db00e99`), with
+its own code, after fetching again A002465 (#95) and its b-file, A238260 (#6),
+A238258 (#10), A256500 (#36), A226775 (#38) and Santos's paper.
+
+- **Remark 1.2**: quotations verbatim; `b`, `q`, `r`, `−w_0` agree with all 105
+  printed digits of A238260, A238258, A256500, A226775 (160-digit
+  evaluation); the 110 printed decimals of `b` are its truncation; the three
+  Lambert identities hold; the Section 1 table is correctly rounded; all 376
+  b-file terms agree with the rook recurrences and the convolution (8), the
+  Stirling form (10) for `n ≤ 40` and six large `n`; direct cell enumeration
+  gives `B_0, …, B_6`.
+- **Proposition 2.2**: the proof holds; each inequality checked for
+  `1 ≤ n < 120`; `B_{n+1}/B_n ≥ 4` for `1 ≤ n ≤ 374`.
+- **Remark 7.2**: (a)–(d) hold; (e) the master equation re-derived identically
+  from the Stirling form of `Φ_J` and `e_1 = h`,
+  `e_2 = −((h²−h)/2 + 1/12 + c_1)/A` (SymPy).
+- **Section 1.1**: archive facts, the 49 delivered label numbers, the scaled
+  residuals, the `P_1, P_2, P_3` check at `n = 4000, 4001` and the order-4
+  extrapolation (through three points: 8.115677, 6.776466) reproduced; the
+  book's address again answers 404.
+- **Corrected**: Section 1.1 described Santos's Theorem 6 as the colour
+  convolution (8); it is the closed double Stirling sum (Santos's (5), at
+  `k = n` our (10)), and (8) is the identity (6) of its proof (dated note).
+  Above, the digit boundary of A238260 (dated note).
+
+The check is recorded at the end of Section 9.
 
 ## Checks made at intake
 
@@ -422,7 +454,9 @@ B=$(mktemp -d); cp article.tex "$B/"; cd "$B"
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The committed PDF was built this way with MiKTeX on 6 October 2026: 20
+The committed PDF was built this way with MiKTeX on 6 October 2026, and
+rebuilt after the independent check of 7 October 2026 (label numbers
+unchanged, aux files compared): 20
 pages; no errors or warnings, no undefined references or citations, no
 multiply defined labels, no duplicate PDF destinations, no overfull or
 underfull boxes (the delivered text also builds without any, 13 pages). The
