@@ -430,6 +430,8 @@ import GowersSzemeredi.Proofs16DenseMultilinearBox
 import GowersSzemeredi.Proofs16CorollaryFromInduction
 import GowersSzemeredi.Proofs16MultilinearProduct
 import GowersSzemeredi.Proofs16InductionAssembly
+import GowersSzemeredi.Proofs16LargePieceMass
+import GowersSzemeredi.Proofs16SpectrumInduction
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 

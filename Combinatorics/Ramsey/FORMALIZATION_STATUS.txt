@@ -12,8 +12,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 607 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 3,892 public Gowers theorems and found only propext,
+  All 611 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 3,922 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 113 exact
   companion proofs and 7 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -1824,6 +1824,24 @@ Finite closing argument for Theorem 16.2
   Its implication to the exact fixed-dimension Theorem 16.2 is now proved,
   with piece mass N^k/s(theta,gamma,k) and the original iteration parameter.
   No large-piece existence premise is discharged by this conditional result.
+
+Transport and spectrum inputs for the large-piece construction
+  Proofs16Translations transports multilinear functions, proper boxes,
+  partitions, and multiply-linear relations through arbitrary coordinate
+  translations, preserving all widths, cardinalities, and cover parameters.
+  Proofs16GoodDomainTransport identifies the cardinality of the selected
+  good domain with the common-base count, verifies every translated vertex
+  lies in the original domain, and transports the all-ones graph into the
+  original relation without loss of mass or multiple-linearity parameters.
+  Proofs16LargePieceMass proves that the corrected theta_2 density meets
+  the final extraction budget: its inverse is at most s(theta,gamma,k).
+  Consequently a proved unit cover for the all-ones graph would yield the
+  large piece required by Section16LargePieceAt in dimension k+1.
+  Proofs16SpectrumInduction proves the spectrum cardinality bound
+  delta^-2*N^k by Parseval and its relational delta-product property by
+  Lemma 14.3. The preceding-dimensional Theorem 16.2 now applies to this
+  spectrum with exactly the parameters of Lemma 16.6 and a threshold
+  uniform in the input domain. The all-ones unit cover remains unresolved.
 
 Reproducible checks (from repository root)
   python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.Audit
