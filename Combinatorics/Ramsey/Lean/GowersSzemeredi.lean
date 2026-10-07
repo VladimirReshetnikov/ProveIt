@@ -233,6 +233,9 @@ import GowersSzemeredi.Proofs08OddFrequencyProgression
 import GowersSzemeredi.Proofs17QuadraticLocalization
 import GowersSzemeredi.Proofs18QuadraticPrimeModel
 
+import GowersSzemeredi.Proofs18LinearFourierObstruction
+import GowersSzemeredi.Proofs18QuadraticCorrelation
+
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 
