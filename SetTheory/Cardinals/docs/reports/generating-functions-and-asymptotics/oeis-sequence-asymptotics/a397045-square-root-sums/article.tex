@@ -250,7 +250,13 @@ text reports.
  $\phi=F$, $\lambda=1$, $\beta=t(x)$: (b) and (c) are its display after
  \eqref{srs:eq:sector}, (d) follows from~\eqref{srs:eq:sector}, (i) holds
  because $Z-1\sim Z=e^F$ on the narrow wedge, and (ii) is the radial
- bound~\eqref{srs:eq:radial} on every fixed sector.
+ bound~\eqref{srs:eq:radial} on every fixed sector. (Corrected after the
+ independent check of 7~October 2026: the letters $\lambda$ and~$\beta$ are
+ not those of~\cite[Theorem~4.1]{BJM}, which writes the multiplier~$\chi$
+ and the inverse function of~$-\varphi'$ as~$\psi$; its conclusion carries
+ $\chi(\psi(x))/(\psi(x)\sqrt{2\pi\varphi''(\psi(x))})$, and here
+ $\varphi=F$, $\chi=1$, $\psi(x)=t(x)$. In~\cite{BJM}, $\lambda$ and~$\beta$
+ are parameters of their Theorem~1.1. The hypotheses are as stated.)
 \item Dong, Robles, Zaharescu and Zeindler~\cite{DRZZ}, arXiv:2412.20101v1,
  Section~6: the Mellin integrand $\Gamma(s)\zeta(s+1)\zeta(s)/\zeta(2s)$ of
  their (6.10) for partitions into squarefree parts, the explicit formula over
@@ -434,6 +440,14 @@ $\sqrt k$ with integers $k>1$ (the comment's reading), and put $a(0)=1$.
  sum retained, the comment is exactly Theorem~\ref{srs:thm:log}'s identity
  $a(n)=N(n+1)$, and with \emph{nonsquare} radicands $k>1$ it is too, since
  then $m_1=0$ always (the source's two correct alternatives).
+ \textup{(Added after the independent check of 7~October 2026: the
+ non-equivalence does not follow from the value at $n=1$, where the two
+ readings agree, with $3$ values with the empty sum and $2$ without. It
+ follows from~\eqref{srs:eq:integermodel}: the two counts differ by
+ $\sum_{i=0}^{n-2}a(i)\ge1$ for every $n\ge2$, with the same difference
+ whether the empty sum is counted in both or in neither. The value
+ $\mathcal I_1-1=2$ shows instead that without the empty sum the comment
+ fails as a formula for $a(n)$ under either reading.)}
 \item The same bookkeeping gives $a(n+1)-a(n)=N(n+2)-N(n+1)$, the number of
  nonunit sums in $[n+1,n+2)$, and this is at least one for every $n\ge0$:
  for $n\le6$ the data show it, and for $n+1\ge5\sqrt2$ the sums
@@ -1104,6 +1118,40 @@ retrieved by the write (the source's ``A linked table \dots{} was not
 successfully retrieved'' describes 3~October 2026), and Kohlbecker's paper
 was read in the publisher's PDF (Section~\ref{srs:sec:provenance}). The
 entry's cumulative comment is corrected in Remark~\ref{srs:rem:comment}.
+\end{writenote}
+\begin{writenote}[Independent check of the write, 7 October 2026]
+An adversarial check made by the intake after the write (commit
+\file{b1a39e80f}) re-derived the statements marked [write] with its own
+code, after fetching again A397045 (revision~\#27) and its b-file, the
+publisher's PDF of~\cite{Kohlbecker} (pp.~346--347 and~362--363 rendered),
+\cite{BJM} (v3, Section~4 rendered) and~\cite{DRZZ} (v1, Section~6).
+\emph{The conjecture} (Remark~\ref{srs:rem:oeis}(a)). The proof of
+Theorem~\ref{srs:thm:log} re-done (the exact identity, the Rankin bound at
+$t_0$, the Chebyshev bound at $t_0(1+Dt_0)$); Kohlbecker's saddle relation
+$u=\alpha\Gamma(\alpha+1)\zeta(\alpha+1)s_u^{-\alpha-1}L(1/s_u)$ with
+$\alpha=2$, $L=c$, and his $P(u)=\sum_{\nu_i\le u}p(\nu_i)=N_{\le}(u)$ here
+(every $p(\nu_i)=1$ by linear independence); $K=2.144717522977472648\ldots$
+three ways. \emph{Remark~\ref{srs:rem:comment}.} The proof
+of~\eqref{srs:eq:integermodel} re-done; by brute force over multisets of
+radicands (40-digit values) $\mathcal I_n=3,8,21,46,104,211$ and the
+squarefree counts $3,7,17,35,76,148$ for $n\le6$, and the shell counts
+$a(1),\dots,a(7)$ directly from all positive radicands; the covering
+constants of~(c) ($\sqrt3-\sqrt2=0.3178$, $5(\sqrt3-\sqrt2)-\sqrt2=0.175>0$,
+while $M=4$ would fail). One gap in the reasoning of~(b), with a correct
+conclusion, is closed by a dated note there. \emph{Remark~\ref{srs:rem:transseries}.}
+(a)--(d) re-derived against the volume, including the linear-interpolation
+identity of~(b) and the chart of~(c). \emph{Sources.} Every statement about
+the entry, the b-file (75 terms, the first 35 equal to the data, strictly
+increasing), Kohlbecker, \cite{BJM} and~\cite{DRZZ} confirmed, except that
+the write named the letters of~\cite[Theorem~4.1]{BJM} wrongly (corrected in
+Section~\ref{srs:sec:provenance}). \emph{Notes.} The diagnostics table to
+every printed digit and the write's extension ($-0.002773$, $-0.002469$,
+$-0.002139$ at $n=50,60,75$; ratios to $t$: $-0.0395$, $-0.0080$, $-0.0064$
+at $n=5,35,75$) from its own float64 code; $|E(u)|/u\le0.8597$ at the jumps
+$\sqrt d$, $d\le10^6$. \emph{Provenance.} Archive facts, the 90 delivered
+label numbers and 84 references (aux of a build of the delivered text, which
+indeed reports duplicate destinations \file{table.1}, \file{table.2})
+confirmed.
 \end{writenote}
 
 \appendix
