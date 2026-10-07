@@ -5,7 +5,8 @@ Scope
   bound is claimed. Smaller four- and five-term thresholds are proved below.
   The source catalogue contains all 120 unique numbered theorem, lemma,
   proposition, and corollary headings in sz-thm-gowers-proof.tex.
-  There are 114 checked exact companion proofs and 6 open statements.
+  There are 114 exact companion proofs and 6 open statements. 113 of the
+  companions are kernel-checked; Lemma 16.10's awaits the next full audit.
   The JSON ledger records every statement, its TeX heading lines, its Lean
   definition, and related results. Conditional implications, restricted cases,
   and counterexamples are not counted as proofs of the full statement.
@@ -24,6 +25,12 @@ Verification at this checkpoint
   the exact Theorems 1.2, 7.1, and 7.2 companions. Their dependencies pass
   the transitive axiom check. The earlier workstation-only validation of
   Theorem 1.2 is now confirmed by the full repository audit.
+  That audit predates the Lemma 16.10 repair below, and its 113/7 count is
+  the pre-repair count. For the repair, only Section16.lean (with the
+  renamed printed encoding and the repaired statement) and 61 of its
+  upstream modules were compiled locally. Proofs16Lemma10 and the retargeted
+  counterexample have not yet been kernel-checked; full verification is
+  deferred to the next complete audit run.
 
 All-scale integer geometry for Section 13
   Proofs07AllScalesStepSpan retains a common positive integer step ratio
