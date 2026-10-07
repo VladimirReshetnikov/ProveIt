@@ -12,8 +12,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 215 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 1,966 public Gowers theorems and found only propext,
+  All 216 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 1,973 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 101 exact
   companion proofs and 19 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -467,6 +467,16 @@ New Section 18 infrastructure
   Proofs18UniformInterval:
     Corollary 3.6 now supplies both an integer-interval uniform stopping case
     and a uniform stopping case in a fresh cyclic model of a proper progression.
+
+Verified Section 13 exponent margins
+  Proofs13ExponentMargins identifies the common Fourier cutoff exactly as
+  2^(-59)*alpha^176 and bounds its Stage 13.4 spectrum parameter by Q/2.
+  The target exponent 2^(-13Q) is strictly smaller than the product of the
+  Stage 13.4 length exponent and Stage 13.5 recurrence exponent, for every
+  permitted positive integer q. This preserves the paper's target exponent
+  and supplies room to absorb constants and integer rounding at large N.
+  It does not yet discharge the numerical budgets of Stage 13.6 or construct
+  Stage 13.5. No catalogue obligation is newly counted by these estimates.
 
 Reproducible checks (from repository root)
   python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.Audit

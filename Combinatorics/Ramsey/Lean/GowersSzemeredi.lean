@@ -152,6 +152,7 @@ import GowersSzemeredi.Proofs13EdgeModels
 import GowersSzemeredi.Proofs13EdgeDensity
 import GowersSzemeredi.Proofs13UniformEdgeModels
 import GowersSzemeredi.Proofs13BilinearExtraction
+import GowersSzemeredi.Proofs13ExponentMargins
 import GowersSzemeredi.Proofs14Fourier
 import GowersSzemeredi.Proofs14Configurations
 import GowersSzemeredi.Proofs14Arrangements
