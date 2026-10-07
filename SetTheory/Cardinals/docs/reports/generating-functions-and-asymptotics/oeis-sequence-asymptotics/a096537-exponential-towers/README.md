@@ -115,6 +115,40 @@ does; the common Lambert base (Part I (14), Part II (220)) is an instance of
 (107), (219), (221), (222) are analogues of the first term of the volume's
 operator series, with the Parts' own error bounds.
 
+## Independent check of the write (7 October 2026)
+
+An independent adversarial check of the write (`cff2b48aa`) reconstructed its
+additions from the commit's diff, rebuilt both delivered manuscripts and diffed
+them against the Parts, and read A096537 (#8) and A096542 (#11) again.
+
+- **Confirmed, checked hardest:** both refutations. The check computed `a_n`
+  and the A096542 rows by its own recurrence
+  `P_{n+1}(y) = y Σ_k C(n,k)(k+1) P_k(y+1) P_{n−k}(y)` (from
+  `F_y = exp(x y F_{y+1})`), with `T(n,k)` recovered by exact interpolation in
+  `y`. The live terms (15) and triangle entries (39) agree;
+  `T(n,1) = n·a_{n−1}` for `n ≤ 11`, and `T(n,1) = n·a_n` only at `n = 1`.
+  Stirling turns Theorem 1.1 into the limit `2√(2π/ρ)`;
+  `√(2/(πρ)) = 1.003552515326411079545…` confirms the truncation and the
+  rounding. Fits of the check's own values to `n = 600` in powers of
+  `n^(−1/3)` give `c_0 = 1.00356`, `c_1 = −0.437`.
+- **Confirmed:** the quoted OEIS lines (verbatim); the Lambert base as a
+  `p0:prop:factorial-core` instance (`κ = 2`, `d = −(2 + log ρ)`); the staircase
+  instances; the numbering (Part I's 135 labels unchanged, including Sections 1
+  and 13 where the remarks sit; Part II's 136 shifted by 14 sections and 109
+  equations; 19 added); the bibliography merge (both Parts' details kept;
+  Report 193's `dlmf9` wording is subsumed by Report 192's Section 9.9(i)); the
+  three unshipped certificate files as byte copies; the 49 staged files; both
+  exact checkers and Part II's interval tests (outputs equal to the records).
+- **Qualified (dated note in Remark 1.4):** the sentence saying that a
+  short-range fit could not have distinguished the two amplitudes holds only
+  for fits that omit the scale `n^(−1/3)`. With that scale, `n ≤ 100` already
+  gives `c_0 = 1.0036`; fits in powers of `1/n` or `n^(−1/2)` give 0.95–0.99 on
+  every range up to `n = 300`. At `n = 2000` the intake's 0.9695 is 3.4 % below
+  the limit (the remark said about 3.5 %).
+
+The check's record is the last paragraph of the front-matter section "What was
+checked, and what was not". Its code and outputs are outside the repository.
+
 ## Relation to the repository
 
 No other placed report treats A096537, A096542, continued exponentials or
@@ -276,7 +310,8 @@ B=$(mktemp -d); cp article.tex "$B/"; cd "$B"
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The committed PDF was built this way with MiKTeX: 60 pages; no errors or
+The committed PDF was rebuilt this way with MiKTeX after the independent check
+(7 October 2026): 60 pages, as before; no errors or
 warnings, no undefined references or citations, no multiply defined labels,
 no duplicate PDF destinations, no overfull or underfull boxes. The delivered
 sources, built the same way, give 24 and 29 pages.
