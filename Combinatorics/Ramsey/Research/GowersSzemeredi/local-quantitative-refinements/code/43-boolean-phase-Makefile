@@ -1,0 +1,18 @@
+PYTHON ?= python3
+PDFLATEX ?= pdflatex
+ARTICLE := boolean_phase_integration
+
+.PHONY: all pdf check clean
+all: pdf
+
+pdf:
+	$(PDFLATEX) -interaction=nonstopmode -halt-on-error $(ARTICLE).tex
+	$(PDFLATEX) -interaction=nonstopmode -halt-on-error $(ARTICLE).tex
+
+check:
+	$(PYTHON) checks/verify.py
+
+clean:
+	rm -f $(ARTICLE).aux $(ARTICLE).log $(ARTICLE).out $(ARTICLE).toc
+	rm -f $(ARTICLE).fls $(ARTICLE).fdb_latexmk $(ARTICLE).synctex.gz
+	rm -rf checks/__pycache__
