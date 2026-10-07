@@ -1,5 +1,6 @@
 /- Modified for ProveIt: import Lean 4.32 compatibility declarations.
- Use older set-comprehension and discrete-subgroup names; statements unchanged. -/
+ Use older set-comprehension and discrete-subgroup names.
+ Use the older unconditional Measure.map_smul theorem; statements unchanged. -/
 import OAI.Compat.BigOperators
 import Mathlib.MeasureTheory.Measure.Prod
 import OAI.Combinatorics.Progressions.Estimates.LinearLiftSheetCompatibility
@@ -301,7 +302,7 @@ theorem normalizedChartReference_map
       (latticeSection (standardEuclideanLattice D) W)) ≠ 0 :=
     (ENNReal.ofReal_pos.mpr (ZLattice.covolume_pos _ volume)).ne'
   rw [normalizedChartReference,
-    Measure.map_smul _ (normalizedLatticeQuotient_measurable W b hb).aemeasurable,
+    Measure.map_smul,
     normalizedLatticeQuotient_map_restrict W b hb μ hΩm hΩ, smul_smul,
     ENNReal.inv_mul_cancel hc ENNReal.ofReal_ne_top, one_smul]
   rfl
