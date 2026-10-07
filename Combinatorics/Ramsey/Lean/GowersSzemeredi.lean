@@ -338,6 +338,10 @@ import GowersSzemeredi.Proofs13FejerRelations
 import GowersSzemeredi.Proofs13FejerSurvival
 import GowersSzemeredi.Proofs13FejerDiagonal
 import GowersSzemeredi.Proofs13FejerSignal
+import GowersSzemeredi.Proofs13FeatureRelations
+import GowersSzemeredi.Proofs13FeaturePolynomial
+import GowersSzemeredi.Proofs13FeatureVertices
+import GowersSzemeredi.Proofs13FeatureZeroCount
 
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
