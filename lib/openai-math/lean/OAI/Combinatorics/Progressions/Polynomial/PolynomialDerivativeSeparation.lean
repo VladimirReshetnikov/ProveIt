@@ -1,3 +1,5 @@
+/- Modified for ProveIt: use MvPolynomial.coeff_zero explicitly on Lean 4.32.
+Mathematical statements are unchanged. -/
 import Mathlib.Algebra.MvPolynomial.PDeriv
 import Mathlib.Tactic
 
@@ -39,7 +41,7 @@ theorem polynomial_eq_zero_of_pderiv_closed
       exact hsteps n
   intro p hp
   ext α
-  simpa only [AddMonoidAlgebra.coeff_zero, Finsupp.zero_apply] using hcoeff α p hp
+  simpa only [MvPolynomial.coeff_zero] using hcoeff α p hp
 
 theorem polynomial_submodule_eq_bot_of_pderiv_closed
     (W : Submodule ℚ (MvPolynomial σ ℚ))

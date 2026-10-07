@@ -1,3 +1,5 @@
+/- Modified for ProveIt: distribute polynomial coefficients over finite sums
+explicitly on Lean 4.32. Mathematical statements are unchanged. -/
 import OAI.Combinatorics.Progressions.Polynomial.RealPolynomialEvaluationMass
 
 namespace OAI
@@ -17,8 +19,8 @@ theorem mapPolynomialCoefficients_coeff {I R S : Type*} [CommRing R] [CommRing S
     [Algebra R S] (L : S →ₗ[R] R) (P : MvPolynomial I S) (d : I →₀ ℕ) :
     (mapPolynomialCoefficients L P).coeff d = L (P.coeff d) := by
   by_cases hd : d ∈ P.support
-  · simp [mapPolynomialCoefficients, coeff_monomial, hd]
-  · simp [mapPolynomialCoefficients, coeff_monomial, hd, notMem_support_iff.mp hd]
+  · simp [mapPolynomialCoefficients, MvPolynomial.coeff_sum, coeff_monomial, hd]
+  · simp [mapPolynomialCoefficients, MvPolynomial.coeff_sum, coeff_monomial, hd, notMem_support_iff.mp hd]
 
 theorem mapPolynomialCoefficients_degree {I R S : Type*} [CommRing R] [CommRing S]
     [Algebra R S] (L : S →ₗ[R] R) (P : MvPolynomial I S) :
