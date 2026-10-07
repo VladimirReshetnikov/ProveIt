@@ -1,0 +1,18 @@
+.PHONY: all pdf check figures clean
+
+all: pdf
+
+pdf:
+	latexmk -pdf -interaction=nonstopmode -halt-on-error -file-line-error -no-shell-escape gowers_fourier_arrangements.tex
+
+check:
+	python3 code/verify_exact_arrangements.py
+	python3 code/verify_translated_fejer.py
+	python3 code/verify_norm_limits.py --output code/norm_verification.json
+	python3 code/verify_series.py
+
+figures:
+	python3 code/make_figures.py
+
+clean:
+	latexmk -c gowers_fourier_arrangements.tex

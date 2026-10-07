@@ -1,0 +1,15 @@
+.PHONY: all paper check clean
+
+ARTICLE = ramsey_torsion_exact_restriction
+
+all: paper check
+
+paper:
+	latexmk -pdf -interaction=nonstopmode -halt-on-error $(ARTICLE).tex
+
+check:
+	python3 code/run_checks.py
+
+clean:
+	latexmk -c $(ARTICLE).tex
+	rm -rf code/__pycache__
