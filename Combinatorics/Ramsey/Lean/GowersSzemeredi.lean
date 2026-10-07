@@ -379,6 +379,9 @@ import GowersSzemeredi.Proofs13EndpointFrequencyAddition
 import GowersSzemeredi.Proofs13EndpointGoodSet
 import GowersSzemeredi.Proofs13EndpointGlobalFourier
 import GowersSzemeredi.Proofs13EndpointPrintedTheorem
+import GowersSzemeredi.Proofs13ImprovedPrintedComparison
+import GowersSzemeredi.Proofs13ImprovedPrintedEndpoint
+import GowersSzemeredi.Proofs13ImprovedPrintedBounds
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 

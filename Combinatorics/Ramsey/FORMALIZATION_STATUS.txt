@@ -12,8 +12,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 533 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 3,519 public Gowers theorems and found only propext,
+  All 536 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 3,523 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 109 exact
   companion proofs and 11 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -1417,6 +1417,25 @@ Completed Theorem 13.12 with its exact printed bounds
   catalogue type for all 0<alpha<=1, including both printed bounds and
   every structural condition. The full axiom audit now counts 109 exact
   companion proofs and 11 open catalogue statements.
+
+Improved printed bounds for Theorem 13.12
+  Proofs13ImprovedPrintedComparison uses the overlap alpha<=332/333.
+  For t=1/alpha, Bernoulli gives t^15>=347/332, hence t^255>=2
+  and 2*t<=t^256. Raising to 2^53 yields the exponent comparison
+  (2/alpha)^(2^53) <= (1/alpha)^(2^61).
+  Proofs13ImprovedPrintedEndpoint uses the global square for alpha>332/333,
+  whose density is greater than 1/333 and hence greater than the required
+  (alpha/2)^(2^42). The original Fourier threshold is retained.
+  Proofs13ImprovedPrintedBounds combines both ranges uniformly for every
+  0<alpha<=1. theorem_13_12_with_improved_printed_bounds gives
+    common side length >= N^((1/2)^((1/alpha)^(2^61))),
+    relative Fourier-set density >= (alpha/2)^(2^42).
+  These simultaneously improve the printed top powers 2^70 and 2^76.
+  All structural conclusions remain, including proper progressions,
+  equal lengths, common nonzero step, and bilinearity on the whole square.
+  The full audit includes all three improvement modules. This strengthens
+  Theorem 13.12; propagation through the remaining Sections 16 and 18 is
+  still required before claiming an improved final Szemeredi bound.
 
 Reproducible checks (from repository root)
   python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.Audit
