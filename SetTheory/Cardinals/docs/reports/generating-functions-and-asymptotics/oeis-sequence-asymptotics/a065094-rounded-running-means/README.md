@@ -170,13 +170,52 @@ for `n ≤ 2500`, where the envelope is about `√n/2 ≈ 25`; averages over
   the certified 69 digits; Route B below (six certificates byte-identical,
   normal = optimized, 19 s).
 
+## Independent check of the write (7 October 2026)
+
+An adversarial check made by the intake after the write (`1ebd8c33c`), with
+its own code, after fetching again A065094 (#19), A065095 (#20), A376995
+(#16), the names of A160617, A160618, and both b-files.
+
+- **Remark 1.4.** Every quotation, revision, date and author line confirmed
+  (Kotěšovec's comment is quoted in two fragments; the elided words are "It
+  follows that the constant above is equal to"). Both b-files byte-identical
+  to the shipped ones; the check's own orbits agree with all 2000 terms.
+- **The conjectures.** The proof chain of Corollary 1.3 re-read. By a route
+  different from the brackets (9) — `A = 1 + Σ w_k ε_k` (5) with
+  `w_k = k(Q_k − Q_{k+1})` from a Miller backward recurrence for the minimal
+  solution, normalized by `Q_1 = e E_1(1)` — `A_±` to 80 digits, agreeing with
+  the `N = 10000` brackets to `3·10⁻⁸²`. The four tabulated endpoints are the
+  outward 70-place roundings of the exact brackets; the 69-digit common
+  truncations hold; Kotěšovec's four decimals (50, 48, 49, 47 places) and the
+  source's 48-place values are truncations; `N/T_N < 8.0967911913136482·10⁻⁸⁴`.
+- **Coefficients.** `c_1, …, c_6` by an ansatz in the three-term recurrence
+  (14) itself, not through the operator (40); `b_1, …, b_5`, (74), (75), the
+  prefactor shift, `c_1 = d_1 − 1`, `c_2 = d_2 − d_1 + 3/4`, the ratio
+  expansion (63): all agree. `T_N` by the positive sum equals (53) at
+  `N = 150, 3000`; the `N = 3000` brackets agree with `N = 10000` to 40 places.
+- **Residual diagnostic** (Section 13) reproduced: 3.294 at `n = 946`, 4.073
+  at `n = 1528`, `H_2500 = 24.50`, the twelve averages; both orbits satisfy
+  the envelopes (30), (31) for `n ≤ 2500`.
+- **Remark 10.2.** (a)–(e) re-derived against the volume (including
+  `z(L) = −2D²/Y²` and `L_c = (1 + log 2)/2`); **one correction**: the Lean
+  declaration for (c) is `Fabius.staircase_round`, not `Fabius.staircase_ceil`
+  (dated note in the article; "Relation to the repository" below).
+- **Provenance.** Archive facts, staged bytes, the 101 delivered label numbers
+  and 63 references, Route B (six certificates byte-identical, normal =
+  optimized, 20 s) confirmed. No error found in the source's proofs.
+
+The check is recorded at the end of Section 13.
+
 ## Relation to the repository
 
 **Formal status.** No statement is formalized, and placement in the
 collection confers no formal status. The staircase arithmetic of Remark
-10.2(a), (c) is formalized generically as `Fabius.staircase_ceil` in
+10.2(a) is formalized generically as `Fabius.staircase_ceil`, and that of
+10.2(c) (`p0:thm:staircase`(3), nearest-integer recovery) as
+`Fabius.staircase_round`, both in
 `Analysis/FabiusFunction/Lean/FabiusFunction/StaircaseInversion.lean`;
-nothing about `a_n^±` is.
+nothing about `a_n^±` is. (Corrected after the independent check of 7
+October 2026: the write named only `Fabius.staircase_ceil` for both.)
 
 **The transseries volume**
 (`Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/`),
@@ -335,7 +374,9 @@ B=$(mktemp -d); cp article.tex "$B/"; cd "$B"
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The committed PDF was built this way with MiKTeX on 7 October 2026: 23 pages;
+The committed PDF was built this way with MiKTeX on 7 October 2026, and
+rebuilt after the independent check of the same day (label numbers
+unchanged, aux files compared): 23 pages;
 no errors or warnings, no undefined references or citations, no multiply
 defined labels, no duplicate PDF destinations, no overfull or underfull boxes
 (the delivered text also builds without any, 19 pages). The article keeps the
