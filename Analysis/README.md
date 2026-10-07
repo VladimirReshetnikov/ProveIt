@@ -1,6 +1,7 @@
 # Analysis
 
-Formal analysis developments.  The exact identity projects have paired Lean
+Analysis developments: formal Lean and Coq projects, and research corpora that
+are not (yet) formalized.  The exact identity projects have paired Lean
 and Coq proofs; the Fabius project is currently a Lean statement formalization.
 
 - [`TrigonometricIdentities/`](TrigonometricIdentities/) contains the
@@ -15,6 +16,14 @@ and Coq proofs; the Fabius project is currently a Lean statement formalization.
   its signed global extension, exact rational dyadic arithmetic, and the
   statements of every result in arXiv:1702.06487v3.  Proofs are the next
   formalization phase.
+- [`Polylogarithms/`](Polylogarithms/) collects Vladimir Reshetnikov's PolyLog
+  research programme, moved from the private Smithereens repository: eight
+  articles and thirty-one reports on multiple polylogarithms at roots of unity,
+  the polylogarithm–polygamma bridge, the Γ-value lattice, polygamma at CM
+  points, generalized Stieltjes constants and their antiderivatives and
+  parameter derivatives, polylogarithm ladders, Clausen values and the
+  Herglotz function. Results are classical, derived or numerically verified,
+  as each document states; nothing is formalized.
 
 The Coq developments are mathematical ports rather than generated
 translations. The tiny-exponent proof uses `coq-interval`; the trigonometric
