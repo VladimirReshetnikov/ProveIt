@@ -1,0 +1,259 @@
+% Created (UTC): 2026-06-21T04:03:14Z
+% Repository HEAD: abd2e7116aa9b8eeaf0206507ec9181346bf65b3
+% Companion to: src/PolyLog/docs/article/gaussian-eisenstein-double-polylogs.tex
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs}
+\usepackage{microtype}
+\emergencystretch=3em
+\hbadness=4000
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\DeclareMathOperator{\Li}{Li}
+\DeclareMathOperator{\Cl}{Cl}
+\DeclareMathOperator{\Real}{Re}
+\DeclareMathOperator{\Imag}{Im}
+\DeclareMathOperator{\lcm}{lcm}
+\DeclareMathOperator{\ord}{ord}
+\newcommand{\iu}{\mathrm{i}}
+\newcommand{\rr}{\rho}
+\newcommand{\code}[1]{\texttt{\small #1}}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\title{Completing the level-3 and level-4 frontier:\\
+the $w=1$ mixed cube-root double polylogarithms}
+\author{Vladimir Reshetnikov}
+\date{2026-06-21}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\small
+Research report. Created (UTC) 2026-06-21T04:03:14Z; repository \texttt{HEAD}
+\texttt{abd2e7116aa9b8eeaf0206507ec9181346bf65b3}.\\
+Companion to \emph{Multiple polylogarithms at Gaussian and Eisenstein arguments}
+(\texttt{gaussian-eisenstein-double-polylogs}).
+\end{center}
+
+\begin{abstract}
+The article \emph{Multiple polylogarithms at Gaussian and Eisenstein arguments} left one piece
+unfinished: the \emph{mixed} cube-root points $\Li_{a,b}(\rr^2,\rr)$ (and the Gaussian
+$\Li_{a,b}(\iu,-\iu)$), where $w=z_1z_2=1$ degenerates the accelerated evaluator. This report builds a
+robust $w=1$ evaluator---a smooth-correction identity accelerated by Wynn's $\rho$-algorithm---generates
+the previously inaccessible values to $500$ digits, reduces them to explicit closed forms through
+weight~$4$, and completes the full level-3 and level-4 depth-2 double-shuffle dimension. The headline:
+in \emph{both} towers the mixed $w=1$ point adds, beyond the article's survivors, exactly \emph{two} new
+depth-2 constants---a real $\Real\Li_{4,1}$ direction at weight~$5$ and an imaginary $\Imag\Li_{5,1}$
+direction at weight~$6$---in identical positions.
+\end{abstract}
+
+\section{The one remaining piece}\label{sec:intro}
+
+The companion article closed its level-3 (Eisenstein) and level-4 (Gaussian) double-shuffle dimension
+computations with one explicitly flagged gap. In the Eisenstein run the \emph{mixed} cube-root points
+\[
+  \Li_{a,b}(\rr^2,\rr),\qquad \Li_{a,b}(\rr,\rr^2),\qquad \rr=e^{2\pi\iu/3},
+\]
+were never folded in, because there $w=z_1z_2=\rr^3=1$, and (quoting the article)
+\begin{quote}\itshape
+both the Lerch-plus-Wynn evaluator and a direct cumulative-sum evaluator stall there at ${\sim}8$
+digits---the period-three, non-oscillating tail defeats Wynn's $\varepsilon$-algorithm \dots\ Folding
+the mixed cube-root points in (for the full level-3 frontier) requires a period-three-aware accelerated
+evaluator, or Wolfram; it is the one remaining piece.
+\end{quote}
+The Gaussian run skipped its own $w=1$ point $(\iu,-\iu)$ for the same reason. This report builds the
+missing evaluator, generates the previously inaccessible values to several hundred digits, and uses
+them to (i)~harvest closed forms for the mixed-point values and (ii)~complete the full level-3 and
+level-4 depth-2 double-shuffle dimension.
+
+Throughout, the convention is
+\begin{equation}\label{eq:conv}
+  \Li_{a,b}(z_1,z_2)=\sum_{n_1>n_2\ge1}\frac{z_1^{n_1}z_2^{n_2}}{n_1^{a}\,n_2^{b}},
+\end{equation}
+which is \code{MultiplePolyLog[\{a,b\},\{z1,z2\}]} in Wolfram~15 (exponents first).
+
+\section{Why the standard evaluator degenerates at \texorpdfstring{$w=1$}{w=1}}\label{sec:why}
+
+With the convention \eqref{eq:conv}, the accelerated evaluator of the article writes the inner tail as
+a Lerch transcendent and sums the \emph{outer} series with an acceleration factor $w^n=(z_1z_2)^n$. At
+the mixed points $w=1$, that factor is identically $1$: the oscillation Wynn's $\varepsilon$-algorithm
+relies on disappears, leaving a bare period-three power-law tail that the algorithm cannot resolve past
+a handful of digits. Summing over the \emph{larger} index instead keeps an oscillating factor
+$z_1^{n_1}$, but for $z_1=\rr^2$ this is a \emph{period-three} oscillation, and a plain
+$\varepsilon$-algorithm (tuned for geometric tails) again stalls.
+
+\section{A robust \texorpdfstring{$w=1$}{w=1} evaluator}\label{sec:eval}
+
+Two ingredients fix it.
+
+\paragraph{(a) A smooth correction identity.} Writing $l=n_1$ (the larger index) and splitting the
+inner partial sum $P(l)=\sum_{n<l}z_2^n/n^b=\Li_b(z_2)-R(l)$ with tail
+$R(l)=\sum_{n\ge l}z_2^n/n^b=z_2^{\,l}\,\Phi(z_2,b,l)$ (Lerch $\Phi$), one gets the exact identity
+\begin{equation}\label{eq:smooth}
+  \boxed{\;\Li_{a,b}(z_1,z_2)=\Li_a(z_1)\,\Li_b(z_2)\;-\;\sum_{l\ge1}\frac{w^{\,l}}{l^{a}}\,\Phi(z_2,b,l)\;}
+\end{equation}
+At $w=1$ the correction summand $\Phi(z_2,b,l)/l^a$ is \emph{smooth}---every oscillating factor
+$z_1^l z_2^l=w^l$ collapses to $1$---with the clean asymptotic
+$\Phi(z_2,b,l)\sim\sum_{j\ge0}\binom{-b}{j}c_j(z_2)\,l^{-b-j}$, where $c_0=\tfrac1{1-z_2}$ and
+$c_{j\ge1}=\Li_{-j}(z_2)$ (rational in $z_2$). The subtle point---the source of a factor-of-one bug
+that cost five digits in a first draft---is that $c_0=\sum_{k\ge0}z_2^k=\tfrac1{1-z_2}$ is \emph{not}
+$\Li_0(z_2)=\tfrac{z_2}{1-z_2}$; they differ by exactly $1$. This gives an Euler--Maclaurin tail in
+Hurwitz zetas, $\sum_{l>M}\Phi/l^a=\sum_j\binom{-b}{j}c_j\,\zeta(a+b+j,M+1)$, a fast and accurate
+cross-check at low to medium precision.
+
+\paragraph{(b) Period-aware $\rho$-acceleration for production.} For high precision the production
+evaluator sums the outer cumulative series directly, samples the partial sums at the common period
+$N=\lcm(\ord z_1,\ord z_2)$ (so every oscillating factor realigns to $1$ at the sample points), and
+accelerates the resulting smooth, power-law-convergent sequence with \textbf{Wynn's $\rho$-algorithm}
+---the algebraic-convergence counterpart of the $\varepsilon$-algorithm. The $\rho$-algorithm yields
+roughly one correct digit per sample point; the evaluator inflates its internal precision to absorb the
+conditioning loss and returns the requested number of correct digits
+(\code{mpl\_w1.py}).
+
+\section{Validation}\label{sec:valid}
+
+The evaluator is checked by three independent, Wolfram-free routes plus one Wolfram cross-check.
+\begin{enumerate}
+\item \textbf{Exact symmetric closed form} (single polylogs only, an entirely separate code path):
+  \begin{equation}\label{eq:sym}
+    \Li_{a,b}(\rr^2,\rr)+\Li_{b,a}(\rr,\rr^2)=\Li_a(\rr^2)\Li_b(\rr)-\zeta(a+b),
+  \end{equation}
+  and the Gaussian analogue $\Li_{a,b}(\iu,-\iu)+\Li_{b,a}(-\iu,\iu)=\Li_a(\iu)\Li_b(-\iu)-\zeta(a+b)$.
+  (The collision term is $\Li_{a+b}(z_1z_2)=\Li_{a+b}(1)=\zeta(a+b)$.)
+\item \textbf{Conjugation} $\Li_{a,b}(\rr,\rr^2)=\overline{\Li_{a,b}(\rr^2,\rr)}$.
+\item \textbf{Two independent summation methods}---the $\rho$-accelerated cumulative sum and the
+  Euler--Maclaurin smooth-correction series---agree to full working precision.
+\item \textbf{Wolfram~15} \texttt{MultiplePolyLog} at moderate precision.
+\end{enumerate}
+All four agree; the symmetric closed form \eqref{eq:sym} holds to the full generated precision
+(${\sim}10^{-500}$) for every $(a,b)$.
+
+\section{Closed forms for the Eisenstein mixed-point values}\label{sec:eisforms}
+
+With $500$-digit values in hand, an integer-relation (PSLQ/LLL) search against the level-3 basis
+---monomials in the single $L$-values $\{\pi,\log 3,\zeta(3),\zeta(5),\Cl_2(\tfrac{2\pi}3),
+\Cl_4(\tfrac{2\pi}3),\Cl_6(\tfrac{2\pi}3)\}$ times the $(\rr,1)$ generators
+$g_{a,b}=\Imag\Li_{a,b}(\rr,1)$, $h_{a,b}=\Real\Li_{a,b}(\rr,1)$, and the lone $(\rr,\rr)$
+double-shuffle survivor $\Imag\Li_{3,2}(\rr,\rr)$---\textbf{reduces every mixed value through weight
+$4$, and every weight-5 imaginary part}, to explicit closed forms (each canary-clean, height $\le 10$,
+re-verified to $10^{-425}$ against the \emph{complete} weight-graded basis). The two simplest:
+\begin{equation}\label{eq:eis-w2}
+  \Imag\Li_{1,1}(\rr^2,\rr)=-\bigl(\Cl_2(\tfrac{2\pi}3)+\Imag\Li_{1,1}(\rr,1)\bigr),\qquad
+  \Real\Li_{1,1}(\rr^2,\rr)=5\,\Real\Li_{1,1}(\rr,1)-\tfrac12\log^2 3.
+\end{equation}
+(The full list of ${\sim}16$ reductions is in \code{harvest\_eis\_mixed.py}.) The weight-5 \emph{real}
+parts and all of weight $6$ do \emph{not} reduce to this basis at height $\lesssim 10^{4}$.
+
+\section{The completed level-3 double-shuffle dimension}\label{sec:eisdim}
+
+Two computations pin the dimension of the full level-3 depth-2 space---all four colored points
+$(\rr,\rr),(\rr^2,\rr^2),(\rr^2,\rr),(\rr,\rr^2)$---modulo single polylogarithms and the $(\rr,1)$
+generators.
+\begin{itemize}
+\item The \textbf{exact-rank convergent double shuffle} (stuffle and shuffle of products
+  $\Li_p(s)\Li_q(t)$, $s,t\in\{\rr,\rr^2\}$, together with the convergent zeta-products
+  $\Li_p(s)\zeta(q)$ whose shuffle reaches the mixed points) gives an \emph{upper bound} of $\mathbf 7$
+  through weight $6$ (the divergent $\Li_1$ words, needing shuffle regularization, are omitted).
+\item \textbf{Combining} that exact rank with the PSLQ closed forms of Section~\ref{sec:eisforms}
+  collapses it:
+\end{itemize}
+\begin{center}
+\begin{tabular}{ccl}
+\toprule
+weight & irreducible dimension & survivors\\
+\midrule
+$2$ & $0$ & ---\\
+$3$ & $0$ & ---\\
+$4$ & $0$ & ---\\
+$5$ & $2$ & $\Imag\Li_{3,2}(\rr,\rr)$ \emph{(article)},\quad $\Real\Li_{4,1}(\rr^2,\rr)$ \textbf{(new)}\\
+$6$ & $1$ & $\Imag\Li_{5,1}(\rr^2,\rr)$ \textbf{(new)}\\
+\bottomrule
+\end{tabular}
+\end{center}
+So the full level-3 depth-2 space, mod single polylogs and the $(\rr,1)$ generators, has dimension
+$\mathbf 3$ through weight $6$. Everything through weight $4$ collapses entirely into the
+$(\rr,1)$-generator world; the mixed cube-root points contribute \textbf{exactly two new constants}
+beyond the article's single $(\rr,\rr)$ survivor---a \emph{real} direction $\Real\Li_{4,1}(\rr^2,\rr)$
+at weight $5$ and an \emph{imaginary} direction $\Imag\Li_{5,1}(\rr^2,\rr)$ at weight $6$.
+
+\begin{remark}[the article's own lesson]
+Non-reduction by integer-relation search is strong evidence, not proof: a genuine reduction of large
+height is invisible to PSLQ, and the convergent double shuffle omits the regularized $\Li_1$ relations.
+So the two new survivors are best read as \emph{candidate} new level-3 depth-2 constants; a full
+regularized double shuffle, or a Bloch-group / Zagier-conjecture argument, would settle their
+independence definitively. As an additional check, an \emph{enriched}-basis probe
+(\code{probe\_eis\_candidates.py})---adding $\Li_n$ at candidate level-3 CM half-points
+$\tfrac{1\pm\rr}2,\ \tfrac1{1-\rr},\ \tfrac{\rr}{\rr-1},\ 1-\rr$ (the level-3 analogue of the Gaussian
+$\tfrac{1+\iu}2$ that resolved the article's Family-2)---fails to crack either candidate:
+$\Real\Li_{4,1}(\rr^2,\rr)$ resists a $105$-atom basis (spurious scale ${\sim}10^{4}$).
+\end{remark}
+
+\section{The Gaussian \texorpdfstring{$(\iu,-\iu)$}{(i,-i)} point and an exact parallel}\label{sec:gauss}
+\sloppy
+The same evaluator handles the level-4 Gaussian point $(\iu,-\iu)$ that the article's level-4 run also
+skipped ($w=\iu\cdot(-\iu)=1$). The picture is identical in shape.
+\begin{itemize}
+\item \textbf{Closed forms.} PSLQ against the level-4 basis (single $L$-values
+  $\pi,\log 2,\beta(2),\beta(4),\beta(6),\zeta(3),\zeta(5)$, the half-point values
+  $\Real\Li_n(\tfrac{1+\iu}2),\Imag\Li_n(\tfrac{1+\iu}2)$, and the $(\iu,1)$ generators) reduces every
+  $(\iu,-\iu)$ value through weight $3$ and every weight-4 imaginary part. The weight-2 case is
+  especially clean:
+  \begin{equation}\label{eq:gauss-w2}
+    \Li_{1,1}(\iu,-\iu)=-\Li_2\!\left(\tfrac{1-\iu}2\right)\qquad(\text{verified to } 10^{-50}).
+  \end{equation}
+\item \textbf{Dimension.} The corrected exact-rank double shuffle (now including $(\iu,-\iu)$) gives an
+  upper bound of $12$; combined with the closed forms it collapses to the article's five $(\iu,-1)$
+  constants plus \textbf{the same two new mixed directions}---$\Real\Li_{4,1}(\iu,-\iu)$ at weight $5$
+  and $\Imag\Li_{5,1}(\iu,-\iu)$ at weight $6$. (One weight-3 residual, $\Imag\Li_{2,1}(\iu,-1)$, is a
+  value the article already reduces to the half-point $\lambda/\mu$ basis, outside the convergent
+  double shuffle's reach.)
+\end{itemize}
+
+\begin{theorem}[the parallel]\label{thm:parallel}
+In \emph{both} towers the $w=1$ mixed point contributes, beyond the published survivors, exactly two
+new depth-2 constants, and \emph{in the same two positions}:
+\[
+  \boxed{\ \Real\Li_{4,1}(\mathrm{mixed})\ \text{at weight }5,\qquad
+            \Imag\Li_{5,1}(\mathrm{mixed})\ \text{at weight }6.\ }
+\]
+\end{theorem}
+That the level-3 and level-4 mixed points add new content at identical weights and index patterns
+---a \emph{real} $\Li_{4,1}$ direction and an \emph{imaginary} $\Li_{5,1}$ direction---is the report's
+most suggestive finding, and a natural target for the regularized double shuffle to explain.
+
+\section{Significance}\label{sec:sig}
+
+\begin{itemize}
+\item \textbf{The ``one remaining piece'' is closed.} The mixed cube-root points the article could not
+  evaluate are now computable to arbitrary precision; the level-3 frontier is complete through weight
+  $6$, and the same evaluator handles the Gaussian $(\iu,-\iu)$ point the level-4 run skipped.
+\item \textbf{A reusable tool.} The smooth-correction $+$ period-aware $\rho$-acceleration evaluator
+  handles \emph{every} root-of-unity double polylogarithm, including the degenerate $w=1$ diagonal where
+  Wolfram's own \texttt{MultiplePolyLog} is slow and erratic (fast at low weight, stalling at higher
+  weight). It is the natural companion to the article's accelerated evaluator for the oscillating case.
+\item \textbf{A clean structural picture.} Through weight $4$ the mixed cube-root doubles carry
+  \emph{no} new content; the first genuinely-new mixed constant appears at weight $5$. This mirrors
+  ---and sharpens---the article's finding that the colored towers are far smaller than a
+  precision-limited search suggests.
+\end{itemize}
+
+\section*{Reproducibility}
+\sloppy
+All scripts are under \code{src/Hypergeometric/tools/scratch/depth3-gaussian/}: \code{mpl\_w1.py}
+(evaluator), \code{gen\_eis\_mixed.py} / \code{gen\_gauss\_mixed.py} (value stores \code{vals\_eis\_mixed.py}
+/ \code{vals\_gauss\_mixed.py}), \code{harvest\_eis\_mixed.py} / \code{harvest\_gauss\_mixed.py} (closed
+forms), \code{shuffle\_ds\_eis\_full.py} / \code{shuffle\_ds\_gauss\_full.py} (exact-rank double shuffle),
+and \code{combined\_dim\_eis.py} / \code{combined\_dim\_gauss.py} (the combined dimension). Values are
+generated to $500$ digits; every displayed identity is verified to at least $10^{-425}$, and the
+symmetric closed form \eqref{eq:sym} (an independent single-polylog identity) holds to ${\sim}10^{-500}$
+for every value. The verified closed forms and the dimension results are collected in the
+\texttt{Get[]}-able store \code{src/PolyLog/identities/discovered-mixed-cuberoot-doubles.wl}.
+
+\end{document}

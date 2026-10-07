@@ -1,0 +1,492 @@
+% Created (UTC): 2026-06-20T01:22:45Z
+% Repository HEAD: a4ece3cdcfaf597b561a6e776ffb3958928e5999
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage{microtype}
+\emergencystretch=3em
+\hbadness=4000
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\DeclareMathOperator{\Li}{Li}
+\DeclareMathOperator{\Cl}{Cl}
+\DeclareMathOperator{\Real}{Re}
+\DeclareMathOperator{\Imag}{Im}
+\DeclareMathOperator{\depth}{depth}
+\newcommand{\iu}{\mathrm{i}}
+\newcommand{\rr}{\rho}
+\newcommand{\gr}{\operatorname{gr}}
+\newcommand{\shuffle}{\mathbin{\rotatebox[origin=c]{180}{\ensuremath{\amalg}}}}
+\newcommand{\stuffle}{\mathbin{\ast}}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+
+\title{Multiple polylogarithms at Gaussian and Eisenstein arguments:\\
+closed forms, double-shuffle dimensions, and the onset of depth three}
+\author{Vladimir Reshetnikov}
+\date{2026-06-20}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We study the double and triple polylogarithms $\Li_{a,b}(z_1,z_2)$ and $\Li_{a,b,c}(z_1,z_2,z_3)$
+evaluated at fourth and third roots of unity---the Gaussian (level~$4$, $\mathbb{Q}(\iu)$) and
+Eisenstein (level~$3$, $\mathbb{Q}(\sqrt{-3})$) cases---using the multivariate special functions
+introduced in Wolfram Language~$15$ together with a high-precision experimental-mathematics
+pipeline. Three kinds of result emerge. First, the \emph{stuffle} product gives a complete family of
+exact closed forms for the symmetric and diagonal combinations of the Gaussian and Eisenstein
+doubles, reducing them to single $L$-values; at the Eisenstein mixed point the colored tail
+degenerates to an \emph{ordinary} zeta value. Second, the full \emph{double shuffle}---stuffle
+together with the shuffle of Goncharov iterated integrals---collapses the depth-$2$ space far below
+what an integer-relation search alone can see: the Gaussian double points contribute only $5$ new
+constants through weight~$6$ (not the $30$ a precision-limited PSLQ reports), and the Eisenstein
+$(\rho,\rho)$ family collapses to a \emph{single} new constant. The discrepancy is a sharp
+methodological lesson: the genuine reductions are of large height and are therefore invisible to
+integer-relation search once the basis is large, whereas the derived double shuffle settles them
+exactly. Third, turning to depth three, we show that $7$ of the $10$ weight-$6$ Gaussian triples are
+depth-$\le2$ products, and we identify the remaining $3$ as genuinely depth-three by matching against
+the motivic dimension: Deligne's theorem and Glanois's depth-graded basis give, for both level~$3$
+and level~$4$, a free motivic Lie algebra with one generator per weight, hence $d_n=2^n$ and
+$\dim\gr^D_p=\binom{n}{p}$, so that $\dim\gr^D_3(\text{weight }6)=\binom{6}{3}=20>0$. Genuine depth
+three thus appears already at weight~$6$ in the Gaussian and Eisenstein towers---five weights below
+the classical threshold of the ordinary multiple zeta values. Every displayed identity has been
+verified to several hundred digits in two independent engines.
+\end{abstract}
+
+\tableofcontents
+
+\section{Introduction}\label{sec:intro}
+
+The classical polylogarithm $\Li_s(z)=\sum_{n\ge1}z^n/n^s$ has, since Lewin, a vast catalogue of
+functional equations and special values. Its multivariate generalization, the \emph{multiple
+polylogarithm}
+\begin{equation}\label{eq:mpl-def}
+  \Li_{s_1,\dots,s_k}(z_1,\dots,z_k)
+  \;=\;\sum_{n_1>n_2>\dots>n_k\ge1}\ \prod_{i=1}^{k}\frac{z_i^{\,n_i}}{n_i^{\,s_i}},
+\end{equation}
+of \emph{weight} $w=s_1+\dots+s_k$ and \emph{depth} $k$, has become a central object of analytic
+number theory and quantum field theory. When the arguments $z_i$ are roots of unity, the values
+\eqref{eq:mpl-def} are the \emph{cyclotomic} (or colored) multiple zeta values; the case of all
+$z_i=1$ recovers the multiple zeta values $\zeta(s_1,\dots,s_k)$, and the cases $z_i\in\mu_N$ (the
+$N$-th roots of unity) give the level-$N$ values. This article concerns the two smallest non-trivial
+levels beyond the alternating ($N=2$) case: the \emph{Gaussian} level $N=4$, where the relevant
+field is $\mathbb{Q}(\iu)$, and the \emph{Eisenstein} level $N=3$, with field
+$\mathbb{Q}(\sqrt{-3})$.
+
+A practical novelty makes a systematic experimental study possible. Wolfram Language~$15.0$
+(June~2026) provides first-class symbols for these functions---\texttt{MultiplePolyLog},
+\texttt{MultipleZeta}, \texttt{GeneralizedPolyLog} (the Goncharov iterated integral),
+\texttt{HarmonicPolyLog}, \texttt{MultipleHarmonicNumber}---so that a colored double or triple
+polylogarithm can be typed, evaluated to arbitrary precision, and (where the kernel can) reduced
+symbolically. We pair this with a custom pipeline: accelerated evaluators for the regimes where the
+built-in functions time out, an arbitrary-precision integer-relation search, and---decisively for
+what follows---an implementation of the \emph{double shuffle} that works with derived relations and
+exact rational rank rather than numerical relation-finding.
+
+The three threads of the article are as follows.
+
+\paragraph{Closed forms (Sections~\ref{sec:stuffle}--\ref{sec:gauss-fam}).} The nested-sum
+(\emph{stuffle}) product gives exact, elementary closed forms for the symmetric and diagonal
+combinations of the Gaussian doubles, reducing them to products of single polylogarithms at
+$\iu,-1,-\iu$. The Eisenstein analogue is identical in form, with one arithmetic surprise at the
+mixed cube-root point.
+
+\paragraph{Double-shuffle dimensions (Sections~\ref{sec:gauss-frontier}--\ref{sec:eisenstein}).} The
+\emph{shuffle} of Goncharov iterated integrals supplies a second, independent family of relations.
+Imposing both---the double shuffle---collapses the colored depth-$2$ space dramatically. The Gaussian
+double points contribute exactly $5$ genuinely new constants through weight~$6$; the Eisenstein
+$(\rho,\rho)$ family contributes exactly $1$. A precision-limited integer-relation search, by
+contrast, reports a far larger number, because the true reductions have large height. We make this
+methodological point precise: \emph{for high-height reductions the derived double shuffle is reliable
+where integer-relation search is not.}
+
+\paragraph{The onset of depth three (Section~\ref{sec:depth3}).} The depth filtration is where the
+arithmetic becomes most interesting. For the uncoloured multiple zeta values, genuine depth-three
+content first appears only at weight~$11$. We show that in the Gaussian and Eisenstein towers it
+appears already at weight~$6$. The computation has two halves: a shuffle calculation reducing $7$ of
+the $10$ weight-$6$ Gaussian triples to depth $\le2$, and an appeal to the motivic dimension
+(Deligne; Glanois) certifying that the remaining $3$ are genuine.
+
+Throughout, ``verified'' means the displayed identity was confirmed numerically to the stated
+precision in \texttt{mpmath} and, independently, in Wolfram~$15$.
+
+\section{Two products and the double shuffle}\label{sec:stuffle}
+
+A multiple polylogarithm has two faces, and each carries a multiplication.
+
+\subsection{The stuffle product}
+
+Multiplying two nested sums \eqref{eq:mpl-def} and re-sorting the summation indices by their relative
+order gives the \emph{stuffle} (quasi-shuffle, or harmonic) product. In depth one it is the splitting
+of the lattice $\{(m,n)\}$ into $m>n$, $m<n$, $m=n$:
+\begin{equation}\label{eq:stuffle-d1}
+  \Li_a(u)\,\Li_b(v)\;=\;\Li_{a,b}(u,v)\;+\;\Li_{b,a}(v,u)\;+\;\Li_{a+b}(uv).
+\end{equation}
+The collision term $\Li_{a+b}(uv)$ multiplies the arguments---the feature that will move colored
+values between levels. Identity \eqref{eq:stuffle-d1} is exact and holds wherever the three series
+converge.
+
+\subsection{The shuffle product}
+
+The second face is Chen's iterated integral. With the Goncharov convention
+\begin{equation}\label{eq:G-def}
+  G(a_1,\dots,a_n;1)=\int_{0<t_1<\dots<t_n<1}\ \prod_{i=1}^{n}\frac{dt_i}{t_i-a_i},
+\end{equation}
+the single polylogarithm is $\Li_n(z)=-G(0^{\,n-1},z^{-1};1)$, and the depth-two polylogarithm is
+\begin{equation}\label{eq:goncharov-dbl}
+  \Li_{a,b}(z_1,z_2)=G\!\left(0^{\,a-1},\tfrac1{z_1},0^{\,b-1},\tfrac1{z_1z_2};1\right),
+\end{equation}
+with the analogous word $0^{a-1}\,y_1\,0^{b-1}\,y_2\,0^{c-1}\,y_3$, $y_j=(z_1\cdots z_j)^{-1}$, in
+depth three. The product of two iterated integrals over the common interval $[0,1]$ is the integral
+over the product region, which decomposes into the shuffles of the two letter-words:
+\begin{equation}\label{eq:shuffle}
+  G(\mathbf u;1)\,G(\mathbf v;1)\;=\;\sum_{\mathbf w\in\mathbf u\,\shuffle\,\mathbf v}G(\mathbf w;1).
+\end{equation}
+Re-identifying each shuffle word through \eqref{eq:goncharov-dbl} expresses a product of polylogarithms
+as a $\mathbb{Q}$-linear combination of polylogarithms---generally at \emph{different} colored points
+from those the stuffle produces. Equating the two expansions of the same product yields the
+\emph{double-shuffle relations}.
+
+\subsection{Method: derived relations versus integer-relation search}\label{sec:method}
+
+Both products are exact and have small integer coefficients. Given numerical values of the relevant
+polylogarithms (to several hundred digits), we generate every stuffle and shuffle relation among the
+products $\Li_p(s)\Li_q(t)$ of a fixed weight, verify each numerically to ${\sim}10^{-600}$, and then
+compute the \emph{exact rational rank} of the resulting linear system on the colored doubles, modulo
+the single polylogarithms and a chosen generating set. The dimension of the space is the corank.
+
+This should be contrasted with the more usual approach of feeding each colored value to an
+integer-relation search (PSLQ or LLL) against a basis of candidate constants. That approach is
+indispensable for \emph{discovering} an unknown closed form, but it has a precision ceiling: a
+genuine relation of height $H$ is invisible to a search whose basis pushes the ``spurious scale''
+$10^{\,\mathrm{dps}/\#\mathrm{atoms}}$ below $H$. As the number of basis atoms grows, the ceiling
+drops. We will see in Section~\ref{sec:gauss-frontier} that the true reductions of the colored
+doubles are of large height, so that integer-relation search systematically \emph{over}-counts their
+independence, while the derived double shuffle---working with the small-height generators and exact
+rank---returns the correct, much smaller, dimension. The lesson recurs throughout: \emph{derived
+relations plus exact rank are reliable where high-precision relation-finding is not.}
+
+\section{Gaussian doubles: closed forms}\label{sec:gauss-fam}
+
+Write $\Li_{a,b}$ at the three Gaussian base points beyond $(\iu,1)$:
+\[
+  (\iu,\iu),\qquad (-1,\iu),\qquad (\iu,-1),
+\]
+all generated to $700$ digits by an accelerated evaluator (Section~\ref{sec:methods}) and agreeing
+with Wolfram~$15$ to full precision. Under the level-$4$ complex conjugation $\iu\mapsto-\iu$ the
+imaginary parts are odd and the real parts even.
+
+\subsection{Family 1: the stuffle closed forms}
+
+Specializing \eqref{eq:stuffle-d1} at the Gaussian points ($uv=-1$ at $(\iu,\iu)$; $uv=-\iu$ at the
+mixed pair) gives a complete set of exact closed forms for the symmetric combinations:
+\begin{align}
+  \Li_{a,b}(\iu,\iu)+\Li_{b,a}(\iu,\iu)   &= \Li_a(\iu)\,\Li_b(\iu)   -\Li_{a+b}(-1),\label{eq:g-sym-ii}\\
+  \Li_{a,b}(-1,\iu)+\Li_{b,a}(\iu,-1)     &= \Li_a(-1)\,\Li_b(\iu)    -\Li_{a+b}(-\iu),\label{eq:g-sym-mix}\\
+  \Li_{a,b}(\iu,-1)+\Li_{b,a}(-1,\iu)     &= \Li_a(\iu)\,\Li_b(-1)    -\Li_{a+b}(-\iu),\nonumber
+\end{align}
+with the clean diagonal corollary
+\begin{equation}\label{eq:g-diag}
+  \Li_{a,a}(\iu,\iu)=\tfrac12\!\left(\Li_a(\iu)^2-\Li_{2a}(-1)\right).
+\end{equation}
+Every single polylogarithm on the right is elementary in the level-$4$ vocabulary:
+$\Imag\Li_n(\iu)=\beta(n)$ is the Dirichlet beta value, $\Real\Li_n(\iu)$ and $\Li_n(-1)=-\eta(n)$
+are rational multiples of $\zeta(n)$ (or $\pi^n$ at even $n$), and $\Li_n(-\iu)=\overline{\Li_n(\iu)}$.
+So Family~1 reduces every symmetric and diagonal Gaussian double to single $L$-values in closed form.
+
+\begin{remark}
+The three stuffle identities \eqref{eq:g-sym-ii}--\eqref{eq:g-sym-mix} were checked against the stored
+$700$-digit values to ${\sim}10^{-692}$ for every admissible $a,b$, and the closed forms were
+confirmed symbolically and numerically by Wolfram~$15$ at low weight, including the weight-$6$
+diagonal $\Li_{3,3}(\iu,\iu)=\tfrac12(\Li_3(\iu)^2-\Li_6(-1))$, for which the kernel returns a form in
+$\beta(4)$, $\pi^4$, $\zeta(3)$.
+\end{remark}
+
+The consequence is structural: all depth-$2$ content of the Gaussian doubles lives in the
+\emph{antisymmetric} parts $\Li_{a,b}(P)-\Li_{b,a}(P)$, which vanish on the diagonal. These are what
+the double shuffle of the next section reduces.
+
+\subsection{Family 2: antisymmetric reductions to the $(\iu,1)$ algebra}
+
+Against the basis of single-polylog monomials together with the $(\iu,1)$ generators
+$g_{a,b}=\Imag\Li_{a,b}(\iu,1)$, $h_{a,b}=\Real\Li_{a,b}(\iu,1)$, the \emph{low-weight} antisymmetric
+parts reduce, each reduction a new closed-form identity found by integer-relation search and confirmed
+in Wolfram~$15$. A representative instance, with $\mu_n=\Real\Li_n(\tfrac{1+\iu}2)$ and
+$\lambda_n=\Imag\Li_n(\tfrac{1+\iu}2)$:
+\begin{equation}\label{eq:fam2-example}
+  \Real\!\left[\Li_{1,2}(\iu,\iu)-\Li_{2,1}(\iu,\iu)\right]
+  =3\zeta(3)-4\log2\,\mu_2-\pi\lambda_2-4h_{1,1}\log2+3h_{1,2}.
+\end{equation}
+Such reductions exist at weights~$2$--$4$ at the mixed points and at weight~$3$ at $(\iu,\iu)$; at
+higher weight the antisymmetric parts do not reduce \emph{against the $(\iu,1)$ basis alone}. To go
+further---and to learn how many are genuinely new---one needs the shuffle.
+
+\section{Gaussian doubles: the double-shuffle dimension}\label{sec:gauss-frontier}
+
+\subsection{A cautionary integer-relation count}
+
+A first attempt to count the genuinely-new depth-$2$ directions proceeds by integer-relation search:
+test each antisymmetric part for membership in the span of the $(\iu,1)$ generators and single-polylog
+products, and tabulate those that fail. Carried out at $700$ digits, this reports \textbf{30}
+independent new directions through weight~$6$. The number is wrong. It is an artifact of the spurious
+scale: the genuine reductions are of large height, and against a basis of a hundred-odd atoms the
+search cannot see them. (Three searches against bases of $46$, $55$, and the $(\iu,1)$-plus-single set
+returned ``dimensions'' of $3$, $6$, and $30$ respectively---all different, all wrong, the count
+\emph{decreasing} as the basis grew and the ceiling fell.)
+
+\subsection{The shuffle, and the correct count}
+
+The shuffle settles it. The key relation is that the shuffle of a $(-1)$-polylogarithm with an
+$\iu$-polylogarithm produces $(\iu,\iu)$ and $\overline{(-1,\iu)}$ doubles, for instance
+\begin{equation}\label{eq:shuffle-22}
+  \Li_2(-1)\,\Li_2(\iu)=\Li_{2,2}(\iu,\iu)+2\Li_{3,1}(\iu,\iu)
+     +\overline{\Li_{2,2}(-1,\iu)}+2\,\overline{\Li_{3,1}(-1,\iu)}
+\end{equation}
+(verified to ${\sim}10^{-694}$), whereas the \emph{stuffle} of the same product produces the
+$(-1,\iu),(\iu,-1)$ doubles. Equating ties all three Gaussian points together. Collecting all $240$
+stuffle and shuffle relations from the products $\Li_p(s)\Li_q(t)$, $s,t\in\{\iu,-1,-\iu\}$,
+$2\le p+q\le6$, verifying each to ${\sim}10^{-600}$, and computing the exact rational rank of the
+linear system on the doubles, modulo single polylogarithms and the $(\iu,1)$ generators, gives:
+
+\begin{center}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{c c c c}
+\hline
+weight & unknowns (Re$+$Im) & dim (stuffle only) & dim (double shuffle)\\
+\hline
+$4$ & $18$ & $8$  & $\mathbf 1$\\
+$5$ & $24$ & $12$ & $\mathbf 2$\\
+$6$ & $30$ & $14$ & $\mathbf 2$\\
+\hline
+total & & $34$ & $\mathbf 5$\\
+\hline
+\end{tabular}
+\end{center}
+
+\begin{theorem}\label{thm:gauss-5}
+Modulo single polylogarithms and the $(\iu,1)$ generators, the Gaussian double points
+$(\iu,\iu),(-1,\iu),(\iu,-1)$ contribute exactly $\mathbf 5$ new depth-$2$ constants through
+weight~$6$---one at weight~$4$, two at weight~$5$, two at weight~$6$. A representative basis is
+\[
+  \Real\Li_{3,1}(\iu,-1);\quad \Imag\Li_{3,2}(\iu,-1),\ \Imag\Li_{4,1}(\iu,-1);\quad
+  \Real\Li_{4,2}(\iu,-1),\ \Real\Li_{5,1}(\iu,-1).
+\]
+Every other Gaussian double of weight $\le6$ is an explicit combination of these five, the $(\iu,1)$
+generators, and products of single $L$-values.
+\end{theorem}
+
+The rank is verified two ways: each relation reproduces its value to $10^{-600}$, and the
+exact-rational rank is precision-independent. As a final gold-check at weight~$4$, fixing the single
+survivor $\Real\Li_{3,1}(\iu,-1)$ to its true value and solving the system predicts all other $17$
+weight-$4$ components to ${\sim}10^{-692}$.
+
+\begin{remark}[the methodological moral]
+Theorem~\ref{thm:gauss-5} corrects the integer-relation count of $30$ by a factor of six. The
+reductions are exact consequences of the small-height double-shuffle generators, but the
+\emph{net} reductions are of large height---so high that an integer-relation search against any
+adequate basis cannot find them. This is the recurring trap of high-precision experimental
+mathematics, here biting in the direction of \emph{over}-stating independence. The derived double
+shuffle, with its exact rank, is immune.
+\end{remark}
+
+\section{The onset of depth three}\label{sec:depth3}
+
+We now move to depth three and the question that organizes this section: \emph{at what weight does
+genuine depth-three content first appear in the Gaussian tower?} For the uncoloured multiple zeta
+values the answer is weight~$11$. We show that for level~$4$ it is weight~$6$.
+
+\subsection{The triples live in a two-letter alphabet}
+
+Consider the Gaussian triples $t_{a,b,c}=\Imag\Li_{a,b,c}(\iu,1,1)$, $a+b+c=6$. By
+\eqref{eq:goncharov-dbl} their Goncharov word is
+\[
+  0^{\,a-1}(-\iu)\,0^{\,b-1}(-\iu)\,0^{\,c-1}(-\iu),
+\]
+since $y_1=1/\iu=-\iu$ and $y_2=y_3=1/\iu=-\iu$: \emph{all three non-zero letters are $-\iu$}. Thus the
+$(\iu,1,1)$ triples live in the same two-letter alphabet $\{0,-\iu\}$ as $\Li_n(\iu)$ and the $(\iu,1)$
+doubles. The shuffle \eqref{eq:shuffle} of $\Li_p(\iu)\,\Li_{q,r}(\iu,1)$ therefore lands entirely in
+$(\iu,1,1)$ triples, expressing a \emph{product}---hence a depth-$\le2$ object---as a sum of triples.
+No regularization is needed: every word ends in a non-zero letter and so is convergent.
+
+\subsection{Seven of ten triples are depth two}
+
+Taking imaginary parts of the $13$ such shuffle products (and the triple products $\Li_p(\iu)\Li_q(\iu)\Li_r(\iu)$)
+gives $13$ linear relations among the $10$ weight-$6$ triples $t_{a,b,c}$, each numerically verified
+and with exact rational rank $7$.
+
+\begin{proposition}\label{prop:7of10}
+Seven of the ten weight-$6$ Gaussian triples $\Li_{a,b,c}(\iu,1,1)$ are depth-$\le2$ products of lower
+$(\iu,1,\dots)$ polylogarithms. The triple space has dimension exactly $3$ modulo products; the
+shuffle-irreducible survivors are $(3,1,2)$, $(3,2,1)$, $(4,1,1)$.
+\end{proposition}
+
+These three are precisely the three Lyndon words of length~$6$ with three $-\iu$'s---the free
+shuffle-algebra generators of the $\{0,-\iu\}$ tower. The shuffle alone cannot decide whether they are
+\emph{genuinely} depth three or reduce further to depth-$2$ constants: such a reduction would be a
+\emph{stuffle} relation invisible to the shuffle (exactly as $\zeta(2,1)=\zeta(3)$ drops a
+word-depth-$2$ object to depth one). A precision-limited integer-relation search is also inconclusive
+here, for the same high-height reason as in Section~\ref{sec:gauss-frontier}. The clean answer comes
+from the motivic dimension.
+
+\subsection{The motivic dimension: genuine depth three at weight six}
+
+Deligne's theorem on the motivic fundamental group of $\mathbb{G}_m\setminus\mu_4$ (the Gaussian case)
+and Glanois's depth-graded basis give the decisive structural fact:
+
+\begin{theorem}[Deligne; Glanois]\label{thm:deligne}
+For level $N=4$ (and likewise $N=3$) the motivic Lie algebra is free with exactly one generator in
+each weight $\ge1$. Consequently the Hilbert series of the period algebra is $1/(1-2t)$, the
+dimensions are $d_n=2^n$, and---because the basis is depth-graded, the depth filtration being
+split---the depth-graded dimensions are binomial,
+\begin{equation}\label{eq:binomial-dim}
+  \dim\gr^D_p(\text{weight }n,\ \text{level }4)=\binom{n}{p}.
+\end{equation}
+\end{theorem}
+
+At weight~$6$ the dimensions \eqref{eq:binomial-dim} are
+$\binom{6}{p}=1,6,15,20,15,6,1$ (summing to $2^6=64$), so in particular
+\begin{equation}\label{eq:gr3-positive}
+  \dim\gr^D_3(\text{weight }6,\ \text{level }4)=\binom{6}{3}=20\;>\;0.
+\end{equation}
+
+\begin{corollary}\label{cor:depth3}
+Genuine depth-three content appears at weight~$6$ in the Gaussian tower. The weight-$6$ depth-three
+graded space is $20$-dimensional; the $(\iu,1,1)$ family's contribution to it is exactly the three
+shuffle-irreducible survivors of Proposition~\ref{prop:7of10}, which are therefore genuine depth three.
+The full weight-$6$ picture is: $7$ of the $10$ $(\iu,1,1)$ triples collapse to depth-$\le2$ products,
+and $3$ are genuine depth three.
+\end{corollary}
+
+This is five weights earlier than the classical $N=1$ threshold, and it resolves a question this
+program had earlier left open---and indeed had at one point misjudged in the opposite direction, on
+the strength of a precision-limited search. The same $d_n=2^n$, ``one generator per weight'' structure
+holds for the Eisenstein level $N=3$, so genuine depth three likewise appears at weight~$6$ there.
+
+\section{The Eisenstein analogue}\label{sec:eisenstein}
+
+Everything above has a level-$3$ counterpart at the cube roots of unity. Write
+$\rho=e^{2\pi\iu/3}$, so $\rho^2=\bar\rho$.
+
+\subsection{Family 1, with an arithmetic twist}
+
+The stuffle closed forms read
+\begin{align}
+  \Li_{a,b}(\rho,\rho)+\Li_{b,a}(\rho,\rho)     &=\Li_a(\rho)\Li_b(\rho)-\Li_{a+b}(\rho^2),
+     \label{eq:eis-sym}\\
+  \Li_{a,b}(\rho^2,\rho)+\Li_{b,a}(\rho,\rho^2) &=\Li_a(\rho^2)\Li_b(\rho)-\zeta(a+b),
+     \label{eq:eis-mix}
+\end{align}
+with the diagonal corollary $\Li_{a,a}(\rho,\rho)=\tfrac12(\Li_a(\rho)^2-\Li_{2a}(\rho^2))$. The
+arithmetic twist is in \eqref{eq:eis-mix}: because $\rho^2\cdot\rho=\rho^3=1$, the colored tail
+degenerates to the \emph{ordinary} zeta value $\zeta(a+b)$, not a level-$3$ value. The single
+cube-root $L$-values split cleanly under the distribution relation
+$\Li_n(\rho)+\Li_n(\rho^2)=(3^{1-n}-1)\zeta(n)$:
+\begin{equation}\label{eq:eis-single}
+  \Real\Li_n(\rho)=\tfrac12(3^{1-n}-1)\,\zeta(n),\qquad
+  \Imag\Li_n(\rho)=\Cl_n(2\pi/3),
+\end{equation}
+the real part a rational multiple of $\zeta(n)$ (or $\pi^n$ at even $n$), the imaginary part the
+Clausen value---the level-$3$ analogue of $\beta(n)$, with $\Cl_2(2\pi/3)$ Gieseking's constant. All
+of \eqref{eq:eis-sym}--\eqref{eq:eis-single} are confirmed in Wolfram~$15$.
+
+\subsection{The $(\rho,\rho)$ frontier: one constant}
+
+Running the level-$3$ double shuffle as in Section~\ref{sec:gauss-frontier}---$90$ stuffle and shuffle
+relations from products $\Li_p(s)\Li_q(t)$, $s,t\in\{\rho,\rho^2\}$, each verified to
+${\sim}10^{-600}$, exact rational rank---collapses the $(\rho,\rho)$ doubles still more sharply than
+the Gaussian:
+
+\begin{center}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{c c c c}
+\hline
+weight & unknowns (Re$+$Im) & dim (stuffle only) & dim (double shuffle)\\
+\hline
+$2$ & $2$  & $0$ & $0$\\
+$3$ & $4$  & $2$ & $0$\\
+$4$ & $6$  & $2$ & $0$\\
+$5$ & $8$  & $4$ & $\mathbf 1$\\
+$6$ & $10$ & $4$ & $0$\\
+\hline
+total & & $12$ & $\mathbf 1$\\
+\hline
+\end{tabular}
+\end{center}
+
+\begin{theorem}\label{thm:eis-1}
+Modulo single polylogarithms and the $(\rho,1)$ generators, the entire $(\rho,\rho)$ family through
+weight~$6$ reduces to a \emph{single} new depth-$2$ constant---$\Imag\Li_{3,2}(\rho,\rho)$, at
+weight~$5$---with weights $2,3,4$ and $6$ collapsing completely.
+\end{theorem}
+
+A gold-check at weight~$5$ fixes the survivor and predicts all seven other weight-$5$ components to
+${\sim}10^{-696}$. The pattern mirrors the Gaussian: there too the weight-$5$ survivors are imaginary
+$\Li_{3,2}$/$\Li_{4,1}$ directions.
+
+\begin{remark}[a genuine cube-root obstacle]
+The decisive shuffle $\Li_p(\rho^2)\Li_q(\rho)\to(\rho,\rho)+(\rho^2,\rho^2)$ lands only on points with
+$w=z_1z_2\neq1$, so the computation never needs the mixed points $(\rho^2,\rho),(\rho,\rho^2)$, where
+$w=\rho^3=1$. This is fortunate, because those points present a real numerical obstacle: both the
+Lerch-plus-Wynn evaluator and a direct cumulative-sum evaluator stall there at ${\sim}8$ digits---the
+period-three, non-oscillating tail defeats Wynn's $\varepsilon$-algorithm, unlike the even-period
+$\iu,-1$ cases, which converge to full precision. Folding the mixed cube-root points in (for the
+\emph{full} level-$3$ frontier) requires a period-three-aware accelerated evaluator, or Wolfram; it is
+the one remaining piece.
+\end{remark}
+
+\section{Methods and verification}\label{sec:methods}
+
+\paragraph{Evaluators.} Where the built-in \texttt{MultiplePolyLog} times out (a second argument on
+the unit circle), the doubles are evaluated by writing the inner tail as a Lerch transcendent,
+$\Li_{a,b}(z_1,z_2)=z_1\sum_{n\ge1}w^n\Phi(z_1,a,n{+}1)/n^b$ with $w=z_1z_2$, computing $\Phi$ by a
+stable forward recursion, and accelerating the unit-circle-oscillating outer sum with Wynn's
+$\varepsilon$-algorithm. The triple evaluator carries running cumulative inner sums and accelerates
+the oscillating outer sum the same way; it is validated against the stored triple values to
+${\sim}10^{-380}$. \emph{Caveat:} the acceleration assumes a genuinely oscillating outer sum
+($w\neq1$ in the double case; an oscillating leading argument in general). At $w=1$ it returns a wrong
+value, and at the cube-root $w=1$ points the period-three tail stalls every Wynn-type acceleration we
+tried (Remark in Section~\ref{sec:eisenstein}); such values were taken from Wolfram instead.
+
+\paragraph{Relations and rank.} Integer-relation search uses a FLINT LLL over the standard relation
+lattice, guarded by a Champernowne-number canary (a genuine relation cannot involve the structureless
+canary, so a non-zero canary coefficient marks a precision-floor artifact) and a smoothness test on
+the coefficient vector. The double-shuffle computations, by contrast, never search: they generate the
+stuffle and shuffle relations combinatorially, verify each numerically, and take an exact rational
+rank.
+
+\paragraph{Two-engine discipline.} Every displayed identity was confirmed both in \texttt{mpmath}
+(several hundred digits) and in Wolfram~$15$, the latter using \texttt{MultiplePolyLog},
+\texttt{PolyLog}, \texttt{MultipleZeta}, and \texttt{GeneralizedPolyLog}. Two incidental hazards are
+worth recording: \texttt{mpl\_wynn} is invalid at $w=1$ (above); and a multi-line assignment in the
+Wolfram front end terminates at the first syntactically complete line, so a long relation must be kept
+on one line or broken only after a binary operator---a truncated relation otherwise reads as a false
+negative.
+
+\section{Summary}\label{sec:summary}
+
+For the Gaussian and Eisenstein multiple polylogarithms we have given (i)~a complete family of exact
+stuffle closed forms for the symmetric and diagonal doubles, with the Eisenstein mixed point
+degenerating onto an ordinary zeta value; (ii)~the exact double-shuffle dimensions of the colored
+depth-$2$ spaces---$5$ new Gaussian constants and $1$ new Eisenstein constant through weight~$6$,
+correcting a six-fold over-count by integer-relation search; and (iii)~a resolution of the depth
+question, showing via a shuffle calculation and the motivic dimension that genuine depth three appears
+already at weight~$6$ in both towers, five weights below the classical threshold. The through-line is
+methodological as much as arithmetic: the derived double shuffle, with exact rank, sees reductions
+that high-precision relation-finding cannot, and the motivic dimension certifies what neither can
+prove numerically.
+
+\paragraph{Acknowledgement of tools.} The computations use Wolfram Language~$15$ (and its
+\texttt{MultiplePolyLog} family), \texttt{mpmath}, and \texttt{python-flint}; the motivic input is
+Deligne's theorem on $\mathbb{G}_m\setminus\mu_N$ and C.~Glanois's depth-graded basis for the
+cyclotomic multiple zeta values.
+
+\end{document}

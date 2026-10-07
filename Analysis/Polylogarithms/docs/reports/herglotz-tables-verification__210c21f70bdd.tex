@@ -1,0 +1,137 @@
+% Created (UTC): 2026-06-25T04:05:20Z
+% Repository HEAD: 210c21f70bdd0023b765a66a61a3aa04fd34c550
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs}
+\usepackage{microtype}
+\emergencystretch=3em \hbadness=4000
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\DeclareMathOperator{\Li}{Li}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\Jcal}{\mathcal{J}}
+\theoremstyle{plain}\newtheorem{theorem}{Theorem}\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\title{Re-verifying the Herglotz function at real quadratic units:\\
+two errata in Radchenko--Zagier's tables, and the elementary boundary}
+\author{Vladimir Reshetnikov}
+\date{2026-06-25}
+\begin{document}
+\maketitle
+\begin{center}\small
+Research report. Created (UTC) 2026-06-25T04:05:20Z; repository \texttt{HEAD}
+\texttt{210c21f70bdd0023b765a66a61a3aa04fd34c550}. Store \texttt{herglotz-quadratic-units.wl}.\\
+Source: D.\ Radchenko and D.\ Zagier, \emph{Arithmetic properties of the Herglotz function}
+(\texttt{src/PolyLog/docs/pdfs/HerglotzFunction/}). Reproducer:
+\texttt{src/PolyLog/tools/scratch/herglotz/verify\_full.gp}.
+\end{center}
+
+\begin{abstract}
+We re-implemented the Herglotz function and its companion $\Jcal(x)$ independently (PARI/GP and
+\texttt{mpmath}), verified the paper's defining equations to $\sim10^{-20}$, and then re-checked
+\emph{every} row of Radchenko--Zagier's Tables~1 and~2 of one-class-per-genus values
+$\Jcal\bigl(n+\sqrt{n^2\pm1}\bigr)$ at $200$-digit precision. Forty-three of the forty-five rows match to
+better than $10^{-80}$. The two that do not are typographical errors in the printed paper: in Table~1,
+the $n=43$ row carries a spurious extra term $+S_{33,56}$, and the $n=61$ row prints $S_{60,1032}$ where
+it should print $S_{60,248}$. Each correction is the \emph{unique} single edit (subscript change,
+coefficient change, or term deletion) that restores the identity; with both applied, all forty-five rows
+verify to $10^{-80}$. As a by-product we map the boundary of elementary evaluability: $\Jcal(x)$ closes in
+$\{\zeta(2),\log2\log x,\log^2x\}$ precisely for the paper's even-trace family $x=n+\sqrt{n^2\pm1}$, and
+\emph{not} for a generic quadratic unit such as the golden ratio---confirming, numerically, the paper's
+remark that the individual values have no general closed form.
+\end{abstract}
+
+\section{The function and its companion}
+The Herglotz(--Zagier) function may be taken in the integral form (the paper's eq.~(1))
+\begin{equation}\label{eq:J}
+  J(x)=\int_0^1\frac{\log(1+t^{x})}{1+t}\,dt ,
+\end{equation}
+related to the Herglotz function $F(x)$ by (eq.~(2))
+\begin{equation}\label{eq:JF}
+  J(x)=F(2x)-2F(x)+F(x/2)+\frac{\pi^2}{12x},
+\end{equation}
+and the arithmetic identities of \S6 are stated for the normalised companion
+\begin{equation}\label{eq:Jcal}
+  \Jcal(x)=J(x)-\frac{\log^2 2}{2}+\frac{\pi^2}{24}\Bigl(x-\frac1x\Bigr),
+  \qquad \Jcal(x)=\mathcal F(2x)-2\mathcal F(x)+\mathcal F(x/2).
+\end{equation}
+The arithmetic atoms are
+\(
+  S_{p,q}=\log\eps_p\,\log\eps_q,
+\)
+where, for a fundamental discriminant $d>1$, $\eps_d$ is the fundamental unit of $\mathbb Q(\sqrt d)$, and
+$\eps_1:=2$. We implemented \eqref{eq:J}--\eqref{eq:Jcal} as \texttt{intnum} integrals and
+$S_{p,q}=\texttt{bnfinit}(x^2-\mathrm{core}(d)).\texttt{reg}$ products, and confirmed
+\eqref{eq:J}--\eqref{eq:Jcal} together with the paper's eqs.~(4),~(23),~(24) to $\sim10^{-20}$ before
+touching the tables.
+
+\section{Row-by-row verification}
+Tables~1 and~2 list, for the $45$ known one-class-per-genus cases, the quantities
+\[
+  4\Bigl(\Jcal\bigl(n+\sqrt{n^2-1}\bigr)-n\tfrac{\pi^2}{24}\Bigr)\quad(\text{Table 1}),\qquad
+  2\Bigl(\Jcal\bigl(n+\sqrt{n^2+1}\bigr)-n\tfrac{\pi^2}{24}\Bigr)\quad(\text{Table 2})
+\]
+as integer combinations of the $S_{p,q}$. Evaluating both sides at $200$ digits, all $16$ rows of Table~2
+(the identities the authors flag as ``apparently new'') and $27$ of the $29$ rows of Table~1 agree to
+better than $10^{-80}$. Two Table~1 rows fail, each by an $O(1)$ residual:
+\[
+  \text{$n=43$:}\ \ \text{LHS}-\text{RHS}=-13.0160\ldots,\qquad
+  \text{$n=61$:}\ \ \text{LHS}-\text{RHS}=-2.9011\ldots .
+\]
+
+\section{The two errata}
+Both residuals resolve to a single, exact, structurally forced correction.
+
+\paragraph{$n=43$ ($n^2-1=2^3\cdot3\cdot7\cdot11=1848$).}
+The printed right-hand side is
+\[
+  3S_{1,1848}+2S_{8,924}+S_{12,616}+S_{24,77}+S_{28,264}+S_{44,168}+\mathbf{S_{33,56}}+S_{21,88}.
+\]
+Its excess over the true value is \emph{exactly} $S_{33,56}$: numerically
+$(\text{LHS}-\text{RHS})/S_{33,56}=-1.000\ldots$ to $110$ digits. A single-edit search (try deleting each
+term, changing each coefficient in $[-4,4]$, or replacing each subscript pair by any
+fundamental-discriminant pair whose product is $1848$ or $4\cdot1848$) returns \emph{one} fix: delete the
+spurious $+S_{33,56}$. The remaining seven terms then satisfy the identity to $10^{-80}$.
+
+\paragraph{$n=61$ ($n^2-1=2^3\cdot3\cdot5\cdot31=3720$).}
+The printed right-hand side is
+\[
+  3S_{1,3720}+S_{12,1240}+2S_{5,744}+S_{24,620}+2S_{40,93}+\mathbf{S_{60,1032}}+S_{120,124}.
+\]
+Here $1032=2^3\cdot3\cdot43$ carries the prime $43$, which divides neither $n^2-1=3720$ nor $4(n^2-1)$;
+the subscript is impossible. The single-edit search returns the unique fix
+$S_{60,1032}\rightarrow S_{60,248}$, with $248=2^3\cdot31$ and $60\cdot248=14880=4\cdot3720$ a genuine
+genus splitting. The corrected row verifies to $10^{-80}$.
+
+\medskip
+\noindent With both corrections, \textbf{all $45$ rows verify to better than $10^{-80}$.} The high-DPI
+scan confirms that the printed paper itself carries both errors (they are not OCR artefacts of our
+transcription); our \texttt{HerglotzFunction.tex} reproduces the printed values faithfully and catalogues
+the corrections in an editorial note, per the repository's transcription convention.
+
+\section{The elementary boundary}
+The closed forms in Tables~1--2 exist because $\Jcal=\mathcal F(2x)-2\mathcal F(x)+\mathcal F(x/2)$ is, at a
+unit $x=n+\sqrt{n^2\pm1}$, a combination of Kronecker limits whose non-elementary parts cancel. This is
+special to the \emph{even-trace} units. Testing the three-term ansatz
+\[
+  \Jcal(x)\ \overset{?}{=}\ a\,\zeta(2)+b\,\log2\,\log x+c\,\log^2 x
+\]
+by integer-relation search (PARI \texttt{lindep}) we find it holds for the paper's family, e.g.
+\[
+  \Jcal(1+\sqrt2)=\tfrac14\zeta(2)+\tfrac12\log2\,\log(1+\sqrt2),\qquad
+  \Jcal(2+\sqrt3)=\tfrac12\zeta(2)+\tfrac12\log2\,\log(2+\sqrt3),
+\]
+but \emph{fails} for every generic quadratic unit we tried---the golden ratio $\phi$, $\phi^2$, the bronze
+unit $\tfrac{3+\sqrt{13}}2$, $\tfrac{5+\sqrt{21}}2$, $3+\sqrt{10}$---where \texttt{lindep} returns
+coefficients of size $\sim10^{25}$ (no relation), despite $\mathbb Q(\sqrt5)$ and the others having class
+number one. The golden value $\Jcal(\phi)$ is therefore a genuinely deeper constant. This is the precise
+numerical content of the paper's closing remark that ``there are no similar formulas for $\Jcal(\eps)$ when
+$\eps$ is a unit of odd trace,'' and that ``there does not seem to be a general formula for the individual
+values $\mathcal F(x)$.''
+
+\section*{Reproducibility}
+The integral/regulator implementation, the full $45$-row verification (with the two corrections), the
+single-edit error localisation, and the elementary-boundary \texttt{lindep} tests are in
+\texttt{src/PolyLog/tools/scratch/herglotz/} (PARI/GP and \texttt{mpmath}); the verified statements and
+both errata are recorded in \texttt{src/PolyLog/identities/herglotz-quadratic-units.wl}.
+\end{document}
