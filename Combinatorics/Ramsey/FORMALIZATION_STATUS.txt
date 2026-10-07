@@ -13,8 +13,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 692 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 4,430 public Gowers theorems and found only propext,
+  All 696 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 4,451 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 113 exact
   companion proofs and 7 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -998,8 +998,32 @@ Complete conventional Section 13 modulus bound
   common-step bilinear square, with side exponent 53 and density exponent
   42, above this conventional threshold. The odd-square threshold needed
   for cubic localization also satisfies the same numerical bound.
-  The complete five-term threshold still needs the subsequent prime-model,
-  quadratic-inverse, cubic phase-removal, and iteration budget comparisons.
+  The subsequent inverse-theorem threshold is now bounded below. The
+  complete five-term closed iteration still needs its numerical comparison.
+
+Conventional numerical threshold for the complete cubic inverse
+  Proofs18FejerReciprocalBudgets bounds the reciprocals of the local
+  quadratic and selected-mass parameters by (2/alpha)^(2^43), and the
+  local count exponent and final discrepancy parameter reciprocals by
+  (2/alpha)^(2^59). These are bounds for the improved 53/42 construction.
+  Proofs18FejerPrimeThresholdEnvelope includes the fixed quadratic inverse
+  constants and proves its local threshold is at most
+  exp((2/alpha)^(2^323)). The entire prime-model and twisted discrepancy
+  threshold is at most exp(exp((2/alpha)^(2^324))).
+  Proofs18CubicRefinementConstantBounds controls the fixed constants through
+  degree three, the actual boundary-refinement constant, and the twisted
+  count constant. Proofs18FejerInverseThresholdEnvelope then proves that
+  the variable cubic phase-refinement constant is at most
+  (2/alpha)^(2^1085), while the reciprocal average-size exponent is at most
+  exp((2/alpha)^(2^61)). Consequently the full cubic inverse threshold is
+  at most exp(exp((2/alpha)^(2^1086))) for every 0 < alpha <= 1.
+  fejer_cubic_function_discrepancy_bound_double_exp exports the actual
+  FunctionDiscrepancyBound at this conventional threshold, retaining both
+  previously proved strict parameter improvements. There is no assumed
+  phase-removal budget or remaining existential modulus in this interface.
+  The final five-term density iteration must still be bounded and compared
+  with the source's numerical threshold. This does not close the general
+  Theorems 18.1 or 18.2 or the Section 16 structural induction.
 
 Cubic obstruction in a strictly smaller prime model
   Proofs17LocalizedPhaseRemoval now exports proposition_17_7_with_upper:
@@ -2244,9 +2268,10 @@ Next substantial obligations
      The cubic inverse theorem, full global assembly, phase removal, and
      five-term iteration are now proved with a fully specified modulus
      threshold, including the stronger Fejer parameters. The entire Section
-     13 Fourier and odd-square threshold is now bounded by a conventional
-     double exponential. Bound the remaining cubic inverse and full closed
-     iteration threshold and compare it with the intended source bound. For arbitrary degrees, supply the Section 16 structural input
+     13 Fourier and odd-square threshold and the complete cubic inverse
+     threshold now have conventional double-exponential bounds. Bound the
+     full closed five-term iteration and compare it with the intended source
+     threshold. For arbitrary degrees, supply the Section 16 structural input
      and propagate the now-proved interval transport and assembly steps.
   4. Close Theorem 18.2 and its headline consequences; then investigate tighter
      final bounds without treating improved auxiliary statements as a proved
