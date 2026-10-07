@@ -6,6 +6,13 @@ The new front end completely decides homogeneous input diagrams after validation
 When inconclusive it continues the original stages. Disable it with `--no-seifert`
 or `use_seifert=False` to retain the previous stage order.
 
+If the initial Reidemeister I/II pass removes crossings but does not finish,
+the pipeline repeats the structural check before matrix filters. Cancelling
+pairs can expose homogeneity. Evidence under `seifert_after_reduction` describes
+the reduced diagram: replay `reidemeister_trace` with `fastunknot.simplify.replay`
+before passing that certificate to `verify_seifert_certificate`. An unchanged
+diagram is not checked twice. The integrated suite now has 71 passing tests.
+
 ```bash
 python3 -m fastunknot recognize examples/trefoil.json
 python3 -m fastunknot khovanov examples/conway_sum_8.json --shared
@@ -38,6 +45,8 @@ The maintained article is [`../synthesis/report.pdf`](../synthesis/report.pdf),
 with source in `../synthesis/structural.tex`; the delivered report remains in
 `../reports/07/paper/`. Run `python benchmark_structural.py --output results/local.json`
 for paired recognition timings and exact scanner checks against the integrated code.
+`python benchmark_reduction.py --output results/reduction_local.json` isolates
+the post-reduction check against the first integrated revision.
 
 The companion article proves exactness and a finite-type complexity bound in
 frontier size and actual connected-component size. **There is no general

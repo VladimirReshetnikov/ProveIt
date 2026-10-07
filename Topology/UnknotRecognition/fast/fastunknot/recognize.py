@@ -228,6 +228,15 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
         evidence["reidemeister_trace"] = [m.to_json() for m in trace]
     if diagram.crossings == 0:
         return Result("UNKNOT", "reidemeister-reduction", original.crossings, 0, monotonic() - start, evidence)
+    if use_seifert and diagram.crossings < original.crossings:
+        # Cancelling opposite-sign crossings can expose homogeneity even when
+        # the original signed graph was inconclusive. Replay the reduction
+        # trace before checking this certificate: it describes the new diagram.
+        certificate = seifert_certificate(diagram)
+        if certificate is not None:
+            evidence["seifert_after_reduction"] = certificate
+            return Result(certificate["status"], "reduced-" + certificate["criterion"],
+                          original.crossings, diagram.crossings, monotonic() - start, evidence)
     if use_descending:
         dart = descending_start(diagram)
         if dart is not None:

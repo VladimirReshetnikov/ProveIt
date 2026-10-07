@@ -7,8 +7,10 @@ import random
 import subprocess
 import sys
 import unittest
+from unittest.mock import patch
 
-from fastunknot import Diagram, recognize, verify_seifert_certificate
+from fastunknot import Diagram, recognize, seifert_certificate, verify_seifert_certificate
+from fastunknot.simplify import replay
 
 
 EXAMPLES = Path(__file__).resolve().parents[1] / "examples"
@@ -22,6 +24,36 @@ def example(name):
 
 
 class IntegrationTests(unittest.TestCase):
+    def test_reduction_exposes_structural_certificate_before_matrix_filters(self):
+        # Added cancelling pairs obscure both signed subgraphs and keep the
+        # Rasmussen interval around zero; reducing them exposes a weaving knot.
+        for repeats in (2, 5, 20):
+            for sign in (-1, 1):
+                word = [sign * g for g in [1, -2] * repeats + [2, -2, -1, 1]]
+                diagram = Diagram.from_braid(3, word)
+                self.assertIsNone(seifert_certificate(diagram))
+                with patch("fastunknot.recognize.alexander_obstruction",
+                           side_effect=AssertionError("matrix filter must be bypassed")):
+                    result = recognize(diagram)
+                self.assertEqual(result.status, "KNOTTED")
+                self.assertEqual(result.method, "reduced-homogeneous-seifert-genus")
+                reduced = replay(diagram, result.evidence["reidemeister_trace"])
+                self.assertEqual(reduced.crossings, 2 * repeats)
+                self.assertEqual(result.reduced_crossings, reduced.crossings)
+                certificate = result.evidence["seifert_after_reduction"]
+                self.assertTrue(verify_seifert_certificate(reduced, certificate))
+                self.assertFalse(verify_seifert_certificate(diagram, certificate))
+                self.assertNotIn("seifert_certificate", result.evidence)
+                self.assertEqual(recognize(diagram, use_seifert=False).status, result.status)
+                self.assertNotIn("seifert_after_reduction",
+                                 recognize(diagram, use_reduction=False).evidence)
+
+    def test_unchanged_diagram_does_not_repeat_structural_scan(self):
+        with patch("fastunknot.recognize.seifert_certificate", wraps=seifert_certificate) as check:
+            result = recognize(example("conway"))
+        self.assertEqual(result.status, "KNOTTED")
+        self.assertEqual(check.call_count, 1)
+
     def test_default_structural_certificates_are_replayable(self):
         cases = [(Diagram.from_pd([]), "UNKNOT"),
                  (Diagram.from_braid(4, [1, -2, 3]), "UNKNOT"),
@@ -72,6 +104,10 @@ class IntegrationTests(unittest.TestCase):
             if "seifert_certificate" in new.evidence:
                 self.assertTrue(verify_seifert_certificate(
                     diagram, new.evidence["seifert_certificate"]))
+            if "seifert_after_reduction" in new.evidence:
+                reduced = replay(diagram, new.evidence["reidemeister_trace"])
+                self.assertTrue(verify_seifert_certificate(
+                    reduced, new.evidence["seifert_after_reduction"]))
             checked += 1
 
     def test_resource_limit_and_optional_inference_budget_differ(self):

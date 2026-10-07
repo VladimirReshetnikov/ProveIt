@@ -203,3 +203,47 @@ generators. This demonstrates representation compression. It does not
 claim a corresponding recognition speedup: the existing recognition
 pipeline already factors visible connected sums. The archive's original
 timing observations remain separate from these local checks.
+
+\subsection{Rechecking structure after crossing reduction}
+The first integration checks the original diagram only. This misses an
+inexpensive opportunity: cancelling opposite-sign crossing pairs may turn
+an inconclusive signed graph into a homogeneous one. The maintained
+pipeline therefore repeats the Seifert check after the initial RI/RII
+pass, provided that the crossing count strictly decreased and is nonzero.
+An unchanged diagram incurs no second graph traversal. Disabling Seifert
+certificates or reduction preserves the corresponding opt-out behavior.
+
+Correctness is a composition of two certificates: the recorded legal
+Reidemeister moves preserve the knot, and the signed-graph certificate
+decides the reduced diagram. The evidence key
+\code{seifert\_after\_reduction} explicitly identifies this target.
+To verify it, replay \code{reidemeister\_trace} on the original diagram,
+then call the independent Seifert verifier on the resulting diagram.
+The original-input key \code{seifert\_certificate} is not populated with
+a certificate for a different diagram. This distinction prevents a
+numerically correct verdict from carrying misleading replay evidence.
+
+For example, append the cancelling braid word
+$\sigma_2\sigma_2^{-1}\sigma_1^{-1}\sigma_1$ to
+$(\sigma_1\sigma_2^{-1})^m$, with $3\nmid m$ and $m\ge2$. The resulting
+knot diagram has both signs on both braid generators and a Rasmussen
+interval containing zero, so the original Seifert test is inconclusive.
+Reduction exposes the homogeneous weaving diagram of positive genus.
+The recheck certifies nontriviality before factorization or matrix filters.
+The added work is one $O(n)$ traversal; combined with the incremental
+RI/RII reducer it gives linear word-operation recognition on this family
+after validation. This is a family result, not a global complexity bound.
+
+The reproduction script \code{fast/benchmark\_reduction.py} loads only
+the baseline recognition module from commit \code{1323898c3}, sharing
+the other implementation modules to isolate this change. Nine paired
+rounds with fresh diagrams, five calls per arm, and A/A controls measured
+speedups 1.99, 2.80, and 8.24 for reduced weaving sizes 10, 100, and 1000
+(input sizes 14, 104, and 1004). The corresponding A/A ratios were
+1.011, 0.993, and 1.023. Control ratios for Conway, the hard unknot, and
+the scrambled grid were 0.99, 0.95, and 0.95; no improvement is claimed
+for them. Raw samples are in
+\code{fast/results/reduction\_structural\_20261007.json}.
+All 71 integrated tests pass, including mirrors, independent certificate
+replay on the reduced diagram, and a regression asserting that the
+matrix filter is not entered on this family.

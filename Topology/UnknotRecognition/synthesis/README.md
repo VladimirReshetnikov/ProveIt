@@ -39,6 +39,9 @@ tests passed on CPython 3.13.14. Reproduce paired recognition measurements and
 exact scanner checks with `../fast/benchmark_structural.py`; local data are in
 `../fast/results/structural_integration_20261007.json`. These measurements are
 separate from the authors' archive data and from end-to-end CLI timings.
+The post-reduction certificate extension is also described there; all 71 tests
+pass. Its isolated comparison is `../fast/benchmark_reduction.py`, with paired
+samples in `../fast/results/reduction_structural_20261007.json`.
 
 ## Historical experiment status (18 September 2026)
 
