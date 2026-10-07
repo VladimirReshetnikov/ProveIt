@@ -21,6 +21,12 @@ from fastunknot.simplify import (descending_start, descending_start_quadratic, l
 
 EXAMPLES = os.path.join(ROOT, "examples")
 
+# Preserve the old method-level regression checks with the new front end off.
+_baseline_recognize = recognize
+def recognize(diagram, **options):
+    options.setdefault("use_seifert", False)
+    return _baseline_recognize(diagram, **options)
+
 
 def load(name):
     with open(os.path.join(EXAMPLES, name), encoding="utf-8") as handle:

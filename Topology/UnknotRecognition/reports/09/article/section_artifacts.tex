@@ -1,0 +1,124 @@
+\section{Artifact organization and repository integration}
+\label{sec:artifacts}
+
+The ZIP is a self-contained research handoff.  Its top-level README specifies
+the pinned revision, supported commands, integration paths, and the distinction
+between original measurements and final audit reruns.  All performance tables
+and plots in this article are generated from retained JSON rather than
+transcribed by hand.  The included source files and SHA-256 manifest make
+the handoff reviewable independently of the conversation that produced it.
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{P{45mm}P{97mm}}
+\toprule
+Path & Purpose \\
+\midrule
+\path{article/} & Modular \LaTeX{} source, bibliography, compiled PDF,
+generated tables, and vector/PNG figures. \\
+\path{fast/} & Complete proposed Python package, with existing examples
+and tests plus the new implementations and regression tests. \\
+\path{baseline/fast/} & Byte-verified original files needed to execute
+the archived comparison package. \\
+\path{tools/} & Independent finite auditors, paired timing scripts,
+table/figure regeneration, article build, and package verification. \\
+\path{data/} & Raw measurements, deterministic validation records,
+source provenance, final test output, and concise benchmark summaries. \\
+\path{integration/} & A patch against the pinned repository paths and
+notes on applying or adapting it. \\
+\path{SHA256SUMS} & Hashes of packaged deliverable files; the manifest
+does not hash itself. \\
+\bottomrule
+\end{tabular}
+\caption{Research package layout.}
+\end{table}
+
+\subsection{Public behavior and compatibility}
+
+The default recognizer now uses the checked interlacement factorizer.
+The old \code{visible\_factors} function remains unchanged, and
+\code{factor\_backend="legacy"} or the CLI's \code{--legacy-factor}
+selects it for comparison.  New factorization evidence is a component
+certificate under \code{connected\_sum\_factorization}; callers that parse
+the old geometric cut trace should use the legacy backend or adopt the
+new documented evidence schema.  This schema change is deliberate and
+must be considered during integration.
+
+The Alexander obstruction retains its previous witness dictionary.  Its
+new backend and statistics arguments are optional.  Existing callers need
+not supply them.  Dense elimination remains the reference implementation.
+The runtime-budget callback now reaches sparse pivots and the factorization
+stage; limits are cooperative and can still be exceeded inside an operation
+without an intermediate callback, such as validation or exact polynomial work.
+
+\code{--pointed} is an explicit recognizer option.  It currently requires
+min-fill pivots, bit algebra, no deferred tail, and one scan order rather
+than a race.  Incompatible CLI options receive an input error; the Python
+API raises \code{ValueError}.  The direct
+\code{reduced\_khovanov\_rank} result stores a \emph{reduced} rank in both
+\code{rank} and \code{reduced\_rank}, and reduced values in
+\code{by\_degree}.  This differs intentionally from the original
+\code{khovanov\_rank} interface, whose \code{rank} is unreduced.
+
+The separate \code{reduced\_khovanov\_decision} can return
+\code{reduced\_rank=None} with a certified lower bound and replay data.
+Clients must not interpret that lower bound as an exact rank.  Existing
+full-rank APIs, including the legacy factored-rank helper, retain their
+semantics.  The package does not silently enable pointed scanning for them.
+
+\subsection{Reproducing the checks}
+
+From the unpacked top-level directory, the following commands run the main
+verification programs.  Explicit output names avoid overwriting the retained
+research records.
+
+\begin{lstlisting}
+PYTHONPATH=fast python3 -m unittest discover -s fast/tests -v
+python3 tools/verify_factorization.py \
+  --output data/reproduced_factorization.json
+python3 tools/verify_reduced_scan.py \
+  --output data/reproduced_reduced.json
+python3 tools/verify_frontier_counterexamples.py \
+  --output data/reproduced_frontiers.json
+python3 tools/hierarchy_budget.py --self-test \
+  --output data/reproduced_hierarchy.json
+python3 tools/verify_package.py
+\end{lstlisting}
+
+The recognition code and finite auditors use only the Python standard
+library.  Matplotlib is needed only to regenerate figures; pre-generated
+figures are included.  Building the article requires a conventional
+\LaTeX{} installation with the listed packages and BibTeX, conveniently
+driven by \code{latexmk}.
+
+\begin{lstlisting}
+python3 tools/render_results.py
+sh tools/build_article.sh
+PYTHONPATH=fast python3 -m fastunknot recognize \
+  fast/examples/conway.json
+PYTHONPATH=fast python3 -m fastunknot recognize \
+  fast/examples/conway.json --no-alexander --no-jones --pointed
+\end{lstlisting}
+
+The benchmark README gives the timing commands, source selection, and
+expected runtime considerations.  Timing scripts intentionally perform
+real repeated computations and are separate from the quick regression
+suite.  Reproducing exact operation counts is a stronger expectation than
+reproducing identical elapsed times in a shared environment.
+
+\subsection{Integration boundaries}
+
+Apply the supplied patch only after checking the target revision.  If the
+repository has advanced, review the differences around the touched Python
+modules rather than treating the archived patch as authoritative over later
+work.  The updated \path{fast/} directory is also supplied as an ordinary
+source tree, so the intended changes can be inspected without applying a
+patch.
+
+Place the article and its accompanying tools/data under a new dated research
+directory in \path{Topology/UnknotRecognition}, or use the repository's
+preferred publication layout.  The existing synthesis remains a historical
+record; the new article supplies the frontier-count correction and updated
+literature status.  The bundle includes the repository's MIT-0 license.
+No remote commit, pull request, or publication is required to inspect or
+reproduce this handoff.

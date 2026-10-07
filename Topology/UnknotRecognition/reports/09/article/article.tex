@@ -1,0 +1,259 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=24mm,headheight=14pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,enumitem}
+\usepackage{graphicx,xcolor,listings,fancyhdr}
+\usepackage[hyphens]{url}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage[colorlinks=true,linkcolor=navy,citecolor=teal,urlcolor=navy,
+  pdftitle={Toward Quasi-Polynomial Unknot Recognition},
+  pdfauthor={Research continuation for the ProveIt project}]{hyperref}
+\definecolor{navy}{HTML}{173B59}
+\definecolor{teal}{HTML}{087E8B}
+\definecolor{lightgray}{HTML}{F3F5F6}
+\definecolor{muted}{HTML}{52616D}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\F}{\mathbb{F}_2}
+\newcommand{\poly}{\operatorname{poly}}
+\newcommand{\code}[1]{\texttt{#1}}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\lstset{basicstyle=\small\ttfamily,backgroundcolor=\color{lightgray},
+  frame=single,rulecolor=\color{lightgray},breaklines=true,
+  columns=fullflexible,keepspaces=true,showstringspaces=false,
+  xleftmargin=4pt,xrightmargin=4pt,aboveskip=10pt,belowskip=10pt}
+\setlist{topsep=4pt,itemsep=3pt,parsep=0pt}
+\setlength{\emergencystretch}{2em}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{muted}ProveIt / Unknot recognition}
+\fancyhead[R]{\small\color{muted}Research continuation, October 2026}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\title{\color{navy}\bfseries Toward Quasi-Polynomial\\Unknot Recognition\\[6pt]
+  \large Certified Factorization, Sparse Elimination,\\
+  Pointed Khovanov Scanning, and Explicit Complexity Obligations}
+\author{Research continuation for Vladimir Reshetnikov's ProveIt project}
+\date{7 October 2026\\[3pt]\small Source baseline:
+  \texttt{4e6fe879e5238ec0b134b6d33fdca0b8c7c1c711}}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+We continue the performance work on ProveIt's exact unknot recognizer with
+three implemented improvements and a revised complexity analysis.  A certified
+interlacement decomposition replaces recursively reconstructed visible
+connected sums.  Its combinatorial core uses $O(n\alpha(n))$ time and linear
+space; the checked PD interface uses $O(n\log(n+1))$ time.  We prove that a
+specific family forces quadratic crossing work in the archived factorizer.
+An incidence-indexed finite-field determinant replaces dense elimination on
+large Alexander minors and admits an explicit bound in terms of measured
+Schur-complement work.  An optional pointed scanner computes reduced Khovanov
+homology directly, with a basepoint policy preserving every proper-prefix
+frontier size and an exact decision-only early-stop rule.
+
+We also correct a consequential complexity assertion: arbitrary scan frontiers
+need not have Catalan-many matching states.  A six-crossing validated diagram
+and a default-order repository fixture provide exact counterexamples.  We
+state the safe general bound, the additional disk hypothesis that restores
+Catalan counting, and a parameterized recognition bound that exposes the
+independent multiplicity obstruction.  For a possible hierarchy backend we
+prove a sharp mixed-radix suffix-reconstruction budget and an explicit
+conditional quasi-polynomial theorem.
+
+The deliverable includes runnable code, independent verification programs,
+raw randomized paired timings, an exact archived baseline, and an integration
+patch.  Large constructed inputs show substantial speedups; the pointed
+scanner has mixed timing results and remains opt-in.  No general
+quasi-polynomial unknot-recognition bound is established.  The final research
+agenda identifies the geometric, algebraic, and bit-complexity results that
+would be needed to establish one.
+\end{abstract}
+\vspace{5pt}
+\noindent\textbf{Keywords.} Unknot recognition; visible connected sums;
+interlacement; sparse elimination; reduced Khovanov homology; frontier width;
+normal surfaces; hierarchy complexity; reproducible computation.
+\clearpage
+\tableofcontents
+\clearpage
+
+\section{Results, scope, and the research objective}
+\label{sec:introduction}
+
+The objective is a sound and complete recognition algorithm whose worst-case
+running time on an $n$-crossing knot diagram is quasi-polynomial.  We use
+\emph{quasi-polynomial} in its usual broad sense
+$\exp((\log n)^{O(1)})$, and distinguish the sharper target
+\begin{equation}
+ T(n)=n^{O(\log n)}=\exp(O(\log^2 n)).
+ \label{eq:main-target}
+\end{equation}
+Logarithms may be taken in any fixed base greater than one.  To avoid small
+input exceptions, an asymptotic expression involving $\log n$ can always be
+read with $\log(n+2)$.
+
+The present continuation makes concrete progress in the repository's
+implemented pipeline and sharpens the statements needed to connect that work
+to \eqref{eq:main-target}.  It does not identify fast behavior on a sample
+with a worst-case theorem.  Nor does it use a one-sided knot invariant as an
+unknot certificate.  Each claim below is assigned to its actual logical role.
+
+\subsection{What is established here}
+
+\begin{enumerate}[leftmargin=*,label=\arabic*.]
+\item \textbf{A provable preprocessing improvement.}  The new factorizer
+computes the atomic visible summands through connected components of the
+Gauss-word interlacement graph without constructing its potentially quadratic
+edge set.  A short spanning forest and a separate nesting check certify the
+partition.  The checked implementation is nearly linear, and a specified
+embedding of cyclic trefoil sums forces quadratic work in the old recursive
+implementation.  The graph-theoretic correspondence is classical; its
+integration, certificate format, reconstruction audit, and baseline comparison
+are the contribution (Section~\ref{sec:factorization}).
+
+\item \textbf{An exact sparse filter implementation.}  Alexander minors
+already have sparse input rows.  We retain this structure through elimination
+using both row dictionaries and column incidence sets.  The work depends on
+the actual pivot neighborhoods.  Worst-case cubic arithmetic remains possible;
+the new bound explains when sparse inputs give a benefit and why input sparsity
+alone is insufficient (Section~\ref{sec:sparse}).
+
+\item \textbf{A direct reduced backend with decision semantics.}  The pointed
+quotient removes one dot variable from each relevant Hom space.  A last-crossing
+basepoint policy avoids the extra frontier size introduced by an early cut.
+Two isolated partial-complex summands prove knottedness before full homology
+is necessarily known.  The engine is implemented and independently checked,
+but remains optional because some small cases become slower
+(Section~\ref{sec:pointed}).
+
+\item \textbf{A corrected interface bound.}  The old Catalan assertion for
+arbitrary matching dictionaries is false, including on an existing fixture
+under the actual default ordering.  We supply exact coefficients, independent
+reconstruction, and the appropriate replacement theorem.  This is a correction
+to the resource analysis, not evidence that the bracket values on those
+examples are wrong (Section~\ref{sec:frontiers}).
+
+\item \textbf{Quantitative conditions for the target.}  The scan analysis
+separates boundary width from object multiplicity.  The hierarchy analysis
+separates termination, encoded state volume, constructive cost, and repeated
+reconstruction.  A sharp suffix-work formula improves the accounting but
+does not supply the missing geometric algorithms
+(Sections~\ref{sec:parameters} and~\ref{sec:hierarchy}).
+\end{enumerate}
+
+\subsection{The exact source baseline}
+
+The baseline is the \path{Topology/UnknotRecognition/fast} subtree of
+ProveIt at revision
+\begin{center}\small
+\texttt{4e6fe879e5238ec0b134b6d33fdca0b8c7c1c711}.
+\end{center}
+It was inspected on 7 October 2026, together with the repository's synthesis
+and acceleration-proposal material~\cite{repository}.  The archived package
+already includes much of the earlier optimization work: incremental
+Reidemeister I/II reduction, a descending-diagram test, visible connected-sum
+factorization, modular Alexander and Jones obstructions, optional exact
+Alexander computation, delayed Reidemeister III search, and a highly optimized
+Bar--Natan scanner.  Its scan has interned matching geometry, bit-packed
+morphisms, compiled gluing plans, min-fill pivot heuristics, cache reuse,
+optional delayed final cancellation, and optional races between orders.
+
+Consequently, comparison with a generic cube-of-resolutions implementation
+would overstate the engineering advance.  Our timing baseline is the actual
+archived package.  Its 40 selected source, example, and test files are retained
+byte-for-byte, checked against their Git blob hashes.  Historical timing output
+is not required to execute that package.  Independent-module loading prevents
+an accidental comparison of the updated code with itself.
+
+The proposed Python package version is 0.3.0.  The archive contains both a
+complete updated package and a patch against the pinned source.  The existing
+Rust port has not been changed.  We do not present a Python improvement as an
+already implemented cross-language improvement.
+
+\subsection{Why the current recognition decision remains exact}
+
+A nonunit Alexander minor or a Jones evaluation differing from the unknot
+value certifies knottedness.  Passing those filters is inconclusive.  A
+descending diagram certifies the unknot, and a visible connected sum is trivial
+exactly when all its summands are trivial.  The residual exact test uses
+reduced Khovanov rank one.  Khovanov unknot detection supplies the needed
+topological characterization~\cite{kronheimermrowka}.  The implication from
+rank one over $\F$ to rank one over $\mathbb Q$ follows from universal
+coefficients and nonvanishing; the unknot has reduced rank one over either
+field.  Thus the characteristic-two implementation has the same decision
+criterion.
+
+With no imposed resource limits the finite scanning computation is complete.
+Cooperative time or object ceilings can yield \code{UNKNOWN}; they never
+justify \code{UNKNOT} or \code{KNOTTED}.  The new early decision API reports a
+proved lower bound separately from an exact rank.  These distinctions are
+maintained at the code and evidence interfaces.
+
+\section{Input, cost model, and notation}
+\label{sec:model}
+
+A PD code specifies four cyclically ordered ports at each crossing, with the
+same over/under convention as the repository.  Validation checks two
+occurrences per edge label, a single traversed strand, and a spherical rotation
+system.  For a connected $n$-crossing projection with $n>0$, there are $n$
+vertices and $2n$ edges; the spherical face condition is $n+2$ faces.  The
+zero-crossing input denotes the trivial circle by convention.  Braid and grid
+inputs first expand to PD codes, so all crossing-count bounds refer to the
+expanded diagram.  A bound in a more succinct original encoding must include
+the conversion cost and output size.
+
+We normalize edge labels to indices of $O(\log(n+2))$ bits.  Combinatorial
+RAM bounds assume word-sized indices, as is standard for graph algorithms.
+If arbitrary long external labels are supplied, reading and normalization
+also depend on their total encoded length.  The hierarchy theorem instead
+states bit-cost obligations explicitly because normal coordinates can be
+exponentially large integers even when the input triangulation is small.
+
+Let $w_i$ be the number of frontier endpoints after $i$ scanned crossings,
+and $w=\max_i w_i$.  Let $M$ be the largest number of live objects after a
+fully cancelled stage of a specified scan, including its initial and final
+stages.  The maximum multiplicity of one boundary matching, summed over
+homological degrees, will be denoted by $\mu$.  Neither $M$ nor $\mu$ is
+bounded by counting different matchings.  The scalar Jones filter has only
+one field coefficient per matching, whereas the homological scanner can have
+many objects with that same matching.
+
+For finite-field elimination, $m$ is matrix dimension, $E$ is the number of
+stored input entries, $Z_{\max}$ is the largest active nonzero count, and $F$
+is the cumulative number of Schur-update positions.  These matrix symbols
+are distinct from the crossing count $n$.  The modular filters use the fixed
+prime $p=2^{61}-1$.  Their arithmetic is exact in $\mathbb F_p$; fixed
+evaluation points provide no distributional success guarantee against an
+adversarial family.
+
+When stating an implementation bound using dictionaries and sets we use the
+standard bounded-cost lookup model.  Python's hashing behavior is not being
+promoted to a deterministic worst-case data-structure theorem.  Ordered
+maps can supply deterministic alternatives at additional logarithmic cost.
+Wall-clock measurements are reported separately from operation counts.
+
+\input{section_factorization}
+\input{section_sparse}
+\input{section_pointed}
+\input{section_frontiers}
+\input{section_parameters}
+\input{section_hierarchy}
+\input{section_experiments}
+\input{section_research}
+\input{section_artifacts}
+
+\clearpage
+\bibliographystyle{plainnat}
+\begingroup\raggedright
+\bibliography{references}
+\endgroup
+\end{document}

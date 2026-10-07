@@ -1,0 +1,1813 @@
+diff --git a/Topology/UnknotRecognition/fast/README.md b/Topology/UnknotRecognition/fast/README.md
+--- a/Topology/UnknotRecognition/fast/README.md
++++ b/Topology/UnknotRecognition/fast/README.md
+@@ -1,10 +1,59 @@
+-# fastunknot 0.2: exact unknot recognition with a scanning Khovanov backend
++# fastunknot 0.3: certified factorization and exact scanning unknot recognition
+ 
+ **Status: exact, complete, and exponential in the worst case. The `n^O(log n)`
+ bound announced in Lackenby's February 2021 talk is NOT achieved here**, for the
+-reasons documented in the synthesized report (`../synthesis/`): the accelerated
+-hierarchy operations in the talk's final flowchart have no published
+-algorithmic specification with cost bounds.
++remaining width, multiplicity, and constructive hierarchy cost obligations
++documented in the accompanying October 2026 research article. Lackenby's
++July 2026 hierarchy preprint gives a full algorithm but does not state a
++quasi-polynomial runtime theorem. The February and March 2021 slides make
++different quantitative announcements; the article distinguishes them.
++
++Version 0.3 adds a checked, independently certifiable interlacement factorizer
++as the recognition default, incidence-indexed sparse elimination for large
++modular Alexander minors, and an **opt-in** direct reduced Khovanov decision
++engine. The component computation is O(n alpha(n)); the checked PD interface
++is O(n log(n+1)). The sparse determinant has an explicit bound in terms of
++actual Schur-update work, with cubic worst-case arithmetic still possible.
++The pointed engine can stop from two isolated summands and reports a lower
++bound separately from an exact rank. It remains optional because timings are
++mixed. See the article and raw paired results for the current comparisons.
++
++The previous Catalan bound for an arbitrary scan frontier is corrected:
++at most (w-1)!! matching states are possible, giving a safe
++2^O(w log(w+1)) factor for the scalar Jones scan. Catalan(w/2) and 2^O(w)
++require a common certified disk boundary. The included six-crossing
++counterexample and the default-order Conway-sum fixture disprove the
++unconditional Catalan assertion without changing their computed invariants.
++
++### New interfaces
++
++```sh
++python -m fastunknot recognize examples/conway.json --legacy-factor
++python -m fastunknot recognize examples/conway.json --no-alexander --no-jones --pointed
++```
++
++`--pointed` requires minfill pivots, bits algebra, tail 0, and race 1.
++`recognize(..., factor_backend="legacy")` selects the unchanged geometric
++factorizer. The new default emits `connected_sum_factorization` with a
++partition and interlacing forest, instead of the old `connected_sum_cuts`
++trace. `visible_factors_interlacement` returns factors plus that certificate;
++`verify_interlacement_certificate` independently verifies it against a Gauss
++word. `visible_factors` and `factored_khovanov_rank` retain their old behavior.
++
++`alexander_obstruction(..., backend="auto"|"dense"|"sparse", statistics=list)`
++retains the existing obstruction dictionary. Auto chooses sparse at 256
++crossings and above. Its prime is fixed and its evaluation constants carry
++no probabilistic completeness guarantee.
++
++`reduced_khovanov_rank` returns a **reduced** `rank` and `by_degree`, unlike
++the original `khovanov_rank` interface. `reduced_khovanov_decision` may return
++`reduced_rank=None`, `lower_bound=2`, and replay data on an early knot verdict.
++The replay data require the preceding cancellations to be replayed; they
++are not a small independent topological certificate. Cooperative resource
++limits now cover factorization and its surrounding recognition stages;
++large operations without intermediate callbacks can still exceed the requested duration.
++
++## Prior development record
+ 
+ Version 0.2 integrates the ideas of the nine acceleration proposals in
+ `../proposals/` that gave a measurable speedup. The 36-crossing braid closure
+@@ -22,16 +71,19 @@
+    Reidemeister III moves that unlock further I/II moves runs later, between
+    steps 7 and 8, when no filter has decided.)
+ 3. **Descending-diagram test**, linear time; sufficient for `UNKNOT`.
+-4. **Visible connected sums.** Two edges bordering the same two faces cut the
+-   diagram into summands. A sum is trivial exactly when every summand is, so
++4. **Visible connected sums.** Interlacement components compute the atomic
++   diagrammatic summands in one pass, with checked PD reconstruction and a
++   partition certificate. A sum is trivial exactly when every summand is, so
+    the summands are examined separately, smallest first.
+ 5. **Modular Alexander test.** The first Alexander minor at t = −1 and at a
+    generic element of F_p, p = 2^61 − 1. For the unknot it is ±t^k; anything
+-   else certifies `KNOTTED`. O(n³) field operations.
++   else certifies `KNOTTED`. Dense or sparse elimination, with O(n³)
++   worst-case field operations.
+ 6. **Modular Jones test.** The Kauffman bracket at a generic A in F_p by a
+    frontier scan that merges partial states with equal boundary matchings.
+-   Cost is bounded by the number of crossingless matchings of the scan
+-   boundary (proved, no multiplicity factor). Skipped above 4096 frontier
++   Cost is bounded by the number of matchings of the scan boundary, at most
++   (w−1)!! without a certified disk hypothesis, with no multiplicity factor.
++   Skipped above 4096 frontier
+    states. Rejects knots with trivial Alexander polynomial such as the Conway
+    knot.
+ 7. **Exact Alexander polynomial** over Z[t] (fraction-free Bareiss).
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/__init__.py b/Topology/UnknotRecognition/fast/fastunknot/__init__.py
+--- a/Topology/UnknotRecognition/fast/fastunknot/__init__.py
++++ b/Topology/UnknotRecognition/fast/fastunknot/__init__.py
+@@ -3,6 +3,7 @@
+ from .alexander import alexander_polynomial
+ from .diagram import Diagram, DiagramError
+ from .factor import visible_factors
++from .interlace import visible_factors_interlacement, verify_interlacement_certificate
+ from .filters import alexander_obstruction, jones_obstruction
+ from .recognize import Result, factored_khovanov_rank, recognize
+ from .scan import ScanLimit, khovanov_rank
+@@ -10,4 +11,18 @@
+ __all__ = ["Diagram", "DiagramError", "Result", "ScanLimit", "alexander_obstruction",
+            "alexander_polynomial", "factored_khovanov_rank", "jones_obstruction", "khovanov_rank",
+            "recognize", "visible_factors"]
+-__version__ = "0.2.0"
++__version__ = "0.3.0"
++
++# The experimental scanner loads only when requested, preserving CLI startup.
++def reduced_khovanov_rank(*args, **kwargs):
++    from .reduced_scan import reduced_khovanov_rank as run
++    return run(*args, **kwargs)
++
++
++def reduced_khovanov_decision(*args, **kwargs):
++    from .reduced_scan import reduced_khovanov_decision as run
++    return run(*args, **kwargs)
++
++
++__all__ += ["visible_factors_interlacement", "verify_interlacement_certificate",
++            "reduced_khovanov_rank", "reduced_khovanov_decision"]
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/__main__.py b/Topology/UnknotRecognition/fast/fastunknot/__main__.py
+--- a/Topology/UnknotRecognition/fast/fastunknot/__main__.py
++++ b/Topology/UnknotRecognition/fast/fastunknot/__main__.py
+@@ -44,6 +44,8 @@
+         ("--no-modular", None, False, None, "disable only the modular Alexander stage"),
+         ("--no-jones", None, False, None, None),
+         ("--no-factor", None, False, None, "do not split visible connected sums"),
++        ("--legacy-factor", None, False, None, "use the original recursive two-edge-cut factorization"),
++        ("--pointed", None, False, None, "experimental direct reduced Khovanov decision engine"),
+         ("--jones-max-states", int, 4096, None, None),
+         ("--pivot", str, "minfill", ("minfill", "lifo"), None),
+         ("--algebra", str, "bits", ("bits", "sets"), None),
+@@ -150,12 +152,18 @@
+         print(f"invalid input: {exc}", file=sys.stderr)
+         return 2
+     if args.command == "recognize":
++        if args.pointed and (args.pivot != "minfill" or args.algebra != "bits" or args.tail or args.race != 1):
++            print("invalid options: --pointed requires --pivot minfill, --algebra bits, --tail 0, --race 1",
++                  file=sys.stderr)
++            return 2
+         result = recognize(diagram, use_reduction=not args.no_reduction,
+                            use_descending=not args.no_descending,
+                            use_alexander=not args.no_alexander, use_modular=not args.no_modular,
+                            use_exact_alexander=True if args.exact_alexander else None, use_r3=not args.no_r3,
+                            race=args.race, race_after=args.race_after,
+                            use_jones=not args.no_jones, use_factorization=not args.no_factor,
++                           factor_backend="legacy" if args.legacy_factor else "interlacement",
++                           use_pointed=args.pointed,
+                            jones_max_states=args.jones_max_states, pivot=args.pivot,
+                            algebra=args.algebra, tail=args.tail, max_objects=args.max_objects,
+                            seconds=args.seconds, check_d_squared=args.check_d2).to_json()
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/filters.py b/Topology/UnknotRecognition/fast/fastunknot/filters.py
+--- a/Topology/UnknotRecognition/fast/fastunknot/filters.py
++++ b/Topology/UnknotRecognition/fast/fastunknot/filters.py
+@@ -7,13 +7,15 @@
+ * ``alexander_obstruction``: the first Alexander minor evaluated at t = -1 and
+   at a generic point of the prime field F_p.  For the unknot the minor is a unit +-t^k of
+   Z[t, 1/t] with 0 <= k < n, so an evaluation outside {+-v^k} proves the knot
+-  nontrivial.  O(n^3) field operations instead of fraction-free elimination
+-  over Z[t].
++  nontrivial.  Dense or incidence-indexed sparse elimination avoids
++  fraction-free elimination over Z[t].  Worst-case arithmetic remains cubic;
++  the sparse path measures its actual Schur-update work.
+ * ``jones_obstruction``: the Kauffman bracket at a generic A in F_p, computed by
+   scanning the diagram and summing state weights as soon as partial smoothings
+-  induce the same boundary matching.  Its cost is bounded by the number of
+-  crossingless matchings of the scan boundary (Catalan(w/2)), with no
+-  multiplicity factor: unlike the Khovanov scan it really is 2^O(w) poly(n).
++  induce the same boundary matching.  An arbitrary frontier of w endpoints
++  has at most (w-1)!! matchings, giving 2^O(w log(w+1)) poly(n) work with no
++  multiplicity factor.  Catalan(w/2) and 2^O(w) require a certified common
++  disk boundary; planarity and the current greedy order do not imply that.
+   A value different from delta * (-A^3)^writhe proves the knot nontrivial.
+ """
+ from __future__ import annotations
+@@ -33,8 +35,8 @@
+ # multiplicative order 61 modulo 2^61 - 1, so {+-2^k} is a tiny structured set
+ # and cyclotomic-looking invariants (torus knots) can land in it.  Proposal 03,
+ # which uses p = 2^31 - 1 and t = 2, misses T(3,61) for exactly this reason:
+-# Delta(2) = -2^29 mod p.  Generic constants make a false "inconclusive"
+-# as unlikely as a random collision (about n / 2^60).
++# Delta(2) = -2^29 mod p.  These fixed constants carry no probabilistic guarantee.
++# An inconclusive result remains inconclusive, even for an adversarial input.
+ ALEXANDER_T = 0x2545F4914F6CDD1D % PRIME
+ JONES_A = 0x9E3779B97F4A7C15 % PRIME
+ 
+@@ -76,31 +78,56 @@
+     return det % p
+ 
+ 
+-def alexander_obstruction(diagram: Diagram) -> dict | None:
+-    """A witness that the Alexander polynomial is not a unit, or None (inconclusive)."""
++def alexander_obstruction(diagram: Diagram, *, backend: str = "auto", check=None,
++                          statistics: list | None = None) -> dict | None:
++    """Exact one-sided Alexander witness, retaining the original witness format.
++
++    ``backend`` is auto, dense, or sparse.  The sparse path eliminates the
++    actual nonzero pattern with row and column incidence indexes.  ``statistics``
++    may collect deterministic sparse-work counters without changing evidence.
++    The field and evaluation points are fixed; no probabilistic completeness
++    claim is made for an inconclusive result.
++    """
++    if backend not in ("auto", "dense", "sparse"):
++        raise ValueError("Alexander backend must be auto, dense, or sparse")
+     n = diagram.crossings
+     if n == 0:
+         return None
+-    rows = alexander_rows(diagram)[:-1]          # sparse: at most three nonzero entries per row
++    sparse_mode = backend == "sparse" or (backend == "auto" and n >= 256)
++    rows = alexander_rows(diagram)[:-1]
+     for value in (-1, ALEXANDER_T):
+-        cache: dict = {}                         # the entries are a handful of distinct polynomials
+-        minor = [[0] * (n - 1) for _ in rows]
+-        for i, sparse in enumerate(rows):
+-            for col, poly in sparse.items():
++        if check is not None:
++            check()
++        cache: dict = {}
++        if sparse_mode:
++            from .sparse import sparse_determinant
++            minor = [{} for _ in rows]
++        else:
++            minor = [[0] * (n - 1) for _ in rows]
++        for i, row in enumerate(rows):
++            for col, poly in row.items():
+                 if col < n - 1:
+                     key = tuple(poly)
+                     number = cache.get(key)
+                     if number is None:
+                         number = cache[key] = _evaluate(poly, value, PRIME)
+-                    minor[i][col] = number
+-        det = determinant_mod(minor, reduced=True)
++                    if number or not sparse_mode:
++                        minor[i][col] = number
++        if sparse_mode:
++            counters = {} if statistics is not None else None
++            det = sparse_determinant(minor, p=PRIME, check=check, stats=counters)
++            if statistics is not None:
++                statistics.append(dict(counters, evaluation=value))
++        else:
++            det = determinant_mod(minor, reduced=True)
+         units, term = set(), 1
+         for _ in range(n):
+             units.add(term)
+             units.add(-term % PRIME)
+             term = term * value % PRIME
+         if det not in units:
+-            return {"kind": "alexander-minor-not-a-unit", "prime": PRIME, "t": value, "minor": det}
++            return {"kind": "alexander-minor-not-a-unit", "prime": PRIME,
++                    "t": value, "minor": det}
+     return None
+ 
+ 
+@@ -198,3 +225,4 @@
+     return {"kind": "kauffman-bracket-differs-from-unknot", "prime": p, "A": a, "writhe": writhe,
+             "bracket": bracket, "unknot_bracket": expected, "peak_states": peak,
+             "transitions": transitions}
++
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/interlace.py b/Topology/UnknotRecognition/fast/fastunknot/interlace.py
+new file mode 100644
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/fastunknot/interlace.py
+@@ -0,0 +1,225 @@
++"""Certified visible connected-sum factorization through Gauss interlacement.
++
++Exact visible factorization for the ``fastunknot`` package.  The historical
++``factor.visible_factors`` API remains available for comparison and compatibility.
++
++On a validated spherical, one-component PD diagram, connected components of
++the Gauss-word interlacement graph are exactly the atoms of visible two-edge
++cut factorization.  Components and a spanning-forest certificate are found in
++O(n alpha(n)) time and O(n) space, without constructing the possibly quadratic
++edge set.  Checked output construction costs O(n log n) overall because the
++upstream ``Diagram.from_pd`` sorts edge labels.  Set ``validate=False`` only
++when the input has already been validated; output construction is then linear.
++
++This factors a *diagram*.  It does not find the prime factors of an arbitrary
++knot diagram and does not make unknot recognition quasi-polynomial.
++"""
++from __future__ import annotations
++
++from collections import defaultdict
++
++from .diagram import Diagram
++
++
++def _validated_word(word):
++    word = tuple(word)
++    if len(word) % 2:
++        raise ValueError("a double-occurrence word has even length")
++    n = len(word) // 2
++    counts = [0] * n
++    for x in word:
++        if type(x) is not int or not 0 <= x < n:
++            raise ValueError("crossings must be integers in 0..n-1")
++        counts[x] += 1
++    if any(c != 2 for c in counts):
++        raise ValueError("every crossing must occur exactly twice")
++    return word
++
++
++class _UnionFind:
++    def __init__(self, n):
++        self.parent = list(range(n))
++        self.size = [1] * n
++
++    def find(self, x):
++        root = x
++        while self.parent[root] != root:
++            root = self.parent[root]
++        while self.parent[x] != x:
++            self.parent[x], x = root, self.parent[x]
++        return root
++
++    def union(self, a, b):
++        a, b = self.find(a), self.find(b)
++        if a == b:
++            return a
++        if self.size[a] < self.size[b]:
++            a, b = b, a
++        self.parent[b] = a
++        self.size[a] += self.size[b]
++        return a
++
++
++def interlacement_components(word):
++    """Return (components, forest) for a normalized double-occurrence word.
++
++    The forest contains actual alternating chord pairs and has exactly n-k
++    edges.  Every component is ordered by original crossing number; components
++    are ordered by their least crossing.  The algorithm works for arbitrary
++    double-occurrence words, including words not realizable in the sphere.
++    """
++    word = _validated_word(word)
++    n = len(word) // 2
++    uf = _UnionFind(n)
++    first = [-1] * n
++    # Each active component owns a circular doubly linked list of its open
++    # chords.  Lists concatenate and arbitrary chords delete in constant time.
++    head = [-1] * n
++    following = [-1] * n
++    previous = [-1] * n
++    stack = []
++    forest = []
++    for position, x in enumerate(word):
++        if first[x] < 0:
++            first[x] = position
++            head[x] = following[x] = previous[x] = x
++            stack.append(x)
++            continue
++        root = uf.find(x)
++        while uf.find(stack[-1]) != root:
++            other = uf.find(stack.pop())
++            # All open chords of 'other' started after x.  Thus x and this
++            # currently open representative are genuinely interlaced.
++            forest.append((x, head[other]))
++            a, b = head[root], head[other]
++            last_a, last_b = previous[a], previous[b]
++            following[last_a], previous[b] = b, last_a
++            following[last_b], previous[a] = a, last_b
++            root = uf.union(root, other)
++            head[root] = a
++        stack[-1] = root
++        if following[x] == x:
++            head[root] = -1
++            stack.pop()
++        else:
++            a, b = previous[x], following[x]
++            following[a], previous[b] = b, a
++            if head[root] == x:
++                head[root] = b
++        following[x] = previous[x] = -1
++    groups = defaultdict(list)
++    for x in range(n):
++        groups[uf.find(x)].append(x)
++    return [tuple(group) for group in groups.values()], forest
++
++
++def verify_interlacement_certificate(word, certificate):
++    """Independently verify a component/forest certificate in O(n alpha(n)).
++
++    Connectivity is witnessed by alternating pairs.  Separation is checked
++    by a component nesting stack, without repeating the discovery algorithm.
++    The verifier checks combinatorial decomposition only; the caller must
++    establish that the input PD diagram is spherical and one-component.
++    """
++    word = _validated_word(word)
++    n = len(word) // 2
++    groups = certificate.get("crossing_components", ())
++    forest = certificate.get("interlacement_forest", ())
++    owner = [-1] * n
++    for c, group in enumerate(groups):
++        if not group:
++            raise ValueError("empty interlacement component")
++        for x in group:
++            if type(x) is not int or not 0 <= x < n or owner[x] != -1:
++                raise ValueError("components do not partition the crossings")
++            owner[x] = c
++    if any(c < 0 for c in owner):
++        raise ValueError("components do not cover the crossings")
++    if len(forest) != n - len(groups):
++        raise ValueError("a spanning forest must have n-k edges")
++    positions = [[] for _ in range(n)]
++    for i, x in enumerate(word):
++        positions[x].append(i)
++    uf = _UnionFind(n)
++    for edge in forest:
++        if len(edge) != 2:
++            raise ValueError("a forest edge must have two endpoints")
++        x, y = edge
++        if any(type(v) is not int or not 0 <= v < n for v in (x, y)):
++            raise ValueError("invalid forest endpoint")
++        a, b = positions[x]
++        c, d = positions[y]
++        if not (a < c < b < d or c < a < d < b):
++            raise ValueError("a claimed forest edge is not interlaced")
++        if owner[x] != owner[y] or uf.find(x) == uf.find(y):
++            raise ValueError("forest crosses components or contains a cycle")
++        uf.union(x, y)
++    for group in groups:
++        root = uf.find(group[0])
++        if any(uf.find(x) != root for x in group):
++            raise ValueError("forest does not connect a component")
++    # Distinct actual components are nested in gaps of one another.  A visit
++    # to an outer component cannot occur before a nested component finishes.
++    counts = [0] * len(groups)
++    stack = []
++    for x in word:
++        c = owner[x]
++        if counts[c] == 0:
++            stack.append(c)
++        if not stack or stack[-1] != c:
++            raise ValueError("distinct components interlace")
++        counts[c] += 1
++        if counts[c] == 2 * len(groups[c]):
++            stack.pop()
++    if stack:
++        raise ValueError("incomplete component nesting")
++    return True
++
++
++def visible_factors_interlacement(diagram, check=lambda: None, *, validate=True):
++    """Return visible factors and an independently checkable certificate.
++
++    ``diagram`` must be a validated ``fastunknot.Diagram``.  The return shape
++    intentionally differs from upstream ``visible_factors``: the second item
++    is a certificate dictionary, not a list of recursive two-edge-cut records.
++    The zero-crossing circle is returned as a single factor.
++    """
++    check()
++    walk = diagram.traversal()
++    word = tuple(d // 4 for d in walk)
++    groups, forest = interlacement_components(word)
++    certificate = {
++        "algorithm": "gauss-interlacement-v1",
++        "original_crossings": diagram.crossings,
++        "crossing_components": [list(group) for group in groups],
++        "interlacement_forest": [list(edge) for edge in forest],
++    }
++    if len(groups) <= 1:
++        return [diagram], certificate
++    n = diagram.crossings
++    owner, local = [-1] * n, [-1] * n
++    rows = []
++    for c, group in enumerate(groups):
++        check()
++        rows.append([[-1] * 4 for _ in group])
++        for k, x in enumerate(group):
++            owner[x], local[x] = c, k
++    visits = [0] * len(groups)
++    last_dart = [-1] * len(groups)
++    for dart in walk:
++        x, slot = divmod(dart, 4)
++        c = owner[x]
++        row = rows[c][local[x]]
++        row[slot] = visits[c]
++        row[(slot + 2) % 4] = visits[c] + 1
++        visits[c] += 1
++        last_dart[c] = dart
++    factors = []
++    for c, component_rows in enumerate(rows):
++        check()
++        dart = last_dart[c]
++        x, slot = divmod(dart, 4)
++        component_rows[local[x]][(slot + 2) % 4] = 0
++        factors.append(Diagram.from_pd(component_rows) if validate else
++                       Diagram(tuple(tuple(row) for row in component_rows)))
++    return factors, certificate
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/recognize.py b/Topology/UnknotRecognition/fast/fastunknot/recognize.py
+--- a/Topology/UnknotRecognition/fast/fastunknot/recognize.py
++++ b/Topology/UnknotRecognition/fast/fastunknot/recognize.py
+@@ -1,22 +1,25 @@
+-"""The recognition pipeline (version 0.2).
+-
+-1. validate the diagram (one component, spherical rotation system);
++"""The exact recognition pipeline.
++
++1. accept a validated diagram (one component, spherical rotation system);
+ 2. crossing-decreasing Reidemeister I/II moves (polynomial);
+ 3. descending-diagram test (linear; sufficient for UNKNOT);
+ 4. split along visible two-edge cuts; a connected sum is trivial exactly when
+    every summand is, so the summands are examined separately, smallest first,
+    and the first knotted summand decides;
+    for each summand:
+-5. Alexander minor in a prime field at t = -1 and t = 2 (cubic; KNOTTED or
+-   inconclusive);
+-6. Kauffman bracket at A = 2 in a prime field by a width-bounded scan
++5. Alexander minor in a prime field at t = -1 and a fixed generic field
++   element, using dense or sparse elimination (KNOTTED or inconclusive);
++6. Kauffman bracket at a fixed generic field element by a width-bounded scan
+    (KNOTTED, inconclusive, or skipped when its budget is exhausted);
+ 7. exact Alexander polynomial over Z[t] (KNOTTED or inconclusive);
+-8. reduced Khovanov rank over F2 by scanning (exact; UNKNOT iff rank 1).
++8. reduced Khovanov rank over F2 by scanning (exact; UNKNOT iff rank 1), or
++   the optional pointed decision engine with its isolated-summand stopping rule.
+ 
+ Every verdict is exact.  Filters 5-7 can only say KNOTTED; agreement with the
+-unknot's value is never evidence of triviality.  Optional ceilings turn a
+-too-expensive step 8 into UNKNOWN, never into a knot verdict.  Worst-case
++unknot's value is never evidence of triviality.  Resource exhaustion at any
++stage returns UNKNOWN, never a knot verdict.  Deadlines are cooperative:
++coarse preprocessing stages are checked before and after their execution.
++Worst-case
+ running time is exponential in the crossing number; it is not quasi-polynomial.
+ """
+ from __future__ import annotations
+@@ -29,6 +32,7 @@
+ from .alexander import alexander_polynomial, evaluate, format_polynomial
+ from .diagram import Diagram
+ from .factor import convolve, visible_factors
++from .interlace import visible_factors_interlacement
+ from .filters import FilterLimit, alexander_obstruction, jones_obstruction
+ from .ordering import best_scan_order
+ from .scan import ScanLimit, khovanov_rank
+@@ -104,7 +108,7 @@
+ 
+ 
+ def _decide_prime_looking(diagram: Diagram, evidence: dict, *, use_modular, use_jones, use_alexander,
+-                          use_exact_alexander, use_r3, use_descending,
++                          use_exact_alexander, use_r3, use_descending, use_pointed,
+                           jones_max_states, jones_max_transitions, max_objects, deadline,
+                           check_d_squared, scan_options) -> tuple[str, str]:
+     """Verdict and method for one summand (already simplified by the caller)."""
+@@ -112,21 +116,27 @@
+         if deadline is not None and monotonic() > deadline:
+             raise ScanLimit("time budget exhausted")
+ 
++    check()
+     if use_modular:
+-        witness = alexander_obstruction(diagram)
++        witness = alexander_obstruction(diagram, check=check)
++        check()
+         if witness is not None:
+             evidence["alexander_modular"] = witness
+             return "KNOTTED", "alexander-modular"
+     order = None
+     if use_jones:
+         # the Jones scan and the Khovanov scan use the same greedy order: compute it once
++        check()
+         order = best_scan_order(diagram.pd, tries=min(diagram.crossings, 12), check=check)
++        check()
+         try:
+             witness = jones_obstruction(diagram, max_states=jones_max_states,
+                                         max_transitions=jones_max_transitions, order=order, check=check)
+         except FilterLimit as exc:
++            check()
+             evidence["jones"] = f"skipped: {exc}"
+         else:
++            check()
+             if witness is not None:
+                 evidence["jones"] = witness
+                 return "KNOTTED", "jones-modular"
+@@ -137,11 +147,14 @@
+     # to 63%) of the whole recognition, so by default it runs only when the modular test did not.
+     exact = use_alexander and (not use_modular if use_exact_alexander is None else use_exact_alexander)
+     if use_alexander and not exact:
+-        evidence["alexander_polynomial"] = ("not computed: the first minor is a unit at t = -1 and at a "
+-                                            "generic point of F_p (use_exact_alexander=True computes it)")
++        evidence["alexander_polynomial"] = (
++            "not computed: the first minor has a unit value at t = -1 and at a generic point of F_p "
++            "(use_exact_alexander=True computes it)" if use_modular else
++            "not computed: the exact Alexander stage was disabled")
+     if exact:
+         check()
+         poly = alexander_polynomial(diagram)
++        check()
+         evidence["alexander_polynomial"] = format_polynomial(poly)
+         evidence["determinant"] = abs(evaluate(poly, -1))
+         if poly != [1]:
+@@ -152,18 +165,32 @@
+         # cost up to 58% on diagrams that the Alexander test decides a moment later.)
+         check()
+         reduced, trace = simplify(diagram, r3=True)
++        check()
+         if reduced.crossings < diagram.crossings:
+             evidence["reidemeister_three"] = {"crossings_before": diagram.crossings,
+                                               "crossings_after": reduced.crossings,
+                                               "trace": [m.to_json() for m in trace]}
+             if reduced.crossings == 0:
+                 return "UNKNOT", "reidemeister-reduction"
+-            if use_descending and descending_start(reduced) is not None:
+-                return "UNKNOT", "descending-diagram"
++            if use_descending:
++                dart = descending_start(reduced)
++                check()
++                if dart is not None:
++                    return "UNKNOT", "descending-diagram"
+             diagram, order = reduced, None
++    check()
+     remaining = None if deadline is None else max(0.0, deadline - monotonic())
++    if use_pointed:
++        from .reduced_scan import reduced_khovanov_decision
++        decision = reduced_khovanov_decision(
++            diagram.pd, order=order, max_objects=max_objects, seconds=remaining,
++            check_d_squared=check_d_squared)
++        check()
++        evidence["pointed_khovanov"] = decision
++        return decision["status"], "pointed-khovanov-F2-scan"
+     kh = khovanov_rank(diagram.pd, order=order, max_objects=max_objects, seconds=remaining,
+                        check_d_squared=check_d_squared, **scan_options)
++    check()
+     evidence["khovanov"] = {"field": "F2", "unreduced_rank": kh["rank"], "reduced_rank": kh["reduced_rank"],
+                             "unreduced_rank_by_cube_degree": kh["by_degree"], "scan_stats": kh["stats"],
+                             "scan_order": kh["order"]}
+@@ -179,55 +206,90 @@
+               jones_max_transitions: int | None = 200_000, max_objects: int | None = None,
+               seconds: float | None = None, check_d_squared: bool = False,
+               pivot: str = "minfill", algebra: str = "bits", tail: int = 0,
+-              race: int = 1, race_after: float = 1.0) -> Result:
++              race: int = 1, race_after: float = 1.0,
++              factor_backend: str = "interlacement", use_pointed: bool = False) -> Result:
++    if factor_backend not in ("interlacement", "legacy"):
++        raise ValueError("factor_backend must be interlacement or legacy")
++    if use_pointed and (pivot != "minfill" or algebra != "bits" or tail or race != 1):
++        raise ValueError("pointed scanning currently requires minfill, bits, tail=0, and race=1")
+     start = monotonic()
+     deadline = None if seconds is None else start + seconds
+     original = diagram
+     evidence: dict[str, Any] = {}
+-    if use_reduction:
+-        diagram, trace = simplify(diagram, r3=False)      # Reidemeister III waits until the filters have failed
+-        evidence["reidemeister_trace"] = [m.to_json() for m in trace]
+-    if diagram.crossings == 0:
+-        return Result("UNKNOT", "reidemeister-reduction", original.crossings, 0, monotonic() - start, evidence)
+-    if use_descending:
+-        dart = descending_start(diagram)
+-        if dart is not None:
+-            evidence["descending_start_dart"] = dart
+-            return Result("UNKNOT", "descending-diagram", original.crossings, diagram.crossings,
++
++    def check():
++        if deadline is not None and monotonic() > deadline:
++            raise ScanLimit("time budget exhausted")
++
++    try:
++        check()
++        if use_reduction:
++            # Reidemeister III waits until the filters have failed.
++            diagram, trace = simplify(diagram, r3=False)
++            check()
++            evidence["reidemeister_trace"] = [m.to_json() for m in trace]
++        if diagram.crossings == 0:
++            return Result("UNKNOT", "reidemeister-reduction", original.crossings, 0,
+                           monotonic() - start, evidence)
+-    factors = [diagram]
+-    if use_factorization:
+-        factors, cuts = visible_factors(diagram)
+-        if cuts:
+-            evidence["connected_sum_cuts"] = cuts
+-    options = dict(use_modular=use_modular and use_alexander, use_jones=use_jones, use_alexander=use_alexander,
+-                   use_exact_alexander=use_exact_alexander, use_r3=use_r3 and use_reduction,
+-                   use_descending=use_descending,
+-                   jones_max_states=jones_max_states, jones_max_transitions=jones_max_transitions,
+-                   max_objects=max_objects, deadline=deadline, check_d_squared=check_d_squared,
+-                   scan_options=dict(pivot=pivot, algebra=algebra, tail=tail, race=race, race_after=race_after))
+-    method = "reduced-khovanov-F2-scan"
+-    try:
++        if use_descending:
++            check()
++            dart = descending_start(diagram)
++            check()
++            if dart is not None:
++                evidence["descending_start_dart"] = dart
++                return Result("UNKNOT", "descending-diagram", original.crossings, diagram.crossings,
++                              monotonic() - start, evidence)
++        factors = [diagram]
++        if use_factorization:
++            check()
++            if factor_backend == "interlacement":
++                factors, certificate = visible_factors_interlacement(diagram, check=check)
++                if len(factors) > 1:
++                    evidence["connected_sum_factorization"] = certificate
++            else:
++                factors, cuts = visible_factors(diagram, check=check)
++                if cuts:
++                    evidence["connected_sum_cuts"] = cuts
++            check()
++        options = dict(use_modular=use_modular and use_alexander, use_jones=use_jones,
++                       use_alexander=use_alexander, use_exact_alexander=use_exact_alexander,
++                       use_r3=use_r3 and use_reduction, use_descending=use_descending,
++                       use_pointed=use_pointed, jones_max_states=jones_max_states,
++                       jones_max_transitions=jones_max_transitions, max_objects=max_objects,
++                       deadline=deadline, check_d_squared=check_d_squared,
++                       scan_options=dict(pivot=pivot, algebra=algebra, tail=tail,
++                                         race=race, race_after=race_after))
++        method = "reduced-khovanov-F2-scan"
++        check()
+         if len(factors) == 1:
+             status, method = _decide_prime_looking(diagram, evidence, **options)
+         else:
+             status, reports = "UNKNOT", []
+             evidence["factors"] = reports
+             for factor in sorted(factors, key=lambda d: d.crossings):
++                check()
+                 sub: dict[str, Any] = {"crossings": factor.crossings}
+                 reports.append(sub)
+                 reduced, trace = simplify(factor, r3=False) if use_reduction else (factor, [])
+-                if reduced.crossings == 0 or (use_descending and descending_start(reduced) is not None):
++                check()
++                trivial = reduced.crossings == 0
++                if not trivial and use_descending:
++                    trivial = descending_start(reduced) is not None
++                    check()
++                if trivial:
+                     sub["status"], sub["method"] = "UNKNOT", "reduction-or-descending"
+                     continue
+                 sub["status"], sub["method"] = _decide_prime_looking(reduced, sub, **options)
++                check()
+                 if sub["status"] == "KNOTTED":
+                     status, method = "KNOTTED", "connected-sum-factor:" + sub["method"]
+                     break
+             else:
+                 method = "connected-sum-all-factors-trivial"
++        check()
+     except (ScanLimit, MemoryError) as exc:
+         evidence["reason"] = str(exc) or "memory allocation failed"
+         return Result("UNKNOWN", "resource-limit", original.crossings, diagram.crossings,
+                       monotonic() - start, evidence)
+     return Result(status, method, original.crossings, diagram.crossings, monotonic() - start, evidence)
++
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/reduced_scan.py b/Topology/UnknotRecognition/fast/fastunknot/reduced_scan.py
+new file mode 100644
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/fastunknot/reduced_scan.py
+@@ -0,0 +1,284 @@
++"""Experimental pointed scanner: cut one edge and set its endpoint dot to zero.
++
++The underlying geometry remains Planar's, while monomials omit circle zero,
++the circle containing the distinguished (smallest labelled) cut endpoint.
++Cross-stage topology plans are ordinary unpointed plans. Numerical shape
++results are cleared whenever the marked-input convention changes.
++"""
++from collections import defaultdict
++from time import monotonic
++
++from .planar import Planar
++from .scan_fast import FastScan
++from .ordering import best_scan_order, repeated_stages, validate_order
++
++
++def pointed_component(c, input_shift=1):
++    left, right, boundary, extra, _ = c
++    rest = boundary >> 1
++    choices = []
++    while rest:
++        low = rest & -rest
++        choices.append((boundary >> 1) ^ low)
++        rest ^= low
++    return (left >> input_shift, right >> input_shift, boundary >> 1, extra,
++            bool(boundary & 1), tuple(choices))
++
++
++def evaluate_pointed(components, f, g=0):
++    result = 1
++    for left, right, boundary, extra, marked, choices in components:
++        dots = (f & left).bit_count() + (g & right).bit_count() + extra
++        if marked:
++            if dots:
++                return 0
++            result <<= boundary
++        elif dots >= 2:
++            return 0
++        elif dots:
++            result <<= boundary
++        elif not boundary:
++            return 0
++        else:
++            nxt = 0
++            for choice in choices:
++                nxt ^= result << choice
++            result = nxt
++    return result
++
++
++class ReducedPlanar(Planar):
++    def __init__(self, marked_endpoint, shape_cache=True):
++        self.marked_endpoint = marked_endpoint
++        self.marked_mode = None
++        super().__init__(shape_cache=shape_cache)
++
++    def stage(self, points, slots):
++        super().stage(points, slots)
++        self.pointed_compositions = {}
++        self.pointed_transfers = {}
++        self.marked_before = self.marked_endpoint in points
++        self.marked_after = self.marked_before or self.marked_endpoint in slots
++        mode = (self.marked_before, self.marked_after)
++        if mode != self.marked_mode:
++            self.shape_results.clear()
++            self.marked_mode = mode
++
++    def compose(self, a, b, c, f, g):
++        if not self.marked_after:
++            return super().compose(a, b, c, f, g)
++        key = (a, b, c)
++        found = self.pointed_compositions.get(key)
++        if found is None:
++            ordinary = super().compose_plan(a, b, c)
++            if ordinary is None:
++                return 0
++            found = (tuple(pointed_component(x) for x in ordinary[0]), {})
++            self.pointed_compositions[key] = found
++        components, memo = found
++        result = 0
++        fs = []
++        while f:
++            low = f & -f
++            fs.append(low.bit_length() - 1)
++            f ^= low
++        while g:
++            low = g & -g
++            tg = low.bit_length() - 1
++            g ^= low
++            for tf in fs:
++                pair = (tf, tg)
++                value = memo.get(pair)
++                if value is None:
++                    value = memo[pair] = evaluate_pointed(components, tf, tg)
++                result ^= value
++        return result
++
++    def transfer(self, a, b, f, i_src, i_tgt):
++        if not self.marked_after:
++            return super().transfer(a, b, f, i_src, i_tgt)
++        key = (a, b, i_src, i_tgt)
++        found = self.pointed_transfers.get(key)
++        if found is None:
++            raw, touched_mask, renumber, _ = super().transfer_plan(a, b, i_src, i_tgt)
++            shift = int(self.marked_before)
++            plans = tuple((ls, lt, tuple(pointed_component(x, shift) for x in components))
++                          for ls, lt, components in raw)
++            renumber = {old >> shift: new >> 1 for old, new in renumber.items()
++                        if not (shift and old == 1)}
++            found = (plans, touched_mask >> shift, renumber, {})
++            self.pointed_transfers[key] = found
++        plans, touched_mask, renumber, memo = found
++        if not plans:
++            return ()
++        total = [0] * len(plans)
++        while f:
++            low = f & -f
++            monomial = low.bit_length() - 1
++            f ^= low
++            core = monomial & touched_mask
++            values = memo.get(core)
++            if values is None:
++                values = memo[core] = [evaluate_pointed(components, core)
++                                     for _, _, components in plans]
++            rest = monomial ^ core
++            shift = 0
++            while rest:
++                low = rest & -rest
++                shift |= renumber[low]
++                rest ^= low
++            for t, value in enumerate(values):
++                total[t] ^= value << shift
++        return tuple((plan[0], plan[1], value)
++                     for plan, value in zip(plans, total) if value)
++
++
++class ReducedScan(FastScan):
++    def __init__(self, marked_endpoint, max_objects=None, deadline=None, shape_cache=True):
++        super().__init__(max_objects=max_objects, deadline=deadline, shape_cache=False)
++        self.algebra = ReducedPlanar(marked_endpoint, shape_cache=shape_cache)
++
++
++def cut_edge(pd, order, edge=None):
++    """Cut an edge at the last crossing; no extra frontier until the final stage.
++
++    Among its four edges choose the one whose first occurrence is earliest,
++    so the reduced quotient is active through the longest possible suffix.
++    An explicit edge allows experiments with other locations.
++    """
++    if not pd:
++        return [], (), None
++    if edge is None:
++        position = {index: k for k, index in enumerate(order)}
++        first = {label: len(pd) for label in pd[order[-1]]}
++        for i, row in enumerate(pd):
++            for label in row:
++                if label in first:
++                    first[label] = min(first[label], position[i])
++        edge = min(first, key=lambda label: (first[label], label))
++    least = min(x for row in pd for x in row)
++    ends = (least - 2, least - 1)
++    cut = [list(row) for row in pd]
++    occurrences = [(i, j) for i in order for j, label in enumerate(pd[i]) if label == edge]
++    if len(occurrences) != 2:
++        raise ValueError("the marked edge must have two ends")
++    for (i, j), endpoint in zip(occurrences, ends):
++        cut[i][j] = endpoint
++    return [tuple(row) for row in cut], ends, edge
++
++
++def _prepare_scan(pd, order, edge, max_objects, seconds, shape_cache):
++    pd = [tuple(row) for row in pd]
++    deadline = None if seconds is None else monotonic() + seconds
++    order = best_scan_order(pd, tries=min(len(pd), 12)) if order is None else validate_order(len(pd), order)
++    cut, endpoints, edge = cut_edge(pd, order, edge=edge)
++    if shape_cache is None:
++        shape_cache = len(order) >= 16 and 8 * repeated_stages(cut, order) >= len(order)
++    scan = ReducedScan(endpoints[0], max_objects=max_objects, deadline=deadline,
++                       shape_cache=shape_cache)
++    return pd, order, cut, endpoints, edge, scan
++
++
++def _terminal_rank(scan, endpoints):
++    if scan.points != frozenset(endpoints):
++        raise ArithmeticError("cut scan did not end in its two endpoints")
++    if any(row for row in scan.out if row is not None):
++        raise ArithmeticError("reduced terminal complex has nonzero differential")
++    if scan.live <= 0 or not scan.live & 1:
++        raise ArithmeticError("a knot must have positive odd reduced F2 rank")
++    by_degree = defaultdict(int)
++    for ma, h in zip(scan.mid, scan.deg):
++        if ma is not None:
++            by_degree[h] += 1
++    return dict(sorted(by_degree.items()))
++
++
++def reduced_khovanov_rank(pd, *, order=None, edge=None, max_objects=None, seconds=None,
++                          check_d_squared=False, shape_cache=None):
++    """Compute reduced F2 Khovanov homology of a validated one-component PD.
++
++    Unlike ``khovanov_rank``, this API's ``rank`` and ``by_degree`` describe the
++    reduced complex directly.  Degrees use the same unnormalized cube convention.
++    A basepoint at the last scanned crossing keeps the original frontier width
++    before closure.  An explicit ``edge`` overrides that performance policy.
++    Limits raise ScanLimit; exhausting a budget never gives a knot verdict.
++    """
++    pd = [tuple(row) for row in pd]
++    if not pd:
++        return {"rank": 1, "reduced_rank": 1, "by_degree": {0: 1}, "stats": {},
++                "order": [], "method": "pointed-khovanov-F2-scan"}
++    pd, order, cut, endpoints, edge, scan = _prepare_scan(
++        pd, order, edge, max_objects, seconds, shape_cache)
++    for i in order:
++        scan.add_crossing(cut[i])
++        if check_d_squared:
++            scan.check_d_squared()
++    by_degree = _terminal_rank(scan, endpoints)
++    return {"rank": scan.live, "reduced_rank": scan.live, "by_degree": by_degree,
++            "stats": dict(scan.stats, **scan.algebra.stats), "order": order,
++            "marked_edge": edge, "method": "pointed-khovanov-F2-scan"}
++
++
++def _isolated_summands(scan, count=2):
++    found = []
++    for ident, ma in enumerate(scan.mid):
++        if not ident & 511:
++            scan._check()
++        if ma is not None and not scan.out[ident] and not scan.inc[ident]:
++            found.append({"object_id": ident, "homological_degree": scan.deg[ident],
++                          "matching": [list(pair) for pair in scan.algebra.pairs[ma]]})
++            if len(found) >= count:
++                break
++    return found
++
++
++def reduced_khovanov_decision(pd, *, order=None, edge=None, max_objects=None, seconds=None,
++                              check_d_squared=False, shape_cache=None, early_stop=True):
++    """Decide unknotness, optionally stopping on two isolated direct summands.
++
++    Each isolated matching summand, after gluing the remaining crossings,
++    becomes the reduced Khovanov complex of a nonempty link and has nonzero
++    homology.  Thus two such summands force reduced rank at least two.  This
++    remains valid before the marked endpoint has appeared: reduced base change
++    at its later appearance is additive, and every completed summand still
++    contains the marked edge.  The last crossing is inspected before scalar
++    cancellation, which can also save the final elimination.
++
++    An early result supplies a lower bound and replay data, NOT an exact rank
++    or an independent small topological certificate.  Replaying the preceding
++    scanner operations is necessary to verify that the two objects are direct
++    summands.  Resource exhaustion raises ScanLimit.
++    """
++    pd = [tuple(row) for row in pd]
++    if not pd:
++        return {"status": "UNKNOT", "reduced_rank": 1, "lower_bound": 1,
++                "by_degree": {0: 1}, "stats": {}, "order": [],
++                "method": "pointed-khovanov-F2-decision", "certificate": None}
++    pd, order, cut, endpoints, edge, scan = _prepare_scan(
++        pd, order, edge, max_objects, seconds, shape_cache)
++    n = len(order)
++    for position, i in enumerate(order):
++        last = position == n - 1
++        scan.add_crossing(cut[i], reduce_now=not last)
++        if check_d_squared:
++            scan.check_d_squared()
++        if early_stop:
++            isolated = _isolated_summands(scan)
++            if len(isolated) >= 2:
++                return {"status": "KNOTTED", "reduced_rank": None, "lower_bound": len(isolated),
++                        "stats": dict(scan.stats, **scan.algebra.stats), "order": order,
++                        "marked_edge": edge, "method": "pointed-isolated-summands",
++                        "certificate": {"kind": "isolated-summands-replay-data",
++                                        "stage": position + 1, "remaining_crossings": n - position - 1,
++                                        "before_final_elimination": last, "objects": isolated}}
++        if last:
++            scan.eliminate()
++            scan.stats["max_objects_after_elimination"] = max(
++                scan.stats["max_objects_after_elimination"], scan.live)
++            if check_d_squared:
++                scan.check_d_squared()
++    by_degree = _terminal_rank(scan, endpoints)
++    return {"status": "UNKNOT" if scan.live == 1 else "KNOTTED", "reduced_rank": scan.live,
++            "lower_bound": scan.live, "by_degree": by_degree,
++            "stats": dict(scan.stats, **scan.algebra.stats), "order": order, "marked_edge": edge,
++            "method": "pointed-khovanov-F2-decision", "certificate": None}
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/sparse.py b/Topology/UnknotRecognition/fast/fastunknot/sparse.py
+new file mode 100644
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/fastunknot/sparse.py
+@@ -0,0 +1,145 @@
++"""Exact sparse finite-field determinants with measured Schur-complement work.
++
++The pivot rule chooses a shortest active row, then a least-populated column
++inside it.  Complete pivoting is permitted: two compact permutation arrays
++account for the determinant sign.  The input is copied and may be reused. Prime p is a caller precondition;
++primality is not tested. Dictionary bounds use the standard lookup-cost model.
++
++With E stored input entries and F = sum((row_degree-1)*(column_degree-1))
++over the selected pivots, the arithmetic work is O(n + E + F), plus at most n
++field inversions; heap work and deterministic neighbor sorting together cost
++O((n + E + F) log(n+1)).  No favorable
++bound on F is assumed.  This is an exact optimization, not an unknot test.
++
++Logical sparse storage is O(n + P), with P the peak number of retained
++nonzeros, and the pivot queue uses O(n) entries. Python dictionaries and sets
++may retain capacity after deletions: a conservative container-capacity bound
++for this implementation is O(n + E + F), with O(n^2) worst-case sparse-index
++capacity. These are entry counts, not a claim about interpreter resident bytes.
++"""
++from __future__ import annotations
++
++from heapq import heapify, heappop, heappush
++
++
++def sparse_determinant(rows, n=None, p=(1 << 61) - 1, *, check=None, stats=None):
++    """Return det(rows) modulo the prime p for sparse square row mappings.
++
++    A zero active row certifies singularity.  ``check`` may raise a resource
++    exception; it is polled every pivot and periodically inside a large pivot.
++    If supplied, ``stats`` is replaced by deterministic operation counters.
++    """
++    source = list(rows)
++    n = len(source) if n is None else n
++    if type(n) is not int or n < 0 or len(source) != n:
++        raise ValueError("the matrix must have n rows with n nonnegative")
++    if type(p) is not int or p < 2:
++        raise ValueError("p must be a prime integer")
++    a = []
++    columns = [set() for _ in range(n)]
++    for i, row in enumerate(source):
++        clean = {}
++        for j, value in row.items():
++            if type(j) is not int or not 0 <= j < n:
++                raise ValueError("column index outside square matrix")
++            v = value % p
++            if v:
++                clean[j] = v
++                columns[j].add(i)
++        a.append(clean)
++    row_order = list(range(n))
++    column_order = list(range(n))
++    row_position = list(range(n))
++    column_position = list(range(n))
++    queue = [(len(row), i) for i, row in enumerate(a)]
++    heapify(queue)
++    nonzeros = sum(map(len, a))
++    work = {"dimension": n, "input_entries": sum(map(len, source)), "initial_nonzeros": nonzeros,
++            "peak_nonzeros": nonzeros, "pivots": 0, "schur_updates": 0,
++            "fill_created": 0, "row_swaps": 0, "column_swaps": 0,
++            "max_pivot_row": 0, "max_pivot_column": 0,
++            "queue_rebuilds": 0, "singular": False}
++    determinant = 1
++    while row_order:
++        if check is not None:
++            check()
++        while queue:
++            length, r = heappop(queue)
++            if a[r] is not None and length == len(a[r]):
++                break
++        else:
++            raise ArithmeticError("active row lost from pivot queue")
++        if length == 0:
++            determinant = 0
++            work["singular"] = True
++            break
++        pivot_row = a[r]
++        c = min(pivot_row, key=lambda j: (len(columns[j]), j))
++        pivot = pivot_row[c]
++        width, height = len(pivot_row), len(columns[c])
++        work["pivots"] += 1
++        work["max_pivot_row"] = max(work["max_pivot_row"], width)
++        work["max_pivot_column"] = max(work["max_pivot_column"], height)
++        work["schur_updates"] += (width - 1) * (height - 1)
++        determinant = determinant * pivot % p
++
++        # Move the chosen row and column to the last active position.  After
++        # eliminating their column, expansion there contributes +pivot.
++        pos = row_position[r]
++        last = row_order[-1]
++        if last != r:
++            determinant = -determinant
++            work["row_swaps"] += 1
++            row_order[pos] = last
++            row_position[last] = pos
++        row_order.pop()
++        pos = column_position[c]
++        last = column_order[-1]
++        if last != c:
++            determinant = -determinant
++            work["column_swaps"] += 1
++            column_order[pos] = last
++            column_position[last] = pos
++        column_order.pop()
++
++        tail = [(j, v) for j, v in pivot_row.items() if j != c]
++        inverse = pow(pivot, -1, p) if tail and height > 1 else 0
++        # Stable order is useful for reproducible counters and certificates.
++        for count, i in enumerate(sorted(columns[c] - {r})):
++            if check is not None and not count & 127:
++                check()
++            row = a[i]
++            value = row.pop(c)
++            nonzeros -= 1
++            if tail:
++                factor = value * inverse % p
++                for j, v in tail:
++                    old = row.get(j, 0)
++                    new = (old - factor * v) % p
++                    if new:
++                        row[j] = new
++                        if not old:
++                            columns[j].add(i)
++                            nonzeros += 1
++                            work["peak_nonzeros"] = max(work["peak_nonzeros"], nonzeros)
++                            work["fill_created"] += 1
++                    elif old:
++                        del row[j]
++                        columns[j].remove(i)
++                        nonzeros -= 1
++            heappush(queue, (len(row), i))
++        for j in pivot_row:
++            columns[j].discard(r)
++        columns[c].clear()
++        nonzeros -= width
++        a[r] = None
++        # Bound stale-priority memory by O(n), charging each rebuild to the
++        # insertions since the preceding rebuild.
++        if len(queue) > max(64, 4 * len(row_order)):
++            queue = [(len(a[i]), i) for i in row_order]
++            heapify(queue)
++            work["queue_rebuilds"] += 1
++    if stats is not None:
++        stats.clear()
++        stats.update(work)
++    return determinant % p
+diff --git a/Topology/UnknotRecognition/fast/pyproject.toml b/Topology/UnknotRecognition/fast/pyproject.toml
+--- a/Topology/UnknotRecognition/fast/pyproject.toml
++++ b/Topology/UnknotRecognition/fast/pyproject.toml
+@@ -4,10 +4,10 @@
+ 
+ [project]
+ name = "fastunknot"
+-version = "0.1.0"
++version = "0.3.0"
+ description = "Exact unknot recognition: polynomial filters plus a scanning Khovanov backend (exponential worst case, no quasi-polynomial claim)"
+ requires-python = ">=3.10"
+-license = {text = "MIT"}
++license = {text = "MIT-0"}
+ dependencies = []
+ 
+ [project.scripts]
+diff --git a/Topology/UnknotRecognition/fast/tests/test_interlace.py b/Topology/UnknotRecognition/fast/tests/test_interlace.py
+new file mode 100644
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/tests/test_interlace.py
+@@ -0,0 +1,203 @@
++"""Independent component, topology, and compatibility checks for interlace."""
++from collections import Counter
++from pathlib import Path
++import sys
++import unittest
++
++FAST_ROOT = Path(__file__).resolve().parents[1]
++sys.path.insert(0, str(FAST_ROOT))
++
++from fastunknot.diagram import Diagram, DiagramError
++from fastunknot.factor import visible_factors
++from fastunknot.interlace import (interlacement_components,
++                                  verify_interlacement_certificate,
++                                  visible_factors_interlacement)
++
++
++def words(n):
++    counts, prefix = [0] * n, []
++
++    def visit(opened):
++        if len(prefix) == 2 * n:
++            yield tuple(prefix)
++            return
++        for x in range(opened):
++            if counts[x] == 1:
++                counts[x] = 2
++                prefix.append(x)
++                yield from visit(opened)
++                prefix.pop()
++                counts[x] = 1
++        if opened < n:
++            counts[opened] = 1
++            prefix.append(opened)
++            yield from visit(opened + 1)
++            prefix.pop()
++            counts[opened] = 0
++
++    yield from visit(0)
++
++
++def explicit_components(word):
++    n = len(word) // 2
++    positions = [[] for _ in range(n)]
++    for i, x in enumerate(word):
++        positions[x].append(i)
++    graph = [set() for _ in range(n)]
++    for x in range(n):
++        a, b = positions[x]
++        for y in range(x):
++            c, d = positions[y]
++            if a < c < b < d or c < a < d < b:
++                graph[x].add(y)
++                graph[y].add(x)
++    unseen, components = set(range(n)), set()
++    while unseen:
++        pending, component = [next(iter(unseen))], set()
++        while pending:
++            x = pending.pop()
++            if x in component:
++                continue
++            component.add(x)
++            pending.extend(graph[x] - component)
++        unseen.difference_update(component)
++        components.add(frozenset(component))
++    return components
++
++
++def word_pd(word, mask):
++    n = len(word) // 2
++    rows, seen = [[-1] * 4 for _ in range(n)], set()
++    for i, x in enumerate(word):
++        slot = (3 if mask & (1 << x) else 1) if x in seen else 0
++        seen.add(x)
++        rows[x][slot] = i
++        rows[x][(slot + 2) % 4] = (i + 1) % (2 * n)
++    return Diagram.from_pd(rows)
++
++
++def pd_key(diagram):
++    labels = {}
++    return tuple(tuple(labels.setdefault(e, len(labels)) for e in row)
++                 for row in diagram.pd)
++
++
++def trefoil_sum(k):
++    base = Diagram.from_braid(2, [1, 1, 1])
++    rows = [[-1] * 4 for _ in range(3 * k)]
++    for block in range(k):
++        for i, dart in enumerate(base.traversal()):
++            x, slot = divmod(dart, 4)
++            position = 6 * block + i
++            rows[3 * block + x][slot] = position
++            rows[3 * block + x][(slot + 2) % 4] = (position + 1) % (6 * k)
++    return Diagram.from_pd(rows)
++
++
++class InterlacementTests(unittest.TestCase):
++    def assert_factorization(self, diagram):
++        before = diagram.pd
++        old, cuts = visible_factors(diagram)
++        factors, certificate = visible_factors_interlacement(diagram)
++        direct, _ = visible_factors_interlacement(diagram, validate=False)
++        self.assertEqual(Counter(map(pd_key, old)), Counter(map(pd_key, factors)))
++        self.assertEqual([pd_key(d) for d in direct], [pd_key(d) for d in factors])
++        self.assertEqual(sum(d.crossings for d in factors), diagram.crossings)
++        self.assertEqual(len(cuts), max(0, len(factors) - 1))
++        self.assertTrue(verify_interlacement_certificate(
++            [dart // 4 for dart in diagram.traversal()], certificate))
++        self.assertEqual(diagram.pd, before)
++        return factors, certificate
++
++    def test_empty_and_single_crossing(self):
++        for diagram in (Diagram.from_pd([]), Diagram.from_braid(2, [1])):
++            factors, _ = self.assert_factorization(diagram)
++            self.assertIs(factors[0], diagram)
++
++    def test_all_abstract_words_through_six_chords(self):
++        checked = 0
++        for n in range(7):
++            for word in words(n):
++                components, forest = interlacement_components(word)
++                self.assertEqual(set(map(frozenset, components)), explicit_components(word))
++                self.assertTrue(verify_interlacement_certificate(word, {
++                    "crossing_components": components, "interlacement_forest": forest}))
++                checked += 1
++        self.assertEqual(checked, 11465)
++
++    def test_all_spherical_rotation_choices_through_four_crossings(self):
++        spherical = 0
++        for n in range(5):
++            for word in words(n):
++                for mask in range(1 << n):
++                    try:
++                        diagram = word_pd(word, mask)
++                    except DiagramError:
++                        continue
++                    self.assert_factorization(diagram)
++                    spherical += 1
++        self.assertEqual(spherical, 313)
++
++    def test_dense_circle_graph_has_sparse_certificate(self):
++        n = 2000
++        word = tuple(range(n)) * 2
++        components, forest = interlacement_components(word)
++        self.assertEqual(len(components), 1)
++        self.assertEqual(len(forest), n - 1)
++        self.assertTrue(verify_interlacement_certificate(word, {
++            "crossing_components": components, "interlacement_forest": forest}))
++
++    def test_cyclic_sum_exposes_baseline_quadratic_work(self):
++        for k in (1, 2, 4, 8, 16):
++            diagram = trefoil_sum(k)
++            factors, _ = self.assert_factorization(diagram)
++            self.assertEqual([d.crossings for d in factors], [3] * k)
++            _, cuts = visible_factors(diagram)
++            work = sum(sum(cut["crossings"]) for cut in cuts)
++            self.assertEqual(work, 3 * (k * (k + 1) // 2 - 1))
++
++    def test_crossing_rotation_and_under_over_data(self):
++        diagram = trefoil_sum(4)
++        rows = []
++        for i, row in enumerate(reversed(diagram.pd)):
++            # Odd cyclic shifts exchange under and over without changing the
++            # spherical rotation; even shifts change the traversal's origin.
++            shift = i % 4
++            rows.append(row[shift:] + row[:shift])
++        self.assert_factorization(Diagram.from_pd(rows))
++
++    def test_certificate_tampering_is_rejected(self):
++        word = (0, 1, 2, 0, 1, 2)
++        bad = [
++            {"crossing_components": [[0], [1], [2]], "interlacement_forest": []},
++            {"crossing_components": [[0, 1, 2]],
++             "interlacement_forest": [[0, 1], [0, 1]]},
++            {"crossing_components": [[0, 1], [1, 2]],
++             "interlacement_forest": [[0, 1]]},
++            {"crossing_components": [[0, 1]], "interlacement_forest": [[0, 1]]},
++        ]
++        for certificate in bad:
++            with self.assertRaises(ValueError):
++                verify_interlacement_certificate(word, certificate)
++        with self.assertRaises(ValueError):
++            verify_interlacement_certificate((0, 0, 1, 1), {
++                "crossing_components": [[0, 1]], "interlacement_forest": [[0, 1]]})
++
++    def test_malformed_double_occurrence_words(self):
++        for word in ((0,), (0, 1), (0, 0, 0, 1), (-1, -1), (True, True)):
++            with self.assertRaises(ValueError):
++                interlacement_components(word)
++
++    def test_cancellation_callback(self):
++        class Cancelled(Exception):
++            pass
++
++        def check():
++            raise Cancelled()
++
++        with self.assertRaises(Cancelled):
++            visible_factors_interlacement(trefoil_sum(2), check)
++
++
++if __name__ == "__main__":
++    unittest.main()
+diff --git a/Topology/UnknotRecognition/fast/tests/test_reduced.py b/Topology/UnknotRecognition/fast/tests/test_reduced.py
+new file mode 100644
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/tests/test_reduced.py
+@@ -0,0 +1,164 @@
++"""Direct reduced scanner and decision-only direct-summand checks."""
++from itertools import product
++import json
++from pathlib import Path
++import random
++import unittest
++
++from fastunknot import Diagram, DiagramError, khovanov_rank
++from fastunknot.geometry import ScanLimit
++from fastunknot.planar import Planar
++from fastunknot.reduced_scan import (
++    ReducedPlanar, ReducedScan, cut_edge, reduced_khovanov_decision,
++    reduced_khovanov_rank,
++)
++
++
++ROOT = Path(__file__).resolve().parents[1]
++
++
++def load(name):
++    return Diagram.from_json(json.loads((ROOT / "examples" / (name + ".json")).read_text()))
++
++
++def matchings(points):
++    if not points:
++        yield ()
++        return
++    for k in range(1, len(points), 2):
++        for inside in matchings(points[1:k]):
++            for outside in matchings(points[k + 1:]):
++                yield tuple(sorted(((points[0], points[k]),) + inside + outside))
++
++
++def lift(value):
++    out = 0
++    while value:
++        low = value & -value
++        out |= 1 << (2 * (low.bit_length() - 1))
++        value ^= low
++    return out
++
++
++def project(value):
++    out = 0
++    while value:
++        low = value & -value
++        monomial = low.bit_length() - 1
++        if not monomial & 1:
++            out |= 1 << (monomial >> 1)
++        value ^= low
++    return out
++
++
++class PointedAlgebraTests(unittest.TestCase):
++    def test_exhaustive_quotient_compositions(self):
++        """All polynomial inputs on all triples of planar matchings through 6 ends."""
++        checked = 0
++        for pairs in (1, 2, 3):
++            points = tuple(range(2 * pairs))
++            ordinary = Planar(shape_cache=False)
++            pointed = ReducedPlanar(0, shape_cache=False)
++            pointed.stage(frozenset(points), (0, 0, 0, 0))
++            ids = []
++            for m in matchings(points):
++                a, b = ordinary.intern(m), pointed.intern(m)
++                self.assertEqual(a, b)
++                ids.append(a)
++            for a, b, c in product(ids, repeat=3):
++                k1, k2 = ordinary.basis(a, b)[1], ordinary.basis(b, c)[1]
++                for f in range(1 << (1 << (k1 - 1))):
++                    for g in range(1 << (1 << (k2 - 1))):
++                        actual = pointed.compose(a, b, c, f, g)
++                        expected = project(ordinary.compose(a, b, c, lift(f), lift(g)))
++                        self.assertEqual(actual, expected, (pairs, a, b, c, f, g))
++                        checked += 1
++        self.assertGreater(checked, 1000)
++
++
++class PointedScannerTests(unittest.TestCase):
++    def test_named_ranks_and_caches(self):
++        for name in ("trefoil", "figure_eight", "conway", "kinoshita_terasaka",
++                     "torus_3_5", "hard_unknot_8", "unknot_braid40"):
++            d = load(name)
++            full = khovanov_rank(d.pd)
++            expected = {h: dim // 2 for h, dim in full["by_degree"].items()}
++            for cache in (False, True):
++                reduced = reduced_khovanov_rank(d.pd, order=full["order"],
++                                                shape_cache=cache, check_d_squared=True)
++                self.assertEqual(reduced["by_degree"], expected, (name, cache))
++                self.assertEqual(reduced["rank"], full["reduced_rank"])
++
++    def test_exhaustive_small_braids_and_decisions(self):
++        # The larger portable exhaustive run also invokes the independent
++        # reduced cube oracle on all 2,898 diagrams through 6 crossings.
++        rng = random.Random(7291107)
++        for word in product((-2, -1, 1, 2), repeat=4):
++            try:
++                d = Diagram.from_braid(3, word)
++            except DiagramError:
++                continue
++            full = khovanov_rank(d.pd)
++            order = rng.sample(range(4), 4)
++            edge = rng.randrange(8)
++            reduced = reduced_khovanov_rank(d.pd, order=order, edge=edge,
++                                            check_d_squared=True)
++            self.assertEqual(reduced["rank"], full["reduced_rank"], word)
++            decision = reduced_khovanov_decision(d.pd, order=order, edge=edge,
++                                                 check_d_squared=True)
++            self.assertEqual(decision["status"], "UNKNOT" if reduced["rank"] == 1 else "KNOTTED")
++            self.assertLessEqual(decision["lower_bound"], reduced["rank"])
++
++    def test_last_edge_preserves_every_proper_frontier(self):
++        d = load("conway")
++        rng = random.Random(827)
++        for _ in range(40):
++            order = rng.sample(range(d.crossings), d.crossings)
++            cut, ends, _ = cut_edge(d.pd, order)
++            old, new = set(), set()
++            for position, index in enumerate(order):
++                for label in d.pd[index]:
++                    old.symmetric_difference_update((label,))
++                for label in cut[index]:
++                    new.symmetric_difference_update((label,))
++                if position < len(order) - 1:
++                    self.assertEqual(len(old), len(new))
++                else:
++                    self.assertEqual(old, set())
++                    self.assertEqual(new, set(ends))
++
++    def test_before_closure_stop_and_replay(self):
++        d = load("conway_sum_2")
++        order = list(range(d.crossings))
++        result = reduced_khovanov_decision(d.pd, order=order, check_d_squared=True)
++        self.assertEqual(result["status"], "KNOTTED")
++        self.assertIsNone(result["reduced_rank"])
++        certificate = result["certificate"]
++        self.assertEqual(certificate["stage"], 11)
++        self.assertEqual(certificate["remaining_crossings"], 11)
++        cut, ends, _ = cut_edge(d.pd, order, edge=result["marked_edge"])
++        scan = ReducedScan(ends[0], shape_cache=False)
++        for i in order[:certificate["stage"]]:
++            scan.add_crossing(cut[i])
++        for obj in certificate["objects"]:
++            ident = obj["object_id"]
++            self.assertIsNotNone(scan.mid[ident])
++            self.assertFalse(scan.out[ident])
++            self.assertFalse(scan.inc[ident])
++            self.assertEqual(scan.deg[ident], obj["homological_degree"])
++            self.assertEqual([list(p) for p in scan.algebra.pairs[scan.mid[ident]]], obj["matching"])
++
++    def test_limits_are_not_verdicts(self):
++        d = load("trefoil")
++        for function in (reduced_khovanov_rank, reduced_khovanov_decision):
++            with self.assertRaises(ScanLimit):
++                function(d.pd, max_objects=0)
++            with self.assertRaises(ScanLimit):
++                function(d.pd, seconds=0)
++            with self.assertRaises(ValueError):
++                function(d.pd, order=[0, 0, 1])
++            self.assertEqual(function(())["reduced_rank"], 1)
++
++
++if __name__ == "__main__":
++    unittest.main()
+diff --git a/Topology/UnknotRecognition/fast/tests/test_resource_integration.py b/Topology/UnknotRecognition/fast/tests/test_resource_integration.py
+new file mode 100644
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/tests/test_resource_integration.py
+@@ -0,0 +1,121 @@
++"""Focused resource-limit regressions for preprocessing and factorization."""
++import importlib
++from pathlib import Path
++import sys
++import unittest
++from unittest.mock import patch
++
++sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
++
++from fastunknot import Diagram
++from fastunknot.scan import ScanLimit
++
++pipeline = importlib.import_module("fastunknot.recognize")
++
++
++class RecognitionResourceTests(unittest.TestCase):
++    @classmethod
++    def setUpClass(cls):
++        cls.diagram = Diagram.from_braid(3, [1, 1, 1, 2, 2, 2])
++
++    def assert_unknown(self, result, message):
++        self.assertEqual((result.status, result.method), ("UNKNOWN", "resource-limit"))
++        self.assertEqual(result.input_crossings, self.diagram.crossings)
++        self.assertIn(message, result.evidence["reason"])
++
++    def test_zero_budget_stops_before_factorization(self):
++        for backend, name in (("interlacement", "visible_factors_interlacement"),
++                              ("legacy", "visible_factors")):
++            with self.subTest(backend=backend), patch.object(pipeline, name) as factor:
++                result = pipeline.recognize(self.diagram, seconds=0,
++                                            use_reduction=False, use_descending=False,
++                                            factor_backend=backend)
++                self.assert_unknown(result, "time budget exhausted")
++                factor.assert_not_called()
++
++    def test_factorization_resource_exceptions_return_unknown(self):
++        for backend, name in (("interlacement", "visible_factors_interlacement"),
++                              ("legacy", "visible_factors")):
++            for error in (ScanLimit("injected factor limit"), MemoryError("injected memory limit")):
++                with self.subTest(backend=backend, error=type(error).__name__):
++                    with patch.object(pipeline, name, side_effect=error) as factor:
++                        result = pipeline.recognize(self.diagram, use_reduction=False,
++                                                    use_descending=False, factor_backend=backend)
++                    self.assert_unknown(result, str(error))
++                    factor.assert_called_once()
++                    self.assertTrue(callable(factor.call_args.kwargs["check"]))
++
++    def test_preprocessing_resource_exceptions_return_unknown(self):
++        for stage in ("simplify", "descending_start"):
++            for error in (ScanLimit("injected preprocessing limit"),
++                          MemoryError("injected preprocessing memory")):
++                with self.subTest(stage=stage, error=type(error).__name__):
++                    with patch.object(pipeline, stage, side_effect=error):
++                        result = pipeline.recognize(self.diagram,
++                                                    use_reduction=stage == "simplify",
++                                                    use_descending=stage == "descending_start")
++                    self.assert_unknown(result, str(error))
++
++    def test_deadline_is_checked_after_coarse_simplification(self):
++        clock = [0.0]
++
++        def delayed_simplify(diagram, **options):
++            clock[0] = 2.0
++            return Diagram.from_pd([]), []
++
++        with patch.object(pipeline, "monotonic", side_effect=lambda: clock[0]):
++            with patch.object(pipeline, "simplify", side_effect=delayed_simplify):
++                result = pipeline.recognize(self.diagram, seconds=1)
++        self.assert_unknown(result, "time budget exhausted")
++
++    def test_deadline_is_checked_after_descending_test(self):
++        clock = [0.0]
++
++        def delayed_descending(diagram):
++            clock[0] = 2.0
++            return 0
++
++        with patch.object(pipeline, "monotonic", side_effect=lambda: clock[0]):
++            with patch.object(pipeline, "descending_start", side_effect=delayed_descending):
++                result = pipeline.recognize(self.diagram, seconds=1, use_reduction=False)
++        self.assert_unknown(result, "time budget exhausted")
++
++    def test_deadline_callback_reaches_each_factor_backend(self):
++        for backend, name in (("interlacement", "visible_factors_interlacement"),
++                              ("legacy", "visible_factors")):
++            clock = [0.0]
++            reached = []
++
++            def delayed_factorization(diagram, check):
++                clock[0] = 2.0
++                reached.append(True)
++                check()
++                self.fail("factorization callback did not enforce its deadline")
++
++            with self.subTest(backend=backend):
++                with patch.object(pipeline, "monotonic", side_effect=lambda: clock[0]):
++                    with patch.object(pipeline, name, side_effect=delayed_factorization):
++                        result = pipeline.recognize(self.diagram, seconds=1,
++                                                    use_reduction=False, use_descending=False,
++                                                    factor_backend=backend)
++                self.assert_unknown(result, "time budget exhausted")
++                self.assertEqual(reached, [True])
++
++    def test_deadline_is_checked_between_factor_decisions(self):
++        clock = [0.0]
++
++        def delayed_decision(diagram, evidence, **options):
++            clock[0] = 2.0
++            return "UNKNOT", "injected completed decision"
++
++        with patch.object(pipeline, "monotonic", side_effect=lambda: clock[0]):
++            with patch.object(pipeline, "_decide_prime_looking",
++                              side_effect=delayed_decision) as decide:
++                result = pipeline.recognize(self.diagram, seconds=1,
++                                            use_reduction=False, use_descending=False)
++        self.assert_unknown(result, "time budget exhausted")
++        self.assertEqual(decide.call_count, 1)
++
++
++if __name__ == "__main__":
++    unittest.main()
+diff --git a/Topology/UnknotRecognition/fast/tests/test_sparse.py b/Topology/UnknotRecognition/fast/tests/test_sparse.py
+new file mode 100644
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/tests/test_sparse.py
+@@ -0,0 +1,107 @@
++"""Independent finite-field and integration checks for sparse determinants."""
++import itertools
++import random
++import unittest
++
++from fastunknot import Diagram, DiagramError
++from fastunknot.filters import alexander_obstruction, determinant_mod
++from fastunknot.sparse import sparse_determinant
++
++
++def leibniz(matrix, p):
++    n = len(matrix)
++    result = 0
++    for perm in itertools.permutations(range(n)):
++        inversions = sum(perm[i] > perm[j] for i in range(n) for j in range(i+1, n))
++        term = -1 if inversions % 2 else 1
++        for i, j in enumerate(perm):
++            term *= matrix[i][j]
++        result += term
++    return result % p
++
++
++def sparse_rows(matrix):
++    return [{j: x for j, x in enumerate(row) if x} for row in matrix]
++
++
++class SparseDeterminantTests(unittest.TestCase):
++    def test_against_independent_leibniz(self):
++        rng = random.Random(707)
++        for n in range(6):
++            for p in (2, 3, 101):
++                for _ in range(25):
++                    a = [[rng.randrange(p) if rng.randrange(3) == 0 else 0
++                          for _ in range(n)] for _ in range(n)]
++                    self.assertEqual(sparse_determinant(sparse_rows(a), p=p), leibniz(a, p))
++
++    def test_against_dense_random_and_singular(self):
++        rng = random.Random(8173)
++        for n in (1, 2, 3, 5, 10, 21, 50):
++            for p in (2, 7, 101, (1 << 61)-1):
++                for k in range(15):
++                    a = [[rng.randrange(p) if rng.random() < 0.22 else 0
++                          for _ in range(n)] for _ in range(n)]
++                    if k % 3 == 0 and n > 1:
++                        a[-1] = a[0][:]
++                    expected = determinant_mod(a, p)
++                    rows = sparse_rows(a)
++                    before = [r.copy() for r in rows]
++                    stats = {}
++                    self.assertEqual(sparse_determinant(rows, p=p, stats=stats), expected)
++                    self.assertEqual(rows, before)
++                    self.assertLessEqual(stats['fill_created'], stats['schur_updates'])
++
++    def test_permutation_signs_and_long_sparse_case(self):
++        rng = random.Random(21)
++        for n in (20, 100, 1000):
++            perm = list(range(n))
++            rng.shuffle(perm)
++            odd = sum(perm[i] > perm[j] for i in range(n) for j in range(i+1,n)) % 2
++            stats = {}
++            self.assertEqual(sparse_determinant([{j:1} for j in perm], p=101, stats=stats),
++                             100 if odd else 1)
++            self.assertEqual(stats['schur_updates'], 0)
++
++    def test_resource_callback_and_validation(self):
++        class Stop(Exception):
++            pass
++        def stop():
++            raise Stop
++        with self.assertRaises(Stop):
++            sparse_determinant([{0:1}], check=stop)
++        for rows, n in (([{1:1}], 1), ([{0:1}], 2), ([{-1:1}], 1)):
++            with self.assertRaises(ValueError):
++                sparse_determinant(rows, n=n)
++
++    def test_transient_nonzero_peak(self):
++        rows = [{0: 1, 1: 1, 2: 1, 3: 1}, {0: 1, 3: 1, 4: 1, 5: 1}]
++        rows += [{1: 1, 2: 1, 4: 1, 5: 1} for _ in range(4)]
++        stats = {}
++        self.assertEqual(sparse_determinant(rows, p=101, stats=stats), 0)
++        self.assertEqual(stats["initial_nonzeros"], 24)
++        # First pivot: remove (1,0), create (1,1) and (1,2), then cancel (1,3).
++        # The counts 24 -> 23 -> 24 -> 25 -> 24 expose a transient cell peak.
++        self.assertEqual(stats["peak_nonzeros"], 25)
++
++    def test_alexander_evidence_matches_dense(self):
++        rng = random.Random(829)
++        done = 0
++        while done < 120:
++            strands = rng.randrange(2, 7)
++            word = [rng.choice((-1,1)) * rng.randrange(1,strands)
++                    for _ in range(rng.randrange(1,40))]
++            try:
++                diagram = Diagram.from_braid(strands,word)
++            except DiagramError:
++                continue
++            self.assertEqual(alexander_obstruction(diagram, backend='dense'),
++                             alexander_obstruction(diagram, backend='sparse'))
++            done += 1
++        for q in (61, 127, 257):
++            diagram = Diagram.from_braid(3, [1,2]*q)
++            self.assertEqual(alexander_obstruction(diagram, backend='dense'),
++                             alexander_obstruction(diagram, backend='sparse'))
++
++
++if __name__ == '__main__':
++    unittest.main()

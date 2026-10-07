@@ -1,3 +1,70 @@
+# fastunknot 0.3.0: structural certificates and optional shared backends
+
+This research continuation adds a linear signed Seifert-graph certificate before
+the established recognition pipeline and three optional Khovanov backends.
+The new front end completely decides homogeneous input diagrams after validation.
+When inconclusive it continues the original stages. Disable it with `--no-seifert`
+or `use_seifert=False` to retain the previous stage order.
+
+If the initial Reidemeister I/II pass removes crossings but does not finish,
+the pipeline repeats the structural check before matrix filters. Cancelling
+pairs can expose homogeneity. Evidence under `seifert_after_reduction` describes
+the reduced diagram: replay `reidemeister_trace` with `fastunknot.simplify.replay`
+before passing that certificate to `verify_seifert_certificate`. An unchanged
+diagram is not checked twice. The integrated suite now has 73 passing tests.
+
+```bash
+python3 -m fastunknot recognize examples/trefoil.json
+python3 -m fastunknot khovanov examples/conway_sum_8.json --shared
+python3 -m unittest discover -s tests -v
+```
+
+Recognition accepts `--backend standard|shared|saturated|euler`. The default is
+`standard`: sharing incurs overhead on prime examples that stay connected.
+`shared` retains exact ranks and raw homological-degree counts. `saturated`
+retains the final unreduced rank capped at three. `euler` adds an optional exact
+suffix-Euler lower bound, controlled by `--euler-max-states` (default 4096).
+A capped count of three means “at least three”; it is never an exact rank.
+An early Euler result uses `rank_lower_bound_capped`, distinct from final
+`rank_capped`. Exhausting the optional inference budget continues complete
+saturated scanning; object/time exhaustion returns `UNKNOWN`.
+Suffix geometry is prepared lazily only for states admitted by the inference
+budget; `euler_stats.prepared_stages` records the number of prepared stages.
+`python benchmark_euler_setup.py --output results/euler_setup_local.json`
+measures this setup separately from full recognition, with allocation peaks
+measured outside the timing samples.
+
+Shared backends require minimum-fill pivots, bit algebra, no tail contraction,
+and no racing. Incompatible options are rejected. `khovanov --shared` cannot
+be combined with `--factor`. Backend selection only matters after enabled
+earlier stages have failed to decide; use the disabling flags in the companion
+article to isolate a backend deliberately.
+
+The new functions live in `fastunknot.seifert`, `fastunknot.component_scan`,
+and `fastunknot.euler_scan`. The Seifert APIs are also exported from `fastunknot`.
+Public PD scanner functions assume a validated classical one-component diagram.
+The permissive `Diagram(pd)` constructor does not validate this promise; use
+`Diagram.from_pd` or the command-line loader.
+
+The maintained article is [`../synthesis/report.pdf`](../synthesis/report.pdf),
+with source in `../synthesis/structural.tex`; the delivered report remains in
+`../reports/07/paper/`. Run `python benchmark_structural.py --output results/local.json`
+for paired recognition timings and exact scanner checks against the integrated code.
+`python benchmark_reduction.py --output results/reduction_local.json` isolates
+the post-reduction check against the first integrated revision.
+
+The companion article proves exactness and a finite-type complexity bound in
+frontier size and actual connected-component size. **There is no general
+quasi-polynomial complexity guarantee.** All 69 unit tests passed in the
+recorded environment. The research archive includes proofs, raw timing samples,
+source provenance, and a patch against the pinned ProveIt baseline.
+
+## Inherited documentation and performance history
+
+The following version-0.2 documentation is retained as the record of the
+previous pipeline and measurements. Stage-order descriptions below predate
+the new optional and structural stages just described.
+
 # fastunknot 0.2: exact unknot recognition with a scanning Khovanov backend
 
 **Status: exact, complete, and exponential in the worst case. The `n^O(log n)`
