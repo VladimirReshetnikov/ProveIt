@@ -1,0 +1,137 @@
+\section{Early decisions from componentwise Euler continuations}
+\label{sec:euler}
+
+\subsection{Why a continuation is needed}
+Saturation alone permits an exact decision at closure. To stop earlier, we
+must prove that enough of the current virtual state survives all remaining
+crossings. A large current multiplicity does not do that. An exact Euler
+calculation of each \emph{completed independent summand} supplies a safe
+lower bound, without computing its full homology.
+
+Let $F_i$ denote extension through the unprocessed suffix, followed by
+closure. It is the same additive, homotopy-preserving operation used by the
+ordinary scan. For a compressed state after $i$ crossings, define
+\begin{equation}\label{eq:eulerbound}
+ B_i=\sum_a p_a(1)\,|\chi(F_i(T_a))|.
+\end{equation}
+Absolute values are taken separately for the different templates before
+combining their multiplicities. Using $p_a(-1)$ would allow copies in
+different homological shifts to cancel and would lose this information.
+
+\begin{theorem}[Monotone lower bound for final rank]\label{thm:euler}
+Along a complete exact component-sharing run,
+\[
+ B_i\le r_2(K),\qquad B_i\le B_{i+1},\qquad B_n=r_2(K).
+\]
+Thus $B_i\ge3$ certifies \KNOTTED before closure. The cap
+$\min(3,B_i)$ can be computed from saturated multiplicities, provided the
+signed Euler characteristics themselves are computed exactly.
+\end{theorem}
+\begin{proof}
+The direct-sum representation and preservation of homotopy equivalence give
+\[
+ r_2(K)=\sum_a p_a(1)\dim_{\F}H(F_i(T_a)).
+\]
+For any finite-dimensional complex $C$, the Euler identity and triangle
+inequality give $|\chi(C)|\le\dim H(C)$. Applying this separately to the
+completed templates proves the lower bound.
+
+Suppose extension and reduction of one template produces
+$E_i(T_a)\simeq\bigoplus_u U_u[e_u]$. Compatibility of continuation gives
+\[
+ \chi(F_i(T_a))=\sum_u(-1)^{e_u}\chi(F_{i+1}(U_u)).
+\]
+The triangle inequality, multiplied by $p_a(1)$ and summed over parents,
+proves monotonicity. Merging equal normalized templates adds nonnegative
+multiplicities and does not change the sum of absolute values. At final
+closure, the fully eliminated complex is a direct sum of isolated objects;
+every normalized template has Euler characteristic one. Hence $B_n$ is the
+actual total rank.
+
+Finally, multiplication by $|\chi|$ and summation are nonnegative
+operations. Lemma~\ref{lem:semiring} shows that saturated multiplicities
+suffice for the cap of~\eqref{eq:eulerbound}. The threshold follows
+from~\eqref{eq:rankcriterion}.
+\end{proof}
+
+This is an obstruction to triviality. A value $B_i=2$ at an incomplete stage
+is inconclusive. Some completed summands have nonzero homology and Euler
+characteristic zero, so even genuine splitting need not produce an early
+certificate.
+
+\subsection{An exact suffix dynamic program}
+For a matching $m$ on the frontier after crossing $i$, set
+$E_i(m)=\chi(F_i(m))$. The final empty matching has
+$E_n(\varnothing)=1$. This is the monoidal empty object; the separate API
+convention that an empty \emph{input PD} is one unknot is handled separately.
+
+Suppose the next crossing gives matching $m_0$ and $c_0$ closed circles in
+smoothing zero, and matching $m_1$ and $c_1$ closed circles in smoothing one.
+The two cube terms differ in degree by one, while each delooped circle has
+two generators in that same homological degree. Therefore
+\begin{equation}\label{eq:eulerrecurrence}
+ E_i(m)=2^{c_0}E_{i+1}(m_0)-2^{c_1}E_{i+1}(m_1).
+\end{equation}
+For a normalized template,
+\begin{equation}\label{eq:templateeuler}
+ \chi(F_i(T))=\sum_{v\in T}(-1)^{h_v}E_i(m_v).
+\end{equation}
+The differential of $T$ is unnecessary for this particular calculation,
+because Euler characteristic depends only on chain dimensions.
+
+The implementation memoizes pairs consisting of the suffix index and the
+full matching. It evaluates the dependency DAG using an explicit stack, so
+a long narrow braid does not hit Python's recursion limit. It deliberately
+uses~\eqref{eq:eulerrecurrence} rather than a writhe shortcut. The recurrence
+follows the scanner's exact raw degree convention and works for arbitrary
+valid scan permutations without additional orientation formulas.
+
+\begin{proposition}[Cost of the Euler continuation]\label{prop:eulercost}
+If all frontiers have size at most $w$, the complete memo table has at most
+$(n+1)M(w)$ states. Each value has $O(n)$ bits. With ordinary finite-state
+dynamic programming, all requested continuation values cost
+$n^{O(1)}2^{O(w\log(w+1))}$ bit operations. Combining them with the physical
+templates adds a polynomial cost in their stored size.
+\end{proposition}
+\begin{proof}
+The boundary label set at each stage is fixed by the scan order, independently
+of smoothing choices. There are at most $M(w)$ complete matchings on it.
+Each state has two outgoing dependencies. From~\eqref{eq:eulerrecurrence}
+and $c_0,c_1\le2$, induction gives $|E_i(m)|\le8^{n-i}$, so the bit bound
+is linear. The two gluing operations are polynomial in $w$; memoized integer
+addition and multiplication by powers of two have polynomial bit cost.
+Use $M(w)=2^{O(w\log(w+1))}$. Full key equality instead of constant-time
+hashing can be charged by a further polynomial factor in the state count,
+which gives the same displayed exponential form.
+\end{proof}
+
+The coefficient values in~\eqref{eq:eulerrecurrence} must not be capped.
+Subtraction may cancel two large terms to a small integer. Only after an
+exact signed sum and an absolute value may the nonnegative lower bound be
+saturated. This is tested explicitly, including mirror diagrams and
+intermediate values larger than the final Euler magnitude.
+
+The optional implementation uses a state budget, defaulting to 4096. If the
+budget is exhausted, it disables only this inference and continues the
+complete saturated scanner. A time or physical-object limit remains a limit
+on the whole computation and becomes \UNKNOWN. The early result exposes
+\code{rank\_lower\_bound\_capped}, not \code{rank} or
+\code{rank\_capped}; the latter would misleadingly suggest a completed
+homology calculation. The suffix-state budget includes all registered
+states over the lifetime of the inference engine.
+
+\subsection{Scope of the early-decision result}
+The theorem supplies a new proof obligation that can be checked without
+assuming that current objects survive: calculate the Euler characteristic
+\emph{after the actual remaining continuation}. The bound is stronger than
+the absolute Euler characteristic of the whole complex because opposite
+Euler contributions from independent components are not cancelled.
+
+It is still sensitive to the differential-component decomposition reached
+by the scan. If there is one component with multiplicity one, its completed
+Euler magnitude is just the ordinary knot Euler magnitude. The implementation
+therefore waits for an actual split before attempting the optional dynamic
+program. This is an optimization of a sound condition, not a completeness
+assumption. An unbounded suffix calculation fits within the conservative
+finite-type bound of Section~\ref{sec:complexity}; the budgeted version gives
+better control of practical overhead.

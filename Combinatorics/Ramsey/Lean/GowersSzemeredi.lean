@@ -405,6 +405,7 @@ import GowersSzemeredi.Proofs16PackagedPremisesCounterexample
 import GowersSzemeredi.Proofs16PackagedExplicitCover
 import GowersSzemeredi.Proofs16Lemma10
 import GowersSzemeredi.Proofs16RegimeSplitting
+import GowersSzemeredi.Proofs16PolyBaseCase
 import GowersSzemeredi.Proofs05DiameterReserve
 import GowersSzemeredi.Proofs05QuarterDiameterBudget
 import GowersSzemeredi.Proofs05QuarterDiameterPartition
