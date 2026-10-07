@@ -1,3 +1,7 @@
+/-
+Modified for ProveIt: identify the interval residue filters explicitly
+on Lean 4.32. Mathematical statements are unchanged.
+-/
 import OAI.Combinatorics.Progressions.Estimates.PositiveNormalizationError
 
 namespace OAI
@@ -335,9 +339,8 @@ theorem interval_mod_probability (a b m v : ℤ) (hab : a < b) (hm : 0 < m) :
     field_simp
   have hdiv := div_le_div_of_nonneg_right
     (scalarResidue_card_real_le a b m v hab.le hm) hL.le
-  convert hdiv.trans_eq heq using 1
-  congr 2
-  apply congrArg Finset.card
+  convert hdiv.trans_eq heq using 1 <;> try rfl
+  apply congrArg (fun s : Finset ℤ => (s.card : ℝ) / ((b - a : ℤ) : ℝ))
   ext x
   simp
 
