@@ -43,4 +43,31 @@ theorem two_div_intervalUniformityParameter_five_le_power {delta : Real}
     _ = x ^ (337 : Nat) := by rw [← pow_mul, ← pow_succ']
     _ ≤ _ := pow_le_pow_right₀ hx1 (by norm_num)
 
+/-- The exact five-term substitution has a smaller reciprocal-density
+budget on the range used by the explicit natural-interval theorem. -/
+theorem two_div_intervalUniformityParameter_five_le_inv_pow {delta : Real}
+    (hδ : 0 < delta) (hδhalf : delta ≤ 1 / 2) :
+    2 / intervalUniformityParameter delta 5 ≤ delta⁻¹ ^ (337 : Nat) := by
+  let x := delta⁻¹
+  have hx : 2 ≤ x := by
+    rw [show x = 1 / delta from (one_div delta).symm]
+    apply (le_div_iff₀ hδ).mpr
+    linarith only [hδhalf]
+  have hc : (64000 : Real) ≤ x ^ (16 : Nat) :=
+    (by norm_num : (64000 : Real) ≤ (2 : Real) ^ (16 : Nat)).trans
+      (pow_le_pow_left₀ (by norm_num) hx _)
+  have hbase : 64000 / delta ^ (5 : Nat) ≤ x ^ (21 : Nat) := by
+    rw [div_eq_mul_inv, ← inv_pow]
+    calc
+      _ ≤ x ^ (16 : Nat) * x ^ (5 : Nat) :=
+        mul_le_mul_of_nonneg_right hc (by positivity)
+      _ = _ := (pow_add _ _ _).symm
+  norm_num only [intervalUniformityParameter, Nat.cast_ofNat, Nat.reduceSub,
+    Nat.reducePow, show (512 : Real) * 5 ^ (3 : Nat) = 64000 by norm_num]
+  rw [div_eq_mul_inv, ← inv_pow, inv_div]
+  calc
+    _ ≤ x * (x ^ (21 : Nat)) ^ (16 : Nat) := mul_le_mul hx
+      (pow_le_pow_left₀ (by positivity) hbase 16) (by positivity) (by positivity)
+    _ = x ^ (337 : Nat) := by rw [← pow_mul, ← pow_succ']
+
 end LeanProofs.GowersSzemeredi
