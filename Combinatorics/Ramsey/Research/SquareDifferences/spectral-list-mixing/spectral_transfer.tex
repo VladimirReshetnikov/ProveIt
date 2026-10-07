@@ -1,0 +1,1432 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{mathpazo}
+\usepackage[margin=26mm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,booktabs,tabularx,array,enumitem}
+\usepackage{tocloft}
+\setlength{\cftbeforesecskip}{3pt}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{fancyhdr}
+\usepackage{needspace}
+\definecolor{ink}{HTML}{194E55}
+\usepackage[colorlinks=true,linkcolor=ink,citecolor=ink,urlcolor=ink,
+  pdftitle={Spectral Transfer for Finite-Field Constraints and Compressed Reflection-Positive Laws},
+  pdfauthor={OpenAI-assisted research report prepared for Vladimir Reshetnikov}]{hyperref}
+\usepackage{bookmark}
+\usepackage{xurl}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Spectral transfer and reflection-positive laws}
+\fancyhead[R]{\small 7 October 2026}
+\fancyfoot[C]{\thepage}
+\setlength{\emergencystretch}{2em}
+\setlist{itemsep=3pt,topsep=5pt}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{question}[theorem]{Question}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\E}{\mathbb E}
+\newcommand{\F}{\mathbb F}
+\newcommand{\C}{\mathbb C}
+\newcommand{\R}{\mathbb R}
+\newcommand{\one}{\mathbf 1}
+\newcommand{\op}{\mathrm{op}}
+\newcommand{\Unif}{\operatorname{Unif}}
+\newcommand{\Prob}{\mathbb P}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\spec}{\operatorname{spec}}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+\newcommand{\abs}[1]{\left\lvert #1\right\rvert}
+\newcommand{\sourcecommit}{\texttt{adc7f1241b42e322a6451854ab7e4b4c146bf78a}}
+\title{\color{ink}\textbf{Spectral Transfer for Finite-Field Constraints}\\[4pt]
+\Large and Compressed Reflection-Positive Laws}
+\author{Research report prepared for Vladimir Reshetnikov\\
+\small OpenAI-assisted mathematical development for the ProveIt collection}
+\date{7 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We prove that a single-edge spectral estimate passes directly to a product
+of constraints on any simple bipartite graph, with no loss in the exponent
+of the error. For edge kernels bounded by one, with constant models
+$d_e\in[0,1)$ and spectral errors $\epsilon_e$, the resulting operator error is
+at most $\sum_j\epsilon_{\pi(j)}\prod_{i<j}d_{\pi(i)}$ for every edge
+ordering $\pi$. The best such ordering is obtained by sorting
+$\epsilon_e/(1-d_e)$. In the homogeneous case this is
+$\epsilon(1-d^m)/(1-d)$, uniformly in the number of vertices and edges.
+For directed nonzero-square constraints over $\F_p$, this replaces the
+$p^{-1/8}$ list estimate in the September 2026 OpenAI square-difference
+manuscript by an explicit $O(p^{-1/2})$ estimate. The exponent is optimal
+uniformly over all patterns.
+
+We then reprove and optimize the finite reflection-positive construction
+used by that manuscript. Its 161 permutation blocks can be replaced by
+17, reducing the number of labels from $(24!)^{161}$ to $(24!)^{17}$,
+while preserving the designated square-difference cycle and an exceptional
+mass at most $p^{-4}$. For the optimized construction, the exceptional
+mass has exact order $p^{-9/2}$ and the conditional prediction operator
+has exact order $p^{-1/4}$. A collision argument proves the matching lower
+bound. The construction extends to every fixed cycle length at least
+three and every fixed-index multiplicative subgroup of a finite field.
+These are finite, local theorems; no improved global exponent for
+square-difference-free subsets of the integers is asserted.
+\end{abstract}
+\vspace{2mm}
+\noindent\textbf{Keywords.} Spectral counting; finite fields; quadratic residues;
+reflection positivity; conditional expectation; quantitative additive combinatorics.
+\setcounter{tocdepth}{1}
+\begingroup\small
+\tableofcontents
+\endgroup
+\newpage
+
+\section{Research setting, selection, and scope}
+\label{sec:setting}
+
+\subsection{The repository intersection}
+
+The October 2026 release of \texttt{openai/math} contains a large collection
+of research manuscripts, together with formal proof material for selected
+statements. Its own introduction distinguishes the manuscripts from their
+individual verification status \cite{catalogue}. Two closely related
+families are especially relevant here: Family 159, on quasipolynomial
+Szemer\'edi bounds, and Family 182, on polynomial-difference avoidance.
+The latter includes \emph{A power saving for square-difference-free sets}
+\cite{square}. Its finite-field construction is the source of the present
+problem. We use the source at the immutable commit
+\begin{center}\small\sourcecommit.\end{center}
+
+The ProveIt snapshot reviewed here is
+\texttt{fe7165a3cda1f9182b2a258cf13431a906c4b0c5}.
+Recent work in its Gowers--Szemer\'edi project carefully separates local
+inequalities, sharp constants, counterexamples to intermediate interfaces,
+and complete global conclusions. The intake records for Reports 288--299
+include hereditary additive-energy rigidity, sharp weighted extremizers,
+fourth-norm estimates, and failures of an overly universal lifting
+statement \cite{proveit,energyintake,refinementsintake}. This is a useful
+methodological intersection: identify a precise finite estimate, improve
+it without changing its quantifiers, and trace the improvement only through
+arguments whose hypotheses have been checked.
+
+This is a selective review of that intersection, not an audit of all the
+manuscripts in either repository. In particular, the global theorems
+reported in Families 159 and 182 are not needed as hypotheses of any
+theorem below. The finite square-constraint and tuple constructions are
+read and reproved directly.
+
+\subsection{The specific loss being removed}
+
+For a simple directed bipartite pattern with $m$ edges, the list-mixing
+lemma in the source's finite-field graph section \cite{square}
+(label \texttt{lem:list-mixing}) bounds the normalized operator error by
+\begin{equation}
+ (32m)^{1/4}p^{-1/8}.
+ \label{eq:old-bound}
+\end{equation}
+It first bounds a four-cycle moment using scalar graph counting and then
+takes a fourth root. The single-edge estimate already has order
+$p^{-1/2}$. For a bipartite list kernel, whole-list $L^2$ test functions
+can be retained while one edge is exposed. This makes the fourth-root
+step unnecessary.
+
+The distinction between whole-list tests and products of one-coordinate
+tests matters. An operator bound concerns arbitrary $F(x_1,\ldots,x_a)$
+and $G(y_1,\ldots,y_b)$ in $L^2$. Theorem~\ref{thm:replacement} treats
+these arbitrary functions. It is therefore a direct replacement for the
+operator lemma in the source, rather than merely a scalar counting result.
+
+\subsection{Contributions and attribution}
+
+The elementary ingredients---telescoping products, the spectral form of
+mixing, Gauss sums, and positivity of Gram matrices---are classical.
+For background on graph counting and additive combinatorics see
+\cite{zhao}. The edge-exposure arguments of Conlon, Fox, and Zhao
+\cite[Section 3]{cfz} are particularly close methodological precedents.
+Examples of the surrounding quantitative progression and
+square-difference literature are \cite{lss,bloommaynard}. We do not claim
+that telescoping or spectral counting is new. The concrete contributions
+established here are the following.
+
+\begin{enumerate}
+\item A general whole-list spectral replacement statement with geometric
+      coefficients and its exactly optimal replacement order.
+\item The explicit $p^{-1/2}$ replacement of \eqref{eq:old-bound}, including
+      the exact single-edge constant for both odd prime congruence classes.
+\item A reparameterized, fully proved finite tuple construction with 17
+      blocks, with a general tradeoff between marking depth and exceptional
+      mass, also valid for fixed-index multiplicative subgroups.
+\item A matching collision lower bound showing that the optimized
+      construction has conditional norm $\Theta(p^{-1/4})$.
+\end{enumerate}
+
+The permutation-block architecture and its marked-cut positive matrix
+come from \cite[\texttt{build/sections/tuples.tex}]{square}; they are
+explicitly credited and reproved in Sections~\ref{sec:construction}--\ref{sec:mixing}.
+The reduction in depth and the sharp conditional lower bound are the new
+developments of that architecture. Priority beyond the sources searched
+has not been exhaustively established. All the stated mathematical
+claims have proofs here; none is represented as a new Lean formalization.
+
+\section{A whole-list spectral replacement theorem}
+\label{sec:replacement}
+
+Every finite probability space below has its specified probability
+measure; products always mean independent product measures. Zero-mass
+points can be removed. For a complex kernel $B:X\times Y\to\C$, set
+\[
+ T_Bg(x)=\E_y B(x,y)g(y),\qquad
+ \norm{B}_{\op}=\norm{T_B}_{L^2(Y)\to L^2(X)}.
+\]
+Equivalently,
+\begin{equation}
+ \abs{\E_{x,y}\overline{f(x)}B(x,y)g(y)}
+ \le \norm{B}_{\op}\norm f_2\norm g_2.
+ \label{eq:duality}
+\end{equation}
+A constant kernel $c$ is the rank-one operator $g\mapsto c\E g$.
+For uniform spaces of sizes $a,b$, the matrix representing $T_B$ in
+orthonormal point-mass bases is $B/\sqrt{ab}$, not the unnormalized
+matrix $B$.
+
+Let $I,J$ be disjoint finite index sets. Give each $i\in I$ a probability
+space $X_i$ and each $j\in J$ a probability space $Y_j$. Write
+$X=\prod_iX_i$ and $Y=\prod_jY_j$. A pattern $H$ is a subset of
+$I\times J$; thus there is at most one edge for each pair of coordinates.
+Assign a kernel $W_e:X_i\times Y_j\to\C$ to every $e=(i,j)$ and define
+\[
+ K_W(x,y)=\prod_{e=(i,j)\in H}W_e(x_i,y_j).
+\]
+
+\begin{lemma}[One exposed edge]
+\label{lem:exposed}
+Fix $e=(i,j)\in H$. On every other edge choose a kernel of absolute
+value at most one, and put an arbitrary kernel $B$ on $e$. Then the
+resulting whole-list kernel $L$ satisfies
+\[
+ \norm L_{\op}\le\norm B_{\op}.
+\]
+\end{lemma}
+\begin{proof}
+Test $L$ against arbitrary $F\in L^2(X)$ and $G\in L^2(Y)$.
+Fix $u=x_{I\setminus\{i\}}$ and $v=y_{J\setminus\{j\}}$.
+All factors other than $B(x_i,y_j)$ separate into three groups: factors
+depending on $x_i$, factors depending on $y_j$, and factors depending
+only on $u,v$. No other factor depends on both $x_i$ and $y_j$, by
+simplicity of the pattern. The conditional pairing has the form
+\[
+ C(u,v)\E_{x_i,y_j}\overline{F_u(x_i)}B(x_i,y_j)G_v(y_j),
+\]
+where the notation absorbs the incident edge factors into the slices,
+and
+\[
+ |C(u,v)|\le1,\quad
+ \norm{F_u}_2\le\norm{F(u,\cdot)}_2,\quad
+ \norm{G_v}_2\le\norm{G(v,\cdot)}_2.
+\]
+The absorbed slices can depend on both $u$ and $v$; their displayed
+upper bounds depend only on $u$ and only on $v$, respectively.
+Applying \eqref{eq:duality}, then averaging the independent $u,v$, gives
+\begin{align*}
+ |\langle F,T_LG\rangle|
+ &\le\norm B_{\op}
+   \bigl(\E_u\norm{F(u,\cdot)}_2\bigr)
+   \bigl(\E_v\norm{G(v,\cdot)}_2\bigr)\\
+ &\le\norm B_{\op}\norm F_2\norm G_2.
+\end{align*}
+The last step is Cauchy--Schwarz on each remaining product space.
+\end{proof}
+
+\begin{theorem}[Spectral replacement]
+\label{thm:replacement}
+Assume $|W_e|\le1$, choose $d_e\in[0,1]$, and suppose
+$\norm{W_e-d_e}_{\op}\le\epsilon_e$. If $m=|H|$ and $\pi$ is any
+ordering of its edges, then
+\begin{equation}
+ \boxed{\quad
+ \norm{K_W-\prod_e d_e}_{\op}
+ \le S(\pi):=\sum_{j=1}^m\epsilon_{\pi(j)}
+                    \prod_{i<j}d_{\pi(i)}.\quad}
+ \label{eq:replacement}
+\end{equation}
+The assertion includes the empty pattern, with error zero. It has no
+dependence on the dimensions of the coordinate spaces or on vertex
+degrees.
+\end{theorem}
+\begin{proof}
+Order the edges as $e_1,\ldots,e_m$. The exact telescoping identity is
+\[
+ \prod_{j=1}^mW_{e_j}-\prod_{j=1}^md_{e_j}
+ =\sum_{j=1}^m\left(\prod_{i<j}d_{e_i}\right)
+    (W_{e_j}-d_{e_j})\left(\prod_{i>j}W_{e_i}\right).
+\]
+Apply Lemma~\ref{lem:exposed} to each summand and use the triangle
+inequality for the operator norm.
+\end{proof}
+
+\begin{corollary}[Homogeneous parameters]
+\label{cor:homogeneous}
+If all $d_e=d<1$ and all $\epsilon_e\le\epsilon$, then
+\begin{equation}
+ \norm{K_W-d^m}_{\op}
+ \le\epsilon\frac{1-d^m}{1-d}.
+ \label{eq:homogeneous}
+\end{equation}
+For $d=1$, the bound is $m\epsilon$.
+\end{corollary}
+
+\begin{corollary}[Comparison of two nonconstant models]
+\label{cor:nonconstant}
+If both $|W_e|\le1$ and $|V_e|\le1$, then
+\[
+ \norm{K_W-K_V}_{\op}
+ \le\sum_{e\in H}\norm{W_e-V_e}_{\op}.
+\]
+\end{corollary}
+\begin{proof}
+Use the same telescoping identity with $V_e$ replacing $d_e$. All
+factors other than the exposed difference are still bounded by one.
+\end{proof}
+
+\subsection{The exactly optimal replacement order}
+
+\begin{proposition}[Ordering rule]
+\label{prop:order}
+Among all bounds $S(\pi)$ in \eqref{eq:replacement}, a minimum is
+obtained by arranging the edges in nondecreasing order of
+\[
+ \frac{\epsilon_e}{1-d_e}\qquad(d_e<1).
+\]
+Edges with $d_e=1$ and $\epsilon_e>0$ may be put last. Edges with
+$d_e=1$ and $\epsilon_e=0$ may be put anywhere. Ties may be ordered
+arbitrarily. This optimizes this telescoping bound, not the actual
+operator norm.
+\end{proposition}
+\begin{proof}
+Consider adjacent edges $e,f$. Their contribution, after removing a
+common nonnegative prefix product, is
+$\epsilon_e+d_e\epsilon_f$. Reversing them gives
+$\epsilon_f+d_f\epsilon_e$. Their difference is
+\[
+ \epsilon_e(1-d_f)-\epsilon_f(1-d_e).
+\]
+All subsequent terms have the same prefix product $d_ed_f$ in either
+order. An adjacent inversion of the claimed ordering therefore never
+increases the total. Sorting by successive interchanges proves the result,
+including the stated $d=1$ cases. A zero prefix can produce additional
+minimizers; no uniqueness assertion is needed.
+\end{proof}
+
+\subsection{Filters, scalar counts, and indispensable hypotheses}
+
+If $a:X\to\C$ and $b:Y\to\C$ satisfy $|a|,|b|\le1$, multiplication
+on the two sides is a contraction. Consequently
+\[
+ \norm{a(x)\bigl(K_W(x,y)-\prod_e d_e\bigr)b(y)}_{\op}
+ \le S(\pi).
+\]
+This permits arbitrary bounded constraints entirely within either list.
+The corresponding model is $a(x)(\prod_e d_e)b(y)$, not a constant
+kernel. If one instead conditions on events of probabilities $\alpha$
+and $\beta$ on the two sides, the operator bound under the conditional
+product measures is at most $S(\pi)/\sqrt{\alpha\beta}$, by extending
+the two tests by zero and keeping the normalization factors.
+
+For an arbitrary simple directed graph on independent coordinate
+variables, the scalar analogue of \eqref{eq:replacement} also holds.
+Expose the two endpoints of one edge and apply \eqref{eq:duality} to
+bounded one-variable functions. The remaining tests have norm at most
+one. In particular,
+\begin{equation}
+ \abs{\E\prod_eW_e-\prod_ed_e}\le S(\pi).
+ \label{eq:scalar}
+\end{equation}
+The whole-list operator assertion, in contrast, uses the specified
+bipartition.
+
+The hypotheses cannot be omitted indiscriminately. If the same
+$0$--$1$ kernel $W$ occurs twice on one pair of coordinates, its product
+is $W$, not a two-edge pseudorandom product. For the square kernel below,
+$\norm{W-1/2}_{\op}\to0$, whereas
+$\norm{W^2-1/4}_{\op}\ge|\E W-1/4|\to1/4$.
+Thus repeated edges would invalidate a vanishing two-edge conclusion.
+Likewise, product measure is essential. For
+$B(x,y)=1_{x=y}$ on a uniform $n$-point space,
+$\norm B_{\op}=1/n$, but $\E B(X,Y)=1$ if one imposes $Y=X$.
+The independence used in the proof is a mathematical assumption, not
+just a convenient notation.
+
+\section{Finite-field residue kernels}
+\label{sec:fields}
+
+\subsection{Multiplicative subgroups over arbitrary finite fields}
+
+Let $q$ be a prime power and let $H\le\F_q^\times$ have index
+$s\ge2$. Set
+\[
+ A_H(t)=1_H(t),\qquad d_s=1/s,\qquad
+ \delta_{q,s}=\frac{(s-1)\sqrt q+1}{sq}.
+\]
+The symbol $s$ here denotes the subgroup index; marking depth below is
+denoted by $t$, and the size of a mark set by $j$.
+
+\begin{lemma}[Single-edge subgroup estimate]
+\label{lem:subgroup}
+On the uniform additive group of $\F_q$,
+\[
+ \norm{A_H(y-x)-1/s}_{\op}\le\delta_{q,s}.
+\]
+The same bound holds for the reversed difference.
+\end{lemma}
+\begin{proof}
+Choose a multiplicative character $\chi$ of exact order $s$ and
+extend all multiplicative characters by zero at zero. For $t\ne0$,
+\[
+ A_H(t)=\frac1s\sum_{j=0}^{s-1}\chi(t)^j.
+\]
+Additive characters diagonalize convolution on $\F_q$. The eigenvalue
+at the trivial additive character after subtracting $1/s$ is $-1/(sq)$.
+For a nontrivial additive character $\psi$, the unnormalized Fourier
+coefficient of $A_H$ is
+\[
+ \frac1s\left(-1+\sum_{j=1}^{s-1}
+            \sum_{u\ne0}\chi(u)^j\psi(u)\right).
+\]
+Each nontrivial Gauss sum in this expression has absolute value $\sqrt q$.
+Here is the required calculation. For nontrivial multiplicative $\xi$,
+put $G(\xi,\psi)=\sum_{u\ne0}\xi(u)\psi(u)$. The substitution $u=av$
+gives
+\begin{align*}
+ |G(\xi,\psi)|^2
+ &=\sum_{a\ne0}\xi(a)\sum_{v\ne0}\psi((a-1)v)\\
+ &=(q-1)-\sum_{a\ne0,1}\xi(a)=q,
+\end{align*}
+because $\sum_{a\ne0}\xi(a)=0$. Dividing the Fourier coefficient by
+$q$ proves the estimate. Transposition preserves the operator norm.
+\end{proof}
+
+\begin{theorem}[Residue constraints between lists]
+\label{thm:residuelists}
+For any simple directed bipartite pattern with $m$ edges, let $K_H$
+be the product of the indicators that the directed differences lie in
+$H$. Directions can differ on different edges. Then
+\begin{equation}
+ \boxed{\quad
+ \norm{K_H-s^{-m}}_{\op}
+ \le(1-s^{-m})\left(q^{-1/2}+\frac1{(s-1)q}\right).
+ \quad}
+ \label{eq:subgrouplists}
+\end{equation}
+The same right-hand side bounds the scalar counting error for any
+simple directed graph with no loops and no opposite edges.
+\end{theorem}
+\begin{proof}
+Apply Corollary~\ref{cor:homogeneous} and \eqref{eq:scalar} with
+$d=1/s$ and $\epsilon=\delta_{q,s}$.
+\end{proof}
+
+For fixed $s$ and a fixed graph, \eqref{eq:scalar} shows that its
+constraint probability tends to $s^{-m}>0$. This elementary positivity
+fact, with an explicit error, is all that is needed to normalize the
+finite laws below. The bound itself is uniform in the pattern, even
+when its size varies with $q$. It is an absolute-error estimate; a
+relative-error conclusion requires $s^{-m}$ to dominate the displayed
+error.
+
+\subsection{Exact constants for nonzero squares}
+
+For an odd prime $p$ write $Q_p^*$ for the nonzero squares and
+$A_p=1_{Q_p^*}$. Define
+\begin{equation}
+ \Delta_p=
+ \begin{cases}
+  (\sqrt p+1)/(2p),&p\equiv1\pmod4,\\
+  \sqrt{p+1}/(2p),&p\equiv3\pmod4.
+ \end{cases}
+ \label{eq:exactdelta}
+\end{equation}
+
+\begin{proposition}[Exact square-kernel norm]
+\label{prop:exactsquare}
+For every odd prime,
+\[
+ \norm{A_p(y-x)-1/2}_{\op}=\Delta_p.
+\]
+Consequently every simple directed bipartite square pattern satisfies
+\begin{equation}
+ \norm{K-2^{-m}}_{\op}
+ \le2(1-2^{-m})\Delta_p
+ \le(1-2^{-m})\frac{\sqrt p+1}{p}.
+ \label{eq:newsquare}
+\end{equation}
+No uniform $o(p^{-1/2})$ estimate is possible for all nonempty patterns.
+\end{proposition}
+\begin{proof}
+Let $\chi$ be the quadratic character and
+$G=\sum_{u\ne0}\chi(u)e^{2\pi iu/p}$. The trivial Fourier eigenvalue
+of the centered kernel is $-1/(2p)$. All its other eigenvalues are
+\[
+ \frac{\chi(k)G-1}{2p},\qquad k\ne0.
+\]
+The preceding Gauss-sum calculation gives $|G|=\sqrt p$, and complex
+conjugation gives $\overline G=\chi(-1)G$. Thus $G$ is real for
+$p\equiv1\pmod4$ and purely imaginary for $p\equiv3\pmod4$.
+Both values of $\chi(k)$ occur. Taking the largest eigenvalue modulus
+proves \eqref{eq:exactdelta}, without needing the sign of the real
+Gauss sum. Formula~\eqref{eq:newsquare} follows from
+Corollary~\ref{cor:homogeneous}. A pattern with a single edge has
+norm exactly $\Delta_p\sim\tfrac12p^{-1/2}$, proving the final claim.
+\end{proof}
+
+The exact density is $(p-1)/(2p)$. One may center there instead of at
+$1/2$, removing the trivial eigenvalue; the nontrivial eigenvalues and
+their maximum are unchanged. Centering at $1/2$ is convenient because
+it matches the source construction. The distinction is kept explicit
+in all formulas.
+
+\section{A general marking principle}
+\label{sec:marking}
+
+The next finite lemma explains why a better spectral exponent reduces
+the number of blocks. It also separates the measure construction from
+its bookkeeping.
+
+Let $\Lambda$ be a set of $\ell=2t+1$ blocks, where $t\ge1$.
+On a finite label space, suppose there are nonnegative measures
+$\nu_S$, one for every $S\subseteq\Lambda$ with $|S|\le t+1$.
+For each block there may be several reflection cuts. At one such cut
+in block $b$, write $Q_S^b(F)$ for the symmetric quadratic form of
+$\nu_S$. Assume that for $b\notin S$ and $|S|\le t$ there is a
+nonnegative quadratic expression $D_S^b(F)$ such that
+\begin{equation}
+ Q_S^b(F)\ge-C_-\rho D_S^b(F),\qquad
+ Q_{S\cup\{b\}}^b(F)\ge c_+D_S^b(F),
+ \label{eq:abstractdom}
+\end{equation}
+where $C_-,c_+>0$ and $\rho>0$. Suppose terminal measures
+$|S|=t+1$ are nonnegative at every cut in an unmarked block.
+
+\begin{theorem}[Marking with a matched weight]
+\label{thm:marking}
+Choose $A\ge\max\{1,C_-/c_+\}$, put $a=A\rho$, and suppose $a\le1$.
+Then
+\begin{equation}
+ M=\sum_{|S|\le t+1}a^{|S|}\nu_S
+ \label{eq:abstractmixture}
+\end{equation}
+is reflection positive at every prescribed cut. If also
+$\nu_\varnothing(1)\ge z_0>0$ and $\nu_S(1)\le B$, then
+\[
+ z_0\le Z:=M(1)\le2^\ell B.
+\]
+The total weight of nonleading components in either the normalized
+full mixture or the normalized mixture with terminal components removed
+is at most $2^\ell B a/z_0$. The normalized terminal mass satisfies
+\begin{equation}
+ \eta\le\binom\ell{t+1}\frac B{z_0}a^{t+1}.
+ \label{eq:abstracteta}
+\end{equation}
+If every terminal mass is at least one, then also
+\begin{equation}
+ \eta\ge\binom\ell{t+1}\frac1{2^\ell B}a^{t+1}.
+ \label{eq:abstractetalower}
+\end{equation}
+\end{theorem}
+\begin{proof}
+Fix a cut in block $b$. Pair each mark set not containing $b$ and of
+size at most $t$ with its union with $\{b\}$. The exact decomposition is
+\begin{align*}
+ M={}&\sum_{\substack{b\notin S\\|S|\le t}}
+ a^{|S|}(\nu_S+a\nu_{S\cup\{b\}})
+ +a^{t+1}\sum_{\substack{b\notin S\\|S|=t+1}}\nu_S.
+\end{align*}
+Every term in a pair has quadratic form at least
+$(ac_+-C_-\rho)D_S^b(F)\ge0$; the unpaired terms are terminal and
+nonnegative. The mass statements follow by summing nonnegative masses.
+In both retained mixtures the denominator is at least $z_0$, and
+$a^{|S|}\le a$ for every nonempty retained $S$.
+\end{proof}
+
+Suppose all normalized component one-label marginals are the same
+uniform law, and the leading conditional operator on mean-zero
+one-label functions has norm at most $C_0\rho$. Revealing the component
+index, applying conditional Jensen, and then using conditional-expectation
+contraction in all other components gives
+\begin{equation}
+ \norm{T}_{L^2_0\to L^2}^2
+ \le C_0^2\rho^2+\frac{2^\ell B}{z_0}a.
+ \label{eq:abstractconditional}
+\end{equation}
+Here $T$ conditions one label on all the other labels under either
+retained normalized mixture. Thus matching $a$ to a spectral error of
+order $q^{-1/2}$ produces terminal mass $O(q^{-(t+1)/2})$ and
+conditional norm $O(q^{-1/4})$. These exponents will be attained,
+not only bounded, by the concrete construction.
+
+\section{The finite permutation-block construction}
+\label{sec:construction}
+
+Fix integers $h\ge3$, $t\ge1$, and subgroup index $s\ge2$. Throughout
+this section $q$ ranges over field orders for which $s\mid q-1$, and
+$H_q\le\F_q^\times$ is the subgroup of index $s$. All constants may
+depend on $h,t,s$, but not on $q$. The group $H_q$ is unique because
+$\F_q^\times$ is cyclic.
+
+\subsection{Vertices, cuts, and addresses}
+
+Let $\Pi$ be the set of all permutation words of $[h]$. Its elements
+are bijections from positions to symbols. Put
+\begin{equation}
+ K=h!,\qquad R=K/2,\qquad \ell=2t+1,\qquad
+ V=\Pi^\ell,\qquad D=|V|=K^\ell,\qquad n=D/2.
+ \label{eq:parameters}
+\end{equation}
+Fix an $h$-cycle $c$ on the positions. Right composition $w\mapsto wc$
+shifts a word. For $0\le j<h$, let $v_j\in V$ have word $c^j$ in
+every block, and set $v_h=v_0$.
+
+A cut is specified by a block $b$ and distinct symbols $\alpha,\beta$.
+Let $\theta$ interchange these symbols in block $b$, by composition on
+the left. Define
+\[
+ V_+=\{v:\alpha\text{ occurs before }\beta\text{ in block }b\},
+ \qquad V_-=\theta V_+.
+\]
+The involution has no fixed vertex and $|V_+|=|V_-|=n$.
+A measure $\nu$ on $\F_q^V$ is reflection positive if, for every cut,
+its matrix with row labels $z_{V_+}$ and column labels
+$(z_{\theta v})_{v\in V_+}$ is symmetric positive semidefinite.
+Equivalently its quadratic form
+\[
+ Q_\nu^b(F)=\int F(z_{V_+})F((z_{\theta v})_{v\in V_+})\,d\nu(z)
+\]
+is nonnegative for every real $F$, and the matrix is symmetric.
+
+For a mark set $S\subseteq[\ell]$ of size $j\le t+1$, let
+\[
+ U_S=\Pi^{[\ell]\setminus S},\qquad m_j=R^j,
+ \qquad u_S:V\to U_S
+\]
+be the projection that forgets marked blocks. At each address $u\in U_S$
+choose an independent list $(Y_{u,i})_{1\le i\le m_j}$ of independent
+uniform elements of $\F_q$. The total number of list entries is
+\[
+ |U_S|m_j=K^{\ell-j}R^j=D/2^j.
+\]
+
+For $j\le t$, draw a directed edge $u\to u'$ between addresses if
+\begin{equation}
+ \#\{a\notin S:u'_a=u_ac\}\ge t+1.
+ \label{eq:addressedge}
+\end{equation}
+For each address edge require every pair of its list entries to satisfy
+\begin{equation}
+ Y_{u',i'}-Y_{u,i}\in H_q.
+ \label{eq:listconstraints}
+\end{equation}
+Let $I_S(Y)$ be the indicator of all these requirements. At the terminal
+level $j=t+1$, impose no field constraints, so $I_S=1$.
+
+These list-constraint graphs have no loops: a permutation word cannot
+be fixed by right multiplication by $c$. They have no opposite edges:
+the blocks counted for opposite directions would be disjoint, since
+a block counted for both would imply $c^2=1$. But two sets of $t+1$
+blocks cannot fit in $\ell=2t+1$ blocks. Thus Theorem~\ref{thm:residuelists}
+and its scalar version apply to every component and every induced
+subgraph. Let $e_S$ be the number of edges of this fixed list graph.
+For nonterminal $S$,
+\begin{equation}
+ \E_Y I_S(Y)=s^{-e_S}+O(q^{-1/2}).
+ \label{eq:validitymass}
+\end{equation}
+In particular every such mass is positive for all sufficiently large
+admissible $q$.
+
+\subsection{A positive interaction among index choices}
+
+Set $\delta=1/(10h^2)$. For distinct vertices $v,w\in V$ let
+$J^S_{vw}=0$ unless $v,w$ differ by a symbol transposition in precisely
+one marked block and agree in all other blocks. In that case, if the
+two swapped positions are distance $g$ apart, set $J^S_{vw}=\delta^g$.
+This is a symmetric nonnegative interaction.
+
+Independently of the field lists, choose each index
+$i_v\in[m_j]$ uniformly and independently. Give the index configuration
+the unnormalized weight
+\begin{equation}
+ W_S(i)=\exp\left(\sum_{\{v,w\}\subset V}
+                  J^S_{vw}1_{i_v=i_w}\right).
+ \label{eq:indexweight}
+\end{equation}
+The sum is over unordered pairs. Define the nonnegative finite measure
+$\nu_{q,S}$ by
+\begin{equation}
+ \int F(z)\,d\nu_{q,S}(z)
+ =\E_Y\E_i I_S(Y)W_S(i)
+           F\bigl((Y_{u_S(v),i_v})_{v\in V}\bigr).
+ \label{eq:component}
+\end{equation}
+This definition is a pushforward of a weighted finite product measure;
+it does not presume that different index configurations give different
+label configurations.
+
+Each vertex has at most $j\binom h2$ interaction neighbors, each of
+weight at most $\delta$. Hence
+\begin{equation}
+ 1\le W_S\le B,
+ \qquad B=\exp\left(\frac{D(t+1)\binom h2\delta}{2}\right),
+ \qquad 0\le\nu_{q,S}(1)\le B.
+ \label{eq:B}
+\end{equation}
+Terminal components have mass between $1$ and $B$, independent of
+$q$. In the leading component $S=\varnothing$, every list has length
+one and $W_\varnothing=1$. Its density relative to independent uniform
+labels at all vertices is the indicator $I_\varnothing$.
+
+Every component is invariant under every reflection $\theta$.
+Indeed left symbol permutations preserve positional gaps and commute
+with the right position shift $c$. If the cut block is unmarked,
+$\theta$ permutes addresses and therefore whole independent lists;
+if it is marked, the address of $v$ equals that of $\theta v$.
+In both cases the index relabeling $i_v\mapsto i_{\theta v}$ preserves
+the product law and its weight. This proves symmetry of all cut
+matrices. It does not by itself prove positivity.
+
+\subsection{Strict positivity at a marked cut}
+
+\begin{lemma}[Marked-cut domination]
+\label{lem:marked}
+Let $b\in S$, $|S|=j$, and use a cut in block $b$. Put
+\[
+ \kappa=\frac9{10}\delta^{h-1},\qquad
+ \lambda=(e^\kappa-1)^n,\qquad
+ c_* =\lambda R^{-(t+1)n}.
+\]
+Then every real half-label function satisfies
+\begin{equation}
+ Q_{q,S}^b(F)
+ \ge\lambda m_j^{-n}\E_{Y,i_+}I_S(Y)
+           F((Y_{u_S(v),i_v})_{v\in V_+})^2.
+ \label{eq:marked}
+\end{equation}
+In particular the coefficient is at least $c_*>0$.
+\end{lemma}
+\begin{proof}
+Index a real symmetric matrix $A$ by $x,y\in V_+$ and set
+$A_{xy}=J^S_{x,\theta y}$. Suppose that the cut symbols in $x_b$
+occupy positions $i<j$ with gap $g=j-i$. Then $A_{xx}=\delta^g$.
+An off-diagonal transposition taking $x$ across this cut either moves
+the first cut symbol beyond position $j$ or the second before position
+$i$. Its gap is at least $g+1$. No transposition in another block can
+cross the cut. There are fewer than $h^2$ possible transpositions, so
+\[
+ \sum_{y\ne x}|A_{xy}|\le h^2\delta^{g+1}
+                         =\tfrac1{10}A_{xx}.
+\]
+Using $2|a_xa_y|\le a_x^2+a_y^2$ gives
+$A\succeq\kappa I_n$.
+
+Fix the field lists, and write $m=m_j$ and
+$\mathcal I=[m]^{V_+}$. For an index configuration $i\in\mathcal I$,
+let $u(i)$ be its one-hot vector in $\R^{V_+\times[m]}$. The cross
+interaction matrix between the two half index configurations is
+\[
+ C(i,k)=\exp\bigl(u(i)^T(A\otimes I_m)u(k)\bigr).
+\]
+There is no factor two: a cross unordered pair has the unique form
+$\{x,\theta y\}$ with $x,y\in V_+$.
+Decompose this entrywise exponential into the product of the factors
+from $\kappa I_n$ and $A-\kappa I_n$. The latter factor, denoted by
+$P$, is positive semidefinite. To see this, express
+$u(i)^T((A-\kappa I_n)\otimes I_m)u(k)$ as an inner product; every
+term in its exponential series is a Gram matrix of tensor powers.
+Also $P(i,i)\ge1$.
+
+The first factor is the matrix
+\[
+ E=\bigotimes_{x\in V_+}
+       \bigl((e^\kappa-1)I_m+\one\one^T\bigr)
+       \succeq\lambda I_{\mathcal I}.
+\]
+The entrywise product of two Gram matrices is again a Gram matrix,
+using tensor products of their representing vectors. Therefore
+\[
+ C=(E-\lambda I)\circ P+\lambda(I\circ P)\succeq\lambda I.
+\]
+Internal plus-side index interactions multiply this matrix on the
+left and right by the same diagonal matrix with diagonal entries at
+least one. The lower bound $\lambda I$ is preserved.
+
+Because $b$ is marked, reflected vertices have the same address.
+The half-label function thus produces the same vector $f_Y(i)$ on
+both sides, even if some emitted field labels coincide. The uniform
+double index average is at least
+\[
+ \lambda m^{-2n}\sum_{i\in\mathcal I} f_Y(i)^2
+ =\lambda m^{-n}\E_{i_+}f_Y(i_+)^2.
+\]
+Multiply by the nonnegative $I_S(Y)$ and average over $Y$.
+Finally $m_j\le R^{t+1}$ gives the uniform coefficient $c_*$.
+\end{proof}
+
+\section{Matching the spectral error and normalizing the laws}
+\label{sec:normalization}
+
+\subsection{The improved error at an unmarked cut}
+
+If $b\notin S$, the addresses split into two independent halves.
+Let $I_+(Y_+)$ impose the field constraints internal to plus addresses,
+and put
+\[
+ D_{q,S}^b(F)=\E_{Y_+,i_+}I_+(Y_+)
+            F((Y_{u_S(v),i_v})_{v\in V_+})^2.
+\]
+
+\begin{lemma}[Unmarked error and next-level comparison]
+\label{lem:unmarked}
+For $b\notin S$, $|S|\le t$, one has
+\begin{align}
+ Q_{q,S}^b(F)&\ge-2B^2q^{-1/2}D_{q,S}^b(F),
+       \label{eq:unmarkednew}\\
+ Q_{q,S\cup\{b\}}^b(F)&\ge c_*R^{-n}D_{q,S}^b(F).
+       \label{eq:nextlevel}
+\end{align}
+For $b\notin S$, $|S|=t+1$, the form $Q_{q,S}^b$ is nonnegative.
+\end{lemma}
+\begin{proof}
+For the first assertion, the field indicator factors as
+\[
+ I_S(Y_+,Y_-)=I_+(Y_+)I_+(Y_-)K_b(Y_+,Y_-),
+\]
+after using reflection to identify the minus list space with a copy of
+the plus list space. The crossing kernel is a simple bipartite residue
+pattern. By \eqref{eq:subgrouplists}, if it has $e_b$ edges,
+\[
+ \norm{K_b-s^{-e_b}}_{\op}\le2q^{-1/2}.
+\]
+All index interactions change marked blocks and hence preserve the
+unmarked cut block. Consequently the index weight splits into identical
+plus and reflected-minus factors. Define
+\[
+ G(Y_+)=I_+(Y_+)\E_{i_+}W_+(i_+)
+                   F((Y_{u_S(v),i_v})_{v\in V_+}).
+\]
+Then $Q_{q,S}^b(F)=\langle G,T_{K_b}G\rangle$. The constant model
+contributes $s^{-e_b}(\E G)^2\ge0$, and
+$\norm G_2^2\le B^2D_{q,S}^b(F)$ by Cauchy--Schwarz in the index
+average. This proves \eqref{eq:unmarkednew}. If $S$ is terminal,
+$K_b=1$, so the same expression is a nonnegative square.
+
+For the second assertion, write $S'=S\cup\{b\}$ and $|S|=j$.
+There are $R$ words in the cut's plus half of $\Pi$. Group the old
+plus-side lists above one new address into a single list of length
+$Rm_j=m_{j+1}$. This is an identification of independent uniform
+field-entry collections, not a conditioning event. Under it, old
+internal validity implies new validity: any new address edge has
+$t+1$ matching clean blocks outside $b$, so every old plus-address
+pair above it was already constrained. For a terminal new component
+the implication is automatic.
+
+Apply Lemma~\ref{lem:marked} to $S'$. Restrict each new half index to
+the sublist corresponding to that vertex's actual plus word in block
+$b$. The restriction has probability exactly $R^{-n}$ because the
+$n$ indices are independent. Conditional on it, the remaining indices
+are independent uniform old indices and give the old half labels.
+The integrand is a square, so restriction only decreases it. The
+validity implication then gives \eqref{eq:nextlevel}.
+\end{proof}
+
+\subsection{The optimized mixture}
+
+Define the fixed positive constants
+\begin{equation}
+ c_+=c_*R^{-n},\qquad
+ A=\max\{1,2B^2/c_+\},\qquad a_q=Aq^{-1/2}.
+ \label{eq:optimizedweight}
+\end{equation}
+Only field orders large enough that $a_q\le1$ are considered from now
+on. Set
+\begin{align}
+ M_q&=\sum_{|S|\le t+1}a_q^{|S|}\nu_{q,S},& Z_q&=M_q(1),
+       \label{eq:concretemixture}\\
+ \mu_q&=M_q/Z_q,&
+ \varepsilon_q&=Z_q^{-1}a_q^{t+1}\sum_{|S|=t+1}\nu_{q,S},
+       \label{eq:mu-epsilon}\\
+ \eta_q&=\varepsilon_q(1),&
+ \mu_q^\circ&=(\mu_q-\varepsilon_q)/(1-\eta_q).
+       \label{eq:nonexceptional}
+\end{align}
+The leading mass tends to $s^{-e_0}$, where $e_0=e_\varnothing$,
+by \eqref{eq:validitymass}. Thus for sufficiently large $q$,
+\begin{equation}
+ \nu_{q,\varnothing}(1)\ge z_0:=\tfrac12s^{-e_0}>0,
+ \qquad z_0\le Z_q\le2^\ell B.
+ \label{eq:z0}
+\end{equation}
+Lemmas~\ref{lem:unmarked} and \ref{lem:marked} verify every premise
+of Theorem~\ref{thm:marking}, with $\rho=q^{-1/2}$.
+It follows that $\mu_q$ is reflection positive at every prescribed cut.
+The submeasure $\varepsilon_q$ is nonnegative, and $\eta_q\to0$;
+therefore both normalized laws are well defined.
+
+\begin{proposition}[Exact order of the exceptional mass]
+\label{prop:eta}
+For terminal $S$ put
+$\beta_S=\E_i W_S(i)$ and $\beta=\sum_{|S|=t+1}\beta_S$.
+These are finite positive constants independent of $q$. Then
+\begin{equation}
+ \eta_q=A^{t+1}\beta s^{e_0}q^{-(t+1)/2}
+                       \bigl(1+O(q^{-1/2})\bigr).
+ \label{eq:etaasymptotic}
+\end{equation}
+In particular $\eta_q=\Theta(q^{-(t+1)/2})$.
+\end{proposition}
+\begin{proof}
+Terminal components have $I_S=1$, so their raw total mass is exactly
+$\beta a_q^{t+1}$. The nonleading contribution to $Z_q$ is $O(a_q)$
+by \eqref{eq:B}. The leading mass is
+$s^{-e_0}+O(q^{-1/2})$. Hence
+$Z_q=s^{-e_0}+O(q^{-1/2})$, whose reciprocal has the corresponding
+expansion. Substitute into \eqref{eq:mu-epsilon}.
+\end{proof}
+
+\subsection{Uniform marginals and the exact selected-pair law}
+
+Each component is invariant under simultaneous changes
+$z_v\mapsto az_v+b$ with $a\in H_q$, $b\in\F_q$. Apply this affine
+change to every field-list entry in \eqref{eq:component}; it preserves
+the uniform product law, all difference constraints, and all index
+weights. In particular every positive-mass normalized component has
+uniform single-label marginals, because translations act transitively.
+So do both laws in \eqref{eq:mu-epsilon}--\eqref{eq:nonexceptional}.
+
+For nonterminal $S$, at least $\ell-t=t+1$ clean blocks remain.
+Each selected consecutive pair $v_j,v_{j+1}$ is related by $c$ in every
+one of these blocks. Its addresses form an edge, and every pair of
+entries in their lists is constrained. Therefore
+\[
+ z_{v_{j+1}}-z_{v_j}\in H_q\quad(0\le j<h)
+\]
+holds throughout the support of $\mu_q^\circ$.
+Let
+\[
+ \Omega_q=\{(x,y)\in\F_q^2:y-x\in H_q\}.
+\]
+The affine group with multipliers in $H_q$ acts transitively on
+$\Omega_q$: to carry $(x,y)$ to $(x',y')$, take
+$a=(y'-x')/(y-x)\in H_q$ and $b=x'-ax$. Invariance and support
+therefore prove that the selected pair is exactly uniform on $\Omega_q$
+under $\mu_q^\circ$.
+
+At the terminal level, $t\ge1$ clean blocks still remain. Consecutive
+selected vertices have distinct addresses, so their output labels lie
+in independent uniform lists. There are no field constraints, and
+the index weight is independent of the field entries. Their pair law
+is consequently uniform on $\F_q^2$, even after averaging all indices.
+For the full law the selected pair distribution is exactly
+\begin{equation}
+ (1-\eta_q)\Unif(\Omega_q)+\eta_q\Unif(\F_q^2).
+ \label{eq:pairlaw}
+\end{equation}
+No reflection-positivity assertion is made for $\mu_q^\circ$; removing
+a positive submeasure need not preserve positive semidefiniteness.
+
+\section{Sharp conditional prediction estimates}
+\label{sec:mixing}
+
+For a law $\rho$ equal to either $\mu_q$ or $\mu_q^\circ$, and a
+vertex $v$, define
+\[
+ T_{\rho,v}f
+ =\E_\rho\bigl[f(z_v)\mid(z_w)_{w\ne v}\bigr].
+\]
+The input space $L^2_0(\F_q)$ is the space of uniform-mean-zero
+complex functions. The output norm uses the actual other-label
+marginal of $\rho$.
+
+\subsection{An upper bound without uniform conditional densities}
+
+\begin{lemma}[Leading-component prediction]
+\label{lem:leadingconditional}
+For the normalized leading component $\rho_0$, uniformly over $v$,
+\[
+ \norm{T_{\rho_0,v}}_{L^2_0\to L^2}=O(q^{-1/2}).
+\]
+\end{lemma}
+\begin{proof}
+Write $x=z_v$, $y=(z_w)_{w\ne v}$. The leading density is
+$L(y)K(x,y)$, where $K$ is the product of the $m_v$ constraints incident
+to $v$ and $L$ is the indicator of all other constraints. Put
+\[
+ c_v=s^{-m_v},\quad a(y)=\E_xK(x,y),\quad
+ b_f(y)=\E_x f(x)K(x,y).
+\]
+If $m_v=0$, $x$ is independent and the conclusion is immediate.
+Otherwise Theorem~\ref{thm:residuelists}, using transposition as needed,
+gives
+\begin{equation}
+ \norm{a-c_v}_2\le\Delta,\qquad
+ \norm{b_f}_2\le\Delta\norm f_2,
+ \qquad \Delta=2q^{-1/2}.
+ \label{eq:ab}
+\end{equation}
+Let $Z_0=\nu_{q,\varnothing}(1)\ge z_0$. The actual other-label
+marginal has density $L(y)a(y)/Z_0$. Thus
+\begin{equation}
+ \norm{T_{\rho_0,v}f}_2^2
+ =Z_0^{-1}\E_y L(y)\frac{|b_f(y)|^2}{a(y)},
+ \label{eq:conditionalratio}
+\end{equation}
+with zero assigned where $a=0$. On $a\ge c_v/2$, the expression is
+bounded by $2z_0^{-1}c_v^{-1}\Delta^2\norm f_2^2$ after integration.
+On its complement, Chebyshev gives probability at most
+$4\Delta^2/c_v^2$. Weighted Cauchy--Schwarz gives the pointwise estimate
+\[
+ \frac{|b_f(y)|^2}{a(y)}
+ \le\E_x|f(x)|^2K(x,y)\le\norm f_2^2.
+\]
+Since $0\le L\le1$, the complement contributes at most
+$4z_0^{-1}c_v^{-2}\Delta^2\norm f_2^2$.
+All $c_v$ are fixed positive numbers, and there are finitely many
+vertices. Combining the estimates proves the result uniformly in $v$.
+\end{proof}
+
+By \eqref{eq:abstractconditional}, with all normalized components
+having uniform input marginals, Lemma~\ref{lem:leadingconditional}
+implies
+\begin{equation}
+ \norm{T_{\rho,v}}_{L^2_0\to L^2}^2
+ \le C_1q^{-1}+C_2a_q=O(q^{-1/2}).
+ \label{eq:conditionalupper}
+\end{equation}
+Revealing the latent component index is legitimate even though the
+index cannot in general be recovered from the output field labels.
+Conditional Jensen only increases the squared prediction norm.
+
+\subsection{A collision lower bound}
+
+\begin{lemma}[Detectable triple collision]
+\label{lem:collision}
+Let $X$ be uniform on $\F_q$, and let the observation $Y$ include
+two field-valued variables $W,U$. Put $E=\{W=U\}$.
+Suppose, for some $a>0$ and fixed $c,C>0$,
+\[
+ \Prob(E)\le Ca,\qquad \Prob(E\cap\{X=W\})\ge ca.
+\]
+Then, for all sufficiently large $q$ depending only on $c,C$,
+\begin{equation}
+ \norm{f\mapsto\E[f(X)\mid Y]}_{L^2_0(\F_q)\to L^2}
+ \ge\frac{c}{2\sqrt C}\sqrt a.
+ \label{eq:collisionlower}
+\end{equation}
+\end{lemma}
+\begin{proof}
+For each nontrivial additive character $\psi$ use the mean-zero unit
+input $f_\psi(x)=\psi(x)$ and the observation test
+$g_\psi(Y)=\psi(W)1_E$. Its squared norm is $\Prob(E)$.
+Orthogonality of all $q$ additive characters gives
+\[
+ \frac1{q-1}\sum_{\psi\ne1}\psi(X-W)
+ =\frac q{q-1}1_{X=W}-\frac1{q-1}.
+\]
+The average real part of
+$\E[f_\psi(X)\overline{g_\psi(Y)}]$ is therefore at least
+$(qca-Ca)/(q-1)$, which is at least $ca/2$ for sufficiently large
+$q$. Some character attains at least this real part. Pairing its
+conditional expectation with $g_\psi$ and dividing by
+$\norm{g_\psi}_2\le\sqrt{Ca}$ proves \eqref{eq:collisionlower}.
+\end{proof}
+
+\begin{theorem}[Sharp prediction rate for the optimized hierarchy]
+\label{thm:sharpconditional}
+For the construction above, every vertex $v$ and both
+$\rho\in\{\mu_q,\mu_q^\circ\}$ satisfy
+\begin{equation}
+ \boxed{\qquad
+ \norm{T_{\rho,v}}_{L^2_0\to L^2}=\Theta(q^{-1/4}).
+ \qquad}
+ \label{eq:sharpconditional}
+\end{equation}
+The positive constants in the two bounds can be chosen uniformly
+over all vertices and both laws.
+\end{theorem}
+\begin{proof}
+The upper bound is \eqref{eq:conditionalupper}. For the lower bound,
+fix $v$ and a block $b$. Choose distinct vertices $w,u$, both different
+from $v$, which agree with $v$ outside $b$. Such choices exist because
+$K=h!\ge6$. Use the observation event $E=\{z_w=z_u\}$.
+
+The leading unnormalized measure has density bounded by one relative
+to independent uniform field labels, so its mass on $E$ is at most
+$1/q$. All nonleading components together have normalized mass
+$O(a_q)$, in either law. Their normalizers are at least $z_0$, so
+\begin{equation}
+ \Prob_\rho(E)\le C(q^{-1}+a_q)\le C'a_q.
+ \label{eq:collisionupperE}
+\end{equation}
+
+In the component $S=\{b\}$ the vertices $v,w,u$ have the same
+address and share a list of length $R$. The independent raw index
+event $i_v=i_w=i_u$ has probability $R^{-2}$. On it all three output
+labels agree. It is independent of the field-list validity event,
+and $W_S\ge1$. Consequently
+\[
+ \nu_{q,\{b\}}(E\cap\{z_v=z_w\})
+ \ge R^{-2}\E_YI_{\{b\}}(Y)\ge c_1>0
+\]
+for sufficiently large $q$, by \eqref{eq:validitymass}. The constant
+can be uniform over the finitely many blocks. Since $t\ge1$, this
+singleton mark set is nonterminal and occurs in both laws with raw
+coefficient $a_q$. Both normalizers are at most $2^\ell B$. Thus
+\begin{equation}
+ \Prob_\rho(E\cap\{z_v=z_w\})\ge c_2a_q.
+ \label{eq:collisionjoint}
+\end{equation}
+Apply Lemma~\ref{lem:collision} with $X=z_v$, $W=z_w$, $U=z_u$.
+The input is uniform and $E$ is observable without $z_v$. The result
+is $\norm{T_{\rho,v}}\ge c_3\sqrt{a_q}=c_3\sqrt A\,q^{-1/4}$.
+\end{proof}
+
+The lower bound identifies a specific obstruction. A singleton marked
+component has probability of order $q^{-1/2}$, and it creates triple
+collisions which an observer can partially detect from the other two
+labels. Concentrating the observation test on these collisions costs
+the square root of that probability. Increasing the terminal marking
+depth does not remove singleton components, so it cannot improve this
+prediction exponent within the same hierarchy.
+
+\Needspace{12\baselineskip}
+\section{The 17-block theorem and its quantitative meaning}
+\label{sec:17blocks}
+
+\begin{theorem}[Compressed square-difference tuple laws]
+\label{thm:compressed}
+Set $h=24$, $t=8$, $\ell=17$, and $V=\Pi^{17}$, with selected vertices
+and reflection cuts as in Section~\ref{sec:construction}. There is a
+fixed integer $P$ such that every prime $p\ge P$ admits a probability
+law $\mu_p$ on $\F_p^V$ and a nonnegative submeasure
+$\varepsilon_p\le\mu_p$ with mass $\eta_p\le p^{-4}$ for which:
+\begin{enumerate}
+\item $\mu_p$ is reflection positive at every specified cut.
+\item Both $\mu_p$ and the normalized nonexceptional law $\mu_p^\circ$
+      have uniform individual marginals and are invariant under common
+      translations and nonzero-square multiplications of all labels.
+      The submeasure $\varepsilon_p$ has the same affine invariance.
+\item On the support of $\mu_p^\circ$ the designated directed
+      $24$-cycle has nonzero-square differences. Each selected ordered
+      pair is uniform on $\Omega_p$ under $\mu_p^\circ$, and has
+      the exact mixture law \eqref{eq:pairlaw} under $\mu_p$.
+\item $\eta_p=C_{\rm exc}p^{-9/2}(1+O(p^{-1/2}))$ for the explicit
+      finite positive constant $C_{\rm exc}=A^9\beta2^{e_0}$.
+\item For each $v$ and either law,
+      $\norm{T_{\rho,v}}=\Theta(p^{-1/4})$. In particular, for every
+      fixed $0<\gamma<1/4$, increasing $P$ if necessary gives
+      $\norm{T_{\rho,v}}\le p^{-\gamma}$ simultaneously for all
+      vertices and both laws.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+Use the construction with subgroup index $s=2$. Positivity and all
+marginal assertions were established in Section~\ref{sec:normalization}.
+Proposition~\ref{prop:eta} gives the exceptional asymptotic, hence
+$\eta_p\le p^{-4}$ for large $p$. Theorem~\ref{thm:sharpconditional}
+gives the last assertion. If $\norm{T_{\rho,v}}\le C p^{-1/4}$,
+then $p\ge C^{1/(1/4-\gamma)}$ suffices for the constant-one bound.
+All relevant finite constants can be maximized to choose one $P$.
+\end{proof}
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabularx}{\textwidth}{@{}lXX@{}}
+\toprule
+Quantity & Source construction \cite{square} & Construction proved here\\
+\midrule
+Cross-list error & $(32m)^{1/4}p^{-1/8}$ & $2(1-2^{-m})\Delta_p$\\
+Marking weight per block & $p^{-1/16}$ & $A p^{-1/2}$, fixed $A$\\
+Last nonterminal depth & $80$ & $8$\\
+Number of blocks & $161$ & $17$\\
+Number of labels & $(24!)^{161}$ & $(24!)^{17}$\\
+Terminal mass estimate & $O(p^{-81/16})$, used to give $p^{-4}$ &
+  $\Theta(p^{-9/2})$, still at most $p^{-4}$\\
+Prediction estimate & $\norm T\le p^{-1/64}$ beyond a threshold &
+  $\norm T=\Theta(p^{-1/4})$; every constant-one exponent $\gamma<1/4$\\
+Selected pair law & Exact square-pair law after terminal removal & Same property\\
+\bottomrule
+\end{tabularx}
+\caption{A comparison of proved local parameters. The smaller construction
+retains the required terminal-mass target; it does not retain the source's
+stronger unused exponent $81/16$. Constants and starting field orders change.}
+\label{tab:comparison}
+\end{table}
+
+The ratio of the two label counts is exactly $(24!)^{144}$.
+This is a substantial reduction in a finite construction, but both
+counts and the resulting constants are still enormous. In particular
+$A$ contains the reciprocal of a very small marked-cut eigenvalue;
+the theorem is not a practical sampler for a realistically sized tuple.
+
+\begin{corollary}[Depth versus terminal error]
+\label{cor:tradeoff}
+For every fixed $h\ge3$, fixed subgroup index $s\ge2$, and integer
+$t\ge1$, the construction on $(h!)^{2t+1}$ labels has
+\[
+ \eta_q=\Theta(q^{-(t+1)/2}),\qquad
+ \norm{T_{\rho,v}}=\Theta(q^{-1/4}).
+\]
+For any desired terminal bound $q^{-B_0}$, it suffices to choose
+$t$ with $(t+1)/2>B_0$. For $B_0=4$, $t=8$ gives 17 blocks.
+\end{corollary}
+
+The strict inequality in this sufficient condition absorbs the finite
+leading constant in \eqref{eq:etaasymptotic}. We do not claim that
+17 is the least possible number of blocks among all constructions.
+Nor do we rule out a depth with $(t+1)/2=B_0$ if its leading constant
+can be made small enough. What is sharp here is the exponent for the
+specified fixed positive-weight hierarchy.
+
+\subsection{What this changes in the integer problem}
+
+The full square-difference argument in \cite{square} proceeds beyond
+the tuple law through additional multilinear and arithmetic estimates.
+Theorems~\ref{thm:residuelists} and \ref{thm:compressed} replace two
+finite ingredients with stronger ones. The parameter $h=24$ is retained
+to preserve the designated cycle used in that argument; the tuple
+theorem alone permits every $h\ge3$.
+
+An improvement in a local exponent does not automatically identify
+an improved value of $c$ in $|A|\le C N^{1-c}$. Deriving such a value
+would require carrying the new degree, thresholds, conditional exponent,
+and all other losses through the remaining proof. This report establishes
+the precise local replacements and their limits, and leaves that global
+optimization as a separate research problem. Its finite theorems remain
+valid independently of that global analysis.
+
+\section{Reproducible verification and a formalization route}
+\label{sec:verification}
+
+The proofs above are analytic and finite-dimensional; no numerical
+observation is used to establish a theorem. A companion program,
+\texttt{code/spectral\_checks.py}, tests normalization, directions,
+edge ordering, and small marked matrices. Its recorded output is
+\texttt{data/spectral\_validation.json}. The deterministic seed is
+\texttt{20261007159}.
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabularx}{\textwidth}{@{}lXr@{}}
+\toprule
+Type & Check & Count\\
+\midrule
+Exact rational & Telescoping identities at all selected coordinate assignments & 1,024\\
+Exact rational & Optimal-order comparisons against permutations & 5,913\\
+Exact rational & Marked cross-interaction diagonal dominance, $h=3,4,5$ & 3 matrices\\
+Floating-point & Square-kernel Fourier and singular-value norms, primes $\le101$ & 25 primes\\
+Floating-point & Every oriented $2$-by-$2$ pattern at $p=3,5,7$ & 243 patterns\\
+Floating-point & Heterogeneous kernels with nonuniform base probabilities & 28 cases\\
+Floating-point & Permutation costs in those heterogeneous cases & 23,652 orders\\
+\bottomrule
+\end{tabularx}
+\caption{Supporting verification. Exact checks use rational arithmetic;
+the floating-point checks are diagnostics, with absolute tolerance
+$2\cdot10^{-10}$, and are not proof certificates for spectral inequalities.}
+\end{table}
+
+The maximum observed absolute discrepancy in the exact square-norm
+formula across the numerical tests was below $9\cdot10^{-17}$.
+The same program includes the repeated-edge obstruction, which is
+supposed to violate the conclusion after its simplicity hypothesis is
+removed. The huge $24$-symbol tuple measure is not enumerated.
+Its positivity is proved by the uniform matrix argument in
+Lemma~\ref{lem:marked}, and its prediction lower bound is proved
+without constructing its full probability table.
+
+A useful Lean development would start with finite weighted probability
+spaces, an explicit bilinear formulation of the spectral norm, and
+Lemma~\ref{lem:exposed}. The telescope and ordering rule then become
+finite sums and products. A second module can supply additive-character
+orthogonality and the Gauss calculation. The marked construction should
+be handled at the level of pushforward finite measures and Gram matrices,
+so that repeated field labels are never treated as distinct states by
+assumption. The final module would formalize the latent-mixture Jensen
+bound and Lemma~\ref{lem:collision}. No Lean files in this package claim
+these steps have been completed.
+
+\section{Further research questions}
+\label{sec:questions}
+
+\begin{question}[Pattern-specific spectral constants]
+For a fixed simple bipartite pattern $H$, determine the smallest
+$C_H(d)$ for which $\norm{K_W-d^{|E(H)|}}_{\op}\le C_H(d)\epsilon$
+holds for all one-bounded kernels with edge errors at most $\epsilon$.
+The geometric bound is uniform in $H$, but need not be optimal for a
+particular matching, tree, or highly symmetric pattern.
+\end{question}
+The one-edge example settles the best possible universal power of the
+error. It does not settle pattern-dependent constants or equality cases.
+An additional exact-degree assumption, $W_e\one=d\one$ and
+$W_e^*\one=d\one$, may improve the constants by making different
+first-order edge contributions orthogonal.
+
+\begin{question}[Smaller positivity constants]
+Can the marked-cut eigenvalue $\lambda R^{-(t+2)n}$ be replaced by a
+much larger explicit lower bound on the subspace actually reached by
+field-label functions? The current proof bounds the entire index matrix,
+including directions which may never be observed after pushforward.
+\end{question}
+This could lower $A$ and the starting field order substantially while
+keeping the same exponents. The question concerns a finite matrix
+compression, and is suitable for symbolic representation-theoretic study.
+
+\begin{question}[Avoiding the collision obstruction]
+Is there a different reflection-positive coupling with the same exact
+selected-pair law and terminal error $O(q^{-4})$, but conditional norm
+$O(q^{-1/4-\varepsilon})$ for some $\varepsilon>0$?
+\end{question}
+Theorem~\ref{thm:sharpconditional} rules out obtaining this merely by
+sharpening the upper-bound analysis of the present fixed mixture.
+A successful construction must suppress or hide the observable triple
+collisions used in Lemma~\ref{lem:collision}, or avoid singleton marked
+mass of order $q^{-1/2}$.
+
+\begin{question}[A minimal block architecture]
+How few permutation blocks can preserve all the required reflections,
+the directed cycle, and an exceptional mass at most $q^{-4}$?
+Can the geometric pairing of mark sets be replaced by a nonuniform
+family with fewer levels or a different incidence design?
+\end{question}
+The 17-block construction is a proved sufficient design, not a universal
+lower bound. Different positive weights for different mark sets may
+lead to a finite optimization problem constrained by all reflection cuts.
+
+\begin{question}[Complete arithmetic propagation]
+After substituting Theorem~\ref{thm:compressed} into the remaining
+square-difference argument, what explicit global exponent and threshold
+can be proved? Which remaining step dominates the quantitative loss?
+\end{question}
+This requires an actual derivation through all subsequent inequalities.
+The local degree and conditional improvements should be propagated
+together; improving one and leaving the other at its old value could
+hide the available gain.
+
+\begin{question}[Growing subgroup index and pattern size]
+Can the fixed-$s$, fixed-pattern tuple theorem be made uniform when the
+subgroup index or the number of constraints grows with $q$?
+\end{question}
+Equation~\eqref{eq:subgrouplists} remains a uniform absolute-error
+estimate. The obstacle is the diminishing normalizing mass and the
+growth of finite interaction constants. A useful uniform theorem must
+control these explicitly, rather than absorb them into a fixed threshold.
+
+\begin{question}[More general constraint spaces]
+Which finite homogeneous relations have both a small centered spectral
+norm and a transitive symmetry group on their allowed ordered pairs,
+so that the same construction gives exact pair marginals?
+\end{question}
+The replacement theorem itself applies to arbitrary finite probability
+spaces. Extending the tuple theorem requires the additional symmetry
+and positivity-of-counts inputs. Affine finite-field relations and
+other association schemes provide concrete candidates.
+
+\appendix
+\section{Source and dependency ledger}
+
+The exact source locations used in the comparison are listed below.
+Paths in the OpenAI repository are relative to
+\nolinkurl{preprints/A-power-saving-for-square-difference-free-sets-September-24-2026/}.
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabularx}{\textwidth}{@{}lX@{}}
+\toprule
+Source location & Use in this report\\
+\midrule
+\texttt{README.md} & Manuscript title, date, and author attribution.\\
+\texttt{build/sections/graph.tex} & Original single-square calculation and
+  the list-mixing estimate \eqref{eq:old-bound}. The new operator proof
+  is Section~\ref{sec:replacement}.\\
+\texttt{build/sections/tuples.tex} & Permutation blocks, index interaction,
+  marked-cut positivity, and list regrouping. The construction is
+  reproved with parameters $h,t,s$ in Sections~\ref{sec:construction}--\ref{sec:normalization}.\\
+\texttt{lean/docs/182.md} (repository root) & The source's stated
+  formalization scope; it is not a formalization of the new refinements.\\
+ProveIt Reports 288--299 intake records & Context for sharp finite
+  refinements and the distinction between proved local interfaces and
+  global conclusions. No theorem from them is a premise of the present proof.\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+The source proof of the marked matrix estimate has been retained in
+mathematical substance with attribution. The key changes are: retaining
+arbitrary $L^2$ list tests in the exposed-edge step; retaining geometric
+constant factors in the telescope; using a fixed constant times the
+actual spectral scale as the marking weight; allowing arbitrary fixed
+subgroup index; and proving the observable-collision lower bound.
+
+For a concise dependency check, the graph theorem uses only finite
+product measure, Cauchy--Schwarz, and a one-edge norm hypothesis.
+The finite-field specialization adds elementary character orthogonality.
+The tuple theorem adds finite Gram-matrix positivity, exact regrouping
+of independent lists, and normalization by a positive counted mass.
+The sharp lower bound adds only a three-index coincidence event and
+the orthogonality identity for additive characters. No global
+Szemer\'edi or square-difference theorem is imported into these proofs.
+
+\begin{thebibliography}{99}
+\raggedright\small
+\bibitem{catalogue}
+OpenAI, \emph{Mathematics manuscript collection}, October 2026 release.
+\url{https://github.com/openai/math}. Snapshot \sourcecommit.
+
+\bibitem{square}
+OpenAI, \emph{A power saving for square-difference-free sets},
+manuscript dated 24 September 2026, OpenAI Math Release, publicly
+released 6 October 2026.
+\url{https://github.com/openai/math/tree/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/A-power-saving-for-square-difference-free-sets-September-24-2026}.
+
+\bibitem{proveit}
+V. Reshetnikov and contributors, \emph{ProveIt}, repository snapshot
+\texttt{fe7165a3cda1f9182b2a258cf13431a906c4b0c5}, 7 October 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt}.
+
+\bibitem{energyintake}
+ProveIt contributors, \emph{Intake of Reports 288--293: hereditary
+relative energy}, commit \texttt{487859db599dfd3a20d24b11595a44973047babf},
+7 October 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/commit/487859db599dfd3a20d24b11595a44973047babf}.
+
+\bibitem{refinementsintake}
+ProveIt contributors, \emph{Intake of Reports 294--299 and product-property
+refinements}, commit \texttt{bbde2b873b2dc7b48af1730926452bdda18bf9c8},
+7 October 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/commit/bbde2b873b2dc7b48af1730926452bdda18bf9c8}.
+
+\bibitem{zhao}
+Y. Zhao, \emph{Graph Theory and Additive Combinatorics: Exploring
+Structure and Randomness}, Cambridge University Press, 2023.
+Author's manuscript and resources: \url{https://yufeizhao.com/gtacbook/}.
+
+\bibitem{cfz}
+D. Conlon, J. Fox, and Y. Zhao, \emph{Extremal results in sparse
+pseudorandom graphs}, Advances in Mathematics \textbf{256} (2014),
+206--290. \url{https://arxiv.org/abs/1204.6645}. See Section 3 for
+edge-exposure counting arguments.
+
+\bibitem{lss}
+J. Leng, A. Sah, and M. Sawhney, \emph{Improved bounds for Szemer\'edi's
+theorem}, 2024. \url{https://arxiv.org/abs/2402.17995}.
+
+\bibitem{bloommaynard}
+T. F. Bloom and J. Maynard, \emph{A new upper bound for sets with no
+square differences}, Compositio Mathematica \textbf{158} (2022),
+1777--1798. \url{https://arxiv.org/abs/2011.13266}.
+\end{thebibliography}
+\end{document}
