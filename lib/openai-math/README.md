@@ -19,8 +19,9 @@ Mathlib `v4.32.0` workspace.
 
 ## Why this subset
 
-The 98 modules are the import closure (90 upstream modules), one extract and
-seven backport modules for the upstream results used
+The 137 modules are two import closures (128 upstream modules), one extract
+and eight backport modules. The first closure (90 upstream modules) supplies
+the upstream results used
 to prove Freiman's theorem and the Balog–Szemerédi theorem, Theorems 7.1 and
 7.2 of the Gowers Szemerédi catalogue in
 [`Combinatorics/Ramsey/Lean/GowersSzemeredi`](../../Combinatorics/Ramsey/Lean/GowersSzemeredi):
@@ -35,6 +36,12 @@ to prove Freiman's theorem and the Balog–Szemerédi theorem, Theorems 7.1 and
 - `exists_integer_freiman_embedding`, `exists_dense_cyclic_model` and
   `exists_fourfold_lift_of_eight_iso`, which give Ruzsa modelling and the
   Freiman lift.
+
+The second closure (38 upstream modules, `FixedDensity/`) supplies
+`OAI.Erdos3.FixedDensity.szemeredi`, a fixed-density Szemerédi theorem on
+`ZMod N` proved by ordered hypergraph regularity and removal, from which
+Theorem 1.2 of the catalogue is derived in
+`GowersSzemeredi/Proofs01SzemerediFixedDensity.lean`.
 
 Nothing else from upstream is vendored. In particular, the upstream headline
 theorem (the quantitative density bound) is **not** part of this subset.
@@ -52,7 +59,9 @@ unchanged.
   signature. All but one are renames: the core `if_pos`/`if_neg`/`dif_pos`/
   `dif_neg` family appears as `ite_eq_left`/`ite_eq_right`/`dite_eq_left`/
   `dite_eq_right`, and the Mathlib lemmas `Finset.prod_le_prod₀` etc. and
-  `Matrix.det_of_isUpperTriangular` are our versions under their new names.
+  `Matrix.det_of_isUpperTriangular` and
+  `OrderEmbedding.range_inj_of_wellFoundedLT` are our versions under their new
+  names.
   The exception is `TensorProduct.inductionOn`, which drops the `zero` case
   of `TensorProduct.induction_on`.
 - Upstream files that use a backported name gain the corresponding
@@ -64,7 +73,8 @@ unchanged.
 
 A search of the vendored sources finds no `sorry`, `axiom`, `native_decide`,
 `implemented_by`, `@[extern]` or `unsafe`. `#print axioms` for
-`theorem_7_1_holds` and `theorem_7_2_holds`, which use this subset, reports
+`theorem_1_2_holds`, `theorem_7_1_holds` and `theorem_7_2_holds`, which use
+this subset, reports
 only `propext`, `Classical.choice` and `Quot.sound` (checked 2026-10-06 with
 Lean 4.32.0 / Mathlib `v4.32.0`).
 

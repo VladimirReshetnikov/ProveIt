@@ -98,6 +98,7 @@ import GowersSzemeredi.Proofs05_10
 import GowersSzemeredi.Proofs07AdditiveRestriction
 import GowersSzemeredi.Proofs07BalogSzemeredi
 import GowersSzemeredi.Proofs07DRC
+import GowersSzemeredi.Proofs01SzemerediFixedDensity
 import GowersSzemeredi.Proofs07FreimanTheorems
 import GowersSzemeredi.Proofs07FreimanGAP
 import GowersSzemeredi.Proofs07FreimanClosure
