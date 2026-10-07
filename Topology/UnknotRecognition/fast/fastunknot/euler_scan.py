@@ -120,6 +120,98 @@ class SuffixEuler:
         return self.cache[root]
 
 
+class ClosureEuler(SuffixEuler):
+    """Evaluate a realizable matching's classical-link closure in linear time.
+
+    The normalized, ungraded Jones/Khovanov Euler value of a classical
+    c-component link is 2**c. In the scanner's raw cube grading the value is
+    (-1)**negative_crossings * 2**c. We construct the completed link's dart
+    pairing and orient its components to find both integers. The orientation
+    is independent of the original knot: smoothing may split components.
+
+    This assumes matchings obtained by resolving a validated classical PD
+    diagram, as in ComponentScan. It is not an evaluator for arbitrary virtual
+    matchings. SuffixEuler remains the independent skein-recurrence reference.
+    max_states bounds requested (stage, matching) values, not smoothing states.
+    """
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.prepared_stage = None
+        self.stats.update(engine="closure-connectivity", traversed_darts=0)
+
+    def _prepare(self, stage):
+        if stage == self.prepared_stage:
+            return
+        # Keep only one stage's graph. Successive queries at this stage use
+        # different boundary matchings but exactly the same internal edges.
+        alpha = [-1] * (4 * (len(self.crossings) - stage))
+        boundary = {}
+        for i in range(stage, len(self.crossings)):
+            self._check()
+            for slot, label in enumerate(self.crossings[i]):
+                dart = 4 * (i - stage) + slot
+                other = boundary.pop(label, None)
+                if other is None:
+                    boundary[label] = dart
+                else:
+                    alpha[dart], alpha[other] = other, dart
+        self.base_alpha, self.boundary = alpha, boundary
+        self.prepared_stage = stage
+        self.stats["prepared_stages"] += 1
+
+    def evaluate(self, stage, pairs):
+        if not 0 <= stage <= len(self.crossings):
+            raise ValueError("invalid suffix stage")
+        self._check()
+        self.stats["evaluations"] += 1
+        key = (stage, tuple(pairs))
+        if key in self.cache:
+            return self.cache[key]
+        if self.max_states is not None and self.stats["states"] >= self.max_states:
+            raise EulerBudget("closure Euler state budget exhausted")
+        self.stats["states"] += 1
+        self._prepare(stage)
+        alpha = self.base_alpha.copy()
+        used = set()
+        for left, right in key[1]:
+            if (left == right or left in used or right in used
+                    or left not in self.boundary or right not in self.boundary):
+                raise ValueError("matching does not pair the suffix frontier")
+            used.update((left, right))
+            a, b = self.boundary[left], self.boundary[right]
+            alpha[a], alpha[b] = b, a
+        if len(used) != len(self.boundary):
+            raise ValueError("matching does not cover the suffix frontier")
+
+        # Mark incoming and outgoing darts separately. The opposite port is
+        # dart XOR 2 in a PD crossing; alpha then follows its outgoing edge.
+        orientation = bytearray(len(alpha))
+        components = 0
+        for start in range(len(alpha)):
+            if orientation[start]:
+                continue
+            components += 1
+            dart = start
+            while not orientation[dart]:
+                self._check()
+                orientation[dart], orientation[dart ^ 2] = 1, 2
+                dart = alpha[dart ^ 2]
+            if dart != start:
+                raise ArithmeticError("invalid component traversal in Euler closure")
+        negative = 0
+        for base in range(0, len(alpha), 4):
+            under = 0 if orientation[base] == 1 else 2
+            over = 1 if orientation[base + 1] == 1 else 3
+            negative += (over - under) % 4 != 3
+        value = (-1 if negative % 2 else 1) * (1 << components)
+        self.cache[key] = value
+        self.stats["traversed_darts"] += len(alpha)
+        self.stats["max_coefficient_bits"] = max(
+            self.stats["max_coefficient_bits"], abs(value).bit_length())
+        return value
+
+
 def component_euler_bound(scan, engine, stage, *, cap=None):
     """Return the sum of absolute Euler characteristics of completed summands.
 
@@ -164,7 +256,7 @@ def euler_compressed_khovanov_decide(pd, *, order=None, max_objects=None, second
         order = best_scan_order(pd, tries=min(len(pd), 12))
     if shape_cache is None:
         shape_cache = len(order) >= 16 and 8 * repeated_stages(pd, order) >= len(order)
-    engine = SuffixEuler(pd, order, max_states=euler_max_states, deadline=deadline)
+    engine = ClosureEuler(pd, order, max_states=euler_max_states, deadline=deadline)
     scan = ComponentScan(max_objects=max_objects, deadline=deadline,
                          shape_cache=shape_cache, rank_cap=3)
     exhausted = False

@@ -11,7 +11,7 @@ from fastunknot.ordering import best_scan_order
 from fastunknot.scan import ScanComplex, khovanov_rank
 from fastunknot.scan_fast import FastScan
 from fastunknot.component_scan import ComponentScan
-from fastunknot.euler_scan import (EulerBudget, SuffixEuler, component_euler_bound,
+from fastunknot.euler_scan import (ClosureEuler, EulerBudget, SuffixEuler, component_euler_bound,
                         euler_compressed_khovanov_decide)
 
 
@@ -33,6 +33,42 @@ def random_diagrams(count, seed):
 
 
 class EulerTests(unittest.TestCase):
+    def test_closed_link_euler_matches_all_live_suffixes(self):
+        checked = 0
+        for diagram, order in random_diagrams(100, 4260107):
+            reference = SuffixEuler(diagram.pd, order, max_states=100000)
+            direct = ClosureEuler(diagram.pd, order, max_states=100000)
+            scan = FastScan(shape_cache=False)
+            for stage in range(len(order) + 1):
+                for matching in {m for m in scan.mid if m is not None}:
+                    pairs = scan.algebra.pairs[matching]
+                    self.assertEqual(direct.evaluate(stage, pairs),
+                                     reference.evaluate(stage, pairs))
+                    checked += 1
+                if stage < len(order):
+                    scan.add_crossing(diagram.pd[order[stage]])
+        self.assertGreater(checked, 500)
+
+    def test_closed_link_euler_handles_long_suffix_with_one_state(self):
+        diagram = Diagram.from_braid(2, [1] * 1201)
+        order = list(range(1201))
+        engine = ClosureEuler(diagram.pd, order, max_states=1)
+        self.assertEqual(engine.evaluate(0, ()), -2)
+        self.assertEqual(engine.evaluate(0, ()), -2)  # a cache hit consumes no budget
+        self.assertEqual(engine.stats["states"], 1)
+        with self.assertRaises(EulerBudget):
+            engine.evaluate(len(order), ())
+        with self.assertRaises(EulerBudget):
+            SuffixEuler(diagram.pd, order, max_states=1).evaluate(0, ())
+        self.assertEqual(ClosureEuler([], [], max_states=1).evaluate(0, ()), 1)
+        mirror = diagram.mirror()
+        self.assertEqual(ClosureEuler(mirror.pd, order, max_states=1).evaluate(0, ()), 2)
+
+    def test_closed_link_euler_rejects_incomplete_boundary_matching(self):
+        diagram = Diagram.from_braid(2, [1, 1, 1])
+        with self.assertRaises(ValueError):
+            ClosureEuler(diagram.pd, [0, 1, 2]).evaluate(1, ())
+
     def test_small_budget_prepares_only_visited_suffix_geometry(self):
         # Constructor work must not allocate full geometry for a long order,
         # even when optional inference is disabled or has a one-state budget.
@@ -78,10 +114,13 @@ class EulerTests(unittest.TestCase):
             rank = khovanov_rank(diagram.pd, order=order)["rank"]
             scan = ComponentScan(shape_cache=False)
             engine = SuffixEuler(diagram.pd, order, max_states=10000)
+            direct = ClosureEuler(diagram.pd, order, max_states=10000)
             previous = 0
             for stage, index in enumerate(order, 1):
                 scan.add_crossing(diagram.pd[index])
                 bound, _ = component_euler_bound(scan, engine, stage)
+                self.assertEqual(component_euler_bound(scan, direct, stage),
+                                 component_euler_bound(scan, engine, stage))
                 self.assertLessEqual(previous, bound)
                 self.assertLessEqual(bound, rank)
                 previous = bound

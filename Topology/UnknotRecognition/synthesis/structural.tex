@@ -289,3 +289,117 @@ using Python's \code{tracemalloc}; they are not process resident memory.
 The raw data are in \code{fast/results/lazy\_euler\_setup\_20261007.json}.
 These measurements concern optional inference setup only, and make no
 claim of an equivalent speedup for full recognition.
+
+\subsection{Replacing Euler state enumeration by link connectivity}
+The suffix dynamic program computes more intermediate information than
+the ungraded Euler functional needs. A surviving matching comes from a
+partial resolution of the original classical diagram. Closing it through
+the unprocessed crossings therefore gives a classical link $L_m$, possibly
+with several components. Gaussian elimination removes objects and changes
+differentials but does not introduce unrealizable matching objects.
+Let $c(L_m)$ be the component count and let $n_-(L_m)$ count negative
+crossings after choosing an orientation on each completed component.
+Then, in the scanner's raw homological convention,
+\[
+ E_i(m)=(-1)^{n_-(L_m)}2^{c(L_m)}.
+\]
+This formula concerns each completed matching separately; using the
+original knot's writhe or component count would be incorrect.
+
+To justify it, the normalized graded Euler characteristic of Khovanov
+homology is the Jones polynomial in the normalization with unknot value
+$q+q^{-1}$~\cite{khovanov}. At $q=1$, a classical $c$-component link has
+value $2^c$; equivalently the specialized skein relation makes the
+normalized value unchanged by crossing changes, which reduce the link
+to the unlink. The homological normalization shifts raw cube degree by
+$-n_-$, accounting for the sign. Reversing a component changes signs
+only at its intersections with other components. The total number of
+such crossings is even for classical plane curves, so the parity of
+$n_-$ is independent of this choice. The empty monoidal closure has
+$c=0$ and value one. Removed crossingless circles are already represented
+by the scanner's delooping multiplicities and are not counted twice.
+
+\code{ClosureEuler} constructs the remaining crossings' dart pairing:
+internal labels pair their two occurrences, and the supplied matching
+pairs the remaining boundary occurrences. Alternating straight-through
+crossing passages with edge pairings orients and counts all components.
+The incoming under/over slots determine each sign using the same PD
+convention as the rest of the package. Each evaluation takes
+$O(n-i+w)$ word operations, plus linear-bit integer construction, instead
+of enumerating up to $M(w)$ smoothing states per suffix stage. At most
+one stage's base graph is retained; complete query values are memoized.
+Thus a budget of $B$ queries gives polynomial work
+$O(n+B(n+w))$ at this level, and removes the exponential dependence on
+frontier size from the Euler inference itself. The shared complex can
+still be exponentially large. This does not settle the general target.
+
+The default \code{euler} backend now uses this evaluator; the exact
+\code{SuffixEuler} recurrence remains available as an independent oracle.
+The state budget now counts requested completed matchings, not recursive
+smoothing states. The zero-budget fallback is unchanged. This formula is
+used only for matchings arising from validated classical diagrams; the
+low-level method is not an evaluator for arbitrary virtual closures.
+
+A separate exploratory comparison checked 34,447 live matching queries
+on 500 seeded random classical knot diagrams with shuffled orders, with
+no differences. The maintained tests include 100 random diagrams across
+all live suffix matchings, exact component-bound equality, mirrors, the
+monoidal empty closure, malformed frontier rejection, and a 1201-crossing
+suffix evaluated using a single query. All 76 tests pass. Seven paired
+raw Euler-assisted scanner runs against commit \code{1fe98cb7e} reduced
+the eight-Conway-summand example's Euler states from 286 to one and
+measured a 1.326 baseline/new time ratio (A/A 1.013), with the same early
+decision at stage 11. Conway and the hard-unknot controls performed no
+Euler inference and provide no evidence of speedup. The script
+\code{fast/benchmark\_euler\_connectivity.py} and
+\code{fast/results/euler\_connectivity\_20261007.json} preserve the
+measurement boundaries and raw samples.
+
+\subsection{Source screening: the OpenAI mathematics collection}
+At the user's suggestion, we screened the manuscript catalogue at
+\url{https://github.com/openai/math}, pinned to commit
+\texttt{adc7f1241b42e322a6451854ab7e4b4c146bf78a}.
+The catalogue contained no directly named unknot-recognition or Khovanov
+algorithm. This is a catalogue screening result, not an assertion that
+every manuscript was audited. The collection itself distinguishes
+different verification stages. No theorem from it is imported as a
+correctness dependency of the recognizer.
+
+The September 25 manuscript \emph{Deterministic quasipolynomial-time
+mean-payoff games}, family 104, asks for forced boundary labels rather
+than the entire numerical fixed point. Its complexity section separately
+counts recursion nodes and the bit cost of local operations. The useful
+methodological lesson here is to compute the required observable directly
+when possible: the preceding connectivity evaluator calculates Euler
+values without constructing the suffix smoothing state space. Its proof
+uses the classical Jones specialization, independently of the game's
+claimed result.
+
+One recursion-counting lemma from that manuscript is directly elementary.
+If every path has length at most $H$, has at most $B$ exceptional edges,
+and each node has at most one ordinary child and at most $s$ exceptional
+children, the node count is bounded by
+\[
+ \sum_{\ell=0}^{H}\sum_{j=0}^{\min(\ell,B)}
+       {\ell\choose j}s^j
+ \le (H+1)(B+1)(1+Hs)^B.
+\]
+Choose the exceptional positions and their child indices; every other
+position is forced. Thus polynomial $H,s$ and logarithmic $B$ imply a
+quasi-polynomial call count, provided local bit cost is also polynomial.
+For an unknot hierarchy, constructing such a budget and proving that all
+but one child spend it would be an alternative precise research target.
+The current scanner has no such proved budget; relabelling its branches
+does not supply one.
+
+Family 089's planar $L_1$ embedding manuscript controls metric distortion
+and charging across scales. Even its asserted constant distortion would
+not bound the number of edges in our frontier or the size of connected
+differential components. Family 306's cosmetic-surgery manuscript has a
+topological conclusion about filled manifolds and uses instanton and
+spinor counts; its introductory construction supplies no bounded-bit
+algorithm for these counts on a PD input. Neither is presently an
+algorithmic replacement for the missing width or hierarchy operations.
+Their introductions and relevant source sections were inspected for
+applicability; this is not a full verification or rejection of those
+manuscripts' main mathematical claims.

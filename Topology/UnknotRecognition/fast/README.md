@@ -11,7 +11,7 @@ the pipeline repeats the structural check before matrix filters. Cancelling
 pairs can expose homogeneity. Evidence under `seifert_after_reduction` describes
 the reduced diagram: replay `reidemeister_trace` with `fastunknot.simplify.replay`
 before passing that certificate to `verify_seifert_certificate`. An unchanged
-diagram is not checked twice. The integrated suite now has 73 passing tests.
+diagram is not checked twice. The integrated suite now has 76 passing tests.
 
 ```bash
 python3 -m fastunknot recognize examples/trefoil.json
@@ -28,11 +28,17 @@ A capped count of three means “at least three”; it is never an exact rank.
 An early Euler result uses `rank_lower_bound_capped`, distinct from final
 `rank_capped`. Exhausting the optional inference budget continues complete
 saturated scanning; object/time exhaustion returns `UNKNOWN`.
-Suffix geometry is prepared lazily only for states admitted by the inference
-budget; `euler_stats.prepared_stages` records the number of prepared stages.
+The Euler backend now computes each completed matching's exact Euler value
+from the classical closure's component count and crossing-sign parity in
+linear time, avoiding suffix smoothing enumeration. The query budget counts
+completed matchings. The original `SuffixEuler` recurrence remains available
+as an independent reference; both prepare geometry lazily within the budget.
+`euler_stats.prepared_stages` records the number of prepared stages.
 `python benchmark_euler_setup.py --output results/euler_setup_local.json`
 measures this setup separately from full recognition, with allocation peaks
 measured outside the timing samples.
+`python benchmark_euler_connectivity.py --output results/euler_local.json`
+compares the raw Euler-assisted scans with the earlier recurrence implementation.
 
 Shared backends require minimum-fill pivots, bit algebra, no tail contraction,
 and no racing. Incompatible options are rejected. `khovanov --shared` cannot
