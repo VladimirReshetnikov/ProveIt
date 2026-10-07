@@ -12,8 +12,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 263 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 2,392 public Gowers theorems and found only propext,
+  All 267 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 2,424 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 101 exact
   companion proofs and 19 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -780,9 +780,33 @@ Unconditional quadratic discrepancy and density increment
   preservation is assumed. The reusable balanced-real facts in
   Proofs18QuantitativeSzemeredi are now public, and the new generic
   discrepancy-to-density interface allows separate size and bias parameters.
-  The large-N threshold is still existential. Theorem 8.2's explicit
-  double-exponential bound requires quantitative thresholds and iteration;
+  The threshold is made explicit in the next checkpoint. Theorem 8.2's
+  double-exponential bound still requires density-preserving iteration;
   the all-degree Section 18 induction and headline bounds also remain open.
+
+Explicit starting threshold and quadratic cyclic dichotomy
+  The odd-frequency, localized phase-removal, and discrepancy constructions
+  now export power-condition interfaces. Their earlier existential-threshold
+  interfaces remain as proved specializations. The two conditions are
+    4 <= N^e,   C(alpha) <= N^sigma,
+  where e=2^-14*(alpha/2)^24718, sigma=e/4096, and
+    C(alpha)=section5LocalRefinementConstant(2,beta)*6^(1/2048),
+    beta=2^-19*alpha^2*(alpha/2)^12359.
+  Proofs18QuadraticThreshold defines the closed sufficient threshold
+  max(4^(1/e),C(alpha)^(1/sigma)) and proves both discrepancy and density
+  increment above it, without an unspecified large-modulus witness.
+  Proofs05RefinementConstantBounds proves C_k(eta)<=C_k(1)*T^K whenever
+  eta>0, T>=1, and eta^(-1)<=T. Proofs18QuadraticThresholdGrowth bounds the
+  entire starting threshold by exp(D*(2/alpha)^25378984), uniformly for
+  0<alpha<=1, with the fixed explicit constant
+    D=4+6*section5LocalRefinementConstant(2,1)>0.
+  Proofs18QuadraticDichotomy combines the explicit increment with the proved
+  Corollary 3.6: under the displayed analytic bound, 4<=N, positive density,
+  alpha<=(density(A)/2)^64, and 512*density(A)^(-4)<=N, the set either has a
+  nonconstant four-term progression or the proved positive density increment.
+  Iteration between interval and cyclic models must still preserve the
+  original relative density. The explicit one-step threshold does not by
+  itself prove Theorem 8.2 or its double-exponential headline bound.
 
 Reproducible checks (from repository root)
   python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.Audit

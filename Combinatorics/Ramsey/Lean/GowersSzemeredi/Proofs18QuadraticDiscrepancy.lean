@@ -17,6 +17,12 @@ def quadraticDiscrepancyExponent (alpha : Real) : Real :=
 def quadraticDiscrepancyParameter (alpha : Real) : Real :=
   (2 : Real) ^ (-(20 : Int)) * alpha ^ 2 * (alpha / 2) ^ (12359 : Nat)
 
+/-- Fixed count constant from quadratic polynomial refinement. -/
+def quadraticRefinementConstant (alpha : Real) : Real :=
+  section5LocalRefinementConstant 2
+    ((2 : Real) ^ (-(19 : Int)) * alpha ^ 2 * (alpha / 2) ^ (12359 : Nat)) *
+    (6 : Real) ^ (1 / 2048 : Real)
+
 /-- Total size divided by the number of cells is the average of a partition. -/
 theorem IsPartition.averageCellSize_univ {N M : Nat} [NeZero N]
     {Q : Fin M → Finset (ZMod N)} (hQ : IsPartition Q Finset.univ) :
@@ -35,11 +41,13 @@ theorem IsPartition.card_mul_le {N M : Nat} [NeZero N]
     ← Nat.cast_sum, hcards] using hs
 
 /-- Quadratic nonuniformity supplies an untwisted proper progression
-partition with explicit average length and total discrepancy. Only the
-fixed-parameter sufficiently-large threshold remains existential. -/
-theorem quadratic_nonuniformity_discrepancy_partition :
-    ∀ alpha : Real, 0 < alpha → alpha ≤ 1 → ∃ N₀ : Nat,
-      ∀ (N : Nat) [NeZero N] [Fact N.Prime], N₀ ≤ N →
+partition with explicit average length and total discrepancy. The two power
+conditions account for rounding and the fixed refinement constant. -/
+theorem quadratic_nonuniformity_discrepancy_partition_of_power_bounds :
+    ∀ alpha : Real, 0 < alpha → alpha ≤ 1 →
+      ∀ (N : Nat) [NeZero N] [Fact N.Prime],
+        4 ≤ (N : Real) ^ cor711Exponent ((alpha / 2) ^ (12359 : Nat)) 1 →
+        quadraticRefinementConstant alpha ≤ (N : Real) ^ quadraticDiscrepancyExponent alpha →
         ∀ f : ZMod N → Complex, DiscValued f → ¬ UniformOfDegree f alpha 2 →
         ∃ L : Nat, ∃ R : Fin L → ModAP N,
           IsPartition (fun j ↦ (R j).carrier) Finset.univ ∧
@@ -48,7 +56,7 @@ theorem quadratic_nonuniformity_discrepancy_partition :
             averageCellSize (fun j ↦ (R j).carrier) ∧
           quadraticDiscrepancyParameter alpha * N ≤
             ∑ j, ‖∑ s ∈ (R j).carrier, f s‖ := by
-  intro alpha hα hαone
+  intro alpha hα hαone N _ _ hlarge hbudget f hf hnot
   let e := cor711Exponent ((alpha / 2) ^ (12359 : Nat)) 1
   let beta := (2 : Real) ^ (-(19 : Int)) * alpha ^ 2 * (alpha / 2) ^ (12359 : Nat)
   let q : Real := 1 / 2048
@@ -59,12 +67,8 @@ theorem quadratic_nonuniformity_discrepancy_partition :
   have hC : 0 < C := mul_pos (section5LocalRefinementConstant_pos 2 beta) (by positivity)
   have hK : (polynomialPartitionConstant 2 : Real)⁻¹ = q := by
     norm_num [polynomialPartitionConstant, q, Nat.factorial]
-  obtain ⟨N₁, hN₁⟩ := quadratic_nonuniformity_localized_phase_removal alpha hα hαone
-  obtain ⟨N₂, hN₂⟩ := Filter.eventually_atTop.mp
-    (eventually_nat_mul_rpow_le (C := C) (D := 1)
-      (sub_lt_sub_left (half_lt_self (mul_pos he hq)) 1) zero_lt_one)
-  refine ⟨max N₁ N₂, fun N _ _ hN f hf hnot ↦ ?_⟩
-  obtain ⟨phi, M, l, Q, hpoly, hpart, hproper, hlength, _, hfail⟩ := hN₁ N (by omega) f hf hnot
+  obtain ⟨phi, M, l, Q, hpoly, hpart, hproper, hlength, _, hfail⟩ :=
+    quadratic_nonuniformity_localized_phase_removal_of_power_bound alpha hα hαone N hlarge f hf hnot
   have hsize : ∀ i, (Q i).carrier.card ≤ l + 1 := by
     intro i
     rw [(hproper i).1]
@@ -105,12 +109,23 @@ theorem quadratic_nonuniformity_discrepancy_partition :
             dsimp only [C]
             ring
           _ = _ := by rw [hp]
+  have hexp : quadraticDiscrepancyExponent alpha = e * q / 2 := by
+    dsimp [quadraticDiscrepancyExponent, e, q]
+    ring
+  have hCbound : C ≤ (N : Real) ^ (e * q / 2) := by
+    simpa only [hexp, quadraticRefinementConstant, C, beta, q] using hbudget
   have hLbound : (L : Real) ≤ (N : Real) ^ (1 - e * q / 2) := by
-    exact hcount'.trans (by simpa only [one_mul] using hN₂ N (by omega))
+    calc
+      _ ≤ C * (N : Real) ^ (1 - e * q) := hcount'
+      _ ≤ (N : Real) ^ (e * q / 2) * (N : Real) ^ (1 - e * q) :=
+        mul_le_mul_of_nonneg_right hCbound (Real.rpow_nonneg hNpos.le _)
+      _ = _ := by
+        rw [← Real.rpow_add hNpos]
+        congr 1
+        ring
   have hL : 0 < L := by
     obtain ⟨j, _⟩ := (hR.1 (0 : ZMod N)).mp (Finset.mem_univ _)
     exact Nat.zero_lt_of_lt j.isLt
-  have hexp : quadraticDiscrepancyExponent alpha = e * q / 2 := by dsimp [quadraticDiscrepancyExponent, e, q]; ring
   have hparam : quadraticDiscrepancyParameter alpha = beta / 2 := by
     dsimp [quadraticDiscrepancyParameter, beta]
     generalize (alpha / 2) ^ (12359 : Nat) = a
@@ -123,5 +138,32 @@ theorem quadratic_nonuniformity_discrepancy_partition :
     _ ≤ (N : Real) ^ (e * q / 2) * (N : Real) ^ (1 - e * q / 2) :=
       mul_le_mul_of_nonneg_left hLbound (Real.rpow_nonneg hNpos.le _)
     _ = N := by rw [← Real.rpow_add hNpos, show e * q / 2 + (1 - e * q / 2) = 1 by ring, Real.rpow_one]
+
+/-- Quadratic nonuniformity supplies an untwisted proper progression
+partition with explicit average length and total discrepancy. Only the
+fixed-parameter sufficiently-large threshold remains existential. -/
+theorem quadratic_nonuniformity_discrepancy_partition :
+    ∀ alpha : Real, 0 < alpha → alpha ≤ 1 → ∃ N₀ : Nat,
+      ∀ (N : Nat) [NeZero N] [Fact N.Prime], N₀ ≤ N →
+        ∀ f : ZMod N → Complex, DiscValued f → ¬ UniformOfDegree f alpha 2 →
+        ∃ L : Nat, ∃ R : Fin L → ModAP N,
+          IsPartition (fun j ↦ (R j).carrier) Finset.univ ∧
+          (∀ j, (R j).IsProper) ∧
+          (N : Real) ^ quadraticDiscrepancyExponent alpha ≤
+            averageCellSize (fun j ↦ (R j).carrier) ∧
+          quadraticDiscrepancyParameter alpha * N ≤
+            ∑ j, ‖∑ s ∈ (R j).carrier, f s‖ := by
+  intro alpha hα hαone
+  have he := (quadratic_frequency_exponent_bounds hα hαone).1
+  have hs : 0 < quadraticDiscrepancyExponent alpha := by
+    exact div_pos he (by norm_num)
+  obtain ⟨N₁, hN₁⟩ := Filter.eventually_atTop.mp
+    (eventually_nat_mul_rpow_le (C := 4) (D := 1) he zero_lt_one)
+  obtain ⟨N₂, hN₂⟩ := Filter.eventually_atTop.mp
+    (eventually_nat_mul_rpow_le (C := quadraticRefinementConstant alpha) (D := 1) hs zero_lt_one)
+  refine ⟨max N₁ N₂, fun N _ _ hN ↦ ?_⟩
+  apply quadratic_nonuniformity_discrepancy_partition_of_power_bounds alpha hα hαone N
+  · simpa only [Real.rpow_zero, mul_one, one_mul] using hN₁ N (by omega)
+  · simpa only [Real.rpow_zero, mul_one, one_mul] using hN₂ N (by omega)
 
 end LeanProofs.GowersSzemeredi

@@ -82,9 +82,10 @@ theorem quadratic_frequency_exponent_bounds {alpha : Real}
 
 /-- An odd affine Fourier progression of length at most sqrt(N), with an
 explicit power lower bound and half the previous relative density. -/
-theorem quadratic_nonuniformity_odd_affine_frequencies :
-    ∀ alpha : Real, 0 < alpha → alpha ≤ 1 → ∃ N₀ : Nat,
-      ∀ (N : Nat) [NeZero N] [Fact N.Prime], N₀ ≤ N →
+theorem quadratic_nonuniformity_odd_affine_frequencies_of_power_bound :
+    ∀ alpha : Real, 0 < alpha → alpha ≤ 1 →
+      ∀ (N : Nat) [NeZero N] [Fact N.Prime],
+        4 ≤ (N : Real) ^ cor711Exponent ((alpha / 2) ^ (12359 : Nat)) 1 →
         ∀ f : ZMod N → Complex, DiscValued f → ¬ UniformOfDegree f alpha 2 →
         ∃ m : Nat, ∃ P : ModAP N, ∃ D : Finset (ZMod N), ∃ a b : ZMod N,
           Odd m ∧ 0 < m ∧ (m : Real) ≤ Real.sqrt N ∧
@@ -92,14 +93,9 @@ theorem quadratic_nonuniformity_odd_affine_frequencies :
           P.step != 0 ∧ P.IsProper ∧ P.length = m ∧ D ⊆ P.carrier ∧
           (alpha / 2) ^ (12359 : Nat) / 2 * m ≤ (D.card : Real) ∧
           ∀ x ∈ D, alpha / 2 * N ≤ ‖fourier (difference f x) (a * x + b)‖ := by
-  intro alpha hα hαone
+  intro alpha hα hαone N _ _ hlarge f hf hnot
   let e := cor711Exponent ((alpha / 2) ^ (12359 : Nat)) 1
-  obtain ⟨he, hehalf⟩ := quadratic_frequency_exponent_bounds hα hαone
-  obtain ⟨N₀, hN₀⟩ := Filter.eventually_atTop.mp
-    (eventually_nat_mul_rpow_le (C := 4) (D := 1) he zero_lt_one)
-  refine ⟨N₀, fun N _ _ hN f hf hnot ↦ ?_⟩
-  have hlarge : 4 ≤ (N : Real) ^ e := by
-    simpa only [Real.rpow_zero, mul_one, one_mul] using hN₀ N hN
+  obtain ⟨_, hehalf⟩ := quadratic_frequency_exponent_bounds hα hαone
   obtain ⟨m, hodd, hm, hmlower, hmupper⟩ := exists_odd_nat_between_half hlarge
   obtain ⟨R, B, a, b, hs, hR, hB, hl, hmass, hfourier⟩ :=
     quadratic_nonuniformity_affine_frequencies N f alpha hα hαone hf hnot
@@ -114,5 +110,25 @@ theorem quadratic_nonuniformity_odd_affine_frequencies :
       _ = _ := (Real.sqrt_eq_rpow _).symm
   exact ⟨m, P, D, a, b, hodd, hm, hmsqrt, hmlower, by rwa [hPs],
     hP, hPl, hDP, hmass', fun x hx ↦ hfourier x (hDB hx)⟩
+
+/-- An odd affine Fourier progression of length at most sqrt(N), with an
+explicit power lower bound and half the previous relative density. -/
+theorem quadratic_nonuniformity_odd_affine_frequencies :
+    ∀ alpha : Real, 0 < alpha → alpha ≤ 1 → ∃ N₀ : Nat,
+      ∀ (N : Nat) [NeZero N] [Fact N.Prime], N₀ ≤ N →
+        ∀ f : ZMod N → Complex, DiscValued f → ¬ UniformOfDegree f alpha 2 →
+        ∃ m : Nat, ∃ P : ModAP N, ∃ D : Finset (ZMod N), ∃ a b : ZMod N,
+          Odd m ∧ 0 < m ∧ (m : Real) ≤ Real.sqrt N ∧
+          (N : Real) ^ cor711Exponent ((alpha / 2) ^ (12359 : Nat)) 1 / 2 ≤ m ∧
+          P.step != 0 ∧ P.IsProper ∧ P.length = m ∧ D ⊆ P.carrier ∧
+          (alpha / 2) ^ (12359 : Nat) / 2 * m ≤ (D.card : Real) ∧
+          ∀ x ∈ D, alpha / 2 * N ≤ ‖fourier (difference f x) (a * x + b)‖ := by
+  intro alpha hα hαone
+  have he := (quadratic_frequency_exponent_bounds hα hαone).1
+  obtain ⟨N₀, hN₀⟩ := Filter.eventually_atTop.mp
+    (eventually_nat_mul_rpow_le (C := 4) (D := 1) he zero_lt_one)
+  refine ⟨N₀, fun N _ _ hN ↦ ?_⟩
+  apply quadratic_nonuniformity_odd_affine_frequencies_of_power_bound alpha hα hαone N
+  simpa only [Real.rpow_zero, mul_one, one_mul] using hN₀ N hN
 
 end LeanProofs.GowersSzemeredi

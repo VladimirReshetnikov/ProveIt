@@ -243,6 +243,11 @@ import GowersSzemeredi.Proofs18TwistedPartitionDiscrepancy
 import GowersSzemeredi.Proofs18QuadraticDiscrepancy
 import GowersSzemeredi.Proofs18QuadraticDensityIncrement
 
+import GowersSzemeredi.Proofs05RefinementConstantBounds
+import GowersSzemeredi.Proofs18QuadraticThreshold
+import GowersSzemeredi.Proofs18QuadraticThresholdGrowth
+import GowersSzemeredi.Proofs18QuadraticDichotomy
+
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 
