@@ -359,6 +359,10 @@ import GowersSzemeredi.Proofs13FejerFrequencyGraph
 import GowersSzemeredi.Proofs13FejerFourierExtraction
 import GowersSzemeredi.Proofs13FejerExplicitExponent
 import GowersSzemeredi.Proofs13FejerPrintedRange
+import GowersSzemeredi.Proofs13EndpointUnitPhase
+import GowersSzemeredi.Proofs13EndpointL1Transfer
+import GowersSzemeredi.Proofs13EndpointNormalization
+import GowersSzemeredi.Proofs13EndpointFourierTransfer
 
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
