@@ -20,5 +20,15 @@ commit `32e1a0956a8622fad067328ca1959729a7634428`.  It is retained as the source
 reference for the independent Coq port under [`../Logic/Modal/`](../Logic/Modal/);
 the port neither imports nor modifies the Lean checkout.
 
+[`openai-math/`](openai-math/) is a ported 98-module subset of the Apache-2.0
+Lean library of `openai/math` (commit `adc7f1241b42e322a6451854ab7e4b4c146bf78a`,
+family 159): Ruzsa modelling, a Croot–Sisask/Sanders-type Bogolyubov lemma and
+their import closure, built as the root Lake library `OAI`. It supplies
+Freiman's theorem and the Balog–Szemerédi theorem (Gowers catalogue
+Theorems 7.1 and 7.2) to
+[`../Combinatorics/Ramsey/Lean/GowersSzemeredi/`](../Combinatorics/Ramsey/Lean/GowersSzemeredi/).
+Its README records provenance, the backport modules under `OAI/Compat/`, and
+every per-file port change.
+
 Repository-authored Busy Beaver models, bridges, and score certificates live
 under [`../Computability/BusyBeaver/`](../Computability/BusyBeaver/), not here.

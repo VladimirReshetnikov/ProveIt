@@ -13,6 +13,8 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[3]
 SOURCE = ROOT / 'Combinatorics/Ramsey/Lean'
+# Source roots by top-level module name; OAI is the vendored openai/math subset.
+SOURCES = {'GowersSzemeredi': SOURCE, 'OAI': ROOT / 'lib/openai-math/lean'}
 OUTPUT = ROOT / '.lake/build/lib/lean'
 
 
@@ -29,11 +31,12 @@ def main():
     def build(module):
         if module in done:
             return
-        source = SOURCE / (module.replace('.', '/') + '.lean')
+        source_root = SOURCES[module.split('.')[0]]
+        source = source_root / (module.replace('.', '/') + '.lean')
         if not source.exists():
             raise SystemExit(f'Missing source: {source}')
         dependencies = re.findall(r'^import\s+(\S+)', source.read_text(), re.M)
-        local = [d for d in dependencies if d.startswith('GowersSzemeredi')]
+        local = [d for d in dependencies if d.split('.')[0] in SOURCES]
         for dependency in local:
             build(dependency)
         target = OUTPUT / (module.replace('.', '/') + '.olean')
@@ -44,7 +47,8 @@ def main():
             return
         target.parent.mkdir(parents=True, exist_ok=True)
         print(f'Checking {module}', flush=True)
-        subprocess.run(['lean', '-R', str(SOURCE), '-o', str(target), str(source)],
+        subprocess.run(['lean', '-DautoImplicit=false', '-R', str(source_root),
+                        '-o', str(target), str(source)],
                        cwd=ROOT, env=env, check=True)
         done.add(module)
 
