@@ -13,8 +13,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 642 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 4,153 public Gowers theorems and found only propext,
+  All 646 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 4,181 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 113 exact
   companion proofs and 7 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -783,6 +783,24 @@ Exact cube-energy transfer between cyclic models
   large new modulus with the same energy and explicit normalization.
   The application to cubic-localization cells, including their upper length
   bound and a comparable new prime modulus, is completed below.
+
+Positive mass of local uniformity obstructions
+  Proofs03SupportEnergy proves that unnormalized degree-k uniformity energy
+  of a disc-valued function is at most its L1 mass to the power k+2, hence
+  at most the support cardinality to that power. No primality, shortness,
+  or progression hypothesis is needed for this sharp support estimate.
+  Proofs17NonuniformCellMass selects cells failing at half the normalized
+  local parameter and proves that their total cardinality exceeds beta*N/2.
+  This avoids the loss of ambient mass caused by selecting just one cell.
+  Proofs18PartitionPrimeModels transfers all selected short proper cells
+  to comparable primes at the same parameter, independent of cell size.
+  Proofs18CubicCellModels applies this construction unconditionally to cubic
+  nonuniformity. The surviving mass fraction is
+  2^-59*alpha^2*(alpha/2)^(2^76), and the quadratic parameter in every prime
+  model is 2^-71*alpha^2*(alpha/2)^(2^76). All local primes can simultaneously
+  exceed any prescribed real threshold while remaining at most N/2.
+  The original modulus threshold is qualitative here. This does not yet
+  assemble local discrepancy into a global cubic discrepancy partition.
 
 Cubic obstruction in a strictly smaller prime model
   Proofs17LocalizedPhaseRemoval now exports proposition_17_7_with_upper:

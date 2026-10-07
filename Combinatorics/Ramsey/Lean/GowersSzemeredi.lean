@@ -441,6 +441,7 @@ import GowersSzemeredi.Proofs16CommonBaseLineCovers
 import GowersSzemeredi.Proofs18GeneralIntervalStopping
 import GowersSzemeredi.Proofs18FromFunctionDiscrepancy
 import GowersSzemeredi.Proofs18QuadraticSourceThreshold
+import GowersSzemeredi.Proofs18CubicCellModels
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 
