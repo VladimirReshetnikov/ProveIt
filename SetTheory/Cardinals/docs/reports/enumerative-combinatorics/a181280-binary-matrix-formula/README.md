@@ -114,6 +114,16 @@ treated in the collection:
   sums), so the Section 6.4 sequences are now proved D-finite; the
   particular guessed recurrences and finite sums of Section 6.4
   (Conjectures 18–19) remain unproved.]
+  [Added 7 October 2026, batch-101 reciprocal note: "the guessed recurrences
+  are not" and "remain unproved" above are out of date. Parts III and IV of
+  that report (Research Reports 231 and 233, batch 101) prove, from the
+  array definition, the order-two, degree-nine A181198 recurrence and the
+  order-three, degree-24 A181199 recurrence for every n ≥ 1, and the paper's
+  Conjectures 18 (for n > 1) and 19, the printed finite sums (Theorems 26.1,
+  30.1, 30.2, 34.1, 34.2 there); its Proposition 33.2 shows that order two is
+  minimal for A181198. So the Section 6.4 conjectures, like this report's
+  Conjecture 20, are now proved in the collection; unrefereed, not
+  formalized.]
 
 None of these reports uses this one's theorems. All are unrefereed and none
 is formalized.
