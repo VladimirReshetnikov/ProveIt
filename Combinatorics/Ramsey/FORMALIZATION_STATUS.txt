@@ -12,8 +12,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 518 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 3,406 public Gowers theorems and found only propext,
+  All 523 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 3,467 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 108 exact
   companion proofs and 12 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -1357,8 +1357,26 @@ Near-maximal endpoint normalization
   coefficient changes by at most 4*epsilon*N, uniformly in both
   derivative directions and frequency.
   This completes the phase-normalization portion of source 57's endpoint
-  proof. Dominant-frequency selection and additive/bilinear correction
-  remain necessary; the near-maximal extraction theorem is still open.
+  proof. The near-maximal extraction theorem is still open.
+
+Near-maximal frequency selection and finite additive correction
+  Proofs13EndpointDominantFourier proves normalized Parseval and the
+  fourth-moment identity, then selects a coherent dominant frequency.
+  Its squared coefficient dominates the second cube mean; the constant
+  function selects frequency zero.
+  Proofs13EndpointFrequencyMap applies this to second differences. The
+  resulting frequency table is symmetric, has zero rows at zero for
+  unit-modulus inputs, and has mean concentration defect exactly 1-Q4.
+  Proofs13EndpointFiniteError develops finite disagreement distance and
+  modal selection. Proofs13EndpointAdditiveCollision bounds every fixed
+  increment's collision probability by twice the addition-test failure.
+  Proofs13EndpointAdditiveCorrection proves finite additive correction:
+  failure theta<1/6 gives a homomorphism at distance at most
+  theta/(1-2*theta), hence at most 2*theta. The proof uses the increment
+  cocycle and a quantitative averaged distance bound.
+  All five modules pass the full axiom audit. Connecting Fourier
+  concentration to the addition test, correcting symmetry to bilinearity,
+  and assembling the endpoint square remain necessary.
 
 Reproducible checks (from repository root)
   python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.Audit
@@ -1380,9 +1398,10 @@ Next substantial obligations
      Fourier extraction and the printed conclusion for alpha<=1023/1024
      are now proved. Source 57 (gowers_research_proveit) gives an explicit
      near-maximal U^4 argument. Unit-modulus normalization and uniform
-     derivative/Fourier transfer are now proved. Dominant-frequency
-     concentration, finite additive correction, symmetry-based bilinear
-     correction, and assembly of the ambient square remain unproved.
+     derivative/Fourier transfer, dominant-frequency concentration, and
+     finite additive correction are now proved. The Fourier addition-test
+     estimate, symmetry-based bilinear correction, and assembly of the
+     ambient square remain unproved.
      The weaker constants in the formal purification still yield the same
      2^53 length top power and an improved 2^42 density top power.
      Source 53 (Report281) gives an explicit

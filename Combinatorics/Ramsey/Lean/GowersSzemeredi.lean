@@ -363,6 +363,11 @@ import GowersSzemeredi.Proofs13EndpointUnitPhase
 import GowersSzemeredi.Proofs13EndpointL1Transfer
 import GowersSzemeredi.Proofs13EndpointNormalization
 import GowersSzemeredi.Proofs13EndpointFourierTransfer
+import GowersSzemeredi.Proofs13EndpointDominantFourier
+import GowersSzemeredi.Proofs13EndpointFiniteError
+import GowersSzemeredi.Proofs13EndpointAdditiveCollision
+import GowersSzemeredi.Proofs13EndpointAdditiveCorrection
+import GowersSzemeredi.Proofs13EndpointFrequencyMap
 
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
