@@ -1,0 +1,670 @@
+\documentclass[11pt,letterpaper]{article}
+\pdfinfoomitdate=1
+\pdftrailerid{}
+\pdfsuppressptexinfo=15
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools,booktabs,microtype}
+\usepackage[margin=1in]{geometry}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\usepackage{enumitem,bookmark}
+\pdfmapfile{+lm.map}\pdfmapfile{+cm.map}\pdfmapfile{+symbols.map}
+\hypersetup{pdftitle={Report 227 High maximum outdegree in rooted unlabeled trees},pdfauthor={Research report},pdfsubject={OEIS A244407 and A244410}}
+\setlist{nosep}
+\setlength{\emergencystretch}{2em}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\coef}[2]{[z^{#1}]#2}
+\newcommand{\Pp}{\mathbb P}
+\newcommand{\Ee}{\mathbb E}
+\newcommand{\Bcal}{\mathcal B}
+\newcommand{\Dcal}{\mathcal D}
+\newcommand{\Ecal}{\mathcal E}
+\newcommand{\bigO}{\mathrm O}
+\newcommand{\MSET}{\operatorname{MSET}}
+\title{High maximum outdegree in rooted unlabeled trees\\[4pt]\large Exact diagonals and two hub corrections for OEIS A244407 and A244410}
+\author{Report 227}
+\date{5 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We study rooted, unlabeled, nonplane trees whose maximum outdegree is exactly $k$. An orbit-pointing decomposition identifies an excess generating function $F=H/(1-R)$, where $R$ is the rooted-tree series and $H$ is an excess-weight forest product. If $m=N-k-1<k$, the count is exactly $[z^m]F$; the next boundary subtracts one. We prove a uniform relative error $\bigO((N+1)\rho^k)$, with the optimal exponential base $\rho$, and an exact correction throughout the two-hub range $N=2k+r+1$, $0\le r<k$. This correction has its own expansion and is exponentially smaller than the principal sector. Classical singularity analysis yields every fixed algebraic order, including the two leading constants recorded in OEIS in 2014. Lambert-$W$ inverses give qualified integer-threshold enclosures. Conditioned on a sufficiently high maximum, the unique hub has a Rayleigh depth on the square-root excess scale and an asymptotically independent, tight decoration with infinite positive-integer moments. All proofs distinguish vertex orbits from vertices. The general analytic methods and the classical degree constant are credited; historical priority remains qualified because the full Goh--Schmutz paper was unavailable for comparison.
+\end{abstract}
+\begingroup\small\setcounter{tocdepth}{1}\tableofcontents\endgroup\clearpage
+
+\section{The counting problem and the scope of the results}
+Let $r_n$ count rooted, unlabeled, nonplane trees on $n$ vertices. Thus children form an unordered multiset, and repeated child types are allowed. Write
+\begin{equation}\label{eq:R}
+R(z)=\sum_{n\ge1}r_nz^n
+=z\exp\!\left(\sum_{j\ge1}\frac{R(z^j)}j\right).
+\end{equation}
+All generating functions in this article are ordinary. The word \emph{degree} will always mean outdegree, the number of children. Let $T(N,k)$ be the number of these tree types on $N$ vertices with maximum outdegree \emph{exactly} $k$. Apart from the explicitly mentioned one-vertex convention, $N\ge2$ and $1\le k\le N-1$.
+
+The OEIS array A244372 records this model. Its two diagonals are
+\begin{equation}\label{eq:oeisdef}
+\mathrm{A244407}(n)=T(2n,n)\quad(n\ge1),\qquad
+\mathrm{A244410}(n)=T(2n+1,n)\quad(n\ge1).
+\end{equation}
+The entry A244410 additionally sets its term at $n=0$ to $1$. The leading equivalents in the two entries are attributed to Vaclav Kotesovec, 11 July 2014 \cite{oeis407,oeis410,oeis372}. The exact identities below explain their constants and their relation.
+
+Define
+\begin{align}
+H(z,v)&=\prod_{s\ge1}(1-vz^s)^{-r_{s+1}},& H(z)&=H(z,1),\\
+H_k(z)&=\sum_{j=0}^k[v^j]H(z,v),&
+G(z)&=\frac1{1-R(z)},\\
+F(z)&=H(z)G(z)=\sum_{m\ge0}f_mz^m.\label{eq:F}
+\end{align}
+A component counted by $H$ is a nonleaf rooted tree of size $s+1$, with \emph{excess weight} $s$. The variable $v$ counts the number of components. This convention removes one vertex of weight from each child of a high-degree vertex.
+
+Here are the main regimes. The coefficient $f_{N-k-1}$ is exact for $N\le2k$. It remains a relatively accurate approximation whenever $(N+1)\rho^k\to0$. Every fixed algebraic expansion and all fixed-moment conclusions transfer in the convenient regime $k/\log N\to\infty$, provided $m=N-k-1\to\infty$. In particular this includes $k\ge\epsilon N$ with fixed $\epsilon>0$. The exact two-hub correction applies when $N=2k+r+1$ with $0\le r<k$, including $N=3k$. Stars, for which $m=0$, satisfy the exact identities but are not in a large-$m$ coefficient asymptotic regime.
+
+\subsection{Attribution and the historical limitation}
+The critical constant $C=H(\rho)$ used below belongs to the classical degree-distribution and cycle-index literature, notably Schwenk \cite{schwenk} and Drmota--Gittenberger \cite{dg}; it is not a newly discovered constant. The P\'olya--Otter expansion, its all-order development, singularity transfer, the method of moments, and Lambert-$W$ inversion are established methods \cite{otter,fs,genitrini,corless}. This article gives complete combinatorial and asymptotic arguments for the present formulas, using that classical analytic input.
+
+Theorems about fixed degree frequencies or absolute errors in growing-degree means do not by themselves resolve the relative size of an exponentially rare event. For example, the uniform absolute error $\bigO(1)$ for a degree-count mean in the discussion following Lemma 3 of Gittenberger \cite{gittenberger} is not a relative bound when the mean is exponentially small. Our relative estimate is instead proved directly from marked-pair objects.
+
+A material limitation remains: the full text of Goh--Schmutz \cite{goh} could not be obtained for this comparison. The publisher record and indexed fragments, together with the later central-window statement in Bartholdi--Diaconis \cite{bd}, support its principal logarithmic-window scope. They cannot exclude an overlapping structural or rare-tail lemma elsewhere in the original paper. Accordingly this article does not assert worldwide novelty, a first proof in the literature, or the absence of prior overlap. Mathematical proofs and historical priority are separate questions.
+
+\section{Exact pointing and stabilized diagonals}
+A distinguished vertex in an unlabeled tree means an isomorphism class of a tree with one mark, not a choice among labeled vertices. Over a fixed unmarked tree the number of such pointed objects is the number of vertex \emph{orbits} under root-preserving automorphisms.
+
+\begin{theorem}[Orbit-pointing]\label{thm:point}
+Let $u$ mark the distance from the root to a distinguished vertex of outdegree $k$. The corresponding series is
+\begin{equation}\label{eq:point}
+P_k(z,u)=\frac{z^{k+1}H_k(z)}{1-uR(z)}.
+\end{equation}
+This identity also holds for $k=0$.
+\end{theorem}
+\begin{proof}
+At the marked vertex there are exactly $k$ child trees. After removing its singleton children, let $j\le k$ nonleaf child components remain. Their excess forest is counted by $[v^j]H(z,v)$; the missing $k-j$ singleton children are restored uniquely. The marked vertex together with one unit from each child contributes $z^{k+1}$.
+
+Every ancestor has one marked child branch continuing to the distinguished vertex, together with an arbitrary unmarked multiset of other rooted trees. The ancestor vertex and that side forest contribute $z\MSET(R)=R$ by \eqref{eq:R}. The ancestors form a sequence, giving $\sum_{h\ge0}u^hR^h$. These are bijections of marked isomorphism types. Even if the underlying unmarked marked-child tree agrees with an unmarked sibling, the mark singles out its colored branch; the remaining copies form the unmarked multiset. No extra multiplicity is introduced. Multiplying proves \eqref{eq:point}.
+\end{proof}
+
+\begin{theorem}[Plateau and first boundary]\label{thm:plateau}
+For $k\ge1$,
+\begin{align}
+T(k+m+1,k)&=f_m &&(0\le m<k),\\
+T(2k+1,k)&=f_k-1.\label{eq:boundary}
+\end{align}
+Consequently
+\begin{equation}\label{eq:oeis}
+\mathrm{A244407}(n)=f_{n-1},\qquad
+\mathrm{A244410}(n)=f_n-1=\mathrm{A244407}(n+1)-1
+\end{equation}
+for $n\ge1$.
+\end{theorem}
+\begin{proof}
+The sum of all outdegrees in an $N$-vertex tree is $N-1$. If $N\le2k$, at most one vertex can have degree at least $k$. Every degree-$k$ pointed tree therefore has a unique maximum-$k$ vertex and is counted once. Each nonleaf component has positive excess, so $H-H_k$ begins in excess degree $k+1$. Taking $[z^m]$ in \eqref{eq:point} proves the plateau.
+
+If $N=2k+1$, no vertex of degree larger than $k$ can coexist with a degree-$k$ vertex. If there are two degree-$k$ vertices, they exhaust the outdegree sum $2k$ and are the only nonleaves. They must be adjacent, with the upper vertex the root. That root has $k-1$ singleton children and the lower vertex as its remaining child; the lower vertex has $k$ singleton children. There is exactly one such tree. The two vertices have different depths, hence different orbits, so pointing counts this tree twice. Truncation still changes no excess-$k$ coefficient. Subtracting one proves \eqref{eq:boundary}, including $k=1$.
+\end{proof}
+The first coefficients, generated exactly, are
+\[
+(f_0,\ldots,f_{12})=(1,2,6,17,50,143,416,1199,3474,10049,29119,84377,244748).
+\]
+
+\section{Two marked vertices and a sharp relative estimate}
+\subsection{The exact ordered-pair identity}
+For $d\ge1$, put
+\begin{equation}\label{eq:MB}
+M_d(z)=z^{d+1}H_d(z),\qquad B_d(z)=z^dH_{d-1}(z).
+\end{equation}
+The first series is a degree-$d$ marked endpoint; the second is a degree-$d$ upper marked vertex with one designated downward branch, which is supplied separately. Let $Q_{d,e}$ count rooted-tree isomorphism classes with an ordered pair of distinct marks of degrees $d,e$.
+
+\begin{lemma}[Exact pair decomposition]\label{lem:pair}
+For $d,e\ge1$,
+\begin{equation}\label{eq:pair}
+Q_{d,e}=G^2(B_dM_e+M_dB_e)+RG^3M_dM_e.
+\end{equation}
+Let $Q_k=\sum_{d,e\ge k}Q_{d,e}$. Coefficientwise,
+\begin{equation}\label{eq:pairbound}
+Q_k\preceq
+\frac{2z^{2k+1}H^2G^2}{(1-z)^2}
++\frac{z^{2k+2}RH^2G^3}{(1-z)^2}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+When one mark is an ancestor of the other, choose which ordered color is above. The unmarked path above the upper mark and the path between the marks each contribute $G$. The two endpoint possibilities give $B_dM_e$ and $M_dB_e$.
+
+For incomparable marks, their lowest common ancestor has two marked child branches distinguished by the two colors. Its vertex and unmarked side forest give $R$. There are three remaining unmarked path segments, contributing $G^3$, and the endpoints give $M_dM_e$. Colored branches are distinguished even when their uncolored types coincide; there is no factor $1/2$ in this ordered-pair construction.
+
+A forest of exactly $a$ ordinary child trees has series $z^aH_a$. Hence a forest of at least $a$ children is bounded coefficientwise by $z^aH/(1-z)$. Summing the two endpoint series in \eqref{eq:pair} gives \eqref{eq:pairbound}.
+\end{proof}
+
+\subsection{Classical analytic input and global coefficient bounds}
+The P\'olya--Otter theorem gives $0<\rho<1$, $R(\rho)=1$, a unique dominant singularity, and analytic continuation to a dented disk at $\rho$ \cite{otter,fs}. With
+\begin{equation}\label{eq:tails}
+\Ecal(z)=\sum_{j\ge2}\frac{R(z^j)}j,
+\qquad
+\Dcal(z)=\sum_{j\ge2}\frac{R(z^j)/z^j-1}{j},
+\end{equation}
+both subsidiary series are analytic for $|z|<\sqrt\rho$; the quotients have removable singularities at zero. Set
+\begin{equation}\label{eq:beta}
+X=1-z/\rho,\quad s=\sqrt X,\quad
+\beta^2=2(1+\rho\Ecal'(\rho)),\qquad
+C=H(\rho).
+\end{equation}
+The local branch is
+\begin{equation}\label{eq:local}
+R=1-\beta s+\frac{\beta^2}{3}s^2+\bigO(s^3),\quad
+G=\frac1{\beta s}+\frac13+\bigO(s),\quad
+H=C\left(1-\frac\beta\rho s+\bigO(s^2)\right).
+\end{equation}
+Indeed, the exact factorization
+\begin{equation}\label{eq:Hfactor}
+H(z)=\exp\bigl(R(z)/z-1+\Dcal(z)\bigr)
+\end{equation}
+proves the expansion for $H$, and
+\begin{equation}\label{eq:C}
+C=\exp\!\left(\sum_{j\ge1}\frac{R(\rho^j)/\rho^j-1}{j}\right).
+\end{equation}
+In the normalization $R(z)=1-b\sqrt{\rho-z}+\cdots$ used in some earlier sources, $\beta=b\sqrt\rho$. Failing to convert this factor changes both the counting and depth constants.
+
+For clarity about applicability of transfer, away from $z=\rho$ on $|z|=\rho$, strict aperiodicity gives $|R(z)|<R(\rho)=1$. This follows also from positivity at all positive sizes and strictness in the triangle inequality. Near $\rho$, $1-R=\beta s+\bigO(s^2)$ has no other zero. Compactness away from $\rho$ and the known continuation of $R$ yield a common sufficiently small enlarged dented disk for $G,H,F$ and the fixed functions in \eqref{eq:pairbound}. The latter have dominant singular orders $1$ and $3/2$. Transfer, with finitely many initial coefficients absorbed, therefore gives absolute constants $c,A>0$ such that
+\begin{align}
+[z^q]G&\le A\rho^{-q},& f_m&\ge c\rho^{-m}(m+1)^{-1/2},\label{eq:basicbounds}\\
+[z^q]\frac{H^2G^2}{(1-z)^2}&\le A\rho^{-q},&
+[z^q]\frac{RH^2G^3}{(1-z)^2}&\le A\rho^{-q}\sqrt{q+1}
+\label{eq:bounds}
+\end{align}
+for all nonnegative indices. Every $f_m$ is positive, so the lower bound extends to those initial indices as well. Section~\ref{sec:allorders} gives the full expansions underlying these bounds.
+
+\begin{theorem}[Uniform relative error with sharp exponential base]\label{thm:uniform}
+There is an absolute constant $A_*>0$ such that, for every $N\ge2$, $1\le k\le N-1$, and $m=N-k-1$,
+\begin{equation}\label{eq:uniform}
+0\le1-\frac{T(N,k)}{f_m}\le A_*(N+1)\rho^k.
+\end{equation}
+The base $\rho$ cannot be replaced by any fixed $b<\rho$ with the same linear prefactor $N+1$ and an absolute constant.
+\end{theorem}
+\begin{proof}
+Put $p=[z^m]H_kG$, $t=T(N,k)$, and $f=f_m$. Every maximum-$k$ tree contributes at least one pointed orbit, so $t\le p\le f$. For a maximum-$k$ tree with $o$ degree-$k$ orbits, the surplus in $p-t$ is $o-1$. Ordered pairs of distinct high-degree vertices give at least that many pair orbits. For a tree of maximum larger than $k$, pairing a degree-$k$ first mark with a higher-degree second mark projects surjectively onto every degree-$k$ first-mark orbit. Thus
+\begin{equation}\label{eq:surplusbound}
+0\le p-t\le[z^N]Q_k.
+\end{equation}
+This is an orbit argument; no raw vertex weighting is used.
+
+The unique excess-one component type ($r_2=1$) supplies a useful endpoint bound. Factor
+\[
+H(\rho,v)=\frac{J(v)}{1-\rho v},\qquad
+J(v)=\prod_{s\ge2}(1-v\rho^s)^{-r_{s+1}}.
+\]
+Since $-\log(1-x)\le x/(1-\rho)$ for $0\le x\le\rho$,
+\begin{align*}
+\log J(1/\rho)
+&\le\frac1{1-\rho}\sum_{s\ge2}r_{s+1}\rho^{s-1}\\
+&=\frac{1-\rho-\rho^2}{(1-\rho)\rho^2}<\infty.
+\end{align*}
+Nonnegative coefficients imply $[v^j]H(\rho,v)\le\rho^jJ(1/\rho)$ and hence
+\begin{equation}\label{eq:foresttail}
+(H-H_k)(\rho)\le\frac{J(1/\rho)}{1-\rho}\rho^{k+1}.
+\end{equation}
+Convolution with the first bound in \eqref{eq:basicbounds} and division by its lower bound for $f_m$ give
+\[
+\frac{f-p}{f}\le A\sqrt{m+1}\rho^k.
+\]
+In the two terms of \eqref{eq:pairbound}, the shifted indices are $m-k$ and $m-k-1$. A negative index contributes zero. The remaining bounds in \eqref{eq:bounds} therefore give
+\[
+\frac{[z^N]Q_k}{f_m}
+\le A\rho^k\sqrt{m+1}
+ +A\rho^{k+1}\sqrt{m+1}\sqrt{\max\{m-k,0\}}
+\le A(N+1)\rho^k.
+\]
+Combining with \eqref{eq:surplusbound} proves \eqref{eq:uniform}.
+
+At $N=2k+1$, the relative error is exactly $1/f_k$. From \eqref{eq:local} and transfer,
+$f_k\sim K\rho^{-k}k^{-1/2}$, where $K=C/(\beta\sqrt\pi)>0$.
+Thus $1/f_k\sim K^{-1}\sqrt{k}\rho^k$. Its ratio to $(2k+2)b^k$ tends to infinity if $b<\rho$, proving the final assertion.
+\end{proof}
+
+\begin{corollary}[Rare-event probability]\label{cor:prob}
+Let $\Delta_N$ be the maximum outdegree of a uniformly chosen $N$-vertex rooted unlabeled tree. If $m=N-k-1\to\infty$ and $(N+1)\rho^k\to0$, then
+\begin{equation}\label{eq:prob}
+\Pp(\Delta_N=k)\sim\frac{2C}{\beta^2}\rho^{k+1}
+\frac{N^{3/2}}{\sqrt m}.
+\end{equation}
+Uniformly for $k/N$ in a compact subinterval of $(0,1)$, this is
+$\frac{2\rho C}{\beta^2}N\rho^k/\sqrt{1-k/N}$.
+\end{corollary}
+\begin{proof}
+Use Theorem~\ref{thm:uniform} and the principal-sector equivalent, together with the classical rooted-tree estimate
+\[
+f_m\sim K\rho^{-m}m^{-1/2},\qquad
+r_N\sim\frac{\beta}{2\sqrt\pi}\rho^{-N}N^{-3/2}.
+\]
+Divide the first by the second. Since $N-m=k+1$, the exponential factor is $\rho^{k+1}$.
+\end{proof}
+The exact integer $k$ must remain in $\rho^k$; replacing it by a rounded real proportion can lose a bounded phase factor. Neither this corollary nor the stronger-than-logarithmic results below assert the central-window maximum-degree law.
+
+\section{The exact two hub sector}\label{sec:twohub}
+The first boundary is part of an entire exact correction series. Define a second excess product and a two-object multiset-with-distinct-types series by
+\begin{equation}\label{eq:Jtwo}
+J_2(z)=\prod_{t\ge1}(1-z^t)^{-r_{t+2}},\qquad
+E_2(F)(z)=\frac{F(z)^2-F(z^2)}2.
+\end{equation}
+The coefficients of $E_2(F)$ are nonnegative integers: it counts unordered pairs of distinct $F$-objects. This is an interpretation of types, including their weights, not just distinct sizes. Set
+\begin{equation}\label{eq:defectpositive}
+\begin{split}
+\Bcal(z)={}&\frac{zJ_2G}{1-z}+\frac{(1+z)F^2}{1-z}\\
+&+zRG\left(E_2(F)+\frac{zF^2}{1-z}\right)
+=\sum_{r\ge0}b_rz^r.
+\end{split}
+\end{equation}
+This expression makes coefficientwise nonnegativity and integrality transparent. The symbol $\Bcal$ is distinct from the analytic subsidiary series $\Dcal$ in \eqref{eq:tails}.
+
+\begin{theorem}[Exact second sector]\label{thm:twohub}
+For integers $k\ge1$ and $0\le r<k$,
+\begin{equation}\label{eq:twohub}
+T(2k+r+1,k)=f_{k+r}-b_r.
+\end{equation}
+In particular $b_0=1$. The defect begins
+\[
+1,7,30,118,432,1520,5187,17341,57013,185111,594834,1895556.
+\]
+\end{theorem}
+\begin{proof}
+Write $N=2k+r+1$ and $p=[z^{k+r}]H_kG$. There are two sources of the difference $f_{k+r}-T(N,k)$.
+
+\emph{Forest truncation.} A forest with $j$ components and excess $j+e$ can be described by removing its excess-one components, of which there is a unique type. The remaining components have sizes $t+2$ and increments $t\ge1$, hence are counted by $J_2$. Such an increment forest has at most $e$ components. When $j\ge e$, padding it to exactly $j$ components by the unique excess-one type is possible and unique.
+
+For an omitted forest write $j=k+\ell$ with $\ell\ge1$. If the ancestor sequence has size $q$, then $e=r-\ell-q$. Whenever $e\ge0$, the condition $r<k$ implies $e<k<j$, so padding imposes no further restriction. Summing $\ell\ge1$ gives the exact identity
+\begin{equation}\label{eq:trunc2}
+f_{k+r}-p=[z^r]\frac{zJ_2(z)G(z)}{1-z}.
+\end{equation}
+
+\emph{The pointing surplus.} Since $N-1=2k+r<3k$, the tree has at most two vertices of degree at least $k$. Let $S_k$ count unmarked trees whose two degree-$k$ vertices lie in the same automorphism orbit. At these sizes,
+\begin{equation}\label{eq:surplus2}
+p-T(N,k)=[z^N]\left(\frac{Q_{k,k}-S_k}{2}+\sum_{e>k}Q_{k,e}\right).
+\end{equation}
+To check this orbit identity, if the two degree-$k$ vertices occupy different orbits, pointing gives two objects, while $Q_{k,k}$ gives two ordered-pair orbits. If they share one orbit, pointing gives one object and $Q_{k,k}$ gives one ordered-pair orbit; subtracting $S_k$ cancels that contribution. If the two high degrees are $k$ and larger than $k$, their degrees distinguish them, and $Q_{k,e}$ gives precisely the one unwanted degree-$k$ pointed object. Trees with no degree-$k$ vertex contribute zero.
+
+In \eqref{eq:pair}, every relevant truncation $H_d$ or $H_{d-1}$ can be replaced by $H$ after shifting out $z^{2k+1}$ and taking a coefficient of degree $r<k$: the first possible omitted degree is at least $k$. Thus in this residual coefficient range
+\begin{align}
+z^{-2k-1}Q_{k,k}&\equiv2H^2G^2+zRH^2G^3,\\
+z^{-2k-1}\sum_{e>k}Q_{k,e}
+&\equiv\frac{2zH^2G^2}{1-z}+\frac{z^2RH^2G^3}{1-z}.
+\label{eq:pairres}
+\end{align}
+Here $\equiv$ means equality of the specified nonnegative residual coefficients; it is not an unrestricted equality of Laurent series.
+
+It remains to compute $S_k$. Interchanged vertices have equal depth and are incomparable. At their lowest common ancestor, their two child branches are isomorphic as pointed rooted trees. Each branch has exactly one high-degree vertex, because a second one would be copied in the other branch and violate the outdegree budget. A third identical branch, another high vertex in a side forest, or a high ancestor is also excluded by $N-1<3k$. The paired identical branch has series $P_k(z^2,1)$, with no factor $1/2$. The common ancestor and its side forest give $R$, and its ancestor sequence gives $G$. Therefore the correct finite-range statement is
+\begin{equation}\label{eq:symmetric}
+S_k(z)\equiv z^{2k+2}R(z)G(z)H_k(z^2)G(z^2)
+\pmod {z^{3k+1}}.
+\end{equation}
+The unique high vertex in each branch means forgetting its mark introduces no multiplicity. In residual degrees $r<k$, \eqref{eq:symmetric} becomes $zRGF(z^2)$ after removing $z^{2k+1}$.
+
+Combining \eqref{eq:trunc2}, \eqref{eq:surplus2}, and \eqref{eq:pairres} gives
+\begin{equation}\label{eq:defectsigned}
+\Bcal=\frac{zJ_2G}{1-z}+\frac{(1+z)H^2G^2}{1-z}
++\frac{z(1+z)RH^2G^3}{2(1-z)}-\frac{zRGF(z^2)}2.
+\end{equation}
+This equals \eqref{eq:defectpositive}, proving the theorem. Its constant term is one.
+\end{proof}
+
+\begin{remark}
+The condition $0\le r=N-2k-1<k$ is the most convenient exact description of the range. In terms of $N$, it is $(N-1)/3<k\le(N-1)/2$, or, for integer $k$, $\lceil N/3\rceil\le k\le\lfloor(N-1)/2\rfloor$. The endpoint $N=3k$ is included. The next size $N=3k+1$ admits three high vertices. It has the additional boundary correction below; no general three-hub sector is asserted.
+\end{remark}
+
+\begin{corollary}[The first three-hub boundary]\label{cor:thirdboundary}
+For every integer $k\ge1$,
+\begin{equation}\label{eq:thirdboundary}
+T(3k+1,k)=f_{2k}-b_k+2.
+\end{equation}
+\end{corollary}
+\begin{proof}
+The forest-truncation argument still applies at residual degree $r=k$: its increment $e=k-\ell-q$ is at most $k-1$, whereas $j=k+\ell$, so padding remains unrestricted.
+
+There are now at most three vertices of degree at least $k$. If there are three, their degrees all equal $k$ and exhaust the outdegree sum $3k$. Their internal skeleton is a chain, or a fork consisting of a root and two nonleaf children; the fork is possible only for $k\ge2$. The remaining children must all be leaves, so each permissible skeleton determines one tree. For the chain the one-mark and ordered-pair orbit counts are $3$ and $6$, with no symmetric pair. Thus the quadratic subtraction in \eqref{eq:surplus2} would produce $3-6/2=0$ instead of one. For the fork the corresponding counts are $2$ and $3$, and its interchangeable child pair contributes one symmetric pair; the subtraction gives $2-(3-1)/2=1$, correctly. Hence the chain requires one additional unit.
+
+There is one other correction: in the ancestor term of $Q_{k,k}$, the exact factor is $2z^{2k+1}H_{k-1}H_kG^2$. At residual degree $k$, replacing $H_{k-1}$ by $H$ introduces exactly one forest, namely $k$ excess-one components. The resulting pair error is two, hence the half-weighted defect is too large by one. The $H_k$ tail begins at $k+1$. The incomparable term has an extra $zR$, of degree at least two, while the mixed-degree terms have an extra $z$; none can see this first omitted coefficient.
+
+Finally the symmetric expression \eqref{eq:symmetric} remains valid at this one extra size when interpreted as counting symmetric degree-$k$ pairs. A third high vertex inside one of the two isomorphic branches would be copied into the other, giving four. Three identical high branches require an additional branching degree and exceed the budget. A third high vertex outside the two branches, if present, must be their common ancestor: otherwise a further positive-degree branching vertex would exceed the already exhausted sum $3k$. This is precisely the fork, already represented by the $RG$ factor. There is therefore no additional symmetric correction. The chain correction and the first ancestor-forest truncation correction give the two units in \eqref{eq:thirdboundary}. For $k=1$ the fork is absent and the same two corrections remain.
+\end{proof}
+
+\section{Every fixed algebraic order}\label{sec:allorders}
+\subsection{A finite and explicit coefficient construction}
+Write
+\begin{equation}\label{eq:Rjet}
+R(\rho(1-s^2))=1+\sum_{j\ge1}\widehat r_js^j,
+\qquad \widehat r_1=-\beta.
+\end{equation}
+Taking logarithms of \eqref{eq:R} and subtracting the critical equation gives
+\begin{equation}\label{eq:implicitjet}
+\log R-R+1=\log(1-s^2)+\Ecal(\rho(1-s^2))-\Ecal(\rho).
+\end{equation}
+For $j\ge2$, the coefficient of $s^{j+1}$ has the new unknown $\widehat r_j$ multiplied by $-\widehat r_1\ne0$. All other terms use previous coefficients and derivatives of $\Ecal$. This triangular recurrence computes any finite jet after choosing the negative square-root branch. It gives $\widehat r_2=\beta^2/3$. Equation \eqref{eq:Hfactor} then computes the corresponding jet
+\begin{equation}\label{eq:Fjet}
+F(\rho(1-s^2))=\sum_{j\ge-1}c_js^j,
+\qquad c_{-1}=\frac C\beta.
+\end{equation}
+These are applications of the classical P\'olya expansion methodology, developed to full order in \cite{genitrini}; the following transfer is standard \cite{fs}.
+
+\begin{theorem}[Principal-sector expansion]\label{thm:allorders}
+For each fixed integer $J\ge0$, as $m\to\infty$,
+\begin{equation}\label{eq:gammaexp}
+f_m=\rho^{-m}\sum_{\ell=0}^{J}c_{2\ell-1}
+\frac{\Gamma(m-\ell+1/2)}{\Gamma(1/2-\ell)\Gamma(m+1)}
++\bigO(\rho^{-m}m^{-J-3/2}).
+\end{equation}
+Equivalently, with $K=C/(\beta\sqrt\pi)$,
+\begin{equation}\label{eq:dexp}
+f_m=K\rho^{-m}m^{-1/2}
+\left(1+\sum_{j=1}^Jd_jm^{-j}+\bigO(m^{-J-1})\right).
+\end{equation}
+Each assertion concerns a fixed finite truncation. No convergence of an infinite asymptotic series is asserted.
+\end{theorem}
+\begin{proof}
+Subtract the Puiseux jet through $s^{2J}$. Its even powers are polynomials in $z$, hence do not contribute at sufficiently large $m$. The exact coefficient formula for an odd power is
+\[
+[z^m](1-z/\rho)^{\ell-1/2}
+=\rho^{-m}\frac{\Gamma(m-\ell+1/2)}{\Gamma(1/2-\ell)\Gamma(m+1)}.
+\]
+The remaining analytic error in the common dented disk is $\bigO(X^{J+1/2})$. Fixed-order singularity transfer gives the error in \eqref{eq:gammaexp}. Expanding its finitely many Gamma ratios gives \eqref{eq:dexp}.
+\end{proof}
+
+Here is a fully specified algebraic engine for $d_j$. Let $B_j(x)$ denote the Bernoulli polynomials and define the formal unit series $\mathcal G(t)$ by
+\[
+\log\mathcal G(t)=\sum_{j\ge1}
+\frac{(-1)^{j+1}\bigl(B_{j+1}(1/2)-B_{j+1}(1)\bigr)}{j(j+1)}t^j.
+\]
+With $d_0=1$,
+\begin{equation}\label{eq:engine}
+\sum_{j\ge0}d_jt^j
+=\mathcal G(t)\sum_{\ell\ge0}\frac{c_{2\ell-1}}{c_{-1}}
+\frac{(-1)^\ell(2\ell)!}{4^\ell\ell!}
+\frac{t^\ell}{\prod_{q=1}^{\ell}(1-(q-1/2)t)}.
+\end{equation}
+To compute through degree $J$, only $\ell\le J$ and finite Taylor polynomials are used. The formula follows from the Gamma-ratio expansion and the two identities
+\[
+\frac{\sqrt\pi}{\Gamma(1/2-\ell)}=\frac{(-1)^\ell(2\ell)!}{4^\ell\ell!},\qquad
+\frac{\Gamma(m-\ell+1/2)}{\Gamma(m+1/2)}
+=\frac{m^{-\ell}}{\prod_{q=1}^{\ell}(1-(q-1/2)/m)}.
+\]
+For example $\mathcal G(t)=1-t/8+t^2/128+5t^3/1024+\cdots$.
+
+\subsection{The two OEIS diagonals and numerical normalization}
+For A244407, substitute $m=n-1$ in \eqref{eq:dexp}:
+\begin{equation}\label{eq:eshift}
+\mathrm{A244407}(n)=\rho K\rho^{-n}n^{-1/2}
+\left(1+\sum_{j=1}^Je_jn^{-j}+\bigO(n^{-J-1})\right),
+\end{equation}
+where $e_0=1$ and
+$\sum_{j\ge0}e_jt^j=\sum_{j\ge0}d_jt^j(1-t)^{-j-1/2}$ as formal series. A244410 has leading constant $K$ and corrections $d_j$; its exact subtraction of $1$ is smaller than every algebraic order relative to its exponential leading term.
+
+The following decimals are numerical evaluations, \emph{not interval-certified bounds}:
+\begin{align*}
+\rho&\approx0.338321856899207695196112625717017,\\
+\beta&\approx1.559490020374640885542207395894885,\\
+C&\approx7.758160291197058127053309431522036,\\
+K&\approx2.806733718459891564049965950871345,\\
+\rho K&\approx0.949579363450968533513661319710569.
+\end{align*}
+The first corrections are
+\begin{center}
+\begin{tabular}{crr}
+\toprule
+$j$&$d_j$&$e_j$\\\midrule
+1&$-6.828264648477568$&$-6.328264648477568$\\
+2&$68.44109201617554$&$58.57369504345919$\\
+3&$-792.7688846473414$&$-634.1566508227980$\\\bottomrule
+\end{tabular}
+\end{center}
+The leading values reproduce the constants recorded in the OEIS entries. Large first corrections explain slow convergence of raw leading-term ratios. The older normalization has $b=\beta/\sqrt\rho\approx2.68112814726711224$ and $2C/\beta^2\approx6.38004209421677598$; low-precision historical decimals should not be treated as high-precision certificates.
+
+By Theorem~\ref{thm:uniform}, \eqref{eq:dexp} transfers to $T(N,k)$ with an additional relative error $\bigO((N+1)\rho^k)$. If $k/\log N\to\infty$ and $m\to\infty$, this error is smaller than every fixed inverse power of $m$ (indeed of $N$). The constants for the fixed-order expansion depend on its order, not on $N$ or $k$.
+
+\subsection{Expansion of the exponentially smaller sector}
+The logarithm of $J_2$ has the exact form
+\begin{equation}\label{eq:Jtwolog}
+\log J_2(z)=\sum_{j\ge1}
+\frac{R(z^j)-z^j-z^{2j}}{jz^{2j}}.
+\end{equation}
+Its apparent singularities at zero are removable. The $j\ge2$ tail is analytic for $|z|<\sqrt\rho$, while the $j=1$ term has the same square-root expansion as $R$. Thus $J_2$ is finite at $\rho$ and has a full Puiseux expansion in the common dented disk. The factors $F(z^2)$ are analytic near $\rho$.
+
+\begin{theorem}[Second-sector expansion]\label{thm:defectasym}
+There are coefficients $a_j$ such that
+\begin{equation}\label{eq:defectjet}
+\Bcal(\rho(1-s^2))=A s^{-3}+a_{-1}s^{-1}+a_0+a_1s+\cdots,
+\qquad
+A=\frac{\rho(1+\rho)C^2}{2(1-\rho)\beta^3}.
+\end{equation}
+In particular, the coefficient of $s^{-2}$ vanishes. For each fixed $J\ge0$, as $r\to\infty$, with $a_{-3}=A$,
+\begin{equation}\label{eq:defectgamma}
+b_r=\rho^{-r}\sum_{\ell=0}^Ja_{2\ell-3}
+\frac{\Gamma(r-\ell+3/2)}{\Gamma(3/2-\ell)\Gamma(r+1)}
++\bigO(\rho^{-r}r^{-J-1/2}).
+\end{equation}
+Consequently $b_r$ has an expansion in integer powers of $1/r$ relative to
+\begin{equation}\label{eq:defectlead}
+b_r\sim L\rho^{-r}\sqrt r,\qquad
+L=\frac{\rho(1+\rho)C^2}{(1-\rho)\beta^3\sqrt\pi}.
+\end{equation}
+If $m=k+r$, $0\le r<k$, and $r\to\infty$, then
+\begin{equation}\label{eq:defectratio}
+\frac{b_r}{f_m}\sim
+\frac{\rho(1+\rho)C}{(1-\rho)\beta^2}\sqrt{rm}\,\rho^k.
+\end{equation}
+\end{theorem}
+\begin{proof}
+In \eqref{eq:defectsigned}, only the $G^3$ term contributes $s^{-3}$, with coefficient $A$. Its possible next term must be combined with the $G^2$ term. From \eqref{eq:local}, the $s^{-2}$ coefficient in $RG^3$ itself is zero: $3(1/3)/\beta^2-1/\beta^2=0$. Multiplication by the linear term of $H^2$ contributes
+\[
+-\frac{(1+\rho)C^2}{(1-\rho)\beta^2}s^{-2}
+\]
+from the $G^3$ summand. This cancels the leading term of $(1+z)H^2G^2/(1-z)$. The other two summands begin at $s^{-1}$. Analytic prefactors in $z=\rho(1-s^2)$ have no linear term in $s$, so this lists every $s^{-2}$ contribution.
+
+Apply the same fixed-order transfer argument as in Theorem~\ref{thm:allorders}, now beginning with $X^{-3/2}$. Even nonnegative powers again contribute only polynomials; the would-be negative integer power $X^{-1}$ has just canceled. This proves \eqref{eq:defectgamma} and the integer-power relative expansion. The leading coefficient is $A/\Gamma(3/2)=2A/\sqrt\pi=L$. Division by $f_m\sim K\rho^{-m}m^{-1/2}$, using $m-r=k$, proves \eqref{eq:defectratio}.
+\end{proof}
+Numerically, without interval certification, $L\approx6.126869046471254$ and the prefactor in \eqref{eq:defectratio} is approximately $2.182917818735289$.
+
+\paragraph{What the two sectors do and do not say.}
+Equation \eqref{eq:twohub} is an exact separation $T=f_m-b_r$, not an inference from an algebraic expansion. For fixed truncation orders $J_1,J_2$, the two independent absolute remainder bounds are
+\[
+\bigO(\rho^{-m}m^{-J_1-3/2})\quad\hbox{and}\quad
+\bigO(\rho^{-r}r^{-J_2-1/2}),
+\]
+respectively. In the high-degree range, the first of these can be much larger than the entire second sector. Thus no fixed algebraic truncation of $f_m$ is claimed to numerically resolve $b_r$. The exact coefficient description retains the exponentially small information; the two expansions describe each sector separately. No optimally truncated uniform transseries or additional three-hub sector is asserted here.
+
+\section{Conditioned hub depth and decoration}\label{sec:geometry}
+An $F$-object consists of an excess forest and an ordered ancestor sequence, with total excess $m$. Choose it uniformly among its $f_m$ types. Let $L_m$ be its ancestor-sequence length, and let $\mathcal A_m$ be its forest decoration, of excess $S_m=|\mathcal A_m|$. In this abstract class
+\begin{equation}\label{eq:depthpgf}
+\Ee u^{L_m}=\frac{[z^m]H(z)/(1-uR(z))}{f_m}.
+\end{equation}
+We first prove the distributional statements in this exact class, then transfer them to uniformly chosen trees with maximum exactly $k$.
+
+\subsection{A common good subset}
+Let $\mathcal U$ be the set of $N$-vertex trees with exactly one vertex of degree at least $k$, that vertex having degree $k$. Put $u=|\mathcal U|$, $t=T(N,k)$, and $f=f_{N-k-1}$. By the pointing bijection, $\mathcal U$ is a common subset of both the actual maximum-$k$ tree class and the abstract $F$-class.
+
+The invalid forest part of the $F$-class has size $f-p$, with $p=[z^{N-k-1}]H_kG$. Every admissible pointed object outside $\mathcal U$ has a second vertex of degree at least $k$. Ordered-pair orbits project surjectively onto its first degree-$k$ marked orbit. Consequently
+\begin{equation}\label{eq:goodset}
+f-u\le(f-p)+[z^N]Q_k,\qquad
+1-\frac uf\le A_*(N+1)\rho^k.
+\end{equation}
+This controls \emph{all} bad pointed objects, including a tree whose two hubs belong to the same one-vertex orbit. The earlier surplus bound $p-t\le[z^N]Q_k$ alone would not suffice for that purpose.
+
+Because $u\le t\le f$, conditioning either uniform law on $\mathcal U$ gives exactly the same uniform law there. A coupling can agree on each common object with mass $1/f$, so its probability of failure is at most $1-u/f$. In particular, the actual probability of a nonunique maximum is $1-u/t\le1-u/f$. This yields both total-variation comparison on the common representation and an exponentially small nonuniqueness probability when $k\ge\epsilon N$.
+
+For actual trees, define hub depth to be zero and decoration to be the empty forest on the exceptional nonunique-maximum event. Any other conventions with depth and decoration excess between zero and $N$ give the same limits below. Such conventions make the random variables fully defined; they do not imply uniqueness on every tree.
+
+\subsection{Rayleigh depth with integer moments}
+\begin{theorem}[Depth law]\label{thm:depth}
+As $m\to\infty$, $L_m/\sqrt m$ converges in distribution and every nonnegative integer moment to a random variable $X_*$ with density
+\begin{equation}\label{eq:rayleigh}
+p(x)=\frac{\beta^2x}{2}\exp\!\left(-\frac{\beta^2x^2}{4}\right),\qquad x\ge0.
+\end{equation}
+The same conclusion holds for the hub depth in a uniform tree conditioned on $\Delta_N=k$, whenever $m=N-k-1\to\infty$ and $k/\log N\to\infty$. In particular it holds uniformly in the regime $k\ge\epsilon N$ with fixed $\epsilon>0$ and $m\to\infty$.
+\end{theorem}
+\begin{proof}
+For a fixed integer $a\ge1$, differentiating \eqref{eq:depthpgf} $a$ times at $u=1$ gives the falling-factorial moment series
+\[
+\sum_{m\ge0}f_m\Ee(L_m)_a z^m
+=\frac{a!H(z)R(z)^a}{(1-R(z))^{a+1}}.
+\]
+Its leading singular term is $a!C\beta^{-a-1}X^{-(a+1)/2}$. Transfer and division by $f_m$ yield
+\begin{align*}
+\Ee(L_m)_a
+&\sim\frac{a!\sqrt\pi}{\beta^a\Gamma((a+1)/2)}m^{a/2}\\
+&=\left(\frac2\beta\right)^a\Gamma(1+a/2)m^{a/2},
+\end{align*}
+where the last step uses Gamma duplication. Converting falling to ordinary powers changes only lower-order moments. The constants are the moments of \eqref{eq:rayleigh}. Their even-moment reciprocal roots have order $a^{-1/2}$, so Carleman's sum diverges. The method of moments proves the stated law and integer-moment convergence.
+
+Under the coupling \eqref{eq:goodset}, depths are bounded by $N$. For the normalized $a$th moment, the error is at most
+\[
+2N^am^{-a/2}A_*(N+1)\rho^k.
+\]
+It tends to zero faster than any inverse power of $N$ when $k/\log N\to\infty$. The failure probability itself tends to zero, proving the transfer in distribution and all fixed integer moments.
+\end{proof}
+The limiting mean is $\sqrt\pi/\beta\approx1.136559918786601$, and its second moment is $4/\beta^2\approx1.644730671898081$. No local limit theorem for individual depth values is being claimed. In particular a total-variation limit from the lattice depth law to its continuous Rayleigh limit is not asserted.
+
+\subsection{A tight decoration with a heavy tail}
+Write $H(z)=\sum h_sz^s$ and $G(z)=\sum g_qz^q$. For an individual forest type $A$ of excess $s$, and for its excess alone, the exact probabilities are
+\begin{equation}\label{eq:decorfinite}
+\Pp(\mathcal A_m=A)=\frac{g_{m-s}}{f_m},\qquad
+\Pp(S_m=s)=\frac{h_sg_{m-s}}{f_m},\quad 0\le s\le m.
+\end{equation}
+
+\begin{theorem}[Decoration and asymptotic independence]\label{thm:decoration}
+The forest $\mathcal A_m$ converges in total variation on the countable set of finite forest types to a random forest $\mathcal A$ with
+\begin{equation}\label{eq:decorlimit}
+\Pp(\mathcal A=A)=\frac{\rho^{|A|}}C.
+\end{equation}
+Its excess $S=|\mathcal A|$ satisfies
+\begin{equation}\label{eq:decortail}
+\Pp(S=s)=\frac{h_s\rho^s}C
+\sim\frac{\beta}{2\rho\sqrt\pi}s^{-3/2}.
+\end{equation}
+The joint limit of $(L_m/\sqrt m,\mathcal A_m)$ is $(X_*,\mathcal A)$ with independent coordinates. For every fixed positive integer $a$,
+\begin{equation}\label{eq:decormom}
+\Ee S_m^a\sim
+\frac{\beta\Gamma(a-1/2)}{2\rho\Gamma(a)}m^{a-1/2}.
+\end{equation}
+The limiting positive-integer moments are infinite. For $0<\alpha<1/2$, the fractional moment is finite and $\Ee S_m^\alpha\to\Ee S^\alpha$.
+All these conclusions transfer to the actual conditioned tree model in the regime of Theorem~\ref{thm:depth}, with the exceptional-event convention above.
+\end{theorem}
+\begin{proof}
+For each fixed $s$, the equivalents for $g_{m-s}$ and $f_m$ give $g_{m-s}/f_m\to\rho^s/C$. These limiting probabilities sum to $H(\rho)/C=1$ over the countable forest space. Pointwise convergence of probabilities to a probability measure on a countable space implies total-variation convergence: first choose a finite set carrying nearly all limiting mass and then use convergence on that set. This proves \eqref{eq:decorlimit} and the corresponding excess law.
+
+The $-C\beta s/\rho$ term in the local expansion of $H$ and $\Gamma(-1/2)=-2\sqrt\pi$ give \eqref{eq:decortail}. Thus $\Ee S^a=\infty$ for every positive integer $a$. To compute the finite-size moments, apply $\theta^a=(z\,d/dz)^a$ to $H$ and multiply by $G$. Its leading singular term is
+\[
+\frac C\rho\frac{\Gamma(a-1/2)}{2\sqrt\pi}X^{-a}.
+\]
+Transfer and division by $f_m$ prove \eqref{eq:decormom}. In particular $\Ee S_m\sim\beta\sqrt\pi\sqrt m/(2\rho)$.
+
+For the fractional-moment statement, the same coefficient estimates, with finitely many initial indices absorbed, give
+\[
+h_s\rho^s\le A(s+1)^{-3/2},\quad
+g_q\rho^q\le A(q+1)^{-1/2},\quad
+f_m\rho^m\ge c(m+1)^{-1/2}.
+\]
+In the tail expectation beyond $M$, split the sum at $s=m/2$. The portion $M<s\le m/2$ is bounded by $A\sum_{s>M}s^{\alpha-3/2}\le A'M^{\alpha-1/2}$. The portion $s>m/2$ is bounded by $A'm^{\alpha-1/2}$ after summing $(m-s+1)^{-1/2}$. This tends to zero; the finitely many smaller $m$ create no obstruction as $M\to\infty$. Uniform integrability proves convergence of these fractional moments.
+
+Conditioning on any fixed forest $A$ leaves the pure ancestor-sequence class $G$ of size $m-|A|$. Repeating the factorial-moment calculation with $H=1$ gives the same Rayleigh limit. First restrict to finitely many forest types and apply this conditional convergence to each; then let that finite set grow, using total-variation tightness. This proves joint convergence and independence.
+
+Finally \eqref{eq:goodset} transfers the distributions. Moment errors are bounded by $2N^aA_*(N+1)\rho^k$ (and by the analogous fractional power), negligible relative to \eqref{eq:decormom}, or tending to zero in the fractional case, in the stated regime.
+\end{proof}
+The decoration is tight although its mean grows like $\sqrt m$, with coefficient approximately $4.085051018275236$. This is consistent: rare large decorations dominate the mean. A limit theorem for the number of components of a different large forest model cannot be substituted for this excess-weight law; compare the separate forest setting in \cite{forest}.
+
+\section{Lambert inverses and integer thresholds}\label{sec:inverse}
+Let $\lambda=\log(1/\rho)>0$. For a fixed $J\ge0$, define
+\begin{equation}\label{eq:model}
+Q_J(t)=1+\sum_{j=1}^Jd_jt^j,\qquad
+M_J(x)=K e^{\lambda x}x^{-1/2}Q_J(1/x).
+\end{equation}
+For sufficiently large real $x$, $Q_J(1/x)>0$ and $(\log M_J)'(x)\to\lambda$. Thus there is a unique large real solution $x_J(y)$ to $M_J(x)=y$ when $y$ is sufficiently large.
+
+\begin{theorem}[Smooth inverses]\label{thm:inverse}
+The exact inverse of the leading model on its large branch is
+\begin{equation}\label{eq:W}
+x_0(y)=-\frac1{2\lambda}
+W_{-1}\!\left(-2\lambda(K/y)^2\right).
+\end{equation}
+For every fixed $J$, coefficients $q_1,\ldots,q_J$ can be computed triangularly so that
+\begin{equation}\label{eq:inverseexp}
+x_J(y)=x_0(y)+\sum_{j=1}^Jq_jx_0(y)^{-j}
++\bigO(x_0(y)^{-J-1}).
+\end{equation}
+\end{theorem}
+\begin{proof}
+Squaring $K e^{\lambda x}x^{-1/2}=y$ gives $x e^{-2\lambda x}=(K/y)^2$, proving \eqref{eq:W}. The branch $W_{-1}$ supplies the large positive solution; $W_0$ would give the irrelevant small one \cite{corless}.
+
+Put $t=1/x_0$ and $\delta=\sum_{j=1}^Jq_jt^j$. Dividing the corrected model equation by its leading counterpart and taking logarithms yields the formal equation
+\begin{equation}\label{eq:invrec}
+\lambda\delta-\frac12\log(1+t\delta)
++\log Q_J\!\left(\frac{t}{1+t\delta}\right)=0.
+\end{equation}
+At order $t^j$ the only new coefficient is $\lambda q_j$, so finite coefficient extraction determines the $q_j$ successively. If $\log Q_J(t)=\sum\ell_jt^j$, then
+\[
+q_1=-\ell_1/\lambda,\qquad
+q_2=(q_1/2-\ell_2)/\lambda.
+\]
+Taylor's theorem bounds the residual after finite substitution by $\bigO(x_0^{-J-1})$. The logarithmic slope of $M_J$ is at least $\lambda/2$ on a sufficiently large tail. The mean-value theorem converts the residual to the same order of inverse error, proving \eqref{eq:inverseexp}.
+\end{proof}
+
+\begin{theorem}[Qualified integer thresholds]\label{thm:threshold}
+Define $I(y)=\min\{m\ge0:f_m\ge y\}$. For every fixed $J$ there is a constant $B_J$ such that, for all sufficiently large $y$,
+\begin{equation}\label{eq:ceilings}
+\left\lceil x_J(y)-B_Jx_J(y)^{-J-1}\right\rceil
+\le I(y)\le
+\left\lceil x_J(y)+B_Jx_J(y)^{-J-1}\right\rceil.
+\end{equation}
+The same enclosure holds with the finite approximation in \eqref{eq:inverseexp}, after increasing $B_J$. The A244407 threshold is $1+I(y)$, and the sufficiently large A244410 threshold is $I(y+1)$.
+\end{theorem}
+\begin{proof}
+From $F=H+RF$, $r_1=1$, and $h_m>0$, one obtains $f_m>f_{m-1}$ for $m\ge1$. The expansion \eqref{eq:dexp} implies
+$\log f_m-\log M_J(m)=\bigO(m^{-J-1})$.
+The logarithmic slope is bounded below on a real tail, so increasing $B_J$ converts this error into a real uncertainty interval around $x_J(y)$ as in \eqref{eq:ceilings}. More explicitly, integers just below its lower endpoint have $f_m<y$, while the first integer at or above its upper endpoint has $f_m\ge y$. The relevant integers have $m/x_J(y)\to1$; ones farther away are handled by monotonicity. This proves the ceiling enclosure. The inverse remainder in Theorem~\ref{thm:inverse} can be absorbed by a larger constant. The two sequence shifts follow from \eqref{eq:oeis}.
+\end{proof}
+This is an enclosure, not an unconditional formula $I(y)=\lceil\hbox{finite approximation}\rceil$. Equality is justified when the two enclosing ceilings coincide. No effective numerical $B_J$ or certified finite starting threshold is supplied. A reproducible numerical illustration at $y=f_{500}$ gives an order-five smooth inverse approximately $500+1.2339325093\times10^{-10}$. Its ceiling is $501$, whereas the exact threshold is $500$. This is why even a very small smooth inverse error must not be ignored near an integer jump.
+
+\section{Reproducibility and further questions}\label{sec:repro}
+The accompanying source package contains this \TeX{} file, its PDF, public Python programs, exact-generated fixtures, a source-provenance note, and source-preserving build instructions. It does not contain the working research notes or review correspondence. The exact code uses arbitrary-precision integers and explicit validation exceptions; its checks remain active under Python's \texttt{-O} option. Its finite supported limits are documented and enforced. The numerical engine uses finite analytic sums and finite jets with arbitrary-precision floating arithmetic, not interval arithmetic. It is a reproducibility aid and a diagnostic of normalization, not a certificate of displayed decimal accuracy.
+
+The checks compare several genuinely different finite descriptions: a bounded-outdegree multiset recurrence for the actual $T(N,k)$, excess Euler products for $F$ and $\Bcal$, and canonical trees with explicit vertex colors for orbit and pair counts. Exact-generated regression fixtures are labeled as such; matching them is not an external OEIS verification. Separately identified entry samples have public URLs and offsets. The mathematical proofs of uniformity, transfer errors, and limit laws do not depend on the extent of these finite tests.
+
+\subsection{Exact coefficient recurrences}
+For an independent way to produce the integer arrays, logarithmic differentiation of the P\'olya and Euler products gives
+\begin{align*}
+\sigma_j&=\sum_{d\mid j}d\,r_d,&
+(n-1)r_n&=\sum_{j=1}^{n-1}\sigma_jr_{n-j}\quad(n\ge2),\\
+\tau_j&=\sum_{d\mid j}d\,r_{d+1},&
+nh_n&=\sum_{j=1}^n\tau_jh_{n-j}\quad(n\ge1),\\
+f_n&=h_n+\sum_{j=1}^nr_jf_{n-j},&
+r_1&=h_0=f_0=1.
+\end{align*}
+The same Euler recurrence with $r_{d+2}$ in place of $r_{d+1}$ produces $J_2$. All divisions are exact integer divisions. Ordinary convolution and the positive form \eqref{eq:defectpositive} then give $b_r$.
+
+For comparison, let $a_{k,n}$ count rooted trees whose every outdegree is at most $k$. Its generating function $R_{\le k}$ satisfies the coefficientwise recursive identity
+\[
+R_{\le k}(z)=z\sum_{j=0}^k[u^j]
+\prod_{s\ge1}(1-uz^s)^{-a_{k,s}}.
+\]
+At size $n$, only component sizes below $n$ are used, so this equation independently determines the coefficients from $a_{k,1}=1$. The desired count is $T(N,k)=a_{k,N}-a_{k-1,N}$. It uses no stabilized-diagonal or two-hub formula. Explicitly colored canonical nested trees give a further finite check of the orbit interpretation.
+
+\subsection{Further questions}
+Several questions remain beyond the present scope.
+\begin{enumerate}
+\item The complete Goh--Schmutz text should be compared before making any priority claim. A bounded source search cannot prove absence of earlier results.
+\item A third exact sector would require accounting for three or more high vertices and their automorphism actions. A single boundary coefficient does not supply that sector.
+\item It would be useful to bridge the relatively rare high-degree regime and the logarithmic central window with estimates that retain both relative precision and orbit information.
+\item Effective, interval-certified values for the critical parameters and explicit inverse-enclosure constants would turn the current asymptotic threshold statements into certified finite algorithms.
+\item An optimal-truncation theory would be needed to resolve an exponentially small sector from an asymptotic approximation to the principal sector alone. The exact decomposition here avoids that requirement without claiming such a theory.
+\item Sharper depth local limits and rates for the joint decoration law may be accessible, but are not consequences of the moment proof alone.
+\end{enumerate}
+
+\begin{thebibliography}{99}
+\bibitem{oeis407} OEIS Foundation Inc., \emph{The On-Line Encyclopedia of Integer Sequences}, A244407, \url{https://oeis.org/A244407}. Definition and leading asymptotic attributed there to Vaclav Kotesovec, 11 July 2014; entry consulted 5 October 2026.
+\bibitem{oeis410} OEIS Foundation Inc., A244410, \url{https://oeis.org/A244410}. Definition, exceptional zeroth term, and leading asymptotic attributed there to Vaclav Kotesovec, 11 July 2014; consulted 5 October 2026.
+\bibitem{oeis372} OEIS Foundation Inc., A244372, \url{https://oeis.org/A244372}. Maximum-outdegree triangle; consulted 5 October 2026.
+\bibitem{otter} R. Otter, The number of trees, \emph{Annals of Mathematics} (2) \textbf{49} (1948), 583--599. \url{https://doi.org/10.2307/1969046}.
+\bibitem{schwenk} A. J. Schwenk, An asymptotic evaluation of the cycle index of a symmetric group, \emph{Discrete Mathematics} \textbf{18} (1977), 71--78. \url{https://doi.org/10.1016/0012-365X(77)90008-5}.
+\bibitem{dg} M. Drmota and B. Gittenberger, The distribution of nodes of given degree in random trees, \emph{Journal of Graph Theory} \textbf{31} (1999), 227--253. Author manuscript: \url{https://dmg.tuwien.ac.at/bgitten/preprints/nodedeg.pdf}. See especially equations (2.8)--(2.10); its file date is not the publication date.
+\bibitem{gittenberger} B. Gittenberger, Nodes of large degree in random trees and forests, \emph{Random Structures \& Algorithms} \textbf{28} (2006), 374--385. Author manuscript dated 2 August 2005: \url{https://www.dmg.tuwien.ac.at/bgitten/preprints/largedeg.pdf}.
+\bibitem{goh} W. M. Y. Goh and E. Schmutz, Unlabeled trees: Distribution of the maximum degree, \emph{Random Structures \& Algorithms} \textbf{5} (1994), 411--440. \url{https://doi.org/10.1002/rsa.3240050304}. Full-text comparison unresolved; author PDF URL: \url{https://www.math.drexel.edu/~eschmutz/PAPERS/ult2.pdf}.
+\bibitem{genitrini} A. Genitrini, Full asymptotic expansion for P\'olya structures, \emph{27th International Conference on Probabilistic, Combinatorial and Asymptotic Methods for the Analysis of Algorithms}, 2016. \url{https://arxiv.org/abs/1605.00837}.
+\bibitem{fs} P. Flajolet and R. Sedgewick, \emph{Analytic Combinatorics}, Cambridge University Press, 2009. Author-hosted text and materials: \url{https://ac.cs.princeton.edu/home/}. See the chapters on singularity analysis and recursive structures.
+\bibitem{corless} R. M. Corless, G. H. Gonnet, D. E. G. Hare, D. J. Jeffrey, and D. E. Knuth, On the Lambert W function, \emph{Advances in Computational Mathematics} \textbf{5} (1996), 329--359. \url{https://doi.org/10.1007/BF02124750}.
+\bibitem{bd} L. Bartholdi and P. Diaconis, An algorithm for uniform generation of unlabeled (P\'olya) trees, \emph{Forum of Mathematics, Sigma}, 2026. \url{https://doi.org/10.1017/fms.2026.10218}. Theorem 2.4 reproduces the central maximum-degree law with attribution to Goh--Schmutz; it cannot establish the scope of every lemma of the 1994 paper.
+\bibitem{forest} M. Bassan, S. Donderwinkel, and B. Kolesnik, To See the Forest for the Trees: On the Infinite Divisibility of Unlabeled Forests, \emph{Journal of Theoretical Probability}, 2026. \url{https://doi.org/10.1007/s10959-026-01513-5}. The component-count forest limit is distinct from the excess decoration studied here.
+\end{thebibliography}
+\end{document}

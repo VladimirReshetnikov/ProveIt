@@ -1,0 +1,139 @@
+Report215 source ledger
+Checked 4 October 2026. Links identify public source locations. Third-party
+PDFs are not redistributed. This is a bounded actual-source comparison,
+not a certification that no later or uninspected result exists.
+
+Exact sequence conventions
+--------------------------
+https://oeis.org/A003238 : a_n, n>=1; recurrence a_(n+1)=sum_(d|n)a_d.
+https://oeis.org/A003318 : S_n=sum_(1<=j<=n)a_j, n>=1.
+https://oeis.org/A018819 : beta_n, partitions of n into powers of two, n>=0.
+https://oeis.org/A000123 : Beta_n=sum_(j=0)^n beta_j=beta_(2n), n>=0.
+The code contains 207 displayed terms across these entries. Two optional
+48-term fixtures are expressly short transcriptions, not full b-files.
+
+Primary exact-target predecessor
+--------------------------------
+P. Erdos and J. H. Loxton, Some problems in partitio numerorum,
+J. Austral. Math. Soc. Series A 27 (1979), 319-331.
+https://doi.org/10.1017/S144678870001243X
+https://www.cambridge.org/core/services/aop-cambridge-core/content/view/0EF53ED5F6F9CCA0FD425E8D82B89C35/S144678870001243Xa.pdf/some-problems-in-partitio-numerorum.pdf
+Section 3 was read. Their q(n)=a_(n+1), Q(x)=S_(floor(x)+1).
+Lemma 1 gives positive binary comparison. Lemma 2 gives a uniform
+multiplicative approximation by positive binary-recurrence sequences.
+Theorem 3, printed page 324, concerns log Q(x), not log q(x), and already
+establishes the periodic summatory leading law. Lemma 4 and (14) supply
+sectorial periodic equivalents for fixed approximants. Printed page 328
+transfers to sums and explicitly leaves convergence of the cumulative
+binary ratio unresolved. These are direct result and method predecessors.
+
+Tree interpretation and earlier growth
+--------------------------------------
+G. Gati, F. Harary, R. W. Robinson, Line colored trees with extendable
+automorphisms, Acta Math. Sci. 2 (1982), 105-110.
+https://oeis.org/A003238/a003238.pdf
+Section 3, pp.109-110, gives the chain-partition citation bridge for the
+one-color tree case and repeats the 1979 periodic summatory formula. The
+other colored-tree square-root asymptotics concern different sequences.
+
+M. K. Gol'dberg, E. M. Livshits, On minimal universal trees, Math. Notes 4
+(1968), 713-717; Russian original Mat. Zametki 4.
+https://www.mathnet.ru/eng/mzm9458
+https://www.researchgate.net/profile/Emmanuel-Livshits-2/publication/226029337_On_minimal_universal_trees/links/54fe22500cf2672e223e9fe3/On-minimal-universal-trees.pdf
+The full Russian text and appendix were read. Theorem 2 identifies the
+uniform-tree partial sum and floor recurrence. The appendix establishes
+logarithmic leading growth; it does not state a periodic-amplitude,
+individual-coefficient, or all-fixed-order theorem.
+
+F. Harary, R. W. Robinson, The number of achiral trees, J. Reine Angew.
+Math. 278/279 (1975), 322-335.
+https://doi.org/10.1515/crll.1975.278-279.322
+https://oeis.org/A002995/a002995_1.pdf
+Full scan read with OCR and relevant pages visually inspected. Section 6,
+equation (36), is the exact planted generating equation with P(z)=z F(z).
+Other achiral-tree classes should not be identified with A003238. Page 334
+poses an asymptotic question; no present all-order theorem is supplied.
+
+Other inspected exact/nearby sources
+-----------------------------------
+F. Chung, D. Coppersmith, R. Graham, On trees containing all small trees
+(1981), pp.265-272.
+https://fanchung.ucsd.edu/ron/papers/81_04_small_trees.pdf
+All eight pages read by OCR. Gives logarithmic size through a log n log log n
+term with O(log n) error; uniform binary trees and binary-partition estimates
+are important neighbors, not the present full-order exact-target theorem.
+
+Kochkarev (2012), arXiv:1205.0344.
+https://arxiv.org/abs/1205.0344
+Full eight pages read: recurrence, tree interpretation, prime-increment
+characterization, and crude bounds; no inspected periodic all-order result.
+
+R. C. Read, 1974 letter and notes.
+https://oeis.org/A003318/a003318.pdf
+Four pages inspected: earlier reference, first terms, and calculation notes.
+
+Lebowitz-Lockard, arXiv:2504.03446v1 (2025).
+https://arxiv.org/html/2504.03446v1
+Full six-page preprint read. Principally concerns distinct chain partitions.
+Its background Theorem 5 writes the 1979 summatory formula for an individual
+count. The primary 1979 p.324 says log Q(x); the report follows the primary
+source. A final 2026 journal version was not inspected.
+
+Classical and general methods
+-----------------------------
+K. Mahler, On a special functional equation, J. London Math. Soc. 15
+(1940), 115-123.
+https://carmamaths.org/resources/mahler/docs/068.pdf
+General one-scale functional equation on pp.121-122 and partition
+specialization in Section 5 inspected. Important method prior; its exact
+hypotheses do not give the infinite all-integer dilation equation here.
+
+N. G. de Bruijn, On Mahler's partition problem, Proceedings of the Section
+of Sciences of the Koninklijke Nederlandse Akademie van Wetenschappen
+te Amsterdam 51(6) (1948), 659-669 (publisher metadata on the linked scan).
+https://pure.tue.nl/ws/portalfiles/portal/4342300/597482.pdf
+Introductions, formulas, hypotheses, and periodic correction/whole-circle
+issue on pp.659-660 inspected. Essential power-product prior. This ledger
+does not claim that every technical lemma was independently audited.
+
+P. Dumas, P. Flajolet, Asymptotique des recurrences mahleriennes: le cas
+cyclotomique, J. Theor. Nombres Bordeaux 8 (1996), 1-30.
+https://doi.org/10.5802/jtnb.154
+https://jtnb.centre-mersenne.org/item/10.5802/jtnb.154.pdf
+The theorem, synopsis, Sections 3-4, and conclusion were read; theorem
+visually checked. Complete analytic-periodic coefficient expansions are
+already given for its cyclotomic product family. Multiple saddles and
+negligibility are prior. Its finite Mahler/product hypotheses do not match
+the present all-integer dilation forcing.
+
+C. Banderier, H.-K. Hwang, V. Ravelomanana, V. Zacharovas, Analysis of an
+exhaustive search algorithm in random graphs and the n^(c log n)-asymptotics,
+SIAM J. Discrete Math. 28(1) (2014), 342-371.
+https://arxiv.org/abs/1207.6549
+https://doi.org/10.1137/130916357
+Theorem 2.1, Proposition 2.4, (2.18), Theorem 3.1, and Section 6 were checked.
+Their binomially weighted recurrence and inhomogeneous pantograph problem
+supply substantial inverse-log and periodic saddle method prior. A survey
+mention of universal trees is not an application of their theorem to A003238.
+Journal metadata independently checked at the arXiv record on 4 October 2026.
+Full original Pennington and Kato-McLeod scopes were not independently read.
+
+Actual repository-neighbor comparison
+-------------------------------------
+ProveIt, Thue_Morse_Frontier_Deductions.tex, actual complete source inspected:
+https://github.com/VladimirReshetnikov/ProveIt/blob/main/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/thue-morse/Thue_Morse_Frontier_Deductions/Thue_Morse_Frontier_Deductions.tex
+Read the exact-dyadic-completion/nonconstancy argument, uniform Mellin-order
+expansion, and all-order Lambert-W saddle theorem in the fetched source.
+They concern flat binary products, Fabius completion, and a Thue-Morse
+geometric product, with different objects and order parameters. No exact
+A003238/A003318 or uniform/universal-tree occurrence was found in that source.
+It is genuine method-level prior for dyadic analytic profiles, nonconstancy,
+and all-order saddle polynomials.
+
+Bounded conclusion
+------------------
+No inspected source supplied the exact two ratio nonconvergence statements,
+or the complete fixed-order individual and summatory expansion with inverse
+uncertainty for this recurrence. This absence finding is bounded by the
+listed reading. The periodic leading shape, binary-prefix idea, generic
+Mahler/saddle methods, and generic inversion method are not claimed as new.

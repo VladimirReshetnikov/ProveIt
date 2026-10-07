@@ -1,0 +1,52 @@
+{
+  "package": "Report212 reproducibility source and finite data",
+  "validation_date_utc": "2026-10-04",
+  "source_checkpoint_manifest_sha256": "7995d901ebf29fba97abe42df42c9c89025805a0806f318faa7f694ad5dc15fc",
+  "cpp_source_sha256": "93ec21265e949d9eb2b6502c37fc0193581f6d4278d7be533f71d8ccff008367",
+  "fixture": {
+    "max_k": 32,
+    "moment_records": 33,
+    "root_records": 528,
+    "bytes": 12785,
+    "origin": "Exact prefix of checkpoint C++ output, compared with fresh regeneration"
+  },
+  "verification_scope": {
+    "independent_direct_walk_enumeration_max_k": 8,
+    "independent_python_recurrence_max_k": 16,
+    "fresh_cpp_generation_max_k": 256,
+    "independently_regenerated_higher_rows_by_different_algorithm": false,
+    "optional512_supplied_but_not_run_for_this_package": true,
+    "full256_output_and_table_reference_comparisons_passed": true,
+    "normal_optimized_positive_output_equality": true,
+    "deliberate_corruption_cases_per_harness_run": 44,
+    "guard_assertion_ast_scan_passed": true,
+    "cli_failure_cases_per_harness_run": 15,
+    "duplicate_moment_root_and_json_keys_rejected": true,
+    "replay_requires_fresh_safe_output_directory": true,
+    "clean_copy_full256_replay_from_unrelated_working_directory_passed": true,
+    "clean_copy_default_quick_replay_passed": true,
+    "direct_cpp_cli_output_guards_passed_normal_and_optimized_harness": true
+  },
+  "run_environment": {
+    "python": "3.12.14",
+    "compiler": "g++ (Debian 14.2.0-19) 14.2.0",
+    "arithmetic": "C++ GMP integers; Python int and Fraction; Decimal display"
+  },
+  "observed_elapsed_seconds": {
+    "quick_fixture_replay": 17.396,
+    "full256_replay": 33.366
+  },
+  "distribution_policy": {
+    "included_inventory": "CODE_INVENTORY.txt",
+    "raw_complete256_rows_included": false,
+    "raw_complete512_rows_included": false,
+    "executables_or_third_party_papers_included": false
+  },
+  "notes": [
+    "No finite test proves the full relative equivalent.",
+    "Stored consistency checks and fresh same-algorithm generation are explicitly distinguished.",
+    "At k=16 the log-squared union/complement entries are unavailable because the two-hub formula threshold condition fails."
+  ],
+  "checkpoint_cpp_source_sha256": "6bd49c47619d90307153543ee74c8ad3fb8675eb1970f77ad8658dcc98b6654f",
+  "source_changes": "Exact recurrence and loop ordering unchanged; CLI integer validation and stream open/write/flush/close checks hardened."
+}
