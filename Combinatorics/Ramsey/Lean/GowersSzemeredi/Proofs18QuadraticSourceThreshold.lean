@@ -1,4 +1,4 @@
-import GowersSzemeredi.Proofs18QuadraticNumericalConstant
+import GowersSzemeredi.Proofs18QuadraticSharperEnvelope
 import GowersSzemeredi.Proofs18GeneralIteration
 import Mathlib.Analysis.Complex.ExponentialBounds
 
@@ -20,12 +20,11 @@ theorem section18_exp_le_two_rpow {x : Real} (hx : 0 ≤ x) :
 0 < delta <= 1/2, with no unspecified multiplicative constant. -/
 theorem quadraticIntervalClosedThreshold_le_explicit_tower {delta : Real}
     (hδ : 0 < delta) (hδhalf : delta ≤ 1 / 2) :
-    quadraticIntervalClosedThreshold delta ≤ (2 : Real) ^ ((2 : Real) ^ (delta⁻¹ ^ ((2 : Nat) ^ 323))) := by
+    quadraticIntervalClosedThreshold delta ≤ (2 : Real) ^ ((2 : Real) ^ (delta⁻¹ ^ ((2 : Nat) ^ 21))) := by
   let u : Real := delta⁻¹
-  let d : Nat := 2 ^ 322
-  let p : Nat := 3070857064
-  let q : Nat := d + 2 * p
-  let E : Nat := 2 ^ 323
+  let p : Nat := 12402
+  let q : Nat := 153 * p
+  let E : Nat := 2 ^ 21
   have hu : 2 ≤ u := by
     change 2 ≤ delta⁻¹
     rw [← one_div]
@@ -33,24 +32,14 @@ theorem quadraticIntervalClosedThreshold_le_explicit_tower {delta : Real}
     linarith
   have hu0 : 0 ≤ u := by linarith
   have hu1 : 1 ≤ u := by linarith
-  have hC : quadraticIterationLogBudgetConstant + 1 ≤ u ^ d :=
-    quadraticIterationLogBudgetConstant_upper.trans (pow_le_pow_left₀ (by norm_num) hu d)
-  have habsorb : (quadraticIterationLogBudgetConstant + 1) * (2 / delta) ^ p ≤ u ^ q := by
-    have hb : 2 / delta ≤ u ^ 2 := by
-      change 2 / delta ≤ (delta⁻¹) ^ 2
-      rw [div_eq_mul_inv]
-      nlinarith
-    calc
-      _ ≤ u ^ d * (u ^ 2) ^ p := mul_le_mul hC (pow_le_pow_left₀ (by positivity) hb p)
-        (by positivity) (by positivity)
-      _ = u ^ q := by rw [← pow_mul, ← pow_add]
-  have hsmall : 2 * p + 2 ≤ (2 : Nat) ^ 322 :=
-    (by norm_num [p] : 2 * p + 2 ≤ (2 : Nat) ^ 34).trans
-      (Nat.pow_le_pow_right (by norm_num) (by omega))
-  have hqE : q + 2 ≤ E := by
-    calc
-      q + 2 ≤ d + d := by change d + 2 * p + 2 ≤ d + d; change 2 * p + 2 ≤ d at hsmall; omega
-      _ = (2 : Nat) ^ 323 := by rw [show (323 : Nat) = 322 + 1 by omega, pow_succ]; dsimp [d]; omega
+  have hα := intervalQuadraticUniformityParameter_pos hδ
+  have hb : 2 / intervalQuadraticUniformityParameter delta ≤ u ^ (153 : Nat) :=
+    two_div_intervalQuadraticUniformityParameter_le_inv_pow hδ hδhalf
+  have habsorb : (2 / intervalQuadraticUniformityParameter delta) ^ p ≤ u ^ q := by
+    have h := pow_le_pow_left₀
+      (by positivity : (0 : Real) ≤ 2 / intervalQuadraticUniformityParameter delta) hb p
+    simpa only [← pow_mul] using h
+  have hqE : q + 2 ≤ E := by norm_num [q, p, E]
   have hx1 : 1 ≤ u ^ q := one_le_pow₀ hu1
   have hinner : 1 + 2 * u ^ q ≤ u ^ E := by
     calc
@@ -67,7 +56,7 @@ theorem quadraticIntervalClosedThreshold_le_explicit_tower {delta : Real}
       _ = (2 : Real) ^ (1 + 2 * u ^ q) := by
         rw [Real.rpow_add (by norm_num : (0 : Real) < 2), Real.rpow_one]
       _ ≤ _ := Real.rpow_le_rpow_of_exponent_le (by norm_num) hinner
-  apply (quadraticIntervalClosedThreshold_le_double_exp hδ (by linarith)).trans
+  apply (quadraticIntervalClosedThreshold_le_double_exp_alpha_sharp hδ (by linarith)).trans
   exact (Real.exp_le_exp.mpr (Real.exp_le_exp.mpr habsorb)).trans hexp
 
 /-- The simplified four-term bound is smaller than the paper's exact
@@ -85,13 +74,13 @@ theorem quadraticIntervalClosedThreshold_le_source {delta : Real}
   rw [← hsource]
   apply Real.rpow_le_rpow_of_exponent_le (by norm_num)
   apply Real.rpow_le_rpow_of_exponent_le (by norm_num)
-  exact pow_le_pow_right₀ hu (Nat.pow_le_pow_right (by norm_num) (by norm_num : 323 ≤ 8192))
+  exact pow_le_pow_right₀ hu (Nat.pow_le_pow_right (by norm_num) (by norm_num : 21 ≤ 8192))
 
 /-- The new four-term threshold is strictly smaller than the source's
 four-term threshold over the entire stated density range. -/
 theorem four_term_explicit_tower_lt_source {delta : Real}
     (hδ : 0 < delta) (hδhalf : delta ≤ 1 / 2) :
-    (2 : Real) ^ ((2 : Real) ^ (delta⁻¹ ^ ((2 : Nat) ^ 323))) <
+    (2 : Real) ^ ((2 : Real) ^ (delta⁻¹ ^ ((2 : Nat) ^ 21))) <
       szemerediThreshold delta 4 := by
   have hu : 1 < delta⁻¹ := by
     have hh : 2 ≤ delta⁻¹ := by
@@ -107,13 +96,13 @@ theorem four_term_explicit_tower_lt_source {delta : Real}
   rw [← hsource]
   apply Real.rpow_lt_rpow_of_exponent_lt (by norm_num)
   apply Real.rpow_lt_rpow_of_exponent_lt (by norm_num)
-  exact pow_lt_pow_right₀ hu (Nat.pow_lt_pow_right (by norm_num) (by norm_num : 323 < 8192))
+  exact pow_lt_pow_right₀ hu (Nat.pow_lt_pow_right (by norm_num) (by norm_num : 21 < 8192))
 
 /-- A smaller explicit threshold suffices in the four-term natural-interval
-case: the innermost exponent is 2^323 instead of the source's 2^8192. -/
+case: the innermost exponent is 2^21 instead of the source's 2^8192. -/
 theorem natural_four_term_explicit_tower
     (delta : Real) (N : Nat) (hδ : 0 < delta) (hδhalf : delta ≤ 1 / 2)
-    (hN : (2 : Real) ^ ((2 : Real) ^ (delta⁻¹ ^ ((2 : Nat) ^ 323))) ≤ N)
+    (hN : (2 : Real) ^ ((2 : Real) ^ (delta⁻¹ ^ ((2 : Nat) ^ 21))) ≤ N)
     (A : Finset Nat) (hA : A ⊆ Finset.Icc 1 N) (hcard : delta * N ≤ A.card) : HasNatAP A 4 :=
   hasNatAP_Icc_of_fin_interval
     (fun B hB => quadratic_interval_szemeredi_closed delta hδ (by linarith) N

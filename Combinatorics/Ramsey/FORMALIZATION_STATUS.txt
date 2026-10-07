@@ -5,19 +5,25 @@ Scope
   bound is claimed. Smaller four- and five-term thresholds are proved below.
   The source catalogue contains all 120 unique numbered theorem, lemma,
   proposition, and corollary headings in sz-thm-gowers-proof.tex.
-  There are 114 exact companion proofs and 6 open statements. 113 of the
-  companions are kernel-checked; Lemma 16.10's awaits the next full audit.
+  The current Lean catalogue has 114 kernel-checked exact companion proofs
+  and 6 open statements. This includes the repaired Lemma 16.10, whose explicit
+  cover conclusion is weaker than the printed unit-parameter claim.
+  It must not be counted as a proof of that printed claim. The full merged
+  development, including the repaired companion and the preserved printed
+  encoding counterexample, passes the axiom and catalogue audit.
   The JSON ledger records every statement, its TeX heading lines, its Lean
   definition, and related results. Conditional implications, restricted cases,
   and counterexamples are not counted as proofs of the full statement.
   Matching headings does not establish mathematical fidelity: several source
   statements and shared definitions have documented repairs or unresolved gaps.
+  Counts in the historical checkpoint sections below describe those earlier
+  checkpoints; the current catalogue count is stated here and in the ledger.
 
 Verification at this checkpoint
-  All 764 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 4,877 public Gowers theorems and found only propext,
-  Classical.choice, and Quot.sound. The audit independently counted 113 exact
-  companion proofs and 7 open catalogue statements from Lean's theorem types.
+  All 766 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 4,884 public Gowers theorems and found only propext,
+  Classical.choice, and Quot.sound. The audit independently counted 114 exact
+  companion proofs and 6 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
   errors remain in this build. The JSON ledger reproduces exactly and has no
   unmatched numbered TeX headings or unmatched catalogue entries.
@@ -25,12 +31,11 @@ Verification at this checkpoint
   the exact Theorems 1.2, 7.1, and 7.2 companions. Their dependencies pass
   the transitive axiom check. The earlier workstation-only validation of
   Theorem 1.2 is now confirmed by the full repository audit.
-  That audit predates the Lemma 16.10 repair below, and its 113/7 count is
-  the pre-repair count. For the repair, only Section16.lean (with the
-  renamed printed encoding and the repaired statement) and 61 of its
-  upstream modules were compiled locally. Proofs16Lemma10 and the retargeted
-  counterexample have not yet been kernel-checked; full verification is
-  deferred to the next complete audit run.
+  This audit also includes the incoming Lemma 16.10 repair. The first
+  merged audit found a binder-introduction error in Proofs16Lemma10; its
+  proof now reduces the local let definitions before introducing the two
+  cover hypotheses. The repaired statement and all quantitative bounds
+  are unchanged. The full combined build and axiom scan now pass.
 
 All-scale integer geometry for Section 13
   Proofs07AllScalesStepSpan retains a common positive integer step ratio
@@ -2000,7 +2005,7 @@ Finite-alphabet bounds for the Section 16 cover obstruction
   has mass at most 5/16 of the parent under the explicit balance and width
   conditions. All four modules pass the full axiom audit.
   This proves the deterministic counting part of source 50's proposed
-  counterexample to the current lemma_16_10 encoding. Balanced-word
+  counterexample to the printed two-premise encoding. Balanced-word
   existence, packaged-premise witnesses, and the final negation are now
   proved below. No source-lemma count changes.
 
@@ -2050,9 +2055,10 @@ Finite-valued functions failing the target multiple-linearity conclusion
   This supplies the negative conclusion for the complete encoding
   counterexample proved below.
 
-Formal counterexample to the current two-premise Lemma 16.10 encoding
+Formal counterexample to the printed two-premise Lemma 16.10 encoding
   Proofs16PackagedPremisesCounterexample proves the literal negation of
-  the unchanged lemma_16_10 predicate. The witness has k=theta=gamma=1,
+  lemma_16_10_printed_unit_encoding, the original two-premise predicate
+  retained under a new name. The witness has k=theta=gamma=1,
   a sufficiently large prime modulus, full input and sidelength domains,
   every cube selected, and zero anchor. Proofs16FullGoodDomain verifies
   that the named good domain is full and the all-ones translated map is
@@ -2068,9 +2074,9 @@ Formal counterexample to the current two-premise Lemma 16.10 encoding
   provided by the balanced-word construction. The target conclusion is
   impossible by the checked 5/16-versus-1/2 mass contradiction.
   All six modules pass the full axiom audit. This is a disproof of the
-  current abstraction, not of the paper's lemma with all its upstream
-  structural assumptions. The numbered result remains open: it needs
-  a faithful contextual repair and a positive proof. The existing global
+  two-premise abstraction, not of the paper's lemma with all its upstream
+  structural assumptions. The weaker repaired catalogue result is proved
+  below; it does not establish the printed unit-parameter claim. The existing global
   affine lift retains explicit graph counts and widths without the false
   closing comparison.
 
@@ -2608,7 +2614,7 @@ Historical conditional induction from universal contextual lifting
   contextual lifting statements. The proof combines Lemma 16.4, compatible
   common-base data, exact graph transport and mass budget, finite extraction,
   and the proved zero- and one-dimensional bases. It never invokes the
-  refuted two-premise lemma_16_10 predicate. Its universal premise is now
+  refuted two-premise lemma_16_10_printed_unit_encoding predicate. Its universal premise is now
   refuted for every k>=1, so these conditional implications do not provide
   a route to the exact theorem. Use the selected-domain reduction instead;
   its remaining obligation is not refuted by the slab examples.
@@ -2711,9 +2717,16 @@ General density iteration from an explicit discrepancy input
 Exact source threshold and a smaller explicit bound for four terms
   Proofs18QuadraticNumericalConstant bounds the fixed quadratic iteration
   prefactor by 2^(2^322), using only the degree-one and degree-two local
-  refinement constants. Proofs18QuadraticSourceThreshold then proves
-  quadraticIntervalClosedThreshold(delta) <= 2^(2^((delta^-1)^(2^323)))
-  for 0<delta<=1/2. The natural-interval theorem with this threshold follows
+  refinement constants. Proofs18QuadraticSharperEnvelope bounds the
+  logarithmic iteration budget by exp((2/alpha)^324) and the iteration
+  base by exp((2/alpha)^16). The same full density iteration consequently
+  satisfies exp(exp((2/alpha)^12402)), or exp(exp((2/delta)^1500642)),
+  uniformly for 0<delta<=1, with no unspecified prefactor. On delta<=1/2,
+  the exact uniformity substitution also gives 2/alpha<=(delta^-1)^153.
+  Proofs18QuadraticSourceThreshold then proves
+  quadraticIntervalClosedThreshold(delta) <= 2^(2^((delta^-1)^(2^21)))
+  for 0<delta<=1/2, improving the previously checked exponent 2^323.
+  The natural-interval theorem with this threshold follows
   from the completed quadratic density iteration and exact interval transfer.
   This threshold is proved strictly smaller than szemerediThreshold(delta,4),
   whose corresponding innermost exponent is 2^8192. In particular,
