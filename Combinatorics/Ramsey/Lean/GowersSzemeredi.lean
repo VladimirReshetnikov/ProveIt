@@ -236,6 +236,10 @@ import GowersSzemeredi.Proofs18QuadraticPrimeModel
 import GowersSzemeredi.Proofs18LinearFourierObstruction
 import GowersSzemeredi.Proofs18QuadraticCorrelation
 
+import GowersSzemeredi.Proofs18PartitionFourierBias
+import GowersSzemeredi.Proofs05VariablePhaseRefinement
+import GowersSzemeredi.Proofs18TwistedPartitionDiscrepancy
+
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 
