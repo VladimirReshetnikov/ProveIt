@@ -12,8 +12,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 271 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 2,455 public Gowers theorems and found only propext,
+  All 275 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 2,502 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 101 exact
   companion proofs and 19 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -826,9 +826,32 @@ Relative balance, interval models, and exceptional-cell selection
   a cell with positive discrepancy >=(beta/8)*its size and size >=beta*N/(8M).
   If every nonexceptional cell is contained in S or disjoint from S, the
   selected cell lies inside S and has relative density at least delta+beta/8.
-  Constructing an interval partition with this exceptional-mass bound, and
-  establishing the relative-balanced uniform stopping case, remain necessary
-  before the density increment can be iterated on integer intervals.
+  The next checkpoint constructs the required geometric refinement. The
+  relative-balanced uniform stopping case remains necessary for iteration.
+
+Boundary refinement and a progression inside the original interval
+  The Section 5 local and efficient refinement interfaces now retain the
+  polynomial image diameter. With the identity polynomial, each cell has
+  diameter <=epsilon*N, and the refined number of cells is at most
+    C_1(4*pi*epsilon)*M^(1/16)*N^(15/16).
+  Refinement preserves the lower bound on total cell-sum discrepancy.
+  Proofs18IntervalBoundaryBand bounds the natural boundary bands by 4*d+2
+  and proves that every diameter-d cell crossing [0,L) lies in these bands.
+  Thus cells crossing the interval have total mass at most
+    4*floor(epsilon*N)+2.
+  At epsilon=tau/64 and 32<=tau*N this is <=tau*N/8, so the robust selection
+  theorem applies. Proofs18IntervalQuadraticIncrement gives a proper modular
+  progression P entirely inside [0,L), with original relative density
+  increased by tau/8, and size at least
+    tau/(8*C_1(4*pi*tau/64))*N^(sigma/16).
+  Here tau and sigma are the explicit quadratic discrepancy parameters from
+  the preceding checkpoints, so sigma/16=2^-30*(alpha/2)^24718. The starting
+  analytic threshold is the same explicit exponential threshold. No loss
+  from replacing the original density by its density in the modulus occurs.
+  This proves a genuine progression increment, not merely an increment on
+  an arbitrary intersection. Transport to an ordinary progression, the
+  relative-balanced uniform stopping case, and quantitative iteration still
+  have to be assembled before claiming Theorem 8.2 or any headline bound.
 
 Reproducible checks (from repository root)
   python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.Audit

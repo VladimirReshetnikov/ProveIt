@@ -253,6 +253,11 @@ import GowersSzemeredi.Proofs18RelativeQuadraticIncrement
 import GowersSzemeredi.Proofs18RelativeIntervalModel
 import GowersSzemeredi.Proofs18ExceptionalCellSelection
 
+import GowersSzemeredi.Proofs18BoundaryRefinement
+import GowersSzemeredi.Proofs18IntervalBoundaryBand
+import GowersSzemeredi.Proofs18IntervalBoundarySelection
+import GowersSzemeredi.Proofs18IntervalQuadraticIncrement
+
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 
