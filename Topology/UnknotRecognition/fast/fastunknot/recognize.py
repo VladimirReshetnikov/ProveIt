@@ -1,23 +1,22 @@
-"""The recognition pipeline (version 0.2).
+"""Exact recognition pipeline (version 0.3).
 
-1. validate the diagram (one component, spherical rotation system);
-2. crossing-decreasing Reidemeister I/II moves (polynomial);
-3. descending-diagram test (linear; sufficient for UNKNOT);
-4. split along visible two-edge cuts; a connected sum is trivial exactly when
-   every summand is, so the summands are examined separately, smallest first,
-   and the first knotted summand decides;
-   for each summand:
-5. Alexander minor in a prime field at t = -1 and t = 2 (cubic; KNOTTED or
-   inconclusive);
-6. Kauffman bracket at A = 2 in a prime field by a width-bounded scan
-   (KNOTTED, inconclusive, or skipped when its budget is exhausted);
-7. exact Alexander polynomial over Z[t] (KNOTTED or inconclusive);
-8. reduced Khovanov rank over F2 by scanning (exact; UNKNOT iff rank 1).
+Input is a validated classical one-component Diagram. The command-line loader
+performs that validation; constructing Diagram(pd) directly is a validity promise.
 
-Every verdict is exact.  Filters 5-7 can only say KNOTTED; agreement with the
-unknot's value is never evidence of triviality.  Optional ceilings turn a
-too-expensive step 8 into UNKNOWN, never into a knot verdict.  Worst-case
-running time is exponential in the crossing number; it is not quasi-polynomial.
+The default first attempts a linear signed Seifert-graph certificate. When
+inconclusive, it follows the established pipeline: Reidemeister I/II reduction,
+descending test, visible connected-sum factorization, modular Alexander/Jones
+obstructions, optional exact Alexander, late Reidemeister III, and F2 Khovanov.
+
+The standard Khovanov scanner remains the default. Optional shared, saturated,
+and euler backends compress literal direct summands; saturated modes preserve
+only a capped rank or a certified lower bound, as named in their evidence.
+Filters never interpret agreement with the unknot invariant as triviality.
+Object/time exhaustion in the backend yields UNKNOWN. An exhausted optional
+Euler inference budget falls back to complete saturated scanning.
+
+The implementation retains an exponential worst-case upper bound. The new
+parameterized theorem is not a general quasi-polynomial guarantee.
 """
 from __future__ import annotations
 
@@ -32,6 +31,7 @@ from .factor import convolve, visible_factors
 from .filters import FilterLimit, alexander_obstruction, jones_obstruction
 from .ordering import best_scan_order
 from .scan import ScanLimit, khovanov_rank
+from .seifert import seifert_certificate
 from .simplify import descending_start, simplify
 
 
@@ -69,7 +69,7 @@ class Result:
             "input_crossings": self.input_crossings, "reduced_crossings": self.reduced_crossings,
             "seconds": round(self.seconds, 6), "evidence": self.evidence,
             "quasipolynomial_guarantee": False,
-            "worst_case": "2^O(n); filters are polynomial or width-bounded, the Khovanov scan is not",
+            "worst_case": "2^O(n) upper bound; no general quasi-polynomial guarantee for the Khovanov backends",
         }
 
 
@@ -162,17 +162,44 @@ def _decide_prime_looking(diagram: Diagram, evidence: dict, *, use_modular, use_
                 return "UNKNOT", "descending-diagram"
             diagram, order = reduced, None
     remaining = None if deadline is None else max(0.0, deadline - monotonic())
-    kh = khovanov_rank(diagram.pd, order=order, max_objects=max_objects, seconds=remaining,
-                       check_d_squared=check_d_squared, **scan_options)
+    backend = scan_options["backend"]
+    if backend == "euler":
+        from .euler_scan import euler_compressed_khovanov_decide
+        kh = euler_compressed_khovanov_decide(
+            diagram.pd, order=order, max_objects=max_objects, seconds=remaining,
+            check_d_squared=check_d_squared, euler_max_states=scan_options["euler_max_states"])
+        evidence["khovanov"] = {"field": "F2", **kh}
+        method = "component-euler-bound" if kh["method"] == "component-euler" else "khovanov-component-sharing-saturated"
+        return kh["status"], method
+    if backend == "saturated":
+        from .component_scan import compressed_khovanov_decide
+        kh = compressed_khovanov_decide(diagram.pd, order=order, max_objects=max_objects,
+                                       seconds=remaining, check_d_squared=check_d_squared)
+        evidence["khovanov"] = {"field": "F2", "rank_capped": kh["rank_capped"],
+                                "rank_cap": 3, "scan_stats": kh["stats"],
+                                "scan_order": kh["order"], "backend": kh["backend"]}
+        return kh["status"], "khovanov-component-sharing-saturated"
+    if backend == "shared":
+        from .component_scan import compressed_khovanov_rank
+        kh = compressed_khovanov_rank(diagram.pd, order=order, max_objects=max_objects,
+                                     seconds=remaining, check_d_squared=check_d_squared)
+    else:
+        standard_options = {key: value for key, value in scan_options.items()
+                            if key not in ("backend", "euler_max_states")}
+        kh = khovanov_rank(diagram.pd, order=order, max_objects=max_objects, seconds=remaining,
+                           check_d_squared=check_d_squared, **standard_options)
     evidence["khovanov"] = {"field": "F2", "unreduced_rank": kh["rank"], "reduced_rank": kh["reduced_rank"],
                             "unreduced_rank_by_cube_degree": kh["by_degree"], "scan_stats": kh["stats"],
                             "scan_order": kh["order"]}
     if "race_winner" in kh:
         evidence["khovanov"]["race_winner"] = kh["race_winner"]
-    return ("UNKNOT" if kh["reduced_rank"] == 1 else "KNOTTED"), "reduced-khovanov-F2-scan"
+    method = "reduced-khovanov-F2-shared" if backend == "shared" else "reduced-khovanov-F2-scan"
+    return ("UNKNOT" if kh["reduced_rank"] == 1 else "KNOTTED"), method
 
 
 def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: bool = True,
+              use_seifert: bool = True, backend: str = "standard",
+              euler_max_states: int | None = 4096,
               use_factorization: bool = True, use_modular: bool = True, use_jones: bool = True,
               use_alexander: bool = True, use_exact_alexander: bool | None = None, use_r3: bool = True,
               jones_max_states: int | None = 4096,
@@ -181,9 +208,21 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
               pivot: str = "minfill", algebra: str = "bits", tail: int = 0,
               race: int = 1, race_after: float = 1.0) -> Result:
     start = monotonic()
+    if backend not in ("standard", "shared", "saturated", "euler"):
+        raise ValueError("backend must be standard, shared, saturated, or euler")
+    if euler_max_states is not None and (type(euler_max_states) is not int or euler_max_states < 0):
+        raise ValueError("euler_max_states must be a nonnegative integer or None")
+    if backend != "standard" and (pivot != "minfill" or algebra != "bits" or tail != 0 or race != 1):
+        raise ValueError("shared backends require minfill pivots, bits algebra, tail=0, and race=1")
     deadline = None if seconds is None else start + seconds
     original = diagram
     evidence: dict[str, Any] = {}
+    if use_seifert:
+        certificate = seifert_certificate(diagram)
+        if certificate is not None:
+            evidence["seifert_certificate"] = certificate
+            return Result(certificate["status"], certificate["criterion"], diagram.crossings,
+                          diagram.crossings, monotonic() - start, evidence)
     if use_reduction:
         diagram, trace = simplify(diagram, r3=False)      # Reidemeister III waits until the filters have failed
         evidence["reidemeister_trace"] = [m.to_json() for m in trace]
@@ -205,7 +244,9 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
                    use_descending=use_descending,
                    jones_max_states=jones_max_states, jones_max_transitions=jones_max_transitions,
                    max_objects=max_objects, deadline=deadline, check_d_squared=check_d_squared,
-                   scan_options=dict(pivot=pivot, algebra=algebra, tail=tail, race=race, race_after=race_after))
+                   scan_options=dict(pivot=pivot, algebra=algebra, tail=tail, race=race,
+                                     race_after=race_after, backend=backend,
+                                     euler_max_states=euler_max_states))
     method = "reduced-khovanov-F2-scan"
     try:
         if len(factors) == 1:

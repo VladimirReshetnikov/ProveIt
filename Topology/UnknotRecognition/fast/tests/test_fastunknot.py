@@ -18,6 +18,13 @@ from fastunknot.simplify import apply_move, descending_start, legal_moves, simpl
 
 EXAMPLES = os.path.join(ROOT, "examples")
 
+# Keep the historical pipeline tests focused on the inherited configuration.
+# The default 0.3 front end is exercised separately by test_integration.py.
+_baseline_recognize = recognize
+def recognize(diagram, **options):
+    options.setdefault("use_seifert", False)
+    return _baseline_recognize(diagram, **options)
+
 
 def load(name):
     with open(os.path.join(EXAMPLES, name), encoding="utf-8") as handle:

@@ -12,7 +12,7 @@ modification times.
 | `04/` | `unknot_recognition_partial.zip` | `unknot` | Khovanov cube, Knot Atlas fixtures | dual-4-connectivity pattern test, potential | 62 |
 | `05/` | `unknot_recognition_partial_implementation (1).zip` | `unknot_recognition` | Reidemeister I/II traces, determinant, Khovanov cube | bond-enumeration pattern test, simplicial normal coordinates, pattern complexity | 58 |
 | `06/` | `unknot-recognition-implementation.zip` | `unknot` | Khovanov cube, 11-crossing fixtures, report verifier | bond-enumeration pattern test | 45 |
-| `07/` | `unknot_structural_compression.zip` | `fastunknot` 0.3.0 (`07/fast/`) | signed-Seifert-graph certificate stage, exact component-sharing Khovanov backend | Euler/component scans | not run |
+| `07/` | `unknot_structural_compression.zip` | `fastunknot` 0.3.0 (`07/fast/`) | signed-Seifert-graph certificate stage, exact component-sharing Khovanov backend | Euler/component scans | 69 integrated tests pass |
 
 Archives `01/`–`06/` each contain a README, a LaTeX report with PDF under
 `docs/`, examples, recorded results, and a standard-library-only Python package.
@@ -26,9 +26,12 @@ rather than being an independent implementation. It contains:
   `4e6fe879e`);
 - `integration.patch`, benchmarks and provenance.
 
-The patch is **not applied** to `../fast/`. By Vladimir's direction, reports on
-this topic are placed as delivered, without test runs or review. Their recorded
-results are the authors' own and are unchecked here.
+The archive was originally placed as delivered, without review. On 7 October
+2026, the continuing algorithm-improvement task reviewed and integrated its
+patch into `../fast/`; all 69 integrated tests passed on CPython 3.13.14. The
+archive remains unchanged. The authors' archived timings remain separate from
+the new local measurements in `../fast/results/structural_integration_20261007.json`.
+See `../synthesis/structural.tex` for the integration analysis and proof limits.
 
 ## Test status (last observed 18 September 2026)
 

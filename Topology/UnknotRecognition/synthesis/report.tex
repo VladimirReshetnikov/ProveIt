@@ -24,7 +24,7 @@
 \title{Six attempts at quasi-polynomial unknot recognition:\\
 synthesis, cross-validation, and a faster exact recognizer}
 \author{Synthesis report prepared with Claude Code}
-\date{17--18 September 2026}
+\date{17--18 September 2026; updated 7 October 2026}
 
 \begin{document}
 \maketitle
@@ -55,7 +55,10 @@ input that timed out at 600 seconds now takes under a second, and recognition
 of the Conway knot went from 59 ms to 1.3 ms), recorded a per-idea ablation,
 and wrote a Rust implementation that is faster again by an order of
 magnitude. The $\qp$ target remains open; Section \ref{sec:missing} states
-precisely what is missing, and nothing in the accelerations touches it.
+precisely what is missing. The October continuation integrates report 07: a
+linear structural certificate and exact component sharing, including a
+conditional finite-type complexity bound. Section~\ref{sec:structural}
+separates this bound from the unresolved general target.
 \end{abstract}
 
 \tableofcontents
@@ -575,6 +578,7 @@ to repeat, it is not quasi-polynomial.
 \input{acceleration.tex}
 \input{round3.tex}
 \input{bend.tex}
+\input{structural.tex}
 
 \section{Assessment and recommendations}
 
@@ -610,7 +614,10 @@ which would make the empirical behaviour subexponential even if unproved.
 (4) Use the archives' exact recognizers as oracles for any future geometric
 implementation, as several of their reports suggest.
 
-\begin{thebibliography}{9}\small
+\begin{thebibliography}{99}
+\bibitem{abe} Tetsuya Abe, \emph{The Rasmussen invariant of a homogeneous knot}, Proc. Amer. Math. Soc. 139 (2011), 2647--2656. \url{https://arxiv.org/abs/1003.5392}.
+\bibitem{lobb} Andrew Lobb, \emph{Computable bounds for Rasmussen's concordance invariant}, Compositio Math. 147 (2011), 661--668. \url{https://arxiv.org/abs/0908.2745}.
+\bibitem{structural07} Report 07, \emph{Unknot recognition: structural certificates and compressed complexes}, delivered 7 October 2026; \code{reports/07/paper/unknot\_structural\_compression.tex}.\small
 \bibitem{slides} Marc Lackenby, \emph{Unknot recognition in quasi-polynomial time}, slides, February 2021, 109 pages, supplied as \code{docs/quasipolynomial-talk.pdf}.
 \bibitem{lackenby2026} Marc Lackenby, \emph{Incompressible surfaces, hierarchies and unknot recognition}, arXiv:2607.23350v1, 25 July 2026, 54 pages. \url{https://arxiv.org/abs/2607.23350}.
 \bibitem{km} P.~B. Kronheimer and T.~S. Mrowka, \emph{Khovanov homology is an unknot-detector}, Publ.\ Math.\ IH\'ES 113 (2011), 97--208.

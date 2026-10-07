@@ -30,7 +30,17 @@ The synthesized report on the six archives and on the new recognizer.
     for the review; the preprint's source is in `../docs/arXiv-2607.23350v1/`
     (Section 9, "The number of steps", is the relevant part).
 
-## Experiment status (last observed 18 September 2026)
+## October 2026 continuation
+
+`structural.tex` maintains the theory and integration review of research report 07.
+The Python implementation now includes its certificates and shared scanners;
+the delivered research archive is unchanged. Local validation: 69 integrated
+tests passed on CPython 3.13.14. Reproduce paired recognition measurements and
+exact scanner checks with `../fast/benchmark_structural.py`; local data are in
+`../fast/results/structural_integration_20261007.json`. These measurements are
+separate from the authors' archive data and from end-to-end CLI timings.
+
+## Historical experiment status (18 September 2026)
 
 Read this before rerunning anything: two of the scripts take hours, and one
 of them was deliberately stopped.

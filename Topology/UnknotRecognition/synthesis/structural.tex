@@ -1,0 +1,205 @@
+\section{Structural certificates and compressed complexes: October continuation}
+\label{sec:structural}
+
+\subsection{Intake, implementation, and scope}
+Report 07~\cite{structural07} extends the Python recognizer at a pinned
+repository snapshot. Its patch was reviewed and integrated on 7 October 2026
+as version 0.3.0. The delivered archive stays unchanged; this section is the
+maintained account of the implementation. The Rust implementation still uses
+the earlier pipeline. The complete integrated Python suite passes all 69
+tests on CPython 3.13.14, including randomized comparisons with the inherited
+scanner, generic set algebra, independent cube calculations in the inherited
+suite, certificate replay, and stagewise checks that $d^2=0$.
+These checks support the implementation; they are not formal proofs of its
+algebra or of the topological theorems it imports.
+
+The new default first tries a signed Seifert-graph certificate. If it is
+inconclusive, the previous pipeline runs. The ordinary scanner remains the
+default backend, because compression adds overhead on complexes that do not
+split. Three optional backends provide exact component sharing, saturated
+decision weights, and early Euler obstructions. They preserve the distinction
+between a proved decision and resource exhaustion. No universal
+quasi-polynomial running-time guarantee follows from this integration.
+
+\subsection{A linear structural decision}
+Let $D$ be a validated, oriented, one-component classical diagram, with $n$
+crossings, writhe $r$, and $s$ Seifert circles. The Seifert graph has one
+vertex per circle and one signed edge per crossing. Let $c_+$ and $c_-$ count
+the connected components of its positive and negative spanning subgraphs,
+including isolated vertices in both counts. Define
+\[
+ g_D=(n-s+1)/2,\qquad \delta=s+1-c_+-c_-.
+\]
+The Seifert surface consists of $s$ discs and $n$ bands and has one boundary
+component; its Euler characteristic is $s-n=1-2g_D$.
+Abe's criterion identifies $\delta=0$ with homogeneity. For a homogeneous
+diagram, the canonical Seifert surface realizes knot genus
+\cite[Theorems 2.3 and 3.4]{abe}. The Kawamura--Lobb bounds give
+\[
+ r-s+2c_+-1\ \le\ s(K)\ \le\ r+s-2c_-+1.
+\]
+Here $s(K)$ is Rasmussen's invariant, distinct from the circle count $s$;
+the upper bound follows by applying the lower bound to the mirror
+\cite{lobb,abe}. The interval width is $2\delta$.
+
+Consequently the implementation certifies the unknot when $g_D=0$, a
+nontrivial knot when $\delta=0$ and $g_D>0$, and a nontrivial knot when the
+interval excludes zero. The first condition gives a spanning disc. The
+second gives positive knot genus. The third uses $s(U)=0$. In every other
+case the stage is inconclusive. In particular, the interval $[0,0]$ alone
+does not certify triviality: the figure-eight knot is a homogeneous
+positive-genus example with that interval.
+
+The implementation follows the oriented smoothing and edge-pairing
+involutions to label circles, then traverses each signed subgraph. This
+costs $O(n)$ word operations after input validation and normalization.
+Each word holds an $O(\log n)$-bit index; this statement does not include
+reading arbitrarily long external edge labels. The separate certificate
+verifier rebuilds orientation from the PD code and uses union by size with
+path compression, costing $O(n\alpha(n))$ word operations. It checks all
+counts and the decision criterion rather than trusting cached production
+data. Both implementations share the classical one-component input promise
+and the cited topology.
+
+\subsection{What exact sharing represents}
+At each scan frontier the inherited Bar--Natan complex has matching objects
+and differential entries in the finite dot-mask algebra over $\F$.
+Connect two objects whenever a differential entry between them is nonzero.
+The connected components of this graph are literal direct summands.
+The shared scanner stores
+\[
+ C\simeq\bigoplus_a\bigoplus_h T_a[h]^{\oplus p_{a,h}},
+ \qquad p_a(z)=\sum_h p_{a,h}z^h\in\mathbb N[z].
+\]
+A template $T_a$ records a complete component with its minimum homological
+degree subtracted. Its key includes the ordered matching identifiers,
+relative degrees, and every differential target and coefficient. Equality
+of complete keys exhibits a chain isomorphism. A hash collision cannot
+identify unequal keys; a missed isomorphism merely loses a saving.
+Multiplicity coefficients are nonnegative integers, never scalars in $\F$.
+Two identical isolated generators have rank two, not rank zero.
+
+Crossing extension is additive and commutes with shifts. Unit elimination
+preserves direct sums: the Schur-complement correction
+$\gamma\phi^{-1}\eta$ remains in the pivot's parent block. Thus it suffices
+to extend and contract one representative, split its resulting differential
+graph, and attach each child's normalization shift to its parent's weight.
+Merging equal child keys adds their shifted weight polynomials. Induction
+proves preservation of the represented chain-homotopy type. At closure all
+nonzero differential entries are units and have been eliminated; summing
+weights gives the exact unreduced rank and its raw homological-degree
+counts. The inherited characteristic-two splitting yields the reduced rank
+by dividing by two. The method does not output a homology basis, quantum
+grading, or integral torsion.
+
+\subsection{Safe decision compression and early obstructions}
+The map $q(m)=\min(3,m)$ is a semiring homomorphism from nonnegative integer
+bookkeeping to saturated addition and multiplication. Evaluating each
+$p_a$ at one and applying $q$ therefore preserves the final total rank
+capped at three. It discards absolute grading but does not modify the
+differential algebra. For a validated knot, unreduced $\F$ rank two
+identifies the unknot, while a capped rank of three identifies a nontrivial
+knot, using the inherited rank criterion and~\cite{km}. No decision is
+made from large multiplicities at an incomplete scan stage.
+
+An early decision needs information about the actual remaining crossings.
+Let $F_i$ extend through that suffix and close the diagram. The completed
+component bound is
+\[
+ B_i=\sum_a p_a(1)\,|\chi(F_i(T_a))|\le\dim_{\F}H(C).
+\]
+This follows by additivity of homology and $|\chi(X)|\le\dim H(X)$ for
+each completed summand. When a component splits, the triangle inequality
+implies $B_i\le B_{i+1}$; at complete closure the bound equals the rank.
+The multiplicity uses $p_a(1)$, not $p_a(-1)$, since shifts do not change
+the absolute Euler characteristic of an individual copy.
+
+The memoized suffix functional on a matching is
+\[
+ E_i(m)=2^{\ell_0}E_{i+1}(m_0)-2^{\ell_1}E_{i+1}(m_1),
+ \qquad E_n(\varnothing)=1,
+\]
+where smoothing $j$ creates $\ell_j$ closed circles and matching $m_j$.
+The terminal empty object here is the monoidal unit; the separate empty
+input-PD convention returns one unknot of rank two. A component's completed
+Euler value is $\sum_v(-1)^{h_v}E_i(m_v)$. Signed intermediate values must
+remain exact: saturating them before subtraction would invalidate the
+bound. Only the final nonnegative bound and multiplicities may be capped.
+The implementation uses an explicit dependency stack, avoiding recursion
+depth failures on long narrow diagrams.
+
+The default Euler budget registers at most 4096 suffix states. Exhaustion
+disables this optional inference and continues the saturated scanner.
+Object or time exhaustion instead propagates to an \code{UNKNOWN} result.
+An early result exposes \code{rank\_lower\_bound\_capped}; a completed
+decision exposes \code{rank\_capped}. Neither is reported as an exact rank
+when it equals three.
+
+\subsection{The conditional complexity statement}
+Fix the complete scan order. Let $w$ bound every frontier, including those
+in an unvisited suffix after an early decision, and let $b$ bound the size
+of every differential component after elimination and before sharing.
+These are execution parameters, not knot invariants or conjecturally
+optimal decompositions. Write $M(0)=1$ and $M(w)=(w-1)!!$ for positive even
+$w$. The number of complete template keys of size at most $b$ is at most
+\[
+ K(b,w)=\sum_{t=1}^{b}t^t M(w)^t 2^{t^2 2^{w/2}}.
+\]
+For a numbered connected component with $t$ vertices, relative degrees
+lie in $\{0,\ldots,t-1\}$, giving $t^t$ assignments. There are at most
+$M(w)$ boundary matchings per vertex. A morphism has at most $2^{w/2}$
+coefficient bits, so it has up to $2^{2^{w/2}}$ possible values. Allowing
+all $t^2$ entries gives the last factor. Confusing coefficient bits with
+the number of morphisms would incorrectly remove an exponential here.
+
+At a compressed stage there are at most $bK(b,w)$ physical objects. A
+crossing creates at most eight objects per parent before elimination:
+each of its two smoothings can create at most two circles. Matrix
+elimination is polynomial in physical size; coefficient operations cost
+$2^{O(w)}$ times polynomial factors. After $j$ crossings the virtual
+expanded state has at most $8^j$ objects, so each multiplicity coefficient
+has $O(j)$ bits and each exact weight has at most $j+1$ degree positions.
+The conservative bit bound, including exact multiplicity arithmetic, is
+\[
+ T(n;b,w)\le n^{O(1)}(bK(b,w))^{O(1)}2^{O(w)}.
+\]
+The suffix Euler table has at most $(n+1)M(w)$ states with $O(n)$-bit
+values and fits within the same conservative bound.
+
+In particular $b^2 2^{w/2}=O(\log^2(n+2))$ suffices for
+$n^{O(\log n)}$ time. This includes fixed $w$ with $b=O(\log n)$, or
+fixed $b$ with $w\le4\log_2\log(n+2)+O(1)$. The order must be supplied
+or efficiently constructed. Neither the existence of such orders for
+every knot nor the required component-size bound has been established.
+Small experimental values do not prove either statement. Moreover,
+report 07 supplies RI/RII-reduced unknot diagrams of homogeneity defect
+one with arbitrarily large canonical genus; defect alone cannot close
+the missing bound. The hierarchy obligations in Section~\ref{sec:missing}
+remain a separate unresolved route.
+
+\subsection{Local measurements and reproducibility}
+The integrated benchmark \code{fast/benchmark\_structural.py} records
+seven randomized paired rounds, with five fresh Diagram records per arm
+and an identical-baseline A/A control. Parsing, validation, imports, and
+serialization are excluded from every arm. The baseline disables the
+Seifert stage; the treatment enables it. These are recognition-function
+timings, not end-to-end command-line times. The raw record is
+\code{fast/results/structural\_integration\_20261007.json}.
+
+On this host the median paired baseline/new ratios were 27.10 for a
+1000-crossing weaving braid, 26.34 for a 1000-crossing positive three-braid,
+and 50.56 for a 1004-crossing positive five-braid. Their median A/A ratios
+were 0.993, 1.002, and 1.008. Inconclusive controls show the added cost:
+Conway 0.97, hard unknot 0.95, and the tiny scrambled-grid unknot 0.60.
+Ratios below one mean the added stage slowed the recognition call.
+These are descriptive measurements with host-dependent variability, not
+fitted complexity exponents or hardware-independent speed guarantees.
+
+Separate raw-scanner checks bypass all geometric factorization and
+recognition filters. Exact sharing agrees with the standard rank and
+degree counts on one and two Conway summands; eight summands give
+$2\cdot33^8=2{,}812{,}817{,}236{,}482$ without expanding that many
+generators. This demonstrates representation compression. It does not
+claim a corresponding recognition speedup: the existing recognition
+pipeline already factors visible connected sums. The archive's original
+timing observations remain separate from these local checks.
