@@ -12,8 +12,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 601 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 3,859 public Gowers theorems and found only propext,
+  All 603 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 3,874 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 113 exact
   companion proofs and 7 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -1787,8 +1787,16 @@ Finite averaging input for Corollary 16.11
     original_width^(c(r^-1*(delta/2), gamma, k)^r).
   The proof partitions overlapping graphs into disjoint classes and uses
   their actual natural count bounded by the real control. This supplies
-  the finite averaging step of Corollary 16.11, whose full statement remains
-  open pending the preceding induction and its Fourier-frequency input.
+  the finite averaging step of Corollary 16.11.
+  Proofs16FrequencySelection constructs the alpha/2-dense graph of large
+  Fourier frequencies and proves its alpha/2 product property directly
+  from non-uniformity, without a modulus-size threshold.
+  Proofs16CorollaryFromInduction proves the entire corrected Corollary 16.11
+  conditional only on Theorem 16.2 (or its corresponding fixed dimension).
+  The selected box is proper. Its retained width exponent is c^r, whereas
+  the common exponent for both width and density is (alpha/8)*c^r; thus
+  the stronger width exponent is larger by the factor 8/alpha. These are
+  conditional results, not exact companions: Theorem 16.2 remains open.
 
 Reproducible checks (from repository root)
   python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.Audit
