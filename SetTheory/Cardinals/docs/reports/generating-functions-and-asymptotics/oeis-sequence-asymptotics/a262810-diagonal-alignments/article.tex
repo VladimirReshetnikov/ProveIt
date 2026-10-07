@@ -176,7 +176,12 @@ different from the source's difference table: all 26 terms of the A262810
 b-file agree, the sequence is strictly increasing from $n=1$, and all 26
 terms of the A316677 b-file equal $2^{n-1}a_n$ ($n\ge1$). No entry states a
 correction to Kot\v{e}\v{s}ovec's equivalent; nothing was submitted to the
-OEIS.
+OEIS. \textup{(Qualified after the independent check of 7~October 2026:
+Howroyd's formula is the inclusion--exclusion double sum
+of~\eqref{dma:eq:difference} summed in the other order, so it is the same
+identity, not a different route. The check confirmed all 26 terms by
+Bala's positive sum, \eqref{dma:eq:positive} at $u=1$, with a certified
+rational tail bound, which is a different identity.)}
 \end{remark}
 
 \subsection{Provenance, sources and reading conventions}\label{dma:sec:provenance}
@@ -906,6 +911,41 @@ unproved claim of the source outside them and no claim of the source that is
 wrong; the b-file and A316677 comparisons the source could not make are now
 made (notes above), and the priority of the marked coupling relative to
 Duchi and Sulanke is noted at the end of Section~\ref{dma:sec:corollary}.
+\end{writenote}
+\begin{writenote}[Independent check of the write, 7 October 2026]
+An adversarial check made by the intake after the write (commit
+\file{b7a7eb374}) re-derived the statements marked [write] with its own
+code, after fetching again A262810 (revision~\#19), A262809 (\#59), A316674
+(\#27), A316677 (\#8), both b-files and Eger's arXiv:1511.00622v2.
+\emph{Remark~\ref{dma:rem:oeis}.} Every quotation, revision and date
+confirmed; the 26 terms of the A262810 b-file equal Bala's positive sum
+(exact, with a certified tail) and the inclusion--exclusion sum, the 26
+terms of the A316677 b-file are $2^{n-1}a_n$, and $a$ is strictly increasing
+from $n=1$. The write's ``a route different from the source's'' is qualified
+there. \emph{Sources.} Eger's Sections~5.5 (formula~(2), the A126086 sum,
+the equivalent credited to his~[17, 28]) and~5.6 (the factor $2^{\ell-1}$ for
+every number of sequences, citing Duchi and Sulanke) as stated; the
+Duchi--Sulanke paper could again not be retrieved, so the question of the
+marked identity stays open. The neighbouring report's \file{SOURCES.md} and
+Section~1.1 read as stated. \emph{Numbers.} From exact $a_n$:
+$(\log(a_n/K_n)-\sum_{j\le3}C_jn^{-2j})n^8=0.014181$, $0.013880$,
+$0.013777$, $0.013730$ ($n=10,15,20,25$);
+$(\log(a_n/G(n,n))+1/12)n^2=0.10613025524$, $0.10613001754$,
+$0.10613000382$ ($n=10,20,25$); $A(n,k)/G(n,k)=0.997071$, $0.998534$,
+$0.994609$, $0.997301$; the mean and variance errors times $n^4$; the eight
+values of $x_J(\log a_n)-n$ at $n=10,25$ and the first inverse correction
+$0.33$, all as stated. $C_1,C_2,C_3$ follow by hand
+from~\eqref{dma:eq:stirling} with $b_1,\dots,b_4=\tfrac1{12},-\tfrac1{360},
+\tfrac1{1260},-\tfrac1{1680}$. \emph{Remark~\ref{dma:rem:transseries}.}
+(a)--(e) re-derived against the volume: the staircase and interpolation
+of~(b) with~(3) of \file{p0:thm:staircase}, the factorial-core data
+$\kappa_{\mathrm{vol}}=\tfrac12$, $d_{\mathrm{vol}}=-\log\lambda$ and the
+template data of~(c), the linear coefficient $2+1/\ell$ and the order-two
+$h_{\mathrm{vol}}$ of~(d), and $H_J/F_0\sim-1/(2x)$ in~(e).
+\emph{Provenance.} Archive facts (the three \file{generated/} byte copies
+identified), the 61 delivered label numbers and 45 references (aux of a
+build of the delivered text) confirmed. Apart from the qualification above,
+no defect was found in the write.
 \end{writenote}
 
 \begin{thebibliography}{9}
