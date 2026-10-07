@@ -10,8 +10,9 @@ noncomputable section
 namespace LeanProofs.GowersSzemeredi
 
 theorem lemma_16_10_holds : lemma_16_10 := by
-  intro N k _ _ hk theta gamma ht ht1 hg hg1 B phi H1 Y x0 hsections hline
-    rho hrho hrho1 m P hP hm
+  intro N k _ _ hk theta gamma ht ht1 hg hg1 B phi H1 Y x0
+  dsimp only
+  intro hsections hline rho hrho hrho1 m P hP hm
   have hs : 1 ≤ gamma ^ (-(2 : Int)) *
       multipleS ((2 : Real) ^ (-(k + 2 : Real)) * theta) gamma k := by
     have h := (section16_face_parameter_lift_reserve k ht ht1 hg hg1).1

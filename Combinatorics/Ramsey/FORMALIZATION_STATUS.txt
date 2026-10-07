@@ -8,9 +8,9 @@ Scope
   The current Lean catalogue declares 114 exact companion proofs and 6
   open statements. This includes the repaired Lemma 16.10, whose explicit
   cover conclusion is weaker than the printed unit-parameter claim.
-  It must not be counted as a proof of that printed claim. Of these current
-  companions, 113 were kernel-checked before the incoming repair; the
-  merged development is undergoing a new full audit.
+  It must not be counted as a proof of that printed claim. The repaired
+  companion now compiles with all 130 reachable dependency modules; the
+  merged development is undergoing a new full axiom and catalogue audit.
   The JSON ledger records every statement, its TeX heading lines, its Lean
   definition, and related results. Conditional implications, restricted cases,
   and counterexamples are not counted as proofs of the full statement.
@@ -31,12 +31,12 @@ Verification at this checkpoint
   the exact Theorems 1.2, 7.1, and 7.2 companions. Their dependencies pass
   the transitive axiom check. The earlier workstation-only validation of
   Theorem 1.2 is now confirmed by the full repository audit.
-  That audit predates the Lemma 16.10 repair below, and its 113/7 count is
-  the pre-repair count. For the repair, only Section16.lean (with the
-  renamed printed encoding and the repaired statement) and 61 of its
-  upstream modules were compiled locally. Proofs16Lemma10 and the retargeted
-  counterexample have not yet been kernel-checked; full verification is
-  deferred to the next complete audit run.
+  That completed audit predates the Lemma 16.10 repair below, and its
+  113/7 count is the pre-repair count. The first merged audit checked the
+  retargeted counterexample but found a binder-introduction error in
+  Proofs16Lemma10. Its proof now unfolds the local let definitions before
+  introducing the two cover hypotheses. The unchanged repaired statement
+  and all 130 dependencies compile; the full combined audit is running.
 
 All-scale integer geometry for Section 13
   Proofs07AllScalesStepSpan retains a common positive integer step ratio
