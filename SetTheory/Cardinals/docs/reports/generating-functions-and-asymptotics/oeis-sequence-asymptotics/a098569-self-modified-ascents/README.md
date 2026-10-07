@@ -278,7 +278,12 @@ place in the collection confers no formal status.
   Section 1.4 said the same; the article keeps its first wording in a dated
   note.) Neither
   report cites the other; a reciprocal note for that report is proposed
-  separately.
+  separately. *[Dated note, 7 October 2026: true of the two manuscripts only.
+  The reciprocal note was applied in that report's own write (`3ed50db4e`,
+  the day of this one): its Remark W2 after Lemma 5.1 and its README's
+  relation section cite this report's Theorem 6.1 (`pdt:thm:elementary`) and
+  Lemma 3.1 (`pdt:lem:global`), with the correction after its independent
+  check (`5ada42e2f`) described above.]*
 - `a202058-ascent-000-growth`, `a294220-ascent-multiplicity-caps`,
   `a202061-ascent-120-deficit`, `a202062-ascent-201-enumeration`: other
   ascent-sequence models; `a336070-weak-ascents` (batch-102 sibling): weak
