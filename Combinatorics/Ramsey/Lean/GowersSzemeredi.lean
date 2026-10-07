@@ -222,6 +222,8 @@ import GowersSzemeredi.Proofs18AffineTransfer
 import GowersSzemeredi.Proofs18IntervalCubeGeometry
 import GowersSzemeredi.Proofs18IntervalCubeEnergy
 import GowersSzemeredi.Proofs18AffineCubeEnergy
+import GowersSzemeredi.Proofs18PrimeCubeModel
+import GowersSzemeredi.Proofs18CubicPrimeModel
 import GowersSzemeredi.Proofs18UniformInterval
 
 /-!

@@ -12,8 +12,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 249 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 2,271 public Gowers theorems and found only propext,
+  All 251 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 2,297 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 101 exact
   companion proofs and 19 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -679,8 +679,30 @@ Exact cube-energy transfer between cyclic models
   identity for an indexed progression with nonzero step in a prime modulus.
   It transfers a restricted function to its interval model in any sufficiently
   large new modulus with the same energy and explicit normalization.
-  Applying this to the cubic-localization cells still requires retaining
-  their upper length bound and selecting a comparable new prime modulus.
+  The application to cubic-localization cells, including their upper length
+  bound and a comparable new prime modulus, is completed below.
+
+Cubic obstruction in a strictly smaller prime model
+  Proofs17LocalizedPhaseRemoval now exports proposition_17_7_with_upper:
+  every actual output cell has length at most the input box width. Both the
+  singleton and long-cell constructions prove this bound. The numbered
+  Proposition 17.7 remains unchanged, as a specialization of the stronger API.
+  Proofs17CubicLocalization retains the resulting sqrt(N) upper bound as well
+  as its previous lower bound; its earlier interfaces remain available.
+  Proofs18PrimeCubeModel selects a prime M between (k+2)*L and 2*(k+2)*L
+  by Bertrand's theorem, and transfers a local obstruction with parameter
+  beta to one with parameter beta/(2*(k+2))^(k+2). The old normalization
+  cancels exactly, and disc bounds are preserved by the interval model.
+  Proofs18CubicPrimeModel constructs the full degree-three application.
+  For each fixed alpha>0 and sufficiently large prime N, cubic nonuniformity
+  yields a cubic polynomial twist on a proper progression of length at least
+  N^e/12, e=(1/2)^((2/alpha)^(2^88)). Its specified index function, extended
+  by zero in a prime M with 4*L<M<=8*L and M<=N/2, fails quadratic uniformity
+  with parameter 2^-70*alpha^2*(alpha/2)^(2^76), independent of N.
+  The function in the new model is the actual pullback of the constructed
+  twist, not an unrelated existential witness. This supplies the analytic
+  degree-lowering transfer; the quantitative density increment and remaining
+  higher-degree structural induction are still unproved.
 
 Reproducible checks (from repository root)
   python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.Audit

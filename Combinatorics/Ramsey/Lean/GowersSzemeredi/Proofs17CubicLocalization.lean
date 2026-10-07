@@ -12,7 +12,7 @@ namespace LeanProofs.GowersSzemeredi
 /-- Failure of cubic uniformity yields a cubic polynomial twist that fails
 quadratic uniformity on a proper progression partition. Both the cell-length
 bound and the surviving uniformity parameter are explicit. -/
-theorem cubic_nonuniformity_localized_phase_removal :
+theorem cubic_nonuniformity_localized_phase_removal_with_upper :
     ∀ alpha : Real, 0 < alpha → alpha ≤ 1 → ∃ N₀ : Nat,
       ∀ (N : Nat) [NeZero N] [Fact N.Prime], N₀ ≤ N →
         ∀ f : ZMod N → Complex, DiscValued f → ¬ UniformOfDegree f alpha 3 →
@@ -21,6 +21,7 @@ theorem cubic_nonuniformity_localized_phase_removal :
           IsPartition (fun i => (Q i).carrier) Finset.univ ∧
           (∀ i, (Q i).IsProper ∧ ((Q i).length = l ∨ (Q i).length = l + 1)) ∧
           (N : Real) ^ ((1 / 2 : Real) ^ ((2 / alpha) ^ ((2 : Nat) ^ 88))) / 12 ≤ l ∧
+          (∀ i, ((Q i).length : Real) ≤ Real.sqrt N) ∧
           ¬ UniformOnPartition (phaseTwist f phi) 2
             ((2 : Real) ^ (-(58 : Int)) * alpha ^ 2 * (alpha / 2) ^ ((2 : Nat) ^ 76)) Q (l + 1) := by
   intro alpha hα hαone
@@ -39,8 +40,8 @@ theorem cubic_nonuniformity_localized_phase_removal :
     rw [← hagree z (hB hz)]
     exact hfourier z hz
   have henergy := fourierSquare_energy P R hPR B f mu alpha delta hα.le hB hmass hlarge
-  obtain ⟨phi, M, l, Q, hpoly, hpartition, hproper, hlength, hnonuniform⟩ :=
-    proposition_17_7_holds N 2 m f S sigma rho hrho (by omega) hmodd
+  obtain ⟨phi, M, l, Q, hpoly, hpartition, hproper, hlength, hupper, hnonuniform⟩ :=
+    proposition_17_7_with_upper N 2 m f S sigma rho hrho (by omega) hmodd
       (fourierSquareBox_width P R hPR hPl hRl)
       (fourierSquareBox_axis_length P R hPR hPl hRl) hPs hmsqrt hf hmu.to_multilinear henergy
   have hconstant : (2 : Real) ^ (-(2 * (2 + 1) ^ 3 : Int)) * rho =
@@ -49,10 +50,30 @@ theorem cubic_nonuniformity_localized_phase_removal :
     generalize (alpha / 2) ^ ((2 : Nat) ^ 76) = a
     norm_num
     ring
-  refine ⟨phi, M, l, Q, hpoly, hpartition, hproper, ?_, ?_⟩
+  refine ⟨phi, M, l, Q, hpoly, hpartition, hproper, ?_, ?_, ?_⟩
   · norm_num only [Nat.cast_ofNat] at hlength
     linarith only [hsize, hlength]
+  · intro i
+    exact (by exact_mod_cast hupper i : ((Q i).length : Real) ≤ m).trans hmsqrt
   · simpa only [Nat.cast_ofNat, hconstant] using hnonuniform
+
+/-- The original localization interface is preserved as a specialization. -/
+theorem cubic_nonuniformity_localized_phase_removal :
+    ∀ alpha : Real, 0 < alpha → alpha ≤ 1 → ∃ N₀ : Nat,
+      ∀ (N : Nat) [NeZero N] [Fact N.Prime], N₀ ≤ N →
+        ∀ f : ZMod N → Complex, DiscValued f → ¬ UniformOfDegree f alpha 3 →
+        ∃ phi : ZMod N → ZMod N, ∃ M l : Nat, ∃ Q : Fin M → ModAP N,
+          PolynomialOn 3 Finset.univ phi ∧
+          IsPartition (fun i => (Q i).carrier) Finset.univ ∧
+          (∀ i, (Q i).IsProper ∧ ((Q i).length = l ∨ (Q i).length = l + 1)) ∧
+          (N : Real) ^ ((1 / 2 : Real) ^ ((2 / alpha) ^ ((2 : Nat) ^ 88))) / 12 ≤ l ∧
+          ¬ UniformOnPartition (phaseTwist f phi) 2
+            ((2 : Real) ^ (-(58 : Int)) * alpha ^ 2 * (alpha / 2) ^ ((2 : Nat) ^ 76)) Q (l + 1) := by
+  intro alpha hα hαone
+  obtain ⟨N₀, hN₀⟩ := cubic_nonuniformity_localized_phase_removal_with_upper alpha hα hαone
+  refine ⟨N₀, fun N _ _ hN f hf hnot => ?_⟩
+  obtain ⟨phi, M, l, Q, hpoly, hpart, hproper, hlower, _, hfail⟩ := hN₀ N hN f hf hnot
+  exact ⟨phi, M, l, Q, hpoly, hpart, hproper, hlower, hfail⟩
 
 /-- An individual proper progression carrying the quadratic obstruction.
 The displayed normalization is in the original ambient modulus; transfer to

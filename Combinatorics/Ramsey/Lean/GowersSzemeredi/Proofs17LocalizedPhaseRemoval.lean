@@ -1295,11 +1295,12 @@ private theorem prop177_small_branch {N k m : Nat} [NeZero N]
         (∀ i, (Q i).IsProper ∧
           ((Q i).length = l ∨ (Q i).length = l + 1)) ∧
         (m : Real) / (3 * k) ≤ l ∧
+        (∀ i, (Q i).length ≤ m) ∧
         ¬ UniformOnPartition (phaseTwist f phi) k
           ((2 : Real) ^ (-(2 * (k + 1) ^ 3 : Int)) * alpha) Q (l + 1) := by
   let phi : ZMod N → ZMod N := fun _ => 0
   let Q : Fin N → ModAP N := prop177SingletonCells N
-  refine ⟨phi, N, 1, Q, ?_, prop177_singleton_partition N, ?_, ?_, ?_⟩
+  refine ⟨phi, N, 1, Q, ?_, prop177_singleton_partition N, ?_, ?_, ?_, ?_⟩
   · unfold PolynomialOn
     refine ⟨fun _ => 0, ?_⟩
     intro x _
@@ -1310,6 +1311,9 @@ private theorem prop177_small_branch {N k m : Nat} [NeZero N]
   · norm_num only [Nat.cast_one]
     apply (div_le_one (by positivity : (0 : Real) < 3 * k)).mpr
     exact_mod_cast hsmall
+  · intro i
+    change 1 ≤ m
+    exact hm.pos
   · have hmpos : 0 < m := hm.pos
     have hmoment := prop177_energy_implies_moment f P sigma alpha hmpos haxes henergy
     have hN : (0 : Real) < N := by exact_mod_cast NeZero.pos N
@@ -2742,6 +2746,7 @@ private theorem prop177_large_branch
         (∀ i, (Q i).IsProper ∧
           ((Q i).length = l ∨ (Q i).length = l + 1)) ∧
         (((2 * h + 1 : Nat) : Real) / (3 * k) : Real) ≤ l ∧
+        (∀ i, (Q i).length ≤ 2 * h + 1) ∧
         ¬ UniformOnPartition (phaseTwist f phi) k
           ((2 : Real) ^ (-(2 * (k + 1) ^ 3 : Int)) * alpha) Q (l + 1) := by
   have hN0 : (0 : Real) ≤ (N : Real) := by positivity
@@ -2871,7 +2876,7 @@ private theorem prop177_large_branch
   let Q : Fin M → ModAP N := fun i =>
     prop177OutputCell N M P.commonDiff
       (prop177TailOffset (prop177BoxCenter P h) E) i
-  refine ⟨Phi E, M, q, Q, hPhiPoly E, ?_, ?_, hlower, ?_⟩
+  refine ⟨Phi E, M, q, Q, hPhiPoly E, ?_, ?_, hlower, ?_, ?_⟩
   · exact prop177_output_partition hMpos P.commonDiff
       (prop177TailOffset (prop177BoxCenter P h) E) (bne_iff_ne.mp hd)
   · intro i
@@ -2879,6 +2884,11 @@ private theorem prop177_large_branch
       (prop177TailOffset (prop177BoxCenter P h) E) (bne_iff_ne.mp hd) i, ?_⟩
     rw [prop177_output_length]
     exact prop177_boundary_increment (NeZero.pos N) hMpos hqWidth hWidthUpper i
+  · intro i
+    have hlen : (Q i).length = q ∨ (Q i).length = q + 1 := by
+      rw [prop177_output_length]
+      exact prop177_boundary_increment (NeZero.pos N) hMpos hqWidth hWidthUpper i
+    omega
   · intro hUniform
     have hqMleN : q * M ≤ N := by
       simpa only [M, mul_comm] using Nat.div_mul_le_self N q
@@ -2896,9 +2906,23 @@ private theorem prop177_large_branch
     simp_rw [prop177_double_sum_re] at hUniform
     simpa only [Q, q, M] using hUniform
 
-/-- **Gowers, Proposition 17.7.** -/
-theorem proposition_17_7_holds : proposition_17_7 := by
-  unfold proposition_17_7
+/-- The actual phase-removal construction also retains an upper bound on
+ every output cell, needed for subsequent no-wrap energy transport. -/
+theorem proposition_17_7_with_upper :
+  ∀ (N k m : Nat) [NeZero N] [Fact N.Prime] (f : ZMod N → Complex)
+      (P : Box N k) (sigma : Point N k → ZMod N) (alpha : Real),
+    0 < alpha → 0 < k → Odd m → P.width = m →
+    (∀ i, (P.axis i).length = m) → P.commonDiff != 0 →
+    (m : Real) ≤ Real.sqrt N → DiscValued f → IsMultilinear sigma →
+    alpha * (N : Real) ^ 2 * (m : Real) ^ k ≤
+      ∑ x ∈ P.carrier, ‖fourier (cubeDifference f x) (sigma x)‖ ^ 2 →
+    ∃ phi : ZMod N → ZMod N, ∃ M l : Nat, ∃ Q : Fin M → ModAP N,
+      PolynomialOn (k + 1) Finset.univ phi ∧
+      IsPartition (fun i => (Q i).carrier) Finset.univ ∧
+      (∀ i, (Q i).IsProper ∧ ((Q i).length = l ∨ (Q i).length = l + 1)) ∧
+      (m : Real) / (3 * k) ≤ l ∧ (∀ i, (Q i).length ≤ m) ∧
+      ¬ UniformOnPartition (phaseTwist f phi) k
+        ((2 : Real) ^ (-(2 * (k + 1) ^ 3 : Int)) * alpha) Q (l + 1) := by
   intro N k m _ _ f P sigma alpha halpha hk hm _hwidth haxes hd
     hmsqrt hf hsigma henergy
   by_cases hsmall : m ≤ 3 * k
@@ -2911,5 +2935,13 @@ theorem proposition_17_7_holds : proposition_17_7 := by
 
 
 
+
+/-- **Gowers, Proposition 17.7.** The catalogue conclusion follows from
+ the stronger construction, retaining its original statement. -/
+theorem proposition_17_7_holds : proposition_17_7 := by
+  intro N k m _ _ f P sigma alpha hα hk hm hwidth haxes hd hmsqrt hf hsigma henergy
+  obtain ⟨phi, M, l, Q, hpoly, hpart, hproper, hlower, _, hfail⟩ :=
+    proposition_17_7_with_upper N k m f P sigma alpha hα hk hm hwidth haxes hd hmsqrt hf hsigma henergy
+  exact ⟨phi, M, l, Q, hpoly, hpart, hproper, hlower, hfail⟩
 
 end LeanProofs.GowersSzemeredi
