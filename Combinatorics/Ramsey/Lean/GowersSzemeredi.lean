@@ -423,6 +423,7 @@ import GowersSzemeredi.Proofs13ImprovedSquareExtraction
 import GowersSzemeredi.Proofs13AllScalesStepSpan
 import GowersSzemeredi.Proofs13AllScalesCoefficientSpan
 import GowersSzemeredi.Proofs13LocalizedStage139
+import GowersSzemeredi.Proofs13ConstructedSquare
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 
