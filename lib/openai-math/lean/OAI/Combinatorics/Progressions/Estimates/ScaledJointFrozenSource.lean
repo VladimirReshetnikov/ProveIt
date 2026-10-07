@@ -1,5 +1,6 @@
 /- Modified for ProveIt: import Lean 4.32 compatibility declarations.
-Statements and proofs are unchanged from the pinned upstream source. -/
+Construct the mapped probability instance from joint-scaling measurability.
+Mathematical statements unchanged. -/
 import OAI.Compat.Measurable
 import Mathlib.MeasureTheory.Measure.Prod
 import OAI.Combinatorics.Progressions.Probability.SlicedRemainderDensityFamily
@@ -57,7 +58,7 @@ theorem scaledJointCubeSource_probability {D α : Type*} [Fintype D] [Fintype α
     (T : PrincipalTupleIndex B h → ℝ) (hT : ∀ i, 0 < T i) :
     IsProbabilityMeasure (scaledJointCubeSource (α := α) h T) := by
   rw [scaledJointCubeSource_eq_map h T hT]
-  infer_instance
+  exact Measure.isProbabilityMeasure_map (jointCubeScale_measurable h T).aemeasurable
 
 theorem scaledJointCubeSource_integral {D α : Type*} [Fintype D] [Fintype α]
     [DecidableEq α] {B : D → Type*} [∀ d, Fintype (B d)] (h : D → ℕ)

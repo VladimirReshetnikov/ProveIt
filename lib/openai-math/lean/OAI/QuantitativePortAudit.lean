@@ -1,6 +1,6 @@
 /-
 Added for ProveIt (not an upstream file; distributed under Apache-2.0).
-Incremental axiom audit of the first 200 modules listed in
+Incremental axiom audit of the first 300 modules listed in
 quantitative-port-manifest.json, plus the added compatibility declarations.
 This does not import or certify Results.Conclusions. Extend this checkpoint
 as the remaining quantitative dependency port compiles.
@@ -205,11 +205,112 @@ import OAI.Combinatorics.Progressions.Geometry.OperatorCoordinateBound
 import OAI.Combinatorics.Progressions.Polynomial.PolynomialAnalyticDerivative
 import OAI.Combinatorics.Progressions.Polynomial.PolynomialDeterminantDerivativeBound
 import OAI.Combinatorics.Progressions.Sampling.BooleanProductSampler
+import OAI.Combinatorics.Progressions.Polynomial.BooleanBlockCoefficientPhase
+import OAI.Combinatorics.Progressions.Estimates.RectangularCellGeometry
+import OAI.Combinatorics.Progressions.Estimates.SublevelThresholdBalance
+import OAI.Combinatorics.Progressions.Estimates.FiniteFiberVolumeBound
+import OAI.Combinatorics.Progressions.Estimates.SeparatedInterpolationBound
+import OAI.Combinatorics.Progressions.Estimates.SeparatedRealSamples
+import OAI.Combinatorics.Progressions.Polynomial.UnivariatePolynomialSublevel
+import OAI.Combinatorics.Progressions.Estimates.SymmetricScalarSublevel
+import OAI.Combinatorics.Progressions.Polynomial.PolynomialCoordinateSlice
+import OAI.Combinatorics.Progressions.Probability.SymmetricCubeMeasure
+import OAI.Combinatorics.Progressions.Estimates.SymmetricCubeSublevel
+import OAI.Combinatorics.Progressions.Estimates.SymmetricCubeVolume
+import OAI.Combinatorics.Progressions.Polynomial.PolynomialDeterminantDegree
+import OAI.Combinatorics.Progressions.Geometry.CoordinateDeterminant
+import OAI.Combinatorics.Progressions.Polynomial.PolynomialDilation
+import OAI.Combinatorics.Progressions.Polynomial.PolynomialValueCoefficient
+import OAI.Combinatorics.Progressions.Polynomial.EmbeddedMatrixDeterminantPolynomial
+import OAI.Combinatorics.Progressions.Estimates.BooleanMinorDimension
+import OAI.Combinatorics.Progressions.Estimates.SmoothHalfspaceCutoff
+import OAI.Combinatorics.Progressions.Estimates.ScalarCubeDomain
+import OAI.Combinatorics.Progressions.Probability.ScalarCubeDomainDensity
+import OAI.Combinatorics.Progressions.Estimates.ScalarCubeBoundaryCost
+import OAI.Combinatorics.Progressions.Geometry.ScalarCubeCoordinates
+import OAI.Combinatorics.Progressions.Estimates.ScalarCubeBoundaryVolume
+import OAI.Combinatorics.Progressions.Probability.ScalarCubeBoundaryMass
+import OAI.Combinatorics.Progressions.Estimates.ScalarCubeFaceSlab
+import OAI.Combinatorics.Progressions.Probability.ScaledCubeProductMeasure
+import OAI.Combinatorics.Progressions.Estimates.ProductCutoffLipschitz
+import OAI.Combinatorics.Progressions.Estimates.ResidualErrorAllocation
+import OAI.Combinatorics.Progressions.Lattices.ScalarCubeLatticeGeometry
+import OAI.Combinatorics.Progressions.Probability.ScalarCubeDensityBudget
+import OAI.Combinatorics.Progressions.Dynamics.ScalarCubeBoundaryLogBudget
+import OAI.Combinatorics.Progressions.Estimates.FiniteInversePerturbation
+import OAI.Combinatorics.Progressions.Geometry.CutoffBoxImageComparison
+import OAI.Combinatorics.Progressions.Geometry.DivergenceSupport
+import OAI.Combinatorics.Progressions.Estimates.CompactSmoothApproximation
+import OAI.Combinatorics.Progressions.Estimates.UnitTestClipping
+import OAI.Combinatorics.Progressions.Probability.BoundedSmoothTestDensity
+import OAI.Combinatorics.Progressions.Estimates.WeightedImageDerivative
+import OAI.Combinatorics.Progressions.Geometry.ImageCoordinateDerivative
+import OAI.Combinatorics.Progressions.Estimates.LocalProductContinuity
+import OAI.Combinatorics.Progressions.Geometry.LocalCoordinateDivergence
+import OAI.Combinatorics.Progressions.Geometry.CoordinateInjection
+import OAI.Combinatorics.Progressions.Linear.SelectedCoordinateMatrix
+import OAI.Combinatorics.Progressions.Lattices.AffineSliceC2Difference
+import OAI.Combinatorics.Progressions.Polynomial.PolynomialParameterContinuity
+import OAI.Combinatorics.Progressions.Estimates.BooleanSelectedDerivativeBound
+import OAI.Combinatorics.Progressions.Estimates.LocalImageComparison
+import OAI.Combinatorics.Progressions.Estimates.BoundedInequalityGoodCutoff
+import OAI.Combinatorics.Progressions.Estimates.PrincipalCoefficientSource
+import OAI.Combinatorics.Progressions.Geometry.BlockCubeCoordinates
+import OAI.Combinatorics.Progressions.Estimates.SigmaAxisOperator
+import OAI.Combinatorics.Progressions.Polynomial.BooleanPolynomialBudget
+import OAI.Combinatorics.Progressions.Lattices.BooleanAffineInput
+import OAI.Combinatorics.Progressions.Estimates.CoefficientNormalization
+import OAI.Combinatorics.Progressions.Polynomial.MonomialArrayJet
+import OAI.Combinatorics.Progressions.Sampling.CanonicalSamplerTuple
+import OAI.Combinatorics.Progressions.Estimates.JointBooleanGoodWeight
+import OAI.Combinatorics.Progressions.Probability.FiniteArrayMeasure
+import OAI.Combinatorics.Progressions.Probability.DensityMixtureAELaw
+import OAI.Combinatorics.Progressions.Probability.RestrictedComplexChartDensityComparison
+import OAI.Combinatorics.Progressions.Geometry.UnitBoxInteriorCutoff
+import OAI.Combinatorics.Progressions.Probability.SigmaProductMeasure
+import OAI.Combinatorics.Progressions.Estimates.SlicedPairAmplitude
+import OAI.Combinatorics.Progressions.Probability.PairedProductLaw
+import OAI.Combinatorics.Progressions.Estimates.FourProductSmoothing
+import OAI.Combinatorics.Progressions.Lattices.RandomAffinePair
+import OAI.Combinatorics.Progressions.Probability.SlicedPairDensity
+import OAI.Combinatorics.Progressions.Estimates.FourSlicedProductSmoothing
+import OAI.Combinatorics.Progressions.Dynamics.SlicedProductBudget
+import OAI.Combinatorics.Progressions.Probability.SpatialProductDensity
+import OAI.Combinatorics.Progressions.Probability.SlicedRemainderDensityFamily
+import OAI.Combinatorics.Progressions.Estimates.FactoredC2Difference
+import OAI.Combinatorics.Progressions.Polynomial.JointBooleanPolynomialPerturbation
+import OAI.Combinatorics.Progressions.Probability.BooleanJetMassBudget
+import OAI.Combinatorics.Progressions.Estimates.CoefficientTailScaling
+import OAI.Combinatorics.Progressions.Sampling.BooleanSamplerMeasurability
+import OAI.Combinatorics.Progressions.Estimates.RawProductArrayNormalization
+import OAI.Combinatorics.Progressions.Sampling.CanonicalRawSampler
+import OAI.Combinatorics.Progressions.Estimates.ScaledJointFrozenSource
+import OAI.Combinatorics.Progressions.Polynomial.RawCanonicalNormalizedPolynomial
+import OAI.Combinatorics.Progressions.Estimates.PrincipalBlockExponent
+import OAI.Combinatorics.Progressions.Polynomial.PrincipalMonomialScale
+import OAI.Combinatorics.Progressions.Estimates.PrincipalCoefficientMarginal
+import OAI.Combinatorics.Progressions.Polynomial.PolynomialKernelValues
+import OAI.Combinatorics.Progressions.Polynomial.ExtendedPolynomialValues
+import OAI.Combinatorics.Progressions.Polynomial.SquarefreePolynomialQuotient
+import OAI.Combinatorics.Progressions.Nilpotent.SquarefreeBracketCoefficients
+import OAI.Combinatorics.Progressions.Polynomial.SquarefreeBlockDegree
+import OAI.Combinatorics.Progressions.Estimates.SquarefreeSplitCount
+import OAI.Combinatorics.Progressions.Lattices.MultilinearAffineExpansion
+import OAI.Combinatorics.Progressions.Polynomial.MultilinearSlicePolynomial
+import OAI.Combinatorics.Progressions.Estimates.MultiaffineOptionExpansion
+import OAI.Combinatorics.Progressions.Polynomial.MultiaffinePolynomialBias
+import OAI.Combinatorics.Progressions.Estimates.StrideProductBounds
+import OAI.Combinatorics.Progressions.Estimates.FiniteBiasedSlice
+import OAI.Combinatorics.Progressions.Linear.MatrixCoordinateSlice
+import OAI.Combinatorics.Progressions.Geometry.MultilinearBoxInverse
+import OAI.Combinatorics.Progressions.Geometry.BoxDifferenceSubstitution
+import OAI.Combinatorics.Progressions.Geometry.BoxCornerMean
 import OAI.Compat.Set
 import OAI.Compat.Isometry
 import OAI.Compat.FinsetInj
 import OAI.Compat.MatrixInjective
 import OAI.Compat.ExteriorPower
+import OAI.Compat.ContinuousLinearMap
 import Lean.Util.CollectAxioms
 
 set_option maxHeartbeats 0
@@ -224,6 +325,10 @@ run_cmd do
         unless allowed.contains axiomName do
           throwError "{name} depends on unapproved axiom {axiomName}"
       checked := checked + 1
+  for name in #[``Set.mem_ofPred_eq, ``Isometry.lipschitzWith, ``Finset.sum_le_sum_of_injOn, ``Matrix.mulVec_injective_of_det_ne_zero, ``Matrix.gram_eq_one_iff_orthonormal, ``exteriorPower.inner_ιMulti_ιMulti, ``exteriorPower.inner_ιMulti_self, ``OrthonormalBasis.exteriorPower, ``OrthonormalBasis.toBasis_exteriorPower, ``ContinuousLinearMap.lipschitzWith] do
+    for axiomName in (← collectAxioms name) do
+      unless allowed.contains axiomName do
+        throwError "{name} depends on unapproved axiom {axiomName}"
   if checked == 0 then throwError "No OAI theorems found"
   logInfo m!"Audited {checked} public OAI theorems: only propext, Classical.choice, Quot.sound."
 #print axioms Set.mem_ofPred_eq

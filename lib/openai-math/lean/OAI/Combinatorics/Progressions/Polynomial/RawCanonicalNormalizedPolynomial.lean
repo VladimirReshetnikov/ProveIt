@@ -1,3 +1,5 @@
+/- Modified for ProveIt: distribute coefficients over polynomial sums
+explicitly in Mathlib v4.32.0. Mathematical statements unchanged. -/
 import OAI.Combinatorics.Progressions.Estimates.ScaledJointFrozenSource
 
 namespace OAI
@@ -78,6 +80,7 @@ theorem polynomial_coefficient_split {K : Type*} [DecidableEq K] (p : MvPolynomi
       ∑ n ∈ p.support \ selected, MvPolynomial.monomial n (p.coeff n) := by
   classical
   ext n
+  simp only [MvPolynomial.coeff_add, MvPolynomial.coeff_sum]
   by_cases hs : n ∈ selected
   · simp [MvPolynomial.coeff_monomial, hs]
   · by_cases hp : n ∈ p.support

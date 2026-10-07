@@ -1,5 +1,6 @@
 /- Modified for ProveIt: import Lean 4.32 compatibility declarations.
-Statements and proofs are unchanged from the pinned upstream source. Import paths are adapted to Mathlib v4.32.0. -/
+Adapt import paths to Mathlib v4.32.0 and simplify zero polynomial
+coefficients explicitly. Mathematical statements unchanged. -/
 import OAI.Compat.TensorProduct
 import Mathlib.Algebra.Algebra.Tower
 import Mathlib.Combinatorics.Nullstellensatz
@@ -274,7 +275,7 @@ theorem eq_zero_of_eval₂_eq_zero_on_grid
   apply e.repr.injective
   ext k
   have hk := congrArg (fun polynomial : MvPolynomial σ S => polynomial.coeff α) (hcoord k)
-  simpa only [coeff_coordinate, AddMonoidAlgebra.coeff_zero, map_zero,
+  simpa only [coeff_coordinate, MvPolynomial.coeff_zero, map_zero,
     Finsupp.zero_apply, LinearMap.toAddMonoidHom_coe, Module.Basis.coord_apply] using hk
 
 theorem eq_of_eval₂_eq_on_grid

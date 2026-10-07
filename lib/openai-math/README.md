@@ -54,12 +54,13 @@ verified.** The Gowers facade does not import the quantitative conclusion.
 [`quantitative-port-manifest.json`](quantitative-port-manifest.json) records
 the upstream source hashes, import closure, and initial compatibility imports.
 
-The first 200 manifest entries have compiled (209 modules including their
+The first 300 manifest entries have compiled (309 modules including their
 compatibility dependencies). The incremental `OAI.QuantitativePortAudit`
 imports this batch and the added compatibility modules. Its axiom scan
-checks 4,389 public OAI theorems and reports only `propext`,
+checks 5,917 public OAI theorems and reports only `propext`,
 `Classical.choice`, and `Quot.sound`; the separately listed compatibility declarations
-also pass. This checkpoint does not certify `Results.Conclusions`.
+also pass, with explicit rejection of any unapproved axiom. This checkpoint
+does not certify `Results.Conclusions`.
 
 The quantitative statement has existential positive constants `C`, `c`, and
 `eta` for each progression length, and bounds the extremal cardinality by
@@ -110,7 +111,7 @@ unchanged.
   and [`LICENSE.mathlib`](LICENSE.mathlib). It compiles with the local
   `Compat/GramMatrix.lean` characterization; the exported inner-product and
   orthonormal-basis declarations pass the three-axiom check. Its downstream
-  consumers remain outside the audited first-200 prefix.
+  consumers remain outside the audited first-300 prefix.
 - Imports of relocated Mathlib modules use their older paths. All directly
   imported Mathlib source paths now exist in the local checkout; this path
   check does not establish that all importing modules compile.
