@@ -107,3 +107,18 @@ September 19, 2026. A limited search did not find a separate proof. This
 is not a guarantee of priority, an exhaustive literature review, external
 peer review, or proof-assistant formalization. The distinction is explained
 in the article and source notes.
+
+## Related report (dated note, 7 October 2026)
+
+See also the sibling report
+[`a168362-lacunary-iterates-mod4`](../a168362-lacunary-iterates-mod4/),
+Part II (batch 114). For the lacunary seed F_p(x) = sum_j x^(p^j) and every
+prime p it proves that every coefficient of every integer iterate is
+divisible by p^((s_p(N)-1)/(p-1)) (its Theorem 16.1), and it builds a
+coefficientwise p-adic iteration group z -> F_p^(o z), z in Z_p, with a
+sufficient period, in z, of each coefficient modulo p^q (its Theorems 24.1
+and 24.2), as this report does for its own series under "p-adic-time
+iteration". Different series; no shared theorem. That report names this one
+as a methodological neighbour, not a source. This section is a pointer
+added in the collection's cleanup pass; the rest of this README is the
+delivered guide.
