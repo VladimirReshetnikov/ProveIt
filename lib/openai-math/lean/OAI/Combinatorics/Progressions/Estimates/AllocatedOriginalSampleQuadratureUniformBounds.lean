@@ -1,3 +1,6 @@
+/- Modified for ProveIt: import Lean 4.32 compatibility declarations.
+Statements and proofs are unchanged from the pinned upstream source. -/
+import OAI.Compat.FinsetInj
 import Mathlib.Analysis.Calculus.MeanValue
 import OAI.Combinatorics.Progressions.Estimates.AllocatedRelativeChildSliceGeometry
 import OAI.Combinatorics.Progressions.Estimates.OneCubePrincipalSliceRiemann

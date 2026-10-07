@@ -1,3 +1,6 @@
+/- Modified for ProveIt: import Lean 4.32 compatibility declarations.
+Statements and proofs are unchanged from the pinned upstream source. -/
+import OAI.Compat.Isometry
 import Mathlib.MeasureTheory.Integral.Prod
 import OAI.Combinatorics.Progressions.Sampling.AllocatedPeriodicGridQuadrature
 import OAI.Combinatorics.Progressions.Sampling.ForecastNativePullbackBudget

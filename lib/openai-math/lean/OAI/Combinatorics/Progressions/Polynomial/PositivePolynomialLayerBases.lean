@@ -1,3 +1,6 @@
+/- Modified for ProveIt: import Lean 4.32 compatibility declarations.
+Statements and proofs are unchanged from the pinned upstream source. -/
+import OAI.Compat.Set
 import Mathlib.LinearAlgebra.StdBasis
 import OAI.Combinatorics.Progressions.Estimates.SquarefreeStructureHeight
 import OAI.Combinatorics.Progressions.Geometry.SupportedQuotientFamilyFaithful

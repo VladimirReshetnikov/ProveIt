@@ -1,5 +1,6 @@
 /- Modified for ProveIt: import Lean 4.32 compatibility declarations.
 Statements and proofs are unchanged from the pinned upstream source. -/
+import OAI.Compat.Set
 import OAI.Compat.Core
 import OAI.Combinatorics.Progressions.Geometry.CenteredFiniteEventSupport
 import OAI.Combinatorics.Progressions.Lattices.AllocatedCenteredBadPrimeSurrogate

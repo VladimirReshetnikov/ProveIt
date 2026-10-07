@@ -1,3 +1,6 @@
+/- Modified for ProveIt: import Lean 4.32 compatibility declarations.
+Statements and proofs are unchanged from the pinned upstream source. -/
+import OAI.Compat.FinsetInj
 import OAI.Combinatorics.Progressions.Estimates.AllocatedOriginalSampleFullSliceLipschitz
 import OAI.Combinatorics.Progressions.Estimates.SlicedToleranceMonotonicity
 import OAI.Combinatorics.Progressions.Lattices.AllocatedAffineScaleEnvelope

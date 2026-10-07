@@ -1,3 +1,6 @@
+/- Modified for ProveIt: import Lean 4.32 compatibility declarations.
+Statements and proofs are unchanged from the pinned upstream source. -/
+import OAI.Compat.Set
 import Mathlib.Data.Fin.Tuple.Sort
 import Mathlib.LinearAlgebra.Basis.Prod
 import Mathlib.LinearAlgebra.FiniteDimensional.Basic

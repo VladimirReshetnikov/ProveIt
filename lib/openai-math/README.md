@@ -77,7 +77,8 @@ unchanged.
 - `OAI/Compat/*.lean` (not upstream) backport the declarations that upstream
   uses from its newer toolchain but that are absent from Lean 4.32.0 /
   Mathlib `v4.32.0`. Each module has narrow imports and states the upstream
-  signature. All but one are renames: the core `if_pos`/`if_neg`/`dif_pos`/
+  signature. Of the original eight modules, all but one are renames: the
+  core `if_pos`/`if_neg`/`dif_pos`/
   `dif_neg` family appears as `ite_eq_left`/`ite_eq_right`/`dite_eq_left`/
   `dite_eq_right`, and the Mathlib lemmas `Finset.prod_le_prod₀` etc. and
   `Matrix.det_of_isUpperTriangular` and
@@ -85,6 +86,11 @@ unchanged.
   names.
   The exception is `TensorProduct.inductionOn`, which drops the `zero` case
   of `TensorProduct.induction_on`.
+- The quantitative port adds `Compat/Set.lean` (definitional predicate
+  membership), `Compat/Isometry.lean` (the newer name for
+  `Isometry.lipschitz`), and `Compat/FinsetInj.lean` (injective finite-sum
+  comparison proved using `sum_image` and subset comparison). These are
+  local proofs under Apache-2.0, with no copied upstream proof text.
 - Upstream files that use a backported name gain the corresponding
   `import OAI.Compat.<Topic>` line, and nothing else, unless a further change
   is listed in their header comment.

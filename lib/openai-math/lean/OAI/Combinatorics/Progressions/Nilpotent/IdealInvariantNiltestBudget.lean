@@ -1,3 +1,6 @@
+/- Modified for ProveIt: import Lean 4.32 compatibility declarations.
+Statements and proofs are unchanged from the pinned upstream source. -/
+import OAI.Compat.Isometry
 import Mathlib.Topology.MetricSpace.Lipschitz
 import OAI.Combinatorics.Progressions.Estimates.RepresentativeWindowPatch
 import OAI.Combinatorics.Progressions.Polynomial.PolynomialShearParameterBudget

@@ -1,3 +1,6 @@
+/- Modified for ProveIt: import Lean 4.32 compatibility declarations.
+Statements and proofs are unchanged from the pinned upstream source. -/
+import OAI.Compat.Set
 import Mathlib.Algebra.Order.Floor.Semiring
 import Mathlib.Analysis.Normed.Group.Uniform
 import Mathlib.Data.Int.Interval

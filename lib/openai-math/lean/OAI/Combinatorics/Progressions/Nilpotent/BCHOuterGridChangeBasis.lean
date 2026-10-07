@@ -1,3 +1,6 @@
+/- Modified for ProveIt: import Lean 4.32 compatibility declarations.
+Statements and proofs are unchanged from the pinned upstream source. -/
+import OAI.Compat.Set
 import OAI.Combinatorics.Progressions.Estimates.PowerSubgroup
 import OAI.Combinatorics.Progressions.Nilpotent.BCHSubgroupGridExistence
 import OAI.Combinatorics.Progressions.Sampling.IntegralGridFunctional

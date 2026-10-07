@@ -1,3 +1,6 @@
+/- Modified for ProveIt: import Lean 4.32 compatibility declarations.
+Statements and proofs are unchanged from the pinned upstream source. -/
+import OAI.Compat.Isometry
 import OAI.Combinatorics.Progressions.Estimates.AllocatedSlicedBooleanSite
 import OAI.Combinatorics.Progressions.Estimates.PreparedScalarStructuralBasePower
 

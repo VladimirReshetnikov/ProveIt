@@ -1,5 +1,6 @@
 /- Modified for ProveIt: import Lean 4.32 compatibility declarations.
 Statements and proofs are unchanged from the pinned upstream source. -/
+import OAI.Compat.Set
 import OAI.Compat.Core
 import Mathlib.Algebra.Lie.Prod
 import Mathlib.LinearAlgebra.Basis.Prod
