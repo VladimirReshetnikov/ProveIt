@@ -436,6 +436,7 @@ import GowersSzemeredi.Proofs16CommonBaseAssembly
 import GowersSzemeredi.Proofs16ContextualInduction
 import GowersSzemeredi.Proofs16UnusedCoordinateCover
 import GowersSzemeredi.Proofs16CoarseFunctionCover
+import GowersSzemeredi.Proofs16AmbientFaceCover
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 

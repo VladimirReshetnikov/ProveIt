@@ -12,8 +12,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 618 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 3,964 public Gowers theorems and found only propext,
+  All 624 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 4,003 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 113 exact
   companion proofs and 7 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -1881,6 +1881,24 @@ Box covers for an unused coordinate
   function exactly by at most 3^k constant multilinear graphs per cell.
   A separate singleton construction retains one graph per singleton cell.
   These provide the small-scale branch for the same dimension-extension step.
+
+All-scale extension of proper-face covers
+  Proofs16UnusedCoordinateBudget proves a factor-sixteen exponent gap
+  between successive dimensions when the iteration parameter is at least
+  two. This absorbs localization and square-root tiling losses whenever
+  the ambient target width exceeds two. Proofs16UnusedCoordinateLift
+  combines that argument with the coarse and singleton covers to obtain
+  an all-scale unused-coordinate extension with unchanged gamma and
+  iteration parameter, assuming the parameter is at least 3^(k+1).
+  Proofs16UnusedCoordinateParameter checks that the actual structured-pair
+  face parameter supplies this reserve in every intermediate dimension.
+  Proofs16PrefixLift iterates the extension, including dimension zero.
+  Proofs16EmbeddedLift transports it to arbitrary embedded coordinate
+  directions. Proofs16AmbientFaceCover consequently extends any genuine
+  proper-face cover to a translated ambient coordinate retraction and
+  restricts it to any domain whose retracted points remain in B.
+  These results prepare the non-top cube-vertex covers. They do not
+  establish the unresolved all-ones unit-parameter lifting comparison.
 
 Reproducible checks (from repository root)
   python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.Audit
