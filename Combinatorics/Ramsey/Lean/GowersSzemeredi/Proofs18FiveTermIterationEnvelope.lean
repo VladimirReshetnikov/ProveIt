@@ -15,11 +15,11 @@ theorem fejer_five_term_step_threshold_le_double_exp {delta : Real}
     intervalDiscrepancyStepThreshold 5 delta
       (fejerCubicDiscrepancyParameter (intervalUniformityParameter delta 5))
       (fejerCubicInverseThreshold (intervalUniformityParameter delta 5)) ≤
-      Real.exp (Real.exp ((2 / intervalUniformityParameter delta 5) ^ ((2 : Nat) ^ 1086))) := by
+      Real.exp (Real.exp ((2 / intervalUniformityParameter delta 5) ^ ((2 : Nat) ^ 62))) := by
   let alpha := intervalUniformityParameter delta 5
   let beta := fejerCubicDiscrepancyParameter alpha
   let x := 2 / alpha
-  let p : Nat := 2 ^ 1086
+  let p : Nat := 2 ^ 62
   have hα : 0 < alpha := intervalUniformityParameter_pos hδ (by omega)
   have hα1 : alpha ≤ 1 := intervalUniformityParameter_le_one hδ.le hδone (by omega)
   have hb : 0 < beta := fejerCubicDiscrepancyParameter_pos hα
@@ -65,13 +65,13 @@ theorem fejer_five_term_iteration_log_budget {delta : Real}
     let T := intervalDiscrepancyStepThreshold 5 delta beta (fejerCubicInverseThreshold alpha)
     let c := beta / (8 * boundaryRefinementConstant (beta / 64))
     1 + Real.log (max 1 T) + |Real.log c| ≤
-      Real.exp ((2 / alpha) ^ ((2 : Nat) ^ 1087)) := by
+      Real.exp ((2 / alpha) ^ ((2 : Nat) ^ 63)) := by
   let alpha := intervalUniformityParameter delta 5
   let beta := fejerCubicDiscrepancyParameter alpha
   let T := intervalDiscrepancyStepThreshold 5 delta beta (fejerCubicInverseThreshold alpha)
   let c := beta / (8 * boundaryRefinementConstant (beta / 64))
   let x := 2 / alpha
-  let Y := x ^ ((2 : Nat) ^ 1086)
+  let Y := x ^ ((2 : Nat) ^ 62)
   have hα : 0 < alpha := intervalUniformityParameter_pos hδ (by omega)
   have hα1 : alpha ≤ 1 := intervalUniformityParameter_le_one hδ.le hδone (by omega)
   have hb : 0 < beta := fejerCubicDiscrepancyParameter_pos hα
@@ -90,22 +90,24 @@ theorem fejer_five_term_iteration_log_budget {delta : Real}
   have hlogc : |Real.log c| ≤ Real.exp Y := by
     calc
       _ = Real.log c⁻¹ := by rw [abs_of_nonpos (Real.log_nonpos hc.le hc1), Real.log_inv]
-      _ ≤ c⁻¹ := Real.log_le_self (inv_nonneg.mpr hc.le)
-      _ ≤ x ^ ((2 : Nat) ^ 1084) := fejer_cubic_interval_length_factor_inv_le_power hα hα1
-      _ ≤ Y := pow_le_pow_right₀ hx1 (by norm_num : (2 : Nat) ^ 1084 ≤ (2 : Nat) ^ 1086)
+      _ ≤ x ^ (1085 : Nat) :=
+        (Real.log_le_iff_le_exp (inv_pos.mpr hc)).mpr
+          ((fejer_cubic_interval_length_factor_inv_le_power hα hα1).trans
+            (pow_two_pow_le_exp_pow_succ hx 1084))
+      _ ≤ Y := pow_le_pow_right₀ hx1 (by norm_num : (1085 : Nat) ≤ (2 : Nat) ^ 62)
       _ ≤ _ := hYe
   have h3 : (3 : Real) ≤ Real.exp (2 * Y) := by
     have h := Real.add_one_le_exp (2 * Y)
     linarith only [h, hY]
-  have hinner : 3 * Y ≤ x ^ ((2 : Nat) ^ 1087) := by
+  have hinner : 3 * Y ≤ x ^ ((2 : Nat) ^ 63) := by
     have hx2 : (3 : Real) ≤ x ^ (2 : Nat) := by
       have h := pow_le_pow_left₀ (by norm_num : (0 : Real) ≤ 2) hx 2
       norm_num at h
       linarith only [h]
     calc
-      _ ≤ x ^ (2 : Nat) * x ^ ((2 : Nat) ^ 1086) := mul_le_mul_of_nonneg_right hx2 (by positivity)
-      _ = x ^ (2 + (2 : Nat) ^ 1086) := (pow_add _ _ _).symm
-      _ ≤ _ := pow_le_pow_right₀ hx1 (by norm_num : 2 + (2 : Nat) ^ 1086 ≤ (2 : Nat) ^ 1087)
+      _ ≤ x ^ (2 : Nat) * x ^ ((2 : Nat) ^ 62) := mul_le_mul_of_nonneg_right hx2 (by positivity)
+      _ = x ^ (2 + (2 : Nat) ^ 62) := (pow_add _ _ _).symm
+      _ ≤ _ := pow_le_pow_right₀ hx1 (by norm_num : 2 + (2 : Nat) ^ 62 ≤ (2 : Nat) ^ 63)
   change 1 + Real.log (max 1 T) + |Real.log c| ≤ _
   calc
     _ ≤ Real.exp Y + Real.exp Y + Real.exp Y := add_le_add (add_le_add h1 hlogT) hlogc
@@ -118,31 +120,31 @@ set_option exponentiation.threshold 2048 in
 theorem fejerFiveTermThreshold_le_double_exp_alpha {delta : Real}
     (hδ : 0 < delta) (hδone : delta ≤ 1) :
     fejerFiveTermThreshold delta ≤
-      Real.exp (Real.exp ((2 / intervalUniformityParameter delta 5) ^ ((2 : Nat) ^ 1088))) := by
+      Real.exp (Real.exp ((2 / intervalUniformityParameter delta 5) ^ ((2 : Nat) ^ 64))) := by
   have hα := intervalUniformityParameter_pos (k := 5) hδ (by omega)
   have hα1 := intervalUniformityParameter_le_one (k := 5) hδ.le hδone (by omega)
   have hx : 2 ≤ 2 / intervalUniformityParameter delta 5 := (le_div_iff₀ hα).mpr (by linarith only [hα1])
   have hg : 0 < fejerCubicDiscrepancyParameter (intervalUniformityParameter delta 5) / 8 :=
     div_pos (fejerCubicDiscrepancyParameter_pos hα) (by norm_num)
   have h := densityIterationClosedThreshold_le_double_exp_of_exp_budget _ _ _ _ _
-    ((2 : Nat) ^ 60) ((2 : Nat) ^ 62) ((2 : Nat) ^ 1087) hg hx
+    ((2 : Nat) ^ 60) ((2 : Nat) ^ 62) ((2 : Nat) ^ 63) hg hx
     (fejer_five_term_iteration_log_budget hδ hδone)
     (fejer_cubic_gain_inv_le_power hα hα1) (fejer_cubic_iteration_base_le_exp hα hα1) (by norm_num)
   exact h.trans (Real.exp_le_exp.mpr (Real.exp_le_exp.mpr (pow_le_pow_right₀ (by linarith only [hx])
-    (by norm_num : (2 : Nat) ^ 1087 + 1 ≤ (2 : Nat) ^ 1088))))
+    (by norm_num : (2 : Nat) ^ 63 + 1 ≤ (2 : Nat) ^ 64))))
 
 set_option exponentiation.threshold 2048 in
 /-- The entire proved five-term construction has a conventional double
 exponential bound in a fixed power of the reciprocal initial density. -/
 theorem fejerFiveTermThreshold_le_double_exp {delta : Real}
     (hδ : 0 < delta) (hδone : delta ≤ 1) :
-    fejerFiveTermThreshold delta ≤ Real.exp (Real.exp ((2 / delta) ^ ((2 : Nat) ^ 1097))) := by
+    fejerFiveTermThreshold delta ≤ Real.exp (Real.exp ((2 / delta) ^ ((2 : Nat) ^ 73))) := by
   have hα := intervalUniformityParameter_pos (k := 5) hδ (by omega)
   apply (fejerFiveTermThreshold_le_double_exp_alpha hδ hδone).trans
   apply Real.exp_le_exp.mpr (Real.exp_le_exp.mpr _)
   have h := pow_le_pow_left₀ (by positivity : 0 ≤ 2 / intervalUniformityParameter delta 5)
-    (two_div_intervalUniformityParameter_five_le_power hδ hδone) ((2 : Nat) ^ 1088)
-  rw [← pow_mul, show (512 : Nat) * (2 : Nat) ^ 1088 = (2 : Nat) ^ 1097 by norm_num] at h
+    (two_div_intervalUniformityParameter_five_le_power hδ hδone) ((2 : Nat) ^ 64)
+  rw [← pow_mul, show (512 : Nat) * (2 : Nat) ^ 64 = (2 : Nat) ^ 73 by norm_num] at h
   exact h
 
 end LeanProofs.GowersSzemeredi
