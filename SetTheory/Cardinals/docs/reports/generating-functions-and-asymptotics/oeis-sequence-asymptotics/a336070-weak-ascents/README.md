@@ -474,7 +474,15 @@ All in `SetTheory/Cardinals/docs/reports/generating-functions-and-asymptotics/oe
 - Both are siblings, not hosts. No other report treats A336070, weak ascents or
   difference ascents (searched 5 October 2026). Pointers from those two reports
   back to this one are a separate reciprocal-notes commit; this write edits no
-  other report.
+  other report. *[Dated note, 7 October 2026: those pointers exist. They were
+  added in the batch-102 write of both siblings (`b71fda5be`: the READMEs, and
+  remarks after `a58:fn:conj:twothirds` and after Question 4 of a294220's
+  Section 10), not in a separate commit. That write also gave
+  `a294220-ascent-multiplicity-caps` a Part III (bundle Report 99): root,
+  ratio and endpoint laws for every fixed multiplicity cap `r ≥ 2`
+  (its Theorems 17.1 and 17.2), with `μ_r` increasing strictly to `6/π²`, the
+  constant of the unrestricted families here (Proposition 17.3 there,
+  `amc:bm:prop:capmonotone`). No theorem is shared.]*
 - *See also* (dated 6 October 2026, batch-106 reciprocal note):
   [`a005975-interval-graphs`](../a005975-interval-graphs/) (bundle Report 133,
   unlabeled interval graphs A005975/A005976, labels `ivg:`) uses the same
@@ -602,6 +610,18 @@ a page, as in other reports with longtables, and one pdfTeX warning
 duplicate ignored", from the uncaptioned notation longtable and Table 1; both
 were already in the write's build, whose record here overlooked the second. A build of the staged base (`report105.tex` as placed) is
 warning-free with 24 pages; its 121 labels keep their numbers here.
+
+Rebuilt on 7 October 2026 (cleanup pass) with three pdfLaTeX passes, to
+remove that warning. A longtable steps the table counter whether or not it
+has a caption, so the notation longtable took hyperref's anchor `table.1`,
+and the `\addtocounter{table}{-1}` after it, which kept Table 1 numbered 1,
+let Table 1 take `table.1` again. The decrement now precedes the longtable,
+which therefore gets the anchor `table.0` (a comment in the source records
+the change). The build: 73 pages, no errors, no warnings (the duplicate
+destination is gone), no undefined or multiply defined references, no
+overfull or underfull boxes, the same single infinite-glue message; all 334
+labels keep their numbers and pages (`.aux` compared with a build of the
+committed text). The text of the article is unchanged.
 
 ## Delivered path → shipped path
 
