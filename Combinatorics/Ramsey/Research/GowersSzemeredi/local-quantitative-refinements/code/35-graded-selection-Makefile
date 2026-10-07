@@ -1,0 +1,9 @@
+.PHONY: all verify
+
+all: gowers_graded_refinements.pdf
+
+gowers_graded_refinements.pdf: gowers_graded_refinements.tex
+	latexmk -pdf -interaction=nonstopmode -halt-on-error gowers_graded_refinements.tex
+
+verify:
+	python3 verification/verify_all.py
