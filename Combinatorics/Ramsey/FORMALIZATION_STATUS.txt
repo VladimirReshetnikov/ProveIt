@@ -13,8 +13,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 710 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 4,560 public Gowers theorems and found only propext,
+  All 713 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 4,583 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 113 exact
   companion proofs and 7 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -1134,6 +1134,31 @@ Short polynomial localization from the structural dimension theorem
   hypotheses. The Section 16 theorem remains an explicit hypothesis;
   this is not an exact companion to Theorem 18.1. Its general numerical
   comparison with the intended source exponent is also still open.
+
+Completed degree induction with recursive inverse parameters
+  Proofs18StructuralInverseParameters defines the discrepancy beta(n,alpha)
+  and average-size exponent sigma(n,alpha) for degree n+2. It uses the proved
+  quadratic and improved Fejer cubic bounds as its two unconditional bases.
+  At each later degree it retains the full dimension-localization parameter,
+  lower-degree prime-model loss, and phase-refinement exponent. Input alpha
+  is clipped to min(alpha,1/2); the output size exponent is capped at one.
+  Positivity for every alpha>0 and the assembly's admissible exponent range
+  are proved by induction. A general monotonicity theorem justifies all
+  weakenings of input, discrepancy, size exponent, and threshold.
+  Proofs18StructuralInverseInduction then proves the complete degree
+  induction: degree n+2 needs only Theorem162At k for 3<=k<n+2.
+  The two-dimensional structural theorem is not needed because the improved
+  cubic inverse theorem is already proved. No lower-degree inverse bound,
+  localization, or partition-construction certificate remains as an extra
+  hypothesis. The resulting finite threshold remains existential because
+  the structural hypotheses supply existential modulus thresholds.
+  Proofs18StructuralInverseConsequences gives a balanced-set inverse theorem
+  with common positive constant min(beta,sigma), and completes natural-
+  interval density iteration for progression length n+4. The latter retains
+  the finite inverse threshold inside intervalDiscrepancyClosedThreshold.
+  These are conditional results with actual recursive constants, not the
+  intended source tower constants. The Section 16 structural theorem and
+  the general numerical comparison remain open; the catalogue stays 113/120.
 
 Cubic obstruction in a strictly smaller prime model
   Proofs17LocalizedPhaseRemoval now exports proposition_17_7_with_upper:
@@ -2302,8 +2327,9 @@ General density iteration from an explicit discrepancy input
   Proofs18FunctionDiscrepancyReduction defines FunctionDiscrepancyBound,
   retaining the explicit modulus threshold T and applying to bounded
   functions, so it covers relative balances. The quadratic inverse
-  theorem is proved to satisfy this interface. Higher degrees are not
-  asserted to satisfy it.
+  theorem is proved to satisfy this interface. The improved cubic theorem
+  also satisfies it unconditionally; subsequent degrees satisfy it under
+  the structural dimension hypotheses recorded above.
   Proofs18GeneralIterationStep combines that input with the general
   uniform stopping theorem, a comparable prime, and exact progression
   reindexing. Proofs18GeneralIteration completes the fixed-constant
@@ -2386,9 +2412,12 @@ Next substantial obligations
      transport and assembly steps. The full inverse induction after short
      polynomial localization is now proved in every degree, with explicit
      constants and thresholds. The structural dimension theorem now supplies
-     that localization with all geometry and energy inputs proved. Complete
-     the Section 16 structural induction and verify the resulting numerical
-     budget against the intended source bound.
+     that localization with all geometry and energy inputs proved. The
+     degree induction is now complete from the unconditional quadratic and
+     improved cubic bases, retaining recursive positive parameters and only
+     the required structural dimension hypotheses. Complete the Section 16
+     structural induction and verify the resulting numerical budget against
+     the intended source bound.
   4. Close Theorem 18.2 and its headline consequences; then investigate tighter
      final bounds without treating improved auxiliary statements as a proved
      improvement of the full Szemeredi estimate.
