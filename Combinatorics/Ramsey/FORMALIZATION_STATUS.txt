@@ -12,8 +12,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 635 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 4,096 public Gowers theorems and found only propext,
+  All 640 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 4,131 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 113 exact
   companion proofs and 7 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -1939,6 +1939,29 @@ Relative progression counting and stopping at every length
   arbitrary progression lengths without an inverse-theorem assumption.
   The higher-degree nonuniform density-increment construction and its
   threshold remain open, as do the seven numbered catalogue statements.
+
+General density iteration from an explicit discrepancy input
+  Proofs18IntervalDiscrepancyIncrement extracts the boundary-refinement
+  argument from the quadratic proof. Any proper discrepancy partition
+  with average size N^sigma and discrepancy beta*N yields an ordinary
+  interval progression of length at least
+  beta/(8*C(beta/64))*N^(sigma/16), with density gain beta/8.
+  The original quadratic theorem now uses this general construction.
+  Proofs18FunctionDiscrepancyReduction defines FunctionDiscrepancyBound,
+  retaining the explicit modulus threshold T and applying to bounded
+  functions, so it covers relative balances. The quadratic inverse
+  theorem is proved to satisfy this interface. Higher degrees are not
+  asserted to satisfy it.
+  Proofs18GeneralIterationStep combines that input with the general
+  uniform stopping theorem, a comparable prime, and exact progression
+  reindexing. Proofs18GeneralIteration completes the fixed-constant
+  iteration with the existing closed threshold and transfers the result
+  to {1,...,N} without density loss. Proofs18FromFunctionDiscrepancy proves
+  the exact Theorem 18.2 conditional on Section18DiscrepancyBudget:
+  the function discrepancy input and comparison of the complete closed
+  iteration threshold with szemerediThreshold. This does not infer an
+  explicit threshold from Theorem 18.1's unspecified N0, and it is not an
+  unconditional companion proof. The seven numbered statements remain open.
 
 Reproducible checks (from repository root)
   python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.Audit
