@@ -16,6 +16,11 @@
 \newcommand{\Pc}{\mathcal P}\newcommand{\Bc}{\mathcal B}\newcommand{\dd}{\mathrm d}
 \newcommand{\ii}{\mathrm i}\newcommand{\ee}{\mathrm e}\newcommand{\ZZ}{\mathbb Z}\newcommand{\NN}{\mathbb N}
 \DeclareMathOperator{\Rea}{Re}
+% Added in the write (batch 112, 7 October 2026).
+\newcommand{\file}[1]{\nolinkurl{#1}}
+\newenvironment{writenote}[1][]{\par\smallskip\begingroup\small
+ \noindent\textbf{[write]}\if\relax\detokenize{#1}\relax\else~\textbf{#1.}\fi\ }%
+ {\par\endgroup\smallskip}
 \title{\textbf{Uniform rooted trees and binary partitions}\\[6pt]\large Ratio nonconvergence and all fixed inverse log orders\\[4pt]Report215}
 \author{}\date{4 October 2026}
 \begin{document}
@@ -23,11 +28,38 @@
 \begin{abstract}
 Let $a_n=\mathrm{A003238}(n)$ be the uniform rooted-tree count and $S_n=\sum_{j=1}^n a_j=\mathrm{A003318}(n)$. We prove that neither $a_{n+1}/\mathrm{A018819}(n)$ nor $S_{n+1}/\mathrm{A000123}(n)$ converges. A positive dyadic identity, a cut positive operator, and exact directed-integer evaluation of $2^{24}$ recurrence coefficients give a contradiction to a hypothetical common radial limit. A positive Abelian argument transfers this contradiction to both ratios without using coefficient asymptotics. A separate midpoint argument certifies actual profile oscillation greater than $0.00001839189788$, also a lower bound for each sequence ratio's limit-superior minus limit-inferior. Separately, an analytic dyadically periodic amplitude and an integrated positive-prefix bound yield individual and summatory expansions to every fixed inverse-logarithmic order, with relative remainder $O_J((\log n)^{-J-1})$. A finite Gaussian-moment prescription supplies every correction. Smooth inverse centers have uncertainty $O_J(x/(\log x)^{J+2})$, which need not shrink absolutely. Erd\H{o}s and Loxton already established periodic summatory leading behavior and binary-prefix approximation in 1979; the cumulative ratio question appears explicitly on their page 328. Our source comparison is bounded, not a worldwide priority claim. The reproducibility archive contains the analytic proof, standard-library exact arithmetic, compact receipts, and deterministic build instructions.
 \end{abstract}
+\begin{writenote}[Status and trust boundary, added 7 October 2026, batch~112]
+This is bundle Report~215 of an external AI-assisted research session, filed
+in ProveIt as the single-source research report
+\file{a003238-uniform-trees-binary-partitions} (provenance, the sources as
+the write read them, what was checked, relation to the repository, the
+collected non-claims and the reading conventions are in
+Section~\ref{urt:sec:provenance}). It is unrefereed and not formalized. Its
+author line and PDF author field are empty, and the title block reads
+``Report215'': it names no person or tool. \emph{What rests on what.}
+Theorem~\ref{urt:thm:nonconvergence}, which answers in the negative the
+question Erd\H{o}s and Loxton left open in 1979, and
+Theorem~\ref{urt:thm:oscillation} are \emph{computer-assisted}: their proofs
+reduce, by the analytic arguments of
+Sections~\ref{urt:sec:radial}--\ref{urt:sec:oscillation}, to finite
+inequalities that Python programs certify in exact integer arithmetic and
+256-bit directed interval arithmetic, including the exact computation of
+$2^{24}$ recurrence coefficients. The write reran every step of that
+certificate except the $2^{24}$-coefficient radial sieve (about 1.6~GiB of
+memory), whose receipt is taken as delivered. Theorem~\ref{urt:thm:expansion}
+and Theorem~\ref{urt:thm:inverse} have conventional proofs that use no
+computation. The write adds Remarks~\ref{urt:rem:oeis}
+and~\ref{urt:rem:transseries} (the OEIS entries quoted, and Cloitre's 2004
+conjecture in A003238 refuted with proof; the inverses against the
+transseries volume) and dated notes, among them a confirmation of the
+Erd\H{o}s--Loxton citations from the paper itself. No statement, proof or
+number of the source was changed.
+\end{writenote}
 \tableofcontents
 
-\section{The exact sequences and the results}\label{sec:results}
+\section{The exact sequences and the results}\label{urt:sec:results}
 All logarithms are natural. Define $a_1=1$ and, for $n\ge1$,
-\begin{equation}\label{eq:recurrence}
+\begin{equation}\label{urt:eq:recurrence}
  a_{n+1}=\sum_{d\mid n}a_d,\qquad S_n=\sum_{j=1}^n a_j,\qquad S_0=0.
 \end{equation}
 These are OEIS A003238 and A003318 with index starting at one~\cite{oeis238,oeis318}. The first terms are
@@ -35,22 +67,22 @@ These are OEIS A003238 and A003318 with index starting at one~\cite{oeis238,oeis
  (a_1,\ldots,a_{10})=(1,1,2,3,5,6,10,11,16,19),\quad
  (S_1,\ldots,S_{10})=(1,2,4,7,12,18,28,39,55,74).
 \]
-The recurrence can serve as the definition throughout this report, so no alternative convention for planted roots enters the calculations. In the usual tree interpretation, a uniform rooted tree is built recursively from a root and a positive number of isomorphic copies of a smaller uniform rooted tree, together with the one-vertex tree. A tree with $n+1$ vertices has $k$ copies of a $d$-vertex tree attached to its root, where $kd=n$; this gives \eqref{eq:recurrence}. Equivalently, vertices at a common distance from the root have equal numbers of children.
+The recurrence can serve as the definition throughout this report, so no alternative convention for planted roots enters the calculations. In the usual tree interpretation, a uniform rooted tree is built recursively from a root and a positive number of isomorphic copies of a smaller uniform rooted tree, together with the one-vertex tree. A tree with $n+1$ vertices has $k$ copies of a $d$-vertex tree attached to its root, where $kd=n$; this gives \eqref{urt:eq:recurrence}. Equivalently, vertices at a common distance from the root have equal numbers of children.
 
 Write
-\begin{equation}\label{eq:offsets}
+\begin{equation}\label{urt:eq:offsets}
  q(n)=a_{n+1},\qquad Q(n)=\sum_{j=0}^nq(j)=S_{n+1}\qquad(n\ge0).
 \end{equation}
-The numbers $q(n)$ count partitions of $n$ into positive parts arranged in a divisibility chain, repetitions allowed, including the empty partition when $n=0$. To see the recurrence directly, divide all parts by the smallest part $d$ and remove one resulting part equal to one. This gives a chain partition of $n/d-1$ and hence $q(n)=\sum_{d\mid n}q(n/d-1)$. Relabeling divisors yields \eqref{eq:recurrence}.
+The numbers $q(n)$ count partitions of $n$ into positive parts arranged in a divisibility chain, repetitions allowed, including the empty partition when $n=0$. To see the recurrence directly, divide all parts by the smallest part $d$ and remove one resulting part equal to one. This gives a chain partition of $n/d-1$ and hence $q(n)=\sum_{d\mid n}q(n/d-1)$. Relabeling divisors yields \eqref{urt:eq:recurrence}.
 
 Let $\beta_n$ count partitions of $n$ into powers of two, with $\beta_0=1$, and put $\Beta_n=\sum_{j=0}^n\beta_j$. Then
-\begin{equation}\label{eq:binary}
+\begin{equation}\label{urt:eq:binary}
  \Bc(z)=\sum_{n\ge0}\beta_nz^n=\prod_{j\ge0}(1-z^{2^j})^{-1},\qquad
  \beta_n=\mathrm{A018819}(n),\quad \Beta_n=\mathrm{A000123}(n).
 \end{equation}
 These conventions agree with the displayed binary entries~\cite{oeisbinary}. In particular $\Beta_n=\beta_{2n}$; A000123 is not the individual binary-partition count at the same argument. This identity follows either from the product or from $\beta_{2n+1}=\beta_{2n}$ and $\beta_{2n}=\beta_{2n-1}+\beta_n$.
 
-\begin{theorem}[Computer-assisted ratio nonconvergence]\label{thm:nonconvergence}
+\begin{theorem}[Computer-assisted ratio nonconvergence]\label{urt:thm:nonconvergence}
 Neither of the positive sequence ratios
 \[
  \frac{a_{n+1}}{\beta_n}
@@ -60,84 +92,242 @@ Neither of the positive sequence ratios
 \]
 has a limit as $n\to\infty$, even as an extended real number.
 \end{theorem}
-The proof in Sections~\ref{sec:radial}--\ref{sec:abelian} is independent of the all-order saddle theorem. Its computational component evaluates exact integer coefficients and includes every analytic truncation error. The two displayed intervals later in the report constrain a \emph{hypothetical common constant}; they do not enclose two actual values of the limiting profile.
+The proof in Sections~\ref{urt:sec:radial}--\ref{urt:sec:abelian} is independent of the all-order saddle theorem. Its computational component evaluates exact integer coefficients and includes every analytic truncation error. The two displayed intervals later in the report constrain a \emph{hypothetical common constant}; they do not enclose two actual values of the limiting profile.
 
 For the asymptotic result, introduce
-\begin{equation}\label{eq:radialdefs}
+\begin{equation}\label{urt:eq:radialdefs}
  \begin{gathered}
  F(z)=\sum_{n\ge1}a_nz^n,\quad f(t)=F(\ee^{-t}),\quad B(t)=\Bc(\ee^{-t}),\quad h=\log2,\quad \rho=\frac{\log(3/2)}{h},\\
  G(t)=\frac{\ee^tf(t)}{B(t)},\qquad H(t)=\frac{\ee^{-t}f(t)}{B(t)}=\ee^{-2t}G(t).
  \end{gathered}
 \end{equation}
 The radial $B(t)$ is distinct from the cumulative sequence $\Beta_n$. For $k\ge1$ put
-\begin{equation}\label{eq:cumulants}
+\begin{equation}\label{urt:eq:cumulants}
  b_k(t)=(-1)^k\frac{\dd^k}{\dd t^k}\log B(t).
 \end{equation}
 There is a unique $t=t_N>0$ satisfying $b_1(t)=N$. For coefficients indexed by $n$, always use $N=n+1$, and write $L=\log(1/t)$ and $v=b_2(t)$.
 
-\begin{theorem}[Every fixed inverse-logarithmic order]\label{thm:expansion}
-There is a positive function $\Pc$ on $(0,\infty)$, holomorphic in a complex sector about this ray, satisfying $\Pc(2t)=\Pc(t)$. It is nonconstant by Theorem~\ref{thm:nonconvergence}'s radial certificate. For every fixed integer $J\ge0$,
+\begin{theorem}[Every fixed inverse-logarithmic order]\label{urt:thm:expansion}
+There is a positive function $\Pc$ on $(0,\infty)$, holomorphic in a complex sector about this ray, satisfying $\Pc(2t)=\Pc(t)$. It is nonconstant by Theorem~\ref{urt:thm:nonconvergence}'s radial certificate. For every fixed integer $J\ge0$,
 \begin{align}
  a_n&=\frac{\ee^{(n+1)t}B(t)}{\sqrt{2\pi v}}
-   \left\{\sum_{r=0}^J\mathcal A_r[\Pc](t)+O_J(L^{-J-1})\right\},\label{eq:coeffmain}\\
+   \left\{\sum_{r=0}^J\mathcal A_r[\Pc](t)+O_J(L^{-J-1})\right\},\label{urt:eq:coeffmain}\\
  S_n&=\frac{\ee^{(n+1)t}B(t)}{\sqrt{2\pi v}}
    \left\{\sum_{r=0}^J\mathcal A_r[\Pc/t](t)+O_J(t^{-1}L^{-J-1})\right\}.
- \label{eq:summain}
+ \label{urt:eq:summain}
 \end{align}
-Here $t=t_{n+1}$, $\mathcal A_0[P]=P$, and the finite prescription \eqref{eq:Ar} defines all corrections. For each fixed $r$,
+Here $t=t_{n+1}$, $\mathcal A_0[P]=P$, and the finite prescription \eqref{urt:eq:Ar} defines all corrections. For each fixed $r$,
 \[
  \mathcal A_r[\Pc](t)=O_r(L^{-r}),\qquad
  \mathcal A_r[\Pc/t](t)=O_r(t^{-1}L^{-r}).
 \]
-The errors in \eqref{eq:coeffmain} and \eqref{eq:summain} are relative errors of order $L^{-J-1}$ after dividing by their respective leading brackets. In particular,
-\begin{equation}\label{eq:sumleading}
+The errors in \eqref{urt:eq:coeffmain} and \eqref{urt:eq:summain} are relative errors of order $L^{-J-1}$ after dividing by their respective leading brackets. In particular,
+\begin{equation}\label{urt:eq:sumleading}
  S_n\sim\frac{a_n}{t_{n+1}}\sim\frac{hn}{\log n}\,a_n.
 \end{equation}
 \end{theorem}
 The notation $\mathcal A_r[\Pc/t]$ means to differentiate the complete amplitude $t\mapsto\Pc(t)/t$ in the prescription. It does not mean $\mathcal A_r[\Pc]/t$. The same saddle is used for both formulas, rather than hiding a shift in a newly chosen saddle.
 
-All orders in this report are fixed before $n\to\infty$. No convergence of the infinite correction series, effective onset, growing-order uniformity, or expansion in every power of $1/n$ is claimed. The implicit constants are existential, except in the separate finite nonconvergence certificate. Section~\ref{sec:inverse} states the precise inverse consequences and the uncertainty attached to integer thresholds.
+All orders in this report are fixed before $n\to\infty$. No convergence of the infinite correction series, effective onset, growing-order uniformity, or expansion in every power of $1/n$ is claimed. The implicit constants are existential, except in the separate finite nonconvergence certificate. Section~\ref{urt:sec:inverse} states the precise inverse consequences and the uncertainty attached to integer thresholds.
 
-\section{What the primary sources already establish}\label{sec:sources}
+\begin{remark}[{[write]} The OEIS entries quoted, and a refuted conjecture, 7~October 2026]\label{urt:rem:oeis}
+The write read the four entries in the internal format on 7~October 2026.
+\emph{A003238} (revision \#133, 30 May 2026; N.~J.~A. Sloane), ``Number of rooted trees with n vertices in which vertices at the same level have the same degree.'', offset~1, b-file $n\le10000$ (Robert Israel). Its formula section contains
+\begin{quote}
+``Conjecture: log(a(n)) is asymptotic to c*log(n)\^{}2 where 0.4 < c < 0.5 - \_Benoit Cloitre\_, Apr 13 2004'',
+\end{quote}
+and a comment by Andrei Zabolotskii (22 January 2017) reads: ``According to the MathOverflow link, log(a(n)) \textasciitilde{} log(n)\^{}2/log(4), and a more precise asymptotic expansion is similar to that of A018819 and hence A000123, so the conjecture in the Formula section is partly correct.''
+\emph{A003318} (\#60, 30 May 2026), ``a(n+1) = 1 + a( floor(n/1) ) + a( floor(n/2) ) + ... + a( floor(n/n) ).'', offset~1, b-file $n\le1000$; A003238's formula section states that its partial sums are A003318. \emph{A018819} (\#219, 3 August 2026), ``Binary partition function: number of partitions of n into powers of 2.'', offset~0. \emph{A000123} (\#324, 23 July 2026), ``Number of binary partitions: number of partitions of 2n into powers of 2.'', offset~0.
+
+\emph{Cloitre's conjecture is false as stated.} The asymptotic form is right, but the constant is $c=1/(2\log2)=0.72134752\ldots$, outside $(0.4,0.5)$. Proof: by~\eqref{urt:eq:loga}, $\log a_n=L^2/(2h)+O(L)$, and by~\eqref{urt:eq:saddleL}, $L=\log n+O(\log\log n)$; hence $\log a_n/\log^2n\to1/(2h)=1/(2\log2)$. (Independently of this report, the same follows from Erd\H{o}s--Loxton's Lemma~1, $\beta_n\le a_{n+1}\le C\beta_n$, and the classical $\log\beta_n\sim\log^2n/(2\log2)$ of Mahler and de~Bruijn; it is also the value $1/\log4$ in Zabolotskii's comment.) The finite data explain the conjecture: with the write's own sieve, $\log a_n/\log^2n$ is $0.486$, $0.479$, $0.489$ and $0.493$ at $n=10^2$, $10^3$, $10^4$ and $2\cdot10^4$, inside $(0.4,0.5)$, and approaches $0.7213$ only at the speed of the $O(L)$ and $\log\log n$ terms. The entry's word ``partly correct'' refers to this situation. No OEIS edit is part of this work.
+
+\emph{Checks.} The write recomputed $a_n$ by the ascending divisor sieve of Section~\ref{urt:sec:contradiction} for $n\le20000$, $S_n$, $\beta_n$ from its recurrence, and $\Beta_n$: all 10000 b-file terms of A003238, all 1000 of A003318, all b-file terms of A018819 with $n\le1000$ and of A000123 with $n\le20000$ agree, as do the first ten values printed above, the identity $\Beta_n=\beta_{2n}$ for $n\le20000$, and the 48 terms of each shipped fixture (\file{data/code-b003238.txt}, \file{data/code-b003318.txt}).
+\end{remark}
+
+\subsection{Provenance, sources and reading conventions}\label{urt:sec:provenance}
+\begin{writenote}[Added 7 October 2026, batch~112]\raggedright
+\emph{Provenance.} This report is Report~215 of the session bundle that
+ProveIt's \file{docs/incoming} intake processed as batch~112: the archive
+\file{Report215-reproducibility.zip} ($601{,}832$ bytes, 37 files in a
+wrapper directory \file{Report215/}), arrival commit \file{60f54ea06},
+placed in \file{f79c9bef1}. The text is the delivered \file{Report215.tex}
+(794 lines, dated 4~October 2026), shipped as \file{article.tex}. The
+programs are shipped under \file{code/} (the root \file{reproduce.py} and
+\file{test_package_guards.py} beside them), the receipts as
+\file{data/code-*.json}, the root \file{PACKAGE_GUARD_CHECKS.json} and
+\file{requirements.txt} under \file{data/}, the two 48-term OEIS fixtures as
+\file{data/code-b003238.txt} and \file{data/code-b003318.txt}, and the source
+ledger \file{SOURCES.txt}, the inventory \file{SOURCE_FILES.txt} and the code
+note \file{code/README.txt} (as \file{code-README.txt}) at the top level. Not
+shipped, and retrievable from the arrival commit: the delivered PDF, the pure
+checksum manifest \file{MANIFEST.json} (36 entries, verified at the write)
+and the delivered \file{README.txt}, replaced by the report README. The
+package records no ProveIt commit; it carries no ``prepared for private
+review'' line and no personal data. It is a single-source report, so no merge
+choice was made. The write prefixed the delivered labels with \file{urt:} and
+updated the references to them; it added this subsection, the notes marked
+[write] and Remarks~\ref{urt:rem:oeis} and~\ref{urt:rem:transseries}, each the
+last statement of its section, and inserted nothing before a delivered
+display or statement, so every theorem, section and equation of the source
+keeps its delivered number.
+
+\emph{The sources, as the write read them} (7~October 2026): OEIS A003238,
+A003318, A018819 and A000123 in the internal format with their b-files
+(Remark~\ref{urt:rem:oeis}); Erd\H{o}s--Loxton~\cite{el} (the published
+PDF, freely served by Cambridge University Press), Section~3: Lemma~1,
+Theorem~3 on p.~324 and the last paragraph of Section~3 on p.~328 (the note
+at the end of Section~\ref{urt:sec:sources}); the transseries volume
+\path{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex}
+(\file{p0:def:model}, \file{p0:def:three-inverses}, \file{p0:thm:staircase},
+\file{plt:def:lw-monomial-log-datum}, \file{plt:thm:lw-template}). Not read
+by the write: the other cited works; the source's account of them
+(Section~\ref{urt:sec:sources}) is reported, not confirmed.
+
+\emph{What was checked at intake.} The batch-112 dossier read the
+manuscript, found no demonstrably wrong claim, and reran the delivered suite
+on a copy except the $2^{24}$-coefficient radial sieve, whose regression
+values it confirmed with its own sieve to $10^6$; the only failures were
+Windows artifacts (carriage returns change the hashes of regenerated
+receipts). \emph{What the write checked.} It read every proof and found no
+error. On a fresh copy it reran, with Python~3.14.4,
+\file{certify_global_bound.py} (60~s), \file{operator_constants.py},
+\file{certify_operator.py} (203~s), \file{combine_certificate.py},
+\file{verify_oscillation.py}, \file{verify_finite_models.py},
+\file{verify_exact.py}, \file{verify_saddle_engine.py} and
+\file{verify_arithmetic.py}: the global-bound, operator-constant and
+operator-value receipts are byte-identical to the delivered ones after
+removing carriage returns, the oscillation, exact and saddle receipts are
+equal as JSON (key order differs), and the combined nonconstancy receipt
+differs only in the SHA-256 hashes it records for its inputs, which change
+with the line ends. \file{certify_radial_values.py} was not run (about
+1.6~GiB; the machine is shared), so the radial enclosures enter
+\file{combine_certificate.py} as delivered. It confirmed against the receipts
+that the printed intervals $I_1$, $I_2$ of
+Proposition~\ref{urt:prop:intervals} are outward roundings of the 256-bit
+endpoints, that the exact gap~\eqref{urt:eq:gap} is
+$0.00001847273026448250\ldots$, that the global bound's upper endpoint is the
+printed $12.790169983612993410799254364259$, and that the oscillation bound's
+exact interval is the one printed in Section~\ref{urt:sec:oscillation}; it
+recomputed in exact rationals $2g/(R_1+R_2)=821010233977/44639777749800000$
+and the displayed margin, $C_4=499968$, $x_*<1$ in~\eqref{urt:eq:globaltail},
+$3^{200}<2^{317}$, $Mt_1/2=36$ and $Mt_2/2=48$; and it rederived the
+leading inverse constants $2/(\ee\sqrt h)$ and $1/(\ee\sqrt h)$
+of~\eqref{urt:eq:inverseleading} from~\eqref{urt:eq:loga}--\eqref{urt:eq:logS}
+and~\eqref{urt:eq:saddleL}. Finite computations are observations, except the
+certificate steps, which are the source's computer-assisted proof.
+
+\emph{Relation to the repository.} Before batch~112 the repository named
+A003238 and A000123 only as targets rejected by the source audits of two
+other reports (\file{a047874-long-increasing-subsequences} and
+\file{a126348-stable-hilbert-series}, in the same directory). The
+nearest reports are in the same directory: \file{a055779-labeled-fat-trees},
+\file{a242375-many-color-rooted-trees} and
+\file{a244407-high-outdegree-rooted-trees} (batch~112; other tree
+families). They share no result with this report, so no reciprocal note is
+proposed. No Lean or Rocq file treats these sequences; no statement of this
+report is formalized, and its place in the collection confers no formal
+status. The inverses are compared with the transseries volume in
+Remark~\ref{urt:rem:transseries}.
+\end{writenote}
+\begin{writenote}[What is not claimed, collected from the source]
+The periodic summatory leading asymptotic, the binary comparison and the
+binary-prefix approximation are Erd\H{o}s and Loxton's; dyadic profiles and
+all-order saddle polynomials are not new methods (Mahler, de~Bruijn,
+Dumas--Flajolet, Banderier--Hwang--Ravelomanana--Zacharovas credited); the
+source comparison is bounded, with Pennington, Kato--McLeod and the final 2026
+version of the distinct-chain-partition preprint not read, and no worldwide
+priority claim. The conditional intervals $I_1$, $I_2$ constrain a
+hypothetical common constant: they are not enclosures of $\Pc(t_1)$,
+$\Pc(t_2)$, and their gap is not an oscillation bound (that is the separate
+Theorem~\ref{urt:thm:oscillation}); rounding that bound up to
+$0.0000183919$ is not justified. All orders are fixed; no convergence of the
+correction series, effective onset, growing-order uniformity or expansion in
+powers of $1/n$; the asymptotic constants are existential; the inverse error
+is relative and its absolute width need not shrink, and no exact eventual
+ceiling formula is given; the 48-term fixtures are not full b-files; finite
+model and saddle-engine checks validate algebra, not the analytic remainder;
+byte identity of the PDF and ZIP only with the recorded toolchain.
+\emph{The write adds:} its checks are exact or floating computations; it did
+not rerun the radial sieve; its transseries remark claims no novelty for any
+inversion.
+\end{writenote}
+\medskip
+\begingroup\small
+\noindent\emph{Reading conventions} (letters the source uses in more than
+one sense, with the tempting false readings; no symbol was renamed).\par\smallskip
+\renewcommand{\arraystretch}{1.1}
+\noindent\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.8in}>{\raggedright\arraybackslash}p{5.4in}@{}}
+\toprule
+Symbol & Meanings\\
+\midrule
+$B$, $\Beta$, $\Bc$ & $B(t)=\Bc(\ee^{-t})$ the radial binary product; $\Beta_n=\mathrm{A000123}(n)$ the cumulative binary count; $B_3$ the alternating exterior expression~\eqref{urt:eq:B3}. \emph{False reading:} $B(t)$ is not $\Beta_n$ (the source says so). Erd\H{o}s--Loxton's $B(x)$ is $\Beta_{\lfloor x\rfloor}$.\\
+$Q$, $q$ & $q(n)=a_{n+1}$ and $Q(n)=S_{n+1}$; $q$ and $Q$ also Erd\H{o}s--Loxton's $q(n)$, $Q(x)$; $q_*$ an additive error in~\eqref{urt:eq:globaltail}; $q$ a factor parameter in Section~\ref{urt:sec:repro}.\\
+$D$ & $D(a)$ the power-majorant constants; $D(z)$ the positive prefix remainder~\eqref{urt:eq:prefixdefs}; $D$ an even degree in~\eqref{urt:eq:Ar}; $D=(0,u_0]$ the operator domain in Section~\ref{urt:sec:oscillation}.\\
+$A$ & $\mathcal A_r[P]$ the correction prescription; $A_j(z)$ the binary prefix products; $A_3=I-T+T^2-T^3$.\\
+$H$, $G$, $R$ & $H(t)=\ee^{-t}f(t)/B(t)$, $G=\ee^{2t}H$, $R(t)=H(t)-H(2t)$; $R_i$ the ratios $U_3/S_3$ in Theorem~\ref{urt:thm:oscillation}.\\
+$S$ & $S_n=\mathrm{A003318}(n)$; $S_3=1-T1+T^21-T^31$. \emph{False reading:} $S_3$ is not the third partial sum.\\
+$M$, $C$ & $M=2^{24}$ the coefficient cutoff; $M$ a running bound in the proof of Proposition~\ref{urt:prop:global}; $M=\sup\Pc$ in Theorem~\ref{urt:thm:oscillation}; $C$ the hypothetical common constant and generic constants $C_r$, $C_b$, $C_J$.\\
+$L$, $t$, $v$ & $L=\log(1/t)$, $t=t_N$ the saddle with $b_1(t)=N$, $v=b_2(t)$.\\
+$h$, $\rho$, $\sigma$ & $h=\log2$; $\rho=\log(3/2)/\log2$; $\sigma=\rho-d_0$. \\
+$c$ & Cloitre's conjectured constant (Remark~\ref{urt:rem:oeis}); generic constants $c$, $c_\varepsilon$.\\
+\bottomrule
+\end{tabular}
+\endgroup
+
+\section{What the primary sources already establish}\label{urt:sec:sources}
 Erd\H{o}s and Loxton~\cite{el}, Section 3, study exactly $q(n)$ and $Q(x)=S_{\lfloor x\rfloor+1}$. Their Lemma 1 gives binary comparison $\beta_n\le q(n)\le C\beta_n$. Their Lemma 2 constructs positive binary-recurrence approximants with uniform multiplicative control. Their Theorem 3, page 324, establishes a periodic summatory logarithmic asymptotic. In their notation its form is
 \begin{align}
  \log Q(x)={}&\frac{\log^2(x/\log x)}{2h}
  +\left(\frac12+\frac{1+\log h}{h}\right)\log x\notag\\
  &-\left(1+\frac{\log h}{h}\right)\log\log x
- +V\!\left(\frac{\log x-\log\log x}{h}\right)+o(1),\label{eq:oldEL}
+ +V\!\left(\frac{\log x-\log\log x}{h}\right)+o(1),\label{urt:eq:oldEL}
 \end{align}
-where $V$ is one-periodic. Their final paragraph of Section 3, page 328, explicitly leaves the convergence of $Q(x)/\sum_{j\le x}\beta_j$ unresolved. Theorem~\ref{thm:nonconvergence} gives a negative answer for these exact conventions. Equation~\eqref{eq:oldEL}, the existence of a periodic leading shape, and binary-prefix approximation are prior results, not conclusions first proposed here.
+where $V$ is one-periodic. Their final paragraph of Section 3, page 328, explicitly leaves the convergence of $Q(x)/\sum_{j\le x}\beta_j$ unresolved. Theorem~\ref{urt:thm:nonconvergence} gives a negative answer for these exact conventions. Equation~\eqref{urt:eq:oldEL}, the existence of a periodic leading shape, and binary-prefix approximation are prior results, not conclusions first proposed here.
 
-Gol'dberg and Livshits~\cite{gl} identify the size of a minimal universal tree with the relevant uniform-tree partial sum and establish its logarithmic leading growth. Gati, Harary, and Robinson~\cite{ghr}, Section 3, connect the chain-partition and tree descriptions and reproduce the Erd\H{o}s--Loxton summatory formula. Harary and Robinson~\cite{hr}, equation (36), give the matching generating equation in a planted convention with one extra root. The recurrence \eqref{eq:recurrence} fixes the convention used here.
+Gol'dberg and Livshits~\cite{gl} identify the size of a minimal universal tree with the relevant uniform-tree partial sum and establish its logarithmic leading growth. Gati, Harary, and Robinson~\cite{ghr}, Section 3, connect the chain-partition and tree descriptions and reproduce the Erd\H{o}s--Loxton summatory formula. Harary and Robinson~\cite{hr}, equation (36), give the matching generating equation in a planted convention with one extra root. The recurrence \eqref{urt:eq:recurrence} fixes the convention used here.
 
-The methods also have substantial predecessors. Mahler~\cite{mahler} and de Bruijn~\cite{debruijn} treat binary or power-partition growth and periodic corrections. Dumas and Flajolet~\cite{df} give complete periodic coefficient expansions for a cyclotomic Mahler-product family and analyze multiple saddles. Banderier, Hwang, Ravelomanana, and Zacharovas~\cite{bhrz} obtain inverse-logarithmic expansions with periodic coefficients for their binomially weighted recurrence. Those exact hypotheses do not identify their objects with \eqref{eq:recurrence}. These works nevertheless preclude treating generic dyadic profiles or all-order saddle polynomials as new methods.
+The methods also have substantial predecessors. Mahler~\cite{mahler} and de Bruijn~\cite{debruijn} treat binary or power-partition growth and periodic corrections. Dumas and Flajolet~\cite{df} give complete periodic coefficient expansions for a cyclotomic Mahler-product family and analyze multiple saddles. Banderier, Hwang, Ravelomanana, and Zacharovas~\cite{bhrz} obtain inverse-logarithmic expansions with periodic coefficients for their binomially weighted recurrence. Those exact hypotheses do not identify their objects with \eqref{urt:eq:recurrence}. These works nevertheless preclude treating generic dyadic profiles or all-order saddle polynomials as new methods.
 
 The source comparison for this report additionally inspected the cited works of Chung--Coppersmith--Graham, Kochkarev, Read, and the 2025 distinct-chain-partition preprint, together with the actual nearby ProveIt source listed in \texttt{SOURCES.txt}. In the inspected material, no theorem supplied either the present ratio nonconvergence or the complete fixed-order individual and summatory expansion for this exact recurrence. This is a bounded finding about those sources. It does not exclude uninspected later work, including a final 2026 version of the distinct-chain-partition paper or full original results of Pennington and Kato--McLeod that were not independently read. The proposed mathematical sharpening is the exact-target coefficient and inverse theorem with its quantified remainder, and the separately certified nonconvergence result. No worldwide priority assertion is made.
 
-\section{Positive radial identities and a global bound}\label{sec:radial}
-Since a chain partition is an ordinary partition, $q(n)\le p(n)$, where $p$ is the ordinary partition function. Thus $F$ is analytic in $|z|<1$. Summing \eqref{eq:recurrence} gives the normally convergent identity
-\begin{equation}\label{eq:funceq}
+\begin{writenote}[The Erd\H{o}s--Loxton citations, checked 7 October 2026]
+The write read the published paper~\cite{el}. Section~3 defines $q(n)$ by
+(8), the binary-partition count $b(n)$ by (9), $B(x)=\sum_{n\le x}b(n)=b(2[x])$
+and the sum function $Q(x)$ of $q$; Lemma~1 is $b(n)\le q(n)\le cb(n)$;
+Theorem~3 is on p.~324; and the last paragraph of Section~3, on p.~328, says
+that their methods could bound the oscillation of $Q(x)/B(x)$, but ``we have
+not been able to decide whether or not $Q(x)/B(x)$ approaches a limit''. With $B(n)=\Beta_n$ and $Q(n)=S_{n+1}$,
+this is exactly the second ratio of Theorem~\ref{urt:thm:nonconvergence}, so
+the citations above are accurate and the theorem answers that question in the
+negative, by a computer-assisted proof. Erd\H{o}s and Loxton anticipated upper
+bounds for the oscillation; Theorem~\ref{urt:thm:oscillation} gives a lower
+bound.
+\end{writenote}
+
+\section{Positive radial identities and a global bound}\label{urt:sec:radial}
+Since a chain partition is an ordinary partition, $q(n)\le p(n)$, where $p$ is the ordinary partition function. Thus $F$ is analytic in $|z|<1$. Summing \eqref{urt:eq:recurrence} gives the normally convergent identity
+\begin{equation}\label{urt:eq:funceq}
  F(z)=\frac{z}{1-z}\left(1+\sum_{k\ge2}F(z^k)\right).
 \end{equation}
 For example, direct expansion of the right side assigns to $z^{n+1}$ the sum of $a_d$ over all divisors $d$ of $n$. The binary product has
-\begin{equation}\label{eq:binarydyad}
+\begin{equation}\label{urt:eq:binarydyad}
  B(t)=\frac{B(2t)}{1-\ee^{-t}}.
 \end{equation}
-Combining \eqref{eq:funceq} and \eqref{eq:binarydyad} yields
+Combining \eqref{urt:eq:funceq} and \eqref{urt:eq:binarydyad} yields
 \begin{align}
  G(t)&=\frac1{B(2t)}+\ee^{-2t}G(2t)
-       +\sum_{k\ge3}\frac{\ee^{-kt}B(kt)}{B(2t)}G(kt),\label{eq:Grec}\\
+       +\sum_{k\ge3}\frac{\ee^{-kt}B(kt)}{B(2t)}G(kt),\label{urt:eq:Grec}\\
  H(t)-H(2t)&=R(t):=
- \frac{\ee^{-2t}}{B(2t)}\left(1+\sum_{k\ge3}f(kt)\right)>0.\label{eq:Hdiff}
+ \frac{\ee^{-2t}}{B(2t)}\left(1+\sum_{k\ge3}f(kt)\right)>0.\label{urt:eq:Hdiff}
 \end{align}
 
-\begin{lemma}[Product-ratio majorant]\label{lem:ratio}
+\begin{lemma}[Product-ratio majorant]\label{urt:lem:ratio}
 For $k\ge3$ and $kt\le1$, let $\lambda_k=\log_2k-1$. Then
-\begin{equation}\label{eq:ratiobound}
+\begin{equation}\label{urt:eq:ratiobound}
  \frac{B(kt)}{B(2t)}\le\ee^2(kt)^{\lambda_k}.
 \end{equation}
 For $0<t\le1/16$,
-\begin{equation}\label{eq:Wbound}
+\begin{equation}\label{urt:eq:Wbound}
  W(t):=\sum_{k\ge3}\frac{\ee^{-kt}B(kt)}{B(2t)}
        \le15t^\rho+24t,\qquad \frac1{B(2t)}\le8t^2.
 \end{equation}
@@ -147,12 +337,12 @@ For $u>0$,
 \[
  \frac{1-\ee^{-2u}}{1-\ee^{-ku}}\le\frac2k\ee^{ku}.
 \]
-Multiply through the last dyadic $u=2^jt$ for which $ku\le1$. The sum of the retained $ku$ is at most 2, and if $J$ is the last index, then $(2/k)^{J+1}\le(kt)^{\lambda_k}$. Every subsequent factor ratio is at most one. This proves \eqref{eq:ratiobound}.
+Multiply through the last dyadic $u=2^jt$ for which $ku\le1$. The sum of the retained $ku$ is at most 2, and if $J$ is the last index, then $(2/k)^{J+1}\le(kt)^{\lambda_k}$. Every subsequent factor ratio is at most one. This proves \eqref{urt:eq:ratiobound}.
 
-The $k=3$ term is at most $\ee^2 3^\rho t^\rho<15t^\rho$. One elementary verification is $\rho<3/5$, $3^{3/5}<2$, and $\ee^2<15/2$. For $4\le k\le7$, monotonicity of $B$ and cancellation in \eqref{eq:binarydyad} give a ratio at most $1-\ee^{-2t}\le2t$, so the total is at most $8t$. For $k\ge8$ the first two canceled factors give a ratio at most $8t^2$; its exponential sum is at most $(\ee^t-1)^{-1}\le1/t$. Thus $16t$ already bounds the terms with $k\ge4$; $24t$ is a convenient enlargement. Finally, retain the first two factors of $1/B(2t)$.
+The $k=3$ term is at most $\ee^2 3^\rho t^\rho<15t^\rho$. One elementary verification is $\rho<3/5$, $3^{3/5}<2$, and $\ee^2<15/2$. For $4\le k\le7$, monotonicity of $B$ and cancellation in \eqref{urt:eq:binarydyad} give a ratio at most $1-\ee^{-2t}\le2t$, so the total is at most $8t$. For $k\ge8$ the first two canceled factors give a ratio at most $8t^2$; its exponential sum is at most $(\ee^t-1)^{-1}\le1/t$. Thus $16t$ already bounds the terms with $k\ge4$; $24t$ is a convenient enlargement. Finally, retain the first two factors of $1/B(2t)$.
 \end{proof}
 
-\begin{proposition}[Certified uniform bound]\label{prop:global}
+\begin{proposition}[Certified uniform bound]\label{urt:prop:global}
 For every real $t>0$, $0<G(t)<14$ and $0<H(t)<14$.
 \end{proposition}
 \begin{proof}
@@ -162,7 +352,7 @@ The finite portion and its tails are specified here so that the computation is a
  =\sum_{r\ge1}\frac1{r(\ee^{rs}-1)}<\frac2s
 \]
 and positivity, $p(r)\le\exp(2\sqrt{2r})\le\exp(3\sqrt{r+1})$. Hence $a_n\le\exp(3\sqrt n)$. For $t\ge1/16$, concavity of the square root at $n=10000$ bounds the omitted polynomial tail by
-\begin{equation}\label{eq:basetail}
+\begin{equation}\label{urt:eq:basetail}
  \sum_{n>10000}a_n\ee^{-nt}
  <\frac{\ee^{-325}}{\ee^{19/400}-1}
  <33\ee^{-325}<2^{-319}.
@@ -173,10 +363,10 @@ Compute $a_n$ through 10000. On each interval $u\le t\le v$ in the grid $u_0=1/1
 \[
  G(t)\le\frac{\ee^u f(u)}{B(v)}.
 \]
-Use \eqref{eq:basetail} for $f(u)$. For $t\ge4$, use $G(t)\le\ee^4f(4)$ and $B(t)\ge1$. Directed evaluation certifies $G<4$ throughout $[1/16,\infty)$.
+Use \eqref{urt:eq:basetail} for $f(u)$. For $t\ge4$, use $G(t)\le\ee^4f(4)$ and $B(t)\ge1$. Directed evaluation certifies $G<4$ throughout $[1/16,\infty)$.
 
-Suppose $G\le M$ has been covered for $t\ge b$, and extend to $a\le t\le b=2a$. Every $kt$ with $k\ge2$ is already covered. Each ratio $B(kt)/B(2t)$ increases with $t$: differentiate individual factor ratios and use the decrease of $x/(\ee^{xu}-1)$ in $x$. Therefore \eqref{eq:Grec} is bounded by
-\begin{equation}\label{eq:band}
+Suppose $G\le M$ has been covered for $t\ge b$, and extend to $a\le t\le b=2a$. Every $kt$ with $k\ge2$ is already covered. Each ratio $B(kt)/B(2t)$ increases with $t$: differentiate individual factor ratios and use the decrease of $x/(\ee^{xu}-1)$ in $x$. Therefore \eqref{urt:eq:Grec} is bounded by
+\begin{equation}\label{urt:eq:band}
  \frac1{B(2b)}+\left(\ee^{-2a}+W_{a,b}\right)M,
 \end{equation}
 where the finite upper bound is
@@ -184,8 +374,8 @@ where the finite upper bound is
  W_{a,b}=\sum_{k=3}^{63}\frac{\ee^{-ka}B(kb)}{B(2b)}
   +\frac{B(64b)\ee^{-64a}}{B(2b)(1-\ee^{-a})}.
 \]
-Take the maximum of $M$ and \eqref{eq:band} at each step. After 22 such bands, the lower endpoint is $t_*=2^{-26}$. For the remaining bands, \eqref{eq:Wbound} bounds the accumulated multiplicative exponent and additive error by
-\begin{equation}\label{eq:globaltail}
+Take the maximum of $M$ and \eqref{urt:eq:band} at each step. After 22 such bands, the lower endpoint is $t_*=2^{-26}$. For the remaining bands, \eqref{urt:eq:Wbound} bounds the accumulated multiplicative exponent and additive error by
+\begin{equation}\label{urt:eq:globaltail}
  x_*=45(2/3)^{26}+48\,2^{-26},\qquad q_*=(32/3)2^{-52}.
 \end{equation}
 Indeed $t_*^\rho=(2/3)^{26}$ and summing the successive geometric scales gives these constants. If $M_*$ is the finite-band bound, every remaining band has bound at most
@@ -196,37 +386,37 @@ The executable \texttt{certify\_global\_bound.py} verifies $x_*<1$ and gives the
 \[
  12.790169983612993410799254364259<14.
 \]
-The arithmetic rules and replay procedure appear in Section~\ref{sec:repro}. Finally $H=\ee^{-2t}G$.
+The arithmetic rules and replay procedure appear in Section~\ref{urt:sec:repro}. Finally $H=\ee^{-2t}G$.
 \end{proof}
 
-Equations~\eqref{eq:Hdiff} and \eqref{eq:Wbound} now give $R(t)=O(t^\rho)$. In detail $f(kt)=\ee^{-kt}B(kt)G(kt)$ and $G<14$, so $R\le1/B(2t)+14W(t)$. Consequently
-\begin{equation}\label{eq:profile}
+Equations~\eqref{urt:eq:Hdiff} and \eqref{urt:eq:Wbound} now give $R(t)=O(t^\rho)$. In detail $f(kt)=\ee^{-kt}B(kt)G(kt)$ and $G<14$, so $R\le1/B(2t)+14W(t)$. Consequently
+\begin{equation}\label{urt:eq:profile}
  \Pc(t):=\lim_{m\to\infty}H(t/2^m)
  =H(t)+\sum_{j\ge1}R(t/2^j)
 \end{equation}
 converges uniformly on compact real intervals, is continuous, and satisfies $\Pc(2t)=\Pc(t)$ and
-\begin{equation}\label{eq:radialequiv}
+\begin{equation}\label{urt:eq:radialequiv}
  H(t)=\Pc(t)+O(t^\rho).
 \end{equation}
-It is bounded below by a positive constant: $H(t)\ge H(2t)$ lets one move every small $t$ into a fixed compact dyadic annulus, where $H$ has a positive minimum. The same compact-annulus argument and \eqref{eq:profile} give a positive lower bound for $\Pc$. This construction alone does not prove nonconstancy.
+It is bounded below by a positive constant: $H(t)\ge H(2t)$ lets one move every small $t$ into a fixed compact dyadic annulus, where $H$ has a positive minimum. The same compact-annulus argument and \eqref{urt:eq:profile} give a positive lower bound for $\Pc$. This construction alone does not prove nonconstancy.
 
-\section{The cut operator and every analytic tail}\label{sec:operator}
+\section{The cut operator and every analytic tail}\label{urt:sec:operator}
 Set $u_0=2^{-10}$. For bounded nonnegative $v$ on $(0,u_0]$, define
-\begin{equation}\label{eq:operator}
+\begin{equation}\label{urt:eq:operator}
  (Tv)(t)=\sum_{j\ge1}\ \sum_{\substack{k\ge3\\kt/2^j\le u_0}}
  \frac{\ee^{(k-2)t/2^j}B(kt/2^j)}{B(2t/2^j)}\,v(kt/2^j).
 \end{equation}
-The exponent in this kernel is positive. It comes from substituting $f(ku)=\ee^{ku}B(ku)H(ku)$ into \eqref{eq:Hdiff}; changing its sign would change the certificate. The domain includes equality $ku=u_0$.
+The exponent in this kernel is positive. It comes from substituting $f(ku)=\ee^{ku}B(ku)H(ku)$ into \eqref{urt:eq:Hdiff}; changing its sign would change the certificate. The domain includes equality $ku=u_0$.
 
-Let $b(t)$ be the remaining positive part of $\sum_{j\ge1}R(t/2^j)$, comprising the inhomogeneous 1 and all terms with $kt/2^j>u_0$. If $H(t)$ had a limit $C$ as $t\downarrow0$, telescoping \eqref{eq:Hdiff} would give
-\begin{equation}\label{eq:conditional}
+Let $b(t)$ be the remaining positive part of $\sum_{j\ge1}R(t/2^j)$, comprising the inhomogeneous 1 and all terms with $kt/2^j>u_0$. If $H(t)$ had a limit $C$ as $t\downarrow0$, telescoping \eqref{urt:eq:Hdiff} would give
+\begin{equation}\label{urt:eq:conditional}
  H+TH+b=C\quad\hbox{on }(0,u_0].
 \end{equation}
 The same identity follows from the hypothesis that $\Pc$ is the constant $C$. The next estimates establish convergence of the operator sums, including the omitted exterior terms.
 
 \subsection{Power majorants for the operator}
-If $a\ge0$ and $a+\rho<9$, Lemma~\ref{lem:ratio} gives
-\begin{equation}\label{eq:Dmajorant}
+If $a\ge0$ and $a+\rho<9$, Lemma~\ref{urt:lem:ratio} gives
+\begin{equation}\label{urt:eq:Dmajorant}
  T(t^a)\le D(a)t^{a+\rho},\qquad
  D(a)=\frac{\ee^{2+u_0}3^{10}}{2^{a+\rho}-1}
        \sum_{k\ge3}k^{a+\rho-10}.
@@ -238,10 +428,10 @@ To verify the exponent and constant, put $u=t/2^j$. Since $ku\le u_0$ and $\lamb
  &\le\ee^{2+u_0}k^{a+\rho}u_0^{\lambda_k-\rho}u^{a+\rho}\\
  &=\ee^{2+u_0}3^{10}k^{a+\rho-10}u^{a+\rho}.
 \end{align*}
-Summing $j\ge1$ gives the denominator in \eqref{eq:Dmajorant}. The condition $a+\rho<9$ is exactly what makes the $k$-series convergent.
+Summing $j\ge1$ gives the denominator in \eqref{urt:eq:Dmajorant}. The condition $a+\rho<9$ is exactly what makes the $k$-series convergent.
 
 The directed computation verifies
-\begin{equation}\label{eq:Dconstants}
+\begin{equation}\label{urt:eq:Dconstants}
  \begin{array}{c|rrrr}
  a&0&\rho&2\rho&3\rho\\ \hline
  D(a)<&31&24&24&28
@@ -258,18 +448,18 @@ These are finite checks with explicit tails, not decimal estimates for infinite 
  2^{7+(r+1)\rho}=128(3/2)^{r+1}.
 \]
 For the sum over $k$, evaluate $3\le k\le31$ and use, for $p>1$,
-\begin{equation}\label{eq:pseries}
+\begin{equation}\label{urt:eq:pseries}
  \sum_{k\ge K}k^{-p}\le K^{-p}+\frac{K^{1-p}}{p-1},\qquad K=32.
 \end{equation}
-Rational powers are enclosed by the directed logarithm and exponential rules of Section~\ref{sec:repro}.
+Rational powers are enclosed by the directed logarithm and exponential rules of Section~\ref{urt:sec:repro}.
 
 Put $d=(31,24,24,28)$, $C_0=1$, and $C_r=\prod_{i=0}^{r-1}d_i$. In particular
-\begin{equation}\label{eq:T4}
+\begin{equation}\label{urt:eq:T4}
  T^r1(t)\le C_rt^{r\rho}\quad(0\le r\le4),\qquad C_4=499968.
 \end{equation}
 
 \subsection{The exterior terms}
-For $0<u\le u_0$, Proposition~\ref{prop:global} gives
+For $0<u\le u_0$, Proposition~\ref{urt:prop:global} gives
 \[
  \sum_{ku>u_0}f(ku)
  \le\frac{14B(u_0)}{1-\ee^{-u}}
@@ -281,15 +471,15 @@ The inhomogeneous 1 is absorbed into $29B(u_0)/u$. Moreover
       \le2^{36}u^8.
 \]
 Drop the factor $\ee^{-2u}\le1$ and sum over $j\ge1$ to obtain
-\begin{equation}\label{eq:bmajorant}
+\begin{equation}\label{urt:eq:bmajorant}
  0\le b(t)\le C_bt^7,\qquad C_b=\frac{29B(u_0)2^{36}}{127}.
 \end{equation}
-The denominator $127$ is $2^7-1$. Applying the last three constants in \eqref{eq:Dconstants} bounds the alternating expression
-\begin{equation}\label{eq:B3}
+The denominator $127$ is $2^7-1$. Applying the last three constants in \eqref{urt:eq:Dconstants} bounds the alternating expression
+\begin{equation}\label{urt:eq:B3}
  B_3=b-Tb+T^2b-T^3b
 \end{equation}
 by $|B_3(t)|\le\varepsilon_b(t)$, where
-\begin{equation}\label{eq:eb}
+\begin{equation}\label{urt:eq:eb}
  \varepsilon_b(t)=C_bt^7\left(1+434t^\rho
  +434\cdot852t^{2\rho}+434\cdot852\cdot3306t^{3\rho}\right).
 \end{equation}
@@ -297,33 +487,33 @@ There is no assumption that $B_3$ is positive.
 
 \subsection{Finite recursion and its omitted terms}
 To enclose $T^r1$ for $r=1,2,3$, retain $3\le k\le15$ and $1\le j\le J_r$, where
-\begin{equation}\label{eq:cutoffs}
+\begin{equation}\label{urt:eq:cutoffs}
  (J_1,J_2,J_3)=(35,20,15).
 \end{equation}
 Enforce the exact condition $ku\le u_0$ in every summand. Every inner interval is multiplied by a positive kernel, and all omitted positive terms receive an upper endpoint contribution.
 
-For the omitted $j$-tail, \eqref{eq:Dmajorant} gives
-\begin{equation}\label{eq:jtail}
+For the omitted $j$-tail, \eqref{urt:eq:Dmajorant} gives
+\begin{equation}\label{urt:eq:jtail}
  C_rt^{r\rho}(2/3)^{rJ_r}.
 \end{equation}
 For $k\ge16$, use
-\begin{equation}\label{eq:ktail}
+\begin{equation}\label{urt:eq:ktail}
  \frac{C_{r-1}\ee^{2+u_0}3^{10}}{(3/2)^r-1}\,
  t^{r\rho}\sum_{k\ge16}k^{r\rho-10},
 \end{equation}
-and bound the last series by \eqref{eq:pseries}, with $K=16$ and $p=10-117r/200$. Adding \eqref{eq:jtail} and \eqref{eq:ktail} double-counts their overlap, which is harmless. An inner recursion may be stopped with the full interval $[0,C_rt^{r\rho}]$. The code uses the rational enlargement
+and bound the last series by \eqref{urt:eq:pseries}, with $K=16$ and $p=10-117r/200$. Adding \eqref{urt:eq:jtail} and \eqref{urt:eq:ktail} double-counts their overlap, which is harmless. An inner recursion may be stopped with the full interval $[0,C_rt^{r\rho}]$. The code uses the rational enlargement
 \[
  C_r m^r(2/3)^{er}\ge C_r(m/2^e)^{r\rho},\qquad t=m/2^e,
 \]
 when this upper bound is below $10^{-12}$. This is an enclosure, not a fitted pruning error. All additions and products are directed.
 
-\section{The finite contradiction}\label{sec:contradiction}
-Four substitutions in \eqref{eq:conditional} yield
-\begin{equation}\label{eq:iterated}
+\section{The finite contradiction}\label{urt:sec:contradiction}
+Four substitutions in \eqref{urt:eq:conditional} yield
+\begin{equation}\label{urt:eq:iterated}
  H=CS_3-B_3+T^4H,\qquad S_3=1-T1+T^21-T^31.
 \end{equation}
 Since $0<H<14$ and $T$ is positive, any common constant $C$ must obey, whenever $S_3(t)>0$,
-\begin{equation}\label{eq:Cinterval}
+\begin{equation}\label{urt:eq:Cinterval}
  \frac{H(t)-14T^41(t)-\varepsilon_b(t)}{S_3(t)}
  \le C\le
  \frac{H(t)+\varepsilon_b(t)}{S_3(t)}.
@@ -331,36 +521,36 @@ Since $0<H<14$ and $T$ is positive, any common constant $C$ must obey, whenever 
 The positivity of $S_3$ is explicitly certified at both test points.
 
 Set
-\begin{equation}\label{eq:points}
+\begin{equation}\label{urt:eq:points}
  t_1=\frac9{2^{21}},\qquad t_2=\frac3{2^{19}},\qquad M=2^{24}.
 \end{equation}
 The program computes every $a_n$, $1\le n\le M$, as an arbitrary-precision integer using the ascending divisor sieve. At step $d$, it adds $a_d$ to each entry $a_{1+kd}$, so each value is final before it is used. There are no floating-point coefficients. Horner evaluation encloses $\sum_{n=1}^M a_n\ee^{-nt}$, and directed product evaluation encloses $B(t)$.
 
 The omitted radial tail is bounded by
-\begin{equation}\label{eq:radialtail}
+\begin{equation}\label{urt:eq:radialtail}
  0\le H(t)-\frac{\ee^{-t}}{B(t)}\sum_{n=1}^M a_n\ee^{-nt}
  \le\frac{14\ee^{-Mt/2}}{1-\ee^{-t/2}}.
 \end{equation}
 Indeed positivity gives $\sum_{n>M}a_n\ee^{-nt}\le\ee^{-Mt/2}f(t/2)$. Apply $f(t/2)<14\ee^{-t/2}B(t/2)$ and the exact relation $B(t/2)/B(t)=(1-\ee^{-t/2})^{-1}$; dropping $\ee^{-3t/2}$ enlarges the result. The two exponents are exactly $Mt_1/2=36$ and $Mt_2/2=48$. This estimate is used as an interval endpoint, not just quoted as small.
 
-\begin{proposition}[Directed conditional intervals]\label{prop:intervals}
+\begin{proposition}[Directed conditional intervals]\label{urt:prop:intervals}
 Under either hypothesis $\lim_{t\downarrow0}H(t)=C$ or $\Pc\equiv C$, the same real number $C$ belongs to both intervals below. Endpoints are rounded outward:
 \begin{align*}
  I_1&=[\,4.9933847050426907,\ 4.9933867654594445\,],\\
  I_2&=[\,4.9933622876055544,\ 4.9933662323124263\,].
 \end{align*}
 The full 256-bit integer endpoints are included in the accompanying receipt. Their exact separation is
-\begin{equation}\label{eq:gap}
+\begin{equation}\label{urt:eq:gap}
  \frac{2138996031241830049592557078436499944663290918102101242885845234882473289}{2^{256}}>0.
 \end{equation}
 \end{proposition}
 \begin{proof}
-Compute the radial enclosures by \eqref{eq:radialtail}, the operator enclosures by \eqref{eq:cutoffs}--\eqref{eq:ktail}, and the $T^4$ and exterior bounds by \eqref{eq:T4} and \eqref{eq:eb}. Substitute the resulting intervals in \eqref{eq:Cinterval}, using outward division by the certified positive $S_3$. The compact receipts retain every integer endpoint; \texttt{combine\_certificate.py} computes the intervals and computes the first lower endpoint minus the second upper endpoint; the replay compares it with the pinned positive numerator in \eqref{eq:gap} divided by $2^{256}$. The reproduction procedure regenerates the underlying $2^{24}$ coefficients and all three operator powers before comparing receipts.
+Compute the radial enclosures by \eqref{urt:eq:radialtail}, the operator enclosures by \eqref{urt:eq:cutoffs}--\eqref{urt:eq:ktail}, and the $T^4$ and exterior bounds by \eqref{urt:eq:T4} and \eqref{urt:eq:eb}. Substitute the resulting intervals in \eqref{urt:eq:Cinterval}, using outward division by the certified positive $S_3$. The compact receipts retain every integer endpoint; \texttt{combine\_certificate.py} computes the intervals and computes the first lower endpoint minus the second upper endpoint; the replay compares it with the pinned positive numerator in \eqref{urt:eq:gap} divided by $2^{256}$. The reproduction procedure regenerates the underlying $2^{24}$ coefficients and all three operator powers before comparing receipts.
 \end{proof}
-The numerator in \eqref{eq:gap} is an exact integer, not a digitized plot or a decimal-fit residual. To avoid a common misinterpretation, the intervals $I_1,I_2$ are \emph{conditional constraints on a single constant}. They are not pointwise enclosures for $\Pc(t_1)$ and $\Pc(t_2)$. Their gap is not asserted to be a lower bound on the actual oscillation of $\Pc$. They prove that $H$ has no radial limit and that $\Pc$ is nonconstant.
+The numerator in \eqref{urt:eq:gap} is an exact integer, not a digitized plot or a decimal-fit residual. To avoid a common misinterpretation, the intervals $I_1,I_2$ are \emph{conditional constraints on a single constant}. They are not pointwise enclosures for $\Pc(t_1)$ and $\Pc(t_2)$. Their gap is not asserted to be a lower bound on the actual oscillation of $\Pc$. They prove that $H$ has no radial limit and that $\Pc$ is nonconstant.
 
-\section{Abelian transfer to the two sequence ratios}\label{sec:abelian}
-\begin{lemma}[Positive Abelian averaging]\label{lem:abelian}
+\section{Abelian transfer to the two sequence ratios}\label{urt:sec:abelian}
+\begin{lemma}[Positive Abelian averaging]\label{urt:lem:abelian}
 Let $u_n\ge0$, $v_n>0$, and suppose $V(z)=\sum v_nz^n\to\infty$ as $z\uparrow1$. If $u_n/v_n\to C<\infty$, then
 \[
  \frac{\sum u_nz^n}{\sum v_nz^n}\longrightarrow C.
@@ -372,30 +562,30 @@ For finite $C$, split $\sum(u_n-Cv_n)z^n$ at an index beyond which $|u_n-Cv_n|\l
 \end{proof}
 
 The generating functions of $q(n)$ and $Q(n)$ are respectively $F(z)/z$ and $F(z)/(z(1-z))$. Those of $\beta_n$ and $\Beta_n$ are $\Bc(z)$ and $\Bc(z)/(1-z)$. Both generating-function ratios are therefore
-\begin{equation}\label{eq:abelratio}
+\begin{equation}\label{urt:eq:abelratio}
  \frac{F(z)}{z\Bc(z)}=G(-\log z).
 \end{equation}
-Both denominators diverge because $\beta_n\ge1$. If either sequence ratio in Theorem~\ref{thm:nonconvergence} converged to a finite $C$, Lemma~\ref{lem:abelian} would force $G(t)\to C$ and hence $H(t)=\ee^{-2t}G(t)\to C$. Proposition~\ref{prop:intervals} rules this out. The global bound $G<14$ rules out a ratio tending to $+\infty$ by the same lemma; nonnegativity excludes $-\infty$. This proves Theorem~\ref{thm:nonconvergence}. No phase-density statement, Tauberian theorem, saddle expansion, or coefficient equivalent is used.
+Both denominators diverge because $\beta_n\ge1$. If either sequence ratio in Theorem~\ref{urt:thm:nonconvergence} converged to a finite $C$, Lemma~\ref{urt:lem:abelian} would force $G(t)\to C$ and hence $H(t)=\ee^{-2t}G(t)\to C$. Proposition~\ref{urt:prop:intervals} rules this out. The global bound $G<14$ rules out a ratio tending to $+\infty$ by the same lemma; nonnegativity excludes $-\infty$. This proves Theorem~\ref{urt:thm:nonconvergence}. No phase-density statement, Tauberian theorem, saddle expansion, or coefficient equivalent is used.
 
 For the original real-variable summatory question, $Q(x)$ and its binary comparator depend on $\lfloor x\rfloor$. The integer nonconvergence therefore gives the same negative answer for real $x\to\infty$.
 
-\section{A separate quantitative oscillation corollary}\label{sec:oscillation}
+\section{A separate quantitative oscillation corollary}\label{urt:sec:oscillation}
 The conditional intervals also yield an actual oscillation lower bound, but only after the additional argument below. They remain conditional constraints on a common constant and are never reinterpreted as values of $\Pc$.
 
-\begin{theorem}[Actual oscillation lower bound]\label{thm:oscillation}
+\begin{theorem}[Actual oscillation lower bound]\label{urt:thm:oscillation}
 Let $\omega=\sup_{t>0}\Pc(t)-\inf_{t>0}\Pc(t)$. Then
-\begin{equation}\label{eq:oscillation}
+\begin{equation}\label{urt:eq:oscillation}
  \omega>0.00001839189788.
 \end{equation}
-For each of the two ratios in Theorem~\ref{thm:nonconvergence}, its limit superior minus its limit inferior is at least $\omega$, and therefore exceeds the same displayed decimal.
+For each of the two ratios in Theorem~\ref{urt:thm:nonconvergence}, its limit superior minus its limit inferior is at least $\omega$, and therefore exceeds the same displayed decimal.
 \end{theorem}
 \begin{proof}
-On $D=(0,u_0]$, $T$ is a bounded positive operator on bounded real functions: $T1(t)\le31t^\rho\le31u_0^\rho$. Also $b$ is bounded by \eqref{eq:bmajorant}. Without assuming constancy, the exact telescoping identity is
+On $D=(0,u_0]$, $T$ is a bounded positive operator on bounded real functions: $T1(t)\le31t^\rho\le31u_0^\rho$. Also $b$ is bounded by \eqref{urt:eq:bmajorant}. Without assuming constancy, the exact telescoping identity is
 \[
  \Pc=H+TH+b.
 \]
 Put $A_3=I-T+T^2-T^3$, $S_3=A_31$, and $U_3=(I+T+T^2+T^3)1$. Four substitutions, or $A_3(I+T)=I-T^4$, give
-\begin{equation}\label{eq:unconditionaloperator}
+\begin{equation}\label{urt:eq:unconditionaloperator}
  H=A_3\Pc-B_3+T^4H.
 \end{equation}
 Every argument at which the operator evaluates a function remains in $D$.
@@ -409,7 +599,7 @@ At either test point, define the auxiliary quantity
  X(t)=\frac{H(t)+B_3(t)-T^4H(t)}{S_3(t)}
      =C+\frac{A_3e(t)}{S_3(t)}.
 \]
-The already established bounds place $X(t_i)$ in the full fixed-point interval used to print $I_i$ in Proposition~\ref{prop:intervals}. This is an unconditional enclosure of $X$, which is a different quantity from $\Pc(t_i)$. If $g>0$ is the exact interval gap \eqref{eq:gap} and $R_i=U_3(t_i)/S_3(t_i)$, then
+The already established bounds place $X(t_i)$ in the full fixed-point interval used to print $I_i$ in Proposition~\ref{urt:prop:intervals}. This is an unconditional enclosure of $X$, which is a different quantity from $\Pc(t_i)$. If $g>0$ is the exact interval gap \eqref{urt:eq:gap} and $R_i=U_3(t_i)/S_3(t_i)$, then
 \[
  g\le X(t_1)-X(t_2)\le\frac\omega2(R_1+R_2).
 \]
@@ -421,7 +611,7 @@ To bound $R_i$ from above, sum the stored upper endpoints for $T^r1(t_i)$, $0\le
  R_1&<1.004024051499,\qquad R_2<1.004765947242.
 \end{align*}
 Consequently
-\begin{equation}\label{eq:oscrational}
+\begin{equation}\label{urt:eq:oscrational}
  \omega>\frac{821010233977}{44639777749800000}
          >0.00001839189788.
 \end{equation}
@@ -447,7 +637,7 @@ For the sequence assertion, positive Abelian averaging gives, with $u_n\ge0$, $v
  \le\limsup_{z\uparrow1}\frac{U(z)}{V(z)}
  \le\limsup_n\frac{u_n}{v_n}.
 \]
-The proof bounds every sufficiently late ratio by its limit-inferior or limit-superior envelope, up to an arbitrary $\varepsilon$, and divides off the vanishing finite head exactly as in Lemma~\ref{lem:abelian}. For either pair $(q,\beta)$ or $(Q,\Beta)$, the averaged ratio is $G(t)$. Every profile value is a subsequential limit, because
+The proof bounds every sufficiently late ratio by its limit-inferior or limit-superior envelope, up to an arbitrary $\varepsilon$, and divides off the vanishing finite head exactly as in Lemma~\ref{urt:lem:abelian}. For either pair $(q,\beta)$ or $(Q,\Beta)$, the averaged ratio is $G(t)$. Every profile value is a subsequential limit, because
 \[
  \lim_{j\to\infty}G(t/2^j)=\Pc(t).
 \]
@@ -456,8 +646,8 @@ Therefore the sequence limit inferior is at most $\inf\Pc$ and its limit superio
 
 The portable checker \texttt{verify\_oscillation.py} imports no producer arithmetic. It reconstructs the signed $S_3$ intervals and the old conditional intervals using integer and \texttt{Fraction} arithmetic, then checks the additional upper and lower bounds. The full package replay runs this lightweight check only after regenerating the large certificate inputs. This corollary is a new inference from those inputs, not a relabeling of the original interval gap.
 
-\section{The total profile is holomorphic}\label{sec:holomorphic}
-The next sections prove Theorem~\ref{thm:expansion} independently of the numerical nonconstancy conclusion. The positivity and boundedness of $\Pc$ suffice; its nonconstancy is not an input to the expansion.
+\section{The total profile is holomorphic}\label{urt:sec:holomorphic}
+The next sections prove Theorem~\ref{urt:thm:expansion} independently of the numerical nonconstancy conclusion. The positivity and boundedness of $\Pc$ suffice; its nonconstancy is not an input to the expansion.
 
 For the following sector estimates let $t\to0$ through positive reals. Fix $y_0>0$ and write $w=t(1+\ii y)$, $|y|\le y_0$. Each binary factor satisfies
 \[
@@ -469,42 +659,42 @@ There are at most $L/h+1$ dyadic $u=2^jt\le1$. The logarithms of the remaining f
  y_0^2\sum_{2^jt>1}\frac{(2^jt)^2\ee^{-2^jt}}{(1-\ee^{-2^jt})^2}.
 \]
 Thus
-\begin{equation}\label{eq:sectorB}
+\begin{equation}\label{urt:eq:sectorB}
  \frac{B(t)}{|B(w)|}\le C_{y_0}t^{-d_0},\qquad
  d_0=\frac{\log(1+y_0^2)}{2h}.
 \end{equation}
-Choose $y_0$ small enough that $\sigma:=\rho-d_0>0$. Positivity gives $|f(w)|\le f(t)$. Apply \eqref{eq:sectorB} at $2t$ to the exact expression for $R$ in \eqref{eq:Hdiff} to obtain
-\begin{equation}\label{eq:Rsector}
+Choose $y_0$ small enough that $\sigma:=\rho-d_0>0$. Positivity gives $|f(w)|\le f(t)$. Apply \eqref{urt:eq:sectorB} at $2t$ to the exact expression for $R$ in \eqref{urt:eq:Hdiff} to obtain
+\begin{equation}\label{urt:eq:Rsector}
  |R(w)|\le C t^\sigma.
 \end{equation}
-The series \eqref{eq:profile} therefore converges normally in the open sector $|\Im w|<y_0\Rea w$, defines a holomorphic $\Pc$, and satisfies $\Pc(2w)=\Pc(w)$. On every narrower sector,
-\begin{equation}\label{eq:sectorH}
+The series \eqref{urt:eq:profile} therefore converges normally in the open sector $|\Im w|<y_0\Rea w$, defines a holomorphic $\Pc$, and satisfies $\Pc(2w)=\Pc(w)$. On every narrower sector,
+\begin{equation}\label{urt:eq:sectorH}
  H(w)=\Pc(w)+O(|w|^\sigma),\qquad
  H^{(k)}(w)-\Pc^{(k)}(w)=O_k(|w|^{\sigma-k})
 \end{equation}
 for every fixed $k$, by Cauchy estimates on disks of radius proportional to $|w|$. Multiplicative periodicity and compactness of a dyadic annulus imply
-\begin{equation}\label{eq:Pderivs}
+\begin{equation}\label{urt:eq:Pderivs}
  |t^k\Pc^{(k)}(t)|\le C_k\quad(t>0).
 \end{equation}
 The exact normalization for subsequent transfer is
-\begin{equation}\label{eq:sectorf}
+\begin{equation}\label{urt:eq:sectorf}
  f(w)=\ee^w B(w)\bigl(\Pc(w)+O(|w|^\sigma)\bigr).
 \end{equation}
-This sector estimate does not by itself control a coefficient circle. That missing step is proved in Section~\ref{sec:circle}.
+This sector estimate does not by itself control a coefficient circle. That missing step is proved in Section~\ref{urt:sec:circle}.
 
-\section{Saddle parameters and the finite correction rule}\label{sec:saddle}
+\section{Saddle parameters and the finite correction rule}\label{urt:sec:saddle}
 Differentiating the absolutely convergent product gives
-\begin{equation}\label{eq:bkexplicit}
+\begin{equation}\label{urt:eq:bkexplicit}
  b_k(t)=\sum_{j\ge0}2^{kj}\sum_{r\ge1}r^{k-1}\ee^{-r2^jt}.
 \end{equation}
 For every fixed $k\ge1$,
-\begin{equation}\label{eq:bkgrowth}
+\begin{equation}\label{urt:eq:bkgrowth}
  t^kb_k(t)=(k-1)!\,\frac{L}{h}+O_k(1).
 \end{equation}
 Indeed $u^k\sum_{r\ge1}r^{k-1}\ee^{-ru}=(k-1)!+O_k(u)$ as $u\downarrow0$. Sum this over $u=2^jt\le1$, whose error sum is bounded, and bound the remaining dyadic tail by exponential decay. The small-$u$ estimate follows by differentiating $1/(\ee^u-1)=u^{-1}+O(1)$ a fixed number of times, or by its convergent analytic expansion near zero after removing the pole.
 
 In particular $b_1'(t)=-b_2(t)<0$, $b_1(0+)=\infty$, and $b_1(\infty)=0$, proving the existence and uniqueness of $t_N$. At $N=n+1$,
-\begin{equation}\label{eq:saddleL}
+\begin{equation}\label{urt:eq:saddleL}
  L=\log N-\log\log N+\log h+o(1),\quad
  t\sim\frac{\log N}{hN},\quad v=b_2(t)\sim\frac{L}{ht^2}.
 \end{equation}
@@ -514,31 +704,31 @@ For a differentiable amplitude $P$, define $\mathcal A_r[P]$ by summing over all
  \ell+\sum_{k=3}^{2r+2}(k-2)m_k=2r.
 \]
 Put $D=\ell+\sum k m_k$, which is even. Then
-\begin{equation}\label{eq:Ar}
+\begin{equation}\label{urt:eq:Ar}
  \mathcal A_r[P](t)=
  \sum \frac{(-1)^{\ell+r+\sum m_k}(D-1)!!\,P^{(\ell)}(t)}{\ell!\,v^{\ell/2}}
  \prod_{k=3}^{2r+2}\frac1{m_k!}
  \left(\frac{b_k(t)}{k!\,v^{k/2}}\right)^{m_k}.
 \end{equation}
-The sum is finite and $(-1)!!=1$. The full exponent of $v$ in any term is the integer $D/2$, even though the factored display uses half-powers. Thus \eqref{eq:Ar} is directly evaluable with exact rational jets.
+The sum is finite and $(-1)!!=1$. The full exponent of $v$ in any term is the integer $D/2$, even though the factored display uses half-powers. Thus \eqref{urt:eq:Ar} is directly evaluable with exact rational jets.
 
 The first correction is
-\begin{equation}\label{eq:A1}
+\begin{equation}\label{urt:eq:A1}
  \mathcal A_1[P]=P\left(\frac{b_4}{8v^2}-\frac{5b_3^2}{24v^3}\right)
                 -\frac{P'b_3}{2v^2}-\frac{P''}{2v}.
 \end{equation}
-Using \eqref{eq:Pderivs} and \eqref{eq:bkgrowth}, a term of grade $2r$ has size $O_r(L^{-r})$ for $P=\Pc$. For $P=\Pc/t$, it has size $O_r(t^{-1}L^{-r})$.
+Using \eqref{urt:eq:Pderivs} and \eqref{urt:eq:bkgrowth}, a term of grade $2r$ has size $O_r(L^{-r})$ for $P=\Pc$. For $P=\Pc/t$, it has size $O_r(t^{-1}L^{-r})$.
 
-In any fixed truncation, one may replace $\Pc$ by $H$ in the entire prescription without changing the remainders in Theorem~\ref{thm:expansion}; \eqref{eq:sectorH} makes the resulting difference power-small in $t$. This is a way to retain extra radial information without knowing Fourier coefficients of the limiting profile. It does not turn a finite radial computation into a certified pointwise profile evaluation unless its own tail has been bounded.
+In any fixed truncation, one may replace $\Pc$ by $H$ in the entire prescription without changing the remainders in Theorem~\ref{urt:thm:expansion}; \eqref{urt:eq:sectorH} makes the resulting difference power-small in $t$. This is a way to retain extra radial information without knowing Fourier coefficients of the limiting profile. It does not turn a finite radial computation into a certified pointwise profile evaluation unless its own tail has been bounded.
 
-\section{An integrated bound for the whole circle}\label{sec:circle}
+\section{An integrated bound for the whole circle}\label{urt:sec:circle}
 Define
-\begin{equation}\label{eq:prefixdefs}
+\begin{equation}\label{urt:eq:prefixdefs}
  D(z)=\frac{z}{1-z}\left(1+\sum_{k\ge3}F(z^k)\right),\qquad
  A_j(z)=\prod_{\ell=0}^{j-1}\frac{z^{2^\ell}}{1-z^{2^\ell}},\quad A_0=1.
 \end{equation}
-Iterating the binary part of \eqref{eq:funceq} gives the normally convergent positive-prefix expansion
-\begin{equation}\label{eq:prefixsum}
+Iterating the binary part of \eqref{urt:eq:funceq} gives the normally convergent positive-prefix expansion
+\begin{equation}\label{urt:eq:prefixsum}
  F(z)=\sum_{j\ge0}A_j(z)D(z^{2^j}).
 \end{equation}
 For clarity, the remainder after $j$ steps is $A_j(z)F(z^{2^j})$. On each compact disk $|z|\le r<1$, the powers $r^{2^j}$ and $F(r^{2^j})$ decay fast enough to make this remainder tend uniformly to zero. Every coefficient in $D$ is nonnegative.
@@ -547,17 +737,17 @@ At $r=\ee^{-t}$, let
 \[
  w_j=\frac{A_j(r)D(r^{2^j})}{F(r)},\qquad w_j\ge0,\qquad\sum_{j\ge0}w_j=1.
 \]
-For small $u$, \eqref{eq:Hdiff} gives
+For small $u$, \eqref{urt:eq:Hdiff} gives
 \[
  \frac{D(\ee^{-u})}{f(u)}=\frac{R(u)}{H(u)}=O(u^\rho).
 \]
 The cancellation of the binary factors and powers is exact:
-\begin{equation}\label{eq:prefixcancel}
+\begin{equation}\label{urt:eq:prefixcancel}
  \frac{A_j(r)f(2^jt)}{f(t)}=\frac{H(2^jt)}{H(t)},\qquad
  w_j=\frac{R(2^jt)}{H(t)}.
 \end{equation}
 Put $K=\lfloor L/(2h)\rfloor$. Boundedness above and below of $H$ near zero then gives
-\begin{equation}\label{eq:shortweights}
+\begin{equation}\label{urt:eq:shortweights}
  \sum_{j<K}w_j=O(t^{\rho/2}).
 \end{equation}
 
@@ -567,7 +757,7 @@ For $u>0$ define
  \Xi_K(t,\theta)=\prod_{\ell=0}^{K-1}\chi(2^\ell t,2^\ell\theta).
 \]
 The function $D$ contains one geometric denominator beyond the $j$ prefix factors; its remaining coefficients are nonnegative. Therefore the exact bound is
-\begin{equation}\label{eq:circlebound}
+\begin{equation}\label{urt:eq:circlebound}
  \frac{|F(r\ee^{\ii\theta})|}{F(r)}
  \le\sum_{j\ge0}w_j\Xi_{j+1}(t,\theta).
 \end{equation}
@@ -575,21 +765,21 @@ This is a bound for the actual $F$, not an assumption that $F$ is an Euler produ
 
 \subsection{Short prefixes}
 The first factor has
-\begin{equation}\label{eq:chiL1}
+\begin{equation}\label{urt:eq:chiL1}
  \int_{-\pi}^{\pi}\chi(t,\theta)\,\dd\theta\le Ct(1+L).
 \end{equation}
-For example, $|1-\ee^{-t+\ii\theta}|^2=(1-\ee^{-t})^2+4\ee^{-t}\sin^2(\theta/2)$ and $\sin(|\theta|/2)\ge|\theta|/\pi$ on this interval imply the estimate by elementary integration. Since every $\chi\le1$, \eqref{eq:shortweights} and \eqref{eq:chiL1} bound the integral of the terms $j<K$ in \eqref{eq:circlebound} by
-\begin{equation}\label{eq:shortint}
+For example, $|1-\ee^{-t+\ii\theta}|^2=(1-\ee^{-t})^2+4\ee^{-t}\sin^2(\theta/2)$ and $\sin(|\theta|/2)\ge|\theta|/\pi$ on this interval imply the estimate by elementary integration. Since every $\chi\le1$, \eqref{urt:eq:shortweights} and \eqref{urt:eq:chiL1} bound the integral of the terms $j<K$ in \eqref{urt:eq:circlebound} by
+\begin{equation}\label{urt:eq:shortint}
  O\bigl(t^{1+\rho/2}(1+L)\bigr).
 \end{equation}
 
 \subsection{Long prefixes at intermediate angles}
 For $j\ge K$, $\Xi_{j+1}\le\Xi_K$. If $|\theta|\le\sqrt t$, then $2^K\le t^{-1/2}$ makes every retained radial argument and angle bounded by one. The same exact factor formula gives
-\begin{equation}\label{eq:intermediate}
+\begin{equation}\label{urt:eq:intermediate}
  \Xi_K(t,\theta)\le[1+c(\theta/t)^2]^{-K/2}
 \end{equation}
-with an absolute $c>0$. Set $\theta_0=tL^{-2/5}$. Integrating \eqref{eq:intermediate}, for instance after $y=\theta/t$, gives
-\begin{equation}\label{eq:intermediateint}
+with an absolute $c>0$. Set $\theta_0=tL^{-2/5}$. Integrating \eqref{urt:eq:intermediate}, for instance after $y=\theta/t$, gives
+\begin{equation}\label{urt:eq:intermediateint}
  \int_{\theta_0\le|\theta|\le\sqrt t}\Xi_K(t,\theta)\,\dd\theta
  \le C\frac{t}{\sqrt L}\exp(-cL^{1/5}).
 \end{equation}
@@ -597,7 +787,7 @@ One can split $|y|\le1$ from $|y|\ge1$: in the first region use $\log(1+cy^2)\ge
 
 \subsection{The outer angles and dyadic secondary peaks}
 For $\sqrt t\le|\theta|\le\pi$, the first factor obeys $\chi(t,\theta)\le C\sqrt t$. The next two factors have an $L^1$ product of order $t$. In fact
-\begin{equation}\label{eq:chiL2}
+\begin{equation}\label{urt:eq:chiL2}
  \int_{-\pi}^{\pi}\chi(u,\theta)^2\,\dd\theta=2\pi\tanh(u/2),
 \end{equation}
 by the geometric-series Poisson kernel. Periodic changes of variable and Cauchy--Schwarz give
@@ -606,31 +796,31 @@ by the geometric-series Poisson kernel. Periodic changes of variable and Cauchy-
  &\le2\pi\sqrt{\tanh(t)\tanh(2t)}\le Ct.
 \end{align*}
 For sufficiently small $t$, $K\ge3$; discard the remaining factors, which are at most one. Thus
-\begin{equation}\label{eq:outerint}
+\begin{equation}\label{urt:eq:outerint}
  \int_{\sqrt t\le|\theta|\le\pi}\Xi_K(t,\theta)\,\dd\theta\le Ct^{3/2}.
 \end{equation}
 This integrated estimate controls the possible secondary dyadic peaks. Bounding their height alone would not be enough at the central coefficient scale.
 
-Combining \eqref{eq:shortint}, \eqref{eq:intermediateint}, and \eqref{eq:outerint}, and dividing by the central angular volume $1/\sqrt v\asymp t/\sqrt L$, shows that the omitted circle $|\theta|>\theta_0$ contributes a relative error
-\begin{equation}\label{eq:fullminor}
+Combining \eqref{urt:eq:shortint}, \eqref{urt:eq:intermediateint}, and \eqref{urt:eq:outerint}, and dividing by the central angular volume $1/\sqrt v\asymp t/\sqrt L$, shows that the omitted circle $|\theta|>\theta_0$ contributes a relative error
+\begin{equation}\label{urt:eq:fullminor}
  O\!\left(L^{3/2}t^{\rho/2}+\sqrt L\,t^{1/2}
            +\exp(-cL^{1/5})\right).
 \end{equation}
 It is smaller than every fixed inverse power of $L$. For the partial-sum generating function $F(z)/(1-z)$, the normalized additional factor on the same circle is precisely $\chi(t,\theta)\le1$. The same whole-circle estimate is therefore valid at its own radial scale.
 
-\section{Local expansion and its remainder}\label{sec:local}
-Cauchy's formula has integrand $f(t-\ii\theta)\ee^{n(t-\ii\theta)}$. On $|\theta|\le\theta_0$, substitute \eqref{eq:sectorf} to obtain the principal integrand
+\section{Local expansion and its remainder}\label{urt:sec:local}
+Cauchy's formula has integrand $f(t-\ii\theta)\ee^{n(t-\ii\theta)}$. On $|\theta|\le\theta_0$, substitute \eqref{urt:eq:sectorf} to obtain the principal integrand
 \[
  B(t-\ii\theta)\ee^{(n+1)(t-\ii\theta)}\Pc(t-\ii\theta).
 \]
-The power-small error in \eqref{eq:sectorf} integrates to a relative $O(t^\sigma)$ after the local Gaussian bound below. The factor $n+1$ is the reason for the saddle convention $b_1(t)=n+1$.
+The power-small error in \eqref{urt:eq:sectorf} integrates to a relative $O(t^\sigma)$ after the local Gaussian bound below. The factor $n+1$ is the reason for the saddle convention $b_1(t)=n+1$.
 
 Put $\theta=x/\sqrt v$. The saddle cancels the linear phase, leaving
-\begin{equation}\label{eq:phase}
+\begin{equation}\label{urt:eq:phase}
  \exp\left(-\frac{x^2}{2}
        +\sum_{k\ge3}\frac{b_k(t)(\ii x)^k}{k!v^{k/2}}\right).
 \end{equation}
-Taylor-expand $\Pc(t-\ii x/\sqrt v)$. Assign grade $\ell$ to its $\ell$th derivative factor and grade $k-2$ to the $k$th cumulant in \eqref{eq:phase}. By \eqref{eq:bkgrowth} and \eqref{eq:Pderivs}, a grade-$g$ monomial is $O(L^{-g/2})$ times a fixed polynomial in $x$. Odd grades integrate to zero over the symmetric interval. The Gaussian integral for an even total degree $D$ is $(D-1)!!$, with the powers of $\ii$ and the amplitude sign giving exactly \eqref{eq:Ar}.
+Taylor-expand $\Pc(t-\ii x/\sqrt v)$. Assign grade $\ell$ to its $\ell$th derivative factor and grade $k-2$ to the $k$th cumulant in \eqref{urt:eq:phase}. By \eqref{urt:eq:bkgrowth} and \eqref{urt:eq:Pderivs}, a grade-$g$ monomial is $O(L^{-g/2})$ times a fixed polynomial in $x$. Odd grades integrate to zero over the symmetric interval. The Gaussian integral for an even total degree $D$ is $(D-1)!!$, with the powers of $\ii$ and the amplitude sign giving exactly \eqref{urt:eq:Ar}.
 
 Here is a fixed-order remainder justification. On the central interval,
 \[
@@ -639,20 +829,20 @@ Here is a fixed-order remainder justification. On the central interval,
        \le C\frac{|x|^3}{\sqrt L}=o(x^2).
 \]
 For the last estimate use analyticity of $\log B(w)$ on $|w-t|\le t/2$ and the derivative bounds $b_k=O_k(Lt^{-k})$; $|\theta|/t=L^{-2/5}$ tends to zero. Fix $J$. Expand the amplitude and phase through enough derivatives to retain all terms of grade at most $2J+1$. Taylor's theorem on a smaller disk, followed by the exponential remainder formula, bounds the omitted integrand by
-\begin{equation}\label{eq:localrem}
+\begin{equation}\label{urt:eq:localrem}
  C_J L^{-J-1}(1+|x|^{m_J})\ee^{-c x^2}
 \end{equation}
 for a fixed integer $m_J$. More explicitly, the amplitude remainder after degree $2J+1$ is $O(L^{-J-1}|x|^{2J+2})$; the logarithmic-phase remainder after cumulant degree $2J+3$ is $O(L^{-J-1}|x|^{2J+4})$. Expand the exponential through power $2J+1$ of the retained nonquadratic phase polynomial. Its tail is $O_J(L^{-J-1}|x|^{6J+6})$, since that polynomial is $O_J(L^{-1/2}|x|^3)=o(1)$ uniformly on this arc. The factor from the logarithmic Taylor remainder contributes $O_J(L^{-J-1}|x|^{2J+4})$. In the resulting finite product, discard monomials of grade at least $2J+2$; each is $O_J(L^{-J-1})$ times a fixed polynomial. All these errors are absorbed by a fixed part of the Gaussian. The retained terms of odd grade integrate to zero; the next even grade is $2J+2$.
 
-Integration of \eqref{eq:localrem} gives $O_J(L^{-J-1})$. Extending every retained Gaussian polynomial integral to the real line costs $O_J(\exp(-cL^{1/5}))$. The whole-circle error \eqref{eq:fullminor} and the sector error $O(t^\sigma)$ are both smaller than every fixed inverse power. This proves \eqref{eq:coeffmain} with its claimed remainder.
+Integration of \eqref{urt:eq:localrem} gives $O_J(L^{-J-1})$. Extending every retained Gaussian polynomial integral to the real line costs $O_J(\exp(-cL^{1/5}))$. The whole-circle error \eqref{urt:eq:fullminor} and the sector error $O(t^\sigma)$ are both smaller than every fixed inverse power. This proves \eqref{urt:eq:coeffmain} with its claimed remainder.
 
 For partial sums,
 \[
  \sum_{n\ge0}S_nz^n=\frac{F(z)}{1-z}.
 \]
-On the central sector the amplitude becomes $\Pc(w)/(1-\ee^{-w})$. Replace it by $\Pc(w)/w$, since $w/(1-\ee^{-w})=1+O(w)$ with the corresponding fixed derivative estimates. This changes the bracket by a power-small relative error. The derivatives of $\Pc(t)/t$ are $O_k(t^{-k-1})$, so the same grade calculation gives the bracket remainder $O_J(t^{-1}L^{-J-1})$. The normalized whole-circle bound was already checked after \eqref{eq:fullminor}. This proves \eqref{eq:summain} and completes Theorem~\ref{thm:expansion}. Taking $J=0$ and using \eqref{eq:saddleL} gives \eqref{eq:sumleading}.
+On the central sector the amplitude becomes $\Pc(w)/(1-\ee^{-w})$. Replace it by $\Pc(w)/w$, since $w/(1-\ee^{-w})=1+O(w)$ with the corresponding fixed derivative estimates. This changes the bracket by a power-small relative error. The derivatives of $\Pc(t)/t$ are $O_k(t^{-k-1})$, so the same grade calculation gives the bracket remainder $O_J(t^{-1}L^{-J-1})$. The normalized whole-circle bound was already checked after \eqref{urt:eq:fullminor}. This proves \eqref{urt:eq:summain} and completes Theorem~\ref{urt:thm:expansion}. Taking $J=0$ and using \eqref{urt:eq:saddleL} gives \eqref{urt:eq:sumleading}.
 
-\section{Inverse centers and integer thresholds}\label{sec:inverse}
+\section{Inverse centers and integer thresholds}\label{urt:sec:inverse}
 For real $Y$ tending to infinity, define
 \[
  \nu_a(Y)=\min\{n\ge1:a_n\ge Y\},\qquad
@@ -663,19 +853,19 @@ The recurrence gives $a_{n+1}\ge a_n+1$ for $n\ge2$, because both divisors $1$ a
 For real $x$ large, set $b_1(t)=x+1$ and define the smooth truncations
 \begin{align}
  f_{a,J}(x)&=\frac{\ee^{(x+1)t}B(t)}{\sqrt{2\pi b_2(t)}}
-       \sum_{r=0}^J\mathcal A_r[\Pc](t),\label{eq:faJ}\\
+       \sum_{r=0}^J\mathcal A_r[\Pc](t),\label{urt:eq:faJ}\\
  f_{S,J}(x)&=\frac{\ee^{(x+1)t}B(t)}{\sqrt{2\pi b_2(t)}}
-       \sum_{r=0}^J\mathcal A_r[\Pc/t](t).\label{eq:fSJ}
+       \sum_{r=0}^J\mathcal A_r[\Pc/t](t).\label{urt:eq:fSJ}
 \end{align}
 These are positive and eventually strictly increasing. To prove this, differentiate the approximants themselves, not the unknown integer-index error in the asymptotic theorem. Since $t'=-1/b_2(t)$, the derivative of the Legendre term $(x+1)t+\log B(t)$ is exactly $t$. The logarithmic derivative of the variance factor is $O(t/L)$. The positive lower bound for $\Pc$, its derivative bounds, and the fixed correction formulas show that the remaining logarithmic derivative is also $O_J(t/L)$. The factor $1/t$ in the summatory amplitude has the same bound. Hence
-\begin{equation}\label{eq:inverseslope}
+\begin{equation}\label{urt:eq:inverseslope}
  \frac{\dd}{\dd x}\log f_{\star,J}(x)=t\bigl(1+O_J(L^{-1})\bigr),
  \qquad \star\in\{a,S\}.
 \end{equation}
 
-\begin{theorem}[Fixed-order inverse uncertainty]\label{thm:inverse}
+\begin{theorem}[Fixed-order inverse uncertainty]\label{urt:thm:inverse}
 Let $x_{\star,J}(Y)$ be the eventually unique real solution of $f_{\star,J}(x)=Y$. For each fixed $J\ge0$, there are constants $C_J$ and an onset such that, for either $\star=a$ or $S$ and all sufficiently large $Y$,
-\begin{equation}\label{eq:inversebracket}
+\begin{equation}\label{urt:eq:inversebracket}
  \left\lceil x_{\star,J}-\frac{C_Jx_{\star,J}}{(\log x_{\star,J})^{J+2}}\right\rceil
  \le\nu_\star(Y)\le
  \left\lceil x_{\star,J}+\frac{C_Jx_{\star,J}}{(\log x_{\star,J})^{J+2}}\right\rceil.
@@ -683,17 +873,17 @@ Let $x_{\star,J}(Y)$ be the eventually unique real solution of $f_{\star,J}(x)=Y
 In particular this is an inverse approximation at every fixed relative logarithmic order. Its absolute bracket width need not tend to zero.
 \end{theorem}
 \begin{proof}
-Theorem~\ref{thm:expansion} says $a_n/f_{a,J}(n)=1+O_J((\log n)^{-J-1})$, and the same holds for $S_n$ and $f_{S,J}$. Integrating \eqref{eq:inverseslope} over an interval of length $\delta=C_Jx/(\log x)^{J+2}$ changes $\log f_{\star,J}$ by a constant multiple of
+Theorem~\ref{urt:thm:expansion} says $a_n/f_{a,J}(n)=1+O_J((\log n)^{-J-1})$, and the same holds for $S_n$ and $f_{S,J}$. Integrating \eqref{urt:eq:inverseslope} over an interval of length $\delta=C_Jx/(\log x)^{J+2}$ changes $\log f_{\star,J}$ by a constant multiple of
 \[
  t\delta\asymp\frac{\log x}{x}\,\frac{C_Jx}{(\log x)^{J+2}}
        =C_J(\log x)^{-J-1}.
 \]
-Choose $C_J$ larger than the uniform error constant. Compare the exact count at $\lfloor x-\delta\rfloor$ and $\lceil x+\delta\rceil$, both asymptotic to $x$. The first is less than $Y$ and the second is at least $Y$. Monotonicity then controls every earlier index and gives \eqref{eq:inversebracket}. Rounding at the upper endpoint only increases the approximant, so no unproved exact-ceiling inference is involved.
+Choose $C_J$ larger than the uniform error constant. Compare the exact count at $\lfloor x-\delta\rfloor$ and $\lceil x+\delta\rceil$, both asymptotic to $x$. The first is less than $Y$ and the second is at least $Y$. Monotonicity then controls every earlier index and gives \eqref{urt:eq:inversebracket}. Rounding at the upper endpoint only increases the approximant, so no unproved exact-ceiling inference is involved.
 \end{proof}
 
 \subsection{Explicit leading inverse scales}
 Elementary dyadic product estimates give
-\begin{equation}\label{eq:logB}
+\begin{equation}\label{urt:eq:logB}
  \log B(t)=\frac{L^2}{2h}+\frac L2+O(1),\qquad tb_1(t)=\frac Lh+O(1).
 \end{equation}
 For the first estimate, use $-\log(1-\ee^{-u})=-\log u+O(u)$ through $2^jt\le1$. The sum of the $O(u)$ errors and the large-$u$ tail are bounded. If $m=\lfloor L/h\rfloor$, the main sum is $(m+1)L-hm(m+1)/2=L^2/(2h)+L/2+O(1)$. The second estimate follows similarly from $u/(\ee^u-1)=1+O(u)$.
@@ -701,9 +891,9 @@ For the first estimate, use $-\log(1-\ee^{-u})=-\log u+O(u)$ through $2^jt\le1$.
 Using the bounded positive amplitude and the variance estimate in the leading saddle formula gives
 \begin{align}
  \log a_n&=\frac{L^2}{2h}+\left(\frac1h-\frac12\right)L
-             -\frac12\log L+O(1),\label{eq:loga}\\
+             -\frac12\log L+O(1),\label{urt:eq:loga}\\
  \log S_n&=\frac{L^2}{2h}+\left(\frac1h+\frac12\right)L
-             -\frac12\log L+O(1).\label{eq:logS}
+             -\frac12\log L+O(1).\label{urt:eq:logS}
 \end{align}
 The bounded terms include the classical dyadic fluctuation. Set $y=\log Y$. Solving these equations gives respectively
 \[
@@ -711,7 +901,7 @@ The bounded terms include the classical dyadic fluctuation. Set $y=\log Y$. Solv
  L=\sqrt{2hy}-1-\frac h2+o(1).
 \]
 The errors here are $O(\log y/\sqrt y)=o(1)$, so exponentiation preserves the leading constants. Since $n\sim(L/h)\ee^L$,
-\begin{equation}\label{eq:inverseleading}
+\begin{equation}\label{urt:eq:inverseleading}
  \begin{aligned}
  \nu_a(Y)\sim\frac{2}{\ee\sqrt h}\sqrt{\log Y}\,
                    \exp\!\bigl(\sqrt{2h\log Y}\bigr),\\
@@ -721,7 +911,16 @@ The errors here are $O(\log y/\sqrt y)=o(1)$, so exponentiation preserves the le
 \end{equation}
 The factor two distinguishes exact-size counts from their cumulative count. The inverse techniques are standard; the exact recurrence and the fixed-order error control determine their application here.
 
-\section{Exact arithmetic and the reproduction contract}\label{sec:repro}
+\begin{remark}[{[write]} The inverses and the transseries volume, 7~October 2026]\label{urt:rem:transseries}
+Compared statement by statement with the repository's transseries
+volume~\cite{TSvol}; its symbols are not used here.
+\begin{enumerate}\raggedright
+\item Theorem~\ref{urt:thm:inverse} brackets the integer staircases $\nu_a$, $\nu_S$ (the volume's $N_\ast$ of \file{p0:def:three-inverses}(1); $a_n$ is eventually strictly increasing and $S_n$ strictly increasing) around the solutions $x_{\star,J}$ of $f_{\star,J}(x)=Y$. The smooth approximants $f_{\star,J}$ are not interpolations of the sequences, so \file{p0:thm:staircase}(1) does not apply to them; the bracket is proved directly at the integers from Theorem~\ref{urt:thm:expansion} and the slope~\eqref{urt:eq:inverseslope}. It is an analogue of \file{p0:thm:staircase}(2), not an instance, with a relative (not absolute) width.
+\item The centres $x_{\star,J}$ are implicit inverses of explicit smooth functions; no formal inverse series is printed. The growth $\log a_n\sim\log^2n/(2\log2)$ is not of the exponential--power type of \file{p0:def:model} ($\log a_n$ is neither $an^\alpha$ nor comparable to it), and $\log a_n$ as a function of $\log n$ has a quadratic leading balance, which is not the monomial--logarithmic form $\rho Z+\mu\log Z$ that \file{plt:def:lw-monomial-log-datum} requires; after the substitution $x=\exp\sqrt{2h\log Y}$ the leading balance changes, and the write did not examine whether the inverse then becomes an instance of \file{plt:thm:lw-template}. The centres and the leading scales~\eqref{urt:eq:inverseleading} are therefore not shown to be instances of a theorem of the volume.
+\end{enumerate}
+\end{remark}
+
+\section{Exact arithmetic and the reproduction contract}\label{urt:sec:repro}
 The archive is deliberately small. It contains this \LaTeX{} source and PDF, standard-library Python code, short explicitly labeled OEIS prefix fixtures, exact semantic receipts, a source ledger, an inventory, and a SHA-256 manifest. It contains no third-party papers, private audit files, full coefficient arrays, or floating-point diagnostics. The paper proves the infinite analytic estimates; the scripts certify the explicitly finite inequalities and interval endpoints.
 
 \subsection{Arithmetic rules}
@@ -738,7 +937,7 @@ The binary product stops when its next factor parameter has upper bound $q\le2/2
 \subsection{Checks and their limits}
 The finite model check independently compares divisor-by-divisor and sieve implementations through 10000, checks 29 direct chain-partition cases, 999 summatory floor recurrences, 5001 binary cumulative identities, and 9998 strict-increase cases. It compares 207 displayed OEIS terms across the four entries. The optional named \texttt{b003238.txt} and \texttt{b003318.txt} files contain only 48 displayed terms each; their labels and receipts do not claim a full b-file comparison.
 
-The finite saddle engine enumerates the multiplicities in \eqref{eq:Ar}. A separate implementation builds the formal exponential by a graded differential recurrence and integrates exact Gaussian moments. It compares orders zero through four on 16 rational jet inputs, for 80 exact cases. These tests validate the finite algebra, not the analytic remainder theorem.
+The finite saddle engine enumerates the multiplicities in \eqref{urt:eq:Ar}. A separate implementation builds the formal exponential by a graded differential recurrence and integrates exact Gaussian moments. It compares orders zero through four on 16 rational jet inputs, for 80 exact cases. These tests validate the finite algebra, not the analytic remainder theorem.
 
 All essential guards are explicit exceptions, not removable \texttt{assert} statements. Deliberately corrupted receipts test precision, row count, test points, positive denominator, nonnegative error, endpoint orientation, disjointness, ordering, and status. The package-level checks test source inventory, hashes, unsafe paths, duplicate JSON keys, and pre-write output safety. Normal and optimized Python runs must generate identical semantic receipts. Runtime and memory metadata are excluded from those receipts.
 
@@ -759,9 +958,9 @@ The radial step genuinely computes all $2^{24}$ coefficients each time. It needs
 
 Python uses only its standard library. PDF reproduction additionally requires the documented pdfTeX/\LaTeX{} and Latin Modern toolchain. The runner disables shell escape, fixes the build epoch and archive metadata, uses an explicit source inventory, and excludes runtime logs from the archive. Exact PDF and ZIP byte identity is promised only with the same TeX and font toolchain; the mathematical receipts are independently deterministic. See \texttt{README.txt} for normal and optimized replay commands and comparison against the original ZIP.
 
-\section{Further directions}\label{sec:future}
+\section{Further directions}\label{urt:sec:future}
 \paragraph{Certified profile values and sharper oscillation bounds.}
-Theorem~\ref{thm:oscillation} gives a genuine oscillation lower bound through a midpoint argument. Directly enclosing $H(t)+\sum_{j\ge1}R(t/2^j)$ with sufficiently sharp correlated tails could additionally yield true pointwise intervals for $\Pc(t)$, sharpen that lower bound, and supply an upper bound. The original conditional interval gap by itself is still not an oscillation bound.
+Theorem~\ref{urt:thm:oscillation} gives a genuine oscillation lower bound through a midpoint argument. Directly enclosing $H(t)+\sum_{j\ge1}R(t/2^j)$ with sufficiently sharp correlated tails could additionally yield true pointwise intervals for $\Pc(t)$, sharpen that lower bound, and supply an upper bound. The original conditional interval gap by itself is still not an oscillation bound.
 
 \paragraph{Effective asymptotic onsets.}
 The fixed-order theorem has existential constants. Making the sector constants, integrated-circle constants, and local Taylor constants explicit would turn the inverse brackets into usable certified numerical thresholds. It would also quantify how large $n$ must be before a selected correction improves a given tolerance.
@@ -773,10 +972,14 @@ Writing $\Pc(t)=\Phi(\log_2 t)$ gives an analytic one-periodic function on a str
 The cut $u_0$, the two test points, the recursion cutoffs, and the $2^{24}$ polynomial cutoff were chosen to give a comfortable certified separation. Sharper power majorants, a more efficient exterior treatment, or a different positive iteration may reduce the exact coefficient workload. Such changes need a new full proof of every altered tail and a fresh exact replay.
 
 \paragraph{Beyond fixed inverse-logarithmic order.}
-The terms suppressed as powers of $t$ include information from the full all-integer dilation forcing. Resolving them would require a finer expansion than Theorem~\ref{thm:expansion}, together with corresponding control of other circle regions. A growing-order or exponentially improved expansion is a separate problem, not an automatic corollary of the finite Gaussian prescription.
+The terms suppressed as powers of $t$ include information from the full all-integer dilation forcing. Resolving them would require a finer expansion than Theorem~\ref{urt:thm:expansion}, together with corresponding control of other circle regions. A growing-order or exponentially improved expansion is a separate problem, not an automatic corollary of the finite Gaussian prescription.
 
 \paragraph{Continued source comparison.}
 The full original Pennington and Kato--McLeod theorem scopes, a final 2026 version of the distinct-chain-partition work, and later citations of Erd\H{o}s--Loxton are natural further checks. A newly found exact-target theorem could change the historical framing without changing the finite certificate. The current conclusions rest on the displayed proof and bounded source comparison.
+
+\begin{writenote}[Added 7 October 2026, under Vladimir's standing rule of 4 October 2026]
+Every open question of the source is in this section, with its sketch and what is missing: certified pointwise profile values and an upper bound for the oscillation; effective onsets for Theorem~\ref{urt:thm:expansion} and Theorem~\ref{urt:thm:inverse}; Fourier coefficients of the profile; smaller certificates; the terms below every fixed inverse-logarithmic order; and the continued source comparison (the full original results of Pennington and of Kato--McLeod, a final 2026 version of the distinct-chain-partition preprint, later citations of Erd\H{o}s--Loxton), none of which the write read. Also open, from the non-claims: an exact eventual ceiling rule and growing-order uniformity. One claim outside the source is refuted: Cloitre's 2004 conjecture in A003238 that $0.4<c<0.5$ (Remark~\ref{urt:rem:oeis}, with proof; $c=1/(2\log2)$). No claim of the source was found to be false.
+\end{writenote}
 
 \begin{thebibliography}{99}
 \bibitem{oeis238} OEIS Foundation, \emph{A003238}, uniform rooted-tree counts, \url{https://oeis.org/A003238}, inspected 4 October 2026.
@@ -790,5 +993,6 @@ The full original Pennington and Kato--McLeod theorem scopes, a final 2026 versi
 \bibitem{debruijn} N. G. de Bruijn, On Mahler's partition problem, \emph{Proc. Section of Sciences, Koninklijke Nederlandse Akademie van Wetenschappen} \textbf{51}(6) (1948), 659--669. Primary scan: \url{https://pure.tue.nl/ws/portalfiles/portal/4342300/597482.pdf}.
 \bibitem{df} P. Dumas and P. Flajolet, Asymptotique des r\'ecurrences mahl\'eriennes: le cas cyclotomique, \emph{J. Th\'eor. Nombres Bordeaux} \textbf{8} (1996), 1--30. \url{https://doi.org/10.5802/jtnb.154}.
 \bibitem{bhrz} C. Banderier, H.-K. Hwang, V. Ravelomanana, and V. Zacharovas, Analysis of an exhaustive search algorithm in random graphs and the $n^{c\log n}$-asymptotics, \emph{SIAM J. Discrete Math.} \textbf{28} (2014), 342--371. Preprint and versions: \url{https://arxiv.org/abs/1207.6549}.
+\bibitem{TSvol}{\raggedright ProveIt, \emph{Transseries and inversion}, \file{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex}; Part~0 (\file{p0:def:model}, \file{p0:def:three-inverses}, \file{p0:thm:staircase}), \file{plt:def:lw-monomial-log-datum}, \file{plt:thm:lw-template}. [Added in the write.]\par}
 \end{thebibliography}
 \end{document}
