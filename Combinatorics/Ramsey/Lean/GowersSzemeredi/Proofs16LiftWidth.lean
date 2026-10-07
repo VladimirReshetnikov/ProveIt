@@ -44,7 +44,7 @@ theorem section16_local_affine_lift_sqrt {N k q r m : Nat} [Fact N.Prime]
     (hw : 16 ≤ ((m : ℝ) / 8) ^
       ((multipleC (((r : ℝ) * s)⁻¹ * ε) gamma k) ^ ((r : ℝ) * s))) :
     ∃ (p : Nat) (G : Finset (Point N (k + 1))) (L : Nat) (S : Fin L → Box N (k + 1))
-      (nu : Fin L → ((Fin r × Fin p) ⊕ (Fin r × Fin r × Fin p × Fin p)) →
+      (nu : Fin L → Fin (section16CompressedCandidateCount r p) →
         Point N (k + 1) → ZMod N),
       (p : ℝ) ≤ (multipleQ (((r : ℝ) * s)⁻¹ * ε) gamma k) ^ ((r : ℝ) * s) ∧
       G ⊆ P.carrier ∧ (1 - 2 * τ - ε) * (P.carrier.card : ℝ) ≤ G.card ∧

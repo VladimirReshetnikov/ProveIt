@@ -22,7 +22,7 @@ theorem section16_uniform_lift_controls {q k : Nat} {sigma theta gamma s : Real}
     let b := (multipleQ (((r : Real) * s)⁻¹ * sigma) gamma k) ^ ((r : Real) * s)
     section16UniformSliceExponent sigma theta gamma s k ≤
       (multipleC (((r : Real) * s)⁻¹ * sigma) gamma k) ^ ((r : Real) * s) ∧
-    (r : Real) * b + (r : Real) * r * b * b ≤ section16UniformLiftGraphBudget sigma theta gamma s k := by
+    max b ((r.choose 2 : Real) * b * b) ≤ section16UniformLiftGraphBudget sigma theta gamma s k := by
   let r := Nat.ceil (6 * (max 1 q : Real) / sigma)
   let R := section16UniformSampleCount sigma theta gamma k
   have hr : 0 < r := Nat.ceil_pos.mpr
@@ -39,11 +39,7 @@ theorem section16_uniform_lift_controls {q k : Nat} {sigma theta gamma s : Real}
   let B := (multipleQ (((R : Real) * s)⁻¹ * sigma) gamma k) ^ ((R : Real) * s)
   have hb0 : 0 ≤ b := (zero_le_one.trans
     (section16_slice_control_ranges (k := k) hr hs hg hg1 hσ hσ1).2.2)
-  have hprod : (r : Real) * b ≤ (R : Real) * B :=
-    mul_le_mul hrR' hb hb0 (Nat.cast_nonneg R)
-  have hsquare := pow_le_pow_left₀ (mul_nonneg (Nat.cast_nonneg r) hb0) hprod 2
-  change (r : Real) * b + (r : Real) * r * b * b ≤ (R : Real) * B + (R : Real) * R * B * B
-  nlinarith only [hprod, hsquare]
+  exact section16_compressed_budget_mono hrR hb0 hb
 
 /-- The line-width bound is uniform over every allowable delta-side count. -/
 theorem section16_uniform_line_width {m q k : Nat} {sigma theta gamma : Real}

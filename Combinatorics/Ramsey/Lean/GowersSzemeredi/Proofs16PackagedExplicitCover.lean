@@ -28,7 +28,7 @@ theorem Section16AllBoxLineCovers.explicit_multilinear_cover {N k : Nat} [Fact N
       let b := (multipleQ (((r : Real) * s)⁻¹ * sigma) gamma k) ^ ((r : Real) * s)
       ∃ (n : Nat) (H : Finset (Point N (k + 1))) (L : Nat)
         (Q : Fin L → Box N (k + 1)) (mu : Fin L → Fin n → Point N (k + 1) → ZMod N),
-        (n : Real) ≤ (r : Real) * b + (r : Real) * r * b * b ∧
+        (n : Real) ≤ max b ((r.choose 2 : Real) * b * b) ∧
         H ⊆ P.carrier ∧ (1 - rho) * (P.carrier.card : Real) ≤ H.card ∧
         IsBoxPartition Q P ∧ (∀ j, (Q j).IsProper) ∧
         (∀ j, Real.sqrt (((Nat.floor l : Real) / 8) ^

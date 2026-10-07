@@ -13,8 +13,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 718 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 4,606 public Gowers theorems and found only propext,
+  All 722 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 4,625 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 113 exact
   companion proofs and 7 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -372,8 +372,9 @@ Corrected distinct-anchor sampling estimate
   output box is proper and has width at least v-1.
   Proofs16LocalAffineLift assembles the complete local construction on a proper
   prime-modulus box with k>=1 and initial scale m>=4. The total loss is at most
-  2*tau+epsilon, and the graph count remains r*p+r*r*p*p with p bounded by the
-  sampled-slice union control. Its geometric output is a genuine box partition.
+  2*tau+epsilon, and its compressed graph count is now max(p,choose(r,2)*p^2),
+  with p bounded by the sampled-slice union control. Its geometric output is
+  a genuine box partition. The original larger-family slice APIs remain available.
   Proofs16LiftWidth chooses v=floor(sqrt(w)/2)+1 when w>=16 and proves both
   v^2+1<=w and v-1>=sqrt(w)/4, accounting for the integer rounding explicitly.
   Here w=(m/8)^a and a=multipleC(epsilon/(r*s),gamma,k)^(r*s).
@@ -387,7 +388,7 @@ Corrected distinct-anchor sampling estimate
   flattens all proper box refinements, and intersects the original good set
   with the union of the new local good sets. The total loss is sigma+2*tau+epsilon.
   With b=multipleQ(epsilon/(r*s),gamma,k)^(r*s), the global graph count is at
-  most r*b+r*r*b*b; the width remains sqrt((m/8)^a)/4 for m<=l.
+  most max(b,choose(r,2)*b^2); the width remains sqrt((m/8)^a)/4 for m<=l.
   Proofs16GlobalLiftParameters pads the line-cover graph count to max(1,q),
   chooses r=ceil(6*max(1,q)/tau), and takes m=floor(l) for l>=0. This handles
   zero graph counts and removes the auxiliary integer choices from assembly.
@@ -437,7 +438,7 @@ Uniform power-width cover from the actual contextual lift
   proved positive. These quantities depend only on the input real
   parameters and dimension, not on the parent box or modulus.
   Proofs16UniformLiftControls proves all count and exponent comparisons,
-  including the full candidate count R*b+R^2*b^2, where
+  including the now-compressed candidate count max(b,choose(R,2)*b^2), where
   b=multipleQ(sigma/(R*s),gamma,k)^(R*s). It preserves the improved linear
   sampling budget and keeps the gamma- and delta-side counts distinct.
   Proofs16RoundedPowerWidth absorbs the floor, division by eight, square
@@ -469,11 +470,39 @@ Uniform power-width cover from the actual contextual lift
   local candidate count: with r distinct anchors and nonempty lists of
   size at most L, affine interpolation needs only choose(r,2)*L^2 when
   r>=2, because interpolants also cover the directly sampled points.
-  This chapter and its proof have been inspected, but that compression is
-  not yet a checked Lean theorem. The current sampling implementation uses
-  draws with replacement, so distinct-anchor extraction and the one-anchor
-  case must be handled before applying the new count. The article expressly
-  leaves the full product-property recurrence and global bound unresolved.
+  The affine compression has now been checked and propagated as recorded
+  below. The proof handles draws with replacement by sorting distinct index
+  pairs and treating the one-value sample separately; it does not assume
+  an injective sample. The article's sharp lower constructions and higher-
+  degree interpolation claims are not yet formalized. It expressly leaves
+  the full product-property recurrence and global bound unresolved.
+
+Compressed interpolation throughout the affine lifting construction
+  Proofs16CompressedInterpolation formalizes the affine candidate reduction
+  in sections/interpolation.tex of Gowers_Exact_Local_Profiles_TeX_and_PDF.zip
+  (interp:thm:anchor-upper and its degenerate-case discussion). Unordered
+  pairs of distinct indices are counted exactly by choose(r,2). If the
+  sample contains two different values, their interpolants cover both the
+  anchored points and every directly sampled point: a correct slice value
+  at that point can be paired with an arbitrary candidate at another anchor.
+  If every sampled value coincides, one slice list covers all certified
+  points. Empty lists are handled without an added nonemptiness assumption.
+  The resulting family has max(p,choose(r,2)*p^2) members for arbitrary
+  with-replacement samples, with no direct-anchor summand.
+  Proofs16CompressedCandidateBounds proves count monotonicity, conversion
+  to the real slice budget, and a strict comparison with r*b+r^2*b^2 for
+  nonempty samples and b>=1. Proofs16CompressedSynchronizedCover transports
+  the family through the existing common-step tiling without changing the
+  retained mass or geometric widths. The local lift, rounded width theorem,
+  all-scale lift, global assembly, and positive packaged cover now use it.
+  Proofs16UniformLiftControls carries the smaller count through the uniform
+  ceiling parameters, so the contextual power cover is strengthened too.
+  Proofs16CompressedLiftImprovement proves that the canonical sample count
+  is at least two and the final budget is exactly choose(R,2)*b^2, strictly
+  below its former R*b+R^2*b^2 value. Sample size, exceptional mass, width
+  exponent, and starting threshold are unchanged. This improves the actual
+  Section 16 construction, but does not prove its prescribed unit-parameter
+  conclusion or improve the general all-length Szemeredi bound.
 
 Shared Section 16 migration
   Box.IsProper is now a shared definition. MultiplyLinear requires proper
@@ -2036,7 +2065,7 @@ Positive cover interface retaining the proved quantitative bounds
   at least (1-rho)|P| and a proper box partition with genuine multilinear
   graphs. If r=ceil(6*max(1,qGamma)/sigma), s is the section parameter,
   and b=multipleQ(((r*s)^-1)*sigma,gamma,k)^(r*s), then the graph count is
-  at most r*b+r^2*b^2. The width is the checked square-root expression
+  at most max(b,choose(r,2)*b^2). The width is the checked square-root expression
   using floor(l), where l is the actual Lemma 16.9 width with its separate
   qDelta count. No unsupported absorption into (gamma,1) is performed.
   The result holds at every natural scale, including zero. It is a proved

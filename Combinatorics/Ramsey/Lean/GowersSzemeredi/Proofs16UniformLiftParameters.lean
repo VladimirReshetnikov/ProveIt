@@ -67,9 +67,9 @@ def section16UniformSliceExponent (sigma theta gamma s : Real) (k : Nat) : Real 
   (multipleC (p⁻¹ * sigma) gamma k) ^ p
 
 def section16UniformLiftGraphBudget (sigma theta gamma s : Real) (k : Nat) : Real :=
-  let r := (section16UniformSampleCount sigma theta gamma k : Real)
-  let b := (multipleQ ((r * s)⁻¹ * sigma) gamma k) ^ (r * s)
-  r * b + r * r * b * b
+  let r := section16UniformSampleCount sigma theta gamma k
+  let b := (multipleQ (((r : Real) * s)⁻¹ * sigma) gamma k) ^ ((r : Real) * s)
+  max b ((r.choose 2 : Real) * b * b)
 
 def section16UniformLiftExponent (sigma theta gamma s : Real) (k : Nat) : Real :=
   section16LineWidthExponent (section16UniformDeltaCount sigma theta gamma k) k sigma theta gamma *
