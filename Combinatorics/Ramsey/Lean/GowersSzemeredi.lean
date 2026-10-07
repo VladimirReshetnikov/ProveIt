@@ -325,6 +325,10 @@ import GowersSzemeredi.Proofs05FiniteRecurrenceBudget
 import GowersSzemeredi.Proofs05FiniteRecurrence
 import GowersSzemeredi.Proofs05FiniteWeylRootBudget
 import GowersSzemeredi.Proofs05FiniteRecurrenceScale
+import GowersSzemeredi.Proofs05FiniteRecurrencePowers
+import GowersSzemeredi.Proofs05FiniteRecurrenceExponentBounds
+import GowersSzemeredi.Proofs05FiniteLocalizationExponentBudget
+import GowersSzemeredi.Proofs05FiniteLocalizationScale
 
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
