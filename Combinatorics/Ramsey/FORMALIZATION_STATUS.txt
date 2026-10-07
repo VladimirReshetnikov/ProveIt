@@ -4,7 +4,7 @@ Scope
   The goal remains open. No improvement to the final Szemeredi bound is claimed.
   The source catalogue contains all 120 unique numbered theorem, lemma,
   proposition, and corollary headings in sz-thm-gowers-proof.tex.
-  There are 107 checked exact companion proofs and 13 open statements.
+  There are 108 checked exact companion proofs and 12 open statements.
   The JSON ledger records every statement, its TeX heading lines, its Lean
   definition, and related results. Conditional implications, restricted cases,
   and counterexamples are not counted as proofs of the full statement.
@@ -12,10 +12,10 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 484 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 3,190 public Gowers theorems and found only propext,
-  Classical.choice, and Quot.sound. The audit independently counted 107 exact
-  companion proofs and 13 open catalogue statements from Lean's theorem types.
+  All 487 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 3,211 public Gowers theorems and found only propext,
+  Classical.choice, and Quot.sound. The audit independently counted 108 exact
+  companion proofs and 12 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
   errors remain in this build. The JSON ledger reproduces exactly and has no
   unmatched numbered TeX headings or unmatched catalogue entries.
@@ -75,7 +75,8 @@ Completed polynomial degree induction
   Proofs05DegreeBudgets prove the real rounding and integer tower estimates.
   Proofs05FullPartition closes Corollaries 5.6 and 5.7 and Lemmas 5.9 and 5.14.
   The explicitly scale-qualified Corollary 5.8 is also proved; the original
-  catalogue statement remains open. The degree induction also proves the
+  catalogue statement is now proved by the threshold-free construction
+  described below. The degree induction also proves the
   stronger diameter N*r^(-2/K), with the documented recurrence-supported
   threshold and rounding-safe simultaneous threshold.
 
@@ -1113,10 +1114,10 @@ Arbitrary-modulus progression moments for Corollary 5.8
   eighth-power budget. The assembly is now also available in a fixed
   degree as Corollary58At, and corollary_5_8_degree_one proves the entire
   degree-one specialization with no added scale hypothesis.
-  Corollary 5.8 remains open until the analytic input is proved for every
-  degree >= 2. Report277 supplies a stronger written localization budget.
-  The fixed-degree result and conditional assembly do not count as exact
-  companions for the all-degree catalogue statement.
+  The analytic localization input is now discharged in every degree by
+  Proofs05ThresholdFreeLocalization. The earlier fixed-degree results and
+  conditional assembly remain available separately; corollary_5_8_holds
+  is the exact companion for the full all-degree catalogue statement.
 
 Finite quadratic recurrence and localization budgets
   Proofs05QuadraticRecurrenceBudget works at T=2^256*R^16, R>=2.
@@ -1154,7 +1155,7 @@ Finite quadratic recurrence and localization budgets
   residue chunks and their refinements, exposing the actual sufficient
   size T*(H+1)^2. It proves ThresholdFreePolynomialLocalization 2 and
   corollary_5_8_degree_two : Corollary58At 2 with no added scale condition.
-  The full all-degree Corollary 5.8 stays open.
+  The full all-degree Corollary 5.8 is now also proved, as described below.
 
 Finite recurrence in every degree
   Proofs05FiniteWeylNormalization normalizes the finite Weyl estimate at
@@ -1181,8 +1182,26 @@ Finite recurrence in every degree
   Proofs05FiniteLocalizationScale takes H=(4L)^(K_(k-1)/2) and
   R=2^(k+6)*L*H^k and proves t*(H+1)^2<=(2L)^(K_k/2).
   Thus the finite recurrence and target-minus-one rounding fit the paper's
-  localization budget in every higher degree. The phase induction remains
-  to be assembled; the catalogue status is unchanged at this checkpoint.
+  localization budget in every higher degree.
+
+Completed Corollary 5.8 in every positive degree
+  Proofs05FiniteLocalizationPhaseError bounds the leading monomial's
+  phase error by 1/(8L) on chunks of length <=2H, with precision
+  R=2^(k+6)*L*H^k. Proofs05FiniteChunkLocalization applies localization
+  in the previous degree at target 2L and transports the proper cells;
+  the two errors sum to at most 1/(4L).
+  Proofs05ThresholdFreeLocalization combines the affine and quadratic
+  bases with the checked recurrence and numerical budgets. Each higher
+  degree uses residue chunks of length H or H+1, degree drop on each
+  chunk, and flattening of the refinements into a proper partition.
+  thresholdFreePolynomialLocalization_all supplies the analytic input
+  to the previously checked singleton/variance/high-correlation assembly.
+  corollary_5_8_holds now has exactly the catalogue type: a proper Q of
+  cardinality at least (N/M)^(1/K_k)/8 and density at least delta+alpha/16,
+  for every positive degree, with no added scale condition. The source
+  heading and its stated length and density conclusions were rechecked.
+  Source 41 (Report277) gives a related stronger written localization
+  budget; this formal proof uses the already checked finite Weyl estimate.
 
 Reproducible checks (from repository root)
   python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.Audit
@@ -1200,15 +1219,7 @@ Next substantial obligations
   quantitative dependency chain. The qualitative Freiman theorems 7.1--7.2
   are proved (Proofs07FreimanClosure). The quadratic four-term theorem 8.2
   and Corollary 8.3 are now proved with their exact catalogue types.
-  1. Resolve Corollary 5.8's missing common-target scale assumptions. Its
-     scale-qualified repair is proved, but does not establish the unrepaired
-     catalogue statement. A written proof of the full catalogue statement,
-     every degree and no scale assumption (length (N/M)^(1/D_k)/8 with
-     D_k <= K_k, gain alpha/3), is source 41 (Report277) of
-     Research/GowersSzemeredi/local-quantitative-refinements; its intake
-     re-derived every step (dossier, batch 123). Sources 26 and 32 are its
-     degree-one and degree-two precursors.
-  2. Resolve the printed Theorem 13.12 length exponent: the complete Fourier
+  1. Resolve the printed Theorem 13.12 length exponent: the complete Fourier
      extraction is proved with a uniform threshold and an explicit exponent,
      but that exponent is strictly smaller than the printed target. Reconcile
      the unrestricted catalogue hypotheses as well; the actual extraction
@@ -1228,7 +1239,7 @@ Next substantial obligations
      lemma_13_7_without_domain and lemma_13_7_without_prime_assumption are
      false over N = 2^k (lemma_13_7_holds is unaffected). These are written
      results only; no formal status changes.
-  3. Complete the higher-dimensional Section 16 induction using the migrated
+  2. Complete the higher-dimensional Section 16 induction using the migrated
      proper-box predicates, propagate properness through the remaining box
      statements, and resolve the documented Corollary 16.11 bound.
      Its one-dimensional base case, Lemma 16.3, the inductive extraction
@@ -1243,11 +1254,11 @@ Next substantial obligations
      repaired statements: source 49's acyclic cover theorem and source 50's
      repair interface. No formal status changes until a counterexample is
      formalized.
-  4. Prove Theorem 18.1 with explicit thresholds strong enough for iteration.
+  3. Prove Theorem 18.1 with explicit thresholds strong enough for iteration.
      The existing Section 18 cyclic dichotomy is conditional on that theorem.
      Extend the relative-balance, boundary refinement, uniform stopping,
      and fixed-parameter iteration now completed for four-term progressions
      to the higher-degree construction, retaining explicit thresholds.
-  5. Close Theorem 18.2 and its headline consequences; then investigate tighter
+  4. Close Theorem 18.2 and its headline consequences; then investigate tighter
      final bounds without treating improved auxiliary statements as a proved
      improvement of the full Szemeredi estimate.

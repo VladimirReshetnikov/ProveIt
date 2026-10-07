@@ -329,6 +329,9 @@ import GowersSzemeredi.Proofs05FiniteRecurrencePowers
 import GowersSzemeredi.Proofs05FiniteRecurrenceExponentBounds
 import GowersSzemeredi.Proofs05FiniteLocalizationExponentBudget
 import GowersSzemeredi.Proofs05FiniteLocalizationScale
+import GowersSzemeredi.Proofs05FiniteLocalizationPhaseError
+import GowersSzemeredi.Proofs05FiniteChunkLocalization
+import GowersSzemeredi.Proofs05ThresholdFreeLocalization
 
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
