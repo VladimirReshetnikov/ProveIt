@@ -37,6 +37,13 @@
 \newcommand{\normtor}[1]{\lVert #1\rVert_{2\pi}}
 \newcommand{\phis}{\varphi}
 \newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+% Added by the ProveIt write phase (batch 111, 7 October 2026): dated notes
+% marked [write], and a macro for file, label and commit names.
+\newcommand{\file}[1]{\nolinkurl{#1}}
+\expandafter\def\expandafter\UrlBreaks\expandafter{\UrlBreaks\do\-\do\_\do\.\do\:}
+\newenvironment{writenote}[1][]{\par\smallskip\begingroup\small
+ \noindent\textbf{[write]}\if\relax\detokenize{#1}\relax\else~\textbf{#1.}\fi\ }%
+ {\par\endgroup\smallskip}
 \title{\LARGE\bfseries Partitions on maximal Schreier supports\\[8pt]\large Full coefficient asymptotics for OEIS A239950}
 \author{Report 195\quad Prepared for Vladimir}
 \date{4 October 2026}
@@ -54,13 +61,22 @@ c=-\frac{26a^2-82a+29}{144(a-1)^2}\sqrt S-\frac{3}{16\sqrt S}<0.
 \]
 The second correction is also evaluated explicitly, with relative remainder $O(n^{-3/2})$. The expansion continues to every fixed half-power order, with relative coefficients in $\mathbb Q(a,\sqrt S)$. The proof includes global radial localization, a full-torus joint lattice local limit theorem, and an absolutely convergent three-variable saddle expansion with a shifted-lattice remainder estimate. We also obtain a Gaussian least-part law, eventual strict increase, a Lambert $W_{-1}$ inverse sandwich with integer rounding, and an exact rational certificate ruling out finite eta quotients for $F(q)/q$. Classical support terminology, occupancy products, and saddle methods are explicitly credited. The accompanying code separates exact standard-library verification from optional symbolic algebra.
 \end{abstract}
+\begin{writenote}[7 October 2026]
+This is bundle Report~195 as placed in ProveIt (batch~111), with every
+delivered label prefixed by \file{mss:}. Its provenance, what the write read
+and checked, the collected non-claims and a table of reading conventions are
+in Section~\ref{mss:sec:provenance}; the additions marked [write] are
+Remarks~\ref{mss:rem:oeis} and~\ref{mss:rem:transseries}, the note at the
+end of Section~\ref{mss:sec:second}, and a note on the questions of Section~\ref{mss:sec:questions}. No delivered statement,
+section or equation number has changed.
+\end{writenote}
 \clearpage
 {\setcounter{tocdepth}{1}\small\tableofcontents}
 \newpage
 
-\section{The sequence and the results}
+\section{The sequence and the results}\label{mss:sec:results}
 A nonempty integer partition is a finite multiset of positive integers. Its \emph{support} is the set of part sizes that occur; its size is the sum of all parts, with multiplicity. Throughout,
-\begin{equation}\label{eq:def}
+\begin{equation}\label{mss:eq:def}
 p_n=\#\{\lambda\vdash n:\min\lambda=|\operatorname{supp}\lambda|\},
 \qquad p_0=0,
 \qquad F(q)=\sum_{n\ge0}p_nq^n.
@@ -68,41 +84,41 @@ p_n=\#\{\lambda\vdash n:\min\lambda=|\operatorname{supp}\lambda|\},
 This is OEIS A239950 \cite{oeis}. The empty partition is excluded. The distinction between support cardinality and total number of parts is essential.
 
 Define the positive constants
-\begin{align}\label{eq:constants}
+\begin{align}\label{mss:eq:constants}
 a&=\log(3/2), &
 S&=\Li_2(2/3)-\Li_2(1/3)+a\log2,\\
 D&=\frac1{\sqrt{6(1-a)}}, &
 K&=\frac{DS^{1/4}}{2\sqrt\pi},\nonumber
 \end{align}
 where $\Li_2(z)=\sum_{k\ge1}z^k/k^2$ for $|z|\le1$. Also put
-\begin{equation}\label{eq:Bc}
+\begin{equation}\label{mss:eq:Bc}
 B_*=-\frac{26a^2-82a+29}{144(a-1)^2},
 \qquad c=B_*\sqrt S-\frac3{16\sqrt S}.
 \end{equation}
 Here $B_*$ is a scalar correction constant; it will be kept distinct from the occupancy integral $B(x,s)$ below. Positivity of $S$ follows directly from its displayed definition, and $0<a<1$.
 
-\begin{theorem}[Coefficient expansion]\label{thm:main}
-There are effectively computable real constants $c_j$, with $c_0=1$, $c_1=c$, and $c_2$ given by \eqref{eq:secondclosed}, such that for every fixed integer $R\ge0$,
-\begin{equation}\label{eq:allorders}
+\begin{theorem}[Coefficient expansion]\label{mss:thm:main}
+There are effectively computable real constants $c_j$, with $c_0=1$, $c_1=c$, and $c_2$ given by \eqref{mss:eq:secondclosed}, such that for every fixed integer $R\ge0$,
+\begin{equation}\label{mss:eq:allorders}
 p_n=K n^{-3/4}e^{2\sqrt{Sn}}
 \left(\sum_{j=0}^{R}c_jn^{-j/2}
 +O_R(n^{-(R+1)/2})\right).
 \end{equation}
 In particular,
-\begin{equation}\label{eq:first}
+\begin{equation}\label{mss:eq:first}
 p_n=K n^{-3/4}e^{2\sqrt{Sn}}
 \left(1+\frac{c}{\sqrt n}+O(n^{-1})\right),\qquad c<0.
 \end{equation}
 \end{theorem}
-In particular, the first two relative corrections are explicit, with the three-term form and $O(n^{-3/2})$ remainder in \eqref{eq:secondexpansion}.
+In particular, the first two relative corrections are explicit, with the three-term form and $O(n^{-3/2})$ remainder in \eqref{mss:eq:secondexpansion}.
 Every relative coefficient $c_j$ belongs to the evaluated field $\mathbb Q(a,\sqrt S)$; no algebraic independence of these constants is presumed. The quantifier ``for every fixed $R$'' is part of the assertion. No convergence of the infinite series, uniformity as $R$ grows, or effective numerical onset is claimed. The proof of coefficient extraction is separate from the real-radial expansion
-\begin{equation}\label{eq:radialintro}
+\begin{equation}\label{mss:eq:radialintro}
 F(e^{-t})=De^{S/t}\left(1+B_*t+O(t^2)\right).
 \end{equation}
-A radial equivalent alone would not justify \eqref{eq:allorders}.
+A radial equivalent alone would not justify \eqref{mss:eq:allorders}.
 
 For the distributional result, introduce
-\begin{equation}\label{eq:lawconstants}
+\begin{equation}\label{mss:eq:lawconstants}
 V=2a-\tfrac12,\qquad
 \kappa=\frac{3(1-a)}{V},\qquad
 W=2S-a^2\kappa,\qquad
@@ -110,21 +126,21 @@ W=2S-a^2\kappa,\qquad
 \end{equation}
 All four constants are positive; this will follow from positive-definite covariance matrices, rather than numerical evaluation.
 
-\begin{theorem}[Least part and inversion]\label{thm:consequences}
-Let $M_n$ be the least part of a partition drawn uniformly from the $p_n$ objects in \eqref{eq:def}, and let $t=\sqrt{S/n}$. Then
-\begin{equation}\label{eq:cltintro}
+\begin{theorem}[Least part and inversion]\label{mss:thm:consequences}
+Let $M_n$ be the least part of a partition drawn uniformly from the $p_n$ objects in \eqref{mss:eq:def}, and let $t=\sqrt{S/n}$. Then
+\begin{equation}\label{mss:eq:cltintro}
 \sqrt{t\kappa_{\rm eff}}\left(M_n-\frac a t\right)
 \ \Longrightarrow\ N(0,1).
 \end{equation}
-The corresponding local mass estimate is uniform on every bounded interval of the standardized variable, as stated in Theorem~\ref{thm:clt}.
+The corresponding local mass estimate is uniform on every bounded interval of the standardized variable, as stated in Theorem~\ref{mss:thm:clt}.
 
 The sequence $p_n$ is eventually strictly increasing. For large $Y$, let
-\begin{equation}\label{eq:rintro}
+\begin{equation}\label{mss:eq:rintro}
 r(Y)=\left[-\frac3{4\sqrt S}\,
 W_{-1}\!\left(-\frac{4\sqrt S}{3}(K/Y)^{2/3}\right)\right]^2,
 \end{equation}
 and $N(Y)=\min\{n\ge0:p_n\ge Y\}$. For some $C>0$ and all sufficiently large $Y$,
-\begin{equation}\label{eq:inverseintro}
+\begin{equation}\label{mss:eq:inverseintro}
 \left\lceil r(Y)-\frac c{\sqrt S}-\frac C{\sqrt{r(Y)}}\right\rceil
 \le N(Y)\le
 \left\lceil r(Y)-\frac c{\sqrt S}+\frac C{\sqrt{r(Y)}}\right\rceil.
@@ -132,7 +148,7 @@ and $N(Y)=\min\{n\ge0:p_n\ge Y\}$. For some $C>0$ and all sufficiently large $Y$
 \end{theorem}
 The two ceilings are necessary in this level of conclusion. An arbitrarily small real error can still change a ceiling near an integer. The statements do not give an explicit least index of monotonicity.
 
-\subsection{Relation to classical work and the scope of the article}
+\subsection{Relation to classical work and the scope of the article}\label{mss:sec:classical}
 The Schreier family consists of finite sets $E\subset\N$ with $|E|\le\min E$, together with the empty set. A nonempty member is inclusion-maximal exactly when $|E|=\min E$. The terminology \emph{maximal Schreier set} is classical; see Chu and Vasseur \cite{chu-vasseur}. Our support family is precisely this family of maximal sets. We put the geometric weight $q^j/(1-q^j)$ on each selected size $j$, and extract coefficients by the sum of all parts. This weighting and indexing must not be confused with enumeration by the greatest support element.
 
 Schreier-type sets, partitions, and compositions are studied by Beanland and Chu \cite{beanland-chu}; bounded-multiplicity Schreier multisets are studied by Chu et al.\ \cite{chu-multisets}. Those models provide important context. The present constraint uses the number of distinct sizes and permits unbounded positive multiplicities. Counting ordered compositions by total length is also a different problem.
@@ -143,36 +159,221 @@ Grabner, Knopfmacher, and Wagner \cite{grabner} provide a general asymptotic sch
 
 The contribution here is a self-contained, sequence-specific derivation with explicit constants and reproducible finite checks. Neither the bounded source review nor the absence of an asymptotic on an inspected OEIS page establishes worldwide novelty. No novelty of the Schreier family, the occupancy product, or the general saddle and local-limit methodology is asserted.
 
-\section{Exact enumeration and support weights}\label{sec:exact}
+\begin{remark}[{[write]} The OEIS entry, quoted, 7~October 2026]\label{mss:rem:oeis}
+OEIS A239950, read on 7~October 2026 in the internal format, is at revision
+\#18 (17~November 2015), author Clark Kimberling (30~March 2014), offset~0.
+Its name is ``Number of partitions of n such that (number of distinct parts)
+= least part.''; a comment of Joerg Arndt (28~April 2014) gives the
+conjugate reading ``(number of distinct parts) = multiplicity of the greatest
+part'' for $n>0$; its formula line is ``A239948(n) + a(n) + A239951(n) =
+A000041(n) for n >= 0.''; it carries Alois P.~Heinz's Maple program and
+b-file ($0\le n\le1000$) and Jean-Fran\c{c}ois Alcover's Mathematica
+programs. It states no asymptotic formula and no conjecture. Its 58 data
+terms are exactly those of the shipped \file{data/oeis_prefix.json}. The
+write fetched the b-file (1001 terms, SHA-256 \file{72e8fed9e454...1cf55f}),
+which the package did not retrieve, and recomputed $p_0,\dots,p_{1500}$ by a
+route of its own, the signed Euler expansion
+\[
+C_m(q)=\frac{q^m(q;q)_m}{(1-q^m)(q;q)_\infty}
+\sum_{k\ge m-1}(-1)^{k+m-1}\binom k{m-1}\frac{q^{k(k+1)/2+km}}{(q;q)_k}
+\]
+of~\eqref{mss:eq:GF} and~\eqref{mss:eq:pochhammer}, which shares nothing with
+the positive recurrence~\eqref{mss:eq:DP}: all 1001 b-file terms and all 1501
+terms of the shipped \file{data/generated-exact_terms.txt} agree, as do
+brute-force counts for $n\le30$. The name quoted in the bibliography
+entry~\cite{oeis}, ``Number of partitions of $n$ such that the number of
+different parts is equal to the smallest part.'', is a paraphrase, not the
+entry's name at any revision the write saw; the delivered text is kept.
+Nothing was submitted to the OEIS.
+\end{remark}
+
+\subsection{Provenance, sources and reading conventions}\label{mss:sec:provenance}
+\begin{writenote}[Added 7 October 2026, batch~111]
+\emph{Provenance.} This report is Report~195 of the session bundle that
+ProveIt's \file{docs/incoming} intake processed as batch~111: the archive
+\file{Report195_TeX_and_Reproducible_Code.zip} ($687{,}972$ bytes, SHA-256
+\file{561bd3b3a4ce...a968e68412c0122}, 25 files, no wrapper directory),
+arrival commit \file{60f54ea06}, placed in \file{d451ef3d8}. The text is the
+delivered \file{Report195.tex} (1084 lines, dated 4~October 2026), shipped
+as \file{article.tex}. Its title page and PDF author field read ``Prepared
+for Vladimir''; the package carries no ``prepared for private review'' line,
+no e-mail address and no other personal data, and records no ProveIt commit.
+The delivered programs are shipped under \file{code/}, the observed OEIS
+prefix and the recorded outputs under \file{data/} (the latter as
+\file{data/generated-*}), and the delivered \file{DATA_SOURCES.md},
+\file{README_REPRODUCIBILITY.md}, \file{code/PROVENANCE.md},
+\file{code/README.md} and \file{data/README.md} as
+\file{DATA_SOURCES.md}, \file{README_REPRODUCIBILITY.md},
+\file{code-PROVENANCE.md}, \file{code-README.md} and \file{data-README.md};
+the report README maps every name. Not shipped, and retrievable from the
+arrival commit: the delivered 27-page PDF, the checksum manifest
+\file{SHA256SUMS.json} (24 entries, verified at the write), and the delivered
+README, replaced by the report README. It is a single-source report, so no
+merge choice was made. The write prefixed the 145 delivered labels with
+\file{mss:} and updated the 109 references to them (90 \verb|\eqref|,
+19 \verb|\ref|); it labelled Section~\ref{mss:sec:results} and
+Subsections~\ref{mss:sec:classical} and~\ref{mss:sec:questions}, and added
+this subsection, the notes marked [write] and
+Remarks~\ref{mss:rem:oeis} and~\ref{mss:rem:transseries}. The added remarks
+are the last statements of their sections, this subsection follows the last
+delivered text of Section~\ref{mss:sec:results}, and the added displays are
+unnumbered, so every theorem, section and equation of the source keeps its
+delivered number (the label tables of a build of the delivered text and of
+this one were compared).
+
+\emph{The sources, as the write read them} (7~October 2026).
+\begin{itemize}[leftmargin=*]\raggedright
+\item OEIS A239950 with its b-file, in the internal format
+ (Remark~\ref{mss:rem:oeis}).
+\item The transseries volume
+ \path{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex}:
+ \file{p0:def:model}, \file{p0:def:core}, \file{p0:thm:lambert-core},
+ \file{p0:thm:lambert-centered}, \file{p0:thm:flattening},
+ \file{p0:def:three-inverses} and \file{p0:thm:staircase}, read for
+ Remark~\ref{mss:rem:transseries}.
+\item Not read by the write: the cited literature
+ \cite{chu-vasseur,beanland-chu,chu-multisets,goh-schmutz,hwang,hwang-yeh,grabner,archibald}.
+ The source's account of it, and its delivered \file{DATA_SOURCES.md} (which
+ says what the source inspected of each item, for instance only the
+ publisher abstract of Goh and Schmutz and the abstract of Hwang), are
+ reported, not confirmed.
+\end{itemize}
+
+\emph{What was checked at intake.} The batch-111 dossier (7~October 2026)
+read the manuscript, found no error in it, confirmed $c_1<0$ and the value
+of $c_2$ against the exact terms to $n=1500$, and reran the delivered suite
+on copies: its outputs reproduce, the only failures being Windows artifacts
+(line-ending bytes in hashed outputs, a recorded Python version string, a
+console code page), none mathematical. \emph{What the write checked.} The
+proofs line by line, with no error found; in particular
+$B(a,s(a))=a$ from~\eqref{mss:eq:Bexplicit}, $V=2a-\tfrac12$ as $B_s$,
+$-G''(a)=\kappa=3(1-a)/V$, $A_0=2^{-1/2}$, the
+normalization~\eqref{mss:eq:normalization}, $K=DS^{1/4}/(2\sqrt\pi)$,
+$-h_v(a,s_0)/12=\tfrac18$, the cap~\eqref{mss:eq:DPcap}, and the reduction
+of $r(Y)$ to $W_{-1}$. With SymPy~1.14.0 it verified $\det H=-2SV\kappa$,
+$C=-H^{-1}$ in~\eqref{mss:eq:C}, that the quadratic
+form~\eqref{mss:eq:Q} is $\tfrac12w^THw$ on the plane~\eqref{mss:eq:plane},
+$W=L_0-J_0^2/V$, both forms of~\eqref{mss:eq:keff}, $VW\kappa_{\rm
+eff}=2SV\kappa$, that the five pieces~\eqref{mss:eq:pieces}
+sum to~\eqref{mss:eq:b1}, and that the radial pieces~\eqref{mss:eq:radialpieces}
+sum to $B_*$. The six-dimensional contraction~\eqref{mss:eq:b2contraction}
+itself was not redone symbolically; $c_2$ was tested numerically (note at the
+end of Section~\ref{mss:sec:second}). In exact arithmetic it reproduced the
+sign certificate~\eqref{mss:eq:logbound}--\eqref{mss:eq:Qsign} and both
+Horner certificates~\eqref{mss:eq:hornercert}--\eqref{mss:eq:hornercert2}
+(left sides $0.2799\ldots$ and $-0.5046\ldots$; tail bounds
+$3.4\cdot10^{-25}$ and $1.0\cdot10^{-13}$), using its own counts. With
+mpmath~1.3.0 at 60 digits it evaluated the constants, the residuals and the
+inverse coefficients (the note at the end of Section~\ref{mss:sec:second}
+and Remark~\ref{mss:rem:transseries}). Finite and floating computations are
+observations, not certificates.
+
+\emph{Relation to the repository.} Before batch~111 no file of the
+repository named A239950. No statement of this report is formalized in Lean
+or Rocq, and its place in the collection confers no formal status. The
+nearest reports are in the same directory
+\file{SetTheory/Cardinals/docs/reports/generating-functions-and-asymptotics/oeis-sequence-asymptotics/}:
+\file{a239964-sizes-equal-max-multiplicity} (batch~111: the number of
+distinct sizes equal to the \emph{maximum} multiplicity, a different
+statistic on the same occupancy product) and
+\file{a098131-minimum-length-compositions} (ordered compositions whose parts
+are at least their number, the Schreier-type condition on length, which the
+source's \file{DATA_SOURCES.md} distinguishes from this support-cardinality
+model). Neither shares a result with this report. The inverses of
+Section~\ref{mss:sec:inverse} are compared with the transseries volume in
+Remark~\ref{mss:rem:transseries}.
+\end{writenote}
+\begin{writenote}[What is not claimed, collected from the source]
+No worldwide novelty: neither the bounded source review nor the absence of
+an asymptotic on the OEIS page establishes it, and no novelty of the
+Schreier family, the occupancy product, or the saddle and local-limit
+methodology is asserted; the applicability of Hwang's theorems~\cite{hwang}
+to the moving cutoff is unresolved, and the source does not claim that
+general partition methods fail to cover some of the analysis. The
+expansion~\eqref{mss:eq:allorders} holds for every fixed order only: no
+convergence, no uniformity as $R$ grows, no effective numerical onset, no
+explicit least index of monotonicity, and no algebraic independence of $a$
+and $S$. The radial equivalent alone would not justify the coefficient
+expansion. Theorem~\ref{mss:thm:clt} gives no higher-order centering and no
+relative local law beyond bounded windows; the full-target uniformity of
+Theorem~\ref{mss:thm:LLT} is absolute, not relative. The inverse brackets
+are smooth-envelope statements, not an identification with piecewise-linear
+interpolation; no convergent inverse series and no unconditional rounded
+equality are asserted. Proposition~\ref{mss:prop:zero} excludes finite eta
+quotients (and any representation holomorphic and nonvanishing in the disk),
+not sums of products, numerators with zeros or $q$-hypergeometric
+identities. The optional symbolic programs compute the first two corrections
+only; they do not prove localization, tails or transfer, and finite checks
+do not prove the asymptotics. Determinism is a same-stack statement. The
+OEIS b-file was not retrieved by the source. The write adds: its own checks
+are floating or finite computations, except the exact certificates it
+reproduced; Remark~\ref{mss:rem:transseries} claims no novelty for any
+inversion.
+\end{writenote}
+\medskip
+\begingroup\small
+\noindent\emph{Reading conventions} (letters the source reuses, with the
+tempting false readings; no symbol of the source was renamed; symbols of the
+transseries volume carry the subscript ``vol'' in
+Remark~\ref{mss:rem:transseries}).\par\smallskip
+\renewcommand{\arraystretch}{1.1}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.95in}>{\raggedright\arraybackslash}p{3.45in}>{\raggedright\arraybackslash}p{1.7in}@{}}
+\toprule
+Symbol & Meaning here (where) & Not to be read as\\
+\midrule
+\endhead
+$a$, $b$ & $\log(3/2)$; the slope $3/(2V)$ of the linear radius~\eqref{mss:eq:linradius}; in~\eqref{mss:eq:tailcert}, $b$ is the integer with $R=(b-1)/b$ & each other; the volume's $a_{\rm vol}$, $b_{\rm vol}$\\
+$c$, $c_j$, $c_0$, $c_1$, $c_2$ & $c=c_1$ the first relative correction; the coefficients of~\eqref{mss:eq:allorders}; but $c_0$ of Lemma~\ref{mss:lem:block}, $c_1<c_2$ in the proof of Lemma~\ref{mss:lem:torus} and $c_1,c_2$ in~\eqref{mss:eq:3Dbound} are unrelated positive constants & each other\\
+$C$ & the contraction matrix~\eqref{mss:eq:C}; elsewhere generic constants & a covariance of real variables\\
+$D$, $D_c$ & the constant $1/\sqrt{6(1-a)}$; the speed coordinate $X+aZ$ (Section~\ref{mss:sec:second}); a fixed displacement in the proof of Theorem~\ref{mss:thm:inverseall} & each other\\
+$p_n$, $p_{n,m}$, $p(v,s)$, $p_0$, $p(n)$ & the counts; with least part $m$; the occupancy density; its value at $v=x$; the partition numbers & each other\\
+$P$, $P_j$, $P_k$, $P(R)$ & the phase~\eqref{mss:eq:P}; the expansion polynomials~\eqref{mss:eq:expansionlocal}; the homogeneous phase terms (Section~\ref{mss:sec:first}); $\prod(1-R^j)^{-1}$ & each other\\
+$B$, $B_*$, $B_{**}$, $\mathsf B_{2r}$ & the occupancy integral; the radial correction; the second-order constant~\eqref{mss:eq:B2}; Bernoulli numbers & each other\\
+$V$, $V(x,s)$ & $2a-\tfrac12$; the variance integral & each other\\
+$W$, $W_{-1}$ & $2S-a^2\kappa$; Lambert's lower branch & each other\\
+$K$, $K_m$ & the leading constant; the occupancy count & each other\\
+$N$, $N(Y)$ & the total size variable; the threshold index; a truncation order in~\eqref{mss:eq:expansionlocal} and~\eqref{mss:eq:tailcert} & each other\\
+$Q$, $Q_\ell$ & $e^{-x}$ in~\eqref{mss:eq:dilog}; the quadratic form~\eqref{mss:eq:Q}; the polynomial of~\eqref{mss:eq:Qsign}; the geometric sum of Lemma~\ref{mss:lem:block} & each other\\
+$T$, $T_N$, $T_J$ & the integral~\eqref{mss:eq:TJL}; the Horner truncation; the inverse model~\eqref{mss:eq:TJ} & each other\\
+$J$, $J_0$, $L$, $L_0$ & the integrals~\eqref{mss:eq:TJL} and their saddle values; $J$ is also a compact interval (Theorem~\ref{mss:thm:LLT}) and an inverse order & each other; the volume's $L_{\rm vol}$\\
+$R$, $R_j$ & a fixed order (also a window bound and a radius); the multiplicities~\eqref{mss:eq:Rlaw} & each other\\
+$\ell_j$, $\ell_1,\ell_2$ & the logarithmic coefficients~\eqref{mss:eq:logcoeffs} in Section~\ref{mss:sec:inverse}; the log-amplitude terms~\eqref{mss:eq:ell} in Section~\ref{mss:sec:first} & each other\\
+$E$, $\E$, $E_j$, $\mathsf E$, $\mathcal E_H$ & a block of integers; expectation; the pieces~\eqref{mss:eq:pieces}; the Euler--Maclaurin series; the Wick contraction & each other\\
+$S$, $\mathcal G$, $G$ & the exponent constant; $F(q)/q$; the radial phase $\Psi(x,s(x))$ & each other\\
+\bottomrule
+\end{longtable}
+\endgroup
+
+\section{Exact enumeration and support weights}\label{mss:sec:exact}
 For $m\ge1$, let $p_{n,m}$ count admissible partitions with least part $m$, and let $C_m(q)=\sum_np_{n,m}q^n$. The size $m$ must occur positively; precisely $m-1$ larger sizes must occur. Thus
-\begin{equation}\label{eq:GF}
+\begin{equation}\label{mss:eq:GF}
 C_m(q)=[u^m]\frac{u q^m}{1-q^m}
 \prod_{j>m}\left(1+\frac{u q^j}{1-q^j}\right),
 \qquad F(q)=\sum_{m\ge1}C_m(q).
 \end{equation}
 Each factor $q^j/(1-q^j)$ selects a positive multiplicity for size $j$. Equivalently,
-\begin{equation}\label{eq:support}
+\begin{equation}\label{mss:eq:support}
 F(q)=\sum_{\substack{E\subset\N\ {\rm finite},\ E\ne\varnothing\\|E|=\min E}}
 \prod_{j\in E}\frac{q^j}{1-q^j}.
 \end{equation}
 To verify the maximality description: if $|E|<\min E$, a sufficiently large new element can be adjoined without leaving the Schreier family. If $|E|=\min E$, adjoining a larger element increases cardinality past the old minimum; adjoining a smaller element reduces the minimum as well. No proper superset is in the family.
 
 The smallest possible total for fixed minimum $m$ is
-\begin{equation}\label{eq:minsize}
+\begin{equation}\label{mss:eq:minsize}
 m+(m+1)+\cdots+(2m-1)=\frac{m(3m-1)}2.
 \end{equation}
-Therefore every coefficient in \eqref{eq:GF} involves finitely many $m$ and $j$. These are formal power series identities. Analytically, $0\le p_n\le p(n)$, where $p(n)$ is the ordinary partition number. Thus $F$ and the relevant sums converge normally on every closed disk $|q|\le r<1$.
+Therefore every coefficient in \eqref{mss:eq:GF} involves finitely many $m$ and $j$. These are formal power series identities. Analytically, $0\le p_n\le p(n)$, where $p(n)$ is the ordinary partition number. Thus $F$ and the relevant sums converge normally on every closed disk $|q|\le r<1$.
 
 In $q$-Pochhammer notation $(z;q)_\infty=\prod_{j\ge0}(1-zq^j)$, the exact product is
-\begin{equation}\label{eq:pochhammer}
+\begin{equation}\label{mss:eq:pochhammer}
 \prod_{j>m}\left(1+\frac{u q^j}{1-q^j}\right)
 =\frac{((1-u)q^{m+1};q)_\infty}{(q^{m+1};q)_\infty}.
 \end{equation}
-This standard factorwise identity is not a simplification of the subsequent diagonal sum to a single product. Section~\ref{sec:zero} gives a precise obstruction to one tempting type of product formula.
+This standard factorwise identity is not a simplification of the subsequent diagonal sum to a single product. Section~\ref{mss:sec:zero} gives a precise obstruction to one tempting type of product formula.
 
 \subsection{An exact positive recurrence}
 The public program computes $p_0,\ldots,p_N$ simultaneously. Process possible sizes $j$ in descending order. Just before size $j$, let $d_{k,s}$ count partitions of $s$ with $k$ distinct sizes, all greater than $j$. The partitions that acquire positive multiplicity of $j$ are
-\begin{equation}\label{eq:DP}
+\begin{equation}\label{mss:eq:DP}
 e_{k,s}=\sum_{r\ge1}d_{k-1,s-rj}
 =e_{k,s-j}+d_{k-1,s-j},\qquad
 d^{\rm new}_{k,s}=d_{k,s}+e_{k,s}.
@@ -180,10 +381,10 @@ d^{\rm new}_{k,s}=d_{k,s}+e_{k,s}.
 Negative subscripts contribute zero. Update $k$ in descending order so that the old $k-1$ row remains available. When $k=j$, add $e_{j,s}$ to the desired answer. Each admissible partition is added once, at its minimum.
 
 Rows above
-\begin{equation}\label{eq:DPcap}
+\begin{equation}\label{mss:eq:DPcap}
 k_{\max}=\left\lfloor\frac{1+\sqrt{1+24N}}6\right\rfloor
 \end{equation}
-are unnecessary, by \eqref{eq:minsize}. In a row $k$ while processing $j$, every entry with $s<kj+k(k-1)/2$ is zero. Integer square roots and explicit integer inequalities implement these cutoffs without floating arithmetic. The recurrence is positive and uses arbitrary-precision integers.
+are unnecessary, by \eqref{mss:eq:minsize}. In a row $k$ while processing $j$, every entry with $s<kj+k(k-1)/2$ is zero. Integer square roots and explicit integer inequalities implement these cutoffs without floating arithmetic. The recurrence is positive and uses arbitrary-precision integers.
 
 For orientation, the first 31 values are
 \begin{center}\small
@@ -200,9 +401,9 @@ $p_n$&136&&&&&&&&&\\\bottomrule
 \end{center}
 These early decreases illustrate why eventual strict increase requires proof. The package regenerates all coefficients through $1500$, checks the observed OEIS prefix through $57$, and independently enumerates all ordinary partitions through $35$, directly testing the defining condition. The inspected OEIS b-file was not retrieved; agreement with its entire contents is not claimed.
 
-\section{The continuous saddle and radial localization}\label{sec:radial}
+\section{The continuous saddle and radial localization}\label{mss:sec:radial}
 For $t>0$, $u=e^s>0$, and $x=tm$, define
-\begin{align}\label{eq:hI}
+\begin{align}\label{mss:eq:hI}
 h(v,s)&=\log\left(1+\frac{e^s}{e^v-1}\right),&
 I(x,s)&=\int_x^\infty h(v,s)\,dv,\\
 p(v,s)&=h_s(v,s)=\frac{e^s}{e^v+e^s-1},&
@@ -211,25 +412,25 @@ V(x,s)&=\int_x^\infty p(v,s)(1-p(v,s))\,dv,&
 \Psi(x,s)&=I(x,s)-xs.\nonumber
 \end{align}
 Differentiation under the integral is legitimate for $x>0$ on compact parameter sets. The derivatives have integrable exponential tails. With $Q=e^{-x}$,
-\begin{equation}\label{eq:dilog}
+\begin{equation}\label{mss:eq:dilog}
 I(x,s)=\Li_2(Q)-\Li_2((1-u)Q).
 \end{equation}
-For $u>1$, the second dilogarithm is understood on the negative real axis by its real analytic continuation, or simply by the defining integral in \eqref{eq:hI}.
+For $u>1$, the second dilogarithm is understood on the negative real axis by its real analytic continuation, or simply by the defining integral in \eqref{mss:eq:hI}.
 
 At every $x>0$, $B(x,s)$ is strictly increasing in $s$, since $B_s=V>0$. Its limits as $s\to-\infty$ and $s\to+\infty$ are $0$ and $+\infty$. For the first limit use $p(v,s)\le u/(e^v-1)$; for the second, $p$ is bounded below on an interval whose length tends to infinity with $\log u$. Hence there is a unique smooth solution $s=s(x)$ of
-\begin{equation}\label{eq:occupancy}
+\begin{equation}\label{mss:eq:occupancy}
 B(x,s(x))=x.
 \end{equation}
 This is the minimizer of $\Psi(x,\cdot)$. Write
-\begin{equation}\label{eq:GA}
+\begin{equation}\label{mss:eq:GA}
 G(x)=\Psi(x,s(x)),\qquad
 A(x)=\frac{u(x)e^{-x}}{1-e^{-x}}
 \exp\{-h(x,s(x))/2\}.
 \end{equation}
 
-\begin{lemma}[Global strict concavity]\label{lem:concavity}
+\begin{lemma}[Global strict concavity]\label{mss:lem:concavity}
 The function $G$ is strictly concave on $(0,\infty)$ and has its unique global maximum at $a=\log(3/2)$. At that point $u(a)=1/2$, $G(a)=S$, and
-\begin{equation}\label{eq:saddlevalues}
+\begin{equation}\label{mss:eq:saddlevalues}
 \begin{gathered}
 p(a,s(a))=\tfrac12,\qquad h(a,s(a))=\log2,\qquad
 V(a,s(a))=V=2a-\tfrac12,\\
@@ -239,17 +440,17 @@ V(a,s(a))=V=2a-\tfrac12,\\
 \end{lemma}
 \begin{proof}
 Put $p_0=p(x,s(x))$. Direct differentiation gives
-\begin{equation}\label{eq:derivatives}
+\begin{equation}\label{mss:eq:derivatives}
 G'=-h-s,\qquad
 s'(x)=\frac{1+p_0}{V(x,s(x))},\qquad
 G''=\frac{p_0}{1-e^{-x}}-\frac{(1+p_0)^2}{V(x,s(x))}.
 \end{equation}
 The identity
-\begin{equation}\label{eq:pv}
+\begin{equation}\label{mss:eq:pv}
 -p_v(v,s)=\frac{p(v,s)(1-p(v,s))}{1-e^{-v}}
 \end{equation}
-implies $V(x,s(x))\le p_0\le1$, and \eqref{eq:occupancy} implies $V(x,s(x))\le x$. Therefore
-\begin{equation}\label{eq:concavityineq}
+implies $V(x,s(x))\le p_0\le1$, and \eqref{mss:eq:occupancy} implies $V(x,s(x))\le x$. Therefore
+\begin{equation}\label{mss:eq:concavityineq}
 \frac{p_0V(x,s(x))}{1-e^{-x}}
 \le\frac{p_0\min(x,1)}{1-e^{-x}}
 \le\frac{p_0}{1-e^{-1}}<4p_0\le(1+p_0)^2.
@@ -257,15 +458,15 @@ implies $V(x,s(x))\le p_0\le1$, and \eqref{eq:occupancy} implies $V(x,s(x))\le x
 For the middle inequality, $x/(1-e^{-x})$ increases up to $x=1$, and $1/(1-e^{-x})$ decreases thereafter. The last inequality is $(1-p_0)^2\ge0$. This proves $G''<0$.
 
 For $u\ne1$, integration yields
-\begin{equation}\label{eq:Bexplicit}
+\begin{equation}\label{mss:eq:Bexplicit}
 B(x,s)=-\frac{u}{1-u}\log(1-(1-u)e^{-x}).
 \end{equation}
-At $(x,u)=(a,1/2)$ it equals $a$. Also $p_0=1/2$ and $h=\log2=-s$, so $G'(a)=0$. Strict concavity proves global uniqueness. Substituting in \eqref{eq:dilog} gives $G(a)=S$. Differentiating \eqref{eq:Bexplicit} in $s$ gives $V=2a-1/2$; the curvature and amplitude then follow from \eqref{eq:derivatives} and \eqref{eq:GA}. In particular $V>0$ because it is an integral of a strictly positive function.
+At $(x,u)=(a,1/2)$ it equals $a$. Also $p_0=1/2$ and $h=\log2=-s$, so $G'(a)=0$. Strict concavity proves global uniqueness. Substituting in \eqref{mss:eq:dilog} gives $G(a)=S$. Differentiating \eqref{mss:eq:Bexplicit} in $s$ gives $V=2a-1/2$; the curvature and amplitude then follow from \eqref{mss:eq:derivatives} and \eqref{mss:eq:GA}. In particular $V>0$ because it is an integral of a strictly positive function.
 \end{proof}
 
-\begin{lemma}[Global tails]\label{lem:globaltails}
+\begin{lemma}[Global tails]\label{mss:lem:globaltails}
 Fix a neighborhood $J_0$ of $a$ whose closure lies in $(0,\infty)$. There is $\eta>0$ such that, as $t\downarrow0$,
-\begin{equation}\label{eq:globaltails}
+\begin{equation}\label{mss:eq:globaltails}
 \sum_{m:\,tm\notin J_0}C_m(e^{-t})
 =O\left(t^{-1}\log(1/t)e^{(S-\eta)/t}\right).
 \end{equation}
@@ -273,7 +474,7 @@ Consequently the corresponding coefficient contribution is bounded by $e^{tn}$ t
 \end{lemma}
 \begin{proof}
 Positivity of the product and monotonicity of $h$ give, for every chosen $u>0$,
-\begin{equation}\label{eq:chernoff}
+\begin{equation}\label{mss:eq:chernoff}
 C_m(e^{-t})\le
 \frac{u e^{-x}}{1-e^{-x}}
 \exp\{[I(x,\log u)-x\log u]/t\}.
@@ -285,88 +486,88 @@ For $x\ge M$, use $u=1$. Here $I(x,0)=\Li_2(e^{-x})<S/2$ when $M$ is sufficientl
 
 \subsection{A radial local estimate}
 On a compact $x$-interval in $(0,\infty)$, Euler--Maclaurin gives uniformly
-\begin{equation}\label{eq:EMleading}
+\begin{equation}\label{mss:eq:EMleading}
 \sum_{j>m}h(tj,s(x))=\frac{I(x,s(x))}{t}-\frac12h(x,s(x))+O(t).
 \end{equation}
 The endpoint sign comes from starting the sum at $m+1$. Let $Z_j$, $j>m$, be independent Bernoulli variables with success probabilities $p(tj,s(x))$. Their sum $Z$ is almost surely finite. Normalizing the occupancy product gives the exact identity
-\begin{equation}\label{eq:radialprob}
+\begin{equation}\label{mss:eq:radialprob}
 C_m(e^{-t})=\frac{u e^{-x}}{1-e^{-x}}
 \exp\left\{\sum_{j>m}h(tj,s)-ms\right\}\Prob(Z=m-1).
 \end{equation}
 Its mean and variance satisfy
-\begin{equation}\label{eq:Bernmoments}
+\begin{equation}\label{mss:eq:Bernmoments}
 \E Z=m-\frac{p_0}{2}+O(t),\qquad
 \Var Z=\frac{V(x,s(x))}{t}+O(1).
 \end{equation}
 A direct Bernoulli Fourier bound is
-\begin{equation}\label{eq:BernFourier}
+\begin{equation}\label{mss:eq:BernFourier}
 \left|\E e^{i\phi Z}\right|
 \le\exp\left\{-2\sin^2(\phi/2)\sum_{j>m}p_j(1-p_j)\right\}.
 \end{equation}
-On the scale $\phi=\sqrt t\,\beta$, the centered logarithm converges to $-V(x,s(x))\beta^2/2$. Third moments give the uniform remainder $O(\sqrt t\,|\beta|^3)$ on bounded $\beta$; \eqref{eq:BernFourier} provides integrable Gaussian domination and suppresses the rest of the torus. Since $m-1-\E Z=O(1)$, Fourier inversion proves
-\begin{equation}\label{eq:radiallocal}
+On the scale $\phi=\sqrt t\,\beta$, the centered logarithm converges to $-V(x,s(x))\beta^2/2$. Third moments give the uniform remainder $O(\sqrt t\,|\beta|^3)$ on bounded $\beta$; \eqref{mss:eq:BernFourier} provides integrable Gaussian domination and suppresses the rest of the torus. Since $m-1-\E Z=O(1)$, Fourier inversion proves
+\begin{equation}\label{mss:eq:radiallocal}
 C_m(e^{-t})=A(x)\sqrt{\frac{t}{2\pi V(x,s(x))}}
 \,e^{G(x)/t}(1+o(1)),
 \end{equation}
 uniformly on compact intervals.
 
-Summing near $a$, whose $x$-mesh is $t$ and Gaussian width is $\sqrt t$, and using Lemma~\ref{lem:globaltails}, yields
-\begin{equation}\label{eq:radialleading}
+Summing near $a$, whose $x$-mesh is $t$ and Gaussian width is $\sqrt t$, and using Lemma~\ref{mss:lem:globaltails}, yields
+\begin{equation}\label{mss:eq:radialleading}
 F(e^{-t})\sim\frac{A_0}{\sqrt{V\kappa}}e^{S/t}=De^{S/t}.
 \end{equation}
-For rigor in the intermediate tails, the atom bound from \eqref{eq:BernFourier} is $O(\sqrt t)$ uniformly on compact $x$-sets; combined with $G(x)\le S-c(x-a)^2$ it supplies a Gaussian Riemann-sum majorant. This avoids applying a local equivalent outside its stated uniform range.
+For rigor in the intermediate tails, the atom bound from \eqref{mss:eq:BernFourier} is $O(\sqrt t)$ uniformly on compact $x$-sets; combined with $G(x)\le S-c(x-a)^2$ it supplies a Gaussian Riemann-sum majorant. This avoids applying a local equivalent outside its stated uniform range.
 
-\section{A joint occupancy and size model}\label{sec:joint}
+\section{A joint occupancy and size model}\label{mss:sec:joint}
 To extract coefficients, total size must be controlled together with occupancy. Define
-\begin{equation}\label{eq:H}
+\begin{equation}\label{mss:eq:H}
 H_m(t,u)=\frac{u e^{-tm}}{1-e^{-tm}}
 \prod_{j>m}\left(1+\frac{u e^{-tj}}{1-e^{-tj}}\right).
 \end{equation}
 For $j>m$, independently choose nonnegative multiplicities $R_j$ with
-\begin{equation}\label{eq:Rlaw}
+\begin{equation}\label{mss:eq:Rlaw}
 \Prob(R_j=0)=\frac1{1+u/(e^{tj}-1)},\qquad
 \Prob(R_j=r)=\frac{u e^{-tjr}}{1+u/(e^{tj}-1)}\quad(r\ge1).
 \end{equation}
 Independently choose $R_m\ge1$ with
-\begin{equation}\label{eq:mandatory}
+\begin{equation}\label{mss:eq:mandatory}
 \Prob(R_m=r)=(1-e^{-x})e^{-x(r-1)},\quad r\ge1.
 \end{equation}
 Set
-\begin{equation}\label{eq:NK}
+\begin{equation}\label{mss:eq:NK}
 N=mR_m+\sum_{j>m}jR_j,\qquad
 K_m=1+\sum_{j>m}\mathbf1_{\{R_j>0\}}.
 \end{equation}
 We write $K_m$ for the occupancy random variable to distinguish it from the leading constant $K$. Since $\sum_{j>m}\Prob(R_j>0)<\infty$, only finitely many sizes are occupied almost surely.
 
 Every configuration of total size $n$ and occupancy $k$ has probability $e^{-tn}u^k/H_m(t,u)$. Consequently the exact tilted identity is
-\begin{equation}\label{eq:tilt}
+\begin{equation}\label{mss:eq:tilt}
 p_{n,m}=e^{tn}u^{-m}H_m(t,u)\Prob_{t,u,m}(N=n,K_m=m).
 \end{equation}
-The mandatory minimum factor, including its power of $u$, has not been dropped. From \eqref{eq:EMleading}, when $u=u(x)$,
-\begin{equation}\label{eq:Hradial}
+The mandatory minimum factor, including its power of $u$, has not been dropped. From \eqref{mss:eq:EMleading}, when $u=u(x)$,
+\begin{equation}\label{mss:eq:Hradial}
 u^{-m}H_m(t,u)=A(x)e^{G(x)/t}(1+O(t))
 \end{equation}
 uniformly on compact $x$-intervals.
 
 \subsection{Moments and a positive covariance matrix}
 In the following integrals $s=s(x)$, and derivatives in $v$ hold $s$ fixed. Define
-\begin{align}\label{eq:TJL}
+\begin{align}\label{mss:eq:TJL}
 T(x)&=I(x,s)+xh(x,s),\\
 J(x)&=\int_x^\infty v\,\frac{p(v,s)(1-p(v,s))}{1-e^{-v}}\,dv,
 &L(x)&=\int_x^\infty v^2h_{vv}(v,s)\,dv.\nonumber
 \end{align}
 At an optional site with $v=tj$, logarithmic derivatives identify
-\begin{equation}\label{eq:sitecov}
+\begin{equation}\label{mss:eq:sitecov}
 -h_v=\E R_j,\qquad h_{vv}=\Var R_j,\qquad
 -p_v=\Cov(R_j,\mathbf1_{\{R_j>0\}}).
 \end{equation}
 Integration by parts, with the exponentially vanishing upper endpoints, gives
-\begin{equation}\label{eq:JL}
+\begin{equation}\label{mss:eq:JL}
 J=xp_0+B=x(1+p_0),\qquad
 L=\frac{x^2p_0}{1-e^{-x}}+2T.
 \end{equation}
 Uniform Euler--Maclaurin, including the mandatory site, now yields
-\begin{align}\label{eq:means}
+\begin{align}\label{mss:eq:means}
 \E N&=t^{-2}T(x)+O(t^{-1}),&
 \E K_m&=t^{-1}x+1-p_0/2+O(t),\\
 \Var N&=t^{-3}L(x)+O(t^{-2}),&
@@ -376,28 +577,28 @@ Uniform Euler--Maclaurin, including the mandatory site, now yields
 The mandatory site contributes $O(t^{-1})$ to $\E N$ and $O(t^{-2})$ to $\Var N$, while its occupancy is identically one.
 
 Let
-\begin{equation}\label{eq:covmatrix}
+\begin{equation}\label{mss:eq:covmatrix}
 \mathcal M(x)=\begin{pmatrix}L(x)&J(x)\\J(x)&V(x,s(x))\end{pmatrix}.
 \end{equation}
 This matrix is positive definite. Indeed it is the integral of the covariance matrix of $(vR,\mathbf1_{\{R>0\}})$ under the optional-site law. The atoms $R=0,1,2$ have positive mass and yield the noncollinear points $(0,0),(v,1),(2v,1)$. Every nonzero linear form has positive variance at every $v>0$. Continuity then gives a uniformly positive least eigenvalue on each compact $x$-interval.
 
 At the saddle,
-\begin{equation}\label{eq:saddlecov}
+\begin{equation}\label{mss:eq:saddlecov}
 T(a)=S,\quad J_0=\tfrac32a,\quad L_0=2S+\tfrac32a^2,
 \quad W=L_0-J_0^2/V=2S-a^2\kappa>0.
 \end{equation}
 Also the envelope identity $G'=-h-s$ gives
-\begin{equation}\label{eq:Tidentity}
+\begin{equation}\label{mss:eq:Tidentity}
 T=G-xG',\qquad T'(a)=-aG''(a)=a\kappa.
 \end{equation}
 These formulas account for the nonzero correlation between size and occupancy. Ignoring it would give an incorrect least-part variance and prefactor.
 
-\section{Full-torus Fourier control and the lattice limit}\label{sec:LLT}
+\section{Full-torus Fourier control and the lattice limit}\label{mss:sec:LLT}
 For a real number $z$, write $\normtor{z}$ for its distance to $2\pi\Z$.
 
-\begin{lemma}[Consecutive integers]\label{lem:block}
+\begin{lemma}[Consecutive integers]\label{mss:lem:block}
 There is an absolute $c_0>0$ such that, for every sufficiently large integer $\ell$, every interval $E$ of $\ell$ consecutive integers, and every $\theta\in[-\pi,\pi]$,
-\begin{equation}\label{eq:block}
+\begin{equation}\label{mss:eq:block}
 \sum_{j\in E}\normtor{j\theta}^2
 \ge c_0\ell\min(1,\ell^2\theta^2).
 \end{equation}
@@ -416,16 +617,16 @@ If $|\theta|\ge2\pi/\ell$, the geometric sum and $|\sin(\theta/2)|\ge|\theta|/\p
 Retain only $1\le d\le\lfloor\ell/(4\pi)\rfloor$. On these terms $|d\theta|\le1/2$, so the sum is at least $c\theta^2\ell^4$. Dividing by $\ell+|Q_\ell|\le2\ell$ gives $\ell-|Q_\ell|\ge c\theta^2\ell^3$. Finally $\normtor{z}^2\ge4\sin^2(z/2)$ proves the claim in both ranges, including $\theta=0$.
 \end{proof}
 
-\begin{lemma}[Joint minor arcs]\label{lem:torus}
+\begin{lemma}[Joint minor arcs]\label{mss:lem:torus}
 Let $x=tm$ and $u$ range over fixed compact subintervals of $(0,\infty)$. There is $c>0$, uniform in those parameters, such that
-\begin{equation}\label{eq:torus}
+\begin{equation}\label{mss:eq:torus}
 \left|\E e^{i\theta N+i\phi K_m}\right|
 \le\exp\left\{-c\left[t^{-1}\min\left(1,\frac{\theta^2}{t^2}\right)
 +\frac{\phi^2}{t}\right]\right\},\quad
 \theta,\phi\in[-\pi,\pi].
 \end{equation}
 In particular,
-\begin{equation}\label{eq:atombound}
+\begin{equation}\label{mss:eq:atombound}
 \sup_{r,k\in\Z}\Prob(N=r,K_m=k)=O(t^2).
 \end{equation}
 \end{lemma}
@@ -433,7 +634,7 @@ In particular,
 Choose constants $c_1<c_2$ with $c_1$ greater than every allowed $x$, and use the consecutive block $E_t=\{j:c_1/t\le j\le c_2/t\}$. Its length is comparable to $t^{-1}$. For all these optional sites, the probabilities of $R_j=0,1,2$ have a common positive lower bound.
 
 For a single-site characteristic function $\chi_j$, the pairs $(0,1)$ and $(1,2)$ in its squared modulus give
-\begin{equation}\label{eq:singleFourier}
+\begin{equation}\label{mss:eq:singleFourier}
 |\chi_j(\theta,\phi)|
 \le\exp\{-c[\normtor{j\theta+\phi}^2+\normtor{j\theta}^2]\}.
 \end{equation}
@@ -442,25 +643,25 @@ This follows from $1-\cos z\ge2\normtor{z}^2/\pi^2$ and $\sqrt{1-v}\le e^{-v/2}$
 \normtor{\phi}^2\le
 2\bigl(\normtor{j\theta+\phi}^2+\normtor{j\theta}^2\bigr).
 \]
-Allocate a fixed fraction of the exponent to this bound, and another fraction to Lemma~\ref{lem:block}. Summing over $E_t$ proves \eqref{eq:torus}; all other factors have modulus at most one. Fourier inversion and the elementary Gaussian integrals give $O(t^{3/2})$ from $\theta$ and $O(t^{1/2})$ from $\phi$, hence \eqref{eq:atombound}.
+Allocate a fixed fraction of the exponent to this bound, and another fraction to Lemma~\ref{mss:lem:block}. Summing over $E_t$ proves \eqref{mss:eq:torus}; all other factors have modulus at most one. Fourier inversion and the elementary Gaussian integrals give $O(t^{3/2})$ from $\theta$ and $O(t^{1/2})$ from $\phi$, hence \eqref{mss:eq:atombound}.
 \end{proof}
 This estimate covers rational resonances as well as generic angles. The difference between multiplicities $1$ and $2$ removes the occupancy phase; consecutive sizes then remove every secondary size peak. No unverified aperiodicity assumption is needed.
 
-\begin{theorem}[Uniform bivariate lattice limit]\label{thm:LLT}
+\begin{theorem}[Uniform bivariate lattice limit]\label{mss:thm:LLT}
 Let $J\subset(0,\infty)$ be compact, let $x=tm\in J$, and choose $u=u(x)$. For integers $r,k$, put
-\begin{equation}\label{eq:z}
+\begin{equation}\label{mss:eq:z}
 z_{t,m}(r,k)=
 \begin{pmatrix}t^{3/2}(r-\E N)\\t^{1/2}(k-\E K_m)\end{pmatrix}.
 \end{equation}
 Uniformly in all these $m,r,k$,
-\begin{equation}\label{eq:LLT}
+\begin{equation}\label{mss:eq:LLT}
 t^{-2}\Prob(N=r,K_m=k)
 =\frac{\exp\{-\tfrac12z_{t,m}^{T}\mathcal M(x)^{-1}z_{t,m}\}}
 {2\pi\sqrt{\det\mathcal M(x)}}+o_J(1).
 \end{equation}
 \end{theorem}
 \begin{proof}
-Center the variables and put $\theta=t^{3/2}\alpha$, $\phi=t^{1/2}\beta$. For bounded $(\alpha,\beta)$, \eqref{eq:means} gives the limiting quadratic logarithm
+Center the variables and put $\theta=t^{3/2}\alpha$, $\phi=t^{1/2}\beta$. For bounded $(\alpha,\beta)$, \eqref{mss:eq:means} gives the limiting quadratic logarithm
 \[
 -\tfrac12(\alpha,\beta)\mathcal M(x)(\alpha,\beta)^T.
 \]
@@ -470,39 +671,39 @@ O_J(\sqrt t)(|\alpha|+|\beta|)^3.
 \]
 The mandatory site's contribution is smaller. These estimates also justify taking logarithms of the individual characteristic factors and passing to their convergent sum.
 
-After scaling, \eqref{eq:torus} bounds the modulus by $e^{-c(\alpha^2+\beta^2)}$ on $|\alpha|\le t^{-1/2}$. In the remaining strip the $\alpha$-length is $O(t^{-3/2})$ and its modulus has a factor $e^{-c/t}$; integration in $\beta$ remains bounded. Extend the characteristic functions by zero outside the scaled torus. They converge in $L^1(\R^2)$ to the corresponding Gaussian characteristic functions, uniformly in $x\in J$. Uniformity follows from the uniform local expansion, the common Gaussian bound, and compactness of $J$.
+After scaling, \eqref{mss:eq:torus} bounds the modulus by $e^{-c(\alpha^2+\beta^2)}$ on $|\alpha|\le t^{-1/2}$. In the remaining strip the $\alpha$-length is $O(t^{-3/2})$ and its modulus has a factor $e^{-c/t}$; integration in $\beta$ remains bounded. Extend the characteristic functions by zero outside the scaled torus. They converge in $L^1(\R^2)$ to the corresponding Gaussian characteristic functions, uniformly in $x\in J$. Uniformity follows from the uniform local expansion, the common Gaussian bound, and compactness of $J$.
 
-Fourier inversion now proves \eqref{eq:LLT}. The factor $t^2$ is precisely the Jacobian $d\theta\,d\phi=t^2d\alpha\,d\beta$. The $L^1$ error controls the inverse transform uniformly over every lattice target, not just targets with bounded $z$.
+Fourier inversion now proves \eqref{mss:eq:LLT}. The factor $t^2$ is precisely the Jacobian $d\theta\,d\phi=t^2d\alpha\,d\beta$. The $L^1$ error controls the inverse transform uniformly over every lattice target, not just targets with bounded $z$.
 \end{proof}
 
-\section{The coefficient equivalent and its normalization}\label{sec:leading}
+\section{The coefficient equivalent and its normalization}\label{mss:sec:leading}
 Choose $t=\sqrt{S/n}$, so $n=S/t^2$ exactly. Near the saddle write
-\begin{equation}\label{eq:y}
+\begin{equation}\label{mss:eq:y}
 y=\frac{tm-a}{\sqrt t}.
 \end{equation}
-For bounded $y$, \eqref{eq:means} and \eqref{eq:Tidentity} give
-\begin{equation}\label{eq:target}
+For bounded $y$, \eqref{mss:eq:means} and \eqref{mss:eq:Tidentity} give
+\begin{equation}\label{mss:eq:target}
 z_{t,m}(n,m)=(-a\kappa y,0)^T+o(1).
 \end{equation}
-Since the first diagonal entry of $\mathcal M(a)^{-1}$ is $1/W$, Theorem~\ref{thm:LLT} yields
-\begin{equation}\label{eq:jointcentral}
+Since the first diagonal entry of $\mathcal M(a)^{-1}$ is $1/W$, Theorem~\ref{mss:thm:LLT} yields
+\begin{equation}\label{mss:eq:jointcentral}
 \Prob(N=n,K_m=m)
 =\frac{t^2}{2\pi\sqrt{VW}}
 \exp\{-a^2\kappa^2y^2/(2W)\}(1+o(1)),
 \end{equation}
 uniformly on bounded $y$-intervals. The density is bounded below there, so the absolute local-limit error can be written relatively in this window.
 
-Combining \eqref{eq:tilt}, \eqref{eq:Hradial}, and
+Combining \eqref{mss:eq:tilt}, \eqref{mss:eq:Hradial}, and
 \[
 G(tm)=S-\tfrac12\kappa t y^2+O(t^{3/2}|y|^3),
 \]
 gives
-\begin{equation}\label{eq:fixedminasymp}
+\begin{equation}\label{mss:eq:fixedminasymp}
 p_{n,m}=e^{2S/t}\frac{A_0t^2}{2\pi\sqrt{VW}}
 \exp\{-\kappa_{\rm eff}y^2/2\}(1+o(1)),
 \end{equation}
 where
-\begin{equation}\label{eq:keff}
+\begin{equation}\label{mss:eq:keff}
 \kappa_{\rm eff}=\kappa+\frac{a^2\kappa^2}{W}
 =\frac{2S\kappa}{W}.
 \end{equation}
@@ -513,51 +714,51 @@ e^{-2S/t}t^{-3/2}\sum_{|y|\le R}p_{n,m}
 \int_{-R}^{R}e^{-\kappa_{\rm eff}y^2/2}\,dy.
 \]
 
-To pass to the whole sum, take a small fixed neighborhood of $a$ on which $G(x)\le S-c(x-a)^2$. Equations \eqref{eq:Hradial} and \eqref{eq:atombound} bound each term there by
-\begin{equation}\label{eq:domination}
+To pass to the whole sum, take a small fixed neighborhood of $a$ on which $G(x)\le S-c(x-a)^2$. Equations \eqref{mss:eq:Hradial} and \eqref{mss:eq:atombound} bound each term there by
+\begin{equation}\label{mss:eq:domination}
 p_{n,m}\le C e^{2S/t}t^2e^{-c y^2}.
 \end{equation}
-The resulting normalized Gaussian Riemann sums are uniformly integrable. Outside the neighborhood, Lemma~\ref{lem:globaltails} is exponentially smaller than $e^{2S/t}t^{3/2}$. Hence $R\to\infty$ is legitimate. The prefactor is
-\begin{equation}\label{eq:normalization}
+The resulting normalized Gaussian Riemann sums are uniformly integrable. Outside the neighborhood, Lemma~\ref{mss:lem:globaltails} is exponentially smaller than $e^{2S/t}t^{3/2}$. Hence $R\to\infty$ is legitimate. The prefactor is
+\begin{equation}\label{mss:eq:normalization}
 \frac{A_0}{\sqrt{2\pi VW\kappa_{\rm eff}}}
 =\frac{A_0}{2\sqrt{\pi S V\kappa}}
 =\frac{D}{2\sqrt{\pi S}}.
 \end{equation}
 We have proved
-\begin{equation}\label{eq:leadingproved}
+\begin{equation}\label{mss:eq:leadingproved}
 p_n\sim\frac{D}{2\sqrt{\pi S}}t^{3/2}e^{2S/t}
 =K n^{-3/4}e^{2\sqrt{Sn}}.
 \end{equation}
 This is coefficient extraction from a genuinely joint lattice estimate, including the entire Fourier torus.
 
-\section{A three-variable saddle to every fixed order}\label{sec:allorders}
+\section{A three-variable saddle to every fixed order}\label{mss:sec:allorders}
 The previous proof establishes the leading constant with transparent probabilistic normalization. For higher orders, it is more efficient to expand the exact double Fourier integral and the discrete minimum simultaneously. A carefully chosen \emph{linear} positive radius makes the resulting three-variable Gaussian absolutely integrable.
 
 \subsection{An exact contour with a linear occupancy radius}
-For complex $z$ with $\Re z>0$, use $H_m(z,e^s)$ for the analytic version of \eqref{eq:H}. For any positive real occupancy radius $e^s$, coefficient inversion gives
-\begin{equation}\label{eq:exactcontour}
+For complex $z$ with $\Re z>0$, use $H_m(z,e^s)$ for the analytic version of \eqref{mss:eq:H}. For any positive real occupancy radius $e^s$, coefficient inversion gives
+\begin{equation}\label{mss:eq:exactcontour}
 p_{n,m}=\frac1{(2\pi)^2}\int_{-\pi}^{\pi}\int_{-\pi}^{\pi}
 e^{nz-m(s+i\phi)}H_m(z,e^{s+i\phi})\,d\theta\,d\phi,
 \quad z=t-i\theta.
 \end{equation}
 The radius can be chosen separately for every integer $m$. Near $a/t$, set
-\begin{equation}\label{eq:linradius}
+\begin{equation}\label{mss:eq:linradius}
 x=tm,\quad s_0=-\log2,\quad b=\frac3{2V},\qquad
 s_{\rm lin}(x)=s_0+b(x-a).
 \end{equation}
 This is an exact choice of contour; it does not replace an exact coefficient by an approximation.
 
 Put $X=x-a$, $U=s_{\rm lin}(x)-s_0+i\phi$, and $Z=(z-t)/t=-i\theta/t$. The moving endpoint is
-\begin{equation}\label{eq:movingendpoint}
+\begin{equation}\label{mss:eq:movingendpoint}
 v=zm=(a+X)(1+Z).
 \end{equation}
-With $n=S/t^2$, the large phase in \eqref{eq:exactcontour} is $P/t$, where
-\begin{equation}\label{eq:P}
+With $n=S/t^2$, the large phase in \eqref{mss:eq:exactcontour} is $P/t$, where
+\begin{equation}\label{mss:eq:P}
 P(X,U,Z)=\frac{I((a+X)(1+Z),s_0+U)}{1+Z}
 -(a+X)(s_0+U)+S(1+Z).
 \end{equation}
 At the origin, $P=2S$, its gradient vanishes, and its Hessian is
-\begin{equation}\label{eq:Hessian}
+\begin{equation}\label{mss:eq:Hessian}
 H=\begin{pmatrix}
 3/2&-3/2&3a/2\\
 -3/2&V&-3a/2\\
@@ -566,12 +767,12 @@ H=\begin{pmatrix}
 \det H=-2SV\kappa\ne0.
 \end{equation}
 Writing $\lambda=\sqrt t$, parameterize the integration plane by
-\begin{equation}\label{eq:plane}
+\begin{equation}\label{mss:eq:plane}
 X=\lambda y,\qquad U=\lambda(by+i\beta),\qquad
 Z=-i\lambda\alpha.
 \end{equation}
 The quadratic term in the exponent becomes
-\begin{equation}\label{eq:Q}
+\begin{equation}\label{mss:eq:Q}
 Q(y,\beta,\alpha)
 =-\frac\kappa2y^2
 -\frac12(L_0\alpha^2+2J_0\alpha\beta+V\beta^2)
@@ -580,97 +781,97 @@ Q(y,\beta,\alpha)
 Its real part is strictly negative definite because $\kappa>0$ and $\mathcal M(a)$ is positive definite. Thus all polynomial Gaussian moments used below are absolutely convergent on this plane.
 
 The real radial phase on the linear radius is
-\begin{equation}\label{eq:Glin}
+\begin{equation}\label{mss:eq:Glin}
 G_{\rm lin}(x)=I(x,s_{\rm lin}(x))-x s_{\rm lin}(x).
 \end{equation}
 Its value, first derivative, and second derivative at $a$ are $S,0,-\kappa$. The second derivative agrees with the optimized curvature because $b=s'(a)$. Hence $G_{\rm lin}(x)\le S-c_0(x-a)^2$ on a sufficiently small fixed neighborhood.
 
 \subsection{Localization before expansion}
-Lemma~\ref{lem:torus} requires only compact positive ranges for $x$ and $u$, not the equation $B=x$. It therefore applies unchanged to the linear radius. Its characteristic-function bound, multiplied by the real normalization in \eqref{eq:exactcontour}, yields an absolute Gaussian bound
-\begin{equation}\label{eq:3Dbound}
+Lemma~\ref{mss:lem:torus} requires only compact positive ranges for $x$ and $u$, not the equation $B=x$. It therefore applies unchanged to the linear radius. Its characteristic-function bound, multiplied by the real normalization in \eqref{mss:eq:exactcontour}, yields an absolute Gaussian bound
+\begin{equation}\label{mss:eq:3Dbound}
 C e^{-c_1y^2-c_2(\alpha^2+\beta^2)}
 \end{equation}
-after removing $e^{2S/t}$, on $|\theta|\le t$. On $|\theta|>t$, the factor $e^{-c/t}$ dominates the polynomial length of the scaled $\alpha$-interval. The $\beta$-integral retains a Gaussian bound. For $tm$ outside this fixed neighborhood, revert to the positive bounds of Lemma~\ref{lem:globaltails}; choosing different radii in different $m$ ranges is legitimate in the exact formula.
+after removing $e^{2S/t}$, on $|\theta|\le t$. On $|\theta|>t$, the factor $e^{-c/t}$ dominates the polynomial length of the scaled $\alpha$-interval. The $\beta$-integral retains a Gaussian bound. For $tm$ outside this fixed neighborhood, revert to the positive bounds of Lemma~\ref{mss:lem:globaltails}; choosing different radii in different $m$ ranges is legitimate in the exact formula.
 
 Fix $0<\varepsilon<1/10$. The sum and integral can consequently be restricted to
-\begin{equation}\label{eq:box}
+\begin{equation}\label{mss:eq:box}
 |y|,|\alpha|,|\beta|\le t^{-\varepsilon}
 \end{equation}
 with normalized error $O(t^M)$ for every fixed $M$. This follows by integrating Gaussian tails and summing their shifted-grid analogues. It is an absolute estimate made before Taylor expansion, so it does not presume cancellation on minor arcs.
 
 \subsection{Complex Euler--Maclaurin with a moving endpoint}
 The identity
-\begin{equation}\label{eq:holomorphich}
+\begin{equation}\label{mss:eq:holomorphich}
 h(v,s)=\log(1+(e^s-1)e^{-v})-\log(1-e^{-v})
 \end{equation}
 defines the required branches by the power-series logarithm. In the local box, $v=zm$ stays near $a$, $e^s$ stays near $1/2$, and along the ray $z[m,\infty)$ both logarithmic arguments remain in their zero-free domains. More explicitly, $\Re(zr)=tr\ge tm$ is bounded below and $|e^s-1|$ stays close to $1/2$, so both $|e^{-zr}|<1$ and $|(e^s-1)e^{-zr}|<1$ uniformly. Derivatives decay exponentially in $\Re v$.
 
 Applying Euler--Maclaurin to the real $j$ variable gives, for every fixed integer $p\ge1$,
-\begin{align}\label{eq:complexEM}
+\begin{align}\label{mss:eq:complexEM}
 \sum_{j>m}h(zj,s)
 ={}&\frac{I(zm,s)}z-\frac12h(zm,s)\\
 &-\sum_{r=1}^{p-1}\frac{\mathsf B_{2r}}{(2r)!}
  z^{2r-1}h_{v^{2r-1}}(zm,s)+O_p(t^{2p-1}),\nonumber
 \end{align}
-where $\mathsf B_{2r}$ denotes the Bernoulli number. The remainder is uniform in \eqref{eq:box}: the periodic-Bernoulli remainder is bounded by a constant times
-\begin{equation}\label{eq:EMremainder}
+where $\mathsf B_{2r}$ denotes the Bernoulli number. The remainder is uniform in \eqref{mss:eq:box}: the periodic-Bernoulli remainder is bounded by a constant times
+\begin{equation}\label{mss:eq:EMremainder}
 |z|^{2p}\int_m^\infty|h_{v^{2p}}(zr,s)|\,dr=O(t^{2p-1}),
 \end{equation}
-since $|z|\asymp t$ there. The ray integral equals $I(zm,s)/z$ by contour deformation in the zero-free right half-plane; the exponentially decaying tail permits closing the deformation at infinity. Alternatively, integrating the uniformly convergent exponential series in \eqref{eq:holomorphich} proves the same identity term by term.
+since $|z|\asymp t$ there. The ray integral equals $I(zm,s)/z$ by contour deformation in the zero-free right half-plane; the exponentially decaying tail permits closing the deformation at infinity. Alternatively, integrating the uniformly convergent exponential series in \eqref{mss:eq:holomorphich} proves the same identity term by term.
 
 The leading amplitude is now the analytic function
-\begin{equation}\label{eq:amplitude}
+\begin{equation}\label{mss:eq:amplitude}
 \mathcal A(v,s)=\frac{e^s e^{-v}}{1-e^{-v}}e^{-h(v,s)/2}.
 \end{equation}
 Its value at the saddle is $A_0=2^{-1/2}$. The first Euler--Maclaurin amplitude correction is $-z h_v(v,s)/12$; at the saddle its coefficient of $t$ is
-\begin{equation}\label{eq:EMfirst}
+\begin{equation}\label{mss:eq:EMfirst}
 -\frac{h_v(a,s_0)}{12}=\frac18.
 \end{equation}
 
 \subsection{Uniform Taylor remainders and the shifted lattice}
-After factoring out $A_0e^{2S/t}$, Taylor expansion of \eqref{eq:P}, \eqref{eq:amplitude}, and \eqref{eq:complexEM} on \eqref{eq:plane} gives, for each fixed $N$,
-\begin{equation}\label{eq:expansionlocal}
+After factoring out $A_0e^{2S/t}$, Taylor expansion of \eqref{mss:eq:P}, \eqref{mss:eq:amplitude}, and \eqref{mss:eq:complexEM} on \eqref{mss:eq:plane} gives, for each fixed $N$,
+\begin{equation}\label{mss:eq:expansionlocal}
 e^{Q(w)}\left(\sum_{j=0}^{N}\lambda^j P_j(w)
 +\mathcal R_N(t,w)\right),\qquad w=(y,\beta,\alpha),
 \end{equation}
 where $P_0=1$ and every $P_j$ is an explicitly calculable polynomial. The parity is
-\begin{equation}\label{eq:parity}
+\begin{equation}\label{mss:eq:parity}
 P_j(-w)=(-1)^jP_j(w).
 \end{equation}
-Indeed a phase monomial of degree $k$ contributes $\lambda^{k-2}$ times a homogeneous polynomial of degree $k$, and an amplitude monomial of degree $k$ contributes $\lambda^k$. Each base Euler--Maclaurin correction has even $\lambda$-order $4r-2$. Products preserve \eqref{eq:parity}.
+Indeed a phase monomial of degree $k$ contributes $\lambda^{k-2}$ times a homogeneous polynomial of degree $k$, and an amplitude monomial of degree $k$ contributes $\lambda^k$. Each base Euler--Maclaurin correction has even $\lambda$-order $4r-2$. Products preserve \eqref{mss:eq:parity}.
 
 Here the expansion is asymptotic, not merely formal. To see this, analytically continue the phase and amplitude to a fixed neighborhood of the origin. Their order-$k$ Taylor terms are bounded by constants times $|w|^k$ after substitution. Beyond the quadratic, the phase perturbation is bounded by $C\lambda|w|^3$ on the local box. Because $\lambda|w|\to0$ uniformly there, its exponential can be absorbed in a fixed fraction of the negative Gaussian $\Re Q$. Taylor's integral remainder in $\lambda$, after the removable singularity of $(P-2S)/\lambda^2$ has been removed, is bounded by $\lambda^{N+1}$ times a fixed polynomial in $|w|$, multiplied by this slightly weakened Gaussian. Taking the Euler--Maclaurin order large enough and treating its uniform residual separately yields constants $C_N,c_N>0$ and an integer $d_N$ such that
-\begin{equation}\label{eq:Taylorbound}
+\begin{equation}\label{mss:eq:Taylorbound}
 |\mathcal R_N(t,w)|e^{\Re Q(w)}
 \le C_N\lambda^{N+1}(1+|w|^{d_N})e^{-c_N|w|^2}.
 \end{equation}
 No derivatives of the Euler--Maclaurin residual are needed: its uniform $O(t^{2p-1})$ bound can be chosen smaller than the requested order before expansion.
 
 The $y$ values lie on a shifted lattice of mesh $\lambda$. After integrating $\alpha,\beta$, each coefficient $e^QP_j$ is a Schwartz function of $y$. For any such function $f$ and every fixed integer $M\ge1$,
-\begin{equation}\label{eq:shifted}
+\begin{equation}\label{mss:eq:shifted}
 \lambda\sum_{k\in\Z}f(\lambda(k+\delta))
 =\int_\R f(y)\,dy+O_M(\lambda^M),
 \qquad 0\le\delta<1,
 \end{equation}
 uniformly in the shift. One proof applies Euler--Maclaurin on the whole real line with arbitrarily many derivatives; all endpoint terms vanish and the remainder is bounded by a constant times $\lambda^M\|f^{(M)}\|_1$. Truncating or extending the local grid costs less than every prescribed power by Gaussian tails.
 
-Thus the shifted grid does not need to be symmetric. First replace its coefficient sums by integrals using \eqref{eq:shifted}; then every odd coefficient vanishes by the simultaneous sign reversal $w\mapsto-w$. Applying \eqref{eq:Taylorbound} with $N=2R+1$ leaves a normalized error $O(\lambda^{2R+2})=O(t^{R+1})$.
+Thus the shifted grid does not need to be symmetric. First replace its coefficient sums by integrals using \eqref{mss:eq:shifted}; then every odd coefficient vanishes by the simultaneous sign reversal $w\mapsto-w$. Applying \eqref{mss:eq:Taylorbound} with $N=2R+1$ leaves a normalized error $O(\lambda^{2R+2})=O(t^{R+1})$.
 
-The exact measure is $d\theta\,d\phi=t^2d\alpha\,d\beta$, together with a $y$-mesh $\sqrt t$. The overall scale is therefore $t^{3/2}$. The Gaussian normalization in Section~\ref{sec:leading}, or direct integration of \eqref{eq:Q}, gives
-\begin{equation}\label{eq:tseries}
+The exact measure is $d\theta\,d\phi=t^2d\alpha\,d\beta$, together with a $y$-mesh $\sqrt t$. The overall scale is therefore $t^{3/2}$. The Gaussian normalization in Section~\ref{mss:sec:leading}, or direct integration of \eqref{mss:eq:Q}, gives
+\begin{equation}\label{mss:eq:tseries}
 p_n=\frac{D}{2\sqrt{\pi S}}t^{3/2}e^{2S/t}
 \left(1+b_1t+\cdots+b_Rt^R+O_R(t^{R+1})\right).
 \end{equation}
-As $t=\sqrt{S/n}$, setting $c_j=b_jS^{j/2}$ proves the existence and remainder in Theorem~\ref{thm:main}. The construction is effective: take finite jets of the analytic functions, multiply finite polynomials to the desired order, and integrate their Gaussian moments. The same argument with the size-Fourier variable absent gives a real-radial expansion to every fixed order. The coefficient proof has not inferred this expansion from an unproved complex continuation of the radial answer.
+As $t=\sqrt{S/n}$, setting $c_j=b_jS^{j/2}$ proves the existence and remainder in Theorem~\ref{mss:thm:main}. The construction is effective: take finite jets of the analytic functions, multiply finite polynomials to the desired order, and integrate their Gaussian moments. The same argument with the size-Fourier variable absent gives a real-radial expansion to every fixed order. The coefficient proof has not inferred this expansion from an unproved complex continuation of the radial answer.
 
 \subsection{An explicit coefficient prescription and its field}
 For a compact formal prescription, use independent formal variables $\xi,\upsilon,\zeta$ and write $w=(\xi,\upsilon,\zeta)$. Define
-\begin{equation}\label{eq:formalvs}
+\begin{equation}\label{mss:eq:formalvs}
 v_\lambda=(a+\lambda\xi)(1+\lambda\zeta),\qquad
 s_\lambda=s_0+\lambda\upsilon.
 \end{equation}
 All expressions below are formal series in $\lambda$ with polynomial coefficients in $w$. Set
-\begin{align}\label{eq:formalseries}
+\begin{align}\label{mss:eq:formalseries}
 \mathcal R(\lambda,w)
 ={}&\frac{\mathcal A(v_\lambda,s_\lambda)}{A_0}
 \exp\left\{
@@ -682,14 +883,14 @@ All expressions below are formal series in $\lambda$ with polynomial coefficient
  h_{v^{2r-1}}(v_\lambda,s_\lambda)
 \right\}.\nonumber
 \end{align}
-The apparent division by $\lambda^2$ is removable after subtracting the constant and using the vanishing gradient. The quadratic term is explicitly subtracted, so the exponent inside the first line starts at positive $\lambda$-order. For a specified coefficient, only finitely many $r$ in the second line matter. Let $\mathcal E_H$ be the normalized Wick contraction with covariance $-H^{-1}$, defined explicitly in Section~\ref{sec:first}. Then the relative coefficients in \eqref{eq:tseries} are
-\begin{equation}\label{eq:coefficientrecipe}
+The apparent division by $\lambda^2$ is removable after subtracting the constant and using the vanishing gradient. The quadratic term is explicitly subtracted, so the exponent inside the first line starts at positive $\lambda$-order. For a specified coefficient, only finitely many $r$ in the second line matter. Let $\mathcal E_H$ be the normalized Wick contraction with covariance $-H^{-1}$, defined explicitly in Section~\ref{mss:sec:first}. Then the relative coefficients in \eqref{mss:eq:tseries} are
+\begin{equation}\label{mss:eq:coefficientrecipe}
 b_j=\mathcal E_H\!\left([\lambda^{2j}]\mathcal R(\lambda,w)\right),
 \qquad c_j=S^{j/2}b_j.
 \end{equation}
-This is a finite prescription for each fixed $j$. The integration plane in \eqref{eq:plane} explains the normalized Gaussian contraction, but need not be substituted again in the invariant formula \eqref{eq:coefficientrecipe}.
+This is a finite prescription for each fixed $j$. The integration plane in \eqref{mss:eq:plane} explains the normalized Gaussian contraction, but need not be substituted again in the invariant formula \eqref{mss:eq:coefficientrecipe}.
 
-\begin{corollary}[Field of the relative coefficients]\label{cor:field}
+\begin{corollary}[Field of the relative coefficients]\label{mss:cor:field}
 For every $j\ge0$, $b_j\in\mathbb Q(a,S)$ and $c_j\in\mathbb Q(a,\sqrt S)$.
 \end{corollary}
 \begin{proof}
@@ -704,38 +905,38 @@ The exceptional low-degree values are $I_0=S-a\log2$, $I_v=-\log2$, and $I_s=a$.
 The positive-order derivatives of $\log\mathcal A$ are rational at the saddle. After $A_0$ has been factored out, its amplitude jet and the Euler--Maclaurin jets have coefficients in $\mathbb Q(a)$ after the moving-endpoint substitution. Bernoulli numbers are rational. Finally the entries of $-H^{-1}$ lie in $\mathbb Q(a,S)$. Finite products, formal exponentiation to a fixed order, and Wick contractions preserve this field. The Gaussian determinant and $A_0$ are already absorbed into the leading factor, so they create no additional roots in these relative coefficients. All denominators are well-defined at the stated constants because the analytic functions and $H^{-1}$ exist there. Algebraic independence of $a,S$ is neither asserted nor needed.
 \end{proof}
 
-\section{The first two explicit corrections}\label{sec:first}
+\section{The first two explicit corrections}\label{mss:sec:first}
 We give the algebra in a form that can be checked by finite polynomial operations. This also specifies how higher coefficients are obtained.
 
-Let $P_k$ be the homogeneous degree-$k$ term in the Taylor expansion of $P$ in \eqref{eq:P}, with coordinates $(X,U,Z)$. Let $\ell_1,\ell_2$ be the homogeneous degree-one and degree-two terms in
-\begin{equation}\label{eq:ell}
+Let $P_k$ be the homogeneous degree-$k$ term in the Taylor expansion of $P$ in \eqref{mss:eq:P}, with coordinates $(X,U,Z)$. Let $\ell_1,\ell_2$ be the homogeneous degree-one and degree-two terms in
+\begin{equation}\label{mss:eq:ell}
 \log\mathcal A((a+X)(1+Z),s_0+U)-\log A_0.
 \end{equation}
-Let $\mathcal E_H$ denote normalized Gaussian contraction on the plane \eqref{eq:plane}, with the quadratic form \eqref{eq:Q}. Its covariance in the complex coordinates is $C=-H^{-1}$:
-\begin{equation}\label{eq:C}
+Let $\mathcal E_H$ denote normalized Gaussian contraction on the plane \eqref{mss:eq:plane}, with the quadratic form \eqref{mss:eq:Q}. Its covariance in the complex coordinates is $C=-H^{-1}$:
+\begin{equation}\label{mss:eq:C}
 C=\begin{pmatrix}
 \dfrac{-4Sa+S-3a^3+3a^2}{6S(a-1)}&-\dfrac1{2(a-1)}&\dfrac a{2S}\\[6pt]
 -\dfrac1{2(a-1)}&-\dfrac1{2(a-1)}&0\\[6pt]
 \dfrac a{2S}&0&-\dfrac1{2S}
 \end{pmatrix}.
 \end{equation}
-This is a contraction notation, not a positive real probability covariance. Absolute Gaussian convergence of the plane was proved in \eqref{eq:Q}. Integration by parts, or completing the square, proves the usual Wick recurrence:
-\begin{equation}\label{eq:wick}
+This is a contraction notation, not a positive real probability covariance. Absolute Gaussian convergence of the plane was proved in \eqref{mss:eq:Q}. Integration by parts, or completing the square, proves the usual Wick recurrence:
+\begin{equation}\label{mss:eq:wick}
 \mathcal E_H[v_i v_1^{e_1}\cdots v_d^{e_d}]
 =\sum_{j=1}^{d}e_j C_{ij}\,
 \mathcal E_H[v_1^{e_1}\cdots v_j^{e_j-1}\cdots v_d^{e_d}],
 \end{equation}
 with the evident interpretation that one chosen factor $v_i$ was removed before applying the formula. Equivalently, even monomial moments are sums over all pairings of products of covariance entries; odd moments vanish.
 
-The coefficient of $t$ in \eqref{eq:tseries} is exactly
-\begin{equation}\label{eq:b1contract}
+The coefficient of $t$ in \eqref{mss:eq:tseries} is exactly
+\begin{equation}\label{mss:eq:b1contract}
 b_1=\frac18+
 \mathcal E_H\left[\ell_2+\frac12\ell_1^2+\ell_1P_3+P_4+\frac12P_3^2\right].
 \end{equation}
-The first term is \eqref{eq:EMfirst}. There is no omitted varying Jacobian: the plane transformation is linear. The minimum-size factor is already part of $\mathcal A$, and the full size term $nz$ is already part of $P$.
+The first term is \eqref{mss:eq:EMfirst}. There is no omitted varying Jacobian: the plane transformation is linear. The minimum-size factor is already part of $\mathcal A$, and the full size term $nz$ is already part of $P$.
 
 For a completely specified derivative recipe, write $q=e^{-v}$ and $u=e^s$. Then
-\begin{align}\label{eq:derivativerecipe}
+\begin{align}\label{mss:eq:derivativerecipe}
 h&=\log(1-(1-u)q)-\log(1-q),\\
 I_v&=-h,&I_s&=-\frac{u}{1-u}\log(1-(1-u)q),\nonumber\\
 \partial_v&=-q\partial_q,&\partial_s&=u\partial_u,\nonumber\\
@@ -744,13 +945,13 @@ I_v&=-h,&I_s&=-\frac{u}{1-u}\log(1-(1-u)q),\nonumber\\
 \end{align}
 Apply these operators at $(q,u)=(2/3,1/2)$, taking
 $I(a,s_0)=S-a\log2$. Taylor-expand $I$ to degree four and $\log\mathcal A$ to degree two, compose the endpoint shift
-\begin{equation}\label{eq:endpointshift}
+\begin{equation}\label{mss:eq:endpointshift}
 v-a=X+aZ+XZ,
 \end{equation}
-and insert the geometric truncation $1/(1+Z)=1-Z+Z^2-Z^3+Z^4+O(Z^5)$. These instructions determine every term in \eqref{eq:b1contract} without a fitted numerical constant.
+and insert the geometric truncation $1/(1+Z)=1-Z+Z^2-Z^3+Z^4+O(Z^5)$. These instructions determine every term in \eqref{mss:eq:b1contract} without a fitted numerical constant.
 
-To display the simplification compactly, put $d=a-1$. The five respective contributions in \eqref{eq:b1contract} are
-\begin{align}\label{eq:pieces}
+To display the simplification compactly, put $d=a-1$. The five respective contributions in \eqref{mss:eq:b1contract} are
+\begin{align}\label{mss:eq:pieces}
 E_0={}&\frac18,\\
 E_1={}&-\frac{45Sa-20S+18a^2-18a}{16Sd},\nonumber\\
 E_2={}&\frac{3(7Sa-3S+3a^2-3a)}{8Sd},\nonumber\\
@@ -760,58 +961,58 @@ E_4={}&-\frac{S^2(245a^2-106a+5)+S(126a^3-9a^2-261a+144)
 +81a^2d^2}{144S^2d^2}.\nonumber
 \end{align}
 Here $E_1$ is the contraction of $\ell_2+\ell_1^2/2$, $E_2$ of $\ell_1P_3$, $E_3$ of $P_4$, and $E_4$ of $P_3^2/2$. Summing gives
-\begin{align}\label{eq:b1}
+\begin{align}\label{mss:eq:b1}
 b_1&=-\frac{26Sa^2-82Sa+29S+27a^2-54a+27}{144S(a-1)^2}\\
 &=B_*-\frac3{16S}.\nonumber
 \end{align}
 Thus $c=b_1\sqrt S$, as asserted.
 
 For comparison, performing the same contraction in the two-dimensional radial phase $I(a+X,s_0+U)-(a+X)(s_0+U)$ gives the five pieces
-\begin{equation}\label{eq:radialpieces}
+\begin{equation}\label{mss:eq:radialpieces}
 \frac18,\quad
 -\frac{5(9a-4)}{16d},\quad
 \frac{3(7a-3)}{8d},\quad
 \frac{76a^2-11a-8}{48d^2},\quad
 -\frac{245a^2-106a+5}{144d^2}.
 \end{equation}
-Their sum is $B_*$. This independently evaluates the radial coefficient in \eqref{eq:radialintro}. It does not replace the three-variable extraction that produced the $-3/(16S)$ contribution in \eqref{eq:b1}.
+Their sum is $B_*$. This independently evaluates the radial coefficient in \eqref{mss:eq:radialintro}. It does not replace the three-variable extraction that produced the $-3/(16S)$ contribution in \eqref{mss:eq:b1}.
 
 \subsection{An exact sign proof}
 The positive atanh series gives
-\begin{equation}\label{eq:logbound}
+\begin{equation}\label{mss:eq:logbound}
 a=2\sum_{k\ge0}\frac{5^{-(2k+1)}}{2k+1}
 <\frac25+\frac2{375}+\frac1{7500}
 =\frac{3041}{7500}<\frac{811}{2000}<1.
 \end{equation}
 For the tail $k\ge2$, replace denominators by $5$ and sum the geometric series. The bound is strict because at least one original denominator exceeds $5$. The polynomial $Q(z)=26z^2-82z+29$ is strictly decreasing on $[0,1]$, and exact arithmetic gives
-\begin{equation}\label{eq:Qsign}
+\begin{equation}\label{mss:eq:Qsign}
 Q(811/2000)=\frac{48373}{2000000}>0.
 \end{equation}
 Therefore $Q(a)>0$, so $B_*<0$ and $c<0$. In particular the leading expression $K n^{-3/4}e^{2\sqrt{Sn}}$ eventually overestimates $p_n$. This sign conclusion does not depend on approximate values of the saddle constants.
 
-\subsection{The second coefficient by a finite contraction}\label{sec:second}
+\subsection{The second coefficient by a finite contraction}\label{mss:sec:second}
 The same invariant prescription gives an explicit second coefficient. Put
-\begin{equation}\label{eq:B2}
+\begin{equation}\label{mss:eq:B2}
 B_{**}=\frac{676a^4+3416a^3-10200a^2+22172a-7559}
 {41472(a-1)^4}.
 \end{equation}
 Then
-\begin{equation}\label{eq:secondclosed}
+\begin{equation}\label{mss:eq:secondclosed}
 c_2=S B_{**}-\frac{15}{16}B_*-\frac{15}{512S},
 \end{equation}
 and the stronger explicit expansion is
-\begin{equation}\label{eq:secondexpansion}
+\begin{equation}\label{mss:eq:secondexpansion}
 p_n=K n^{-3/4}e^{2\sqrt{Sn}}
 \left(1+\frac c{\sqrt n}+\frac{c_2}{n}+O(n^{-3/2})\right).
 \end{equation}
 The symbol $B_{**}$ in this decomposition is an explicit rational function of $a$; the calculation below extracts coefficients directly from the three-variable phase.
 
-Here are finite algebraic details sufficient to reconstruct this calculation. Retain the homogeneous phase terms $P_k$ through $k=6$ and the log-amplitude terms $\ell_k$ through $k=4$, extending the definitions in \eqref{eq:ell}. Let $\mathsf E_j$ be the degree-$j$ part of
+Here are finite algebraic details sufficient to reconstruct this calculation. Retain the homogeneous phase terms $P_k$ through $k=6$ and the log-amplitude terms $\ell_k$ through $k=4$, extending the definitions in \eqref{mss:eq:ell}. Let $\mathsf E_j$ be the degree-$j$ part of
 \[
 \mathsf E(X,U,Z)=-\frac{1+Z}{12}h_v((a+X)(1+Z),s_0+U).
 \]
 The required Euler--Maclaurin terms are
-\begin{align}\label{eq:secondEM}
+\begin{align}\label{mss:eq:secondEM}
 \mathsf E_0={}&\frac18,\\
 \mathsf E_1={}&\frac{U}{16}-\frac{7X}{16}
 +\left(\frac18-\frac{7a}{16}\right)Z,\nonumber\\
@@ -820,67 +1021,85 @@ The required Euler--Maclaurin terms are
 &+\left(\frac{19a}{8}-\frac78\right)XZ
 +\left(\frac{19a^2}{16}-\frac{7a}{16}\right)Z^2.\nonumber
 \end{align}
-Define, in the same abstract complex-coordinate basis as \eqref{eq:C},
-\begin{align}\label{eq:r1234}
+Define, in the same abstract complex-coordinate basis as \eqref{mss:eq:C},
+\begin{align}\label{mss:eq:r1234}
 r_1&=P_3+\ell_1,&r_2&=P_4+\ell_2+\mathsf E_0,\\
 r_3&=P_5+\ell_3+\mathsf E_1,&r_4&=P_6+\ell_4+\mathsf E_2.\nonumber
 \end{align}
 Under scaling by $\lambda$, the logarithm of the normalized factor is
 $\lambda r_1+\lambda^2r_2+\lambda^3r_3+\lambda^4r_4+\cdots$.
 The coefficient of $t^2=\lambda^4$ is therefore exactly
-\begin{equation}\label{eq:b2contraction}
+\begin{equation}\label{mss:eq:b2contraction}
 b_2=\mathcal E_H\left[
  r_4+r_1r_3+\frac12r_2^2
  +\frac12r_1^2r_2+\frac1{24}r_1^4\right].
 \end{equation}
-This includes $\mathsf E_0^2/2$ and all mixed phase, amplitude, and endpoint terms. The next Bernoulli term starts at $t^3$ and cannot contribute. The polynomial in brackets has degree at most twelve; Wick pairing or six applications of the finite Gaussian heat operator evaluate it exactly. Using \eqref{eq:derivativerecipe} for the phase and amplitude derivatives, this calculation gives
-\begin{equation}\label{eq:b2exact}
+This includes $\mathsf E_0^2/2$ and all mixed phase, amplitude, and endpoint terms. The next Bernoulli term starts at $t^3$ and cannot contribute. The polynomial in brackets has degree at most twelve; Wick pairing or six applications of the finite Gaussian heat operator evaluate it exactly. Using \eqref{mss:eq:derivativerecipe} for the phase and amplitude derivatives, this calculation gives
+\begin{equation}\label{mss:eq:b2exact}
 b_2=B_{**}-\frac{15B_*}{16S}-\frac{15}{512S^2}.
 \end{equation}
-Multiplication by $S$ gives \eqref{eq:secondclosed}.
+Multiplication by $S$ gives \eqref{mss:eq:secondclosed}.
 
-The optional second-coefficient program computes the derivative jets and the contraction in \eqref{eq:b2contraction}. It uses the linear coordinate $D_c=X+aZ$, whose covariance with $Z$ vanishes, to keep the polynomial operations small; it explicitly checks this transformed covariance against the transformed Hessian. The resulting rational identity is checked against \eqref{eq:B2} and \eqref{eq:b2exact}. This is exact symbolic algebra, not a fit to finite sequence values.
+The optional second-coefficient program computes the derivative jets and the contraction in \eqref{mss:eq:b2contraction}. It uses the linear coordinate $D_c=X+aZ$, whose covariance with $Z$ vanishes, to keep the polynomial operations small; it explicitly checks this transformed covariance against the transformed Hessian. The resulting rational identity is checked against \eqref{mss:eq:B2} and \eqref{mss:eq:b2exact}. This is exact symbolic algebra, not a fit to finite sequence values.
 
-For the analytic error in \eqref{eq:secondexpansion}, invoke the already proved $R=2$ case of Section~\ref{sec:allorders}. Computing phase degree six and log-amplitude degree four identifies the $\lambda^4$ coefficient; it does not alone establish an unintegrated $O(\lambda^6)$ error. In the remainder proof take $N=5$: the next $\lambda^5$ polynomial exists, is odd, and has zero full Gaussian integral, while its shifted-lattice error is smaller than every fixed power. The remaining normalized error is $O(\lambda^6)=O(t^3)$. All denominators in the exact answer are nonzero since $S>0$ and $0<a<1$.
+For the analytic error in \eqref{mss:eq:secondexpansion}, invoke the already proved $R=2$ case of Section~\ref{mss:sec:allorders}. Computing phase degree six and log-amplitude degree four identifies the $\lambda^4$ coefficient; it does not alone establish an unintegrated $O(\lambda^6)$ error. In the remainder proof take $N=5$: the next $\lambda^5$ polynomial exists, is odd, and has zero full Gaussian integral, while its shifted-lattice error is smaller than every fixed power. The remaining normalized error is $O(\lambda^6)=O(t^3)$. All denominators in the exact answer are nonzero since $S>0$ and $0<a<1$.
 
-\section{The least part in the constrained ensemble}\label{sec:least}
-\begin{theorem}[Gaussian law and bounded-window local masses]\label{thm:clt}
+\begin{writenote}[Decimals and a numerical check, 7 October 2026]
+The source prints no decimal value. For orientation, the write's values
+(mpmath at 60 digits from the closed forms, every digit a truncation) are
+$a=0.4054651081\ldots$, $S=0.7481056530\ldots$, $D=0.5294631036\ldots$,
+$K=0.1389061592\ldots$, $B_*=-0.0005169346\ldots$,
+$c=c_1=-0.2172274082\ldots$, $B_{**}=0.0000099188\ldots$,
+$c_2=-0.0386693672\ldots$, $V=0.3109302162\ldots$,
+$\kappa=5.7363504177\ldots$, $W=0.5531440891\ldots$ and
+$\kappa_{\rm eff}=15.5163772317\ldots$. With
+$\varrho_n=p_n/(Kn^{-3/4}e^{2\sqrt{Sn}})$ and the exact counts, the
+quantity $(\varrho_n-1-c/\sqrt n-c_2/n)\,n^{3/2}$ is $-0.0155\ldots$,
+$-0.0202\ldots$, $-0.0204\ldots$, $-0.0203\ldots$ at $n=400$, $800$, $1200$,
+$1500$: it stays bounded, as~\eqref{mss:eq:secondexpansion} requires, while
+$(\varrho_n-1-c/\sqrt n)\,n$ is $-0.0394\ldots$, $-0.0393\ldots$,
+$-0.0391\ldots$ at $n=400$, $800$, $1500$, close to $c_2$. This is a finite numerical observation;
+it neither proves the expansion nor determines $c_3$.
+\end{writenote}
+
+\section{The least part in the constrained ensemble}\label{mss:sec:least}
+\begin{theorem}[Gaussian law and bounded-window local masses]\label{mss:thm:clt}
 Choose an admissible partition uniformly at size $n$, let $M_n$ be its least part, and set $t=\sqrt{S/n}$. With
-\begin{equation}\label{eq:zm}
+\begin{equation}\label{mss:eq:zm}
 z_m=\sqrt{t\kappa_{\rm eff}}\left(m-\frac a t\right),
 \qquad \phis(z)=\frac{e^{-z^2/2}}{\sqrt{2\pi}},
 \end{equation}
 for every fixed $R<\infty$,
-\begin{equation}\label{eq:locallaw}
+\begin{equation}\label{mss:eq:locallaw}
 \Prob(M_n=m)=\sqrt{t\kappa_{\rm eff}}\,\phis(z_m)(1+o(1))
 \end{equation}
 uniformly for integer $m$ with $|z_m|\le R$. Moreover $z_{M_n}\Longrightarrow N(0,1)$.
 \end{theorem}
 \begin{proof}
-Divide \eqref{eq:fixedminasymp} by \eqref{eq:leadingproved}. Its constants simplify using \eqref{eq:normalization}, giving \eqref{eq:locallaw}. The standardized mesh is $\sqrt{t\kappa_{\rm eff}}$.
+Divide \eqref{mss:eq:fixedminasymp} by \eqref{mss:eq:leadingproved}. Its constants simplify using \eqref{mss:eq:normalization}, giving \eqref{mss:eq:locallaw}. The standardized mesh is $\sqrt{t\kappa_{\rm eff}}$.
 
-To prove tightness, \eqref{eq:domination} and the total equivalent imply, throughout a fixed neighborhood of $tm=a$,
+To prove tightness, \eqref{mss:eq:domination} and the total equivalent imply, throughout a fixed neighborhood of $tm=a$,
 \[
 \Prob(M_n=m)\le C\sqrt t\,e^{-cy^2},\qquad y=(tm-a)/\sqrt t.
 \]
-Outside that neighborhood, the total probability is exponentially small, up to harmless polynomial factors, by Lemma~\ref{lem:globaltails}. The Gaussian Riemann sums therefore have uniformly vanishing tails as their standardized window grows. On a bounded window, \eqref{eq:locallaw} turns sums against bounded continuous test functions into the corresponding Gaussian integral. Taking the window to infinity proves weak convergence.
+Outside that neighborhood, the total probability is exponentially small, up to harmless polynomial factors, by Lemma~\ref{mss:lem:globaltails}. The Gaussian Riemann sums therefore have uniformly vanishing tails as their standardized window grows. On a bounded window, \eqref{mss:eq:locallaw} turns sums against bounded continuous test functions into the corresponding Gaussian integral. Taking the window to infinity proves weak convergence.
 \end{proof}
-Thus the least part is centered to first order at $a\sqrt{n/S}$ and fluctuates on the $n^{1/4}$ scale. The theorem supplies neither a higher-order centering constant nor a relative local approximation uniform in unbounded standardized windows. The full-target uniformity in Theorem~\ref{thm:LLT} is an \emph{absolute} joint local-limit estimate; it must not be misread as such a stronger relative law for $M_n$.
+Thus the least part is centered to first order at $a\sqrt{n/S}$ and fluctuates on the $n^{1/4}$ scale. The theorem supplies neither a higher-order centering constant nor a relative local approximation uniform in unbounded standardized windows. The full-target uniformity in Theorem~\ref{mss:thm:LLT} is an \emph{absolute} joint local-limit estimate; it must not be misread as such a stronger relative law for $M_n$.
 
-\section{Eventual monotonicity and a rounded inverse}\label{sec:inverse}
-Taking logarithms of \eqref{eq:first} gives
-\begin{equation}\label{eq:logpn}
+\section{Eventual monotonicity and a rounded inverse}\label{mss:sec:inverse}
+Taking logarithms of \eqref{mss:eq:first} gives
+\begin{equation}\label{mss:eq:logpn}
 \log p_n=2\sqrt{Sn}-\frac34\log n+\log K
 +\frac c{\sqrt n}+O(n^{-1}).
 \end{equation}
 Subtracting adjacent instances,
-\begin{equation}\label{eq:logratio}
+\begin{equation}\label{mss:eq:logratio}
 \log p_{n+1}-\log p_n=\frac{\sqrt S}{\sqrt n}+O(n^{-1})>0
 \end{equation}
 for sufficiently large $n$. No derivative estimate for an unknown remainder sequence has been used: the difference of two $O(n^{-1})$ quantities is still $O(n^{-1})$, which is already smaller than the main increment.
 
 Let
-\begin{equation}\label{eq:f0}
+\begin{equation}\label{mss:eq:f0}
 f_0(x)=2\sqrt{Sx}-\frac34\log x+\log K.
 \end{equation}
 For sufficiently large $Y$, its large inverse root $r=r(Y)$ satisfies $f_0(r)=\log Y$. Setting $v=\sqrt r$, the equation is $K v^{-3/2}e^{2\sqrt S v}=Y$. Raising to power $-2/3$ and multiplying by $-4\sqrt S/3$ gives
@@ -888,15 +1107,15 @@ For sufficiently large $Y$, its large inverse root $r=r(Y)$ satisfies $f_0(r)=\l
 \left(-\frac{4\sqrt S}3v\right)e^{-4\sqrt S v/3}
 =-\frac{4\sqrt S}3(K/Y)^{2/3}.
 \]
-The lower real branch $W_{-1}$ selects the large solution and proves \eqref{eq:rintro}.
+The lower real branch $W_{-1}$ selects the large solution and proves \eqref{mss:eq:rintro}.
 
 Choose $C_0>0$ so that, for all sufficiently large integers $n$,
-\begin{equation}\label{eq:envelopes}
+\begin{equation}\label{mss:eq:envelopes}
 f_-(n)\le\log p_n\le f_+(n),\qquad
 f_\pm(x)=f_0(x)+\frac c{\sqrt x}\pm\frac{C_0}{x}.
 \end{equation}
 Both smooth envelopes are increasing eventually. Their roots at height $\log Y$ obey
-\begin{equation}\label{eq:roots}
+\begin{equation}\label{mss:eq:roots}
 x_\pm(Y)=r(Y)-\frac c{\sqrt S}+O(r(Y)^{-1/2}).
 \end{equation}
 Indeed $f_0'(r)=\sqrt S/\sqrt r+O(r^{-1})$, and a bounded displacement $d$ changes $f_0$ by $d\sqrt S/\sqrt r+O(r^{-1})$. The choice $d=-c/\sqrt S$ cancels the correction $c/\sqrt r$. The residual is $O(r^{-1})$, which corresponds to an index displacement $O(r^{-1/2})$ by the mean value theorem.
@@ -905,32 +1124,32 @@ The upper envelope reaches the target no later than the true sequence can; the l
 \[
 \lceil x_+(Y)\rceil\le N(Y)\le\lceil x_-(Y)\rceil.
 \]
-Once $Y$ exceeds the finitely many early sequence values, those early terms cannot affect $N(Y)$. Enlarging a fixed $C$ in \eqref{eq:roots} proves \eqref{eq:inverseintro}. The correction $-c/\sqrt S$ is positive, consistent with the eventual overestimate by the leading model.
+Once $Y$ exceeds the finitely many early sequence values, those early terms cannot affect $N(Y)$. Enlarging a fixed $C$ in \eqref{mss:eq:roots} proves \eqref{mss:eq:inverseintro}. The correction $-c/\sqrt S$ is positive, consistent with the eventual overestimate by the leading model.
 
 \subsection{Inverse envelopes to every fixed order}
 The preceding constant-shift bracket extends to arbitrary fixed order, with an exact indexing convention. Define the logarithmic coefficients by the formal identity
-\begin{equation}\label{eq:logcoeffs}
+\begin{equation}\label{mss:eq:logcoeffs}
 \log\left(1+\sum_{j\ge1}c_j z^j\right)=\sum_{j\ge1}\ell_jz^j.
 \end{equation}
 Thus $\ell_1=c_1=c$ and $\ell_2=c_2-c_1^2/2$. These are finite rational polynomials in the $c_j$ at each order.
 
-\begin{theorem}[All fixed inverse orders]\label{thm:inverseall}
+\begin{theorem}[All fixed inverse orders]\label{mss:thm:inverseall}
 There are consistently defined constants $\delta_0,\delta_1,\ldots$ in $\mathbb Q(a,\sqrt S)$ such that, for every fixed integer $J\ge0$, putting
-\begin{equation}\label{eq:TJ}
+\begin{equation}\label{mss:eq:TJ}
 T_J(r)=r+\sum_{k=0}^{J-1}\delta_k r^{-k/2},
 \end{equation}
 with an empty sum for $J=0$, there is $A_J>0$ for which
-\begin{equation}\label{eq:inverseall}
+\begin{equation}\label{mss:eq:inverseall}
 \left\lceil T_J(r(Y))-A_Jr(Y)^{-J/2}\right\rceil
 \le N(Y)\le
 \left\lceil T_J(r(Y))+A_Jr(Y)^{-J/2}\right\rceil
 \end{equation}
 for all sufficiently large $Y$. The first two formal coefficients are
-\begin{equation}\label{eq:deltas}
+\begin{equation}\label{mss:eq:deltas}
 \delta_0=-\frac{c_1}{\sqrt S},\qquad
 \delta_1=\frac{3\delta_0/4-\ell_2}{\sqrt S}.
 \end{equation}
-Here $\ell_2=c_2-c_1^2/2$ uses the explicit coefficient \eqref{eq:secondclosed}, so both displayed inverse corrections are given by exact expressions in $a,S$.
+Here $\ell_2=c_2-c_1^2/2$ uses the explicit coefficient \eqref{mss:eq:secondclosed}, so both displayed inverse corrections are given by exact expressions in $a,S$.
 \end{theorem}
 \begin{proof}
 The forward expansion gives, for each fixed $J$,
@@ -938,10 +1157,10 @@ The forward expansion gives, for each fixed $J$,
 \log p_n=f_0(n)+\sum_{j=1}^J\ell_j n^{-j/2}
 +O_J(n^{-(J+1)/2}).
 \]
-Add and subtract $C_Jx^{-(J+1)/2}$ to the smooth expression to obtain envelopes $g_J^\pm(x)$. Their derivatives are asymptotic to $\sqrt S x^{-1/2}$, so both are increasing eventually. Their large roots $\rho_J^\pm$ at level $\log Y$ bracket the integer threshold after ceilings, exactly as in \eqref{eq:envelopes}. Comparing at $r\pm D$ for a sufficiently large fixed $D$ shows $\rho_J^\pm=r+O_J(1)$; their derivatives there are bounded below by a positive constant times $r^{-1/2}$.
+Add and subtract $C_Jx^{-(J+1)/2}$ to the smooth expression to obtain envelopes $g_J^\pm(x)$. Their derivatives are asymptotic to $\sqrt S x^{-1/2}$, so both are increasing eventually. Their large roots $\rho_J^\pm$ at level $\log Y$ bracket the integer threshold after ceilings, exactly as in \eqref{mss:eq:envelopes}. Comparing at $r\pm D$ for a sufficiently large fixed $D$ shows $\rho_J^\pm=r+O_J(1)$; their derivatives there are bounded below by a positive constant times $r^{-1/2}$.
 
 For the explicit recursion put $q=r^{-1/2}$ and $x=r+d$. Subtracting $f_0(r)$, the envelope-free residual is
-\begin{align}\label{eq:inverseresidual}
+\begin{align}\label{mss:eq:inverseresidual}
 &2\sqrt S\,q^{-1}\bigl((1+q^2d)^{1/2}-1\bigr)
 -\frac34\log(1+q^2d)\\
 &\hspace{20mm}+\sum_{j=1}^J\ell_jq^j(1+q^2d)^{-j/2}.\nonumber
@@ -950,26 +1169,79 @@ For bounded $d$ this is analytic in $q$ at zero after removal of the displayed r
 \[
 d=\delta_0+\delta_1q+\cdots+\delta_{J-1}q^{J-1}
 \]
-and cancel successive coefficients. At each step the coefficient of the new $\delta_k$ is $\sqrt S\ne0$; only $\ell_1,\ldots,\ell_{k+1}$ are needed. This proves consistency as $J$ increases, and gives \eqref{eq:deltas} from the first two equations.
+and cancel successive coefficients. At each step the coefficient of the new $\delta_k$ is $\sqrt S\ne0$; only $\ell_1,\ldots,\ell_{k+1}$ are needed. This proves consistency as $J$ increases, and gives \eqref{mss:eq:deltas} from the first two equations.
 
 The finite substitution leaves the unscaled residual $O_J(q^{J+1})$. The envelope term has that same order. Dividing by the lower bound of order $q$ for the derivative, the mean value theorem gives
 \[
 \rho_J^\pm=T_J(r)+O_J(q^J).
 \]
-For $J=0$, use $d=0$: the envelope residual is $O(q)$, so the root error is $O(1)$ without referring to undefined coefficients. Enlarging $A_J$ and applying the monotonicity of ceilings proves \eqref{eq:inverseall}. Corollary~\ref{cor:field}, \eqref{eq:logcoeffs}, and the rational recursion show $\delta_k\in\mathbb Q(a,\sqrt S)$.
+For $J=0$, use $d=0$: the envelope residual is $O(q)$, so the root error is $O(1)$ without referring to undefined coefficients. Enlarging $A_J$ and applying the monotonicity of ceilings proves \eqref{mss:eq:inverseall}. Corollary~\ref{mss:cor:field}, \eqref{mss:eq:logcoeffs}, and the rational recursion show $\delta_k\in\mathbb Q(a,\sqrt S)$.
 \end{proof}
 The $J=0$ bracket has bounded real width; shrinking begins at $J=1$. Keeping $\delta_0$ through $\delta_R$ requires $J=R+1$ and gives real error $O(r^{-(R+1)/2})$. These are smooth-envelope inverse expansions, not an identification with ordinary piecewise-linear interpolation of the integer sequence. Neither convergence of an infinite inverse series nor one unconditional rounded equality is asserted.
 
-\section{A rational interior zero and the product obstruction}\label{sec:zero}
+\begin{remark}[{[write]} The inverses and the transseries volume, 7~October 2026]\label{mss:rem:transseries}
+Statement by statement, against the volume named in
+Section~\ref{mss:sec:provenance} (its symbols carry the subscript ``vol'').
+\begin{enumerate}[label=(\alph*),leftmargin=*]
+\item \emph{Instance.} Let $n_1$ be an index from which $p_n$ is strictly
+increasing (it exists by Section~\ref{mss:sec:inverse}). For
+$Y>\max_{n<n_1}p_n$, $N(Y)$ is the integer staircase $N_*(Y)$ of
+\file{p0:def:three-inverses} with $A_n=p_n$, so
+\file{p0:thm:staircase}(1) applies: $N(Y)=\lceil\nu(Y)\rceil$ for every
+admissible interpolation. In the exact counts $p_{n+1}>p_n$ for
+$33\le n<1500$, and the last decrease is $p_{33}=184<p_{32}=190$; that is a
+finite observation, not a proof that $n_1=33$.
+\item \emph{Instance.} The root $r(Y)$ of~\eqref{mss:eq:rintro} is
+\file{p0:thm:lambert-core}(3), case $b_{\rm vol}<0$, after the substitution
+$X_{\rm vol}=\sqrt r$: with $a_{\rm vol}=2\sqrt S$, $b_{\rm vol}=-\tfrac32$,
+$L_{\rm vol}=\log(Y/K)$ the core equation $a_{\rm vol}X+b_{\rm vol}\log X=
+L_{\rm vol}$ is $f_0(X^2)=\log Y$, and the large solution
+$(|b_{\rm vol}|/a_{\rm vol})(-W_{-1}(z))$ with
+$z=-(a_{\rm vol}/|b_{\rm vol}|)e^{-L_{\rm vol}/|b_{\rm vol}|}=
+-\tfrac43\sqrt S(K/Y)^{2/3}$ is exactly the bracket
+in~\eqref{mss:eq:rintro}; it exists once $L_{\rm vol}$ exceeds the fold
+value $L_c$ of \file{p0:eq:core-threshold}.
+\item \emph{Formal instance.} In the variable $X=\sqrt x$ the forward
+expansion is the exponential--power model of \file{p0:def:model} with data
+$(K,2\sqrt S,1,-\tfrac32,1,\sum_j\ell_jt^j)$ (equivalently
+$(K,2\sqrt S,\tfrac12,-\tfrac34,\tfrac12,\sum_j\ell_jt^j)$ in $x$). The
+coefficients $\delta_k$ of Theorem~\ref{mss:thm:inverseall} are those of the
+Lambert-centred series of \file{p0:thm:lambert-centered}(4) (formal exactness), squared: if
+$\sqrt x=X+\sum_{n\ge1}\gamma_nX^{-n}$ is that series about $X=\sqrt{r(Y)}$,
+then $\delta_k=2\gamma_{k+1}+\sum_{i+j=k,\ i,j\ge1}\gamma_i\gamma_j$. Both
+are the unique formal solutions of the same residual equation, so they
+agree; the write checked $\delta_0=2\gamma_1$ and $\delta_1=2\gamma_2$
+symbolically from the volume's Bell recurrence ($\gamma_1=-\ell_1/(2\sqrt
+S)$, $\gamma_2=-(-\tfrac32\gamma_1+\ell_2)/(2\sqrt S)$) and numerically,
+$\delta_0=0.2511499825\ldots$, $\delta_1=0.2897638360\ldots$. That
+coefficient identity is formal. \emph{Instance:} the smooth envelopes
+$g_J^\pm$ in the proof of Theorem~\ref{mss:thm:inverseall} are exactly of
+exponential--power type in $X$, with data
+$(K,2\sqrt S,1,-\tfrac32,1,\sum_{j\le J}\ell_jt^j\pm C_Jt^{J+1})$, so the
+root estimate $\rho_J^\pm=T_J(r)+O_J(r^{-J/2})$ there is
+\file{p0:thm:lambert-centered}(5) with $N=J$, followed by squaring (the
+term $\pm C_Jt^{J+1}$ changes no $\gamma_n$ with $n\le J$). The counts
+themselves are not of that type, and~(5) says nothing about $N(Y)$.
+\item \emph{Analogues.} The brackets~\eqref{mss:eq:inverseintro}
+and~\eqref{mss:eq:inverseall} are, as stated and proved, analogues of
+\file{p0:thm:staircase}(2): two-ceiling brackets proved directly at the
+integers from smooth envelopes, not deduced from an admissible
+interpolation of the counts. (Diagnostic: at record values $Y=p_n$,
+sampled for $200\le n<1500$, $|T_2(r(Y))-n|<0.0019$.)
+\end{enumerate}
+No novelty is claimed for any of these inversions.
+\end{remark}
+
+\section{A rational interior zero and the product obstruction}\label{mss:sec:zero}
 Set
-\begin{equation}\label{eq:Gnormalized}
+\begin{equation}\label{mss:eq:Gnormalized}
 \mathcal G(q)=F(q)/q=\sum_{n\ge0}p_{n+1}q^n.
 \end{equation}
 This function is holomorphic on $|q|<1$, with $\mathcal G(0)=1$.
 
-\begin{proposition}[Exact sign certificate]\label{prop:zero}
+\begin{proposition}[Exact sign certificate]\label{mss:prop:zero}
 The inequalities
-\begin{equation}\label{eq:zerosigns}
+\begin{equation}\label{mss:eq:zerosigns}
 \mathcal G(-3/4)>1/4,\qquad \mathcal G(-4/5)<-1/2
 \end{equation}
 hold. Consequently $\mathcal G$ has a real zero in $(-4/5,-3/4)$ and is not a finite eta quotient after removal of a monomial factor.
@@ -978,75 +1250,85 @@ hold. Consequently $\mathcal G$ has a real zero in $(-4/5,-3/4)$ and is not a fi
 The two finite inequalities below are verified by exact rational arithmetic in the accompanying standard-library certificate. We first prove the uniform error bound that makes them statements about the infinite series.
 
 Let $P(R)=\prod_{j\ge1}(1-R^j)^{-1}$ for $0<R<1$. Expanding the logarithm gives
-\begin{equation}\label{eq:partitionmajorant}
+\begin{equation}\label{mss:eq:partitionmajorant}
 \log P(R)=\sum_{k\ge1}\frac{R^k}{k(1-R^k)}
 \le-\frac{\log(1-R)}{1-R}.
 \end{equation}
 For $R=(b-1)/b$ this yields $P(R)\le b^b$. Let
 $T_N(q)=\sum_{n=0}^Np_{n+1}q^n$ and $r=|q|<R$. Since $p_{n+1}\le p(n+1)$,
-\begin{align}\label{eq:tailcert}
+\begin{align}\label{mss:eq:tailcert}
 |\mathcal G(q)-T_N(q)|
 &\le(r/R)^{N+1}\sum_{n>N}p(n+1)R^n\\
 &\le(r/R)^{N+1}\frac{P(R)}R
 \le(r/R)^{N+1}\frac{b^b}{R}.\nonumber
 \end{align}
-For $N=1000$, use $(r,b)=(3/4,5)$ and $(4/5,6)$. The exact rational quantity on the right is less than $10^{-12}$ in both cases. Horner evaluation with rational numbers, using coefficients regenerated from \eqref{eq:DP}, verifies
-\begin{equation}\label{eq:hornercert}
+For $N=1000$, use $(r,b)=(3/4,5)$ and $(4/5,6)$. The exact rational quantity on the right is less than $10^{-12}$ in both cases. Horner evaluation with rational numbers, using coefficients regenerated from \eqref{mss:eq:DP}, verifies
+\begin{equation}\label{mss:eq:hornercert}
 T_{1000}(-3/4)-\left(\frac{3/4}{4/5}\right)^{1001}\frac{5^5}{4/5}>\frac14,
 \end{equation}
 and
-\begin{equation}\label{eq:hornercert2}
+\begin{equation}\label{mss:eq:hornercert2}
 T_{1000}(-4/5)+\left(\frac{4/5}{5/6}\right)^{1001}\frac{6^6}{5/6}<-\frac12.
 \end{equation}
-Equations \eqref{eq:tailcert}--\eqref{eq:hornercert2} prove \eqref{eq:zerosigns}. Continuity gives an interior negative real zero.
+Equations \eqref{mss:eq:tailcert}--\eqref{mss:eq:hornercert2} prove \eqref{mss:eq:zerosigns}. Continuity gives an interior negative real zero.
 
-A finite eta quotient, after removing its power of $q$, is a finite product of integral powers of $(q^d;q^d)_\infty$, $d\ge1$, multiplied by a nonzero constant. Each factor is holomorphic and nonvanishing in $|q|<1$: its logarithmic product converges normally on compact subdisks. Negative integral powers remain holomorphic and nonvanishing there. The product therefore has no interior zero, contradicting \eqref{eq:zerosigns}.
+A finite eta quotient, after removing its power of $q$, is a finite product of integral powers of $(q^d;q^d)_\infty$, $d\ge1$, multiplied by a nonzero constant. Each factor is holomorphic and nonvanishing in $|q|<1$: its logarithmic product converges normally on compact subdisks. Negative integral powers remain holomorphic and nonvanishing there. The product therefore has no interior zero, contradicting \eqref{mss:eq:zerosigns}.
 \end{proof}
 This is a finite-computation-assisted exact certificate, not a numerical root estimate. It excludes finite eta quotients and, more generally, any proposed representation known to be holomorphic and nonvanishing throughout the disk. It does not exclude sums or differences of eta quotients, a numerator with zeros, or other basic-hypergeometric identities. Failure to recognize an alternative identity is not a theorem of nonexistence.
 
-\section{Reproducibility and further questions}\label{sec:reproduce}
+\section{Reproducibility and further questions}\label{mss:sec:reproduce}
 The companion archive contains the editable \LaTeX\ manuscript, authored verification programs, observed finite reference data, and build instructions. Its mandatory verification path uses only the Python standard library for exact arithmetic and replay; producing the PDF additionally requires a \texttt{pdflatex} installation and the listed TeX packages. The full exact coefficient list through $1500$ is regenerated rather than accepted as evidence merely because a saved file exists.
 
 The mandatory checks are:
 \begin{enumerate}[leftmargin=*,itemsep=2pt]
 \item regenerate the positive dynamic program and compare the observed 58-term OEIS prefix;
 \item independently enumerate ordinary partitions through $35$ and test the defining condition;
-\item evaluate the rational sign proof \eqref{eq:logbound}--\eqref{eq:Qsign};
+\item evaluate the rational sign proof \eqref{mss:eq:logbound}--\eqref{mss:eq:Qsign};
 \item recalculate the two rational Horner certificates and their proven tails;
 \item replay the checks in normal and optimized Python, requiring identical exact outputs;
 \item verify the explicit archive inventory and deterministic same-stack rebuilds.
 \end{enumerate}
-All public guards use explicit exceptions so that they remain active under Python's \texttt{-O} option. The optional SymPy verification differentiates the elementary formulas in \eqref{eq:derivativerecipe} and performs exact Wick contractions. One program checks the first correction in two and three dimensions; another checks the explicit second coefficient. SymPy is an additional dependency and is used only when requested. These are fixed-order verifiers, not an unrestricted all-orders engine. Saved receipts are not substituted for running the computations. The analytic proofs of the Fourier tails and asymptotic remainders are in the article, not delegated to finite coefficient agreement.
+All public guards use explicit exceptions so that they remain active under Python's \texttt{-O} option. The optional SymPy verification differentiates the elementary formulas in \eqref{mss:eq:derivativerecipe} and performs exact Wick contractions. One program checks the first correction in two and three dimensions; another checks the explicit second coefficient. SymPy is an additional dependency and is used only when requested. These are fixed-order verifiers, not an unrestricted all-orders engine. Saved receipts are not substituted for running the computations. The analytic proofs of the Fourier tails and asymptotic remainders are in the article, not delegated to finite coefficient agreement.
 
 Determinism is a same-stack statement: fixed source files, Python, TeX engine, packages, and fonts give identical rebuilt bytes under the documented build. It is not a claim that unrelated TeX installations produce identical PDFs. The build uses a fresh absolute output path and refuses unsafe paths or existing destinations; the README gives the exact commands. The archive excludes downloaded literature and nonpublic review material.
 
-\subsection{Questions suggested by the analysis}
+\subsection{Questions suggested by the analysis}\label{mss:sec:questions}
 The following are extensions rather than results proved here.
 \begin{enumerate}[leftmargin=*,itemsep=4pt]
 \item Can one derive explicit $c_j$ for $j\ge3$ in a compact recurrence, and give effective remainder constants or a computable monotonicity onset? The finite-jet construction proves existence at every fixed order but does not provide those quantitative error bounds.
-\item What are the next centering and variance corrections for the least part? A marked three-variable expansion should contain them, but Theorem~\ref{thm:clt} only gives the stated first-order centering and bounded-window local law.
+\item What are the next centering and variance corrections for the least part? A marked three-variable expansion should contain them, but Theorem~\ref{mss:thm:clt} only gives the stated first-order centering and bounded-window local law.
 \item Can one obtain relative moderate-deviation estimates for the least part, beyond fixed standardized windows, with explicit ranges? This requires additional uniformity beyond the present Gaussian-tail domination.
-\item Does the diagonal generating function admit a useful nonproduct basic-hypergeometric identity? Proposition~\ref{prop:zero} rules out finite eta quotients but leaves many identities possible.
+\item Does the diagonal generating function admit a useful nonproduct basic-hypergeometric identity? Proposition~\ref{mss:prop:zero} rules out finite eta quotients but leaves many identities possible.
 \item How do the constants and phases change for constraints such as $\min\lambda=r\,|\operatorname{supp}\lambda|+s$, or for bounded multiplicities? Each variant needs its own exact model and global saddle check.
 \item How much of the moving-cutoff analysis can be placed directly under general partition local-limit theorems, in particular the full hypotheses of Hwang \cite{hwang}? Resolving that applicability question would clarify the relation with existing frameworks.
 \end{enumerate}
+\begin{writenote}[7 October 2026]
+Under Vladimir's standing rule of 4~October 2026 (unproved claims are moved
+to questions, wrong ones are refuted on the record), the write found no claim
+of the source that is unproved as stated and none that is wrong, so nothing
+was moved here or refuted. Two finite observations bear on the questions
+without settling them: for Question~1, the exact counts increase strictly for
+$33\le n<1500$ (Remark~\ref{mss:rem:transseries}(a)), which proves no onset;
+for Question~4, the shipped exact Euler exponents of $F$ through degree~200
+show no pure period up to~50, which excludes no identity.
+\end{writenote}
 
 \appendix
-\section{Finite-jet instructions for higher coefficients}\label{app:algorithm}
-Here is a concrete algebraic implementation of the effectiveness assertion in Theorem~\ref{thm:main}. To determine terms through $t^R$:
+\section{Finite-jet instructions for higher coefficients}\label{mss:app:algorithm}
+Here is a concrete algebraic implementation of the effectiveness assertion in Theorem~\ref{mss:thm:main}. To determine terms through $t^R$:
 \begin{enumerate}[leftmargin=*,itemsep=3pt]
-\item Expand $I(v,s)$ about $(a,s_0)$ through total degree $2R+2$ using $I_v=-h$ and the elementary $I_s$ in \eqref{eq:derivativerecipe}. Expand $\log\mathcal A$ through total degree $2R$.
-\item Compose $v-a=X+aZ+XZ$, $s-s_0=U$, and expand $(1+Z)^{-1}$ to the required degree in \eqref{eq:P}. Keep the Hessian term separate.
+\item Expand $I(v,s)$ about $(a,s_0)$ through total degree $2R+2$ using $I_v=-h$ and the elementary $I_s$ in \eqref{mss:eq:derivativerecipe}. Expand $\log\mathcal A$ through total degree $2R$.
+\item Compose $v-a=X+aZ+XZ$, $s-s_0=U$, and expand $(1+Z)^{-1}$ to the required degree in \eqref{mss:eq:P}. Keep the Hessian term separate.
 \item Include all Euler--Maclaurin terms $-\mathsf B_{2r}z^{2r-1}h_{v^{2r-1}}/(2r)!$ whose substitution can contribute through $\lambda^{2R}$. Terms with base exponent $4r-2>2R$ can be discarded.
-\item Substitute the formal scaled coordinates $(X,U,Z)=(\lambda\xi,\lambda\upsilon,\lambda\zeta)$ in \eqref{eq:formalseries}, keeping $(\xi,\upsilon,\zeta)$ abstract. Expand through $\lambda^{2R}$ and divide the amplitude by $A_0$. This gives finite coefficient polynomials in the complex-coordinate basis.
-\item Contract the coefficient of $\lambda^{2j}$ with the complex-coordinate covariance \eqref{eq:C}. Equivalently, substitute the plane first and integrate against the normalized Gaussian \eqref{eq:Q}; do not apply $C$ directly to a polynomial already expressed in the real plane coordinates. The result is $b_j$, and $c_j=S^{j/2}b_j$.
+\item Substitute the formal scaled coordinates $(X,U,Z)=(\lambda\xi,\lambda\upsilon,\lambda\zeta)$ in \eqref{mss:eq:formalseries}, keeping $(\xi,\upsilon,\zeta)$ abstract. Expand through $\lambda^{2R}$ and divide the amplitude by $A_0$. This gives finite coefficient polynomials in the complex-coordinate basis.
+\item Contract the coefficient of $\lambda^{2j}$ with the complex-coordinate covariance \eqref{mss:eq:C}. Equivalently, substitute the plane first and integrate against the normalized Gaussian \eqref{mss:eq:Q}; do not apply $C$ directly to a polynomial already expressed in the real plane coordinates. The result is $b_j$, and $c_j=S^{j/2}b_j$.
 \end{enumerate}
-To prove a remainder through this order one expands one further odd $\lambda$-order, as in Section~\ref{sec:allorders}; that odd integral vanishes but allows the $O(t^{R+1})$ bound. The computational jet truncation for the coefficients themselves does not replace that analytic remainder argument.
+To prove a remainder through this order one expands one further odd $\lambda$-order, as in Section~\ref{mss:sec:allorders}; that odd integral vanishes but allows the $O(t^{R+1})$ bound. The computational jet truncation for the coefficients themselves does not replace that analytic remainder argument.
 
-The entries of $H$ and all required derivatives are exact expressions built from rational operations and the constants in \eqref{eq:constants}. At the working point the exponential variables are rational, $e^{-a}=2/3$ and $e^{s_0}=1/2$, which keeps finite symbolic calculations small. The package's optional verifiers implement the $R=1$ and $R=2$ calculations directly from these instructions. Coefficients $c_j$ for $j\ge3$ are prescribed but not explicitly evaluated here. No numerical fitting to the coefficient list is used.
+The entries of $H$ and all required derivatives are exact expressions built from rational operations and the constants in \eqref{mss:eq:constants}. At the working point the exponential variables are rational, $e^{-a}=2/3$ and $e^{s_0}=1/2$, which keeps finite symbolic calculations small. The package's optional verifiers implement the $R=1$ and $R=2$ calculations directly from these instructions. Coefficients $c_j$ for $j\ge3$ are prescribed but not explicitly evaluated here. No numerical fitting to the coefficient list is used.
 
-\section{A normalization check by Gaussian integration}\label{app:gaussian}
-The integral of the leading three-dimensional Gaussian can be checked without determinants of complex matrices. Integrate $\beta$ in \eqref{eq:Q} first:
+\section{A normalization check by Gaussian integration}\label{mss:app:gaussian}
+The integral of the leading three-dimensional Gaussian can be checked without determinants of complex matrices. Integrate $\beta$ in \eqref{mss:eq:Q} first:
 \[
 \int_\R e^{-V\beta^2/2-J_0\alpha\beta}\,d\beta
 =\sqrt{\frac{2\pi}{V}}\,
@@ -1059,7 +1341,7 @@ The remaining $\alpha$ exponent is $-W\alpha^2/2+ia\kappa y\alpha$, so
  e^{-a^2\kappa^2y^2/(2W)}.
 \]
 Then the $y$ integral has curvature $\kappa_{\rm eff}$. Thus
-\begin{equation}\label{eq:GaussianIntegral}
+\begin{equation}\label{mss:eq:GaussianIntegral}
 \int_{\R^3}e^{Q(w)}\,dw
 =\frac{(2\pi)^{3/2}}{\sqrt{VW\kappa_{\rm eff}}}
 =\frac{(2\pi)^{3/2}}{\sqrt{2SV\kappa}}.
