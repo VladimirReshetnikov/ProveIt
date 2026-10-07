@@ -1,0 +1,199 @@
+VERIFICATION NOTES
+Microscopic Schedules in Rounding Extinction
+5 October 2026
+
+1. DELIVERABLE AND SCOPE
+
+The package contains a 29-page mathematical article, its complete LaTeX
+source, four vector PDF figures with PNG previews, reproducible Python
+code, and the output of a completed default computation.
+
+The article supplies mathematical proofs. The computation checks finite
+instances of its backward-threshold mechanism, constructs exact rational
+enclosure endpoints, and illustrates limiting formulas. It does not
+constitute formal verification of the article, and it does not prove the
+asymptotic convergence statements from finitely many observations.
+
+The finite Mobius-inversion theorem for every bounded increment law was
+added to the mathematical manuscript. Its proof is not part of the finite
+computation tests described below.
+
+2. EXACT DYNAMICS AND INDEXING
+
+Every weight sequence starts at w_1=1. Write r_k=w_k/w_(k-1), for k>=2.
+The forward integer quotient Q_k=x_k/w_k (using the article's notation
+for the remaining mass x_k) follows
+
+    Q_k = floor(Q_(k-1) / r_k).
+
+The least initial state that reaches a specified integer target at stage K
+is obtained by the backward recursion
+
+    q_K = target,
+    q_(k-1) = ceil(r_k * q_k).
+
+For survival, target=1, and T_w(K)=q_1. All tested r_k are rational. Their
+numerators and denominators are handled as Python integers; both the
+forward floors and backward ceilings use exact integer division.
+
+For a periodic tuple (alpha_0,...,alpha_(p-1)), the transition indexed by k
+uses alpha_(k mod p). A positive phase has r_k=1+alpha_(k mod p)/k. The
+two zero-phase choices are an exact plateau r_k=1 and an active weak
+increment r_k=1+1/k^2.
+
+The separate explicit perturbation models use
+
+    w_(2j-1)=j,    w_(2j)=j+epsilon/j,
+
+with epsilon=0, 1/2, 1/100, and 1/10000. Their ratios are derived exactly
+from these weights, rather than substituted with an asymptotic expansion.
+
+3. THE TEN WEIGHT MODELS
+
+The six periodic models are:
+
+    (1)
+    (1/2,3/2)
+    (0,2), with the zero phase an exact plateau
+    (0,2), with the zero phase active
+    (1/2,1,3/2)
+    (1/2,3/2,1)
+
+The four explicit perturbation models are the epsilon values listed in
+Section 2. Thus the permuted tuples are separate finite-dynamics models,
+even though their limiting drift is the same.
+
+4. COMPLETED FINITE CHECKS
+
+Inverse-boundary checks: 3,200 passed.
+
+For each of ten models, every K from 1 through 40 and every terminal
+target from 1 through 4 were tested. The computed backward threshold was
+run forward and shown to attain the target. One less than that threshold
+was run forward and shown not to attain the target. Counting both sides
+gives 10 * 40 * 4 * 2 = 3,200 checks.
+
+Exhaustive small-survival checks: 2,847 passed.
+
+For each model and each K from 1 through 15, every initial integer from
+zero through T_w(K)+2 was tested. The forward survival decision agreed
+with the criterion initial >= T_w(K) on every tested input.
+
+Threshold diagnostics: 310 records.
+
+Each of the ten models was evaluated at 31 selected terminal stages,
+including K=100, 1000, 10000, and 100000. The threshold field in every
+record is an exact integer. The selected K values and results are recorded
+in data/thresholds.csv. Larger K values can be requested through the
+script's --max-K option, but they are not part of the delivered default run.
+
+The data/verification.json and data/run_log.txt files record the outcome.
+
+5. EXACT RATIONAL CERTIFICATES
+
+For rational phase data and rational z, the code enumerates the exact
+breakpoints of the piecewise constant drift D. On an interval (a,b) where
+D=d, its contribution to t is exactly
+
+    (a+d)/(b+d).
+
+Consequently t(z) is constructed as a product of rational numbers using
+fractions.Fraction, without floating-point breakpoint comparisons.
+
+All certificate examples in the delivered run have mean m=1. With eta the
+active-zero frequency and rho the total active frequency, the article's
+enclosure theorem gives
+
+    (z + eta/(m+1)) * t(z)^(m+1)
+        <= L <=
+    (z + rho/(m+1)) * t(z)^(m+1).
+
+Because m+1=2 here, both endpoints are exact rational numbers. The file
+data/certificates.json stores their complete numerators and denominators,
+as well as those of t(z).
+
+There are 22 certificate records: z=100 and z=1000 for eleven drift
+entries. These comprise the six periodic drift entries and five density
+entries theta=0, 1/4, 1/2, 3/4, 1. Some entries coincide: permuting the
+positive phases preserves the drift, and the endpoint density models
+coincide with the plateau and fully active cases. Thus 22 records should
+not be read as 22 distinct mathematical laws.
+
+The arithmetic construction of each endpoint is exact. That the endpoints
+enclose the mathematical limiting constant is a consequence of the proof
+in the article. The code also checks that a numerical evaluation of the
+proposed constant lies between them; this is a numerical compatibility
+check, not an independently certified evaluation of the Gamma functions.
+
+6. ROUNDED DIAGNOSTICS
+
+Weights and normalized thresholds are evaluated with 70-digit Decimal
+arithmetic. The explicit perturbation weights have exact rational formulas
+before their conversion to Decimal. General periodic weights are evaluated
+by successive Decimal products.
+
+The constants 1/pi, 1/(2*pi), and pi/8 use a Decimal evaluation of pi from
+Machin's identity. Other commensurable constants use the standard-library
+math.lgamma function on exact rational arguments converted to floating
+point. The stored arguments are exact; the evaluations are not.
+
+The CSV decimal displays are rounded values. They are not guaranteed
+outward-rounded endpoints and should not be quoted as such. For a fully
+exact enclosure, use the rational fields in data/certificates.json.
+
+The profile samples, plotting coordinates, and rendered curves use
+floating-point values. Their role is illustration. The exact q_k values
+underlying the sampled backward trajectories are included separately in
+data/profile_samples.csv.
+
+7. FIGURES AND DOCUMENT REVIEW
+
+Four vector figures are supplied:
+
+    figures/normalized_thresholds.pdf
+    figures/drift_and_profiles.pdf
+    figures/constant_discontinuity.pdf
+    figures/weak_phase_density.pdf
+
+Each figure was rendered from its PDF with pdftoppm and visually inspected
+for legibility, clipping, and font rendering. Matching PNG previews are
+also included. This visual review concerns presentation, not proof of the
+mathematical claims shown in a figure.
+
+All 29 pages of the final article were rendered and visually inspected.
+The final LaTeX build has no undefined references or overfull/underfull
+box warnings. The archive was extracted to a clean directory and rebuilt
+using only its included source and figures; the resulting PDF reproduced
+the 29 pages and their complete extracted text. ZIP integrity and the
+SHA-256 checksums of the archived files were also checked.
+
+8. CLAIMS NOT MADE BY THE COMPUTATION
+
+The finite checks do not establish an asymptotic error rate. Observed
+convergence at K<=100000 is not a certified bound on the remaining error.
+No K^(-2/3) rate, bounded-error claim, or other rate is asserted as a result
+of these computations.
+
+The finite checks do not prove the full averaging theorem, the sharp
+spectrum theorem, sparse-modification invariance, nonexistence examples,
+or the finite Mobius-inversion theorem. Those claims rest on their stated
+hypotheses and mathematical proofs in the manuscript.
+
+Neither the Python checks nor the accompanying mathematical proofs have
+been checked by a proof assistant. This package makes no formal-
+verification claim and no claim of exhaustive historical priority.
+
+9. REPRODUCTION
+
+From the package directory, use:
+
+    python3 code/verify.py
+
+or, without regenerating figures:
+
+    python3 code/verify.py --no-figures
+
+Python 3.10 or later is required. The delivered run used Python 3.12.
+The checks and data generation use only the standard library. NumPy and
+Matplotlib are needed only for figure generation. See README.txt for the
+LaTeX reproduction commands and a complete file guide.

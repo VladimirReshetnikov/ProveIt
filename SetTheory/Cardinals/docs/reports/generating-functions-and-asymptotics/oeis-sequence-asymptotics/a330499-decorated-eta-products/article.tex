@@ -1,0 +1,1376 @@
+\pdfinfoomitdate=1
+\pdftrailerid{}
+\pdfsuppressptexinfo=15
+\newcommand{\DoNotLoadEpstopdf}{}
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools,booktabs,array}
+\usepackage[margin=1in]{geometry}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\usepackage{enumitem}
+\setlist{itemsep=3pt,topsep=5pt}
+\allowdisplaybreaks[2]
+\emergencystretch=2em
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\OO}{\mathcal O}
+\newcommand{\NN}{\mathbb N}
+\newcommand{\EE}{\mathbb E}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\odd}{\operatorname{odd}}
+\newcommand{\stir}[2]{\genfrac{[}{]}{0pt}{}{#1}{#2}}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\dd}{\,\mathrm d}
+\DeclareMathOperator{\Rea}{Re}
+\DeclareMathOperator{\Ima}{Im}
+\hypersetup{pdftitle={Report185 Decorated logarithmic eta products and OEIS A330499},pdfauthor={Research report},pdfsubject={Uniform all orders oscillatory coefficient asymptotics and threshold inverses}}
+\title{Report185\\[5pt]Decorated logarithmic eta products\\[3pt]and OEIS A330499}
+\author{Uniform oscillatory asymptotics and threshold inverses}
+\date{3 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We prove an all-fixed-orders coefficient theorem for the composition
+$F_B(z)=\sum_{k\ge1}\log(1+B(z)^k)$, where $B$ is analytic with nonnegative
+coefficients and its occupied sizes have difference span one. If
+$B(\rho)=1$ strictly inside the disk of analyticity, the leading coefficient
+is $\pi^2/(12\mu)$ after multiplication by $\rho^n$, where $\mu$ is the
+mean of the decorating size law. The first correction is
+$n^{-3/4}H_0(\sqrt n)$, followed by half-power orders; each $H_j$ is an
+explicit entire trigonometric series, bounded and uniformly almost periodic
+on the real axis. Its mode damping is determined by the variance divided
+by the squared mean. A pole-subtracted boundary integral and a uniform
+stationary-phase estimate justify summing the actual remainders, even
+though accumulating root-of-unity cusps prevent standard Delta-domain
+transfer. For $B(z)=-\log(1-z)$, we identify the exact leading constant
+of A330499, give its first three oscillatory terms, prove signed
+subsequences that exclude a pure $1/n$ refinement, and derive
+rounding-aware inverse envelopes to every fixed order. Exact finite
+checks and optional floating-point diagnostics accompany the proof.
+\end{abstract}
+
+\paragraph{Scope.}
+The reusable contribution is the decorated-product coefficient theorem,
+including its uniform remainder. The eta transformation, stationary
+phase, labelled supernecklaces and inverse reversion are classical
+inputs. The bounded source comparison in Section~\ref{sec:sources} is
+not a worldwide priority determination. All orders and the decoration
+are fixed before $n\to\infty$. The constants in the asymptotic remainder
+are existence constants; this report does not supply a certified
+large-$n$ cutoff or a certified numerical inverse algorithm.
+
+\newpage
+{\small\tableofcontents}
+\newpage
+
+\section{Main results and their meaning}\label{sec:main}
+Let
+\begin{equation}\label{eq:model}
+ L(z)=-\log(1-z),\qquad
+ F(z)=\sum_{k\ge1}\log(1+L(z)^k)
+     =\sum_{n\ge0}a_n\frac{z^n}{n!}.
+\end{equation}
+All logarithms in the defining series are the power-series logarithms
+at the origin. The sequence $(a_n)_{n\ge0}$ is OEIS A330499~\cite{oeis}.
+Its first values are
+\[
+ 0,\ 1,\ 2,\ 13,\ 71,\ 558,\ 5344,\ 60926,\ 766898,\ 10759096.
+\]
+The OEIS record inspected on 3 October 2026 gives the leading equivalent
+$n!c(1-e^{-1})^{-n}$ with the displayed decimal $c=0.478656\ldots$.
+Define
+\begin{equation}\label{eq:logconstants}
+ \rho=1-e^{-1},\qquad M=e-1,\qquad C=\frac{\pi^2}{12M}
+       =0.478656655620749637061291495659\ldots.
+\end{equation}
+The decimal is a numerical evaluation of the exact expression, not an
+interval certificate.
+
+\begin{theorem}[A330499 at every fixed order]\label{thm:A}
+There are real entire functions $H_j$, $j\ge0$, bounded on the real axis,
+such that for every fixed integer $N\ge1$,
+\begin{equation}\label{eq:Aall}
+ a_n=n!\rho^{-n}\left\{C+
+       \sum_{j=0}^{N-1}n^{-3/4-j/2}H_j(\sqrt n)
+       +\OO_N(n^{-3/4-N/2})\right\}.
+\end{equation}
+Each $H_j$ and each of its derivatives is given by an absolutely
+convergent trigonometric series. The first three functions are explicit
+in Section~\ref{sec:three}; a finite recipe for every further function
+is given in Theorem~\ref{thm:general}. In particular,
+\begin{equation}\label{eq:threeintro}
+ \frac{a_n\rho^n}{n!}=C+n^{-3/4}H_0(\sqrt n)
+        +n^{-5/4}H_1(\sqrt n)+n^{-7/4}H_2(\sqrt n)
+        +\OO(n^{-9/4}).
+\end{equation}
+\end{theorem}
+
+The oscillation in \eqref{eq:Aall} is a power-scale effect, not an
+exponentially small correction. In particular, there is no constant
+$c_1$ for which $a_n\rho^n/n!=C+c_1/n+\OO(n^{-2})$.
+Section~\ref{sec:sign} proves this from an exact rational first-harmonic
+tail estimate and explicit signed subsequences. A leading equivalent
+by itself does not reveal this obstruction.
+
+The proof is most useful in a broader setting. For a nonnegative
+analytic decoration $B$, the numbers $b_j\rho^j$ at $B(\rho)=1$ define
+a probability law. If its mean and variance are $\mu$ and $v$, the
+$m$th oscillation has damping
+\begin{equation}\label{eq:damping}
+ \exp\left(-\frac{\pi^2mv}{\mu^2}\right).
+\end{equation}
+This identifies a structural smoothing parameter. A small variance
+relative to the squared mean makes many modes relevant; it does not
+justify taking a zero-variance limit of a theorem whose constants depend
+on the decoration.
+
+\paragraph{Why the proof uses the coefficient boundary.}
+The modular eta identity is exact, but the coefficient boundary
+approaches its singular point tangentially. The local real-axis
+expansion loses the oscillatory information. Moreover, singular
+preimages of odd-order roots of unity accumulate at $\rho$ from
+nearly vertical directions. Section~\ref{sec:cusps} proves that these
+are actual nonremovable cusps. The standard Delta-domain hypothesis
+for singularity analysis is therefore unavailable. We instead subtract
+the dominant pole, use dominated boundary coefficient extraction, and
+control every dual eta mode uniformly before summing its error.
+
+\section{Exact coefficients and labelled interpretation}\label{sec:exact}
+For an integer $m\ge1$, let $\odd(m)$ be its largest odd divisor,
+and let $\sigma(m)=\sum_{d\mid m}d$. Put
+\begin{equation}\label{eq:cm}
+ c_m=\frac{\sigma(\odd(m))}{m}.
+\end{equation}
+The distinction between $c_m$ and the leading constant $C$ will be used
+throughout.
+
+\begin{lemma}[The positive logarithmic product coefficients]\label{lem:cm}
+For $|q|<1$,
+\begin{equation}\label{eq:F0}
+ F_0(q):=\sum_{k\ge1}\log(1+q^k)=\sum_{m\ge1}c_mq^m.
+\end{equation}
+In particular, $0<c_m\le1+\log m$.
+\end{lemma}
+\begin{proof}
+The defining logarithmic series converges locally normally. Writing
+$P(q)=\prod_{k\ge1}(1-q^k)$ and using its analytic logarithm gives
+\[
+ F_0(q)=\log P(q^2)-\log P(q),\qquad
+ \log P(q)=-\sum_{m\ge1}\sigma_{-1}(m)q^m,
+\]
+where $\sigma_{-1}(m)=\sum_{d\mid m}d^{-1}=\sigma(m)/m$.
+Consequently the coefficient is
+\[
+ \sigma_{-1}(m)-\mathbf1_{2\mid m}\sigma_{-1}(m/2).
+\]
+Writing $m=2^\nu u$ with $u$ odd shows that this difference equals
+$\sigma(u)/m$. Positivity follows, while
+$c_m\le\sigma_{-1}(m)\le\sum_{j=1}^m1/j\le1+\log m$.
+Alternatively, expanding the individual logarithms gives the exact
+identity $c_m=\sum_{j\mid m}(-1)^{j+1}/j$.
+\end{proof}
+
+Unsigned Stirling numbers of the first kind are denoted by
+$\stir nk$. They satisfy
+\[
+ \frac{L(z)^k}{k!}=\sum_{n\ge k}\stir nk\frac{z^n}{n!},
+ \qquad
+ \stir{n+1}k=n\stir nk+\stir n{k-1}.
+\]
+Thus \eqref{eq:F0} yields the finite exact transform
+\begin{equation}\label{eq:stirling}
+ a_n=\sum_{k=1}^n\stir nk\,(k-1)!\,\sigma(\odd(k)),\qquad a_0=0.
+\end{equation}
+This is an integer formula with positive weights. It is also an
+independent way to evaluate the coefficients without summing truncated
+analytic products numerically.
+
+\begin{proposition}[Marked cycles of cycles and strict growth]\label{prop:counts}
+The number $a_n$ counts labelled cycles of cycles with the following
+additional choice: if there are $k$ inner cycles, choose an odd divisor
+$d$ of $k$ and one of $d$ colors. Furthermore,
+\begin{equation}\label{eq:monotone}
+ a_{n+1}>n a_n\quad(n\ge1),
+\end{equation}
+and $(a_n)_{n\ge0}$ is strictly increasing.
+\end{proposition}
+\begin{proof}
+There are $\stir nk$ ways to decompose $n$ distinct labels into $k$
+nonempty cycles. These $k$ distinguishable cycles can be arranged into
+an outer directed cycle in $(k-1)!$ ways. The additional finite choice
+has $\sum_{d\mid k,\ d\text{ odd}}d=\sigma(\odd(k))$ possibilities.
+This gives \eqref{eq:stirling}. The underlying unmarked labelled
+cycle-of-cycles construction is classical supernecklace
+combinatorics~\cite{supernecklace,ac}; the divisor-colored version here
+is the direct interpretation of the displayed weight.
+
+Write $w_k=(k-1)!\sigma(\odd(k))>0$. Applying the Stirling recurrence
+and taking $\stir nk=0$ outside $0\le k\le n$ gives
+\[
+ a_{n+1}=n a_n+\sum_{j=0}^n\stir nj w_{j+1}>n a_n.
+\]
+The last sum is positive for $n\ge1$. Together with $a_0=0$ and
+$a_1=1$, this proves the assertion.
+\end{proof}
+
+Unmarked supernecklaces have generating function $-\log(1-L(z))$
+and a different leading scale $n!\rho^{-n}/n$. The finite marking in
+Proposition~\ref{prop:counts} is not asymptotically innocuous: the
+logarithmic eta product has a pole-sized leading term and oscillatory
+power corrections.
+
+\section{The general analytic decoration theorem}\label{sec:general}
+Assume that
+\begin{equation}\label{eq:Bassump}
+ B(z)=\sum_{j\ge1}b_jz^j,\qquad b_j\ge0,
+ \qquad B\text{ holomorphic for }|z|<R,
+ \qquad 0<\rho<R,\quad B(\rho)=1.
+\end{equation}
+The support is required to have \emph{difference span one}:
+\begin{equation}\label{eq:span}
+ \gcd\{j-k:b_jb_k>0\}=1.
+\end{equation}
+Here the gcd of the differences is the positive generator of the
+subgroup they span. In particular the support is not a singleton.
+This hypothesis is stronger than $\gcd\{j:b_j>0\}=1$.
+For example, $(z+z^3)/2$ satisfies the latter condition, but
+$B(-1)=-1$ gives another boundary contact.
+
+Define the positive-integer-valued variable $K$ by
+\begin{equation}\label{eq:law}
+ \Pr\{K=j\}=b_j\rho^j,
+ \qquad \mu=\EE K,\quad v=\Var K>0.
+\end{equation}
+Since $\rho<R$, this law has a moment generating function analytic
+near zero. Denote its cumulants by $\kappa_r$, so
+$\kappa_1=\mu$, $\kappa_2=v$. Let
+\begin{equation}\label{eq:modes}
+ F_B(z)=F_0(B(z)),\quad \alpha_m=2\pi^2m,
+ \quad d=\frac{v}{2\mu^2},\quad
+ q_1=\frac{\kappa_3}{6\mu^2}-\frac{v^2}{4\mu^3}.
+\end{equation}
+The dual-mode parameter $\alpha_m$ is unrelated to the sequence value $a_n$.
+
+On a neighborhood of real $\theta=0$, use the logarithm branch with
+$-\log B(\rho)=0$, and define the removable germ
+\begin{equation}\label{eq:W}
+ W(\theta)=\frac1{-\log B(\rho e^{\ii\theta})}
+                  -\frac{\ii}{\mu\theta},
+ \qquad E_\alpha(\theta)=e^{-\alpha(W(\theta)-d)}.
+\end{equation}
+The first terms are $W(\theta)=d+\ii q_1\theta+\OO(\theta^2)$.
+Let
+\begin{equation}\label{eq:Y}
+ Y(w)=\left(\frac{w+\sqrt{w^2+4}}2\right)^2,
+ \qquad Y(0)=1.
+\end{equation}
+The square root is the analytic branch positive at zero. The identity
+$Y+Y^{-1}=2+w^2$ is exact.
+
+\begin{theorem}[Uniform transfer at every fixed order]\label{thm:general}
+Under \eqref{eq:Bassump}--\eqref{eq:span}, for every fixed integer
+$N\ge1$,
+\begin{equation}\label{eq:general}
+ \rho^n[z^n]F_B(z)=\frac{\pi^2}{12\mu}
+  +\sum_{j=0}^{N-1}n^{-3/4-j/2}H_j(\sqrt n)
+  +\OO_{B,N}(n^{-3/4-N/2}).
+\end{equation}
+For $\alpha>0$, form the finite expression
+\begin{equation}\label{eq:Qrecipe}
+\begin{split}
+ Q_j(\alpha)={}&\sum_{r+k=j}
+ \frac{(-\ii)^r}{4^rr!k!}
+ \left(\frac\alpha\mu\right)^{k/2}
+ \left(\frac\mu\alpha\right)^{r/2}E_\alpha^{(k)}(0)\\[-2pt]
+ &\hspace{25mm}\cdot
+ \left.\frac{\mathrm d^{2r}}{\mathrm dw^{2r}}
+                \{Y(w)^kY'(w)\}\right|_{w=0}.
+\end{split}
+\end{equation}
+There is a real function $P_j$ with $Q_j=(-\ii)^jP_j$;
+$P_j(\alpha)$ is $\alpha^{-j/2}$ times a polynomial in $\alpha$
+of degree at most $2j$. Then
+\begin{equation}\label{eq:Hrecipe}
+\begin{split}
+ H_j(u)=-\sum_{m\ge1}&c_m e^{-\alpha_md}
+          \frac{(\alpha_m/\mu)^{1/4}}{\sqrt\pi}P_j(\alpha_m)\\
+ &\cdot\cos\left(2u\sqrt{\alpha_m/\mu}+\frac\pi4+\frac{j\pi}2\right).
+\end{split}
+\end{equation}
+Every such series, and each fixed derivative in $u$, converges
+absolutely on the real axis and locally uniformly on the complex
+plane. The functions $H_j$ are real entire and uniformly almost
+periodic on the real axis; they and all their derivatives are bounded
+there.
+\end{theorem}
+
+The adjective ``entire'' does not mean bounded on the complex plane.
+Uniform almost periodicity means uniform approximation on the real
+axis by finite trigonometric sums; it follows immediately from the
+absolute convergence asserted in the theorem.
+
+The first terms of the finite recipe are particularly simple:
+\begin{equation}\label{eq:P01}
+ P_0(\alpha)=1,\qquad
+ P_1(\alpha)=\frac{q_1\alpha^{3/2}}{\sqrt\mu}
+                      +\frac{3\sqrt\mu}{16\sqrt\alpha}.
+\end{equation}
+Thus
+\begin{align}
+ H_0(u)&=-\sum_{m\ge1}c_me^{-\alpha_md}
+      \frac{(\alpha_m/\mu)^{1/4}}{\sqrt\pi}
+      \cos\left(2u\sqrt{\alpha_m/\mu}+\frac\pi4\right),\label{eq:H0general}\\
+ H_1(u)&=\sum_{m\ge1}c_me^{-\alpha_md}
+      \frac{(\alpha_m/\mu)^{1/4}}{\sqrt\pi}P_1(\alpha_m)
+      \sin\left(2u\sqrt{\alpha_m/\mu}+\frac\pi4\right).\label{eq:H1general}
+\end{align}
+In view of $\alpha_md=\pi^2mv/\mu^2$, these formulas give
+\eqref{eq:damping} without fitting an empirical decay constant.
+
+\subsection{Examples of admissible decorations}
+The theorem applies to ordinary analytic functions as written; their
+interpretation as labelled classes is optional. Table~\ref{tab:B}
+shows common decorations. Each has strictly positive consecutive
+coefficients, or support $\{1,2\}$, hence difference span one.
+For the set decoration write $\ell=\log2$.
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabular}{lllll}
+\toprule
+Decoration $B(z)$ & $\rho$ & $\mu$ & $v$ & $v/\mu^2$\\
+\midrule
+Lists $z/(1-z)$ & $1/2$ & $2$ & $2$ & $1/2$\\
+Sets $e^z-1$ & $\ell$ & $2\ell$ & $2\ell(1-\ell)$ & $(1-\ell)/(2\ell)$\\
+Cycles $-\log(1-z)$ & $1-e^{-1}$ & $M$ & $M$ & $1/M$\\
+Two sizes $(z+z^2)/2$ & $1$ & $3/2$ & $1/4$ & $1/9$\\
+\bottomrule
+\end{tabular}
+\caption{The variance ratio determines exponential mode damping.
+Every parameter is exact.}\label{tab:B}
+\end{table}
+These entries follow from $\mu=\rho B'(\rho)$ and
+$v=\rho^2B''(\rho)+\rho B'(\rho)-\mu^2$. A monomial decoration
+has zero variance and is excluded. The theorem is not uniform in a
+family approaching a monomial, changing its support span, or moving
+$\rho$ to the boundary of analyticity.
+
+\section{The exact eta identity and boundary extraction}\label{sec:boundary}
+The proof of Theorem~\ref{thm:general} occupies this section and
+Section~\ref{sec:uniform}. No unproved exchange of a fixed-mode
+asymptotic expansion with an infinite sum is used.
+
+\subsection{The transformed product}
+The classical modular transformation of the Dedekind eta function
+implies, for positive real $t$,
+\begin{equation}\label{eq:Peta}
+ P(e^{-t})=\sqrt{\frac{2\pi}{t}}
+    \exp\left(\frac t{24}-\frac{\pi^2}{6t}\right)
+    P(e^{-4\pi^2/t}).
+\end{equation}
+The logarithm and square-root branches extend analytically from
+$t>0$ to $\Rea t>0$. See DLMF 23.18~\cite{eta} and the explicit
+product identity (15) of Ardehali--Rosengren~\cite{ardehali}.
+Subtracting the logarithm of \eqref{eq:Peta} from the same identity
+with $t$ replaced by $2t$ gives
+\begin{equation}\label{eq:etaexact}
+ F_0(e^{-t})=\frac{\pi^2}{12t}-\frac{\log2}{2}+\frac t{24}
+                 -\sum_{m\ge1}c_m e^{-2\pi^2m/t},\qquad \Rea t>0.
+\end{equation}
+Indeed, with $Q=e^{-2\pi^2/t}$, the remaining product logarithm is
+$\log P(Q)-\log P(Q^2)=-F_0(Q)$, and $|Q|<1$ because
+$\Rea(1/t)>0$. The identity holds first on the positive real axis and
+then on the entire right half-plane by holomorphic continuation. This
+also fixes the logarithmic branch without a possible hidden multiple
+of $2\pi\ii$.
+
+On the coefficient circle $z=\rho e^{\ii\theta}$, the cumulant identity
+$\log B(\rho e^{\ii\theta})=\log\EE e^{\ii\theta K}$ gives
+\begin{align}
+ t(\theta):=-\log B(\rho e^{\ii\theta})
+  &=-\ii\mu\theta+\frac v2\theta^2
+           +\frac{\ii\kappa_3}{6}\theta^3+\OO(\theta^4),\label{eq:texpand}\\
+ \frac1{t(\theta)}
+  &=\frac{\ii}{\mu\theta}+d+\ii q_1\theta+\OO(\theta^2).
+ \label{eq:invtexpand}
+\end{align}
+In particular $W$ in \eqref{eq:W} is analytic. Choose a sufficiently
+small $\delta>0$ so that it is holomorphic on a neighborhood of
+$[-\delta,\delta]$ and
+\begin{equation}\label{eq:Wpositive}
+ \Rea W(\theta)\ge d/2\quad (|\theta|\le\delta,\ \theta\in\mathbb R).
+\end{equation}
+This positive real part provides the summable mode damping on the
+actual boundary.
+
+\subsection{Why span one removes the other boundary contacts}
+By the triangle inequality, $|B(\rho e^{\ii\theta})|\le1$.
+Equality is possible exactly when all the unit complex numbers
+$e^{\ii j\theta}$ for occupied sizes $j$ are identical. Equivalently,
+$e^{\ii(j-k)\theta}=1$ for every pair of occupied sizes. The span-one
+hypothesis is therefore exactly what implies
+\begin{equation}\label{eq:strictcircle}
+ |B(\rho e^{\ii\theta})|<1\quad
+         (\theta\not\equiv0\pmod{2\pi}).
+\end{equation}
+On any compact arc avoiding zero, the upper bound is strictly below
+one. Since $B$ is analytic beyond the circle, the defining
+$F_0(B(z))$ series extends holomorphically through that arc. Hence its
+boundary values are smooth there, with all derivatives bounded on
+compact arcs.
+
+\subsection{Subtracting the pole before taking boundary values}
+Set $x=z/\rho$. A direct Taylor expansion at $x=1$ gives
+\begin{equation}\label{eq:poleexpand}
+ \frac1{-\log B(\rho x)}
+ =\frac1{\mu(1-x)}+\frac{v-\mu}{2\mu^2}+\OO(1-x).
+\end{equation}
+For $|x|<1$,
+$\Rea(1/(1-x))\ge1/2$. The constant contribution to the lower
+bound in \eqref{eq:poleexpand} is
+$1/(2\mu)+(v-\mu)/(2\mu^2)=d$. Thus, after shrinking the local
+neighborhood,
+\[
+ \Rea\frac1{-\log B(\rho x)}\ge d/2
+       \qquad (|x|<1,\ x\text{ near }1).
+\]
+The dual-mode sum in \eqref{eq:etaexact} is consequently bounded there
+by $\sum_m c_m e^{-\alpha_md/2}<\infty$.
+
+It follows that
+\begin{equation}\label{eq:G}
+ G(x)=F_B(\rho x)-\frac{\pi^2}{12\mu(1-x)}
+\end{equation}
+is bounded on the unit disk. Near $x=1$, this follows from
+\eqref{eq:poleexpand}, the bounded mode sum and the analytic term
+$t/24$; away from $1$, it follows from \eqref{eq:strictcircle} and
+compactness. Boundary values exist and are smooth away from $1$,
+and are bounded near it. Dominated convergence on radial circles
+therefore gives Fourier coefficient extraction from those boundary
+values. No assumption of analytic continuation across $1$ is made.
+
+Choose a real even $C^\infty$ cutoff $\chi$, supported in
+$(-\delta,\delta)$ and equal to one on a smaller neighborhood of
+zero. The analytic pole-subtracted part of $\pi^2/(12t)$ and the
+remaining elementary terms in \eqref{eq:etaexact}, multiplied by
+$\chi$, are smooth functions of $\theta$. All terms outside the
+cutoff are smooth as well. Repeated integration by parts makes their
+$n$th Fourier coefficients $\OO_L(n^{-L})$ for every fixed $L$.
+We have reduced the coefficient problem to
+\begin{equation}\label{eq:reduction}
+ \rho^n[z^n]F_B(z)-\frac{\pi^2}{12\mu}
+ =-\sum_{m\ge1}c_mJ_{\alpha_m}(n)+\OO_L(n^{-L}),
+\end{equation}
+where
+\begin{equation}\label{eq:J}
+ J_\alpha(n)=\frac1{2\pi}\int_{-\delta}^{\delta}
+   \chi(\theta)e^{-\ii(n\theta+\alpha/(\mu\theta))}
+                     e^{-\alpha W(\theta)}\dd\theta.
+\end{equation}
+The value at the single point $\theta=0$ is irrelevant. The exchange
+of the sum with the integral is justified by the summable majorant
+$c_me^{-\alpha_md/2}$ from \eqref{eq:Wpositive}.
+
+\section{Uniform stationary phase and the summed remainder}\label{sec:uniform}
+The following estimate is the quantitative step needed for the
+infinite mode sum. Its uniformity is stronger than a fixed-$m$
+stationary-phase expansion.
+
+\begin{lemma}[Uniform single-mode estimate]\label{lem:uniform}
+Fix $\alpha_0>0$ and an integer $N\ge1$. There are positive constants
+$\eta,c,C_N$ and a nonnegative integer $M_N$, depending on the fixed
+decoration, $N$ and $\alpha_0$, such that for all sufficiently large $n$ and
+$\alpha_0\le\alpha\le\eta n$,
+\begin{equation}\label{eq:Jasym}
+\begin{split}
+ J_\alpha(n)={}&n^{-3/4}e^{-\alpha d}
+      \frac{(\alpha/\mu)^{1/4}}{\sqrt\pi}
+      \Rea\left\{e^{-\ii(2\sqrt{\alpha n/\mu}+\pi/4)}
+                  \sum_{j=0}^{N-1}n^{-j/2}Q_j(\alpha)\right\}\\
+ &+R_{N,\alpha}(n),
+\end{split}
+\end{equation}
+with $Q_j$ as in \eqref{eq:Qrecipe} and
+\begin{equation}\label{eq:uniformerror}
+ |R_{N,\alpha}(n)|\le
+ C_Nn^{-3/4-N/2}(1+\alpha)^{M_N}e^{-c\alpha}.
+\end{equation}
+The constants do not depend on $n$ or $\alpha$ in this range.
+\end{lemma}
+
+\begin{proof}
+Put
+\begin{equation}\label{eq:scaling}
+ s=\sqrt{\frac\alpha{\mu n}},\qquad
+ \lambda=\sqrt{\frac{\alpha n}{\mu}},\qquad \theta=sy.
+\end{equation}
+Then
+\[
+ n\theta+\frac\alpha{\mu\theta}
+       =\lambda\phi(y),\qquad \phi(y)=y+y^{-1}.
+\]
+The phase has exactly two real stationary points, $y=1$ and $y=-1$,
+and $\phi''(1)=2$, $\phi''(-1)=-2$. Choose $\eta$ small enough
+that $s\le s_0$ and fixed neighborhoods of these two points lie in
+$\chi(sy)=1$ for all allowed $s$. Use a fixed partition into those
+two neighborhoods and the nonstationary complement.
+
+\paragraph{Uniform amplitude bounds.}
+On either fixed stationary neighborhood, every fixed-order derivative
+in $y$ of $e^{-\alpha W(sy)}$ is bounded by
+\begin{equation}\label{eq:ampbounds}
+ C_j(1+\alpha)^{D_j}e^{-c\alpha},
+\end{equation}
+uniformly for $0<s\le s_0$. This follows from the chain rule, bounded
+derivatives of $W$, and \eqref{eq:Wpositive}. Factors of $s$ are
+bounded by fixed constants. The same estimate holds after an analytic
+coordinate change with bounded derivatives on the chosen compact
+neighborhood. Constants may change from line to line.
+
+\paragraph{An explicit stationary-phase remainder bound.}
+Near $y=1$, set $w=(y-1)/\sqrt y$, so $y=Y(w)$ and
+$\phi(y)=2+w^2$. For a compactly supported smooth amplitude $f$, the
+Gaussian integral gives
+\begin{equation}\label{eq:gaussian}
+ \int_{\mathbb R}e^{-\ii\lambda w^2}f(w)\dd w
+ =e^{-\ii\pi/4}\sqrt{\frac\pi\lambda}
+    \sum_{r=0}^{N-1}\frac{(-\ii)^r}{4^rr!\lambda^r}f^{(2r)}(0)
+   +\mathcal R_N.
+\end{equation}
+For completeness, Fourier inversion expresses the left side as the
+Gaussian factor times the integral of
+$\widehat f(\xi)e^{\ii\xi^2/(4\lambda)}$. Taylor expansion of the
+last exponential through degree $N-1$, using its real-axis remainder
+bound, gives
+\begin{equation}\label{eq:gaussianbound}
+ |\mathcal R_N|\le C_N\lambda^{-N-1/2}
+             \int_{\mathbb R}|\xi|^{2N}|\widehat f(\xi)|\dd\xi.
+\end{equation}
+The weighted Fourier norm is bounded by a fixed combination of the
+$L^1$ norms of $f$ and its derivatives through order $2N+2$: use the
+$L^1$ bound for $|\xi|\le1$ and integrate by parts $2N+2$ times
+for $|\xi|>1$. This proves a remainder bound uniform over our
+amplitudes, by \eqref{eq:ampbounds}. One may justify the Gaussian
+Fourier interchange first with a factor $e^{-\varepsilon w^2}$ and
+then let $\varepsilon\downarrow0$.
+
+The actual amplitude here is a fixed cutoff times
+\[
+ e^{-\alpha d}E_\alpha(sY(w))Y'(w).
+\]
+At zero the cutoff is identically one. In the term indexed by $r$
+in \eqref{eq:gaussian}, Taylor-expand $E_\alpha(sY(w))$ in $s$
+through degree $N-r-1$. The retained terms are
+\[
+ \frac{s^k}{k!}E_\alpha^{(k)}(0)Y(w)^kY'(w),\qquad r+k<N.
+\]
+Real Taylor remainder estimates, also after the finitely many needed
+$w$-derivatives, give a bound polynomial in $\alpha$ times
+$e^{-c\alpha}s^{N-r}$. The damping remains valid on the real
+Taylor segments $0\le\xi\le sY(w)$ because of
+\eqref{eq:Wpositive}. Multiplying by
+$s\lambda^{-r-1/2}$ gives exactly
+$n^{-3/4-N/2}$ times a fixed power of $\alpha$.
+The remainder in \eqref{eq:gaussianbound}, after the outside factor
+$s$, has the same required form.
+
+For the retained terms,
+\[
+ s\lambda^{-1/2}=(\alpha/\mu)^{1/4}n^{-3/4},\qquad
+ s^k\lambda^{-r}
+ =n^{-(r+k)/2}(\alpha/\mu)^{k/2}(\mu/\alpha)^{r/2}.
+\]
+These identities give precisely \eqref{eq:Qrecipe}. Since the
+coefficients of $B$ are real, $W(-\theta)=\overline{W(\theta)}$.
+The negative stationary point supplies the complex conjugate of the
+positive one. The factor $2$ from adding them combines with
+$1/(2\pi)$ and the Gaussian factor $\sqrt\pi$ to give
+$1/\sqrt\pi$ in \eqref{eq:Jasym}.
+
+\paragraph{The nonstationary complement.}
+There are three ranges, each controlled by ordinary integrations by
+parts with the phase derivative.
+\begin{enumerate}
+\item On a fixed compact set avoiding $0,1,-1$, $|\phi'|$ is bounded
+below. After $L$ integrations the contribution, including the outside
+factor $s$, is bounded by
+$C_Ls\lambda^{-L}(1+\alpha)^{D_L}e^{-c\alpha}$.
+\item On $0<|y|<1/2$, substitute $u=1/y$. The phase is again
+$u+u^{-1}$ and the Jacobian is $u^{-2}$. The transformed amplitude and
+every needed derivative have integrable tails as $|u|\to\infty$.
+Boundary terms there vanish; at the other endpoint the partition
+cutoff handles the boundary. The same bound follows.
+\item On $|y|>2$, $\phi'$ is bounded away from zero and derivatives
+of $1/\phi'$ decay integrably. For $k\ge1$,
+\begin{equation}\label{eq:outerL1}
+ \int\left|\frac{\mathrm d^k}{\mathrm dy^k}
+       \{\chi(sy)e^{-\alpha W(sy)}\}\right|\dd y
+ \le C_ks^{k-1}(1+\alpha)^{D_k}e^{-c\alpha}.
+\end{equation}
+This follows by changing variables back to $\theta$ and the chain
+rule. Since $s\le s_0$, the bounds are uniform. Terms with no
+derivative on the amplitude instead have an integrably decaying
+derivative of $1/\phi'$. Thus $L\ge1$ integrations give the same
+$C_Ls\lambda^{-L}$ bound. The outer smooth cutoff removes endpoint
+terms at the support boundary.
+\end{enumerate}
+Take $L=N+1$. The power of $n$ in $s\lambda^{-L}$ is
+$n^{-1-N/2}$, smaller than the target $n^{-3/4-N/2}$; powers of
+$\alpha$ are absorbed in $(1+\alpha)^{M_N}$, since
+$\alpha\ge\alpha_0$. This proves the lemma.
+\end{proof}
+
+\subsection{Summing actual mode errors}
+Apply Lemma~\ref{lem:uniform} to $\alpha_m=2\pi^2m$ with
+$\alpha_m\le\eta n$. The sum of the actual remainders is bounded by
+\begin{equation}\label{eq:sumerror}
+ C_Nn^{-3/4-N/2}
+   \sum_{m\ge1}c_m(1+\alpha_m)^{M_N}e^{-c\alpha_m}
+     =\OO_{B,N}(n^{-3/4-N/2}).
+\end{equation}
+For $\alpha_m>\eta n$, the integral itself satisfies
+\[
+ |J_{\alpha_m}(n)|\le C e^{-\alpha_md/2}.
+\]
+The entire large-mode tail is exponentially small in $n$. Each
+retained coefficient series also has an exponentially small tail
+there: its coefficient is an exponential times a fixed power of
+$\alpha_m$. Therefore the partial sums of the retained terms may be
+extended to all $m\ge1$. Finally, choose the smooth-circle remainder
+order $L$ in \eqref{eq:reduction} large enough. This proves
+\eqref{eq:general} with a true $n$-independent remainder constant.
+
+\subsection{Reality and convergence of the coefficient recipe}
+The symmetry $W(-\theta)=\overline{W(\theta)}$ implies that
+$E_\alpha^{(k)}(0)$ is $(-\ii)^k$ times a real polynomial in
+$\alpha$ of degree at most $k$. The derivatives involving $Y$ in
+\eqref{eq:Qrecipe} are real. Thus $Q_j=(-\ii)^jP_j$. The factor
+$\alpha^{(k-r)/2}=\alpha^{-j/2}\alpha^k$ shows that $P_j$ is
+$\alpha^{-j/2}$ times a polynomial of degree at most $2j$.
+Only finitely many cumulants enter at any fixed order.
+
+The real part in \eqref{eq:Jasym} is
+$P_j(\alpha)\cos(2u\sqrt{\alpha/\mu}+\pi/4+j\pi/2)$,
+which gives \eqref{eq:Hrecipe} including its signs. Derivatives of
+any fixed order in $u$ add only powers of $\sqrt{\alpha_m}$.
+For complex $u$ in a compact set, the trigonometric factors have
+absolute value at most a fixed multiple of
+$\exp(2|\Ima u|\sqrt{\alpha_m/\mu})$. Exponential decay linear in
+$m$ dominates this square-root growth and every polynomial.
+Consequently all asserted convergences, analyticity and real-axis
+boundedness follow. This completes the proof of
+Theorem~\ref{thm:general}.
+
+\section{Explicit terms for the logarithmic decoration}\label{sec:three}
+For $B(z)=L(z)$, the solution $B(\rho)=1$ is
+$\rho=1-e^{-1}<1$, strictly within its analytic disk. Its positive
+coefficients occupy all sizes, so the theorem applies.
+Using the logarithmic moment generating function
+$\log L(\rho e^s)$ gives
+\begin{equation}\label{eq:cumulants}
+ \mu=v=M,\qquad
+ \kappa_3=M^3+M,\qquad \kappa_4=M^4+6M^3+M.
+\end{equation}
+For instance $\mu=\rho/(1-\rho)=M$; the remaining identities follow
+by successively applying $z\,\mathrm d/\mathrm dz$ to
+$\log L(z)$ and evaluating at $z=\rho$. In particular,
+\begin{equation}\label{eq:dqlog}
+ d=\frac1{2M},\qquad q_1=\frac M6-\frac1{12M}.
+\end{equation}
+Define
+\begin{equation}\label{eq:AKphi}
+ A_m=\frac{2\pi^2m}{M},\qquad
+ K_m=c_me^{-A_m/2}\frac{A_m^{1/4}}{\sqrt\pi},\qquad
+ \Phi_m(u)=2u\sqrt{A_m}+\frac\pi4,
+ \qquad U=\frac{2M^2-1}{12}.
+\end{equation}
+Then
+\begin{align}
+ H_0(u)&=-\sum_{m\ge1}K_m\cos\Phi_m(u),\label{eq:H0log}\\
+ H_1(u)&=\sum_{m\ge1}K_m
+     \frac{(8M^2-4)A_m^2+9}{48\sqrt{A_m}}\sin\Phi_m(u).
+ \label{eq:H1log}
+\end{align}
+These expressions are absolutely convergent, and the tail decays
+rapidly for this particular decoration.
+
+\subsection{The third oscillatory coefficient with its sign}
+For a general decoration, write
+\[
+ W(\theta)=d+\ii q_1\theta+r_2\theta^2+\OO(\theta^3).
+\]
+Reciprocal-series expansion of \eqref{eq:texpand} through the next
+term yields
+\begin{equation}\label{eq:r2}
+ r_2=-\frac{v^3}{8\mu^4}
+            +\frac{v\kappa_3}{6\mu^3}
+            -\frac{\kappa_4}{24\mu^2}.
+\end{equation}
+The three terms with $r+k=2$ in \eqref{eq:Qrecipe} give
+\begin{equation}\label{eq:Q2general}
+ Q_2(\alpha)=-\frac{\alpha^3q_1^2}{2\mu}
+          -\frac{\alpha^2r_2}{\mu}
+          -\frac{15\alpha q_1}{16}
+          +\frac{15\mu}{512\alpha}.
+\end{equation}
+To check the constants directly,
+\[
+ Y'(0)=1,\qquad (Y Y')''(0)=15/4,\qquad Y^{(5)}(0)=-15/16,
+\]
+while $E_\alpha'(0)=-\ii\alpha q_1$ and
+$E_\alpha''(0)=-2\alpha r_2-\alpha^2q_1^2$.
+Note that $Q_2=-P_2$, rather than $Q_2=P_2$.
+
+For $B=L$, equations \eqref{eq:cumulants} and \eqref{eq:r2} simplify
+to $r_2=-M^2/24-M/12$. To avoid confusing the scaled variable with
+the universal recipe, denote $Q_2(MA)$ by $R_2(A)$. Then
+\begin{equation}\label{eq:R2}
+ R_2(A)=-\frac{A^3U^2}{2}
+          +A^2\left(\frac{M^3}{24}+\frac{M^2}{12}\right)
+          -\frac{15AU}{16}+\frac{15}{512A},
+\end{equation}
+and the third coefficient is
+\begin{equation}\label{eq:H2log}
+ H_2(u)=-\sum_{m\ge1}K_mR_2(A_m)\cos\Phi_m(u).
+\end{equation}
+Equations \eqref{eq:H0log}, \eqref{eq:H1log}, \eqref{eq:H2log},
+and Theorem~\ref{thm:general} prove Theorem~\ref{thm:A}.
+
+\subsection{An independent Laguerre route for finite diagnostics}
+Put $w=1-z/\rho$. Direct series inversion gives
+\begin{equation}\label{eq:localjet}
+ \frac1{-\log L(z)}
+   =\frac1{Mw}-\frac M6w+\frac{M^2}{24}w^2
+                         -\frac{7M^3}{180}w^3+\OO(w^4).
+\end{equation}
+Thus, for a fixed dual parameter $\alpha$, the analytic amplitude
+multiplying $\exp(-A/w)$, $A=\alpha/M$, begins as
+\begin{equation}\label{eq:expjet}
+ e^{-\alpha/[-\log L(z)]}
+ =e^{-A/w}\left\{1+\frac{\alpha M}{6}w
+       +M^2\left(\frac{\alpha^2}{72}-\frac\alpha{24}\right)w^2
+       +\OO_\alpha(w^3)\right\}.
+\end{equation}
+The associated-Laguerre generating function implies the exact identity
+\begin{equation}\label{eq:laguerre}
+ [x^n](1-x)^j e^{-A/(1-x)}=e^{-A}L_n^{(-j-1)}(A).
+\end{equation}
+It follows simply by multiplying
+$\sum_{n\ge0}L_n^{(\nu)}(A)x^n=(1-x)^{-\nu-1}
+\exp(-Ax/(1-x))$ by $e^{-A}$ and taking $\nu=-j-1$.
+Finite jets in \eqref{eq:expjet} therefore give independently
+computable Laguerre approximants.
+
+The fixed-positive-argument Laguerre expansions in
+DLMF 18.15(iv)~\cite{laguerre} agree with the first terms above.
+Their stated compact-argument uniformity does not cover a dual
+parameter tending to infinity. Accordingly, this is a cross-check and
+numerical route; it is not used in place of the uniform summation
+argument of Section~\ref{sec:uniform}.
+
+\section{A rational tail bound and genuine sign changes}\label{sec:sign}
+For the logarithmic decoration, put
+\[
+ r=e^{-\pi^2/M},\qquad
+ K_1=e^{-\pi^2/M}\frac{(2\pi^2/M)^{1/4}}{\sqrt\pi}>0.
+\]
+Numerically $r=0.003202319565807\ldots$ and
+$K_1=0.0033262016024504409820\ldots$. We next prove the bound needed
+for sign changes using only rational inequalities, without relying on
+those decimals.
+
+\begin{lemma}[First-harmonic dominance]\label{lem:tail}
+For $K_m$ defined in \eqref{eq:AKphi},
+\begin{equation}\label{eq:tail}
+ \frac{\sum_{m\ge2}K_m}{K_1}
+ <\frac{359101}{26730899}<\frac1{50}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+An elementary upper bound for $e$ is
+\[
+ e<\sum_{k=0}^6\frac1{k!}
+           +\frac{1/7!}{1-1/8}
+     =\frac{31967}{11760}<\frac{87}{32}.
+\]
+The geometric bound is valid since successive terms after $1/7!$
+have ratios at most $1/8$. Hence $M<55/32$. Archimedes' classical
+bound $\pi>223/71>157/50$ gives
+\[
+ \frac{\pi^2}{M}>\frac{(157/50)^2}{55/32}
+     =\frac{197192}{34375}>\frac{573}{100}.
+\]
+The finite positive rational sum
+$\sum_{k=0}^{20}(573/100)^k/k!$ is greater than $300$.
+Therefore $e^{\pi^2/M}>300$, and $r<1/300$.
+
+By Lemma~\ref{lem:cm},
+\[
+ \frac{K_m}{K_1}=c_m m^{1/4}r^{m-1}
+        \le(1+\log m)m^{1/4}r^{m-1}
+        \le m^2r^{m-1}\quad(m\ge2).
+\]
+For the last inequality, $1+\log m\le m$ and $m^{1/4}\le m$
+suffice. Summing $\sum_{m\ge1}m^2r^{m-1}=(1+r)/(1-r)^3$ and
+using $r<1/300$ yields
+\[
+ \sum_{m\ge2}\frac{K_m}{K_1}
+ <\frac{1+1/300}{(1-1/300)^3}-1
+ =\frac{359101}{26730899}<\frac1{50}.
+\]
+All the final comparisons are rational and are replayed by the exact
+verification program.
+\end{proof}
+
+\begin{theorem}[Signed subsequences]\label{thm:sign}
+For A330499,
+\begin{align}
+ \liminf_{n\to\infty}n^{3/4}
+       \left(\frac{a_n\rho^n}{n!}-C\right)&\le-\frac{49K_1}{50},\label{eq:liminf}\\
+ \limsup_{n\to\infty}n^{3/4}
+       \left(\frac{a_n\rho^n}{n!}-C\right)&\ge\frac{49K_1}{50}.
+ \label{eq:limsup}
+\end{align}
+In particular the normalized error is not $o(n^{-3/4})$ and admits
+no pure integer-power refinement beginning with $C+c_1/n$.
+\end{theorem}
+\begin{proof}
+Set $A_1=2\pi^2/M$. For all sufficiently large integers $j$, choose
+$n_j$ to be a nearest integer to
+\[
+ \left(\frac{2\pi j-\pi/4}{2\sqrt{A_1}}\right)^2.
+\]
+Changing this square by at most $1/2$ changes its square root by
+$\OO(1/j)$. Hence $\cos\Phi_1(\sqrt{n_j})\to1$. Equation
+\eqref{eq:H0log} and Lemma~\ref{lem:tail} imply
+$\limsup_j H_0(\sqrt{n_j})\le-49K_1/50$.
+Choosing instead a nearest integer to
+$(((2j+1)\pi-\pi/4)/(2\sqrt{A_1}))^2$ makes the first cosine tend
+to $-1$, giving the opposite bound. These are increasing unbounded
+subsequences after discarding finitely many initial values.
+Finally, Theorem~\ref{thm:A} with $N=1$ gives
+\[
+ n^{3/4}\left(\frac{a_n\rho^n}{n!}-C\right)
+          =H_0(\sqrt n)+\OO(n^{-1/2}).
+\]
+This proves both comparisons. A refinement $C+c_1/n+\OO(n^{-2})$
+would make this expression tend to zero, a contradiction.
+\end{proof}
+The strict tail inequality actually permits strict improvements of
+\eqref{eq:liminf}--\eqref{eq:limsup}. No exact value of either extreme
+is claimed. Their determination would require controlling the joint
+phase behavior, not just the dominant harmonic.
+
+\section{Actual root of unity cusps and the Delta obstruction}\label{sec:cusps}
+The failure of a usual analytic-continuation hypothesis should not be
+inferred just from the appearance of an infinite product. The
+following argument proves genuine singularities directly.
+
+\begin{proposition}[Odd-order cusps]\label{prop:cusps}
+Let $\zeta$ be a primitive root of unity of odd order $h$. With the
+analytic logarithmic branch of $F_0$ in the unit disk,
+\begin{equation}\label{eq:cusp}
+ \lim_{t\downarrow0}tF_0(\zeta e^{-t})=\frac{\pi^2}{12h^2}.
+\end{equation}
+In particular each such root is a nonremovable singularity.
+\end{proposition}
+\begin{proof}
+Absolute convergence for $|q|<1$ permits the Lambert representation
+\[
+ \log P(q)=-\sum_{r\ge1}\frac{q^r}{r(1-q^r)}.
+\]
+At $q=\zeta e^{-t}$ the terms $r=h\ell$ contribute, after
+multiplication by $t$,
+\[
+ -\sum_{\ell\ge1}\frac{t}{h\ell(e^{h\ell t}-1)}
+       \longrightarrow -\frac{\pi^2}{6h^2}.
+\]
+Dominated convergence is justified by
+$t/(e^{h\ell t}-1)\le1/(h\ell)$.
+For $r$ not divisible by $h$, the finitely many nontrivial root
+arguments have radial segments bounded away from $1$. Thus
+$|1-\zeta^re^{-rt}|\ge c_h>0$, uniformly in $r,t$. The absolute
+contribution of these terms is at most
+\[
+ c_h^{-1}\sum_{r\ge1}\frac{e^{-rt}}r=\OO_h(\log(1/t)),
+\]
+which disappears after multiplication by $t$.
+Since $h$ is odd, $\zeta^2$ still has order $h$. Applying the same
+limit to $q^2=\zeta^2e^{-2t}$ yields
+$t\log P(q^2)\to-\pi^2/(12h^2)$.
+Subtracting $t\log P(q)$ proves \eqref{eq:cusp}.
+The order $h$ is fixed before taking the limit; no uniform-in-$h$
+estimate has been used.
+\end{proof}
+
+\begin{corollary}[No standard Delta-domain at the positive point]\label{cor:delta}
+For any decoration in Theorem~\ref{thm:general}, $F_B$ has no
+holomorphic continuation to a standard Delta-neighborhood of $\rho$
+that excludes only an outward wedge of half-angle less than $\pi/2$.
+\end{corollary}
+\begin{proof}
+Since $B'(\rho)=\mu/\rho>0$, let $g$ be its local holomorphic
+inverse near $B(\rho)=1$. For odd $h\to\infty$, put
+$\zeta_h=e^{2\pi\ii/h}$ and $z_h=g(\zeta_h)$. Taylor expansion gives
+\[
+ z_h=\rho+\frac\rho\mu(\zeta_h-1)+\OO(|\zeta_h-1|^2),
+ \quad z_h\to\rho,\quad \arg(z_h-\rho)\to\pi/2.
+\]
+The conjugate sequence has limiting argument $-\pi/2$.
+The local inverse image of the disk $|q|<1$ is connected near
+$\rho$ and meets the original coefficient disk. Along the radial
+curves $g(\zeta_he^{-t})$, Proposition~\ref{prop:cusps} gives a
+divergence at $z_h$. This is the same analytic branch as $F_B$ by
+continuation from their common interior region.
+
+A standard Delta-neighborhood consists locally of points sufficiently
+close to $\rho$, except for an outward wedge
+$|\arg(z-\rho)|\le\phi$ with some $\phi<\pi/2$.
+For all sufficiently large $h$, $z_h$ lies strictly inside the
+remaining neighborhood. The nearby radial curves also lie there and
+connect to the interior branch through the local inverse image of
+$|q|<1$. A holomorphic continuation to that whole neighborhood would
+therefore have to be regular at $z_h$, contradicting the divergence.
+\end{proof}
+
+This establishes the obstruction needed to select the proof method.
+It does not classify all root-of-unity cusps or all possible analytic
+continuation domains. The boundary proof is independently valid and
+does not use the obstruction as a substitute for an error estimate.
+
+\section{Smooth inverses and pointwise integer envelopes}\label{sec:inverse}
+The coefficient theorem yields arbitrarily accurate fixed-order
+\emph{smooth charts}. The discrete threshold remains a staircase, so
+its statement must retain rounding explicitly. Throughout this
+section the sequence is A330499 and the constants are
+\eqref{eq:logconstants}.
+
+\subsection{Every fixed order with two ceilings}
+Define, for $Y>0$,
+\begin{equation}\label{eq:threshold}
+ \mathcal N(Y)=\min\{n\ge1:a_n\ge Y\}.
+\end{equation}
+Proposition~\ref{prop:counts} proves strict monotonicity, and
+Theorem~\ref{thm:A} proves unboundedness, so this is well-defined.
+For a fixed integer $J\ge0$, put
+\begin{align}
+ S_J(x)&=C+\sum_{j=0}^Jx^{-3/4-j/2}H_j(\sqrt x),\label{eq:SJ}\\
+ \mathcal L_J(x)&=\log\Gamma(x+1)-x\log\rho+\log S_J(x),\label{eq:LJ}\\
+ p_J&=\frac34+\frac{J+1}{2}.\label{eq:pJ}
+\end{align}
+These functions are defined for all sufficiently large real $x$,
+since $S_J(x)=C+\OO(x^{-3/4})>0$.
+
+\begin{theorem}[Pointwise threshold envelopes]\label{thm:inverse}
+For each fixed $J\ge0$, there are $D_J>0$ and a starting point
+$x_J$ such that the charts
+$\mathcal L_J(x)\pm D_Jx^{-p_J}$ are strictly increasing on
+$x\ge x_J$, and their large roots defined by
+\begin{align}
+ \mathcal L_J(x_+)+D_Jx_+^{-p_J}&=\log Y,\label{eq:xplus}\\
+ \mathcal L_J(x_-)-D_Jx_-^{-p_J}&=\log Y\label{eq:xminus}
+\end{align}
+satisfy, for every sufficiently large $Y$,
+\begin{equation}\label{eq:ceil}
+ \lceil x_+\rceil\le\mathcal N(Y)\le\lceil x_-\rceil.
+\end{equation}
+Moreover $x_+\le x_-$ and
+\begin{equation}\label{eq:gap}
+ x_--x_+=\OO_J\left(\frac{x_+^{-p_J}}{\log x_+}\right).
+\end{equation}
+The constants and starting point are existence statements, not
+numerically certified values.
+\end{theorem}
+\begin{proof}
+Theorem~\ref{thm:A} with $N=J+1$, followed by the logarithm on a
+fixed neighborhood of the positive constant $C$, gives
+\begin{equation}\label{eq:logbackerror}
+ |\log a_n-\mathcal L_J(n)|\le D_Jn^{-p_J}
+\end{equation}
+for all sufficiently large integers $n$, after choosing $D_J$.
+Boundedness of the derivatives of $H_j$ gives
+$S_J'(x)=\OO_J(x^{-5/4})$. The standard digamma expansion implies
+\[
+ \mathcal L_J'(x)
+ =\psi(x+1)-\log\rho+\frac{S_J'(x)}{S_J(x)}
+ =\log(x/\rho)+\OO(1/x)+\OO_J(x^{-5/4}).
+\]
+Both perturbed charts therefore have positive derivative for large
+$x$ and tend to infinity. Their roots exist uniquely there, and the
+upper chart reaches a given height first, so $x_+\le x_-$.
+
+If an integer $n<x_+$ is sufficiently large, its upper chart is
+less than $\log Y$, and \eqref{eq:logbackerror} forces $a_n<Y$.
+The finitely many smaller integers also satisfy this once $Y$ is
+large enough. Hence $\mathcal N(Y)\ge\lceil x_+\rceil$.
+For $n=\lceil x_-\rceil$, the lower chart is at least $\log Y$,
+so $a_n\ge Y$ and the upper bound follows. This reasoning remains
+valid if either root is an integer, or if $Y$ is arbitrarily close to
+a sequence value.
+
+Subtracting the root equations and using the lower derivative bound
+$c\log x$ for $\mathcal L_J$ gives \eqref{eq:gap} by the mean value
+theorem. The roots are asymptotically equivalent, as follows already
+from their common leading factorial scale.
+\end{proof}
+
+For large $Y$ the two ceilings are equal or adjacent, since the real
+root gap tends to zero. They cannot uniformly be collapsed to one
+ceiling of the central chart. Arbitrarily small changes in $Y$ near
+a jump can change $\mathcal N(Y)$, however accurate the smooth chart
+may be.
+
+\subsection{The first oscillatory displacement of the exact core}
+Let $x_*=x_*(Y)$ be the unique sufficiently large root of the
+\emph{exact factorial core}
+\begin{equation}\label{eq:core}
+ \mathcal F_*(x)=\log\Gamma(x+1)-x\log\rho+\log C=\log Y.
+\end{equation}
+Its derivative is
+$\mathcal F_*'(x)=\psi(x+1)-\log\rho\sim\log(x/\rho)$.
+
+\begin{proposition}[First oscillatory inverse shift]\label{prop:shift}
+Set
+\begin{equation}\label{eq:shift}
+ x_{\mathrm{osc}}=x_*-
+ \frac{x_*^{-3/4}H_0(\sqrt{x_*})}
+      {C\{\psi(x_*+1)-\log\rho\}}.
+\end{equation}
+The central smooth root of $\mathcal L_0(x)=\log Y$ differs from
+$x_{\mathrm{osc}}$ by
+$\OO(x_*^{-3/2}/\log x_*)$. In particular there is a fixed $K>0$
+such that the actual integer threshold satisfies
+\begin{equation}\label{eq:firstceil}
+ \left\lceil x_{\mathrm{osc}}-
+            \frac{Kx_*^{-5/4}}{\log x_*}\right\rceil
+ \le\mathcal N(Y)\le
+ \left\lceil x_{\mathrm{osc}}+
+            \frac{Kx_*^{-5/4}}{\log x_*}\right\rceil
+\end{equation}
+for all sufficiently large $Y$.
+\end{proposition}
+\begin{proof}
+Write $E_0(x)=\log(S_0(x)/C)$. Then
+\[
+ E_0(x)=C^{-1}x^{-3/4}H_0(\sqrt x)+\OO(x^{-3/2}),
+ \qquad E_0'(x)=\OO(x^{-5/4}).
+\]
+The central root of $\mathcal F_*+E_0$ differs from $x_*$ by
+$\OO(x_*^{-3/4}/\log x_*)$. Taylor expansion over that interval
+shows that its first displacement is
+$-E_0(x_*)/\mathcal F_*'(x_*)$, with an error bounded by
+$\OO(x_*^{-2}/(\log x_*)^2)$ from varying $E_0$ and smaller
+core-curvature terms. Replacing $E_0(x_*)$ by its first displayed
+term leaves the stated $\OO(x_*^{-3/2}/\log x_*)$ error.
+The two roots of Theorem~\ref{thm:inverse} for $J=0$ are within
+$\OO(x_*^{-5/4}/\log x_*)$ of the central root. Enlarge a single
+constant $K$ to contain all these errors and take ceilings.
+\end{proof}
+
+\subsection{Lambert initialization and the accuracy it does not supply}
+Write $y=\log Y$ and use the positive real branch of Lambert $W$.
+The solution of $x_0\log(x_0/(e\rho))=y$ is
+\begin{equation}\label{eq:lambert}
+ x_0=\frac{y}{W(y/(e\rho))}.
+\end{equation}
+Stirling's expansion gives
+\[
+ \mathcal F_*(x)=x\log\frac{x}{e\rho}
+        +\frac12\log(2\pi x)+\log C+\frac1{12x}+\OO(x^{-3}).
+\]
+Since the omitted half-logarithmic term is $\OO(\log x_0)$ and the
+core derivative is of order $\log x_0$, the exact core root first
+differs from $x_0$ by $\OO(1)$. One Taylor correction yields
+\begin{equation}\label{eq:lambertcorrect}
+ x_*=x_0-
+       \frac{\frac12\log(2\pi x_0)+\log C}{\log(x_0/\rho)}
+        +\OO\left(\frac1{x_0\log x_0}\right).
+\end{equation}
+Indeed the remaining Stirling term, derivative variation and quadratic
+core term are all $\OO(1/x_0)$ in the equation, hence
+$\OO(1/(x_0\log x_0))$ in the root.
+
+This Lambert expression is a useful seed for solving
+\eqref{eq:core}. Its displayed error is smaller than the leading
+oscillatory displacement, but larger than the next half-power inverse
+corrections. Therefore replacing $x_*$ in an arbitrarily high-order
+claim by this finite seed without propagating its error would be
+incorrect. The root in \eqref{eq:shift} is the exact factorial-core
+root, not just \eqref{eq:lambertcorrect}.
+
+\subsection{Generating higher smooth inverse terms}
+For any fixed $J$, put $E_J(x)=\log(S_J(x)/C)$, so that
+$\mathcal L_J=\mathcal F_*+E_J$. Let $X(y)$ be the large local
+inverse of $\mathcal F_*$ and write $D_y=(1/\mathcal F_*'(x))D_x$
+when acting on a function of $x=X(y)$. Ordinary Lagrange reversion
+of the perturbation parameter $\varepsilon$ in
+$\mathcal F_*(x)+\varepsilon E_J(x)=y$ gives
+\begin{equation}\label{eq:reversion}
+ x=X(y)+\sum_{k\ge1}\frac{(-\varepsilon)^k}{k!}
+     D_y^{k-1}\left\{X'(y)E_J(X(y))^k\right\}.
+\end{equation}
+This is a local analytic identity in $\varepsilon$ near zero and a
+constructive finite-order reversion rule. For sufficiently large
+$y$, one can set $\varepsilon=1$: in a fixed complex neighborhood
+of the real root the perturbation and its first derivative tend to
+zero, whereas the core derivative has size $\log X(y)$, so the
+analytic implicit solution exists on a parameter disk containing
+$|\varepsilon|\le1$. Equivalently, finite Taylor reversion with a
+remainder follows by repeated substitution and the same derivative
+bounds.
+
+Only finitely many derivatives and products are needed for any
+requested fixed precision. Increasing $J$ reduces the coefficient
+backward error; reversion then converts it into a smooth root error
+of order $x^{-p_J}/\log x$. Finally, Theorem~\ref{thm:inverse}
+converts that information to a pointwise integer statement. These are
+classical inverse-chart and backward-error operations; the
+model-specific input is the oscillatory coefficient law. They do not
+create an unambiguous real inverse of the discrete staircase.
+
+\section{Computational checks and reproducibility}\label{sec:computations}
+The companion archive separates mathematical proof, exact finite
+checks and floating-point diagnostics. Agreement at many indices is
+useful for detecting algebraic errors, but is not a replacement for
+Lemma~\ref{lem:uniform}, nor an interval certificate for its implicit
+constant.
+
+\subsection{Exact mandatory checks}
+The mandatory Python verification kernel uses only the standard
+library. It computes the positive Stirling transform
+\eqref{eq:stirling}, matches all 21 terms listed in the inspected
+OEIS record, checks the direct alternating-divisor identity through
+$100$, checks the exact recurrence and strict growth through $600$,
+and replays the rational inequalities in Lemma~\ref{lem:tail}.
+Independent finite coefficient computations test the formal
+composition directly rather than reusing the same weighted transform.
+
+Checks use explicit exception-raising guards, so Python's
+optimization flag cannot silently disable them. Negative controls
+alter fixtures and other mathematical inputs and must fail in both
+ordinary Python and Python \texttt{-O}. A fixed checksum of the
+exact integer output through $600$ is a reproducibility fingerprint;
+it is not evidence in place of the underlying identities.
+
+\subsection{Optional floating diagnostics}
+The optional high-precision checks use \texttt{mpmath}; the FFT and
+two-size experiment additionally use the numerical dependencies
+listed in the archive. They are excluded from the standard-library
+mathematical gate. The portable diagnostic scripts and the historical numerical
+outputs are retained with provenance and hashes, and the high-precision
+replay compares 50- and 80-digit computations. Finite tolerances are
+regression limits on those samples, not uniform asymptotic bounds.
+
+For numerical comparison define
+\[
+ T_n=n^{3/4}\left(\frac{a_n\rho^n}{n!}-C\right),\qquad
+ T_n^{(J)}=\sum_{j=0}^Jn^{-j/2}H_j(\sqrt n).
+\]
+The first two error columns in Table~\ref{tab:coeffdiag} illustrate that
+$T_n$ can remain visibly displaced from $H_0(\sqrt n)$ at moderate
+indices. Retaining $H_1$ generally helps, but asymptotic truncation
+does not promise monotone improvement at every individual $n$.
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabular}{r r r r}
+\toprule
+$n$ & $T_n$ & $T_n^{(0)}$ & $T_n^{(1)}$\\
+\midrule
+100   & $-0.003509157374$ & $-0.002844061648$ & $-0.005567577555$\\
+200   & $ 0.004071822395$ & $ 0.002461800049$ & $ 0.004970742765$\\
+400   & $-0.001726451607$ & $ 0.000985440349$ & $-0.001563360516$\\
+800   & $ 0.000498855063$ & $ 0.002121973187$ & $ 0.000685065706$\\
+1000  & $ 0.001520405923$ & $-0.000167680657$ & $ 0.001516496146$\\
+2000  & $ 0.003100045820$ & $ 0.002332031756$ & $ 0.003185266147$\\
+\bottomrule
+\end{tabular}
+\caption{Finite numerical diagnostics, rounded for display.
+Exact integer coefficients underlie $T_n$; harmonic sums are numerical.
+No entry is an interval enclosure.}\label{tab:coeffdiag}
+\end{table}
+
+For inverse diagnostics one may take $Y=a_n$, whose exact threshold
+is $n$, and compare smooth roots with that known integer.
+Table~\ref{tab:inversediag} uses the exact factorial core, the first
+shift \eqref{eq:shift}, and the root of the three-term chart
+$\mathcal L_2$. The small residuals illustrate the formulas only;
+they do not license one-ceiling rounding near every threshold.
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabular}{r r r r}
+\toprule
+$n$ & $x_*-n$ & $x_{\mathrm{osc}}-n$ & $\mathcal L_2^{-1}(\log a_n)-n$\\
+\midrule
+100  & $-4.57425935\,10^{-5}$ & $-8.67428957\,10^{-6}$ & $ 1.05433425\,10^{-6}$\\
+200  & $ 2.77698434\,10^{-5}$ & $ 1.09789162\,10^{-5}$ & $-1.46614723\,10^{-7}$\\
+400  & $-6.25087523\,10^{-6}$ & $-9.81874913\,10^{-6}$ & $ 6.74257110\,10^{-8}$\\
+800  & $ 9.69829090\,10^{-7}$ & $-3.15553380\,10^{-6}$ & $ 4.07413144\,10^{-9}$\\
+1000 & $ 2.42462740\,10^{-6}$ & $ 2.69203273\,10^{-6}$ & $-7.70215372\,10^{-9}$\\
+2000 & $ 2.68683539\,10^{-6}$ & $ 6.65621847\,10^{-7}$ & $-1.17990530\,10^{-9}$\\
+\bottomrule
+\end{tabular}
+\caption{Floating-point smooth inverse errors at known jump values.
+A first correction need not improve every finite case.}\label{tab:inversediag}
+\end{table}
+
+Two independent diagnostics are especially useful for detecting
+model-specific mistakes. The two-size decoration has the finite
+coefficient formula
+\begin{equation}\label{eq:twosize}
+ [z^n]F_{(z+z^2)/2}(z)
+   =\sum_{k=\lceil n/2\rceil}^{n}
+         c_k2^{-k}\binom{k}{n-k}.
+\end{equation}
+Here $\rho=1$, $\mu=3/2$, $v=1/4$, $\kappa_3=0$ and
+$q_1=-1/216$. Comparisons through $n=20000$ test the universal
+first correction against a coefficient formula unrelated to
+Stirling numbers. Separately, a modular-transform FFT with
+$262144$ samples and $80$ eta modes extracts coefficients through
+selected indices up to $64000$, with overlap checks against exact
+integers through $2000$. These FFT outputs are ordinary floating-point
+experiments, not validated quadrature or interval calculations.
+
+\subsection{Rebuilding and the integrity boundary}
+The archive contains the editable \LaTeX{} source, the PDF, the exact
+kernel, optional experiments, machine-readable check results, a
+manifest and rebuilding instructions. The build uses a fresh working
+directory, rejects relevant \LaTeX{} warnings and layout overflows,
+and writes a deterministically ordered ZIP with normalized metadata.
+The release is checked by clean extraction and rebuilding; changing a
+hashed payload must be rejected by its integrity checker.
+
+These guarantees concern the specified package and toolchain.
+Different \TeX{} or font versions may change PDF bytes while preserving
+mathematical content. Full analytic proofs are in this manuscript;
+no third-party papers or private research notes are needed for a
+rebuild. See the archive's reproducibility guide for the exact commands,
+optional dependencies and the distinction between the exact and
+numerical test tiers.
+
+\section{Source comparison and attribution}\label{sec:sources}
+The public sources below were reviewed for the mathematical model and
+proof inputs. The comparison is deliberately bounded.
+
+\paragraph{OEIS model.}
+The official A330499 record~\cite{oeis}, revision 11 dated
+17 December 2019, defines \eqref{eq:model} and lists the leading
+numerical constant. Its inspected formula field does not give the
+closed form \eqref{eq:logconstants}, a proof, or higher corrections.
+The adjacent A330498 has an additional harmonic $1/k$ weight in its
+kernel. It does not satisfy the eta identity used here and is excluded
+from every theorem in this report.
+
+\paragraph{Eta transformation.}
+The modular identity is classical, as recorded in DLMF
+23.18~\cite{eta}. Ardehali--Rosengren's 2026 paper~\cite{ardehali}
+provides an explicit product formulation in equation (15). Its
+small-parameter asymptotic discussion fixes a nontangential angular
+range in the right half-plane. The present boundary
+$t(\theta)=-\ii\mu\theta+v\theta^2/2+\cdots$ is tangential.
+That source's displayed radial-type expansions therefore do not,
+by themselves, prove the decorated coefficient theorem. Our use of
+the exact identity is followed by a separate uniform boundary argument.
+
+\paragraph{Classical coefficient and inverse machinery.}
+The supernecklace construction is recorded in OEIS A003713 and the
+Flajolet--Sedgewick book companion, exercise IV.28~\cite{supernecklace,ac}.
+DLMF 18.15(iv)~\cite{laguerre} supplies classical Laguerre
+asymptotics, with its stated compact-positive-argument uniformity.
+The stationary-phase Gaussian expansion, Lambert factorial
+initialization, local Lagrange reversion and backward-error conversion
+are standard methods. The specific contribution here is their
+uniform, summable application to a nonmonomial analytic decoration
+and the ensuing explicit oscillatory laws and threshold envelopes.
+
+\paragraph{Bounded overlap screen.}
+Exact-sequence and broader model searches in the available report
+collection and mathematical repository found no inspected report
+with this A330499 decorated-logarithmic-product theorem. Potentially
+adjacent inspected models involved critical polylogarithmic Lambert
+charts, divisor-weighted exponentiated products, planar-map
+coefficients on a different logarithmic scale, or factorially forced
+recurrences. They did not supply the present boundary transfer.
+This records the scope of the comparison, not proof of complete
+private-collection coverage or worldwide novelty. No external
+repository or OEIS record is changed by this report.
+
+\section{Further questions and present limits}\label{sec:further}
+The theorem gives every fixed order for a fixed decoration. Several
+natural extensions require additional work.
+\begin{enumerate}
+\item \textbf{Effective error constants and cutoffs.}
+The proof tracks polynomial-times-exponential bounds but does not
+optimize explicit cutoff radii, amplitude norms or stationary-phase
+constants. An interval implementation of these choices could turn
+Theorem~\ref{thm:inverse} into a certified inverse algorithm. The
+current finite diagnostics do not supply those missing constants.
+\item \textbf{Other support spans.}
+If the difference span exceeds one, multiple unit-modulus boundary
+contacts occur. Their phases and cusp types must be combined. Merely
+replacing the span-one condition by gcd of the occupied sizes is
+invalid, as $(z+z^3)/2$ demonstrates.
+\item \textbf{Vanishing variance.}
+As $v/\mu^2$ decreases, the number of appreciable harmonics grows.
+A uniform crossover theorem toward monomial decorations would need
+new two-parameter estimates. It is not a consequence of keeping
+$B$ fixed in Theorem~\ref{thm:general}.
+\item \textbf{Joint phases and limiting error laws.}
+The frequencies are proportional to $\sqrt m$. Their arithmetic
+relations may permit sharper extreme-value or distribution results
+for $H_0(\sqrt n)$. The signed subsequences here need only the first
+harmonic and establish neither an empirical limit law nor the exact
+limsup and liminf.
+\item \textbf{Growing orders and exponentially improved expansions.}
+The coefficient recipe is finite at every fixed order. It does not
+control coefficient growth as the requested order tends to infinity,
+optimal truncation, or a complete exponentially improved transseries.
+\item \textbf{Weighted kernels.}
+The harmonic weighting in A330498 leads to a different transformation
+problem. Its neighboring sequence number is not evidence that the
+same theorem applies. Other products or weights should be treated
+from their own exact kernels.
+\end{enumerate}
+
+\paragraph{Conclusion.}
+For A330499, the exact leading constant is only the first part of the
+answer. Analytic decoration damps the eta modes by a variance ratio
+but leaves a real $n^{-3/4}$ oscillation, followed by explicitly
+computable half-power orders. A uniform boundary proof makes that
+infinite oscillatory expansion rigorous and gives inverse envelopes
+that remain valid at the jumps of the integer threshold.
+
+\begin{thebibliography}{9}
+\bibitem{oeis}
+The OEIS Foundation Inc., \emph{A330499}, contributed by V. Kote\v{s}ovec,
+16 December 2019; inspected revision 11, 17 December 2019.
+\url{https://oeis.org/A330499}. Accessed 3 October 2026.
+\bibitem{eta}
+NIST Digital Library of Mathematical Functions, \emph{Section 23.18,
+Modular Transformations}, especially equations 23.18.5--23.18.7.
+\url{https://dlmf.nist.gov/23.18}. Accessed 3 October 2026.
+\bibitem{ardehali}
+A. A. Ardehali and H. Rosengren, \emph{A new product formula for
+$(z;q)_\infty$, with applications to asymptotics}, arXiv:2602.11329v1,
+2026; equation (15) and the angular scope of Section 4.
+\url{https://arxiv.org/html/2602.11329v1}.
+\bibitem{laguerre}
+NIST Digital Library of Mathematical Functions, \emph{Section 18.15(iv),
+Laguerre polynomials}, especially equations 18.15.14--18.15.16.
+\url{https://dlmf.nist.gov/18.15}. Accessed 3 October 2026.
+\bibitem{supernecklace}
+The OEIS Foundation Inc., \emph{A003713, Supernecklaces}.
+\url{https://oeis.org/A003713}. Accessed 3 October 2026.
+\bibitem{ac}
+P. Flajolet and R. Sedgewick, \emph{Analytic Combinatorics}, Cambridge
+University Press, 2009; book companion, Chapter IV, exercise IV.28.
+\url{https://ac.cs.princeton.edu/40complex/}.
+\end{thebibliography}
+\end{document}

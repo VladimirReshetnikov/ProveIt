@@ -1,0 +1,76 @@
+{
+  "note": "All rejection guards are explicit and remain active under python -O.",
+  "status": "PASS",
+  "tests": [
+    {
+      "cases": 128,
+      "result": "PASS",
+      "test": "Bareiss versus independent Leibniz determinant"
+    },
+    {
+      "cases": 40,
+      "result": "PASS",
+      "test": "integer complex Horner versus Fraction arithmetic"
+    },
+    {
+      "cases": 3,
+      "result": "PASS",
+      "test": "crossing formula with unequal denominators"
+    },
+    {
+      "reason": "incomplete or misordered states",
+      "result": "rejected",
+      "test": "permuted finite state list"
+    },
+    {
+      "reason": "adjugate polynomial identity failed",
+      "result": "rejected",
+      "test": "perturbed adjugate coefficient"
+    },
+    {
+      "reason": "genuine determinant identity failed at integer q=1",
+      "result": "rejected",
+      "test": "extraneous common factor (1+q), despite passing adjugate identity"
+    },
+    {
+      "reason": "genuine determinant identity failed at integer q=1",
+      "result": "rejected",
+      "test": "changed interior polynomial coefficient"
+    },
+    {
+      "reason": "rational mesh node is off circle",
+      "result": "rejected",
+      "test": "off-circle rational node"
+    },
+    {
+      "reason": "node modulus threshold failed",
+      "result": "rejected",
+      "test": "node below modulus threshold"
+    },
+    {
+      "reason": "polygon vertex has zero imaginary part",
+      "result": "rejected",
+      "test": "vertex on ray"
+    },
+    {
+      "reason": "polygon edge meets origin",
+      "result": "rejected",
+      "test": "edge through zero"
+    },
+    {
+      "reason": "mesh too coarse for certified arc bound",
+      "result": "rejected",
+      "test": "insufficient mesh"
+    },
+    {
+      "reason": "polygon winding count failed",
+      "result": "rejected",
+      "test": "reversed contour orientation"
+    },
+    {
+      "reason": "polygon edge meets origin",
+      "result": "rejected",
+      "test": "deleted vertex creates origin-crossing closing chord"
+    }
+  ]
+}

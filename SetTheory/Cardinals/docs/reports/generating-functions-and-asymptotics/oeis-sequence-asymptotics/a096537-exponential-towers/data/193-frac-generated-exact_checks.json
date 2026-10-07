@@ -1,0 +1,679 @@
+{
+  "arithmetic": "Python standard-library integer and Fraction arithmetic only",
+  "independent_exhaustive_prufer": [
+    {
+      "labelled_tree_count": 1,
+      "n": 1
+    },
+    {
+      "labelled_tree_count": 3,
+      "n": 2
+    },
+    {
+      "labelled_tree_count": 16,
+      "n": 3
+    },
+    {
+      "labelled_tree_count": 125,
+      "n": 4
+    },
+    {
+      "labelled_tree_count": 1296,
+      "n": 5
+    },
+    {
+      "labelled_tree_count": 16807,
+      "n": 6
+    }
+  ],
+  "initial_polynomial_rows_low_degree_first": [
+    [
+      1
+    ],
+    [
+      0,
+      1
+    ],
+    [
+      0,
+      2,
+      3
+    ],
+    [
+      0,
+      15,
+      30,
+      16
+    ],
+    [
+      0,
+      244,
+      564,
+      444,
+      125
+    ],
+    [
+      0,
+      6885,
+      17540,
+      16680,
+      7320,
+      1296
+    ],
+    [
+      0,
+      298326,
+      817470,
+      877740,
+      478380,
+      136590,
+      16807
+    ],
+    [
+      0,
+      18377191,
+      53352138,
+      62582100,
+      39142600,
+      14146440,
+      2873136,
+      262144
+    ]
+  ],
+  "polynomial_recurrence": {
+    "coefficient_equalities_checked": 496,
+    "identity": "P_0(y)=1; P_n(y)=y*sum(k*binom(n-1,k-1)*P_(k-1)(y+1)*P_(n-k)(y), k=1..n)",
+    "maximum_n": 30
+  },
+  "rational_shift_checks": {
+    "maximum_height": 10,
+    "maximum_scaled_integer_recurrence_degree": 30,
+    "maximum_tower_coefficient_degree": 10,
+    "properties": [
+      "finite tower matches independent truncated formal exponential",
+      "exact-height nonnegative coefficients",
+      "exact-height minimum degree h",
+      "EGF path diagonal h! times rising factorial (y)_h",
+      "height-10 tower stabilizes to P_n(y) through degree 10",
+      "q^n P_n(p/q) matches scaled integer tower recurrence through degree 30"
+    ],
+    "shifts": [
+      {
+        "path_diagonal_egf_coefficients": [
+          {
+            "denominator": 10,
+            "numerator": 1
+          },
+          {
+            "denominator": 50,
+            "numerator": 11
+          },
+          {
+            "denominator": 500,
+            "numerator": 693
+          },
+          {
+            "denominator": 1250,
+            "numerator": 21483
+          },
+          {
+            "denominator": 2500,
+            "numerator": 880803
+          },
+          {
+            "denominator": 12500,
+            "numerator": 134762859
+          },
+          {
+            "denominator": 125000,
+            "numerator": 57543740793
+          },
+          {
+            "denominator": 156250,
+            "numerator": 4085605596303
+          },
+          {
+            "denominator": 1562500,
+            "numerator": 2978406479704887
+          },
+          {
+            "denominator": 1562500,
+            "numerator": 271034989653144717
+          }
+        ],
+        "shift": {
+          "denominator": 10,
+          "numerator": 1
+        }
+      },
+      {
+        "path_diagonal_egf_coefficients": [
+          {
+            "denominator": 2,
+            "numerator": 1
+          },
+          {
+            "denominator": 2,
+            "numerator": 3
+          },
+          {
+            "denominator": 4,
+            "numerator": 45
+          },
+          {
+            "denominator": 2,
+            "numerator": 315
+          },
+          {
+            "denominator": 4,
+            "numerator": 14175
+          },
+          {
+            "denominator": 4,
+            "numerator": 467775
+          },
+          {
+            "denominator": 8,
+            "numerator": 42567525
+          },
+          {
+            "denominator": 2,
+            "numerator": 638512875
+          },
+          {
+            "denominator": 4,
+            "numerator": 97692469875
+          },
+          {
+            "denominator": 4,
+            "numerator": 9280784638125
+          }
+        ],
+        "shift": {
+          "denominator": 2,
+          "numerator": 1
+        }
+      },
+      {
+        "path_diagonal_egf_coefficients": [
+          {
+            "denominator": 1,
+            "numerator": 1
+          },
+          {
+            "denominator": 1,
+            "numerator": 4
+          },
+          {
+            "denominator": 1,
+            "numerator": 36
+          },
+          {
+            "denominator": 1,
+            "numerator": 576
+          },
+          {
+            "denominator": 1,
+            "numerator": 14400
+          },
+          {
+            "denominator": 1,
+            "numerator": 518400
+          },
+          {
+            "denominator": 1,
+            "numerator": 25401600
+          },
+          {
+            "denominator": 1,
+            "numerator": 1625702400
+          },
+          {
+            "denominator": 1,
+            "numerator": 131681894400
+          },
+          {
+            "denominator": 1,
+            "numerator": 13168189440000
+          }
+        ],
+        "shift": {
+          "denominator": 1,
+          "numerator": 1
+        }
+      },
+      {
+        "path_diagonal_egf_coefficients": [
+          {
+            "denominator": 2,
+            "numerator": 3
+          },
+          {
+            "denominator": 2,
+            "numerator": 15
+          },
+          {
+            "denominator": 4,
+            "numerator": 315
+          },
+          {
+            "denominator": 2,
+            "numerator": 2835
+          },
+          {
+            "denominator": 4,
+            "numerator": 155925
+          },
+          {
+            "denominator": 4,
+            "numerator": 6081075
+          },
+          {
+            "denominator": 8,
+            "numerator": 638512875
+          },
+          {
+            "denominator": 2,
+            "numerator": 10854718875
+          },
+          {
+            "denominator": 4,
+            "numerator": 1856156927625
+          },
+          {
+            "denominator": 4,
+            "numerator": 194896477400625
+          }
+        ],
+        "shift": {
+          "denominator": 2,
+          "numerator": 3
+        }
+      },
+      {
+        "path_diagonal_egf_coefficients": [
+          {
+            "denominator": 1,
+            "numerator": 2
+          },
+          {
+            "denominator": 1,
+            "numerator": 12
+          },
+          {
+            "denominator": 1,
+            "numerator": 144
+          },
+          {
+            "denominator": 1,
+            "numerator": 2880
+          },
+          {
+            "denominator": 1,
+            "numerator": 86400
+          },
+          {
+            "denominator": 1,
+            "numerator": 3628800
+          },
+          {
+            "denominator": 1,
+            "numerator": 203212800
+          },
+          {
+            "denominator": 1,
+            "numerator": 14631321600
+          },
+          {
+            "denominator": 1,
+            "numerator": 1316818944000
+          },
+          {
+            "denominator": 1,
+            "numerator": 144850083840000
+          }
+        ],
+        "shift": {
+          "denominator": 1,
+          "numerator": 2
+        }
+      },
+      {
+        "path_diagonal_egf_coefficients": [
+          {
+            "denominator": 10,
+            "numerator": 37
+          },
+          {
+            "denominator": 50,
+            "numerator": 1739
+          },
+          {
+            "denominator": 500,
+            "numerator": 297369
+          },
+          {
+            "denominator": 1250,
+            "numerator": 19923723
+          },
+          {
+            "denominator": 2500,
+            "numerator": 1534126671
+          },
+          {
+            "denominator": 12500,
+            "numerator": 400407061131
+          },
+          {
+            "denominator": 125000,
+            "numerator": 271876394507949
+          },
+          {
+            "denominator": 156250,
+            "numerator": 29090774212350543
+          },
+          {
+            "denominator": 1562500,
+            "numerator": 30632585245605121779
+          },
+          {
+            "denominator": 1562500,
+            "numerator": 3890338326191850465933
+          }
+        ],
+        "shift": {
+          "denominator": 10,
+          "numerator": 37
+        }
+      }
+    ]
+  },
+  "row_checks": {
+    "maximum_n": 30,
+    "minimum_n": 1,
+    "properties": [
+      "nonnegative integer coefficients",
+      "degree n",
+      "zero constant coefficient",
+      "Cayley leading coefficient (n+1)^(n-1)",
+      "coefficientwise P_n(y) >= n*y*P_(n-1)(y+1)"
+    ]
+  },
+  "schema_version": 1,
+  "scope": "Finite exact identities and rational inequalities only; not an asymptotic or quadrature certificate",
+  "status": "PASS",
+  "tail_rational_inequalities": [
+    {
+      "left": {
+        "denominator": 1,
+        "numerator": 0
+      },
+      "name": "positive_radius",
+      "positive_margin": {
+        "denominator": 125,
+        "numerator": 4
+      },
+      "relation": "<",
+      "right": {
+        "denominator": 125,
+        "numerator": 4
+      }
+    },
+    {
+      "left": {
+        "denominator": 1,
+        "numerator": 0
+      },
+      "name": "positive_lower_endpoint",
+      "positive_margin": {
+        "denominator": 100,
+        "numerator": 99
+      },
+      "relation": "<",
+      "right": {
+        "denominator": 100,
+        "numerator": 99
+      }
+    },
+    {
+      "left": {
+        "denominator": 100,
+        "numerator": 99
+      },
+      "name": "endpoint_order",
+      "positive_margin": {
+        "denominator": 50,
+        "numerator": 1
+      },
+      "relation": "<",
+      "right": {
+        "denominator": 100,
+        "numerator": 101
+      }
+    },
+    {
+      "left": {
+        "denominator": 1,
+        "numerator": 0
+      },
+      "name": "positive_sqrt2_lower_bound",
+      "positive_margin": {
+        "denominator": 5,
+        "numerator": 7
+      },
+      "relation": "<",
+      "right": {
+        "denominator": 5,
+        "numerator": 7
+      }
+    },
+    {
+      "left": {
+        "denominator": 25,
+        "numerator": 49
+      },
+      "name": "sqrt2_lower_square",
+      "positive_margin": {
+        "denominator": 25,
+        "numerator": 1
+      },
+      "relation": "<",
+      "right": {
+        "denominator": 1,
+        "numerator": 2
+      }
+    },
+    {
+      "left": {
+        "denominator": 1,
+        "numerator": 2
+      },
+      "name": "sqrt2_upper_square",
+      "positive_margin": {
+        "denominator": 40000,
+        "numerator": 89
+      },
+      "relation": "<",
+      "right": {
+        "denominator": 40000,
+        "numerator": 80089
+      }
+    },
+    {
+      "left": {
+        "denominator": 128638125,
+        "numerator": 88984939
+      },
+      "name": "gradient_x",
+      "positive_margin": {
+        "denominator": 257276250,
+        "numerator": 2123497
+      },
+      "relation": "<",
+      "right": {
+        "denominator": 10,
+        "numerator": 7
+      }
+    },
+    {
+      "left": {
+        "denominator": 50940697500,
+        "numerator": 18798571369
+      },
+      "name": "gradient_y",
+      "positive_margin": {
+        "denominator": 25470348750,
+        "numerator": 24743353
+      },
+      "relation": "<",
+      "right": {
+        "denominator": 100,
+        "numerator": 37
+      }
+    },
+    {
+      "left": {
+        "denominator": 980100,
+        "numerator": 1010101
+      },
+      "name": "gradient_z",
+      "positive_margin": {
+        "denominator": 980100,
+        "numerator": 9203
+      },
+      "relation": "<",
+      "right": {
+        "denominator": 25,
+        "numerator": 26
+      }
+    },
+    {
+      "left": {
+        "denominator": 155520000000,
+        "numerator": 15627160849
+      },
+      "name": "baseline",
+      "positive_margin": {
+        "denominator": 155520000000,
+        "numerator": 80359151
+      },
+      "relation": "<",
+      "right": {
+        "denominator": 1000,
+        "numerator": 101
+      }
+    },
+    {
+      "left": {
+        "denominator": 2304,
+        "numerator": 385
+      },
+      "name": "airy_coefficient",
+      "positive_margin": {
+        "denominator": 1440000,
+        "numerator": 143
+      },
+      "relation": "<",
+      "right": {
+        "denominator": 1250,
+        "numerator": 209
+      }
+    },
+    {
+      "left": {
+        "denominator": 576,
+        "numerator": 385
+      },
+      "name": "fourfold_airy_coefficient",
+      "positive_margin": {
+        "denominator": 72000,
+        "numerator": 7
+      },
+      "relation": "<",
+      "right": {
+        "denominator": 2000,
+        "numerator": 1337
+      }
+    },
+    {
+      "left": {
+        "denominator": 768,
+        "numerator": 455
+      },
+      "name": "threefold_airy_coefficient",
+      "positive_margin": {
+        "denominator": 19200,
+        "numerator": 1
+      },
+      "relation": "<",
+      "right": {
+        "denominator": 400,
+        "numerator": 237
+      }
+    },
+    {
+      "left": {
+        "denominator": 200000,
+        "numerator": 216317
+      },
+      "name": "rounded_combined_bound",
+      "positive_margin": {
+        "denominator": 200000,
+        "numerator": 3683
+      },
+      "relation": "<",
+      "right": {
+        "denominator": 10,
+        "numerator": 11
+      }
+    },
+    {
+      "left": {
+        "denominator": 1,
+        "numerator": 0
+      },
+      "name": "positive_cuberoot_lower_bound",
+      "positive_margin": {
+        "denominator": 100,
+        "numerator": 79
+      },
+      "relation": "<",
+      "right": {
+        "denominator": 100,
+        "numerator": 79
+      }
+    },
+    {
+      "left": {
+        "denominator": 1000000,
+        "numerator": 493039
+      },
+      "name": "cuberoot_lower_cube",
+      "positive_margin": {
+        "denominator": 1000000,
+        "numerator": 6961
+      },
+      "relation": "<",
+      "right": {
+        "denominator": 2,
+        "numerator": 1
+      }
+    },
+    {
+      "left": {
+        "denominator": 7900000000000000000000,
+        "numerator": 1100000007900000000079
+      },
+      "name": "final_tail_margin",
+      "positive_margin": {
+        "denominator": 7900000000000000000000,
+        "numerator": 13899992099999999921
+      },
+      "relation": "<",
+      "right": {
+        "denominator": 1000,
+        "numerator": 141
+      }
+    }
+  ]
+}
