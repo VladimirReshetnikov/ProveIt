@@ -402,6 +402,7 @@ import GowersSzemeredi.Proofs16AlphabetCoverParameters
 import GowersSzemeredi.Proofs16AlphabetPackagedCover
 import GowersSzemeredi.Proofs16FullGoodDomain
 import GowersSzemeredi.Proofs16PackagedPremisesCounterexample
+import GowersSzemeredi.Proofs16PackagedExplicitCover
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 

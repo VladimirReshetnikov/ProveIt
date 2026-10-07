@@ -12,8 +12,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 556 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 3,594 public Gowers theorems and found only propext,
+  All 557 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 3,595 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 110 exact
   companion proofs and 10 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -1544,6 +1544,19 @@ Formal counterexample to the current two-premise Lemma 16.10 encoding
   a faithful contextual repair and a positive proof. The existing global
   affine lift retains explicit graph counts and widths without the false
   closing comparison.
+
+Positive cover interface retaining the proved quantitative bounds
+  Proofs16PackagedExplicitCover combines the two packaged premises at
+  sigma=rho/4 with the verified global affine lift. It gives retained mass
+  at least (1-rho)|P| and a proper box partition with genuine multilinear
+  graphs. If r=ceil(6*max(1,qGamma)/sigma^2), s is the section parameter,
+  and b=multipleQ(((r*s)^-1)*sigma,gamma,k)^(r*s), then the graph count is
+  at most r*b+r^2*b^2. The width is the checked square-root expression
+  using floor(l), where l is the actual Lemma 16.9 width with its separate
+  qDelta count. No unsupported absorption into (gamma,1) is performed.
+  The result holds at every natural scale, including zero. It is a proved
+  positive interface for further induction work, not an exact companion
+  to the refuted catalogue claim. The full audit includes this module.
 
 Reproducible checks (from repository root)
   python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.Audit
