@@ -837,18 +837,19 @@ def Section16AllBoxLineCovers {N k : Nat} [NeZero N]
           (section16Lemma9Width m qDelta k sigma theta gamma delta theta1 zeta)
           qGamma
 
-/-- **Lemma 16.10.** The correctly indexed all-ones vertex map on `B_1` is
-itself `(gamma,1)`-multiply `(k+1)`-linear.  The two standing inputs are
-packaged explicitly: multiply multilinearity of the fixed-final-coordinate
-cross-sections and the line covers supplied by Lemma 16.9.
+/-- The printed Lemma 16.10 encoding, retained without a companion: the
+correctly indexed all-ones vertex map on `B_1` would be `(gamma,1)`-multiply
+`(k+1)`-linear, given the two packaged inputs (multiply multilinearity of
+the fixed-final-coordinate cross-sections and the line covers supplied by
+Lemma 16.9).
 
-Editorial warning: this records the printed qualitative claim, but the
-proof's closing quantitative comparison is not uniform in the outer
-parameter `theta`.  With the displayed control functions, its auxiliary
-graph count becomes unbounded as `theta` tends to zero while the target
-`multipleQ` bound is fixed.  Thus this Prop-valued catalogue entry must not
-be read as supplying a proof of the assertion. -/
-def lemma_16_10 : Prop :=
+This predicate is false: `lemma_16_10_packaged_premises_counterexample`
+proves its negation (`k = theta = gamma = 1`, a balanced finite-alphabet
+word on the final coordinate, every sufficiently large prime). The printed
+proof's closing comparison `q(sigma/p,gamma,k+1)^p <= q(rho,gamma,k+1)` is
+not uniform in the error parameters: `p` grows as `rho` decreases, and the
+graph count also grows as `theta` decreases while the unit target is fixed. -/
+def lemma_16_10_printed_unit_encoding : Prop :=
   ∀ (N k : Nat) [NeZero N] (theta gamma : Real),
     0 < theta → theta ≤ 1 → 0 < gamma → gamma ≤ 1 →
     ∀ (B : Finset (Point N (k + 1)))
@@ -863,6 +864,88 @@ def lemma_16_10 : Prop :=
     FinalCoordinateSectionsMultiplyLinear gamma crossSectionR B1 phi1 →
     Section16AllBoxLineCovers theta gamma B1 phi1 →
     MultiplyLinearFunction gamma 1 B1 phi1
+
+/-- The number `r` of sampled final-coordinate slices in the proof of
+Lemma 16.10, `ceil(6*max(1,qGamma)/sigma)`. The printed `ceil(q*sigma^-2)`
+rests on a two-hit estimate that fails for distinct anchors; this is the
+verified budget (`Proofs16DistinctSampling`). -/
+def section16Lemma10Samples (qGamma : Nat) (sigma : Real) : Nat :=
+  Nat.ceil (6 * (max 1 qGamma : Real) / sigma)
+
+/-- The slice graph count `q((r*s)^-1*sigma,gamma,k)^(r*s)` after the `r`
+cross-sections with iteration parameter `s` share one refinement. -/
+def section16Lemma10SliceQ (r : Nat) (s sigma gamma : Real) (k : Nat) : Real :=
+  (multipleQ (((r : Real) * s)⁻¹ * sigma) gamma k) ^ ((r : Real) * s)
+
+/-- The matching width exponent `c((r*s)^-1*sigma,gamma,k)^(r*s)`. -/
+def section16Lemma10SliceC (r : Nat) (s sigma gamma : Real) (k : Nat) : Real :=
+  (multipleC (((r : Real) * s)⁻¹ * sigma) gamma k) ^ ((r : Real) * s)
+
+/-- Graph count of the interpolated cover: a directly sampled slice value
+(at most `b`) or an affine interpolant through two distinct anchors (at most
+`choose(r,2)*b^2`). -/
+def section16Lemma10GraphBound (r : Nat) (b : Real) : Real :=
+  max b ((r.choose 2 : Real) * b * b)
+
+/-- Width of the interpolated cover: the floor of the Lemma 16.9 width `l`,
+localized to short parents (`/8`), raised to the slice exponent, and
+retiled synchronously (square root, `/4`). -/
+def section16Lemma10Width (l e : Real) : Real :=
+  Real.sqrt (((Nat.floor l : Real) / 8) ^ e) / 4
+
+/-- **Lemma 16.10 (repaired).** On every proper box `P` of width at least
+`m` and for every loss `rho`, the all-ones vertex map `phi_1` on `B_1` is
+covered, off a set of mass `rho*|P|`, by multilinear graphs on a partition of
+`P` into proper boxes. The graph count and the width are the ones its proof
+actually delivers: Lemma 16.9 at `sigma = rho/4`, small-class deletion,
+`r` sampled anchor slices, two-anchor affine interpolation of the
+cross-section covers, and synchronized retiling.
+
+The printed conclusion, `(gamma,1)`-multiple `(k+1)`-linearity, requires
+the final comparison with `q(rho,gamma,k+1)` and `m^c(rho,gamma,k+1)`, which
+fails; that encoding is retained above as
+`lemma_16_10_printed_unit_encoding` together with its formal negation.
+As in the migrated Lemmas 16.6 and 16.9, the paper's standing prime modulus
+and the induction range `k >= 1` are explicit. The two packaged inputs are
+unchanged. Theorem 16.2 does not follow from this repaired form with the
+printed control functions; it remains a separate open statement. -/
+def lemma_16_10 : Prop :=
+  ∀ (N k : Nat) [NeZero N] [Fact N.Prime], 1 ≤ k →
+    ∀ (theta gamma : Real),
+    0 < theta → theta ≤ 1 → 0 < gamma → gamma ≤ 1 →
+    ∀ (B : Finset (Point N (k + 1)))
+      (phi : Point N (k + 1) → ZMod N)
+      (H1 : Finset (Point N k))
+      (Y : (h : Point N k) → Finset (Section16CubeElement B h))
+      (x0 : Point N k),
+    let B1 := section16GoodDomain B H1 Y x0
+    let phi1 := section16PhiOne phi x0
+    let crossSectionR := gamma ^ (-(2 : Int)) *
+      multipleS ((2 : Real) ^ (-(k + 2 : Real)) * theta) gamma k
+    FinalCoordinateSectionsMultiplyLinear gamma crossSectionR B1 phi1 →
+    Section16AllBoxLineCovers theta gamma B1 phi1 →
+    ∀ rho : Real, 0 < rho → rho ≤ 1 →
+    ∀ (m : Nat) (P : Box N (k + 1)), P.IsProper → m ≤ P.width →
+      let sigma := rho / 4
+      let theta1 := section16ThetaOne theta gamma k
+      let delta := section16Delta theta1
+      let zeta := section16Zeta theta gamma k
+      ∃ qGamma qDelta : Nat,
+        (qGamma : Real) ≤ section16Lemma9QBound sigma theta gamma k ∧
+        (qDelta : Real) ≤ section16Lemma9DeltaQBound sigma delta theta1 k ∧
+        let l := section16Lemma9Width m qDelta k sigma theta gamma delta theta1 zeta
+        let r := section16Lemma10Samples qGamma sigma
+        ∃ (n : Nat) (H : Finset (Point N (k + 1))) (L : Nat)
+          (Q : Fin L → Box N (k + 1))
+          (mu : Fin L → Fin n → Point N (k + 1) → ZMod N),
+          (n : Real) ≤ section16Lemma10GraphBound r
+            (section16Lemma10SliceQ r crossSectionR sigma gamma k) ∧
+          H ⊆ P.carrier ∧ (1 - rho) * (P.carrier.card : Real) ≤ H.card ∧
+          IsBoxPartition Q P ∧ (∀ j, (Q j).IsProper) ∧
+          (∀ j, section16Lemma10Width l
+            (section16Lemma10SliceC r crossSectionR sigma gamma k) ≤ (Q j).width) ∧
+          (∀ j i, IsMultilinear (mu j i)) ∧
+          ∀ j z, z ∈ (Q j).carrier → z ∈ B1 → z ∈ H → ∃ i, phi1 z = mu j i z
 
 /-- The iteration parameter used in the proof of Corollary 16.11. -/
 def section16CorollaryIteration (alpha : Real) (k : Nat) : Real :=
