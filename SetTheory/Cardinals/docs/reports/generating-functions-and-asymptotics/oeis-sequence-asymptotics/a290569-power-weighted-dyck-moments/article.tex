@@ -1,0 +1,1382 @@
+\newcommand{\DoNotLoadEpstopdf}{}
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,booktabs,array}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{enumitem,fancyhdr}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue,breaklinks=true]{hyperref}
+\hypersetup{pdftitle={Report 201: Harmonic perturbations of power-weighted Dyck moments},pdfauthor={Report 201},pdfsubject={General positive-power amplitudes, harmonic transfer, and Gamma products}}
+\pdfinfoomitdate=1\pdftrailerid{}\pdfsuppressptexinfo=15
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Harmonic perturbations of Dyck moments}
+\fancyhead[R]{\small Report 201}\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}\setlength{\parskip}{4pt}\setlength{\parindent}{1.2em}
+\emergencystretch=2em
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\E}{\mathbb E}\newcommand{\Prob}{\mathbb P}
+\newcommand{\K}{\mathcal K}\newcommand{\ee}{\mathrm e}\newcommand{\dd}{\,\mathrm d}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\newcommand{\Dyck}{\mathcal D}
+\title{\LARGE\bfseries Harmonic perturbations\\of power weighted Dyck moments\\[8pt]\large Absolute amplitudes and polynomial weight asymptotics}
+\author{Report 201}\date{4 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+For every fixed $p>0$, we derive the full leading amplitude of Dyck moments with descent weights $h^p$, together with a relative $O_p((\log n)^{-2})$ remainder. The absolute formula was already posted by Kot\v e\v sovec on OEIS in 2020. Our route combines a uniform endpoint occupation estimate with the strong asymptotics of Freud orthogonal-polynomial leading coefficients, using the precise all-positive-exponent statement restated by Claeys, Krasovsky, and Minakov. Separately, a direct uniform variational argument gives the exact relative amplitude under logarithmic perturbations $a/h+O(h^{-1-\delta})$. The constant is a renormalized Euler product times $\exp(aK_p)$, where $K_p=-\log I_p+2\log2/p$ and $I_p=\int_0^1(1-u^p)^{-1/2}\dd u$. Exact two-step conditioning extends this to a parity-harmonic term and supplies an independent cubic derivation from the classical Dixon continued fraction. Gamma products now give the absolute amplitude for every real polynomial of positive degree that is positive at the positive integers, including A216966, A218221, and classical quartic examples. We prove inclusive two-ceiling Lambert-$W$ inverses: a general little-$o$ envelope and a sharper logarithmic envelope for pure powers. Portable exact checks, separate numerical diagnostics, and a reproducible TeX/PDF package accompany the proofs. No effective onset, uniformity in $p$, all-orders expansion, or first-proof claim is made.
+\end{abstract}
+\clearpage
+{\small\setcounter{tocdepth}{1}\tableofcontents}
+\newpage
+
+\section{Results and their scope}\label{sec:results}
+Let $\Dyck_n$ be the Dyck paths of semilength $n$: nearest-neighbor paths of $2n$ steps, starting and ending at zero, which remain nonnegative. For $h\ge1$, let $N_h(D)$ count descents from $h$ to $h-1$. For a positive weight sequence $\lambda=(\lambda_h)_{h\ge1}$ put
+\begin{equation}\label{eq:definition}
+ W_\lambda(D)=\prod_{h\ge1}\lambda_h^{N_h(D)},\qquad
+ Z_n(\lambda)=\sum_{D\in\Dyck_n}W_\lambda(D),\qquad Z_0(\lambda)=1.
+\end{equation}
+Thus $\sum_hN_h=n$. Our index is always semilength, not total path length or the index of an exponential generating function. First-return decomposition gives the formal Stieltjes fraction
+\begin{equation}\label{eq:Sfraction}
+ \sum_{n\ge0}Z_n(\lambda)z^n
+ =\cfrac{1}{1-\cfrac{\lambda_1z}{1-\cfrac{\lambda_2z}{1-\cfrac{\lambda_3z}{\ddots}}}}.
+\end{equation}
+For the growing weights studied here this ordinary series need not converge at any nonzero $z$. All uses of \eqref{eq:Sfraction} are formal. Scaling all descent weights by $\kappa>0$ multiplies $Z_n$ by $\kappa^n$.
+
+Fix $p>0$ and define
+\begin{equation}\label{eq:constants}
+ I_p=\int_0^1\frac{\dd u}{\sqrt{1-u^p}}
+ =\frac{\Gamma(1/p)\sqrt\pi}{p\Gamma(1/p+1/2)},\quad
+ H_p=I_p^{-1},\quad K_p=\log H_p+\frac{2\log2}{p},\quad r_p=\ee^{K_p}.
+\end{equation}
+The beta integral and duplication formula give
+\begin{equation}\label{eq:rp}
+ r_p=\frac{2^{2/p}}{I_p}
+ =\frac{2p\Gamma(2/p)}{\Gamma(1/p)^2},\qquad r_p^p=\frac4{I_p^p}.
+\end{equation}
+
+\begin{theorem}[Absolute pure-power amplitude]\label{thm:absolute}
+For every fixed real $p>0$, let
+\begin{equation}\label{eq:cpdp}
+ d_p=r_p^p=\frac4{I_p^p},\qquad
+ \mathcal{C}_p=\sqrt{\frac{p\,d_p}{2\pi}}=\sqrt{\frac{2p}{\pi}}I_p^{-p/2}.
+\end{equation}
+Then
+\begin{equation}\label{eq:absolute}
+ Z_n(h^p)=\mathcal{C}_pd_p^n(n!)^pn^{-1/2}
+ \left(1+O_p((\log n)^{-2})\right).
+\end{equation}
+The constants and onset in $O_p$ may depend on the fixed $p$. No effective values, power-rate error, or uniformity as $p$ varies are asserted.
+\end{theorem}
+
+\begin{theorem}[Harmonic amplitude transfer]\label{thm:harmonic}
+Suppose, with fixed $a\in\mathbb R$, $\delta>0$, and $C_f<\infty$,
+\[
+ \lambda_h=h^p\ee^{f_h},\qquad f_h=\frac ah+r_h,\qquad
+ |r_h|\le C_fh^{-1-\delta}.
+\]
+Then
+\begin{equation}\label{eq:harmonic}
+ \frac{Z_n(\lambda)}{Z_n(h^p)}\sim n^a\ee^{aK_p}P_f,
+ \qquad
+ P_f=\lim_{N\to\infty}N^{-a}\prod_{h=1}^N\ee^{f_h}
+ =\exp\left(a\gamma+\sum_{h\ge1}r_h\right)>0.
+\end{equation}
+No absolute asymptotic for $Z_n(h^p)$ is assumed. The error in this equivalent is relative $o(1)$; no universal power rate is asserted.
+\end{theorem}
+
+\begin{theorem}[Parity-harmonic amplitude transfer]\label{thm:parity}
+The same conclusion \eqref{eq:harmonic} holds if instead
+\begin{equation}\label{eq:parity-assumption}
+ f_h=\frac ah+\frac{b(-1)^h}{h}+r_h,\qquad
+ |r_h|\le C_fh^{-1-\delta},\qquad a,b\in\mathbb R,
+\end{equation}
+where now
+\begin{equation}\label{eq:parity-product}
+ P_f=\exp\left(a\gamma-b\log2+\sum_{h\ge1}r_h\right).
+\end{equation}
+The alternating term supplies its convergent product constant but no additional power of $n$ or macroscopic shape constant.
+\end{theorem}
+
+The endpoint estimate below is useful independently of either transfer theorem. Write $\E_{n,\lambda}$ for expectation under the probability measure $W_\lambda/Z_n(\lambda)$.
+\begin{theorem}[Uniform endpoint occupation]\label{thm:endpoint}
+Fix $p>0$ and $0<c\le C<\infty$. There are $\rho>0$, $C_1<\infty$, and $n_0$, depending only on $p,c,C$, such that every positive sequence with
+\begin{equation}\label{eq:powerclass}
+ ch^p\le\lambda_h\le Ch^p\quad(h\ge1)
+\end{equation}
+satisfies
+\begin{equation}\label{eq:endpoint}
+ \E_{n,\lambda}|N_h-1|\le C_1(h/n)^p
+ \qquad(n\ge n_0,\quad1\le h\le\rho n).
+\end{equation}
+No monotonicity, smoothness, or asymptotic expansion of the weights is required.
+\end{theorem}
+
+\begin{theorem}[Quantitative summable stability]\label{thm:summable}
+Suppose $\lambda$ and $\widetilde\lambda$ both satisfy \eqref{eq:powerclass} and
+$|\log(\widetilde\lambda_h/\lambda_h)|\le K h^{-q}$ for fixed $K<\infty$ and $q>1$. Then
+\begin{equation}\label{eq:summable}
+ \frac{Z_n(\widetilde\lambda)}{Z_n(\lambda)}
+ =\left(\prod_{h\ge1}\frac{\widetilde\lambda_h}{\lambda_h}\right)(1+O(R_n)),
+ \qquad
+ R_n=\begin{cases}
+ n^{1-q},&1<q<p+1,\\
+ n^{-p}\log n,&q=p+1,\\
+ n^{-p},&q>p+1.
+ \end{cases}
+\end{equation}
+The implicit constant depends only on fixed $p,c,C,K,q$. The product converges absolutely in logarithms and is positive.
+\end{theorem}
+
+The general absolute baseline and harmonic transfer give exact amplitudes in every polynomial degree.
+\begin{theorem}[Absolute polynomial amplitudes in every degree]\label{thm:polynomial-main}
+Let $Q(x)=\kappa\prod_{j=1}^d(x+c_j)$ be a real polynomial of degree $d$, with $\kappa>0$ and $Q(h)>0$ at every positive integer. Roots are counted with multiplicity, and put $a=\sum_jc_j\in\mathbb R$. Then for every $d\ge1$,
+\begin{equation}\label{eq:polynomial-relative}
+ \frac{Z_n(Q)}{Z_n(h^d)}\sim
+ \kappa^n\frac{(r_dn)^a}{\prod_{j=1}^d\Gamma(1+c_j)}.
+\end{equation}
+For every such $d$ the absolute equivalent is
+\begin{equation}\label{eq:polynomial-absolute}
+ Z_n(Q)\sim\frac{\mathcal{C}_dr_d^a}{\prod_{j=1}^d\Gamma(1+c_j)}
+ (\kappa r_d^d)^n(n!)^dn^{a-1/2}.
+\end{equation}
+Here $\mathcal{C}_d$ and $r_d$ are the constants in \eqref{eq:cpdp} and \eqref{eq:rp} evaluated at $p=d$. The error for this general shifted family is only relative $o(1)$: the pure-power logarithmic rate does not automatically transfer. For $d=3$ this specializes to
+\begin{equation}\label{eq:cubic-main}
+ Z_n(Q)\sim
+ \frac{\sqrt{6/\pi}\,I_3^{-3/2}r_3^a}{\prod_{j=1}^3\Gamma(1+c_j)}
+ \left(\frac{4\kappa}{I_3^3}\right)^n(n!)^3n^{a-1/2}.
+\end{equation}
+For $d=4$, set $r=r_4=8\sqrt\pi/\Gamma(1/4)^2$. Then
+\begin{equation}\label{eq:quartic-main}
+ Z_n(Q)\sim
+ \frac{\sqrt{2/\pi}\,r^{2+a}}{\prod_{j=1}^4\Gamma(1+c_j)}
+ (\kappa r^4)^n(n!)^4n^{a-1/2}.
+\end{equation}
+The gamma products in these formulas are real and strictly positive, even when some individual linear factors are negative at small integers or occur in nonreal conjugate pairs.
+\end{theorem}
+
+\subsection{Prior formulas and the inputs used here}
+OEIS A216966 already records, in its COMMENTS, Kot\v e\v sovec's general-$p$ absolute formula dated 24 September 2020:
+\begin{equation}\label{eq:posted-general}
+ Z_n(h^p)\sim c(p)d(p)^n\frac{(n!)^p}{\sqrt n},\quad
+ d(p)=\left[\frac{2p\Gamma(2/p)}{\Gamma(1/p)^2}\right]^p,\quad
+ c(p)=\sqrt{\frac{p\,d(p)}{2\pi}}.
+\end{equation}
+Equivalently $d(p)=4/I_p^p$ and $c(p)=\sqrt{2p/\pi}\,I_p^{-p/2}$. The inspected entry does not label this formula conjectural. The cubic specialization is credited there to 25 August 2017, updated 23 September 2020; the A218221 equivalent has the same original date and an update of 16 March 2024 \cite{oeiscubic}.
+
+This article derives \eqref{eq:posted-general} for every fixed $p>0$, with the logarithmic remainder in Theorem~\ref{thm:absolute}. The external input is a strong Freud leading-coefficient theorem, directly inspected in Claeys--Krasovsky--Minakov's explicit restatement \cite[Eq. (2.3)]{ckm}, attributed there to Kriecherbauer--McLaughlin \cite[Theorem 1.5]{km}. The original 1999 theorem text was not directly inspected; that source boundary is retained throughout. The cubic Dixon and quartic Berg--Valent derivations remain independent checks of the special constants. Neither a missing proof link on OEIS nor a bounded source search establishes absence of an earlier proof.
+
+Avdoshkin--Dymarsky already derived the same formal power-weight saddle geometry \cite[Appendix C]{avdoshkin}; Dymarsky--Smolkin studied the moment power induced by a constant shift of asymptotically linear Lanczos coefficients \cite{dymarsky}. Classical associated-Hermite and secant-power families give exact low-degree tests. The analytic and combinatorial ingredients of the Dixon and quartic comparison models are credited where used. The contribution developed here is a complete, explicitly scoped proof chain from uniform endpoint control to the stated relative amplitudes and applications.
+
+\subsection{How the proof is organized}
+Sections~\ref{sec:ratios}--\ref{sec:stability} prove endpoint occupation and product stability without a limit shape. Section~\ref{sec:freud} then proves the all-$p$ absolute amplitude and its logarithmic rate from Freud norms. Sections~\ref{sec:shape}--\ref{sec:harmonic-proof} establish the direct interpolated concentration, regularize harmonic occupation, and integrate it. Section~\ref{sec:parity-proof} proves the parity extension using signed conditional means, not pair independence. Gamma algebra is in Section~\ref{sec:gamma}; Sections~\ref{sec:dixon}--\ref{sec:applications} supply independent classical anchors and examples. Section~\ref{sec:inverse} gives a generic $o(1/\log t)$ pre-rounding envelope and a pure-power $O_p((\log t)^{-3})$ envelope. Numerical checks remain separate from proofs and finite-threshold certificates.
+
+\section{Moment ratios and exact excursion deletion}\label{sec:ratios}
+For the rest of this section assume \eqref{eq:powerclass}. Write
+\[
+ u_n(h)=\E_{n,\lambda}N_h,\qquad
+ v_n(h)=\Prob_{n,\lambda}(\max D\ge h),
+\]
+and set $u_N(j)=0$ when $j>N$.
+
+\begin{lemma}[An all-length ratio bound]\label{lem:allk}
+For every $n\ge1$ and $0\le k\le n$,
+\begin{equation}\label{eq:allk}
+ Z_n(\lambda)\ge c^n(n!)^p\ge(cn^p/\ee^p)^n,
+ \qquad
+ \frac{Z_{n-k}(\lambda)}{Z_n(\lambda)}
+ \le\left(\frac{\ee^p}{cn^p}\right)^k.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Take the finite symmetric Jacobi matrix indexed by $0,\ldots,n$, with zero diagonal and entries $J_{h-1,h}=J_{h,h-1}=\sqrt{\lambda_h}$. A closed nearest-neighbor walk from zero of length $2j$, $j\le n$, is a Dyck path and cannot leave this truncation. It traverses each edge equally often in the two directions. Hence
+\[
+ (J^{2j})_{00}=Z_j(\lambda),\qquad 0\le j\le n.
+\]
+The spectral theorem, applied to squared eigenvalues, makes these initial moments those of a positive measure on $[0,\infty)$ of mass one. H\"older's inequality gives $Z_{n-k}\le Z_n^{(n-k)/n}$. The mountain $U^nD^n$ contributes at least $c^n(n!)^p$, and $n!\ge(n/\ee)^n$. Dividing the moment inequality by $Z_n$ proves the claim, including $k=0,n$.
+\end{proof}
+This fixed-$n$ chord bound controls every deletion length at once. No asymptotic one-step ratio is used.
+
+Let $e_{h,k}$ be the total weight of primitive negative excursions of length $2k$ at height $h$: they start at $h$, immediately descend, remain in $\{0,\ldots,h-1\}$ until the last step, then rise to $h$. In particular these excursions remain nonnegative. Their $k$ downsteps have heights at most $h$, so
+\begin{equation}\label{eq:excursion-bound}
+ 0\le e_{h,k}\le4^kC^kh^{pk}.
+\end{equation}
+
+\begin{lemma}[Exact deletion and slot identity]\label{lem:deletion}
+For $1\le h\le n$,
+\begin{equation}\label{eq:deletion}
+ u_n(h)-v_n(h)=\sum_{k=1}^{n-h}e_{h,k}\frac{Z_{n-k}}{Z_n}
+ \bigl(u_{n-k}(h)+u_{n-k}(h+1)\bigr).
+\end{equation}
+\end{lemma}
+\begin{proof}
+Mark a non-last descent across edge $h$. A later return to $h$ exists; cut out the path from this descent through its first such return. It is a unique primitive negative excursion. Deletion leaves a Dyck path of semilength $n-k$ with a distinguished vertex of height $h$.
+
+Conversely insert any permitted negative excursion at any vertex of height $h$ in the shorter path. Since that path subsequently ends at zero, its later steps include a descent across $h$, so the inserted marked descent is non-last. The constructions are inverse, preserve all other descent heights, and multiply weights. The shorter path must reach $h$, which forces $k\le n-h$.
+
+For $h>0$, a path has exactly $N_h+N_{h+1}$ vertices of height $h$: classify their arrivals as upsteps across edge $h$ or downsteps across edge $h+1$, using upward/downward balance on edge $h$. The number of non-last descents is $N_h-\mathbf1_{\{\max D\ge h\}}$. Weighted summation gives \eqref{eq:deletion}.
+\end{proof}
+Put
+\begin{equation}\label{eq:A-a}
+ A=\frac{4C\ee^p}{c},\qquad a(n,h)=A(h/n)^p.
+\end{equation}
+Equations~\eqref{eq:allk}--\eqref{eq:deletion} imply
+\begin{equation}\label{eq:cone-recursion}
+ u_n(h)\le1+\sum_{k=1}^{n-h}a(n,h)^k
+ \bigl(u_{n-k}(h)+u_{n-k}(h+1)\bigr).
+\end{equation}
+All quantities in this recursion are nonnegative, a fact used in the deliberate overcounting below.
+
+\section{A uniform cone expansion at the lower boundary}\label{sec:cone}
+Choose constants
+\begin{equation}\label{eq:cone-constants}
+ \alpha=\min\left(\frac14,(12A)^{-1/p}\right),\quad
+ \eta=A\alpha^p\le\frac1{12},\quad r_0=3\eta\le\frac14,\quad
+ \kappa_0=\frac{\alpha}{2(1+\alpha)}.
+\end{equation}
+We first prove a rough bound in a wider cone and then extract the small error in a narrower one.
+
+Start with $h\le\alpha n/2$. Expand \eqref{eq:cone-recursion} recursively at every pair $(N,j)$ with $j\le\alpha N$; stop at the first exit from this outer cone. The expansion is finite because $N$ strictly decreases at every edge. Inside the cone the coefficient of a loss $k$ is at most $\eta^k$.
+
+For total loss $s$ and $\ell$ recursive edges, the positive compositions of $s$ supply $\binom{s-1}{\ell-1}$ possibilities, and at each edge there are two height choices, preserving or increasing $j$. Thus the total coefficient of all chains with loss $s\ge1$ is bounded by
+\begin{equation}\label{eq:chain-count}
+ \sum_{\ell=1}^s2^\ell\binom{s-1}{\ell-1}\eta^s
+ =2\,3^{s-1}\eta^s=\frac23r_0^s.
+\end{equation}
+This includes impossible chains and therefore only enlarges a nonnegative upper bound. The constants inserted at internal nodes sum to at most
+$1+2\eta/(1-3\eta)$.
+
+A terminal exit has coordinates $(n-s,h+t)$, where $0\le t\le s$. Since $h+t>\alpha(n-s)$ but $h\le\alpha n/2$, it must have $s>\kappa_0n$. Every terminal occupation is at most $n$; an impossible child has occupation zero. Therefore all exit terms together are at most
+\begin{equation}\label{eq:exit-bound}
+ \frac{2n}{3(1-r_0)}r_0^{\kappa_0n}
+ \le\frac{2}{3(1-r_0)\ee\kappa_0\log(1/r_0)}.
+\end{equation}
+The last inequality uses $\sup_{x\ge0}x\ee^{-bx}=1/(\ee b)$. Consequently
+\begin{equation}\label{eq:B-bound}
+ u_n(h)\le B_0:=1+\frac{2\eta}{1-3\eta}
+ +\frac{2}{3(1-r_0)\ee\kappa_0\log(1/r_0)}
+ \quad(1\le h\le\alpha n/2).
+\end{equation}
+
+Now take $n\ge8/\alpha$ and $h\le\alpha n/8$. If $k\le n/2$, then
+\[
+ h+1\le\alpha n/4\le\alpha(n-k)/2,
+\]
+so both child occupations in \eqref{eq:deletion} are at most $B_0$. For $k>n/2$ use $n$. With $a=a(n,h)\le\eta/8^p<1/4$, summing the geometric bounds gives
+\begin{align}\label{eq:nonlast}
+ 0\le u_n(h)-v_n(h)
+ &\le\frac{2B_0a+2n a^{\lfloor n/2\rfloor+1}}{1-a}\notag\\
+ &\le\frac83(B_0+1)a.
+\end{align}
+Here $n4^{-\lfloor n/2\rfloor}\le1$ for $n\ge2$. A path with maximum below $h$ has at most $4^n$ possible step patterns and weight at most $(Ch^p)^n$. The mountain bound yields
+\begin{equation}\label{eq:not-reaching}
+ 1-v_n(h)\le[A(h/n)^p]^n=a^n\le a.
+\end{equation}
+Finally the identity
+\[
+ |N_h-1|=(N_h-\mathbf1_{\{\max D\ge h\}})+\mathbf1_{\{\max D<h\}}
+\]
+holds pathwise. Equations~\eqref{eq:nonlast}--\eqref{eq:not-reaching} prove Theorem~\ref{thm:endpoint} with the explicit, nonoptimal choices
+\begin{equation}\label{eq:rho}
+ \rho=\alpha/8,\qquad n_0=\lceil8/\alpha\rceil,\qquad
+ C_1=A\left[1+\frac83(B_0+1)\right].
+\end{equation}
+All constants depend only on $p,c,C$. They can become large as $p\downarrow0$; the theorem fixes $p>0$ and asserts no uniformity in that limit.
+
+\section{Summable changes without a shape theorem}\label{sec:stability}
+We prove Theorem~\ref{thm:summable}. Put $g_h=\log(\widetilde\lambda_h/\lambda_h)$ and use geometric interpolation
+\[
+ \lambda_h(t)=\lambda_h\ee^{tg_h},\qquad 0\le t\le1.
+\]
+It stays in the same interval $[ch^p,Ch^p]$. The finite positive path sum can be differentiated without a limiting interchange:
+\begin{equation}\label{eq:derivative}
+ \frac{\dd}{\dd t}\log Z_n(\lambda(t))
+ =\sum_{h=1}^ng_hu_{n,t}(h).
+\end{equation}
+Take $L=\lfloor\rho n\rfloor$. Subtract the absolutely convergent sum $\sum_{h\ge1}g_h$. The endpoint theorem bounds the low part by
+\[
+ \left|\sum_{h\le L}g_h(u_{n,t}(h)-1)\right|
+ \le C_1K n^{-p}\sum_{h\le L}h^{p-q}.
+\]
+Since $\sum_hu_{n,t}(h)=n$, the high occupation and deterministic tail are bounded by
+\[
+ \left|\sum_{h>L}g_hu_{n,t}(h)\right|\le\frac{Kn}{(L+1)^q},
+ \qquad \left|\sum_{h>L}g_h\right|\le K\sum_{h>L}h^{-q}.
+\]
+Their orders are $O(n^{1-q})$. The first power sum has order $n^{p-q+1}$, $\log n$, or $1$ according as $q<p+1$, $q=p+1$, or $q>p+1$. These bounds are uniform in $t$ with precisely the dependence stated in the theorem. Integrating \eqref{eq:derivative} and exponentiating proves \eqref{eq:summable}.
+
+In particular a fixed finite collection of weight changes contributes exactly its finite product to the leading ratio. However, this proof uses a uniform pointwise power bound on the logarithmic tail. It is not a theorem for an arbitrary $\ell^1$ perturbation, and the borderline harmonic case cannot be obtained by simply setting $q=1$.
+
+\subsection{A broader small-perturbation lemma}
+The pointwise power decay can be relaxed if the logarithmic product has a convergent ordinary sum. This extension will be needed for the Freud comparison, whose error is smaller than harmonic but need not be bounded by $h^{-1-\delta}$.
+
+\begin{lemma}[Convergent products below the harmonic scale]\label{lem:small-product}
+Let $\lambda$ and $\widetilde\lambda$ both belong to a common power class \eqref{eq:powerclass}. Suppose
+\[
+ f_h=\log(\widetilde\lambda_h/\lambda_h)=o(1/h),\qquad
+ \sum_{h\ge1}f_h=S
+\]
+converges as an ordinary real series, not necessarily absolutely. Then
+\begin{equation}\label{eq:small-product}
+ \frac{Z_n(\widetilde\lambda)}{Z_n(\lambda)}\longrightarrow\ee^S.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Interpolate $\lambda_h(t)=\lambda_h\ee^{tf_h}$. The fixed power bounds and endpoint constants are uniform for $0\le t\le1$. With $L=\lfloor\rho n\rfloor$, subtract $S$ from the finite logarithmic derivative. The difference is exactly
+\begin{equation}\label{eq:small-split}
+ \sum_{h\le L}f_h(u_{n,t}(h)-1)
+ +\sum_{L<h\le n}f_hu_{n,t}(h)-\sum_{h>L}f_h.
+\end{equation}
+The final, signed ordinary tail tends to zero by hypothesis. The middle term is at most $n\sup_{h>L}|f_h|=o(1)$, using $h|f_h|\to0$ and $n/(L+1)=O(1)$. The first term is at most
+\[
+ C_1n^{-p}\sum_{h\le L}h^p|f_h|.
+\]
+Given $\varepsilon>0$, choose a fixed $H$ with $|f_h|\le\varepsilon/h$ for $h>H$. The finitely many $h\le H$ contribute $O_H(n^{-p})$, and the rest contributes at most
+$C_1\varepsilon n^{-p}\sum_{h\le L}h^{p-1}\le C_p\varepsilon$. Letting $\varepsilon\downarrow0$ proves uniform $o(1)$ for \eqref{eq:small-split}. Integrate on $[0,1]$ and exponentiate.
+\end{proof}
+The condition $f_h=o(1/h)$ is separate from convergence of the sum. In particular, we never infer it merely from a telescoping norm product. Neither this lemma nor Theorem~\ref{thm:summable} is a theorem for arbitrary $\ell^1$ changes without a pointwise tail condition.
+
+\section{The general absolute amplitude from Freud norms}\label{sec:freud}
+We now prove Theorem~\ref{thm:absolute}. Only the endpoint estimate and product stability are needed; the later shape and harmonic-occupation arguments play no role in this absolute baseline proof.
+
+\subsection{The precise published coefficient estimate}
+Fix $p>0$, set $\beta=2/p$, and define
+\begin{equation}\label{eq:Freud-scale}
+ A_F=B(\beta/2,1/2)^{1/\beta}=(pI_p)^{p/2}.
+\end{equation}
+For the fixed, \emph{unnormalized} even measure
+\[
+ \dd\mu(x)=\exp(-|A_Fx|^\beta)\dd x\quad(x\in\mathbb R),
+\]
+let $\phi_h(x)=\gamma_hx^h+\cdots$ be orthonormal with $\gamma_h>0$. Claeys--Krasovsky--Minakov \cite[Section 2, Eq. (2.3)]{ckm} explicitly state, for every fixed $\beta>0$,
+\begin{align}\label{eq:CKM}
+ \log\gamma_h={}&-\frac12\log\pi
+ -\frac{h+1/2}{\beta}\log h+\frac h\beta+h\log2\notag\\
+ &+\frac{\beta-4}{24\beta h}
+ +O_\beta\left(\frac1{h\log^2h}\right).
+\end{align}
+They attribute this estimate to Kriecherbauer--McLaughlin \cite[Theorem 1.5]{km}. We use the exact modern restatement, directly checked in the March 2023 institutional manuscript, current September 2022 arXiv v2, and SISSA postprint. The original 1999 theorem text and proof were not directly accessible in the inspected sources.
+
+The distinction between fixed and varying weights matters. Although \cite{ckm} also studies an ensemble with varying weight $\exp(-n|y|^\beta)$, its $\gamma_h$ in \eqref{eq:CKM} is the leading coefficient for the fixed weight above, not the varying-weight coefficient $\chi_h$. Equations (2.1)--(2.2) of that source connect them by a change of variables. Likewise the restriction $\beta\ge1$ attached to a subsequent local polynomial estimate does not restrict the explicit all-$\beta$ quantifier in (2.3). No analyticity hypothesis on the potential is being silently extended to small $\beta$.
+
+\subsection{Exact moments and probability normalization}
+The total mass is
+\begin{equation}\label{eq:Freud-mass}
+ M_F=\int_{\mathbb R}\ee^{-|A_Fx|^\beta}\dd x
+ =\frac{2\Gamma(1/\beta)}{\beta A_F}
+ =\frac{p\Gamma(p/2)}{A_F}.
+\end{equation}
+Let $X$ have probability measure $\mu/M_F$ and put $Y=2X$. Substituting $u=(A_Fx)^\beta$ in the positive half-line integral gives the exact even moments
+\begin{equation}\label{eq:Freud-moments}
+ \nu_n=\E Y^{2n}
+ =\left(\frac4{A_F^2}\right)^n
+ \frac{\Gamma(pn+p/2)}{\Gamma(p/2)},\qquad\nu_0=1.
+\end{equation}
+Let $q_h$ be the squared norm of the degree-$h$ monic polynomial for the law of $Y$. The monic polynomial for the unnormalized $X$ measure is $\phi_h/\gamma_h$, of norm $\gamma_h^{-2}$. Its transformed monic polynomial is $2^h\phi_h(Y/2)/\gamma_h$. Thus
+\begin{equation}\label{eq:Freud-norms}
+ q_h=\frac{4^h}{M_F\gamma_h^2},\qquad q_0=1.
+\end{equation}
+In particular $\gamma_0=M_F^{-1/2}$ handles the initial normalization exactly; no large-$h$ formula is used at zero.
+
+The concrete even probability measure has moments of every order and infinite support. Gram--Schmidt gives positive monic norms and zero diagonal recurrence, with coefficients
+\begin{equation}\label{eq:Freud-recurrence}
+ \widetilde\lambda_h=q_h/q_{h-1}>0.
+\end{equation}
+Finite polynomial orthogonality gives
+\begin{equation}\label{eq:Freud-Dyck}
+ Z_n(\widetilde\lambda)=\nu_n.
+\end{equation}
+Indeed multiplication by $y$ in the orthogonal-polynomial basis has these Jacobi coefficients; the coefficient of the degree-zero polynomial in $y^{2n}$ equals its integral, and the closed multiplication walks are the weighted Dyck paths. Equivalently use a symmetric Jacobi truncation at heights $0,\ldots,n$: a return walk of length $2n$ cannot go higher. No infinite self-adjoint realization or uniqueness of a representing measure is required. Moment indeterminacy for $\beta<1$, equivalently $p>2$, therefore causes no ambiguity in this finite identity for the chosen measure.
+
+\subsection{The undifferentiated error and product constant}
+Substitute \eqref{eq:CKM} into \eqref{eq:Freud-norms}. With $\beta=2/p$ this gives
+\begin{equation}\label{eq:log-q}
+ \log q_h=\log(\pi/M_F)+p(h+1/2)\log h-ph
+ +\frac{2p-1}{12h}+E_h,\qquad
+ E_h=O_p\left(\frac1{h\log^2h}\right).
+\end{equation}
+For $h\ge2$, subtract the formula at $h-1$ and then subtract $p\log h$. The smooth leading bracket satisfies
+\[
+ (h+1/2)\log h-(h-1/2)\log(h-1)-1-\log h
+ =(h-1/2)\log\frac h{h-1}-1=O(h^{-2}).
+\]
+The first difference of the explicit $1/h$ term is also $O_p(h^{-2})$. Crucially we do \emph{not} differentiate the unknown error or assume a smooth expansion for it. The triangle inequality alone gives
+\[
+ |E_h-E_{h-1}|\le|E_h|+|E_{h-1}|
+ =O_p\left(\frac1{h\log^2h}\right).
+\]
+Therefore
+\begin{equation}\label{eq:Freud-small}
+ f_h:=\log\frac{\widetilde\lambda_h}{h^p}
+ =O_p\left(\frac1{h\log^2h}\right)=o(1/h).
+\end{equation}
+This is absolutely summable. Also $\widetilde\lambda_h/h^p\to1$, so positivity at the finitely many earlier indices supplies common two-sided power bounds for $\widetilde\lambda_h$ and $h^p$.
+
+The product telescopes \emph{exactly}:
+\begin{equation}\label{eq:Freud-telescope}
+ \prod_{h=1}^N\frac{\widetilde\lambda_h}{h^p}=\frac{q_N}{(N!)^p}.
+\end{equation}
+Applying fixed-$p$ Stirling asymptotics to \eqref{eq:log-q} yields its positive limit
+\begin{equation}\label{eq:Freud-P}
+ P=\frac\pi{M_F(2\pi)^{p/2}}.
+\end{equation}
+Lemma~\ref{lem:small-product} and \eqref{eq:Freud-Dyck} now give
+\begin{equation}\label{eq:Freud-transfer}
+ \frac{\nu_n}{Z_n(h^p)}\longrightarrow P.
+\end{equation}
+The orientation and the normalization at zero both matter: the desired moments are asymptotic to $\nu_n/P$.
+
+\subsection{Simplifying the absolute prefactor}
+Fixed-$p$ Stirling applied to the exact gamma moment gives
+\begin{equation}\label{eq:nu-asymptotic}
+ \nu_n\sim C_\nu\left(\frac{4p^p}{A_F^2}\right)^n(n!)^pn^{-1/2},\qquad
+ C_\nu=\frac{(2\pi)^{(1-p)/2}p^{(p-1)/2}}{\Gamma(p/2)}.
+\end{equation}
+The shift $pn+p/2$ has not been replaced by $pn$; it supplies the essential power of $p$ in $C_\nu$. Equations~\eqref{eq:Freud-scale} and \eqref{eq:Freud-mass} imply
+\[
+ \frac{4p^p}{A_F^2}=\frac4{I_p^p}=d_p,
+\]
+\begin{align}\label{eq:Freud-amplitude}
+ \frac{C_\nu}{P}
+ &=\frac{(2\pi)^{(1-p)/2}p^{(p-1)/2}}{\Gamma(p/2)}
+   \frac{M_F(2\pi)^{p/2}}\pi\notag\\
+ &=\sqrt{\frac2\pi}\frac{p^{(p+1)/2}}{A_F}
+ =\sqrt{\frac{2p}{\pi}}I_p^{-p/2}=\mathcal{C}_p.
+\end{align}
+Together with \eqref{eq:Freud-transfer}, this proves the leading equivalent in Theorem~\ref{thm:absolute} for every fixed $p>0$.
+
+\subsection{The logarithmic remainder}
+The same input gives more than qualitative product stability. From \eqref{eq:log-q} and Stirling,
+\begin{equation}\label{eq:Freud-signed-tail}
+ \sum_{h=1}^Lf_h=\log\frac{q_L}{(L!)^p}
+ =\log P+\frac{p-1}{12L}
+ +O_p\left(\frac1{L\log^2L}\right).
+\end{equation}
+The coefficient is $(2p-1)/12-p/12$; the next $O_p(L^{-3})$ Stirling term is absorbed. Thus the \emph{signed} tail satisfies
+\begin{equation}\label{eq:signed-tail-bound}
+ \left|\sum_{h>L}f_h\right|=O_p(L^{-1}).
+\end{equation}
+The bound obtained by summing $|f_h|$ would be only $O_p(1/\log L)$, so this exact telescoping information must be retained.
+
+Interpolate $\lambda_h(t)=h^p\ee^{tf_h}$ and again take $L=\lfloor\rho n\rfloor$. The logarithmic derivative minus $\log P$ is precisely \eqref{eq:small-split}. Its third term is $O_p(1/n)$ by \eqref{eq:signed-tail-bound}; its middle term is
+\[
+ O_p\left(n\sup_{h>L}\frac1{h\log^2h}\right)=O_p((\log n)^{-2}).
+\]
+For the endpoint term use
+$C_1n^{-p}\sum_{h\le L}h^p|f_h|$. Finitely many exceptional heights contribute $O_p(n^{-p})$. Split the remaining sum at $\lfloor\sqrt n\rfloor$. Below the split the weaker estimate $|f_h|\le C/h$ gives $O_p(n^{-p/2})$. Above it, $\log h\ge(\log n)/2$, so \eqref{eq:Freud-small} and $\sum_{h\le L}h^{p-1}=O_p(n^p)$ give $O_p((\log n)^{-2})$. For fixed $p>0$, the former bound is smaller eventually. If $L<\sqrt n$ at first, this only changes the onset.
+
+All estimates hold uniformly in $t$. Integration gives
+\[
+ \log\frac{\nu_n}{Z_n(h^p)}=\log P+O_p((\log n)^{-2}),
+ \qquad
+ Z_n(h^p)=\frac{\nu_n}{P}\bigl(1+O_p((\log n)^{-2})\bigr).
+\]
+The exact gamma formula \eqref{eq:Freud-moments} has relative Stirling error $O_p(1/n)$. Equations~\eqref{eq:nu-asymptotic}--\eqref{eq:Freud-amplitude} therefore prove the full statement \eqref{eq:absolute}.
+
+The constants inherit the fixed-parameter dependence of the published estimate and the endpoint class. They are not supplied effectively. This proof neither strengthens the Freud input nor differentiates its error, and it does not transfer the logarithmic rate to a general harmonic perturbation.
+
+\section{Direct uniform concentration under vanishing perturbations}\label{sec:shape}
+The singular statistic $\sum_hN_h/h$ requires both macroscopic shape and boundary control. We now establish the shape directly under the entire interpolated family. A bounded Radon--Nikodym comparison with the pure-power law would be invalid: for instance a nonzero $f_1$ changes the weight of $(UD)^n$ by $\ee^{nf_1}$. Uniform concentration must therefore be proved rather than transferred by a pathwise bounded-density shortcut.
+
+In this section only, assume an arbitrary fixed real sequence $f_h\to0$ and put
+\begin{equation}\label{eq:vanishing-family}
+ \lambda_h(t)=h^p\ee^{tf_h},\qquad0\le t\le1.
+\end{equation}
+Interpolate the path heights linearly, with time divided by $n$ and height by $n$. Thus $y_n(s)$, $0\le s\le2$, belongs to the compact uniform-topology space
+\[
+ \K=\{y:[0,2]\to[0,\infty):y(0)=y(2)=0,\quad y\text{ is }1\text{-Lipschitz}\}.
+\]
+Every $y\in\K$ satisfies $y(s)\le\min(s,2-s)\le1$. Compactness follows from uniform boundedness, equicontinuity, and closure.
+
+For $|v|\le1$ define the binary entropy
+\[
+ \mathcal E(v)=-\frac{1+v}{2}\log\frac{1+v}{2}
+              -\frac{1-v}{2}\log\frac{1-v}{2},\qquad0\log0=0,
+\]
+and the extended-real functionals
+\begin{equation}\label{eq:variational}
+ S(y)=\int_0^2\mathcal E(y'(s))\dd s,\quad
+ V(y)=\frac p2\int_0^2\log y(s)\dd s,\quad
+ \Phi_p(y)=S(y)+V(y).
+\end{equation}
+Lipschitz functions are differentiable almost everywhere. A divergent negative logarithmic integral means $V(y)=-\infty$.
+
+If $H_j$ is the upper endpoint height of step $j$, upward/downward edge balance gives the exact identity
+\begin{equation}\label{eq:step-weight}
+ \log\frac{W_{\lambda(t)}(D)}{n^{pn}}
+ =\frac12\sum_{j=1}^{2n}\left[p\log(H_j/n)+tf_{H_j}\right].
+\end{equation}
+The factor $1/2$ is essential: each weighted descent is paired with the corresponding number of ascents across its edge.
+
+\subsection{A clipped closed-set upper bound}
+Fix $\varepsilon\in(0,1]$ and an integer $M\ge1$. Set
+\[
+ F=\max(0,\sup_h f_h),\qquad\omega_M=\sup_{h>M}|f_h|\longrightarrow0.
+\]
+For $n\ge(M/\varepsilon)\ee^{F/p}$, every $h\ge1$ and $0\le t\le1$ satisfy
+\begin{equation}\label{eq:clipping}
+ p\log(h/n)+tf_h\le p\log\max(h/n,\varepsilon)+\omega_M.
+\end{equation}
+For $h>M$ the perturbation is bounded by $\omega_M$. For $h\le M$, the chosen $n$ gives $p\log(h/n)+F\le p\log\varepsilon$. Thus the finitely many large low-height values are absorbed into the clipping slack, rather than charged an uncontrolled $O(n)$ error.
+
+For a finite partition $Q=(s_i)$ of $[0,2]$, define
+\[
+ S_Q(y)=\sum_i(s_{i+1}-s_i)\mathcal E\left(\frac{y(s_{i+1})-y(s_i)}{s_{i+1}-s_i}\right),\qquad
+ V_\varepsilon(y)=\frac p2\int_0^2\log\max(y(s),\varepsilon)\dd s.
+\]
+Both are continuous on $\K$. Nested dyadic partitions give $S_Q\downarrow S$: Jensen's inequality gives monotonicity, and differentiation of Lipschitz functions with bounded convergence identifies the limit. Likewise $V_\varepsilon\downarrow V$ as $\varepsilon\downarrow0$, by monotone convergence applied to the nonnegative function $-\log\max(y,\varepsilon)$.
+
+Let $B\subseteq\K$ be closed. Divide the $2n$ steps into blocks at rounded times $ns_i$. There are only polynomially many vectors of block endpoint heights. For a block of length $L$ and displacement $d$, the bridge count is at most
+\[
+ \binom{L}{(L+d)/2}\le\exp\{L\mathcal E(d/L)\};
+\]
+impossible parities give no bridge, and nonnegativity can only decrease the count. For fixed $Q$, rounding errors in normalized entropy are $o(1)$ uniformly over paths, by continuity of $\mathcal E$. The step upper height divided by $n$ differs from $y_n(s)$ by at most $1/n$ within its interval. Since the clipped logarithm is $1/\varepsilon$-Lipschitz, \eqref{eq:step-weight}--\eqref{eq:clipping} give
+\begin{equation}\label{eq:clipped-upper}
+ \limsup_{n\to\infty}\sup_{t\in[0,1]}\frac1n
+ \log\left(n^{-pn}\sum_{D:y_n\in B}W_{\lambda(t)}(D)\right)
+ \le\sup_{y\in B}(S_Q(y)+V_\varepsilon(y))+\omega_M.
+\end{equation}
+The conventions are $\log0=-\infty$ and $\sup\varnothing=-\infty$.
+
+First let $M\to\infty$. Then take nested dyadic partitions and decreasing $\varepsilon\to0$. For a decreasing sequence of continuous functions on a compact set, the maxima converge to the supremum of their pointwise upper-semicontinuous limit. Indeed choose maximizing points, take a convergent subsequence, and bound its limiting values by each fixed earlier function; the reverse inequality is immediate. Applying this to the compact set $B$ proves
+\begin{equation}\label{eq:closed-upper}
+ \limsup_{n\to\infty}\sup_t\frac1n
+ \log\left(n^{-pn}\sum_{D:y_n\in B}W_{\lambda(t)}(D)\right)
+ \le\sup_{y\in B}\Phi_p(y).
+\end{equation}
+It also shows that $\Phi_p$ is upper semicontinuous. This is the closed-set large-deviation upper estimate actually needed below.
+
+\subsection{The unique calibrated arch}
+Define $y_*$ increasingly on $[0,1]$ by
+\begin{equation}\label{eq:arch-definition}
+ s=\int_0^{y_*(s)}\frac{\dd v}{\sqrt{1-(v/H_p)^p}},
+\end{equation}
+and reflect about $s=1$. Since $H_pI_p=1$, its maximum is $H_p$, and $y_*\in\K$. In the interior,
+\begin{equation}\label{eq:arch-equations}
+ (y_*')^2=1-(y_*/H_p)^p,\qquad
+ y_*''=-\frac p{2H_p^p}y_*^{p-1}.
+\end{equation}
+The second identity extends through the top by continuation. At either endpoint, height divided by the distance to that endpoint tends to one.
+
+\begin{lemma}[Calibration and uniqueness]\label{lem:calibration}
+The functional $\Phi_p$ has the unique maximizer $y_*$ on $\K$.
+\end{lemma}
+\begin{proof}
+Set
+\[
+ A_*(s)=\mathcal E'(y_*'(s))
+ =\frac12\log\frac{1-y_*'(s)}{1+y_*'(s)}.
+\]
+Equations~\eqref{eq:arch-equations} give
+\[
+ A_*'(s)=\frac{p}{2y_*(s)},\qquad
+ A_*(s)=O(1+|\log s|+|\log(2-s)|).
+\]
+The entropy and logarithm tangent inequalities are
+\begin{align*}
+ \mathcal E(y')-\mathcal E(y_*')&\le A_*(y'-y_*'),\\
+ \frac p2(\log y-\log y_*)&\le\frac p2\frac{y-y_*}{y_*}.
+\end{align*}
+Integrate on $[d,2-d]$ and integrate the first right side by parts. The interior terms cancel. The remaining boundary term
+$[A_*(y-y_*)]_d^{2-d}$ is $O(d|\log d|)$ because both heights are $O(d)$ at the endpoints.
+
+The tangent terms are integrable: $A_*$ is integrable and $(y-y_*)/y_*$ is bounded near the endpoints. If $V(y)=-\infty$ there is nothing to prove; otherwise taking $d\downarrow0$ proves $\Phi_p(y)\le\Phi_p(y_*)$. If $y\ne y_*$, continuity makes them different on a set of positive measure, and the logarithmic tangent deficit has strictly positive integral,
+\[
+ \frac p2\int_0^2\left[\frac y{y_*}-1-\log\frac y{y_*}\right]\dd s>0,
+\]
+possibly infinite. The strict inequality proves uniqueness, including nonsmooth competitors, zero plateaus, and multiple arches.
+\end{proof}
+For every fixed $\eta_0>0$, compactness and upper semicontinuity therefore give a strict gap
+\begin{equation}\label{eq:gap}
+ \sup_{\|y-y_*\|_\infty\ge\eta_0}\Phi_p(y)<\Phi_p(y_*).
+\end{equation}
+
+\subsection{A matching lower bound with controlled endpoints}
+We provide the lower bound explicitly because the logarithm is singular at zero. Approximate $y_*$ by positive polygons $z\in\K$ that equal $s$ on $[0,\varepsilon]$ and $2-s$ on $[2-\varepsilon,2]$, and have all interior slopes strictly between $-1$ and $1$. For example join $(\varepsilon,\varepsilon)$ to $(2\varepsilon,y_*(2\varepsilon))$, use fine chords of $y_*$ on the remaining interior, and reflect at the end. The joining slope is greater than $-1$, less than $1$, and tends to $1$ as $\varepsilon\downarrow0$.
+
+These approximants converge uniformly to $y_*$, their derivatives converge almost everywhere, and they satisfy $z(s)\ge c_0\min(s,2-s)$ with a common $c_0>0$ for sufficiently advanced approximants. The bounded entropy and an integrable constant plus $|\log\min(s,2-s)|$ dominate the two integrands. Hence
+\begin{equation}\label{eq:polygon-approx}
+ \Phi_p(z)\longrightarrow\Phi_p(y_*).
+\end{equation}
+Fix one polygon. Refine its linear interior pieces into blocks of maximal length $d$ without changing $z$. Choose lattice times and parity-compatible lattice heights within $O(1)$ of their prescribed values $ns_i,nz(s_i)$. Take deterministic all-up and all-down endpoint pieces of rounded lengths. For large $n$, the fixed positive slack of every interior slope from $\pm1$ guarantees feasible bridges.
+
+Let $b_z=\min_{[\varepsilon,2-\varepsilon]}z>0$. Every unrestricted bridge in an interior block stays within $2d+O(1/n)$ of $z$, since both its slopes and those of $z$ have absolute value at most one. Choosing $d$ sufficiently small relative to $b_z$ makes \emph{every} such bridge positive. Their concatenations are consequently admissible Dyck paths. Distinct bridge choices give distinct paths. Stirling's formula for the finitely many binomial factors gives
+\[
+ \log\#\{\text{constructed paths}\}=nS(z)+o(n).
+\]
+The endpoint pieces have zero entropy.
+
+On the interior, the logarithm is uniformly Lipschitz and the normalized pure-power log weights approach the \emph{interior contribution} to $nV(z)$, with error $nO_z(d)+o(n)$. The deterministic endpoints contribute separately
+\begin{equation}\label{eq:endpoint-potential}
+ p\sum_{h=1}^{\lfloor\varepsilon n\rfloor}\log(h/n)+O(\log n),
+\end{equation}
+whose quotient by $n$ tends to $p\int_0^\varepsilon\log s\dd s$. This is exactly the two-endpoint contribution to $V(z)$, including the factor $1/2$ in \eqref{eq:step-weight}.
+
+The perturbation is uniformly $o(n)$ over all these paths and all $t$. On the deterministic endpoints its absolute contribution is at most
+$\sum_{h\le\varepsilon n+O(1)}|f_h|=o(n)$ by Ces\`aro convergence. On the interior all heights are at least $c_zn$, so the absolute contribution is at most
+$n\sup_{h\ge c_zn}|f_h|=o(n)$. It follows that
+\[
+ \liminf_{n\to\infty}\inf_t\frac1n\log[n^{-pn}Z_n(\lambda(t))]
+ \ge\Phi_p(z)-O_z(d).
+\]
+The limits are taken in order: first $n\to\infty$ at fixed polygon and refinement, then $d\downarrow0$, then improve the polygon. Combining with \eqref{eq:closed-upper} for $B=\K$ proves the uniform variational limit
+\begin{equation}\label{eq:free-energy}
+ \sup_{t\in[0,1]}\left|\frac1n\log[n^{-pn}Z_n(\lambda(t))]-\Phi_p(y_*)\right|
+ \longrightarrow0.
+\end{equation}
+Using \eqref{eq:closed-upper} on the closed complement of an $\eta_0$-ball and the gap \eqref{eq:gap} yields the needed conclusion.
+
+\begin{proposition}[Uniform fixed-neighborhood concentration]\label{prop:concentration}
+For every fixed $p>0$, fixed real sequence $f_h\to0$, and fixed $\eta_0>0$, there are $c_{\eta_0}>0$ and $n_{\eta_0}$ such that
+\begin{equation}\label{eq:concentration}
+ \sup_{0\le t\le1}\Prob_{n,t}(\|y_n-y_*\|_\infty\ge\eta_0)
+ \le\ee^{-c_{\eta_0}n}\qquad(n\ge n_{\eta_0}).
+\end{equation}
+\end{proposition}
+Only fixed-neighborhood concentration and the displayed closed-set upper estimate have been proved or used. No rate for shrinking neighborhoods, fluctuation theorem, or full lower large-deviation principle on arbitrary open sets is asserted.
+
+\section{The regularized harmonic occupation constant}\label{sec:harmonic-occupation}
+Retain a fixed vanishing sequence $f_h$ and the interpolation \eqref{eq:vanishing-family}. Since $f_h$ is bounded, the whole family lies in one power class \eqref{eq:powerclass}, so the endpoint theorem applies uniformly in $t$. This observation allows the next statement to be used for both harmonic and parity-harmonic perturbations.
+
+\begin{proposition}[Harmonic occupation]\label{prop:harmonic-occupation}
+Uniformly for $0\le t\le1$,
+\begin{equation}\label{eq:harmonic-occupation}
+ \sum_{h=1}^n\frac{u_{n,t}(h)}h
+ =\log n+\gamma+K_p+o(1).
+\end{equation}
+\end{proposition}
+\begin{proof}
+For every bounded height function $g$, edge balance gives
+\begin{equation}\label{eq:edge-balance}
+ \frac1n\sum_hN_hg(h/n)=\frac1{2n}\sum_{j=1}^{2n}g(H_j/n).
+\end{equation}
+Fix $0<\varepsilon<\min(\rho,H_p)$ and put $L=\lfloor\varepsilon n\rfloor$. Use
+$g_\varepsilon(x)=x^{-1}\mathbf1_{\{x>\varepsilon\}}$, with value zero at zero. Proposition~\ref{prop:concentration} gives
+\begin{equation}\label{eq:bulk-harmonic}
+ \sum_{h>L}\frac{u_{n,t}(h)}h\longrightarrow
+ \frac12\int_0^2g_\varepsilon(y_*(s))\dd s
+ =T_\varepsilon:=\int_\varepsilon^{H_p}\frac{\dd y}{y\sqrt{1-(y/H_p)^p}}
+\end{equation}
+uniformly in $t$.
+
+Here is a justification despite the cutoff's discontinuity. The arch hits height $\varepsilon$ at exactly two times. The set
+$A_\delta=\{s:|y_*(s)-\varepsilon|\le\delta\}$ has measure tending to zero as $\delta\downarrow0$. If $\|y_n-y_*\|_\infty+1/n<\delta/2$, the cutoff indicators agree outside $A_\delta$; where they are one the reciprocal difference is bounded by a constant times $\varepsilon^{-2}(\|y_n-y_*\|_\infty+1/n)$. On $A_\delta$ the functions are bounded by $1/\varepsilon$. Thus the path functional is uniformly close to its arch value on a sufficiently small fixed neighborhood. Its complement has exponentially small probability and the functional is bounded, proving uniform expectation convergence. There is no lattice mismatch: $h/n>\varepsilon$ is exactly $h>\lfloor\varepsilon n\rfloor$. The two arch branches cancel the $1/2$ in \eqref{eq:edge-balance}.
+
+The low-height remainder satisfies, for fixed $p>0$,
+\begin{equation}\label{eq:low-harmonic}
+ \left|\sum_{h\le L}\frac{u_{n,t}(h)-1}{h}\right|
+ \le C_1n^{-p}\sum_{h\le L}h^{p-1}\le C_p\varepsilon^p.
+\end{equation}
+The power-sum bound is valid also for $0<p<1$. The ordinary harmonic number contributes
+\[
+ \sum_{h\le L}\frac1h=\log n+\log\varepsilon+\gamma+o(1).
+\]
+To evaluate the regularized bulk integral, substitute $v=(y/H_p)^p$:
+\begin{align}\label{eq:T-epsilon}
+ T_\varepsilon
+ &=\frac1p\int_{(\varepsilon/H_p)^p}^1\frac{\dd v}{v\sqrt{1-v}}
+ =\frac2p\operatorname{artanh}\sqrt{1-(\varepsilon/H_p)^p}\notag\\
+ &=\log(H_p/\varepsilon)
+   +\frac2p\log\left(1+\sqrt{1-(\varepsilon/H_p)^p}\right).
+\end{align}
+Hence $\log\varepsilon+T_\varepsilon\to K_p$. More precisely, combining the previous estimates gives
+\[
+ \limsup_{n\to\infty}\sup_t\left|\sum_h\frac{u_{n,t}(h)}h-\log n-\gamma-K_p\right|
+ \le C_p\varepsilon^p+|\log\varepsilon+T_\varepsilon-K_p|.
+\]
+Let $\varepsilon\downarrow0$ after $n\to\infty$. This proves \eqref{eq:harmonic-occupation} without selecting an unproved shrinking cutoff.
+\end{proof}
+The Euler constant has a concrete origin in the low-height harmonic sum. Its positive sign is necessary: it later cancels the Euler constant in the Weierstrass gamma product.
+
+\section{Residual estimates and harmonic interpolation}\label{sec:harmonic-proof}
+Under the hypotheses of Theorem~\ref{thm:harmonic}, the interpolation $\lambda_h(t)=h^p\ee^{tf_h}$ has a common power class, and Proposition~\ref{prop:harmonic-occupation} applies. For the residual $r_h$ take $L=\lfloor\rho n\rfloor$ and repeat the proof of summable stability:
+\begin{align}\label{eq:residual}
+ \sum_{h\le n}r_hu_{n,t}(h)-\sum_{h\ge1}r_h
+ &=O\left(n^{-p}\sum_{h\le L}h^{p-1-\delta}+n^{-\delta}\right)\notag\\
+ &=\begin{cases}
+ O(n^{-\delta}),&0<\delta<p,\\
+ O(n^{-p}\log n),&\delta=p,\\
+ O(n^{-p}),&\delta>p.
+ \end{cases}
+\end{align}
+The constants are uniform in $t$ and depend on the fixed parameters and class bounds. In every case this is $o(1)$. These rates control only the residual contribution; they are not rates for the harmonic term or for the whole equivalent.
+
+Differentiation of the finite path sum yields
+\begin{align*}
+ \frac{\dd}{\dd t}\log Z_n(\lambda(t))
+ &=a\sum_{h=1}^n\frac{u_{n,t}(h)}h+\sum_{h=1}^nr_hu_{n,t}(h)\\
+ &=a(\log n+\gamma+K_p)+\sum_{h\ge1}r_h+o(1),
+\end{align*}
+uniformly in $t$. Integrating on $[0,1]$ and exponentiating proves \eqref{eq:harmonic}. Independently,
+\[
+ \sum_{h=1}^Nf_h-a\log N\longrightarrow a\gamma+\sum_{h\ge1}r_h,
+\]
+which proves the product formula. This proof integrates expectations under every interpolated law. It does not attempt an unjustified passage from convergence in probability under one law to exponential moments of an unbounded statistic.
+
+\section{Parity cancellation by exact two-step conditioning}\label{sec:parity-proof}
+We now prove Theorem~\ref{thm:parity}. Under \eqref{eq:parity-assumption}, $|f_h|\le D_0/h$ after increasing a fixed constant to cover small heights. The weights $\lambda_h(t)=h^p\ee^{tf_h}$ belong to a common power class and satisfy
+\begin{equation}\label{eq:adjacent}
+ \left|\log\frac{\lambda_{h+1}(t)}{\lambda_h(t)}\right|
+ \le p\log(1+1/h)+|f_{h+1}|+|f_h|\le\frac Dh.
+\end{equation}
+Therefore
+\begin{equation}\label{eq:adjacent-difference}
+ \frac{|\lambda_{h+1}(t)-\lambda_h(t)|}{\lambda_{h+1}(t)+\lambda_h(t)}
+ \le\frac D{2h},
+\end{equation}
+using $\tanh(|x|/2)\le|x|/2$. Monotonicity of the weights is not needed.
+
+\subsection{The signed statistic with a smooth cutoff}
+Fix $\varepsilon>0$. Choose a nondecreasing $C^1$ function $\chi:[0,\infty)\to[0,1]$, zero for $x\le\varepsilon$ and one for $x\ge2\varepsilon$. Set
+\[
+ \psi(x)=\chi(x)/x\ (x>0),\quad\psi(0)=0,\quad
+ w_h=\frac{\chi(h/n)}h=\frac1n\psi(h/n),\quad
+ G_n(D)=\sum_{h\ge1}(-1)^hw_hN_h(D).
+\]
+For fixed $\varepsilon$, both $\psi$ and $\psi'$ are bounded, $\psi'$ is integrable on $[0,\infty)$, and
+\begin{equation}\label{eq:w-diff}
+ |w_{h+1}-w_h|\le C_\varepsilon/n^2,\qquad
+ w_h\le1/(\varepsilon n)\quad\hbox{when }w_h\ne0.
+\end{equation}
+Group the steps into $n$ consecutive pairs. Every pair starts at an even time, hence at an even height $k$. Condition on all path vertices except the middle vertex of one particular pair. Its endpoints and all external weight factors are fixed. There are four cases:
+\begin{itemize}[leftmargin=1.6em]
+ \item A pair $UU$ makes no descent and contributes zero to $G_n$.
+ \item A pair $DD$ contributes $w_k-w_{k-1}$, of magnitude at most $C_\varepsilon/n^2$.
+ \item For equal endpoints $k\ge2$, both $UD$ and $DU$ are nonnegative and feasible. Their local weights are respectively $\lambda_{k+1}(t)$ and $\lambda_k(t)$; their contributions to $G_n$ are $-w_{k+1}$ and $w_k$.
+ \item At equal endpoints $k=0$, only $UD$ is feasible. Its contribution $-w_1$ is zero once $n\ge1/\varepsilon$.
+\end{itemize}
+For equal endpoints $k\ge2$, the exact conditional mean is consequently
+\begin{equation}\label{eq:conditional-pair}
+ \frac{\lambda_k(t)w_k-\lambda_{k+1}(t)w_{k+1}}
+ {\lambda_k(t)+\lambda_{k+1}(t)}.
+\end{equation}
+Its absolute value is bounded by
+\[
+ |w_k-w_{k+1}|+|w_k|\frac{|\lambda_k(t)-\lambda_{k+1}(t)|}{\lambda_k(t)+\lambda_{k+1}(t)}.
+\]
+If $w_k\ne0$ then $k>\varepsilon n$, so \eqref{eq:adjacent-difference}--\eqref{eq:w-diff} bound this by $C'_\varepsilon/n^2$. If $w_k=0$, the second term vanishes. Thus linearity and the tower property, separately for each pair's conditioning, give
+\begin{equation}\label{eq:cutoff-signed}
+ \sup_t|\E_{n,t}G_n|\le C'_\varepsilon/n\longrightarrow0.
+\end{equation}
+This is an estimate for a \emph{signed expectation}. The pairs have not been declared independent, and neither a vanishing absolute moment nor concentration of $G_n$ follows from this argument or is used.
+
+\subsection{Removing the cutoff}
+Take $2\varepsilon<\rho$ from Theorem~\ref{thm:endpoint} and extend $u_{n,t}(h)=0$ for $h>n$. The low part after subtracting one traversal per edge satisfies
+\begin{equation}\label{eq:low-parity}
+ \left|\sum_{h\ge1}(1-\chi(h/n))\frac{(-1)^h(u_{n,t}(h)-1)}h\right|
+ \le C_1n^{-p}\sum_{h\le2\varepsilon n}h^{p-1}\le C_p\varepsilon^p.
+\end{equation}
+The high deterministic baseline tends to zero as well. The partial sums of $(-1)^h$ are bounded, and summation by parts gives
+\begin{align}\label{eq:parity-baseline}
+ \left|\sum_{h\ge1}(-1)^hw_h\right|
+ &\le |w_1|+\sum_{h\ge1}|w_{h+1}-w_h|\notag\\
+ &\le |w_1|+\frac1n\int_0^\infty|\psi'(x)|\dd x=O_\varepsilon(n^{-1}).
+\end{align}
+The infinite sum converges because $w_h\to0$ and has finite variation. The difference between the full occupation sum and the full alternating harmonic series is exactly the low term in \eqref{eq:low-parity}, plus $\E G_n$, minus the deterministic sum in \eqref{eq:parity-baseline}. There is no omitted high baseline tail. Let $n\to\infty$ and then $\varepsilon\downarrow0$ to obtain
+\begin{equation}\label{eq:parity-occupation}
+ \sum_{h=1}^n\frac{(-1)^hu_{n,t}(h)}h=-\log2+o(1)
+ \quad\hbox{uniformly for }0\le t\le1.
+\end{equation}
+
+The direct shape theorem applies since $f_h\to0$, so \eqref{eq:harmonic-occupation} remains valid. The residual estimate \eqref{eq:residual} is unchanged. The logarithmic derivative of $Z_n$ is therefore
+\[
+ a(\log n+\gamma+K_p)-b\log2+\sum_{h\ge1}r_h+o(1)
+\]
+uniformly in $t$. Integrating proves Theorem~\ref{thm:parity}, and the elementary harmonic and alternating-harmonic sums prove \eqref{eq:parity-product}. Nothing here asserts transfer for arbitrary periodic $1/h$ terms; the proof uses the specific parity structure of two-step blocks.
+
+\section{Gamma products for shifted factors and positive polynomials}\label{sec:gamma}
+For $\alpha>-1$, the positive weights $h^{p-1}(h+\alpha)$ have
+\[
+ f_h=\log(1+\alpha/h)=\alpha/h+O(h^{-2}),\qquad
+ \prod_{h=1}^N(1+\alpha/h)=\frac{\Gamma(N+1+\alpha)}{\Gamma(1+\alpha)\Gamma(N+1)}.
+\]
+Fixed-shift Stirling asymptotics yield $P_f=1/\Gamma(1+\alpha)$. Thus
+\begin{equation}\label{eq:one-shift}
+ \frac{Z_n(h^{p-1}(h+\alpha))}{Z_n(h^p)}
+ \sim\frac{(r_pn)^\alpha}{\Gamma(1+\alpha)}.
+\end{equation}
+For $c>-1$, the fully shifted powers similarly give
+\begin{equation}\label{eq:all-shift}
+ \frac{Z_n((h+c)^p)}{Z_n(h^p)}
+ \sim\frac{(r_pn)^{pc}}{\Gamma(1+c)^p}.
+\end{equation}
+More generally, if $c_j>-1$, $b_j>0$, and $\sum_jb_j=p$, then the weight
+$\prod_j(h+c_j)^{b_j}$ has $a=\sum_jb_jc_j$ and product constant
+$\prod_j\Gamma(1+c_j)^{-b_j}$. The parameters in these statements are fixed as $n\to\infty$.
+
+For a real positive-at-positive-integers polynomial
+$Q(x)=\kappa\prod_{j=1}^d(x+c_j)$, positivity excludes a negative-integer $c_j$. Let $a=\sum_jc_j\in\mathbb R$. The logarithm of the \emph{whole positive value} has expansion
+\[
+ \log\frac{Q(h)}{\kappa h^d}=\frac ah+O(h^{-2}).
+\]
+No logarithm of an individual negative linear factor is introduced. The gamma functional equation proves the exact identity
+\begin{equation}\label{eq:finite-gamma}
+ \prod_{h=1}^N\frac{Q(h)}{\kappa h^d}
+ =\prod_{j=1}^d\frac{\Gamma(N+1+c_j)}{\Gamma(1+c_j)\Gamma(N+1)}.
+\end{equation}
+For every fixed shift, real or complex, the gamma quotient is asymptotic to $N^{c_j}$ along positive real $N$. Therefore the normalized product tends to
+$\prod_j\Gamma(1+c_j)^{-1}$. Theorem~\ref{thm:harmonic} proves \eqref{eq:polynomial-relative}. Its product constant is positive by \eqref{eq:harmonic}; hence the gamma product is real and positive too. This argument handles conjugate roots and real shifts below $-1$ without a branch ambiguity.
+
+For example the cubic $h(h^2+1)$ is positive and has shifts $0,i,-i$, so
+\[
+ \prod_j\Gamma(1+c_j)=\Gamma(1+i)\Gamma(1-i)=\frac\pi{\sinh\pi},\qquad a=0.
+\]
+Its leading ratio to pure cubic moments is $\sinh\pi/\pi$. The real cubic
+$h(h-6/5)(h-9/5)$ is also positive at every positive integer: both nontrivial factors are negative at $h=1$, and both are positive for $h\ge2$. Here $a=-3$ and the positive gamma product is $\Gamma(-1/5)\Gamma(-4/5)$. A quartic example is $h^2(h-3/2)^2$, with $a=-3$ and gamma product $\Gamma(-1/2)^2=4\pi$. Positivity on the integers, rather than positivity of each factor on the whole positive real axis, is the relevant hypothesis.
+
+\subsection{Absolute amplitudes and a broader residual corollary}
+Combining \eqref{eq:polynomial-relative} with Theorem~\ref{thm:absolute} at $p=d$ gives exactly \eqref{eq:polynomial-absolute}. Its amplitude is $\mathcal{C}_dr_d^a/\prod_j\Gamma(1+c_j)$, its exponential base is $\kappa r_d^d$, and its remaining power is $n^{a-1/2}$. This multiplication yields only a relative $o(1)$ error for the general family, because the harmonic transfer has no stated logarithmic rate. For $d=3,4$ it gives \eqref{eq:cubic-main} and \eqref{eq:quartic-main}; the next two sections recover their pure baselines by independent classical anchors.
+
+The small-product lemma also permits a broader, carefully separated residual hypothesis.
+\begin{corollary}[Convergent residuals after harmonic transfer]\label{cor:broad-residual}
+Let $p>0$, $\kappa>0$, $a,b\in\mathbb R$ be fixed, and suppose $\lambda_h>0$ with
+\[
+ \log\frac{\lambda_h}{\kappa h^p}=\frac ah+\frac{b(-1)^h}{h}+r_h,
+ \qquad r_h=o(1/h),\qquad\sum_{h\ge1}r_h\text{ convergent}.
+\]
+The residual sum is an ordinary real series and need not converge absolutely. Then
+\begin{equation}\label{eq:broad-absolute}
+ Z_n(\lambda)\sim \mathcal{C}_pr_p^aP_f\,(\kappa d_p)^n(n!)^pn^{a-1/2},
+ \qquad P_f=\exp\left(a\gamma-b\log2+\sum_{h\ge1}r_h\right)>0.
+\end{equation}
+Equivalently $P_f=\lim_{N\to\infty}N^{-a}\prod_{h\le N}\lambda_h/(\kappa h^p)$.
+\end{corollary}
+\begin{proof}
+First apply Theorem~\ref{thm:parity} to the exact comparison weights
+$\lambda_h^{(0)}=h^p\exp(a/h+b(-1)^h/h)$, with zero residual. Next compare $\lambda_h/\kappa$ to $\lambda_h^{(0)}$ using Lemma~\ref{lem:small-product}; both are in a common power class and their log ratio is precisely $r_h$. This contributes $\exp(\sum r_h)$. Multiply by the pure-power equivalent and restore the exact homogeneous factor $\kappa^n$. Ordinary harmonic and alternating harmonic summation gives the product limit.
+\end{proof}
+Thus the original shape/parity proof is not being applied directly to a more irregular residual. The extension is a composition with a separate lemma, and still does not cover arbitrary $\ell^1$ residuals without the pointwise $o(1/h)$ condition.
+
+\section{The classical Dixon anchor and the absolute cubic law}\label{sec:dixon}
+The parity theorem connects pure cubic weights with an exactly solved classical continued fraction. We track the analytic normalization because three different indices occur: Dyck semilength $n$, the power $3n+1$ in a Dixon function, and its factorial $(3n+1)!$.
+
+\subsection{The formal Laplace fraction and signs}
+Let $\operatorname{sm}$ and $\operatorname{cm}$ be the analytic-at-zero solutions of
+\[
+ \operatorname{sm}'=\operatorname{cm}^2,\qquad
+ \operatorname{cm}'=-\operatorname{sm}^2,\qquad
+ \operatorname{sm}(0)=0,\quad\operatorname{cm}(0)=1.
+\]
+Conrad--Flajolet \cite[Theorem 2]{conrad}, on PDF pages 11--12, give the formal Laplace identity
+\begin{equation}\label{eq:dixon-laplace}
+ \int_0^\infty\operatorname{sm}(u)\ee^{-u/x}\dd u
+ =\cfrac{x^2}{1+\cfrac{d_1x^3}{1+\cfrac{d_2x^3}{1+\ddots}}},
+\end{equation}
+where
+\begin{equation}\label{eq:dixon-weights}
+ d_{2j-1}=(3j-2)(3j-1)^2,\qquad
+ d_{2j}=(3j)^2(3j+1)\quad(j\ge1).
+\end{equation}
+The integral is interpreted term by term: $u^m/m!$ maps to $x^{m+1}$. We do not require a convergent improper integral on the positive real axis.
+
+Substitute $z=-x^3$ in the Dyck S-fraction \eqref{eq:Sfraction}. Comparison with \eqref{eq:dixon-laplace} shows
+\[
+ \operatorname{sm}(z)=\sum_{n\ge0}(-1)^nZ_n(d)\frac{z^{3n+1}}{(3n+1)!}.
+\]
+Following Conrad--Flajolet's equation (19), define
+$\operatorname{smh}(z)=-\operatorname{sm}(-z)$. Since
+$(-1)^n(-1)^{3n+1}=-1$, all signs cancel:
+\begin{equation}\label{eq:smh-series}
+ \operatorname{smh}(z)=\sum_{n\ge0}Z_n(d)\frac{z^{3n+1}}{(3n+1)!}.
+\end{equation}
+The first moments are $1,4,160,20800,6476800$. The package compares the polynomial ODE coefficients with an independent Dyck computation through $n=48$; the formal source theorem supplies the identity for all $n$.
+
+\subsection{Checking the analytic urn theorem}
+To establish the complete dominant-singularity statement, use Flajolet--Gabarr\'o--Pekari's \emph{Analytic urns} \cite{urns}, Theorems 1--2 and Corollary 1. For their replacement matrix
+\[
+ \begin{pmatrix}-1&2\\2&-1\end{pmatrix},
+\]
+the parameters are $a=b=s=1$ and $h=a+b+s=3$. The initial state is $a_0=1,b_0=0$, with $t_0=a_0+b_0=1$. The conditions $a,b,s>0$ and the tenability/divisibility conditions
+\[
+ a\mid a_0,\quad b\mid b_0,\quad a\mid(b+s),\quad b\mid(a+s)
+\]
+are all satisfied. Moreover $a_0=a,b_0=0$ is exactly the initial specialization of Theorem 2.
+
+Theorem 1's auxiliary functions become
+\begin{equation}\label{eq:urn-specialization}
+ \delta(u)=(1-u^3)^{1/3},\qquad
+ J(u)=\int_0^u(1-v^3)^{-2/3}\dd v,\qquad
+ \psi(J(u))=\frac{u}{(1-u^3)^{1/3}}.
+\end{equation}
+The roots are the analytic determinations at zero. We rename the source's auxiliary integral $J$ to avoid collision with our $I_3$.
+
+Put $y=u/(1-u^3)^{1/3}$. Direct differentiation gives
+\[
+ \frac{\dd y}{\dd u}=(1-u^3)^{-4/3},\quad
+ \frac{\dd J}{\dd u}=(1-u^3)^{-2/3},\quad
+ 1+y^3=(1-u^3)^{-1}.
+\]
+Hence $\psi(0)=0$ and $\psi'=(1+\psi^3)^{2/3}$ near zero. Defining $c=(1+\psi^3)^{1/3}$ gives the polynomial initial-value problem
+\[
+ \psi'=c^2,\qquad c'=\psi^2,\qquad\psi(0)=0,\quad c(0)=1.
+\]
+The pair $(-\operatorname{sm}(-z),\operatorname{cm}(-z))$ satisfies the same equations. Local analytic uniqueness thus identifies $\psi=\operatorname{smh}$, with no untracked rescaling.
+
+\subsection{All three dominant poles and their phases}
+Theorem 2 of \cite{urns} gives the radius
+\begin{equation}\label{eq:rho-dixon}
+ \rho_D=J(1)=\frac13B(1/3,1/3)
+ =\frac{\Gamma(1/3)^2}{3\Gamma(2/3)}.
+\end{equation}
+It proves analyticity inside $|z|<\rho_D$, identifies exactly the three singularities
+$\rho_D,\rho_D\omega,\rho_D\omega^2$ on the circle, where $\omega=\ee^{2\pi i/3}$, and supplies analytic continuation in sectors of angle larger than $\pi$ at them, with regularity elsewhere on that circle. These global facts are needed for coefficient transfer; locating a positive real pole alone would not suffice.
+
+The source's displayed singular expansion (23), whose leading exponent is $-t_0/s$, specializes to
+\begin{equation}\label{eq:dixon-positive-pole}
+ \psi(z)=(\rho_D-z)^{-1}\mathcal A((\rho_D-z)^3),\qquad\mathcal A(0)=1,
+\end{equation}
+with $\mathcal A$ analytic near zero. The residue at $\rho_D$ is therefore $-1$ in the usual $(z-\rho_D)^{-1}$ convention. The support of \eqref{eq:smh-series}, or the initial-value equations, gives $\psi(\omega z)=\omega\psi(z)$. At $z_j=\rho_D\omega^j$ the principal part is consequently
+\begin{equation}\label{eq:dixon-pole-phases}
+ \frac{\omega^{2j}}{\rho_D\omega^j-z},\qquad
+ \operatorname{Res}_{z=z_j}\psi(z)=-\omega^{2j}.
+\end{equation}
+Its contribution to $[z^m]\psi(z)$ is
+$\rho_D^{-m-1}\omega^{j(1-m)}$. For $m=3n+1$ all three phases are one. The singularity-transfer argument in Corollary 1 of \cite{urns} therefore gives
+\begin{equation}\label{eq:dixon-asymptotic}
+ [z^{3n+1}]\operatorname{smh}(z)\sim3\rho_D^{-3n-2},\qquad
+ Z_n(d)\sim3\Gamma(3n+2)\rho_D^{-3n-2}.
+\end{equation}
+The factor three counts the equally contributing poles; the extra inverse radius comes from $1/(\rho_D-z)$ rather than $1/(1-z/\rho_D)$. No sharper source remainder is needed or transferred to the final perturbed family.
+
+The beta integral for $I_3$ and duplication at $1/3$ show
+\begin{equation}\label{eq:rho-I}
+ I_3=\frac{\Gamma(1/3)\sqrt\pi}{3\Gamma(5/6)},\quad
+ \rho_D=2^{1/3}I_3,\quad
+ r_3=\frac{2^{2/3}}{I_3}=\frac{4\sqrt3\pi}{\Gamma(1/3)^3}.
+\end{equation}
+For comparison, the real change of variables in \eqref{eq:urn-specialization} also gives
+$\rho_D=\int_0^\infty(1+y^3)^{-2/3}\dd y$, but that real integral does not replace the three-pole theorem.
+
+\subsection{The exact parity product and pure cubic amplitude}
+With $\kappa_D=27/8$, the weights \eqref{eq:dixon-weights} are
+\[
+ d_h=\begin{cases}
+ \kappa_D(h-1/3)(h+1/3)^2,&h\text{ odd},\\
+ \kappa_Dh^2(h+2/3),&h\text{ even}.
+ \end{cases}
+\]
+They are positive. Their first logarithmic coefficients are $1/3$ on odd heights and $2/3$ on even heights, so
+\begin{equation}\label{eq:dixon-harmonic}
+ \log\frac{d_h}{\kappa_Dh^3}
+ =\frac{1/2}{h}+\frac{(1/6)(-1)^h}{h}+O(h^{-2}).
+\end{equation}
+For an even cutoff $N=2m$, separating the factors gives the exact product
+\begin{align}\label{eq:dixon-product}
+ \prod_{h=1}^{2m}\frac{d_h}{\kappa_Dh^3}
+ &=\frac{\Gamma(m+1/3)\Gamma(m+2/3)^2\Gamma(m+4/3)}
+ {\Gamma(m+1/2)^3\Gamma(m+1)}\notag\\
+ &\hspace{1em}\cdot\frac{\Gamma(1/2)^3}{\Gamma(1/3)\Gamma(2/3)^2\Gamma(4/3)}.
+\end{align}
+The first quotient is asymptotic to $m^{1/2}$. Reflection and recurrence reduce the constant on the second line to $9/(4\sqrt\pi)$. The extra odd-cutoff factor tends to one; hence the full limit is
+\begin{equation}\label{eq:dixon-product-limit}
+ \lim_{N\to\infty}N^{-1/2}\prod_{h=1}^N\frac{d_h}{\kappa_Dh^3}
+ =\frac9{4\sqrt{2\pi}}.
+\end{equation}
+The parity theorem now gives
+\begin{equation}\label{eq:dixon-transfer}
+ \frac{Z_n(d)}{Z_n(h^3)}\sim
+ \kappa_D^n(r_3n)^{1/2}\frac9{4\sqrt{2\pi}}.
+\end{equation}
+Finally Stirling's formula yields
+\[
+ \frac{\Gamma(3n+2)}{(n!)^3}\sim\frac{3^{3n+3/2}}{2\pi}.
+\]
+Divide \eqref{eq:dixon-asymptotic} by \eqref{eq:dixon-transfer} and use \eqref{eq:rho-I}. The result is
+\begin{equation}\label{eq:pure-cubic}
+ Z_n(h^3)\sim\sqrt{\frac6\pi}\,I_3^{-3/2}
+ \left(\frac4{I_3^3}\right)^n(n!)^3n^{-1/2}.
+\end{equation}
+Together with \eqref{eq:polynomial-relative}, this proves \eqref{eq:cubic-main}. The intermediate Dixon fraction is genuinely parity-dependent; it is not the S-fraction for A218221 itself.
+
+\section{The quartic baseline and parallel amplitudes}\label{sec:quartic}
+The pure quartic equivalent established in Report 199 is
+\begin{equation}\label{eq:pure-quartic}
+ Z_n(h^4)\sim\sqrt{\frac2\pi}\,r^{4n+2}(n!)^4n^{-1/2},\qquad
+ r=\frac{\sqrt2}{I_4}=\frac{8\sqrt\pi}{\Gamma(1/4)^2}.
+\end{equation}
+For completeness, the leading-order normalization can be recovered directly from the classical Berg--Valent comparison \cite{bergvalent} and the summable theorem already proved here. Let $b_n=Z_n(\gamma)$ with $\gamma_h=h^2(h^2-1/4)$ and put
+$K_0=\Gamma(1/4)^2/(4\sqrt\pi)=\sqrt2I_4$. Berg--Valent's equation (3.1) uses the birth--death rates
+\[
+ \lambda_j=(4j+1)(4j+2)^2(4j+3),\qquad
+ \mu_j=(4j-1)(4j)^2(4j+1),\quad\mu_0=0.
+\]
+The alternating S-coefficients $\alpha_{2j+1}=\lambda_j$, $\alpha_{2j}=\mu_j$ satisfy
+$\alpha_h=4h^2(4h^2-1)=16\gamma_h$. Their S-to-J contraction has diagonal $\alpha_{2j}+\alpha_{2j+1}$, with $\alpha_0=0$, and squared off-diagonal $\alpha_{2j+1}\alpha_{2j+2}$, agreeing with their equation (2.31). Thus their moments $s_n$ satisfy $s_n=16^nb_n$.
+
+Their Proposition 3.6.1, pages 194--195, gives
+\begin{equation}\label{eq:BV}
+ b_n=\frac{4\Gamma(4n+2)}{16^nK_0^{4n+2}}
+ \bigl(1+O(25^{-n})\bigr).
+\end{equation}
+Both $\gamma_h$ and $h^4$ lie between $(3/4)h^4$ and $h^4$. Since
+$\log(\gamma_h/h^4)=\log(1-1/(4h^2))=O(h^{-2})$, Theorem~\ref{thm:summable} gives
+\[
+ \frac{b_n}{Z_n(h^4)}\longrightarrow
+ \prod_{h\ge1}\left(1-\frac1{4h^2}\right)=\frac2\pi.
+\]
+The product is Euler's sine product at $1/2$, or \eqref{eq:finite-gamma} with shifts $0,0,-1/2,1/2$. Stirling's formula in \eqref{eq:BV} now yields \eqref{eq:pure-quartic}. This rederives only the leading baseline used here; the finer correction in Report 199 is not needed.
+
+Applying the polynomial relative theorem to \eqref{eq:pure-quartic} proves \eqref{eq:quartic-main}. A harmonic perturbation changes the subleading problem, so neither the baseline's first correction nor the comparison's exponential remainder is carried unchanged into that general family.
+
+\section{OEIS applications and a matching interpretation}\label{sec:applications}
+All identifications in this section use the current displayed definitions or programs as well as exact displayed-prefix checks. Finite prefix agreement alone would not prove a weight identity. Entries were inspected on 4 October 2026; no OEIS or repository record was changed.
+
+\subsection{A216966 and common-opener matching triples}
+The continued fraction for A216966 explicitly uses $\lambda_h=h^3$. Its first terms are
+\[
+ 1,\ 1,\ 9,\ 297,\ 24273,\ 3976209,\ 1145032281,\ 530050022073.
+\]
+A perfect matching on $[2n]$ has an opener at the smaller endpoint of each pair and a closer at the larger. Consider ordered triples of matchings having the same opener set. Scanning the vertices gives a common Dyck path: an opener increments the unmatched-opener count, a closer decrements it, and the count never becomes negative. At a closer of current height $h$, each of the three matchings independently chooses one of its $h$ available earlier openers. Thus the number of decorations of a fixed path is $\prod_hh^{3N_h}$. Conversely these choices produce exactly one ordered triple. Therefore A216966 counts these common-opener matching triples. This elementary interpretation is the cubic analogue of the matching quadruples for pure quartic moments; it does not require any connectedness condition.
+
+Write $D_3=r_3^3=4/I_3^3$ and $C_3=\sqrt{3D_3/(2\pi)}$. Equation~\eqref{eq:pure-cubic} reads
+\begin{equation}\label{eq:A216966}
+ \mathrm{A216966}(n)\sim C_3D_3^n(n!)^3n^{-1/2}.
+\end{equation}
+In gamma notation $D_3=192\sqrt3\pi^3/\Gamma(1/3)^9$. These are exactly the already-posted Kot\v e\v sovec constants described in Section~\ref{sec:results}.
+
+\subsection{A218221 and tetrahedral descent weights}
+A218221's displayed finite-fraction program gives
+$\lambda_h=\binom{h+2}{3}=h(h+1)(h+2)/6$. Thus $\kappa=1/6$, $a=3$, and the gamma product is $\Gamma(1)\Gamma(2)\Gamma(3)=2$. Its first terms are
+\[
+ 1,\ 1,\ 5,\ 65,\ 1725,\ 81225,\ 6181125,\ 710984625.
+\]
+The exact leading consequences are
+\begin{equation}\label{eq:A218221-ratio}
+ \frac{6^n\mathrm{A218221}(n)}{\mathrm{A216966}(n)}\sim\frac{(r_3n)^3}{2},
+\end{equation}
+\begin{equation}\label{eq:A218221}
+ \mathrm{A218221}(n)\sim
+ \sqrt{\frac3{8\pi}}\,r_3^{9/2}
+ \left(\frac{r_3^3}{6}\right)^n(n!)^3n^{5/2}.
+\end{equation}
+The amplitude is equivalently
+$2^{15/2}3^{11/4}\pi^4/\Gamma(1/3)^{27/2}=0.603824587006556\ldots$, matching the posted formula. This is an application of a rigorous cubic baseline plus polynomial transfer. The Dixon weights begin $4,36,100,252,\ldots$; after scaling the first to one they begin $1,9,25,\ldots$, whereas A218221's weights begin $1,4,10,\ldots$. The parity theorem is a substantive bridge, not an identification of these two S-fractions.
+
+\subsection{Lemniscatic and tree examples in degree four}
+The pure quartic moment sequence is A227887, with $\lambda_h=h^4$. Its first terms are
+\[
+ 1,\ 1,\ 17,\ 1585,\ 485729,\ 372281761.
+\]
+The following three examples are classical elliptic/tree families, used as applications and normalization tests \cite{oeisquartic}.
+
+A144853 identifies its S-fraction coefficients with A187756, namely
+\[
+ \lambda_h=\frac{h^2(4h^2-1)}3
+ =\frac43h^2(h-1/2)(h+1/2).
+\]
+Here $a=0$ and the gamma product is $\pi/2$. Therefore
+\begin{equation}\label{eq:A144853}
+ \mathrm{A144853}(n)\sim\frac2\pi\sqrt{\frac2\pi}\,r^2
+ \left(\frac43r^4\right)^n(n!)^4n^{-1/2}.
+\end{equation}
+Its initial values are $1,1,21,2541,1023561,1036809081$. A261000 has weights $h^2(4h^2-1)$ and is exactly
+\begin{equation}\label{eq:A261000}
+ \mathrm{A261000}(n)=3^n\mathrm{A144853}(n).
+\end{equation}
+This also follows from the entries' identical JacobiSD coefficient formulas with their displayed scale factors. Its interpretation is in unordered even-degree bilabeled increasing trees on $2n+1$ nodes, and its first terms are $1,3,189,68607,82908441$.
+
+A144849 explicitly uses $h\,\mathrm{A139757}(h)/3$, where
+$\mathrm{A139757}(h)=(h+1)(2h+1)^2$. Thus
+\[
+ \lambda_h=\frac{h(h+1)(2h+1)^2}{3}
+ =\frac43h(h+1/2)^2(h+1).
+\]
+Its shift sum is $a=2$ and gamma product is $\pi/4$, giving
+\begin{equation}\label{eq:A144849}
+ \mathrm{A144849}(n)\sim\frac4\pi\sqrt{\frac2\pi}\,r^4
+ \left(\frac43r^4\right)^n(n!)^4n^{3/2}.
+\end{equation}
+It begins $1,6,336,77616,50916096,76307083776$. The entry gives squared sine-lemniscate and increasing bilabeled strict binary tree interpretations, the latter with $4n+2$ labels. In particular the comparison within this classical family is
+\begin{equation}\label{eq:tree-ratio}
+ \frac{\mathrm{A144849}(n)}{\mathrm{A144853}(n)}\sim2r^2n^2.
+\end{equation}
+This explains the exponent and constant uniformly through the shifts. We do not claim that these classical elliptic asymptotics are new.
+
+\subsection{Pure quartic moments are not A338634}
+Let $M(z)=\sum_{n\ge0}\mathrm{A227887}(n)z^n$. A338634 is the distinct formal transform $A(x)$ satisfying
+\[
+ A(x)=M(x/A(x)^2),\qquad M(z)=A(zM(z)^2).
+\]
+Its positive-index coefficients are the even free cumulants of the symmetric moment sequence with even moments $Z_n(h^4)$ and vanishing odd moments. For example it begins
+$1,1,15,1490,472475,367254494$, rather than the raw-moment prefix above. Report 199 treats that transform and its connected noncrossing-closure interpretation. The transfer theorems in this article concern the raw weighted-Dyck moments $Z_n$, and must not be applied to A338634 by silently identifying it with $Z_n(h^4)$.
+
+\section{Classical low-degree normalization checks}\label{sec:classical}
+The values $I_1=2$ and $I_2=\pi/2$ give $r_1=2$ and $r_2=4/\pi$. The following exact families independently test the semilength convention, the harmonic power, and the gamma constant. They are classical benchmarks rather than new targets.
+
+\subsection{Associated Hermite moments}
+For $c>-1$, the normalized associated-Hermite recurrence with coefficient $h+c$ has density
+\begin{equation}\label{eq:hermite-density}
+ \varrho_c(y)=\frac{1}{\sqrt{2\pi}\Gamma(c+1)|D_{-c}(iy)|^2},\qquad
+ Z_n(h+c)=\int_{\mathbb R}y^{2n}\varrho_c(y)\dd y.
+\end{equation}
+Here $D_\nu$ is the parabolic-cylinder function. The normalization follows by rescaling Askey--Wimp's recurrence
+$H_{m+1}=2xH_m-2(m+c)H_{m-1}$ using
+$P_m(y)=2^{-m/2}H_m(y/\sqrt2;c)$. The displayed recurrence and orthogonality measure were checked in DLMF 18.30.13--15, which attributes them to Askey--Wimp \cite{dlmf,askeywimp}; the original publisher record, but not its full paper, was inspected. Drake gives the associated-Hermite matching context \cite{drake}.
+
+DLMF 12.9.1 applies along the imaginary axis and gives
+\[
+ \varrho_c(y)\sim\frac{|y|^{2c}\ee^{-y^2/2}}{\sqrt{2\pi}\Gamma(c+1)}\quad(|y|\to\infty).
+\]
+For any fixed tail cutoff the compact part of the moment integral is negligible compared with the Gaussian-tail moment. Comparing tails and then evaluating the gamma integral yields
+\[
+ Z_n(h+c)\sim\frac{2^{n+c}\Gamma(n+c+1/2)}{\sqrt\pi\Gamma(c+1)}.
+\]
+Since $Z_n(h)=(2n-1)!!=2^n\Gamma(n+1/2)/\sqrt\pi$ exactly,
+\begin{equation}\label{eq:hermite-ratio}
+ \frac{Z_n(h+c)}{Z_n(h)}\sim\frac{(2n)^c}{\Gamma(1+c)},
+\end{equation}
+in agreement with \eqref{eq:one-shift}. There is no uniformity claim as $c\downarrow-1$ or as $c$ grows with $n$.
+
+\subsection{The secant-power family}
+For $\beta=1+\alpha>0$, the exact EGF is
+\begin{equation}\label{eq:secant-EGF}
+ \sum_{n\ge0}Z_n(h(h+\alpha))\frac{t^{2n}}{(2n)!}=(\sec t)^\beta.
+\end{equation}
+Deb--Sokal \cite[Section 6.3, Eq. (6.24a) at $k=0$]{debsokal} give the continued-fraction normalization, with attribution to Stieltjes and Rogers. Flajolet's weighted-path treatment supplies the general correspondence \cite{flajolet}. The exact identity can also be checked from the addition law
+\[
+ (\sec(t+u))^\beta=(\sec t)^\beta(\sec u)^\beta
+ (1-\tan t\tan u)^{-\beta},
+\]
+which yields the Jacobi coefficients $h(h+\beta-1)$.
+
+At $R=\pi/2$ the local expansion is
+\[
+ (\sec t)^\beta=R^{-\beta}(1-t/R)^{-\beta}
+ \bigl(1+O((1-t/R)^2)\bigr).
+\]
+The pole or algebraic singularity at $-R$ contributes equally to an even coefficient; no other singularity is on $|t|=R$. Standard coefficient transfer gives
+\[
+ [t^{2n}](\sec t)^\beta\sim
+ \frac{2R^{-2n-\beta}(2n)^{\beta-1}}{\Gamma(\beta)}.
+\]
+Dividing by the $\alpha=0$ case proves
+\begin{equation}\label{eq:secant-ratio}
+ \frac{Z_n(h(h+\alpha))}{Z_n(h^2)}\sim
+ \frac{(4n/\pi)^\alpha}{\Gamma(1+\alpha)}.
+\end{equation}
+The two nearest singularities and the EGF index $2n$ account for the powers of two. The distinct weights $(h+c)^2$ are not identified with this EGF: $h(h+2c)$ differs from $(h+c)^2$ by $c^2$.
+
+The package includes displayed-prefix checks for the associated-Hermite sequences A000698 with its one-term offset, A167872 and A321963, and the appropriate secant-power sequences A000182, A002105, A326328, A395382 and A395383. These identifications are used only as finite normalization checks, with their sign and scale conventions stored explicitly.
+
+\section{A safeguarded inverse for factorial-power growth}\label{sec:inverse}
+The absolute harmonic and polynomial formulas are useful for locating a large threshold, but their relative $o(1)$ errors do not justify an unconditional rounding rule. The following lemma states exactly what a leading equivalent supplies.
+
+\begin{theorem}[Inclusive factorial-power inverse]\label{thm:inverse}
+Let $(z_n)_{n\ge0}$ be positive and suppose, for fixed $C>0$, $B>0$, $p>0$, and $q\in\mathbb R$,
+\begin{equation}\label{eq:inverse-template}
+ z_n\sim CB^n(n!)^pn^q.
+\end{equation}
+Define $N(Y)=\min\{n\ge0:z_n\ge Y\}$. Set
+\[
+ R=B^{1/p},\qquad b=q+p/2,\qquad C_{\log}=\log[C(2\pi)^{p/2}].
+\]
+For sufficiently large $Y$, write $L=\log Y$ and define
+\begin{equation}\label{eq:inverse-center}
+ t=\frac{L}{pW_0(RL/(p\ee))},\qquad
+ \xi=t-\frac{b\log t+C_{\log}}{p\log(Rt)},
+\end{equation}
+where $W_0$ is the principal Lambert branch. There exists a nonnegative radius
+$\eta(Y)=o(1/\log t)$ such that
+\begin{equation}\label{eq:two-ceilings}
+ \lceil\xi-\eta(Y)\rceil\le N(Y)\le\lceil\xi+\eta(Y)\rceil.
+\end{equation}
+The two bounding integers are equal or consecutive for all sufficiently large $Y$. Equivalently, for each fixed $\varepsilon>0$, eventually
+\begin{equation}\label{eq:epsilon-ceilings}
+ \left\lceil\xi-\frac\varepsilon{\log t}\right\rceil
+ \le N(Y)\le
+ \left\lceil\xi+\frac\varepsilon{\log t}\right\rceil.
+\end{equation}
+The onset may depend on the sequence and $\varepsilon$ and is not effective from \eqref{eq:inverse-template} alone.
+\end{theorem}
+\begin{proof}
+Write $z_n=CB^n(n!)^pn^q(1+e_n)$ with $e_n\to0$. Then
+\[
+ \frac{z_{n+1}}{z_n}=B(n+1)^p(1+1/n)^q\frac{1+e_{n+1}}{1+e_n}
+ \sim Bn^p\longrightarrow\infty.
+\]
+Thus for some $n_*$ the sequence is strictly increasing on $n\ge n_*$ and tends to infinity. No global monotonicity assumption is needed. To ensure that the first crossing belongs to this tail, impose the finite-prefix safeguard
+\begin{equation}\label{eq:prefix-safeguard}
+ Y>\max_{0\le n\le n_*}z_n.
+\end{equation}
+It holds automatically for all sufficiently large $Y$, but must be checked or otherwise certified for a concrete threshold.
+
+Stirling's formula gives
+\begin{equation}\label{eq:G}
+ \log z_n=G(n)+o(1),\qquad
+ G(x)=px\log(Rx/\ee)+b\log x+C_{\log}.
+\end{equation}
+The $O(1/n)$ Stirling term is absorbed into $o(1)$; the unknown $e_n$ need not have a power rate. Let $F$ be piecewise-linear interpolation of $\log z_n$ on $[n_*,\infty)$. It is continuous and strictly increasing. Since
+$G''(x)=p/x-b/x^2=O(1/x)$, its own linear-interpolation error is $O(1/x)$. Interpolation of the discrete $o(1)$ term still tends to zero, so
+\begin{equation}\label{eq:interpolation}
+ F(x)=G(x)+o(1)\quad(x\to\infty).
+\end{equation}
+For $Y$ satisfying \eqref{eq:prefix-safeguard}, let $x_Y$ be the unique real solution of $F(x_Y)=L$. The inclusive convention gives the exact equality
+\begin{equation}\label{eq:exact-ceiling}
+ N(Y)=\lceil x_Y\rceil.
+\end{equation}
+In particular if $Y=z_m$ then $x_Y=m$ and the first crossing is $m$.
+
+The Lambert equation in \eqref{eq:inverse-center} is exactly
+\begin{equation}\label{eq:t-L}
+ pt\log(Rt/\ee)=L.
+\end{equation}
+As $Y\to\infty$, $t\to\infty$. Put $d=\xi-t$; the displayed formula gives $d=O(1)$. For $G_0(x)=px\log(Rx/\ee)$, one has $G_0'(x)=p\log(Rx)$ and $G_0''(x)=p/x$. Taylor expansion over the bounded displacement $d$ yields
+\[
+ G_0(t+d)=L+p\log(Rt)d+O(1/t),\qquad
+ b\log(t+d)=b\log t+O(1/t).
+\]
+The chosen $d$ cancels the logarithmic and constant terms, proving
+\begin{equation}\label{eq:center-residual}
+ G(\xi)-L=O(1/t).
+\end{equation}
+This is the residual of the explicit center, not an estimate for the unknown error in \eqref{eq:inverse-template}.
+
+Comparing $F((1\pm\varepsilon)t)$ with $L$ for fixed small $\varepsilon>0$ in \eqref{eq:interpolation}--\eqref{eq:t-L} proves $x_Y\sim t$. Since $F(x_Y)=L$, equations~\eqref{eq:interpolation} and \eqref{eq:center-residual} give
+$G(x_Y)-G(\xi)=o(1)$. On the interval between $x_Y$ and $\xi$,
+\[
+ G'(x)=p\log(Rx)+b/x\sim p\log t.
+\]
+The mean-value theorem consequently gives $x_Y-\xi=o(1/\log t)$. Take
+$\eta(Y)=|x_Y-\xi|$, or any larger radius of the same order. Monotonicity of ceilings and \eqref{eq:exact-ceiling} prove \eqref{eq:two-ceilings} and \eqref{eq:epsilon-ceilings}. Eventually $2\eta<1$, so the ceilings differ by at most one.
+\end{proof}
+
+The theorem is intentionally qualitative. Multiplying the template by
+$\exp(1/\log(n+2))$ preserves \eqref{eq:inverse-template}, while its logarithmic perturbation shifts the continuous inverse by order $1/(\log t)^2$. Thus an $o(1/(t\log t))$ pre-rounding radius cannot follow from a leading equivalent alone. Nor may one erase the two-ceiling safeguard near an integer boundary. A concrete certification requires an explicit remainder or exact evaluations near the candidate index, together with the finite-prefix check.
+
+For any family in Corollary~\ref{cor:broad-residual}, use $C=\mathcal{C}_pr_p^aP_f$, $B=\kappa d_p$, and $q=a-1/2$. For a degree-$d$ polynomial use $p=d$, $C=\mathcal{C}_dr_d^a/\prod_j\Gamma(1+c_j)$, and $B=\kappa r_d^d$. The generic finite-prefix safeguard remains part of the first-crossing statement.
+
+For a cubic polynomial in Theorem~\ref{thm:polynomial-main}, put
+\[
+ C=C_Q=\frac{\sqrt{6/\pi}\,I_3^{-3/2}r_3^a}{\prod_j\Gamma(1+c_j)},\quad
+ B=r_3^3\kappa,\quad p=3,\quad q=a-1/2.
+\]
+Then $R=r_3\kappa^{1/3}$, $b=a+1$, and
+$C_{\log}=\log[(2\pi)^{3/2}C_Q]$. For a quartic polynomial, use
+\[
+ C=C_Q=\frac{\sqrt{2/\pi}\,r^{2+a}}{\prod_j\Gamma(1+c_j)},\quad
+ B=\kappa r^4,\quad p=4,\quad q=a-1/2,
+\]
+so $R=r\kappa^{1/4}$, $b=a+3/2$, and $C_{\log}=\log(4\pi^2C_Q)$.
+
+\subsection{A sharper logarithmic envelope for pure powers}
+For unscaled pure weights $h^p$, the quantitative baseline supplies a smaller asymptotic radius. It still does not supply effective numerical bounds.
+
+\begin{corollary}[Pure-power logarithmic inverse]\label{cor:pure-inverse}
+Fix $p>0$, write $m_n=Z_n(h^p)$, and define
+$N_p(Y)=\min\{n\ge0:m_n\ge Y\}$. In \eqref{eq:inverse-center} take
+\[
+ R=r_p,\qquad b=(p-1)/2,\qquad C_{\log}=\log[\mathcal{C}_p(2\pi)^{p/2}].
+\]
+There are constants $C'_p>0$ and $Y_p$ such that for $Y\ge Y_p$,
+\begin{equation}\label{eq:pure-inverse}
+ \left\lceil\xi-\frac{C'_p}{(\log t)^3}\right\rceil
+ \le N_p(Y)\le
+ \left\lceil\xi+\frac{C'_p}{(\log t)^3}\right\rceil.
+\end{equation}
+The two integers are equal or consecutive eventually. The constants and onset are not supplied effectively.
+\end{corollary}
+\begin{proof}
+Appending $UD$ at height zero injects $\Dyck_n$ into $\Dyck_{n+1}$ without changing a weight, since $\lambda_1=1$. For $n\ge1$, the mountain of semilength $n+1$ is a positive-weight path outside that image. Therefore $m_0=m_1=1$ and $m_{n+1}>m_n$ for $n\ge1$. For $Y>1$ there is consequently no finite-prefix ambiguity.
+
+Let $F$ linearly interpolate $\log m_n$ on integers $n\ge1$. Theorem~\ref{thm:absolute} and Stirling give
+\[
+ F(x)=G(x)+O_p((\log x)^{-2}),\qquad
+ G(x)=px\log(r_px/\ee)+\frac{p-1}{2}\log x+C_{\log}.
+\]
+At nonintegers the interpolation error of $G$ is $O_p(1/x)$ because $G''(x)=O_p(1/x)$, so the displayed error is unchanged. If $F(x_Y)=\log Y$, strict increase and the inclusive convention give $N_p(Y)=\lceil x_Y\rceil$, including $Y=m_k$.
+
+The same Lambert equation and bounded correction as in Theorem~\ref{thm:inverse} give $G(\xi)-\log Y=O_p(1/t)$ and $x_Y\sim t$. Since $G'$ is asymptotic to $p\log t$ between $x_Y$ and $\xi$, the mean-value theorem yields
+\[
+ |x_Y-\xi|=O_p((\log t)^{-3}).
+\]
+Choose a sufficiently large fixed implied constant and use monotonicity of the ceiling. Once $2C'_p/(\log t)^3<1$, the bounding integers differ by at most one.
+\end{proof}
+This corollary is stated for $h^p$ itself. Scaling by $\kappa<1$ need not preserve the immediate monotonicity argument, and a concrete scaled-family inverse must retain a finite-prefix safeguard. More importantly, the pure-power logarithmic rate has not been proved for a general harmonic or polynomial perturbation. Those families retain Theorem~\ref{thm:inverse}'s $o(1/\log t)$ radius. Neither enclosure is an unconditional single-ceiling formula.
+
+\section{Exact checks and reproducibility}\label{sec:repro}
+The companion archive contains the complete TeX source and PDF, portable Python programs, exact integer and rational data, displayed-source fixtures with provenance, numerical diagnostics, a README, and deterministic file manifests. It redistributes no third-party paper PDF. The mathematical proofs are the preceding arguments; finite checks are independent consistency tests, not substitutes for limiting estimates.
+
+The principal moment computation is a height-state walk recurrence. With $v_s(h)$ the total weight of nonnegative prefixes of length $s$ ending at $h$, start from $v_0(0)=1$ and apply
+\[
+ v_{s+1}(h+1)\mathrel{+}=v_s(h),\qquad
+ v_{s+1}(h-1)\mathrel{+}=\lambda_hv_s(h)\quad(h\ge1).
+\]
+Then $Z_n=v_{2n}(0)$. A separate first-return recurrence uses elevated moments $M_{a,n}$ for paths based at height $a$:
+\[
+ M_{a,0}=1,\qquad M_{a,n}=\sum_{k=0}^{n-1}\lambda_{a+1}M_{a+1,k}M_{a,n-1-k}.
+\]
+An independently truncated formal S-fraction checks the same prefixes. Integer scaling is explicit for rational-weight examples; floating-point arithmetic is not used in these equality tests.
+
+The public exact suite includes:
+\begin{itemize}[leftmargin=1.6em]
+ \item moment prefixes through $n=256$ for A216966, A218221, A227887, A144849, A144853, A261000, and the Dixon comparison, together with a separately computed A338634 transform;
+ \item all inspected displayed moment terms, with offsets and signs explicit, and the displayed A187756 weight values; unexamined b-files are not claimed as validated;
+ \item independent walk, first-return, and S-fraction prefix comparisons through $n=24$;
+ \item exact total-occupation and primitive negative-excursion deletion identities for varied positive rational laws, including irregular laws and positive polynomials with complex or negative nonintegral shifts;
+ \item exact two-step conditional-pair identities, retaining the boundary case where $DU$ is infeasible;
+ \item Dixon ODE-versus-Dyck coefficients through $n=48$, exact finite product recurrences and gamma-factor algebra, and Gaussian/secant-power formal coefficient checks.
+\end{itemize}
+A separate Freud companion constructs exact rational gamma moments for integer parameters $p=1,\ldots,6$, obtains monic norms through degree $16$ by rational Hankel factorization, and compares the resulting recurrence S-fraction with the moments through $n=16$. It checks the telescoping products, probability and scale normalizations, Gaussian recurrence, and prefactor algebra. Its default receipt records $760$ finite instances, including $60$ independently checked inclusive thresholds for pure integer powers. Separate high-precision output samples eight fixed powers, including $p=1/4,1/2,3/2$, and records the scaled logarithmic residuals and inverse errors. These diagnostics do not estimate universal constants in the $O_p$ bounds, and the exact algebra does not independently prove the cited Freud coefficient theorem.
+
+The code uses explicit exception checks rather than Python assertions, so its validations remain active under \code{python -O}. Code, public fixtures, and output files use relative package paths; no private research paths are needed. The README records exact instance counts and the finite ranges, rather than equating a count of tests with a proof.
+
+Numerical files are explicitly labeled diagnostics. They evaluate arch constants, pure-power and one-shift occupation means, gamma products, cubic and quartic amplitudes, and inclusive inverse thresholds. Such computations can expose normalization mistakes and slow finite convergence, but they are not interval-certified bounds, effective asymptotic onsets, or proofs of the claimed limits. The low-power tests deliberately include $p=1/2$, where finite convergence can be slow.
+
+The rounding warning is visible in a finite example: at the exact integer threshold $Y=\mathrm{A218221}(128)$, the numerical center is $\xi\approx128.000375119743$, so its unguarded ceiling is $129$, whereas exact comparison against all earlier generated terms gives the inclusive crossing $128$. This demonstrates why the two-ceiling convention matters; it does not determine the theorem's unknown asymptotic radius.
+
+The build validates source and package manifests, regenerates the data and PDF in fresh directories, and makes a deterministic ZIP. A normal replay compares every public member with its recorded release value. The release procedure additionally extracts the actual ZIP and runs the documented builds in both ordinary and optimized Python modes, with the caller's bytecode environment unset, then compares every public member and the complete ZIP bytes. PDF identity is scoped to the documented matching TeX toolchain and font files; arbitrary TeX versions are not asserted to be byte-identical. Guard tests cover the listed malformed inputs, manifests, symlinks, and unsafe destinations; they are a finite rejection suite, not a general security certification.
+
+\section{Source inspection and attribution boundaries}\label{sec:sources}
+The preceding external analytic inputs are specific and checkable. For the general-power baseline, Claeys--Krasovsky--Minakov \cite{ckm} was inspected directly at the fixed-weight definitions and equation (2.3), including the explicit all-$\beta>0$ range. The full March 2023 UCLouvain manuscript, September 2022 arXiv v2, and SISSA postprint agree on the needed formula. The publisher record confirms the 2023 publication; its typeset full body was not the inspected copy. The original Kriecherbauer--McLaughlin full body was not retrieved, so its Theorem 1.5 is cited only as explicitly restated in CKM. The varying-weight ensemble coefficient, a later local estimate restricted to $\beta\ge1$, and the source's separate Hankel-determinant constant problem are not substituted for the fixed-weight leading-coefficient theorem used here.
+
+ The Conrad--Flajolet full PDF was available and its Theorem 2, signs, formal-Laplace convention, and equation (19) were inspected. The \emph{Analytic urns} full PDF was inspected at Theorem 1 (PDF pages 8--9), Theorem 2 and displayed expansion (23) (PDF page 13), and Corollary 1 and its coefficient argument (PDF page 16). Journal and PDF pagination differ. Section~\ref{sec:dixon} checks the urn parameters, hypotheses, local identification, all dominant singularities, and all residue phases explicitly.
+
+The quartic comparison uses the Berg--Valent full-text formulas (2.31), (3.1), the definition of $K_0$, and Proposition 3.6.1 on pages 194--195, already inspected for Report 199. Only its stated leading normalization and classical moment theorem are used here. Report 199 is a companion result, not a replacement citation for Berg--Valent.
+
+For low-degree checks, the DLMF formulas for associated Hermite and cylinder functions were inspected; the original Askey--Wimp publisher metadata and abstract were available, but its complete original paper was not audited. Drake's arXiv paper and the relevant Deb--Sokal and Flajolet full-text formulas were inspected. Stieltjes and Rogers are historical attributions as recorded in those sources, not unexamined theorem statements invoked to justify a general-$p$ amplitude.
+
+Avdoshkin--Dymarsky's Appendix C already formulates the weighted entropy saddle and equation
+$-f''/(1-f'^2)=p/(2f)$ for height scaling $h\approx2nf(t)$. Its parabola for $p=1$ and sine for $p=2$ translate into the arch here by $y(s)=2f(s/2)$. That is prior for the formal geometry; the singular fixed-height occupation regularization and the precise transfer hypothesis in this article are separate steps. Dymarsky--Smolkin's supplement studies the logarithmic moment correction from a constant shift of asymptotically linear Lanczos coefficients. Its $n$-power is consistent with $a=2c$ for $\lambda_h=(h+c)^2$, but the inspected discussion does not supply the exact $\Gamma(1+c)^{-2}$ amplitude under the present hypotheses. These are bounded statements about the inspected portions, not literature-wide absence claims.
+
+For OEIS, A216966 and A218221 already post the equivalents and authorship dates stated earlier, and A216966 also posts \eqref{eq:posted-general}. The A144849 weight formula is explicit in its continued-fraction definition; A144853 uses A187756's coefficients. Peter Bala's associated A144853 note was available as indexed text, while its direct PDF fetch did not yield a usable file in this inspection. Its contents are corroborative, not needed in place of the explicit entry definitions. The elliptic and tree interpretations are known applications, not a claim of new sequence discovery.
+
+Focused literature searches and a bounded read-only screen of the public ProveIt repository sought the sequence identifiers and weighted-Dyck/harmonic topics. Searches also checked the most relevant existing reports; the nearby peak-weight Newton-edge problem concerns a different model. These checks did not establish an exact duplicate of the present full theorem package, but they cannot prove that no equivalent result exists elsewhere. No first-ever proof or priority claim is made.
+
+\section{What is reusable and what remains open}\label{sec:questions}
+The uniform occupation estimate applies to an entire nonsmooth power class, before any arch is known. Its combination with a concrete Freud moment measure and an exact telescoping norm product proves the already-posted absolute formula for all fixed positive powers, without a new saddle fluctuation determinant. It provides a direct way to separate low-height product constants from the macroscopic contribution of a harmonic tail. The direct interpolated concentration avoids the need for a bounded change of measure. The parity argument isolates the cancellation needed by the cubic comparison without imposing independence. These components can be reused separately, with their stated hypotheses.
+
+Several questions remain outside the results proved here:
+\begin{enumerate}[leftmargin=1.8em]
+ \item Can the pure-power logarithmic remainder be sharpened to a proved inverse-power correction for every fixed $p>0$? The current argument controls the published norm error without differentiating it; an asserted smooth recurrence expansion would require additional justification.
+ \item Can harmonic transfer be given an effective rate, including a quantitative shrinking-cutoff occupation estimate? The present fixed-cutoff limit does not determine a universal rate or a numerical onset.
+ \item Which residual classes beyond ordinarily convergent series with $r_h=o(1/h)$ admit amplitude transfer, and which oscillatory $1/h$ terms admit cancellation beyond parity? Arbitrary $\ell^1$ residuals and general periodic terms require further arguments.
+ \item Can fluctuation theory for the arch yield controlled subleading amplitudes for genuinely shifted cubic and quartic families? A complete raw inverse-power expansion would require substantially more than the leading transfer result.
+ \item Can explicit error constants make the two-ceiling inverse a certified finite-threshold method?
+\end{enumerate}
+
+\clearpage
+\begingroup\small
+\begin{thebibliography}{99}
+\bibitem{oeiscubic} OEIS Foundation Inc., \emph{The On-Line Encyclopedia of Integer Sequences}, \href{https://oeis.org/A216966}{A216966} and \href{https://oeis.org/A218221}{A218221}. Cubic formulas by V. Kot\v e\v sovec (25 August 2017; updates 23 September 2020 and 16 March 2024, respectively); general positive-power formula in A216966 COMMENTS (24 September 2020). Entries inspected 4 October 2026.
+\bibitem{ckm} T. Claeys, I. Krasovsky, and O. Minakov, Weak and strong confinement in the Freud random matrix ensemble and gap probabilities, \emph{Commun. Math. Phys.} \textbf{402} (2023), 833--894. \href{https://doi.org/10.1007/s00220-023-04749-y}{doi:10.1007/s00220-023-04749-y}; \href{https://arxiv.org/abs/2209.07253}{arXiv:2209.07253v2} (22 September 2022); \href{https://research.dial.uclouvain.be/server/api/core/bitstreams/7641b207-65d4-4d81-aa94-cd2289e17a23/content}{institutional manuscript dated 28 March 2023}. Equation (2.3) and its fixed-weight definitions directly inspected.
+\bibitem{km} T. Kriecherbauer and K. T.-R. McLaughlin, Strong asymptotics of polynomials orthogonal with respect to Freud weights, \emph{Int. Math. Res. Not.} \textbf{1999}(6), 299--333. \href{https://doi.org/10.1155/S1073792899000161}{doi:10.1155/S1073792899000161}. Theorem 1.5 used as explicitly restated in \cite[Eq. (2.3)]{ckm}; original theorem text not directly inspected.
+\bibitem{conrad} E. van Fossen Conrad and P. Flajolet, The Fermat cubic, elliptic functions, continued fractions, and a combinatorial excursion, \emph{S\'eminaire Lotharingien de Combinatoire} \textbf{54} (2006), B54g. \href{https://arxiv.org/abs/math/0507268}{arXiv:math/0507268} (2005).
+\bibitem{urns} P. Flajolet, J. Gabarr\'o, and H. Pekari, Analytic urns, \emph{Ann. Probab.} \textbf{33}(3) (2005), 1200--1233. \href{https://doi.org/10.1214/009117905000000026}{doi:10.1214/009117905000000026}; \href{https://arxiv.org/abs/math/0407098}{arXiv:math/0407098}.
+\bibitem{bergvalent} C. Berg and G. Valent, The Nevanlinna parametrization for some indeterminate Stieltjes moment problems associated with birth and death processes, \emph{Methods Appl. Anal.} \textbf{1} (1994), 169--209. \href{https://doi.org/10.4310/MAA.1994.v1.n2.a3}{doi:10.4310/MAA.1994.v1.n2.a3}.
+\bibitem{avdoshkin} A. Avdoshkin and A. Dymarsky, Euclidean operator growth and quantum chaos, \emph{Phys. Rev. Research} \textbf{2} (2020), 043234. \href{https://doi.org/10.1103/PhysRevResearch.2.043234}{doi:10.1103/PhysRevResearch.2.043234}; \href{https://arxiv.org/abs/1911.09672}{arXiv:1911.09672}, Appendix C.
+\bibitem{dymarsky} A. Dymarsky and M. Smolkin, Krylov complexity in conformal field theory, \emph{Phys. Rev. D} \textbf{104} (2021), L081702. \href{https://doi.org/10.1103/PhysRevD.104.L081702}{doi:10.1103/PhysRevD.104.L081702}; \href{https://arxiv.org/abs/2104.09514}{arXiv:2104.09514}, supplemental discussion of pole structure and shifted Lanczos coefficients.
+\bibitem{flajolet} P. Flajolet, Combinatorial aspects of continued fractions, \emph{Discrete Math.} \textbf{32} (1980), 125--161. \href{https://algo.inria.fr/flajolet/Publications/Flajolet80b.pdf}{Author-hosted full text}.
+\bibitem{debsokal} B. Deb and A. D. Sokal, Continued fractions for cycle-alternating permutations, \emph{Ramanujan J.} \textbf{65} (2024), 1013--1060. \href{https://doi.org/10.1007/s11139-024-00905-7}{doi:10.1007/s11139-024-00905-7}; \href{https://arxiv.org/abs/2304.06545}{arXiv:2304.06545}.
+\bibitem{dlmf} NIST, \emph{Digital Library of Mathematical Functions}, \href{https://dlmf.nist.gov/18.30}{Section 18.30(iv)}, especially 18.30.13--15, and \href{https://dlmf.nist.gov/12.9}{Section 12.9}, especially 12.9.1. Inspected 4 October 2026.
+\bibitem{askeywimp} R. Askey and J. Wimp, Associated Laguerre and Hermite polynomials, \emph{Proc. Roy. Soc. Edinburgh Sect. A} \textbf{96} (1984), 15--37. \href{https://doi.org/10.1017/S0308210500020412}{doi:10.1017/S0308210500020412}. Original publisher record inspected; formulas used through DLMF.
+\bibitem{drake} D. Drake, The combinatorics of associated Hermite polynomials (2007). \href{https://arxiv.org/abs/0709.0987}{arXiv:0709.0987}.
+\bibitem{oeisquartic} OEIS Foundation Inc., \href{https://oeis.org/A227887}{A227887}, \href{https://oeis.org/A144849}{A144849}, \href{https://oeis.org/A139757}{A139757}, \href{https://oeis.org/A144853}{A144853}, \href{https://oeis.org/A187756}{A187756}, \href{https://oeis.org/A261000}{A261000}, and \href{https://oeis.org/A338634}{A338634}. Entries inspected 4 October 2026.
+\bibitem{oeisclassical} OEIS Foundation Inc., \href{https://oeis.org/A000698}{A000698}, \href{https://oeis.org/A167872}{A167872}, \href{https://oeis.org/A321963}{A321963}, \href{https://oeis.org/A000182}{A000182}, \href{https://oeis.org/A002105}{A002105}, \href{https://oeis.org/A326328}{A326328}, \href{https://oeis.org/A395382}{A395382}, \href{https://oeis.org/A395383}{A395383}, and \href{https://oeis.org/A104133}{A104133}. Displayed source terms used for exact checks; signs, scales and offsets are recorded in the companion data.
+\end{thebibliography}
+\endgroup
+\end{document}
