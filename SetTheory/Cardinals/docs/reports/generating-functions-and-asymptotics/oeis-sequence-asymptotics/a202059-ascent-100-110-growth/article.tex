@@ -12,8 +12,26 @@
 \pdftrailerid{}
 \hypersetup{pdftitle={Ascent sequences avoiding 100 or 110: the sharp linear logarithmic constant (A202059) and factorial logarithmic growth (A202060)},pdfauthor={},pdfsubject={Merged report a202059-ascent-100-110-growth (batch 102): Report 243 (base) and Report 241 of the session bundle}}
 % Added 5 October 2026, batch 102: running head names the Part.
-\newcommand{\PartMark}{a202059-ascent-100-110-growth}
-\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small Ascent sequences avoiding 100 or 110}\fancyhead[R]{\small\PartMark}\fancyfoot[C]{\thepage}
+% Changed 7 October 2026 (cleanup pass): \PartMark was a macro read at shipout, so the
+% page on which Part II begins, whose top half is Part I, was headed "Part II: Report 241".
+% The Part now travels as a mark of its own class; a page on which the Part changes is
+% headed by both names, "<Part at the top of the page> / <Part at its end>".
+\NewMarkClass{a59part}
+\newcommand{\PartMark}[1]{\InsertMark{a59part}{#1}}
+\ExplSyntaxOn
+\cs_new:Npn \__aiiv_part_head:
+  {
+    \mark_if_eq:nnnnTF { page } { a59part } { top } { last }
+      { \mark_use_last:nn { page } { a59part } }
+      {
+        \tl_if_blank:eTF { \mark_use_top:nn { page } { a59part } }
+          { \mark_use_last:nn { page } { a59part } }
+          { \mark_use_top:nn { page } { a59part } \enspace/\enspace \mark_use_last:nn { page } { a59part } }
+      }
+  }
+\NewDocumentCommand \PartHead { } { \__aiiv_part_head: }
+\ExplSyntaxOff
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small Ascent sequences avoiding 100 or 110}\fancyhead[R]{\small\PartHead}\fancyfoot[C]{\thepage}
 \renewcommand{\headrulewidth}{0pt}\setlength{\headheight}{14pt}
 \setlength{\parskip}{4pt}\setlength{\emergencystretch}{2em}
 \setlist{itemsep=2pt,topsep=4pt}\numberwithin{equation}{section}
@@ -31,6 +49,7 @@
 \theoremstyle{plain}\newtheorem{wcorollary}[wremark]{Corollary}
 \makeatletter\g@addto@macro\UrlBreaks{\do\_\do\-}\makeatother
 \begin{document}
+\PartMark{a202059-ascent-100-110-growth}%
 \begin{center}
 {\LARGE\bfseries Ascent Sequences Avoiding 100 or 110}\par\vspace{8pt}
 {\large The sharp linear logarithmic constant for A202059,\\ brackets for A202060, and factorial logarithmic growth}\par\vspace{8pt}
@@ -309,7 +328,7 @@ about other reports are checked against the repository of 5 October 2026.
 \end{itemize}
 
 \part{The sharp linear logarithmic constant for 100 avoidance (Report 243)}\label{a59:part}
-\renewcommand{\PartMark}{Part I: Report 243}
+\PartMark{Part I: Report 243}
 
 \wtag\ Part~I is Report~243 of the session bundle, \emph{The Sharp Linear
 Logarithmic Constant for 100 Avoiding Ascent Sequences}, subtitle
@@ -1022,8 +1041,11 @@ question suggested by the data.
 \item \emph{Is $d_n\le b_n$ for every $n$?} The paragraph after
 Proposition~\ref{a59:prop:finiteupper} declines to claim $u_n\le b_n$. For
 $a_n$ it is false from $n=5$ on in the range below. For $d_n$ the
-inequality holds for $n\le15$, with equality for $n\le8$ (and, by the
-independent check, for $n\le26$; dated note below):
+inequality holds for $n\le15$ (and, by the independent check, for $n\le26$;
+dated note below), with equality for $n\le8$. (Dated note, 7~October 2026:
+the parenthesis first followed ``with equality for $n\le8$'', where it could
+be read as claiming equality up to $n=26$; the table below has
+$b_n-d_n>0$ from $n=9$ on. Only its place changed.)
 \begin{center}
 \small
 \begin{tabular}{@{}rrrrr@{\qquad}rrrrr@{}}
@@ -1119,7 +1141,7 @@ with $n\le15$. This was a careful reading with numerical tests, not a formal
 verification or an external review.
 
 \part{Factorial logarithmic growth of pattern avoiding ascent sequences (Report 241)}\label{a59:g:part}
-\renewcommand{\PartMark}{Part II: Report 241}
+\PartMark{Part II: Report 241}
 
 \wtag\ Part~II is Report~241 of the session bundle, \emph{Factorial
 Logarithmic Growth of Pattern Avoiding Ascent Sequences}, subtitle
@@ -1802,7 +1824,7 @@ locate'' an earlier correction of the conjecture is a non-claim of
 priority, not an open question.
 
 \appendix
-\renewcommand{\PartMark}{Appendix}
+\PartMark{Appendix}
 \section{Provenance, numbering and editorial changes}\label{a59:app:provenance}
 
 \wtag\ Written 5 October 2026 (batch 102).

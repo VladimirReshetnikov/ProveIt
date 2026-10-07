@@ -329,7 +329,17 @@ All in `SetTheory/Cardinals/docs/reports/generating-functions-and-asymptotics/oe
   common class). Part I's `Av(000,100)` lies inside the A202058 class, whose
   factorial-normalized root tends to `8/(3π²)`; here the root of `eₙ/n!`
   is `Θ((log n)^{−2})`, consistent. Pointers in those READMEs are a
-  separate reciprocal-notes commit.
+  separate reciprocal-notes commit. *[Dated note, 7 October 2026: the
+  READMEs of `a202058-ascent-000-growth` and `a294220-ascent-multiplicity-caps`
+  gained their pointers in the batch-102 write of both (`b71fda5be`), those
+  of `a202061-ascent-120-deficit` and `a202062-ascent-201-enumeration` in the
+  cleanup pass of 7 October 2026; "Their READMEs list the family without 100
+  and 110" is therefore out of date. The same write gave `a202058` a Part V
+  (bundle Report 97) with the endpoint laws of its class (Corollary 46.4
+  there): the proportion of values used once tends to `1 − 8/(3π)` and that
+  of distinct values to `1 − 4/(3π)`. Part I's `Av(000,100)` and the common
+  class `Av(000,100,110)` here are subclasses of that class; no theorem is
+  shared.]*
 - `a098569-self-modified-ascents` (new in batch 102, Report 242, labels
   `pdt:`, written in `3daaab24e`): Part I's comparison count is its `b_N`
   (`bₙ = A098569(n−1)`). Its Theorem 6.1 (`pdt:thm:elementary`) gives the
@@ -455,6 +465,22 @@ numbers (later pages shift by one). The log carries three "Infinite glue shrinka
 split" messages, one from each longtable that breaks across pages (Tables
 1, 2 and 3), as in other reports with longtables. The delivered sources built
 alone give 16 and 13 pages with no warnings.
+
+Rebuilt on 7 October 2026 (cleanup pass) with three pdfLaTeX passes, after
+two changes. (1) The running head: the Part name was a macro read when a page
+was shipped out, so the page on which Part II begins (page 26), whose top half
+is the end of Part I, was headed "Part II: Report 241" alone (likewise the
+pages on which Part I and the appendix begin). The name is now a LaTeX mark,
+and a page on which the Part changes is headed by both names, for example
+"Part I: Report 243 / Part II: Report 241" (pages 8, 26 and 41 rendered and
+inspected). (2) Section 15, question (i): the parenthesis "(and, by the
+independent check, for `n ≤ 26`; dated note below)" now follows "the
+inequality holds for `n ≤ 15`" instead of "with equality for `n ≤ 8`",
+where it could be read as claiming equality up to 26; a dated note in place
+says so (page 25 rendered). Still 45 pages, the same three infinite-glue
+messages and nothing else; all 127 labels keep their numbers (`.aux`
+compared with a build of the committed text); nine labels at the start of
+Part II move one page later (pages 27–30 to 28–31).
 
 ## Delivered path → shipped path
 
