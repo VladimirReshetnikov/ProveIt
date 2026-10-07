@@ -12,8 +12,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 598 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 3,840 public Gowers theorems and found only propext,
+  All 601 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 3,859 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 113 exact
   companion proofs and 7 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -1761,6 +1761,34 @@ Propagated improvement to the complete bilinear-square construction
   This auxiliary bilinear-square improvement is not a final Szemeredi-bound
   claim. The distinct geometry issue is now repaired by the all-scale
   constructed-witness interfaces described above.
+
+Sharper composed square exponent and fewer scale hypotheses
+  Proofs13ConstructedWidth composes the strengthened numbered lemmas directly.
+  Given Stage 13.6, R.length <= Q.length, and the column-width hypothesis
+  required by Lemma 13.8, it constructs a square with side at least
+    R.length^(2^-385 * alpha^1856) - 1,
+  with the same density 2^-137*alpha^704 and a retained subset of the original
+  domain. No extra affine-extraction scale or assumed square grid remains.
+  Proofs13SquareExponentLimit then proves, for every fixed positive beta below
+    2^-385 * alpha^1856 / 2^(10*section13Q(alpha)),
+  that all sufficiently large prime moduli admit such a square of side at
+  least N^beta. The threshold depends on alpha and beta and is existential.
+  The limiting exponent itself is not asserted. A concrete companion takes
+  beta equal to 3/2 times the previously published improved square exponent,
+  giving a verified 50-percent increase. This remains an auxiliary bound;
+  no improvement of the final Szemeredi estimate is claimed.
+
+Finite averaging input for Corollary 16.11
+  Proofs16DenseMultilinearBox proves that a multiply-linear function on a
+  delta-dense subset of a proper box admits a proper sub-box and one
+  multilinear graph with relative mass at least
+    (delta/2) / q(r^-1*(delta/2), gamma, k)^r.
+  The selected box retains width at least
+    original_width^(c(r^-1*(delta/2), gamma, k)^r).
+  The proof partitions overlapping graphs into disjoint classes and uses
+  their actual natural count bounded by the real control. This supplies
+  the finite averaging step of Corollary 16.11, whose full statement remains
+  open pending the preceding induction and its Fourier-frequency input.
 
 Reproducible checks (from repository root)
   python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.Audit
