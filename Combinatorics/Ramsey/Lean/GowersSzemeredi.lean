@@ -342,6 +342,9 @@ import GowersSzemeredi.Proofs13FeatureRelations
 import GowersSzemeredi.Proofs13FeaturePolynomial
 import GowersSzemeredi.Proofs13FeatureVertices
 import GowersSzemeredi.Proofs13FeatureZeroCount
+import GowersSzemeredi.Proofs13FejerRegularity
+import GowersSzemeredi.Proofs13FejerNumerics
+import GowersSzemeredi.Proofs13FejerSelection
 
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue

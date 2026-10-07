@@ -12,8 +12,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 497 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 3,290 public Gowers theorems and found only propext,
+  All 500 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 3,300 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 108 exact
   companion proofs and 12 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -1252,8 +1252,27 @@ Quadratic feature classification and exceptional parameter counts
   Each unintended relation has at most 2*N^31 zeros in the 32-variable
   specialization; a finite family has the corresponding union bound.
   These are unconditional algebraic/counting foundations. They do not yet
-  assemble the bounded integer coefficient box, repeated-vertex exclusion,
-  the catalogue DArrangement encoding, or the final purification theorem.
+  assemble the bounded integer coefficient box, the catalogue DArrangement
+  encoding, or the final purification theorem. The short-relation interface
+  for repeated-vertex exclusion is checked below.
+
+Fejer regularity and subset-selection assembly
+  Proofs13FejerRegularity proves that if every short feature relation lies
+  on the intended coefficient line, an unrespected phase has only diagonal
+  simultaneous relations (for L<=N). With at least three labels, L>=2,
+  and nonzero intended coefficients, the same line condition forces the
+  physical vertices to be distinct. Thus repeated vertices can be charged
+  to the exceptional family once the coefficient-box bridge is supplied.
+  Proofs13FejerSelection combines the existing seed/Bernoulli machinery
+  with a good-edge signal lower bound, a regular bad-edge baseline, and
+  an explicit exceptional-cardinality error. Its structural Fejer version
+  returns an actual subset retaining the requested good mass and limiting
+  bad/good ratio whenever the displayed score budget holds. This is a
+  conditional assembly theorem; the arrangement-specific hypotheses and
+  numerical budget have not yet been discharged.
+  Proofs13FejerNumerics chooses L=2*M in the 32-label shifted-pair estimate.
+  The signal is exactly 2^(-64)*M^(-31), and its ratio to the bad baseline
+  is M/2^32. The comparison theorem carries this constant without rounding.
 
 Reproducible checks (from repository root)
   python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.Audit
