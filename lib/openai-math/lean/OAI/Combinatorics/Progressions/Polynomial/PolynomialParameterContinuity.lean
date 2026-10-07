@@ -1,3 +1,5 @@
+/- Modified for ProveIt: prove the finite regularity bound below infinity
+explicitly for the older ContDiff order API. Statements unchanged. -/
 import Mathlib.Algebra.MvPolynomial.Division
 import Mathlib.Analysis.Calculus.FDeriv.CompCLM
 import Mathlib.Analysis.Calculus.MeanValue
@@ -242,7 +244,7 @@ theorem polynomialVectorMap_second_fderiv_bound [DecidableEq O]
     ‖fderiv ℝ (fderiv ℝ (polynomialVectorMap p)) x‖ ≤
       Fintype.card I * (Fintype.card I *
         ((d + 1 : ℝ) ^ Fintype.card I * ((d : ℝ) * ((d : ℝ) * C)))) := by
-  have hs : ContDiff ℝ 2 (polynomialVectorMap p) := (polynomialVectorMap_contDiff p).of_le (by norm_num)
+  have hs : ContDiff ℝ 2 (polynomialVectorMap p) := (polynomialVectorMap_contDiff p).of_le (WithTop.coe_le_coe.mpr (le_top : (2 : ℕ∞) ≤ ⊤))
   have hs' : ContDiff ℝ 1 (fderiv ℝ (polynomialVectorMap p)) := hs.fderiv_right (by norm_num)
   have hA := hs'.differentiable one_ne_zero x
   exact polynomialOperator_fderiv_norm_le _ (fun o i => MvPolynomial.pderiv i (p o))
@@ -411,7 +413,7 @@ theorem polynomialVectorMap_mass_c2_bounds {I O : Type*}
     rw [polynomialVectorMap_fderiv_entry]
     exact (mvPolynomial_eval_abs_le_sum_coeff (pderiv i (p o)) x hx).trans (hfirst o i)
   · have hs : ContDiff ℝ 2 (polynomialVectorMap p) :=
-      (polynomialVectorMap_contDiff p).of_le (by norm_num)
+      (polynomialVectorMap_contDiff p).of_le (WithTop.coe_le_coe.mpr (le_top : (2 : ℕ∞) ≤ ⊤))
     have hs' : ContDiff ℝ 1 (fderiv ℝ (polynomialVectorMap p)) := hs.fderiv_right (by norm_num)
     exact polynomialOperator_fderiv_norm_le _ (fun o i => pderiv i (p o))
       (fun y o i => polynomialVectorMap_fderiv_entry p y i o) x (hs'.differentiable one_ne_zero x)

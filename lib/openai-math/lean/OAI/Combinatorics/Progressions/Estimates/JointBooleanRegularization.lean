@@ -1,3 +1,5 @@
+/- Modified for ProveIt: prove finite regularity below infinity explicitly
+for the older ContDiff order API. Mathematical statements unchanged. -/
 import OAI.Combinatorics.Progressions.Dynamics.BooleanCanonicalLogBudget
 import OAI.Combinatorics.Progressions.Dynamics.BudgetedOpenImageComparison
 import OAI.Combinatorics.Progressions.Dynamics.JointBooleanWeightBudget
@@ -152,7 +154,7 @@ theorem jointBoolean_selected_derivative_bound {h : D → ℕ}
       (Fintype.card (O d)) (Fintype.card α) (h d) (C d) (R d) ≤ H) :
     ‖fderiv ℝ (selectedDerivative (jointBooleanSampler h c sets) (jointBooleanInjection block v sel)) x‖ ≤ H := by
   apply sigmaAxisSampler_selected_fderiv_norm_le _
-    (fun d => (booleanSamplerMap_contDiff (c d) (sets d)).of_le (by norm_num)) _ x hH
+    (fun d => (booleanSamplerMap_contDiff (c d) (sets d)).of_le (by first | exact WithTop.coe_le_coe.mpr le_top | norm_num)) _ x hH
   intro d
   exact (boolean_selected_derivative_bound (c d) (sets d) (block d) (v d) (sel d)
     (hcard d) (fun i => x ⟨d, i⟩) (hC d) (hR d) (hc d) (fun i => hx ⟨d, i⟩)).trans (hcap d)
@@ -298,7 +300,7 @@ theorem jointBoolean_divergence_bound {h : D → ℕ}
         (Fintype.card (JointBlockParameter B h α) : ℝ) * ((K : ℝ) ^ 2 * H) * ∫ x, |w x| := by
   let U := jointBooleanSampler h c sets
   let J := jointBooleanInjection block v sel
-  have hU : ContDiff ℝ 2 U := (jointBooleanSampler_contDiff h c sets).of_le (by norm_num)
+  have hU : ContDiff ℝ 2 U := (jointBooleanSampler_contDiff h c sets).of_le (by first | exact WithTop.coe_le_coe.mpr le_top | norm_num)
   have hinfo (x) (hx : x ∈ tsupport w) := jointBoolean_selected_inverse_bound
     c sets block v sel hcard x C R κ hC (fun d => zero_le_one.trans (hR d)) hκ hc
     (hbox x hx) (hdet x hx) K.coe_nonneg hK
@@ -473,7 +475,7 @@ theorem jointBooleanGoodWeight_translation_bound {h : D → ℕ}
   · simp only [Finset.sum_const, Finset.card_univ, nsmul_eq_mul, NNReal.coe_mul, NNReal.coe_natCast]
     rfl
   · exact imageTranslationBound_of_selected_inverse U
-      ((jointBooleanSampler_contDiff h c sets).of_le (by norm_num)) J w hs.1 hs.2.1 hs.2.2.1
+      ((jointBooleanSampler_contDiff h c sets).of_le (by first | exact WithTop.coe_le_coe.mpr le_top | norm_num)) J w hs.1 hs.2.1 hs.2.2.1
       (fun x hx => (hi x hx).1) (fun _ => Q) hdiv
 
 end Erdos3

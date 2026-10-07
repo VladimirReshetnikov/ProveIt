@@ -1,3 +1,5 @@
+/- Modified for ProveIt: prove finite regularity below infinity explicitly
+for the older ContDiff order API. Mathematical statements unchanged. -/
 import OAI.Combinatorics.Progressions.Estimates.DiagonalSliceBounds
 import OAI.Combinatorics.Progressions.Lattices.AffineBooleanCubeComparison
 
@@ -288,7 +290,7 @@ theorem jointAffineBoolean_good_weight_comparison
   let J := jointAffineBooleanInjection block v sel L δ
   let S : ℝ≥0 := ⟨jointBooleanWeightBudget (O := O) (α := α) h C A T r κ,
     jointBooleanWeightBudget_nonneg h C hC A T r (fun d i => (hr d i).le) κ (fun d => (hκ d).le)⟩
-  have hU : ContDiff ℝ 2 U := (jointAffineBooleanSampler_contDiff c sets L b).of_le (by norm_num)
+  have hU : ContDiff ℝ 2 U := (jointAffineBooleanSampler_contDiff c sets L b).of_le (by first | exact WithTop.coe_le_coe.mpr le_top | norm_num)
   have hJ : ‖J‖ ≤ 1 := jointAffineBooleanInjection_norm_le block v sel L δ hblock
     (fun d => (hδ d).le) hLinv
   have hw := jointAffineBooleanGoodWeight_spec c sets block v sel (fun d => (L d).toContinuousLinearMap)
@@ -374,7 +376,7 @@ theorem jointAffineBoolean_translation_bound
   let J := jointAffineBooleanInjection block v sel L δ
   let S : ℝ≥0 := ⟨jointBooleanWeightBudget (O := O) (α := α) h C A T r κ,
     jointBooleanWeightBudget_nonneg h C hC A T r (fun d i => (hr d i).le) κ (fun d => (hκ d).le)⟩
-  have hU : ContDiff ℝ 2 U := (jointAffineBooleanSampler_contDiff c sets L b).of_le (by norm_num)
+  have hU : ContDiff ℝ 2 U := (jointAffineBooleanSampler_contDiff c sets L b).of_le (by first | exact WithTop.coe_le_coe.mpr le_top | norm_num)
   have hJ : ‖J‖ ≤ 1 := jointAffineBooleanInjection_norm_le block v sel L δ hblock
     (fun d => (hδ d).le) hLinv
   have hw := jointAffineBooleanGoodWeight_spec c sets block v sel (fun d => (L d).toContinuousLinearMap)

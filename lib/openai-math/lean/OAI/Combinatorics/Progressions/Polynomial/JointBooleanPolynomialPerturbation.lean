@@ -1,3 +1,5 @@
+/- Modified for ProveIt: prove finite regularity below infinity explicitly
+for the older ContDiff order API. Mathematical statements unchanged. -/
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import OAI.Combinatorics.Progressions.Estimates.FactoredC2Difference
 import OAI.Combinatorics.Progressions.Sampling.CanonicalSamplerTuple
@@ -36,7 +38,7 @@ theorem parameterPolynomialMap_c2_bounds
     rw [← polynomialParameterPoint_affine]
     exact polynomialVectorMap_fderiv_bound p hd hC hc _ hb
   · rw [he]
-    apply affineSlice_second_fderiv_norm_le _ ((polynomialVectorMap_contDiff p).of_le (by norm_num))
+    apply affineSlice_second_fderiv_norm_le _ ((polynomialVectorMap_contDiff p).of_le (by first | exact WithTop.coe_le_coe.mpr le_top | norm_num))
       _ _ x (polynomialParameterInjection_norm_le Z I)
     rw [← polynomialParameterPoint_affine]
     exact polynomialVectorMap_second_fderiv_bound p hd hC hc _ hb
@@ -60,9 +62,9 @@ theorem parameterPolynomialMap_perturbation_bounds
     (fun o m => mvPolynomial_div_single_coeff_bound (p o) none (hc o) m) ht z hz x hx
   exact factoredDifference_c2_bounds (parameterPolynomialMap p t z) (parameterPolynomialMap p 0 z)
     (parameterPolynomialMap q t z) t
-    ((parameterPolynomialMap_contDiff p t z).of_le (by norm_num))
-    ((parameterPolynomialMap_contDiff p 0 z).of_le (by norm_num))
-    ((parameterPolynomialMap_contDiff q t z).of_le (by norm_num))
+    ((parameterPolynomialMap_contDiff p t z).of_le (by first | exact WithTop.coe_le_coe.mpr le_top | norm_num))
+    ((parameterPolynomialMap_contDiff p 0 z).of_le (by first | exact WithTop.coe_le_coe.mpr le_top | norm_num))
+    ((parameterPolynomialMap_contDiff q t z).of_le (by first | exact WithTop.coe_le_coe.mpr le_top | norm_num))
     (parameterPolynomialMap_sub_zero p t z) x hq.1 hq.2.1 hq.2.2
 
 end Erdos3

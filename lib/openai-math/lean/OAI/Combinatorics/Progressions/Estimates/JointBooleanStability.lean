@@ -1,5 +1,5 @@
 /- Modified for ProveIt: import Lean 4.32 compatibility declarations.
-Statements and proofs are unchanged from the pinned upstream source. -/
+Mathematical statements unchanged. Prove finite regularity below infinity explicitly. -/
 import OAI.Compat.BigOperators
 import OAI.Combinatorics.Progressions.Estimates.JointBooleanRegularizationChoice
 import OAI.Combinatorics.Progressions.Polynomial.PolynomialPerturbationScaleBudget
@@ -180,7 +180,7 @@ theorem jointSlicedPrincipal_unitBox_comparison
   let K : ℝ≥0 := ⟨κ⁻¹, inv_nonneg.mpr hκ.le⟩
   let H : ℝ≥0 := ⟨H₀ + 1, by dsimp [H₀]; positivity⟩
   let S : ℝ≥0 := ⟨2 * (N : ℝ) ^ 2 * A / r, by positivity⟩
-  have hU : ContDiff ℝ 2 U := (jointSlicedPrincipal_contDiff c lower width).of_le (by norm_num)
+  have hU : ContDiff ℝ 2 U := (jointSlicedPrincipal_contDiff c lower width).of_le (by first | exact WithTop.coe_le_coe.mpr le_top | norm_num)
   have hJ : ‖J‖ ≤ 1 := jointSlicedInjection_norm_le b i
   have hbox (x) (hx : x ∈ tsupport w) : ∀ p, |x p| ≤ 1 := by
     intro p
@@ -215,7 +215,7 @@ theorem jointSlicedPrincipal_unitBox_comparison
   have h := selected_cutoff_comparison_of_close_derivatives
     (unitBoxMeasure (Σ d, B d × F d)) w w
     (unitBoxInteriorCutoff_contDiff r).continuous.measurable (unitBoxInteriorCutoff_range r)
-    ((unitBoxInteriorCutoff_contDiff r).of_le (by norm_num))
+    ((unitBoxInteriorCutoff_contDiff r).of_le (by first | exact WithTop.coe_le_coe.mpr le_top | norm_num))
     (unitBoxInteriorCutoff_compact hr) (fun x => (unitBoxInteriorCutoff_range r x).1)
     (unitBoxInteriorCutoff_density hr) U V hU hV J hJ K H S
     (fun x hx => (hinv x hx).1) (fun x hx => (hinv x hx).2)
@@ -403,7 +403,7 @@ theorem jointBoolean_good_weight_comparison {h : D → ℕ}
     (jointBooleanCutoff_contDiff c sets block v sel ψ hψ r κ).continuous.measurable
     (jointBooleanCutoff_range c sets block v sel ψ hrange r κ) hs.1 hs.2.1 hs.2.2.1
     (jointBooleanGoodWeight_measure c sets block v sel ψ hψ hrange hzero r hr κ hκ)
-    (jointBooleanSampler h c sets) V ((jointBooleanSampler_contDiff h c sets).of_le (by norm_num)) hV
+    (jointBooleanSampler h c sets) V ((jointBooleanSampler_contDiff h c sets).of_le (by first | exact WithTop.coe_le_coe.mpr le_top | norm_num)) hV
     (jointBooleanInjection block v sel) (jointBooleanInjection_norm_le block hblock v sel) K H S
     (fun x hx => (hi x hx).1) (fun x hx => (hi x hx).2) hsmall _ hHV _ hε hmass hclose φ hφ hbound
   · intro x hx
@@ -458,7 +458,7 @@ theorem jointBoolean_c2_comparison
   let U := jointBooleanSampler h c sets
   let w := jointBooleanGoodWeight c sets block v sel ψ r κ
   let J := jointBooleanInjection block v sel
-  have hU : ContDiff ℝ 2 U := (jointBooleanSampler_contDiff h c sets).of_le (by norm_num)
+  have hU : ContDiff ℝ 2 U := (jointBooleanSampler_contDiff h c sets).of_le (by first | exact WithTop.coe_le_coe.mpr le_top | norm_num)
   have hw := jointBooleanGoodWeight_spec c sets block v sel ψ hψ hrange hzero r hr κ hκ
   have he (x) (hx : x ∈ tsupport w) := herr x (hw.2.2.2.2 x hx).1
   have hsmall' (x) (hx : x ∈ tsupport w) : (K : ℝ) * ‖fderiv ℝ V x - fderiv ℝ U x‖ ≤ 1 / 2 :=

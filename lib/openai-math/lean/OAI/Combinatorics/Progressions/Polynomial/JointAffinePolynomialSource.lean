@@ -1,3 +1,5 @@
+/- Modified for ProveIt: prove finite regularity below infinity explicitly
+for the older ContDiff order API. Mathematical statements unchanged. -/
 import OAI.Combinatorics.Progressions.Lattices.JointAffineBooleanTolerance
 
 namespace OAI
@@ -71,7 +73,7 @@ theorem exists_uniform_joint_affine_polynomial_source_with_scales
   refine ⟨hd.1, hd.2.1, hd.2.2.1, hd.2.2.2.1, ?_⟩
   intro p hpdeg hpcoeff z hz hpzero φ hφ hbound
   apply hd.2.2.2.2 (parameterPolynomialMap p t z)
-    ((parameterPolynomialMap_contDiff p t z).of_le (by norm_num)) _ φ hφ hbound
+    ((parameterPolynomialMap_contDiff p t z).of_le (by first | exact WithTop.coe_le_coe.mpr le_top | norm_num)) _ φ hφ hbound
   intro x hx
   have he := parameterPolynomialMap_uniform_c2_error p hpdeg hCp hpcoeff
     (show |t| ≤ 1 by rwa [abs_of_pos ht]) z hz x hx

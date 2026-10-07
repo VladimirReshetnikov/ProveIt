@@ -1,3 +1,5 @@
+/- Modified for ProveIt: prove finite regularity below infinity explicitly
+for the older ContDiff order API. Mathematical statements unchanged. -/
 import OAI.Combinatorics.Progressions.Estimates.SplitSmoothProductProfile
 import OAI.Combinatorics.Progressions.Geometry.BoxDifferenceHom
 import OAI.Combinatorics.Progressions.Probability.ScaledCubeProductMeasure
@@ -392,7 +394,7 @@ theorem scalarCubeBoundaryWeight_spec (α : Type*) [Fintype α] [DecidableEq α]
       (∀ a, 0 ≤ scalarCubeBoundaryWeight α r a) ∧ (∫ a, |scalarCubeBoundaryWeight α r a|) ≤ 1 := by
   let b := inequalityBoundaryCutoff (fun _ : Bool × Finset α => r) scalarCubeFace
   have hb : ContDiff ℝ 1 b :=
-    (inequalityBoundaryCutoff_smooth _ _ scalarCubeFace_contDiff).of_le (by norm_num)
+    (inequalityBoundaryCutoff_smooth _ _ scalarCubeFace_contDiff).of_le (by first | exact WithTop.coe_le_coe.mpr le_top | norm_num)
   have hs : tsupport b ⊆ scalarCubeDomain α := scalarCubeBoundaryCutoff_tsupport_domain α hr
   refine ⟨scalarCubeCutoffWeight_contDiff b hb,
     scalarCubeCutoffWeight_compact b (scalarCubeBoundaryCutoff_compact α hr),
@@ -424,7 +426,7 @@ theorem scalarCubeBoundaryWeight_derivative_budget {α : Type*} [Fintype α] [De
       ((2 * 2 ^ Fintype.card α : ℕ) : ℝ) * ((Fintype.card α : ℝ) + 1) ^ 2 * A / r := by
   let b := inequalityBoundaryCutoff (fun _ : Bool × Finset α => r) scalarCubeFace
   have hb : ContDiff ℝ 1 b :=
-    (inequalityBoundaryCutoff_smooth _ _ scalarCubeFace_contDiff).of_le (by norm_num)
+    (inequalityBoundaryCutoff_smooth _ _ scalarCubeFace_contDiff).of_le (by first | exact WithTop.coe_le_coe.mpr le_top | norm_num)
   have hs : tsupport b ⊆ scalarCubeDomain α := scalarCubeBoundaryCutoff_tsupport_domain α hr
   have h := scalarCubeCutoffWeight_coordinate_sum_le b hb hs (by positivity)
     (fun a _ => scalarCubeBoundaryCutoff_fderiv_norm_le A hLip hr a)
