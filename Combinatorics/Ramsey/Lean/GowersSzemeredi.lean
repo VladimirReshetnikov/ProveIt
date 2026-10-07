@@ -376,6 +376,9 @@ import GowersSzemeredi.Proofs13EndpointCharacterApproximation
 import GowersSzemeredi.Proofs13EndpointCharacterOrthogonality
 import GowersSzemeredi.Proofs13EndpointCocycleTest
 import GowersSzemeredi.Proofs13EndpointFrequencyAddition
+import GowersSzemeredi.Proofs13EndpointGoodSet
+import GowersSzemeredi.Proofs13EndpointGlobalFourier
+import GowersSzemeredi.Proofs13EndpointPrintedTheorem
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 

@@ -4,7 +4,7 @@ Scope
   The goal remains open. No improvement to the final Szemeredi bound is claimed.
   The source catalogue contains all 120 unique numbered theorem, lemma,
   proposition, and corollary headings in sz-thm-gowers-proof.tex.
-  There are 108 checked exact companion proofs and 12 open statements.
+  There are 109 checked exact companion proofs and 11 open statements.
   The JSON ledger records every statement, its TeX heading lines, its Lean
   definition, and related results. Conditional implications, restricted cases,
   and counterexamples are not counted as proofs of the full statement.
@@ -12,10 +12,10 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 530 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 3,513 public Gowers theorems and found only propext,
-  Classical.choice, and Quot.sound. The audit independently counted 108 exact
-  companion proofs and 12 open catalogue statements from Lean's theorem types.
+  All 533 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 3,519 public Gowers theorems and found only propext,
+  Classical.choice, and Quot.sound. The audit independently counted 109 exact
+  companion proofs and 11 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
   errors remain in this build. The JSON ledger reproduces exactly and has no
   unmatched numbered TeX headings or unmatched catalogue entries.
@@ -622,7 +622,8 @@ Complete large-N common-step square extraction
   All intermediate data and numerical budgets are constructed. The threshold
   remains existential. The later all-density and Fourier results below extend
   this construction. The unrestricted numbered catalogue statements and the
-  printed Theorem 13.12 exponent remain open; no final Szemeredi bound is claimed.
+  printed Theorem 13.12 exponent required the endpoint argument now proved below;
+  no final Szemeredi bound is claimed.
 
 All-density square extraction
   Proofs13DenseEdgeModels removes the alpha<=1/6 restriction without weakening
@@ -674,7 +675,7 @@ Complete Fourier square extraction and the printed exponent gap
   substitution already gives a spectral parameter at least
   (1/alpha)^(2^70), before the additional denominator and prefactor losses.
   This compares estimates, not counterexamples to the printed theorem. The
-  full numbered Theorem 13.12 remains open: a stronger construction or an
+  full numbered Theorem 13.12 was still open at this stage: a stronger construction or an
   independently justified correction is needed. Its exponent was not changed.
 
 Explicit tower form of the verified Fourier bound
@@ -1219,7 +1220,7 @@ Prepared frequency graph and reusable restriction score
   bounds the bad/good ratio. The original Lemma 12.5 uses the shared proof.
   These are inputs to source 57's improved route to Theorem 13.12. The
   Fejer purification is now proved below with explicit elementary constants;
-  graph propagation is now checked below; the near-maximal endpoint remains.
+  graph propagation and the near-maximal endpoint are now checked below.
 
 Finite Fejer survival foundations
   Five Proofs13Fejer modules establish a normalized nonnegative kernel in
@@ -1312,9 +1313,10 @@ Uniform quantitative Fejer purification
   arrangement count. The selected set has density at least
   2^-77*rho^3*eta^3*beta and respected fraction at least 1-eta.
   These are complete purification theorems with their stated quantitative
-  hypotheses. They do not yet close the numbered Theorem 13.12.
+  hypotheses. Closing the numbered Theorem 13.12 additionally uses the
+  endpoint proof below.
   The graph propagation and numerical comparisons listed below are now
-  checked; the near-maximal endpoint remains unproved.
+  checked; the near-maximal endpoint is now proved below.
 
 Improved Fourier extraction and the printed parameter range
   Proofs13FejerFrequencyGraph propagates the new purification through the
@@ -1335,7 +1337,8 @@ Improved Fourier extraction and the printed parameter range
   0<alpha<=1023/1024. theorem_13_12_away_from_one proves every printed
   conclusion on this range, including the original density and Fourier
   bounds. It is deliberately not an exact companion for theorem_13_12:
-  the interval 1023/1024<alpha<1 still needs the near-maximal argument.
+  the interval 1023/1024<alpha<1 additionally uses the near-maximal argument
+  completed below.
   The endpoint alpha=1 cannot satisfy strict nonuniformity, by the already
   proved discValued_uniform_one. The catalogue count remains unchanged.
 
@@ -1357,7 +1360,7 @@ Near-maximal endpoint normalization
   coefficient changes by at most 4*epsilon*N, uniformly in both
   derivative directions and frequency.
   This completes the phase-normalization portion of source 57's endpoint
-  proof. The near-maximal extraction theorem is still open.
+  proof. The near-maximal extraction theorem is completed below.
 
 Near-maximal frequency selection and finite additive correction
   Proofs13EndpointDominantFourier proves normalized Parseval and the
@@ -1376,7 +1379,7 @@ Near-maximal frequency selection and finite additive correction
   cocycle and a quantitative averaged distance bound.
   All five modules pass the full axiom audit. Connecting Fourier
   concentration to the addition test is completed below; assembly of
-  the endpoint square remains necessary.
+  the endpoint square is completed below.
   Proofs13EndpointRowCorrection corrects arbitrary cyclic rows with loss
   six times their addition-test failure, including large-failure rows.
   Proofs13EndpointSymmetricRankOne gives a pivot proof over finite fields:
@@ -1401,6 +1404,20 @@ Near-maximal Fourier addition tests
   disagreement at most 162*(1-Q4(g)). No inverse theorem or large-modulus
   threshold is assumed. All four modules pass the full axiom audit.
 
+Completed Theorem 13.12 with its exact printed bounds
+  Proofs13EndpointGoodSet intersects frequency agreement with a defect
+  cutoff, losing at most the disagreement fraction plus four times the
+  mean defect. Proofs13EndpointGlobalFourier proves, for any disc-valued f
+  with Q4(f)>=1-epsilon, a global scalar bilinear Fourier set of density
+  at least 1-332*epsilon and coefficient lower bound (3/4-4*epsilon)*N.
+  This theorem has no large-modulus threshold and holds at epsilon=0.
+  Proofs13EndpointPrintedTheorem uses the whole cyclic group as two proper
+  common-step progressions for alpha>1023/1024. Together with the checked
+  Fejer extraction away from one, theorem_13_12_holds proves the exact
+  catalogue type for all 0<alpha<=1, including both printed bounds and
+  every structural condition. The full axiom audit now counts 109 exact
+  companion proofs and 11 open catalogue statements.
+
 Reproducible checks (from repository root)
   python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.Audit
   python3 Combinatorics/Ramsey/scripts/gowers_status.py
@@ -1417,16 +1434,11 @@ Next substantial obligations
   quantitative dependency chain. The qualitative Freiman theorems 7.1--7.2
   are proved (Proofs07FreimanClosure). The quadratic four-term theorem 8.2
   and Corollary 8.3 are now proved with their exact catalogue types.
-  1. Complete Theorem 13.12 on 1023/1024<alpha<1. The complete improved
-     Fourier extraction and the printed conclusion for alpha<=1023/1024
-     are now proved. Source 57 (gowers_research_proveit) gives an explicit
-     near-maximal U^4 argument. Unit-modulus normalization and uniform
-     derivative/Fourier transfer, dominant-frequency concentration, and
-     finite additive correction, and symmetry-based bilinear correction
-     and the Fourier addition-test estimate are now proved. Assembly of
-     the ambient square remains unproved.
-     The weaker constants in the formal purification still yield the same
-     2^53 length top power and an improved 2^42 density top power.
+  1. Theorem 13.12 is now complete. Resolve the remaining intermediate
+     Section 13 statements (13.5, 13.6, 13.9, and 13.10), preserving the
+     distinction between their source hypotheses and existing encodings.
+     The global endpoint and improved Fejer extraction are proved; the
+     auxiliary bounds do not yet improve the final Szemeredi estimate.
      Source 53 (Report281) gives an explicit
      threshold and side length N^(3 gamma(a)) for the uniform square
      extraction; source 51 shows Corollary1310Grid does not follow from the
