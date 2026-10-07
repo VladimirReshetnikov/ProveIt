@@ -18,19 +18,19 @@ open Finset
 
 namespace LeanProofs.GowersSzemeredi
 
-private def residueNatAP (r p : Nat) (a : Fin p) : NatAP where
+def residueNatAP (r p : Nat) (a : Fin p) : NatAP where
   start := a
   step := p
   length := (r - 1 - a) / p + 1
 
-private lemma residueNatAP_index_lt {r p : Nat} (hp : 0 < p) (hpr : p ≤ r)
+theorem residueNatAP_index_lt {r p : Nat} (hp : 0 < p) (hpr : p ≤ r)
     (a : Fin p) (i : Nat) : i < (residueNatAP r p a).length ↔ a + i * p < r := by
   have har : (a : Nat) ≤ r - 1 := by omega
   change i < (r - 1 - a) / p + 1 ↔ _
   rw [Nat.lt_succ_iff, Nat.le_div_iff_mul_le hp]
   omega
 
-private lemma residueNatAP_mem (r p : Nat) (a : Fin p) (x : Nat) :
+theorem residueNatAP_mem (r p : Nat) (a : Fin p) (x : Nat) :
     x ∈ (residueNatAP r p a).carrier ↔
       ∃ i : Nat, i < (residueNatAP r p a).length ∧ a + i * p = x := by
   simp only [NatAP.carrier, mem_image, mem_univ, true_and]
@@ -40,7 +40,7 @@ private lemma residueNatAP_mem (r p : Nat) (a : Fin p) (x : Nat) :
   · rintro ⟨i, hi, rfl⟩
     exact ⟨⟨i, hi⟩, rfl⟩
 
-private lemma residueNatAP_proper {r p : Nat} (hp : 0 < p) (a : Fin p) :
+theorem residueNatAP_proper {r p : Nat} (hp : 0 < p) (a : Fin p) :
     (residueNatAP r p a).IsProper := by
   refine ⟨hp, ?_⟩
   unfold NatAP.carrier
@@ -50,7 +50,7 @@ private lemma residueNatAP_proper {r p : Nat} (hp : 0 < p) (a : Fin p) :
     apply Fin.ext
     exact Nat.mul_right_cancel hp (Nat.add_left_cancel hij)
 
-private lemma residueNatAP_partition {r p : Nat} (hp : 0 < p) (hpr : p ≤ r) :
+theorem residueNatAP_partition {r p : Nat} (hp : 0 < p) (hpr : p ≤ r) :
     IsNatAPPartition (residueNatAP r p) (Finset.range r) := by
   constructor
   · intro x
