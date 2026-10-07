@@ -98,6 +98,19 @@ placements is the authoritative one; it found no overlap.
 `oeis-sequence-asymptotics/a227578-ordered-rook-paths` counts lattice paths
 of rook *moves*; `a330266-balanced-smirnov-poisson` uses rook polynomials
 (non-attacking rook placements). Neither concerns kings or knights.
+Two batch-109 reports carry dated reciprocal notes of 7 October 2026 here
+(no label added). `oeis-sequence-asymptotics/a137432-maximum-density-kings`
+treats the dense regime of kings (`hw` kings on `2h × 2w` boards, one per
+`2 × 2` block; OEIS A137432, A061593, A061594) by a block encoding and
+transfer spectra; it shares no lemma with this report, and its `a_n`,
+`A(h,w)`, `K`, `B_j` are not this report's `K_n`, `B_n` (note at the end of
+Section 1). `oeis-sequence-asymptotics/a002465-nonattacking-bishops` treats
+the same regime of `n` pieces on the `n × n` board for bishops (OEIS
+A002465, A238260), which Theorem 2's finite move set excludes (a bishop is a
+rider), by an exact Stirling coefficient formula and a two-variable saddle
+point; growth `b Γ(n) qⁿ`, with a parity split at order `n⁻³`. It shares no
+lemma with this report, and its `B_n` (the bishop count) is not this
+report's carrier `B_n` (note after Theorem 2).
 
 ## Notation
 
@@ -118,7 +131,10 @@ and repository search, three carriers, the rook distinction, notation
 table; Section 6: the files in the collection; Section 7: the instance
 note), two bibliography entries (`scp-tai`, `scp-cti`), and set the
 bibliography ragged-right. No statement, proof, number or table of the
-manuscript was changed.
+manuscript was changed. The batch-109 reciprocal notes (7 October 2026)
+added two dated `[write]` notes (end of Section 1:
+`a137432-maximum-density-kings`;
+after Theorem 2: `a002465-nonattacking-bishops`) and no label (still 41).
 
 ## Files
 
@@ -128,7 +144,7 @@ PROOF.md                                             delivered Markdown version 
 SOURCES.md                                           delivered sources and scope of the literature check (as delivered)
 independent_verification-README.md                   delivered README of the independent checks (independent_verification/README.md)
 article.tex                                          the report (delivered as Sparse_Chess_Asymptotics.tex)
-article.pdf                                          compiled report, 10 pages
+article.pdf                                          compiled report, 11 pages
 code/compute_clusters.py                             connected-support enumeration; writes cluster_coefficients.json in the current directory
 code/derive_expansion.py                             exact extraction formula; reads/writes JSON in the current directory
 code/verify_finite.py                                direct 3x3-5x5 board enumeration, 12 checks (stdout; imports compute_clusters)
@@ -208,7 +224,9 @@ geometry, hyperref and microtype. From this directory:
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The committed PDF was built in a scratch directory with MiKTeX: 10 pages,
+The committed PDF was built in a scratch directory with MiKTeX: 11 pages
+(10 before the batch-109 reciprocal notes of 7 October 2026, which keep every
+label and its number),
 no errors or warnings, no undefined references or citations, no multiply
 defined labels, no duplicate PDF destinations, no overfull or underfull
 boxes. (The delivered source builds to 9 pages with the same clean log.)

@@ -182,6 +182,11 @@ sub-prefix `a122:pd:`: the manuscript's 111 labels, prefixed, and 11 new
 ones (`a122:pd:part`, `a122:pd:front`, `a122:pd:rem:allorders` and eight
 question labels `a122:pd:q:*`).
 
+*Reciprocal note (batch 108, 7 October 2026).* One dated `[write]` note at
+the end of *Results and attribution*, on
+`a299907-lonesum-decomposable-matrices`; no label added (still 137), every
+label keeps its number.
+
 Part II's numbering is the manuscript's plus eight: manuscript Section `k`
 is Section `k + 8`, and every equation, theorem, lemma, corollary,
 proposition, remark and question number inside it shifts with it (the
@@ -428,6 +433,14 @@ Touchard-summed coverage-window expansion to every order
 (`mxc:tp:thm:couponall`) for a different array: the same mechanism as Part
 II here (defects made of pairs, weight `1/2!`), no shared theorem. (These
 pointers are made here only; those reports are not edited by these writes.)
+`oeis-sequence-asymptotics/a299907-lonesum-decomposable-matrices` (batch
+108; it names this report as its nearest neighbour) treats the diagonal of
+Kamano's `exp(x + y + 1/(1 − (e^x − 1)(e^y − 1)) − 1)` (lonesum decomposable
+matrices, A299907): the same `(n!)^2` scale and Stirling-sum machinery, but
+the exponential of a pole, with growth
+`(n!)^2 (log 2)^(−2n) n^(−5/4) e^(sqrt(2n/log 2))` and a two-scale saddle;
+no shared theorem (dated note of 7 October 2026 at the end of Part I's
+"Results and attribution").
 
 **Stale sentences.** `proof.md:9` (not printed in the article) and
 `source_review.md` say that a search of the repository index found no
@@ -548,7 +561,10 @@ PDF destinations, no overfull or underfull boxes, and no LaTeX or package
 warnings. The log carries 684 `fontmap entry ... already exists, duplicates
 ignored` warnings from the delivered preamble's `\pdfmapfile{+lm.map}`
 lines (MiKTeX already loads those maps); the committed text before Part II
-gives the same 684 (and 10 pages). The delivered Part II manuscript uses
+gives the same 684 (and 10 pages). Rebuilt on 7 October 2026 after the
+batch-108 reciprocal note: still 37 pages, every label keeping its number,
+the same clean log and the same 684 notices. The delivered Part II
+manuscript uses
 newtx fonts and builds to 22 pages; here it is set in the report's Latin
 Modern.
 

@@ -262,7 +262,14 @@ re-check them against the live pages.
   by a "shares no theorem" remark in
   [`factorial-ratio-polynomial-divisibility`](../factorial-ratio-polynomial-divisibility/),
   and by the source audit shipped with Part V of the A088714 report.
-  A000262 occurs nowhere else in the repository.
+  A000262 occurred nowhere else in the repository when this report was
+  written. (Corrected 7 October 2026, batch 108: it is now also used, as the
+  exact ingredient `B_k` of the finite sum `a_n = Σ_k k! B_k S(n+1,k+1)^2`,
+  by
+  [`a299907-lonesum-decomposable-matrices`](../../generating-functions-and-asymptotics/oeis-sequence-asymptotics/a299907-lonesum-decomposable-matrices/),
+  which names this report (as the only earlier one to name A000262); no
+  theorem is shared. The collection catalogue's entry for that report also
+  names A000262.)
 - **Formal neighbour.** Placement in this collection confers no formal
   status. The Lean module
   [`QuadraticCoreCatalan.lean`](../../../../../../Analysis/FabiusFunction/Lean/FabiusFunction/QuadraticCoreCatalan.lean)

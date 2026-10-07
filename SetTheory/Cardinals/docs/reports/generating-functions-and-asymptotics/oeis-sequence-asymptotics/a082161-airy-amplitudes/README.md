@@ -560,6 +560,16 @@ The readings most likely to mislead:
   regime of inverse-power corrections: no stretched exponential, no shared lemma.
 - `../a290268-unbounded-deficits` has an Airy law of a different kind (an additive fold),
   unrelated.
+- `../a397711-bounded-indegree-dags` (batch 108; dated note of 7 October 2026 at the end of
+  the guide's "Neighbouring reports" paragraph) meets the same Airy zero for labelled DAGs
+  with every indegree at most two (A397711): `log a_n = 2n log n − n + 3·2^{−1/3} z n^{1/3}
+  + o(n^{1/3})`, and the analogue for every fixed indegree bound, at logarithmic precision
+  only (no amplitude, power prefactor or second term), through generalized parking
+  functions and Mallein's homogeneous killed-walk estimates (cited there, not reproved).
+  Its `2^{−1/3} z` is the `a` of Parts I, II and IV. No shared lemma. (This report's data
+  file `data/48-dfa-A331120.seq` cites Priez's parking-function enumeration of minimal
+  acyclic automata; that report uses the generalized parking functions of Kung and Yan,
+  and this report's own proofs use none.)
 - Every inverse section is an instance of `p0:thm:lambert-core`,
   `p0:thm:perturbed-inversion` and `p0:thm:staircase` of the transseries volume
   (`Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/`); no
@@ -580,10 +590,12 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
 The build of 5 October 2026 (rebuilt the same day after the independent check, with four
-pdfLaTeX passes in a scratch copy) has 0 errors, 0 warnings (no undefined references or
-citations, no multiply defined labels, no duplicate destinations) and 0 overfull or
+pdfLaTeX passes in a scratch copy; rebuilt again on 7 October 2026 after the batch-108
+reciprocal note, with the same clean log and every label keeping its number) has 0
+errors, 0 warnings (no undefined references or citations, no multiply defined labels, no duplicate destinations) and 0 overfull or
 underfull boxes, and gives 176 pages: title, abstract and contents pp. 1–7, Part 0
-(guide) pp. 8–16, Part I pp. 16–38, Part II pp. 38–55, Part III pp. 55–88, Part IV
+(guide) pp. 8–16, Part I pp. 17–38 (pp. 16–38 before the 7 October note),
+Part II pp. 38–55, Part III pp. 55–88, Part IV
 pp. 88–99, Part V pp. 99–171 (guide Section 66 pp. 99–105, Report 100 pp. 105–129,
 Report 101 pp. 129–146, Report 103 pp. 146–169, Section 105 pp. 169–171), Appendix A
 pp. 172–175, references pp. 175–176. (The build of 2 October 2026, before Part V, had 98

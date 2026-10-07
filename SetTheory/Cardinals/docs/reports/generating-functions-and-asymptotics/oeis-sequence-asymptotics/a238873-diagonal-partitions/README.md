@@ -490,6 +490,14 @@ end of Section 47.
   Boltzmann methods.
 - `a082161-airy-amplitudes` meets the first Airy zero through a killed walk
   (Dirichlet operator `−∂² + 8x`): analogous mechanism, no instance either way.
+- `a397711-bounded-indegree-dags` (batch 108; dated reciprocal note of 7 October
+  2026 after the write note of Section `dgp:airy:sec:source`) uses the same
+  Mallein Lemmas 2.6 and 2.7, (2.15) and (2.19), for the `n^{1/3}` Airy term of
+  bounded-indegree labelled DAGs (A397711), with the walk `Poisson(1) − 1`
+  (σ² = 1, factor 2^{−1/3}) where Part IV has `1 − Geom(1/2)` (σ² = 2, factor
+  1), applied at fixed tilts blockwise on a geometric grid to a potential of
+  order 1/i. No shared object or theorem; the same external input, whose proofs
+  neither report verified.
 - `a380274-mahonian-growing-powers/literature.md` cites R. Zhang on
   Ramanujan's entire function for a different problem.
 - The transseries volume, for the inverses (above).
@@ -574,7 +582,9 @@ toolchain only.
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-pdfLaTeX (MiKTeX or TeX Live), single file, 91 pages (90 at the write); packages: amsmath,
+pdfLaTeX (MiKTeX or TeX Live), single file, 91 pages (90 at the write;
+still 91 after the batch-108 reciprocal note of 7 October 2026, every label keeping its number, zero
+warnings and boxes); packages: amsmath,
 amssymb, amsthm, mathtools, geometry, booktabs, longtable, array, pict2e,
 microtype, hyperref, xurl, lmodern. Build in a scratch directory; only
 `article.pdf` is committed.
