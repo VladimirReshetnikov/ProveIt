@@ -1,0 +1,95 @@
+{
+  "title": "A 5 x 5 Obstruction to Polynomial Ordered Matrix Removal",
+  "date": "2026-10-07",
+  "status": "Research draft with complete mathematical proofs and supplementary finite and numerical checks",
+  "prepared_with": "ChatGPT",
+  "intended_integration": "VladimirReshetnikov/ProveIt",
+  "repositories_modified": false,
+  "sources": [
+    {
+      "repository": "openai/math",
+      "commit": "adc7f1241b42e322a6451854ab7e4b4c146bf78a",
+      "family": "190",
+      "title": "Polynomial removal fails for ordered binary matrices",
+      "manuscript_date": "2026-09-25",
+      "directory": "preprints/Polynomial-removal-fails-for-ordered-binary-matrices-September-25-2026",
+      "formalization_catalogue": "lean/docs/190.md",
+      "license": "Apache-2.0",
+      "inherited_mathematics": [
+        "Signed regular-tree block construction and row/column orders",
+        "Mode roles and nonanchor threshold entries",
+        "Protected-path propagation lower bound against arbitrary binary edits"
+      ],
+      "review_scope": "Read manuscript components and formalization scope; upstream Lean project not rebuilt"
+    },
+    {
+      "repository": "VladimirReshetnikov/ProveIt",
+      "commit": "fb9602e556560a15704b4feb176ba6de08378665",
+      "manuscript": "Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex",
+      "theorem_label": "p0:thm:lambert-core",
+      "manuscript_blob_sha": "26378ed517d4ed2e21add80faacfd8851f1fbd10",
+      "lean_source": "Analysis/FabiusFunction/Lean/FabiusFunction/LinLogCoreInversion.lean",
+      "lean_blob_sha": "2ea802e56782329b7c3e91be86b38a99eecd57b3",
+      "relevant_lean_theorems": [
+        "linLogCore_eq_iff",
+        "linLogCore_linLogCoreRoot",
+        "linLogCoreRoot_unique"
+      ],
+      "review_scope": "Source-level inspection of positive-parameter exact inversion and uniqueness; upstream Lean modules not rebuilt",
+      "contribution_boundary": "The general Lambert inversion is existing machinery; the exact combinatorial relation and its specialized expansion are developed in this article"
+    }
+  ],
+  "main_pattern": [
+    [0, 1, 1, 1, 0],
+    [1, 0, 1, 0, 1],
+    [1, 1, 0, 0, 0],
+    [1, 0, 0, 1, 0],
+    [0, 1, 0, 1, 1]
+  ],
+  "main_parameters": {
+    "m": "2^h",
+    "d": "20h+2",
+    "n": "dm",
+    "copy_count": "2m^8",
+    "original_copy_transversal": "m",
+    "entry_disjoint_packing": "m",
+    "minimum_binary_edit_count": "m^2",
+    "normalized_edit_distance": "d^(-2)",
+    "normalized_copy_density": "2d^(-10)m^(-2)",
+    "balanced_sampling_scale": "d m^(2/3)",
+    "balanced_detection_limit": "1-exp(-2c^3)",
+    "optimal_uniform_rectangle_entry_scale": "d^2 m",
+    "inverse_parameter_a": "log(2)/20"
+  },
+  "new_result_groups_relative_to_reviewed_sources": [
+    "Full-pattern bounded-signature pinning and the explicit five-by-five obstruction",
+    "Exact copy classification, count, transversal and packing",
+    "An explicit optimal repair with a proof of freeness after repair",
+    "Exact finite sampling identities, Poisson transition and clustering",
+    "Variational leading constant for one uniform rectangle with fixed sizes",
+    "Exact transversal-to-repair relation and convergent logarithmic expansion",
+    "Regular branching extension and optimization within that family",
+    "An explicit four-by-four copy surviving the two-anchor repair"
+  ],
+  "verification": {
+    "full_H5_exhaustive_depths": [1, 2],
+    "structural_and_designated_body_depths": [1, 2, 3, 4, 5, 6],
+    "fixed_size_exact_factorial_identities": 58,
+    "new_theorems_formalized_in_Lean": false,
+    "computational_search_over_all_edits": false,
+    "external_peer_review": false,
+    "receipts": [
+      "code/verification_results.json",
+      "code/inversion_results.json",
+      "figures/sampling_figure_data.json"
+    ]
+  },
+  "scope_limits": [
+    "No claim that five is the globally minimum forbidden-pattern size",
+    "No unrestricted adaptive-entry-query lower bound",
+    "Rectangle optimization is for one independent uniform rectangle with fixed sizes",
+    "No matching universal upper bound for the inverse logarithmic repair barrier",
+    "Numerical optimizer locations are approximate, with no uniqueness claim",
+    "Novelty is relative to reviewed source statements, not an exhaustive priority certification"
+  ]
+}
