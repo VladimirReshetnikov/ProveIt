@@ -13,8 +13,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 755 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 4,836 public Gowers theorems and found only propext,
+  All 762 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 4,872 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 113 exact
   companion proofs and 7 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -2345,11 +2345,11 @@ Joint structural cover with uniform power controls
   gives a written all-dimensional endpoint obstruction to the older
   universal Section16ContextualLiftAt contract: some valid common-base
   witnesses fail the unit cover, while a different witness for the same
-  input succeeds. This report has no Lean proof and its negation is not
-  asserted here. It motivates an existential witness-selection repair;
-  it does not invalidate the checked large-box controls above, nor claim
-  to refute Theorem 16.2. Keep the universal contract unasserted pending
-  formal verification of this stronger obstruction.
+  input succeeds. The universal-contract negation is now proved in
+  Proofs16ContextualLiftCounterexample, with every upstream field checked.
+  The same constructed witness admits a sufficient-mass selected subdomain
+  with a unit cover. This does not invalidate the large-box controls above
+  or refute Theorem 16.2; the existential selected-lifting repair remains open.
 
 Retaining the common-base mass in the extraction count
   Proofs16SharpPowerExtraction retains the actual mass of the translated
@@ -2405,9 +2405,8 @@ Weighted graph-sum support and genuine unit-product slabs
   R under the explicit sufficient condition 4*L*R<=N. The graph also has
   the actual RelationProductProperty used by structural extraction.
   These results formalize the weighted-product mechanism in incoming
-  Report 299. Its balanced-word, structured-pair, spectrum, and common-base
-  witness assembly have not all been connected to the slab construction;
-  no negation of the universal contextual contract is asserted here.
+  Report 299. The balanced-word, structured-pair, spectrum, and common-base
+  assembly is now completed in Proofs16ContextualLiftCounterexample below.
   This is evidence relevant to the remaining lifting hypotheses, not a
   proof or refutation of the exact general Theorem 16.2. The seven source
   catalogue gaps remain unchanged.
@@ -2440,10 +2439,41 @@ Exact slab arrangements, spectrum, and complete common-base witnesses
   chosen base x0. Every mass, selection, spectrum, and identity field is
   checked. A theorem confirms its good domain is the entire original slab.
   These results complete the geometric and common-base witness component
-  of Report 299. The balanced-word and structured-pair hypotheses and the
-  quantitative failure of the resulting unit cover still need to be joined
-  to this witness. No negation of Section16ContextualLiftAt, no exact new
-  catalogue companion, and no general final bound is asserted here.
+  of Report 299. Proofs16ContextualLiftCounterexample below joins them to
+  the balanced-word obstruction and structured-pair hypotheses, proving
+  the negation of the universal contract. No exact new catalogue companion
+  or improved general final bound follows from that negation.
+
+Formal obstruction to universal lifting with all upstream fields
+  Proofs16AdditiveTupleEnergy identifies additiveTupleCount exactly with
+  collision energy of half-tuple sums, for every finite additive commutative
+  monoid and every tuple order, including zero. Cauchy--Schwarz proves
+    |A|^(2*d) <= |G|*additiveTupleCount(d,A).
+  Proofs16SlabStructuredPair applies the order-eight bound, proves
+  theta1<=theta^16 and the proper-face budget>=theta^-1, and concludes that
+  a slab with |A|>=theta*N and at most theta^-1 values satisfies the actual
+  Section16StructuredPair. No regularity of its value word is needed.
+  Proofs16PartialWordObstruction transports the 5/16 cover obstruction to
+  any nonempty proper box inside the partial domain. The interval-word and
+  interval-box geometry retain the literal alphabet [0,R), all progression
+  balance counts, and the genuine interval product-property condition.
+  Proofs16SlabWordScales checks L=floor(N/(4R)), its density at least 1/(8R),
+  and the power-width comparison with explicit positive-power thresholds.
+  Proofs16NonUnitIntervalSlabs then supplies such words and slabs for all
+  sufficiently large prime N, using K=ceil(Q(1/2,1,k+1)), R=4K,
+  balance scale N^(C(1/2,1,k+1)/2), and tolerance 1/(32K).
+  Proofs16ContextualLiftCounterexample proves, for every k>=1,
+    not Section16ContextualLiftAt k.
+  Its inputs satisfy HasProductProperty at gamma=1 and every structured-pair
+  field; its witness satisfies every Section16CommonBaseData field. The
+  full good domain has no unit MultiplyLinearFunction cover. This is a
+  literal negation of the unchanged predicate, not a packaged-premise
+  surrogate or a finite computational check. The same witness also has a
+  Section16SelectedUnitDomain of the required source mass and unit cover,
+  by the proved finite-value selection theorem. Thus the checked obstruction
+  refutes universal full-domain lifting, while preserving the selected-domain
+  repair as an open route. It does not refute Theorem 16.2 or Szemeredi's
+  theorem and does not close any of the seven exact catalogue gaps.
 
 Selected-domain repair of the remaining exact lifting obligation
   Proofs16SelectedDomainTransport defines Section16SelectedUnitDomain D:
@@ -2475,14 +2505,14 @@ Selected-domain repair of the remaining exact lifting obligation
   original partial function on B. Consequently every common-base witness
   admits a successful selected domain whenever |phi(B)| <= theta^-1. This
   verifies the finite-range selection mechanism relevant to the reported
-  universal-witness obstructions, without claiming to have formalized all
-  hypotheses or the full counterexample from Report 299.
+  universal-witness obstructions. The full genuine obstruction and a
+  successful selected domain for the same witness are now proved below.
   The general selected-lifting theorem remains unproved. Existing large-box
   power covers provide local candidate families on a partition, not the
   single bounded global family assumed in the selection case. The new
   conditional induction and special case do not prove Lemma 16.10 or close
-  any of the seven exact source companions. The false older packaged lemma
-  and the unasserted universal contract remain unchanged.
+  any of the seven exact source companions. The older packaged lemma and
+  universal contract are both preserved unchanged and both are now refuted.
 
 Fourier localization and inverse induction from the joint power cover
   Proofs16PowerCoverDenseBox selects a dense multilinear graph from any
@@ -2535,7 +2565,8 @@ Transport and spectrum inputs for the large-piece construction
   delta^-2*N^k by Parseval and its relational delta-product property by
   Lemma 14.3. The preceding-dimensional Theorem 16.2 now applies to this
   spectrum with exactly the parameters of Lemma 16.6 and a threshold
-  uniform in the input domain. The all-ones unit cover remains unresolved.
+  uniform in the input domain. A unit cover on every full common-base
+  domain is now refuted; sufficient-mass selected lifting remains unresolved.
 
 Compatible common-base witnesses for the Section 16 lifting step
   Proofs16DenseSelection retains the sidelength cardinality and each selected
@@ -2547,21 +2578,24 @@ Compatible common-base witnesses for the Section 16 lifting step
   the spectrum, intersects its retained base with the selected sidelengths,
   and constructs Section16CommonBaseData with all these compatible witnesses.
   Its threshold is uniform over the input structured pair. This discharges
-  the common-base bookkeeping; the general all-ones lifting remains open.
+  the common-base bookkeeping. The universal full-domain lifting is now
+  refuted; the existential selected-domain lifting remains open.
 
-Exact induction reduced to contextual lifting
+Historical conditional induction from universal contextual lifting
   Proofs16FinalSections constructs the canonical last-coordinate face and
   proves that a structured pair supplies the fixed-final-coordinate premise
   on its selected good domain, with the original parameter unchanged.
-  Proofs16ContextualInduction defines the unasserted Section16ContextualLiftAt:
+  Proofs16ContextualInduction preserves Section16ContextualLiftAt:
   it retains the full original product property, the structured pair, and
   the constructed common-base witnesses, with a uniform modulus threshold.
   Theorem 16.2 in every dimension now follows conditionally from those
   contextual lifting statements. The proof combines Lemma 16.4, compatible
   common-base data, exact graph transport and mass budget, finite extraction,
   and the proved zero- and one-dimensional bases. It never invokes the
-  refuted two-premise lemma_16_10 predicate. This is a precise open obligation,
-  not a proved replacement of Lemma 16.10 or an exact Theorem 16.2 companion.
+  refuted two-premise lemma_16_10 predicate. Its universal premise is now
+  refuted for every k>=1, so these conditional implications do not provide
+  a route to the exact theorem. Use the selected-domain reduction instead;
+  its remaining obligation is not refuted by the slab examples.
 
 Box covers for an unused coordinate
   Proofs16UnusedCoordinateCover extends a lower-dimensional partial function
@@ -2609,9 +2643,9 @@ Actual non-top vertex and remainder covers
   from the actual common-base witnesses and pairs them with the already
   proved final-coordinate section covers. Both geometric inputs to the
   explicit sampling/interpolation lift now follow from the actual data.
-  The comparison with the unit-parameter multiple-linearity controls
-  remains unproved; neither the refuted packaged Lemma 16.10 nor the
-  contextual lifting obligation is asserted.
+  The asserted unit cover of every full common-base domain is now refuted.
+  Neither the packaged Lemma 16.10 nor the universal contextual contract
+  can supply that comparison; the selected-domain obligation remains open.
 
 Relative progression counting and stopping at every length
   Proofs03LinearPatternStep and Proofs03LinearPatternBound prove the
@@ -2716,6 +2750,9 @@ Next substantial obligations
      Section16SelectedLiftAt obligation, allowing sufficient-mass selection
      inside a chosen common-base domain. Its finite-global-candidate case
      is proved; the general selection is still the substantive gap.
+     The stronger universal Section16ContextualLiftAt is now formally
+     refuted in every positive dimension, with genuine upstream fields;
+     do not attempt to discharge that false contract.
   3. Prove Theorem 18.1 with explicit thresholds strong enough for iteration.
      The existing Section 18 cyclic dichotomy is conditional on that theorem.
      General relative counting, uniform stopping, and density iteration
