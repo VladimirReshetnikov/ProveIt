@@ -388,6 +388,12 @@ $b=1.586562859178089847374174938\ldots$ ($92253$) and, in
 Section~\ref{lcw:sec:occupation}, $p=0.431494883273705551403382959\ldots$
 ($59299$). The delivered digits are kept; every printed digit except these
 three is a truncation.
+(Scope clarified after the independent check of 7~October 2026: this
+concerns the seven values printed with ``\ldots''. The values printed
+without it, the six entries of the table of
+Section~\ref{lcw:sec:coefficients} and the two mean offsets of
+Theorem~\ref{lcw:thm:occupation}, are correctly rounded to twelve decimals,
+and five of them are not truncations.)
 \end{writenote}
 
 \section{An absolute expansion to every fixed order}\label{lcw:sec:expansion}
@@ -895,6 +901,18 @@ at $N=400$ for $D=1,2,3$, consistent with a $1/N$ correction. Row~1 is
 A002426, the central trinomial coefficients. The argument is classical and
 is a fixed-dimension statement: it neither uses nor extends
 Theorem~\ref{lcw:thm:ratio}, whose compact-ratio regime excludes fixed $D$.
+\textup{(Added after the independent check of 7~October 2026: the proof was
+re-derived step by step and is correct. The $1/N$ term is also explicit. The
+cubic term of $\log\varphi$ vanishes by symmetry, and its quartic term is
+$\sum_i\theta_i^4/(12(2D+1))-|\theta|^4/(2(2D+1)^2)$. Its average against the
+Gaussian weight $e^{-|x|^2/(2D+1)}$ gives
+$A_{N,D}(1)\,2^D(\pi N)^{D/2}(2D+1)^{-N-D/2}=1-3D/(16N)+O(N^{-2})$. That is
+$-0.1875$, $-0.375$, $-0.5625$ for $D=1,2,3$, against the exact-count values
+$-0.187495$, $-0.374746$, $-0.561437$ at $N=400$ above. Richardson
+extrapolation from $N=200$ and $400$ gives $-0.1875002$, $-0.375001$ and
+$-0.562508$. This is the standard
+Edgeworth computation, recorded here as a numerical corroboration, not as a
+proved second-order theorem.)}
 \end{remark}
 
 \section{Exact checks and reproducibility}\label{lcw:sec:verification}
@@ -1034,6 +1052,39 @@ last digit (note at the end of Section~\ref{lcw:sec:constants}). On
 question~2: the extreme case of the dense ratio $N/D\to\infty$ in which $D$
 stays fixed is settled for its leading term by Remark~\ref{lcw:rem:rows};
 $N/D\to\infty$ with $D\to\infty$, and $N/D\to0$, stay open.
+\end{writenote}
+\begin{writenote}[Independent check of the write, 7 October 2026]
+An adversarial check made by the intake after the write (commit
+\file{f3fb85cb6}) re-derived the statements marked [write] with its own
+code, after fetching again A328716 (revision~\#38), A328718 (\#35), A002426
+and the A328716 b-file. \emph{Remark~\ref{lcw:rem:rows}}, checked the
+hardest. The reduction to $\Pp(S_N=0)$, the Fourier inversion, the two
+extremal facts ($\varphi=1$ only at $0$; $\varphi>-1$ since
+$1+2\sum\cos\theta_i\ge1-2D$), the local bound and the Gaussian integral
+were re-derived, and the conjecture's row index was confirmed to be the
+dimension. The exact counts at $N=400$ (by Miller's power recurrence for
+$F^D$, a route distinct from the source's two) give the three printed values,
+and row~1 equals A002426 on all its data terms. A dated note there adds the
+$1/N$ term $-3D/16$. \emph{Remark~\ref{lcw:rem:oeis}.} Quotations,
+revisions and dates confirmed; all 399 b-file terms agree with Miller's
+recurrence modulo two primes, and 45 of them ($n\le40$, $n=100,199,250,398$)
+exactly; Kot\v{e}\v{s}ovec's $d$ and both $c$ are truncations of $d$, $C_\pm$.
+\emph{Note of Section~\ref{lcw:sec:constants}.} At 70 digits, $r$, $b$ and
+$p$ end in a rounded digit with the stated truncations and next digits, and
+$d$, $C_\pm$, $\tau^2$ are truncations. The note's scope is clarified there.
+\emph{Notes of Section~\ref{lcw:sec:verification}.} Every entry of the
+diagnostics table reproduced, and $\E K_n-np$ computed as
+$n(1-A_{n,n-1}(1)/a_n)$ (an axis is unused exactly when the bridge lives in
+$n-1$ dimensions): $-0.070931$, $-0.313069$, $-0.071086$, $-0.312368$ at
+$n=60,61,120,121$, as stated. \emph{Remark~\ref{lcw:rem:transseries}.}
+(a)--(e) re-derived against the volume (\file{p0:thm:staircase}(4) and
+\file{p0:rem:parity-instances}, \file{p0:prop:factorial-core} with
+$\kappa=1$, $d_{\mathrm{vol}}=\log d$, the template chart, and the
+core-reversion form with $\Lambda_{\mathrm{vol}}=1+1/L$).
+\emph{Provenance.} Archive facts, the pin \file{83befe707} (3~October
+2026), the four neighbouring reports named, and the 72 delivered label
+numbers and 65 references (aux of a build of the delivered text) confirmed.
+Apart from the scope of one sentence, no defect was found in the write.
 \end{writenote}
 
 \begin{thebibliography}{9}

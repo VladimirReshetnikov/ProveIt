@@ -146,7 +146,12 @@ proof:
   counted by brute force). Without the empty sum it gives `2 ≠ a(1)`. So
   neither convention makes the integer reading equal to `a(n)`; squarefree
   (or nonsquare) radicands with the empty sum do, which is Theorem 1.1's
-  identity.
+  identity. (Added after the independent check of 7 October 2026: the
+  article's sentence deriving the non-equivalence of the integer and
+  squarefree readings from the value at `n = 1` is corrected by a dated note;
+  at `n = 1` the two readings agree, and the non-equivalence comes from the
+  difference `Σ_{i≤n−2} a(i) ≥ 1` for every `n ≥ 2`, the same under either
+  convention.)
 - Also `a(n+1) − a(n)` is the number of nonunit sums in `[n+1, n+2)`, at
   least one for every `n ≥ 0` (the sums `i√2 + j√3` beyond `5√2`, and the
   data below), so `a` is strictly increasing.
@@ -224,6 +229,40 @@ outside the four questions. Refuted with proof: the OEIS comment's
   Lemmas 6.2 and 6.8); the transseries volume. Not read: Ingham's paper,
   Agarwala–Auluck, A000333, DLMF 25.10.
 
+## Independent check of the write (7 October 2026)
+
+An adversarial check made by the intake after the write (`b1a39e80f`), with
+its own code, after fetching again A397045 (#27) and its b-file,
+Kohlbecker's publisher PDF (pp. 346–347, 362–363 rendered), BJM v3 (Section
+4 rendered) and DRZZ v1 (Section 6).
+
+- **The conjecture.** The proof of Theorem 1.1 re-done (exact identity,
+  Rankin bound at `t_0`, Chebyshev bound at `t_0(1 + Dt_0)`). Kohlbecker's
+  Corollary 1 confirmed as specialized: his
+  `u = αΓ(α+1)ζ(α+1) s_u^{−α−1} L(1/s_u)` with `α = 2`, `L = c`, and his
+  `P(u) = Σ_{ν_i ≤ u} p(ν_i) = N_≤(u)` (each `p(ν_i) = 1`). `K` three ways.
+- **The comment (Remark 2.1).** (2.4) re-proved; brute force over multisets
+  of radicands gives `𝓘_n = 3, 8, 21, 46, 104, 211` and squarefree counts
+  `3, 7, 17, 35, 76, 148` (`n ≤ 6`), and `a(1..7)` directly; the covering
+  constants of (c) checked (`M = 4` would fail, `M = 5` works). **One gap in
+  reasoning, conclusion correct**: (b) inferred the non-equivalence of the two
+  readings from `n = 1`, where they agree; dated note added (see above).
+- **Remark 7.1**: (a)–(d) re-derived, including the interpolation identity
+  of (b).
+- **Sources.** Entry, b-file (75 terms, first 35 = data, strictly
+  increasing), Kohlbecker, BJM and DRZZ statements confirmed, **except** that
+  Section 1.1 gave BJM's Theorem 4.1 the letters `λ`, `β`: BJM write `χ` for
+  the multiplier and `ψ` for the inverse of `−φ'` (`χ = 1`, `ψ(x) = t(x)`
+  here; `λ`, `β` belong to their Theorem 1.1). Corrected by a dated note.
+- **Notes.** Table 2 to every printed digit; the write's extension
+  (`−0.002773, −0.002469, −0.002139`; ratios `−0.0395, −0.0080, −0.0064`)
+  from the check's own float64 code; `|E(u)|/u ≤ 0.8597` at the jumps,
+  `d ≤ 10⁶`.
+- Provenance, the 90 delivered label numbers and 84 references, and the
+  delivered build's duplicate destinations confirmed.
+
+The check is recorded at the end of Section 11.
+
 ## Relation to the repository
 
 **Formal status.** No statement is formalized, and placement in the
@@ -278,7 +317,7 @@ statement.
 ```text
 README.md                                 this guide (replaces the delivery README)
 article.tex                               the report (delivered Report172.tex; labels prefixed, [write] additions)
-article.pdf                               compiled report, 26 pages
+article.pdf                               compiled report, 27 pages
 sources-REFERENCES.md                     the source's access record of its references (delivered sources/)
 code/companion.py                         exact, cpp and diagnostics commands (delivered code/)
 code/enumerate_roots.cpp                  independent C++ enclosure enumerator (delivered code/)
@@ -381,8 +420,9 @@ B=$(mktemp -d); cp article.tex "$B/"; cd "$B"
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The committed PDF was built this way with MiKTeX on 6 October 2026: 26
-pages; no errors or warnings, no undefined references or citations, no
+The committed PDF was built this way with MiKTeX on 6 October 2026 (26
+pages), and rebuilt after the independent check of 7 October 2026 (label
+numbers unchanged, aux files compared): 27 pages; no errors or warnings, no undefined references or citations, no
 multiply defined labels, no duplicate PDF destinations, no overfull or
 underfull boxes. The delivered text, built the same way, gives 20 pages and
 two duplicate destinations (`table.1`, `table.2`), because it loads `float`

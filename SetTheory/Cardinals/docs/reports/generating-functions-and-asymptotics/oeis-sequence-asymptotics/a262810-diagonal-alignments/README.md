@@ -135,6 +135,11 @@ The write computed `a_n`, `n ≤ 25`, exactly by Howroyd's formula (a route
 different from the source's difference table): all 26 terms of the A262810
 b-file agree, `a` is strictly increasing from `n = 1`, and all 26 terms of
 the A316677 b-file equal `2^{n−1} a_n`. Nothing was submitted to the OEIS.
+(Qualified after the independent check of 7 October 2026: Howroyd's formula
+is the inclusion–exclusion double sum (15) summed in the other order, the
+same identity rather than a different route; the check confirmed all 26
+terms by Bala's positive sum (14) at `u = 1` with a certified rational
+tail.)
 
 ## What is not claimed
 
@@ -204,6 +209,36 @@ was not checked).
   arXiv:1511.00622v2, Sections 5.5–5.6; the transseries volume. Not read:
   Griggs–Hanlon–Odlyzko–Waterman, Pemantle–Wilson, Duchi–Sulanke, Slowinski.
 
+## Independent check of the write (7 October 2026)
+
+An adversarial check made by the intake after the write (`b7a7eb374`), with
+its own code, after fetching again the four OEIS entries, both b-files and
+Eger's arXiv:1511.00622v2.
+
+- **Remark 1.4.** Quotations, revisions and dates confirmed. The 26 b-file
+  terms equal Bala's positive sum (exact, certified tail) and the
+  inclusion–exclusion sum; A316677 = `2^{n−1} a_n` on all 26; `a` strictly
+  increasing from `n = 1`. **One qualification**: the write called Howroyd's
+  formula "a route different from the source's difference table"; it is the
+  same double sum in the other order (dated note in the article, and above).
+- **Sources.** Eger, Sections 5.5 (formula (2), the A126086 sum, the
+  equivalent credited to his [17, 28]) and 5.6 (the factor `2^{ℓ−1}` for
+  every number of sequences, citing Duchi–Sulanke): as stated. The
+  Duchi–Sulanke paper again could not be retrieved; whether it gives the
+  marked identity stays open. The neighbouring report's `SOURCES.md` and
+  Section 1.1: as stated.
+- **Numbers**, from exact `a_n`: the `C_3` residuals times `n⁸`, the
+  Proposition 7.1 values, `A(n,k)/G(n,k)`, the mean and variance errors
+  times `n⁴`, the eight values `x_J(log a_n) − n` and the first inverse
+  correction `0.33`: all as stated. `C_1, C_2, C_3` follow by hand from (33)
+  with `b_1, …, b_4 = 1/12, −1/360, 1/1260, −1/1680`.
+- **Remark 8.3**: (a)–(e) re-derived against the volume.
+- Provenance (the three `generated/` byte copies identified), the 61
+  delivered label numbers and 45 references confirmed. Apart from the
+  qualification, **no defect was found in the write.**
+
+The check is recorded at the end of Section 10.
+
 ## Relation to the repository
 
 **Formal status.** No statement is formalized, and placement in the
@@ -262,7 +297,7 @@ Section 1, and nothing was inserted before a delivered display or statement.
 ```text
 README.md                          this guide (replaces the delivery README)
 article.tex                        the report (delivered report.tex; labels prefixed, [write] additions)
-article.pdf                        compiled report, 19 pages
+article.pdf                        compiled report, 20 pages
 README_CODE.md                     the verifier's documentation (delivered at the root)
 source_audit.md                    the source's attribution audit (delivered at the root)
 code/verify_report177.py           exact rational verifier (delivered at the root)
@@ -359,8 +394,9 @@ B=$(mktemp -d); cp article.tex "$B/"; cd "$B"
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The committed PDF was built this way with MiKTeX on 7 October 2026: 19
-pages; no errors or warnings, no undefined references or citations, no
+The committed PDF was built this way with MiKTeX on 7 October 2026 (19
+pages), and rebuilt after the independent check of the same day (label
+numbers unchanged, aux files compared): 20 pages; no errors or warnings, no undefined references or citations, no
 multiply defined labels, no duplicate PDF destinations, no overfull or
 underfull boxes (the delivered text also builds without any, 14 pages). The
 write loads `array` for its notation table (a dated comment in the

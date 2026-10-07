@@ -411,6 +411,13 @@ functional equations of general orientations and contains no such
 equation. The published version was not read. The equations themselves are
 right: the write checked them to order $t^{38}$
 (Remark~\ref{peo:rem:oeis}), and the companion to $t^{1001}$.
+\textup{(Added after the independent check of 7~October 2026: the equations
+are in Section~8.1 in every version available, arXiv:1803.08265v1 (22~March
+2018) as well as~v2, and the HAL deposit \file{hal-01738160v2} (5~November
+2019), which HAL cites as the JCTA paper and whose Section~8 is word for
+word that of~v2; the journal's typeset version was still not read.
+Proposition~8.4 of~\cite{BC} is in its Section~8.3, ``When $u<0$'', and
+covers $u\in[-1,0)$, as BMEP's two references to it require.)}
 \end{remark}
 
 \section{Exact analytic Lambert models}\label{peo:sec:models}
@@ -892,7 +899,57 @@ that $\rho$ is the only singularity on $|t|=\rho$ and the continuation
 beyond it. Until then, Theorems~\ref{peo:thm:two}, \ref{peo:thm:fixed},
 \ref{peo:thm:logarithms} and~\ref{peo:thm:inverse} are conditional for
 A324312 and A277493.
+\textup{(Added after the independent check of 7~October 2026: the same
+authors regard the proposition as proved. Version~3 of~\cite{refined},
+Section~6.4 (p.~38), says of the logarithmic singular behaviour of its
+equation~(85) that it ``has been proven to be correct in [14] for
+$\omega=0$ and $\omega=1$'', where~[14] is~\cite{BMEP} and $\omega=0$ is the
+general family ($Q(t,0,1)=2G(t)$); the other weights are called predicted
+there. The check found no written proof elsewhere, so ``conditional'' here
+means: resting on a refereed proposition whose proof is only indicated, not
+on a conjecture.)}
 \end{enumerate}
+\begin{writenote}[Independent check of the write, 7 October 2026]
+An adversarial check made by the intake after the write (commit
+\file{05dcc17a8}) re-derived the statements marked [write] with its own
+code, after fetching again A324312 (revision~\#18), A277493 (\#53) and
+A324314 (\#7), arXiv:1803.08265v1 and~v2, the HAL deposit of~\cite{BMEP},
+version~3 of~\cite{refined} and~\cite{BC}. \emph{Counts.} Its own
+fixed-point reversion of~$\Omega$ (exact rationals, $m\le42$) reproduces
+every printed term of the three entries; $r_m$ to $m=1002$ from the
+recurrence~\eqref{peo:eq:recurrence} agree with it for $m\le42$ and satisfy
+$\Omega(R)\equiv t$ modulo $t^{1003}$ and three primes near $10^6$ (a test
+independent of~\eqref{peo:eq:ODE}; a single perturbed coefficient fails
+it); the first 1000 terms of each sequence are strictly increasing, as
+Remark~\ref{peo:rem:transseries}(a) says. \emph{Remark~\ref{peo:rem:input}.}
+Every quotation of Section~8 of~\cite{BMEP}, the $\Delta$-domain, the radii,
+the two leading forms (and $\rho\alpha=\sqrt3/(54\pi)$, $1/(16\pi)$, BMEP's
+coefficients of $\varepsilon\log\varepsilon$) and the citation note
+confirmed; the note is extended there, and question~\ref{peo:q:continuation}
+gains the authors' own later statement. \emph{Remark~\ref{peo:rem:transseries}.}
+Each instance re-derived against the volume's statements: the
+staircase and its admissible interpolation (b), the branch rule and
+$L_c=1$ (c), the data $(1,-1,0,0)$ and $q_N=(-1)^{N+1}\mathrm{LamP}_N$ (d),
+$(1-w)E+h_{\mathrm{vol}}(E)+f_{\mathrm{vol}}(\eta,E)=0$ with
+$h_{\mathrm{vol}}$ of order~$2$ in~$u$, $f_{\mathrm{vol}}$ divisible by~$\eta$, over
+$\mathbb Q[w,(1-w)^{-1}]$ (e),
+and the failure of (H3) in the chart $Z_{\mathrm{vol}}=m$ (f).
+\emph{Notes.} $Q_0,\dots,Q_5$ and $E_1,E_2$ recomputed by a different
+organization of the same transfer (the moments $\tau^j\mapsto j!\,c_j$
+substituted in $f(L-\tau)$, no derivative operator); $U_1,U_2,U_3$ and
+$\delta_1,\dots,\delta_4$ of both families by substitution in the integrated
+equation; Table~\ref{peo:tab:parameters}, $H$ and~$C$. The model
+coefficients $h_{1002}$, $k_{1002}$ were computed as integrals over the two
+lips of the cut (no recurrence; validated at $m=30$ against Taylor
+coefficients and a circle integral): all four entries of
+Table~\ref{peo:tab:diagnostics}, $1.6474952$ and $1.8500125$,
+$mL(a_n/(\kappa_0\mu^mh_m)-1)=1.0177405$ and $0.9081502$,
+$mL(-k_m/(2h_m))=1.0180049$ and $0.9084582$, and the three values of
+$x_J(y)-1000$ as stated (the write's four-digit values are rounded).
+\emph{Provenance.} Archive facts, the 58 delivered label numbers (aux of a
+build of the delivered text) and the README's file sizes and counts
+confirmed. No defect was found in the write.
+\end{writenote}
 
 \appendix
 \section{The fourth local sector}\label{peo:app:U}
