@@ -13,8 +13,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 646 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 4,181 public Gowers theorems and found only propext,
+  All 649 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 4,187 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 113 exact
   companion proofs and 7 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -801,6 +801,28 @@ Positive mass of local uniformity obstructions
   exceed any prescribed real threshold while remaining at most N/2.
   The original modulus threshold is qualitative here. This does not yet
   assemble local discrepancy into a global cubic discrepancy partition.
+
+Interior discrepancy on cubic localization cells
+  Proofs18SupportedBoundaryDiscrepancy extends the boundary argument to
+  arbitrary bounded complex functions supported on an interval. Removing
+  exceptional cells costs at most their cardinality. After the proved
+  small-diameter refinement, cells contained in the interval retain at
+  least 7*beta*N/8 of the discrepancy, provided 32 <= beta*N.
+  Proofs18SupportedFunctionDiscrepancy applies any explicit function inverse
+  bound and keeps the refinement count at most
+  C(beta/64)*N^(1-sigma/16). No zero-mean or relative-balance assumption
+  is imposed on the interval function.
+  Proofs18CubicLocalDiscrepancy composes the new positive-mass cubic models
+  with the proved quadratic inverse theorem. Every selected original cell
+  now has an actual interior discrepancy family in its smaller prime model,
+  with common discrepancy parameter and count exponent. The threshold for
+  the original prime is qualitative; all local inverse thresholds and the
+  boundary scale requirement are discharged by the constructed choice.
+  These interior families do not yet cover their supporting intervals.
+  A controlled completion and transport back to the original modulus,
+  followed by removal of the cubic phase, remain necessary for a global
+  cubic discrepancy theorem. Carrier-injective modular properness alone
+  does not supply the no-wrap geometry needed for that transport.
 
 Cubic obstruction in a strictly smaller prime model
   Proofs17LocalizedPhaseRemoval now exports proposition_17_7_with_upper:
@@ -2038,11 +2060,15 @@ Next substantial obligations
      faithful contextual repair; the false abstraction cannot be proved.
   3. Prove Theorem 18.1 with explicit thresholds strong enough for iteration.
      The existing Section 18 cyclic dichotomy is conditional on that theorem.
-     Extend the relative-balance, boundary refinement, uniform stopping,
-     and fixed-parameter iteration now completed for four-term progressions
-     to the higher-degree construction, retaining explicit thresholds.
-     Relative counting and the uniform stopping branch are now proved
-     for arbitrary progression lengths; the nonuniform branch remains.
+     General relative counting, uniform stopping, and density iteration
+     from an explicit function discrepancy bound are already proved for
+     arbitrary progression lengths. Discharge the higher-degree inverse
+     input and its numerical budget, rather than repeating those reductions.
+     The cubic construction now yields interior discrepancy families on a
+     positive mass of localization cells. Complete and transport those
+     families with a controlled cell count, remove the cubic phase, and
+     make the original modulus threshold explicit. Keep the interval
+     geometry distinct from carrier-injective modular properness.
   4. Close Theorem 18.2 and its headline consequences; then investigate tighter
      final bounds without treating improved auxiliary statements as a proved
      improvement of the full Szemeredi estimate.
