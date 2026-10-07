@@ -1,5 +1,5 @@
 /- Modified for ProveIt: import Lean 4.32 compatibility declarations.
-Statements and proofs are unchanged from the pinned upstream source. -/
+ Use older set-comprehension and discrete-subgroup names; statements unchanged. -/
 import OAI.Compat.Set
 import OAI.Compat.Isometry
 import OAI.Combinatorics.Progressions.Dynamics.LocalizedAverageScaleBudget
@@ -78,8 +78,8 @@ def filtration (d : ℕ) : NilpotentLieFiltration (Algebra d) 1 where
 theorem basis_layers (d j : ℕ) :
     (filtration d).layer j = Submodule.span ℚ ((basis d) '' {_i : Fin d | j ≤ (1 : ℕ)}) := by
   by_cases hj : j ≤ 1
-  · simpa only [filtration, hj, ite_true, Set.ofPred_true, Set.image_univ] using (basis d).span_eq.symm
-  · simp only [filtration, hj, ite_false, Set.ofPred_false, Set.image_empty, Submodule.span_empty]
+  · simpa only [filtration, hj, ite_true, Set.setOf_true, Set.image_univ] using (basis d).span_eq.symm
+  · simp only [filtration, hj, ite_false, Set.setOf_false, Set.image_empty, Submodule.span_empty]
 
 end Erdos3.RationalTorus
 

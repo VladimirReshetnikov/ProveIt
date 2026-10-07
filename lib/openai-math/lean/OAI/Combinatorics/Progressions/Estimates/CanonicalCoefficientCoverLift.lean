@@ -1,5 +1,5 @@
 /- Modified for ProveIt: import Lean 4.32 compatibility declarations.
-Statements and proofs are unchanged from the pinned upstream source. -/
+ Use older set-comprehension and discrete-subgroup names; statements unchanged. -/
 import OAI.Compat.Measurable
 import OAI.Combinatorics.Progressions.Lattices.LatticeCoverMeasure
 import OAI.Combinatorics.Progressions.Linear.FiniteKernelRestriction
@@ -81,7 +81,7 @@ theorem normalizedCoverLift_reference (d : ℕ) (hd : 0 < d)
         normalizedChartRegion W b hb Ω) := by
   let Λ := latticeSection (standardEuclideanLattice D) W
   let : DiscreteTopology Λ.toAddSubgroup := latticeSection_discrete (standardEuclideanLattice D) W
-  let : IsClosed (Λ.toAddSubgroup : Set W) := AddSubgroup.isClosed_of_discreteTopology
+  let : IsClosed (Λ.toAddSubgroup : Set W) := AddSubgroup.isClosed_of_discrete
   let : CompactSpace (W ⧸ Λ.toAddSubgroup) := latticeQuotient_compact Λ
   let : BorelSpace (W ⧸ Λ.toAddSubgroup) := QuotientAddGroup.borelSpace
   let : IsFiniteMeasure (normalizedChartReference W b Ω) :=
@@ -116,7 +116,7 @@ theorem normalizedCoverResidues_reference
   let : Fintype (quotientIntegerCover Λ.toAddSubgroup d).ker :=
     Fintype.ofEquiv (R → ZMod d) (coverKernelBasisEquiv Λ.toAddSubgroup bW d hd).toEquiv
   let : DiscreteTopology Λ.toAddSubgroup := latticeSection_discrete (standardEuclideanLattice D) W
-  let : IsClosed (Λ.toAddSubgroup : Set W) := AddSubgroup.isClosed_of_discreteTopology
+  let : IsClosed (Λ.toAddSubgroup : Set W) := AddSubgroup.isClosed_of_discrete
   let : BorelSpace (W ⧸ Λ.toAddSubgroup) := QuotientAddGroup.borelSpace
   let : IsFiniteMeasure (normalizedChartReference W b Ω) :=
     normalizedChartReference_finite W b hb μ hΩm hΩ

@@ -1,3 +1,4 @@
+/- Modified for ProveIt: Use older set-comprehension and discrete-subgroup names; statements unchanged. -/
 import OAI.Combinatorics.Progressions.Lattices.ProjectedLatticeSheetCover
 import OAI.Combinatorics.Progressions.Lattices.StandardLatticeCoordinates
 
@@ -47,7 +48,7 @@ theorem smallLiftRegion_measurable {J : Type*} [Fintype J]
   let : DiscreteTopology (latticeSection (standardEuclideanLattice J) W).toAddSubgroup :=
     latticeSection_discrete (standardEuclideanLattice J) W
   let : IsClosed ((latticeSection (standardEuclideanLattice J) W).toAddSubgroup : Set W) :=
-    AddSubgroup.isClosed_of_discreteTopology
+    AddSubgroup.isClosed_of_discrete
   rw [latticeSmallLiftRegion_eq_sheets]
   apply MeasurableSet.iUnion
   intro z

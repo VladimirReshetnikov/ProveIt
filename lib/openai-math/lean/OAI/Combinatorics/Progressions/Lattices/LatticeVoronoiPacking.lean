@@ -1,3 +1,4 @@
+/- Modified for ProveIt: Use older set-comprehension and discrete-subgroup names; statements unchanged. -/
 import Mathlib.Algebra.Module.ZLattice.Covolume
 import Mathlib.Topology.MetricSpace.HausdorffDistance
 import OAI.Combinatorics.Progressions.Estimates.EuclideanBisectorNull
@@ -21,13 +22,13 @@ def latticeVoronoi : Set E := {x : E | ∀ z : Λ, ‖x‖ ≤ ‖x - z.val‖}
 omit [InnerProductSpace ℝ E] [FiniteDimensional ℝ E] in
 theorem latticeVoronoi_closed : IsClosed (latticeVoronoi Λ) := by
   change IsClosed {x : E | ∀ z : Λ, ‖x‖ ≤ ‖x - z.val‖}
-  simp only [Set.ofPred_forall]
+  simp only [Set.setOf_forall]
   exact isClosed_iInter (fun z => isClosed_le continuous_norm ((continuous_id.sub continuous_const).norm))
 
 theorem exists_sub_mem_latticeVoronoi [DiscreteTopology Λ] (x : E) :
     ∃ z : Λ, x - z.val ∈ latticeVoronoi Λ := by
   have hclosed : IsClosed (Λ : Set E) :=
-    (AddSubgroup.isClosed_of_discreteTopology : IsClosed (Λ.toAddSubgroup : Set E))
+    (AddSubgroup.isClosed_of_discrete : IsClosed (Λ.toAddSubgroup : Set E))
   obtain ⟨z, hz, he⟩ := hclosed.exists_infDist_eq_dist ⟨0, Λ.zero_mem⟩ x
   refine ⟨⟨z, hz⟩, ?_⟩
   intro w

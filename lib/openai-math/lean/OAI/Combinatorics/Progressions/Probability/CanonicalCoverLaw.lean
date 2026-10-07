@@ -1,3 +1,4 @@
+/- Modified for ProveIt: Use older set-comprehension and discrete-subgroup names; statements unchanged. -/
 import Mathlib.Analysis.Normed.Group.Quotient
 import Mathlib.MeasureTheory.Measure.Haar.Unique
 import OAI.Combinatorics.Progressions.Estimates.CanonicalCoefficientCoverLift
@@ -67,7 +68,7 @@ open MeasureTheory
 instance subspaceArrayIntegerLattice_closed {I D : Type*} (U : Submodule ℝ (D → ℝ)) :
     IsClosed (subspaceArrayIntegerLattice I U : Set (I → U)) := by
   change IsClosed {x : I → U | ∀ i a, ∃ n : ℤ, (x i).val a = n}
-  simp only [Set.ofPred_forall]
+  simp only [Set.setOf_forall]
   apply isClosed_iInter
   intro i
   apply isClosed_iInter

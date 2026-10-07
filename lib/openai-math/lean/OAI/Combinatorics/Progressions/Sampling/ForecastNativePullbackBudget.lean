@@ -1,3 +1,6 @@
+/- Modified for ProveIt: import Lean 4.32 compatibility declarations.
+Statements and proofs are unchanged from the pinned upstream source. -/
+import OAI.Compat.ContinuousLinearMap
 import OAI.Combinatorics.Progressions.Geometry.AllocatedFullSiteSupport
 import OAI.Combinatorics.Progressions.Lattices.ForecastIntegerAxisSplit
 import OAI.Combinatorics.Progressions.Sampling.AllocatedOriginalSampleForecastAtom

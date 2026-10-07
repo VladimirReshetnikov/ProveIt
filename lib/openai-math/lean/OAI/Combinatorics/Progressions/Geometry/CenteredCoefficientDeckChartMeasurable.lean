@@ -1,5 +1,5 @@
 /- Modified for ProveIt: import Lean 4.32 compatibility declarations.
-Statements and proofs are unchanged from the pinned upstream source. -/
+ Use older set-comprehension and discrete-subgroup names; statements unchanged. -/
 import OAI.Compat.Measurable
 import Mathlib.MeasureTheory.Constructions.Polish.Basic
 import OAI.Combinatorics.Progressions.Estimates.ConstantCenterUniformLifts
@@ -89,7 +89,7 @@ theorem coefficientDeckChartEvent_measurableSet (q : ℕ) [NeZero q]
     event (coefficientSamplerChartResidues q z.1 z.2)}
   have hsmall : MeasurableSet {z : T | ∀ a,
       |coefficientSamplerAmbientPoint U b o z.1 a| < 1/2} := by
-    simp only [Set.ofPred_forall]
+    simp only [Set.setOf_forall]
     apply MeasurableSet.iInter
     intro a
     exact measurableSet_lt ((coefficientSamplerAmbientPoint_measurable U b o a).comp measurable_fst).abs

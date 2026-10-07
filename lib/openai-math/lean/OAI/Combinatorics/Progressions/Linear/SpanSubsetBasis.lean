@@ -1,5 +1,5 @@
 /- Modified for ProveIt: adapt import paths to Mathlib v4.32.0.
-Mathematical statements and proofs unchanged. -/
+Mathematical statements unchanged. Use Set.setOf_mem_eq for set comprehension. -/
 import Mathlib.Data.Real.Basic
 import Mathlib.LinearAlgebra.Basis.Submodule
 import Mathlib.LinearAlgebra.FiniteDimensional.Basic
@@ -20,7 +20,7 @@ theorem exists_basis_of_span_subset {E : Type*} [AddCommGroup E] [Module ℝ E]
   obtain ⟨s, hs, hspan, hli⟩ := exists_linearIndependent ℝ S
   let : Fintype s := hli.setFinite.fintype
   have he : Submodule.span ℝ (Set.range ((↑) : s → E)) = Submodule.span ℝ S := by
-    simpa only [Subtype.range_coe_subtype, Set.ofPred_mem_eq] using hspan
+    simpa only [Subtype.range_coe_subtype, Set.setOf_mem_eq] using hspan
   let b₀ : Basis s ℝ (Submodule.span ℝ S) := (Basis.span hli).map (LinearEquiv.ofEq _ _ he)
   let b := b₀.reindex (Fintype.equivFin s)
   refine ⟨Fintype.card s, b, ?_, ?_⟩

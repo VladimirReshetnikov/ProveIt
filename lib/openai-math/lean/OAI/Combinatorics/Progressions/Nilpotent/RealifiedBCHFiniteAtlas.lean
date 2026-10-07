@@ -1,3 +1,4 @@
+/- Modified for ProveIt: Use older set-comprehension and discrete-subgroup names; statements unchanged. -/
 import Mathlib.Topology.Algebra.Group.Quotient
 import Mathlib.Topology.OpenPartialHomeomorph.Basic
 import OAI.Combinatorics.Progressions.Estimates.ImageRepresentatives
@@ -33,7 +34,7 @@ noncomputable def quotientCoordinateChart (z : NilpotentLieBCHGroup L s hnil) :
   have ho : IsOpenMap f := QuotientGroup.isOpenMap_coe.comp
     ((Homeomorph.mulLeft z).isOpenMap.comp (basisHomeomorph e).symm.isOpenMap)
   have hU : IsOpen U := by
-    simp only [U, Set.ofPred_forall]
+    simp only [U, Set.setOf_forall]
     exact isOpen_iInter_of_finite (fun i => isOpen_lt (continuous_apply i).abs continuous_const)
   exact OpenPartialHomeomorph.ofContinuousOpen (hi.toPartialEquiv f U) hf.continuousOn ho hU
 

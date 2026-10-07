@@ -1,3 +1,4 @@
+/- Modified for ProveIt: Use older set-comprehension and discrete-subgroup names; statements unchanged. -/
 import OAI.Combinatorics.Progressions.Fourier.BoundedFrequencyKernel
 
 namespace OAI
@@ -80,9 +81,9 @@ theorem stepOne_basis_layers (j : ℕ) :
     F.layer j = Submodule.span ℚ (b '' {i | j ≤ (fun _ : ι => 1) i}) := by
   by_cases hj : j ≤ 1
   · have htop : F.layer j = ⊤ := top_unique (F.one_eq_top ▸ F.antitone hj)
-    simpa only [hj, Set.ofPred_true, Set.image_univ, b.span_eq] using htop
+    simpa only [hj, Set.setOf_true, Set.image_univ, b.span_eq] using htop
   · have hbot : F.layer j = ⊥ := bot_unique ((F.antitone (by omega : 2 ≤ j)).trans F.terminal.le)
-    simpa only [hj, Set.ofPred_false, Set.image_empty, Submodule.span_empty] using hbot
+    simpa only [hj, Set.setOf_false, Set.image_empty, Submodule.span_empty] using hbot
 
 variable (ω : ι → ℕ)
   (hlayers : ∀ j, F.layer j = Submodule.span ℚ (b '' {i | j ≤ ω i}))
