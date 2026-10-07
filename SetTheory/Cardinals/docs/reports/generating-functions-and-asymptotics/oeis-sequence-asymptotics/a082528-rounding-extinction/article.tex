@@ -7,6 +7,7 @@
 \usepackage{booktabs,array,longtable,graphicx}
 \usepackage[dvipsnames]{xcolor}
 \usepackage{enumitem,fancyhdr}
+\usepackage{placeins}% added in batch 110 for Part III's \FloatBarrier
 \usepackage{hyperref}
 \usepackage{xurl}
 \usepackage[nameinlink,noabbrev]{cleveref}
@@ -14,7 +15,8 @@
 \definecolor{linkblue}{RGB}{24,84,125}
 \hypersetup{colorlinks=true,linkcolor=linkblue,citecolor=linkblue,urlcolor=linkblue,
  pdftitle={Gamma constants and scaling limits for rounding extinction},
- pdfauthor={Research report prepared for Vladimir Reshetnikov with OpenAI}}
+ pdfauthor={Parts I and III: research report prepared for Vladimir Reshetnikov with OpenAI; Part II: Report 188 (no author named)},
+ pdfsubject={OEIS A073047, A082527, A082528; power-rounding extinction, quantitative thresholds, microscopic schedules; report a082528-rounding-extinction (batches 85 and 110)}}
 \pagestyle{fancy}
 \fancyhf{}
 \fancyhead[L]{\small\textsc{Gamma constants for rounding extinction}}
@@ -55,6 +57,13 @@
 \newenvironment{writenote}[1][]{\par\smallskip\begingroup\small
  \noindent\textbf{[write]}\if\relax\detokenize{#1}\relax\else~\textbf{#1.}\fi\ }%
  {\par\endgroup\smallskip}
+% Added by the ProveIt write phase (batch 110): macros of Parts II and III.
+\newcommand{\OO}{\mathcal O}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\ind}{\mathbf 1}
+\newcommand{\weak}{\mathrel{\Rightarrow}}
+\DeclareMathOperator{\supp}{supp}
 \newcommand{\cm}{c_m}
 \newcommand{\Lm}{L_m}
 \newcommand{\ym}{y_m}
@@ -63,10 +72,13 @@
  Gamma Constants and Scaling Limits\\[4pt]
  for Rounding Extinction\\[8pt]
  \large Cloitre's power-rounding conjecture, smooth-weight universality,\\
- and the limits of regular variation}
-\author{Research report prepared for Vladimir Reshetnikov\\
- \small with OpenAI}
-\date{3 October 2026}
+ and the limits of regular variation\\[6pt]
+ \normalsize Part II: quantitative thresholds, inverses, and global mass profiles\\[2pt]
+ \normalsize Part III: microscopic schedules and averaged ceiling laws}
+\author{Parts I and III: research report prepared for Vladimir Reshetnikov\\
+ \small with OpenAI\\[4pt]
+ \normalsize Part II: Report 188 (no author named)}
+\date{3 October 2026;\\ Parts II and III added 7 October 2026 (batch 110)}
 \begin{document}
 \maketitle
 \begin{abstract}
@@ -96,6 +108,33 @@ within this report.
 \noindent\textbf{Status.} Complete mathematical proofs are supplied here;
 the report is AI-assisted, unrefereed, and not formally verified.
 The historical search was targeted, not exhaustive.
+
+\paragraph{Editorial note (7 October 2026, batch 110).}
+Since batch~110 the report has three Parts. Part~I is the report described
+above. Part~II (\cref{rex:qt:sec:front} onwards) is built from Report~188
+of a session bundle, written without sight of this report, on the same pure
+power process: it proves the leading law of \cref{rex:thm:main} again by a
+second route and adds the remainder
+$T_m(K)=L_mK^{m+1}+O_m(K^{(m+1)^2/(m+2)})$, uniform on compact $m$-sets,
+with an explicit all-index enclosure, a global minimal-mass profile with a
+rate and a law for positive terminal quotients; this answers Research
+question~\ref{rex:q:rates}. Part~III (\cref{rex:sch:sec:front} onwards) is
+built from the manuscript \emph{Microscopic Schedules in Rounding
+Extinction}, which starts from Research question~\ref{rex:q:schedules}: for
+nondecreasing weights with bounded scaled increments whose joint empirical
+law of increment and activity converges, it proves the extinction law with
+an averaged ceiling drift, finite Gamma products, a jump of the constant
+from $1/(2\pi)$ to $\pi/8$ under perturbations of the weights smaller
+than every inverse power of the index,
+a schedule with no limiting constant, the exact range $(0,1/(m+1))$ of the
+constants, and recovery of the law from the drift. It answers that question
+for this class and the sparse-exception question in its bounded form. The
+two Parts continue the two directions named at the end of
+\cref{rex:sec:questions}. Their labels carry the prefixes \texttt{rex:qt:}
+and \texttt{rex:sch:}; each keeps its source's letters, with a table of
+readings. Dated notes in \cref{rex:sec:results,rex:sec:history,rex:sec:constant,rex:sec:certificates,rex:sec:clock,rex:sec:questions}
+record what has changed. Parts~II and~III are AI-assisted, unrefereed and
+not formalized.
 \newpage
 \setcounter{tocdepth}{1}
 \tableofcontents

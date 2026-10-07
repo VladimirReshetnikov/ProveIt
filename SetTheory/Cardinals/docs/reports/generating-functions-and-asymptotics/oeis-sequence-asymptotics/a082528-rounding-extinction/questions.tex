@@ -23,6 +23,17 @@ their accumulated errors against the omitted small-time tail. The
 classical $m=1$ estimate in \cref{rex:eq:classical-error} supplies a
 benchmark. Compactness alone contains no numerical rate.
 
+\begin{writenote}[Added 7 October 2026, batch~110]
+Answered by Part~II (Report~188): $E_m(K)=O_m(K^{(m+1)^2/(m+2)})$,
+that is $\delta_m=(m+1)/(m+2)$, with implied constants uniform for $m$ in
+any compact subinterval of $(0,\infty)$, and an explicit enclosure of
+$T_m(K)$ at every index (\cref{rex:qt:thm:main,rex:qt:thm:envelope}). The
+proof makes the crossing errors quantitative through a monotone integral
+coordinate and balances them against the small-time tail, as suggested
+above. At $m=1$ the exponent is the classical $4/3$. Whether $\delta_m$
+can be enlarged is Part~II's question~\ref{rex:qt:q:sharper}, open.
+\end{writenote}
+
 \begin{question}[Bounded stopping-time error]\label{rex:q:bounded}
 For which $m>0$, if any, does
 \[
@@ -40,7 +51,14 @@ where the stopping index is $K+1$, and expand the resulting power.
 The two equivalent formulations indicate that an error term at the
 scale of a single threshold gap is required.
 
-\begin{question}[Signs and fluctuation scales]
+\begin{writenote}[Added 7 October 2026, batch~110]
+Open. Part~II's remainder gives
+$\tau_m(n)=(c_mn)^{1/(m+1)}+O_m(n^{1/((m+1)(m+2))})$, not $O_m(1)$; this
+question reappears as Part~II's question~\ref{rex:qt:q:bounded} and
+Part~III's Research question~\ref{rex:sch:q:classical}.
+\end{writenote}
+
+\begin{question}[Signs and fluctuation scales]\label{rex:q:fluct}
 Does $T_m(K)-L_mK^{m+1}$ have an eventual sign? What are the natural
 scales of its upper and lower envelopes? Does any centered and scaled
 version have a limiting distribution along integer horizons?
@@ -51,6 +69,12 @@ plotted data include both signs. Neither observation establishes an
 eventual-sign theorem. The nonmonotone normalized errors show that a
 simple monotonicity argument would need additional structure. Any probabilistic terminology here would describe a
 distribution over sampled horizons, not randomness in the recurrence.
+
+\begin{writenote}[Added 7 October 2026, batch~110]
+Open; it reappears as Part~II's question~\ref{rex:qt:q:fluct}. Part~II
+bounds the error, $|T_m(K)-L_mK^{m+1}|=O_m(K^{(m+1)^2/(m+2)})$, but says
+nothing about its sign or its distribution.
+\end{writenote}
 
 \begin{question}[A theory of microscopic schedules]\label{rex:q:schedules}
 Classify the limits for regularly varying weights when
@@ -67,7 +91,27 @@ of that pattern. Establishing such an averaging theorem is a
 substantive extension; it is not a consequence of
 \cref{rex:thm:weights-main}.
 
-\begin{question}[Stability under sparse exceptional steps]
+\begin{writenote}[Added 7 October 2026, batch~110]
+Answered by Part~III for nondecreasing weights whose scaled increments
+$\beta_k=k(w_k/w_{k-1}-1)$ lie in a fixed interval $[0,B]$ and whose joint
+empirical law of $\beta_k$ and of the flag $\sigma_k=\ind_{\{w_k>w_{k-1}\}}$
+converges (\cref{rex:sch:def:law}). The information beyond the index is that
+augmented law: the ceiling is applied to each type before averaging, the
+averaged drift~\eqref{rex:sch:eq:drift} determines the profile, the
+constant and the forward trajectory (\cref{rex:sch:thm:main}), and the drift
+determines the law (\cref{rex:sch:thm:recovery}). Periodic patterns, repeated
+values and oscillation are all covered; a zero slope counts differently
+according as the weight stays equal or increases by $o(1/k)$, which moves the
+constant from $1/(2\pi)$ to $\pi/8$ in the example of
+\cref{rex:sch:thm:jump}. Without a limiting law the constant need not exist
+(\cref{rex:sch:thm:no-limit}). Outside this class the question stays open,
+re-scoped as Part~III's Research questions~\ref{rex:sch:q:unbounded}
+(unbounded or negative increments), \ref{rex:sch:q:sparse} (sparse large
+jumps) and~\ref{rex:sch:q:nonconv} (schedules without a limiting law), and
+the rate of the averaged law is its Research question~\ref{rex:sch:q:quant}.
+\end{writenote}
+
+\begin{question}[Stability under sparse exceptional steps]\label{rex:q:sparse}
 How many exceptional ratios can be allowed without changing $L_m$?
 For example, suppose the local ratio condition holds outside a set
 of indices of density zero. Which bounds on the exceptional
@@ -80,7 +124,17 @@ exceptions to a sparse infinite set requires controlling their
 combined effect on the quotient increments. Density alone need not
 control the size of those effects.
 
-\begin{question}[Moving exponents and singular regimes]
+\begin{writenote}[Added 7 October 2026, batch~110]
+Answered in its bounded form by Part~III: for nondecreasing weights,
+changes of the successive ratios on a set of density zero, with the scaled
+increments there bounded, change neither the augmented law, nor the
+constant, nor the profiles (\cref{rex:sch:cor:sparse} and the note after
+it), each schedule being normalized by its own $w_K$. Whether a sparse set
+of very large jumps can change the constant is open: Part~III's Research
+question~\ref{rex:sch:q:sparse}.
+\end{writenote}
+
+\begin{question}[Moving exponents and singular regimes]\label{rex:q:moving}
 Describe joint limits with $m=m(n)\downarrow0$ or $m=m(n)\to\infty$.
 Determine ranges in which the fixed-parameter equivalent remains
 uniform and identify any transition scales.
@@ -92,7 +146,14 @@ is exactly $1$. The explicit expansions in
 \cref{rex:prop:parameter} describe the constants, but they do not control
 the speed of convergence of the underlying discrete process.
 
-\begin{question}[Rates for the full trajectory and loss distribution]
+\begin{writenote}[Added 7 October 2026, batch~110]
+Open. Part~II's bounds are uniform only on compact $m$-sets
+(\cref{rex:qt:thm:main}); its \cref{rex:qt:sec:parameter} expands $c_m$ at
+both ends but proves no joint regime, and its question~\ref{rex:qt:q:varying}
+asks the same.
+\end{writenote}
+
+\begin{question}[Rates for the full trajectory and loss distribution]\label{rex:q:trajectory}
 Obtain explicit bounds for
 \[
  \sup_{0\leq t\leq1}|X_n(t)-F_m(t)|
@@ -106,6 +167,16 @@ The limiting density is explicit on each increment regime. It permits
 certified computation of limiting observables using finite sums and
 an integrable tail. Rates for the finite process again depend on
 discrete crossing errors rather than solely on the Gamma constant.
+
+\begin{writenote}[Added 7 October 2026, batch~110]
+Partly advanced, still open. Part~II gives a rate for the backward minimal
+path, uniformly over the whole path:
+$\max_{1\le j\le k}|j^pq_j/k^{p+1}-f_m(j/k)|=O_m(k^{-(m+1)/(m+2)})$ for
+$p=m$ (\cref{rex:qt:thm:global}, \cref{rex:qt:rem:identify}). It gives no
+rate for the forward paths $X_n$ or for the loss measures asked about here.
+Part~III marks the loss measures by the increment state
+(\cref{rex:sch:thm:loss}), without a rate.
+\end{writenote}
 
 \begin{question}[Sieve and game interpretations for higher powers]
 Is there a natural sieve or solitaire model whose survival thresholds
@@ -142,6 +213,16 @@ test how the constant changes when the local smoothness condition is
 relaxed. These two directions address the principal limitations of
 the present theorem: the absence of a finite error bound, and the
 dependence on the microscopic schedule.
+
+\begin{writenote}[Added 7 October 2026, batch~110]
+Both directions have been taken up: the quantitative analysis for pure
+powers is Part~II, and a periodic-ratio model, generalized to every
+convergent bounded increment law, is Part~III.
+\end{writenote}
+
+% Parts II and III (batch 110) are \input here, before the appendices of Part I.
+\input{rates.tex}
+\input{schedules.tex}
 
 \appendix
 \section{Proof dependencies and source audit}\label{rex:app:audit}

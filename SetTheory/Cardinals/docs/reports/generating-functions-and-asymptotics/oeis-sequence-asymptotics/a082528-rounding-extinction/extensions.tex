@@ -39,6 +39,15 @@ They do not by themselves certify how close a finite threshold
 $T_m(K)$ is to its asymptotic equivalent: that is a different error
 problem.
 
+\begin{writenote}[Added 7 October 2026, batch~110]
+The same integration at every $t$, not only at $t_j$, is Part~II's
+\cref{rex:qt:prop:profilebound}; Part~III's
+certificate~\eqref{rex:sch:eq:certificate} extends the bracket to every
+schedule of its class (\cref{rex:sch:rem:parts}). Part~II's
+\cref{rex:qt:thm:envelope} addresses the different error problem named
+here: it encloses $T_m(K)$ itself at every index.
+\end{writenote}
+
 There is also an exact finite computation bound. If the backward
 recurrence has been computed only as far as stage $k$, then
 \begin{equation}\label{rex:eq:partial-computation}
@@ -97,6 +106,15 @@ part of \cref{rex:thm:weights-main}, proved below.
 
 No randomness has been introduced in this statement. The measure records
 what fraction of a fixed initial value is lost at each normalized stage.
+
+\begin{writenote}[Added 7 October 2026, batch~110]
+Part~III's \cref{rex:sch:thm:loss} extends this corollary to every schedule
+of its class and marks each loss with the increment state of its step; for
+the law $\delta_{(m,1)}$ its time marginal is~\eqref{rex:eq:loss-density}
+(\cref{rex:sch:rem:parts}). In its example with active zero phases a
+fraction $2/\pi$ of the mass is lost at steps whose weight increments tend
+to zero.
+\end{writenote}
 
 \subsection{Monotonicity and endpoint behavior of \texorpdfstring{$c_m$}{c(m)}}
 
@@ -160,6 +178,14 @@ The limit $m\downarrow0$ is singular for the original process. At
 $m=0$, every modulus is $1$, so a positive integer initial value never
 changes and has no finite extinction time. The fixed-$m$ theorem does
 not justify interchanging the limits $m\downarrow0$ and $n\to\infty$.
+
+\begin{writenote}[Added 7 October 2026, batch~110]
+Part~II's \cref{rex:qt:sec:parameter} prints the same series and
+small-$m$ expansion, one further term of~\eqref{rex:eq:large-m}, and the
+exponentiated form $c_m=1+m(\log(1/m)+1-\gamma)+O(m^2\log^2m)$ as
+$m\downarrow0$. Its remainder bounds are uniform only on compact $m$-sets,
+so it too leaves this interchange of limits open.
+\end{writenote}
 
 \section{Smoothly varying moduli}\label{rex:sec:weights}
 
@@ -429,3 +455,15 @@ constant distinguishes the two schedules.
 This example supplies a precise research boundary. A theorem for all
 regularly varying moduli must include additional information about how
 their growth is distributed among individual rounding steps.
+
+\begin{writenote}[Added 7 October 2026, batch~110]
+Part~III identifies that information for nondecreasing weights with
+bounded scaled increments: the joint limiting law of the scaled increment
+$k(w_k/w_{k-1}-1)$ and of the flag recording whether the weight strictly
+increases (\cref{rex:sch:thm:main}). The block weights above are its
+case~$a=0$ of \cref{rex:sch:cor:one-positive}. Part~III also shows that
+weights agreeing with the block weights to every inverse power of the index
+can have any constant in $[1/(2\pi),\pi/8]$ when $m=1$, $r=2$
+(\cref{rex:sch:thm:flat-perturbation}), and that a schedule need not have
+a limiting constant at all (\cref{rex:sch:thm:no-limit}).
+\end{writenote}
