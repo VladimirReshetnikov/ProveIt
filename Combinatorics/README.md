@@ -24,7 +24,18 @@ and exact growth-rate bounds for square-lattice polyominoes.
   the source papers.  The research-report collection's
   [`a003407-dyadic-scaling-rigidity`](../SetTheory/Cardinals/docs/reports/generating-functions-and-asymptotics/oeis-sequence-asymptotics/a003407-dyadic-scaling-rigidity/README.md)
   builds on its parity recurrences and Sharma's Theorem 2.8; its own
-  theorems are not formalized.
+  theorems are not formalized.  Beside the Gowers–Szemerédi development,
+  [`Ramsey/Research/GowersSzemeredi/local-quantitative-refinements`](Ramsey/Research/GowersSzemeredi/local-quantitative-refinements/README.md)
+  is a research report built from fifty-nine external manuscripts of
+  6 October 2026 (batches 115–125 of [`docs/incoming`](../docs/incoming/README.md);
+  sources 01–39 written in so far, 40–59 placed): sharper local estimates
+  for density transfer and phase-flat partitions, the inverse step, cube
+  and progression counts and the Proposition 17.7 phase extraction, each
+  compared with the corrected statements of the Lean catalogue and its
+  ledger `gowers-proof-status.json`.  Some sources give written proofs of
+  catalogue statements that were open when they arrived, and
+  `FORMALIZATION_STATUS.txt` points at them; the report itself is not
+  formalized and gains no formal status from its placement.
 
 The A198683 research corpus is preserved under
 `PowerTowers/Research/A198683`; its wave-5 ledger is the authoritative account
