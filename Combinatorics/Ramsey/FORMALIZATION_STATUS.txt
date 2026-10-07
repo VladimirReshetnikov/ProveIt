@@ -13,8 +13,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 705 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 4,506 public Gowers theorems and found only propext,
+  All 709 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 4,545 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 113 exact
   companion proofs and 7 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -1077,9 +1077,38 @@ General inverse induction after polynomial localization
   guarantees both the lower-degree starting modulus and absence of wrapping.
   The existing Fejer cubic assembly and phase-removal proofs now instantiate
   the general lemmas, preserving their original statements and numerical
-  bounds. The higher-degree structural localization hypothesis remains
-  unasserted; these general induction steps are not exact companions for
-  Theorem 18.1 and do not change the 113/120 catalogue count.
+  bounds. The higher-degree localization input is now constructed from the
+  fixed-dimensional Section 16 theorem below. These conditional induction
+  steps are not exact companions for Theorem 18.1 and do not change the
+  113/120 catalogue count.
+
+Short polynomial localization from the structural dimension theorem
+  Proofs16EqualSideBoxCover generalizes the padded common-step interval
+  cover to every dimension. Its product capacity is at most 2^k times
+  the original box cardinality. A dense set therefore has a piece of
+  density at least delta/2^k in an equal-side box of any prescribed
+  positive side length up to the original width. Padded cells may extend
+  beyond the original box; the selected dense points remain in the original
+  set, and no unsupported containment of the full padded box is asserted.
+  Proofs16OddDenseBox selects an odd side between N^e/2 and sqrt(N), for
+  e<=1/2 and N^e>=4, preserving properness and the nonzero common step.
+  Proofs17MultilinearBoxEnergy extracts the actual large-frequency points
+  from the Corollary 16.11 count and applies this construction. It proves
+  the required full-box second-moment bound from the selected points.
+  The retained exponent is e=min(section16CorollaryWidthExponent,1/2),
+  and the retained density is section16CorollaryExponent/2^k.
+  Proofs17LocalizationFromDimensionInduction now constructs the exact
+  geometric input to Proposition 17.7 from Theorem162At k. It obtains a
+  degree-(k+1) twist and a proper partition with lengths l or l+1, where
+  l>=N^e/(6*k) and every cell length is at most sqrt(N). The surviving
+  partition-uniformity parameter includes the actual density loss,
+  alpha^2/4, and the complete 2^(-2*(k+1)^3) phase-localization factor.
+  function_inverse_step_of_dimension_induction consequently derives the
+  next inverse bound from Theorem162At k and the lower-degree inverse
+  bound, with no additional geometric, energy, transport, or assembly
+  hypotheses. The Section 16 theorem remains an explicit hypothesis;
+  this is not an exact companion to Theorem 18.1. Its general numerical
+  comparison with the intended source exponent is also still open.
 
 Cubic obstruction in a strictly smaller prime model
   Proofs17LocalizedPhaseRemoval now exports proposition_17_7_with_upper:
@@ -2331,8 +2360,10 @@ Next substantial obligations
      Section 16 structural input and propagate the now-proved interval
      transport and assembly steps. The full inverse induction after short
      polynomial localization is now proved in every degree, with explicit
-     constants and thresholds; supply that structural localization and then
-     verify its resulting numerical budget.
+     constants and thresholds. The structural dimension theorem now supplies
+     that localization with all geometry and energy inputs proved. Complete
+     the Section 16 structural induction and verify the resulting numerical
+     budget against the intended source bound.
   4. Close Theorem 18.2 and its headline consequences; then investigate tighter
      final bounds without treating improved auxiliary statements as a proved
      improvement of the full Szemeredi estimate.

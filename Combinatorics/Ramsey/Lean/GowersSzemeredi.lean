@@ -454,6 +454,7 @@ import GowersSzemeredi.Proofs13FourierThresholdEnvelope
 import GowersSzemeredi.Proofs18FejerInverseThresholdEnvelope
 import GowersSzemeredi.Proofs18FiveTermSourceThreshold
 import GowersSzemeredi.Proofs18ShortLocalizationInverse
+import GowersSzemeredi.Proofs17LocalizationFromDimensionInduction
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 
