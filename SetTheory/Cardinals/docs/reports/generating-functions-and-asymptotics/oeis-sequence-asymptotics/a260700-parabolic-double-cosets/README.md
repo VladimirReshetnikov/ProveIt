@@ -133,6 +133,18 @@ and Bell-number saddles, not by a Fubini pole. No theorem is shared; a dated
 note in Section 9 here (added 5 October 2026) records the pointer, and that
 report already names A120733 as the labelled analogue.
 
+**A fourth neighbour (batch 108).** The collection report
+[`a138178-symmetric-packed-matrices`](../a138178-symmetric-packed-matrices/)
+(OEIS A138178; bundle Report 238) writes its count as
+½ Σ_k 2^(−k) f_n(k) with f_n a polynomial in k and extracts the same Fubini
+pole at `ρ = log 2`: a positive coefficient envelope bounds all the nonreal
+poles at once, at every polynomial degree, and the pole at `ρ` gives
+n!/(2ρ^(n+1)), combined with an involution saddle and an expansion in
+n^(−1/2). It bounds the nonreal poles without computing their
+contributions, so question 3 here is untouched. No theorem is shared; a
+dated note in Section 9 here (added 7 October 2026) records the pointer,
+and that report names this one in its Section 1.1 note.
+
 ## Notation
 
 Symbols are printed as delivered. A table in the first `[write]` note
@@ -157,7 +169,10 @@ a fourth dated `[write]` note (Section 9, before the research questions)
 and a fourth bibliography entry (`pdc-mxc`); it adds no label (still 64)
 and the PDF stays at 19 pages. A batch-100 reciprocal note (5 October 2026) added a fifth dated
 `[write]` note after it and a fifth bibliography entry (`pdc-bpm`); it adds
-no label (still 64).
+no label (still 64). A batch-108 reciprocal note (7 October 2026) added a
+sixth dated `[write]` note after that one and a sixth bibliography entry
+(`pdc-spm`); it adds no label (still 64), and the rebuilt PDF stays at 19
+pages with the same clean log.
 
 ## Files
 
