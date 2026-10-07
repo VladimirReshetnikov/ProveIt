@@ -1,3 +1,4 @@
+/- Modified for ProveIt: Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
 import OAI.Combinatorics.Progressions.Estimates.UnconditionedArbitraryFixedPatchFamily
 import OAI.Combinatorics.Progressions.Lattices.ScalarLatePrimeCutoffPowerBudget
 import OAI.Combinatorics.Progressions.Lattices.UnconditionedLatePrimeBudget
@@ -68,7 +69,7 @@ theorem exists_unconditioned_latePrime_niltest_base (s : ℕ) :
               ((localForm z).loweringAt (fun j => (x.val j : ℝ)))).patchValue Ψ)) ∧
         (letI := polynomialShearIndexFintype w (fun i => hpos i)
          letI := moduleTopology ℝ (ℝ ⊗[ℚ] PolynomialShearLieAlgebra w ℚ)
-         letI := IsModuleTopology.isTopologicalAddGroup ℝ (ℝ ⊗[ℚ] PolynomialShearLieAlgebra w ℚ)
+         letI := IsModuleTopology.topologicalAddGroup ℝ (ℝ ⊗[ℚ] PolynomialShearLieAlgebra w ℚ)
          letI := realification_moduleTopology_t2 (polynomialShearOrderedBasis w)
          ∃ (F : (polynomialShearNilmanifold w s hs).Space → ℂ)
            (tests : (trimmedIntegerBox N R × rectangularWeightIndices 0 W 1) →
@@ -96,7 +97,7 @@ theorem exists_unconditioned_latePrime_niltest_base (s : ℕ) :
     hΨ, hB, hretained, hmass, hmass', hslice, hcorrelation, ?_⟩
   let := polynomialShearIndexFintype w (fun i => hpos i)
   let := moduleTopology ℝ (ℝ ⊗[ℚ] PolynomialShearLieAlgebra w ℚ)
-  let := IsModuleTopology.isTopologicalAddGroup ℝ (ℝ ⊗[ℚ] PolynomialShearLieAlgebra w ℚ)
+  let := IsModuleTopology.topologicalAddGroup ℝ (ℝ ⊗[ℚ] PolynomialShearLieAlgebra w ℚ)
   let := realification_moduleTopology_t2 (polynomialShearOrderedBasis w)
   let q := p + (n₀ : ℝ) + 2
   have hd : (d : ℝ) ≤ p :=
@@ -182,7 +183,7 @@ theorem exists_unconditioned_chosenLatePrime_niltest_base (s n₀ : ℕ) :
               ((localForm z).loweringAt (fun j => (x.val j : ℝ)))).patchValue Ψ)) ∧
         (letI := polynomialShearIndexFintype w (fun i => hpos i)
          letI := moduleTopology ℝ (ℝ ⊗[ℚ] PolynomialShearLieAlgebra w ℚ)
-         letI := IsModuleTopology.isTopologicalAddGroup ℝ (ℝ ⊗[ℚ] PolynomialShearLieAlgebra w ℚ)
+         letI := IsModuleTopology.topologicalAddGroup ℝ (ℝ ⊗[ℚ] PolynomialShearLieAlgebra w ℚ)
          letI := realification_moduleTopology_t2 (polynomialShearOrderedBasis w)
          ∃ (F : (polynomialShearNilmanifold w s hs).Space → ℂ)
            (tests : (trimmedIntegerBox N R × rectangularWeightIndices 0 W 1) →
@@ -332,7 +333,7 @@ theorem exists_unconditioned_scalarScale_niltest_base (s n₀ : ℕ) :
               ((localForm z).loweringAt (fun j => (x.val j : ℝ)))).patchValue Ψ)) ∧
         (letI := polynomialShearIndexFintype w (fun i => hpos i)
          letI := moduleTopology ℝ (ℝ ⊗[ℚ] PolynomialShearLieAlgebra w ℚ)
-         letI := IsModuleTopology.isTopologicalAddGroup ℝ (ℝ ⊗[ℚ] PolynomialShearLieAlgebra w ℚ)
+         letI := IsModuleTopology.topologicalAddGroup ℝ (ℝ ⊗[ℚ] PolynomialShearLieAlgebra w ℚ)
          letI := realification_moduleTopology_t2 (polynomialShearOrderedBasis w)
          ∃ (F : (polynomialShearNilmanifold w s hs).Space → ℂ)
            (tests : (trimmedIntegerBox N R × rectangularWeightIndices 0 W 1) →

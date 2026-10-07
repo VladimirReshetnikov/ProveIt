@@ -1,5 +1,6 @@
 /- Modified for ProveIt: import Lean 4.32 compatibility declarations.
-Statements and proofs are unchanged from the pinned upstream source. -/
+Mathematical statements are unchanged from the pinned upstream source.
+Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
 import OAI.Compat.BigOperators
 import OAI.Combinatorics.Progressions.Dynamics.CyclicProductBudget
 import OAI.Combinatorics.Progressions.Nilpotent.CyclicNiltestDetection
@@ -84,7 +85,7 @@ theorem exists_cyclicProductNiltestDetection_succ.{u,v} (s : ℕ) :
   let : FiniteDimensional ℚ (∀ i, L i) :=
     (RationalFilteredNilmanifold.productFinBasis D).finiteDimensional_of_finite
   let := moduleTopology ℝ (ℝ ⊗[ℚ] (∀ i, L i))
-  let : IsTopologicalAddGroup (ℝ ⊗[ℚ] (∀ i, L i)) := IsModuleTopology.isTopologicalAddGroup ℝ _
+  let : IsTopologicalAddGroup (ℝ ⊗[ℚ] (∀ i, L i)) := IsModuleTopology.topologicalAddGroup ℝ _
   let : T2Space (ℝ ⊗[ℚ] (∀ i, L i)) :=
     realification_moduleTopology_t2 (RationalFilteredNilmanifold.productFinBasis D)
   obtain ⟨U, hU, hUeval⟩ := RationalFilteredNilmanifold.exists_product_niltest D S hp hι hS

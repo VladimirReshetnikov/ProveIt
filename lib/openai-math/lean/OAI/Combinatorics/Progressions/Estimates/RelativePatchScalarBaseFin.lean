@@ -1,3 +1,4 @@
+/- Modified for ProveIt: Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
 import OAI.Combinatorics.Progressions.Lattices.ScalarEndpointLatePrimeCommonSide
 import OAI.Combinatorics.Progressions.Polynomial.ScalarNestedSourceDegreeGlobalization
 
@@ -97,7 +98,7 @@ theorem exists_relativePatch_scalarBase_fin_power (s : ℕ)
       (fun j => (hPrimeEarly j).1) N hwidth f₀ (fun x _ => hf₀ x) hfree₀ hmean
   let := polynomialShearIndexFintype patch.weight patch.weight_pos
   let := moduleTopology ℝ (ℝ ⊗[ℚ] PolynomialShearLieAlgebra patch.weight ℚ)
-  let := IsModuleTopology.isTopologicalAddGroup ℝ (ℝ ⊗[ℚ] PolynomialShearLieAlgebra patch.weight ℚ)
+  let := IsModuleTopology.topologicalAddGroup ℝ (ℝ ⊗[ℚ] PolynomialShearLieAlgebra patch.weight ℚ)
   let := realification_moduleTopology_t2 (polynomialShearOrderedBasis patch.weight)
   obtain ⟨_M, _hregularity, P, _hCenterLift, hkeep⟩ := hProblem
   have hSearly : Real.exp ((p + 2) ^ earlyExponent) ≤ (side : ℝ) :=

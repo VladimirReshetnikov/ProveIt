@@ -1,3 +1,4 @@
+/- Modified for ProveIt: Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
 import OAI.Combinatorics.Progressions.Estimates.LowTaggedRationalLiftRewrite
 import OAI.Combinatorics.Progressions.Estimates.TranslationMajorCorrelationDecomposition
 import OAI.Combinatorics.Progressions.Fourier.MajorPhaseLowFourierExtraction
@@ -209,7 +210,7 @@ theorem exists_majorPhase_residue_detection (d : ℕ) (hd : 0 < d) :
   let hwd := lowTaggedWeight_le J d
   let := moduleTopology ℝ (ℝ ⊗[ℚ] weightedSubalgebra w d)
   let : IsTopologicalAddGroup (ℝ ⊗[ℚ] weightedSubalgebra w d) :=
-    IsModuleTopology.isTopologicalAddGroup ℝ _
+    IsModuleTopology.topologicalAddGroup ℝ _
   let : T2Space (ℝ ⊗[ℚ] weightedSubalgebra w d) :=
     realification_moduleTopology_t2 (weightedBasis w d hw)
   let A := fun i => residueAffinePolynomial q start

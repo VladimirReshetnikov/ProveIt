@@ -1,3 +1,4 @@
+/- Modified for ProveIt: Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
 import OAI.Combinatorics.Progressions.Dynamics.AnchoredEpochVisit
 import OAI.Combinatorics.Progressions.Dynamics.ControlledAdaptedEpochChild
 import OAI.Combinatorics.Progressions.Dynamics.RetainedEpochTransition
@@ -230,7 +231,7 @@ theorem exists_physical_epoch_frame (s : ℕ) :
   let N := (base.model.filtration.gradedRefiltrationSubalgebra (epochRecordIntersection state.records)) ⧸
     E.filtration.layerIdeal (s + 1)
   let := moduleTopology ℝ (ℝ ⊗[ℚ] N)
-  let := IsModuleTopology.isTopologicalAddGroup ℝ (ℝ ⊗[ℚ] N)
+  let := IsModuleTopology.topologicalAddGroup ℝ (ℝ ⊗[ℚ] N)
   let := realification_moduleTopology_t2 V₀.basis
   obtain ⟨V, _, _, hV, childOrbit, _, hstep⟩ := hchild
   obtain ⟨F, hdimension, hgeometry, hstep'⟩ := hadapted base.model base.weights base.adapted

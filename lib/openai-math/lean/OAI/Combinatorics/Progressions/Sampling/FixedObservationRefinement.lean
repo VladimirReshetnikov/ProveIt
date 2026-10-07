@@ -1,3 +1,4 @@
+/- Modified for ProveIt: Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
 import OAI.Combinatorics.Progressions.Estimates.NativeProductPartition
 import OAI.Combinatorics.Progressions.Estimates.ProjectedNativeCoefficient
 import OAI.Combinatorics.Progressions.Estimates.TranslatedShiftTesting
@@ -103,7 +104,7 @@ theorem exists_fixed_shifted_observation_partition (s a : ℕ) :
     (productFinBasis E).finiteDimensional_of_finite
   let := moduleTopology ℝ (ℝ ⊗[ℚ] (∀ k : ι × Fin 3, L k.1))
   let : IsTopologicalAddGroup (ℝ ⊗[ℚ] (∀ k : ι × Fin 3, L k.1)) :=
-    IsModuleTopology.isTopologicalAddGroup ℝ _
+    IsModuleTopology.topologicalAddGroup ℝ _
   let : T2Space (ℝ ⊗[ℚ] (∀ k : ι × Fin 3, L k.1)) :=
     realification_moduleTopology_t2 (productFinBasis E)
   let r := 3 * p + 3
@@ -172,7 +173,7 @@ theorem exists_fixed_observation_refinement (s a : ℕ) :
   intro ι I _ _ _ L _ _ _ _ _ _ d D g degree N _ A p ρ hs hp hι hD hcard hA hsum hρ hρinv
   let : FiniteDimensional ℚ (∀ i, L i) := (productFinBasis D).finiteDimensional_of_finite
   let := moduleTopology ℝ (ℝ ⊗[ℚ] (∀ i, L i))
-  let : IsTopologicalAddGroup (ℝ ⊗[ℚ] (∀ i, L i)) := IsModuleTopology.isTopologicalAddGroup ℝ _
+  let : IsTopologicalAddGroup (ℝ ⊗[ℚ] (∀ i, L i)) := IsModuleTopology.topologicalAddGroup ℝ _
   let : T2Space (ℝ ⊗[ℚ] (∀ i, L i)) := realification_moduleTopology_t2 (productFinBasis D)
   obtain ⟨n, hn, hnb, W, hW, hWsum, hWdiam⟩ := hpartition D g N hp hι hD hρ hρinv
   let t := p + (p + B) ^ B

@@ -1,3 +1,4 @@
+/- Modified for ProveIt: Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
 import OAI.Combinatorics.Progressions.Estimates.NativeBoundedVariablePatchExpansion
 import OAI.Combinatorics.Progressions.Nilpotent.PositivePolynomialFactorNiltests
 
@@ -425,7 +426,7 @@ theorem exists_canonical_positivePolynomial_splitting (t a : ℕ) :
         fun _ => moduleTopology ℝ _
       letI : ∀ i, IsTopologicalAddGroup (ℝ ⊗[ℚ] (M.filtration.positivePolynomialAlgebra ⧸
         restrictedOutsideDownsetIdeal M.filtration.positivePolynomialAlgebra (J i) (hJ i))) :=
-        fun _ => IsModuleTopology.isTopologicalAddGroup ℝ _
+        fun _ => IsModuleTopology.topologicalAddGroup ℝ _
       letI : ∀ i, T2Space (ℝ ⊗[ℚ] (M.filtration.positivePolynomialAlgebra ⧸
         restrictedOutsideDownsetIdeal M.filtration.positivePolynomialAlgebra (J i) (hJ i))) :=
         fun i => realification_moduleTopology_t2 (M.positivePolynomialDownsetFinBasis (J i) (hJ i) p)
@@ -458,13 +459,13 @@ theorem exists_canonical_positivePolynomial_splitting (t a : ℕ) :
         restrictedOutsideDownsetIdeal M.filtration.positivePolynomialAlgebra (J i) (hJ i))) := fun _ => moduleTopology ℝ _
   let : ∀ i, IsTopologicalAddGroup (ℝ ⊗[ℚ] (M.filtration.positivePolynomialAlgebra ⧸
         restrictedOutsideDownsetIdeal M.filtration.positivePolynomialAlgebra (J i) (hJ i))) :=
-    fun _ => IsModuleTopology.isTopologicalAddGroup ℝ _
+    fun _ => IsModuleTopology.topologicalAddGroup ℝ _
   let : ∀ i, T2Space (ℝ ⊗[ℚ] (M.filtration.positivePolynomialAlgebra ⧸
         restrictedOutsideDownsetIdeal M.filtration.positivePolynomialAlgebra (J i) (hJ i))) :=
     fun i => realification_moduleTopology_t2 (M.positivePolynomialDownsetFinBasis (J i) (hJ i) p)
   let := moduleTopology ℝ (ℝ ⊗[ℚ] M.filtration.positivePolynomialAlgebra)
   let : IsTopologicalAddGroup (ℝ ⊗[ℚ] M.filtration.positivePolynomialAlgebra) :=
-    IsModuleTopology.isTopologicalAddGroup ℝ _
+    IsModuleTopology.topologicalAddGroup ℝ _
   let : T2Space (ℝ ⊗[ℚ] M.filtration.positivePolynomialAlgebra) :=
     realification_moduleTopology_t2 (M.positivePolynomialFinBasis p)
   let : ∀ i, FiniteDimensional ℚ (M.filtration.positivePolynomialAlgebra ⧸
@@ -474,7 +475,7 @@ theorem exists_canonical_positivePolynomial_splitting (t a : ℕ) :
     restrictedOutsideDownsetIdeal M.filtration.positivePolynomialAlgebra (J i) (hJ i)))
   let : IsTopologicalAddGroup (ℝ ⊗[ℚ] (∀ i, M.filtration.positivePolynomialAlgebra ⧸
       restrictedOutsideDownsetIdeal M.filtration.positivePolynomialAlgebra (J i) (hJ i))) :=
-    IsModuleTopology.isTopologicalAddGroup ℝ _
+    IsModuleTopology.topologicalAddGroup ℝ _
   let : T2Space (ℝ ⊗[ℚ] (∀ i, M.filtration.positivePolynomialAlgebra ⧸
       restrictedOutsideDownsetIdeal M.filtration.positivePolynomialAlgebra (J i) (hJ i))) :=
     realification_moduleTopology_t2 (Module.finBasis ℚ _)

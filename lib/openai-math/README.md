@@ -54,10 +54,10 @@ verified.** The Gowers facade does not import the quantitative conclusion.
 [`quantitative-port-manifest.json`](quantitative-port-manifest.json) records
 the upstream source hashes, import closure, and initial compatibility imports.
 
-The first 300 manifest entries have compiled (309 modules including their
+The first 600 manifest entries have compiled (612 modules including their
 compatibility dependencies). The incremental `OAI.QuantitativePortAudit`
 imports this batch and the added compatibility modules. Its axiom scan
-checks 5,917 public OAI theorems and reports only `propext`,
+checks 12,498 public OAI theorems and reports only `propext`,
 `Classical.choice`, and `Quot.sound`; the separately listed compatibility declarations
 also pass, with explicit rejection of any unapproved axiom. This checkpoint
 does not certify `Results.Conclusions`.
@@ -99,6 +99,12 @@ unchanged.
   `Isometry.lipschitz`), and `Compat/FinsetInj.lean` (injective finite-sum
   comparison proved using `sum_image` and subset comparison). These are
   local proofs under Apache-2.0, with no copied upstream proof text.
+- `Compat/Stirling.lean` proves the power expansion in descending factorials
+  by induction from the Stirling recurrence. This is a local Apache-2.0
+  proof, with no upstream proof text copied; its axiom check passes.
+- `Compat/FinsuppWeight.lean` derives finite-index weight summation from
+  `Finsupp.sum_fintype`; it is a local Apache-2.0 proof with no copied
+  upstream proof text. Its axiom check passes.
 - `Compat/MatrixInjective.lean` derives matrix-vector injectivity from a
   nonzero determinant using the older trivial-kernel theorem. It supports
   integer-fiber and residue-refined-period modules.
@@ -111,7 +117,7 @@ unchanged.
   and [`LICENSE.mathlib`](LICENSE.mathlib). It compiles with the local
   `Compat/GramMatrix.lean` characterization; the exported inner-product and
   orthonormal-basis declarations pass the three-axiom check. Its downstream
-  consumers remain outside the audited first-300 prefix.
+  consumers remain outside the currently audited prefix.
 - Imports of relocated Mathlib modules use their older paths. All directly
   imported Mathlib source paths now exist in the local checkout; this path
   check does not establish that all importing modules compile.

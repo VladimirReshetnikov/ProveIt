@@ -1,3 +1,4 @@
+/- Modified for ProveIt: Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
 import OAI.Combinatorics.Progressions.Estimates.TwoDownsetPrecision
 import OAI.Combinatorics.Progressions.Geometry.MissingCoordinateDownsets
 import OAI.Combinatorics.Progressions.Geometry.NativeCoordinateSplitFreezing
@@ -70,7 +71,7 @@ theorem exists_missing_coordinate_niltest_approximation (s a : ℕ) :
     restrictedOutsideDownsetIdeal M.filtration.positivePolynomialAlgebra (J i) (hJ i)
   let : ∀ i, TopologicalSpace (ℝ ⊗[ℚ] K i) := fun _ => moduleTopology ℝ _
   let : ∀ i, IsTopologicalAddGroup (ℝ ⊗[ℚ] K i) :=
-    fun _ => IsModuleTopology.isTopologicalAddGroup ℝ _
+    fun _ => IsModuleTopology.topologicalAddGroup ℝ _
   let : ∀ i, T2Space (ℝ ⊗[ℚ] K i) :=
     fun i => realification_moduleTopology_t2 (M.positivePolynomialDownsetFinBasis (J i) (hJ i) q)
   have hM : M.ComplexityLE q := (D.totalDegreeMultidegree_complexity (Fin (s + 1)) hT.1).mono M hpq

@@ -1,3 +1,4 @@
+/- Modified for ProveIt: Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
 import OAI.Combinatorics.Progressions.Estimates.ControlledRefilteredCyclicExpansion
 import OAI.Combinatorics.Progressions.Estimates.CyclicCellAnchors
 import OAI.Combinatorics.Progressions.Estimates.SlowInverseControl
@@ -93,10 +94,10 @@ theorem exists_controlled_refiltered_residue_expansion (s r : ℕ) :
   let I₀ := {i : ι // i ≠ a}
   let Z₀ := pi (fun i : I₀ => D i.val)
   let := moduleTopology ℝ (ℝ ⊗[ℚ] (H ⧸ E.filtration.layerIdeal (s + 1)))
-  let := IsModuleTopology.isTopologicalAddGroup ℝ (ℝ ⊗[ℚ] (H ⧸ E.filtration.layerIdeal (s + 1)))
+  let := IsModuleTopology.topologicalAddGroup ℝ (ℝ ⊗[ℚ] (H ⧸ E.filtration.layerIdeal (s + 1)))
   let := realification_moduleTopology_t2 Q.basis
   let := moduleTopology ℝ (ℝ ⊗[ℚ] (∀ i : I₀, L i.val))
-  let := IsModuleTopology.isTopologicalAddGroup ℝ (ℝ ⊗[ℚ] (∀ i : I₀, L i.val))
+  let := IsModuleTopology.topologicalAddGroup ℝ (ℝ ⊗[ℚ] (∀ i : I₀, L i.val))
   let := realification_moduleTopology_t2 Z₀.basis
   obtain ⟨Q', hQ'F, hQ'b, hQ'le, hQ', Z, hZF, hZb, hZle, hZ, hbase⟩ := hbase
   refine ⟨Q', hQ'F, hQ'b, hQ'le, hQ', Z, hZF, hZb, hZle, hZ, ?_⟩

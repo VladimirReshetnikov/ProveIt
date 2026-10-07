@@ -1,3 +1,4 @@
+/- Modified for ProveIt: Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
 import OAI.Combinatorics.Progressions.Dynamics.NativeEquivalenceTransferBudget
 import OAI.Combinatorics.Progressions.Nilpotent.PreparedAdditionNiltest
 
@@ -155,10 +156,10 @@ theorem exists_controlled_addition_family (s : ℕ) :
     (omittedCoordinateWeight i) (omittedCoordinateWeight_le_one i)
   let J := K ⧸ E.filtration.layerIdeal (s + 1)
   let := moduleTopology ℝ (ℝ ⊗[ℚ] K)
-  let : IsTopologicalAddGroup (ℝ ⊗[ℚ] K) := IsModuleTopology.isTopologicalAddGroup ℝ _
+  let : IsTopologicalAddGroup (ℝ ⊗[ℚ] K) := IsModuleTopology.topologicalAddGroup ℝ _
   let : T2Space (ℝ ⊗[ℚ] K) := realification_moduleTopology_t2 E.basis
   let := moduleTopology ℝ (ℝ ⊗[ℚ] J)
-  let : IsTopologicalAddGroup (ℝ ⊗[ℚ] J) := IsModuleTopology.isTopologicalAddGroup ℝ _
+  let : IsTopologicalAddGroup (ℝ ⊗[ℚ] J) := IsModuleTopology.topologicalAddGroup ℝ _
   let : T2Space (ℝ ⊗[ℚ] J) := realification_moduleTopology_t2 Q.basis
   have hall (a : Fin 3 → I) := M.exists_prepared_addition_niltest i hi hs
     E hEF hEL Q hQF hQL hp (hM.1.mono D hR.2.1) hE he hQ

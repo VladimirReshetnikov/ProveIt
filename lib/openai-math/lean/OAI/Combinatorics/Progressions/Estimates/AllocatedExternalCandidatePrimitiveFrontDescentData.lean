@@ -1,3 +1,4 @@
+/- Modified for ProveIt: Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
 import OAI.Combinatorics.Progressions.Dynamics.PreparedFiniteNestedFrontNativeBudget
 import OAI.Combinatorics.Progressions.Fourier.AllocatedExternalCandidateSpatialNativeFrequencyTransport
 
@@ -66,7 +67,7 @@ theorem exists_native_descended_quotient
         (pBudget + 2) ^ RationalFilteredNilmanifold.positiveKernelNativeDescentExponent s) ∧
       (letI := moduleTopology ℝ (ℝ ⊗[ℚ] (L ⧸ prep.nativeQuotientIdeal))
        letI : IsTopologicalAddGroup (ℝ ⊗[ℚ] (L ⧸ prep.nativeQuotientIdeal)) :=
-         IsModuleTopology.isTopologicalAddGroup ℝ _
+         IsModuleTopology.topologicalAddGroup ℝ _
        letI := realification_moduleTopology_t2 Q.basis
        ∃ descended : (X → ℤ) → Q.Niltest (fullTaggedVariableWeight (X := X) J),
          (∀ x, (descended x).UnitIntervalValued) ∧
@@ -121,7 +122,7 @@ theorem exists_native_descended_quotient
     fun i j => (hmap i j).trans (hb.2.2.1.trans hb.2.2.2.1), ?_⟩
   let := moduleTopology ℝ (ℝ ⊗[ℚ] (L ⧸ ideal))
   let : IsTopologicalAddGroup (ℝ ⊗[ℚ] (L ⧸ ideal)) :=
-    IsModuleTopology.isTopologicalAddGroup ℝ _
+    IsModuleTopology.topologicalAddGroup ℝ _
   let : T2Space (ℝ ⊗[ℚ] (L ⧸ ideal)) := realification_moduleTopology_t2 Q.basis
   obtain ⟨descended, _, hunit, hnorm, hcomplex, hLip, hrec, hcontract, hnets⟩ :=
     prep.selected.exists_native_descent ideal hkernel hI Q hQF hQL pDesc hb.2.1
@@ -204,7 +205,7 @@ theorem exists_native_marked_descended_quotient
           ((pBudget + 2) ^ RationalFilteredNilmanifold.positiveKernelNativeDescentExponent s)) ∧
       (letI := moduleTopology ℝ (ℝ ⊗[ℚ] (L ⧸ prep.nativeQuotientIdeal))
        letI : IsTopologicalAddGroup (ℝ ⊗[ℚ] (L ⧸ prep.nativeQuotientIdeal)) :=
-         IsModuleTopology.isTopologicalAddGroup ℝ _
+         IsModuleTopology.topologicalAddGroup ℝ _
        letI := realification_moduleTopology_t2 Q.basis
        ∃ descended : (X → ℤ) → Q.Niltest (fullTaggedVariableWeight (X := X) J),
          (∀ x, (descended x).UnitIntervalValued) ∧
@@ -552,7 +553,7 @@ structure PrimitiveFrontQuotientData {p : ℝ} {e : ℕ}
   descent :
     letI := moduleTopology ℝ (ℝ ⊗[ℚ] (L ⧸ front.prep.nativeQuotientIdeal))
     letI : IsTopologicalAddGroup (ℝ ⊗[ℚ] (L ⧸ front.prep.nativeQuotientIdeal)) :=
-      IsModuleTopology.isTopologicalAddGroup ℝ _
+      IsModuleTopology.topologicalAddGroup ℝ _
     letI := realification_moduleTopology_t2 quotient.basis
     ∃ descended : (X → ℤ) → quotient.Niltest (fullTaggedVariableWeight (X := X) J),
       (∀ x, (descended x).UnitIntervalValued) ∧
@@ -898,12 +899,12 @@ end QuotientTopology
 theorem exists_descendedFamily :
     letI := moduleTopology ℝ (ℝ ⊗[ℚ] (L ⧸ data.front.prep.nativeQuotientIdeal))
     letI : IsTopologicalAddGroup (ℝ ⊗[ℚ] (L ⧸ data.front.prep.nativeQuotientIdeal)) :=
-      IsModuleTopology.isTopologicalAddGroup ℝ _
+      IsModuleTopology.topologicalAddGroup ℝ _
     letI := realification_moduleTopology_t2 data.quotient.basis
     Nonempty data.DescendedFamily := by
   let := moduleTopology ℝ (ℝ ⊗[ℚ] (L ⧸ data.front.prep.nativeQuotientIdeal))
   let : IsTopologicalAddGroup (ℝ ⊗[ℚ] (L ⧸ data.front.prep.nativeQuotientIdeal)) :=
-    IsModuleTopology.isTopologicalAddGroup ℝ _
+    IsModuleTopology.topologicalAddGroup ℝ _
   let : T2Space (ℝ ⊗[ℚ] (L ⧸ data.front.prep.nativeQuotientIdeal)) :=
     realification_moduleTopology_t2 data.quotient.basis
   obtain ⟨tests, hunit, hnorm, hcomplexity, hLip, hrecovery, hcontract, hnets⟩ := data.descent

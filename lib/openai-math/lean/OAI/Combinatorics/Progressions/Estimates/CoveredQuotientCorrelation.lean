@@ -1,3 +1,4 @@
+/- Modified for ProveIt: Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
 import OAI.Combinatorics.Progressions.Linear.CommonFreeSpanBounds
 import OAI.Combinatorics.Progressions.Linear.LowerRankObservableDifference
 
@@ -173,7 +174,7 @@ theorem exists_native_free_unit_observable (s : ℕ) :
             (hM := D.filtration.lowerCentralSeries_eq_bot) φ) ∧
           (letI := moduleTopology ℝ (ℝ ⊗[ℚ] FreeDegreeRankLieAlgebra X s r w hw)
            letI : IsTopologicalAddGroup (ℝ ⊗[ℚ] FreeDegreeRankLieAlgebra X s r w hw) :=
-             IsModuleTopology.isTopologicalAddGroup ℝ _
+             IsModuleTopology.topologicalAddGroup ℝ _
            letI := realification_moduleTopology_t2 E.basis
            ∃ V : E.UnitVerticalObservable (Q.realSubgroup s r) I ((p + C) ^ C),
              V.frequency = U.frequency.comp φ.toLinearMap ∧
@@ -204,7 +205,7 @@ theorem exists_native_free_unit_observable (s : ℕ) :
     hfree X L r d hr D R w hw f hf p hp hX hR hfH
   let := moduleTopology ℝ (ℝ ⊗[ℚ] FreeDegreeRankLieAlgebra X s r w hw)
   let : IsTopologicalAddGroup (ℝ ⊗[ℚ] FreeDegreeRankLieAlgebra X s r w hw) :=
-    IsModuleTopology.isTopologicalAddGroup ℝ _
+    IsModuleTopology.topologicalAddGroup ℝ _
   let := realification_moduleTopology_t2 E.basis
   have hlayer (i j : ℕ) :
       (Q.filtration.layer i j).map φ.toLinearMap ≤ R.filtration.layer i j := by

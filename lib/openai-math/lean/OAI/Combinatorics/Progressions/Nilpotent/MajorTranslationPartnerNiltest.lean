@@ -1,3 +1,4 @@
+/- Modified for ProveIt: Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
 import OAI.Combinatorics.Progressions.Dynamics.MajorTranslationPartnerBudget
 import OAI.Combinatorics.Progressions.Estimates.TranslationMajorTwistedCorrelationStepDrop
 
@@ -39,7 +40,7 @@ theorem exists_majorTranslation_partner_niltest (d : ℕ) :
         N.basis.finiteDimensional_of_finite
       letI := moduleTopology ℝ (ℝ ⊗[ℚ] PairAlgebra (weightedSubalgebra w d) L)
       letI : IsTopologicalAddGroup (ℝ ⊗[ℚ] PairAlgebra (weightedSubalgebra w d) L) :=
-        IsModuleTopology.isTopologicalAddGroup ℝ _
+        IsModuleTopology.topologicalAddGroup ℝ _
       letI : T2Space (ℝ ⊗[ℚ] PairAlgebra (weightedSubalgebra w d) L) :=
         realification_moduleTopology_t2 N.basis
       ∃ S : N.Niltest (fun _ : U => 1), S.normBound = 1 ∧ S.ComplexityLE ((p + C) ^ C) ∧
@@ -59,7 +60,7 @@ theorem exists_majorTranslation_partner_niltest (d : ℕ) :
     N.basis.finiteDimensional_of_finite
   let := moduleTopology ℝ (ℝ ⊗[ℚ] PairAlgebra (weightedSubalgebra w d) L)
   let : IsTopologicalAddGroup (ℝ ⊗[ℚ] PairAlgebra (weightedSubalgebra w d) L) :=
-    IsModuleTopology.isTopologicalAddGroup ℝ _
+    IsModuleTopology.topologicalAddGroup ℝ _
   let : T2Space (ℝ ⊗[ℚ] PairAlgebra (weightedSubalgebra w d) L) :=
     realification_moduleTopology_t2 N.basis
   obtain ⟨V, hVnorm, hV, _, hVeval⟩ := hmajor w hw hwd hd Ψ F hF A hA hp hdim hΨ

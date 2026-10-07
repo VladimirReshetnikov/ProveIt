@@ -1,3 +1,4 @@
+/- Modified for ProveIt: Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
 import OAI.Combinatorics.Progressions.Estimates.NativeTwoVariableSplitFreezing
 import OAI.Combinatorics.Progressions.Polynomial.CanonicalPositivePolynomialSplitting
 
@@ -28,7 +29,7 @@ def DownsetSplittingStatement (s t a C : ℕ) : Prop :=
         fun _ => moduleTopology ℝ _
       letI : ∀ i, IsTopologicalAddGroup (ℝ ⊗[ℚ] (M.filtration.positivePolynomialAlgebra ⧸
         restrictedOutsideDownsetIdeal M.filtration.positivePolynomialAlgebra (J i) (hJ i))) :=
-        fun _ => IsModuleTopology.isTopologicalAddGroup ℝ _
+        fun _ => IsModuleTopology.topologicalAddGroup ℝ _
       letI : ∀ i, T2Space (ℝ ⊗[ℚ] (M.filtration.positivePolynomialAlgebra ⧸
         restrictedOutsideDownsetIdeal M.filtration.positivePolynomialAlgebra (J i) (hJ i))) :=
         fun i => realification_moduleTopology_t2 (M.positivePolynomialDownsetFinBasis (J i) (hJ i) p)
@@ -79,7 +80,7 @@ theorem exists_multidegree_downset_splitting (s t a : ℕ) :
     fun _ => moduleTopology ℝ _
   let : ∀ i, IsTopologicalAddGroup (ℝ ⊗[ℚ] (M.filtration.positivePolynomialAlgebra ⧸
       restrictedOutsideDownsetIdeal M.filtration.positivePolynomialAlgebra (J i) (hJ i))) :=
-    fun _ => IsModuleTopology.isTopologicalAddGroup ℝ _
+    fun _ => IsModuleTopology.topologicalAddGroup ℝ _
   let : ∀ i, T2Space (ℝ ⊗[ℚ] (M.filtration.positivePolynomialAlgebra ⧸
       restrictedOutsideDownsetIdeal M.filtration.positivePolynomialAlgebra (J i) (hJ i))) :=
     fun i => realification_moduleTopology_t2 (M.positivePolynomialDownsetFinBasis (J i) (hJ i) p)
@@ -150,7 +151,7 @@ def TwoDownsetSplittingStatement (s t a C : ℕ) : Prop :=
         fun _ => moduleTopology ℝ _
       letI : ∀ b, IsTopologicalAddGroup (ℝ ⊗[ℚ] (M.filtration.positivePolynomialAlgebra ⧸
         restrictedOutsideDownsetIdeal M.filtration.positivePolynomialAlgebra (J b) (hJ b))) :=
-        fun _ => IsModuleTopology.isTopologicalAddGroup ℝ _
+        fun _ => IsModuleTopology.topologicalAddGroup ℝ _
       letI : ∀ b, T2Space (ℝ ⊗[ℚ] (M.filtration.positivePolynomialAlgebra ⧸
         restrictedOutsideDownsetIdeal M.filtration.positivePolynomialAlgebra (J b) (hJ b))) :=
         fun b => realification_moduleTopology_t2 (M.positivePolynomialDownsetFinBasis (J b) (hJ b) p)
@@ -209,7 +210,7 @@ def TwoDownsetCorrelationStatement (s t C : ℕ) : Prop :=
         fun _ => moduleTopology ℝ _
       letI : ∀ b, IsTopologicalAddGroup (ℝ ⊗[ℚ] (M.filtration.positivePolynomialAlgebra ⧸
         restrictedOutsideDownsetIdeal M.filtration.positivePolynomialAlgebra (J b) (hJ b))) :=
-        fun _ => IsModuleTopology.isTopologicalAddGroup ℝ _
+        fun _ => IsModuleTopology.topologicalAddGroup ℝ _
       letI : ∀ b, T2Space (ℝ ⊗[ℚ] (M.filtration.positivePolynomialAlgebra ⧸
         restrictedOutsideDownsetIdeal M.filtration.positivePolynomialAlgebra (J b) (hJ b))) :=
         fun b => realification_moduleTopology_t2 (M.positivePolynomialDownsetFinBasis (J b) (hJ b) p)
@@ -256,7 +257,7 @@ def TwoDownsetPrecisionStatement (s t C : ℕ) : Prop :=
         fun _ => moduleTopology ℝ _
       letI : ∀ b, IsTopologicalAddGroup (ℝ ⊗[ℚ] (M.filtration.positivePolynomialAlgebra ⧸
         restrictedOutsideDownsetIdeal M.filtration.positivePolynomialAlgebra (J b) (hJ b))) :=
-        fun _ => IsModuleTopology.isTopologicalAddGroup ℝ _
+        fun _ => IsModuleTopology.topologicalAddGroup ℝ _
       letI : ∀ b, T2Space (ℝ ⊗[ℚ] (M.filtration.positivePolynomialAlgebra ⧸
         restrictedOutsideDownsetIdeal M.filtration.positivePolynomialAlgebra (J b) (hJ b))) :=
         fun b => realification_moduleTopology_t2 (M.positivePolynomialDownsetFinBasis (J b) (hJ b) p)
@@ -307,7 +308,7 @@ theorem exists_two_downset_splitting (s t a : ℕ) :
     fun _ => moduleTopology ℝ _
   let : ∀ i, IsTopologicalAddGroup (ℝ ⊗[ℚ] (M.filtration.positivePolynomialAlgebra ⧸
       restrictedOutsideDownsetIdeal M.filtration.positivePolynomialAlgebra (J i) (hJ i))) :=
-    fun _ => IsModuleTopology.isTopologicalAddGroup ℝ _
+    fun _ => IsModuleTopology.topologicalAddGroup ℝ _
   let : ∀ i, T2Space (ℝ ⊗[ℚ] (M.filtration.positivePolynomialAlgebra ⧸
       restrictedOutsideDownsetIdeal M.filtration.positivePolynomialAlgebra (J i) (hJ i))) :=
     fun i => realification_moduleTopology_t2 (M.positivePolynomialDownsetFinBasis (J i) (hJ i) p)
@@ -414,7 +415,7 @@ theorem exists_two_downset_correlation (s t : ℕ) :
     fun _ => moduleTopology ℝ _
   let : ∀ i, IsTopologicalAddGroup (ℝ ⊗[ℚ] (M.filtration.positivePolynomialAlgebra ⧸
       restrictedOutsideDownsetIdeal M.filtration.positivePolynomialAlgebra (J i) (hJ i))) :=
-    fun _ => IsModuleTopology.isTopologicalAddGroup ℝ _
+    fun _ => IsModuleTopology.topologicalAddGroup ℝ _
   let : ∀ i, T2Space (ℝ ⊗[ℚ] (M.filtration.positivePolynomialAlgebra ⧸
       restrictedOutsideDownsetIdeal M.filtration.positivePolynomialAlgebra (J i) (hJ i))) :=
     fun i => realification_moduleTopology_t2 (M.positivePolynomialDownsetFinBasis (J i) (hJ i) p)
@@ -491,7 +492,7 @@ theorem exists_two_downset_precision (s t : ℕ) :
     fun _ => moduleTopology ℝ _
   let : ∀ i, IsTopologicalAddGroup (ℝ ⊗[ℚ] (M.filtration.positivePolynomialAlgebra ⧸
       restrictedOutsideDownsetIdeal M.filtration.positivePolynomialAlgebra (J i) (hJ i))) :=
-    fun _ => IsModuleTopology.isTopologicalAddGroup ℝ _
+    fun _ => IsModuleTopology.topologicalAddGroup ℝ _
   let : ∀ i, T2Space (ℝ ⊗[ℚ] (M.filtration.positivePolynomialAlgebra ⧸
       restrictedOutsideDownsetIdeal M.filtration.positivePolynomialAlgebra (J i) (hJ i))) :=
     fun i => realification_moduleTopology_t2 (M.positivePolynomialDownsetFinBasis (J i) (hJ i) p)

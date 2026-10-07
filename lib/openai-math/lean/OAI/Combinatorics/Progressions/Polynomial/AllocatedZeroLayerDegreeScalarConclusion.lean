@@ -1,3 +1,4 @@
+/- Modified for ProveIt: Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
 import OAI.Combinatorics.Progressions.Dynamics.AllocatedExternalCandidateExponentialFreezingBudget
 import OAI.Combinatorics.Progressions.Estimates.AllocatedExternalCandidateStepZero
 import OAI.Combinatorics.Progressions.Estimates.AllocatedZeroLayerScalarPassage
@@ -393,7 +394,7 @@ theorem exists_normalizedShearDegreeConclusion
     Nonempty (P.Conclusion outputCost (Real.exp (-outputCost)) (Real.exp (-outputCost))) := by
   let := moduleTopology ℝ (ℝ ⊗[ℚ] PolynomialShearLieAlgebra patch.weight ℚ)
   let : IsTopologicalAddGroup (ℝ ⊗[ℚ] PolynomialShearLieAlgebra patch.weight ℚ) :=
-    IsModuleTopology.isTopologicalAddGroup ℝ _
+    IsModuleTopology.topologicalAddGroup ℝ _
   let := realification_moduleTopology_t2
     (polynomialShearNilmanifold patch.weight s patch.weight_le).basis
   have hnorm : 0 ≤ normBudget := hchild.trans hchildBudget

@@ -1,5 +1,6 @@
 /- Modified for ProveIt: import Lean 4.32 compatibility declarations.
-Statements and proofs are unchanged from the pinned upstream source. -/
+Remove a reflexivity step after simp closes the raised-basis identity
+on Lean 4.32. Mathematical statements unchanged. -/
 import OAI.Compat.Set
 import Mathlib.Analysis.Complex.Basic
 import Mathlib.Data.ZMod.Basic
@@ -556,7 +557,6 @@ noncomputable def raisedLayerBasis (i : Fin (t + 1)) :
 theorem raisedLayerBasis_of_lt (i : Fin (t + 1)) (hi : i.val < s + 1) :
     D.raisedLayerBasis hst i = D.layerBasis ⟨i.val, hi⟩ := by
   simp [raisedLayerBasis, hi]
-  rfl
 
 noncomputable def raiseStep : RationalFilteredNilmanifold L t d where
   filtration := D.filtration.raiseStep hst

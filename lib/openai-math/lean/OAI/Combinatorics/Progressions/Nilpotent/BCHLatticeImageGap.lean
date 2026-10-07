@@ -1,3 +1,6 @@
+/- Modified for ProveIt: use the older manifold derivative lemma, handle
+all conversion goals, and remove a closed-goal tactic on Lean 4.32.
+Mathematical statements are unchanged. -/
 import Mathlib.Analysis.Calculus.Deriv.Comp
 import Mathlib.Analysis.Calculus.Deriv.Mul
 import OAI.Combinatorics.Progressions.Geometry.RiemannianLocalCoordinates
@@ -223,7 +226,7 @@ theorem mfderiv_basisHomeomorph_coordinates (e : Basis ι ℝ L)
     simp only [writtenInExtChartAt, Function.comp_apply, basis_extChartAt_symm_apply,
       extChartAt_model_space_eq_id, Homeomorph.apply_symm_apply, id_eq]
     rfl
-  rw [hm.mfderiv_abuse, heq]
+  rw [hm.mfderiv, heq]
   simp only [modelWithCornersSelf_coe, Set.range_id, fderivWithin_univ, fderiv_id]
   rfl
 
@@ -316,8 +319,7 @@ theorem mfderiv_coordinateLine (t : ℝ) :
       fun u : ℝ => u • v := by
     funext u
     simp [writtenInExtChartAt, coordinateLine]
-    rfl
-  rw [hm.mfderiv_abuse, heq]
+  rw [hm.mfderiv, heq]
   simp only [modelWithCornersSelf_coe, Set.range_id, fderivWithin_univ]
   change deriv (fun u : ℝ => u • v) t = v
   exact (show HasDerivAt (fun u : ℝ => u • v) v t by
@@ -360,7 +362,7 @@ theorem contMDiff_linear_hom (n : ℕ∞ω) :
   let := basisChartedSpace (hnil := hM) f
   apply ContMDiff.of_comp_isOpenEmbedding (basisHomeomorph f).isOpenEmbedding
   have hc := A.contDiff.contMDiff.comp (contMDiff_basisHomeomorph (hnil := hnil) e n)
-  convert hc using 1; try rfl
+  convert hc using 1 <;> try rfl
   funext g
   exact linear_hom_basisHomeomorph e f φ A hA g
 
@@ -375,7 +377,7 @@ theorem mfderiv_linear_hom_coordinates (g : NilpotentLieBCHGroup L s hnil) (v : 
     funext x
     simpa only [writtenInExtChartAt, Function.comp_apply, basis_extChartAt_apply,
       basis_extChartAt_symm_apply, homCoordinates] using congrFun hA x
-  rw [hm.mfderiv_abuse, heq]
+  rw [hm.mfderiv, heq]
   simp only [modelWithCornersSelf_coe, Set.range_id, fderivWithin_univ, ContinuousLinearMap.fderiv]
   rfl
 

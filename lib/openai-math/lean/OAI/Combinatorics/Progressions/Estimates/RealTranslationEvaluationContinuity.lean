@@ -1,3 +1,4 @@
+/- Modified for ProveIt: Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
 import Mathlib.Topology.Algebra.Module.FiniteDimension
 import Mathlib.Topology.Algebra.Module.ModuleTopology
 import Mathlib.Topology.Algebra.MvPolynomial
@@ -46,7 +47,7 @@ theorem continuous_polynomialShearExp_eval {σ X : Type*} [Fintype σ]
   let W := weightedSupportLE (R := ℝ) w n
   let instFiniteW : Module.Finite ℝ W := weightedSupportLE_moduleFinite w hw n
   let instTopoW : TopologicalSpace W := moduleTopology ℝ W
-  let instTopAddW : IsTopologicalAddGroup W := IsModuleTopology.isTopologicalAddGroup ℝ W
+  let instTopAddW : IsTopologicalAddGroup W := IsModuleTopology.topologicalAddGroup ℝ W
   let p : W := ⟨P, (mem_weightedSupportLE_iff w n P).mpr le_rfl⟩
   let L : X →ₗ[ℝ] Module.End ℝ W :=
     { toFun := fun x => polynomialShearEnd (D x) n

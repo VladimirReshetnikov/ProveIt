@@ -1,3 +1,4 @@
+/- Modified for ProveIt: Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
 import OAI.Combinatorics.Progressions.Dynamics.NativeOptionProductBudget
 import OAI.Combinatorics.Progressions.Estimates.NativeSquareRecovery
 import OAI.Combinatorics.Progressions.Linear.FrozenDiagramKernelInvariance
@@ -427,7 +428,7 @@ theorem exists_uniform_frozen_split_reconstruction (t k : ℕ) :
       ∀ q : ℕ, 0 < q → (q : ℝ) ≤ Real.exp p →
       let Z₀ := pi F
       letI := moduleTopology ℝ (ℝ ⊗[ℚ] (∀ i, L i))
-      letI := IsModuleTopology.isTopologicalAddGroup ℝ (ℝ ⊗[ℚ] (∀ i, L i))
+      letI := IsModuleTopology.topologicalAddGroup ℝ (ℝ ⊗[ℚ] (∀ i, L i))
       letI := realification_moduleTopology_t2 Z₀.basis
       ∃ Q' : RationalFilteredNilmanifold L₀ s d₀,
         Q'.filtration = Q.filtration ∧ Q'.basis = Q.basis ∧ Q'.lattice ≤ Q.lattice ∧
@@ -466,12 +467,12 @@ theorem exists_uniform_frozen_split_reconstruction (t k : ℕ) :
     Z₀
   let T := optionProduct (Q.raiseStep hst) F
   let := moduleTopology ℝ (ℝ ⊗[ℚ] (∀ i, L i))
-  let := IsModuleTopology.isTopologicalAddGroup ℝ (ℝ ⊗[ℚ] (∀ i, L i))
+  let := IsModuleTopology.topologicalAddGroup ℝ (ℝ ⊗[ℚ] (∀ i, L i))
   let := realification_moduleTopology_t2 Z₀.basis
   let Mprod := ∀ i : Option ι, optionLieSpace L₀ L i
   let Aprod := optionFactors (Q.raiseStep hst) F
   let := moduleTopology ℝ (ℝ ⊗[ℚ] Mprod)
-  let := IsModuleTopology.isTopologicalAddGroup ℝ (ℝ ⊗[ℚ] Mprod)
+  let := IsModuleTopology.topologicalAddGroup ℝ (ℝ ⊗[ℚ] Mprod)
   let := realification_moduleTopology_t2 T.basis
   let p₀ := (p + 3) ^ 2
   let p₁ := p₀ + (p₀ + A) ^ A
@@ -575,7 +576,7 @@ theorem exists_diagram_native_external_net (s t k : ℕ) :
       ∀ q : ℕ, 0 < q → (q : ℝ) ≤ Real.exp p →
       let Z₀ := pi F
       letI := moduleTopology ℝ (ℝ ⊗[ℚ] (∀ i, L i))
-      letI := IsModuleTopology.isTopologicalAddGroup ℝ (ℝ ⊗[ℚ] (∀ i, L i))
+      letI := IsModuleTopology.topologicalAddGroup ℝ (ℝ ⊗[ℚ] (∀ i, L i))
       letI := realification_moduleTopology_t2 Z₀.basis
       ∃ Q' : RationalFilteredNilmanifold L₀ s d₀,
         Q'.filtration = Q.filtration ∧ Q'.basis = Q.basis ∧ Q'.lattice ≤ Q.lattice ∧
@@ -628,7 +629,7 @@ theorem exists_diagram_native_external_net (s t k : ℕ) :
     e f d₀ d E D Q hst F φ ψ₀ ψ p hp hι hE hD hQ hF hφ hψ₀ hψ hinj q hq hqp
   let Z₀ := pi F
   let := moduleTopology ℝ (ℝ ⊗[ℚ] (∀ i, L i))
-  let := IsModuleTopology.isTopologicalAddGroup ℝ (ℝ ⊗[ℚ] (∀ i, L i))
+  let := IsModuleTopology.topologicalAddGroup ℝ (ℝ ⊗[ℚ] (∀ i, L i))
   let := realification_moduleTopology_t2 Z₀.basis
   obtain ⟨Q', hQF, hQb, hQle, hQgeom, Z, hZF, hZb, hZle, hZgeom, hrecovery⟩ :=
     hrec E D Q hst F φ ψ₀ ψ hp hι hE hD hQ hF hφ hψ₀ hψ hinj q hq hqp
@@ -750,12 +751,12 @@ theorem exists_uniform_frozen_two_target_reconstruction (t k : ℕ) :
   let Z₀ := pi F
   let T := optionProduct (Q.raiseStep hst) F
   let := moduleTopology ℝ (ℝ ⊗[ℚ] (Unit → L₁))
-  let := IsModuleTopology.isTopologicalAddGroup ℝ (ℝ ⊗[ℚ] (Unit → L₁))
+  let := IsModuleTopology.topologicalAddGroup ℝ (ℝ ⊗[ℚ] (Unit → L₁))
   let := realification_moduleTopology_t2 Z₀.basis
   let Mprod := ∀ i : Option Unit, optionLieSpace L₀ (fun _ : Unit => L₁) i
   let Aprod := optionFactors (Q.raiseStep hst) F
   let := moduleTopology ℝ (ℝ ⊗[ℚ] Mprod)
-  let := IsModuleTopology.isTopologicalAddGroup ℝ (ℝ ⊗[ℚ] Mprod)
+  let := IsModuleTopology.topologicalAddGroup ℝ (ℝ ⊗[ℚ] Mprod)
   let := realification_moduleTopology_t2 T.basis
   let p₀ := (p + 3) ^ 2
   let p₁ := p₀ + (p₀ + A) ^ A

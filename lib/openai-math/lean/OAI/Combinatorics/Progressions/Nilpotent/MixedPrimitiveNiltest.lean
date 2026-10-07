@@ -1,3 +1,4 @@
+/- Modified for ProveIt: Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
 import OAI.Combinatorics.Progressions.Estimates.MixedPrimitiveGowers
 
 namespace OAI
@@ -68,7 +69,7 @@ theorem exists_mixed_primitive_niltest_budget (d : ℕ) :
     (RationalFilteredNilmanifold.productFinBasis models).finiteDimensional_of_finite
   let := moduleTopology ℝ (ℝ ⊗[ℚ] (∀ b, K b))
   let : IsTopologicalAddGroup (ℝ ⊗[ℚ] (∀ b, K b)) :=
-    IsModuleTopology.isTopologicalAddGroup ℝ _
+    IsModuleTopology.topologicalAddGroup ℝ _
   let : T2Space (ℝ ⊗[ℚ] (∀ b, K b)) :=
     realification_moduleTopology_t2 (RationalFilteredNilmanifold.productFinBasis models)
   let S := RationalFilteredNilmanifold.unitBoundedPiNiltest models tests hr hcard htests hcap

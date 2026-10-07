@@ -1,3 +1,4 @@
+/- Modified for ProveIt: Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
 import OAI.Combinatorics.Progressions.Estimates.NativeTwoVariableSplitFreezing
 import OAI.Combinatorics.Progressions.Nilpotent.PreparedDilationNiltest
 
@@ -46,10 +47,10 @@ theorem exists_controlled_dilation_family (s : ℕ) (q : ℤ) :
   let K := M.filtration.ordinary.dilationPairSubalgebra (q : ℚ)
   let J := K ⧸ E.filtration.layerIdeal (s + 1)
   let := moduleTopology ℝ (ℝ ⊗[ℚ] K)
-  let : IsTopologicalAddGroup (ℝ ⊗[ℚ] K) := IsModuleTopology.isTopologicalAddGroup ℝ _
+  let : IsTopologicalAddGroup (ℝ ⊗[ℚ] K) := IsModuleTopology.topologicalAddGroup ℝ _
   let : T2Space (ℝ ⊗[ℚ] K) := realification_moduleTopology_t2 E.basis
   let := moduleTopology ℝ (ℝ ⊗[ℚ] J)
-  let : IsTopologicalAddGroup (ℝ ⊗[ℚ] J) := IsModuleTopology.isTopologicalAddGroup ℝ _
+  let : IsTopologicalAddGroup (ℝ ⊗[ℚ] J) := IsModuleTopology.topologicalAddGroup ℝ _
   let : T2Space (ℝ ⊗[ℚ] J) := realification_moduleTopology_t2 Q.basis
   have he' (j : Fin 2) (a) (k) : rationalLogHeight
       (D.basis.repr (M.filtration.ordinary.dilationPairProjection (q : ℚ) j (E.basis a)) k) ≤

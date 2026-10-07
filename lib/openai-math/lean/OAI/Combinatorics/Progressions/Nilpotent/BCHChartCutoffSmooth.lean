@@ -1,5 +1,6 @@
 /- Modified for ProveIt: import Lean 4.32 compatibility declarations.
-Statements and proofs are unchanged from the pinned upstream source. -/
+Discharge all conversion goals and use IsModuleTopology.topologicalAddGroup
+on Lean 4.32. Mathematical statements are unchanged. -/
 import OAI.Compat.Core
 import Mathlib.AlgebraicTopology.FundamentalGroupoid.SimplyConnected
 import Mathlib.Analysis.Convex.Contractible
@@ -294,7 +295,7 @@ theorem lieGroup_basis (n : ℕ∞ω) :
       ((contMDiff_basisHomeomorph e n).comp contMDiff_fst).prodMk_space
         ((contMDiff_basisHomeomorph e n).comp contMDiff_snd)
     have hbch := (contDiff_coordinateBCH (n := n) e s).contMDiff.comp hcoords
-    convert hbch using 1; try rfl
+    convert hbch using 1 <;> try rfl
     funext z
     simp only [Function.comp_apply, basisHomeomorph_apply, LinearEquiv.symm_apply_apply]
     rfl
@@ -590,7 +591,7 @@ theorem exists_realification_topology_of_grid (e : Basis ι ℚ L)
         (NilpotentLieBCHGroup (ℝ ⊗[ℚ] L) s (realification_lowerCentralSeries_eq_bot hnil))) := by
   let τ := moduleTopology ℝ (ℝ ⊗[ℚ] L)
   let : TopologicalSpace (ℝ ⊗[ℚ] L) := τ
-  let : IsTopologicalAddGroup (ℝ ⊗[ℚ] L) := IsModuleTopology.isTopologicalAddGroup ℝ _
+  let : IsTopologicalAddGroup (ℝ ⊗[ℚ] L) := IsModuleTopology.topologicalAddGroup ℝ _
   let : FiniteDimensional ℝ (ℝ ⊗[ℚ] L) := (e.baseChange ℝ).finiteDimensional_of_finite
   have hcoord : Continuous (e.baseChange ℝ).equivFun :=
     IsModuleTopology.continuous_of_linearMap (e.baseChange ℝ).equivFun.toLinearMap

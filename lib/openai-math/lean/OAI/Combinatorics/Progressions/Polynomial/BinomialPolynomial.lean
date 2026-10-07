@@ -1,3 +1,6 @@
+/- Modified for ProveIt: import a locally proved Stirling expansion for
+Lean 4.32. Mathematical statements and proof bodies are unchanged. -/
+import OAI.Compat.Stirling
 import Mathlib.Algebra.Polynomial.Roots
 import Mathlib.Combinatorics.Enumerative.Stirling
 import Mathlib.RingTheory.Polynomial.Pochhammer

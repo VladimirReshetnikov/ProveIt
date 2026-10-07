@@ -1,3 +1,4 @@
+/- Modified for ProveIt: Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
 import OAI.Combinatorics.Progressions.Geometry.SublatticeOrbitMetric
 import OAI.Combinatorics.Progressions.Nilpotent.CoveredAnchoredSquareNiltests
 
@@ -65,7 +66,7 @@ def PrescribedCoveredInputPartitionSpec (s k₀ a C : ℕ) : Prop :=
       let KL := sumLieSpace K (fun i => (D i).filtration.squareLieSubalgebra ⧸
         (D i).filtration.squareFiltration.layerIdeal (s + 1))
       letI := moduleTopology ℝ (ℝ ⊗[ℚ] (∀ i, KL i))
-      letI := IsModuleTopology.isTopologicalAddGroup ℝ (ℝ ⊗[ℚ] (∀ i, KL i))
+      letI := IsModuleTopology.topologicalAddGroup ℝ (ℝ ⊗[ℚ] (∀ i, KL i))
       letI := realification_moduleTopology_t2 (pi Z).basis
       letI := (pi Z).metricSpace
       ∃ (I : Type) (inst : Fintype I), letI := inst;
@@ -142,7 +143,7 @@ theorem exists_prescribed_covered_input_partition (s k₀ a : ℕ) :
   let KL := sumLieSpace K (fun i => (D i).filtration.squareLieSubalgebra ⧸
     (D i).filtration.squareFiltration.layerIdeal (s + 1))
   let := moduleTopology ℝ (ℝ ⊗[ℚ] (∀ i, KL i))
-  let := IsModuleTopology.isTopologicalAddGroup ℝ (ℝ ⊗[ℚ] (∀ i, KL i))
+  let := IsModuleTopology.topologicalAddGroup ℝ (ℝ ⊗[ℚ] (∀ i, KL i))
   let := realification_moduleTopology_t2 (pi Z).basis
   let := (pi Z).metricSpace
   have hp0 : 0 ≤ p := by linarith

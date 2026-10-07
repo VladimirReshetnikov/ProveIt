@@ -1,3 +1,4 @@
+/- Modified for ProveIt: Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
 import OAI.Combinatorics.Progressions.Estimates.AllocatedMarkedDictionaryRecovery
 
 namespace OAI
@@ -33,7 +34,7 @@ def DiagramNativeExternalNetConclusion (s t k : ℕ)
       (φ : H →ₗ⁅ℚ⁆ M) (ψ₀ : H →ₗ⁅ℚ⁆ L₀) (ψ : ∀ i, H →ₗ⁅ℚ⁆ L i) (p cost : ℝ) (q : ℕ) : Prop :=
       let Z₀ := pi F
       letI := moduleTopology ℝ (ℝ ⊗[ℚ] (∀ i, L i))
-      letI := IsModuleTopology.isTopologicalAddGroup ℝ (ℝ ⊗[ℚ] (∀ i, L i))
+      letI := IsModuleTopology.topologicalAddGroup ℝ (ℝ ⊗[ℚ] (∀ i, L i))
       letI := realification_moduleTopology_t2 Z₀.basis
       ∃ Q' : RationalFilteredNilmanifold L₀ s d₀,
         Q'.filtration = Q.filtration ∧ Q'.basis = Q.basis ∧ Q'.lattice ≤ Q.lattice ∧
@@ -111,7 +112,7 @@ theorem DiagramNativeExternalNetConclusion.exists_physical_family (s t k : ℕ)
     (h : DiagramNativeExternalNetConclusion.{u, uO, uR, uIO} s t k E D Q F φ ψ₀ ψ p cost q) :
       let Z₀ := pi F
       letI := moduleTopology ℝ (ℝ ⊗[ℚ] (∀ i, L i))
-      letI := IsModuleTopology.isTopologicalAddGroup ℝ (ℝ ⊗[ℚ] (∀ i, L i))
+      letI := IsModuleTopology.topologicalAddGroup ℝ (ℝ ⊗[ℚ] (∀ i, L i))
       letI := realification_moduleTopology_t2 Z₀.basis
       ∃ Q' : RationalFilteredNilmanifold L₀ s d₀,
         Q'.filtration = Q.filtration ∧ Q'.basis = Q.basis ∧ Q'.lattice ≤ Q.lattice ∧
@@ -167,7 +168,7 @@ theorem DiagramNativeExternalNetConclusion.exists_physical_family (s t k : ℕ)
                       frozen (observableAt x) (leftAt x) (rightAt x) source := by
   let Z₀ := pi F
   let := moduleTopology ℝ (ℝ ⊗[ℚ] (∀ i, L i))
-  let := IsModuleTopology.isTopologicalAddGroup ℝ (ℝ ⊗[ℚ] (∀ i, L i))
+  let := IsModuleTopology.topologicalAddGroup ℝ (ℝ ⊗[ℚ] (∀ i, L i))
   let := realification_moduleTopology_t2 Z₀.basis
   obtain ⟨Q', hQF, hQb, hQle, hQgeom, Z, hZF, hZb, hZle, hZgeom,
     K, hK, hnet⟩ := h
@@ -233,7 +234,7 @@ theorem DiagramNativeExternalNetConclusion.mono (s t k : ℕ)
     DiagramNativeExternalNetConclusion.{u, v, w, z} s t k E D Q F φ ψ₀ ψ p' cost' q := by
   let Z₀ := pi F
   let := moduleTopology ℝ (ℝ ⊗[ℚ] (∀ i, L i))
-  let := IsModuleTopology.isTopologicalAddGroup ℝ (ℝ ⊗[ℚ] (∀ i, L i))
+  let := IsModuleTopology.topologicalAddGroup ℝ (ℝ ⊗[ℚ] (∀ i, L i))
   let := realification_moduleTopology_t2 Z₀.basis
   obtain ⟨Q', hQF, hQb, hQle, hQgeom, Z, hZF, hZb, hZle, hZgeom, K, hK, hnet⟩ := h
   refine ⟨Q', hQF, hQb, hQle, hQgeom.mono Q' hcost,

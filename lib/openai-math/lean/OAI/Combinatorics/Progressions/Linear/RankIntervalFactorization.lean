@@ -1,3 +1,4 @@
+/- Modified for ProveIt: Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
 import OAI.Combinatorics.Progressions.Geometry.UnitIntervalBox
 import OAI.Combinatorics.Progressions.Linear.NativeRankRelationExistence
 import OAI.Combinatorics.Progressions.Linear.RankUnadaptedFactorization
@@ -525,7 +526,7 @@ theorem exists_rank_interval_product (s : ℕ) (hs : 1 ≤ s) :
             (∀ k : Option (Fin 4), optionLieSpace (I.expansion.L i) (fun _ : Fin 4 => W.L) k))
           letI : IsTopologicalAddGroup (ℝ ⊗[ℚ]
               (∀ k : Option (Fin 4), optionLieSpace (I.expansion.L i) (fun _ : Fin 4 => W.L) k)) :=
-            IsModuleTopology.isTopologicalAddGroup ℝ _
+            IsModuleTopology.topologicalAddGroup ℝ _
           letI : T2Space (ℝ ⊗[ℚ]
               (∀ k : Option (Fin 4), optionLieSpace (I.expansion.L i) (fun _ : Fin 4 => W.L) k)) :=
             realification_moduleTopology_t2 (productFinBasis (I.productModels i))
@@ -580,7 +581,7 @@ theorem exists_rank_interval_product (s : ℕ) (hs : 1 ≤ s) :
     (∀ k : Option (Fin 4), optionLieSpace (I.expansion.L i) (fun _ : Fin 4 => W.L) k))
   let : IsTopologicalAddGroup (ℝ ⊗[ℚ]
       (∀ k : Option (Fin 4), optionLieSpace (I.expansion.L i) (fun _ : Fin 4 => W.L) k)) :=
-    IsModuleTopology.isTopologicalAddGroup ℝ _
+    IsModuleTopology.topologicalAddGroup ℝ _
   let : T2Space (ℝ ⊗[ℚ]
       (∀ k : Option (Fin 4), optionLieSpace (I.expansion.L i) (fun _ : Fin 4 => W.L) k)) :=
     realification_moduleTopology_t2 (productFinBasis (I.productModels i))
@@ -783,7 +784,7 @@ theorem exists_rank_interval_factorization (s : ℕ) (hs : 1 ≤ s) :
     (∀ k : Option (Fin 4), optionLieSpace (I.expansion.L i) (fun _ : Fin 4 => W.L) k))
   let : IsTopologicalAddGroup (ℝ ⊗[ℚ]
       (∀ k : Option (Fin 4), optionLieSpace (I.expansion.L i) (fun _ : Fin 4 => W.L) k)) :=
-    IsModuleTopology.isTopologicalAddGroup ℝ _
+    IsModuleTopology.topologicalAddGroup ℝ _
   let : T2Space (ℝ ⊗[ℚ]
       (∀ k : Option (Fin 4), optionLieSpace (I.expansion.L i) (fun _ : Fin 4 => W.L) k)) :=
     realification_moduleTopology_t2 (productFinBasis (I.productModels i))

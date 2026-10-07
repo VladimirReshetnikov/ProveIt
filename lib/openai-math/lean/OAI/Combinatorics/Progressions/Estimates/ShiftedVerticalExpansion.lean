@@ -1,3 +1,4 @@
+/- Modified for ProveIt: Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
 import OAI.Combinatorics.Progressions.Nilpotent.BoxNiltestDetection
 import OAI.Combinatorics.Progressions.Nilpotent.NativeSquareNiltest
 import OAI.Combinatorics.Progressions.Nilpotent.PolarizedVerticalNiltest
@@ -157,11 +158,11 @@ theorem exists_vertical_derivative_detection (s : ℕ) :
   let : FiniteDimensional ℚ K := inferInstance
   let : FiniteDimensional ℚ M := inferInstance
   let : TopologicalSpace (ℝ ⊗[ℚ] K) := moduleTopology ℝ (ℝ ⊗[ℚ] K)
-  let : IsTopologicalAddGroup (ℝ ⊗[ℚ] K) := IsModuleTopology.isTopologicalAddGroup ℝ _
+  let : IsTopologicalAddGroup (ℝ ⊗[ℚ] K) := IsModuleTopology.topologicalAddGroup ℝ _
   let : ContinuousSMul ℝ (ℝ ⊗[ℚ] K) := inferInstance
   let : T2Space (ℝ ⊗[ℚ] K) := realification_moduleTopology_t2 (Module.finBasis ℚ K)
   let : TopologicalSpace (ℝ ⊗[ℚ] M) := moduleTopology ℝ (ℝ ⊗[ℚ] M)
-  let : IsTopologicalAddGroup (ℝ ⊗[ℚ] M) := IsModuleTopology.isTopologicalAddGroup ℝ _
+  let : IsTopologicalAddGroup (ℝ ⊗[ℚ] M) := IsModuleTopology.topologicalAddGroup ℝ _
   let : ContinuousSMul ℝ (ℝ ⊗[ℚ] M) := inferInstance
   let : T2Space (ℝ ⊗[ℚ] M) := realification_moduleTopology_t2 (Module.finBasis ℚ M)
   obtain ⟨n, E, S, _, hS, hval⟩ := hsq D p hp w hw T hT χ hvert h

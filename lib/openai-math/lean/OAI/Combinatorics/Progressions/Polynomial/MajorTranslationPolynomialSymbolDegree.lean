@@ -1,3 +1,5 @@
+/- Modified for ProveIt: Use explicit MvPolynomial coefficient lemmas and homogeneous-submodule
+subtraction on Lean 4.32; mathematical statements unchanged. -/
 import Mathlib.LinearAlgebra.Finsupp.Defs
 import Mathlib.RingTheory.MvPolynomial.WeightedHomogeneous
 import OAI.Combinatorics.Progressions.Estimates.WeightedAxisScaling
@@ -67,7 +69,7 @@ theorem polynomialSlotCoefficient_monomial [DecidableEq τ] (α : σ →₀ ℕ)
       apply hγ
       ext i
       exact congrArg (fun a : σ ⊕ τ →₀ ℕ => a (Sum.inr i)) h
-    simp only [hγ, ite_false, AddMonoidAlgebra.coeff_zero, Finsupp.zero_apply,
+    simp only [hγ, ite_false, MvPolynomial.coeff_zero,
       coeff_monomial, hne]
 
 theorem polynomialParameterEval_monomial (t : σ → R)
@@ -94,7 +96,7 @@ theorem polynomialSlotCoefficient_eval (t : σ → R) (β : τ →₀ ℕ)
     rw [← hm, polynomialSlotCoefficient_monomial, polynomialParameterEval_monomial]
     by_cases h : γ = β <;> simp [h, coeff_monomial]
   | add P Q hP hQ =>
-    simp only [map_add, AddMonoidAlgebra.coeff_add, Finsupp.add_apply, hP, hQ]
+    simp only [map_add, MvPolynomial.coeff_add, hP, hQ]
 
 end Erdos3
 
@@ -143,7 +145,7 @@ theorem polynomialSlotCoefficient_eq_zero_of_weight_ge (w : B → ℕ)
     (α : B →₀ ℕ) (hd : d ≤ Finsupp.weight w α) :
     polynomialSlotCoefficient α P = 0 := by
   ext β
-  rw [polynomialSlotCoefficient_coeff, AddMonoidAlgebra.coeff_zero, Finsupp.zero_apply]
+  rw [polynomialSlotCoefficient_coeff, MvPolynomial.coeff_zero]
   by_contra hne
   have hlt : Finsupp.weight (Sum.elim (fun _ : U => 0) w) (β.sumElim α) < d :=
     hP (mem_support_iff.mpr hne)
@@ -391,13 +393,14 @@ theorem majorTranslationJointPolynomial_top_homogeneous (w : B → ℕ)
     (majorTranslationJointPolynomial D (majorTranslationTopCoordinates w A)).IsWeightedHomogeneous
       (Sum.elim (fun _ : U => 1) w) d := by
   rw [majorTranslationJointPolynomial_eq_sub_aeval]
-  apply hD.sub
+  apply (weightedHomogeneousSubmodule ℝ _ d).sub_mem hD
   apply aeval_isWeightedHomogeneous _ _ _ _ hD
   intro i
   cases i with
   | inl i => exact isWeightedHomogeneous_zero ℝ _ _
   | inr j =>
-      exact (isWeightedHomogeneous_X (R := ℝ) (Sum.elim (fun _ : U => 1) w) (Sum.inr j)).sub
+      exact (weightedHomogeneousSubmodule ℝ _ (w j)).sub_mem
+        (isWeightedHomogeneous_X (R := ℝ) (Sum.elim (fun _ : U => 1) w) (Sum.inr j))
         (majorParameterRename_homogeneous (fun _ => 1) w
           (majorTranslationTopCoordinates_homogeneous w A j))
 

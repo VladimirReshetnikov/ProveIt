@@ -1,5 +1,6 @@
 /- Modified for ProveIt: import Lean 4.32 compatibility declarations.
- Use older set-comprehension and discrete-subgroup names; statements unchanged. -/
+ Use older set-comprehension and discrete-subgroup names; statements unchanged.
+Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
 import OAI.Compat.Set
 import OAI.Compat.Isometry
 import OAI.Combinatorics.Progressions.Dynamics.LocalizedAverageScaleBudget
@@ -190,7 +191,7 @@ noncomputable instance instRealTopology (d : ℕ) : TopologicalSpace (ℝ ⊗[�
   moduleTopology ℝ (ℝ ⊗[ℚ] Algebra d)
 
 instance instRealTopologicalAddGroup (d : ℕ) : IsTopologicalAddGroup (ℝ ⊗[ℚ] Algebra d) :=
-  IsModuleTopology.isTopologicalAddGroup ℝ _
+  IsModuleTopology.topologicalAddGroup ℝ _
 
 instance instRealContinuousSMul (d : ℕ) : ContinuousSMul ℝ (ℝ ⊗[ℚ] Algebra d) :=
   ModuleTopology.continuousSMul ℝ _

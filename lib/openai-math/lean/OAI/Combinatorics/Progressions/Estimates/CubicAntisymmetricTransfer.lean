@@ -1,5 +1,6 @@
 /- Modified for ProveIt: import Lean 4.32 compatibility declarations.
-Statements and proofs are unchanged from the pinned upstream source. -/
+Mathematical statements are unchanged from the pinned upstream source.
+Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
 import OAI.Compat.BigOperators
 import OAI.Combinatorics.Progressions.Estimates.NativeBinaryAssignments
 import OAI.Combinatorics.Progressions.Geometry.ComparisonProductMetric
@@ -342,7 +343,7 @@ theorem exists_controlled_diagonal_comparison (s : ℕ) :
       let P := p + (s + 1).factorial + 1
       letI := moduleTopology ℝ (ℝ ⊗[ℚ] M.filtration.SquarefreeAlgebra (fun j : ReplicatedIndex bound => j.1))
       letI : IsTopologicalAddGroup (ℝ ⊗[ℚ] M.filtration.SquarefreeAlgebra (fun j : ReplicatedIndex bound => j.1)) :=
-        IsModuleTopology.isTopologicalAddGroup ℝ _
+        IsModuleTopology.topologicalAddGroup ℝ _
       letI : T2Space (ℝ ⊗[ℚ] M.filtration.SquarefreeAlgebra (fun j : ReplicatedIndex bound => j.1)) :=
         realification_moduleTopology_t2 (M.squarefreeFinBasis P)
       ∃ U : M.SymmetricSquarefreeUnitData P V.frequency ((p + C) ^ C),
@@ -389,7 +390,7 @@ theorem exists_controlled_diagonal_comparison (s : ℕ) :
   have hFR : ((s + 1).factorial : ℝ) ≤ R := by dsimp [R]; linarith
   let := moduleTopology ℝ (ℝ ⊗[ℚ] M.filtration.SquarefreeAlgebra (fun j : ReplicatedIndex bound => j.1))
   let : IsTopologicalAddGroup (ℝ ⊗[ℚ] M.filtration.SquarefreeAlgebra (fun j : ReplicatedIndex bound => j.1)) :=
-    IsModuleTopology.isTopologicalAddGroup ℝ _
+    IsModuleTopology.topologicalAddGroup ℝ _
   let : T2Space (ℝ ⊗[ℚ] M.filtration.SquarefreeAlgebra (fun j : ReplicatedIndex bound => j.1)) :=
     realification_moduleTopology_t2 (M.squarefreeFinBasis P)
   obtain ⟨U⟩ := hsymm D M hs hM V.frequency V.height
@@ -398,7 +399,7 @@ theorem exists_controlled_diagonal_comparison (s : ℕ) :
   rw [hs] at hE he
   let K := M.filtration.comparisonSubalgebra (fun j : ReplicatedIndex bound => j.1)
   let := moduleTopology ℝ (ℝ ⊗[ℚ] K)
-  let : IsTopologicalAddGroup (ℝ ⊗[ℚ] K) := IsModuleTopology.isTopologicalAddGroup ℝ _
+  let : IsTopologicalAddGroup (ℝ ⊗[ℚ] K) := IsModuleTopology.topologicalAddGroup ℝ _
   let : T2Space (ℝ ⊗[ℚ] K) := realification_moduleTopology_t2 E.basis
   obtain ⟨ε, γ, A, hγ, hfactor, _, hA, hε⟩ := hnormal D p hp hM.1
     (M.filtration.realification.polynomialOrbitEval 0 g)
@@ -464,7 +465,7 @@ theorem exists_factorial_diagonal (s : ℕ) :
   let := moduleTopology ℝ (ℝ ⊗[ℚ] W.multi.filtration.SquarefreeAlgebra
     (fun j : ReplicatedIndex bound => j.1))
   let : IsTopologicalAddGroup (ℝ ⊗[ℚ] W.multi.filtration.SquarefreeAlgebra
-      (fun j : ReplicatedIndex bound => j.1)) := IsModuleTopology.isTopologicalAddGroup ℝ _
+      (fun j : ReplicatedIndex bound => j.1)) := IsModuleTopology.topologicalAddGroup ℝ _
   let : T2Space (ℝ ⊗[ℚ] W.multi.filtration.SquarefreeAlgebra
       (fun j : ReplicatedIndex bound => j.1)) :=
     realification_moduleTopology_t2 (W.multi.squarefreeFinBasis P)

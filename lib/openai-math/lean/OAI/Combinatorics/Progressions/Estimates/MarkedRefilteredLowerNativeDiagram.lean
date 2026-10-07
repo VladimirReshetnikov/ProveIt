@@ -1,3 +1,4 @@
+/- Modified for ProveIt: Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
 import OAI.Combinatorics.Progressions.Dynamics.AllocatedMarkedCoveredLowerDiagramBudget
 import OAI.Combinatorics.Progressions.Dynamics.MarkedRefilteredModelBudget
 import OAI.Combinatorics.Progressions.Dynamics.NativeMarkedQuotientHeightBudget
@@ -446,13 +447,13 @@ structure AllocatedMarkedCoveredLowerDiagram (k q : ℕ) (p cost : ℝ) where
       (W.map (D.filtration.associatedGradedMap Fmark.filtration φ hφ))))
     letI : IsTopologicalAddGroup (ℝ ⊗[ℚ] (Fmark.filtration.gradedRefiltrationSubalgebra
       (W.map (D.filtration.associatedGradedMap Fmark.filtration φ hφ)))) :=
-      IsModuleTopology.isTopologicalAddGroup ℝ _
+      IsModuleTopology.topologicalAddGroup ℝ _
     letI := realification_moduleTopology_t2 Fref.basis
     letI := moduleTopology ℝ (ℝ ⊗[ℚ]
       ((D.filtration.gradedRefiltrationSubalgebra W) ⧸ Dref.filtration.layerIdeal (s + 1)))
     letI : IsTopologicalAddGroup (ℝ ⊗[ℚ]
       ((D.filtration.gradedRefiltrationSubalgebra W) ⧸ Dref.filtration.layerIdeal (s + 1))) :=
-      IsModuleTopology.isTopologicalAddGroup ℝ _
+      IsModuleTopology.topologicalAddGroup ℝ _
     letI := realification_moduleTopology_t2 Q.basis
     letI := Q.metricSpace
     letI := Fref.metricSpace
@@ -532,19 +533,19 @@ theorem exists_allocated_marked_covered_lower_diagram (s k : ℕ) :
   obtain ⟨nQ, hnQ, Q, hQfil, hQlat, hQgeom, hQproj⟩ := hsource
   let := moduleTopology ℝ (ℝ ⊗[ℚ] (D.filtration.gradedRefiltrationSubalgebra W))
   let : IsTopologicalAddGroup (ℝ ⊗[ℚ] (D.filtration.gradedRefiltrationSubalgebra W)) :=
-    IsModuleTopology.isTopologicalAddGroup ℝ _
+    IsModuleTopology.topologicalAddGroup ℝ _
   let := realification_moduleTopology_t2 E.basis
   let := moduleTopology ℝ (ℝ ⊗[ℚ] (Fmark.filtration.gradedRefiltrationSubalgebra
     (W.map (D.filtration.associatedGradedMap Fmark.filtration φ hφ))))
   let : IsTopologicalAddGroup (ℝ ⊗[ℚ] (Fmark.filtration.gradedRefiltrationSubalgebra
     (W.map (D.filtration.associatedGradedMap Fmark.filtration φ hφ)))) :=
-    IsModuleTopology.isTopologicalAddGroup ℝ _
+    IsModuleTopology.topologicalAddGroup ℝ _
   let := realification_moduleTopology_t2 F.basis
   let := moduleTopology ℝ (ℝ ⊗[ℚ]
     ((D.filtration.gradedRefiltrationSubalgebra W) ⧸ E.filtration.layerIdeal (s + 1)))
   let : IsTopologicalAddGroup (ℝ ⊗[ℚ]
     ((D.filtration.gradedRefiltrationSubalgebra W) ⧸ E.filtration.layerIdeal (s + 1))) :=
-    IsModuleTopology.isTopologicalAddGroup ℝ _
+    IsModuleTopology.topologicalAddGroup ℝ _
   let := realification_moduleTopology_t2 Q.basis
   have hcovers := hcover D Fmark φ hφ W E hEfil F Q hp₀
     (hEgeom.mono E hnative₀) (hDgeom.mono D hpp₀)

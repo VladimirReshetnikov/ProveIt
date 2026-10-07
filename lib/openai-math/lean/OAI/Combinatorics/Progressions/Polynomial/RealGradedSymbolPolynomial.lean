@@ -1,5 +1,7 @@
 /- Modified for ProveIt: import Lean 4.32 compatibility declarations.
-Use Finsupp.mapDomain_apply for injective reindexing; statements unchanged. -/
+Use older Finsupp reindexing names and direct application of simplified
+coordinate identities on Lean 4.32; allow deeper elaboration of quotient
+instances. Mathematical statements unchanged. -/
 import OAI.Compat.Core
 import OAI.Compat.TensorProduct
 import Mathlib.Algebra.Module.TransferInstance
@@ -7,6 +9,9 @@ import Mathlib.LinearAlgebra.Basis.Bilinear
 import Mathlib.LinearAlgebra.Finsupp.Defs
 import OAI.Combinatorics.Progressions.Estimates.SquareGradedRelative
 import OAI.Combinatorics.Progressions.Estimates.SymbolAbsorptionBounds
+
+set_option maxRecDepth 2048
+set_option maxHeartbeats 800000
 
 namespace OAI
 
@@ -51,7 +56,7 @@ theorem ofSupportedCoordinates_apply_of_not_mem (b : Basis ι S V)
     b.repr (coefficients (ofSupportedCoordinates (R := R) b A c) α) i = 0 := by
   change mixedCoordinates b ((mixedCoordinates b).symm _) (α, i) = _
   rw [LinearEquiv.apply_symm_apply]
-  apply Finsupp.mapDomain_of_notMem_range
+  apply Finsupp.mapDomain_notin_range
   rintro ⟨z, hz⟩
   exact h (hz ▸ z.property)
 
@@ -345,7 +350,7 @@ noncomputable def gradedSymbolPolynomial :
   have h := ofSupportedCoordinates_apply (R := ℚ) (F.associatedGradedBasis b ω hlayers)
     {z : (σ →₀ ℕ) × ι | Finsupp.weight w z.1 = ω z.2}
     c z
-  convert h using 2
+  convert h using 2 <;> rfl
 
 theorem gradedSymbolPolynomial_coefficient_of_ne (x : F.PolynomialSymbol w)
     (α : σ →₀ ℕ) (i : ι) (h : Finsupp.weight w α ≠ ω i) :
@@ -361,10 +366,12 @@ theorem gradedSymbolPolynomial_coefficient_of_ne (x : F.PolynomialSymbol w)
 @[simp] theorem gradedSymbolPolynomial_basis (z : SymbolBasisIndex w ω) :
     F.gradedSymbolPolynomial b ω hlayers w (F.polynomialSymbolBasis b ω hlayers w z) =
       monomial z.val.1 (F.associatedGradedBasis b ω hlayers z.val.2) := by
-  simp only [gradedSymbolPolynomial, LinearMap.comp_apply, LinearEquiv.coe_coe, Basis.repr_self]
+  dsimp only [gradedSymbolPolynomial, LinearMap.comp_apply, LinearEquiv.coe_coe]
+  erw [Basis.repr_self]
   have h := ofSupportedCoordinates_single (R := ℚ) (F.associatedGradedBasis b ω hlayers)
     {z : (σ →₀ ℕ) × ι | Finsupp.weight w z.1 = ω z.2} z (1 : ℚ)
-  simpa only [one_smul] using h
+  simp only [one_smul] at h
+  exact h
 
 theorem gradedSymbolPolynomial_injective :
     Function.Injective (F.gradedSymbolPolynomial b ω hlayers w) := by
@@ -419,7 +426,7 @@ noncomputable def gradedSymbolPolynomialLie :
       (F.gradedSymbolPolynomial b ω hlayers w) ?_ x y
     intro u v
     have h := F.gradedSymbolPolynomial_lie_basis b ω hlayers w u v
-    convert h using 2
+    exact h
 
 end NilpotentLieFiltration
 end Erdos3

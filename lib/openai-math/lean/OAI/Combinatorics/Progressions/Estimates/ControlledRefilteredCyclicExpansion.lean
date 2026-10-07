@@ -1,3 +1,4 @@
+/- Modified for ProveIt: Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
 import OAI.Combinatorics.Progressions.Estimates.AdaptedDiagramNativeExternalNet
 
 namespace OAI
@@ -39,13 +40,13 @@ theorem exists_lower_refilteredRecoveryFamily :
   let T := nativeRefilteredTarget D a W E Q
   let Z₀ := pi (fun i : I => D i.val)
   let := moduleTopology ℝ (ℝ ⊗[ℚ] A)
-  let := IsModuleTopology.isTopologicalAddGroup ℝ (ℝ ⊗[ℚ] A)
+  let := IsModuleTopology.topologicalAddGroup ℝ (ℝ ⊗[ℚ] A)
   let := realification_moduleTopology_t2 Q.basis
   let := moduleTopology ℝ (ℝ ⊗[ℚ] M)
-  let := IsModuleTopology.isTopologicalAddGroup ℝ (ℝ ⊗[ℚ] M)
+  let := IsModuleTopology.topologicalAddGroup ℝ (ℝ ⊗[ℚ] M)
   let := realification_moduleTopology_t2 T.basis
   let := moduleTopology ℝ (ℝ ⊗[ℚ] (∀ i : I, L i.val))
-  let := IsModuleTopology.isTopologicalAddGroup ℝ (ℝ ⊗[ℚ] (∀ i : I, L i.val))
+  let := IsModuleTopology.topologicalAddGroup ℝ (ℝ ⊗[ℚ] (∀ i : I, L i.val))
   let := realification_moduleTopology_t2 Z₀.basis
   obtain ⟨Λ, _, _, _, _, _, m, hm, hΛin, hΛout, hV, hrec⟩ := hfamily
   have hI : (Fintype.card I : ℝ) ≤ b :=

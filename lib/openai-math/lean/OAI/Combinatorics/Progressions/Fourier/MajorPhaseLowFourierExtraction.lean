@@ -1,5 +1,6 @@
 /- Modified for ProveIt: import Lean 4.32 compatibility declarations.
-Statements and proofs are unchanged from the pinned upstream source. -/
+Mathematical statements are unchanged from the pinned upstream source.
+Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
 import OAI.Compat.Core
 import OAI.Combinatorics.Progressions.Dynamics.NormalizedTwistExtractionBudget
 import OAI.Combinatorics.Progressions.Nilpotent.MajorTranslationPartnerNiltest
@@ -546,7 +547,7 @@ theorem exists_majorPhase_low_localized_correlating_frequency (m d : ℕ) :
   let : Fintype (WeightedBasisIndex w d) := Fintype.ofFinite _
   let := moduleTopology ℝ (ℝ ⊗[ℚ] weightedSubalgebra w d)
   let : IsTopologicalAddGroup (ℝ ⊗[ℚ] weightedSubalgebra w d) :=
-    IsModuleTopology.isTopologicalAddGroup ℝ _
+    IsModuleTopology.topologicalAddGroup ℝ _
   let : T2Space (ℝ ⊗[ℚ] weightedSubalgebra w d) :=
     realification_moduleTopology_t2 (weightedBasis w d hw)
   let A := fun i => lowTaggedPolynomial J d poly i - MvPolynomial.C (c i)
@@ -560,7 +561,7 @@ theorem exists_majorPhase_low_localized_correlating_frequency (m d : ℕ) :
     M.basis.finiteDimensional_of_finite
   let := moduleTopology ℝ (ℝ ⊗[ℚ] PairAlgebra (weightedSubalgebra w d) L)
   let : IsTopologicalAddGroup (ℝ ⊗[ℚ] PairAlgebra (weightedSubalgebra w d) L) :=
-    IsModuleTopology.isTopologicalAddGroup ℝ _
+    IsModuleTopology.topologicalAddGroup ℝ _
   let : T2Space (ℝ ⊗[ℚ] PairAlgebra (weightedSubalgebra w d) L) :=
     realification_moduleTopology_t2 M.basis
   obtain ⟨S, hSnorm, hS, hSeval⟩ :=

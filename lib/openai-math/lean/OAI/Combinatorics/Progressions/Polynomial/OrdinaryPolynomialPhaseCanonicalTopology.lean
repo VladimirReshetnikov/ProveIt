@@ -1,3 +1,4 @@
+/- Modified for ProveIt: Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
 import OAI.Combinatorics.Progressions.Nilpotent.LocalMajorDenseSliceNiltest
 
 namespace OAI
@@ -18,7 +19,7 @@ theorem canonicalTopologicalAddGroup (s : ℕ) :
     letI := canonicalTopology s
     IsTopologicalAddGroup (ℝ ⊗[ℚ] weightedSubalgebra weight s) := by
   let := moduleTopology ℝ (ℝ ⊗[ℚ] weightedSubalgebra weight s)
-  exact IsModuleTopology.isTopologicalAddGroup ℝ _
+  exact IsModuleTopology.topologicalAddGroup ℝ _
 
 theorem canonicalContinuousSMul (s : ℕ) :
     letI := canonicalTopology s
