@@ -1,0 +1,51 @@
+\section{The counting model and main results}\label{sec:results}
+For partitions $\lambda,\mu\vdash n$, let $K_{\lambda\mu}$ be the ordinary Kostka number: the number of semistandard Young tableaux of shape $\lambda$ and content $\mu$. Define
+\begin{equation}\label{eq:defa}
+a_n=\sum_{\lambda\vdash n}\sum_{\mu\vdash n}K_{\lambda\mu},\qquad a_0=1.
+\end{equation}
+This is OEIS A104779 \cite{A104779}. The former entry A178718 is officially a duplicate, with offset $1$ instead of $0$; its positive indices agree with those of A104779, without an index shift \cite{A178718}. The initial values, at $n=0,1,\ldots$, are
+\[
+1,1,3,7,21,57,182,565,1931,6670,24537,92337,364602,\ldots.
+\]
+An equivalent model counts symmetric nonnegative integer matrices, of variable dimension, whose total entry sum is $n$, whose rows are nonzero, and whose row sums are weakly decreasing. Positions remain distinct when margins coincide. In particular, simultaneous permutations among equal-margin rows and columns are \emph{not} identified. Symmetry makes the column conditions automatic. The empty matrix gives $a_0=1$.
+
+All logarithms are natural. Write $I_n$ for the number of involutions in the symmetric group $S_n$, with
+\begin{equation}\label{eq:involutionrec}
+I_0=I_1=1,\qquad I_n=I_{n-1}+(n-1)I_{n-2}\quad(n\geq2),
+\end{equation}
+and put
+\begin{equation}\label{eq:Cintro}
+C=\prod_{j\geq2}(1-1/j!)^{-1}
+  =2.5294774720791526481801161542539542411787\ldots.
+\end{equation}
+The product converges because $\sum_{j\geq2}1/j!<\infty$.
+
+\begin{theorem}\label{thm:main}
+There are nonnegative, effectively computable constants $H_s$, $s\geq0$, with $H_0=1$ and $H_1=H_2=0$, such that for every fixed integer $S\geq0$,
+\begin{equation}\label{eq:main}
+a_n=C\sum_{s=0}^{S}H_s I_{n-s}
+       +O_S\bigl(I_n n^{-(S+1)/2}\bigr)\qquad(n\to\infty).
+\end{equation}
+The shifted terms are used only for $n\geq S$. Each constant is specified by the convergent coefficient product in Section~\ref{sec:identity}, and has a finite rational approximation algorithm with a proved error bound. In particular,
+\begin{equation}\label{eq:firstrelative}
+\frac{a_n}{CI_n}=1+H_3n^{-3/2}
+ +(H_4-\tfrac32H_3)n^{-2}+O(n^{-5/2}),
+\end{equation}
+where $H_3=0.9887340176\ldots$ and $H_4=6.0121093539\ldots$.
+\end{theorem}
+
+Combining this result with the classical involution expansion gives a Poincar\'e expansion at every fixed half-integer order. Its leading equivalent is
+\begin{equation}\label{eq:leading}
+a_n\sim \frac{C}{\sqrt2}\left(\frac ne\right)^{n/2}
+                   \exp(\sqrt n-1/4).
+\end{equation}
+Section~\ref{sec:expansions} supplies all terms through $n^{-3}$ in the multiplicative and logarithmic normalizations. The absence of relative orders $n^{-1/2}$ and $n^{-1}$ in \eqref{eq:firstrelative} is specific to normalization by the \emph{exact} involution number. Those orders are present if the leading equivalent in \eqref{eq:leading} is used instead.
+
+There are two further consequences. Under the uniform distribution on the matrices counted by $a_n$, the multiplicities of margins $j\geq2$ converge jointly, in total variation on the entire profile space, to independent geometric variables with parameter $1/j!$. The sharp leading error is $(2H_3/C)n^{-3/2}$. For the nonnegative and binary rectangular sorted-margin models, A321652 and A068313, the analogous expansion has scale $C^2n!$, integer inverse powers, and opposite first relative corrections at order $n^{-2}$.
+
+\subsection{Scope and attribution}
+Schwob's exact enumeration of self-inverse double cosets supplies both the Kostka-sum root-count identity and the cycle-index product used here \cite[\S4.3, (4.5)--(4.8)]{Schwob}. The companion identities are also in that source. These are prior results. The involution saddle method and all-order expansion have classical antecedents in Moser--Wyman \cite{MW1955,MW1956}; Bornemann \cite[Appendix C]{Bornemann} provides a modern display of the initial coefficients. We give the analytic details needed for a self-contained application, without claiming the underlying method as new.
+
+The contribution developed here is the global support estimate and stabilization argument for this aggregate, its computable coefficient family, and the consequences for inversion, full margin profiles, and factorial-scale companions. Source comparison is bounded to the actual public versions inspected. In particular, Schwob's arXiv version 1 was inspected, while the journal full text was inaccessible; no claim about an unexamined journal revision is made. Neither a missing formula in an OEIS entry nor a bounded literature search proves global priority.
+
+The phrase ``all fixed orders'' means that the truncation order is fixed before $n\to\infty$. Appendix~\ref{sec:sectors} strengthens the algebraic result with an exact half-axis decomposition and separate fixed-order expansions for its dominant and alternating recessive sectors. It transfers a classical Gaussian-moment and parabolic-cylinder structure through the proved support estimates. We do not prove convergence of the infinite asymptotic series, uniformity for growing truncation order, optimal truncation, or a complete description of additional exponential effects, Stokes data, or resurgence. Coefficient certificates are effective; the constants and onsets in the asymptotic remainders are not numerically certified. This distinction remains essential when rounding an inverse.

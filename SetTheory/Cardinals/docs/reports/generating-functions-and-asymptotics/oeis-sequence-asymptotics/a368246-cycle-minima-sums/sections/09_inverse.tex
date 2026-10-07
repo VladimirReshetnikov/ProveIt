@@ -1,0 +1,179 @@
+\section{A real model and a genuine integer inverse}\label{sec:inverse}
+\subsection{Fixing a real interpolation explicitly}
+An integer asymptotic formula does not determine a unique smooth interpolation. For inverse statements we therefore choose one, using only the finite expansion proved above. First collect each logarithmic coefficient into its root-of-unity Fourier representation. Replace the self-conjugate frequency $(-1)^n$ by $\cos(\pi x)$. For a nonreal conjugate pair, choose the member $\zeta$ with $0<\arg\zeta<\pi$, and replace the integer pair by
+\begin{equation}\label{eq:interpolation}
+2\Rea\left(c(\log x)\ee^{-\ii x\arg\zeta}\right).
+\end{equation}
+The coefficient $c$ includes any fixed phase resulting from the shift $m=n-1$. This prescription is real for real $x$ and agrees with the expansion at every integer. Using $\ee^{-\pi\ii x}$ alone for the frequency $(-1)^n$ would be incorrect for this purpose, because it is not real between integers.
+
+Let $B_K(x)$ be the interpolation of the right-hand side of \eqref{eq:main} with its error omitted, and put
+\begin{equation}\label{eq:AK}
+A_K(x)=\Gamma(x)B_K(x).
+\end{equation}
+For instance,
+\begin{align}\label{eq:Bmodels}
+B_2(x)&=A+\frac{\cos(\pi x)}{x^2},\\
+B_3(x)&=A+\frac{\cos(\pi x)}{x^2}
++\frac{\cos(\pi x)(8-2\gamma-2\log x)}{x^3}\notag\\
+&\hspace{18mm}+\frac{6\Rea(C_\om\om\ee^{-2\pi\ii x/3})}{x^3}.\notag
+\end{align}
+All following assertions refer to this fixed interpolation, rather than to an unknown smooth inverse of the actual integer sequence.
+
+For each fixed $K$ and each fixed derivative order $h$, termwise differentiation of the finite trigonometric expression gives
+\begin{equation}\label{eq:Bderivative}
+B_K(x)=A+O_K(x^{-2}),\qquad B_K^{(h)}(x)=O_{K,h}(x^{-2})\quad(h\geq1).
+\end{equation}
+Indeed, the leading term is of order $x^{-2}$ and differentiation of its frequency does not increase its magnitude; the finitely many higher terms $x^{-j}(\log x)^{j-2}$ are smaller. Thus $B_K$ is eventually positive. By the standard Stirling expansions of the digamma and trigamma functions,
+\begin{align}\label{eq:logderivatives}
+\frac{\mathrm d}{\mathrm dx}\log A_K(x)
+&=\log x+O_K(x^{-1})>0,\\
+\frac{\mathrm d^2}{\mathrm dx^2}\log A_K(x)
+&=\frac1x+O_K(x^{-2})>0.\notag
+\end{align}
+Both inequalities hold only for sufficiently large $x$, with an onset not evaluated here.
+
+\subsection{Eventual monotonicity of the integer sequence}
+The leading equivalent $b_n\to A>0$ gives
+\begin{equation}\label{eq:ratio}
+\frac{a_{n+1}}{a_n}=n\frac{b_{n+1}}{b_n}\sim n.
+\end{equation}
+Hence $a_n$ is positive and strictly increasing for all sufficiently large $n$. Choose any fixed $n_0$ beyond that point. For sufficiently large $y$, define
+\begin{equation}\label{eq:nu}
+\nu(y)=\min\{n\geq n_0:a_n\geq y\}.
+\end{equation}
+Changing the chosen $n_0$ has no effect when $y$ is large. The low-index zero at $n=2$ therefore creates no ambiguity in the eventual inverse.
+
+At integer $n$, positivity and \eqref{eq:main} imply
+\begin{equation}\label{eq:logerror}
+\log a_n-\log A_K(n)
+=O_K\!\left(n^{-K-1}(1+\log n)^{K-1}\right).
+\end{equation}
+This compares the model and the sequence only at integers. There is no assertion that a continuous interpolation of the sequence has the same error between integers.
+
+\subsection{The two ceiling envelope}
+For sufficiently large $y$, let $r=r_K(y)$ be the unique sufficiently large real solution of
+\begin{equation}\label{eq:r}
+A_K(r)=y.
+\end{equation}
+Existence and uniqueness follow from eventual monotonicity of the model, its positivity, and $A_K(x)\to\infty$.
+
+\begin{theorem}[Integer inverse envelope]\label{thm:inverse}
+For each fixed $K\geq2$ there are constants $C_K>0$ and $y_K$ such that, with
+\begin{equation}\label{eq:delta}
+\delta_K(y)=C_Kr_K(y)^{-K-1}(1+\log r_K(y))^{K-2},
+\end{equation}
+one has
+\begin{equation}\label{eq:ceil}
+\left\lceil r_K(y)-\delta_K(y)\right\rceil
+\leq\nu(y)\leq
+\left\lceil r_K(y)+\delta_K(y)\right\rceil
+\qquad(y\geq y_K).
+\end{equation}
+For sufficiently large $y$, the two bounds are either identical or consecutive integers. In the latter case, comparison with the actual sequence at the lower candidate determines the answer.
+\end{theorem}
+\begin{proof}
+On $[r-2,r+2]$, for sufficiently large $r$, \eqref{eq:logderivatives} gives
+\[
+\frac{\mathrm d}{\mathrm dx}\log A_K(x)\geq\frac12\log r.
+\]
+On the integers of this interval, the absolute error in \eqref{eq:logerror} is at most
+\[
+D_Kr^{-K-1}(1+\log r)^{K-1}
+\]
+for a fixed $D_K$, after absorbing the bounded ratios between $n$ and $r$. Choose $C_K$ sufficiently larger than $2D_K$, including the harmless eventual ratio $(1+\log r)/\log r$. Because $\delta_K\to0$, the integers
+\begin{equation}\label{eq:testintegers}
+j=\lceil r-\delta_K\rceil-1,\qquad m=\lceil r+\delta_K\rceil
+\end{equation}
+belong to $[r-2,r+2]$ for large $r$. Their distances from $r$ are at least $\delta_K$ with the indicated signs. The mean value theorem and the strictly enlarged constant imply
+\[
+\log a_j<\log y,\qquad \log a_m\geq\log y.
+\]
+The strict lower index in \eqref{eq:testintegers} covers equality of $y$ with a sequence value. Eventual monotonicity of $a_n$ extends these comparisons to all smaller and larger indices, proving \eqref{eq:ceil}.
+
+For large $y$, $2\delta_K<1$, so the two ceilings differ by at most one. If the bounds coincide, that integer is $\nu(y)$. Otherwise let $\ell$ be the lower candidate. The answer is $\ell$ when $a_\ell\geq y$, and $\ell+1$ when $a_\ell<y$.
+\end{proof}
+
+The factor $(1+\log r)^{K-2}$ is the counting error transported through a derivative of size $\log r$. It is one logarithmic power smaller than the error in \eqref{eq:logerror}. The envelope is an asymptotic theorem; the constants $C_K,y_K$ have not been numerically certified, so it is not an unconditional finite rounding rule.
+
+\subsection{A Lambert W starting coordinate}
+Define
+\begin{equation}\label{eq:Lambert}
+\mathcal L=\log y+\gamma-\frac12\log(2\pi),\qquad
+X=\frac{\mathcal L}{W_0(\mathcal L/\ee)},
+\end{equation}
+where $W_0$ is the principal real branch of Lambert's function. For sufficiently large $y$, $\mathcal L>0$ and
+\begin{equation}\label{eq:X}
+X(\log X-1)=\mathcal L.
+\end{equation}
+Stirling's formula and \eqref{eq:Bderivative} give, uniformly for bounded $u$,
+\begin{align*}
+\log A_K(X+u)-\log y
+={}&(u-\tfrac12)\log X+O_K(X^{-1}).
+\end{align*}
+In particular the root lies in a fixed bounded neighborhood of $X+1/2$. Evaluating more precisely at that center yields
+\begin{equation}\label{eq:halfresidual}
+\log A_K(X+\tfrac12)-\log y
+=-\frac1{24X}+O_K(X^{-2}).
+\end{equation}
+To check the coefficient, expand
+\[
+\log\Gamma(X+\tfrac12)
+=X\log(X+\tfrac12)-X-\tfrac12
+ +\tfrac12\log(2\pi)+\frac1{12(X+1/2)}+O(X^{-3}).
+\]
+The first two terms contribute $X\log X-X-1/(8X)+O(X^{-2})$, and the Stirling correction adds $1/(12X)$, leaving $-1/(24X)$. The term $\log B_K=-\gamma+O_K(X^{-2})$ does not change this coefficient. By \eqref{eq:logderivatives},
+\begin{equation}\label{eq:displacement}
+r_K(y)=X+\frac12+O_K\!\left(\frac1{X\log X}\right).
+\end{equation}
+This establishes the displacement from the Lambert coordinate without using a fitted inverse.
+
+\subsection{A fixed number of Newton steps reaches every fixed order}
+Set
+\begin{equation}\label{eq:fNewton}
+f_{K,y}(x)=\log\Gamma(x)+\log B_K(x)-\log y,
+\end{equation}
+and define the finite iterates
+\begin{equation}\label{eq:Newton}
+x_0=X+1,\qquad
+x_{t+1}=x_t-\frac{f_{K,y}(x_t)}{f'_{K,y}(x_t)}.
+\end{equation}
+Only the finite, explicitly chosen model $B_K$ is used here.
+
+\begin{theorem}[Finite Newton transport]\label{thm:Newton}
+For each fixed $K$, the iterates in \eqref{eq:Newton} are well defined for all sufficiently large $y$, stay above $r_K(y)$, and decrease toward it. For every fixed integer $t\geq0$,
+\begin{equation}\label{eq:Newtonerror}
+0\leq x_t-r_K(y)
+=O_{K,t}\!\left((X\log X)^{-(2^t-1)}\right).
+\end{equation}
+In particular, for
+\begin{equation}\label{eq:steps}
+t_K=\left\lceil\log_2(K+2)\right\rceil,
+\end{equation}
+there exist constants $\widetilde C_K,\widetilde y_K$ such that
+\begin{equation}\label{eq:explicitceil}
+\left\lceil x_{t_K}-\Delta_K\right\rceil
+\leq\nu(y)\leq
+\left\lceil x_{t_K}+\Delta_K\right\rceil,
+\quad
+\Delta_K=\widetilde C_KX^{-K-1}(1+\log X)^{K-2},
+\end{equation}
+for $y\geq\widetilde y_K$. Thus the center of the inverse envelope can be obtained by a finite number of specified operations, rather than left as an unspecified smooth inverse.
+\end{theorem}
+\begin{proof}
+By \eqref{eq:displacement}, $x_0=X+1$ lies above the model root and differs from it by $O(1)$. On the bounded interval between the root and $x_0$, equations \eqref{eq:logderivatives} give
+\[
+f'_{K,y}(x)\asymp\log X,\qquad
+0<f''_{K,y}(x)=O_K(X^{-1}).
+\]
+For an increasing convex function, the Newton intercept from a point to the right of a zero lies between that zero and the starting point. Therefore every iterate stays in this interval. Taylor's theorem, applied between $r$ and $x_t$, gives
+\begin{equation}\label{eq:quadratic}
+x_{t+1}-r
+=\frac{f''_{K,y}(\xi_t)}{2f'_{K,y}(x_t)}(x_t-r)^2
+\leq\frac{C_K'}{X\log X}(x_t-r)^2
+\end{equation}
+for an intermediate point $\xi_t$. Starting from an $O(1)$ error and inducting proves \eqref{eq:Newtonerror}, since the exponents obey $e_{t+1}=2e_t+1$, $e_0=0$.
+
+For the choice \eqref{eq:steps}, $2^{t_K}-1\geq K+1$, so the error in \eqref{eq:Newtonerror} is bounded by a constant times $X^{-K-1}(1+\log X)^{K-2}$. The quantities $X$ and $r$ are asymptotic by \eqref{eq:displacement}. Enlarging the constant to cover both the Newton error and the radius in Theorem~\ref{thm:inverse} proves \eqref{eq:explicitceil}.
+\end{proof}
+
+The theorem concerns exact mathematical iteration. A floating point implementation adds numerical error. The supplied evaluator for $K=2,3$ reports numerical iterates and residuals at a chosen precision; it does not certify interval enclosure of $r_K$, provide the unknown onset in \eqref{eq:explicitceil}, or license unconditional rounding. When the two integer candidates differ, a genuine threshold decision still uses the exact counting polynomial or another independently certified comparison with $a_n$.

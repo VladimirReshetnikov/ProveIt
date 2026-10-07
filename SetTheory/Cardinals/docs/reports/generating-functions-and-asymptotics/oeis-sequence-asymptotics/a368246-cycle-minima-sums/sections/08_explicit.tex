@@ -1,0 +1,109 @@
+\section{The second and third order terms}\label{sec:explicit}
+\subsection{The value and analytic slope at minus one}
+At $z=-1$, consecutive product factors telescope:
+\begin{equation}\label{eq:minusvalue}
+\left(1+\frac1{2k-1}\right)
+\left(1-\frac1{2k}\right)=1.
+\end{equation}
+Thus $F(-1)=1$. The first terms of the filtered tree series are
+\begin{equation}\label{eq:B2}
+B_2(s)=s-2s^2+O(s^3).
+\end{equation}
+To obtain the order-three coefficient, the analytic linear term of $\log F(-\ee^{-s})$ is also required. We compute it directly rather than infer it from finite coefficient data.
+
+Isolate $j=1$, as before, and group the logarithmic sum by the power $r$. The analytic coefficient of $s$ in the $r=1$ term is
+\[
+\frac32-\log2,
+\]
+and in the $r=2$ term it is
+\[
+\zeta(2)-1-\log2.
+\]
+For clarity, the former comes from differentiating $z(\Li_1(z)-z)$ at $z=-\ee^{-s}$. For the latter, insert the expansion of $\Li_2(\ee^{-2s})$ into $-\tfrac12\ee^{-2s}(\Li_2(\ee^{-2s})-\ee^{-2s})$ and separate its $-s\log s$ part. The isolated factor $\log(1+\ee^{-2s})$ contributes $-1$.
+
+For all $r\geq3$, the first derivative is absolutely summable after $j=1$ has been removed. Summing the geometric series in $r$ gives the remaining analytic slope
+\begin{align}\label{eq:slopeS}
+S&=\sum_{j\geq2}(j+1)
+\frac{\bigl((-1)^j/j\bigr)^3}{1-(-1)^j/j}\\
+&=\sum_{\substack{j\geq2\\j\ \mathrm{even}}}
+\left(\frac2{j-1}-\frac2j-\frac1{j^2}\right)
+-\sum_{\substack{j\geq3\\j\ \mathrm{odd}}}\frac1{j^2}\notag\\
+&=2\log2+1-\zeta(2).\notag
+\end{align}
+Adding the four contributions gives $1/2$. Therefore the local logarithm is
+\begin{align}\label{eq:logminus}
+\log F(-\ee^{-s})={}&-s\log s+\frac{s}{2}+2s^2\log s\\
+&+\text{analytic terms of degree at least }2
++O\bigl(s^3(1+|\log s|)\bigr),\notag
+\end{align}
+where the finite-jet statement and its differentiated control follow from the earlier factorization. The omitted analytic coefficient of $s^2$ will not affect the nonanalytic terms of degree at most two.
+
+\subsection{Changing from the exponential coordinate}
+Set $t=1+z$, so $s=-\log(1-t)=t+t^2/2+O(t^3)$. Exponentiating \eqref{eq:logminus} first gives the nonanalytic terms
+\[
+-s\log s+s^2\left(\frac12\log^2s+\frac32\log s\right).
+\]
+The analytic $s/2$ term matters through its product with $-s\log s$. On changing coordinates, the contribution of $-s\log s$ includes $-\tfrac12t^2\log t$. The final nonanalytic jet through degree two is therefore
+\begin{equation}\label{eq:tminus}
+-t\log t+t^2\left(\frac12\log^2t+\log t\right).
+\end{equation}
+This calculation explains why omitting the analytic linear coefficient, or forgetting the coordinate change, would alter the constant at order three.
+
+\subsection{Exact transfer at minus one}
+For $m\geq3$, the basic identities are
+\begin{align}\label{eq:exactlogidentities}
+[z^m](1-z)\log(1-z)&=\frac1{m(m-1)},\\
+[z^m](1-z)^2\log(1-z)&=-\frac2{m(m-1)(m-2)},\notag\\
+[z^m](1-z)^2\log^2(1-z)&=
+\frac{4(H_{m-3}-3/2)}{m(m-1)(m-2)}.\notag
+\end{align}
+The last identity follows either by twice differentiating \eqref{eq:transfer} at $p=2$, or by multiplying the identity $[z^m]\log^2(1-z)=2H_{m-1}/m$ by $(1-z)^2$. Substituting $z\mapsto-z$ adds the factor $(-1)^m$.
+
+Since $H_{m-3}=\log m+\gamma+O(m^{-1})$, the coefficient of \eqref{eq:tminus} is
+\begin{equation}\label{eq:minusm}
+(-1)^m\left\{-\frac1{m^2}
++\frac{2\log m+2\gamma-6}{m^3}\right\}
++O\!\left(\frac{(1+\log m)^2}{m^4}\right).
+\end{equation}
+For example, the three contributions to the constant at $m^{-3}$ are $-1$ from $-t\log t$, $-3$ from half the squared-log term, and $-2$ from $t^2\log t$. Their sum is $-6$.
+
+Now $m=n-1$ and $(-1)^m=-(-1)^n$. Expanding the denominators and logarithm gives
+\begin{equation}\label{eq:minusn}
+(-1)^n\left\{\frac1{n^2}
++\frac{8-2\gamma-2\log n}{n^3}\right\}
++O\!\left(\frac{(1+\log n)^2}{n^4}\right).
+\end{equation}
+The change from $6$ to $8$ is the $m=n-1$ shift of the leading term; this is not an optional convention.
+
+\subsection{The two cubic roots}
+For $\zeta=\om$ or $\overline\om$, equation \eqref{eq:rootleading} becomes
+\[
+-\frac32F(\zeta)\left(1-\frac z\zeta\right)^2
+\log\left(1-\frac z\zeta\right).
+\]
+By \eqref{eq:singlelog}, its leading coefficient is
+\[
+3F(\zeta)\zeta^{-m}m^{-3}.
+\]
+The conjugate pair therefore contributes
+\begin{equation}\label{eq:cubicpair}
+\frac{6\Rea(C_\om\om^{-m})}{m^3}
++O\!\left(\frac{1+\log m}{m^4}\right).
+\end{equation}
+Replacing $m$ by $n-1$ changes the phase to $\om^{1-n}$ and does not otherwise change this leading order. No roots of order at least four contribute through order three. Combining the pole coefficient $A$, \eqref{eq:minusn}, and \eqref{eq:cubicpair} proves Theorem~\ref{thm:explicit}.
+
+\subsection{The first periodic polynomials and numerical meaning}
+The first two polynomials in Theorem~\ref{thm:main} are explicitly
+\begin{align*}
+P_2(n,u)&=(-1)^n,\\
+P_3(n,u)&=(-1)^n(8-2\gamma-2u)
+ +6\Rea(C_\om\om^{1-n}).
+\end{align*}
+Their periods divide $2$ and $6$, respectively. The coefficient of $u$ and the constant coefficient in $P_3$ both average to zero over six consecutive integers. The absence of a smooth correction is visible at these first orders and is proved at every fixed order by the positive-root cancellation.
+
+The code evaluates $C_\om$ from the Gamma product and independently from the polylogarithmic logarithm with $j=1$ removed. If the sum in that logarithm is truncated after $r=R$, its omitted absolute logarithmic tail is bounded by
+\begin{equation}\label{eq:numericaltail}
+\sum_{r>R}\frac1r\sum_{j\geq2}j^{-r}
+\leq\frac{3\,2^{-R}}{R+1}.
+\end{equation}
+This is an analytic truncation bound. Ordinary high precision evaluation of the retained transcendental terms still has numerical roundoff; the agreement of two evaluations is a diagnostic rather than a certified enclosure unless all those operations are evaluated with directed interval control. No coefficient in \eqref{eq:explicit} is obtained by a numerical fit.

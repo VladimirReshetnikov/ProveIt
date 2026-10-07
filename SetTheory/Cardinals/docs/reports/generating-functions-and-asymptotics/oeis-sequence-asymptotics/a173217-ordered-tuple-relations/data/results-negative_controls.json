@@ -1,0 +1,329 @@
+{
+  "all_checks_passed": true,
+  "diagnostic_entry_point_digit_limit_guards": [
+    {
+      "entry_point": "reproduce.py",
+      "explicit_preflight_rejection": true,
+      "interpreter_settings_changed": false,
+      "output_created": false,
+      "requested_limit": 640
+    },
+    {
+      "entry_point": "check_hypergraph.py",
+      "explicit_preflight_rejection": true,
+      "interpreter_settings_changed": false,
+      "output_created": false,
+      "requested_limit": 640
+    }
+  ],
+  "fixed_limit_serialization_regressions": [
+    {
+      "CLI_input_guard_preserved": true,
+      "canonical_decimal_output": true,
+      "computed_integer_digits": 5001,
+      "endpoint_decimal_digits": 1016,
+      "nearest_integer_decimal_digits": 400,
+      "noncanonical_computed_result_rejections": 4,
+      "process_limit_unchanged": true,
+      "rational_and_numeric_json_passed": true,
+      "recovery_d": 2,
+      "recovery_n": 150,
+      "recovery_output_sha256": "84b97f32b4bd9b9c4efb40d1aec1ee12d5e3a0f23dd18526909e1b6b60e5fd0f",
+      "requested_limit": 640,
+      "serializer_and_input_rejections": 13,
+      "stdout_matches_file": true,
+      "synthetic_cross_check_serialization_passed": true
+    },
+    {
+      "CLI_input_guard_preserved": true,
+      "canonical_decimal_output": true,
+      "computed_integer_digits": 5001,
+      "endpoint_decimal_digits": 4425,
+      "nearest_integer_decimal_digits": 1959,
+      "noncanonical_computed_result_rejections": 4,
+      "process_limit_unchanged": true,
+      "rational_and_numeric_json_passed": true,
+      "recovery_d": 2,
+      "recovery_n": 600,
+      "recovery_output_sha256": "78ae1c72a699b9a42714b4d9e8884663818878b343a75bdf2b0d572f6e9f03c3",
+      "requested_limit": 4300,
+      "serializer_and_input_rejections": 13,
+      "stdout_matches_file": true,
+      "synthetic_cross_check_serialization_passed": true
+    }
+  ],
+  "negative_control_count": 44,
+  "negative_controls": [
+    {
+      "case": "d below domain",
+      "exception": "ValueError",
+      "guard": "d must",
+      "rejected": true
+    },
+    {
+      "case": "negative n",
+      "exception": "ValueError",
+      "guard": "n must",
+      "rejected": true
+    },
+    {
+      "case": "boolean d",
+      "exception": "ValueError",
+      "guard": "d must",
+      "rejected": true
+    },
+    {
+      "case": "fractional n",
+      "exception": "ValueError",
+      "guard": "n must",
+      "rejected": true
+    },
+    {
+      "case": "cutoff n=1",
+      "exception": "ValueError",
+      "guard": "n must",
+      "rejected": true
+    },
+    {
+      "case": "zero retained cutoff",
+      "exception": "ValueError",
+      "guard": "M must",
+      "rejected": true
+    },
+    {
+      "case": "zero precision",
+      "exception": "ValueError",
+      "guard": "bits must",
+      "rejected": true
+    },
+    {
+      "case": "boolean precision",
+      "exception": "ValueError",
+      "guard": "bits must",
+      "rejected": true
+    },
+    {
+      "case": "cached float Stirling input",
+      "exception": "ValueError",
+      "guard": "n must",
+      "rejected": true
+    },
+    {
+      "case": "cached float Fubini input",
+      "exception": "ValueError",
+      "guard": "n must",
+      "rejected": true
+    },
+    {
+      "case": "cached float constant precision",
+      "exception": "ValueError",
+      "guard": "bits must",
+      "rejected": true
+    },
+    {
+      "case": "unknown recovery method",
+      "exception": "ValueError",
+      "guard": "Unknown cutoff",
+      "rejected": true
+    },
+    {
+      "case": "unknown tail method",
+      "exception": "ValueError",
+      "guard": "Unknown cutoff",
+      "rejected": true
+    },
+    {
+      "case": "negative harmonic input",
+      "exception": "ValueError",
+      "guard": "n must",
+      "rejected": true
+    },
+    {
+      "case": "invalid exact count domain",
+      "exception": "ValueError",
+      "guard": "d must",
+      "rejected": true
+    },
+    {
+      "case": "invalid inclusion count domain",
+      "exception": "ValueError",
+      "guard": "n must",
+      "rejected": true
+    },
+    {
+      "case": "derivation degree domain",
+      "exception": "ValueError",
+      "guard": "d must",
+      "rejected": true
+    },
+    {
+      "case": "negative derivation order",
+      "exception": "ValueError",
+      "guard": "R must",
+      "rejected": true
+    },
+    {
+      "case": "nonintegral derivation order",
+      "exception": "ValueError",
+      "guard": "R must",
+      "rejected": true
+    },
+    {
+      "case": "diagnostic zero n",
+      "exception": "ValueError",
+      "guard": "n must",
+      "rejected": true
+    },
+    {
+      "case": "diagnostic zero M",
+      "exception": "ValueError",
+      "guard": "M must",
+      "rejected": true
+    },
+    {
+      "case": "diagnostic invalid dimension",
+      "exception": "ValueError",
+      "guard": "d must",
+      "rejected": true
+    },
+    {
+      "case": "short Fubini table",
+      "exception": "ValueError",
+      "guard": "Fubini table",
+      "rejected": true
+    },
+    {
+      "case": "addition context mismatch",
+      "exception": "ValueError",
+      "guard": "context mismatch",
+      "rejected": true
+    },
+    {
+      "case": "subtraction context mismatch",
+      "exception": "ValueError",
+      "guard": "context mismatch",
+      "rejected": true
+    },
+    {
+      "case": "multiplication context mismatch",
+      "exception": "ValueError",
+      "guard": "context mismatch",
+      "rejected": true
+    },
+    {
+      "case": "complex multiplication context mismatch",
+      "exception": "ValueError",
+      "guard": "context mismatch",
+      "rejected": true
+    },
+    {
+      "case": "distinct equal-precision contexts",
+      "exception": "ValueError",
+      "guard": "context mismatch",
+      "rejected": true
+    },
+    {
+      "case": "reversed dyadic endpoints",
+      "exception": "ArithmeticError",
+      "guard": "Reversed interval",
+      "rejected": true
+    },
+    {
+      "case": "reversed Fraction bounds",
+      "exception": "ArithmeticError",
+      "guard": "Reversed rational bounds",
+      "rejected": true
+    },
+    {
+      "case": "float endpoint",
+      "exception": "ValueError",
+      "guard": "Bounds must",
+      "rejected": true
+    },
+    {
+      "case": "float exact input",
+      "exception": "ValueError",
+      "guard": "must be an integer",
+      "rejected": true
+    },
+    {
+      "case": "float scale factor",
+      "exception": "ValueError",
+      "guard": "Scale factor",
+      "rejected": true
+    },
+    {
+      "case": "float rational output",
+      "exception": "ValueError",
+      "guard": "Rational output",
+      "rejected": true
+    },
+    {
+      "case": "float rounding input",
+      "exception": "ValueError",
+      "guard": "Rounding input",
+      "rejected": true
+    },
+    {
+      "case": "reciprocal crossing zero",
+      "exception": "ArithmeticError",
+      "guard": "positive interval",
+      "rejected": true
+    },
+    {
+      "case": "reciprocal touching zero",
+      "exception": "ArithmeticError",
+      "guard": "positive interval",
+      "rejected": true
+    },
+    {
+      "case": "changed OEIS term",
+      "exception": "ValueError",
+      "guard": "OEIS reference integrity mismatch",
+      "rejected": true
+    },
+    {
+      "case": "wrong OEIS identifier",
+      "exception": "ValueError",
+      "guard": "OEIS reference integrity mismatch",
+      "rejected": true
+    },
+    {
+      "case": "changed hierarchy coefficient",
+      "exception": "ValueError",
+      "guard": "Hierarchy coefficients integrity mismatch",
+      "rejected": true
+    },
+    {
+      "case": "missing hierarchy order",
+      "exception": "ValueError",
+      "guard": "Hierarchy coefficients integrity mismatch",
+      "rejected": true
+    },
+    {
+      "case": "CLI invalid recovery domain",
+      "guard": "d must",
+      "rejected": true
+    },
+    {
+      "case": "CLI corrupt OEIS",
+      "guard": "OEIS reference integrity mismatch",
+      "rejected": true
+    },
+    {
+      "case": "CLI corrupt coefficients",
+      "guard": "Hierarchy coefficients integrity mismatch",
+      "rejected": true
+    },
+    {
+      "case": "exact-count oracles disabled during precision refinement",
+      "passed": true,
+      "precision_attempts": [
+        64,
+        128,
+        256
+      ]
+    }
+  ],
+  "oracle_independence_check_passed": true
+}

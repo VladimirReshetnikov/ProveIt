@@ -1,0 +1,69 @@
+\section{Rare deletion probabilities and their saddle shift}\label{sec:deletion}
+For a fixed nonzero polynomial $P$ with nonnegative coefficients, of degree $d\ge1$, suppose $C-P$ still has nonnegative coefficients. Here $P$ is used afresh and need not be the full exceptional polynomial of Section~\ref{sec:likelihood}. When $P$ records selected component categories, the ratio $[z^n]e^{C-P}/[z^n]e^C$ is their absence probability. The analytic formula below also applies to any polynomial satisfying the stated coefficient conditions. Set $p_j=\De^jP(r)$.
+
+\begin{theorem}[Fixed-polynomial deletion]\label{thm:deletion}
+At the original exact saddle $r$,
+\begin{equation}\label{eq:deletion}
+ \log\frac{[z^n]e^{C(z)-P(z)}}{[z^n]e^{C(z)}}
+ =-P(r)+\frac{p_2-p_1^2}{2b}
+       -\frac{p_1\kappa_3}{2b^2}
+       +O_P(r^{3d-1}/n^2).
+\end{equation}
+\end{theorem}
+\begin{proof}
+Let $\rho$ solve $\De(C-P)(\rho)=n$ and write $s=\log(\rho/r)$. Since deleting a nonzero nonnegative polynomial lowers the mean at $r$, monotonicity gives $s>0$. On $0\le s\le2p_1/b$, cumulant estimates stay uniform because $rs=O(r^d/n)=o(1)$. The increase in the mean is $bs(1+o(1))$, so this interval brackets the new saddle. Taylor expansion then improves the estimate to
+\begin{equation}\label{eq:shift}
+ s=\frac{p_1}{b}+O(r^{2d-1}/n^2),\qquad
+ s=O(r^{d-1}/n).
+\end{equation}
+The saddle phase changes by
+\begin{align}\label{eq:phasechange}
+ &(C-P)(\rho)-n\log\rho-C(r)+n\log r\nonumber\\
+ &\hspace{25mm}=-P(r)-\frac{p_1^2}{2b}+O(r^{3d-1}/n^2).
+\end{align}
+For clarity, the quadratic combination is $-p_1s+bs^2/2$, and the cubic and perturbation remainders are bounded by $\kappa_3s^3$ and $p_2s^2$. Their orders are $r^{3d-1}/n^2$ and $r^{3d-2}/n^2$.
+
+The new variance is
+\[
+ \De^2(C-P)(\rho)
+ =b-p_2+\frac{\kappa_3p_1}{b}+O(r^{2d+1}/n).
+\]
+Taking the logarithm of the square-root variance ratio gives
+\begin{equation}\label{eq:varchange}
+ \frac{p_2}{2b}-\frac{\kappa_3p_1}{2b^2}+O(r^{2d}/n^2).
+\end{equation}
+The apparently larger variance remainder is divided by $b\asymp nr$ in this step.
+
+The first saddle correction changes by $O(r^{d+1}/n^2)$ under the shift and the direct polynomial deletion. One can check it by differentiating \eqref{eq:E1}:
+\[
+ \De E_1=\frac{\kappa_5}{8b^2}
+      -\frac{2\kappa_3\kappa_4}{3b^3}
+      +\frac{5\kappa_3^3}{8b^4}=O(r^2/n).
+\]
+Multiply by \eqref{eq:shift}; direct deletion is smaller. Applying Theorem~\ref{thm:coeff} through $J=1$ leaves $O(r^2/n^2)$ in the logarithm. For $d\ge1$, all these errors fit inside $O(r^{3d-1}/n^2)$. Combining \eqref{eq:phasechange} and \eqref{eq:varchange} proves the result.
+\end{proof}
+
+\subsection{No nonsunflower components}
+Take $P(z)=5z^4/24$. Then
+\begin{align}\label{eq:nonsunflower}
+ \log\PP_n(T_3=T_4=0)
+ ={}&-\frac{5r^4}{24}-\frac{25r^8}{72b}
+       +\frac{5r^4}{3b}-\frac{5r^4\kappa_3}{12b^2}
+       +O(r^{11}/n^2).
+\end{align}
+The leading saddle-shift correction is
+$-25r^7/(72n)(1+O(1/r))$. Exponentiation gives the relative estimate
+\begin{equation}\label{eq:nonsunflowerrel}
+ \PP_n(T_3=T_4=0)=e^{-5r^4/24}
+ \left\{1-\frac{25r^8}{72b}
+       +O(r^4/n+r^{14}/n^2)\right\}.
+\end{equation}
+The $r^{14}/n^2$ term includes the square of the leading logarithmic correction. This relative result does not follow from the absolute total-variation estimate.
+
+\subsection{No isolated vertices}
+Taking $P(z)=z$ gives the exact event $S=0$ and
+\begin{equation}\label{eq:BA}
+ \log\frac{B_n}{A_n}
+ =-r+\frac{r-r^2}{2b}-\frac{r\kappa_3}{2b^2}+O(r^2/n^2).
+\end{equation}
+In particular $B_n/A_n\sim e^{-r}\to0$. The no-isolate restriction retains a vanishing fraction of all admissible objects and removes almost all of them. This is compatible with isolates making up a vanishing fraction of the components: absence of a growing but sparse category can still be a very rare event.

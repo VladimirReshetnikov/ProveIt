@@ -1,0 +1,102 @@
+{
+  "adaptation_changes": [
+    "Explicit domain and interval-context guards, including under optimized Python",
+    "Reference corruption detection before evaluation",
+    "Output paths configurable and independent of current working directory",
+    "No elapsed-time or machine-path fields in generated JSON",
+    "Standalone recovery separates exact-H-independent refinement from exact-H-aware cross-check",
+    "Four replays compare all generated JSON bytes",
+    "Integrate no-log cutoff as default and retain harmonic cutoff as optional comparison",
+    "Retain the exact ordered-composition identity checks for n through 30",
+    "Output-only chunked decimal serialization covers large computed integers without changing interpreter input digit guards",
+    "Canonical computed-answer string comparison removes large-decimal reparsing from certify",
+    "Fixed-limit subprocess regressions cover recover(2,150) at 640 and recover(2,600) at 4300 in each interpreter mode",
+    "Combined replay and direct check_hypergraph.py explicitly require the mpmath diagnostic digit limit of 4300 or larger (or already unlimited); 640-cap rejection tests verify no output is created, without changing formatting or interpreter settings"
+  ],
+  "dependency_versions": {
+    "mpmath": "1.3.0",
+    "sympy": "1.14.0"
+  },
+  "portable_revision": "v3",
+  "reference_data": [
+    {
+      "bytes": 731,
+      "name": "oeis_reference.json",
+      "sha256": "b25cfd65f5866831a53923db3006eb48d03289cb126e0febd05292e840ce6e93"
+    },
+    {
+      "bytes": 610,
+      "name": "hierarchy_reference.json",
+      "sha256": "032c04aa0209f433fc50da8d0c6377a5fe390c3404f0c75e46c517e12c5b1a13"
+    }
+  ],
+  "sequence_sources": [
+    {
+      "d": 2,
+      "oeis": "A173217",
+      "terms_included": [
+        0,
+        8
+      ],
+      "url": "https://oeis.org/A173217"
+    },
+    {
+      "d": 3,
+      "oeis": "A301466",
+      "terms_included": [
+        0,
+        8
+      ],
+      "url": "https://oeis.org/A301466"
+    },
+    {
+      "d": 4,
+      "oeis": "A301468",
+      "terms_included": [
+        0,
+        8
+      ],
+      "url": "https://oeis.org/A301468"
+    }
+  ],
+  "source_date": "2026-10-04",
+  "source_inputs": [
+    {
+      "bytes": 1442,
+      "name": "derive_hierarchy.py",
+      "role": "symbolic hierarchy generator",
+      "sha256": "74ce5aff6d36b589879877496880c33ccf7c23474dd6e354e28ec5550e67cc87"
+    },
+    {
+      "bytes": 3810,
+      "name": "check_hypergraph.py",
+      "role": "exact enumeration and numerical diagnostic generator",
+      "sha256": "bdc7a047435e831ec0e1fd0755ef187227794986c6d4db27cb6b818ea331d401"
+    },
+    {
+      "bytes": 610,
+      "name": "hierarchy_coefficients.json",
+      "role": "exact coefficient reference",
+      "sha256": "032c04aa0209f433fc50da8d0c6377a5fe390c3404f0c75e46c517e12c5b1a13"
+    },
+    {
+      "bytes": 10853,
+      "name": "rational_checks.py",
+      "role": "harmonic-cutoff rational certificate generator",
+      "sha256": "f5e18da8f83ef1e09ab626792ffc97021bb16713da1ded50adafe1d6709f3358"
+    },
+    {
+      "bytes": 6057,
+      "name": "no_log_rational_checks.py",
+      "role": "no-log cutoff and reconstruction/cross-check source",
+      "sha256": "c3b33d7cce98fde1bcb166abc39dccab08a3a36a9f2d8879a9da730229c0339e"
+    },
+    {
+      "bytes": 6992,
+      "name": "ADDENDUM_NO_LOG_CUTOFF.md",
+      "role": "mathematical statement and proof of the no-log cutoff",
+      "sha256": "75a4ea72d45c0820a1e74b6dc1d69b6f35550d6099851340470f0b4dc4713b04"
+    }
+  ],
+  "tested_python": "3.12.14"
+}

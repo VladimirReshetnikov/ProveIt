@@ -1,0 +1,76 @@
+\section{Rooted trees and cancellation at the positive singularity}\label{sec:positive}
+\subsection{The singular logarithm of an integer polylogarithm}
+For an integer $r\geq1$, the local expansion on a fixed slit neighborhood is
+\begin{align}\label{eq:polylog}
+\Li_r(\ee^{-rs})={}&
+\frac{(-rs)^{r-1}}{(r-1)!}\bigl(H_{r-1}-\log(rs)\bigr)\\
+&+\sum_{\substack{k\geq0\\k\ne r-1}}
+ \zeta(r-k)\frac{(-rs)^k}{k!},\notag
+\end{align}
+where $H_0=0$ and $H_m=\sum_{h=1}^m h^{-1}$. For each of the finitely many $r\leq L$, the analytic part is convergent sufficiently near $s=0$. With a fixed choice of $\log s$, \eqref{eq:polylog} is valid on both sides of the short boundary arc under consideration. The singularity comes from the one displayed logarithm.
+
+Multiplying by the coefficient $(-1)^{r+1}\ee^{-rs}/r$ from $H_L$ gives the logarithmic part
+\[
+-\frac{r^{r-1}}{r!}\,s^{r-1}\ee^{-rs}\log s.
+\]
+Both sign factors $(-1)^{r+1}$ and $(-1)^{r-1}$ have canceled; the remaining minus sign is from $-\log(rs)$. Hence, at $z=\ee^{-s}$, the logarithmic coefficient of $H_L$ is $-B_{1,L}(s)$, where
+\begin{equation}\label{eq:B1}
+B_{1,L}(s)=\sum_{r=1}^{L}\frac{r^{r-1}}{r!}\,
+ s^{r-1}\ee^{-rs}.
+\end{equation}
+
+\subsection{The exact tree identity}
+Let
+\begin{equation}\label{eq:tree}
+T(w)=\sum_{r\geq1}\frac{r^{r-1}}{r!}w^r.
+\end{equation}
+Lagrange inversion gives $T(w)=w\ee^{T(w)}$ for the analytic branch with $T(0)=0$. Equivalently, $T(w)\ee^{-T(w)}=w$. Since $s\mapsto s\ee^{-s}$ has derivative $1$ at zero, the inverse function theorem implies
+\begin{equation}\label{eq:treeidentity}
+T(s\ee^{-s})=s
+\end{equation}
+for $s$ in a neighborhood of zero. Dividing its power series by $s$, with the removable value at $s=0$, yields
+\begin{equation}\label{eq:exactcancel}
+\sum_{r\geq1}\frac{r^{r-1}}{r!}\,
+ s^{r-1}\ee^{-rs}=1.
+\end{equation}
+Every fixed Taylor coefficient receives contributions from finitely many $r$. Consequently
+\begin{equation}\label{eq:D}
+B_{1,L}(s)=1+O(s^L),\qquad D_L(s):=1-B_{1,L}(s)=O(s^L).
+\end{equation}
+No interchange of a nonconvergent boundary logarithmic series is used: the finite factorization is already exact, and \eqref{eq:exactcancel} is an analytic identity near zero.
+
+\begin{proposition}[Only a pole remains at the positive root]\label{prop:positive}
+For every finite $L$, there is a function $U_L$ analytic and nonzero near zero such that
+\begin{equation}\label{eq:positiveform}
+P_L(\ee^{-s})=s^{-1}U_L(s)
+ \exp\bigl(D_L(s)\log s\bigr).
+\end{equation}
+The factor $Q_L(\ee^{-s})$ has the differentiated finite Taylor expansions of Lemma~\ref{lem:taylor}. It follows that, to every prescribed finite order, the only nonanalytic coefficient-producing term at $z=1$ is a constant multiple of $(1-z)^{-1}$.
+\end{proposition}
+\begin{proof}
+The terms of $\log P_L(\ee^{-s})$ other than $-B_{1,L}(s)\log s$ are analytic near zero. This includes $\log(1+\ee^{-2s})$, whose argument is nonzero there. Exponentiating the analytic part produces $U_L$. Since $-B_{1,L}=-1+D_L$, equation \eqref{eq:positiveform} follows.
+
+Now fix the desired finite order, then choose $L$ larger. The logarithmic exponential differs from $1$ first at order $s^L\log s$, so after multiplication by $s^{-1}$ its first possible logarithm is at order $s^{L-1}\log s$. Before that order, multiplication by a sufficiently deep Taylor polynomial of $Q_L$ produces a Laurent polynomial with one simple pole and otherwise nonnegative integer powers. The change of variable $s=-\log z$ is analytic and invertible near $z=1$, and $s^{-1}-(1-z)^{-1}$ is analytic there. Thus the sole singular contribution at the selected orders is the simple pole.
+\end{proof}
+
+The conclusion is a finite-jet assertion for each requested differentiability order. It is not a convergent local Laurent expansion of $F$ in a full neighborhood of $1$. Dense singularities on the unit circle will rule out that stronger claim.
+
+\subsection{The pole coefficient from the product}
+For real $0<z<1$,
+\begin{align}\label{eq:residue}
+\log\bigl((1-z)F(z)\bigr)
+={}&(1-z)\log(1-z)\\
+&+\sum_{j\geq1}\left\{\log\left(1+\frac{z^{j+1}}j\right)
+-\frac{z^{j+1}}j\right\}.\notag
+\end{align}
+For $j\geq2$ the summand is uniformly bounded in absolute value by a fixed multiple of $j^{-2}$; the first summand is handled separately. Dominated convergence gives
+\begin{align*}
+\lim_{z\uparrow1}\log\bigl((1-z)F(z)\bigr)
+&=\sum_{j\geq1}\left(\log(1+1/j)-1/j\right)\\
+&=\lim_{N\to\infty}\bigl(\log(N+1)-H_N\bigr)=-\gamma.
+\end{align*}
+Therefore
+\begin{equation}\label{eq:resvalue}
+\lim_{z\uparrow1}(1-z)F(z)=\ee^{-\gamma}=A.
+\end{equation}
+The finite-jet form identifies this radial limit with the coefficient of the local pole. This is a direct residue computation, rather than a Tauberian inference from the coefficient limit. Since $[z^m](1-z)^{-1}=1$, the positive root contributes exactly $A$ to every coefficient in the final subtraction.

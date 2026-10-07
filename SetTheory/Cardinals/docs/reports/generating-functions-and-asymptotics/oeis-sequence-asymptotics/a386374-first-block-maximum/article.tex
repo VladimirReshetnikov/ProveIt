@@ -1,0 +1,551 @@
+\pdfinfoomitdate=1
+\pdftrailerid{}
+\documentclass[11pt]{article}
+\usepackage[letterpaper,margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,booktabs,longtable,array,needspace}
+\usepackage[hidelinks]{hyperref}
+\hypersetup{pdftitle={Report208 First maximum frequencies in ordered partitions},pdfauthor={Report208},pdfsubject={A386374 and A386375}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Prob}{\mathbb P}
+\newcommand{\ceil}[1]{\left\lceil #1\right\rceil}
+\newcommand{\floor}[1]{\left\lfloor #1\right\rfloor}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\norm}[1]{\left\|#1\right\|}
+\DeclareMathOperator{\Var}{Var}
+\setlength{\emergencystretch}{2em}
+\allowdisplaybreaks[2]
+\title{First maximum frequencies in ordered partitions}
+\author{Report208}
+\date{4 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+A386374 counts initial-alphabet words for which letter 1 is tied for highest frequency, equivalently ordered set partitions whose first block is largest. Its strict companion is A386375. Individual positive-pole subtraction gives absolutely convergent residue sums with explicit absolute exponential-generating-function coefficient errors 11 and 4. Uniform analytic reversion then gives finite root-free expansions at every fixed order. For the weak count, a two-term phase law yields different sharp upper and lower oscillation scales, including the constant term in each phase minimum. The strict count is uniformly smaller by a factor asymptotic to $(\log 2)\log\log n/\log n$. A finite-step Newton construction and shrinking two-ceiling enclosures describe the inverse of the weak sequence. The moving-pole method and maximum-size scale are classical, with directly relevant surjection results in Gourdon's 1996 thesis. This report supplies a specialized analysis, with finite numerical validation distinguished from rigorous asymptotic statements and finite-input certification.
+\end{abstract}
+\setcounter{tocdepth}{1}
+\tableofcontents
+\newpage
+
+\section{Objects and main conclusions}
+For $n\geq1$, let $a_n$ count words of length $n$ on an initial interval $[k]=\{1,\ldots,k\}$, for any $1\leq k\leq n$, using every letter and satisfying
+\[
+ \#\{i:w_i=1\}\geq \#\{i:w_i=j\}\qquad(1\leq j\leq k).
+\]
+Let $u_n$ impose strict inequality for every $j>1$, and put $a_0=u_0=1$. These are OEIS A386374 and A386375, respectively \cite{weak,strict}. The index sets of the letters form an ordered set partition. Thus the first block is tied for largest in the weak model and uniquely largest in the strict model.
+
+Write $F_n$ for the ordered Bell number, and set
+\[
+ \rho=\log 2,\qquad P_n=\frac{a_n}{F_n},\qquad E_m(z)=\sum_{j=0}^m\frac{z^j}{j!},
+ \qquad E_m(z)=0\quad(m<0).
+\]
+All logarithms are natural unless a base is displayed. Asymptotic statements concern $n\to\infty$ (or the explicitly indicated real variable) with expansion order fixed.
+
+For a uniform random ordered partition of $[n]$, let $K$ be its number of blocks and $J$ the number of blocks tied for largest. Conditional on the unordered partition, all block orders are equally likely. Consequently
+\begin{equation}\label{eq:expectations}
+ P_n=\E\!\left[\frac{J}{K}\right],\qquad
+ \frac{u_n}{F_n}=\E\!\left[\frac{\boldsymbol 1_{\{J=1\}}}{K}\right].
+\end{equation}
+In particular, $P_n\geq1/n$. The random denominator in \eqref{eq:expectations} must be retained: $\E[J/K]$ is not generally $\E[J]/\E[K]$.
+
+The central oscillation conclusions are
+\begin{equation}\label{eq:mainenvelopes}
+ \limsup_{n\to\infty}\frac{nP_n\log\log n}{\log n}=\frac2e,
+ \qquad
+ \liminf_{n\to\infty}\frac{nP_n}{\log\log n}=2\rho.
+\end{equation}
+These have different normalizations. The strict/weak ratio has the phase-uniform equivalent
+\begin{equation}\label{eq:mainstrict}
+ \frac{u_n}{a_n}\sim\rho\frac{\log\log n}{\log n}.
+\end{equation}
+Sections \ref{sec:poles}--\ref{sec:expansion} give stronger finite-sum coefficient expansions; Sections \ref{sec:phase}--\ref{sec:envelopes} prove \eqref{eq:mainenvelopes}; Section \ref{sec:strict} proves \eqref{eq:mainstrict}. Section \ref{sec:inverse} concerns the inverse of $a_n$, not an inverse theorem for the strict sequence.
+
+\subsection{Exact generating functions and recurrences}
+Fix the size $m$ of the first block. The remaining labels form an ordered sequence of nonempty blocks of size at most $m$ in the weak case and at most $m-1$ in the strict case. Hence
+\begin{align}
+ A(z)=\sum_{n\geq0}\frac{a_nz^n}{n!}
+ &=\sum_{m\geq0}\frac{z^m}{m!\,[2-E_m(z)]},\label{eq:weakEGF}\\
+ U(z)=\sum_{n\geq0}\frac{u_nz^n}{n!}
+ &=1+z+\sum_{m\geq1}\frac{z^{m+1}}{(m+1)!\,[2-E_m(z)]},\label{eq:strictEGF}\\
+ F(z)=\sum_{n\geq0}\frac{F_nz^n}{n!}&=\frac1{2-e^z}.\label{eq:BellEGF}
+\end{align}
+The first two EGFs agree with the current OEIS entries. They also have the following direct exact recurrence. Let $b_{m,t}$ count ordered partitions on $t$ labels with block size at most $m$, including $b_{0,0}=1$ and $b_{0,t}=0$ for $t>0$. Then
+\begin{align}
+ b_{m,0}&=1,&
+ b_{m,t}&=\sum_{j=1}^{\min(m,t)}\binom tj b_{m,t-j},\label{eq:boundedrec}\\
+ a_n&=\sum_{m=1}^n\binom nm b_{m,n-m},&
+ u_n&=\sum_{m=1}^n\binom nm b_{m-1,n-m}\quad(n\geq1).\label{eq:exactrec}
+\end{align}
+The empty sums use the stated conventions. The first values are shown in Table \ref{tab:exact}; all displayed values are generated from the exact recurrences and independently checked by rational EGF extraction.
+
+\input{tables/exact.tex}
+
+\section{Positive poles and an explicit absolute error}\label{sec:poles}
+For $m\geq1$, let $r_m$ be the unique positive solution of $E_m(r_m)=2$, and define
+\begin{equation}\label{eq:residue}
+ c_m=\frac{r_m^{m-1}}{m!E_{m-1}(r_m)}.
+\end{equation}
+Existence and uniqueness follow from monotonicity on the positive real axis. We have $r_1=1$, $r_2=\sqrt3-1$, and
+\[
+ \rho<r_{m+1}<r_m\leq\sqrt3-1\quad(m\geq2),\qquad r_m\downarrow\rho.
+\]
+Indeed $E_m(\rho)<2$, and $E_m$ increases to $e^z$ on positive bounded intervals. Also $0<c_m\leq1/m!$, because $r_m\leq1$ and $E_{m-1}(r_m)\geq1$.
+
+\begin{theorem}[Uniform residue estimate]\label{thm:poles}
+For every integer $n\geq1$,
+\begin{equation}\label{eq:absweak}
+ \abs{\frac{a_n}{n!}-\sum_{m\geq1}c_mr_m^{-n}}\leq11.
+\end{equation}
+The series converges absolutely for every fixed real $n$. The bound is an absolute error for the EGF coefficient $a_n/n!$.
+\end{theorem}
+
+\begin{proof}
+We first separate all other complex zeros uniformly on the unit circle. Write $z=x+iy$, $|z|=1$. If $|y|\geq1/4$, then
+\[
+ |e^z-2|\geq2e^{x/2}|\sin(y/2)|
+ \geq2e^{-1/2}\sin(1/8)>\frac18.
+\]
+For completeness, squaring the first inequality follows from
+$|e^{x+iy}-2|^2=(e^x-2)^2+8e^x\sin^2(y/2)$.
+If $|y|<1/4$, then $|x|>\sqrt{15}/4$, and the reverse triangle inequality gives
+$|e^z-2|\geq|e^x-2|>1/8$.
+For $m\geq4$, the exponential tail on $|z|=1$ is at most
+\[
+ \sum_{j\geq5}\frac1{j!}<\frac1{100}.
+\]
+Rouch\'e's theorem now shows that $2-E_m$ has exactly one zero inside the unit disk, since $2-e^z$ has only $\rho$ there. This zero is $r_m$, and
+\begin{equation}\label{eq:circle}
+ |2-E_m(z)|>\frac18-\frac1{100}>\frac1{12}\qquad(|z|=1).
+\end{equation}
+For $m=2$, the factorization with roots $\sqrt3-1$ and $-\sqrt3-1$ gives the same lower bound directly. For $m=3$, the derivative of $z^3+3z^2+6z-6$ is strictly positive on the real axis, so it has just one real root $r_3<3/4$. The conjugate nonreal roots have modulus $\sqrt{6/r_3}>\sqrt8$. Thus the modulus of $2-E_3(z)$ on $|z|=1$ is greater than $(\sqrt8-1)^2/24>1/12$.
+
+For each $m\geq2$, remove its own simple pole before summing:
+\[
+ H_m(z)=\frac{z^m}{m!\,[2-E_m(z)]}-\frac{c_m}{1-z/r_m}.
+\]
+This is analytic on a neighborhood of the closed unit disk. The first term on its boundary is bounded by $12/m!$. For the second, use
+\[
+ \frac{c_m}{|1-z/r_m|}\leq\frac1{m!}\frac{r_m}{1-r_m}
+ \leq\frac{\sqrt3+1}{m!}<\frac3{m!}.
+\]
+It follows that $|H_m(z)|\leq15/m!$ throughout the disk. The series of these pole-subtracted functions converges normally in the disk and uniformly on its boundary. Cauchy's coefficient estimate gives
+\[
+ \abs{[z^n]\sum_{m\geq2}H_m(z)}\leq15(e-2)<11.
+\]
+For $m=1$, the summand $z/(1-z)$ and its pole term $1/(1-z)$ have the same positive-degree coefficients. The $m=0$ term affects only degree zero. This proves \eqref{eq:absweak}. Absolute convergence of the residue series follows from $c_m\leq1/m!$ and $\rho\leq r_m\leq1$ for any fixed real exponent.
+\end{proof}
+
+\begin{remark}
+The positive poles accumulate at $\rho$. The argument subtracts individual poles first; it neither moves a contour through their accumulation point nor assumes meromorphic continuation across that point.
+\end{remark}
+
+\section{Conversion to a relative estimate}\label{sec:relative}
+Pole subtraction in \eqref{eq:BellEGF} gives
+\begin{equation}\label{eq:Bellpole}
+ \frac{F_n}{n!}=\frac1{2\rho^{n+1}}+O(1).
+\end{equation}
+This follows directly by subtracting $1/[2\rho(1-z/\rho)]$ and using the same unit circle. In fact the boundary norm of the remainder is less than $10$: the first term is at most $8$, and the pole term at most $1/[2(1-\rho)]<5/3$, using $\rho<7/10$.
+
+Define
+\[
+ S(n)=\sum_{m\geq1}c_m(\rho/r_m)^n.
+\]
+The lower bound $a_n/F_n\geq1/n$, \eqref{eq:absweak}, and \eqref{eq:Bellpole} imply $S(n)\geq c/n$ for some absolute $c>0$ and all sufficiently large $n$. Therefore
+\begin{equation}\label{eq:relative}
+ a_n=n!\rho^{-n}S(n)\,[1+O(n\rho^n)].
+\end{equation}
+The original constant 11 is not an $O(1)$ error in $a_n$, and the conversion to a relative error requires the lower bound just proved.
+
+\section{Finite root free expansions at every fixed order}\label{sec:expansion}
+Set
+\begin{equation}\label{eq:D}
+ D_m=2-E_m(\rho)=\sum_{j>m}\frac{\rho^j}{j!},\quad
+ \alpha_m=E_{m-1}(\rho),\quad \beta_m=E_{m-2}(\rho),\quad
+ \gamma_m=E_{m-3}(\rho).
+\end{equation}
+The Greek notation avoids confusing the truncated-exponential value with the count $a_m$. Let $d_m(s)$ denote the local analytic solution of
+\[
+ E_m(\rho+d_m(s))-E_m(\rho)=s,\qquad d_m(0)=0.
+\]
+Define coefficient series
+\begin{align}
+ \ell_m(s)&=\log(1+d_m(s)/\rho)=\sum_{j\geq1}\ell_{m,j}s^j,\label{eq:ell}\\
+ h_m(s)&=(m-1)\ell_m(s)-\log\frac{E_{m-1}(\rho+d_m(s))}{\alpha_m}
+       =\sum_{j\geq1}h_{m,j}s^j.\label{eq:h}
+\end{align}
+All coefficient operations at any fixed order are finite. In particular $\ell_{m,1}=1/(\rho\alpha_m)$. For $x\geq0$, put
+\begin{align}
+ B_{m,j}(x)&=h_{m,j}x^j-\ell_{m,j+1}x^{j+1},\label{eq:bj}\\
+ Q_{m,0}(x)&=1,\qquad
+ Q_{m,l}(x)=\frac1l\sum_{j=1}^l jB_{m,j}(x)Q_{m,l-j}(x)\quad(l\geq1).\label{eq:Qrec}
+\end{align}
+This is the coefficient recurrence for the exponential of $\sum_{j\geq1}B_{m,j}(x)v^j$.
+
+For an integer $L\geq0$, choose
+\begin{align}
+ K_L&=20(L+3),\notag\\
+ M_L(n)&=\min\{M\geq2:\rho^M/M!\leq n^{-L-5}\},\label{eq:cutoffs}\\
+ \mathcal W_L(n)&=\{2\leq m\leq M_L(n):nD_m\leq K_L\log n\},\notag\\
+ T_m(n)&=\frac{\rho^{m-1}}{m!\alpha_m}
+             \exp\!\left(-\frac{nD_m}{\rho\alpha_m}\right).\label{eq:T}
+\end{align}
+The window has $O_L(\log n/\log\log n)$ indices.
+
+\begin{theorem}[Uniform finite expansion]\label{thm:expansion}
+For every fixed $L\geq0$,
+\begin{equation}\label{eq:allorders}
+ a_n=n!\rho^{-n}
+ \sum_{m\in\mathcal W_L(n)}T_m(n)
+ \left(\sum_{l=0}^L\frac{Q_{m,l}(nD_m)}{n^l}\right)
+ \left[1+O_L\!\left(\frac{(\log n)^{2L+2}}{n^{L+1}}\right)\right].
+\end{equation}
+The final bracket multiplies the entire finite sum. For sufficiently large $n$ the zeroth-order sum is positive and the correction in parentheses is uniformly $1+o(1)$. No root $r_m$ needs to be calculated in this formula.
+\end{theorem}
+
+\begin{proof}
+The proof has a local uniform estimate and two discarded tails. On $|d|\leq1/10$, every derivative of $E_m(\rho+d)$ is bounded in modulus by $e^{\rho+1/10}<3$, while $\alpha_m\geq1$. On a sufficiently small fixed $s$-disk, Rouch\'e's theorem applied to $\alpha_md-s$ and the quadratic remainder gives a unique analytic inverse with $|d_m(s)|\leq2|s|$, uniformly in $m$. On a smaller fixed disk, $E_{m-1}(\rho+d_m(s))$ is uniformly separated from zero. Therefore
+\begin{equation}\label{eq:localbounds}
+ \abs{\ell_m(s)-\frac{s}{\rho\alpha_m}}\leq C|s|^2,
+ \qquad |h_m(s)|\leq Cm|s|.
+\end{equation}
+For fixed $m$ and $x\geq0$, form
+\[
+ G_{m,x}(v)=\exp\!\left(h_m(xv)-
+       \frac{\ell_m(xv)-\ell_{m,1}xv}{v}\right),
+\]
+with its removable value at $v=0$. On $|v|=c/(m+x)^2$, this function is uniformly bounded for an absolute sufficiently small $c>0$. Cauchy's estimate at $v=1/n$ gives
+\begin{equation}\label{eq:Gbound}
+ G_{m,x}(1/n)=\sum_{l=0}^L Q_{m,l}(x)n^{-l}
+       +O_L\!\left(\left[\frac{(m+x)^2}{n}\right]^{L+1}\right).
+\end{equation}
+At $x=nD_m$, the exact normalized residue is $T_m(n)G_{m,nD_m}(1/n)$. In the retained window, $m+nD_m=O_L(\log n)$. Summing \eqref{eq:Gbound} against the positive $T_m(n)$ transfers its error to a relative error for the retained zeroth-order sum.
+
+For the left tail, the mean value theorem on $[\rho,1]$ gives $r_m-\rho\geq D_m/e$, while
+\[
+ \log(r_m/\rho)\geq(r_m-\rho)/r_m\geq D_m/e.
+\]
+Hence indices with $nD_m>K_L\log n$, including $m=1$ for large $n$, contribute at most $e n^{-K_L/e}$ to $S(n)$. This is smaller than the needed $n^{-L-3}$. The corresponding zeroth-order root-free tail is no larger in order, since $\rho\alpha_m\leq2\rho<e$.
+
+For the right tail, $r_m-\rho\leq D_m$ and
+$(r_m/\rho)^{m-1}\leq\exp((m-1)D_m/\rho)\leq C$ uniformly. Thus $c_m\leq C\rho^{m-1}/m!$, and the tail past $M_L(n)$ is $O(n^{-L-5})$. After division by $S(n)\geq c/n$, both tails remain smaller than the claimed relative error. Finally, \eqref{eq:relative} adds an exponentially small term. The $L=0$ case of the uniform local bound also shows that the retained corrected sum is positive and comparable to its zeroth-order version, establishing the multiplicative form in \eqref{eq:allorders}.
+\end{proof}
+
+\subsection{The first two correction polynomials}
+Writing $\alpha=\alpha_m$, $\beta=\beta_m$, $\gamma=\gamma_m$, the required coefficients are
+\begin{align}
+ \ell_1&=\frac1{\rho\alpha},&
+ \ell_2&=-\frac{\beta}{2\rho\alpha^3}-\frac1{2\rho^2\alpha^2},\notag\\
+ \ell_3&=\frac{3\beta^2-\alpha\gamma}{6\rho\alpha^5}
+       +\frac{\beta}{2\rho^2\alpha^4}+\frac1{3\rho^3\alpha^3},\label{eq:ellcoeff}\\
+ h_1&=\frac{m-1}{\rho\alpha}-\frac{\beta}{\alpha^2},&
+ h_2&=(m-1)\ell_2-\frac{\gamma}{2\alpha^3}+\frac{\beta^2}{\alpha^4}.\notag
+\end{align}
+Consequently
+\begin{equation}\label{eq:Q12}
+ Q_{m,1}(x)=h_1x-\ell_2x^2,\qquad
+ Q_{m,2}(x)=h_2x^2-\ell_3x^3+\tfrac12Q_{m,1}(x)^2.
+\end{equation}
+The reproduction code checks formal reversion and these coefficients symbolically, and checks recurrence \eqref{eq:Qrec} against exponential expansion through order four. This moving-window expansion provides arbitrary fixed algebraic relative precision, with its logarithmic factors explicit; it is not a constant-coefficient power series in $1/n$.
+
+\section{A simpler sum and a two term phase law}\label{sec:phase}
+Put
+\[
+ p_m=\frac{\rho^m}{m!},\qquad \lambda_m(n)=\frac{nD_m}{2\rho}.
+\]
+\begin{proposition}\label{prop:simple}
+The weak probability satisfies
+\begin{equation}\label{eq:simple}
+ P_n=\left(\sum_{m\geq1}p_me^{-\lambda_m(n)}\right)
+       \left[1+O\!\left(\frac{(\log n)^3}{n}\right)\right].
+\end{equation}
+For sufficiently large $n$, let $m=m(n)$ be the unique integer with
+$\lambda_m\geq1>\lambda_{m+1}$, and set $t=\lambda_m$. Uniformly over this full phase,
+\begin{equation}\label{eq:twoterm}
+ P_n=(p_me^{-t}+p_{m+1}e^{-\lambda_{m+1}})\,[1+O(1/m)],
+ \qquad m\sim\frac{\log n}{\log\log n}.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Apply Theorem \ref{thm:expansion} with $L=0$. On its effective window,
+$2-\alpha_m=D_{m-1}=D_m+p_m=O(mD_m)$. Replacing the residue amplitude by the corresponding factor $p_m$ after normalization by $F_n$ changes it relatively by $O(mD_m)$. Replacing the exponential rate $1/(\rho\alpha_m)$ by $1/(2\rho)$ changes the exponent by $O(nmD_m^2)$. Both are $O((\log n)^3/n)$ on the window. The discarded tails have already been bounded, and \eqref{eq:Bellpole} contributes an exponentially small relative error. This proves \eqref{eq:simple}.
+
+The factorial tail obeys $D_m\sim p_{m+1}$, so the two inequalities defining $m$ and Stirling's formula give $m\log m\sim\log n$.
+For the upper-index tail,
+\[
+ \sum_{j\geq m+2}p_je^{-\lambda_j}\leq\sum_{j\geq m+2}p_j
+       =O(p_{m+1}/m),
+ \qquad p_{m+1}e^{-\lambda_{m+1}}\geq p_{m+1}/e.
+\]
+For the lower-index tail, split $j<m/2$ and $m/2\leq j<m$. In the first range, $D_j\geq D_{\floor{m/2}}$, and the factor $e^{-nD_j/(2\rho)}$ is superexponentially small in $m$ relative to the retained terms. In the second range,
+\[
+ \frac{D_{j-1}}{D_j}\geq cm,\qquad \frac{p_{j-1}}{p_j}\leq Cm.
+\]
+Starting from $\lambda_m=t\geq1$, successive downward summands have ratio at most $Cm e^{-cm}$, so their sum is negligible. These bounds prove the uniform relative error in \eqref{eq:twoterm}, including the ends of each phase.
+\end{proof}
+
+\section{Sharp upper and lower oscillation scales}\label{sec:envelopes}
+The elementary factorial-tail expansions are
+\begin{align}
+ D_m&=p_{m+1}\left[1+\frac{\rho}{m+2}+O(m^{-2})\right],\label{eq:tailratio}\\
+ \frac{D_{m+1}}{D_m}&=\frac{\rho}{m+2}[1+O(m^{-2})],\notag\\
+ np_m&=2(m+1)t[1+O(1/m)],\qquad
+ np_{m+1}=2\rho t[1+O(1/m)].\notag
+\end{align}
+They hold uniformly as $m\to\infty$.
+
+\begin{theorem}[Envelopes and refined phase minima]\label{thm:envelopes}
+The limits in \eqref{eq:mainenvelopes} hold. More precisely, over each full integer phase interval,
+\begin{equation}\label{eq:minimum}
+ \min_{\substack{n\in\mathbb Z\\2\rho/D_m\leq n<2\rho/D_{m+1}}}nP_n
+ =2\rho\,[\log m+\log\log m+1-\log\rho+o(1)].
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+For the upper envelope divide \eqref{eq:twoterm}, multiplied by $n$, by $m$. Its terms are asymptotically
+\[
+ 2te^{-t}\quad\hbox{and}\quad 2ve^{-v},\qquad
+ v=\frac{\rho t}{m}\in[0,1+o(1)].
+\]
+If $t$ stays bounded, the second tends to zero and the first is at most $2/e$. If $t\to\infty$, the first tends to zero and the second is at most $2/e$. Subsequence splitting covers arbitrary choices of phases. To attain the bound choose
+\begin{equation}\label{eq:peak}
+ n_m=\ceil{\frac{2\rho}{D_m}}.
+\end{equation}
+Then $n_m$ is in phase $m$ for large $m$ and $t\to1$. The ceiling is important for this literal phase statement: nearest-integer rounding could fall just below the boundary. Since $m\sim\log n/\log\log n$, the upper limit in \eqref{eq:mainenvelopes} follows.
+
+For the lower envelope fix $\varepsilon>0$. If $t\leq(1-\varepsilon)\log m$, the first term $np_me^{-t}$ is much larger than $\log m$. If $t\geq(1-\varepsilon)\log m$ and $t=o(m)$, the second term is at least $2\rho(1-\varepsilon+o(1))\log m$. If $t$ is not $o(m)$, a subsequence has its second term of order $m$, again much larger than $\log m$. Letting $\varepsilon\downarrow0$ proves the required lower bound. For equality at leading scale, take an integer nearest to
+\begin{equation}\label{eq:trough}
+ \frac{2\rho}{D_m}\,[\log m+\log\log m-\log\rho].
+\end{equation}
+This is well inside phase $m$ for large $m$. The first term of $nP_n$ is asymptotic to $2\rho$, and its second term is
+$2\rho[\log m+\log\log m-\log\rho+o(1)]$. Thus the lower limit follows from $\log m\sim\log\log n$.
+
+For the constant term in \eqref{eq:minimum}, \eqref{eq:trough} first gives an upper bound $2\rho[\log m+\log\log m+O(1)]$. A minimizer cannot have $t$ comparable to $m$, and the second term then forces $t=O(\log m)$. More precisely it bounds $t$ above by $\log m+O(\log\log m)$; the first term bounds $t$ below by $\log m-O(1)$. On this localized range, the relative $O(1/m)$ error in \eqref{eq:twoterm} becomes absolute $o(1)$ in $nP_n$, and the upper tail is $O(\log m/m)$. Uniformly the objective reduces to
+\begin{equation}\label{eq:localmin}
+ 2[mt e^{-t}+\rho t]+o(1).
+\end{equation}
+Its relevant stationary point is the large solution of
+$(t-1)e^{-t}=\rho/m$; the other solution near 1 is a local maximum. The large solution has
+\[
+ t=\log m+\log\log m-\log\rho+o(1),\qquad
+ mt e^{-t}=\rho\frac{t}{t-1}=\rho+o(1).
+\]
+The phase endpoints have much larger values, while the mesh in $t$ is $D_m/(2\rho)=o(1)$. This proves the claimed integer minimum with the $+1$ constant.
+\end{proof}
+
+\section{The strict first maximum companion}\label{sec:strict}
+The strict EGF \eqref{eq:strictEGF} has the same denominators as the weak EGF. Its pole amplitude for index $m$ is
+\[
+ c_m^{\mathrm s}=\frac{r_m}{m+1}c_m.
+\]
+\begin{theorem}[Strict coefficient and relative estimates]\label{thm:strict}
+For every integer $n\geq2$,
+\begin{equation}\label{eq:absstrict}
+ \abs{\frac{u_n}{n!}-\sum_{m\geq1}\frac{r_m}{m+1}c_mr_m^{-n}}\leq4.
+\end{equation}
+Uniformly over the phase $m=m(n)$ of Proposition \ref{prop:simple},
+\begin{equation}\label{eq:strictphase}
+ \frac{u_n}{a_n}=\frac{\rho}{m}[1+O(1/m)].
+\end{equation}
+At every fixed order, Theorem \ref{thm:expansion} extends to $u_n$ by replacing $T_m(n)$ with $\rho T_m(n)/(m+1)$ and $h_m(s)$ with $h_m(s)+\ell_m(s)$ throughout the definitions of $B_{m,j}$ and $Q_{m,l}$. The window and relative error order are unchanged.
+\end{theorem}
+
+\begin{proof}
+For $m\geq2$, pole subtraction in the strict summand has unit-circle norm at most $15/(m+1)!$, exactly as in Theorem \ref{thm:poles}. Summing gives $15(e-5/2)<4$. The $m=1$ term is $z^2/[2(1-z)]$, whose coefficients equal its pole contribution $1/2$ for $n\geq2$; the polynomial $1+z$ changes only $n=0,1$. This proves \eqref{eq:absstrict}.
+
+On the two effective indices $j=m,m+1$,
+\[
+ \frac{r_j}{j+1}=\frac{\rho}{m}[1+O(1/m)],
+\]
+because $r_j-\rho\leq D_j$ decays faster than every inverse power of $m$. The weak lower-index tail is $O(\operatorname{poly}(m)e^{-cm})$ relative to the retained terms, and remains negligible after the additional factor $m$ needed to compare with the smaller strict count. This is justified by the same $m/2$ split as in Proposition \ref{prop:simple}. On $j\geq m+2$ the strict multiplier is $O(1/m)$, so the strict upper tail is $O(1/m)$ relative to the strict two-term sum itself. Thus the strict normalized residue sum is at least $c'/(nm)$, and the absolute errors 11 and 4 become relative errors $O(nm\rho^n)$, negligible uniformly. This proves \eqref{eq:strictphase} and \eqref{eq:mainstrict}.
+
+Finally, the factor $r_m/(m+1)$ is exactly $\rho e^{\ell_m(D_m)}/(m+1)$, which proves the announced amplitude and $h$ substitutions. Uniform analytic bounds persist. The strict lower bound $c'/(nm)$ and the generous $n^{-L-5}$ cutoff absorb the omitted factorial and left exponential tails. Hence the all-fixed-order relative error is unchanged.
+\end{proof}
+
+\section{Real inverse and shrinking integer enclosures}\label{sec:inverse}
+Define the positive interpolation
+\begin{equation}\label{eq:interpolation}
+ B(x)=\Gamma(x+1)\sum_{m\geq1}c_mr_m^{-x},\qquad x\geq1.
+\end{equation}
+The sum and every fixed-order derivative converge locally uniformly. Each summand has logarithmic derivative $\psi(x+1)-\log r_m>0$ on $x\geq1$, so $B$ is strictly increasing and tends to infinity. Here $\psi$ is the logarithmic derivative of $\Gamma$. Theorem \ref{thm:poles} says $|a_n-B(n)|\leq11n!$; the interpolation is not an exact identity at integer arguments.
+
+The sequence $a_n$ is strictly increasing for $n\geq1$. Indeed appending letter 1 is an injection into the next counted class, and $(1,2,\ldots,n+1)$ lies outside its image. The only initial equality is $a_0=a_1=1$. Thus for real $X>0$ define
+\[
+ q(X)=\min\{n\geq0:a_n\geq X\};\qquad q(X)=0\quad(0<X\leq1).
+\]
+The recurrence \eqref{eq:exactrec} settles any finite prefix outside the asymptotic range below.
+
+\subsection{Lambert scale and a finite approximation}
+Let $y=\log X$ and, for sufficiently large $X$, define
+\begin{equation}\label{eq:N}
+ N=\frac{y}{W(y/(e\rho))},\qquad N\log\frac{N}{e\rho}=y,
+\end{equation}
+where $W$ is the positive real Lambert function. The positive-sum phase estimates extend unchanged to real arguments, and Stirling's formula gives
+\begin{equation}\label{eq:logB}
+ \log B(x)=x\log\frac{x}{e\rho}-\frac12\log x+O(\log\log x).
+\end{equation}
+For example, the phase bounds give $x^{-1}$ times factors between constant multiples of $\log\log x$ and $\log x/\log\log x$ for the normalized residue sum. Their logarithms are $-\log x+O(\log\log x)$, which combined with the $\tfrac12\log x$ Stirling term yields \eqref{eq:logB}. Consequently the unique solution $B(x)=X$ satisfies
+\begin{equation}\label{eq:xlocation}
+ x=N+\frac12+O\!\left(\frac{\log\log N}{\log N}\right).
+\end{equation}
+
+Freeze the finite window at $\mathcal W_L(N)$ and put, for real $z$ near $N$,
+\begin{align}
+ R_{m,L}(z)&=\sum_{l=0}^L\frac{Q_{m,l}(zD_m)}{z^l},\notag\\
+ S_L(z)&=\sum_{m\in\mathcal W_L(N)}
+ \frac{\rho^{m-1}}{m!\alpha_m}e^{-zD_m/(\rho\alpha_m)}R_{m,L}(z),\label{eq:finiteinverse}\\
+ B_L(z)&=\Gamma(z+1)\rho^{-z}S_L(z),\qquad g_L(z)=\log B_L(z).\notag
+\end{align}
+The proof of Theorem \ref{thm:expansion}, including both tails, is uniform on $I_N=[N-2,N+3]$ with this frozen window because $z/N=1+O(1/N)$. Hence
+\begin{equation}\label{eq:relativeinverse}
+ \frac{B_L(z)}{B(z)}=1+O_L(\epsilon_L),\qquad
+ \epsilon_L=\frac{(\log N)^{2L+2}}{N^{L+1}}.
+\end{equation}
+
+\subsection{Direct derivative control}
+It is unnecessary to differentiate a relative asymptotic remainder in \eqref{eq:relativeinverse}. Instead differentiate the explicit finite polynomial sum. Uniform analyticity from Section \ref{sec:expansion} gives $|h_{m,j}|\leq C_jm$ and $|\ell_{m,j}|\leq C_j$. Taking absolute values of all polynomial coefficients, recurrence \eqref{eq:Qrec} yields
+\[
+ |Q_{m,l}|_{\rm abs}(X)\leq C_l(m+X)^{2l},\qquad X\geq0.
+\]
+Each monomial of $Q_{m,l}(X)$ has degree between $l$ and $2l$. Thus $Q_{m,l}(zD_m)/z^l$ is a polynomial in $z$ of degrees between 0 and $l$. On $I_N$, its absolute monomial sum is
+$O_L((\log^2N/N)^l)$, and its first and second derivatives are bounded by $l/z$ and $l(l-1)/z^2$ times that sum. It follows that
+\begin{align}
+ R_{m,L}&=1+O_L(\log^2N/N),\notag\\
+ R'_{m,L}&=O_L(\log^2N/N^2),\qquad
+ R''_{m,L}=O_L(\log^2N/N^3).\label{eq:Rderivs}
+\end{align}
+Let $S_0$ denote the retained positive zeroth-order sum. Since $D_m/(\rho\alpha_m)=O_L(\log N/N)$ in the window,
+\[
+ \frac{S_L}{S_0}=1+o(1),\quad
+ \frac{|S_L'|}{S_0}=O_L(\log N/N),\quad
+ \frac{|S_L''|}{S_0}=O_L(\log^2N/N^2).
+\]
+Together with the standard real Stirling derivative estimates these give
+\begin{equation}\label{eq:gderivs}
+ g_L'(z)=\log(N/\rho)+O_L(\log N/N)>0,\qquad
+ g_L''(z)=O_L(1/N).
+\end{equation}
+The exact derivative $g'=(\log B)'$ has the same first estimate: it is $\psi(z+1)-\log\rho$ minus the positive pole-weighted mean of $\log(r_m/\rho)$. Splitting at $zD_m=K\log z$, with fixed sufficiently large $K$, bounds this mean by $O(\log z/z)$, using the left-tail estimate and the lower bound for the residue sum.
+
+\begin{theorem}[Finite-step real inverse]\label{thm:inverse}
+For fixed $L\geq0$ and all sufficiently large $X$, $B_L$ has a unique crossing $x_L$ of $X$ in $I_N$, and
+\begin{equation}\label{eq:inverseerror}
+ |x_L-x|\leq C_L\frac{(\log N)^{2L+1}}{N^{L+1}}
+\end{equation}
+for some constant $C_L$. Start $z_0=N+1/2$ and perform
+\begin{equation}\label{eq:Newton}
+ z_{j+1}=z_j-\frac{g_L(z_j)-\log X}{g_L'(z_j)},\qquad
+ j=0,\ldots,J_L-1,\qquad J_L=\ceil{\log_2(L+2)}.
+\end{equation}
+After enlarging $C_L$, the same bound holds with $z_{J_L}$ in place of $x_L$.
+\end{theorem}
+
+\begin{proof}
+Uniform closeness \eqref{eq:relativeinverse}, the crossing location \eqref{eq:xlocation}, and positive slope \eqref{eq:gderivs} imply existence and uniqueness in $I_N$ and the mean-value bound \eqref{eq:inverseerror}. Initially $|z_0-x_L|=O(\log\log N/\log N)$. The direct derivative bounds give the Newton error recurrence
+\[
+ |z_{j+1}-x_L|\leq\frac{C_L}{N\log N}|z_j-x_L|^2.
+\]
+For fixed $j$ all iterates stay in $I_N$ for sufficiently large $N$, and induction gives
+\begin{equation}\label{eq:Newtonerror}
+ |z_j-x_L|=O_{L,j}\!\left(
+ \frac{(\log\log N)^{2^j}}
+ {N^{2^j-1}(\log N)^{2^{j+1}-1}}\right).
+\end{equation}
+The chosen $J_L$ has $2^{J_L}-1\geq L+1$, so this is no larger than the order in \eqref{eq:inverseerror}. The theorem specifies a fixed finite number of steps, not unrestricted Newton convergence from arbitrary starts.
+\end{proof}
+
+\subsection{The additional integer error}
+For $n\geq30$, the explicit Bell remainder bound in Section \ref{sec:relative} and $P_n\geq1/n$ imply
+\begin{align}
+ \frac{B(n)}{n!}&\geq\frac{\rho^{-n}}{2\rho n}-\frac{10}{n}-11
+ \geq\frac{\rho^{-n}}{4\rho n},\label{eq:explicitB}\\
+ \abs{\frac{a_n}{B(n)}-1}&\leq44\rho n\rho^n<31n\rho^n<\frac12,\notag\\
+ |\log a_n-\log B(n)|&\leq62n\rho^n.\label{eq:logerror}
+\end{align}
+For the last inequality in \eqref{eq:explicitB}, one may use $\rho<7/10$ and the exact rational base-case check
+\[
+ (10/7)^{30}>(14/5)(10+11\cdot30).
+\]
+Thereafter the exponential-to-linear ratio increases. Likewise $31\cdot30(7/10)^{30}<1/2$, and $n(7/10)^n$ decreases in this range. Finally $|\log(1+u)|\leq2|u|$ for $|u|<1/2$ proves \eqref{eq:logerror}.
+
+For large $N$, the threshold and its neighboring integers lie in $I_N$. This follows by comparing integers just below $N-1$ and just above $N+2$ with \eqref{eq:xlocation} and \eqref{eq:logerror}, and using strict monotonicity. Moreover $g'\geq\tfrac12\log N$ on $I_N$. Define
+\begin{equation}\label{eq:Delta}
+ \Delta_L(N)=C_L\frac{(\log N)^{2L+1}}{N^{L+1}}
+       +\frac{124(N+3)\rho^{N-2}}{\log N}.
+\end{equation}
+The second term comes from translating \eqref{eq:logerror} to a real-index displacement using this slope bound.
+
+\begin{corollary}[Two-ceiling enclosure]\label{cor:ceilings}
+With $C_L$ sufficiently large and for all sufficiently large $X$,
+\begin{equation}\label{eq:ceilings}
+ \ceil{x_L-\Delta_L(N)}\leq q(X)\leq\ceil{x_L+\Delta_L(N)}.
+\end{equation}
+The same conclusion holds with the specified Newton iterate $z_{J_L}$ after enlarging $C_L$ to absorb \eqref{eq:Newtonerror}.
+\end{corollary}
+
+\begin{remark}[Certification boundary]
+The constants $C_L$ and their validity thresholds have not been numerically certified here. Thus \eqref{eq:ceilings} is a rigorous asymptotic enclosure theorem, not automatically a certified answer at a supplied finite $X$. Since $\Delta_L(N)\to0$, its two ceilings eventually agree or differ by one. An unconditional formula $q(X)=\ceil{x_L}$ would be unjustified for $X$ arbitrarily close to an integer crossing. Certified separation or exact neighboring values from \eqref{eq:exactrec} resolve that ambiguity. Alternatively, \eqref{eq:absweak} gives explicit direct envelopes $B(n)\pm11n!$; using them as a numerical certificate requires rigorous evaluation of the residue sum, not merely floating-point roots.
+\end{remark}
+
+\section{Reproducible finite checks and numerical diagnostics}\label{sec:checks}
+The archive contains the editable \LaTeX\ source, this PDF, two finite-check programs, a reproduction driver, dependency versions, data, and generated tables. It contains no third-party books or papers. The checks use explicit exceptions rather than Python \texttt{assert}, so optimization does not remove them.
+
+The first program verifies all 22 displayed weak OEIS values and all 23 displayed strict values, compares composition counts through $n=12$, checks the weak counts by unordered set-partition enumeration through $n=9$, and checks formal reversion, amplitudes, and the first two correction polynomials. The second independently enumerates all initial-alphabet words through $n=7$, extracts rational EGF coefficients through $n=30$, verifies the circle and inverse constants with rational arithmetic, and checks the correction recurrence, polynomial degree ranges, and strict amplitude shift through order four. The reproduction driver compares the independent exact terms, generates every table from the data, and tests that a deliberately false guard raises an exception in both ordinary and optimized execution.
+
+Table \ref{tab:diagnostic} is a floating-point diagnostic at 100 decimal digits. Its reference is a truncated normalized positive-pole sum over $2\leq m\leq60$; its approximations sum the $L=0,1,2$ root-free terms over the same range. This deliberately fixed diagnostic range is not the moving window of Theorem \ref{thm:expansion}. The omitted $m=1$ contribution is exponentially small for these normalized large-$n$ comparisons. The accompanying data also record small-$n$ absolute coefficient residuals after adding back the exact $m=1$ contribution. Neither diagnostic proves the error bounds or provides interval-certified roots.
+
+\input{tables/diagnostic.tex}
+
+Table \ref{tab:phase} illustrates the envelope shapes. Here $n$ is the positive real argument $2\rho t/D_m$, not integer-rounded, with $t=1$ for the displayed peak and $t=\log m+\log\log m-\log\rho$ for the displayed trough. The proxy uses the normalized residue sum over $2\leq j\leq m+30$, multiplied by $2\rho$. Thus the finite rows need not equal the eventual envelope constants $2/e\approx0.7357588823$ and $2\rho\approx1.3862943611$. In particular, the slow logarithmic corrections in \eqref{eq:minimum} are visible in the trough column.
+
+\input{tables/phase.tex}
+
+\subsection{Reproduction commands and deterministic packaging}
+From the extracted archive, run
+\begin{center}
+\texttt{python3 reproduce.py -{}-out /tmp/report208-normal}\par
+\texttt{python3 -O reproduce.py -{}-out /tmp/report208-optimized}
+\end{center}
+Each command executes both finite checkers, compares generated data and tables with the shipped versions, rebuilds the PDF to byte stability with \texttt{pdflatex}, and constructs a deterministic ZIP from the actual rebuilt members. The driver omits only the independent checker's deliberately recorded optimization flag when creating its canonical public data file; the raw normal and optimized independent logs are not claimed byte-identical. With the pinned dependencies and \LaTeX\ environment used for this report, the actual final ZIP members and whole ZIP bytes were verified identical across the two modes. Byte identity across different \LaTeX\ distributions is not promised. SHA256 hashes accompany the final deliverables outside the ZIP.
+
+The numerical tests are finite validation. The proofs establish the infinite asymptotic conclusions; neither replaces the other. No claim of certified finite-input inversion, numerical root intervals, or exhaustive literature priority follows from successful reproduction.
+
+\section{Sources and scope of the contribution}\label{sec:sources}
+The definitions, EGFs, and current displayed terms in A386374 and A386375 were inspected directly on 4 October 2026 \cite{weak,strict}. Both entries showed a b-file link but no asymptotic or external research reference. A previously considered cross-reference, A308876, was also inspected: it concerns the EGF $e^z(1-z)/(1-2z)$ and an asymptotic $n!2^{n-1}e^{1/2}$ attributed there to V\'aclav Kot\v{e}\v{s}ovec in 2019, rather than a maximum-occupancy theorem \cite{unrelated}.
+
+The most directly relevant prior is Gourdon's 1996 thesis, Chapter VI, Section 4, Theorem 7 and Example 8 on printed page 195 \cite{gourdonthesis}. Example 8 explicitly treats random surjections with a variable number of image elements, the unrestricted ordered-partition model here. It gives a moving-pole factorial-tail maximum-size distribution, the scale $\log n/\log\log n$, and bounded variance. Thus the factorial cutoff scale, pole perturbation, and leading maximum-size phenomenon are established prior. The shrinking transition width associated with the factorial tail is also a consequence of that established law, rather than a new general extreme-value mechanism.
+
+The actual 1995 proceedings text was also inspected, including the assumptions and Section 5, Theorem 4, printed pages 258--259 \cite{gourdon95}. Its displayed algebraic-logarithmic supercritical theorem assumes a finite singularity of the inner component generating function; $e^z-1$ does not meet that assumption directly. The thesis example handles the entire-function variant. The proceedings also advertises more complete asymptotic expansions. Accordingly, neither pole perturbation nor all-order singularity expansions are presented as a new general method. The 1998 journal version was identified but its full text was not obtained; its contents are not assumed identical to the inspected proceedings \cite{gourdon98}.
+
+Flajolet and Sedgewick, Section V.2 and Notes V.2--V.3, printed page 300, explain renewal conditioning, supercritical sequences, largest components, and truncation-pole displacement, citing Gourdon \cite{ac}. This supplies additional classical context. The displayed smooth coefficient hypothesis there is geometric times a power; it does not itself state the factorial-tail tie expectation and envelopes proved here.
+
+Daly's full manuscript gives logarithmic and Poisson total-variation approximations for maxima multiplicities in a fixed number of independent observations \cite{daly}. Its introduction, equations (1)--(3), and Theorems 1 and 3 were inspected. In the present setting block sizes are constrained by their total and $K$ is random, so \eqref{eq:expectations} is not an immediate iid substitution. No novelty is claimed for general discrete ties or Poisson approximation. Carayol and Rotondo's full manuscript was inspected in its introduction, fixed-$k$ constrained-Poisson representation, Appendix F maximum bounds, and Appendix G saddle estimates \cite{carayol}. That work gives surjection sampling algorithms and fixed-$k$ profile bounds. The constrained-Poisson representation is prior, rather than a result of this report.
+
+Bender and Gao's paper is particularly relevant because its abstract advertises large parts and multiplicity statistics \cite{bendergao}. Only its publisher abstract and references were obtained; attempted PDF links returned the landing page. Its full text was not read, so theorem-level non-overlap cannot be certified. Olofsson's 1999 article was likewise known through bibliographic and abstract information and Daly's discussion, not a retrieved full original \cite{olofsson}.
+
+The specialized results proved here are the explicit positive-residue coefficient errors, the uniform finite root-free scheme, the first-block tie probability with its two distinct envelope scales and refined phase minimum, the phase-uniform strict/weak comparison, and the shrinking weak inverse enclosure. The inspected passages of Gourdon do not state this collection of first-block enumeration results. This is a bounded comparison with inspected sources, not a first-proof or worldwide-novelty claim. The absence of an asymptotic from a current OEIS entry likewise does not establish originality.
+
+\subsection{Further calculations}
+Three useful next calculations are: explicit constants and onset in Theorem \ref{thm:expansion}, with interval roots and factorial-tail bounds for finite-threshold certification; higher uniform phase corrections beyond the $o(1)$ phase-minimum remainder; and a separately proved strict-sequence interpolation and integer inverse, respecting its smaller normalized lower bound and finite prefix. These are extensions suggested by this report, not assertions that the questions are unresolved throughout the literature.
+
+\begin{thebibliography}{99}
+\small\setlength{\itemsep}{3pt}
+\bibitem{weak} OEIS Foundation Inc. \emph{A386374}. Current entry inspected 4 October 2026. \url{https://oeis.org/A386374}.
+\bibitem{strict} OEIS Foundation Inc. \emph{A386375}. Current entry inspected 4 October 2026. \url{https://oeis.org/A386375}.
+\bibitem{unrelated} OEIS Foundation Inc. \emph{A308876}. Current entry inspected 4 October 2026. \url{https://oeis.org/A308876}.
+\bibitem{gourdonthesis} X. Gourdon. \emph{Combinatoire, Algorithmique et G\'eom\'etrie des Polyn\^omes}. Doctoral thesis, \'{E}cole Polytechnique, 1996. Chapter VI, Section 4 and Example 8, printed p.\ 195. \href{https://www.mit.edu/~sfinch/Xavier_Gourdon_-_Combinatoire,_algorithmique_et_geometrie_des_polynomes_-_Ecole_Polytechnique_thesis.pdf}{Full thesis PDF}.
+\bibitem{gourdon95} X. Gourdon. Largest component in random combinatorial structures. \emph{FPSAC 1995 proceedings}, 1995, 12-page proceedings version; Section 5, Theorem 4, printed pp.\ 258--259. \url{https://fpsac-archive.github.io/FPSAC95/ARTICLES/24.GOURDON.pdf}.
+\bibitem{gourdon98} X. Gourdon. Largest component in random combinatorial structures. \emph{Discrete Mathematics} 180 (1998), 185--209. \url{https://doi.org/10.1016/S0012-365X(97)00115-5}. Journal full text not obtained for this comparison.
+\bibitem{ac} P. Flajolet and R. Sedgewick. \emph{Analytic Combinatorics}. Cambridge University Press, 2009. Section V.2 and Notes V.2--V.3. \url{https://algo.inria.fr/flajolet/Publications/book.pdf}.
+\bibitem{daly} F. Daly. \emph{Approximations for the number of maxima and near-maxima in independent data}. arXiv:2505.06088v1. Inspected HTML displayed manuscript date 24 August 2026. \url{https://arxiv.org/html/2505.06088v1}.
+\bibitem{carayol} A. Carayol and P. Rotondo. \emph{Efficient Uniform Sampling of Surjections via their Profiles}. arXiv:2605.24068v1, 22 May 2026. \url{https://arxiv.org/html/2605.24068v1}.
+\bibitem{bendergao} E. A. Bender and Z. Gao. Part Sizes of Smooth Supercritical Compositional Structures. \emph{Combinatorics, Probability and Computing} 23 (2014), 686--716. \url{https://doi.org/10.1017/S0963548314000315}. Publisher abstract and references inspected; full text not obtained.
+\bibitem{olofsson} P. Olofsson. A Poisson approximation with applications to the number of maxima in a discrete sample. 1999. Bibliographic and abstract lead discussed by Daly \cite{daly}; original full article not obtained.
+\end{thebibliography}
+\end{document}

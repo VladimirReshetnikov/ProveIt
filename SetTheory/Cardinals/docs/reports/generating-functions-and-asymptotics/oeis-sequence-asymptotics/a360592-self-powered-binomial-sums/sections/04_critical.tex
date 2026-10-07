@@ -1,0 +1,242 @@
+\section{The critical half power expansion}
+\label{sec:critical}
+In this section $p=1$, $q=2$, $c=\sqrt{e/2}$,
+$t=n^{-1/2}$, and $\lambda=c/t$.
+The normalization $M_1$ is \eqref{eq:criticalM}.
+Since $\lambda^2/n=c^2$, the leading quadratic defect persists:
+$\Delta_n(X)$ is approximately $-3(tX)^2/4$, whose limiting value is
+$-3c^2/4$. Expanding $e^{\Delta_n(X)}$ as a small perturbation of one would
+miss an order-one factor. We retain that factor and expand around the
+Poisson center instead.
+
+\begin{theorem}\label{thm:critical}
+For every fixed integer $K\ge0$, there are explicit polynomials
+$C_{1,j}\in\Q[c]$ such that
+\begin{equation}\label{eq:criticalall}
+ \frac{a_1(n)}{M_1(n)}
+     =\sum_{j=0}^K C_{1,j}(c)n^{-j/2}
+                    +O_K(n^{-(K+1)/2}).
+\end{equation}
+Both parities have the same coefficients. There are no odd quarter powers
+in the normalized expansion. The first four nonconstant coefficients are
+\begin{align}
+ C_{1,1}(c)&=\frac c4+\frac{11c^3}{8},\label{eq:critC1}\\
+ C_{1,2}(c)&=\frac{31c^2}{32}-\frac{319c^4}{96}
+                                      +\frac{121c^6}{128},\label{eq:critC2}\\
+ C_{1,3}(c)&=-\frac{5c}{96}-\frac{739c^3}{128}
+              +\frac{46517c^5}{3840}-\frac{7381c^7}{1536}
+              +\frac{1331c^9}{3072},\label{eq:critC3}\\
+ C_{1,4}(c)&=-\frac{227c^2}{128}+\frac{61923c^4}{2048}
+              -\frac{771061c^6}{15360}+\frac{4140367c^8}{184320}
+              \nonumber\\[-2pt]
+          &\hspace{18mm}-\frac{41261c^{10}}{12288}
+                         +\frac{14641c^{12}}{98304}.\label{eq:critC4}
+\end{align}
+\end{theorem}
+
+\subsection{A separate global bound}
+The exact Poisson identity is still available, now in the form
+\begin{equation}\label{eq:criticalexact}
+ \frac{a_1(n)}{M_1(n)}
+  =2e^{3c^2/4}\E\left[e^{\Delta_n(X)}\1_{\{X\le n\}}
+                               \1_{\{X\equiv n\ (2)\}}\right].
+\end{equation}
+The nonpositivity statement of Lemma~\ref{lem:sign} is false at $p=1$;
+for example, $\Delta_n(1)>0$.
+The required replacement is a uniform upper bound.
+
+\begin{lemma}\label{lem:criticalbound}
+For every integer $0\le r\le n$,
+\begin{equation}\label{eq:criticalbound}
+ \Delta_n(r)\le-\frac{r^2}{4n}+\frac r{2n}
+              =\frac{1-(r-1)^2}{4n}\le\frac1{4n}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+The first two terms of \eqref{eq:Delta} now form
+$F(r)=((n+r)/2)\log(1+r/n)-r/2$.
+One has $F(0)=F'(0)=0$ and
+$F''(r)=1/(2n(1+r/n))\le1/(2n)$, so $F(r)\le r^2/(4n)$.
+Since $\log(1-x)\le-x$ for $0\le x<1$,
+\[
+ \sum_{h=0}^{r-1}\log\left(1-\frac{2h}{n+r}\right)
+       \le-\frac{r(r-1)}{n+r}\le-\frac{r(r-1)}{2n}.
+\]
+The final inequality uses $r(r-1)\ge0$, which holds at every allowed
+integer. Adding the bounds proves \eqref{eq:criticalbound}.
+\end{proof}
+
+Let
+\begin{equation}\label{eq:criticalbulk}
+ \mathcal C_n=\{|X-\lambda|\le\lambda^{3/4}\}.
+\end{equation}
+The usual exponential Markov argument for the Poisson generating function
+implies, for a positive absolute constant $b_0$ and large $\lambda$,
+\begin{equation}\label{eq:criticaltail}
+ \Pp(\mathcal C_n^c)
+ \le2\exp\left(-\frac{\lambda^{3/2}}
+                         {2(\lambda+\lambda^{3/4})}\right)
+ =O(e^{-b_0\sqrt\lambda}).
+\end{equation}
+For completeness, the upper-tail Chernoff rate is
+$\lambda((1+s)\log(1+s)-s)$ at displacement $s\lambda$;
+integrating $\log(1+s)\ge s/(1+s)$ bounds it below by
+$\lambda s^2/(2(1+s))$. The lower-tail rate is at least
+$\lambda s^2/2$. Substitute $s=\lambda^{-1/4}$.
+
+Lemma~\ref{lem:criticalbound} bounds the exact normalized contribution
+on $\mathcal C_n^c$ by a fixed multiple of \eqref{eq:criticaltail}.
+Every fixed polynomially weighted tail is also negligible by
+Cauchy--Schwarz and Poisson moment bounds. Since $\lambda\asymp\sqrt n$,
+these errors are smaller than every power of $n^{-1}$.
+For large $n$, the central event lies inside $0\le X\le2\lambda<n$.
+
+\subsection{Defect polynomials at criticality}
+Specializing \eqref{eq:Dgeneral} gives
+\begin{equation}\label{eq:Dcrit}
+ D_j(r)=(-1)^{j+1}\left\{
+  \frac{r^{j+1}}{2j(j+1)}
+  +\frac1j\sum_{h=0}^{r-1}\bigl[(r-2h)^j-r^j\bigr]\right\}.
+\end{equation}
+The first values are
+\begin{align*}
+ D_1&=-3r^2/4+r,& D_2&=r^3/4-r/3,\\
+ D_3&=-7r^4/24+r^3/3,&
+ D_4&=7r^5/40-r^3/3+2r/15,\\
+ D_5&=-11r^6/60+r^5/5.
+\end{align*}
+We require a local logarithmic estimate on a larger analytic scale than
+in Lemma~\ref{lem:cauchy}.
+For every fixed $L\ge1$, uniformly for integers $0\le r\le2\lambda$,
+\begin{equation}\label{eq:criticalDrem}
+ \Delta_n(r)=\sum_{j=1}^L D_j(r)n^{-j}
+          +O_L\left(\frac{r^{L+2}}{n^{L+1}}\right)
+       =\sum_{j=1}^L t^{2j}D_j(r)+O_L(t^L).
+\end{equation}
+To verify this, rewrite the defect exactly as
+\[
+ \Delta_n(r)=\frac{n-r}{2}\log(1+r/n)-\frac r2
+            +\sum_{h=0}^{r-1}\log(1+(r-2h)/n).
+\]
+Expand the first logarithm through degree $L+1$ and each logarithm in
+the sum through degree $L$. Their arguments are within $O(t)$ of one.
+The usual logarithmic remainders, together with the $n,r$ prefactors
+and the $r$ terms in the sum, give $O(r^{L+2}/n^{L+1})$.
+The statement at $r=0$ is exact. Collecting coefficients gives
+\eqref{eq:Dcrit}.
+
+\subsection{Centered moments and a finite weighted generator}
+Put
+\begin{equation}\label{eq:Ucenter}
+ U=t(X-\lambda)=tX-c.
+\end{equation}
+Let $B_{d,k}^{\ge2}$ count set partitions of $d$ labeled elements into
+$k$ blocks, with no singleton blocks. They satisfy
+\begin{equation}\label{eq:assocStirling}
+ B_{0,0}^{\ge2}=1,\qquad
+ B_{d,k}^{\ge2}=kB_{d-1,k}^{\ge2}+(d-1)B_{d-2,k-1}^{\ge2},
+\end{equation}
+with out-of-range indices zero. The recurrence separates the block
+containing the last label according as it has more than two elements or
+has two elements.
+The centered Poisson generating function is
+\[
+ \E e^{z(X-\lambda)}=\exp(\lambda(e^z-1-z)).
+\]
+Coefficient comparison gives the exact polynomial identity
+\begin{equation}\label{eq:centralmoment}
+ \E U^d=\sum_{k=0}^{\lfloor d/2\rfloor}
+           B_{d,k}^{\ge2}c^k t^{d-k}.
+\end{equation}
+Thus only integer powers of $t$ occur, and their least possible exponent
+is $\lceil d/2\rceil$. In particular,
+$\E|U|^{2h}=O_h(t^h)$ for each fixed $h$.
+
+For the chosen expansion order $K$, define
+\begin{equation}\label{eq:VK}
+ V_K(t,u)=\frac{3c^2}{4}
+            +\sum_{j=1}^{K+1}t^{2j}D_j((c+u)/t).
+\end{equation}
+It is a polynomial with no negative powers of $t$ because
+$\deg D_j\le j+1$. Its constant term vanishes and
+\begin{equation}\label{eq:VK0}
+ V_K(0,u)=-\frac{3cu}{2}-\frac{3u^2}{4}.
+\end{equation}
+Assign weight two to $t$ and weight one to $u$.
+Let $P_K(t,u)$ be $e^{V_K(t,u)}$ truncated to weighted degree at most
+$2K+1$. Every monomial of $V_K$ has positive weight, so it suffices to
+truncate the finite sum
+\begin{equation}\label{eq:PK}
+ \sum_{m=0}^{2K+1}\frac{V_K(t,u)^m}{m!}.
+\end{equation}
+Replace every $u^d$ in $P_K$ by the right side of
+\eqref{eq:centralmoment}, and retain powers through $t^K$.
+This finite procedure defines $C_{1,0},\ldots,C_{1,K}$.
+It is different from the small-deformation generator of the previous section.
+
+\subsection{Remainder and parity proof}
+\begin{proof}[Proof of Theorem~\ref{thm:critical}]
+On $\mathcal C_n$, one has
+$|U|\le t\lambda^{3/4}=O(t^{1/4})\to0$.
+Take $L=K+1$ in \eqref{eq:criticalDrem}. The exponent error is
+$O(t^{K+1})$, and $V_K(t,U)$ is uniformly bounded on this event.
+Therefore
+\begin{equation}\label{eq:criticalexprem}
+ e^{\Delta_n(X)+3c^2/4}
+       =e^{V_K(t,U)}+O_K(t^{K+1})
+       \quad\hbox{on }\mathcal C_n.
+\end{equation}
+
+Set $s=\sqrt t$ solely to apply ordinary multivariate Taylor's theorem to
+$e^{V_K(s^2,u)}$ at $(0,0)$. Its total-degree $2K+1$ Taylor polynomial is
+$P_K(s^2,u)$. The remainder is
+$O_K((|s|+|u|)^{2K+2})$ in a fixed neighborhood.
+Averaging this bound, using \eqref{eq:centralmoment} and
+$(a+b)^m\le2^{m-1}(a^m+b^m)$, gives $O_K(t^{K+1})$.
+The parity-restricted expectation costs at most a factor two.
+The extra odd weighted degree is important: a Taylor argument stopped at
+$2K$ would give only an absolute $O(t^{K+1/2})$ bound by this method.
+
+The polynomial tail estimate and \eqref{eq:criticaltail} allow us to replace
+the central expectation of $P_K$ by its unrestricted Poisson expectation.
+For every fixed polynomial $Q(X)$ the exact parity filter says
+\[
+ 2\E[Q(X)\1_{\{X\equiv n\ (2)\}}]
+    =\E Q(X)+(-1)^n\E[(-1)^XQ(X)].
+\]
+For $Q(X)=X^j$, the last expectation is
+$e^{-2\lambda}T_j(-\lambda)$.
+A monomial $t^iU^d=t^i(tX-c)^d$ is a finite combination of
+$t^{i+j}X^j$. Since $t^jT_j(-c/t)$ remains bounded, the parity contribution
+from $P_K$ is $O_K(e^{-2\lambda})$.
+Finally \eqref{eq:centralmoment} produces only integer powers of $t$;
+those beyond $K$ are $O_K(t^{K+1})$.
+Combining these statements with \eqref{eq:criticalexact} proves the
+expansion and the claimed absence of odd quarter powers.
+The displayed coefficients result from the finite generator.
+\end{proof}
+
+\subsection{The first coefficient without symbolic expansion}
+There is a short independent way to see the first correction.
+Put $Z=tX=c+U$ and $f(z)=e^{-3z^2/4}$.
+On the bulk, the first two defect polynomials give
+\[
+ e^{\Delta_n(X)}=f(Z)\{1+t(Z+Z^3/4)+O(t^2)\}.
+\]
+Since $\E U=0$ and $\E U^2=ct$, the centered Taylor calculation gives
+\[
+ \E f(Z)=f(c)+\frac{ct}{2}f''(c)+O(t^2).
+\]
+Here a fourth-order Taylor remainder and the exact third central moment
+justify the $O(t^2)$ error; an absolute third-moment bound alone would be
+insufficient. The same argument applied to $f(Z)(Z+Z^3/4)$ gives its
+expectation equal to its value at $c$ plus $O(t)$.
+The tails have already been controlled globally.
+Dividing by $f(c)$, the coefficient is
+\[
+ c+\frac{c^3}{4}+\frac c2\left(-\frac32+\frac{9c^2}{4}\right)
+       =\frac c4+\frac{11c^3}{8}.
+\]
+This identifies the missing cancellation without a symbolic black box.
+It also explains why adding the observed extra $1/(8c)$ changes the true
+refinement while leaving the leading equivalent untouched.

@@ -1,0 +1,54 @@
+\section{The model and the classical component input}\label{sec:model}
+An admissible hypergraph is a set of distinct $3$-subsets of $[n]$ such that any two distinct hyperedges have intersection of size $0$ or $2$. Labels are distinguished; no quotient by vertex permutations is taken. Isolated vertices are allowed in $A_n$ and forbidden in $B_n$, with $A_0=B_0=1$. We use the uniform probability measure on the $A_n$ objects and write $\PP_n,\E_n$ for its probability and expectation.
+
+Andrew Howroyd's comments of 18 August 2019 in OEIS A323296 and A323297 give the component decomposition and the exponential generating functions used here \cite{oeis296,oeis297}. The connected count is the related sequence A323294, whose eventual formula is credited to Gus Wiseman \cite{oeis294}. We include the short classification to fix every small-size multiplicity.
+
+\begin{proposition}[Component classification]\label{prop:class}
+Every nontrivial connected component is a single edge, a pair-star consisting of all triples formed by adjoining one of its other vertices to a common pair, or a three- or four-edge hypergraph on four vertices. On a fixed labelled $m$-set the connected counts are
+\[
+ c_1=1,\qquad c_2=0,\qquad c_3=1,\qquad c_4=11,\qquad
+ c_m=\binom m2\quad(m\ge5).
+\]
+The eleven four-vertex components comprise six two-edge pair-stars, four three-edge tetrahedra, and one complete tetrahedron.
+\end{proposition}
+\begin{proof}
+Use adjacency of edges by nonempty intersection. If two edges each meet a third in two vertices, they share at least one vertex, so admissibility forces their own intersection to have size two. Thus adjacency is transitive, and every connected edge component is pairwise two-intersecting.
+
+Choose edges $abc,abd$. An edge meeting both in two vertices is either $abx$, or $acd$, or $bcd$. If a vertex $x$ outside $\{a,b,c,d\}$ occurs, the edge $abx$ rules out $acd$ and $bcd$, forcing all edges to contain $ab$. Every vertex of the component outside this pair then gives exactly its triple with the pair. Otherwise the component is confined to four vertices. A single edge has no uniquely distinguished pair and must be counted only once. For a pair-star on at least four vertices the pair is unique, giving $\binom m2$ choices. On four vertices the additional choices are the four triples of edges and the one complete edge set.
+\end{proof}
+
+Let $\De=z\,\dd/\dd z$ and set
+\begin{align}
+ C(z)&=\sum_{m\ge1}c_m\frac{z^m}{m!}
+ =z-\frac{z^2}{2}-\frac{z^3}{3}+\frac{5z^4}{24}
+       +\frac{z^2e^z}{2},\label{eq:C}\\
+ A_n&=n![z^n]e^{C(z)},\qquad B_n=n![z^n]e^{C(z)-z}.\label{eq:AB}
+\end{align}
+Although the last expression for $C$ includes negative polynomial terms, its power-series coefficients are nonnegative. This distinction matters when using characteristic-function domination. Write
+\[
+ H(z)=\frac{z^2e^z}{2},\qquad
+ U(z)=z-\frac{z^2}{2}-\frac{z^3}{3}+\frac{5z^4}{24}.
+\]
+The exact positive saddle $r=r_n$ is defined by
+\begin{equation}\label{eq:saddle}
+ \De C(r)=n,\qquad \kappa_j=\De^j C(r),\qquad b=\kappa_2,
+ \qquad \eps=\frac rn.
+\end{equation}
+It exists uniquely for $n>0$, since $\De C$ is strictly increasing from zero to infinity. Throughout, limits are as $n\to\infty$; constants in fixed-order estimates may depend on that order or on the fixed polynomial under discussion.
+
+\subsection{The statistics and their exact defect identity}
+Let $K$ be the number of components, including isolates, and $E$ the number of hyperedges. Let $S,T_3,T_4$ count, respectively, isolated vertices, three-edge tetrahedral components, and complete four-edge tetrahedral components. Put $X=(S,T_3,T_4)$. The components counted by $T_3,T_4$ will be called nonsunflower components: all other nontrivial components have a common pair, with the single-edge case interpreted separately.
+
+The contribution of a component with $m$ vertices and $e$ edges to $E+2K-n$ is $e+2-m$. It is zero on every single edge and pair-star, one on an isolate or a three-edge tetrahedron, and two on a complete tetrahedron. Hence the exact identity is
+\begin{equation}\label{eq:defect}
+ \defect:=E+2K-n=S+T_3+2T_4.
+\end{equation}
+For example, the connected EGF marked by its number of edges is
+\[
+ z+\frac{vz^3}{6}+\frac{z^2}{2}(e^{vz}-1-vz)
+      +\frac{(4v^3+v^4)z^4}{24}.
+\]
+Multiplying this connected series by a component marker and exponentiating yields the joint edge/component EGF. The simpler identity \eqref{eq:defect} explains why treating the raw pair $(K,E)$ as a nondegenerate bivariate Gaussian would miss an entire fluctuation scale.
+
+\subsection{Scope and attribution}
+Hayman's method and its complete-expansion refinements, notably Harris--Schoenfeld and Odlyzko--Richmond, supply the established analytic setting \cite{odlyzko}. Refined independent Poisson conditioning and exact total-variation likelihood identities are likewise prior tools of Arratia--Tavar\'e \cite{arratia}. The results below specialize these frameworks with explicit coefficients and remainders, a sharp exceptional-vector constant, rare-deletion corrections, and projected marked laws. The forbidden-intersection extremal literature studies a different question, the maximum number of edges \cite{keevash}. A bounded source review did not identify this exact package of refinements, but no exhaustive novelty or priority assertion is intended.

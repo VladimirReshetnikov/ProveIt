@@ -1,0 +1,121 @@
+\section{Exact counting and Poisson reduction}
+\label{sec:exact}
+\subsection{A formal generating function and a graph model}
+Expanding the finite binomial at each $m$ gives the formal identity
+\begin{equation}\label{eq:ogf}
+ \sum_{n\ge0}a_p(n)x^n
+       =\sum_{m\ge0}x^m\bigl(1+(mx)^p\bigr)^m.
+\end{equation}
+Indeed, the term indexed by $k$ on the right is
+$\binom mk m^{pk}x^{m+pk}$. Setting $m=n-pk$ gives
+\eqref{eq:counts}, and $k\le m$ becomes $qk\le n$.
+Every coefficient receives only finitely many contributions, so no analytic
+convergence is being claimed. In fact, the coefficients have superexponential
+growth.
+
+For a direct interpretation, use the canonical labeled vertex set
+$[m]=\{1,\ldots,m\}$. Choose $k$ active vertices. Each active vertex has $p$
+ordered, or color-labeled, outgoing arc slots, and each slot independently
+chooses a target in $[m]$. Loops and repeated targets are allowed.
+Inactive vertices have no outgoing slots. There are
+$\binom mk m^{pk}$ such structures. The size statistic is
+\[
+ n=m+pk=\hbox{number of vertices plus number of arcs}.
+\]
+The disjoint union over the possible $m$ therefore has size $a_p(n)$.
+This is a labeled model with a nonstandard size statistic;
+\eqref{eq:ogf} is not an ordinary unlabeled-digraph generating function.
+
+The number of inactive vertices is
+\begin{equation}\label{eq:rdef}
+ r=m-k=n-qk,\qquad
+ k=\frac{n-r}{q},\qquad m=\frac{n+pr}{q}.
+\end{equation}
+For a uniformly chosen structure of size $n$, denote this random number by
+$R_n$. Its support is exactly
+$\{r:0\le r\le n,\ r\equiv n\pmod q\}$.
+
+\subsection{An exact change of variables}
+For $n>0$ write $N=n/q$ and $B=N^{pn/q}$.
+For an allowed $r$, use $\binom mk=\binom mr$ to get
+\[
+ m^{pk}\binom mk
+  =\frac{m^{pk+r}}{r!}\prod_{h=0}^{r-1}\left(1-\frac hm\right).
+\]
+Since $pk+r=(pn+r)/q$ and $m=N(1+pr/n)$, this becomes
+\begin{equation}\label{eq:exactterm}
+ m^{pk}\binom mk=B\frac{\lambda^r}{r!}e^{\Delta_n(r)},
+\end{equation}
+where
+\begin{equation}\label{eq:Delta}
+ \Delta_n(r)=\frac{pn+r}{q}\log(1+pr/n)-\frac{p^2r}{q}
+      +\sum_{h=0}^{r-1}\log\left(1-\frac{qh}{n+pr}\right).
+\end{equation}
+All factors inside the logarithms are positive for integers $0\le r\le n$:
+$n+pr-q(r-1)=n-r+q>0$.
+The empty product and empty sum at $r=0$ are one and zero respectively.
+The same expression defines a real function at every integer in this range,
+not only those satisfying the congruence.
+
+If $X\sim\Pois(\lambda)$, summation gives the exact identity
+\begin{equation}\label{eq:exactpoisson}
+ q e^{-\lambda}\frac{a_p(n)}{B}
+  =q\E\left[e^{\Delta_n(X)}\1_{\{X\le n\}}
+                    \1_{\{X\equiv n\ (q)\}}\right].
+\end{equation}
+For $p\ge2$ the left side is $\Rcal_p(n)$.
+For $p=1$ it is $e^{-d}a_1(n)/M_1(n)$.
+The factor $q$ is the lattice spacing of the residue condition. It does
+not come from a Stirling approximation; no approximation has yet been used.
+
+\subsection{Poisson polynomial identities}
+Let $T_j$ denote the Touchard polynomial,
+\begin{equation}\label{eq:touchard}
+ T_j(z)=\sum_{\ell=0}^j\left\{\begin{matrix}j\\\ell\end{matrix}\right\}z^\ell,
+ \qquad \E X^j=T_j(\lambda).
+\end{equation}
+Here the braces are Stirling numbers of the second kind.
+This follows by writing $X^j$ in the falling-factorial basis and using
+$\E(X)_\ell=\lambda^\ell$.
+In particular, for each fixed $j$,
+$\E X^j=O_j((1+\lambda)^j)$.
+
+Put $\omega=e^{2\pi\ii/q}$ and
+$\kappa_q=1-\cos(2\pi/q)>0$.
+For any integer residue $a$ and any nonnegative integer $j$,
+\begin{equation}\label{eq:filter}
+ q\E[X^j\1_{\{X\equiv a\ (q)\}}]
+  =\sum_{\ell=0}^{q-1}\omega^{-a\ell}
+       e^{\lambda(\omega^\ell-1)}T_j(\lambda\omega^\ell).
+\end{equation}
+To see this, insert
+$q\1_{\{X\equiv a\}}=\sum_{\ell=0}^{q-1}\omega^{\ell(X-a)}$
+and use the Poisson generating function. The $\ell=0$ term is $T_j(\lambda)$;
+all other terms are
+$O_{q,j}((1+\lambda)^j e^{-\kappa_q\lambda})$.
+For a fixed polynomial, residue restriction therefore changes its Poisson
+average only by an exponentially small absolute error.
+This statement concerns polynomial averages. It does not identify a
+relative secondary exponential sector of the full nonpolynomial sum.
+
+\subsection{Exact monotonicity}
+\begin{proposition}\label{prop:monotone}
+For every $p\ge1$,
+\[
+ a_p(0)=\cdots=a_p(p)=1,\qquad a_p(p+1)=2,
+\]
+and $a_p(n+1)>a_p(n)$ for every $n\ge p$.
+Consequently, for each real $y>1$ the threshold
+\begin{equation}\label{eq:threshold}
+ T_p(y)=\min\{n\ge0:a_p(n)\ge y\}
+\end{equation}
+is well-defined.
+\end{proposition}
+\begin{proof}
+For each previously allowed $k$, increasing $n$ increases
+$m=n-pk\ge k$. Both $m^{pk}$ and $\binom mk$ are nondecreasing in $m$,
+and all newly allowed summands are positive. At the first step $n=p$,
+the new $k=1$ term gives strictness. Thereafter the common $k=1$ term
+$(n-p)^{p+1}$ strictly increases. It also proves unboundedness.
+The initial equalities are immediate from \eqref{eq:counts}.
+\end{proof}

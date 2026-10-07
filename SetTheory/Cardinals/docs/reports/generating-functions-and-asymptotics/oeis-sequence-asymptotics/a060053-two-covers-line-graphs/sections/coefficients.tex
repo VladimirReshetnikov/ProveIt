@@ -1,0 +1,447 @@
+\section{Lambert expansions and explicit
+coefficients}\label{lambert-expansions-and-explicit-coefficients}
+
+All limits are for positive integer \(n\) tending to infinity. The
+polynomial \(P\) and expansion order \(J\) are fixed before taking that
+limit. Implicit constants can depend on \(P\) and \(J\). Numerical
+diagnostics below are not rigorous intervals.
+
+
+\subsection{Definitions and main
+theorem}\label{definitions-and-main-theorem}
+
+Write \((u)_k=u(u-1)\cdots(u-k+1)\) for a falling factorial and
+\(u^{\overline{k}}=u(u+1)\cdots(u+k-1)\) for a rising factorial. Put
+
+\[
+\begin{gathered}
+ M(m)=m(m-1)/2,\qquad
+ H_n=e^{-1}\sum_{m\ge0}\frac{(M(m))_n}{m!},\\
+ c_k=[z^k]e^{P(z)},\qquad
+ A_P(n)=\sum_{k=0}^n(n)_kc_kH_{n-k}.
+\end{gathered}
+\]
+
+Assume \(P\) is a fixed real polynomial with \(P(0)=0\). The relevant
+cases are
+
+\[
+ P_V(z)=-z/2,\quad P_U(z)=z/2,\quad
+ P_L(z)=z/2-z^3/6-z^4/4-z^5/8-z^6/48.
+\]
+
+Let
+
+\[
+ r=W(2n),\qquad s=e^r=2n/r,
+\]
+
+\[
+ S_n=\frac{\exp\{2n(r-1+1/r)-1-n\log2-r^2/4-r/2\}}{\sqrt{1+r}}.
+ \tag{C1}\label{eq:C1}
+\]
+
+\textbf{Theorem C1.} If \(K_P\) is the field generated over the rationals
+by the coefficients of \(P\), there are rational functions
+\(a_{P,j}(r)\) in \(K_P(r)\), obtained by the finite algebraic
+prescription below, with \(a_{P,0}=1\) and
+
+\[
+ a_{P,j}(r)=O_{P,j}((1+r)^{4j}),
+\]
+
+such that, for every fixed \(J\ge0\),
+
+\[
+ A_P(n)=S_n\left(\sum_{j=0}^J\frac{a_{P,j}(r)}{n^j}
+ +O_{P,J}\!\left(\frac{(1+r)^{4J+4}}{n^{J+1}}\right)\right).
+ \tag{C2}\label{eq:C2}
+\]
+
+For rational \(P\) these are ordinary rational functions over the
+rationals and the prescription is exactly computable by rational
+arithmetic. For arbitrary real \(P\) the prescription is algebraic
+relative to its coefficients; no computable access to an arbitrary real
+constant is assumed.
+
+Thus the statement covers every fixed order. The accompanying software
+has been run and checked through \(J=3\); computation at three orders is
+not the proof of the all-orders assertion. The public interface supports
+orders zero through three. The finite algebraic prescription itself has
+no fixed mathematical order cap.
+
+\subsection{Exact finite-order coefficient
+generator}\label{exact-finite-order-coefficient-generator}
+
+Use formal \(h\) and \(y\), with
+
+\[
+ h=s^{-1/2},\quad x=1+hy,\quad n=r/(2h^2),\quad
+ m=x/h^2,\quad M=\frac{x^2}{2h^4}(1-h^2/x).
+\]
+
+Write $\mathsf B_k(z)$ for the Bernoulli polynomial and
+$\mathsf B_k=\mathsf B_k(0)$ for the Bernoulli number. These differ from
+the Bell numbers $B_k$ used earlier; for example $\mathsf B_2=1/6$.
+For \(p\ge1\) let
+
+\[
+ F_p(n)=\sum_{j=0}^{n-1}j^p
+       =\frac{\mathsf B_{p+1}(n)-\mathsf B_{p+1}(0)}{p+1}.
+\]
+
+The identity in the second expression defines its polynomial
+continuation. Set
+
+\[
+ D=n\log(1-h^2/x)-\sum_{p\ge1}\frac{F_p(n)}{pM^p},
+ \tag{C3}\label{eq:C3}
+\]
+
+\[
+ E=\frac{(r-x)\log x+(1-r)(x-1)}{h^2}
+ +\frac{r+1}{2}y^2-\frac12\log x
+ -\sum_{q\ge1}\frac{\mathsf B_{2q}h^{4q-2}}{2q(2q-1)x^{2q-1}}
+ +D+\frac r2+\frac{r^2}4,
+ \tag{C4}\label{eq:C4}
+\]
+
+\[
+ Q=\sum_{k\ge0}c_k\frac{(n)_k}{(M-n+1)^{\overline{k}}}.
+ \tag{C5}\label{eq:C5}
+\]
+
+Equations (C3)--(C5) are finite-order formal instructions. To obtain
+\(a_{P,j}\), keep \(p\le j+1\) in (C3), \(q\) with \(4q-2\le2j\) in
+(C4), and \(k\le j\) in (C5), and discard powers above \(h^{2j}\). In
+particular, no infinite Stirling series is asserted to converge.
+
+If \(Y\) is centered Gaussian with variance \(1/(r+1)\), then
+
+\[
+ a_{P,j}(r)=\left(\frac r2\right)^j
+ \mathbb E\left([h^{2j}]e^{E(h,Y,r)}Q(h,Y,r)\right).
+ \tag{C6}\label{eq:C6}
+\]
+
+This is an exact algebraic prescription over \(K_P\), and is an exact
+rational-arithmetic prescription when \(P\) has rational coefficients.
+Gaussian moments are
+
+\[
+ \mathbb E Y^{2\ell}=(2\ell-1)!!/(1+r)^\ell,
+ \qquad \mathbb E Y^{2\ell+1}=0.
+\]
+
+An efficient implementation computes the coefficients of \(\exp(E)\) by
+the finite recurrence
+
+\[
+ b_0=1,\qquad b_j=\frac1j\sum_{k=1}^j kE_kb_{j-k},
+ \quad E=\sum_{k\ge1}E_kh^k.
+\]
+
+The code \texttt{generate\_coefficients.py} implements this using exact
+SymPy rational arithmetic for the displayed rational polynomials \(P\);
+formal polynomial parameters can instead be retained symbolically.
+Setting \(D=0\) and omitting its centering constants gives the usual
+Bell saddle corrections \(b_j\) for
+
+\[
+ 2^{-n}B_{2n}=\frac{e^{2n(r-1+1/r)-1-n\log2}}{\sqrt{1+r}}
+ \left(\sum_{j=0}^J b_j(r)n^{-j}
+ +O_J((1+r)^{4J+4}n^{-J-1})\right).
+\]
+
+The coefficients relative to the exact Bell factor are obtained by
+ordinary formal division, not by identifying \(S_n\) with that exact
+factor.
+
+\subsection{Justification of the fixed-order
+remainder}\label{justification-of-the-fixed-order-remainder}
+
+\subsubsection{Localization and signed
+convolution}\label{localization-and-signed-convolution}
+
+The preceding exact-saddle section establishes the following facts
+directly from strict concavity of
+
+\[
+ f_n(t)=\sum_{j<n}\log(M(t)-j)-\log\Gamma(t+1),
+ \qquad t>(1+\sqrt{1+8(n-1)})/2.
+\]
+
+Its unique saddle \(\tau\) satisfies \(\tau=s+O(r)\), its variance is
+\(\sigma^2=s(1+O(r^2/n))/(r+1)\), and on an interval comparable with
+\(s\) the exponent loses at least \(c(t-\tau)^2/\sigma^2\). Outside that
+interval a concave tangent gives an exponentially decreasing right tail;
+the left tail has only \(O(s)\) integer points. In particular
+\(H_n/S_n=1+O(r^4/n)\). The same estimates hold with \(n\) replaced by
+\(n-k\) for any fixed \(k\).
+
+Positivity also gives the adjacent-ratio upper bound
+
+\[
+ H_{n-1}/H_n\le C(\log n/n)^2.
+\]
+
+Combining it for \(k\le n/2\) with the entire majorant
+\(\exp(\sum_j|[z^j]P|z^j)\), and using a coefficient Cauchy bound for
+\(k>n/2\), yields
+
+\[
+ A_P(n)=\sum_{k=0}^J(n)_kc_kH_{n-k}
+ +O_{P,J}(H_n(r^2/n)^{J+1}).
+ \tag{C7}\label{eq:C7}
+\]
+
+This is an absolute bound and does not assume the \(c_k\) have one sign.
+For \(d=\deg P\ge1\) the normalized absolute far tail \(k>n/2\) is at
+most
+
+\[
+ \exp\{-\tfrac12(1+1/d)n\log n+n\log\log n+O_P(n)\}.
+\]
+
+Therefore only fixed \(k\le J\) are needed for the Lambert coefficient
+calculation.
+
+For each such \(k\), discard its extra left support \(n-k\le M(m)<n\).
+There \(m=O(\sqrt n)\), and the logarithm of its unnormalized summand is
+at most \(n\log n+O_J(n+\log n)\), whereas
+\(\log H_n=2n\log n-2n\log\log n+O(n)\). It is exponentially negligible
+relative to every fixed algebraic error required here. On the common
+support \(M(m)\ge n\), the exact identity
+
+\[
+ \frac{(M)_{n-k}}{(M)_n}
+  =\frac1{(M-n+1)^{\overline{k}}}
+ \tag{C8}\label{eq:C8}
+\]
+
+justifies the finite version \(Q_J\) of (C5). Applying (C8) to the
+discarded support would be invalid.
+
+Nor is a uniform bound on \(Q_J\) near \(M=n\) needed. Localize each
+original positive sum \(H_{n-k}\) separately before introducing \(Q_J\).
+For fixed \(k\) its saddle differs from \(s\) by \(O_J(r)\), and its
+variance is comparable with \(s/(1+r)\). Thus the portion outside the
+common Lambert window \(|Z|\le r^2\) is \(O_J(H_{n-k}e^{-c_Jr^4})\).
+Multiplying by \((n)_k|c_k|\) and using
+\((n)_kH_{n-k}/H_n=O_J((r^2/n)^k)\) gives \(O_{P,J}(H_ne^{-c_Jr^4})\)
+after summing \(k\le J\). This controls the boundary and far tails even
+when the rational multiplier itself is large there. Only inside the
+common central window is \(Q_J\) expanded analytically.
+
+\subsubsection{A finite analytic
+exponent}\label{a-finite-analytic-exponent}
+
+Fix \(J\). In (C3), retain \(p=1,\ldots,J+1\) and retain the logarithm
+\(n\log(1-h^2/x)\) analytically, with its removable value at \(h=0\). In
+(C4), retain only those Stirling terms with \(4q-2\le2J\). Call the
+resulting finite analytic exponent \(E_J\). Use \(Q_J\) from (C5) with
+\(k\le J\).
+
+The original real collision logarithm differs from this finite version,
+uniformly for \(m\) comparable with \(s\), by
+
+\[
+ O_J(n^{J+3}/M^{J+2})
+ =O_J(r^{J+3}h^{2J+2}).
+ \tag{C9}\label{eq:C9}
+\]
+
+Indeed the omitted logarithm tail is bounded by a constant times
+\(\sum_{j<n}(j/M)^{J+2}\), since \(n/M=o(1)\). The omitted real
+positive-argument Stirling remainder is bounded by its first omitted
+term, and hence is \(O_J(h^{2J+2})\) or smaller. These are estimates for
+real \(h\); they are not deduced from convergence of the Stirling
+series. The standard finite Stirling remainder is documented in
+\href{https://dlmf.nist.gov/5.11}{DLMF §5.11}.
+
+At \(h=0\), \(D\) begins with \(-r/(2x)-r^2/(4x^2)\), so
+\(E_J(0,y,r)=0\). Every singular-looking power of \(h\) in the finite
+expression is removable. For example, \(F_p(n)/M^p\) starts at
+\(h^{2p-2}\); the quadratic term of the first expression in (C4) cancels
+its explicitly added Gaussian term.
+
+\subsubsection{Cauchy radius, integrated remainder, and
+parity}\label{cauchy-radius-integrated-remainder-and-parity}
+
+Rescale \(Z=\sqrt{1+r}\,y\). For real \(Z\) and \(r\ge1\), there is a
+sufficiently small \(c_J>0\) such that on the complex \(h\)-disk
+
+\[
+ |h|\le R_Z=c_J(1+r)^{-3/2}(1+|Z|)^{-3}
+ \tag{C10}\label{eq:C10}
+\]
+
+we have
+
+\[
+ |e^{E_J(h,Z/\sqrt{1+r},r)}Q_J(h,Z/\sqrt{1+r},r)|\le C_{P,J}.
+ \tag{C11}\label{eq:C11}
+\]
+
+Here is a direct bound behind (C11). On this disk,
+\(|hy|\le c_J(1+r)^{-2}|Z|/(1+|Z|)^3\), so all denominators \(x\) and
+the finitely many factors in \(Q_J\) stay away from zero. The shifted
+leading collision part is \(O(r^2|hy|)\), hence bounded. The next
+collision contribution is \(O(r^3|h|^2)\), hence bounded, and all
+subsequent fixed collision terms are smaller. The cubic-and-higher Bell
+phase is \(O((1+r)|h||y|^3/(1-|hy|))\), also bounded. The logarithmic
+amplitude and the finite Stirling terms are bounded as well. The finite
+\(Q_J\) is bounded since each \(k\)-term starts at \(O((r|h|^2)^k)\) and
+all its normalized denominators are nonzero. Constants may be reduced or
+enlarged for finitely many lower powers and fixed coefficients.
+
+Cauchy's estimate therefore bounds its coefficient of \(h^q\) by
+
+\[
+ C_{P,J,q}(1+r)^{3q/2}(1+|Z|)^{3q}.
+ \tag{C12}\label{eq:C12}
+\]
+
+On the real central window \(|Z|\le r^2\), the actual \(h=e^{-r/2}\)
+eventually satisfies \(h\le R_Z/2\). Expanding through degree \(2J+1\)
+has pointwise remainder bounded by
+
+\[
+ C_{P,J}h^{2J+2}(1+r)^{3J+3}(1+|Z|)^{6J+6}.
+ \tag{C13}\label{eq:C13}
+\]
+
+Multiplying by the Gaussian density and integrating gives
+
+\[
+ O_{P,J}(h^{2J+2}(1+r)^{3J+3})
+ =O_{P,J}((1+r)^{4J+4}/n^{J+1}).
+ \tag{C14}\label{eq:C14}
+\]
+
+The real errors in (C9), and the Stirling error, fit inside (C14);
+exponentiation preserves those bounds because they tend uniformly to
+zero on this window. The convolution remainder (C7) also fits, using
+\(H_n/S_n=1+o(1)\).
+
+For clarity about the lattice: \(Z_m=\sqrt{1+r}\,h(m-s)\), so its mesh
+is \(\Delta=\sqrt{1+r}\,h\). The normalized central sum is
+
+\[
+ \frac{\Delta}{\sqrt{2\pi}}\sum_m e^{-Z_m^2/2}
+ e^{E_J(h,Z_m/\sqrt{1+r},r)}Q_J(h,Z_m/\sqrt{1+r},r).
+ \tag{C15}\label{eq:C15}
+\]
+
+The mesh-weighted sum of any fixed polynomial times \(e^{-Z^2/2}\) is
+uniformly bounded. Thus (C13) controls the summed remainder too. For
+each of the finitely many retained polynomial coefficients, Poisson
+summation of a Gaussian and its derivatives replaces (C15) by its
+integral with error bounded by a polynomial in \(r\) and \(\Delta^{-1}\)
+times \(\exp(-2\pi^2/\Delta^2)\), hence smaller than every fixed
+required power of \(n\). The actual sum outside \(|Z|\le r^2\) has
+relative size \(\exp(-cr^4)\), by the concavity estimates and
+\(\tau-s=O(r)\); fixed polynomial factors do not change its
+negligibility. This also justifies extending the polynomial-Gaussian
+integrals to the whole line.
+
+Finally the analytic expression is invariant under
+\((h,y)\mapsto(-h,-y)\). Its coefficient of \(h^q\) has parity \(q\) in
+\(y\). Odd terms integrate to zero. The even terms are precisely (C6).
+Formula (C12), integrated at \(q=2j\) and multiplied by \((r/2)^j\),
+gives \(a_{P,j}=O((1+r)^{4j})\). Gaussian moments put the coefficients
+in \(K_P(r)\), and in \(\mathbb{Q}(r)\) for rational \(P\). This proves
+(C2).
+
+\subsection{Explicit coefficients and the nonconstant remainder
+issue}\label{explicit-coefficients-and-the-nonconstant-remainder-issue}
+
+The \(S_n\)-normalized first coefficients are
+
+\[
+ a_{H,1}=\frac{r^2(r^5-12r^3-28r^2-28r-16)}{48(r+1)^3},
+\]
+
+\[
+ a_{V,1}=\frac{r^2(r^5-24r^3-64r^2-64r-28)}{48(r+1)^3},
+\]
+
+\[
+ a_{U,1}=a_{L,1}
+ =\frac{r^2(r^5+8r^2+8r-4)}{48(r+1)^3}.
+\]
+
+For compact display, define the numerator polynomials
+\begin{align*}
+N_H(r)={}&r^{11}-48r^9-80r^8+544r^7+2032r^6+2176r^5\\
+ &-544r^4-2928r^3-2368r^2-1088r-768,\\
+N_V(r)={}&r^{11}-72r^9-152r^8+904r^7+3832r^6+3280r^5\\
+ &-7936r^4-22272r^3-23296r^2-12080r-3072,\\
+N_U(r)={}&r^{11}-24r^9-8r^8+472r^7+1960r^6+5392r^5\\
+ &+12608r^4+20736r^3+20288r^2+10192r+1536.
+\end{align*}
+The second coefficients are
+\[
+a_{H,2}=\frac{r^3N_H(r)}{4608(r+1)^6},\qquad
+a_{V,2}=\frac{r^3N_V(r)}{4608(r+1)^6},\qquad
+a_{U,2}=a_{L,2}=\frac{r^3N_U(r)}{4608(r+1)^6}.
+\]
+
+The equality of \(U\) and \(L\) at these two orders is structural:
+\(e^{P_L}\) and \(e^{P_U}\) agree through degree two. At the next order,
+
+\[
+ a_{L,3}-a_{U,3}=-r^6/48
+ \tag{C16}\label{eq:C16}
+\]
+
+exactly. The complete order-three rational functions are in
+\texttt{data/coefficients\_order3.json}.
+
+Now define the \textbf{exact} Bell normalization
+
+\[
+ T_n=2^{-n}B_{2n}e^{-r^2/4-r/2}.
+\]
+
+Then
+
+\[
+ \frac{V_n}{T_n}=1+\frac{v_1(r)}n+\frac{v_2(r)}{n^2}
+ +\frac{v_3(r)}{n^3}+O(r^{16}/n^4),
+\]
+
+where
+
+\[
+ v_1(r)=r^2(r-6)(r+3)/48,
+\]
+
+\[
+\begin{split}
+ v_2(r)&=\frac{r^3 N_B(r)}{4608(r+1)^3},\\
+ N_B(r)&=r^8-3r^7-66r^6+58r^5+945r^4+813r^3\\
+ &\hspace{1cm}-2640r^2-4956r-2208.
+\end{split}
+\]
+
+and
+
+\[
+ v_3(r)\sim r^{12}/663552.
+\]
+
+Consequently the remainder after \(v_2/n^2\) is asymptotic to
+\(r^{12}/(663552n^3)\). It is \textbf{not \(O(n^{-3})\) with a constant
+independent of \(n\)}. A valid simple upper bound at that truncation is
+\(O(r^{12}/n^3)\).
+
+
+The first relative effect of identifying line images is consequently
+\[
+\frac{L_n}{U_n}=1-\frac{r^6}{48n^3}+O\left(\frac{r^{16}}{n^4}\right).
+\]
+This follows by dividing the two expansions with their common first and
+second coefficients. The correction separating the legacy series from
+corrected line graphs first enters at order four, consistently with the
+missing quartic term of the legacy multiplier.

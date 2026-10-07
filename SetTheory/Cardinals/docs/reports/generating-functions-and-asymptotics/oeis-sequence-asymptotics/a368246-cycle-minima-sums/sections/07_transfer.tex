@@ -1,0 +1,83 @@
+\section{Coefficient transfer and the zero mean sector}\label{sec:transfer}
+\subsection{An exact identity before asymptotic expansion}
+For $m\geq0$ and a complex parameter $\alpha$,
+\begin{equation}\label{eq:transfer}
+[z^m]\left(1-\frac z\zeta\right)^\alpha
+=\zeta^{-m}(-1)^m\binom\alpha m
+=\zeta^{-m}\frac{\Gamma(m-\alpha)}
+ {\Gamma(-\alpha)\Gamma(m+1)}.
+\end{equation}
+The binomial coefficient is a polynomial in $\alpha$, so the Gamma expression is interpreted by analytic continuation at apparent poles. Differentiate $h$ times with respect to $\alpha$ and then set $\alpha=p\in\Z_{\geq0}$ to obtain the exact coefficient of
+\[
+\left(1-\frac z\zeta\right)^p\log^h\left(1-\frac z\zeta\right).
+\]
+For a fixed finite set of $p,h$, the Gamma-ratio expansion may be differentiated uniformly in a small parameter neighborhood. This follows, for example, by applying Cauchy's derivative formula to the uniform finite Stirling expansion in that neighborhood. Thus it retains a controlled remainder after differentiation.
+
+The ratio in \eqref{eq:transfer} begins with $m^{-\alpha-1}$. At a nonnegative integer $p$, the reciprocal Gamma factor $1/\Gamma(-\alpha)$ has a simple zero. Consequently the coefficient at every inverse-power order is a polynomial in $\log m$ of degree at most $h-1$, rather than $h$. More explicitly, for each fixed $J\geq p+1$,
+\begin{equation}\label{eq:generaltransfer}
+[z^m]\left(1-\frac z\zeta\right)^p\log^h\left(1-\frac z\zeta\right)
+=\zeta^{-m}\sum_{j=p+1}^{J}\frac{Q_{p,h,j}(\log m)}{m^j}
++O\!\left(\frac{(1+\log m)^{h-1}}{m^{J+1}}\right),
+\end{equation}
+where $h\geq1$ and $\deg Q_{p,h,j}\leq h-1$. For $h=1$, one also has the particularly useful exact formula
+\begin{equation}\label{eq:singlelog}
+[z^m]\left(1-\frac z\zeta\right)^p\log\left(1-\frac z\zeta\right)
+=\zeta^{-m}\frac{(-1)^{p+1}p!}{m(m-1)\cdots(m-p)},\quad m>p.
+\end{equation}
+This formula fixes the signs in both \eqref{eq:genericcoefficient} and the low-order expansion.
+
+\subsection{Which roots can contribute at a given order}
+At a root of order $q\geq2$, a logarithm power $h$ in the expansion of \eqref{eq:rootform} has degree at least $h(q-1)$, and the extra zero at $\pm\ii$ adds one more. Multiplication by analytic jets and change of analytic coordinate can only increase the degree. Thus every nonanalytic monomial has
+\begin{equation}\label{eq:degreeconstraint}
+p\geq h(q-1)+\varepsilon_\zeta.
+\end{equation}
+If it contributes at order $m^{-j}$, then $j\geq p+1$. In particular,
+\begin{equation}\label{eq:orderconstraint}
+q\leq j,\qquad h-1\leq p-1\leq j-2.
+\end{equation}
+This proves the bound on logarithm degree and shows that only roots of order at most $j$ can appear at order $j$. The order-four exception improves the first restriction for that specific pair. There is no monomial with $p=0$ at a nontrivial root, hence no $m^{-1}$ term.
+
+\subsection{Discarding the deeper subtraction terms}
+The global construction retained all nonanalytic terms through $p=M-1=K+1$ so that its remainder had $M$ integrable derivatives. To state an expansion only through $m^{-K}$, retain in the coefficient formula only the terms with $p\leq K-1$ and only the transfer powers $j\leq K$.
+
+Terms with $p=K$ start at
+\[
+O\bigl(m^{-K-1}(1+\log m)^{K-1}\bigr).
+\]
+Terms with $p=K+1$ start at $O(m^{-K-2}(1+\log m)^K)$ and are absorbed in the same bound for large $m$. Terms from expanding the transfer of lower-degree monomials beyond $j=K$ also obey that bound. Finally, \eqref{eq:globalremainder} is stronger. There are finitely many roots and monomials for each $K$, so addition gives
+\begin{equation}\label{eq:mexpansion}
+[z^m]F(z)=A+
+\sum_{j=2}^{K}\frac{\widetilde P_j(m,\log m)}{m^j}
++O_K\!\left(\frac{(1+\log m)^{K-1}}{m^{K+1}}\right),
+\end{equation}
+with the restrictions \eqref{eq:orderconstraint}.
+
+This two-depth argument is useful: one subtracts more local terms than one finally displays. Stopping the local analysis at the displayed order alone would not automatically furnish the global Fourier remainder.
+
+\subsection{Periodicity and the absence of a constant frequency}
+Every term in $\widetilde P_j$ has a nontrivial frequency $\zeta^{-m}$ with exact order $q\leq j$. Its coefficient is a polynomial in $\log m$. The root $1$ contributed only the constant $A$ because of Section~\ref{sec:positive}; it supplies no algebraic correction.
+
+For any nontrivial $\zeta$ with $\zeta^{\lambda_j}=1$,
+\begin{equation}\label{eq:zeromean}
+\sum_{m=0}^{\lambda_j-1}\zeta^{-m}=0.
+\end{equation}
+Hence every logarithmic coefficient in $\widetilde P_j$ is periodic with period dividing $\lambda_j$ and has zero mean. Since $F$ has real Taylor coefficients, the amplitudes at conjugate roots are conjugate. Pairing them makes the coefficients visibly real.
+
+To finish, use the exact shift $m=n-1$. For fixed $j$,
+\[
+(n-1)^{-j}=n^{-j}(1-1/n)^{-j},\qquad
+\log(n-1)=\log n+\log(1-1/n),\qquad
+\zeta^{-m}=\zeta^{1-n}.
+\]
+Taylor expansion to the requested finite order preserves the logarithm-degree bound. Contributions to order $n^{-j}$ come from original orders at most $j$, whose periods all divide $\lambda_j$. Their frequencies stay nontrivial, and multiplication by the fixed factor $\zeta$ does not create a constant frequency. Equation \eqref{eq:zeromean} remains valid. The remainder transforms to that in \eqref{eq:main}, proving Theorem~\ref{thm:main}.
+
+\subsection{A finite prescription for every coefficient}
+The proof is constructive at a fixed order, although it does not promise elementary closed forms for all higher amplitudes. A precise prescription is:
+\begin{enumerate}
+\item Choose $L=K+6$ and enumerate the roots in $Z_L$.
+\item At each root, calculate the finite polylogarithmic analytic and logarithmic jets from \eqref{eq:HL}, \eqref{eq:polylog}, and \eqref{eq:rootform}.
+\item Obtain the required derivatives of $Q_L$ from its absolutely and uniformly differentiated series. Formula \eqref{eq:tailbound} supplies convergent bounds for these derivatives.
+\item Multiply jets and change to $t=1-z/\zeta$. Keep the nonanalytic monomials required by the two-depth subtraction.
+\item Apply \eqref{eq:transfer}, expand the Gamma ratio to the chosen finite order, pair conjugate roots, and replace $m$ by $n-1$.
+\end{enumerate}
+This specifies actual coefficients of this sequence. Generic power-log transfer examples are useful tests of the method, but their arbitrary input amplitudes are not higher coefficients of A368246. The accompanying code distinguishes the exact sequence calculations from symbolic transfer identities and only evaluates the fully displayed sequence models of orders two and three.

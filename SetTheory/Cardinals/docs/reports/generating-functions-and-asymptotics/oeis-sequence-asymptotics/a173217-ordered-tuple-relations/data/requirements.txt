@@ -1,0 +1,16 @@
+# Python packages for the full finite reproduction driver:
+sympy==1.14.0
+mpmath==1.3.0
+# Tested interpreter: CPython 3.12.14. Certified rational recovery uses stdlib only.
+# PDF executables: kpsewhich, pdftex, pdflatex.
+# Tested: pdfTeX 3.141592653-2.6-1.40.26 (TeX Live 2025/dev/Debian),
+# kpathsea 6.4.0/dev, LaTeX2e <2024-11-01> patch level 2.
+# Required LaTeX packages: fontenc, lmodern, geometry, amsmath, amssymb,
+# amsthm, mathtools, microtype, booktabs, longtable, array, xcolor, hyperref.
+# Installed map files: cm.map, cmextra.map, latxfont.map, symbols.map,
+# euler.map, lm.map. The driver creates its own private pdftex.map.
+# PDF review (not needed for deterministic build): Poppler pdfinfo/pdftoppm.
+# Same TeX/font versions are required for byte-identical PDF replay.
+# Combined mpmath diagnostic/full reproduction: Python integer conversion limit
+# must be 4300 (the default), higher, or explicitly unlimited. Drivers do not
+# change it. Standard-library certified recovery is tested at limit 640.

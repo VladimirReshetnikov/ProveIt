@@ -1,0 +1,107 @@
+\section{Logarithmic inversion and fine threshold location}\label{sec:inverse}
+Two distinct inverse problems must be separated. A reversed logarithmic expansion gives an explicit asymptotic size and a practical root-finding seed. The exact-saddle expansion gives a far finer location and, when supplemented with effective bounds or exact adjacent checks, integer thresholds.
+
+\subsection{The exact-saddle smooth function}
+For real $x$ sufficiently large let $r_x$ solve $\De C(r_x)=x$, put $b_x=\De^2C(r_x)$, and define
+\begin{equation}\label{eq:F}
+ F_J(x)=\log\Gamma(x+1)+C(r_x)-x\log r_x
+       -\tfrac12\log(2\pi b_x)+\log S_J(r_x).
+\end{equation}
+Since $S_J=1+O(r_x/x)$, it is positive eventually. Theorem~\ref{thm:coeff} gives, at integer $n$,
+\begin{equation}\label{eq:logerror}
+ \log A_n=F_J(n)+O_J((r_n/n)^{J+1}).
+\end{equation}
+Differentiating the saddle relation gives $\dd r_x/\dd x=r_x/b_x$. The implicit derivatives in $C(r_x)-x\log r_x$ cancel, and therefore
+\begin{equation}\label{eq:Fprime}
+ F'_J(x)=\psi(x+1)-\log r_x-\frac{\kappa_3(r_x)}{2b_x^2}
+       +\frac{r_x}{b_x}\frac{\dd}{\dd r}\log S_J(r_x)
+       \sim\log(x/r_x)>0.
+\end{equation}
+Indeed the explicit rational monomials in \eqref{eq:Eell} satisfy
+$\De E_\ell=O_J(r\eps^\ell)$, and the last contribution is $O_J(\eps/x)$. Thus $F_J$ has a unique inverse on a sufficiently large half-line.
+
+\begin{theorem}[Rounding-safe inverse brackets]\label{thm:inverse}
+Fix $J$. Suppose $K_J$ and a starting point are chosen so that
+\[
+ |\log A_n-F_J(n)|\le K_J(r_n/n)^{J+1}
+\]
+for all integers beyond that point. For sufficiently large $M$, define $x_-,x_+$ by
+\begin{align}
+ F_J(x_-)+K_J(r_{x_-}/x_-)^{J+1}&=\log M,\label{eq:lowerinverse}\\
+ F_J(x_+)-K_J(r_{x_+}/x_+)^{J+1}&=\log M.\label{eq:upperinverse}
+\end{align}
+Then the integer threshold $N(M)=\min\{n:A_n\ge M\}$ satisfies
+\begin{equation}\label{eq:ceilings}
+ \ceil{x_-}\le N(M)\le\ceil{x_+}.
+\end{equation}
+If $x_J$ is defined by $F_J(x_J)=\log M$, the bracket width and each endpoint's distance from $x_J$ have order at most
+\begin{equation}\label{eq:inversefine}
+ O_J\left(\frac{(r_{x_J}/x_J)^{J+1}}{\log(x_J/r_{x_J})}\right).
+\end{equation}
+\end{theorem}
+\begin{proof}
+The two functions on the left of \eqref{eq:lowerinverse}--\eqref{eq:upperinverse} are eventually increasing, with derivatives asymptotic to \eqref{eq:Fprime}. If an integer $n<\ceil{x_-}$, then $n<x_-$, and the upper estimate for $\log A_n$ is below $\log M$. If $n\ge\ceil{x_+}$, its lower estimate is at least $\log M$. The finite early segment is irrelevant for sufficiently large $M$. The mean value theorem and \eqref{eq:Fprime} give \eqref{eq:inversefine}. Finally $A_n$ is nondecreasing by adjoining an isolated labelled vertex, and the coefficient formula also implies eventual strict increase.
+\end{proof}
+
+The theorem is an asymptotic bracket statement; this article does not supply numerical values for $K_J$ and the starting point. It therefore does not claim that rounding a computed asymptotic inverse alone certifies an exact threshold. When the bracket crosses an integer, exact adjacent coefficient comparisons settle the answer. There is also no need to posit a canonical smooth interpolation of the integer sequence: \eqref{eq:ceilings} is the precise meaning of fine range location.
+
+\subsection{Three explicit inverse-logarithmic corrections}
+Let $y=\log M$, $L=\log y$, $\ell=\log L$, and $c=\log2$.
+\begin{theorem}[Reversed logarithmic expansion]\label{thm:reverse}
+For each fixed $J$, the solution $x_J(y)$ of $F_J(x)=y$ satisfies
+\begin{align}\label{eq:reverse}
+ x_J(y)=\frac yL\bigg\{1&+\frac{2\ell+1}{L}
+ +\frac{4\ell^2-2\ell+c-1}{L^2}\\[-3pt]
+ &+\frac{8\ell^3-22\ell^2+8c\ell-c-c^2/2-1/2}{L^3}
+ +O\left(\frac{\ell^4}{L^4}\right)\bigg\}.\nonumber
+\end{align}
+There is a coefficient-by-coefficient recursion for every fixed subsequent logarithmic order.
+\end{theorem}
+\begin{proof}
+Define
+\begin{align}
+ n_0(r)&=\tfrac12e^rr^2(r+2),\nonumber\\
+ g(r)&=r+2\log r-c-1+\log(1+2/r)+\frac1{r+2}.\label{eq:g}
+\end{align}
+The exact saddle, Stirling's expansion, and the polynomial perturbation imply
+\[
+ n=n_0(r)+O(r^4),\qquad F_J(n)=n_0(r)g(r)+O(r^5).
+\]
+For example, the main factor in the latter expression is
+$\log n_0-\log r-1+H(r)/n_0=g(r)$; the saddle perturbation and fixed logarithmic factors fit inside $O(r^5)$. Errors polynomial in $r$ are exponentially small relatively here. They may be discarded for fixed inverse-logarithmic orders, though not for count-relative accuracy. Taking logarithms and then dividing by $g$ yields, to all such orders,
+\begin{equation}\label{eq:logreversal}
+ L=r+3\log r-c+\log(1+2/r)+\log g(r),\qquad n=\frac y{g(r)}.
+\end{equation}
+First,
+\[
+ g(r)=r+2\log r-c-1+\frac3r-\frac4{r^2}
+                  +\frac{20}{3r^3}+O(r^{-4}).
+\]
+Reversion in \eqref{eq:logreversal} gives
+\begin{align}\label{eq:rinverse}
+ r={}&L-4\ell+c+\frac{14\ell-3c-1}{L}\\
+ &+\frac{26\ell^2-12c\ell-54\ell+3c^2/2+12c+7/2}{L^2}
+ +O(\ell^3/L^3).\nonumber
+\end{align}
+Substituting \eqref{eq:rinverse} in $y/g(r)$ gives \eqref{eq:reverse}.
+
+For a mechanical arbitrary-order rule set $t=1/L$, regard $\ell,c$ as formal constants, and seek
+\[
+ R=t^{-1}-4\ell+c+\sum_{k\ge1}a_k(\ell)t^k,
+ \qquad \log R=\ell+\log(tR).
+\]
+Expand \eqref{eq:logreversal} with $\log g(R)=\ell+\log(tg(R))$. At power $t^k$ the new unknown $a_k$ occurs with coefficient one in $R$, while its appearances in logarithms are delayed by at least one power. Solve successively, then expand $1/[t g(R)]$. This gives polynomials $q_k(\ell)$ of degree at most $k$ in
+\[
+ n=\frac yL\sum_{k\ge0}\frac{q_k(\ell)}{L^k}.
+\]
+Taylor's theorem for $\log(1+u)$, where $|u|=O(\ell/L)$, bounds a truncation through relative order $m$ by $O_m(\ell^{m+1}/L^{m+1})$. The derivative of $\log(n_0(r)g(r))$ is $1+O(1/r)$, so inversion preserves that order. This justifies the formal recursion as an asymptotic expansion.
+\end{proof}
+
+The $\log2$ terms record the factor $1/2$ in $H$. Even the error in \eqref{eq:reverse} is eventually much larger than one. A leading Lambert-$W$ seed $x\approx y/W(y)$ is still coarser, and neither seed should be substituted into a counting formula and called relatively accurate.
+
+\subsection{Newton refinement to the exact-saddle scale}
+Use \eqref{eq:reverse} to initialize Newton iteration for the full function $F_J$, with derivative \eqref{eq:Fprime}. On $|x-x_J|\le x_J/2$, direct differentiation gives $F'_J\asymp L$ and $F''_J=O(1/x_J)$. Taylor's theorem therefore yields
+\[
+ |e_{k+1}|\le\frac{C|e_k|^2}{x_JL}.
+\]
+The logarithmic seed has vanishing relative error and eventually lies in this basin. Once the numerical residual is at most the coefficient-error scale $(r/x)^{J+1}$, the mean value theorem converts it to \eqref{eq:inversefine}, subject to the numerical error margin. Solving the reduced equation $n_0g=y$ alone would not obtain this finer accuracy. Effective integer certification still requires the additional bounds or exact checks specified above.

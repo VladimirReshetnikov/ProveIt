@@ -1,0 +1,65 @@
+\section{The expansion and its scope}\label{sec:results}
+For $n\geq1$, let $a_n$ be the number of permutations of $[n]=\{1,\ldots,n\}$ for which the sum of the least elements of all cycles is $n$. The empty permutation is counted separately by $a_0=1$. The initial values are
+\[
+1,1,0,2,3,8,90,384,2940,18864,232848,1919520,\ldots,
+\]
+starting at $n=0$. Put
+\begin{equation}\label{eq:normalization}
+b_n=\frac{a_n}{(n-1)!}\qquad(n\geq1),\qquad A=\ee^{-\gamma},
+\end{equation}
+where $\gamma$ is Euler's constant. The normalization is never applied at $n=0$.
+
+\begin{theorem}[Fixed order expansion]\label{thm:main}
+For every fixed integer $K\geq2$ there are real functions $P_j(n,u)$, $2\leq j\leq K$, such that
+\begin{equation}\label{eq:main}
+b_n=A+\sum_{j=2}^{K}\frac{P_j(n,\log n)}{n^j}
+ +\bigO_K\!\left(\frac{(1+\log n)^{K-1}}{n^{K+1}}\right)
+ \qquad(n\longrightarrow\infty).
+\end{equation}
+Each $P_j(n,u)$ is a polynomial in $u$ of degree at most $j-2$. Its coefficients are periodic in the integer $n$, with period dividing
+\[
+\lambda_j=\lcm(2,3,\ldots,j),
+\]
+and each coefficient has mean zero over that period. In particular, no nonoscillatory algebraic correction occurs at any fixed order, and there is no term of order $n^{-1}$.
+\end{theorem}
+
+The quantifier ``fixed'' matters. The implied constants and the sufficiently large starting index may depend on $K$. The theorem does not assert convergence when $K\to\infty$, a uniform estimate in $K$, or a summation of an infinite transseries. It describes a compatible hierarchy of finite asymptotic expansions. Polynomial growth in $\log n$ is included explicitly in the error.
+
+Let $\om=\exp(2\pi\ii/3)$ and define
+\begin{equation}\label{eq:Comega}
+C_\om=\prod_{r=1}^{3}
+\frac{\Gamma(r/3)}{\Gamma\bigl((r+\om^{r+1})/3\bigr)}.
+\end{equation}
+\begin{theorem}[The first two corrections]\label{thm:explicit}
+The expansion through order three is
+\begin{align}\label{eq:explicit}
+b_n={}&A+\frac{(-1)^n}{n^2}\\
+&+\frac{(-1)^n(8-2\gamma-2\log n)
+ +6\Rea(C_\om\om^{1-n})}{n^3}
+ +\bigO\!\left(\frac{(1+\log n)^2}{n^4}\right).\notag
+\end{align}
+For orientation only, a high precision evaluation gives
+\[
+C_\om\approx0.83150170079289916148
+      -1.03642907874318733151\,\ii.
+\]
+The displayed decimal is an arithmetic approximation, not an interval certificate. The exact definition is \eqref{eq:Comega}.
+\end{theorem}
+
+\subsection{Why the positive singularity is not enough}
+The exact generating function is
+\begin{equation}\label{eq:Fintro}
+F(z)=\prod_{j\geq1}\left(1+\frac{z^{j+1}}j\right),\qquad
+b_n=[z^{n-1}]F(z),\qquad |z|<1.
+\end{equation}
+Its unit circle is a natural boundary. The pole at $1$ supplies the constant $A$, but the nontrivial roots of unity supply every algebraic correction. A radial estimate as $z\uparrow1$ cannot, by itself, prove \eqref{eq:main}. In particular, subtracting the positive pole does not produce analytic continuation across a whole arc around $1$.
+
+We instead split $F$ into a finite polylogarithmic factor and a tail with as many bounded boundary derivatives as the chosen order requires. Only finitely many roots then need explicit local subtraction. A global absolutely continuous boundary trace justifies repeated Fourier integration by parts. This establishes an actual coefficient estimate, including the contribution of all the unselected high-order roots.
+
+\subsection{Attribution and the bounded novelty claim}
+The finite record polynomial is classical and appears explicitly in Louchard \cite[Eq.~(1)]{Louchard}; its conversion to \eqref{eq:Fintro} is elementary. The leading constant $A$ follows immediately from the Dickman local limit theorem of Giuliano, Szewczak and Weber \cite[Theorem~2.1]{GSW}. The general hybrid method, including expansions at roots of unity despite a natural boundary, belongs to Flajolet, Fusy, Gourdon, Panario and Pouyanne \cite{FFGPP}. Their Section~3 analyzes the related product $\prod_{j\geq1}(1+z^j/j)$, whose correction sector is different from that of \eqref{eq:Fintro}.
+
+The specific calculation developed here is the cancellation of the entire nonoscillatory algebraic sector for the shifted exponent $j+1$, together with explicit oscillatory coefficients and a justified integer inverse. These particular refinements were not found in the sources inspected for this report. That statement is a bounded literature observation, not a claim of worldwide priority. Section~\ref{sec:sources} describes the source and duplicate-search limits, including the lack of a freshly retrieved OEIS revision for A368246.
+
+\subsection{Guide to the proof}
+Section~\ref{sec:counting} fixes the combinatorial normalization and index shift. Sections~\ref{sec:tail}--\ref{sec:roots} construct the local expansions with differentiated remainders. Section~\ref{sec:global} supplies the global boundary argument, and Section~\ref{sec:transfer} converts it into Theorem~\ref{thm:main}. Section~\ref{sec:explicit} proves Theorem~\ref{thm:explicit} without fitting coefficients. Section~\ref{sec:inverse} gives the threshold envelope and a finite Newton approximation to its explicit model root. The final sections document the reproducible arithmetic, known limitations, and sources, then propose further research questions.

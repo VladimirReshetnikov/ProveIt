@@ -1,0 +1,113 @@
+\section{Controlled inversion and integer thresholds}\label{sec:inverse}
+There are two different inverse questions. If the input is promised to be an exact sequence value $A=a_n$, one seeks its integer index. For an arbitrary positive threshold $A$, one seeks
+\begin{equation}\label{eq:threshold}
+N(A)=\min\{n\geq0:a_n\geq A\}.
+\end{equation}
+For large $A$ the equality $a_0=a_1=1$ is immaterial, but a continuous approximation must still be rounded with care.
+
+\subsection{The smooth root and Newton iteration}
+Fix $K\geq0$ and set
+\begin{align}
+G(x)&=\frac x2(\log x-1),\notag\\
+F_K(x)&=G(x)+\sqrt x+\kappa_0
+                         +\sum_{j=1}^{K}\beta_jx^{-j/2}.
+                         \label{eq:FK}
+\end{align}
+For sufficiently large $x$,
+\begin{equation}\label{eq:FKderivative}
+F_K'(x)=\frac12\log x+\frac1{2\sqrt x}
+ -\sum_{j=1}^{K}\frac{j\beta_j}{2}x^{-j/2-1}>0,
+\qquad F_K''(x)=O_K(1/x).
+\end{equation}
+Let $L=\log A$, and let $\rho_K$ be the unique sufficiently large root of $F_K(\rho_K)=L$.
+
+\begin{proposition}\label{prop:inverse}
+If $A=a_n$, then
+\begin{equation}\label{eq:modelinverseerror}
+\rho_K=n+O_K\left(\frac{n^{-(K+1)/2}}{\log n}\right).
+\end{equation}
+Let $W_0$ be the principal positive-real Lambert $W$ branch, and set
+\begin{equation}\label{eq:Wseed}
+x_0=\frac{2L}{W_0(2L/e)}.
+\end{equation}
+Starting from this value, the Newton iterates
+\begin{equation}\label{eq:newton}
+x_{q+1}=x_q-\frac{F_K(x_q)-L}{F_K'(x_q)}
+\end{equation}
+satisfy, for each fixed $q\geq0$,
+\begin{equation}\label{eq:newtonerror}
+x_q-\rho_K
+ =O_{K,q}\left(
+ x_0^{1-2^{q-1}}(\log x_0)^{-(2^{q+1}-1)}\right).
+\end{equation}
+Thus finitely many terms and finitely many Newton steps achieve any prescribed fixed algebraic index accuracy asymptotically.
+\end{proposition}
+\begin{proof}
+The expansion \eqref{eq:loga} and the mean value theorem, with $F_K'\asymp\log x$, prove \eqref{eq:modelinverseerror}. No derivative of the unknown remainder is used. The seed solves $G(x_0)=L$ exactly, and $F_K(x)-G(x)=O(\sqrt x)$. Hence $x_0-\rho_K=O(\sqrt{x_0}/\log x_0)$, in a neighborhood where $x\asymp x_0$. Taylor's theorem for the explicit smooth function $F_K$ gives the Newton error recurrence
+\[
+e_{q+1}=O_K\left(\frac{e_q^2}{x_0\log x_0}\right),
+\qquad e_q=x_q-\rho_K.
+\]
+Induction yields \eqref{eq:newtonerror}. Its successive orders are
+\[
+O\left(\frac{\sqrt{x_0}}{\log x_0}\right),\quad
+O((\log x_0)^{-3}),\quad
+O(x_0^{-1}(\log x_0)^{-7}),\quad
+O(x_0^{-3}(\log x_0)^{-15}),\ldots.
+\]
+\end{proof}
+
+\subsection{Explicit initial inverse terms}
+Center the constant by setting
+\[
+L_c=\log A-\kappa_0,\qquad
+x=\frac{2L_c}{W_0(2L_c/e)},\qquad\ell=\log x.
+\]
+For exact-term inputs $A=a_n$,
+\begin{align}
+n={}&x-\frac{2\sqrt x}{\ell}+\frac2{\ell^2}-\frac2{\ell^3}\notag\\
+ &-x^{-1/2}\left(\frac{2\beta_1}{\ell}
+       +\frac1{\ell^3}-\frac{14}{3\ell^4}+\frac4{\ell^5}\right)
+       +O\left(\frac{x^{-1}}{\ell}\right).\label{eq:centeredinverse}
+\end{align}
+Here $2\beta_1/\ell=7/(12\ell)$. The next term is
+\begin{equation}\label{eq:centerednext}
+x^{-1}\left(-\frac{2\beta_2}{\ell}-\frac{4\beta_1}{\ell^3}
+       -\frac4{\ell^5}+\frac{40}{3\ell^6}-\frac{10}{\ell^7}\right);
+\end{equation}
+including it improves the error to $O(x^{-3/2}/\ell)$.
+Without centering, take $x=2L/W_0(2L/e)$ and $\ell=\log x$. Then
+\begin{equation}\label{eq:uncenteredinverse}
+n=x-\frac{2\sqrt x}{\ell}-\frac{2\kappa_0}{\ell}
+        +\frac2{\ell^2}-\frac2{\ell^3}
+        +O(x^{-1/2}/\ell).
+\end{equation}
+Higher terms follow by substituting
+$n=x+\sum_{j=-1}^{M}d_j(\ell)x^{-j/2}$ in $F_K(n)-L$ and cancelling successive powers of $x^{-1/2}$. Every new coefficient enters linearly with nonzero factor $\ell/2$. Consequently the $d_j$ are rational functions of $\ell$, with polynomial dependence on $\kappa_0$ and the $\beta_j$. The package checks the displayed formulas by exact symbolic substitution.
+
+\subsection{A precise two ceiling enclosure}
+The matrix model proves $a_{n+1}>a_n$ for every $n\geq1$. Append a final row and column of zeros except for a new diagonal $1$. Every old margin is at least $1$, so weakly decreasing order is preserved, and deletion recovers the original matrix. The one-entry matrix $[n+1]$ is outside the image, which has at least two rows. This proves strict increase; it does not claim strict increase between $n=0$ and $n=1$.
+
+Put $p=(K+1)/2$. By \eqref{eq:loga} there exist constants $B>0$ and $N_0$ such that
+\begin{equation}\label{eq:logerrorbound}
+|\log a_n-F_K(n)|\leq Bn^{-p}\qquad(n\geq N_0).
+\end{equation}
+Increase $N_0$ so that both $F_K(x)+Bx^{-p}$ and $F_K(x)-Bx^{-p}$ are increasing. For sufficiently large $L=\log A$, define $x_-$ and $x_+$ by
+\begin{equation}\label{eq:enveloperoots}
+F_K(x_-)+Bx_-^{-p}=L,\qquad
+F_K(x_+)-Bx_+^{-p}=L.
+\end{equation}
+
+\begin{theorem}\label{thm:ceilings}
+For every sufficiently large threshold $A$,
+\begin{equation}\label{eq:ceilings}
+\ceil{x_-}\leq N(A)\leq\ceil{x_+},\qquad
+x_+-x_-=O_K\left(\frac{x_-^{-p}}{\log x_-}\right).
+\end{equation}
+Eventually the two displayed ceilings either coincide or are consecutive integers.
+\end{theorem}
+\begin{proof}
+Every integer $n<\ceil{x_-}$ in the range of \eqref{eq:logerrorbound} has $\log a_n<L$ by the upper envelope. Once $A$ is sufficiently large, all smaller integers in the omitted finite prefix also have $a_n<A$. Conversely $n=\ceil{x_+}$ has $\log a_n\geq L$ by the lower envelope. These prove the two inequalities. The mean value theorem, with derivative comparable to $\log x_-$, gives the width estimate. It is eventually less than $1$.
+\end{proof}
+
+For promised exact terms, any approximation with an eventually proved $o(1)$ absolute index error recovers $n$ by nearest-integer rounding for all sufficiently large $n$. For arbitrary thresholds, blindly taking $\ceil{\rho_K}$ is unjustified near a jump: $A$ may lie arbitrarily close to an exact sequence value. If certified roots and remainder constants are available, the two candidates in \eqref{eq:ceilings} can be resolved by exact neighboring-term comparison. The present existence-form bounds do not supply numerical values of $B,N_0$, a finite-input onset, or a certified rounding decision at any particular input.

@@ -1,0 +1,106 @@
+\section{The involution saddle at every fixed order}\label{sec:involutions}
+This section records a classical saddle calculation in a form directly usable with Theorem~\ref{thm:main}. The method and all-order involution asymptotics are prior work \cite{MW1955,MW1956}. The details below supply a controlled remainder and an explicit finite coefficient rule.
+
+Since $I_n=n![z^n]\exp(z+z^2/2)$, the positive saddle is
+\begin{equation}\label{eq:saddle}
+r=\frac{\sqrt{4n+1}-1}{2},\qquad n=r^2+r.
+\end{equation}
+\begin{proposition}\label{prop:saddle}
+For every fixed integer $J\geq0$,
+\begin{equation}\label{eq:saddleexpansion}
+I_n=\frac{n!e^{r+r^2/2}}{2\sqrt\pi\,r^{n+1}}
+ \left(\sum_{j=0}^{J}\gamma_jr^{-j}+O_J(r^{-J-1})\right).
+\end{equation}
+The rational coefficients are given by the finite recursion
+\begin{align}
+p_m(v)&=\frac{(\ii v)^{m+1}}{(m+1)!}
+            +\frac{2^{m+1}(\ii v)^{m+2}}{(m+2)!},\quad m\geq1,\notag\\
+Q_0(v)&=1,\qquad
+Q_j(v)=\frac1j\sum_{m=1}^j mp_m(v)Q_{j-m}(v),\label{eq:saddlerec}\\
+\gamma_j&=\frac1{\sqrt\pi}\int_{\R}e^{-v^2}Q_j(v)\,\dd v.\notag
+\end{align}
+The integral is an algebraic rule: send odd powers of $v$ to zero and $v^{2k}$ to $(2k-1)!!/2^k$.
+\end{proposition}
+\begin{proof}
+Cauchy's formula on $|z|=r$ gives the prefactor $n!e^{r+r^2/2}/(2\pi r^n)$ times the integral of $e^{\Phi_r(\theta)}$ on $[-\pi,\pi]$, where
+\[
+\Phi_r(\theta)=r(e^{\ii\theta}-1-\ii\theta)
+ +\tfrac12r^2(e^{2\ii\theta}-1-2\ii\theta).
+\]
+Its real part is exactly
+\begin{equation}\label{eq:realphase}
+\Re\Phi_r(\theta)=-r(1-\cos\theta)-r^2\sin^2\theta.
+\end{equation}
+For $|\theta|\leq\pi/2$ this is at most $-4r^2\theta^2/\pi^2$; for $|\theta|\geq\pi/2$ it is at most $-r$. Fix $0<\eps<1/3$. The integral outside $|\theta|\leq r^{-1+\eps}$ is smaller than every fixed algebraic order. The second inequality also controls the possible secondary peak near $\theta=\pi$.
+
+On the central interval put $\theta=v/r$ and $h=1/r$. Direct Taylor expansion gives
+\[
+\Phi_r(v/r)=-v^2+\sum_{m\geq1}h^mp_m(v).
+\]
+The coefficient polynomials of the exponential satisfy \eqref{eq:saddlerec}. For fixed $J$, Taylor's theorem in $h$ bounds the remainder on $|v|\leq r^\eps$ by $h^{J+1}$ times a fixed polynomial in $|v|$ times $e^{\delta v^2}$, with any chosen $\delta>0$ once $r$ is large. Indeed, derivatives of the analytic exponent of fixed order are bounded by fixed polynomials in $|v|$ when $h|v|=o(1)$, and its non-Gaussian part is bounded by $Ch(v^2+|v|^3)\leq\delta v^2$. Taking $\delta<1$ leaves an integrable Gaussian majorant after multiplication by $e^{-v^2}$. Extending polynomial Gaussian integrals to all of $\R$ adds exponentially small error. Finally $\dd\theta=\dd v/r$ gives \eqref{eq:saddleexpansion}.
+\end{proof}
+
+The first saddle coefficients are
+\begin{equation}\label{eq:gammas}
+(\gamma_0,\ldots,\gamma_6)=
+\left(1,-\frac14,-\frac7{96},\frac{77}{384},
+-\frac{3989}{18432},\frac{3275}{24576},\frac{1076179}{26542080}\right).
+\end{equation}
+
+\subsection{Conversion to half integer powers}
+Write $t=n^{-1/2}$ and
+\begin{equation}\label{eq:Bofn}
+B(n)=\frac1{\sqrt2}\left(\frac ne\right)^{n/2}e^{\sqrt n-1/4}.
+\end{equation}
+For every fixed $J$,
+\begin{equation}\label{eq:Ialpha}
+I_n=B(n)\left(\sum_{j=0}^{J}\alpha_jn^{-j/2}
+                  +O_J(n^{-(J+1)/2})\right),
+\end{equation}
+where
+\begin{align}
+\alpha_0&=1,&\alpha_1&=\frac7{24},&
+\alpha_2&=-\frac{119}{1152},&
+\alpha_3&=-\frac{7933}{414720},\notag\\
+\alpha_4&=\frac{1967381}{39813120},&
+\alpha_5&=-\frac{57200419}{1337720832},&
+\alpha_6&=\frac{6340449533}{687970713600}.\label{eq:alphas}
+\end{align}
+The first three nonconstant coefficients also appear explicitly in Bornemann \cite[Appendix C, (120)]{Bornemann}. The logarithmic form is
+\begin{align}
+\log I_n={}&\frac n2(\log n-1)+\sqrt n-\frac14-\frac12\log2\notag\\
+ &+\frac7{24}t-\frac7{48}t^2+\frac{37}{1920}t^3
+   +\frac5{128}t^4-\frac{5879}{107520}t^5
+   +\frac{43}{1440}t^6+O(t^7).\label{eq:logI}
+\end{align}
+
+For an all-order rule, put
+$R(t)=\sqrt{1+t^2/4}-t/2$, so that $r=R(t)/t$ and $\log R(t)=-\operatorname{arsinh}(t/2)$. Let $\mathcal B(t)$ denote the formal logarithmic correction to $\log B(n)$. Substitution in \eqref{eq:saddleexpansion} and Stirling's expansion give
+\begin{align}
+\mathcal B(t)={}&\frac{R(t)}{2t}
+ +\frac{\operatorname{arsinh}(t/2)}{t^2}
+ +\operatorname{arsinh}(t/2)-\frac1t+\frac14\notag\\
+ &+\sum_{k\geq1}\frac{B_{2k}}{2k(2k-1)}t^{4k-2}
+ +\log\left(\sum_{j\geq0}\gamma_j\left(\frac{t}{R(t)}\right)^j\right).
+ \label{eq:allorderI}
+\end{align}
+Here $B_{2k}$ are Bernoulli numbers; the apparent negative powers cancel. At any specified order, every sum and series operation is truncated, so the rule is finite. Then $\alpha_j=[t^j]\exp\mathcal B(t)$. Proposition~\ref{prop:saddle} and Stirling's remainder justify each fixed truncation.
+
+\subsection{Ratios at fixed shifts}
+For any fixed nonnegative integer $s$, subtraction of sufficiently long logarithmic expansions gives
+\begin{align}
+\frac{I_{n-s}}{I_n}=n^{-s/2}\bigg[1
+ &-\frac s2t+\frac{3s^2}{8}t^2
+ +\frac{-7s^3-6s^2+7s}{48}t^3\notag\\
+ &+\frac{25s^4+56s^3-28s^2-56s}{384}t^4\notag\\
+ &+\frac{-81s^5-340s^4-30s^3+700s^2+111s}{3840}t^5
+ +O_s(t^6)\bigg].\label{eq:shiftratio}
+\end{align}
+For all orders, exponentiate the finite truncation of
+\begin{align}
+\mathcal D_s(t)={}&\frac{t^{-2}-s}{2}\log(1-st^2)+\frac s2
+ +\frac{\sqrt{1-st^2}-1}{t}\notag\\
+ &+\mathcal B\left(\frac{t}{\sqrt{1-st^2}}\right)-\mathcal B(t).
+ \label{eq:shiftrule}
+\end{align}
+Then $I_{n-s}/I_n$ has asymptotic series $n^{-s/2}\exp\mathcal D_s(t)$. Uniformity is asserted only for $s$ in a prescribed finite set. This argument retains enough terms before subtracting; it does not differentiate an unproved remainder.

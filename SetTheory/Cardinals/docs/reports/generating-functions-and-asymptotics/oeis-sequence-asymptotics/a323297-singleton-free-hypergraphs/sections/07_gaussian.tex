@@ -1,0 +1,121 @@
+\section{Projected Gaussian laws on two different scales}\label{sec:gaussian}
+The raw edge/component pair is asymptotically singular. The defect \eqref{eq:defect} identifies the residual direction and makes a nonsingular limit available before taking any Gaussian approximation.
+
+Set
+\begin{align}
+ d&=r+\frac{r^4}{4},& \tau^2&=r+\frac{r^4}{3},& \eta&=r+r^4,\label{eq:dmeans}\\
+ V&=C(r)-\frac{n^2}{b},& T&=\tau^2-\frac{\eta^2}{b},&
+ G_*&=d-\frac{n\eta}{b},\qquad \rho=\frac{G_*}{\sqrt{VT}}.\label{eq:schur}
+\end{align}
+These are Boltzmann means and covariance Schur complements for conditioning on total vertex count. Their scales are
+\begin{equation}\label{eq:schurscales}
+ V\sim\frac n{r^2},\qquad T\sim\frac{r^4}{3},\qquad
+ \rho\sim\frac{\sqrt3}{4}\frac{r^3}{\sqrt n}\longrightarrow0.
+\end{equation}
+For the cancellation in $V$, the $H$-only expression is exactly
+\[
+ H-\frac{(\De H)^2}{\De^2H}
+ =\frac{Hr}{r^2+5r+4},
+\]
+and the polynomial changes contribute $O(r^4)$. The other equivalents follow directly from \eqref{eq:scales}.
+
+\begin{theorem}[Quantitative projected characteristic law]\label{thm:gauss}
+For every fixed $T_0<\infty$, uniformly over $|t|,|s|\le T_0$,
+\begin{align}\label{eq:gauss}
+ &\E_n\exp\left\{\ii t\frac{K-C(r)}{\sqrt V}
+                     +\ii s\frac{\defect-d}{\sqrt T}\right\}\nonumber\\
+ &\hspace{15mm}=\exp\{-\tfrac12(t^2+s^2+2\rho ts)\}
+       +O_{T_0}(r^{-2}+\sqrt{r/n}).
+\end{align}
+Thus the two standardized variables converge jointly to independent standard normals. In particular,
+\begin{equation}\label{eq:degenerate}
+ \left(\frac{K-C(r)}{\sqrt V},
+       \frac{E-[n-2C(r)+d]}{2\sqrt V}\right)
+ \ \Longrightarrow\ (Z,-Z),
+\end{equation}
+whereas the residual $E+2K-n$ fluctuates independently on scale $r^2/\sqrt3$.
+\end{theorem}
+
+\subsection{Orthogonal projection before conditioning}
+Index the connected component types by $\alpha$, with Boltzmann mean $\lambda_\alpha$, size $m_\alpha$, and defect $d_\alpha$. The latter is one for isolates and three-edge tetrahedra, two for complete tetrahedra, and zero otherwise. Their counts $Z_\alpha$ are independent Poissons. Direct sums give
+\begin{align*}
+ \Var K&=C(r),&\Cov(K,N)&=n,&\Var N&=b,\\
+ \Var\defect&=\tau^2,&\Cov(\defect,N)&=\eta,&
+ \Cov(K,\defect)&=d.
+\end{align*}
+Define the projection coefficients
+\[
+ a_\alpha=1-\frac nbm_\alpha,\qquad
+ q_\alpha=d_\alpha-\frac\eta b m_\alpha,
+\]
+and the centered sums
+\[
+ Y=\sum_\alpha a_\alpha(Z_\alpha-\lambda_\alpha),\qquad
+ Q_* =\sum_\alpha q_\alpha(Z_\alpha-\lambda_\alpha).
+\]
+Both have zero covariance with $N$, and
+\[
+ \Var Y=V,\quad \Var Q_*=T,\quad \Cov(Y,Q_*)=G_*.
+\]
+On $N=n$, they equal $K-C(r)$ and $\defect-d$. The conditional characteristic numerator is therefore the Fourier integral of
+\begin{equation}\label{eq:markedphase}
+ \exp\sum_\alpha\lambda_\alpha
+       \{e^{\ii u_\alpha}-1-\ii u_\alpha\},\qquad
+ u_\alpha=\frac{x m_\alpha}{\sqrt b}
+      +\frac{t a_\alpha}{\sqrt V}
+      +\frac{s q_\alpha}{\sqrt T},
+\end{equation}
+where $x=\theta\sqrt b$. Its quadratic exponent is exactly
+\begin{equation}\label{eq:markedquadratic}
+ -\tfrac12(x^2+t^2+s^2+2\rho ts).
+\end{equation}
+The absence of $xt$ and $xs$ terms is the reason for projecting first.
+
+\subsection{Cubic error estimates}
+The absolute third-moment sums satisfy
+\begin{align}
+ \sum_\alpha\lambda_\alpha(m_\alpha/\sqrt b)^3
+    &=O(\sqrt{r/n}),\nonumber\\
+ \sum_\alpha\lambda_\alpha|a_\alpha/\sqrt V|^3
+    &=O(\sqrt{r/n}),\label{eq:thirdmoments}\\
+ \sum_\alpha\lambda_\alpha|q_\alpha/\sqrt T|^3
+    &=O(r^{-2}).\nonumber
+\end{align}
+The first is immediate from $\kappa_3/b^{3/2}$. For the second, the main $H$ weights have $m=2+\Pois(r)$ and
+\[
+ \frac nb=\frac{r+2}{r^2+5r+4}
+       +\text{an exponentially small polynomial error}.
+\]
+Consequently $\E|1-(n/b)m|^3=O(r^{-3/2})$. One elementary bound is
+$\E|\Pois(r)-r|^3\le(3r^2+r)^{3/4}$, from the fourth moment. Multiply by $H\asymp n/r$ and divide by $V^{3/2}\asymp n^{3/2}/r^3$. The finitely modified small sizes contribute at most $O(r^7/n^{3/2})$, a smaller order. For the third estimate, the exceptional types contribute $O(r^4)/T^{3/2}=O(r^{-2})$; the ordinary types contribute at most
+\[
+ \frac{(\eta/b)^3\kappa_3}{T^{3/2}}=O(r^5/n^2).
+\]
+
+The all-real Taylor inequality
+$|e^{\ii u}-1-\ii u+u^2/2|\le|u|^3/6$, together with
+$(|u|+|v|+|w|)^3\le9(|u|^3+|v|^3+|w|^3)$, bounds the phase difference between \eqref{eq:markedphase} and \eqref{eq:markedquadratic} by
+\begin{equation}\label{eq:markederror}
+ C(|x|+|t|+|s|)^3\{r^{-2}+\sqrt{r/n}\}.
+\end{equation}
+
+\subsection{Domination on the full marked contour}
+The estimates must remain uniform for bounded $t,s$ outside a tiny Gaussian window. On $|\theta|\le c_0/r$, retain ordinary sizes $m\in[r/2,2r]$ and all exceptional types. Their phases in \eqref{eq:markedphase} are at most one in absolute value for sufficiently small $c_0$ and large $n$. The normalized covariance matrix of these retained types differs from the full matrix by $o(1)$ in operator norm. Indeed the omitted Poisson size tails are exponentially small in $r$, even after the polynomial factors from normalizing the small variance $V$; and essentially all defect variance is retained. Since $\rho\to0$, its quadratic form is bounded below by a positive constant times $x^2+t^2+s^2$. Using $1-\cos u\ge cu^2$ yields domination by $e^{-cx^2}$.
+
+For the outer arc, ordinary component phases take the form $m\theta'+u$, where
+\[
+ \theta'=\theta-\frac{tn}{b\sqrt V}-\frac{s\eta}{b\sqrt T},
+ \qquad u=\frac t{\sqrt V}.
+\]
+The shift is $O(n^{-1/2}+r/n)=o(1/r)$. For $c_0/r\le|\theta|\le\pi$, the distance of $\theta'$ from zero modulo $2\pi$ remains at least a constant times $1/r$. The radial estimate \eqref{eq:radial} applies unchanged to $e^{\ii u}H(re^{\ii\theta'})$, since its modulus is unchanged. The exceptional and other polynomial terms add only $O(r^4)$. Thus this entire outer arc is $O(e^{-cn/r^2})$ uniformly for bounded $t,s$.
+
+\subsection{Completion of the Gaussian proof}
+For complex $z,w$,
+\[
+ |e^z-e^w|\le|z-w|e^{\max(\Re z,\Re w)}
+\]
+by integrating along the line segment. Apply this inequality to the two exponents, use \eqref{eq:markederror} and the preceding domination, and integrate against $e^{-cx^2}$. The numerator error is the normalized integral error $O_{T_0}(r^{-2}+\sqrt{r/n})$ times $(2\pi b)^{-1/2}$. The denominator is
+\[
+ \PP(N=n)=(2\pi b)^{-1/2}(1+O(r/n)).
+\]
+The Gaussian integral of \eqref{eq:markedquadratic} therefore gives \eqref{eq:gauss}. Finally $\sqrt T/\sqrt V=O(r^3/\sqrt n)\to0$, so \eqref{eq:defect} yields \eqref{eq:degenerate} and completes the proof of Theorem~\ref{thm:gauss}.

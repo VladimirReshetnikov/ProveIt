@@ -1,0 +1,56 @@
+\section{Exact checks and reproducible computation}\label{sec:computation}
+The archive separates finite exact statements from noncertified numerical observations. Neither kind of finite check establishes an asymptotic remainder or replaces the proofs above. The accompanying \texttt{COMPUTATION.md} records bounds, algorithms, and environment requirements in detail.
+
+\subsection{Exact coefficient and component checks}
+The labelled assembly recurrence is
+\begin{equation}\label{eq:recurrence}
+ A_0=1,\qquad
+ A_n=\sum_{m=1}^n\binom{n-1}{m-1}c_mA_{n-m}.
+\end{equation}
+It follows by choosing the component containing vertex one. Setting $c_1=0$ gives $B_n$. An independent coefficient route expands
+\[
+ e^{C(z)}=e^{U(z)}\sum_{k\ge0}\frac{z^{2k}e^{kz}}{2^kk!},
+\]
+where only $k\le n/2$ contributes to $[z^n]$. A short polynomial-exponential recurrence computes $e^U$, and exact rational or integer convolutions recover the labelled coefficients. Agreement of these two routes is stronger than checking two rearrangements of \eqref{eq:recurrence}.
+
+\begin{samepage}
+The initial terms are
+\begin{center}
+\begin{tabular}{r|rrrrrrrrr}
+\toprule
+$n$&0&1&2&3&4&5&6&7&8\\
+\midrule
+$A_n$&1&1&1&2&16&76&271&1212&10158\\
+$B_n$&1&0&0&1&11&10&25&406&4823\\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{samepage}
+Direct enumeration of admissible edge sets through $n=8$ independently checks these terms, the connected multiplicities, and \eqref{eq:defect} on every object. Exact marked first and second moment identities are checked by two coefficient routes. The released bound for the recurrence-based count and moment checks is $n=640$; this is a deliberate resource bound, not a limitation of the mathematical formulas.
+
+\subsection{Symbolic and numerical checks}
+Exact rational Gaussian contractions in \eqref{eq:Eell} reproduce \eqref{eq:E1}--\eqref{eq:E2}. Independent formal series reversal reproduces all coefficients in \eqref{eq:rinverse} and \eqref{eq:reverse}. The public symbolic program reports zero differences, with bounded expansion orders and explicit validation.
+
+The separately labelled \texttt{diagnostics.py} evaluates exact-count ratios and saddle approximations at finite sizes. Its tables include the scaled total-variation ratio, the $L^1$ likelihood residual, deletion corrections, coefficient residuals, and marked covariance scales. These are floating-point calculations, explicitly \emph{noncertified}: no interval enclosure, rigorous numerical error bar, or finite onset of the asymptotic estimates is claimed. Exact large integers are not converted to unbounded decimal strings merely to make these diagnostics.
+
+
+For a compact numerical illustration, let $c_*=(10/3)\phi(1)$ and let $R$ be the likelihood remainder in \eqref{eq:likelihood}. The following rounded values are taken from the \emph{noncertified} diagnostic receipt; Poisson sums are truncated as described in the supplement.
+\begin{center}
+\small
+\begin{tabular}{rcccc}
+\toprule
+$n$ & $\TV/(\phi(1)v/b)$ & $\TV/(c_*r^3/n)$ & $n^2\E_Q|R|/r^6$ & $\Var_n(K)/V$\\
+\midrule
+80  & 1.14453 & 0.52610 & 0.97029 & 1.00009\\
+160 & 1.11414 & 0.54980 & 1.08081 & 0.99947\\
+320 & 1.08574 & 0.57171 & 1.19548 & 0.99961\\
+640 & 1.06423 & 0.59317 & 1.30935 & 0.99984\\
+\bottomrule
+\end{tabular}
+\end{center}
+The two TV normalizations are asymptotically equivalent but differ substantially at these sizes. The table illustrates why exact-saddle quantities can be useful well before their leading logarithmic simplifications are accurate; it certifies neither a convergence rate nor an asymptotic onset.
+
+\subsection{Reproduction boundaries}
+The build verifies the complete source inventory before running checks, compiles a disposable source copy with a private TeX format and shell escape disabled, and requires byte-for-byte agreement with the frozen PDF and receipts. Python child processes disable bytecode output and enforce a decimal conversion cap independently of the inherited environment. Public input bounds use explicit exceptions, so optimization mode does not remove validation.
+
+The ZIP replay extracts the actual archive, verifies its contents and metadata, rebuilds it in normal and optimized Python modes, and compares the PDF, receipts, and all regenerated archive members. Source hashes are checked before and after builds. Reproducibility is relative to the recorded Python, symbolic-library, and TeX toolchain; a different engine or font installation may legitimately produce different PDF bytes and will be reported as a mismatch. The package includes no third-party paper PDFs and no private working or review notes.

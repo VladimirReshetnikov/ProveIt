@@ -1,0 +1,63 @@
+\section{Reproducible computations and their limits}\label{sec:reproduction}
+The analytic theorem rests on the preceding proofs. The accompanying programs serve three narrower purposes: checking exact finite identities, checking the displayed symbolic calculations, and diagnosing numerical behavior without turning a finite fit into an asymptotic proof. All supplied code is editable and runs locally without network access.
+
+\subsection{Exact arithmetic and independent enumeration}
+The public module \texttt{code/record\_sum.py} implements the finite polynomial \eqref{eq:finite} with integer coefficients. It computes the diagonal coefficient at each stage. A separate calculation multiplies the shifted product in exact rational arithmetic, then multiplies by $(n-1)!$. The certificate compares these methods through $n=60$ and checks the displayed initial values, including $a_0$ and the index shift.
+
+A third calculation enumerates every permutation through $n=8$. It separately computes the sum of record positions and the sum of cycle minima from the permutation itself. It does not use the product formulas to determine those statistics. This checks both interpretations, while the proofs in Section~\ref{sec:counting} establish the identities for all $n$.
+
+For the rooted-tree cancellation, the exact coefficient of $s^k$ in $B_q$ is calculated as
+\begin{equation}\label{eq:exacttreecoefficient}
+[s^k]B_q(s)=
+\sum_{\substack{1\leq r\leq k+1\\q\mid r}}
+\frac{r^{r-1}(-r)^{k-r+1}}{r!\,(k-r+1)!}.
+\end{equation}
+This rational sum independently verifies cancellation through degree $40$ at $q=1$ and the filtered leading terms for orders $2$ through $14$. It verifies many finite coefficients of \eqref{eq:exactcancel}; the identity for every degree follows from the inverse-function argument, not from extrapolating these checks.
+
+Symbolic calculations verify the logarithmic local jet at $-1$, the exact transfers in \eqref{eq:exactlogidentities}, and the sign and constant changes under $m=n-1$. They also check the simple-zero delay at $\pm\ii$. Tests of a general transfer identity are identified as such. The code does not generate fabricated higher sequence coefficients by feeding arbitrary amplitudes into a generic symbolic method.
+
+\subsection{High precision constants and directed coefficient bounds}
+The Gamma amplitudes at $\om$ and $\ii$ are evaluated at high precision and compared with independent polylogarithmic sums after isolating the $j=1$ factor. A second computation at higher precision checks stability. The analytic truncation bound \eqref{eq:numericaltail} is reported separately from special-function roundoff. The special-function evaluations use ordinary high precision arithmetic, not interval arithmetic, and the printed digits are not certified enclosures.
+
+For optional larger finite-product calculations, the Decimal routine constructs lower and upper coefficient arrays. Since all coefficients, reciprocals $1/j$, and update operations are nonnegative, rounding each division, multiplication, and addition down gives a lower bound, while rounding them up gives an upper bound. Induction over the descending coefficient updates proves enclosure of the exact finite rational coefficients. The certificate compares small cases with exact fractions.
+
+These directed intervals account for roundoff in the finite nonnegative product. They do not certify the error in an asymptotic expansion, the evaluation of $\gamma$ or complex Gamma functions, or an inverse threshold. In particular, a small residual after subtracting \eqref{eq:explicit} remains a diagnostic even if the coefficient itself has been rigorously enclosed. The optional large computation is quadratic in its cutoff and is not required for the default certificate.
+
+\subsection{Supported commands and bounded inputs}
+The package README gives the complete invocation syntax. Representative commands are
+\begin{quote}\small\ttfamily
+python -B code/checks.py\\
+python -B -O code/checks.py\\
+python -B code/record\_sum.py exact --n 60\\
+python -B code/record\_sum.py roots --digits 80 --cutoff 115\\
+python -B code/record\_sum.py inverse --log-y 1000 --order 3\\
+python -B code/record\_sum.py decimal --n 1800 --digits 60
+\end{quote}
+The inverse command accepts $\log y$ directly, avoiding construction of a huge target. It evaluates the actual $K=2$ or $K=3$ model in \eqref{eq:Bmodels}, with its analytic derivative and the real frequency convention. Fixed-count undamped Newton iterates and a residual-controlled numerical root are distinguished in its output. The latter is a numerical solution of the model, not a certified integer inverse of $a_n$.
+
+The supported interface rejects out-of-range inputs, invalid precision requests, nonfinite numerical input, and explicit nonconvergence. Exact diagonal computation is bounded at $n=200$. Optional Decimal computation allows $1\leq n\leq6000$ and $20\leq\text{precision}\leq200$. The numerical inverse permits $10\leq\log y\leq10^{12}$, with bounded precision and iteration counts. The documented decimal integer conversion cap is $640$ digits. It is not disabled to accommodate unbounded inputs.
+
+All program guards use explicit conditional failures, not Python assertions that disappear with optimization. Every child Python process is launched with \texttt{-B}; the environment also disables bytecode writes. The normal and optimized modes are checked against the same frozen JSON receipts. These finite guard tests verify the supported interface; they are not a general proof of security against every possible filesystem race or hostile interpreter.
+
+\subsection{A frozen reproducible archive}
+The public archive contains the editable TeX, bibliography and source ledger, Python code, dependency pins, arithmetic receipts, and the verified PDF. It contains no third-party paper PDFs and no private working audits. The manifest records a SHA-256 digest for every package file except the manifest itself. It detects changes, missing files, additions, unexpected directories, and symlinks; it is an integrity record, not a cryptographic signature from an external authority.
+
+The build verifies the manifest before running the arithmetic and guard suites. It compiles a disposable source copy with a private TeX format and cache. Every TeX invocation, including private format generation and version inspection, uses \texttt{-no-shell-escape}. Fixed dates and a fixed trailer identifier make the reference PDF deterministic. The build rejects overfull boxes, missing glyphs, and unresolved references, and requires the regenerated PDF to match the frozen PDF byte for byte.
+
+Output paths must be new and outside the source package, with an existing parent directory. Existing outputs, symlink ancestors, and raw dot or dot-dot path components are rejected. The build does not merge into an old directory or write generated files back into the source tree.
+
+The ZIP has sorted entries, a fixed timestamp, fixed modes, and stored compression. A separate verifier first compares the actual ZIP with the trusted frozen package, then extracts it into two fresh directories and runs complete normal and optimized builds. It compares all archive members and metadata, the full ZIP, the PDF, the arithmetic and guard receipts, and the build receipt, and verifies that both extracted source trees remain unchanged. Build logs may contain temporary paths and are not claimed to be byte-identical.
+
+Reference tool versions are pinned in the README and receipts. Exact PDF byte reproduction depends on the TeX engine, fonts, and package versions; a different toolchain is reported as a mismatch rather than silently accepted. The mathematical proof does not depend on a particular TeX release or on successful reproduction of a floating point decimal.
+
+\subsection{Explicit limits}
+For ease of interpretation, the report does not claim any of the following:
+\begin{itemize}
+\item convergence of an infinite root-of-unity transseries or uniformity as $K$ grows;
+\item an effective numerical constant or starting index for the asymptotic errors;
+\item a finite threshold certificate obtained by rounding a numerical model root;
+\item interval certification of the printed complex Gamma amplitudes;
+\item a complete public implementation of every higher $P_j$ in elementary constants;
+\item formal proof-assistant verification, peer review, or a worldwide priority search.
+\end{itemize}
+The assertions that are proved are the every-fixed-order expansion, the complete zero-frequency cancellation, the displayed low-order coefficients, the natural boundary and exceptional zeros, and the asymptotic integer envelopes with finite Newton centers.

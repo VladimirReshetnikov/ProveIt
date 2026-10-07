@@ -1,0 +1,64 @@
+\section{Exact counting and the shifted product}\label{sec:counting}
+\subsection{The complete finite counting polynomial}
+For a permutation $\pi\in S_n$, write $c(\pi)$ for the sum of its cycle minima. Define
+\[
+G_n(z)=\sum_{\pi\in S_n}z^{c(\pi)},\qquad G_0(z)=1.
+\]
+\begin{proposition}\label{prop:finite}
+For every integer $n\geq1$,
+\begin{equation}\label{eq:finite}
+G_n(z)=\prod_{k=1}^{n}(k-1+z^k).
+\end{equation}
+The same polynomial enumerates the sum of record positions in permutations of $[n]$. Consequently $a_n=[z^n]G_n(z)$ for $n\geq0$.
+\end{proposition}
+\begin{proof}
+Insert the largest label $n$ into a permutation of $[n-1]$ written in cycles. There are $n-1$ possible insertions immediately after one of the existing labels. Each leaves every cycle minimum unchanged. The remaining possibility creates the singleton cycle $(n)$, increasing the sum of minima by $n$. Every permutation of $[n]$ is obtained exactly once in this way. Thus
+\[
+G_n(z)=(n-1+z^n)G_{n-1}(z),
+\]
+and iteration proves \eqref{eq:finite}.
+
+For the second interpretation, let $I_k$ indicate that position $k$ is a left-to-right maximum of a uniform random permutation. The relative rank of the entry in position $k$ among the first $k$ entries is uniform on $\{1,\ldots,k\}$, and these relative ranks are independent. One way to see independence is that the relative-rank code is a bijection between permutations and the $1\cdot2\cdots n=n!$ possible codes. Therefore $I_k$ are independent with $\Pr(I_k=1)=1/k$, and
+\[
+\mathbb E z^{\sum_{k=1}^{n}kI_k}
+=\prod_{k=1}^{n}\left(1-\frac1k+\frac{z^k}{k}\right)
+=\frac{G_n(z)}{n!}.
+\]
+This proves equality in distribution of the two statistics and hence the equality of their counting polynomials. It is not a claim that the two sums agree for each individual permutation.
+\end{proof}
+
+Factoring out the first factor $z$ and the constants in the other factors gives
+\begin{equation}\label{eq:finitefactor}
+G_n(z)=z(n-1)!\prod_{j=1}^{n-1}\left(1+\frac{z^{j+1}}j\right)
+\qquad(n\geq1).
+\end{equation}
+Thus
+\begin{equation}\label{eq:shift}
+b_n=[z^{n-1}]\prod_{j=1}^{n-1}\left(1+\frac{z^{j+1}}j\right)
+=[z^{n-1}]F(z).
+\end{equation}
+The factor with $j=n-1$ already has degree $n$ and is harmless for this coefficient; the same is true of every subsequent factor. The equality is exact for $n=1$ as well: the constant coefficient is $1$. At $n=2$ the coefficient of $z$ vanishes, explaining the exceptional zero $a_2=0$.
+
+\subsection{Analytic existence and a global growth bound}
+For each $0\leq r<1$,
+\[
+\sum_{j\geq1}\frac{r^{j+1}}j=-r\log(1-r)<\infty.
+\]
+The product \eqref{eq:Fintro} therefore converges locally uniformly on $\D=\{z:|z|<1\}$. It defines an analytic function with nonnegative Taylor coefficients. None of the factors vanishes in the disk, since its zeros have modulus $j^{1/(j+1)}\geq1$. Hence $F$ is nonzero in $\D$. Moreover,
+\begin{equation}\label{eq:globalbound}
+|F(z)|\leq F(|z|)
+\leq\exp\!\left(\sum_{j\geq1}\frac{|z|^{j+1}}j\right)
+=(1-|z|)^{-|z|}\leq\frac1{1-|z|}.
+\end{equation}
+This is the finite global order $-1$ used in the classical hybrid theorem. It also controls the function independently of any local expansion.
+
+\subsection{The leading equivalent was already implied by a local limit theorem}
+Put $T_n=\sum_{k=1}^{n}kI_k$. Proposition~\ref{prop:finite} gives
+\[
+\Pr(T_n=n)=\frac{a_n}{n!},\qquad n\Pr(T_n=n)=b_n.
+\]
+Theorem~2.1 of \cite{GSW} states that, for integer $\kappa_n$ with $\kappa_n/n\to x>0$,
+\[
+n\Pr(T_n=\kappa_n)\longrightarrow\ee^{-\gamma}\rho(x),
+\]
+where the Dickman function satisfies $\rho(x)=1$ on $[0,1]$. Taking $\kappa_n=n$ gives $b_n\to A$. This report also computes $A$ directly from the product, because that residue enters the global subtraction. Neither the alternative derivation nor its use here makes the leading equivalent a new result.

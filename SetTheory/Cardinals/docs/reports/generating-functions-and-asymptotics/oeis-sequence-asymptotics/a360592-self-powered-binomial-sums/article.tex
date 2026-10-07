@@ -1,0 +1,100 @@
+\pdfinfoomitdate=1
+\pdftrailerid{}
+\pdfsuppressptexinfo=15
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{enumitem}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,urlcolor=MidnightBlue,citecolor=MidnightBlue,bookmarksnumbered=true]{hyperref}
+\usepackage{fancyhdr}
+\pdfmapfile{+lm.map}\pdfmapfile{+cm.map}\pdfmapfile{+symbols.map}
+\hypersetup{pdftitle={Report 230 Corrected Poisson Endpoint Expansions},pdfauthor={Research report},pdfsubject={Fixed order counts, marked laws, and controlled inverses}}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Poisson endpoint expansions}
+\fancyhead[R]{\small Report 230}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{4pt}
+\setlength{\emergencystretch}{2em}
+\linespread{1.06}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Pp}{\mathbb P}
+\newcommand{\Pois}{\operatorname{Pois}}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\Cov}{\operatorname{Cov}}
+\newcommand{\TV}{d_{\mathrm{TV}}}
+\newcommand{\1}{\mathbf 1}
+\newcommand{\Rcal}{\mathcal R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\ii}{\mathrm i}
+\DeclareMathOperator{\Res}{Res}
+\title{Corrected Poisson Endpoint Expansions\\[4pt]\large Critical resummation, inactive vertices, and controlled index inverses\\for a family of self powered binomial sums}
+\author{Report 230}
+\date{5 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+For the exact sums
+\[
+ a_p(n)=\sum_{0\le k\le n/(p+1)}(n-pk)^{pk}\binom{n-pk}{k},
+\]
+we prove every fixed algebraic order for each fixed integer $p\ge1$.
+An exact residue-conditioned Poisson representation gives a small deformation
+when $p\ge2$ and a critical, nonvanishing deformation when $p=1$.
+The latter requires a centered resummation and has half-power corrections,
+with no odd quarter powers. We calculate corrected coefficients for OEIS
+A360592, A360479, and A360747; their observed leading equivalents remain valid.
+For $p\ge2$ we prove weighted density expansions, mean and variance refinements,
+and sharp total-variation constants for the inactive-vertex count, including an
+improved tilted Poisson reference. Explicit finite smooth models yield controlled
+Newton and convergent local Lagrange inverses, arbitrary fixed index accuracy,
+and a two-ceiling envelope for exact thresholds. The proofs include global
+tail bounds and never differentiate an unspecified discrete remainder.
+A self-contained exact-arithmetic package accompanies the article.
+\end{abstract}
+\noindent\textbf{Scope.} All asymptotic assertions keep $p$ and the requested order fixed.
+No secondary exponential sector, optimal truncation theorem, growing-$p$ limit,
+effective finite inverse onset, or critical marked-law theorem is asserted.
+\tableofcontents
+\input{sections/01_overview}
+\input{sections/02_exact}
+\input{sections/03_subcritical}
+\input{sections/04_critical}
+\input{sections/05_marked}
+\input{sections/06_inverse}
+\input{sections/07_computation_sources}
+\input{sections/08_questions}
+\input{sections/09_appendix}
+\begin{thebibliography}{9}
+\bibitem{oeis1} The OEIS Foundation Inc., \emph{A360592},
+\url{https://oeis.org/A360592}. Indexed primary-entry formula observed 5 October 2026;
+see Section~\ref{sec:sources} for retrieval limitations.
+\bibitem{oeis2} The OEIS Foundation Inc., \emph{A360479},
+\url{https://oeis.org/A360479}. Primary-entry formula observed 5 October 2026;
+see Section~\ref{sec:sources}.
+\bibitem{oeis3} The OEIS Foundation Inc., \emph{A360747},
+\url{https://oeis.org/A360747}. Indexed primary-entry formula observed 5 October 2026;
+see Section~\ref{sec:sources}.
+\bibitem{dlmf} NIST Digital Library of Mathematical Functions,
+\emph{Lagrange Inversion Theorem}, Section 1.10(vii),
+\url{https://dlmf.nist.gov/1.10.vii};
+\emph{Charlier Polynomials}, equation 18.23.5,
+\url{https://dlmf.nist.gov/18.23.E5}.
+\bibitem{corless} R. M. Corless, G. H. Gonnet, D. E. G. Hare,
+D. J. Jeffrey, and D. E. Knuth, \emph{On the Lambert $W$ Function},
+Advances in Computational Mathematics \textbf{5} (1996), 329--359,
+\url{https://doi.org/10.1007/BF02124750}.
+\end{thebibliography}
+\end{document}
