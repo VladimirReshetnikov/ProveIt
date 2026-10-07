@@ -1,0 +1,581 @@
+{
+  "created_utc": "2026-10-07T23:22:09.525174+00:00",
+  "python": "3.12.14",
+  "executable": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+  "platform": "Linux-6.18.44-x86_64-with-glibc2.39",
+  "package_version": "0.3.0",
+  "scope": "Six fresh-process CLI cases and two public-API checks; no full-suite rerun.",
+  "passed": true,
+  "cases": [
+    {
+      "name": "default_conway",
+      "kind": "cli",
+      "command": [
+        "python",
+        "-m",
+        "fastunknot",
+        "recognize",
+        "fast/examples/conway.json"
+      ],
+      "working_directory": ".",
+      "environment": {
+        "PYTHONPATH": "fast"
+      },
+      "expected_exit": 0,
+      "exit_code": 0,
+      "seconds": 0.045673557000554865,
+      "stdout": "{\n \"status\": \"KNOTTED\",\n \"is_unknot\": false,\n \"method\": \"jones-modular\",\n \"input_crossings\": 11,\n \"reduced_crossings\": 11,\n \"seconds\": 0.003916,\n \"evidence\": {\n  \"reidemeister_trace\": [],\n  \"jones\": {\n   \"kind\": \"kauffman-bracket-differs-from-unknot\",\n   \"prime\": 2305843009213693951,\n   \"A\": 2177342782468422681,\n   \"writhe\": -1,\n   \"bracket\": 1034482905276118013,\n   \"unknot_bracket\": 675013989396796121,\n   \"peak_states\": 5,\n   \"transitions\": 62\n  }\n },\n \"quasipolynomial_guarantee\": false,\n \"worst_case\": \"2^O(n); filters are polynomial or width-bounded, the Khovanov scan is not\"\n}\n",
+      "stderr": "",
+      "checks": [
+        "exit code",
+        "no traceback",
+        "JSON verdict",
+        "complexity claim",
+        "default exact result"
+      ],
+      "result": {
+        "status": "KNOTTED",
+        "is_unknot": false,
+        "method": "jones-modular",
+        "input_crossings": 11,
+        "reduced_crossings": 11,
+        "seconds": 0.003916,
+        "evidence": {
+          "reidemeister_trace": [],
+          "jones": {
+            "kind": "kauffman-bracket-differs-from-unknot",
+            "prime": 2305843009213693951,
+            "A": 2177342782468422681,
+            "writhe": -1,
+            "bracket": 1034482905276118013,
+            "unknot_bracket": 675013989396796121,
+            "peak_states": 5,
+            "transitions": 62
+          }
+        },
+        "quasipolynomial_guarantee": false,
+        "worst_case": "2^O(n); filters are polynomial or width-bounded, the Khovanov scan is not"
+      },
+      "status": "KNOTTED",
+      "failures": [],
+      "passed": true
+    },
+    {
+      "name": "legacy_connected_sum",
+      "kind": "cli",
+      "command": [
+        "python",
+        "-m",
+        "fastunknot",
+        "recognize",
+        "fast/examples/conway_sum_2.json",
+        "--legacy-factor"
+      ],
+      "working_directory": ".",
+      "environment": {
+        "PYTHONPATH": "fast"
+      },
+      "expected_exit": 0,
+      "exit_code": 0,
+      "seconds": 0.07239304900213028,
+      "stdout": "{\n \"status\": \"KNOTTED\",\n \"is_unknot\": false,\n \"method\": \"connected-sum-factor:jones-modular\",\n \"input_crossings\": 22,\n \"reduced_crossings\": 22,\n \"seconds\": 0.001149,\n \"evidence\": {\n  \"reidemeister_trace\": [],\n  \"connected_sum_cuts\": [\n   {\n    \"cut_edges\": [\n     22,\n     0\n    ],\n    \"crossings\": [\n     11,\n     11\n    ]\n   }\n  ],\n  \"factors\": [\n   {\n    \"crossings\": 11,\n    \"jones\": {\n     \"kind\": \"kauffman-bracket-differs-from-unknot\",\n     \"prime\": 2305843009213693951,\n     \"A\": 2177342782468422681,\n     \"writhe\": -1,\n     \"bracket\": 1034482905276118013,\n     \"unknot_bracket\": 675013989396796121,\n     \"peak_states\": 5,\n     \"transitions\": 62\n    },\n    \"status\": \"KNOTTED\",\n    \"method\": \"jones-modular\"\n   }\n  ]\n },\n \"quasipolynomial_guarantee\": false,\n \"worst_case\": \"2^O(n); filters are polynomial or width-bounded, the Khovanov scan is not\"\n}\n",
+      "stderr": "",
+      "checks": [
+        "exit code",
+        "no traceback",
+        "JSON verdict",
+        "complexity claim",
+        "legacy factor evidence schema"
+      ],
+      "result": {
+        "status": "KNOTTED",
+        "is_unknot": false,
+        "method": "connected-sum-factor:jones-modular",
+        "input_crossings": 22,
+        "reduced_crossings": 22,
+        "seconds": 0.001149,
+        "evidence": {
+          "reidemeister_trace": [],
+          "connected_sum_cuts": [
+            {
+              "cut_edges": [
+                22,
+                0
+              ],
+              "crossings": [
+                11,
+                11
+              ]
+            }
+          ],
+          "factors": [
+            {
+              "crossings": 11,
+              "jones": {
+                "kind": "kauffman-bracket-differs-from-unknot",
+                "prime": 2305843009213693951,
+                "A": 2177342782468422681,
+                "writhe": -1,
+                "bracket": 1034482905276118013,
+                "unknot_bracket": 675013989396796121,
+                "peak_states": 5,
+                "transitions": 62
+              },
+              "status": "KNOTTED",
+              "method": "jones-modular"
+            }
+          ]
+        },
+        "quasipolynomial_guarantee": false,
+        "worst_case": "2^O(n); filters are polynomial or width-bounded, the Khovanov scan is not"
+      },
+      "status": "KNOTTED",
+      "failures": [],
+      "passed": true
+    },
+    {
+      "name": "interlacement_connected_sum",
+      "kind": "cli",
+      "command": [
+        "python",
+        "-m",
+        "fastunknot",
+        "recognize",
+        "fast/examples/conway_sum_2.json"
+      ],
+      "working_directory": ".",
+      "environment": {
+        "PYTHONPATH": "fast"
+      },
+      "expected_exit": 0,
+      "exit_code": 0,
+      "seconds": 0.06180289600160904,
+      "stdout": "{\n \"status\": \"KNOTTED\",\n \"is_unknot\": false,\n \"method\": \"connected-sum-factor:jones-modular\",\n \"input_crossings\": 22,\n \"reduced_crossings\": 22,\n \"seconds\": 0.002874,\n \"evidence\": {\n  \"reidemeister_trace\": [],\n  \"connected_sum_factorization\": {\n   \"algorithm\": \"gauss-interlacement-v1\",\n   \"original_crossings\": 22,\n   \"crossing_components\": [\n    [\n     0,\n     1,\n     2,\n     3,\n     4,\n     5,\n     6,\n     7,\n     8,\n     9,\n     10\n    ],\n    [\n     11,\n     12,\n     13,\n     14,\n     15,\n     16,\n     17,\n     18,\n     19,\n     20,\n     21\n    ]\n   ],\n   \"interlacement_forest\": [\n    [\n     2,\n     5\n    ],\n    [\n     2,\n     10\n    ],\n    [\n     2,\n     4\n    ],\n    [\n     2,\n     1\n    ],\n    [\n     2,\n     3\n    ],\n    [\n     2,\n     6\n    ],\n    [\n     4,\n     7\n    ],\n    [\n     4,\n     9\n    ],\n    [\n     5,\n     8\n    ],\n    [\n     19,\n     16\n    ],\n    [\n     19,\n     20\n    ],\n    [\n     19,\n     18\n    ],\n    [\n     19,\n     21\n    ],\n    [\n     18,\n     15\n    ],\n    [\n     16,\n     13\n    ],\n    [\n     16,\n     17\n    ],\n    [\n     17,\n     14\n    ],\n    [\n     17,\n     12\n    ],\n    [\n     12,\n     11\n    ],\n    [\n     0,\n     1\n    ]\n   ]\n  },\n  \"factors\": [\n   {\n    \"crossings\": 11,\n    \"jones\": {\n     \"kind\": \"kauffman-bracket-differs-from-unknot\",\n     \"prime\": 2305843009213693951,\n     \"A\": 2177342782468422681,\n     \"writhe\": -1,\n     \"bracket\": 1034482905276118013,\n     \"unknot_bracket\": 675013989396796121,\n     \"peak_states\": 5,\n     \"transitions\": 62\n    },\n    \"status\": \"KNOTTED\",\n    \"method\": \"jones-modular\"\n   }\n  ]\n },\n \"quasipolynomial_guarantee\": false,\n \"worst_case\": \"2^O(n); filters are polynomial or width-bounded, the Khovanov scan is not\"\n}\n",
+      "stderr": "",
+      "checks": [
+        "exit code",
+        "no traceback",
+        "JSON verdict",
+        "complexity claim",
+        "interlacement factor evidence schema",
+        "public certificate verifier accepts CLI output"
+      ],
+      "result": {
+        "status": "KNOTTED",
+        "is_unknot": false,
+        "method": "connected-sum-factor:jones-modular",
+        "input_crossings": 22,
+        "reduced_crossings": 22,
+        "seconds": 0.002874,
+        "evidence": {
+          "reidemeister_trace": [],
+          "connected_sum_factorization": {
+            "algorithm": "gauss-interlacement-v1",
+            "original_crossings": 22,
+            "crossing_components": [
+              [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8,
+                9,
+                10
+              ],
+              [
+                11,
+                12,
+                13,
+                14,
+                15,
+                16,
+                17,
+                18,
+                19,
+                20,
+                21
+              ]
+            ],
+            "interlacement_forest": [
+              [
+                2,
+                5
+              ],
+              [
+                2,
+                10
+              ],
+              [
+                2,
+                4
+              ],
+              [
+                2,
+                1
+              ],
+              [
+                2,
+                3
+              ],
+              [
+                2,
+                6
+              ],
+              [
+                4,
+                7
+              ],
+              [
+                4,
+                9
+              ],
+              [
+                5,
+                8
+              ],
+              [
+                19,
+                16
+              ],
+              [
+                19,
+                20
+              ],
+              [
+                19,
+                18
+              ],
+              [
+                19,
+                21
+              ],
+              [
+                18,
+                15
+              ],
+              [
+                16,
+                13
+              ],
+              [
+                16,
+                17
+              ],
+              [
+                17,
+                14
+              ],
+              [
+                17,
+                12
+              ],
+              [
+                12,
+                11
+              ],
+              [
+                0,
+                1
+              ]
+            ]
+          },
+          "factors": [
+            {
+              "crossings": 11,
+              "jones": {
+                "kind": "kauffman-bracket-differs-from-unknot",
+                "prime": 2305843009213693951,
+                "A": 2177342782468422681,
+                "writhe": -1,
+                "bracket": 1034482905276118013,
+                "unknot_bracket": 675013989396796121,
+                "peak_states": 5,
+                "transitions": 62
+              },
+              "status": "KNOTTED",
+              "method": "jones-modular"
+            }
+          ]
+        },
+        "quasipolynomial_guarantee": false,
+        "worst_case": "2^O(n); filters are polynomial or width-bounded, the Khovanov scan is not"
+      },
+      "status": "KNOTTED",
+      "failures": [],
+      "passed": true
+    },
+    {
+      "name": "forced_pointed_conway",
+      "kind": "cli",
+      "command": [
+        "python",
+        "-m",
+        "fastunknot",
+        "recognize",
+        "fast/examples/conway.json",
+        "--pointed",
+        "--no-alexander",
+        "--no-jones"
+      ],
+      "working_directory": ".",
+      "environment": {
+        "PYTHONPATH": "fast"
+      },
+      "expected_exit": 0,
+      "exit_code": 0,
+      "seconds": 0.0578746780010988,
+      "stdout": "{\n \"status\": \"KNOTTED\",\n \"is_unknot\": false,\n \"method\": \"pointed-khovanov-F2-scan\",\n \"input_crossings\": 11,\n \"reduced_crossings\": 11,\n \"seconds\": 0.007256,\n \"evidence\": {\n  \"reidemeister_trace\": [],\n  \"pointed_khovanov\": {\n   \"status\": \"KNOTTED\",\n   \"reduced_rank\": null,\n   \"lower_bound\": 2,\n   \"stats\": {\n    \"max_objects_before_elimination\": 123,\n    \"max_objects_after_elimination\": 41,\n    \"eliminations\": 106,\n    \"max_boundary\": 6,\n    \"compositions\": 56,\n    \"entries\": 1051,\n    \"plans\": 175,\n    \"shape_hits\": 0,\n    \"result_hits\": 0\n   },\n   \"order\": [\n    1,\n    3,\n    0,\n    2,\n    6,\n    4,\n    8,\n    5,\n    10,\n    7,\n    9\n   ],\n   \"marked_edge\": 13,\n   \"method\": \"pointed-isolated-summands\",\n   \"certificate\": {\n    \"kind\": \"isolated-summands-replay-data\",\n    \"stage\": 11,\n    \"remaining_crossings\": 0,\n    \"before_final_elimination\": true,\n    \"objects\": [\n     {\n      \"object_id\": 1,\n      \"homological_degree\": 0,\n      \"matching\": [\n       [\n        -2,\n        -1\n       ]\n      ]\n     },\n     {\n      \"object_id\": 7,\n      \"homological_degree\": 1,\n      \"matching\": [\n       [\n        -2,\n        -1\n       ]\n      ]\n     }\n    ]\n   }\n  }\n },\n \"quasipolynomial_guarantee\": false,\n \"worst_case\": \"2^O(n); filters are polynomial or width-bounded, the Khovanov scan is not\"\n}\n",
+      "stderr": "",
+      "checks": [
+        "exit code",
+        "no traceback",
+        "JSON verdict",
+        "complexity claim",
+        "pointed decision route"
+      ],
+      "result": {
+        "status": "KNOTTED",
+        "is_unknot": false,
+        "method": "pointed-khovanov-F2-scan",
+        "input_crossings": 11,
+        "reduced_crossings": 11,
+        "seconds": 0.007256,
+        "evidence": {
+          "reidemeister_trace": [],
+          "pointed_khovanov": {
+            "status": "KNOTTED",
+            "reduced_rank": null,
+            "lower_bound": 2,
+            "stats": {
+              "max_objects_before_elimination": 123,
+              "max_objects_after_elimination": 41,
+              "eliminations": 106,
+              "max_boundary": 6,
+              "compositions": 56,
+              "entries": 1051,
+              "plans": 175,
+              "shape_hits": 0,
+              "result_hits": 0
+            },
+            "order": [
+              1,
+              3,
+              0,
+              2,
+              6,
+              4,
+              8,
+              5,
+              10,
+              7,
+              9
+            ],
+            "marked_edge": 13,
+            "method": "pointed-isolated-summands",
+            "certificate": {
+              "kind": "isolated-summands-replay-data",
+              "stage": 11,
+              "remaining_crossings": 0,
+              "before_final_elimination": true,
+              "objects": [
+                {
+                  "object_id": 1,
+                  "homological_degree": 0,
+                  "matching": [
+                    [
+                      -2,
+                      -1
+                    ]
+                  ]
+                },
+                {
+                  "object_id": 7,
+                  "homological_degree": 1,
+                  "matching": [
+                    [
+                      -2,
+                      -1
+                    ]
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        "quasipolynomial_guarantee": false,
+        "worst_case": "2^O(n); filters are polynomial or width-bounded, the Khovanov scan is not"
+      },
+      "status": "KNOTTED",
+      "failures": [],
+      "passed": true
+    },
+    {
+      "name": "invalid_pointed_race",
+      "kind": "cli",
+      "command": [
+        "python",
+        "-m",
+        "fastunknot",
+        "recognize",
+        "fast/examples/conway.json",
+        "--pointed",
+        "--race",
+        "2"
+      ],
+      "working_directory": ".",
+      "environment": {
+        "PYTHONPATH": "fast"
+      },
+      "expected_exit": 2,
+      "exit_code": 2,
+      "seconds": 0.061397527999361046,
+      "stdout": "",
+      "stderr": "invalid options: --pointed requires --pivot minfill, --algebra bits, --tail 0, --race 1\n",
+      "checks": [
+        "exit code",
+        "no traceback",
+        "clean invalid-options error"
+      ],
+      "failures": [],
+      "passed": true
+    },
+    {
+      "name": "zero_budget_trefoil",
+      "kind": "cli",
+      "command": [
+        "python",
+        "-m",
+        "fastunknot",
+        "recognize",
+        "fast/examples/trefoil.json",
+        "--seconds",
+        "0",
+        "--no-reduction",
+        "--no-descending"
+      ],
+      "working_directory": ".",
+      "environment": {
+        "PYTHONPATH": "fast"
+      },
+      "expected_exit": 3,
+      "exit_code": 3,
+      "seconds": 0.06958215600025142,
+      "stdout": "{\n \"status\": \"UNKNOWN\",\n \"is_unknot\": null,\n \"method\": \"resource-limit\",\n \"input_crossings\": 3,\n \"reduced_crossings\": 3,\n \"seconds\": 5e-06,\n \"evidence\": {\n  \"reason\": \"time budget exhausted\"\n },\n \"quasipolynomial_guarantee\": false,\n \"worst_case\": \"2^O(n); filters are polynomial or width-bounded, the Khovanov scan is not\"\n}\n",
+      "stderr": "",
+      "checks": [
+        "exit code",
+        "no traceback",
+        "JSON verdict",
+        "complexity claim",
+        "resource-limit result"
+      ],
+      "result": {
+        "status": "UNKNOWN",
+        "is_unknot": null,
+        "method": "resource-limit",
+        "input_crossings": 3,
+        "reduced_crossings": 3,
+        "seconds": 5e-06,
+        "evidence": {
+          "reason": "time budget exhausted"
+        },
+        "quasipolynomial_guarantee": false,
+        "worst_case": "2^O(n); filters are polynomial or width-bounded, the Khovanov scan is not"
+      },
+      "status": "UNKNOWN",
+      "failures": [],
+      "passed": true
+    },
+    {
+      "name": "disabled_exact_alexander_api",
+      "kind": "python_api",
+      "call": "recognize(trefoil, use_modular=False, use_exact_alexander=False, use_jones=False)",
+      "checks": [
+        "truthful disabled-stage evidence"
+      ],
+      "failures": [],
+      "result": {
+        "status": "KNOTTED",
+        "is_unknot": false,
+        "method": "reduced-khovanov-F2-scan",
+        "input_crossings": 3,
+        "reduced_crossings": 3,
+        "seconds": 0.000791,
+        "evidence": {
+          "reidemeister_trace": [],
+          "alexander_polynomial": "not computed: the exact Alexander stage was disabled",
+          "khovanov": {
+            "field": "F2",
+            "unreduced_rank": 6,
+            "reduced_rank": 3,
+            "unreduced_rank_by_cube_degree": {
+              "0": 2,
+              "1": 2,
+              "3": 2
+            },
+            "scan_stats": {
+              "max_objects_before_elimination": 18,
+              "max_objects_after_elimination": 6,
+              "eliminations": 7,
+              "max_boundary": 4,
+              "compositions": 0,
+              "entries": 26,
+              "plans": 11,
+              "shape_hits": 0,
+              "result_hits": 0
+            },
+            "scan_order": [
+              0,
+              1,
+              2
+            ]
+          }
+        },
+        "quasipolynomial_guarantee": false,
+        "worst_case": "2^O(n); filters are polynomial or width-bounded, the Khovanov scan is not"
+      },
+      "status": "KNOTTED",
+      "passed": true
+    },
+    {
+      "name": "package_version",
+      "kind": "python_api",
+      "call": "fastunknot.__version__",
+      "version": "0.3.0",
+      "checks": [
+        "version 0.3.0",
+        "packaging version and MIT-0 metadata"
+      ],
+      "failures": [],
+      "pyproject_version": "0.3.0",
+      "pyproject_license": "MIT-0",
+      "passed": true
+    }
+  ],
+  "source_sha256": {
+    "fast/fastunknot/__init__.py": "e17933d8355732184c62bd1ddb9fcf8863ab7aebe2de06e0faf9a11e085f77de",
+    "fast/fastunknot/__main__.py": "2edc87e57302f016082dd7edb2a2ba725ee6656051394ee0a6dc8214d233780c",
+    "fast/fastunknot/alexander.py": "7b1f35cd4981cd43d698aa893fee571dc236ebf1ebea7231adc5b0f3a299cd75",
+    "fast/fastunknot/algebra.py": "f51f807dbf1b8b35d76f6153c36d0747dfb0ff1d550bf5760327dec493f403ab",
+    "fast/fastunknot/diagram.py": "98e730e3bfda13e9f100585a5d8c4602c4e05501d4b6cab9431bdfdf4f172b6e",
+    "fast/fastunknot/factor.py": "1b885f14da7b7aeaa21b86360a47d10a565f31a375d52afd1ea44fba10e89420",
+    "fast/fastunknot/filters.py": "3f93b12ebfa8e8a7c4496f374685b79d7cfae4f52a8141b5d4b6a8e1efee3271",
+    "fast/fastunknot/geometry.py": "430216440879ab7f8bbc403a3408fa66a1e793a0173c2b81ed97d74186cc2812",
+    "fast/fastunknot/interlace.py": "b98703923282099c0de7dfdfa20c107f3558128c74a14cd2ce2d8455589abed9",
+    "fast/fastunknot/ordering.py": "18f62b2c86d0ba26843bd466374a6a32eaa38e0c8ca909fd8750d88808d39d57",
+    "fast/fastunknot/planar.py": "c4ca4a65c76804c3e6628c2adfb4e3409717e2ef3925c5bca25969dc998137b7",
+    "fast/fastunknot/recognize.py": "72661f45f6d772e20bdffd1811651a400c5d48da1a00b93d1386d385211f7c6a",
+    "fast/fastunknot/reduced_scan.py": "02a5ce389d8571e3db0622e7078ecf62bf282f17dfdd4f92c85b55f3c3ab1a74",
+    "fast/fastunknot/scan.py": "cb3c2eb15e01174f4b89eeb44bda7ed2c431ee8d697daa0dc612230701b0a53c",
+    "fast/fastunknot/scan_fast.py": "49d43c886c0adb85fe24017d12ab26822ae95b6a6930f280546654170f3f1282",
+    "fast/fastunknot/scan_reference.py": "b79897060c7774dd2f3e08c63147b5ee74cf50c0262a50d0452430d9b52686b6",
+    "fast/fastunknot/simplify.py": "a116e4e939beea2e145610ddd35525745d8ed1cb8ff6f20f7a28b324db5f5fa8",
+    "fast/fastunknot/sparse.py": "58a4d7c80edea9cf9d2a140982b1b5f98750e7e699a358f8d23ff4ebe0094a7e",
+    "fast/pyproject.toml": "e6f6482059473e4379c13145d27646039431cde03c5d98853ecd3082b2cc9d16",
+    "LICENSE": "1287271ea1f4b1fc1fe2ac82cfd39fb632b02615f50175ec915fa033c9cc64a2"
+  }
+}

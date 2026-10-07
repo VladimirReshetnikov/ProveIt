@@ -1,5 +1,6 @@
 /- Modified for ProveIt: import Lean 4.32 compatibility declarations.
-Statements and proofs are unchanged from the pinned upstream source. -/
+Remove redundant reflexivity after simplification closes the constant-coordinate case.
+Mathematical statements are unchanged. -/
 import OAI.Compat.Core
 import Mathlib.MeasureTheory.Constructions.Pi
 import OAI.Combinatorics.Progressions.Fourier.EuclideanJetTorus
@@ -181,7 +182,6 @@ theorem coordinate_constant_decomposition {K : Type*} {m : ℕ} {J : Fin m → T
   · subst d
     simp [constantCoordinateExtension, nonconstantCoordinateExtension, coefficientCoordinateSplit,
       coefficientConstantCoordinates, constantCoefficientSlotEquiv, zeroCoefficientExponent]
-    rfl
   · simp [constantCoordinateExtension, nonconstantCoordinateExtension, coefficientCoordinateSplit, hz]
 
 theorem coordinateSiteValue_constant {K : Type*} [Fintype K] {m : ℕ} {J : Fin m → Type*}

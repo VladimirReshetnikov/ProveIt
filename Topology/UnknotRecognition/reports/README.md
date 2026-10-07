@@ -13,11 +13,24 @@ modification times.
 | `05/` | `unknot_recognition_partial_implementation (1).zip` | `unknot_recognition` | Reidemeister I/II traces, determinant, Khovanov cube | bond-enumeration pattern test, simplicial normal coordinates, pattern complexity | 58 |
 | `06/` | `unknot-recognition-implementation.zip` | `unknot` | Khovanov cube, 11-crossing fixtures, report verifier | bond-enumeration pattern test | 45 |
 | `07/` | `unknot_structural_compression.zip` | `fastunknot` 0.3.0 (`07/fast/`) | signed-Seifert-graph certificate stage, exact component-sharing Khovanov backend | Euler/component scans | 69 integrated tests pass |
+| `08/` | `unknot_recognition_progress.zip` | `fastunknot` 0.3.0 (`08/Topology/UnknotRecognition/fast/`, `code_changes.patch`) | complete decision for closures of braids on at most three strands (`O(ell)` symbol operations), integral-matrix second backend, writhe obstruction | matching multiplicities after unit cancellation, residue diagnostic | not run |
+| `09/` | `unknot_progress_20261007.zip` | `fastunknot` 0.3.0 (`09/fast/`, `integration/fastunknot-0.3.patch`) | proved performance improvements to the scan; article with eleven research questions | — | not run |
+| `10/` | `unknot_component_entropy_20261007.zip` | standard-library kernel (`10/code/`) | component-quotient factorization of F2 cobordism composition, `poly(w)·2^(w/2)` composition | sparse-profile restart potential (conditional) | not run |
+| `11/` | `unknot_twist_research_bundle.zip` | `twistkh` (opt-in backend) | twist-compressed Khovanov complex for braid closures given as twist blocks, exact preflight cost certificates | — | not run |
 
 Archives `01/`–`06/` each contain a README, a LaTeX report with PDF under
 `docs/`, examples, recorded results, and a standard-library-only Python package.
 
-`07/` (placed 7 October 2026) continues the project's own `../fast/` package
+`07/`–`11/` were placed on 7 October 2026. Each is a research continuation of
+this project, and all but `10/` extend or patch `../fast/`. Of these, only
+`07/` has been integrated (see below). `08/`–`11/` were placed as delivered,
+under the standing intake rule: no test runs, no patch application, no
+review. Their recorded results are the authors' own. `08/` ships its changed files in the repository's own
+layout (`08/Topology/UnknotRecognition/...`); `11/` suggests
+`research/twist_compression/` as its home. Both are kept inside their report
+directories as delivered.
+
+`07/` continues the project's own `../fast/` package
 rather than being an independent implementation. It contains:
 
 - the article (`paper/`);

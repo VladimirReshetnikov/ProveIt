@@ -1,0 +1,194 @@
+\section{What a multiplicity bound would prove}
+\label{sec:parameters}
+
+We give a rigorous parameter bound for one fixed-order scan that fully
+cancels after every crossing.  It applies to the ordinary and pointed
+engines; deferred tails and races are excluded from this statement.  The
+input is a normalized $n$-crossing PD code, so edge labels use $O(\log(n+1))$
+bits.  The crossing-free case is handled separately in constant time.
+
+Let $w$ be the maximum number of frontier endpoints, including the final
+two endpoints of a pointed scan.  Let $M\geq1$ be the maximum number of live
+objects \emph{after} a fully canceled stage, including the initial stage.
+Let $\mu$ be the largest total multiplicity of any one matching at any such
+stage, summed over all homological degrees.  These are parameters of the
+actual computation; none is assumed to have a small bound in terms of $n$.
+
+\begin{lemma}[One-crossing expansion]
+\label{lem:eightfold}
+If a canceled stage has at most $M$ objects, attaching the next crossing and
+delooping creates at most $8M$ objects before cancellation.  At most $4M$
+cancellations can occur at that stage.
+\end{lemma}
+
+\begin{proof}
+There are two smoothings.  Every newly closed circle contains at least one
+of that smoothing's two new arcs: previously closed circles have already
+been delooped, and untouched old matching arcs cannot form a new circle.
+Thus each smoothing creates at most two closed circles.  Delooping supplies
+at most $2^2$ copies, giving at most $2\cdot2^2=8$ new objects per old object.
+Taking the pointed quotient cannot increase this count.  Every cancellation
+removes two objects and creates none, which gives the second assertion.
+\end{proof}
+
+This argument includes the final crossing, whether it closes the ordinary
+diagram completely or leaves the two marked endpoints.  It does not apply
+repeatedly with the same $M$ through an unreduced tail: $r$ crossings without
+intermediate cancellation permit the weaker bound $8^rM$.  The parameter
+must then be enlarged accordingly.
+
+\begin{proposition}[Work in terms of retained objects]
+\label{prop:retainedbound}
+The full-elimination scan performs at most $O(nM^3)$ algebra compositions.
+Its lazy pivot queue uses at most $O(nM^4)$ insertions and removals.  With
+deterministic dictionary implementations, its bit-operation complexity is
+bounded by
+\begin{equation}
+ \poly(n,w,\log(M+1))\,M^4\,2^{O(w)}.
+ \label{eq:retainedbound}
+\end{equation}
+For the supplied Python dictionaries, the same expression is an operation
+bound in the usual dictionary cost model; constant worst-case hashing cost
+is not being asserted.
+\end{proposition}
+
+\begin{proof}
+Put $N=8M$.  A stage has at most $N^2$ differential entries.  Transferring an
+entry through either smoothing produces at most sixteen delooped entries,
+so crossing attachment involves $O(M^2)$ bounded-arity transfer operations.
+Each pivot has at most $N$ incoming and $N$ outgoing neighbors.  Its Schur
+update therefore uses $O(N^2)$ compositions.  There are at most $N/2$ pivots,
+giving $O(M^3)$ compositions per stage.
+
+The implementation's lazy queue needs separate accounting.  Initialization
+and pivot updates create $O(M^3)$ candidate records per stage, with duplicates
+allowed.  A stale record is refiled at its newly evaluated Markowitz cost.
+It cannot become stale again until a cancellation changes the differential.
+Since there are $O(M)$ cancellations, each created record is refiled at most
+$O(M)$ times.  Thus there are $O(M^4)$ queue operations, each with at most
+logarithmic heap overhead.  This argument avoids incorrectly equating cubic
+composition count with cubic total bookkeeping cost.  An indexed queue or
+complete pivot search can achieve a different accounting, but is not the
+current implementation.
+
+An overlay on at most $w$ endpoints has at most $w/2$ circles.  An unpointed
+morphism consequently has at most $2^{w/2}$ coefficient bits; the pointed
+quotient removes one variable when active.  Enumerating pairs of monomials,
+compiling their surface components, and evaluating each component all take
+$2^{O(w)}\poly(w)$ bit operations, even with naive integer operations.
+Labels, object indices, and matching identifiers add logarithmic factors in
+$n$ and $M$.  Numerical cache entries are bounded by the actual polynomial
+number of calls just counted, rather than by a count of possible values:
+a Hom space with $2^{w/2}$ coefficient bits has up to
+$2^{2^{w/2}}$ possible coefficient vectors.  Finitely many topology-plan
+shapes therefore do not remove the multiplicity parameter.  Replacing
+hashing by balanced dictionaries adds only logarithmic factors in the
+number of stored entries.  Combining these observations over $n$ stages proves
+\eqref{eq:retainedbound}.
+\end{proof}
+
+\begin{corollary}[Width and multiplicity criterion]
+\label{cor:multiplicitycriterion}
+Define $D(0)=1$ and $D(w)=(w-1)!!$ for even $w\geq2$.  Then
+\[
+ M\leq\mu D(w),\qquad
+ T\leq\poly(n)\exp\!\bigl(O(w\log(w+1)+\log(\mu+1))\bigr).
+\]
+In particular, a family satisfying
+$w\log(w+1)+\log(\mu+1)=O(\log^2(n+2))$
+has a quasi-polynomial implementation of this scan.
+\end{corollary}
+
+\begin{proof}
+On a fixed frontier of $b$ endpoints there are at most $(b-1)!!$ perfect
+matchings.  Multiplying by the total multiplicity bound proves the first
+inequality.  This is a \emph{per-stage} count: different stages have different
+label sets, and retaining their matchings adds at most a factor $n+1$.
+Finally $\log D(w)=O(w\log(w+1))$, and substitution into
+\eqref{eq:retainedbound} gives the claimed form.
+\end{proof}
+
+The double factorial is deliberate.  A Catalan count requires additional
+common-boundary topology, discussed earlier; arbitrary frontier sets do not
+supply it.  If every frontier of the \emph{actual scan} has a certified common
+disk realization, including the cut endpoints when a pointed engine is used,
+the sharper count gives
+\[
+ M\leq\mu C_{w/2},\qquad
+ T\leq\poly(n)\exp\!\bigl(O(w+\log(\mu+1))\bigr),
+\]
+because the Catalan number satisfies $C_{w/2}\leq2^w$.
+Then $w+\log(\mu+1)=O(\log^2(n+2))$ suffices for quasi-polynomial time.
+The last-crossing marking theorem preserves frontier cardinality; it does
+not by itself certify this common disk hypothesis.
+
+More seriously, small width does not force small multiplicity.
+Serial diagrams of connected sums of $k$ trefoils have bounded scan width
+and reduced rank $3^k$.  The trefoil's characteristic-two reduced complex
+has three surviving generators; the connected-sum tensor product multiplies
+these ranks~\cite[Sections~3--4]{khovanov2002}.  Processing one fixed-size factor at a time keeps
+only a bounded number of frontier endpoints.  Nevertheless the final
+pointed minimal complex has $3^k$ objects of the same matching.  This is an
+exponential obstruction for the \emph{explicit generator representation}.
+It is not a lower bound for computing the integer $3^k$, a compressed graded
+answer, or the unknot decision.  Factorization and the isolated-summand
+criterion can avoid that explicit representation on this family.
+
+\begin{corollary}[Small visible factors]
+\label{cor:small-factors}
+Suppose the atomic visible factors of a validated $n$-crossing diagram have
+at most $b$ crossings each.  Checked factorization followed by complete
+scanning of each factor gives an exact decision procedure with bound
+\[
+ O(n\log(n+1))+n\,2^{O(b)}.
+\]
+In particular, $b=O(\log^2(n+2))$ gives the sharper quasi-polynomial target.
+\end{corollary}
+
+\begin{proof}
+Lemma~\ref{lem:eightfold} bounds all object counts on an $s$-crossing factor
+by $8^s$, even if no cancellation helps.  Its frontier has $O(s)$ endpoints.
+Proposition~\ref{prop:retainedbound} therefore gives $2^{O(s)}$ time.
+There are at most $n$ nonempty factors, their crossing counts sum to $n$,
+and a connected sum is the unknot precisely when all factors are.
+Add the checked factorization cost from
+Proposition~\ref{prop:interlace-reconstruction}.
+\end{proof}
+
+This restricted class already has a quasi-polynomial algorithm with a
+polynomial-cost factorizer.  The present improvement reduces its
+preprocessing cost; it does not by itself enlarge the class to all diagrams.
+
+\subsection{A further closed-complex rank obstruction}
+
+The following elementary observation is a proved, unimplemented follow-up,
+without a novelty-priority claim.  It can sometimes avoid final scalar
+elimination when no isolated object is present.
+
+\begin{lemma}[Vertex-cover bound]
+\label{lem:vertexcoverbound}
+Let $(V,d)$ be a finite scalar chain complex with $N$ homogeneous basis vectors.
+Form an undirected graph joining two basis vectors whenever the differential
+has a nonzero entry between them.  For every vertex cover $C$,
+\[
+ \dim H(V,d)\geq N-2|C|.
+\]
+\end{lemma}
+
+\begin{proof}
+The complementary vertices $I$ are independent, so
+$d(\operatorname{span}I)\subseteq\operatorname{span}C$.
+Put $b=\dim d(\operatorname{span}I)$.  Since $d^2=0$, this $b$-dimensional
+subspace lies in the kernel of $d$ restricted to $\operatorname{span}C$.
+Thus $\dim d(\operatorname{span}C)\leq|C|-b$, and
+$\operatorname{rank}d\leq b+(|C|-b)=|C|$.
+Now use $\dim H=N-2\operatorname{rank}d$.
+\end{proof}
+
+The support graph is bipartite by homological parity, so a minimum cover
+can be found by bipartite matching.  A cover giving $N-2|C|>1$ proves
+knottedness for a closed reduced knot complex.  Verifying the cover against
+that scalar differential is easy, although obtaining and verifying the
+differential still requires its preceding computation.  The square-zero
+hypothesis is essential, and the lemma cannot be applied to an open
+cobordism complex simply by counting its matching objects.

@@ -1,0 +1,219 @@
+\section{Further research questions and proposed milestones}
+\label{sec:research}
+
+The next stage should pursue two complementary goals: improve the exact
+implemented recognizer on difficult inputs, and prove structural statements
+strong enough to control its worst case.  The following questions specify
+what would count as progress.  They include possible negative results; a
+counterexample to an attractive compression hypothesis is useful when it
+prevents an unjustified global claim.
+
+\subsection{Q1. Which frontier topology controls matching support?}
+
+The immediate question is whether a useful intermediate bound lies between
+the single-disk Catalan estimate and the unrestricted double factorial.
+Suppose the processed region has $b$ relevant boundary components.  Can its
+realizable matching support be bounded, under a precise encoding of endpoint
+orders and boundary incidences, by an expression such as
+$2^{O(w)}w^{O(b)}$?  If so, which additional winding or connectivity data
+must be retained?  If not, can an explicit planar knot family demonstrate
+the obstruction?
+
+The first milestone is a certified boundary representation derived from
+the PD rotation system.  The checker should report actual boundary cycles,
+the frontier incidences on each cycle, and the processed side.  A second
+milestone is a theorem about exactly that representation, tested against
+the six-state counterexample and the default Conway-sum fixture.  Counting
+abstract noncrossing partitions under a boundary order not supplied by the
+input would not meet this milestone.
+
+\subsection{Q2. Can certified noose decompositions replace greedy scans?}
+
+A greedy linear order is easy to run and often effective, but it lacks the
+geometric certificate required for the sharper count.  A decomposition based
+on embedded separators or nooses could carry that certificate with each
+interface.  The design question is how to compose tangle complexes along a
+branching decomposition while controlling both width and homological
+multiplicity.
+
+The first prototype should expose a checked decomposition format before
+optimizing the algebra.  Compare its certified boundary widths, support
+sizes, peak multiplicities, and wall-clock cost with the existing greedy
+order on identical diagrams.  A low-width decomposition can still lose
+through expensive joining operations; the accounting must include those
+joins.  A route to \eqref{eq:main-target} needs a structural theorem after
+allowed reductions, or a complementary method for pieces that retain large
+interfaces.
+
+\subsection{Q3. What compresses repeated tangle complexes?}
+
+Visible two-edge cuts admit a scalar connected-sum rule and are now handled
+efficiently.  Four-ended cuts are the next natural extension.  Can a useful
+class of tangles be represented by small complexes of boundary modules,
+with exact composition and a canonical compressed form?  Repeated tangles
+could then share a symbolic representation instead of duplicating all
+generators.
+
+The central obstacle is extension data.  The total rank, graded rank, or
+Jones polynomial of each piece generally does not specify the differential
+or the boundary action needed after gluing.  A proposed summary must therefore
+come with a congruence theorem: equal summaries give equivalent results under
+every permitted complementary gluing.  Test this property on exhaustive
+small tangles with several closures before treating it as an algorithmic
+interface.  A compact dictionary of repeated byte-identical complexes can
+be an initial engineering step, but is not itself such a theorem.
+
+\subsection{Q4. Can decision certificates appear before full reduction?}
+
+The isolated-summand theorem supplies one exact lower bound, and the
+vertex-cover lemma supplies another after scalar closure.  Can they be
+extended to small blocks of objects whose every allowed completion has
+nonzero reduced homology?  A useful block certificate must survive the
+remaining differential and gluing functors, rather than merely count
+uncancelled generators.
+
+Implement the scalar support-graph cover bound first and measure its overhead
+against the final cancellation it avoids.  Then study small open complexes
+with certified nonzero closures.  A compelling positive result would be a
+class of prime-looking filter survivors where a bounded-size certificate
+arises after only a controlled portion of the scan.  A compelling negative
+result would show that an entire proposed class of local certificates can
+remain absent until the end despite large eventual rank.  Neither outcome
+requires pretending that the present connected-sum examples establish new
+pipeline superiority.
+
+\subsection{Q5. Can the pointed backend be selected cheaply?}
+
+The last-crossing edge policy has a proved frontier property, but it is not
+an optimal basepoint theorem.  Which inexpensive statistics predict when
+the quotient's savings exceed its bookkeeping?  Candidate statistics include
+the time of first marked-edge appearance, early matching multiplicities,
+the distribution of equal-matching pivots, and the number of marked surface
+components in compiled plans.
+
+A selection rule should be trained or tuned on one corpus and evaluated on
+a separate corpus.  Its entire cost belongs in the end-to-end timing.
+Running both expensive scans merely to choose the faster one is not a
+low-cost selector, although a deliberately bounded race may be useful under
+a stated resource policy.  Further algebra work could seek a fused ordinary
+and pointed transfer routine that shares topology compilation without mixing
+the incompatible numeric cache bases.
+
+\subsection{Q6. Which Alexander matrices have controlled elimination work?}
+
+The sparse theorem reduces a performance question to the actual pivot
+parameter $F$.  Can knot-diagram structure, a braid decomposition, or an
+embedded separator order imply a useful bound on $F$ for a specified pivot
+policy?  Input sparsity does not suffice.  Nor does good behavior on the
+sampled $T(3,q)$ diagrams prove that a degree heuristic always maintains
+small neighborhoods.
+
+A first theoretical target is a rigorously specified diagram family for
+which the pivot evolution can be described inductively.  A second is a
+parameterized fill bound in terms of a checked graph decomposition of the
+minor's incidence pattern.  Engineering comparisons should include row-only
+sparse elimination, indexed complete pivoting, and dense fallback at the
+same field and evaluation points.  Track attempted Schur positions and
+transient storage, not only newly created fill.
+
+\subsection{Q7. Can preprocessing expose hidden decomposition?}
+
+Interlacement components characterize visible summands of a fixed diagram.
+They do not solve topological prime decomposition.  Can a bounded collection
+of Reidemeister or flype-like transformations expose enough decompositions
+to bound the largest residual piece on a useful class of inputs?  What
+certificate shows that the transformation sequence preserves the knot and
+that its search cost is controlled?
+
+One intermediate result would bound the work needed to expose a specified
+class of obscured connected sums.  A stronger result would control the
+size or width of every remaining factor after a proven reduction strategy.
+The algorithm must charge unsuccessful move searches and revalidation,
+not just successful crossing reductions.  Memoizing repeated factor PD
+codes is useful, but it cannot identify arbitrarily disguised equivalent
+summands without further mathematics.
+
+\subsection{Q8. Can a geometric hierarchy meet the state-volume contract?}
+
+Section~\ref{sec:hierarchy} gives a quantitative target:
+$\sum_i\log(g_i+1)=O(\log^2 n)$, together with polynomially bounded
+epochs, encoded data, and total work per charged visit.  Can an accelerated
+hierarchy construction prove that complete contract?  This asks more than
+showing termination or a short final certificate.
+
+The first deliverable should be a specification of the state, each
+transition, its preconditions, and a verification procedure for its output.
+Uniform caps must survive every suffix rebuild.  If a decomposition is
+restarted with different caps or a different depth, identify and charge a
+new epoch.  Unequal caps and unequal level costs should be retained because
+the sharp weighted formula can reveal where work is actually concentrated.
+A bound of $O(\log^3 n)$ on the logarithmic state volume would still yield
+quasi-polynomial time, but would not be the sharper
+$n^{O(\log n)}$ claim.
+
+\subsection{Q9. Can compressed geometry stay compressed through every step?}
+
+Interval orbit counting and binary normal coordinates are useful primitives,
+but a chain of routines can lose their advantage at an interface.  Can the
+algorithm cut, trace components, transport discs, and rebuild boundary
+patterns while retaining compressed multiplicities and explicit bit bounds?
+Which routines require an actual list of components, and can that output
+be represented by types with multiplicities instead?
+
+Implement a small end-to-end path from a triangulated exterior through one
+certified cut and back to a valid handle or triangulation description.
+Record input and output bit lengths, represented surface weight, number of
+interval identifications, and total primitive calls.  Reject an interface
+that silently expands a binary weight into one object per normal disk.
+Only after this path is specified should a global hierarchy runtime be
+inferred from its building blocks.
+
+\subsection{Q10. What benchmark corpus tests the unresolved decision stage?}
+
+The next corpus should contain growing families of known unknots and
+nontrivial knots that survive the complete inexpensive front end.  It should
+include alternative diagrams of the same knot, certified move traces for
+scrambled unknots, high-width examples, and cases with no visible factors.
+Crossing number, effective width, boundary topology, matching support,
+object multiplicity, and the deciding stage should all be recorded.
+
+Generated instances need provenance.  A known unknot produced by a verified
+move sequence supplies a trusted label; a knot that a cheap invariant
+rejects measures a different part of the pipeline.  Separate instances used
+for heuristic tuning from those used for evaluation.  Fixed seeds,
+randomized paired timing, A/A controls, and retained failures should remain
+standard.  The purpose is to identify the remaining mechanism of growth,
+not to maximize an average speedup on easily rejected diagrams.
+
+\subsection{Q11. Which certificates should be formalized first?}
+
+The shortest independently verifiable components offer a practical entry
+point for proof-assistant work: the interlacement spanning forest and nesting
+verifier, the inherited-PD reconstruction, finite-field Schur elimination
+with permutation signs, and the mixed-radix ranking and suffix budget.
+These have explicit finite data and compact mathematical invariants.
+
+For homology, a later stage can formalize the marked-dot ideal and the
+surface-evaluation rules, then Gaussian cancellation and its interaction
+with gluing.  The distinction between an isolated-object replay record and
+a compact chain-equivalence certificate should remain explicit.  A small
+formal checker is more useful than a formal statement whose hardest
+topological or complexity premise is hidden in an unimplemented oracle.
+
+\subsection{Proposed order of work}
+
+The first implementation milestone is to integrate the audited factorizer
+and sparse filter, preserve the pointed option, and establish the expanded
+corpus and counter instrumentation.  The first structural milestone is a
+certified interface representation with a proved matching-support bound.
+The next algebraic milestone is an exact compositional compression or an
+earlier decision certificate that handles a substantial residual class.
+In parallel, the hierarchy route needs a small compressed geometric backend
+whose complete costs can be charged to the explicit ranking model.
+
+A claim of general quasi-polynomial recognition becomes justified only when
+every input is covered by one sound, complete algorithm with a proved
+worst-case budget.  Combining fast filters with a conditional scanner and
+an unspecified hierarchy subroutine does not yet supply that coverage.
+The present package gives concrete improvements and testable mathematical
+obligations for the next iteration.

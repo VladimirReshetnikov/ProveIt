@@ -1,0 +1,184 @@
+\section{Incidence-indexed sparse Alexander elimination}
+\label{sec:sparse}
+
+The modular Alexander filter is polynomial-time, so improving it does not
+by itself repair the recognizer's exponential worst case.  It nevertheless
+matters for two reasons.  Large diagrams can be rejected without reaching
+homology, and dense storage can consume resources before a favorable
+decomposition or invariant has an opportunity to help.  The original
+Alexander rows are already sparse; the archived filter expands the chosen
+minor to a dense matrix.  This section removes that expansion for large
+inputs and analyzes the resulting work.
+
+\subsection{Preserving the existing one-sided witness}
+
+At a crossing, the Wirtinger--Alexander relation contributes at most three
+column terms.  Terms in the same column are combined.  Deleting the chosen
+row and column gives an $(n-1)\times(n-1)$ minor with $O(n)$ stored polynomial
+entries.  The implementation evaluates exactly the same minor as before at
+$t=-1$ and at the repository's fixed generic field element.  It also retains
+the same allowable unit values $\{\pm t^k:0\leq k<n\}$.
+
+Consequently, the new backend changes neither the mathematical filter nor
+its evidence dictionary.  It changes how a numerical determinant is
+computed.  A determinant outside the unit set still proves knottedness;
+agreement remains inconclusive.  The implementation does not infer a
+random-error probability from using a large fixed constant.  In particular,
+no independence assumption about the input diagram and the evaluation point
+is silently introduced.
+
+The dense routine remains available as a reference and for small matrices.
+The default \code{auto} policy selects sparse elimination at $n\geq256$
+crossings and dense elimination below that threshold.  Explicit
+\code{dense} and \code{sparse} choices support comparison.  This crossover
+is an engineering choice informed by pilot measurements, not a universal
+theorem about which routine is faster.
+
+\subsection{Pivoting on actual incidences}
+
+Store every active row as a map from column index to a nonzero field value.
+For each column also store the set of rows containing it.  A lazy priority
+queue chooses a shortest active row.  Among that row's nonzero columns,
+choose one having minimum active column degree, with stable index tie
+breaking.  This is a local fill heuristic related to the classical
+Markowitz approach~\cite{markowitz}; it does not claim to find a global
+minimum-fill pivot or even the minimum Markowitz product over all entries.
+
+Let the selected pivot be $a_{rc}\ne0$, with row and column degrees $u$ and
+$v$.  Only the $(u-1)(v-1)$ pairs in its row-tail by column-neighborhood
+product can change.  For every such pair, perform
+\begin{equation}
+ a_{ij}\leftarrow a_{ij}-a_{ic}a_{rc}^{-1}a_{rj}.
+ \label{eq:sparse-update}
+\end{equation}
+Insert a new incidence when a zero becomes nonzero, and delete an incidence
+when cancellation gives zero.  Remove the pivot column entries and then the
+pivot row.  Column incidence sets make it unnecessary to scan all active
+rows merely to discover the ones having $a_{ic}\ne0$.
+
+Complete row and column pivoting is convenient here.  Two compact arrays
+record the current row and column orders, with inverse-position arrays.
+Move the selected row and column to their last active positions; each
+nontrivial transposition flips a determinant sign.  Their last positions
+are then deleted in constant time.  Stable original indices continue to
+identify sparse rows and columns, so no global relabeling is needed after
+a pivot.
+
+\begin{proposition}[Determinant correctness]
+\label{prop:sparse-correct}
+For a square matrix over a prime field, the incidence-indexed algorithm
+returns its exact determinant.  It returns zero upon finding a zero active
+row.  It does not mutate the caller's input rows.
+\end{proposition}
+
+\begin{proof}
+After the recorded permutations, partition the active matrix as
+\[
+ \begin{pmatrix}B&b\\c^{\mathsf T}&a\end{pmatrix},\qquad a\ne0.
+\]
+Subtract $b_i/a$ times its last row from each earlier row.  These elementary
+operations preserve determinant and yield a block triangular matrix with
+diagonal blocks $B-ba^{-1}c^{\mathsf T}$ and $a$.  Its determinant is
+$a\det(B-ba^{-1}c^{\mathsf T})$.  Equation~\eqref{eq:sparse-update}
+computes exactly this Schur complement.  Entries outside the indicated
+Cartesian product do not change.  The row and column transpositions are
+accounted for by their signs.  Induction on active dimension proves the
+result, with empty determinant one.  A zero active row makes the remaining
+determinant zero and therefore the original determinant zero.  Copying and
+normalizing the input maps before elimination proves the last assertion.
+\end{proof}
+
+The generic function takes primality as a precondition.  It checks the
+basic integer and index contracts but does not run a primality test.  The
+filter's fixed modulus satisfies the precondition.  Supplying a composite
+modulus to this field algorithm is outside its interface contract.
+
+\subsection{An explicit bound in terms of Schur work}
+
+For the pivot sequence actually chosen, define
+\begin{equation}
+ F=\sum_{\text{pivots }(r,c)}(u_{rc}-1)(v_{rc}-1).
+ \label{eq:sparse-fill-work}
+\end{equation}
+Here $m$ is matrix dimension, $E$ counts all stored input entries inspected
+before removing modular zeros, and $Z_{\max}$ is the maximum active nonzero
+count.  The parameter $F$ counts attempted update positions, including updates that cancel to
+zero and repeated updates to the same position at different pivots.  It is
+more informative than counting only newly created nonzeros.
+
+\begin{theorem}[Sparse elimination resource bound]
+\label{thm:sparse-work}
+Under the dictionary lookup model, elimination uses $O(m+E+F)$ field
+operations, together with at most $m$ field inversions.  Its incidence,
+ordering, and priority work is
+\[
+ O\bigl((m+E+F)\log(m+1)\bigr).
+\]
+Its logical sparse storage, including retained caller-input references, is
+$O(m+E+Z_{\max})$ field entries and indices.  A conservative bound allowing
+Python dictionaries and sets to retain allocated capacity after deletion is
+$O(m+E+F)$.  Every created fill entry is
+charged to one of the $F$ update positions.  No favorable bound on $F$ or
+$Z_{\max}$ follows solely from the initial $O(n)$ Alexander sparsity.
+\end{theorem}
+
+\begin{proof}
+Initial normalization and incidence construction inspect $E$ entries.
+Every update in \eqref{eq:sparse-update} costs a bounded number of field
+operations.  Forming multipliers for rows meeting a pivot column is charged
+to those incidences.  Deleting incidences and scanning pivot rows can also
+be charged to entries: an entry is either present initially or was created
+by a preceding update, and it can be deleted only once before another
+creation.  Their total number is at most $E+F$.  Thus even pivots with an
+empty row tail, whose product term is zero, have their incidence work
+accounted for.
+
+Each affected row inserts a refreshed degree into the priority queue.
+Stale records are discarded on extraction.  A queue record is inserted or
+discarded only a constant number of times, and the insertion count is
+$O(m+E+F)$.  The implementation rebuilds the heap whenever stale records
+make it larger than a constant multiple of the active row count, apart
+from a fixed small allowance.  A rebuild costs linear time in active rows
+and is amortized against records accumulated or rows removed since the
+previous rebuild.  Heap operations and stable sorting of pivot-column
+incidences therefore fit the stated logarithmic overhead.  The compact
+permutation arrays use linear space.
+
+The active matrix and its dual incidence representation use $O(Z_{\max})$
+logical entries; the bounded heap uses $O(m)$ records.  The source row list retains
+the original input, giving the additional $E$ allowance.  A nonzero first
+created during elimination arises in an explicitly visited update position,
+so the fill-creation count is at most $F$.  Charging retained allocation to
+all entries ever inserted yields the conservative concrete storage bound.
+\end{proof}
+
+For a variable modulus, multiply the arithmetic-operation bound by the
+appropriate cost of operations on $O(\log p)$-bit integers and include the
+cost of modular inversion.  The fixed 61-bit filter avoids coefficient
+growth.  This is one reason the modular filter is useful even when an exact
+polynomial computation will eventually be needed.
+
+The bound permits cubic work: all active degrees can be proportional to the
+active dimension.  Conversely, if a matrix family has $E=O(m)$ and the chosen
+pivots satisfy $F=O(m)$, this implementation uses nearly linear work in the
+stated model.  This is a conditional consequence of the measured parameter,
+not a claimed structural theorem for every knot-derived Alexander matrix.
+
+\subsection{Validation and practical interpretation}
+
+Independent determinant checks use the Leibniz permutation formula on 450
+small matrices over three fields, followed by 420 comparisons with the
+archived dense elimination over larger dimensions and four fields.  They
+include singular matrices, zero rows, characteristic two, complete-pivot
+sign changes, and permutation matrices through dimension 1,000.  The latter
+require no Schur updates, testing the distinction between pivot-incidence
+work and $F$.  Diagram-level checks compare exact witness dictionaries on
+120 generated braid knots and selected torus knots, and verify input
+preservation and resource callbacks.
+
+The larger torus-knot examples in Section~\ref{sec:experiments} exhibit small
+Schur neighborhoods and substantial measured improvements.  Small examples
+can be slower because maintaining incidence sets and priorities costs more
+than traversing short dense rows.  The archive retains those regressions.
+No empirical line fit is offered as a proof that the observed fill pattern
+persists on other families.

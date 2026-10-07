@@ -1,5 +1,6 @@
 /- Modified for ProveIt: import Lean 4.32 compatibility declarations.
-Statements and proofs are unchanged from the pinned upstream source. -/
+Use BlockTriangular OrderDual.toDual and det_of_lowerTriangular on Lean 4.32.
+Mathematical statements are unchanged. -/
 import OAI.Compat.Core
 import Mathlib.Algebra.BigOperators.Group.Finset.Piecewise
 import Mathlib.Data.Finset.Max
@@ -123,8 +124,8 @@ theorem det_eq_one_of_triangular_labels {K ι α : Type*} [CommRing K]
     (B : Matrix ι ι K) (p : ι → α) (hp : Function.Injective p)
     (htri : ∀ i j, p i < p j → B i j = 0) (hdiag : ∀ i, B i i = 1) : B.det = 1 := by
   let : LinearOrder ι := LinearOrder.lift' p hp
-  have hB : B.IsLowerTriangular := fun {i j} hij => htri i j hij
-  rw [Matrix.det_of_isLowerTriangular B hB]
+  have hB : B.BlockTriangular OrderDual.toDual := fun {i j} hij => htri i j hij
+  rw [Matrix.det_of_lowerTriangular B hB]
   simp only [hdiag, Finset.prod_const_one]
 
 theorem lower_unitriangular_preserves_minimal_minor

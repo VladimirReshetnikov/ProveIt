@@ -1,5 +1,6 @@
 /- Modified for ProveIt: import Lean 4.32 compatibility declarations.
-Statements and proofs are unchanged from the pinned upstream source. -/
+Construct mapped probability instances from the existing measurable chart maps.
+Mathematical statements are unchanged. -/
 import OAI.Compat.BigOperators
 import OAI.Compat.Measurable
 import OAI.Combinatorics.Progressions.Estimates.MixedArrayReference
@@ -184,7 +185,9 @@ theorem mixedCoefficient_quotient_density (W : Submodule ℝ (EuclideanSpace ℝ
   let : IsProbabilityMeasure (mixedCoefficientLaw c w p) := mixedCoefficientLaw_probability c w hw p
   have hprob : IsProbabilityMeasure (realDensityMeasure μ F) := by
     rw [← hlaw]
-    infer_instance
+    exact Measure.isProbabilityMeasure_map
+      ((normalizedLatticeQuotient_measurable W b hb).comp
+        (orthonormalMixedChart e).measurable).aemeasurable
   let : IsProbabilityMeasure (realDensityMeasure μ F) := hprob
   obtain ⟨hFi, hFmass⟩ := boundedDensity_mass μ F hFm hF0 hFB
   refine ⟨F, hFm, fun y => ⟨hF0 y, hFB y⟩, hFi, hFmass, hlaw, ?_⟩
@@ -278,7 +281,9 @@ theorem canonicalMixedDensity_mass
   let : IsProbabilityMeasure (mixedCoefficientLaw c w p) := mixedCoefficientLaw_probability c w hw p
   let : IsProbabilityMeasure (realDensityMeasure μ (canonicalMixedDensity W b hb o c w p)) := by
     rw [← hlaw]
-    infer_instance
+    exact Measure.isProbabilityMeasure_map
+      ((normalizedLatticeQuotient_measurable W b hb).comp
+        (orthonormalMixedChart o).measurable).aemeasurable
   exact boundedDensity_mass μ _ (canonicalMixedDensity_measurable W b hb o c w p)
     (canonicalMixedDensity_nonneg W b hb o c w hw p) (canonicalMixedDensity_bound W b hb o c w hw p)
 

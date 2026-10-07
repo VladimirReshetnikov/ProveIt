@@ -1,3 +1,7 @@
+/-
+Modified for ProveIt: supply the product probability, finite-measure, and translation-invariance instances
+explicitly on Lean 4.32. Mathematical statements are unchanged.
+-/
 import Mathlib.MeasureTheory.Constructions.Pi
 import Mathlib.MeasureTheory.Measure.Haar.Unique
 import OAI.Combinatorics.Progressions.Fourier.EuclideanJetTorus
@@ -20,6 +24,9 @@ theorem coefficientCoordinateTorus_measurePreserving {K : Type*} [Fintype K] {m 
     (ν : ∀ s : CoefficientSlot K m, Measure (SubspaceArrayTorus Unit (U s.1)))
     [∀ s, (ν s).IsAddLeftInvariant] [∀ s, IsProbabilityMeasure (ν s)] :
     MeasurePreserving (coefficientCoordinateTorus U) μ (Measure.pi ν) := by
+  letI : IsProbabilityMeasure (Measure.pi ν) := Measure.pi.instIsProbabilityMeasure ν
+  letI : IsFiniteMeasure (Measure.pi ν) := Measure.pi.instIsFiniteMeasure ν
+  letI : (Measure.pi ν).IsAddLeftInvariant := Measure.pi.isAddLeftInvariant ν
   let _ := coefficientCoordinateTori_compact (K := K) U
   let _ : μ.IsAddHaarMeasure :=
     { toIsFiniteMeasureOnCompacts := inferInstance
@@ -27,7 +34,7 @@ theorem coefficientCoordinateTorus_measurePreserving {K : Type*} [Fintype K] {m 
       toIsOpenPosMeasure := isOpenPosMeasure_of_addLeftInvariant_of_compact
         (μ := μ) Set.univ isCompact_univ (by simp) }
   let _ : (Measure.pi ν).IsAddHaarMeasure :=
-    { toIsFiniteMeasureOnCompacts := inferInstance
+    { toIsFiniteMeasureOnCompacts := ⟨fun _ _ => measure_lt_top _ _⟩
       toIsAddLeftInvariant := inferInstance
       toIsOpenPosMeasure := isOpenPosMeasure_of_addLeftInvariant_of_compact
         (μ := Measure.pi ν) Set.univ isCompact_univ (by simp) }
