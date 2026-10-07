@@ -1,0 +1,18 @@
+PYTHON ?= python3
+LATEXMK ?= latexmk
+
+.PHONY: all pdf check numerical clean
+all: pdf check
+
+pdf: article.pdf
+article.pdf: article.tex
+	$(LATEXMK) -pdf -interaction=nonstopmode -halt-on-error article.tex
+
+check:
+	$(PYTHON) verification/verify.py
+
+numerical:
+	$(PYTHON) verification/verify.py --numerical --output data/verification-rerun.json
+
+clean:
+	$(LATEXMK) -c article.tex

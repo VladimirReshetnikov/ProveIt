@@ -1,0 +1,16 @@
+.PHONY: all pdf verify clean
+
+all: pdf verify
+
+pdf: article.pdf
+
+article.pdf: article.tex
+	latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+
+verify:
+	python3 code/verify.py --output verification.json --certificates arc_certificates.json > verification-run.txt
+	cat verification-run.txt
+
+clean:
+	latexmk -c article.tex
+	rm -rf code/__pycache__
