@@ -3,14 +3,16 @@ import GowersSzemeredi.Proofs16AlphabetPackagedCover
 import GowersSzemeredi.Proofs16FullGoodDomain
 import Mathlib.Data.Nat.Prime.Infinite
 
-/-! The two premises currently packaged in `lemma_16_10` do not entail its
+/-! The two premises packaged in the printed Lemma 16.10 encoding
+(`lemma_16_10_printed_unit_encoding`) do not entail its
 conclusion. This preserves the predicate being refuted and makes no claim
 against the paper's lemma with all of its preceding structural hypotheses. -/
 set_option autoImplicit false
 noncomputable section
 namespace LeanProofs.GowersSzemeredi
 
-theorem lemma_16_10_packaged_premises_counterexample : ¬ lemma_16_10 := by
+theorem lemma_16_10_packaged_premises_counterexample :
+    ¬ lemma_16_10_printed_unit_encoding := by
   classical
   intro hlemma
   obtain ⟨R, N₀, hR, hRbound, hwords⟩ := exists_non_multiplyLinear_finite_word 1
