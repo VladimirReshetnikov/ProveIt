@@ -372,7 +372,11 @@ All in `SetTheory/Cardinals/docs/reports/generating-functions-and-asymptotics/oe
   inverse-logarithmic order). Its `C_⋆ = (3π²α²/(2v))^{1/3}` uses its own
   normalization; `σ_D = (3π²α/(2v))^{1/3}` here; no relation between the
   constants is asserted. Neither report cites the other. Remark 29.2 gives the
-  details; a reciprocal note there is a separate commit.
+  details; a reciprocal note there is a separate commit. *[Dated note,
+  7 October 2026: applied in `32919c4cf`. a202061's article (a dated note
+  after `a61:o2:thm:main`) and its README ("Same method, other sequences")
+  now point here, so "neither report cites the other" holds of the source
+  manuscripts only.]*
 - `a279544-inversion-kernel-classes` and `a279571-inversion-cone-walk`
   (placed in the same batch): other Britt–Beaton classes, with algebraic
   kernels or a quadrant cone walk; unrelated methods and regimes, no
