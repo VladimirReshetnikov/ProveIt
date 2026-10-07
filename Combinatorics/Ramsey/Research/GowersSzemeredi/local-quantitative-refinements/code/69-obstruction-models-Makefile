@@ -1,0 +1,15 @@
+.PHONY: all pdf verify verify-optimized clean
+
+all: verify pdf
+
+pdf:
+	latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+
+verify:
+	python3 code/verify.py --max-degree 12
+
+verify-optimized:
+	python3 -O code/verify.py --max-degree 12 --output /tmp/boolean-verification-optimized.json
+
+clean:
+	latexmk -c article.tex

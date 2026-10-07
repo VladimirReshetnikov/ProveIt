@@ -1,0 +1,70 @@
+PROPOSED PROVEIT INTEGRATION
+
+Suggested new report directory:
+Combinatorics/Ramsey/Research/GowersSzemeredi/exact-local-profiles/
+
+This is a proposed destination, not a claim that the directory has been
+created in the repository. Preserve the single-file PDF and TeX together
+with figures and verification data, or merge individual sections into the
+existing local-quantitative-refinements article.
+
+RESULT MAPPING
+
+fourier:*
+  Gowers Lemma 5.2 and the missing-interval discussion in source 37.
+  Solves the unequal-budget problem near every interior common-budget
+  point; gives an exact certificate valid wherever its conditions hold.
+  The old certificate's entire optimality region is a finite polytope.
+  Do not label the local branch as a global solution for every budget.
+
+cthree:*
+  Graph additive energy and affine rigidity, source 11 and the recent
+  gowers-character-affine-refinements manuscript.
+  Keep the elementary abelian 3-target hypothesis explicit. The domain
+  may be any finite abelian group unless exponent three is stated.
+  The new global thresholds are for uniform four-query graph energy,
+  not every homomorphism-testing distribution. The sharp cutoff is 13.
+
+interp:*
+  Shared-anchor interpolation, source 39, especially Section 10 and
+  the lower-bound/compression questions; Gowers Lemma 16.10.
+  Replace sum L_i + E_t by E_t when at least t lists are nonempty.
+  Use the separate formula for fewer active lists. The generic lower
+  construction is sharp for the stated local interface; it does not
+  certify every geometric product-property premise of the full proof.
+
+norm:*
+  Symmetric-colouring and polynomial-degree chapters, especially
+  sources 10, 14, 22, and 38; construction credited to Shi-Dong.
+  No degree cap is needed in the independent norm-block classification.
+  Preserve the characteristic p > 2m and field-size/length hypotheses.
+  Do not replace "independent norm blocks" by "all polynomials".
+  The unrestricted scalar quintic problem remains open.
+
+NUMBERING AND BUILD
+
+All theorem and equation labels are namespaced as above. Bibliography
+keys are local to the complete article; rename them on merging if they
+conflict with existing keys. The section sources use standard AMS theorem
+environments, enumitem, booktabs, graphicx, and the packages in frontmatter.
+The figure paths assume this directory is the compilation root.
+
+The full assembled TeX is reproducible from the section files using
+code/assemble.py. Its two PDF figures are required by the default build.
+Internal draft cutoff13_notes.tex and transient compiler files are not
+part of the distribution.
+
+FORMALIZATION
+
+No Lean proof is included. Suggested order:
+  (1) interpolation upper bound and generic collision construction;
+  (2) exact signed graph expansion and two-color inequality;
+  (3) the seven-case finite-field projection table and synchronization;
+  (4) norm-ratio reduction and exact irreducibility certificates;
+  (5) character estimates conditional on the classical Weil theorem;
+  (6) supported moments, exact matrix optimum, and Hessian calculation.
+
+The distinction between the proof, finite certificate, and diagnostic
+script should be retained in any merged presentation. Mathematical
+novelty claims are relative to the recorded baseline; the research audit
+does not establish exhaustive literature priority.

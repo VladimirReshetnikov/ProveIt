@@ -1,0 +1,59 @@
+PYTHON ?= python3
+PDFLATEX ?= pdflatex
+TEXFLAGS ?= -interaction=nonstopmode -halt-on-error -file-line-error
+ARTICLE := gowers_sharp_energy_restriction
+
+.DEFAULT_GOAL := pdf
+.PHONY: all pdf standalone modular check check-energy check-weights check-punctures check-filter figure clean
+
+all: pdf
+
+# The complete standalone source and the supplied figure are already present.
+# No Python, BibTeX, network access, or figure regeneration is needed here.
+pdf:
+	$(PDFLATEX) $(TEXFLAGS) $(ARTICLE).tex
+	$(PDFLATEX) $(TEXFLAGS) $(ARTICLE).tex
+	$(PDFLATEX) $(TEXFLAGS) $(ARTICLE).tex
+
+# Regenerate after editing main.tex or sections; deliberately independent
+# of pdf so the supplied standalone source can compile without Python.
+standalone:
+	$(PYTHON) code/build_standalone.py
+
+# Alternative authoring build; it does not rewrite the standalone source.
+modular:
+	$(PDFLATEX) $(TEXFLAGS) main.tex
+	$(PDFLATEX) $(TEXFLAGS) main.tex
+	$(PDFLATEX) $(TEXFLAGS) main.tex
+
+check: check-energy check-weights check-punctures check-filter
+
+check-energy:
+	mkdir -p data
+	$(PYTHON) code/verify_energy.py --output data/energy_checks.json
+
+check-weights:
+	mkdir -p data
+	$(PYTHON) code/verify_energy.py --weights-only --output data/weighted_energy_checks.json
+
+# These scripts print JSON. Rename only after a successful check so an
+# interrupted or failed run does not replace the previous final report.
+check-punctures:
+	mkdir -p data
+	$(PYTHON) code/verify_punctures.py > data/puncture_checks.json.tmp
+	mv data/puncture_checks.json.tmp data/puncture_checks.json
+
+check-filter:
+	mkdir -p data
+	$(PYTHON) code/verify_filter.py > data/filter_checks.json.tmp
+	mv data/filter_checks.json.tmp data/filter_checks.json
+
+# Optional; the plotting dependencies are unnecessary for the main targets.
+figure:
+	$(PYTHON) code/make_figure.py
+
+clean:
+	rm -f $(ARTICLE).aux $(ARTICLE).log $(ARTICLE).out $(ARTICLE).toc
+	rm -f $(ARTICLE).fls $(ARTICLE).fdb_latexmk $(ARTICLE).synctex.gz
+	rm -f main.aux main.log main.out main.toc main.fls main.fdb_latexmk main.synctex.gz
+	rm -f data/puncture_checks.json.tmp data/filter_checks.json.tmp

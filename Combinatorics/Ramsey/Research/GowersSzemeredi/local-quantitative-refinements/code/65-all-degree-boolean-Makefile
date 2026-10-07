@@ -1,0 +1,18 @@
+PYTHON ?= python3
+LATEXMK ?= latexmk
+ARTICLE := all_degree_boolean_integration
+
+.PHONY: all check pdf clean
+all: check pdf
+
+check:
+	$(PYTHON) code/verify.py
+	$(PYTHON) -O code/verify.py --output data/verification_optimized.json
+	$(PYTHON) -c "from pathlib import Path; import sys; a=Path('data/verification.json').read_bytes(); b=Path('data/verification_optimized.json').read_bytes(); sys.exit(0 if a == b else 'Verifier outputs differ')"
+
+pdf:
+	$(LATEXMK) -pdf -interaction=nonstopmode -halt-on-error $(ARTICLE).tex
+
+clean:
+	$(LATEXMK) -c $(ARTICLE).tex
+	$(PYTHON) -c "from pathlib import Path; Path('data/verification_optimized.json').unlink(missing_ok=True)"
