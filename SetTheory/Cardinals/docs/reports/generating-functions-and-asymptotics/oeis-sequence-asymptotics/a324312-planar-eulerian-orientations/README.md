@@ -166,7 +166,11 @@ attributes the differential equations (8.1) to "[BMEP, Section 7]" (Section
 the series"; Section 7 ("Solution for general Eulerian orientations")
 contains no such equation. The published version was not read. The
 equations are right (checked by the write to `t^38`, by the companion to
-`t^1001`).
+`t^1001`). (Added after the independent check of 7 October 2026: they are in
+Section 8.1 in arXiv v1 (22 March 2018) as well, and in the HAL deposit
+`hal-01738160v2` (5 November 2019, cited by HAL as the JCTA paper), whose
+Section 8 is word for word v2's; the journal's typeset version was still not
+read.)
 
 ## What is not claimed
 
@@ -205,7 +209,13 @@ adds, under Vladimir's standing rule of 4 October 2026:
    Bousquet-Mélou–Courtiel, Section 8.3, with `Ω_g`; BMEP name the
    nonnegativity of the coefficients of `t − R(t)` as one key ingredient).
    Until then the count statements for A324312 and A277493 are
-   conditional.
+   conditional. (Added after the independent check of 7 October 2026: the
+   same authors regard the proposition as proved. arXiv:2503.15046v3,
+   Section 6.4, p. 38, says the logarithmic singular behaviour "has been
+   proven to be correct in [14] for ω = 0 and ω = 1", `[14]` being BMEP and
+   `ω = 0` the general family, `Q(t,0,1) = 2G(t)`. No written proof was found
+   elsewhere; "conditional" means resting on a refereed proposition whose
+   proof is only indicated, not on a conjecture.)
 
 **Nothing in the source was found to be wrong**; one citation is corrected
 by a dated note (above). No claim was refuted and none moved, other than
@@ -243,6 +253,38 @@ the conditional input made a question.
   title and opening of v3 Section 6.4; the transseries volume. Not read: the
   published BMEP, Bousquet-Mélou–Courtiel, Elvey Price–Guttmann, the DLMF
   pages.
+
+## Independent check of the write (7 October 2026)
+
+An adversarial check made by the intake after the write (`05dcc17a8`), with
+its own code, after fetching again the three OEIS entries, BMEP
+(arXiv v1, v2 and the HAL deposit), the refined preprint v3 and
+Bousquet-Mélou–Courtiel.
+
+- **Counts.** Its own fixed-point reversion of `Ω` (exact, `m ≤ 42`)
+  reproduces every printed term; `r_m` to `m = 1002` from (8.2) agree with
+  it and satisfy `Ω(R) ≡ t` modulo `t^1003` and three primes near `10⁶`
+  (independent of the ODE; a perturbed coefficient fails); the first 1000
+  terms of each sequence are strictly increasing.
+- **Remark 3.1** (the analytic input and the citation note): every quotation
+  confirmed; the note extended (v1 and HAL also Section 8.1). **New for
+  Question 6**: the authors' own statement (refined preprint v3, Section 6.4)
+  that the behaviour is proved in BMEP for `ω = 0, 1` (dated note; the
+  conditional reading of the report is unchanged).
+- **Remark 7.2**: each instance re-derived against the volume's statements
+  (staircase and interpolation, branch rule `L_c = 1`, lw-template data
+  `(1, −1, 0, 0)`, core-reversion form over `Q[w, (1−w)⁻¹]`, (H3) failure).
+- **Notes**: `Q_0, …, Q_5`, `E_1`, `E_2` by a different organization of the
+  transfer (Hankel moments substituted in `f(L − τ)`); `U_1, U_2, U_3`,
+  `δ_1, …, δ_4` by substitution; Table 1, `H`, `C`. `h_1002`, `k_1002` as
+  integrals over the lips of the cut (no recurrence): Table 2 to all printed
+  digits, `1.6474952`, `1.8500125`, `1.0177405`, `0.9081502`, `1.0180049`,
+  `0.9084582`, and the three `x_J(y) − 1000` (the write's four-digit values
+  are rounded).
+- Provenance, label numbers and this README's sizes and counts confirmed.
+  **No defect was found in the write.**
+
+The check is recorded at the end of Section 9.
 
 ## Relation to the repository
 
@@ -302,7 +344,7 @@ statement.
 ```text
 README.md                                   this guide (replaces the delivery README)
 article.tex                                 the report (delivered Report171.tex; labels prefixed, [write] additions)
-article.pdf                                 compiled report, 20 pages
+article.pdf                                 compiled report, 21 pages
 code/companion.py                           exact, symbolic, diagnostics and inverse commands (delivered code/)
 code/test_companion.py                      positive and deliberate-failure tests (delivered code/)
 code/test_build.py                          build-guard tests; fail on Windows (delivered code/)
@@ -431,8 +473,9 @@ B=$(mktemp -d); cp article.tex "$B/"; cd "$B"
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The committed PDF was built this way with MiKTeX on 6 October 2026: 20
-pages; no errors or warnings, no undefined references or citations, no
+The committed PDF was built this way with MiKTeX on 6 October 2026 (20
+pages), and rebuilt after the independent check of 7 October 2026 (label
+numbers unchanged, aux files compared): 21 pages; no errors or warnings, no undefined references or citations, no
 multiply defined labels, no duplicate PDF destinations, no overfull or
 underfull boxes (the delivered text also builds without any, 14 pages). The
 delivered byte-identity claims (`SOURCE_DATE_EPOCH`, suppressed PDF dates)
