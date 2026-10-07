@@ -278,6 +278,7 @@ import GowersSzemeredi.Proofs16CoordinateFaces
 import GowersSzemeredi.Proofs16FaceInduction
 import GowersSzemeredi.Proofs16ParallelFaces
 import GowersSzemeredi.Proofs16ParallelFaceInduction
+import GowersSzemeredi.Proofs16FiniteFaceInduction
 
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue

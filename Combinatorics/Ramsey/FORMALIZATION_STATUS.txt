@@ -12,8 +12,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 296 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 2,674 public Gowers theorems and found only propext,
+  All 297 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 2,676 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 103 exact
   companion proofs and 17 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -981,9 +981,16 @@ Coordinate-face induction toward Lemma 16.4
   is at most theta*N^d, with the same uniform prime threshold and the
   original multipleS parameter. These results are conditional on the
   lower-dimensional induction hypothesis and do not close Lemma 16.4.
-  Remaining steps include combining all coordinate directions, transporting
-  covers under coordinate permutations, comparing dimension-dependent
-  cover parameters, and extracting the final arrangement-rich partial graph.
+  Proofs16FiniteFaceInduction combines any finite collection of coordinate
+  directions, including different face dimensions, while preserving every
+  previously obtained cover. Its loss is the sum of the local budgets and
+  its prime threshold is uniform for the entire family. The underlying
+  restriction theorem allows arbitrary downward-closed conclusions and
+  distinct deletion costs.
+  Remaining steps include representing every coordinate direction in a
+  family of at most 2^d members, transporting covers under coordinate
+  permutations, comparing dimension-dependent cover parameters, and
+  extracting the final arrangement-rich partial graph.
 
 Reproducible checks (from repository root)
   python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.Audit
