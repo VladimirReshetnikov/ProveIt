@@ -1,7 +1,8 @@
 Gowers Szemeredi formalization checkpoint — 2026-10-07
 
 Scope
-  The goal remains open. No improvement to the final Szemeredi bound is claimed.
+  The goal remains open. No improvement to the general all-length Szemeredi
+  bound is claimed. Smaller four- and five-term thresholds are proved below.
   The source catalogue contains all 120 unique numbered theorem, lemma,
   proposition, and corollary headings in sz-thm-gowers-proof.tex.
   There are 113 checked exact companion proofs and 7 open statements.
@@ -12,8 +13,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 601 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 3,859 public Gowers theorems and found only propext,
+  All 713 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 4,583 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 113 exact
   companion proofs and 7 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -337,7 +338,8 @@ Corrected distinct-anchor sampling estimate
   every nonempty surviving class has at least two elements. For q classes
   per base point with total mass at most |T|*n, pruning and sampling together
   discard at most 2*sigma*|T|*n points, in the sum-of-class-sizes formulation.
-  Proofs16ClassDeletion now transports these counts to an actual good subset
+  The earlier pruning estimate remains available. Proofs16ClassDeletion
+  now uses the stronger weighted estimate below to construct a good subset
   of the ambient product. Its intersection with each original class is the
   retained class; points outside the class family are preserved. Both sampled
   anchors remain in that good subset.
@@ -387,7 +389,7 @@ Corrected distinct-anchor sampling estimate
   With b=multipleQ(epsilon/(r*s),gamma,k)^(r*s), the global graph count is at
   most r*b+r*r*b*b; the width remains sqrt((m/8)^a)/4 for m<=l.
   Proofs16GlobalLiftParameters pads the line-cover graph count to max(1,q),
-  chooses r=ceil(6*max(1,q)/tau^2), and takes m=floor(l) for l>=0. This handles
+  chooses r=ceil(6*max(1,q)/tau), and takes m=floor(l) for l>=0. This handles
   zero graph counts and removes the auxiliary integer choices from assembly.
   Proofs16ClosingComparison proves that the transcription's same-dimensional
   closing graph comparison is false throughout its stated positive range:
@@ -401,6 +403,30 @@ Corrected distinct-anchor sampling estimate
   The newly received gowers_interpolation_article.zip proposes sampling
   without replacement and singleton recovery for a sharper local bound. Its
   argument has been inspected, but is not a checked Lean result at this stage.
+
+Linear inverse-loss sampling budget in the complete affine lift
+  Proofs16WeightedSamplingBudget proves that a class C with at least two
+  elements in an n-point column space contributes at most 6*n/r expected
+  lost points under r independent draws. The proof weights the distinct-pair
+  failure probability by |C| before averaging; it requires no lower bound
+  on the individual class density. The same sample serves every class.
+  Classes of size zero or one are discarded separately, costing at most one
+  point per class. When 2*q<=sigma*n, these singleton losses and the weighted
+  sampling losses total at most 2*sigma*|T|*n once r*sigma>=6*q.
+  The complementary short-column branch enumerates all columns within the
+  same linear budget, retaining directly sampled points without requiring
+  two distinct anchors. Thus the complete recovered-good-set theorem now
+  needs only r*tau>=6*q, instead of r*tau^2>=6*q.
+  This improvement propagates through affine-class selection, anchored
+  products, the synchronized local lift, its square-root width bound, the
+  all-scale construction, the global lift, and the positive packaged cover.
+  The rounded global sample count is now ceil(6*max(1,q)/tau). Lean also
+  proves that this never exceeds the former quadratic budget on 0<tau<=1.
+  Every retained-mass and geometric conclusion is preserved. The older
+  individual-class probability and pruning theorems remain available.
+  This improves the actual Section 16 construction; it does not establish
+  the still-unsupported comparison with the unit-parameter controls or
+  assert the refuted two-premise Lemma 16.10 predicate.
 
 Shared Section 16 migration
   Box.IsProper is now a shared definition. MultiplyLinear requires proper
@@ -782,6 +808,357 @@ Exact cube-energy transfer between cyclic models
   large new modulus with the same energy and explicit normalization.
   The application to cubic-localization cells, including their upper length
   bound and a comparable new prime modulus, is completed below.
+
+Positive mass of local uniformity obstructions
+  Proofs03SupportEnergy proves that unnormalized degree-k uniformity energy
+  of a disc-valued function is at most its L1 mass to the power k+2, hence
+  at most the support cardinality to that power. No primality, shortness,
+  or progression hypothesis is needed for this sharp support estimate.
+  Proofs17NonuniformCellMass selects cells failing at half the normalized
+  local parameter and proves that their total cardinality exceeds beta*N/2.
+  This avoids the loss of ambient mass caused by selecting just one cell.
+  Proofs18PartitionPrimeModels transfers all selected short proper cells
+  to comparable primes at the same parameter, independent of cell size.
+  Proofs18CubicCellModels applies this construction unconditionally to cubic
+  nonuniformity. The surviving mass fraction is
+  2^-59*alpha^2*(alpha/2)^(2^76), and the quadratic parameter in every prime
+  model is 2^-71*alpha^2*(alpha/2)^(2^76). All local primes can simultaneously
+  exceed any prescribed real threshold while remaining at most N/2.
+  The original modulus threshold is qualitative here. Global assembly is
+  now proved by the full cubic discrepancy theorem below.
+
+Interior discrepancy on cubic localization cells
+  Proofs18SupportedBoundaryDiscrepancy extends the boundary argument to
+  arbitrary bounded complex functions supported on an interval. Removing
+  exceptional cells costs at most their cardinality. After the proved
+  small-diameter refinement, cells contained in the interval retain at
+  least 7*beta*N/8 of the discrepancy, provided 32 <= beta*N.
+  Proofs18SupportedFunctionDiscrepancy applies any explicit function inverse
+  bound and keeps the refinement count at most
+  C(beta/64)*N^(1-sigma/16). No zero-mean or relative-balance assumption
+  is imposed on the interval function.
+  Proofs18CubicLocalDiscrepancy composes the new positive-mass cubic models
+  with the proved quadratic inverse theorem. Every selected original cell
+  now has an actual interior discrepancy family in its smaller prime model,
+  with common discrepancy parameter and count exponent. The threshold for
+  the original prime is qualitative; all local inverse thresholds and the
+  boundary scale requirement are discharged by the constructed choice.
+  This particular interior-family interface does not cover its supporting
+  interval. The complete interval partition and original-modulus transport
+  are now constructed separately below, and the global cubic theorem uses
+  that full construction. Carrier-injective modular properness alone does
+  not supply no-wrap geometry; the small-arc construction supplies it.
+
+Full interval completion and discrepancy transport
+  Proofs18NaturalClipping constructs exact intersections of ordinary
+  progressions with integer intervals, including empty intersections.
+  Proofs18NaturalWrapSplit splits a translated ordinary progression at its
+  unique possible modular wrap. Proofs18SmallArcUnwrap first translates a
+  short modular arc to zero and uses the proved natural representative
+  theorem, obtaining at most two disjoint ordinary pieces for every clipped
+  carrier-injective modular progression. The condition is 2*(d+1) < N.
+  Proofs18IntervalPartitionUnwrap assembles these pieces into a full
+  partition of the supporting interval, with exactly twice as many indexed
+  cells and no loss of total discrepancy. Empty cells are allowed.
+  Proofs18FullIntervalDiscrepancy refines to diameter N/16, proves the
+  integer rounding condition for N >= 4, and applies any function inverse
+  bound. Its complete ordinary partition has count at most
+  2*C(1/16)*N^(1-sigma/16), preserving beta*N discrepancy exactly.
+  Proofs18LocalDiscrepancyTransport maps that partition through a proper
+  original progression. It preserves properness, full coverage, every cell
+  sum, and the count budget. No boundary mass is discarded and the old
+  modulus need not be prime. This closes the missing local interval
+  geometry without conflating injectivity with absence of modular wraps.
+
+Unconditional cubic discrepancy and five-term iteration
+  Proofs18SelectedRefinement assembles refinements on any selected family
+  with unrefined complementary cells, summing count budgets and discrepancy.
+  The count inequalities x^(1-t) <= x/l^t for x >= l > 0 and
+  1 <= x/l^t for x >= l >= 1, t <= 1 let all budgets sum by exact mass.
+  Proofs18CubicTwistedDiscrepancy constructs a full global partition for a
+  cubic twist. Its count is at most D*N/l^t, where l >= N^e/12,
+  e=cubicLocalizationExponent(alpha), and
+  t=quadraticDiscrepancyExponent(a)/16 with a=cubicLocalQuadraticParameter(alpha).
+  Its discrepancy is at least mu*quadraticDiscrepancyParameter(a)*N,
+  where mu=cubicLocalizedMassParameter(alpha). All local quadratic inverse
+  hypotheses and prime-model thresholds are discharged by construction.
+  Proofs18CubicDiscrepancy removes the cubic phase and proves an unconditional
+  function inverse theorem for degree three, for every 0 < alpha <= 1.
+  Its positive average-size exponent is e*quadraticDiscrepancyExponent(a)
+  divided by 32*polynomialPartitionConstant(3). Its discrepancy parameter
+  is mu*quadraticDiscrepancyParameter(a)/2. Fixed count constants are
+  absorbed by increasing a threshold depending only on alpha.
+  Proofs18CubicIteration exports the actual FunctionDiscrepancyBound with
+  an existential threshold T and discharges the full five-term density
+  iteration, retaining T inside the proved closed iteration threshold.
+  This proves the end-to-end five-term argument through the constructed
+  cubic inverse theorem. The later numerical comparison below establishes
+  the source five-term bound; the general Theorem 18.1 remains open. The original
+  modulus threshold in this older interface is qualitative; the explicit
+  interface below removes that limitation. The Section 16 induction needed
+  for arbitrary degrees remains open. The catalogue stays 113/120.
+
+Explicit geometric thresholds in Section 13
+  Proofs13ExplicitPowerThreshold defines max(1,max(1,C/D)^(1/e)) and proves
+  C <= D*N^e above that bound for positive D,e. No existential witness is
+  used in the definition. Proofs13ExplicitRoundedBudgets combines three
+  such bounds to construct the ceiling integer satisfying the recurrence,
+  square-root, and Bohr-radius budgets, uniformly over all actual parameters.
+  Proofs13ExplicitRecurrenceThreshold makes the Stage 13.5 recurrence and
+  endpoint-deletion bounds explicit, including both floor-length cases.
+  A finite maximum of ceiling thresholds handles all permitted spectrum
+  sizes uniformly over actual densities above delta.
+  Proofs13ExplicitDensityBudgets carries the rounded construction through
+  Stage 13.6 with the actual-density conclusions and upper length retained.
+  Proofs13ExplicitSquareScale supplies finite bounds for the final row,
+  coefficient-width, affine, and rounded power conditions.
+  Proofs13ExplicitGeometricThreshold assembles these formulas into a fully
+  explicit density-uniform common-step bilinear square extraction theorem.
+  Its input is the actual Section13Context, not an assumed square or scale
+  package. The explicit Fourier and cubic interfaces below propagate this
+  geometric threshold through the full five-term argument.
+
+Explicit Fourier, cubic inverse, and five-term thresholds
+  Proofs13ExplicitFejerPurification exposes the actual finite Fejer scale
+  M=ceil(2^34/(rho*eta)) and threshold
+  max(2*M,ceil(2^131*M^63/(rho*eta*delta^15))). It proves both the
+  purification and density conclusions above this displayed bound.
+  Proofs13ExplicitFrequencyGraph instantiates these formulas on the
+  constructed prepared graph. Proofs13ExplicitFourierThreshold combines
+  that bound with the explicit geometric threshold. The resulting square
+  has side at least N^((1/2)^((2/alpha)^(2^53))) and relative density at
+  least (alpha/2)^(2^42). The source-style weaker exponents 88 and 76
+  are also exported by proved monotone comparisons at the same threshold.
+  Proofs13ExplicitOddSquare and Proofs17ExplicitCubicLocalization retain
+  properness, common cell lengths, the sqrt(N) upper bound, and the actual
+  cubic twist and quadratic nonuniformity. All rounding budgets are explicit.
+  Proofs18ExplicitCubicCellModels selects all needed prime models above
+  a prescribed threshold with the actual pullback function and modulus
+  at most N/2. Proofs18ExplicitCubicTwistedDiscrepancy assembles their
+  quadratic inverse partitions. Proofs18ExplicitCubicDiscrepancy removes
+  the phase and absorbs the fixed refinement constant with a displayed
+  positive-power threshold, giving FunctionDiscrepancyBound at
+  cubicInverseThreshold(alpha), with no existential modulus parameter.
+  Proofs18ExplicitFiveTerm defines fiveTermThreshold(delta) by the closed
+  density-iteration formula with this explicit cubic input and proves that
+  every subset of [1,N] of density at least delta has a five-term progression
+  above that bound, for every 0 < delta <= 1. The threshold is a finite
+  expression involving powers, exponentials, floors, ceilings, and a finite
+  maximum; no eventual-growth witness is chosen in its definition.
+  The improved Fejer construction below now satisfies a strictly smaller
+  numerical threshold than the paper's five-term bound.
+  This does not close the general numbered Theorems 18.1 or 18.2.
+
+Fejer improvements through the complete cubic inverse
+  Proofs13FejerOddSquare retains the stronger Fourier side exponent
+  (1/2)^((2/alpha)^(2^53)) and density (alpha/2)^(2^42) when making
+  the square odd and short. Proofs17FejerCubicLocalization propagates
+  both improvements through polynomial localization, including the
+  upper lengths needed for genuine smaller prime models.
+  Proofs18FejerCubicParameters defines the improved mass and quadratic
+  parameters mu=2^-59*alpha^2*(alpha/2)^(2^42) and
+  a=2^-71*alpha^2*(alpha/2)^(2^42). The average-size exponent is
+  e*quadraticDiscrepancyExponent(a)/(32*polynomialPartitionConstant(3)),
+  where e=(1/2)^((2/alpha)^(2^53)); the discrepancy is
+  mu*quadraticDiscrepancyParameter(a)/2.
+  Proofs18FejerCubicCellModels, Proofs18FejerCubicTwistedDiscrepancy,
+  and Proofs18FejerCubicDiscrepancy construct the full proper untwisted
+  partition with these parameters and an explicit starting threshold.
+  Proofs18FejerFiveTerm gives the corresponding closed interval bound.
+  Proofs18FejerCubicImprovement proves that both final cubic inverse
+  parameters strictly exceed the older 88/76 versions for every
+  0 < alpha <= 1. This is a proved comparison of the actual partition
+  guarantees, not merely a comparison of intermediate Fourier constants.
+  The Fejer starting threshold now has the conventional upper
+  envelope and compared with the source five-term bound. No improvement to
+  the general all-length Szemeredi bound is claimed.
+
+Numerical envelopes for the explicit Section 13 thresholds
+  Proofs13FejerThresholdPolynomial proves a power bound for the actual
+  rounded purification threshold from reciprocal power bounds on its
+  parameters. It specializes to
+  section13FrequencyGraphThreshold(alpha) <= (2/alpha)^(2^37)
+  for 0 < alpha <= 1, including both natural ceiling operations.
+  Proofs13ThresholdExponentialEnvelope bounds the positive-power
+  threshold by exp((A+B)*E) from numerator, reciprocal coefficient,
+  and reciprocal exponent budgets; it includes zero exponents for
+  the zero term of finite spectrum maxima. Polynomial and exponential
+  specializations give single- and double-exponential bounds.
+  Proofs13SpectralThresholdBudgets proves the reciprocal bounds
+  1/section13Zeta(delta) <= 2^section13Q(delta) and
+  1/section10Zeta(delta^32/16) <= 2^section13Q(delta), with the
+  corrected Section 10 ceiling and denominator. Its spectral ceiling
+  is at most 2*section13K(delta). Fixed reciprocal-density monomials
+  are bounded by the same Q through an explicit power comparison.
+  Proofs13SquareThresholdEnvelope bounds the final square length,
+  outer scale, and rounded power thresholds by exp(exp(4*A)),
+  exp(exp(6*A)), and exp(exp(7*A)), respectively, under their proved
+  reciprocal exponential budgets.
+  Proofs13SquareThresholdSpectralBound supplies those budgets for the
+  actual geometric parameters. Both final square thresholds are at
+  most exp(exp(112*section13Q(delta))). At the Fejer graph density
+  delta=(alpha/2)^4207554485, this is at most
+  exp(exp((2/alpha)^(2^54))). The complete geometric and Fourier bounds
+  below now include the earlier recurrence and integer-budget thresholds.
+
+Complete conventional Section 13 modulus bound
+  Proofs13RecurrenceParameterBudgets bounds the actual theta-one reciprocal
+  by Q, the initial length coefficient reciprocal by Q^2, the clipped
+  coefficient reciprocal by Q^3, and the recurrence exponent reciprocal
+  by Q^4. The last inequality includes q=0, which occurs in the finite
+  maximum even though actual nonempty spectra have q>0.
+  Proofs13IntegerThresholdEnvelope bounds each actual integer-budget
+  threshold by exp(exp(18*Q)) and its finite maximum of ceilings by
+  exp(exp(19*Q)). Proofs13RecurrenceThresholdEnvelope bounds simultaneous
+  quadratic partition thresholds uniformly, then the recurrence length
+  threshold by exp(exp(14*Q)), the initial recurrence threshold by
+  exp(exp(21*Q)), and the full finite recurrence maximum by exp(exp(22*Q)).
+  The proof keeps enormous natural powers symbolic; it does not replace
+  the genuine polynomial partition threshold or omit the zero-frequency
+  and rounding cases.
+  Proofs13GeometricThresholdEnvelope now bounds the whole constructed
+  geometric threshold by exp(exp(112*Q(delta))). After the Fejer density
+  substitution this is at most exp(exp((2/alpha)^(2^54))).
+  Proofs13FourierThresholdEnvelope includes the polynomial frequency-graph
+  threshold and proves the same bound for the full Fourier construction.
+  theorem_13_12_fejer_double_exponential exports the actual proper
+  common-step bilinear square, with side exponent 53 and density exponent
+  42, above this conventional threshold. The odd-square threshold needed
+  for cubic localization also satisfies the same numerical bound.
+  The subsequent inverse-theorem threshold and complete five-term closed
+  iteration now have the numerical envelopes and comparisons below.
+
+Conventional numerical threshold for the complete cubic inverse
+  Proofs18FejerReciprocalBudgets bounds the reciprocals of the local
+  quadratic and selected-mass parameters by (2/alpha)^(2^43), and the
+  local count exponent and final discrepancy parameter reciprocals by
+  (2/alpha)^(2^59). These are bounds for the improved 53/42 construction.
+  Proofs18FejerPrimeThresholdEnvelope includes the fixed quadratic inverse
+  constants and proves its local threshold is at most
+  exp((2/alpha)^(2^323)). The entire prime-model and twisted discrepancy
+  threshold is at most exp(exp((2/alpha)^(2^324))).
+  Proofs18CubicRefinementConstantBounds controls the fixed constants through
+  degree three, the actual boundary-refinement constant, and the twisted
+  count constant. Proofs18FejerInverseThresholdEnvelope then proves that
+  the variable cubic phase-refinement constant is at most
+  (2/alpha)^(2^1085), while the reciprocal average-size exponent is at most
+  exp((2/alpha)^(2^61)). Consequently the full cubic inverse threshold is
+  at most exp(exp((2/alpha)^(2^1086))) for every 0 < alpha <= 1.
+  fejer_cubic_function_discrepancy_bound_double_exp exports the actual
+  FunctionDiscrepancyBound at this conventional threshold, retaining both
+  previously proved strict parameter improvements. There is no assumed
+  phase-removal budget or remaining existential modulus in this interface.
+  The final five-term density iteration is bounded and compared with the
+  source threshold below. This does not close the general Theorems 18.1
+  or 18.2 or the Section 16 structural induction.
+
+Explicit improved five-term Szemeredi bound
+  Proofs18DensityIterationExponentialBudget bounds the complete closed
+  density iteration when the reciprocal length exponent has a single
+  exponential bound. It includes the ceiling on the number of density
+  increments and the logarithm of the actual length coefficient.
+  Proofs18FejerIterationParameters supplies the cubic gain, coefficient,
+  and exponent budgets. Proofs18FiveTermUniformityParameters bounds the
+  substitution alpha=intervalUniformityParameter(delta,5), with
+  alpha<=delta^5 and 2/alpha<=(2/delta)^512.
+  Proofs18FiveTermIterationEnvelope bounds every stopping threshold and
+  the full iteration, obtaining
+    fejerFiveTermThreshold(delta) <= exp(exp((2/delta)^(2^1097)))
+  for every 0<delta<=1. No unspecified multiplicative constant or eventual
+  threshold remains. Proofs18FiveTermSourceThreshold converts this to
+    N >= 2^(2^(delta^(-(2^1100))))
+  for 0<delta<=1/2 and proves that every subset of [1,N] of density at
+  least delta contains a nonconstant five-term arithmetic progression.
+  The displayed threshold is proved strictly smaller than the source's
+  five-term bound, whose innermost exponent is 2^16384.
+  theorem_18_2_five_holds consequently proves the exact five-term instance
+  of Theorem 18.2. This is a restricted instance; the catalogue count stays
+  113/120, and the general all-length quantitative theorem remains open.
+
+General inverse induction after polynomial localization
+  Proofs18GeneralLocalInverseAssembly applies an inverse theorem in any
+  degree to selected prime models, transports their full proper partitions
+  to the original cells, and includes the unselected cells in the count.
+  With comparable-prime ratio R and lower-degree exponent sigma<=16, the
+  full partition count is at most D*N/l^(sigma/16), where
+    D=max(1,2*boundaryRefinementConstant(1/16)*R^(1-sigma/16)).
+  Its localized_partition theorem constructs the prime models directly
+  from failure of partition uniformity at eta. The common local parameter
+  is (eta/2)/(2*(degree+2))^(degree+2); the surviving discrepancy is
+  eta*beta*N/2. It handles arbitrary degrees, with genuine proper transport.
+  Proofs18GeneralPhaseInverseAssembly removes polynomial phases, including
+  a separate polynomial on each cell. From a count D*N^(1-e), it produces
+  average cell size at least N^(e/(2*K)), with K the actual polynomial
+  partition constant, and retains half the discrepancy above an explicit
+  positive-power threshold. Its cell-length count conversion is general
+  in both the exponent and the length-loss constant.
+  Proofs18GeneralInverseStep composes these constructions: a localized
+  degree-d obstruction and the degree-d inverse bound give the degree-(d+1)
+  inverse conclusion, with discrepancy eta*beta/4 and average-size exponent
+  e*sigma/(32*polynomialPartitionConstant(d+1)). Every constant and threshold
+  is a finite formula. Proofs18ShortLocalizationInverse supplies the local
+  prime geometry from the actual localization lengths l or l+1, their
+  N^e/c lower bound, and their sqrt(N) upper bound. Its explicit threshold
+  guarantees both the lower-degree starting modulus and absence of wrapping.
+  The existing Fejer cubic assembly and phase-removal proofs now instantiate
+  the general lemmas, preserving their original statements and numerical
+  bounds. The higher-degree localization input is now constructed from the
+  fixed-dimensional Section 16 theorem below. These conditional induction
+  steps are not exact companions for Theorem 18.1 and do not change the
+  113/120 catalogue count.
+
+Short polynomial localization from the structural dimension theorem
+  Proofs16EqualSideBoxCover generalizes the padded common-step interval
+  cover to every dimension. Its product capacity is at most 2^k times
+  the original box cardinality. A dense set therefore has a piece of
+  density at least delta/2^k in an equal-side box of any prescribed
+  positive side length up to the original width. Padded cells may extend
+  beyond the original box; the selected dense points remain in the original
+  set, and no unsupported containment of the full padded box is asserted.
+  Proofs16OddDenseBox selects an odd side between N^e/2 and sqrt(N), for
+  e<=1/2 and N^e>=4, preserving properness and the nonzero common step.
+  Proofs17MultilinearBoxEnergy extracts the actual large-frequency points
+  from the Corollary 16.11 count and applies this construction. It proves
+  the required full-box second-moment bound from the selected points.
+  The retained exponent is e=min(section16CorollaryWidthExponent,1/2),
+  and the retained density is section16CorollaryExponent/2^k.
+  Proofs17LocalizationFromDimensionInduction now constructs the exact
+  geometric input to Proposition 17.7 from Theorem162At k. It obtains a
+  degree-(k+1) twist and a proper partition with lengths l or l+1, where
+  l>=N^e/(6*k) and every cell length is at most sqrt(N). The surviving
+  partition-uniformity parameter includes the actual density loss,
+  alpha^2/4, and the complete 2^(-2*(k+1)^3) phase-localization factor.
+  function_inverse_step_of_dimension_induction consequently derives the
+  next inverse bound from Theorem162At k and the lower-degree inverse
+  bound, with no additional geometric, energy, transport, or assembly
+  hypotheses. The Section 16 theorem remains an explicit hypothesis;
+  this is not an exact companion to Theorem 18.1. Its general numerical
+  comparison with the intended source exponent is also still open.
+
+Completed degree induction with recursive inverse parameters
+  Proofs18StructuralInverseParameters defines the discrepancy beta(n,alpha)
+  and average-size exponent sigma(n,alpha) for degree n+2. It uses the proved
+  quadratic and improved Fejer cubic bounds as its two unconditional bases.
+  At each later degree it retains the full dimension-localization parameter,
+  lower-degree prime-model loss, and phase-refinement exponent. Input alpha
+  is clipped to min(alpha,1/2); the output size exponent is capped at one.
+  Positivity for every alpha>0 and the assembly's admissible exponent range
+  are proved by induction. A general monotonicity theorem justifies all
+  weakenings of input, discrepancy, size exponent, and threshold.
+  Proofs18StructuralInverseInduction then proves the complete degree
+  induction: degree n+2 needs only Theorem162At k for 3<=k<n+2.
+  The two-dimensional structural theorem is not needed because the improved
+  cubic inverse theorem is already proved. No lower-degree inverse bound,
+  localization, or partition-construction certificate remains as an extra
+  hypothesis. The resulting finite threshold remains existential because
+  the structural hypotheses supply existential modulus thresholds.
+  Proofs18StructuralInverseConsequences gives a balanced-set inverse theorem
+  with common positive constant min(beta,sigma), and completes natural-
+  interval density iteration for progression length n+4. The latter retains
+  the finite inverse threshold inside intervalDiscrepancyClosedThreshold.
+  These are conditional results with actual recursive constants, not the
+  intended source tower constants. The Section 16 structural theorem and
+  the general numerical comparison remain open; the catalogue stays 113/120.
 
 Cubic obstruction in a strictly smaller prime model
   Proofs17LocalizedPhaseRemoval now exports proposition_17_7_with_upper:
@@ -1610,7 +1987,7 @@ Positive cover interface retaining the proved quantitative bounds
   Proofs16PackagedExplicitCover combines the two packaged premises at
   sigma=rho/4 with the verified global affine lift. It gives retained mass
   at least (1-rho)|P| and a proper box partition with genuine multilinear
-  graphs. If r=ceil(6*max(1,qGamma)/sigma^2), s is the section parameter,
+  graphs. If r=ceil(6*max(1,qGamma)/sigma), s is the section parameter,
   and b=multipleQ(((r*s)^-1)*sigma,gamma,k)^(r*s), then the graph count is
   at most r*b+r^2*b^2. The width is the checked square-root expression
   using floor(l), where l is the actual Lemma 16.9 width with its separate
@@ -1787,8 +2164,195 @@ Finite averaging input for Corollary 16.11
     original_width^(c(r^-1*(delta/2), gamma, k)^r).
   The proof partitions overlapping graphs into disjoint classes and uses
   their actual natural count bounded by the real control. This supplies
-  the finite averaging step of Corollary 16.11, whose full statement remains
-  open pending the preceding induction and its Fourier-frequency input.
+  the finite averaging step of Corollary 16.11.
+  Proofs16FrequencySelection constructs the alpha/2-dense graph of large
+  Fourier frequencies and proves its alpha/2 product property directly
+  from non-uniformity, without a modulus-size threshold.
+  Proofs16CorollaryFromInduction proves the entire corrected Corollary 16.11
+  conditional only on Theorem 16.2 (or its corresponding fixed dimension).
+  The selected box is proper. Its retained width exponent is c^r, whereas
+  the common exponent for both width and density is (alpha/8)*c^r; thus
+  the stronger width exponent is larger by the factor 8/alpha. These are
+  conditional results, not exact companions: Theorem 16.2 remains open.
+
+Rigidity of the original product property at the unit endpoint
+  Proofs16ProductEndpoint proves that saturation of the N^3 additive-count
+  bound forces preservation of every additive quadruple. On ZMod N this
+  gives a globally affine map. Unit product property on the entire domain
+  therefore forces affine coordinate restrictions, which combine into one
+  multilinear function by induction and two-anchor interpolation.
+  Proofs16MultilinearProduct proves the converse with arbitrary nonnegative
+  weights and any finite family of parallel lines. Thus, over a prime
+  field, full-domain unit product property is equivalent to multilinearity.
+  This supplies the positive endpoint requested by source 50's plan and
+  distinguishes the genuine upstream hypothesis from the insufficient
+  packaged premises of Lemma 16.10. It is an endpoint result, not a proof
+  of the general quantitative induction or a repair of that false predicate.
+
+Finite closing argument for Theorem 16.2
+  Proofs16GreedyRelations proves the arbitrary-dimensional extraction by
+  strong induction on relation cardinality. A positive lower mass for each
+  removed good subrelation bounds the number of pieces; the remaining
+  projection has fewer than theta*N^k points. The proof returns a large
+  base set covered by the enumerated pieces, including the empty-family case.
+  Proofs16InductionAssembly combines this with the proved finite-union and
+  parameter-monotonicity results. Section16LargePieceAt records precisely
+  the still-required uniform large unit-multiply-linear subrelation theorem.
+  Its implication to the exact fixed-dimension Theorem 16.2 is now proved,
+  with piece mass N^k/s(theta,gamma,k) and the original iteration parameter.
+  No large-piece existence premise is discharged by this conditional result.
+
+Transport and spectrum inputs for the large-piece construction
+  Proofs16Translations transports multilinear functions, proper boxes,
+  partitions, and multiply-linear relations through arbitrary coordinate
+  translations, preserving all widths, cardinalities, and cover parameters.
+  Proofs16GoodDomainTransport identifies the cardinality of the selected
+  good domain with the common-base count, verifies every translated vertex
+  lies in the original domain, and transports the all-ones graph into the
+  original relation without loss of mass or multiple-linearity parameters.
+  Proofs16LargePieceMass proves that the corrected theta_2 density meets
+  the final extraction budget: its inverse is at most s(theta,gamma,k).
+  Consequently a proved unit cover for the all-ones graph would yield the
+  large piece required by Section16LargePieceAt in dimension k+1.
+  Proofs16SpectrumInduction proves the spectrum cardinality bound
+  delta^-2*N^k by Parseval and its relational delta-product property by
+  Lemma 14.3. The preceding-dimensional Theorem 16.2 now applies to this
+  spectrum with exactly the parameters of Lemma 16.6 and a threshold
+  uniform in the input domain. The all-ones unit cover remains unresolved.
+
+Compatible common-base witnesses for the Section 16 lifting step
+  Proofs16DenseSelection retains the sidelength cardinality and each selected
+  cube-domain density from the actual Lemma 16.5 construction, together with
+  one shared selected family and induced map. Proofs16VertexIdentity solves
+  the alternating cube sum for the all-ones vertex with its correct parity
+  signs and derives the identity required by Lemma 16.9 from Lemma 16.7.
+  Proofs16CommonBaseAssembly applies the preceding-dimensional induction to
+  the spectrum, intersects its retained base with the selected sidelengths,
+  and constructs Section16CommonBaseData with all these compatible witnesses.
+  Its threshold is uniform over the input structured pair. This discharges
+  the common-base bookkeeping; the general all-ones lifting remains open.
+
+Exact induction reduced to contextual lifting
+  Proofs16FinalSections constructs the canonical last-coordinate face and
+  proves that a structured pair supplies the fixed-final-coordinate premise
+  on its selected good domain, with the original parameter unchanged.
+  Proofs16ContextualInduction defines the unasserted Section16ContextualLiftAt:
+  it retains the full original product property, the structured pair, and
+  the constructed common-base witnesses, with a uniform modulus threshold.
+  Theorem 16.2 in every dimension now follows conditionally from those
+  contextual lifting statements. The proof combines Lemma 16.4, compatible
+  common-base data, exact graph transport and mass budget, finite extraction,
+  and the proved zero- and one-dimensional bases. It never invokes the
+  refuted two-premise lemma_16_10 predicate. This is a precise open obligation,
+  not a proved replacement of Lemma 16.10 or an exact Theorem 16.2 companion.
+
+Box covers for an unused coordinate
+  Proofs16UnusedCoordinateCover extends a lower-dimensional partial function
+  across one unused coordinate. Short-parent localization and compatible
+  final-axis tiling preserve the graph count and exceptional mass. The
+  explicit rounded width is sqrt((m/8)^a)/4, where a is the original cover
+  exponent, whenever (m/8)^a >= 16. This is a proved geometric construction;
+  absorption into the ambient-dimensional controls is a separate obligation.
+  Proofs16CoarseFunctionCover partitions any proper box of width at least
+  two into cells with side lengths two or three and covers an arbitrary
+  function exactly by at most 3^k constant multilinear graphs per cell.
+  A separate singleton construction retains one graph per singleton cell.
+  These provide the small-scale branch for the same dimension-extension step.
+
+All-scale extension of proper-face covers
+  Proofs16UnusedCoordinateBudget proves a factor-sixteen exponent gap
+  between successive dimensions when the iteration parameter is at least
+  two. This absorbs localization and square-root tiling losses whenever
+  the ambient target width exceeds two. Proofs16UnusedCoordinateLift
+  combines that argument with the coarse and singleton covers to obtain
+  an all-scale unused-coordinate extension with unchanged gamma and
+  iteration parameter, assuming the parameter is at least 3^(k+1).
+  Proofs16UnusedCoordinateParameter checks that the actual structured-pair
+  face parameter supplies this reserve in every intermediate dimension.
+  Proofs16PrefixLift iterates the extension, including dimension zero.
+  Proofs16EmbeddedLift transports it to arbitrary embedded coordinate
+  directions. Proofs16AmbientFaceCover consequently extends any genuine
+  proper-face cover to a translated ambient coordinate retraction and
+  restricts it to any domain whose retracted points remain in B.
+  These results supply the ambient extension used by the non-top vertex
+  construction below. They do not establish the unresolved all-ones
+  unit-parameter lifting comparison.
+
+Actual non-top vertex and remainder covers
+  Proofs16CoordinateMaskFaces realizes coordinate masks as proper-face
+  retractions. Proofs16VertexCovers applies the ambient extension to
+  each translated cube vertex other than the all-ones vertex, on the
+  actual selected good domain. Every such vertex lies in the original
+  partial-function domain by the checked cube membership theorem.
+  Proofs16WeightedSumCovers proves scalar closure and finite nonempty
+  sum closure. Proofs16RemainderCover combines the 2^k-1 signed vertex
+  covers with exactly section16Lemma9R, discharging the remainder premise
+  of Lemma 16.9 from the structured pair, for k >= 1.
+  Proofs16CommonBaseLineCovers therefore constructs all-box line covers
+  from the actual common-base witnesses and pairs them with the already
+  proved final-coordinate section covers. Both geometric inputs to the
+  explicit sampling/interpolation lift now follow from the actual data.
+  The comparison with the unit-parameter multiple-linearity controls
+  remains unproved; neither the refuted packaged Lemma 16.10 nor the
+  contextual lifting obligation is asserted.
+
+Relative progression counting and stopping at every length
+  Proofs03LinearPatternStep and Proofs03LinearPatternBound prove the
+  Cauchy--Schwarz reduction and generalized von Neumann estimate for
+  arbitrary distinct coefficients over a prime field. Proofs03AnyFactorBound
+  moves the uniform factor to any position by reindexing, preserving
+  degree k-2 and exponent 1/2^(k-1).
+  Proofs18GeneralRelativeCount proves the finite telescoping identity and
+  bounds the relative k-term progression-count error by
+  k*alpha^(1/2^(k-1))*N^2. Proofs18GeneralProgressionExistence turns this
+  into an integer count and removes the at most N constant progressions.
+  Proofs18GeneralIntervalStopping supplies at least floor(L/k)^2
+  progressions in the interval support and transfers a nonconstant
+  progression back to the original integer interval. For 2<=k<=L,
+  2L<N<=8L, and 0<delta<=1, relative uniformity of degree k-2 with
+  alpha=(delta^k/(512*k^3))^(2^(k-1)) guarantees a k-term progression
+  whenever 512*k^2 < delta^k*N. This parameter specializes exactly
+  to the existing four-term choice. The stopping branch now covers
+  arbitrary progression lengths without an inverse-theorem assumption.
+  The higher-degree nonuniform density-increment construction and its
+  threshold remain open, as do the seven numbered catalogue statements.
+
+General density iteration from an explicit discrepancy input
+  Proofs18IntervalDiscrepancyIncrement extracts the boundary-refinement
+  argument from the quadratic proof. Any proper discrepancy partition
+  with average size N^sigma and discrepancy beta*N yields an ordinary
+  interval progression of length at least
+  beta/(8*C(beta/64))*N^(sigma/16), with density gain beta/8.
+  The original quadratic theorem now uses this general construction.
+  Proofs18FunctionDiscrepancyReduction defines FunctionDiscrepancyBound,
+  retaining the explicit modulus threshold T and applying to bounded
+  functions, so it covers relative balances. The quadratic inverse
+  theorem is proved to satisfy this interface. The improved cubic theorem
+  also satisfies it unconditionally; subsequent degrees satisfy it under
+  the structural dimension hypotheses recorded above.
+  Proofs18GeneralIterationStep combines that input with the general
+  uniform stopping theorem, a comparable prime, and exact progression
+  reindexing. Proofs18GeneralIteration completes the fixed-constant
+  iteration with the existing closed threshold and transfers the result
+  to {1,...,N} without density loss. Proofs18FromFunctionDiscrepancy proves
+  the exact Theorem 18.2 conditional on Section18DiscrepancyBudget:
+  the function discrepancy input and comparison of the complete closed
+  iteration threshold with szemerediThreshold. This does not infer an
+  explicit threshold from Theorem 18.1's unspecified N0, and it is not an
+  unconditional companion proof. The seven numbered statements remain open.
+
+Exact source threshold and a smaller explicit bound for four terms
+  Proofs18QuadraticNumericalConstant bounds the fixed quadratic iteration
+  prefactor by 2^(2^322), using only the degree-one and degree-two local
+  refinement constants. Proofs18QuadraticSourceThreshold then proves
+  quadraticIntervalClosedThreshold(delta) <= 2^(2^((delta^-1)^(2^323)))
+  for 0<delta<=1/2. The natural-interval theorem with this threshold follows
+  from the completed quadratic density iteration and exact interval transfer.
+  This threshold is proved strictly smaller than szemerediThreshold(delta,4),
+  whose corresponding innermost exponent is 2^8192. In particular,
+  theorem_18_2_four_holds proves the four-term instance with the source's
+  exact displayed threshold. This is a restricted instance, not a proof
+  of Theorem 18.2 for all lengths, and the 113/120 count does not change.
 
 Reproducible checks (from repository root)
   python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.Audit
@@ -1833,9 +2397,27 @@ Next substantial obligations
      faithful contextual repair; the false abstraction cannot be proved.
   3. Prove Theorem 18.1 with explicit thresholds strong enough for iteration.
      The existing Section 18 cyclic dichotomy is conditional on that theorem.
-     Extend the relative-balance, boundary refinement, uniform stopping,
-     and fixed-parameter iteration now completed for four-term progressions
-     to the higher-degree construction, retaining explicit thresholds.
+     General relative counting, uniform stopping, and density iteration
+     from an explicit function discrepancy bound are already proved for
+     arbitrary progression lengths. Discharge the higher-degree inverse
+     input and its numerical budget, rather than repeating those reductions.
+     The cubic inverse theorem, full global assembly, phase removal, and
+     five-term iteration are now proved with a fully specified modulus
+     threshold, including the stronger Fejer parameters. The entire Section
+     13 Fourier and odd-square threshold and the complete cubic inverse
+     threshold now have conventional double-exponential bounds. The full
+     five-term iteration now satisfies a strictly smaller numerical bound
+     than the source five-term instance. For arbitrary degrees, supply the
+     Section 16 structural input and propagate the now-proved interval
+     transport and assembly steps. The full inverse induction after short
+     polynomial localization is now proved in every degree, with explicit
+     constants and thresholds. The structural dimension theorem now supplies
+     that localization with all geometry and energy inputs proved. The
+     degree induction is now complete from the unconditional quadratic and
+     improved cubic bases, retaining recursive positive parameters and only
+     the required structural dimension hypotheses. Complete the Section 16
+     structural induction and verify the resulting numerical budget against
+     the intended source bound.
   4. Close Theorem 18.2 and its headline consequences; then investigate tighter
      final bounds without treating improved auxiliary statements as a proved
      improvement of the full Szemeredi estimate.

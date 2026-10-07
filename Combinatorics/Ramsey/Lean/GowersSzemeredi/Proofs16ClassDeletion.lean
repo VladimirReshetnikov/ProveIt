@@ -1,4 +1,4 @@
-import GowersSzemeredi.Proofs16ClassPruning
+import GowersSzemeredi.Proofs16WeightedSamplingBudget
 
 /-! # Turning classwise losses into ambient good subsets -/
 set_option autoImplicit false
@@ -94,7 +94,7 @@ theorem section16_prune_and_sample_good_set {α β : Type*}
     (q r : Nat) (C : β × Fin q → Finset α) (σ : ℝ) (hq : 0 < q) (hσ : 0 < σ)
     (hlong : 2 * (q : ℝ) ≤ σ * Fintype.card α)
     (hdisj : ∀ h, Pairwise (fun i j => Disjoint (C (h, i)) (C (h, j))))
-    (hr : 6 * (q : ℝ) ≤ (r : ℝ) * σ ^ 2) :
+    (hr : 6 * (q : ℝ) ≤ (r : ℝ) * σ) :
     ∃ (sample : Fin r → α) (E : Finset (β × α)),
       (1 - 2 * σ) * (Fintype.card β : ℝ) * Fintype.card α ≤ E.card ∧
       ∀ h t x, (h, x) ∈ E → x ∈ C (h, t) →
@@ -103,15 +103,8 @@ theorem section16_prune_and_sample_good_set {α β : Type*}
   classical
   let A := fun i : β × Fin q => section16FibreClassSet i.1 (C i)
   have hAdisj := section16FibreClassSet_pairwise C hdisj
-  have hmass : (∑ i, ((C i).card : ℝ)) ≤ (Fintype.card β : ℝ) * Fintype.card α := by
-    have hu : (Finset.univ.biUnion A).card = ∑ i, (C i).card := by
-      rw [Finset.card_biUnion (fun i _ j _ hij => hAdisj hij)]
-      simp [section16FibreClassSet_card]
-    have hb := Finset.card_le_univ (Finset.univ.biUnion A)
-    rw [hu, Fintype.card_prod] at hb
-    exact_mod_cast hb
   obtain ⟨sample, D, hD, hanchors, hloss⟩ :=
-    section16_prune_and_sample q r C σ hq hσ hlong hmass hr
+    section16_linear_prune_and_sample q r C σ hq hσ hlong hr
   obtain ⟨E, _, hED, hE⟩ := disjoint_class_deletion Finset.univ A
     (fun i => section16FibreClassSet i.1 (D i)) (fun _ => Finset.subset_univ _)
     (fun i => section16FibreClassSet_mono _ (hD i)) hAdisj

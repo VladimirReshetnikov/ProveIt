@@ -37,7 +37,7 @@ theorem Section16LineCover.global_affine_lift_rounded {N k q : Nat} [Fact N.Prim
     (hsections : FinalCoordinateSectionsMultiplyLinear gamma s B phi)
     (hk : 0 < k) (hg : 0 < gamma) (hg1 : gamma ≤ 1) (hs : 1 ≤ s)
     (hl : 0 ≤ l) (τ ε : ℝ) (hτ : 0 < τ) (hτ1 : τ ≤ 1) (hε : 0 < ε) (hε1 : ε ≤ 1) :
-    let r := ⌈6 * (max 1 q : ℝ) / τ ^ 2⌉₊
+    let r := ⌈6 * (max 1 q : ℝ) / τ⌉₊
     let b := (multipleQ (((r : ℝ) * s)⁻¹ * ε) gamma k) ^ ((r : ℝ) * s)
     ∃ (n : Nat) (H : Finset (Point N (k + 1))) (L : Nat)
       (Q : Fin L → Box N (k + 1)) (mu : Fin L → Fin n → Point N (k + 1) → ZMod N),
@@ -49,10 +49,10 @@ theorem Section16LineCover.global_affine_lift_rounded {N k q : Nat} [Fact N.Prim
       (∀ j i, IsMultilinear (mu j i)) ∧
       ∀ j z, z ∈ (Q j).carrier → z ∈ B → z ∈ H → ∃ i, phi z = mu j i z := by
   let q' := max 1 q
-  let r := ⌈6 * (q' : ℝ) / τ ^ 2⌉₊
+  let r := ⌈6 * (q' : ℝ) / τ⌉₊
   have hq' : 0 < q' := lt_of_lt_of_le Nat.zero_lt_one (le_max_left _ _)
-  have hr : 6 * (q' : ℝ) ≤ (r : ℝ) * τ ^ 2 :=
-    (div_le_iff₀ (sq_pos_of_pos hτ)).mp (Nat.le_ceil _)
+  have hr : 6 * (q' : ℝ) ≤ (r : ℝ) * τ :=
+    (div_le_iff₀ hτ).mp (Nat.le_ceil _)
   have hpad := hline.mono_count (le_max_right 1 q)
   simpa only [q', r, Nat.cast_max, Nat.cast_one] using
     hpad.global_affine_lift hsections hk hg hg1 hs (Nat.floor_le hl)

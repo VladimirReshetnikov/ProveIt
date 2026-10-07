@@ -30,7 +30,7 @@ theorem section16_product_anchored_good_set {N k q r : Nat} [Fact N.Prime]
       ∃ t, phi (appendCoordinate h x) = ell h t x)
     (σ : ℝ) (hq : 0 < q) (hσ : 0 < σ)
     (hlong : 2 * (q : ℝ) ≤ σ * J.card)
-    (hr : 6 * (q : ℝ) ≤ (r : ℝ) * σ ^ 2) :
+    (hr : 6 * (q : ℝ) ≤ (r : ℝ) * σ) :
     ∃ (sample : Fin r → ZMod N) (F : Finset (Point N (k + 1))),
       (∀ i, sample i ∈ J) ∧ F ⊆ lastProductSet A J ∧
       (1 - 2 * σ) * ((lastProductSet A J).card : ℝ) ≤ F.card ∧
