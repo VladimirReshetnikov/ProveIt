@@ -1,5 +1,6 @@
 /- Modified for ProveIt: import Lean 4.32 compatibility declarations.
-Statements and proofs are unchanged from the pinned upstream source. -/
+Mathematical statements are unchanged from the pinned upstream source.
+Use MvPolynomial coefficient lemmas explicitly on Lean 4.32; statements unchanged. -/
 import OAI.Compat.Core
 import OAI.Combinatorics.Progressions.Estimates.RealifiedTripleLayers
 import OAI.Combinatorics.Progressions.Geometry.CoordinateSubstitutionAlgebra
@@ -28,7 +29,7 @@ theorem substitute_update_add (f : σ → MvPolynomial τ R) (i : σ)
   intro a _
   by_cases ha : a i ≤ 1
   · rw [aeval_monomial_update_add (R := R) f i u v a ha,
-      MvPolynomial.coeff_sub, AddMonoidAlgebra.coeff_add, Finsupp.add_apply, sub_smul, add_smul]
+      MvPolynomial.coeff_sub, MvPolynomial.coeff_add, sub_smul, add_smul]
   · simp only [hp a (Nat.lt_of_not_ge ha), smul_zero, add_zero, sub_zero]
 
 theorem coefficients_substitute_update_sub_mem (P : Submodule R V)

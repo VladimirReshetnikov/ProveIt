@@ -99,6 +99,9 @@ unchanged.
   `Isometry.lipschitz`), and `Compat/FinsetInj.lean` (injective finite-sum
   comparison proved using `sum_image` and subset comparison). These are
   local proofs under Apache-2.0, with no copied upstream proof text.
+- `Compat/Stirling.lean` proves the power expansion in descending factorials
+  by induction from the Stirling recurrence. This is a local Apache-2.0
+  proof, with no upstream proof text copied; its axiom check passes.
 - `Compat/MatrixInjective.lean` derives matrix-vector injectivity from a
   nonzero determinant using the older trivial-kernel theorem. It supports
   integer-fiber and residue-refined-period modules.
@@ -111,7 +114,7 @@ unchanged.
   and [`LICENSE.mathlib`](LICENSE.mathlib). It compiles with the local
   `Compat/GramMatrix.lean` characterization; the exported inner-product and
   orthonormal-basis declarations pass the three-axiom check. Its downstream
-  consumers remain outside the audited first-300 prefix.
+  consumers remain outside the currently audited prefix.
 - Imports of relocated Mathlib modules use their older paths. All directly
   imported Mathlib source paths now exist in the local checkout; this path
   check does not establish that all importing modules compile.

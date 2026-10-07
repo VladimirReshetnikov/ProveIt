@@ -1,3 +1,4 @@
+/- Modified for ProveIt: Use MvPolynomial coefficient lemmas explicitly on Lean 4.32; statements unchanged. -/
 import OAI.Combinatorics.Progressions.Estimates.PairedDiagonalApproximation
 
 namespace OAI
@@ -19,7 +20,7 @@ theorem polynomialRationalApproximation_of_decomposition {I : Type*}
     PolynomialRationalApproximation T R P := by
   refine ⟨D, hD, hDR, Q, ?_⟩
   intro α
-  rw [hP, AddMonoidAlgebra.coeff_add, Finsupp.add_apply,
+  rw [hP, MvPolynomial.coeff_add,
     integerPolynomialQuotient_coeff, add_sub_cancel_right]
   exact hE α
 

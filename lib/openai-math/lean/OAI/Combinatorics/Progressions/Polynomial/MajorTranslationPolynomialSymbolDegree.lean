@@ -1,3 +1,4 @@
+/- Modified for ProveIt: Use MvPolynomial coefficient lemmas explicitly on Lean 4.32; statements unchanged. -/
 import Mathlib.LinearAlgebra.Finsupp.Defs
 import Mathlib.RingTheory.MvPolynomial.WeightedHomogeneous
 import OAI.Combinatorics.Progressions.Estimates.WeightedAxisScaling
@@ -67,7 +68,7 @@ theorem polynomialSlotCoefficient_monomial [DecidableEq τ] (α : σ →₀ ℕ)
       apply hγ
       ext i
       exact congrArg (fun a : σ ⊕ τ →₀ ℕ => a (Sum.inr i)) h
-    simp only [hγ, ite_false, AddMonoidAlgebra.coeff_zero, Finsupp.zero_apply,
+    simp only [hγ, ite_false, MvPolynomial.coeff_zero,
       coeff_monomial, hne]
 
 theorem polynomialParameterEval_monomial (t : σ → R)
@@ -94,7 +95,7 @@ theorem polynomialSlotCoefficient_eval (t : σ → R) (β : τ →₀ ℕ)
     rw [← hm, polynomialSlotCoefficient_monomial, polynomialParameterEval_monomial]
     by_cases h : γ = β <;> simp [h, coeff_monomial]
   | add P Q hP hQ =>
-    simp only [map_add, AddMonoidAlgebra.coeff_add, Finsupp.add_apply, hP, hQ]
+    simp only [map_add, MvPolynomial.coeff_add, hP, hQ]
 
 end Erdos3
 
@@ -143,7 +144,7 @@ theorem polynomialSlotCoefficient_eq_zero_of_weight_ge (w : B → ℕ)
     (α : B →₀ ℕ) (hd : d ≤ Finsupp.weight w α) :
     polynomialSlotCoefficient α P = 0 := by
   ext β
-  rw [polynomialSlotCoefficient_coeff, AddMonoidAlgebra.coeff_zero, Finsupp.zero_apply]
+  rw [polynomialSlotCoefficient_coeff, MvPolynomial.coeff_zero]
   by_contra hne
   have hlt : Finsupp.weight (Sum.elim (fun _ : U => 0) w) (β.sumElim α) < d :=
     hP (mem_support_iff.mpr hne)
