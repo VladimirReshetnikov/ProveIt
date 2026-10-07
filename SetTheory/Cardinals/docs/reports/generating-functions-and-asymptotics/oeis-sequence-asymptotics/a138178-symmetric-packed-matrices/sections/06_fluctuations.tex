@@ -1,43 +1,43 @@
-\section{Dimension and trace fluctuations}\label{sec:fluctuations}
+\section{Dimension and trace fluctuations}\label{spm:sec:fluctuations}
 Choose a matrix uniformly from $\mathcal A_n$, and write $D_n,T_n$ for its dimension and diagonal sum. Their joint moment generating function is
 \[
  \E e^{aD_n+bT_n}=\frac{A_n(e^a,e^b)}{A_n(1,1)}.
 \]
-Theorem~\ref{thm:main} applies in a fixed complex neighborhood of $(a,b)=(0,0)$, including derivative remainders. It therefore supplies all fixed cumulants by differentiation.
+Theorem~\ref{spm:thm:main} applies in a fixed complex neighborhood of $(a,b)=(0,0)$, including derivative remainders. It therefore supplies all fixed cumulants by differentiation.
 
 \subsection{The involution factor}
-The one-dimensional saddle of Lemma~\ref{lem:involution}, with Stirling's formula for $n!$, gives uniformly near $v=1$
-\begin{align}\label{eq:logI}
+The one-dimensional saddle of Lemma~\ref{spm:lem:involution}, with Stirling's formula for $n!$, gives uniformly near $v=1$
+\begin{align}\label{spm:eq:logI}
  \log I_n(v)={}&\frac n2(\log n-1)+v\sqrt n-\frac{v^2}{4}
               -\frac12\log2\notag\\
  &+\left(\frac{v^3}{24}+\frac v4\right)n^{-1/2}
    -\left(\frac{v^2}{16}+\frac1{12}\right)n^{-1}
    +O(n^{-3/2}).
 \end{align}
-For completeness, expand $\rho(h)$ from \eqref{eq:scaling} in
-$vr+r^2/2-n\log r$, expand the angular normalizer using $H$ in \eqref{eq:H}, and add
+For completeness, expand $\rho(h)$ from \eqref{spm:eq:scaling} in
+$vr+r^2/2-n\log r$, expand the angular normalizer using $H$ in \eqref{spm:eq:H}, and add
 \[
  \log n!=(n+\tfrac12)\log n-n+\tfrac12\log(2\pi)
              +\frac1{12n}+O(n^{-3}).
 \]
-At each order this uses finitely many even Gaussian moments. The same Taylor bound as \eqref{eq:taylorbound}, with no gamma variable, proves the remainder. Thus \eqref{eq:logI} is also an all-fixed-order construction. At $v=1$ its logarithmic coefficient of $n^{-1}$ is $-7/48$.
+At each order this uses finitely many even Gaussian moments. The same Taylor bound as \eqref{spm:eq:taylorbound}, with no gamma variable, proves the remainder. Thus \eqref{spm:eq:logI} is also an all-fixed-order construction. At $v=1$ its logarithmic coefficient of $n^{-1}$ is $-7/48$.
 
-\begin{proposition}[First joint cumulants]\label{prop:cumulants}
+\begin{proposition}[First joint cumulants]\label{spm:prop:cumulants}
 With $L=\log2$,
 \begin{align}
- \E D_n={}&\frac{n}{2L}+\frac1{2L}-\frac12-\frac L4+O(n^{-1/2}),\label{eq:ED}\\
+ \E D_n={}&\frac{n}{2L}+\frac1{2L}-\frac12-\frac L4+O(n^{-1/2}),\label{spm:eq:ED}\\
  \Var D_n={}&\frac{n(1-L)}{4L^2}
- +\frac{1-L}{4L^2}+\frac{L-1}{8}+O(n^{-1/2}),\label{eq:VD}\\
+ +\frac{1-L}{4L^2}+\frac{L-1}{8}+O(n^{-1/2}),\label{spm:eq:VD}\\
  \E T_n={}&\sqrt n+L-\frac12
- +\frac{3/8-L+L^2/2}{\sqrt n}+O(n^{-1}),\label{eq:ET}\\
+ +\frac{3/8-L+L^2/2}{\sqrt n}+O(n^{-1}),\label{spm:eq:ET}\\
  \Var T_n={}&\sqrt n+2L-1
- +\frac{5/8-4L+5L^2/2}{\sqrt n}+O(n^{-1}),\label{eq:VT}\\
- \Cov(D_n,T_n)={}&-\frac12+\frac{1-L}{2\sqrt n}+O(n^{-1}).\label{eq:cov}
+ +\frac{5/8-4L+5L^2/2}{\sqrt n}+O(n^{-1}),\label{spm:eq:VT}\\
+ \Cov(D_n,T_n)={}&-\frac12+\frac{1-L}{2\sqrt n}+O(n^{-1}).\label{spm:eq:cov}
 \end{align}
 \end{proposition}
 \begin{proof}
-Take the logarithm of \eqref{eq:main}, using
-$C_1n^{-1/2}+D_2n^{-1}$ for its first normalized logarithmic terms, and insert \eqref{eq:logI}. Differentiate with respect to $a$ and $b$. The required identities are
+Take the logarithm of \eqref{spm:eq:main}, using
+$C_1n^{-1/2}+D_2n^{-1}$ for its first normalized logarithmic terms, and insert \eqref{spm:eq:logI}. Differentiate with respect to $a$ and $b$. The required identities are
 \[
  \left.\frac{\dd L(e^a)}{\dd a}\right|_{a=0}=-\frac12,
  \qquad
@@ -47,9 +47,9 @@ $C_1n^{-1/2}+D_2n^{-1}$ for its first normalized logarithmic terms, and insert \
 Both $-(n+1)\log L(e^a)$ and $-\log(1+e^a)$ must be retained. The uniform holomorphic remainder justifies the differentiated error bounds.
 \end{proof}
 
-\begin{theorem}[Two independent Gaussian scales]\label{thm:gaussian}
+\begin{theorem}[Two independent Gaussian scales]\label{spm:thm:gaussian}
 Let $\sigma_D^2=(1-L)/(4L^2)>0$. Then
-\begin{equation}\label{eq:gaussian}
+\begin{equation}\label{spm:eq:gaussian}
  \left(\frac{D_n-n/(2L)}{\sigma_D\sqrt n},
        \frac{T_n-\sqrt n}{n^{1/4}}\right)
  \ \Longrightarrow\ (Z_1,Z_2),
@@ -60,13 +60,13 @@ where $Z_1,Z_2$ are independent standard normal variables.
 Substitute $a=s/(\sigma_D\sqrt n)$ and $b=t/n^{1/4}$ in the logarithm of the marked ratio. After centering, its limit is $(s^2+t^2)/2$ on a neighborhood of the origin. The leading $a$ term comes from $-(n+1)\log L(e^a)$, the leading $b$ term from $e^b\sqrt n$, and all mixed terms vanish on these scales. Convergence of the joint moment generating function proves the result.
 \end{proof}
 
-The nonzero limiting \emph{unscaled} covariance in \eqref{eq:cov} is compatible with independent scaled limits. There is also an exact lattice constraint:
-\begin{equation}\label{eq:parity}
+The nonzero limiting \emph{unscaled} covariance in \eqref{spm:eq:cov} is compatible with independent scaled limits. There is also an exact lattice constraint:
+\begin{equation}\label{spm:eq:parity}
  T_n\equiv n\pmod2.
 \end{equation}
 No span-one local limit or total-variation approximation of $T_n$ by an unrestricted Poisson law is asserted. The valid local analytic residue is instead
-\begin{equation}\label{eq:trace-residue}
+\begin{equation}\label{spm:eq:trace-residue}
  \E[v^{T_n}]e^{-(v-1)\sqrt n}
  \longrightarrow \exp\left(\frac{(2L-1)(v^2-1)}4\right)
 \end{equation}
-uniformly near $v=1$. This follows by combining the $v$-dependent terms in \eqref{eq:logI} with $S(L,v)-S(L,1)$.
+uniformly near $v=1$. This follows by combining the $v$-dependent terms in \eqref{spm:eq:logI} with $S(L,v)-S(L,1)$.

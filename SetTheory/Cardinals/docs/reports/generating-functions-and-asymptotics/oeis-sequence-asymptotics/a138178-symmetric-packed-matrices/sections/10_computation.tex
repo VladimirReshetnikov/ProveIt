@@ -1,4 +1,4 @@
-\section{Exact reproduction and its limits}\label{sec:computation}
+\section{Exact reproduction and its limits}\label{spm:sec:computation}
 The package separates exact finite checks, symbolic coefficient identities, noncertified floating diagnostics, and deterministic document reproduction. None of these checks replaces the analytic tail and remainder proofs.
 
 \subsection{Independent counting algorithms}
@@ -7,7 +7,7 @@ For the unmarked generating function $F_k(z)=(1-z)^{-k}(1-z^2)^{-(k^2-k)/2}$,
  \frac{F_k'(z)}{F_k(z)}=\frac{k+k^2z}{1-z^2}.
 \]
 Writing $d_n(k)=n!f_n(k,1)$ gives the exact polynomial recurrence
-\begin{equation}\label{eq:exactrecurrence}
+\begin{equation}\label{spm:eq:exactrecurrence}
  d_0(k)=1,\quad d_1(k)=k,\quad
  d_{n+1}(k)=k d_n(k)+n(k^2+n-1)d_{n-1}(k).
 \end{equation}
@@ -17,7 +17,7 @@ If $P_j(u)=(1+u)^{-1}\sum_{k\geq0}q^kk^j$, then
  P_m(u)=u\sum_{j=1}^m\binom mj P_{m-j}(u).
 \]
 Thus the geometric transform is the finite exact sum
-\begin{equation}\label{eq:finite-transform}
+\begin{equation}\label{spm:eq:finite-transform}
  A_n(u,v)=\sum_{j=0}^n[k^j]f_n(k,v)P_j(u).
 \end{equation}
 The implementation retains the more general marked rational logarithmic derivative
@@ -28,17 +28,17 @@ The implementation retains the more general marked rational logarithmic derivati
 For rational $v=V/D$, it stores $D^nn!f_n(k,V/D)$ as an integer polynomial; exact fractions are introduced only for the final normalization. All terms are finite.
 
 A second algorithm does not use that recurrence. At each integer auxiliary dimension it counts diagonal and off-diagonal occupancies by stars and bars:
-\begin{equation}\label{eq:starsbars}
+\begin{equation}\label{spm:eq:starsbars}
  f_n(k,v)=\sum_{\ell+2j=n}
  \binom{k+\ell-1}{\ell}
  \binom{\binom k2+j-1}{j}v^\ell,
 \end{equation}
 where a zero number of cells contributes $1$ for zero occupancy and $0$ otherwise. Zero-line deletion then gives
-\begin{equation}\label{eq:deletion}
+\begin{equation}\label{spm:eq:deletion}
  A_n(u,v)=\sum_{d=0}^n u^d\sum_{k=0}^d
                    (-1)^{d-k}\binom dk f_n(k,v).
 \end{equation}
-Replacing the two stars-and-bars factors by $\binom{k}{\ell}$ and $\binom{\binom k2}{j}$ gives the independent binary algorithm. Collision markers are checked independently by expanding the two numerator factors in \eqref{eq:collision-fn} before applying \eqref{eq:deletion}.
+Replacing the two stars-and-bars factors by $\binom{k}{\ell}$ and $\binom{\binom k2}{j}$ gives the independent binary algorithm. Collision markers are checked independently by expanding the two numerator factors in \eqref{spm:eq:collision-fn} before applying \eqref{spm:eq:deletion}.
 
 A third small-case algorithm recursively enumerates upper-triangular entry assignments, tracks occupied lines, and keeps the full tuple $(D,T,R,S)$. It neither uses the geometric transform nor the polynomial recurrence. This checks model conventions, trace parity, and both meanings of collision counts.
 
@@ -57,10 +57,27 @@ The exact receipt records larger integers with a documented signed, length-prefi
 The symbolic verifier compares the coupled Gaussian calculation of $C_1,C_2$ with a separate factorial-degree-moment expression. It also checks the collision and binary first corrections, the involution logarithmic coefficients from its recurrence, and a rational enclosure proving $1<L+L^2<2$, as used in the sharp total-variation constant. These are exact algebraic checks. They do not constitute a machine-checked proof of the asymptotic estimates.
 
 \subsection{Floating diagnostics}
-A separate program evaluates leading ratios, corrected residuals, and collision moments from exact rational data at high decimal working precision. The points $(u,v)=(1,1),(2,2),(1,1/2)$ provide different cancellation tests. The latter two are diagnostics at those fixed points, not an enlargement of the specifically stated complex neighborhood in Theorem~\ref{thm:main}. Decimal outputs are explicitly labeled noncertified: they are not interval enclosures, effective error bounds, or evidence of a proven numerical onset. No claim is made that the entire external OEIS b-file was independently compared.
+A separate program evaluates leading ratios, corrected residuals, and collision moments from exact rational data at high decimal working precision. The points $(u,v)=(1,1),(2,2),(1,1/2)$ provide different cancellation tests. The latter two are diagnostics at those fixed points, not an enlargement of the specifically stated complex neighborhood in Theorem~\ref{spm:thm:main}. Decimal outputs are explicitly labeled noncertified: they are not interval enclosures, effective error bounds, or evidence of a proven numerical onset. No claim is made that the entire external OEIS b-file was independently compared.
+
+\begin{writenote}[Added 6 October 2026, batch~108]
+The write made that comparison: all 501 terms $A_0,\ldots,A_{500}$ of the
+b-file agree with an exact computation of its own
+(Remark~\ref{spm:rem:oeis}).
+\end{writenote}
 
 \subsection{Rebuilding from an immutable package}
 The TeX source and reproducible Python verifier are included with the PDF. The detailed commands and pinned dependency versions are in the package's README and computation notes. The build verifies a SHA-256 manifest before running and verifies that source bytes have not changed afterward. Output is written to a fresh external directory; packaged source paths are not overwritten.
+
+\begin{writenote}[Added 6 October 2026, batch~108]
+In ProveIt the PDF, the manifest and the package README described here are
+not shipped (they are in the archive of the arrival commit
+\file{60f54ea06}), and the files are shipped under other names
+(\file{build.py} in \file{code/}, the receipts in \file{data/}), so the
+build cannot run in the repository. The three mathematical programs run
+from the shipped files on a scratch copy and reproduce their receipts byte
+for byte (report README, Route~B); the build and replay need the delivered
+layout, a POSIX host and the delivering TeX toolchain (Route~A).
+\end{writenote}
 
 Public bounded inputs are validated before expensive work, with explicit exceptions rather than assertions that disappear under Python optimization. Every Python subprocess is invoked with \texttt{-B}, independently of environment settings; guard tests also run in ordinary and \texttt{-O} modes. TeX runs with \texttt{-no-shell-escape}. The ZIP has sorted members and fixed metadata. The replay test extracts the actual ZIP twice, rebuilds it under ordinary and optimized Python, and compares output bytes and ZIP metadata as well as source immutability. This establishes reproducibility for the recorded toolchain, not for arbitrary future TeX, compression, or symbolic-algebra versions.
 

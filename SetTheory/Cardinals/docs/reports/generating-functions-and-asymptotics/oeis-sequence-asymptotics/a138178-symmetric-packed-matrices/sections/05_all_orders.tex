@@ -1,6 +1,6 @@
-\section{Finite coefficient construction and rigorous remainder}\label{sec:allorders}
+\section{Finite coefficient construction and rigorous remainder}\label{spm:sec:allorders}
 Set $h=n^{-1/2}$ and make the central substitutions
-\begin{equation}\label{eq:scaling}
+\begin{equation}\label{spm:eq:scaling}
  t=h^{-2}(1+hy),\quad \theta=hw,\quad
  \rho(h)=\sqrt{1+v^2h^2/4}-vh/2,
 \end{equation}
@@ -23,17 +23,17 @@ with zeroth moments $1$, odd moments $0$, and products factorized.
 
 Define formal series with removable singularities at $h=0$ by
 \begin{align}
- G(h,y)&=h^{-2}\bigl(\log(1+hy)-hy\bigr)+y^2/2,\label{eq:G}\\
+ G(h,y)&=h^{-2}\bigl(\log(1+hy)-hy\bigr)+y^2/2,\label{spm:eq:G}\\
  H(h,w)&=v h^{-1}\rho(h)(e^{\ii hw}-1)
- +\frac{\rho(h)^2}{2h^2}(e^{2\ii hw}-1)-\frac{\ii w}{h}+w^2,\label{eq:H}\\
+ +\frac{\rho(h)^2}{2h^2}(e^{2\ii hw}-1)-\frac{\ii w}{h}+w^2,\label{spm:eq:H}\\
  \mathcal B(h,y,w)&=B\bigl(h^{-1}\rho(h)e^{\ii hw},
-                       h^{-2}(1+hy)/L,v\bigr).\label{eq:scaledB}
+                       h^{-2}(1+hy)/L,v\bigr).\label{spm:eq:scaledB}
 \end{align}
 Here $G(0,y)=H(0,w)=0$ and $\mathcal B(0,y,w)=S(L,v)$.
 
-\begin{proposition}[Finite Gaussian algorithm]\label{prop:algorithm}
-The coefficients in Theorem~\ref{thm:main} are defined by
-\begin{equation}\label{eq:algorithm}
+\begin{proposition}[Finite Gaussian algorithm]\label{spm:prop:algorithm}
+The coefficients in Theorem~\ref{spm:thm:main} are defined by
+\begin{equation}\label{spm:eq:algorithm}
  \sum_{j\geq0}C_j(L,v)h^j
  =e^{-S(L,v)}
  \frac{\mathcal E\exp(G+H+\mathcal B)}
@@ -44,7 +44,7 @@ This is an identity of formal power series: at any fixed order only finitely man
 \begin{proof}
 On the central window, the gamma exponent is $-y^2/2+G$ and the angular exponent is $-w^2+H$. Dividing by the exact gamma normalization and the exact involution coefficient integral gives respectively the two factors in the denominator. In particular the gamma density is centered at $n$, not its mean $n+1$; the series $G$ and its normalizer retain that shift.
 
-The least powers of $h$ in the three summand families of \eqref{eq:B} are respectively $m-2$, $2m-4$, and $2m-2$. To calculate through $h^J$ one therefore needs only
+The least powers of $h$ in the three summand families of \eqref{spm:eq:B} are respectively $m-2$, $2m-4$, and $2m-2$. To calculate through $h^J$ one therefore needs only
 \[
  m\leq J+2,\qquad m\leq\lfloor J/2\rfloor+2,
  \qquad m\leq\lfloor J/2\rfloor+1
@@ -59,19 +59,19 @@ For transparency, the first calculation can be displayed without a symbolic syst
        +\frac{L^2}{4}(-2v+4\ii w-2y)+\frac{v^3L^2}{3}.
 \end{align*}
 The normalizers cancel the expectations of $G_1,H_1$, leaving
-$C_1=\mathcal E\mathcal B_1$, exactly \eqref{eq:C1}. At second order,
-\begin{equation}\label{eq:secondalgorithm}
+$C_1=\mathcal E\mathcal B_1$, exactly \eqref{spm:eq:C1}. At second order,
+\begin{equation}\label{spm:eq:secondalgorithm}
  C_2=\mathcal E\left(\mathcal B_2+(G_1+H_1)\mathcal B_1
                          +\frac{\mathcal B_1^2}{2}\right)
        -\mathcal E(G_1+H_1)C_1.
 \end{equation}
-Substitution in this finite polynomial identity gives \eqref{eq:D2}--\eqref{eq:C2}. The reproduction package checks these identities exactly and separately checks the collision first correction.
+Substitution in this finite polynomial identity gives \eqref{spm:eq:D2}--\eqref{spm:eq:C2}. The reproduction package checks these identities exactly and separately checks the collision first correction.
 
 \subsection{Why the formal algorithm is asymptotic}
-A formal Gaussian calculation alone would not prove the theorem. Choose a fixed $0<\alpha<1/3$ and restrict $|y|,|w|\leq h^{-\alpha}$. The previous section bounds the excluded tails by $O(e^{-c h^{-2\alpha}})$. On this window, $1+hy$ is separated from zero, $\rho$ is analytic, and $|x/k|=O(h)$. The logarithmic series \eqref{eq:B} and any fixed number of its $h$ derivatives converge uniformly.
+A formal Gaussian calculation alone would not prove the theorem. Choose a fixed $0<\alpha<1/3$ and restrict $|y|,|w|\leq h^{-\alpha}$. The previous section bounds the excluded tails by $O(e^{-c h^{-2\alpha}})$. On this window, $1+hy$ is separated from zero, $\rho$ is analytic, and $|x/k|=O(h)$. The logarithmic series \eqref{spm:eq:B} and any fixed number of its $h$ derivatives converge uniformly.
 
 Taylor's theorem through order $J$ for the local exponential has an integrable remainder bounded by
-\begin{equation}\label{eq:taylorbound}
+\begin{equation}\label{spm:eq:taylorbound}
  C_Jh^{J+1}(1+|y|+|w|)^{D_J}e^{\eta(y^2+w^2)},
  \qquad \eta<1/4.
 \end{equation}
@@ -83,10 +83,57 @@ $\rho(s)^2+vs\rho(s)=1$ removes the apparent singularity in $H$. Uniformly on th
  |\mathcal B(s,y,w)|\leq C.
 \]
 Because $h(|y|+|w|)=o(1)$, the residual real parts are at most
-$\eta(y^2+w^2)+C$ after taking $h$ sufficiently small. Every fixed derivative is bounded by a polynomial in $|y|+|w|$: the only denominator factors are powers of $1+sy$ and analytic factors separated from zero, and the least-degree structure of \eqref{eq:B} bounds the number of relevant terms. Differentiating the exponential a fixed number of times multiplies it only by such polynomials. This proves \eqref{eq:taylorbound}.
+$\eta(y^2+w^2)+C$ after taking $h$ sufficiently small. Every fixed derivative is bounded by a polynomial in $|y|+|w|$: the only denominator factors are powers of $1+sy$ and analytic factors separated from zero, and the least-degree structure of \eqref{spm:eq:B} bounds the number of relevant terms. Differentiating the exponential a fixed number of times multiplies it only by such polynomials. This proves \eqref{spm:eq:taylorbound}.
 
-Multiplication by the Gaussian density $e^{-y^2/2-w^2}$ makes \eqref{eq:taylorbound} integrable over the full plane. Its integral is $O_J(h^{J+1})$. Extending each finite polynomial coefficient integral from the window to the full plane loses only an exponentially small tail. The same argument applies to both denominator integrals, whose constant terms are nonzero. This proves \eqref{eq:main} after the exponentially small pole error \eqref{eq:poleerror} is restored.
+Multiplication by the Gaussian density $e^{-y^2/2-w^2}$ makes \eqref{spm:eq:taylorbound} integrable over the full plane. Its integral is $O_J(h^{J+1})$. Extending each finite polynomial coefficient integral from the window to the full plane loses only an exponentially small tail. The same argument applies to both denominator integrals, whose constant terms are nonzero. This proves \eqref{spm:eq:main} after the exponentially small pole error \eqref{spm:eq:poleerror} is restored.
 
-The notation $\mathcal E e^{G+H+\mathcal B}$ in \eqref{eq:algorithm} is formal. The proof extends only finite polynomial truncations to the full real plane; it never integrates $\log(1+hy)$ through $y=-1/h$.
+The notation $\mathcal E e^{G+H+\mathcal B}$ in \eqref{spm:eq:algorithm} is formal. The proof extends only finite polynomial truncations to the full real plane; it never integrates $\log(1+hy)$ through $y=-1/h$.
 
-Finally the normalized quantity in \eqref{eq:main} is holomorphic and nonzero on a slightly smaller neighborhood for large $n$, by Lemma~\ref{lem:involution} and its uniform limit $1$. Cauchy's formula, applied on a larger compact polydisc, bounds all fixed derivatives of the remainder. Its analytic logarithm consequently has a differentiable expansion to every fixed order. This completes the proof of Theorem~\ref{thm:main}.
+Finally the normalized quantity in \eqref{spm:eq:main} is holomorphic and nonzero on a slightly smaller neighborhood for large $n$, by Lemma~\ref{spm:lem:involution} and its uniform limit $1$. Cauchy's formula, applied on a larger compact polydisc, bounds all fixed derivatives of the remainder. Its analytic logarithm consequently has a differentiable expansion to every fixed order. This completes the proof of Theorem~\ref{spm:thm:main}.
+
+\begin{remark}[{[write]} The third coefficient at $u=v=1$, and the data, 6~October 2026]\label{spm:rem:third}
+The write evaluated the finite prescription~\eqref{spm:eq:algorithm} at
+$u=v=1$ through $h^3$ in SymPy~1.14.0, with $L$ symbolic (an implementation
+of its own, not shipped; it expands $G$, $H$ and $\mathcal B$ from
+\eqref{spm:eq:G}--\eqref{spm:eq:scaledB}, keeping in~\eqref{spm:eq:B}
+exactly the terms listed in the proof of
+Proposition~\ref{spm:prop:algorithm}, takes the Gaussian moments of
+$\mathcal E$, and divides by both normalizers). It returns $S(L,1)=L^2/4$,
+$C_1(L,1)=-L^2/6$ and $C_2(L,1)=-L^2/4+L^4/18$, as in
+\eqref{spm:eq:C1}--\eqref{spm:eq:C2}, and
+\[
+ C_3(L,1)=-\frac{L^2(50L^4+324L^2-1755)}{6480},\qquad
+ D_3(L,1)=C_3-C_1C_2+\tfrac13C_1^3=-\frac{L^2(22L^2-65)}{240}.
+\]
+Theorem~\ref{spm:thm:main} with $J=3$ therefore extends~\eqref{spm:eq:unmarked}
+by the term $C_3n^{-3/2}$, with remainder $O(n^{-2})$; at $L=\log2$,
+$C_1=-0.08007550\ldots$, $C_2=-0.10728908\ldots$ and
+$C_3=0.11772518\ldots$. This value rests on the write's single
+implementation (Question~\ref{spm:q:third}).
+
+\emph{The data.} With $\varrho_n=A_n\big/\bigl(e^{L^2/4}I_n(1)/(2L^{n+1})\bigr)$
+and $h=n^{-1/2}$, the exact counts of Remark~\ref{spm:rem:oeis} give
+(50-digit \texttt{mpmath}; the delivered noncertified receipt
+\file{data/diagnostic_receipt.json} records the quantities of the second to fifth columns at
+$n=32$, $80$, $160$, $320$, $640$, and agrees with the row $n=32$):
+\begin{center}\small
+\begin{tabular}{@{}r*{5}{c}@{}}
+\toprule
+$n$ & $\varrho_n$ & $(\varrho_n-1)/h$ & $(\varrho_n-1-C_1h)/h^2$ & $(\varrho_n-1-C_1h-C_2h^2)/h^3$ & $(\varrho_n-\sum_{j\le3}C_jh^j)/h^4$\\
+\midrule
+16 & 0.97438 & $-0.1025$ & $-0.0896$ & 0.0709 & $-0.1872$\\
+32 & 0.98295 & $-0.0965$ & $-0.0927$ & 0.0826 & $-0.1986$\\
+50 & 0.98678 & $-0.0935$ & $-0.0947$ & 0.0889 & $-0.2041$\\
+100 & 0.99102 & $-0.0898$ & $-0.0976$ & 0.0966 & $-0.2112$\\
+200 & 0.99384 & $-0.0872$ & $-0.1000$ & 0.1024 & $-0.2168$\\
+300 & 0.99504 & $-0.0859$ & $-0.1012$ & 0.1051 & $-0.2194$\\
+400 & 0.99574 & $-0.0852$ & $-0.1020$ & 0.1067 & $-0.2210$\\
+500 & 0.99621 & $-0.0847$ & $-0.1025$ & 0.1078 & $-0.2222$\\
+\bottomrule
+\end{tabular}
+\end{center}
+(rounded to the digits shown). The third to fifth columns move toward
+$C_1$, $C_2$ and $C_3$ as $n$ grows, and the last stays between $-0.18$
+and $-0.23$ for $16\le n\le500$. These are observations on a finite range,
+consistent with the expansion; they certify no coefficient and no rate.
+\end{remark}
