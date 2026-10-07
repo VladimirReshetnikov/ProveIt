@@ -1,5 +1,6 @@
 /- Modified for ProveIt: import Lean 4.32 compatibility declarations.
-Statements and proofs are unchanged from the pinned upstream source. -/
+Construct mapped probability instances explicitly from measurability.
+Mathematical statements unchanged. -/
 import OAI.Compat.Measurable
 import OAI.Combinatorics.Progressions.Estimates.JointBooleanGoodWeight
 import OAI.Combinatorics.Progressions.Geometry.UnitBoxInteriorCutoff
@@ -75,7 +76,8 @@ noncomputable def sigmaAxisMeasure (μ : ∀ d, Measure (I d → ℝ)) : Measure
 instance sigmaAxisMeasure_probability (μ : ∀ d, Measure (I d → ℝ))
     [∀ d, IsProbabilityMeasure (μ d)] : IsProbabilityMeasure (sigmaAxisMeasure μ) := by
   unfold sigmaAxisMeasure
-  infer_instance
+  exact Measure.isProbabilityMeasure_map
+    (sigmaAxisCoordinates I).symm.continuous.measurable.aemeasurable
 
 theorem sigmaAxisMeasure_projection (μ : ∀ d, Measure (I d → ℝ))
     [∀ d, IsProbabilityMeasure (μ d)] (d : D) :
@@ -103,7 +105,7 @@ theorem sigmaAxisSampler_image_law (μ : ∀ d, Measure (I d → ℝ))
     Measure.map (sigmaAxisSampler U) (sigmaAxisMeasure μ) =
       sigmaAxisMeasure (fun d => Measure.map (U d) (μ d)) := by
   let : ∀ d, IsProbabilityMeasure (Measure.map (U d) (μ d)) :=
-    fun d => inferInstance
+    fun d => Measure.isProbabilityMeasure_map (hU d).aemeasurable
   rw [sigmaAxisMeasure, Measure.map_map (sigmaAxisSampler_measurable U hU)
     (sigmaAxisCoordinates I).symm.continuous.measurable]
   have he : sigmaAxisSampler U ∘ (sigmaAxisCoordinates I).symm =

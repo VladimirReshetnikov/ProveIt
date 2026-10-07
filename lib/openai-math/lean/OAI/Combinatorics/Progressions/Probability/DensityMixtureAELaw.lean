@@ -1,3 +1,5 @@
+/- Modified for ProveIt: construct mapped probability-measure instances
+explicitly from measurability in Mathlib v4.32.0. Statements unchanged. -/
 import OAI.Combinatorics.Progressions.Estimates.RealWeightPMF
 import OAI.Combinatorics.Progressions.Estimates.SplitSmoothProductProfile
 
@@ -154,7 +156,7 @@ theorem imageLaw_eq_density_of_bounded_tests
     (htest : ∀ φ : X → ℝ, Measurable φ → (∀ x, ‖φ x‖ ≤ 1) →
       (∫ a, φ (U a) ∂μ) = ∫ x, f x * φ x ∂ν) :
     μ.map U = realDensityMeasure ν f := by
-  let : IsProbabilityMeasure (μ.map U) := inferInstance
+  let : IsProbabilityMeasure (μ.map U) := Measure.isProbabilityMeasure_map hU.aemeasurable
   let : IsFiniteMeasure (realDensityMeasure ν f) := realDensityMeasure_finite ν f hfi hf0
   ext s hs
   apply (measureReal_eq_measureReal_iff (measure_ne_top _ _) (measure_ne_top _ _)).mp
@@ -241,7 +243,7 @@ theorem densityMixture_image_law {T Ω X : Type*}
   have hp := densityMixture_probability_density μ ξ D hD (Filter.Eventually.of_forall hprob)
   have hm : Measurable (densityMixture μ D) :=
     hD.stronglyMeasurable.integral_prod_left'.measurable
-  let : IsProbabilityMeasure ((μ.prod ν).map U) := inferInstance
+  let : IsProbabilityMeasure ((μ.prod ν).map U) := Measure.isProbabilityMeasure_map hU.aemeasurable
   let : IsFiniteMeasure (realDensityMeasure ξ (densityMixture μ D)) :=
     realDensityMeasure_finite ξ _ hp.2.1 hp.1
   ext s hs

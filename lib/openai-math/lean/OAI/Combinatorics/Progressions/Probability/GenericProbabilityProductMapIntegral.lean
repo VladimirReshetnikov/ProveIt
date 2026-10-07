@@ -1,3 +1,5 @@
+/- Modified for ProveIt: construct mapped probability instances explicitly
+from measurability in Mathlib v4.32.0. Statements unchanged. -/
 import Mathlib.MeasureTheory.Constructions.BorelSpace.Complex
 import Mathlib.MeasureTheory.Integral.Prod
 
@@ -42,7 +44,7 @@ theorem probability_prod_map_integral
     (ν : Measure Ω) [IsProbabilityMeasure ν] (f : Ω → β) (hf : Measurable f)
     (φ : α × β → ℂ) (hφ : Measurable φ) {C : ℝ} (hC : ∀ p, ‖φ p‖ ≤ C) :
     ∫ p, φ p ∂(μ.prod (ν.map f)) = ∫ a, ∫ x, φ (a, f x) ∂ν ∂μ := by
-  have : IsProbabilityMeasure (ν.map f) := inferInstance
+  have : IsProbabilityMeasure (ν.map f) := Measure.isProbabilityMeasure_map hf.aemeasurable
   have hi : Integrable φ (μ.prod (ν.map f)) :=
     ⟨hφ.aestronglyMeasurable, HasFiniteIntegral.of_bounded (Filter.Eventually.of_forall hC)⟩
   rw [integral_prod φ hi]
@@ -56,7 +58,7 @@ theorem probability_prod_map_real_integral
     (ν : Measure Ω) [IsProbabilityMeasure ν] (f : Ω → β) (hf : Measurable f)
     (φ : α × β → ℝ) (hφ : Measurable φ) {C : ℝ} (hC : ∀ p, ‖φ p‖ ≤ C) :
     ∫ p, φ p ∂(μ.prod (ν.map f)) = ∫ a, ∫ x, φ (a, f x) ∂ν ∂μ := by
-  have : IsProbabilityMeasure (ν.map f) := inferInstance
+  have : IsProbabilityMeasure (ν.map f) := Measure.isProbabilityMeasure_map hf.aemeasurable
   have hi : Integrable φ (μ.prod (ν.map f)) :=
     ⟨hφ.aestronglyMeasurable, HasFiniteIntegral.of_bounded (Filter.Eventually.of_forall hC)⟩
   rw [integral_prod φ hi]
