@@ -141,12 +141,16 @@ Added by the write (6 October 2026), with proofs, marked `[write]`:
   Theorem 7.1 is **not an instance, only an analogue** of `p0:thm:staircase`
   (no admissible interpolation; the brackets come from two envelopes at the
   integers); no Lambert core (`p0:thm:lambert-core`,
-  `p0:prop:factorial-core`) occurs, and the quadratic-logarithmic balance is
-  outside `plt:thm:lw-template`. The **formal part of the four-term reversion
+  `p0:prop:factorial-core`) occurs. The **formal part of the four-term reversion
   is an instance of `p0:thm:core-reversion` after a change of variables**:
   `t = 1/r`, `x = r(1+E)`, `R = ℚ[a, a^{−1}, b, ℓ, C_1, C_2]`, `Λ = 2a`,
   `h(u) = au²` (checked in SymPy: its first four coefficients are the
   manuscript's `d, e, f, g`); the analytic remainder is the manuscript's own.
+  After `G = √(F_2/a)` it is **also a formal instance of
+  `plt:thm:lw-template`** (data `(1, −1/(2a), −b/(2a), B)`, the route of
+  `a089479-fixed-permanent-matrices` and `a222959-zero-slope-matrices`); the
+  write first said that "the quadratic-logarithmic balance is outside
+  `plt:thm:lw-template`", corrected after the independent check below.
 - **Section 12 (`sqt:sec:further`)**: the open questions.
 - Section 1.1 (`sqt:sec:provenance`: provenance, the sources as the write
   read them, what was checked, relation to the repository, collected
@@ -246,6 +250,30 @@ The manuscript's own six questions (Section 11.2) stay as printed.
   page of 0910.2477v2), Greenhill–McKay, Isaev–McKay (both), Isaev–McKay–Zhang,
   Zipunnikov–Booth–Yoshida, Aw, Isaev–Makai–McKay. What the article says
   about them is the manuscript's.
+- **Independent check of the write (6 October 2026).** An adversarial check
+  made by the intake after the write (`d63de7211`), with its own code, after
+  fetching the OEIS entry, its b-file, Canfield–McKay v2 and Isaev v2 again.
+  Lemma 8.2 re-read and found to hold; against the rendered preprint, region
+  (3.1), Theorem 3, the convention of p. 4 and (4.1) (exactly `I_{0,λ}` at
+  `m = n`) are as the lemma uses them, and (1.1) at `m = n` is
+  `(2/3)(4 + 1/u)` (SymPy). Every quotation and bound of Remark 8.3 found on
+  pp. 15–20; Isaev's Theorem 1.2 and `Δ̄_V(f,X) ≤ Δ_V(f)` as quoted. Remark
+  9.2: quotations verbatim, first wordings those of the delivered files; all
+  thirteen `Δ` and `nΔ`, the margin 0.5651, the ratios 0.36 and 0.61, both
+  monotonicities and the Richardson values reproduced at 80 digits. Remark
+  1.2: the entry as quoted, Pak's main terms exactly
+  `log L_n − (1/2)log(4π) − 1/4`, `1.515512123…`. Remark 7.2 (1), (3) hold.
+  One statement too strong: (2)'s "the leading balance … is not of the
+  monomial–logarithmic type of `plt:thm:lw-template`" (after
+  `G = √(F_2/a)` the reversion is a formal instance, its solution
+  reproducing `d, e, f, g` by SymPy); corrected with a dated note keeping
+  the first wording, and the instance added to (3). Archive facts and the
+  97/87 label and reference counts confirmed. For the record, the intake's
+  `D_1`, `D_2` extrapolations (−1.47, 6.5) match fits of order two or three;
+  the exact fit through all of `6 ≤ n ≤ 13` gives −1.4964 and 6.9139. This
+  README's count of 150 fontmap notices did not reproduce (684 in rebuilds
+  of both texts), corrected below. The check is recorded at the end of
+  Section 9.
 
 ## Relation to the repository
 
@@ -258,8 +286,9 @@ lemma concerns arbitrary reals, not `a_n`.
 
 **The transseries volume.** Remark 7.2: `ν(Y)` is an instance of the
 staircase definition, the four-term reversion formally an instance of
-`p0:thm:core-reversion` after a change of variables, Theorem 7.1 an analogue
-of `p0:thm:staircase` only.
+`p0:thm:core-reversion` after a change of variables and, after
+`G = √(F_2/a)`, of `plt:thm:lw-template`, Theorem 7.1 an analogue of
+`p0:thm:staircase` only.
 
 **Neighbouring reports** (under
 `SetTheory/Cardinals/docs/reports/generating-functions-and-asymptotics/oeis-sequence-asymptotics/`):
@@ -429,12 +458,16 @@ B=$(mktemp -d); cp -r article.tex sections "$B/"; cd "$B"
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The committed PDF was built this way with MiKTeX on 6 October 2026: 31
-pages; no errors, no LaTeX or package warnings, no undefined references or
+The committed PDF was built this way with MiKTeX on 6 October 2026, after
+the independent check (also 31 pages at the write; label numbers unchanged,
+aux files compared): 31 pages; no errors, no LaTeX or package warnings, no undefined references or
 citations, no multiply defined labels, no duplicate PDF destinations, no
 overfull or underfull boxes. The delivered preamble's `\pdfmapfile` lines
-make pdfTeX print 150 "fontmap entry … already exists, duplicates ignored"
-notices, as many as in a build of the delivered text (24 pages, otherwise
+make pdfTeX print 684 "fontmap entry … already exists, duplicates ignored"
+notices (log lines; the write's count of 150 was not reproduced at the
+independent check, whose rebuilds of this text and of the delivered one
+both give 684, as for the sibling reports of batch 108),
+as many as in a build of the delivered text (24 pages, otherwise
 clean). The delivered byte-identity claims apply to `Report236.pdf` under
 the delivering toolchain, not to this build.
 
