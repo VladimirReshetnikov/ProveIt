@@ -1,3 +1,7 @@
+/-
+Modified for ProveIt: rewrite supported submodule coordinates at default
+transparency on Lean 4.32. Mathematical statements are unchanged.
+-/
 import Mathlib.LinearAlgebra.Basis.Prod
 import OAI.Combinatorics.Progressions.Estimates.QuotientTopSymbol
 import OAI.Combinatorics.Progressions.Estimates.ReducedSquareSymbol
@@ -121,7 +125,8 @@ theorem adaptedSquareBasis_layers (b : Basis ι ℚ L) (w : ι → ℕ)
       exact hy i hi
     | inr i =>
       change (F.squareBasis b _).repr x (Sum.inr i) = 0
-      rw [F.squareBasis_repr_inr, supportedSubmoduleBasis_repr]
+      rw [F.squareBasis_repr_inr]
+      erw [supportedSubmoduleBasis_repr]
       exact hz i (by change ¬ j ≤ w i - 1 at hi; have := i.property; omega)
   · intro hx
     constructor
