@@ -4,7 +4,7 @@ Scope
   The goal remains open. No improvement to the final Szemeredi bound is claimed.
   The source catalogue contains all 120 unique numbered theorem, lemma,
   proposition, and corollary headings in sz-thm-gowers-proof.tex.
-  There are 106 checked exact companion proofs and 14 open statements.
+  There are 107 checked exact companion proofs and 13 open statements.
   The JSON ledger records every statement, its TeX heading lines, its Lean
   definition, and related results. Conditional implications, restricted cases,
   and counterexamples are not counted as proofs of the full statement.
@@ -23,6 +23,27 @@ Verification at this checkpoint
   exact Theorems 7.1 and 7.2 companions. The axiom check follows their
   dependencies transitively. Lemma 16.4 also passed an independent exact-type
   and transitive-axiom check before integration into this full audit.
+  Addendum (Theorem 1.2, after the audit above): Proofs01SzemerediFixedDensity
+  and its imports (38 further vendored FixedDensity modules, lib/openai-math)
+  were compiled one module at a time on the Windows workstation; #print
+  axioms reports only propext, Classical.choice, and Quot.sound for
+  theorem_1_2_holds, and a file importing it together with
+  Proofs07FreimanClosure elaborates without name collisions. The full Audit
+  build has not been rerun with it. Ledger: 107 exact, 13 open.
+
+Completed Theorem 1.2 (Szemeredi, qualitative) by a non-Gowers route
+  Proofs01SzemerediFixedDensity proves theorem_1_2 with its exact catalogue
+  type from the vendored OAI.Erdos3.FixedDensity.szemeredi: by ordered
+  hypergraph regularity and removal, for k >= 2 and delta > 0 there is
+  c > 0 such that every subset of ZMod M of density >= delta spans at least
+  c M^2 cyclic k-progressions (a, d). A set A in [1, N] of density delta is a
+  subset of ZMod (2N + 1) of density >= delta/3; once 2N + 1 > 1/c the pairs
+  with d = 0 cannot carry the whole count, and since 2N + 1 > 2N a cyclic
+  progression with d != 0 lifts to an integer one (consecutive lifted
+  differences lie in (-N, N), so they agree; a negative difference is read
+  backwards). This is not Gowers's proof and gives no explicit constant:
+  Theorems 1.3, 18.2 and Corollary 18.7 stay open, and the existing
+  conditional theorem_1_2_holds_of_theorem_18_2 is unaffected.
 
 Completed Theorems 7.1 and 7.2 (Freiman, Balog-Szemeredi)
   Gowers quotes both theorems; they are now proved in Proofs07FreimanClosure
