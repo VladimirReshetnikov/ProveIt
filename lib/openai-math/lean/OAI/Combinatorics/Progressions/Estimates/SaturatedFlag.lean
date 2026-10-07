@@ -1,5 +1,7 @@
+/- Modified for ProveIt: adapt import paths to Mathlib v4.32.0.
+Mathematical statements and proofs unchanged. -/
 import Mathlib.Algebra.EuclideanDomain.Int
-import Mathlib.Basic.Real.Basic
+import Mathlib.Data.Real.Basic
 import Mathlib.LinearAlgebra.Basis.Prod
 import Mathlib.LinearAlgebra.FreeModule.PID
 import Mathlib.LinearAlgebra.LinearIndependent.Lemmas

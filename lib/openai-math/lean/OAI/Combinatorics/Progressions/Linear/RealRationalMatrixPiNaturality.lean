@@ -1,8 +1,8 @@
 /- Modified for ProveIt: import Lean 4.32 compatibility declarations.
-Statements and proofs are unchanged from the pinned upstream source. -/
+Statements and proofs are unchanged from the pinned upstream source. Import paths are adapted to Mathlib v4.32.0. -/
 import OAI.Compat.TensorProduct
 import Mathlib.Algebra.Algebra.Rat
-import Mathlib.Basic.Real.Basic
+import Mathlib.Data.Real.Basic
 import Mathlib.LinearAlgebra.Matrix.ToLin
 import Mathlib.LinearAlgebra.TensorProduct.Pi
 

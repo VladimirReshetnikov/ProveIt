@@ -1,11 +1,11 @@
 /- Modified for ProveIt: import Lean 4.32 compatibility declarations.
-Statements and proofs are unchanged from the pinned upstream source. -/
+Statements and proofs are unchanged from the pinned upstream source. Import paths are adapted to Mathlib v4.32.0. -/
 import OAI.Compat.BigOperators
 import Mathlib.Analysis.Normed.Module.FiniteDimension
 import Mathlib.Data.Fintype.Perm
 import Mathlib.LinearAlgebra.Matrix.NonsingularInverse
 import Mathlib.Tactic
-import Mathlib.Topology.Algebra.Module.ContinuousLinearMap.Invertible
+import Mathlib.Topology.Algebra.Module.Equiv
 
 namespace OAI
 

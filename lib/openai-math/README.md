@@ -98,6 +98,19 @@ unchanged.
   `Isometry.lipschitz`), and `Compat/FinsetInj.lean` (injective finite-sum
   comparison proved using `sum_image` and subset comparison). These are
   local proofs under Apache-2.0, with no copied upstream proof text.
+- `Compat/MatrixInjective.lean` derives matrix-vector injectivity from a
+  nonzero determinant using the older trivial-kernel theorem. It supports
+  the integer-fiber and residue-refined-period modules in the next batch.
+- `Compat/ExteriorPower.lean` is a Mathlib backport, with the original
+  Justus Springer copyright and author notice retained. Its separate pinned
+  source and license are recorded in [`LICENSE.provenance`](LICENSE.provenance)
+  and [`LICENSE.mathlib`](LICENSE.mathlib). It compiles with the local
+  `Compat/GramMatrix.lean` characterization; the exported inner-product and
+  orthonormal-basis declarations pass the three-axiom check. Its downstream
+  consumers remain outside the audited first-100 prefix.
+- Imports of relocated Mathlib modules use their older paths. All directly
+  imported Mathlib source paths now exist in the local checkout; this path
+  check does not establish that all importing modules compile.
 - `Estimates/FormalExpLog.lean` uses the older explicit-ring derivative API
   and derives reverse substitution from `substInvOfIsUnit`. The initial
   dependency batch also adapts the free-monoid induction case name.

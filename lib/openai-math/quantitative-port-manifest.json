@@ -20702,7 +20702,8 @@
     "OAI.Combinatorics.Progressions.Geometry.SupportedCubeEquivTransport": "Use Set.mem_setOf_eq for predicate membership. Module compiled on Lean 4.32.0.",
     "OAI.Combinatorics.Progressions.Estimates.FormalExpLog": "Supply the derivative coefficient ring, use deriv_log, and derive reverse substitution through substInvOfIsUnit. Module compiled on Lean 4.32.0.",
     "OAI.Combinatorics.Progressions.Estimates.RationalHeight": "Use prod_le_prod' for natural-number product comparisons. Module compiled on Lean 4.32.0.",
-    "OAI.Combinatorics.Progressions.Estimates.FreePrimitiveCriterion": "Use the older FreeMonoid.inductionOn' case name mul_of. Module compiled on Lean 4.32.0."
+    "OAI.Combinatorics.Progressions.Estimates.FreePrimitiveCriterion": "Use the older FreeMonoid.inductionOn' case name mul_of. Module compiled on Lean 4.32.0.",
+    "OAI.Combinatorics.Progressions.Polynomial.PolynomialIntegerInputs": "Simplify zero coefficients using MvPolynomial.coeff_zero. Module compiled on Lean 4.32.0."
   },
   "additional_compat_imports": {
     "OAI.Combinatorics.Progressions.Nilpotent.BCHQuotientLocalIsometry": [
@@ -20874,7 +20875,8 @@
       "Isometry"
     ],
     "OAI.Combinatorics.Progressions.Lattices.StandardLatticeCoordinates": [
-      "Set"
+      "Set",
+      "GramMatrix"
     ],
     "OAI.Combinatorics.Progressions.Lattices.GaussianLatticeDistance": [
       "Set"
@@ -20912,6 +20914,15 @@
     ],
     "OAI.Combinatorics.Progressions.Fourier.JoinedFrequencyQuotientInjectivity": [
       "Set"
+    ],
+    "OAI.Combinatorics.Progressions.Lattices.ResidueRefinedPeriod": [
+      "MatrixInjective"
+    ],
+    "OAI.Combinatorics.Progressions.Lattices.IntegerFiberUniformBound": [
+      "MatrixInjective"
+    ],
+    "OAI.Combinatorics.Progressions.Geometry.CoordinateMinorCovolume": [
+      "ExteriorPower"
     ]
   },
   "generic_product_comparison_renames": [
@@ -20950,5 +20961,119 @@
     "toolchain": "leanprover/lean4:v4.32.0",
     "date": "2026-10-07",
     "scope": "Only this initial prefix and its dependencies; Results.Conclusions remains unverified."
+  },
+  "mathlib_import_renames": {
+    "OAI.Combinatorics.Progressions.Linear.RealRationalMatrixPiNaturality": {
+      "Mathlib.Basic.Real.Basic": "Mathlib.Data.Real.Basic"
+    },
+    "OAI.Combinatorics.Progressions.Linear.SpanSubsetBasis": {
+      "Mathlib.Basic.Real.Basic": "Mathlib.Data.Real.Basic"
+    },
+    "OAI.Combinatorics.Progressions.Linear.RationalClearedMatrixReal": {
+      "Mathlib.Basic.Real.Basic": "Mathlib.Data.Real.Basic"
+    },
+    "OAI.Combinatorics.Progressions.Linear.KernelBudgetEnvelope": {
+      "Mathlib.Basic.Real.Basic": "Mathlib.Data.Real.Basic"
+    },
+    "OAI.Combinatorics.Progressions.Linear.RescaledLieBasis": {
+      "Mathlib.Basic.Real.Basic": "Mathlib.Data.Real.Basic"
+    },
+    "OAI.Combinatorics.Progressions.Linear.BaseChangeCoordinateProjection": {
+      "Mathlib.Basic.Real.Basic": "Mathlib.Data.Real.Basic"
+    },
+    "OAI.Combinatorics.Progressions.Linear.MatrixSupInverse": {
+      "Mathlib.Topology.Algebra.Module.ContinuousLinearMap.Invertible": "Mathlib.Topology.Algebra.Module.Equiv"
+    },
+    "OAI.Combinatorics.Progressions.Sampling.ForecastJacobianBudget": {
+      "Mathlib.Basic.NNReal.Basic": "Mathlib.Data.NNReal.Basic"
+    },
+    "OAI.Combinatorics.Progressions.Sampling.FiniteNormalizedRealGridCorrection": {
+      "Mathlib.Basic.Real.Basic": "Mathlib.Data.Real.Basic"
+    },
+    "OAI.Combinatorics.Progressions.Dynamics.ModeThresholdLogBudget": {
+      "Mathlib.Basic.NNReal.Defs": "Mathlib.Data.NNReal.Defs"
+    },
+    "OAI.Combinatorics.Progressions.Estimates.SampledNativeModel": {
+      "Mathlib.Analysis.Normed.Module.Seminorm.Basic": "Mathlib.Analysis.Seminorm"
+    },
+    "OAI.Combinatorics.Progressions.Estimates.ProperSubspaceCount": {
+      "Mathlib.Basic.Real.Basic": "Mathlib.Data.Real.Basic"
+    },
+    "OAI.Combinatorics.Progressions.Estimates.RealDirectionExtension": {
+      "Mathlib.Basic.Real.Basic": "Mathlib.Data.Real.Basic"
+    },
+    "OAI.Combinatorics.Progressions.Estimates.RestrictedSymbolAlgebraicMajorStep": {
+      "Mathlib.Basic.Real.Basic": "Mathlib.Data.Real.Basic"
+    },
+    "OAI.Combinatorics.Progressions.Estimates.RealSubquotientEquiv": {
+      "Mathlib.Basic.Real.Basic": "Mathlib.Data.Real.Basic"
+    },
+    "OAI.Combinatorics.Progressions.Estimates.FiniteInversePerturbation": {
+      "Mathlib.Topology.Algebra.Module.ContinuousLinearMap.Invertible": "Mathlib.Topology.Algebra.Module.Equiv"
+    },
+    "OAI.Combinatorics.Progressions.Estimates.TriangularCorrectionRows": {
+      "Mathlib.Basic.Real.Basic": "Mathlib.Data.Real.Basic"
+    },
+    "OAI.Combinatorics.Progressions.Estimates.SigmaAxisOperator": {
+      "Mathlib.Topology.Algebra.Module.ContinuousLinearMap.Invertible": "Mathlib.Topology.Algebra.Module.Equiv"
+    },
+    "OAI.Combinatorics.Progressions.Estimates.SaturatedFlag": {
+      "Mathlib.Basic.Real.Basic": "Mathlib.Data.Real.Basic"
+    },
+    "OAI.Combinatorics.Progressions.Estimates.FiniteClassifiedRepresentatives": {
+      "Mathlib.Basic.Real.Basic": "Mathlib.Data.Real.Basic"
+    },
+    "OAI.Combinatorics.Progressions.Estimates.DenseProductCardDeficit": {
+      "Mathlib.Basic.Real.Basic": "Mathlib.Data.Real.Basic"
+    },
+    "OAI.Combinatorics.Progressions.Polynomial.PiCoordinatePolynomialCoefficients": {
+      "Mathlib.Basic.Real.Basic": "Mathlib.Data.Real.Basic"
+    },
+    "OAI.Combinatorics.Progressions.Polynomial.PolynomialKernelValues": {
+      "Mathlib.Basic.Real.Basic": "Mathlib.Data.Real.Basic"
+    },
+    "OAI.Combinatorics.Progressions.Polynomial.NormalizedRealPolynomialChart": {
+      "Mathlib.Basic.Real.Basic": "Mathlib.Data.Real.Basic"
+    },
+    "OAI.Combinatorics.Progressions.Lattices.CentralLatticeQuotientAction": {
+      "Mathlib.Basic.Real.Basic": "Mathlib.Data.Real.Basic"
+    },
+    "OAI.Combinatorics.Progressions.Fourier.CharacterCoordinateScale": {
+      "Mathlib.Basic.Complex.Basic": "Mathlib.Data.Complex.Basic"
+    }
+  },
+  "mathlib_backports": [
+    {
+      "module": "OAI.Compat.ExteriorPower",
+      "repository": "https://github.com/leanprover-community/mathlib4",
+      "revision": "d13f23b723b8a846827a245b89c10fc7d3f11612",
+      "source_path": "Mathlib/Analysis/InnerProductSpace/ExteriorPower.lean",
+      "upstream_sha256": "5b908fd9b2e9f429431b7f38171d6e532bdb1b64f298fb51031c83344a50774a",
+      "license": "Apache-2.0",
+      "license_file": "LICENSE.mathlib",
+      "copyright": "Copyright (c) 2026 Justus Springer. All rights reserved.",
+      "verification": "Compiled with OAI.Compat.GramMatrix on Lean 4.32.0. Exported inner-product and orthonormal-basis declarations use only propext, Classical.choice, Quot.sound; downstream consumers remain unverified."
+    }
+  ],
+  "independent_compat_verification": {
+    "modules": [
+      "OAI.Compat.MatrixInjective",
+      "OAI.Compat.GramMatrix",
+      "OAI.Compat.ExteriorPower"
+    ],
+    "checked_declarations": [
+      "Matrix.mulVec_injective_of_det_ne_zero",
+      "Matrix.gram_eq_one_iff_orthonormal",
+      "exteriorPower.inner_\u03b9Multi_\u03b9Multi",
+      "exteriorPower.inner_\u03b9Multi_self",
+      "OrthonormalBasis.exteriorPower",
+      "OrthonormalBasis.toBasis_exteriorPower"
+    ],
+    "allowed_axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "date": "2026-10-07"
   }
 }

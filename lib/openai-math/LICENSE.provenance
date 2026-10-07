@@ -51,3 +51,24 @@ progress. quantitative-port-manifest.json records the pinned quantitative
 import closure and SHA-256 hashes of the original upstream files. Git
 history records local changes; these changes do not imply upstream
 endorsement or verification of the port.
+
+Additional Mathlib backport
+--------------------------
+lean/OAI/Compat/ExteriorPower.lean is ported from Mathlib, rather than from
+openai/math. Its original notice is retained verbatim in the source:
+
+Copyright (c) 2026 Justus Springer. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Justus Springer
+
+Repository: https://github.com/leanprover-community/mathlib4
+Revision: d13f23b723b8a846827a245b89c10fc7d3f11612
+Original path: Mathlib/Analysis/InnerProductSpace/ExteriorPower.lean
+Pinned source:
+https://github.com/leanprover-community/mathlib4/blob/d13f23b723b8a846827a245b89c10fc7d3f11612/Mathlib/Analysis/InnerProductSpace/ExteriorPower.lean
+
+LICENSE.mathlib reproduces the license file from that Mathlib revision
+unchanged. The port retains the original copyright and author header,
+records its modifications prominently, and keeps the original source hash
+in quantitative-port-manifest.json. Its local module path is changed to
+OAI.Compat.ExteriorPower to work with the older workspace toolchain.

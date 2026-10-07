@@ -1,7 +1,9 @@
+/- Modified for ProveIt: adapt import paths to Mathlib v4.32.0.
+Mathematical statements and proofs unchanged. -/
 import Mathlib.Algebra.BigOperators.Group.Finset.Sigma
 import Mathlib.Data.Fintype.BigOperators
 import Mathlib.Data.Fintype.EquivFin
-import Mathlib.Basic.Real.Basic
+import Mathlib.Data.Real.Basic
 import Mathlib.Tactic
 
 namespace OAI

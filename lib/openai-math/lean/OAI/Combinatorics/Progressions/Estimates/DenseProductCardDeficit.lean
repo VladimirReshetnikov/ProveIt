@@ -1,8 +1,8 @@
 /- Modified for ProveIt: import Lean 4.32 compatibility declarations.
-Statements and proofs are unchanged from the pinned upstream source. -/
+Statements and proofs are unchanged from the pinned upstream source. Import paths are adapted to Mathlib v4.32.0. -/
 import OAI.Compat.BigOperators
 import Mathlib.Algebra.Order.BigOperators.Ring.Finset
-import Mathlib.Basic.Real.Basic
+import Mathlib.Data.Real.Basic
 import Mathlib.Tactic
 
 namespace OAI

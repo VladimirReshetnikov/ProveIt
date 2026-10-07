@@ -1,4 +1,6 @@
-import Mathlib.Topology.Algebra.Module.ContinuousLinearMap.Invertible
+/- Modified for ProveIt: adapt import paths to Mathlib v4.32.0.
+Mathematical statements and proofs unchanged. -/
+import Mathlib.Topology.Algebra.Module.Equiv
 import OAI.Combinatorics.Progressions.Geometry.SigmaAxisCoordinates
 
 namespace OAI

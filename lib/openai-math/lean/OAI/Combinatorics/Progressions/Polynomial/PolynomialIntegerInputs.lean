@@ -1,5 +1,5 @@
-/- Modified for ProveIt: import Lean 4.32 compatibility declarations.
-Statements and proofs are unchanged from the pinned upstream source. -/
+/- Modified for ProveIt: import Lean 4.32 compatibility declarations and
+simplify zero polynomial coefficients explicitly. Statements unchanged. -/
 import OAI.Compat.BigOperators
 import Mathlib.Algebra.MvPolynomial.Degrees
 import Mathlib.Algebra.MvPolynomial.Eval
@@ -34,7 +34,7 @@ theorem one_le (hp : RationalPolynomialHeightLE p H) : 1 ≤ H :=
 
 theorem zero (hH : 1 ≤ H) : RationalPolynomialHeightLE (0 : MvPolynomial σ ℚ) H := by
   intro m
-  simpa only [AddMonoidAlgebra.coeff_zero, Finsupp.zero_apply] using rationalHeightLE_zero hH
+  simpa only [MvPolynomial.coeff_zero] using rationalHeightLE_zero hH
 
 theorem C {q : ℚ} (hq : RationalHeightLE q H) :
     RationalPolynomialHeightLE (MvPolynomial.C q : MvPolynomial σ ℚ) H := by

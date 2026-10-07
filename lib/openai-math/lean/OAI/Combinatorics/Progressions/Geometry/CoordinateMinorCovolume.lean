@@ -1,4 +1,6 @@
-import Mathlib.Analysis.InnerProductSpace.ExteriorPower
+/- Modified for ProveIt: import the attributed Mathlib exterior-power
+backport. Mathematical statements and proofs unchanged. -/
+import OAI.Compat.ExteriorPower
 import OAI.Combinatorics.Progressions.Lattices.LatticeSheetHaar
 
 namespace OAI

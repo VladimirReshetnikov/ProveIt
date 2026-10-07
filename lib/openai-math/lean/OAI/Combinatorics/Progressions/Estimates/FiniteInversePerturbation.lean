@@ -1,6 +1,8 @@
+/- Modified for ProveIt: adapt import paths to Mathlib v4.32.0.
+Mathematical statements and proofs unchanged. -/
 import Mathlib.Analysis.Normed.Module.FiniteDimension
 import Mathlib.Tactic
-import Mathlib.Topology.Algebra.Module.ContinuousLinearMap.Invertible
+import Mathlib.Topology.Algebra.Module.Equiv
 
 namespace OAI
 

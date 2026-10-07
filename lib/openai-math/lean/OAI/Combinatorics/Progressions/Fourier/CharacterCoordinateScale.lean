@@ -1,9 +1,9 @@
 /- Modified for ProveIt: use Mathlib v4.32.0's generic prod_le_prod'
-for product comparisons. Mathematical statements unchanged. -/
+for product comparisons. Mathematical statements unchanged. Import paths are adapted to Mathlib v4.32.0. -/
 import Mathlib.Algebra.BigOperators.Pi
 import Mathlib.Algebra.Group.AddChar
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Mathlib.Basic.Complex.Basic
+import Mathlib.Data.Complex.Basic
 import Mathlib.Data.Finset.Max
 import Mathlib.GroupTheory.OrderOfElement
 import Mathlib.RingTheory.RootsOfUnity.Complex

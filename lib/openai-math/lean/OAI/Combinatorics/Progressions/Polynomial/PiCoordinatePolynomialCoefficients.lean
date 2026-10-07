@@ -1,4 +1,6 @@
-import Mathlib.Basic.Real.Basic
+/- Modified for ProveIt: adapt import paths to Mathlib v4.32.0.
+Mathematical statements and proofs unchanged. -/
+import Mathlib.Data.Real.Basic
 import Mathlib.LinearAlgebra.StdBasis
 import OAI.Combinatorics.Progressions.Polynomial.VectorPolynomialReconstruction
 

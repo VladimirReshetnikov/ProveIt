@@ -1,6 +1,8 @@
+/- Modified for ProveIt: adapt import paths to Mathlib v4.32.0.
+Mathematical statements and proofs unchanged. -/
 import Mathlib.Algebra.BigOperators.Fin
 import Mathlib.Data.Matrix.Basic
-import Mathlib.Basic.Real.Basic
+import Mathlib.Data.Real.Basic
 import Mathlib.Tactic
 
 namespace OAI

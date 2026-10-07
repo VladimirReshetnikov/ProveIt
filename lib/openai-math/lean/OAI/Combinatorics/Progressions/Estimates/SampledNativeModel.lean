@@ -1,5 +1,7 @@
+/- Modified for ProveIt: adapt import paths to Mathlib v4.32.0.
+Mathematical statements and proofs unchanged. -/
 import Mathlib.Analysis.LocallyConvex.BalancedCoreHull
-import Mathlib.Analysis.Normed.Module.Seminorm.Basic
+import Mathlib.Analysis.Seminorm
 import OAI.Combinatorics.Progressions.Fourier.WeightedTranslationTwistedCentralFrequency
 import OAI.Combinatorics.Progressions.Lattices.NativeIntegerAffinePullbackHom
 import OAI.Combinatorics.Progressions.Lattices.ResidueStrideRebase

@@ -1,5 +1,6 @@
 /- Modified for ProveIt: import Lean 4.32 compatibility declarations.
 Statements and proofs are unchanged from the pinned upstream source. -/
+import OAI.Compat.MatrixInjective
 import OAI.Compat.BigOperators
 import Mathlib.Analysis.SpecialFunctions.Exp
 import Mathlib.Data.Matrix.ColumnRowPartitioned

@@ -1,3 +1,6 @@
+/- Modified for ProveIt: import Lean 4.32 compatibility declarations.
+Statements and proofs are unchanged from the pinned upstream source. -/
+import OAI.Compat.MatrixInjective
 import OAI.Combinatorics.Progressions.Estimates.PivotJacobianBound
 import OAI.Combinatorics.Progressions.Sampling.PivotGridErrorTransfer
 
