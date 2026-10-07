@@ -98,6 +98,18 @@ no other report on A380592 or tied seasons. The batch-77 report
 exact generating function: a different model and method, and neither
 report uses the other. No reciprocal note was made there.
 
+Two batch-108 reports in the same directory are growing-dimensional Fourier
+counts of the same kind (dated note of 7 October 2026 at the end of
+Section 9, `tfs:sec:prior`); neither uses this report's results, nor this
+report theirs. `oeis-sequence-asymptotics/a110058-square-contingency-tables`
+(bundle Report 236, OEIS A110058) applies the same Isaev Theorem 1.2 to the
+Canfield–McKay integral of square contingency tables; its Barvinok–Hartigan
+citation, arXiv:0910.2477, is a different paper from the arXiv:0910.2497
+cited here. `oeis-sequence-asymptotics/a222959-zero-slope-matrices` (bundle
+Report 194, OEIS A222959) has its own global localization, every fixed order
+without Isaev's theorem (a positive product of cosines on its central tube),
+and parity-aware inverse thresholds.
+
 ## Notation
 
 Symbols are printed as delivered. A table in the first `[write]` note
@@ -116,7 +128,10 @@ step also added three dated `[write]` notes (Section 1: provenance,
 neighbour, notation table; end of Section 8: the relation to the
 transseries volumes; Section 10: the shipped layout), two bibliography
 entries (`tfs-tai`, `tfs-cti`), and set the bibliography ragged-right. No
-statement, proof or number of the manuscript was changed.
+statement, proof or number of the manuscript was changed. The batch-108
+reciprocal note (7 October 2026) added a fourth dated `[write]` note (end of
+Section 9: `a110058-square-contingency-tables` and
+`a222959-zero-slope-matrices`) and no label (still 73).
 
 ## Files
 
@@ -202,8 +217,10 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 The committed PDF was built in a scratch directory with MiKTeX: 17 A4
 pages, no errors or warnings, no undefined references or citations, no
 multiply defined labels, no duplicate PDF destinations, no overfull or
-underfull boxes. (The delivered source built to 15 pages with the same
-clean log.) `code/build-report.sh` is kept as delivered; to use it, copy
+underfull boxes; rebuilt on 7 October 2026 after the batch-108 reciprocal
+note, still 17 pages, every label keeping its number. (The delivered source
+built to 15 pages with the same clean log.) `code/build-report.sh` is kept
+as delivered; to use it, copy
 it to a scratch directory with `article.tex` placed as
 `report/tied-football-asymptotics.tex`.
 
