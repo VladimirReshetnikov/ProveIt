@@ -12,8 +12,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 216 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 1,973 public Gowers theorems and found only propext,
+  All 218 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 1,986 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 101 exact
   companion proofs and 19 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -447,9 +447,18 @@ Constructed height models and the Stage 13.6--13.9 chain
   Proofs13BilinearExtraction assembles Stages 13.6--13.9 and their mass bounds,
   using an additional displayed width inequality for Lemma 13.8. No row sets,
   affine partitions, or coefficient models are assumed as extra inputs.
-  The numerical budgets still require proof: a positive integer target, its
-  square bounded by N, m+1 <= |Q|, the Stage 13.6 lower length, the Bohr-radius
-  inequality with the corrected rounded radius, and the Stage 13.8 width.
+  Proofs13IntegerBudgets proves that strict power gaps allow a single ceiling
+  target to satisfy the square, length, Bohr-radius, and width budgets.
+  Proofs13LargeScaleBudgets applies these gaps to the actual Section 13
+  parameters, absorbs both the floor and the possible loss of an endpoint,
+  and takes a finite maximum over the permitted spectrum sizes q.
+  Consequently, for each fixed 0<alpha<=1/6, one threshold N0 depending only
+  on alpha makes all six numerical budgets automatic for every N>=N0 and
+  every valid pair of Stage 13.4--13.5 data. The assembled extraction then
+  constructs Stages 13.6--13.9, retaining |R|<=|Q| and the paper's target
+  exponent. The threshold is existential, not an explicit headline bound.
+  The preceding data, prime modulus, and density restriction are still
+  hypotheses; this is not a proof of the unrepaired catalogue Lemma 13.6.
   The catalogue remains at 101 exact companions and 19 open statements.
   This chain does not supply the stronger integer step/translation geometry
   needed for Corollary 13.10, nor establish a final Szemeredi bound.
@@ -475,8 +484,9 @@ Verified Section 13 exponent margins
   Stage 13.4 length exponent and Stage 13.5 recurrence exponent, for every
   permitted positive integer q. This preserves the paper's target exponent
   and supplies room to absorb constants and integer rounding at large N.
-  It does not yet discharge the numerical budgets of Stage 13.6 or construct
-  Stage 13.5. No catalogue obligation is newly counted by these estimates.
+  The large-scale budget theorem uses this margin to discharge the numerical
+  assumptions for sufficiently large N, but does not construct Stage 13.5.
+  No catalogue obligation is newly counted by these estimates.
 
 Reproducible checks (from repository root)
   python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.Audit
