@@ -1,3 +1,4 @@
+/- Modified for ProveIt: Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
 import OAI.Combinatorics.Progressions.Estimates.NativeSharedFreeFamily
 
 namespace OAI
@@ -33,7 +34,7 @@ theorem exists_native_shared_free_rank_relation (s : ℕ) (hs : 2 ≤ s) :
           Nonempty (FreeCoordinateFrame E.basis A) ∧
           (letI := moduleTopology ℝ (ℝ ⊗[ℚ] D.CoefficientFreeLieAlgebra)
            letI : IsTopologicalAddGroup (ℝ ⊗[ℚ] D.CoefficientFreeLieAlgebra) :=
-             IsModuleTopology.isTopologicalAddGroup ℝ _
+             IsModuleTopology.topologicalAddGroup ℝ _
            letI := realification_moduleTopology_t2 E.basis
            ∃ V : E.UnitVerticalObservable (T.realSubgroup s r) (Fin W.family.outputDim) A,
              V.frequency = B.freeFrequency D ∧
@@ -84,7 +85,7 @@ theorem exists_native_shared_free_rank_relation (s : ℕ) (hs : 2 ≤ s) :
   have hpA : p ≤ A := hpq.trans (hqP.trans hPA)
   let := moduleTopology ℝ (ℝ ⊗[ℚ] D.CoefficientFreeLieAlgebra)
   let : IsTopologicalAddGroup (ℝ ⊗[ℚ] D.CoefficientFreeLieAlgebra) :=
-    IsModuleTopology.isTopologicalAddGroup ℝ _
+    IsModuleTopology.topologicalAddGroup ℝ _
   let := realification_moduleTopology_t2 E.basis
   obtain ⟨V, hfreq, ξ, hξ, hcommon, H', hH'H, hH'W, hH', hshort', hdense, hfactor⟩ := hdata
   have hall (h : ZMod N) :

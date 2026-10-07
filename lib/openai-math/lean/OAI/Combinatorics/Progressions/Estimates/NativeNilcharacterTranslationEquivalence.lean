@@ -1,3 +1,4 @@
+/- Modified for ProveIt: Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
 import OAI.Combinatorics.Progressions.Estimates.ShiftedVerticalExpansion
 
 namespace OAI
@@ -94,7 +95,7 @@ theorem exists_lower_product_family (s : ℕ) :
           Q.GeometryComplexityLE ((p + C) ^ C) ∧
           letI := moduleTopology ℝ (ℝ ⊗[ℚ] (L ⧸ D.filtration.layerIdeal (s + 1)))
           letI : IsTopologicalAddGroup (ℝ ⊗[ℚ] (L ⧸ D.filtration.layerIdeal (s + 1))) :=
-            IsModuleTopology.isTopologicalAddGroup ℝ _
+            IsModuleTopology.topologicalAddGroup ℝ _
           letI : T2Space (ℝ ⊗[ℚ] (L ⧸ D.filtration.layerIdeal (s + 1))) :=
             realification_moduleTopology_t2 Q.basis
           ∃ S : I → I → Q.Niltest w,
@@ -133,7 +134,7 @@ theorem exists_lower_product_family (s : ℕ) :
   refine ⟨n, hn, Q, hQF, hQL, hQg.mono Q hqC, ?_⟩
   let := moduleTopology ℝ (ℝ ⊗[ℚ] (L ⧸ D.filtration.layerIdeal (s + 1)))
   let : IsTopologicalAddGroup (ℝ ⊗[ℚ] (L ⧸ D.filtration.layerIdeal (s + 1))) :=
-    IsModuleTopology.isTopologicalAddGroup ℝ _
+    IsModuleTopology.topologicalAddGroup ℝ _
   let : T2Space (ℝ ⊗[ℚ] (L ⧸ D.filtration.layerIdeal (s + 1))) :=
     realification_moduleTopology_t2 Q.basis
   have hS := fun i j => hdescent D Q hQF hQL (V.productNiltest g i j) q hq
@@ -195,7 +196,7 @@ theorem exists_self_equivalence_budget (s : ℕ) :
   obtain ⟨n, _, Q, _, _, _, hS⟩ := hfamily D V g hp hD
   let := moduleTopology ℝ (ℝ ⊗[ℚ] (L ⧸ D.filtration.layerIdeal (s + 1)))
   let : IsTopologicalAddGroup (ℝ ⊗[ℚ] (L ⧸ D.filtration.layerIdeal (s + 1))) :=
-    IsModuleTopology.isTopologicalAddGroup ℝ _
+    IsModuleTopology.topologicalAddGroup ℝ _
   let : T2Space (ℝ ⊗[ℚ] (L ⧸ D.filtration.layerIdeal (s + 1))) :=
     realification_moduleTopology_t2 Q.basis
   obtain ⟨S, _, _, hSc, hSe⟩ := hS
@@ -295,13 +296,13 @@ theorem exists_translation_equivalence_budget (s : ℕ) :
   let : FiniteDimensional ℚ L := D.basis.finiteDimensional_of_finite
   let := moduleTopology ℝ (ℝ ⊗[ℚ] D.filtration.squareLieSubalgebra)
   let : IsTopologicalAddGroup (ℝ ⊗[ℚ] D.filtration.squareLieSubalgebra) :=
-    IsModuleTopology.isTopologicalAddGroup ℝ _
+    IsModuleTopology.topologicalAddGroup ℝ _
   let : T2Space (ℝ ⊗[ℚ] D.filtration.squareLieSubalgebra) :=
     realification_moduleTopology_t2 (Module.finBasis ℚ D.filtration.squareLieSubalgebra)
   let := moduleTopology ℝ (ℝ ⊗[ℚ] (D.filtration.squareLieSubalgebra ⧸
     D.filtration.squareFiltration.layerIdeal (s + 1)))
   let : IsTopologicalAddGroup (ℝ ⊗[ℚ] (D.filtration.squareLieSubalgebra ⧸
-      D.filtration.squareFiltration.layerIdeal (s + 1))) := IsModuleTopology.isTopologicalAddGroup ℝ _
+      D.filtration.squareFiltration.layerIdeal (s + 1))) := IsModuleTopology.topologicalAddGroup ℝ _
   let : T2Space (ℝ ⊗[ℚ] (D.filtration.squareLieSubalgebra ⧸
       D.filtration.squareFiltration.layerIdeal (s + 1))) :=
     realification_moduleTopology_t2 (Module.finBasis ℚ (D.filtration.squareLieSubalgebra ⧸

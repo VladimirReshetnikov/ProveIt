@@ -1,3 +1,4 @@
+/- Modified for ProveIt: Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
 import OAI.Combinatorics.Progressions.Dynamics.SharedFreeLowerComparisonBudget
 
 namespace OAI
@@ -54,7 +55,7 @@ theorem exists_uniform_lower_pair_model {L I : Type} [LieRing L] [LieAlgebra ℚ
         U.filtration = filtration S T.filtration.rank_le_degree ∧ U.ComplexityLE pM ∧
         (letI := moduleTopology ℝ (ℝ ⊗[ℚ] Algebra S (r + 1))
          letI : IsTopologicalAddGroup (ℝ ⊗[ℚ] Algebra S (r + 1)) :=
-           IsModuleTopology.isTopologicalAddGroup ℝ _
+           IsModuleTopology.topologicalAddGroup ℝ _
          letI := realification_moduleTopology_t2 M.basis
          ∃ Z : M.UnitVerticalObservable (U.realSubgroup s (r + 1)) (I × I) pM,
            (∀ i x, Z.observable i (QuotientGroup.mk x) =
@@ -66,14 +67,14 @@ theorem exists_uniform_lower_pair_model {L I : Type} [LieRing L] [LieAlgebra ℚ
   intro pM φ
   let := moduleTopology ℝ (ℝ ⊗[ℚ] (Fin 2 → L))
   let : IsTopologicalAddGroup (ℝ ⊗[ℚ] (Fin 2 → L)) :=
-    IsModuleTopology.isTopologicalAddGroup ℝ _
+    IsModuleTopology.topologicalAddGroup ℝ _
   let := realification_moduleTopology_t2 (Pi.basis (fun _ : Fin 2 => D.basis))
   obtain ⟨M, U, hU, hUc, _, _, _, _, hZ⟩ :=
     (exists_native_pair_model.{0, 0} s).choose_spec.2 L I (r + 1) d D T S B hS p hp hT hB V
   refine ⟨M, U, hU, hUc, ?_⟩
   let := moduleTopology ℝ (ℝ ⊗[ℚ] Algebra S (r + 1))
   let : IsTopologicalAddGroup (ℝ ⊗[ℚ] Algebra S (r + 1)) :=
-    IsModuleTopology.isTopologicalAddGroup ℝ _
+    IsModuleTopology.topologicalAddGroup ℝ _
   let := realification_moduleTopology_t2 M.basis
   obtain ⟨Z, hfreq, hobs⟩ := hZ
   refine ⟨Z, hobs, ?_⟩
@@ -152,7 +153,7 @@ theorem CoefficientBases.exists_covered_comparison
           U.ComplexityLE pM ∧
           (letI := moduleTopology ℝ (ℝ ⊗[ℚ] SubspaceFreeLift.Algebra S (r + 1))
            letI : IsTopologicalAddGroup (ℝ ⊗[ℚ] SubspaceFreeLift.Algebra S (r + 1)) :=
-             IsModuleTopology.isTopologicalAddGroup ℝ _
+             IsModuleTopology.topologicalAddGroup ℝ _
            letI := realification_moduleTopology_t2 M.basis
            ∃ Z : M.UnitVerticalObservable (U.realSubgroup s (r + 1))
                (Fin W.family.outputDim × Fin W.family.outputDim) pM,
@@ -266,7 +267,7 @@ theorem CoefficientBases.exists_covered_factored_family {τ : Type*}
   refine ⟨M, Tm, hTm, hTmc, ?_⟩
   let := moduleTopology ℝ (ℝ ⊗[ℚ] SubspaceFreeLift.Algebra S (r + 1))
   let : IsTopologicalAddGroup (ℝ ⊗[ℚ] SubspaceFreeLift.Algebra S (r + 1)) :=
-    IsModuleTopology.isTopologicalAddGroup ℝ _
+    IsModuleTopology.topologicalAddGroup ℝ _
   let := realification_moduleTopology_t2 M.basis
   obtain ⟨Z, hobs, huniform⟩ := hZ
   apply huniform.realizeFamily

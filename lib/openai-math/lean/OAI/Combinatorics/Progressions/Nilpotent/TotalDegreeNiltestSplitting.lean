@@ -1,3 +1,4 @@
+/- Modified for ProveIt: Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
 import OAI.Combinatorics.Progressions.Estimates.TwoDownsetPrecision
 import OAI.Combinatorics.Progressions.Polynomial.NativeTotalDegreeMultifiltration
 
@@ -30,7 +31,7 @@ theorem exists_totalDegree_niltest_splitting (s a : ℕ) :
     restrictedOutsideDownsetIdeal M.filtration.positivePolynomialAlgebra (J b) (hJ b)
   let : ∀ b, TopologicalSpace (ℝ ⊗[ℚ] K b) := fun _ => moduleTopology ℝ _
   let : ∀ b, IsTopologicalAddGroup (ℝ ⊗[ℚ] K b) :=
-    fun _ => IsModuleTopology.isTopologicalAddGroup ℝ _
+    fun _ => IsModuleTopology.topologicalAddGroup ℝ _
   let : ∀ b, T2Space (ℝ ⊗[ℚ] K b) :=
     fun b => realification_moduleTopology_t2 (M.positivePolynomialDownsetFinBasis (J b) (hJ b) p)
   let g := D.filtration.realTotalDegreeOrbit T.orbit

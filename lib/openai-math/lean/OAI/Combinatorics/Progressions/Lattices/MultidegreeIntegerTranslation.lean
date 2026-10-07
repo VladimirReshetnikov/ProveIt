@@ -1,3 +1,4 @@
+/- Modified for ProveIt: Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
 import OAI.Combinatorics.Progressions.Estimates.NativeNilcharacterTranslationEquivalence
 
 namespace OAI
@@ -41,13 +42,13 @@ theorem exists_integer_translation_equivalence_budget (s : ℕ) :
   let : FiniteDimensional ℚ L := D.basis.finiteDimensional_of_finite
   let := moduleTopology ℝ (ℝ ⊗[ℚ] D.filtration.squareLieSubalgebra)
   let : IsTopologicalAddGroup (ℝ ⊗[ℚ] D.filtration.squareLieSubalgebra) :=
-    IsModuleTopology.isTopologicalAddGroup ℝ _
+    IsModuleTopology.topologicalAddGroup ℝ _
   let : T2Space (ℝ ⊗[ℚ] D.filtration.squareLieSubalgebra) :=
     realification_moduleTopology_t2 (Module.finBasis ℚ D.filtration.squareLieSubalgebra)
   let := moduleTopology ℝ (ℝ ⊗[ℚ] (D.filtration.squareLieSubalgebra ⧸
     D.filtration.squareFiltration.layerIdeal (s + 1)))
   let : IsTopologicalAddGroup (ℝ ⊗[ℚ] (D.filtration.squareLieSubalgebra ⧸
-      D.filtration.squareFiltration.layerIdeal (s + 1))) := IsModuleTopology.isTopologicalAddGroup ℝ _
+      D.filtration.squareFiltration.layerIdeal (s + 1))) := IsModuleTopology.topologicalAddGroup ℝ _
   let : T2Space (ℝ ⊗[ℚ] (D.filtration.squareLieSubalgebra ⧸
       D.filtration.squareFiltration.layerIdeal (s + 1))) :=
     realification_moduleTopology_t2 (Module.finBasis ℚ (D.filtration.squareLieSubalgebra ⧸

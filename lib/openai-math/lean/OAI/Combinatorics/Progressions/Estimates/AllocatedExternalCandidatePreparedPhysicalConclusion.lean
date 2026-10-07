@@ -1,3 +1,4 @@
+/- Modified for ProveIt: Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
 import OAI.Combinatorics.Progressions.Dynamics.AllocatedExternalCandidateSourcePhysicalBudgetBounds
 import OAI.Combinatorics.Progressions.Dynamics.CandidateFrontActualPowerBudget
 import OAI.Combinatorics.Progressions.Geometry.AllocatedExternalCandidateSpatialNativeAdaptedConclusion
@@ -206,7 +207,7 @@ def PrimitiveFrontQuotientPhysicalTerminalAt (Cgeometry C Cbasis K T : ℕ)
       [∀ r, T2Space (ℝ ⊗[ℚ] PolynomialTranslationLie.weightedSubalgebra OrdinaryPolynomialPhase.weight r)],
       letI := moduleTopology ℝ (ℝ ⊗[ℚ] (L ⧸ data.front.prep.nativeQuotientIdeal))
       letI : IsTopologicalAddGroup (ℝ ⊗[ℚ] (L ⧸ data.front.prep.nativeQuotientIdeal)) :=
-        IsModuleTopology.isTopologicalAddGroup ℝ _
+        IsModuleTopology.topologicalAddGroup ℝ _
       letI := realification_moduleTopology_t2 data.quotient.basis
       ∃ desc : data.DescendedFamily,
       ∃ geometry : (optionProduct D (fun j => (F.native j).model)).AdaptedMapGeometryData
@@ -289,7 +290,7 @@ theorem exists_primitiveFrontQuotient_actual_physical_terminal
   let pGeometry := source.front.geometryBudget
   let := moduleTopology ℝ (ℝ ⊗[ℚ] (L ⧸ data.front.prep.nativeQuotientIdeal))
   let : IsTopologicalAddGroup (ℝ ⊗[ℚ] (L ⧸ data.front.prep.nativeQuotientIdeal)) :=
-    IsModuleTopology.isTopologicalAddGroup ℝ _
+    IsModuleTopology.topologicalAddGroup ℝ _
   let := realification_moduleTopology_t2 data.quotient.basis
   obtain ⟨desc⟩ := data.exists_descendedFamily
   have bounds := source.front.factorGeometryBudget hp
@@ -404,7 +405,7 @@ def PrimitiveFrontQuotientCanonicalPhysicalTerminalAt (Cgeometry C Cbasis K T : 
       source.front.familyParameter ≤ source.inner.physicalBudget ∧
       letI := moduleTopology ℝ (ℝ ⊗[ℚ] (L ⧸ data.front.prep.nativeQuotientIdeal))
       letI : IsTopologicalAddGroup (ℝ ⊗[ℚ] (L ⧸ data.front.prep.nativeQuotientIdeal)) :=
-        IsModuleTopology.isTopologicalAddGroup ℝ _
+        IsModuleTopology.topologicalAddGroup ℝ _
       letI := realification_moduleTopology_t2 data.quotient.basis
       ∃ desc : data.DescendedFamily,
       ∃ geometry : (optionProduct D (fun j => (F.native j).model)).AdaptedMapGeometryData
@@ -722,7 +723,7 @@ theorem AllocatedExternalCandidateProblem.PrimitiveFrontQuotientData.conclusion_
     hscore, hmass, hpGeoFull, hfamilyFull, hmodels⟩ := produced
   let quotientTopology := moduleTopology ℝ (ℝ ⊗[ℚ] (L ⧸ data.front.prep.nativeQuotientIdeal))
   let quotientAdd : IsTopologicalAddGroup (ℝ ⊗[ℚ] (L ⧸ data.front.prep.nativeQuotientIdeal)) :=
-    IsModuleTopology.isTopologicalAddGroup ℝ _
+    IsModuleTopology.topologicalAddGroup ℝ _
   let quotientSMul : ContinuousSMul ℝ (ℝ ⊗[ℚ] (L ⧸ data.front.prep.nativeQuotientIdeal)) :=
     inferInstance
   let quotientT2 := realification_moduleTopology_t2 data.quotient.basis
@@ -743,7 +744,7 @@ theorem AllocatedExternalCandidateProblem.PrimitiveFrontQuotientData.conclusion_
     (∀ i : Option (KernelProjectionPresentPivot data.front.prep.selected.code),
       optionLieSpace (L ⧸ D.filtration.pivotAnnihilatorIdeal φ F.η
       (Finset.univ : Finset (KernelProjectionPresentPivot data.front.prep.selected.code)).toList) (fun j => (F.native j).L) i)) :=
-    IsModuleTopology.isTopologicalAddGroup ℝ _
+    IsModuleTopology.topologicalAddGroup ℝ _
   let : T2Space (ℝ ⊗[ℚ]
     (∀ i : Option (KernelProjectionPresentPivot data.front.prep.selected.code),
       optionLieSpace (L ⧸ D.filtration.pivotAnnihilatorIdeal φ F.η

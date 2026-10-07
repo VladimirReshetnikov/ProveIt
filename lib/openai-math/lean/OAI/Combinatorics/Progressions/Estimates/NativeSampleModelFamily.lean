@@ -1,3 +1,4 @@
+/- Modified for ProveIt: Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
 import OAI.Combinatorics.Progressions.Estimates.SampledNativeModel
 import OAI.Combinatorics.Progressions.Nilpotent.NiltestOrbitOne
 
@@ -154,7 +155,7 @@ noncomputable def ofModels {ι : Type} [Fintype ι] {g : ι → X → ℂ}
     (RationalFilteredNilmanifold.productFinBasis D).finiteDimensional_of_finite
   let := moduleTopology ℝ (ℝ ⊗[ℚ] (∀ i, (V i).L))
   let : IsTopologicalAddGroup (ℝ ⊗[ℚ] (∀ i, (V i).L)) :=
-    IsModuleTopology.isTopologicalAddGroup ℝ _
+    IsModuleTopology.topologicalAddGroup ℝ _
   let : T2Space (ℝ ⊗[ℚ] (∀ i, (V i).L)) :=
     realification_moduleTopology_t2 (RationalFilteredNilmanifold.productFinBasis D)
   let factors := fun j => RationalFilteredNilmanifold.selectedOrbitFactors base base {j}

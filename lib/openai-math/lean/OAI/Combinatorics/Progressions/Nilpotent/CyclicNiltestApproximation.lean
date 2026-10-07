@@ -1,5 +1,6 @@
 /- Modified for ProveIt: import Lean 4.32 compatibility declarations.
-Statements and proofs are unchanged from the pinned upstream source. -/
+Mathematical statements are unchanged from the pinned upstream source.
+Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
 import OAI.Compat.BigOperators
 import OAI.Combinatorics.Progressions.Estimates.ProductOrbitCongruence
 import OAI.Combinatorics.Progressions.Estimates.RealificationModuleTopology
@@ -410,13 +411,13 @@ theorem exists_product_niltest {ι σ : Type*} [Fintype ι] {L : ι → Type*}
     (hι : (Fintype.card ι : ℝ) ≤ p) (hT : ∀ i, (T i).ComplexityLE p) :
     letI : FiniteDimensional ℚ (∀ i, L i) := (productFinBasis D).finiteDimensional_of_finite
     letI := moduleTopology ℝ (ℝ ⊗[ℚ] (∀ i, L i))
-    letI : IsTopologicalAddGroup (ℝ ⊗[ℚ] (∀ i, L i)) := IsModuleTopology.isTopologicalAddGroup ℝ _
+    letI : IsTopologicalAddGroup (ℝ ⊗[ℚ] (∀ i, L i)) := IsModuleTopology.topologicalAddGroup ℝ _
     letI : T2Space (ℝ ⊗[ℚ] (∀ i, L i)) := realification_moduleTopology_t2 (productFinBasis D)
     ∃ S : (pi D).Niltest w, S.ComplexityLE (productNiltestBudget p) ∧
       ∀ x, S.eval x = ∏ i, (T i).eval x := by
   let : FiniteDimensional ℚ (∀ i, L i) := (productFinBasis D).finiteDimensional_of_finite
   let := moduleTopology ℝ (ℝ ⊗[ℚ] (∀ i, L i))
-  let : IsTopologicalAddGroup (ℝ ⊗[ℚ] (∀ i, L i)) := IsModuleTopology.isTopologicalAddGroup ℝ _
+  let : IsTopologicalAddGroup (ℝ ⊗[ℚ] (∀ i, L i)) := IsModuleTopology.topologicalAddGroup ℝ _
   let : T2Space (ℝ ⊗[ℚ] (∀ i, L i)) := realification_moduleTopology_t2 (productFinBasis D)
   exact ⟨piNiltest D T hp hι hT, piNiltest_complexity D T hp hι hT, piNiltest_eval D T hp hι hT⟩
 

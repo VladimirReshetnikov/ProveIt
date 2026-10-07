@@ -1,3 +1,4 @@
+/- Modified for ProveIt: Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
 import OAI.Combinatorics.Progressions.Estimates.FixedObservableMarkedFiberGlobalLift
 import OAI.Combinatorics.Progressions.Nilpotent.FrozenComplexNiltest
 
@@ -320,7 +321,7 @@ theorem exists_constructed_fixedObservable_topInvariant_descent (s : ℕ) :
             (D.filtration.quotientStepHom (D.filtration.layerIdeal (s + 1)) le_rfl) ∧
           letI := moduleTopology ℝ (ℝ ⊗[ℚ] (L ⧸ D.filtration.layerIdeal (s + 1)))
           letI : IsTopologicalAddGroup (ℝ ⊗[ℚ] (L ⧸ D.filtration.layerIdeal (s + 1))) :=
-            IsModuleTopology.isTopologicalAddGroup ℝ _
+            IsModuleTopology.topologicalAddGroup ℝ _
           letI : T2Space (ℝ ⊗[ℚ] (L ⧸ D.filtration.layerIdeal (s + 1))) :=
             realification_moduleTopology_t2 Q.basis
           ∃ (S : Q.Niltest v) (quotientTests : Ω → Q.Niltest w),
@@ -362,7 +363,7 @@ theorem exists_constructed_fixedObservable_topInvariant_descent (s : ℕ) :
       (by linarith : (1 : ℝ) ≤ p + 3) (by decide : 5 ≤ 11))
   let _ := moduleTopology ℝ (ℝ ⊗[ℚ] (L ⧸ D.filtration.layerIdeal (s + 1)))
   let _ : IsTopologicalAddGroup (ℝ ⊗[ℚ] (L ⧸ D.filtration.layerIdeal (s + 1))) :=
-    IsModuleTopology.isTopologicalAddGroup ℝ _
+    IsModuleTopology.topologicalAddGroup ℝ _
   let _ : T2Space (ℝ ⊗[ℚ] (L ⧸ D.filtration.layerIdeal (s + 1))) :=
     realification_moduleTopology_t2 Q.basis
   obtain ⟨S, quotientTests, hSo, hSn, hSl, hSu, hSc, hrec, hSe, hfamily⟩ :=
@@ -412,7 +413,7 @@ theorem exists_uniform_frozen_descent (s k : ℕ) :
               Q.GeometryComplexityLE ((p + C) ^ C) ∧
               (letI := moduleTopology ℝ (ℝ ⊗[ℚ] (L ⧸ D.filtration.layerIdeal (s + 1)))
                letI : IsTopologicalAddGroup (ℝ ⊗[ℚ] (L ⧸ D.filtration.layerIdeal (s + 1))) :=
-                 IsModuleTopology.isTopologicalAddGroup ℝ _
+                 IsModuleTopology.topologicalAddGroup ℝ _
                letI := realification_moduleTopology_t2 Q.basis
                ∀ a r : E.RealGroup,
                  (∀ i, |(E.basis.baseChange ℝ).repr a.coord i| ≤ Real.exp ((p + 2) ^ k)) →
@@ -462,11 +463,11 @@ theorem exists_uniform_frozen_descent (s k : ℕ) :
     n, hn, Q, hQF, hQL, hQ.mono Q (hQr.trans hrC), ?_⟩
   let := moduleTopology ℝ (ℝ ⊗[ℚ] (L ⧸ D.filtration.layerIdeal (s + 1)))
   let : IsTopologicalAddGroup (ℝ ⊗[ℚ] (L ⧸ D.filtration.layerIdeal (s + 1))) :=
-    IsModuleTopology.isTopologicalAddGroup ℝ _
+    IsModuleTopology.topologicalAddGroup ℝ _
   let : TopologicalSpace (ℝ ⊗[ℚ] (L ⧸ F.filtration.layerIdeal (s + 1))) :=
     moduleTopology ℝ _
   let : IsTopologicalAddGroup (ℝ ⊗[ℚ] (L ⧸ F.filtration.layerIdeal (s + 1))) :=
-    IsModuleTopology.isTopologicalAddGroup ℝ _
+    IsModuleTopology.topologicalAddGroup ℝ _
   let := realification_moduleTopology_t2 Q.basis
   intro a b ha hb hinvariant
   obtain ⟨hconj, K, hK, hKlip⟩ := hmap a b ha hb

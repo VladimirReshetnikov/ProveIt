@@ -1,5 +1,6 @@
 /- Modified for ProveIt: import Lean 4.32 compatibility declarations.
-Statements and proofs are unchanged from the pinned upstream source. -/
+Mathematical statements are unchanged from the pinned upstream source.
+Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
 import OAI.Compat.Core
 import OAI.Combinatorics.Progressions.Estimates.NativeCommonModelQuadruples
 import OAI.Combinatorics.Progressions.Estimates.QuadraticBoundedFamily
@@ -864,7 +865,7 @@ theorem HasUnitRankInducedCorrelationFamily.combineMixed
     D.coefficientFreeGenerator D.coefficientWeight D.coefficientIsDependent t)
   let : IsTopologicalAddGroup (ℝ ⊗[ℚ] MarkedShiftQuotient D.coefficientFreeFiltration
     D.coefficientFreeGenerator D.coefficientWeight D.coefficientIsDependent t) :=
-      IsModuleTopology.isTopologicalAddGroup ℝ _
+      IsModuleTopology.topologicalAddGroup ℝ _
   let := realification_moduleTopology_t2 E.basis
   let := E.metricSpace
   obtain ⟨G, hGn, hGL, hcorr⟩ := hdata

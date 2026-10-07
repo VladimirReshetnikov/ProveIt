@@ -1,3 +1,4 @@
+/- Modified for ProveIt: Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
 import OAI.Combinatorics.Progressions.Dynamics.SharedFreeFullOrbitBudget
 import OAI.Combinatorics.Progressions.Dynamics.SharedFreeLowerComparisonBudget
 import OAI.Combinatorics.Progressions.Lattices.AffineRefinedCoefficients
@@ -310,7 +311,7 @@ theorem CoefficientBases.exists_invariant_native_comparison_model
             (hM := (pi (fun _ : Fin 2 => E)).filtration.lowerCentralSeries_eq_bot) φ) ∧
           (letI := moduleTopology ℝ (ℝ ⊗[ℚ] SubspaceFreeLift.Algebra S r)
            letI : IsTopologicalAddGroup (ℝ ⊗[ℚ] SubspaceFreeLift.Algebra S r) :=
-             IsModuleTopology.isTopologicalAddGroup ℝ _
+             IsModuleTopology.topologicalAddGroup ℝ _
            letI := realification_moduleTopology_t2 M.basis
            ∃ Z : M.UnitVerticalObservable (U.realSubgroup s r)
                (Fin W.family.outputDim × Fin W.family.outputDim) (sharedFreeComparisonModelBudget s Q P'),
@@ -327,7 +328,7 @@ theorem CoefficientBases.exists_invariant_native_comparison_model
   refine ⟨J, hJ, M, U, hU, hUc, hcentral, hframe, hmatrix, hlattice, ?_⟩
   let := moduleTopology ℝ (ℝ ⊗[ℚ] SubspaceFreeLift.Algebra S r)
   let : IsTopologicalAddGroup (ℝ ⊗[ℚ] SubspaceFreeLift.Algebra S r) :=
-    IsModuleTopology.isTopologicalAddGroup ℝ _
+    IsModuleTopology.topologicalAddGroup ℝ _
   let := realification_moduleTopology_t2 M.basis
   obtain ⟨Z, hfreqZ, hobs⟩ := hZ
   have hzero := B₀.native_comparison_frequency_zero D E T hbQ hT V g hg D'
@@ -392,7 +393,7 @@ theorem CoefficientBases.exists_uniform_lower_comparison_model
           U.ComplexityLE (sharedFreeComparisonModelBudget s Q P') ∧
           (letI := moduleTopology ℝ (ℝ ⊗[ℚ] SubspaceFreeLift.Algebra S (r + 1))
            letI : IsTopologicalAddGroup (ℝ ⊗[ℚ] SubspaceFreeLift.Algebra S (r + 1)) :=
-             IsModuleTopology.isTopologicalAddGroup ℝ _
+             IsModuleTopology.topologicalAddGroup ℝ _
            letI := realification_moduleTopology_t2 M.basis
            ∃ Z : M.UnitVerticalObservable (U.realSubgroup s (r + 1))
                (Fin W.family.outputDim × Fin W.family.outputDim) (sharedFreeComparisonModelBudget s Q P'),
@@ -409,7 +410,7 @@ theorem CoefficientBases.exists_uniform_lower_comparison_model
   refine ⟨J, hJ, M, U, hU, hUc, ?_⟩
   let := moduleTopology ℝ (ℝ ⊗[ℚ] SubspaceFreeLift.Algebra S (r + 1))
   let : IsTopologicalAddGroup (ℝ ⊗[ℚ] SubspaceFreeLift.Algebra S (r + 1)) :=
-    IsModuleTopology.isTopologicalAddGroup ℝ _
+    IsModuleTopology.topologicalAddGroup ℝ _
   let := realification_moduleTopology_t2 M.basis
   obtain ⟨Z, _, hzero, _, hobs⟩ := hZ
   refine ⟨Z, hobs, ?_⟩
@@ -495,7 +496,7 @@ theorem CoefficientBases.exists_lower_factored_family {τ : Type*}
   refine ⟨M, Tm, hTm, hTmc, ?_⟩
   let := moduleTopology ℝ (ℝ ⊗[ℚ] SubspaceFreeLift.Algebra S (r + 1))
   let : IsTopologicalAddGroup (ℝ ⊗[ℚ] SubspaceFreeLift.Algebra S (r + 1)) :=
-    IsModuleTopology.isTopologicalAddGroup ℝ _
+    IsModuleTopology.topologicalAddGroup ℝ _
   let := realification_moduleTopology_t2 M.basis
   obtain ⟨Z, hobs, huniform⟩ := hZ
   apply huniform.realizeFamily

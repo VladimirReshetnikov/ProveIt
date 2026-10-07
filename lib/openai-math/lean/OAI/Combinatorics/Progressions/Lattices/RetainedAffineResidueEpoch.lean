@@ -1,3 +1,4 @@
+/- Modified for ProveIt: Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
 import OAI.Combinatorics.Progressions.Lattices.FixedAffineResidueDescent
 import OAI.Combinatorics.Progressions.Polynomial.RetainedPhysicalLowerDegree
 
@@ -33,7 +34,7 @@ theorem exists_fixed_child_affine_residue_descent (s a : ℕ) :
         let H := D.filtration.gradedRefiltrationSubalgebra W
         let N := H ⧸ E.filtration.layerIdeal (s + 1)
         let := moduleTopology ℝ (ℝ ⊗[ℚ] N)
-        let := IsModuleTopology.isTopologicalAddGroup ℝ (ℝ ⊗[ℚ] N)
+        let := IsModuleTopology.topologicalAddGroup ℝ (ℝ ⊗[ℚ] N)
         let := realification_moduleTopology_t2 Q.basis
         let T := Q.raiseStep (Nat.le_succ s)
         ∃ Λ : Subgroup T.filtration.Group, Λ ≤ T.lattice ∧
@@ -117,7 +118,7 @@ noncomputable def HasFixedAffineResidueChild {σ L : Type*} [Fintype σ] [Decida
       let H := D.filtration.gradedRefiltrationSubalgebra W
       let N := H ⧸ E.filtration.layerIdeal (s + 1)
       let := moduleTopology ℝ (ℝ ⊗[ℚ] N)
-      let := IsModuleTopology.isTopologicalAddGroup ℝ (ℝ ⊗[ℚ] N)
+      let := IsModuleTopology.topologicalAddGroup ℝ (ℝ ⊗[ℚ] N)
       let := realification_moduleTopology_t2 Q.basis
       ∃ V : RationalFilteredNilmanifold N s n,
         V.filtration = Q.filtration ∧ V.lattice ≤ Q.lattice ∧ V.GeometryComplexityLE cost ∧

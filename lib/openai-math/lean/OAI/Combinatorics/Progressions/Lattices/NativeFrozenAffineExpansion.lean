@@ -1,3 +1,4 @@
+/- Modified for ProveIt: Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
 import OAI.Combinatorics.Progressions.Estimates.NativeTwoVariableSplitFreezing
 
 namespace OAI
@@ -28,7 +29,7 @@ theorem exists_frozen_affine_expansion {σ : Type*} [Fintype σ] [DecidableEq σ
   subst t
   let K := W.multi.filtration.weightedSubalgebra (retainedCoordinateWeight S)
   let := moduleTopology ℝ (ℝ ⊗[ℚ] K)
-  let : IsTopologicalAddGroup (ℝ ⊗[ℚ] K) := IsModuleTopology.isTopologicalAddGroup ℝ _
+  let : IsTopologicalAddGroup (ℝ ⊗[ℚ] K) := IsModuleTopology.topologicalAddGroup ℝ _
   let : T2Space (ℝ ⊗[ℚ] K) := realification_moduleTopology_t2 D.basis
   obtain ⟨T, _, hT, _, heval⟩ := hD
   let U := T.affinePullback (fun i (_ : Unit) => A i.val) (fun i => b i.val)

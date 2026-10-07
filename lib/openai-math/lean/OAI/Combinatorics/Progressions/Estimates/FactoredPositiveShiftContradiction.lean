@@ -1,3 +1,4 @@
+/- Modified for ProveIt: Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
 import Mathlib.Analysis.SpecialFunctions.Exp
 import OAI.Combinatorics.Progressions.Dynamics.FixedListPowerBudget
 import OAI.Combinatorics.Progressions.Dynamics.PartitionFixedListLogBudget
@@ -704,7 +705,7 @@ theorem exists_prepared_higher_shift_contradiction (s r b₀ k₀ k c : ℕ) (hc
   let T := optionFactors D₀ Z
   let H := (pi T).filtration.gradedRefiltrationSubalgebra W
   let := moduleTopology ℝ (ℝ ⊗[ℚ] (H ⧸ R.filtration.layerIdeal (s + 1)))
-  let := IsModuleTopology.isTopologicalAddGroup ℝ (ℝ ⊗[ℚ] (H ⧸ R.filtration.layerIdeal (s + 1)))
+  let := IsModuleTopology.topologicalAddGroup ℝ (ℝ ⊗[ℚ] (H ⧸ R.filtration.layerIdeal (s + 1)))
   let := realification_moduleTopology_t2 Q₀.basis
   have hdata := hpartition D b v hF M hM hin hout E D₀ W R Q₀ q
     hp hι hκ hD hV hb hE hcost hcostb hbase

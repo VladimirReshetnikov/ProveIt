@@ -1,3 +1,4 @@
+/- Modified for ProveIt: Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
 import OAI.Combinatorics.Progressions.Dynamics.TranslationMajorCorrelationBudget
 import OAI.Combinatorics.Progressions.Estimates.QuadraticPairStepDrop
 import OAI.Combinatorics.Progressions.Estimates.ReducedTranslationMajorTwistedVerticalSelection
@@ -262,7 +263,7 @@ theorem exists_native_pair_vertical_step_drop (s : ℕ) (hs : 2 ≤ s) :
     (productFinBasis models).finiteDimensional_of_finite
   let := moduleTopology ℝ (ℝ ⊗[ℚ] PairAlgebra L M)
   let : IsTopologicalAddGroup (ℝ ⊗[ℚ] PairAlgebra L M) :=
-    IsModuleTopology.isTopologicalAddGroup ℝ _
+    IsModuleTopology.topologicalAddGroup ℝ _
   let : T2Space (ℝ ⊗[ℚ] PairAlgebra L M) :=
     realification_moduleTopology_t2 (productFinBasis models)
   have hp0 : 0 ≤ p := by linarith
@@ -366,7 +367,7 @@ theorem exists_native_pair_positive_step_drop (s : ℕ) (hs : 1 ≤ s) :
       (productFinBasis models).finiteDimensional_of_finite
     let := moduleTopology ℝ (ℝ ⊗[ℚ] PairAlgebra L M)
     let : IsTopologicalAddGroup (ℝ ⊗[ℚ] PairAlgebra L M) :=
-      IsModuleTopology.isTopologicalAddGroup ℝ _
+      IsModuleTopology.topologicalAddGroup ℝ _
     let : T2Space (ℝ ⊗[ℚ] PairAlgebra L M) :=
       realification_moduleTopology_t2 (productFinBasis models)
     have hp0 : 0 ≤ p := by linarith

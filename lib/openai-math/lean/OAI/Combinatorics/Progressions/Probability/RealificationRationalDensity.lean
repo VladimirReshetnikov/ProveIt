@@ -1,5 +1,6 @@
 /- Modified for ProveIt: import Lean 4.32 compatibility declarations.
-Statements and proofs are unchanged from the pinned upstream source. -/
+Mathematical statements are unchanged from the pinned upstream source.
+Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
 import OAI.Compat.TensorProduct
 import Mathlib.Topology.Algebra.Module.Basic
 import Mathlib.Topology.Algebra.Module.ModuleTopology
@@ -48,7 +49,7 @@ theorem realification_submodule_mem_closure_rational
     x ∈ closure (Set.range (fun v : P => (1 : ℝ) ⊗ₜ[ℚ] (v : V))) := by
   let := moduleTopology ℝ (ℝ ⊗[ℚ] P)
   let : IsTopologicalAddGroup (ℝ ⊗[ℚ] P) :=
-    IsModuleTopology.isTopologicalAddGroup ℝ _
+    IsModuleTopology.topologicalAddGroup ℝ _
   have hc : Continuous (P.subtype.baseChange ℝ) :=
     IsModuleTopology.continuous_of_linearMap (P.subtype.baseChange ℝ)
   obtain ⟨z, rfl⟩ := hx

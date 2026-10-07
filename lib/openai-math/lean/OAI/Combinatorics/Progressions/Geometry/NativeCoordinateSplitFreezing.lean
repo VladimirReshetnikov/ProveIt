@@ -1,3 +1,4 @@
+/- Modified for ProveIt: Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
 import Mathlib.Order.UpperLower.Basic
 import OAI.Combinatorics.Progressions.Estimates.NativeTwoVariableSplitFreezing
 
@@ -275,7 +276,7 @@ theorem exists_second_expansion_budget (σ : Type) [Fintype σ] [DecidableEq σ]
     (by simpa only [NNReal.coe_one] using Real.one_le_exp hp)
   let K := (R.multi true).filtration.weightedSubalgebra (retainedCoordinateWeight S)
   let := moduleTopology ℝ (ℝ ⊗[ℚ] K)
-  let : IsTopologicalAddGroup (ℝ ⊗[ℚ] K) := IsModuleTopology.isTopologicalAddGroup ℝ _
+  let : IsTopologicalAddGroup (ℝ ⊗[ℚ] K) := IsModuleTopology.topologicalAddGroup ℝ _
   let : T2Space (ℝ ⊗[ℚ] K) := realification_moduleTopology_t2 E.basis
   obtain ⟨T, _, hT, _, hTeval⟩ := hE
   let U := T.affinePullback (fun _ (_ : Unit) => (1 : ℤ)) 0

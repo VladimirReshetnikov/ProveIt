@@ -1,3 +1,4 @@
+/- Modified for ProveIt: Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
 import OAI.Combinatorics.Progressions.Estimates.CubicAntisymmetricTransfer
 
 namespace OAI
@@ -36,7 +37,7 @@ theorem exists_cubic_frozen_affine_expansion :
   rcases ht2 with rfl
   let K := V.multi.filtration.weightedSubalgebra (retainedCoordinateWeight S)
   let := moduleTopology ℝ (ℝ ⊗[ℚ] K)
-  let : IsTopologicalAddGroup (ℝ ⊗[ℚ] K) := IsModuleTopology.isTopologicalAddGroup ℝ _
+  let : IsTopologicalAddGroup (ℝ ⊗[ℚ] K) := IsModuleTopology.topologicalAddGroup ℝ _
   let : T2Space (ℝ ⊗[ℚ] K) := realification_moduleTopology_t2 D.basis
   obtain ⟨T, _hTnorm, hT, _hzero, heval⟩ := hD
   let U := T.affinePullback (fun j k => A j.val k) (fun j => b j.val)

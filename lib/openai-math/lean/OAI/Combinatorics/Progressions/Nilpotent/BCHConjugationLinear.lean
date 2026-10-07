@@ -1,3 +1,5 @@
+/- Modified for ProveIt: adapt manifold derivative names, conversion tactics,
+and trivialization coercions to Lean 4.32. Mathematical statements unchanged. -/
 import Mathlib.Algebra.Group.End
 import Mathlib.Analysis.Calculus.Deriv.Comp
 import Mathlib.Analysis.Calculus.Deriv.Mul
@@ -577,7 +579,7 @@ noncomputable def rightSmoothRiemannianMetric :
       contMDiff := ?_ }
   intro x
   rw [contMDiffAt_section]
-  convert (contMDiff_rightInnerForm (hnil := hnil) e).contMDiffAt (x := x) using 1; try rfl
+  convert (contMDiff_rightInnerForm (hnil := hnil) e).contMDiffAt (x := x) using 1 <;> try rfl
   funext y
   ext v w
   simp [hom_trivializationAt_apply, ContinuousLinearMap.inCoordinates,
@@ -586,11 +588,9 @@ noncomputable def rightSmoothRiemannianMetric :
     basisChart_mem_source e x y
   have hw : (trivializationAt (ι → ℝ) (TangentSpace 𝓘(ℝ, ι → ℝ)) x).symm y w = w :=
     (Trivialization.symmL_apply (R := ℝ) _ hy w).symm.trans (basis_tangent_symmL e x y w)
-  change rightInnerForm e y
-    ((trivializationAt (ι → ℝ) (TangentSpace 𝓘(ℝ, ι → ℝ)) x).symmL ℝ y v)
-    ((trivializationAt (ι → ℝ) (TangentSpace 𝓘(ℝ, ι → ℝ)) x).symm y w) = rightInnerForm e y v w
   exact congrArg₂ (fun a b : ι → ℝ => rightInnerForm e y a b)
-    (basis_tangent_symmL e x y v) hw
+    ((Trivialization.symmL_apply (R := ℝ) _ hy v).symm.trans
+      (basis_tangent_symmL e x y v)) hw
 
 end Erdos3.NilpotentLieBCHGroup
 
@@ -734,7 +734,7 @@ theorem mfderiv_mul_right_coordinates (g h : NilpotentLieBCHGroup L s hnil) (v :
   let := lieGroup_basis (hnil := hnil) e 1
   have hm : MDifferentiableAt 𝓘(ℝ, ι → ℝ) 𝓘(ℝ, ι → ℝ) (fun x => x * h) g :=
     contMDiff_mul_right.mdifferentiableAt one_ne_zero
-  rw [hm.mfderiv_abuse]
+  rw [hm.mfderiv]
   simp only [writtenInExtChartAt, Function.comp_def, basis_extChartAt_apply,
     basis_extChartAt_symm_apply, modelWithCornersSelf_coe, Set.range_id, fderivWithin_univ]
   rfl
@@ -876,7 +876,7 @@ theorem contMDiff_mapReal (n : ℕ∞ω) :
   apply ContMDiff.of_comp_isOpenEmbedding (basisHomeomorph f).isOpenEmbedding
   have hc := (basisCoordinateMap e f φ.toLinearMap).contDiff.contMDiff.comp
     (contMDiff_basisHomeomorph (hnil := hnil) e n)
-  convert hc using 1; try rfl
+  convert hc using 1 <;> try rfl
   funext g
   exact mapReal_basisHomeomorph e f φ g
 
@@ -894,7 +894,7 @@ theorem mfderiv_mapReal_coordinates (g : NilpotentLieBCHGroup L s hnil) (v : ι 
     funext x
     simp only [writtenInExtChartAt, Function.comp_apply, basis_extChartAt_apply,
       basis_extChartAt_symm_apply, mapReal_basisHomeomorph e f, Homeomorph.apply_symm_apply]
-  rw [hm.mfderiv_abuse, heq]
+  rw [hm.mfderiv, heq]
   simp only [modelWithCornersSelf_coe, Set.range_id, fderivWithin_univ,
     ContinuousLinearMap.fderiv]
   rfl

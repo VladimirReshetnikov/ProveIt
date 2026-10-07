@@ -1,3 +1,4 @@
+/- Modified for ProveIt: Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
 import OAI.Combinatorics.Progressions.Estimates.AdaptedDiagramNativeExternalNet
 import OAI.Combinatorics.Progressions.Geometry.AntisymmetricBoxPrecision
 import OAI.Combinatorics.Progressions.Linear.BiasedChosenBasisStepDrop
@@ -82,7 +83,7 @@ theorem exists_real_module_topology {ι V : Type*} [Fintype ι]
       IsTopologicalAddGroup (ℝ ⊗[ℚ] V) ∧ ContinuousSMul ℝ (ℝ ⊗[ℚ] V) ∧ T2Space (ℝ ⊗[ℚ] V) := by
   let τ := moduleTopology ℝ (ℝ ⊗[ℚ] V)
   let : TopologicalSpace (ℝ ⊗[ℚ] V) := τ
-  let : IsTopologicalAddGroup (ℝ ⊗[ℚ] V) := IsModuleTopology.isTopologicalAddGroup ℝ _
+  let : IsTopologicalAddGroup (ℝ ⊗[ℚ] V) := IsModuleTopology.topologicalAddGroup ℝ _
   let : FiniteDimensional ℝ (ℝ ⊗[ℚ] V) := (b.baseChange ℝ).finiteDimensional_of_finite
   have hc : Continuous (b.baseChange ℝ).equivFun :=
     IsModuleTopology.continuous_of_linearMap (b.baseChange ℝ).equivFun.toLinearMap
@@ -253,7 +254,7 @@ theorem exists_prepared_antisymmetric_descent :
     moduleTopology ℝ _
   let : IsTopologicalAddGroup (ℝ ⊗[ℚ]
       (D.filtration.gradedRefiltrationSubalgebra V.subalgebra ⧸ E.filtration.layerIdeal 2)) :=
-    IsModuleTopology.isTopologicalAddGroup ℝ _
+    IsModuleTopology.topologicalAddGroup ℝ _
   let := realification_moduleTopology_t2 Q.basis
   refine ⟨{
     nonnegative := hp
@@ -274,7 +275,7 @@ theorem exists_prepared_antisymmetric_descent :
     algebra := inferInstance
     dim := n
     topology := moduleTopology ℝ _
-    topologicalAdd := IsModuleTopology.isTopologicalAddGroup ℝ _
+    topologicalAdd := IsModuleTopology.topologicalAddGroup ℝ _
     continuousSMul := inferInstance
     hausdorff := realification_moduleTopology_t2 Q.basis
     model := Q
@@ -416,7 +417,7 @@ theorem exists_native_frozen_middle_expansion (s : ℕ) :
       D.filtration.gradedRefiltrationSubalgebra R.subalgebra) := moduleTopology ℝ _
   let : IsTopologicalAddGroup (ℝ ⊗[ℚ]
       D.filtration.gradedRefiltrationSubalgebra R.subalgebra) :=
-    IsModuleTopology.isTopologicalAddGroup ℝ _
+    IsModuleTopology.topologicalAddGroup ℝ _
   let := realification_moduleTopology_t2 E.basis
   let t := p + (p + B) ^ B + 4
   have ht : 0 ≤ t := by dsimp [t]; positivity
@@ -432,7 +433,7 @@ theorem exists_native_frozen_middle_expansion (s : ℕ) :
         E.filtration.layerIdeal (s + 1))) := moduleTopology ℝ _
   let : IsTopologicalAddGroup (ℝ ⊗[ℚ]
       (D.filtration.gradedRefiltrationSubalgebra R.subalgebra ⧸
-        E.filtration.layerIdeal (s + 1))) := IsModuleTopology.isTopologicalAddGroup ℝ _
+        E.filtration.layerIdeal (s + 1))) := IsModuleTopology.topologicalAddGroup ℝ _
   let := realification_moduleTopology_t2 Q.basis
   have ha' : ∀ i, |(D.basis.baseChange ℝ).repr a.coord i| ≤ Real.exp ((t + 2) ^ 1) :=
     fun i => (ha i).trans (Real.exp_le_exp.mpr (by simp only [pow_one]; linarith))

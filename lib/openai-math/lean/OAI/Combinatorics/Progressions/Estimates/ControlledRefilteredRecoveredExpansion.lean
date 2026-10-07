@@ -1,3 +1,4 @@
+/- Modified for ProveIt: Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
 import OAI.Combinatorics.Progressions.Lattices.ControlledRefilteredResidueExpansion
 import OAI.Combinatorics.Progressions.Lattices.SlowResidueRecovery
 
@@ -317,10 +318,10 @@ noncomputable def RefilteredRecoveredExpansionSpec (p : ℝ) (q r : ℕ) (cost :
   let I₀ := {i : ι // i ≠ a}
   let Z₀ := pi (fun i : I₀ => D i.val)
   letI := moduleTopology ℝ (ℝ ⊗[ℚ] (H ⧸ E.filtration.layerIdeal (s + 1)))
-  letI := IsModuleTopology.isTopologicalAddGroup ℝ (ℝ ⊗[ℚ] (H ⧸ E.filtration.layerIdeal (s + 1)))
+  letI := IsModuleTopology.topologicalAddGroup ℝ (ℝ ⊗[ℚ] (H ⧸ E.filtration.layerIdeal (s + 1)))
   letI := realification_moduleTopology_t2 Q.basis
   letI := moduleTopology ℝ (ℝ ⊗[ℚ] (∀ i : I₀, L i.val))
-  letI := IsModuleTopology.isTopologicalAddGroup ℝ (ℝ ⊗[ℚ] (∀ i : I₀, L i.val))
+  letI := IsModuleTopology.topologicalAddGroup ℝ (ℝ ⊗[ℚ] (∀ i : I₀, L i.val))
   letI := realification_moduleTopology_t2 Z₀.basis
   ∃ P : ℕ, 0 < P ∧ (P : ℝ) ≤ Real.exp cost ∧
     ∃ Q' : RationalFilteredNilmanifold (H ⧸ E.filtration.layerIdeal (s + 1)) s n,
@@ -423,10 +424,10 @@ noncomputable def RefilteredProductExpansionSpec (p : ℝ) (q r : ℕ) (cost : �
   let I₀ := {i : ι // i ≠ a}
   let Z₀ := pi (fun i : I₀ => D i.val)
   letI := moduleTopology ℝ (ℝ ⊗[ℚ] (H ⧸ E.filtration.layerIdeal (s + 1)))
-  letI := IsModuleTopology.isTopologicalAddGroup ℝ (ℝ ⊗[ℚ] (H ⧸ E.filtration.layerIdeal (s + 1)))
+  letI := IsModuleTopology.topologicalAddGroup ℝ (ℝ ⊗[ℚ] (H ⧸ E.filtration.layerIdeal (s + 1)))
   letI := realification_moduleTopology_t2 Q.basis
   letI := moduleTopology ℝ (ℝ ⊗[ℚ] (∀ i : I₀, L i.val))
-  letI := IsModuleTopology.isTopologicalAddGroup ℝ (ℝ ⊗[ℚ] (∀ i : I₀, L i.val))
+  letI := IsModuleTopology.topologicalAddGroup ℝ (ℝ ⊗[ℚ] (∀ i : I₀, L i.val))
   letI := realification_moduleTopology_t2 Z₀.basis
   ∃ P : ℕ, 0 < P ∧ (P : ℝ) ≤ Real.exp cost ∧
     ∃ Q' : RationalFilteredNilmanifold (H ⧸ E.filtration.layerIdeal (s + 1)) s n,
@@ -532,10 +533,10 @@ theorem exists_refiltered_recovered_expansion (s r : ℕ) :
   let I₀ := {i : ι // i ≠ a}
   let Z₀ := pi (fun i : I₀ => D i.val)
   let := moduleTopology ℝ (ℝ ⊗[ℚ] (H ⧸ E.filtration.layerIdeal (s + 1)))
-  let := IsModuleTopology.isTopologicalAddGroup ℝ (ℝ ⊗[ℚ] (H ⧸ E.filtration.layerIdeal (s + 1)))
+  let := IsModuleTopology.topologicalAddGroup ℝ (ℝ ⊗[ℚ] (H ⧸ E.filtration.layerIdeal (s + 1)))
   let := realification_moduleTopology_t2 Q.basis
   let := moduleTopology ℝ (ℝ ⊗[ℚ] (∀ i : I₀, L i.val))
-  let := IsModuleTopology.isTopologicalAddGroup ℝ (ℝ ⊗[ℚ] (∀ i : I₀, L i.val))
+  let := IsModuleTopology.topologicalAddGroup ℝ (ℝ ⊗[ℚ] (∀ i : I₀, L i.val))
   let := realification_moduleTopology_t2 Z₀.basis
   obtain ⟨Q', hQF, hQb, hQle, hQ, Z, hZF, hZb, hZle, hZ, hbase⟩ := hbase
   let t := (b + 2) ^ 2 + b + 1

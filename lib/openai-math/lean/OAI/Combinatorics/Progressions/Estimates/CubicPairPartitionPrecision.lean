@@ -1,3 +1,4 @@
+/- Modified for ProveIt: Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
 import OAI.Combinatorics.Progressions.Geometry.CubicPairCoordinateTest
 
 namespace OAI
@@ -233,7 +234,7 @@ theorem exists_cubic_pair_local_approximation :
     (le_add_of_nonneg_left ht).trans hcost
   let : TopologicalSpace (ℝ ⊗[ℚ] V.CubicPairAlgebra) := moduleTopology ℝ _
   let : IsTopologicalAddGroup (ℝ ⊗[ℚ] V.CubicPairAlgebra) :=
-    IsModuleTopology.isTopologicalAddGroup ℝ _
+    IsModuleTopology.topologicalAddGroup ℝ _
   let := realification_moduleTopology_t2 (pi V.cubicPairModels).basis
   let D := pi V.cubicPairModels
   have hD : D.GeometryComplexityLE t :=
@@ -343,7 +344,7 @@ theorem exists_cubic_pair_frozen_reduction :
     (le_add_of_nonneg_left hu).trans hsum
   let : TopologicalSpace (ℝ ⊗[ℚ] V.CubicPairAlgebra) := moduleTopology ℝ _
   let : IsTopologicalAddGroup (ℝ ⊗[ℚ] V.CubicPairAlgebra) :=
-    IsModuleTopology.isTopologicalAddGroup ℝ _
+    IsModuleTopology.topologicalAddGroup ℝ _
   let := realification_moduleTopology_t2 (pi V.cubicPairModels).basis
   exact ⟨u, hu, huC, houter R hr,
     R.hasCubicPairFrozenEquivalence_mono (hfrozen R hr hu) hBC⟩

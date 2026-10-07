@@ -1,3 +1,4 @@
+/- Modified for ProveIt: Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
 import OAI.Combinatorics.Progressions.Linear.SharedFreeComparisonKernel
 
 namespace OAI
@@ -75,7 +76,7 @@ theorem CoefficientBases.comparison_lower_rank_family
     (SubspaceFreeLift.Algebra S (r + 1) ⧸ U.filtration.layerIdeal s (r + 1)))
   let : IsTopologicalAddGroup (ℝ ⊗[ℚ]
     (SubspaceFreeLift.Algebra S (r + 1) ⧸ U.filtration.layerIdeal s (r + 1))) :=
-    IsModuleTopology.isTopologicalAddGroup ℝ _
+    IsModuleTopology.topologicalAddGroup ℝ _
   let := realification_moduleTopology_t2 Q'.basis
   obtain ⟨K, hKo, hKn, hKc, hKu, _, hKe⟩ := hK
   exact ⟨U.rankQuotientOrbit Q' hQF u, K, hKo, hKn, hKc, hKu, hKe⟩

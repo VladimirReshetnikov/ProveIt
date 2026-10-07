@@ -1,5 +1,6 @@
 /- Modified for ProveIt: import Lean 4.32 compatibility declarations.
-Statements and proofs are unchanged from the pinned upstream source. -/
+Mathematical statements are unchanged from the pinned upstream source.
+Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
 import OAI.Compat.BigOperators
 import OAI.Combinatorics.Progressions.Estimates.AllocatedZeroLayerCommonSideInitializationUniform
 import OAI.Combinatorics.Progressions.Estimates.CommonSideExponentialAbsorption
@@ -439,7 +440,7 @@ theorem exists_canonicalZeroLayer_budgeted_initialization (s n₀ : ℕ) :
         (∀ j, realPolynomialMass (patch.form.center j) ≤ shape) ∧
         let := polynomialShearIndexFintype patch.weight patch.weight_pos
         let := moduleTopology ℝ (ℝ ⊗[ℚ] PolynomialShearLieAlgebra patch.weight ℚ)
-        let := IsModuleTopology.isTopologicalAddGroup ℝ (ℝ ⊗[ℚ] PolynomialShearLieAlgebra patch.weight ℚ)
+        let := IsModuleTopology.topologicalAddGroup ℝ (ℝ ⊗[ℚ] PolynomialShearLieAlgebra patch.weight ℚ)
         let := realification_moduleTopology_t2 (polynomialShearOrderedBasis patch.weight)
         ∃ M : ℝ≥0, patch.ExternalObservableRegularity M input ∧
         ∃ Q : AllocatedExternalCandidateProblem (E := CanonicalEmptyLayerGeometry.I 0) A
@@ -474,7 +475,7 @@ theorem exists_canonicalZeroLayer_budgeted_initialization (s n₀ : ℕ) :
   refine ⟨A, d, patch, hd, hrank, hLip, hcenter, ?_⟩
   let := polynomialShearIndexFintype patch.weight patch.weight_pos
   let := moduleTopology ℝ (ℝ ⊗[ℚ] PolynomialShearLieAlgebra patch.weight ℚ)
-  let := IsModuleTopology.isTopologicalAddGroup ℝ (ℝ ⊗[ℚ] PolynomialShearLieAlgebra patch.weight ℚ)
+  let := IsModuleTopology.topologicalAddGroup ℝ (ℝ ⊗[ℚ] PolynomialShearLieAlgebra patch.weight ℚ)
   let := realification_moduleTopology_t2 (polynomialShearOrderedBasis patch.weight)
   dsimp only
   simpa only [input] using hrest

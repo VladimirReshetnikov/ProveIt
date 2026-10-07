@@ -1,3 +1,4 @@
+/- Modified for ProveIt: Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
 import OAI.Combinatorics.Progressions.Estimates.MarkedRefilteredLowerNativeDiagram
 import OAI.Combinatorics.Progressions.Linear.ExternalKernelPrecenterNativePointPartners
 import OAI.Combinatorics.Progressions.Sampling.AllocatedExternalCandidatePhysicalScore
@@ -537,13 +538,13 @@ theorem refilteredFrozenObservable_recovery_of_coveredDiagram
       (W.map (D.filtration.associatedGradedMap Fmark.filtration φ hφ))))
     letI : IsTopologicalAddGroup (ℝ ⊗[ℚ] (Fmark.filtration.gradedRefiltrationSubalgebra
       (W.map (D.filtration.associatedGradedMap Fmark.filtration φ hφ)))) :=
-      IsModuleTopology.isTopologicalAddGroup ℝ _
+      IsModuleTopology.topologicalAddGroup ℝ _
     letI := realification_moduleTopology_t2 covered.Fref.basis
     letI := moduleTopology ℝ (ℝ ⊗[ℚ]
       ((D.filtration.gradedRefiltrationSubalgebra W) ⧸ covered.Dref.filtration.layerIdeal (s + 1)))
     letI : IsTopologicalAddGroup (ℝ ⊗[ℚ]
       ((D.filtration.gradedRefiltrationSubalgebra W) ⧸ covered.Dref.filtration.layerIdeal (s + 1))) :=
-      IsModuleTopology.isTopologicalAddGroup ℝ _
+      IsModuleTopology.topologicalAddGroup ℝ _
     letI := realification_moduleTopology_t2 covered.Q.basis
     letI := covered.Q.metricSpace
     letI := covered.Fref.metricSpace
@@ -559,13 +560,13 @@ theorem refilteredFrozenObservable_recovery_of_coveredDiagram
     (W.map (D.filtration.associatedGradedMap Fmark.filtration φ hφ))))
   let : IsTopologicalAddGroup (ℝ ⊗[ℚ] (Fmark.filtration.gradedRefiltrationSubalgebra
     (W.map (D.filtration.associatedGradedMap Fmark.filtration φ hφ)))) :=
-    IsModuleTopology.isTopologicalAddGroup ℝ _
+    IsModuleTopology.topologicalAddGroup ℝ _
   let := realification_moduleTopology_t2 covered.Fref.basis
   let := moduleTopology ℝ (ℝ ⊗[ℚ]
     ((D.filtration.gradedRefiltrationSubalgebra W) ⧸ covered.Dref.filtration.layerIdeal (s + 1)))
   let : IsTopologicalAddGroup (ℝ ⊗[ℚ]
     ((D.filtration.gradedRefiltrationSubalgebra W) ⧸ covered.Dref.filtration.layerIdeal (s + 1))) :=
-    IsModuleTopology.isTopologicalAddGroup ℝ _
+    IsModuleTopology.topologicalAddGroup ℝ _
   let := realification_moduleTopology_t2 covered.Q.basis
   let := covered.Q.metricSpace
   let := covered.Fref.metricSpace

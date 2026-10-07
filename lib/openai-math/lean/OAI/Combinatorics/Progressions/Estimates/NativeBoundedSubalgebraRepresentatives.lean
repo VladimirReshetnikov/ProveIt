@@ -1,3 +1,4 @@
+/- Modified for ProveIt: Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
 import OAI.Combinatorics.Progressions.Dynamics.LieSubalgebraRepresentativeBudget
 import OAI.Combinatorics.Progressions.Lattices.LieSubalgebraLatticeInnerGrid
 import OAI.Combinatorics.Progressions.Linear.RefilteredKernelConstantBounds
@@ -68,7 +69,7 @@ theorem exists_native_subalgebra_rational_representatives (s : ℕ) :
   refine ⟨m, hm, hmb.trans (Real.exp_le_exp.mpr hbC), ?_⟩
   intro g hgK hg
   let := moduleTopology ℝ (ℝ ⊗[ℚ] K)
-  let : IsTopologicalAddGroup (ℝ ⊗[ℚ] K) := IsModuleTopology.isTopologicalAddGroup ℝ _
+  let : IsTopologicalAddGroup (ℝ ⊗[ℚ] K) := IsModuleTopology.topologicalAddGroup ℝ _
   let hnilK := lie_subalgebra_lowerCentralSeries_eq_bot D.filtration.lowerCentralSeries_eq_bot K
   let f := realificationMap (hnil := hnilK) (hM := D.filtration.lowerCentralSeries_eq_bot) K.incl
   obtain ⟨gK, hgK⟩ := (show g ∈ f.range from by

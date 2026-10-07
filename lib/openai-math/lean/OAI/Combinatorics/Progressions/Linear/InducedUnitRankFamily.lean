@@ -1,3 +1,4 @@
+/- Modified for ProveIt: Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
 import OAI.Combinatorics.Progressions.Estimates.CoveredInducedCorrelationFamily
 import OAI.Combinatorics.Progressions.Geometry.NativeCorrelationCoordinates
 
@@ -59,7 +60,7 @@ def HasUnitRankInducedCorrelationFamily (B C : ℝ) : Prop :=
                D.coefficientFreeGenerator D.coefficientWeight D.coefficientIsDependent t)
              letI : IsTopologicalAddGroup (ℝ ⊗[ℚ] MarkedShiftQuotient D.coefficientFreeFiltration
                D.coefficientFreeGenerator D.coefficientWeight D.coefficientIsDependent t) :=
-                  IsModuleTopology.isTopologicalAddGroup ℝ _
+                  IsModuleTopology.topologicalAddGroup ℝ _
              letI := realification_moduleTopology_t2 E.basis
              letI := E.metricSpace
              ∃ G : Fin k → E.Space → ℂ,
@@ -108,7 +109,7 @@ theorem HasCommonInducedCorrelationFamily.combineLower
     D.coefficientFreeGenerator D.coefficientWeight D.coefficientIsDependent t)
   let : IsTopologicalAddGroup (ℝ ⊗[ℚ] MarkedShiftQuotient D.coefficientFreeFiltration
     D.coefficientFreeGenerator D.coefficientWeight D.coefficientIsDependent t) :=
-      IsModuleTopology.isTopologicalAddGroup ℝ _
+      IsModuleTopology.topologicalAddGroup ℝ _
   let := realification_moduleTopology_t2 E₁.basis
   let := E₁.metricSpace
   obtain ⟨G, hGn, hGL, hcorr⟩ := hdata
@@ -158,7 +159,7 @@ theorem HasCoveredInducedCorrelationFamily.combineLower
   let T₀ := T.withLattice Λ l hl hin hout
   let := moduleTopology ℝ (ℝ ⊗[ℚ] D.DependentQuotient)
   let : IsTopologicalAddGroup (ℝ ⊗[ℚ] D.DependentQuotient) :=
-    IsModuleTopology.isTopologicalAddGroup ℝ _
+    IsModuleTopology.topologicalAddGroup ℝ _
   let := realification_moduleTopology_t2 Q.basis
   obtain ⟨k, hk, hkB, U₀, hcommon, hsecond⟩ := hcoeff
   obtain ⟨F, _, hF⟩ := exists_binary_lower_rank_unit_family (p := C + B + 2) E A₀ U T₀

@@ -1,5 +1,6 @@
 /- Modified for ProveIt: import Lean 4.32 compatibility declarations.
-Statements and proofs are unchanged from the pinned upstream source. -/
+Mathematical statements are unchanged from the pinned upstream source.
+Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
 import OAI.Compat.TensorProduct
 import OAI.Combinatorics.Progressions.Estimates.SharedFreeComparisonOrbit
 import OAI.Combinatorics.Progressions.Linear.SharedFreeComparisonBasis
@@ -286,7 +287,7 @@ theorem exists_native_pair_model (s : ℕ) :
             (hM := (pi (fun _ : Fin 2 => D)).filtration.lowerCentralSeries_eq_bot) φ) ∧
           (letI := moduleTopology ℝ (ℝ ⊗[ℚ] Algebra S r)
            letI : IsTopologicalAddGroup (ℝ ⊗[ℚ] Algebra S r) :=
-             IsModuleTopology.isTopologicalAddGroup ℝ _
+             IsModuleTopology.topologicalAddGroup ℝ _
            letI := realification_moduleTopology_t2 E.basis
            ∃ V : E.UnitVerticalObservable (Q.realSubgroup s r) (I × I) ((p + C) ^ C),
              V.frequency = (pairDifferenceFunctional U.frequency).comp φ.toLinearMap ∧
@@ -324,7 +325,7 @@ theorem exists_native_pair_model (s : ℕ) :
     hfree (Fin 2 → L) (I × I) r _ D₂ T₂ S B hS K hK hT₂ hB₂
       ((U.paired T hp hT.1).mono hPK)
   let := moduleTopology ℝ (ℝ ⊗[ℚ] Algebra S r)
-  let : IsTopologicalAddGroup (ℝ ⊗[ℚ] Algebra S r) := IsModuleTopology.isTopologicalAddGroup ℝ _
+  let : IsTopologicalAddGroup (ℝ ⊗[ℚ] Algebra S r) := IsModuleTopology.topologicalAddGroup ℝ _
   let := realification_moduleTopology_t2 E.basis
   obtain ⟨V, hfreq, hobs⟩ := hV
   exact ⟨E, Q, hQ, hQc.mono Q hbound, hcentral, ⟨frame.mono hbound⟩,
@@ -762,7 +763,7 @@ theorem exists_native_comparison_model
             (hM := (pi (fun _ : Fin 2 => E)).filtration.lowerCentralSeries_eq_bot) φ) ∧
           (letI := moduleTopology ℝ (ℝ ⊗[ℚ] SubspaceFreeLift.Algebra S r)
            letI : IsTopologicalAddGroup (ℝ ⊗[ℚ] SubspaceFreeLift.Algebra S r) :=
-             IsModuleTopology.isTopologicalAddGroup ℝ _
+             IsModuleTopology.topologicalAddGroup ℝ _
            letI := realification_moduleTopology_t2 M.basis
            ∃ Z : M.UnitVerticalObservable (U.realSubgroup s r)
                (Fin W.family.outputDim × Fin W.family.outputDim) (sharedFreeComparisonModelBudget s Q P'),
@@ -782,7 +783,7 @@ theorem exists_native_comparison_model
   refine ⟨B, hB, ?_⟩
   let := moduleTopology ℝ (ℝ ⊗[ℚ] (Fin 2 → D.CoefficientFreeLieAlgebra))
   let : IsTopologicalAddGroup (ℝ ⊗[ℚ] (Fin 2 → D.CoefficientFreeLieAlgebra)) :=
-    IsModuleTopology.isTopologicalAddGroup ℝ _
+    IsModuleTopology.topologicalAddGroup ℝ _
   let := realification_moduleTopology_t2 (Pi.basis (fun _ : Fin 2 => E.basis))
   exact (SubspaceFreeLift.exists_native_pair_model s).choose_spec.2
     D.CoefficientFreeLieAlgebra (Fin W.family.outputDim) r _ E T S B hS K h2

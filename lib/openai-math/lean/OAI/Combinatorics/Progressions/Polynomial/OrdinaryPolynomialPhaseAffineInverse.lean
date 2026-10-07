@@ -1,3 +1,4 @@
+/- Modified for ProveIt: Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
 import OAI.Combinatorics.Progressions.Estimates.ControlledDetectedTranslationBaseBounds
 import OAI.Combinatorics.Progressions.Estimates.PreparedFiniteForwardFixedCenterThreshold
 import OAI.Combinatorics.Progressions.Polynomial.OrdinaryPhasePairFunctionalBounds
@@ -481,7 +482,7 @@ theorem exists_ordinary_polynomial_phase_inverse (s : ℕ) (hs : 0 < s) :
     (nilmanifold s).basis.finiteDimensional_of_finite
   let := moduleTopology ℝ (ℝ ⊗[ℚ] weightedSubalgebra weight s)
   let : IsTopologicalAddGroup (ℝ ⊗[ℚ] weightedSubalgebra weight s) :=
-    IsModuleTopology.isTopologicalAddGroup ℝ _
+    IsModuleTopology.topologicalAddGroup ℝ _
   let : T2Space (ℝ ⊗[ℚ] weightedSubalgebra weight s) :=
     realification_moduleTopology_t2 (nilmanifold s).basis
   let q : ℝ := (p + a) ^ a

@@ -1,5 +1,6 @@
 /- Modified for ProveIt: import Lean 4.32 compatibility declarations.
-Statements and proofs are unchanged from the pinned upstream source. -/
+Mathematical statements are unchanged from the pinned upstream source.
+Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
 import OAI.Compat.Core
 import OAI.Compat.BigOperators
 import OAI.Combinatorics.Progressions.Lattices.NativeIntervalResiduePartition
@@ -83,7 +84,7 @@ theorem prod {ι : Type} [Fintype ι] {degree N : ℕ} [NeZero N] {p : ℝ}
   let : FiniteDimensional ℚ (∀ i, L i) :=
     (RationalFilteredNilmanifold.productFinBasis D).finiteDimensional_of_finite
   let := moduleTopology ℝ (ℝ ⊗[ℚ] (∀ i, L i))
-  let : IsTopologicalAddGroup (ℝ ⊗[ℚ] (∀ i, L i)) := IsModuleTopology.isTopologicalAddGroup ℝ _
+  let : IsTopologicalAddGroup (ℝ ⊗[ℚ] (∀ i, L i)) := IsModuleTopology.topologicalAddGroup ℝ _
   let : T2Space (ℝ ⊗[ℚ] (∀ i, L i)) :=
     realification_moduleTopology_t2 (RationalFilteredNilmanifold.productFinBasis D)
   have hp' : 0 ≤ raisedNiltestBudget p := hp.trans (le_raisedNiltestBudget p)

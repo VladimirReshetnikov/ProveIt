@@ -1,5 +1,6 @@
 /- Modified for ProveIt: import Lean 4.32 compatibility declarations.
-Statements and proofs are unchanged from the pinned upstream source. -/
+Mathematical statements are unchanged from the pinned upstream source.
+Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
 import OAI.Compat.TensorProduct
 import OAI.Combinatorics.Progressions.Estimates.NativeEquivalenceTransitivity
 
@@ -291,7 +292,7 @@ theorem cyclic_upperComparison_mul_niltest
   let : FiniteDimensional ℚ (∀ b, K b) :=
     (RationalFilteredNilmanifold.productFinBasis D).finiteDimensional_of_finite
   let := moduleTopology ℝ (ℝ ⊗[ℚ] (∀ b, K b))
-  let : IsTopologicalAddGroup (ℝ ⊗[ℚ] (∀ b, K b)) := IsModuleTopology.isTopologicalAddGroup ℝ _
+  let : IsTopologicalAddGroup (ℝ ⊗[ℚ] (∀ b, K b)) := IsModuleTopology.topologicalAddGroup ℝ _
   let : T2Space (ℝ ⊗[ℚ] (∀ b, K b)) :=
     realification_moduleTopology_t2 (RationalFilteredNilmanifold.productFinBasis D)
   let S := RationalFilteredNilmanifold.piNiltest D U hR' hcard hUc

@@ -1,3 +1,4 @@
+/- Modified for ProveIt: Use IsModuleTopology.topologicalAddGroup on Lean 4.32; statements unchanged. -/
 import OAI.Combinatorics.Progressions.Estimates.PrescribedCoveredInputPartition
 
 namespace OAI
@@ -105,7 +106,7 @@ def CoveredAnchoredInputPartitionSpec (s a C : ℕ) : Prop :=
                   letI : IsTopologicalAddGroup (ℝ ⊗[ℚ] (∀ i, sumLieSpace K
                     (fun j => (D j).filtration.squareLieSubalgebra ⧸
                       (D j).filtration.squareFiltration.layerIdeal (s + 1)) i)) :=
-                    IsModuleTopology.isTopologicalAddGroup ℝ _
+                    IsModuleTopology.topologicalAddGroup ℝ _
                   letI : T2Space (ℝ ⊗[ℚ] (∀ i, sumLieSpace K
                     (fun j => (D j).filtration.squareLieSubalgebra ⧸
                       (D j).filtration.squareFiltration.layerIdeal (s + 1)) i)) :=
@@ -230,7 +231,7 @@ theorem exists_covered_anchored_input_partition (s a : ℕ) :
     (D i).filtration.squareFiltration.layerIdeal (s + 1))
   let : FiniteDimensional ℚ (∀ i, KL i) := (productFinBasis Z).finiteDimensional_of_finite
   let := moduleTopology ℝ (ℝ ⊗[ℚ] (∀ i, KL i))
-  let : IsTopologicalAddGroup (ℝ ⊗[ℚ] (∀ i, KL i)) := IsModuleTopology.isTopologicalAddGroup ℝ _
+  let : IsTopologicalAddGroup (ℝ ⊗[ℚ] (∀ i, KL i)) := IsModuleTopology.topologicalAddGroup ℝ _
   let : T2Space (ℝ ⊗[ℚ] (∀ i, KL i)) := realification_moduleTopology_t2 (productFinBasis Z)
   let := (pi Z).metricSpace
   let : ∀ i, MetricSpace (Z i).Space := fun i => (Z i).metricSpace
@@ -307,7 +308,7 @@ def AmbientAnchoredInputPartitionSpec (s a B C : ℕ) : Prop :=
       let KL := sumLieSpace K (fun i => (D i).filtration.squareLieSubalgebra ⧸
         (D i).filtration.squareFiltration.layerIdeal (s + 1))
       letI := moduleTopology ℝ (ℝ ⊗[ℚ] (∀ i, KL i))
-      letI := IsModuleTopology.isTopologicalAddGroup ℝ (ℝ ⊗[ℚ] (∀ i, KL i))
+      letI := IsModuleTopology.topologicalAddGroup ℝ (ℝ ⊗[ℚ] (∀ i, KL i))
       letI := realification_moduleTopology_t2 (pi Z).basis
       letI := W.metricSpace
       ∀ (g : ∀ j, (E j).filtration.realification.PolynomialOrbit (fun _ : Unit => 1))
@@ -378,7 +379,7 @@ theorem exists_ambient_anchored_input_partition (s : ℕ) :
     (D i).filtration.squareFiltration.layerIdeal (s + 1))
   let W := (pi Z).withLattice Γ mΓ hmΓ hinΓ houtΓ
   let := moduleTopology ℝ (ℝ ⊗[ℚ] (∀ i, KL i))
-  let := IsModuleTopology.isTopologicalAddGroup ℝ (ℝ ⊗[ℚ] (∀ i, KL i))
+  let := IsModuleTopology.topologicalAddGroup ℝ (ℝ ⊗[ℚ] (∀ i, KL i))
   let := realification_moduleTopology_t2 (pi Z).basis
   let := W.metricSpace
   have hp0 : 0 ≤ p := by linarith
@@ -521,7 +522,7 @@ def PrescribedAmbientInputPartitionSpec (s k₀ a B C : ℕ) : Prop :=
       let KL := sumLieSpace K (fun i => (D i).filtration.squareLieSubalgebra ⧸
         (D i).filtration.squareFiltration.layerIdeal (s + 1))
       letI := moduleTopology ℝ (ℝ ⊗[ℚ] (∀ i, KL i))
-      letI := IsModuleTopology.isTopologicalAddGroup ℝ (ℝ ⊗[ℚ] (∀ i, KL i))
+      letI := IsModuleTopology.topologicalAddGroup ℝ (ℝ ⊗[ℚ] (∀ i, KL i))
       letI := realification_moduleTopology_t2 (pi Z).basis
       letI := W.metricSpace
       ∀ (g : ∀ j, (E j).filtration.realification.PolynomialOrbit (fun _ : Unit => 1))
@@ -599,7 +600,7 @@ theorem exists_prescribed_ambient_input_partition (s : ℕ) :
     (D i).filtration.squareFiltration.layerIdeal (s + 1))
   let W := (pi Z).withLattice Γ mΓ hmΓ hinΓ houtΓ
   let := moduleTopology ℝ (ℝ ⊗[ℚ] (∀ i, KL i))
-  let := IsModuleTopology.isTopologicalAddGroup ℝ (ℝ ⊗[ℚ] (∀ i, KL i))
+  let := IsModuleTopology.topologicalAddGroup ℝ (ℝ ⊗[ℚ] (∀ i, KL i))
   let := realification_moduleTopology_t2 (pi Z).basis
   let := W.metricSpace
   have hp0 : 0 ≤ p := by linarith
@@ -747,7 +748,7 @@ def PrescribedComplementInputPartitionSpec (s k₀ a B C : ℕ) : Prop :=
         (D i).filtration.squareFiltration.layerIdeal (s + 1))
       let KC := ∀ j : {j : Option (κ ⊕ ι) // j ≠ none}, optionLieSpace L₀ KL j.val
       letI := moduleTopology ℝ (ℝ ⊗[ℚ] KC)
-      letI := IsModuleTopology.isTopologicalAddGroup ℝ (ℝ ⊗[ℚ] KC)
+      letI := IsModuleTopology.topologicalAddGroup ℝ (ℝ ⊗[ℚ] KC)
       letI := realification_moduleTopology_t2 Z₀.basis
       letI := W.metricSpace
       ∀ (g : ∀ j, (E j).filtration.realification.PolynomialOrbit (fun _ : Unit => 1))
@@ -832,11 +833,11 @@ theorem exists_prescribed_complement_input_partition (s : ℕ) :
     (D i).filtration.squareFiltration.layerIdeal (s + 1))
   let KC := ∀ j : {j : Option (κ ⊕ ι) // j ≠ none}, optionLieSpace L₀ KL j.val
   let := moduleTopology ℝ (ℝ ⊗[ℚ] KC)
-  let := IsModuleTopology.isTopologicalAddGroup ℝ (ℝ ⊗[ℚ] KC)
+  let := IsModuleTopology.topologicalAddGroup ℝ (ℝ ⊗[ℚ] KC)
   let := realification_moduleTopology_t2 Z₀.basis
   let := W.metricSpace
   let := moduleTopology ℝ (ℝ ⊗[ℚ] (∀ i, KL i))
-  let := IsModuleTopology.isTopologicalAddGroup ℝ (ℝ ⊗[ℚ] (∀ i, KL i))
+  let := IsModuleTopology.topologicalAddGroup ℝ (ℝ ⊗[ℚ] (∀ i, KL i))
   let := realification_moduleTopology_t2 (pi Z).basis
   have hp0 : 0 ≤ p := by linarith
   have hp2p : p ≤ 2 * p := by linarith
