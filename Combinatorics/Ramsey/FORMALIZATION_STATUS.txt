@@ -12,8 +12,8 @@ Scope
   statements and shared definitions have documented repairs or unresolved gaps.
 
 Verification at this checkpoint
-  All 566 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 3,656 public Gowers theorems and found only propext,
+  All 567 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 3,665 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 110 exact
   companion proofs and 10 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -1571,9 +1571,10 @@ Stronger simultaneous diameter and endpoint-preserving quadratic selection
   selected cell and retains strong-height density alpha^32/16 rather
   than alpha^32/20. No endpoint-deletion mass assumption is needed.
   Proofs13UntrimmedRecurrence constructs this improved Stage 13.5 under
-  the existing polynomial threshold and the weaker scale condition
-  L^(1/2^(12q))>=4. The former separate condition involving alpha^32*L
-  disappears. Proofs13DensityIndependentRecurrence consequently gives
+  the existing polynomial threshold alone. Choosing target length
+  max(4,floor(L^(1/2^(12q)))) ensures every cell has at least three points.
+  Both the separate target-scale condition and the condition involving
+  alpha^32*L disappear. Proofs13DensityIndependentRecurrence consequently gives
   one ambient-modulus threshold depending only on the Fourier cutoff,
   uniformly over all positive context densities. These seven new modules
   and the modified schedule pass the complete dependency and axiom audit.
@@ -1591,8 +1592,25 @@ The full printed singleton-scale branch of Lemma 13.5
   Applied at a strong height with e=1/2^(11q), this proves Stage 13.5
   whenever L^(1/2^(12q))<=2. A separate companion verifies the paper's
   integer cutoff L<=2^(2^(12q)), including equality. Both modules pass
-  the full axiom audit. The interval above this singleton cutoff and
-  below the repaired simultaneous-polynomial threshold remains unresolved.
+  the full axiom audit. The remaining interval is characterized below.
+
+Verified overlap of the two Lemma 13.5 branches
+  Proofs13RecurrenceRange proves that the repaired polynomial threshold
+  is at most the printed singleton cutoff whenever q>=311. Hence all
+  Stage 13.4 data with q>=311 satisfy Lemma 13.5 over every prime modulus.
+  Oddness in the polynomial branch follows from properness and the
+  threshold; the singleton branch already covers the small moduli.
+  The formal failure-localization theorem says that any remaining
+  counterexample over a prime modulus must have q<311 and
+    2^(2^(12q)) < L <= simultaneousPolynomialThreshold(2,q).
+  This is a necessary condition for failure, not an assertion that such
+  counterexamples exist. The full all-scale numbered statement remains
+  open. A possible next route is to use the existing finite quadratic
+  Weyl/recurrence results (quadratic_recurrence has sample bound
+  2^256*R^16 without an asymptotic threshold) to improve the quadratic
+  partition threshold in this remaining interval. No claim about that
+  route is counted as a proof. The complete audit includes the new range
+  theorem and the strengthened threshold-only selection proof.
 
 Reproducible checks (from repository root)
   python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.Audit

@@ -412,6 +412,7 @@ import GowersSzemeredi.Proofs13UntrimmedRecurrence
 import GowersSzemeredi.Proofs13DensityIndependentRecurrence
 import GowersSzemeredi.Proofs13SmallRecurrenceScale
 import GowersSzemeredi.Proofs13SingletonRecurrence
+import GowersSzemeredi.Proofs13RecurrenceRange
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 

@@ -7,33 +7,49 @@ set_option autoImplicit false
 noncomputable section
 namespace LeanProofs.GowersSzemeredi
 
-theorem lemma_13_5_without_endpoint_budget {N : Nat} [NeZero N]
+theorem lemma_13_5_from_polynomial_threshold {N : Nat} [NeZero N]
     (hprime : N.Prime) (hodd : N != 2)
     (S : Section13Context N) (D : Stage134Data N) (theta : Real)
     (h134 : IsStage134Data S theta D)
-    (hthreshold : simultaneousPolynomialThreshold 2 D.q < D.P.length)
-    (hscale : 4 ≤ (D.P.length : Real) ^ ((1 : Real) / (2 : Real) ^ (12 * D.q))) :
+    (hthreshold : simultaneousPolynomialThreshold 2 D.q < D.P.length) :
     ∃ E : Stage135Data N, IsStage135Data S D E ∧
       S.alpha ^ 32 * E.Q.length / 16 ≤ (criticalHeights S D E).card := by
   classical
   let X := (D.P.length : Real) ^ ((1 : Real) / (2 : Real) ^ (12 * D.q))
-  let v := Nat.floor X
+  let v := max 4 (Nat.floor X)
   have hq : 1 ≤ D.q := h134.1
   have hP : D.P.IsProper := h134.2.2.1
   have hPpos : 0 < D.P.length := by omega
   have hPone : (1 : Real) ≤ D.P.length := by exact_mod_cast hPpos
-  have hX : 4 ≤ X := hscale
-  have hv : 1 ≤ v := Nat.le_floor (by norm_num only [Nat.cast_one]; linarith only [hX])
-  have hvfloor : (v : Real) ≤ X := Nat.floor_le (by linarith only [hX])
-  have hround : X < (v : Real) + 1 := Nat.lt_floor_add_one X
+  have hvfour : 4 ≤ v := le_max_left _ _
+  have hv : 1 ≤ v := by omega
+  have hvfloor : ((Nat.floor X : Nat) : Real) ≤ X := Nat.floor_le (Real.rpow_nonneg (Nat.cast_nonneg _) _)
+  have hround : X < (v : Real) + 1 := by
+    have hfloor : ((Nat.floor X : Nat) : Real) ≤ v := by exact_mod_cast (le_max_right 4 (Nat.floor X))
+    linarith only [Nat.lt_floor_add_one X, hfloor]
   have hK : (polynomialPartitionConstant 2 : Real) = (2 : Real) ^ (11 : Nat) := by
     norm_num [polynomialPartitionConstant]
   have hden : 2 * (polynomialPartitionConstant 2 : Real) ^ D.q ≤
       (2 : Real) ^ (12 * D.q) := by
     rw [hK, ← pow_mul, ← pow_succ']
     exact pow_le_pow_right₀ (by norm_num) (by omega)
+  have hfour : (4 : Real) ≤ (D.P.length : Real) ^
+      (2 * (polynomialPartitionConstant 2 : Real) ^ D.q)⁻¹ := by
+    have hboost := simultaneous_partition_final_root (by norm_num : 1 ≤ 2) hq hthreshold
+    calc
+      (4 : Real) = Real.sqrt 16 := by
+        rw [show (16 : Real) = 4 ^ 2 by norm_num, Real.sqrt_sq (by norm_num : (0 : Real) ≤ 4)]
+      _ ≤ Real.sqrt ((D.P.length : Real) ^ ((polynomialPartitionConstant 2 : Real) ^ D.q)⁻¹) :=
+        Real.sqrt_le_sqrt hboost
+      _ = _ := by
+        rw [Real.sqrt_eq_rpow, ← Real.rpow_mul (Nat.cast_nonneg D.P.length)]
+        congr 1
+        simp only [mul_inv_rev]
+        ring
   have hvupper : (v : Real) ≤ (D.P.length : Real) ^
       (2 * (polynomialPartitionConstant 2 : Real) ^ D.q)⁻¹ := by
+    simp only [v, Nat.cast_max, Nat.cast_ofNat]
+    apply max_le hfour
     apply hvfloor.trans
     apply Real.rpow_le_rpow_of_exponent_le hPone
     simpa only [one_div] using
@@ -56,7 +72,6 @@ theorem lemma_13_5_without_endpoint_budget {N : Nat} [NeZero N]
       linarith only [hround]
     · rw [hj]
       linarith only [hround]
-  have hvfour : 4 ≤ v := Nat.le_floor (by exact_mod_cast hX)
   have hQthree (j : Fin M) : 3 ≤ (Q j).length := by
     change 3 ≤ (R j).length
     rcases (hR j).2.2 with hj | hj <;> omega
@@ -77,9 +92,24 @@ theorem lemma_13_5_without_endpoint_budget {N : Nat} [NeZero N]
       ring
   have hlength (j : Fin M) : X / 2 ≤ ((Q j).length : Real) := by
     have hl := hQlower j
-    linarith only [hX, hl]
+    by_cases hX : 4 ≤ X
+    · linarith only [hX, hl]
+    · have hthree : (3 : Real) ≤ (Q j).length := by exact_mod_cast hQthree j
+      linarith only [hX, hthree]
   obtain ⟨j, hj⟩ := stage135_select_untrimmed_partition hprime hodd S D Q hM hP
     h134.2.2.2.1 hQpart hQproper hQstep hQthree hlength h134.2.2.2.2.2.2.2.1 hQdiam
   exact ⟨⟨Q j⟩, hj⟩
+
+/-- Compatibility with the earlier scale-qualified interface. The scale
+hypothesis is now unnecessary; the polynomial threshold alone suffices. -/
+theorem lemma_13_5_without_endpoint_budget {N : Nat} [NeZero N]
+    (hprime : N.Prime) (hodd : N != 2)
+    (S : Section13Context N) (D : Stage134Data N) (theta : Real)
+    (h134 : IsStage134Data S theta D)
+    (hthreshold : simultaneousPolynomialThreshold 2 D.q < D.P.length)
+    (_hscale : 4 ≤ (D.P.length : Real) ^ ((1 : Real) / (2 : Real) ^ (12 * D.q))) :
+    ∃ E : Stage135Data N, IsStage135Data S D E ∧
+      S.alpha ^ 32 * E.Q.length / 16 ≤ (criticalHeights S D E).card :=
+  lemma_13_5_from_polynomial_threshold hprime hodd S D theta h134 hthreshold
 
 end LeanProofs.GowersSzemeredi
