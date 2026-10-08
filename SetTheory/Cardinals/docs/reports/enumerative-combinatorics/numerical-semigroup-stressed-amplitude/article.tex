@@ -27,6 +27,11 @@
 \newcommand{\cS}{\mathcal S}\newcommand{\cU}{\mathcal U}
 \newcommand{\cV}{\mathcal V}\newcommand{\cT}{\mathcal T}
 \newcommand{\Hbin}{H_{\mathrm{bin}}}
+% Added in the write (7 October 2026).
+\newcommand{\file}[1]{\nolinkurl{#1}}
+\newenvironment{writenote}[1][]{\par\smallskip\begingroup\small
+ \noindent\textbf{[write]}\if\relax\detokenize{#1}\relax\else~\textbf{#1.}\fi\ }%
+ {\par\endgroup\smallskip}
 \title{\textbf{A Finite Positive Amplitude\\for Stressed Kunz Words}\\[5pt]
 \large A Self Contained Proof with an Exponential Remainder}
 \author{Research report 274}\date{6 October 2026}
@@ -41,14 +46,39 @@ $(\xi^2+\xi^3)(\xi+\xi^2+\xi^3)=1$.
 An exact boundary renewal gives a convergent positive series for
 $C_s=N(\xi)/(\xi P'(\xi))$. Its convergence follows from an exact activity transformation and an elementary weighted container and matching estimate. The complementary words, having a $1$ at or before one third of their length, have exponentially small total critical weight. The decisive additional loss comes from translated forbidden pairs and a deterministic selection of disjoint matching blocks. All combinatorial estimates, preimage losses, and analytic steps are proved here; earlier root and ratio theorems are not proof inputs. The result establishes the stressed part of Zhu's polynomial-prefactor formulation with exponent zero, and gives a two-pole expansion for the depth-at-most-three count. We also obtain a shrinking-error inverse threshold and the vanishing of every fixed inverse-power correction. No finite amplitude for depth at least four, numerical value of $C_s$, practical onset, or full subdominant expansion is asserted. An original bounded exact-arithmetic companion checks the finite identities and constructions.
 \end{abstract}
+\begin{writenote}[Status and trust boundary, added 7 October 2026]
+This is Report~274 of an external AI-assisted research session, filed in
+ProveIt as the research report \file{numerical-semigroup-stressed-amplitude}
+of the enumerative-combinatorics collection (provenance, the sources as the
+write read them, what was checked, relation to the repository, the collected
+non-claims and the reading conventions are in
+Section~\ref{ska:sec:provenance}). It is unrefereed and not formalized. Its
+author line reads ``Research report 274'' and its PDF author field is empty:
+it names no person or tool. \emph{The main theorem is not independently
+verified.} Theorem~\ref{ska:thm:main} rests on a long self-contained argument
+(the exact renewal, the activity transformation, a loop-aware container
+lemma, dense-window standardization and the early-one penalty of
+Section~\ref{ska:sec:early}); the write read every step and found no error,
+and every exact finite identity it tested holds, but a reading is not a
+verification, and the source itself asks for an independent check of the
+all-length argument. The constants of the proof are existential and
+astronomically weak (the early-one saving is below $10^{-4}$ per letter),
+so no finite computation tests the conclusion: the finite data are still far
+from the asserted limit (notes in Sections~\ref{ska:sec:theorem}
+and~\ref{ska:sec:questions}). If the theorem holds, it proves the $s_g$ parts
+of Zhu's Conjecture~7.3 with exponent $\alpha'=0$, against the numerical
+expectation stated there. The write adds Remarks~\ref{ska:rem:transseries}
+and~\ref{ska:rem:oeis} and dated notes; no statement, proof or number of the
+source was changed.
+\end{writenote}
 \clearpage
 \setcounter{tocdepth}{1}
 \makeatletter\renewcommand{\l@section}{\@dottedtocline{1}{0em}{2.2em}}\makeatother
 \tableofcontents\clearpage
 
-\section{The theorem and its scope}\label{sec:theorem}
+\section{The theorem and its scope}\label{ska:sec:theorem}
 A \emph{stressed word} is a nonempty word $w=w_1\cdots w_L$ on $\{1,2,3\}$, ending in $3$, such that
-\begin{equation}\label{eq:unwrapped}
+\begin{equation}\label{ska:eq:unwrapped}
 w_i+w_j\ge w_{i+j}\qquad(1\le i,j,\ i+j\le L).
 \end{equation}
 Repeated source indices are permitted. On this alphabet, the wrapped Kunz inequalities are automatic, and the only forbidden unwrapped pattern is two $1$'s whose index sum carries $3$. Set
@@ -59,17 +89,17 @@ s_g=\#\{w\text{ stressed}:g(w)=g\},\qquad
 \]
 Thus $s_0=s_1=s_2=0$. Define
 \begin{align}
-A(z)&=z^2+z^3,& B(z)&=z+z^2+z^3,& C(z)&=z+z^2,\label{eq:ABC}\\
+A(z)&=z^2+z^3,& B(z)&=z+z^2+z^3,& C(z)&=z+z^2,\label{ska:eq:ABC}\\
 P(z)&=A(z)B(z)=z^3+2z^4+2z^5+z^6,
-&P(\xi)&=1,& \rho&=\xi^{-1}.\label{eq:P}
+&P(\xi)&=1,& \rho&=\xi^{-1}.\label{ska:eq:P}
 \end{align}
 The positive solution $\xi$ is unique because $P$ is strictly increasing on the positive real axis, starts at zero, and is unbounded. We shall use the exact inequalities
-\begin{equation}\label{eq:rootbracket}
+\begin{equation}\label{ska:eq:rootbracket}
 \varphi^{-1}<\frac58<\xi<\frac{33}{50}<\frac23<1,
 \qquad \varphi=\frac{1+\sqrt5}{2}.
 \end{equation}
 Indeed, $5/8+(5/8)^2>1$ gives the first comparison, direct substitution gives $P(5/8)<1$, and
-\begin{equation}\label{eq:rootcert}
+\begin{equation}\label{ska:eq:rootcert}
 P(33/50)-1=\frac{1737269}{15625000000}>0.
 \end{equation}
 Equivalently, $\rho>1$ solves $\rho^6-\rho^3-2\rho^2-2\rho-1=0$.
@@ -80,25 +110,25 @@ J+J=\{j+j':j,j'\in J\},\qquad
 u(J)=|(J+J)\cap\{0,\ldots,r-1\}|.
 \]
 The sumset includes sums of an element with itself. Define the nonnegative polynomials
-\begin{equation}\label{eq:Dr}
+\begin{equation}\label{ska:eq:Dr}
 D_r(z)=A(z)^r
 \sum_{\substack{J\subseteq\{0,\ldots,r\}\\0\in J,\ r\notin J+J}}
 z^{|J|+3}A(z)^{r+1-|J|}C(z)^{u(J)}B(z)^{r-u(J)},
 \end{equation}
 and the formal series
-\begin{equation}\label{eq:N}
+\begin{equation}\label{ska:eq:N}
 N(z)=z^3(1+A(z))+\sum_{r\ge1}D_r(z).
 \end{equation}
 
-\begin{theorem}[Finite positive stressed amplitude]\label{thm:main}
-The series in~\eqref{eq:N} converges absolutely and uniformly on $|z|\le33/50$. There exist constants $K<\infty$ and $0<\rho_2<\rho$ such that, for all integers $g\ge0$,
-\begin{equation}\label{eq:main}
+\begin{theorem}[Finite positive stressed amplitude]\label{ska:thm:main}
+The series in~\eqref{ska:eq:N} converges absolutely and uniformly on $|z|\le33/50$. There exist constants $K<\infty$ and $0<\rho_2<\rho$ such that, for all integers $g\ge0$,
+\begin{equation}\label{ska:eq:main}
 \left|s_g-C_s\rho^g\right|\le K\rho_2^g,
 \qquad
 C_s=\frac{N(\xi)}{\xi P'(\xi)}\in(0,\infty).
 \end{equation}
 More precisely, for some $R_s>\xi$,
-\begin{equation}\label{eq:simplepole}
+\begin{equation}\label{ska:eq:simplepole}
 \cS(z)=\frac{C_s}{1-z/\xi}+H(z),
 \end{equation}
 where $H$ is analytic on $|z|<R_s$.
@@ -108,7 +138,7 @@ All constants in this article are existence constants unless an explicit value i
 
 \subsection{How the proof is organized}
 Partition the words into $U$, with no $1$ at or before $L/3$, and its complement $V$. Their generating functions satisfy the exact identity
-\begin{equation}\label{eq:proofmap}
+\begin{equation}\label{ska:eq:proofmap}
 \cS(z)=\underbrace{\frac{N(z)}{1-P(z)}}_{\cU(z)}+\cV(z).
 \end{equation}
 There are two separate convergence problems. First, the boundary polynomials $D_r$ must be summable beyond $\xi$. Their exact transformation into weighted stressed-word polynomials permits a strict subcritical estimate at $33/50$. Second, $V$ must have a radius of convergence greater than $\xi$. The ordinary critical matching estimate has a neutral factor, so a new loss is needed. An original early $1$ supplies linearly many necessary translated exclusions; a disjoint-block selection converts them into a strict exponential penalty. Only after both steps does the analytic pole extraction apply.
@@ -116,27 +146,184 @@ There are two separate convergence problems. First, the boundary polynomials $D_
 \subsection{Relation to the earlier literature}
 The stressed-word encoding, the rational lower family with denominator $1-P$, and the Fibonacci filter for depth at most three have antecedents in Bacher and Zhu~\cite{Bacher,Zhu}. Bacher's discussion of central and terminal transition regions motivates separating a finite boundary from the two bulk blocks. The elementary fingerprint method used here belongs to the classical graph-container framework; see Samotij~\cite{Samotij}. Zhu introduced the dense-window standardization~\cite[Sections~5.4--5.5]{Zhu}; we use matching-preserving refinements and terminal-matching optimization from Reports~270 and~271~\cite{Report270,Report271}. All needed ingredients are proved in full below. No root-rate or consecutive-ratio conclusion from those reports is assumed, and no weighted graph-homomorphism theorem is needed for this three-letter argument.
 
-Zhu's Section~7.3(c) asks for exponents $\alpha,\alpha'$ in polynomial-prefactor statements for the depth-at-least-four count and for $s_g$. Its formal statement does not require the exponents to be positive. Theorem~\ref{thm:main} establishes the stressed part with $\alpha'=0$. This differs from the numerical suggestion there that the exponents lie between $1.6$ and $1.7$; it does not contradict a proved theorem or the formal existence assertion. The depth-at-least-four exponent $\alpha$, its amplitude, and its ratio to $s_g$ remain open here.
+Zhu's Section~7.3(c) asks for exponents $\alpha,\alpha'$ in polynomial-prefactor statements for the depth-at-least-four count and for $s_g$. Its formal statement does not require the exponents to be positive. Theorem~\ref{ska:thm:main} establishes the stressed part with $\alpha'=0$. This differs from the numerical suggestion there that the exponents lie between $1.6$ and $1.7$; it does not contradict a proved theorem or the formal existence assertion. The depth-at-least-four exponent $\alpha$, its amplitude, and its ratio to $s_g$ remain open here.
 
 The present proof is self contained apart from elementary complex analysis. No comprehensive historical-priority claim is made. In view of the difference from the finite-data extrapolation, independent external checking of the all-length argument would be especially valuable.
+\begin{writenote}[Zhu's conjecture and his finite data, 7 October 2026]
+The write read Zhu's arXiv version~3 (7 September 2023, 20 pages). The
+passage cited as Section~7.3(c) is Conjecture~7.3(c) (p.~19), stated jointly
+for the depth-at-least-four count $\hat n_g=h_g$ and for $s_g$: there are
+constants $\alpha,\alpha'$, possibly equal, with $\hat n_g=g^{\alpha+o(1)}\rho^g$
+and $s_g=g^{\alpha'+o(1)}\rho^g$; Zhu's $r_{1.51}$ is this report's $\rho$
+(the positive root of $x^6-x^3-2x^2-2x-1$, defined in his Section~2). The
+surrounding text says that, on the numerical evidence, exponential
+asymptotics for $s_g$ and $\hat n_g$ ``appears unlikely'' and that the
+exponents seem to lie between $1.6$ and $1.7$. Theorem~\ref{ska:thm:main}
+would prove the $s_g$ halves of parts (a)--(c) with $\alpha'=0$
+(Corollary~\ref{ska:cor:stress} states the ratio form of part (b)); the
+$\hat n_g$ halves stay open, as the source says. Zhu's Table~2 of $s_g$ for
+$g\le95$ (p.~17), which the write's
+own enumeration reproduces for $g\le26$, gives $s_g/\rho^g=0.3276$, $0.4937$,
+$0.9137$, $1.4309$, $2.1860$ at $g=20$, $30$, $50$, $70$, $95$, still
+increasing, with local exponent $d\log(s_g\rho^{-g})/d\log g$ of $1.16$,
+$1.31$, $1.37$, $1.40$ at $g=40$, $60$, $80$, $95$. These data do not
+contradict the theorem, whose remainder carries no effective constant, but
+they show that its limit regime, if it is reached, lies beyond all available
+counts.
+\end{writenote}
 
-\section{Kunz words and the exact Fibonacci filter}\label{sec:kunz}
+\subsection{Provenance, sources and reading conventions}\label{ska:sec:provenance}
+\begin{writenote}[Added 7 October 2026]\raggedright
+\emph{Provenance.} The archive \file{Report274_Stressed_Kunz_Finite_Amplitude.zip}
+($448{,}517$ bytes, 9 files, wrapper directory \file{Report274/}) arrived
+alone in \file{764740f07} (6~October 2026); it is not part of the session
+bundle, and it was placed in \file{2680aae95} in the enumerative-combinatorics
+collection, since no OEIS sequence is its object. The text is the delivered
+\file{article.tex} (824 lines, 21 pages, dated 6~October 2026), shipped under
+the same name. The programs are shipped under \file{code/}: the builder
+\file{build.py} as \file{code/build.py}, \file{companion/exact_checks.py} as
+\file{code/companion-exact_checks.py} and the two test files as
+\file{code/tests-test_build.py} and \file{code/tests-test_companion.py};
+\file{SOURCES.md} as delivered. Not shipped, and retrievable from the arrival
+commit: the delivered \file{article.pdf} (replaced by a build of this text),
+the checksum manifest \file{MANIFEST.sha256} (8 entries, all verified at the
+write) and the delivered \file{README.md}, which the report README replaces.
+The package records no ProveIt commit; it carries no ``prepared for private
+review'' line and no personal data. It is a single-source report. It names
+Reports~270 and~271 as earlier reports of the same research sequence; neither
+was delivered, and if they arrive they continue this report. The write
+prefixed the 96 delivered labels with \file{ska:}, a prefix used
+nowhere else in the repository, and updated the references to them
+(51 \verb|\eqref|, 13 \verb|\ref|); it added this subsection, the notes marked [write] and
+Remarks~\ref{ska:rem:transseries} and~\ref{ska:rem:oeis}, each the last
+statement of its section, and inserted no numbered display, so every
+section, statement and equation of the source keeps its delivered number.
+
+\emph{The sources, as the write read them} (7~October 2026): Zhu's
+arXiv:2202.05755v3 (note at the end of Section~1.2; Definition~3.7 of a
+stressed word, Section~4.1 with the lower family $x^3(x+1)(x^2+x+1)$,
+Conjecture~7.3 and Table~2 of $s_g$, $t_g$, $\hat n_g$); OEIS A007323 in the
+internal format, and OEIS searches for $s_g$ and $t_g$
+(Remark~\ref{ska:rem:oeis}); the transseries volume
+\path{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex}
+(\file{p0:def:model}, \file{p0:thm:lambert-core}, \file{p0:def:three-inverses},
+\file{p0:thm:staircase}). Not read by the write: Bacher, Samotij, Zhu's
+Sections~5.4--5.5 in detail, and the undelivered Reports~270 and~271, which
+the source says are not proof dependencies.
+
+\emph{What was checked at intake.} The intake dossier read the manuscript,
+found no demonstrably wrong claim, ran the companion's exact checks and its
+13 regression tests on a copy (they pass; the Linux-only builder and its
+tests were not run), and recorded that the counts to $g=36$ and the boundary
+series to $r=23$ are pre-asymptotic. \emph{What the write checked.} It read
+every proof and found no error; in particular it checked the block
+decomposition of Proposition~\ref{ska:prop:renewal}, the sequential bookkeeping
+in the proof of Proposition~\ref{ska:prop:transform} (offset~$0$ carries the
+endpoint multiplier $u\gamma$), the fingerprint reconstruction and the
+incidence count in Lemma~\ref{ska:lem:containers}, the independence of the
+standardized prefix one-set, the eligibility optimization of
+Lemma~\ref{ska:lem:product}, the three cases of
+Theorem~\ref{ska:thm:early} (including $a-|H|>L/16-1$, the source count
+$|H|-q\ge L/12$, the degree bound four and the selection of at least $m/8$
+block-disjoint relations), and the residue computations of
+Sections~\ref{ska:sec:analytic} and~\ref{ska:sec:twopole}. With its own code
+(Python 3.14.4, exact integers and fractions; SymPy 1.14.0; mpmath 1.3.0), not
+importing the delivered programs, it
+\begin{itemize}\raggedright
+\item enumerated all Kunz words on $\{1,2,3\}$ of genus $g\le26$: $s_g$ and
+$t_g$ equal Zhu's Table~2, the filter~\eqref{ska:eq:filter} holds (and holds
+in that table for all $3\le g\le95$), and the separated class $U$ equals
+$N/(1-P)$ coefficientwise, also with the length refinement
+of~\eqref{ska:eq:refinedrenewal} (at $g=26$: $10{,}146$ separated and
+$10{,}806$ early-one words of $s_{26}=20{,}952$);
+\item verified~\eqref{ska:eq:transform} as a polynomial identity for $r\le6$
+and modulo $z^{27}$ for $r\le8$, the general identity~\eqref{ska:eq:generalrenewal}
+at three random rational triples for $r\le8$, and~\eqref{ska:eq:iterates} for
+$n\le3$;
+\item checked exactly every rational certificate: \eqref{ska:eq:rootbracket}
+($P(5/8)=209625/262144$), \eqref{ska:eq:rootcert},
+\eqref{ska:eq:actcert1}--\eqref{ska:eq:triplecert}, the formula for $E(x)^2$,
+its derivative~\eqref{ska:eq:Ederivative}, $E(2/3)^2=1120000/1121931$,
+$T_0(2/3)=64/81$, and the identity behind $L_2>L_b$;
+\item computed $\xi=0.6599822256094898538\ldots$, $\rho=1.5151923206363711598\ldots$
+(Zhu's $r_{1.51}$), $\xi P'(\xi)=4.1282412080\ldots$, the critical factors
+$\beta\gamma=0.7921\ldots$, $T_0=0.7646\ldots$, $E=0.9627\ldots$,
+$L_1=1.9127\ldots$, $\eta=0.009838\ldots$, and the three components
+$0.000790$, $0.0405$, $0.0000768$ of the saving~$\tau$
+in~\eqref{ska:eq:tau}, which is therefore about $7.7\times10^{-5}$;
+\item evaluated $D_r(\xi)=A(\xi)S_r(\cdot)$ for $r\le33$ by enumerating the
+one-sets of the transformed words (note in Section~\ref{ska:sec:questions}).
+\end{itemize}
+It reran, on a fresh copy of the delivered layout,
+\file{companion/exact_checks.py} and \file{tests/test_companion.py} with the
+delivered flags (\texttt{-I -B -X int\_max\_str\_digits=640}, normal and
+\texttt{-O}): the two companion outputs are identical, every count in the
+delivered README's coverage list is reproduced, and the 13 tests pass in both
+modes. The builder and its 33 tests need Linux descriptor features and were
+not run. Floating computations are observations, not certificates.
+
+\emph{Relation to the repository.} Before this placement the repository had
+no report on numerical-semigroup enumeration by genus.
+\file{numerical-semigroup-leaf-types} treats the same objects with a
+structural question (leaves of large type in the semigroup tree) and
+\file{a069762-pyramidal-frobenius} treats Frobenius numbers; no result is
+shared and no reciprocal note is proposed. No Lean or Rocq file treats these
+objects; no statement of this report is formalized, and its place in the
+collection confers no formal status. The inverse is compared with the
+transseries volume in Remark~\ref{ska:rem:transseries}.
+\end{writenote}
+\begin{writenote}[What is not claimed, collected from the source]
+The stressed-word encoding, the rational lower family and the Fibonacci
+filter are Bacher's and Zhu's; the dense-window standardization is Zhu's; the
+container method is classical (Samotij). No comprehensive priority claim, no
+external peer review. Not claimed: a numerical value of $C_s$ or a useful
+approximation of it; a practical genus from which the error is small; any
+amplitude, ratio or exponent for depth at least four; the sign or
+noncancellation of the full secondary residual; the next singularity,
+optimal remainder bases or a full subdominant expansion; a practical
+numerical inverse; that finite tests prove the weighted criterion or the
+three-case argument. \emph{The write adds:} its checks are exact or floating
+computations; its transseries remark claims no novelty for any inversion.
+\end{writenote}
+\medskip
+\begingroup\small
+\noindent\emph{Reading conventions} (letters the source uses in more than one
+sense, with the tempting false readings; no symbol was renamed).\par\smallskip
+\renewcommand{\arraystretch}{1.1}
+\noindent\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.95in}>{\raggedright\arraybackslash}p{5.3in}@{}}
+\toprule
+Symbol & Meanings\\
+\midrule
+$\alpha$, $\beta$, $\gamma$ & In Section~\ref{ska:sec:transform}: $\alpha=v+w$, $\beta=u+v+w$, $\gamma=u+v$; in Sections~\ref{ska:sec:standardization}--\ref{ska:sec:early}: $\beta=v+w$, $\gamma=u+v$, $W=u+v+w$ (the source flags this). \emph{False reading:} the $\beta$ of Section~\ref{ska:sec:transform} is the $W$ of Sections~\ref{ska:sec:standardization}--\ref{ska:sec:early}.\\
+$A$, $B$, $C$, $P$, $\Pi$ & $A,B,C,P$ the fixed polynomials~\eqref{ska:eq:ABC}--\eqref{ska:eq:P}; $\Pi=\beta(\beta+u)$ the local pair factor, equal to $P(\xi)=1$ at the critical activities. $C_s$ the amplitude; $C$ also constants.\\
+$D$, $N$, $n$ & $D_r$ the boundary polynomials, $N(z)$ their numerator series; $n=\lceil L/k\rceil$ the window length; $n_g$ all semigroups of genus $g$.\\
+$H$, $R$ & $H$ a container, and $H(z)$ the analytic remainder~\eqref{ska:eq:analyticremainder}; $R$ the residual set of Lemma~\ref{ska:lem:containers}, $R_s$, $R'$ radii.\\
+$L$, $M$ & $L$ the word length; $L_1,L_2,L_b$ eligibility gains; $M$ the preimage ratio~\eqref{ska:eq:M}, $M_0$ a constant in Section~\ref{ska:sec:inverse}.\\
+$q$, $Q$ & $q$ the marked early one in Section~\ref{ska:sec:early}, and $q=\gamma/\beta$ in the proof of Proposition~\ref{ska:prop:transform}; $Q$ the window of $k$ three-positions.\\
+$S$, $\cS$, $T$ & $S_r$ the weighted stressed polynomials~\eqref{ska:eq:weightedpoly}; $\cS(z)$ the generating function; $S_{\mathrm{lead}}$ the Fibonacci constant; $T_0$ the tail-pair factor, $\mathfrak T$ the activity map, $\cT(z)$ the depth-at-most-three series. \emph{False reading:} $S_r$ is not a coefficient of $\cS$.\\
+$t$, $u$, $v$ & $t=\lfloor\sqrt k\rfloor$ in Lemma~\ref{ska:lem:containers} and $t=u/\alpha$ in Section~\ref{ska:sec:transform}; $u,v,w$ activities, $u(J)$ the sumset count in~\eqref{ska:eq:Dr} and $u_L$ the overwrite count~\eqref{ska:eq:overwritecount}; $v$ also an image word.\\
+$\delta$, $\lambda$, $\rho$ & $\delta=1/48$ in Section~\ref{ska:sec:early}, $\delta_k$ the container slack, $\delta_*$ the inverse exponent; $\lambda=\rho_2/\rho$; $\rho=1/\xi$, $\rho_2$, $\rho_3$ remainder bases; $r$ the boundary parameter and $r=\varphi^{-1}$ in the proof of Corollary~\ref{ska:cor:twopole}.\\
+\bottomrule
+\end{tabular}
+\endgroup
+
+\section{Kunz words and the exact Fibonacci filter}\label{ska:sec:kunz}
 For completeness, we connect the word count to numerical semigroups without importing an asymptotic theorem. A numerical semigroup is an additive submonoid $\Lambda\subseteq\N_0$ with finite complement. Its genus is $|\N_0\setminus\Lambda|$, its multiplicity is the least positive element $m$, and its conductor is the least $c$ such that $c+\N_0\subseteq\Lambda$. The depth is $\lceil c/m\rceil$; $\N_0$ has depth zero.
 
 For each $1\le i<m$, let $k_i m+i$ be the least element of $\Lambda$ congruent to $i$ modulo $m$. Then $k_i\ge1$, and closure is equivalent to
 \begin{align}
-k_i+k_j&\ge k_{i+j} &&(i+j<m),\label{eq:kunz1}\\
-k_i+k_j+1&\ge k_{i+j-m} &&(i+j>m),\label{eq:kunz2}
+k_i+k_j&\ge k_{i+j} &&(i+j<m),\label{ska:eq:kunz1}\\
+k_i+k_j+1&\ge k_{i+j-m} &&(i+j>m),\label{ska:eq:kunz2}
 \end{align}
 where $k_0=0$ and the case $i+j=m$ is automatic. Conversely, positive integers satisfying these inequalities define a semigroup by taking all multiples of $m$ and the progressions $k_i m+i+m\N_0$. The displayed inequalities check closure between every two residue classes; each progression has a least element, so the complement is finite. No positive integer below $m$ is included. This proves the bijection.
 
-There are exactly $k_i$ missing nonnegative integers in residue class $i$, so the genus is $\sum_i k_i$. If $q=\max_i k_i$ and $j$ is the last index attaining $q$, the largest missing integer is $(q-1)m+j$, hence the depth is $q$. Thus depth at most three corresponds precisely to words on $\{1,2,3\}$ satisfying the Kunz inequalities. For these letters, the left side of~\eqref{eq:kunz2} is at least three, so only~\eqref{eq:kunz1} can restrict the word. Its only possible violation is $(1,1,3)$. This is the stressed condition when the final letter is three.
+There are exactly $k_i$ missing nonnegative integers in residue class $i$, so the genus is $\sum_i k_i$. If $q=\max_i k_i$ and $j$ is the last index attaining $q$, the largest missing integer is $(q-1)m+j$, hence the depth is $q$. Thus depth at most three corresponds precisely to words on $\{1,2,3\}$ satisfying the Kunz inequalities. For these letters, the left side of~\eqref{ska:eq:kunz2} is at least three, so only~\eqref{ska:eq:kunz1} can restrict the word. Its only possible violation is $(1,1,3)$. This is the stressed condition when the final letter is three.
 
 Let $t_g$ count semigroups of depth at most three, including $t_0=1$, and put $\cT(z)=\sum_{g\ge0}t_gz^g$. Let $n_g$ count all semigroups of genus $g$, and let $h_g=n_g-t_g$ count those of depth at least four.
 
-\begin{proposition}[Classical Fibonacci filter]\label{prop:filter}
+\begin{proposition}[Classical Fibonacci filter]\label{ska:prop:filter}
 As formal power series,
-\begin{equation}\label{eq:filter}
+\begin{equation}\label{ska:eq:filter}
 \cT(z)=\frac{1+\cS(z)}{1-z-z^2}.
 \end{equation}
 In particular, $s_g=t_g-t_{g-1}-t_{g-2}$ for $g\ge3$.
@@ -145,15 +332,15 @@ In particular, $s_g=t_g-t_{g-1}-t_{g-2}$ for $g\ge3$.
 Every word with letters in $\{1,2\}$ is Kunz. A word containing a three is uniquely a stressed prefix, ending at its last three, followed by an arbitrary word on $\{1,2\}$. Conversely, appending such a tail to a stressed prefix preserves the inequalities: an unwrapped target in the tail is at most two, and every wrapped inequality on this alphabet is automatic. This is a bijection preserving genus. The arbitrary tail contributes $1/(1-z-z^2)$, and the empty stressed prefix accounts for the numerator $1$.
 \end{proof}
 
-\section{Exact renewal for the separated boundary}\label{sec:renewal}
+\section{Exact renewal for the separated boundary}\label{ska:sec:renewal}
 Let $U$ consist of stressed words of length $L$ whose first one, if present, occurs at $a>L/3$. For a second formal variable $y$, recording length, write
 \[
 \cU(z,y)=\sum_{w\in U}z^{g(w)}y^{|w|},\qquad \cU(z)=\cU(z,1).
 \]
 
-\begin{proposition}[Length-refined renewal]\label{prop:renewal}
+\begin{proposition}[Length-refined renewal]\label{ska:prop:renewal}
 There is an exact identity of formal series
-\begin{equation}\label{eq:refinedrenewal}
+\begin{equation}\label{ska:eq:refinedrenewal}
 \cU(z,y)=
 \frac{yz^3(1+yA(z))+\displaystyle\sum_{r\ge1}y^{3r+2}D_r(z)}
 {1-y^2P(z)}.
@@ -161,7 +348,7 @@ There is an exact identity of formal series
 In particular, $\cU(z)=N(z)/(1-P(z))$.
 \end{proposition}
 \begin{proof}
-First count the words whose ones are all strictly after the midpoint. For odd length $L=2m+1$, the first $m$ positions have alphabet $\{2,3\}$, the next $m$ positions are arbitrary, and the terminal position is three. Their weight is $z^3P(z)^m$. For even length $L=2m+2$, there are $m+1$ initial positions on $\{2,3\}$ and $m$ subsequent arbitrary positions before the terminal three, giving $z^3A(z)P(z)^m$. No sum of two one-positions reaches a position in the word. These disjoint odd and even families, including words with no ones, give the first numerator in~\eqref{eq:refinedrenewal}.
+First count the words whose ones are all strictly after the midpoint. For odd length $L=2m+1$, the first $m$ positions have alphabet $\{2,3\}$, the next $m$ positions are arbitrary, and the terminal position is three. Their weight is $z^3P(z)^m$. For even length $L=2m+2$, there are $m+1$ initial positions on $\{2,3\}$ and $m$ subsequent arbitrary positions before the terminal three, giving $z^3A(z)P(z)^m$. No sum of two one-positions reaches a position in the word. These disjoint odd and even families, including words with no ones, give the first numerator in~\eqref{ska:eq:refinedrenewal}.
 
 Every remaining word in $U$ has $L/3<a\le L/2$. Put $r=L-2a$. The value $r=0$ is impossible because the one at $a$ would add to itself to reach the terminal three. Therefore $r\ge1$, and $a>L/3$ is equivalent to $a>r$. The consecutive blocks are
 \begin{center}
@@ -187,37 +374,37 @@ The other two blocks have weight $A^{a-1}B^{a-r-1}$. Writing $a=r+1+j$ gives $L=
 \sum_{a\ge r+1}y^{2a+r}A^{a-1}B^{a-r-1}
 =\frac{y^{3r+2}A^r}{1-y^2AB}.
 \]
-This yields the second numerator in~\eqref{eq:refinedrenewal}. The first-one location, $r$, and the active one-set are uniquely determined by the word. There are no marked-word multiplicities in this identity.
+This yields the second numerator in~\eqref{ska:eq:refinedrenewal}. The first-one location, $r$, and the active one-set are uniquely determined by the word. There are no marked-word multiplicities in this identity.
 \end{proof}
 
 The minimal length attached to $D_r$ is $3r+2$, so the bivariate formal sum is locally finite. The univariate genus sum is also locally finite because every letter contributes at least one. These observations justify the identities before any convergence is known.
 
-\section{The exact transformation of activities}\label{sec:transform}
+\section{The exact transformation of activities}\label{ska:sec:transform}
 For positive activities $(u,v,w)$, let
-\begin{equation}\label{eq:weightedpoly}
+\begin{equation}\label{ska:eq:weightedpoly}
 S_r(u,v,w)=\sum_{\substack{a_1\cdots a_r\text{ stressed}}}
 u^{\#\{i:a_i=1\}}v^{\#\{i:a_i=2\}}w^{\#\{i:a_i=3\}}.
 \end{equation}
 This is a homogeneous polynomial of degree $r$ with nonnegative integer coefficients. The same notation will also be used for its formal polynomial evaluation.
 
-\begin{proposition}[Boundary activity identity]\label{prop:transform}
+\begin{proposition}[Boundary activity identity]\label{ska:prop:transform}
 For every $r\ge1$ there is a polynomial identity
-\begin{equation}\label{eq:transform}
+\begin{equation}\label{ska:eq:transform}
 D_r(z)=A(z)S_r\bigl(A(z)^2,A(z)^2C(z),A(z)^2z^3\bigr).
 \end{equation}
 More generally, put $\alpha=v+w$, $\beta=u+v+w$, and $\gamma=u+v$, and define
-\begin{equation}\label{eq:Tmap}
+\begin{equation}\label{ska:eq:Tmap}
 \mathfrak T(u,v,w)=(u\alpha\gamma,\alpha^2\gamma,\alpha^2w).
 \end{equation}
 If $\cU(u,v,w)$ is the weighted sum over the separated-boundary class, then formally
-\begin{equation}\label{eq:generalrenewal}
+\begin{equation}\label{ska:eq:generalrenewal}
 \cU(u,v,w)=
 \frac{w(1+\alpha)+u\gamma\displaystyle\sum_{r\ge1}S_r(\mathfrak T(u,v,w))}
 {1-\alpha\beta}.
 \end{equation}
 \end{proposition}
 \begin{proof}
-We first verify the general boundary contribution. In the proof of Proposition~\ref{prop:renewal}, replace the weights $z,z^2,z^3$ by $u,v,w$. The counterpart of $D_r$ is
+We first verify the general boundary contribution. In the proof of Proposition~\ref{ska:prop:renewal}, replace the weights $z,z^2,z^3$ by $u,v,w$. The counterpart of $D_r$ is
 \[
 \Delta_r=\alpha^r
 \sum_{\substack{0\in J\subseteq\{0,\ldots,r\}\\r\notin J+J}}
@@ -228,22 +415,22 @@ For the algebraic verification, use temporarily the positive quantities
 b=\alpha^2\beta,\qquad t=u/\alpha,\qquad q=\gamma/\beta.
 \]
 Then
-\begin{equation}\label{eq:sequentialsum}
+\begin{equation}\label{ska:eq:sequentialsum}
 \Delta_r=w\alpha b^r\sum_J t^{|J|}q^{u(J)}.
 \end{equation}
 The position zero, necessarily selected and covered, contributes $tq$. Write $J'=J\setminus\{0\}$ and process $i=1,\ldots,r-1$ in order. Whether $i\in J'+J'$ is determined by earlier positive selected positions. If $i$ is selected, its contribution after attaching one factor $b$ is $btq=u\alpha\gamma$. If it is not selected but is already covered by $J'+J'$, its contribution is $bq=\alpha^2\gamma$. If it is neither selected nor covered, its contribution is
 \[
 b=\alpha^2\gamma+\alpha^2w.
 \]
-These are exactly the choices of letter $1$, letter $2$ at a covered position, and letters $2$ or $3$ at an uncovered position in a stressed word with activities~\eqref{eq:Tmap}. Selecting a covered position is permitted: a one at the target of two earlier ones never violates a Kunz inequality.
+These are exactly the choices of letter $1$, letter $2$ at a covered position, and letters $2$ or $3$ at an uncovered position in a stressed word with activities~\eqref{ska:eq:Tmap}. Selecting a covered position is permitted: a one at the target of two earlier ones never violates a Kunz inequality.
 
-The final position must be three, of transformed weight $\alpha^2w$, and this is allowed precisely when $r\notin J'+J'$. The original condition $r\notin J+J$ additionally forbids selecting $r$; the terminal-three condition does the same in the transformed word. The endpoint multiplier left over from~\eqref{eq:sequentialsum} is
+The final position must be three, of transformed weight $\alpha^2w$, and this is allowed precisely when $r\notin J'+J'$. The original condition $r\notin J+J$ additionally forbids selecting $r$; the terminal-three condition does the same in the transformed word. The endpoint multiplier left over from~\eqref{ska:eq:sequentialsum} is
 \[
 \frac{w\alpha\,b\,tq}{\alpha^2w}=u\gamma.
 \]
-Consequently $\Delta_r=u\gamma S_r(\mathfrak T(u,v,w))$. Although the calculation used positive quotients, both sides are polynomials, so equality on all positive triples proves the polynomial identity. Substitution into the exact renewal proves~\eqref{eq:generalrenewal}.
+Consequently $\Delta_r=u\gamma S_r(\mathfrak T(u,v,w))$. Although the calculation used positive quotients, both sides are polynomials, so equality on all positive triples proves the polynomial identity. Substitution into the exact renewal proves~\eqref{ska:eq:generalrenewal}.
 
-For $(u,v,w)=(z,z^2,z^3)$, we have $u\gamma=zC(z)=A(z)$ and $u\alpha\gamma=A(z)^2$, giving~\eqref{eq:transform}. The first endpoint check is
+For $(u,v,w)=(z,z^2,z^3)$, we have $u\gamma=zC(z)=A(z)$ and $u\alpha\gamma=A(z)^2$, giving~\eqref{ska:eq:transform}. The first endpoint check is
 \[
 D_1(z)=z^4A(z)^2C(z)=z^3A(z)^3
 =A(z)S_1\bigl(A(z)^2,A(z)^2C(z),A(z)^2z^3\bigr).
@@ -253,18 +440,18 @@ D_1(z)=z^4A(z)^2C(z)=z^3A(z)^3
 The transformation is an exact identity for the separated class, not a renewal identity for all stressed words. One useful algebraic feature is that $\gamma/\alpha$ is invariant under $\mathfrak T$, since both $\alpha$ and $\gamma$ are multiplied by $\alpha\beta$. For example,
 \begin{align}
 \mathfrak T^n(z,z^2,z^3)
-&=\omega_n\bigl(1,z+z^2+\cdots+z^{n+1},z^{n+2}\bigr),\label{eq:iterates}\\
+&=\omega_n\bigl(1,z+z^2+\cdots+z^{n+1},z^{n+2}\bigr),\label{ska:eq:iterates}\\
 \omega_0&=z,\qquad
 \omega_{n+1}=z\omega_n^3\left(\frac{1-z^{n+2}}{1-z}\right)^2.\nonumber
 \end{align}
 These formulas follow by substitution, with the quotient interpreted as a finite geometric sum. They alone do not establish convergence of the full weighted stressed series. The next estimates supply that essential analytic input.
 
-\section{An elementary container estimate with loops}\label{sec:containers}
+\section{An elementary container estimate with loops}\label{ska:sec:containers}
 All graphs in this section are finite and undirected, may have loops, and have no multiple edges. A loop counts once in the number of neighbors of its vertex. An independent set contains neither both endpoints of an ordinary edge nor the vertex of a loop.
 
-\begin{lemma}[Loop-aware regular-graph containers]\label{lem:containers}
+\begin{lemma}[Loop-aware regular-graph containers]\label{ska:lem:containers}
 Let $G$ have $d$ vertices and exactly $k$ neighbors at every vertex, where $k\ge4$. Put
-\begin{equation}\label{eq:containerconstants}
+\begin{equation}\label{ska:eq:containerconstants}
 t=\lfloor\sqrt{k}\rfloor,\qquad
 \delta_k=\frac{t}{2(2k-t)}+\frac1{t+1},\qquad
 b_k=\Hbin\left(\frac1{t+1}\right),
@@ -273,7 +460,7 @@ where $\Hbin(p)=-p\log p-(1-p)\log(1-p)$. There is a family of at most $\exp(b_k
 \end{lemma}
 \begin{proof}
 Fix a total order on vertices. Starting with the entire vertex set, repeatedly choose a vertex of maximum degree in the current induced graph, breaking ties by the fixed order. Stop when the induced maximum degree is at most $t$. To process an independent set $I$, if the queried vertex lies in $I$, record it in a fingerprint $F$ and remove its closed neighborhood; otherwise remove only that vertex. Every recorded vertex is loop-free, because it lies in $I$. Its induced degree is greater than $t$, so at least $t+1$ vertices are removed at this step. Therefore
-\begin{equation}\label{eq:fingerprint}
+\begin{equation}\label{ska:eq:fingerprint}
 |F|\le d/(t+1).
 \end{equation}
 The final residual set $R$ has induced maximum degree at most $t$, and $I\subseteq F\cup R$.
@@ -287,7 +474,7 @@ The internal incidences contribute at most $t|R|$; the crossing incidences contr
 |R|\le\frac{kd}{2k-t}
 =\frac d2+\frac{t d}{2(2k-t)}.
 \]
-Combining with~\eqref{eq:fingerprint} bounds $|F\cup R|$ as claimed.
+Combining with~\eqref{ska:eq:fingerprint} bounds $|F\cup R|$ as claimed.
 
 The fingerprint reconstructs the full deterministic process: a pivot is treated as selected precisely when it is in $F$. Hence it determines $R$ and the container $F\cup R$. The number of containers is at most $\sum_{j\le d/(t+1)}\binom dj$. For $p=1/(t+1)\le1/2$ and $j\le pd$, one has
 \[
@@ -297,21 +484,21 @@ Summing the corresponding binomial probabilities proves
 $\sum_{j\le pd}\binom dj\le e^{d\Hbin(p)}$. This proves the count and the lemma.
 \end{proof}
 
-\section{Dense windows and weighted preimages}\label{sec:standardization}
-Fix activities $(u,v,w)>0$ for letters $1,2,3$. In Sections~\ref{sec:standardization}--\ref{sec:criterion}, use
+\section{Dense windows and weighted preimages}\label{ska:sec:standardization}
+Fix activities $(u,v,w)>0$ for letters $1,2,3$. In Sections~\ref{ska:sec:standardization}--\ref{ska:sec:criterion}, use
 \begin{align}
-\beta&=v+w,&\gamma&=u+v,&W&=u+v+w,\label{eq:localnotation}\\
+\beta&=v+w,&\gamma&=u+v,&W&=u+v+w,\label{ska:eq:localnotation}\\
 \Pi&=\beta(\beta+u),&T_0&=v^2+2uv,&
-E&=\beta\gamma\sqrt{\frac{\beta+2u}{\beta+u}}.\label{eq:pairfactors}
+E&=\beta\gamma\sqrt{\frac{\beta+2u}{\beta+u}}.\label{ska:eq:pairfactors}
 \end{align}
-These are local weighted quantities, distinct from the polynomials $A,B,C,P$ in~\eqref{eq:ABC}--\eqref{eq:P}.
+These are local weighted quantities, distinct from the polynomials $A,B,C,P$ in~\eqref{ska:eq:ABC}--\eqref{ska:eq:P}.
 
 \subsection{The terminal reflection matching}
 In any stressed word of length $L$, the terminal three forbids two ones at positions summing to $L$. Pair the positions $i,L-i$ for $1\le i<L$ and $i\ne L-i$. There are at most two exceptional positions: the terminal coordinate $L$, and the loop coordinate $L/2$ when $L$ is even. After removing these exceptions, all remaining coordinates lie in ordinary two-coordinate matching blocks. This matching remains a necessary constraint after any replacement that does not introduce a new one.
 
 \subsection{Sparse threes}
 Fix an integer $k\ge4$. Among words with fewer than $k^2$ threes, fix their positions and replace all threes by twos. The image has alphabet $\{1,2\}$ and retains the terminal matching constraint. Each ordinary pair has total weight $T_0=v^2+2uv$, while the at most two exceptions cost only a fixed factor. For fixed positions, replacing back has a weight ratio bounded in terms of $(u,v,w,k)$. There are at most $(L+1)^{k^2}$ choices of positions. Hence, with constants depending on the fixed activities and $k$,
-\begin{equation}\label{eq:sparse}
+\begin{equation}\label{ska:eq:sparse}
 S_L^{\mathrm{sparse}}(u,v,w)
 \le K_k(L+1)^{k^2}T_0^{L/2}.
 \end{equation}
@@ -319,13 +506,13 @@ The harmless difference between $L/2$ and the number of ordinary pairs has been 
 
 \subsection{A deterministic dense standardization}
 Suppose there are at least $k^2$ threes. Let $n=\lceil L/k\rceil$ and partition $[L]=\{1,\ldots,L\}$ consecutively into intervals of length $n$, except possibly the last. There are at most $k$ intervals. Choose the rightmost interval containing at least $k$ threes; let $d$ be its rightmost three-position and let $Q$ be, for definiteness, its first $k$ three-positions. Then
-\begin{equation}\label{eq:Qwindow}
+\begin{equation}\label{ska:eq:Qwindow}
 |Q|=k,\qquad Q\subseteq(d-n,d].
 \end{equation}
 Every later interval contains fewer than $k$ threes, and the chosen interval has none after $d$, so fewer than $k^2$ threes occur after $d$.
 
 Standardize the word by replacing every positive position in $(d-n,d]$ by three, and every tail three at a position greater than $d$ by two. The image has a prefix of length $d$ on $\{1,2,3\}$ and a tail on $\{1,2\}$. No one was introduced, so the terminal reflection matching survives. The image need not itself be stressed; only the stated necessary constraints are used below. The number of overwritten positions is at most
-\begin{equation}\label{eq:overwritecount}
+\begin{equation}\label{ska:eq:overwritecount}
 u_L=\lceil L/k\rceil+k^2.
 \end{equation}
 When $d<n$, the overwrite interval is intersected with positive positions, so the same bound remains valid.
@@ -336,34 +523,34 @@ q+d>2d-n>2d-2n.
 \]
 Their positive sum must therefore equal $q$, an original three-position, contrary to the original Kunz inequality. A changed prefix position is three and cannot be a one. This also covers repeated source indices and graph loops.
 
-Lemma~\ref{lem:containers} supplies a container $H$ for the prefix one-set, with
-\begin{equation}\label{eq:containeruse}
+Lemma~\ref{ska:lem:containers} supplies a container $H$ for the prefix one-set, with
+\begin{equation}\label{ska:eq:containeruse}
 |H|\le d/2+\delta_kd,
 \qquad\#\{H\}\le e^{b_kd}.
 \end{equation}
 
 \subsection{Every parameter and weight loss}
 Before using any further relation, fix $d,Q$, and the tail overwrite set. This fixes the full overwrite set. At each overwritten position, the total possible original weight divided by the assigned image weight is at most
-\begin{equation}\label{eq:M}
+\begin{equation}\label{ska:eq:M}
 M=\frac{u+v+w}{\min(v,w)}>1.
 \end{equation}
 Thus the weighted number of preimages of an image is at most $M^{u_L}$ times its image weight. This bound deliberately sums over all original letters, even those impossible in the fixed parameter class; such a relaxation is valid for an upper bound.
 
 The choices of $d$, of its $k$ selected positions, and of fewer than $k^2$ tail positions are bounded by
-\begin{equation}\label{eq:parameterloss}
+\begin{equation}\label{ska:eq:parameterloss}
 (L+1)^{k^2+k+1}.
 \end{equation}
 The full parameter and preimage loss is consequently at most
-\begin{equation}\label{eq:preimageloss}
+\begin{equation}\label{ska:eq:preimageloss}
 K_k(L+1)^{k^2+k+1}\exp\left(\frac{\log M}{k}L\right).
 \end{equation}
 The extra factors $M^{k^2+1}$ have been included in $K_k$. In particular, after $k$ is fixed, all nonexponential losses are polynomials in $L$, and the exponential preimage rate tends to zero as $k\to\infty$.
 
-\section{Matching blocks and the weighted criterion}\label{sec:criterion}
+\section{Matching blocks and the weighted criterion}\label{ska:sec:criterion}
 Fix a standardized prefix length $d$ and a container $H$. A prefix coordinate is \emph{eligible} when it belongs to $H$. Relax the image family as follows: eligible prefix coordinates have alphabet $\{1,2,3\}$, ineligible prefix coordinates have alphabet $\{2,3\}$, and tail coordinates have alphabet $\{1,2\}$. In every ordinary terminal matching block, exclude $(1,1)$. Drop all other constraints, including fixed overwrite values. This is a product of independent blocks that contains every actual image under consideration.
 
 Let $a$ be the number of prefix-prefix blocks, $b$ the number of crossing blocks, and $c$ the number of coordinates in tail-tail blocks. Let $e,f$ be the exceptional prefix and tail coordinate counts. Then
-\begin{equation}\label{eq:blockcounts}
+\begin{equation}\label{ska:eq:blockcounts}
 2a+b+e=d,\qquad b+c+f=L-d,\qquad e+f\le2.
 \end{equation}
 The exact ordinary block weights are
@@ -382,7 +569,7 @@ Tail-tail & none & $T_0$\\
 \end{tabular}
 \end{center}
 The exceptional coordinates contribute a factor bounded by a constant depending only on the activities. The successive eligibility gains are
-\begin{equation}\label{eq:gains}
+\begin{equation}\label{ska:eq:gains}
 L_1=\frac{\beta+u}{\beta},\qquad
 L_2=\frac{\beta+2u}{\beta+u},\qquad
 L_b=1+\frac{uv}{\beta\gamma},\qquad
@@ -394,16 +581,16 @@ For the only less immediate comparison, $L_2>L_b$ is equivalent to
 \beta\gamma-v(\beta+u)=uw>0.
 \]
 
-\begin{lemma}[Two useful product bounds]\label{lem:product}
+\begin{lemma}[Two useful product bounds]\label{ska:lem:product}
 The relaxed block product is bounded by each of
 \begin{align}
-K L_1^{\delta_kL}\Pi^a E^b T_0^{c/2},\label{eq:sharpblocks}\\
-K\Pi^a(\beta\gamma)^bT_0^{c/2}L_1^{|H|-a}.\label{eq:crudeblocks}
+K L_1^{\delta_kL}\Pi^a E^b T_0^{c/2},\label{ska:eq:sharpblocks}\\
+K\Pi^a(\beta\gamma)^bT_0^{c/2}L_1^{|H|-a}.\label{ska:eq:crudeblocks}
 \end{align}
 Here $K$ depends only on the fixed activities, not on $k,L,d,H$.
 \end{lemma}
 \begin{proof}
-The all-ineligible baseline is $\beta^{2a}(\beta\gamma)^bT_0^{c/2}$. By~\eqref{eq:containeruse} and~\eqref{eq:blockcounts}, the number of eligible prefix positions is at most
+The all-ineligible baseline is $\beta^{2a}(\beta\gamma)^bT_0^{c/2}$. By~\eqref{ska:eq:containeruse} and~\eqref{ska:eq:blockcounts}, the number of eligible prefix positions is at most
 \[
 a+b/2+e/2+\delta_kd.
 \]
@@ -412,81 +599,81 @@ At the relaxed real budget $a+b/2$, grant the largest $a$ gains, one $L_1$ for e
 \beta^{2a}(\beta\gamma)^bT_0^{c/2}L_1^aL_2^{b/2}
 =\Pi^aE^bT_0^{c/2}.
 \]
-Increasing the budget by $e/2+\delta_kd$ costs at most $L_1^{e/2+\delta_kd}$. Since $e\le2$ and $d\le L$, this proves~\eqref{eq:sharpblocks}. A smaller actual budget only reduces the product. Finally, bounding every eligibility gain by $L_1$ directly gives
+Increasing the budget by $e/2+\delta_kd$ costs at most $L_1^{e/2+\delta_kd}$. Since $e\le2$ and $d\le L$, this proves~\eqref{ska:eq:sharpblocks}. A smaller actual budget only reduces the product. Finally, bounding every eligibility gain by $L_1$ directly gives
 \[
 K\beta^{2a}(\beta\gamma)^bT_0^{c/2}L_1^{|H|},
 \]
-which equals~\eqref{eq:crudeblocks}. Including exceptional eligible positions in $|H|$ is another harmless overestimate.
+which equals~\eqref{ska:eq:crudeblocks}. Including exceptional eligible positions in $|H|$ is another harmless overestimate.
 \end{proof}
 
-\begin{proposition}[Positive-activity convergence criterion]\label{prop:criterion}
+\begin{proposition}[Positive-activity convergence criterion]\label{ska:prop:criterion}
 For positive $(u,v,w)$, if
-\begin{equation}\label{eq:criterion}
+\begin{equation}\label{ska:eq:criterion}
 \beta(\beta+u)<1,\qquad v^2+2uv<1,\qquad
 \beta\gamma\sqrt{\frac{\beta+2u}{\beta+u}}<1,
 \end{equation}
 then $S_L(u,v,w)\le K\theta^L$ for some $K<\infty$ and $0<\theta<1$, uniformly in $L\ge1$.
 \end{proposition}
 \begin{proof}
-Put $q_0=\max(\sqrt\Pi,\sqrt E,\sqrt{T_0})<1$. Because $2a+2b+c=L-e-f$,~\eqref{eq:sharpblocks} is at most $K L_1^{\delta_kL}q_0^L$, with the at most two omitted coordinates absorbed into $K$. The square root of $E$ is correct: a crossing block has two coordinates. Summing containers and applying~\eqref{eq:preimageloss} gives
-\begin{equation}\label{eq:densecriterion}
+Put $q_0=\max(\sqrt\Pi,\sqrt E,\sqrt{T_0})<1$. Because $2a+2b+c=L-e-f$,~\eqref{ska:eq:sharpblocks} is at most $K L_1^{\delta_kL}q_0^L$, with the at most two omitted coordinates absorbed into $K$. The square root of $E$ is correct: a crossing block has two coordinates. Summing containers and applying~\eqref{ska:eq:preimageloss} gives
+\begin{equation}\label{ska:eq:densecriterion}
 S_L^{\mathrm{dense}}(u,v,w)
 \le K_k(L+1)^{k^2+k+1}
 \left[q_0e^{b_k}L_1^{\delta_k}M^{1/k}\right]^L.
 \end{equation}
-The bracket tends to $q_0<1$ as $k\to\infty$. Choose one sufficiently large integer $k$ for which it is below one. This choice is made once, before $L$ tends to infinity. The fixed polynomial is absorbed into any slightly larger exponential base still below one. The sparse estimate~\eqref{eq:sparse} has a strict gap because $T_0<1$, so the same conclusion holds after the two classes are added.
+The bracket tends to $q_0<1$ as $k\to\infty$. Choose one sufficiently large integer $k$ for which it is below one. This choice is made once, before $L$ tends to infinity. The fixed polynomial is absorbed into any slightly larger exponential base still below one. The sparse estimate~\eqref{ska:eq:sparse} has a strict gap because $T_0<1$, so the same conclusion holds after the two classes are added.
 \end{proof}
 
-\section{An exact certificate for the numerator}\label{sec:numerator}
-We now apply Proposition~\ref{prop:criterion} after the activity transformation, at the rational point $z=33/50$. There is no floating-point inequality in this step.
+\section{An exact certificate for the numerator}\label{ska:sec:numerator}
+We now apply Proposition~\ref{ska:prop:criterion} after the activity transformation, at the rational point $z=33/50$. There is no floating-point inequality in this step.
 
-\begin{proposition}[Exponential boundary summability]\label{prop:numerator}
+\begin{proposition}[Exponential boundary summability]\label{ska:prop:numerator}
 For some $K_N<\infty$ and $0<\theta_N<1$,
-\begin{equation}\label{eq:boundarydecay}
+\begin{equation}\label{ska:eq:boundarydecay}
 D_r(33/50)\le K_N\theta_N^r\qquad(r\ge1).
 \end{equation}
-Consequently $N$ is analytic on $|z|<33/50$ and the series in~\eqref{eq:N} converges uniformly and absolutely on its closed disk.
+Consequently $N$ is analytic on $|z|<33/50$ and the series in~\eqref{ska:eq:N} converges uniformly and absolutely on its closed disk.
 \end{proposition}
 \begin{proof}
-At $z=33/50$, the three transformed activities in~\eqref{eq:transform} are
+At $z=33/50$, the three transformed activities in~\eqref{ska:eq:transform} are
 \begin{align}
-A^2&=\frac{8169809769}{15625000000}<\frac{523}{1000},\label{eq:actcert1}\\
-A^2C&=\frac{22377108957291}{39062500000000}<\frac{573}{1000},\label{eq:actcert2}\\
-A^2z^3&=\frac{293598453668553}{1953125000000000}<\frac{151}{1000}.\label{eq:actcert3}
+A^2&=\frac{8169809769}{15625000000}<\frac{523}{1000},\label{ska:eq:actcert1}\\
+A^2C&=\frac{22377108957291}{39062500000000}<\frac{573}{1000},\label{ska:eq:actcert2}\\
+A^2z^3&=\frac{293598453668553}{1953125000000000}<\frac{151}{1000}.\label{ska:eq:actcert3}
 \end{align}
 Use the dominating triple $(u,v,w)=(523,573,151)/1000$. Its exact pair factors are
-\begin{equation}\label{eq:triplecert}
+\begin{equation}\label{ska:eq:triplecert}
 \Pi=\frac{225707}{250000},\qquad
 T_0=\frac{927687}{1000000},\qquad
 E^2=\frac{108835743993}{121777343750}.
 \end{equation}
-The first two are below $19/20$, and $E^2<(19/20)^2$. All three inequalities in~\eqref{eq:criterion} hold. The weighted polynomials $S_r$ have nonnegative coefficients, so coordinatewise domination and~\eqref{eq:transform} prove~\eqref{eq:boundarydecay}. For every $|z|\le33/50$, nonnegativity also gives $|D_r(z)|\le D_r(33/50)$. The resulting geometric majorant proves the asserted convergence and analyticity.
+The first two are below $19/20$, and $E^2<(19/20)^2$. All three inequalities in~\eqref{ska:eq:criterion} hold. The weighted polynomials $S_r$ have nonnegative coefficients, so coordinatewise domination and~\eqref{ska:eq:transform} prove~\eqref{ska:eq:boundarydecay}. For every $|z|\le33/50$, nonnegativity also gives $|D_r(z)|\le D_r(33/50)$. The resulting geometric majorant proves the asserted convergence and analyticity.
 \end{proof}
 
 At this point the separated class has a finite positive simple-pole amplitude. This does not yet settle the full stressed count: an uncontrolled complementary class could still have a divergent prefactor or another singularity at $\xi$. The next section proves a strict gap for exactly that complement.
 
-\section{Early ones have an exponential critical gap}\label{sec:early}
+\section{Early ones have an exponential critical gap}\label{ska:sec:early}
 Fix $x=\xi$ and specialize the activities to $(x,x^2,x^3)$. In this section,
 \begin{align}
-\beta&=x^2+x^3,&\gamma&=x+x^2,&W&=x+x^2+x^3,\label{eq:criticalletters}\\
-\Pi&=\beta W=1,&T_0&=x^4+2x^3,&E&=\beta\gamma\sqrt{\frac{\beta+2x}{\beta+x}}.\label{eq:criticalfactors}
+\beta&=x^2+x^3,&\gamma&=x+x^2,&W&=x+x^2+x^3,\label{ska:eq:criticalletters}\\
+\Pi&=\beta W=1,&T_0&=x^4+2x^3,&E&=\beta\gamma\sqrt{\frac{\beta+2x}{\beta+x}}.\label{ska:eq:criticalfactors}
 \end{align}
-The gains $L_1,L_2,L_b$ and $M$ retain their definitions from~\eqref{eq:gains} and~\eqref{eq:M}. Let
-\begin{equation}\label{eq:VL}
+The gains $L_1,L_2,L_b$ and $M$ retain their definitions from~\eqref{ska:eq:gains} and~\eqref{ska:eq:M}. Let
+\begin{equation}\label{ska:eq:VL}
 V_L=\sum_{\substack{w\text{ stressed},\ |w|=L\\
 \exists q\le L/3:\ w_q=1}}x^{g(w)}.
 \end{equation}
 
-\begin{theorem}[Early-one suppression]\label{thm:early}
+\begin{theorem}[Early-one suppression]\label{ska:thm:early}
 There are $K_V<\infty$ and $0<\theta_V<1$ such that
-\begin{equation}\label{eq:earlygap}
+\begin{equation}\label{ska:eq:earlygap}
 V_L\le K_V\theta_V^L\qquad(L\ge1).
 \end{equation}
 \end{theorem}
 
 \subsection{The strictly subcritical factors at the critical point}
 Although $\Pi=1$, the other factors have strict margins:
-\begin{equation}\label{eq:criticalstrict}
+\begin{equation}\label{ska:eq:criticalstrict}
 \beta\gamma<1,\qquad T_0<1,\qquad E<1,
 \qquad 1<L_b<L_2<L_1.
 \end{equation}
@@ -495,29 +682,29 @@ The last chain was proved for all positive activities. Also $\gamma<W$, so $\bet
 E(x)^2=\frac{x^6(1+x)^4(x^2+x+2)}{x^2+x+1}.
 \]
 Its derivative is
-\begin{equation}\label{eq:Ederivative}
+\begin{equation}\label{ska:eq:Ederivative}
 \frac{x^5(1+x)^3
 (10x^5+26x^4+50x^3+51x^2+37x+12)}{(x^2+x+1)^2}>0.
 \end{equation}
-At $x=2/3$ the square equals $1120000/1121931<1$. This proves~\eqref{eq:criticalstrict}.
+At $x=2/3$ the square equals $1120000/1121931<1$. This proves~\eqref{ska:eq:criticalstrict}.
 
 \subsection{Reduction to fixed parameter classes}
-Use the sparse/dense split and standardization of Section~\ref{sec:standardization}, for a large fixed $k$ to be chosen. The sparse class already has a strict gap by~\eqref{eq:sparse}. In the dense class, mark one original position $q\le L/3$ with $w_q=1$. Summing over all possible marks introduces at most a factor $L$ and is used only for an upper bound.
+Use the sparse/dense split and standardization of Section~\ref{ska:sec:standardization}, for a large fixed $k$ to be chosen. The sparse class already has a strict gap by~\eqref{ska:eq:sparse}. In the dense class, mark one original position $q\le L/3$ with $w_q=1$. Summing over all possible marks introduces at most a factor $L$ and is used only for an upper bound.
 
-Fix $q,d,Q$, the full overwrite set $F$, and a container $H$. These data are fixed before any product probability is considered. The image one-set lies in $H$, and the matching-block relaxation of Section~\ref{sec:criterion} contains every actual image. The two product bounds are now
+Fix $q,d,Q$, the full overwrite set $F$, and a container $H$. These data are fixed before any product probability is considered. The image one-set lies in $H$, and the matching-block relaxation of Section~\ref{ska:sec:criterion} contains every actual image. The two product bounds are now
 \begin{align}
-K L_1^{\delta_kL} E^b T_0^{c/2},\label{eq:criticalsharp}\\
-K(\beta\gamma)^bT_0^{c/2}L_1^{|H|-a}.\label{eq:criticalcrude}
+K L_1^{\delta_kL} E^b T_0^{c/2},\label{ska:eq:criticalsharp}\\
+K(\beta\gamma)^bT_0^{c/2}L_1^{|H|-a}.\label{ska:eq:criticalcrude}
 \end{align}
-The parameters still satisfy~\eqref{eq:blockcounts}, and $|F|\le u_L$ from~\eqref{eq:overwritecount}. Set $\delta=1/48$. The following three cases are exhaustive.
+The parameters still satisfy~\eqref{ska:eq:blockcounts}, and $|F|\le u_L$ from~\eqref{ska:eq:overwritecount}. Set $\delta=1/48$. The following three cases are exhaustive.
 
 \subsection{Case one a short standardized prefix}
-Suppose $d\le(1-\delta)L$. Put $\sigma=\max(E,\sqrt{T_0})<1$. By~\eqref{eq:blockcounts},
+Suppose $d\le(1-\delta)L$. Put $\sigma=\max(E,\sqrt{T_0})<1$. By~\eqref{ska:eq:blockcounts},
 \[
 b+c=L-d-f\ge\delta L-2.
 \]
-Consequently~\eqref{eq:criticalsharp} is at most
-\begin{equation}\label{eq:caseone}
+Consequently~\eqref{ska:eq:criticalsharp} is at most
+\begin{equation}\label{ska:eq:caseone}
 K L_1^{\delta_kL}\sigma^{\delta L-2}.
 \end{equation}
 Before restoring the vanishing container and preimage rates, this has the fixed positive exponential saving $-\delta\log\sigma$.
@@ -528,8 +715,8 @@ Suppose $d>(1-\delta)L$ and $|H|<5L/12$. Since $b\le L-d$ and $e\le2$,
 a=\frac{d-b-e}{2}\ge\frac{2d-L-2}{2}
 >\left(\frac12-\delta\right)L-1.
 \]
-It follows that $a-|H|>L/16-1$. The factors $\beta\gamma,T_0$ are below one, so~\eqref{eq:criticalcrude} is at most
-\begin{equation}\label{eq:casetwo}
+It follows that $a-|H|>L/16-1$. The factors $\beta\gamma,T_0$ are below one, so~\eqref{ska:eq:criticalcrude} is at most
+\begin{equation}\label{ska:eq:casetwo}
 K L_1^{-L/16+1}.
 \end{equation}
 This gives the fixed positive saving $(\log L_1)/16$.
@@ -540,12 +727,12 @@ Suppose $d>(1-\delta)L$ and $|H|\ge5L/12$. At most $q$ members of $H$ lie above 
 |H|-q\ge L/12
 \]
 eligible source positions $i\in H$ satisfying $i+q\le d$. Discard a source if either endpoint $i,i+q$ belongs to $F$, if either is an exceptional matching coordinate, or if the two endpoints belong to the same ordinary matching block. The first exclusion costs at most $2|F|\le2u_L$, the second at most four, and the last at most one, since it requires $2i+q=L$. Thus the number $m$ of retained relations satisfies
-\begin{equation}\label{eq:mrelations}
+\begin{equation}\label{ska:eq:mrelations}
 m\ge L/12-2u_L-5.
 \end{equation}
 
 Every actual image $v$ in the fixed parameter class obeys
-\begin{equation}\label{eq:translated}
+\begin{equation}\label{ska:eq:translated}
 (v_i,v_{i+q})\ne(1,3)
 \end{equation}
 for each retained source. Indeed, the original marked value was $w_q=1$, and the original inequality gives $1+w_i\ge w_{i+q}$. The queried endpoints were unchanged, so the same forbidden pair holds for their image values. This argument uses the \emph{original} value at $q$, not the image value $v_q$. The marked position itself may have been overwritten. Nor is any assumption made that every eligible source actually carries one.
@@ -563,30 +750,30 @@ is allowed and has weight $x^3$. Its target is a prefix coordinate, so the assig
 (\text{target}=3,\ \text{partner}=2)
 \]
 is allowed and has weight $x^5$, irrespective of target eligibility or of the partner's side. Each block's total weight is at most $W^2$, because every allowed pair is in $\{1,2,3\}^2$. The source and target blocks are distinct. Therefore
-\begin{equation}\label{eq:eta}
+\begin{equation}\label{ska:eq:eta}
 \Pr(v_i=1,\ v_{i+q}=3)\ge\eta:=\frac{x^8}{W^4}\in(0,1).
 \end{equation}
 Distinct selected relations involve disjoint blocks, so these violation events are independent in the relaxed product measure. Their exclusion multiplies the product bound by at most
 \begin{align}
 (1-\eta)^{m/8}
-&\le K_k\exp\left[-\frac\eta8\left(\frac1{12}-\frac2k\right)L\right]\label{eq:penalty}\\
+&\le K_k\exp\left[-\frac\eta8\left(\frac1{12}-\frac2k\right)L\right]\label{ska:eq:penalty}\\
 &\le K_k e^{-\eta L/128}\qquad(k\ge96).\nonumber
 \end{align}
-The ceiling error and the fixed $k^2$ term in $u_L$ are absorbed into $K_k$. When the lower bound in~\eqref{eq:mrelations} is negative, the same formula remains a harmless loose bound after this constant is included. Together with~\eqref{eq:criticalsharp} and $E,T_0<1$, the case-three image weight is at most
-\begin{equation}\label{eq:casethree}
+The ceiling error and the fixed $k^2$ term in $u_L$ are absorbed into $K_k$. When the lower bound in~\eqref{ska:eq:mrelations} is negative, the same formula remains a harmless loose bound after this constant is included. Together with~\eqref{ska:eq:criticalsharp} and $E,T_0<1$, the case-three image weight is at most
+\begin{equation}\label{ska:eq:casethree}
 K_kL_1^{\delta_kL}e^{-\eta L/128}.
 \end{equation}
 
-The independence used here belongs only to the enlarged product of matching blocks. We never assert independence in the actual Kunz ensemble, and never condition the product measure on Kunz validity, overwrite values, or the value at the original mark. These are precisely the constraints that can be dropped for an upper bound before imposing the necessary exclusions~\eqref{eq:translated}.
+The independence used here belongs only to the enlarged product of matching blocks. We never assert independence in the actual Kunz ensemble, and never condition the product measure on Kunz validity, overwrite values, or the value at the original mark. These are precisely the constraints that can be dropped for an upper bound before imposing the necessary exclusions~\eqref{ska:eq:translated}.
 
 \subsection{One parameter choice for all cases}
 Define the positive fixed saving
-\begin{equation}\label{eq:tau}
+\begin{equation}\label{ska:eq:tau}
 \tau=\min\left(-\frac{\log\sigma}{48},
 \frac{\log L_1}{16},\frac\eta{128}\right)>0.
 \end{equation}
 The combined container, eligibility, and preimage exponential rate is at most
-\begin{equation}\label{eq:epsilonk}
+\begin{equation}\label{ska:eq:epsilonk}
 \eps_k=b_k+\delta_k\log L_1+\frac{\log M}{k}\longrightarrow0.
 \end{equation}
 Choose one integer $k\ge96$ with $\eps_k<\tau/4$. This choice works for all three cases. After multiplying their image estimates by all parameter and preimage bounds, and summing containers and the at most $L$ marks, the dense contribution is at most
@@ -594,16 +781,16 @@ Choose one integer $k\ge96$ with $\eps_k<\tau/4$. This choice works for all thre
 K_k(L+1)^{k^2+k+2}e^{-3\tau L/4}
 \le K'_k e^{-\tau L/2}.
 \]
-The second inequality follows because a fixed polynomial times $e^{-\tau L/4}$ is bounded over positive integers. The sparse contribution~\eqref{eq:sparse} is at most another constant times $T_0^{L/4}$. Thus~\eqref{eq:earlygap} holds, for example with
+The second inequality follows because a fixed polynomial times $e^{-\tau L/4}$ is bounded over positive integers. The sparse contribution~\eqref{ska:eq:sparse} is at most another constant times $T_0^{L/4}$. Thus~\eqref{ska:eq:earlygap} holds, for example with
 \[
 \theta_V=\max(e^{-\tau/2},T_0^{1/4})<1
 \]
-and a sufficiently large finite $K_V$. This completes the proof of Theorem~\ref{thm:early}.
+and a sufficiently large finite $K_V$. This completes the proof of Theorem~\ref{ska:thm:early}.
 
 The ordering is important: fix the activities and all positive margins, choose a single sufficiently large $k$, and only then let $L$ increase. The proof makes no exchange of a growing standardization parameter with the word length.
 
-\section{The analytic disk and the positive simple pole}\label{sec:analytic}
-We now prove Theorem~\ref{thm:main}. Let $\cV(z)$ be the genus generating function of the early-one class in~\eqref{eq:VL}. Every length-$L$ word has genus at most $3L$. For $y>x=\xi$,
+\section{The analytic disk and the positive simple pole}\label{ska:sec:analytic}
+We now prove Theorem~\ref{ska:thm:main}. Let $\cV(z)$ be the genus generating function of the early-one class in~\eqref{ska:eq:VL}. Every length-$L$ word has genus at most $3L$. For $y>x=\xi$,
 \[
 \sum_{\substack{w\in V\,;\ |w|=L}}y^{g(w)}
 \le (y/\xi)^{3L}V_L
@@ -611,7 +798,7 @@ We now prove Theorem~\ref{thm:main}. Let $\cV(z)$ be the genus generating functi
 \]
 For example, $y=\xi\theta_V^{-1/6}>\xi$ makes the bracket $\sqrt{\theta_V}<1$. Hence $\cV(y)<\infty$, and its nonnegative coefficient series is analytic for $|z|<y$.
 
-Proposition~\ref{prop:numerator} makes $N$ analytic for $|z|<33/50$. The exact formal decomposition~\eqref{eq:proofmap}, initially valid near zero, therefore gives a meromorphic continuation of $\cS$ to the intersection of these disks.
+Proposition~\ref{ska:prop:numerator} makes $N$ analytic for $|z|<33/50$. The exact formal decomposition~\eqref{ska:eq:proofmap}, initially valid near zero, therefore gives a meromorphic continuation of $\cS$ to the intersection of these disks.
 
 There is no zero of $1-P(z)$ with $|z|<\xi$, since $|P(z)|\le P(|z|)<1$. On $|z|=\xi$, the equation $P(z)=1$ implies equality in the triangle inequality, and each nonzero monomial of $P(z)$ must have positive real phase. Writing $z=\xi e^{i\vartheta}$ gives $e^{3i\vartheta}=e^{4i\vartheta}=1$, and thus $e^{i\vartheta}=1$. The only boundary zero is $z=\xi$. It is simple, because $P'(\xi)>0$.
 
@@ -620,7 +807,7 @@ Since the polynomial has finitely many roots, one can choose $R_s>\xi$ smaller t
 1-P(z)=\xi P'(\xi)(1-z/\xi)+O((z-\xi)^2).
 \]
 Therefore the function
-\begin{equation}\label{eq:analyticremainder}
+\begin{equation}\label{ska:eq:analyticremainder}
 H(z)=\frac{N(z)}{1-P(z)}+\cV(z)
 -\frac{N(\xi)}{\xi P'(\xi)}\frac1{1-z/\xi}
 \end{equation}
@@ -628,15 +815,15 @@ has a removable singularity at $\xi$ and is analytic on $|z|<R_s$. For any fixed
 \[
 |[z^g]H(z)|\le \max_{|z|=R'}|H(z)|\,(R')^{-g}.
 \]
-Set $\rho_2=(R')^{-1}<\rho$ to obtain~\eqref{eq:main}. Positivity and finiteness follow from the convergent nonnegative numerator and its strictly positive baseline:
-\begin{equation}\label{eq:positivity}
+Set $\rho_2=(R')^{-1}<\rho$ to obtain~\eqref{ska:eq:main}. Positivity and finiteness follow from the convergent nonnegative numerator and its strictly positive baseline:
+\begin{equation}\label{ska:eq:positivity}
 0<\frac{\xi^3(1+A(\xi))}{\xi P'(\xi)}\le C_s<\infty.
 \end{equation}
 No Tauberian argument, ratio-limit hypothesis, or extrapolation of coefficients is involved.
 
-\begin{corollary}[Consequences for the stressed sequence]\label{cor:stress}
+\begin{corollary}[Consequences for the stressed sequence]\label{ska:cor:stress}
 For some $0<\lambda<1$,
-\begin{equation}\label{eq:stressconsequences}
+\begin{equation}\label{ska:eq:stressconsequences}
 \frac{s_g}{\rho^g}=C_s+O(\lambda^g),\qquad
 \frac{s_{g+1}}{s_g}=\rho\bigl(1+O(\lambda^g)\bigr),\qquad
 s_g=g^{o(1)}\rho^g.
@@ -644,16 +831,16 @@ s_g=g^{o(1)}\rho^g.
 The sequence is positive and strictly increasing for all sufficiently large $g$, and its $g$th root tends to $\rho$.
 \end{corollary}
 \begin{proof}
-Take $\lambda=\rho_2/\rho$. Divide~\eqref{eq:main} by $C_s\rho^g$, whose constant is positive. The ratio conclusion follows by division of $1+O(\lambda^{g+1})$ by $1+O(\lambda^g)$. Taking logarithms gives the root and $g^{o(1)}$ conclusions. Finally,
+Take $\lambda=\rho_2/\rho$. Divide~\eqref{ska:eq:main} by $C_s\rho^g$, whose constant is positive. The ratio conclusion follows by division of $1+O(\lambda^{g+1})$ by $1+O(\lambda^g)$. Taking logarithms gives the root and $g^{o(1)}$ conclusions. Finally,
 \[
 s_{g+1}-s_g=C_s(\rho-1)\rho^g+O(\rho_2^g)>0
 \]
 eventually, because $\rho>1$.
 \end{proof}
 
-\section{Two poles for the depth at most three count}\label{sec:twopole}
-Retain $t_g,h_g,n_g$ and the exact filter of Section~\ref{sec:kunz}. Write
-\begin{equation}\label{eq:Slead}
+\section{Two poles for the depth at most three count}\label{ska:sec:twopole}
+Retain $t_g,h_g,n_g$ and the exact filter of Section~\ref{ska:sec:kunz}. Write
+\begin{equation}\label{ska:eq:Slead}
 S_{\mathrm{lead}}=\frac{\varphi}{\sqrt5}
 \left(1+\cS(\varphi^{-1})\right)
 =\frac{\varphi}{\sqrt5}\left(1+\sum_{g\ge0}s_g\varphi^{-g}\right),
@@ -662,13 +849,13 @@ S_{\mathrm{lead}}=\frac{\varphi}{\sqrt5}
 \end{equation}
 The series converges because $\varphi^{-1}<\xi$, and $\kappa>0$. This is the usual leading constant from the Fibonacci filter, with a subscript only to distinguish it from the generating function $\cS$.
 
-\begin{corollary}[The shallow residual]\label{cor:twopole}
+\begin{corollary}[The shallow residual]\label{ska:cor:twopole}
 For some $0<\rho_3<\rho$,
-\begin{equation}\label{eq:twopole}
+\begin{equation}\label{ska:eq:twopole}
 t_g=S_{\mathrm{lead}}\varphi^g-\kappa C_s\rho^g+O(\rho_3^g).
 \end{equation}
 In particular, $(t_g-S_{\mathrm{lead}}\varphi^g)/\rho^g\to-\kappa C_s<0$. For all semigroups the conclusion is exactly
-\begin{equation}\label{eq:total}
+\begin{equation}\label{ska:eq:total}
 n_g=S_{\mathrm{lead}}\varphi^g+h_g-\kappa C_s\rho^g+O(\rho_3^g).
 \end{equation}
 \end{corollary}
@@ -682,14 +869,14 @@ At $\xi$, the filter denominator is nonzero. The coefficient of $(1-z/\xi)^{-1}$
 \[
 \frac{C_s}{1-\xi-\xi^2}=-\kappa C_s.
 \]
-Choose $R$ with $\xi<R<\min(R_s,\varphi)$. After subtracting these two simple-pole terms, the function is analytic for $|z|<R$. The negative Fibonacci pole lies outside this disk. Cauchy's estimate on a slightly smaller radius greater than $\xi$ proves~\eqref{eq:twopole}, and $n_g=t_g+h_g$ proves~\eqref{eq:total}.
+Choose $R$ with $\xi<R<\min(R_s,\varphi)$. After subtracting these two simple-pole terms, the function is analytic for $|z|<R$. The negative Fibonacci pole lies outside this disk. Cauchy's estimate on a slightly smaller radius greater than $\xi$ proves~\eqref{ska:eq:twopole}, and $n_g=t_g+h_g$ proves~\eqref{ska:eq:total}.
 \end{proof}
 
-The explicit $h_g$ in~\eqref{eq:total} is essential. This article does not show that $h_g/\rho^g$ converges, determine $h_g/s_g$, or prove a sign or noncancellation for the total residual. If a finite limit $C_h$ were established separately, its total secondary coefficient would be $C_h-\kappa C_s$; equality would require a further analysis on a smaller scale.
+The explicit $h_g$ in~\eqref{ska:eq:total} is essential. This article does not show that $h_g/\rho^g$ converges, determine $h_g/s_g$, or prove a sign or noncancellation for the total residual. If a finite limit $C_h$ were established separately, its total secondary coefficient would be $C_h-\kappa C_s$; equality would require a further analysis on a smaller scale.
 
-\section{An inverse threshold and fixed-order corrections}\label{sec:inverse}
-The finite amplitude improves inversion beyond a statement of exponential root growth. Fix constants from~\eqref{eq:main} and put
-\begin{equation}\label{eq:inverseparams}
+\section{An inverse threshold and fixed-order corrections}\label{ska:sec:inverse}
+The finite amplitude improves inversion beyond a statement of exponential root growth. Fix constants from~\eqref{ska:eq:main} and put
+\begin{equation}\label{ska:eq:inverseparams}
 \lambda=\rho_2/\rho\in(0,1),\qquad
 \delta_*=-\frac{\log\lambda}{\log\rho}>0,\qquad
 x_0(y)=\frac{\log(y/C_s)}{\log\rho}.
@@ -700,9 +887,9 @@ G(y)=\min\{g\ge0:s_g\ge y\}.
 \]
 It exists because $s_g\to\infty$. Enlarge the range of $y$ so that it exceeds all counts in the finite initial segment before eventual strict monotonicity.
 
-\begin{corollary}[A shrinking integer-boundary bracket]\label{cor:inverse}
+\begin{corollary}[A shrinking integer-boundary bracket]\label{ska:cor:inverse}
 There are finite constants $K_*,Y$ such that, for all real $y\ge Y$,
-\begin{equation}\label{eq:ceilingbracket}
+\begin{equation}\label{ska:eq:ceilingbracket}
 \left\lceil x_0(y)-K_*y^{-\delta_*}\right\rceil
 \le G(y)\le
 \left\lceil x_0(y)+K_*y^{-\delta_*}\right\rceil.
@@ -711,7 +898,7 @@ If $\dist(x_0(y),\Z)>K_*y^{-\delta_*}$, the two endpoints coincide and $G(y)=\lc
 \end{corollary}
 \begin{proof}
 Write $s_g=C_s\rho^g(1+e_g)$ with $|e_g|\le M_0\lambda^g$. Eventually $|e_g|\le1/2$, so
-\begin{equation}\label{eq:logerror}
+\begin{equation}\label{ska:eq:logerror}
 \left|\frac{\log s_g}{\log\rho}-g-\frac{\log C_s}{\log\rho}\right|
 \le\frac{2M_0}{\log\rho}\lambda^g.
 \end{equation}
@@ -727,7 +914,7 @@ g_- =\lceil x_0(y)-\eps\rceil-1,
 \]
 Both are within distance two of $x_0(y)$, and
 $g_-<x_0(y)-\eps$ while $g_+\ge x_0(y)+\eps$.
-The strict slack $K_*>K_0$ in~\eqref{eq:logerror} gives $s_{g_-}<y<s_{g_+}$, including when either shifted endpoint is itself an integer. Eventual monotonicity, together with exclusion of the finite initial segment, yields $g_-+1\le G(y)\le g_+$, which is~\eqref{eq:ceilingbracket}.
+The strict slack $K_*>K_0$ in~\eqref{ska:eq:logerror} gives $s_{g_-}<y<s_{g_+}$, including when either shifted endpoint is itself an integer. Eventual monotonicity, together with exclusion of the finite initial segment, yields $g_-+1\le G(y)\le g_+$, which is~\eqref{ska:eq:ceilingbracket}.
 
 For the exact-count promise $y=s_g$,
 \[
@@ -737,11 +924,11 @@ x_0(s_g)=g+\frac{\log(1+e_g)}{\log\rho}
 Eventually the error is strictly less than one half, proving unique nearest-integer recovery. This last conclusion uses the exact-count promise; nearest-integer rounding is generally incorrect for arbitrary thresholds.
 \end{proof}
 
-Near an integer boundary, the bracket~\eqref{eq:ceilingbracket} must be retained. The error estimate does not choose a side of that boundary. The constants in this inversion result are existence quantities; without a certified evaluation of $C_s$ and the remainder, it is not a practical numerical inverse algorithm.
+Near an integer boundary, the bracket~\eqref{ska:eq:ceilingbracket} must be retained. The error estimate does not choose a side of that boundary. The constants in this inversion result are existence quantities; without a certified evaluation of $C_s$ and the remainder, it is not a practical numerical inverse algorithm.
 
-\begin{corollary}[Every fixed inverse-power correction is zero]\label{cor:allorders}
+\begin{corollary}[Every fixed inverse-power correction is zero]\label{ska:cor:allorders}
 For every fixed integer $N\ge1$,
-\begin{equation}\label{eq:allorders}
+\begin{equation}\label{ska:eq:allorders}
 s_g=C_s\rho^g\bigl(1+o(g^{-N})\bigr).
 \end{equation}
 Consequently, in any fixed-order expansion
@@ -752,12 +939,38 @@ s_g=C_s\rho^g\left(1+\frac{c_1}{g}+\cdots+
 all coefficients $c_1,\ldots,c_N$ vanish.
 \end{corollary}
 \begin{proof}
-The relative error in~\eqref{eq:main} is $O(\lambda^g)$, which is $o(g^{-N})$ for every fixed $N$. If a displayed coefficient were nonzero, multiply by the smallest corresponding power $g^j$ after subtracting one and take the limit. The exponential remainder tends to zero, contradicting that nonzero coefficient.
+The relative error in~\eqref{ska:eq:main} is $O(\lambda^g)$, which is $o(g^{-N})$ for every fixed $N$. If a displayed coefficient were nonzero, multiply by the smallest corresponding power $g^j$ after subtracting one and take the limit. The exponential remainder tends to zero, contradicting that nonzero coefficient.
 \end{proof}
 
 This is an all-fixed-algebraic-orders statement, not a full subdominant transseries. It does not locate the next singularity, determine its amplitude, rule out oscillations at smaller exponential scales, or identify the optimal remainder base.
 
-\section{Bounded exact checks and reproducibility}\label{sec:checks}
+\begin{remark}[{[write]} The inverse and the transseries volume, 7~October 2026]\label{ska:rem:transseries}
+Compared statement by statement with the repository's transseries
+volume~\cite{TSvol}; the volume's symbols are not used here.
+\begin{enumerate}\raggedright
+\item \emph{The growth.} If Theorem~\ref{ska:thm:main} holds, then along the
+integers $\log s_g=\log C_s+g\log\rho+O(\lambda^g)$: the
+exponential--power model of \file{p0:def:model} with exponent one, no
+logarithmic term and zero correction series, every correction being smaller
+than every power of $g$ (which is Corollary~\ref{ska:cor:allorders}). This is
+an exact instance of the model identity along the sequence, conditional on
+the theorem.
+\item \emph{The inverse centre.} $x_0(y)$ of~\eqref{ska:eq:inverseparams} is
+the exact solution of the volume's dominant block \file{p0:thm:lambert-core}
+in its degenerate case without logarithmic term (part~(1)), with slope
+$\log\rho$ and target $\log(y/C_s)$: an exact instance.
+\item \emph{The thresholds.} $G(y)$ is the volume's staircase
+(\file{p0:def:three-inverses}(1)) of the eventually increasing~$s_g$. The model
+$C_s\rho^x$ does not take the values $s_g$ at the integers, so it is not an
+admissible interpolation: the bracket~\eqref{ska:eq:ceilingbracket}, with its
+clause for $\dist(x_0,\Z)$, is an analogue of \file{p0:thm:staircase}(2), and
+the nearest-integer recovery of a promised exact count an analogue of
+\file{p0:thm:staircase}(3), not instances. Both are proved directly, and both
+inherit the conditional status of Theorem~\ref{ska:thm:main}.
+\end{enumerate}
+\end{remark}
+
+\section{Bounded exact checks and reproducibility}\label{ska:sec:checks}
 The mathematical proof above is independent of computation. The accompanying original Python companion checks finite instances and exact algebra to detect implementation or transcription errors. All decisive arithmetic is integer or rational arithmetic. No numerical estimate of $C_s$ is supplied.
 
 \subsection{What is checked}
@@ -775,8 +988,29 @@ The offline builder checks an exact public-file allowlist, snapshots its sources
 The reproducible package contains the editable article, its PDF, the companion and tests, a short source map, and the builder documentation. It does not redistribute third-party papers, prior supporting reports, private working records, or audit notes. The complete mathematical argument needed for this theorem is in this article. A manifest pins the public members, and a separate checksum pins the actual ZIP bytes. Normal and optimized-Python replays check that validation survives optimization and that the declared outputs agree. Exact commands and tested resource caps are specified in the package README.
 
 Finite tests validate only their stated bounded domains. They do not prove the universal weighted criterion, justify an asymptotic extrapolation, or replace the three-case early-one argument.
+\begin{writenote}[The shipped files, 7 October 2026]
+In ProveIt the PDF and the manifest are not shipped and the delivered README
+is replaced; the companion, the tests and the builder are
+\file{code/companion-exact_checks.py}, \file{code/tests-test_companion.py},
+\file{code/tests-test_build.py} and \file{code/build.py}. The builder checks
+the exact delivered seven-file layout (\file{companion/}, \file{tests/}), and
+the companion test imports the companion by its delivered path, so both run
+only in a re-extracted archive; the report README gives commands.
+\end{writenote}
 
-\section{Further questions}\label{sec:questions}
+\begin{remark}[{[write]} The OEIS, 7~October 2026]\label{ska:rem:oeis}
+The source cites no OEIS entry. The count $n_g$ of all numerical semigroups of
+genus~$g$ is OEIS A007323, revision \#263 (18 August 2026), by Don Zagier
+(1994), which links Zhu's paper and displays Bras-Amor\'os's conjectures,
+among them $a(n)\ge a(n-1)+a(n-2)$ (Zhu's Conjecture~1.2); the total
+formula~\eqref{ska:eq:total} does not decide it, as the paragraph after
+Corollary~\ref{ska:cor:twopole} says. Searches of 7~October 2026 for initial
+segments of $s_g$ ($1,0,1,3,2,4,9,12,20,32,\ldots$ from $g=3$) and of $t_g$
+($1,1,2,4,6,11,20,33,57,99,\ldots$) found no entry; neither sequence is in the
+OEIS. No OEIS edit is part of this work.
+\end{remark}
+
+\section{Further questions}\label{ska:sec:questions}
 \subsection{Depth four and the full secondary residual}
 The principal remaining enumeration question is whether $h_g=C_h\rho^g+o(\rho^g)$ for some finite positive $C_h$, or whether a genuinely different prefactor occurs. The early-one argument exploits that every unwrapped three-letter violation is $(1,1,3)$. Depth four introduces additional forbidden patterns and a wrapped constraint, so the present block penalty does not transfer without a new structural analysis. A useful next goal is an exact depth-four decomposition whose boundary series has a checkable convergence criterion. Even if $C_h$ exists, proving $C_h\ne\kappa C_s$ is a separate question.
 
@@ -795,7 +1029,23 @@ The exponential asymptotic error does not by itself explain the apparent positiv
 The argument isolates one simple pole and proves an analytic neighborhood beyond it. The next obstruction might arise from another zero of $1-P$, from the boundary numerator, or from the early-one series. Locating it would determine whether smaller terms are pure exponentials, oscillatory contributions, or more complicated singular terms. The arbitrary admissible bases $\rho_2$ and $\rho_3$ used here are not asserted to be optimal.
 
 \subsection{General activity domains}
-The inequalities in Proposition~\ref{prop:criterion} are sufficient conditions, not a characterization of all convergent activity triples. The invariant $\gamma/\alpha$ and the exact transformation~\eqref{eq:Tmap} suggest studying the true convergence boundary of $\sum_rS_r(u,v,w)$. A sharper description could strengthen amplitude tail bounds and distinguish geometric mechanisms that are hidden by a uniform container relaxation. Any such use must retain the distinction between the exact separated-class renewal and the full stressed series.
+The inequalities in Proposition~\ref{ska:prop:criterion} are sufficient conditions, not a characterization of all convergent activity triples. The invariant $\gamma/\alpha$ and the exact transformation~\eqref{ska:eq:Tmap} suggest studying the true convergence boundary of $\sum_rS_r(u,v,w)$. A sharper description could strengthen amplitude tail bounds and distinguish geometric mechanisms that are hidden by a uniform container relaxation. Any such use must retain the distinction between the exact separated-class renewal and the full stressed series.
+\begin{writenote}[Added 7 October 2026, under Vladimir's standing rule of 4 October 2026]
+These five directions are the source's own and stay open. The write adds two.
+\emph{Independent verification} of Theorem~\ref{ska:thm:main}, which the source
+requests: the write's reading found no error, but no second reader has
+checked the all-length argument, and Zhu's finite data are far from the
+asserted limit (note at the end of Section~1.2). \emph{The boundary series
+at the critical point.} With the transformed activities
+$(u,v,w)=(A^2,A^2C,A^2\xi^3)(\xi)=(0.5228\ldots,0.5727\ldots,0.1502\ldots)$,
+whose factors $\Pi=0.9008\ldots$, $T_0=0.9269\ldots$, $E=0.9438\ldots$ satisfy
+the criterion with the rate bound $\max(\sqrt\Pi,\sqrt E,\sqrt{T_0})=0.9715\ldots$,
+the write's floating values $D_r(\xi)=0.4386$, $0.4707$, $0.4989$, $0.5353$, $0.5664$, $0.5907$ for $r=23,25,\ldots,33$ and $0.3003$, $0.3277$, $0.3472$, $0.3665$, $0.3886$ for $r=24,26,\ldots,32$ are still increasing (by factors
+between $1.04$ and $1.10$ every two steps for $21\le r\le33$, slowly
+decreasing), and the lower approximants $C_s^{(R)}$ are $0.4490$, $1.0798$, $2.0415$, $2.4159$ for $R=10,20,30,33$ (the baseline term alone gives $0.1199$). The proof's polynomial factors allow such a transient; locating
+the turning point, or a certified tail bound, would test the theorem
+quantitatively. No claim of the source was found false.
+\end{writenote}
 
 \clearpage
 \begin{thebibliography}{9}
@@ -820,5 +1070,7 @@ Daniel G. Zhu, \emph{Sub-Fibonacci behavior in numerical semigroup enumeration},
 \href{https://doi.org/10.5070/C63261988}{doi:10.5070/C63261988}.
 \href{https://arxiv.org/html/2202.05755v3}{arXiv version 3, 7 September 2023}.
 Stressed words and the filter: Section~3; dense-window standardization: Sections~5.4--5.5; polynomial-prefactor formulation: Section~7.3(c); secondary cancellation discussion: Section~7.4.
+\bibitem{TSvol}
+ProveIt, \emph{Transseries and inversion}, \path{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex}; Part~0 (\file{p0:def:model}, \file{p0:thm:lambert-core}, \file{p0:def:three-inverses}, \file{p0:thm:staircase}). [Added in the write.]
 \end{thebibliography}
 \end{document}

@@ -1,214 +1,230 @@
-# Report274: reproducible companion and build
+# A Finite Positive Amplitude for Stressed Kunz Words
 
-This distribution contains the article, its source, a bounded exact-arithmetic
-companion, and offline regression/build tools. See `article.pdf` for the
-mathematical statements and `SOURCES.md` for bibliographic provenance. The
-companion's finite checks are diagnostics and regression tests; they do not
-replace the article's proofs or certify an asymptotic threshold.
+**Numerical semigroups of depth at most three, in Kunz coordinates: the
+"stressed" words on {1,2,3} are claimed to satisfy `s_g = C_s ρ^g + O(ρ_2^g)`
+with `0 < C_s < ∞`, `1/ρ` the positive root of `(x² + x³)(x + x² + x³) = 1`
+(`ρ = 1.5151…`, Zhu's `r_{1.51}`), by an exact boundary renewal, an activity
+transformation, a loop-aware container lemma, dense-window standardization
+and an early-one penalty; with a two-pole expansion of the depth-at-most-three
+count, an inverse threshold, and the vanishing of every fixed inverse-power
+correction. The main theorem is not independently verified, and it runs
+against the numerical expectation in Zhu's Conjecture 7.3.**
 
-## Requirements
+A single-source research report: Report 274 of an external research session,
+which arrived alone in `764740f07` (6 October 2026), outside the session
+bundle, and was placed by `2680aae95` in the enumerative-combinatorics
+collection (no OEIS sequence is its object); written on 7 October 2026. The
+author line reads "Research report 274" and the PDF author field is empty; the
+manuscript names no person, tool or addressee.
 
-- Linux with POSIX directory descriptors, `O_NOFOLLOW`, and `/proc/self/fd`
-- Python 3.11 or newer; only the standard library is used
-- An already installed TeX toolchain at `/usr/bin/pdftex` and
-  `/usr/bin/pdflatex`, with the packages used by `article.tex`
+| Source | Archive | Placed | Shipped as |
+|---|---|---|---|
+| *A Finite Positive Amplitude for Stressed Kunz Words: A Self Contained Proof with an Exponential Remainder* ("Research report 274", 6 October 2026) | `Report274_Stressed_Kunz_Finite_Amplitude.zip` (448,517 bytes, 9 files, wrapper `Report274/`; `article.tex`, 824 lines, 21 pp.) | `2680aae95` | `article.tex` |
 
-No installation, dependency download, network request, or shell escape is
-performed by the build. The reference environment uses Python 3.12.14 and
-pdfTeX 1.40.26 (TeX Live 2025/dev/Debian). Byte-for-byte PDF reproduction assumes
-matching TeX engines, formats, packages, fonts, and compression libraries.
-Archive byte identity additionally assumes the same Python/DEFLATE toolchain.
-The mathematics does not depend on PDF or ZIP byte identity.
+The package records no ProveIt commit, so no pin is recorded. It names
+Reports 270 and 271 as earlier reports of the same research sequence; they
+were not delivered, and if they arrive they continue this report.
 
-## Run the exact checks
+**Status:** AI-assisted, unrefereed, not formalized: no Lean or Rocq
+declaration exists for any statement of this report, and its place in the
+collection confers no formal status. **Trust boundary: the main theorem is
+not independently verified.** The write read every step of its proof and
+found no error, and every exact finite identity it tested holds, but the
+constants are existential and astronomically weak (the early-one saving is
+below `10⁻⁴` per letter), the finite data are far from the asserted limit,
+and the source itself asks for an independent check of the all-length
+argument.
 
-From the directory containing `build.py`:
+## What the report claims and proves
 
-```sh
-python3 -I -B -X int_max_str_digits=640 tests/test_companion.py
-python3 -I -B -X int_max_str_digits=640 companion/exact_checks.py
-python3 -I -B -X int_max_str_digits=640 -O tests/test_companion.py
-python3 -I -B -X int_max_str_digits=640 -O companion/exact_checks.py
-python3 -I -B -X int_max_str_digits=640 tests/test_build.py
-python3 -I -B -X int_max_str_digits=640 -O tests/test_build.py
-```
+A stressed word is a word on {1,2,3} ending in 3 with `w_i + w_j ≥ w_{i+j}`;
+`s_g` counts them by genus (the sum of the letters), `t_g` counts semigroups of
+depth at most three, `P = A·B` with `A = z² + z³`, `B = z + z² + z³`,
+`P(ξ) = 1`, `ρ = 1/ξ`.
 
-`-I` isolates Python from user-site modules, inherited Python settings, and
-ambient import paths. `-B` suppresses bytecode writes. The explicit `-X` option
-sets the child process's integer-to/from-decimal digit limit to 640, including
-under `-I`, which ignores the corresponding environment variable. The code does
-not disable that protection or alter the caller's global integer digit limit.
-The companion uses integers and exact fractions, with no floating-point or
-shared decimal context.
+- Section 2: the Kunz bijection and the classical Fibonacci filter
+  `𝒯 = (1 + 𝒮)/(1 − z − z²)` (Proposition 2.1).
+- Proposition 3.1: an exact length-refined renewal for the class `U` of words
+  whose first 1 lies beyond one third of the length: `𝒰 = N/(1 − P)` with
+  boundary polynomials `D_r` (1.6).
+- Proposition 4.1: an exact activity transformation
+  `D_r = A·S_r(A², A²C, A²z³)` (and a general version with the map 𝔗).
+- Lemma 5.1, Sections 6–7: a loop-aware container lemma, dense-window
+  standardization with weighted preimages, and the criterion of
+  Proposition 7.2 (`S_L ≤ Kθ^L` when three pair factors are below one).
+- Proposition 8.1: `D_r(33/50)` decays exponentially (rational certificates).
+- **Theorem 9.1:** at the critical point, words with a 1 in the first third
+  have exponentially small total weight (three cases; translated forbidden
+  pairs and a disjoint-block selection).
+- **Theorem 1.1:** `s_g = C_s ρ^g + O(ρ_2^g)`, `C_s = N(ξ)/(ξP'(ξ)) ∈ (0,∞)`;
+  Corollary 10.1 (ratios, roots, monotonicity); Corollary 11.1:
+  `t_g = S_lead φ^g − κ C_s ρ^g + O(ρ_3^g)`; Corollary 12.1: a shrinking
+  two-ceiling inverse bracket; Corollary 12.2: every fixed inverse-power
+  correction vanishes.
 
-The full build runs these three programs normally and with `-O`, and requires
-identical stdout for each normal/optimized pair. Unit-test progress and elapsed
-time are written to stderr and retained in logs, but are not compared as
-reproducible mathematical output. All substantive checks use explicit exceptions
-or unittest methods; they remain active when Python removes `assert` statements.
+(Section, statement and equation numbers are those of the committed PDF.)
 
-The companion defaults are maximum word length 12, boundary order 10, graph
-order 8, allocation size 6, and standardization length 12. Public input ceilings
-are length 12, boundary order 10, graph order 9, allocation size 8, and structural
-size 256. Exact activities must be positive, at most 16, and have numerator and
-denominator of at most 128 bits. Decimal CLI tokens must contain only ASCII
-digits, occupy at most 640 characters, and fit the parameter-specific range;
-magnitude is checked before integer conversion. Public integer parameters reject
-booleans, floats, strings, negative values, and values above their individual caps.
-Allocation size alone permits zero. These are deliberately finite diagnostics.
+## What the report does not claim
 
-### Default-run coverage
+The stressed-word encoding, the lower family and the filter are Bacher's and
+Zhu's; the dense-window standardization is Zhu's; the container method is
+classical (Samotij). No comprehensive priority claim, no peer review. Not
+claimed: a numerical value or useful approximation of `C_s`; a practical onset;
+anything about depth at least four; the sign of the full secondary residual;
+the next singularity or optimal remainder bases; a practical inverse; that the
+finite tests prove the criterion or the three-case argument.
 
-The deterministic JSON report records the actual bounds and counts. With the
-default parameters, the checked finite instances are:
+## The write's findings
 
-- Boundary polynomial identities for orders 1 through 10; length/genus and
-  renewal identities for lengths 1 through 12; complete genus coefficients
-  through genus 14
-- 30 general-activity transform identities using three exact rational activity
-  triples
-- 7,056 eligibility allocations and 1,470 optimum-budget checks
-- 502 cyclic graphs, including 476 looped graphs, and 4,330 independent sets
-- 41,878 dense-block images for block parameters 2 and 3, checking structural
-  properties only; this does not verify the full dense-block probability theorem
-- 11,358 early-mark instances, including 872 overwritten marks; 9,123 retained
-  relations and 7,768 selected relations
-- 54 forbidden-block marginal checks and three four-block independence checks
-- 13 companion regression tests and 33 builder regression tests, each run
-  normally and under `-O`
+- **Zhu read** (dated note at the end of Section 1.2): arXiv:2202.05755v3
+  (7 September 2023). The "Section 7.3(c)" of the source is Conjecture 7.3(c)
+  (p. 19), stated jointly for the depth-at-least-four count `n̂_g` and `s_g`;
+  Zhu's text calls exponential asymptotics for them unlikely on the evidence
+  and suggests exponents between 1.6 and 1.7. Theorem 1.1 would prove the
+  `s_g` halves of Conjecture 7.3(a)–(c) with `α' = 0`. **Zhu's Table 2
+  (`s_g`, `g ≤ 95`) gives `s_g/ρ^g` = 0.3276, 0.4937, 0.9137, 1.4309, 2.1860
+  at `g = 20, 30, 50, 70, 95`, still increasing (local exponent 1.40 at
+  `g = 95`)**; this does not contradict a theorem without effective constants,
+  but its limit regime lies beyond all available counts.
+- **The boundary series** (dated note in Section 14): at the critical point
+  the terms `D_r(ξ)` are still increasing through `r = 33` (0.4386, …, 0.5907
+  for odd `r = 23…33`), by factors between 1.04 and 1.10 every two steps,
+  slowly decreasing, although the transformed activities satisfy the
+  criterion with rate bound 0.9715; the lower approximants `C_s^(R)` reach
+  2.4159 at `R = 33`. The proof's polynomial factors allow such a transient.
+- **Recomputed with the write's own code:** every Kunz word on {1,2,3} of
+  genus `g ≤ 26` (`s_g`, `t_g` equal Zhu's Table 2; the filter, which also
+  holds throughout Zhu's table to `g = 95`; the class `U` equals `N/(1 − P)`,
+  also with the length refinement (3.1)); the transformation (4.2) as a
+  polynomial identity for `r ≤ 6` and modulo `z²⁷` for `r ≤ 8`, the general
+  identity (4.4) at three rational triples, the iterates (4.6); every rational
+  certificate ((1.4), (1.5), (8.2)–(8.5), `E(x)²` and its derivative (9.6),
+  `E(2/3)² = 1120000/1121931`, `T_0(2/3) = 64/81`); `ξ`, `ρ`, `ξP'(ξ)`, the
+  critical factors and the saving `τ ≈ 7.7·10⁻⁵` of (9.16).
+- **Remark 12.3 (transseries volume):** conditional on Theorem 1.1, the growth
+  is an exact instance of `p0:def:model` along the integers (exponent one,
+  no logarithmic term, zero correction series); the inverse centre `x_0(y)` is
+  an exact instance of `p0:thm:lambert-core`(1); Corollary 12.1 and the
+  exact-count recovery are analogues of `p0:thm:staircase`(2) and (3).
+- **The OEIS** (Remark 13.1): `n_g` is A007323 (#263, Zagier; with
+  Bras-Amorós's conjecture `a(n) ≥ a(n−1) + a(n−2)`, which the report does not
+  decide); `s_g` and `t_g` are not in the OEIS. No OEIS edit.
 
-These finite coverage counts are reproducibility records, not asymptotic
-certificates. In particular, observed examples and structural checks do not
-supply uniform probabilistic estimates or a numerical onset guarantee.
+## Further questions, and the standing rule
 
-Graph/container cases with degrees below four are structural diagnostics only;
-the theorem uses its entropy estimate for degrees at least four. Likewise,
-the dense-image tests with parameters two and three exercise the finite
-construction, not the asymptotic choice of a large fixed parameter.
+Section 14 (the source's five directions: depth four and the full secondary
+residual, a certified amplitude, the finite-genus regime, subdominant
+singularities, general activity domains), with a dated note under Vladimir's
+standing rule of 4 October 2026 adding: an **independent verification of
+Theorem 1.1**, which the source requests, and a quantitative study of the
+boundary series at the critical point. No claim of the source was found
+false; nothing is refuted.
 
-## Verify and reproduce
+## Relation to the repository
 
-```sh
-python3 -I -B -X int_max_str_digits=640 build.py verify
-python3 -I -B -X int_max_str_digits=640 build.py reproduce \
-  --output /tmp/report274-build-1
-```
+No other report treats numerical-semigroup enumeration by genus.
+`numerical-semigroup-leaf-types` treats the same objects with a structural
+question (leaves of large type in the semigroup tree) and
+`a069762-pyramidal-frobenius` treats Frobenius numbers; no shared result, so no
+reciprocal note. No Lean or Rocq development treats these objects.
 
-Choose a new, absolute output directory outside the source directory. The builder
-creates it if absent; an existing directory must be empty. It refuses relative
-paths, traversal components, symlink ancestors, the source tree or its ancestors,
-system-directory destinations, and existing output files. It never overwrites a
-previous build. For a second reproduction, choose another fresh directory.
+## Labels and numbering
 
-There are two exact permitted source layouts:
+All labels carry the prefix `ska:` (used nowhere else in the repository): the
+96 delivered labels, prefixed before anything cited them (64 references
+updated: 51 `\eqref`, 13 `\ref`), and the write's three (`ska:sec:provenance`,
+`ska:rem:transseries`, `ska:rem:oeis`); 99 in all. The write's remarks are the
+last statements of their sections and its additions contain no numbered
+display, so every number is delivered (checked against the `.aux` of a build
+of the delivered text: 96 labels, 0 differences). Section 1.3 is the write's.
 
-1. An authoring tree with the seven source files listed below. `verify` checks
-   this exact bounded inventory; no previously published content hash is implied
-2. An extracted distribution with those seven files, `article.pdf`, and
-   `MANIFEST.sha256`. `verify` also checks every manifest digest. `reproduce`
-   additionally requires the rebuilt PDF hash to equal the distributed PDF hash
+## Notation
 
-The seven source files are:
+No symbol was renamed. Letters with several senses are tabulated in Section
+1.3 with the false readings, notably `α, β, γ` (in Section 4 `β = u + v + w`,
+in Sections 6–9 `β = v + w`), `A, B, C, P, Π`, `D, N, n`, `H, R`, `L, M`,
+`q, Q`, `S_r` versus `𝒮`, `t, u, v`, `δ, λ, ρ`.
+
+## The write's additions
+
+The status note after the abstract, the dated note at the end of Section 1.2,
+Section 1.3 (provenance, sources read, checks, relation, collected
+non-claims, reading conventions), Remarks 12.3 and 13.1, the dated notes at the
+ends of Sections 13 and 14, the label prefixes, the bibliography entry
+`TSvol`, and the `\file` macro and `writenote` environment. Everything else is
+delivered text.
+
+## Files
 
 ```text
-README.md
-SOURCES.md
-article.tex
-build.py
-companion/exact_checks.py
-tests/test_build.py
-tests/test_companion.py
+README.md                        this guide (replaces the delivered README.md)
+SOURCES.md                       the source's sources and proof scope
+article.tex                      the report (delivered article.tex, written)
+article.pdf                      compiled report, 25 pages (a build of this text)
+code/build.py                    delivered builder: allowlisted snapshot, tests, TeX, ZIP and pins (Linux only)
+code/companion-exact_checks.py   delivered companion: bounded exact checks (delivered companion/exact_checks.py)
+code/tests-test_build.py         33 builder regression tests (delivered tests/test_build.py; Linux only)
+code/tests-test_companion.py     13 companion regression tests (delivered tests/test_companion.py)
 ```
 
-Unexpected files, empty extra directories, bytecode caches, and generated files
-inside the source tree are rejected. Do not place a ZIP or its detached pin in
-the extracted `Report274` directory.
-
-A successful reproduction writes these deliverables outside the source tree:
-
-- `article.pdf`
-- `MANIFEST.sha256`
-- `report274_stressed_amplitude.zip`
-- `report274_stressed_amplitude.zip.sha256`
-- `reproduction_receipt.json`
-
-The output also retains normal/optimized test and companion logs, a copied
-`check-work` source snapshot, and the private `tex-work` directory and TeX logs.
-They are not archive members. The receipt records the actual PDF, manifest, and
-ZIP digests, Python version, digit limit, stdout equality, and source-preservation
-result. A failed build leaves its partial output for inspection; use a fresh
-output directory when retrying.
-
-TeX builds a local format, then runs two PDF passes, with shell escape disabled,
-restricted TeX input/output options, and automatic font/format generators
-disabled. The final log must contain no overfull boxes, unresolved references,
-undefined citations, multiply defined labels, or pending cross-reference rerun.
-
-## Archive and pins
-
-The ZIP contains exactly nine regular files under `Report274/`: the seven source
-files above, `article.pdf`, and `MANIFEST.sha256`. Members are sorted, use a fixed
-2026-10-06 00:00:00 timestamp, Unix regular-file mode 0644, DEFLATE level 9, and no
-encryption, extra fields, comments, directory entries, or private build logs.
-The builder reopens the ZIP, verifies metadata, CRCs, member names, and every
-member's bytes, and only then writes the detached actual ZIP pin.
-
-`MANIFEST.sha256` hashes the eight public files other than itself. The detached
-`report274_stressed_amplitude.zip.sha256` hashes the completed archive. The ZIP
-pin is deliberately outside the ZIP to avoid a self-referential hash. A hash
-verifies byte consistency; authenticity requires a trusted, independently
-obtained copy of the pin.
-
-From the build-output directory, check the actual archive pin with:
+Every file except `README.md`, `article.tex` and `article.pdf` is
+byte-identical to its delivery (the builder and the companion and test files
+moved to `code/`). Not shipped (retrievable from `764740f07`): the delivered
+`article.pdf` (21 pages), `MANIFEST.sha256` (8 entries, all verified at the
+write) and the delivered `README.md` (replaced by this guide).
 
 ```sh
-sha256sum -c report274_stressed_amplitude.zip.sha256
+git show 764740f07:docs/incoming/Report274_Stressed_Kunz_Finite_Amplitude.zip > <scratch>/r274.zip
 ```
 
-To repackage a verified extracted distribution without running TeX:
+**Delivered text that names the delivery layout.** Section 13 and
+`SOURCES.md` describe the delivered archive (a dated note at the end of
+Section 13 says what is shipped). `code/build.py` checks the exact delivered
+seven-file layout (`companion/`, `tests/`) and needs Linux descriptor
+features, so it runs only in a re-extracted archive on Linux.
+
+## Rerunning the checks (on scratch copies)
+
+The companion and its tests expect the delivered `companion/` and `tests/`
+directories. From this directory (Git Bash):
 
 ```sh
-python3 -I -B -X int_max_str_digits=640 build.py package \
-  --output /tmp/report274-package-1
+T=$(mktemp -d); mkdir -p "$T/companion" "$T/tests"
+cp code/companion-exact_checks.py "$T/companion/exact_checks.py"; cp code/tests-test_companion.py "$T/tests/test_companion.py"
+cd "$T"
+py -I -B -X int_max_str_digits=640 companion/exact_checks.py > normal.json
+py -I -B -X int_max_str_digits=640 -O companion/exact_checks.py > optimized.json
+cmp normal.json optimized.json && echo identical
+py -I -B -X int_max_str_digits=640 tests/test_companion.py
 ```
 
-`package` requires the manifest-pinned distribution layout. It preserves and
-repackages the existing PDF; it does not claim that TeX or the companion checks
-were rerun. Its output is the ZIP and detached ZIP pin.
+At the write (7 October 2026, Windows, Python 3.14.4) the two outputs were
+identical, every count in the delivered README's coverage list was
+reproduced, and the 13 tests passed in both modes. The builder and its 33
+tests were not run.
 
-## Safety and resource boundaries
+## Build
 
-Python-side reads traverse no-follow directory descriptors and check ordinary
-single-link files before and after reading. A file's identity, size, timestamps,
-and link count must remain stable. Source snapshots are bounded to 64 entries,
-12 MiB per file, and 32 MiB overall, and must match the exact source/distribution
-allowlist. All Python-side destination writes use descriptor-relative exclusive
-creation; existing regular files, symlinks, dangling links, and hard-link aliases
-are refused. Output reads reject aliases and nonregular files as well.
+pdfLaTeX (fontenc, lmodern, geometry, amsmath, amssymb, amsthm, mathtools,
+booktabs, array, microtype, enumitem, hyperref, fancyhdr). In a scratch copy:
 
-Tests and companion checks run from a byte snapshot copied into the external
-build directory. Final inventory comparisons detect source-content changes.
-Output-parent rename regressions verify that an already opened directory handle
-continues to refer to the original directory; pre-open symlink swaps are
-rejected. Subprocess working directories use a pinned descriptor through
-`/proc/self/fd`. Unsupported platforms fail closed rather than substituting a
-path-based fallback.
+```sh
+B=$(mktemp -d); cp article.tex "$B/"; cd "$B"
+latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+```
 
-The subprocess environment is constructed from a small allowlist, with a fixed
-PATH and deterministic time/locale settings. Isolated Python ignores the
-environment hash seed; reproducible output uses explicit sorting and stable
-serialization instead. The integer-digit cap is set explicitly with `-X`. The
-environment does not inherit `PYTHONPATH`, `PYTHONHOME`, loader overrides, or TeX search-path
-variables. Each child has a 900-second timeout and a streaming 4 MiB combined
-stdout/stderr limit. Timeout and output-limit arguments reject booleans,
-fractional values, strings, nonpositive values, and values above their caps.
-Failure terminates the child process group. Standard input is closed.
+The committed PDF was built from this file with MiKTeX pdfLaTeX (three
+passes, 7 October 2026): 25 pages; no errors or warnings, no undefined
+references, no multiply defined labels, no duplicate destinations, no
+overfull or underfull boxes. The delivered text gives 21 pages, equally clean.
 
-These are integrity and bounded-execution safeguards for trusted source and an
-installed toolchain, not an operating-system sandbox. Python test scripts and
-the TeX engine still execute with the caller's privileges. TeX's own file access
-and output creation are explicitly outside the Python no-follow/race-safety
-boundary. The flags reduce accidental or unwanted operations; they do not make
-untrusted TeX safe. Concurrent hostile same-user processes, compromised tools,
-malicious Python source, mounts, and kernel-level attacks are outside the claim.
-Use an independently isolated environment before building untrusted material.
+## Provenance
+
+- Report 274 (arrival `764740f07`, 6 October 2026), placed by `2680aae95`;
+  written 7 October 2026.
+- Sources cited by the report: Zhu, *Sub-Fibonacci behavior in numerical
+  semigroup enumeration* (Combinatorial Theory 3(2), 2023; arXiv:2202.05755v3,
+  read by the write); Bacher, *Generic numerical semigroups*
+  (arXiv:2105.04200); Samotij (Eur. J. Combin. 48, 2015); the undelivered
+  Reports 270 and 271; and the repository's transseries volume and OEIS
+  A007323 (added by the write).
