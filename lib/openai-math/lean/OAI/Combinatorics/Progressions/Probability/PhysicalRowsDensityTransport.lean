@@ -1,3 +1,6 @@
+/- Modified for ProveIt: supply the proved Euclidean-layer measurable-open
+instances explicitly in physicalRowsStandardEquiv on Lean 4.32. All upstream
+declaration statements are unchanged. -/
 import OAI.Combinatorics.Progressions.Geometry.PhysicalRowsStandardCoordinates
 
 namespace OAI
@@ -18,8 +21,13 @@ noncomputable def physicalRowsStandardEquiv : EuclideanJetLayers U Row ≃ᵐ Eu
   invFun z j s := z j (boundedBooleanJetRowsEquiv (Fin q) (j.val + 1) s)
   left_inv _ := rfl
   right_inv _ := rfl
-  measurable_toFun := (physicalRowsToStandard_continuous U).measurable
+  measurable_toFun := by
+    let : OpensMeasurableSpace (EuclideanJetLayers U Row) :=
+      @BorelSpace.opensMeasurable _ _ _ (euclideanJetLayers_borel U)
+    exact (physicalRowsToStandard_continuous U).measurable
   measurable_invFun := by
+    let : OpensMeasurableSpace (EuclideanJetLayers U Std) :=
+      @BorelSpace.opensMeasurable _ _ _ (euclideanJetLayers_borel U)
     apply Continuous.measurable
     apply continuous_pi
     intro j
