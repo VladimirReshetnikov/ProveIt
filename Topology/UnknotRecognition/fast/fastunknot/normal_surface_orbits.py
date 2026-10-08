@@ -9,6 +9,7 @@ from .interval_orbits import count_orbits
 from .normal_surface_geometry import (
     NormalOrbitError, _prepare, _coordinates, _arc_system, normal_arc_pairings,
     _boundary_graph, _fingerprint, _TOPOLOGY_FIELDS,
+    _primitive_coordinates,
 )
 
 
@@ -43,7 +44,7 @@ def _nonzero_boundary_class(prepared, analysed, check):
 
 def normal_surface_topology(triangulation, coordinates, *, max_cycles=None,
                             periodic_rule='fine_wilf', check=lambda: None,
-                            record_certificate=False):
+                            record_certificate=False, reduce_multiplicity=True):
     """Count components, orientations, boundary curves and total Euler value.
 
     The normal surface with doubled coordinates is the horizontal boundary of its
@@ -58,18 +59,27 @@ def normal_surface_topology(triangulation, coordinates, *, max_cycles=None,
     Optional certificates bind the validated input, three orbit proofs and
     a finite boundary-cohomology witness. Use integer_codec.json_safe to
     serialize arbitrary binary sizes. Incomplete calls emit no certificate.
+    Common coordinate multiplicity is removed before orbit search by default.
+    Query statistics then describe the quotient vector, and coordinate_divisor
+    records its exact scale. Topology fields always describe the original input.
+    Disable reduce_multiplicity to retain direct queries and version-one proofs.
     """
     if max_cycles is not None and (type(max_cycles) is not int or max_cycles < 0):
         raise ValueError('max_cycles must be a nonnegative integer or None')
     if type(record_certificate) is not bool:
         raise ValueError('record_certificate must be bool')
+    if type(reduce_multiplicity) is not bool:
+        raise ValueError('reduce_multiplicity must be bool')
     prepared = _prepare(triangulation, check)
     analysed = _coordinates(prepared, coordinates, check)
+    divisor, orbit_data = (_primitive_coordinates(analysed, check)
+                           if reduce_multiplicity else (1, analysed))
+    reduction = {'coordinate_divisor': divisor} if divisor > 1 else {}
     queries, proofs, used = {}, {}, 0
     for label, boundary, scale in [('surface', False, 1),
                                     ('double', False, 2), ('boundary', True, 1)]:
         check()
-        size, pairings = _arc_system(prepared, analysed, boundary=boundary,
+        size, pairings = _arc_system(prepared, orbit_data, boundary=boundary,
                                      scale=scale, check=check)
         remaining = None if max_cycles is None else max_cycles - used
         result = count_orbits(size, pairings, max_cycles=remaining,
@@ -81,7 +91,7 @@ def normal_surface_topology(triangulation, coordinates, *, max_cycles=None,
                               stats=dict(result.stats))
         if not result.complete:
             return dict(status='INCONCLUSIVE', reason='shared orbit-cycle allowance exhausted',
-                        cycles=used, queries=queries)
+                        cycles=used, queries=queries, **reduction)
         if record_certificate:
             proofs[label] = result.certificate
     components = queries['surface']['orbits']
@@ -91,6 +101,11 @@ def normal_surface_topology(triangulation, coordinates, *, max_cycles=None,
     nonorientable = 2 * components - double_components
     if min(orientable, nonorientable) < 0:
         raise ArithmeticError('normal doubling violates the orientation-cover identity')
+    if divisor > 1:
+        orientable, nonorientable = (divisor * orientable + (divisor // 2) * nonorientable,
+                                     (divisor & 1) * nonorientable)
+        components = orientable + nonorientable
+        boundary_components *= divisor
     result = dict(status='COMPLETE', tetrahedra=len(prepared['tetrahedra']),
                   components=components, orientable_components=orientable,
                   nonorientable_components=nonorientable,
@@ -99,7 +114,7 @@ def normal_surface_topology(triangulation, coordinates, *, max_cycles=None,
                   normal_disks=analysed['normal_disks'],
                   maximum_coordinate_bits=analysed['maximum_coordinate_bits'],
                   boundary_normal_arcs=analysed['boundary_arcs'],
-                  cycles=used, queries=queries,
+                  cycles=used, queries=queries, **reduction,
                   trust='native topology of the supplied finite triangulation; '
                         'no correspondence with an input knot is asserted')
     if components == 1:
@@ -124,6 +139,9 @@ def normal_surface_topology(triangulation, coordinates, *, max_cycles=None,
             input_sha256=_fingerprint(triangulation, analysed, check),
             queries=proofs, boundary_homology=parity,
             topology={key: result[key] for key in _TOPOLOGY_FIELDS if key in result})
+        if divisor > 1:
+            result['certificate'].update(schema='normal-surface-topology-v2',
+                                         coordinate_divisor=divisor)
     check()
     return result
 

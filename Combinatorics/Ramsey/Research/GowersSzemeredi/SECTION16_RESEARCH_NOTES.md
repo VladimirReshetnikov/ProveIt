@@ -812,6 +812,90 @@ cells' per-point steps must tile, which is the peer's Lemma 16.1
 partition machinery. This is composition, not new mathematics, plus the
 pre-extension hypothesis.
 
+**Bohr-side size control, proved (same day).**
+- `bohr_card_le_four_pow` (`Proofs16BohrDoubling`):
+  |B(K;ρ)| ≤ 4^|K|·|B(K;ρ/2)|.
+- `bohr_exists_regular_step` (`Proofs16BohrRegularStep`): among the radii
+  ρ(1 − j/(2m)), some consecutive ratio is ≤ 4^(|K|/m), which is about
+  1 + θ for m ≈ |K|/θ.
+
+These work directly with the corpus's `bohr`, without OAI.
+
+**Next: variety doubling.** |V(ρ)| = Σ_{y ∈ B(Ψ;ρ)} |B(Γ ∪ {L_k(y)}; ρ)|.
+The fibres double by `bohr_card_le_four_pow`. The y-range needs a cell
+argument:
+- bucket y ∈ B(Ψ;ρ) into 4^|Ψ| cells with representatives y₀, so that
+  y − y₀ ∈ B(Ψ;ρ/2);
+- Freiman-linearity gives L(y) = L(y − y₀) + (L(y₀) − L(0));
+- so each fibre over y injects, by x ↦ x, into the fibre over y − y₀ of a
+  variety with r more frequencies, namely the constants L_k(y₀) − L_k(0)
+  on that cell.
+
+Bounding the fibre at radius ρ by one at radius ρ/2 needs the radii split
+between the two terms, which adds one more Bohr-doubling factor. So the
+expected bound is |V(ρ)| ≤ 4^O(|Γ|+|Ψ|+r)·|V′(ρ/2)| for a slightly
+enlarged variety V′, and the regular step is then taken over the enlarged
+family.
+
+**Correction (same day): naive variety doubling fails.**
+- The shift L(y) = L(w) + c sends the fibre over y to
+  B(Γ ∪ {L_k(w) + c_k}; ρ), a variety with *shifted* frequencies.
+- Nothing compares it with the unshifted fibre B(Γ ∪ {L_k(w)}; ρ/2). The
+  condition |(L(w) + c)·x| ≤ ρN neither implies nor is implied by
+  |L(w)·x| ≤ ρN/2.
+- So a single variety does not double with respect to itself. The natural
+  object is the family of shifted varieties {V_c}. Controlling their sizes
+  uniformly is the content of Milićević's §3 algebraic regularity method
+  ("efficient algebraic regularity lemma", his Theorem 3.5, generalized
+  from [49]).
+
+The packing step therefore needs that regularity input, beyond the
+Bohr-side lemmas proved here. It is a further hypothesis to state
+precisely, or a substantial formalization in its own right. It is not
+composition.
+
+**From Milićević §2 (read 2026-10-08, pp. 30–39).**
+- His equation (9) is Freiman-linearity on a coset progression in
+  coordinates, φ(Σ λ_i e_i + h) = Σ λ_i φ(e_i) + φ(h). That is
+  `freiman_linear_gap_affine` (`Proofs16GapCoordinates`), so the formal
+  lemma matches his usage.
+- **Proposition 2.37 ("Bohr–Bohr sets are Bohr")** may replace variety
+  doubling. For a Freiman-linear φ : B(Γ;ρ) → 𝕋^d, with r = |Γ|, the set
+  {x ∈ B : ‖φ(x)‖ ≤ σ} contains a Bohr set of codimension at most
+  d + (2r log(σ⁻¹ρ⁻¹))^O(1) and radius at least σ(2r log(σ⁻¹ρ⁻¹))^(−O(1)).
+- For fixed x, the variety's y-section {y ∈ B(Ψ;ρ) : ‖L(y)·x/N‖ ≤ ρ} is
+  such a set, since y ↦ L(y)·x is Freiman-linear.
+- So every y-section contains a genuine Bohr set, of quasi-polynomial
+  codimension, where `bohr_card_le_four_pow` and `bohr_exists_regular_step`
+  apply section by section.
+- Packing could then proceed section by section in y, with boxes in x
+  supplied by the x-direction Dirichlet argument of
+  `bilinearBohrVariety_contains_box_at`. That would avoid shifted-family
+  regularity. Not yet checked in detail.
+
+**Formalized (same day).** `BohrBohrIsBohr D` (Prop. 2.37, d = 1, as a
+hypothesis) and `variety_full_section_contains_bohr`: for every
+x ∈ B(Γ;ρ), {x} × B(Ψ″;ρ″) ⊆ V with |Ψ″| ≤ |Ψ| + r(1 + loss^D) and
+ρ″ ≥ ρ/loss^D (`Proofs16BohrBohrSections`).
+
+**Two observations from attempting the packing.**
+1. **x-fibres need no hypothesis.** For fixed y, the x-section of V is
+   exactly the Bohr set B(Γ ∪ {L_k(y)}; ρ). Proposition 2.37 is needed
+   only for y-sections.
+2. **The real obstruction is partial cells.** `MultiplyLinear` asks that,
+   on each cell, Φ's graph over V ∩ cell ∩ H be covered by few
+   multilinear functions. If V ∩ cell is not a product set, the bi-affine
+   argument breaks at the boundary, because the quadruple chains leave V.
+   Two options:
+   - use only cells inside V, and put the boundary mass in the θ-loss set
+     H^c. That needs boundary mass ≤ θ, a regularity statement for V
+     itself: the shifted-family issue again, but only for the boundary;
+   - prove that Φ on a "convex" V ∩ cell, an interval on each line, is
+     still covered by O(1) multilinear pieces. That needs quadruples
+     linking neighbouring lines inside V.
+
+   Either is a genuine lemma, not bookkeeping.
+
 So off-origin covers of V's graph reduce to two inputs: the peer's
 Lemma 16.1 (polynomial exponent), and Bohr-set regularity for the
 variety's frequencies, with radius losses polynomial in the rank. Both
