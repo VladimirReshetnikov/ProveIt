@@ -95,6 +95,17 @@ class WhiteheadPowerTests(unittest.TestCase):
             self.assertEqual(moves[0]['exponent'], n)
             self.assertEqual(arena.stats['power_moves'], 1)
             self.assertEqual(len(alive), 1)
+        # Historical allocations suppress the expansion-ratio trigger. The
+        # second identical unit direction must still activate the profiler.
+        arena, n = WordArena(), 2**10
+        for g in range(3, 2003):
+            arena.letter(g)
+        base = arena.concat(arena.letter(1), arena.power(arena.letter(2), n))
+        roots, moves = [arena.power(base, 2), arena.power(base, 3)], []
+        self.assertTrue(_search(arena, roots, {1, 2}, moves, relator_moves=True, max_letters=5))
+        self.assertEqual([m['kind'] for m in moves],
+                         ['whitehead', 'whitehead_power', 'relator', 'eliminate'])
+        self.assertEqual(moves[1]['exponent'], n-1)
 
     def test_power_certificate_independent_replayers_and_forgery(self):
         d = Diagram.from_pd(Diagram.from_braid(2, [1, -1, 1]).pd)

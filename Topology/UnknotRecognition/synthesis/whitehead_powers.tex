@@ -1,0 +1,246 @@
+\section{Batching powers of a Whitehead automorphism}
+\label{sec:whitehead-powers}
+
+\subsection{The remaining cost of elementary descent}
+
+Compressed words remove the obligation to materialize every letter, but
+not the obligation to make every search move. For example, the abstract
+presentation
+\[
+ \langle a,b\mid (ab^N)^2,(ab^N)^3\rangle,\qquad N=2^h,
+\]
+has an $O(h)$-size straight-line program (SLP). Neither generator occurs
+once in either relator. A unit Whitehead substitution $a\mapsto ab^{-1}$,
+$b\mapsto b$ reduces total cyclic length by five, and the same direction
+remains available for $N$ iterations. Our recorded producer takes these
+unit steps before attempting an overlap in rank two. The presentation is
+infinite cyclic: writing $u=ab^N$, the two relations imply $u=u^3(u^2)^{-1}=1$,
+so $a=b^{-N}$. This example is a supplied group presentation, not a family
+of hard knot diagrams. It nevertheless isolates an exponential iteration
+cost in the previous compressed search.
+
+The implementation now minimizes cyclic length along a selected Whitehead
+power in one exact operation when a cheap adaptive trigger justifies it.
+The minimization below is elementary and is proved here; it is not an
+assumption imported from an unverified complexity claim in a research report.
+
+\subsection{An exact convex length formula}
+
+Use our established convention for a type-II Whitehead automorphism
+$\alpha=\alpha_{a,A}$, where $a\in A$ and $-a\notin A$. Signed letters
+$x$ with $|x|\ne |a|$ satisfy
+\[
+ \alpha^k(x)=a^{-k[-x\in A]}x a^{k[x\in A]},
+ \qquad \alpha^k(a)=a.
+\]
+Here brackets denote indicators, and $k$ is a nonnegative integer.
+For a cyclically freely reduced relator, retain its cyclic sequence of
+letters other than $a^{\pm1}$. Between successive retained letters $x,y$
+there is a possibly empty run $a^e$, where the sign of $e$ is measured
+relative to the signed multiplier $a$. Its transformed exponent is
+\[
+ e+kd,\qquad d=[x\in A]-[-y\in A]\in\{-1,0,1\}.
+\]
+
+\begin{lemma}[The retained letters do not cancel]
+For every nonnegative integer $k$, the retained cyclic sequence is the same
+before and after applying $\alpha^k$ and cyclic free reduction.
+\end{lemma}
+\begin{proof}
+Only a gap that becomes zero can bring two retained letters together.
+If these letters are inverses, $y=-x$, then $d=0$. Their initial intervening
+run cannot be empty because the input is cyclically freely reduced, so
+that run remains nonempty for every $k$. Thus no first cancellation of
+retained letters is possible, including at the cyclic seam. Words with
+no retained letters are powers of $a$ and are fixed.
+\end{proof}
+
+\begin{proposition}[Weighted-median line minimization]
+For a tuple of cyclically freely reduced relators, total cyclic length
+under $\alpha^k$ has the form
+\[
+ F(k)=C+\sum_t w_t|k-t|,\qquad w_t\in\mathbb Z_{>0}.
+\]
+Each gap with $d\ne0$ contributes one occurrence of $t=-ed$;
+all other contributions belong to $C$. If the histogram is nonempty,
+the smallest nonnegative minimizer is $k_* =\max(0,t_*)$, where $t_*$ is
+the lower weighted median: the first sorted key whose cumulative weight
+is at least half the total. For an empty histogram, $k_*=0$.
+\end{proposition}
+\begin{proof}
+The lemma gives the exact contribution $|e+kd|$ from each gap. For
+$d=\pm1$ this is $|k-(-ed)|$. The integer forward difference of a term
+$|k-t|$ is $-1$ before $t$ and $+1$ at and after $t$. Summing these
+nondecreasing differences gives a convex function. The first nonnegative
+forward difference occurs at the lower weighted median; restricting to
+$k\ge0$ clips that point at zero.
+\end{proof}
+
+Consequently, the exact unit change and optimal change are
+\[
+ F(1)-F(0)=\sum_t w_t\begin{cases}1&t\le0,\\-1&t>0,\end{cases}
+ \qquad
+ F(k_*)-F(0)=\sum_t w_t(|k_*-t|-|t|).
+\]
+When the selected min-cut has negative unit change, $k_*\ge1$ and every
+unit step before the first minimum strictly decreases length. The macro
+therefore never passes through a length-increasing intermediate cyclic
+word. It may choose a different overall search path from recomputing the
+best cut after every unit step; the procedure remains a bounded heuristic
+for finding a certificate.
+
+\subsection{Computing the histogram on a shared grammar}
+
+For each reachable SLP node store four values: first and last retained
+letters (zero if absent), and signed lengths of its prefix and suffix
+$a$-runs. A terminal supplies these immediately. For a concatenation $UV$,
+the first retained letter is that of $U$, if present, and otherwise that
+of $V$; the last letter is determined symmetrically. A prefix run extends
+into $V$ exactly when $U$ has no retained letter, and similarly for a suffix.
+If both children contain retained letters, their concatenation introduces
+one internal gap with exponent
+\[
+ e=\operatorname{suffix}(U)+\operatorname{prefix}(V).
+\]
+Initialize root multiplicities from the entire relator list and propagate
+them downward in reverse topological order. An internal gap contributes
+its node's multiplicity to the histogram. If both child identifiers are
+the same, both occurrences are still counted. Finally, add one seam gap
+per root having a retained letter. Duplicate relators have separate seams.
+Every internal gap is created at exactly one concatenation occurrence in
+the expanded parse, so the weighted count is exact.
+
+Let $s$ be the number of reachable nonempty grammar rules and $m$ the
+number of roots, counting duplicates. There are at most $s+m$ gap events;
+seam gaps for duplicate roots have the same key, so there are at most
+$2s$ distinct histogram keys. The metadata, multiplicities and histogram
+use $O(s)$ integer records plus the root list. Traversal, sorting and median
+selection use $O(s\log(s+1)+m)$ arithmetic operations. Rule lengths are
+at most $2^s$, multiplicities at most $m2^s$, and the run-length and count integers
+have $O(s+\log(m+1))$ bits. Thus this is polynomial bit complexity in the
+compressed input size, with no expanded-word traversal.
+
+The powered images share a binary construction of $a^{k_*}$ and its
+inverse. Before reduction, substitution creates only polynomially many
+new grammar nodes. Exact compressed free and cyclic reduction use the
+previously established word kernel. The producer checks both that the
+profile's unit change equals the independent min-cut prediction and that
+the actual reduced output length equals the profile's predicted gain.
+These checks supplement the proof; the certificate verifier does not trust
+any optimization assertion.
+
+\subsection{Adaptive triggering and independently checked certificates}
+
+Computing the full profile is unnecessary when the chosen power is one.
+The producer profiles when either the immediately preceding move used the
+same multiplier and subset, or current expanded total length exceeds four
+times the number of allocated arena rules (including the empty rule and
+unreachable historical rules). Both triggers are cheap and exact; the
+factor four is a policy choice, not a theorem about optimal scheduling.
+When neither trigger fires, it performs the original unit move. Thus the
+large-compression example above is batched immediately, while an ordinary
+run of repeated moves triggers profiling on its second step. Counters
+record profile calls, actual power moves, and maximum exponent bit length.
+The explicit producer remains unchanged except that a compressed handoff
+can return the new certificate format.
+
+Version 3 adds a \code{whitehead\_power} move with the existing multiplier
+and signed subset plus an integer exponent at least two. Booleans, floats,
+missing or extra fields, and use in older certificate versions are rejected.
+A power of one retains the old \code{whitehead} representation. Versions
+1 and 2 remain supported; version 3 also permits version-2 relator moves.
+The producer selects the lowest version needed by its trace.
+
+The compressed verifier reconstructs the Wirtinger presentation independently,
+validates the automorphism, and independently builds its powered substitution.
+It never calls the gap profiler or the producer's image builder. The literal
+verifier instead repeats the elementary automorphism, checking resources on
+every iteration. A gigantic exponent is rejected by the literal work budget
+before attempting that many iterations. Such a resource failure is
+inconclusive, not a proof of knottedness or invalidity. Both verifiers check
+all surviving relators and the final single generator. Powers can represent
+length-increasing moves in externally supplied certificates; the optimizer's
+shortening condition is not a prerequisite for a valid automorphism.
+
+\subsection{Validation and the remaining global problem}
+
+The profile is checked against literal elementary substitutions for every
+cyclically reduced word of length at most three over three generators, for
+all 96 valid multiplier/subset choices. Duplicate roots, empty roots,
+all-multiplier words, signed multipliers and the seam are included. A further
+400 random tuples check mixed gap distributions. The abstract presentation
+above completes in three moves for $h=10,100,500$: one power, one relator
+overlap and one generator elimination. Expansion is permitted only after
+the relators have total length five. A separate artificially inflated trace
+on a small genuine unknot is replayed independently with exponent $2^{100}$;
+this tests the verifier and is not evidence of a hard knot family.
+
+These results eliminate one exponential elementary-descent mechanism. They
+do not bound the number of changes of Whitehead direction, grammar growth
+across such changes, the number of relator moves, or the completeness of
+presentation simplification. In particular, the implementation still has
+no general subexponential or quasi-polynomial recognition guarantee.
+The next useful theoretical target is a global potential controlling
+alternating directions and representation growth.
+
+The incoming-report directory contained no new delivery on 8 October 2026.
+The checked head of the suggested \texttt{openai/math} repository remained
+\texttt{fd4aeeb2ee4fc729c18d98444fed42fd0529eeeb}; its latest manuscript and
+Lean updates did not supply a new knot-recognition algorithm. The new
+power optimizer follows from the algebraic analysis above. It does not
+assume the announced quasi-polynomial bound for Lackenby's geometric
+algorithm.
+
+\subsection{Paired measurements and an unchanged knot-corpus regime}
+
+The reproducible driver \code{benchmark\_whitehead\_power.py} loads the
+trusted historical producer and verifier from commit
+\code{6773a9b6e2ab50cdae07a627397054ce4a522b6d} without changing the checkout.
+It compares that baseline, an identical A/A control, and the power-enabled
+implementation in shuffled order with five measured repetitions following
+one excluded warmup. Each of the fifteen knot inputs is reconstructed
+from PD and passed through complete recognition with compressed group
+search and independent replay: 225 measured queries, all successful.
+A separate thirty measured group probes use adaptive search on Gordian
+with letter caps 4096 and 8192; all complete. Group time is capped at
+15 seconds, whole recognition at 18 seconds, search work at twenty million
+units and arena storage at 100000 nodes.
+
+\input{tables/whitehead_power_queries.tex}
+
+No knot query or capped probe uses a power greater than one. The trigger
+requests at most one profile per such run. Gordian's compressed recognition
+remains about 1.95 seconds; its tight-cap continuation remains about
+3.6 seconds. The first run's sum of fourteen small-case medians is worse
+with powers, 232.86 versus 220.78 and 216.23 milliseconds. In particular,
+\code{survivor-02} varies from 16 to 57 milliseconds despite identical
+search work, nodes and prefix counters in all three arms. We retain these
+raw observations and do not claim a knot-corpus speedup.
+A separately retained follow-up uses 21 measured rounds on
+\code{survivor-00} and \code{survivor-02}, or 126 additional full queries.
+Before/control/powers medians are 16.919/17.069/16.904 milliseconds and
+15.753/15.685/15.733 milliseconds respectively; process CPU medians are
+within 0.002 milliseconds of these wall-time medians. The large slowdown
+from the first run does not reproduce. These observations support no
+material difference on those inputs, rather than a general speed claim.
+The follow-up is saved separately in
+\code{results/whitehead\_power\_followup\_20261008.json}.
+
+The synthetic family uses an independent one-million-unit work cap,
+100000 arena nodes and an explicit overlap allowance of five letters.
+There are 75 measured kernel runs. The old producer completes for $h=4,8$
+using $2^h+2$ moves, but exhausts its work budget for $h=12,100,500$.
+All new runs complete in three moves. The $h=500$ result allocates 1011
+nonempty nodes and consumes 17115 charged work units including construction.
+The old failed runs are censored observations; their elapsed times are not
+completion times and no speedup ratio is formed against them.
+
+\input{tables/whitehead_power_kernels.tex}
+
+The full maintained suite passes 658 tests with Regina 7.4.1 in
+130.885 seconds. A targeted rerun additionally checks that historical
+unreachable grammar allocations can suppress the size trigger while the
+second identical direction still activates batching. Raw results and
+execution orders are retained in
+\code{results/whitehead\_power\_20261008.json}; test and benchmark logs
+are retained under \code{synthesis/data/whitehead-power-*}.

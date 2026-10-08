@@ -8,6 +8,11 @@ by compressed substitution or literal elementary replay. The explicit search
 policy is unchanged. This removes exponential unit descent on a supplied
 compact presentation family; a general subexponential recognition bound remains
 unproved. See [`whitehead_powers.tex`](../synthesis/whitehead_powers.tex).
+Reproduce the matched historical comparisons with
+`python -B benchmark_whitehead_power.py --output results/whitehead_power_local.json`.
+Use `--case survivor-02 --rounds 21 --queries-only` for a focused timing audit.
+Saved primary and follow-up results retain all raw samples and censoring status;
+no speedup on the current knot corpus is claimed.
 
 
 This research continuation adds a linear signed Seifert-graph certificate before
