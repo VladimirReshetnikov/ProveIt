@@ -355,3 +355,48 @@ def _fingerprint(triangulation, analysed, check):
 _TOPOLOGY_FIELDS = ('components', 'orientable_components', 'nonorientable_components',
                     'boundary_components', 'euler_characteristic', 'normal_disks',
                     'compressing_disk', 'genus', 'crosscaps')
+
+
+def _divide_coordinates(analysed, divisor, check):
+    """Reconstruct a supplied vector's exact scalar quotient.
+
+    Matching, edge weights and Euler data are homogeneous in the coordinates.
+    Divisibility is checked on every coordinate before dividing the linear
+    geometry data. This helper does not search for the common divisor.
+    """
+    if type(divisor) is not int or divisor < 2 or not analysed['normal_disks']:
+        raise NormalOrbitError('a multiplicity reduction needs a nonempty vector and divisor >= 2')
+    rows = []
+    for row in analysed['rows']:
+        check()
+        reduced = []
+        for value in row:
+            quotient, remainder = divmod(value, divisor)
+            if remainder:
+                raise NormalOrbitError('the multiplicity divisor must divide every coordinate')
+            reduced.append(quotient)
+        rows.append(reduced)
+    weights = {}
+    for edge, value in analysed['weights'].items():
+        check()
+        weights[edge] = value // divisor
+    return dict(rows=rows, weights=weights, faces=analysed['faces'],
+                euler_characteristic=analysed['euler_characteristic'] // divisor,
+                normal_disks=analysed['normal_disks'] // divisor,
+                boundary_arcs=analysed['boundary_arcs'] // divisor,
+                maximum_coordinate_bits=max(value.bit_length() for row in rows for value in row))
+
+
+def _primitive_coordinates(analysed, check):
+    """Find the common coordinate multiplicity; stop as soon as it is one."""
+    from math import gcd
+    divisor = 0
+    for row in analysed['rows']:
+        check()
+        for value in row:
+            divisor = gcd(divisor, value)
+            if divisor == 1:
+                return 1, analysed
+    if divisor < 2:
+        return 1, analysed
+    return divisor, _divide_coordinates(analysed, divisor, check)

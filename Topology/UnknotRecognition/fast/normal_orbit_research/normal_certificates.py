@@ -19,7 +19,7 @@ import types
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from fastunknot.integer_codec import json_safe
-from fastunknot.normal_surface_orbits import normal_surface_topology
+from fastunknot.normal_surface_orbits import normal_surface_topology as _native_topology
 from fastunknot.normal_surface_verify import verify_normal_surface_certificate
 from fastunknot.normal_surface_geometry import _prepare
 from normal_orbit_research.fixtures import (
@@ -29,6 +29,11 @@ from normal_orbit_research.fixtures import (
 BASELINE = '98f21ce333bf1d5bdd0c630effd794cc88a33aec'
 SEED = 261008496
 ARCHIVE = ROOT.parent/'reports/47/snapshot/Topology/UnknotRecognition/fast/fastunknot'
+
+
+def normal_surface_topology(*args, **kwargs):
+    """Reproduce the version-one experiment without later multiplicity reduction."""
+    return _native_topology(*args, reduce_multiplicity=False, **kwargs)
 
 
 def digest(data):
