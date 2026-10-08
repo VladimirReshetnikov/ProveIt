@@ -1065,3 +1065,30 @@ if two_meridian:
                   '@{}lrrrrrrr@{}', rows)+r'\end{center}'+'\n'+
             'Median milliseconds for whole recognition, including PD validation and replay. '
             'Ratios are medians of paired off/on times; limits are censored.\n')
+
+endpoint_clipping = load('../fast/results/endpoint_clipping_20261008.json')
+if endpoint_clipping:
+    names = {'marker-power':'Marker control', 'bigram-power':'Dense bigram',
+        'fourgram-power':'Dense fourgram', 'nonperiodic-target':'One rejected',
+        'partial-half':'Half rejected', 'period-reject':'Period rejected',
+        'full-overlap-control':'Short-period control', 'sparse-17-control':'Sparse control',
+        'lcs-phase':'Phased LCS', 'relator-phase':'Phased relator', 'quotient-control':'Quotient control'}
+    for scope in ('kernels','operations','rows'):
+        rows=[]
+        for item in endpoint_clipping[scope]:
+            if scope=='rows':
+                cells=[esc(item['name'].replace('-', ' ').capitalize())]
+            else:
+                cells=[names[item['family']],str(item['bits'])]
+            for arm in ('baseline','control','clipping'):
+                c=item['completed_medians'][arm]
+                cells.append(f"{1000*c['seconds']:.3f}" if c['count']==endpoint_clipping['rounds'] else 'limit')
+            pair=item['paired_ratios']['baseline/clipping']
+            cells.append(f"{pair['median']:.2f}" if pair['count']==endpoint_clipping['rounds'] else '--')
+            rows.append(' & '.join(cells)+r' \\')
+        with open(f'tables/endpoint_clipping_{scope}.tex','w') as handle:
+            handle.write(r'\begin{center}\small'+'\n'+table(
+                ('Input' if scope=='rows' else 'Family & Bits')+' & Before & A/A & Clipping & Ratio',
+                '@{}lrrrr@{}' if scope=='rows' else '@{}lrrrrr@{}',rows)+r'\end{center}'+'\n'+
+                'Median milliseconds; ratios are medians of complete paired before/clipping times. '
+                'Censored runs are shown as limits and excluded from ratios.\n')

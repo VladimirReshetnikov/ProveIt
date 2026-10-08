@@ -7,6 +7,13 @@ projectors and seams, 482 for presentations and early certificates, 393 for
 compressed certificates, and 40 for separator transfer. These checks establish
 integrity, not mathematical correctness.
 
+The later intake places these deliveries, followed by the SU(2) and port
+register reports, in \path{reports/35/}--\path{reports/40/}. A separate
+byte comparison verifies all retained files against the original ZIPs;
+only the separator benchmark CSV has CRLF-to-LF normalization, and
+checksum-only manifests are omitted under the existing intake policy.
+The placement record is \path{data/incoming-35-40-placement-audit.json}.
+
 The audit record is:
 \begin{center}\small
 \path{data/incoming-four-20261008-review.json}
@@ -51,10 +58,11 @@ The endpoint matcher certifies an arithmetic progression using short endpoint
 anchors, proves a period on the largest candidate window, and gallops and
 bisects in candidate rank to locate the true overlap cutoff. This is stronger
 than merely accepting an entire candidate progression when its two largest
-members match. It should be compared directly against the current endpoint,
-window and sparse-marker shortcuts, especially on broken progressions, before
-changing their dispatch. The delivered whole-knot runs have zero endpoint
-activations and establish no end-to-end speedup.
+members match. Section~\ref{sec:endpoint-clipping} now integrates it after
+the existing shortcuts and compares it against the current maintained
+matcher, including partial cutoffs and failed period certificates. The
+delivered whole-knot runs have zero endpoint activations and establish no
+end-to-end speedup; primitive capacity gains must be assessed separately.
 
 The regular-cover kernel represents compatible isomorphisms by at most two
 congruence families per connected base graph, but fast equivalence checking

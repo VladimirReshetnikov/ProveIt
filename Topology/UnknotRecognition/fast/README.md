@@ -1771,3 +1771,26 @@ The theory, proof obligations, validation and full-pipeline comparison with
 the existing compressed-group incumbent are in
 [`two_meridian.tex`](../synthesis/two_meridian.tex) and the updated article PDF.
 The stage remains opt-in.
+
+### Endpoint patterns and exact overlap cutoffs
+
+The compressed-group word engine now tries short endpoint patterns after the
+existing uniform, short-period, sparse-letter and two-largest-overlap shortcuts.
+Patterns of lengths 1, 2, 4 and 8 can describe a complete arithmetic progression
+of candidate suffix/prefix overlap lengths even when individual letters are
+dense. An exact period check makes matching monotone along that progression;
+backward doubling and bisection locate the last matching candidate. Short
+exceptional overlaps are checked individually.
+
+This handles binary-sized periods and multiplicities without expanding the
+words. A failed structural check retains the complete occurrence-table matcher.
+All attempts use the existing arena's work, node and cancellation controls;
+exhaustion never means that no overlap exists. Only complete answers enter the
+cache. New counters use `lcs_anchor_`; the previous shortcuts and their counters
+remain intact. The public recognition defaults and certificate formats are
+unchanged.
+
+This improves a restricted class of exact compressed-word queries. It does not
+bound the number of relator moves needed to recognize arbitrary knots. See
+[`endpoint_clipping.tex`](../synthesis/endpoint_clipping.tex) for the proof,
+validation and comparison against the previous maintained matcher.
