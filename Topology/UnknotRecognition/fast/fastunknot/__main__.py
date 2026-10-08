@@ -62,9 +62,10 @@ OPTIONS = {
          "exact decision backend for a source braid on at most three strands"),
         ("--no-braid-reduction", None, False, None, "disable singleton endpoint destabilization"),
         ("--no-seifert", None, False, None, "disable the linear signed Seifert graph certificate"),
-        ("--backend", str, "standard", ("standard", "shared", "saturated", "euler", "twist", "barcode", "fitting"),
+        ("--backend", str, "standard", ("standard", "shared", "saturated", "euler", "shadow", "twist", "barcode", "fitting"),
          "Khovanov backend, including optional sharing, twists, intervals, or scalar splitting"),
         ("--euler-max-states", int, 4096, None, "state budget for optional Euler continuation"),
+        ("--shadow-max-work", int, 1_000_000, None, "work allowance for optional marked determinant continuations"),
         ("--max-objects", int, None, None, "ceiling on objects of the scanning complex (UNKNOWN when exceeded)"),
         ("--seconds", float, None, None, "cooperative time budget"),
         ("--no-reduction", None, False, None, None),
@@ -273,6 +274,9 @@ def main(argv: list[str] | None = None) -> int:
         if args.euler_max_states < 0:
             print("--euler-max-states must be nonnegative", file=sys.stderr)
             return 2
+        if args.shadow_max_work < 0:
+            print("--shadow-max-work must be nonnegative", file=sys.stderr)
+            return 2
         if args.backend != "standard" and (args.pivot != "minfill" or args.algebra != "bits"
                                             or args.tail != 0 or args.race != 1):
             print("alternate backends require minfill, bits, tail=0, and race=1", file=sys.stderr)
@@ -293,6 +297,7 @@ def main(argv: list[str] | None = None) -> int:
                            use_braid_profile=args.braid_profile,
                            use_braid_reduction=not args.no_braid_reduction,
                            euler_max_states=args.euler_max_states,
+                           shadow_max_work=args.shadow_max_work,
                            use_descending=not args.no_descending,
                            use_alexander=not args.no_alexander, use_modular=not args.no_modular,
                            use_exact_alexander=True if args.exact_alexander else None, use_r3=not args.no_r3,
