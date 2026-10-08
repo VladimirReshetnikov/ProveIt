@@ -1,0 +1,395 @@
+% Original proof note for integration into the research article.
+% This is a fragment, without a document preamble.
+% The optimization argument is self-contained. The general network-integrality
+% principle is classical; no priority claim is made for that principle.
+
+\section{Certified minimization of cocycle normal seeds}
+\label{sec:cocycle}
+
+\subsection{The precise family being optimized}
+
+Let $\mathcal T$ be a finite triangulation of a compact orientable
+$3$-manifold $M$. Generalized triangulations with distinct faces of the
+same tetrahedron identified are allowed, provided they genuinely triangulate
+the stated manifold. Ideal vertices must first be truncated. Choose an
+orientation for every global edge, and let $c$ be an integral simplicial
+$1$-cocycle. In tetrahedron $t$, write $v_{t,i}$ for the global vertex
+represented by local corner $i\in\{0,1,2,3\}$. There are integral local heights
+$h_{t,i}$, unique up to an additive constant for each tetrahedron, satisfying
+\[
+ h_{t,j}-h_{t,i}=c([i,j]_t).
+\]
+The cocycle equation on triangular faces guarantees their existence.
+On a paired face the two lists of heights differ by a constant integer.
+
+For an integral global vertex potential $f$, put
+\[
+ c_f=c+\delta f,\qquad a_{t,i}=h_{t,i}+f(v_{t,i}).
+\]
+The half-integral levels of the affine local height functions fit together
+to give a cooriented normal surface $S(c_f)$. They fit because paired-face
+height functions differ by an integer and we use all levels in
+$\mathbb Z+\tfrac12$. Its signed intersection with each oriented edge is
+$c_f(e)$; in particular it represents the relative homology class
+Poincar\'e dual to $[c]$.
+
+Order the four local corners so that
+$a_0\leq a_1\leq a_2\leq a_3$. The three successive gaps count respectively
+triangles at the lowest corner, quadrilaterals separating the lowest two
+corners from the highest two, and triangles at the highest corner:
+\[
+ a_1-a_0,\quad a_2-a_1,\quad a_3-a_2.
+\]
+Zero gaps cause no ambiguity when heights coincide. Thus there is at most
+one nonzero quadrilateral type, and the number of discs in tetrahedron $t$ is
+exactly its height span. Our objective is consequently
+\[
+ D(f)=\sum_{t=1}^T\left(\max_i a_{t,i}-\min_i a_{t,i}\right).
+ \tag{CS1}
+\]
+This is the number of normal discs, not the Euler characteristic, genus,
+Thurston norm, or pattern-complexity. All coordinates are written in binary;
+the construction takes three gap operations per tetrahedron.
+
+\subsection{A sparse network and a short dual certificate}
+
+\begin{theorem}[Integral span minimization]
+Given $T$ lists of four integer heights and four global vertex labels per
+list, the minimum of \textup{(CS1)} over integral potentials can be computed
+in time polynomial in their binary input size. The same minimum is obtained
+over real potentials. There is an optimality certificate consisting of an
+integral potential and $T$ matched corner pairs. It can be checked with
+$O(T)$ integer arithmetic operations after indexing the vertex labels.
+\end{theorem}
+
+\begin{proof}
+Introduce free variables $L_t,U_t$ and $f_v$ and minimize
+\[
+ \sum_t(U_t-L_t)
+\]
+subject to
+\[
+ U_t-f_{v_{t,i}}\geq h_{t,i},\qquad
+ f_{v_{t,i}}-L_t\geq-h_{t,i}
+ \quad(t=1,\ldots,T;\ i=0,1,2,3).
+ \tag{CS2}
+\]
+For fixed $f$, minimizing over $L,U$ recovers \textup{(CS1)} exactly.
+Each constraint is a difference between two variables, so its coefficient
+matrix is a directed incidence matrix, up to transposition. In particular,
+this is an integral network linear program. The following explicit dual
+description also yields a constructive proof of integrality.
+
+Make nodes $\ell_t$, $u_t$, and one node for each global vertex $v$. Add
+four arcs $\ell_t\to v_{t,i}$ of reward $-h_{t,i}$ and four arcs
+$v_{t,i}\to u_t$ of reward $h_{t,i}$. Each $\ell_t$ has supply $1$, each
+$u_t$ has demand $1$, and the vertex nodes have balance zero. Maximize
+total reward. The network is feasible: send a unit from each $\ell_t$
+through any one of its corners to $u_t$. Its underlying directed graph
+has three layers, so a feasible flow has no directed circulation, and
+every arc carries between zero and one unit. Network integrality gives an
+integral optimum.
+
+An integral flow selects one corner $(t,i)$ leaving each lower node and one
+corner $(s,j)$ entering each upper node. At a global vertex, match the
+incoming selected corners arbitrarily to the outgoing selected corners.
+This produces $T$ rows $(t,i,s,j)$ such that sources $t$ and targets $s$
+each occur once, and $v_{t,i}=v_{s,j}$ in every row. The dual value is
+\[
+ Q=\sum_{(t,i,s,j)}(h_{s,j}-h_{t,i}).
+ \tag{CS3}
+\]
+For any real potential and any such row, the common vertex potential cancels:
+\[
+ \max_k a_{s,k}-\min_k a_{t,k}
+ \geq a_{s,j}-a_{t,i}=h_{s,j}-h_{t,i}.
+\]
+Summing over the permutations of lower and upper nodes gives $D(f)\geq Q$.
+Therefore a potential and a matching with $D(f)=Q$ certify optimality even
+against all real potentials. This verifier needs no flow solver.
+
+For completeness, an optimal flow gives an integral potential achieving
+equality. In its residual graph retain every forward arc with its original
+reward, and retain the reverse arc with negated reward whenever the original
+flow is positive. Optimality says that there is no positive-reward directed
+cycle. Add a universal source with zero-reward arcs and take longest-path
+distances $x$. These are finite integers. For each residual arc $p\to q$
+with reward $r$, they satisfy $x_q-x_p\geq r$. On each positive-flow arc
+the reverse inequality is also present, giving equality. Set
+$f_v=x_v$, $L_t=x_{\ell_t}$, and $U_t=x_{u_t}$. These satisfy
+\textup{(CS2)}, and multiplying the equalities on used arcs by their flows
+and summing gives
+\[
+ \sum_t(U_t-L_t)=Q.
+\]
+The actual span objective of this $f$ is at most the left side, while weak
+duality gives the opposite inequality $D(f)\geq Q$. Hence equality holds.
+\end{proof}
+
+\paragraph{Implementation and binary complexity.}
+The implementation negates rewards to obtain a min-cost problem, adds a
+source and sink with unit source/sink capacities, and performs $T$
+shortest-path augmentations. Each internal arc has capacity $T+1$; this is
+strictly larger than the total flow, so it never removes an original
+forward arc from the final residual graph. Parallel arcs from repeated
+global vertices are retained; they encode different local heights.
+
+There are $2T+V+2\leq6T+2$ nodes and $10T$ forward arcs. Bellman--Ford
+uses $O(NE)$ relaxations per augmentation, giving $O(T^3)$ integer
+relaxations overall, followed by $O(T^2)$ work to extract the potential.
+If $H=\max(1,|h_{t,i}|)$, the rewards have magnitude at most $H$, and
+simple-path distances have magnitude $O(TH)$. The resulting potential can
+be translated by a constant so that its smallest entry is zero; all entries
+still have magnitude $O(TH)$. Thus all arithmetic uses
+$O(\log H+\log(T+1))$ bits. With ordinary binary addition/comparison, this
+gives the conservative bit bound
+\[
+ O\bigl(T^3(\log H+\log(T+1))\bigr),
+\]
+up to vertex-indexing and input/output costs. The $T$ matching rows use
+$O(T\log(T+1))$ bits; the potential and normal coordinates use
+$O(T(\log H+\log(T+1)))$ bits. No capacity or iteration count depends on
+the numerical value of a height or a normal coordinate.
+
+\paragraph{A weighted variant.}
+Positive integral weights $w_t$ on tetrahedral discs replace supply and
+demand $1$ by $w_t$. The same network formulation and integrality proof
+apply. A general polynomial-time min-cost flow algorithm handles binary
+weights. The present code intentionally implements only the unweighted
+case: replacing its $T$ unit augmentations by $\sum_t w_t$ unit
+augmentations would be pseudopolynomial in binary weights.
+
+\subsection{Edge coherence and deletion of zero classes}
+
+Call a cooriented normal surface \emph{edge coherent} when all of its
+intersections with any one oriented global edge have the same sign. An
+edge with no intersections is allowed. Every surface $S(c_f)$ above is
+edge coherent.
+
+\begin{lemma}[Reconstruction from a coherent edge cocycle]
+Let $S$ be an edge-coherent cooriented normal surface. Its signed edge
+intersection numbers form an integral cocycle $c_S$, and its normal
+coordinates equal those of $S(c_S)$.
+\end{lemma}
+
+\begin{proof}
+The algebraic intersection count around a triangular face is zero: each
+oriented normal arc contributes cancelling endpoints. Hence the signed
+edge counts form a cocycle. Edge coherence implies that the unsigned
+count on edge $e$ is $|c_S(e)|$.
+
+Here is an explicit uniqueness argument for admissible normal coordinates
+with specified unsigned edge counts. In a tetrahedron, write $x_i$ for its
+four triangle counts and $q_{01},q_{02},q_{03}$ for its three quadrilateral
+counts, indexed by the pair separated from its complement. The six edge
+counts give a linear map from these seven coordinates. Its kernel is
+one-dimensional, generated by
+\[
+ (1,1,1,1,-1,-1,-1).
+\]
+One can verify this directly: all four triangles together meet each edge
+twice, as do all three quadrilaterals together; solving the six homogeneous
+edge equations gives only this relation. Suppose two admissible coordinate
+vectors had the same edge counts. Their difference is a multiple $\lambda$
+of this vector. If $\lambda>0$, the second vector must have all three
+quadrilateral entries at least $\lambda$, violating quadrilateral
+compatibility; if $\lambda<0$, the same contradiction applies to the first
+vector. Thus $\lambda=0$. Both $S$ and the local-height surface $S(c_S)$
+are admissible and have the same unsigned edge counts, proving equality.
+\end{proof}
+
+\begin{theorem}[No zero-class component union at an optimum]
+Let $f$ minimize \textup{(CS1)} for a cocycle $c$ in a compact orientable
+$3$-manifold. No nonempty union of components of $S(c_f)$ represents zero
+in $H_2(M,\partial M;\mathbb Z)$. In particular every component is
+nonseparating within its ambient connected component of $M$.
+\end{theorem}
+
+\begin{proof}
+Suppose a nonempty component union $Q$ represents zero. The complement
+surface $S'=S(c_f)\setminus Q$ is still cooriented, normal, and edge
+coherent, because deletion does not create a sign disagreement. The
+signed edge cocycle of $Q$ represents its Poincar\'e-dual class, so it is
+an integral coboundary $\delta g$. The remaining surface has cocycle
+$c_f-\delta g=c+\delta(f-g)$. By the reconstruction lemma, its normal
+coordinates are precisely those of $S(c+\delta(f-g))$.
+
+Every nonempty normal surface contains at least one disc. Deletion of $Q$
+therefore strictly reduces the objective \textup{(CS1)}, contradicting
+minimality. Finally, a connected cooriented separating properly embedded
+surface is the relative boundary of a component of its complement, so
+it represents zero and is excluded by the result just proved.
+\end{proof}
+
+\begin{corollary}[Connected rank-one primitive seed]
+Suppose $M$ is connected, $H^1(M;\mathbb Z)\cong\mathbb Z$, and $[c]$ is a
+primitive generator. Every minimum-disc cocycle seed $S(c_f)$ is connected
+and nonseparating.
+\end{corollary}
+
+\begin{proof}
+Every component is nonseparating by the theorem. A connected cooriented
+nonseparating surface represents a primitive relative homology class:
+join a point on one side to a point on the other through its connected
+complement and close across the surface. The resulting closed curve
+has algebraic intersection number one with that surface. In rank one,
+each component therefore represents either the positive or the negative
+generator. Opposite signs would give a nonempty two-component union
+with zero relative class, which the theorem excludes. All signs agree,
+and their sum is the given primitive generator, so exactly one component
+is present.
+\end{proof}
+
+\paragraph{Checking the hypotheses.}
+The arbitrary-height API certifies only the optimization problem.
+The face-pairing adapter checks reciprocal gluings, integer height
+transitions, and normal matching; it does not certify manifold links.
+The archive02 protocol adapter uses its separately validated finite
+triangulation object. The connectedness theorem requires both rank one and
+integral primitivity. In a spanning-tree gauge, integral cocycles form
+the integral kernel of a matrix and hence a saturated sublattice. When
+that kernel has rational dimension one, a nonzero kernel vector whose
+coordinate gcd is one generates its integral lattice. This provides a
+simple primitivity check for that specific rank-one construction.
+An arbitrary rational cohomology basis in higher rank is not thereby a
+saturated integral basis.
+
+The initial spanning-tree gauge already has a related property: a
+zero-class component union would give an exact edge cocycle vanishing on
+every tree edge. Its vertex potential is then constant, so its cocycle
+is zero; edge coherence forces the union to be empty. Thus the connected
+rank-one seed is not a new existence theorem. The optimization result
+shows that the guarantee survives leaving this special gauge, although
+arbitrary changes of vertex potential can introduce separating components.
+
+\subsection{What this supplies to a hierarchy implementation}
+
+Theorem 6.2 of Lackenby's 2026 preprint \cite{lackenby2026} constructs nonseparating normal
+surfaces from integral cocycles. The present routine supplies an exact
+minimum-disc representative within the vertex-potential family of a
+selected class, with an independent lower-bound certificate. The general
+principle that suitable topological optimization problems become integral
+linear programs is classical; for example, Dey, Hirani, and Krishnamoorthy
+\cite{dey2011} treat optimal homologous cycles. The specific local-span objective, binary implementation,
+and no-zero-component-union consequence above are the contribution being
+documented here, without a claim of literature-wide priority.
+
+There is a small normalization clarification in the proof of Lackenby's
+Theorem 6.2, on page 27 of the PDF. After reducing a rational kernel to
+one dimension, the condition that the sum of its coordinates is one need
+not intersect that line: the line spanned by $(1,-1)$ is a simple example.
+Set one known nonzero coordinate to one instead, then clear denominators.
+This is an implementation-safe repair of that linear-algebra step; it
+does not challenge the stated theorem. The normalizing row then has norm
+one, so the existing Hadamard determinant estimate still applies.
+
+\paragraph{Limits and further questions.}
+The optimization does not minimize pattern-complexity or prove
+incompressibility. A lower disc count is not a demonstrated reduction of
+the hierarchy's number of resets. It supplies neither compressed cutting
+with all attaching data nor a bound on hierarchy depth. In a one-vertex
+triangulation, every local height receives the same global shift and the
+objective is constant; the code returns a certificate of this limitation.
+Truncation or subdivision can create useful vertex freedom, but increasing
+the triangulation also changes the objective and costs work. No claim of
+subdivision-invariant improvement or of completeness over all normal
+surfaces is justified.
+
+The genuine finite-exterior experiments therefore use the ten-vertex,
+56-tetrahedron triangulations produced by truncating the two-tetrahedron
+ideal trefoil and figure-eight exteriors. Simplifying those triangulations
+first yields one-vertex triangulations and removes this particular freedom.
+For the spanning-tree cocycles tested, the disc counts decrease from
+109 to 54 and from 60 to 38. Independent Regina checks give connected
+orientable surfaces of Euler characteristic $-1$ with one boundary
+component. These are measurements of a normal-seed primitive on two
+examples, not end-to-end recognition speedups or evidence of a general
+asymptotic bound.
+
+Useful next questions are whether the potential can be optimized jointly
+with a small family of cohomology classes, whether subdivision choices
+can be guided by a certified benefit/cost estimate, and whether disc
+optimization can be combined with a separate certified pattern-complexity
+descent. A weighted objective can favor expensive local handle types, but
+its network algorithm must remain polynomial in binary capacities.
+
+\subsection{A compressed Euler-characteristic check}
+
+The normal coordinates also permit a useful positive-certificate test without
+expanding the discs. Let $F=D(f)$, let $A$ be the sum of the numbers of sides
+of all normal discs, and let $A_{\partial}$ be the total number of normal
+arcs lying in unpaired boundary faces. If $q_{t,k}$ and $x_{t,i}$ are the
+quadrilateral and triangle coordinates, then
+\[
+ A=3\sum_{t,i}x_{t,i}+4\sum_{t,k}q_{t,k}.
+\]
+Each internal normal arc is counted twice before gluing, and each boundary
+arc once. Each point on a global triangulation edge is a vertex of the
+surface cell structure. Thus
+\begin{equation}
+ \chi(S(c_f))=
+ \sum_{e\text{ global}}|c_f(e)|
+ -\frac{A+A_{\partial}}{2}+F.
+ \label{eq:seed-euler}
+\end{equation}
+All terms use binary coordinates and a linear number of incidence records.
+The formula assumes the verified manifold triangulation and normal matching
+already required above; it is not a way to infer those hypotheses from an
+arbitrary list of heights.
+
+\begin{proposition}[A sufficient positive test]
+Suppose $M$ has independently been identified as the exterior of the input
+knot, and the primitive rank-one hypotheses for the optimized seed hold.
+If the value in \eqref{eq:seed-euler} is one, the knot is trivial.
+\end{proposition}
+\begin{proof}
+The seed is a connected orientable properly embedded surface. The
+classification formula $\chi=2-2g-b$ shows that $\chi=1$ forces $g=0$ and
+$b=1$, so it is a disk. Its nonzero primitive relative homology class implies
+that its boundary is an essential longitude on the boundary torus of the
+knot exterior. Joining that longitude to the core knot by the corresponding
+annulus in its tubular neighborhood produces an embedded spanning disk.
+\end{proof}
+
+This is a proposed certificate interface, not a newly integrated recognition
+stage. A value at most zero is inconclusive. Even for the unknot, minimizing
+disc count within one cocycle's vertex-potential family has not been shown
+to find a disk. In particular, the optimizer's globality is globality within
+the stated family, not among all normal representatives of the homology class.
+The package's product-solid-torus examples illustrate a successful case, while
+the two knotted exteriors give $\chi=-1$.
+
+\subsection{Transporting an optimum through known gauge changes}
+
+The dual certificate has another direct performance consequence on a fixed
+triangulation. Suppose new local heights are known to have the form
+\[
+ h'_{t,i}=h_{t,i}+g(v_{t,i})+a_t,
+\]
+where $g$ is a global integral potential and $a_t$ is an arbitrary integral
+offset for tetrahedron $t$. These changes describe the same cocycle class.
+
+\begin{proposition}[Certificate transport]
+If $f$ and a matching certify the optimum for $h$, then $f'=f-g$ and the
+same matching certify the same optimum for $h'$. The normal coordinates are
+unchanged. Transport and verification take a linear number of binary
+arithmetic operations after indexing.
+\end{proposition}
+\begin{proof}
+The adjusted heights become
+$h'_{t,i}+f'(v_{t,i})=h_{t,i}+f(v_{t,i})+a_t$. Every local span and gap is
+unchanged. On a matched row $(t,i,s,j)$, the common global vertex cancels
+the added $g$ values, leaving an added reward $a_s-a_t$. Sources and targets
+are each permutations of the tetrahedra, so these offsets sum to zero.
+The old primal/dual equality therefore remains valid. The reported initial
+disc count must of course be recomputed for the new input before serializing
+a certificate.
+\end{proof}
+
+This transport formula is a proved opportunity for a future cache interface;
+the patch does not expose a new transport API. It also sharpens the
+interpretation of the large-coboundary experiment: if the generating
+potential and an old optimum are supplied, one can transport that optimum
+without solving a new flow. The experiment deliberately asks the general
+optimizer to recover an optimum from the changed heights alone. Cutting or
+retriangulating changes the incidence data and is not covered by this formula.

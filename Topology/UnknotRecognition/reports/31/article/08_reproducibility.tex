@@ -1,0 +1,155 @@
+\section{Reproducibility and repository integration}
+\label{app:reproduce}
+
+\subsection{Package map}
+
+The accompanying archive is organized as follows. Relative paths are from
+the archive's top-level directory.
+\begin{longtable}{@{}P{0.38\linewidth}P{0.58\linewidth}@{}}
+\toprule
+Path & Purpose\\
+\midrule
+\endhead
+\path{article/unknot_certified_primitives.tex} & Main editable article;
+section inputs, bibliography, generated tables, and vector figure are beside it.\\[4pt]
+\path{article/unknot_certified_primitives.pdf} & Compiled and visually checked
+article.\\[4pt]
+\path{article/build.sh} & Rebuilds the article with PDFLaTeX through latexmk.\\[4pt]
+\path{integration/changes.patch} & Repository-relative source patch against
+the pinned baseline.\\[4pt]
+\path{integration/tree/} & A runnable source snapshot preserving
+\path{Topology/UnknotRecognition/} and the required reference packages.\\[4pt]
+\path{integration/manifest.json} & SHA-256 hashes, changed-file inventory,
+and baseline identity.\\[4pt]
+\path{integration/patch-validation.json} & Temporary-index apply check and
+byte-for-byte reconstruction of every changed file.\\[4pt]
+\path{results/} & Full raw exact outputs, timing samples, table values,
+completion status, and independent audits.\\[4pt]
+\path{results/checkpoints/} & Earlier tensor arithmetic measurements,
+explicitly distinguished from the final six-arm comparison.\\[4pt]
+\path{certificates/} & Independently replayable original-diagram Gordian
+certificate used by the overlap audit.\\[4pt]
+\path{reproduce/} & Test runner, independent Regina audit, table/figure
+generator, assembly helper, and detailed reproduction instructions.\\[4pt]
+\path{validation/} & Unedited test outputs, final coverage composition,
+worker-regression diagnosis, independent reviews, and article build/QA record.\\[4pt]
+\path{provenance/} & Mathematical audit notes and primary-source metadata.\\
+\bottomrule
+\end{longtable}
+
+The source snapshot contains the maintained \code{fast} code, tests,
+fixtures, and reference packages from reports 02, 24, 26, and 28. It does
+not duplicate the entire historical repository or bundle the external
+Regina binary. Relevant existing licenses and package metadata are retained.
+The final source patch modifies or adds eighteen files. It is accompanied
+by a full snapshot so that mathematical review is not dependent on reading
+a diff alone.
+
+\subsection{Applying and checking the patch}
+
+At the specified baseline checkout, first inspect the change summary and
+perform the ordinary Git apply check:
+\par\noindent\begin{minipage}{\linewidth}
+\begin{lstlisting}[language=bash]
+git rev-parse HEAD
+git apply --check /path/to/package/integration/changes.patch
+git apply /path/to/package/integration/changes.patch
+\end{lstlisting}
+\end{minipage}\par
+
+The recorded baseline is
+\begin{center}\small\baseline\end{center}
+If integrating after later repository work, review any conflicts against
+that baseline instead of assuming the patch's context still matches.
+The delivered package was checked in a separate temporary index: the patch
+applied and every reconstructed changed file matched the snapshot by hash.
+This did not modify the checkout's real index or create a remote commit.
+
+The article can be placed with the repository's research reports and linked
+from the synthesis documents during integration. It is self-contained and
+does not require historical article fragments to compile. Its proofs make
+clear which algorithms are newly implemented, which bounds were already
+known, and which routes remain conditional.
+
+\subsection{Tests and independent audits}
+
+From the source snapshot or integrated checkout's \code{fast} directory:
+\par\noindent\begin{minipage}{\linewidth}
+\begin{lstlisting}[language=bash]
+python -B -m unittest discover -s tests -v
+python -B audit_tensor_jones.py \
+  --output results/tensor_jones_audit_local.json
+python -B benchmark_tensor_jones.py --rounds 7 --seconds 2 \
+  --output results/tensor_jones_local.json
+python -B benchmark_cocycle_seed.py --regina \
+  --output results/cocycle_seed_local.json
+python -B benchmark_overlap_witness.py \
+  --output results/overlap_witness_local.json
+\end{lstlisting}
+\end{minipage}\par
+
+The optional Regina version used here is 7.4.1. Without it, the base modules
+remain usable but independent geometric tests are not the same validation
+run. The module-by-module test runner documents an alternative complete
+inventory route and the exact final coverage composition.
+
+The overlap historical comparison reads the archived helper from Git at the
+pinned revision. It therefore requires that Git object, normally supplied by
+the target repository checkout. The standalone current-code snapshot suffices
+for its tests and ordinary use, but does not recreate absent Git history.
+The README records this prerequisite explicitly.
+
+The independent Regina audit runs from the package directory:
+\par\noindent\begin{minipage}{\linewidth}
+\begin{lstlisting}[language=bash]
+python -B reproduce/audit_regina_jones.py \
+  --fast-dir /path/to/ProveIt/Topology/UnknotRecognition/fast \
+  --output results/regina_jones_local.json
+\end{lstlisting}
+\end{minipage}\par
+
+An optional \code{--regina-path} supplies a separate dependency installation.
+The audit validates variable conventions and compares whole coefficient
+maps. It does not use a polynomial digest as a substitute for equality.
+
+\subsection{Rebuilding the article and tables}
+
+The main document uses standard TeX Live packages and no shell-escape
+extension. Tables and the figure can be regenerated from archived JSON:
+\par\noindent\begin{minipage}{\linewidth}
+\begin{lstlisting}[language=bash]
+python -B reproduce/make_research_tables.py
+sh article/build.sh
+\end{lstlisting}
+\end{minipage}\par
+
+The figure generator uses Matplotlib; \code{--tables-only} avoids that
+dependency when the supplied vector figure is retained. Table generation
+checks the median calculations against individual samples and does not
+rerun a benchmark. Earlier checkpoint timings are not mixed into the final
+table.
+
+The PDF has been rendered to page images and inspected for clipping,
+unreadable tables, malformed mathematics, and unintended blank pages.
+Build diagnostics and the page-level review record are retained under
+\path{validation/}. Auxiliary TeX build products are unnecessary for source
+reproduction, apart from the supplied bibliography source and generated
+figure assets.
+
+\subsection{Limitations of the research record}
+
+This is a research continuation prepared with AI assistance, with separate
+mathematical, algorithmic, and literature audit passes. Those checks are not
+external peer review, and the mathematical proofs have not been formalized
+in a proof assistant. The article supplies enough definitions, proofs,
+counterexamples, and exact artifacts for further scrutiny rather than asking
+the reader to accept a performance claim from an informal summary.
+
+The initial incomplete test process and the reproduced pre-fix worker failure
+are retained separately from successful final coverage. Timings are from a
+single recorded environment. The current knot corpus does not exercise the
+new compressed partial-overlap path during ordinary complete queries.
+The normal-seed objective does not certify incompressibility, and the tensor
+bound concerns full Jones computation. A general quasi-polynomial bound
+for the maintained complete recognizer remains a goal of the research
+program, not a deliverable claimed by this package.

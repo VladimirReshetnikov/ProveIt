@@ -1,0 +1,336 @@
+\section{The route toward quasi-polynomial recognition}
+\label{sec:research}
+
+\subsection{A complexity ledger}
+
+The results in this article improve concrete operations. To determine what
+they imply globally, one must retain both the encoded input size of each
+operation and the number of operations. The following ledger records the
+present status without replacing an unresolved factor by a constant.
+
+\begin{table}[ht]
+\centering\small
+\begin{tabularx}{\linewidth}{p{0.23\linewidth}YY}
+\toprule
+Operation & Established here & Remaining global factor\\
+\midrule
+Full Jones computation & $\poly(n)2^{O(w)}$ bit time; certified
+$w=O(\sqrt n)$ & Polynomial identity does not certify the unknot;
+general polylogarithmic width is unavailable\\
+Near-prefix compressed LCS & $O(gS^2)$ arithmetic operations;
+polynomial bit cost for fixed $S$ & Search-move count, grammar growth,
+and frequency of the small-deficit condition\\
+Dihedral boundary transport & $O((k+1)B^3)$ bit time after preparation;
+at most two root progressions & Number and encoding of cover
+presentations; additional gluing data\\
+Cyclic boundary marking types & At most
+$\max\{2,-\chi(C)\}^{k-1}$ & Bounds on Euler complexity and attachment
+slots for every generated piece\\
+Hierarchy construction & Published compressed cutting is available &
+Encoded-cost control of all construction, failure, repair, and iteration
+branches\\
+\bottomrule
+\end{tabularx}
+\caption{What each local result contributes to the target. A short
+representation of a set does not by itself bound the number of sets
+generated during a search.}
+\label{tab:ledger}
+\end{table}
+
+\subsection{What an actual global proof must control}
+
+Let $N(n)$ be the number of distinct algorithmic states actually processed,
+let $s(n)$ bound the bit length of any state, and let $C(s)$ bound the bit
+cost of processing a state, including certificate maintenance and canonical
+comparison. An exhaustive but memoized implementation can have a bound
+\begin{equation}\label{eq:global-ledger}
+ T(n)\le\poly(n)+N(n)\,C(s(n))
+\end{equation}
+only after proving that all needed transitions are represented and that
+the canonical identifications preserve the recognition problem. Hidden
+enumeration of surfaces, gluing maps, or correction choices belongs in
+$N$ or $C$; it cannot be omitted because individual objects have short
+descriptions.
+
+For the target $n^{O(\log n)}$, it would suffice to establish
+$N(n)\le\exp(O(\log^2 n))$, $s(n)\le\exp(O(\log^2 n))$, and a fixed
+polynomial bound on $C$. Stronger polynomial encoding bounds would make
+such a proof more useful. These are sufficient accounting conditions,
+not assertions that the current implementation satisfies them. In
+particular, a polynomial certificate-verification theorem controls the
+cost of checking a supplied object, but does not bound the search needed
+to find it.
+
+The iteration expression in Lackenby's Section~9 has the form
+\begin{equation}\label{eq:lackenby-iterations}
+ I\le L(G+1)^L,
+\end{equation}
+where $L$ bounds hierarchy length and $G$ bounds the relevant pattern
+complexity. Its logarithm is at most
+$\log L+L\log(G+1)$. Even if $G$ is polynomial in the original crossing
+number, substituting only $L=O(n)$ into this estimate yields an
+$\exp(O(n\log n))$ upper bound. It does not yield a quasi-polynomial
+upper bound. This is a limitation of that inference, not a lower bound
+on the algorithm. To obtain $n^{O(\log n)}$ from this form one needs,
+for example, a proof that the \emph{effective} charged depth is
+$O(\log n)$ with polynomial branching, or an amortized replacement that
+controls the product of branch factors.
+
+The distinction between existing compressed operations and unfinished
+global construction is particularly important here. Lackenby's
+Theorem~14.4 supplies polynomial compressed cutting for a compact properly
+embedded orientable normal surface in an orientable 3-manifold with a
+handle structure of uniform type. Proposition~14.2 additionally handles
+admissibilization and removal of interior parallelity, assuming
+irreducibility and an essential current pattern. Applying the latter on a branch whose
+essentiality is still unknown requires a separate justification. The
+research gap should be stated as encoded-cost and continuation control
+for the entire algorithm, including failed candidates and repair, rather
+than as the absence of a published compressed-cutting operation.
+
+\subsection{A useful local consequence of the boundary theorem}
+
+Suppose a fixed checked cyclic component $C$ has
+$\max\{2,-\chi(C)\}\le n^a$ and $1\le k\le b\log(n+2)$ ordered
+unparameterized boundary slots with their base boundary labels fixed,
+where $a,b$ are constants. When $k=0$ there is one unmarked type. The
+canonicalization theorem of Section~\ref{sec:transport} gives at most
+\[
+ (n^a)^{b\log(n+2)-1}=\exp(O(\log^2(n+2)))
+\]
+inequivalent markings of this component. The proved mixed-radix formula
+also gives direct indexing of the canonical classes; the implemented
+API returns a key, count, and witness, rather than running an enumerator.
+Replacing a loop over all sheet
+representatives by this canonical index is therefore a real local
+quasi-polynomial reduction in the number of local marking classes,
+provided the hypotheses hold. A corresponding running-time bound also
+requires control of the presentation's bit size and its preparation
+cost. Euler complexity alone does not control those costs: an annulus
+can have an arbitrarily large binary sheet count while having only one
+whole-circle marking class. The bound on class count is therefore kept
+separate from the $B$-dependent arithmetic bounds.
+
+There are three separate reasons this is not a general state-count
+theorem. First, the component and covering presentation are fixed.
+Second, point phases, parametrized attaching maps, orientation choices,
+and interval-fibre prescriptions may contain additional information.
+Third, different hierarchy levels can generate different pieces and
+gluing graphs. One must bound the combination of these data, and prove
+that discarded marking representatives have equivalent future behavior.
+
+The exponential examples in Section~\ref{sec:transport} sharpen the
+research task. Binary sheet count alone cannot replace Euler complexity.
+Even genus zero does not control ordered point phases on an annulus.
+Conversely, unparameterized boundary circles are substantially cheaper
+than arbitrary point coordinates once the underlying topology is bounded.
+A promising geometric implementation should therefore record the precise
+kind of each attachment, rather than using point labels for every
+boundary operation merely because points are convenient to serialize.
+
+\subsection{Research questions for the tensor backend}
+
+\paragraph{1. Minimize the turning cochain and integer size.}
+The dual-tree construction proves a polynomial bound, but its $L_b$ need
+not be small. For a fixed outer face, minimizing $\sum_e|b_e|$ subject to
+the face equations is an integral minimum-cost flow problem on the dual
+graph: replace each edge by two opposite arcs of unit cost and impose the
+face demands. Integral demands admit an integral optimum; cancelling
+opposite arc flow cannot increase cost. Thus a polynomial optimization
+method can select a gauge with no larger $L_b$ than the tree solution.
+Choosing the outer face as well can be reduced to trying all $n+2$ faces.
+This observation supplies a concrete optimization problem; the current
+patch uses the simpler tree construction and does not claim timings for
+an unimplemented flow solver.
+
+The practical question is whether smaller $L_b$ offsets the preparation
+cost. A more refined objective would minimize the maximum accumulated
+exponent span along the selected crossing order, rather than total
+absolute turning. It must preserve the exact face equations and the
+phase theorem. Compare tree, flow, and order-aware gauges on both the
+successful grids and the regressing tree medials; record coefficient bit
+lengths and total query time.
+
+\paragraph{2. Choose between binary tensors and Potts partitions safely.}
+The experiments show complementary strengths. Can a small bounded pilot
+predict which representation will finish first without consuming a large
+fraction of the total allowance? A useful portfolio would charge every
+pilot transition, preserve common order certificates, and retain an
+uncapped worst-case guarantee supplied by at least one branch. The
+decision rule should be tested on held-out diagrams and with matched
+orders. Merely choosing the fastest backend after seeing its completed
+answer is not an implementable speedup.
+
+An intermediate conversion is a separate question: can a processed Potts
+summary be transformed exactly into the orientation tensor at a cost
+smaller than recomputing the prefix? Such a map must account for turning
+and the fixed specialization. A formula on arbitrary combinatorial
+partitions cannot be inferred from a disk-boundary basis without checking
+which partitions and phases are actually realizable.
+
+\paragraph{3. Characterize useful families of small certified width.}
+The binary theorem already gives $n^{O(\log n)}$ full Jones computation
+on supplied orders of width $O(\log^2 n)$. Which knot-diagram families
+encountered after the repository's structural simplifications admit such
+orders, and can this be certified efficiently? General four-valent plane
+graphs include large grids, so an argument based only on planarity cannot
+force polylogarithmic width. The graph property must use additional
+structure or a proved transformation of the diagram.
+
+For nontrivial knots whose full polynomial is nonidentity, this can
+accelerate the obstruction branch. A complete recognizer for a promised
+family would additionally require a theorem that identity implies the
+unknot in that family, or a separately bounded fallback. This promise
+must be explicit in any claimed recognition complexity.
+
+\paragraph{4. Find a homological analogue with an actual comparison map.}
+The two-state tensor preserves an evaluated bracket, not a relative
+chain complex. A research program toward Khovanov compression should
+begin with a precisely defined retained object and a chain map, homotopy
+equivalence, or sufficient detection theorem. What additional graded
+data are needed when cancellations in the scalar tensor hide nonzero
+homology? Does the required dimension grow polynomially, exponentially,
+or faster with width? Small exhaustive counterexamples should be sought
+before assuming a fixed-dimensional categorified boundary state.
+
+This question is central rather than cosmetic: Khovanov detection gives
+the fallback its mathematical completeness \cite{kronheimer-mrowka},
+whereas the present Jones contraction only computes an obstruction.
+A scalar identity cannot replace the missing homological theorem.
+
+\subsection{Research questions for compressed group computations}
+
+\paragraph{5. Prove a cyclic analogue of the near-prefix reduction.}
+The new matcher is useful when a verified linear common prefix leaves
+short tails. The current partial-relator operation may double words to
+represent cyclic positions, making that deficit large. Can one work
+directly with a long common cyclic arc and at most $S$ exceptional
+letters, without doubling the relevant linear deficit? The desired
+result should bound candidate cyclic alignments, preserve both donor
+orientations, and produce a witness checked by the existing independent
+relator verifier. Finding the long arc must be charged too.
+
+\paragraph{6. Share periodic comparisons without losing exactness.}
+Different near-prefix diagonals create related seeds and node--phase
+tables. Can one share those tables across compatible periods or replace
+them by a common refinement whose total size is controlled? Taking the
+least common multiple of all periods can itself be expensive, so a
+polynomial state bound must precede such a construction. Another
+practical direction is an adaptive deficit gate based on reachable
+grammar size and remaining work. The fixed $S\le32$ gate is deliberately
+simple; its replacement should have an explicit charged bound and retain
+the complete fallback.
+
+\paragraph{7. Bound grammar growth and the number of certificate moves.}
+Polynomial local word operations do not imply polynomial search. Prove
+a potential that decreases by a controlled amount under \emph{batched}
+Whitehead and relator moves while also bounding DAG growth. Expanded
+length is unsuitable by itself: it can be exponentially large in the
+input grammar, and unit decreases can be exponentially numerous.
+The repository's existing power macros already remove particular
+subtraction sequences. A general amortized theorem should track
+symbol counts, grammar reuse, generator changes, and replay-certificate
+size together, including branches in which no shortening move exists.
+
+Evidence should include naturally arising relator states from difficult
+diagrams where the new branch actually runs. The present fifteen-input
+whole-knot audit records zero uses, so it supplies no empirical answer
+to this question. Saving those future compressed states and their
+independent replay witnesses would make the next experiment substantially
+more informative than additional artificial powers alone.
+
+\subsection{Research questions for geometric construction}
+
+\paragraph{8. Turn compressed cutting into a complete checked interface.}
+Implement the input and output objects of the published cutting theorem
+with explicit boundary incidences and parallelity-bundle attachments.
+Verify the output using compressed combinatorial identities or a separate
+checker on bounded instances. Then account for every subsequent
+admissibilization, compression, and repair operation when a candidate
+fails an essentiality test. The key question is whether the same encoded
+size bound survives all these operations, not whether a successful
+essential hierarchy has a short certificate.
+
+\paragraph{9. Prove a continuation theorem for canonical geometric states.}
+Two pieces with the same genus and number of boundary components need
+not admit the same gluings. Specify the complete retained data: fixed
+base presentation, whole-circle slots, point or twist data when required,
+orientations, interval fibres, and external incidence structure.
+Prove that equality of canonical states gives mutually transportable
+future operations and preserves the answer being decided. The cyclic
+keys in this article solve one exact component of this specification.
+They do not justify deleting the other data.
+
+Extend the canonicalization from cyclic to the full supported dihedral
+case, and then identify whether general AHT interval-pairing systems admit
+a similarly small representation of all compatible maps. The at-most-two
+progression theorem uses affine $\pm x+a$ actions in an essential way.
+Piecewise affine systems may require more branches; their count and
+bit size must be proved, not extrapolated from this special case.
+
+\paragraph{10. Charge attachment complexity to topology across all levels.}
+Can every piece produced by a suitable accelerated hierarchy be arranged
+to have polynomial negative Euler complexity and only $O(\log n)$
+simultaneously relevant unparameterized attachment slots? The local
+marking theorem would then control that piece's marking choices.
+The open issue is whether such bounds are preserved by cuts and repairs,
+and whether the number of different underlying pieces is itself
+quasi-polynomial. A counterexample with many indispensable attachment
+slots would be just as valuable as a positive theorem, since it would
+identify the need for a different summary.
+
+\paragraph{11. Replace linear hierarchy depth by an amortized bound.}
+A balanced divide-and-conquer decomposition can have logarithmic
+recursion depth while still doing too much total work. Seek a potential
+whose decreases control the \emph{product} of branching factors or the
+number of distinct canonical states, including revisits and repairs.
+One precise target is
+$\sum_i\log b_i=O(\log^2 n)$ over the genuine branching steps of every
+unfolded search path, together with polynomial bit work for each
+intervening unary segment and a valid treatment of revisits. Unary work
+must be charged separately: $2^n$ successive one-child updates have
+branching product one but can still require exponential work.
+Alternatively, a charged factor at least two for each nontrivial macro
+update makes that cost visible in the logarithmic sum. A proof that only
+the geometric height is logarithmic would leave the other factors in
+\eqref{eq:global-ledger} unresolved.
+
+\subsection{Research questions for certification and experiments}
+
+\paragraph{12. Maintain a reproducible complexity and evidence ledger.}
+For every new shortcut, record its theorem hypotheses, output guarantee,
+encoded-size measure, resource semantics, and exact fallback. For every
+performance claim, identify the completed operation, source revision,
+inputs, warmups, paired controls, and censored runs. Expand the current
+test corpus with independent exact answers and examples activating the
+newly optimized path. Retain negative results and discovered ordering
+defects; they indicate where the apparent bottleneck really lies.
+
+A useful proof-assistant project is to formalize the finite identities
+that guard the fastest paths: the face-cochain equations and their cycle
+consequence, tensor expansion, balanced-base reconstruction, the
+near-prefix coverage lemma, and the root-map/CRT solver. These are
+well-scoped algebraic and combinatorial statements. Formalizing them
+would strengthen implementation trust, while the global geometric
+complexity theorem would remain a separate mathematical obligation.
+
+\subsection{Suggested order of work}
+
+The immediate implementation priorities are gauge-size reduction,
+carefully charged backend selection, and recording real group-search
+states that activate near-prefix matching. They have clear experimental
+acceptance criteria and fit the current code.
+
+The highest-value mathematical priorities for the quasi-polynomial
+target are a complete compressed-cutting continuation interface,
+canonical geometric state equivalence, and an amortized state-count
+theorem. Work on the binary tensor's categorified analogue is a second
+possible route, with the explicit warning that scalar cancellation
+provides no automatic homological compression.
+
+The present contribution reaches a stronger proved bound for full Jones
+computation in this repository, removes an exact compressed-word
+bottleneck, and supplies new explicit boundary-transport and local
+counting tools. A general quasi-polynomial unknot-recognition theorem
+would require the remaining global arguments in this section. None is
+assumed in the implementation or inferred from the measurements.

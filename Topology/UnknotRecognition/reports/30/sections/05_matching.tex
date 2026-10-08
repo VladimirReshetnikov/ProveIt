@@ -1,0 +1,462 @@
+\section{Exact matching after a long common prefix}
+\label{sec:matching}
+
+\subsection{A remaining expensive local query}
+
+The frozen repository already contains a complete polynomial algorithm for
+longest common substrings of binary straight-line programs (SLPs). General
+polynomial compressed LCS algorithms are also established in the
+literature~\cite{compressed-lcs-classical}. The repository's
+cut-pair search combines arithmetic progressions of suffix--prefix overlaps,
+exact compressed equality, and periodic extension. Subsequent refinements
+use the shared signed alphabet and the shared directed adjacent-pair set
+to bound possible match lengths. A checked witness attaining such a bound
+finishes the query immediately. These are substantial existing components;
+the present change adds a specialized exact branch to that implementation.
+
+The relevant baseline implementation is
+\path{fast/fastunknot/compressed_lcs.py}. Its proofs are in
+\path{synthesis/compressed_lcs.tex}, \path{synthesis/lcs_bounds.tex},
+and \path{synthesis/lcs_transitions.tex}, relative to the frozen
+\path{Topology/UnknotRecognition} directory. In particular, the last source
+records an unresolved family with identical alphabets and identical
+adjacent-pair sets. Put
+\[
+ P_N=(ab)^N,\qquad T=\mathtt{aabbccacbabc},\qquad
+ X_N=P_NcT,\quad Y_N=P_NaT.
+\]
+Every ordered pair over $\{a,b,c\}$ occurs inside $T$. Consequently neither
+the alphabet bound nor the directed-pair bound separates these words.
+Their longest common prefix already has length $2N$, but a generic exact
+search still has to prove that no longer substring occurs at a shifted
+position. The baseline exhausts the two-million-work allowance on the
+specified binary-power grammar when $N=2^{500}$.
+
+The information that makes this query easier is the small amount of word
+remaining after the checked common prefix: thirteen letters on each side.
+An improvement on a nearly full match can start in only a short initial
+interval. Rather than add another fixed-length local-factor bound, we
+reduce all possible improvements to short shifts of the same known common
+prefix. A finite cycle automaton checks those shifts on the SLP itself.
+The resulting algorithm applies to an arbitrary common prefix, with no
+assumption that it is alternating, uniform, or globally periodic.
+
+\subsection{The diagonal reduction}
+
+All intervals are zero-based and half-open. For finite words $X,Y$, let
+$\LCS(X,Y)$ denote the length of their longest common contiguous substring,
+and let $\LCP(X,Y)$ denote their longest common-prefix length. We write
+$\operatorname{LCSuf}$ for the longest common-suffix length.
+
+Suppose the exact common-prefix length is $K$, and write
+\[
+ |X|=K+a,\qquad |Y|=K+b,\qquad
+ a,b\ge1,\qquad S=a+b-1.
+\]
+The case in which either word ends at position $K$ is already solved by
+the prefix witness. In the new branch we assume
+\begin{equation}
+ K\ge S-1.
+ \label{eq:near-prefix-domain}
+\end{equation}
+The implementation additionally requires $S\le32$. The latter is an
+implementation gate, not an assumption needed for the mathematical reduction.
+
+\begin{lemma}[A bounded set of cut alignments]
+\label{lem:near-prefix-diagonals}
+Let $c=a-1$. For each integer
+\[
+ 1-a\le d\le b-1
+\]
+put $c_d=c+d$ and define
+\[
+ M_d=
+ \operatorname{LCSuf}(X[0:c],Y[0:c_d])
+ +\LCP(X[c:|X|],Y[c_d:|Y|]).
+\]
+Under \eqref{eq:near-prefix-domain},
+\begin{equation}
+ \LCS(X,Y)=\max\bigl(K,\max_{1-a\le d\le b-1}M_d\bigr).
+ \label{eq:near-prefix-max}
+\end{equation}
+There are exactly $S$ values of $d$, and both cuts lie in the first
+$S-1$ letters of the common prefix.
+\end{lemma}
+
+\begin{proof}
+Each $M_d$ is the length of an actual common substring: concatenate the
+matching suffix ending at the two cuts with the matching prefix beginning
+there. Thus the right-hand side cannot exceed $\LCS(X,Y)$.
+
+Conversely, suppose a common substring has length $m>K$ and starts at
+positions $i$ in $X$ and $j$ in $Y$. Its starts satisfy
+\[
+ 0\le i\le |X|-m\le a-1=c,
+ \qquad 0\le j\le b-1.
+\]
+Its alignment $d=j-i$ therefore belongs to the displayed range. The cut
+$c$ lies in the closed interval $[i,i+m]$: the left inequality was just
+proved, and $i+m>K\ge c$. The corresponding cut $c_d$ lies at the same
+position relative to the second occurrence because
+$c_d-j=c-i$. Extending the two occurrences left and right from their cuts
+therefore gives $M_d\ge m$.
+
+Finally, $0\le c\le S-1$ and $0\le c_d\le S-1$. The domain assumption
+places all these cuts inside the shared prefix. Counting the integer
+alignments gives $(b-1)-(1-a)+1=a+b-1=S$.
+\end{proof}
+
+The alignment count is a sum of the two deficits, rather than their
+product. Enumerating all possible starting pairs separately would use
+$ab$ candidates. An arbitrary pair of compressed words can still have an
+exponentially large $S$; the new branch is used only when its bound is
+small. A failed gate invokes the existing complete algorithm without
+enumerating any of these alignments.
+
+Lemma~\ref{lem:near-prefix-diagonals} alone is insufficient for practical
+speed. Evaluating the $M_d$ by general compressed LCP and LCSuf queries
+can compare very long, differently aligned parses repeatedly. The
+benchmark includes precisely this generic-LCE ablation. To obtain the
+improvement, the shared-prefix structure must also be used inside each
+alignment query.
+
+\subsection{Short shifts are exact periodicity tests}
+
+Let $P=X[0:K]=Y[0:K]$. The left part of $M_d$ uses at most $S-1$ letters
+on each side, so it can be computed from one explicitly read short prefix
+of $P$. The right part is more interesting. When $d=0$, its value is
+$K-c$: the definition of the exact LCP says the next two letters differ.
+Together with its left extension, this gives $M_0=K$.
+
+For $d\ne0$, set
+\[
+ u=\min(c,c_d),\quad v=\max(c,c_d),\quad q=v-u=|d|,
+ \quad A=P[u:v],\quad Z=P[u:K].
+\]
+Here $1\le q\le S-1$, and the seed $A$ is a short, explicit word. Let
+$A^\infty$ denote the one-sided infinite periodic word beginning with $A$.
+It is only a mathematical reference word; no infinite or long repeated
+word is allocated. Define
+\[
+ E=\LCP(Z,A^\infty).
+\]
+Since $A$ is the first $q$ letters of $Z$, we have $E\ge q$.
+
+\begin{lemma}[Exact self-comparison from one periodic prefix]
+\label{lem:near-prefix-periodicity}
+With the preceding notation,
+\[
+ \LCP(P[u:K],P[v:K])=E-q.
+\]
+If $E<K-u$, this is also the exact right extension in the original words
+from cuts $c,c_d$. If $E=K-u$, only at most $\max(a,b)\le S$ additional
+letters must be compared to obtain that right extension.
+\end{lemma}
+
+\begin{proof}
+For every $0\le t<E-q$, both $Z[t]$ and $Z[t+q]$ are inside the prefix
+that agrees with $A^\infty$, and their phases modulo $q$ are equal.
+Hence the two substrings agree for $E-q$ letters. If $E<|Z|$, then
+$Z[E]$ differs from the periodic letter at that phase, whereas
+$Z[E-q]$ still equals it. This is the first mismatch in the shifted
+comparison. If $E=|Z|$, the shorter substring has ended, so its full
+length $|Z|-q$ is the answer.
+
+In the first case the mismatch occurs before either relevant occurrence
+leaves the known prefix $P$, so the same mismatch occurs in $X,Y$. In
+the second case the larger cut coordinate has reached position $K$,
+and the smaller has reached $K-q$. The word whose larger coordinate
+has just reached $K$ has only its original suffix of length $a$ or $b$
+remaining. Comparing the rest therefore takes at most $\max(a,b)$
+letter comparisons, regardless of $K$.
+\end{proof}
+
+This lemma does not assume that $P$ has period $q$. A short violation
+of that period is an exact reason to stop the shifted match. Nor does
+it infer equality from a matching seed: the whole required periodic
+extent is computed on the grammar. For arbitrary nonperiodic prefixes,
+the state computation often finds an early violation; its correctness
+does not depend on finding one quickly.
+
+\subsection{Evaluating the cycle automaton on an SLP}
+
+For a fixed seed $A$ of length $q$, a phase is an integer in
+$\{0,\ldots,q-1\}$. For a grammar node $V$ and phase $r$, define
+\[
+ F(V,r)=\LCP\bigl(W_V, A[r]A[r+1]\cdots\bigr),
+\]
+where pattern indices are reduced modulo $q$ and $W_V$ is the word
+spelled by $V$. A terminal $t$ satisfies
+\[
+ F(t,r)=\begin{cases}1,&t=A[r],\\0,&t\ne A[r].\end{cases}
+\]
+For a binary production $V=UV'$,
+\begin{equation}
+ F(V,r)=
+ \begin{cases}
+ F(U,r),&F(U,r)<|U|,\\[2pt]
+ |U|+F\bigl(V',(r+|U|)\bmod q\bigr),&F(U,r)=|U|.
+ \end{cases}
+ \label{eq:cycle-automaton-prefix}
+\end{equation}
+
+\begin{proposition}[Exact periodic-prefix primitive]
+\label{prop:cycle-automaton}
+Recurrence \eqref{eq:cycle-automaton-prefix} computes the exact periodic
+prefix extent. For a grammar with $g$ nodes it has at most $gq$ states.
+Memoized evaluation needs $O(gq)$ arithmetic and dictionary operations,
+and $O(gq)$ stored states, without expanding any nonterminal word.
+\end{proposition}
+
+\begin{proof}
+The terminal rule is immediate. At a concatenation, a mismatch inside
+the left child is the first mismatch of the concatenation. If the whole
+left child matches, the right child starts after exactly $|U|$ periodic
+letters, so its phase is $(r+|U|)\bmod q$. This proves the recurrence
+by induction on the grammar DAG.
+
+There are only $q$ possible phases for each node. The evaluator memoizes
+each requested pair $(V,r)$ once. Each state requests at most its two
+child states, with a constant amount of additional arithmetic and table
+work. Children precede their parent in the binary SLP, so dependencies
+are acyclic. Repeated occurrences in an exponentially large derivation
+tree reuse the same node--phase entry; they do not produce new states.
+\end{proof}
+
+This is an elementary compressed finite-automaton computation, used here
+to replace a more expensive general equality primitive. We do not claim
+that evaluating finite automata on compressed words is a new general
+idea. The present contribution is the exact alignment reduction that
+produces small cycle automata for this particular LCS regime, together
+with its implementation, proof, and controlled measurements.
+
+\subsection{The resulting algorithm and bit complexity}
+
+\begin{theorem}[LCS with bounded suffix deficits]
+\label{thm:near-prefix-lcs}
+Suppose binary SLPs for $X,Y$ and the exact value $K=\LCP(X,Y)$ are
+available, with positive suffix deficits $a,b$, $S=a+b-1$, and
+$K\ge S-1$. Let $g$ be the number of allocated nonempty grammar nodes
+at entry to the algorithm, and let $H\le g$ be their maximum height.
+There is an exact algorithm returning the LCS length and an occurrence
+witness using
+\[
+ O(gS^2)
+\]
+arithmetic and dictionary operations. It creates $O(SH)$ additional
+grammar nodes, has at most $O(gS)$ simultaneously live node--phase
+states, and explicitly reads at most $5S-1$ letters from the roots.
+
+For fixed $S$, the implemented branch has deterministic polynomial bit
+complexity, in addition to the preceding exact LCP computation. It does
+not require a random fingerprint, a bound on hash-collision probability,
+or a promise of periodicity of the common prefix.
+\end{theorem}
+
+\begin{proof}
+Read $P[0:S-1]$ and the suffix windows
+\[
+ X[\max(0,K-S):|X|],\qquad
+ Y[\max(0,K-S):|Y|].
+\]
+Each suffix window has length at most $2S$, giving the stated total
+letter bound. The routine follows only grammar branches intersecting
+these bounded intervals; a conservative traversal bound is $O(HS)$.
+
+Enumerate the $S$ alignments from Lemma~\ref{lem:near-prefix-diagonals}.
+Their left extensions are computed from the short prefix already read.
+The zero shift needs no periodic query. For every nonzero shift construct
+the slice $P[u:K]$, take its seed from the short prefix, and apply
+Proposition~\ref{prop:cycle-automaton}. A slice of one original root adds
+$O(H)$ boundary-path nodes and does not increase height. Each individual
+slice has a reachable grammar of size $O(g+H)=O(g)$, even though slices
+from different alignments are retained in the arena. Consequently the
+sum of node--phase work is bounded by
+\[
+ O\!\left(g\sum_{d=1-a}^{b-1}\max(1,|d|)\right)=O(gS^2).
+\]
+The $O(S^2)$ short comparisons and $O(SH)$ slice work fit this bound.
+At any moment only one periodic-query table is live, with at most
+$O(gS)$ states. Accumulated slice allocation is $O(SH)$. When a periodic
+match reaches the prefix endpoint, Lemma~\ref{lem:near-prefix-periodicity}
+shows that the required continuation lies in the two already read short
+suffix windows. Equation~\eqref{eq:near-prefix-max} proves that the maximum
+of the resulting exact extensions and the original prefix witness is the
+exact LCS. Its two starting positions are the two cuts minus the common
+left-extension length.
+
+For bit accounting, let $B$ bound the binary lengths of stored word
+lengths and coordinates, let $A_0$ bound the bit length of an alphabet
+symbol, and let $R$ bound the bit lengths of the caller's numeric caps
+and the preexisting resource counters. Put
+\[
+ \beta=B+A_0+R+\lceil\log_2(gS+2)\rceil+1.
+\]
+All stored lengths use $O(\beta)$ bits. Additions, comparisons, table-key
+operations, resource-accounting updates, and phase remainders have
+polynomial bit cost; a conservative
+schoolbook bound is $O(\beta^2)$ per arithmetic operation. If balanced
+comparison dictionaries are used, the same state recurrence therefore
+has bit bound
+\[
+ O\bigl(gS^2\beta^2\log(gS+2)\bigr).
+\]
+The delivered Python code instead uses ordinary collision-resolving
+dictionaries. No probabilistic assumption is needed for exactness. Even
+charging the worst-case linear lookup cost in a dictionary with
+$O(gS)$ entries gives the conservative deterministic bound
+\[
+ O(g^2S^3\beta^2).
+\]
+This also covers the existing exact rule-interning and slice dictionaries
+under the same conservative charge. Stored grammar data, short words,
+and simultaneously live automaton states use $O(gS\beta)$ bits, apart
+from implementation object overhead. With the fixed gate $S\le32$,
+all these bounds are polynomial in the encoded input size. The common
+prefix itself is obtained by the repository's previous exact SLP LCP
+routine; its cost must be added, not silently treated as free.
+\end{proof}
+
+The two arithmetic bounds should not be confused. The useful operation
+count $O(gS^2)$ assumes ordinary constant-time dictionary operations.
+The explicitly stated deterministic bit bound remains polynomial even
+under worst-case dictionary behavior. Both bounds concern this one
+string query after its common prefix is available; neither bounds the
+number of group transformations in a full recognition attempt.
+
+\subsection{Integration, caps, and resource semantics}
+
+The implementation adds \code{small_interval} and
+\code{periodic_prefix} to \code{CommonSubstring}, with
+\code{near_prefix} coordinating the branch.
+The public \code{longest} method still begins with its exact prefix
+query and its alphabet and directed-pair bounds. If those bounds have
+not already completed the query, it calls the new branch with the exact
+prefix length. An eligible branch returns an exact answer and witness;
+an ineligible branch returns no answer and the existing cut-pair search
+continues.
+
+The current gate is deliberately fixed at $S\le32$. It therefore
+adds no loop proportional to an exponentially large encoded deficit.
+Its second condition, $K\ge S-1$, ensures that every small seed and
+every selected cut lies in the known common prefix. Inputs outside this
+domain are covered by the existing complete matcher. Increasing the
+gate is a future tuning decision supported by the parameterized bound;
+it is not required for correctness of the present integration.
+
+An optional LCS cap is handled exactly as before. If the prefix already
+attains it, the earlier code returns immediately. Otherwise the computed
+prefix is the true uncapped LCP, because its mismatch occurred strictly
+before the cap. The new branch may stop after an actual witness attains
+the cap; it returns the first capped part of that witness. It never
+uses a guessed upper bound as evidence that a substring exists.
+
+Every traversal and comparison in the added branch consumes the arena's
+shared work allowance and calls its cancellation callback. Allocation
+continues to use the existing node limit. Each periodic-query memo table
+also has a state allowance equal to \code{max_nodes}; exceeding it raises
+\code{CompressedLimit}. These exceptions remain inconclusive resource
+outcomes. They are not converted into a negative substring answer or a
+negative knot verdict. The periodic table is local to one completed
+query, so an interruption stores no partially proved answer for reuse.
+
+The new short-interval reader explicitly materializes bounded seeds and
+tail windows. Calling this ``no expansion'' without qualification would
+hide that detail. The precise guarantee is that at most $5S-1$ root
+letters are read explicitly, irrespective of the expanded core length.
+No diagnostic whole-word expansion, exponential repeated-word allocation,
+or probabilistic equality shortcut is used.
+
+\subsection{Resolved families and a retained negative control}
+
+\begin{example}[Equal adjacent-pair sets]
+For $X_N=P_NcT$ and $Y_N=P_NaT$, with $N\ge16$, the exact LCP is
+$K=2N$, and $a=b=13$, so $S=25$. We have
+\[
+ \LCS(X_N,Y_N)=2N.
+\]
+Indeed, a longer substring would start in the first thirteen positions
+of each word. Starts of opposite parity mismatch immediately in the
+alternating prefixes. For equal parities and unequal starts, the earlier
+arrival at $X_N$'s tail encounters $c$ opposite an alternating letter.
+If $Y_N$ reaches its tail first, its initial $a$ may match, but the next
+letter is the first $a$ of $T$ and mismatches the alternating prefix's
+next $b$. The equal-parity separation is at least two, so the other
+word has not left that prefix before this mismatch. Equal starts
+encounter $c$ versus $a$ at position $2N$. Thus no alignment permits a
+longer match.
+
+The new branch verifies this answer without occurrence tables. On the
+standard power grammars its arithmetic cost is linear in
+$h=\log_2N$: $S$ is fixed, and the grammar has $O(h)$ nodes. Its bit
+cost remains polynomial in $h$, with the factors for arithmetic on
+$O(h)$-bit lengths included as in Theorem~\ref{thm:near-prefix-lcs}.
+\end{example}
+
+\begin{example}[A genuine improvement on the prefix witness]
+Let
+\[
+ X=(ab)^Nc,\qquad Y=(ab)^{N+1}c.
+\]
+Their exact LCP is $2N$, but $X$ occurs in $Y$ at offset two, so
+\[
+ \LCS(X,Y)=2N+1.
+\]
+Here the two suffix deficits are one and three. The new branch returns
+the witness $(2N+1,0,2)$. This tests discovery of a longer common
+substring, rather than merely certification that an existing prefix is
+optimal. Signed random-word tests also exercise longer shifted matches
+and swapped input order.
+\end{example}
+
+\begin{example}[A branch that remains unresolved]
+Replace $T$ in the first family by $T^3$. The tail lengths are now 37,
+so $S=73>32$ and the new branch is not entered. For the tested
+$N\ge256$, the same parity and first-departure argument proves that the
+LCS is still $2N$. Alphabets and adjacent-pair sets still agree, so the
+existing complete matcher remains responsible for this control.
+Resource exhaustion on its larger cases is retained in the results.
+No time ratio is assigned to an unfinished baseline or an unfinished
+new query.
+\end{example}
+
+The tests compare 500 periodic-prefix queries with explicit oracles and
+450 nearly full LCS instances with literal substring search, including
+more than one hundred cases whose best witness is longer than the
+initial prefix. They also check large powers through $2^{500}$,
+cap handling, returned positions, the eligibility gate, state exhaustion,
+work exhaustion, cancellation, and a successful retry after a stopped
+periodic query. The existing exhaustive and randomized compressed-LCS
+and cyclic-overlap tests remain in place.
+
+The accompanying experiments compare the frozen implementation with an
+identical A/A control, the exact diagonal reduction using general LCE
+primitives, and the full cycle-automaton branch. They additionally retain
+an interior-match control already settled by the older transition bound.
+The genuine knot-corpus queries measure whole recognition and independent
+certificate replay, not only this local primitive. Their unchanged
+certificate digests and lack of calls to the new branch support
+preservation of those existing paths; they do not demonstrate a speedup
+in completed unknot recognition.
+
+\subsection{What this result does and does not establish}
+
+The exact theorem resolves an identifiable compressed-string bottleneck
+that survived alphabet and directed-pair pruning. Its useful parameter is
+the amount of input remaining after an exact long common prefix. This is
+different information from a fixed-order local factor set, and the
+algorithm handles arbitrary contents of the shared prefix within the
+stated domain.
+
+The result is also deliberately local. The implementation is a specialized
+branch inside an already polynomial compressed LCS algorithm; it is not
+a new proof that general compressed LCS belongs to polynomial time.
+It does not show that all knot presentations reach this favorable regime,
+that all useful cyclic overlaps have a long common prefix in the spelling
+being queried, or that word grammars remain small throughout a search.
+In particular, doubling a pair of relators for a cyclic query can make
+their suffix deficits large even when their original spellings share
+a long prefix. The new branch then yields to the existing complete
+cyclic machinery. Turning the present local improvement into a bound
+for general unknot recognition still requires separate global progress,
+representation-size, and completeness arguments.

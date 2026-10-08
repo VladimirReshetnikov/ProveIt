@@ -1,0 +1,73 @@
+\subsection{A current claim about Jones detection and its audited prerequisites}
+\label{sec:jones-status}
+
+The literature check was made on 8 October 2026. Carmi and Cohen's
+June 2026 preprint explicitly claims that the Jones polynomial detects the
+unknot \cite[Theorem~6.9]{carmicohen2026}. The arXiv record inspected on that
+date lists version~1 only and displays no withdrawal notice. This claim
+must be acknowledged; it cannot be resolved by repeating older descriptions
+of the problem's status. Our theorems and recognition decisions do not assume
+the claimed detection theorem.
+
+There is a concrete reason for this independence. The pinned repository
+already contains an audit of a prerequisite consequence of that preprint.
+Lemma~5.8, combined with the universal realization asserted in
+Proposition~5.12 and the threshold in Section~5.1.1, implies a uniform bound
+on the degree in $p=x-x^{-1}$ of every ordinary residual twist state:
+\[
+ \deg_p V\le B_{\rm host}+11+2.
+\]
+Here the expansion is $V(x)=a(p)+b(p)x$, and the degree means
+$\max(\deg a,\deg b)$. This implication precedes the low-order anchor
+vanishing used later in Theorem~5.10; it is not restricted to hosts already
+known to have trivial Jones polynomial \cite[Sections~5.1--5.6]{carmicohen2026}.
+
+For clarity, the existing witness can be described without any clasp-machine
+isotopy. Take the three-crossing host with planar-diagram rows
+\[
+ (5,1,2,0),\quad(1,4,3,2),\quad(0,3,4,5).
+\]
+Replace the third row by an odd anti-parallel twist of length $L$, keeping
+its exterior ports fixed. Explicitly, the first twist row begins with
+$(a_0,b_0)=(0,3)$. At row $i=0,\ldots,L-1$ use
+$(a_i,b_i,c_i,d_i)$, where $(c_i,d_i)=(6+2i,7+2i)$ for $i<L-1$,
+$(c_{L-1},d_{L-1})=(4,5)$, and
+$(a_{i+1},b_{i+1})=(d_i,c_i)$. These are the same fixed-exterior
+diagrams used by the baseline audit.
+
+Their knot Jones polynomials, in $t=x^2$, satisfy the audited skein recurrence
+\[
+ V_1(t)=t+t^3-t^4,\qquad
+ V_L(t)=t^2V_{L-2}(t)+t-t^2+t^3-t^4.
+\]
+Consequently the highest term is $-t^{L+3}$. The identity
+$x^m=F_{m-1}(p)+F_m(p)x$, with
+\[
+ F_m(p)=\sum_{k=0}^{\lfloor(m-1)/2\rfloor}
+          \binom{m-k-1}{k}p^{m-2k-1},
+\]
+shows that the corresponding $b$-polynomial has leading term
+$-p^{2L+5}$. All lower $t$-powers contribute smaller $p$-degrees.
+Thus the degree is $2L+5$; for the mirror it is $2L+6$.
+
+The host has $B_{\rm host}=3\cdot3+1-1=9$, so the proposed uniform
+residual cap is $22$. The baseline's $L=9$ witness has degree $23$.
+The present package independently recomputes its complete Jones polynomial
+with Regina~7.4.1, and recomputes the formal expansion using the displayed
+binomial formula rather than the baseline's coefficient recurrence.
+It also checks $L=23$: the degree is $51$, while $L>22$ even satisfies
+the long-twist inequality needed by the later descent. The mirror degrees
+are $24$ and $52$, respectively. All four polynomial computations agree
+coefficient by coefficient with all three tensor arithmetic modes.
+
+The original audit additionally records local oriented-smoothing reductions
+and Reidemeister-II anchor cancellations. Our new independent computation
+replicates its polynomial obstruction. It neither constructs a nontrivial
+knot with Jones polynomial one nor identifies a unique erroneous
+clasp-machine step. It shows that the stated universal geometric realization
+and uniform residual-degree consequence cannot both apply to these explicit
+ordinary twists. Accordingly, a Jones polynomial different from one gives
+the usual nontriviality obstruction, whereas identity remains inconclusive
+in this implementation. The source and complete raw outputs are
+\path{reproduce/audit_regina_jones.py} and
+\path{results/regina_jones_20261008.json}.

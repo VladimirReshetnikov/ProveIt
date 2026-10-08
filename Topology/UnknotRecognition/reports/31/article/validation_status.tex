@@ -1,0 +1,26 @@
+Final discovery contains 721 tests in 83 maintained modules. The recorded
+validation covers this inventory through ordinary \code{unittest} module
+runs, with Regina distribution 7.4.1 enabled and no skipped tests. Before
+the worker repair, all 720 then-existing tests ran: 719 passed and the
+unchanged large-input worker regression raised a timeout. That error
+reproduced in isolation. It was a compatibility defect in partial-input
+communication on the inspected Python 3.12.14 runtime, rather than evidence
+of a mathematical failure in any of the three primitives.
+
+Only \path{fastunknot/normal_surface.py} and its test module changed after
+that comprehensive batch. The other 82 modules supply 712 passing tests;
+the affected worker module subsequently passes all nine tests, including
+one added cleanup regression. Thus the final coverage is
+$712+9=721$ current tests. A further six-test public-integration rerun also
+passes; those six belong to the retained 712 and are not counted twice.
+The affected module is the only test module using the worker transport;
+the cocycle adapter tests import Regina directly. No existing test's
+deadline or expectation was relaxed. The complete accounting, final source
+hashes and raw logs are in \path{validation/final-validation.json} and the
+adjacent validation files.
+
+An earlier single-process discovery attempt ended with exit code 1 after
+14 passing lines, without a unittest summary or traceback. Its cause was
+not established; the next test passed in isolation. This attempt is
+preserved and classified as incomplete, separately from the comprehensive
+module runs. We do not report a successful final single-process suite run.

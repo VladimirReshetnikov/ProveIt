@@ -1,0 +1,268 @@
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/compressed_lcs.py b/Topology/UnknotRecognition/fast/fastunknot/compressed_lcs.py
+index 769973948..9a9210bf0 100644
+--- a/Topology/UnknotRecognition/fast/fastunknot/compressed_lcs.py
++++ b/Topology/UnknotRecognition/fast/fastunknot/compressed_lcs.py
+@@ -159,6 +159,128 @@ class CommonSubstring:
+                     length, first, second = self.extension(left, right, k)
+                     yield (length, second, first) if swapped else (length, first, second)
+ 
++    def small_interval(self, node, start, stop):
++        """Read only a caller-bounded seed or tail, without expanding its root."""
++        a, result = self.arena, []
++        pending = [(node, start, stop)]
++        while pending:
++            a.tick()
++            current, lo, hi = pending.pop()
++            if lo == hi:
++                continue
++            rule = a.rules[current]
++            if rule[0] == 't':
++                result.append(rule[1])
++                continue
++            left, right = rule[1:]
++            cut = a.lengths[left]
++            if hi > cut:
++                pending.append((right, max(0, lo-cut), hi-cut))
++            if lo < cut:
++                pending.append((left, lo, min(hi, cut)))
++        a.stats['lcs_seed_letters'] = a.stats.get('lcs_seed_letters', 0)+len(result)
++        return result
++
++    def periodic_prefix(self, root, pattern):
++        """Exact LCP with an infinite periodic word, by a cycle automaton.
++
++        A state is (grammar node, phase modulo len(pattern)); its value is
++        the matching prefix length. There are at most g*len(pattern) states.
++        The caller supplies a short explicit pattern, never a large expansion.
++        """
++        if not pattern:
++            raise ValueError('periodic pattern must be nonempty')
++        a, period, done = self.arena, len(pattern), {}
++        pending = [(root, 0)]
++        while pending:
++            a.tick()
++            node, phase = pending[-1]
++            key = node, phase
++            if key in done:
++                pending.pop()
++                continue
++            if not node:
++                value = 0
++            else:
++                rule = a.rules[node]
++                if rule[0] == 't':
++                    value = int(rule[1] == pattern[phase])
++                else:
++                    left, right = rule[1:]
++                    first = left, phase
++                    if first not in done:
++                        pending.append(first)
++                        continue
++                    value = done[first]
++                    if value == a.lengths[left]:
++                        second = right, (phase+a.lengths[left]) % period
++                        if second not in done:
++                            pending.append(second)
++                            continue
++                        value += done[second]
++            if len(done) >= a.max_nodes:
++                raise CompressedLimit('compressed-LCS periodic state allowance exhausted')
++            done[key] = value
++            pending.pop()
++        a.stats['lcs_periodic_states'] = a.stats.get('lcs_periodic_states', 0)+len(done)
++        return done[root, 0]
++
++    def near_prefix(self, x, y, prefix, limit, max_alignments=32):
++        """Certify nearly full LCS queries using bounded short-shift tests.
++
++        prefix must be the exact common-prefix length and smaller than limit.
++        Return None if its two suffix deficits leave too many alignments.
++        Otherwise every possible improvement crosses a cut in a short prefix;
++        self-comparison of the shared long prefix reduces to small-period
++        automata, followed by bounded explicit tail comparisons.
++        """
++        a = self.arena
++        nx, ny = a.lengths[x], a.lengths[y]
++        dx, dy = nx-prefix, ny-prefix
++        count = dx+dy-1
++        if count > max_alignments or prefix < count-1 or min(dx, dy) < 1:
++            return None
++        a.tick()
++        a.stats['lcs_near_prefix_queries'] = a.stats.get('lcs_near_prefix_queries', 0)+1
++        head = self.small_interval(x, 0, count-1)
++        tail_start = max(0, prefix-count)
++        xt = self.small_interval(x, tail_start, nx)
++        yt = self.small_interval(y, tail_start, ny)
++        cut, best = dx-1, (prefix, 0, 0)
++        for delta in range(1-dx, dy):
++            a.tick()
++            a.stats['lcs_near_prefix_alignments'] = a.stats.get('lcs_near_prefix_alignments', 0)+1
++            other = cut+delta
++            before = 0
++            while before < min(cut, other):
++                a.tick()
++                if head[cut-before-1] != head[other-before-1]:
++                    break
++                before += 1
++            if not delta:
++                after = prefix-cut
++            else:
++                low, high = min(cut, other), max(cut, other)
++                period = high-low
++                word = a.slice(x, low, prefix)
++                extent = self.periodic_prefix(word, head[low:high])
++                after = extent-period
++                if extent == prefix-low:
++                    # The larger coordinate has reached the shared prefix's
++                    # end. All remaining candidate letters lie in short tails.
++                    remaining = min(nx-cut, ny-other)
++                    while after < remaining:
++                        a.tick()
++                        if xt[cut+after-tail_start] != yt[other+after-tail_start]:
++                            break
++                        after += 1
++            length = before+after
++            if length > best[0]:
++                best = min(length, limit), cut-before, other-before
++                if best[0] == limit:
++                    break
++        return best
++
+     def longest(self, x, y, cap=None):
+         """Return (min(LCS length, cap), x start, y start); empty uses (0,0,0)."""
+         a = self.arena
+@@ -200,6 +322,10 @@ class CommonSubstring:
+         if best[0] == limit:
+             a.stats['lcs_transition_stops'] = a.stats.get('lcs_transition_stops', 0)+1
+             return best
++        near = self.near_prefix(x, y, prefix, limit)
++        if near is not None:
++            a.stats['lcs_near_prefix_stops'] = a.stats.get('lcs_near_prefix_stops', 0)+1
++            return near
+         xs = sorted((n for n in xn if a.rules[n][0] == 'c'), key=lambda n: -xb[n])
+         ys = sorted((n for n in yn if a.rules[n][0] == 'c'), key=lambda n: -yb[n])
+         for u in xs:
+diff --git a/Topology/UnknotRecognition/fast/tests/test_compressed_lcs.py b/Topology/UnknotRecognition/fast/tests/test_compressed_lcs.py
+index 8a02884d6..c51af8ab1 100644
+--- a/Topology/UnknotRecognition/fast/tests/test_compressed_lcs.py
++++ b/Topology/UnknotRecognition/fast/tests/test_compressed_lcs.py
+@@ -27,6 +27,104 @@ def parsed(arena, word, rng):
+ 
+ 
+ class CompressedLCSTests(unittest.TestCase):
++    def test_periodic_prefix_automaton_against_literal_words(self):
++        rng = random.Random(3101)
++        for _ in range(500):
++            pattern = [rng.choice((-2, -1, 1, 2)) for _ in range(rng.randrange(1, 9))]
++            word = (pattern*rng.randrange(12)
++                    + [rng.choice((-2, -1, 1, 2)) for _ in range(rng.randrange(25))])
++            arena = WordArena()
++            root = parsed(arena, word, rng)
++            matcher = CommonSubstring(arena)
++            expected = next((i for i, letter in enumerate(word)
++                if letter != pattern[i % len(pattern)]), len(word))
++            self.assertEqual(matcher.periodic_prefix(root, pattern), expected)
++            lo = rng.randrange(len(word)+1)
++            hi = rng.randrange(lo, len(word)+1)
++            self.assertEqual(matcher.small_interval(root, lo, hi), word[lo:hi])
++        with self.assertRaises(ValueError):
++            CommonSubstring(WordArena()).periodic_prefix(0, [])
++
++    def test_near_prefix_diagonals_against_literal_lcs(self):
++        rng = random.Random(3102)
++        improved = 0
++        for trial in range(450):
++            if trial % 3:
++                shared = [rng.choice((-2, -1, 1, 2)) for _ in range(rng.randrange(24, 70))]
++                tx = [3]+[rng.choice((-2, -1, 1, 2, 3)) for _ in range(rng.randrange(12))]
++                ty = [-3]+[rng.choice((-2, -1, 1, 2, 3)) for _ in range(rng.randrange(12))]
++            else:
++                block = [rng.choice((-2, -1, 1, 2)) for _ in range(rng.randrange(1, 6))]
++                shared = block*20
++                tx, ty = [3], block+[3]
++            x, y = shared+tx, shared+ty
++            if trial % 2:
++                x, y = y, x
++            arena = WordArena()
++            u, v = parsed(arena, x, rng), parsed(arena, y, rng)
++            matcher = CommonSubstring(arena)
++            prefix, expected = lcp(x, y), literal_lcs(x, y)
++            improved += expected > prefix
++            for cap in (min(len(x), len(y)), prefix+1):
++                answer = matcher.near_prefix(u, v, prefix, cap)
++                self.assertIsNotNone(answer)
++                length, first, second = answer
++                self.assertEqual(length, min(expected, cap), (x, y, cap))
++                self.assertEqual(x[first:first+length], y[second:second+length])
++                self.assertLessEqual(first+length, len(x))
++                self.assertLessEqual(second+length, len(y))
++            length, first, second = matcher.longest(u, v)
++            self.assertEqual(length, expected)
++            self.assertEqual(x[first:first+length], y[second:second+length])
++        self.assertGreater(improved, 100)
++
++    def test_near_prefix_exponential_equal_bigrams_and_positive_witness(self):
++        for bits in (8, 32, 500):
++            arena, n = WordArena(max_work=2000000), 2**bits
++            run = arena.power(arena.from_word([1, 2]), n)
++            tail = arena.from_word([1, 1, 2, 2, 3, 3, 1, 3, 2, 1, 2, 3])
++            x = arena.concat(run, arena.concat(arena.letter(3), tail))
++            y = arena.concat(run, arena.concat(arena.letter(1), tail))
++            matcher = CommonSubstring(arena)
++            with patch.object(arena, 'expand', side_effect=AssertionError('must not expand root')), \
++                 patch.object(matcher, 'overlaps', side_effect=AssertionError('no occurrence tables')):
++                self.assertEqual(matcher.longest(x, y), (2*n, 0, 0))
++            self.assertEqual(arena.stats['lcs_near_prefix_alignments'], 25)
++            self.assertLess(arena.stats['lcs_seed_letters'], 110)
++            arena, n = WordArena(max_work=2000000), 2**bits
++            run = arena.power(arena.from_word([1, 2]), n)
++            x = arena.concat(run, arena.letter(3))
++            y = arena.concat(run, arena.from_word([1, 2, 3]))
++            with patch.object(arena, 'expand', side_effect=AssertionError('must not expand root')):
++                length, first, second = CommonSubstring(arena).longest(x, y)
++            self.assertEqual((length, first, second), (2*n+1, 0, 2))
++
++    def test_near_prefix_guard_and_resource_exhaustion(self):
++        arena = WordArena()
++        run = arena.power(arena.from_word([1, 2]), 2**20)
++        x = arena.concat(run, arena.power(arena.letter(3), 20))
++        y = arena.concat(run, arena.power(arena.letter(-3), 20))
++        matcher = CommonSubstring(arena)
++        self.assertIsNone(matcher.near_prefix(x, y, 2**21, arena.lengths[x]))
++        x, y = arena.from_word([1, 2, 3]), arena.from_word([2, 1, 3])
++        self.assertIsNone(matcher.near_prefix(x, y, 0, 3))
++        arena.max_nodes = 1
++        with self.assertRaisesRegex(CompressedLimit, 'periodic state'):
++            matcher.periodic_prefix(run, [1, 2])
++        arena.max_nodes = 100000
++        self.assertEqual(matcher.periodic_prefix(run, [1, 2]), 2**21)
++        arena.left = 0
++        with self.assertRaises(CompressedLimit):
++            matcher.periodic_prefix(run, [1, 2])
++        class Cancelled(Exception):
++            pass
++        arena.left = 100000
++        def cancel():
++            raise Cancelled()
++        arena.check = cancel
++        with self.assertRaises(Cancelled):
++            matcher.periodic_prefix(run, [1, 2])
++
+     def test_dyadic_overlap_progressions_exhaustive_and_random_parses(self):
+         words = [list(w) for n in range(1, 6) for w in itertools.product((1, 2), repeat=n)]
+         arena = WordArena(max_nodes=1000000, max_work=100000000)
+diff --git a/Topology/UnknotRecognition/fast/tests/test_lcs_transitions.py b/Topology/UnknotRecognition/fast/tests/test_lcs_transitions.py
+index 978d3e3e4..c667ec92b 100644
+--- a/Topology/UnknotRecognition/fast/tests/test_lcs_transitions.py
++++ b/Topology/UnknotRecognition/fast/tests/test_lcs_transitions.py
+@@ -58,7 +58,9 @@ class LCSTransitionTests(unittest.TestCase):
+             self.assertEqual(matcher.longest(x, y), (2**501, 1, 1))
+         self.assertEqual(arena.stats['lcs_extensions'], 1)
+         # Equal alphabets and equal bigram sets do not imply equal strings.
+-        tail = [1, 1, 2, 2, 3, 3, 1, 3, 2, 1, 2, 3]
++        # A longer tail also keeps the bounded-deficit branch ineligible,
++        # retaining this test's coverage of the complete cut-pair fallback.
++        tail = [1, 1, 2, 2, 3, 3, 1, 3, 2, 1, 2, 3]*3
+         x, y = [1, 2]*32+[3]+tail, [1, 2]*32+[1]+tail
+         arena = WordArena()
+         u, v = arena.from_word(x), arena.from_word(y)

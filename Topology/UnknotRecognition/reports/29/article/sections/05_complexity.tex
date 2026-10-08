@@ -1,0 +1,239 @@
+\section{Coefficient bounds and the remaining complexity barrier}
+\label{sec:complexity}
+
+\subsection{An explicit bound for an actual completed suffix}
+
+The completion theorem is useful only with a proved size bound. Let $n\ge1$
+be the number of suffix crossings. A completed suffix is obtained by pairing
+its frontier labels, with no additional crossing-free circles supplied from
+outside. Circles already removed by delooping in the prefix are represented by
+the relative complex and its shifts; they must not be silently added to this
+closed diagram.
+
+\begin{lemma}[Crossings bound the number of link components]
+\label{lem:components-crossings}
+For a spherical $n$-crossing diagram in which every link component meets a
+crossing, the number $c$ of link components satisfies $c\le n$.
+\end{lemma}
+\begin{proof}
+For component $i$, let $s_i$ be its number of self-crossings and $u_i$ the number
+of mixed-crossing incidences on it. If $s_i>0$, then $s_i+u_i/2\ge1$.
+If $s_i=0$, the component is a simple closed curve on the sphere. Its number of
+intersections with every other closed curve is even, by mod-two intersection
+on the sphere. Because it meets a crossing, $u_i$ is positive and at least two.
+Thus $s_i+u_i/2\ge1$ in this case as well. Summing over components counts
+each self-crossing once and each mixed crossing twice with coefficient one
+half, so $c\le\sum_i(s_i+u_i/2)=n$.
+\end{proof}
+
+Every link component of our completed suffix meets a retained crossing:
+each frontier endpoint belongs to a retained crossing, and the matching has
+no closed component of its own. Hence the lemma applies even if the projection
+is disconnected.
+
+\begin{proposition}[Per-object and per-component coordinate bounds]
+\label{prop:coordinate-bounds}
+Let $\sigma\in\Z^4$ be the marked four-residue Euler vector of a completed
+$n$-crossing suffix object, and put $a=J(1)$. Then
+\begin{align}
+ |a|&\le 2^{n-1}, & |d|&\le 2^{n-1},\\
+ \norm{\sigma}&\le2^{n-1}, &
+ |\sigma_r|&\le\left\lfloor\frac{|a|+2^{n-1}}2\right\rfloor.
+ \label{eq:object-bounds}
+\end{align}
+For a whole differential component containing $s_a$ represented objects,
+with object Euler values $a_o$, a valid bound is
+\begin{equation}
+ C_a=\sum_{o\in\mathcal C_a}
+       \left\lfloor\frac{|a_o|+2^{n-1}}2\right\rfloor
+       \le s_a2^{n-1}.
+ \label{eq:coordinate-bound}
+\end{equation}
+\end{proposition}
+\begin{proof}
+The value-at-one formula gives $|a|=2^{c-1}\le2^{n-1}$. For a connected
+projection, the signed Tait cofactor is a sum of products of $\pm1$ over
+spanning trees. If its Tait graph has $v$ vertices, every tree chooses exactly
+$v-1$ of the $n$ crossing edges, so its absolute value is at most
+$\binom{n}{v-1}$. For $n\ge1$, each binomial coefficient is at most
+$2^{n-1}$: it is a term in either the even or the odd binomial sum, and both
+sums equal $2^{n-1}$. Loops and parallel edges do not invalidate this argument.
+For a disconnected projection, the value at $i$ is zero, so the same bound
+holds. Multiplication by a Gaussian unit does not change $|d|$.
+
+The two nonzero possible coordinates are $(a+d)/2$ and $(a-d)/2$; therefore
+their total absolute value is $\max(|a|,|d|)$, and each absolute value has
+the stated integer bound. Homological signs and quantum shifts only negate
+or permute coordinates. Summing over a whole component and using the triangle
+inequality gives \cref{eq:coordinate-bound}.
+\end{proof}
+
+This deliberately elementary bound is inexpensive to compute and is valid for
+signed, nonalternating diagrams. A smaller certified bound can only improve
+the stopping criterion. The implementation uses the first expression in
+\cref{eq:coordinate-bound}, because the exact $a_o$ values have already been
+computed by the Euler prefilter.
+
+\subsection{How many bits of modulus suffice?}
+
+Let $s_{\max}=\max_a s_a$. At threshold one, a product with
+\[
+                   M>s_{\max}2^{n-1}
+\]
+is sufficient. Thus the sufficient threshold has $n+\log_2 s_{\max}+O(1)$ bits.
+A small-prime product can overshoot that target by the bit length of its last
+prime; this does not affect the asymptotic bound for the Boolean comparison. No exponential-size
+integer \emph{bit length} is hidden in this step, although $s_{\max}$ itself
+may count exponentially many represented objects.
+
+For a supply of distinct primes each of at least $w$ bits, the number needed
+is at most
+\[
+ O\!\left(1+\frac{n+\log(s_{\max}+1)}{w}\right),
+\]
+provided enough such primes are supplied and validated. This is a statement
+about the arithmetic interface, not a claim that a fixed machine-word palette
+works for arbitrarily large inputs. An asymptotic implementation can enlarge
+the prime range and include the cost of finding and certifying the primes.
+For completeness, let $L\ge1$ be the required modulus bit length. Sieve
+odd primes up to a cutoff $X$, doubling $X$ until their product exceeds the
+certified bound. The classical Chebyshev estimate
+$\vartheta(X)=\sum_{p\le X}\log p=\Theta(X)$ \cite{chebyshevnotes}
+shows that this stops with $X=O(L)$. Sieving, exact product construction,
+and primality certification by the sieve therefore take polynomial time and
+space in $L$, and each selected prime has $O(\log(L+1))$ bits. This supplies
+a deterministic asymptotic extension; it is not implemented in the fixed
+palette interface. A user can also supply a sufficiently large certified
+finite palette for a specified input-size range.
+
+The current code accepts distinct odd primes below $2^{31}$, and defaults to
+$(65521)$. It tests the explicit completion inequality after every full prime
+pass. If the supplied palette is exhausted before that inequality holds, the
+record says that threshold completion was not certified. Scanning then
+continues. The code neither invents missing modulus bits nor interprets an
+inconclusive residue as an unknot certificate.
+
+\subsection{A cost account for the implemented observer}
+
+Let $N$ be the original number of crossings. For observed suffix $s$, write
+$n_s$ for its crossing count, $b_s$ for its frontier size, $v_s$ for the number
+of common black-fragment vertices, $\ell_s$ for the number of primes processed,
+$K_s$ for the number of distinct boundary matchings queried, and $D_{s,p}$
+for the number of distinct black terminal partitions queried at prime $p$.
+Let $S_s$ be the total number of represented objects traversed in the observed
+whole components. These are measured workload parameters, not promised small
+functions of $N$.
+
+The main costs are as follows. Ordinary dictionary and disjoint-set operations
+are stated in the usual unit-cost model; field and large-integer costs are
+separated explicitly.
+
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}P{0.29\textwidth}X@{}}
+\toprule
+Operation & Cost and limitation\\
+\midrule
+Source coloring & Once, near-linear in $N$, including spherical validation.\\
+Suffix geometry & $O(N+n_s\log(n_s+1)+v_s^2)$ elementary work is a safe bound.
+The current constructor revalidates the whole crossing order at each stage;
+it is not a suffix-only $O(n_s)$ routine.\\
+Boundary acceptance and counts & $O(b_s\log(b_s+1))$ per new matching is a safe
+bound for normalization and boundary disjoint-set summaries.\\
+Response preparation & $O(v_s^3)$ field operations and $O(v_s^2)$ temporary
+field elements per prime.\\
+New determinant query & $O(1+b_s^3)$ field operations, using a matrix of size
+at most $b_s-2$ when $b_s>0$; immediate zero when radical dimension is too large.\\
+Whole-component aggregation & $O(\ell_sS_s)$ four-coordinate visits, in addition
+to grading recovery and exact Euler accounting. No norm is applied to a proper
+subset of one component.\\
+CRT and norm minimization & Four-coordinate integer arithmetic per component
+and prime, on integers whose bit length includes $\log M$ and the exact sums.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+In particular, the determinant field-operation term is bounded by
+\begin{equation}
+ O\!\left(\sum_s\left[
+       \ell_s v_s^3+\sum_{p\ {
+m processed}}D_{s,p}(1+b_s^3)
+                      \right]\right).
+ \label{eq:arithmetic-ledger}
+\end{equation}
+This term must be added to the scan itself, geometric validation, grading
+recovery, coefficient accounting, cache operations, and CRT bit costs.
+If prime bit lengths and the total modulus bit length are polynomial in $N$
+and $\log(S_s+1)$, each displayed elementary arithmetic operation has polynomial
+bit complexity. This suffices for the conditional asymptotic conclusions below;
+we do not equate a Python big-integer operation with a constant-time bit operation.
+
+Active nonzero response data use $O(\ell_s(1+b_s)^2)$ field elements in addition
+to the common dense graph. The implementation also retains per-stage matching
+and cofactor caches, and completed value caches whose keys include earlier
+stages. Its \emph{total} memory is therefore not bounded by $O(b_s^2)$.
+Memory accounting must include at least the recorded matching keys, four-vectors,
+Euler values, and the scanner's own objects and morphisms.
+
+\subsection{What a width bound would and would not buy}
+
+There are at most
+\[
+                 (b-1)!!\le b^{b/2}=2^{O(b\log b)}
+\]
+perfect matchings on a labeled even frontier. Black terminal partitions are
+also bounded by the Bell number on $b/2$ elements, hence by
+$2^{O(b\log b)}$. These bounds require no single-disk assumption. If all
+completions are known to be noncrossing on one fixed disk boundary, a Catalan
+bound may be substituted; the present general suffix representation does not
+establish that additional hypothesis.
+
+Consequently a polylogarithmic frontier bounds the \emph{number of possible
+oracle keys} quasi-polynomially. For example,
+$b=O((\log N)^2/\log\log N)$ gives at most $2^{O((\log N)^2)}$ matching keys.
+The stronger restriction $b=O(\log N)$ gives
+$2^{O(\log N\log\log N)}$ keys by this elementary estimate. These are oracle
+table bounds, not complete recognition bounds.
+
+Many algebraic generators may have the same boundary matching and different
+differentials, gradings, or continuation behavior. Determinant caching removes
+repeated observation cost for that matching; it does not identify those
+algebraic generators. Moreover, crossing order optimization has no proved
+polylogarithmic-width guarantee on arbitrary inputs in the maintained program.
+Planarity by itself is not such a guarantee.
+
+\begin{proposition}[A precise conditional route to quasi-polynomial time]
+\label{prop:conditional}
+Consider a family of validated diagrams with $N$ crossings. Suppose there is
+an algorithm which, through a decisive marked obstruction or final rank
+calculation, constructs and updates the required relative complexes in
+$2^{(\log N)^{O(1)}}$ bit operations and space, including every represented
+object and morphism. Suppose also that the number of stages and oracle calls
+is quasi-polynomial and that exact sums and multiplicities have polynomial or
+quasi-polynomially bounded bit length. Then adding the deterministic modular
+observer with sufficient certified modulus preserves a quasi-polynomial bound.
+\end{proposition}
+\begin{proof}
+A suffix has $O(N)$ darts and at most $O(N)$ common graph vertices. Preparation
+and each determinant therefore have polynomial dimension. The coefficient
+bound requires $O(N+\log(S_s+1))$ modulus bits; the hypothesis makes this
+polynomial in $N$ for a quasi-polynomial number of explicit objects.
+The sieve construction above supplies enough primes with polynomial bit
+length in polynomial time in the required modulus bit length. Every observer
+operation has polynomial cost in its relevant bit lengths, hence at most
+quasi-polynomial cost in $N$, apart from its already counted traversal of
+represented objects. A quasi-polynomial number of such operations and the
+assumed representation work remain quasi-polynomial.
+\end{proof}
+
+The main hypothesis is exactly the unresolved obligation. The proposition is
+an interface theorem explaining where a future representation result would
+attach, not a proof that this hypothesis holds. Even a constant-size determinant
+cannot pay for exponentially many distinct differential generators. Conversely,
+a structural family formula may succeed despite an exponentially large explicit
+basis, as the three-braid literature demonstrates \cite{kelomaki}.
+
+There is a second independent obstruction: the four-residue bound can remain
+one for every prefix examined. Khovanov unknot detection concerns the full
+homology, whereas these Euler values retain only a small part of it. A universal
+bound on the first decisive prefix would need a new theorem about continuation
+behavior. None of the modular arithmetic results supplies that theorem.

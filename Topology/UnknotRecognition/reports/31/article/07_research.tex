@@ -1,0 +1,355 @@
+\section{What is still needed for quasi-polynomial recognition}
+\label{sec:research}
+
+The most useful next step is to make the missing global bounds explicit
+enough to prove, refute, or measure. A vague expectation that every local
+operation is fast is not an adequate complexity argument. In particular,
+binary coordinates can encode exponentially many discs, a small grammar can
+undergo exponentially many valid rewrites, and a small boundary alphabet
+can carry a large algebraic object.
+
+\subsection{A complete accounting identity}
+
+Let $R$ be the number of processed search or hierarchy states, let $S_j$
+be the complete binary encoding size of state $j$, and let $C_j$ be the
+cost of generating, transforming, and checking it. If local operations have
+a uniform polynomial bound $C_j\leq(S_j+N)^d$, then
+\begin{equation}
+ \operatorname{Time}(N)
+ \leq\operatorname{preparation}(N)+
+ R\left(N+\max_j S_j\right)^d.
+ \label{eq:global-accounting}
+\end{equation}
+Thus both $R$ and the maximum represented size must be quasi-polynomial.
+This elementary inequality is the central obligation that the three new
+primitives do not yet discharge.
+
+For the hierarchy route, the lexicographic reset accounting in
+\cite[Section~9]{lackenby2026} gives at most $L(g+1)^L$ passes through a
+step, where $L$ bounds hierarchy length and $g$ bounds relevant
+pattern-complexities. Taking logarithms shows the precise requirement:
+\begin{equation}
+ \log L+L\log(g+1)\leq(\log(N+2))^{O(1)}
+ \label{eq:reset-target}
+\end{equation}
+would suffice for the iteration part of a quasi-polynomial bound. A linear
+bound on $L$ together with a polynomial bound on $g$ gives only an
+$\exp(O(N\log N))$ reset estimate by this argument. Strict decrease of a
+large integer potential proves termination, but is not the same as a small
+number of decreases.
+
+The refined hierarchy controls length through its initial handle complexity,
+but this does not by itself supply \eqref{eq:reset-target}. A successful
+program could either obtain much stronger simultaneous depth and complexity
+bounds, or replace the lexicographic reset estimate with a better amortized
+or memoized one. The latter may be more plausible than forcing every
+decomposition to halve a topological quantity. In either case the actual
+compressed cutting and attaching operations must satisfy the local cost
+assumption in \eqref{eq:global-accounting}.
+
+\subsection{A conditional composition theorem with explicit hypotheses}
+
+The following statement is an accounting tool, not a theorem that the current
+hierarchy or group search satisfies its hypotheses.
+
+\begin{theorem}[Conditional quasi-polynomial composition]
+Suppose a complete recognition procedure on an $N$-bit input can be organized
+as a rooted search tree with the following properties, for fixed constants
+$a,b,c,d,C$:
+\begin{enumerate}
+\item its depth is at most $C\log^a(N+2)$;
+\item each node has at most $(N+2)^c$ children, including every necessary
+branch of the complete procedure;
+\item every node, attaching map, integer, and certificate needed locally
+has total binary encoding size at most $\exp(C\log^b(N+2))$;
+\item constructing a node, deciding its local actions, checking its
+certificate, and verifying a leaf take time at most the $d$th power of its
+encoding size plus $N$.
+\end{enumerate}
+Then the complete procedure has quasi-polynomial bit time and can be
+executed in quasi-polynomial space by depth-first traversal.
+\label{thm:conditional-qp}
+\end{theorem}
+\begin{proof}
+The number of nodes is bounded by a geometric sum with largest term
+\[
+ ((N+2)^c)^{C\log^a(N+2)}
+ =\exp(O(\log^{a+1}(N+2))).
+\]
+The per-node cost is $\exp(O(\log^b(N+2)))$ times a polynomial factor in
+$N$. Multiplying gives
+$\exp(O(\log^{\max(a+1,b,1)}(N+2)))$. The active path has
+polylogarithmic length and each stored state has the stated bound; the local
+workspace is bounded by the local running time. This gives the space
+conclusion. Completeness is an explicit hypothesis; it is not
+obtained from this counting argument.
+\end{proof}
+
+Another route replaces depth and branching by a proved quasi-polynomial
+bound on the number of distinct canonical states and a rule that expands
+each at most once. That requires a canonical representation preserving all
+attaching and boundary-pattern data. Equal coarse statistics or isomorphic
+unlabelled incidence graphs are not automatically equivalent states for a
+future geometric continuation.
+
+For a width-based route, $w=\log^{O(1)}N$ makes the binary tensor primitive
+quasi-polynomial immediately. Planarity alone only supplies $w=O(\sqrt n)$.
+Moreover, exact Jones identity still requires an independent completion
+route in this implementation. A width theorem and a complete treatment of
+identity cases would therefore both be needed before that observation became
+a recognition theorem.
+
+\subsection{Safe portfolio accounting}
+
+The measurements suggest a practical improvement that already has a simple
+complexity proof: run faithful Potts for a polynomially bounded amount of
+whole-query work, and if it does not finish, run the certified binary tensor
+algorithm from the validated diagram. The first arm is often much cheaper
+on the current corpus. The second supplies the better universal bound.
+
+\begin{proposition}[A bounded prelude preserves a fallback bound]
+If an exact prelude costs at most $p(N)$ bit operations and returns either
+a checked answer or an inconclusive result, while an exact complete fallback
+costs at most $F(N)$, sequential composition costs at most $p(N)+F(N)$ and
+is exact. In particular, a polynomially bounded faithful-Potts prelude
+preserves the binary tensor full-Jones bound.
+\end{proposition}
+\begin{proof}
+The prelude either supplies a checked answer within its budget or consumes
+at most $p(N)$ before the fallback starts. The fallback receives the original
+validated problem. Its cost and correctness then apply independently of the
+failed prelude. Adding the bounds proves the claim.
+\end{proof}
+
+The budget must include preparation, all attempted shadings or orders,
+coefficient arithmetic, and normalization, not just one inner transition
+counter. In this implementation those operations have polynomial bit bounds
+per represented work object, so a proved polynomial transition and state
+budget can support such a prelude. The portfolio itself is proposed, not
+part of the frozen patch.
+
+There is an analogous constraint on an eventual quasi-polynomial recognizer:
+it cannot always insist on finishing an uncapped $2^{O(\sqrt n)}$ invariant
+first and then claim a quasi-polynomial total from a later stage. Such an
+invariant must have its own quasi-polynomial allowance, be skipped, or be
+proved cheaper on the relevant branch. Optional heuristics are compatible
+with a good worst-case theorem when their discarded work is explicitly
+bounded.
+
+\subsection{Priority I: complete compressed geometry}
+
+\begin{question}[Exact cutting with complete attaching data]
+Can a cut along a binary normal surface be computed and independently
+verified in time polynomial in the triangulation size, coordinate bit
+length, and size of the compressed output, without enumerating individual
+discs or parallel product regions?
+\end{question}
+
+This is the most consequential implementation target for the hierarchy
+route. A useful representation must retain oriented attaching intervals,
+boundary patterns, component identities, and maps back to the original
+manifold. Merely recording multiplicities of local normal disc types does
+not say how the new boundary pieces are paired. A benchmark should therefore
+include exponentially large parallel families with a fixed number of local
+types, and compare the compressed result with a literal cut on all feasible
+small members. The pass condition is equality of reconstructed attaching
+maps and certificate replay, together with output-size and bit-cost bounds.
+
+\begin{question}[Certified parallelity reduction]
+Can all relevant product or parallelity regions be recognized and collapsed
+using compressed interval data, with a certificate of the resulting handle
+structure and inherited boundary pattern?
+\end{question}
+
+This would connect the implementation to the refined hierarchy's depth
+control. It must include exceptional or non-disk bundle bases and their
+vertical boundaries, rather than assuming every repeated local block is a
+trivial product. A concrete first milestone is an exact list of permitted
+local quotient operations, each with a reconstruction certificate and
+explicit effect on the chosen complexity measure. The benefit should be
+measured in compressed handle count and subsequent reset work, not only in
+the number of expanded tetrahedra avoided.
+
+\begin{question}[Normal curves after a compressed cut]
+Can boundary intersection, isotopy, and normalization operations be made
+polynomial in all representation parameters actually produced by cutting?
+\end{question}
+
+Lackenby's fast curve algorithms provide suitable starting primitives
+\cite{lackenbycurves2026}. Their hypotheses and parameters must be preserved
+at the adapter boundary. In particular, standard-curve normalization depends
+on its simplification number as well as triangulation size and logarithmic
+weight. Controlling only binary multiplicities is therefore insufficient if
+the cut creates many independently paired arc pieces. The next artifact
+should expose that pairing count or simplification number as a measured and
+proved state-size parameter, with literal small-instance comparison.
+
+\begin{question}[Independent geometric decision certificates]
+Can a successful hierarchy, crushing sequence, or meridian disk be exported
+from discovery and replayed by a small exact checker bound to the original
+diagram and its peripheral data?
+\end{question}
+
+The cocycle matching is a model for this boundary: the solver proposes a
+small certificate and a separate routine checks the claimed objective.
+Geometry needs richer witnesses, including the validity of the exterior,
+essential boundary slopes, and the admissibility of each operation. A first
+positive milestone is the Euler-characteristic disk test proved in
+Section~\ref{sec:cocycle}. Its implementation should not mistake a rank-one
+manifold for the input knot exterior or use a disk with inessential boundary
+as an unknot certificate.
+
+\subsection{Priority II: a global descent or reset theorem}
+
+\begin{question}[Reset accounting stronger than lexicographic termination]
+Is there an amortized potential, persistent-prefix reuse theorem, or
+canonical-state bound that replaces $L(g+1)^L$ by a quasi-polynomial bound
+on actual reconstruction work?
+\end{question}
+
+An informative experiment must record why a prefix is discarded, what data
+remain reusable, and how much later work is repeated. Counting only successful
+decompositions hides the potentially dominant cost. A candidate theorem
+should specify an injection from reset events into a bounded family of
+combinatorial objects or prove a multiplicative decrease after a bounded
+batch of events. If neither can be shown, an explicit family with repeated
+near-identical resets would be a valuable negative result.
+
+\begin{question}[State size under repeated cutting and simplification]
+Can the complete compressed state remain quasi-polynomial in the original
+diagram size throughout every necessary branch?
+\end{question}
+
+The word ``complete'' includes coefficient bits, interval endpoints,
+pairings, boundary-pattern labels, and certificate history. A fixed local
+alphabet of handle types is helpful but does not bound the number of copies
+or distinct attaching patterns. A proposed invariant should have a bound
+under each primitive and under composition; an individual output-sensitive
+algorithm alone does not prevent its outputs from growing too quickly.
+Recording both peak size and cumulative newly created data will distinguish
+reusable DAG sharing from repeated copying.
+
+\begin{question}[Algebraic summaries beyond the Jones state space]
+Can a complete detecting invariant or geometric boundary condition be
+represented at polylogarithmic interfaces with quasi-polynomial total
+algebraic multiplicity and update cost?
+\end{question}
+
+Replacing Bell partitions by binary states solves a specific invariant
+calculation. It cannot simply be transferred to Khovanov complexes: the
+number of boundary labels does not bound chain-group multiplicities,
+differential data, or the work needed to perform exact cancellation and
+rank decisions. Even with one boundary label, an abstract chain object can
+carry arbitrarily many summands. A viable stronger summary needs an exact
+composition theorem controlling those data, with proof that the final
+decision is complete. Small widths on special diagram classes should be
+studied separately from claims about arbitrary planar diagrams.
+
+\subsection{Priority III: improving the new primitives}
+
+\begin{question}[Weighted and class-aware cocycle optimization]
+Can the certified flow objective be extended to local geometric costs that
+predict hierarchy work, and can a bounded set of cohomology classes be
+searched without losing a global bit bound?
+\end{question}
+
+Positive integral tetrahedron weights preserve the network formulation, but
+require a flow algorithm polynomial in binary capacities. Minimizing genus
+or pattern-complexity is not obtained simply by renaming the disc-count
+objective. Varying the cohomology class also leaves the current potential
+family and may reintroduce an integer search problem. A useful first result
+would state exactly which weighted local objectives remain convex network
+spans, and compare their certified optima with measured cut or reset costs
+on genuine knot exteriors. The rank-one primitive case is a natural initial
+target because its class choices are controlled.
+
+\begin{question}[When does additional vertex freedom justify its cost?]
+Can truncation or subdivision be chosen by a certified benefit/cost rule
+that improves seed construction or downstream geometry on difficult inputs?
+\end{question}
+
+The finite-exterior examples show useful freedom with ten vertices and none
+after one-vertex simplification. More vertices do not automatically help:
+they increase the flow and geometric state, and disc count changes with the
+triangulation. A fair comparison should report the number of tetrahedra,
+bits, normal discs, Euler characteristic, and actual downstream work. For
+known pure gauge changes on a fixed triangulation, the certificate-transport
+proposition avoids solving the flow again. Retriangulation requires a
+separate transport theorem and cannot use that formula without proof.
+
+\begin{question}[Smaller tensor work with the same certified bound]
+Can order selection, outer-face selection, and a bounded faithful prelude
+reduce actual state and arithmetic costs while preserving the universal
+square-root bound?
+\end{question}
+
+The existing certificate allows heuristic orders to compete with a guaranteed
+one. A cost model incorporating actual state multiplicity and mantissa bits
+may predict runtime better than frontier width alone. Any order-search
+budget must be charged. An especially useful negative deduction follows
+from Proposition~\ref{prop:gauge}: changing only a same-outer bend gauge
+cannot reduce normalized mantissas or their bit lengths for a fixed order.
+Optimizing that gauge solely to shrink integer precision would be wasted
+effort. Changing the outer face is a different operation and can be tested
+explicitly, while retaining the complete turning proof. Sharper bounds on
+formal coefficient span also remain a mathematical question, rather than
+an assumed consequence of gauge covariance.
+
+\begin{question}[Witness quality and the next compressed bottleneck]
+Can a budgeted overlap scheduler obtain useful gain guarantees, while
+rejecting impossible whole-donor queries before they consume the allowance?
+\end{question}
+
+The present first-witness gain ratio tends to zero on a proved family, so
+an unconditional approximation theorem for this exact policy is unavailable.
+A modified policy might retain several cheap witnesses, increase a threshold
+geometrically, or optimize gain only within a controlled collection of
+periodic alignments. Each proposal needs a clear extra-work bound and a
+counterexample search. Independently, the pair $(ab)^N,(aabb)^N$ calls for
+a cheap exact incompatibility summary of run lengths or periodic defects
+at the earlier whole-donor stage. The relevant parameter may be defect count
+in addition to grammar size and length bit size.
+
+\begin{question}[From local group moves to complete bounded discovery]
+For presentations arising from actual knot diagrams, can one prove a
+quasi-polynomial bound on necessary moves, grammar growth, and certificate
+size for a complete discovery strategy?
+\end{question}
+
+This is substantially harder than a polynomial local word theorem. A strict
+decrease of expanded relator length may still allow exponentially many
+unit decreases. Strong compression does not itself make the greedy move
+set complete. Research should distinguish arbitrary synthetic presentations
+from residuals reachable by verified transformations of Wirtinger
+presentations. The next benchmark target is a collection of actual knot
+residuals above the explicit bridge cap that genuinely exercise the new
+partial-overlap stage, with independently replayed final certificates and
+all preceding-stage work included.
+
+\subsection{Milestones and decision criteria}
+
+The priorities above can be organized into three reviewable releases.
+The first should implement a capped full-Jones portfolio, seed-certificate
+transport, and a peripheral-data-bound positive disk checker. Success means
+unchanged exact outputs, independent certificate replay, and a documented
+improvement on inputs that exercise the changed path.
+
+The second should deliver compressed cutting and normal-curve adapters with
+explicit output-size bounds, including product-region and boundary pairing
+data. Success means agreement with literal topology on small cases and
+polynomial dependence on binary weights on large structured families, with
+no hidden disc expansion. If some family forces excessive pairing growth,
+that obstruction should be stated before extending the hierarchy code.
+
+The third should address \eqref{eq:reset-target} and
+\eqref{eq:global-accounting}: prove an amortized reset or canonical-state
+bound for a complete strategy, or construct a rigorous family showing that
+the proposed strategy cannot satisfy it. A general quasi-polynomial claim
+should be made only when the completeness theorem, state-size invariant,
+primitive bit bounds, and total-work accounting all refer to the same
+implemented or fully specified algorithm.
+
+The work in this package makes the next stage concrete. It provides exact
+primitives whose guarantees can be composed when the missing global
+structure is available, and it identifies several attractive shortcuts
+that fail under direct mathematical or experimental scrutiny.

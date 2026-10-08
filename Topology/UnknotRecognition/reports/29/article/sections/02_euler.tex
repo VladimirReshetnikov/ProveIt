@@ -1,0 +1,192 @@
+\section{Marked completion and the integer Euler obstruction}
+\label{sec:euler}
+
+\subsection{Relative complexes and a persistent marked point}
+
+Fix a classical one-component planar diagram $D$ with $N$ crossings and a
+validated permutation of its crossings. A proper prefix leaves a suffix with
+$n\ge1$ crossings. The scanning construction represents the prefix by a complex
+in the dotted cobordism category. Each object is a boundary matching with its
+homological and quantum shifts; closed circles have been removed through the
+standard delooping operations. Differentials, cancellations, and their homotopies
+are the actual maps supplied by this construction \cite{barnatan2005,barnatan2007}.
+
+Choose a point on an edge incident to the final unprocessed crossing. It remains
+in the suffix at every proper-prefix observation. On completion, the marked
+circle carries the action of $A=\F_2[x]/(x^2)$. The marked quotient is applied
+after the actual suffix has been attached.
+
+\begin{lemma}[Why completion and reduction preserve the contractions]
+\label{lem:marked}
+Suppose the prefix complex is decomposed and simplified by chain maps and
+chain homotopies that commute with the marked action after completion. Applying
+the marked quotient preserves every recorded chain-homotopy equivalence.
+\end{lemma}
+\begin{proof}
+If maps $f,g$ and a homotopy $h$ satisfy $fg-1=dh+hd$, all maps are
+$A$-linear. Their induced maps on the quotient satisfy the same equality,
+because passage to the quotient respects composition and addition. The other
+homotopy identity is treated identically. This argument does not require the
+quotient functor to be flat or exact on arbitrary short exact sequences.
+\end{proof}
+
+Let $\mathcal C_a$ be a whole connected component of the differential graph after such
+simplification. The absence of differentials between these groups gives a
+direct sum of complexes. Completing with the actual suffix and applying the
+marked quotient gives
+\begin{equation}
+ \Khred(K;\F_2)\cong
+ \bigoplus_a H\!\left(\widetilde{\operatorname{cl}}(\mathcal C_a)\right)^{\oplus m_a},
+ \label{eq:completed-sum}
+\end{equation}
+up to recorded shifts, whose effect on the norms below is harmless. Shared
+copies can have different global shifts; each has the same norm.
+
+\subsection{Four integer coordinates}
+
+For a finite bigraded complex $X$, define its residue-four Euler vector by
+\begin{equation}
+ \sigma_r(X)=\sum_{h,\ j\equiv r\pmod4}(-1)^h\dim_{\F_2}X^{h,j},
+ \qquad 0\le r<4.
+ \label{eq:sigma}
+\end{equation}
+Differentials preserve the quantum grading, so taking Euler characteristics
+after homology leaves this vector unchanged. A homological shift negates all
+four coordinates when the shift is odd. A quantum shift cyclically permutes
+them. Both preserve the $\ell^1$ norm.
+
+\begin{proposition}[Existing marked-component bound]
+\label{prop:B4}
+With the provenance of \cref{lem:marked}, put
+$x_a=\sigma(\widetilde{\operatorname{cl}}(\mathcal C_a))$. Then
+\[
+ B_4=\sum_a m_a\norm{x_a}
+ \le\dim_{\F_2}\Khred(K;\F_2).
+\]
+In particular, $B_4>1$ certifies that $K$ is nontrivial.
+\end{proposition}
+\begin{proof}
+For each residue, let $e_r,o_r$ be the total dimensions of the even and odd
+homology groups. Then $|e_r-o_r|\le e_r+o_r$. Summing over residues and
+using \cref{eq:completed-sum} proves the inequality. Reduced Khovanov rank one
+detects the unknot; the maintained $\F_2$ criterion follows from the standard
+unknot-detection theorem and change-of-coefficients implications
+\cite{kronheim}. The rank-one implication is the existing recognition premise,
+not a new assertion about the auxiliary prime fields used below.
+\end{proof}
+
+\paragraph{The order of operations is part of the theorem.}
+For each whole component, sum all signed, shifted object vectors first. Then
+take a norm, and finally sum with positive multiplicities. A pair of object
+vectors $u$ and $-u$ may belong to one contractible complex. Their true Euler
+contribution is zero, while $\norm{u}+\norm{-u}$ is positive. Neither modular
+arithmetic nor early stopping permits taking a norm midway through this sum.
+Stopping after a \emph{completed} component is safe because all remaining
+component norms are nonnegative.
+
+\subsection{Recovering the vector from two scalar evaluations}
+
+We use the repository's raw reduced polynomial convention
+\begin{equation}
+ J_D(q)=\sum_{s\in\{0,1\}^n}(-q)^{|s|}
+                 (q+q^{-1})^{c(s)-1}.
+ \label{eq:raw-J}
+\end{equation}
+Here $c(s)$ counts the circles of the smoothing. The completion contains no
+explicit crossing-free circles outside this diagram; previously delooped
+circles are represented by the prefix's shifted objects and multiplicities.
+
+Changing a smoothing changes the circle count by one in parity. Hence all
+quantum degrees in \cref{eq:raw-J} have parity
+$\epsilon=(c(0)-1)\bmod2$. If
+\[
+ a=J_D(1),\qquad d=i^{-\epsilon}J_D(i)\in\Z,
+\]
+the only potentially nonzero coordinates are
+\begin{equation}
+ \sigma_\epsilon=\frac{a+d}{2},\qquad
+ \sigma_{\epsilon+2}=\frac{a-d}{2}.
+ \label{eq:two-values}
+\end{equation}
+Indeed, evaluation at one adds the two residue sums, while evaluation at $i$
+subtracts them after removing the common factor $i^\epsilon$. In particular,
+\begin{equation}
+                     \norm{\sigma(D)}=\max(|a|,|d|).
+ \label{eq:maxnorm}
+\end{equation}
+This identity will give small and explicit coefficient bounds.
+
+\subsection{The exact evaluation at one}
+
+Let $c$ be the number of link components and $c_0=c(0)$ the all-zero circle
+count. In the raw convention,
+\begin{equation}
+                  a=(-1)^{n+c+c_0}2^{c-1}.
+ \label{eq:euler-sign}
+\end{equation}
+One way to see the sign is to choose an orientation and write $h$ for the
+number of one-smoothings in its Seifert state and $s$ for its Seifert circles.
+Circle parity gives $s\equiv c_0+h\pmod2$. The orientable Seifert surface
+has $s-n\equiv c\pmod2$. Thus $h\equiv n+c+c_0\pmod2$.
+The normalized reduced evaluation at one is $2^{c-1}$, and the raw shift
+supplies the sign above.
+
+The existing implementation computes the same integer by independently
+orienting the completed link. A reusable boundary connectivity summary can
+instead determine $c$ and $c_0$ without revisiting the suffix. Both versions
+remain available as cross-checks. The integer $2^{c-1}$ has $O(n)$ bits; a
+boundary-sized combinatorial traversal is not automatically a boundary-only
+bit-cost bound for constructing this integer.
+
+\subsection{The signed determinant and its phase}
+
+For a connected completed projection, checkerboard color its regions. At a
+crossing $e$, let $b_e$ be the smoothing bit that does not join its black
+sectors, and put $w_e=(-1)^{b_e}$. Set $B=\sum_e b_e$. If $G$ is the signed
+black Tait graph with $v$ vertices, then
+\begin{equation}
+ J_D(i)=(-i)^{B+v-1}\tau(G),\qquad
+ \tau(G)=\det L_G^{(0)},
+ \label{eq:tait}
+\end{equation}
+where $L_G^{(0)}$ is a grounded Laplacian cofactor.
+
+At $q=i$, all states except one-circle states vanish. Those states correspond
+to spanning trees of the Tait graph. Their phases give \cref{eq:tait}; the
+matrix-tree expansion is polynomial in the edge weights, so the signs do not
+require a positive Laplacian. Loops contribute to $B$, although their incidence
+vectors vanish in the Laplacian. Removing them from the phase would invalidate
+the observation. If the projection is disconnected, every smoothing has more
+than one circle and $J_D(i)=0$.
+
+For connected accepted geometry we also have
+\[
+                       B+v-1\equiv\epsilon\pmod2.
+\]
+Choose any unsigned spanning tree. Its one-circle state has smoothing-weight
+parity $B+v-1$, while circle parity gives $|s|\equiv c_0-1\pmod2$.
+This proves the identity even when the signed tree sum cancels.
+It is a combinatorial parity condition, not merely a check that the computed
+Gaussian integer lies on the correct axis. The implementation checks it even
+when a modular determinant vanishes, so a zero residue cannot conceal a phase
+inconsistency.
+
+\subsection{Relative shifts and multiplicity saturation}
+
+The maintained grading recovery assigns a relative quantum shift $t_o$ to
+every object in a component, checking every nonzero differential and cycle.
+For a map of dot degree $d$ between matchings with $m$ arcs and $c$ glued
+circles, its equation is $t_{\rm target}-t_{\rm source}=m-c+2d$.
+Object $o$ contributes $(-1)^{h_o}\operatorname{rot}_{t_o}\sigma(D_o)$.
+Only the shift modulo four is needed after consistency has been verified.
+
+For threshold $T$, replacing a positive multiplicity $m$ by
+$\min(m,T+1)$ preserves whether $m\norm{x}>T$, because the norm is an integer.
+The same statement extends to sums of nonnegative terms. The maintained
+scanner uses cap three; this remains sound for our threshold one. It does not
+permit saturating signed Euler coefficients before aggregation.
+
+Finally, a proper-prefix restriction remains mandatory. At the closed terminal
+stage, separate unmarked scalar generators are not automatically free marked
+$A$-summands. The modular observer refuses that stage. An \code{UNKNOT} verdict
+comes only from the completed rank-two unreduced calculation.

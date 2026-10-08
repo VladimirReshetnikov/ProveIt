@@ -1,0 +1,755 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=0.92in,headheight=14pt]{geometry}
+\usepackage{microtype,booktabs,array,longtable,enumitem}
+\usepackage{xcolor,fancyhdr,xurl}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black]{hyperref}
+\usepackage{needspace}
+\hypersetup{pdftitle={Certified braid kernels and linear Markov descent},pdfauthor={ProveIt research continuation},pdfsubject={Parameterized unknot recognition and certified braid preprocessing}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Certified braid kernels}
+\fancyhead[R]{\small ProveIt research continuation}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{0.35em}
+\setlength{\parindent}{1.2em}
+\setlist{itemsep=0.2em,topsep=0.4em,leftmargin=*}
+\linespread{1.045}
+\emergencystretch=1.4em
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{question}{Research question}[section]
+\newcommand{\F}{\mathbb F_2}
+\newcommand{\Kh}{\widetilde{\operatorname{Kh}}}
+\newcommand{\poly}{\operatorname{poly}}
+\newcommand{\cl}[1]{\widehat{#1}}
+\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\N}{\mathbb N}
+\newcommand{\ram}{\textnormal{word-RAM}}
+\newcommand{\status}[1]{\textnormal{\texttt{#1}}}
+\makeatletter
+\let\tableinput\@@input
+\makeatother
+\newcommand{\sourcepin}{\texttt{8388b5368036}}
+\title{\vspace{-1.3em}\textbf{Certified braid kernels and\\linear Markov descent}\\[0.45em]
+\large Minority-sign parameters for exact and\\quasipolynomial unknot recognition}
+\author{Research report prepared for the ProveIt project}
+\date{8 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We develop a structural preprocessing route for explicit Artin braid words whose closures are knots. For a word of length $n$ on $b$ strands, let $g_B=(n-b+1)/2$ be the genus of its canonical braid surface and let $k$ be the smaller of its positive and negative letter counts. Splitting at every generator index with a unique occurrence produces a certified connected-sum decomposition with at most $4g_B$ surviving crossings. Applying the Bennequin obstruction separately to the factors either proves nontriviality or gives a closure-preserving kernel with at most $4\kappa\le4k$ crossings and at most $2\kappa+1$ strands, where $\kappa$ is the sum of the factors' minority counts. This yields a complete fixed-parameter algorithm with time $\poly(n)2^{O(k)}$, and the stronger factorwise bound $\poly(n)2^{O(k_*)}$, where $k_*$ is the largest surviving factor parameter. In particular, $k_*=O(\log^2 n)$ gives $n^{O(\log n)}$ time.
+
+A second contribution replaces repeated global scans in singleton endpoint Markov descent by an amortized-linear algorithm with a separately replayed, linear-size trace. The package includes a standard-library implementation, a small-instance reduced Khovanov oracle, certificate verifiers, finite exhaustive checks, and paired measurements. The singleton topological observation and occurrence-count method have classical antecedents; the present contribution is their explicit all-factor kernelization, local sign accounting, complete complexity reduction, and verified implementation. No general quasipolynomial bound for unrestricted diagrams is asserted.
+\end{abstract}
+\vspace{0.4em}
+\noindent\textbf{Scope.} Explicit, uncompressed Artin words; one-component closures; exact decisions with resource caps disabled. A small kernel is a theorem about a supplied presentation, not an assertion that every knot has an efficiently discoverable small presentation.
+\newpage
+{\small\setlength{\parskip}{0pt}\linespread{1}\selectfont\tableofcontents}
+\newpage
+
+\section{Problem, contribution, and relation to existing work}
+\label{sec:position}
+
+\subsection{The bottleneck addressed here}
+The inspected ProveIt implementation uses several inexpensive certificates before complete homology computation. Its braid-specific code tests the Bennequin inequality, has an exact at-most-three-strand branch, and can descend through singleton endpoint generators. The maintained recognition pipeline also includes geometric reduction, factorization, polynomial obstructions, and complete characteristic-two Khovanov backends. Its documented general guarantee remains exponential \cite{proveit,braidsource}. A faster coefficient operation alone does not control the number of generators presented to such a backend. The present work therefore reduces the size of the topological input before constructing the chain complex.
+
+The baseline endpoint helper is particularly concrete: it repeatedly cyclically free-reduces the whole word, scans both endpoint generator lists, rotates the word, and decreases the strand count. Its documented bound is $O(nb)$ word operations \cite{endpointsource}. We replace this repeated traversal by a deletion-only data structure. Independently, we use \emph{internal} singleton generators as connected-sum cuts. These cuts are not endpoint destabilizations and must not be justified as braid-group equalities.
+
+\subsection{What is classical, and what is developed here}
+Van Cott's work on braid length already uses generator-occurrence arrays and the fact that a singleton occurrence splits a closed braid as a connected sum \cite[proof of Theorem 5]{vancott}. Thus neither that observation nor the underlying pigeonhole argument is claimed as a new topological discovery. Our construction uses every such cut without a primeness or shortest-word hypothesis, retains explicit factors, and gives local minority-sign accounting, bit-size bounds, verifiers, and an exact recognition reduction. Priority for the isolated $4k$ corollary has not been exhaustively established.
+
+The imported inequality is the classical Bennequin inequality, used here only in its necessary condition for an unknot braid; Dasbach--Lin record this specialization \cite{dasbachlin}. The complete backend relies on Khovanov's chain construction and the Kronheimer--Mrowka unknot-detection theorem \cite{khovanov,km}. We do not claim that near-positive links have not previously been studied: Przytycki--Taniyama, for example, treat small numbers of negative crossings in much broader diagram classes \cite{przytycki}.
+
+Width restrictions and homological computation remain a different issue. Kelom\"aki--Sch\"utz show, among other results, exponential behavior of a scanning approach even on certain three-braid families \cite{kelomaki}. This cautions against inferring small chain complexes from small braid index. Our proof instead bounds the \emph{entire explicit crossing input} to an exponential backend. The hierarchy route is also distinct: Lackenby's July 2026 preprint explains in Section 9 that its described steps lack the precision needed for running-time estimates \cite{lackenby}. Nothing here supplies those missing hierarchy primitives.
+
+\subsection{A map of the results}
+There are three different conclusions, with different hypotheses.
+
+First, singleton splitting is an unconditional closure-preserving reduction to $4g_B$ crossings. It uses no recognition invariant. Second, after local Bennequin tests, surviving instances have a $4k$-crossing kernel. Rejected instances are already certified nontrivial. Third, replacing each residual factor by a complete exponential computation gives an unconditional parameterized recognition algorithm on explicit braid words. A quasipolynomial specialization follows only when the computed residual parameter is polylogarithmic in the original input length.
+
+The endpoint improvement has a separate status: its asymptotic time is linear on \emph{all} valid inputs for that reduction routine, whether or not the routine finds anything. It is not a complete search for destabilizations, and linear running time of one stage is not linear running time of recognition.
+
+\section{Input model and elementary invariants}
+\label{sec:model}
+
+\begin{definition}[Explicit Artin input]
+An input is a positive integer $b$ and an explicit list
+\[
+ w=(a_1,\ldots,a_n),\qquad a_t\in\{\pm1,\ldots,\pm(b-1)\},
+\]
+representing $\beta=\sigma_{|a_1|}^{\sgn(a_1)}\cdots\sigma_{|a_n|}^{\sgn(a_n)}\in B_b$.
+The closure is required to have one component. The empty word in $B_1$ represents the unknot. Powers are expanded: $\sigma_i^{2^r}$ has $2^r$ letters in this model, not $r$ bits.
+\end{definition}
+
+Replace each signed letter by the adjacent transposition $(|a_t|,|a_t|+1)$. The cycles of the resulting permutation correspond exactly to components of the closure. Thus the one-component promise is checked, not assumed by the public API. For a valid knot input every index $1,\ldots,b-1$ occurs: an absent index separates two invariant strand sets. In particular $b\le n+1$, a check made before allocating strand-indexed arrays.
+
+Let
+\begin{equation}
+ P=\#\{t:a_t>0\},\quad M=\#\{t:a_t<0\},\quad
+ e=P-M,\quad k=\min(P,M)=\frac{n-|e|}{2}.
+ \label{eq:parameters}
+\end{equation}
+The canonical braid surface has $b$ Seifert discs, $n$ bands, and one boundary component. Consequently
+\begin{equation}
+ g_B=\frac{n-b+1}{2}\in\N.
+ \label{eq:braidgenus}
+\end{equation}
+This is also verified arithmetically by the permutation parity. It is the genus of the surface determined by this \emph{word}, not necessarily the minimum genus of the knot. The same formula for a braid surface is standard \cite{vancott}; our subsequent bounds never replace $g_B$ by the smaller knot genus.
+
+A machine word contains an index or counter of $O(\log(n+b+2))$ bits. Statements about linear word operations use this model. A conservative bit simulation multiplies such bounds by a logarithmic factor. Parsing arbitrary external JSON is charged to its actual byte length; the normalized valid-word estimate does not pretend that a huge invalid integer can be read in constant time. No compressed-word algorithm is claimed.
+
+\begin{lemma}[Mirror invariance of the parameters]
+Replacing every $a_t$ by $-a_t$ reverses $e$, preserves $n,b,g_B,k$, and preserves whether the closure is the unknot.
+\end{lemma}
+\begin{proof}
+The letter counts $P$ and $M$ are exchanged. Reflection of the braid diagram gives the mirror knot, and the mirror of a spanning disc is a spanning disc. Reflection is involutive, so triviality is preserved in both directions.
+\end{proof}
+
+\section{Singleton cuts and a closure-preserving genus kernel}
+\label{sec:genuskernel}
+
+\subsection{The topological cut, with the necessary qualification}
+\begin{definition}
+An index $i\in\{1,\ldots,b-1\}$ is a \emph{singleton index} when
+\[
+ f_i:=\#\{t:|a_t|=i\}=1.
+\]
+The count is unsigned: one occurrence of $\sigma_i$ and one of $\sigma_i^{-1}$ gives $f_i=2$, not a singleton.
+\end{definition}
+
+\begin{lemma}[Singleton connected-sum cut]
+\label{lem:split}
+Suppose $f_i=1$. Delete that letter and project the other letters to indices $<i$ and $>i$, retaining their order. The projections define braids $\beta_L\in B_i$ and $\beta_R\in B_{b-i}$, the latter with indices shifted down by $i$. If $\cl\beta$ is a knot, both projected closures are knots and
+\[
+ \cl\beta\cong\cl{\beta_L}\,\#\,\cl{\beta_R}.
+\]
+Here $\cong$ denotes knot isotopy. This is not an equality in $B_b$.
+\end{lemma}
+\begin{proof}
+Write the word as $u\sigma_i^\epsilon v$. Cyclically moving $u\sigma_i^\epsilon$ past the closure seam gives the conjugate word $vu\sigma_i^\epsilon$. No letter of $vu$ has index $i$. Each remaining letter lies entirely on the first $i$ strands or entirely on the last $b-i$ strands. The two alphabets commute, because any index from one differs from any index from the other by at least two. We may therefore arrange
+\[
+ vu\sigma_i^\epsilon=\alpha_L\alpha_R\sigma_i^\epsilon,
+\]
+without changing the internal order of either projected word.
+
+Close $\alpha_L$ and $\alpha_R$ separately in disjoint balls. In the displayed word the final $\sigma_i^\epsilon$ makes the standard local band connection between a short arc on the right edge of the left closure and a short arc on the left edge of the right closure. The band lies in the otherwise empty corridor between the two strand blocks. A sphere separating the balls can be adjusted across this band to meet the joined closure in precisely two points. The two capped pieces are the original projected closures. The local choice $\epsilon=\pm1$ changes the drawn half-twist at the join, which can be absorbed by moving an attaching arc in its ball; it does not put a knotted tangle into the corridor. This is the usual geometric connected sum, not an arbitrary band sum.
+
+For completeness, component counts also identify which case occurs. The permutations of $\alpha_L$ and $\alpha_R$ act on disjoint sets. Multiplication by $(i,i+1)$ merges the cycle containing $i$ with the cycle containing $i+1$, and affects no other cycle. If their separate closure component counts are $c_L,c_R$, the joined count is $c_L+c_R-1$. Since it is one, $c_L=c_R=1$.
+
+Finally, the projections of $vu$ are cyclic rotations of the projections of $uv$. Projecting a rotated list simply moves its projected prefix to its end. Cyclic rotation preserves a closed braid, so the factors can be computed from the original linear word as stated.
+\end{proof}
+
+This is the classical singleton observation in the explicit form needed by the verifier \cite{vancott}. The restriction to the standard Artin corridor is essential to this proof. No claim about arbitrary Seifert-graph bridges, arbitrary bands between surfaces, or general band-generator encodings is being imported.
+
+\begin{lemma}[No cancellation of knot summands]
+\label{lem:no-cancel}
+A finite connected sum of knots is the unknot if and only if every summand is the unknot.
+\end{lemma}
+\begin{proof}
+The connected sum of spanning discs gives a spanning disc, proving one direction. For the other, consider a decomposing sphere $S$ meeting an unknot in two points, and an embedded spanning disc $D$ transverse to $S$. The intersection consists of one arc joining the two boundary points and possibly circles. An innermost-circle surgery removes the circles without changing $\partial D$: choose a circle innermost on a puncture-free disc in $S$, replace the appropriate subdisc, and push off $S$. Such a puncture-free side exists because the intersection arc joins the two punctures without crossing that circle. Repetition leaves one intersection arc. Cutting $D$ along it gives discs for the two capped knot arcs, so both summands are unknots. Induction proves the finite-sum assertion.
+\end{proof}
+
+\subsection{All cuts can be made at once}
+Let the singleton indices be $c_1<\cdots<c_s$, and set $c_0=0$, $c_{s+1}=b$. The strand intervals
+\[
+ I_j=\{c_{j-1}+1,\ldots,c_j\},\qquad 1\le j\le s+1,
+\]
+partition all strands. Delete the $s$ singleton letters. In each interval, retain every letter with $c_{j-1}<|a_t|<c_j$ and replace its index by $|a_t|-c_{j-1}$, preserving its sign. Let the resulting word have length $n_j$ and $b_j=c_j-c_{j-1}$ strands.
+
+\begin{proposition}[Batch decomposition and exact accounting]
+\label{prop:batch}
+Every projected closure $K_j$ is a knot, and
+\begin{align}
+ \cl\beta&\cong K_1\#\cdots\# K_{s+1},\label{eq:sum}\\
+ n&=s+\sum_j n_j,\qquad b=\sum_j b_j,\label{eq:sizeaccount}\\
+ g_B&=\sum_j g_j,\qquad g_j:=\frac{n_j-b_j+1}{2}.\label{eq:genusaccount}
+\end{align}
+Every generator index of a nonempty factor occurs at least twice. Empty factors are precisely one-strand unknot factors.
+\end{proposition}
+\begin{proof}
+Apply Lemma~\ref{lem:split} successively. Cutting at one singleton deletes no other occurrence and never changes the unsigned multiplicity of any remaining generator. Its left and right projections commute only across the deleted boundary, and later cuts are still singleton cuts within one factor. The cyclic rotations in the proof merely change the closure seams of projected words. Consequently the final factors are the displayed batch projections, up to those harmless rotations.
+
+The first two counting identities follow from the partition and the deleted letters. There are $s+1$ intervals, so
+\[
+ \sum_j (n_j-b_j+1)=n-s-b+(s+1)=n-b+1,
+\]
+which proves the genus identity. The original knot has no absent generator. Every non-cut generator therefore has multiplicity at least two, and its full list of occurrences stays within one factor. A factor on more than one strand cannot have an empty word because its permutation would not be a single cycle.
+\end{proof}
+
+\Needspace{14\baselineskip}
+\begin{theorem}[Linear-crossing genus kernel]
+\label{thm:genus}
+For every explicit knot braid, batch singleton splitting produces nonempty factors satisfying
+\begin{equation}
+ n_j\le4g_j,\qquad b_j-1\le2g_j.
+ \label{eq:localgenus}
+\end{equation}
+Their total crossing count $m$ satisfies
+\begin{equation}
+ m:=\sum_{n_j>0}n_j\le4g_B.
+ \label{eq:4g}
+\end{equation}
+There is a single braid with the same knot closure, exactly $m$ letters, and at most $2g_B+1$ strands. All objects can be produced in $O(n+b)$ word operations, apart from the separately specified verifier.
+\end{theorem}
+\begin{proof}
+For a nonempty factor all $b_j-1$ generators occur at least twice; hence
+\[
+ n_j\ge2(b_j-1).
+\]
+On the other hand, $n_j=2g_j+b_j-1$. Combining the two gives $b_j-1\le2g_j$, and substitution gives $n_j\le4g_j$. Summation and Proposition~\ref{prop:batch} prove \eqref{eq:4g}.
+
+To merge factors, use the standard overlapping-one-strand braid connected sum. Start with the first factor. Shift every index of the next factor by the previous strand count minus one and concatenate. Geometrically the two braids occupy consecutive height blocks and adjacent strand blocks with a single strand in common. Cutting that common strand between the blocks exhibits the ordinary connected sum. Iterating gives $1+\sum_j(b_j-1)$ strands and adds no letters. Empty one-strand factors change nothing. Thus the merged braid has at most $2g_B+1$ strands and closure \eqref{eq:sum}.
+
+For production, count occurrences in an array indexed by the original generator, list the singleton indices in increasing order, and assign every non-cut generator to its interval. One pass over the original letters then appends them to their assigned factors with the appropriate index shift. Computing the interval assignments and all output lists costs $O(n+b)$ word operations in total. Merging needs only a running strand offset and another pass over the surviving letters.
+\end{proof}
+
+The constructive argument avoids a possibly quadratic explicit sequence of commutations. The certificate proves the projected decomposition; it need not list every adjacent swap used in a conceptual isotopy proof. A single merged braid is useful for a standard kernelization interface, but keeping the factor list is better for recognition because the factors can be solved separately.
+
+\section{Local sign obstructions and the minority kernel}
+\label{sec:minority}
+
+\subsection{Using Bennequin locally rather than globally}
+The classical inequality implies that a $b$-strand braid representing the unknot has $e\le b-1$. Applying the same statement to the mirror gives
+\begin{equation}
+ \cl\beta=U\quad\Longrightarrow\quad |e|\le b-1.
+ \label{eq:bennequin}
+\end{equation}
+Only this specialization is used below \cite{dasbachlin}. It is one-sided: passing the inequality is not an unknot certificate.
+
+For each nonempty factor produced by Proposition~\ref{prop:batch}, let $e_j$ be its exponent sum and $k_j=(n_j-|e_j|)/2$ its minority count. Define
+\begin{equation}
+ \kappa=\sum_{n_j>0} k_j,\qquad
+ k_* = \max_{n_j>0} k_j,\qquad
+ g_* = \max_{n_j>0} g_j,
+ \label{eq:localparameters}
+\end{equation}
+where a maximum over no factors is zero.
+
+\Needspace{14\baselineskip}
+\begin{theorem}[Certified minority-sign kernel]
+\label{thm:minority}
+There is a polynomial-time procedure on explicit knot braids which has the following outcomes.
+\begin{enumerate}[label=(\roman*)]
+\item If a singleton factor satisfies $|e_j|>b_j-1$, it returns a certificate that the input knot is nontrivial.
+\item Otherwise, it returns a single braid with the same knot closure, with $m$ letters and $b'$ strands, satisfying
+\begin{equation}
+ m\le4\kappa\le4k,\qquad b'\le2\kappa+1\le2k+1.
+ \label{eq:4k}
+\end{equation}
+If there are no nonempty factors, it returns the empty one-strand unknot.
+\end{enumerate}
+The compact braid payload has $O((k+1)\log(k+2))$ bits. For $k\ge1$ its letter-list part has $O(k\log(k+2))$ bits. The retained audit certificate has size $O(n\log(n+b+2))$ bits and is not part of this compact-payload estimate.
+\end{theorem}
+\begin{proof}
+A failing factor cannot be the unknot by \eqref{eq:bennequin}. Lemma~\ref{lem:no-cancel} then proves the original knot nontrivial.
+
+If all factors pass, then
+\[
+ n_j-2k_j=|e_j|\le b_j-1,
+\]
+so $g_j=(n_j-b_j+1)/2\le k_j$. Applying Theorem~\ref{thm:genus} factorwise gives $n_j\le4g_j\le4k_j$, and $b_j-1\le2g_j\le2k_j$. Summing proves the first inequalities in \eqref{eq:4k}.
+
+Let $P_j,M_j$ be the signs retained in factor $j$. Since cuts only delete letters,
+\[
+ \sum_j\min(P_j,M_j)\le\min\!\left(\sum_j P_j,\sum_j M_j\right)
+ \le\min(P,M)=k.
+\]
+This proves $\kappa\le k$ without assuming that different factors have the same majority sign. After merging, every generator index is at most $2k$ and there are at most $4k$ letters. Encoding the signed indices and strand count gives the asserted payload size. When $k=0$, a passing instance has $g_j=0$ for every factor, so it has no nonempty factor and the one-strand empty word suffices.
+
+If a kernelization convention requires an ordinary braid instance rather than a rejection flag, output the fixed trefoil word $(1,1,1)\in B_2$ on rejection. Thus the decision-kernel size is at most $\max(3,4k)$ letters. The closure-preserving claim applies to the surviving branch; replacing a rejected knot by the trefoil is only decision-equivalent.
+\end{proof}
+
+\begin{proposition}[Dominance and exact sign accounting]
+\label{prop:dominance}
+If every singleton factor passes its Bennequin test, the original word passes its Bennequin test. Moreover, if $e_S$ is the exponent sum of the $s$ deleted singleton letters, then
+\begin{equation}
+ e=e_S+\sum_j e_j,\qquad
+ k-\kappa=\frac{s+\sum_j|e_j|-|e|}{2}\ge0.
+ \label{eq:signaccount}
+\end{equation}
+\end{proposition}
+\begin{proof}
+The exponent identity follows by partitioning the letters. Since $|e_S|\le s$,
+\[
+ |e|\le s+\sum_j|e_j|\le s+\sum_j(b_j-1)=b-1.
+\]
+Subtracting the definitions of $k$ and $\kappa$, and using $n=s+\sum n_j$, gives the formula. Its nonnegativity also follows from the triangle inequality. Empty factors contribute zero throughout.
+\end{proof}
+
+Consequently a separate global Bennequin check can be placed first as a cheap early rejection, but it does not find any rejection missed by all the local checks. The converse fails substantially.
+
+\begin{example}[Opposite signs do not cancel knot factors]
+\label{ex:trefoils}
+Consider
+\[
+ \beta=\sigma_1^3\sigma_3^{-3}\sigma_2\in B_4.
+\]
+Its exponent is $1$, so $|e|\le3$ passes globally. Index $2$ is a singleton. The two factors are the positive and negative two-strand trefoils, with exponents $3$ and $-3$ and strand bound $1$. Both fail locally, so the input is nontrivial. The two signs do not cancel connected-sum factors. The independent finite oracle in the package obtains reduced $\F$-rank $9$ for this seven-crossing example.
+\end{example}
+
+\subsection{What the kernel preserves, and what it does not}
+The surviving factor list and merged braid preserve the \emph{isotopy class of the closure}. Neither preserves the original braid element, strand count, writhe, or word length. The merged word may have factors with opposite majority signs, so its own minority count need not equal $\kappa$. What is true is that it retains exactly the non-cut signed letters and hence has minority count at most the original $k$. The length bound $m\le4\kappa$ also gives the independent estimate $k(\text{merged})\le2\kappa$.
+
+The full JSON returned by the implementation deliberately includes provenance and a replayable decomposition. That audit envelope can have size proportional to $n$ even when the mathematical kernel is empty. The compact kernel object is the field \texttt{merged\_kernel}, or a constant yes/no instance. Confusing these two encodings would incorrectly turn an $O(n)$ certificate into an asserted $O(k)$ output file.
+
+The theorem is not a statement about a minimal number of negative crossings over all presentations. It uses the counts in the supplied word and the factors explicitly constructed from it. No conjugacy search, minimal braid-index computation, or optimization over Markov moves is hidden in the definition of the parameter.
+
+\section{A complete exact algorithm and its bit complexity}
+\label{sec:exact}
+
+\subsection{From a kernel to a decision procedure}
+Use the following procedure on a validated input. Form and verify the singleton decomposition; reject if any local Bennequin test fails; discard empty one-strand factors. For each remaining factor, run any complete exact unknot backend. Reject as soon as a factor is knotted, and accept only when every factor is proved trivial. Identical factor words may be memoized. If a configured resource cap stops a computation, record \status{UNKNOWN}; it is never treated as proof of triviality.
+
+Correctness follows from Lemmas~\ref{lem:split} and~\ref{lem:no-cancel}. It does not require the backend to output a homology basis, integral torsion, a connected-sum factorization, or a prime decomposition. Factorization is established \emph{before} the backend is called.
+
+\subsection{Why reduced characteristic-two homology suffices}
+\begin{lemma}[Transfer of unknot detection to total reduced $\F$-rank]
+\label{lem:f2}
+For a knot $K$,
+\[
+ \dim_{\F}\Kh(K;\F)=1\quad\Longleftrightarrow\quad K=U.
+\]
+\end{lemma}
+\begin{proof}
+Kronheimer--Mrowka prove that total reduced rational rank one detects the unknot \cite{km}. The integral reduced chain complex is finite and free as an abelian chain complex. The universal coefficient theorem, summed over all gradings, gives
+\[
+ \dim_{\F}\Kh(K;\F)
+ =\dim_{\mathbb Q}\Kh(K;\mathbb Q)+2t,
+\]
+where $t$ is the number of cyclic even-order torsion summands in integral reduced homology. Each such summand contributes once by tensor product and once in the adjacent homological degree by $\operatorname{Tor}$; odd-order torsion contributes nothing. If the left side is one, the nonnegative integer $t$ must be zero and the rational rank must be one. Conversely, the unknot's reduced complex is a single free generator, so its reduced $\F$-rank is one. Quantum shifts do not affect total rank.
+\end{proof}
+
+This argument avoids relying on any unstated relationship between reduced and unreduced rank in a software backend. The supplied independent oracle computes the reduced complex directly, fixing the marked resolution circle to carry the label $x\in\F[x]/(x^2)$.
+
+\subsection{A deliberately conservative complete bound}
+\begin{lemma}[Enhanced-state bound]
+\label{lem:cubebound}
+An $m$-crossing connected knot diagram has at most $4^m$ generators in its reduced enhanced-state cube. It can be recognized by this cube in time
+\begin{equation}
+ \poly(m+1)2^{6m}
+ \label{eq:cubetime}
+\end{equation}
+and space $\poly(m+1)2^{4m}$ in a straightforward bit implementation.
+\end{lemma}
+\begin{proof}
+Fix a complete resolution with $c$ circles. Form the graph whose vertices are those circles and whose $m$ edges are the original crossing sites, joining the circles incident to the site; loops are permitted. The original projection is connected, so this graph is connected. Thus $c-1\le m$. The fixed marked circle leaves $2^{c-1}\le2^m$ labelings. There are $2^m$ resolution choices, giving at most $C=4^m$ enhanced generators. The crossingless knot is the separate case $C=1$.
+
+Constructing resolutions and Frobenius edge maps costs a polynomial in $m$ per local combinatorial operation. Each cube edge contributes at most two target labels for a source label. With dense binary columns, writing and updating the complete differential costs at most $\poly(m+1)C^2$ bit operations. Ordinary Gaussian elimination over $\F$ uses at most $O(C^3)$ bit operations across the degree blocks: at most quadratically many column additions, each on at most $C$ bits, suffices as a loose bound. Computing dimensions and differential ranks then gives homology dimensions. By Lemma~\ref{lem:f2}, total reduced rank one is exactly the unknot case. Substituting $C\le4^m$ gives \eqref{eq:cubetime}, and storing the matrices gives the space bound.
+\end{proof}
+
+No attempt is made to optimize the exponent $6$. The point is to establish a complete backend with a fully paid exponential cost, so that substituting a small kernel is legitimate. A fast scanner, sparse elimination, or the production at-most-three-braid certificate can improve actual execution without being needed for this upper bound. Bar--Natan's fast-computation work provides the background for the more efficient scanning approach \cite{barnatan}.
+
+\Needspace{14\baselineskip}
+\begin{theorem}[Complete parameterized recognition]
+\label{thm:fpt}
+There is a deterministic exact algorithm for unknot recognition on explicit Artin braid knot inputs with
+\begin{equation}
+ T(n,\beta)\le\poly(n+1)+\sum_{j:n_j>0}\poly(n_j+1)2^{6n_j}.
+ \label{eq:sumtime}
+\end{equation}
+It has the following consequences:
+\begin{align}
+ T(n,\beta)&\le\poly(n+1)2^{24g_*},\label{eq:gstar}\\
+ T(n,\beta)&\le\poly(n+1)2^{24k_*}\le\poly(n+1)2^{24k}
+ \quad\text{if no local test rejects.}\label{eq:kstar}
+\end{align}
+For inputs rejected by a local test, preprocessing alone decides the instance. Thus the whole decision problem is fixed-parameter tractable in the supplied word's minority count $k$.
+\end{theorem}
+\begin{proof}
+The kernel producer and independent verifier have polynomial bit complexity in $n+b$. Each factor is a validated knot braid and has an $n_j$-crossing closed diagram. Apply Lemma~\ref{lem:cubebound} separately to the factors. Correctness is the connected-sum criterion, so no multiplication of homology ranks is required for the decision.
+
+Theorem~\ref{thm:genus} gives $n_j\le4g_j\le4g_*$. The number of factors and every polynomial prefactor in \eqref{eq:sumtime} are bounded polynomially in the original input length. This proves \eqref{eq:gstar}. When local tests pass, $g_j\le k_j$ and $k_*\le k$, proving \eqref{eq:kstar}. An early rejection costs only polynomial preprocessing, so it also fits a $\poly(n+1)2^{O(k)}$ bound for every valid input.
+\end{proof}
+
+\begin{corollary}[Polynomial and quasipolynomial presentation classes]
+\label{cor:qp}
+With resource caps disabled, the algorithm is polynomial-time on families with $k_*=O(\log(n+2))$ after passing local tests, and has running time
+\[
+ n^{O(\log n)}=\exp(O(\log^2 n))
+\]
+on families with $k_*=O(\log^2(n+2))$. The same statements hold with $g_*$ in place of $k_*$. In particular, the stronger but simpler input restriction $k=O(\log^2(n+2))$ suffices.
+\end{corollary}
+\begin{proof}
+Substitute the stated parameter bounds into Theorem~\ref{thm:fpt}. The fixed polynomial preprocessing factor is absorbed in the corresponding polynomial or quasipolynomial expression.
+\end{proof}
+
+\begin{corollary}[Additive input and parameter costs]
+\label{cor:additive}
+The complete algorithm can be implemented with bit complexity
+\[
+ O((n+1)\log^2(n+2))+2^{O(k)}.
+\]
+In particular, for each fixed minority bound $k$, its input-length dependence is near-linear. More generally, a uniform bound on the residual maximum factor parameter gives near-linear input-length dependence even when there are many factors.
+\end{corollary}
+\begin{proof}
+The array-based producer and occurrence-list/binary-search verifier cost $O((n+1)\log^2(n+2))$ bit operations, including the source and factor validation. No search over braid representatives occurs. On a passing input every nonempty factor has integer $g_j\ge1$, hence $k_j\ge1$. Thus the number of nonempty factors is at most $\kappa\le k$, and their total length is at most $4k$. Their complete computations in \eqref{eq:sumtime} cost at most $k\,\poly(k+1)2^{24k}=2^{O(k)}$ for $k\ge1$. The zero-parameter case and rejected inputs use preprocessing alone. For bounded $k_*$, each factor computation has a bounded cost and there are at most $n$ factors. This last conclusion follows without computing or storing the product of their homology ranks.
+\end{proof}
+
+These are complete, two-sided decisions on the stated classes, not merely invariant queries. They require no conjecture that a computed homological window captures all homology. They also do not become a general theorem by calling the parameter ``small in practice'': a generic word can have $k=\Theta(n)$ and no useful cuts.
+
+The maximum-factor bound can be much stronger than the total-parameter bound. A diagram with many independently certified bounded-size factors has bounded $k_*$ even when $\kappa$ grows linearly with its length. The decision remains a conjunction of small computations. It need not materialize an exponentially large product of homology groups or an exponentially large exact total rank.
+
+\section{Amortized-linear singleton endpoint descent}
+\label{sec:descent}
+
+\subsection{Moves and the baseline cost}
+Two closure-preserving moves are used. A cyclically adjacent pair $a,-a$ may be removed: if the pair straddles the current seam, first move the seam by conjugation. If the right endpoint index $b-1$ appears once, write the word as $u\sigma_{b-1}^{\epsilon}v$, rotate to $vu\sigma_{b-1}^{\epsilon}$, and destabilize to $vu\in B_{b-1}$. The left endpoint index $1$ has the symmetric move, followed by decreasing every surviving absolute generator index by one.
+
+The existing helper stops once there are at most three strands and, otherwise, gives the right endpoint priority. The source-derived baseline reproduced in this package follows those choices. Its cost is $O(nb)$ because it can perform $b-3$ rounds, each traversing and copying a word of length $O(n)$ \cite{endpointsource}. It is correct as a sufficient-condition simplifier; no correction to its knot-theoretic semantics is needed.
+
+\subsection{A deletion-only representation}
+Label every input letter by its original position $0,\ldots,n-1$. Keep its signed generator immutable. Maintain:
+\begin{enumerate}[label=(\alph*)]
+\item a circular doubly linked list of live positions, a live-bit array, a head position, and a live length;
+\item for each original generator index, its live occurrence count and the exclusive-or of the live position identifiers at that index;
+\item a surviving strand interval $[\ell,h)$, initially $[0,b)$, and a queue of candidate inverse adjacencies.
+\end{enumerate}
+The current left and right endpoint generator indices, in original coordinates, are $\ell+1$ and $h-1$. A surviving letter with original absolute index $a$ has current index $a-\ell$. All relabeling is deferred until final output. A left destabilization increments $\ell$; a right destabilization decrements $h$.
+
+A count equal to one makes the exclusive-or value the unique live position. Position zero is valid: the count, not a truth-value test on the exclusive-or, establishes uniqueness. Deleting a position updates its neighbors, count, and exclusive-or in constant word operations.
+
+Initialize the candidate queue with all $n$ positions, interpreted as left ends of cyclic adjacency pairs. On popping a live position, inspect its current successor. Remove the pair only if its signed letters are inverse. After deleting a pair, queue the predecessor of the removed pair, since that is the only newly created adjacency. Stale queue entries are harmless and discarded. Once the queue is empty, the word is cyclically freely reduced.
+
+At more than the target number of strands, test the right endpoint count and then the left endpoint count. A singleton endpoint is removed, the head is set to its old successor to implement the specified cyclic rotation, and the new predecessor adjacency is queued. Repeat. If neither endpoint is a singleton, stop. When the strand target has been reached, drain the inverse queue before returning; no endpoint move beyond the target is required.
+
+\Needspace{14\baselineskip}
+\begin{theorem}[Linear endpoint descent with replay]
+\label{thm:linear}
+On a validated $n$-letter $b$-strand knot input, the preceding algorithm terminates in $O(n+b)$ word operations and $O(n+b)$ words of space. Its output has the same knot closure and has no greater word length or strand count. It produces at most $n$ move records, occupying $O(n\log(n+b+2))$ bits. A separate replay verifier checks the supplied moves in $O(n+b)$ word operations. A conservative bit bound for production and replay is
+\[
+ O((n+b)\log(n+b+2)).
+\]
+\end{theorem}
+\begin{proof}
+Initially the circular list, counts, exclusive-or values, and endpoint interval represent the exact input. Removing a cyclic inverse pair represents cancellation in a conjugate braid word, so it preserves the closure and leaves the interval unchanged. The endpoint move has exactly the Markov interpretation described above. An endpoint generator is unique by its count, so no other surviving letter is removed or invalidated when the interval shrinks. Moving the head to the successor records the actual cyclic rotation, and deferred relabeling yields the correct final Artin indices. Induction proves the representation invariant and topological correctness.
+
+Every successful cancellation deletes two positions, and every endpoint step deletes one. A position can be deleted only once. There are initially $n$ queued candidates, and at most one new candidate is appended per successful deletion event. Hence at most $2n$ queue entries are popped. A pop costs constant word operations, including the test for a stale entry. There are at most $n$ successful deletion events and at most one failed endpoint test after the final queue drain. More generally each successful drain followed by a further iteration contains an endpoint deletion, so the number of endpoint tests is also $O(n+1)$. Array initialization and output cost $O(n+b)$. This proves the production bound.
+
+A move record names original positions and, for destabilization, an endpoint side. Replay reconstructs its own circular list and counts. It verifies adjacency and opposite signs for cancellations; for destabilization it verifies the specified original position is live, has the required endpoint index, and has live count one. It then performs the local update and compares the claimed final word with the reconstructed word. Replay does not run the producer's search or trust its exclusive-or table. With at most $n$ records, the replay time and space are linear as well. Each record and index has logarithmic bit length, giving the certificate and bit bounds.
+\end{proof}
+
+The replay certificate proves the transformations it contains. It does not prove that all possible braid relations or destabilizations have been searched, and it need not even prove maximal descent under the chosen policy. The implementation's \texttt{queue\_pops} field is a diagnostic; replay does not trust it as a proof of runtime.
+
+\subsection{Why the queue does not miss a free cancellation}
+Every initial adjacency is scheduled. If two live positions become neighbors later, at least one deletion event created that adjacency, and that event queued its predecessor. If a scheduled entry becomes stale or its successor changes before it is popped, either its relevant endpoint has disappeared or the later change has scheduled the new adjacency. Thus after the queue empties no live inverse pair remains. This proves the structural invariant used between endpoint steps without rescanning the word.
+
+Different orders of free cancellation can produce different linear seams, but cyclically reduced representatives of the same free-group conjugacy class are cyclic rotations of one another. Their generator counts agree. With the same right-before-left endpoint policy, this explains the expected agreement with the baseline up to cyclic rotation. Correctness of the new routine needs only its legal replay, not agreement with a particular baseline seam.
+
+\subsection{A family with a genuine stage-complexity improvement}
+\label{subsec:stabilized}
+Let
+\begin{equation}
+ \alpha=\sigma_1\sigma_2\sigma_1\sigma_2^{-1}\in B_3,
+ \qquad
+ \beta_L=\alpha\sigma_3\sigma_4\cdots\sigma_{L+2}\in B_{L+3}.
+ \label{eq:stabilized}
+\end{equation}
+The word $\alpha$ reduces by one braid relation and cancellation to $\sigma_2\sigma_1$, whose closure is the unknot. Each additional positive letter is a Markov stabilization. For $\beta_L$,
+\[
+ n=L+4,\qquad b=L+3,\qquad g_B=1,\qquad k=1.
+\]
+There are no free inverse cancellations in the displayed word. The baseline removes one right endpoint per round while traversing a word whose length decreases from $L+4$ to $4$. Its traversal work is
+\[
+ \sum_{r=1}^{L}\Theta(r+4)=\Theta(L^2).
+\]
+Theorem~\ref{thm:linear} gives $\Theta(L)$ time, including certificate replay, for the replacement. This is a strict asymptotic improvement of the endpoint stage on an infinite family, rather than a fitted timing exponent.
+
+The family is \emph{not} hard for every branch of the production recognizer. In particular, after descent the existing exact three-braid branch can decide it without homology. The stage improvement is meaningful precisely because it accelerates the route to that branch, not because the family requires a large Khovanov complex in an optimized recognizer.
+
+\section{Sharpness, examples, and limits of the method}
+\label{sec:limits}
+
+\begin{proposition}[Sharpness for the singleton-only reduction]
+\label{prop:sharp}
+For every integer $r\ge1$, there is an unknot braid on $2r+1$ strands with $4r$ letters, $k=g_B=r$, and no singleton index. Thus both inequalities $m\le4k$ and $b'\le2k+1$ are attained by the singleton-only rule on an infinite family of unknots.
+\end{proposition}
+\begin{proof}
+Take
+\begin{equation}
+ \eta_r=\prod_{j=0}^{r-1}
+ \left(\sigma_{2j+1}\sigma_{2j+2}\sigma_{2j+1}\sigma_{2j+2}^{-1}\right)
+ \in B_{2r+1}.
+ \label{eq:sharp}
+\end{equation}
+Each block is the three-braid $\alpha$ from \eqref{eq:stabilized}, shifted to its strand interval. Consecutive blocks overlap in one strand, so the closure is a connected sum of $r$ unknots and hence an unknot. Every generator index occurs twice, every block contributes three positive and one negative letter, and
+\[
+ n=4r,\quad e=2r=b-1,\quad k=r,\quad
+ g_B=\frac{4r-(2r+1)+1}{2}=r.
+\]
+The unique-occurrence rule makes no cut. The Bennequin bound is exactly saturated and does not reject. Thus the whole word survives as a $4r$-crossing, $(2r+1)$-strand kernel.
+\end{proof}
+
+This is an optimality statement for a specified preprocessing rule, not a lower bound on the problem or on all kernelizations. Each block admits a short Reidemeister-III/braid-relation reduction. The repository's rank-two and other certified rewrite stages are natural complements. It would be misleading to call \eqref{eq:sharp} a hard family for the complete production pipeline.
+
+\begin{example}[Factorwise parameters versus total parameters]
+Place $r$ copies of $\alpha$ on disjoint three-strand intervals, and connect consecutive intervals by one singleton generator each. For example, one can concatenate the internal words and then the $r-1$ connecting letters. The closure is a connected sum of unknots, and the permutation argument in Lemma~\ref{lem:split} verifies that it is a knot. The input has $3r$ strands and $5r-1$ letters. With positive connecting letters, $k=g_B=r$. After cutting, all nonempty factors have $g_j=k_j=1$, so $k_*=1$ even though the total minority count is unbounded. Arbitrary shuffles of letters from disjoint blocks preserving each block's internal order give the same conclusion. This is a family on which the maximum-factor bound is substantially stronger than a bound written only in $k$.
+\end{example}
+
+\subsection{Presentation sensitivity}
+One may insert any number of adjacent pairs $\sigma_i\sigma_i^{-1}$ into a braid word without changing its closure. Each insertion increases $n$ by two, leaves $e$ and $b$ unchanged, and increases both $k$ and $g_B$ by one. This proves that these are not knot invariants. The linear free-reduction routine removes these particular examples immediately, so they do not demonstrate difficulty after all available preprocessing. They demonstrate only why a statement about a supplied presentation must not be silently replaced by a statement about the knot itself.
+
+Similarly, the genus of an arbitrary Seifert surface of the knot is not the parameter in Theorem~\ref{thm:genus}. A conversion from a general planar diagram or a band presentation to an Artin braid may change both the length and the minority count. A theorem extending the present complexity bound to such encodings must pay for that conversion and prove the relevant parameter bound. No such general conversion theorem is proved here.
+
+\subsection{A precise remaining bridge to the general target}
+To obtain a general $n^{O(\log n)}$ algorithm by this route, it would suffice to construct, in that time, a certified reduction of every input to factors with $g_*=O(\log^2 n)$, or to produce a conclusive certificate by another stage whenever such a reduction is unavailable. Our arguments do not establish that structural alternative. In particular, the existence of a tiny presentation of the unknot is not an algorithm for finding its isotopy from a complicated input.
+
+There are two logically different directions for further progress: decrease the residual geometric parameter with costed, replayable moves, or make the exact backend substantially better than exponential in that parameter. The present results make the first direction measurable and prove one useful endpoint primitive linear; they do not resolve the general alternative.
+
+\section{Implementation, certificate boundaries, and validation}
+\label{sec:implementation}
+
+\subsection{Delivered modules and their contracts}
+The package has no nonstandard runtime dependency. Its main components are:
+\begin{center}
+\small
+\begin{tabular}{p{0.28\linewidth}p{0.64\linewidth}}
+\toprule
+File & Contract \\
+\midrule
+\path{braidkernel/core.py} & Validated braid record, batch cut producer, independent decomposition verifier, merging, local Bennequin kernel. \\
+\path{braidkernel/descent.py} & Linear cyclic free reduction and endpoint descent; independent original-position trace replay. \\
+\path{braidkernel/cube.py} & Small-instance, complete exponential reduced $\F$ cube oracle; exact Laurent state sum for checks. \\
+\path{braidkernel/recognizer.py} & Safe aggregation of kernel factors and exact backend decisions. \\
+\path{integration/adapter.py} & Optional callback bridge to an existing safe backend, with a shared remaining time allowance. \\
+\bottomrule
+\end{tabular}
+\end{center}
+The independent cut verifier uses occurrence lists and binary search for interval membership rather than the producer's generator-owner table. It checks that every singleton is present in the certificate, recomputes all projections, validates their one-component closures, and checks the exact size and genus identities. Its bound is $O(n\log(b+1)+b)$ word operations. Therefore the default \emph{verified} kernel API is conservatively $O(n\log(n+2))$ word time, not the producer's linear bound. A bit simulation gives $O(n\log^2(n+2))$ after normalized input validation.
+
+The endpoint replay is different: every move is local, so producer plus independent replay retains the linear word bound. This distinction is preserved in the measurements.
+
+The statuses are semantically separated. \status{CORE} means a surviving instance requiring an exact decision; it is not acceptance. \status{UNKNOT} and \status{KNOTTED} mean established decisions within the imported topology and the verified computation. \status{UNKNOWN} means that the requested resource-bounded computation did not settle the instance. Agreement with a Jones value is never turned into acceptance.
+
+\subsection{Reference oracle and its limits}
+The oracle resolves every crossing and labels circles by $1,x\in\F[x]/(x^2)$. The marked circle, chosen by an input strand point, is always labeled $x$. Its local maps are
+\begin{align*}
+ \mu(1\otimes1)&=1,&\mu(1\otimes x)&=x,&
+ \mu(x\otimes1)&=x,&\mu(x\otimes x)&=0,\\
+ \Delta(1)&=1\otimes x+x\otimes1,&
+ \Delta(x)&=x\otimes x.
+\end{align*}
+In characteristic two cube signs disappear. A column is stored as an arbitrary-precision integer bit vector. The oracle reports raw homological degrees, chain dimensions, differential ranks, total reduced rank, and optional explicit checks that $d^2=0$. It does not report quantum grading or integral torsion, neither of which is needed for the total-rank decision theorem.
+
+The default caps are 12 crossings and 200,000 enhanced generators \emph{per factor}. The theoretical complete algorithm is obtained by setting both caps to \texttt{None} and imposing no time cap. The reference implementation is intended for audits and small kernels; it is not a replacement for an optimized production homology engine on large cores.
+
+Time limits are cooperative. The oracle checks elapsed time at construction stages and before matrix reductions, not at every individual bit-vector operation. The adapter checks the remaining global allowance before calls, and preprocessing does not promise hard real-time interruption. Exhaustion cannot produce a false unknot decision, but a small requested wall-time allowance is not a guaranteed hard upper bound. Production integration should add the host's cooperative budget callback inside long loops.
+
+\subsection{What is, and is not, independently verified}
+Certificate replay independently validates the finite combinatorial transformation. It is not a machine-checked proof of the topological singleton lemma, Markov's theorem, the Bennequin inequality, or Khovanov unknot detection. Those mathematical inputs remain in the trusted theorem base. The human-readable proofs establish the newly assembled reduction and cost accounting; no Lean or Coq formalization is supplied.
+
+The reduced cube is independent of the repository's scanner. The validation also compares short three-braids with a separate matrix criterion documented in the inspected upstream source \cite{braidsource}. This is useful differential testing, not a new proof of the three-braid classification. The Laurent bracket checker uses independent state-sum algebra, but shares the resolution-connectivity routine with the cube; it is therefore not fully independent diagram geometry.
+
+Only specified upstream source files were inspected at commit \sourcepin; a complete checkout was not executed in this environment. No full upstream regression suite or production recognition benchmark was run, and no remote repository was modified. The callback adapter was tested with controlled stand-ins, not an installed \texttt{fastunknot}. Integration requires its own full-suite and corpus validation.
+
+\subsection{Finite verification corpus}
+The final recorded unit run passed \textbf{42 test methods}. Beyond individual examples, the tests cover corrupted certificates, malformed words and link rejection, mirrors, empty inputs, generator caps, safe unknown propagation, large stabilization chains, and callback contracts. The test log is \path{data/tests.txt}.
+
+The independent corpus run is summarized in Table~\ref{tab:validation}. Exhaustive enumeration considers every three-braid word of lengths 2, 4, and 6 over $\{\pm1,\pm2\}$, retaining only one-component closures. For each retained word, the original reduced cube is computed, $d^2$ is checked, the matrix criterion is compared, the kernel verdict is checked, and the reduced-rank product of the certified factors is compared with the original rank.
+
+The planted internal-cut corpus uses two four-letter three-braid knot words, shifts one onto the other three strands, shuffles the two internal words while preserving each internal order, and inserts a single positive or negative connecting generator. These are nine-crossing six-braid knot inputs. Original, projected, and merged reduced ranks agree; original and merged normalized Laurent brackets agree. The expected rank product also follows from the reduced connected-sum chain construction and the field K\"unneth theorem. The decision algorithm itself does not depend on this product check.
+
+\begin{table}[htbp]
+\centering
+\caption{Completed finite validation. These counts are tests, not formal verification or an exhaustive classification of arbitrary braids.}
+\label{tab:validation}
+\begin{tabular}{lr}
+\toprule
+Check population & Count \\
+\midrule
+Candidate three-braid words & 4368 \\
+Retained three-braid knot closures & 2856 \\
+Planted internal-cut knot inputs & 32 \\
+Original cubes explicitly checked for $d^2=0$ & 2888 \\
+Random new/old endpoint comparisons & 1000 \\
+Observed mismatches & 0 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The random endpoint comparison corpus contains valid knot braids with 2--10 strands and up to 60 letters. For each, the new trace is replayed, and the terminal strand count, length, and cyclic word are compared with the source-derived baseline. Exact seeds, dimensions, and short-word records are in \path{data/validation_summary.json} and \path{data/validation_cases.json}. These finite checks support implementation confidence; they do not replace the asymptotic or topological proofs.
+
+\section{Paired performance measurements}
+\label{sec:measurements}
+
+\subsection{The endpoint stage}
+The endpoint experiment compares the source-derived old helper with the new producer \emph{plus its independent verifier}. It uses the stabilization family \eqref{eq:stabilized}, five randomized paired rounds, and a second identical baseline arm as an A/A control. Each call builds fresh work arrays. The timing excludes imports, parsing, and command-line startup. The terminal result is checked for every call.
+
+Table~\ref{tab:endpoint} reports the saved run on CPython 3.13.5. The ratio is the median of paired baseline/new ratios, not the ratio of the two median times. The exact platform description and all samples are retained in \path{data/benchmark.json}. These are host-dependent descriptive measurements, not hardware-independent guarantees.
+
+\begin{table}[htbp]
+\centering
+\caption{Endpoint stage: old helper versus new production plus replay. Times are milliseconds. Larger old/new ratios indicate a speedup.}
+\label{tab:endpoint}
+\small
+\begin{tabular}{rrrrrr}
+\toprule
+Strands & Letters & Old median & New median & Old/new & A/A \\
+\midrule
+\tableinput endpoint_rows.tex 
+\bottomrule
+\end{tabular}
+\end{table}
+
+The largest case has 4096 strands and 4097 letters. Its measured paired ratio is approximately $238.45$. The reason to expect improvement with input size is Theorem~\ref{thm:linear} and the quadratic baseline analysis, not extrapolation of that single number. At the smallest measured stabilization size the ratio is only about $3.61$, illustrating the influence of fixed costs.
+
+\subsection{Negative controls}
+For a tiny no-cut three-braid core and an internal-cut-only four-braid input, 15 paired rounds were run in batches of 50 calls to resolve short timings. The old/new ratios were approximately $0.152$ and $0.204$. Thus the new \emph{verified} endpoint routine was about $6.6$ and $4.9$ times slower, respectively, on these tiny controls. The baseline quickly returns, whereas the new path builds and replays additional data structures. An internal cut does not itself help an endpoint-only routine.
+
+These observations argue against an unconditional default replacement without production measurements. A sensible integration can bypass descent once $b\le3$, since the exact small-braid decision branch already applies, and can make the full verified stage opt-in while measuring larger inputs. Such a policy change needs separate measurement; the table does not retrospectively credit an optimization that was not run.
+
+\subsection{Controlled raw-cube comparison}
+A separate experiment contrasts the package's own raw cube with its own kernel followed by the \emph{same} cube. It uses three paired rounds on stabilized unknots. Table~\ref{tab:cube} records the original raw enhanced-generator counts and paired ratios.
+
+\begin{table}[htbp]
+\centering
+\caption{Standalone reference experiment, not the production recognizer. The baseline deliberately skips all existing geometric and braid shortcuts.}
+\label{tab:cube}
+\begin{tabular}{rrr}
+\toprule
+Original letters & Raw enhanced generators & Raw/kernel time ratio \\
+\midrule
+\tableinput cube_rows.tex 
+\bottomrule
+\end{tabular}
+\end{table}
+
+This measures the effect of avoiding unnecessary cube expansion. It must not be advertised as a corresponding speedup over ProveIt's complete pipeline: that pipeline already has a three-braid shortcut and does not need to compute this raw cube. The stage-level endpoint comparison is the direct evidence for replacing the old endpoint primitive. All other production-speed claims remain to be measured with the entire recognizer enabled and with identical resource policies.
+
+\section{Further research questions and integration priorities}
+\label{sec:research}
+
+\begin{question}[Certified low-parameter alternatives]
+Can every diagram be reduced, within $n^{O(\log n)}$ time, either to a conclusive certificate from another stage or to explicit braid factors with $g_*=O(\log^2 n)$?
+\end{question}
+This is a sufficient bridge to the general target, not a theorem proved by the current kernel. It needs bounds both on the search and on intermediate certificate size. An existence argument for a short unknot representative does not pay either cost. An initial tractable goal is a theorem for a well-defined family of braid presentations, with an independently checkable reduction history.
+
+\begin{question}[Composition with rank-two and braid-relation reductions]
+Can local certified braid-relation moves be scheduled so that each accepted move either lowers $g_B$, exposes a singleton cut, or decreases a bounded auxiliary potential?
+\end{question}
+The sharp family \eqref{eq:sharp} is an explicit benchmark: one relation per block defeats the singleton barrier. The challenge is a global amortization that charges failed searches and avoids repeatedly rescanning unchanged regions. This would combine naturally with the repository's existing rank-two and causal move-search work, without assuming that every search branch succeeds.
+
+\begin{question}[Improving the crossing constant]
+What crossing bound below $4k$ is achievable by a polynomial-time, closure-preserving kernel with a specified richer move set?
+\end{question}
+Proposition~\ref{prop:sharp} rules out improvement only for the present singleton-only output rule. It places no obstruction on a kernel that contracts rank-two patterns, uses small-braid decisions to remove proved unknot factors, or recognizes other certified local replacements. Any claimed lower bound must specify the allowed reductions and distinguish crossing count from encoded bits.
+
+\begin{question}[Small-multiplicity interfaces]
+Can a generator with a few occurrences be replaced by a bounded-complexity tangle interface rather than a connected-sum cut?
+\end{question}
+A singleton creates a two-point separating sphere after closure. Two or more occurrences generally do not. A correct extension must retain boundary connectivity and the state needed for future gluing; merely multiplying factor answers is unsound. The useful target is a compositional representation whose size depends singly exponentially on interface complexity, with no hidden generator multiplicity explosion.
+
+\begin{question}[Input conversion with a paid sign parameter]
+Which classes of planar diagrams admit efficiently constructible Artin braid representatives whose residual $k_*$ or $g_*$ is controlled by a comparably small diagram parameter?
+\end{question}
+The algorithmic input model matters. One should separately count conversion time, output letters, and introduced positive/negative pairs. Generalized band generators and binary-encoded twist powers require their own theorems; expanding them first may destroy the intended bound.
+
+\begin{question}[Parameter-aware backend selection]
+Can the exact residual computation be selected using $(n_j,b_j,k_j,g_j)$ and certified scan parameters, with a provable cost no worse than the best of several complete backends up to controlled overhead?
+\end{question}
+A practical design could race a small-braid certificate, the maintained sparse scanner, and a suitably capped cube or external exact backend. Every racer must preserve the same decision semantics and pass unused budget consistently. A large incomplete rank or a matching polynomial is not a decision. An asymptotic theorem must include the total cost of all racers, not just the winning one.
+
+\begin{question}[Production ablation and certificate compatibility]
+Where in the actual recognizer should local cuts and linear endpoint descent run, and which existing shortcuts should precede them?
+\end{question}
+The first implementation milestone is an opt-in stage with a versioned trace schema and source-bound replay. It should preserve old certificate verification, validate the source braid against its diagram, and retry all affected factor computations under one global budget. Paired full-pipeline measurements must include no-cut cores, inputs already settled by earlier filters, internal connected sums, long stabilization chains, and resource-exhaustion cases. The delivered measurements do not yet answer this integration question.
+
+\begin{question}[Formal verification and streaming certificates]
+Can the finite permutation, projection, and size accounting be formalized, followed by a proof-carrying interface to the topological singleton lemma?
+\end{question}
+The occurrence-array and linked-list invariants are natural first targets. A useful formal artifact would establish that every accepted trace denotes a legal sequence, rather than merely reproducing the producer. For very large words, one can also study streaming output of moves and factors, while preserving enough source information for independent replay. The compact kernel and the linear-size audit record should remain distinct objects.
+
+\section{Conclusion}
+The resulting package gives two concrete advances for the repository's algorithmic program. It exposes a complete, computable minority-sign parameter through a certified $4k$-crossing reduction, and it replaces a quadratic-on-stabilizations endpoint routine by a linear one with replay. The parameterized theorem gives genuine two-sided quasipolynomial recognition when the residual maximum factor parameter is $O(\log^2 n)$; it does not assume an unproved statement about homological windows or template multiplicities.
+
+The scope is equally concrete. The singleton observation is classical, the kernel is presentation-dependent, the independent oracle is exponential, and the full production pipeline has not been benchmarked or integrated in this work. The main remaining research task is a costed structural reduction that forces small residual factors more generally, or a stronger exact method for the factors that remain.
+
+\appendix
+\section{Certificate formats and source binding}
+\label{app:certificates}
+
+The \texttt{artin-singleton-cuts-v1} certificate records the original strand count and word length, then all cut generator indices, their original positions, and their signed letters. Each factor record contains a half-open zero-based strand interval \texttt{[start,stop)}, its strand count, and its projected signed word. Replay receives the \emph{actual original braid} as an argument. The dimensions alone are not treated as authentication; all cuts and projected words are recomputed from that braid. Obstruction indices in the kernel result refer to the separately listed \emph{nonempty} factors, while the decomposition certificate retains empty intervals too.
+
+The \texttt{linear-endpoint-descent-v1} certificate records a sequence of two move types:
+\begin{verbatim}
+{"op": "cancel", "first": ORIGINAL_ID, "second": ORIGINAL_ID}
+{"op": "destabilize", "side": "left" | "right",
+ "position": ORIGINAL_ID}
+\end{verbatim}
+It also records the final cyclic ordering of original position identifiers and the final relabeled braid. The verifier rejects deleted, out-of-range, or nonintegral identifiers, nonadjacent cancellations, wrong endpoint sides, non-singleton deletions, and inconsistent final words. It verifies equivalence, not maximality of the search. Diagnostics such as queue counts are not trusted proof fields.
+
+Neither certificate should be attached to a different intermediate diagram without replaying the preceding transformations. A production integration that starts from a planar diagram must establish that its cached source braid actually represents that diagram before applying the braid certificate. The callback adapter assumes this binding is supplied by the caller; it does not infer it from matching crossing counts.
+
+\section{Reproduction and inspected source snapshot}
+Run the following from the package root:
+\begin{verbatim}
+python -m unittest discover -s tests -v
+python scripts/validate.py
+python scripts/benchmark.py
+python scripts/render_tables.py
+sh article/build.sh
+python -m braidkernel examples/local_bennequin.json
+python -m braidkernel examples/stabilized_unknot.json --kernel-only
+\end{verbatim}
+The complete, uncapped reference decision can be invoked from Python:
+\begin{verbatim}
+from braidkernel import Braid, recognize
+answer = recognize(Braid.checked(b, word),
+                   max_crossings=None, max_generators=None)
+\end{verbatim}
+That setting removes safety caps and can require exponential resources. The normal examples and unit tests use small kernels and bounded computations.
+
+The source audit is pinned to ProveIt commit
+\begin{center}\small\path{8388b53680366eed81f8bc23d8db8cfbf2cd956e}.\end{center}
+The relevant files are under \path{Topology/UnknotRecognition/fast/fastunknot/}. Their inspected blob identifiers are:
+\begin{description}[font=\normalfont\ttfamily,style=nextline]
+\item[braid\_reduction.py] \path{974d42c8c722018fad7678b2000758155ffe5162}.
+\item[braid.py] \path{d7de8c2d8f7b12f35a4ccc19478ca09a370bc2a3}.
+\item[recognize.py] \path{6a2db8e7c7a667a4d830ff0527992fcf4c231962}; the initial pipeline contract and definitions were inspected, not every implementation branch.
+\end{description}
+The bundled endpoint baseline is a source-derived reproduction of the relevant helper, not a claim that a full upstream checkout was executed. Third-party paper PDFs are cited, not redistributed. The artifact manifest records hashes of the delivered source, article, tests, examples, and saved measurements.
+
+\clearpage
+\begin{thebibliography}{99}
+\bibitem{vancott}
+C.~A. Van Cott, \emph{Relationships between braid length and the number of braid strands}, Algebraic \& Geometric Topology \textbf{7} (2007), 181--196. \url{https://doi.org/10.2140/agt.2007.7.181}.
+
+\bibitem{dasbachlin}
+O.~T. Dasbach and X.-S. Lin, \emph{The Bennequin number of $n$-trivial closed $n$-braids is negative}, arXiv:math/0010278 (2000). \url{https://arxiv.org/abs/math/0010278}.
+
+\bibitem{khovanov}
+M. Khovanov, \emph{A categorification of the Jones polynomial}, Duke Mathematical Journal \textbf{101} (2000), 359--426; arXiv:math/9908171. \url{https://arxiv.org/abs/math/9908171}.
+
+\bibitem{km}
+P.~B. Kronheimer and T.~S. Mrowka, \emph{Khovanov homology is an unknot-detector}, arXiv:1005.4346 (2010). \url{https://arxiv.org/abs/1005.4346}.
+
+\bibitem{barnatan}
+D. Bar-Natan, \emph{Fast Khovanov homology computations}, arXiv:math/0606318 (2006). \url{https://arxiv.org/abs/math/0606318}.
+
+\bibitem{przytycki}
+J.~H. Przytycki and K. Taniyama, \emph{Almost positive links have negative signature}, arXiv:0904.4130 (2009). \url{https://arxiv.org/abs/0904.4130}.
+
+\bibitem{kelomaki}
+T. Kelom\"aki and D. Sch\"utz, \emph{On computational complexity of Khovanov homology}, arXiv:2601.02119 (2026). \url{https://arxiv.org/abs/2601.02119}.
+
+\bibitem{lackenby}
+M. Lackenby, \emph{Incompressible surfaces, hierarchies and unknot recognition}, arXiv:2607.23350v1 (25 July 2026), especially Section 9. \url{https://arxiv.org/abs/2607.23350}.
+
+\bibitem{proveit}
+V. Reshetnikov, \emph{ProveIt: Topology/UnknotRecognition}, repository and maintained research documentation, inspected 8 October 2026. \url{https://github.com/VladimirReshetnikov/ProveIt/tree/8388b53680366eed81f8bc23d8db8cfbf2cd956e/Topology/UnknotRecognition}.
+
+\bibitem{braidsource}
+ProveIt contributors, \emph{fastunknot/braid.py}, source at commit \sourcepin. \url{https://github.com/VladimirReshetnikov/ProveIt/blob/8388b53680366eed81f8bc23d8db8cfbf2cd956e/Topology/UnknotRecognition/fast/fastunknot/braid.py}.
+
+\bibitem{endpointsource}
+ProveIt contributors, \emph{fastunknot/braid\_reduction.py}, source at commit \sourcepin. \url{https://github.com/VladimirReshetnikov/ProveIt/blob/8388b53680366eed81f8bc23d8db8cfbf2cd956e/Topology/UnknotRecognition/fast/fastunknot/braid_reduction.py}.
+\end{thebibliography}
+\end{document}

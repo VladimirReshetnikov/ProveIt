@@ -1,0 +1,582 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,mathtools,booktabs,array}
+\usepackage{enumitem,xcolor,hyperref,fancyhdr,listings}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black,pdftitle={Graded Occupancy and Polynomial Scanning of Four-Strand Torus Tangles},pdfauthor={ProveIt research contribution}}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small Graded occupancy and torus-block scanning}\fancyhead[R]{\small ProveIt research draft}\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\emergencystretch}{2em}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\F}{\mathbb F}
+\newcommand{\Kh}{\operatorname{Kh}}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\Min}{\operatorname{Min}}
+\newcommand{\rk}{\operatorname{rank}}
+\newcommand{\wt}{\operatorname{wt}}
+\newcommand{\poly}{\operatorname{poly}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\id}{\operatorname{id}}
+\newcommand{\kk}{\mathcal A_s}
+\newcommand{\cost}{\mathsf C}
+\lstset{basicstyle=\small\ttfamily,breaklines=true,columns=fullflexible,keepspaces=true,frame=single,rulecolor=\color{black!25}}
+\title{\textbf{Graded Occupancy and Polynomial Scanning\\of Four-Strand Torus Tangles}\\[6pt]\large A block-parameterized route to quasi-polynomial unknot recognition}
+\author{Research contribution prepared for the ProveIt project}
+\date{8 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We replace a cubic-in-population cancellation estimate by an estimate sensitive to the number of matching summands in a single homological--quantum bidegree. For a homogeneous complex over the finite dotted matching category with $2s$ boundary points, total population $M$, and maximum bidegree occupancy $\mu$, exhaustive local Gaussian cancellation takes $\poly(s)2^{O(s)}M(1+\mu)^2$ elementary coefficient work, up to dictionary and indexing factors. Graded residue homology transfers population and occupancy bounds from any homotopy-equivalent comparison complex to every exhaustively reduced scan.
+
+The essential external input is Kelom\"aki's quadratic-size, uniformly bounded-bidegree Morse model for four-strand torus braids. Applying the transfer principle at every prefix, and retaining all homological degrees, gives a specified finite-field scanning algorithm with $\widetilde O(n^3)$ bit complexity and $\widetilde O(n^2)$ space for standard four-strand torus words of $n$ crossings. This supplies an affirmative four-strand finite-field instance of Kelom\"aki--Sch\"utz's Question~8.3 for the scanner specified here. It does not address all strand counts or integral coefficient growth.
+
+For braids assembled from $t$ four-strand torus blocks and $d$ isolated crossing defects, we prove an explicit product bound. At fixed strand count, $t=O(\log n)$ and $d=O(\log^2 n)$ give a full quasi-polynomial unknot decision algorithm on this syntactically certifiable class. A bigraded $\F_2$ prototype, literal block certificates, independent cube audits, operation counters, and raw measurements accompany the article. No general quasi-polynomial unknot recognizer or production-wide speedup is asserted.
+\end{abstract}
+\tableofcontents
+\newpage
+
+\section{Scope, input model, and contribution}
+\subsection{Where this continues the repository}
+The reviewed ProveIt material already establishes scalar-residue survivor prediction, minimal-window domination, and the quantum homogeneity of the scanner's coefficients. It also implements single-generator twist compression and several exact filters. Those ingredients are prior work here, not new claims of this article. In particular, the reviewed \texttt{synthesis/radical.tex}, \texttt{extremal.tex}, and \texttt{homogeneous.tex} distinguish small boundary width from small matching multiplicity, and do not claim a general quasi-polynomial recognizer~\cite{Repo}.
+
+The local simplification paradigm is Bar--Natan's~\cite{BN07}. The present contribution combines those algebraic ideas in a different direction. Instead of controlling only shallow homological windows, we control the \emph{full} complex of a structured braid. Instead of assuming that an arbitrary simplification heuristic finds a particular small Morse model, we prove that exhaustive cancellation inherits that model's graded multiplicities. Finally, instead of charging every pivot against all surviving objects, we exploit the bounded quantum-degree range of a morphism.
+
+The executable artifact is a new research harness built on unchanged geometric code from the earlier radical-transfer archive. It is not a checkout of the current production recognizer, and the current production test suite was not run on this adapter. Integration obligations are listed in Section~\ref{sec:integration}. The repository commit recorded during the review is
+\begin{center}\small\texttt{ca4681932655c2898d3ea65611bb74ba988b87d0}.\end{center}
+The provenance manifest separately identifies the reviewed blobs and the older vendored reference files.
+
+\subsection{Parameters and computational contract}
+The input is an \emph{expanded} word $w$ of length $n$ in Artin generators of the braid group $B_s$. Indices and signs are explicitly encoded; dependence on $s$ is charged. Bounds polynomial in $n$ are not bounds polynomial in the bit length of binary-encoded exponents. A braid scan retains its $s$ top endpoints and $s$ current bottom endpoints, and closes the braid only after scanning the word. All these endpoints lie on one prescribed disk boundary. This is not the arbitrary-frontier PD scan.
+
+We use even Khovanov homology over a fixed finite field, with the executable prototype specialized to $\F_2$. A field fixed in advance has constant-size elements. The bit-complexity statements use deterministic comparison dictionaries or an equivalent guaranteed indexing structure; the Python prototype uses ordinary dictionaries and measures their actual performance. We do not infer a worst-case dictionary guarantee from Python timings.
+
+For a delooped, bigraded matching complex $C$, set
+\begin{equation}\label{eq:params}
+\begin{gathered}
+ m_{a,h,q}(C)=\text{number of copies of }a\{q\}\text{ in degree }h,\\
+ M(C)=\sum_{a,h,q}m_{a,h,q}(C),\qquad
+ \mu(C)=\max_{h,q}\sum_a m_{a,h,q}(C).
+\end{gathered}
+\end{equation}
+Thus $\mu$ sums over matching types in one bidegree. It is neither the number of matching types nor a homology rank. We put $\mu(0)=0$.
+
+\subsection{Main conclusions}
+The central implications, proved below, are
+\begin{equation}\label{eq:roadmap}
+\begin{gathered}
+ \text{small relative comparison model}
+ \Longrightarrow \text{small graded minimal scan},\\
+ (M,\mu,s)\Longrightarrow
+ \widetilde O\!\left(\poly(s)2^{O(s)}M(1+\mu)^2\right)
+ \text{ work per reduction},\\
+ \text{four-strand torus prefixes}:\quad M=O(n^2),\ \mu=O(1)
+ \Longrightarrow \widetilde O(n^3)\text{ full scan}.
+\end{gathered}
+\end{equation}
+The last conclusion uses Kelom\"aki's model, not a new construction of that model~\cite{Kel25}. The extension to many blocks is a parameterized theorem for recognizable words, not an assertion that arbitrary knots have such presentations. Detecting an unperturbed torus knot is already elementary; the value of the result is the relative chain-complex guarantee and its stability under composition with other tangles.
+
+\section{The finite graded disk category}
+\subsection{Objects, coefficients, and intrinsic weight}
+Let $\mathcal B_s$ be the noncrossing perfect matchings of $2s$ points in a fixed cyclic order. For $a,b\in\mathcal B_s$, let $c(a,b)$ be the number of circles obtained by overlaying them. In the standard finite dotted matching category used for ordinary Khovanov computations, a basis of $\Hom(a,b)$ consists of one monomial $x_S$ for each subset $S$ of those circles. Dots satisfy $x_i^2=0$. Thus
+\[
+ \dim\Hom(a,b)=2^{c(a,b)}\le 2^s.
+\]
+The multiplication is the usual surgery/TQFT multiplication. It follows from the tangle and arc-algebra formalisms~\cite{BN05,Kho02}. For present purposes it is enough to use the finite graded quotient through which the ordinary closure calculation factors. A homotopy equivalence in the original dotted cobordism category descends under this additive functor; no faithfulness assertion for every possible cobordism is needed.
+
+Give the basis element $x_S:a\to b$ intrinsic weight
+\begin{equation}\label{eq:weight}
+ \wt(x_S)=s-c(a,b)+2|S|.
+\end{equation}
+Every weight is between $0$ and $2s$. Weight zero occurs exactly for $a=b$ and $S=\varnothing$, namely the scalar identity. Nonzero terms of a composition have weight equal to the sum of the input weights. This is the negative of the normalized cobordism degree; equivalently it follows by adding Euler characteristics and dot counts during surgery.
+
+One can justify the required computational envelope without a sophisticated coefficient engine. There are Catalan-many matching types, each Hom basis has at most $2^s$ vectors, and a direct expansion of two coefficients and the resulting surgeries uses $\poly(s)2^{O(s)}$ operations. Consequently both arithmetic and storage for a single coefficient, and geometry tables indexed only by matching types and basis monomials, have an exponential-in-$s$ envelope. Memoization indexed by \emph{arbitrary full coefficients} is not silently included in this envelope.
+
+\subsection{Absolute quantum shifts}
+Write $a\{q\}$ for a shifted matching object. We use the convention that a homogeneous differential entry from $a\{q\}$ to $b\{r\}$ can contain $x_S$ only when
+\begin{equation}\label{eq:homogeneity}
+ r-q=s-c(a,b)+2|S|.
+\end{equation}
+Its homological degree is $+1$. A crossing extension followed by delooping has the raw shift rule
+\begin{equation}\label{eq:child}
+ (h,q)\longmapsto \left(h+i,\ q+i+c-2|\ell|\right),
+ \qquad i\in\{0,1\},
+\end{equation}
+where $c$ is the number of newly closed circles and $\ell$ records which circle labels are $X$. This is the same recovered-grading equation audited in the repository~\cite{Repo}. Here, however, the absolute shifts are stored, not merely inferred separately on connected components.
+
+A loop contributes a direct sum of shifts $+1$ and $-1$. A saddle's degree is compensated by the change in $i$. Therefore \eqref{eq:homogeneity} holds after extension. If a homogeneous entry between equal matchings has nonzero scalar coefficient, its weight is zero, so the entire entry is a scalar multiple of the identity and its two shifts agree. It is a unit. Gaussian cancellation through it preserves both degrees: the shifts telescope in the Schur correction.
+
+\begin{remark}[Why recovered relative potentials are not enough]
+Knowing shift differences inside each connected component establishes homogeneity, but does not determine how different components align in a common bidegree. Independently translating those components can change $\mu$. The occupancy theorem requires the actual absolute shifts propagated from the initial complex, or a certified globally equivalent assignment. The new prototype uses \eqref{eq:child} from $q=0$.
+\end{remark}
+
+\subsection{The scalar residue functor}
+Let $J$ consist of positive-weight morphisms. Additivity of weights makes $J$ an ideal. Moreover,
+\begin{equation}\label{eq:nilpotent}
+ J^{2s+1}=0,
+\end{equation}
+because a nonzero term cannot have weight greater than $2s$. This bound also applies to matrices of such morphisms, independently of the number of summands. It is enough here; we do not need the sharper exponent in the prior radical report.
+
+The quotient by $J$ retains only scalar identities between equal shifted matching types $(a,q)$. Denote this functor by $\rho$. In particular, an undotted map between \emph{different} matchings is discarded. From the multiplicativity of $\rho$, a chain complex $C$ gives a direct sum of ordinary field complexes $\rho(C)_{a,q}$.
+
+\section{From comparison models to the actual minimal scan}
+\subsection{Graded multiplicities are determined before elimination}
+For every $(a,q)$, let
+\[
+ r_{a,h,q}=\rk\left(\rho(d):C_{a,h,q}\longrightarrow C_{a,h+1,q}\right).
+\]
+The following is the graded form of the repository's residue survivor principle.
+
+\begin{theorem}[Graded survivor formula]\label{thm:survivor}
+After any exhaustive sequence of homogeneous scalar-unit cancellations, the remaining multiplicities are
+\begin{equation}\label{eq:survivor}
+ m_{a,h,q}(\Min C)=m_{a,h,q}(C)-r_{a,h,q}-r_{a,h-1,q}.
+\end{equation}
+They are independent of pivot order. In particular, if $C\simeq E$ by a graded chain homotopy equivalence, then
+\begin{equation}\label{eq:dominate}
+ m_{a,h,q}(\Min C)\le m_{a,h,q}(E),\qquad
+ M(\Min C)\le M(E),\qquad \mu(\Min C)\le\mu(E).
+\end{equation}
+\end{theorem}
+\begin{proof}
+A cancellation through a nonzero scalar identity is a graded chain homotopy equivalence. Applying $\rho$ turns its matrix update into the usual scalar Gaussian update, so it preserves the homology of $\rho(C)$. Exhaustion means that no nonzero scalar identity remains in any differential entry. The residue differential of the output is therefore zero. The output multiplicities are the dimensions of the original residue homology, which gives \eqref{eq:survivor}.
+
+An additive functor preserves chain homotopies. Thus $\rho(C)$ and $\rho(E)$ are homotopy equivalent, and have the same homology in every $(a,h,q)$. The dimension of that homology is at most the dimension of the corresponding chain space of $\rho(E)$, namely $m_{a,h,q}(E)$. Summing, or summing over $a$ and then taking a maximum, proves \eqref{eq:dominate}. Notice that this argument does not need to construct $E$ or a map from $C$ to $E$ during the scan.
+\end{proof}
+
+\begin{proposition}[Minimal complexes are rigid]\label{prop:rigid}
+A bounded finite complex splits as a minimal complex plus contractible two-term disks. Two minimal complexes that are graded chain homotopy equivalent are graded chain isomorphic.
+\end{proposition}
+\begin{proof}
+Every allowed cancellation is an invertible graded basis change followed by deletion of a disk $X\xrightarrow{u}X$ with $u$ invertible. Repetition terminates and produces the decomposition. If $f:M\to N$ and $g:N\to M$ are homotopy inverses between minimal complexes, the equations for $gf-\id$ and $fg-\id$ contain a minimal differential in each summand. They are zero modulo $J$. The images of $f,g$ are consequently degreewise inverse modulo $J$. By \eqref{eq:nilpotent}, a matrix of the form $1+z$, $z\in J$, is invertible by a finite geometric series. This gives a left and a right inverse for each component of $f$; they coincide. Inverting a degreewise invertible chain map gives a chain map, proving the assertion.
+\end{proof}
+
+The population bound needs only Theorem~\ref{thm:survivor}; Proposition~\ref{prop:rigid} explains why the conclusion is stronger than an accidental agreement of ranks. Neither result says that the minimal \emph{differential} can be replaced by zero. The two-term complex $a\{0\}\xrightarrow{x}a\{2\}$ has zero residue differential but a nonzero differential.
+
+\subsection{The prefix transfer principle}
+Let $F_1,\ldots,F_n$ be the crossing-extension functors, including delooping. Starting with the trivial braid object, define
+\[
+ A_0=C_0,\qquad A_j=\Min(F_jA_{j-1}).
+\]
+Because each $F_j$ preserves graded homotopies, $A_j$ is homotopy equivalent to the ordinary complex of the first $j$ crossings. If any comparison complex $E_j$ represents that same prefix, Theorem~\ref{thm:survivor} bounds $A_j$ by $E_j$ bidegree by bidegree.
+
+\begin{lemma}[One-crossing allocation]\label{lem:extension}
+In an open braid disk scan, one crossing gives
+\[
+ M(F_jA)\le 3M(A),\qquad \mu(F_jA)\le 6\mu(A).
+\]
+\end{lemma}
+\begin{proof}
+One resolution preserves the two local strands, and the other may create at most one circle. A loopless parent therefore has at most three delooped children. For any fixed child bidegree, \eqref{eq:child} allows at most six parent bidegrees: $i\in\{0,1\}$ and quantum increments $i-1,i,i+1$. Each parent has at most one child in a specified one of these possibilities. Summing bounds gives the result. The estimate deliberately overcounts some geometrically impossible combinations.
+\end{proof}
+The fully allocated temporary stage, not just the post-cancellation result, is thus controlled. No homological truncation is used anywhere in this article.
+
+\section{Occupancy-sensitive cancellation complexity}\label{sec:complexity}
+\subsection{Locality of every possible fill entry}
+\begin{lemma}[Graded incidence bound]\label{lem:incidence}
+For a homogeneous complex with occupancy $\mu$ and boundary half-width $s$, each object has at most
+\begin{equation}\label{eq:D}
+ D=(2s+1)\mu
+\end{equation}
+outgoing and at most $D$ incoming nonzero entries. The same bound holds throughout any sequence of homogeneous scalar cancellations, with $\mu$ measured before that sequence.
+\end{lemma}
+\begin{proof}
+A source in $(h,q)$ can map only into $(h+1,q+r)$ for $0\le r\le2s$, by \eqref{eq:homogeneity}. Each such bidegree contains at most $\mu$ objects. Incoming entries satisfy the analogous constraint. Cancellation removes objects without adding any, and its homogeneous basis changes do not change their labels. A fill entry cannot escape the same grading constraints. Hence the original $\mu$ bounds every intermediate incidence as well.
+\end{proof}
+
+\subsection{A specified sparse elimination schedule}
+Maintain an outgoing dictionary and an incoming dictionary for every active object, and a queue of scalar identity entries. Initially inspect every nonzero entry once. Pop a candidate, discard it if stale, and otherwise cancel it. For a pivot $b\to c$ of value $u\ne0$, only pairs
+\[
+ a\in\operatorname{in}(c)\setminus\{b\},\qquad
+ z\in\operatorname{out}(b)\setminus\{c\}
+\]
+require a Schur update:
+\begin{equation}\label{eq:schur}
+ d_{z,a}\longleftarrow d_{z,a}-d_{z,b}u^{-1}d_{c,a}.
+\end{equation}
+Update both adjacency dictionaries when an entry appears or disappears. Queue a new scalar candidate when necessary. Delete \emph{all} entries incident with $b,c$, not just the entries participating in \eqref{eq:schur}. Over $\F_2$, subtraction is XOR and every scalar pivot is $1$.
+
+A deduplicated queue has at most one pending copy of an entry at a time. A stale candidate cannot cause an invalid cancellation because liveness and its current coefficient are checked immediately before mutation. There is no repeated full-matrix scan to reconstruct incoming adjacency or rediscover all pivots.
+
+\begin{theorem}[Occupancy-sensitive reduction]\label{thm:work}
+For a finite homogeneous matching complex with population $M$ and occupancy $\mu$, the above exhaustive reduction uses
+\begin{equation}\label{eq:mainwork}
+ \widetilde O\!\left(\poly(s)2^{O(s)}M(1+\mu)^2\right)
+\end{equation}
+bit operations and
+\begin{equation}\label{eq:mainspace}
+ \widetilde O\!\left(\poly(s)2^{O(s)}M(1+\mu)\right)
+\end{equation}
+bits of working space, apart from an optional full history or explicit chain-equivalence certificate. Here the suppressed factors include logarithms of the population and grading-label range, and field constants.
+\end{theorem}
+\begin{proof}
+There are at most $M/2$ pivots. Lemma~\ref{lem:incidence} bounds their update pairs by $D^2$ each. Each pair requires a bounded number of coefficient operations, each within $\poly(s)2^{O(s)}$. Initialization touches at most $MD$ entries. Deleting incidences costs $O(D)$ per pivot. A new queue candidate is caused either by initialization or by an update, so the number of pushes is at most $MD+(M/2)D^2$; stale pops have the same bound.
+
+Using balanced dictionaries makes the lookup, insertion, deletion, and pending-set operations logarithmic. Sorting local adjacency lists, when used for deterministic replay, is also covered. Substituting $D=(2s+1)\mu$ proves the time estimate, including the harmless zero-differential case through $1+\mu$.
+
+At any moment there are at most $MD$ coefficient entries. The queue contains at most one pending copy of a pair of allocated object indices. A scalar candidate must connect equal matching types and equal quantum shifts in adjacent homological degrees. For each of the original $M$ source objects there are at most $\mu$ possible targets with these labels, even counting objects that have since been deleted. Consequently there are at most $M\mu$ possible candidate pairs during the entire stage. The pending-set deduplication bounds the queue by this number, including stale entries. This sharper counting argument is why no full queue history or periodic global rescan is required for the stated space bound.
+
+Finally, keep geometry/basis caches bounded by $\poly(s)2^{O(s)}$, not by the number of arbitrary coefficients ever encountered, and discard obsolete stage labels or canonically rebase the boundary. Storing object indices and shifts costs logarithmic factors. This proves the space estimate.
+\end{proof}
+
+\paragraph{The distinction between work and queue size.}
+There can be $O(MD^2)$ pushes over a reduction, because a popped pair may later become a candidate again. Simultaneously pending pairs are nevertheless bounded by $M\mu$. This uses both absolute grading and deduplication. Without deduplication, counting cumulative pushes would only give the weaker space estimate. The prototype keeps a pending set and checks stale entries when they are popped.
+
+\subsection{Final closure and scan cost}
+The representable closure functor for the standard braid closure is $\Hom(b,-)$ for the closing matching $b$, followed by the usual grading normalization. Closing a matching creates at most $s$ circles, hence at most $2^s$ field generators. Their quantum shifts differ from the matching's shift by an integer in $[-s,s]$.
+
+\begin{lemma}[Closure cost]\label{lem:closure}
+The final closure of a matching complex with parameters $(M,\mu,s)$ has at most $2^sM$ generators and at most $(2s+1)2^s\mu$ generators in any bidegree. Its full bigraded homology can be computed within the time and space envelopes of Theorem~\ref{thm:work}.
+\end{lemma}
+\begin{proof}
+The two size bounds follow by counting circle labels and possible input quantum shifts. Each differential matrix at a fixed quantum degree connects adjacent homological degrees. Both its source and target dimensions are at most $U=(2s+1)2^s\mu$. Gaussian rank computation of one such matrix takes at most a constant times $U^2$ times the number of its columns, allowing the analogous row term for empty source or target. Summing over bidegrees bounds total rank work by $O(2^sMU^2)$. Constructing these matrices from the open matching entries also costs only $\poly(s)2^{O(s)}$ times their population/incidence count. Store and process these graded blocks without a global dense matrix. The bounds follow after absorbing exponential-in-$s$ factors.
+\end{proof}
+
+If $M_j,\mu_j$ bound the \emph{fully allocated} stage $F_jA_{j-1}$ and the final closed calculation is charged as above, the complete scan has the additive bound
+\begin{equation}\label{eq:sumcost}
+ T\le\widetilde O\!\left(\poly(s)2^{O(s)}
+ \sum_{j=0}^n M_j(1+\mu_j)^2\right),
+\end{equation}
+with the corresponding peak-space bound, plus storage for the input and the $O(n)$ scalar trace records. Writing simply $M_*^3$ discards useful graded information because $\mu_j$ may be bounded while $M_j$ grows quadratically.
+
+\section{A polynomial scanner for four-strand torus words}\label{sec:torus}
+\subsection{Precisely the external ingredient}
+The following is the input from Kelom\"aki~\cite[Proposition~3.6 and Corollary~4.2]{Kel25}. We use the v1 preprint and do not claim to have independently formalized its Morse construction.
+
+\begin{theorem}[Kelom\"aki's comparison models, external input]\label{thm:kel}
+For each $m\ge0$, the open four-strand torus braid has a finite, delooped relative Morse complex $E_m$ representing its Bar--Natan complex. There are absolute constants $C,A$ such that
+\begin{equation}\label{eq:kel}
+ \mu(E_m)\le C,\qquad M(E_m)\le A(m+1)^2.
+\end{equation}
+These estimates persist after passage to the ordinary finite-field dotted matching category. The mirror convention in the source merely reflects or translates the grading labels.
+\end{theorem}
+
+The key point is that \eqref{eq:kel} bounds \emph{open chain objects in each bidegree}, not merely the Betti numbers of a closed link. The source's Corollary~4.2 defines its dimensions after delooping. Its homotopy equivalence remains valid after reducing integral coefficients modulo a prime. The source does not need its unresolved third homological recursion for this bound.
+
+For a completely ineffective-in-practice but explicit constant, its reduction of the occupancy maximum to $0\le m\le38$ gives $C\le3^{114}$: the raw $3m$-crossing open cube has at most $3^{3m}$ delooped objects by Lemma~\ref{lem:extension}. Its linear ranges of homological and quantum degrees then permit, for example, $A=32\cdot3^{114}$. Neither this constant nor a table of all these base complexes is used by the scanner.
+
+\subsection{All prefixes are controlled}
+Put $\tau=\sigma_1\sigma_2\sigma_3$. A prefix of $\tau^m$ is
+\[
+ \tau^k u,\qquad u\in\{1,\sigma_1,\sigma_1\sigma_2\}.
+\]
+Apply the at most two crossing functors in $u$ to $E_k$. This is a comparison model for the prefix with
+\[
+ M\le9A(k+1)^2,\qquad \mu\le36C.
+\]
+Theorem~\ref{thm:survivor} transfers both bounds to the exhaustively reduced prefix. The next fully allocated crossing costs at most another factor $3$ in population and $6$ in occupancy. Consequently every temporary stage has $M=O((k+1)^2)$ and $\mu=O(1)$.
+
+\begin{theorem}[Four-strand finite-field scanning]\label{thm:torus}
+Fix a finite field. For the expanded standard word of a four-strand torus braid, the disk scanner that deloop-cancels exhaustively after each crossing and closes only at the end computes the full bigraded even Khovanov homology in
+\begin{equation}\label{eq:cubic}
+ T(n)=\widetilde O(n^3),\qquad S(n)=\widetilde O(n^2),
+\end{equation}
+where $n$ is its crossing count. The same bounds hold for mirrors and the reversed-generator variants. The computation retains all homological degrees. The population guarantee is independent of pivot order; the stated time guarantee uses the local-incidence schedule of Section~\ref{sec:complexity}.
+\end{theorem}
+\begin{proof}
+Here $s=4$ is fixed. The preceding comparison bounds and \eqref{eq:sumcost} give
+\[
+ T(n)\le\widetilde O\!\left(\sum_{j=0}^n(j+1)^2\right)
+ =\widetilde O(n^3).
+\]
+The peak stage requires $\widetilde O(n^2)$ space. Lemma~\ref{lem:closure} charges the complete final closure within $\widetilde O(n^2)$ additional time and space. Mirrors dualize the graded complex, and the relevant rectangle symmetries relabel the boundary and reflect or translate gradings. They preserve the comparison population and occupancy. The same proof applies.
+\end{proof}
+
+\begin{corollary}[A less optimized polynomial guarantee]\label{cor:dense}
+A version using a conservative $O(M^3)$ coefficient-work allowance for every stage still has $\widetilde O(n^7)$ time and $\widetilde O(n^4)$ dense-matrix space on these words.
+\end{corollary}
+\begin{proof}
+Insert $M_j=O((j+1)^2)$ in the cubic population estimate and sum $O((j+1)^6)$ over stages. Fixed width and a fixed field bound every coefficient's size independently of $n$.
+\end{proof}
+Thus polynomiality is not contingent on the numerical benefit of a particular priority heuristic. The cubic refinement uses bounded graded incidence rather than a claim that all small-model differentials are already known explicitly.
+
+\subsection{Relation to the published complexity question}
+Kelom\"aki--Sch\"utz ask in Question~8.3 whether scanning computes torus-link homology in polynomial time for a fixed strand count at least four, and point to the quadratic four-strand Morse model as evidence~\cite{KS26}. Theorem~\ref{thm:torus} provides an affirmative \emph{four-strand, fixed-finite-field} instance for the specified exhaustive scanner. The missing bridge in that application is supplied by graded residue domination and bounded-incidence elimination. This is a mathematical deduction from cited work, not a claim to have reconstructed its Morse differential faster, and not a priority claim against all subsequent literature.
+
+Over $\mathbb Z$, a nonzero scalar need not be a unit. For example, the homogeneous complex $a\xrightarrow{2}a$ has no integral unit pivot. The field-minimality argument cannot simply be transplanted to integral cancellation. Over $\mathbb Q$, all nonzero scalars are units, but a bit-complexity theorem must control numerator and denominator growth. The finite-field theorem avoids both issues.
+
+\section{Torus blocks, defects, and a quasi-polynomial decision class}\label{sec:blocks}
+\subsection{Syntactically certified four-strand blocks}
+An embedded four-strand block in $B_s$ is a positive power of one of the four patterns
+\begin{equation}\label{eq:patterns}
+ (j,j+1,j+2),\quad(j+2,j+1,j),\quad
+ (-j,-j-1,-j-2),\quad(-j-2,-j-1,-j),
+ \qquad 1\le j\le s-3.
+\end{equation}
+The notation lists signed Artin generators. The remaining strands are vertical. These patterns are related by mirrors and rectangle symmetries, so Theorem~\ref{thm:kel} applies to each. In particular, the inverse of the ascending positive pattern is the \emph{descending} negative pattern; literal order is not ignored.
+
+A block-and-defect certificate partitions the expanded word into $t$ such blocks with repetition counts $m_1,\ldots,m_t\ge1$ and $d$ individual crossing letters. Therefore
+\begin{equation}\label{eq:nrelation}
+ n=3\sum_{i=1}^t m_i+d.
+\end{equation}
+A verifier checks the allowed patterns and reconstructs every letter. Arbitrary periodic words, mixed-sign weaving patterns, and equalities only in the braid group do not qualify without an additional verified rewriting certificate.
+
+\subsection{Product population bound}
+Composing two loopless $s$-strand matching diagrams creates at most $s$ closed circles. Delooping therefore multiplies the number of pairs of summands by at most $2^s$. Embedding a four-strand comparison model beside vertical strands does not increase its number of summands.
+
+\begin{theorem}[Uniform block-and-defect bound]\label{thm:blocks}
+Let a braid word have a verified decomposition as above, and take $A\ge1$ as in Theorem~\ref{thm:kel}. Define
+\begin{equation}\label{eq:R}
+ R=9\,3^d(2^s A)^t\prod_{i=1}^t(m_i+1)^2,
+\end{equation}
+where an empty product is $1$. Every reduced prefix has population at most $R$, and every fully allocated crossing stage has population at most $3R$. Full bigraded homology, and unknot recognition for a one-component closure over $\F_2$, are consequently computable within
+\begin{equation}\label{eq:blocktime}
+ T\le\poly(n,s)2^{O(s)}R^3,\qquad
+ S\le\poly(n,s)2^{O(s)}R^2.
+\end{equation}
+The algorithm need not construct any of the external Morse models.
+\end{theorem}
+\begin{proof}
+Build a comparison model by composing the small model of each completed block. At most $2^s$ delooped children arise per pair of matching summands at each such composition. An isolated crossing can instead be applied by the local crossing functor and costs a factor at most $3$. If a prefix ends inside a block, use the small model of its completed repetitions followed by at most two individual crossing functors. Those last functors cost at most $9$. Use $m'_i+1\le m_i+1$ for a partly traversed block. Factors from not-yet-encountered blocks and defects are at least one, so adding them only enlarges the bound. This gives a comparison population at most $R$ for every prefix.
+
+Composition preserves relative graded chain homotopies, hence Theorem~\ref{thm:survivor} bounds the actual minimal prefix by the comparison model. Lemma~\ref{lem:extension} gives $3R$ before the next cancellation. Apply Theorem~\ref{thm:work} with the coarse inequality $\mu\le M\le3R$, and charge closure using Lemma~\ref{lem:closure}. Polynomial preprocessing and grading-label costs are included in \eqref{eq:blocktime}. Section~\ref{sec:verdict} proves the recognition assertion. The proof uses comparison models only as mathematical witnesses of small size; every actual coefficient is computed by local crossing extension and elimination.
+\end{proof}
+
+By concavity of $\log$, for $t>0$,
+\begin{equation}\label{eq:logR}
+ \log R\le\log9+d\log3+t(s\log2+\log A)
+ +2t\log\!\left(1+\frac{n}{3t}\right).
+\end{equation}
+For $t=0$, the last term is defined as zero.
+
+\begin{corollary}[A quasi-polynomial class]\label{cor:quasi}
+Put $L=\log(n+s+2)$. A family of certified braid words satisfying
+\begin{equation}\label{eq:regime}
+ s+d+st+t\log\!\left(1+\frac{n}{\max(1,t)}\right)=O(L^2)
+\end{equation}
+admits full homology computation and exact one-component unknot decision in $\exp(O(L^2))$ time and space. In particular, at fixed strand count it is sufficient that $t=O(\log n)$ and $d=O(\log^2 n)$.
+\end{corollary}
+\begin{proof}
+Equation~\eqref{eq:logR} bounds $\log R$ by $O(L^2)$ under \eqref{eq:regime}. The exponential dependence on $s$ and all polynomial factors in \eqref{eq:blocktime} are absorbed by the same bound. The coefficient of $t$ coming from $\log A$ is an absolute constant, not an input-dependent hidden quantity.
+\end{proof}
+
+This is a genuine restricted decision theorem, not merely a shallow-window certificate for nontriviality: on certified inputs all homology degrees are covered, so equality with the unknot is conclusive. It does not say that an arbitrary knot has a decomposition obeying \eqref{eq:regime}, or that a short word can always be rewritten into one with a small parameter budget.
+
+\subsection{A sharper occupancy convolution}
+The coarse use of $\mu\le M$ loses the cubic torus specialization. The following reusable bound can improve a multi-block analysis without changing the algorithm.
+
+\begin{proposition}[Composition occupancy]\label{prop:convolution}
+For two delooped $s$-strand matching complexes $X,Y$, let $X\star Y$ denote their composition followed by delooping. Then
+\begin{align}
+ M(X\star Y)&\le 2^s M(X)M(Y),\label{eq:convM}\\
+ \mu(X\star Y)&\le (2s+1)2^s
+ \min\{M(X)\mu(Y),\mu(X)M(Y)\}.\label{eq:convmu}
+\end{align}
+These are bounds for a comparison complex, and therefore also bound its exhaustive minimal reduction.
+\end{proposition}
+\begin{proof}
+Let $p_X(h,q)=\sum_a m_{a,h,q}(X)$, and similarly for $Y$. A pair of summands produces at most $2^s$ children, with homological degree the sum and with quantum degree the sum plus an integer $z\in[-s,s]$. For fixed $(h,q)$ its population is bounded by
+\[
+ 2^s\sum_{z=-s}^s\sum_{u,v}p_X(u,v)p_Y(h-u,q-v-z).
+\]
+For each $z$, the inner sum is at most $M(X)\mu(Y)$ and also at most $\mu(X)M(Y)$. This proves \eqref{eq:convmu}; summing all children proves \eqref{eq:convM}. Apply Theorem~\ref{thm:survivor} for the final assertion.
+\end{proof}
+For example, a single growing torus block composed with a fixed exterior braid has $M=O(n^2)$ and $\mu=O(1)$, with constants depending on the exterior. Scanning that fixed exterior before or after the block therefore retains the cubic bound. With several growing blocks, one may put the largest block in the $\mu$ position of repeated applications of \eqref{eq:convmu}, rather than using its quadratic size twice more in $M\mu^2$. The additive prefix cost \eqref{eq:sumcost} is the correct accounting formula; a bound on the final product alone is not a substitute for all-prefix control.
+
+\subsection{Finding and checking a decomposition}
+The supplied planner constructs a directed acyclic graph whose vertices are word positions. A defect edge advances one letter. A block edge advances across an integral number of repetitions of an allowed pattern. At each position, dynamic programming retains the least defect count for each block count, then removes labels dominated by another label using no more blocks and no more defects. Backpointers reconstruct witnesses.
+
+\begin{proposition}[Planner correctness]\label{prop:planner}
+The planner returns precisely the nondominated achievable pairs $(t,d)$, with a valid literal decomposition for each. Its implementation has a conservative $O(sn^4)$ elementary-work bound and polynomial space. Certificate verification is polynomial and can be implemented in $O(n+s)$ time by streaming the reconstructed letters.
+\end{proposition}
+\begin{proof}
+Every edge is a valid piece and every valid partition determines a path. Induction on the terminal position shows that the dynamic-programming transitions generate every achievable label before dominance removal. If a prefix label is dominated, appending any fixed suffix path preserves that dominance, so its removal cannot discard a nondominated terminal label. Keeping only the least defect count at fixed $t$ is the same argument. Every retained label stores a predecessor and an actual piece, giving a reconstructible certificate. There are polynomially many positions, repetition endpoints, and labels; straightforward enumeration, comparisons, and backpointer storage give the stated conservative bound.
+\end{proof}
+For a word already known to be a single torus pattern, linear-time pattern verification is enough. Running the general Pareto planner is not part of the cubic bound in Theorem~\ref{thm:torus}. The planner is a certificate finder, not a predictor of wall time or an optimizer of pivot fill.
+
+\section{From the homology computation to a knot verdict}\label{sec:verdict}
+Track the permutation of braid strands. Its number of cycles is the number of components in the closure. The prototype reports \texttt{LINK} for more than one component rather than treating a link as a knot. For a one-component closure it uses total unreduced $\F_2$ rank two as its unknot criterion.
+
+For completeness, here is the coefficient bridge behind that criterion. In the usual closed cube write $A=\F_2[X]/(X^2)$. Let $x$ multiply the marked-circle factor by $X$, and let $\nu$ be the sum of the derivatives $\partial/\partial X$ on all circle factors. Directly on $1,X$ one checks that $\nu$ commutes with both saddle maps: multiplication and comultiplication. Over $\F_2$,
+\[
+ x^2=\nu^2=0,\qquad x\nu+\nu x=\id.
+\]
+The images of the complementary chain projections $x\nu$ and $\nu x$ are $\operatorname{im}x$ and $\operatorname{im}\nu$. The maps $x$ and $\nu$ identify these two subcomplexes, with the expected quantum shift. Hence the total unreduced rank is twice the total reduced $\F_2$ rank. This is the standard characteristic-two splitting; see also~\cite{Shu}.
+
+If the unreduced rank is two, the reduced $\F_2$ rank is one. Universal coefficients bound the reduced rational rank by one. Its Euler characteristic at the appropriate unit specialization is one for a knot, so its rational rank is not zero. Kronheimer--Mrowka's unknot-detection theorem then implies that the knot is the unknot~\cite{KM}. Conversely, the unknot has unreduced rank two. Thus
+\[
+ K\text{ is the unknot}\quad\Longleftrightarrow\quad
+ \dim_{\F_2}\Kh(K;\F_2)=2.
+\]
+No Jones-polynomial identity test is substituted for this theorem. A resource ceiling raises an exception and returns no verdict; agreement on a proper homological window is not used.
+
+\section{Implementation and integration contract}\label{sec:integration}
+\subsection{What the artifact implements}
+The prototype in \texttt{src/graded\_scan.py} represents each summand by a matching identifier, a raw homological degree, and an absolute auxiliary quantum shift. It has four reduction choices: local FIFO cancellation; the same FIFO schedule with rebuilt incoming adjacency as an ablation; a reversed initial FIFO schedule; and the earlier report's independent minimum-fill scalar reducer. All four compute the same invariant; only the first implements the intended local scheduling strategy.
+
+Each crossing is fully attached and delooped before exhaustive cancellation. Boundary labels are then returned to a fixed canonical set. This is not merely renaming object identifiers: overlay-circle indices may be permuted. The adapter transports every dot subset through that permutation before discarding the previous stage's caches. Both the geometry table and the monomial-level composition memo are finite in the boundary parameter.
+
+At closure, for an object $(a,h,q)$, a basis subset $S$ of the $c(b,a)$ overlay circles receives normalized degrees
+\begin{equation}\label{eq:closuregrading}
+ H=h-n_-,\qquad Q=q+n_+-2n_-+c(b,a)-2|S|.
+\end{equation}
+The differential is formed with actual cobordism composition, and ranks are computed separately in each $(H,Q)$ block. The program checks quantum homogeneity of every nonzero open entry. Audit mode additionally checks $d^2=0$, exact residue survivor multiplicities, and the common-disk noncrossing condition after rebasing.
+
+\subsection{Compact pseudocode}
+\begin{lstlisting}
+C := one identity matching in bidegree (0,0)
+for crossing in expanded word:
+    C := tensor_crossing_and_deloop(C)  # allocate both resolutions
+    propagate_absolute_quantum_shifts(C)
+    build_local_incoming_and_outgoing_indices(C)
+    initialize_scalar_candidate_queue(C)
+    while a valid candidate exists:
+        cancel_it_with_local_Schur_updates(C)
+        update_indices_and_queue(C)
+    canonically_rebase_boundary_and_dot_indices(C)
+close_all_objects_and_maps(C)
+compute_ranks_separately_in_each_bigrading(C)
+check_component_count_before_reporting_a_knot_verdict()
+\end{lstlisting}
+
+\subsection{What should be integrated, and what should not}
+The current production scanner has a different, array-based internal representation from the old reference code used here. The deliverable therefore contains an integration contract rather than a blind patch that overwrites production files. The intended integration is to preserve absolute quantum shifts in a dedicated disk-braid path; maintain local incoming/outgoing indices; expose the occupancy and update counters; and retain the existing exact fallback and limits.
+
+The mathematical proof does not authorize moving the disk argument to an uncertified arbitrary frontier, dropping nonzero radical maps, using only relative shifts when measuring occupancy, or stopping before every scalar unit has been cancelled. It also does not justify an unbounded history of coefficient memoization. A production adapter should compare to the current complete backend before changing any default policy.
+
+The coefficient code under \texttt{vendor/} is unchanged prior-report code with its original provenance and license. The new algebra scheduler, grading transport, closure grading, planner, and audits are under \texttt{src/}, \texttt{tests/}, and \texttt{experiments/}. No C-extension, optional database, network access, or external knot package is required to run the supplied tests.
+
+\section{Reproducible evidence}\label{sec:evidence}
+\subsection{Correctness audit}
+The validation run uses seed $20261008$. It includes 160 random words on two to five strands with at most nine crossings, twelve signed/reversed four-strand torus examples, and three additional mixed/embedded/weaving examples. These are words and closures, not 175 certified distinct knot types.
+
+All 175 cases agree in every bigraded homology rank with a separately assembled crossing cube. The first sixty also run the local, reverse, independent reference, and rebuild reducers. Across the resulting 355 scans, 1,488 prefix reductions have their graded minimal multiplicities audited, and 67,474 open differential entries are checked for homogeneity. The first sixty cases additionally agree with twice the reduced ranks of the unchanged prior cube oracle. No failure was recorded. These are finite checks, not a substitute for the all-input proofs.
+
+The unit suite passes 24 tests. In addition to known small examples and torus cases, it checks mirrors, braid relations, distant commutation, inverse pairs, positive and negative Markov stabilization, bad inputs, timeout and allocation failures, a nonzero radical map that must not be cancelled, rejected inhomogeneous coefficients, a non-disk pairing, and literal block-certificate tampering. Planner witnesses are also checked on all positive four-strand words of lengths zero through four.
+
+\subsection{Object growth and grading occupancy}
+Table~\ref{tab:growth} records complete single-run structural measurements. ``Peak allocated'' includes the temporary crossing extension before cancellation. ``Peak minimal'' counts explicit matching summands after exhaustive cancellation; ``updates'' counts Schur pairs rather than expensive nontrivial coefficient products. Every row includes a final full homology computation.
+\begin{table}[htbp]\centering\small
+\input{growth_table.tex}
+\caption{Structural counters from \texttt{results/growth.json}. Torus row $m$ means $(\sigma_1\sigma_2\sigma_3)^m$. The mixed and weaving words are specified in the JSON.}\label{tab:growth}
+\end{table}
+
+The measured torus occupancies stabilize at nine over this sample, whereas total matching populations continue to grow. We do not promote the observed value nine to a universal theorem. The proved constant comes from the external model, and our explicit safe version of it is enormous. Conversely, the weaving rows show why small boundary width alone is not an occupancy certificate: the same four-strand boundary already has much larger occupancy. The twelve-crossing weaving closure here is a link; its rank is not being presented as a knot benchmark.
+
+The mixed-block example is
+\[
+ (\sigma_1\sigma_2\sigma_3)^4\,
+ \sigma_2^{-1}\,
+ (\sigma_3^{-1}\sigma_2^{-1}\sigma_1^{-1})^3\,
+ \sigma_2\sigma_1.
+\]
+It has a literal certificate with $t=2,d=3$. Its small measured complex demonstrates executable composition through opposite-sign blocks, but does not establish a uniform small constant for all such words.
+
+\subsection{Paired timing and its limits}
+The ablation compares local FIFO adjacency against a control that uses the \emph{same FIFO candidates and algebraic update order} but rebuilds incoming adjacency from the entire matrix before each pivot. Thus the number of Schur pairs agrees exactly. Both paths compute full homology; neither uses a recognizer's early filters. Each completed case has five shuffled paired trials and two additional identical local calls per trial as an A/A control. Imports are excluded; attachment, grading checks, rebasing, reduction, and closure are included.
+
+\begin{table}[htbp]\centering\small
+\input{timing_table.tex}
+\caption{Completed timing batches only. ``Paired ratio'' is the median of rebuild/local time ratios, not the ratio of the two displayed medians. ``A/A'' compares identical local implementations.}\label{tab:timing}
+\end{table}
+
+The first batch completed three cases before an outer execution timeout interrupted the next case. A retry completed two cases before another outer timeout. All completed batches, including the contrary small-case result and its noisy control, are preserved. No data for an interrupted case is imputed. The full reproduction script requests a broader corpus, which may take longer than the validation suite. The single-run structural table is a separate experiment, not an extra timing replicate.
+
+Batch A is consistent with a modest advantage for local indexing on these torus examples. Batch B is noisy enough to reverse the smallest comparison. Therefore the timing data do not support a universal wall-time speedup, let alone an end-to-end improvement of the maintained recognizer. The durable results are the exact operation-count argument, the removal of full incoming-index reconstruction, the inherited object bounds, and the independently checked output contract. A quieter dedicated benchmark environment is a necessary next step.
+
+\section{What the bounds do not imply}
+\subsection{Full-homology expansion remains a general barrier}
+Small boundary width does not bound $\mu$ or $M$. Even abstract homogeneous complexes at width one can contain arbitrarily many copies in the same bidegree with zero differential; no unit cancellation reduces them. For actual link inputs, Kelom\"aki--Sch\"utz prove exponential-time examples for explicit scanning and divide-and-conquer computations, including families of three-braid closures~\cite{KS26}. The special four-strand torus theorem is therefore not a bounded-braid-index theorem.
+
+An exponential lower bound for an explicit homology representation is not an exponential lower bound for unknot recognition. A recognizer may reject a nontrivial knot without constructing its entire homology. The block theorem identifies a class where full computation is already affordable; extending recognition beyond that class may require output compression, a different invariant, or short positive/negative certificates.
+
+\subsection{The input representation matters}
+The decomposition parameter is diagrammatic and syntactic. A long displayed braid can represent a simple knot, and a knot can have many different braid presentations. A word with few blocks need not be the shortest presentation, and a failure to find few blocks says nothing decisive about its knot type. Certificate-preserving rewrites may enlarge the useful class, but their search cost and any expansion of the word must be charged separately.
+
+A binary exponent may describe an exponentially long torus block. The present scanner still processes every crossing, so Theorem~\ref{thm:torus} is polynomial in expanded length, not in the encoded exponent. There is no hidden exponentiation shortcut for the whole chain complex.
+
+\subsection{No extrapolation from finite-field rank to integral data}
+The prototype computes $\F_2$ ranks, not integral torsion. The finite-field complexity theorem is mathematically valid for other fixed finite fields with a sign-correct coefficient engine, but that engine is not included here. Universal coefficient comparisons used for unknot detection do not recover integral Khovanov homology.
+
+The bounds also exclude the cost of writing explicit homotopy-equivalence matrices back to the original exponential cube, or keeping every prefix profile. The default trace stores only scalar counters and timings. Audit mode can request all profiles for small examples; that optional output can exceed the space bound in Theorem~\ref{thm:torus}.
+
+\section{Further research questions and topics}\label{sec:future}
+\paragraph{1. Optimal four-strand occupancy.}
+Determine the exact supremum of $\mu(\Min E_m)$, including partial-period prefixes, over $\F_2$ and over other fixed finite fields. The observed peak nine is a specific conjecture candidate only after specifying our absolute grading and summation over matching types. A rigorous recurrence or finite-state reduction could replace the enormous safe constant and sharpen practical allocation forecasts.
+
+\paragraph{2. Five-strand relative comparison models.}
+Find a polynomial-size homotopy model for every open prefix of a five-strand torus word. A polynomial bound on its bidegree occupancy would feed directly into Theorem~\ref{thm:work}. A bound on closed Betti numbers alone is insufficient. This isolates a precise part of the higher-strand version of Question~8.3.
+
+\paragraph{3. More efficient multi-block convolution.}
+Exploit \eqref{eq:convmu} at every actual prefix, including which matching pairs produce circles and which quantum shifts occur. Can a compact support description yield a substantially smaller bound than the product $R^3$ when several blocks are long? An amortized proof that preserves one block's bounded occupancy across a larger class of exteriors would be particularly useful.
+
+\paragraph{4. Certified rewriting into block form.}
+Combine the literal planner with the repository's rank-two, cyclic-Garside, and causal braid-relation certificates. Search should optimize a proved parameter budget, not just crossing number. Can a bounded rewriting radius be explored quasi-polynomially while preserving a useful bound on $t,d,s$ and on word expansion?
+
+\paragraph{5. Polynomial dependence on exponent bit length.}
+Seek a compressed differential or a recurrence that permits binary powering of a torus block while keeping relative chain maps exact. An explicit $O(m^2)$ generator model does not by itself give a $\poly(\log m)$ computation. An output specification that compresses long grading patterns is necessary.
+
+\paragraph{6. Integral cancellation and coefficient height.}
+Identify a replacement for the field-minimal residue argument over $\mathbb Z$, perhaps by separating prime-primary pieces or controlling Smith-form data relative to the frontier. Over $\mathbb Q$, bound coefficient height under crossing-by-crossing elimination. These are distinct obstacles and should not be conflated with object-count control.
+
+\paragraph{7. Production data structures.}
+Implement the occupancy-preserving path against the current array-based scanner. Compare a compact deletable scalar-candidate set, periodic queue compaction, and local minimum-fill priorities. Verify deterministic bounds for indexing and memory, including dormant object slots and cached monomial compositions.
+
+\paragraph{8. Recognition before complete homology.}
+When graded occupancy becomes large, determine which partial computations can produce a sound nontriviality witness and when a different exact backend should take over. The proof must distinguish a negative witness, a positive unknot certificate, and an inconclusive bounded query. Exponential homology output should not be mistaken for an unavoidable recognition cost.
+
+\paragraph{9. Independent formalization.}
+Formalize the weight-additivity identity, residue multiplicity formula, and local-incidence cost bound. The external Morse theorem should appear as an explicit dependency until its own proof is independently imported. A formalized finite-field quotient functor would clarify precisely which geometric assumptions are required by every adapter.
+
+\paragraph{10. Controlled performance study.}
+Repeat the paired experiments in fresh processes on an otherwise idle machine, add peak-memory measurements, and compare against the actual maintained production baseline on the same output contract. Include hard unknots, mixed-sign block families, and non-block controls. Publish all timeouts and regressions rather than selecting only favorable examples.
+
+\appendix
+\section{A proof and dependency checklist}
+The mathematical dependencies can be audited in the following order.
+\begin{enumerate}[leftmargin=*,itemsep=4pt]
+\item The finite matching quotient has basis $x_S$, composition is homogeneous for \eqref{eq:weight}, and the usual crossing/closure construction factors through it. These are standard arc-algebra/TQFT facts, made concrete by the vendored composition code.
+\item The stored shifts satisfy \eqref{eq:child}; every entry satisfies \eqref{eq:homogeneity}. This is proved by crossing extension and preserved by scalar Schur updates.
+\item Scalar residue is an additive functor. Exhaustion leaves zero residue differential, giving Theorem~\ref{thm:survivor}. No conjecture about typical cancellation behavior is used.
+\item All allocated objects have at most $D$ neighbors by Lemma~\ref{lem:incidence}; local update counts and the deduplicated candidate-pair bound give the claimed reduction bounds.
+\item The external four-strand model is genuinely relative, graded, and small per bidegree. Corollary~4.2 and its preceding definitions, not a statement about the closed homology alone, supply this input.
+\item Every prefix is a complete torus period followed by at most two crossings. This bridges the external size theorem to \emph{all} stages of the executable scan.
+\item Literal certificates and planar composition give \eqref{eq:R}. An explicit structural regime, not bounded width alone, yields Corollary~\ref{cor:quasi}.
+\item Full $\F_2$ homology and the one-component test give the final knot verdict by Section~\ref{sec:verdict}. Limits and failed certificates are never verdicts.
+\end{enumerate}
+
+\section{An exact arithmetic check of the external cutoff}
+The cutoff behind the explicit safe constant in Section~\ref{sec:torus} can be checked without a numerical linear-programming solver. Rewriting the three strict inequalities in the proof of the cited Corollary~4.2 gives
+\[
+ -\tfrac12 m+\tfrac12 h-\tfrac14 q<3,\qquad
+ 3m-\tfrac32 h+q<\tfrac92,\qquad
+ -\tfrac94 m+h-\tfrac34 q<\tfrac94.
+\]
+Adding them cancels $h$ and $q$, leaving $m/4<39/4$, hence $m<39$. The supplied \path{experiments/check_bounds.py} verifies this rational coefficient identity exactly. This check audits only the arithmetic cutoff; it does not independently prove the source's Morse acyclicity or its object correspondences. The resulting bound $C\le3^{114}$ is deliberately an upper bound on raw base-case objects, not a measured or optimal minimal occupancy.
+
+\section{Reproducing the artifact}
+The package requires Python 3.10 or later for the reference implementation, and a standard LaTeX installation for the paper. The validation run recorded here used Python 3.13.5. All test and algebra operations are exact over $\F_2$; floating point is used only for timing.
+\begin{lstlisting}[language=bash]
+python -m unittest discover -s tests -v
+python experiments/validate.py
+python experiments/growth.py
+python experiments/benchmark.py --rounds 5
+python experiments/make_tables.py
+cd article
+pdflatex -interaction=nonstopmode -halt-on-error graded_torus_scanning.tex
+pdflatex -interaction=nonstopmode -halt-on-error graded_torus_scanning.tex
+\end{lstlisting}
+For a small exact query:
+\begin{lstlisting}[language=bash]
+python src/graded_scan.py --strands 4 \
+  --word '[1,2,3,1,2,3,1,2,3]' --audit
+python src/block_plan.py --strands 4 \
+  --word '[1,2,3,1,2,3,-2,-3,-2,-1]'
+\end{lstlisting}
+The package includes \texttt{CLAIMS.md}, \texttt{PROVENANCE.json}, an integration contract, raw JSON and console logs, and file hashes. Re-running a broader benchmark replaces its result file; the archived interrupted-batch files remain separate. The benchmark script's completion time depends substantially on the environment.
+
+\begin{thebibliography}{9}
+\bibitem{BN05} D.~Bar-Natan, \emph{Khovanov's homology for tangles and cobordisms}, Geometry \& Topology \textbf{9} (2005), 1443--1499. \href{https://arxiv.org/abs/math/0410495v2}{arXiv:math/0410495v2}.
+\bibitem{BN07} D.~Bar-Natan, \emph{Fast Khovanov homology computations}, Journal of Knot Theory and Its Ramifications \textbf{16} (2007), 243--255. \href{https://arxiv.org/abs/math/0606318}{arXiv:math/0606318}.
+\bibitem{Kho02} M.~Khovanov, \emph{A functor-valued invariant of tangles}, Algebraic \& Geometric Topology \textbf{2} (2002), 665--741. \href{https://arxiv.org/abs/math/0103190v2}{arXiv:math/0103190v2}.
+\bibitem{Kel25} T.~Kelom\"aki, \emph{Morse matchings and Khovanov homology of 4-strand torus links}, preprint (2025), \href{https://arxiv.org/abs/2507.15060v1}{arXiv:2507.15060v1}. Principal imported input: Proposition~3.6 and Corollary~4.2, with the size definitions on printed page~17.
+\bibitem{KS26} T.~Kelom\"aki and D.~Sch\"utz, \emph{On computational complexity of Khovanov homology}, preprint (2026), \href{https://arxiv.org/abs/2601.02119v1}{arXiv:2601.02119v1}. In particular Theorem~1.2 and Question~8.3.
+\bibitem{KM} P.~B.~Kronheimer and T.~S.~Mrowka, \emph{Khovanov homology is an unknot-detector}, Publications Math\'ematiques de l'IH\'ES \textbf{113} (2011), 97--208. \href{https://arxiv.org/abs/1005.4346}{arXiv:1005.4346}.
+\bibitem{Shu} A.~N.~Shumakovitch, \emph{Torsion of the Khovanov homology}, Fundamenta Mathematicae \textbf{225} (2014); revised preprint \href{https://arxiv.org/abs/math/0405474v2}{arXiv:math/0405474v2} (2018).
+\bibitem{Repo} V.~Reshetnikov, \emph{ProveIt: Topology/UnknotRecognition}, reviewed 8 October 2026. \href{https://github.com/VladimirReshetnikov/ProveIt/tree/ca4681932655c2898d3ea65611bb74ba988b87d0/Topology/UnknotRecognition}{Recorded repository snapshot}. Reviewed synthesis files: \texttt{radical.tex}, \texttt{extremal.tex}, and \texttt{homogeneous.tex}. Earlier executable geometric baseline: \texttt{unknot\_radical\_transfer\_20261007.zip}, with individual hashes and attribution in this package's provenance manifest. These project drafts and the present contribution are not substitutes for independent mathematical review.
+\end{thebibliography}
+\end{document}
