@@ -2,8 +2,9 @@
 
 Research report 26 supplies the marked-completion argument and signed Tait
 phase. Only genuine relative components at proper prefixes may be observed.
-An exhausted optional budget disables inference; complete capped scanning
-continues. No partial lower bound can certify an unknot.
+An exhausted determinant-work budget switches to query-capped Euler
+observations; exhausted query capacity leaves complete capped scanning.
+No partial lower bound can certify an unknot.
 """
 from .component_scan import ComponentScan, components
 from .diagram import DisjointSet
@@ -40,6 +41,10 @@ def _bareiss(matrix, tick):
     return sign * matrix[-1][-1]
 
 
+class ShadowWorkBudget(EulerBudget):
+    """The marked work allowance is exhausted; Euler query capacity may remain."""
+
+
 class ClosureShadow(ClosureEuler):
     """Actual suffix closures evaluated modulo q^4-1, retaining the raw phase.
 
@@ -56,12 +61,17 @@ class ClosureShadow(ClosureEuler):
         self.max_work = max_work
         self.shadow_cache = {}
         self.stats.update(engine="marked-residue-four", work_units=0, determinants=0,
-                          max_cofactor_size=0, shadow_evaluations=0)
+                          max_cofactor_size=0, shadow_evaluations=0,
+                          max_unsplit_cofactor_size=0, tait_blocks=0,
+                          tait_bridge_factors=0, tait_block_determinants=0,
+                          tait_disconnected=0, tait_zero_factors=0,
+                          observer_mode="shadow", euler_fallback_evaluations=0,
+                          euler_fallback_states=0, euler_fallback_traversed_darts=0)
 
     def _tick(self, amount=1):
         self._check()
         if self.max_work is not None and self.stats["work_units"] + amount > self.max_work:
-            raise EulerBudget("marked continuation work budget exhausted")
+            raise ShadowWorkBudget("marked continuation work budget exhausted")
         self.stats["work_units"] += amount
 
     def evaluate_one(self, stage, pairs):
@@ -141,8 +151,12 @@ class ClosureShadow(ClosureEuler):
             black = {f: i for i, f in enumerate(f for f in range(count)
                                                 if color[f] == black_color)}
             size = len(black) - 1
-            self._tick(size * size)
-            matrix = [[0] * size for _ in range(size)]
+            # Small cofactors avoid graph-decomposition overhead. Larger
+            # graphs factor at articulation vertices before dense allocation.
+            factor_blocks = size > 16
+            self._tick(0 if factor_blocks else size * size)
+            matrix = None if factor_blocks else [[0] * size for _ in range(size)]
+            edges = []
             b_total = 0
             for base in range(0, len(alpha), 4):
                 self._tick()
@@ -153,7 +167,9 @@ class ClosureShadow(ClosureEuler):
                 b_total += b
                 u, v = (black[face[base + j]] for j in slots)
                 weight = -1 if b else 1
-                if u != v:
+                if factor_blocks:
+                    edges.append((u, v, weight))
+                elif u != v:
                     if u:
                         matrix[u - 1][u - 1] += weight
                     if v:
@@ -161,9 +177,14 @@ class ClosureShadow(ClosureEuler):
                     if u and v:
                         matrix[u - 1][v - 1] -= weight
                         matrix[v - 1][u - 1] -= weight
-            self.stats["max_cofactor_size"] = max(self.stats["max_cofactor_size"], size)
+            self.stats["max_unsplit_cofactor_size"] = max(self.stats["max_unsplit_cofactor_size"], size)
             self.stats["determinants"] += 1
-            determinant = _bareiss(matrix, self._tick)
+            if factor_blocks:
+                from .tait_blocks import spanning_tree_product
+                determinant = spanning_tree_product(len(black), edges, self._tick, _bareiss, self.stats)
+            else:
+                self.stats["max_cofactor_size"] = max(self.stats["max_cofactor_size"], size)
+                determinant = _bareiss(matrix, self._tick)
             unit = ((1, 0), (0, -1), (-1, 0), (0, 1))[(b_total + size) % 4]
             real, imaginary = determinant * unit[0], determinant * unit[1]
         if (real, imaginary)[1 - parity]:
@@ -178,11 +199,35 @@ class ClosureShadow(ClosureEuler):
 
 
 class _EulerPart:
+    """One-way fallback sharing the original exact cache and query allowance."""
     def __init__(self, engine):
         self.engine = engine
+        self.shadow_exhausted = False
+
+    def disable_shadow(self):
+        self.shadow_exhausted = True
+        self.engine.stats["observer_mode"] = "euler"
 
     def evaluate(self, stage, pairs):
-        return self.engine.evaluate_one(stage, pairs)
+        if not 0 <= stage < len(self.engine.crossings):
+            raise ValueError("marked continuation requires a proper prefix")
+        if not self.shadow_exhausted:
+            try:
+                return self.engine.evaluate_one(stage, pairs)
+            except ShadowWorkBudget:
+                self.disable_shadow()
+        # The reserve is the remaining shared query allowance, not a reset of
+        # the spent marked-work budget. Direct geometry is O(suffix size) per
+        # new query and still checks the global deadline, even on cache hits.
+        key = (stage, tuple(pairs))
+        fresh = key not in self.engine.cache
+        before = self.engine.stats["traversed_darts"]
+        value = ClosureEuler.evaluate(self.engine, stage, key[1])
+        self.engine.stats["euler_fallback_evaluations"] += 1
+        self.engine.stats["euler_fallback_states"] += int(fresh)
+        self.engine.stats["euler_fallback_traversed_darts"] += (
+            self.engine.stats["traversed_darts"] - before)
+        return value
 
 
 def component_shadow_bound(scan, engine, stage, *, cap=2):
@@ -240,19 +285,28 @@ def shadow_compressed_khovanov_decide(pd, *, order=None, max_objects=None, secon
         shape_cache = len(order) >= 16 and 8 * repeated_stages(pd, order) >= len(order)
     scan = ComponentScan(max_objects=max_objects, deadline=deadline,
                          shape_cache=shape_cache, rank_cap=3)
-    exhausted = False
+    euler_part = _EulerPart(engine)
+    euler_exhausted = False
     for stage in range(len(order) + 1):
         scan._check()
         copies = sum(sum(w.values()) for w in scan.weights)
-        if not exhausted and stage < len(order) and (stage == 0 or copies > 1):
+        if not euler_exhausted and stage < len(order) and (stage == 0 or copies > 1):
             try:
-                euler, chi = component_euler_bound(scan, _EulerPart(engine), stage, cap=3)
+                euler, chi = component_euler_bound(scan, euler_part, stage, cap=3)
                 records = []
                 bound = 2 if euler >= 3 else 0
-                if bound < 2:
-                    bound, records = component_shadow_bound(scan, engine, stage)
+                if bound < 2 and not euler_part.shadow_exhausted:
+                    try:
+                        bound, records = component_shadow_bound(scan, engine, stage)
+                    except ShadowWorkBudget:
+                        # The Euler bound for this whole stage already completed.
+                        # Discard any partial marked observation; future stages
+                        # retain the remaining exact Euler query capacity.
+                        euler_part.disable_shadow()
             except EulerBudget:
-                exhausted = True
+                euler_exhausted = True
+                euler_part.shadow_exhausted = True
+                engine.stats["observer_mode"] = "scan"
             else:
                 if bound >= 2:
                     stats = dict(scan.stats, **scan.algebra.stats)
@@ -261,7 +315,8 @@ def shadow_compressed_khovanov_decide(pd, *, order=None, max_objects=None, secon
                                 marked_label=pd[order[-1]][0], components=records, stats=stats,
                                 euler_characteristics=chi,
                                 multiplicities_capped=[sum(w.values()) for w in scan.weights],
-                                order=order, shadow_stats=dict(engine.stats), shadow_exhausted=exhausted)
+                                order=order, shadow_stats=dict(engine.stats), shadow_exhausted=euler_part.shadow_exhausted,
+                                euler_exhausted=euler_exhausted)
         if stage < len(order):
             scan.add_crossing(pd[order[stage]])
             if check_d_squared:
@@ -272,4 +327,5 @@ def shadow_compressed_khovanov_decide(pd, *, order=None, max_objects=None, secon
     return dict(status="UNKNOT" if rank == 2 else "KNOTTED", method="closed-rank",
                 rank_capped=rank, rank_cap=3, stage=len(order), crossings=len(order),
                 stats=dict(scan.stats, **scan.algebra.stats), order=order,
-                shadow_stats=dict(engine.stats), shadow_exhausted=exhausted)
+                shadow_stats=dict(engine.stats), shadow_exhausted=euler_part.shadow_exhausted,
+                euler_exhausted=euler_exhausted)

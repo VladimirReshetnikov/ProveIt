@@ -2,6 +2,31 @@
 
 The synthesized report on the six archives and on the new recognizer.
 
+`shadow_fallback.tex` extends the adaptive scheduler: exhausting marked work
+retains direct Euler observations within the original shared query cap; query
+exhaustion then continues the same exact scanner. It states the changed
+zero-work semantics, separate fallback counters, cache/deadline invariants,
+and the limited `O(nK)` bound on new closure geometry. All 582 tests pass
+(`data/shadow-fallback-integrated-tests.txt`), including 200 scans checked
+against independent homology across several budget combinations.
+`../fast/benchmark_shadow_fallback.py` separates raw scans from recognition
+and preserves both heuristic and explicitly supplied order results.
+
+`tait_blocks.tex` follows actual marked-observer traces to optimize single
+completion queries. The maintained shadow backend factors signed Tait graphs
+at articulation vertices before dense allocation, keeping direct cofactors
+through size 16. It proves the product formula with signed cancellation and
+the retained global Jones phase, and explains deadline/budget behavior.
+All 577 integrated tests pass (`data/tait-block-integrated-tests.txt`).
+`../fast/benchmark_tait_blocks.py` measures initial queries, complete raw scans,
+and complete recognition separately, with seven shuffled rounds and identical
+controls. The initial cutoff-eight results are retained alongside the final
+cutoff-sixteen results, so the scheduling choice and regressions are visible.
+On the 352-crossing Conway sum the initial query improves 17.4x and the raw
+scan 21.5x: the new observer stays within its local budget and reaches a later
+Euler certificate. Full recognition still decides all measured inputs through
+earlier filters, so no overall recognizer gain is established.
+
 `boundary_reuse.tex` proves the new adaptive Euler path summaries and the
 research cut-face Tait quotient construction. The maintained Euler evaluator
 switches after four distinct same-stage queries when the suffix is sufficiently
