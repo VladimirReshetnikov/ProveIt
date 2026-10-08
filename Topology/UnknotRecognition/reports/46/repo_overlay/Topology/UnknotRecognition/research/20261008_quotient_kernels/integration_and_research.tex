@@ -1,0 +1,225 @@
+\section{Integration contracts and implementation decisions}
+\label{sec:integration}
+
+The archive supplies an overlay at the original repository-relative paths
+and a binary-capable Git patch against the pinned baseline. The patch is
+verified by applying it to a clean reconstruction of the affected baseline
+files and comparing the resulting bytes with the overlay. It includes the
+article and reproducibility artifacts; no remote branch or publication is
+created as part of this delivery.
+
+\subsection{Production and research interfaces}
+
+The exact interval kernel is a standalone native Python module. A minimal
+query, run with \path{fast/} on the import path, is:
+
+\noindent\begin{minipage}{\linewidth}
+\begin{lstlisting}[language=Python]
+from fastunknot.interval_orbits import IntervalPairing, count_orbits
+
+p = 2**512 + 1
+pairs = [IntervalPairing(i*p, (i+1)*p-1,
+                         (i+1)*p, (i+2)*p-1)
+         for i in range(128)]
+answer = count_orbits(129*p, pairs, max_cycles=1000)
+assert answer.complete and answer.orbits == p
+\end{lstlisting}
+\end{minipage}
+
+Endpoints are inclusive and zero-based. A pairing must have equal domain
+and range widths. \code{periodic\_rule="aht"} selects the original merger
+for comparison; the default is \code{"fine\_wilf"}. Signed counting and
+point-membership queries reuse the same exact kernel. A cycle limit is
+shared across the constituent counts. An exhausted query returns an
+incomplete result, and a caller-provided cancellation callback propagates
+its exception. Neither condition is interpreted as a negative theorem.
+
+The normal-surface adapter can be exercised on a supplied layered meridian:
+
+\noindent\begin{minipage}{\linewidth}
+\begin{lstlisting}[language=Python]
+from normal_orbit_research.fixtures import layered_torus
+from fastunknot.normal_surface_orbits import normal_surface_topology
+
+triangulation, coordinates = layered_torus(32)
+topology = normal_surface_topology(
+    triangulation, coordinates, max_cycles=10000)
+assert topology['status'] == 'COMPLETE'
+assert topology['components'] == 1
+assert topology['compressing_disk']
+\end{lstlisting}
+\end{minipage}
+
+This result concerns the provided triangulation. It is not a top-level
+recognition verdict. The inherited constructor is included for research
+and tests, with provenance pointing to report 36; the production adapter
+does not depend on that constructor.
+
+The scalar options are deliberately explicit:
+
+\noindent\begin{minipage}{\linewidth}
+\begin{lstlisting}[language=Python]
+from fastunknot.scalar_split import fitting_khovanov_rank
+
+answer = fitting_khovanov_rank(
+    pd, fitting_primary=True, fitting_coefficient_mode='forest')
+# Other modes: 'direct' (the maintained default), 'span'.
+\end{lstlisting}
+\end{minipage}
+
+The lower-level scalar-space and scalar-split functions likewise accept
+\code{coefficient\_mode}. The full original basis is returned in every
+mode. New counters expose coefficient rank, equation counts, forest
+edges, original variables and reduced variables. Existing admission caps,
+type distinctions, witness checks and cache-invalidation rules are
+preserved.
+
+The explicit overlap entry point now defaults to \code{backend="adaptive"}.
+The optional values \code{"pairwise"} and \code{"joint"} isolate the
+incumbent and shared-index strategies for audits. This change applies when
+an existing configured group search calls the explicit overlap query; it
+does not automatically enable an otherwise disabled group stage or remove
+an explicit expansion cap. The existing certificate fields and independent
+replayers remain unchanged.
+
+\subsection{Two correctness repairs exposed by the audit}
+
+The public scalar-space shortcut for an all-singleton closed group formerly
+returned only the common identity. For a disconnected declared group, the
+correct space contains one component-indicator scalar for each weak
+component. The empty group similarly has a zero-dimensional endomorphism
+space, rather than a basis list containing the zero vector. The shortcut
+now handles these cases and rejects malformed duplicate or nonclosed
+groups. Internal connected scanner calls retain their prior mathematical
+behavior. These statements concern the declared scalar partition; the
+change does not recover unknown relative quantum shifts between unrelated
+components.
+
+The maintained normal-surface subprocess wrapper also had a reproducible
+partial-input deadlock in this CPython environment. Its polling loop sent
+the payload in the first \code{communicate} call and retried with no input
+after a timeout. If the child delayed reading a large payload, later polls
+could leave the unsent remainder pending indefinitely. The existing
+regression test exposed this failure in the untouched baseline.
+
+The repair stages UTF-8 input and captures output in private temporary
+standard streams, then polls the child's public \code{wait} interface.
+This avoids repeated partial pipe communication. Cancellation and deadline
+checks cover preparation, waiting and output collection; exceptional exits
+kill and reap the child and close the streams. The tests retain strict
+cleanup checks and add Unicode plus large-output coverage. This is a
+correctness repair, with a temporary-storage tradeoff, and is not included
+in the reported quotient-kernel speedups.
+
+\subsection{Claims at the integration boundary}
+
+\begin{center}\small
+\begin{tabularx}{\textwidth}{@{}p{33mm}XX@{}}
+\toprule
+Component & Established here & Remaining boundary\\\midrule
+Interval orbits & Exact counts; sharper merger; polynomial encoded query & Weighted component data and attachment extraction\\
+Normal topology & Native validation and topology for an admissible supplied vector & Surface search, cut output and knot-exterior correspondence\\
+Scalar solve & Same full canonical commutant with fewer equations or unknowns & Uniform bounds on multiplicities, coefficient encoding and reconstruction\\
+Cyclic overlap & Exact maximum guaranteed shortening with a near-linear local query & Total presentation growth, successful move count and completeness\\
+Complete pipeline & Passing integration tests and measured Gordian improvement & A general quasi-polynomial worst-case proof\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The integration favors explicit contracts: each reusable local operation
+states its input representation, its resource behavior, and what its
+answer certifies. This makes later research failures informative. For
+example, if a compressed cutting implementation needs information absent
+from an orbit-count result, it must extend that result's contract rather
+than quietly reconstruct an exponentially large surface.
+
+\input{research_agenda.tex}
+
+\appendix
+\section{Reproducing the numerical report}
+
+From the repository root, first verify and apply \path{integration.patch}
+against the pinned baseline. Detailed commands and a checksum manifest
+are included in the archive's README. The ordinary full-suite command is
+run from \path{Topology/UnknotRecognition/fast}:
+
+\noindent\begin{minipage}{\linewidth}
+\begin{lstlisting}[language=bash]
+PYTHONPATH=. python3 -B -m unittest discover -s tests -v
+\end{lstlisting}
+\end{minipage}
+
+The maintained suite has sibling reference dependencies in
+\path{reports/24/reference}, \path{reports/26/detshadow} and
+\path{reports/28/src/closure_reset}. They must be present at the pinned
+commit. A sparse checkout of \path{fast/} alone is insufficient for this
+full gate. The independent Regina comparisons are optional tests, but
+they were available and ran in the reported environment.
+
+The four experiment entry points, run from \path{fast/}, are:
+
+\noindent\begin{minipage}{\linewidth}
+\begin{lstlisting}[language=bash]
+python3 -B interval_research/benchmark.py \
+  --output interval_research/results.json
+python3 -B normal_orbit_research/benchmark.py \
+  --output normal_orbit_research/results.json
+python3 -B benchmark_coefficient_span.py \
+  --output coefficient_research/results.json
+python3 -B cyclic_overlap_research/benchmark.py \
+  --output cyclic_overlap_research/results.json
+python3 -B cyclic_overlap_research/make_summary.py
+\end{lstlisting}
+\end{minipage}
+
+Use new output paths to retain the shipped samples unchanged. The
+benchmark scripts record exact answers and reject disagreements before
+producing a successful report. The interval, coefficient and relator benchmarks also check that
+their measured source files did not change during the run. The normal
+series records end-of-run source hashes; the final static audit checks
+all recorded hashes against the supplied files. Random seeds,
+warmup policy, repeat counts and source digests are stored in the JSON.
+
+To regenerate the figures and tables, run \path{render_results.py} from
+the article directory; it reads the four archived result files at their
+repository-relative locations. Matplotlib is required only for this step.
+The supplied figure PDFs and tables allow the article to be built without
+rerunning any experiment:
+
+\noindent\begin{minipage}{\linewidth}
+\begin{lstlisting}[language=bash]
+latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+\end{lstlisting}
+\end{minipage}
+
+\section{The complete whole-query corpus}
+
+Table~\ref{tab:corpus} provides the per-input full-query medians in addition
+to the focused Gordian comparison. Inputs that never reach the optimized
+query are necessary controls. Their nearly identical timings should not
+be interpreted as evidence for, or against, the local index theorem.
+Every measured run and excluded warmup is retained in the raw corpus.
+
+\input{tables/overlap_corpus.tex}
+
+\section{Attribution and artifact provenance}
+
+The maintained pipeline and layered-torus fixtures belong to the ProveIt
+baseline \cite{repository}. The native orbit implementation was written
+independently from the AHT paper; no third-party GPL orbit implementation
+was imported or copied. The stronger threshold uses Fine--Wilf periodicity
+\cite{finewilf}; the graph interpretation has a substantial existing
+literature, including Rankin \cite{rankin}. The normal connectivity
+reduction and weighted-orbit existence theorem are classical AHT results.
+Suffix automata are classical \cite{blumer}, and the coefficient and forest
+identities are elementary linear algebra applied to the maintained typed
+solver. Bar-Natan's local and formal-complex methods provide the relevant
+Khovanov computational setting \cite{barnatan,barnatancob}.
+
+The new package claims these particular implementations, integration
+decisions, proofs of their contracts and reproducible observations. It
+does not claim priority for the general mathematical ingredients. The
+normal validator is adapted from report 36's native certificate checker;
+the inherited fixture file is identified separately in the provenance
+record. Regina is used only as an external independent test oracle and is
+not redistributed as production source in this archive.

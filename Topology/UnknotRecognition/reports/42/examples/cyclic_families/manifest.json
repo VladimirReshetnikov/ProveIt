@@ -1,0 +1,74 @@
+{
+  "schema": "cyclic-family-example-manifest-v1",
+  "source": "source/Topology/UnknotRecognition/fast",
+  "examples": [
+    {
+      "name": "constrained_annulus12",
+      "input": "constrained_annulus12.input.json",
+      "output": "constrained_annulus12.output.json",
+      "literal_check": true,
+      "expected": {
+        "feasible": true,
+        "minimum_components": 2,
+        "solution_count": 2,
+        "feasible_parameters": [
+          [
+            4
+          ],
+          [
+            10
+          ]
+        ]
+      }
+    },
+    {
+      "name": "disconnected_annuli_to_connected",
+      "input": "disconnected_annuli_to_connected.input.json",
+      "output": "disconnected_annuli_to_connected.output.json",
+      "literal_check": true,
+      "expected": {
+        "feasible": true,
+        "minimum_components": 1,
+        "solution_count": 12,
+        "local_component_count": 12
+      }
+    },
+    {
+      "name": "infeasible_annulus",
+      "input": "infeasible_annulus.input.json",
+      "output": "infeasible_annulus.output.json",
+      "literal_check": true,
+      "expected": {
+        "feasible": false,
+        "solution_count": 0
+      }
+    },
+    {
+      "name": "large_hex_roundtrip",
+      "input": "large_hex_roundtrip.input.json",
+      "output": "large_hex_roundtrip.output.json",
+      "literal_check": false,
+      "expected": {
+        "feasible": true,
+        "minimum_components": 1,
+        "modulus_formula": "6^4096",
+        "modulus_bits": 10589,
+        "witness_formula": "3^4096",
+        "expanded_sheet_records": 0
+      }
+    },
+    {
+      "name": "k4_global_family",
+      "input": "k4_global_family.input.json",
+      "output": "k4_global_family.output.json",
+      "literal_check": true,
+      "expected": {
+        "feasible": true,
+        "minimum_components": 1,
+        "solution_count": 81,
+        "globally_connected_assignments": 78
+      }
+    }
+  ],
+  "peripheral_metadata": "k4.designated_boundaries.json"
+}

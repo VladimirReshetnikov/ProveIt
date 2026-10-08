@@ -1,0 +1,18 @@
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{lrrrrr}
+\toprule
+Query & Pairwise & A/A & Adaptive & Joint only & Paired gain\\
+\midrule
+Gordian, explicit & 830.71 & 818.67 & 490.70 & 931.04 & $1.766\times$\\
+Gordian, compressed & 1357.32 & 1311.26 & 1045.27 & 1487.00 & $1.297\times$\\
+Gordian overlap only & 265.05 & 271.97 & 62.03 & 416.87 & $4.232\times$\\
+Synthetic $8\times64$ & 8.25 & 8.50 & 9.81 & 7.03 & $0.859\times$\\
+Synthetic $32\times64$ & 129.52 & 129.20 & 46.80 & 26.00 & $2.768\times$\\
+Synthetic $128\times64$ & 2066.90 & 2113.14 & 231.60 & 185.60 & $8.798\times$\\
+Synthetic periodic duplicates & 74.05 & 77.14 & 4.49 & 311.44 & $16.510\times$\\
+\bottomrule
+\end{tabular}
+\caption{Final cyclic-overlap audit. Times are completed-query medians in milliseconds; paired gain is the median of within-round pairwise/adaptive ratios. Whole Gordian recognition includes fresh PD validation, all pipeline stages and independent replay (five measured rounds). Isolated exact queries include index construction and failed prelude work (three rounds). One warmup per arm is excluded. Synthetic rows are presentation-query workloads, not hard-knot recognition benchmarks.}
+\label{tab:cyclic-overlap-audit}
+\end{table}

@@ -1,0 +1,16 @@
+\begin{table}[htbp]
+\centering\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}lrrrrrr@{}}
+\toprule
+Input & $\ell$ & Gain & Pairwise ms & Adaptive ms & Joint ms & P/adaptive\\\midrule
+Gordian residual & 17504 & 2998 & 265.052 & 62.032 & 416.868 & 4.232\\
+$8\times64$ random & 512 & 0 & 8.249 & 9.809 & 7.025 & 0.859\\
+$32\times64$ random & 2048 & 0 & 129.521 & 46.800 & 26.003 & 2.768\\
+$128\times64$ random & 8192 & 0 & 2066.899 & 231.601 & 185.595 & 8.798\\
+Periodic duplicates & 32768 & 1024 & 74.049 & 4.485 & 311.439 & 16.510\\
+\bottomrule
+\end{tabular}
+\caption{Exact explicit overlap queries, including all index construction and any failed prelude. Only the first row comes from the measured knot presentation; the others are synthetic capacity cases.}
+\label{tab:overlap_kernels}
+\end{table}

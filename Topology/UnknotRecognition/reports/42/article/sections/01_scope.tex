@@ -1,0 +1,118 @@
+\section{The continuation and its exact scope}
+\label{sec:scope}
+
+\subsection{What problem is being improved?}
+
+The long-term objective is a complete algorithm deciding whether a classical
+knot diagram with $n$ crossings represents the unknot in time
+$n^{O(\log n)}=2^{O((\log n)^2)}$. This is a statement about the entire
+computation, including preprocessing, state construction, every restart,
+coefficient bit lengths, and the final verdict. More generally,
+quasi-polynomial means $\exp((\log(n+2))^{O(1)})$; we focus on the
+concrete squared-logarithm target. A polynomial subroutine
+for an exponentially large state is not sufficient.
+
+The maintained implementation combines inexpensive certificates and
+invariant filters with complete, potentially exponential fallback
+algorithms. Its Khovanov route uses a tangles-and-cobordisms formulation
+of chain complexes, following the framework of Bar-Natan~\cite{barnatan};
+the unknot-detection theorem itself is due to Kronheimer and
+Mrowka~\cite{km}. Exactness and the worst-case running time are separate
+questions. In particular, a filter which has not detected an obstruction
+has not proved the knot trivial.
+
+This continuation audits the repository at \sourcepin, fetched on
+8 October 2026. The initial remote inspection saw the immediately earlier
+revision \code{04d799b69d38}; the branch advanced
+while the sparse checkout was being obtained. All patches, baseline
+comparisons, and distributed source hashes use the actual checked-out
+revision \sourcepin. No inference is made from a mutable \code{main} URL
+after that point. The full baseline identifier is:
+\begin{center}
+\code{ea9cf443c8ce33e09ed0c48b0ef7856ddf6326a3}
+\end{center}
+
+\subsection{The three bottlenecks addressed}
+
+Recent incoming reports already supplied polynomial projectors, compressed
+surface-cover assembly, regular-cover gluing equivalence, and a binary
+normal-disc certificate checker~\cite{projectors,certificates}. We use
+their precise scope, including their negative measurements. The present
+work advances three subsequent tasks.
+
+\begin{enumerate}
+\item \textbf{Optimize over a represented family.} Previous surface-cover
+kernels primarily classify a supplied assignment or compare two assignments.
+We ask an existential and optimization question over all assignments
+satisfying simultaneous linear congruences. This removes a genuine phase
+enumeration for the specified connectivity predicate.
+\item \textbf{Extract compressed data from actual normal coordinates.}
+Rather than assume an already supplied sheet presentation, we construct
+signed disc-stack and prism-gap identifications from tetrahedral face
+pairings and seven normal coordinates per tetrahedron. This gives a
+concrete geometric interface, while stopping short of full compressed
+cutting and parallelity-bundle classification.
+\item \textbf{Reuse algebra already computed.} The projector report
+identified the corner algebra $e\End(C)e$ as the correct child
+endomorphism space but did not implement reuse. We implement and measure
+that inheritance, including canonicalization needed to preserve the
+existing bounded candidate policy.
+\end{enumerate}
+
+\begin{center}
+\small
+\begin{tabular}{>{\raggedright\arraybackslash}p{.25\linewidth}>{\raggedright\arraybackslash}p{.34\linewidth}>{\raggedright\arraybackslash}p{.30\linewidth}}
+\toprule
+Contribution & What is established & Remaining limitation\\
+\midrule
+Affine cyclic families & Exact minimum component count; factor-free
+construction; dual certificates & Translation actions and affine
+constraints; no arbitrary topology predicate\\
+Normal-coordinate extraction & Linear number of signed bands and local
+prism contacts; exact binary arithmetic & No full residual handle
+structure or unrestricted orbit implementation\\
+Scalar-space inheritance & Exact child spaces from one parent solve;
+verified implementation & Parent dimension, component size, and splitter
+activation still matter\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Relation to the current geometric literature}
+
+Lackenby's July 2026 preprint~\cite{lackenby2026} supplies an
+incompressibility algorithm and an unknot-recognition consequence. Its
+Section 9 does not provide cost bounds for every step; Proposition 9.1
+instead bounds iterations by $L(g+1)^L$. Theorem 14.4 already gives a
+polynomial-time compressed cutting operation for a uniform-type handle
+structure and a specified orientable normal surface, measured in handle
+count and logarithmic weight. Thus neither compressed cutting in principle
+nor the use of binary surface coordinates is a new theorem of this
+article. The new extraction code makes a smaller, explicit tetrahedral
+part of that interface executable.
+
+Agol--Hass--Thurston's interval-orbit methods~\cite{aht} are the appropriate
+general background for processing enormous collections of normal pieces.
+Our local bounds are not a claimed improvement on their general orbit
+complexity. Covering-space monodromy and its connection with connected
+components are classical~\cite{hatcher}. The affine-family theorem adds
+a fully specified optimization and certificate layer for a restricted
+family representation.
+
+\subsection{Meaning of ``proved'' and of the reported novelty}
+
+Theorems below have conventional mathematical proofs. The arithmetic,
+geometric, and algebraic implementations are supported by exact tests and
+independent finite oracles. Those are different forms of evidence: a
+finite test does not prove an asymptotic theorem, and a prose proof does
+not verify a Python implementation. Separate model-assisted reviews were
+used to challenge the proofs and check implementation contracts. No
+proof-assistant formalization or external peer review is claimed.
+
+The delta relative to the inspected repository and incoming reports is
+explicit. We do not claim worldwide priority for the underlying facts
+about affine modules, primitive vectors, finite-ring duality, or corner
+algebras. Elementary ingredients can be useful even when they are
+classical; the research contribution here is the precise executable
+combination, its certificates, its performance consequences, and the
+identification of what it does and does not resolve.

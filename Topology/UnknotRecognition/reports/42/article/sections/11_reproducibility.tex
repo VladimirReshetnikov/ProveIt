@@ -1,0 +1,156 @@
+\section{Reproducibility and repository integration}
+\label{sec:reproduce}
+
+\subsection{What the archive contains}
+
+The archive includes the complete article source, generated tables and
+scientific figures, and the compiled PDF. A curated \code{source/} tree
+contains the maintained Python implementation, its tests and fixtures, and
+the historical reference modules required by those tests. Historical result
+archives unrelated to this continuation are omitted. The distributed source
+is pinned to \sourcepin{} except for the explicit delta in
+\code{source_manifest.json}.
+
+The \code{patches/} directory contains a Git-applicable patch with two
+modified files and fourteen new files. A separate \code{baseline/} directory
+retains the two modified files exactly as they appeared at the pinned
+revision. It lets the scalar benchmark load its historical arm without
+network access or a Git checkout. Independent validation applied the patch
+in a fresh directory, checked all sixteen affected outputs byte for byte,
+and compared every one of the 362 distributed source files with the working
+tree. The 346 unmodified source files match the pinned Git blobs exactly.
+
+The \code{experiments/} directory contains the arithmetic and geometric
+reference checks, including rational geometry and optional Regina
+comparisons. \code{results/} preserves the recorded measurements and exact
+comparison counts. \code{validation/} preserves the baseline failure,
+final 790-test success, targeted checks, patch audit, and artifact checks.
+Standalone copies of the small arithmetic and extraction modules are kept
+only to make those experiment scripts independent of package installation;
+their bytes match the corresponding integrated modules.
+
+\subsection{Commands for independent reproduction}
+
+The new mathematical kernels require only the Python standard library.
+Regina is optional for the independent native audit; Matplotlib is optional
+for regenerating the figures. The recorded versions are listed in
+\code{requirements-audit.txt}. LaTeX compilation uses ordinary
+\code{pdflatex} and \code{latexmk}, with the packages declared in the main
+source file.
+
+\noindent\begin{minipage}{\linewidth}
+From the extracted archive root:
+
+\begin{lstlisting}
+python scripts/check_hashes.py
+python scripts/reproduce.py quick
+
+# Optional native audit and figure dependencies:
+python -m pip install -r requirements-audit.txt
+python scripts/reproduce.py full
+
+# Paired and binary-size benchmarks:
+python scripts/reproduce.py benchmarks
+
+# Rebuild the article:
+cd article
+latexmk -pdf -interaction=nonstopmode -halt-on-error \
+  unknot_affine_families.tex
+\end{lstlisting}
+\end{minipage}
+
+The reproduction driver writes new logs and measurements to
+\code{reproduction/}; it preserves the recorded evidence. ``Quick'' runs
+all 65 methods in the five new or restored test modules, the rational
+face-order audit, the certificate examples, and the peripheral reduction
+check. ``Full'' runs the complete integrated suite and the Regina audit.
+The benchmark mode is separate so that correctness checks do not depend
+on machine-specific timing thresholds.
+
+To review the source delta at the pinned repository revision, use:
+
+\begin{lstlisting}
+git apply --check /path/to/affine_families_and_inheritance.patch
+git apply /path/to/affine_families_and_inheritance.patch
+\end{lstlisting}
+
+The article and supporting research files can then be placed in the
+repository's chosen report or incoming-document location. The distributed
+patch edits the implementation paths; it does not choose or overwrite a
+report number.
+
+\subsection{Concrete example contracts}
+
+The cyclic-family examples include a constrained annulus with optimum two,
+a self-seam joining twelve locally disconnected annuli into a connected
+member, an infeasible seam with a negative certificate, and a 10,589-bit
+modulus whose stored hexadecimal witness verifies without sheet expansion.
+The $K_4$ example keeps its designated-boundary requirements in a separate
+metadata file, since that hard peripheral query is outside the optimizer's
+strict input schema. Run:
+
+\begin{lstlisting}
+python scripts/check_family_examples.py
+\end{lstlisting}
+
+For direct package use, the public family functions are
+\code{compile_family}, \code{optimize_cover_family},
+\code{realize_family}, and \code{verify_cover_family_certificate} in
+\code{fastunknot.cyclic_cover_family}. The command-line entry point accepts
+one JSON input and emits the compiled family and arithmetic certificate.
+The verifier ignores the producer's compilation and recomputes it from the
+original geometry. It certifies feasibility and optimality, or infeasibility;
+it does not certify the auxiliary assignment count or any topological
+predicate outside the stated component objective.
+
+The normal extractor accepts a JSON object with exactly
+\code{triangulation} and \code{coordinates}. It emits the signed polygon
+bands, prism bands, residual-cell incidence data, and provenance.
+The optional \code{--orbit-input surface} and
+\code{--orbit-input orientation} switches emit the corresponding interval
+orbit problems. Those files are inputs to a subsequent orbit engine, not
+claims that the engine has been run. The supplied normal examples include
+the sharp two-tetrahedron fixture and a 128-tetrahedron Fibonacci meridian.
+
+\subsection{Optional scalar controls and evidence boundaries}
+
+Within the already optional Fitting backend, ordinary reuse defaults to
+\code{fitting_reuse_endomorphisms=True}. It preserves the deterministic
+candidate basis and search policy. The separately configurable primary,
+locality, and one-generator paths default to false:
+
+\begin{lstlisting}
+from fastunknot.scalar_split import fitting_khovanov_rank
+answer = fitting_khovanov_rank(
+    pd,
+    fitting_reuse_endomorphisms=True,
+    fitting_primary=True,
+    fitting_certify_local=True,
+    fitting_monogenic_corners=True,
+)
+\end{lstlisting}
+
+This snippet deliberately selects an experimental backend and its optional
+mechanisms. It is not a recommendation to raise every size cap on arbitrary
+inputs. Independent locality auditing uses
+\code{verify_scalar_local_certificate}; unlike production inheritance,
+that verifier recomputes the full commutant to check the dimension claim.
+The different cost contracts of the arithmetic and scalar verifiers should
+not be conflated.
+
+\subsection{Provenance and continuing obligations}
+
+The inherited polynomial-projector module, its fixtures and tests, and the
+worker-communication correction are attributed by source path and hash.
+The Fibonacci meridian family is likewise attributed to the earlier
+compressed-certificate report. No external article PDF or downloaded slide
+deck is bundled as a new research artifact. The new work follows the
+repository's MIT No Attribution license; included pre-existing components
+retain their accompanying license notices.
+
+A claim ledger records proved statements, tested implementation contracts,
+measured improvements, negative results, and unresolved global obligations.
+The immediate deliverable is a set of exact reusable operations and an
+integration-ready research record. A complete quasi-polynomial recognizer
+still requires the explicit state-growth, representation-size, and
+geometric-coverage arguments in Section~\ref{sec:global}.

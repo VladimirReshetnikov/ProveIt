@@ -1,0 +1,155 @@
+\section{What one affine optimum does not encode}
+\label{sec:boundaries}
+
+\subsection{Distinct framed states still exist}
+
+The previous regular-cover gluing report~\cite{certificates} counts
+$m^\beta$ possible cyclic cycle-phase tuples after tree normalization.
+That count concerns distinct coverings over a fixed labelled
+decomposition. It cannot be removed when the requested output is an
+explicit list of every such state. Moreover, its local block covers are
+already connected, so a connected assembly of those blocks is connected
+for every seam phase. In that exact model, connectivity optimization
+would be trivial.
+
+The current theorem concerns a different query on a broader input model:
+possibly disconnected local cyclic covers, with affine dependence in
+their monodromy and gluing data. It computes the optimum of one invariant
+over a family. It neither identifies all members with one another nor
+provides a complete invariant for all future attachments. This distinction
+prevents an incorrect inference from a polynomial existential query to
+a polynomial enumeration or canonicalization of all geometric states.
+
+\subsection{Connectedness does not determine genus}
+
+\begin{example}[A five-sheet pair of pants]
+\label{ex:genus}
+Let the base be a pair of pants, and let its first two boundary
+translations on $\Z/5\Z$ be $1$ and $a$. The third is $-1-a$.
+For $a=1$ the cover is connected and has three boundary components,
+one over each base boundary. Since its Euler characteristic is $-5$,
+its genus is two. For $a=-1$ it remains connected but has seven boundary
+components: one, one, and five. Its genus is zero.
+\end{example}
+
+The example follows directly from orbit lengths of a translation and
+$\chi(\widetilde F)=5\chi(F)$. It is also checked by the existing cover
+classifier in the regression suite. A hierarchy step that needs a planar
+base, a disc, a specific peripheral curve, or a particular attachment
+type therefore cannot substitute the component optimizer for that
+geometric test.
+
+\subsection{Separate component optima can conflict}
+
+Even a sum of simple component-count objectives can carry correlations.
+Over $\Z/2\Z$ consider two disconnected base graphs with respective
+single loop voltages $z$ and $z+1$. Each graph individually admits a
+connected cover. No common parameter makes both connected: their total
+component counts are $1+2$ or $2+1$. Thus optimizing each component
+separately and adding the answers would give the wrong result.
+The current surface-family compiler requires a connected base graph.
+A future multi-component interface must retain shared constraints and
+prove its joint optimization rule.
+
+\subsection{Counting can be harder than producing an optimum}
+
+For this subsection only, assume the prime divisors of $m$ are known.
+Let $S$ be the feasible parameter set, let $z_0+B u$ be a full
+parameterization, and write $h=v+G u$, where $v=c+Hz_0$ and $G=HB$.
+For each prime $p\mid m$, let $r_p$ be the rank of $G\pmod p$ and put
+\[
+ \theta_p=
+ \begin{cases}
+  1,&-v\notin\im(G\pmod p),\\
+  1-p^{-r_p},&-v\in\im(G\pmod p).
+ \end{cases}
+\]
+
+\begin{proposition}[Exact proportion of connected assignments]
+\label{prop:counting}
+The number of distinct feasible parameters giving a connected cyclic
+cover is
+\begin{equation}
+ |S|\prod_{p\mid m}\theta_p.\label{eq:connected-count}
+\end{equation}
+\end{proposition}
+\begin{proof}
+Uniform $u\in(\Z/m\Z)^k$ pushes forward to uniform $z\in S$, because
+every fibre of a homomorphism onto $S-z_0$ has the same cardinality.
+Modulo a prime $p$, the affine equation $v+Gu=0$ has probability zero
+when inconsistent and probability $p^{-r_p}$ otherwise. A vector is
+primitive modulo $m$ exactly when it is not the zero vector modulo any
+prime dividing $m$. The Chinese remainder theorem makes these prime
+conditions independent for uniform $u$. Multiplying their probabilities
+and then by $|S|$ proves the formula. Redundant parameterizations do not
+alter the result.
+\end{proof}
+
+This is a counting identity, not a factor-free algorithm for evaluating
+the product. The distinction is necessary. In the one-variable family
+$h(z)=z$ with no constraints, the connected assignments are precisely
+the units, so their number is Euler's totient $\varphi(m)$. If
+$m=pq$ for distinct unknown primes, knowledge of $\varphi(m)$ gives
+\[
+ p+q=m-\varphi(m)+1,
+\]
+and hence recovers $p,q$ as the integer roots of a quadratic. Thus a
+general polynomial-time exact connected-assignment counter would imply
+a polynomial-time algorithm for factoring such semiprimes. This is a
+reduction, not a proof that the counting problem has no polynomial
+algorithm. It explains why the minimum and its witness can be obtained
+without offering an equally strong counting claim.
+
+\subsection{Many simultaneous peripheral conditions are hard}
+
+\begin{theorem}[Simultaneous peripheral connectedness is NP-complete]
+\label{thm:peripheral-hardness}
+Consider the following decision problem: a connected planar bordered base
+surface is supplied with a three-sheet cyclic cover whose generator
+translations are affine functions of parameters in $\Z/3\Z$, and a
+subset of boundary circles is specified. Does some parameter assignment
+make the entire preimage of each specified boundary circle connected?
+This problem is NP-complete, even with no additional congruence constraints.
+\end{theorem}
+\begin{proof}
+Membership in NP follows by supplying the parameter vector. A boundary
+translation $a$ has a connected three-sheet preimage exactly when
+$a\ne0\pmod3$, so verification is polynomial in the listed input.
+
+For hardness, take a finite graph $G=(V,E)$ and one parameter $z_v$ for
+each vertex. Use a planar surface with $|E|+1$ boundary circles and
+assign the first $|E|$ free generators the translations $z_u-z_v$,
+one for each edge $uv$. The final boundary has the inverse product,
+so its translation is minus the sum of these edge differences. Specify
+only the first $|E|$ boundaries. Their preimages are all connected exactly
+when $z_u\ne z_v$ for every edge, which is a proper three-colouring.
+Graph three-colourability is NP-complete~\cite{gjs}. The construction is
+polynomial even with dense coefficient rows. Restricting to graphs with
+at least one edge preserves hardness, and in every satisfying instance
+the entire surface cover is also connected, since at least one nonzero
+translation generates $\Z/3\Z$.
+\end{proof}
+
+This is a hardness result for an expressive family query. It is not a
+hardness result for unknot recognition, normal-surface embedding, or a
+single already specified cover. It makes a practical interface distinction:
+one global gcd objective is tractable, whereas imposing many correlated
+peripheral objectives permits graph colouring. Consequently a future
+hierarchy adapter must exploit geometric restrictions on its actual
+families rather than assume arbitrary affine peripheral constraints are
+equally inexpensive. The reduction also carries any quasi-polynomial
+algorithm for this unrestricted peripheral query to graph three-colouring.
+NP-completeness alone does not unconditionally rule out that running time;
+it identifies the strength of the additional algorithm being requested.
+
+\subsection{Completeness of a representation is a separate obligation}
+
+For a specified normal surface, the extracted interval maps are usually
+partial maps on several stacks of different sizes. They are not
+automatically translations of a single cyclic fibre. Likewise a normal
+surface search includes nonnegative coordinates and quadrilateral
+alternatives, not merely unrestricted residue parameters. Passing from
+those data to an affine cyclic family requires a separate extraction
+and coverage theorem. The two geometric interfaces in this article are
+useful complementary components; no unproved adapter between them is
+silently assumed.
