@@ -1,0 +1,209 @@
+\section{Polynomial projectors, certified local algebras, and static reuse}
+\label{sec:primary-continuation}
+
+\subsection{What the new algebraic path changes}
+The projector-and-seam delivery extends the existing scalar Fitting search.
+For a component $C$ of the live cobordism complex, let $R$ be its complete
+algebra of scalar chain endomorphisms over $\mathbb F_2$. Scalar blocks mix
+only objects with the same matching, homological degree and recovered quantum
+shift. The solver imposes $Qd=dQ$ separately for every morphism coefficient,
+including every attachment in the component. It does not discard the
+non-scalar coefficients of $d$ when constructing those equations.
+
+The old search tries a bounded deterministic list of elements $Q\in R$.
+A sufficiently large power gives the Fitting decomposition
+$C=\ker Q^k\oplus\operatorname{im}Q^k$. This discovers a proper summand when
+both parts are nonzero, but every invertible candidate has trivial kernel.
+An invertible candidate can nevertheless have several distinct irreducible
+primary factors. The optional \code{primary} backend tests for the associated
+polynomial projectors after the ordinary Fitting test fails. A nilpotent or
+identity candidate cannot supply such a projector and skips this extra work.
+The component, variable and candidate caps remain unchanged.
+
+\subsection{A complete polynomial test for one candidate}
+Let $D$ be the number of scalar coordinates and $\mu_Q$ the minimal polynomial
+of the direct sum of the typed blocks. The first linear dependence among
+$I,Q,\ldots,Q^D$ determines $\mu_Q$ exactly. Flattening the blocks preserves
+all matrix entries, so an earlier annihilating polynomial would have caused
+an earlier dependence. The evaluation map
+\[
+ \mathbb F_2[t]/(\mu_Q)\longrightarrow R,\qquad p\longmapsto p(Q)
+\]
+is injective. Write $\mu_Q=\prod_{i=1}^s f_i^{e_i}$ with distinct irreducible
+$f_i$. Each Chinese-remainder factor $\mathbb F_2[t]/(f_i^{e_i})$ is local.
+Its only idempotents are zero and one: for an idempotent $e$, either $e$ or
+$1-e$ is a unit, giving $e=1$ or $e=0$ respectively. Therefore
+\[
+ \mathcal B_Q=\{p\bmod\mu_Q:p^2=p\}
+ \cong\mathbb F_2^s.
+\]
+This is Berlekamp's classical fixed-algebra construction~\cite{berlekamp-primary},
+including repeated irreducible factors. In characteristic two, squaring is
+linear in this commutative quotient. The implementation finds the nullspace
+of the columns $t^{2j}+t^j\bmod\mu_Q$. A basis element other than $0,1$ gives
+an actual nonzero, nonidentity idempotent $p(Q)$.
+
+Discovery uses retained packed powers. A separate positive checker uses
+Horner evaluation, checks an annihilator, verifies the displayed projector
+polynomial and squares the actual matrices. A positive witness does not need
+to establish minimality of the displayed annihilator. The scanner additionally
+checks the full commutator, the invertibility of the splitting bases and every
+transformed cross term. Thus the accepted decomposition preserves all typed
+attachments. Elementary methods take $O(D^4)$ binary operations and $O(D^3)$
+bits for one polynomial-projector query; building the complete commutant and
+trying multiple candidates are separate costs.
+
+For example, $f=t^3+t+1$ and $g=t^3+t^2+1$ are irreducible. The invertible
+matrix $C_f\oplus C_g$ has no ordinary stable-kernel split, while
+$p=t^4+t^2+t$ satisfies $p\equiv0\pmod f$, $p\equiv1\pmod g$ and projects
+onto the second summand. This example explains the stronger test without
+assuming that such a matrix occurs in every difficult knot scan.
+
+\subsection{A new stopping certificate for the entire scalar algebra}
+A failed polynomial test usually says only that this particular $Q$ offers
+no polynomial projector. The maintained continuation adds an exception that
+can be proved complete for the current scalar algebra. Let
+$a=\dim_{\mathbb F_2}R$. If
+\[
+ \deg\mu_Q=a\quad\hbox{and}\quad\dim\mathcal B_Q=1,
+\]
+then the injective evaluation map above is surjective by dimension equality.
+Consequently $R=\mathbb F_2[Q]$ is a local algebra. It contains no nontrivial
+idempotents, so no subsequent scalar candidate can split this component.
+The remaining candidate trials can be skipped exactly.
+
+The implementation uses the complete commutant dimension, not the number of
+candidates sampled. It rechecks that the generator commutes with the complete
+differential, and records the minimal polynomial, degree, candidate matrices
+and algebra dimension in the search metrics. A repeated irreducible factor
+is allowed: the algebra can have nilpotents and still be local. Conversely,
+two copies of a field admit a primary candidate of small degree while their
+full commutant is a matrix algebra containing projections. The degree equality
+is essential and is tested explicitly.
+
+This certificate concerns the specified scalar endomorphism algebra of the
+current complex. It is not a claim that no more general cobordism operation,
+homotopy reduction or future crossing extension can simplify the complex.
+Unlike the positive projector checker, replay of this negative certificate
+must justify completeness of the commutant and minimality of $\mu_Q$.
+The current code obtains both from exact linear solves; the saved numerical
+dimensions alone would not suffice as an external proof.
+
+\subsection{Transporting complete child spaces without changing the search}
+The delivery proposes, but does not implement, static reuse of corner algebras.
+We implement it behind \code{fitting\_reuse\_commutant=True}. Suppose a verified
+split gives $C=\bigoplus_i C_i$, with inclusion $u_i$, projection $v_i$, and
+$e_i=u_iv_i$. Every scalar endomorphism of $C_i$ extends by zero to $C$;
+conversely $r\in R$ restricts to $v_i r u_i$. Hence
+\[
+ \operatorname{End}_{\rm scalar}(C_i)\cong e_i R e_i,
+ \qquad \sum_i\dim(e_iRe_i)\le\dim R.
+\]
+Conjugating a complete parent basis by the accepted change of coordinates and
+restricting it to a child therefore spans the entire child commutant.
+No new equations against the differential need be solved for that child.
+
+A basis change in the commutant could otherwise change the first sampled
+candidates. To avoid this confounder, the transported spanning set is reduced
+to the unique basis with increasing least-bit pivots and zero coefficients
+at the other pivot positions. That is precisely the existing nullspace
+solver's basis in the same variable ordering. Direct tests compare the whole
+basis, candidate count, every split witness and final complex against fresh
+solving. The two implementations consequently follow the same search, apart
+from the common certified stopping rule.
+
+Transport is lazy: size skips, exhausted split allowances and cache hits do
+not construct a child space. A cached positive witness does not contain a
+complete parent basis, so its children use fresh solves. Basis reuse stays
+inside one static compression call; adding a crossing or changing the
+differential starts from fresh spaces. Failed transport leaves the current
+exact differential intact. The option remains off by default because avoiding
+a solve is not itself a runtime advantage: transporting and canonicalizing a
+large basis can cost more than solving a small child's equations.
+
+The sum-of-dimensions bound gives at most $\min(a,D)$ nonzero leaves in a
+proper static refinement tree. A straightforward simultaneous transport has
+$O(aD^3)$ cost per level and $O(aD^4)$ over such a tree, before candidate
+search, dependency elimination and differential transport. These bounds are
+in the explicit live dimension, which remains uncontrolled in terms of the
+original crossing count. They provide no general quasi-polynomial theorem.
+
+\subsection{Validation and measurement protocol}
+The transferred kernel passes exhaustive binary-polynomial tests through
+degree six, independently evaluated small matrix minimal polynomials,
+repeated-primary-factor cases, corrupted-witness rejection and full-differential
+conjugation checks. Public API and CLI tests exercise exact ranks, capped
+recognition, incompatible options and fallback. Additional maintained tests
+compare 200 canonical spans against fresh nullspaces and audit transported
+child spaces on multiple algebraic families and genuine knot scans. They
+cover cache hits, split-budget ordering and interruption inside transport.
+An exhaustive small-commutant test enumerates every endomorphism for each
+accepted local-algebra stop and confirms that its only idempotents are zero
+and identity. A repeated-field control has a primary nongenerator but still
+splits, excluding the unsound shortcut of stopping after any primary candidate.
+
+The maintained \path{benchmark_primary_continuation.py} pins the original
+Fitting module at \code{437b48c7f} and the transferred primary module at
+\code{74446633a}. The five arms are original Fitting, an identical A/A control,
+delivered primary search, maintained primary with the local-algebra stop,
+and maintained primary with both the stop and static corner reuse. Every
+source hash is checked before and after timing. Five shuffled rounds with
+two calls per batch follow one excluded warmup per arm; the seed is 26100879.
+Raw knot scans use one common prepared order and compare complete graded
+ranks with the ordinary Khovanov scanner. Ordering and diagram construction
+are outside those timers. Algebraic search includes the commutant solve,
+all candidate work and the verified basis change; complete compression also
+includes recursive splitting and sharing. Fixture construction is outside
+both timers. The latter inputs are graded algebraic complexes, not established
+classical-knot prefixes. Identical final primary witnesses and representations
+are checked across the delivered and two maintained primary arms.
+
+The final integrated gate passes all 748 tests in 179.037 seconds with Regina
+available. The benchmark completes 950 measured calls and excludes 95 warmup
+calls. There are 250 raw knot scans and 350 calls each for algebraic search and
+recursive compression. The supplementary field audit checks 320 exact candidate
+pairs and 240 field elements by an independent Frobenius-orbit calculation.
+Its uniform-sampling probabilities are not attributed to the deterministic
+production candidate policy.
+
+\input{tables/primary_knots.tex}
+
+All five knot cases have zero primary candidates, primary splits and local-algebra
+stops. Corner reuse occurs three times each on Conway and Kinoshita--Terasaka,
+but supplies no measured improvement. The other knot cases do not invoke it.
+These timings give no evidence of a natural-knot speedup or a reason to change
+the overall default scanner. They are raw complete homology scans, not the
+full recognition portfolio with its earlier filters.
+
+\input{tables/primary_compression.tex}
+
+On the dense degree-eight family, original Fitting exhausts 32 candidates
+without splitting. The delivered primary kernel finds a parent split after two
+candidates, but its recursive pass still examines 46 candidates in total.
+The maintained local-algebra certificate reduces that total to six, including
+three polynomial-projector calls and two certified stops. Complete-compression
+medians fall from 18.685 milliseconds for delivered primary to 9.836 for the
+maintained continuation, with median paired ratio 1.905. Both retain exactly
+the same final complex with 75 differential entries, compared with 142 before
+the parent split. This is a gain in complete recursive compression, beyond
+merely the already faster search for its first split.
+
+The degree-ten family likewise reduces 52 total candidates to six and retains
+102 entries instead of the original 221. The degree-twelve family reduces
+58 candidates to six and has delivered/maintained medians 66.129/32.529
+milliseconds, with median paired ratio 2.033. Degree twelve raises the scalar
+variable allowance above the production default, which must remain explicit
+when interpreting the result. The degree-eight bridge fixture has paired ratio
+2.849. Timing variation is substantial in the degree-ten samples, including
+the identical Fitting control, so its raw samples and paired statistics are
+retained rather than turning a ratio of medians into a precision claim.
+
+Corner transport lowers fresh commutant builds from three to one on each
+split two-field fixture, but slows every measured complete-compression family.
+For dense degree eight it takes 15.048 milliseconds rather than 9.836; its
+median paired primary/corner ratio is 0.655. The canonical-basis checks show
+that this is transport cost, not a different search outcome. Thus the
+polynomial-projector backend enables the local-algebra stop, while corner
+reuse remains a separately selectable experimental option. Raw measurements
+and the exact source pins are in
+\path{results/primary_continuation_20261008.json}.

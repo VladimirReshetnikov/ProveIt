@@ -1696,3 +1696,34 @@ identifies the winner, and `backend_policy` records the switch and discarded
 work. Large witnesses use the backend-specific hexadecimal encoding. Polynomial
 identity remains inconclusive for recognition and continues to Khovanov.
 The overall default Jones backend remains unchanged.
+
+### Polynomial scalar projectors and local-algebra stopping
+
+The optional `primary` Khovanov backend extends Fitting splitting with exact
+polynomial idempotents from Berlekamp's fixed algebra. It can split an invertible
+candidate whose stable kernel is zero. Every accepted split checks the whole
+typed differential and every transformed attachment.
+
+```sh
+python -B -m fastunknot recognize examples/trefoil.json --backend primary
+python -B -m fastunknot khovanov examples/trefoil.json --primary
+```
+
+Python callers select `fitting_primary=True` in `fitting_khovanov_rank` or
+`fitting_khovanov_decide`. The existing object, variable and candidate caps apply.
+A failed candidate ordinarily leaves the component unchanged. If the candidate
+has minimal-polynomial degree equal to the *complete* commutant dimension and
+one-dimensional Frobenius fixed space, the entire scalar algebra is local.
+Then no scalar idempotent exists and the remaining trials are safely skipped.
+This says nothing about simplification by more general cobordism operations.
+
+The experimental `fitting_reuse_commutant=True` option transports complete child
+spaces inside one static compression pass. Canonical bases preserve the fresh
+solver's candidate sequence. Reuse stops at a differential change and remains
+off by default: measured transport overhead exceeds the saved child solves.
+
+The local-algebra stop improves complete compression on the supplied algebraic
+fixtures, but the five tested knot scans never invoke the primary path. The
+main default backend is unchanged, and no general quasi-polynomial recognition
+bound is claimed. Source-pinned measurements, negative results, proofs and the
+748-test validation are in `../synthesis/primary_continuation.tex` and the PDF.
