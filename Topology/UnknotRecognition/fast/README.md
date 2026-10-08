@@ -1,5 +1,16 @@
 # fastunknot 0.3.0: braid and structural certificates with optional shared backends
 
+Explicit overlap search now skips donors whose lengths cannot exceed the
+best guaranteed shortening already found, and stops a donor scan when its
+upper bound is attained. This preserves the complete selected witness and
+independent replay, while reducing work for repeated long donors. See
+[`exposure_residual.tex`](../synthesis/exposure_residual.tex) for the proof,
+controlled measurements, and an independently verified continuation of the
+Whitehead report's stalled Gordian residual. The exposure handoff remains an
+offline experiment: the existing search already recognizes that input faster.
+Reproduce the pruning audit with
+`python -B exposure_research/benchmark_bounds.py`.
+
 Compressed substring queries also bound matches by the directed signed-letter
 pairs shared by both words. This handles some expensive cases with identical
 alphabets. Whole-donor search rejects impossible pair sets, including the

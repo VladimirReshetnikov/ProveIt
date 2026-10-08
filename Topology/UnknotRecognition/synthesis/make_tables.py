@@ -1105,3 +1105,23 @@ if braid_descent:
         handle.write(r'\begin{center}\small'+'\n'+table(
             'Case & Before & A/A & Adaptive & Ratio','@{}lrrrr@{}',rows)+r'\end{center}'+'\n'+
             'Median milliseconds; ratios are medians of paired before/adaptive times.\n')
+
+overlap_bounds = load('../fast/results/overlap_bounds_20261008.json')
+if overlap_bounds:
+    names = {'repeated_16x128': 'Repeated 16 by 128',
+             'repeated_128x128': 'Repeated 128 by 128',
+             'disjoint_16x128': 'Disjoint 16 by 128',
+             'later_longer': 'Later longer donor',
+             'native_explicit': 'Gordian explicit',
+             'native_exposure_overlap': 'Gordian exposure handoff'}
+    rows=[]
+    for name, arms in overlap_bounds['summary'].items():
+        cells=[names[name]]
+        cells.extend(f"{1000*arms[arm]['median_seconds']:.3f}" for arm in ('baseline','control','pruned'))
+        cells.append(f"{arms['pruned']['paired_baseline_ratio']:.2f}")
+        rows.append(' & '.join(cells)+r' \\')
+    with open('tables/overlap_bounds.tex','w') as handle:
+        handle.write(r'\begin{center}\small'+'\n'+table(
+            'Query or complete search & Before & A/A & Pruned & Ratio','@{}lrrrr@{}',rows)+r'\end{center}'+'\n'+
+            'Median milliseconds; ratios are medians of paired before/pruned times. '
+            'Native rows include two independent full certificate replays.\n')
