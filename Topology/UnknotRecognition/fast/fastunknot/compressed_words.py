@@ -23,20 +23,25 @@ class WordArena:
     ``max_work`` charges cooperative abstract operations, not CPU instructions.
     ``equality_probe_steps`` caps a direct DAG walk before polynomial fallback;
     zero bypasses the probe. The default cap is independent of expanded length.
+    ``prefix_probe_steps`` separately caps this walk for longest-prefix queries.
     All public word arguments are node ids obtained from this arena.
     """
     def __init__(self, *, max_nodes=100000, max_work=10000000, equality_probe_steps=64,
+                 prefix_probe_steps=64,
                  check=lambda: None):
         for name, value in (('max_nodes', max_nodes), ('max_work', max_work),
-                            ('equality_probe_steps', equality_probe_steps)):
+                            ('equality_probe_steps', equality_probe_steps),
+                            ('prefix_probe_steps', prefix_probe_steps)):
             if type(value) is not int or value < 0:
                 raise ValueError(f'{name} must be a nonnegative integer')
         self.max_nodes, self.left, self.check = max_nodes, max_work, check
         self.equality_probe_steps = equality_probe_steps
+        self.prefix_probe_steps = prefix_probe_steps
         self.rules, self.lengths, self.first, self.last = [None], [0], [0], [0]
         self._interned, self._inverse, self._reduced, self._equal_cache = {}, {0: 0}, {0: 0}, {}
         self.stats = dict(work=0, equality_calls=0, splits=0, compact_triples=0, peak_assertions=0,
-                          probe_steps=0, probe_resolved=0, probe_fallbacks=0)
+                          probe_steps=0, probe_resolved=0, probe_fallbacks=0,
+                          lcp_calls=0, lcp_probe_steps=0, lcp_probe_resolved=0, lcp_probe_fallbacks=0)
 
     def tick(self, amount=1):
         self.check()
@@ -165,33 +170,38 @@ class WordArena:
             self._reduced[result] = result
         return result
 
-    def _equality_probe(self, a, b):
-        """Bounded synchronized DAG walk: bool if resolved, None on fallback.
+    def _prefix_probe(self, a, b, cap, steps, counter):
+        """Return (proved common-prefix length, resolved) by a bounded DAG walk.
 
         Skip identical subtrees; otherwise split the longer leading chunk.
         No expanded word is allocated. A fixed work cap prevents an unfolded
         traversal from inheriting the possibly exponential represented length.
         """
-        left, right = [a], [b]
-        for _ in range(self.equality_probe_steps):
+        left, right, matched = [a], [b], 0
+        for _ in range(steps):
             self.tick()
-            self.stats['probe_steps'] += 1
+            self.stats[counter] += 1
             u, v = left[-1], right[-1]
             if u == v:
+                matched += self.lengths[u]
+                if matched >= cap:
+                    return cap, True
                 left.pop()
                 right.pop()
-                if not left:
-                    # Root lengths agree and each skipped chunk has equal length.
-                    return True
             elif self.first[u] != self.first[v]:
-                return False
+                return matched, True
             elif self.lengths[u] >= self.lengths[v]:
                 _, x, y = self.rules[left.pop()]
                 left.extend((y, x))
             else:
                 _, x, y = self.rules[right.pop()]
                 right.extend((y, x))
-        return None
+        return matched, False
+
+    def _equality_probe(self, a, b):
+        matched, resolved = self._prefix_probe(a, b, self.lengths[a],
+                                              self.equality_probe_steps, 'probe_steps')
+        return matched == self.lengths[a] if resolved else None
 
     def _remember_equal(self, key, result):
         if len(self._equal_cache) >= self.max_nodes:
@@ -321,7 +331,8 @@ class WordArena:
         return self._remember_equal(key, result)
 
     def lcp(self, a, b, cap=None):
-        """Exact longest common prefix; logarithmically many equality queries."""
+        """Bounded direct walk, then exact bisection beyond the proved prefix."""
+        self.stats['lcp_calls'] += 1
         hi = min(self.lengths[a], self.lengths[b])
         if cap is not None:
             if type(cap) is not int or cap < 0:
@@ -334,10 +345,18 @@ class WordArena:
             self.tick()
             return 0
         lo = 0
+        if self.prefix_probe_steps:
+            lo, resolved = self._prefix_probe(a, b, hi, self.prefix_probe_steps, 'lcp_probe_steps')
+            if resolved:
+                self.stats['lcp_probe_resolved'] += 1
+                return lo
+            self.stats['lcp_probe_fallbacks'] += 1
         while lo < hi:
             self.tick()
             mid = (lo+hi+1)//2
-            if self.equal(self.slice(a, 0, mid), self.slice(b, 0, mid)):
+            # The prefix before lo is already proved equal. Rechecking it
+            # would duplicate work and can create needlessly large slices.
+            if self.equal(self.slice(a, lo, mid), self.slice(b, lo, mid)):
                 lo = mid
             else:
                 hi = mid-1
