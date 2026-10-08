@@ -1,3 +1,6 @@
+/- Modified for ProveIt: make real-part congruence explicit before the
+final finite-sum comparison on Lean 4.32. All upstream theorem statements
+and bounds are unchanged. -/
 import OAI.Combinatorics.Progressions.Dynamics.PhysicalRowsBudgetedL1Perturbation
 import OAI.Combinatorics.Progressions.Estimates.AllocatedOriginalExponentialCover
 
@@ -638,6 +641,7 @@ theorem allocatedRecenteredSelectedMean_l1_source
   have ht' := (sub_le_sub_left hcost κ).trans ht
   convert ht' using 1
   congr 1
+  apply congrArg Complex.re
   apply Finset.sum_congr rfl
   intro t _
   dsimp only [allocatedRecenteredResidueWeight, allocatedWholeResidueReconstruction, ψ, A, root, D, H, T]
