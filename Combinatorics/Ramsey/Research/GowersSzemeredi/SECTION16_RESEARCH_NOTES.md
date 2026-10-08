@@ -1216,7 +1216,7 @@ the zero-width case. Its uniform spectrum assembly has minimum width
 `(zeta/2)*sqrt(n^epsilon(floor(Qb sigma)))`, so the bound depends only on
 the supplied spectrum controls and can be shared across further partition
 refinements. The production source and all three transitive axiom checks
-pass. Its facade import is included in the next combined audit.
+pass. Its facade import passes the combined audit.
 
 `Proofs16PolynomialLemma6.exists_polynomial_lemma_16_6` specializes the
 uniform assembly to the exact induced-function inputs used by Lemma 16.6.
@@ -1225,7 +1225,7 @@ and above the recurrence threshold, it gives proper product cells with
 the uniform polynomial width bound and linear induced restrictions on
 the good base set. Spectrum coverage and the induced selection are still
 premises. Its production source and transitive axiom check pass; the
-facade import is included in the next combined audit.
+facade import passes the combined audit.
 
 `Proofs16PolynomialLemma9.exists_polynomial_lemma_16_9` carries the
 improved width through the remainder-cover and line-cover assembly. If
@@ -1236,7 +1236,34 @@ Lemma 16.6 construction. Flattening retains one common width
 `(zeta/2)*sqrt(n^epsilon(floor(Qb(sigma/2))))`, the original remainder
 graph-count bound, and good mass at least `1-sigma`. The production source
 passes Lean. Spectrum structure, induced selection, and the remainder
-cover are explicit premises; the combined facade audit is queued.
+cover are explicit premises; the combined facade audit passes.
+
+**An all-scale Lemma 16.6 bound is now proved.**
+`Proofs16PolynomialAllScaleParameters` absorbs the recurrence threshold
+by setting `x=m^(a/(4*E))`, rounding `H=ceil(x)`, and taking `n=H^(2*E)`.
+If `(zeta/(4*b))*x > 1`, then `x > 16`, so this integer scale lies between
+`b^E` and `(m/8)^a` and its retiled width dominates the target. Here
+`b=C*(q+1)` and `E=2*p*(q+1)^(2^(k+2))`.
+
+`Proofs16PolynomialAllScaleLemma6` combines that arithmetic with the
+large-scale theorem and singleton partitions. For `0<a=Eb(sigma)<=1`,
+it yields minimum width `(zeta/(4*b))*m^(a/(4*E))` for **every input
+width**, without an additional threshold premise. The prefactor and
+reciprocal exponent have polynomial dependence on the spectrum-count
+bound `q=floor(Qb(sigma))`. The production sources and the combined facade audit pass. Spectrum
+structure and induced selection remain
+explicit inputs.
+
+`Proofs16PolynomialAllScaleLemma9` then transfers that width through the
+remainder cover for every input scale. With
+`c=(multipleC(sigma/(2*r),gamma,k+1))^r` and `a=Eb(sigma/2)`, its line-cover
+width is `(zeta/(4*b))*m^(c*a/(4*E))`, where `q=floor(Qb(sigma/2))`.
+The original remainder graph-count and good-mass conclusions are retained.
+A separate monotonicity lemma transfers the power lower bound on remainder
+cell widths. The complete production source and the follow-up combined
+facade audit pass. No localized threshold remains in
+this result's hypotheses, but spectrum structure, induced selection, and
+the remainder cover remain premises.
 
 The remaining work is integration into the higher-dimensional lift and
 its structure hypotheses, together with explicit dimension constants where

@@ -112,7 +112,9 @@ def _factor_plan(data, summary, intervals, check):
     """Exact projected lengths/exponents and a cheap rule-count upper bound.
 
     A node's nonempty factor projections lie within the hull of its terminal
-    factor indices. Range additions count all such hulls in linear space.
+    factor indices. A concatenation can create a projected rule only where
+    both children survive, within the intersection of their hulls. Range
+    additions count these possible new rules in linear space.
     The bound need not be tight; it schedules work but proves no knot verdict.
     Caller has validated the full grammar and established a knot closure.
     """
@@ -145,13 +147,15 @@ def _factor_plan(data, summary, intervals, check):
         if rule[0] == 'g':
             index = labels[abs(rule[1])]
             span = (index, index) if index >= 0 else None
+            created = span
         else:
             a, b = spans[rule[1]], spans[rule[2]]
             span = ((min(a[0], b[0]), max(a[1], b[1])) if a and b else a or b)
+            created = ((max(a[0], b[0]), min(a[1], b[1])) if a and b else None)
         spans.append(span)
-        if span is not None:
-            difference[span[0]] += 1
-            difference[span[1] + 1] -= 1
+        if created is not None and created[0] <= created[1]:
+            difference[created[0]] += 1
+            difference[created[1] + 1] -= 1
     plan, covered = [], 0
     for index, (lo, hi) in enumerate(intervals):
         check()

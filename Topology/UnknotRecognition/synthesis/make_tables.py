@@ -1314,3 +1314,17 @@ if nm:
     open('tables/normal_multiplicity.tex', 'w').write('\\begin{center}\\small\n' + table(
         'Input & old ms & new ms & count ratio & proof ratio & proof bytes old/new',
         '@{}lrrrrr@{}', rows) + '\\end{center}\n')
+
+# Lazy projection within the complete source-bound compressed-braid recognizer.
+lf = load('../fast/results/lazy_forest_20261008.json')
+if lf:
+    rows = []
+    for r in lf['cases']:
+        m = r['medians']
+        rows.append(esc(r['name'])+' & '+' & '.join(
+            f'{1000*m[a]:.3f}' for a in ('old','current','eager'))
+            +f" & {r['paired_ratios']['current']:.3f} & "
+            +f"{len(r['old_projection_calls'])}/{len(r['new_projection_calls'])}"+r' \\')
+    open('tables/lazy_forest.tex','w').write('\\begin{center}\\small\n'+table(
+        'Input & old ms & lazy ms & eager ms & ratio & projections old/new',
+        '@{}lrrrrr@{}',rows)+'\\end{center}\n')

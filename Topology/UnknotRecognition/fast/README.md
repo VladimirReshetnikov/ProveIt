@@ -2050,3 +2050,21 @@ See [`normal_multiplicity.tex`](../synthesis/normal_multiplicity.tex) for the
 sheet-cover argument, bit complexity, old/new proof compatibility and paired
 measurements. The optimization reduces work on repeated surfaces; normal
 vector discovery and knot-exterior provenance remain separate obligations.
+
+### Prepare compressed forest factors on demand
+
+Compressed-braid recognition now builds a cheap factor schedule from the source
+DAG, then projects and summarizes each factor only when it is visited. It keeps
+finite/exponent obstructions ahead of three-strand factors and wider fallbacks.
+A child-span-intersection upper bound replaces actual projected grammar size as the secondary
+scheduling key. This estimate changes discovery order, never proof validity.
+
+Global source and knot-component checks still run first. A negative proof needs
+one fully prepared, independently replayed summand; a positive proof still needs
+all factors in original strand order. One-strand projections now return their
+exact canonical empty grammar directly. Existing certificate formats are unchanged.
+Set `use_lazy_factors=False` or use the compressed-braid CLI's `--eager-factors`
+flag to retain eager preparation and its former ordering. All work remains under
+the shared public allowances. See [`lazy_forest.tex`](../synthesis/lazy_forest.tex)
+for the scheduling proof, cost limits, compatibility audit and complete-call
+measurements, including positive controls that need every factor.

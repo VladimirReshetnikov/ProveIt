@@ -1,3 +1,6 @@
+/- Modified for ProveIt: give the budgeted-tree terminal stage-data proof
+a finite local checking budget on Lean 4.32. The upstream theorem statement
+and mathematical proof body are unchanged. -/
 import OAI.Combinatorics.Progressions.Estimates.AllocatedCandidateStageDataConstruction
 import OAI.Combinatorics.Progressions.Geometry.CertifiedFullChartBudgetedTreeTerminal
 
@@ -63,6 +66,7 @@ local notation "gmark" => Fmark.realification.polynomialOrbitCoordinates (fullTa
 local notation "Z" => Fmark.realPolynomialSymbolHom bF ν hF (fullTaggedVariableWeight J) gmark
 local notation "Q" => P.withKeep keep hkeep
 
+set_option maxHeartbeats 400000 in
 theorem exists_budgeted_tree_terminal_of_stage_data
     [Fintype (SymbolBasisIndex (fun _ : Vars => 1) ω)]
     [Fintype (SymbolBasisIndex (fun _ : Vars => 1) ν)]

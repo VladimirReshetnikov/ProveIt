@@ -118,6 +118,13 @@ localized spectrum-assembly consumers: they preserve proper cells,
 linearity restrictions, and the stated mass and graph-count bounds above
 an explicit localized input threshold. Spectrum structure and local Bohr
 linearity remain hypotheses.
+The all-scale Lemma 16.6 and 16.9 consumers now pass the completed facade
+audit as well. A polynomial prefactor absorbs the recurrence threshold:
+with `b=C*(q+1)` and `E=2*p*(q+1)^(2^(k+2))`, Lemma 16.6 gives width
+`(zeta/(4*b))*m^(a/(4*E))` for `0<a<=1` at every input scale. The remainder
+cover in Lemma 16.9 multiplies this exponent by its own width exponent,
+while retaining the original graph-count and good-mass bounds. These
+results still require the spectrum structure and selection inputs.
 This reuses the audited Schmidt input without any new upstream module.
 Explicit degree constants and the final all-length threshold remain open.
 
