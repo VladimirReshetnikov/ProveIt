@@ -1,3 +1,6 @@
+/- Modified for ProveIt: supply the proved covered-chart measurable-open
+instance explicitly in canonicalCoefficientDeckSample_jet_measurable, avoiding
+Lean 4.32 instance-search timeout. The theorem statement is unchanged. -/
 import OAI.Combinatorics.Progressions.Sampling.CoveredJetSampler
 
 namespace OAI
@@ -25,6 +28,8 @@ theorem canonicalCoefficientDeckSample_jet_measurable (d : ℕ) [NeZero d] :
     Measurable (fun p : CoefficientSamplerArrays (K := K) I n × CoefficientDeckResidues (K := K) Q d =>
       euclideanCoefficientJetMap U root dirs rows
         (canonicalCoefficientDeckSample U bW b hb o d (Nat.pos_of_ne_zero (NeZero.ne d)) p.1 p.2)) := by
+  let : OpensMeasurableSpace (CoveredJetChartSource U O Q n d) :=
+    @BorelSpace.opensMeasurable _ _ _ (coveredJetChartSource_borel U d)
   have hchart := (coveredJetChart_continuous (O := O) U b hb bW d).measurable.comp
     (mixedCoveredJetCoordinates_measurable (O := O) (B := Q) (n := n) U o d)
   have hjet := canonicalCoefficientJetArrays_measurable (I := I) (n := n) root dirs rows
