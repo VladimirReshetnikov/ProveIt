@@ -20,8 +20,8 @@ Scope
   checkpoints; the current catalogue count is stated here and in the ledger.
 
 Verification at this checkpoint
-  All 777 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 4,990 public Gowers theorems and found only propext,
+  All 778 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 4,995 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 114 exact
   companion proofs and 6 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -113,6 +113,17 @@ Cubic controls for the actual Freiman-family covers
   concrete controls can be passed directly to the parametric affine lift.
   The individual section-cover inputs remain hypotheses, so the six open
   catalogue statements remain open. The full audit includes these results.
+
+Uniform sample controls and a quartic candidate bound
+  Proofs16CubicUniformControls proves that increasing the positive graph
+  count decreases cubicBaseExponent. The sampled count chosen by the line
+  cover can be replaced by section16UniformSampleCount in both the cubic
+  exponent and the compressed interpolation budget, in the directions
+  required by the affine lift. The concrete candidate count also satisfies
+    section16CompressedCandidateCount(r, 3*max(1,r)*q)
+      <= 9*max(1,r)^4*q^2
+  for q > 0, including the empty-sample fallback. These are uniform local
+  controls; the full audit passes and no catalogue statement is closed.
 
 Conditional quantitative density bridge and dependency port
   Proofs01QuantitativeDensityBridge proves the exact Theorem 1.3 from
