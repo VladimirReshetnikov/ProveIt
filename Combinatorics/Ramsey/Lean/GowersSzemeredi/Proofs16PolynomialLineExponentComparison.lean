@@ -28,6 +28,18 @@ theorem section16PolynomialLemma9Width_eq_power (m k C p q : Nat)
       (zeta / (4 * ((C * (q + 1) : Nat) : Real))) *
         (m : Real) ^ section16PolynomialLemma9Exponent k p q sigma theta gamma a := rfl
 
+/-- Positivity of the new line exponent for positive controls. -/
+theorem section16PolynomialLemma9Exponent_pos {k p q : Nat}
+    (hk : 0 < k) (hp : 0 < p) {sigma theta gamma a : Real}
+    (hs : 0 < sigma) (ht : 0 < theta) (hg : 0 < gamma) (ha : 0 < a) :
+    0 < section16PolynomialLemma9Exponent k p q sigma theta gamma a := by
+  have hh := lemma9WidthWithExponent_pos hk hs ht hg ha 0
+  simp only [lemma9WidthWithExponent, section16RecurrenceExponent, Nat.mul_zero,
+    Nat.cast_zero, neg_zero, zpow_zero, mul_one] at hh
+  unfold section16PolynomialLemma9Exponent
+  apply div_pos _ (by positivity)
+  linarith
+
 /-- The factor-two all-scale exponent loss still leaves an eventual strict
 improvement over the old line exponent for fixed positive controls. -/
 theorem eventually_lemma9WidthWithExponent_lt_polynomial {k p : Nat}
