@@ -321,6 +321,7 @@ import GowersSzemeredi.Proofs16BohrDoubling
 import GowersSzemeredi.Proofs16BohrRegularStep
 import GowersSzemeredi.Proofs16BohrBohrSections
 import GowersSzemeredi.Proofs16BiaffineGluing
+import GowersSzemeredi.Proofs16BohrRowIntervals
 import GowersSzemeredi.Proofs16StructuredExtraction
 import GowersSzemeredi.Proofs16BaseCaseZero
 import GowersSzemeredi.Proofs05ProgressionMoments
