@@ -1,5 +1,7 @@
 /- Modified for ProveIt: import Lean 4.32 compatibility declarations.
-Statements and proofs are unchanged from the pinned upstream source. -/
+Prove the uniform grid-volume comparison by splitting the full product into
+grid and non-grid axes, replacing a newer product-injection lemma.
+All upstream theorem statements are unchanged. -/
 import OAI.Compat.BigOperators
 import OAI.Combinatorics.Progressions.Estimates.AllocatedProductCutoffEnvelope
 
@@ -376,23 +378,28 @@ theorem allocatedUniformGridVolumeCap_one_le :
 
 theorem allocatedCutoffGridVolumeCap_le_uniform :
     allocatedCutoffGridVolumeCap B U b S rowSets r ≤ allocatedUniformGridVolumeCap B rowSets r := by
-  unfold allocatedCutoffGridVolumeCap allocatedUniformGridVolumeCap
-  apply Finset.prod_le_prod_of_injOn₀
-    (fun a : {a // allocatedGridAxis (I := I) U b S.value a} => a.val)
-    (fun _ _ _ _ h => Subtype.ext h) (Finset.subset_univ _)
-  · intro a _
-    rcases a with ⟨⟨j, i | i⟩, ha⟩
-    · exact False.elim ha
-    · dsimp only [allocatedCutoffGridRadius, allocatedGridIntegerAxis]
-      rw [layerIntegerPrincipalSlots_card]
-  · intro a _
-    have hrad := allocatedCutoffGridRadius_nonneg (α := α) B U b S r a
-    exact pow_nonneg (by positivity) _
-  · intro a _ _
+  let F (a : LayerSamplerAxis I n) : ℝ :=
+    (2 * (((2 : ℝ) ^ Fintype.card α * (2 * (r : ℝ))) *
+      (8 * ((Fintype.card (B a) : ℝ) + 1))) + 3) ^ (rowSets a.1).card
+  have hF (a : LayerSamplerAxis I n) : 1 ≤ F a := by
     apply one_le_pow₀
     have h : 0 ≤ (((2 : ℝ) ^ Fintype.card α * (2 * (r : ℝ))) *
         (8 * ((Fintype.card (B a) : ℝ) + 1))) := by positivity
     linarith
+  have he : allocatedCutoffGridVolumeCap B U b S rowSets r =
+      ∏ a : {a // allocatedGridAxis (I := I) U b S.value a}, F a.val := by
+    apply Finset.prod_congr rfl
+    intro a _
+    rcases a with ⟨⟨j, i | i⟩, ha⟩
+    · exact False.elim ha
+    · dsimp only [allocatedCutoffGridRadius, allocatedGridIntegerAxis, F]
+      rw [layerIntegerPrincipalSlots_card]
+  change allocatedCutoffGridVolumeCap B U b S rowSets r ≤ ∏ a, F a
+  rw [he, ← Fintype.prod_subtype_mul_prod_subtype
+    (allocatedGridAxis (I := I) U b S.value) F]
+  exact le_mul_of_one_le_right
+    (Finset.prod_nonneg (fun a _ => zero_le_one.trans (hF a.val)))
+    (Finset.one_le_prod (fun a _ => hF a.val))
 
 end Erdos3.VectorPolynomial
 
