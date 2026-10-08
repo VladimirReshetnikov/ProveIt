@@ -1,0 +1,94 @@
+\appendix
+\section{Reproducibility, audit trail, and exact commands}
+\label{sec:reproducibility}
+
+\subsection{Reviewed source pins}
+
+\begin{longtable}{@{}p{0.28\textwidth}p{0.66\textwidth}@{}}
+\toprule
+Item & Pin \\
+\midrule
+\endhead
+ProveIt repository & \code{VladimirReshetnikov/ProveIt} \\
+Reviewed commit & \hashcode{23893144e3aafd074a23cfb633222ab7e03e6d2e} \\
+RIII source path & \code{Topology/UnknotRecognition/fast/fastunknot/simplify.py} \\
+RIII source blob & \hashcode{2fcaabb51eaa45cf84bdee32cd1b4e18acf2c478} \\
+OpenAI math README blob & \hashcode{8ac0cb7dbf1f38ad3b7480310d4e1d9482f0cfe8} \\
+Date of review & October 7, 2026, America/Los\_Angeles \\
+\bottomrule
+\end{longtable}
+
+\subsection{Bundle commands}
+
+From the artifact root:
+
+\begin{lstlisting}[language=bash]
+python -m unittest discover -s tests -v
+python experiments/exhaustive_validation.py \
+  --systems 5000 \
+  --sites 6 \
+  --moves 9 \
+  --reductions 3 \
+  --depth 6 \
+  --output results/validation.json
+python experiments/exhaustive_catalog.py \
+  --depth 4 \
+  --moves-per-system 3 \
+  --output results/exhaustive_catalog.json
+
+cd article
+./build.sh
+\end{lstlisting}
+
+The JSON output is deterministic because each generated system uses its integer
+index as the random seed.
+
+\subsection{Claims ledger}
+
+The machine-readable file \code{claims/claims\_ledger.yaml} distinguishes:
+\begin{itemize}
+\item proved manuscript claims;
+\item computational checks and their scope;
+\item the unexecuted production integration;
+\item the explicitly unproved general quasi-polynomial goal;
+\item the absence of an exhaustive literature-priority claim.
+\end{itemize}
+The file \code{claims/research\_log.md} records the rejected connected-prefix
+conjecture, the state-history and inverse-pruning implementation corrections,
+and the deterministic-policy boundary of the recognition theorem.
+
+\subsection{How to audit the key proof mechanically}
+
+A lightweight independent audit can proceed as follows.
+\begin{enumerate}
+\item Check that every neutral rule's guard reads only its declared support and
+      that disjoint supports imply commuting bit toggles.
+\item For every unrestricted BFS witness, compute its births, front-load them,
+      replay, and truncate at the first terminal state.
+\item Run the birth-front search with the original witness's birth count and
+      depth.  It must find a witness no longer than the oracle witness.
+\item Build the support-overlap graph of the oracle witness plus its terminal
+      reduction.  If it is disconnected, delete a nonterminal component and
+      obtain a shorter witness, contradicting BFS minimality.
+\end{enumerate}
+The validation script performs these checks on generated finite systems.
+
+\subsection{PDF verification}
+
+The compiled PDF should be rendered to images with the repository-independent
+PDF tooling and inspected for clipped equations, code blocks, table overflow,
+and broken glyphs.  The build in this bundle uses only standard TeX packages and
+ASCII punctuation in source text where renderer compatibility can be fragile.
+
+\subsection{Repository integration boundary}
+
+The patch is a review artifact.  It should not be merged merely because the
+abstract tests pass.  The repository-side maintainer should:
+\begin{enumerate}
+\item verify the baseline blob or rebase the patch by inspection;
+\item add repository-native unit tests for state restoration and replay;
+\item run every maintained test and pinned-source check;
+\item benchmark failed searches under the same paired methodology used by the
+      synthesis;
+\item leave clustered mode opt-in until the evidence supports a default change.
+\end{enumerate}

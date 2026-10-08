@@ -1,0 +1,137 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage{url}
+\usepackage{seqsplit}
+\usepackage{graphicx}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!45!black,
+  citecolor=green!35!black,
+  urlcolor=blue!55!black,
+  pdftitle={Causal-Branch Parameterization of Reidemeister-III Unlocking},
+  pdfauthor={OpenAI, prepared for the ProveIt repository}
+}
+\setlist{itemsep=2pt,topsep=4pt}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{ProveIt Unknot Recognition, Report 25}
+\rhead{Causal-branch RIII search}
+\cfoot{\thepage}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{claim}[theorem]{Claim}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{algorithmic}[theorem]{Algorithm}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{warning}[theorem]{Warning}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\R}{\mathcal{R}}
+\newcommand{\T}{\mathcal{T}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\birth}{\operatorname{birth}}
+\newcommand{\poly}{\operatorname{poly}}
+\newcommand{\bigO}{O}
+\newcommand{\Unk}{\mathsf{Unknot}}
+\newcommand{\Unknown}{\mathsf{Unknown}}
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\hashcode}[1]{\texttt{\seqsplit{#1}}}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  columns=fullflexible,
+  breaklines=true,
+  frame=single,
+  numbers=left,
+  numberstyle=\tiny,
+  showstringspaces=false,
+  tabsize=4
+}
+
+\title{\textbf{Causal-Branch Parameterization of Reidemeister-III Unlocking}\\
+\large A restricted quasi-polynomial simplification theorem and an integration-ready search for ProveIt}
+\author{OpenAI\\Prepared for Vladimir Reshetnikov's \texttt{ProveIt} repository}
+\date{October 7, 2026\\Reviewed baseline: commit \texttt{23893144e3aafd074a23cfb633222ab7e03e6d2e}}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+The maintained ProveIt unknot recognizer uses a fast exact Khovanov/Bar--Natan
+fallback and a crossing-nonincreasing Reidemeister preprocessor.  Its current
+Reidemeister-III (RIII) helper searches short sequences, but after the first
+move it follows only the neighborhood of the most recent move.  The repository
+records substantial empirical gains from this search, while explicitly leaving
+general quasi-polynomial unknot recognition open.
+
+This report isolates and solves the parameterized combinatorial problem behind
+that helper.  For a bounded-local reversible rewrite system, we define the
+\emph{birth number} $b$ of a first-unlocking trace to be the number of neutral
+actions whose footprints are disjoint from all earlier footprints.  We prove:
+(i) the action-footprint graph of every shortest first-unlocking trace, including
+its terminal decreasing action, is connected; (ii) all birth actions can be
+commuted to the beginning; and (iii) traces of length at most $k$ and birth
+number at most $b$ can be enumerated in
+\[
+   N^{b+O(1)}(Ck)^k
+\]
+time and polynomial working memory, where $C$ depends only on the finite local
+rule set.  In the fixed-dart model used by ProveIt, an RIII footprint has at most
+24 darts and bounded local incidence, so the theorem applies with an absolute
+constant.  Repeating the search between crossing-decreasing RI/RII phases gives
+a sound unknot preprocessor.  It is quasi-polynomial on families with
+$b,k=O(\log N)$, improves to $N^{O(\log\log N)}$ for $b=O(1)$ and
+$k=O(\log N)$, and is polynomial for $b=O(1)$ and
+$k=O(\log N/\log\log N)$.
+
+A proof audit also finds and repairs a tempting false claim: shortest local
+traces need not have connected chronological prefixes.  Two independent
+preparatory branches may be joined only by a later move.  The birth parameter is
+therefore necessary.  The bundle contains a dependency-free reference
+implementation, strict counterexamples separating the current last-neighbor
+search from accumulated-support search, a finite oracle comparison on 5,000
+generated local systems, and an opt-in ProveIt adapter targeting the reviewed
+\code{simplify.py} blob.  No theorem that arbitrary unknot diagrams have
+logarithmic $b$ or $k$ is claimed, and the adapter has not been run through the
+full repository regression suite in this environment.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+\input{sections/01_summary}
+\input{sections/02_baseline}
+\input{sections/03_model}
+\input{sections/04_causal}
+\input{sections/05_enumeration}
+\input{sections/06_r3}
+\input{sections/07_algorithm}
+\input{sections/08_validation}
+\input{sections/09_consequences}
+\input{sections/10_questions}
+\input{sections/11_reproducibility}
+\input{sections/12_references}
+
+\end{document}
