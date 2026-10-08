@@ -774,3 +774,14 @@ versions one and two replayable. Evidence is in `data/adaptive-forest-*`;
 `../fast/compressed_braid_research/adaptive.py` provides `audit` and `benchmark`
 modes, each taking `--output FILE`, against the maintained baseline at
 `666a62f6a`. All timing arms include proof construction and independent replay.
+
+
+`sparse_seeds.tex` integrates report 47's generation-stamped closure engine,
+productive-prerequisite candidate graph and proper-closure pruning. It proves
+the quadratic seed-search bound under the checked trivial-singleton condition
+and preserves exhaustive search on productive-unary systems. The native
+benchmark compares against the byte-identical frozen prior module and keeps
+whole-pipeline timeouts separate from completed seed-class failures. Evidence
+is in `data/sparse-seeds-*`; reproduce it with
+`../fast/two_meridian_research/audit_search.py` and
+`../fast/benchmark_two_meridian_search.py`, each taking `--output FILE`.

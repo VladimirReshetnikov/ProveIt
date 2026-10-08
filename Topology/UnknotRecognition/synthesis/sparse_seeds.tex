@@ -1,0 +1,255 @@
+\section{Sparse two-meridian seed search with complete candidate pruning}
+\label{sec:sparse-seeds}
+
+Report 47 contains a second useful native optimization besides its orbit
+certificates: a faster search for the two-meridian derivations of
+Section~\ref{sec:two-meridian}. We integrate its reusable closure state,
+structurally restricted candidate pairs and proper-closure pruning.
+The representation arithmetic, source-bound certificate format and
+search-independent verifier are unchanged. The delivered frozen baseline is
+byte-identical to the previously maintained module, so the comparison does
+not depend on reconstructing an approximate historical implementation.
+
+\subsection{The implication system and its checked sparse regime}
+
+A signed Wirtinger crossing $(o,u,v,\epsilon)$ supplies implications
+$\{o,u\}\Rightarrow v$ and $\{o,v\}\Rightarrow u$. Coincident dependencies
+count once. For seeds $S$, let $\operatorname{cl}(S)$ be the least set
+containing $S$ and closed under these rules. A successful one- or two-seed
+closure supplies an acyclic original-crossing derivation of all meridians.
+The unchanged exact arithmetic then imposes every original relation and
+returns an unknot or nontrivial-knot verdict. Exhaustive closure failure
+still says only that this diagram lacks the required derivation; it remains
+\texttt{INCONCLUSIVE} for recognition.
+
+The sparse regime requires every singleton closure to be trivial. This is
+equivalent to absence of a productive unary rule: a rule with one distinct
+dependency and a different target. A productive unary rule immediately grows
+its singleton. Conversely, without one, no first step can grow any singleton.
+The implementation checks the original rule list before using sparse pairs.
+It does not assume that every knot diagram satisfies this condition.
+
+Suppose there are at least three arcs and a pair $S$ generates all arcs.
+Some rule must derive the first arc outside $S$. Its prerequisites are in
+$S$. They cannot consist of one arc in the checked regime, so they are
+exactly the two elements of $S$, and its target is outside $S$.
+Consequently every generating pair occurs among the distinct prerequisite
+pairs of productive binary rules. With $r$ directed rules, at most $r$
+pairs need examination. A knot diagram with $n$ crossings has $O(n)$ arcs
+and at most $2n$ such rules, in place of the former quadratic pair set.
+On two arcs, the sole pair is retained explicitly: it already contains the
+whole universe and requires no first rule. Zero and one arc are handled
+by the earlier empty/singleton logic.
+
+The productive-unary guard is necessary. For example, crossings
+$(0,0,1)$ and $(1,2,3)$ on four abstract arcs imply $0\Rightarrow1$ and
+$\{1,2\}\Rightarrow3$. The pair $\{0,2\}$ generates all four arcs, but
+it is not a productive binary prerequisite pair. The apparent candidates
+$\{1,2\}$ and $\{1,3\}$ cannot derive arc zero. The maintained algorithm
+therefore retains exhaustive pair enumeration whenever a productive unary
+rule exists. The example concerns the implication logic, not a claim that
+these two crossings are a valid four-arc knot diagram.
+
+\subsection{Reuse closure arrays without changing derivation order}
+
+The old engine allocates dependency counters for every attempted seed set,
+paying $\Theta(v+r)$ initialization even if the trial reaches only one or
+two of its $v$ arcs. The new engine allocates two arrays once. Advancing a
+generation number makes older entries logically absent. A known-generation
+stamp records enqueueing; a processed-generation stamp records removal from
+the queue. The reached list is rebuilt only from actually visited vertices.
+
+A rule fires when all its distinct dependencies have processed stamps for
+the current generation and its target lacks a current known stamp. The
+processed distinction is essential for preserving the exact previous trace.
+In the old counter algorithm, the remaining counter is precisely the number
+of dependencies not yet removed from the queue. Thus the two firing
+conditions agree after every dequeue. Induction on queue events gives the
+same enqueues, rule choices and derivation order, including coincident
+dependencies. Testing only the known stamps would still compute closure,
+but could change the timing of rule firings and the certificate trace.
+
+One attempt pays for its dequeued vertices and their rule incidences, not
+for untouched vertices. Both stamps are needed because a vertex may have
+been enqueued but not yet processed when another dependency is examined.
+Generation counters have $O(\log(n+2))$ bits over the at-most-quadratic number
+of attempts; no array of all possible pairs is allocated.
+
+\subsection{Prune pairs inside failed closed sets}
+
+If a failed trial exhausts its queue in a proper closed set $C$, then every
+seed pair $S'\subseteq C$ also fails:
+\[
+ \operatorname{cl}(S')\subseteq\operatorname{cl}(C)=C\ne V.
+\]
+The producer stores candidate pairs as a sparse undirected graph. After a
+failed trial, it examines candidate edges incident to reached vertices and
+marks later edges whose other endpoint is also reached. It skips those edges
+on subsequent enumeration. Only proper completed closures justify pruning;
+a resource-interrupted prefix proves no failed candidate.
+
+Candidates remain in lexicographic order. Every omitted or skipped pair is
+proved unsuccessful, so the first successful pair remains the same as in the
+old exhaustive algorithm. Singleton attempts are also retained in their
+original order. Combined with identical queue traces, this preserves the
+entire successful certificate, including its exact arithmetic and source
+binding. The number of charged attempts now counts actually examined seeds;
+proved failures need not consume a full closure computation. Under a fixed
+budget more of the class may be exhausted, but no monotonic improvement for
+every tiny resource allowance is promised: the new graph has a preparation
+cost of its own.
+
+\subsection{Search bounds and their limits}
+
+Let $v$ be the number of arcs, $r$ the number of rules and $\mathcal A$ the
+seed sets actually examined. For a reached closure $C_S$, let $d_R(x)$ and
+$d_P(x)$ be its vertices' rule-incidence and candidate-graph degrees.
+A coarse output-sensitive bound is
+\[
+ O\!\left(v+r\log(r+1)+
+ \sum_{S\in\mathcal A}\sum_{x\in C_S}
+ (1+d_R(x)+d_P(x))\right)
+\]
+word operations, with $O(v+r)$ working words. The graph term is needed only
+for failed candidate-pair closures. This formula uses ordinary amortized
+set lookup for pair deduplication; sorting and adjacent deduplication offer
+a deterministic comparison alternative. Even quadratic worst-case hash
+preparation leaves the following quadratic Wirtinger bound intact.
+
+There are $v$ singleton trials and at most $r$ candidate-pair trials, each
+visiting at most $O(v+r)$ incidences. For a validated knot diagram,
+$v,r=O(n)$, giving $O(n^2)$ search word operations or
+$O(n^2\log(n+2))$ elementary bit operations for indices. This replaces the
+old cubic closure-search bound on the checked regime. The unrestricted
+productive-unary fallback retains $O(v^2(v+r))$ search work, although its
+individual attempts still benefit from reused state. Memory remains linear
+in the rule system rather than in the number of potential pairs.
+
+This theorem concerns finding the derivation. Successful representation
+arithmetic, gcd/parity checks and mandatory certificate replay remain as in
+Section~\ref{sec:two-meridian}; their deliberately conservative
+$O(n^4\log(n+2))$ complete-stage bound is not improved merely by changing
+closure enumeration. The public stage remains opt-in in the ordinary
+pipeline, after invariant filters, with the same time, work and attempt caps.
+Earlier filter costs are outside the standalone bound. Exhaustive failure
+proves no knot-type result, and no cheap conversion of every knot diagram
+into the two-seed class has been established.
+
+\subsection{Native validation}
+
+All six delivered source, test, corpus, benchmark and documentation files
+were verified against the archived report-47 manifest at intake. The maintained
+research README now distinguishes fresh native evidence from the delivery's
+historical measurements. The previous maintained module and the delivered frozen
+baseline both have SHA256 beginning \texttt{5eb36230e9b9}. The optimized
+module is integrated without changing the delivered search implementation.
+Fourteen focused tests pass in 2.309 seconds. They include all 4,096
+four-arc systems of distinct crossing triples and all 512 three-arc systems
+allowing productive unary rules. For every one- and two-seed set, a separate
+fixed-point sweep agrees with the stamped engine, whose trace also agrees
+exactly with the old counter engine. The tests compare the first successful
+pair before and after pruning. Four hundred additional random degenerate
+systems cover coincident labels, empty rules and repeated generations.
+
+The twenty frozen actual-diagram fixtures retain exactly the same successful
+certificates. The suite exercises proper-closure pruning, the planar
+productive-unary fallback, search-independent replay, exact shared-work
+boundaries and global cancellation. These checks preserve the distinction
+between exhausting a seed class and completing knot recognition.
+
+The full maintained suite passes 915 tests with Regina in 209.658 seconds.
+A further seeded audit compares 240 held-out actual planar braid closures
+against the unchanged frozen module. Verdicts and successful certificates
+agree exactly: 102 unknots, 86 nontrivial knots and 52 exhaustive two-seed
+failures. There are 153 sparse-regime inputs and 87 productive-unary fallback
+inputs. Both old and new verifiers accept each conclusive certificate.
+This comparison checks the search integration; the pre-existing geometric
+and quaternion tests supply the independent arithmetic controls.
+
+The same audit constructs disconnected three-vertex implication blocks to
+check scaling of unsuccessful closures. With 5,000 blocks there are 15,000
+vertices and 10,000 directed rules. The candidate graph has 10,000 edges,
+and closed-set pruning skips 5,000 of them. There are 20,000 actual trials,
+30,000 vertex dequeues, 40,000 visited rule incidences and 20,000 pruning
+incidences, versus 112,492,500 potential unordered pairs. The corresponding
+counts scale exactly with the number of blocks in four audited sizes.
+Preparation's charged sorting term is retained. These are synthetic
+implication systems, not asserted knot diagrams. The 0.508-second audit,
+all signed planar inputs, the unary guard counterexample and exact source
+hashes are in \path{data/sparse-seeds-native-audit.json}.
+
+\subsection{Standalone and whole-pipeline measurements}
+
+The benchmark retains the delivery's fixed twenty-diagram corpus and seed
+2610081249, but reruns it against the current maintained pipeline. Standalone
+arms are the frozen baseline, an identical baseline control, stamped closure
+without candidate restriction, candidates without closed-set pruning, and
+the complete optimization. Each has one shuffled warmup and nine measured
+rounds. Every timed call includes fresh PD validation, seed search, successful
+representation arithmetic and replay. An exhaustive unsuccessful seed search
+counts as a completed class query but stays inconclusive for recognition.
+
+\input{tables/sparse_seeds.tex}
+
+Whole-pipeline measurements separately use the ordinary configuration with
+a three-second budget and the compressed-group configuration with an
+18-second total budget and 15-second group allowance. Each compares the
+old stage, its identical control, the new stage and disabling the stage,
+with one shuffled warmup and five measured rounds. Local two-meridian caps
+remain 50 ms, two million work units and 10,000 attempted seeds. A pipeline
+\texttt{UNKNOWN} remains a censored sample; it is not assigned a completion
+time or used in paired completed-time ratios. All raw samples, actual stage
+invocations, proof hashes and loaded-dependency hashes are retained in
+\path{../fast/results/two_meridian_search_native_20261008.json}.
+
+\input{tables/sparse_seeds_pipeline.tex}
+
+All 900 measured standalone calls finish their class query. On Gordian,
+the old median is 456.551 ms and the optimized median is 4.581 ms; the
+median paired ratio is 100.120. Stamped state alone takes 40.373 ms and
+restricting to prerequisite pairs takes 4.837 ms. The number of attempted
+seed sets falls from 10,011 to 274, and charged work from 4,347,002 to
+12,251. With the unchanged two-million-work cap, the old search stops
+before exhaustion whereas the new search completely excludes its seed
+class. Both answers remain inconclusive for knot recognition. This is a
+search improvement on a hard negative instance for the derivation class,
+not a new obstruction to unknottedness.
+
+The smaller Conway and Kinoshita--Terasaka fixtures have paired standalone
+ratios 1.882 and 1.791. Other fixtures gain little: survivor-09 has ratio
+1.002, and the trefoil has ratio 0.951. Metadata construction can cost more
+than it saves when a tiny successful derivation is found immediately.
+The identical-baseline controls range from 0.975 to 1.038 across the
+standalone corpus. These measurements support the large search improvement
+and its mechanism; they do not support a universal constant-factor gain.
+
+There are 800 measured whole-pipeline calls, of which 780 complete. All
+20 censored calls are ordinary-configuration Gordian runs, across the four
+arms. The group configuration completes Gordian through the existing
+cyclic-group backend. Its old/new medians are 1,683.188/1,692.476 ms,
+while its median of paired old/new ratios is 1.037. The latter statistic
+need not equal the ratio of separate medians. With only five rounds and
+identical-control ratios ranging from 0.909 to 1.035 across the group corpus,
+this is weak evidence for a whole-pipeline gain. Disabling the seed stage
+has Gordian median 1,653.628 ms. The optimized stage quickly finishes its
+unsuccessful class query; most elapsed time belongs to other work.
+
+Survivor-00 improves from 3.003 to 2.541 ms in the ordinary pipeline
+(paired ratio 1.184), while several invariant-filtered fixtures never reach
+the seed stage and consequently show no systematic change. All timings,
+including slower arms and censored samples, are retained. The measured
+loaded-source hashes are unchanged throughout the run. The public default
+therefore remains disabled: the evidence justifies integrating the faster
+search for callers that enable this class test, without yet establishing
+an automatic dispatch policy that improves the broader input distribution.
+
+\paragraph{Remaining theoretical gap.}
+The new bound is quadratic for closure discovery in its checked regime,
+with an exact fallback outside it. It neither bounds the number of
+Reidemeister moves required to enter the two-seed class nor supplies a
+quasi-polynomial complete recognizer for arbitrary planar diagrams.
+Future adaptive scheduling can use reached-closure sizes and charged work
+as progress signals, but any early departure must remain inconclusive and
+leave a complete fallback available. Such scheduling also requires measured
+stage costs rather than extrapolating the standalone 100-fold ratio to
+whole-pipeline performance.
