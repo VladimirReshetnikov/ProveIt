@@ -46,7 +46,8 @@ class PeriodicOverlapTests(unittest.TestCase):
             self.assertIsNone(matcher.periodic_overlaps(u, v))
             # Keep exercising the general table path after phase rejection;
             # sparse endpoint certificates have their own literal oracles.
-            with patch.object(matcher, 'sparse_overlaps', return_value=None):
+            with patch.object(matcher, 'sparse_overlaps', return_value=None), \
+                 patch.object(matcher, 'progression_overlaps', return_value=None):
                 aps = matcher.overlaps(u, v)
             self.assertEqual({p+i*d for p, d, n in aps for i in range(n)},
                              {k for k in range(1, 181) if x[-k:] == y[:k]})
