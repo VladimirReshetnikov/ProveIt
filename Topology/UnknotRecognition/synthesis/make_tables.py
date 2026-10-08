@@ -1190,3 +1190,23 @@ if orbit_controls:
             'Median milliseconds; ratio is the median paired classical/sharp '
             'time. Cycles are classical/sharp. Surface queries include validation '
             'and all three orbit counts; chain queries count interval orbits only.\n')
+
+orbit_proofs = load('../fast/results/orbit_certificates_20261008.json')
+if orbit_proofs:
+    rows = []
+    for row in orbit_proofs['incidence']:
+        family, shape = row['name'].split('_', 1)
+        cells = [{'static': 'Static', 'normal8': 'Meridian',
+                  'parallel500': 'Parallel'}[family] + ', ' + shape]
+        cells.extend(f"{1000*row['medians'][arm]:.2f}" for arm in
+                     ('uncached', 'cached', 'certified'))
+        cells.append(f"{row['paired_ratio']['cached']:.2f}")
+        cells.append(str(row['old_queries']) + '/' + str(row['stats']['orbit_queries']))
+        rows.append(' & '.join(cells) + r' \\')
+    with open('tables/orbit_certificates.tex', 'w') as handle:
+        handle.write(r'\begin{center}\small' + '\n' + table(
+            'Marked system & Fresh & Reuse & Certified & Ratio & Queries',
+            '@{}lrrrrr@{}', rows) + r'\end{center}' + '\n' +
+            'Median milliseconds per complete incidence query. Certified includes '
+            'proof construction and independent replay; ratio is the median paired '
+            'fresh/reuse time. Queries are fresh/reuse.\n')
