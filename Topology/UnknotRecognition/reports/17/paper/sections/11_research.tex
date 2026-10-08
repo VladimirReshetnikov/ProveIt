@@ -1,0 +1,249 @@
+\section{Further research questions and concrete next experiments}
+\label{sec:research}
+
+The following program distinguishes short implementation projects,
+structural mathematical questions, and obligations needed for a full
+complexity theorem. A successful next step should produce either a proof
+with explicit hypotheses, an independently replayable improvement, or an
+informative counterexample.
+
+\subsection{Immediate work on scalar transfers}
+
+\begin{question}[Optimize the actual component cost]\label{q:order}
+Can crossing orders and checkerboard colors be chosen to minimize merge
+work, rather than only the global cut-edge or active-face maximum?
+\end{question}
+
+The current shading heuristic minimizes $(\max f_i,\sum f_i)$, while
+Theorem~\ref{thm:componentwidth} depends on $g$ and actual work also depends
+on alignment counts. A useful objective combines the sum of component orbit
+counts, the products at merge steps, and estimated integer lengths.
+Compute these structural features without running the full tensor
+contraction, then compare greedy local changes on a fixed corpus.
+The benchmark should include construction time and preserve orders on which
+the existing heuristic wins. A worst-case approximation guarantee for this
+objective would be more valuable than a favorable average alone.
+
+\begin{question}[Switch representations at justified points]
+Can a certified runtime policy choose among matching, one-tensor Potts,
+and component Potts without paying their full combined costs?
+\end{question}
+
+The present measurements disprove a universal dominance claim. A first
+policy can select an algorithm from cheap structural profiles and give each
+attempt a fixed work budget. A stronger policy would convert a partially
+computed representation when its cost grows. Such a conversion needs an
+explicit linear map and an exact normalization account. Training a heuristic
+on these 29 examples and reporting its accuracy on the same examples would
+not answer the question; use held-out diagrams and relabeling controls.
+
+\begin{question}[Factor beyond processed connected components]
+When can an exact active tensor be split along articulation vertices,
+small separators, or algebraic low-rank structure?
+\end{question}
+
+Graph-component independence is sufficient but not necessary for a compact
+tensor. At a one-vertex separator, condition on the separator spin and
+exploit the remaining color stabilizer. At larger separators, equality
+patterns induce different stabilizer groups and orbit multiplicities.
+The first milestone is a complete merge-and-forget calculus for separators
+of size one and two, checked against labeled enumeration.
+Algebraic rank factorization must preserve signed exact coefficients and
+must charge for rank discovery. A large output rank supplies a natural
+counterexample to an overly broad compression conjecture.
+
+\begin{question}[Use contraction trees without assuming disk frontiers]
+Can a tree-based exact Potts contraction improve path-order bottlenecks in
+the repository while retaining the symmetry quotient?
+\end{question}
+
+Existing tensor and graph-width literature provides the starting point
+\cite{meichanetzidis2019,maria2021}. The implementation question is how to
+combine separator assignments, spin orbits and exact coefficient growth in
+a reproducible cost model. A contraction tree should be stored as part of
+the computation input and validated. Compare total contractions, maximum
+tensor size, integer lengths and order-search cost. A tree decomposition
+is useful only if its conversion and join operations are also bounded.
+
+\subsection{Detection strength and exact specializations}
+
+\begin{question}[Characterize the kernel of the six-color evaluation]
+Which nontrivial knots, if any, have $V_K(2+\sqrt3)=1$?
+\end{question}
+
+This is a structural question about a specific evaluation. Start with
+families having exact trace or skein recurrences: closed braids of fixed
+index, twist constructions, satellites with controlled pattern, and
+connected sums. Search for polynomial divisibility by $t^2-4t+1$ using
+exact Laurent polynomials. A found collision is valuable even if another
+filter already detects the knot. Failure to find one in a knot table gives
+no completeness theorem.
+
+\begin{question}[Design a small complementary menu]
+Can a bounded or slowly growing set of algebraic points eliminate broad
+classes of collisions while keeping total work small?
+\end{question}
+
+The $q=5$ failure and $q=6$ repair show why algebraic complementarity matters.
+Measure additional detections per unit of exact work, with first-passing
+and never-detected cases recorded. Distinguish changing $q$ from changing a
+prime at fixed $q$. Proposition~\ref{prop:menu} gives an unconditional
+growing menu for detecting whether the full Jones polynomial is $1$;
+improving its number of points on a proved class is a concrete target.
+A universal fixed menu would require a new theorem about the possible
+Jones polynomials of knots.
+
+\begin{question}[Arithmetic circuits or reconstruction]
+Can modular evaluation and certified reconstruction outperform integer
+pairs for very long, narrow diagrams?
+\end{question}
+
+The exact bit bound supplies an a priori reconstruction threshold.
+One could evaluate over enough compatible primes, reconstruct each
+coordinate, and verify with an additional exact identity. It is essential
+to count prime selection, conversions, and total bit work. Pair arithmetic
+has unusually cheap local multipliers, so a modular strategy may lose on
+moderate inputs. Large-parameter tests should use the same diagram order
+and report integer sizes, not merely crossing count.
+
+\begin{question}[Shorter certificates than full replay]
+Can a nontrivial exact Potts value be certified with a verifier materially
+faster than recomputing the transfer?
+\end{question}
+
+The current evidence stores inputs and exact outputs, so replay has the
+same complexity class as evaluation. A contraction transcript can expose
+local sums and products, but may be as large as the computation.
+Explore checkable arithmetic circuits, deterministic residual identities,
+or interactive-verification models with their assumptions stated.
+A soundness claim must account for arbitrary forged intermediate tables,
+not just altered final values.
+
+\subsection{Ring-valued compression for the complete fallback}
+
+\begin{question}[Find useful ring-valued chain endomorphisms]
+Can the scalar candidate search from the preceding continuation be extended
+to produce small nontrivial same-matching ring-valued endomorphisms?
+\end{question}
+
+Theorem~\ref{thm:fitting} assumes the operator is supplied. A concrete
+experiment is to add low dot-degree unknowns to the scalar intertwining
+equations, solve them exactly, and test whether the lifted Fitting summands
+reduce work on actual scanner blocks. Record the search dimension, solution
+support, block sizes before and after splitting, and the cost of checking
+all categorical cross terms. A search that routinely costs more than the
+saved elimination is not a performance improvement.
+
+\begin{question}[Exploit low annihilator degree]
+When is the residue characteristic polynomial substantially larger than a
+usable annihilator, and can a shorter one be found cheaply?
+\end{question}
+
+The universal certificate has degree $pr$, and the radical cutoff is sharp
+in the full class. Particular matrices may have much smaller residue
+minimal polynomials or additional relations. A residue minimal polynomial
+alone need not lift with exponent $p$ by the proof of
+Theorem~\ref{thm:residue}; that proof uses characteristic-polynomial
+coefficients over the large ring. The first task is to identify a valid
+lifting theorem or an explicit counterexample before replacing the
+characteristic polynomial in code. Compare any successful refinement with
+doubled geometric-series inversion.
+
+\begin{question}[Keep Fitting projectors succinct]
+Can $e(A)$ and its basis changes be manipulated without expanding their
+coefficient supports or multiplicity spaces?
+\end{question}
+
+A degree-$O(r)$ polynomial is short, but evaluating it can create large
+entries. Candidate representations include sparse monomial maps, shared
+composition DAGs, and block recurrences. Each needs exact addition,
+composition, zero testing, and application to differentials. The target
+is a closure theorem bounding all these operations on a specified class.
+Measure both the representation size and the cost of operations performed
+on it; a small serialized expression can still hide expensive evaluation.
+
+\begin{question}[Decision information without full homology]
+Which exact summaries retain the rank-one question under all tangle
+extensions while discarding irrelevant homology?
+\end{question}
+
+Previous saturated decisions and homological windows suggest useful
+restricted summaries, but a complete invariant of future continuations can
+be much larger than a scalar Euler characteristic. Formulate a congruence
+on partial complexes that is respected by every allowed crossing extension.
+Prove that the terminal decision descends to the quotient. Then either
+bound the number of quotient states or exhibit a family requiring many.
+This is a direct route toward the missing hypotheses of
+Theorem~\ref{thm:conditional}.
+
+\begin{question}[Learn from the explicit three-braid barrier]
+Which features permit compressed three-braid algorithms, and which survive
+at four or more strands?
+\end{question}
+
+The 2026 results provide both a warning about explicit output size and a
+positive compressed model \cite{kelomaki2026}. A useful next project is to
+encode a proven fixed-strand family with exact multiplicities and verify
+the closed recurrences against the baseline scanner.
+The research target is an extension theorem with a precise parameter,
+not an empirical claim that all fixed-width complexes remain small.
+
+\subsection{A fully costed geometric branch}
+
+\begin{question}[Implement compressed normal-curve operations]
+Can the published intersection and isotopy algorithms be integrated with
+ProveIt's boundary-pattern representation?
+\end{question}
+
+The initial deliverable should handle explicit triangulated surfaces,
+binary normal coordinates, geometric intersection numbers and the essential
+curve precondition for isotopy \cite{lackenbycurves2026}.
+Tests must include exponentially large weights described by short binary
+inputs. Enumerating all normal arcs would destroy the intended complexity.
+Every conversion between patterns, triangulations and normal coordinates
+must be part of the time and size account.
+
+\begin{question}[Control hierarchy restarts and encodings]
+What invariant gives a useful simultaneous bound on hierarchy length,
+pattern complexity, representation size and restart cost?
+\end{question}
+
+The expression $L(G+1)^L$ motivates a quantitative target but is not itself
+a complete running-time theorem. Instrument an implementation of one
+well-defined hierarchy step and prove that its compressed output meets a
+stated bound. Then analyze how cutting and simplification interact with
+that bound under restarts. A fast terminal checker is already a useful
+component; the next milestone is a fully costed nonterminal transition,
+followed by a global potential argument.
+
+\begin{question}[Connect the algebraic and geometric branches]
+Can an exact algebraic obstruction or partial homological summary guide
+geometric choices without becoming an unproved pruning rule?
+\end{question}
+
+A safe interaction uses algebraic information to prioritize work while
+retaining every branch required by the geometric correctness proof.
+A stronger pruning rule needs its own implication theorem.
+The first practical milestone is shared diagram and certificate formats
+with explicit preprocessing equivalences. The longer-term milestone is
+a combined algorithm whose worst-case bound can be proved independently
+of its heuristic ordering choices.
+
+\subsection{Evaluation discipline and recommended sequence}
+
+Before a broad default change, extend the corpus beyond small named
+fixtures and short random braids. Include pairs of diagrams of the same
+knot with different embeddings and orders, nontrivial Alexander-trivial
+knots, difficult unknot diagrams, large connected sums, and families chosen
+to stress each representation. Record cases solved before the Jones stage
+separately. Measure failed or budget-limited attempts as costs, not as
+missing data.
+
+The recommended sequence is: first improve the component-aware order
+objective and confirm it on held-out inputs; next extract actual
+same-matching blocks to test the residue certificates; then implement one
+compressed geometric operation with a complete bit-complexity contract.
+In parallel, maintain the exact-specialization collision search and the
+independent oracles. This sequence produces useful verified increments
+while keeping the eventual quasi-polynomial theorem tied to explicit,
+testable obligations.

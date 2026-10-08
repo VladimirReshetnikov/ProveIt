@@ -1,0 +1,472 @@
+\section{Further incoming reports and checked integrations}
+\label{sec:incoming}
+
+\subsection{Intake status and provenance}
+Reports 08--12 arrived during the October continuation and were merged
+from the shared main branch before further integration. Their delivered
+contents remain unchanged. Local reruns passed 59 test methods for report
+08, 69 for report 09, 15 for report 10's numerical kernels, and 62 for
+report 11. These are separate suites and their counts must not be added
+as though they were independent mathematical cases. Logs and local
+cross-checks are retained under \code{synthesis/data/}. The current
+production suite passes 134 tests. Report 12's 29 archive test methods also
+pass locally. The braid specialization of report 08, selected preprocessing
+of report 09, and component contraction from report 12 are integrated.
+Report 10's parallel kernel was cross-checked; report 11, report 09's pointed
+backend, and report 12's succinct block layer remain under integration review.
+
+\subsection{Complete recognition for checked short-strand braids}
+Report 08 contributes a complete decision procedure for the closure of
+an explicit braid on at most three strands. This is a restricted input
+class, not a method for reducing every diagram to three strands. The
+public raw-word entry point is \code{braid\_certificate(m, word)}. It checks
+integer generators, strand bounds, and that the strand permutation is
+one cycle before issuing a knot verdict. If the word has $n$ letters,
+one-component closure requires $m\le n+1$, so even permutation validation
+uses linear space and word operations.
+
+Write $e$ for the exponent sum. Bennequin's inequality applied to a
+braid and its mirror gives $|e|\le m-1$ for an unknot closure. A violation
+therefore proves knottedness on any number of strands. For one or two
+strands, this test leaves only the trivial closure classes, so it already
+gives a complete answer. Its converse is not asserted for arbitrary $m$.
+
+For three strands put $a=\sigma_1$, $b=\sigma_2$, $x=aba$, $y=ab$,
+and $z=x^2=y^3$. The central quotient is
+\[
+ B_3/\langle z\rangle\cong C_2*C_3
+   =\langle x,y\mid x^2=y^3=1\rangle.
+\]
+The Birman--Menasco classification says that the three conjugacy classes
+with unknot closure are represented by $ab$, $(ab)^{-1}$, and $ab^{-1}$;
+see Theorem 4.1(i) of
+\href{https://arxiv.org/abs/2204.13660}{Datta's account of the classification}.
+Only this specific classification result is needed here. The implementation
+maps letters to at most two quotient tokens:
+\[
+ a\mapsto y^2x,\quad a^{-1}\mapsto xy,\quad
+ b\mapsto xy^2,\quad b^{-1}\mapsto yx.
+\]
+A stack multiplies adjacent tokens in the same cyclic factor. A deque
+then removes or combines equal-factor end tokens until the word is
+cyclically reduced. Each push, pop, and end operation can be charged to
+an input token, so the total is $O(n)$ symbol operations. Cyclic words
+are compared up to rotation, not by an expensive conjugator search.
+
+The exact test accepts the following exponent/quotient pairs:
+\[
+ (e,\text{cyclic class})=(2,[y]),\quad(-2,[y^2]),
+ \quad(0,[xyxy^2]).
+\]
+For the last case the implementation counts two $x$ tokens, one $y$,
+and one $y^2$ in a reduced word of length four. Alternation forces
+precisely the desired cyclic class. To justify lifting the quotient
+test, lift a quotient conjugator to $B_3$. The remaining difference
+from the target is $z^k$; since $e(z)=6$, equality of exponent sums
+forces $k=0$. Thus forgetting the center has not lost information
+needed by the classifier. A conservative bit bound, including counters
+and indices, is $O((n+m)\log(n+m+2))$.
+
+An optional independent backend multiplies the integral matrices
+\[
+ A=\begin{pmatrix}1&1\\0&1\end{pmatrix},\qquad
+ B=\begin{pmatrix}1&0\\-1&1\end{pmatrix}.
+\]
+The map $B_3\to\mathrm{SL}_2(\mathbb Z)$ has kernel
+$\langle z^2\rangle$, whose exponent sum is a multiple of twelve.
+Trace one has two conjugacy classes, lifted from the order-three
+elements of $C_2*C_3$; exponent residue distinguishes them. Trace three
+has the single class of $AB^{-1}$. One way to see the latter claim is
+to express a hyperbolic projective conjugacy class as a positive word
+in $L=A$ and $R=B^{-1}$. A mixed word can be rotated to start with
+$L^rR^s$, $r,s\ge1$, of trace $2+rs$. Each additional letter increases
+the trace of this strictly positive matrix. Trace three forces $r=s=1$
+and no further letters. Lifting and matching exponent sums again
+eliminates the central ambiguity.
+
+Consequently the exact trace/exponent pairs for the unknot are
+$(2,1),(-2,1),(0,3)$. After the writhe bound and knot-permutation
+validation, this is equivalently $|2-\operatorname{tr}(M)|=1$.
+Without the writhe condition the determinant test is unsound as a
+recognizer: $(ab)^5$ has determinant one but is the nontrivial torus
+knot $T(3,5)$. Matrix entries can have $\Theta(n)$ bits and the
+addition-only implementation uses $O(n^2)$ bit time. The symbolic
+backend is therefore the default; matrix witnesses use hexadecimal
+strings to avoid decimal serialization limits.
+
+For more strands, an optional sufficient simplification freely and
+cyclically cancels inverse letters, then looks for an endpoint generator
+$\sigma_1^{\pm1}$ or $\sigma_{m-1}^{\pm1}$ occurring exactly once.
+Cyclic rotation exposes an elementary Markov destabilization. Deleting
+that letter and relabeling the remaining strands preserves the closure.
+There are at most $m-3$ steps, each using $O(n)$ work. The accompanying
+verifier replays the supplied choices and validates every singleton,
+rather than trusting the asserted final word. This $O(nm)$ procedure
+does not find every destabilization: Morton's four-strand unknot remains
+inconclusive and exercises the existing exact diagram fallback.
+
+\paragraph{Integration and provenance.}
+Only \code{Diagram.from\_braid} attaches checked braid provenance.
+PD and grid input acquire none; a reduced factor also does not inherit
+the original word. Mirrors negate the word's letters, while serialized
+provenance is reconstructed and compared to the stored PD, allowing a
+half-turn of an individual crossing row. Equality and hashing continue
+to depend only on the PD. Standard JSON output remains PD; the explicit
+\code{preserve\_braid=True} option retains the source word.
+
+Recognition now tries the linear braid test before the Seifert stage.
+For $m>3$, the potentially quadratic endpoint descent waits until the
+Seifert, Reidemeister I/II, repeated Seifert, and descending tests have
+failed. Resource handling surrounds both braid stages. The evidence
+records which representation made the decision, and any Markov trace.
+\code{--no-braid}, \code{--braid-backend matrix}, and
+\code{--no-braid-reduction} expose ablations. Existing structural and
+scanner tests explicitly disable earlier braid dispatch where needed
+to keep testing their intended code paths.
+
+\paragraph{Validation and measurement scope.}
+The integrated tests exhaust all 46,376 one-component three-braid words
+of lengths two, four, six, and eight against both representations.
+For the 2,856 words through length six they also compare the verdict
+to an independent dense Khovanov cube. Separate checks cover Alexander
+determinants, Artin relations, conjugation, mirror and pickle behavior,
+invalid inputs, endpoint replay, resource limits, and the four-strand
+fallback. The raw symbolic counter records exactly two token operations
+per input letter; timings do not substitute for its amortized proof.
+\code{fast/benchmark\_braid.py} compares fresh diagram construction plus
+recognition to the current \code{use\_braid=False} ablation, including
+the already-integrated Seifert shortcut. Python startup and JSON parsing
+are excluded. Its raw-word scaling experiment separately avoids PD
+construction. The raw samples are
+\code{fast/results/braid\_integration\_20261007.json}.
+
+\paragraph{Local braid results.}
+Nine paired rounds, rerun after correctness tests completed, measured
+baseline/new ratios 3.30--4.89 on the five scrambled three-braid unknots
+with default Reidemeister III enabled, and 9.73--41.12 when that optional
+search was disabled in both arms. Positive three-braid cases improved
+1.23--1.35 times, and the hard eight-crossing braid fixture 6.14 times.
+Conway, Kinoshita--Terasaka, grid input, and the four-strand fallback
+support no timing claim under the recorded paired/A--A rule. The
+256-strand stabilized unknot was about 2.8\% slower: the additional
+linear provenance check has a real constant cost when a different
+cheap certificate would already finish. These are finite local results,
+not a uniform speedup claim. The symbolic raw-word test took 0.112 seconds at 128,000
+letters in the committed run, with exactly 256,000 token operations.
+
+
+\subsection{Canonical visible factors from interlacement}
+Traverse the validated spherical knot diagram and record the crossing
+number at each visit, obtaining a double-occurrence word $W$ of length
+$2n$. Join two crossing labels if their occurrences alternate cyclically.
+Report 09 identifies the connected components of this interlacement
+graph with the atomic crossing sets of visible connected-sum
+factorization. This is a statement about the given diagram; it does not
+find hidden prime factors of an arbitrary knot presentation.
+
+For completeness, the central argument is short. A chord not adjacent
+to any chord of a connected component has both endpoints in one gap
+between successive endpoints of that component. Connectedness forces
+every chord of another component into the same gap. Consequently the
+component intervals are nested or disjoint. An innermost component is
+a contiguous closed interval: every crossing it visits is visited twice.
+Only the two edges at the ends of that interval connect its projection
+subgraph to the rest. In the projection sphere these form a visible
+splitting curve. Removing the interval preserves interlacements among
+the remaining labels, so induction splits all graph components.
+Conversely, a visible two-edge split separates whole intervals and
+cannot divide a connected interlacement component. The induced traversal,
+with original crossing rotations and over/under data, determines each
+factor diagram.
+
+The implementation never builds the potentially quadratic graph. A stack
+tracks active components, union--find merges them when a closing chord
+crosses later-open components, and circular linked lists maintain an
+open representative of each component. Every successful merge decreases
+the number of components. Each chord is opened and closed once, giving
+$O(n\alpha(n))$ combinatorial work and $O(n)$ storage. Checked PD output
+construction sorts labels, for $O(n\log(n+1))$ total interface work.
+
+The certificate contains a partition of crossing labels and a forest of
+actual interlaced pairs. A separate verifier checks every forest edge,
+connectivity within each proposed group, and proper component nesting.
+It does not rerun the discovery algorithm. Production recognition now
+uses this factorizer and exposes \code{connected\_sum\_factorization}
+evidence. The historical API and cut-trace schema remain available
+through \code{factor\_backend="legacy"} or \code{--legacy-factor}.
+
+On a cyclic sum of $k$ standard trefoil diagrams, the old recursive
+factorizer peels off one factor per internal call. Its internal crossing
+visits total
+\[
+ 3\sum_{j=2}^k j=3\left(k(k+1)/2-1\right),
+\]
+which is quadratic in input size. The new factorizer reads the word once
+and constructs constant-size factors directly. Seven local paired kernel
+runs measured baseline/new ratios 14.20, 56.59, and 117.20 for $k=32,128,256$;
+A/A ratios were 1.007, 1.005, and 0.985. These are factorizer timings,
+not default recognition speedups: the Seifert stage already decides this
+homogeneous family before factorization.
+
+\subsection{Sparse modular Alexander elimination}
+The Alexander minor starts with at most three nonzero entries per row.
+Report 09's sparse determinant keeps row dictionaries and column incidence
+sets. It selects a shortest active row, then a least-populated column in
+that row, and records row and column permutation signs. Removing a pivot
+updates only its incident Schur-complement positions. The determinant
+equals the signed product of pivots, by the same block-elimination
+identity as dense Gaussian elimination; a zero active row proves
+singularity. All arithmetic is exact in the fixed prime field.
+
+If $m$ is the minor dimension, $E$ its initial nonzero count, and
+\[
+ F=\sum_{\text{pivots}}(\text{row degree}-1)(\text{column degree}-1),
+\]
+the arithmetic work is $O(m+E+F)$ plus at most $m$ inversions. Heap
+maintenance and stable neighbor order add logarithmic bookkeeping.
+The bound is conditional on actual fill; $F$ may still be cubic. The
+logical number of live entries also differs from Python container
+capacity and resident memory. The implementation reports these work
+counters rather than claiming linear complexity for every Alexander
+matrix.
+
+The sparse path is selected automatically at 256 crossings; dense and
+sparse modes remain explicit low-level options. On positive three-braid
+examples with 62, 262, and 514 crossings, local paired sparse-kernel
+speedups were 0.67, 1.10, and 1.98 (A/A ratios 0.999, 0.999, 1.002).
+The small-case regression motivates retaining the dense path below the
+threshold. These kernel measurements also bypass the Seifert stage.
+The exact witness dictionaries agree, including determinant signs.
+The reproduction script is \code{fast/benchmark\_factor\_sparse.py};
+raw samples are in \code{fast/results/factor\_sparse\_20261007.json}.
+
+\subsection{Resource handling and the corrected frontier bound}
+Factorization and preprocessing now execute inside the same resource
+handler as the exact backend. Cooperative deadline checks occur before
+and after coarse operations and between factors; sparse elimination
+receives the callback at each pivot. An exhausted deadline or a memory
+allocation failure yields \code{UNKNOWN}. Tests inject these failures
+and advance a simulated clock during preprocessing, ensuring an expired
+operation does not leak an exception or produce a late verdict.
+
+Report 09 also corrects an older theoretical statement. The scan stores
+endpoint pairings but supplies no certificate that all frontier points
+lie on one disk boundary in a common cyclic order. On arbitrary frontiers
+the safe scalar-state bound is
+\[
+ s_i\le\min\{2^i,(w_i-1)!!\},
+ \qquad T\le\operatorname{poly}(n,w,\log p)(w-1)!!.
+\]
+The Catalan count is valid only with that additional disk condition.
+We reproduced three counterexamples by independent prefix-resolution
+enumeration: an explicit six-crossing input, a twelve-crossing greedy
+order, and the existing double-Conway fixture under its default best
+order. Each has a six-endpoint frontier with six nonzero Laurent and
+modular matching states, exceeding the third Catalan number five.
+The data are in \code{synthesis/data/frontier-counterexamples-integration.json}.
+The earlier proposition and user documentation have been corrected;
+the exact bracket calculation and all verdicts are unchanged.
+
+\subsection{Later algebra and twist reports: production cross-checks}
+Report 10's component-contraction kernel completed 453,611 matching
+comparisons against the current production algebra, with all completed
+comparisons equal. Both inspected source hashes matched at the preintegration checkpoint; Conway and
+Kinoshita--Terasaka scans agree in every raw homological degree. Their
+adaptive runs selected no compressed calls, so those checks establish
+compatibility but no ordinary-diagram speedup. Report 11's twist backend
+agreed on 200 production reduced-rank comparisons. Report 12's preintegration source
+hash checks also passed; baseline, adaptive, and forced contraction agreed
+on each degree for six production fixtures, with $d^2=0$ checked after
+every crossing. The 29 standalone tests pass. These results are saved
+as the corresponding \code{report10}, \code{report11}, and
+\code{report12-production-crosscheck.json} files under
+\code{synthesis/data/}; the delivered reports themselves are unchanged.
+
+The scope of the later claims matters. A faster dense cobordism product
+reduces one algebra operation, while the number of objects and calls can
+still be exponential. Twist compression requires a supplied braid-block
+presentation and measures size in expanded crossings. Report 12's
+succinct Schur cancellation assumes that tensor factors for a
+same-matching block and its interfaces have already been supplied.
+Its trillion-generator example verifies an algebraic identity and is
+not a knot decision. General extraction of these descriptions and
+control of their size under all crossing and cancellation operations
+remain unresolved. In particular, a scalar unit in a square-free
+characteristic-two algebra is its own inverse, but a matrix unit need
+not be: radical corrections require a finite matrix geometric series.
+That distinction must survive any future block integration.
+
+
+\subsection{Typed scalar shortcuts in the default planar algebra}
+The report 12 adapter drew attention to a small mismatch between the two
+production algebra engines: the older bit engine shortcuts identities
+and scalar squares, whereas the default integer-matching engine compiled
+them as general cobordisms. The default \code{Planar.compose} now returns
+zero immediately for a zero factor, and recognizes the identity only
+when its source and target matching agree. A polynomial encoded by the
+integer one in a different morphism space is not an identity.
+
+For an endomorphism of one matching, the coefficient ring is
+$R_b=\mathbb F_2[x_1,\ldots,x_b]/(x_i^2)$. If
+$F=c+\sum_{S\ne\varnothing}f_Sx_S$, then
+\[
+ F^2=c^2+\sum_{S\ne\varnothing}f_S^2x_S^2=c,
+\]
+because cross terms cancel in characteristic two and every nonconstant
+square-free monomial has square zero. Thus equal scalar endomorphisms
+compose to their constant coefficient. This avoids the old Cartesian
+loop over $|\operatorname{supp}F|^2$ monomial pairs. Comparing packed
+integers may still read the coefficient vector; it is not constant bit
+time for arbitrary dense inputs. Equal coefficients in differently
+typed morphism spaces do not satisfy this identity, and matrix-valued
+endomorphisms are explicitly outside its scope.
+
+The new tests compare every three-arc scalar and typed identity against
+the original compiled evaluator, enumerate equal coefficients across
+all small matching triples to catch a missing type guard, and check
+1,000 random four-arc products. The suite at this scalar-only checkpoint
+passed 116 tests.
+Nine paired raw-scan runs are recorded in
+\code{fast/results/planar\_shortcuts\_20261007.json}, with a pinned
+pre-change implementation, fresh algebra objects, and separate untimed
+call profiling. Ordinary scans support no general timing gain: the
+scanner already shortcuts most identities before calling this layer.
+For example, Conway calls the general algebra only 32 times, three of
+which are scalar squares; its exact square-zero debug checks call the
+algebra much more frequently. The separate dense scalar microcases
+measure the algebra operation alone and must not be advertised as full
+recognition speedups. The reproduction command is
+\code{python benchmark\_planar\_shortcuts.py --output RESULTS.json}.
+
+\subsection{Opt-in component contraction in the production scanner}
+Reports 10 and 12 share an exact algebraic improvement. We have integrated
+report 12's contraction kernel and adapter, preserving its attribution
+to the established fast subset-convolution algorithm. The independent
+matrix-block and tensor prototypes remain in the research archive.
+The production option is \code{composition="component"}; the explicit
+\code{component-dense} mode selects the dense asymptotic algorithm on
+every nontrivial composition. The standard scalar engine remains default.
+
+Let the middle matching have $b$ arcs and hence $w=2b$ boundary points.
+A compiled gluing plan decomposes into connected surfaces. For component
+$j$, write $L_j,Q_j$ for its input-circle sets, $B_j$ for its output-circle
+set, and $e_j$ for its fixed dots. Sending every left input variable in
+$L_j$ to $z_j$, and every right input variable in $Q_j$ to the same $z_j$,
+defines algebra maps into
+$R_c=\mathbb F_2[z_1,\ldots,z_c]/(z_j^2)$, where $c$ counts components.
+Two dots entering one component vanish. Distinct input monomials with
+the same projected support cancel by XOR; keeping only the number of
+dots would lose this information.
+
+Define a linear output map $\Lambda$ componentwise. Total dot occupancy
+at least two vanishes. An open component with one dot gives the monomial
+on all its output circles; with zero dots it gives the sum of monomials
+omitting exactly one output circle. A closed component gives one exactly
+when its total dot occupancy is one, and otherwise zero. Multiplication
+across disjoint output blocks defines the complete map. The composition
+identity is
+\[
+ \mathcal B(F,G)=\Lambda\bigl(\pi_L(F)\pi_R(G)\bigr).
+\]
+Checking input monomials proves it: the projections and multiplication
+kill precisely the repeated-dot cases, while the output rule is the
+original Frobenius evaluation. Bilinearity extends the equality to
+arbitrary coefficient vectors. A positive-genus component vanishes
+because a handle acts by $2x=0$ over $\mathbb F_2$.
+
+The ring product is disjoint subset convolution,
+\[
+ (FG)_S=\sum_{T\subseteq S}F_TG_{S\setminus T}.
+\]
+We use the ranked transform of
+\href{https://arxiv.org/abs/cs/0611101}{Bj\"orklund, Husfeldt, Kaski,
+and Koivisto, \emph{Fourier meets M\"obius}}. Group coefficients by
+subset cardinality, take the subset zeta transform at each rank,
+convolve the rank polynomials, and invert the transform. At output
+subset $S$, selecting rank $|S|$ retains exactly disjoint pairs whose
+union is $S$. In characteristic two the inverse transform uses the
+same XOR butterfly. The cost is $O((c+1)^2 2^c)$ field operations and
+$O((c+1)2^c)$ coefficient storage; this algorithm is not a new invention.
+
+If the left, right, and output spaces have $a,d,h$ circles, the complete
+factorized operation has cost
+\[
+ O\bigl((a+1)2^a+(d+1)2^d+(c+1)^2 2^c+(h+1)2^h\bigr)
+\]
+in field and subset-mask operations. For the output step, component
+$j$ with $r_j$ output circles contributes at most $r_j+1$ alternatives,
+and $\prod_j(r_j+1)\le 2^{\sum_jr_j}=2^h$. Each surviving component
+contains a middle arc, so $a,d,h,c\le b$ in ordinary composition.
+Consequently the conservative bit cost is
+$\operatorname{poly}(w)2^{w/2}$, improving the dense Cartesian-pair
+baseline, which can visit $4^b=2^w$ pairs. Python coefficient integers
+contain up to $2^b$ bits and are not treated as unit-cost words. The
+implementation unpacks their bytes once when traversing support and
+uses rank polynomials with only $O(b)$ bits in the dense transform.
+
+Sparse input requires a different choice. The adaptive mode delegates
+small support products to the existing engine. After projection, it
+also uses the characteristic-two identities
+\[
+ FG=F(F+G)+F(0)=G(F+G)+G(0)
+\]
+to choose the cheapest of three sparse pair enumerations. A ranked
+transform is selected only when its estimated work is lower. The
+adaptive threshold is a performance heuristic; the explicit dense mode
+is the implementation to which the displayed asymptotic bound applies.
+
+\paragraph{Implementation boundaries.}
+The adapter retains the current \code{Planar} matching IDs and circle
+numbering. It strips only the redundant fifth field of each compiled
+component. Its added plan cache is cleared at each stage, and installation
+is permitted only on a fresh scanner before any crossing. It does not
+replace the specialized crossing-transfer operation. The options are
+available through both \code{recognize} and \code{khovanov\_rank}, and
+through \code{--composition standard|component|component-dense} in the
+CLI. The current integration requires the standard scanner, minimum-fill
+pivots, bit coefficients, and no racing; incompatible combinations are
+rejected before an early certificate can hide them. Earlier recognition
+filters still run normally, and explicit rank computation bypasses them.
+
+\code{composition\_max\_variables}, or the CLI flag of the same name
+with hyphens, defaults to eighteen. It bounds the component and output
+variables on selected factored allocations. This is an allocation guard,
+not a process-memory bound or a theorem for arbitrarily large uncapped
+inputs. Exceeding it produces \code{UNKNOWN} in recognition and a
+resource exception in the raw Python rank API; the CLI reports resource
+exhaustion with exit code three. Kernel deadline callbacks share the
+scanner's deadline. Counts of delegated, factored, and scalar-shortcut
+calls are reported under \code{composition\_stats}. Neither a declined
+dense call nor an allocation estimate is evidence of knottedness.
+
+The dense improvement leaves the number and size of live chain objects
+uncontrolled. The finite-type sharing theorem and the need for a
+uniform topological progress bound therefore remain unchanged. Faster
+local algebra alone does not prove quasi-polynomial unknot recognition.
+
+
+\paragraph{Integrated validation and measurements.}
+All 134 production tests pass. The contraction-specific tests exhaust
+65,536 three-variable ring products, compare 2,245 small matching/monomial
+compositions to both the production evaluator and an independent set-based
+engine, and check all 2,744 four-arc matching triples with seeded arbitrary
+polynomials. Complete scans, per-stage $d^2=0$, and exact homological-degree
+counts agree on supplied fixtures and forty additional random braid closures.
+Pipeline tests exercise allocation failure, option rejection, evidence fields,
+and both CLI resource paths. They also exposed an existing unclosed input
+file in the CLI loader, which now uses a context manager.
+
+The seven-round production benchmark includes separate standard/standard
+controls. Adaptive isolated dense products improved 2.87, 10.25, and 37.90
+times at six, eight, and ten variables; nearly equal dense products improved
+6.51, 35.10, and 182.84 times through polarization. The ten-variable sparse
+control was about 1.13 times slower adaptively and 43.86 times slower under
+forced dense contraction. No adaptive factored calls were selected on the
+six ordinary scanner fixtures. Their observed adaptive baseline/new ratios
+were 0.94--1.04, with A/A variation, and establish no broad scan speedup.
+The forced path was slower on several ordinary scans. Raw samples, exact
+inputs, counters, and timing boundaries are retained in
+\code{fast/results/component\_algebra\_20261007.json}; reproduce with
+\code{fast/benchmark\_component\_algebra.py}. The dense-kernel improvement
+is real for the supplied synthetic morphisms, but their density is not
+claimed to arise on every difficult knot input.

@@ -1,0 +1,116 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=1in]{geometry}
+\usepackage{microtype,booktabs,array,longtable,enumitem,xcolor,graphicx,needspace}
+\usepackage{fancyhdr,listings}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning}
+\definecolor{ink}{RGB}{24,47,70}
+\definecolor{accent}{RGB}{0,103,113}
+\usepackage[colorlinks=true,linkcolor=ink,citecolor=accent,urlcolor=accent,breaklinks]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\makeatletter
+\renewcommand*\l@subsection{\@dottedtocline{2}{1.5em}{3.2em}}
+\makeatother
+\hypersetup{pdftitle={Exact Long-Twist Recurrences and Streamed Homology for Unknot Recognition},
+pdfauthor={Research continuation prepared for the ProveIt project},
+pdfsubject={Finite-threshold homology, binary braid inputs, rigorous resource bounds, and a research programme toward quasi-polynomial recognition}}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small ProveIt / Unknot Recognition}
+\fancyhead[R]{\small Exact recurrences and streamed homology}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{1.1em}
+\setlist{itemsep=3pt,topsep=5pt,leftmargin=1.7em}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{question}[theorem]{Research question}
+\newcommand{\F}{\mathbb F_2}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathcal N}
+\newcommand{\Kh}{\operatorname{Kh}}
+\newcommand{\rKh}{\widetilde{\operatorname{Kh}}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\poly}{\operatorname{poly}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\lstset{basicstyle=\small\ttfamily,breaklines=true,columns=fullflexible,
+keepspaces=true,frame=single,rulecolor=\color{black!20},
+xleftmargin=0.4em,xrightmargin=0.4em,showstringspaces=false}
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\thispagestyle{empty}
+\vspace*{0.15in}
+\noindent{\large\scshape ProveIt research continuation}\par
+\vspace{0.32in}
+\noindent{\Huge\bfseries\color{ink} Exact Long-Twist\\[5pt]
+Recurrences and\\[5pt] Streamed Homology}\par
+\vspace{0.22in}
+\noindent{\Large for Unknot Recognition}\par
+\vspace{0.23in}
+\noindent Finite thresholds, compressed braid inputs, measured implementation
+tradeoffs, and the remaining quasi-polynomial problem\par
+\vspace{0.22in}
+\noindent Prepared for Vladimir Reshetnikov's ProveIt project\\
+8 October 2026\par
+\vspace{0.18in}\hrule\vspace{0.12in}
+\begin{abstract}
+We continue the integrated twist-compression and component-algebra work in
+ProveIt at revision \code{ea2abcb115aaa58f0b193ce1e045c2def983e1e6}.
+For a signed braid with one variable run \(\sigma_i^{\varepsilon m}\), freeze
+the other runs and let their total crossing count be \(W\). We prove that
+one reduced characteristic-two Khovanov computation at \(m_0=W+2\) determines
+the entire homological-degree profile for every \(m\ge m_0\).
+Two fixed finite boundary pieces are separated by a constant-rank interval;
+the exact rank is
+\[
+R(m)=R(m_0)+(m-m_0)\eta,\qquad
+\eta=\dim_{\F}\rKh(J_E;\F)>0,
+\]
+where \(J_E\) is the closure with the selected run replaced by its turnback
+smoothing. The proof uses the repeated differential \(D_E+X_p+X_q\),
+not just repeated chain dimensions. Jaeger's weighted-dot theorem identifies
+the slope. A compact output makes the exponent dependence polynomial in
+its bit length for fixed context.
+
+We implement the recurrence, a degree-streamed exact backend with bounded
+state and map caches, and direct structural certificates for run-encoded
+braids. Paired experiments show substantial standalone homology gains from
+the recurrence and a measurable time--space tradeoff from streaming.
+Independent crossing-cube comparisons check both signed gradings and the
+full homological profiles. We also prove that a proposed definite-signature
+shortcut is dominated by the existing Rasmussen interval, and that this
+interval already decides every knot in the recurrence's dominant-run range.
+Thus the new exact-homology result does not enlarge that decision class.
+The work gives precise restricted-input bounds and an implementable research
+programme; it does not establish unrestricted quasi-polynomial recognition.
+\end{abstract}
+\vfill
+\noindent\small Deliverable: a reproducible article, additive implementation,
+regression tests, independent audits, raw measurements, and a patch against
+the pinned baseline. Mathematical proofs and executable checks are
+distinguished throughout.
+\end{titlepage}
+\hypersetup{pageanchor=true}
+\pagenumbering{roman}
+\tableofcontents
+\clearpage
+\pagenumbering{arabic}
+\input{01_scope}
+\input{02_recurrence}
+\input{03_slope}
+\input{04_algorithms}
+\input{05_experiments}
+\input{06_research}
+\input{07_integration}
+\input{references}
+\end{document}

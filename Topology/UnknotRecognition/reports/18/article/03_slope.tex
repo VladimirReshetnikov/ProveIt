@@ -1,0 +1,262 @@
+\section{The slope is the homology of the smoothing closure}
+\label{slope-section}
+
+The finite-threshold recurrence identifies its slope as the homology dimension
+of a repeated differential. We now identify that number topologically. This
+also proves that the repeated part cannot disappear. All vector spaces in this
+section are over $\F$, and the reduction point is fixed on a closing arc
+outside the run boxes. Let
+\[
+ V=\bigoplus_q E^q,\qquad F=D_E+L,\qquad
+ L=X_p+X_q,\qquad
+ \eta=\dim V-2\operatorname{rank}F,
+\]
+where $p$ and $q$ lie on the cap and cup of the distinguished $E$ smoothing.
+Here $D_E$ is the context differential. The notation $X_p$ denotes the
+usual dot action, namely multiplication by $X$ on the resolution circle
+containing $p$. Let $J_E$ be the actual link diagram obtained by replacing
+the entire distinguished run by that smoothing. The identification below
+concerns total homology dimension; it does not identify the original
+homological grading on the summands of $V$ with a grading on $H(V,F)$.
+
+\subsection{The two dots lie on one actual component}
+
+\begin{lemma}\label{slope-cap-cup}
+The cap and cup of the distinguished smoothing belong to the same component
+of $J_E$, for every choice of the other signed braid runs.
+\end{lemma}
+
+\begin{proof}
+Remove the interior of the smoothing box and retain the four cut ends. The
+outside diagram consists of closed components and two open paths. The braid
+orientation implies that each open path joins a top cut end to a bottom
+cut end: two ends of the same kind cannot be the ends of a coherently
+oriented outside path. Consequently the outside matching of these four ends is
+one of the two top-to-bottom matchings. Joining the two top ends by the cap
+and the two bottom ends by the cup produces a single closed component in
+either case. This component contains both smoothing arcs. The argument
+concerns the actual strands, with crossings retained. In a complete
+resolution the two arcs can lie on different circles, so it would be
+incorrect to set $L=0$ state by state.
+\end{proof}
+
+\subsection{The characteristic-two weight slide}
+
+Jaeger's weighted-dot construction proves that, in characteristic two,
+relocating markings while preserving their total weight on every actual
+component preserves the twisted complex~\cite[Theorem~3.1]{jaeger}. We give
+the local algebra needed here, including its compatibility with reduction.
+It supplies an explicit change of basis, a stronger statement than merely
+saying that two dot actions induce the same homology map.
+
+\begin{lemma}\label{slope-slide}
+Let $(K,d)$ be the ordinary crossing-cube complex of a link, with its
+gradings forgotten. Suppose $p,p'$ are successive points of one actual
+strand, separated by one crossing. If $W$ is any sum of fixed-arc dot
+actions and $W'=W+X_p+X_{p'}$, then $(K,d+W)$ and $(K,d+W')$ are isomorphic
+as vector spaces equipped with square-zero endomorphisms. The isomorphism
+preserves the reduced subcomplex at a fixed marked point.
+\end{lemma}
+
+\begin{proof}
+Use the Frobenius algebra $A=\F[X]/(X^2)$, with multiplication $m$ and
+comultiplication
+\[
+ \Delta(1)=1\otimes X+X\otimes1,\qquad
+ \Delta(X)=X\otimes X.
+\]
+Direct evaluation on the basis gives
+\begin{align}
+ m\Delta&=0,&
+ \Delta m&=X\otimes1+1\otimes X,\label{slope-frobenius}\\
+ m(X\otimes1)&=Xm=m(1\otimes X),&
+ (X\otimes1)\Delta&=\Delta X=(1\otimes X)\Delta.
+ \label{slope-naturality}
+\end{align}
+The notation on the right of the first line means the corresponding
+endomorphism of $A\otimes A$.
+Dot operators commute and square to zero; they also commute with the cube
+differential by \eqref{slope-naturality}. Thus $(d+W)^2=0$ for every $W$
+in the statement.
+
+Let $H$ be the reverse saddle at the selected crossing: it changes its cube
+coordinate from $1$ to $0$, uses the saddle opposite to the ordinary
+differential, and is zero in the other direction. Thus $H^2=0$.
+Saddles at other cube coordinates commute with $H$; their two occurrences
+in $dH+Hd$ cancel in characteristic two. At the selected crossing,
+\eqref{slope-frobenius} gives
+\[
+ dH+Hd=X_p+X_{p'}=:T.
+\]
+Moreover $TH=0$. If the reverse saddle merges, its two output dot actions
+agree and sum to zero. If it splits, the assertion follows from
+$(X\otimes1+1\otimes X)\Delta=0$. Equation~\eqref{slope-naturality}
+shows that each fixed-arc dot commutes with $H$, including the dots
+appearing in $W$. Therefore
+\begin{align*}
+ (d+W')(1+H)+(1+H)(d+W)
+ &=dH+Hd+(W'+W)+W'H+HW\\
+ &=T+T+WH+HW+TH=0.
+\end{align*}
+Since $(1+H)^2=1$, this proves the claimed isomorphism.
+
+If $z$ is the reduction point, then $H$ commutes with $X_z$ by the same
+local identities. Hence $1+H$ preserves $\operatorname{im}X_z$, the
+subcomplex in which the marked resolution circle is labeled $X$. Its
+inverse does so as well. This also covers the case where $z$ belongs to a
+different component from the moving dots.
+\end{proof}
+
+Repeatedly applying the lemma moves a dot along any path in its actual
+component. Two unit weights meeting at one point cancel because $1+1=0$.
+By Lemma~\ref{slope-cap-cup}, the reduced cube of $J_E$ with differential
+$d+X_p+X_q$ is consequently isomorphic to its ordinary reduced cube.
+This argument uses a sequence of local invertible maps. A general
+null-homotopy $T=dH+Hd$ would not, by itself, justify replacing $d+T$ by
+$d$; the identities $H^2=0$ and $TH=0$ are what make the displayed
+conjugation work.
+
+\subsection{Compatibility with the compressed context}
+
+The preceding argument applies initially to the crossing cube. Passing to
+the run complex requires compatibility of the compression with the two
+exterior dots. This follows from the local cobordism construction, but it
+is useful to record exactly which homotopy identities are needed.
+
+\begin{lemma}\label{slope-compression}
+Suppose $(K,d)$ and $(V,D_E)$ are related by the local Bar--Natan
+reductions in the context run boxes. Let $L_K$ and $L_V$ be the sums of the
+two dot actions on the distinguished smoothing arcs. Then these reductions
+induce a homotopy equivalence between $(K,d+L_K)$ and $(V,D_E+L_V)$ after
+forgetting the gradings. They also preserve the fixed reduction.
+\end{lemma}
+
+\begin{proof}
+Bar--Natan's tangle formalism and its delooping and cancellation operations
+take place in the category of local dotted cobordisms~\cite{bn05,bn07}.
+An exterior marked arc is retained throughout each such operation. Sliding
+a dot along its unchanged boundary cylinder shows that every local
+structural map, and every local contracting homotopy, commutes with that
+dot. This remains true for linear combinations and composites, and for
+the maps obtained by delooping a circle inside a context box. The two
+distinguished dots and the reduction point are outside those boxes.
+
+More explicitly, choose the resulting maps $f:K\to V$, $g:V\to K$ and
+homotopies $h$ on $K$, $k$ on $V$. In addition to their ordinary chain-map
+identities they satisfy
+\[
+ fL_K=L_Vf,\quad gL_V=L_Kg,\quad
+ hL_K=L_Kh,\quad kL_V=L_Vk.
+\]
+Thus $f$ and $g$ are chain maps for the deformed differentials. Their
+homotopy identities remain valid, because
+\[
+ gf-1=dh+hd=(d+L_K)h+h(d+L_K),
+\]
+and similarly
+\[
+ fg-1=D_Ek+kD_E=(D_E+L_V)k+k(D_E+L_V).
+\]
+The additional terms cancel in characteristic two. All maps commute with
+the reduction dot, so the same identities restrict to the reduced
+subcomplexes. Only finite complexes are involved; no completion or
+infinite-twist limit enters this argument.
+\end{proof}
+
+\begin{theorem}[Topological slope]\label{slope-theorem}
+For either sign of the distinguished braid run,
+\begin{equation}\label{slope-identity}
+ \boxed{\displaystyle
+ \eta=\dim_{\F}\rKh(J_E;\F)>0.}
+\end{equation}
+The reduction point on the right is the original fixed point, and total
+dimension is taken over all homological and quantum degrees.
+\end{theorem}
+
+\begin{proof}
+Lemma~\ref{slope-compression} identifies $H(V,F)$ with the homology of the
+reduced crossing cube deformed by the two dots. The weight-slide argument
+identifies that cube with the ordinary reduced cube of $J_E$. This proves
+the equality and shows that the slope is independent of the sign chosen
+for the distinguished run.
+
+For strict positivity, the graded Euler characteristic of ordinary reduced
+integral Khovanov homology is the reduced Jones polynomial, up to the
+standard normalization~\cite{bn05}. For a nonempty link with $\ell$
+components, its value at $1$ has absolute value $2^{\ell-1}$ and is
+nonzero. Thus the integral reduced homology has a nonzero free summand.
+The universal coefficient theorem then gives nonzero reduced homology
+over $\F$. The diagram $J_E$ is nonempty, so this applies even when it is
+a link with several components.
+\end{proof}
+
+\begin{remark}\label{slope-grading}
+The dot deformation combines maps of different original bidegrees.
+Jaeger's formulation retains a collapsed $\delta$ grading, and forgetting
+that grading is sufficient for \eqref{slope-identity}. The formula does
+not recover the individual homological or quantum degrees of $\rKh(J_E)$
+inside the repeated part. The homological-degree profile for the original
+twisted closure follows instead from the separate identification of its
+successive complete $E$ groups and both incident boundary maps. These are
+distinct assertions and use different grading information.
+\end{remark}
+
+\subsection{Computational consequences and output size}
+
+Write the context interval as $[a,c]$, let $w=c-a$, and put $m_0=w+2$.
+For $m\ge m_0$, set $\delta=m-m_0$. The two signed recurrence formulas
+have exactly $\delta$ inserted degrees. Combining them with
+Theorem~\ref{slope-theorem} gives
+\begin{equation}\label{slope-rank-growth}
+ R(m)=R(m_0)+\delta\,\dim_{\F}\rKh(J_E;\F),
+\end{equation}
+where $R$ denotes total reduced rank for either fixed choice of sign.
+Every inserted degree is nonzero. In particular, this is an exact linear
+growth statement with positive integer slope, not merely an upper bound
+on the possible growth.
+
+The identity provides an independent interpretation and a possible
+cross-check of the slope. The algorithm need not compute $\rKh(J_E)$
+separately: one reference computation at $m_0$ already contains a central
+boundary equal to $F$, so that $\eta=\dim V-2\operatorname{rank}F$.
+The two reference shoulder Betti numbers need not equal $\eta$; the
+boundary-rank extraction is essential. The original closure's component
+count remains necessary before using the Khovanov unknot-detection
+criterion~\cite{km}, because shortening an exponent can change the
+permutation parity and the number of components.
+
+There is also an unconditional output-size obstruction. An explicit list
+of nonzero degree--Betti-number pairs contains at least $\delta$ entries,
+and therefore requires $\Omega(\delta)$ output operations. For fixed
+context and growing binary-encoded $m$, this is exponential in the bit
+length of $m$. A compact profile avoids that cost by retaining the two
+fixed shoulders, their degree shifts, and one constant-coefficient
+interval. Its dependence on the distinguished exponent is only through
+binary integers of $O(\log m)$ bits. The same is true of the extra
+arithmetic needed to return \eqref{slope-rank-growth}. This observation
+does not bound the cost of computing the context data as the context
+grows; that cost can still be exponential. It establishes the appropriate
+output representation and the precise sense in which a single large
+exponent can be handled without expansion.
+
+\subsection{Position relative to existing tangle methods}
+
+The local twist normal form, dot calculus, and cancellation machinery are
+established mathematics~\cite{bn05,bn07}. Thompson gives compact zig-zag
+representatives for rational-tangle Khovanov complexes~\cite{thompson}.
+Jaeger's weight-moving theorem supplies the central algebra behind the
+slope identification~\cite{jaeger}. Kotelskiy, Watson, and Zibrowius give
+immersed-curve descriptions of four-ended tangle invariants, gluing
+theorems recovering Khovanov homology, and an interpretation of the
+two-strand infinite-twist construction~\cite{kwz}. These precedents make
+clear why a general priority claim for twist stability would be
+inappropriate.
+
+The contribution developed here is the explicit finite threshold, the
+extraction from one reference computation, the compact exact output, and
+their implementation and verification relative to the pinned ProveIt
+baseline. The immersed-curve viewpoint is a plausible route for studying
+several variable twist regions, but obtaining useful complexity bounds
+would require control of the context representation, local systems, and
+gluing calculations. The one-run theorem alone supplies no such control
+and does not justify a general quasi-polynomial unknot-recognition bound.

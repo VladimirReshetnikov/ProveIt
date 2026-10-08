@@ -16,15 +16,8 @@ modification times.
 | `08/` | `unknot_recognition_progress.zip` | `fastunknot` 0.3.0 (`08/Topology/UnknotRecognition/fast/`, `code_changes.patch`) | complete decision for closures of braids on at most three strands (`O(ell)` symbol operations), integral-matrix second backend, writhe obstruction | matching multiplicities after unit cancellation, residue diagnostic | 59 archive tests pass; braid integration passes |
 | `09/` | `unknot_progress_20261007.zip` | `fastunknot` 0.3.0 (`09/fast/`, `integration/fastunknot-0.3.patch`) | proved performance improvements to the scan; article with eleven research questions | — | 69 archive tests pass; factor/sparse integration passes |
 | `10/` | `unknot_component_entropy_20261007.zip` | standard-library kernel (`10/code/`) | component-quotient factorization of F2 cobordism composition, `poly(w)·2^(w/2)` composition | sparse-profile restart potential (conditional) | 15 kernel tests pass; 453,611 production algebra comparisons agree |
-| `11/` | `unknot_twist_research_bundle.zip` | `twistkh` (opt-in backend) | twist-compressed Khovanov complex for braid closures given as twist blocks, exact preflight cost certificates | — | 62 archive tests pass; opt-in twist backend integrated; 200 prior and 100 new production degree comparisons agree |
-| `12/` | `unknot_frobenius_research.zip` | opt-in adapter for `fastunknot` (`12/reference/legacy/` baseline) | exact component quotient for compiled cobordisms, succinct block cancellation | quasi-polynomial bound for the structured block problem only | 29 archive tests; opt-in component contraction integrated; 229 production tests pass |
-| `13/` | `unknot_research_20261007.zip` | implementations for `fastunknot` | homological windows (any prescribed interval of unreduced Khovanov homology over F2), finite nilpotent reduction | quasi-polynomial bound for prescribed homological queries under diagram parameters | 64 scanner and 10 hierarchy tests pass; exact windows integrated |
-| `14/` | `unknot_continuation_quotients.zip` | `fastunknot` 0.4.0 | interval normalization, length-two continuation quotients, certified scalar Fitting splitting | exact window ordering | 94 tests pass; integration review ongoing |
-| `15/` | `unknot_radical_transfer_20261007.zip` | survivor-first compression code | sharp radical nilpotence index 2k of the characteristic-two arc category, two-pass transfer | — | 18 archive tests and independent certificates pass; survivor prediction and adaptive shortcut integrated |
-| `16/` | `unknot_recognition_dense_algebra_20261008.zip` | dense cobordism-algebra code | `poly(m)·2^m` dense coefficient algorithm by ranked subset convolution, certified finite-quotient filters | — | 74 archive tests and independent algebra checks pass; homogeneous coefficient path integrated |
-| `17/` | `unknot_potts_frontiers.zip` | `fastunknot` with opt-in Potts backends (`17/fast/`, `integration/changes.patch`) | fixed-color Potts transfer for an exact Jones specialization, single-exponential in a Tait-graph frontier at most half the cut-edge frontier; component-factored transfer | — | not run |
-| `18/` | `unknot_twist_research_2026-10-08.zip` | additive continuation of `fastunknot` (`18/fast/`, `integration.patch`) | exact long-twist recurrence for reduced F2 Khovanov homology, streamed homology backend, direct braid-profile structural evaluation | — | not run |
-| `19/` | `unknot_rank_two_kernels_20261007.zip` | standard-library rank-two braid kernel (`19/src/`) | optimal one-pass disjoint rank-two substitutions in `O(n log n)`, linear replay verifier | quasi-polynomial bound for flat rank-two inflations of `O(log² n)`-crossing cores only | not run |
+| `11/` | `unknot_twist_research_bundle.zip` | `twistkh` (opt-in backend) | twist-compressed Khovanov complex for braid closures given as twist blocks, exact preflight cost certificates | — | 62 archive tests pass; 200 production comparisons agree |
+| `12/` | `unknot_frobenius_research.zip` | opt-in adapter for `fastunknot` (`12/reference/legacy/` baseline) | exact component quotient for compiled cobordisms, succinct block cancellation | quasi-polynomial bound for the structured block problem only | 29 archive tests; opt-in component contraction integrated; 134 production tests pass |
 
 Archives `01/`–`06/` each contain a README, a LaTeX report with PDF under
 `docs/`, examples, recorded results, and a standard-library-only Python package.
@@ -32,8 +25,8 @@ Archives `01/`–`06/` each contain a README, a LaTeX report with PDF under
 `07/`–`12/` were placed on 7 October 2026. Each is a research continuation of
 this project, and all but `10/` extend or patch `../fast/`. Report `07/` and the factorization, sparse elimination, and resource handling
 from `09/`, plus the braid specialization from `08/` and opt-in component contraction
-from `12/`, and twist compression from `11/` are integrated
-(245 current production tests pass). Local reruns of
+from `12/`, are integrated
+(134 current production tests pass). Local reruns of
 `08/`, `09/`, `10/`, and `11/` passed 59, 69, 15, and 62 test methods respectively.
 They were originally placed as delivered under the intake rule; this later
 algorithm-improvement task performs review and integration separately. The
@@ -41,29 +34,6 @@ delivered archive files remain unchanged. Their recorded results are the authors
 layout (`08/Topology/UnknotRecognition/...`); `11/` suggests
 `research/twist_compression/` as its home. Both are kept inside their report
 directories as delivered.
-
-`13/`–`16/` were placed as delivered on 7 October 2026 under the intake rule:
-no test runs, no patch application, no review. Text files are stored with LF,
-and checksum files are dropped. Their recorded results are the authors' own.
-
-`17/`–`19/` were placed the same way on 7 October 2026. `17/` and `18/` each
-ship a patch against `../fast/` and a pinned copy of the project under
-`reference/`; neither patch is applied. `18/` suggests
-`research/twist-continuation-20261008/` as its home; it is kept here as
-delivered.
-
-Separately from placement, the algorithm-improvement task reviewed `15/` and
-`16/` in isolated archive extractions. Their source files remain unchanged.
-The current implementation integrates the survivor/degree-gap shortcut from
-`15/`, with adaptive switching, and homogeneous coefficient multiplication
-from `16/`, with a further top-degree shortcut. The full transfer engine and
-finite-quotient filter are not integrated. Current validation passes 245 tests;
-local logs, proofs, applicability limits, and paired measurements are in
-`../synthesis/radical.tex` and `../synthesis/homogeneous.tex`. Report `13/` contributes the integrated exact window scanner and mirror bound;
-`../synthesis/windows.tex` describes the new bounded adaptive widening policy.
-Its 64 scanner and 10 hierarchy tests pass. Report `14/` passes 94 tests;
-interval normalization, decision quotients, and scalar splitting remain under
-review. Archive source files are unchanged.
 
 `07/` continues the project's own `../fast/` package
 rather than being an independent implementation. It contains:
@@ -80,8 +50,6 @@ patch into `../fast/`; all 69 integrated tests passed on CPython 3.13.14. The
 archive remains unchanged. The authors' archived timings remain separate from
 the new local measurements in `../fast/results/structural_integration_20261007.json`.
 See `../synthesis/structural.tex` for the integration analysis and proof limits.
-
-Dated note (2026-10-07): the SHA-256 manifests `01/MANIFEST.sha256`, `06/MANIFEST.sha256` and `12/checksums.sha256`, and those of `../proposals/01`–`03`, were removed at Vladimir's direction (imported reports keep no SHA-256 records; the files they listed are unchanged, and the bytes remain in Git history). Reports placed later keep no checksum files.
 
 ## Test status (last observed 18 September 2026)
 

@@ -1,0 +1,118 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx,booktabs,longtable,tabularx,array}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{enumitem,listings,needspace}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage[font=small,labelfont=bf]{caption}
+\usepackage{fancyhdr,hyperref}
+\hypersetup{colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,
+ urlcolor=MidnightBlue,pdftitle={Certified Potts Filters and Order-Controlled Algebra for Unknot Recognition},
+ pdfauthor={ProveIt research continuation}}
+\urlstyle{same}
+\setlength{\emergencystretch}{2em}
+\setlength{\parskip}{0.25em}
+\setlist{itemsep=0.25em,topsep=0.4em}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small ProveIt: unknot recognition}
+\fancyhead[R]{\small Research continuation, 8 October 2026}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{question}[theorem]{Research question}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\F}{\mathbb F}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\poly}{\operatorname{poly}}
+\renewcommand{\wr}{\operatorname{wr}}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\im}{\operatorname{im}}
+\newcommand{\rk}{\operatorname{rank}}
+\newcommand{\End}{\operatorname{End}}
+\newcommand{\Kh}{\operatorname{Kh}}
+\newcommand{\fall}[2]{(#1)_{\underline{#2}}}
+\newcommand{\pair}[2]{(#1,#2)}
+\newcommand{\code}[1]{\texttt{\small #1}}
+\newcommand{\claim}[1]{\par\smallskip\noindent\textbf{Status.} #1\par\smallskip}
+\lstset{basicstyle=\ttfamily\footnotesize,columns=fullflexible,
+ breaklines=true,frame=single,rulecolor=\color{black!20},
+ backgroundcolor=\color{black!2},keepspaces=true,showstringspaces=false,
+ xleftmargin=0.3em,xrightmargin=0.3em,aboveskip=0.8em,belowskip=0.8em}
+\title{\LARGE\bfseries Certified Potts Filters and\\[0.3em]
+Order-Controlled Algebra for\\[0.3em]Unknot Recognition\\[0.7em]
+\large Exact arithmetic, component factorization, adversarial examples,\\
+and a precise research program toward quasi-polynomial complexity}
+\author{Research continuation for the ProveIt project}
+\date{8 October 2026\\[0.3em]\small Baseline commit
+\texttt{86f23490006c880cd01db9bec10761d39c6395c8}}
+\begin{document}
+\maketitle
+\begin{abstract}
+We develop and implement a certified scalar preprocessing improvement for
+ProveIt's unknot recognizer. A signed checkerboard Potts transfer replaces
+the current Jones filter's arbitrary matching frontier by equality patterns
+of a fixed number of spin colors. For every crossing order of a connected
+plane knot diagram, the number of active vertices of either Tait graph is
+at most half the number of cut diagram edges. This yields
+$\poly(n,w)q^{w/2}$ arithmetic work at fixed integer $q$, with all normalization
+and coefficient lengths accounted for. Independent processed components
+can be represented by separate tensors; a relative-color alignment formula
+then gives a stronger bound in terms of the largest component frontier.
+
+For $q\ge5$, computations take place exactly in
+$\Z[x]/(x^2-(q-2)x+1)$, using integer pairs and no floating point.
+An essential adversarial calculation shows that the previously studied
+$q=5$ specialization is identically equal to the unknot value on an infinite
+family of nontrivial weaving knots. Every exact $q\ge6$ specialization
+detects every nontrivial knot in that family. This motivates $q=6$ for the
+new exact backend without asserting that a single Jones value detects
+all knots.
+
+We also prove a residue characteristic-polynomial annihilator and sharp
+radical-matrix nilpotence bounds over truncated polynomial rings. These
+give short inverse and Fitting certificates for supplied same-matching
+endomorphisms, extending the scope of earlier scalar splitting.
+The package includes implementations, integration changes, independent
+smoothing-cube and algebraic oracles, raw benchmark records, and reproducible
+certificate replay. The Potts correspondence and single-exponential
+width algorithms have substantial prior literature. Our contribution is
+their precise, audited implementation and the associated scope analysis
+for this repository. A complete quasi-polynomial unknot recognition bound
+is not established.
+\end{abstract}
+\clearpage
+\tableofcontents
+\clearpage
+\input{sections/01_scope}
+\input{sections/02_potts}
+\input{sections/03_frontiers}
+\input{sections/04_exact}
+\input{sections/05_factorization}
+\input{sections/06_blind_family}
+\input{sections/07_implementation}
+\input{sections/08_experiments}
+\input{sections/09_residue_algebra}
+\input{sections/10_complexity}
+\input{sections/11_research}
+\input{sections/12_reproducibility}
+\clearpage
+\begingroup
+\raggedright
+\small
+\bibliographystyle{plainnat}
+\bibliography{references}
+\endgroup
+\end{document}

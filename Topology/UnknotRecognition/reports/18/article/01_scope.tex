@@ -1,0 +1,257 @@
+\section{Conclusions, baseline, and research scope}\label{sec:scope}
+
+The strongest new mathematical step in this continuation is an exact
+finite-threshold recurrence for one long twist region. The existing
+support-counting formula says that the chain dimension grows affinely in a
+selected exponent. We pass from that statement about the number of
+generators to a statement about the differential and hence the actual
+homology. This distinction matters: a repeated vector space can carry
+different differentials, and chain-size growth alone does not determine
+homology growth.
+
+The implementation work has two complementary purposes. The recurrence
+avoids constructing an arbitrarily long repeated part. The streamed backend
+reduces retained storage when the finite complex still needs to be evaluated.
+Direct braid-source structural bounds avoid expanding a binary exponent
+merely to rediscover a certificate already available from elementary counts.
+Each change has an explicit interface and an independently stated scope.
+
+\subsection{What is already in ProveIt}
+
+The baseline is the repository's main revision
+\code{ea2abcb115aaa58f0b193ce1e045c2def983e1e6}, retrieved on 8 October 2026.
+The immediately relevant integrated work comprises report 10 on structural
+and algebraic improvements, report 11 on twist compression, report 12 on
+component algebra, and their synthesis updates~\cite{repo}.
+The complete \code{fast/} Python source, tests, examples, and build metadata
+at this revision accompany the package as a reference snapshot.
+
+The current recognizer already has much more than a naive crossing cube.
+Its pipeline contains checked diagram construction, braid certificates
+including the at-most-three-strand endpoint, signed Seifert-graph criteria,
+diagram simplification, visible connected-sum and interlacement
+factorization, modular Alexander and Jones obstructions, and exact
+Khovanov scanning. Optional paths provide a twist macro backend and
+component-algebra contractions. Existing scan machinery includes local
+gluing, unit cancellation, bit-packed linear algebra, and choices of scan
+order. Those features are baseline capabilities, not contributions of this
+continuation.
+
+In particular, report 11 explicitly proposed degree-streamed rank
+computation and required the state generator and map caches to be included
+in its memory analysis. We implement that proposal rather than presenting
+the rank identity underlying it as a new mathematical discovery.
+Report 11 also established, for supplied signed runs with lengths \(m_j\),
+the support polynomial
+\begin{equation}\label{eq:support}
+\N=\sum_{S\subseteq[t]}2^{c(S)-1}\prod_{j\in S}m_j
+\end{equation}
+and a restricted-family complexity bound
+\begin{equation}\label{eq:prior-bound}
+\poly(n)\,2^{O(t\log(2+n/t))},\qquad n=\sum_jm_j.
+\end{equation}
+Here \(c(S)\) is the number of circles after choosing the turnback exactly
+in the boxes in \(S\). The run count \(t\) is the count in the supplied
+presentation. It is not a proven small invariant of every knot.
+
+\begin{center}
+\small
+\begin{tabular}{p{0.43\linewidth}p{0.48\linewidth}}
+\toprule
+Result or capability & Status in this continuation\\
+\midrule
+Two-strand twist normal form; Khovanov unknot detector &
+Established literature, used with explicit attribution.\\
+Support polynomial and \(t=O(\log n)\) bound &
+Already integrated in the pinned ProveIt baseline.\\
+One-reference signed homology recurrence and slope extraction &
+Proved here as a continuation of that model; implemented.\\
+Slope as reduced homology of the turnback closure &
+Proved using established dot-sliding and local contraction machinery.\\
+Degree-streamed ranks, bounded caches, early lower bound &
+Implemented with exact accounting and regression checks.\\
+Structural certificates on binary run input &
+An encoding improvement to existing sufficient conditions.\\
+New signature packing decision class &
+None: the proposed bound is proved dominated.\\
+Unrestricted quasi-polynomial recognition &
+Not established by this work.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Current literature and the asymptotic target}
+
+The mathematical local input is Bar--Natan's tangle category and
+cancellation calculus~\cite{bn05,bn07}, with integer-twist complexes
+described explicitly by Thompson~\cite{thompson}. The rank-one decision
+criterion is due to Kronheimer and Mrowka~\cite{km}.
+Twist stabilization and compact tangle descriptions have substantial
+precedent, including the immersed-curve framework of Kotelskiy, Watson,
+and Zibrowius~\cite{kwz}. The finite threshold and one-reference extraction
+below should be assessed as a precise, executable continuation of the
+repository's model. We make no general priority claim for stability under
+twisting.
+
+Kelom\"aki and Sch\"utz's 2026 preprint supplies an especially useful
+boundary for complexity arguments: their Theorem 1.2 gives exponential
+scanning behavior on certain three-strand braid families, whereas their
+Theorem 1.3 gives a specialized polynomial-time computation for all
+three-strand braids~\cite{ks26}. A bounded number of boundary matching
+types therefore cannot, by itself, bound the number of algebraic summands.
+The specialized theorem also prevents a misleading benchmark claim:
+three-strand examples are useful algebraic checks, but do not demonstrate
+new difficult instances for the integrated recognizer.
+
+The hierarchy route must be described separately. Lackenby's July 2026
+preprint develops incompressible surfaces, boundary patterns, and unknot
+recognition. Section 9 bounds iterations while explicitly leaving costs
+of steps insufficiently specified for a complete runtime estimate;
+Proposition 9.1 gives \(L(g+1)^L\) iterations in its hierarchy and pattern
+parameters~\cite{lackenby26}. Other results provide compact surface
+certificates and algorithms polynomial in handle data and logarithmic
+normal weight. Those facts support a serious alternative research
+programme, but they do not supply the missing cost theorem for the present
+Khovanov implementation. Certificate existence, certificate verification,
+certificate search, and repeated compressed operations remain different
+tasks.
+
+We also inspected the user-suggested \code{openai/math} catalogue and
+repository guidance~\cite{openaimath}. Its manuscripts have varying
+verification status. No theorem from that collection is needed for the
+proofs here; a superficially similar quasi-polynomial result in a different
+subject would not remove the particular representation and rank barriers
+identified below. The useful methodological lesson is to keep dependencies,
+proof status, and machine-checkable artifacts explicit.
+
+\subsection{Four sizes that must be kept distinct}
+
+Let
+\begin{equation}\label{eq:input}
+\beta=\sigma_{i_1}^{e_1}\cdots\sigma_{i_t}^{e_t},\qquad
+1\le i_j<b,\quad e_j\in\Z\setminus\{0\}.
+\end{equation}
+Put \(m_j=|e_j|\), \(n=\sum_jm_j\), and define the encoded input size,
+up to a fixed choice of delimiters, by
+\begin{equation}\label{eq:encoded}
+\lambda=1+\lceil\log_2(b+1)\rceil+
+\sum_{j=1}^t\bigl(1+\lceil\log_2(b+1)\rceil+
+                         \lceil\log_2(m_j+1)\rceil\bigr).
+\end{equation}
+An expanded braid word has length \(n\). A run-encoded braid can have
+\(n\) exponential in \(\lambda\). A planar diagram normally presents its
+crossings explicitly and therefore has a different input model.
+
+There are also the number \(S=\prod_j(m_j+1)\) of macro states, the total
+reduced chain dimension \(\N\), and the bit length of the requested output.
+A scalar formula for \(\N\) does not compute a differential rank. A
+compact formula for a homological profile is a different output from an
+explicit dictionary containing each degree. We charge for the chosen
+representation throughout.
+
+The closure of a braid is a knot exactly when its strand permutation is a
+single cycle. A run contributes the adjacent transposition only when its
+exponent is odd. Thus original component count is computable without
+expanding any run. For a one-component \(b\)-braid every generator index
+\(1,\ldots,b-1\) occurs; omitting index \(i\) separates the first \(i\)
+strands from the others. This simple fact gives \(b-1\le t\) and will also
+control the reference size in the dominant-run theorem.
+
+\subsection{The characteristic-two exact endpoint}
+
+For a knot \(K\), the endpoint used here is
+\begin{equation}\label{eq:detector}
+K\text{ is the unknot}\quad\Longleftrightarrow\quad
+\dim_{\F}\rKh(K;\F)=1.
+\end{equation}
+The implication from rank one follows from the rational rank-one detector
+of Kronheimer--Mrowka and the universal coefficient theorem: characteristic
+two dimension is at least the rational dimension, and reduced homology is
+nonzero. The unknot has one reduced generator over either field.
+All calculations retain a fixed reduction point. For links we compute
+reduced homology at that point, but do not apply a knot-only decision
+criterion to them.
+
+Resource exhaustion has a precise meaning. A mathematical exact algorithm
+without fixed caps terminates on finite inputs. Its resource-bounded
+implementation can return \code{UNKNOWN}. Such a result is neither
+evidence of knottedness nor evidence of triviality. The same distinction
+applies when a computation has established only a lower bound on the
+homology dimension.
+
+\section{The local complex and its global counts}\label{sec:local}
+
+We use \(A=\F[X]/(X^2)\), with
+\[
+\Delta(1)=1\otimes X+X\otimes1,\qquad \Delta(X)=X\otimes X.
+\]
+A resolution with \(c\) circles has reduced space of dimension
+\(2^{c-1}\): the circle containing the fixed mark carries \(X\), and each
+other circle carries \(1\) or \(X\).
+Let \(I\) denote the identity two-strand matching and \(E\) the matching
+joining the two top ends and joining the two bottom ends. Names such as
+cap and cup depend on drawing orientation; the chosen arcs are always
+identified as the top and bottom arcs of \(E\).
+
+\begin{proposition}[Established local normal form]\label{prop:normal}
+After forgetting quantum grading, a positive run of length \(m\) is
+represented by
+\[
+I\xrightarrow{s}E\xrightarrow{L}E\xrightarrow{L}\cdots
+\xrightarrow{L}E,\qquad L=X_{\rm top}+X_{\rm bottom},
+\]
+in degrees \(0,1,\ldots,m\). A negative run is represented by its dual
+complex in degrees \(-m,\ldots,-1,0\), with \(I\) in degree zero, the final
+saddle into \(I\), and the same internal dot sum.
+The replacement is valid inside any fixed exterior tangle.
+\end{proposition}
+
+\begin{proof}
+This is the characteristic-two, quantum-forgotten specialization of the
+integer-twist normal form~\cite[Proposition 4.1]{thompson}. Tensoring with
+one additional crossing gives an \(E\)-circle summand. Delooping that circle
+and cancelling an invertible saddle block gives the next zig-zag term.
+The local contraction formula is the categorical Schur complement of
+Bar--Natan~\cite{bn07}. Over the integers the internal maps have alternating
+signs; the dot sum and difference agree over \(\F\). Mirroring reverses
+degrees and dualizes saddles. These operations are relative to the
+boundary, which justifies the stated exterior compatibility.
+\end{proof}
+
+In the tensor product of run complexes, a state has coordinates
+\(0\le k_j\le m_j\). Its degree is \(\sum_j\operatorname{sign}(e_j)k_j\).
+Its geometry depends only on the support \(\{j:k_j\ne0\}\), while its
+differentials also distinguish the first saddle from internal dot maps.
+For a fixed support \(S\), the number of coordinate choices is
+\(\prod_{j\in S}m_j\). This proves \eqref{eq:support}.
+The independence of geometry from the nonzero coordinate is also the
+key to the stronger homology result below.
+
+For later accounting define
+\begin{equation}\label{eq:layers}
+d_h=\dim C^h,\qquad r_h=\rank(\partial_h:C^h\longrightarrow C^{h+1}),
+\qquad \N=\sum_h d_h.
+\end{equation}
+The exact formula
+\begin{equation}\label{eq:betti}
+\beta_h=\dim H^h=d_h-r_{h-1}-r_h
+\end{equation}
+uses both incident boundary ranks. Computing only chain dimensions, only
+one boundary rank, or a rank bound in the wrong direction cannot justify
+an exact Betti number.
+
+Two convenient coarse quantities are
+\[
+Q=\sum_h d_hd_{h+1},\qquad
+T_{\rm elim}=
+O\!\left(\N+\sum_h d_h d_{h+1}\min(d_h,d_{h+1})\right)
+\]
+for elimination once the actual columns are supplied. Generating states
+and local maps is a separate cost; it is included explicitly in the
+algorithm bounds below. The \(\N\) term also charges for visiting zero
+columns and end degrees.
+\(Q\) is a dense bit envelope, not a count of actual nonzero entries.
+The displayed elimination term is a conservative bit-operation bound for
+ordinary characteristic-two Gaussian elimination. It is enough for
+asymptotic upper bounds; it is not a claim that Python attains an optimal
+matrix multiplication exponent.
