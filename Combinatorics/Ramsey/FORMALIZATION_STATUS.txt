@@ -20,8 +20,8 @@ Scope
   checkpoints; the current catalogue count is stated here and in the ledger.
 
 Verification at this checkpoint
-  All 788 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 5,059 public Gowers theorems and found only propext,
+  All 790 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 5,069 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 114 exact
   companion proofs and 6 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -189,6 +189,21 @@ Fixed Freiman families on final-coordinate sections
   theta*N^2, and each slice has the same bound
   section16BaseFamilyBound(gamma,theta), independent of inner cover loss.
   These modules pass the full audit; the catalogue count is unchanged.
+
+Unconditional dimension-two cubic graph piece
+  Proofs16CubicStructuredExtraction first retains fixed families with
+  theta*N^2/4 deletion, then performs the existing proper-face and
+  arrangement restrictions at density theta/2. Both the structured pair
+  and its fixed-family witnesses survive all restrictions.
+  Proofs16CubicStructuredCover constructs the spectrum and slice inputs,
+  applies the all-box cubic lift, and translates the resulting graph back
+  into the original partial graph. Its mass is at least
+    section16ThetaTwo(section16ThetaOne(theta/2,gamma,1))*N^2.
+  Its explicit graph and width controls depend only on theta, gamma, and
+  the inner loss; the width exponent is proved positive. This extraction
+  is unconditional for sufficiently large odd primes. Comparing its
+  controls to the exact manuscript budget and extending the structural
+  induction beyond dimension two remain open. Both modules pass the audit.
 
 Conditional quantitative density bridge and dependency port
   Proofs01QuantitativeDensityBridge proves the exact Theorem 1.3 from
