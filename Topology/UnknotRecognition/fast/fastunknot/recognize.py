@@ -162,7 +162,8 @@ def _invariant_obstruction(diagram, evidence, *, use_modular, use_jones, use_ale
         order_stats, witness = {}, None
         try:
             test, method, extra = select_jones_filter(jones_backend, potts_colors)
-            if jones_backend in ("potts-separator", "potts-adaptive", "potts-faithful"):
+            if jones_backend in ("potts-separator", "potts-adaptive", "potts-faithful",
+                                  "spin-faithful"):
                 extra["statistics"] = order_stats
             witness = test(diagram, max_states=jones_max_states,
                            max_transitions=jones_max_transitions, order=order, check=check, **extra)
