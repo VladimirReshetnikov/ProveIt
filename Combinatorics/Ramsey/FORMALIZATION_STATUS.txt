@@ -20,8 +20,8 @@ Scope
   checkpoints; the current catalogue count is stated here and in the ledger.
 
 Verification at this checkpoint
-  All 820 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 5,322 public Gowers theorems and found only propext,
+  All 823 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 5,365 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 114 exact
   companion proofs and 6 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -41,12 +41,13 @@ Verification at this checkpoint
   module. Their statements and proof bodies are unchanged. After this
   adjustment, the merged small-degree results, and the explicit selection,
   dimension-two, and quartic inverse thresholds, the low-dimensional
-  Corollary 16.11 companions, and the stackable-slice reductions, the
-  820-module Gowers audit checks 5,322 theorems and the same 114/6
+  Corollary 16.11 companions, the stackable-slice reductions, and the
+  conditional dimension-three results, the
+  823-module Gowers audit checks 5,365 theorems and the same 114/6
   catalogue split.
   GowersSzemeredi.PortImportAudit additionally
   compiles the facade and full affine-recovery module together as a
-  2,559-module closure and checks equality of the extracted propositions
+  2,562-module closure and checks equality of the extracted propositions
   with their originals. This does not certify the remaining density port.
 
 Conditional stackable structure and slice reduction
@@ -56,8 +57,11 @@ Conditional stackable structure and slice reduction
   extraction. Proofs16PartJSlices proves that such a cover restricts every
   final-coordinate slice with the stated density loss and provides the
   cubic slice input on a common-base good domain, with parameter Q*q.
-  These are checked conditional reductions. The required higher-dimensional
-  structure input is not proved, so no full catalogue entry is closed.
+  Proofs16PartJPiece, Proofs16PartJBudget, and Proofs16PartJTheorem now
+  derive Theorem162At 3 and Corollary1611At 3 from StackableStructureAt 2
+  with polynomial bounds on both cover controls. The graph and width
+  budgets pass the same axiom audit. The required structure input remains
+  unproved, so these conditional reductions close no full catalogue entry.
 
 Conditional Section 16 regime splitting
   The merged Proofs16RegimeSplitting gives exact coarse covers for relations
