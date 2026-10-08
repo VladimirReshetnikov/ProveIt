@@ -410,7 +410,8 @@ def khovanov_rank(pd: Iterable[Iterable[int]], *, order: list[int] | None = None
                   max_objects: int | None = None, seconds: float | None = None,
                   check_d_squared: bool = False, pivot: str = "minfill", algebra: str = "bits",
                   self_inverse: bool = True, tail: int = 0, shape_cache: bool | None = None,
-                  race: int = 1, race_after: float = 1.0) -> dict[str, Any]:
+                  race: int = 1, race_after: float = 1.0,
+                  composition: str = "standard", composition_max_variables: int = 18) -> dict[str, Any]:
     """Total unreduced F2 Khovanov rank of a validated PD code by scanning.
 
     ``tail`` crossings at the end are added without cancellation and the closed
@@ -425,7 +426,20 @@ def khovanov_rank(pd: Iterable[Iterable[int]], *, order: list[int] | None = None
     other greedy orders in separate processes once the default order has run for
     ``race_after`` seconds; the first to finish wins (``race_winner`` in the
     result).  Rank and ranks by degree are the same whoever wins.
+
+    ``composition`` optionally selects report 12 component contraction:
+    ``component`` adapts to support size, ``component-dense`` forces the dense
+    ranked transform. Both require the standard scanner and race=1. The
+    component/output allocation limit is ``composition_max_variables``;
+    MemoryError/ScanLimit propagate from this raw API. Counts are returned in
+    ``composition_stats``. The standard engine remains the default.
     """
+    if composition not in ("standard", "component", "component-dense"):
+        raise ValueError("composition must be standard, component, or component-dense")
+    if type(composition_max_variables) is not int or composition_max_variables < 0:
+        raise ValueError("composition_max_variables must be nonnegative")
+    if composition != "standard" and (pivot != "minfill" or algebra != "bits" or not self_inverse or race != 1):
+        raise ValueError("component composition requires minfill, bits, self_inverse=True, and race=1")
     pd = [tuple(c) for c in pd]
     if type(tail) is not int or tail < 0:
         raise ValueError("tail must be a nonnegative integer")
@@ -444,6 +458,11 @@ def khovanov_rank(pd: Iterable[Iterable[int]], *, order: list[int] | None = None
     else:                         # ablation configurations
         complex_ = ScanComplex(max_objects=max_objects, deadline=deadline, pivot=pivot,
                                algebra=algebra, self_inverse=self_inverse)
+    if composition != "standard":
+        from .component_algebra import install_on_empty_scan
+        install_on_empty_scan(complex_, minimum_pairs=0 if composition == "component-dense" else 64,
+                              method="fast" if composition == "component-dense" else "auto",
+                              dense_limit=composition_max_variables)
     if type(race) is not int or race < 1 or race_after < 0:
         raise ValueError("race must be a positive integer and race_after nonnegative")
     runner = None
@@ -479,6 +498,9 @@ def khovanov_rank(pd: Iterable[Iterable[int]], *, order: list[int] | None = None
     stats.update({k: v for k, v in complex_.algebra.stats.items()})
     result = {"rank": rank, "reduced_rank": rank // 2, "by_degree": by_degree, "stats": stats,
               "order": order, "pivot": pivot, "algebra": algebra, "tail": tail}
+    if composition != "standard":
+        result["composition"] = composition
+        result["composition_stats"] = dict(complex_.algebra.kernel_stats)
     if runner is not None:
         result["race_winner"] = "index"
     return result
