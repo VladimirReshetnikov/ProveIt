@@ -86,6 +86,18 @@ PDFs in `docs/arXiv-2607.23350v1/`.
 
 ## Current integration (7 October 2026)
 
+The maintained Python suite now passes 222 tests. The latest work adds
+twist-compressed homology with a quasi-polynomial bound for braid presentations
+having logarithmically many signed runs, plus optional adaptive cancellation
+(`--reduction adaptive`). The latter preserves sparse cancellation progress,
+tries exact binary survivor prediction when update work grows, and resumes
+the same complex if the shortcut cannot finish. Neither improvement gives a
+general quasi-polynomial algorithm. Theory and measurements are in
+[`synthesis/twist.tex`](synthesis/twist.tex) and
+[`synthesis/radical.tex`](synthesis/radical.tex), included in the maintained PDF.
+
+Earlier integration checkpoints follow.
+
 Report 07 is integrated into the Python implementation: a linear Seifert-graph
 certificate stage and optional exact, saturated, and Euler-assisted shared
 scanners. A follow-up repeats the structural check when RI/RII removes crossings,

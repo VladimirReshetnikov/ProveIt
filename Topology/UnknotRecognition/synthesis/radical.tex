@@ -1,0 +1,227 @@
+\section{Survivor prediction and adaptive cancellation}
+\label{sec:radical-adaptive}
+
+The incoming package \code{unknot\_radical\_transfer\_20261007.zip}
+analyzes minimal complexes before performing cobordism-valued elimination.
+We reviewed an isolated extraction of the delivered archive, reran its
+checks, and integrated a narrower operation into the production scanner:
+exact prediction of the surviving matching multiplicities, followed by a
+certified shortcut when no differential can remain. An adaptive variant
+uses this operation only after ordinary cancellation becomes expensive.
+The delivered report and the production measurements are separate artifacts.
+
+\subsection{What binary residue homology determines}
+At a fixed frontier with $2k$ endpoints, write $c(a,b)$ for the number of
+circles in the overlay of two matching objects. A dotted basis morphism
+$x_S:a\to b$ has nonnegative intrinsic weight
+\[
+  \omega(x_S)=k-c(a,b)+2|S|.
+\]
+Weight zero means exactly the undotted identity of one matching.
+The Euler-characteristic calculation in the composition engine makes
+weights additive on every nonzero term of a valid cobordism composition.
+More explicitly, for input dot counts $u,v$ and output dot count $q$,
+the nonzero genus-zero terms obey
+\[
+  2q=2u+2v+k-c(a,b)-c(b,c)+c(a,c),
+\]
+which gives the stated additivity after substitution. Consequently the
+operation $\rho$ that retains only the scalar identity coefficient
+between equal matchings is multiplicative. An undotted coefficient
+between \emph{different} matchings is discarded. Forgetting this typing
+would give an incorrect binary complex.
+
+Let $m_{a,h}$ count copies of matching $a$ in degree $h$ of a valid
+partial complex $C$. The residue differential $d_0=\rho(d)$ is a direct
+sum, over $a$, of ordinary binary complexes. Put
+\[
+ r_{a,h}=\operatorname{rank}_{\F}(d_0:C_{a,h}\to C_{a,h+1}),\qquad
+ \mu_{a,h}=m_{a,h}-r_{a,h}-r_{a,h-1}.
+\]
+
+\begin{proposition}[Exact survivor profile]
+Complete scalar-unit cancellation leaves exactly $\mu_{a,h}$ copies
+of each matching in each degree. This profile is independent of pivot
+order at the fixed processed tangle.
+\end{proposition}
+\begin{proof}
+An allowed pivot is an endomorphism $\phi$ with scalar coefficient one,
+so $\rho(\phi)=\rho(\phi^{-1})=1$. Applying $\rho$ to its cobordism
+Schur update gives the ordinary binary pivot update. Hence each
+cancellation preserves residue homology. Cancellation terminates,
+removing two objects at each step. Its final residue differential is
+zero: a remaining nonzero scalar coefficient would be another allowed
+pivot. The final multiplicities are therefore the dimensions of the
+original residue homology, namely $\mu_{a,h}$.
+\end{proof}
+
+This argument uses only the valid compositions already required by the
+scanner. It does not require a universal Catalan count, the full
+classification of minimal complexes, or the incoming report's sharp
+nilpotence exponent. In particular, pivot heuristics can improve fill,
+composition work, and intermediate memory, but cannot decrease the
+final matching multiplicities of a fixed prefix. Changing the scan
+order changes the prefix and is a different operation.
+
+\subsection{An exact shortcut, and an essential non-shortcut}
+The profile is not itself the surviving differential. For example,
+$a\xrightarrow{x}a$ in degrees zero and one has zero residue
+differential, yet its dotted map is nonzero. Cancelling other scalar
+pivots can also create such maps between surviving objects.
+
+\begin{proposition}[Degree-gap shortcut]
+Suppose the occupied degrees of $\mu$ contain no consecutive integers.
+Then $C$ is homotopy equivalent, relative to its frontier, to the direct
+sum specified by $\mu$, with zero differential. The same conclusion
+holds at a closed frontier without the degree-gap hypothesis.
+\end{proposition}
+\begin{proof}
+Perform unit cancellation conceptually and apply the survivor
+proposition. A differential increases homological degree by one, so
+the degree-gap hypothesis forbids every remaining entry, even between
+unequal matchings. At a closed frontier $k=0$, all coefficients are
+scalars and a fully cancelled differential is zero. The usual local
+cancellation equivalences therefore identify $C$ with exactly the
+stated zero-differential complex.
+\end{proof}
+
+The implementation need not carry out that conceptual sequence: it
+computes binary ranks and constructs the resulting objects directly.
+There are no cobordism compositions in the shortcut. Because the
+equivalence is relative to the frontier, subsequent crossing gluing
+preserves it. Zero survivors are allowed. Nonconsecutive integer
+degrees and previously cancelled object slots are handled explicitly.
+The raw helper assumes a valid complex, including $d^2=0$; a nonnegative
+profile alone is not a validity certificate.
+
+\subsection{Switching implementations in response to progress}
+Eager residue prediction can be slower than the existing sparse
+cancellation loop. The adaptive mode follows an introsort-style
+policy, with a mathematical distinction: the alternative operation
+is a conditional shortcut, not a universal asymptotic fallback.
+
+At the beginning of each crossing stage let $N$ be the live object
+count. Start the existing minimum-fill cancellation with an allowance
+\[
+ B=\max(256,4N)
+\]
+for Schur update pairs. Before cancelling a pivot from $b$ to $c$,
+its candidate work is
+\[
+  (|\operatorname{out}(b)|-1)(|\operatorname{in}(c)|-1).
+\]
+These are the Markowitz costs already available to the queue. They
+bound touched pairs, not actual expensive compositions: scalar
+identities, zero products, and caches may make a pair cheaper.
+When the next pivot would exceed $B$, pause before that pivot,
+finish the counters, and discard the candidate queues. All completed
+pivots, live maps, and composition caches are retained.
+
+Compute the residue profile of this partially reduced complex. If
+the degree-gap or closed-boundary certificate applies, finish the
+stage using the shortcut. Otherwise resume ordinary cancellation
+on the same partial result. There is at most one prediction attempt
+per crossing stage, so a failed attempt cannot cause oscillation
+between implementations. A later crossing starts a fresh allowance.
+The constants are a transparent cost heuristic, not a proved optimal
+threshold. Deadline and object limits keep their existing meaning;
+neither slow progress nor a failed shortcut decides whether a knot
+is trivial.
+
+The shared state is what makes this switch inexpensive and sound.
+Every pause lies between complete homotopy equivalences; a partially
+applied Schur update is never exposed to another engine. Rebuilding
+the queue on fallback costs a fresh pass over its remaining entries,
+while the completed algebra is reused. The additional binary rank
+work is not bounded by elapsed sparse work, so this policy does not
+claim the constant-factor competitive guarantee of a time-sliced
+portfolio. In particular, it does not acquire introsort's global
+worst-case theorem merely by adopting its switching principle.
+
+\paragraph{Interfaces and evidence.}
+Both recognition and raw homology accept the Python option
+\code{reduction="adaptive"} or \code{reduction="residue"}; the latter
+predicts at every reduced stage and is an ablation/control. The CLI
+uses \code{--reduction adaptive|residue|standard}. This controls
+chain cancellation and is distinct from the existing
+\code{--no-reduction} switch for Reidemeister simplification.
+The default remains \code{standard}. The new modes require the
+standard backend, bit coefficients, minimum-fill pivots, and no race;
+they compose with component contraction and the existing tail option.
+Unsupported combinations are rejected before early recognition filters.
+Counters expose prediction attempts, successful shortcuts, switches,
+fallbacks, and Schur update pairs. Earlier recognition certificates
+remain enabled, so raw homology measurements are not pipeline speedups.
+
+\subsection{The stronger report and its boundary assumptions}
+For noncrossing matchings in a \emph{prescribed common cyclic order},
+the incoming report proves the sharp arc-algebra radical exponent
+$J^{2k}=0\ne J^{2k-1}$ for $k\ge1$. Its dot derivative and central
+marked dot also yield a two-pass transfer formula. Given a scalar
+contraction $(i,p,h)$ and $\delta=d-d_0$, the induced differential is
+\[
+  D=\sum_{r=0}^{2k-2}p\delta(h\delta)^ri.
+\]
+This is a finite specialization of the
+\href{https://arxiv.org/abs/math/0403266}{homological perturbation lemma},
+whose inverse formula and special contraction conditions are stated
+in Crainic's Section 2. The report supplies sharp-depth examples,
+so truncating this general expression after the first correction
+would be unsound.
+
+Those stronger formulas are not installed into the arbitrary PD
+scanner here. Its frontier pairing representation has no global
+common-disk certificate. As a simple warning, the three pairings
+$(01)(23),(02)(13),(03)(12)$ are not simultaneously noncrossing in
+one cyclic order; blindly composing the associated abstract triple
+in the planar gluing engine yields an impossible surface component.
+The narrow production proof above needs only its existing valid
+geometric compositions. A full transfer adapter must establish
+its category and geometry assumptions separately. The report's
+provided profile adapter targets the older dictionary-based scanner,
+not the current interned-list implementation; our adapter is new.
+
+The survivor profile also exposes the main asymptotic obstruction.
+A small number of matching \emph{types} does not bound their
+\emph{multiplicities}. Even fixed-width scans can have exponentially
+many surviving copies. The report's parameterized transfer estimate
+still depends on both boundary half-width and the largest minimal
+survivor count. No bound forcing these parameters into a
+quasi-polynomial regime for every input has been established.
+
+\subsection{Validation and measured limits}
+The isolated report rerun passed 18 unit tests, 2,244 exhaustive
+composition/derivation comparisons, 500 full transfer certificates,
+500 minimal-profile comparisons, 308 marked-transfer certificates,
+306 braid closures against an independent crossing cube, and 1,365
+intermediate-stage contraction certificates. Sharp radical witnesses
+through $k=12$ and transfer-depth witnesses through $k=8$ also passed.
+These checks cover the report's model; they do not prove a global
+runtime bound or establish compatibility with arbitrary scanner geometry.
+
+Production tests compare each predicted profile to actual complete
+cancellation at every stage of 120 seeded knot closures on two to
+five strands, using both greedy and shuffled crossing orders. Every
+final homological degree agrees for eager, adaptive, and ordinary
+scans; twenty cases also use the independent older set-based engine.
+Additional tests check a nontrivial unit, nonzero maps after a declined
+shortcut, pause/resume validity, both adaptive outcomes, budget
+exhaustion, CLI and pipeline evidence, and incompatible options.
+All 222 integrated tests passed. The integrated run and the report validation summaries are retained
+under \code{synthesis/data/}.
+
+\input{tables/residue-integration.tex}
+
+The benchmark includes seven shuffled paired trials with a second
+ordinary-scanner control. Diagram construction is excluded and scan
+order selection is included. Synthetic two-term complexes are timed
+only during elimination, after deterministic construction: they have
+a dense dotted differential, a full-rank binary residue, and a single
+survivor. Their density is not asserted to occur on a measured knot
+scan. The adaptive mode is useful on this kernel family, but the
+ordinary diagram results do not establish a general recognition gain.
+Raw inputs, all timings, counters, and controls are stored in
+\code{fast/results/residue\_integration\_20261007.json}; reproduce with
+\code{fast/benchmark\_residue.py}. These measurements keep both new
+modes opt-in while giving subsequent adaptive policies a tested,
+interruptible cancellation interface.

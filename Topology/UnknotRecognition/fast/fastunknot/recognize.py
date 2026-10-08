@@ -229,6 +229,8 @@ def _decide_prime_looking(diagram: Diagram, evidence: dict, *, use_modular, use_
     if "composition" in kh:
         evidence["khovanov"]["composition"] = kh["composition"]
         evidence["khovanov"]["composition_stats"] = kh["composition_stats"]
+    if "reduction" in kh:
+        evidence["khovanov"]["reduction"] = kh["reduction"]
     if "race_winner" in kh:
         evidence["khovanov"]["race_winner"] = kh["race_winner"]
     method = "reduced-khovanov-F2-shared" if backend == "shared" else "reduced-khovanov-F2-scan"
@@ -248,8 +250,13 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
               pivot: str = "minfill", algebra: str = "bits", tail: int = 0,
               race: int = 1, race_after: float = 1.0,
               factor_backend: str = "interlacement", composition: str = "standard",
-              composition_max_variables: int = 18, twist_max_basis: int = 1_000_000) -> Result:
+              composition_max_variables: int = 18, twist_max_basis: int = 1_000_000,
+              reduction: str = "standard") -> Result:
     start = monotonic()
+    if reduction not in ("standard", "residue", "adaptive"):
+        raise ValueError("reduction must be standard, residue, or adaptive")
+    if reduction != "standard" and (backend != "standard" or pivot != "minfill" or algebra != "bits" or race != 1):
+        raise ValueError("residue/adaptive reduction requires standard backend, minfill, bits, and race=1")
     if type(twist_max_basis) is not int or twist_max_basis < 0:
         raise ValueError("twist_max_basis must be nonnegative")
     if composition not in ("standard", "component", "component-dense"):
@@ -350,7 +357,7 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
                                          race_after=race_after, backend=backend,
                                          euler_max_states=euler_max_states, composition=composition,
                                          composition_max_variables=composition_max_variables,
-                                         twist_max_basis=twist_max_basis))
+                                         twist_max_basis=twist_max_basis, reduction=reduction))
         method = "reduced-khovanov-F2-scan"
         check()
         if len(factors) == 1:

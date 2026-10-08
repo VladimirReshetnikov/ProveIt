@@ -37,6 +37,8 @@ def _scan_worker() -> int:
 # One table for both parsers.  (flag, type or None for a switch, default, choices, help)
 OPTIONS = {
     "recognize": [
+        ("--reduction", str, "standard", ("standard", "residue", "adaptive"),
+         "chain cancellation strategy (distinct from Reidemeister --no-reduction)"),
         ("--twist-max-basis", int, 1_000_000, None, "reduced basis ceiling for the optional twist backend"),
         ("--composition", str, "standard", ("standard", "component", "component-dense"),
          "opt-in component contraction for the standard scanner"),
@@ -72,6 +74,8 @@ OPTIONS = {
         ("--output", str, None, None, "write the JSON result to this file"),
     ],
     "khovanov": [
+        ("--reduction", str, "standard", ("standard", "residue", "adaptive"),
+         "opt-in binary survivor prediction and degree-gap cancellation shortcut"),
         ("--twist", None, False, None, "compute a checked source braid through twist blocks"),
         ("--twist-max-basis", int, 1_000_000, None, "reduced basis ceiling for the optional twist backend"),
         ("--composition", str, "standard", ("standard", "component", "component-dense"),
@@ -173,6 +177,13 @@ def main(argv: list[str] | None = None) -> int:
         print(f"invalid input: {exc}", file=sys.stderr)
         return 2
     if args.command in ("recognize", "khovanov"):
+        if args.reduction != "standard" and (
+                args.pivot != "minfill" or args.algebra != "bits" or args.race != 1
+                or getattr(args, "backend", "standard") != "standard"
+                or getattr(args, "shared", False) or getattr(args, "twist", False)):
+            print("residue/adaptive reduction requires standard backend, no --shared/--twist, minfill, bits, and race=1",
+                  file=sys.stderr)
+            return 2
         if args.twist_max_basis < 0:
             print("--twist-max-basis must be nonnegative", file=sys.stderr)
             return 2
@@ -196,6 +207,7 @@ def main(argv: list[str] | None = None) -> int:
                            use_seifert=not args.no_seifert, backend=args.backend,
                            twist_max_basis=args.twist_max_basis,
                            composition=args.composition, composition_max_variables=args.composition_max_variables,
+                           reduction=args.reduction,
                            use_braid=not args.no_braid, braid_backend=args.braid_backend,
                            use_braid_reduction=not args.no_braid_reduction,
                            euler_max_states=args.euler_max_states,
@@ -244,7 +256,7 @@ def main(argv: list[str] | None = None) -> int:
             return 0
         options = dict(check_d_squared=args.check_d2, pivot=args.pivot, algebra=args.algebra, tail=args.tail,
                        race=args.race, race_after=args.race_after, composition=args.composition,
-                       composition_max_variables=args.composition_max_variables)
+                       composition_max_variables=args.composition_max_variables, reduction=args.reduction)
         try:
             result = factored_khovanov_rank(diagram, **options) if args.factor else khovanov_rank(diagram.pd, **options)
         except (ScanLimit, MemoryError) as exc:
