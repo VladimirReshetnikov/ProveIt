@@ -316,6 +316,7 @@ import GowersSzemeredi.Proofs16GapCoordinates
 import GowersSzemeredi.Proofs16VarietyBoxAt
 import GowersSzemeredi.Proofs16BohrDoubling
 import GowersSzemeredi.Proofs16BohrRegularStep
+import GowersSzemeredi.Proofs16BohrBohrSections
 import GowersSzemeredi.Proofs16StructuredExtraction
 import GowersSzemeredi.Proofs16BaseCaseZero
 import GowersSzemeredi.Proofs05ProgressionMoments
