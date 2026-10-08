@@ -1,3 +1,6 @@
+/- Modified for ProveIt: supply explicit intermediate topology instances
+for nested finite products on Lean 4.32 / Mathlib v4.32.0.
+The statements are unchanged; this port remains under Apache-2.0. -/
 import OAI.Combinatorics.Progressions.Probability.NormalizedCoveredDensity
 
 namespace OAI
@@ -17,6 +20,8 @@ abbrev CoveredJetChartSource (O B : Fin m → Type*) (n : Fin m → ℕ) (d : �
 
 instance coveredJetChartSource_borel [∀ j, Fintype (O j)] (d : ℕ) [NeZero d] :
     BorelSpace (CoveredJetChartSource U O B n d) := by
+  let : ∀ j, SecondCountableTopology ((euclideanSubspace (U j) × (Fin (n j) → ℤ)) × (B j → ZMod d)) := fun _ => inferInstance
+  let : ∀ j, SecondCountableTopology (O j → (euclideanSubspace (U j) × (Fin (n j) → ℤ)) × (B j → ZMod d)) := fun _ => inferInstance
   let : ∀ j, BorelSpace ((euclideanSubspace (U j) × (Fin (n j) → ℤ)) × (B j → ZMod d)) :=
     fun _ => inferInstance
   let : ∀ j, BorelSpace (O j → (euclideanSubspace (U j) × (Fin (n j) → ℤ)) × (B j → ZMod d)) :=
@@ -90,9 +95,11 @@ theorem coveredJetChart_embedding (Ω : ∀ j, O j → Set (EuclideanSpace ℝ (
       coveredJetChart U b hb bW d x.val) := by
   let : ∀ j, PolishSpace ((euclideanSubspace (U j) × (Fin (n j) → ℤ)) × (B j → ZMod d)) :=
     fun _ => inferInstance
-  let : ∀ j, PolishSpace (O j → (euclideanSubspace (U j) × (Fin (n j) → ℤ)) × (B j → ZMod d)) :=
-    fun _ => by constructor
-  let : PolishSpace (CoveredJetChartSource U O B n d) := by constructor
+  let : ∀ j, SecondCountableTopology ((euclideanSubspace (U j) × (Fin (n j) → ℤ)) × (B j → ZMod d)) := fun _ => inferInstance
+  let : ∀ j, TopologicalSpace.IsCompletelyMetrizableSpace ((euclideanSubspace (U j) × (Fin (n j) → ℤ)) × (B j → ZMod d)) := fun _ => inferInstance
+  let : ∀ j, SecondCountableTopology (O j → (euclideanSubspace (U j) × (Fin (n j) → ℤ)) × (B j → ZMod d)) := fun _ => inferInstance
+  let : ∀ j, TopologicalSpace.IsCompletelyMetrizableSpace (O j → (euclideanSubspace (U j) × (Fin (n j) → ℤ)) × (B j → ZMod d)) := fun _ => inferInstance
+  let : PolishSpace (CoveredJetChartSource U O B n d) := inferInstance
   exact ContinuousOn.measurableEmbedding (coveredJetSourceRegion_measurable U b d Ω hΩm)
     (coveredJetChart_continuous U b hb bW d).continuousOn
     (coveredJetChart_injOn U b hb bW d Ω hΩ)

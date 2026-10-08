@@ -11,7 +11,7 @@ the pipeline repeats the structural check before matrix filters. Cancelling
 pairs can expose homogeneity. Evidence under `seifert_after_reduction` describes
 the reduced diagram: replay `reidemeister_trace` with `fastunknot.simplify.replay`
 before passing that certificate to `verify_seifert_certificate`. An unchanged
-diagram is not checked twice. The integrated suite now has 272 passing tests.
+diagram is not checked twice. The integrated suite now has 277 passing tests.
 
 The incoming radical-transfer report contributes exact binary prediction of
 the objects surviving cancellation. `--reduction adaptive` (Python:
@@ -827,3 +827,43 @@ improve by 3.4–33.8 times locally, while the stress five-braid slows down abou
 1.8 times. Default behavior is unchanged. The full suite passes 272 tests;
 proofs, barriers, and measurements are in
 [`../synthesis/ranktwo.tex`](../synthesis/ranktwo.tex).
+
+### Minimal extremal windows and certified size bounds
+
+The new optional strategy cancels the entire crossing extension before upper
+truncation, including the temporary degree beyond the guard. This is distinct
+from the default support strategy's pre-allocation pruning:
+
+```sh
+python -m fastunknot window examples/conway.json --lower 0 --upper 2 --minimal
+python -m fastunknot recognize examples/conway.json --window-radius 2 --window-strategy minimal
+```
+
+The Python entry point is
+`fastunknot.minimal_window.khovanov_minimal_window_auto(diagram, lower, upper)`.
+It defaults to choosing the mirror with smaller raw upper depth. CLI mirror
+selection requires `--auto-mirror`, as with other window queries. Results
+always return original raw degree labels. `trace=True` records retained
+matching/degree profiles. Ordinary, residue, and adaptive exhaustive reduction
+and component composition are supported.
+
+This strategy verifies a nice disc scan order: connected prefixes and suffixes,
+consecutive attachments, no projection loop edges, and final closure. With no
+supplied order it first checks the fast greedy order, then attempts a cubic
+construction when needed. Failure withdraws the sharper complexity certificate;
+the query still computes exact homology. All planning and temporary allocations
+are covered by the query's resource limits.
+
+A certified order of girth W gives retained degree-j counts at most binomial(t,j)
+before closure, doubled at closure, and a uniform quasi-polynomial query bound
+for raw upper depth O(log n) and W=O(log² n). Runtime checks verify these counts.
+This bound does not apply to the existing support strategy, and a narrow interval
+in the middle is not necessarily a shallow endpoint query. Partial agreement
+still cannot certify an unknot. See
+[`../synthesis/extremal.tex`](../synthesis/extremal.tex) for the domination proof,
+cache accounting, external theorem attribution, and exact padding obstruction.
+
+All 277 tests pass. `benchmark_minimal_windows.py --output FILE` compares exact
+identical window queries on common supplied orders. Minimal mode is slower on
+all six measured cases; it remains optional despite its stronger conditional
+bound. These partial-query ratios are not end-to-end recognition speedups.

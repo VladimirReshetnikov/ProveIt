@@ -196,7 +196,8 @@ def _decide_prime_looking(diagram: Diagram, evidence: dict, *, use_modular, use_
                               max_objects=ceiling, seconds=window_options["seconds"],
                               deadline=deadline, order=order, check_d_squared=check_d_squared,
                               reduction=scan_options["reduction"], composition=scan_options["composition"],
-                              composition_max_variables=scan_options["composition_max_variables"])
+                              composition_max_variables=scan_options["composition_max_variables"],
+                              strategy=window_options["strategy"])
         evidence["khovanov_windows"] = probe["evidence"]
         if probe["status"] != "INCONCLUSIVE":
             method = "khovanov-window-obstruction" if probe["status"] == "KNOTTED" else "khovanov-window-complete"
@@ -278,9 +279,12 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
               composition_max_variables: int = 18, twist_max_basis: int = 1_000_000,
               reduction: str = "standard", window_radius: int | None = None,
               window_max_objects: int | None = 20000, window_seconds: float | None = 0.1,
-              use_ranktwo: bool = False, ranktwo_seconds: float | None = 0.1) -> Result:
+              use_ranktwo: bool = False, ranktwo_seconds: float | None = 0.1,
+              window_strategy: str = "support") -> Result:
     restart_options = locals().copy() if use_ranktwo else None
     start = monotonic()
+    if window_strategy not in ("support", "minimal"):
+        raise ValueError("window_strategy must be support or minimal")
     if type(use_ranktwo) is not bool:
         raise ValueError("use_ranktwo must be boolean")
     if ranktwo_seconds is not None:
@@ -431,7 +435,8 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
                        jones_max_states=jones_max_states, jones_max_transitions=jones_max_transitions,
                        max_objects=max_objects, deadline=deadline, check_d_squared=check_d_squared,
                        window_options=None if window_radius is None else dict(
-                           radius=window_radius, max_objects=window_max_objects, seconds=window_seconds),
+                           radius=window_radius, max_objects=window_max_objects, seconds=window_seconds,
+                           strategy=window_strategy),
                        scan_options=dict(pivot=pivot, algebra=algebra, tail=tail, race=race,
                                          race_after=race_after, backend=backend,
                                          euler_max_states=euler_max_states, composition=composition,
