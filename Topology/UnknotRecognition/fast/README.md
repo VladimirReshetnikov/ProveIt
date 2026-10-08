@@ -11,7 +11,7 @@ the pipeline repeats the structural check before matrix filters. Cancelling
 pairs can expose homogeneity. Evidence under `seifert_after_reduction` describes
 the reduced diagram: replay `reidemeister_trace` with `fastunknot.simplify.replay`
 before passing that certificate to `verify_seifert_certificate`. An unchanged
-diagram is not checked twice. The integrated suite now has 572 passing tests.
+diagram is not checked twice. The integrated suite now has 577 passing tests.
 
 New RIII trace entries include `triangle`, the three dart indices of the
 chosen face in the original input diagram. Crossing indices alone can name
@@ -165,6 +165,20 @@ scan; global exhaustion remains `UNKNOWN`. Completed determinant values alone
 are cached, so interruption cannot publish a partial result. Early evidence
 uses `reduced_rank_lower_bound_capped`, `stage`, and `shadow_stats`; the final
 rank still uses `rank_capped`. The existing backend restrictions apply.
+
+Larger completed Tait graphs now factor at articulation vertices before dense
+matrix allocation. Parallel signed weights are combined first; cancelled edges
+may give a zero tree sum. Bridge blocks contribute their weights, and other
+blocks use the existing exact Bareiss determinant. The original crossing phase
+is retained, including loops. Cofactors through size 16 keep direct evaluation.
+`shadow_stats` distinguishes `max_unsplit_cofactor_size` from the largest actual
+`max_cofactor_size` and reports `tait_blocks`, `tait_bridge_factors`,
+`tait_block_determinants`, `tait_disconnected`, and `tait_zero_factors`.
+All work remains interruptible and locally budgeted; partial products are never
+cached. `python -B benchmark_tait_blocks.py --output results/tait_blocks_local.json`
+records actual observer traces and separates initial queries, raw scans, and
+complete recognition. See `../synthesis/tait_blocks.tex` for the signed product
+proof, cutoff measurements, and remaining complexity limits.
 
 The default stays `standard`: earlier filters already decide many examples
 where the raw marked scanner improves substantially. The paired benchmark

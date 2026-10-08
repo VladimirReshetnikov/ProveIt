@@ -63,16 +63,34 @@ def trace_driver(module, data):
                 stats=engine.stats)
 
 
+def cases():
+    for path in sorted((HERE/'examples').glob('*.json')):
+        yield path.stem, json.loads(path.read_text())
+    base = Diagram.from_json(json.loads((HERE/'examples/conway.json').read_text()))
+    for copies in (16, 32):
+        # Concatenate oriented traversals: each copy occupies a disjoint set
+        # of crossings, with successive strand labels joining the summands.
+        rows = [[-1] * 4 for _ in range(base.crossings * copies)]
+        position = 0
+        for offset in range(0, len(rows), base.crossings):
+            for dart in base.traversal():
+                crossing, slot = divmod(dart, 4)
+                rows[offset + crossing][slot] = position
+                rows[offset + crossing][(slot + 2) % 4] = (position + 1) % (2 * len(rows))
+                position += 1
+        diagram = Diagram.from_pd(rows)
+        yield f'conway_sum_{copies}', dict(pd=diagram.pd)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', type=Path, required=True)
     args = parser.parse_args()
     revision, old = load_baseline()
     rng, rows, traces = random.Random(2612), [], []
-    for path in sorted((HERE/'examples').glob('*.json')):
-        data = json.loads(path.read_text())
+    for name, data in cases():
         n = Diagram.from_json(data).crossings
-        traces.append(dict(name=path.stem, crossings=n, baseline=trace_driver(old, data),
+        traces.append(dict(name=name, crossings=n, baseline=trace_driver(old, data),
                            current=trace_driver(shadow_scan, data)))
         for scope in ('closure', 'raw-shadow', 'recognition-shadow'):
             if not n and scope == 'closure':
@@ -87,7 +105,7 @@ def main():
                         return value, dict(value=value, stats=engine.stats)
                     if scope == 'raw-shadow':
                         out = module.shadow_compressed_khovanov_decide(d.pd, max_objects=50000, seconds=5)
-                        return (out['status'], out['method'], out['stage']), {
+                        return out['status'], {
                             k: out[k] for k in ('status', 'method', 'stage', 'shadow_exhausted', 'shadow_stats')}
                     saved = shadow_scan.shadow_compressed_khovanov_decide
                     try:
@@ -123,20 +141,21 @@ def main():
                             continue
                         if expected is None:
                             expected = signature
-                        assert signature == expected, (path.stem, scope, arm, signature, expected)
+                        assert signature == expected, (name, scope, arm, signature, expected)
                     evidence[arm] = results[-1][1]
                 samples.append(dict(order=order, seconds=times, statuses=statuses))
             complete = all(all(v == 'complete' for v in s['statuses'].values()) for s in samples)
             ratios = {a: statistics.median(s['seconds']['direct']/s['seconds'][a] for s in samples)
                       for a in arms[1:]} if complete else None
-            rows.append(dict(name=path.stem, crossings=n, input=data, scope=scope,
+            rows.append(dict(name=name, crossings=n, input=data, scope=scope,
                              repetitions=repetitions, samples=samples, evidence=evidence,
                              complete=complete, median_speedups=ratios))
-            print(scope, path.stem, {k: round(v, 3) for k, v in (ratios or {}).items()}, flush=True)
+            print(scope, name, {k: round(v, 3) for k, v in (ratios or {}).items()}, flush=True)
     paths = [Path(__file__)] + [HERE/'fastunknot'/name for name in
         ('shadow_scan.py', 'tait_blocks.py', 'euler_scan.py', 'recognize.py', 'ordering.py')]
     output = dict(scope=__doc__, baseline_revision=revision, baseline_scope='shadow_scan.py only; other dependencies shared',
                   rounds=7, seed=2612, python=platform.python_version(), traces=traces, rows=rows,
+                  comparison='Raw scans must agree on verdict; method and stage may differ when the local budget is exhausted',
                   sources={str(p.relative_to(HERE)): hashlib.sha256(p.read_bytes()).hexdigest() for p in paths})
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(output, indent=2)+'\n')

@@ -418,3 +418,33 @@ if boundary:
                          r'\end{center}' + '\n' +
                          'Ratios are median paired direct/alternative times; values above one '
                          'favor the alternative. A/A compares identical direct implementations.\n')
+
+tait_blocks = load('../fast/results/tait_blocks_20261008.json')
+if tait_blocks:
+    by_case = {}
+    for row in tait_blocks['rows']:
+        by_case.setdefault(row['name'], {})[row['scope']] = row
+    names = dict(conway='Conway', conway_double_three='Conway double three',
+                 conway_forbidden_pretzel='Conway pretzel', conway_sum_2='Conway sum 2',
+                 conway_sum_3='Conway sum 3', conway_sum_8='Conway sum 8',
+                 conway_sum_16='Conway sum 16', conway_sum_32='Conway sum 32',
+                 figure_eight='Figure eight', grid_determinant_one_knot='Grid determinant one',
+                 grid_scrambled_unknot='Scrambled unknot', hard_unknot_8='Hard unknot 8',
+                 kinoshita_terasaka='Kinoshita--Terasaka', stress_braid5_36='Stress braid 36',
+                 torus_3_5='$T(3,5)$', trefoil='Trefoil', unknot='Crossingless unknot',
+                 unknot_braid40='Braid unknot 40')
+    rows = []
+    for name, scopes in by_case.items():
+        cells = []
+        for scope in ('closure', 'raw-shadow', 'recognition-shadow'):
+            ratios = scopes[scope]['median_speedups'] if scope in scopes else None
+            cells.extend(['---', '---'] if ratios is None else
+                         [f'{ratios[k]:.3f}' for k in ('blocks', 'control')])
+        rows.append(names[name] + ' & ' + ' & '.join(cells) + r' \\')
+    with open('tables/tait_blocks_benchmark.tex', 'w') as handle:
+        handle.write(r'\begin{center}\small' + '\n' +
+                     table('Input & Initial & A/A & Raw & A/A & Full & A/A',
+                           '@{}lrrrrrr@{}', rows) + r'\end{center}' + '\n' +
+                     'Ratios are median paired direct/block times; values above one favor '
+                     'block evaluation. A/A compares identical direct implementations. '
+                     'Every scope includes fresh setup.\n')

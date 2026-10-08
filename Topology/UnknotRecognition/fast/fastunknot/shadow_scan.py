@@ -146,7 +146,7 @@ class ClosureShadow(ClosureEuler):
             size = len(black) - 1
             # Small cofactors avoid graph-decomposition overhead. Larger
             # graphs factor at articulation vertices before dense allocation.
-            factor_blocks = size > 8
+            factor_blocks = size > 16
             self._tick(0 if factor_blocks else size * size)
             matrix = None if factor_blocks else [[0] * size for _ in range(size)]
             edges = []
