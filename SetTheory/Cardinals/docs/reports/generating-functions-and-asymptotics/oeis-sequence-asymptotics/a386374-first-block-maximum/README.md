@@ -76,7 +76,8 @@ single-ceiling formula.
   (counts and `P_n = E[J/K]` exactly); the EGF to degree 40; monotonicity;
   every numerical inequality of the proofs of Theorems 2.1, 7.1 and Section
   8 (the sampled circle minima are at least 1/2, well above the bounds); the
-  deviations in (10), (33), (12) for `n ≤ 60` (at most 0.37, 0.12, 0.05);
+  deviations in (10), (33), (12) for `n ≤ 60` (at most 0.37, 0.12, 0.05;
+  the last for `1 ≤ n ≤ 60`, see the independent check);
   the reversion coefficients (24) and `Q_{m,1}`, `Q_{m,2}` (25) (SymPy); the
   residue factorization `c_m(ρ/r_m)^n = T_m(n) G_{m,nD_m}(1/n)`; **every
   entry of Tables 2 and 3** (all correct roundings; truncations given in a
@@ -89,6 +90,35 @@ single-ceiling formula.
   instances of `plt:thm:lw-template` (the phase factor and the moving window);
   `B` is not an admissible interpolation (`B(n) ≠ a_n`), so Corollary 8.2 is
   an analogue of `p0:thm:staircase`(2), proved directly.
+
+## Independent check of the write (7 October 2026)
+
+An independent adversarial check of the write (`20f872d12`) read A386374
+(#16), A386375 (#12) and A308876 (#15) again and recomputed every number the
+write added, with its own code. It is recorded in a dated note at the end of
+Section 10.
+
+- **Confirmed:** both b-files (426 terms each), also against the two OEIS
+  e.g.f.s expanded as exact rational series to degree 60 (a route that does
+  not use the recurrences (7)–(8)); brute force over words for `n ≤ 7`
+  (`P_n = E[J/K]` exactly); monotonicity to 425; the proof constants and the
+  rational checks; the coefficients (24)–(25) by its own reversion; the
+  residue factorization, which is an exact identity (`d_m(D_m) = r_m − ρ`);
+  Tables 2 and 3 in every printed digit, with `D_m` summed as a tail and the
+  roots taken at 100 and 320 digits; every truncation in the write's note;
+  the phase minima and the strict/weak ratios at the peaks and troughs; the
+  provenance figures, the byte identity of the ten staged files, the identity
+  of the three inlined tables with the shipped table files, Remark 8.4, the
+  label numbering (68 delivered labels unchanged) and the file listing.
+- **Made precise (dated notes):** the Bell-pole deviation bound 0.05 holds
+  for `1 ≤ n ≤ 60` (maximum 0.0406…); at `n = 0` the deviation is
+  `1 − 1/(2ρ) = 0.2786…`, still inside 10. The strict/weak product
+  `(u_n/a_n) m/ρ` "0.48–0.68 along the exact sequence" is the range of the
+  write's five samples. Over every `50 ≤ n ≤ 425` it runs from 0.4697… at
+  `n = 124`, the end of phase 2, to 0.7041… at `n = 125`, the start of phase 3.
+
+No claim was found wrong in substance. Rebuilt: 20 pages, label numbers
+unchanged.
 
 ## Further questions, and the standing rule
 
@@ -205,8 +235,8 @@ B=$(mktemp -d); cp article.tex "$B/"; cd "$B"
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The committed PDF was built from this file with MiKTeX pdfLaTeX (three passes,
-7 October 2026): 20 pages; no errors or warnings, no undefined references, no
+The committed PDF was rebuilt at the independent check from this file with
+MiKTeX pdfLaTeX (three passes, 7 October 2026): 20 pages; no errors or warnings, no undefined references, no
 multiply defined labels, no duplicate destinations, no overfull or underfull
 boxes. The delivered text (with its `tables/`) gives 15 pages and two
 underfull lines in the bibliography.
