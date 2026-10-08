@@ -23,7 +23,7 @@ from fastunknot.scan_fast import FastScan
 
 
 EXAMPLES = Path(__file__).resolve().parents[1] / 'examples'
-MODES = ('graded', 'graded-adaptive')
+MODES = ('graded', 'graded-adaptive', 'corridor', 'corridor-adaptive')
 SCAN_OPTIONS = dict(use_braid=False, use_seifert=False, use_reduction=False,
                     use_descending=False, use_alexander=False, use_jones=False,
                     use_factorization=False)
@@ -109,7 +109,8 @@ class GradedTransferIntegrationTests(unittest.TestCase):
                                                check_d_squared=True)
                         self.assertEqual(result['by_degree'], expected)
                         self.assertEqual(result['reduction'], mode)
-                        self.assertIn('graded_transfer_stages', result['stats'])
+                        self.assertIn('corridor_stages' if mode.startswith('corridor') else
+                                      'graded_transfer_stages', result['stats'])
 
     def test_random_diagrams_against_the_set_coefficient_oracle(self):
         rng = random.Random(2026100817)

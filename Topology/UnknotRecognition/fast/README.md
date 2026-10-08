@@ -11,7 +11,7 @@ the pipeline repeats the structural check before matrix filters. Cancelling
 pairs can expose homogeneity. Evidence under `seifert_after_reduction` describes
 the reduced diagram: replay `reidemeister_trace` with `fastunknot.simplify.replay`
 before passing that certificate to `verify_seifert_certificate`. An unchanged
-diagram is not checked twice. The integrated suite now has 431 passing tests.
+diagram is not checked twice. The integrated suite now has 458 passing tests.
 
 The incoming radical-transfer report contributes exact binary prediction of
 the objects surviving cancellation. `--reduction adaptive` (Python:
@@ -1032,3 +1032,25 @@ the full-profile computation keeps its context-length-plus-two reference.
 All 431 maintained tests pass. See [TWIST_CONTINUATION.md](TWIST_CONTINUATION.md)
 for the extended schema and [the theory](../synthesis/symbolic_runs.tex) for
 succinct complexity and the conditional repair-DAG research target.
+
+
+### Survivor corridors and bidirectional adaptive transfer
+
+`--reduction corridor` preserves full graded transfer while pruning paths
+that cannot reach an output survivor and choosing propagation direction per
+component. `--reduction corridor-adaptive` first spends the existing sparse
+Schur-update allowance and retains completed pivots before switching.
+Both are optional; `standard` remains the default. The supported backend,
+coefficient, tail and resource contracts match the graded full-transfer modes;
+window combinations are rejected. Direct controls also expose sparse scalar
+components and Boolean endpoint selection.
+
+The 458-test maintained suite passes. Independent audits check 3,885 transfer
+comparisons on 555 prefixes, all eight contraction identities at each prefix,
+and entrywise equality of sparse versus packed scalar maps. The constructed
+shared-suffix family proves a near-linear complete stage versus quadratic
+forward propagation at fixed algebra size; it does not prove a knot-prefix
+family or superiority to sparse cancellation. See
+[corridor_research/README.md](corridor_research/README.md) for measurements,
+commands and limitations, and [the article](../synthesis/corridor_transfer.tex)
+for proofs and complete setup accounting.

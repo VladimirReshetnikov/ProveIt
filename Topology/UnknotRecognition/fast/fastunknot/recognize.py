@@ -309,12 +309,12 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
         from math import isfinite
         if type(window_seconds) not in (int, float) or not isfinite(window_seconds) or window_seconds < 0:
             raise ValueError("window_seconds must be finite and nonnegative, or None")
-    if reduction not in ("standard", "residue", "adaptive", "disk-adaptive", "graded", "graded-adaptive"):
-        raise ValueError("reduction must be standard, residue, adaptive, disk-adaptive, graded, or graded-adaptive")
+    if reduction not in ("standard", "residue", "adaptive", "disk-adaptive", "graded", "graded-adaptive", "corridor", "corridor-adaptive"):
+        raise ValueError("reduction must be standard, residue, adaptive, disk-adaptive, graded, graded-adaptive, corridor, or corridor-adaptive")
     if reduction != "standard" and (backend != "standard" or pivot != "minfill" or algebra != "bits" or race != 1):
         raise ValueError("residue/adaptive reduction requires standard backend, minfill, bits, and race=1")
-    if reduction in ("graded", "graded-adaptive") and window_radius is not None:
-        raise ValueError("graded reduction cannot be combined with window_radius")
+    if reduction in ("graded", "graded-adaptive", "corridor", "corridor-adaptive") and window_radius is not None:
+        raise ValueError("graded/corridor reduction cannot be combined with window_radius")
     if type(twist_max_basis) is not int or twist_max_basis < 0:
         raise ValueError("twist_max_basis must be nonnegative")
     if composition not in ("standard", "component", "component-dense"):
