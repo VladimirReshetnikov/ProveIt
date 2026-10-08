@@ -1,0 +1,224 @@
+\section{Independent orbit proofs and reusable marked-union queries}
+\label{sec:orbit-certificates}
+
+Report 47 supplies an independent verifier for the six AHT reduction rules
+and a reduction from marked-component incidence to ordinary orbit counts.
+We reconcile these with the sharper kernel of
+Section~\ref{sec:native-interval-orbits}, instead of installing a second
+production orbit scheduler. The maintained extension records optional local
+proofs, replays both merger conventions, computes complete incidence
+histograms, and shares repeated marked-union queries. These are local
+components of a possible compressed hierarchy, not a recognition procedure.
+
+\subsection{What the verifier establishes}
+
+\path{../fast/fastunknot/interval_orbit_verify.py} imports neither the orbit
+producer nor its scheduling helpers. It checks the universe size and the
+ordered, canonical input pairing list, then applies six independently
+implemented local rules. A certificate must finish with an empty universe
+and no pairings. Its claimed count must equal the number of singleton
+orbits removed by static contractions. A truncated valid prefix proves no
+count. Boolean values are rejected in integer fields, and exact hexadecimal
+transport is accepted without changing Python's global decimal limit.
+
+Identity deletion removes only reflexive relations. Static contraction
+recomputes the entire complement of all pairing domains and ranges,
+compares the supplied gaps, and shifts remaining endpoints by their exact
+deleted rank. Reflection trimming retains one arrow for each two-point
+orbit and leaves a fixed midpoint available for subsequent counting.
+A periodic merger checks both periods and the union hull. Version one
+requires overlap $p+q$; version two requires $p+q-\gcd(p,q)$, using the
+proved criterion in the preceding section. Changing a sharp-only trace
+to version one therefore makes it fail replay.
+
+Transmission records the powers applied to the source and image intervals
+of a target pairing. The verifier checks that these partial inverses are
+defined throughout each interval. For a positive translation of distance
+$p$, power $s$ is legal only when the original interval is in the range
+and its last intermediate left endpoint remains in that range. Monotonicity
+then covers every intermediate power with one inequality; the cost depends
+on the bit length of $s$, not on $s$. A trimmed reflection permits one
+inverse step. The verifier composes the two affine maps independently and
+normalizes their resulting intervals.
+
+Suffix truncation requires the carrier to end at the universe boundary,
+the removed suffix to lie in its range, and every other pairing to avoid
+that suffix. A positive carrier has strictly positive displacement, so
+iteration reaches a surviving earlier representative. A reflection must
+already have disjoint domain and range. The verifier does not require the
+producer's preferred scheduling choices: any sequence satisfying these
+local conditions is sound. Scheduling is needed for the producer's
+polynomial running-time theorem, not for the validity of a supplied trace.
+
+Replay is polynomial in the explicit trace length, pairing-list size and
+integer bit lengths. The producer's polynomial cycle bound gives a
+polynomial-size trace: a cycle emits polynomially many deletion, gap, merge,
+transmission and truncation records, each with polynomially many binary
+integers. This is not a hostile-input memory cap; callers can limit
+serialized size and use cooperative cancellation. Production recording is
+optional. Incomplete runs expose neither a partial count nor a certificate.
+
+\subsection{Coning a marked union}
+
+Let $A$ be a nonempty union of half-open marked intervals in the orbit
+universe. For each interval $[a,b)$ of length at least two, adjoin the
+translation $[a,b-2]\to[a+1,b-1]$. Its points become one class. Join one
+point of each interval to a common marked anchor by singleton pairings.
+There are at most twice as many new pairings as marked intervals, with no
+expansion into individual points.
+
+If $C$ is the original orbit count and $C_A$ is the count after these
+identifications, then the number of original orbits meeting $A$ is
+\[
+ H(A)=C-C_A+1.
+\]
+Indeed, exactly those original orbits meeting $A$ become one class; all
+others retain their identities. The empty union has $H(\varnothing)=0$
+and requires no coned query. This argument allows partial translations,
+reflections, intersecting marks, static points and disconnected supports.
+
+For ordered ports $A_1,\ldots,A_r$, let $h(T)$ count orbits meeting exactly
+the ports indexed by $T\subseteq[r]$. Define
+\[
+ F(S)=H\!\left(\bigcup_{i\in S}A_i\right),\qquad
+ G(U)=C-F([r]\setminus U).
+\]
+An orbit contributes to $G(U)$ precisely when its signature is a subset
+of $U$, so $G(U)=\sum_{T\subseteq U}h(T)$. The producer recovers $h$ by
+Boolean M\"obius inversion in $O(r2^r)$ integer subtractions. It retains
+$h(\varnothing)$, the completely unmarked component count.
+
+\subsection{Sharing queries and proofs without changing the output}
+
+Different port subsets can describe the same marked set. The implementation
+sorts intervals, merges overlap and adjacency, and uses the resulting
+ordered disjoint union as its cache key. Equal unions introduce exactly
+the same coning pairings in the same order. Consequently one result and
+one proof can serve every mask with that union; neither an approximate
+shape signature nor equality of counts is used to justify reuse.
+
+If all $r$ nonempty ports coincide, there is one distinct nonempty union:
+only two orbit queries are needed, including the original count. If the
+ports form a strict nonempty nested chain, there are $r$ distinct unions
+and $r+1$ queries. Disjoint nonempty ports can have $2^r-1$ distinct unions,
+so no uniform query reduction follows. The output remains a dense array
+of $2^r$ counts, even when query reuse is substantial.
+
+The new incidence certificate has version two. It contains one baseline
+orbit proof, one proof per distinct nonempty union, and an index array
+binding every subset mask to its proof. Empty unions have no proof index.
+The verifier reconstructs the marked unions from the supplied ports,
+rejects rebinding one proof to a different union, checks every distinct
+orbit proof, and rejects unused or duplicate proof assignments. To check
+the histogram it computes its \emph{forward} subset sums, rather than
+repeating the producer's inverse transform. This catches incorrect
+histograms independently of inversion code. Input normalization and the
+explicit coning construction are shared; their correctness is also checked
+against literal marked graphs in the small-instance tests.
+
+Let $M$ be the total number of marked intervals and $U$ the number of
+distinct nonempty unions. If $P(k,B)$ bounds the orbit kernel for $k$
+pairings and $B$-bit endpoints, a coarse bound is
+\[
+ (U+1)P(k+2M,B)
+ +O\!\left(2^r M\log(M+1)B+r2^r B\right).
+\]
+The first term pays for the baseline and distinct coned queries; the second
+pays for union construction, cache keys and dense inversion. For hash-based
+lookups this uses ordinary expected dictionary costs; balanced ordered
+keys would add polynomial comparison factors without changing the
+$2^r\operatorname{poly}(k+M+r,B)$ bound. Certificate storage contains one
+trace per distinct union and $O(2^r\log(U+2))$ bits of proof indices,
+in addition to the dense counts and input records.
+
+Polynomially bounded $k,M,B$ give a polynomial query for $r=O(\log n)$,
+and a quasi-polynomial query for $r=O((\log n)^2)$. Neither condition has
+been established for a complete unknot hierarchy. The weighted AHT
+extension offers a different route to sparse component-weight information;
+this dense reduction is not a new general complexity bound for weighted
+orbits. It implements one useful aggregate query over the unweighted kernel.
+
+Unlike the delivery's separate allowance for each coned query, the maintained
+interface shares one \texttt{max\_cycles} budget across all orbit calls.
+Exhaustion returns \texttt{INCONCLUSIVE} with work statistics and no histogram
+or certificate. Port validation and Boolean inversion also poll the global
+callback. The default explicit port cap is 12. Raising it permits the
+corresponding exponential output cost; the cap is not a theorem about
+geometric input. A signature records set incidence only. It omits point
+multiplicity, cyclic order, slope and the action of future attachment maps.
+
+\subsection{Validation and measured costs}
+
+Nineteen new verifier tests adapt the report's adversarial replay suite and
+add sharp-threshold version checks, a forged merger below the exact threshold,
+1,000 randomized comparisons with literal graphs, and a transmission of
+$2^{16000}-1$ steps stored in a single record. They compare traced and
+untraced results and operation statistics, exercise exact JSON transport,
+and disable producer functions while replaying proofs. Malformed inputs,
+changed source bindings, invalid local operations and unfinished traces
+are rejected. Seven incidence tests compare 250 random marked graphs and
+18 actual normal-arc systems against literal component signatures, including
+parallel meridians, overlapping and coincident ports, huge static universes,
+shared budget boundaries and certificate mutations.
+All 831 maintained tests pass with Regina in 179.802 seconds. A separate
+cross-replay audit imports the unchanged report-47 producer and verifier
+under another package namespace. For 1,000 interval systems, the maintained
+verifier accepts the delivery's classical proofs and the delivery's verifier
+accepts our classical proofs; our sharp proofs also pass independent replay.
+The audit exercises all six rule types. One hundred marked systems agree
+with the delivery's complete incidence histograms, with both proof formats
+checked by their respective verifiers. Evidence and source hashes are in
+\path{data/orbit-certificate-cross-replay.json}.
+
+\input{tables/orbit_certificates.tex}
+
+The incidence benchmark uses the same maintained orbit kernel for both
+the fresh-query ablation and the cached implementation, isolating reuse
+from the difference between the reports' two orbit schedulers. There are
+nine workloads, four shuffled arms, one warmup and five measured rounds:
+36 warmup and 180 measured incidence calls. The fourth arm is an identical
+cached control. Seed 261008483 fixes the order. Each complete histogram is
+compared outside its timed region; the certified arm includes local proof
+construction and independent verification in its timing. The inputs use
+eight marks on a static $2^{4000}$-point universe, six marks on the normal
+arc graph of an eight-tetrahedron meridian, or six marks on $2^{500}$
+parallel copies of that meridian. Marks are chosen coordinate intervals,
+not claimed outputs of a geometric attachment-port extractor.
+
+Coincident marks reduce queries from 256 to two in the static case and
+from 64 to two in the native cases. The native unscaled query improves
+from 128.5 to 3.8 ms, with paired ratio 33.308. The large parallel-copy
+query improves from 2.411 seconds to 40.5 ms, with paired ratio 61.817;
+including proof generation and replay takes 68.6 ms. Ratios can exceed
+the ratio of total query counts because the unchanged baseline count
+is cheaper than a coned count. Nested marks also benefit, while disjoint
+marks leave every union distinct. The latter show no reliable improvement
+and can incur cache overhead. All timing arms and proof-size costs are
+retained in \path{../fast/results/orbit_certificates_20261008.json};
+for example, the disjoint parallel-copy certificate is about 13.3 MB
+in the measured JSON transport. Binary input does not imply a tiny trace.
+
+The same driver separately measures ordinary counts, optional recording,
+and recording plus replay against the pre-certificate kernel pinned at
+\texttt{8cd6dcfcd}. Its initial small-query samples had divergent identical
+controls, so a separate batched follow-up retains those results and measures
+fresh batches of the four workloads. It uses seed 261008485, seven measured
+rounds, and 1,000 repeats for each tiny translation/reflection query, 30
+for the 64-pair chain and ten for the native 32-tetrahedron arc query.
+Its raw results are in \path{../fast/results/orbit_trace_cost_20261008.json}.
+On the native arc query, the old/current paired ratio is 0.976: the optional
+recording branches have a small default-path cost. Median times are 33.34 ms
+before the change, 33.92 ms without recording, 37.48 ms with recording and
+42.88 ms with recording plus replay. The translation and chain ratios are
+0.968 and 0.993. Reflection samples retain some variability, so no precise
+default-path gain is claimed there. Paired identical-current ratios in the
+follow-up range from 0.999 to 1.026. Proof production is optional precisely
+because its time and storage are real costs. These local costs do not alter
+ordinary knot dispatch, which does not currently call the orbit interface.
+
+The remaining normal-disc certificate adapter and sparse two-meridian seed
+search in report 47 require separate review. The report's source snapshots
+are unchanged. The maintained coning and replay code establish assertions
+about supplied interval relations, including relations extracted by our
+validated normal-arc adapter; they do not establish diagram-to-exterior
+provenance or search completeness.
