@@ -49,7 +49,7 @@ reproduced by `../fast/benchmark_euler_setup.py`.
 `research_updates.tex` covers the later report 08–12 intake and reviewed
 integrations: complete short-strand braid recognition, interlacement factors,
 sparse Alexander elimination, and the corrected general-frontier matching bound.
-The current full production suite passes 229 tests. Local report 10–12 production
+The current full production suite passes 245 tests. Local report 10–12 production
 cross-checks are retained in `data/`. Report 12's exact component contraction
 is integrated as an opt-in API/CLI option. Report 11's twist backend is now
 integrated too; report 12's structured block cancellation remains under review. The braid benchmark includes PD construction and keeps the current
@@ -124,3 +124,14 @@ arbitrary PD input. `data/twist-integrated-tests.txt` records the 209-test suite
 Raw homology measurements and controls are in
 `../fast/results/twist_integration_20261007.json`; the extended four-strand
 context experiment is in `../fast/results/twist_context_scaling_20261007.json`.
+
+`windows.tex` proves report 13's exact moving homological interval, including
+both guards, pre-allocation pruning, mirror selection, and the conditional
+quasi-polynomial query bound. It explains the new optional adaptive widening
+stage, local budgets and complete fallback, and compatibility with adaptive
+cancellation. `../fast/benchmark_windows.py --output FILE` reproduces the
+seven-round comparisons in `../fast/results/window_integration_20261008.json`.
+The table generator reads that file. `data/window-integrated-tests.txt` records
+245 passing tests; report 13's 64 scanner and 10 hierarchy tests and report
+14's 94 tests have separate logs in `data/`. Report 14's integration review is
+ongoing, including its scalar basis changes' compatibility with quantum grading.

@@ -86,7 +86,7 @@ PDFs in `docs/arXiv-2607.23350v1/`.
 
 ## Current integration (7 October 2026)
 
-The maintained Python suite now passes 229 tests. The latest work adds
+The maintained Python suite now passes 245 tests. The latest work adds
 twist-compressed homology with a quasi-polynomial bound for braid presentations
 having logarithmically many signed runs, plus optional adaptive cancellation
 (`--reduction adaptive`). The latter preserves sparse cancellation progress,
@@ -162,3 +162,14 @@ implementation would still need: an encoded layered handle structure with
 bit-size bounds, bounded hierarchical multi-surfaces, compressed cutting with
 provenance, constructive Cheeger-region and weak-reduction routines, the
 logarithmic depth bound, and the end-to-end cost accounting.
+
+Report 13's exact homological windows now support optional adaptive widening:
+`recognize --window-radius 4` queries successively wider normalized bands under
+one local budget, then uses the complete backend if inconclusive. Guard degrees
+make each query exact; only full coverage can turn agreement into an unknot
+certificate. The 36-crossing stress case needs 7692 peak objects for its
+knottedness obstruction versus 17694 for the full computation. Widening can
+also slow down recognition, so it remains opt-in. See
+[`synthesis/windows.tex`](synthesis/windows.tex) for proofs, measured tradeoffs,
+and conditional quasi-polynomial query bounds. General quasi-polynomial unknot
+recognition remains an open implementation goal.
