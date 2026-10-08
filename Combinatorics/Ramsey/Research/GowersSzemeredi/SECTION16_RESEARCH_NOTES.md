@@ -1041,7 +1041,18 @@ So what remains on the variety route is exactly two things:
    those coordinates the forms are genuinely bilinear, so the peer's lemma
    applies there. The remaining obstruction is transporting cells between
    GAP coordinates and boxes of ℤ/N.
-2. The translation from Φ's graph to φ's, by the shift (s, t).
+2. ~~The translation from Φ's graph to φ's, by the shift (s, t).~~
+   **Done** (`Proofs16VarietyTranslate`, kernel-checked):
+   `deep_structure_multiplyLinear_phi` takes any part Γ_φ of φ's graph
+   whose points, shifted back by (s, t), are deep agreement points
+   (`varietyAgreement` at radius ρ/2). Given a Freiman bihomomorphism Φ on
+   V(ρ) and `OscillationPartitionsExist` for the unshifted variety, Γ_φ is
+   `MultiplyLinearWith` with one map per cell. It reuses the box and
+   partition translation API of `Proofs16Translations`.
+
+So, conditionally on `MilicevicDeepVarietyStructure`, the variety route's
+only open input is item 1. That is `OscillationPartitionsExist`: Lemma 16.1
+for Freiman-bilinear forms on a Bohr set.
 The bracket route above (steps 1–4) stays as a self-contained alternative
 for the one-variable core, with step 3 formalized. With quasi-polynomial
 t, a poly(1/t) exponent gives widths N^(exp(−polylog)), inside the
