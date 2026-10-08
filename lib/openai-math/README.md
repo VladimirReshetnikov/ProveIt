@@ -107,6 +107,9 @@ height induction and its Section 16 lift now also pass isolated Lean checks:
 for dimension-dependent constants `K,p`, input width
 `H^(p*(q+1)^(2^(k+2)))` and `H >= K*(q+1)` suffice for a common proper box
 partition of minimum width `H` and common-difference error `2*N/H`.
+The checked root-width profile has exponent
+`1/(2*p*(q+1)^(2^(k+2)))` and integer threshold
+`(K*(q+1))^(2*p*(q+1)^(2^(k+2)))`, with ceiling rounding included.
 This reuses the audited Schmidt input without any new upstream module.
 Explicit degree constants and the final all-length threshold remain open.
 
