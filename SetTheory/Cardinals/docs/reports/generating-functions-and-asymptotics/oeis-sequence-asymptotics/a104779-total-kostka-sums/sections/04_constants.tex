@@ -1,5 +1,5 @@
-\section{Effective coefficients and certified constants}\label{sec:constants}
-At any fixed weight $S$, the product \eqref{eq:P} has a finite polynomial approximation. Enumerate partitions with parts at least $2$ and size at most $S$. Truncate each $d_j$ at weight $S$, replace its reciprocal by
+\section{Effective coefficients and certified constants}\label{tks:sec:constants}
+At any fixed weight $S$, the product \eqref{tks:eq:P} has a finite polynomial approximation. Enumerate partitions with parts at least $2$ and size at most $S$. Truncate each $d_j$ at weight $S$, replace its reciprocal by
 \[
 (1-d_j)^{-1}=\sum_{k=0}^{\lfloor S/2\rfloor}d_j^k
 \quad\text{modulo terms of weight greater than }S,
@@ -11,21 +11,21 @@ R_s^*=\max_{\substack{\rho\vdash s\\\min\rho\geq2}}r(\rho),
 \]
 with $R_0^*=1$ and an empty maximum interpreted as $0$.
 
-\begin{proposition}\label{prop:tails}
+\begin{proposition}\label{tks:prop:tails}
 For $J\geq\max(2,s)$,
 \begin{align}
-0\leq H_s-H_{s,J}&\leq84R_s^*4^{s-J},\label{eq:geomconstanttail}\\
-0\leq C-C_J&\leq\frac{6(J+2)}{(J+1)(J+1)!}.\label{eq:Ctail}
+0\leq H_s-H_{s,J}&\leq84R_s^*4^{s-J},\label{tks:eq:geomconstanttail}\\
+0\leq C-C_J&\leq\frac{6(J+2)}{(J+1)(J+1)!}.\label{tks:eq:Ctail}
 \end{align}
 For $s\geq2$ and $J\geq\max(s,4)$, the stronger fixed-weight estimate is
-\begin{equation}\label{eq:factorialconstanttail}
+\begin{equation}\label{tks:eq:factorialconstanttail}
 0\leq H_s-H_{s,J}
  \leq24sR_s^*4^s\frac{(J+1)^s}{(J+1)!}.
 \end{equation}
 Consequently each $H_s$ is computable to any prescribed absolute precision by a finite algorithm with a proved stopping rule.
 \end{proposition}
 \begin{proof}
-At $t_0=1/4$, expansion of \eqref{eq:Hjt} gives
+At $t_0=1/4$, expansion of \eqref{tks:eq:Hjt} gives
 $\mathcal H_j(1,t_0)\leq e^3 4^{-j}$. Set
 \[
 \delta_j=d_j(t_0^2,t_0^3,\ldots)
@@ -38,38 +38,38 @@ P(t_0)-P_J(t_0)
  =P(t_0)\left(1-\prod_{j>J}(1-\delta_j)\right)
  \leq P(t_0)\sum_{j>J}\delta_j.
 \]
-Bounding a weight-$s$ coefficient by $4^s$ times this positive total and then multiplying by the maximal root count proves \eqref{eq:geomconstanttail}. The same argument for $C$, using $C\leq6$ and
+Bounding a weight-$s$ coefficient by $4^s$ times this positive total and then multiplying by the maximal root count proves \eqref{tks:eq:geomconstanttail}. The same argument for $C$, using $C\leq6$ and
 \[
 \sum_{j>J}\frac1{j!}\leq\frac{J+2}{(J+1)(J+1)!},
 \]
-proves \eqref{eq:Ctail}.
+proves \eqref{tks:eq:Ctail}.
 
 For the refinement, truncate each $d_j$ at weight $s$ before evaluating at $t_0$. This preserves the desired coefficient and can only decrease the positive product. At each weight $k$, the sum of $1/z_\rho$ over types without $1$-parts is at most $1$: it is the proportion of fixed-point-free permutations of $k$. For $j\geq s$, the truncated factor input is therefore at most $2s j^s/j!$. If $j\geq J+1$ and $J\geq\max(s,4)$, then
 \[
 \frac{(j+1)^s/(j+1)!}{j^s/j!}
  =\frac{(1+1/j)^s}{j+1}\leq\frac e{J+2}<\frac12.
 \]
-The tail is at most $4s(J+1)^s/(J+1)!$. Multiplication by the product bound $6$, the coefficient factor $4^s$, and $R_s^*$ proves \eqref{eq:factorialconstanttail}.
+The tail is at most $4s(J+1)^s/(J+1)!$. Multiplication by the product bound $6$, the coefficient factor $4^s$, and $R_s^*$ proves \eqref{tks:eq:factorialconstanttail}.
 \end{proof}
 
 \subsection{The first nonzero support coefficients}
 Define
-\begin{equation}\label{eq:Dk}
+\begin{equation}\label{tks:eq:Dk}
 D_k=\sum_{j\geq\max(2,k)}\frac{\fall jk}{j!-1},\qquad
 v_{j,2}=\frac{\fall j2}{2(j!-1)},\qquad
 v_{j,3}=\frac{\fall j3}{3(j!-1)}.
 \end{equation}
-Direct extraction from \eqref{eq:P} gives
+Direct extraction from \eqref{tks:eq:P} gives
 \begin{align}
-H_3&=D_3/3,\label{eq:H3}\\
-H_4&=D_4/4+(D_2/2)^2+\sum_{j\geq2}v_{j,2}^2,\label{eq:H4}\\
-H_5&=D_5/5,\label{eq:H5}\\
-H_6&=2D_6/9+2(D_3/3)^2+2\sum_{j\geq3}v_{j,3}^2.\label{eq:H6}
+H_3&=D_3/3,\label{tks:eq:H3}\\
+H_4&=D_4/4+(D_2/2)^2+\sum_{j\geq2}v_{j,2}^2,\label{tks:eq:H4}\\
+H_5&=D_5/5,\label{tks:eq:H5}\\
+H_6&=2D_6/9+2(D_3/3)^2+2\sum_{j\geq3}v_{j,3}^2.\label{tks:eq:H6}
 \end{align}
-At support $3$ only $(3)$ contributes, with root count $1$; at support $4$ only $(2,2)$ contributes, with root count $2$; at support $5$ only $(5)$ contributes; and at support $6$ only $(3,3)$ contributes, with root count $4$. For example, the coefficient of $u_2^2$ receives both a term from $d_j$ and a term from $d_j^2$ within a single factor, as well as terms from different factors. These repeated-factor contributions are exactly the extra squared sums in \eqref{eq:H4} and \eqref{eq:H6}.
+At support $3$ only $(3)$ contributes, with root count $1$; at support $4$ only $(2,2)$ contributes, with root count $2$; at support $5$ only $(5)$ contributes; and at support $6$ only $(3,3)$ contributes, with root count $4$. For example, the coefficient of $u_2^2$ receives both a term from $d_j$ and a term from $d_j^2$ within a single factor, as well as terms from different factors. These repeated-factor contributions are exactly the extra squared sums in \eqref{tks:eq:H4} and \eqref{tks:eq:H6}.
 
 \subsection{Forty decimal interval certificates}
-The following are enclosing intervals, not merely rounded floating-point approximations. Every displayed interval has width $10^{-40}$. The finite sums and products use $J=70$, exact rational arithmetic, and the proved tails \eqref{eq:Ctail} and \eqref{eq:factorialconstanttail}; outward decimal rounding is by integer division. The package reproduces the calculation.
+The following are enclosing intervals, not merely rounded floating-point approximations. Every displayed interval has width $10^{-40}$. The finite sums and products use $J=70$, exact rational arithmetic, and the proved tails \eqref{tks:eq:Ctail} and \eqref{tks:eq:factorialconstanttail}; outward decimal rounding is by integer division. The package reproduces the calculation.
 \begin{center}
 \small
 \begin{tabular}{cl}
@@ -90,3 +90,18 @@ $H_6$ & $[\,3.1846595830270382795159539520700360539731,$\\
 \end{tabular}
 \end{center}
 The constants need not be rational; the finite approximants and the rigorous error bounds are rational. The certification of these constants is logically separate from an effective remainder estimate for $a_n$: no numerical starting index for an asymptotic theorem follows from this table alone.
+\begin{writenote}[The constants recomputed, 7 October 2026]
+The write extracted $q_\rho$ for all types of weight at most~6 from its own
+truncation of~\eqref{tks:eq:P} at $J=60$ (exact fractions) and evaluated the
+closed forms~\eqref{tks:eq:H3}--\eqref{tks:eq:H6} at 50 digits; the two agree
+to 50 digits, and every displayed interval contains the recomputed value:
+\begin{center}
+\begin{tabular}{@{}ll@{}}
+$C$ & $2.529477472079152648180116154253954241178702\ldots$\\
+$H_3$ & $0.988734017611906710676590001502765952229404\ldots$\\
+$H_4$ & $6.012109353905084178139999319012952880522219\ldots$\\
+$H_5$ & $0.545635897455836459526189103459496805572989\ldots$\\
+$H_6$ & $3.184659583027038279515953952070036053973163\ldots$
+\end{tabular}
+\end{center}
+\end{writenote}

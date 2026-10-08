@@ -18,6 +18,12 @@
 \theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
 \theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
 \newcommand{\E}{\mathbb E}\newcommand{\PP}{\mathbb P}\newcommand{\R}{\mathbb R}\newcommand{\N}{\mathbb N}\newcommand{\ii}{\mathrm i}\newcommand{\dd}{\mathrm d}\newcommand{\eps}{\varepsilon}\newcommand{\ceil}[1]{\left\lceil #1\right\rceil}\newcommand{\fall}[2]{(#1)_{#2}}\newcommand{\TV}{d_{\mathrm{TV}}}\newcommand{\Part}{\mathcal P}
+% Added in the write (batch 113, 7 October 2026).
+\usepackage{etoolbox}\AtBeginEnvironment{thebibliography}{\raggedright}% [write] removes the one underfull bibliography line of the delivered build
+\newcommand{\file}[1]{\nolinkurl{#1}}
+\newenvironment{writenote}[1][]{\par\smallskip\begingroup\small
+ \noindent\textbf{[write]}\if\relax\detokenize{#1}\relax\else~\textbf{#1.}\fi\ }%
+ {\par\endgroup\smallskip}
 \begin{document}
 \begin{center}
 {\large Report \ReportNumber}\par\vspace{8pt}
@@ -33,6 +39,26 @@ a_n=C\sum_{s=0}^{S}H_s I_{n-s}
 \]
 where $I_n$ is the involution number, $C=\prod_{j\geq2}(1-1/j!)^{-1}$, and the nonnegative constants $H_s$ are effectively computable, with $H_0=1$ and $H_1=H_2=0$. A positive global support bound controls the growing family of cycle types, while analytic coefficient stabilization identifies every fixed support. We give half-integer corrections through $n^{-3}$, rationally certified forty-decimal intervals for five constants, and a Lambert-$W$/Newton inverse with a precise two-ceiling qualification. The entire nonunit margin profile converges to independent geometric multiplicities, with sharp total-variation distance $(2H_3/C)n^{-3/2}+O(n^{-2})$. The same method gives factorial-shift expansions for A321652 and A068313. An exact Gaussian half-axis split further supplies separately controlled dominant and alternating recessive sectors, the latter smaller by $e^{-2\sqrt n}$. The cycle-index identities are due to Schwob; the involution and special-function asymptotic methods are classical. No complete transseries theory, explicit asymptotic onset, or certified finite-input inverse is asserted.
 \end{abstract}
+\begin{writenote}[Status and trust boundary, added 7 October 2026, batch~113]
+This is bundle Report~237 of an external AI-assisted research session, filed
+in ProveIt as the single-source research report
+\file{a104779-total-kostka-sums} (provenance, the sources as the write read
+them, what was checked, relation to the repository, the collected non-claims
+and the reading conventions are in Section~\ref{tks:sec:provenance}). It is
+unrefereed and not formalized. Its title page and PDF author field read
+``Report 237'': it names no person or tool. \emph{What rests on what.} The
+exact identities~\eqref{tks:eq:schwob} and~\eqref{tks:eq:companionexact} are
+imported from Schwob's arXiv version~1 and are not reproved; the write did
+not read that paper, but its own finite computations confirm both identities
+for $n\le11$ against Kostka numbers computed without the cycle index. Every
+asymptotic statement has a conventional proof in the text: a positive global
+support majorant, analytic coefficient stabilization, the classical
+involution saddle, Gaussian half-axis moments, Stirling's formula and the
+mean value theorem. No proof uses a computation; the rational interval
+certificates of Section~\ref{tks:sec:constants} use the proved tail bounds.
+The write adds Remarks~\ref{tks:rem:transseries} and~\ref{tks:rem:oeis} and
+dated notes; no statement, proof or number of the source was changed.
+\end{writenote}
 \setcounter{tocdepth}{1}
 \begingroup\small\setlength{\parskip}{0pt}
 \makeatletter\renewcommand\l@section[2]{\@dottedtocline{1}{0em}{2em}{#1}{#2}}\makeatother

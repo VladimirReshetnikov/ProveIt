@@ -1,45 +1,45 @@
-\section{The limiting nonunit margin profile}\label{sec:margins}
+\section{The limiting nonunit margin profile}\label{tks:sec:margins}
 Choose uniformly a symmetric sorted-positive-margin matrix counted by $a_n$. For $j\geq2$, let $M_j$ be the number of its margins equal to $j$. A profile $m=(m_j)_{j\geq2}$ has finite support and is feasible when
-\begin{equation}\label{eq:marginweight}
+\begin{equation}\label{tks:eq:marginweight}
 W(m)=\sum_{j\geq2}jm_j\leq n.
 \end{equation}
 It then determines the remaining $n-W(m)$ unit margins. This profile refers to distinct row positions in the matrix model, not to a quotient by simultaneous permutations.
 
 Put
-\begin{equation}\label{eq:pilaw}
+\begin{equation}\label{tks:eq:pilaw}
 w(m)=\prod_{j\geq2}(j!)^{-m_j},\qquad
 \pi(m)=\frac{w(m)}{C},\qquad
 T_3(m)=\sum_{j\geq3}2\binom j3m_j.
 \end{equation}
 The law $\pi$ is the product of independent geometric distributions on $\{0,1,2,\ldots\}$,
-\begin{equation}\label{eq:geommargin}
+\begin{equation}\label{tks:eq:geommargin}
 \PP_\pi(M_j=m)=(1-1/j!)(1/j!)^m.
 \end{equation}
 Since $\sum_{j\geq2}\PP_\pi(M_j>0)=\sum_{j\geq2}1/j!<\infty$, it is supported on finite profiles. Its normalization is exactly $C$, and
-\begin{equation}\label{eq:ET3}
+\begin{equation}\label{tks:eq:ET3}
 \E_\pi T_3=\sum_{j\geq3}\frac{2\binom j3}{j!-1}=H_3.
 \end{equation}
 
 Let $P_n$ be the actual profile law, extended by zero to infeasible profiles, and put $q_n=I_{n-3}/I_n$ for $n\geq3$.
-\begin{theorem}\label{thm:marginlaw}
+\begin{theorem}\label{tks:thm:marginlaw}
 On the countable space of finite nonunit margin profiles,
-\begin{equation}\label{eq:marginL1}
+\begin{equation}\label{tks:eq:marginL1}
 \left\|\frac{\dd P_n}{\dd\pi}-1-q_n(T_3-H_3)\right\|_{L^1(\pi)}
  =O(n^{-2}).
 \end{equation}
 In particular,
-\begin{equation}\label{eq:marginTV}
+\begin{equation}\label{tks:eq:marginTV}
 \TV(P_n,\pi)=\frac{2H_3}{C}n^{-3/2}+O(n^{-2}).
 \end{equation}
 Thus the entire nonunit margin profile converges jointly in total variation to the independent geometric law.
 \end{theorem}
 \begin{proof}
-For a feasible profile, apply the Young-subgroup sum in \eqref{eq:schwob} to its single margin partition. The identity permutation contributes exactly $I_nw(m)$. No support-$1$ or support-$2$ element contributes. A support-$3$ element is a single $3$-cycle in a block of size $j$, with $2\binom j3$ choices per such block. Its square-root count is $I_{n-3}$. Therefore the number of matrices of profile $m$ is exactly
-\begin{equation}\label{eq:fixedprofile}
+For a feasible profile, apply the Young-subgroup sum in \eqref{tks:eq:schwob} to its single margin partition. The identity permutation contributes exactly $I_nw(m)$. No support-$1$ or support-$2$ element contributes. A support-$3$ element is a single $3$-cycle in a block of size $j$, with $2\binom j3$ choices per such block. Its square-root count is $I_{n-3}$. Therefore the number of matrices of profile $m$ is exactly
+\begin{equation}\label{tks:eq:fixedprofile}
 I_nw(m)+I_{n-3}w(m)T_3(m)+R_{n,m},\qquad R_{n,m}\geq0,
 \end{equation}
-where the remainder contains supports at least $4$. The proof of Theorem~\ref{thm:main} gives
-\begin{equation}\label{eq:marginremainder}
+where the remainder contains supports at least $4$. The proof of Theorem~\ref{tks:thm:main} gives
+\begin{equation}\label{tks:eq:marginremainder}
 \sum_{W(m)\leq n}R_{n,m}=O(I_n n^{-2}).
 \end{equation}
 
@@ -50,22 +50,22 @@ For every $1<R<\sqrt2$, the exponential moment
 \]
 is finite. The $T_3$-weighted moment is also finite, either by differentiating the geometric factors and summing a factorially decaying series, or by bounding $T_3$ by a polynomial in $W$ and choosing a slightly larger admissible $R$. Consequently both
 $\sum_{W>n}\pi(m)$ and $\sum_{W>n}\pi(m)T_3(m)$ are $O(R^{-n})$.
-Summing \eqref{eq:fixedprofile} and using \eqref{eq:marginremainder} now gives
+Summing \eqref{tks:eq:fixedprofile} and using \eqref{tks:eq:marginremainder} now gives
 \[
 \frac{a_n}{CI_n}=1+q_nH_3+O(n^{-2}).
 \]
-Divide \eqref{eq:fixedprofile} by $a_n\pi(m)$, sum absolute errors against $\pi$, and include the exponentially small infeasible tail. The remainder has $L^1$ mass $O(n^{-2})$ by positivity. Since $q_n=O(n^{-3/2})$, quadratic normalization terms are $O(n^{-3})$. This proves \eqref{eq:marginL1}.
+Divide \eqref{tks:eq:fixedprofile} by $a_n\pi(m)$, sum absolute errors against $\pi$, and include the exponentially small infeasible tail. The remainder has $L^1$ mass $O(n^{-2})$ by positivity. Since $q_n=O(n^{-3/2})$, quadratic normalization terms are $O(n^{-3})$. This proves \eqref{tks:eq:marginL1}.
 
 Total variation is half the $L^1$ density difference, so
 \[
 \TV(P_n,\pi)=\frac{q_n}{2}\E_\pi|T_3-H_3|+O(n^{-2}).
 \]
-The variable $T_3$ is nonnegative and every positive value is at least $2$. The certificate in Section~\ref{sec:constants} proves $0<H_3<2$. Since its mean is $H_3$,
+The variable $T_3$ is nonnegative and every positive value is at least $2$. The certificate in Section~\ref{tks:sec:constants} proves $0<H_3<2$. Since its mean is $H_3$,
 \[
 \E_\pi|T_3-H_3|=2H_3\PP_\pi(T_3=0),\qquad
 \PP_\pi(T_3=0)=\prod_{j\geq3}(1-1/j!)=\frac2C.
 \]
-Finally \eqref{eq:shiftratio} gives $q_n=n^{-3/2}+O(n^{-2})$, proving \eqref{eq:marginTV}.
+Finally \eqref{tks:eq:shiftratio} gives $q_n=n^{-3/2}+O(n^{-2})$, proving \eqref{tks:eq:marginTV}.
 \end{proof}
 
 \subsection{The matrix dimension deficit}
@@ -73,9 +73,9 @@ If $K_n$ is the matrix dimension, then
 \[
 n-K_n=\sum_{j\geq2}(j-1)M_j.
 \]
-Total variation contracts under a measurable map. Thus the law of this deficit converges, with error at most that in \eqref{eq:marginTV}, to the finite random variable
-$D=\sum_{j\geq2}(j-1)M_j$ under \eqref{eq:geommargin}. Its probability generating function is
-\begin{equation}\label{eq:deficitpgf}
+Total variation contracts under a measurable map. Thus the law of this deficit converges, with error at most that in \eqref{tks:eq:marginTV}, to the finite random variable
+$D=\sum_{j\geq2}(j-1)M_j$ under \eqref{tks:eq:geommargin}. Its probability generating function is
+\begin{equation}\label{tks:eq:deficitpgf}
 \E z^D=\prod_{j\geq2}\frac{1-1/j!}{1-z^{j-1}/j!},\qquad |z|\leq1.
 \end{equation}
 For example, the limiting probability that every margin equals $1$ is $1/C$, and that no margin exceeds $2$ is $2/C$. These follow from the joint profile theorem. Distributional and total-variation convergence do not by themselves assert convergence of unbounded moments of the actual finite-$n$ deficit; no such additional assertion is needed here.

@@ -1,4 +1,4 @@
-\section{The exact cycle index and support constants}\label{sec:identity}
+\section{The exact cycle index and support constants}\label{tks:sec:identity}
 For a partition $\nu$ with $m_\ell(\nu)$ parts equal to $\ell$, define
 \[
 z_\nu=\prod_{\ell\geq1}\ell^{m_\ell(\nu)}m_\ell(\nu)!,\qquad
@@ -6,26 +6,26 @@ p_\nu=\prod_{\ell\geq1}p_\ell^{m_\ell(\nu)},\qquad
 h_j(p)=\sum_{\nu\vdash j}\frac{p_\nu}{z_\nu}.
 \]
 Let $r(\nu)$ be the number of square roots in $S_{|\nu|}$ of a fixed permutation of cycle type $\nu$. This is a square-root count, not a count of involutions commuting with that permutation. With
-\begin{equation}\label{eq:F}
+\begin{equation}\label{tks:eq:F}
 F(p)=\prod_{j\geq1}(1-h_j(p))^{-1},\qquad
 \alpha_\nu=[p_\nu]F(p),
 \end{equation}
 Schwob's identity is
-\begin{equation}\label{eq:schwob}
+\begin{equation}\label{tks:eq:schwob}
 a_n=\sum_{\nu\vdash n}\alpha_\nu r(\nu)
  =\sum_{\mu\vdash n}\frac1{|S_\mu|}\sum_{\sigma\in S_\mu}r(\sigma).
 \end{equation}
-Here $S_\mu$ is the standard Young subgroup, a product of symmetric groups on the blocks specified by $\mu$. All coefficients of $F$ are nonnegative. Formula~\eqref{eq:schwob} is imported from \cite[\S4.3]{Schwob}; it fixes the normalization of the entire argument.
+Here $S_\mu$ is the standard Young subgroup, a product of symmetric groups on the blocks specified by $\mu$. All coefficients of $F$ are nonnegative. Formula~\eqref{tks:eq:schwob} is imported from \cite[\S4.3]{Schwob}; it fixes the normalization of the entire argument.
 
 \subsection{Square roots and nonfixed support}
 Write $\nu=1^{n-s}\rho$, where $\rho$ has no parts equal to $1$ and $|\rho|=s$. Then
-\begin{equation}\label{eq:rootfactor}
+\begin{equation}\label{tks:eq:rootfactor}
 r(1^{n-s}\rho)=I_{n-s}r(\rho).
 \end{equation}
 Indeed, a square root commutes with its square and therefore preserves the fixed-point set of its square. On that set it is an arbitrary involution; on the complement it is a square root of the permutation of type $\rho$.
 
 For later estimates and computations, the contribution of $m$ cycles of length $\ell$ to $r(\nu)$ is
-\begin{equation}\label{eq:rootcycles}
+\begin{equation}\label{tks:eq:rootcycles}
 \begin{cases}
 \displaystyle\sum_{k=0}^{\lfloor m/2\rfloor}
  \frac{m!\ell^k}{(m-2k)!2^kk!},&\ell\text{ odd},\\[7pt]
@@ -37,18 +37,18 @@ For later estimates and computations, the contribution of $m$ cycles of length $
 The factors are multiplied over $\ell$. One may pair two cycles of the same length, with $\ell$ possible interlacings; an unpaired odd cycle has a unique root of the same length, while an even cycle cannot be left unpaired. This also explains the source formula in \cite[\S3.1]{Schwob}.
 
 Let $u_\ell$ have weight $\ell$ for $\ell\geq2$, and write $u_\rho=\prod_{\ell\geq2}u_\ell^{m_\ell(\rho)}$. For $j\geq2$ set
-\begin{equation}\label{eq:dj}
+\begin{equation}\label{tks:eq:dj}
 d_j(u)=\sum_{\substack{\rho\text{ has parts }\geq2\\0<|\rho|\leq j}}
  \frac{\fall{j}{|\rho|}}{(j!-1)z_\rho}\,u_\rho,
 \qquad \fall{j}{s}=\frac{j!}{(j-s)!}.
 \end{equation}
 Define the convergent fixed-weight coefficient product
-\begin{equation}\label{eq:P}
+\begin{equation}\label{tks:eq:P}
 P(u)=\prod_{j\geq2}(1-d_j(u))^{-1},\qquad
 q_\rho=[u_\rho]P(u),
 \end{equation}
 and put
-\begin{equation}\label{eq:Hs}
+\begin{equation}\label{tks:eq:Hs}
 H_s=\sum_{\substack{\rho\vdash s\\\text{parts }\geq2}}r(\rho)q_\rho,
 \qquad H_0=1.
 \end{equation}
