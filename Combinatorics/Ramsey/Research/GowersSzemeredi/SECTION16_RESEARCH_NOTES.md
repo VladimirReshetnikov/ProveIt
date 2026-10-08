@@ -786,6 +786,12 @@ powers in the proof of Corollary 16.11 and its stated polynomial exponent.
 These locations agree with the transcription; this check does not repair
 the quantitative comparison.
 
+**Kernel-checked comparison.** `section16CorollaryExponent_lt_printed`
+(`Proofs16CorollaryExponentGap`) proves the supplied exponent strictly
+below the printed (α/2)^(2^(2^(k+9))), for every 0 < α ≤ 1/2 and every k.
+The iteration parameter r is at least the degree A = 2^(2^(k+8)), so
+c^r ≤ (α/2)^(A²).
+
 The Lean counterexample refutes `lemma_16_10_printed_unit_encoding`, whose
 premises are the two packaged cover conditions. It does not by itself
 refute every formulation retaining the full preceding construction of
