@@ -1,0 +1,273 @@
+\section{Interval normalization, continuation quotients, and graded splitting}
+\label{sec:continuation-integration}
+
+Report 14 contributes a different compression mechanism: change bases to
+expose direct summands, then shorten certain entire summands when only a
+final unknot verdict is required. The production implementation now includes
+optional \code{barcode} and \code{fitting} recognition backends and exact-rank
+interfaces. We retain the standard backend as default. The scalar splitter
+is strengthened to respect recovered quantum shifts by default, allowing
+its representation to retain the homogeneous coefficient invariant from
+Section~\ref{sec:homogeneous-integration}.
+
+\subsection{Exact decomposition of a pure component}
+Let $m$ be one matching on $2p$ boundary endpoints. Its endomorphism ring is
+\[
+ R_m=\F[x_1,\ldots,x_p]/(x_1^2,\ldots,x_p^2).
+\]
+Every element $\theta$ with zero constant term satisfies $\theta^2=0$:
+squares of nonconstant monomials vanish, and cross terms cancel in
+characteristic two. Call a connected differential component pure if all
+its objects are $m$ and every nonzero entry is one fixed nonzero
+$\theta$ of this form. Singletons are also considered pure.
+
+Write a pure component's degreewise maps as $\theta B_h$, where $B_h$
+is binary. Crucially $B_{h+1}B_h$ need not vanish: it is the factor
+$\theta^2$ that makes the actual differential square to zero. The $B_h$
+form a representation of a finite linearly oriented quiver, whose interval
+decomposition is a simultaneous scalar change of basis. Define
+\[
+ \rho(a,b)=\operatorname{rank}(B_{b-1}\cdots B_a),\qquad
+ \rho(a,a)=\dim V_a.
+\]
+The number of intervals supported on $[a,b]$ is
+\[
+ \rho(a,b)-\rho(a-1,b)-\rho(a,b+1)+\rho(a-1,b+1),
+\]
+with unavailable ranks interpreted as zero. Indeed $\rho(a,b)$ counts
+intervals covering $[a,b]$, and this finite difference selects exactly
+the intervals born at $a$ and ending at $b$. Successive image-space bases
+compute these ranks without materializing all matrix products.
+
+Reinserting $\theta$ gives a chain isomorphism to a direct sum of intervals
+$I_l(m,\theta)$, each with $l$ consecutive copies of $m$ and maps
+$\theta$. The implementation reconstructs intervals in degree order and
+then shares identical templates using the existing nonnegative
+multiplicity polynomials. This decomposition preserves full raw homology
+and every later additive continuation. It is applied to whole differential
+components, never to a submatrix that still has unaccounted attachments.
+
+In exact mode, lengths and birth shifts are retained. In decision mode,
+birth shifts may be discarded and multiplicities saturated at three.
+These are two distinct interfaces. In particular, scalar coefficients
+remain in $\F$, whereas multiplicities are counts and must not be reduced
+modulo two.
+
+\subsection{Why length two is enough for the decision observation}
+Put $A=\F[\epsilon]/(\epsilon^2)$ and let $J_l$ have $l$ free rank-one
+terms with differential $\epsilon$. For an actual remaining crossing
+sequence and ordinary closure $F$, put $D=F(m)$ and let $\epsilon$ act
+by $F(\theta)$. This action commutes with the suffix differential and
+squares to zero. In the strict raw complex, additive planar gluing gives
+\[
+ F(I_l(m,\theta))\cong J_l\otimes_A D.
+\]
+This module structure, not linearity alone, justifies the replacement.
+
+For a bounded complex $D$ of finite-dimensional $A$-modules, the
+finite dual-number derived classification gives
+\begin{equation}\label{eq:integrated-continuation-rank}
+ r_l(D)=\dim H(J_l\otimes_A D)
+       =a l+2\sum_{j\ge1}b_j\min(l,j),
+\end{equation}
+where $a,b_j$ are nonnegative and finitely supported. Here $a$ counts
+shifted simple modules and $b_j$ counts shifted free intervals $J_j$.
+Report 14 supplies an elementary proof: take a bounded-above degreewise
+finite free resolution and cancel its units downward. The remaining
+matrices are $\epsilon B_h$. In an exact far-left tail,
+$2r_h-\operatorname{rank}B_{h-1}-\operatorname{rank}B_h=0$ forces
+constant rank and invertible $B_h$. Choose identity bases on that tail,
+cut it once, and interval-decompose the finite remainder. Intervals born
+after the cut stay finite; those born at the cut extend left and represent
+shifted simple modules. Thus only finitely many summands are needed.
+
+For completeness, the tensor calculation behind
+\eqref{eq:integrated-continuation-rank} is
+\[
+ \dim H(J_l\otimes_A J_j)=2\min(l,j),\qquad
+ \dim H(J_l\otimes_A\F)=l.
+\]
+The first differential is $\epsilon(u+v)$ on
+$A\otimes\F[u,v]/(u^l,v^j)$. Its homology dimension is twice the
+cokernel dimension of multiplication by $u+v$, namely $2\min(l,j)$.
+The second differential vanishes. Since $J_l$ is bounded and free,
+tensoring preserves the quasi-isomorphisms used above.
+
+A nonzero radical endomorphism requires a nonempty matching. Every complete
+smoothing of an actual suffix glued to it contains at least one circle,
+so its unreduced chain-space dimension is even. Homology has the same
+parity, implying $r_1(D)=a+2\sum b_j$ is even and therefore $a$ is even.
+For $l\ge2$, if $a>0$ or any $b_j>0$ with $j\ge2$, then already
+$r_2(D)\ge4$. Otherwise $r_l(D)=2b_1$ is constant. Consequently
+\begin{equation}\label{eq:integrated-cap-two}
+ \min(3,r_l(D))=\min(3,r_{\min(l,2)}(D)).
+\end{equation}
+Length one cannot replace length two uniformly: close a two-arc matching
+to one circle and take $\theta=x_1+x_2$. The two dots become the same
+circle operator and cancel, so the interval's closed rank is $2l$.
+For arbitrary algebraic suffixes without the evenness premise, the simple
+module gives $r_l=l$, and cutoff two fails. The optional algebraic cutoff
+three remains valid in that broader setting.
+
+Shortening preserves an observation, not the homotopy type or the exact
+homology. Repeated replacements are sound because every later continuation
+is also a continuation before the replacement. Direct sums and copies
+preserve capped-rank equality, and saturation commutes with addition and
+multiplication of nonnegative counts. At final closure, elimination leaves
+isolated generators; their saturated total is exactly the original rank
+capped at three. Rank two certifies the unknot, and a capped value three
+means at least three, hence at least four for a classical knot.
+The code labels shortened-model object statistics accordingly and never
+exports their degree counts as exact knot homology.
+
+\subsection{Certified scalar splitting with recovered grading}
+Purity need not be visible in the current basis. The optional Fitting
+search looks for scalar endomorphisms $Q$ satisfying $Qd=dQ$, solving the
+binary equations coefficient by coefficient. The archive permits variables
+between objects with equal matching and homological degree. We additionally
+require equality of recovered quantum shift by default.
+
+For a nonzero homogeneous entry $u\to v$, let $d_{uv}$ be its dot degree
+and $c_{uv}$ the overlay-circle count. The required relation is
+\[
+ q_v-q_u=p-c_{uv}+2d_{uv}.
+\]
+Propagating these differences along the undirected differential graph
+recovers all $q_v$ up to one additive constant per component. The code
+checks homogeneity of every inspected entry and rejects inconsistent cycle
+sums. Scalar variables exist only within blocks $(m,h,q)$. Both solving
+and basis-change verification use these blocks. Cache keys include the
+relative shifts, so a cached ungraded search cannot silently stand in for
+a graded search or a geometrically different shift constraint.
+
+For a candidate $Q$, take a power $Q^N$ with $N$ a power of two at least
+the largest block dimension. Then
+$\ker Q^N\oplus\operatorname{im}Q^N$ is the stable Fitting decomposition.
+Because $Q$ commutes with $d$, these spaces form subcomplexes.
+The code builds bases for both parts, checks invertibility, verifies the
+commutator independently, transforms every differential coefficient, and
+requires every entry across the proposed split to vanish. It accepts only
+nontrivial splits. Optional witnesses record the original and transformed
+matrices, matching and degree labels, relative quantum shifts, and the
+change of basis. A separate dense test verifier checks both directions of
+the basis transformation and rejects corrupted witnesses.
+
+The search is deliberately incomplete: defaults limit each considered
+component to 48 objects, the scalar system to 1024 variables, accepted
+splits to 16 per crossing, and candidates to a bounded deterministic set.
+A local size or search limit leaves the exact component intact. Accepted
+splits are followed by interval normalization and sharing. Exhausting the
+global scanner budget gives \code{UNKNOWN}. The global time allowance
+includes order selection, and retained-object ceilings are checked before
+crossing allocation. The low-level \code{preserve\_grading=False} option
+retains the archive's exact ungraded search for controlled comparisons;
+it does not justify the homogeneous bounds below.
+
+For a connected pure component with homogeneous $\theta$ of dot degree
+$d$, $q_v-2d h_v$ is constant throughout the component. Thus all objects
+in a given homological layer have the same recovered quantum shift, and
+its interval basis changes are automatically graded. Sharing identical
+connected templates preserves the existence of a graded lift up to
+componentwise shifts. Shortening keeps a graded interval representative,
+although it does not preserve the original bigraded homology. These facts
+justify using homogeneous coefficient counts after our restricted scalar
+splits; no claim to output the erased absolute quantum grading is made.
+
+\subsection{A sharper checkpoint bound}
+A pure checkpoint is a stage where, after the implemented splitting and
+normalization, every component is pure. Such a stage is recognizable; a
+small maximum gap between such stages is an additional family hypothesis.
+Let $w=2p$ bound the frontier throughout the chosen order, and let $g$
+bound the number of crossings between successive pure checkpoints,
+including the initial and final stages.
+
+Without grading, there are $2^{2^p-1}-1$ possible nonzero radical
+coefficients on a fixed matching. With our homogeneous invariant there are
+at most
+\[
+ S(p)=\sum_{d=1}^p\left(2^{\binom pd}-1\right)
+ \le p\,2^{\binom p{\lfloor p/2\rfloor}}\quad(p\ge1),
+ \qquad S(0)=0.
+\]
+At a checkpoint, a shortened interval type is determined by its matching
+and coefficient; singletons need no coefficient. With
+$M(w)=(w-1)!!$ for $w>0$ and $M(0)=1$, there are at most
+\[
+ M(w)(1+S(p))\ \text{templates},\qquad
+ M(w)(1+2S(p))\ \text{stored objects}.
+\]
+No common boundary disk is assumed. This bound is independent of the
+original connected component size, the number of hidden copies, and the
+original interval lengths. Exact mode retains lengths through $n+1$ and
+pays only an additional polynomial factor in $n$.
+
+One crossing makes at most eight delooped children per object. Hence an
+impure stretch costs at most a factor $8^g$ in stored objects. Gaussian
+elimination, interval ranks, the bounded scalar search, and coefficient
+operations have polynomial cost in this physical size and $2^{O(w)}$.
+Multiplicity polynomials have polynomially many degree positions and
+$O(n)$-bit coefficients. The resulting conservative bound is
+\begin{equation}\label{eq:graded-checkpoint-cost}
+ T(n;w,g)\le n^{O(1)}
+ \exp\left(O\left(g+w\log(w+1)+
+                  \binom{w/2}{\lfloor w/4\rfloor}\right)\right).
+\end{equation}
+This sharpens the report's $2^{w/2}$ term by incorporating the recovered
+grading. It gives a complete quasi-polynomial recognizer on families with
+constructible suitable orders for which the displayed exponent is
+$O(\log^2(n+2))$. It does not prove that arbitrary knot diagrams have such
+orders or frequent pure checkpoints. A single gap $g=n$ leaves an
+exponential bound. A normalization size cap that skips a nontrivial
+component prevents that stage from counting as a pure checkpoint in the
+implemented statistics.
+
+\subsection{Validation and practical scope}
+All 267 production tests pass. The imported interval tests independently
+change quiver bases, reconstruct interval multiplicities, and compare dense
+suffix closures. The scalar tests replay witnesses, check corruption, and
+compare 80 seeded knot braids with exact full ranks and capped decisions;
+another 60 seeded braid cases exercise interval normalization. New production
+regressions cover grading constraints, inconsistent cycles, cache separation,
+order-selection deadlines, input validation, CLI incompatibilities, and
+recognition fallback after an agreeing window query. Recovered shifts also
+agree up to componentwise constants with independently propagated shadow
+labels on Conway, Kinoshita--Terasaka, and the hard unknot.
+
+Report 14's independent continuation verifier imports no production code.
+It enumerates 861 finite complexes of dual-number modules, including
+nonfree modules and unit differentials, and passes 10\,206 threshold
+comparisons through interval length six. This supports the implementation
+and finite algebra examples; the all-suffix statement rests on the proof.
+Its output and the full integrated test log are retained under
+\path{synthesis/data/}.
+
+\input{tables/continuation-integration.tex}
+
+These are seven shuffled paired raw-backend rounds on CPython 3.13.14,
+including order selection and excluding imports and diagram construction.
+Every exact result is checked degree by degree against the full scanner;
+every decision result is checked against its rank capped at three. A/A
+compares identical full-scanner arms. Witness recording is performed
+separately, outside the timed arms. Earlier certificates are bypassed, so
+these measurements describe backend costs rather than end-to-end default
+recognition. Default front-end methods and all inputs are recorded.
+
+The data include overhead and unsuccessful normalization attempts. None
+of these five actual diagrams produces an eligible nonsingleton pure
+component, so they demonstrate no real-diagram interval-shortening gain.
+The synthetic ladder regression does exhibit the intended structural
+saving: 31 hidden copies of a seven-term interval require 217 objects under
+literal sharing, seven after exact interval normalization, and two after
+decision shortening. This is a graded algebraic fixture, not a claim that
+it appears in the knot corpus. Scalar splitting produces two verified splits on both Conway and
+Kinoshita--Terasaka, but their existence alone does not imply faster recognition.
+On this corpus the new modes are slower than the full baseline. The quantum
+restriction also costs time: the median ungraded/graded Fitting ratio is
+about $0.85$ on those two diagrams and near one on the other three.
+The measured tradeoffs support keeping both backends optional.
+
+Report 14's bounded crossing-order optimizer is a separate proposal and
+is not part of this integration. Its objective is a frontier proxy rather
+than elapsed scanner time. The general quasi-polynomial recognition goal
+still requires a structural theorem or additional machinery beyond these
+conditional compression bounds.

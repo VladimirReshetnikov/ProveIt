@@ -100,12 +100,13 @@ class ComponentScan(FastScan):
             raise ArithmeticError("crossing ancestry did not match the scanner allocation")
         self._compress(ancestry)
 
-    def _compress(self, ancestry):
+    def _compress(self, ancestry, groups=None):
+        """Share exact components; optional groups reuse a verified inventory."""
         # Dictionary equality verifies the complete key even on hash collision.
         types = {}
         encountered = largest = expanded = 0
         weight_totals = [sum(weight.values()) for weight in self.weights]
-        for group in components(self):
+        for group in components(self) if groups is None else groups:
             self._check()
             encountered += 1
             largest = max(largest, len(group))

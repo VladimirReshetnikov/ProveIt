@@ -19,7 +19,7 @@ modification times.
 | `11/` | `unknot_twist_research_bundle.zip` | `twistkh` (opt-in backend) | twist-compressed Khovanov complex for braid closures given as twist blocks, exact preflight cost certificates | — | 62 archive tests pass; opt-in twist backend integrated; 200 prior and 100 new production degree comparisons agree |
 | `12/` | `unknot_frobenius_research.zip` | opt-in adapter for `fastunknot` (`12/reference/legacy/` baseline) | exact component quotient for compiled cobordisms, succinct block cancellation | quasi-polynomial bound for the structured block problem only | 29 archive tests; opt-in component contraction integrated; 229 production tests pass |
 | `13/` | `unknot_research_20261007.zip` | implementations for `fastunknot` | homological windows (any prescribed interval of unreduced Khovanov homology over F2), finite nilpotent reduction | quasi-polynomial bound for prescribed homological queries under diagram parameters | 64 scanner and 10 hierarchy tests pass; exact windows integrated |
-| `14/` | `unknot_continuation_quotients.zip` | `fastunknot` 0.4.0 | interval normalization, length-two continuation quotients, certified scalar Fitting splitting | exact window ordering | 94 tests pass; integration review ongoing |
+| `14/` | `unknot_continuation_quotients.zip` | `fastunknot` 0.4.0 | interval normalization, length-two continuation quotients, certified scalar Fitting splitting | exact window ordering | 94 archive tests pass; intervals and graded scalar splitting integrated |
 | `15/` | `unknot_radical_transfer_20261007.zip` | survivor-first compression code | sharp radical nilpotence index 2k of the characteristic-two arc category, two-pass transfer | — | 18 archive tests and independent certificates pass; survivor prediction and adaptive shortcut integrated |
 | `16/` | `unknot_recognition_dense_algebra_20261008.zip` | dense cobordism-algebra code | `poly(m)·2^m` dense coefficient algorithm by ranked subset convolution, certified finite-quotient filters | — | 74 archive tests and independent algebra checks pass; homogeneous coefficient path integrated |
 
@@ -30,7 +30,7 @@ Archives `01/`–`06/` each contain a README, a LaTeX report with PDF under
 this project, and all but `10/` extend or patch `../fast/`. Report `07/` and the factorization, sparse elimination, and resource handling
 from `09/`, plus the braid specialization from `08/` and opt-in component contraction
 from `12/`, and twist compression from `11/` are integrated
-(245 current production tests pass). Local reruns of
+(267 current production tests pass). Local reruns of
 `08/`, `09/`, `10/`, and `11/` passed 59, 69, 15, and 62 test methods respectively.
 They were originally placed as delivered under the intake rule; this later
 algorithm-improvement task performs review and integration separately. The
@@ -48,13 +48,17 @@ Separately from placement, the algorithm-improvement task reviewed `15/` and
 The current implementation integrates the survivor/degree-gap shortcut from
 `15/`, with adaptive switching, and homogeneous coefficient multiplication
 from `16/`, with a further top-degree shortcut. The full transfer engine and
-finite-quotient filter are not integrated. Current validation passes 245 tests;
+finite-quotient filter are not integrated. Current validation passes 267 tests;
 local logs, proofs, applicability limits, and paired measurements are in
 `../synthesis/radical.tex` and `../synthesis/homogeneous.tex`. Report `13/` contributes the integrated exact window scanner and mirror bound;
 `../synthesis/windows.tex` describes the new bounded adaptive widening policy.
 Its 64 scanner and 10 hierarchy tests pass. Report `14/` passes 94 tests;
-interval normalization, decision quotients, and scalar splitting remain under
-review. Archive source files are unchanged.
+interval normalization, decision quotients, and scalar splitting are now optional
+production backends. Scalar changes preserve recovered quantum shifts by default.
+See `../synthesis/continuations.tex` for the sharper conditional checkpoint bound,
+267-test integration, independent finite algebra verification, and negative timing
+results. Its separate order optimizer remains unintegrated. Archive source files
+are unchanged.
 
 `07/` continues the project's own `../fast/` package
 rather than being an independent implementation. It contains:
