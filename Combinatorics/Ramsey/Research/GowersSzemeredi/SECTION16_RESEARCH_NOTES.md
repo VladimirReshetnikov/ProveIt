@@ -972,6 +972,23 @@ denominator covers its cost without losing the target width. The production
 module and its transitive axiom check pass, with only `propext`,
 `Classical.choice`, and `Quot.sound`.
 
+**Eventual improvement under the old threshold is proved.**
+`Proofs16PolynomialRecurrenceComparison` proves, for every fixed dimension
+and choice of positive exponent constant, that the new reciprocal-polynomial
+exponent is eventually strictly larger than `section16RecurrenceExponent`.
+It also proves that the new integer threshold is eventually no larger than
+`section16WidthThreshold`. The helper is the elementary asymptotic statement
+`A*(q+1)^d < b^q` for all sufficiently large `q` when `b >= 2`.
+
+`exists_eventually_stronger_section16_recurrence` combines these comparisons
+with the construction: for every dimension there are integer constants
+`K,p,q0` such that **under the old width threshold**, every family size
+`q >= q0` has a common proper partition satisfying the new, strictly larger
+width exponent and the corresponding smaller error exponent. The production
+module passed the normal repository checker; the follow-up full facade
+audit is running. The crossover `q0` and dimension constants remain
+existential, so this does not supply numerical improvements for small `q`.
+
 The remaining work is integration into the higher-dimensional lift and
 its structure hypotheses, together with explicit dimension constants where
 the printed thresholds require them. The printed final all-length threshold

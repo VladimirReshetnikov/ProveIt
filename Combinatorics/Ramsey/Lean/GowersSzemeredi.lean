@@ -48,6 +48,7 @@ import GowersSzemeredi.Proofs05MultilinearIteration
 import GowersSzemeredi.Proofs16Lemma1
 import GowersSzemeredi.Proofs16SimultaneousRecurrence
 import GowersSzemeredi.Proofs16PolynomialRecurrenceProfile
+import GowersSzemeredi.Proofs16PolynomialRecurrenceComparison
 import GowersSzemeredi.Proofs16Lemma5
 import GowersSzemeredi.Proofs16InducedSelection
 import GowersSzemeredi.Proofs16ShortProduct

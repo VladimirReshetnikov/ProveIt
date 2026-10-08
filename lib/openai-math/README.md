@@ -109,6 +109,10 @@ partition of minimum width `H` and common-difference error `2*N/H`.
 The checked root-width profile has exponent
 `1/(2*p*(q+1)^(2^(k+2)))` and integer threshold
 `(K*(q+1))^(2*p*(q+1)^(2^(k+2)))`, with ceiling rounding included.
+The recurrence comparison also proves an eventual strict improvement of
+that exponent under the old rounding-safe threshold. Its module passes the
+repository checker; the follow-up facade audit is running. Dimension
+constants and the crossover family size are existential.
 This reuses the audited Schmidt input without any new upstream module.
 Explicit degree constants and the final all-length threshold remain open.
 
