@@ -1145,6 +1145,17 @@ the good base set. Spectrum coverage and the induced selection are still
 premises. Its production source and transitive axiom check pass; the
 facade import is included in the next combined audit.
 
+`Proofs16PolynomialLemma9.exists_polynomial_lemma_16_9` carries the
+improved width through the remainder-cover and line-cover assembly. If
+`w = m^((multipleC(sigma/(2*r),gamma,k+1))^r)` is at least four and a
+positive integer `n <= (w/8)^(Eb(sigma/2))` meets the polynomial recurrence
+threshold at `floor(Qb(sigma/2))`, every remainder cell admits the improved
+Lemma 16.6 construction. Flattening retains one common width
+`(zeta/2)*sqrt(n^epsilon(floor(Qb(sigma/2))))`, the original remainder
+graph-count bound, and good mass at least `1-sigma`. The production source
+passes Lean. Spectrum structure, induced selection, and the remainder
+cover are explicit premises; the combined facade audit is queued.
+
 The remaining work is integration into the higher-dimensional lift and
 its structure hypotheses, together with explicit dimension constants where
 the printed thresholds require them. The printed final all-length threshold
