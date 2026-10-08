@@ -111,8 +111,10 @@ Read on 7 October 2026 in the internal format.
   least part.", offset 0; Arndt's comment (28 April 2014) gives the
   conjugate reading "(number of distinct parts) = multiplicity of the
   greatest part"; formula "A239948(n) + a(n) + A239951(n) = A000041(n) for
-  n >= 0."; Heinz's Maple program and b-file (`0 ≤ n ≤ 1000`), Alcover's
-  Mathematica. No asymptotic formula, no conjecture.
+  n >= 0."; Heinz's Maple program and b-file (`0 ≤ n ≤ 1000`), Mathematica programs
+  of Kimberling (unsigned) and Alcover (the write said "Alcover's";
+  corrected by the independent check, 7 October 2026). No asymptotic
+  formula, no conjecture.
 - The 58 data terms equal the shipped `data/oeis_prefix.json`. The b-file,
   which the package did not retrieve, was fetched by the write (SHA-256
   `72e8fed9e454…1cf55f`); all 1001 terms agree with the write's own signed
@@ -184,6 +186,52 @@ or unproved.**
   volume (labels named above). Not read: the eight cited works; the source's
   own record of what it inspected is `DATA_SOURCES.md`.
 
+## Independent check of the write (7 October 2026)
+
+An adversarial check made by the intake after the write (`a0d4f816a`), with
+its own code, after fetching again A239950 (#18) and its b-file (same
+SHA-256).
+
+- **Remark 1.3.** Revision, dates, name, comment, formula and the 58 data
+  terms confirmed. All 1001 b-file terms and the 1501 shipped terms
+  recomputed by a third route (the conjugate reading of Arndt's comment: an
+  ascending dynamic program by the multiplicity of the greatest part), and
+  brute force for `n ≤ 30`. **Corrected:** only the second Mathematica
+  block is Alcover's; the first is unsigned, so Kimberling's (dated note
+  after Remark 1.3; the OEIS bullet above).
+- **Recomputations.** With SymPy: `det H = −2SVκ`, `C = −H⁻¹`, the plane
+  form (7.7), `W = L_0 − J_0²/V`, both forms of `κ_eff`, `VWκ_eff = 2SVκ`,
+  the five pieces (8.7) summing to (8.8) and to `B_* − 3/(16S)`, the radial
+  pieces (8.9) summing to `B_*`. By quadrature from the defining integrals:
+  `s(a) = −log 2`, `G(a) = S`, `V = 2a − 1/2`, `−G''(a) = κ`, `A_0 = 2^{−1/2}`,
+  `T(a) = S`, `J_0 = 3a/2`, `L_0 = 2S + 3a²/2`, the normalization (6.7) and
+  `K`. The sign certificate and both Horner certificates in exact arithmetic
+  (`0.27994…`, `−0.50461…`; tails `3.43·10⁻²⁵`, `1.00·10⁻¹³`); the zero
+  `−0.7743600362…`; all twelve printed decimals are truncations; the
+  residuals at `n = 400, 800, 1200, 1500`; `p_{n+1} > p_n` for
+  `33 ≤ n < 1500`, `p_33 = 184 < p_32 = 190`; integral Euler exponents with
+  no pure period `≤ 50` through degree 200. The least-part mean and variance
+  at `n = 1500` (18.486 against `a/t = 18.156`; 2.867 against
+  `1/(tκ_eff) = 2.886`) agree with Theorem 9.1 to first order.
+- **Remark 10.2.** (a)–(d) re-derived against the volume's statements; the
+  instance and analogue classifications hold, and `δ_0`, `δ_1` were confirmed
+  also by solving the truncated envelope equation directly. Two precisions,
+  recorded in a dated note after the remark: the remark's `γ_n` are the
+  volume's `c_n` (the volume's Bell recurrence writes them `γ_{n+1}`, with
+  `γ_1 := 0`); and `p0:thm:staircase`(1) needs `Y ≥ p_{n_1}` as well as
+  `Y > max_{n<n_1} p_n` (true for all large `Y`). The diagnostic of (d)
+  reproduces (0.0018149 over the sampled records).
+- **Provenance.** Archive bytes, SHA-256, 25 files, 1084 lines, 24 manifest
+  entries, 27 delivered pages, the not-shipped sizes, the staged files
+  (byte-identical), the 145 delivered labels and 109 references (numbers
+  unchanged against a rebuild of the delivered text), the file list, the
+  neighbouring reports, `Fabius.staircase_ceil`, and the Route B rerun
+  (`PASS`; normal and optimized outputs byte-identical to the shipped
+  records) confirmed.
+- The check read the source's proofs as well and found no error.
+
+The check is recorded at the end of Section 12.1.
+
 ## Relation to the repository
 
 **Formal status.** No statement is formalized, and placement in the
@@ -237,7 +285,7 @@ delivered text of Section 1, and the added displays are unnumbered.
 ```text
 README.md                                 this guide (replaces the delivery README)
 article.tex                               the report (delivered Report195.tex; labels prefixed, [write] additions)
-article.pdf                               compiled report, 30 pages
+article.pdf                               compiled report, 31 pages
 DATA_SOURCES.md                           the source's data provenance and bounded source screen (delivered)
 README_REPRODUCIBILITY.md                 algorithms, certificates, determinism and limits (delivered)
 code-PROVENANCE.md                        code provenance disclosure (delivered code/PROVENANCE.md)
@@ -332,8 +380,8 @@ B=$(mktemp -d); cp article.tex "$B/"; cd "$B"
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The committed PDF was built this way with MiKTeX on 7 October 2026 (30
-pages): no errors or warnings, no undefined references or citations, no
+The committed PDF was built this way with MiKTeX on 7 October 2026 (31
+pages after the independent check's notes; 30 at the write): no errors or warnings, no undefined references or citations, no
 multiply defined labels, no duplicate PDF destinations, no overfull or
 underfull boxes (the delivered text also builds without any, 27 pages). The
 delivered byte-identity claims apply to `Report195.tex` under the delivering

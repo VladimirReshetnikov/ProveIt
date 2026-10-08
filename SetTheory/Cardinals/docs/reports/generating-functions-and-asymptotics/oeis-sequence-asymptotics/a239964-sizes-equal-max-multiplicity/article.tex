@@ -182,6 +182,19 @@ $(a(n)/(Cn^{-3/2}e^{B\sqrt n})-1-d_1n^{-1/2}-d_2n^{-1})\,n^{3/2}$ is
 $38.2\ldots$, $41.7\ldots$, $44.1\ldots$ at $n=250$, $500$, $1000$. These are
 finite numerical observations, not proofs.
 \end{writenote}
+\begin{writenote}[Independent check, a precision, 7 October 2026]
+The four values $12.57\ldots$, $14.06\ldots$, $14.70\ldots$, $15.06\ldots$
+are $a(n)$ minus~\eqref{dmm:eq:mainpoly} with $R=3$, divided by the
+\emph{leading} term $e^xc_1\tau^3/(2\pi\sqrt{2A})$ and by $\tau^3$; that is
+the quantity that tends to $c_4/c_1$. Divided instead by the $R=3$
+approximation itself they are $13.57\ldots$, $14.80\ldots$, $15.32\ldots$,
+$15.60\ldots$, with the same limit. Every other number of the note above was
+reproduced: the constants from numerical derivatives of
+$H(z)=(e^{-z};e^{-z})_\infty$ and, independently, from subset sums grouped by
+$s$ (signed subset counts and signed $J_2$ sums from exact products), and
+$d_1$, $d_2$ also from the large-$n$ expansion of~\eqref{dmm:eq:mainpoly}
+with $R=3$ itself.
+\end{writenote}
 
 \begin{theorem}[Threshold inversion]\label{dmm:thm:inverseintro}
 The sequence $a(n)$ is eventually strictly increasing and unbounded. Let
@@ -1102,6 +1115,21 @@ only formally, with the source's own Taylor remainder.
 \end{enumerate}
 No novelty is claimed for any of these inversions.
 \end{remark}
+\begin{writenote}[Independent check, two precisions, 7 October 2026]
+(i) In~(c) the letters $\gamma_n$ are this remark's own: $\gamma_n$ is the
+volume's coefficient $c_{n,\rm vol}$ of \file{p0:eq:c-lagrange}, which the
+volume's Bell recurrence~\file{p0:eq:c-bell} writes as
+$\gamma_{n+1,\rm vol}$ (there $\gamma_{1,\rm vol}:=0$ and
+$\gamma_{r,\rm vol}:=c_{r-1,\rm vol}$). With that reading the three
+displayed values are the recurrence's $c_{1,\rm vol}$, $c_{2,\rm vol}$,
+$c_{3,\rm vol}$ for $a_{\rm vol}=B$, $b_{\rm vol}=-3$, $q_j=\lambda_j$, and
+the check re-derived them and the three forms of~\eqref{dmm:eq:deltas}.
+(ii) In~(a), \file{p0:thm:staircase}(1) is stated for $X\ge A_{n_1}=a(n_0)$;
+for $X$ between the finite maximum of $a(n)$, $n<n_0$, and $a(n_0)$ one has
+$N(X)=n_0$ directly. So the identity $N(X)=\lceil\nu(X)\rceil$ holds for
+$X$ beyond that maximum with also $X\ge a(n_0)$, in particular for all large
+$X$. The diagnostic in~(c) reproduces ($0.09088\ldots$ at $n=300$).
+\end{writenote}
 
 \section{Exact computation and reproducibility}\label{dmm:sec:verification}
 \subsection{A positive integer recurrence}
@@ -1157,6 +1185,30 @@ was moved here or refuted; three of the printed decimals are rounded rather
 than truncated (note after Corollary~\ref{dmm:cor:prob}). For Question~1, the
 b-file increases strictly for $9\le n<1000$ (Remark~\ref{dmm:rem:transseries}(a)),
 which proves no onset.
+\end{writenote}
+\begin{writenote}[Independent check of the write, 7 October 2026]
+An independent adversarial check re-derived every [write] statement with its
+own code. Confirmed: Remark~\ref{dmm:rem:oeis} against the live entry
+(\#17) and b-file (same SHA-256), with brute force over all partitions for
+$n\le60$ and the diagonal transform~\eqref{dmm:eq:transform} expanded through
+the products $B_S$ to degree~150 (6819 subsets), both equal to the b-file;
+the 333 subsets; the provenance figures (archive bytes and SHA-256, 14 files,
+943 lines, 22 delivered pages, 13 and 7 manifest entries); 105 delivered
+labels (53 \verb|\eqref|, 9 \verb|\ref|) keeping their numbers in a rebuild of
+the delivered text; $\ell_1,\ell_2,\ell_3$ of $L_S$ and the fourth
+jet~\eqref{dmm:eq:fourthjet} on eight concrete sets by series expansion of the
+definition~\eqref{dmm:eq:LS}; $Q_0,Q_1,Q_2$, the probability coefficients,
+the polynomials~\eqref{dmm:eq:Gpoly}; the constants $c_1,\dots,c_4$, $C$,
+$d_1$, $d_2$ and the rounding and truncation statements; the residuals (with
+the precision recorded after Corollary~\ref{dmm:cor:prob}); $a(n+1)\le a(n)$
+only at $n=1,2,5,8$; $\delta_0$, $\delta_1$ and the diagnostic; the
+transseries classification of Remark~\ref{dmm:rem:transseries}, including the
+flattening coefficient $P_1=9\log(L-K)-Bd_1$; and the delivered verifier's
+\texttt{--full1000} rerun from the shipped files (outputs byte-identical).
+Precisions added by dated notes: the normalization of the residual ratios
+(after Corollary~\ref{dmm:cor:prob}); the meaning of $\gamma_n$ and the
+range of $X$ in Remark~\ref{dmm:rem:transseries}. No claim of the source was
+found wrong or unproved.
 \end{writenote}
 
 \clearpage

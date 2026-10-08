@@ -186,6 +186,18 @@ different parts is equal to the smallest part.'', is a paraphrase, not the
 entry's name at any revision the write saw; the delivered text is kept.
 Nothing was submitted to the OEIS.
 \end{remark}
+\begin{writenote}[Independent check, correction, 7 October 2026]
+Of the entry's two Mathematica blocks only the second (the recursion, dated
+17~November 2015, ``after Alois P.~Heinz'') is signed by Jean-Fran\c{c}ois
+Alcover; the first (\texttt{z = 50; \dots}, the five \texttt{Table} counts
+for A239948--A239952) is unsigned, hence by the entry's author, Clark
+Kimberling. ``Jean-Fran\c{c}ois Alcover's Mathematica programs'' above
+should read ``Mathematica programs of Clark Kimberling and of
+Jean-Fran\c{c}ois Alcover''. Everything else in this remark was confirmed
+against the live entry (\#18) and its b-file (same SHA-256), and the counts
+by a third route (the conjugate reading, by multiplicity of the greatest
+part).
+\end{writenote}
 
 \subsection{Provenance, sources and reading conventions}\label{mss:sec:provenance}
 \begin{writenote}[Added 7 October 2026, batch~111]
@@ -1231,6 +1243,26 @@ sampled for $200\le n<1500$, $|T_2(r(Y))-n|<0.0019$.)
 \end{enumerate}
 No novelty is claimed for any of these inversions.
 \end{remark}
+\begin{writenote}[Independent check, two precisions, 7 October 2026]
+(i) In~(c) the letters $\gamma_n$ are this remark's own: $\gamma_n$ is the
+volume's coefficient $c_{n,\rm vol}$ of \file{p0:eq:c-lagrange}, which the
+volume's Bell recurrence~\file{p0:eq:c-bell} writes as
+$\gamma_{n+1,\rm vol}$ (there $\gamma_{1,\rm vol}:=0$ and
+$\gamma_{r,\rm vol}:=c_{r-1,\rm vol}$). With that reading the two displayed
+values are the recurrence's $c_{1,\rm vol}=-q_1/a_{\rm vol}$ and
+$c_{2,\rm vol}=-(b_{\rm vol}c_{1,\rm vol}+q_2)/a_{\rm vol}$ with
+$q_j=\ell_j$, and the check confirmed them, the squaring formula for
+$\delta_k$, and $\delta_0,\delta_1$ (also by solving $f_0(x)+\ell_1x^{-1/2}
++\ell_2x^{-1}=\log Y$ directly at $\log Y=50,200,1000$, where
+$(x-r-\delta_0)\sqrt r=0.2970,0.2917,0.2902$ tends to $\delta_1$).
+(ii) In~(a), \file{p0:thm:staircase}(1) is stated for $Y\ge A_{n_1}=p_{n_1}$;
+for $\max_{n<n_1}p_n<Y<p_{n_1}$ (possible only if $p_{n_1}$ exceeds every
+earlier term) $N(Y)=n_1$ directly. So the identity
+$N(Y)=\lceil\nu(Y)\rceil$ holds for $Y>\max_{n<n_1}p_n$ with also
+$Y\ge p_{n_1}$, in particular for all large $Y$. The diagnostic in~(d) reproduces
+($0.0018149\ldots$ at $n=200$ over the sampled records; $0.0020\ldots$ over
+every $n$ in $[200,1500)$).
+\end{writenote}
 
 \section{A rational interior zero and the product obstruction}\label{mss:sec:zero}
 Set
@@ -1311,6 +1343,30 @@ without settling them: for Question~1, the exact counts increase strictly for
 $33\le n<1500$ (Remark~\ref{mss:rem:transseries}(a)), which proves no onset;
 for Question~4, the shipped exact Euler exponents of $F$ through degree~200
 show no pure period up to~50, which excludes no identity.
+\end{writenote}
+\begin{writenote}[Independent check of the write, 7 October 2026]
+An independent adversarial check re-derived every [write] statement with its
+own code. Confirmed: the counts $p_0,\dots,p_{1500}$ by a third route (the
+conjugate reading of Arndt's comment, an ascending dynamic program by the
+multiplicity of the greatest part), equal to all 1001 terms of the live
+b-file, the 58 data terms and the shipped list, and to brute force for
+$n\le30$; the provenance figures (archive bytes and SHA-256, 25 files,
+1084 lines, 24 manifest entries, 27 delivered pages); 145 delivered labels
+(90 \verb|\eqref|, 19 \verb|\ref|) keeping their numbers in a rebuild of the
+delivered text; with SymPy, $\det H=-2SV\kappa$, $C=-H^{-1}$, the plane
+form, $W$, both forms of $\kappa_{\rm eff}$, and both piece sums; by
+quadrature from the defining integrals, $G(a)=S$, $V$, $\kappa$, $A_0$,
+$T(a)=S$, $J_0$, $L_0$ and the normalization; the sign and Horner
+certificates in exact arithmetic; every printed decimal as a truncation; the
+residuals; $p_{n+1}>p_n$ for $33\le n<1500$ and $p_{33}<p_{32}$; the Euler
+exponents and the absence of a pure period up to~50; the transseries
+classification of Remark~\ref{mss:rem:transseries}. The least-part mean and
+variance at $n=1500$ ($18.486$ against $a/t=18.156$; $2.867$ against
+$1/(t\kappa_{\rm eff})=2.886$) agree with Theorem~\ref{mss:thm:clt} to
+first order. Corrected by dated notes: an attribution of the entry's
+Mathematica programs (after Remark~\ref{mss:rem:oeis}); the meaning of
+$\gamma_n$ and the range of~$Y$ in Remark~\ref{mss:rem:transseries}. No
+claim of the source was found wrong or unproved.
 \end{writenote}
 
 \appendix
