@@ -79,10 +79,10 @@ hashes and compatibility adaptations. Run
 `python3 Combinatorics/Ramsey/scripts/check_gowers_port_scope.py` to check the
 closure; pass a module name to show an import path explaining its inclusion.
 
-The first 3,400 manifest entries have compiled (3,416 modules including their
+The first 3,500 manifest entries have compiled (3,516 modules including their
 compatibility dependencies). The incremental `OAI.QuantitativePortAudit`
 imports this batch and the added compatibility modules. Its axiom scan
-checks 52,058 public OAI theorems and reports only `propext`,
+checks 53,607 public OAI theorems and reports only `propext`,
 `Classical.choice`, and `Quot.sound`; the separately listed compatibility declarations
 also pass, with explicit rejection of any unapproved axiom. This checkpoint
 does not certify `Results.Conclusions`.
@@ -101,15 +101,18 @@ one-dimensional strengthening has a separate Apache-2.0 license and source
 attribution in `Combinatorics/Ramsey/Lean/GowersSzemeredi/LICENSE.openai-math`.
 `Proofs05MinimumModularPartition` transfers this to the catalogue's modular
 polynomial phases, giving centered distance at most `2*k*N/H` within each
-index cell, for every nonzero modulus. Both modules passed isolated Lean
-checks; their full facade audit is queued. The simultaneous multiaffine
-height induction and its Section 16 lift now also pass isolated Lean checks:
+index cell, for every nonzero modulus. The completed Gowers facade audit includes these modules and the
+simultaneous multiaffine height induction with its Section 16 lift:
 for dimension-dependent constants `K,p`, input width
 `H^(p*(q+1)^(2^(k+2)))` and `H >= K*(q+1)` suffice for a common proper box
 partition of minimum width `H` and common-difference error `2*N/H`.
 The checked root-width profile has exponent
 `1/(2*p*(q+1)^(2^(k+2)))` and integer threshold
 `(K*(q+1))^(2*p*(q+1)^(2^(k+2)))`, with ceiling rounding included.
+The recurrence comparison also proves an eventual strict improvement of
+that exponent under the old rounding-safe threshold. Its module passes the
+repository checker; the follow-up facade audit is running. Dimension
+constants and the crossover family size are existential.
 This reuses the audited Schmidt input without any new upstream module.
 Explicit degree constants and the final all-length threshold remain open.
 

@@ -793,6 +793,25 @@ where Δ_k = L_k(e) − L_k(0) (L_k is affine along the column).
   in each coordinate, as in `affine_of_second_difference`. It is the next
   formalizable piece.
 
+**Update (same day): single off-origin boxes need no GAP coordinates.**
+`bilinearBohrVariety_contains_box_at` (`Proofs16VarietyBoxAt`) builds a
+box around any deep point (x₀, y₀) of V with three nested
+simultaneous-Dirichlet choices.
+1. e₁ over Ψ, so that L is affine along a long run of multiples of e₁.
+2. t over {δ_k·x₀}, with e = t·e₁. The quadruple (y₀ + e) + 0 = y₀ + e
+   makes L(y₀ + e) − L(y₀) = L(e) − L(0) = t·δ_k.
+3. d over Γ ∪ {L_k(y₀)} ∪ {t·δ_k}.
+
+The coordinate lemma (`freiman_linear_gap_affine`, `Proofs16GapCoordinates`)
+is proved too, but not needed for single boxes.
+
+**What remains for (R)'s covers.** A packing/partition: cover all but θ of
+V's points inside an arbitrary box P by disjoint such boxes. The deep
+points are the bulk of V for a regular radius (port Bohr regularity). The
+cells' per-point steps must tile, which is the peer's Lemma 16.1
+partition machinery. This is composition, not new mathematics, plus the
+pre-extension hypothesis.
+
 So off-origin covers of V's graph reduce to two inputs: the peer's
 Lemma 16.1 (polynomial exponent), and Bohr-set regularity for the
 variety's frequencies, with radius losses polynomial in the rank. Both
@@ -880,7 +899,7 @@ under the same bound with search limit `M`, it produces `1 <= q <= M`
 and `centeredAbs(q^(j+1)*a_i) < R*N` simultaneously. The modulus and the
 search limit are separate; a use requiring a nonzero modular multiplier
 can impose `M < N`. Its module passed an isolated Lean check, and the
-updated facade audit is queued.
+updated facade audit passes.
 The same module also proves `exists_mixed_modular_recurrence_bound`.
 For fixed maximum degree `k`, constants `K,p` give a common
 `1 <= q <= H^(p*(d+1)^(2*k))` making every monomial in `d` families and
@@ -900,7 +919,7 @@ Degree reduction at scale `2*T` and induction on each actual block length
 avoid truncating children and creating short tails. The extra factor of two
 only changes the degree-dependent constant `p`, not the exponent `2*k` in
 family size. The production module passed an isolated Lean check; the full
-facade audit is queued. Its adapted proof carries separate Apache-2.0
+facade audit passes. Its adapted proof carries separate Apache-2.0
 licensing and provenance in the adjacent `LICENSE.openai-math`.
 
 `Proofs05MinimumModularPartition.exists_minimum_polynomialOn_partition`
@@ -951,7 +970,7 @@ H >= K*(q+1),  width(P) >= H^(p*(q+1)^(2^(k+2)))
 give a common proper box partition with **every width at least `H`** and
 `centeredAbs(mu_i(x)*cell.commonDiff) <= 2*N/H` at every point of every
 cell. Rescaling by `2^k` and increasing `p` absorb the diameter coefficient.
-Both production modules passed Lean; the combined facade audit is queued.
+Both production modules and the combined facade axiom audit pass.
 
 This supplies polynomial dependence on `q` in the input-width exponent
 in the stated large-width regime. It does not give explicit dimension
@@ -971,6 +990,23 @@ The proof takes the ceiling of the real root; doubling the exponent
 denominator covers its cost without losing the target width. The production
 module and its transitive axiom check pass, with only `propext`,
 `Classical.choice`, and `Quot.sound`.
+
+**Eventual improvement under the old threshold is proved.**
+`Proofs16PolynomialRecurrenceComparison` proves, for every fixed dimension
+and choice of positive exponent constant, that the new reciprocal-polynomial
+exponent is eventually strictly larger than `section16RecurrenceExponent`.
+It also proves that the new integer threshold is eventually no larger than
+`section16WidthThreshold`. The helper is the elementary asymptotic statement
+`A*(q+1)^d < b^q` for all sufficiently large `q` when `b >= 2`.
+
+`exists_eventually_stronger_section16_recurrence` combines these comparisons
+with the construction: for every dimension there are integer constants
+`K,p,q0` such that **under the old width threshold**, every family size
+`q >= q0` has a common proper partition satisfying the new, strictly larger
+width exponent and the corresponding smaller error exponent. The production
+module passed the normal repository checker; the follow-up full facade
+audit is running. The crossover `q0` and dimension constants remain
+existential, so this does not supply numerical improvements for small `q`.
 
 The remaining work is integration into the higher-dimensional lift and
 its structure hypotheses, together with explicit dimension constants where
