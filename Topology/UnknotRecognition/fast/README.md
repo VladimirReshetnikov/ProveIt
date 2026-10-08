@@ -11,8 +11,35 @@ the pipeline repeats the structural check before matrix filters. Cancelling
 pairs can expose homogeneity. Evidence under `seifert_after_reduction` describes
 the reduced diagram: replay `reidemeister_trace` with `fastunknot.simplify.replay`
 before passing that certificate to `verify_seifert_certificate`. An unchanged
-diagram is not checked twice. The integrated suite now has 648 passing tests
+diagram is not checked twice. The integrated suite now has 653 passing tests
 with the optional Regina dependency installed.
+
+`--group-adaptive` starts the optional group search with explicit words, then
+switches once to SLPs before a substitution would exceed its letter allowance.
+The switch preserves the current presentation, completed moves and remaining
+work/time budget. It automatically uses compressed replay after a handoff;
+without a handoff, replay stays explicit. `--group-switch-letters 4096` enables
+an earlier optional threshold; Python callers use `use_group=True,
+group_adaptive=True, group_switch_letters=4096`. Always-compressed search and
+adaptive search are mutually exclusive.
+
+The default switch threshold equals the hard letter cap. It preserves all
+fifteen current corpus traces and their explicit representation. In 375 whole
+queries its timing is near the explicit controls; earlier switching on Gordian
+costs 1.641 seconds versus the explicit control's 1.251 seconds. With hard caps
+of 64/60 letters on two small cases and 4096/8192 on Gordian, the adaptive stage
+instead recovers verified certificates in all twenty measured probes where
+explicit search exhausts the cap. Those exhaustion times are not speedups.
+See [`results/adaptive_group_20261008.json`](results/adaptive_group_20261008.json)
+and [`adaptive_group.tex`](../synthesis/adaptive_group.tex) for complete scopes,
+the bounded explicit-prelude argument and the unresolved asymptotic limits.
+
+```sh
+python -B -m fastunknot recognize normal_research/gordian.json \
+  --group-adaptive --group-relators --group-seconds 3 \
+  --group-max-work 10000000 --seconds 5
+python -B benchmark_adaptive_group.py --output results/adaptive_group_local.json
+```
 
 `--group-compressed-search` enables optional compressed group discovery and
 replay. Exact generator counts, unique-occurrence masks and weighted Whitehead

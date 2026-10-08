@@ -2,6 +2,27 @@
 
 The synthesized report on the six archives and on the new recognizer.
 
+`adaptive_group.tex` adds one-way continuation from explicit to compressed
+group search before a predicted substitution exceeds the letter allowance.
+It preserves generator names, relator slots, completed moves and remaining
+resources. No-switch traces retain explicit replay; switched traces undergo
+independent compressed replay from the original PD. The article proves a
+polynomial bound on the explicit prelude when the threshold is polynomially
+bounded, while retaining the compressed search's completeness and complexity
+gaps.
+
+The 375-query audit preserves all fifteen default traces and records timings
+near the explicit controls. Switching earlier at 4096 letters is slower on
+Gordian, so the default threshold stays at the hard cap. In a separate
+80-probe matched-cap audit, adaptive and always-compressed search verify all
+forty of their probes while both explicit arms exhaust all forty. Caps affect
+overlap availability and can substantially change the move sequence; these are
+capacity results, not ratios against completed explicit recognition times.
+Raw measurements are in `../fast/results/adaptive_group_20261008.json`.
+All 653 tests pass with optional Regina installed in 126.251 seconds; see
+`data/adaptive-group-integrated-tests.txt`. The rebuilt article has 171 pages,
+with build output in `data/adaptive-group-article-build.txt`.
+
 The latest prefix revision in `compressed_words.tex` adds bounded direct
 cancellation walks and bisection beyond the prefix already proved equal.
 In 375 measured queries, Gordian improves from 2.461 to 1.922 seconds including
