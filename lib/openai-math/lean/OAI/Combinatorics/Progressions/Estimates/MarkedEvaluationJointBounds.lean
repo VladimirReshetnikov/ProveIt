@@ -1,3 +1,6 @@
+/- Modified for ProveIt: give exists_markedShiftQuotient_bounded_direction_data
+ a finite local elaboration budget on Lean 4.32. Statements and proof text
+ are unchanged from the pinned upstream source. -/
 import OAI.Combinatorics.Progressions.Fourier.MarkedQuotientFrequencyBounds
 import OAI.Combinatorics.Progressions.Geometry.MarkedDirectionCoordinates
 
@@ -254,6 +257,7 @@ variable {I ι L : Type*} [Fintype I] [Fintype ι] [LieRing L] [LieAlgebra ℚ L
   (hc : ∀ i j k, RationalHeightLE (lieStructureConstants b i j k) H)
   (hgen : ∀ i j, RationalHeightLE (b.repr (v i) j) H)
 
+set_option maxHeartbeats 400000 in
 include hF hω hw hv hH hc hgen in
 theorem exists_markedShiftQuotient_bounded_direction_data (t : ℕ)
     (η : L →ₗ[ℚ] ℚ) {K A : ℕ} (hη : ∀ i, RationalHeightLE (η (b i)) K)
