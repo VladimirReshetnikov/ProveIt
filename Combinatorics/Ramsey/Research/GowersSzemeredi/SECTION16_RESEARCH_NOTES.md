@@ -713,6 +713,13 @@ This is an average-length bound, not a minimum length for every cell.
 
 This is manifest entry 3295, included in the completed prefix-3400 build
 and axiom audit. No additional upstream port is needed to use these results.
+`Proofs05SchmidtRecurrence.simultaneous_modular_monomial_recurrence` now
+transfers the monomial theorem to the Gowers centered norm on `ZMod N`:
+under the same bound with search limit `M`, it produces `1 <= q <= M`
+and `centeredAbs(q^(j+1)*a_i) < R*N` simultaneously. The modulus and the
+search limit are separate; a use requiring a nonzero modular multiplier
+can impose `M < N`. Its module passed an isolated Lean check, and the
+updated facade audit is queued.
 The remaining work is the bridge to a simultaneous multilinear **box**
 partition satisfying Lemma 16.1's minimum-width and uniform-smallness
 requirements, and adequate degree constants. The constants above are
