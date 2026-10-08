@@ -1,3 +1,6 @@
+/- Modified for ProveIt: supply the proved EuclideanJetLayers Borel structure
+explicitly as OpensMeasurableSpace in the error-majorant integrable-mass proof
+to avoid Lean 4.32 instance-search timeout. Theorem statements are unchanged. -/
 import OAI.Combinatorics.Progressions.Estimates.CoveredJetAmbientLift
 import OAI.Combinatorics.Progressions.Estimates.PhysicalJetIntegralComparison
 import OAI.Combinatorics.Progressions.Fourier.AllocatedErrorStandardFourier
@@ -229,6 +232,8 @@ theorem allocatedCoefficientErrorMajorant_integrable_mass (η A : ℝ≥0) (C V 
     (∫ y, allocatedCoefficientErrorMajorant B U b S o hR hσ x u v rows η A d y ∂haar) ≤
       (η : ℝ) * A * (2 * (∑ j, (C j : ℝ) * ((Fintype.card (J j) : ℝ) + 1)) + 1) ^
         Fintype.card (Σ a : LayerSamplerAxis I n, O a.1) := by
+  let : OpensMeasurableSpace (EuclideanJetLayers U O) :=
+    @BorelSpace.opensMeasurable _ _ _ (euclideanJetLayers_borel U)
   let g := allocatedCoefficientErrorMajorant B U b S o hR hσ x u v rows η A d
   have hp := allocatedErrorTorusKernel_bounds B U b S o hR hσ x u v rows η A C V hC hV
   have hg0 (y) : 0 ≤ g y := (hp.1 (coveredJetAmbientTorus U d y)).1
