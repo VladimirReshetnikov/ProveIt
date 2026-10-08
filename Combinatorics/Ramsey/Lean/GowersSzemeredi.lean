@@ -408,6 +408,7 @@ import GowersSzemeredi.Proofs16RegimeSplitting
 import GowersSzemeredi.Proofs16PolyBaseCase
 import GowersSzemeredi.Proofs16WithLemma6
 import GowersSzemeredi.Proofs16WithLemma9
+import GowersSzemeredi.Proofs16WithLift
 import GowersSzemeredi.Proofs05DiameterReserve
 import GowersSzemeredi.Proofs05QuarterDiameterBudget
 import GowersSzemeredi.Proofs05QuarterDiameterPartition

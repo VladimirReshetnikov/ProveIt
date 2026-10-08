@@ -46,7 +46,7 @@ evidence that the ideas are the natural ones.
   This is the most valuable single idea for recognition: it rejects the
   Kinoshita--Terasaka and Conway knots, which have trivial Alexander
   polynomial, in about a millisecond, and its cost is \emph{provably}
-  $\mathrm{Catalan}(w/2)\cdot\mathrm{poly}(n)$ for scan width $w$, because
+  $(w-1)!!\cdot\mathrm{poly}(n)$ for scan width $w$, because
   states with equal matchings are merged; there is no multiplicity factor.
 \item \textbf{Visible connected sums.} Two edges bordering the same two faces
   are a two-edge cut of the projection, so the diagram is a connected sum of
@@ -183,12 +183,15 @@ $O(n^3)$ field operations.
 Two statements with an exponential flavour are now \emph{proved} rather than
 observed:
 \begin{proposition}
-The Jones filter costs $O\bigl(n\cdot\mathrm{Catalan}(w/2)\cdot\mathrm{poly}(w)\bigr)$
+The Jones filter costs $O\bigl(n\cdot(w-1)!!\cdot\mathrm{poly}(w)\bigr)$
 field operations for a scan of width $w$.
 \end{proposition}
 \begin{proof}
-After each crossing the state is a map from crossingless matchings of at most
+After each crossing the state is a map from perfect matchings of at most
 $w$ boundary points to $\mathbb F_p$; each entry spawns two successors.
+The earlier Catalan claim required an unproved common-disk hypothesis.
+Report 09 supplies explicit counterexamples; the October integration corrects
+this statement without changing the exact bracket evaluation.
 \end{proof}
 \begin{proposition}
 If the visible factors of the reduced diagram have $n_1,\dots,n_k$ crossings,
