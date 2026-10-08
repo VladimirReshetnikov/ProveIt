@@ -2,6 +2,24 @@
 
 The synthesized report on the six archives and on the new recognizer.
 
+`relator_powers.tex` documents quotient deletion, version-4 certificate replay,
+exact uniform signed-letter summaries and pruning before inverse allocation.
+It proves polynomial bit complexity for the supplied pure-power Euclidean
+subproblem, with two moves on `a^N, a^(N^2+1)`; this is not a general knot bound.
+All 672 tests pass with Regina in 146.146 seconds, including independent replay
+of a genuine Gordian alternative trace and forged quotient rejection. The
+component-controlled audit includes 225 full knot queries, 30 capped group
+probes and 150 kernel runs with separate quotient/pruning and uniform-summary
+arms. At `N=256`, the quotient family improves from 257 moves / 331.5 ms
+to two moves / 0.44 ms; at `N=2^500` both changes finish in 15.0 ms while
+either alone exhausts the work cap. Existing knot traces are unchanged,
+with about 2% overhead on the small-case sum and near-equal Gordian timings.
+Resource limits remain censored. Raw results are in
+`../fast/results/relator_power_20261008.json`; logs are in
+`data/relator-power-*`. The rebuilt article has 186 pages, with no new
+layout warnings or unresolved references. Earlier checkpoint measurements
+follow below.
+
 `compressed_matching.tex` documents the exact arithmetic-progression occurrence
 table, iterative local-window query, checked progression unions and polynomial
 bit-complexity argument. The new whole-donor fallback preserves normal closure

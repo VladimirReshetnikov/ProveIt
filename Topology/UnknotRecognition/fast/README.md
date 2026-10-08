@@ -9,6 +9,9 @@ turns repeated subtraction into Euclidean division; the general recognition
 bound remains unproved. The integrated suite has 672 passing tests with Regina,
 including a genuine Gordian trace accepted by both verifiers, forged macro
 rejection, and a compressed `2^500` replay without expansion.
+The proof and limits are in [`relator_powers.tex`](../synthesis/relator_powers.tex).
+Reproduce the component-controlled audit with
+`python -B benchmark_relator_power.py --output results/relator_power_local.json`.
 
 When compressed group search would stall above the explicit-letter cap,
 `--group-relators` now enables exact whole-donor deletion without expansion.
