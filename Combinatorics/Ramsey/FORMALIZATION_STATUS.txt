@@ -20,8 +20,8 @@ Scope
   checkpoints; the current catalogue count is stated here and in the ledger.
 
 Verification at this checkpoint
-  All 818 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 5,310 public Gowers theorems and found only propext,
+  All 820 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 5,322 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 114 exact
   companion proofs and 6 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -40,13 +40,24 @@ Verification at this checkpoint
   preventing declaration collisions with the full upstream affine-recovery
   module. Their statements and proof bodies are unchanged. After this
   adjustment, the merged small-degree results, and the explicit selection,
-  dimension-two, and quartic inverse thresholds, plus the low-dimensional
-  Corollary 16.11 companions, the 818-module Gowers audit checks 5,310
-  theorems and the same 114/6 catalogue split.
+  dimension-two, and quartic inverse thresholds, the low-dimensional
+  Corollary 16.11 companions, and the stackable-slice reductions, the
+  820-module Gowers audit checks 5,322 theorems and the same 114/6
+  catalogue split.
   GowersSzemeredi.PortImportAudit additionally
   compiles the facade and full affine-recovery module together as a
-  2,557-module closure and checks equality of the extracted propositions
+  2,559-module closure and checks equality of the extracted propositions
   with their originals. This does not certify the remaining density port.
+
+Conditional stackable structure and slice reduction
+  Proofs16PartJInterface states StackableStructureAt and CubicStackableClass,
+  which require covers with controlled finite unions of partial graphs.
+  The dimension-one instance follows from the existing Freiman-family
+  extraction. Proofs16PartJSlices proves that such a cover restricts every
+  final-coordinate slice with the stated density loss and provides the
+  cubic slice input on a common-base good domain, with parameter Q*q.
+  These are checked conditional reductions. The required higher-dimensional
+  structure input is not proved, so no full catalogue entry is closed.
 
 Conditional Section 16 regime splitting
   The merged Proofs16RegimeSplitting gives exact coarse covers for relations
@@ -330,8 +341,8 @@ Conditional quantitative density bridge and dependency port
   manifest and can show a dependency path from the density target.
   These new sources are outside the current Gowers import closure, and
   the complete quantitative dependency build has not yet passed.
-  The first 3,100 pinned manifest entries compile as a 3,116-module closure.
-  OAI.QuantitativePortAudit checks 47,922 public OAI theorems in this prefix
+  The first 3,200 pinned manifest entries compile as a 3,216-module closure.
+  OAI.QuantitativePortAudit checks 49,010 public OAI theorems in this prefix
   using only the three standard axioms, and checks the added compatibility
   lemmas. This partial dependency audit is separate from the Gowers audit
   above and does not certify Results.Conclusions.

@@ -1,5 +1,6 @@
-/- Modified for ProveIt: import Lean 4.32 compatibility declarations.
-Statements and proofs are unchanged from the pinned upstream source. -/
+/- Modified for ProveIt: import Lean 4.32 compatibility declarations and
+provide explicit sigma-finite instances for the nested Haar product integral.
+All upstream statements and quantitative bounds are unchanged. -/
 import OAI.Compat.Core
 import Mathlib.MeasureTheory.Integral.Pi
 import OAI.Combinatorics.Progressions.Estimates.AmbientBooleanReconstruction
@@ -387,6 +388,8 @@ theorem singleSiteHaar_ambientIntegerCharacter_integral
       ∂Measure.pi (fun j => Measure.pi (fun _ : Unit => ν j))) =
       if ∀ j, U j ≤ LinearMap.ker (integerRowLinear (fun i => a ⟨j, i⟩))
       then 1 else 0 := by
+  let : ∀ j, SigmaFinite (ν j) := fun _ => inferInstance
+  let : ∀ j, SigmaFinite (Measure.pi (fun _ : Unit => ν j)) := fun _ => inferInstance
   have he (y : EuclideanJetLayers U (fun _ => Unit)) :
       ambientIntegerCharacter a
         (fun i => coveredJetAmbientTorus U 1 y ⟨i.1, (), i.2⟩) =

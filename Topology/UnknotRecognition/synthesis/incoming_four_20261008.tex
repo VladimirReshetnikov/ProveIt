@@ -1,0 +1,139 @@
+\section{Four further October deliveries and their integration boundaries}
+\label{sec:incoming-four}
+
+The user pointed out four newly arrived \path{docs/incoming/unknot_*.zip}
+archives. Their hashes and all supplied manifest entries verify: 705 for
+projectors and seams, 482 for presentations and early certificates, 393 for
+compressed certificates, and 40 for separator transfer. These checks establish
+integrity, not mathematical correctness.
+
+The audit record is:
+\begin{center}\small
+\path{data/incoming-four-20261008-review.json}
+\end{center}
+The suggested
+\code{openai/math} head remains \code{fd4aeeb2ee} at this review.
+
+\paragraph{Projectors and seams.}
+The reviewed polynomial-projector construction is integrated and extended in
+Section~\ref{sec:primary-continuation}. Its separate geometry kernel assembles
+complete boundary covers with dihedral sheet maps, retaining original ports
+and marks. It does not extract such pieces from an arbitrary knot exterior
+or verify their embedding in that exterior. Geometry and the independently
+proposed worker-communication repair remain separate integration items.
+
+\paragraph{Presentations and early certificates.}
+The report claims exact real-feasibility bounds controlled by generator count,
+explicit relator length and retained word-circuit cuts. Its quaternion compiler
+uses a noncommuting-generator test, rather than assuming arbitrary generator
+images must differ for a nonabelian representation. It distinguishes an
+arbitrary presentation from certified meridional generators, charges dense
+polynomial construction, and identifies the published traceless-meridian
+specialization as not yet implemented in its benchmarked solver. The required
+small presentation or small circuit cut is not proved for every residual knot.
+The delivered Z3 path is an optional exact external solver, not an independent
+UNSAT proof checker. Those provenance and solver boundaries require review
+before a production verdict path is added.
+
+The same report supplies a first-jet observer and reverse-suffix modular
+responses. The response proof retains a singular interior radical instead of
+silently applying an invertible Schur-complement formula. Its claimed
+$O(n(W+1)^2)$ field-operation bound concerns shared preparation of all suffixes
+under a valid reverse filtration. It does not bound the number of live
+Khovanov components or automatically establish a full-recognition speedup.
+The next useful check is a maintained consumer and complete accounting for
+response preparation, query reuse and exact fallback. The first-jet report
+retains its observed regressions, so automatic dispatch is not justified by
+the delivered timing evidence alone.
+
+\paragraph{Compressed certificates.}
+The endpoint matcher certifies an arithmetic progression using short endpoint
+anchors, proves a period on the largest candidate window, and gallops and
+bisects in candidate rank to locate the true overlap cutoff. This is stronger
+than merely accepting an entire candidate progression when its two largest
+members match. It should be compared directly against the current endpoint,
+window and sparse-marker shortcuts, especially on broken progressions, before
+changing their dispatch. The delivered whole-knot runs have zero endpoint
+activations and establish no end-to-end speedup.
+
+The regular-cover kernel represents compatible isomorphisms by at most two
+congruence families per connected base graph, but fast equivalence checking
+does not bound the number of distinct states. The disk checker validates a
+finite triangulation, normal coordinates, primitivity, extreme-ray rank,
+Euler characteristic and essential boundary parity. Even a correct accepted
+disk still needs a verified link from that triangulation to the input knot
+diagram. Neither geometry module is promoted to a knot-verdict path at this
+checkpoint.
+
+\paragraph{Separator transfer.}
+The first-hit identity factors a typed DAG transfer through a vertex cut.
+Prefixes must stop at their first cut vertex; unrestricted prefixes would
+count a path multiple times when the cut is not an antichain. The numerical
+rank budget then maximizes $\sum_h r_h$ subject to
+$r_{h-1}+r_h\le c_h$ and supplied upper bounds on $r_h$. Saturating the
+leftmost available path edge is optimal: any deficit can be moved from the
+next edge to it without decreasing the objective, then the argument repeats.
+Thus $\sum_h c_h-2\max\sum_h r_h$ is the sharp lower bound supplied by those
+numbers. For a verified reduced knot complex, a bound greater than one is a
+one-sided obstruction; a smaller bound does not certify an unknot.
+
+All 36 delivered separator tests pass in the current environment. This is a
+prototype gate, not a production Khovanov integration gate. The report supplies
+neither a maintained cobordism-closure evaluator nor a cheap general exporter
+of a suitable state; its braid utility first constructs an exponential cube.
+Its actual-knot timings favor ordinary propagation. A future transfer must
+validate the closure and grading conventions, compare expanded maps with the
+current corridor implementation, and charge construction and cut discovery.
+These obligations remain outside the current integration.
+
+\subsection{The subsequent degree-budgeted SU(2) delivery}
+Commit \code{ea9cf443c} adds the degree-budgeted SU(2) archive:
+\begin{center}\small
+\path{unknot_su2_degree_budget_20261008.zip}
+\end{center}
+All 50 checksum entries verify,
+and all 30 delivered test methods pass in 1.049 seconds. The report has a
+particularly concrete restricted recognition route: two \emph{certified}
+meridian generators permit a complete compressed integer calculation.
+The underlying topological input is established: Kronheimer--Mrowka,
+Corollary 7.17 of \emph{Knots, sutures and excision}, gives an irreducible
+$\mathrm{SU}(2)$ representation sending a chosen meridian to $i$ for every
+nontrivial knot~\cite{km-traceless-primary}. The primary source was checked
+directly during this review.
+
+For noncommuting pure imaginary generator images $A,B$, set $T=AB$.
+Since $A^2=B^2=-1$ and $ATA^{-1}=T^{-1}$, every word has the form
+$(-1)^e T^k A^s$ with $e,s\in\{0,1\}$. Multiplication changes only one integer
+and two parity bits:
+\[
+ (e,k,s)(f,\ell,t)=(e+f+st\bmod2,\ k+(-1)^s\ell,\ s+t\bmod2).
+\]
+Thus a binary straight-line word circuit can be evaluated without expansion.
+For comparison relators with triples $(e_j,k_j,s_j)$, odd $s_j$ is impossible.
+Otherwise the equations are $k_j\phi\equiv e_j\pi\pmod{2\pi}$ with
+$0<\phi<\pi$. After ruling out $k_j=0,e_j=1$, let $d=\gcd_j|k_j|$.
+If $d=0$, every interior phase works. If $d>0$, an odd $k_j/d$ fixes a parity
+$e$; all equations are compatible exactly when
+$e_j\equiv(k_j/d)e\pmod2$. An interior phase then exists exactly when
+$\lfloor(d-1+e)/2\rfloor>0$. A compact witness is $\phi=\pi/d$ for odd parity
+or $2\pi/d$ for even parity, subject to that strict interior condition.
+These normal-form and phase arguments check out at the algebraic interface.
+
+The report's bit bound is polynomial in compressed input size: intermediate
+exponent bit lengths are linear in the number of word-circuit nodes, and the
+remaining operations are gcd, quotient and parity calculations. It also gives
+an exhaustive two-seed Wirtinger propagation class, with a claimed polynomial
+complete recognition bound on diagrams admitting such a derivation. The
+unrestricted multi-generator path is a formula compiler; the invoked general
+existential-real algorithm is not implemented in this package.
+
+The maintained adapter in Section~\ref{sec:two-meridian} now constructs and
+replays the seed derivation from the validated PD, keeps every original crossing
+relation and carries meridian provenance to the two surviving generators.
+An arbitrary two-generator endpoint of a Whitehead search is insufficient:
+exponent sum one does not prove that a generator is a meridian. The delivered
+Boolean declaration is explicitly a precondition, not a topology certificate.
+The production path checks that precondition from the diagram itself and
+exposes a bounded optional recognizer with verified verdicts on the resulting
+restricted class. The general formula compiler remains a separate research
+interface, with no all-knot small-seed or degree bound established.

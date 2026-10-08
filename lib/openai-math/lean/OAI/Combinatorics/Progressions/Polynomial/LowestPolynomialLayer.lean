@@ -1,3 +1,6 @@
+/- Modified for ProveIt: use the older lower-triangular matrix API and
+reducible rewriting for the prefix-slot weight on Lean 4.32.
+All upstream theorem statements and bounds are unchanged. -/
 import Mathlib.LinearAlgebra.Matrix.Block
 import Mathlib.LinearAlgebra.Matrix.NonsingularInverse
 import OAI.Combinatorics.Progressions.Polynomial.PolynomialPatchProductBudget
@@ -42,11 +45,11 @@ theorem earlierSlotMatrix_mulVec (m : (i : Fin D) → Fin i.val → R)
 
 theorem det_one_sub_strictLower (M : Matrix (Fin D) (Fin D) R)
     (hM : ∀ i j, i ≤ j → M i j = 0) : (1 - M).det = 1 := by
-  have htri : (1 - M).IsLowerTriangular := by
+  have htri : (1 - M).BlockTriangular OrderDual.toDual := by
     intro i j hij
     change i < j at hij
     simp [Matrix.sub_apply, hM i j hij.le, Matrix.one_apply_ne hij.ne]
-  rw [Matrix.det_of_isLowerTriangular _ htri]
+  rw [Matrix.det_of_lowerTriangular _ htri]
   apply Finset.prod_eq_one
   intro i _
   simp [Matrix.sub_apply, hM i i le_rfl]
@@ -113,7 +116,7 @@ theorem lowest_prefix_slotAffine (A : PolynomialSlots σ (D + E) w)
     | inl a => rfl
     | inr j =>
       exact hw ⟨j.val, lt_trans j.isLt i.isLt⟩
-  rw [← hweight, ← hw i]
+  erw [← hweight, ← hw i]
   exact A.degree (i.castAdd E)
 
 theorem exists_lowest_affine_prefix (A : PolynomialSlots σ (D + E) w)

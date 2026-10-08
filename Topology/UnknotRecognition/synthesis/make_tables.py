@@ -1000,3 +1000,68 @@ if spin_valuation:
             r'\end{center}' + '\nMedian milliseconds for fresh full Jones queries, including ordering. '
             'Current shifted arithmetic controls for the new dispatch and counters. '
             'Limits are censored.\n')
+
+adaptive_jones = load('../fast/results/adaptive_jones_20261008.json')
+if adaptive_jones:
+    arms = ('baseline', 'control', 'spin', 'adaptive')
+    rows = []
+    names = {'kinoshita_terasaka': 'KT', 'hard_unknot_8': 'Hard 8',
+             'stress_braid5_36': 'Braid5 36', 'grid-8-shuffled': 'Grid 8 shuffled'}
+    for row in adaptive_jones['rows']:
+        cells = [esc(names.get(row['name'], row['name'].replace('-', ' ').capitalize()))]
+        for arm in arms:
+            cells.append(f"{1000*row['median_seconds'][arm]:.3f}"
+                         if row['completed'][arm] == adaptive_jones['rounds'] else 'limit')
+        rows.append(' & '.join(cells) + r' \\')
+    with open('tables/adaptive_jones.tex', 'w') as handle:
+        handle.write(r'\begin{center}\small' + '\n' +
+            table('Input & Potts & A/A & Spin & Adaptive', '@{}lrrrr@{}', rows) +
+            r'\end{center}' + '\nMedian milliseconds for fresh full Jones queries, including ordering. '
+            'Limits are censored, not completed-query times.\n')
+
+primary_continuation = load('../fast/results/primary_continuation_20261008.json')
+if primary_continuation:
+    arms = ('fitting', 'control', 'delivered', 'primary', 'corner')
+    for scope in ('knots', 'compression'):
+        rows = []
+        items = primary_continuation['knots' if scope == 'knots' else 'fields']
+        for row in items:
+            if scope == 'knots':
+                name = {'kinoshita_terasaka': 'KT', 'hard_unknot_8': 'Hard 8',
+                        'stress_braid5_36': 'Braid5 36', 'torus_3_5': 'Torus (3,5)'}.get(row['name'],row['name'].capitalize())
+                timing = row['timing']
+            else:
+                name = str(row['degree'])+' '+row['mixing']
+                timing = row['compression']['timing']
+            rows.append(' & '.join([esc(name)] +
+                [f"{1000*timing['median_seconds'][arm]:.3f}" for arm in arms]) + r' \\')
+        with open(f'tables/primary_{scope}.tex', 'w') as handle:
+            handle.write(r'\begin{center}\small'+'\n'+
+                table('Input & Fitting & A/A & Delivered & Local stop & Corner', '@{}lrrrrr@{}', rows)+
+                r'\end{center}'+'\nMedian milliseconds; all calls complete. '+
+                ('Full raw knot scans at a common prepared order.\n' if scope=='knots' else
+                 'Complete recursive compression of graded algebraic fixtures; construction excluded.\n'))
+
+two_meridian = load('../fast/results/two_meridian_20261008.json')
+if two_meridian:
+    rows = []
+    names = {'kinoshita_terasaka': 'KT', 'hard_unknot_8': 'Hard 8',
+             'figure_eight': 'Figure eight'}
+    for row in two_meridian['rows']:
+        cells = [esc(names.get(row['name'], row['name'].replace('-', ' ').capitalize())),
+                 str(row['crossings'])]
+        for mode in ('ordinary', 'compressed_group'):
+            result = row['modes'][mode]
+            for arm in ('disabled', 'enabled'):
+                times = result['completed_median_seconds'][arm]
+                count = sum(s['measurements'][arm]['completed'] for s in result['samples'])
+                cells.append(f'{1000*times:.2f}' if count == two_meridian['measured_rounds'] else 'limit')
+            pair = result['paired_ratios']['disabled/enabled']
+            cells.append(f"{pair['median']:.2f}" if pair['count'] == two_meridian['measured_rounds'] else '--')
+        rows.append(' & '.join(cells) + r' \\')
+    with open('tables/two_meridian.tex', 'w') as handle:
+        handle.write(r'\begin{center}\small'+'\n'+
+            table('Input & $n$ & Ord. off & Ord. on & Ratio & Group off & Group on & Ratio',
+                  '@{}lrrrrrrr@{}', rows)+r'\end{center}'+'\n'+
+            'Median milliseconds for whole recognition, including PD validation and replay. '
+            'Ratios are medians of paired off/on times; limits are censored.\n')

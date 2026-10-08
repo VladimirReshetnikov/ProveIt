@@ -1,3 +1,6 @@
+/- Modified for ProveIt: discharge the natural-number power-base side
+condition left by gcongr on Lean 4.32. All upstream theorem statements
+and quantitative bounds are unchanged. -/
 import OAI.Combinatorics.Progressions.Linear.PreparedSpatialKernelBlocks
 
 namespace OAI
@@ -72,6 +75,7 @@ theorem preparation_step_caps (s n M R h He c : ℕ) {p δ : ℝ}
       preparationOscillationCap s n R p := by
     unfold preparationOscillationCap
     gcongr
+    omega
   have hK : K ≤ preparationOscillationCap s n R p := by
     dsimp only [K]
     exact_mod_cast hKnat

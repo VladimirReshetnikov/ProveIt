@@ -1,5 +1,6 @@
-/- Modified for ProveIt: import Lean 4.32 compatibility declarations.
-Statements and proofs are unchanged from the pinned upstream source. -/
+/- Modified for ProveIt: import Lean 4.32 compatibility declarations and give the
+full tagged detection conversion a finite local checking budget.
+Statements and mathematical proofs are unchanged from the pinned upstream source. -/
 import OAI.Compat.Core
 import OAI.Compat.TensorProduct
 import Mathlib.Algebra.MvPolynomial.Rename
@@ -708,6 +709,7 @@ def FullTaggedDetectedMajorGradeConclusion : Prop :=
       (fullTaggedGradedBaseIntersection J k K₀ (fun i => majorPhaseDetectedRealBase J k (detectedfast i)))
       (lowTaggedVectorExtend J k (realChartSubstitute chart slow)) (lowTaggedVectorExtend J k rat)
 
+set_option maxHeartbeats 400000 in
 theorem fullTaggedDetectedMajorGradeConclusion_of_vector_detection
     (hfast : BasisGradedSubmodule (F.associatedGradedBasis b ω hF) ω fast)
     (hsection : ∀ y, fast.mkQ (lift y) = y)

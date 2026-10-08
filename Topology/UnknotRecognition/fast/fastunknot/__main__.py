@@ -70,11 +70,15 @@ OPTIONS = {
         ("--group-compressed-search", None, False, None, "enable compressed group search and replay; overlaps expand within a fixed cap"),
         ("--group-adaptive", None, False, None, "start group search explicitly and switch to compressed words before exceeding the letter allowance"),
         ("--group-switch-letters", int, None, None, "enable adaptive group search with this earlier substitution-size threshold"),
+        ("--two-meridian", None, False, None, "try checked two-seed Wirtinger recognition after invariant filters"),
+        ("--two-meridian-seconds", float, 0.05, None, "shared local allowance for two-seed search and replay"),
+        ("--two-meridian-max-work", int, 2000000, None, "shared two-seed preparation, search, arithmetic and replay work cap"),
+        ("--two-meridian-max-attempts", int, 10000, None, "seed-set attempt cap; exhaustion is inconclusive"),
         ("--braid-backend", str, "free-product", ("free-product", "matrix"),
          "exact decision backend for a source braid on at most three strands"),
         ("--no-braid-reduction", None, False, None, "disable singleton endpoint destabilization"),
         ("--no-seifert", None, False, None, "disable the linear signed Seifert graph certificate"),
-        ("--backend", str, "standard", ("standard", "shared", "saturated", "euler", "shadow", "closure", "twist", "barcode", "fitting"),
+        ("--backend", str, "standard", ("standard", "shared", "saturated", "euler", "shadow", "closure", "twist", "barcode", "fitting", "primary"),
          "Khovanov backend, including optional sharing, twists, intervals, or scalar splitting"),
         ("--euler-max-states", int, 4096, None, "state budget for optional Euler continuation"),
         ("--shadow-max-work", int, 1_000_000, None, "work allowance for optional marked determinant continuations"),
@@ -118,6 +122,7 @@ OPTIONS = {
         ("--composition-max-variables", int, 18, None, "component/output variable allocation limit"),
         ("--barcode", None, False, None, "exact common-coefficient interval normalization"),
         ("--fitting", None, False, None, "exact grading-preserving scalar splitting and intervals"),
+        ("--primary", None, False, None, "exact scalar splitting with primary polynomial projectors"),
         ("--shared", None, False, None, "use exact component sharing (cannot combine with --factor)"),
         ("--check-d2", None, False, None, None),
         ("--factor", None, False, None, "multiply ranks over visible connected summands"),
@@ -250,6 +255,7 @@ def main(argv: list[str] | None = None) -> int:
                 args.pivot != "minfill" or args.algebra != "bits" or args.race != 1
                 or getattr(args, "backend", "standard") != "standard"
                 or getattr(args, "barcode", False) or getattr(args, "fitting", False)
+                or getattr(args, "primary", False)
                 or getattr(args, "shared", False) or getattr(args, "twist", False)):
             print("residue/adaptive reduction requires the standard backend, minfill, bits, and race=1",
                   file=sys.stderr)
@@ -264,6 +270,7 @@ def main(argv: list[str] | None = None) -> int:
                 args.pivot != "minfill" or args.algebra != "bits" or args.race != 1
                 or getattr(args, "backend", "standard") != "standard"
                 or getattr(args, "barcode", False) or getattr(args, "fitting", False)
+                or getattr(args, "primary", False)
                 or getattr(args, "shared", False)):
             print("component composition requires standard backend, minfill, bits, and race=1", file=sys.stderr)
             return 2
@@ -318,6 +325,10 @@ def main(argv: list[str] | None = None) -> int:
                            group_adaptive=args.group_adaptive or args.group_switch_letters is not None,
                            group_switch_letters=args.group_switch_letters,
                            group_relators=args.group_relators, group_max_work=args.group_max_work,
+                           use_two_meridian=args.two_meridian,
+                           two_meridian_seconds=args.two_meridian_seconds,
+                           two_meridian_max_work=args.two_meridian_max_work,
+                           two_meridian_max_attempts=args.two_meridian_max_attempts,
                            use_braid_profile=args.braid_profile,
                            use_braid_reduction=not args.no_braid_reduction,
                            euler_max_states=args.euler_max_states,
@@ -371,18 +382,19 @@ def main(argv: list[str] | None = None) -> int:
         print(json.dumps(result, indent=1))
         return 0
     if args.command == "khovanov":
-        if args.barcode or args.fitting:
-            if (sum((args.barcode, args.fitting, args.shared, args.twist)) > 1 or args.factor
+        if args.barcode or args.fitting or args.primary:
+            if (sum((args.barcode, args.fitting, args.primary, args.shared, args.twist)) > 1 or args.factor
                     or args.pivot != "minfill" or args.algebra != "bits" or args.tail or args.race != 1):
-                print("--barcode/--fitting require one backend, no --factor, minfill, bits, tail=0, race=1",
+                print("--barcode/--fitting/--primary require one backend, no --factor, minfill, bits, tail=0, race=1",
                       file=sys.stderr)
                 return 2
-            if args.fitting:
+            if args.fitting or args.primary:
                 from .scalar_split import fitting_khovanov_rank as rank
             else:
                 from .barcode_scan import barcode_khovanov_rank as rank
             try:
-                result = rank(diagram.pd, check_d_squared=args.check_d2)
+                splitting_options = {"fitting_primary": True} if args.primary else {}
+                result = rank(diagram.pd, check_d_squared=args.check_d2, **splitting_options)
             except (ScanLimit, MemoryError) as exc:
                 print(json.dumps(dict(status="UNKNOWN", method="resource-limit", reason=str(exc))))
                 return 3
@@ -430,7 +442,7 @@ def main(argv: list[str] | None = None) -> int:
         statistics = {}
         try:
             test, _, extra = select_jones_filter(args.backend, args.potts_colors)
-            if args.backend in ("potts-faithful", "spin-faithful"):
+            if args.backend in ("potts-faithful", "spin-faithful", "faithful-adaptive"):
                 extra.update(statistics=statistics, include_polynomial=True)
             witness = test(diagram, max_states=args.max_states,
                            max_transitions=args.max_transitions, **extra)
@@ -439,7 +451,7 @@ def main(argv: list[str] | None = None) -> int:
                               "reason": str(exc) or "memory allocation failed"}))
             return 3
         result = {"verdict": "KNOTTED" if witness else "INCONCLUSIVE", "witness": witness}
-        for field in ("polynomial_identity", "jones_polynomial"):
+        for field in ("polynomial_identity", "jones_polynomial", "backend_policy"):
             if field in statistics:
                 result[field] = statistics[field]
         print(json.dumps(result, indent=1))
