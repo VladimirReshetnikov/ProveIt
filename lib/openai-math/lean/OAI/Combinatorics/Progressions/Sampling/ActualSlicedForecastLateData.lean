@@ -1,3 +1,5 @@
+/- Modified for ProveIt: make the final scaled forecast-error conversion
+explicit on Lean 4.32. All upstream theorem statements are unchanged. -/
 import OAI.Combinatorics.Progressions.Sampling.ActualFixedSpatialSlicedInactiveGridCap
 import OAI.Combinatorics.Progressions.Sampling.PreparedActualSlicedForecastSetup
 
@@ -554,9 +556,10 @@ theorem exists_actualFixedSpatialSlicedForecast_native_source
     have heq := slice.principalLaw_eq_contained
     rw [← heq] at hh
     have scaled := mul_le_mul_of_nonneg_left hh s.hκ
-    simpa only [ActualFixedSpatialSlicedForecastPath.target, coeff₀, H, mul_assoc,
+    simp only [ActualFixedSpatialSlicedForecastPath.target, coeff₀, H, mul_assoc,
       ← Finset.mul_sum, ← mul_sub, norm_mul, Complex.norm_real, Real.norm_eq_abs,
-      abs_of_nonneg s.hκ] using scaled
+      abs_of_nonneg s.hκ] at scaled ⊢
+    convert scaled using 1 <;> rfl
 
 end Erdos3.VectorPolynomial
 
@@ -790,9 +793,10 @@ theorem exists_actualFixedSpatialSlicedForecast_universal_native_source
     have heq := slice.principalLaw_eq_contained
     rw [← heq] at hh
     have scaled := mul_le_mul_of_nonneg_left hh s.hκ
-    simpa only [ActualFixedSpatialSlicedForecastPath.targetAt, coeff₀, H, mul_assoc,
+    simp only [ActualFixedSpatialSlicedForecastPath.targetAt, coeff₀, H, mul_assoc,
       ← Finset.mul_sum, ← mul_sub, norm_mul, Complex.norm_real, Real.norm_eq_abs,
-      abs_of_nonneg s.hκ] using scaled
+      abs_of_nonneg s.hκ] at scaled ⊢
+    convert scaled using 1 <;> rfl
 
 end Erdos3.VectorPolynomial
 
