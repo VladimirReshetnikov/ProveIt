@@ -74,7 +74,7 @@ OPTIONS = {
          "exact decision backend for a source braid on at most three strands"),
         ("--no-braid-reduction", None, False, None, "disable singleton endpoint destabilization"),
         ("--no-seifert", None, False, None, "disable the linear signed Seifert graph certificate"),
-        ("--backend", str, "standard", ("standard", "shared", "saturated", "euler", "shadow", "closure", "twist", "barcode", "fitting"),
+        ("--backend", str, "standard", ("standard", "shared", "saturated", "euler", "shadow", "closure", "twist", "barcode", "fitting", "primary"),
          "Khovanov backend, including optional sharing, twists, intervals, or scalar splitting"),
         ("--euler-max-states", int, 4096, None, "state budget for optional Euler continuation"),
         ("--shadow-max-work", int, 1_000_000, None, "work allowance for optional marked determinant continuations"),
@@ -118,6 +118,7 @@ OPTIONS = {
         ("--composition-max-variables", int, 18, None, "component/output variable allocation limit"),
         ("--barcode", None, False, None, "exact common-coefficient interval normalization"),
         ("--fitting", None, False, None, "exact grading-preserving scalar splitting and intervals"),
+        ("--primary", None, False, None, "exact scalar splitting with primary polynomial projectors"),
         ("--shared", None, False, None, "use exact component sharing (cannot combine with --factor)"),
         ("--check-d2", None, False, None, None),
         ("--factor", None, False, None, "multiply ranks over visible connected summands"),
@@ -250,6 +251,7 @@ def main(argv: list[str] | None = None) -> int:
                 args.pivot != "minfill" or args.algebra != "bits" or args.race != 1
                 or getattr(args, "backend", "standard") != "standard"
                 or getattr(args, "barcode", False) or getattr(args, "fitting", False)
+                or getattr(args, "primary", False)
                 or getattr(args, "shared", False) or getattr(args, "twist", False)):
             print("residue/adaptive reduction requires the standard backend, minfill, bits, and race=1",
                   file=sys.stderr)
@@ -264,6 +266,7 @@ def main(argv: list[str] | None = None) -> int:
                 args.pivot != "minfill" or args.algebra != "bits" or args.race != 1
                 or getattr(args, "backend", "standard") != "standard"
                 or getattr(args, "barcode", False) or getattr(args, "fitting", False)
+                or getattr(args, "primary", False)
                 or getattr(args, "shared", False)):
             print("component composition requires standard backend, minfill, bits, and race=1", file=sys.stderr)
             return 2
@@ -371,18 +374,19 @@ def main(argv: list[str] | None = None) -> int:
         print(json.dumps(result, indent=1))
         return 0
     if args.command == "khovanov":
-        if args.barcode or args.fitting:
-            if (sum((args.barcode, args.fitting, args.shared, args.twist)) > 1 or args.factor
+        if args.barcode or args.fitting or args.primary:
+            if (sum((args.barcode, args.fitting, args.primary, args.shared, args.twist)) > 1 or args.factor
                     or args.pivot != "minfill" or args.algebra != "bits" or args.tail or args.race != 1):
-                print("--barcode/--fitting require one backend, no --factor, minfill, bits, tail=0, race=1",
+                print("--barcode/--fitting/--primary require one backend, no --factor, minfill, bits, tail=0, race=1",
                       file=sys.stderr)
                 return 2
-            if args.fitting:
+            if args.fitting or args.primary:
                 from .scalar_split import fitting_khovanov_rank as rank
             else:
                 from .barcode_scan import barcode_khovanov_rank as rank
             try:
-                result = rank(diagram.pd, check_d_squared=args.check_d2)
+                splitting_options = {"fitting_primary": True} if args.primary else {}
+                result = rank(diagram.pd, check_d_squared=args.check_d2, **splitting_options)
             except (ScanLimit, MemoryError) as exc:
                 print(json.dumps(dict(status="UNKNOWN", method="resource-limit", reason=str(exc))))
                 return 3

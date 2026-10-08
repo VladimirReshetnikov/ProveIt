@@ -207,16 +207,22 @@ def _change_basis(scan, group, blocks, changes, kernel_dimensions):
 
 
 def find_scalar_split(scan, group, *, max_variables=1024, basis_trials=64,
-                      combination_trials=16, check=None, preserve_grading=True):
+                      combination_trials=16, check=None, preserve_grading=True,
+                      primary=False):
     """Return transformed rows and a verifiable witness, or no split.
 
     The search is deterministic: the first basis_trials basis vectors, then a
     fixed-seed collection of binary linear combinations. Every returned split
     is exact, regardless of whether this bounded search finds all splits.
+    With primary=True, a candidate missed by the zero-eigenvalue Fitting
+    test is also searched for polynomial idempotents by Berlekamp's method.
     """
+    if type(primary) is not bool:
+        raise ValueError('primary must be a boolean')
     data = scalar_endomorphism_space(scan, group, max_variables=max_variables, check=check,
                                      preserve_grading=preserve_grading)
-    metrics = dict(variables=0, equations=0, dimension=0, candidates=0, skipped_variables=0)
+    metrics = dict(variables=0, equations=0, dimension=0, candidates=0, skipped_variables=0,
+                   primary_candidates=0, primary_splits=0, primary_max_minimal_degree=0)
     if data is None:
         metrics['skipped_variables'] = 1
         return None, None, metrics
@@ -242,8 +248,27 @@ def find_scalar_split(scan, group, *, max_variables=1024, basis_trials=64,
         metrics['candidates'] += 1
         columns = _columns(blocks, variables, vector)
         changes, kernels, image_dimension, exponent = _fitting_bases(blocks, columns)
+        primary_witness = None
         if image_dimension in (0, len(group)):
-            continue
+            # Nilpotent and identity candidates have a primary minimal
+            # polynomial, so their polynomial algebra has no nontrivial
+            # idempotent.  Avoid Berlekamp work in these common cases.
+            if (not primary or image_dimension == 0
+                    or all(matrix == [1 << i for i in range(len(matrix))] for matrix in columns)):
+                continue
+            from .primary_split import primary_projector
+            original_columns = columns
+            metrics['primary_candidates'] += 1
+            columns, primary_witness = primary_projector(columns, check=check)
+            metrics['primary_max_minimal_degree'] = max(
+                metrics['primary_max_minimal_degree'], primary_witness['minimal_degree'])
+            if columns is None:
+                continue
+            changes, kernels, image_dimension, exponent = _fitting_bases(blocks, columns)
+            if image_dimension in (0, len(group)):
+                raise ArithmeticError('a nontrivial primary projector failed to split')
+            primary_witness['candidate_columns'] = original_columns
+            metrics['primary_splits'] += 1
         if not _commutes(scan, group, blocks, columns):
             raise ArithmeticError("the computed scalar endomorphism does not commute with d")
         out, sides = _change_basis(scan, group, blocks, changes, kernels)
@@ -254,6 +279,8 @@ def find_scalar_split(scan, group, *, max_variables=1024, basis_trials=64,
             kernel_dimensions=kernels, stable_exponent=exponent,
             image_dimension=image_dimension, sides=sides,
         )
+        if primary_witness is not None:
+            witness['primary'] = primary_witness
         return out, witness, metrics
     return None, None, metrics
 
@@ -290,7 +317,8 @@ class FittingScan(BarcodeScan):
     def __init__(self, *args, fitting_max_objects=48, fitting_max_variables=1024,
                  fitting_max_splits=16, fitting_basis_trials=64,
                  fitting_combination_trials=16, fitting_cache_entries=4096,
-                 record_witnesses=False, preserve_grading=True, **kwargs):
+                 record_witnesses=False, preserve_grading=True,
+                 fitting_primary=False, **kwargs):
         super().__init__(*args, **kwargs)
         for name, value in [('fitting_max_objects', fitting_max_objects),
                             ('fitting_max_variables', fitting_max_variables),
@@ -303,7 +331,10 @@ class FittingScan(BarcodeScan):
             setattr(self, name, value)
         if type(preserve_grading) is not bool:
             raise ValueError("preserve_grading must be a boolean")
+        if type(fitting_primary) is not bool:
+            raise ValueError('fitting_primary must be a boolean')
         self.preserve_grading = preserve_grading
+        self.fitting_primary = fitting_primary
         self.record_witnesses = record_witnesses
         self.fitting_witnesses = []
         self.scalar_cache = {}
@@ -311,7 +342,9 @@ class FittingScan(BarcodeScan):
                           fitting_skipped_size=0, fitting_skipped_variables=0,
                           fitting_skipped_split_budget=0, fitting_max_variables=0,
                           fitting_max_endomorphism_dimension=0, fitting_cache_hits=0,
-                          fitting_cache_misses=0, fitting_skipped_scalar_only=0)
+                          fitting_cache_misses=0, fitting_skipped_scalar_only=0,
+                          fitting_primary_candidates=0, fitting_primary_splits=0,
+                          fitting_primary_max_minimal_degree=0)
 
     def _compress(self, ancestry, groups=None):
         # Work with views of the current indices until an accepted split really
@@ -343,11 +376,12 @@ class FittingScan(BarcodeScan):
                 finished.append((source, group, parent))
                 continue
             self.stats['fitting_examined'] += 1
-            key = _scalar_key(source, group, self.preserve_grading)
+            # Negative search entries depend on which candidate policy ran.
+            key = self.fitting_primary, _scalar_key(source, group, self.preserve_grading)
             if key in self.scalar_cache:
                 self.stats['fitting_cache_hits'] += 1
                 witness, saved_metrics = self.scalar_cache[key]
-                metrics = dict(saved_metrics, candidates=0)
+                metrics = dict(saved_metrics, candidates=0, primary_candidates=0)
                 if witness is None:
                     out = None
                 else:
@@ -363,12 +397,17 @@ class FittingScan(BarcodeScan):
                     source, group, max_variables=self.fitting_max_variables,
                     basis_trials=self.fitting_basis_trials,
                     combination_trials=self.fitting_combination_trials, check=self._check,
-                    preserve_grading=self.preserve_grading)
+                    preserve_grading=self.preserve_grading, primary=self.fitting_primary)
                 if self.fitting_cache_entries:
                     if len(self.scalar_cache) >= self.fitting_cache_entries:
                         self.scalar_cache.clear()
                     self.scalar_cache[key] = (None if witness is None else dict(witness), dict(metrics))
             self.stats['fitting_candidates'] += metrics['candidates']
+            self.stats['fitting_primary_candidates'] += metrics['primary_candidates']
+            self.stats['fitting_primary_splits'] += metrics['primary_splits']
+            self.stats['fitting_primary_max_minimal_degree'] = max(
+                self.stats['fitting_primary_max_minimal_degree'],
+                metrics['primary_max_minimal_degree'])
             self.stats['fitting_skipped_variables'] += metrics['skipped_variables']
             self.stats['fitting_max_variables'] = max(self.stats['fitting_max_variables'], metrics['variables'])
             self.stats['fitting_max_endomorphism_dimension'] = max(
@@ -451,18 +490,21 @@ def fitting_khovanov_rank(pd, **options):
     if options.get('rank_cap') is not None or options.get('length_cap') is not None:
         raise ValueError('the exact-rank entry point does not accept decision caps')
     scan, order = _run(pd, **options)
+    primary = options.get('fitting_primary', False)
+    backend = 'scalar-primary-interval-sharing' if primary else 'scalar-fitting-interval-sharing'
     if scan is None:
         return dict(rank=2, reduced_rank=1, by_degree={0: 2}, stats={}, order=[],
-                    backend='scalar-fitting-interval-sharing', stages=[], witnesses=[])
+                    backend=backend, stages=[], witnesses=[], primary_decomposition=primary)
     rank = scan.total_rank()
     if rank % 2:
         raise ArithmeticError('odd unreduced F2 rank for a knot')
     stats = dict(scan.stats)
     stats.update(scan.algebra.stats)
     return dict(rank=rank, reduced_rank=rank // 2, by_degree=scan.ranks_by_degree(),
-                stats=stats, order=order, backend='scalar-fitting-interval-sharing',
+                stats=stats, order=order, backend=backend,
                 stages=scan.stage_history, witnesses=scan.fitting_witnesses,
-                preserves_quantum_grading=scan.preserve_grading)
+                preserves_quantum_grading=scan.preserve_grading,
+                primary_decomposition=scan.fitting_primary)
 
 
 def fitting_khovanov_decide(pd, *, length_cap=2, **options):
@@ -473,16 +515,19 @@ def fitting_khovanov_decide(pd, *, length_cap=2, **options):
     homotopy type are not preserved by this optional length replacement.
     """
     scan, order = _run(pd, rank_cap=3, length_cap=length_cap, **options)
+    primary = options.get('fitting_primary', False)
+    backend = 'scalar-primary-interval-decision' if primary else 'scalar-fitting-interval-decision'
     if scan is None:
         return dict(status='UNKNOT', rank_capped=2, rank_cap=3, stats={}, order=[],
-                    backend='scalar-fitting-interval-decision', length_cap=length_cap,
-                    stages=[], witnesses=[])
+                    backend=backend, length_cap=length_cap, stages=[], witnesses=[],
+                    primary_decomposition=primary)
     rank = scan.total_rank()
     if rank not in (2, 3):
         raise ArithmeticError('a validated knot has unreduced rank at least two')
     stats = dict(scan.stats)
     stats.update(scan.algebra.stats)
     return dict(status='UNKNOT' if rank == 2 else 'KNOTTED', rank_capped=rank, rank_cap=3,
-                stats=stats, order=order, backend='scalar-fitting-interval-decision',
+                stats=stats, order=order, backend=backend,
                 length_cap=length_cap, stages=scan.stage_history,
-                witnesses=scan.fitting_witnesses, preserves_quantum_grading=scan.preserve_grading)
+                witnesses=scan.fitting_witnesses, preserves_quantum_grading=scan.preserve_grading,
+                primary_decomposition=scan.fitting_primary)
