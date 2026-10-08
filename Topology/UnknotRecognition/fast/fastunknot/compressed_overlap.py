@@ -16,16 +16,23 @@ def whole_donor_move(arena, roots):
     donors = sorted(nonempty, key=lambda item: (-arena.lengths[item[1]], item[0]))
     counts = {i: arena.summarize([root])[0] for i, root in nonempty}
     doubled, pairs, pair_cells = {}, {}, 0
+    uniform = getattr(arena, 'uniform', None)
 
     def internal_pairs(root):
         nonlocal pair_cells
         if root not in pairs:
-            found = adjacent_pairs(arena, arena._reachable([root]))
+            letter = uniform[root] if uniform is not None else 0
+            if letter:
+                arena.tick()
+                found = {(letter, letter)} if arena.lengths[root] > 1 else set()
+            else:
+                found = adjacent_pairs(arena, arena._reachable([root]))
             pair_cells += len(found)+1
             if pair_cells > arena.max_nodes:
                 raise CompressedLimit('compressed-overlap adjacency cache allowance exhausted')
             pairs[root] = found
         return pairs[root]
+
     for donor, source in donors:
         size = arena.lengths[source]
         eligible = []

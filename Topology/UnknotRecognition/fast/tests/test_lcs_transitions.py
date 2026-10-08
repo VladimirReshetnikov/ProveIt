@@ -87,6 +87,23 @@ class LCSTransitionTests(unittest.TestCase):
         with self.assertRaisesRegex(CompressedLimit, 'adjacency cache'):
             whole_donor_move(arena, roots)
 
+    def test_uniform_whole_donor_pairs_need_no_grammar_traversal(self):
+        arena, n = WordArena(max_work=100000), 2**500
+        roots = [arena.power(arena.letter(1), n), arena.power(arena.letter(1), n*n+1)]
+        with patch('fastunknot.compressed_overlap.adjacent_pairs',
+                   side_effect=AssertionError('uniform metadata already determines every pair')):
+            move = whole_donor_move(arena, roots)
+        self.assertEqual(move['kind'], 'relator_power')
+        self.assertEqual(move['copies'], n)
+        # Single-letter donors have no internal pairs, including inverse-only matches.
+        for letter in (1, -1):
+            arena = WordArena()
+            roots = [arena.letter(1), arena.power(arena.letter(letter), 3)]
+            with patch('fastunknot.compressed_overlap.adjacent_pairs', side_effect=AssertionError):
+                move = whole_donor_move(arena, roots)
+            self.assertEqual(move['inverse'], letter < 0)
+            self.assertEqual(move['copies'], 3)
+
     def test_same_alphabet_partial_move_reaches_the_new_fallback(self):
         arena, n = WordArena(max_work=100000), 2**500
         run = arena.power(arena.from_word([1, 2]), n)

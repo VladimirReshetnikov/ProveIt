@@ -1,0 +1,251 @@
+\section{Directed transition bounds for compressed overlap search}
+\label{sec:lcs-transitions}
+
+\subsection{Equal alphabets can still have different local order}
+
+The same-alphabet control of Section~\ref{sec:lcs-bounds},
+$(ab)^Nac,(ab)^Nca$, exhausted the work allowance at $N=2^{500}$.
+An alphabet-only bound cannot distinguish these words, but their adjacent
+letter pairs differ. Any common substring must use pairs that occur in
+both words. The new stage applies this stronger necessary condition after
+the alphabet-run stage has failed to finish the query.
+
+It is also necessary to improve the preceding whole-donor stage. A fast
+partial-overlap query is of little use if an impossible full-donor query
+has already consumed its budget. We therefore use directed pair sets to
+reject impossible whole-donor orientations before building inverse words
+or invoking the occurrence matcher. Both uses are exact pruning; the
+existing complete string algorithms remain available when the conditions
+are insufficient.
+
+\subsection{Exact directed pairs from grammar cuts}
+
+For a word $W$, let $E(W)$ be its set of ordered adjacent signed-letter
+pairs. This is a linear-word definition; no cyclic closing edge is added
+unless explicitly requested by a caller. For each reachable binary rule
+$U=AB$, record the pair
+$(\operatorname{last}(A),\operatorname{first}(B))$.
+
+\begin{lemma}[Cut-pair extraction]
+The union of these pairs over reachable binary rules is exactly $E(W)$.
+It has at most as many entries as there are reachable binary rules and
+can be collected without expanding $W$.
+\end{lemma}
+\begin{proof}
+A rule's cut contributes an actual adjacent pair whenever that rule occurs
+in the derivation tree. Conversely, any adjacent positions in the expanded
+word have a lowest common ancestor in that tree. They lie on opposite sides
+of its cut, so their pair is contributed by the corresponding grammar rule.
+Repeated occurrences of a rule contribute the same pair and need not be
+visited separately.
+\end{proof}
+
+Let $C$ be the shared signed alphabet and let $E=E(X)\cap E(Y)$ for the
+two query roots. A common substring is a word over $C$ whose every adjacent
+pair lies in $E$. It is a walk in the directed graph of allowed transitions,
+although the implementation only needs a set of pairs and three lengths
+per grammar rule. Signs and order are retained; inverse words transform
+an original pair $(u,v)$ into $(-v,-u)$.
+
+\subsection{Longest runs respecting the common transitions}
+
+As before, summarize each grammar word by its longest valid prefix $p$,
+suffix $q$ and contiguous run $r$. A terminal in $C$ has all three values
+one, and any other terminal has all three zero. At a binary rule $W=UV$,
+let $\delta=1$ when
+$(\operatorname{last}(U),\operatorname{first}(V))\in E$, and zero otherwise.
+The recurrence is
+\[
+\begin{aligned}
+ p(W)&=p(U)+\delta\,\mathbf1_{p(U)=|U|}\,p(V),\\
+ q(W)&=q(V)+\delta\,\mathbf1_{q(V)=|V|}\,q(U),\\
+ r(W)&=\max\{r(U),r(V),\delta\,(q(U)+p(V))\}.
+\end{aligned}
+\]
+A run crossing the cut must have an allowed transition there. If either
+side contributes no valid letters, the child maxima already cover the
+remaining run. Induction therefore gives exact run lengths, and
+\[
+ \operatorname{LCS}(U,V)\le\min(r(U),r(V))
+\]
+for any pair of reachable words in the query. The summaries use the shared
+root constraints; they remain upper bounds for every smaller rule pair.
+
+The implementation first uses prefix and alphabet-run checks. Only when
+those fail to finish does it collect directed pairs. A side whose entire
+pair set is shared needs no new transition-summary pass; its existing
+alphabet bound remains valid. Otherwise the stronger summaries replace
+its bounds. The existing incremental witness loop then uses the improved
+global and local bounds, returning only after an exact witness reaches
+one of them. This preserves the complete fallback and its polynomial
+local bound. The extra extraction and summary work is linear in reachable
+rules in the usual arithmetic/dictionary model; integer and dictionary
+costs remain polynomial in the encoded input size.
+
+For $X=(ab)^Nac$ and $Y=(ab)^Nca$, the shared pairs are $ab$ and $ba$.
+The maximum valid run has length $2N+1$ in $X$ and $2N$ in $Y$.
+The already checked prefix of length $2N$ therefore proves the exact
+answer without any occurrence table. There is also an interior-match
+family $c(ab)^Nb,b(ab)^Nc$. Cutting both grammars halfway through their
+long periodic blocks lets the first aligned-cut extension find $2N$
+letters. The transition bound is $2N$, so no further extensions are needed.
+On the specified binary-power parses, these tests use polynomial work in
+$\log N$ and no expansion.
+
+\subsection{Filtering whole donors before matching}
+
+An occurrence of a donor spelling $D$ inside a cyclic target $R$ requires
+\[
+ E(D)\subseteq E(R)\cup\{(\operatorname{last}(R),
+                              \operatorname{first}(R))\}.
+\]
+The target's closing pair is essential: a genuine match may cross its seam.
+For an inverse donor, transform every internal source pair as described
+above. The test is only necessary; passing it still requires the exact
+compressed occurrence query. A one-letter donor has no internal pairs
+and is not rejected by this condition.
+
+After the existing length and absolute-count filters, the implementation
+collects each needed root's pairs lazily and caches them for that call.
+It rejects incompatible orientations before allocating an inverse donor.
+The total cached entries are limited by the arena's node allowance;
+exhaustion raises the existing resource exception and remains inconclusive.
+All traversals and candidate checks consume the shared work allowance.
+
+For the cyclic relators
+\[
+ D=(ab)^Nac,\qquad R=(ab)^Nca,
+\]
+the absolute counts agree. However $ac$ is absent from the target's cyclic
+pair set, and $bc$ is absent from the donor's cyclic pair set. The reversed
+negative pairs cannot occur in either positive word. Thus every whole-donor
+orientation is rejected without an occurrence table or inverse construction.
+The complete cyclic stage then finds the common prefix $(ab)^N$ using
+transition bounds on the doubled words. The ordinary relator move replaces
+$R$ by $c^{-1}a^{-1}ca$, preserving the donor and normal closure. Total
+expanded relator length falls from $4N+4$ to $2N+6$.
+
+This measures a local search-and-application operation on supplied relators.
+It does not establish that the optional group search reaches this state
+before its other moves, nor does it certify an unknot from this presentation.
+The public recognizer still reconstructs and independently checks a complete
+trace from the original planar diagram.
+
+\subsection{A control that the new condition does not resolve}
+
+Let $T=\mathtt{aabbccacbabc}$. Its internal pairs include all nine ordered
+pairs over $\{a,b,c\}$. The words
+\[
+ X=(ab)^N cT,\qquad Y=(ab)^N aT
+\]
+therefore have identical alphabets and identical pair sets. Their exact
+LCS is $2N$ for $N\ge16$, but neither cheap bound proves this.
+To see the exact value, the common prefix gives the lower bound. A common
+substring longer than $2N$ would have to start within the first thirteen
+positions of each word, since each tail has length thirteen. Unequal
+starting parities mismatch immediately. With equal parity, if $X$ reaches
+its tail first, its $c$ disagrees with the other alternating prefix. If
+$Y$ reaches its tail first, its first $a$ can agree but its next $a$
+disagrees with the following $b$. Equal starts disagree at $c$ versus $a$.
+None yields a match longer than $2N$.
+
+The complete fallback is still required on this control. Its retained
+resource limits demonstrate that a stronger necessary condition does not
+solve general compressed substring search by itself. More importantly,
+none of these local bounds proves a bound on total relator moves, grammar
+growth or recognition completeness. The general subexponential target
+remains unresolved.
+
+\subsection{Validation and controlled measurements}
+
+Four new tests compare directed pair sets and transition-run summaries
+with every reachable literal word in 400 random signed grammars. They check
+same-alphabet queries through $N=2^{500}$ with occurrence tables forbidden,
+an interior witness with later overlaps forbidden, an equal-pair control
+requiring the exact fallback, cyclic-seam matches, the sign/order change
+under inversion, impossible orientations with matching and inverse allocation
+forbidden, an independent cache limit, exhausted work, and the complete
+local partial-move operation without expansion. The integrated suite passes
+686 tests with Regina 7.4.1 in 155.970 seconds; the fourteen-test targeted
+suite passes in 20.006 seconds. A fifth new test forbids adjacency
+traversal when uniform metadata already determines the pair set, including
+one-letter and inverse-only matches. After that shortcut, the final
+integrated suite passes 687 tests in 162.201 seconds.
+
+\input{tables/lcs_transitions_queries.tex}
+
+All 225 full knot queries complete with identical certificate digests, and
+none reaches the changed fallback. The small-fourteen sum of medians is
+197.913 milliseconds before, 196.984 for A/A and 199.021 after. Gordian
+medians are 1.947, 1.952 and 1.942 seconds. These data check existing paths;
+they do not demonstrate a knot-corpus speedup.
+
+\input{tables/lcs_transitions_kernels.tex}
+
+The primary audit contains 135 substring queries, 75 local partial-move
+operations and 45 successful abstract quotient searches. At $h=500$, the
+prefix family finishes in 3.612 milliseconds with 508 nodes and 6576 work
+units; the interior family takes 5.120 milliseconds with 1014 nodes and
+9596 work units. Both archived queries exhaust the two-million-work cap.
+On the equal-bigram control the new stage adds little charged work but
+cannot improve the bound: all arms still exhaust the cap at $h=500$.
+
+For the full partial-move operation, at $h=8$ the baseline takes 176.782
+milliseconds, the new matcher alone 12.035, pruning alone 165.455 and
+both 0.356. At $h=500$, only both changes complete: 7.078 milliseconds,
+514 nodes and 15775 work units. Both isolated components exhaust the cap.
+This demonstrates why progress in a fallback must be accompanied by a
+bounded route through the preceding stages on this family.
+
+The successful quotient control exposes a regression in the initial
+filter. At $h=500$, its median rises from 14.130 milliseconds (14.105 A/A)
+to 15.340, and work increases from 27624 to 32135. The pair sets of these
+uniform words were being recomputed by grammar traversal even though the
+arena already stores their exact signed letter. The final implementation
+uses that metadata: a one-letter word has no internal pair, and a longer
+uniform word with letter $a$ has exactly the pair $(a,a)$. This takes
+constant work and avoids the redundant traversal. Mixed words retain the
+normal cut-based extraction, and cache accounting is unchanged.
+
+\input{tables/donor_pair_shortcut.tex}
+
+At $h=500$, the follow-up medians are 13.601 milliseconds before, 13.549
+for its A/A control, 15.112 for the initial filter and 13.545 for the final
+shortcut. The extra charged work falls from 4511 units to six; the node
+count remains 1003. The nonuniform partial-operation medians are 7.445
+milliseconds for the initial filter, 7.329 for its A/A control and 7.346
+for the final code, all with the same trace, 514 nodes and 15775 work units.
+Thus reuse of exact uniform metadata removes the measured quotient
+regression without changing the mixed-word filtering behavior.
+
+The follow-up compares the original donor helper, the initial filtered
+helper archived at \code{3e9afde43}, and the final uniform shortcut in the
+same current kernel and search harness. It uses 21 measured rounds after
+one warmup, with shuffled arm order and seed 3011. There are 252 quotient
+measurements and 63 partial-operation controls. The partial controls repeat
+the initial filter as A/A and verify that the shortcut leaves nonuniform
+traces unchanged. Every follow-up operation completes, and traces agree
+across its arms. Raw follow-up samples are in
+\path{results/donor_pair_shortcut_20261008.json}.
+
+
+The baseline uses the matcher class and whole-donor helper archived at
+\code{87e9585ec}, inside the common current word arena, recognition and
+replay harness. A/A repeats those components. Local partial-move tests
+also isolate the new matcher with the old whole-donor stage and the new
+whole-donor filter with the old matcher. A successful pure-power quotient
+family is retained to expose any overhead added to an already successful
+whole-donor path.
+
+Every case has one excluded warmup and five measured rounds with shuffled
+arm order, using seed 3010. Full knot timings include fresh PD construction,
+recognition and independent certificate replay; certificate digests are
+checked outside the timer. Kernel and operation timings include grammar
+construction. Resource-limited runs are censored, not negative answers
+or completed-time denominators. Whole recognition allows 18 seconds,
+with 15 seconds and twenty million work units in its group stage. Local
+queries allow two million work units and 100000 nodes/table cells.
+Raw results are in \path{results/lcs_transitions_20261008.json}, with
+logs in \path{synthesis/data/lcs-transitions-*}. There was no new incoming
+report, and the suggested \code{openai/math} head remained at the previously
+recorded \code{fd4aeeb2ee}.

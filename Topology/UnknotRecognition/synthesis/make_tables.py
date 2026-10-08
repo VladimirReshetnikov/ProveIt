@@ -761,3 +761,59 @@ if lcs_bounds:
             table('Partial move, $h$ & Before & A/A & Both & Nodes & Work', '@{}rrrrrr@{}', rows) +
             r'\end{center}' + '\nMedian milliseconds including construction, failed whole-donor '
             'search, cyclic query and checked application. Nodes/work describe both changes.\n')
+
+lcs_transitions = load('../fast/results/lcs_transitions_20261008.json')
+if lcs_transitions:
+    from statistics import median
+    arms = ('baseline', 'control', 'full')
+    rows = ['Small 14, summed medians & ' + ' & '.join(
+        f"{1000*sum(r['median_seconds'][a] for r in lcs_transitions['rows'] if r['name'] != 'gordian'):.3f}"
+        for a in arms) + r' \\']
+    gordian = next(r for r in lcs_transitions['rows'] if r['name'] == 'gordian')
+    rows.append('Gordian, full query & ' + ' & '.join(
+        f"{1000*gordian['median_seconds'][a]:.3f}" for a in arms) + r' \\')
+    with open('tables/lcs_transitions_queries.tex', 'w') as handle:
+        handle.write(r'\begin{center}\small' + '\n' +
+            table('Scope & Before & A/A & Transitions', '@{}lrrr@{}', rows) +
+            r'\end{center}' + '\nMedian milliseconds; all full knot queries complete.\n')
+    rows = []
+    for row in lcs_transitions['kernels']:
+        cells = [row['family'].replace('-', ' ').capitalize(), str(row['bits'])]
+        for arm in arms:
+            samples = [s['measurements'][arm] for s in row['samples']]
+            cells.append(f"{1000*median(s['seconds'] for s in samples):.3f}"
+                         if all(s['status'] == 'COMPLETE' for s in samples) else 'limit')
+        rows.append(' & '.join(cells) + r' \\')
+    with open('tables/lcs_transitions_kernels.tex', 'w') as handle:
+        handle.write(r'\begin{center}\small' + '\n' +
+            table('LCS family & $h$ & Before & A/A & Transitions', '@{}llrrr@{}', rows) +
+            r'\end{center}' + '\nMedian milliseconds including construction; limits are censored.\n')
+        rows = []
+        for row in lcs_transitions['operations']:
+            cells = [row['family'].capitalize(), str(row['bits'])]
+            for arm in ('baseline', 'control', 'matcher-only', 'prune-only', 'full'):
+                samples = [s['measurements'].get(arm) for s in row['samples']]
+                cells.append('---' if samples[0] is None else
+                    f"{1000*median(s['seconds'] for s in samples):.3f}"
+                    if all(s['status'] == 'COMPLETE' for s in samples) else 'limit')
+            rows.append(' & '.join(cells) + r' \\')
+        handle.write(r'\begin{center}\footnotesize' + '\n' +
+            table('Operation & $h$ & Before & A/A & Matcher & Pruning & Both', '@{}llrrrrr@{}', rows) +
+            r'\end{center}' + '\nMedian milliseconds including construction. '
+            'Both denotes the initial filter before the uniform-word shortcut. '
+            'Partial operations do not produce knot verdicts.\n')
+
+pair_shortcut = load('../fast/results/donor_pair_shortcut_20261008.json')
+if pair_shortcut:
+    from statistics import median
+    rows = []
+    for row in pair_shortcut['rows']:
+        cells = [row['family'].capitalize(), str(row['bits'])]
+        for arm in ('baseline', 'control', 'filtered', 'shortcut'):
+            cells.append('---' if arm not in row['median_seconds'] else f"{1000*row['median_seconds'][arm]:.3f}")
+        rows.append(' & '.join(cells) + r' \\')
+    with open('tables/donor_pair_shortcut.tex', 'w') as handle:
+        handle.write(r'\begin{center}\small' + '\n' +
+            table('Operation & $h$ & Before & A/A & Filter & Shortcut', '@{}llrrrr@{}', rows) +
+            r'\end{center}' + '\nMedian milliseconds over 21 measured rounds. '
+            'A/A repeats Before for Quotient and Filter for Partial. All operations complete with identical traces.\n')
