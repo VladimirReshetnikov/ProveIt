@@ -15,8 +15,9 @@ certificate. And a refutation: A350879's alternative form with
 
 A research report bound from three manuscripts dated 4 October 2026
 ("Report 216", "Report 217", "Report 218" of a session bundle). Report 216's
-author line and PDF author field are empty; Reports 217 and 218 read "Report
-217" and "Report 218". None names a person, tool or addressee; none carries a
+author line and PDF author field are empty; the title pages of Reports 217
+and 218 read "Report 217" and "Report 218", and their PDF author fields are
+empty too (corrected by the independent check, 7 October 2026). None names a person, tool or addressee; none carries a
 "prepared for private review" line, an e-mail address or personal data.
 
 | Part | Bundle report | Archive | Pin | Placed | Printed as |
@@ -268,6 +269,53 @@ non-increase is at `n = 42` and its last log-concavity failure at `n = 445`
   transseries volume (labels in the Guide). Not read: the cited literature
   (Pittel's paper attempted, refused).
 
+## Independent check of the write (7 October 2026)
+
+An adversarial check made by the intake after the write (`27ecec221`), with
+its own code, after fetching again A350879 (#51), A237753 (#32), A237751
+(#11), A118096 (#57), A117086 (#19) and their b-files.
+
+- **The A350879 refutation (Remark 1.3).** The live comment is quoted
+  verbatim; `2^((k+4)/2) 3^((k+1)/2) = 4√3·6^(k/2)`; with the b-file,
+  posted/true equals `exp(−(π − √π)√(2n/3))` exactly (`2.56·10⁻²⁷` at
+  `n = 3000`, `2.82·10⁻⁴⁹` at `10000`); `A237753(3000)` is `0.72740…` times
+  the true equivalent (`0.8256…` at 10000) and `2.8412…·10²⁶` times the posted
+  form. A237753's own formula line is the true form at `k = 2`. Confirmed.
+- **A117086 strictly increasing for every `n ≥ 0` (Remark 30.3(a)).** The
+  proof re-read (injection, `(n−2, 2)`, `(n−5, 3, 2)`, small values) and the
+  b-file checked: confirmed.
+- **Counts.** Brute force for `n ≤ 45` (all four statistics and every
+  A350879 entry); Manyama's column generating function (a route independent
+  of the sieve) to `n = 1000`; the sieves (19)–(20) with the check's own code to
+  `n = 3000`; all b-file terms in range agree.
+- **Coefficients.** The radial series (45), (47), the coefficients (46),
+  (48), the general `c_1` for `2 ≤ k ≤ 5`, `0 ≤ b ≤ 3`; Part II's `d_1..d_4`
+  by (71) and (69), the relative errors `−3.3063·10⁻⁷`, `−1.4600·10⁻⁸` and the
+  inverse offset `2.709·10⁻⁵` at `n = 10000`; Part III's `g_1..g_8` from both
+  series and `c_0..c_5`; residuals against the b-files bounded. The
+  observations `E_{2,0}` from 15, `T_{2,1}` from 5, A118096's last
+  non-increase 42 and last log-concavity failure 445, `D` from 18, all
+  reproduce.
+- **Numbering and merge.** Part I unchanged, Part II shifted by 10 sections
+  and 65 equations, Part III by 21 and 103, appendices kept; 92, 54, 90
+  delivered and 16 added labels (252); 83, 57, 86 references; the merged
+  bibliography; the duplication correspondences of Part III.
+- **Transseries remarks (6.5, 17.2, 30.3).** Re-derived, including the
+  flattening polynomials `P_1`, `P_2` of Part II and the Pittel root
+  `w = φ⁻¹ = e^{−x_0}`. A precision: in each item (a),
+  `p0:thm:staircase`(1) also needs the target to be at least the value at the
+  onset; true for all large targets.
+- **Corrected:** Reports 217 and 218 read "Report 217/218" on their title
+  pages only; their PDF author fields are empty (the Guide's provenance note
+  and the opening of this README).
+- **Reruns.** Report 216 `reproduce.py --exact` (only the recorded Python
+  version differs), Report 217 `selftest.py` and `build.py --order 4
+  --max-n 10000`, Report 218 `reproduce.py --N 1000` and
+  `uniform_certificates.py`: identical up to line endings.
+- The check read the three Parts' proofs as well and found no error.
+
+The check is recorded in the Guide, after the collected non-claims.
+
 ## Relation to the repository
 
 **Formal status.** No statement is formalized, and placement in the
@@ -314,7 +362,7 @@ keeps its number up to the stated section and equation shifts.
 ```text
 README.md                                         this guide (replaces Report 216's delivery README)
 article.tex                                       the merged report (Report216.tex, Report217 article.tex, report218.tex; labels prefixed, [write] additions)
-article.pdf                                       compiled report, 64 pages
+article.pdf                                       compiled report, 65 pages
 216-slope-SOURCES.txt                             Report 216's source references and scope cautions (delivered SOURCES.txt)
 216-slope-SOURCE_FILES.txt                        Report 216's source inventory (delivered SOURCE_FILES.txt)
 216-slope-code-README.md                          Report 216's code guide (delivered code/README.md)
@@ -440,8 +488,8 @@ B=$(mktemp -d); cp article.tex "$B/"; cd "$B"
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The committed PDF was built this way with MiKTeX on 7 October 2026 (64
-pages): no errors or warnings, no undefined references or citations, no
+The committed PDF was built this way with MiKTeX on 7 October 2026 (65
+pages after the independent check's note; 64 at the write): no errors or warnings, no undefined references or citations, no
 multiply defined labels, no duplicate PDF destinations, no overfull or
 underfull boxes (the delivered texts build with 20, 14 and 22 pages; Report
 217's has one underfull box in its bibliography, which the merged
