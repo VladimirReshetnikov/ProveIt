@@ -1,0 +1,224 @@
+\section{Adaptive boundary summaries for repeated completion queries}
+\label{sec:boundary-reuse}
+
+Repeated observations of one suffix should share its topology.  The maintained
+Euler backend now starts with direct closure walks and switches to a pair of
+boundary path summaries when enough distinct queries reach the same stage.
+A separate research implementation extends this idea to report 26's signed
+Tait kernel.  Its common vertices are \emph{cut-face fragments}; this choice
+makes both the quotient construction and its geometric checks depend on the
+boundary rather than on another traversal of the entire suffix.
+Neither improvement bounds the number of relative generators or proves a
+general subexponential recognition algorithm.
+
+\subsection{Two path summaries determine the raw Euler value}
+
+Fix a suffix with $n$ crossings and $b$ boundary darts.  Its partial edge
+involution is $\alpha$; at each crossing the opposite-dart pairing describes
+link strands, and the zero-smoothing pairing describes the all-zero state.
+Combining either local pairing with the internal edges gives disjoint closed
+circles and paths whose endpoints lie on the boundary.  Store the number of
+closed circles and the induced boundary matching for each of these two graphs.
+Preparation takes $O(n+b)$ combinatorial work and temporary space, while the
+retained summaries have size $O(b)$ apart from the integer counts.
+
+For a proposed boundary matching $m$, the circles of the completed graph
+are exactly the stored closed circles plus the alternating cycles of the
+stored boundary matching with $m$.  Thus two boundary walks compute the link
+component count $c$ and the all-zero circle count $c_0$.  Coverage is checked:
+every boundary label must occur once, with no missing, repeated, or unknown
+endpoint.  No suffix dart need be revisited by these queries.
+
+Here is why these counts suffice even for the sign.  Choose any orientation
+of the classical completion, let $h$ be the number of one-smoothings in its
+oriented Seifert state, and let $s$ be its number of Seifert circles.  Changing
+one smoothing changes circle parity, giving $s\equiv c_0+h\pmod2$.
+The orientable Seifert surface has Euler characteristic $s-n$ and $c$
+boundary components, hence $s-n\equiv c\pmod2$.  This also holds for a
+disconnected surface.  Therefore
+\[
+ h\equiv n+c+c_0\pmod2,\qquad
+ \chi_{\mathrm{raw,unred}}(m)=(-1)^{n+c+c_0}2^c.
+\]
+This is the unnormalized Euler value needed by the existing relative scan.
+The production caller supplies classical completions from a valid scan;
+these two path summaries alone are not a test for virtual planarity.
+At the empty scalar terminal the convention is $n=c=c_0=0$, with value one;
+it does not denote an implicitly added crossingless unknot.
+
+Each subsequent query uses $O(b)$ combinatorial operations.  This is not
+an $O(b)$ bound on bit complexity independent of $n$: the integer $2^c$ itself
+has $c+1=O(n+b)$ bits.  The implementation retains exact integers and the
+existing coefficient-size statistics.
+
+\subsection{When the maintained backend switches}
+
+The summaries are implemented in
+\path{fast/fastunknot/boundary_connectivity.py}.
+
+\code{AdaptiveClosureEuler} in \path{fast/fastunknot/euler_scan.py} uses the
+independent orientation-based \code{ClosureEuler} for the first four distinct,
+uncached queries at a stage.  Later queries prepare the summaries if $b\le n$;
+a wide boundary on a short suffix keeps direct evaluation.  This is an
+empirical setup policy, not an optimal stopping theorem.  A low-level
+\code{compression\_after=0} option forces eager preparation for diagnostics.
+The public Euler backend uses the adaptive policy; the standard recognizer
+backend remains unchanged.
+
+Changing the stage discards the active summaries.  Cached exact values do
+not consume another query allowance.  The global deadline is checked even
+on a cache hit, and the local query cap is checked before preparation.
+A summary is published only after both path traversals finish, so an
+interrupted setup cannot leave a usable half-summary.  Local inference
+exhaustion continues the same exact saturated scan, while global exhaustion
+returns \code{UNKNOWN}, as before.  The direct closure evaluator and the
+older suffix-smoothing recurrence remain independent references.
+
+Five new tests cover random classical completions and their mirrors,
+independent recurrence values and explicit circle counts, switching and
+stage changes, the wide-boundary guard, cache and budget behavior, malformed
+coverage, and interruption after the first of the two path summaries.
+The full maintained suite passes all 572 tests; logs are retained in
+\path{data/boundary-connectivity-tests.txt} and
+\path{data/boundary-connectivity-integrated-tests.txt}.
+
+\subsection{A common Tait graph made from cut-face fragments}
+
+The research implementation \path{fast/determinant_research/boundary_tait.py}
+starts with a checkerboard coloring of the original classical diagram.
+Write $\rho$ for cyclic rotation of a crossing's darts.  A completed face
+follows the permutation $\rho\alpha$.  Retain only its edges arising from
+internal suffix edges.  Each resulting component is either a closed face
+cycle or an open face path.  These \emph{fragments}, rather than entire
+original regions, are the common graph vertices.  In particular, a region
+that splits when the prefix is removed is represented by separate fragments.
+
+For a boundary label $a$ with dart $d_a$, store the fragment containing
+$d_a$ as its outgoing endpoint and the fragment containing $\rho(d_a)$ as
+its incoming endpoint.  Pairing labels $a,b$ inserts exactly the two face
+connections
+\[
+ d_a\longrightarrow\rho(d_b),\qquad
+ d_b\longrightarrow\rho(d_a).
+\]
+Consequently every completed face is obtained by identifying these open
+fragments, while every closed fragment remains untouched.  This proves the
+face reconstruction directly from the partial permutation; it does not
+assume that the original region partition survives a new closure.
+
+There are at most $2b$ open fragments.  A query runs union-find only on them
+and on the suffix projection components incident to the boundary.  Counts
+of closed fragments and closed projection components are stored once.
+Every inserted face connection must preserve the inherited checkerboard
+color.  If $F$ is the resulting face count and $k$ the resulting projection
+component count, the query also requires
+\[
+ F=n+2k.
+\]
+The completed rotation system has $V=n$ and $E=2n$.  Its orientable ribbon
+components have total Euler characteristic $F-n=2k-2\sum g_i$; the displayed
+check is therefore equivalent to every $g_i=0$.  It certifies spherical
+completion for accepted queries.  Color incompatibility is a decline of
+this particular representation, even when a completion is classical;
+it is never evidence that a knot is nontrivial.
+
+Choose the smaller shading by fragment count.  Each crossing contributes
+one signed edge between its two black fragments, with the same local weight
+as in Section~\ref{sec:determinant-continuations}.  The black open fragments
+are terminals.  All identifications of the common graph occur among these
+terminals; black closed fragments are fixed interior vertices.  Thus an
+accepted connected completion has exactly the quotient Tait graph required
+by report 26's terminal kernel.  Its phase is recomputed from the resulting
+black vertex count $v$:
+\[
+ J_{\mathrm{raw}}(i)=(-i)^{B+v-1}\tau(G/m).
+\]
+The crossing sum $B$ includes loop edges even though loops contribute zero
+to the Laplacian.  If the completed projection is disconnected, the
+specialization is zero and no kernel is needed.  If there is no boundary,
+one black vertex serves as the artificial grounding terminal.
+
+The common Laplacian is prepared once; the delivered exact rational kernel
+is built lazily.  Canonical terminal partitions cache completed integer
+cofactors, so distinct matchings inducing the same partition share a
+value.  Phase and topology counts are still computed for each matching.
+The two boundary path summaries give the raw value at one and the parity
+$\epsilon=c_0-1\pmod2$.  Together with the value at $i$, they reconstruct
+the four marked residues by the existing $(a+d)/2,(a-d)/2$ formula.
+
+The geometric query costs $O(b\,\alpha(b))$ combinatorial operations.
+For the determinant, the singular-safe elimination described earlier leaves
+a border of dimension $r+q$, where $r$ is interior nullity and $q$ is one
+less than the number of terminal blocks.  If $r>q$, the cofactor vanishes;
+otherwise $r+q=O(b)$.  This controls matrix dimension, not coefficient bit
+length or the number of scan queries.  Rational arithmetic can still depend
+polynomially on the original suffix size.  Production integration also
+requires an interruptible maintained kernel and useful amortization on
+actual observer traces.  The present prototype imports report 26's kernel
+and has no production deadline or local-work interface; production shadow
+observations continue to compute their closures directly.
+
+\subsection{Independent geometry audit}
+
+\path{fast/determinant_research/audit_boundary_tait.py} repeats all 4,503
+actual completion queries on 582 proper-prefix stages of 78 retained input
+diagrams.  Every accepted value agrees with an independently rebuilt
+completed diagram, including component counts, zero circles, raw Euler
+values, and the Gaussian value at $i$.  There are 1,317 disconnected
+projections, 15 singular stage kernels, maximum terminal count ten, and
+maximum interior nullity two.  Kernel certificates are checked independently.
+
+A further exhaustive pairing audit covers boundary sizes four through eight
+in the first 20 retained diagrams: among 3,468 pairings, 745 are accepted,
+472 classical completions are declined because the inherited coloring does
+not fit, and 2,251 nonclassical completions are rejected.  Every accepted
+pairing passes the independent classical completion check and both value
+comparisons.  The scope, exact inputs, and source hashes are recorded in
+\code{data/boundary-tait-audit.json}.  These finite checks support the
+implementation; the fragment and Euler-characteristic arguments above
+supply the general accepted-query contract.
+
+\subsection{Measured reuse and its limits}
+
+\path{fast/benchmark_boundary.py} uses seven shuffled paired rounds with
+identical control arms and one excluded warmup.  Every timed sample includes
+fresh engine setup.  The isolated workload consists of 200 distinct actual
+matchings from one nine-crossing prefix, all with 18 boundary darts.  Appended
+cancelling braid pairs increase the suffix from 5 to 37, 133, and 517
+crossings without changing the knot.  Matching-stream discovery is outside
+the primitive timings.  These deliberately easy added crossings isolate
+reuse; they are not a hard family for complete recognition.
+
+\input{tables/boundary_streams.tex}
+
+The adaptive Euler policy achieves up to $15.8$ times speedup, including its
+first four direct queries and summary setup.  Eager setup reaches $23.6$
+times on the longest suffix.  On the shortest suffix, the guard prevents
+preparation but the adaptive wrapper still costs about 15 percent in this
+isolated 200-query workload.  This overhead is retained in the table.
+
+The research determinant path reaches $53.9$ times speedup, including
+coloring, fragment geometry, kernel construction, and partition-cache setup.
+However, all four of these common graphs have nine vertices, all nine are
+terminals, and interior nullity is zero.  These gains therefore demonstrate
+boundary geometry and partition reuse, not amortization of a nontrivial
+interior elimination or a singular-kernel runtime advantage.  Only 61 or
+96 distinct cofactors are computed for each 200-matching stream; disconnected
+queries also avoid determinants.  Independent kernel-certificate checking
+is performed in the separate audit, outside these timings.
+
+\input{tables/boundary_pipeline.tex}
+
+For complete raw Euler scans, the baseline loads the earlier
+\code{euler\_scan.py} from revision \code{f0179ab50}; the other dependencies
+are shared.  Status, method, and observation stage agree in every paired
+run.  None of these seven raw scans prepares a boundary summary.  They show
+no consistent gain, and the stress case is about four percent slower.
+For complete recognition with the Euler backend requested, earlier filters
+decide every example, so no Euler evaluator runs.  No whole-recognizer
+speedup is established.  The raw samples, per-arm evidence, inputs, and
+source hashes are retained in
+\path{fast/results/boundary_reuse_20261008.json}.  Future scheduling decisions
+must distinguish frequent cheap boundary queries from early-stopping scans;
+neither a favorable microbenchmark nor an adaptive switch supplies the
+missing universal width bound.

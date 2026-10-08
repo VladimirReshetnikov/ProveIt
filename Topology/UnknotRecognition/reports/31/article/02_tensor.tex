@@ -1,0 +1,408 @@
+\section{Exact full Jones computation with binary planar tensors}
+\label{sec:tensor}
+
+The extra logarithm in the faithful partition backend comes from remembering
+an equality relation among frontier objects. A binary tensor model can instead
+remember one orientation bit per frontier edge. The difficulty is the loop
+factor: summing the two orientations of a smoothed circle must produce the
+Kauffman factor, independently of its shape or nesting. A combinatorial
+rotation cochain supplies this information without drawing coordinates or
+floating-point angles.
+
+\subsection{A checked rotation cochain}
+
+Assume first that $n>0$. The validated one-component classical diagram gives
+a connected four-valent graph cellularly embedded in the sphere. Multiple
+edges, loops, and repeated vertices in a face boundary are allowed. Its
+$4n$ darts are numbered by crossing and counterclockwise port. Let $\alpha$
+reverse an edge and let $\rho$ advance one port at a crossing. The face walks
+are the cycles of $\rho\alpha$, in the convention used by the implementation.
+There are $F=n+2$ faces and $2n$ edges. A distinguished face $o$ is regarded as
+the outer face.
+
+Assign an integer bend $\beta(d)$ to each dart, with
+$\beta(\alpha d)=-\beta(d)$. The local corner of a positive face-boundary
+walk contributes one quarter turn. We require
+\begin{equation}
+ \sum_{d\in f}\beta(d)=b_f,\qquad
+ b_f=\begin{cases}4-|f|,&f\ne o,\\-4-|o|,&f=o.\end{cases}
+ \label{eq:face-bends}
+\end{equation}
+Thus bounded faces have total turn $4$ and the outer face has total turn
+$-4$. The word ``positive'' here denotes the selected permutation convention;
+no additional claim that a face lies on the left of its traversal is needed.
+
+The demand sum is zero:
+\[
+ \sum_f b_f=4(F-1)-4-4n=0.
+\]
+Root a spanning tree of the dual graph at $o$, and send each subtree's total
+demand through its parent edge. Put zero bend on non-tree dual edges. This
+constructs an integral antisymmetric solution. The implementation checks
+every antisymmetry equation and every face sum after routing; it does not
+accept the routing procedure itself as the check.
+
+\begin{lemma}[A polynomial bend envelope]
+The routed cochain can be chosen to satisfy
+\[
+ \max_d|\beta(d)|\leq3(n+1),\qquad
+ \sum_{\{d,\alpha d\}}|\beta(d)|\leq3(n+1)^2.
+\]
+\end{lemma}
+\begin{proof}
+Every face is nonempty. A positive demand is at most $3$, and only the
+$n+1$ bounded faces can have positive demand. Since total demand is zero,
+the absolute demand of any set of faces is at most total positive demand,
+which is at most $3(n+1)$. The dual spanning tree has $F-1=n+1$ edges.
+The routed value on each is a subtree demand sum, giving both bounds.
+\end{proof}
+
+No metric embedding is required. In particular, long arithmetic coordinates
+from a planar straight-line drawing never enter this calculation.
+
+\subsection{Why every smoothed circle has rotation four}
+
+A smoothing at a crossing joins adjacent ports. Write
+$\tau(a,b)=+1$ when $b-a\equiv1\pmod4$ and $\tau(a,b)=-1$ when
+$b-a\equiv-1\pmod4$. Traversing a smoothing from incoming port $a$ to
+outgoing port $b$ contributes $\tau(a,b)$. An edge traversal contributes
+the corresponding signed bend. We must prove that the total is always
+$+4$ or $-4$ on an oriented smoothed circle.
+
+\begin{lemma}[Rotation of a smoothing component]
+For any choice of all $n$ smoothings, every resulting circle has total
+combinatorial rotation $+4$ in one orientation and $-4$ in the other.
+\label{lem:rotation}
+\end{lemma}
+\begin{proof}
+Work with abstract face disks rather than assuming that each face boundary
+is a simple polygon in the projection graph. This retains the correct local
+sectors at a loop or a repeated vertex. A chosen smoothing creates a band
+between the two uncapped opposite face sectors. On the boundary of the
+region receiving the band, two old $+1$ corners become two $-1$ turns. Its
+total boundary rotation decreases by $4$, exactly as its Euler characteristic
+decreases by $1$ when a band is attached.
+
+Initially each bounded face disk has rotation $4$ by
+\eqref{eq:face-bends}. Consequently every bounded complementary region $R$
+of the smoothed circles has total boundary rotation $4\chi(R)$. This
+argument permits bands within one region and between distinct regions; it
+depends only on the Euler change under a band attachment.
+
+An innermost smoothed circle bounds a disk and therefore has rotation $4$
+in its positive boundary direction. Now proceed outward through the nesting
+of circles. A bounded complementary region with $h$ holes has
+$\chi(R)=1-h$. Each already treated inner boundary contributes $-4$ with
+the region's boundary direction. Therefore its outer boundary has rotation
+$4(1-h)+4h=4$. This proves the assertion for all circles. Reversing direction
+negates every corner turn and bend, giving $-4$.
+\end{proof}
+
+This proof addresses precisely the cases that a naive appeal to a polygonal
+turning-number picture can overlook: repeated face walks, self-loops, and
+nested components. It also explains why assigning a formal loop weight at
+an arbitrary frontier connectivity is unnecessary in the binary model.
+
+\subsection{Local tensors and normalization}
+
+Use the Kauffman bracket convention in which a state with $c$ circles has
+loop factor $\delta^c$, with
+\[
+ \delta=-A^2-A^{-2}.
+\]
+The normalized Jones polynomial divides by one loop factor. Make the formal
+substitution
+\[
+ A=i z^2,\qquad \delta=z^4+z^{-4}.
+\]
+Factor out one $i$ per crossing. Smoothing $s=0$ then has weight $z^2$,
+and smoothing $s=1$ has weight $-z^{-2}$. All remaining arithmetic is in
+$\Z[z,z^{-1}]$.
+
+At a crossing let $\varepsilon_j\in\{+1,-1\}$ denote the orientation of
+port $j$, positive when pointing out of the crossing. Edge contraction
+identifies opposite port signs. A smoothing joins opposite signs, so a
+nonzero crossing tensor has exactly two positive signs and two negative
+signs: at most six assignments. The pairings are
+\[
+ \mathcal P_0=\{(0,1),(2,3)\},\qquad
+ \mathcal P_1=\{(0,3),(1,2)\}.
+\]
+For a compatible pair $(a,b)$ the directed corner contribution is
+$-\varepsilon_a\tau(a,b)$, because $\varepsilon_a=-1$ means that the
+traversal enters at $a$. Absorb an edge bend at the smaller-numbered dart
+only. If $E_v(\varepsilon)$ is the sum of the absorbed signed bends at
+crossing $v$, the local tensor entry is
+\begin{equation}
+ T_v(\varepsilon)=
+ \sum_{\substack{s\in\{0,1\}\\
+           \varepsilon_a=-\varepsilon_b\ ((a,b)\in\mathcal P_s)}}
+ (-1)^s z^{\,2-4s+E_v(\varepsilon)
+                   -\sum_{(a,b)\in\mathcal P_s}\varepsilon_a\tau(a,b)}.
+ \label{eq:local-tensor}
+\end{equation}
+Each entry has at most two signed monomials. A loop edge at one crossing
+enforces its two endpoint signs locally and never creates a frontier edge.
+
+For clarity, the entries before multiplication by $z^{E_v}$ are as follows.
+The asymmetry comes from the fixed turning convention; the closed invariant
+is independent of it.
+\begin{center}
+\begin{tabular}{@{}cccccc@{}}
+\toprule
+$(+,+,-,-)$ & $(+,-,+,-)$ & $(-,+,+,-)$ & $(+,-,-,+)$ & $(-,+,-,+)$ & $(-,-,+,+)$\\
+\midrule
+$-z^{-2}$ & $0$ & $z^2$ & $z^2$ & $z^4-z^{-4}$ & $-z^{-2}$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The upper bound six is deliberately conservative and remains valid when
+local cancellations or loop constraints remove assignments.
+
+Let $F_D(z)$ be the contraction of these tensors. Expanding each local
+smoothing choice and then each compatible orientation orients every
+smoothed circle independently. Lemma~\ref{lem:rotation} makes its two
+orientation weights sum to $z^4+z^{-4}$. Therefore
+\begin{equation}
+ \langle D\rangle\big|_{A=i z^2}=i^nF_D(z).
+ \label{eq:bracket-tensor}
+\end{equation}
+If $w(D)$ is the writhe, the usual oriented normalization gives
+\begin{equation}
+ V_D(z^{-8})=
+ (-1)^{(n-w(D))/2}z^{-6w(D)}
+ \frac{F_D(z)}{z^4+z^{-4}}.
+ \label{eq:jones-normalization}
+\end{equation}
+The exponent $(n-w(D))/2$ is integral. The Laurent implementation performs
+an exact division with a checked zero remainder, applies the sign and shift,
+and checks that every remaining $z$-exponent is divisible by eight. It
+publishes the coefficient dictionary in variable $t=z^{-8}$. The empty
+crossing diagram is treated explicitly as the one-component unknot.
+
+\begin{proposition}[Conservative output bounds]
+For an $n$-crossing knot diagram,
+\[
+ V_D(t)=\sum_e c_e t^e,\qquad |e|\leq2n,
+ \qquad\sum_e|c_e|\leq4^n.
+ \label{prop:jones-bounds}
+\]
+\end{proposition}
+\begin{proof}
+In the state sum after division by one loop factor, a state contributes a
+monomial times $\delta^{c-1}$. There are $2^n$ states and at most $n+1$
+circles in a state of a connected $n$-crossing projection. Its coefficient
+mass is at most $2^{c-1}\leq2^n$, so the sum has mass at most $4^n$.
+The smoothing monomial has $A$-degree between $-n$ and $n$; the loop factor
+adds at most $2n$ in absolute degree, and the writhe correction adds at most
+$3n$. Thus the normalized $A$-degree is at most $6n$ in absolute value.
+The standard knot normalization has integral $t=A^{-4}$ exponents, which
+gives the more than sufficient bound $|e|\leq2n$.
+\end{proof}
+
+The code also verifies $V_D(1)=1$ and these bounds. These are useful error
+checks, not a substitute for the state-sum proof or an independent polynomial
+oracle. A wrong polynomial can satisfy all three.
+
+\subsection{Frontier contraction and the square-root bound}
+
+Fix an ordering of the crossings. After a prefix has been processed, let
+$\partial S$ be the edges with exactly one processed endpoint. A state is
+one bit for each edge of $\partial S$, with the bit referenced to its
+canonical dart. The coefficient for that bit assignment is the sum of all
+compatible tensor products in the processed part. The update joins the
+current crossing to every compatible assignment, forgets closed edges,
+and introduces the new frontier edges. It sums equal output assignments.
+There is no remembered partition and no assumption that the processed part
+is a disk.
+
+Let $w$ be the maximum number of crossing edges in a prefix cut. There are
+at most $2^w$ keys and at most six local transitions per incoming key.
+Indexing the bits costs only polynomial overhead. At any intermediate stage
+the formal exponent envelope is
+\begin{equation}
+ |e|\leq B_n:=4n+3(n+1)^2.
+ \label{eq:tensor-exponents}
+\end{equation}
+Indeed a crossing contributes a smoothing exponent of absolute value at most
+two and two corner turns of total absolute value at most two; the absorbed
+bends contribute at most the cochain's total absolute bend. Expanding at
+most six assignments and two monomials per crossing bounds the total
+coefficient mass of any partial sum by $12^n$. A coefficient therefore has
+$O(n)$ bits, and there are $O(n^2)$ possible Laurent exponents per key.
+
+\begin{theorem}[Binary frontier full-Jones bound]
+Given a validated $n$-crossing knot diagram and an order of crossing-edge
+frontier width $w$, the full Jones polynomial can be computed exactly in
+$\poly(n)2^w$ bit time and space. With the repository's checked planar
+separator order this becomes
+\[
+ \poly(n)2^{O(\sqrt n)}.
+\]
+\label{thm:tensor}
+\end{theorem}
+\begin{proof}
+The invariant of the update is the partial contraction just described;
+induction on the prefix proves it. At the end the frontier is empty, so
+\eqref{eq:bracket-tensor} and \eqref{eq:jones-normalization} give the result.
+The state count and polynomial arithmetic bounds prove the first claim.
+
+For completeness, a bounded-degree planar graph has recursively balanced
+separators of size $O(\sqrt m)$ on an $m$-vertex subproblem
+\cite{lipton1979}. List each child subproblem before its separator, as in
+the maintained constructor. At a
+prefix inside a child, a crossing edge leaving the prefix is incident to
+one of the ancestor separators or the current leaf. Since degree is four,
+the frontier is bounded by four times the sum of the separator sizes on
+that recursion path. Balance gives a geometric series
+$\sqrt n+\sqrt{\theta n}+\sqrt{\theta^2n}+\cdots=O(\sqrt n)$ for
+some fixed $\theta<1$. The maintained separator constructor supplies an
+explicit partition hierarchy; its verifier checks separation, balance,
+size, the flattened order, and the resulting width. The tensor backend
+constructs and checks this witness before relying on its guarantee.
+\end{proof}
+
+The implementation can compare this order with an ordinary scan order and
+use the narrower one; the certified witness still bounds the chosen width.
+An explicit \code{certified=False} call is a useful ordering ablation, but
+it has no universal square-root width promise. Supplying a bad order does
+not invalidate the invariant, only its performance.
+
+\subsection{Exact specialization and balanced-digit recovery}
+
+Python sparse Laurent dictionaries carry appreciable overhead. We can
+evaluate the tensors at one sufficiently large exact integer and reconstruct
+the entire final polynomial, retaining the same frontier state count. This
+is a coefficient-bounded Kronecker substitution, not a numerical sample used
+as probabilistic evidence.
+
+Choose
+\[
+ k=\max\!\left(1,\left\lceil\frac{2n+2}{8}\right\rceil\right),
+ \qquad z=2^k,\qquad x=z^8\geq4\cdot4^n.
+\]
+For a first implementation, subtract each local tensor's minimum exponent
+$g_v$ and contract its integral value. If $g=\sum_v g_v$, the final integer
+is $Z=z^{-g}F_D(z)$. Equation~\eqref{eq:jones-normalization} yields
+\begin{equation}
+ P(x):=x^{2n}V_D(x^{-1})=
+ \frac{(-1)^{(n-w)/2}z^{16n+4-6w+g}Z}{z^8+1}.
+ \label{eq:integer-jones}
+\end{equation}
+A negative power of $z$ is moved into the denominator. Exact integer division
+must have zero remainder. The polynomial $P$ has degree at most $4n$, and
+each coefficient has absolute value at most $4^n<x/2$.
+
+\begin{lemma}[Balanced recovery]
+An integer of the form $P(x)=\sum_{j=0}^{4n}a_jx^j$, with
+$|a_j|<x/2$, determines all the $a_j$ uniquely. Iteratively choose the
+residue in $[-x/2,x/2)$ and divide the remaining difference by $x$.
+\end{lemma}
+\begin{proof}
+The constant coefficient is the unique allowed representative of the
+integer modulo $x$. Subtracting it and dividing by $x$ leaves the same
+problem with one fewer coefficient. Induction proves uniqueness and the
+algorithm. The recovered coefficient at index $j$ is the coefficient of
+$t^{2n-j}$ in $V_D(t)$.
+\end{proof}
+
+The intermediate specialized tensor values need not encode their formal
+Laurent polynomials injectively. Distinct partial polynomials can specialize
+to the same value, and a nonzero partial polynomial can specialize to zero.
+Evaluation is a ring homomorphism, so every subsequent addition and
+multiplication still gives the correct final value. Faithfulness is needed
+only for final recovery, where the proved degree and coefficient bounds
+apply. This distinction permits much smaller intermediate keys and avoids
+an unjustified assumption about partial coefficient growth.
+
+The implementation includes an exact identity shortcut: compare the
+contracted value to the value implied by $V_D=1$ before normalization and
+digit extraction when its monomial exponent permits that comparison. The
+same faithful encoding proves this equality is a whole-polynomial identity
+test. It does not make the invariant a complete unknot certificate.
+
+\subsection{Valuation normalization and gauge covariance}
+
+The global-shift version can spend most of its time carrying powers of $z$
+that merely encode monomial offsets. Store a nonzero specialized value in
+the canonical form
+\[
+ z^v m,\qquad v\in\Z,\quad m\in\Z\setminus\{0\},\quad z\nmid m.
+\]
+Zero has a separate representation. Multiplying by a signed local monomial
+adds to $v$ and changes the sign of $m$. To add $z^{v_1}m_1$ and
+$z^{v_2}m_2$, put $r=\min(v_1,v_2)$ and form
+\[
+ a=m_1z^{v_1-r}+m_2z^{v_2-r}.
+\]
+If $a\ne0$, remove the largest power $z^j$ dividing $a$ and return
+$(r+j,a/z^j)$. With $z=2^k$, this uses the number of trailing zero bits of
+$|a|$, divided by $k$. It is exact even when carries create additional
+factors of $z$. These are valuations of the evaluated rational number,
+not formal lowest exponents of an unexpanded polynomial.
+
+At the final state let $F_D(z)=z^v m$. Equation~\eqref{eq:integer-jones}
+applies with $g=v$ and $Z=m$, and the same balanced decoding recovers the
+full polynomial. From \eqref{eq:tensor-exponents} and the $12^n$ mass bound,
+\[
+ -B_n\leq v\leq B_n+\log_z(12^n),\qquad
+ \bits(m)\leq2kB_n+n\log_2 12+O(1)=O(n^3).
+\]
+Thus arbitrary-precision integer work remains polynomial per transition.
+The bound is deliberately conservative; the experiments record actual
+mantissa sizes.
+
+\begin{proposition}[Gauge covariance of partial contractions]
+Fix the same outer face. If $\beta$ and $\beta'$ both satisfy
+\eqref{eq:face-bends}, their difference is an integral vertex coboundary
+on the projection graph. For each fixed frontier assignment, the two partial
+contraction coefficients differ by a monomial $z^q$ depending only on that
+assignment and the processed crossing set. Closed contractions agree.
+Consequently the normalized mantissas and their bit lengths agree.
+\label{prop:gauge}
+\end{proposition}
+\begin{proof}
+The difference has zero period on every facial cycle. Since the embedding
+is spherical, facial cycles generate the integral cycle space, so integrating
+along a primal spanning tree yields an integral potential $h$ with
+$\beta'-\beta=\delta h$. In a tensor product, the resulting exponent is a
+sum of signed edge potential differences. At each internal crossing, the
+two-in/two-out condition cancels the coefficient of $h$. Only boundary
+terms remain; the convention for absorbing a bend at one endpoint fixes
+which boundary term is used. All internal assignments with the same
+frontier signs therefore receive the same monomial multiplier. It factors
+through every partial sum. At a closed frontier the multiplier is one.
+Canonical valuation normalization removes precisely such a multiplier
+from the mantissa.
+\end{proof}
+
+This also gives a useful kernel-level robustness statement. An arbitrary
+valid same-outer cochain with $L$-bit bends can have enormous numerical
+values. Its boundary gauge offsets need only $O(L+\log(n+2))$ bits; the
+mantissas and the differences used to align terms are those of the bounded
+canonical cochain. A valuation implementation therefore has
+$\poly(n,L)2^w$ cost on such data. The public constructor currently creates
+the bounded canonical cochain; accepting externally supplied gauges is
+not a new public interface in this patch.
+
+Gauge covariance alone does \emph{not} prove that every intermediate formal
+Laurent span is $O(n)$. It removes a common monomial offset, not the span
+between genuinely different exponents. We retain the proved $O(n^2)$
+envelope for the complexity theorem and leave sharper span bounds as a
+separate research problem.
+
+\subsection{Recognition semantics and limits}
+
+A completed polynomial different from one proves knottedness. A completed
+identity polynomial is retained as evidence and the recognizer continues to
+its other stages. An exhausted state, transition, or global time allowance
+publishes no partial polynomial as an invariant. This distinction is checked
+both through the standalone Jones command and through the public recognizer.
+
+The patch introduces \code{jones\_backend="tensor"} and the CLI choice
+\code{--backend tensor}. The optional public dispatch uses valuation-normalized
+integer arithmetic. The low-level \code{tensor\_jones} function defaults to
+the Laurent implementation as a readable reference and supports the two
+integer modes explicitly. The existing default Jones backend is unchanged.
+The square-root theorem concerns uncapped complete invariant computation;
+capped queries are partial decision attempts and may be inconclusive.

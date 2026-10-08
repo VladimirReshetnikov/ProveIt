@@ -1,0 +1,162 @@
+\section{Scope, source audit, and principal conclusions}
+\label{sec:context}
+
+\subsection{The question addressed}
+
+The practical question is whether repeated observations of a partially computed
+knot complex can become sufficiently cheap to justify earlier recognition.
+The asymptotic question is whether such observations can help the program avoid
+the exponentially large intermediate representations that obstruct a general
+quasi-polynomial bound. These questions require different evidence. A fast
+determinant subroutine answers the first only on workloads where it is used
+often enough. It answers the second only when accompanied by control of the
+number and size of the complexes that must be constructed before it succeeds.
+
+The source examined here is the public ProveIt revision
+\begin{center}\basecommit.\end{center}
+All references to the ``maintained'' implementation mean that pinned revision,
+before this package's additions. The repository already contains 28 numbered
+reports, numerous integrated improvements, and a Python implementation far
+beyond the earliest scanning baseline. Its relevant files are
+\path{fast/fastunknot/shadow_scan.py},
+\path{fast/fastunknot/integer_determinant.py},
+\path{fast/fastunknot/tait_blocks.py}, and the research prototype
+\path{fast/determinant_research/boundary_tait.py}.
+The maintained explanations are
+\path{synthesis/determinant_continuations.tex},
+\path{synthesis/boundary_reuse.tex},
+\path{synthesis/tait_blocks.tex}, and
+\path{synthesis/shadow_fallback.tex} \cite{proveit}.
+
+Report 26 already supplies the marked four-residue obstruction and a
+singular-safe rational terminal kernel. Later maintained work supplies cut-face
+fragments, a boundary-only geometric acceptance check, articulation factorization
+of direct cofactors, and a budgeted Euler fallback. We use those results openly.
+Reintroducing a Schur complement or an Euler norm without this attribution would
+misstate the continuation's contribution.
+
+\subsection{What this continuation adds}
+
+The deliverable has four connected parts.
+
+\begin{enumerate}
+\item An exact terminal count, $t=b/2$, and the resulting $b-2$ residual
+dimension bound for a nonempty frontier. This sharpens the earlier loose linear
+bound for the actual cut-face construction.
+\item A modular observer with a fully proved integer interpretation. It combines
+congruences by the Chinese remainder theorem (CRT), retains the exact coordinate
+sum, and solves a four-dimensional integer norm minimization explicitly.
+\item A deterministic threshold completion theorem. The modulus required to
+decide whether the existing bound exceeds one is smaller than the modulus
+required to reconstruct all its integer coordinates.
+\item An optional implementation in the maintained package, with independent replay of its
+positive observations and paired comparisons against both relevant predecessors.
+\end{enumerate}
+
+The basic modular-determinant idea is established numerical algebra
+\cite{dumasurbanska}. Boundary response matrices also have a substantial
+literature \cite{kenyonwilson}. Our claims concern the explicit proofs and
+implementation given here; a limited literature search is not a certification
+of historical priority for every elementary lemma.
+
+\begin{samepage}
+\begin{theorem}[Combined observer guarantee]
+\label{thm:main}
+Suppose a validated classical knot diagram has a proper scan prefix whose
+relative complex has been obtained by the algebraically valid operations
+implemented by the maintained scanner. Let $\mathcal C_a$ be its whole differential components, with positive
+multiplicities $m_a$, and let $x_a\in\Z^4$ be the marked completed Euler vectors.
+For a product $M$ of distinct validated odd primes, the algorithm below computes
+a number $L_M$ satisfying
+\[
+ 0\le L_M\le B_4:=\sum_a m_a\norm{x_a}
+ \le \dim_{\F_2}\Khred(K;\F_2).
+\]
+It may therefore return \code{KNOTTED} whenever $L_M>1$.
+If $|x_{a,r}|\le C_a$ and $M>\max_a C_a$, then
+\[
+             L_M>1\quad\Longleftrightarrow\quad B_4>1.
+\]
+For a suffix with $b>0$ frontier darts, each modular determinant query after
+preparation uses a matrix of dimension at most $b-2$, or returns the proved
+zero residue without forming that matrix. These statements remain valid at
+primes where the interior matrix becomes more singular.
+\end{theorem}
+\end{samepage}
+
+The proof is distributed through \cref{sec:euler,sec:geometry,sec:modular}.
+The hypothesis about the relative complex is essential: a randomly chosen
+matrix satisfying $d^2=0$ is not enough. Likewise, $L_M\le1$ is not an unknot
+certificate, even when the threshold comparison with $B_4$ is complete.
+
+\subsection{Current literature and the complexity target}
+
+Lackenby's July 2026 preprint develops an explicit hierarchy framework and
+efficiently encoded certificates \cite{lackenby2026}. Proposition 9.1 bounds
+the number of iterations by
+\[
+                         L(g+1)^L,
+\]
+where $L$ is a hierarchy-length bound and $g$ a pattern-complexity bound.
+The refined algorithm controls hierarchy length using handle complexity;
+Theorem 14.1 establishes, under its manifold and handle-structure
+hypotheses, the existence of an essential hierarchy with a polynomial-size
+encoding and polynomial-time verification. The paper leaves the proposed speed-up to further work. These are
+substantial algorithmic foundations, but polynomial certificate verification
+does not supply a polynomial or quasi-polynomial certificate-construction time.
+
+The exact exponent also deserves care. The March 2021 Oxford technical
+handout states $2^{O((\log N)^3)}=N^{O((\log N)^2)}$ \cite{lackenbytalk}.
+The Oxford seminar abstract instead states $N^{O(\log N)}$
+\cite{lackenbyabstract}. Both are
+quasi-polynomial, but the latter is stronger. We keep the repository's stronger
+target visible while using $2^{(\log N)^{O(1)}}$ when discussing the broad class.
+No result here converts one announced exponent into another.
+
+A separate September 2026 preprint by Musick explicitly claims polynomial
+unknot recognition \cite{musick}. This changes what a current literature note
+must acknowledge. The present work does not validate or integrate that claimed
+algorithm. A limited review identifies the grammar-to-geometric-local-minimum
+step and total compressed-description accounting as obligations for a separate
+audit; it supplies no counterexample or disproof. Our definite complexity claim
+is about the maintained ProveIt implementation: it still has no established
+general quasi-polynomial guarantee.
+
+The representation obstacle is concrete. In their January 2026 preprint,
+Kelom\"aki and Sch\"utz prove
+exponential behavior for basis-oriented scanning and divide-and-conquer on
+particular positive or alternating three-braids, while also obtaining
+polynomial-time structural formulas for three-braid Khovanov homology
+\cite{kelomaki}. Thus a small frontier and a large explicit homology basis can
+coexist. A succinct answer may nevertheless be tractable. This continuation
+compresses an observation of the complex; it does not prove that the complex
+itself remains succinct.
+
+\subsection{Reading the empirical conclusion}
+
+On the favorable repeated-query workload, 47 interior vertices are eliminated
+once and 200 actual boundary matchings are observed. The modular path is
+$26.67$ times faster than the maintained direct path and $3.97$ times faster
+than the rational prototype. At 127 interior vertices and 50 queries, the
+corresponding ratios are $10.74$ and $10.22$.
+
+Conversely, the all-terminal workload slows down, the smallest nontrivial
+interior favors the rational prototype, and the raw recognizer examples all
+favor the existing direct observer. These measurements justify an optional
+backend and further scheduling research. They do not justify changing the
+default recognizer or claiming a general recognition speed-up.
+
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}P{0.28\textwidth}X@{}}
+\toprule
+Claim category & Status in this package\\
+\midrule
+Modular arithmetic soundness & Proved, implemented, independently audited.\\
+Exact terminal count & Proved for the checked cut-face representation.\\
+Deterministic threshold completion & Proved; implementation reports whether its finite palette suffices.\\
+Repeated-query acceleration & Measured with setup included and both predecessors compared.\\
+Whole-recognizer acceleration & Not demonstrated on the tested corpus.\\
+General quasi-polynomial recognition & Not established by this work.\\
+\bottomrule
+\end{tabularx}
+\end{center}

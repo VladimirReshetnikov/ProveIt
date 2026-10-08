@@ -1,0 +1,226 @@
+\section{The exact boundary size and the modular response kernel}
+\label{sec:geometry}
+
+\subsection{Cut-face fragments}
+
+At a suffix stage, retain its $4n$ crossing darts. Let $\rho$ rotate each
+crossing counterclockwise and let $\alpha$ pair darts joined by retained
+internal edges. Boundary darts are the $b$ darts where this partial involution
+is undefined. The partial face map is
+\[
+                           f(d)=\rho(\alpha(d)).
+\]
+It is an injective partial map. Its components are directed cycles and directed
+paths, including paths consisting of one dart. They are the closed face
+fragments and open face fragments of the suffix.
+
+A checkerboard coloring of the original diagram assigns a color to each dart
+corner. Internal face-map steps preserve color. Rotating to the next corner
+changes color. Therefore each fragment has one well-defined inherited color.
+The common Tait graph has black fragments as vertices and one signed edge for
+each retained crossing. Open black fragments are its terminals; closed black
+fragments are its interior vertices. Keeping fragments is necessary: removing
+the prefix may split an original region, so merely remembering its original
+region identifier would not encode every completion correctly.
+
+If boundary labels $a,b$ are paired, with darts $d_a,d_b$, the two newly inserted
+face connections are
+\begin{equation}
+           d_a\longrightarrow\rho(d_b),\qquad
+           d_b\longrightarrow\rho(d_a).
+ \label{eq:face-glue}
+\end{equation}
+Thus completion only identifies open fragments. Closed fragments remain
+distinct. These are exactly terminal identifications of the common graph.
+
+\subsection{A precise count instead of a loose linear estimate}
+
+\begin{theorem}[Half the frontier is the terminal set]
+\label{thm:half-boundary}
+For $b>0$, a checkerboard-colored suffix has exactly $b$ open face fragments,
+of which exactly $b/2$ are black and $b/2$ are white. In particular, the common
+Tait graph has exactly
+\[
+                              t=b/2
+\]
+terminals, whichever shading is chosen.
+\end{theorem}
+\begin{proof}
+There are $b$ missing outgoing ends of $f$, precisely the boundary darts $d$.
+There are $b$ missing incoming ends, precisely the darts $\rho(d)$ for those
+same boundary darts. Every noncycle component of an injective partial map on
+a finite set is a directed path with one missing incoming end and one missing
+outgoing end. Hence the number of paths is exactly $b$.
+
+Let $O_B,I_B$ denote the black missing-outgoing and missing-incoming counts,
+and define $O_W,I_W$ similarly. Each path is monochromatic, giving
+$O_B=I_B$ and $O_W=I_W$. Rotation changes color, so the correspondence
+$d\mapsto\rho(d)$ gives $I_B=O_W$ and $I_W=O_B$. All four quantities are
+therefore $b/2$. The black paths are exactly the black open fragments.
+An isolated dart is a length-zero path and has the same one-incoming,
+one-outgoing deficiency; it causes no exception.
+\end{proof}
+
+The earlier boundary-reuse account only required a safe $O(b)$ terminal bound.
+The exact equality gives a sharper storage contract and, after elimination,
+a useful explicit matrix-size bound. It does not require the entire frontier
+to lie on one disk boundary, and it makes no Catalan-state assumption.
+
+When $b=0$, there are no open fragments. The code chooses one black vertex
+as an artificial grounding terminal. This case has $t=1$ and must not be
+substituted into a formula involving $b-2$.
+
+\subsection{Boundary-only geometric acceptance}
+
+The common graph is valid for a query only after three checks.
+First, the matching must cover every boundary label exactly once.
+Second, every connection in \cref{eq:face-glue} must preserve the inherited
+color. Third, the completed rotation system must be spherical.
+
+Let $F$ be the number of completed faces and $k$ the number of completed
+projection components. Store the numbers of closed fragments and closed
+projection components during preparation. The query uses disjoint-set unions
+only among open fragments and among projection components touching the
+boundary. It then checks
+\begin{equation}
+                              F=n+2k.
+ \label{eq:spherecheck}
+\end{equation}
+The completed ribbon graph has $V=n$, $E=2n$. Its total Euler characteristic
+is $F-n=2k-2\sum_i g_i$, where $g_i\ge0$ are its orientable genera. Thus
+\cref{eq:spherecheck} is equivalent to every component having genus zero.
+There is no need to reconstruct all suffix faces for each query.
+
+Both local pairings used by the Euler observer, namely opposite crossing
+darts for link strands and adjacent darts for the zero smoothing, also admit
+path summaries. Gluing either summary to the query matching computes $c$ and
+$c_0$ in boundary-sized work. The acceptance check and these two counts together
+give the exact phase and the exact value at one.
+
+An inherited-color incompatibility declines this representation; it does not
+prove knottedness. A malformed or nonspherical query is rejected as invalid
+input to this oracle. In the public recognition pipeline all queried matchings
+come from a validated classical scan, and a declined optional representation
+causes fallback.
+
+\subsection{The signed Laplacian quotient}
+
+For an edge $e=uv$ with integer weight $w_e$, add
+$w_e(e_u-e_v)(e_u-e_v)^{\mathsf T}$ to the Laplacian. This definition includes
+parallel edges and gives zero for a loop. It yields an integer symmetric matrix
+with zero row sums, without a positivity assumption.
+
+Order the interior and terminal vertices to write
+\[
+               L=\begin{pmatrix} A&B\\B^{\mathsf T}&D\end{pmatrix}.
+\]
+For a terminal partition with $q+1$ blocks, ground its first block. Let $Q$
+be the $t\times q$ matrix indicating the other blocks. Grounding the quotient
+graph gives the matrix
+\begin{equation}
+ L_Q=\begin{pmatrix}
+ A&BQ\\Q^{\mathsf T}B^{\mathsf T}&Q^{\mathsf T}DQ
+ \end{pmatrix}.
+ \label{eq:quotient}
+\end{equation}
+Every interior vertex remains separate. All terminal identifications are
+encoded by the columns of $Q$. This identity follows by applying the
+identification map to each edge incidence vector, so it remains valid if some
+edges become loops or cancel by opposite weights.
+
+\subsection{Elimination over each prime separately}
+
+Fix an odd prime $p$. We reduce the original integer $L$ modulo $p$ and eliminate
+only interior coordinates by symmetric pivots. If the remaining interior block
+has a nonzero diagonal entry, use a one-coordinate pivot. If all its diagonals
+vanish but an off-diagonal entry $u$ is nonzero, use
+\[
+                  P=\begin{pmatrix}0&u\\u&0\end{pmatrix},
+                  \qquad \det P=-u^2\ne0.
+\]
+If neither exists, the remaining interior block is zero. Symmetry ensures that
+these cases exhaust the possibilities.
+
+For an invertible pivot block $P$, replace the remaining block by its Schur
+complement and multiply an accumulated factor $\delta$ by $\det P$. Apply the
+same operations to interior-terminal couplings and terminal-terminal entries.
+Simultaneous row and column permutations contribute the square of a sign,
+so they do not change the determinant. No rational pivot profile is reused
+at another prime.
+
+\begin{theorem}[Singular-safe modular response]
+\label{thm:response}
+Let $r=\nullity_{\F_p}A$. The preparation produces $\delta\in\F_p^\times$,
+$R\in\F_p^{r\times t}$, and a symmetric $S\in\F_p^{t\times t}$ such that
+for every terminal partition,
+\begin{equation}
+ \det L_Q=\delta\det
+ \begin{pmatrix}
+       0_r&RQ\\Q^{\mathsf T}R^{\mathsf T}&Q^{\mathsf T}SQ
+ \end{pmatrix}
+ \quad\text{in }\F_p.
+ \label{eq:response}
+\end{equation}
+If $r>q$, the answer is zero. If $r\le q$, the residual dimension is at most
+$2(t-1)$. In particular, for $b>0$ it is at most $b-2$.
+\end{theorem}
+\begin{proof}
+At each pivot the block determinant identity proves the equality between the
+old determinant and the pivot determinant times the new Schur-complement
+determinant. Because only interior coordinates are eliminated, these identities
+commute with multiplication of the coupling and terminal blocks by $Q$ and
+$Q^{\mathsf T}$. Induction over all pivots yields \cref{eq:response}.
+The remaining interior block is zero and has dimension $\nullity A$ because
+every extracted pivot is nonsingular.
+
+If $r>q$, the linear map $RQ$ has a nonzero left null vector. Extending that
+vector by zeros on the terminal coordinates gives a null vector of the
+residual symmetric matrix. Otherwise its dimension is $r+q\le2q\le2(t-1)$.
+Apply \cref{thm:half-boundary} for the last assertion.
+\end{proof}
+
+When $r=q$, a useful independent identity is
+\begin{equation}
+                       \det L_Q=(-1)^r\delta\det(RQ)^2.
+ \label{eq:critical}
+\end{equation}
+It follows by swapping the two block column groups and obtaining a block
+triangular matrix. Its determinant is independent of $S$. This is a field
+identity; an ordering or real sign must not be assigned to its modular value.
+
+\begin{example}[A singular modular interior with a nonzero answer]
+Take a triangle whose edge weights are $1,2,1$, and designate two vertices
+as terminals. With the remaining vertex first,
+\[
+ L=\begin{pmatrix}
+ 3&-1&-2\\-1&2&-1\\-2&-1&3
+ \end{pmatrix},\qquad \tau(G)=5.
+\]
+Over $\Q$, the interior block $[3]$ is invertible. Over $\F_3$ it is zero,
+so a rational Schur complement cannot simply be reduced using its denominator.
+The modular response retains one radical direction; for the unmerged terminal
+partition its residual matrix has off-diagonal entry $1$ and determinant
+$-1\equiv2\pmod3$, exactly $5\bmod3$.
+At $p=5$, the final determinant is zero modulo five although the integer
+determinant is nonzero. Neither phenomenon is an error or a reason to infer
+an integer zero.
+\end{example}
+
+\subsection{What is retained and what is rebuilt}
+
+The implementation keeps one active suffix geometry. For each requested prime
+it builds one response, then caches cofactors by canonical terminal partition.
+Two different boundary matchings with the same black partition share a
+determinant. They still undergo their own geometry checks and may have different
+link counts; these data are not inferred from the partition alone.
+
+If $r>t-1$, every query residue is zero and the kernel can discard its unused
+large residual arrays. Otherwise it retains at most an $r\times t$ coupling
+and a $t\times t$ response, with $r\le t-1$. Changing the suffix discards these
+active matrices. The separately cached completed values remain exact for their
+full keys, which include the stage, matching, and prime.
+
+Preparation is dense and still costs $O(v^3)$ field operations for a common
+graph with $v$ vertices. The gain is that this cost is paid once per prime and
+suffix, while subsequent determinants are boundary-sized. The theorem does not
+guarantee that a scan asks enough queries to repay this setup.

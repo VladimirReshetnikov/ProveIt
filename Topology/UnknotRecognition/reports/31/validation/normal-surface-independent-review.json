@@ -1,0 +1,39 @@
+{
+  "reviewer": "independent algebra/tensor agent",
+  "review_type": "source inspection after author freeze; focused test logs inspected, not independently rerun",
+  "files": [
+    {
+      "path": "Topology/UnknotRecognition/fast/fastunknot/normal_surface.py",
+      "sha256": "b4bf5c3b3a869973fe275bef3edb8c1d872cac9d4228e8cca21fbde0ba2b8893"
+    },
+    {
+      "path": "Topology/UnknotRecognition/fast/tests/test_normal_surface.py",
+      "sha256": "6a494f7c45591b3b7f61e8d644661af3194a882c484f9f907c50f8d20e5df984"
+    }
+  ],
+  "findings": [
+    "One communicator thread submits payload exactly once and owns communicate; the parent never retries partial stdin submission.",
+    "Event publication precedes parent consumption of either completed output or captured worker exception.",
+    "Cancellation and deadline checks execute in the caller thread before and after completion polling.",
+    "Event construction, Thread construction and Thread.start are within the launched child cleanup scope.",
+    "Cleanup kills a live direct child, waits for process exit, joins a started communicator, then closes all three pipe streams.",
+    "Worker OSError and setup RuntimeError/OSError become NormalWorkerError; caller check exceptions retain their original type.",
+    "The added regression test injects communication and Event/Thread construction/start failures and checks direct-child reaping and pipe closure."
+  ],
+  "scope": "Existing controlled direct-child Regina worker contract; no change to process-group or inherited-grandchild-pipe semantics.",
+  "focused_test_evidence": [
+    {
+      "path": "validation/normal-surface-after-fix.log",
+      "tests": 9,
+      "result": "passed",
+      "sha256": "8d7239349dd2f69686f716f1f12e3aa49d1856e06eb1c1093f79c6d7cdb30517"
+    },
+    {
+      "path": "validation/integration-after-worker-fix.log",
+      "tests": 6,
+      "result": "passed",
+      "sha256": "a1a1a41372b6063703375d98a6ac4eeca498e060563119603cf29bb91b912707"
+    }
+  ],
+  "decision": "approved"
+}

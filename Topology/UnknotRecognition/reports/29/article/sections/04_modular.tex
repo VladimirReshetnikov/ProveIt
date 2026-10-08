@@ -1,0 +1,229 @@
+\section{Modular lower bounds and deterministic threshold completion}
+\label{sec:modular}
+
+\subsection{A residue is information about an integer}
+
+The complex remains over $\F_2$. Its graded dimensions and Euler sums are
+integers. We use an auxiliary prime $p$ only to compute those integers modulo
+$p$, evaluating \cref{eq:two-values} with $2^{-1}\in\F_p$. The Gaussian phase
+is represented by one of $(1,0),(0,-1),(-1,0),(0,1)$; there is no need to adjoin
+a square root of minus one to $\F_p$.
+
+For a whole component, add the shifted object residues with their homological
+signs modulo $p$. Applying CRT to this final four-vector reconstructs its
+congruence class modulo the product of the processed primes. This ordering
+requires only four accumulated integers per component. Reconstructing every
+object's full integer determinant first is unnecessary.
+
+\begin{samepage}
+\begin{definition}[Balanced and sum-constrained norms]
+For odd $M\ge3$, let $\bal_M(z)$ be the unique representative of $z\bmod M$
+in $[-(M-1)/2,(M-1)/2]$. For a residue vector $z\in(\Z/M\Z)^d$, set
+\[
+ D_M(z)=\sum_j|\bal_M(z_j)|.
+\]
+If an exact integer sum $a$ is known and $a\equiv\sum_jz_j\pmod M$, set
+\[
+ F_M(z,a)=\min\left\{\norm{y}:y\in\Z^d,\ y\equiv z\pmod M,
+                                  \sum_j y_j=a\right\}.
+\]
+\end{definition}
+\end{samepage}
+
+For our application, $d=4$ and $a_a=\sum_r x_{a,r}$ is the exact completed
+component Euler value, obtained from the already available evaluations at one.
+The two modular bounds are
+\begin{equation}
+ B_M=\sum_a m_aD_M(x_a),\qquad
+ L_M=\sum_a m_aF_M(x_a,a_a).
+ \label{eq:modular-bounds}
+\end{equation}
+
+\begin{proposition}[Soundness and monotone refinement]
+\label{prop:monotone}
+For every odd $M$,
+\[
+                 B_M\le L_M\le B_4.
+\]
+If $M\mid M'$, then $B_M\le B_{M'}$ and $L_M\le L_{M'}$.
+Also $L_M\ge\sum_a m_a|a_a|$.
+\end{proposition}
+\begin{proof}
+Balanced representatives minimize each coordinate's absolute value among all
+its integer lifts. Requiring the exact sum can only raise that minimum. The
+true integer vector is feasible for the sum-constrained problem, proving the
+upper bound. A congruence class modulo $M'$ is a subset of its congruence
+class modulo $M$, so both minima are monotone. Finally the triangle inequality
+gives $\norm{y}\ge|\sum_jy_j|=|a_a|$ for every feasible vector.
+\end{proof}
+
+Each rejection is therefore deterministic and sound, even when the first
+prime is chosen heuristically. Our implementation uses a fixed default prime,
+not probabilistic stabilization of reconstructed integers.
+
+\subsection{An explicit solution to the integer norm problem}
+
+\begin{theorem}[Minimum norm with a known sum]
+\label{thm:minimum}
+Put $b_j=\bal_M(z_j)$ and $h=(a-\sum_jb_j)/M$. If $h=0$, then
+$F_M(z,a)=\sum_j|b_j|$. Otherwise let $u_1\ge\cdots\ge u_s>0$ be the
+absolute values of those $b_j$ whose sign is opposite to $h$. Then
+\begin{equation}
+ F_M(z,a)=\sum_j|b_j|+M|h|
+                     -2\sum_{j=1}^{\min(|h|,s)}u_j.
+ \label{eq:minimum-formula}
+\end{equation}
+A minimizing lift can be constructed using $O(d\log d)$ comparisons and
+integer arithmetic, independent of the magnitude of $h$ except for bit cost.
+\end{theorem}
+\begin{proof}
+Write a lift as $y=b+Mw$, with $w\in\Z^d$ and $\sum_jw_j=h$.
+For one positive step in coordinate $j$, the change in absolute value is $M$
+unless $b_j<0$, in which case the first step costs $M-2|b_j|$.
+Every further positive step costs $M$. Negative steps have the analogous
+first-step discount when $b_j>0$. Since $M$ is odd and $|b_j|\le(M-1)/2$,
+all first-step costs are strictly positive.
+
+If some $w_i>0$ and some $w_j<0$, moving both one step toward zero leaves
+$\sum w$ unchanged and strictly decreases the objective. Thus a minimizer
+has all nonzero $w_j$ of the sign of $h$. Allocate the $|h|$ required steps
+to the largest available first-step discounts. Once each selected coordinate
+has received one step, every remaining marginal cost is $M$. This proves
+\cref{eq:minimum-formula}. Sorting the at most $d$ discounts and putting any
+remaining steps into one already correctly signed coordinate constructs an
+attaining lift. No loop of length $|h|$ is necessary.
+\end{proof}
+
+For example, modulo three the residues $(1,1)$ have balanced norm two.
+With exact sum five, a minimizing lift is $(4,1)$ and its norm is five.
+Feasibility alone would not prove a lower bound: an arbitrary lift may have
+norm larger than the true integer vector. The optimization theorem is what
+makes the returned minimum safe.
+
+\subsection{Threshold recovery requires less than coefficient recovery}
+
+Let $T\ge0$ be an integer threshold and suppose certified coordinate bounds
+$|x_{a,r}|\le C_a$ are available. They need not be equal across components.
+
+\begin{theorem}[Balanced threshold completion]
+\label{thm:balanced-complete}
+If
+\[
+       M>\max_a\left(C_a+\left\lfloor T/m_a\right\rfloor\right),
+\]
+then $B_M>T$ if and only if $B_4>T$.
+\end{theorem}
+\begin{proof}
+One implication follows from soundness. If $B_M\le T$, every balanced
+coordinate in component $a$ has absolute value at most $\lfloor T/m_a\rfloor$.
+Any nonzero difference between the true coordinate and that representative is
+a multiple of $M$. It would force the true coordinate to have magnitude at
+least $M-\lfloor T/m_a\rfloor>C_a$. Thus all true coordinates equal their
+balanced representatives and $B_4=B_M\le T$.
+\end{proof}
+
+\begin{theorem}[Sharper completion with the exact sum]
+\label{thm:sum-complete}
+If
+\begin{equation}
+       M>\max_a\left(C_a+\left\lfloor T/(2m_a)\right\rfloor\right),
+ \label{eq:sharp-threshold}
+\end{equation}
+then $L_M>T$ if and only if $B_4>T$. In particular, at $T=1$,
+\begin{equation}
+                     M>\max_a C_a
+ \label{eq:threshold-one}
+\end{equation}
+suffices.
+\end{theorem}
+\begin{proof}
+Again soundness gives one implication. Suppose $L_M\le T$ and choose a
+minimizing lift $y_a$ for each component. Then
+$\norm{y_a}\le\lfloor T/m_a\rfloor$. If $x_a\ne y_a$, the vector
+$(x_a-y_a)/M$ is a nonzero integer vector with coordinate sum zero. It therefore
+has a coordinate at least one and another at most minus one. Among the
+corresponding two coordinates of $y_a$, at least one has absolute value at
+most $\lfloor T/(2m_a)\rfloor$. On that coordinate,
+\[
+ |x_{a,r}|\ge M-|y_{a,r}|
+             \ge M-\lfloor T/(2m_a)\rfloor>C_a,
+\]
+a contradiction. Thus every $x_a=y_a$, proving $B_4=L_M\le T$.
+\end{proof}
+
+At threshold one this avoids the usual $M>2\max C_a$ requirement for
+unique centered reconstruction. It decides a Boolean comparison, not every
+large coordinate. The distinction is useful even when the modulus is not large
+enough to identify a general integer vector uniquely.
+
+\begin{example}[Strictness and fixed-palette blindness]
+For any odd $M\ge3$, the vector $(M,-M,0,0)$ has exact sum zero and is
+indistinguishable from zero modulo $M$. With $C=M$, condition
+\cref{eq:threshold-one} fails at equality, and the modular norm is zero while
+the true norm is $2M$. Thus strict inequality is necessary for a theorem based
+only on coordinate bounds. More generally, if the product of all primes in a
+fixed palette is $P$, the vector $(P,-P,0,0)$ is invisible to the entire palette.
+These are algebraic counterexamples to an overstrong inference; no claim is
+made that a prescribed vector is realized by a knot prefix.
+\end{example}
+
+The general bound is likewise sharp. For one component of weight $m$, let
+$s=\lfloor T/(2m)\rfloor$, choose odd $M>2s+1$, and take
+$y=(-s,s)$, $x=(M-s,-M+s)$ with $C=M-s$. They have the same exact sum and
+the same residues. The small lift has weighted norm $2ms\le T$, whereas
+the large lift can exceed $T$. Equality at $M=C+s$ therefore cannot replace
+the strict comparison.
+
+\subsection{A useful limitation of the exact-sum enhancement}
+
+\begin{proposition}[No extra threshold-one rejection after the Euler check]
+\label{prop:redundancy}
+Suppose $M\ge3$ is odd and $\sum_a m_a|a_a|\le1$. Then
+\[
+                         B_M>1\quad\Longleftrightarrow\quad L_M>1.
+\]
+\end{proposition}
+\begin{proof}
+If $B_M\le1$, each component's balanced vector has norm at most one and
+$|a_a|\le1$. The difference between $a_a$ and the balanced coordinate sum
+is divisible by $M$ and has absolute value at most two. It is therefore zero.
+Every balanced vector already satisfies the exact sum, so $L_M=B_M\le1$.
+The other implication follows from $B_M\le L_M$.
+\end{proof}
+
+This prevents an attractive but incorrect performance claim. In the actual
+recognizer, the exact Euler obstruction is checked first. The sum-constrained
+formula does not then discover additional threshold-one rejections beyond
+balanced residues. Its value here is the stronger completion criterion and
+an explicit general higher-threshold interface. We implement it for that
+certified interpretation, not as an unmeasured source of extra knot detections.
+
+\subsection{How many individual primes can miss an existing obstruction?}
+
+CRT is one route to completion; a bound on individual bad primes is another
+useful planning tool.
+
+\begin{proposition}[Prime-exposure bound]
+\label{prop:prime-exposure}
+Assume $|x_{a,r}|\le H$ and $B_4>1$. In a pool of distinct odd primes each
+at least $\ell>1$, either every prime detects $B_p>1$, or the number of
+inconclusive primes is at most (in this second case $H\ge2$)
+\[
+ \left\lfloor\frac{\log(H(H^2-1))}{\log\ell}\right\rfloor
+ <\frac{3\log(H+1)}{\log\ell}.
+\]
+\end{proposition}
+\begin{proof}
+If every coordinate is $0$ or $\pm1$, every odd prime preserves each absolute
+value, and every prime detects the obstruction. Otherwise choose one coordinate
+$x$ with $|x|\ge2$. An inconclusive prime has $B_p\le1$, so this coordinate
+is congruent to $0$ or $\pm1$. Hence it divides the nonzero integer
+$x(x-1)(x+1)$. The product of $k$ distinct such primes is at least $\ell^k$
+and at most $H(H^2-1)$, proving the bound.
+\end{proof}
+
+Uniformly random ordering of a certified prime pool consequently admits an
+expected exposure estimate, although no randomness is needed for soundness.
+We do not implement such a scheduler. The result concerns exposing an
+\emph{already present} component obstruction; it neither guarantees that one
+exists nor bounds the work required to reach the corresponding prefix.

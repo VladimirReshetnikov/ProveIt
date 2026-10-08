@@ -1,0 +1,110 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=1in,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,tabularx,array}
+\usepackage{graphicx,xcolor,enumitem,fancyhdr}
+\usepackage{listings,xurl}
+\definecolor{ink}{RGB}{24,47,73}
+\definecolor{teal}{RGB}{0,103,113}
+\definecolor{light}{RGB}{243,246,249}
+\usepackage[colorlinks=true,linkcolor=ink,citecolor=teal,urlcolor=teal]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\hypersetup{pdftitle={Modular Boundary Responses for Unknot Recognition},
+ pdfauthor={ProveIt research continuation prepared with OpenAI ChatGPT},
+ pdfsubject={Exact modular Euler obstructions and singular-safe boundary compression}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{ink}Modular boundary responses}
+\fancyhead[R]{\small ProveIt research notes}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{3pt}
+\setlist{itemsep=3pt,topsep=5pt}
+\emergencystretch=2em
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\DeclareMathOperator{\Kh}{Kh}
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\nullity}{nullity}
+\DeclareMathOperator{\bal}{bal}
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\sgn}{sgn}
+\newcommand{\F}{\mathbb F}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Khred}{\widetilde{\Kh}}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert_1}
+\newcommand{\code}[1]{\texttt{\small #1}}
+\newcommand{\basecommit}{\texttt{8a95834940cf77cdab1b39571ffc102ca8b6bede}}
+\lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible,
+ keepspaces=true,showstringspaces=false,backgroundcolor=\color{light},
+ frame=single,rulecolor=\color{light},xleftmargin=4pt,xrightmargin=4pt}
+\title{\color{ink}\bfseries Modular Boundary Responses\\for Unknot Recognition\par
+ \vspace{0.5em}\large Certified Euler obstructions, singular-safe compression,\\
+ and deterministic threshold refinement}
+\author{ProveIt research continuation\\
+ \small Prepared for Vladimir Reshetnikov with OpenAI ChatGPT}
+\date{8 October 2026}
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+\begin{abstract}
+We continue the implementation program in \emph{ProveIt/Topology/UnknotRecognition}.
+The maintained marked-continuation observer reconstructs closed diagrams and
+evaluates integer signed-Laplacian determinants. A prior research prototype
+reuses a rational boundary response. We give and implement a finite-field
+continuation of that prototype, retaining singular interior directions and
+reusing the actual suffix geometry. Its auxiliary primes reduce integer Euler
+characteristics; the underlying Khovanov complex remains over $\F_2$.
+
+Three quantitative results organize the improvement. First, a checkerboard
+suffix with $b>0$ frontier darts has exactly $b/2$ black open face fragments,
+so every potentially nonzero residual determinant has dimension at most $b-2$.
+Second, modular residues of whole completed components give sound, monotone
+lower bounds on reduced Khovanov rank. Retaining the exact Euler sum yields a
+closed formula for the strongest $\ell^1$ lower bound with those data.
+Third, if each component coordinate is bounded by $C_a$, accumulated modulus
+$M>\max_a C_a$ already makes the threshold-one test exact; unique coefficient
+reconstruction is unnecessary. We prove explicit bounds on $C_a$ and identify
+the distinction between this completion theorem and the finite prime palette
+implemented by the prototype.
+
+Fresh-setup paired measurements show a $26.67$-fold improvement over the
+maintained direct evaluator and a $3.97$-fold improvement over the earlier
+rational prototype on a 200-query workload with 47 genuine interior vertices.
+The small-interior cases and all seven raw recognition examples show regressions.
+The new backend therefore remains optional. No general quasi-polynomial
+running-time bound for the maintained recognizer is proved. The package
+includes proofs, source changes, independent arithmetic and geometric audits,
+replay checks, full timing samples, and a targeted research agenda.
+\end{abstract}
+\vfill
+\noindent\small\textbf{Research status.} This is an AI-assisted working paper, cross-checked with separate
+arithmetic routines and exact small-instance computations, not a refereed publication. Established results,
+repository-derived constructions, proved refinements, experiments, and open
+obligations are distinguished throughout. The source baseline is recorded
+exactly in the accompanying provenance file.
+\newpage
+{\small\setlength{\parskip}{0pt}\tableofcontents}
+\newpage
+\input{sections/01_context}
+\input{sections/02_euler}
+\input{sections/03_geometry}
+\input{sections/04_modular}
+\input{sections/05_complexity}
+\input{sections/06_implementation}
+\input{sections/07_experiments}
+\input{sections/08_research}
+\input{references}
+\end{document}

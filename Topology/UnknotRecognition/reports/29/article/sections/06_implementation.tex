@@ -1,0 +1,189 @@
+\section{Implementation, replay, and correctness evidence}
+\label{sec:implementation}
+
+\subsection{An optional backend with a small integration surface}
+
+The new public selector is \code{backend="shadow-modular"}. The existing
+\code{standard} default and existing \code{shadow} integer observer retain
+their roles. The production additions are deliberately separated by invariant:
+
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}P{0.36\textwidth}X@{}}
+\toprule
+Module under \path{fast/fastunknot/} & Responsibility\\
+\midrule
+\path{boundary_tait.py} & Checked cut-face geometry, canonical black partitions,
+spherical acceptance, and boundary component counts.\\
+\path{modular_response.py} & Prime validation, symmetric elimination with one-
+or two-coordinate pivots, retained radical, and quotient cofactors.\\
+\path{modular_lattice.py} & CRT, balanced representatives, exact-sum minimum
+norm, and certified threshold completion.\\
+\path{modular_shadow.py} & Whole-component observation, adaptive prime passes,
+resource accounting, and capped scan fallback.\\
+\path{modular_verify.py} & Replay of positive raw observations using the old
+integer observer and an independent minimum-norm calculation.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The changes to \path{recognize.py} and \path{__main__.py} register the selector
+and \code{shadow\_primes} option. The five production modules have no dependency
+on archived report packages or the earlier rational prototype. They use the
+Python standard library and the maintained package.
+
+A normal command is:
+\begin{lstlisting}[language=bash]
+python -B -m fastunknot recognize examples/conway.json \
+  --backend shadow-modular --shadow-primes 65521
+\end{lstlisting}
+The usual filters may decide this input before the selected backend runs.
+For a direct reproducible marked-observer example, the supplied demonstration
+uses the closure of $(\sigma_1\sigma_2)^5$ and the natural crossing order:
+\begin{lstlisting}[language=Python]
+from fastunknot import Diagram
+from fastunknot.modular_shadow import modular_shadow_khovanov_decide
+from fastunknot.modular_verify import replay_modular_shadow
+
+D = Diagram.from_braid(3, [1, 2] * 5)
+claim = modular_shadow_khovanov_decide(
+    D.pd, order=list(range(10)), shadow_max_work=None,
+    primes=(3, 5, 7, 11, 13))
+assert claim["method"] == "marked-residue-four-modular"
+assert claim["stage"] == 9
+replay = replay_modular_shadow(D.pd, claim)
+assert replay["verified"]
+\end{lstlisting}
+This example illustrates a genuine proper-prefix obstruction, including a
+whole component with more than one object. It is not the benchmark family.
+
+\subsection{Saturation and transactional resource behavior}
+
+The mathematical $L_M$ is the full sum in \cref{eq:modular-bounds}. The decision
+routine returns its threshold-saturated form $\min(2,L_M)$ and may stop after
+a subset of \emph{whole} components already contributes at least two. It records
+both the observed and total component counts. A positive result certifies the
+Boolean comparison even if the sufficient modulus-size inequality was not
+needed. A negative comparison is labeled complete only after every relevant
+component has been processed and the coefficient bound proves completeness.
+
+A geometry, response, cofactor, or completed vector enters its cache only after
+its computation finishes. Deadline or work interruption cannot publish a
+partial elimination as if it were a valid response. Already completed exact
+Euler values remain usable. Every cache hit still checks the global deadline.
+
+The optional observer has two local allowances. Exhausting the determinant work
+allowance disables the modular shadow and retains the existing Euler reserve.
+Exhausting the shared completed-state allowance disables further observations
+and lets the capped complex scan continue. A geometric inherited-color decline
+also disables the optional representation. Global time or object exhaustion
+propagates through the public API as \code{UNKNOWN}. With no such global
+resource bound, the finite exact capped scan remains the fallback decision
+procedure. Small modular norms, zero cofactors, and exhausted prime palettes
+never produce \code{UNKNOT}.
+
+The deadlines are cooperative: expensive Python arithmetic, allocation, and
+individual library calls cannot be interrupted at every machine instruction.
+The benchmark therefore adds a separate POSIX signal-based wall-clock cap, while the production
+interface preserves the established cooperative resource semantics.
+
+\subsection{What the replay verifier proves}
+
+A positive raw observation contains the source crossing order and surviving
+mark, the proper stage, distinct whole component identities, recovered shifts,
+saturated positive multiplicities, the processed primes, the exact CRT product,
+four residues, exact Euler sums, coefficient bounds, minimizing lifts, and
+claimed norms.
+
+The verifier reconstructs the prefix using \code{ComponentScan(rank\_cap=3)}.
+It validates the whole-component identities against the reconstructed
+differential graph. It then evaluates completions using the older
+\code{ClosureShadow} integer implementation. Thus the new boundary geometry,
+finite-field response, and production lattice minimizer are absent from this
+arithmetic verification path. It checks every aggregate residue against the
+independently computed integer vector and recomputes the constrained minimum
+by a separate marginal-cost formula.
+
+Checking minimality is essential. A congruent vector with the right coordinate
+sum is a feasible lift, but its norm can be larger than the true minimum.
+One tampering test supplies a feasible lift of norm four where the correct
+modular minimum is two; replay rejects it even though four also equals the
+independently computed integer norm. A claimed minimum is not authenticated
+merely by exhibiting one feasible vector.
+
+The verifier accepts distinct complete component records whose verified weighted
+sum exceeds one; other components need not be listed. It rejects partial
+components, duplication, false shifts, incompatible source data, composite or
+repeated primes, false products, incorrect residues, and nonminimal lifts.
+Resource exceptions propagate rather than being converted into acceptance.
+Runtime counters and performance metadata are outside its certificate scope.
+
+This is \emph{full prefix replay with an independent observer arithmetic path}.
+It is not a short standalone NP certificate, an independent implementation of
+the scanner, or a formal proof-assistant development. Replaying a large prefix
+may cost as much as constructing it. Those distinctions matter when using the
+word ``certificate'' in complexity claims.
+
+\subsection{Independent arithmetic and actual-diagram audits}
+
+The package supplies three new test modules, with 31 tests in total. The response
+tests include 1,964 randomized quotient comparisons against both dense modular
+determinants and integer Bareiss determinants. They force singular interiors,
+two-coordinate pivots, exceptional primes, loop-producing identifications,
+nonclassical pairing rejection, and deadline interruption. End-to-end tests
+check real suffix completions, mirrors, grading recovery, public dispatch,
+Euler fallback, closed-rank unknot decisions, and replay corruption.
+
+A separate arithmetic script imports no production modular code. Its independent
+dynamic-programming enumeration checks 33,300 norm-minimization instances, and
+its exhaustive vector checks test 1,496,340 weighted threshold cases. These are
+finite audits of the implementation and statements; the general proofs remain
+necessary.
+
+The larger diagram audit chooses 64 seeded random small braid inputs and five
+fixed inputs, then includes each mirror. Every diagram has at most nine
+crossings so that an independent reduced $\F_2$ cube is feasible. The saved
+input list and all crossing orders make the result reproducible without
+repeating the random selection.
+
+\input{tables/audit}
+
+All these comparisons pass. The cube code comes from report 26 and constructs
+its own differential and homology; it is independent of the maintained scanner's
+cancellation machinery. The audit explicitly checks $d^2=0$. It compares both
+proper-prefix lower bounds and final capped ranks with the independent reduced
+homology.
+
+Prime three alone misses 70 real obstructions in this audit. It produces no
+false positive. The adaptive supplied palette resolves every one of the 868
+threshold comparisons in the audit. This is direct evidence for the one-sided
+meaning of modular observations and against treating an inconclusive small
+prime as an unknot test.
+
+The geometric audit observes a maximum frontier of 14 darts, seven terminals,
+residual nullity two, and actual query dimension five. It checks $t=b/2$ on
+730 nonempty-frontier preparations, the $b-2$ bound on 14,898 potential queries,
+and 198 radical-dimension zero cases. These include singular cases absent
+from the timing family.
+
+\subsection{Full-suite status and an inherited limitation}
+
+A broader run of the maintained test suite discovered 708 tests, including
+the first 21 new modular tests. It recorded 704 passes, three optional-Regina
+skips, and one error in an existing normal-surface subprocess test. The ten
+replay tests were added afterward and are included in the separate complete
+31-test modular run.
+
+The error reproduces both in isolation and against the untouched baseline
+\path{normal_surface.py}. On this CPython 3.12.14 POSIX runtime, a timed
+\code{communicate(payload)} call can leave input pending; retrying with
+\code{communicate(None)} retains the internal buffer but no longer schedules
+stdin writes. In the test, 65,536 of 500,000 bytes are sent and the child waits
+for the remainder until the local deadline. A single uninterrupted communication
+call completes successfully. The package records this as a real inherited
+optional-worker I/O defect, not as benchmark contention or a passing gate.
+No source change in that unrelated worker is included here.
+
+The failure limits an optional native-worker path and does not invalidate the
+modular arithmetic comparisons. It must nevertheless remain visible to anyone
+reproducing the full suite. A separate repair needs to preserve pending-stdin
+progress, global cancellation, and child cleanup together.

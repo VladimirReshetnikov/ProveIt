@@ -1,0 +1,178 @@
+\section{Binary boundary tensors for the bracket}
+\label{sec:tensors}
+
+\subsection{Orient each circle instead of recording its connectivity}
+
+Work initially in a commutative extension of
+$\Z[A,A^{-1}]$ containing an invertible element $\rho$ with
+\begin{equation}\label{eq:rho-fourth}
+ \rho^4=-A^2.
+\end{equation}
+Then $\rho^4+\rho^{-4}=\delta$. By Theorem~\ref{thm:turning}, the sum of the
+weights of the two orientations of any smoothing circle is exactly
+$\delta$. Thus every factor $\delta^{c(s)}$ in the bracket state sum can
+be evaluated by independently orienting the circles.
+
+Choose a canonical dart $d_e$ on each diagram edge; the implementation
+chooses the smaller dart index. A binary edge state gives that edge an
+arrow, either in the direction of $d_e$ or against it. Write
+$\epsilon_d=+1$ when the arrow points out of the vertex at dart $d$, and
+$\epsilon_d=-1$ otherwise. Thus $\epsilon_{\alpha(d)}=-\epsilon_d$.
+A smoothing is compatible with these arrows if each of its pairs has one
+incoming and one outgoing dart.
+
+For a compatible smoothing $s$ at crossing $v$, let $r_v(s,\epsilon)$ be
+the sum of its two local turns. It belongs to $\{-2,0,2\}$. Define the
+local crossing tensor and the edge weight by
+\begin{align}
+ T_v(\epsilon)&=\sum_{\substack{s\in\{0,1\}\\s\text{ compatible}}}
+          A^{1-2s}\rho^{r_v(s,\epsilon)},\label{eq:crossing-tensor}\\
+ E_e(\epsilon)&=\rho^{\epsilon_{d_e}b_{d_e}}.\label{eq:edge-tensor}
+\end{align}
+The crossing tensor vanishes unless two darts point in and two point out.
+Only six of the sixteen arrow configurations can occur. The two alternating
+configurations each support both smoothings; the others support one.
+
+\begin{theorem}[Exact two-state contraction]
+\label{thm:binary-tensor}
+For a validated nonempty classical knot diagram,
+\begin{equation}\label{eq:network}
+ \mathcal B_D(A)=
+ \sum_{\text{one binary arrow per edge}}
+     \prod_v T_v(\epsilon)\prod_e E_e(\epsilon).
+\end{equation}
+For any crossing order, a direct frontier contraction of this expression
+has at most $2^{w_i}$ keys after a prefix whose cut has $w_i$ diagram edges.
+No connectivity or disk condition on the prefix is required.
+\end{theorem}
+
+\begin{proof}
+Expand every sum in \eqref{eq:crossing-tensor}. A nonzero term consists of
+a smoothing state and an arrow on each edge such that the arrows extend
+coherently through every smoothing arc. This is exactly an independent
+choice of orientation for each smoothing circle. Its weight is the
+smoothing monomial $A^{n-2|s|}$ times $\rho$ raised to the sum of all local
+and edge turns. Summing the orientations of one circle gives
+$\rho^4+\rho^{-4}=\delta$. Doing this independently for all circles recovers
+\eqref{eq:bracket-state-sum}.
+
+To contract a prefix, sum all arrow variables whose two incident crossings
+are processed and retain those with exactly one processed endpoint. The
+result is a tensor indexed by the latter binary variables. There are
+$2^{w_i}$ assignments. A loop at one crossing has both endpoints processed
+together and is summed locally. This is ordinary distributivity in a
+finite product of local tensors and does not use a boundary matching.
+\end{proof}
+
+\subsection{A continuation statement with its exact scope}
+
+Let $P$ be a set of processed crossings, let $Q$ be its complement, and
+fix the same full-diagram turning data. Assign each edge factor to its
+canonical endpoint. The contraction of $P$ produces a vector $u_P$ and
+that of $Q$ produces the complementary vector $u_Q$ on the same cut
+assignments. Their contraction is $\mathcal B_D$.
+
+This gives an exact linear summary for the bracket under the remaining
+contraction. It does not imply that the summary preserves the relative
+Khovanov complex, nor that it distinguishes every topological tangle.
+The distinction explains how the binary state bound can coexist with
+large matching sets and with the baseline's lower bounds on explicit
+categorified checkpoints. Decategorification can identify data that a
+chain-complex computation must retain.
+
+\subsection{One cyclotomic phase per frontier key}
+
+For exact arithmetic we later set $A=B^2$ and $\rho=\zeta B$, where
+$\zeta^4=-1$. At first sight every coefficient is a four-coordinate
+integer in $\Z[\zeta]$. A stronger statement removes most of that storage.
+
+\begin{lemma}[A vertex potential modulo four]
+\label{lem:phase-potential}
+For an oriented edge from slot $j$ at vertex $v$ to slot $k$ at vertex $u$,
+there is a function $\nu$ on vertices with values in $\Z/4\Z$ such that
+\begin{equation}\label{eq:phase-potential}
+ b_d+j-k-2=\nu(u)-\nu(v)\pmod4.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+The expression on the left is antisymmetric modulo four. Around a face,
+the next departing slot equals the preceding arriving slot plus one,
+modulo four. Consequently $\sum(j-k)=|f|\pmod4$. The face sum of the
+left side of \eqref{eq:phase-potential} is therefore
+$\sum b_d-|f|=\pm4=0\pmod4$. Apply
+Lemma~\ref{lem:closed-cochain} over $\Z/4\Z$ and take its vertex potential.
+\end{proof}
+
+\begin{theorem}[Phase determined by the boundary]
+\label{thm:one-phase}
+Fix a set $P$ of processed crossings and a binary assignment on its cut.
+All nonzero monomials contributing to that tensor entry have the same
+power of $\zeta$ modulo four. The entry therefore has the form
+$c\zeta^r$, with $c\in\Z$ and $0\le r<4$, after the integer
+specialization and the nonnegative shifts described below.
+\end{theorem}
+
+\begin{proof}
+At a crossing, the local turning exponent satisfies
+\[
+ r_v=\sum_{d=(v,j)}\epsilon_d j\pmod4.
+\]
+Indeed, an arc from incoming $j$ to outgoing $k$ turns by
+$k-j-2\pmod4$; summing two arcs subtracts four.
+Every allowed crossing has two incoming and two outgoing darts, so
+$\sum_{d\text{ at }v}\epsilon_d=0$. We may consequently add
+$\nu(v)\sum\epsilon_d$ without changing the phase.
+
+An internal edge of the prefix contributes, from its two endpoints and
+its edge factor,
+\[
+ \epsilon_d\bigl(b_d+j-k+\nu(v)-\nu(u)\bigr)
+       =2\epsilon_d=2\pmod4
+\]
+by Lemma~\ref{lem:phase-potential}. This contribution is independent of
+its arrow. A cut edge contributes only terms determined by its fixed
+arrow, its processed endpoint, and the fixed convention assigning its
+edge factor. Thus the total phase is fixed by the boundary assignment and
+by $P$. The extra powers of $B$ used for denominator clearing have no
+$\zeta$ phase. Powers differing by four have opposite signs because
+$\zeta^4=-1$, and those signs are absorbed into the integer $c$.
+\end{proof}
+
+The implementation stores this phase together with one signed integer.
+When terms reach the same key, it checks that their phases agree before
+adding their integers. The check is an implementation invariant backed by
+the theorem, rather than an assumption that discards other coordinates.
+Zero entries are removed. A closed result has phase zero, since every
+smoothing circle contributes a multiple of four.
+
+\subsection{The executable contraction}
+
+The contraction uses a deterministic crossing order. At each step it
+performs the following operations.
+\begin{enumerate}
+\item Identify the current cut edges incident to the crossing, cut edges
+that survive untouched, newly opened edges, and self-loops.
+\item Compile the local arrow table from
+\eqref{eq:crossing-tensor}--\eqref{eq:edge-tensor}, summing self-loop
+orientations immediately. At most eight smoothing--orientation
+contributions occur before equal monomials are aggregated.
+\item For each stored boundary key, read its incident arrow bits and
+apply the compatible local transitions. Copy the untouched bits and
+append the new bits to form the next key.
+\item Multiply by the compiled local monomials, merge equal keys using
+Theorem~\ref{thm:one-phase}, and remove zero entries.
+\end{enumerate}
+The local tensors have bounded arity. An arbitrary number of holes in the
+processed region changes neither the arity nor the binary dimension of a
+cut edge. The implementation's cap counts actual tensor updates, not the
+number of smoothing states of the full diagram.
+
+\begin{remark}[Why this does not improve Khovanov automatically]
+The evaluation in \eqref{eq:network} is an identity for a Laurent
+polynomial. Its signed sums can cancel information that would survive in
+homology. Applying the same data reduction to a differential without
+proving a homotopy or homology comparison would be invalid. A useful next
+problem is to identify precisely which additional data, if any, can be
+retained at controlled cost; Section~\ref{sec:research} discusses this.
+\end{remark}

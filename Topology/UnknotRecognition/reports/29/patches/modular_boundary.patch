@@ -1,0 +1,3186 @@
+diff --git a/Topology/UnknotRecognition/fast/MODULAR_BOUNDARY.md b/Topology/UnknotRecognition/fast/MODULAR_BOUNDARY.md
+new file mode 100644
+index 0000000..7281c0a
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/MODULAR_BOUNDARY.md
+@@ -0,0 +1,75 @@
++# Modular boundary response backend
++
++This optional backend reuses the suffix's checked cut-face Tait graph and evaluates completed integer Euler vectors modulo validated odd primes. The Khovanov complex itself remains over **F₂**. It extends the existing marked four-residue observer and the earlier rational boundary response prototype.
++
++```bash
++python -B -m fastunknot recognize examples/conway.json \
++  --backend shadow-modular --shadow-primes 65521
++```
++
++The normal filters can decide an input before this backend is reached. The default backend remains `standard`. Raw scans on the seven recorded recognition examples were slower with the new observer, although repeated observations with large suffix interiors were substantially faster. See the article and `results/modular_benchmarks.json` for both results.
++
++## What is guaranteed
++
++- The matching must cover the actual frontier, preserve inherited checkerboard colors, and pass the spherical rotation-system check.
++- With `b > 0` frontier darts, there are exactly `b/2` black open face fragments. Each potentially nonzero residual determinant has dimension at most `b - 2`.
++- Every prime rebuilds its own singular-safe symmetric elimination. A singular interior is retained through radical directions; it is not confused with a zero quotient determinant.
++- Integer four-vectors are aggregated across a **whole differential component before taking a norm**. CRT combines prime information; norms from separate primes are never added.
++- The exact component Euler sum gives a minimum-norm integer lift. If the accumulated modulus exceeds every certified component coordinate bound, the threshold-one comparison agrees with the exact integer observer.
++- A positive modular lower bound is deterministic. A small or zero residue is inconclusive. Only the complete rank-two unreduced scan can return `UNKNOT` on this path.
++
++The default prime palette is `(65521,)`; the supported interface accepts distinct odd primes below `2**31`. A finite supplied palette may not certify threshold completeness. The recorded `modular_observation.threshold_exact` distinguishes a proved Boolean comparison from an incomplete negative observation. A positive obstruction makes the Boolean comparison certain even without reaching the modulus-size bound.
++
++## Public Python entry points
++
++```python
++from fastunknot import Diagram, recognize
++
++D = Diagram.from_braid(3, [1, 2] * 5)
++result = recognize(D, backend="shadow-modular", shadow_primes=(3, 5, 7, 11, 13))
++```
++
++For a validated raw diagram and a fixed scan order:
++
++```python
++from fastunknot.modular_shadow import modular_shadow_khovanov_decide
++from fastunknot.modular_verify import replay_modular_shadow
++
++claim = modular_shadow_khovanov_decide(
++    D.pd, order=list(range(10)), shadow_max_work=None,
++    primes=(3, 5, 7, 11, 13))
++assert claim["method"] == "marked-residue-four-modular"
++assert claim["stage"] == 9
++assert replay_modular_shadow(D.pd, claim)["verified"]
++```
++
++`replay_modular_shadow` accepts raw modular `KNOTTED` observations only. It reconstructs the prefix, checks component identity, recovered shifts, multiplicities, prime products, residues, exact sums, coordinate bounds, and the claimed minimum. It computes completion vectors with the old integer `ClosureShadow` and uses a separately coded minimum-norm formula. Invalid claims raise `ModularVerificationError`; resource exhaustion raises `ScanLimit`. The Boolean convenience wrapper `verify_modular_shadow` returns `False` for invalid claims and propagates resource exceptions.
++
++Replay shares the maintained scanner and may be as expensive as the original prefix. It is **not** a short independent NP certificate or a formally verified scanner. Statistics and timing metadata are outside its authenticated scope.
++
++## Resource behavior
++
++The modular observer shares the existing completed-state allowance with the exact Euler reserve. Exhausting determinant work disables the modular path and retains Euler observations. Exhausting the observation-state allowance continues the capped scan. A geometric inherited-color decline also triggers fallback. Global time and object exhaustion become `UNKNOWN` through the public recognizer. Partially computed responses are never installed in caches, and cache hits still check the global deadline.
++
++The active response is small, but the dense preparation, value caches, matching keys, and scanner objects also consume memory. No total `O(b²)` memory claim is made.
++
++## Reproduction
++
++From this `fast` directory:
++
++```bash
++python -B -m unittest discover -s tests -p 'test_modular_*.py' -v
++python -B modular_research/demo.py --output results/modular_demo_rerun.json
++python -B modular_research/audit.py --help
++python -B modular_research/benchmark.py --help
++```
++
++The new tests comprise 31 cases. The actual-diagram audit checks 138 diagrams against independent reduced F₂ cubes, 868 proper prefixes, 15,096 modular vectors, and 50 replayed positive claims. Preserve the sibling archived reference packages used by the research drivers; production imports do not depend on them.
++
++The benchmark uses five shuffled paired rounds, excluded warmups, identical integer controls, and fresh preparation inside each timing. Its 24,200 vector and 2,013 status comparisons count repeated validation events, not distinct inputs. All timed modular interiors are nonsingular; separate tests exercise singular cases.
++
++The full maintained suite has a separately documented inherited optional-worker communication error on the recorded CPython 3.12.14 runtime. The new 31-test modular suite passes. Do not represent the broader suite as entirely green.
++
++## Mathematical limit
++
++This work bounds observation cost and the modulus needed to recover the existing Euler threshold. It does not bound the number of differential generators or the first decisive scan stage. General quasi-polynomial complexity for the maintained recognizer remains unproved. The next priorities are response scheduling, incremental geometry, singular-safe block decomposition, and continuation-compatible compressed complex representations.
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/__main__.py b/Topology/UnknotRecognition/fast/fastunknot/__main__.py
+index ca54a7b..db87c56 100644
+--- a/Topology/UnknotRecognition/fast/fastunknot/__main__.py
++++ b/Topology/UnknotRecognition/fast/fastunknot/__main__.py
+@@ -74,10 +74,11 @@ OPTIONS = {
+          "exact decision backend for a source braid on at most three strands"),
+         ("--no-braid-reduction", None, False, None, "disable singleton endpoint destabilization"),
+         ("--no-seifert", None, False, None, "disable the linear signed Seifert graph certificate"),
+-        ("--backend", str, "standard", ("standard", "shared", "saturated", "euler", "shadow", "closure", "twist", "barcode", "fitting"),
++        ("--backend", str, "standard", ("standard", "shared", "saturated", "euler", "shadow", "shadow-modular", "closure", "twist", "barcode", "fitting"),
+          "Khovanov backend, including optional sharing, twists, intervals, or scalar splitting"),
+         ("--euler-max-states", int, 4096, None, "state budget for optional Euler continuation"),
+         ("--shadow-max-work", int, 1_000_000, None, "work allowance for optional marked determinant continuations"),
++        ("--shadow-primes", str, "65521", None, "comma-separated odd primes for modular marked continuations"),
+         ("--closure-max-work", int, 1_000_000, None, "work allowance for optional classical closure bounds and resets"),
+         ("--max-objects", int, None, None, "ceiling on objects of the scanning complex (UNKNOWN when exceeded)"),
+         ("--seconds", float, None, None, "cooperative time budget"),
+@@ -290,6 +291,12 @@ def main(argv: list[str] | None = None) -> int:
+         if args.shadow_max_work < 0:
+             print("--shadow-max-work must be nonnegative", file=sys.stderr)
+             return 2
++        try:
++            from .modular_lattice import validate_primes
++            shadow_primes = validate_primes(tuple(int(p) for p in args.shadow_primes.split(",")))
++        except ValueError as error:
++            print("invalid --shadow-primes: " + str(error), file=sys.stderr)
++            return 2
+         if args.closure_max_work < 0:
+             print("--closure-max-work must be nonnegative", file=sys.stderr)
+             return 2
+@@ -322,6 +329,7 @@ def main(argv: list[str] | None = None) -> int:
+                            use_braid_reduction=not args.no_braid_reduction,
+                            euler_max_states=args.euler_max_states,
+                            shadow_max_work=args.shadow_max_work,
++                           shadow_primes=shadow_primes,
+                            closure_max_work=args.closure_max_work,
+                            use_descending=not args.no_descending,
+                            use_alexander=not args.no_alexander, use_modular=not args.no_modular,
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/boundary_tait.py b/Topology/UnknotRecognition/fast/fastunknot/boundary_tait.py
+new file mode 100644
+index 0000000..0151f2f
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/fastunknot/boundary_tait.py
+@@ -0,0 +1,415 @@
++"""Checked cut-face Tait graphs for boundary-only completion queries.
++
++Vertices are black *cut-face fragments*, not whole faces of the original PD.
++A completion identifies only fragments touching the frontier. Its coverage,
++inherited coloring, sphere Euler equation, projection components, link
++components and zero-smoothing circles are checked using boundary summaries.
++The resulting canonical partition can be passed to ModularTerminalKernel.
++
++A failed inherited-color check is an explicit decline; some other classical
++pairings can require recoloring a cut component. A failed sphere check is an
++invalid completion. Neither case produces an invariant or a knot verdict.
++This module has no report-directory or research-prototype imports.
++"""
++from .boundary_connectivity import BoundaryConnectivity
++from .diagram import DisjointSet
++
++
++def _noop():
++    pass
++
++
++def _rot(dart):
++    return (dart & -4) | ((dart + 1) & 3)
++
++
++class BoundaryDeclined(ValueError):
++    """A completion does not preserve the inherited checkerboard colors."""
++
++
++class _Palette:
++    """Read-only checked coloring token; it also supports sequence access."""
++    __slots__ = ("pd", "colors")
++
++    def __init__(self, pd, colors):
++        object.__setattr__(self, "pd", pd)
++        object.__setattr__(self, "colors", tuple(colors))
++
++    def __setattr__(self, name, value):
++        raise AttributeError("checkerboard palette is immutable")
++
++    def __delattr__(self, name):
++        raise AttributeError("checkerboard palette is immutable")
++
++    def __len__(self):
++        return len(self.colors)
++
++    def __getitem__(self, index):
++        return self.colors[index]
++
++    def __iter__(self):
++        return iter(self.colors)
++
++
++def _source(pd, check):
++    """Validate a closed spherical PD, allowing multiple link components."""
++    check()
++    rows, pending, paired = [], {}, set()
++    alpha = []
++    for i, row in enumerate(pd):
++        check()
++        values = []
++        for value in row:
++            check()
++            if type(value) is not int:
++                raise ValueError("PD labels must be integers")
++            values.append(value)
++        if len(values) != 4:
++            raise ValueError("each PD crossing must have four labels")
++        rows.append(tuple(values))
++        alpha.extend((-1, -1, -1, -1))
++        for j, label in enumerate(values):
++            check()
++            dart = 4 * i + j
++            if label in paired:
++                raise ValueError("every original PD label must occur exactly twice")
++            if label in pending:
++                other = pending.pop(label)
++                alpha[dart], alpha[other] = other, dart
++                paired.add(label)
++            else:
++                pending[label] = dart
++    if pending:
++        raise ValueError("every original PD label must occur exactly twice")
++    # Preserve immutable Diagram.pd identity so a palette can be reused cheaply.
++    immutable = type(pd) is tuple
++    if immutable:
++        for row in pd:
++            check()
++            if type(row) is not tuple:
++                immutable = False
++                break
++    rows = pd if immutable else tuple(rows)
++    face, face_count = [-1] * len(alpha), 0
++    for start in range(len(alpha)):
++        check()
++        if face[start] >= 0:
++            continue
++        dart = start
++        while face[dart] < 0:
++            check()
++            face[dart] = face_count
++            dart = _rot(alpha[dart])
++        if dart != start:
++            raise ValueError("original face walk does not close")
++        face_count += 1
++    projection = DisjointSet(len(rows))
++    for dart, other in enumerate(alpha):
++        check()
++        projection.union(dart // 4, other // 4)
++    components = set()
++    for i in range(len(rows)):
++        check()
++        components.add(projection.find(i))
++    if face_count != len(rows) + 2 * len(components):
++        raise ValueError("original PD rotation system is not spherical")
++    return rows, alpha, face, face_count
++
++
++def coloring(pd, check=None):
++    """Return an immutable reusable palette for a checked spherical source PD."""
++    check = _noop if check is None else check
++    rows, alpha, face, face_count = _source(pd, check)
++    adjacent = []
++    for _ in range(face_count):
++        check()
++        adjacent.append(set())
++    for dart, other in enumerate(alpha):
++        check()
++        adjacent[face[dart]].add(face[other])
++    color = [-1] * face_count
++    for start in range(face_count):
++        check()
++        if color[start] >= 0:
++            continue
++        color[start] = 0
++        queue = [start]
++        for f in queue:
++            check()
++            for g in adjacent[f]:
++                check()
++                if color[g] < 0:
++                    color[g] = 1 - color[f]
++                    queue.append(g)
++                elif color[g] == color[f]:
++                    raise ValueError("original faces are not checkerboard colorable")
++    colors = []
++    for f in face:
++        check()
++        colors.append(color[f])
++    check()
++    return _Palette(rows, colors)
++
++
++def _checked_palette(pd, palette, check):
++    if palette is None:
++        return coloring(pd, check)
++    if isinstance(palette, _Palette) and palette.pd is pd:
++        check()
++        return palette
++    rows, alpha, face, face_count = _source(pd, check)
++    colors = []
++    for color in palette:
++        check()
++        if type(color) is not int or color not in (0, 1):
++            raise ValueError("palette entries must be 0 or 1")
++        colors.append(color)
++    if len(colors) != len(alpha):
++        raise ValueError("palette must color every original dart")
++    face_colors = [-1] * face_count
++    for dart, other in enumerate(alpha):
++        check()
++        f = face[dart]
++        if face_colors[f] >= 0 and face_colors[f] != colors[dart]:
++            raise ValueError("palette changes color inside an original face")
++        face_colors[f] = colors[dart]
++        if colors[dart] == colors[other]:
++            raise ValueError("palette does not checkerboard adjacent faces")
++    check()
++    return _Palette(rows, colors)
++
++
++class BoundaryTait:
++    """A checked fixed suffix and the Tait graph common to accepted closures.
++
++    ``order`` is a permutation of all source crossings; ``stage`` is a proper
++    prefix length. Reuse ``palette`` from ``coloring`` or a previous instance to
++    avoid recoloring an immutable source. Setup uses a dense integer Laplacian;
++    geometry itself is linear apart from sorting and disjoint-set operations.
++    ``partition`` uses only the frontier, not the stored suffix crossings.
++    """
++
++    def __init__(self, pd, order, stage, palette=None, check=None):
++        check = _noop if check is None else check
++        check()
++        palette = _checked_palette(pd, palette, check)
++        pd = palette.pd
++        crossing_order, used = [], set()
++        for index in order:
++            check()
++            if (type(index) is not int or not 0 <= index < len(pd)
++                    or index in used):
++                raise ValueError("order must be a permutation of source crossings")
++            crossing_order.append(index)
++            used.add(index)
++        if len(crossing_order) != len(pd):
++            raise ValueError("order must cover every source crossing")
++        if type(stage) is not int or not 0 <= stage < len(crossing_order):
++            raise ValueError("boundary Tait geometry requires a nonempty suffix")
++        n = len(crossing_order) - stage
++        colors, alpha, boundary = [], [-1] * (4 * n), {}
++        for k in range(n):
++            check()
++            index = crossing_order[stage + k]
++            for j, label in enumerate(pd[index]):
++                check()
++                colors.append(palette[4 * index + j])
++                dart = 4 * k + j
++                if label in boundary:
++                    other = boundary.pop(label)
++                    alpha[dart], alpha[other] = other, dart
++                else:
++                    boundary[label] = dart
++        connectivity = BoundaryConnectivity(alpha, boundary, check)
++        faces, projection = DisjointSet(4 * n), DisjointSet(n)
++        for dart, other in enumerate(alpha):
++            check()
++            if other >= 0:
++                faces.union(dart, _rot(other))
++                projection.union(dart // 4, other // 4)
++        face_roots, face_colors = set(), {}
++        for dart, color in enumerate(colors):
++            check()
++            root = faces.find(dart)
++            face_roots.add(root)
++            if root in face_colors and face_colors[root] != color:
++                raise ValueError("cut face changes original color")
++            face_colors[root] = color
++        black_count = 0
++        for color in face_colors.values():
++            check()
++            black_count += color
++        if black_count > len(face_colors) // 2:
++            for i in range(len(colors)):
++                check()
++                colors[i] = 1 - colors[i]
++            for root in face_colors:
++                check()
++                face_colors[root] = 1 - face_colors[root]
++        ends, starts, open_roots = {}, {}, set()
++        for label, dart in boundary.items():
++            check()
++            end, start = faces.find(dart), faces.find(_rot(dart))
++            ends[label], starts[label] = end, start
++            open_roots.update((end, start))
++        check()
++        open_faces = sorted(open_roots)
++        check()
++        face_ids, open_colors = {}, []
++        for i, root in enumerate(open_faces):
++            check()
++            face_ids[root] = i
++            open_colors.append(face_colors[root])
++        for label in boundary:
++            check()
++            ends[label], starts[label] = face_ids[ends[label]], face_ids[starts[label]]
++        black = []
++        for root in face_roots:
++            check()
++            if face_colors[root]:
++                black.append(root)
++        check()
++        black.sort()
++        check()
++        black_ids = {}
++        for i, root in enumerate(black):
++            check()
++            black_ids[root] = i
++        terminals, black_open = [], []
++        for root in open_faces:
++            check()
++            if face_colors[root]:
++                terminals.append(black_ids[root])
++                black_open.append(face_ids[root])
++        closed_black = len(black) - len(terminals)
++        if not terminals:
++            terminals = [0]  # Empty frontier: retain a grounding vertex.
++        edges, b_total = [], 0
++        for base in range(0, 4 * n, 4):
++            check()
++            slots = []
++            for j in range(4):
++                check()
++                if colors[base + j]:
++                    slots.append(j)
++            if slots not in ([0, 2], [1, 3]):
++                raise ValueError("invalid checkerboard sectors at a crossing")
++            u = black_ids[faces.find(base + slots[0])]
++            v = black_ids[faces.find(base + slots[1])]
++            b = int(slots == [0, 2])
++            b_total += b
++            edges.append((u, v, -1 if b else 1))
++        laplacian = []
++        for _ in black:
++            check()
++            row = []
++            for _ in black:
++                check()
++                row.append(0)
++            laplacian.append(row)
++        for u, v, weight in edges:
++            check()
++            if u != v:
++                laplacian[u][u] += weight
++                laplacian[v][v] += weight
++                laplacian[u][v] -= weight
++                laplacian[v][u] -= weight
++        projection_roots, open_projection = set(), set()
++        for i in range(n):
++            check()
++            projection_roots.add(projection.find(i))
++        for dart in boundary.values():
++            check()
++            open_projection.add(projection.find(dart // 4))
++        check()
++        ordered_projection = sorted(open_projection)
++        check()
++        projection_ids = {}
++        for i, root in enumerate(ordered_projection):
++            check()
++            projection_ids[root] = i
++        projection_labels = {}
++        for label, dart in boundary.items():
++            check()
++            projection_labels[label] = projection_ids[projection.find(dart // 4)]
++        frozen_laplacian = []
++        for row in laplacian:
++            check()
++            frozen_laplacian.append(tuple(row))
++        check()
++        self.n = n
++        self.palette = palette
++        self.labels = connectivity.labels
++        self.boundary = boundary
++        self.connectivity = connectivity
++        self.ends, self.starts = ends, starts
++        self.open_colors = tuple(open_colors)
++        self.closed_faces = len(face_roots) - len(open_faces)
++        self.black_open = tuple(black_open)
++        self.closed_black = closed_black
++        self.terminals = tuple(terminals)
++        self.edges = tuple(edges)
++        self.laplacian = tuple(frozen_laplacian)
++        self.B = b_total
++        self.projection = projection_labels
++        self.closed_projection = len(projection_roots) - len(ordered_projection)
++        self.projection_size = len(ordered_projection)
++
++    def partition(self, pairs, check=None):
++        """Verify a closure and return a canonical terminal partition and phase.
++
++        The phase exponent specifies ``(-i)**phase`` multiplying the signed
++        tree cofactor. Disconnected projections have zero reduced q=i value.
++        ``unreduced_euler`` is the exact signed q=1 Euler characteristic.
++        """
++        check = _noop if check is None else check
++        check()
++        matching = []
++        for pair in pairs:
++            check()
++            values = []
++            for label in pair:
++                check()
++                if type(label) is not int:
++                    raise ValueError("matching labels must be integers")
++                values.append(label)
++            if len(values) != 2:
++                raise ValueError("matching entries must be pairs")
++            matching.append(tuple(values))
++        components, zero = self.connectivity.counts(matching, check)
++        faces = DisjointSet(len(self.open_colors))
++        projection = DisjointSet(self.projection_size)
++        for a, b in matching:
++            check()
++            for end, start in ((self.ends[a], self.starts[b]),
++                               (self.ends[b], self.starts[a])):
++                check()
++                if self.open_colors[end] != self.open_colors[start]:
++                    raise BoundaryDeclined("matching changes inherited face colors")
++                faces.union(end, start)
++            projection.union(self.projection[a], self.projection[b])
++        projection_roots = set()
++        for i in range(self.projection_size):
++            check()
++            projection_roots.add(projection.find(i))
++        shadows = self.closed_projection + len(projection_roots)
++        face_roots = set()
++        for i in range(len(self.open_colors)):
++            check()
++            face_roots.add(faces.find(i))
++        face_count = self.closed_faces + len(face_roots)
++        if face_count != self.n + 2 * shadows:
++            raise ValueError("matching completion is not spherical")
++        names, partition = {}, []
++        for i in self.black_open:
++            check()
++            root = faces.find(i)
++            partition.append(names.setdefault(root, len(names)))
++        vertices = self.closed_black + len(names)
++        check()
++        return dict(partition=tuple(partition) or (0,),
++                    phase=(self.B + vertices - 1) % 4,
++                    black_vertices=vertices, shadow_components=shadows,
++                    link_components=components, zero_circles=zero,
++                    unreduced_euler=(-1 if (self.n + components + zero) % 2 else 1)
++                                    * (1 << components))
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/modular_lattice.py b/Topology/UnknotRecognition/fast/fastunknot/modular_lattice.py
+new file mode 100644
+index 0000000..08525e5
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/fastunknot/modular_lattice.py
+@@ -0,0 +1,88 @@
++"""Certified integer L1 lower bounds from residues and an exact coordinate sum.
++
++Auxiliary moduli concern integer Euler characteristics, not the coefficient
++field of the Khovanov complex. Every function uses exact integer arithmetic.
++"""
++from math import gcd, isqrt
++
++
++def validate_primes(primes, check=None):
++    """Return distinct odd primes in the prototype's signed 31-bit range."""
++    result = tuple(primes)
++    if not result or len(set(result)) != len(result):
++        raise ValueError("supply a nonempty sequence of distinct odd primes")
++    for p in result:
++        if check is not None:
++            check()
++        if type(p) is not int or p < 3 or p >= (1 << 31) or p % 2 == 0:
++            raise ValueError("auxiliary primes must be odd integers below 2^31")
++        for divisor in range(3, isqrt(p) + 1, 2):
++            if check is not None:
++                check()
++            if p % divisor == 0:
++                raise ValueError("an auxiliary modulus is composite")
++    return result
++
++
++def balanced(residue, modulus):
++    if type(modulus) is not int or modulus < 3 or modulus % 2 == 0:
++        raise ValueError("balanced representatives require an odd modulus >= 3")
++    value = residue % modulus
++    return value - modulus if 2 * value > modulus else value
++
++
++def crt_vector(old, modulus, new, prime):
++    """Merge two residue vectors with coprime moduli; return canonical residues."""
++    if len(old) != len(new) or gcd(modulus, prime) != 1:
++        raise ValueError("CRT vectors need equal lengths and coprime moduli")
++    inverse = pow(modulus, -1, prime)
++    return tuple(x + modulus * (((y - x) * inverse) % prime)
++                 for x, y in zip(old, new))
++
++
++def minimum_l1_lift(residues, modulus, exact_sum=None):
++    """Minimum L1 of integer lifts, optionally subject to their exact sum.
++
++    Returns both the minimum and an attaining lift. The latter is a witness
++    for the small lattice minimization, not for a completed knot complex.
++    """
++    lift = [balanced(x, modulus) for x in residues]
++    if exact_sum is None:
++        return sum(map(abs, lift)), tuple(lift)
++    difference = exact_sum - sum(lift)
++    if difference % modulus:
++        raise ValueError("exact sum is incompatible with the residues")
++    steps = difference // modulus
++    if not steps:
++        return sum(map(abs, lift)), tuple(lift)
++    if not lift:
++        raise ValueError("an empty vector cannot have nonzero sum")
++    direction = 1 if steps > 0 else -1
++    remaining = abs(steps)
++    discounts = sorted((i for i, b in enumerate(lift) if b * direction < 0),
++                       key=lambda i: -abs(lift[i]))
++    for i in discounts[:remaining]:
++        lift[i] += direction * modulus
++        remaining -= 1
++    if remaining:
++        # Every unused marginal cost is now exactly modulus. If there was
++        # a discount, its coordinate already has the required sign.
++        index = discounts[0] if discounts else 0
++        lift[index] += direction * modulus * remaining
++    return sum(map(abs, lift)), tuple(lift)
++
++
++def threshold_is_exact(modulus, coordinate_bounds, multiplicities, threshold=1,
++                       *, exact_sums=True):
++    """A sufficient deterministic completion criterion, not stabilization."""
++    if type(threshold) is not int or threshold < 0:
++        raise ValueError("threshold must be a nonnegative integer")
++    if len(coordinate_bounds) != len(multiplicities):
++        raise ValueError("bound and multiplicity lengths differ")
++    divisor = 2 if exact_sums else 1
++    for bound, weight in zip(coordinate_bounds, multiplicities):
++        if type(bound) is not int or bound < 0 or type(weight) is not int or weight < 1:
++            raise ValueError("coordinate bounds must be nonnegative and weights positive")
++        if modulus <= bound + threshold // (divisor * weight):
++            return False
++    return True
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/modular_response.py b/Topology/UnknotRecognition/fast/fastunknot/modular_response.py
+new file mode 100644
+index 0000000..b09ce83
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/fastunknot/modular_response.py
+@@ -0,0 +1,310 @@
++"""Exact terminal-identification response over a checked odd prime field.
++
++For an integer signed Laplacian, eliminate only nonterminal coordinates.  A
++symmetric 1-by-1 / 2-by-2 pivot scheme retains the entire radical of that block.
++Consequently an exceptional prime changes the pivot profile, never the answer.
++Each grounded terminal quotient is a determinant of size ``nullity + q``, where
++q is its number of ungrounded terminal blocks.  It is identically zero when
++``nullity > q``; every nontrivial query therefore has size at most ``2*(b-1)``.
++
++Setup is dense: O(n**3) field operations and O(n**2) space in the worst case.
++The class does not imply a bound on scanner width, number of stages or queries.
++Every public operation accepts a no-argument cancellation/work callback.  A
++callback exception propagates; neither a partial kernel nor a partial query is
++published or cached.  The caller owns publication and any query cache.
++"""
++
++
++def _noop():
++    pass
++
++
++def validate_prime(prime, check=None):
++    """Validate an odd prime at most 2**31-1, deterministically.
++
++    Strong Miller--Rabin bases 2, 7 and 61 are deterministic below
++    4,759,123,141, which contains the entire supported range.  Keeping the range
++    explicit prevents a probable-prime test from silently becoming a field
++    assumption for larger inputs.  No unchecked composite reaches inversion.
++    """
++    check = _noop if check is None else check
++    check()
++    if type(prime) is not int or not 3 <= prime <= (1 << 31) - 1 or prime % 2 == 0:
++        raise ValueError("prime must be an odd prime at most 2**31-1")
++    for divisor in (3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37):
++        check()
++        if prime == divisor:
++            return prime
++        if prime % divisor == 0:
++            raise ValueError("modulus is composite")
++    exponent, twos = prime - 1, 0
++    while exponent % 2 == 0:
++        check()
++        exponent //= 2
++        twos += 1
++    for base in (2, 7, 61):
++        check()
++        if base % prime == 0:
++            continue
++        value = pow(base, exponent, prime)
++        check()
++        if value in (1, prime - 1):
++            continue
++        for _ in range(twos - 1):
++            check()
++            value = value * value % prime
++            if value == prime - 1:
++                break
++        else:
++            raise ValueError("modulus is composite")
++    return prime
++
++
++def _canonical_partition(partition, size, check):
++    names, result = {}, []
++    for label in partition:
++        check()
++        if type(label) is not int or label < 0:
++            raise ValueError("partition labels must be nonnegative integers")
++        if len(result) >= size:
++            raise ValueError("partition must label every terminal exactly once")
++        result.append(names.setdefault(label, len(names)))
++    if len(result) != size:
++        raise ValueError("partition must label every terminal exactly once")
++    return tuple(result), len(names)
++
++
++def _determinant(matrix, prime, check):
++    """Independent row pivoting for the small query matrix; consumes matrix."""
++    determinant = 1
++    for column in range(len(matrix)):
++        check()
++        pivot = None
++        for row in range(column, len(matrix)):
++            check()
++            if matrix[row][column]:
++                pivot = row
++                break
++        if pivot is None:
++            return 0
++        if pivot != column:
++            matrix[column], matrix[pivot] = matrix[pivot], matrix[column]
++            determinant = -determinant
++        value = matrix[column][column]
++        determinant = determinant * value % prime
++        inverse = pow(value, -1, prime)
++        for row in range(column + 1, len(matrix)):
++            check()
++            factor = matrix[row][column] * inverse % prime
++            matrix[row][column] = 0
++            for j in range(column + 1, len(matrix)):
++                check()
++                matrix[row][j] = (matrix[row][j] - factor * matrix[column][j]) % prime
++    return determinant % prime
++
++
++def _symmetric_swap(matrix, first, second, check):
++    if first == second:
++        return
++    check()
++    matrix[first], matrix[second] = matrix[second], matrix[first]
++    for row in matrix:
++        check()
++        row[first], row[second] = row[second], row[first]
++
++
++class ModularTerminalKernel:
++    """A reusable exact response for identifications of specified terminals.
++
++    ``laplacian`` must be a nonempty, square, symmetric integer matrix with
++    zero row sums. ``terminals`` is a nonempty list of distinct vertex indices.
++    Query labels describe an arbitrary partition in terminal-list order; labels
++    need not be consecutive. The first terminal block is the grounded block.
++    Input matrices are never mutated. Stored response/coupling arrays are tuples.
++    """
++
++    @classmethod
++    def build(cls, laplacian, terminals, prime, check=None):
++        check = _noop if check is None else check
++        check()
++        prime = validate_prime(prime, check)
++        rows = []
++        for row in laplacian:
++            check()
++            values, total = [], 0
++            for value in row:
++                check()
++                if type(value) is not int:
++                    raise ValueError("laplacian entries must be integers")
++                values.append(value)
++                total += value
++            if total:
++                raise ValueError("laplacian rows must sum to zero over the integers")
++            rows.append(tuple(values))
++        size = len(rows)
++        if not size:
++            raise ValueError("laplacian must be nonempty")
++        for row in rows:
++            check()
++            if len(row) != size:
++                raise ValueError("laplacian must be square")
++        for i in range(size):
++            check()
++            for j in range(i):
++                check()
++                if rows[i][j] != rows[j][i]:
++                    raise ValueError("laplacian must be symmetric")
++        terminal_list, terminal_set = [], set()
++        for vertex in terminals:
++            check()
++            if (type(vertex) is not int or not 0 <= vertex < size
++                    or vertex in terminal_set):
++                raise ValueError("terminals must be distinct vertex indices")
++            terminal_list.append(vertex)
++            terminal_set.add(vertex)
++        if not terminal_list:
++            raise ValueError("at least one terminal is required")
++        interior = []
++        for vertex in range(size):
++            check()
++            if vertex not in terminal_set:
++                interior.append(vertex)
++        indices = interior + terminal_list
++        matrix = []
++        for i in indices:
++            check()
++            row = []
++            for j in indices:
++                check()
++                row.append(rows[i][j] % prime)
++            matrix.append(row)
++        m, b = len(interior), len(terminal_list)
++        eliminated = one_pivots = two_pivots = 0
++        factor = 1
++        while eliminated < m:
++            check()
++            k = eliminated
++            diagonal = None
++            for i in range(k, m):
++                check()
++                if matrix[i][i]:
++                    diagonal = i
++                    break
++            if diagonal is not None:
++                _symmetric_swap(matrix, k, diagonal, check)
++                pivot = matrix[k][k]
++                inverse = pow(pivot, -1, prime)
++                factor = factor * pivot % prime
++                for i in range(k + 1, size):
++                    check()
++                    coefficient = matrix[i][k] * inverse % prime
++                    for j in range(i, size):
++                        check()
++                        value = (matrix[i][j] - coefficient * matrix[k][j]) % prime
++                        matrix[i][j] = matrix[j][i] = value
++                eliminated += 1
++                one_pivots += 1
++                continue
++            pair = None
++            for i in range(k, m):
++                check()
++                for j in range(i + 1, m):
++                    check()
++                    if matrix[i][j]:
++                        pair = (i, j)
++                        break
++                if pair is not None:
++                    break
++            if pair is None:
++                break  # Entire residual interior block is zero.
++            first, second = pair
++            _symmetric_swap(matrix, k, first, check)
++            # second > first >= k, so the first swap did not move second.
++            _symmetric_swap(matrix, k + 1, second, check)
++            pivot = matrix[k][k + 1]
++            inverse = pow(pivot, -1, prime)
++            factor = -factor * pivot * pivot % prime
++            for i in range(k + 2, size):
++                check()
++                left = matrix[i][k] * inverse % prime
++                right = matrix[i][k + 1] * inverse % prime
++                for j in range(i, size):
++                    check()
++                    value = (matrix[i][j] - left * matrix[k + 1][j]
++                             - right * matrix[k][j]) % prime
++                    matrix[i][j] = matrix[j][i] = value
++            eliminated += 2
++            two_pivots += 1
++        nullity = m - eliminated
++        # If no partition can absorb the radical, retain no unnecessary block.
++        universal_zero = nullity > b - 1
++        coupling, response = [], []
++        if not universal_zero:
++            for i in range(eliminated, m):
++                check()
++                row = []
++                for j in range(m, size):
++                    check()
++                    row.append(matrix[i][j])
++                coupling.append(tuple(row))
++            for i in range(m, size):
++                check()
++                row = []
++                for j in range(m, size):
++                    check()
++                    row.append(matrix[i][j])
++                response.append(tuple(row))
++        check()
++        result = cls()
++        result.prime = prime
++        result.terminals = tuple(terminal_list)
++        result.factor = factor
++        result.nullity = nullity
++        result.coupling = tuple(coupling)
++        result.response = tuple(response)
++        result.universal_zero = universal_zero
++        result.stats = dict(matrix_size=size, interior_size=m, terminals=b,
++                            eliminated=eliminated, nullity=nullity,
++                            one_pivots=one_pivots, two_pivots=two_pivots,
++                            universal_zero=universal_zero)
++        return result
++
++    def query(self, partition, check=None):
++        """Return the quotient graph's tree cofactor modulo the validated prime."""
++        check = _noop if check is None else check
++        check()
++        labels, blocks = _canonical_partition(partition, len(self.terminals), check)
++        q, r, prime = blocks - 1, self.nullity, self.prime
++        if r > q:
++            check()
++            return 0
++        size = r + q
++        matrix = []
++        for _ in range(size):
++            check()
++            row = []
++            for _ in range(size):
++                check()
++                row.append(0)
++            matrix.append(row)
++        for i in range(r):
++            check()
++            for terminal, block in enumerate(labels):
++                check()
++                if block:
++                    j = r + block - 1
++                    matrix[i][j] = (matrix[i][j] + self.coupling[i][terminal]) % prime
++                    matrix[j][i] = matrix[i][j]
++        for left, left_block in enumerate(labels):
++            check()
++            if not left_block:
++                continue
++            i = r + left_block - 1
++            for right, right_block in enumerate(labels):
++                check()
++                if right_block:
++                    j = r + right_block - 1
++                    matrix[i][j] = (matrix[i][j] + self.response[left][right]) % prime
++        value = self.factor * _determinant(matrix, prime, check) % prime
++        check()
++        return value
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/modular_shadow.py b/Topology/UnknotRecognition/fast/fastunknot/modular_shadow.py
+new file mode 100644
+index 0000000..fa76846
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/fastunknot/modular_shadow.py
+@@ -0,0 +1,314 @@
++"""Boundary-reused modular Euler obstructions with complete capped fallback.
++
++The scanner still computes Khovanov homology over F2. Auxiliary odd primes
++reduce integer completed Euler vectors only. Zero modular determinants and
++small lower bounds are never unknot certificates.
++"""
++from time import monotonic
++
++from .component_scan import ComponentScan, components
++from .euler_scan import ClosureEuler, EulerBudget, component_euler_bound
++from .modular_lattice import (crt_vector, minimum_l1_lift, threshold_is_exact,
++                              validate_primes)
++from .ordering import best_scan_order, repeated_stages, validate_order
++from .recovered_grading import recover_shifts
++from .shadow_scan import ClosureShadow, ShadowWorkBudget, _EulerPart
++
++
++DEFAULT_PRIMES = (65521,)
++
++
++class ModularClosureShadow(ClosureShadow):
++    """One active suffix geometry, one response per prime, shared query budget."""
++
++    def __init__(self, pd, order, *, primes=DEFAULT_PRIMES, **kwargs):
++        super().__init__(pd, order, **kwargs)
++        self.pd = tuple(tuple(c) for c in pd)
++        self.order = tuple(order)
++        self.primes = validate_primes(primes, self._check)
++        self.palette = None
++        self.boundary_geometry = None
++        self.geometry_stage = None
++        self.partitions = {}
++        self.kernels = {}
++        self.cofactors = {}
++        self.stats.update(engine="modular-marked-residue-four",
++                          boundary_preparations=0, boundary_queries=0,
++                          modular_kernel_builds=0, modular_determinants=0,
++                          modular_partition_hits=0, modular_cache_hits=0,
++                          max_common_vertices=0, max_terminal_count=0,
++                          max_modular_nullity=0, max_query_matrix=0,
++                          primes_completed=0, exact_threshold_observations=0,
++                          incomplete_threshold_observations=0,
++                          boundary_declines=0)
++        self.last_observation = None
++
++    def _geometry(self, stage):
++        self._check()
++        if self.geometry_stage == stage:
++            return self.boundary_geometry
++        from .boundary_tait import BoundaryTait, coloring
++        if self.palette is None:
++            palette = coloring(self.pd, check=self._tick)
++            self.palette = palette
++        geometry = BoundaryTait(self.pd, self.order, stage,
++                                palette=self.palette, check=self._tick)
++        # A completed constructor is the publication boundary. No partial
++        # geometry or elimination state is retained after interruption.
++        self.boundary_geometry = geometry
++        self.geometry_stage = stage
++        self.partitions, self.kernels, self.cofactors = {}, {}, {}
++        self.stats["boundary_preparations"] += 1
++        self.stats["max_common_vertices"] = max(
++            self.stats["max_common_vertices"], len(geometry.laplacian))
++        self.stats["max_terminal_count"] = max(
++            self.stats["max_terminal_count"], len(geometry.terminals))
++        return geometry
++
++    def _partition(self, stage, pairs):
++        geometry = self._geometry(stage)
++        pairs = tuple(pairs)
++        if pairs not in self.partitions:
++            data = geometry.partition(pairs, check=self._tick)
++            self.partitions[pairs] = data
++            self.stats["boundary_queries"] += 1
++        return self.partitions[pairs]
++
++    def evaluate_one(self, stage, pairs):
++        if not 0 <= stage < len(self.crossings):
++            raise ValueError("marked continuation requires a proper prefix")
++        self._check()
++        key = (stage, tuple(pairs))
++        if key in self.cache or self.geometry_stage != stage:
++            return super().evaluate_one(stage, key[1])
++        if self.max_states is not None and self.stats["states"] >= self.max_states:
++            raise EulerBudget("closure Euler state budget exhausted")
++        data = self._partition(stage, key[1])
++        value = data["unreduced_euler"]
++        self.cache[key] = value
++        self.stats["states"] += 1
++        self.stats["evaluations"] += 1
++        self.stats["max_coefficient_bits"] = max(
++            self.stats["max_coefficient_bits"], abs(value).bit_length())
++        return value
++
++    def evaluate(self, stage, pairs, prime=None):
++        if prime is None:
++            prime = self.primes[0]
++        if prime not in self.primes:
++            raise ValueError("prime is outside this observer's validated palette")
++        if not 0 <= stage < len(self.crossings):
++            raise ValueError("cannot mark arbitrary final unmarked generators")
++        self._check()
++        pairs = tuple(pairs)
++        key = (stage, pairs, prime)
++        self.stats["shadow_evaluations"] += 1
++        if key in self.shadow_cache:
++            self.stats["modular_cache_hits"] += 1
++            return self.shadow_cache[key]
++        euler = self.evaluate_one(stage, pairs)
++        if euler % 2:
++            raise ArithmeticError("unreduced closed Euler value must be even")
++        data = self._partition(stage, pairs)
++        if data["unreduced_euler"] != euler:
++            raise ArithmeticError("boundary Euler value disagrees with cached exact value")
++        determinant = 0
++        if data["shadow_components"] == 1:
++            geometry = self.boundary_geometry
++            if prime not in self.kernels:
++                from .modular_response import ModularTerminalKernel
++                kernel = ModularTerminalKernel.build(
++                    geometry.laplacian, geometry.terminals, prime, check=self._tick)
++                self.kernels[prime] = kernel
++                self.stats["modular_kernel_builds"] += 1
++                self.stats["max_modular_nullity"] = max(
++                    self.stats["max_modular_nullity"], kernel.nullity)
++            kernel = self.kernels[prime]
++            names = {}
++            partition = tuple(names.setdefault(v, len(names)) for v in data["partition"])
++            cofactor_key = (prime, partition)
++            if cofactor_key not in self.cofactors:
++                value = kernel.query(partition, check=self._tick)
++                self.cofactors[cofactor_key] = value
++                self.stats["modular_determinants"] += 1
++                size = kernel.nullity + len(names) - 1
++                if kernel.nullity <= len(names) - 1:
++                    self.stats["max_query_matrix"] = max(self.stats["max_query_matrix"], size)
++            else:
++                self.stats["modular_partition_hits"] += 1
++            determinant = self.cofactors[cofactor_key]
++        parity = (data["zero_circles"] - 1) % 2
++        if data["shadow_components"] == 1 and data["phase"] % 2 != parity:
++            raise ArithmeticError("connected Tait phase disagrees with smoothing parity")
++        unit = ((1, 0), (0, -1), (-1, 0), (0, 1))[data["phase"]]
++        value_i = (unit[0] * determinant % prime, unit[1] * determinant % prime)
++        if value_i[1 - parity]:
++            raise ArithmeticError("modular determinant phase violates Jones parity")
++        difference = value_i[parity]
++        inverse_two = (prime + 1) // 2
++        reduced_euler = (euler // 2) % prime
++        result = [0] * 4
++        result[parity] = (reduced_euler + difference) * inverse_two % prime
++        result[parity + 2] = (reduced_euler - difference) * inverse_two % prime
++        self.shadow_cache[key] = tuple(result)
++        return tuple(result)
++
++
++def component_modular_shadow_bound(scan, engine, stage, *, cap=2):
++    """Observe whole genuine components, aggregate, CRT-refine, then norm.
++
++    The returned records support replay of this arithmetic. Provenance of the
++    relative complex still requires the validated source and scanner replay.
++    """
++    if not 0 <= stage < len(engine.crossings):
++        raise ValueError("modular observation requires a proper marked prefix")
++    if cap is not None and (type(cap) is not int or cap < 1):
++        raise ValueError("cap must be positive or None")
++    weight_cap = getattr(scan, "rank_cap", None)
++    if weight_cap is not None and (cap is None or cap > weight_cap or weight_cap < 2):
++        raise ValueError("requested lower-bound cap exceeds saturated multiplicities")
++    groups = []
++    suffix_size = len(engine.crossings) - stage
++    # A signed spanning-tree cofactor has at most binomial(s, v-1)
++    # terms, and every binomial coefficient is <= 2**(s-1) for s>=1.
++    tree_bound = 1 << (suffix_size - 1)
++    for group in components(scan):
++        engine._tick(len(group))
++        shifts = recover_shifts(scan, group, check=engine._tick)
++        exact_sum, coordinate_bound = 0, 0
++        for v in group:
++            engine._tick()
++            value = engine.evaluate_one(stage, scan.algebra.pairs[scan.mid[v]])
++            if value % 2:
++                raise ArithmeticError("completed object has odd unreduced Euler value")
++            value //= 2
++            exact_sum += -value if scan.deg[v] % 2 else value
++            coordinate_bound += (abs(value) + tree_bound) // 2
++        multiplicity = 1
++        if hasattr(scan, "weights"):
++            owner = scan.owner[group[0]]
++            if any(scan.owner[v] != owner for v in group):
++                raise ArithmeticError("differential mixes independent component owners")
++            multiplicity = sum(scan.weights[owner].values())
++        groups.append(dict(objects=group, shifts=shifts, exact_sum=exact_sum,
++                           coordinate_bound=coordinate_bound, multiplicity=multiplicity,
++                           residues=(0, 0, 0, 0)))
++    modulus, records = 1, []
++    bound = 0
++    for prime_index, prime in enumerate(engine.primes):
++        next_modulus = modulus * prime
++        records, bound = [], 0
++        for group in groups:
++            vector = [0] * 4
++            for v in group["objects"]:
++                engine._tick()
++                value = engine.evaluate(stage, scan.algebra.pairs[scan.mid[v]], prime)
++                sign = -1 if scan.deg[v] % 2 else 1
++                for j, coefficient in enumerate(value):
++                    vector[(j + group["shifts"][v]) % 4] += sign * coefficient
++            vector = tuple(x % prime for x in vector)
++            residues = crt_vector(group["residues"], modulus, vector, prime)
++            group["residues"] = residues
++            norm, lift = minimum_l1_lift(residues, next_modulus, group["exact_sum"])
++            bound += group["multiplicity"] * norm
++            records.append(dict(objects=group["objects"], residues=list(residues),
++                                minimum_lift=list(lift), modulus=next_modulus,
++                                exact_euler=group["exact_sum"],
++                                coordinate_bound=group["coordinate_bound"],
++                                relative_q=[group["shifts"][v] for v in group["objects"]],
++                                multiplicity=group["multiplicity"], norm=norm))
++            if cap is not None and bound >= cap:
++                engine.last_observation = dict(stage=stage, modulus=next_modulus,
++                    primes=list(engine.primes[:prime_index + 1]), threshold_exact=True,
++                    obstruction=True, observed_components=len(records), total_components=len(groups))
++                return cap, records
++        modulus = next_modulus
++        engine.stats["primes_completed"] += 1
++        exact = threshold_is_exact(modulus,
++            [g["coordinate_bound"] for g in groups], [g["multiplicity"] for g in groups],
++            threshold=(cap - 1 if cap is not None else 1), exact_sums=True)
++        engine.last_observation = dict(stage=stage, modulus=modulus,
++            primes=list(engine.primes[:prime_index + 1]), threshold_exact=exact,
++            obstruction=False, observed_components=len(records), total_components=len(groups))
++        # cap=None requests a lower bound, not full integer reconstruction.
++        if exact and cap is not None:
++            engine.stats["exact_threshold_observations"] += 1
++            break
++    else:
++        if engine.last_observation and engine.last_observation["threshold_exact"]:
++            engine.stats["exact_threshold_observations"] += 1
++        else:
++            engine.stats["incomplete_threshold_observations"] += 1
++    return bound, records
++
++
++def modular_shadow_khovanov_decide(pd, *, order=None, max_objects=None, seconds=None,
++                                  check_d_squared=False, shape_cache=None,
++                                  euler_max_states=4096, shadow_max_work=1_000_000,
++                                  primes=DEFAULT_PRIMES):
++    """Complete F2 recognition with optional modular integer obstructions.
++
++    Low-level input must be a validated classical one-component PD, as for
++    the existing shadow scanner. The public recognize() API validates it.
++    """
++    pd = [tuple(crossing) for crossing in pd]
++    if order is not None:
++        order = validate_order(len(pd), order)
++    deadline = None if seconds is None else monotonic() + seconds
++    if order is None:
++        order = best_scan_order(pd, tries=min(len(pd), 12)) if pd else []
++    engine = ModularClosureShadow(pd, order, primes=primes, max_states=euler_max_states,
++                                  max_work=shadow_max_work, deadline=deadline)
++    if shape_cache is None:
++        shape_cache = len(order) >= 16 and 8 * repeated_stages(pd, order) >= len(order)
++    scan = ComponentScan(max_objects=max_objects, deadline=deadline,
++                         shape_cache=shape_cache, rank_cap=3)
++    euler_part, euler_exhausted = _EulerPart(engine), False
++    for stage in range(len(order) + 1):
++        scan._check()
++        copies = sum(sum(w.values()) for w in scan.weights)
++        if not euler_exhausted and stage < len(order) and (stage == 0 or copies > 1):
++            try:
++                euler, chi = component_euler_bound(scan, euler_part, stage, cap=3)
++                records = []
++                bound = 2 if euler >= 3 else 0
++                if bound < 2 and not euler_part.shadow_exhausted:
++                    from .boundary_tait import BoundaryDeclined
++                    try:
++                        bound, records = component_modular_shadow_bound(scan, engine, stage)
++                    except ShadowWorkBudget:
++                        euler_part.disable_shadow()
++                    except BoundaryDeclined:
++                        # A coloring decline means this representation cannot
++                        # answer. It is never a topological obstruction.
++                        engine.stats["boundary_declines"] += 1
++                        euler_part.disable_shadow()
++            except EulerBudget:
++                euler_exhausted = True
++                euler_part.shadow_exhausted = True
++                engine.stats["observer_mode"] = "scan"
++            else:
++                if bound >= 2:
++                    return dict(status="KNOTTED", method=("component-euler" if euler >= 3
++                                else "marked-residue-four-modular"),
++                        reduced_rank_lower_bound_capped=2, stage=stage, crossings=len(order),
++                        marked_label=pd[order[-1]][0], components=records,
++                        stats=dict(scan.stats, **scan.algebra.stats),
++                        euler_characteristics=chi,
++                        multiplicities_capped=[sum(w.values()) for w in scan.weights],
++                        order=order, shadow_stats=dict(engine.stats),
++                        modular_observation=engine.last_observation,
++                        shadow_exhausted=euler_part.shadow_exhausted,
++                        euler_exhausted=euler_exhausted)
++        if stage < len(order):
++            scan.add_crossing(pd[order[stage]])
++            if check_d_squared:
++                scan.check_d_squared()
++    rank = scan.total_rank() if pd else 2
++    if rank not in (2, 3):
++        raise ArithmeticError("validated knot must have unreduced rank at least two")
++    return dict(status="UNKNOT" if rank == 2 else "KNOTTED", method="closed-rank",
++                rank_capped=rank, rank_cap=3, stage=len(order), crossings=len(order),
++                stats=dict(scan.stats, **scan.algebra.stats), order=order,
++                shadow_stats=dict(engine.stats), modular_observation=engine.last_observation,
++                shadow_exhausted=euler_part.shadow_exhausted, euler_exhausted=euler_exhausted)
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/modular_verify.py b/Topology/UnknotRecognition/fast/fastunknot/modular_verify.py
+new file mode 100644
+index 0000000..ad90190
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/fastunknot/modular_verify.py
+@@ -0,0 +1,319 @@
++"""Independent observer arithmetic after full replay of a modular knot claim.
++
++The replay reconstructs the complete ComponentScan prefix over F2. It then
++rebuilds each claimed suffix completion with the older ClosureShadow engine,
++using integer determinants, and checks the recorded auxiliary-prime residues,
++relative quantum shifts, multiplicities and norm witnesses against the exact
++integer vectors. It never calls the modular observer, terminal response kernel
++or production lattice minimizer.
++
++This is a full prefix replay, not a short standalone NP certificate. The scanner
++and its topological interpretation remain trusted program dependencies; they
++are not independently formalized here. Optional object and time limits can
++terminate replay inconclusively, and such resource exceptions propagate.
++"""
++from hashlib import sha256
++import json
++from math import isfinite, isqrt
++from time import monotonic
++
++from .component_scan import ComponentScan
++from .diagram import Diagram, DiagramError
++from .frobenius.subset import homogeneous_degree
++from .geometry import ScanLimit
++from .shadow_scan import ClosureShadow
++
++
++class ModularVerificationError(ValueError):
++    """A malformed or incorrect modular-observer claim failed replay."""
++
++
++def _require(condition, message):
++    if not condition:
++        raise ModularVerificationError(message)
++
++
++def _integer(value, name, minimum=None):
++    _require(type(value) is int, name + " must be an integer")
++    _require(minimum is None or value >= minimum, name + " is out of range")
++    return value
++
++
++def _integers(value, name, check, length=None, minimum=None):
++    _require(isinstance(value, (list, tuple)), name + " must be a sequence")
++    if length is not None:
++        _require(len(value) == length, name + " has the wrong length")
++    result = []
++    for item in value:
++        check()
++        result.append(_integer(item, name + " entry", minimum))
++    return tuple(result)
++
++
++def _source(pd, check):
++    raw = pd.pd if isinstance(pd, Diagram) else pd
++    _require(isinstance(raw, (list, tuple)), "source PD must be a sequence")
++    rows = []
++    for row in raw:
++        check()
++        rows.append(_integers(row, "source crossing", check, 4))
++    check()
++    try:
++        Diagram.from_pd(rows)
++    except DiagramError as error:
++        raise ModularVerificationError("invalid classical knot source: " + str(error)) from error
++    check()
++    return tuple(rows)
++
++
++def _groups(scan, check):
++    """Inventory whole differential components with explicit deadline polls."""
++    seen, groups = set(), []
++    for root, matching in enumerate(scan.mid):
++        check()
++        if matching is None or root in seen:
++            continue
++        group, stack = [], [root]
++        seen.add(root)
++        while stack:
++            check()
++            vertex = stack.pop()
++            group.append(vertex)
++            for row in (scan.out[vertex], scan.inc[vertex]):
++                check()
++                for other in row:
++                    check()
++                    if other not in seen:
++                        seen.add(other)
++                        stack.append(other)
++        check()
++        group.sort()
++        groups.append(tuple(group))
++    return tuple(groups)
++
++
++def _prime_product(primes, check):
++    values = _integers(primes, "auxiliary primes", check, minimum=3)
++    _require(values, "at least one auxiliary prime is required")
++    used, product = set(), 1
++    for prime in values:
++        check()
++        _require(prime < (1 << 31) and prime % 2,
++                 "auxiliary primes must be odd and below 2^31")
++        _require(prime not in used, "auxiliary primes must be distinct")
++        used.add(prime)
++        for divisor in range(3, isqrt(prime) + 1, 2):
++            check()
++            _require(prime % divisor, "auxiliary modulus is composite")
++        product *= prime
++    return values, product
++
++
++def _minimum_norm(residues, modulus, exact_sum, check):
++    """Independent closed cost formula for the sum-constrained lift minimum.
++
++    In the sign of the necessary sum correction, each oppositely signed
++    centered coordinate offers one discount of twice its absolute value.
++    All other unit corrections cost exactly modulus. The largest available
++    discounts are selected; no production lift construction is imported.
++    """
++    centered = []
++    for residue in residues:
++        check()
++        centered.append(residue - modulus if 2 * residue > modulus else residue)
++    difference = exact_sum - sum(centered)
++    _require(difference % modulus == 0, "exact Euler sum contradicts residues")
++    steps = difference // modulus
++    discounts = []
++    for value in centered:
++        check()
++        if value * steps < 0:
++            discounts.append(abs(value))
++    check()
++    discounts.sort(reverse=True)
++    return (sum(abs(x) for x in centered) + modulus * abs(steps)
++            - 2 * sum(discounts[:abs(steps)]))
++
++
++def replay_modular_shadow(pd, result, *, seconds=None, max_objects=None):
++    """Return verified replay details; raise on an invalid or limited claim.
++
++    Only raw ``marked-residue-four-modular`` KNOTTED results are accepted.
++    Closed-rank and ordinary Euler verdicts use other verification routes.
++    A subset of distinct *whole* components suffices if its verified weighted
++    lower bound is at least two. Runtime/statistical fields are not certificates
++    and are not authenticated by this replay.
++    """
++    if seconds is not None:
++        _require(type(seconds) in (int, float) and seconds >= 0,
++                 "seconds must be a nonnegative finite number")
++        try:
++            seconds = float(seconds)
++        except OverflowError as error:
++            raise ModularVerificationError("seconds is too large") from error
++        _require(isfinite(seconds), "seconds must be finite")
++    if max_objects is not None:
++        _integer(max_objects, "max_objects", 0)
++    deadline = None if seconds is None else monotonic() + seconds
++
++    def check():
++        if deadline is not None and monotonic() > deadline:
++            raise ScanLimit("time budget exhausted in modular claim replay")
++
++    check()
++    _require(isinstance(result, dict), "result must be an object")
++    _require(result.get("status") == "KNOTTED", "only KNOTTED claims are accepted")
++    _require(result.get("method") == "marked-residue-four-modular",
++             "result is not a raw modular marked-observer claim")
++    source = _source(pd, check)
++    n = len(source)
++    _require(_integer(result.get("crossings"), "crossings", 0) == n,
++             "crossing count disagrees with the source")
++    stage = _integer(result.get("stage"), "stage", 0)
++    _require(stage < n, "a marked claim requires a proper prefix and nonempty suffix")
++    order = _integers(result.get("order"), "order", check, n, 0)
++    _require(set(order) == set(range(n)), "order is not a crossing permutation")
++    _require(_integer(result.get("marked_label"), "marked_label") == source[order[-1]][0],
++             "marked label disagrees with the surviving source crossing")
++    _require(_integer(result.get("reduced_rank_lower_bound_capped"),
++                      "reduced rank bound", 0) == 2, "modular decision must claim bound two")
++    records = result.get("components")
++    _require(isinstance(records, list) and records, "nonempty component records are required")
++    observation = result.get("modular_observation")
++    fields = {"stage", "modulus", "primes", "threshold_exact", "obstruction",
++              "observed_components", "total_components"}
++    _require(isinstance(observation, dict) and set(observation) == fields,
++             "invalid modular observation fields")
++    _require(_integer(observation["stage"], "observation stage", 0) == stage,
++             "observation stage differs from replay stage")
++    _require(observation["obstruction"] is True and observation["threshold_exact"] is True,
++             "a positive observation must identify an exact threshold obstruction")
++    primes, modulus = _prime_product(observation["primes"], check)
++    _require(_integer(observation["modulus"], "modulus", 3) == modulus,
++             "modulus is not the product of the stated primes")
++    _require(_integer(observation["observed_components"], "observed components", 1)
++             == len(records), "observed component count is incorrect")
++
++    scan = ComponentScan(rank_cap=3, max_objects=max_objects, deadline=deadline,
++                         shape_cache=False)
++    check()
++    if max_objects is not None and scan.live > max_objects:
++        raise ScanLimit("object budget exhausted before modular claim replay")
++    for i in range(stage):
++        check()
++        scan.add_crossing(source[order[i]])
++    groups = _groups(scan, check)
++    _require(_integer(observation["total_components"], "total components", 1) == len(groups),
++             "recorded total component count disagrees with replay")
++    group_set = set(groups)
++    weights = []
++    for weight in scan.weights:
++        check()
++        total = 0
++        for count in weight.values():
++            check()
++            total += _integer(count, "replayed multiplicity", 1)
++        _require(1 <= total <= 3, "replayed saturated multiplicity is invalid")
++        weights.append(total)
++    supplied_weights = _integers(result.get("multiplicities_capped"),
++                                 "multiplicities_capped", check, len(weights), 1)
++    _require(supplied_weights == tuple(weights), "capped multiplicities disagree with replay")
++    exact = ClosureShadow(source, order, max_states=None, max_work=None, deadline=deadline)
++    chi = [0] * len(weights)
++    object_euler = {}
++    for vertex, matching in enumerate(scan.mid):
++        check()
++        if matching is None:
++            continue
++        value = exact.evaluate_one(stage, scan.algebra.pairs[matching])
++        _require(value % 2 == 0, "replayed completed Euler characteristic is odd")
++        object_euler[vertex] = value // 2
++        chi[scan.owner[vertex]] += -value if scan.deg[vertex] % 2 else value
++    supplied_chi = _integers(result.get("euler_characteristics"),
++                             "euler_characteristics", check, len(chi))
++    _require(supplied_chi == tuple(chi), "ordinary component Euler values disagree with replay")
++
++    seen, checked_records, verified_bound = set(), [], 0
++    record_fields = {"objects", "residues", "minimum_lift", "modulus", "exact_euler",
++                     "coordinate_bound", "relative_q", "multiplicity", "norm"}
++    for record in records:
++        check()
++        _require(isinstance(record, dict) and set(record) == record_fields,
++                 "invalid component record fields")
++        group = _integers(record["objects"], "component objects", check, minimum=0)
++        _require(group in group_set, "record must contain one entire replayed component")
++        _require(group not in seen, "duplicate component record")
++        seen.add(group)
++        shifts = _integers(record["relative_q"], "relative_q", check, len(group))
++        _require(shifts[0] == 0, "relative quantum shifts have the wrong normalization")
++        q = dict(zip(group, shifts))
++        owner = scan.owner[group[0]]
++        for vertex in group:
++            check()
++            _require(scan.owner[vertex] == owner, "claimed component mixes independent owners")
++            for target, value in scan.out[vertex].items():
++                check()
++                degree = homogeneous_degree(value, check=check)
++                _require(degree is not None and degree >= 0,
++                         "replayed differential entry is not homogeneous")
++                circles = scan.algebra.basis(scan.mid[vertex], scan.mid[target])[1]
++                delta = len(scan.points) // 2 - circles + 2 * degree
++                _require(q[target] - q[vertex] == delta,
++                         "recorded quantum phase violates a differential edge")
++        multiplicity = _integer(record["multiplicity"], "multiplicity", 1)
++        _require(multiplicity == weights[owner], "component multiplicity disagrees with replay")
++        _require(_integer(record["modulus"], "record modulus", 3) == modulus,
++                 "component modulus differs from the validated CRT product")
++        residues = _integers(record["residues"], "residues", check, 4, 0)
++        _require(all(x < modulus for x in residues), "residues must be canonical")
++        lift = _integers(record["minimum_lift"], "minimum_lift", check, 4)
++        exact_euler = _integer(record["exact_euler"], "exact_euler")
++        norm = _integer(record["norm"], "norm", 0)
++        coordinate_bound = _integer(record["coordinate_bound"], "coordinate_bound", 0)
++        vector, expected_sum, expected_bound = [0] * 4, 0, 0
++        tree_bound = 1 << (n - stage - 1)
++        for vertex in group:
++            check()
++            sign = -1 if scan.deg[vertex] % 2 else 1
++            value = exact.evaluate(stage, scan.algebra.pairs[scan.mid[vertex]])
++            for j, coefficient in enumerate(value):
++                check()
++                vector[(j + q[vertex]) % 4] += sign * coefficient
++            expected_sum += sign * object_euler[vertex]
++            expected_bound += (abs(object_euler[vertex]) + tree_bound) // 2
++        _require(exact_euler == expected_sum == sum(vector),
++                 "exact Euler sum disagrees with the independent integer vector")
++        _require(tuple(x % modulus for x in vector) == residues,
++                 "component residues disagree with independent integer determinants")
++        _require(coordinate_bound == expected_bound and max(map(abs, vector)) <= expected_bound,
++                 "coordinate bound disagrees with the checked suffix bound")
++        _require(sum(lift) == exact_euler, "minimum lift has the wrong exact sum")
++        _require(tuple(x % modulus for x in lift) == residues,
++                 "minimum lift has the wrong residue classes")
++        _require(sum(map(abs, lift)) == norm, "claimed norm is not the lift norm")
++        _require(_minimum_norm(residues, modulus, exact_euler, check) == norm,
++                 "lift does not attain the minimum possible norm")
++        exact_norm = sum(map(abs, vector))
++        _require(norm <= exact_norm, "claimed lower bound exceeds the independent exact norm")
++        verified_bound += multiplicity * norm
++        checked_records.append(dict(objects=list(group), exact_vector=vector,
++                                    exact_norm=exact_norm, verified_norm=norm,
++                                    multiplicity=multiplicity))
++    _require(verified_bound >= 2, "verified records do not establish reduced rank above one")
++    check()
++    raw = json.dumps(source, separators=(",", ":")).encode("ascii")
++    return dict(verified=True, status="KNOTTED", stage=stage, crossings=n,
++                source_sha256=sha256(raw).hexdigest(), modulus=modulus, primes=list(primes),
++                verified_weighted_lower_bound=verified_bound,
++                checked_components=len(checked_records), total_components=len(groups),
++                components=checked_records, exact_observer_stats=dict(exact.stats),
++                scope="Full ComponentScan prefix replay with independent integer observer arithmetic")
++
++
++def verify_modular_shadow(pd, result, *, seconds=None, max_objects=None):
++    """Return claim validity; propagate resource exhaustion and program errors."""
++    try:
++        replay_modular_shadow(pd, result, seconds=seconds, max_objects=max_objects)
++    except ModularVerificationError:
++        return False
++    return True
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/recognize.py b/Topology/UnknotRecognition/fast/fastunknot/recognize.py
+index 6a2db8e..8ee002b 100644
+--- a/Topology/UnknotRecognition/fast/fastunknot/recognize.py
++++ b/Topology/UnknotRecognition/fast/fastunknot/recognize.py
+@@ -305,14 +305,20 @@ def _decide_prime_looking(diagram: Diagram, evidence: dict, *, use_modular, use_
+             check_d_squared=check_d_squared, closure_max_work=scan_options["closure_max_work"])
+         evidence["khovanov"] = {"field": "F2", **kh}
+         return kh["status"], "classical-closure-bound" if kh["method"] == "closure-bound" else "khovanov-closure-reset"
+-    if backend == "shadow":
+-        from .shadow_scan import shadow_compressed_khovanov_decide
+-        kh = shadow_compressed_khovanov_decide(
++    if backend in ("shadow", "shadow-modular"):
++        if backend == "shadow-modular":
++            from .modular_shadow import modular_shadow_khovanov_decide as shadow_decide
++            extra_shadow = {"primes": scan_options["shadow_primes"]}
++        else:
++            from .shadow_scan import shadow_compressed_khovanov_decide as shadow_decide
++            extra_shadow = {}
++        kh = shadow_decide(
+             diagram.pd, order=order, max_objects=max_objects, seconds=remaining,
+             check_d_squared=check_d_squared, euler_max_states=scan_options["euler_max_states"],
+-            shadow_max_work=scan_options["shadow_max_work"])
++            shadow_max_work=scan_options["shadow_max_work"], **extra_shadow)
+         evidence["khovanov"] = {"field": "F2", **kh}
+         method = {"marked-residue-four": "marked-residue-four-bound",
++                  "marked-residue-four-modular": "marked-residue-four-modular-bound",
+                   "component-euler": "component-euler-bound",
+                   "closed-rank": "khovanov-component-sharing-saturated"}[kh["method"]]
+         return kh["status"], method
+@@ -338,7 +344,8 @@ def _decide_prime_looking(diagram: Diagram, evidence: dict, *, use_modular, use_
+                                      seconds=remaining, check_d_squared=check_d_squared)
+     else:
+         standard_options = {key: value for key, value in scan_options.items()
+-                            if key not in ("backend", "euler_max_states", "twist_max_basis", "shadow_max_work", "closure_max_work")}
++                            if key not in ("backend", "euler_max_states", "twist_max_basis",
++                                           "shadow_max_work", "shadow_primes", "closure_max_work")}
+         kh = khovanov_rank(diagram.pd, order=order, max_objects=max_objects, seconds=remaining,
+                            check_d_squared=check_d_squared, **standard_options)
+     evidence["khovanov"] = {"field": "F2", "unreduced_rank": kh["rank"], "reduced_rank": kh["reduced_rank"],
+@@ -368,6 +375,7 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
+               use_braid_reduction: bool = True, use_braid_profile: bool = False,
+               euler_max_states: int | None = 4096,
+               shadow_max_work: int | None = 1_000_000,
++              shadow_primes: tuple[int, ...] = (65521,),
+               closure_max_work: int | None = 1_000_000,
+               use_factorization: bool = True, use_modular: bool = True, use_jones: bool = True,
+               use_alexander: bool = True, use_exact_alexander: bool | None = None, use_r3: bool = True,
+@@ -480,8 +488,11 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
+         raise ValueError("braid_backend must be free-product or matrix")
+     if factor_backend not in ("interlacement", "legacy"):
+         raise ValueError("factor_backend must be interlacement or legacy")
+-    if backend not in ("standard", "shared", "saturated", "euler", "shadow", "closure", "twist", "barcode", "fitting"):
+-        raise ValueError("backend must be standard, shared, saturated, euler, shadow, closure, twist, barcode, or fitting")
++    if backend not in ("standard", "shared", "saturated", "euler", "shadow", "shadow-modular",
++                       "closure", "twist", "barcode", "fitting"):
++        raise ValueError("invalid Khovanov backend")
++    from .modular_lattice import validate_primes
++    shadow_primes = validate_primes(shadow_primes)
+     if euler_max_states is not None and (type(euler_max_states) is not int or euler_max_states < 0):
+         raise ValueError("euler_max_states must be a nonnegative integer or None")
+     if shadow_max_work is not None and (type(shadow_max_work) is not int or shadow_max_work < 0):
+@@ -686,6 +697,7 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
+                                          race_after=race_after, backend=backend,
+                                          euler_max_states=euler_max_states, composition=composition,
+                                          shadow_max_work=shadow_max_work,
++                                         shadow_primes=shadow_primes,
+                                          closure_max_work=closure_max_work,
+                                          composition_max_variables=composition_max_variables,
+                                          twist_max_basis=twist_max_basis, reduction=reduction))
+diff --git a/Topology/UnknotRecognition/fast/modular_research/audit.py b/Topology/UnknotRecognition/fast/modular_research/audit.py
+new file mode 100644
+index 0000000..bb24f56
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/modular_research/audit.py
+@@ -0,0 +1,264 @@
++"""Reproducible small-knot audit against integer shadows and independent cubes.
++
++This is a correctness audit, not a performance benchmark. It forces every
++listed auxiliary prime at every live matching, even when adaptive production
++would stop earlier. Full F2 reduced cubes are exponential and restricted to at
++most nine crossings. All source braids, orders, mirrors and positive replay
++records are saved so that the run can be reproduced without random selection.
++"""
++import argparse
++from collections import Counter
++from datetime import datetime, timezone
++import hashlib
++import json
++from pathlib import Path
++import random
++import sys
++from time import perf_counter
++
++FAST = Path(__file__).resolve().parents[1]
++ROOT = FAST.parent
++sys.path[:0] = [str(FAST), str(ROOT / 'reports/26')]
++
++from fastunknot import Diagram
++from fastunknot.component_scan import ComponentScan, components
++from fastunknot.modular_shadow import (ModularClosureShadow,
++    component_modular_shadow_bound, modular_shadow_khovanov_decide)
++from fastunknot.modular_verify import replay_modular_shadow
++from fastunknot.recovered_grading import recover_shifts
++from fastunknot.shadow_scan import ClosureShadow, component_shadow_bound
++from detshadow.cube import reduced_homology
++from detshadow.diagram import Diagram as ReferenceDiagram
++
++
++PRIMES = (3, 5, 7, 11, 13, 65521)
++
++
++def inputs(count, seed, max_crossings):
++    rng = random.Random(seed)
++    rows = []
++    fixed = [('trefoil', 2, [1, 1, 1]),
++             ('figure-eight', 3, [1, -2, 1, -2]),
++             ('unknot-with-cancellation', 2, [1, 1, -1]),
++             ('one-crossing-unknot', 2, [1]),
++             ('torus-3-4', 3, [1, 2] * 4)]
++    seen = set()
++    for name, strands, word in fixed:
++        if len(word) <= max_crossings:
++            diagram = Diagram.from_braid(strands, word)
++            rows.append(dict(name=name, strands=strands, word=word,
++                             order=list(range(len(word))), selection='fixed'))
++            seen.add(diagram.pd)
++    accepted = attempts = 0
++    while accepted < count:
++        attempts += 1
++        if attempts > max(1000, 200 * count):
++            raise RuntimeError('random source selection exhausted its attempt allowance')
++        strands = rng.randrange(2, 6)
++        word = [rng.choice((-1, 1)) * rng.randrange(1, strands)
++                for _ in range(rng.randrange(3, max_crossings + 1))]
++        try:
++            diagram = Diagram.from_braid(strands, word)
++        except ValueError:
++            continue
++        if diagram.pd in seen:
++            continue
++        seen.add(diagram.pd)
++        order = list(range(len(word)))
++        rng.shuffle(order)
++        rows.append(dict(name='random-%03d' % accepted, strands=strands, word=word,
++                         order=order, selection='seeded-random'))
++        accepted += 1
++    return rows, attempts
++
++
++def integer_components(scan, engine, stage):
++    records, weighted = {}, 0
++    for group in components(scan):
++        shifts = recover_shifts(scan, group)
++        vector = [0] * 4
++        for vertex in group:
++            value = engine.evaluate(stage, scan.algebra.pairs[scan.mid[vertex]])
++            sign = -1 if scan.deg[vertex] % 2 else 1
++            for j, coefficient in enumerate(value):
++                vector[(j + shifts[vertex]) % 4] += sign * coefficient
++        multiplicity = sum(scan.weights[scan.owner[group[0]]].values())
++        norm = sum(map(abs, vector))
++        weighted += multiplicity * norm
++        records[tuple(group)] = dict(vector=vector, norm=norm, multiplicity=multiplicity)
++    return weighted, records
++
++
++def audit(rows, seed, attempts):
++    start = perf_counter()
++    totals = Counter(base_inputs=len(rows), prime_count=len(PRIMES))
++    methods, ranks, crossing_histogram = Counter(), Counter(), Counter()
++    cases = []
++    for index, row in enumerate(rows):
++        original = Diagram.from_braid(row['strands'], row['word'])
++        for mirrored, diagram in ((False, original), (True, original.mirror())):
++            context = dict(input_index=index, mirrored=mirrored, name=row['name'])
++            order = row['order']
++            reference = reduced_homology(ReferenceDiagram(diagram.pd),
++                max_crossings=9, max_generators=250000, check_d2=True)
++            rank = reference['rank']
++            expected_status = 'UNKNOT' if rank == 1 else 'KNOTTED'
++            totals['diagrams'] += 1
++            totals['full_reduced_cubes'] += 1
++            totals['cube_generators'] += reference['generators']
++            totals['cube_d2_columns'] += reference['d2_columns']
++            ranks[rank] += 1
++            crossing_histogram[diagram.crossings] += 1
++            exact = ClosureShadow(diagram.pd, order, max_states=None, max_work=None)
++            modular = ModularClosureShadow(diagram.pd, order, primes=PRIMES,
++                                            max_states=None, max_work=None)
++            small = ModularClosureShadow(diagram.pd, order, primes=(3,),
++                                          max_states=None, max_work=None)
++            scan = ComponentScan(shape_cache=False, rank_cap=3)
++            stage_records = []
++            for stage, crossing in enumerate(order):
++                totals['proper_prefixes'] += 1
++                live = sorted(set(scan.mid) - {None})
++                for matching in live:
++                    pairs = scan.algebra.pairs[matching]
++                    value = exact.evaluate(stage, pairs)
++                    for prime in PRIMES:
++                        actual = modular.evaluate(stage, pairs, prime)
++                        assert actual == tuple(x % prime for x in value), (context, stage, prime)
++                        totals['modular_vector_comparisons'] += 1
++                    totals['actual_matching_completions'] += 1
++                geometry = modular.boundary_geometry
++                b = len(geometry.labels)
++                if b:
++                    assert len(geometry.terminals) * 2 == b, (context, stage, 'terminal count')
++                    assert geometry.open_colors.count(0) == geometry.open_colors.count(1) == b // 2
++                    totals['terminal_half_frontier_checks'] += 1
++                else:
++                    assert len(geometry.terminals) == 1
++                    totals['empty_frontier_grounding_checks'] += 1
++                totals['maximum_frontier_darts'] = max(totals['maximum_frontier_darts'], b)
++                totals['maximum_terminals'] = max(totals['maximum_terminals'], len(geometry.terminals))
++                for matching in live:
++                    pairs = scan.algebra.pairs[matching]
++                    data = modular.partitions[tuple(pairs)]
++                    if data['shadow_components'] != 1:
++                        totals['disconnected_completions'] += 1
++                    for prime, kernel in modular.kernels.items():
++                        q = len(set(data['partition'])) - 1
++                        totals['maximum_residual_nullity'] = max(
++                            totals['maximum_residual_nullity'], kernel.nullity)
++                        if kernel.nullity <= q:
++                            size = kernel.nullity + q
++                            assert size <= (b - 2 if b else 0), (context, stage, prime, size, b)
++                            totals['frontier_minus_two_dimension_checks'] += 1
++                            totals['maximum_query_matrix_dimension'] = max(
++                                totals['maximum_query_matrix_dimension'], size)
++                        else:
++                            totals['radical_dimension_zero_cases'] += 1
++                integer_bound, integers = integer_components(scan, exact, stage)
++                capped_exact, _ = component_shadow_bound(scan, exact, stage, cap=2)
++                assert capped_exact == min(2, integer_bound), (context, stage, 'exact component aggregate')
++                assert integer_bound <= rank, (context, stage, integer_bound, rank)
++                lower, records = component_modular_shadow_bound(scan, modular, stage, cap=2)
++                assert 0 <= lower <= capped_exact <= min(2, rank), (context, stage, lower, capped_exact, rank)
++                totals['component_bound_comparisons'] += 1
++                totals['bounds_checked_against_full_homology'] += 1
++                for record in records:
++                    exact_record = integers[tuple(record['objects'])]
++                    assert tuple(x % record['modulus'] for x in exact_record['vector']) == tuple(record['residues'])
++                    assert record['norm'] <= exact_record['norm']
++                    assert record['multiplicity'] == exact_record['multiplicity']
++                    assert sum(exact_record['vector']) == record['exact_euler']
++                    assert max(map(abs, exact_record['vector'])) <= record['coordinate_bound']
++                    totals['whole_component_record_checks'] += 1
++                observation = dict(modular.last_observation)
++                if observation['threshold_exact']:
++                    assert lower == capped_exact, (context, stage, 'exact threshold', lower, capped_exact)
++                    totals['certified_threshold_agreements'] += 1
++                else:
++                    totals['unresolved_threshold_observations'] += 1
++                small_lower, _ = component_modular_shadow_bound(scan, small, stage, cap=2)
++                assert small_lower <= capped_exact, (context, stage, 'small-prime false positive')
++                totals['small_prime_bound_comparisons'] += 1
++                if small.last_observation['threshold_exact']:
++                    assert small_lower == capped_exact
++                    totals['small_prime_certified_threshold_agreements'] += 1
++                if small_lower < 2 <= capped_exact:
++                    assert not small.last_observation['threshold_exact']
++                    totals['small_prime_missed_obstructions'] += 1
++                stage_records.append(dict(stage=stage, frontier_darts=b,
++                    terminals=len(geometry.terminals), live_matchings=len(live),
++                    exact_weighted_bound=integer_bound, modular_bound_capped=lower,
++                    small_prime_bound_capped=small_lower,
++                    threshold_exact=observation['threshold_exact'],
++                    used_primes=observation['primes'], modulus=observation['modulus']))
++                scan.add_crossing(diagram.pd[crossing])
++                scan.check_d_squared()
++            assert scan.total_rank() == min(3, 2 * rank), (context, 'final capped rank')
++            totals['final_capped_rank_comparisons'] += 1
++            decision = modular_shadow_khovanov_decide(diagram.pd, order=order,
++                shape_cache=False, euler_max_states=None, shadow_max_work=None,
++                primes=PRIMES, check_d_squared=True)
++            assert decision['status'] == expected_status, (context, decision['status'], rank)
++            methods[decision['method']] += 1
++            totals['recognition_status_comparisons'] += 1
++            case = dict(**context, pd=[list(c) for c in diagram.pd], order=list(order),
++                reference_reduced_homology=reference, stages=stage_records,
++                decision_status=decision['status'], decision_method=decision['method'],
++                decision_stage=decision['stage'])
++            if decision['method'] == 'marked-residue-four-modular':
++                replay = replay_modular_shadow(diagram.pd, decision)
++                assert replay['verified'] and replay['verified_weighted_lower_bound'] >= 2
++                assert rank > 1
++                totals['positive_modular_replays'] += 1
++                totals['replayed_components'] += replay['checked_components']
++                case['raw_modular_claim'] = decision
++                case['independent_replay'] = replay
++            cases.append(case)
++        if (index + 1) % 16 == 0:
++            print(json.dumps(dict(completed_base_inputs=index + 1,
++                                  vector_comparisons=totals['modular_vector_comparisons'],
++                                  positive_replays=totals['positive_modular_replays'])), flush=True)
++    assert totals['small_prime_missed_obstructions'] > 0, 'audit needs a real modular alias example'
++    assert totals['positive_modular_replays'] > 0, 'audit needs a replayed obstruction'
++    source_paths = [Path(__file__), FAST / 'fastunknot/modular_verify.py',
++        FAST / 'fastunknot/modular_shadow.py', FAST / 'fastunknot/modular_lattice.py',
++        FAST / 'fastunknot/modular_response.py', FAST / 'fastunknot/boundary_tait.py',
++        FAST / 'fastunknot/boundary_connectivity.py', FAST / 'fastunknot/component_scan.py',
++        FAST / 'fastunknot/scan_fast.py', FAST / 'fastunknot/recovered_grading.py',
++        FAST / 'fastunknot/planar.py', FAST / 'fastunknot/shadow_scan.py',
++        FAST / 'fastunknot/euler_scan.py', FAST / 'fastunknot/integer_determinant.py',
++        FAST / 'fastunknot/diagram.py', FAST / 'fastunknot/frobenius/subset.py',
++        FAST / 'tests/test_modular_verify.py', ROOT / 'reports/26/detshadow/cube.py',
++        ROOT / 'reports/26/detshadow/diagram.py', ROOT / 'reports/26/detshadow/linalg.py']
++    return dict(schema='modular-shadow-audit-v1', generated_utc=datetime.now(timezone.utc).isoformat(),
++        scope=__doc__, replay_scope='Full prefix replay using the same ComponentScan and older exact integer ClosureShadow; no claim of a short standalone certificate or independently formalized scanner',
++        selection=dict(seed=seed, accepted_random_inputs=sum(r['selection'] == 'seeded-random' for r in rows),
++                       random_attempts=attempts, max_crossings=9,
++                       mirrors_included=True, distinct_base_pd=True),
++        auxiliary_primes=list(PRIMES), small_prime_palette=[3], totals=dict(totals),
++        decision_methods=dict(methods), reduced_rank_histogram=dict(sorted(ranks.items())),
++        crossing_histogram=dict(sorted(crossing_histogram.items())),
++        elapsed_seconds=perf_counter() - start,
++        sources={str(p.relative_to(ROOT)): hashlib.sha256(p.read_bytes()).hexdigest() for p in source_paths},
++        base_inputs=rows, cases=cases)
++
++
++def main():
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument('--output', type=Path, default=FAST / 'results/modular_audit.json')
++    parser.add_argument('--seed', type=int, default=26100858)
++    parser.add_argument('--random-count', type=int, default=64)
++    args = parser.parse_args()
++    if args.random_count < 0:
++        parser.error('--random-count must be nonnegative')
++    rows, attempts = inputs(args.random_count, args.seed, 9)
++    result = audit(rows, args.seed, attempts)
++    args.output.parent.mkdir(parents=True, exist_ok=True)
++    args.output.write_text(json.dumps(result, indent=2) + '\n')
++    print(json.dumps(dict(totals=result['totals'], decision_methods=result['decision_methods'],
++                          elapsed_seconds=result['elapsed_seconds']), sort_keys=True))
++
++
++if __name__ == '__main__':
++    main()
+diff --git a/Topology/UnknotRecognition/fast/modular_research/benchmark.py b/Topology/UnknotRecognition/fast/modular_research/benchmark.py
+new file mode 100644
+index 0000000..290ecf0
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/modular_research/benchmark.py
+@@ -0,0 +1,348 @@
++"""Separate modular boundary arithmetic, raw scans, and full recognition.
++
++Five shuffled paired rounds follow one excluded warmup per arm. Every call
++constructs a fresh engine, and all arithmetic-stream samples include geometry
++and terminal-response setup. The integer control invokes the identical baseline
++implementation. Correctness comparisons and digests occur outside timed calls.
++
++The synthetic workload appends a pure five-strand braid, preserving the closure
++permutation while creating genuine interior vertices. Its queries are actual
++matchings from the first nine stages of a production FastScan. These workloads
++measure repeated suffix arithmetic, not difficulty of recognizing the knots.
++"""
++from __future__ import annotations
++
++import argparse
++from contextlib import contextmanager
++from datetime import datetime, timezone
++import hashlib
++import json
++from pathlib import Path
++import platform
++import random
++import signal
++import statistics
++import subprocess
++import sys
++from time import monotonic, perf_counter
++
++
++HERE = Path(__file__).resolve().parents[1]
++sys.path.insert(0, str(HERE))
++from fastunknot import Diagram, recognize
++from fastunknot.geometry import ScanLimit
++from fastunknot.modular_shadow import ModularClosureShadow, modular_shadow_khovanov_decide
++from fastunknot.ordering import best_scan_order
++from fastunknot.scan_fast import FastScan
++from fastunknot.shadow_scan import ClosureShadow, shadow_compressed_khovanov_decide
++from determinant_research.boundary_tait import BoundaryTait as RationalBoundaryTait
++
++
++WORD = [-2, 3, 2, 2, 4, 2, -3, -2, -1, 1, -2, -1, -2, -2]
++ORDER = [5, 1, 10, 2, 9, 11, 13, 6, 7, 0, 12, 4, 8, 3]
++PURE_TAIL = [1, 1, -2, -2, 3, 3, -4, -4]
++CORPUS = ("conway", "kinoshita_terasaka", "conway_sum_2", "conway_sum_8",
++          "hard_unknot_8", "grid_scrambled_unknot", "stress_braid5_36")
++ARITHMETIC_ARMS = ("integer", "integer_control", "rational_boundary", "modular_boundary")
++PIPELINE_ARMS = ("integer", "integer_control", "modular")
++PRIME = 65521
++
++
++class WallLimit(TimeoutError):
++    pass
++
++
++@contextmanager
++def hard_limit(seconds):
++    """Also bound the archived rational prototype, which has no callback."""
++    def expired(signum, frame):
++        raise WallLimit("benchmark hard wall-clock limit")
++    previous = signal.signal(signal.SIGALRM, expired)
++    signal.setitimer(signal.ITIMER_REAL, seconds)
++    try:
++        yield
++    finally:
++        signal.setitimer(signal.ITIMER_REAL, 0)
++        signal.signal(signal.SIGALRM, previous)
++
++
++def digest(value):
++    encoded = json.dumps(value, sort_keys=True, separators=(",", ":")).encode()
++    return hashlib.sha256(encoded).hexdigest()
++
++
++def source_hashes():
++    files = list((HERE / "fastunknot").rglob("*.py"))
++    files += [Path(__file__), HERE / "determinant_research/boundary_tait.py"]
++    files += list((HERE.parent / "reports/26/detshadow").glob("*.py"))
++    return {str(p.relative_to(HERE.parent)): hashlib.sha256(p.read_bytes()).hexdigest()
++            for p in sorted(files)}
++
++
++def summarize_pipeline(result):
++    if isinstance(result, dict):
++        data = result
++    else:
++        data = result.to_json()
++    summary = {key: data[key] for key in ("status", "method", "stage", "crossings",
++               "input_crossings", "reduced_crossings", "rank_capped", "rank_cap",
++               "reduced_rank_lower_bound_capped", "shadow_exhausted", "euler_exhausted",
++               "shadow_stats", "modular_observation", "stats") if key in data}
++    if "order" in data:
++        summary["order"] = data["order"]
++        summary["order_sha256"] = digest(data["order"])
++    evidence = data.get("evidence", {})
++    if evidence:
++        summary["evidence"] = evidence
++    return summary
++
++
++def stream_workload(tail_repetitions):
++    word = WORD + PURE_TAIL * tail_repetitions
++    diagram = Diagram.from_braid(5, word)
++    order = ORDER + list(range(len(WORD), diagram.crossings))
++    scan = FastScan(shape_cache=False)
++    for crossing in order[:9]:
++        scan.add_crossing(diagram.pd[crossing])
++    pairs = [scan.algebra.pairs[m] for m in sorted(set(scan.mid) - {None})]
++    data = dict(strands=5, word=word, pd=diagram.pd, order=order, stage=9,
++                tail_repetitions=tail_repetitions, suffix_crossings=diagram.crossings - 9,
++                frontier=len(scan.points), available_matching_count=len(pairs),
++                source="actual FastScan matchings after nine crossings")
++    data["pd_sha256"], data["order_sha256"] = digest(diagram.pd), digest(order)
++    return diagram, order, pairs, data
++
++
++def arithmetic_runner(diagram, order, pairs, seconds):
++    def run(arm):
++        if arm in ("integer", "integer_control"):
++            engine = ClosureShadow(diagram.pd, order, max_states=None, max_work=None,
++                                   deadline=monotonic() + seconds)
++            vectors = tuple(engine.evaluate(9, pair) for pair in pairs)
++            return dict(status="COMPLETE", vectors=vectors, stats=dict(engine.stats))
++        if arm == "modular_boundary":
++            engine = ModularClosureShadow(diagram.pd, order, primes=(PRIME,), max_states=None,
++                                          max_work=None, deadline=monotonic() + seconds)
++            vectors = tuple(engine.evaluate(9, pair) for pair in pairs)
++            geometry = engine.boundary_geometry
++            stats = dict(engine.stats)
++            stats["interior_vertices"] = len(geometry.laplacian) - len(geometry.terminals)
++            return dict(status="COMPLETE", vectors=vectors, stats=stats)
++        engine = RationalBoundaryTait(diagram.pd, order, 9)
++        vectors = []
++        for pair in pairs:
++            z, data = engine.evaluate(pair)
++            parity = (data["zero_circles"] - 1) % 2
++            if z[1 - parity] != 0:
++                raise ArithmeticError("rational reference violated phase parity")
++            a, difference = data["unreduced_euler"] // 2, z[parity]
++            if (a + difference) % 2:
++                raise ArithmeticError("rational reference produced a half-integer residue")
++            vector = [0] * 4
++            vector[parity], vector[parity + 2] = (a + difference) // 2, (a - difference) // 2
++            vectors.append(tuple(vector))
++        stats = dict(common_vertices=len(engine.laplacian), terminals=len(engine.terminals),
++                     interior_vertices=len(engine.laplacian) - len(engine.terminals),
++                     nullity=engine.kernel.nullity if engine.kernel else None,
++                     kernel_builds=int(engine.kernel is not None),
++                     distinct_determinants=len(engine.cache))
++        return dict(status="COMPLETE", vectors=tuple(vectors), stats=stats)
++    return run
++
++
++def main():
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument("--output", type=Path, default=HERE / "results/modular_benchmarks.json")
++    parser.add_argument("--summary", type=Path)
++    parser.add_argument("--rounds", type=int, default=5)
++    parser.add_argument("--seconds", type=float, default=3.0)
++    parser.add_argument("--seed", type=int, default=20261008)
++    parser.add_argument("--scopes", nargs="+", choices=("streams", "raw", "pipeline", "disabled"),
++                        default=("streams", "raw", "pipeline", "disabled"))
++    args = parser.parse_args()
++    rng = random.Random(args.seed)
++    started = datetime.now(timezone.utc).isoformat()
++    hashes_before = source_hashes()
++    revision = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=HERE, text=True).strip()
++    rows, pilots = [], []
++    verified_vectors, verified_statuses = 0, 0
++
++    def invoke(run, arm):
++        begin = perf_counter()
++        try:
++            with hard_limit(args.seconds + 0.15):
++                value = run(arm)
++        except (ScanLimit, MemoryError, WallLimit) as exc:
++            return perf_counter() - begin, dict(status="UNKNOWN", censored=True,
++                                                reason=type(exc).__name__ + ": " + str(exc))
++        elapsed = perf_counter() - begin
++        # All signatures and comparisons are deliberately outside timing.
++        if "vectors" in value:
++            vectors = tuple(tuple(int(c) % PRIME for c in v) for v in value.pop("vectors"))
++            value["normalized_vectors"] = vectors
++            value["vector_sha256"] = digest(vectors)
++        value["censored"] = value.get("status") == "UNKNOWN"
++        return elapsed, value
++
++    def check_results(results, expected=None):
++        nonlocal verified_vectors, verified_statuses
++        for arm, (_, value) in results.items():
++            if value["censored"]:
++                continue
++            signature = value.get("normalized_vectors", value["status"])
++            if expected is None:
++                expected = signature
++            if signature != expected:
++                raise AssertionError(("arm disagreement", arm, value, expected))
++            if "normalized_vectors" in value:
++                verified_vectors += len(signature)
++            else:
++                verified_statuses += 1
++        return expected
++
++    def compact(value):
++        return {k: v for k, v in value.items() if k != "normalized_vectors"}
++
++    def measure(name, scope, arms, run, data, warm=None):
++        if warm is None:
++            warm = {arm: invoke(run, arm) for arm in arms}
++        expected = check_results(warm)
++        row = dict(name=name, scope=scope, input=data, input_sha256=digest(data),
++                   parameters=dict(seconds=args.seconds, max_objects=50000, prime=PRIME),
++                   warmup_excluded={a: dict(seconds=t, result=compact(v))
++                                    for a, (t, v) in warm.items()},
++                   samples=[], repetitions=1)
++        if any(v["censored"] for _, v in warm.values()):
++            row.update(complete=False, censored_in_warmup=True, median_speedups=None,
++                       note="No repeated timeout samples or speedup ratios are reported.")
++            rows.append(row)
++            print(scope, name, "censored during warmup", flush=True)
++            checkpoint()
++            return
++        # Repeated fresh invocations stabilize sub-millisecond pipeline samples.
++        repetitions = 1 if scope == "arithmetic-stream" else max(
++            1, min(20, int(0.01 / max(t for t, _ in warm.values()))))
++        row["repetitions"] = repetitions
++        for round_index in range(args.rounds):
++            shuffled = list(arms)
++            rng.shuffle(shuffled)
++            times, details, raw_times = {}, {}, {}
++            for arm in shuffled:
++                calls = [invoke(run, arm) for _ in range(repetitions)]
++                expected = check_results({str(i): call for i, call in enumerate(calls)}, expected)
++                raw_times[arm] = [t for t, _ in calls]
++                times[arm] = statistics.mean(raw_times[arm])
++                details[arm] = [compact(v) for _, v in calls]
++            row["samples"].append(dict(round=round_index + 1, order=shuffled,
++                                       seconds=times, call_seconds=raw_times, results=details))
++        complete = all(not v["censored"] for sample in row["samples"]
++                       for values in sample["results"].values() for v in values)
++        row["complete"] = complete
++        row["median_seconds"] = {a: statistics.median(s["seconds"][a] for s in row["samples"])
++                                 for a in arms}
++        row["median_speedups"] = ({a: statistics.median(
++            s["seconds"][arms[0]] / s["seconds"][a] for s in row["samples"]) for a in arms[1:]}
++            if complete else None)
++        if scope == "arithmetic-stream" and complete:
++            row["modular_over_rational_speedup"] = statistics.median(
++                s["seconds"]["rational_boundary"] / s["seconds"]["modular_boundary"]
++                for s in row["samples"])
++        rows.append(row)
++        print(scope, name, {a: round(v, 3) for a, v in (row["median_speedups"] or {}).items()}, flush=True)
++        checkpoint()
++
++    def checkpoint():
++        hashes_after = source_hashes()
++        changed = [p for p in sorted(set(hashes_before) | set(hashes_after))
++                   if hashes_before.get(p) != hashes_after.get(p)]
++        output = dict(description=__doc__, started_utc=started,
++                      recorded_utc=datetime.now(timezone.utc).isoformat(),
++                      revision=revision, python=platform.python_version(),
++                      platform=platform.platform(), seed=args.seed, rounds=args.rounds,
++                      cooperative_seconds=args.seconds, hard_seconds=args.seconds + 0.15,
++                      warmup="One per arm excluded; shortened streams re-pilot afresh.",
++                      control="integer_control calls the identical integer implementation.",
++                      timing="Fresh constructors included; input matching-stream generation, correctness checks and digests excluded.",
++                      caveat="Shared execution environment; ratios are paired medians, not asymptotic claims.",
++                      verified_vectors=verified_vectors, verified_statuses=verified_statuses,
++                      pilots=pilots, rows=rows, sources_before=hashes_before,
++                      sources_after=hashes_after, changed_sources=changed)
++        args.output.parent.mkdir(parents=True, exist_ok=True)
++        args.output.write_text(json.dumps(output, indent=2) + "\n")
++
++    if "streams" in args.scopes:
++        for k in (0, 1, 4, 12, 32):
++            diagram, order, all_pairs, base_data = stream_workload(k)
++            for count in (len(all_pairs), 50, 20):
++                pairs = all_pairs[:count]
++                run = arithmetic_runner(diagram, order, pairs, args.seconds)
++                warm = {arm: invoke(run, arm) for arm in ARITHMETIC_ARMS}
++                check_results(warm)
++                if not any(v["censored"] for _, v in warm.values()):
++                    break
++                pilots.append(dict(name=f"pure_tail_{k}", matching_count=len(pairs),
++                                   results={a: dict(seconds=t, result=compact(v))
++                                            for a, (t, v) in warm.items()},
++                                   note="Censored pilot excluded from paired estimates; shorter actual stream is tried."))
++                checkpoint()
++            data = dict(base_data, matching_count=len(pairs), pairs=pairs,
++                        pairs_sha256=digest(pairs))
++            measure(f"pure_tail_{k}", "arithmetic-stream", ARITHMETIC_ARMS, run, data, warm)
++
++    for name in CORPUS:
++        data = json.loads((HERE / "examples" / (name + ".json")).read_text())
++        diagram = Diagram.from_json(data)
++        reference_order = best_scan_order(diagram.pd, tries=min(len(diagram.pd), 12))
++        input_data = dict(example=data, pd_sha256=digest(diagram.pd),
++                          raw_order=reference_order, raw_order_sha256=digest(reference_order))
++        for scope in args.scopes:
++            if scope == "streams":
++                continue
++            def run(arm, scope=scope, data=data):
++                fresh = Diagram.from_json(data)
++                if scope == "raw":
++                    decide = (modular_shadow_khovanov_decide if arm == "modular"
++                              else shadow_compressed_khovanov_decide)
++                    return summarize_pipeline(decide(fresh.pd, max_objects=50000, seconds=args.seconds))
++                options = dict(backend="shadow-modular" if arm == "modular" else "shadow",
++                               max_objects=50000, seconds=args.seconds)
++                if scope == "disabled":
++                    options.update(use_reduction=False, use_descending=False, use_seifert=False,
++                                   use_braid=False, use_rational=False, use_braid_reduction=False,
++                                   use_factorization=False, use_modular=False, use_jones=False,
++                                   use_alexander=False, use_exact_alexander=False, use_r3=False)
++                return summarize_pipeline(recognize(fresh, **options))
++            label = {"raw": "raw-shadow", "pipeline": "recognition-default-filters",
++                     "disabled": "recognition-disabled-filters"}[scope]
++            measure(name, label, PIPELINE_ARMS, run, input_data)
++
++    checkpoint()
++    output = json.loads(args.output.read_text())
++    lines = ["MODULAR CONTINUATION BENCHMARK", f"Revision: {revision}",
++             f"Rounds: {args.rounds}; excluded warmups; seconds/call: {args.seconds}",
++             "Fresh geometry/response setup included in arithmetic measurements.",
++             f"Source changes during run: {output['changed_sources']}",
++             f"Verified vector comparisons: {verified_vectors}; statuses: {verified_statuses}", ""]
++    for row in rows:
++        label = row["scope"] + " / " + row["name"]
++        if not row["complete"]:
++            lines.append(label + ": CENSORED; no speedup estimate")
++            continue
++        times = ", ".join(f"{a}={v:.6f}s" for a, v in row["median_seconds"].items())
++        ratios = ", ".join(f"{a}={v:.3f}x" for a, v in row["median_speedups"].items())
++        lines += [label, "  medians: " + times, "  integer/arm paired medians: " + ratios]
++        if "modular_over_rational_speedup" in row:
++            lines.append(f"  rational/modular: {row['modular_over_rational_speedup']:.3f}x")
++    lines += ["", "Interpretation: arithmetic stream gains do not establish whole-recognizer gains.",
++              "Normal filters may decide all corpus cases before either shadow observer runs.",
++              "Disabled-filter and raw scopes deliberately expose the observer and must remain separate.",
++              "Full raw samples, inputs, hashes, statistics and timeout pilots are in the JSON file."]
++    text = "\n".join(lines) + "\n"
++    if args.summary:
++        args.summary.parent.mkdir(parents=True, exist_ok=True)
++        args.summary.write_text(text)
++    print(text, flush=True)
++
++
++if __name__ == "__main__":
++    main()
+diff --git a/Topology/UnknotRecognition/fast/modular_research/demo.py b/Topology/UnknotRecognition/fast/modular_research/demo.py
+new file mode 100644
+index 0000000..bcaaf22
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/modular_research/demo.py
+@@ -0,0 +1,46 @@
++#!/usr/bin/env python3
++"""Produce and independently replay representative modular observations."""
++import argparse
++import json
++from pathlib import Path
++import sys
++
++FAST = Path(__file__).resolve().parents[1]
++sys.path.insert(0, str(FAST))
++from fastunknot import Diagram
++from fastunknot.modular_shadow import modular_shadow_khovanov_decide
++from fastunknot.modular_verify import replay_modular_shadow
++
++
++def main():
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument('--output', type=Path)
++    args = parser.parse_args()
++    rows = []
++    for name, strands, word in (
++        ('trefoil', 2, [1, 1, 1]),
++        ('figure_eight', 3, [1, -2] * 2),
++        ('torus_3_5', 3, [1, 2] * 5),
++        ('unknot', 3, [1, 2]),
++    ):
++        diagram = Diagram.from_braid(strands, word)
++        claim = modular_shadow_khovanov_decide(diagram.pd,
++            order=list(range(len(word))), shadow_max_work=None,
++            primes=(3, 5, 7, 11, 13))
++        replay = (replay_modular_shadow(diagram.pd, claim)
++                  if claim['method'] == 'marked-residue-four-modular' else None)
++        rows.append(dict(name=name, braid=dict(strands=strands, word=word),
++                         pd=diagram.pd, claim=claim, replay=replay))
++    result = dict(schema='modular-boundary-demo-v1', cases=rows,
++        scope='Positive raw modular claims are replayed by the old integer observer. '
++              'The unknot decision comes from final closed rank, not a small modular bound.')
++    content = json.dumps(result, indent=2) + '\n'
++    if args.output:
++        args.output.parent.mkdir(parents=True, exist_ok=True)
++        args.output.write_text(content)
++    else:
++        print(content, end='')
++
++
++if __name__ == '__main__':
++    main()
+diff --git a/Topology/UnknotRecognition/fast/tests/test_modular_response.py b/Topology/UnknotRecognition/fast/tests/test_modular_response.py
+new file mode 100644
+index 0000000..ca1d6a1
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/tests/test_modular_response.py
+@@ -0,0 +1,404 @@
++"""Independent quotient determinants, completed diagrams and interruption checks."""
++import copy
++import itertools
++import random
++import unittest
++
++from fastunknot import Diagram
++from fastunknot.boundary_tait import BoundaryDeclined, BoundaryTait, coloring
++from fastunknot.integer_determinant import bareiss
++from fastunknot.modular_response import ModularTerminalKernel, validate_prime
++from fastunknot.scan_fast import FastScan
++from fastunknot.shadow_scan import ClosureShadow
++
++
++def laplacian(size, edges):
++    result = [[0] * size for _ in range(size)]
++    for u, v, weight in edges:
++        if u != v:
++            result[u][u] += weight
++            result[v][v] += weight
++            result[u][v] -= weight
++            result[v][u] -= weight
++    return result
++
++
++def quotient_minor(matrix, terminals, partition):
++    """Form the entire integer quotient before grounding; no response formula."""
++    blocks = {}
++    labels = [blocks.setdefault(label, len(blocks)) for label in partition]
++    interior = [i for i in range(len(matrix)) if i not in terminals]
++    owner = {v: i for i, v in enumerate(interior)}
++    owner.update({v: len(interior) + labels[i] for i, v in enumerate(terminals)})
++    size = len(interior) + len(blocks)
++    result = [[0] * size for _ in range(size)]
++    for i in range(len(matrix)):
++        for j in range(len(matrix)):
++            result[owner[i]][owner[j]] += matrix[i][j]
++    ground = len(interior)
++    return [[result[i][j] for j in range(size) if j != ground]
++            for i in range(size) if i != ground]
++
++
++def dense_modular_determinant(matrix, prime):
++    """Full normalized Gaussian elimination, independent of symmetric setup."""
++    rows = [[value % prime for value in row] for row in matrix]
++    determinant = 1
++    for k in range(len(rows)):
++        pivot = next((i for i in range(k, len(rows)) if rows[i][k]), None)
++        if pivot is None:
++            return 0
++        if pivot != k:
++            rows[k], rows[pivot] = rows[pivot], rows[k]
++            determinant = -determinant
++        value = rows[k][k]
++        determinant = determinant * value % prime
++        inverse = pow(value, prime - 2, prime)
++        rows[k] = [x * inverse % prime for x in rows[k]]
++        for i in range(k + 1, len(rows)):
++            factor = rows[i][k]
++            rows[i] = [(x - factor * y) % prime for x, y in zip(rows[i], rows[k])]
++    return determinant % prime
++
++
++def partitions(size):
++    if size == 0:
++        yield ()
++        return
++    for prefix in partitions(size - 1):
++        for last in range(max(prefix, default=-1) + 2):
++            yield prefix + (last,)
++
++
++def matchings(labels):
++    if not labels:
++        yield ()
++        return
++    for i in range(1, len(labels)):
++        for rest in matchings(labels[1:i] + labels[i + 1:]):
++            yield ((labels[0], labels[i]),) + rest
++
++
++def component_count(size, edges):
++    graph = [set() for _ in range(size)]
++    for left, right in edges:
++        graph[left].add(right)
++        graph[right].add(left)
++    seen, count = set(), 0
++    for start in range(size):
++        if start in seen:
++            continue
++        count += 1
++        seen.add(start)
++        stack = [start]
++        while stack:
++            for other in graph[stack.pop()]:
++                if other not in seen:
++                    seen.add(other)
++                    stack.append(other)
++    return count
++
++
++def completion_counts(pd, order, stage, pairs):
++    """Rebuild all suffix darts and traverse full completion graphs."""
++    suffix = [pd[i] for i in order[stage:]]
++    where = {}
++    for i, row in enumerate(suffix):
++        for j, label in enumerate(row):
++            where.setdefault(label, []).append(4 * i + j)
++    alpha = [-1] * (4 * len(suffix))
++    for darts in where.values():
++        if len(darts) == 2:
++            a, b = darts
++            alpha[a], alpha[b] = b, a
++    for a, b in pairs:
++        left, right = where[a][0], where[b][0]
++        alpha[left], alpha[right] = right, left
++    assert -1 not in alpha
++    edge_pairs = list(enumerate(alpha))
++    shadows = component_count(len(suffix), ((a // 4, b // 4) for a, b in edge_pairs))
++    links = component_count(len(alpha), edge_pairs + [(a, a ^ 2) for a in range(len(alpha))])
++    zero = component_count(len(alpha), edge_pairs + [(a, a ^ 1) for a in range(len(alpha))])
++    seen, faces = set(), 0
++    for start in range(len(alpha)):
++        if start in seen:
++            continue
++        faces += 1
++        dart = start
++        while dart not in seen:
++            seen.add(dart)
++            other = alpha[dart]
++            dart = (other & -4) | ((other + 1) & 3)
++        assert dart == start
++    return shadows, links, zero, faces
++
++
++class Interrupted(RuntimeError):
++    pass
++
++
++class Counter:
++    def __init__(self, limit=None):
++        self.calls, self.limit = 0, limit
++
++    def __call__(self):
++        self.calls += 1
++        if self.limit is not None and self.calls >= self.limit:
++            raise Interrupted("cancelled exact computation")
++
++
++class ModularKernelTests(unittest.TestCase):
++    def test_random_signed_quotients_against_full_modular_and_integer_determinants(self):
++        rng = random.Random(261008)
++        queries = singular = two_pivots = 0
++        for size in range(1, 9):
++            for _ in range(12):
++                edges = [(i, j, rng.randrange(-4, 5)) for i in range(size)
++                         for j in range(i, size) if rng.randrange(3)]
++                matrix = laplacian(size, edges)
++                before = copy.deepcopy(matrix)
++                b = rng.randrange(1, size + 1)
++                terminals = rng.sample(range(size), b)
++                labels = list(partitions(b)) if b <= 4 else [
++                    tuple(rng.randrange(b) for _ in range(b)) for _ in range(15)]
++                for prime in (3, 5, 7, 101):
++                    kernel = ModularTerminalKernel.build(matrix, terminals, prime)
++                    singular += int(kernel.nullity > 0)
++                    two_pivots += kernel.stats['two_pivots']
++                    for partition in labels:
++                        full = quotient_minor(matrix, terminals, partition)
++                        actual = kernel.query(partition)
++                        self.assertEqual(actual, dense_modular_determinant(full, prime))
++                        self.assertEqual(actual, bareiss(copy.deepcopy(full), lambda _: None) % prime)
++                        q = len(set(partition)) - 1
++                        if kernel.nullity <= q:
++                            self.assertLessEqual(kernel.nullity + q, 2 * (b - 1))
++                        queries += 1
++                self.assertEqual(matrix, before)
++        self.assertGreater(queries, 1900)
++        self.assertGreater(singular, 20)
++        self.assertGreater(two_pivots, 0)
++
++    def test_radical_coupling_and_forced_two_by_two_pivots(self):
++        two = [[0, 1, -1], [1, 0, -1], [-1, -1, 2]]
++        kernel = ModularTerminalKernel.build(two, [2], 101)
++        self.assertEqual(kernel.stats['two_pivots'], 1)
++        self.assertEqual((kernel.nullity, kernel.query((0,))), (0, 100))
++        singular = [[0, 1, -1], [1, -1, 0], [-1, 0, 1]]
++        kernel = ModularTerminalKernel.build(singular, [1, 2], 101)
++        self.assertEqual(kernel.nullity, 1)
++        self.assertEqual(kernel.query((0, 1)), 100)
++        self.assertEqual(kernel.query((0, 0)), 0)
++        self.assertEqual(kernel.query((41, 8)), 100)
++        zero = ModularTerminalKernel.build([[0] * 4 for _ in range(4)], [2, 3], 7)
++        self.assertTrue(zero.universal_zero)
++        self.assertEqual(zero.coupling, ())
++        self.assertEqual(zero.query((0, 1)), 0)
++        all_terminal = ModularTerminalKernel.build([[0] * 4 for _ in range(4)], range(4), 7)
++        self.assertEqual(all_terminal.query((9, 9, 9, 9)), 1)
++        self.assertEqual(all_terminal.query((0, 0, 0, 1)), 0)
++
++    def test_exceptional_primes_change_rank_without_losing_the_answer(self):
++        triangle = laplacian(3, [(0, 1, 2), (0, 2, 1), (1, 2, 1)])
++        good = ModularTerminalKernel.build(triangle, [1, 2], 7)
++        exceptional = ModularTerminalKernel.build(triangle, [1, 2], 3)
++        self.assertEqual((good.nullity, exceptional.nullity), (0, 1))
++        self.assertEqual(good.query((0, 1)), 5)
++        self.assertEqual(exceptional.query((0, 1)), 2)
++        divisible = ModularTerminalKernel.build(triangle, [2], 5)
++        self.assertEqual(divisible.query((0,)), 0)
++        self.assertGreater(divisible.nullity, 0)
++        matrix = [[3, 1, -4], [1, 3, -4], [-4, -4, 8]]
++        mod3 = ModularTerminalKernel.build(matrix, [2], 3)
++        mod5 = ModularTerminalKernel.build(matrix, [2], 5)
++        self.assertEqual((mod3.stats['two_pivots'], mod5.stats['one_pivots']), (1, 2))
++        self.assertEqual((mod3.query((0,)), mod5.query((0,))), (2, 3))
++
++    def test_prime_validation_is_deterministic_within_the_supported_range(self):
++        for number in range(3, 2000, 2):
++            expected = all(number % d for d in range(2, int(number ** 0.5) + 1))
++            if expected:
++                self.assertEqual(validate_prime(number), number)
++            else:
++                with self.assertRaises(ValueError):
++                    validate_prime(number)
++        self.assertEqual(validate_prime(2147483647), 2147483647)
++        for bad in (None, True, 2, 0, -7, 3.0, 2047, 1373653, 25326001,
++                    2147483645, 2147483649, 4759123141):
++            with self.assertRaises(ValueError):
++                validate_prime(bad)
++        matrix = [[1, -1], [-1, 1]]
++        with self.assertRaises(ValueError):
++            ModularTerminalKernel.build(matrix, [0], 9)
++
++    def test_malformed_matrices_terminals_and_partitions(self):
++        for matrix in ([], [[0], [0]], [[1, 0], [0, -1]], [[1, -1], [-2, 2]],
++                       [[0.0]], [[False]], [[0, 0], [0]]):
++            with self.assertRaises(ValueError):
++                ModularTerminalKernel.build(matrix, [0], 7)
++        matrix = [[1, -1], [-1, 1]]
++        for terminals in ([], [0, 0], [-1], [2], [True], [0.0]):
++            with self.assertRaises(ValueError):
++                ModularTerminalKernel.build(matrix, terminals, 7)
++        kernel = ModularTerminalKernel.build(matrix, [0, 1], 7)
++        for partition in ((), (0,), (0, 0, 0), (0, -1), (0, True), (0, 1.0), (0, [])):
++            with self.assertRaises(ValueError):
++                kernel.query(partition)
++
++    def test_callbacks_abort_setup_query_and_zero_shortcuts_without_mutation(self):
++        matrix = laplacian(6, [(i, j, i + j - 3) for i in range(6) for j in range(i)])
++        before = copy.deepcopy(matrix)
++        for limit in (1, 30, 100, 200):
++            with self.assertRaises(Interrupted):
++                ModularTerminalKernel.build(matrix, [3, 4, 5], 101, Counter(limit))
++            self.assertEqual(matrix, before)
++        kernel = ModularTerminalKernel.build(matrix, [3, 4, 5], 101)
++        state = copy.deepcopy(kernel.__dict__)
++        counter = Counter()
++        value = kernel.query((0, 1, 2), counter)
++        self.assertGreater(counter.calls, 5)
++        for limit in (1, counter.calls // 2, counter.calls):
++            with self.assertRaises(Interrupted):
++                kernel.query((0, 1, 2), Counter(limit))
++            self.assertEqual(kernel.__dict__, state)
++        self.assertEqual(kernel.query((0, 1, 2)), value)
++        zero = ModularTerminalKernel.build([[0] * 3 for _ in range(3)], [2], 7)
++        with self.assertRaises(Interrupted):
++            zero.query((0,), Counter(3))
++        with self.assertRaises(Interrupted):
++            validate_prime(2147483647, Counter(5))
++
++
++class BoundaryGeometryTests(unittest.TestCase):
++    def test_live_completions_against_full_geometry_and_exact_shadow(self):
++        rng = random.Random(261009)
++        accepted = queries = disconnected = 0
++        while accepted < 24:
++            strands = rng.randrange(2, 5)
++            word = [rng.choice((-1, 1)) * rng.randrange(1, strands)
++                    for _ in range(rng.randrange(1, 10))]
++            try:
++                diagram = Diagram.from_braid(strands, word)
++            except ValueError:
++                continue
++            accepted += 1
++            for diagram in (diagram, diagram.mirror()):
++                order = list(range(diagram.crossings))
++                rng.shuffle(order)
++                palette = coloring(diagram.pd)
++                exact = ClosureShadow(diagram.pd, order, max_states=None, max_work=None)
++                scan = FastScan(shape_cache=False)
++                for stage, index in enumerate(order):
++                    geometry = BoundaryTait(diagram.pd, order, stage, palette)
++                    self.assertIs(geometry.palette, palette)
++                    kernels = [ModularTerminalKernel.build(geometry.laplacian,
++                                                          geometry.terminals, p)
++                               for p in (3, 5, 101)]
++                    for matching in set(scan.mid) - {None}:
++                        pairs = scan.algebra.pairs[matching]
++                        data = geometry.partition(pairs)
++                        shadow, links, zero, faces = completion_counts(diagram.pd, order, stage, pairs)
++                        self.assertEqual(data['shadow_components'], shadow)
++                        self.assertEqual(data['link_components'], links)
++                        self.assertEqual(data['zero_circles'], zero)
++                        self.assertEqual(faces, geometry.n + 2 * shadow)
++                        self.assertEqual(data['unreduced_euler'], exact.evaluate_one(stage, pairs))
++                        vector = exact.evaluate(stage, pairs)
++                        expected = (vector[0] - vector[2], vector[1] - vector[3])
++                        unit = ((1, 0), (0, -1), (-1, 0), (0, 1))[data['phase']]
++                        for kernel in kernels:
++                            value = kernel.query(data['partition']) if shadow == 1 else 0
++                            actual = tuple(x * value % kernel.prime for x in unit)
++                            self.assertEqual(actual, tuple(x % kernel.prime for x in expected))
++                        self.assertEqual(tuple(dict.fromkeys(data['partition'])),
++                                         tuple(range(len(set(data['partition'])))))
++                        queries += 1
++                        disconnected += int(shadow > 1)
++                    scan.add_crossing(diagram.pd[index])
++        self.assertGreater(queries, 500)
++        self.assertGreater(disconnected, 0)
++
++    def test_arbitrary_pairings_are_checked_before_any_residue(self):
++        declined = nonspherical = accepted = 0
++        diagram = Diagram.from_braid(3, [1, 2] * 4)
++        order = [0, 3, 6, 1, 4, 7, 2, 5]
++        for stage in range(2, 7):
++            geometry = BoundaryTait(diagram.pd, order, stage)
++            if len(geometry.labels) > 8:
++                continue
++            for pairs in matchings(geometry.labels):
++                shadow, _, _, faces = completion_counts(diagram.pd, order, stage, pairs)
++                try:
++                    data = geometry.partition(pairs)
++                except BoundaryDeclined:
++                    declined += 1
++                except ValueError:
++                    nonspherical += 1
++                    self.assertNotEqual(faces, geometry.n + 2 * shadow)
++                else:
++                    accepted += 1
++                    self.assertEqual(faces, geometry.n + 2 * shadow)
++                    self.assertEqual(data['shadow_components'], shadow)
++        self.assertGreater(declined, 0)
++        self.assertGreater(nonspherical, 0)
++        self.assertGreater(accepted, 0)
++
++    def test_malformed_sources_orders_palettes_and_pair_coverage(self):
++        for pd in ((), ((0, 0, 0, 0),), ((0, 1, 0, 1),), ((0, 0, 1),),
++                   ((0, 0, 1, True),), ((0, 0, 1, 2),)):
++            with self.assertRaises(ValueError):
++                BoundaryTait(pd, list(range(len(pd))), 0)
++        diagram = Diagram.from_braid(2, [1, 1, 1])
++        for order in ([], [0, 1], [0, 1, 1], [0, 1, 3], [False, 1, 2]):
++            with self.assertRaises(ValueError):
++                BoundaryTait(diagram.pd, order, 0)
++        for stage in (-1, 3, True, 1.0):
++            with self.assertRaises(ValueError):
++                BoundaryTait(diagram.pd, [0, 1, 2], stage)
++        for palette in ((), (0,) * 12, (2,) * 12, (True,) * 12):
++            with self.assertRaises(ValueError):
++                BoundaryTait(diagram.pd, [0, 1, 2], 1, palette)
++        palette = coloring(diagram.pd)
++        geometry = BoundaryTait(diagram.pd, [0, 1, 2], 1, tuple(palette))
++        scan = FastScan(shape_cache=False)
++        scan.add_crossing(diagram.pd[0])
++        pairs = scan.algebra.pairs[next(m for m in scan.mid if m is not None)]
++        self.assertEqual(geometry.partition(pairs),
++                         BoundaryTait(diagram.pd, [0, 1, 2], 1, palette).partition(pairs))
++        a = geometry.labels[0]
++        for bad in ((), pairs + (pairs[0],), ((-1, -2),) + pairs[1:],
++                    ((a, a),) + pairs[1:], ((a,),) + pairs[1:], ((a, True),) + pairs[1:]):
++            with self.assertRaises(ValueError):
++                geometry.partition(bad)
++        with self.assertRaises(AttributeError):
++            palette.colors = ()
++        closed = BoundaryTait(diagram.pd, [0, 1, 2], 0, palette)
++        self.assertEqual((closed.labels, closed.partition(())['partition']), ((), (0,)))
++
++    def test_callbacks_and_boundary_query_work_do_not_depend_on_suffix_length(self):
++        query_counts = []
++        for length in (3, 43):
++            diagram = Diagram.from_braid(2, [1] * length)
++            order = list(range(length))
++            palette = coloring(diagram.pd)
++            for limit in (1, 10, 30):
++                with self.assertRaises(Interrupted):
++                    BoundaryTait(diagram.pd, order, 1, palette, Counter(limit))
++            geometry = BoundaryTait(diagram.pd, order, 1, palette)
++            scan = FastScan(shape_cache=False)
++            scan.add_crossing(diagram.pd[0])
++            pairs = scan.algebra.pairs[next(m for m in scan.mid if m is not None)]
++            check = Counter()
++            expected = geometry.partition(pairs, check)
++            query_counts.append(check.calls)
++            for limit in (1, check.calls // 2, check.calls):
++                with self.assertRaises(Interrupted):
++                    geometry.partition(pairs, Counter(limit))
++            self.assertEqual(geometry.partition(pairs), expected)
++        self.assertEqual(query_counts[0], query_counts[1])
++        with self.assertRaises(Interrupted):
++            coloring(Diagram.from_braid(2, [1, 1, 1]).pd, Counter(30))
++
++
++if __name__ == '__main__':
++    unittest.main()
+diff --git a/Topology/UnknotRecognition/fast/tests/test_modular_shadow.py b/Topology/UnknotRecognition/fast/tests/test_modular_shadow.py
+new file mode 100644
+index 0000000..2d58c86
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/tests/test_modular_shadow.py
+@@ -0,0 +1,227 @@
++"""Independent integer/cube checks and resource contracts for modular shadows."""
++import copy
++import itertools
++import json
++from pathlib import Path
++import random
++import subprocess
++import sys
++import unittest
++from unittest.mock import patch
++
++from fastunknot import Diagram, recognize
++from fastunknot.component_scan import ComponentScan
++from fastunknot.euler_scan import EulerBudget
++from fastunknot.geometry import ScanLimit
++from fastunknot.modular_lattice import (balanced, crt_vector, minimum_l1_lift,
++                                       threshold_is_exact, validate_primes)
++from fastunknot.modular_shadow import (ModularClosureShadow,
++    component_modular_shadow_bound, modular_shadow_khovanov_decide)
++from fastunknot.scan_fast import FastScan
++from fastunknot.shadow_scan import (ClosureShadow, ShadowWorkBudget,
++                                    component_shadow_bound)
++
++
++def small_diagrams(count=20, seed=811031):
++    rng = random.Random(seed)
++    produced = 0
++    while produced < count:
++        strands = rng.randrange(2, 5)
++        word = [rng.choice((-1, 1)) * rng.randrange(1, strands)
++                for _ in range(rng.randrange(1, 10))]
++        try:
++            diagram = Diagram.from_braid(strands, word)
++        except ValueError:
++            continue
++        order = list(range(diagram.crossings))
++        rng.shuffle(order)
++        produced += 1
++        yield diagram, order
++
++
++class LatticeTests(unittest.TestCase):
++    def test_sum_constrained_minimum_against_exhaustive_integer_lifts(self):
++        for modulus in (3, 5, 7):
++            for residues in itertools.product(range(modulus), repeat=2):
++                for total in range(-10, 11):
++                    if (total - sum(residues)) % modulus:
++                        continue
++                    expected = min(abs(x) + abs(total - x)
++                        for x in range(-30, 31)
++                        if x % modulus == residues[0]
++                        and (total - x) % modulus == residues[1])
++                    actual, lift = minimum_l1_lift(residues, modulus, total)
++                    self.assertEqual(actual, expected)
++                    self.assertEqual(sum(lift), total)
++                    self.assertEqual(tuple(x % modulus for x in lift), residues)
++
++    def test_four_coordinate_lifts_and_monotonicity(self):
++        rng = random.Random(812301)
++        for _ in range(150):
++            x = [rng.randrange(-20, 21) for _ in range(4)]
++            previous = 0
++            for modulus in (3, 15, 105):
++                lower, lift = minimum_l1_lift(x, modulus, sum(x))
++                self.assertLessEqual(previous, lower)
++                self.assertLessEqual(lower, sum(map(abs, x)))
++                self.assertEqual(sum(lift), sum(x))
++                previous = lower
++            self.assertEqual(previous, sum(map(abs, x)))
++        # A mixed-direction choice cannot improve the exact sum-constrained
++        # minimizer. Exhaust all candidate lifts for a nontrivial 4-vector.
++        for residues in itertools.product(range(3), repeat=4):
++            for total in (-3, 0, 3):
++                if (total - sum(residues)) % 3:
++                    continue
++                expected = min(sum(abs(r + 3 * z) for r, z in zip(residues, shifts))
++                    for shifts in itertools.product(range(-2, 3), repeat=4)
++                    if sum(r + 3 * z for r, z in zip(residues, shifts)) == total)
++                self.assertEqual(minimum_l1_lift(residues, 3, total)[0], expected)
++
++    def test_crt_exposes_aliases_and_threshold_bound_is_sharp(self):
++        self.assertEqual(crt_vector((0, 0), 3, (1, 4), 5), (6, 9))
++        # x and -x are invisible modulo each divisor of x; neither zero is
++        # an integer-zero certificate, despite the exactly known sum zero.
++        true = (15, -15, 0, 0)
++        self.assertEqual(minimum_l1_lift(true, 15, 0)[0], 0)
++        self.assertFalse(threshold_is_exact(15, [15], [1]))
++        self.assertTrue(threshold_is_exact(17, [15], [1]))
++        self.assertGreater(minimum_l1_lift(true, 17, 0)[0], 1)
++        for bound in range(1, 7):
++            modulus = 2 * ((bound + 1) // 2) + 1
++            for vector in itertools.product(range(-bound, bound + 1), repeat=2):
++                lower, _ = minimum_l1_lift(vector, modulus, sum(vector))
++                self.assertEqual(lower > 1, sum(map(abs, vector)) > 1)
++        # Exact-sum information can strengthen general higher-threshold
++        # bounds; threshold-one recognition uses it chiefly for termination.
++        self.assertEqual(minimum_l1_lift((1, 1), 3)[0], 2)
++        self.assertEqual(minimum_l1_lift((1, 1), 3, 5)[0], 5)
++
++    def test_invalid_lattice_inputs_and_composite_primes(self):
++        for values in ((), (3, 3), (2,), (9,), (True,), (1 << 31,), (65521, 21)):
++            with self.assertRaises(ValueError):
++                validate_primes(values)
++        for modulus in (0, 2, 4):
++            with self.assertRaises(ValueError):
++                balanced(1, modulus)
++        with self.assertRaises(ValueError):
++            minimum_l1_lift((0, 0), 3, 1)
++
++
++class ModularShadowTests(unittest.TestCase):
++    def test_actual_prefix_vectors_equal_integer_completions_modulo_each_prime(self):
++        count = 0
++        for diagram, order in small_diagrams(24):
++            for diagram in (diagram, diagram.mirror()):
++                exact = ClosureShadow(diagram.pd, order, max_states=None, max_work=None)
++                modular = ModularClosureShadow(diagram.pd, order, primes=(3, 5, 65521),
++                                                max_states=None, max_work=None)
++                scan = FastScan(shape_cache=False)
++                for stage, index in enumerate(order):
++                    for matching in set(scan.mid) - {None}:
++                        pairs = scan.algebra.pairs[matching]
++                        value = exact.evaluate(stage, pairs)
++                        for prime in modular.primes:
++                            self.assertEqual(modular.evaluate(stage, pairs, prime),
++                                             tuple(x % prime for x in value))
++                            count += 1
++                    scan.add_crossing(diagram.pd[index])
++        self.assertGreater(count, 700)
++
++    def test_component_bounds_below_exact_and_equal_when_threshold_completed(self):
++        for diagram, order in small_diagrams(18, 811044):
++            scan = ComponentScan(shape_cache=False, rank_cap=3)
++            exact = ClosureShadow(diagram.pd, order, max_states=None, max_work=None)
++            modular = ModularClosureShadow(diagram.pd, order, primes=(3, 5, 7, 11, 13),
++                                            max_states=None, max_work=None)
++            for stage, index in enumerate(order):
++                before = copy.deepcopy((scan.mid, scan.deg, scan.out, scan.inc,
++                                        scan.weights, scan.owner))
++                expected, _ = component_shadow_bound(scan, exact, stage)
++                lower, records = component_modular_shadow_bound(scan, modular, stage)
++                self.assertLessEqual(lower, expected)
++                if modular.last_observation["threshold_exact"]:
++                    self.assertEqual(lower, expected)
++                for record in records:
++                    self.assertEqual(sum(record["minimum_lift"]), record["exact_euler"])
++                self.assertEqual(before, (scan.mid, scan.deg, scan.out, scan.inc,
++                                           scan.weights, scan.owner))
++                scan.add_crossing(diagram.pd[index])
++                scan.check_d_squared()
++
++    def test_determinant_one_knot_and_final_rank(self):
++        diagram = Diagram.from_braid(3, [1, 2] * 5)
++        result = modular_shadow_khovanov_decide(diagram.pd, order=list(range(10)),
++                                               shadow_max_work=None)
++        self.assertEqual((result["status"], result["method"], result["stage"]),
++                         ("KNOTTED", "marked-residue-four-modular", 9))
++        unknot = Diagram.from_braid(3, [1, 2])
++        result = modular_shadow_khovanov_decide(unknot.pd)
++        self.assertEqual((result["status"], result["method"]), ("UNKNOT", "closed-rank"))
++
++    def test_interrupted_kernel_does_not_publish_partial_state(self):
++        diagram = Diagram.from_braid(3, [1, 2] * 5)
++        engine = ModularClosureShadow(diagram.pd, list(range(10)), max_work=None)
++        from fastunknot.modular_response import ModularTerminalKernel
++        original = ModularTerminalKernel.build
++
++        def interrupted(*args, **kwargs):
++            engine.max_work = engine.stats["work_units"] + 12
++            return original(*args, **kwargs)
++
++        with patch.object(ModularTerminalKernel, "build", side_effect=interrupted):
++            with self.assertRaises(ShadowWorkBudget):
++                engine.evaluate(0, ())
++        self.assertFalse(engine.kernels)
++        self.assertFalse(engine.shadow_cache)
++        engine.max_work = None
++        expected = ClosureShadow(diagram.pd, list(range(10))).evaluate(0, ())
++        self.assertEqual(engine.evaluate(0, ()), tuple(x % 65521 for x in expected))
++
++    def test_budget_cache_and_global_deadline(self):
++        diagram = Diagram.from_braid(2, [1, 1, 1])
++        engine = ModularClosureShadow(diagram.pd, [0, 1, 2], max_states=1, max_work=None)
++        value = engine.evaluate(0, ())
++        before = engine.stats["work_units"]
++        self.assertEqual(engine.evaluate(0, ()), value)
++        self.assertEqual(engine.stats["work_units"], before)
++        scan = FastScan()
++        scan.add_crossing(diagram.pd[0])
++        pairs = scan.algebra.pairs[next(m for m in scan.mid if m is not None)]
++        with self.assertRaises(EulerBudget):
++            engine.evaluate(1, pairs)
++        engine.deadline, engine.max_work = 0, 0
++        with self.assertRaises(ScanLimit):
++            engine.evaluate(0, ())
++        self.assertEqual(recognize(diagram, backend="shadow-modular", seconds=0).status,
++                         "UNKNOWN")
++        for budget in ({"shadow_max_work": 0}, {"euler_max_states": 0}):
++            out = modular_shadow_khovanov_decide(diagram.pd, **budget)
++            self.assertEqual(out["status"], "KNOTTED")
++            self.assertTrue(out["shadow_exhausted"])
++            self.assertNotEqual(out["method"], "marked-residue-four-modular")
++
++    def test_geometry_decline_falls_back_without_false_verdict(self):
++        from fastunknot.boundary_tait import BoundaryDeclined, BoundaryTait
++        diagram = Diagram.from_braid(3, [1, 2])
++        with patch.object(BoundaryTait, "partition", side_effect=BoundaryDeclined("test decline")):
++            out = modular_shadow_khovanov_decide(diagram.pd)
++        self.assertEqual((out["status"], out["method"]), ("UNKNOT", "closed-rank"))
++        self.assertEqual(out["shadow_stats"]["boundary_declines"], 1)
++
++    def test_cli_and_invalid_options(self):
++        path = Path(__file__).resolve().parents[1] / "examples/trefoil.json"
++        args = [sys.executable, "-B", "-m", "fastunknot", "recognize", str(path),
++                "--backend", "shadow-modular", "--no-braid", "--no-seifert", "--no-reduction",
++                "--no-descending", "--no-factor", "--no-alexander", "--no-modular", "--no-jones"]
++        run = subprocess.run(args, capture_output=True, text=True, check=True)
++        out = json.loads(run.stdout)
++        self.assertEqual((out["status"], out["method"]),
++                         ("KNOTTED", "marked-residue-four-modular-bound"))
++        bad = subprocess.run(args + ["--shadow-primes", "9"], capture_output=True, text=True)
++        self.assertEqual(bad.returncode, 2)
++        self.assertNotIn("Traceback", bad.stderr)
++
++
++if __name__ == "__main__":
++    unittest.main()
+diff --git a/Topology/UnknotRecognition/fast/tests/test_modular_verify.py b/Topology/UnknotRecognition/fast/tests/test_modular_verify.py
+new file mode 100644
+index 0000000..80f038b
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/tests/test_modular_verify.py
+@@ -0,0 +1,197 @@
++"""Positive replay, deliberate certificate corruption and resource propagation."""
++import copy
++import json
++import unittest
++from unittest.mock import patch
++
++from fastunknot import Diagram
++from fastunknot.boundary_tait import BoundaryTait, coloring
++from fastunknot.geometry import ScanLimit
++from fastunknot.modular_response import ModularTerminalKernel
++from fastunknot.modular_shadow import ModularClosureShadow, modular_shadow_khovanov_decide
++from fastunknot.modular_verify import (ModularVerificationError, replay_modular_shadow,
++                                      verify_modular_shadow)
++from fastunknot.scan_fast import FastScan
++from fastunknot.shadow_scan import ClosureShadow
++
++
++class ModularReplayTests(unittest.TestCase):
++    @classmethod
++    def setUpClass(cls):
++        cls.examples = []
++        for strands, word in ((2, [1, 1, 1]), (3, [1, -2] * 2), (3, [1, 2] * 5)):
++            diagram = Diagram.from_braid(strands, word)
++            result = modular_shadow_khovanov_decide(diagram.pd, order=list(range(len(word))),
++                shadow_max_work=None, primes=(3, 5, 7, 11, 13))
++            assert result['method'] == 'marked-residue-four-modular'
++            cls.examples.append((diagram, result))
++
++    def test_replays_json_round_trips_and_full_prefix_components(self):
++        for diagram, result in self.examples:
++            before = copy.deepcopy(result)
++            output = replay_modular_shadow(diagram.pd, json.loads(json.dumps(result)))
++            self.assertTrue(output['verified'])
++            self.assertGreaterEqual(output['verified_weighted_lower_bound'], 2)
++            for record in output['components']:
++                self.assertLessEqual(record['verified_norm'], record['exact_norm'])
++            self.assertTrue(verify_modular_shadow(diagram, result))
++            self.assertEqual(result, before)
++        self.assertGreater(self.examples[-1][1]['stage'], 0)
++        self.assertGreater(len(self.examples[-1][1]['components'][0]['objects']), 1)
++
++    def test_replay_does_not_call_new_modular_arithmetic(self):
++        diagram, result = self.examples[-1]
++        with patch.object(ModularClosureShadow, 'evaluate', side_effect=AssertionError('new observer')):
++            with patch.object(ModularTerminalKernel, 'build', side_effect=AssertionError('new kernel')):
++                with patch('fastunknot.modular_lattice.minimum_l1_lift',
++                           side_effect=AssertionError('new lattice minimizer')):
++                    self.assertTrue(verify_modular_shadow(diagram.pd, result))
++
++    def test_source_order_stage_and_mark_must_match(self):
++        diagram, result = self.examples[0]
++        unknot = Diagram.from_braid(2, [1, 1, -1])
++        self.assertFalse(verify_modular_shadow(unknot.pd, result))
++        for source in (None, (), ((0, 1, 0, 1),), ((0, 0, 0, 0),), ((0, True, 0, True),)):
++            self.assertFalse(verify_modular_shadow(source, result))
++        for field, value in (('status', 'UNKNOT'), ('method', 'closed-rank'), ('crossings', 4),
++                             ('crossings', True), ('stage', 3), ('stage', -1), ('stage', False),
++                             ('order', [0, 0, 2]), ('order', [0, 1]), ('marked_label', -1),
++                             ('reduced_rank_lower_bound_capped', 1)):
++            tampered = copy.deepcopy(result)
++            tampered[field] = value
++            self.assertFalse(verify_modular_shadow(diagram.pd, tampered), (field, value))
++        self.assertFalse(verify_modular_shadow(diagram.pd, None))
++
++    def test_prime_product_and_observation_metadata_are_checked(self):
++        diagram, result = self.examples[1]  # two auxiliary primes are needed here.
++        self.assertEqual(result['modular_observation']['primes'], [3, 5])
++        for field, value in (('primes', [3, 3]), ('primes', [3, 9]), ('primes', [2, 5]),
++                             ('primes', [3, True]), ('primes', []), ('modulus', 3),
++                             ('stage', 1), ('observed_components', 2),
++                             ('total_components', 2), ('obstruction', False),
++                             ('threshold_exact', False)):
++            tampered = copy.deepcopy(result)
++            tampered['modular_observation'][field] = value
++            self.assertFalse(verify_modular_shadow(diagram.pd, tampered), (field, value))
++        tampered = copy.deepcopy(result)
++        tampered['components'][0]['modulus'] = 3
++        self.assertFalse(verify_modular_shadow(diagram.pd, tampered))
++
++    def test_partial_duplicate_and_unknown_components_are_rejected(self):
++        diagram, result = self.examples[-1]
++        partial = copy.deepcopy(result)
++        partial['components'][0]['objects'].pop()
++        partial['components'][0]['relative_q'].pop()
++        self.assertFalse(verify_modular_shadow(diagram.pd, partial))
++        duplicate = copy.deepcopy(result)
++        duplicate['components'].append(copy.deepcopy(duplicate['components'][0]))
++        duplicate['modular_observation']['observed_components'] += 1
++        self.assertFalse(verify_modular_shadow(diagram.pd, duplicate))
++        for objects in ([], [10**6], [True], list(reversed(result['components'][0]['objects']))):
++            tampered = copy.deepcopy(result)
++            tampered['components'][0]['objects'] = objects
++            self.assertFalse(verify_modular_shadow(diagram.pd, tampered))
++        empty = copy.deepcopy(result)
++        empty['components'] = []
++        empty['modular_observation']['observed_components'] = 0
++        self.assertFalse(verify_modular_shadow(diagram.pd, empty))
++
++    def test_residues_quantum_phases_and_scalar_metadata_are_checked(self):
++        diagram, result = self.examples[-1]
++        for field, value in (('residues', [0, 0, 0, 0]), ('residues', [3, 0, 2, 0]),
++                             ('residues', [True, 0, 2, 0]), ('residues', [1, 2]),
++                             ('exact_euler', 1), ('coordinate_bound', 0),
++                             ('multiplicity', 0), ('multiplicity', 2), ('norm', 0),
++                             ('minimum_lift', [0, 0, 0, 0])):
++            tampered = copy.deepcopy(result)
++            tampered['components'][0][field] = value
++            self.assertFalse(verify_modular_shadow(diagram.pd, tampered), (field, value))
++        for amount in (1, 4):
++            tampered = copy.deepcopy(result)
++            tampered['components'][0]['relative_q'][1] += amount
++            self.assertFalse(verify_modular_shadow(diagram.pd, tampered))
++        uniform = copy.deepcopy(result)
++        uniform['components'][0]['relative_q'] = [q + 4 for q in uniform['components'][0]['relative_q']]
++        self.assertFalse(verify_modular_shadow(diagram.pd, uniform))
++        for field in ('euler_characteristics', 'multiplicities_capped'):
++            tampered = copy.deepcopy(result)
++            tampered[field][0] += 1
++            self.assertFalse(verify_modular_shadow(diagram.pd, tampered))
++        extra = copy.deepcopy(result)
++        extra['components'][0]['phase'] = 0
++        self.assertFalse(verify_modular_shadow(diagram.pd, extra))
++
++    def test_feasible_nonminimal_lift_is_rejected_even_below_the_exact_norm(self):
++        diagram, result = self.examples[-1]
++        tampered = copy.deepcopy(result)
++        # This is the exact vector itself and has the right residues and sum,
++        # but its norm 4 is larger than the modular lattice minimum 2.
++        tampered['components'][0]['minimum_lift'] = [-2, 0, 2, 0]
++        tampered['components'][0]['norm'] = 4
++        with self.assertRaisesRegex(ModularVerificationError, 'minimum possible norm'):
++            replay_modular_shadow(diagram.pd, tampered)
++
++    def test_resource_limits_propagate_and_are_shared_with_integer_observer(self):
++        diagram, result = self.examples[-1]
++        before = copy.deepcopy(result)
++        for options in ({'seconds': 0}, {'max_objects': 0}, {'max_objects': 1}):
++            with self.assertRaises(ScanLimit):
++                verify_modular_shadow(diagram.pd, result, **options)
++        for options in ({'seconds': -1}, {'seconds': float('inf')}, {'seconds': float('nan')},
++                        {'seconds': True}, {'max_objects': -1}, {'max_objects': True}):
++            with self.assertRaises(ModularVerificationError):
++                replay_modular_shadow(diagram.pd, result, **options)
++        original = ClosureShadow.evaluate
++
++        def expire(engine, *args, **kwargs):
++            self.assertIsNotNone(engine.deadline)
++            engine.deadline = 0
++            return original(engine, *args, **kwargs)
++
++        with patch.object(ClosureShadow, 'evaluate', expire):
++            with self.assertRaises(ScanLimit):
++                verify_modular_shadow(diagram.pd, result, seconds=5)
++        self.assertEqual(result, before)
++
++    def test_shapes_only_change_caching_and_replay_preserves_object_identity(self):
++        diagram, _ = self.examples[-1]
++        for enabled in (False, True):
++            result = modular_shadow_khovanov_decide(diagram.pd,
++                order=list(range(diagram.crossings)), shape_cache=enabled,
++                shadow_max_work=None, primes=(3, 5, 7))
++            self.assertTrue(verify_modular_shadow(diagram.pd, result))
++
++    def test_exact_terminal_count_and_frontier_query_dimension(self):
++        nonempty = queries = empty = 0
++        for strands, word in ((2, [1] * 7), (3, [1, -2] * 4), (3, [1, 2] * 5)):
++            diagram = Diagram.from_braid(strands, word)
++            order = list(reversed(range(diagram.crossings)))
++            palette = coloring(diagram.pd)
++            scan = FastScan(shape_cache=False)
++            for stage, index in enumerate(order):
++                geometry = BoundaryTait(diagram.pd, order, stage, palette)
++                b = len(geometry.labels)
++                if b:
++                    self.assertEqual(2 * len(geometry.terminals), b)
++                    nonempty += 1
++                else:
++                    self.assertEqual(len(geometry.terminals), 1)
++                    empty += 1
++                for prime in (3, 5, 101):
++                    kernel = ModularTerminalKernel.build(geometry.laplacian,
++                                                          geometry.terminals, prime)
++                    for matching in set(scan.mid) - {None}:
++                        data = geometry.partition(scan.algebra.pairs[matching])
++                        q = len(set(data['partition'])) - 1
++                        if kernel.nullity <= q:
++                            dimension = kernel.nullity + q
++                            self.assertLessEqual(dimension, b - 2 if b else 0)
++                            queries += 1
++                scan.add_crossing(diagram.pd[index])
++        self.assertGreater(nonempty, 15)
++        self.assertGreater(queries, 100)
++        self.assertEqual(empty, 3)
++
++
++if __name__ == '__main__':
++    unittest.main()

@@ -1,0 +1,196 @@
+\section{Signed Tait block products for actual observer workloads}
+\label{sec:tait-blocks}
+
+The preceding boundary experiment isolates a useful primitive, but actual
+recognition decides when that primitive runs.  We therefore traced the
+unmodified marked observer on every retained example before choosing its
+next optimization.  Most examples ask for just the initial determinant.
+The determinant-one torus and grid examples ask for two additional distinct
+closures at a later stage.  No example in this collection reaches the
+repeated-query threshold of four at any stage.  This evidence favors reducing
+the cost of a single completed Tait graph before enabling terminal-kernel
+setup in the production observer.
+
+The maintained shadow backend now factors larger signed Tait graphs at their
+articulation vertices.  For example, the initial eightfold Conway connected
+sum has a $41\times41$ full cofactor, but its block factors require matrices
+of size at most $6\times6$.  This optimization applies directly to each
+actual completion, with the original signed phase retained.  It makes no
+assumption that a partial complex splits as a knot connected sum.
+
+\subsection{Why the signed product identity is exact}
+
+Let $G$ be the black Tait multigraph of a connected classical projection,
+with integer edge weights $w_e\in\{1,-1\}$.  Its weighted tree sum is
+\[
+ \tau(G)=\sum_{T\text{ spanning tree of }G}\prod_{e\in T}w_e.
+\]
+Loops never occur in a tree and may be discarded for this computation.
+For parallel edges between $u$ and $v$, a tree can use at most one, so
+replacing them by the single weight
+$w_{uv}=\sum_{e:u\leftrightarrow v}w_e$ preserves the sum.  This is a
+polynomial identity and does not require positive weights.  A zero combined
+weight may be deleted.  If these deletions disconnect the graph, the sum is
+zero even though the original knot projection remains connected.
+
+Suppose the resulting graph is connected, and let $G_1,\ldots,G_s$ be its
+edge blocks, with each bridge treated as a two-vertex block.  Then
+\[
+ \boxed{\tau(G)=\prod_{j=1}^s\tau(G_j).}
+\]
+To prove this, first split at an articulation vertex into two graphs meeting
+only at that vertex.  Restricting a spanning tree to either graph gives a
+spanning tree there: a disconnected restriction cannot be reconnected by
+leaving and returning through the same articulation vertex.  Conversely,
+the union of two such trees is connected and has no cycle.  The bijection
+preserves the product of edge weights.  Induction on the block-cut tree
+gives the formula.  Thus the identity also holds when factors are negative
+or vanish by cancellation.  A bridge contributes its combined weight; the
+one-vertex graph has tree sum one.
+
+For a nontrivial block, the integer matrix-tree theorem identifies its tree
+sum with any grounded Laplacian cofactor.  The implementation uses the
+existing fraction-free Bareiss determinant with exact-division checks and
+row-level interruption points.  It stops once a zero factor is found.
+No positive-definite elimination or nonsingular-interior premise is used.
+
+The full specialization is still
+\[
+ J_{\mathrm{raw}}(i)=(-i)^{B+v-1}\prod_j\tau(G_j),
+\]
+where $v$ is the black vertex count of the \emph{full completed graph} and
+$B$ is the original crossing sum.  In particular, loops and cancelled
+parallel edges continue to contribute to the crossing phase.  Multiplying
+independently normalized block Jones polynomials without these conventions
+would not justify the implementation.
+
+This factorization is performed after the actual closure has been checked.
+It cannot automatically be applied to the fixed common graph before arbitrary
+terminal identifications: those identifications can create cycles crossing
+old articulation blocks.  Terminal-kernel reuse and completed-graph block
+factorization therefore have different geometric premises.
+
+\subsection{Implementation, resources, and complexity}
+
+\path{fast/fastunknot/tait_blocks.py} combines parallel weights and uses an
+iterative low-link depth-first search to produce edge blocks.  A stack of
+DFS frames replaces recursion, so a long chain does not impose Python's
+recursion-depth limit.  When a child's low-link index is at least its
+parent's discovery index, the edge stack is popped through that tree edge
+to emit a block.  A visit count detects disconnection of the nonzero graph.
+
+The observer chooses the smaller checkerboard shading as before.  For a
+cofactor of size at most sixteen it retains the direct dense path; larger
+cofactors use block decomposition before any dense matrix is allocated.
+This cutoff avoids adding graph bookkeeping to the smallest queries.  It
+is an implementation policy, not a claim that sixteen is universally optimal.
+The observer exposes block, bridge, cancellation, and block-determinant
+counts.  \code{max\_unsplit\_cofactor\_size} records the full graph's size,
+while \code{max\_cofactor\_size} now records the largest matrix actually
+allocated.  The preexisting \code{determinants} field continues to count
+connected closure specializations, including interrupted attempts.
+
+Write $b_j=|V(G_j)|-1$.  Apart from integer bit costs, the determinant path
+uses
+\[
+ O\!\left(|V|+|E|+\sum_j b_j^3\right)
+ \quad\text{work and}\quad
+ O\!\left(|V|+|E|+\max_j b_j^2\right)\text{ auxiliary space},
+\]
+with bridge factors evaluated directly.  This replaces the full cofactor's
+cubic arithmetic and quadratic allocation by the corresponding block costs.
+The graph decomposition itself is linear.  Integer sizes still grow with
+the input; the displayed arithmetic count is not a unit-cost claim for
+arbitrarily large numbers.  These polynomial savings do not bound the
+Khovanov scanner's exponential state growth or establish a general
+subexponential recognition algorithm.
+
+All graph traversal, edge aggregation, matrix allocation, and elimination
+paths charge the existing local work allowance and poll the global deadline.
+Only a complete four-residue result enters the closure cache.  A partially
+multiplied block product is local state and is discarded on interruption.
+The implementation measured in this section disables observations on local
+exhaustion and continues the same exact capped scan.  The later scheduler in
+Section~\ref{sec:shadow-fallback} retains a query-capped Euler phase; a global
+deadline still yields \code{UNKNOWN}.  The
+bounded-work policy counts combinatorial and arithmetic updates, not integer
+bit operations.  The change remains inside the optional \code{shadow}
+backend; default recognition still uses \code{standard}.
+
+\subsection{Validation and workload evidence}
+
+Five new tests compare 245 random small weighted multigraphs with independent
+spanning-tree enumeration and 192 larger graphs with independent dense
+cofactors.  They include parallel edges, loops, negative weights, deletion
+of cancelled edges, and connected graphs whose signed tree sum vanishes.
+A 5,000-vertex bridge chain verifies the iterative traversal and avoids
+any dense allocation.  Four larger classical diagrams and their mirrors
+match independently reconstructed values at both one and $i$; this checks
+that the block product retains the global phase.
+
+An injected interruption after one completed block verifies that no partial
+result is cached.  Resumption recomputes the exact value, global deadlines
+win even on a cache hit, and a real 2,000-unit optional allowance on the
+Conway sum exhausts locally while exact scanning still returns knotted.
+All 577 maintained tests pass after the final cutoff change.
+The test records are \path{data/tait-block-tests.txt} and
+\path{data/tait-block-integrated-tests.txt}.
+
+\path{fast/benchmark_tait_blocks.py} keeps three scopes separate: the initial
+closure query, the complete raw marked scan, and complete recognition with
+the shadow backend requested.  Each sample includes fresh diagram and
+observer setup.  Two additional inputs concatenate 16 and 32 oriented Conway traversals to
+form larger connected sums; their validated PD codes are retained in the
+benchmark data.  Seven paired rounds shuffle direct, identical control, and
+block-factor arms; imports and one warmup are excluded.  The direct baseline
+loads \code{shadow\_scan.py} from revision \code{2c7c8df3f}, sharing other
+dependencies.  Actual observer traces are collected separately outside the
+timed calls.  Inputs, source hashes, work counts, and raw samples accompany
+the resulting tables.
+
+\input{tables/tait_blocks_benchmark.tex}
+
+\paragraph{Choosing the direct-path cutoff from measured overhead.}
+The first run, preserved in
+\path{fast/results/tait_blocks_threshold8_20261008.json}, used cutoff eight
+and the implementation at \code{07c02e10c}.  It improved the eightfold Conway
+sum's initial query by $2.10$ times, but made the irreducible size-16 stress
+cofactor about nine percent slower.  The size-11 twofold sum also lost about
+five percent.  Raising the cutoff to sixteen removes those decomposition
+costs, at the price of foregoing the initial run's modest size-16 threefold
+sum gain.  The displayed final run uses this revised policy.  Both source
+versions and all measurements are retained; the comparison does not replace
+the earlier unfavorable samples with the later ones.
+
+\paragraph{Single queries and complete raw scans.}
+The final initial-query speedups are $2.15$, $5.24$, and $17.42$ times for
+8, 16, and 32 Conway summands.  The 40-crossing braid unknot improves by
+$1.30$ times: all twenty effective blocks are bridges, so it allocates no
+dense determinant matrix.  The size-16 irreducible stress case now keeps
+its direct path and has ratios near one.  The corresponding complete raw
+scan gains are $1.19$, $1.62$, and $21.55$ times for the three larger sums,
+and $1.08$ times for the braid unknot.
+
+The 32-fold sum illustrates why resource behavior matters.  Its initial
+unrestricted direct query needs 1,398,785 work units, compared with 13,252
+for block products.  With the normal million-unit optional allowance,
+the old driver stops observing during this query and scans all 352
+crossings, eventually certifying knottedness from closed rank.  The new
+driver uses only 14,619 units including its later Euler query and obtains
+a component-Euler certificate after 11 crossings.  Its largest determinant
+is $5\times5$, compared with the original $160\times160$ cofactor.
+The raw benchmark therefore requires agreement of verdicts while recording
+method and stage differences explicitly.  The large gain here includes
+preserving the opportunity for later inference, not just faster arithmetic.
+Both runs complete; no timeout is assigned a speedup ratio.
+
+\paragraph{Complete recognition and the remaining limit.}
+Earlier recognizer filters decide all 18 measured inputs before the shadow
+backend runs.  Full-recognition ratios range from $0.967$ to $1.048$, with
+no demonstrated overall benefit from the new determinant path.  For the
+32-fold sum the existing factorization and Jones filter already return in
+about 15 milliseconds, ahead of either raw scanner.  The results support
+the optimization inside the optional observer; they do not justify changing
+the default backend or claiming a general asymptotic improvement in unknot
+recognition.  Final inputs, traces, source hashes, and measurements are in
+\path{fast/results/tait_blocks_20261008.json}.

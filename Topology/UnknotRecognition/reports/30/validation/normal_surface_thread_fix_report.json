@@ -1,0 +1,41 @@
+{
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "regina": "7.4.1",
+  "baseline_commit": "8a95834940cf77cdab1b39571ffc102ca8b6bede",
+  "before_source": "research/qa/normal_surface_before_pipe_thread.py",
+  "before_sha256": "18deb3f935fc860e5c4f618e494b9cedaa49699ae3183ff68606e623a7979239",
+  "corrected_sha256": {
+    "Topology/UnknotRecognition/fast/fastunknot/normal_surface.py": "0fb9bd4d03bf20fc56c290e8c9ee30504983091f4ba7a1a04f458757945b2896",
+    "Topology/UnknotRecognition/fast/tests/test_normal_surface.py": "cc962f7bc3f48160314231788a64e16637235cc3445c5142936bb78c02b79a56"
+  },
+  "normal_surface_tests": {
+    "count": 9,
+    "seconds": 2.841,
+    "passed": true,
+    "exit_code": 0,
+    "log": "research/qa/normal_surface_thread_start_verified.log"
+  },
+  "spin_tests": {
+    "count": 13,
+    "seconds": 0.378,
+    "passed": true,
+    "log": "research/qa/spin_after_pipe_thread_tests.log"
+  },
+  "new_test": "test_cancellation_during_blocked_payload_reaps_child_and_pipe_thread",
+  "changes": [
+    "One communicate(payload) call in a dedicated non-daemon thread.",
+    "Main thread waits at most 50 ms per poll and preserves local/global checks.",
+    "Failure cleanup kills and reaps the child, joins the communication thread, then closes streams.",
+    "No private subprocess API, repeated input, verdict change, or trust change.",
+    "RuntimeError or OSError from only Thread.start becomes NormalWorkerError; caller check exceptions remain untouched."
+  ],
+  "limitation": "The controlled worker must not leave descendants inheriting its standard pipes; this is direct-child cleanup, not portable process-tree isolation. The maintained worker creates no Python subprocesses. Standard-library APIs are portable, but this run tested Linux only.",
+  "full_suite_run": false,
+  "preceding_normal_surface_tests": {
+    "count": 9,
+    "seconds": 2.805,
+    "passed": true,
+    "log": "research/qa/normal_surface_thread_fix_tests.log"
+  },
+  "incomplete_capture_log": "research/qa/normal_surface_thread_start_tests.log"
+}

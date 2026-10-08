@@ -1,0 +1,188 @@
+\section{Integration, certificate boundaries, and resource behavior}
+\label{sec:integration}
+
+The source patch keeps each optional experiment available through a supported
+interface. The new production modules have no mandatory third-party Python
+dependency. Regina is used for optional geometric checks and the existing
+external fallback, not for either the tensor implementation or the cocycle
+flow solver.
+
+\subsection{Using the exact tensor backend}
+
+From the \code{fast} directory, the standalone command computes a full
+polynomial and reports its one-sided recognition consequence:
+\par\noindent\begin{minipage}{\linewidth}
+\begin{lstlisting}[language=bash]
+python -B -m fastunknot jones examples/trefoil.json --backend tensor
+python -B -m fastunknot jones examples/hard_unknot_8.json --backend tensor
+\end{lstlisting}
+\end{minipage}\par
+
+The first input has a nonidentity polynomial; the second has identity and
+the standalone Jones command is inconclusive about knot type. To use the
+tensor stage within the full recognizer:
+\par\noindent\begin{minipage}{\linewidth}
+\begin{lstlisting}[language=bash]
+python -B -m fastunknot recognize examples/hard_unknot_8.json \
+  --jones-backend tensor
+\end{lstlisting}
+\end{minipage}\par
+
+Other earlier stages may already decide this small input. Tests explicitly
+disable those stages when checking that tensor identity continues to the
+Khovanov fallback, and that a separately exhausted fallback returns
+\status{UNKNOWN} rather than misusing Jones identity.
+
+The low-level interface is:
+\par\noindent\begin{minipage}{\linewidth}
+\begin{lstlisting}[language=Python]
+from fastunknot import Diagram
+from fastunknot.tensor_jones import tensor_jones
+
+diagram = Diagram.from_braid(3, [1, -2] * 5)
+result = tensor_jones(
+    diagram, certified=True, arithmetic="integer",
+    max_states=4096, max_transitions=200000,
+)
+\end{lstlisting}
+\end{minipage}\par
+
+The result contains the exact full polynomial as signed hexadecimal integer
+coefficients indexed by integral $t$-exponent, the chosen order and separator
+certificate, crossing count, writhe, and measured resource counters. Hex
+encoding avoids dependence on a runtime's decimal-digit conversion limit
+for very large exact integers. Callers can select \code{"laurent"} for the
+reference calculation or \code{"integer-global"} for the arithmetic
+ablation. The latter intentionally preserves an inefficient monomial-shift
+scheme for comparison.
+
+The retained state and transition limits count mathematical work objects.
+They do not independently cap the bytes occupied by a large integer.
+Deadline callbacks are checked during preparation, state updates,
+coefficient loops, and decoding. A running big-integer operation is not
+preempted at an arbitrary machine instruction, so these are cooperative
+allowances rather than hard real-time guarantees.
+
+\subsection{Optimizing and checking a cocycle seed}
+
+The numeric API accepts four global vertex IDs and four integral heights
+per tetrahedron:
+\par\noindent\begin{minipage}{\linewidth}
+\begin{lstlisting}[language=Python]
+from fastunknot.cocycle_seed import (
+    minimize_disc_seed, check_seed_certificate,
+)
+
+certificate = minimize_disc_seed(vertices, heights)
+checked = check_seed_certificate(vertices, heights, certificate)
+assert checked["primal"] == checked["dual"]
+\end{lstlisting}
+\end{minipage}\par
+
+It rejects malformed rows and nonintegral values. The checker recomputes
+the potential-adjusted local gaps, disc counts, shared-vertex matching,
+source and target permutations, and objective equality. It does not call
+the optimizer or trust its reported statistics.
+
+There are two geometric adapters. The face-pairing API validates reciprocal
+gluings, local integer height transitions, and normal matching. The
+triangulation-protocol API accepts a separately validated finite
+triangulation and integral cocycle, including the archive02 object used in
+the tests. The optimization theorem needs only numeric data; the topological
+theorems additionally need a genuine compact orientable manifold,
+coorientation, and the stated integral class conditions. No adapter silently
+infers manifold validity from an optimal flow.
+
+A normal-coordinate vector together with a primal/dual matching certifies
+the restricted minimum-disc problem. It does not certify that the surface
+is incompressible or that a subsequent hierarchy is essential. Those are
+separate certificate types. The proposed Euler-characteristic positive test
+in Section~\ref{sec:cocycle} would also require independently bound
+knot-exterior provenance and peripheral data before it could decide an
+input diagram.
+
+\subsection{Enabling the overlap witness policy}
+
+The new CLI flag enables its required compressed search and relator moves:
+\par\noindent\begin{minipage}{\linewidth}
+\begin{lstlisting}[language=bash]
+python -B -m fastunknot recognize examples/hard_unknot_8.json \
+  --group-overlap-witness --group-seconds 2
+\end{lstlisting}
+\end{minipage}\par
+
+Python callers select the related flags explicitly:
+\par\noindent\begin{minipage}{\linewidth}
+\begin{lstlisting}[language=Python]
+result = recognize(
+    diagram,
+    use_group=True,
+    group_compressed_search=True,
+    group_relators=True,
+    group_overlap_witness=True,
+)
+\end{lstlisting}
+\end{minipage}\par
+
+The standalone compressed producer accepts
+\code{relator\_moves=True, overlap\_witness=True}; the local helper accepts
+\code{witness\_first=True}. Non-Boolean values and inconsistent option
+combinations are rejected. The adaptive explicit-to-compressed policy is a
+different interface and is not silently changed by this option.
+
+Search still has the same resource semantics: a verified successful group
+certificate proves the existing conclusion, while an unsuccessful or capped
+search remains inconclusive. The first-witness policy may change a future
+search trajectory, which is why it is not made the default. Neither
+independent verifier needs to know which search policy discovered a move.
+
+\subsection{Repairing large requests to the external normal-surface worker}
+
+The maintained test inventory exposed a separate, reproducible compatibility
+bug in the existing worker transport. The parent initially called
+\code{communicate(payload, timeout=...)} and retried with no input after a
+short timeout. In the tested Python 3.12.14 runtime, the communication code
+retained its internal input buffer but registered writable stdin only when
+the current call supplied a truthy input argument. A delayed reader with a
+500-kilobyte request could therefore receive only the first pipeful, while
+the parent waited until its three-second test allowance expired.
+
+\input{worker_fix}
+
+This is an engineering correctness and performance repair, not a new
+topological theorem. The external engine remains explicitly trusted for
+its own topology operations. Digest validation, response schema checks,
+decision semantics, and the complete built-in fallback remain in force.
+
+\subsection{What an independent verifier does and does not establish}
+
+\begin{table}[H]
+\centering\small
+\begin{tabularx}{\linewidth}{@{}P{0.22\linewidth}YY@{}}
+\toprule
+Evidence & Independent check & Conclusion\\
+\midrule
+Separator hierarchy & Graph partition, balance, order, cut width &
+The stated width bound for that input and order.\\[3pt]
+Full tensor polynomial & State-sum and Regina comparison in the audit &
+Implementation agreement on tested inputs; the general exactness theorem
+comes from Section~\ref{sec:tensor}.\\[3pt]
+Seed potential and matching & Recomputed local spans and equal dual bound &
+Global optimality within the vertex-potential family.\\[3pt]
+Relator trace & Literal or compressed move-by-move replay &
+The existing group certificate conclusion for the original diagram.\\[3pt]
+External normal decision & Input digest, process status, schema, engine label &
+A completed externally trusted decision, not independent replay of a
+geometric hierarchy.\\
+\bottomrule
+\end{tabularx}
+\caption{Trust boundaries retained by the integration. A consistency check
+is not automatically a certificate of a stronger mathematical claim.}
+\end{table}
+
+All complete output claims refer to a validated input. An invalid planar
+encoding, unmatched normal coordinates, an inexact division, or a malformed
+certificate is a failed operation. A resource exhaustion is a different
+outcome and remains inconclusive. Preserving this distinction is essential
+when combining several exact and heuristic discovery stages in one
+recognizer.
