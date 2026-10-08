@@ -3087,6 +3087,34 @@ Higher-dimensional stackability gap (research notes, Part H)
   there: the printed statements 16.2, 16.11, 18.1, 18.2 and 18.7 stay
   exact and are not restated.
 
+Theorems 18.1, 18.2 and Corollary 18.7 degree by degree (2026-10-07)
+  The three catalogue entries quantify over every degree or length. New
+  per-degree and per-length predicates restate them exactly:
+  theorem_18_1_iff_forall_degree, theorem_18_2_iff_forall_length and
+  corollary_18_7_iff_forall_length. Proved instances, with the source's exact
+  exponents and thresholds:
+  - Theorem181At 0 (vacuous: balanced functions sum to zero).
+  - Theorem181At 1, from the large Fourier coefficient and the degree-one,
+    one-cell untwisting theorem. Its exponent is 1/64 and its discrepancy
+    sqrt(alpha)/2.
+  - Theorem181At 2, from the quadratic inverse theorem. Its parameters are
+    at least alpha^24740 and alpha^49462, against alpha^(2^4096).
+  - Theorem182At k and Corollary187At k for every k <= 5. Lengths up to
+    three follow from Roth's theorem with its explicit constant 10^12
+    (roth_explicit_threshold, now public in Proofs02Roth), since
+    exp(exp(10^12/delta)) <= szemerediThreshold delta k for delta <= 1/2.
+    Lengths four and five use the existing four- and five-term proofs.
+    Corollary 18.7 at a length follows from Theorem 18.2 at that length and
+    density one half (corollary_18_7_at_of_half_density).
+  Degree three of Theorem 18.1 is NOT reachable from the proved cubic
+  inverse theorem. Its width exponent e is only certified to satisfy
+  1/e <= exp((2/alpha)^(2^61)). That certified lower bound is exponentially
+  small and falls below alpha^(2^8192) for every alpha <= 1/2, since already
+  at alpha = 1/2 the exponents compare as 2^(2^62) against 2^8192*log 2. Lengths >= 6 of Theorem 18.2 need
+  an explicit modulus threshold for the structural input; Theorem162At
+  provides only an existential N0. The three entries stay open; the count
+  stays 114/6.
+
 Reproducible checks (from repository root)
   python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.Audit
   python3 Combinatorics/Ramsey/scripts/gowers_status.py
