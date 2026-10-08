@@ -1163,3 +1163,30 @@ if integer_terminal:
             'Stage & Rational & A/A & Direct & Kernel & Switch & Ratio','@{}lrrrrrr@{}',rows)+
             r'\end{center}'+'\n'+'Median milliseconds; final column is the median paired '
             'rational/integer-kernel ratio. These are complete observer-stage timings.\n')
+
+orbit_controls = load('../fast/results/orbits_20261008.json')
+if orbit_controls:
+    rows = []
+    selected = [(f"Chain, {r['pairings']} pairings", r)
+                for r in orbit_controls['intervals']
+                if r['family'] == 'adjacent_periodic_chain']
+    selected += [(f"Meridian, {r['tetrahedra']} tetrahedra", r)
+                 for r in orbit_controls['surfaces']
+                 if r['scale_bits'] == 1 and r['tetrahedra'] in (4, 32, 128)]
+    selected += [(r'$2^{2000}$ parallel discs', r)
+                 for r in orbit_controls['surfaces'] if r['scale_bits'] == 2001]
+    for label, row in selected:
+        cells = [label]
+        cells.extend(f"{1000 * row['medians'][arm]:.3f}"
+                     for arm in ('aht', 'fine_wilf', 'fine_wilf_AA'))
+        cells.append(f"{row['paired_speedup']:.3f}")
+        cells.append(str(row['outputs']['aht']['cycles']) + '/' +
+                     str(row['outputs']['fine_wilf']['cycles']))
+        rows.append(' & '.join(cells) + r' \\')
+    with open('tables/interval_orbits.tex', 'w') as handle:
+        handle.write(r'\begin{center}\small' + '\n' + table(
+            'Query & Classical & Sharp & A/A & Ratio & Cycles',
+            '@{}lrrrrr@{}', rows) + r'\end{center}' + '\n' +
+            'Median milliseconds; ratio is the median paired classical/sharp '
+            'time. Cycles are classical/sharp. Surface queries include validation '
+            'and all three orbit counts; chain queries count interval orbits only.\n')

@@ -2,6 +2,18 @@
 
 The synthesized report on the six archives and on the new recognizer.
 
+`interval_orbits.tex` integrates binary AHT orbit counting with the exact
+Fine–Wilf periodic merger and native aggregate topology of supplied normal
+surfaces. It explains the orientation double, boundary essentiality test,
+shared cycle budget and missing knot-exterior provenance. All 805 maintained
+tests pass with Regina. The worker I/O repair stages UTF-8 streams to avoid
+losing partially sent requests. The Christoffel delivery's 22 tests and two
+saved examples replay successfully; its proposed rank-two knot terminal
+still needs a native certificate contract and independent source replay.
+Run `../fast/benchmark_orbits.py --output FILE` from `fast/` for controlled
+component measurements; samples and source hashes are in
+`../fast/results/orbits_20261008.json` and logs in `data/quotient-orbit-*`.
+
 `integer_terminal.tex` derives the fraction-free terminal kernel's common-scale
 quotient formula, including singular interiors and the empty border, and
 describes its independent rational replay. It becomes the boundary research
