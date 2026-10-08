@@ -51,6 +51,8 @@ archive remains unchanged. The authors' archived timings remain separate from
 the new local measurements in `../fast/results/structural_integration_20261007.json`.
 See `../synthesis/structural.tex` for the integration analysis and proof limits.
 
+Dated note (2026-10-07): the SHA-256 manifests `01/MANIFEST.sha256`, `06/MANIFEST.sha256` and `12/checksums.sha256`, and those of `../proposals/01`–`03`, were removed at Vladimir's direction (imported reports keep no SHA-256 records; the files they listed are unchanged, and the bytes remain in Git history). Reports placed later keep no checksum files.
+
 ## Test status (last observed 18 September 2026)
 
 All six suites pass on CPython 3.14.4 / Windows 11 with exactly the test

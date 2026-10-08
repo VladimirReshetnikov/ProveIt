@@ -28,10 +28,9 @@ The package audit surfaces are:
 - [`ASSET_DISPOSITION.csv`](ASSET_DISPOSITION.csv): the disposition of all 88
   files in the two superseded source subgroups and the migration from the
   former 63-payload checkpoint to the current 55-file canonical asset tree;
-- [`SOURCE_CLOSURE.sha256`](SOURCE_CLOSURE.sha256): a purpose-specific
-  23-input source-only record maintained by its approved generator; its merged
-  digest belongs to that generated file, while older digests remain historical
-  provenance below;
+- `SOURCE_CLOSURE.sha256`, the 23-input source-only record, was removed on
+  2026-10-07 at Vladimir's direction (imported reports keep no SHA-256 records; the files they listed are unchanged, and the bytes remain in Git history). `audit/build_source_closure.py` regenerates it; the
+  digests cited below and in `VALIDATION.md` are historical provenance;
 - [`PROVENANCE.md`](PROVENANCE.md): source hashes, arrival lineage, nested
   predecessors, and immutable recovery points.
 

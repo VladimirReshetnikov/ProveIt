@@ -167,7 +167,7 @@ python -m unittest discover -s tests -v
 and all 10 pipeline examples in the supplied benchmark. `tools/hard36.json`
 is the difficult input by itself. `results/` contains timings and validation
 logs. `docs/changes.patch` is a source patch relative to the original `fast/`
-directory. `PROVENANCE.json` and `MANIFEST.sha256` record input and output hashes.
+directory. `PROVENANCE.json` records input and output hashes (`MANIFEST.sha256` was removed on 2026-10-07 at Vladimir's direction (imported reports keep no SHA-256 records; the files they listed are unchanged, and the bytes remain in Git history)).
 
 The license is MIT No Attribution (MIT-0), retained from the supplied archive.
 No third-party papers or font files are redistributed in this package.
