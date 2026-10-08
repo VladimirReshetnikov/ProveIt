@@ -96,6 +96,42 @@ related equational classes, the Harrison/Tamura comparison; added from the
 non-claims: a quantitative eventual ordering and uniform-in-`μ` amplitude
 bounds. No claim of the source was found false; nothing is refuted.
 
+## Independent check of the write (7 October 2026)
+
+An independent adversarial check of the batch-112 write (`7f470df1e`), with
+its own code, confirmed every claim of the write and added one precision.
+
+- **OEIS.** A001425 (#43) and its b-file read again: the name, Sloane,
+  Bower, the asymptotic line, Howroyd's PARI program and b-file (`n = 0..36`)
+  are as quoted; no conjecture. *Precision* (dated note after Remark 8.1):
+  the date 3 December 2003 is printed in the entry itself, on its Extensions
+  line ("Formula Dec 03 2003."), and the entry has a third formula line,
+  `a(n) = A001329(n) - A079183(n)`, which the remark does not list.
+- **Exact, by another route.** `U_n` for `n ≤ 36` by a literal walk over the
+  unordered-pair orbits of a representative of every cycle type (no grouped
+  product): all 37 b-file terms and the 25 delivered counts agree. The same
+  walk gives the five fixed counts of Section 2.1, the sector table,
+  `Σ_{n≤24} p(n) = 7337`, the ratios `T_22/T_3` (6.789890195…, 1.304041955…,
+  0.2078537627…) and `0 ≤ R_D(n) ≤ B_D(n)` in all 62 cases (28 odd; largest
+  ratio 1.786×10⁻⁴). The 729 laws at `n = 3` reproduce every printed
+  statistic, `P_3 = 11/243`, `Q_3 = 13/129`.
+- **Coefficients.** `L_1…L_5` of `T_2` and the amplitude coefficients of
+  (5.2), (5.5), (5.6), from the exact logarithms and from formula (4.4).
+- **Inverse.** The initializer's `u(θ − u − 1/2 + 5/(4 log u + 2))` is 0.716,
+  0.674, 0.652, 0.642 at `L = 10³, 10⁵, 10⁸, 10¹²`; Remark 7.4 confirmed per
+  statement (outside the model; analogue of `p0:thm:staircase`(2); `u` the
+  square root of the `κ = 1/4`, `d = 0` factorial core and the `B = 0` case of
+  the Lambert template; the correction not shown to be an instance).
+- **Also confirmed:** the provenance (4,786,760 bytes, 25 files, 669 lines,
+  18 pages; manifests 11/11, 24/24, 10/10); the 19 staged files
+  byte-identical; 75 delivered labels with their numbers on the check's own
+  builds; the README listing (22 files); no earlier repository mention;
+  `code/check.py` reproduces every output up to CR (the unshipped
+  `fixed_counts.json` included) and `code/test_guards.py` passes (71 checks).
+
+The check is recorded in a dated note at the end of Section 1.2. Rebuilt:
+22 pages (21), label numbers unchanged.
+
 ## Relation to the repository
 
 No other file of the repository names A001425 or treats commutative magmas.
@@ -136,7 +172,7 @@ environment in the preamble. Everything else is delivered text.
 ```text
 README.md                           this guide (replaces the delivered README.md)
 article.tex                         the report (delivered Report200.tex, written)
-article.pdf                         compiled report, 21 pages
+article.pdf                         compiled report, 22 pages
 code-USAGE.txt                      delivered code/USAGE.txt (commands, outputs, independent methods)
 code/build.py                       validation, replay, PDF and deterministic ZIP builder (delivered root build.py)
 code/check.py                       reproduction runner: route comparisons and data writer
@@ -215,7 +251,9 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 The committed PDF was built this way with MiKTeX pdfLaTeX (7 October 2026):
 21 pages; no errors or warnings, no undefined references, no multiply
 defined labels, no duplicate destinations, no overfull or underfull boxes.
-The delivered text gives 18 pages with no warnings.
+The delivered text gives 18 pages with no warnings. Rebuilt at the
+independent check (7 October 2026, pdfLaTeX ×3, with its two dated notes): 22
+pages, the same clean log.
 
 ## Provenance
 

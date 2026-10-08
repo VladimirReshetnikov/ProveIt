@@ -126,6 +126,42 @@ full fourth sector, the general threshold dependence of higher sectors,
 coefficientwise positivity of `U` (tested to `r = 520`), growing-order
 methods. No claim of either source was found false, and nothing is refuted.
 
+## Independent check of the write (7 October 2026)
+
+An independent adversarial check of the batch-112 write (`155fb997d`), with
+its own code, confirmed every claim of the write; nothing needed correction.
+
+- **OEIS.** A244372 (#23), A244407 (#14), A244410 (#11) read again: the
+  quotations, revisions, dates and attributions of Remark 1.1 are verbatim,
+  the posted constants are truncations of `ρK`, `K`, `1/ρ`, and the entries
+  hold no conjecture.
+- **Exact.** Own series reproduce the printed `f_m`, `b_r`, `U_r`, `V_r` and
+  `[z^13]W = −7692`; the signed and positive forms of `𝓑` agree; the A244372
+  b-file gives the six case counts above with no failure. A brute-force
+  enumeration of canonical trees (`N ≤ 14`) and a cycle-index count of
+  bounded-outdegree trees (`N ≤ 70`, `k ≤ 24`) agree with the b-file; the
+  root tails agree with Theorem 11.1 for `q ≤ 6`.
+- **Decimals, by a second route.** Besides the closed forms from the critical
+  equation, Richardson extrapolation of the exact `f_m`, `r_n`, `b_r`, `U_r`,
+  `V_r` (`400 ≤ m ≤ 1200`, no Puiseux jet) gives `K`, `ρK`, `d_1…d_6`,
+  `e_1…e_3`, `τ`, `L`, `c^B_{−1}`, `A_U`, `α_1/α_0` (hence `u_{−3}`), `A_V`
+  (hence `J_3(ρ)`) to at least 25 agreeing digits; fits admitting
+  half-integer powers confirm the missing `s^{−2}` of `𝓑` and `s^{−4}`,
+  `s^{−2}` of `U`. Every source decimal is a correct rounding, every "…" of
+  the write a correct truncation; `x_5(f_500) − 500` reproduced.
+- **Evidence extended:** `U_r > 0` for every `r ≤ 1200` (not a proof).
+- **Also confirmed:** Remark 7.3 per statement against the volume; the
+  provenance (566,903 and 1,063,459 bytes, 15 and 21 files, 670 and 858
+  lines, 18 and 21 pages, manifests 12/12 and 18/18, `public227/`
+  byte-identical); the 26 staged delivered files byte-identical; 168
+  delivered labels with their numbers (Part II shifted by 8 sections and 57
+  equations) on the check's own builds; the README listing (29 files); no
+  earlier repository mention; the delivered suites reproduce their records
+  on scratch copies.
+
+The check is recorded in a dated note at the end of the Guide. Rebuilt:
+44 pages (unchanged), label numbers unchanged.
+
 ## Relation to the repository
 
 No other file of the repository names A244407, A244410 or A244372. Nearest
@@ -274,7 +310,8 @@ The committed PDF was built this way with MiKTeX pdfLaTeX (7 October 2026):
 defined labels, no duplicate destinations, no overfull or underfull boxes
 (the log's "duplicates ignored" lines are font-map notices from the
 delivered `\pdfmapfile` lines, also in the delivered builds). The delivered
-texts give 18 and 21 pages with no warnings.
+texts give 18 and 21 pages with no warnings. Rebuilt at the independent
+check (7 October 2026, pdfLaTeX ×3): 44 pages, the same clean log.
 
 ## Provenance
 

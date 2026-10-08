@@ -17,7 +17,9 @@ or addressee.
 | *Fixed couple ménage rows: Exact differences, concavity, uniform expansions and inverse enclosures* ("Report 221", 4 October 2026) | `Report221.zip` (475,232 bytes, 16 files, no wrapper directory; `Report221.tex`, 591 lines, 16 pp.) | `a4186a946` | `article.tex` |
 
 The package records no ProveIt commit, so no pin is recorded; its source
-ledger pins the Git blobs of two repository files, which are the current ones.
+ledger pins the Git blobs of two repository files, which were the current ones
+at the write; the transseries volume has since received two dated repairs in
+Appendix V (`d92db8d06`), not touching the statements the report compares.
 
 **Status:** AI-assisted, unrefereed, not formalized: no Lean or Rocq
 declaration in this repository exists for any statement of this report, and
@@ -99,6 +101,44 @@ rerun.
   `plt:thm:lw-template`; Theorem 8.1 an analogue of `p0:thm:staircase`(3) and
   Theorem 9.1 of (2).
 
+## Independent check of the write (7 October 2026)
+
+An independent adversarial check of the write (`b353bba89`) read the OEIS
+entries and the Lean file again and recomputed every number the write added,
+with its own code: `T(n,k)` from the entry's double-sum formula (not the
+cofactor formula (5)), `U_n` from Touchard's formula. It is recorded in a dated
+note at the end of Section 12.
+
+- **Confirmed:** all 1275 A332709 b-file terms, the A000179 and A127548
+  b-files, the posted terms of A258664–A258667 and A258673; Theorems 3.2, 4.2
+  (complete classification) and 7.2 (identity and sign pattern) for every
+  `n ≤ 120`; Table 1 and the TV coefficients by exact residuals at
+  `n = 100, 200, 300` (bounded and settling, also at the central column); the
+  Wyman–Moser rounding for `2 ≤ m ≤ 300`; the A258667 ratio
+  (`n⁴(ratio − 1)` = 3.1016, 2.4644, 2.2150, 2.1036, 2.0509 at
+  `n = 20 … 320`, next coefficient → 16); the Lean file's size, pinned SHA-256
+  (with one appended newline) and `IsEquivalent` statement; the provenance
+  figures, the 15-entry manifest, the byte identity of the 12 staged files,
+  Remark 9.2, the label numbering (60 delivered labels unchanged) and the
+  file listing.
+- **Corrected (dated note after Remark 11.1):** the write said that
+  A258664–A258666 and A258673 "post no asymptotic formula". Each posts the
+  A258667 conjecture `a(n) ~ e^{−2} n!/(n−2)(1 + Σ_{k≥1} (−1)^k/(k!(n−1)_k))`
+  (revisions #85, #75, #74, #71, Shevelev–Moses), with no proof recorded. The
+  report settles all four as it does A258667: by (23), Theorem 6.1 and
+  Table 1, `a(n)` divided by the displayed expression is
+  `1 − n^{−3} − 4n^{−4} + …` (A258664), `1 + 2n^{−4} + 15n^{−5} + …`
+  (A258665) and `1 + 2n^{−4} + 16n^{−5} + …` (A258666, A258673). So each
+  conjecture holds as a leading equivalence and fails as an asymptotic
+  expansion, at relative order `n^{−3}` (A258664) or `n^{−4}`. Exact counts
+  agree (`n³(ratio − 1)` = −1.108 … −1.013, `n⁴(ratio − 1)` = 2.427 … 2.048
+  and 2.464 … 2.051 at `n = 40 … 320`).
+- **Stale (dated note after the provenance note):** the pinned blob of the
+  transseries volume was current at the write; `d92db8d06` changed it later
+  the same day (Appendix V only).
+
+Rebuilt: 20 pages (19), label numbers unchanged.
+
 ## Further questions, and the standing rule
 
 Section 12 (explicit inverse constants and onset, total-variation identities
@@ -106,7 +146,9 @@ for other boards, several fixed couples, higher-difference signs, the
 inaccessible publisher texts), with a dated note under Vladimir's standing
 rule of 4 October 2026; added: a rerun of the Lean proof. The two A332709
 conjectures are proved; the expansion reading of the A258667 conjecture is
-refuted at relative order `n^{−4}`; no claim of the source was found false.
+refuted at relative order `n^{−4}`, and the same conjecture in A258664–A258666
+and A258673 is settled the same way (independent check); no claim of the
+source was found false.
 
 ## Relation to the repository
 
@@ -148,7 +190,7 @@ prefixes, the bibliography entry `TSvol`, and the `\file` macro and
 README.md                                     this guide (replaces the delivered README.md)
 SOURCES.md                                    the source's bounded source ledger
 article.tex                                   the report (delivered Report221.tex, written)
-article.pdf                                   compiled report, 19 pages
+article.pdf                                   compiled report, 20 pages
 code/build.py                                 the delivered builder (checks, PDF, manifests, ZIP; delivered root)
 code/check_exact.py                           deterministic exact tests and negative controls
 code/diagnostics.py                           100-digit diagnostics, explicitly noncertifying
@@ -213,8 +255,8 @@ B=$(mktemp -d); cp article.tex "$B/"; cd "$B"
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The committed PDF was built from this file with MiKTeX pdfLaTeX (three passes,
-7 October 2026): 19 pages; no errors or warnings, no undefined references, no
+The committed PDF was rebuilt at the independent check from this file with
+MiKTeX pdfLaTeX (three passes, 7 October 2026): 20 pages (the write's: 19); no errors or warnings, no undefined references, no
 multiply defined labels, no duplicate destinations, no overfull or underfull
 boxes. The delivered text gives 16 pages with the same clean log.
 

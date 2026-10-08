@@ -15,12 +15,13 @@ tool or addressee.
 
 | Source | Archive | Placed | Shipped as |
 |---|---|---|---|
-| *Exact pole sectors and integer recovery for ordered tuple relations: All-fixed-order collision kernels and shrinking inverse enclosures* ("Report220", 4 October 2026) | `Report220-reproducibility.zip` (688,477 bytes, 26 files, wrapper `Report220/`; `Report220.tex`, 758 lines, 18 pp.) | `a4186a946` | `article.tex` |
+| *Exact pole sectors and integer recovery for ordered tuple relations: All-fixed-order collision kernels and shrinking inverse enclosures* ("Report220", 4 October 2026) | `Report220-reproducibility.zip` (688,477 bytes, 26 files, wrapper `Report220/`; `Report220.tex`, 757 lines (the write said 758), 18 pp.) | `a4186a946` | `article.tex` |
 
 **Pin:** the package records ProveIt commit `c744ff67d` (4 October 2026), an
 ancestor of the placement; the write verified the three Git blobs, the
-SHA-256 and the quoted line ranges. The transseries volume is unchanged since
-(same blob).
+SHA-256 and the quoted line ranges. The transseries volume was unchanged at
+the write (same blob); `d92db8d06` later added two dated repair boxes recording
+the corrections of Appendix A (blob now `f6f91ca8…`).
 
 **Status:** AI-assisted, unrefereed, not formalized: no Lean or Rocq
 declaration exists for any statement of this report, and its place in the
@@ -79,14 +80,16 @@ single-ceiling formula; the decimal diagnostics are not interval certificates.
   direction (the first modulus ratio is 0.740 … 0.00158 for `x = 0.001 … 100`).
   The write adds that the volume's own proof of the uniform bound transfers to
   the weighted family only while `ρ_x ≤ 2π`, whereas the report's bound (51)
-  needs no restriction. The volume at HEAD still has all three passages; its
-  correction is a separate commit; the volume is not edited here.
+  needs no restriction. At the write the volume still had all three passages;
+  its correction is the separate commit `d92db8d06` (see the independent
+  check); the volume is not edited here.
 - **The OEIS entries** (Remark B.1): A173217 (#30, Paul D. Hanna 2010;
   equivalent by Václav Kotešovec 2018), A301466 (#10) and A301468 (#4)
   (Kotešovec 2018, with the general `m > 2` equivalent), A000670 (#913,
   Hickerson's pole formula), and A173219, A121251, A104209 as Appendix B
   describes them. The write's counts equal the b-files (A173217 to n = 100,
-  A301466 to 60, A301468's 11 terms). No conjecture; no OEIS edit.
+  A301466 to 60, A301468's 11 terms). No conjecture (corrected at the
+  independent check: A000670 displays two, unrelated); no OEIS edit.
 - **Recomputed with the write's own code:** counts by two formulas and by
   brute force; the tail bound and majorant on grids; the cutoff table (exact);
   recovery at both cutoffs for 21 inputs (all errors below the bounds, all
@@ -101,6 +104,44 @@ single-ceiling formula; the decimal diagnostics are not interval certificates.
   `p0:def:model`; the order-zero inverse (48) an exact instance of
   `p0:thm:lambert-core`; `x_R` for `R ≥ 1` not shown to be an instance of
   `plt:thm:lw-template`; Corollary 8.2 an analogue of `p0:thm:staircase`(2).
+
+## Independent check of the write (7 October 2026)
+
+An independent adversarial check of the write (`7ad0ec8ab`) read the seven
+OEIS entries again and recomputed every number the write added, with its own
+code. It also checked the two repair boxes that `d92db8d06` added to the
+transseries volume. It is recorded in a dated note at the end of Appendix B.
+
+- **Confirmed:** `H_d(n)` by inclusion–exclusion (2) against the three b-files
+  (A301466 to 175 by the Stirling–Fubini formula), brute force, the table of
+  Section 1 and monotonicity; the cutoff table; recovery below
+  `13/(18n^{d−1})` (and the harmonic bound) at both cutoffs for nine inputs up
+  to `(12,10)`; `max K/R = 0.3183157`; the log-2 bounds; `κ(d,a_*) + β_d = 2 − log 2`;
+  (34), (36), (37) and `C_{d,1}` from the definition (3) of the amplitude
+  (stable residuals to `n = 2000`); `b_{d,1}`; the first nonreal pair (ratio
+  1.0173 at `n = 20`, `1 + 6·10^{−14}` at 40); Appendix A's identity, values
+  and ratios; the pin (commit, three blobs, SHA-256, quoted lines); both
+  manifests; the byte identity of the 20 staged files and of the omitted byte
+  copy; Remark 8.3; the label numbering (74 delivered labels unchanged) and
+  the file listing.
+- **The volume's repair boxes (`d92db8d06`) are right.** The constant is
+  `1/4` exactly. With `|u_k(x)| < 1` for `k ≠ 0` the bound `ρ_x²/12` holds for
+  every `x > 0`. The volume's monotonicity argument fails for `ρ > 2π` (for
+  example at `ρ = 7` from `n = 2` on). The numbers in both boxes agree. **One point
+  the boxes do not mention:** the proof of `q2:thm:weighted` applies the
+  Mittag-Leffler argument "verbatim". The symmetric expansion of
+  `(1 − x(e^z − 1))^{−1}` has the entire part `1/(2(1 + x))`, not 0. That
+  theorem, too, stands for `n ≥ 1`. This is reported to the volume's owner;
+  the volume is not edited.
+- **Corrected (dated notes):** the delivered text has 757 lines, not 758. The
+  statements that the volume is unchanged are dated by the later repair (the
+  `TSvol` entry is no longer the pinned blob). "None of the entries has a
+  conjecture" is wrong for A000670: it displays Peter Bala's 2022
+  periodicity conjecture and Mikhail Kurkov's 2018 formula (marked proved in
+  2026), neither related to this report.
+
+No mathematical claim of the write was found wrong. Rebuilt: 24 pages (23),
+label numbers unchanged.
 
 ## Further questions, and the standing rule
 
@@ -157,7 +198,7 @@ delivered build's two underfull lines). Everything else is delivered text.
 README.md                               this guide (replaces the delivered README.txt)
 SOURCES.txt                             the source's attribution and pin notes
 article.tex                             the report (delivered Report220.tex, written)
-article.pdf                             compiled report, 23 pages
+article.pdf                             compiled report, 24 pages
 code-README.md                          the source's code guide (delivered code/README.md)
 code/check_hypergraph.py                exact counts, pole-tail and asymptotic diagnostics (mpmath)
 code/derive_hierarchy.py                exact kernel coefficients through order four (SymPy)
@@ -237,8 +278,8 @@ B=$(mktemp -d); cp article.tex "$B/"; cd "$B"
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The committed PDF was built from this file with MiKTeX pdfLaTeX (three passes,
-7 October 2026): 23 pages; no errors or warnings, no undefined references, no
+The committed PDF was rebuilt at the independent check from this file with
+MiKTeX pdfLaTeX (three passes, 7 October 2026): 24 pages (the write's: 23); no errors or warnings, no undefined references, no
 multiply defined labels, no duplicate destinations, no overfull or underfull
 boxes. The delivered text gives 18 pages and two underfull lines in the
 bibliography.
