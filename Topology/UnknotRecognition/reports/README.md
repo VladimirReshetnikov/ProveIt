@@ -267,8 +267,13 @@ local budget expires. The original 701-diagram validation and a 176-scan
 upstream probe pass. A separate checked common-Tait-graph producer agrees with
 direct determinants on all 3,186 connected queries tested; 1,317 disconnected
 queries have determinant specialization zero. Common-kernel reuse remains
-outside production pending a maintained implementation and amortization
-measurements. Full recognition and raw scanner benchmarks are reported
+outside production pending a maintained interruptible implementation and
+amortization measurements on actual observer traces. The follow-up in
+`../synthesis/boundary_reuse.tex` proves a cut-face-fragment producer with
+boundary-only query checks, independently audits all 4,503 actual completions
+and 3,468 arbitrary pairings, and measures isolated repeated-query gains.
+The maintained Euler backend now adaptively reuses boundary path summaries;
+all 572 integrated tests pass. Full recognition and raw scanner benchmarks are reported
 separately; the standard backend remains the default.
 
 Report `27/` is reviewed in `../synthesis/causal_r3.tex`. The maintained

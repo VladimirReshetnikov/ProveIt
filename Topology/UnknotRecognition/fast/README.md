@@ -11,7 +11,7 @@ the pipeline repeats the structural check before matrix filters. Cancelling
 pairs can expose homogeneity. Evidence under `seifert_after_reduction` describes
 the reduced diagram: replay `reidemeister_trace` with `fastunknot.simplify.replay`
 before passing that certificate to `verify_seifert_certificate`. An unchanged
-diagram is not checked twice. The integrated suite now has 567 passing tests.
+diagram is not checked twice. The integrated suite now has 572 passing tests.
 
 New RIII trace entries include `triangle`, the three dart indices of the
 chosen face in the original input diagram. Crossing indices alone can name
@@ -125,11 +125,19 @@ A capped count of three means “at least three”; it is never an exact rank.
 An early Euler result uses `rank_lower_bound_capped`, distinct from final
 `rank_capped`. Exhausting the optional inference budget continues complete
 saturated scanning; object/time exhaustion returns `UNKNOWN`.
-The Euler backend now computes each completed matching's exact Euler value
-from the classical closure's component count and crossing-sign parity in
-linear time, avoiding suffix smoothing enumeration. The query budget counts
-completed matchings. The original `SuffixEuler` recurrence remains available
-as an independent reference; both prepare geometry lazily within the budget.
+The Euler backend begins with direct linear-time closure walks. After four
+distinct queries at a stage, it prepares strand and zero-smoothing boundary
+path summaries when the boundary has no more darts than the suffix has
+crossings. Subsequent queries walk only these boundary summaries, computing
+the exact raw Euler value as `(-1)**(n+c+c0) * 2**c`. Preparation remains
+within the existing deadline and query budget; interrupted summaries are not
+published. The query budget counts completed matchings. `ClosureEuler` and
+the original `SuffixEuler` recurrence remain independent references.
+The low-level `AdaptiveClosureEuler(compression_after=0)` forces eager setup
+for diagnostics; public recognition uses the adaptive policy.
+`python -B benchmark_boundary.py --output results/boundary_local.json`
+separates repeated-query timings from complete scans and recognition.
+See `../synthesis/boundary_reuse.tex` for the proof and measured limitations.
 `euler_stats.prepared_stages` records the number of prepared stages.
 `python benchmark_euler_setup.py --output results/euler_setup_local.json`
 measures this setup separately from full recognition, with allocation peaks
@@ -164,6 +172,12 @@ separates complete recognition from raw scanner timings. The theory and
 validation are in `../synthesis/determinant_continuations.tex`. The common
 terminal graph producer in `determinant_research/terminal_geometry_audit.py`
 is a checked research prototype; production computes each completion directly.
+The newer `determinant_research/boundary_tait.py` uses cut-face fragments and
+boundary-only gluing checks, reusing a signed terminal kernel and partition
+cache. Its audit agrees on 4,503 actual completions and checks another 3,468
+arbitrary pairings. It remains research code: it imports the delivered kernel
+and lacks production deadline/work accounting. Isolated repeated-query gains
+do not establish a complete-recognizer speedup.
 
 `--backend closure` adds report 28's classical closure bounds and
 single-survivor resets. For a whole radical component with one matching, it

@@ -2,6 +2,21 @@
 
 The synthesized report on the six archives and on the new recognizer.
 
+`boundary_reuse.tex` proves the new adaptive Euler path summaries and the
+research cut-face Tait quotient construction. The maintained Euler evaluator
+switches after four distinct same-stage queries when the suffix is sufficiently
+long. All 572 tests pass (`data/boundary-connectivity-integrated-tests.txt`).
+`../fast/determinant_research/audit_boundary_tait.py` verifies 4,503 actual
+completions and 3,468 arbitrary boundary pairings, including classical pairings
+that must decline this inherited-color representation.
+`../fast/benchmark_boundary.py` records seven paired rounds with fresh setup:
+adaptive Euler queries improve up to 15.8x on isolated long-suffix streams;
+the research determinant path reaches 53.9x. The latter benchmark has no
+interior elimination, and complete recognition shows no overall improvement.
+Inputs, source hashes, timings, and audit counts are retained in
+`../fast/results/boundary_reuse_20261008.json` and
+`data/boundary-tait-audit.json`. Terminal kernels remain outside production.
+
 `closure_resets.tex` reviews report 28's first-jet formula and pure-block
 classical closure bounds, with the maintained optional `closure` backend.
 It explains the total-rank invariant of a geometric reset, whole-summand and
