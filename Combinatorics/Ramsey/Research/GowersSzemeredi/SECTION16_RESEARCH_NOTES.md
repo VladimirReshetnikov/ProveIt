@@ -1574,3 +1574,22 @@ independent of the density parameters, modulus, and relation, but remain
 existential. All three production modules and their transitive axiom checks
 pass; the full facade audit is queued. No new upstream module is imported,
 and no remaining all-dimension structure statement is claimed.
+
+### Simultaneous oscillation of multilinear variety phases
+
+`Proofs16PolynomialVarietyOscillation` applies the same recurrence to all
+`|Gamma|+|Psi|+r` defining conditions of a bilinear Bohr variety. If each
+mixed phase `L_i(x_1)*x_0` is multilinear on a proper parent box, constants
+`K>=2,p>0` independent of the phase count give a common proper partition
+with every cell width at least `H` and oscillation at most `4*N/H`, provided
+`H>=K*(|Gamma|+|Psi|+r+1)` and
+`H^(p*(|Gamma|+|Psi|+r+1)^8)<=parent.width`. The global affine case
+`L_i(y)=a_i*y+b_i` satisfies the phase premise. For `8<=rho*H`, every such
+cell is good for the half-radius and full-radius varieties.
+
+The complete production source and its three transitive axiom checks pass;
+the combined facade audit is queued. This proves an oscillation partition
+in a concrete case. Freiman linearity only on a Bohr set does not yet supply
+the parent-box multilinearity premise, and an all-box positive-power
+oscillation partition is not asserted. The result reuses the already
+scoped Schmidt recurrence input and adds no upstream module.

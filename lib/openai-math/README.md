@@ -241,3 +241,10 @@ check. The 3,600-entry prefix build and its axiom audit now pass. The latest pro
 check records 975 adapted files with modification notices. The Gowers
 facade now includes the polynomial multilinear extraction, cubic pure-power
 cover, and eventual strict line-exponent comparison; its full audit passes.
+
+Further original Gowers consumers use the same recurrence for actual
+two-dimensional graph pieces, relation decomposition, and simultaneous
+oscillation of bilinear-variety conditions whose mixed phases are
+multilinear on the parent. Their production sources and transitive axiom
+checks pass; their combined facade audit is queued. These add no vendored
+upstream modules or changes to the provenance/license scope.
