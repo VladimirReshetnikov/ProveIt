@@ -247,6 +247,13 @@ def _decide_prime_looking(diagram: Diagram, evidence: dict, *, use_modular, use_
                     seconds=remaining, check_d_squared=check_d_squared)
         evidence["khovanov"] = {"field": "F2", **kh}
         return kh["status"], "khovanov-" + backend + "-saturated"
+    if backend == "closure":
+        from .closure_scan import closure_khovanov_decide
+        kh = closure_khovanov_decide(
+            diagram.pd, order=order, max_objects=max_objects, seconds=remaining,
+            check_d_squared=check_d_squared, closure_max_work=scan_options["closure_max_work"])
+        evidence["khovanov"] = {"field": "F2", **kh}
+        return kh["status"], "classical-closure-bound" if kh["method"] == "closure-bound" else "khovanov-closure-reset"
     if backend == "shadow":
         from .shadow_scan import shadow_compressed_khovanov_decide
         kh = shadow_compressed_khovanov_decide(
@@ -280,7 +287,7 @@ def _decide_prime_looking(diagram: Diagram, evidence: dict, *, use_modular, use_
                                      seconds=remaining, check_d_squared=check_d_squared)
     else:
         standard_options = {key: value for key, value in scan_options.items()
-                            if key not in ("backend", "euler_max_states", "twist_max_basis", "shadow_max_work")}
+                            if key not in ("backend", "euler_max_states", "twist_max_basis", "shadow_max_work", "closure_max_work")}
         kh = khovanov_rank(diagram.pd, order=order, max_objects=max_objects, seconds=remaining,
                            check_d_squared=check_d_squared, **standard_options)
     evidence["khovanov"] = {"field": "F2", "unreduced_rank": kh["rank"], "reduced_rank": kh["reduced_rank"],
@@ -304,6 +311,7 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
               use_braid_reduction: bool = True, use_braid_profile: bool = False,
               euler_max_states: int | None = 4096,
               shadow_max_work: int | None = 1_000_000,
+              closure_max_work: int | None = 1_000_000,
               use_factorization: bool = True, use_modular: bool = True, use_jones: bool = True,
               use_alexander: bool = True, use_exact_alexander: bool | None = None, use_r3: bool = True,
               r3_search: str = "last", r3_depth: int = 4,
@@ -377,12 +385,14 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
         raise ValueError("braid_backend must be free-product or matrix")
     if factor_backend not in ("interlacement", "legacy"):
         raise ValueError("factor_backend must be interlacement or legacy")
-    if backend not in ("standard", "shared", "saturated", "euler", "shadow", "twist", "barcode", "fitting"):
-        raise ValueError("backend must be standard, shared, saturated, euler, shadow, twist, barcode, or fitting")
+    if backend not in ("standard", "shared", "saturated", "euler", "shadow", "closure", "twist", "barcode", "fitting"):
+        raise ValueError("backend must be standard, shared, saturated, euler, shadow, closure, twist, barcode, or fitting")
     if euler_max_states is not None and (type(euler_max_states) is not int or euler_max_states < 0):
         raise ValueError("euler_max_states must be a nonnegative integer or None")
     if shadow_max_work is not None and (type(shadow_max_work) is not int or shadow_max_work < 0):
         raise ValueError("shadow_max_work must be a nonnegative integer or None")
+    if closure_max_work is not None and (type(closure_max_work) is not int or closure_max_work < 0):
+        raise ValueError("closure_max_work must be a nonnegative integer or None")
     if backend != "standard" and (pivot != "minfill" or algebra != "bits" or tail != 0 or race != 1):
         raise ValueError("alternate backends require minfill pivots, bits algebra, tail=0, and race=1")
     deadline = None if seconds is None else start + seconds
@@ -552,6 +562,7 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
                                          race_after=race_after, backend=backend,
                                          euler_max_states=euler_max_states, composition=composition,
                                          shadow_max_work=shadow_max_work,
+                                         closure_max_work=closure_max_work,
                                          composition_max_variables=composition_max_variables,
                                          twist_max_basis=twist_max_basis, reduction=reduction))
         method = "reduced-khovanov-F2-scan"
