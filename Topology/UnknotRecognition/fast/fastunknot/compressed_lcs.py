@@ -28,6 +28,73 @@ class CommonSubstring:
     def suffix(self, x, y):
         return self.arena.lcp(self.arena.inverse(x), self.arena.inverse(y))
 
+    def periodic_overlaps(self, x, y):
+        """Certify a period at most 32; None means use the complete fallback.
+
+        Each grammar rule stores a bit mask of phases at which its whole word
+        agrees with the proposed periodic sequence. A finite prefix proposes
+        the period but never certifies the rest of either word.
+        """
+        a = self.arena
+        if min(a.lengths[x], a.lengths[y]) < 128:
+            return None
+        a.stats['lcs_periodic_trials'] = a.stats.get('lcs_periodic_trials', 0)+1
+        sample, pending = [], [a.slice(y, 0, 64)]
+        while pending:
+            a.tick()
+            node = pending.pop()
+            rule = a.rules[node]
+            if rule[0] == 't':
+                sample.append(rule[1])
+            else:
+                pending.extend((rule[2], rule[1]))
+        for period in range(1, 33):
+            a.tick(len(sample))
+            if all(value == sample[i % period] for i, value in enumerate(sample)):
+                break
+        else:
+            return None
+        pattern = sample[:period]
+        letter_masks = {}
+        for phase, value in enumerate(pattern):
+            a.tick()
+            letter_masks[value] = letter_masks.get(value, 0) | (1 << phase)
+        all_phases, masks = (1 << period)-1, {}
+        nodes = a._reachable([x, y])
+        for node in nodes:
+            a.tick()
+            rule = a.rules[node]
+            if rule[0] == 't':
+                mask = letter_masks.get(rule[1], 0)
+            else:
+                left, right = rule[1:]
+                shift = a.lengths[left] % period
+                moved = ((masks[right] >> shift) |
+                         (masks[right] << (period-shift))) & all_phases
+                mask = masks[left] & moved
+            masks[node] = mask
+        a.stats['lcs_periodic_rules'] = a.stats.get('lcs_periodic_rules', 0)+len(nodes)
+        if not masks[x] or not (masks[y] & 1):
+            return None
+        # The least period of the 64-letter sample (at most 32) has a
+        # primitive cyclic block. A full block matches only at phase zero.
+        phase = (masks[x] & -masks[x]).bit_length()-1
+        end_phase = (phase+a.lengths[x]) % period
+        limit, result = min(a.lengths[x], a.lengths[y]), []
+        for length in range(1, period):
+            if length % period == end_phase:
+                continue
+            a.tick(length)
+            if all(pattern[(end_phase-length+i) % period] == pattern[i]
+                   for i in range(length)):
+                result.append((length, 0, 1))
+        first = end_phase or period
+        count = (limit-first)//period+1
+        if count:
+            result.append((first, period if count > 1 else 0, count))
+        a.stats['lcs_periodic_hits'] = a.stats.get('lcs_periodic_hits', 0)+1
+        return result
+
     def overlaps(self, x, y):
         """Disjoint APs of positive k with suffix_k(x) == prefix_k(y)."""
         a = self.arena
@@ -49,6 +116,8 @@ class CommonSubstring:
         if limit and a.uniform[x] and a.uniform[y]:
             if a.uniform[x] == a.uniform[y]:
                 result = [(1, 1 if limit > 1 else 0, limit)]
+        elif (periodic := self.periodic_overlaps(x, y)) is not None:
+            result = periodic
         else:
             low = 1
             while low <= limit:
