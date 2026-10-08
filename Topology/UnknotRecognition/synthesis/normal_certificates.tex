@@ -1,0 +1,231 @@
+\section{Source-bound certificates for binary normal-surface topology}
+\label{sec:normal-certificates}
+
+The next report-47 integration connects the local orbit proofs of
+Section~\ref{sec:orbit-certificates} to the maintained normal-surface adapter.
+The report's polygon-stack adapter is useful as an independent reference,
+but leaves ambient-manifold validity as a precondition. The maintained
+adapter already checks the finite manifold itself. We retain its edge-point
+interval model and manifold validator, and add optional certificates to its
+three existing orbit queries. Thus this integration strengthens the
+checkable evidence without weakening the existing ambient input contract.
+
+\subsection{Exact scope and reconstructed geometry}
+
+The input is a reciprocal tetrahedral face-pairing array and seven
+nonnegative normal coordinates per tetrahedron. The native validator checks
+connectedness, ambient orientability, absence of reversed-edge
+identifications, circle or interval edge links, sphere or disc vertex links,
+and exactly one finite torus boundary. Matching equations, quadrilateral
+constraints and globally consistent edge-intersection counts are checked
+from the supplied coordinates. No recognition of a knot exterior, and no
+relation to an input planar diagram, is inferred from these checks.
+
+For an ambient edge $e$, the normal intersection weight is $w_e$.
+The surface's one-skeleton is represented on the disjoint union of these
+edge-point intervals. At a face corner, the endpoints of its normal arcs
+are paired by their rank from the corner. A parity union--find determines
+which end of an edge interval is nearest the corner; vertex labels alone
+would be insufficient in a one-vertex triangulation. The already validated
+normal polygons attach to this one-skeleton, so its connected components
+are exactly those of the surface. Restricting to boundary faces gives its
+boundary circles. Neither construction enumerates individual discs,
+intersection points or sheets.
+
+The finite geometry routines now live in
+\path{../fast/fastunknot/normal_surface_geometry.py}; their validation and
+interval construction are shared by producer and checker. This is an
+explicit common trust boundary. The checker does not invoke the topology
+producer, orbit scheduler or boundary-cohomology search. Independent
+polygon-stack extraction and Regina supply cross-checks of the shared
+geometry rather than being required production dependencies.
+
+\subsection{The three orbit proofs and orientation doubling}
+
+The optional \texttt{normal-surface-topology-v1} certificate contains the
+normalized source digest, the complete proofs for \texttt{surface},
+\texttt{double} and \texttt{boundary}, a boundary-cohomology witness and a
+precisely typed table of topological claims. Integer coordinates and their
+hexadecimal encodings have the same normalized source digest. The exact
+face records remain bound; an isomorphic relabelling requires fresh
+reconstruction and evidence. The digest is a source consistency check, not
+a replacement for mathematical verification.
+
+Replay revalidates the caller's manifold and coordinates and reconstructs
+all three ordered interval systems. It then invokes the independent local
+orbit verifier on those reconstructed inputs. Rewriting the outer digest
+cannot make a foreign trace acceptable. Each orbit trace must finish;
+an otherwise valid prefix supplies no count.
+
+Let $C$, $C_2$ and $b$ be the verified counts for the normal vector $x$,
+its double $2x$, and its boundary. The doubled normal surface is the
+horizontal boundary of a regular normal interval neighbourhood of the
+original. In an orientable ambient manifold this is its orientation double
+cover. An orientable component contributes two lifted components and a
+nonorientable component contributes one. Hence
+\[
+ C_{\mathrm{or}}=C_2-C,\qquad C_{\mathrm{nonor}}=2C-C_2.
+\]
+The checker rejects negative values. The finite reconstruction also computes
+$\chi=V-E+F$: $V=\sum_e w_e$, $E$ counts normal arcs after face
+identifications, and $F$ is the sum of normal coordinates. All these are
+binary arithmetic operations on a compressed description.
+
+For a connected orientable surface, the checker verifies
+$g=(2-b-\chi)/2$, including nonnegativity and integrality. For a connected
+nonorientable surface it verifies the positive crosscap number
+$2-b-\chi$. Every supplied component count, Euler value, disc count,
+genus or crosscap claim must match the reconstructed calculation. Boolean
+values are not accepted as integer counts. The empty surface has zero
+components and no connected-surface genus claim.
+
+\subsection{A finite witness for essential boundary}
+
+Normal intersections with each ambient boundary edge define a mod-two
+cochain $z(e)=w_e\bmod2$. The normal matching equations make it a cocycle:
+on each boundary triangle the endpoints of normal arcs occur in pairs.
+Its cohomology class is dual to the surface boundary's homology class.
+The graph used below has one edge for each ambient boundary edge, retaining
+loops and multiple edges, and is independent of sheet multiplicity.
+
+The report supplies two complementary finite witnesses. To prove that the
+class vanishes, the producer supplies one bit $p(v)$ per graph vertex, and
+the checker verifies
+\[
+ z(uv)=p(u)+p(v)\pmod2
+\]
+for every edge. To prove nonvanishing, it supplies a set of graph edges
+having even incidence at every vertex and odd sum of $z(e)$. This is a
+closed mod-two chain with pairing one against the cocycle. Either witness
+has size linear in the finite boundary graph. The positive witness can be
+found by a breadth-first potential assignment: an inconsistent edge closes
+an odd cycle using the two parent paths. Replay checks the chain directly
+and does not repeat that search.
+
+A connected normal surface with $\chi=1$ and one boundary component is a
+disc. Its boundary is a simple closed curve in the validated boundary
+torus. Such a curve is essential exactly when its mod-two homology class
+is nonzero: every essential simple torus curve represents a primitive
+integral class. The checker therefore certifies a compressing disc exactly
+when $C=1$, $\chi=1$, $b=1$, and the nonzero boundary witness verifies.
+A vertex-linking disc correctly fails the last condition. An aggregate
+zero boundary class on a disconnected surface says nothing about each
+individual boundary curve; the disc conclusion requires connectedness.
+
+\subsection{Complexity, budgets and API}
+
+For $t$ tetrahedra and largest coordinate bit length $B$, each interval
+system has $O(t)$ pairings and $O(B+\log(t+1))$-bit endpoints. The ordinary
+normal-disc count may be exponential in $B$, but neither the finite
+validation nor any of the three orbit queries expands it. The polynomial
+AHT production and trace-size bounds of
+Section~\ref{sec:native-interval-orbits} therefore yield polynomial-size
+normal-topology certificates and polynomial verification in the supplied
+encoded geometry and proof length. This is a theorem for a supplied normal
+vector, not a polynomial algorithm for finding a compressing disc.
+
+\texttt{normal\_surface\_topology(..., record\_certificate=True)} records the
+proofs; the default remains count-only. A single \texttt{max\_cycles}
+allowance is shared across all three production queries. An incomplete
+query returns \texttt{INCONCLUSIVE} without any topology certificate or
+compressing-disc answer. Recording preserves cycle counts and all previous
+result fields. Proof production and independent verification are separate
+API calls; requesting a proof does not implicitly replay it.
+
+\texttt{verify\_normal\_surface\_certificate} optionally checks a shared
+\texttt{max\_operations} cap on the sum of recorded orbit events before
+replay. Exceeding it means unverified, not a negative topological claim.
+Caller cancellation exceptions propagate, including \texttt{ValueError}.
+Invalid supplied manifold data raises the same \texttt{NormalOrbitError}
+as production; malformed proof data returns false. Callers can additionally
+bound serialized size or provide cooperative deadlines. These controls do
+not assert that the entire untrusted input was bounded before allocation.
+
+\subsection{Native validation and performance evidence}
+
+Four delivered source and test files were checked against report 47's
+manifest. The native adapter retains the prior finite geometry, whose
+count-only results are compared against the actual maintained implementation
+at commit \texttt{98f21ce333bf}. Twenty-eight focused tests pass in
+11.167 seconds. New proof tests disable all producer search functions during
+replay, alter every topological claim, substitute foreign queries, rewrite
+source digests, corrupt both boundary-witness forms, exhaust shared caps,
+and inject cancellation at early, middle and late checkpoints. Empty,
+one-sided, vertex-linking and parallel surfaces include coordinates with
+more than 20,000 bits and hexadecimal JSON round trips.
+
+The seeded native audit starts with 252 actual normal vectors in layered solid
+tori with one through eight tetrahedra, including compatible sums and empty
+vectors. Every result agrees with both Regina and the report's separate
+polygon-stack extraction; both native and report certificates replay.
+Eighteen further cases attach tetrahedral balls along boundary faces, preserving
+the manifold while adding boundary vertices; meridian extensions and each
+vertex-linking disc exercise the larger boundary graph. There are twelve
+compressing-disc cases, 34 cases with a nonorientable
+component and 94 disconnected cases among the 270 total comparisons. The old native count-only result also
+agrees exactly in every case. Raw vectors, proof digests and source hashes
+are retained in \path{data/normal-certificate-native-audit.json}.
+
+The full maintained suite passes 924 tests with Regina in 246.517 seconds.
+The final focused run includes additional odd-cycle and exact-potential
+checks on a three-vertex graph. The ten moved geometry definitions are
+AST-identical to their baseline versions; the refactoring adds no alternate
+manifold-validation path.
+
+The benchmark uses the actual baseline module from that commit with unchanged
+orbit-kernel dependencies. Its six arms are the old count-only call, the new
+count-only call, an identical new control, optional proof recording,
+production followed by independent replay, and replay of an already supplied
+proof. There is one shuffled warmup and five shuffled measured rounds per
+case. Small fixtures use batches to reduce timer overhead; each call starts
+with fresh source validation. Proof transport and JSON serialization are
+outside the timed region. All results and produced certificates are compared
+outside timing; the combined production/replay arm checks successful replay
+inside its call. Source hashes are checked before and after the experiment.
+
+\input{tables/normal_certificates.tex}
+
+Here ``both'' means production plus independent verification, and the ratio
+is the median paired count-only/replay time. Replay therefore has a different
+input contract: a complete proof is already available. The table does not
+claim that the full task of finding and verifying a normal surface has been
+accelerated by the same ratio. Raw shuffled samples, exact representative
+certificates and their encoded sizes are in
+\path{../fast/results/normal_certificates_20261008.json}.
+
+The 840 measured calls and 168 excluded warmup calls finish in a
+56.791-second run. For the 96-tetrahedron meridian, fresh topology computation
+has median 1,267.563 ms and source-bound replay 125.874 ms, with median
+paired ratio 9.852. Its proof has 24,038 recorded orbit events and occupies
+2,018,995 bytes in compact JSON. This establishes substantially cheaper
+checking when a proof is already supplied. Production plus replay takes
+1,514.220 ms and is more expensive than count-only discovery.
+
+At 32 tetrahedra, count-only/replay medians are 70.736/16.466 ms (paired
+ratio 4.364); at eight tetrahedra they are 5.043/2.453 ms (ratio 2.079).
+The $2^{5000}$ parallel multiplicity has ratio 2.450, whereas the 20,001-bit
+one-sided example has ratio 1.059. In the latter case finite reconstruction
+and binary arithmetic leave little orbit search to avoid. Large coordinate
+bit length by itself does not imply a large replay advantage.
+
+Identical current controls have paired ratios from 0.983 to 1.011.
+Nevertheless the large fixture's recording-only median, 1,688.191 ms,
+exceeds its combined production/replay median. The raw shuffled samples
+retain this timing fluctuation; subtracting those separate medians would
+not estimate the cost of verification. Nor do the old/new count-only
+measurements establish an optimization of discovery: their geometry and
+orbit algorithms are unchanged. The useful performance result here is
+proof reuse, with independently checked source reconstruction, and its
+benefit depends on how much orbit search the source would otherwise need.
+
+\paragraph{What remains before a diagram recognizer can use this.}
+A checked compressing disc implies unknottedness only after the supplied
+manifold has been established as the original knot exterior. This adapter
+validates a finite manifold with torus boundary but supplies no such
+correspondence. It also does not search for a normal vector, bound the
+cost of a hierarchy that finds one, identify slopes of general components,
+or distinguish every component in an aggregate summary. Report 47's
+boundary-incidence extensions and the maintained marked-union proofs can
+support further work, but neither replaces those missing source and
+complexity arguments. General quasi-polynomial recognition is still open
+for the maintained implementation.

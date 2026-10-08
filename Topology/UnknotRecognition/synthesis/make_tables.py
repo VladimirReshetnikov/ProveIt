@@ -1287,3 +1287,16 @@ if ss:
         rows.append(' & '.join(cells)+r' \\')
     open('tables/sparse_seeds_pipeline.tex','w').write('\\begin{center}\n'+
         table('Input & ordinary old/new ms & ratio & group old/new ms & ratio','@{}lrrrr@{}',rows)+'\\end{center}\n')
+
+# Native supplied-normal-vector certificates: distinguish discovery and replay.
+nc = load('../fast/results/normal_certificates_20261008.json')
+if nc:
+    rows = []
+    for r in nc['cases']:
+        m = r['medians']
+        rows.append(esc(r['name']) + ' & ' + ' & '.join(
+            f'{1000*m[arm]:.3f}' for arm in ('current', 'record', 'certified', 'replay'))
+            + f" & {r['current_over']['replay']:.3f}" + r' \\')
+    open('tables/normal_certificates.tex', 'w').write('\\begin{center}\n' + table(
+        'Input & count ms & record ms & both ms & replay ms & ratio',
+        '@{}lrrrrr@{}', rows) + '\\end{center}\n')

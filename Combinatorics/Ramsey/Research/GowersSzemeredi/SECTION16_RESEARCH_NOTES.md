@@ -1007,6 +1007,30 @@ width exponent and the corresponding smaller error exponent. The production
 module and the follow-up full facade axiom audit pass. The crossover `q0` and dimension constants remain
 existential, so this does not supply numerical improvements for small `q`.
 
+**The improved exponent now reaches retiled linearity.**
+`Proofs16PolynomialRetiledLinearity` passes a direct production-source Lean
+check. Its `Section16RetiledLinearityBound` keeps frequency coverage,
+local Bohr linearity, and the compatible-axis hypotheses explicit. The
+new recurrence yields proper product cells of minimum width
+`(zeta/2)*sqrt(m^epsilon(q))`, with a linear final-coordinate restriction
+on every good base point. The generic tiling theorem accepts a supplied
+recurrence partition, so the existing recurrence API is preserved.
+`exists_eventually_stronger_retiled_linearity` gives this conclusion under
+the old integer threshold for all sufficiently large `q`, with a strictly
+larger exponent. Integer rounding and the length-minus-one margin are
+included. The next full facade audit is pending.
+
+`Proofs16PolynomialProductAssembly` also passes Lean. It applies this
+profile to a `MultiplyLinearWith Qb Eb` spectrum cover on short parent
+boxes. For positive integer `n <= (m/8)^(Eb sigma)` above the new threshold
+at `floor(Qb sigma)`, it obtains one proper product partition of minimum
+width `(zeta/2)*sqrt(n^epsilon(q))`, where the actual cover count satisfies
+`q <= Qb sigma`. The good base set retains at least `1-sigma` of the mass.
+Monotonicity in the family size justifies testing the threshold at the
+known count bound. This makes the recurrence usable in the localized
+spectrum assembly; the threshold, spectrum structure, and local Bohr
+linearity remain explicit. The next combined audit is pending.
+
 The remaining work is integration into the higher-dimensional lift and
 its structure hypotheses, together with explicit dimension constants where
 the printed thresholds require them. The printed final all-length threshold

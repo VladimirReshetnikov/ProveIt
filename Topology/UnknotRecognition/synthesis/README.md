@@ -785,3 +785,19 @@ whole-pipeline timeouts separate from completed seed-class failures. Evidence
 is in `data/sparse-seeds-*`; reproduce it with
 `../fast/two_meridian_research/audit_search.py` and
 `../fast/benchmark_two_meridian_search.py`, each taking `--output FILE`.
+
+`normal_certificates.tex` connects independent orbit replay to the native
+normal-surface adapter. It retains finite manifold validation, reconstructs
+all three interval queries from the caller's source, and checks a finite
+boundary-cohomology witness. The result certifies a supplied vector, without
+asserting knot-exterior provenance or performing a vector search. Reproduce
+the native audit and benchmark from `fast/` with:
+
+```sh
+python -B normal_orbit_research/normal_certificates.py audit --output ../synthesis/data/normal-certificate-native-audit.json
+python -B normal_orbit_research/normal_certificates.py benchmark --output results/normal_certificates_20261008.json
+```
+
+The audit compares Regina, report 47's independent polygon-stack geometry, and
+the frozen maintained baseline. Timing separates discovery, proof recording,
+production plus replay, and replay of an already supplied proof.

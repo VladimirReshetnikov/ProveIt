@@ -1993,3 +1993,36 @@ search mode, candidate count, excluded pairs and visited closure incidences.
 All preparation, attempts, arithmetic and replay share the original allowances.
 See [`sparse_seeds.tex`](../synthesis/sparse_seeds.tex) for the proofs and native
 measurements, and `two_meridian_research/README.md` for reproduction commands.
+
+### Certificates for supplied normal surfaces
+
+The native normal-surface adapter can now record source-bound topology proofs:
+
+```python
+from fastunknot.normal_surface_orbits import normal_surface_topology
+from fastunknot.normal_surface_verify import verify_normal_surface_certificate
+
+result = normal_surface_topology(triangulation, coordinates,
+                                record_certificate=True, max_cycles=100000)
+if result['status'] == 'COMPLETE':
+    verified = verify_normal_surface_certificate(
+        triangulation, coordinates, result['certificate'], max_operations=1000000)
+```
+
+Both calls reconstruct the finite connected orientable manifold with one torus
+boundary and check the normal vector. Replay verifies three complete orbit
+traces and a finite boundary-cohomology witness without rerunning either search.
+It checks components, orientability, boundary curves, Euler characteristic,
+connected-surface genus/crosscaps, and whether the supplied surface is a
+compressing disc. These claims concern the supplied triangulation; the API
+establishes no correspondence with an input knot diagram and performs no
+normal-vector search.
+
+The default remains count-only. `max_cycles` is shared across production
+queries; incomplete production emits no certificate. Replay's `max_operations`
+cap covers the sum of trace events; exceeding it returns `False` (unverified).
+Malformed evidence returns `False`, malformed source geometry raises
+`NormalOrbitError`, and external cancellation exceptions propagate. Use
+`fastunknot.integer_codec.json_safe` before JSON serialization of huge integers.
+See [`normal_certificates.tex`](../synthesis/normal_certificates.tex) for the
+proof, scope, independent comparisons and performance measurements.
