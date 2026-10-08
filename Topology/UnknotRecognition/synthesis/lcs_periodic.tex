@@ -1,0 +1,193 @@
+\section{Exact phase certificates for short-period overlaps}
+\label{sec:lcs-periodic}
+
+\subsection{Recognizing a structured case before general matching}
+
+The full-overlap control of Section~\ref{sec:lcs-windows} asks for all
+positive $k$ satisfying
+\[
+ \operatorname{suffix}_k((ab)^N)=\operatorname{prefix}_k((ab)^N).
+\]
+Its answer is simply the progression
+$2,4,\ldots,2N$, but the general periodic-extension machinery still
+exhausts its allowance on the larger test sizes. A short known repeating
+block gives a more direct route. It can be verified throughout a compressed
+grammar by a finite-state computation, without occurrence tables or long
+substring equality queries.
+
+The new stage attempts this route only when both feasible overlap operands
+have length at least 128. It reads a prefix of exactly 64 letters from the
+right operand and proposes its least period $p\le32$, if one exists.
+These fixed constants bound the speculative work and the size of phase
+masks; they are policy choices, not mathematical thresholds for general
+recognition. The proposed block is $B=b_0\cdots b_{p-1}$.
+The sample does not prove that the remaining word is periodic. Both entire
+operands must pass the grammar certificate below. Otherwise the existing
+complete matcher runs unchanged.
+
+This is another instance of adaptive implementation selection: a small
+structural test can choose a cheaper exact algorithm. Failure of that test
+is not failure of the underlying search, and exhaustion remains inconclusive.
+
+\subsection{A phase mask at every grammar rule}
+
+For a grammar word $W$, define
+\[
+ M(W)=\{r\in\mathbb Z/p\mathbb Z:
+          W_i=b_{(r+i)\bmod p}\text{ for every }0\le i<|W|\}.
+\]
+This set is represented by a $p$-bit integer. A terminal $a$ has precisely
+the phases at which $b_r=a$. At a binary rule $W=UV$,
+\[
+ M(UV)=M(U)\cap\bigl(M(V)-|U|\bigr).
+\]
+Equivalently, rotate the right child's bit mask to the right by
+$|U|\bmod p$, then intersect it with the left mask. This condition is
+necessary and sufficient: the first child starts at phase $r$ and the
+second at phase $r+|U|$. Induction over the grammar proves that every
+mask describes the entire represented word, including positions far beyond
+the sampled prefix. Signed letters are compared exactly, with no hashing.
+
+The certificate succeeds only if $0\in M(Y)$ and $M(X)$ is nonempty.
+Select any certified starting phase $r\in M(X)$ and set
+$e=(r+|X|)\bmod p$. The right operand is then a prefix of $B^\infty$,
+and every suffix of $X$ starts at its certified phase $e-k$.
+
+\subsection{Recovering every overlap length}
+
+The candidate block is cyclically primitive. Indeed, if a nonzero cyclic
+shift fixed $B$, it would be a repetition of a block of length
+$\gcd(p,r)<p$. The sampled prefix, being a prefix of $B^\infty$, would
+then have that smaller period, contradicting the chosen least period.
+Consequently a full block matches $B$ only at phase zero.
+
+For $k\ge p$ an overlap therefore exists exactly when
+\[
+ k\equiv e\pmod p.
+\]
+The same congruence is sufficient for shorter lengths as well. It produces
+one arithmetic progression with first element $e$ if $e>0$, or $p$ if
+$e=0$, and step $p$, clipped at $\min(|X|,|Y|)$. Its multiplicity is stored
+as an integer even when exponentially large.
+
+Shorter overlaps outside this congruence class are possible because a
+proper fragment of a primitive block may agree at several phases.
+The implementation checks each $1\le k<p$ outside the main progression
+by comparing
+\[
+ b_{(e-k+i)\bmod p}=b_i\qquad(0\le i<k).
+\]
+Each successful check contributes a singleton progression. This gives at
+most $p$ disjoint progressions, all exact. Their union is the complete
+overlap set, rather than a selected useful witness. The existing critical
+alignment routine can therefore consume them without changes to its proof
+or the ordinary relator certificate format.
+
+For $X=Y=(ab)^N$, $p=2$ and $e=0$, so the output is $(2,2,N)$.
+For a block of 32 distinct letters, with $X$ starting at phase seven and
+both words containing $N$ full blocks, the answer is $(7,32,N)$. The latter
+case checks a nonzero rotation and the maximal supported period.
+
+\subsection{Work, memory and the scope of the bound}
+
+The prefix sample contains at most 64 letters; its explicit local traversal
+has bounded size, independent of the represented word lengths. Creating
+that prefix slice costs $O(H)$ for grammar height $H$. Period proposal
+and short-exception checks take bounded work because $p\le32$.
+The mask pass uses one bounded-width integer per reachable rule and one
+transition per binary rule. Its work is $O(s)$ after a topological order
+is available. The current shared reachability helper sorts node identifiers,
+so an implementation-level bound is $O(s\log s+H)$ word operations,
+plus polynomial costs for the binary-encoded lengths. No loop counts to
+$N$ or enumerates the members of a returned progression.
+
+The arena's shared allowance charges sample traversal, candidate-period
+checks, reachability, mask evaluation and short-overlap checks. Existing
+node and overlap-cache limits remain in force. At most one mask is retained
+per reachable node, and each mask has at most 32 bits. A failed proposal
+adds bounded sample work; a plausible sample that fails globally adds one
+grammar pass before the fallback. The negative controls measure this
+speculation cost.
+
+This stage establishes an efficient exact local algorithm for two words
+certified to follow a common short periodic block. It does not bound the
+periods arising throughout unknot recognition, guarantee that relator search
+reaches such states, or bound the number of moves and intermediate grammar
+sizes. The general subexponential and quasi-polynomial targets remain open
+for this implementation.
+
+\subsection{Validation and matched measurements}
+
+Literal-oracle tests cover signed blocks, nonprimitive supplied spellings,
+random grammar parses, phase rotations, truncated final blocks, and
+exceptional short overlaps. Mutations after position 64 and a 33-letter
+period verify that a plausible prefix or an unsupported period does not
+bypass the complete matcher. A 32-letter shifted block repeated $2^{500}$
+times must finish under 20000 work units with whole-word expansion and occurrence
+tables forbidden. A separate oracle checks that the returned progressions
+feed the exact critical-extension calculation correctly.
+The integration run passes 693 tests in 183.274 seconds. The four-test
+periodic suite, including the additional extension oracle, passes in
+0.786 seconds; together the runs cover all 694 tests currently present.
+
+\input{tables/lcs_periodic_queries.tex}
+\input{tables/lcs_periodic_kernels.tex}
+\input{tables/lcs_periodic_operations.tex}
+
+For the full-overlap family at $h=8$, median time falls from 31.393
+milliseconds (31.449 A/A) to 0.124; charged work falls from 37641 to
+328 and arena nodes from 108 to 11. At $h=32$ and $h=500$, both archived
+controls exhaust two million work units, while phase certification completes
+in 0.347 and 2.406 milliseconds respectively. The $h=500$ run uses 503
+nodes, 4264 work units and no occurrence-table cells, returning one
+progression representing $2^{500}$ overlap lengths.
+
+For the shifted 32-letter block, at $h=8$ the medians are 242.843
+milliseconds before, 243.305 A/A and 0.473 after. At $h=500$, only the
+new stage completes: 4.582 milliseconds, 1094 nodes and 10110 charged
+work units, again with one progression and no occurrence tables. This
+confirms that the method handles a nonzero phase and is not restricted
+to identical binary-power roots or a two-letter alphabet.
+
+The late-defect control records the cost of an unsuccessful proposal.
+At $h=8$, medians are 33.184, 33.148 and 32.865 milliseconds; the exact
+work increase is 301 units, from 40113 to 40414. Nodes and cumulative
+table cells remain 121 and 541 respectively. At $h=32$ and $h=500$,
+all arms still exhaust the allowance. For $h=500$ the recorded times to
+exhaustion are 2.717, 2.759 and 2.803 seconds. These are censored searches,
+not completed-query timing ratios. The failed certificate correctly leaves
+this more general obstacle unresolved.
+
+All full knot queries produce identical certificate digests, and none
+attempts the new phase stage. The small-fourteen sums of medians are
+300.269 milliseconds before, 309.512 A/A and 299.232 after; Gordian
+medians are 2.113, 2.229 and 2.141 seconds. Every local relator operation
+also completes with the same trace across arms. Successful $h=500$
+quotient-search medians are 13.381, 13.702 and 13.413 milliseconds.
+These controls provide no evidence of a knot-corpus speedup, and their
+A/A variation limits interpretation of small timing differences.
+
+The archived baseline is the window-localized matcher at \code{ca4681932};
+A/A repeats it. Every arm runs inside the same current arena, donor helpers,
+recognizer and independent certificate replayer. Seed 3013 shuffles the
+three arms in one excluded warmup and five measured rounds per case.
+The audit includes 225 complete knot queries, 270 string queries and 135
+local relator operations. String and relator timings include grammar
+construction. Whole-query timings include fresh PD construction and replay,
+with certificate digest comparison outside the clock. Local operations
+have the unchanged two-million-work and 100000-node/table-cell allowances;
+whole recognition has 18 seconds, including a 15-second, twenty-million-work
+group stage. Limited runs are censored, not negative answers or completed
+runtime denominators.
+
+The late-defect control uses $X=Y=(ab)^Nc$. Its sampled prefix suggests
+period two, but the final $c$ invalidates every phase mask. Its only overlap
+is the full word; the complete fallback must establish this. This is a
+correctness and speculation-cost control, not an expected shortcut success.
+
+Raw samples are in \path{results/lcs_periodic_20261008.json}, and logs are
+under \path{synthesis/data/lcs-periodic-*}. The incoming archives and their
+relevance review are unchanged from Section~\ref{sec:lcs-windows}; the
+suggested \code{openai/math} head remains \code{fd4aeeb2ee}. The phase
+certificate is the elementary evaluation of a fixed periodic language on
+a straight-line grammar, not a claim of a new general recognition theorem.
