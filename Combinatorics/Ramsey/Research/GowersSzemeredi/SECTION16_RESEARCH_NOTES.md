@@ -360,6 +360,22 @@ catalogue's Corollary 16.11 exponent `(α/8)·c(r⁻¹α/8, α/2, k)^r` is
 items. Every route beyond dimension two needs lower-dimensional counts that
 are polynomial in all parameters.
 
+**Polynomial controls are necessary but not sufficient.** One could try to
+make dimension two polynomial in every parameter:
+
+- feed the cubic dimension-one controls into the cross-sections of
+  Lemma 16.4(i) and the line covers of Lemma 16.9, instead of the printed
+  `(γ,R)` controls behind `section16Lemma9QBound`;
+- replace Lemma 16.1 for linear forms (the case k = 1) by Dirichlet's
+  theorem, whose exponent is about `1/q` rather than `K^(−4q)`.
+
+Even then, stacking would fail. The proof of Theorem 16.2 ends with a
+greedy decomposition into about `γ⁻²/θ₂` pieces united by Lemma 16.8, which
+is a sequential union (H.2). Applied to a stack of r slices at `γ/√r`, the
+number of pieces is polynomial in r, so the exponent is exponential in it.
+A stackable invariant must therefore support **simultaneous** unions, not
+merely polynomial counts.
+
 ### H.4 A stackable invariant: Bohr-structured multilinearity (proposal)
 
 The induction needs a class of k-dimensional structures that (a) is closed
