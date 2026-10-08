@@ -163,7 +163,7 @@ def _invariant_obstruction(diagram, evidence, *, use_modular, use_jones, use_ale
         try:
             test, method, extra = select_jones_filter(jones_backend, potts_colors)
             if jones_backend in ("potts-separator", "potts-adaptive", "potts-faithful",
-                                  "spin-faithful"):
+                                  "spin-faithful", "faithful-adaptive"):
                 extra["statistics"] = order_stats
             witness = test(diagram, max_states=jones_max_states,
                            max_transitions=jones_max_transitions, order=order, check=check, **extra)
@@ -177,6 +177,8 @@ def _invariant_obstruction(diagram, evidence, *, use_modular, use_jones, use_ale
             evidence["separator_order"] = certificate
         if "ordering_policy" in order_stats:
             evidence["jones_ordering_policy"] = order_stats["ordering_policy"]
+        if "backend_policy" in order_stats:
+            evidence["jones_backend_policy"] = order_stats["backend_policy"]
         if "polynomial_identity" in order_stats:
             evidence["jones_polynomial_identity"] = order_stats["polynomial_identity"]
         if witness is not None:
