@@ -1604,3 +1604,16 @@ in a concrete case. Freiman linearity only on a Bohr set does not yet supply
 the parent-box multilinearity premise, and an all-box positive-power
 oscillation partition is not asserted. The result reuses the already
 scoped Schmidt recurrence input and adds no upstream module.
+
+`Proofs16PolynomialVarietyProfile` now chooses a rounded integer scale to
+obtain good cells of width at least `W^(1/(2*p*(q+1)^8))`, where `W` is the
+parent width and `q=|Gamma|+|Psi|+r`. Its integer threshold is
+`max(C*(q+1),ceil(8/rho))^(2*p*(q+1)^8)`, with fixed existential `C>=2,p>0`.
+`Proofs16PolynomialVarietyCover` uses one multilinear map on the good cells
+and the existing nine-map coarse cover below that threshold. Capping the
+positive exponent gives `MultiplyLinearWith` on every proper box, with
+controls independent of the requested loss. This discharges the partition
+input for globally multilinear mixed phases, including globally affine
+coordinate functions. It makes no such claim for general Freiman maps
+on Bohr sets. Both production modules and their five transitive axiom checks
+pass; the combined facade audit remains queued behind the port build.
