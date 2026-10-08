@@ -2,8 +2,26 @@
 
 `boundary_tait.py` validates matching coverage, inherited face colors and
 spherical completion before interpreting a terminal quotient as a native
-boundary observation. Its default algebra is the exact rational kernel from
-report 26. This interface is not enabled by ordinary recognition dispatch.
+boundary observation. Its default algebra is the fraction-free integer kernel
+in `fastunknot/terminal_determinant.py`; `arithmetic='rational'` retains the
+exact rational kernel from report 26 as an independent reference. This
+interface is not enabled by ordinary recognition dispatch.
+
+The integer kernel eliminates the interior once, retains its null directions
+and common determinant scale, then computes small integer quotient determinants
+with checked exact division. `prepare_kernel(verify=True)` independently
+replays the source binding using rational Schur elimination. It is 1.229 times
+faster than the previous rational observer across the small native corpus and
+19.223 times faster on a 73-vertex stage with 200 actual prefix queries. These
+are observer timings, not full-recognizer speedups. A tested policy that waits
+for four distinct queries before preparing the kernel wastes substantial work
+on larger interiors and is not enabled.
+
+Run `python -B benchmark_integer_terminal.py` from `fast/` to reproduce this
+comparison. The earlier modular experiment below remains a historical record
+of the rational default at its own pinned checkpoint. See the synthesis
+article's fraction-free terminal section for the scaling formula, independent
+replay and bit-complexity limits.
 
 `terminal_plan.py` adds a field-plan traversal for the kernel protocol in the
 dynamic-terminal delivery. It validates every merge, including descendants

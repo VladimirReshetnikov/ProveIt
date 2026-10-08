@@ -1144,3 +1144,22 @@ if dynamic_terminal:
             '@{}lrrrrr@{}',rows)+r'\end{center}'+'\n'+
             'Median milliseconds per fresh replay; the final column is the median paired '
             'rational/arm ratio for all 582 stages. These are observer timings.\n')
+
+integer_terminal = load('../fast/results/integer_terminal_20261008.json')
+if integer_terminal:
+    rows=[]
+    names={'native_all':'Native corpus','padding_4_one':'17 vertices, one',
+           'padding_4_all':'17 vertices, stream','padding_16_one':'41 vertices, one',
+           'padding_16_all':'41 vertices, stream','padding_32_one':'73 vertices, one',
+           'padding_32_all':'73 vertices, stream','padding_32_repeated':'73 vertices, repeats'}
+    for name,arms in integer_terminal['summary'].items():
+        cells=[names[name]]
+        cells.extend(f"{1000*arms[arm]['median_seconds']:.3f}" for arm in
+                     ('rational','control','direct','integer_kernel','adaptive_four'))
+        cells.append(f"{arms['integer_kernel']['paired_rational_ratio']:.2f}")
+        rows.append(' & '.join(cells)+r' \\')
+    with open('tables/integer_terminal.tex','w') as handle:
+        handle.write(r'\begin{center}\small'+'\n'+table(
+            'Stage & Rational & A/A & Direct & Kernel & Switch & Ratio','@{}lrrrrrr@{}',rows)+
+            r'\end{center}'+'\n'+'Median milliseconds; final column is the median paired '
+            'rational/integer-kernel ratio. These are complete observer-stage timings.\n')

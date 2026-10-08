@@ -2,6 +2,16 @@
 
 The synthesized report on the six archives and on the new recognizer.
 
+`integer_terminal.tex` derives the fraction-free terminal kernel's common-scale
+quotient formula, including singular interiors and the empty border, and
+describes its independent rational replay. It becomes the boundary research
+observer's default while ordinary recognition dispatch remains unchanged.
+Controlled observer measurements show 1.229 times improvement on the original
+native corpus and 19.223 times on a larger 73-vertex stage. A four-query adaptive
+candidate is slower than eager preparation on repeated large queries and is
+not promoted. The source, tests, native audit and measured samples are linked
+from `../fast/determinant_research/README.md`.
+
 `dynamic_terminal_review.tex` reviews the fixed-size determinant representation,
 rank-two terminal contractions, singular-safe rank updates and signed CRT in
 the dynamic-terminal delivery. Its native adapter agrees on 4,503 completion

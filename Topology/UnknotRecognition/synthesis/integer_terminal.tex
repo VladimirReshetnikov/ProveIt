@@ -1,0 +1,159 @@
+\section{Fraction-free terminal kernels and the cost of switching}
+\label{sec:integer-terminal}
+
+Section~\ref{sec:dynamic-terminal-review} found that direct integer quotient
+elimination beat the rational observer on small native graphs. This does not
+mean every query should repeat the interior elimination. We now retain the
+terminal-kernel structure while preparing and querying it with integers.
+The validated fraction-free kernel becomes the boundary research observer's
+default; \texttt{arithmetic='rational'} retains the earlier reference. Neither
+observer is dispatched by ordinary knot recognition. The improvement changes
+exact arithmetic cost, not the meaning or sufficiency of a boundary observation.
+
+\subsection{An integer border with a determinant scale}
+
+Ground terminal zero, and order the remaining coordinates as $h$ interior
+vertices followed by $t=b-1$ terminals. Perform fraction-free elimination
+while a nonzero pivot remains in the interior block. Row and column swaps
+are allowed independently within that block. With previous pivot
+$\Delta_{k-1}$, initially one, and current pivot $p$, update trailing entries by
+\[
+ a'_{ij}=\frac{p a_{ij}-a_{ik}a_{kj}}{\Delta_{k-1}}.
+\]
+Every division is checked for zero remainder. The bordered-minor identity
+underlying Bareiss elimination guarantees exactness \cite{bareiss-terminal}.
+A zero diagonal is insufficient to stop: off-diagonal interior pivots are
+searched too, and both permutation signs are recorded. Only a wholly zero
+remaining interior block ends preparation.
+
+After $\rho$ pivots put $r=h-\rho$, let $\Delta\ne0$ be the last pivot
+(one if none were taken), and let $\epsilon$ be the accumulated swap sign.
+The retained integer matrix $K$ equals $\Delta$ times the remaining rational
+Schur complement. It has a zero $r\times r$ interior corner. Independent
+row and column pivots can destroy symmetry, so its two coupling blocks are
+not assumed to be transposes.
+
+For a partition with $q$ non-root terminal blocks, sum rows and columns of
+$K$ within those blocks and discard terminals in the root block, retaining
+the null directions. Write the resulting integer border as $K_\pi$ and set
+$d=r+q$. Its exact quotient cofactor is
+\[
+ \tau_\pi=\begin{cases}
+ 0,&r>q,\\
+ \epsilon\Delta,&d=0,\\
+ \displaystyle\epsilon\frac{\det K_\pi}{\Delta^{d-1}},&d>0.
+ \end{cases}
+\]
+The final division is checked as well. The empty-border case is essential:
+eliminating every coordinate leaves the eliminated determinant, not an empty
+determinant divided by an integer power with negative exponent.
+
+\begin{proof}
+The selected interior rows and columns form a nonsingular $\rho\times\rho$
+block of the permuted source, of determinant $\Delta$. Terminal identification
+does not affect these coordinates. Schur elimination therefore factors each
+quotient determinant as $\epsilon\Delta$ times its remaining Schur determinant.
+The integer border scales all $d$ remaining rows by $\Delta$, so its
+determinant acquires a factor $\Delta^d$. This proves the formula for $d>0$;
+the empty Schur determinant gives the $d=0$ case. If $r>q$, the $r$ null rows
+couple to only $q$ terminal columns, forcing zero. A failed exact division
+is consequently an arithmetic failure, never evidence about knot type.
+\end{proof}
+
+\subsection{Independent replay and resource bounds}
+
+\path{../fast/fastunknot/terminal_determinant.py} stores immutable border rows,
+the scale, sign, source labels and interior pivot positions. Its independent
+diagnostic verifier replays those positions with rational Schur subtraction,
+checks nonzero pivots, multiplies the rational pivots, and compares the scaled
+residual entry by entry. It checks that the claimed null interior is zero.
+It never calls the constructor or its fraction-free recurrence. This binds
+the kernel to its supplied matrix; no new serialized knot-certificate
+protocol is claimed.
+
+Preparation costs $O(v^3)$ integer operations and $O(v^2)$ space. If
+$r\le b-1$, a query uses $O(b^2+(r+q)^3)$ integer operations on a border of
+size at most $2(b-1)$; if $r>b-1$, every partition returns zero immediately.
+This matches the earlier static kernel's arithmetic bound while avoiding
+repeated fraction normalization. It is not a uniform bit-complexity speedup.
+For source entries of at most $\tau$ bits, bordered minors have
+$O(v(\tau+\log(v+1)))$ bits. Aggregation adds logarithmic factors, and the
+final numerator and denominator can acquire another factor $O(b)$ in their
+bit lengths before exact cancellation. These bounds are polynomial for
+explicit input, but individually reduced fractions can be more economical
+than a common scale on some matrices.
+
+Construction, query elimination and diagnostic replay accept a cooperative
+callback. Interrupted construction publishes no kernel. Queries use fresh
+mutable border storage and preserve the prepared kernel. The boundary adapter
+keeps its geometry checks, phases, component counts and normalized partition
+cache. Its existing whole-adapter deadline limitations remain; an algebra
+callback alone does not establish a production resource contract.
+
+Four new tests compare 8,000 random signed-graph quotients with independently
+built full integer cofactors, and replay each kernel independently. They
+exercise off-diagonal pivots, singular interiors, empty quotients, nonunit
+scales, malformed input, corrupted kernels and interruption. Twenty-five
+actual random knot diagrams compare all boundary values and metadata against
+explicit rational mode. Before the default change, all 782 maintained tests
+passed with Regina in 167.115 seconds; the new default is checked separately
+against the full suite and native completion audit. The final default passes
+all 782 tests with Regina in 182.267 seconds. Across 78 diagrams and 582
+stages, all 4,503 native queries agree with independently rebuilt completions,
+including 15 singular rational-interior cases. Of 3,468 additional arbitrary
+pairings, 745 are accepted and independently agree, 472 classical pairings
+are declined by the inherited-color contract, and 2,251 nonclassical pairings
+are rejected. These totals match the earlier geometry audit. Every prepared
+kernel in this audit also passes independent rational source replay.
+
+\subsection{Larger native stages and a switching experiment}
+
+The benchmark pins the rational observer at \texttt{7951ae852} and includes
+an identical control. Other arms use direct full integer quotient elimination,
+the reusable integer kernel, or a candidate policy that handles four distinct
+connected partitions directly and prepares the integer kernel on the fifth.
+All share the same normalized partition cache. Cache hits do not consume
+another distinct-query allowance. The four-query threshold is an experiment,
+not an optimal stopping theorem.
+
+In addition to the previous 4,503 native observations, we extend an actual
+five-strand scanner prefix by copies of the identity braid word
+$\sigma_1\sigma_2\sigma_2^{-1}\sigma_1^{-1}$. This preserves its closure
+while enlarging both face shadings, producing selected graphs with 17, 41
+and 73 vertices and nine terminals. Repeating only one generator's cancelling
+pair would keep the selected graph at nine vertices. We measure one connected
+query, the full 200-query stream, and 200 repeats of one connected query.
+The completions are actual maintained prefix states; these constructed
+workloads separate setup, reuse and caching, rather than represent hard knots.
+
+\input{tables/integer_terminal.tex}
+
+Fresh PD validation, geometry, preparation, queries and cache activity are
+timed. Input generation, output hashing and independent verification are
+excluded. Seed 261008119 shuffles one warmup round and five measured rounds
+for five arms and eight workloads: 40 warmups and 200 measured samples. The
+smallest one-query case uses ten fresh replays per sample. All complete values
+and metadata agree across every arm and round. Raw samples are in
+\path{../fast/results/integer_terminal_20261008.json}.
+The measured integer implementation is frozen at \texttt{fc8b7da1c}, before
+changing the research constructor's default; the benchmark selected integer
+mode explicitly. The later default change and explicit rational-reference
+test are covered by the separate final validation above.
+
+Across the original native corpus, the reusable integer kernel has median
+271.8 ms against 340.2 ms for the rational observer, with paired speedup 1.229.
+On the full 73-vertex stage it takes 22.8 ms against 439.0 ms, with paired
+speedup 19.223. Direct integer evaluation still takes 355.3 ms there because
+it repeats the interior work on 25 distinct partitions. The four-query policy
+takes 77.1 ms: paying for four large full quotients before setup costs more
+than preparing immediately. With only one distinct query, the adaptive arm
+correctly avoids setup even when that query is repeated 200 times. On the
+small native corpus it reduces kernel preparations from 582 to 128, but its
+275.2 ms median does not beat the reusable kernel's 271.8 ms. Identical-control
+paired ratios range from 0.985 to 1.019 across the workloads.
+
+These results justify the integer kernel as the research observer's default,
+but not the candidate switching rule. A future adaptive policy should account
+for the actual cost of discarded direct-query work, especially as the interior
+grows. The measured improvement is at the observer boundary, not a full-knot
+recognition speedup, and leaves the global quasi-polynomial problem open.
