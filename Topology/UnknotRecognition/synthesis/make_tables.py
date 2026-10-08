@@ -1000,3 +1000,21 @@ if spin_valuation:
             r'\end{center}' + '\nMedian milliseconds for fresh full Jones queries, including ordering. '
             'Current shifted arithmetic controls for the new dispatch and counters. '
             'Limits are censored.\n')
+
+adaptive_jones = load('../fast/results/adaptive_jones_20261008.json')
+if adaptive_jones:
+    arms = ('baseline', 'control', 'spin', 'adaptive')
+    rows = []
+    names = {'kinoshita_terasaka': 'KT', 'hard_unknot_8': 'Hard 8',
+             'stress_braid5_36': 'Braid5 36', 'grid-8-shuffled': 'Grid 8 shuffled'}
+    for row in adaptive_jones['rows']:
+        cells = [esc(names.get(row['name'], row['name'].replace('-', ' ').capitalize()))]
+        for arm in arms:
+            cells.append(f"{1000*row['median_seconds'][arm]:.3f}"
+                         if row['completed'][arm] == adaptive_jones['rounds'] else 'limit')
+        rows.append(' & '.join(cells) + r' \\')
+    with open('tables/adaptive_jones.tex', 'w') as handle:
+        handle.write(r'\begin{center}\small' + '\n' +
+            table('Input & Potts & A/A & Spin & Adaptive', '@{}lrrrr@{}', rows) +
+            r'\end{center}' + '\nMedian milliseconds for fresh full Jones queries, including ordering. '
+            'Limits are censored, not completed-query times.\n')

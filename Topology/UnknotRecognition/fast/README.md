@@ -1672,3 +1672,27 @@ full integers and final normalization; `max_frontier_mantissa_bits` and
 `max_frontier_valuation` describe the compressed frontier representation.
 The general Jones bound is `2^O(sqrt(n))`; its polynomial factor is absorbed.
 For a separately supplied width `w`, retain `poly(n) 2^O(w)`.
+
+
+### Adaptive faithful Jones queries
+
+The optional `faithful-adaptive` backend gives faithful Potts at most `128*n`
+transitions, then switches to binary spin if Potts reaches that work allowance
+or its state cap. Both attempts share the caller's transition limit; discarded
+Potts work, including internal reordering, is counted. A completed separator
+order is reused. With caps/deadlines disabled, the default policy retains the
+`2^O(sqrt(n))` general full-Jones bound.
+
+```sh
+python -B -m fastunknot jones examples/trefoil.json --backend faithful-adaptive
+python -B -m fastunknot recognize examples/conway.json --jones-backend faithful-adaptive
+```
+
+The Python API is `adaptive_jones_exact` in `fastunknot.adaptive_jones`, with
+`include_polynomial=True` for full recovery. `potts_trial_transitions=None`
+selects the default trial; zero selects spin directly. A custom larger trial
+has its own cost. Result `transitions` counts all attempts, `selected_backend`
+identifies the winner, and `backend_policy` records the switch and discarded
+work. Large witnesses use the backend-specific hexadecimal encoding. Polynomial
+identity remains inconclusive for recognition and continues to Khovanov.
+The overall default Jones backend remains unchanged.
