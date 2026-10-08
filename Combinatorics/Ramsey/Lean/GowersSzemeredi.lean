@@ -302,6 +302,7 @@ import GowersSzemeredi.Proofs16CorollaryExponentGap
 import GowersSzemeredi.Proofs18LengthSixRouteGap
 import GowersSzemeredi.Proofs18CubicExponentGap
 import GowersSzemeredi.Proofs16BracketWindow
+import GowersSzemeredi.Proofs16FreimanBilinearReadout
 import GowersSzemeredi.Proofs16StructuredExtraction
 import GowersSzemeredi.Proofs16BaseCaseZero
 import GowersSzemeredi.Proofs05ProgressionMoments
