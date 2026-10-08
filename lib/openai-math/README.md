@@ -76,10 +76,10 @@ hashes and compatibility adaptations. Run
 `python3 Combinatorics/Ramsey/scripts/check_gowers_port_scope.py` to check the
 closure; pass a module name to show an import path explaining its inclusion.
 
-The first 1,800 manifest entries have compiled (1,816 modules including their
+The first 1,900 manifest entries have compiled (1,916 modules including their
 compatibility dependencies). The incremental `OAI.QuantitativePortAudit`
 imports this batch and the added compatibility modules. Its axiom scan
-checks 30,296 public OAI theorems and reports only `propext`,
+checks 31,909 public OAI theorems and reports only `propext`,
 `Classical.choice`, and `Quot.sound`; the separately listed compatibility declarations
 also pass, with explicit rejection of any unapproved axiom. This checkpoint
 does not certify `Results.Conclusions`.
@@ -138,8 +138,9 @@ above intentionally omit unrelated declarations; their proof status remains pend
   source and license are recorded in [`LICENSE.provenance`](LICENSE.provenance)
   and [`LICENSE.mathlib`](LICENSE.mathlib). It compiles with the local
   `Compat/GramMatrix.lean` characterization; the exported inner-product and
-  orthonormal-basis declarations pass the three-axiom check. Its downstream
-  consumers remain outside the currently audited prefix.
+  orthonormal-basis declarations pass the three-axiom check. Its direct
+  consumer `Geometry/CoordinateMinorCovolume.lean` is included in the
+  audited 1,800-entry prefix; the full quantitative conclusion is still pending.
 - Imports of relocated Mathlib modules use their older paths. All directly
   imported Mathlib source paths now exist in the local checkout; this path
   check does not establish that all importing modules compile.

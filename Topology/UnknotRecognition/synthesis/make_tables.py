@@ -319,3 +319,24 @@ if garside and garside_kernel:
         'generate and replay only the winning certificate.\n')
     with open('tables/cyclic-garside-integration.tex', 'w') as handle:
         handle.write(content)
+
+surface_cover = load('../fast/results/surface_cover_20261008.json')
+if surface_cover:
+    rows = [f"{esc(row['name'])} & {row['sheets']} & {row['families']} & "
+            f"{row['expanded_over_compressed']:.2f} & {row['control_over_compressed']:.3f}" + r" \\"
+            for row in surface_cover['topology']]
+    content = (r"\begin{center}" + '\n' +
+        table('Supplied cover & Sheets & Records & Expanded/compressed & A/A',
+              '@{}lrrrr@{}', rows) + r"\end{center}" + '\n' +
+        'Ratios are median paired times for complete cover topology; '
+        'sheet expansion is an independent oracle, not a competing compressed algorithm.\n')
+    rows = [f"{row['sheet_exponent']} & {row['marks']} & {1e3*row['query_seconds']:.3f} & "
+            f"{row['signature_json_bytes']} & {row['control_over_query']:.3f}" + r" \\"
+            for row in surface_cover['marked_queries']]
+    content += (r"\begin{center}" + '\n' +
+        table('Sheet exponent & Marks & Query (ms) & JSON bytes & A/A',
+              '@{}rrrrr@{}', rows) + r"\end{center}" + '\n' +
+        'Marked queries reuse a prepared index, with sheet count $W=2^{\\mathrm{exponent}}$. '
+        'Preparation and serialization are outside query timing.\n')
+    with open('tables/surface-cover-integration.tex', 'w') as handle:
+        handle.write(content)
