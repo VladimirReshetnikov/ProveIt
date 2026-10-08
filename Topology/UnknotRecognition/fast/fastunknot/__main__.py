@@ -14,7 +14,11 @@ EXIT = {"UNKNOT": 0, "KNOTTED": 0, "UNKNOWN": 3}
 
 
 def load(path: str) -> Diagram:
-    data = json.load(sys.stdin if path == "-" else open(path, encoding="utf-8"))
+    if path == "-":
+        data = json.load(sys.stdin)
+    else:
+        with open(path, encoding="utf-8") as handle:
+            data = json.load(handle)
     return Diagram.from_json(data)
 
 
@@ -33,6 +37,9 @@ def _scan_worker() -> int:
 # One table for both parsers.  (flag, type or None for a switch, default, choices, help)
 OPTIONS = {
     "recognize": [
+        ("--composition", str, "standard", ("standard", "component", "component-dense"),
+         "opt-in component contraction for the standard scanner"),
+        ("--composition-max-variables", int, 18, None, "component/output variable allocation limit"),
         ("--no-braid", None, False, None, "disable source-braid certificates"),
         ("--braid-backend", str, "free-product", ("free-product", "matrix"),
          "exact decision backend for a source braid on at most three strands"),
@@ -64,6 +71,9 @@ OPTIONS = {
         ("--output", str, None, None, "write the JSON result to this file"),
     ],
     "khovanov": [
+        ("--composition", str, "standard", ("standard", "component", "component-dense"),
+         "opt-in component contraction for the standard scanner"),
+        ("--composition-max-variables", int, 18, None, "component/output variable allocation limit"),
         ("--shared", None, False, None, "use exact component sharing (cannot combine with --factor)"),
         ("--check-d2", None, False, None, None),
         ("--factor", None, False, None, "multiply ranks over visible connected summands"),
@@ -159,6 +169,15 @@ def main(argv: list[str] | None = None) -> int:
     except (DiagramError, ValueError, OSError) as exc:
         print(f"invalid input: {exc}", file=sys.stderr)
         return 2
+    if args.command in ("recognize", "khovanov"):
+        if args.composition_max_variables < 0:
+            print("--composition-max-variables must be nonnegative", file=sys.stderr)
+            return 2
+        if args.composition != "standard" and (
+                args.pivot != "minfill" or args.algebra != "bits" or args.race != 1
+                or getattr(args, "backend", "standard") != "standard" or getattr(args, "shared", False)):
+            print("component composition requires standard backend, minfill, bits, and race=1", file=sys.stderr)
+            return 2
     if args.command == "recognize":
         if args.euler_max_states < 0:
             print("--euler-max-states must be nonnegative", file=sys.stderr)
@@ -169,6 +188,7 @@ def main(argv: list[str] | None = None) -> int:
             return 2
         result = recognize(diagram, use_reduction=not args.no_reduction,
                            use_seifert=not args.no_seifert, backend=args.backend,
+                           composition=args.composition, composition_max_variables=args.composition_max_variables,
                            use_braid=not args.no_braid, braid_backend=args.braid_backend,
                            use_braid_reduction=not args.no_braid_reduction,
                            euler_max_states=args.euler_max_states,
@@ -197,8 +217,14 @@ def main(argv: list[str] | None = None) -> int:
             print(json.dumps(result, indent=1))
             return 0
         options = dict(check_d_squared=args.check_d2, pivot=args.pivot, algebra=args.algebra, tail=args.tail,
-                       race=args.race, race_after=args.race_after)
-        result = factored_khovanov_rank(diagram, **options) if args.factor else khovanov_rank(diagram.pd, **options)
+                       race=args.race, race_after=args.race_after, composition=args.composition,
+                       composition_max_variables=args.composition_max_variables)
+        try:
+            result = factored_khovanov_rank(diagram, **options) if args.factor else khovanov_rank(diagram.pd, **options)
+        except (ScanLimit, MemoryError) as exc:
+            print(json.dumps({"status": "UNKNOWN", "method": "resource-limit",
+                              "reason": str(exc) or "memory allocation failed"}))
+            return 3
         print(json.dumps(result, indent=1))
         return 0
     if args.command == "jones":

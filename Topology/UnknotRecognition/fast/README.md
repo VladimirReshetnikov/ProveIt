@@ -11,7 +11,7 @@ the pipeline repeats the structural check before matrix filters. Cancelling
 pairs can expose homogeneity. Evidence under `seifert_after_reduction` describes
 the reduced diagram: replay `reidemeister_trace` with `fastunknot.simplify.replay`
 before passing that certificate to `verify_seifert_certificate`. An unchanged
-diagram is not checked twice. The integrated suite now has 116 passing tests.
+diagram is not checked twice. The integrated suite now has 134 passing tests.
 
 Report 08 adds complete recognition for checked source braids on at most three
 strands. `Diagram.from_braid` and braid JSON retain validated provenance, so the
@@ -583,5 +583,36 @@ squares over its square-free F2 ring. These identities agree with the original
 cobordism evaluator; they do not apply to arbitrary morphisms or matrix blocks.
 `benchmark_planar_shortcuts.py` records raw scan and separate scalar-kernel
 timings. Ordinary scans showed negligible timing impact because most identities
-are already removed by the scanner. The dense report 12 adapter remains opt-in
-research code; no default dense-engine switch has been made.
+are already removed by the scanner. Report 12's component contraction is now integrated as an opt-in production
+option; the standard engine remains the default.
+
+### Optional component contraction
+
+Both `recognize` and `khovanov_rank` accept `composition="component"` (adaptive)
+or `composition="component-dense"` (forced ranked subset convolution).
+The CLI flag is `--composition`. This contracts morphisms through the connected
+components of their compiled gluing plan without changing any differential.
+On a boundary of `w` points the dense operation has `poly(w) * 2^(w/2)` bit cost;
+the number of chain objects and operations still has no general quasi-polynomial
+bound. Standard min-fill/bit scanning and `race=1` are required; shared backends
+are not yet wired to this option.
+
+```bash
+python -m fastunknot khovanov examples/conway.json --composition component --check-d2
+python -m fastunknot recognize examples/conway.json --composition component-dense
+```
+
+Earlier recognition filters still take priority. `composition_max_variables=18`
+(CLI `--composition-max-variables`) caps component/output variables on selected
+allocations. Recognition returns `UNKNOWN` if this limit is exceeded; the raw
+Python rank API raises a resource exception. The CLI reports resource exhaustion
+with exit code 3. `composition_stats` exposes actual use of the new method.
+The advanced fresh-scanner installer is in `fastunknot.component_algebra`.
+
+`benchmark_component_algebra.py` separates full raw scans from dense and sparse
+kernel measurements. Local seven-round data show about 38× for independent dense
+ten-variable products, 183× for nearly equal dense products using polarization,
+and about 44× slowdown when a sparse ten-variable product is forced through the
+dense method. None of the six ordinary scan cases selected an adaptive factored
+call. Those results justify the explicit option, not a default switch. The raw
+samples and A/A controls are in `results/component_algebra_20261007.json`.

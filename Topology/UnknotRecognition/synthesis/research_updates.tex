@@ -9,10 +9,11 @@ contents remain unchanged. Local reruns passed 59 test methods for report
 report 11. These are separate suites and their counts must not be added
 as though they were independent mathematical cases. Logs and local
 cross-checks are retained under \code{synthesis/data/}. The current
-production suite, after the selected report 08 and 09 integrations below,
-passes 116 tests. Report 12's 29 test methods also pass locally. Reports
-10--12 and report 09's pointed backend remain under integration review
-at this checkpoint.
+production suite passes 134 tests. Report 12's 29 archive test methods also
+pass locally. The braid specialization of report 08, selected preprocessing
+of report 09, and component contraction from report 12 are integrated.
+Report 10's parallel kernel was cross-checked; report 11, report 09's pointed
+backend, and report 12's succinct block layer remain under integration review.
 
 \subsection{Complete recognition for checked short-strand braids}
 Report 08 contributes a complete decision procedure for the closure of
@@ -269,12 +270,12 @@ the exact bracket calculation and all verdicts are unchanged.
 \subsection{Later algebra and twist reports: production cross-checks}
 Report 10's component-contraction kernel completed 453,611 matching
 comparisons against the current production algebra, with all completed
-comparisons equal. Both inspected source hashes match, and Conway and
+comparisons equal. Both inspected source hashes matched at the preintegration checkpoint; Conway and
 Kinoshita--Terasaka scans agree in every raw homological degree. Their
 adaptive runs selected no compressed calls, so those checks establish
 compatibility but no ordinary-diagram speedup. Report 11's twist backend
-agreed on 200 production reduced-rank comparisons. Report 12's source
-hash checks also pass; baseline, adaptive, and forced contraction agree
+agreed on 200 production reduced-rank comparisons. Report 12's preintegration source
+hash checks also passed; baseline, adaptive, and forced contraction agreed
 on each degree for six production fixtures, with $d^2=0$ checked after
 every crossing. The 29 standalone tests pass. These results are saved
 as the corresponding \code{report10}, \code{report11}, and
@@ -323,7 +324,8 @@ endomorphisms are explicitly outside its scope.
 The new tests compare every three-arc scalar and typed identity against
 the original compiled evaluator, enumerate equal coefficients across
 all small matching triples to catch a missing type guard, and check
-1,000 random four-arc products. The full suite passes 116 tests.
+1,000 random four-arc products. The suite at this scalar-only checkpoint
+passed 116 tests.
 Nine paired raw-scan runs are recorded in
 \code{fast/results/planar\_shortcuts\_20261007.json}, with a pinned
 pre-change implementation, fresh algebra objects, and separate untimed
@@ -335,3 +337,136 @@ algebra much more frequently. The separate dense scalar microcases
 measure the algebra operation alone and must not be advertised as full
 recognition speedups. The reproduction command is
 \code{python benchmark\_planar\_shortcuts.py --output RESULTS.json}.
+
+\subsection{Opt-in component contraction in the production scanner}
+Reports 10 and 12 share an exact algebraic improvement. We have integrated
+report 12's contraction kernel and adapter, preserving its attribution
+to the established fast subset-convolution algorithm. The independent
+matrix-block and tensor prototypes remain in the research archive.
+The production option is \code{composition="component"}; the explicit
+\code{component-dense} mode selects the dense asymptotic algorithm on
+every nontrivial composition. The standard scalar engine remains default.
+
+Let the middle matching have $b$ arcs and hence $w=2b$ boundary points.
+A compiled gluing plan decomposes into connected surfaces. For component
+$j$, write $L_j,Q_j$ for its input-circle sets, $B_j$ for its output-circle
+set, and $e_j$ for its fixed dots. Sending every left input variable in
+$L_j$ to $z_j$, and every right input variable in $Q_j$ to the same $z_j$,
+defines algebra maps into
+$R_c=\mathbb F_2[z_1,\ldots,z_c]/(z_j^2)$, where $c$ counts components.
+Two dots entering one component vanish. Distinct input monomials with
+the same projected support cancel by XOR; keeping only the number of
+dots would lose this information.
+
+Define a linear output map $\Lambda$ componentwise. Total dot occupancy
+at least two vanishes. An open component with one dot gives the monomial
+on all its output circles; with zero dots it gives the sum of monomials
+omitting exactly one output circle. A closed component gives one exactly
+when its total dot occupancy is one, and otherwise zero. Multiplication
+across disjoint output blocks defines the complete map. The composition
+identity is
+\[
+ \mathcal B(F,G)=\Lambda\bigl(\pi_L(F)\pi_R(G)\bigr).
+\]
+Checking input monomials proves it: the projections and multiplication
+kill precisely the repeated-dot cases, while the output rule is the
+original Frobenius evaluation. Bilinearity extends the equality to
+arbitrary coefficient vectors. A positive-genus component vanishes
+because a handle acts by $2x=0$ over $\mathbb F_2$.
+
+The ring product is disjoint subset convolution,
+\[
+ (FG)_S=\sum_{T\subseteq S}F_TG_{S\setminus T}.
+\]
+We use the ranked transform of
+\href{https://arxiv.org/abs/cs/0611101}{Bj\"orklund, Husfeldt, Kaski,
+and Koivisto, \emph{Fourier meets M\"obius}}. Group coefficients by
+subset cardinality, take the subset zeta transform at each rank,
+convolve the rank polynomials, and invert the transform. At output
+subset $S$, selecting rank $|S|$ retains exactly disjoint pairs whose
+union is $S$. In characteristic two the inverse transform uses the
+same XOR butterfly. The cost is $O((c+1)^2 2^c)$ field operations and
+$O((c+1)2^c)$ coefficient storage; this algorithm is not a new invention.
+
+If the left, right, and output spaces have $a,d,h$ circles, the complete
+factorized operation has cost
+\[
+ O\bigl((a+1)2^a+(d+1)2^d+(c+1)^2 2^c+(h+1)2^h\bigr)
+\]
+in field and subset-mask operations. For the output step, component
+$j$ with $r_j$ output circles contributes at most $r_j+1$ alternatives,
+and $\prod_j(r_j+1)\le 2^{\sum_jr_j}=2^h$. Each surviving component
+contains a middle arc, so $a,d,h,c\le b$ in ordinary composition.
+Consequently the conservative bit cost is
+$\operatorname{poly}(w)2^{w/2}$, improving the dense Cartesian-pair
+baseline, which can visit $4^b=2^w$ pairs. Python coefficient integers
+contain up to $2^b$ bits and are not treated as unit-cost words. The
+implementation unpacks their bytes once when traversing support and
+uses rank polynomials with only $O(b)$ bits in the dense transform.
+
+Sparse input requires a different choice. The adaptive mode delegates
+small support products to the existing engine. After projection, it
+also uses the characteristic-two identities
+\[
+ FG=F(F+G)+F(0)=G(F+G)+G(0)
+\]
+to choose the cheapest of three sparse pair enumerations. A ranked
+transform is selected only when its estimated work is lower. The
+adaptive threshold is a performance heuristic; the explicit dense mode
+is the implementation to which the displayed asymptotic bound applies.
+
+\paragraph{Implementation boundaries.}
+The adapter retains the current \code{Planar} matching IDs and circle
+numbering. It strips only the redundant fifth field of each compiled
+component. Its added plan cache is cleared at each stage, and installation
+is permitted only on a fresh scanner before any crossing. It does not
+replace the specialized crossing-transfer operation. The options are
+available through both \code{recognize} and \code{khovanov\_rank}, and
+through \code{--composition standard|component|component-dense} in the
+CLI. The current integration requires the standard scanner, minimum-fill
+pivots, bit coefficients, and no racing; incompatible combinations are
+rejected before an early certificate can hide them. Earlier recognition
+filters still run normally, and explicit rank computation bypasses them.
+
+\code{composition\_max\_variables}, or the CLI flag of the same name
+with hyphens, defaults to eighteen. It bounds the component and output
+variables on selected factored allocations. This is an allocation guard,
+not a process-memory bound or a theorem for arbitrarily large uncapped
+inputs. Exceeding it produces \code{UNKNOWN} in recognition and a
+resource exception in the raw Python rank API; the CLI reports resource
+exhaustion with exit code three. Kernel deadline callbacks share the
+scanner's deadline. Counts of delegated, factored, and scalar-shortcut
+calls are reported under \code{composition\_stats}. Neither a declined
+dense call nor an allocation estimate is evidence of knottedness.
+
+The dense improvement leaves the number and size of live chain objects
+uncontrolled. The finite-type sharing theorem and the need for a
+uniform topological progress bound therefore remain unchanged. Faster
+local algebra alone does not prove quasi-polynomial unknot recognition.
+
+
+\paragraph{Integrated validation and measurements.}
+All 134 production tests pass. The contraction-specific tests exhaust
+65,536 three-variable ring products, compare 2,245 small matching/monomial
+compositions to both the production evaluator and an independent set-based
+engine, and check all 2,744 four-arc matching triples with seeded arbitrary
+polynomials. Complete scans, per-stage $d^2=0$, and exact homological-degree
+counts agree on supplied fixtures and forty additional random braid closures.
+Pipeline tests exercise allocation failure, option rejection, evidence fields,
+and both CLI resource paths. They also exposed an existing unclosed input
+file in the CLI loader, which now uses a context manager.
+
+The seven-round production benchmark includes separate standard/standard
+controls. Adaptive isolated dense products improved 2.87, 10.25, and 37.90
+times at six, eight, and ten variables; nearly equal dense products improved
+6.51, 35.10, and 182.84 times through polarization. The ten-variable sparse
+control was about 1.13 times slower adaptively and 43.86 times slower under
+forced dense contraction. No adaptive factored calls were selected on the
+six ordinary scanner fixtures. Their observed adaptive baseline/new ratios
+were 0.94--1.04, with A/A variation, and establish no broad scan speedup.
+The forced path was slower on several ordinary scans. Raw samples, exact
+inputs, counters, and timing boundaries are retained in
+\code{fast/results/component\_algebra\_20261007.json}; reproduce with
+\code{fast/benchmark\_component\_algebra.py}. The dense-kernel improvement
+is real for the supplied synthetic morphisms, but their density is not
+claimed to arise on every difficult knot input.
