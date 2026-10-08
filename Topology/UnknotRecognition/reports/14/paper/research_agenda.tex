@@ -1,0 +1,144 @@
+\section{Further research questions and a staged programme}
+\label{sec:agenda}
+
+The general target remains open for this implementation. The results above
+suggest concrete next questions that can be tested or proved without
+assuming the desired state bound. The order below reflects their dependence
+on the present code and mathematics.
+
+\subsection{Find the summands before they become large}
+The Fitting pass already detects summands that graph connectivity misses.
+Its cost currently competes with the time saved by sparser later matrices.
+Can the scalar endomorphism space be maintained incrementally when a crossing
+is added, instead of solved anew? A useful result would give a complete update
+algorithm with cost polynomial in the changed blocks, together with a
+criterion deciding when reusing an old splitting remains valid. Every reused
+projection must still commute with the new differential.
+
+The current bounded candidate search is deliberately incomplete. A candidate
+endomorphism may be invertible or nilpotent on an indecomposable summand and
+give no split, even if another endomorphism would work. A next implementation
+could use primary decomposition of endomorphisms, or a proved decomposition
+algorithm for finite-dimensional module representations. Its cost must be
+compared with continuing the unsplit complex. The practical success criterion
+is a reduction in complete measured work including decomposition overhead,
+not the mere production of additional summands.
+
+\subsection{Extend the class with a finite continuation observation}
+The common-$\theta$ condition reduces the problem to the dual numbers. What
+is the next useful class? Two independently active dot directions lead toward
+\[
+ \F[x,y]/(x^2,y^2),
+\]
+where the classification problem is substantially different. A carefully
+scoped goal is to classify continuation observations of a specified family of
+two-direction complexes at the rank-two threshold, rather than classify all
+modules. The correct statement must quantify over every allowed suffix.
+Agreement on sampled closures is evidence for a conjecture, not a valid
+replacement rule.
+
+Another useful target is a small tangle with two or more matching types and a
+restricted set of saddle maps. The attached towers seen in actual scans
+motivate this direction: whole-component common-$\theta$ recognition is too
+restrictive on the measured corpus. A normal form for this larger class could
+make the present quotient active on ordinary diagrams. Rational-tangle and
+four-ended tangle constructions provide relevant prior structure
+\cite{thompson,immersed}; their
+hypotheses and grading conventions must be retained.
+
+\subsection{Prove a structural bound on the unresolved intervals of a scan}
+The checkpoint theorem reduces the target to explicit bounds on $w$ and $g$.
+An immediate mathematical question is whether a natural family of validated
+diagrams, extending the already tractable braid and rational-tangle families,
+admits a constructible order with
+\[
+ g+2^{w/2}+w\log(w+1)=O((\log n)^2).
+\]
+A useful theorem must also bound the cost of finding that order. Merely
+asserting the existence of a favorable representation would not complete the
+algorithmic argument.
+
+Corollary~\ref{cor:coefficient-alphabet} provides another concrete target:
+logarithmic frontier width and $O(\log^2 n)$ checkpoint gaps suffice when
+the checkpoint coefficients have dot degree at most two. Can a marked,
+graded, or restricted-tangle structure force that degree bound after
+normalization? The condition concerns actual checkpoint coefficients;
+arbitrary intermediate algebra must still be charged in full.
+
+A universal low-width replacement theorem for all knot types is unavailable:
+Lunel--de Mesmay give torus-knot families with unavoidable large diagram
+treewidth~\cite{widthobstruction}. Such lower bounds do not prevent an
+algorithm from rejecting those knots using an inexpensive independent
+certificate. This suggests an asymmetric target: either produce a short
+nontriviality certificate, or construct a sequence of suitably bounded
+algebraic checkpoints. Establishing this dichotomy would be far stronger
+than optimizing a handful of observed scans.
+
+\subsection{Build a catalogue of sharp obstructions}
+The length-two bound has a sharp formal-block example. Similar sharpness
+examples are needed for every proposed observation quotient. In particular,
+one should construct common-nilpotent and mixed-matching families whose
+serialized component sizes grow, and determine which are realizable inside
+actual knot scans. A representation that is legal algebraically need not be
+the Khovanov complex of a tangle. Keeping these two questions separate will
+prevent synthetic compression demonstrations from being misreported as knot
+benchmarks.
+
+The 2026 explicit-basis exponential examples~\cite{kelomaki} are especially
+valuable stress families. For each one, record how multiplicity, component
+size, scalar endomorphism dimension, and checkpoint gaps grow after each new
+normalization. The point is to identify a surviving obstruction, or prove
+that an observation quotient removes it, rather than infer asymptotics from
+a short timing curve.
+
+\subsection{Exploit graded or marked structure with compatible gluing}
+The present exact-rank backend retains homological degree but forgets quantum
+degree; decision compression discards still more information. A separate
+graded implementation could restrict scalar basis changes to compatible
+bigraded blocks and use the grading to constrain possible endomorphisms.
+This may lower the cost of the Fitting solver, but could also remove useful
+ungraded decompositions. Both outcomes should be measured.
+
+Cohen's characteristic-two splitting of arc algebras is relevant to reducing
+the size of the coefficient algebra~\cite{cohen}. The tangle-bimodule result
+does not automatically preserve both actions in arbitrary configurations.
+A concrete next problem is to specify compatible marked endpoints throughout
+the scan and prove that the chosen identifications commute with every gluing
+operation. An algebra isomorphism alone does not supply that compatibility.
+
+\subsection{Add a complete tractable topological class}
+The linear-time recognition theorem for diagrams of treewidth two provides
+an independent complete structural backend~\cite{treewidthtwo}. Implementing
+its certified reductions would broaden the front end and offer a useful
+comparison with the algebraic route. A proper implementation should accept a
+verified decomposition, record every reduction, and distinguish recognition
+on the promised class from attempting to discover a suitable diagram.
+
+\subsection{Connect back to compressed hierarchy operations}
+The geometric route remains valuable. If an implementation has at most
+$L(g+1)^L$ phases and each phase costs at most $B$ bit operations, then
+\[
+ \log_2 T\le \log_2 B+\log_2 L+L\log_2(g+1)+O(1).
+\]
+Here the letters are the hierarchy parameters, not the checkpoint gap of
+this article. This elementary accounting identity specifies what is needed
+from the hierarchy programme: controlled length, controlled pattern data,
+and bounded exact operations on the compressed encoding. The July 2026
+preprint supplies important pieces~\cite{lackenby2026}; it does not justify
+omitting any of these implementation costs.
+
+\subsection{Formalize the new algebraic interface}
+The continuation theorem is a manageable formalization target. It can be
+split into finite-dimensional linear algebra over $\F$, finite interval
+decomposition, the dual-number tensor pairing, and the parity refinement.
+The largest foundational dependency is the derived classification; the
+appendix provides an explicit elementary route that can be used instead of
+importing a general derived-category classification theorem.
+
+A practical first verification milestone is an independently checkable
+certificate for each scalar basis split: binary change-of-basis matrices,
+their inverses, and the transformed differential. For interval normalization,
+rank certificates for the products in the multiplicity formula would certify
+the inferred decomposition. Formalizing the observation-preserving shortening
+rule then allows a small verifier to accept a decision model without trusting
+the optimizer that found it.

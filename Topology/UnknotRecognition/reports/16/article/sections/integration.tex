@@ -1,0 +1,139 @@
+\section{Repository integration and artifact guide}
+\label{sec:integration}
+
+\subsection{Compatibility and public interfaces}
+
+The archive contains a self-contained copy of the pinned \texttt{fast/}
+package, an exact baseline copy, and a patch with paths relative to the
+ProveIt repository root. The implementation needs Python 3.10 or newer
+and has no new third-party runtime dependency. The recorded checks use
+Python 3.12.14. Matplotlib is needed only to regenerate the research
+figure; the figure and generated tables are already included for a
+standalone PDF build.
+
+The public scanner options are
+\begin{lstlisting}[language=Python]
+FastScan(..., composition="legacy")
+khovanov_rank(..., composition="legacy")
+recognize(..., composition="legacy",
+          quotient_max_assignments=0,
+          quotient_seconds=0.1)
+\end{lstlisting}
+The accepted composition modes are \texttt{legacy}, \texttt{adaptive},
+and \texttt{dense}. The latter forces the new dense paths while retaining
+exact zero, identity, and self-product shortcuts. Nonlegacy modes require
+the bits algebra, min-fill cancellation, and self-inverse option where
+that option is exposed. Unsupported combinations raise an error. The
+implementation does not silently ignore them. Competing worker processes
+and factored calls preserve the chosen composition mode, shape-cache
+setting, and optional $d^2$ checks.
+
+The finite-target filter is disabled when its assignment budget is zero.
+A positive budget applies to complete seed-orbit assignments per examined
+summand, across the configured palette. The default cooperative filter
+cap is 0.1 seconds; the Python API permits \texttt{None} to remove that
+separate cap. A global recognition deadline still limits the filter by
+the remaining time. Exhaustion of the filter's own budget records
+\texttt{INCONCLUSIVE} and continues. Exhaustion of the global recognition
+budget returns \texttt{UNKNOWN}. These distinctions are part of the
+public behavior, not merely diagnostic logging.
+
+Example commands, run from \texttt{implementation/fast/}, are
+\begin{lstlisting}[language=bash]
+python -m fastunknot khovanov examples/conway.json \
+  --composition adaptive --check-d2
+
+python -m fastunknot recognize examples/conway.json \
+  --no-jones --quotient-max-assignments 5000 \
+  --quotient-seconds 0.1
+
+python -m unittest discover -s tests -v
+\end{lstlisting}
+The second command disables Jones specifically to expose the new
+certificate stage on a fixture that the default Jones filter already
+handles. It is a demonstration of the fallback, not a recommended change
+to filter order.
+
+\subsection{Witness evidence and independent replay}
+
+A successful finite-target search returns method
+\texttt{finite-quotient-A5-seeds}. Evidence contains the exact normalized
+working \texttt{diagram\_pd}, certificate, checked seed plan, orbit counts,
+attempt details, and status. When preprocessing factors a diagram,
+the witness belongs to a specified summand and its evidence is stored
+with that summand. Existing simplification and factorization correctness
+connect that working diagram to the original input. The finite-target
+checker itself verifies precisely the PD supplied to it; it does not
+claim to replay the earlier Reidemeister or connected-sum transformations.
+
+For an unfactored result whose finite-target stage succeeded, replay is
+\begin{lstlisting}[language=Python]
+from fastunknot.finite_quotient_check import verify_certificate
+
+evidence = result.evidence["finite_quotient"]
+checked = verify_certificate(evidence["diagram_pd"],
+                             evidence["certificate"])
+assert checked["valid"]
+\end{lstlisting}
+The supplement also provides a portable helper that replays every
+archived certificate against its exact fixture. Keeping explicit
+permutations and the precise PD is essential: an image-group order or
+an opaque solver state is insufficient evidence by itself.
+
+\subsection{What each directory contains}
+
+\begin{center}
+\small
+\begin{tabular}{P{.35\linewidth}P{.57\linewidth}}
+\toprule
+Path & Purpose \\
+\midrule
+\texttt{article/} & Main TeX file, section sources, generated tables,
+vector figure, bibliography, and compiled PDF. \\
+\texttt{implementation/fast/} & Runnable package, optional backends,
+74-test suite, isolated scanner benchmark, and integration notes. \\
+\texttt{baseline/fast/} & Forty source files verified against their
+pinned Git blob identities; prior result directories are omitted. \\
+\texttt{verification/algebra/} & Portable dense benchmark, scalar
+comparison suite, associativity/transfer checks, grading audit, and raw
+measurement JSON. \\
+\texttt{verification/finite\_quotient/} & Search comparison, certificates,
+seed plans, exact fixture bytes, exhaustive negative controls, and replay
+helper. \\
+\texttt{provenance/} & Repository revisions, baseline blob records,
+source normalization details, and validation records. \\
+\texttt{tools/} & Table and figure generation, archive verification,
+and patch reproduction helpers. \\
+\texttt{patches/} & Integration patch against the pinned repository
+paths. \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The top-level README gives exact commands from a freshly extracted
+archive. The TeX bibliography is self-contained; no BibTeX or Biber
+database download is required. Compiling the main file with ordinary
+pdfLaTeX passes resolves the table of contents and cross-references.
+The SHA-256 manifest covers the delivered source, data, and PDF files.
+The verification helper checks the manifest, the original Git blob
+identities, recorded fixture hashes, and the correspondence of the patch
+to the supplied baseline and implementation.
+
+\subsection{Merge boundaries}
+
+The intentional edits to existing implementation files are limited to
+the scanner selector, public option forwarding and counters, optional
+recognizer stage and shared budget, CLI propagation, and the README link.
+New modules implement dense composition, finite-target search, and its
+separate verifier. The patch includes the new tests and integration
+notes. Research measurements and the article may be stored under a new
+report directory when integrating the archive.
+
+The patch is concrete and reviewable against the pinned revision. If the
+repository has advanced, its changes should be reconciled with the newer
+code and the same suite rerun. In particular, report-07 sharing, the
+pointed scanner, three-braid specialization, and newer preprocessing
+branches are not represented here as an already tested combined release.
+The theorem about graded component types applies to the specified exact
+sharing construction; implementation and performance of that combined
+backend remain a separate, well-defined task.

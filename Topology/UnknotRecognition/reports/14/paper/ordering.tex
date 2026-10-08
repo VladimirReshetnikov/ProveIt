@@ -1,0 +1,98 @@
+\section{Exact optimization of a bounded crossing window}
+\label{sec:ordering}
+
+The previous scan-order planner is a fast greedy search with several starting
+crossings and tie rules. We add a deterministic local optimization with a
+precise objective. It is independent of the algebraic quotient and remains
+optional, since a better frontier profile need not yield a faster homology
+calculation.
+
+\subsection{The subset state is exact}
+Let $P$ be the fixed set of crossings before a window, and let $B$ be the
+$k$ crossings inside it.
+For $S\subseteq B$, let $\partial(P\cup S)$ be the set of edge labels occurring
+an odd number of times among crossings already processed. Write
+\[
+ b(S)=|\partial(P\cup S)|.
+\]
+Every edge label occurs exactly twice in the full diagram. Thus this set is
+exactly the scan frontier, including the cancellation of labels that occur
+twice at a self-loop crossing. It depends on the subset $S$, not the order
+used to reach $S$.
+
+Only the at most $4k$ labels incident with the window can change. Represent
+those labels by bit positions, let $z$ encode the initial local frontier, and
+let $t_i$ be the parity mask of crossing $i$. If $c$ counts frontier labels
+outside this local set, then
+\begin{equation}\label{eq:subsetwidth}
+ b(S)=c+\operatorname{popcount}\left(z\mathbin{\mathrm{xor}}
+                    \mathop{\mathrm{xor}}_{i\in S}t_i\right).
+\end{equation}
+All subset widths can be computed using the least significant set bit of
+each subset. The sets at both ends of the window are fixed, so every frontier
+outside the window is unchanged by its permutation.
+
+\subsection{Why the optimization has two passes}
+The selected objective is lexicographic: first minimize the global maximum
+frontier size, then an additive cost. The implementation offers either
+$c_1(b)=b$ or $c_2(b)=2^{b/2}$. Frontier sizes are even for a degree-four
+diagram graph. The latter cost is motivated by the dimension of a dot
+endomorphism space, and is explicitly only a proxy for full scanner work.
+
+A tempting one-label recurrence for pairs $(\text{peak},\text{sum})$ is
+incorrect. A path with a smaller early peak but a larger sum can lose to a
+different path when a later frontier raises both peaks to the same value.
+Lexicographic comparison is not preserved by the operation that takes a
+maximum in the first coordinate. Our implementation first solves the
+bottleneck problem and then the constrained additive problem.
+
+Let $W_{\mathrm{out}}$ be the maximum frontier size outside the window. Set
+$p(\varnothing)=W_{\mathrm{out}}$ and
+\[
+ p(S)=\min_{i\in S}\max\{p(S\setminus\{i\}),b(S)\}.
+\]
+The optimal global peak is $W_*=p(B)$. Now set $d(\varnothing)=0$, forbid
+every nonempty state with $b(S)>W_*$, and compute
+\[
+ d(S)=c_j(b(S))+\min_{i\in S}d(S\setminus\{i\})
+\]
+over feasible predecessors. Backtracking gives an optimal window order.
+The original order is feasible, and equal-score replacements are discarded
+to avoid unnecessary changes.
+
+\begin{theorem}[Exact window optimization]\label{thm:window}
+For fixed crossings outside a window of size $k$, the two-pass algorithm
+finds a permutation minimizing the stated global lexicographic objective.
+It uses $O(k2^k)$ subset transitions and $O(2^k)$ table entries, in addition
+to polynomial work for boundary masks and exact integer costs. Every
+accepted replacement weakly decreases the global peak and strictly improves
+the selected global pair.
+\end{theorem}
+\begin{proof}
+Equation~\eqref{eq:subsetwidth} gives the exact cost at every state. Every
+window permutation corresponds to exactly one maximal path through the
+subset lattice. Conversely, each such path adds one distinct crossing at
+each step and yields a permutation. The first recurrence is the usual
+bottleneck recurrence on this acyclic graph, with all fixed outside peaks
+included in its initial value. After $W_*$ is known, the second recurrence
+is an ordinary additive shortest path in the induced feasible subgraph.
+Outside frontiers are fixed, so minimizing the local additive contribution
+minimizes the global one. The lattice contains $2^k$ states and
+$k2^{k-1}$ directed inclusion edges. Integer masks have $O(k)$ local bits;
+the additive costs have at most polynomially many bits in the input size.
+Thus the corresponding bit complexity is $2^k\operatorname{poly}(n,k)$.
+\end{proof}
+
+The bounded number of overlapping passes is part of the algorithm. When a
+time budget expires, the planner returns the last completely verified order.
+This is still a valid input to the recognizer. If $k=O(\log n)$, a polynomial
+number of windows costs polynomial time; if $k=O((\log n)^2)$, their cost is
+quasi-polynomial. These statements concern the planner. They do not establish
+a width bound for its output, a globally optimal unrestricted order, or a
+quasi-polynomial homology computation.
+
+The implementation is independently checked against all permutations of
+many small degree-four multigraphs, including loops and parallel edges.
+The graph theorem does not require those test graphs to be realizable as
+knot diagrams. Separate tests on validated knot diagrams verify that the
+resulting orders preserve homology.

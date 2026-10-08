@@ -1,5 +1,6 @@
-/- Modified for ProveIt: import Lean 4.32 compatibility declarations.
-Statements and proofs are unchanged from the pinned upstream source. -/
+/- Modified for ProveIt: import Lean 4.32 compatibility declarations and use
+MvPolynomial.coeff_zero explicitly in the zero-coordinate simplifications.
+The theorem statements are unchanged from the pinned upstream source. -/
 import OAI.Compat.Core
 import OAI.Combinatorics.Progressions.Estimates.MajorTranslationJointLower
 import OAI.Combinatorics.Progressions.Estimates.MajorTranslationPureFactorValues
@@ -201,7 +202,7 @@ theorem exists_translation_coordinate_polynomialOrbit
     · intro α
       have h := F.realCoordinatePolynomialOrbit_eval_coordinates b ω hlayers _ Acoord hAcoord u (Sum.inr α)
       simpa only [Acoord, Sum.elim_inr, map_zero, ZeroMemClass.coe_zero,
-        AddMonoidAlgebra.coeff_zero, Finsupp.zero_apply] using h
+        MvPolynomial.coeff_zero] using h
   have hq (u : U → ℝ) : bchRealTranslationHom w d hwd
       (F.realification.polynomialOrbitRealEval (fun _ : U => 1) u q) =
         ⟨0, specializeMajorParameters (RingHom.id ℝ) P u⟩ := by
@@ -448,7 +449,7 @@ theorem translationBasePolynomialOrbit_realEval
     exact translationBasePolynomialOrbit_eval_coordinates w d hw hwd A hA u (Sum.inl i)
   · intro α
     simpa only [translationBaseCoordinatePolynomial, Sum.elim_inr, map_zero,
-      ZeroMemClass.coe_zero, AddMonoidAlgebra.coeff_zero, Finsupp.zero_apply] using
+      ZeroMemClass.coe_zero, MvPolynomial.coeff_zero] using
       translationBasePolynomialOrbit_eval_coordinates w d hw hwd A hA u (Sum.inr α)
 
 theorem translationPurePolynomialOrbit_realEval

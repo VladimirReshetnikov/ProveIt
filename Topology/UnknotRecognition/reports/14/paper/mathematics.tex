@@ -1,0 +1,708 @@
+\section{The algebraic model and the decision threshold}
+\label{sec:algebraic-model}
+
+The input is an explicitly listed, validated classical knot diagram with
+$n$ crossings. Complexity statements use normalized edge labels of
+$O(\log(n+2))$ bits; reading and normalizing a longer external encoding
+incurs its actual input-size cost. The empty input denotes one
+crossing-free circle. A scan
+order determines, after each crossing, a finite set of live boundary
+labels. Its cardinality is even. As in the preceding implementation, the
+objects of the scanning category are loopless matchings of these labels;
+closed circles are replaced by their two summands by delooping. We retain
+homological degrees and work over $\F$, but forget the quantum grading.
+In particular, the basis changes below are assertions in the
+quantum-ungraded category. A quantum-graded extension would require
+additional compatibility conditions on those basis changes.
+
+Write
+\[
+ r_2(K)=\dim_{\F}\Kh(K;\F).
+\]
+The decision criterion used by the existing recognizer is
+\begin{equation}\label{eq:rank-two}
+ K\text{ is an unknot}\quad\Longleftrightarrow\quad r_2(K)=2.
+\end{equation}
+Here is the coefficient justification. The reduced/unreduced splitting
+over $\F$ gives $r_2(K)=2\dim_{\F}\rKh(K;\F)$
+\cite{shumakovitch}. The universal coefficient theorem implies
+\[
+ \dim_{\Q}\rKh(K;\Q)\le\dim_{\F}\rKh(K;\F).
+\]
+The rational-rank unknot-detection theorem then excludes every nontrivial
+knot when the reduced $\F$ rank is one~\cite{km}. The reverse implication
+follows from the unknot complex. This argument does not assume that a
+rank-one reduction modulo two excludes odd integral torsion.
+
+We use the notation
+\[
+ \capthree(a)=\min(3,a),\qquad a\in\N.
+\]
+A completed capped value of two therefore certifies \UNKNOT, while a
+value of three certifies \KNOTTED. For a valid knot the latter value means
+that the actual rank is at least four. Values zero and one indicate a
+violated input promise or an implementation invariant; they are not
+interpreted as topological verdicts.
+
+The algebraic correctness statements are relative to the established
+Bar--Natan gluing, delooping, and cancellation operations
+\cite{khovanov,barnatan}. The new algorithms operate on their finite
+matrices and use exact binary arithmetic. They do not constitute a formal
+verification of the entire topological foundation.
+
+\section{Exact interval normalization of square-zero components}
+\label{sec:interval-normalization}
+
+\subsection{A recognizable coefficient subcategory}
+
+For a matching $m$ with $k$ arcs, the endomorphism ring used by the scanner
+is the dot algebra
+\begin{equation}\label{eq:dot-algebra}
+ R_m=\End(m)\cong
+ \F[x_1,\ldots,x_k]/(x_1^2,\ldots,x_k^2).
+\end{equation}
+Its binary basis consists of the squarefree dot monomials; its dimension
+is $2^k$. The identity is the constant monomial. This is the familiar
+diagonal endomorphism algebra of the matching category
+\cite{khovanov,barnatan}.
+
+Let $\mathfrak m=(x_1,\ldots,x_k)$ be the augmentation ideal. Every
+$\theta\in\mathfrak m$ satisfies $\theta^2=0$: in characteristic two,
+the square of a sum is the sum of its squares, and each nonconstant
+squarefree monomial has square zero. Conversely, an element with constant
+coefficient one is a unit. Thus the nonzero augmentation elements are
+exactly the nonzero nonunits of this ring.
+
+The undirected differential graph has one vertex per object and an edge
+when a differential entry is nonzero. Its connected components are
+literal direct summands of the complex. The earlier sharing backend
+identifies repeated components by complete serialization~\cite{prior}.
+The following condition exposes additional summands inside such a
+component.
+
+\begin{definition}[Pure component]\label{def:pure}
+A nonsingleton differential component is \emph{pure} if all its objects
+have one matching $m$ and every nonzero differential entry is one fixed
+nonzero $\theta\in R_m$ satisfying $\theta^2=0$. A singleton is pure
+without a choice of $\theta$.
+\end{definition}
+
+Purity is a test of the actual stored matrix. We do not posit an oracle
+which determines whether an arbitrary complex can be made pure. In a pure
+component, write the degree-$h$ term as $m^{d_h}$. Then
+\begin{equation}\label{eq:theta-matrix}
+ \delta_h=\theta M_h,\qquad
+ M_h:\F^{d_h}\longrightarrow\F^{d_{h+1}},
+\end{equation}
+where $\delta_h$ is the differential and $M_h$ is a binary matrix.
+The matrices $M_h$ need not satisfy
+$M_{h+1}M_h=0$. The actual differential squares to zero because
+$\theta^2=0$. The distinction is essential for the algorithm: its rank
+calculations use products of the $M_h$, not products of the actual
+cobordism differentials.
+
+\begin{definition}[Interval complex]
+For integers $a\le b$, let $I_{[a,b]}(m,\theta)$ have one copy of $m$ in
+each degree $a,\ldots,b$, with differential $\theta$ between successive
+copies and zero elsewhere. Its length is $b-a+1$. After removing the birth
+shift $a$, write this complex as $I_{b-a+1}(m,\theta)$.
+\end{definition}
+
+\subsection{The exact decomposition and its computation}
+
+\begin{theorem}[Exact interval normalization]\label{thm:interval}
+Every pure component is chain-isomorphic to a direct sum of interval
+complexes. The isomorphism is given by binary changes of basis within
+each homological degree. The interval multiplicities are uniquely
+determined by the binary matrices in~\eqref{eq:theta-matrix}.
+\end{theorem}
+
+\begin{proof}
+We first prove the elementary interval decomposition for an arbitrary
+finite sequence of binary vector spaces and maps $M_h$; this is the
+equioriented type-$A$ case of the usual interval classification
+\cite{carlsson}. Suppose the sequence is nonzero. Let $a$ be its earliest
+nonzero degree, and choose the largest $b\ge a$ for which the composite
+from $V_a$ to $V_b$ is nonzero, counting the identity when $b=a$.
+Choose $v_a$ whose image $v_b$ is nonzero, and let $v_h$ be its successive
+images for $a\le h\le b$. Choose a covector $\lambda_b$ with
+$\lambda_b(v_b)=1$, and define
+\[
+ \lambda_h=\lambda_bM_{b-1}\cdots M_h,
+ \qquad p_h=v_h\lambda_h\quad(a\le h\le b).
+\]
+Outside this interval put $p_h=0$. We have $\lambda_h(v_h)=1$, so each
+$p_h$ is idempotent. For an interior arrow,
+$p_{h+1}M_h=M_hp_h$. At the left endpoint $V_{a-1}=0$; at the right
+endpoint $M_bv_b=0$ by maximality of $b$. Hence $p$ is an idempotent
+endomorphism of the entire sequence. Its image is one interval and its
+kernel is an invariant complement. Induction on the total vector-space
+dimension proves existence.
+
+Every binary invertible change-of-basis matrix remains invertible after
+its entries are multiplied by $\mathrm{id}_m$ in the additive category:
+its binary inverse supplies the actual inverse. Applying the changes
+of basis to $\theta M_h$ therefore gives a chain isomorphism of the
+original component with the corresponding $\theta$-intervals.
+The multiplicity formula below proves uniqueness.
+\end{proof}
+
+Let the occupied degree range be $u,\ldots,v$. For $u\le a\le b\le v$
+define the rank invariant
+\begin{equation}\label{eq:rank-invariant}
+ \rho(a,b)=\rank(M_{b-1}\cdots M_a),
+ \qquad \rho(a,a)=d_a.
+\end{equation}
+Ranks with an endpoint outside the occupied range are assigned the value
+zero. An interval $[p,q]$ contributes one to $\rho(a,b)$ exactly when
+$p\le a\le b\le q$. Taking successive differences gives
+\begin{equation}\label{eq:mobius-bars}
+ \mu(a,b)=\rho(a,b)-\rho(a-1,b)
+          -\rho(a,b+1)+\rho(a-1,b+1).
+\end{equation}
+This is the multiplicity of $[a,b]$. In particular, the result is a
+nonnegative integer, and
+\begin{equation}\label{eq:barcode-audit}
+ \sum_{a\le b}\mu(a,b)(b-a+1)=\sum_h d_h.
+\end{equation}
+These identities give both a deterministic algorithm and useful
+independent consistency checks. The implementation can compute all ranks
+by binary matrix multiplication and elimination, form the differences,
+and reconstruct the rank invariant from the resulting intervals.
+
+If there are $H$ degree layers and $B$ objects, a conservative elementary
+bound is $O(H^2B^3)$ binary field operations. No efficiency claim depends
+on this exponent being optimal. Bit-packed matrices provide the practical
+implementation. Recognition of purity and the required coefficient
+comparisons are polynomial in the stored matrix and coefficient lengths.
+
+Replacing the component by explicit intervals retains exactly $B$ objects
+by~\eqref{eq:barcode-audit}. Its advantage is that these objects now lie
+in separately shareable summands. Number an interval's vertices in
+increasing degree, and remove its birth shift. Its complete template is
+then determined by $(m,\theta,\text{length})$. Length-one templates do not
+use $\theta$. Equal templates can be continued once, with exact shifted
+multiplicities or with the existing saturated multiplicities.
+
+\begin{example}[A strict improvement over graph-component sharing]
+\label{ex:dense-pure}
+Take $B\ge2$ copies of $m$ in degree zero and $B$ copies in degree one,
+and put $\theta$ in every differential entry. Its differential graph is
+the connected graph $K_{B,B}$, and no entry is a unit. Literal component
+sharing leaves one template with $2B$ objects. The scalar matrix is the
+all-ones matrix of rank one. Interval normalization produces one
+length-two interval and $B-1$ singletons in each of the two degrees.
+After shifted sharing, only three objects remain: two in the interval
+and one singleton with multiplicity polynomial $(B-1)(1+z)$.
+
+This is a valid algebraic stress family. It is not asserted that arbitrary
+members occur as intermediate states of the current knot scanner. That
+additional realizability assertion would need a separate construction.
+\end{example}
+
+The replacement must apply to an entire direct summand. A tower attached
+to other matchings may be normalized only if its basis changes are also
+applied to every external incident differential. Simply discarding those
+attachments would invalidate the complex. The exact splitter developed
+in the next part of the article addresses this issue by producing and
+checking an actual change of basis.
+
+\section{Short intervals with identical capped continuation ranks}
+\label{sec:continuation-quotient}
+
+Exact normalization still leaves intervals of unbounded length. They
+need not split further: finite free strings are indecomposable over the
+dual numbers~\cite{keller}. The decision problem permits a different operation. A long
+string can be replaced by a short one when every possible remaining
+continuation has the same capped homology rank. Such a replacement is
+not asserted to be a chain-homotopy equivalence.
+
+\subsection{The dual-number tensor calculation}
+
+Put $A=\F[\epsilon]/(\epsilon^2)$, and let $J_l$ be the complex of $l$
+copies of the free rank-one $A$-module, in consecutive degrees, with every
+differential multiplication by $\epsilon$. All tensor products of
+complexes below are totalized, and all dimensions refer to total
+$\F$-homology. Homological shifts do not affect these dimensions.
+
+\begin{lemma}[Tensor pairing of intervals]\label{lem:interval-tensor}
+For positive integers $l,m$,
+\[
+ \dim_{\F}H(J_l\otimes_A J_m)=2\min(l,m),
+ \qquad
+ \dim_{\F}H(J_l\otimes_A\F)=l.
+\]
+\end{lemma}
+
+\begin{proof}
+For the first formula, identify the $lm$ free basis positions of the
+total tensor product, after forgetting their grading, with
+\[
+ R=\F[u,v]/(u^l,v^m).
+\]
+The total differential on $A\otimes_{\F}R$ is multiplication by
+$\epsilon$ times the linear operator $T$ given by multiplication by
+$u+v$ on $R$. There are no sign distinctions in characteristic two.
+This differential has binary rank $\rank(T)$, so its total homology has
+dimension $2lm-2\rank(T)=2\dim\coker(T)$. But
+\[
+ \coker(T)\cong
+ \F[u,v]/(u^l,v^m,u+v)
+ \cong\F[u]/(u^{\min(l,m)}),
+\]
+which has dimension $\min(l,m)$. Collecting the degreewise matrices
+into one graded total differential preserves the sum of their ranks.
+For the second formula, $\epsilon$ acts by zero on the simple module,
+so all differentials vanish and there are $l$ one-dimensional terms.
+\end{proof}
+
+The needed derived-category classification is particularly small. Every
+bounded complex of finite $A$-modules is isomorphic in the bounded
+derived category to a finite direct sum of shifts of the $J_m$ and shifts
+of the simple module $\F$~\cite[Example 3.7(b)]{keller}.
+Appendix~\ref{app:dual-number-classification} gives an elementary proof
+using minimal free resolutions and the finite interval argument above.
+We use this established classification as an algebraic input; no novelty
+claim is made for it.
+
+\begin{theorem}[The continuation rank formula]\label{thm:rank-formula}
+Let $D$ be a bounded complex of finite-dimensional $A$-modules. There are
+nonnegative integers $a,b_1,b_2,\ldots$, only finitely many nonzero, such
+that, for every $l\ge1$,
+\begin{equation}\label{eq:continuation-rank-formula}
+ r_l(D):=\dim_{\F}H(J_l\otimes_A D)
+   =a l+2\sum_{m\ge1}b_m\min(l,m).
+\end{equation}
+The integer $a$ counts the simple-module summands of $D$, and $b_m$
+counts its free interval summands of length $m$, ignoring shifts.
+\end{theorem}
+
+\begin{proof}
+The complex $J_l$ is bounded and free, hence tensoring with it preserves
+quasi-isomorphisms and computes the derived tensor product. Decompose
+$D$ as above and apply Lemma~\ref{lem:interval-tensor} to each summand.
+The decomposition is finite, and homology dimensions add under direct
+sums. This proves the formula simultaneously for all $l$.
+\end{proof}
+
+The theorem does not require the algorithm to compute the decomposition
+of the potentially enormous suffix $D$. It proves an identity for every
+such suffix, which justifies a local replacement before the suffix is
+processed.
+
+\begin{corollary}[Universal length cutoff]\label{cor:universal-cutoff}
+For any positive integer threshold $c$, any $D$ as above, and any $l\ge1$,
+\[
+ \min(c,r_l(D))=\min(c,r_{\min(l,c)}(D)).
+\]
+In particular, length three is a safe cutoff for rank capped at three
+under arbitrary bounded dual-number continuations.
+\end{corollary}
+
+\begin{proof}
+Only $l\ge c$ needs consideration. If $a>0$, both ranks are at least
+$c$. If $a=0$ and some $b_m>0$ has $m\ge c$, that summand contributes
+at least $2c$ to both ranks. Otherwise every nonzero $b_m$ has $m<c$,
+so the right side of~\eqref{eq:continuation-rank-formula} has stabilized
+by $l=c$ and the two ranks are exactly equal.
+\end{proof}
+
+The cutoff in this fully general statement cannot be lowered uniformly:
+for $D=\F$, the rank is $r_l(D)=l$. The geometric continuations of the
+scanner have an extra parity property, which permits a sharper cutoff.
+
+\subsection{Why a tangle continuation has the required module structure}
+
+Fix a matching $m$ and a square-zero endomorphism $\theta$. Let $F$ mean
+attach all remaining crossing complexes, close the diagram, and apply
+the ordinary unreduced Frobenius TQFT. For the proof, use the strict raw
+complex before optional Gaussian contractions. Planar gluing of complexes
+is additive, preserves composition, and uses the total tensor
+differential~\cite{barnatan}. Thus
+\[
+ D=F(m),\qquad \epsilon\cdot v=F(\theta)(v)
+\]
+defines a bounded complex of finite $A$-modules: $F(\theta)$ is a
+degree-zero chain map and $F(\theta)^2=F(\theta^2)=0$. Inspecting the
+totalized differential gives
+\begin{equation}\label{eq:functor-tensor}
+ F\bigl(I_l(m,\theta)\bigr)\cong J_l\otimes_A D.
+\end{equation}
+This identifies the balanced module action required by
+Theorem~\ref{thm:rank-formula}. It is stronger than merely saying that
+the continuation is a linear operation. The implementation may perform
+homotopy-preserving contractions, but the raw functor supplies this
+strict model for the proof.
+
+\begin{lemma}[Even continuation rank]\label{lem:even-suffix}
+If $m$ admits a nonzero square-zero endomorphism, then
+$\dim_{\F}H(F(m))$ is even for every actual scanner continuation.
+\end{lemma}
+
+\begin{proof}
+The empty matching has endomorphism ring $\F$, so $m$ has at least one
+arc. Every complete smoothing of the suffix, glued to $m$, is a nonempty
+union of circles. Its unreduced TQFT vector space has dimension $2^c$
+for some $c\ge1$. Hence the raw total chain dimension of $F(m)$ is even.
+For any finite complex of binary vector spaces,
+\[
+ \dim H(D)=\dim D-2\rank(d_D),
+\]
+so its total homology dimension has the same parity. This proves the
+claim. In particular, the argument does not require a marked-point
+implementation or an assumption that the $A$-module complex is free.
+\end{proof}
+
+\begin{theorem}[Geometric length cutoff two]\label{thm:geometric-cutoff}
+For every matching $m$, nonzero square-zero $\theta\in\End(m)$, positive
+length $l$, and actual remaining continuation $F$,
+\begin{equation}\label{eq:length-two}
+ \capthree\!\left(\dim H(F(I_l(m,\theta)))\right)
+ =
+ \capthree\!\left(\dim H(F(I_{\min(l,2)}(m,\theta)))\right).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+By Lemma~\ref{lem:even-suffix} and
+\eqref{eq:continuation-rank-formula},
+$r_1(D)=a+2\sum_m b_m$ is even, so $a$ is even. Suppose $l\ge2$.
+If $a>0$, then $a\ge2$ and its contribution at length two is already
+at least four. If $a=0$ but some $b_m>0$ has $m\ge2$, that summand
+also contributes at least four at length two. In the remaining case,
+only $b_1$ can be nonzero, and $r_l(D)=2b_1$ is independent of $l$.
+These three cases prove the equality. Length one is unchanged.
+\end{proof}
+
+\begin{example}[The geometric cutoff is sharp]\label{ex:cutoff-sharp}
+Let $m$ pair four cyclically ordered endpoints as
+$(1,2)$ and $(3,4)$, and close it with the other crossingless pairing
+$(1,4)$ and $(2,3)$. The closure is one circle. Write $x_1,x_2$ for dots
+on the two arcs of $m$ and set $\theta=x_1+x_2$. Under closure both dots
+act by the same circle operator $x$, so $F(\theta)=x+x=0$. The image
+of $m$ is the two-dimensional circle space. Consequently
+\[
+ \dim H(F(I_l(m,\theta)))=2l.
+\]
+Replacing a length-two interval by a singleton would change a capped
+value of three to two. Thus cutoff one cannot preserve these geometric
+observations uniformly. This example concerns valid algebraic objects
+and a crossingless planar closure; it does not claim that each source
+interval is itself the full complex of a knot diagram.
+\end{example}
+
+\subsection{Compositional correctness of the decision backend}
+
+\begin{definition}[Continuation equivalence]\label{def:continuation-equivalence}
+For two complexes $C,C'$ on the same boundary, write $C\equiv_3 C'$ if
+every permitted remaining crossing sequence and ordinary closure $F$
+satisfies
+\[
+ \capthree\!\left(\dim H(F(C))\right)
+ =\capthree\!\left(\dim H(F(C'))\right).
+\]
+\end{definition}
+
+This is an equivalence relation by equality of the specified observations.
+It is preserved by adjoining a common direct summand, taking finitely
+many copies, and performing a common crossing extension: in the last
+case, any further completion is also a permitted completion before that
+extension. Theorem~\ref{thm:geometric-cutoff} identifies long intervals
+with length-two representatives for this relation. It does not identify
+their homotopy types.
+
+The prior backend stores a template together with nonnegative
+multiplicities, optionally recording absolute shifts in a polynomial
+$p(z)\in\N[z]$~\cite{prior}. For total-rank decisions, replace the
+weight by $\capthree(p(1))$. Addition and multiplication use saturation:
+\[
+ a\oplus b=\min(3,a+b),\qquad a\otimes b=\min(3,ab).
+\]
+The map $\N\to\{0,1,2,3\}$ given by saturation preserves both
+operations. These are nonnegative counts, not coefficients reduced
+modulo two.
+
+\begin{theorem}[Decision correctness under repeated replacements]
+\label{thm:decision-correctness}
+Start with the existing exact scanning complex. At any stages, perform
+exact unit cancellations, exact changes of basis, direct-summand
+decompositions, and sharing of equal normalized templates. For each
+pure summand, apply Theorem~\ref{thm:interval}; in decision mode shorten
+each resulting interval to length $\min(l,2)$ and saturate its
+multiplicity at three. Assume that structural choices do not depend on
+the discarded multiplicities or absolute shifts. At final closure the
+reported count is precisely $\capthree(r_2(K))$.
+\end{theorem}
+
+\begin{proof}
+Fix the full future crossing order at any proposed replacement. By
+Theorem~\ref{thm:geometric-cutoff}, completing a single replaced interval
+would give the same capped total homology rank. Completion is additive
+on independent summands and commutes with homological shifts. Since
+capping commutes with addition and multiplication of nonnegative
+integers, replacing any number of independent copies preserves the
+capped rank of the completed whole complex. Exact changes of basis,
+contractions, and component sharing preserve the actual homotopy type
+before capping and hence preserve this observation as well.
+
+Repeat this argument at every later replacement, comparing the
+counterfactual full completion immediately before and immediately after
+it. Transitivity shows that all replacements together preserve the
+capped final rank. At closure, the empty matching has endomorphism
+ring $\F$; complete elimination leaves isolated generators, whose
+capped multiplicities compute that rank. Finally apply
+\eqref{eq:rank-two} for the verdict.
+\end{proof}
+
+This proof deliberately uses an observational invariant after shortening.
+The represented complex need not retain the original homotopy type,
+exact rank, or degree-by-degree homology. The exact-rank backend therefore
+uses interval splitting without shortening. The decision backend reports
+a capped rank and does not supply exact homological counts or cycle
+representatives. Likewise, exact signed Euler data from the former
+representation cannot silently be carried through an interval shortening.
+
+The current length alone does not give a completed rank bound greater
+than two. For a geometric example, take one arc $m$ with $\theta=x$ and
+close it to one circle. Then $D=A$ with $\epsilon$ acting by $x$, and
+Lemma~\ref{lem:interval-tensor} gives
+$\dim H(J_l\otimes_A A)=2$ for every $l$. Thus arbitrarily long legal
+interval complexes can have a rank-two closure observation. For
+arbitrary module continuations, an acyclic $D$ can even give rank zero.
+The theorem says that the short representative has the same completed
+threshold observation; it does not license a verdict from the current
+number of stored objects.
+
+\section{A checkpoint bound independent of component size}
+\label{sec:checkpoint-complexity}
+
+\subsection{The state count after normalization}
+
+Fix the implemented ordering and exact splitting policy. Let $w$ be the
+largest frontier size over the entire planned scan. Let a \emph{pure
+checkpoint} be a stage at which, after unit elimination and the chosen
+exact splitting operations, every differential component satisfies
+Definition~\ref{def:pure}. Include the initial and final states among
+the checkpoints. Let $g$ bound the number of crossings between
+successive checkpoints. A checkpoint is recognizable from its current
+matrix. A useful uniform bound on their gaps is an additional theorem
+about an input family, not something implied by their definition.
+
+For even $w\ge0$ put
+\begin{equation}\label{eq:M-N}
+ M(0)=1,\qquad M(w)=(w-1)!!\quad(w>0),
+ \qquad N(w)=2^{\,2^{w/2}-1}-1.
+\end{equation}
+There are at most $M(w)$ frontier matchings. The quantity $N(w)$ counts
+the nonzero augmentation elements of the endomorphism ring of a
+matching with $w/2$ arcs: its $2^{w/2}-1$ nonconstant basis monomials
+have arbitrary binary coefficients. In particular, $N(0)=0$.
+Counting all perfect matchings avoids assuming that the frontier bounds
+one disc or that numeric labels specify a useful cyclic order.
+
+\begin{samepage}
+\begin{proposition}[Physical size at a pure checkpoint]
+\label{prop:checkpoint-size}
+After interval normalization, length cutoff two, and complete sharing,
+a pure checkpoint satisfies
+\begin{equation}\label{eq:checkpoint-P}
+\begin{aligned}
+ \text{stored templates}&\le M(w)(1+N(w)),\\
+ \text{stored objects}&\le P(w):=M(w)(1+2N(w)),
+\end{aligned}
+\end{equation}
+independently of multiplicities and of the sizes of the
+original connected differential components.
+\end{proposition}
+\end{samepage}
+
+\begin{proof}
+For each matching there is one possible singleton type, with one object.
+Every other retained interval has length two and is determined by its
+matching and one of the at most $N(w)$ possible nonzero square-zero
+endomorphisms. It contributes two objects. Constructing the vertices
+in degree order makes equal triples have equal complete serializations;
+no graph-isomorphism oracle is needed for these types. Summing these
+counts gives the bounds. A smaller actual frontier only decreases
+both $M$ and $N$.
+\end{proof}
+
+For comparison, the exact-rank version retains lengths up to $n+1$,
+because every raw cube degree lies between zero and $n$. Its analogous
+object bound is
+\begin{equation}\label{eq:exact-checkpoint-P}
+ P_{\mathrm{exact}}(n,w)
+ \le M(w)\left(1+N(w)\frac{n(n+3)}2\right),
+\end{equation}
+using $\sum_{l=2}^{n+1}l=n(n+3)/2$. Absolute birth shifts are recorded
+in the exact multiplicity polynomials. The universal cutoff-three
+variant for arbitrary module continuations, if desired, has the
+decision bound $M(w)(1+5N(w))$ instead of~\eqref{eq:checkpoint-P}.
+
+\subsection{Complexity through impure stretches}
+
+\begin{theorem}[Quantified checkpoint complexity]
+\label{thm:checkpoint-complexity}
+Under the preceding assumptions, both the exact interval-sharing
+backend and the shortened decision backend admit the conservative
+bit-complexity bound
+\begin{equation}\label{eq:checkpoint-runtime}
+ T(n;w,g)\le n^{O(1)}
+ \exp\!\left(O\!\left(g+w\log(w+1)+2^{w/2}\right)\right).
+\end{equation}
+The same expression is a conservative space bound. Exact splitting
+operations that preserve the number of objects and cost polynomial
+time in the physical matrix size and coefficient dimension may be
+included without changing this form of bound.
+\end{theorem}
+
+\begin{proof}
+In one crossing extension, each old loopless matching has two
+smoothings. Each smoothing creates at most two new circles, since every
+new circle contains one of the two newly added smoothing arcs. Delooping
+therefore creates at most four objects per smoothing, or eight objects
+per old object in total. Elimination removes objects; exact basis
+changes and interval normalization do not increase their total number;
+sharing and shortening only decrease it. Thus, between two checkpoints,
+the physical object count is bounded by $8^g$ times the preceding
+checkpoint bound, allowing an immaterial additional factor eight
+depending on endpoint accounting.
+
+Unit elimination uses polynomially many matrix and coefficient
+operations in this physical size. The interval algorithm has
+polynomial cost by~\eqref{eq:rank-invariant}--\eqref{eq:mobius-bars}.
+The same is true of the exact splitting procedures admitted in the
+statement. In the dot-mask algebra, morphisms have $2^{O(w)}$ coefficient
+bits, and direct enumeration of monomials and their gluings gives a
+conservative $2^{O(w)}$ bit cost per composition or transfer, including
+the four temporary ports of the next crossing. This is the same finite
+algebra cost model used in the prior analysis~\cite{prior}.
+
+Exact multiplicity polynomials have at most $n+1$ degree positions.
+The virtual unreduced allocation grows by at most eight per crossing,
+so each coefficient has $O(n)$ bits. In decision mode the weights have
+constant size. Complete key comparisons, matching identifiers, and
+persistent caches add polynomial factors in the stated physical size
+and $n$; the bound need not rely on average-case hashing.
+
+Finally,
+\[
+ \log M(w)=O(w\log(w+1)),\qquad
+ \log(1+N(w))=O(2^{w/2}).
+\]
+Substitute either~\eqref{eq:checkpoint-P} or
+\eqref{eq:exact-checkpoint-P} into the physical-size estimate, charge
+the polynomial operations across $n$ crossings, and absorb the
+resulting fixed powers in the exponential. This gives
+\eqref{eq:checkpoint-runtime}.
+\end{proof}
+
+\begin{corollary}[A specific quasi-polynomial regime]
+\label{cor:checkpoint-quasipolynomial}
+Suppose a diagram family has constructible scan orders and a proved
+checkpoint schedule for which
+\begin{equation}\label{eq:checkpoint-qp-condition}
+ g+2^{w/2}+w\log(w+1)=O(\log^2(n+2)).
+\end{equation}
+If constructing the order and schedule costs at most $n^{O(\log n)}$
+bit operations, the resulting complete recognizer runs in
+$n^{O(\log n)}$ bit operations on that family. Fixed $w$ and fixed $g$
+give a polynomial bound when the order is polynomial-time constructible.
+\end{corollary}
+
+For integer $w$, the last term in~\eqref{eq:checkpoint-qp-condition}
+can be absorbed into a universal multiple of $2^{w/2}$; it is displayed
+to retain the actual matching-count contribution. For example,
+$w\le4\log_2\log(n+2)+O(1)$ and $g=O(\log^2(n+2))$ suffice.
+
+The previous component-sharing theorem required a bound on the maximum
+post-elimination connected component size $b$, with the sufficient
+condition $b^2 2^{w/2}=O(\log^2 n)$~\cite{prior}. The new result removes
+that component-size requirement at pure checkpoints. In particular,
+an interval can have length proportional to $n$, and a connected pure
+component can contain arbitrarily many copies mixed by binary changes
+of basis. Neither prevents the checkpoint bound. The exact and decision
+variants achieve this in different ways: exact normalization keeps
+polynomially many possible lengths, while the continuation quotient
+uses only two lengths.
+
+This remains a conditional structural theorem. No argument here shows
+that every knot diagram, or every prime nonhomogeneous diagram left
+after the structural front end, has frequent pure checkpoints. Taking
+only the initial and final checkpoints can leave $g=n$, which yields
+an exponential bound. Likewise, a large frontier remains costly because
+$N(w)$ is doubly exponential in $w$. Experimental success of an exact
+splitter on individual diagrams is useful evidence about these
+parameters, but does not replace the missing uniform theorem.
+
+\subsection{A sharper bound for restricted coefficient alphabets}
+\label{sec:coefficient-alphabets}
+
+The all-polynomials count $N(w)$ is deliberately conservative. It can be
+replaced when the coefficients occurring at the useful checkpoints have
+additional structure. The restriction need only hold at those
+checkpoints; arbitrary intermediate coefficients are still charged at
+their full dot-mask size.
+
+\begin{corollary}[Checkpoint coefficient alphabets]
+\label{cor:coefficient-alphabet}
+Suppose that, at every pure checkpoint and for each actual matching $m$,
+all nonsingleton pure components use coefficients from a set
+$\Theta_{i,m}$ with
+\[
+ |\Theta_{i,m}|\le A(w).
+\]
+The sets may depend on the checkpoint $i$ and matching $m$; only their
+cardinality bound must be uniform. Under the other assumptions of
+Theorem~\ref{thm:checkpoint-complexity}, the decision checkpoint has at
+most $M(w)(1+2A(w))$ objects, and both the exact and decision variants
+admit the bound
+\begin{equation}\label{eq:alphabet-runtime}
+ T(n;w,g,A)\le n^{O(1)}
+ \exp\!\left(O\!\left(g+w\log(w+1)+\log(1+A(w))\right)\right).
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+For each matching, retain one singleton type and at most $A(w)$
+length-two types, giving the stated object count. The exact variant
+again gains only a polynomial factor in $n$ from possible lengths.
+Between checkpoints the same factor $8^g$ bounds expansion. Importantly,
+we still charge $2^{O(w)}$ bit operations for general coefficient
+compositions and transfers; we do not assume that low-complexity
+coefficients remain so between checkpoints. Its logarithmic contribution
+$O(w)$ is absorbed by $O(w\log(w+1))$ for positive even $w$, and the
+empty-frontier case is constant. Substitution in the preceding proof
+gives~\eqref{eq:alphabet-runtime}.
+\end{proof}
+
+For example, put $p=w/2$. If every checkpoint coefficient is a nonzero
+\emph{linear} combination of the $p$ dot generators, then
+\[
+ A(w)\le2^p-1,
+ \qquad
+ T\le n^{O(1)}\exp O\!\left(g+w\log(w+1)\right).
+\]
+More generally, if every such coefficient has dot degree at most a
+fixed positive integer $d$, the squarefree monomial basis gives
+\begin{equation}\label{eq:degree-alphabet}
+ A(w)\le2^{S_d(p)}-1,
+ \qquad
+ S_d(p)=\sum_{j=1}^{\min(d,p)}\binom pj.
+\end{equation}
+For fixed $d$, this yields
+\[
+ T\le n^{O(1)}\exp O_d\!\left(g+w\log(w+1)+w^d\right).
+\]
+In particular, either the linear or the degree-at-most-two hypothesis,
+together with $w=O(\log(n+2))$ and $g=O(\log^2(n+2))$, suffices for
+the target $n^{O(\log n)}$. The full coefficient arithmetic is still
+polynomial in $n$ in this width regime.
+
+These are additional, checkable checkpoint hypotheses. They are not
+asserted invariants of crossing extension, elimination, or scalar
+splitting, and the measured corpus does not establish them for a
+uniform class of residual knot diagrams. Their value is to exhibit a
+less restrictive route than counting all $2^{2^{w/2}-1}$ augmentation
+polynomials: a proof controlling the coefficients at recurring
+checkpoints could permit logarithmic frontier width.

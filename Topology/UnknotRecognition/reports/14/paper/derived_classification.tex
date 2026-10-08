@@ -1,0 +1,128 @@
+\section{An elementary dual-number derived classification}
+\label{app:dual-number-classification}
+
+This appendix proves the classification used in
+Theorem~\ref{thm:rank-formula}, retaining the finiteness conditions needed
+for that application. The classification is established mathematics;
+see Keller--Yang--Zhou~\cite[Example 3.7(b)]{keller}. The argument here
+explains why the possible unbounded projective resolution introduces
+only simple-module summands, rather than additional unknown types.
+
+Let $A=\F[\epsilon]/(\epsilon^2)$. A cochain complex has differential
+raising its degree by one. A finite free interval $J_l$ has $l$ free
+rank-one terms and consecutive differentials $\epsilon$. A
+left-infinite interval ending in degree $b$ is
+\[
+ \cdots\xrightarrow{\epsilon}A
+ \xrightarrow{\epsilon}A
+ \xrightarrow{\epsilon}\underset{b}{A}\longrightarrow0.
+\]
+It is exact below $b$ and has cohomology $A/(\epsilon)=\F$ in degree
+$b$. It therefore represents a shift of the simple module.
+
+\begin{proposition}[Classification needed for continuation ranks]
+\label{prop:derived-classification}
+Every bounded complex $D$ of finite-dimensional $A$-modules is
+quasi-isomorphic to a finite direct sum of homological shifts of finite
+free intervals $J_l$ and of the simple module $\F$.
+\end{proposition}
+
+\begin{proof}
+We give the construction in three steps.
+
+\paragraph{Step 1: a degreewise finite free resolution.}
+There is a bounded-above complex $P$ of finite free $A$-modules and a
+quasi-isomorphism $f:P\to D$. The following downward construction
+establishes the precise finiteness assertion. Suppose $P$ and $f$ have
+been constructed in degrees greater than $i$. The degree-$i$ term of
+the partially built mapping cone is $D^i\oplus P^{i+1}$, whose cycles
+are the finite $A$-module
+\[
+ Z_i=\bigl\{(d,p):
+ d_Dd+f^{i+1}p=0,\quad d_P^{i+1}p=0\bigr\}.
+\]
+Choose a finite free module $P^i$ surjecting onto $Z_i$, and define
+$f^i$ and $d_P^i$ to be its two component maps. The defining equations
+of $Z_i$ give the chain-map identity and $d_P^{i+1}d_P^i=0$.
+The new boundaries from $P^i$ in the cone cover all its degree-$i$
+cycles. Begin above the highest nonzero degree of $D$ and continue
+downward. Each cone degree becomes exact, with its outgoing maps
+unaffected by later steps. Hence the completed cone is acyclic.
+The resulting $P$ is bounded above and has finite free rank in every
+degree, as claimed.
+
+\paragraph{Step 2: minimalization and the exact left tail.}
+Over the local ring $A$, cancel every unit entry of the differential,
+working downward from the highest degrees. A unit pivot splits off a
+contractible pair $A\xrightarrow{\sim}A$. Each pair of adjacent degrees
+has finite rank, so only finitely many cancellations are needed there.
+Once a differential has all its entries in the radical $(\epsilon)$,
+later changes of basis cannot make their residues nonzero. The
+descending procedure is locally finite: a fixed degree and its adjacent
+matrices stabilize after finitely many operations. It therefore gives
+a bounded-above minimal free complex $P'$ quasi-isomorphic to $P$.
+This also follows by tracking the elementary cancellation equivalences
+degree by degree; no infinite sum of maps in a fixed degree is required.
+
+Write $P'^i=A^{r_i}$. Every differential is now uniquely of the form
+\[
+ d_{P'}^i=\epsilon B_i,
+ \qquad B_i:\F^{r_i}\longrightarrow\F^{r_{i+1}}.
+\]
+Multiplication by $\epsilon B_i$ has binary rank $\rank(B_i)$:
+it maps the constant part to the $\epsilon$ part and kills the latter.
+Consequently
+\begin{equation}\label{eq:minimal-tail-rank}
+ \dim_{\F}H^i(P')
+  =2r_i-\rank(B_{i-1})-\rank(B_i).
+\end{equation}
+Because $D$ is bounded, the left side is zero for every sufficiently
+negative $i$. Each rank on the right is at most $r_i$, so exactness in
+degree $i$ forces
+\[
+ \rank(B_{i-1})=\rank(B_i)=r_i.
+\]
+At two consecutive exact degrees this gives $r_i=r_{i+1}$ and makes
+$B_i$ invertible. Hence the sufficiently far-left tail has one constant
+finite rank $r$, with every $B_i$ invertible. Choose bases recursively
+to make all these tail matrices identities. The case $r=0$ simply
+means that the minimal complex is bounded on both sides.
+
+\paragraph{Step 3: one finite interval decomposition.}
+Choose a cut degree $a$ within that identity tail. Only finitely many
+nonzero degrees lie at or to the right of $a$, and their dimensions
+are finite. Apply the elementary finite interval decomposition from
+Theorem~\ref{thm:interval} to the sequence of binary matrices from
+degree $a$ to the highest degree of $P'$.
+
+Every interval born strictly after $a$ remains a finite interval.
+Every interval born at $a$ extends to the left along one of the
+identity tail coordinates. To see this explicitly, extend the
+chosen change of basis in degree $a$ backward through the identity
+tail; all its matrices remain identities. Thus these intervals
+become left-infinite intervals, with no additional couplings.
+There are finitely many intervals altogether because the finite
+sequence being decomposed has finite total dimension.
+
+Reinsert the factor $\epsilon$ in the differentials. This expresses
+$P'$ as a finite direct sum of finite free $\epsilon$-intervals and
+left-infinite $\epsilon$-intervals. Each left-infinite interval is
+quasi-isomorphic to a shifted simple module, as observed above.
+Composing with the quasi-isomorphisms in the first two steps proves
+the proposition.
+\end{proof}
+
+Only existence is needed in the continuation argument. The recognizer
+does not construct this resolution for a suffix or attempt to process
+an infinite complex. It computes the finite barcode of an already
+stored pure component, then applies the rank identity which the
+classification proves for every possible suffix.
+
+The distinction between free and arbitrary module continuations matters.
+If $D$ is perfect, only finite free intervals occur, so the coefficient
+$a$ in~\eqref{eq:continuation-rank-formula} vanishes. In an arbitrary
+bounded module complex, shifted simple modules can occur. The geometric
+cutoff-two theorem did not assume their absence: it proved that their
+number $a$ is even, using the unreduced circle-space parity of the
+actual closure. This is why that theorem applies to every square-zero
+dot polynomial, including ones whose action is not free on a resolution.

@@ -1,0 +1,65 @@
+\section{An output-size obstruction for compressed cuts}
+\label{sec:compressed-cut-output}
+
+An efficient compressed cutting theorem must be translated into an
+explicit output contract.  Merely storing normal coordinates in binary
+does not make an expanded component list efficient.
+
+\begin{proposition}[Parallel-disc output lower bound]
+\label{prop:parallel-disc-output}
+There is a fixed one-tetrahedron triangulated 3-ball and a family of
+properly embedded orientable normal surfaces $S_W$, for integers $W\ge1$,
+with normal-coordinate input length $O(\log(W+1))$, such that cutting
+along $S_W$ produces $W+1$ connected components.  Between successive
+normal discs are $W-1$ pairwise disjoint product slabs.  Consequently an
+algorithm that explicitly lists all cut components, or all these
+individual product slabs, requires $\Omega(W)$ output operations.
+\end{proposition}
+
+\begin{proof}
+Choose a vertex of one tetrahedron and take $W$ pairwise disjoint,
+nested, normally isotopic triangles linking that vertex.  Their normal
+vector has one coordinate $W$ and six zero coordinates.  Each triangle
+is a properly embedded disc.  In a collar of one such disc, the
+successive triangles divide the collar into $W-1$ copies of
+$D^2\times I$.  The two remaining regions, one towards the vertex and
+one away from it, are also balls.  Therefore the cut manifold has
+$W+1$ components.  Writing one record for each component or slab has
+the asserted lower bound.  Taking $W=2^k$ makes this exponential in
+the binary coordinate length.
+\end{proof}
+
+This does not contradict a compressed-cutting theorem.  It shows that
+its concrete interface must support aggregated multiplicities,
+symbolic families, or a stated connectedness restriction.  A suitable
+record for this example is one ordinary product type with binary
+multiplicity $W-1$, together with the two exceptional end regions.
+It is insufficient to advertise polynomial time in $\log W$ while
+returning a Python list with one element per product region.
+
+More generally, if $S$ is a connected two-sided normal surface with
+normal vector $v$, then $Wv$ is represented by $W$ parallel copies of
+$S$.  With compatible collar markings,
+\[
+ M\mathbin{\backslash\!\backslash}(WS)
+ \cong
+ \bigl(M\mathbin{\backslash\!\backslash}S\bigr)
+ \sqcup
+ \coprod_{i=1}^{W-1}(S\times I).
+\]
+Thus multiplicity extraction can be an exact preprocessing operation
+when connectedness and two-sidedness of the base surface are certified.
+Dividing coordinates by their greatest common divisor alone does not
+certify either condition.  For a one-sided connected surface, doubling
+its normal vector describes the boundary of a regular neighborhood,
+which can be connected; blindly interpreting that factor of two as
+two disjoint copies would be incorrect.
+
+In the July 2026 hierarchy paper, Theorem 14.4 (p.~51) gives the
+compressed cut information, whereas Proposition 14.2 (p.~50) adds
+essential-pattern and irreducibility hypotheses for the subsequent
+simplification.  These are different contracts.  In particular,
+an undecided unknot exterior does not supply an essential initial
+pattern as an available assumption.  The representation lower bound
+above is an implementation obligation, not an assertion that the
+literature's compressed theorem is false.

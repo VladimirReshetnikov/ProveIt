@@ -1,0 +1,190 @@
+\section{Quantitative accounting for a future hierarchy engine}
+\label{sec:hierarchy-accounting}
+
+The near-linear terminal test removes one repeated search from the
+hierarchy route.  To obtain a general quasi-polynomial recognizer, one
+must also bound the construction and revision of the hierarchy, the
+size of its compressed states, and the cost of transporting a terminal
+witness.  This section specifies a sufficient global accounting theorem.
+It does not assert that the geometric hypotheses have been established
+for the delivered implementation.
+
+\subsection{The precise status of the source bounds}
+
+The February 2021 slides cited here, the file
+\code{quasipolynomial-talk.pdf}, announce
+$n^{O(\log n)}$ \cite{lackenbytalk}.  The November 2024 Tsinghua abstract
+announces
+\[
+ 2^{O((\log n)^3)}=n^{O((\log n)^2)}
+ \qquad\cite{lackenby2024}.
+\]
+These are different stated bounds.  Both are quasi-polynomial, and the
+sources reviewed here do not establish an explanation for the difference.
+The July 2026 preprint is a separate source: it gives a hierarchy
+algorithm and efficient certificate operations, while identifying further
+speed-up as future work \cite{lackenby2026}.
+
+For its iteration analysis, let $L$ bound the length of every hierarchy
+that occurs, and let $g$ bound every nonnegative complexity digit that
+is stored, including after a suffix is rebuilt.  Proposition~9.1 gives
+\begin{equation}
+ \#\{\hbox{executions of any fixed algorithmic step}\}
+ \leq L(g+1)^L.
+ \label{eq:lackenby-iteration-bound}
+\end{equation}
+Proposition~10.2 gives the refined length bound
+$L\leq4c_q(\mathcal H)$, in terms of the initial handle structure's
+q-complexity.  For a linear-size initial structure of uniform type this
+is $L=O(n)$ \cite[Props.~9.1 and 10.2]{lackenby2026}.
+
+Equation~\eqref{eq:lackenby-iteration-bound} is not yet a bit-time estimate.
+Its digits concern pattern complexity, including intersections with the
+boundary pattern, rather than genus alone.  A bound valid only for the
+first chosen surfaces is insufficient when later replacements introduce
+new surfaces.  Moreover, each counted step may act on a compressed object
+whose bit length must itself be controlled.
+
+Even if the additional estimate $g\leq(n+2)^a$ were supplied, combining it
+only with $L=O(n)$ would give the coarse iteration bound
+$\exp(O(n\log(n+2)))$.  This is not a quasi-polynomial upper bound.
+It is also not a lower bound on the algorithm: a sharper analysis may
+exploit correlations between successive choices or long stretches of
+forced operations.  The distinction motivates the following elementary
+accounting result.
+
+\subsection{A rooted-tree bound that includes forced operations}
+
+All logarithms in this subsection are natural logarithms.  A rooted tree
+represents \emph{actual execution occurrences}: distinct visits are
+distinct nodes unless a separate memoization argument proves that they
+can be charged to one computation.  At a node $v$, write $b(v)$ for the
+number of its children.  A node with one child describes a forced
+operation and contributes $\log b(v)=0$.  Leaves contribute no logarithm.
+
+\begin{theorem}[Depth and cumulative branching]
+\label{thm:hierarchy-tree-accounting}
+Let $T$ be a rooted, finitely branching tree of depth at most $D$, where
+depth counts edges.  Suppose that every root-to-leaf path satisfies
+\begin{equation}
+ \sum_{\substack{v\ \mathrm{on\ the\ path}\\b(v)>0}}\log b(v)\leq B.
+ \label{eq:branch-budget}
+\end{equation}
+Then
+\begin{equation}
+ |V(T)|\leq(D+1)e^B.
+ \label{eq:tree-node-bound}
+\end{equation}
+If all work associated with one node has bit cost at most $C$, including
+its assigned state construction, tests, certificate data, and transition
+work, the total assigned cost is at most $C(D+1)e^B$.
+\end{theorem}
+
+\begin{proof}
+Finite branching and bounded depth imply that $T$ is finite.  Assign the
+root weight $1$, and assign every child of an internal node $v$ the
+weight of $v$ divided by $b(v)$.  Thus at every fixed depth the sum of
+the node weights is at most $1$: passing to the next depth preserves the
+weight at internal nodes and drops the weight at leaves.
+
+For a node $u$, its weight is
+\[
+ p(u)=
+ \prod_{\substack{v\ \mathrm{a\ proper}\\\mathrm{ancestor\ of}\ u}}
+ \frac1{b(v)}.
+\]
+Extend its path to a leaf.  Since every summand in
+\eqref{eq:branch-budget} is nonnegative, the ancestor sum for $u$ is at
+most $B$.  Hence $p(u)\geq e^{-B}$.  If there are $N_j$ nodes at depth
+$j$, then $N_je^{-B}\leq1$, so $N_j\leq e^B$.  Summing over
+$j=0,\ldots,D$ proves~\eqref{eq:tree-node-bound}.  Summing the stated
+per-node costs proves the final assertion.
+\end{proof}
+
+The weights are a counting device.  No randomized algorithm or
+probabilistic running-time assumption is involved.  The same proof works
+with computable bounds $\widehat b(v)\geq b(v)$ in place of the actual
+positive child counts: distribute weight $p(v)/\widehat b(v)$ to each
+child, so that total weight can only decrease.
+
+Unary chains explain why the depth term cannot be omitted.  A chain of
+$D+1$ nodes has $B=0$ and attains the bound exactly.  Conversely, a
+small bound on the length of each completed geometric hierarchy is not
+automatically a bound on $D$: rebuilding its suffix many times can
+create many execution occurrences.  A tree interpretation must account
+for those occurrences explicitly.
+
+\begin{corollary}[Explicit quasi-polynomial budgets]
+\label{cor:hierarchy-qp-budget}
+Suppose a complete algorithm on $n$-crossing inputs admits the accounting
+of Theorem~\ref{thm:hierarchy-tree-accounting}, uniformly over all its
+inputs and executions.  If
+\[
+ B(n)+\log(D(n)+1)+\log(C(n)+1)
+     =O\bigl((\log(n+2))^r\bigr)
+\]
+for a fixed $r\geq1$, then its accounted bit time is
+$\exp(O((\log(n+2))^r))$.
+In particular, polynomial $C,D$ and
+$B=O(\log^2(n+2))$ imply $n^{O(\log(n+2))}$ time; replacing that
+branching budget by $O(\log^3(n+2))$ gives
+$n^{O((\log(n+2))^2)}$.
+\end{corollary}
+
+\begin{proof}
+Take logarithms of the time bound in
+Theorem~\ref{thm:hierarchy-tree-accounting} and substitute the hypotheses.
+\end{proof}
+
+For example, polynomially many forced operations along a path are
+compatible with the stronger bound when at most $O(\log n)$ nodes
+branch and each has at most $n^{O(1)}$ children.  Their cumulative
+branching is $O(\log^2 n)$.  If polynomial branching occurs at
+$O(\log^2 n)$ levels instead, the same arithmetic gives
+$O(\log^3 n)$.  These are sufficient accounting regimes, not an
+explanation of the historical announcements.
+
+This formulation permits the available choices to depend on the entire
+earlier history.  It can therefore be more informative than multiplying
+independent worst-case caps at every hierarchy level.  Nevertheless,
+the bound must hold on all explored paths, including failed choices and
+restarts.  A bound on one successful certificate, or on the number of
+distinct unlabeled states, does not establish the hypotheses.
+
+\subsection{The geometric obligations behind the symbols}
+
+There are three distinct representation issues.  First, a polynomial
+number of local handle types does not bound the number of handles.
+Second, large normal coordinates require binary arithmetic and
+multiplicity-aware output, as
+Proposition~\ref{prop:parallel-disc-output} demonstrates.  Third, a
+compact object can still require a costly search to construct.
+The per-node bound $C$ must include all three issues rather than treating
+surface production or witness transport as an oracle.
+
+Theorem~14.4 of the 2026 paper supplies compressed cutting data in time
+polynomial in the handle count and logarithm of the extended surface
+weight.  Proposition~14.2's subsequent simplification has additional
+irreducibility and essential-pattern hypotheses
+\cite[Prop.~14.2 and Thm.~14.4]{lackenby2026}.
+The latter hypothesis cannot be silently supplied by an undecided knot
+exterior with empty initial pattern.  A verifier may establish it from
+an appropriate certificate; a general producer must also handle the
+opposite case.
+
+A concrete realization of Corollary~\ref{cor:hierarchy-qp-budget} should
+therefore attach to every state an encoding-size bound, an explicit
+description of its admissible continuations, and a record of each
+operation used to transfer boundary curves.  If a simplification is
+conditional on essentiality, its contract must state how that
+precondition is certified or how a compression witness is handled.
+All outer changes of Heegaard data and all reconstructions of discarded
+suffixes must receive a charge in the same execution accounting.
+
+Efficient verification of a supplied hierarchy and efficient generation
+of one are separate requirements.  The present package advances the
+terminal test and the algebraic route, and gives exact interfaces against
+which a hierarchy implementation can be audited.  It does not supply
+uniform geometric bounds for $B,D,C$.  Proving those bounds, together
+with an executable producer satisfying their hypotheses, remains the
+step needed for a general hierarchy-based complexity theorem.

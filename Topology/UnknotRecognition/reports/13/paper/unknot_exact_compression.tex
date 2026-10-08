@@ -1,0 +1,292 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage{microtype,amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,enumitem,graphicx,float}
+\usepackage[table]{xcolor}
+\usepackage{tikz}
+\usepackage{fancyhdr}
+\usepackage{listings}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=navy,citecolor=teal,urlcolor=teal]{hyperref}
+\definecolor{navy}{HTML}{17324D}
+\definecolor{teal}{HTML}{086F83}
+\definecolor{pale}{HTML}{F1F6F8}
+\definecolor{warm}{HTML}{A54D36}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\F}{\mathbb F_2}
+\newcommand{\Kh}{\operatorname{Kh}}
+\newcommand{\id}{\operatorname{id}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\End}{\operatorname{End}}
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\bigO}{\mathcal O}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{12pt}
+\setlist{itemsep=3pt,topsep=5pt}
+\setcounter{tocdepth}{2}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{navy}Exact compression for unknot recognition}
+\fancyhead[R]{\small\color{navy}ProveIt research continuation}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\lstset{basicstyle=\small\ttfamily,backgroundcolor=\color{pale},
+  frame=single,rulecolor=\color{pale},breaklines=true,columns=fullflexible,
+  keepspaces=true,showstringspaces=false}
+\hypersetup{pdftitle={Exact Truncation, Nilpotent Reduction, and Fast Terminal Tests for Unknot Recognition},
+  pdfauthor={Research continuation prepared for Vladimir Reshetnikov}}
+
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\vspace*{0.6in}
+{\color{teal}\large PROVEIT / TOPOLOGY / UNKNOT RECOGNITION\par}
+\vspace{0.4in}
+{\color{navy}\huge\bfseries Exact Truncation,\par
+Nilpotent Reduction,\par
+and Fast Terminal Tests\par}
+\vspace{0.2in}
+{\color{navy}\LARGE for Unknot Recognition\par}
+\vspace{0.35in}
+{\large A proved and reproducible continuation toward\par
+quasi-polynomial algorithms\par}
+\vspace{0.5in}
+{\large Prepared for Vladimir Reshetnikov\par}
+{\large 8 October 2026\par}
+\vfill
+\noindent\fcolorbox{teal}{pale}{\begin{minipage}{0.91\textwidth}
+\textbf{What this package establishes.}
+An exact scanner for selected homological degrees, a finite algebraic
+construction of minimal complexes, and a deterministic near-linear
+terminal boundary-pattern algorithm.  The implementation is tested against
+the pinned ProveIt code and independent certificate identities.
+
+\medskip
+\textbf{What remains open in the implementation.}
+The complete recognizer retains an exponential worst-case upper bound.
+The quasi-polynomial theorem proved here concerns prescribed homological
+windows under explicit diagram parameters; a general recognition bound
+requires an additional geometric or homological witness theorem.
+\end{minipage}}\par
+\vspace{0.35in}
+{\small Audited ProveIt revision:\par
+\texttt{ca61a1a5f967999d778d6efd7c882e77a2eb379d}\par}
+\end{titlepage}
+\pagenumbering{roman}
+\hypersetup{pageanchor=true}
+
+\begin{abstract}
+We continue the ProveIt unknot-recognition program with three concrete
+algorithms and an explicit analysis of the remaining complexity gap.
+First, we compute an exact prescribed interval of Khovanov homology by
+discarding partial chain summands before allocation whenever the remaining
+crossings cannot carry them into the target or its adjacent differential
+degrees.  For a diagram with $n$ crossings, frontier size $w$, $s$ Seifert
+circles, and minority crossing-sign count $\mu$, the delivered algorithm
+computes normalized degrees $[-d,d]$ in
+$2^{O(w+s+\mu+d)}(n+1)^{O(\mu+d+1)}$ bit operations.
+This gives an $n^{O(\log n)}$ bound for those homological queries when
+$w+s=O(\log^2 n)$ and $\mu+d=O(\log n)$.  A mismatching window is a
+sound knot certificate; an agreeing window invokes the complete fallback.
+Second, the positive-degree ideal of the matching category has nilpotence
+exponent at most $w+1$, independently of object multiplicity.  Binary
+matrix reduction followed by a finite perturbation series constructs an
+exact minimal complex and explicit deformation-retraction maps.
+Third, a known ball's trivalent boundary pattern is tested in
+$O(s_P\log s_P)$ deterministic RAM operations by detecting dual loops,
+bigons, and nonfacial triangles; negative results carry independently
+verifiable primal-cut witnesses.
+On the supplied 36-crossing stress input, the window reduces the peak
+allocation from 17,694 to 7,692 objects and decides nontriviality under a
+10,000-object ceiling that stops the full scanner.  The paper includes
+paired measurements, proofs, integration code, an output-size obstruction
+for expanded normal-surface cuts, and a prioritized research program.
+\end{abstract}
+
+\tableofcontents
+\newpage
+\pagenumbering{arabic}
+
+\section{Scope, source audit, and principal results}
+\label{sec:scope}
+
+The task is to improve the existing recognizer while pursuing a
+quasi-polynomial general algorithm.  Both objectives matter.  A useful
+optimization must preserve the exact mathematical meaning of a verdict,
+and a complexity claim must count every object, coefficient, intermediate
+state, and output required by the implemented procedure.
+
+The audited source is \code{VladimirReshetnikov/ProveIt}, revision
+\path{ca61a1a5f967999d778d6efd7c882e77a2eb379d}, specifically
+\code{Topology/UnknotRecognition} \cite{proveit}.
+The active \code{fast/} code combines diagram validation, elementary
+reductions, connected-sum factorization, Alexander and Jones obstructions,
+and an exact $\F$ Khovanov scanner.  The same revision also stores the
+recent structural-compression continuation in \code{reports/07}; its
+patch has not been applied to the active \code{fast/} tree.
+This package's integration patch targets that active tree.  The baseline
+file hashes, source revision, new modules, and test output are supplied.
+
+Recent work already supplied structural Seifert-graph tests,
+component sharing with exact multiplicities, and faster auxiliary filters.
+Other recent continuations developed a three-braid backend and exposed
+the distinction between frontier size and intrinsic complex multiplicity.
+The present work addresses different operations: which degrees are
+constructed, how a binary contraction is lifted to the full category,
+and how terminal small-cut searches are replaced by planar triangle
+enumeration.
+
+\begin{table}[ht]
+\centering\small
+\begin{tabular}{p{0.27\textwidth}p{0.35\textwidth}p{0.27\textwidth}}
+\toprule
+Result & Precise guarantee & Delivered status\\
+\midrule
+Moving degree window & Exact requested homology after arbitrary valid
+scan order and unit cancellations & Implemented; complete fallback preserved\\
+Parameterized cost & Uniform bit bound in $w,s,\mu,d,n$ & Proved for the
+implemented representation\\
+Finite nilpotent lift & Exact minimal complex and checked chain maps &
+Research backend; measured separately\\
+Terminal pattern test & $O(s_P\log s_P)$ RAM time on a known ball &
+Implemented; independent negative verifier\\
+Expanded-cut obstruction & $\Omega(W)$ output for $W$ explicitly listed
+parallel cut components & Proved; informs the required interface\\
+General recognition & Complete Khovanov fallback & Exponential upper bound;
+general quasi-polynomial implementation unresolved\\
+\bottomrule
+\end{tabular}
+\caption{Claims are separated by the mathematical quantity actually computed.}
+\end{table}
+
+\subsection{The literature establishes the boundary of the claim}
+
+Bar-Natan's local cancellation framework is the foundation of the existing
+scanner \cite{barnatan}.  Kelom\"aki and Sch\"utz prove that explicit
+scanning and divide-and-conquer computations can be exponential even for
+positive or alternating three-braids.  Their paper also gives a polynomial
+algorithm for full three-braid homology and polynomial algorithms for
+extremal degrees at fixed strand number \cite{kelomaki}.  These statements
+are compatible: an efficiently computed compressed answer can have an
+exponentially large basis.  Frontier control alone cannot substitute for
+control of multiplicity.
+
+Lackenby's July 2026 preprint develops a hierarchy algorithm and efficient
+certificate operations \cite{lackenby2026}.  Its introduction identifies
+speed-up as future work, and its quantitative analysis leaves a growth
+parameter uncontrolled.  The February 2021 Oxford slides announce
+$n^{O(\log n)}$ \cite{lackenbytalk}.  The November 2024
+Tsinghua abstract states the different announced bound
+\[
+ 2^{O((\log n)^3)}=n^{O((\log n)^2)}
+ \qquad\cite{lackenby2024}.
+\]
+We distinguish that bound from the stronger $n^{O(\log n)}$ target.
+Both are quasi-polynomial; they have different logarithmic exponents.
+We do not infer the reason for this difference from the announcements.
+The existence of an announcement does not make a local implementation
+quasi-polynomial without its missing quantitative and constructive steps.
+
+\subsection{A useful connection with \texttt{openai/math}}
+
+The second requested repository was inspected at revision
+\path{adc7f1241b42e322a6451854ab7e4b4c146bf78a}.
+Its manuscript \emph{Parabolic Intersections in Artin Groups}, dated
+23 September 2026, develops finite-amplitude layer operations and explicit
+homotopies under tensoring \cite{openai_artin}.  The methodological
+connection is precise: bounded future degree movement makes some present
+layers irrelevant to a requested output.  Section~\ref{sec:window-theory}
+proves the required version directly in the Khovanov setting.  No theorem
+about arbitrary Artin-group parabolics is assumed by this recognizer.
+
+\section{The computational and algebraic model}
+\label{sec:model}
+
+An input is a validated one-component classical PD diagram with $n$
+crossings.  Each crossing is a cyclic four-tuple; every edge label occurs
+twice.  The code checks one-component connectivity and that the rotation
+system is spherical.  After normalization the edge labels are dense
+integers, so the combinatorial input has $O(n\log(n+2))$ bits.  The empty
+PD represents one crossing-free circle.
+
+A scan adds one crossing at a time.  Its two resolutions have raw
+homological degrees $0$ and $1$.  A resolved partial diagram is a matching
+of the current frontier, together with closed circles.  Delooping replaces
+each circle by two summands over $\F$.  If the frontier has $w_i=2k_i$
+endpoints, a matching has $k_i$ arcs.  The scanner stores multiple copies
+of a matching in distinct chain degrees or with different differential
+incidences.  These multiplicities are ordinary nonnegative integers,
+even though matrix coefficients lie in $\F$.
+
+For two matchings $a,b$, let $c(a,b)$ be the number of circles formed by
+gluing them along their frontier.  The corresponding morphism space has
+$2^{c(a,b)}$ dotted basis elements.  An integer bit mask encodes their
+$\F$ coefficients: bit position $S$ records the monomial with a dot on
+each circle indexed by a bit of $S$.  This integer can have as many as
+$2^{w_i/2}$ bits.  Treating it as a unit-cost scalar would hide an
+exponential dependence on $w_i$.
+
+The quantity reported by the full backend is ungraded in the quantum
+direction and graded in raw homological degree.  For a knot, the total
+unreduced $\F$ rank is twice its reduced rank
+\cite[Corollary~3.2.C]{shumakovitch}.  The reduced-rank-one
+criterion detects the unknot: the characteristic-zero detection theorem
+\cite{kronheimer} and the universal coefficient theorem imply that
+reduced $\F$ rank one forces the characteristic-zero rank to be one;
+the unknot itself has that rank.  Thus the existing full fallback has an
+exact mathematical certificate criterion.  The partial window will use
+only the necessary homology of the unknot, so its agreement is inconclusive.
+
+\begin{definition}[Parameters used below]
+Let $w=\max_i w_i$ be the executed frontier size, $s$ the number of
+Seifert circles, $\nu$ the number of negative oriented PD crossings, and
+$\mu=\min\{\nu,n-\nu\}$.  A normalized homological radius $d$ asks for
+degrees $[-d,d]$.  The raw target is $[\nu-d,\nu+d]$.
+For the separate terminal algorithm, $s_P$ denotes its number of darts;
+it is unrelated to the Seifert-circle parameter $s$.
+\end{definition}
+
+\input{window_theory}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figures/window_support_and_profile.pdf}
+\caption{Left: the exact moving support window for $n=36$ and target raw
+degree $16$.  The guard degrees retain the incident differentials.
+Right: actual pre-elimination allocations for the supplied stress diagram
+under the same crossing order.  The 10,000-object ceiling is crossed by the
+full scan and respected by the window scan.}
+\label{fig:window-profile}
+\end{figure}
+
+\input{perturbation_theory}
+\input{../hierarchy/terminal_patterns}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.93\textwidth]{figures/terminal_triangle.pdf}
+\caption{The dual criterion on explicit sphere triangulations.  A facial
+triangle in $K_4$ is harmless.  Inserting a vertex into that face makes its
+old boundary a nonfacial triangle: the two sides contain three primal
+vertices each, producing a three-edge violating bond.}
+\label{fig:terminal-dual}
+\end{figure}
+
+\input{../hierarchy/weight_expansion_obstruction}
+\input{hierarchy_accounting}
+\input{experiments_and_integration}
+\input{research_agenda}
+\input{references}
+\end{document}

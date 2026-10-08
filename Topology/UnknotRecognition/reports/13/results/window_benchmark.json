@@ -1,0 +1,5788 @@
+{
+  "schema": "unknot-window-benchmark-v1",
+  "created_utc": "2026-10-07T23:44:18.034131+00:00",
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "platform": "Linux-6.18.44-x86_64-with-glibc2.39",
+  "repeats": 7,
+  "timing_protocol": "one warmup each; alternating paired order; identical PD and scan order",
+  "scope": "core scans without cheap filters; full ranks versus exact normalized H0 only",
+  "source_commit": "ca61a1a5f967999d778d6efd7c882e77a2eb379d",
+  "cases": [
+    {
+      "name": "conway",
+      "crossings": 11,
+      "target_raw_degree": 6,
+      "target_normalized_degree": 0,
+      "input_mirrored": false,
+      "pd": [
+        [
+          3,
+          1,
+          4,
+          0
+        ],
+        [
+          7,
+          3,
+          8,
+          2
+        ],
+        [
+          11,
+          4,
+          12,
+          5
+        ],
+        [
+          1,
+          7,
+          2,
+          6
+        ],
+        [
+          8,
+          16,
+          9,
+          15
+        ],
+        [
+          10,
+          17,
+          11,
+          18
+        ],
+        [
+          5,
+          12,
+          6,
+          13
+        ],
+        [
+          14,
+          19,
+          15,
+          20
+        ],
+        [
+          16,
+          0,
+          17,
+          21
+        ],
+        [
+          18,
+          13,
+          19,
+          14
+        ],
+        [
+          20,
+          9,
+          21,
+          10
+        ]
+      ],
+      "pd_sha256": "e07360e53bc2af0003a9c6a66d7b13830e37ab5da1bd28c822eaf34b14d726e5",
+      "order": [
+        1,
+        3,
+        0,
+        2,
+        6,
+        4,
+        8,
+        5,
+        10,
+        7,
+        9
+      ],
+      "full_rank": 66,
+      "window_rank": 10,
+      "is_nontriviality_certificate": true,
+      "median_full_over_window": 1.0158348299618212,
+      "full": {
+        "samples_seconds": [
+          0.008971891998953652,
+          0.005949737002083566,
+          0.0043049539999628905,
+          0.008305873001518194,
+          0.004699258999607991,
+          0.008198192001145799,
+          0.00720163100049831
+        ],
+        "median_seconds": 0.00720163100049831,
+        "q1_seconds": 0.005324498000845779,
+        "q3_seconds": 0.008252032501331996,
+        "minimum_seconds": 0.0043049539999628905,
+        "maximum_seconds": 0.008971891998953652,
+        "by_degree": {
+          "0": 2,
+          "1": 4,
+          "2": 4,
+          "3": 6,
+          "4": 8,
+          "5": 8,
+          "6": 10,
+          "7": 8,
+          "8": 6,
+          "9": 4,
+          "10": 4,
+          "11": 2
+        },
+        "stats": {
+          "max_objects_before_elimination": 246,
+          "max_objects_after_elimination": 66,
+          "eliminations": 196,
+          "max_boundary": 6,
+          "compositions": 90,
+          "entries": 1519,
+          "plans": 179,
+          "shape_hits": 0,
+          "result_hits": 0
+        }
+      },
+      "window": {
+        "samples_seconds": [
+          0.00708937200033688,
+          0.007653012002265314,
+          0.007999698998901295,
+          0.00626165199719253,
+          0.006178098999953363,
+          0.007709397999860812,
+          0.005840948000695789
+        ],
+        "median_seconds": 0.00708937200033688,
+        "q1_seconds": 0.0062198754985729465,
+        "q3_seconds": 0.007681205001063063,
+        "minimum_seconds": 0.005840948000695789,
+        "maximum_seconds": 0.007999698998901295,
+        "by_degree": {
+          "6": 10
+        },
+        "stats": {
+          "max_objects_before_elimination": 124,
+          "max_objects_after_elimination": 35,
+          "eliminations": 116,
+          "max_boundary": 6,
+          "compositions": 103,
+          "entries": 1096,
+          "discarded_before_allocation": 76,
+          "isolated_guard_objects_discarded": 62,
+          "unpruned_prefix_stages": 6,
+          "skipped_old_edge_smoothings": 100,
+          "max_unfiltered_expansion_of_retained_prefix": 168,
+          "window_profile": [
+            {
+              "processed": 1,
+              "remaining": 10,
+              "retained_lower": -5,
+              "retained_upper": 7,
+              "unfiltered_expansion_of_retained_prefix": 2,
+              "objects_before_elimination": 2,
+              "objects_after_elimination": 2,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 1
+            },
+            {
+              "processed": 2,
+              "remaining": 9,
+              "retained_lower": -4,
+              "retained_upper": 7,
+              "unfiltered_expansion_of_retained_prefix": 5,
+              "objects_before_elimination": 5,
+              "objects_after_elimination": 3,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 6
+            },
+            {
+              "processed": 3,
+              "remaining": 8,
+              "retained_lower": -3,
+              "retained_upper": 7,
+              "unfiltered_expansion_of_retained_prefix": 7,
+              "objects_before_elimination": 7,
+              "objects_after_elimination": 5,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 8
+            },
+            {
+              "processed": 4,
+              "remaining": 7,
+              "retained_lower": -2,
+              "retained_upper": 7,
+              "unfiltered_expansion_of_retained_prefix": 10,
+              "objects_before_elimination": 10,
+              "objects_after_elimination": 10,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 13
+            },
+            {
+              "processed": 5,
+              "remaining": 6,
+              "retained_lower": -1,
+              "retained_upper": 7,
+              "unfiltered_expansion_of_retained_prefix": 27,
+              "objects_before_elimination": 27,
+              "objects_after_elimination": 13,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 57
+            },
+            {
+              "processed": 6,
+              "remaining": 5,
+              "retained_lower": 0,
+              "retained_upper": 7,
+              "unfiltered_expansion_of_retained_prefix": 26,
+              "objects_before_elimination": 26,
+              "objects_after_elimination": 26,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 41
+            },
+            {
+              "processed": 7,
+              "remaining": 4,
+              "retained_lower": 1,
+              "retained_upper": 7,
+              "unfiltered_expansion_of_retained_prefix": 59,
+              "objects_before_elimination": 58,
+              "objects_after_elimination": 34,
+              "discarded_before_allocation": 1,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 128
+            },
+            {
+              "processed": 8,
+              "remaining": 3,
+              "retained_lower": 2,
+              "retained_upper": 7,
+              "unfiltered_expansion_of_retained_prefix": 80,
+              "objects_before_elimination": 77,
+              "objects_after_elimination": 35,
+              "discarded_before_allocation": 3,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 198
+            },
+            {
+              "processed": 9,
+              "remaining": 2,
+              "retained_lower": 3,
+              "retained_upper": 7,
+              "unfiltered_expansion_of_retained_prefix": 99,
+              "objects_before_elimination": 87,
+              "objects_after_elimination": 33,
+              "discarded_before_allocation": 12,
+              "isolated_guard_objects_discarded": 2,
+              "entries_before_elimination": 263
+            },
+            {
+              "processed": 10,
+              "remaining": 1,
+              "retained_lower": 4,
+              "retained_upper": 7,
+              "unfiltered_expansion_of_retained_prefix": 86,
+              "objects_before_elimination": 70,
+              "objects_after_elimination": 28,
+              "discarded_before_allocation": 16,
+              "isolated_guard_objects_discarded": 6,
+              "entries_before_elimination": 179
+            },
+            {
+              "processed": 11,
+              "remaining": 0,
+              "retained_lower": 5,
+              "retained_upper": 7,
+              "unfiltered_expansion_of_retained_prefix": 168,
+              "objects_before_elimination": 124,
+              "objects_after_elimination": 10,
+              "discarded_before_allocation": 44,
+              "isolated_guard_objects_discarded": 54,
+              "entries_before_elimination": 202
+            }
+          ],
+          "plans": 171,
+          "shape_hits": 0,
+          "result_hits": 0
+        }
+      },
+      "window_without_isolated_guard_pruning": {
+        "by_degree": {
+          "6": 10
+        },
+        "stats": {
+          "max_objects_before_elimination": 156,
+          "max_objects_after_elimination": 96,
+          "eliminations": 116,
+          "max_boundary": 6,
+          "compositions": 103,
+          "entries": 1096,
+          "discarded_before_allocation": 94,
+          "isolated_guard_objects_discarded": 0,
+          "unpruned_prefix_stages": 6,
+          "skipped_old_edge_smoothings": 100,
+          "max_unfiltered_expansion_of_retained_prefix": 216,
+          "window_profile": [
+            {
+              "processed": 1,
+              "remaining": 10,
+              "retained_lower": -5,
+              "retained_upper": 7,
+              "unfiltered_expansion_of_retained_prefix": 2,
+              "objects_before_elimination": 2,
+              "objects_after_elimination": 2,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 1
+            },
+            {
+              "processed": 2,
+              "remaining": 9,
+              "retained_lower": -4,
+              "retained_upper": 7,
+              "unfiltered_expansion_of_retained_prefix": 5,
+              "objects_before_elimination": 5,
+              "objects_after_elimination": 3,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 6
+            },
+            {
+              "processed": 3,
+              "remaining": 8,
+              "retained_lower": -3,
+              "retained_upper": 7,
+              "unfiltered_expansion_of_retained_prefix": 7,
+              "objects_before_elimination": 7,
+              "objects_after_elimination": 5,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 8
+            },
+            {
+              "processed": 4,
+              "remaining": 7,
+              "retained_lower": -2,
+              "retained_upper": 7,
+              "unfiltered_expansion_of_retained_prefix": 10,
+              "objects_before_elimination": 10,
+              "objects_after_elimination": 10,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 13
+            },
+            {
+              "processed": 5,
+              "remaining": 6,
+              "retained_lower": -1,
+              "retained_upper": 7,
+              "unfiltered_expansion_of_retained_prefix": 27,
+              "objects_before_elimination": 27,
+              "objects_after_elimination": 13,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 57
+            },
+            {
+              "processed": 6,
+              "remaining": 5,
+              "retained_lower": 0,
+              "retained_upper": 7,
+              "unfiltered_expansion_of_retained_prefix": 26,
+              "objects_before_elimination": 26,
+              "objects_after_elimination": 26,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 41
+            },
+            {
+              "processed": 7,
+              "remaining": 4,
+              "retained_lower": 1,
+              "retained_upper": 7,
+              "unfiltered_expansion_of_retained_prefix": 59,
+              "objects_before_elimination": 58,
+              "objects_after_elimination": 34,
+              "discarded_before_allocation": 1,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 128
+            },
+            {
+              "processed": 8,
+              "remaining": 3,
+              "retained_lower": 2,
+              "retained_upper": 7,
+              "unfiltered_expansion_of_retained_prefix": 80,
+              "objects_before_elimination": 77,
+              "objects_after_elimination": 35,
+              "discarded_before_allocation": 3,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 198
+            },
+            {
+              "processed": 9,
+              "remaining": 2,
+              "retained_lower": 3,
+              "retained_upper": 7,
+              "unfiltered_expansion_of_retained_prefix": 99,
+              "objects_before_elimination": 87,
+              "objects_after_elimination": 35,
+              "discarded_before_allocation": 12,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 263
+            },
+            {
+              "processed": 10,
+              "remaining": 1,
+              "retained_lower": 4,
+              "retained_upper": 7,
+              "unfiltered_expansion_of_retained_prefix": 90,
+              "objects_before_elimination": 72,
+              "objects_after_elimination": 36,
+              "discarded_before_allocation": 18,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 179
+            },
+            {
+              "processed": 11,
+              "remaining": 0,
+              "retained_lower": 5,
+              "retained_upper": 7,
+              "unfiltered_expansion_of_retained_prefix": 216,
+              "objects_before_elimination": 156,
+              "objects_after_elimination": 96,
+              "discarded_before_allocation": 60,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 202
+            }
+          ],
+          "plans": 171,
+          "shape_hits": 0,
+          "result_hits": 0
+        },
+        "timed": false
+      }
+    },
+    {
+      "name": "kinoshita_terasaka",
+      "crossings": 11,
+      "target_raw_degree": 6,
+      "target_normalized_degree": 0,
+      "input_mirrored": false,
+      "pd": [
+        [
+          3,
+          1,
+          4,
+          0
+        ],
+        [
+          7,
+          3,
+          8,
+          2
+        ],
+        [
+          11,
+          4,
+          12,
+          5
+        ],
+        [
+          1,
+          7,
+          2,
+          6
+        ],
+        [
+          8,
+          17,
+          9,
+          18
+        ],
+        [
+          10,
+          20,
+          11,
+          19
+        ],
+        [
+          5,
+          12,
+          6,
+          13
+        ],
+        [
+          14,
+          9,
+          15,
+          10
+        ],
+        [
+          16,
+          21,
+          17,
+          0
+        ],
+        [
+          18,
+          14,
+          19,
+          13
+        ],
+        [
+          20,
+          15,
+          21,
+          16
+        ]
+      ],
+      "pd_sha256": "f51aef368bfdf20993e5be1e3d0b60a5ec9ab6e5ca6092a2537c70b4ca7b7aac",
+      "order": [
+        1,
+        3,
+        0,
+        2,
+        6,
+        4,
+        8,
+        9,
+        5,
+        7,
+        10
+      ],
+      "full_rank": 66,
+      "window_rank": 10,
+      "is_nontriviality_certificate": true,
+      "median_full_over_window": 1.1557735823480153,
+      "full": {
+        "samples_seconds": [
+          0.008089824001217494,
+          0.008103823998681037,
+          0.009740636000060476,
+          0.00982815800307435,
+          0.00895409000077052,
+          0.009196138998959213,
+          0.007406583001284162
+        ],
+        "median_seconds": 0.00895409000077052,
+        "q1_seconds": 0.008096823999949265,
+        "q3_seconds": 0.009468387499509845,
+        "minimum_seconds": 0.007406583001284162,
+        "maximum_seconds": 0.00982815800307435,
+        "by_degree": {
+          "0": 2,
+          "1": 4,
+          "2": 4,
+          "3": 6,
+          "4": 8,
+          "5": 8,
+          "6": 10,
+          "7": 8,
+          "8": 6,
+          "9": 4,
+          "10": 4,
+          "11": 2
+        },
+        "stats": {
+          "max_objects_before_elimination": 246,
+          "max_objects_after_elimination": 66,
+          "eliminations": 195,
+          "max_boundary": 6,
+          "compositions": 111,
+          "entries": 1534,
+          "plans": 231,
+          "shape_hits": 0,
+          "result_hits": 0
+        }
+      },
+      "window": {
+        "samples_seconds": [
+          0.00654852700245101,
+          0.007797240999934729,
+          0.009012304999487242,
+          0.007747269999526907,
+          0.008401121998758754,
+          0.007621388002007734,
+          0.005993136997858528
+        ],
+        "median_seconds": 0.007747269999526907,
+        "q1_seconds": 0.007084957502229372,
+        "q3_seconds": 0.008099181499346741,
+        "minimum_seconds": 0.005993136997858528,
+        "maximum_seconds": 0.009012304999487242,
+        "by_degree": {
+          "6": 10
+        },
+        "stats": {
+          "max_objects_before_elimination": 118,
+          "max_objects_after_elimination": 35,
+          "eliminations": 113,
+          "max_boundary": 6,
+          "compositions": 161,
+          "entries": 1072,
+          "discarded_before_allocation": 63,
+          "isolated_guard_objects_discarded": 58,
+          "unpruned_prefix_stages": 6,
+          "skipped_old_edge_smoothings": 93,
+          "max_unfiltered_expansion_of_retained_prefix": 150,
+          "window_profile": [
+            {
+              "processed": 1,
+              "remaining": 10,
+              "retained_lower": -5,
+              "retained_upper": 7,
+              "unfiltered_expansion_of_retained_prefix": 2,
+              "objects_before_elimination": 2,
+              "objects_after_elimination": 2,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 1
+            },
+            {
+              "processed": 2,
+              "remaining": 9,
+              "retained_lower": -4,
+              "retained_upper": 7,
+              "unfiltered_expansion_of_retained_prefix": 5,
+              "objects_before_elimination": 5,
+              "objects_after_elimination": 3,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 6
+            },
+            {
+              "processed": 3,
+              "remaining": 8,
+              "retained_lower": -3,
+              "retained_upper": 7,
+              "unfiltered_expansion_of_retained_prefix": 7,
+              "objects_before_elimination": 7,
+              "objects_after_elimination": 5,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 8
+            },
+            {
+              "processed": 4,
+              "remaining": 7,
+              "retained_lower": -2,
+              "retained_upper": 7,
+              "unfiltered_expansion_of_retained_prefix": 10,
+              "objects_before_elimination": 10,
+              "objects_after_elimination": 10,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 13
+            },
+            {
+              "processed": 5,
+              "remaining": 6,
+              "retained_lower": -1,
+              "retained_upper": 7,
+              "unfiltered_expansion_of_retained_prefix": 27,
+              "objects_before_elimination": 27,
+              "objects_after_elimination": 13,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 57
+            },
+            {
+              "processed": 6,
+              "remaining": 5,
+              "retained_lower": 0,
+              "retained_upper": 7,
+              "unfiltered_expansion_of_retained_prefix": 26,
+              "objects_before_elimination": 26,
+              "objects_after_elimination": 26,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 41
+            },
+            {
+              "processed": 7,
+              "remaining": 4,
+              "retained_lower": 1,
+              "retained_upper": 7,
+              "unfiltered_expansion_of_retained_prefix": 59,
+              "objects_before_elimination": 58,
+              "objects_after_elimination": 34,
+              "discarded_before_allocation": 1,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 128
+            },
+            {
+              "processed": 8,
+              "remaining": 3,
+              "retained_lower": 2,
+              "retained_upper": 7,
+              "unfiltered_expansion_of_retained_prefix": 80,
+              "objects_before_elimination": 77,
+              "objects_after_elimination": 35,
+              "discarded_before_allocation": 3,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 203
+            },
+            {
+              "processed": 9,
+              "remaining": 2,
+              "retained_lower": 3,
+              "retained_upper": 7,
+              "unfiltered_expansion_of_retained_prefix": 86,
+              "objects_before_elimination": 78,
+              "objects_after_elimination": 31,
+              "discarded_before_allocation": 8,
+              "isolated_guard_objects_discarded": 1,
+              "entries_before_elimination": 235
+            },
+            {
+              "processed": 10,
+              "remaining": 1,
+              "retained_lower": 4,
+              "retained_upper": 7,
+              "unfiltered_expansion_of_retained_prefix": 89,
+              "objects_before_elimination": 70,
+              "objects_after_elimination": 25,
+              "discarded_before_allocation": 19,
+              "isolated_guard_objects_discarded": 9,
+              "entries_before_elimination": 222
+            },
+            {
+              "processed": 11,
+              "remaining": 0,
+              "retained_lower": 5,
+              "retained_upper": 7,
+              "unfiltered_expansion_of_retained_prefix": 150,
+              "objects_before_elimination": 118,
+              "objects_after_elimination": 10,
+              "discarded_before_allocation": 32,
+              "isolated_guard_objects_discarded": 48,
+              "entries_before_elimination": 158
+            }
+          ],
+          "plans": 222,
+          "shape_hits": 0,
+          "result_hits": 0
+        }
+      },
+      "window_without_isolated_guard_pruning": {
+        "by_degree": {
+          "6": 10
+        },
+        "stats": {
+          "max_objects_before_elimination": 148,
+          "max_objects_after_elimination": 88,
+          "eliminations": 113,
+          "max_boundary": 6,
+          "compositions": 161,
+          "entries": 1072,
+          "discarded_before_allocation": 94,
+          "isolated_guard_objects_discarded": 0,
+          "unpruned_prefix_stages": 6,
+          "skipped_old_edge_smoothings": 93,
+          "max_unfiltered_expansion_of_retained_prefix": 210,
+          "window_profile": [
+            {
+              "processed": 1,
+              "remaining": 10,
+              "retained_lower": -5,
+              "retained_upper": 7,
+              "unfiltered_expansion_of_retained_prefix": 2,
+              "objects_before_elimination": 2,
+              "objects_after_elimination": 2,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 1
+            },
+            {
+              "processed": 2,
+              "remaining": 9,
+              "retained_lower": -4,
+              "retained_upper": 7,
+              "unfiltered_expansion_of_retained_prefix": 5,
+              "objects_before_elimination": 5,
+              "objects_after_elimination": 3,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 6
+            },
+            {
+              "processed": 3,
+              "remaining": 8,
+              "retained_lower": -3,
+              "retained_upper": 7,
+              "unfiltered_expansion_of_retained_prefix": 7,
+              "objects_before_elimination": 7,
+              "objects_after_elimination": 5,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 8
+            },
+            {
+              "processed": 4,
+              "remaining": 7,
+              "retained_lower": -2,
+              "retained_upper": 7,
+              "unfiltered_expansion_of_retained_prefix": 10,
+              "objects_before_elimination": 10,
+              "objects_after_elimination": 10,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 13
+            },
+            {
+              "processed": 5,
+              "remaining": 6,
+              "retained_lower": -1,
+              "retained_upper": 7,
+              "unfiltered_expansion_of_retained_prefix": 27,
+              "objects_before_elimination": 27,
+              "objects_after_elimination": 13,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 57
+            },
+            {
+              "processed": 6,
+              "remaining": 5,
+              "retained_lower": 0,
+              "retained_upper": 7,
+              "unfiltered_expansion_of_retained_prefix": 26,
+              "objects_before_elimination": 26,
+              "objects_after_elimination": 26,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 41
+            },
+            {
+              "processed": 7,
+              "remaining": 4,
+              "retained_lower": 1,
+              "retained_upper": 7,
+              "unfiltered_expansion_of_retained_prefix": 59,
+              "objects_before_elimination": 58,
+              "objects_after_elimination": 34,
+              "discarded_before_allocation": 1,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 128
+            },
+            {
+              "processed": 8,
+              "remaining": 3,
+              "retained_lower": 2,
+              "retained_upper": 7,
+              "unfiltered_expansion_of_retained_prefix": 80,
+              "objects_before_elimination": 77,
+              "objects_after_elimination": 35,
+              "discarded_before_allocation": 3,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 203
+            },
+            {
+              "processed": 9,
+              "remaining": 2,
+              "retained_lower": 3,
+              "retained_upper": 7,
+              "unfiltered_expansion_of_retained_prefix": 86,
+              "objects_before_elimination": 78,
+              "objects_after_elimination": 32,
+              "discarded_before_allocation": 8,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 235
+            },
+            {
+              "processed": 10,
+              "remaining": 1,
+              "retained_lower": 4,
+              "retained_upper": 7,
+              "unfiltered_expansion_of_retained_prefix": 91,
+              "objects_before_elimination": 71,
+              "objects_after_elimination": 35,
+              "discarded_before_allocation": 20,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 222
+            },
+            {
+              "processed": 11,
+              "remaining": 0,
+              "retained_lower": 5,
+              "retained_upper": 7,
+              "unfiltered_expansion_of_retained_prefix": 210,
+              "objects_before_elimination": 148,
+              "objects_after_elimination": 88,
+              "discarded_before_allocation": 62,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 158
+            }
+          ],
+          "plans": 222,
+          "shape_hits": 0,
+          "result_hits": 0
+        },
+        "timed": false
+      }
+    },
+    {
+      "name": "hard_unknot_8",
+      "crossings": 8,
+      "target_raw_degree": 5,
+      "target_normalized_degree": 0,
+      "input_mirrored": false,
+      "pd": [
+        [
+          15,
+          0,
+          1,
+          13
+        ],
+        [
+          0,
+          2,
+          3,
+          1
+        ],
+        [
+          2,
+          4,
+          5,
+          3
+        ],
+        [
+          5,
+          4,
+          6,
+          7
+        ],
+        [
+          6,
+          14,
+          8,
+          9
+        ],
+        [
+          9,
+          8,
+          10,
+          11
+        ],
+        [
+          7,
+          11,
+          12,
+          13
+        ],
+        [
+          12,
+          10,
+          14,
+          15
+        ]
+      ],
+      "pd_sha256": "aa6d276cd9c0554935d1499dd88e4cf135fd54dfcb0f2830f531408eecf44e52",
+      "order": [
+        0,
+        1,
+        2,
+        3,
+        6,
+        7,
+        4,
+        5
+      ],
+      "full_rank": 2,
+      "window_rank": 2,
+      "is_nontriviality_certificate": false,
+      "median_full_over_window": 1.1925484890113665,
+      "full": {
+        "samples_seconds": [
+          0.0011952729983022436,
+          0.0008957430000009481,
+          0.0016261460004898254,
+          0.0036727229999087285,
+          0.0019189859995094594,
+          0.0034529090007708874,
+          0.0008012580001377501
+        ],
+        "median_seconds": 0.0016261460004898254,
+        "q1_seconds": 0.0010455079991515959,
+        "q3_seconds": 0.0026859475001401734,
+        "minimum_seconds": 0.0008012580001377501,
+        "maximum_seconds": 0.0036727229999087285,
+        "by_degree": {
+          "5": 2
+        },
+        "stats": {
+          "max_objects_before_elimination": 11,
+          "max_objects_after_elimination": 4,
+          "eliminations": 16,
+          "max_boundary": 4,
+          "compositions": 0,
+          "entries": 66,
+          "plans": 34,
+          "shape_hits": 0,
+          "result_hits": 0
+        }
+      },
+      "window": {
+        "samples_seconds": [
+          0.0008728380016691517,
+          0.0013635889990837313,
+          0.002086656000756193,
+          0.0020051930005138274,
+          0.0015931460002320819,
+          0.0008665040004416369,
+          0.0010777280003821943
+        ],
+        "median_seconds": 0.0013635889990837313,
+        "q1_seconds": 0.000975283001025673,
+        "q3_seconds": 0.0017991695003729546,
+        "minimum_seconds": 0.0008665040004416369,
+        "maximum_seconds": 0.002086656000756193,
+        "by_degree": {
+          "5": 2
+        },
+        "stats": {
+          "max_objects_before_elimination": 11,
+          "max_objects_after_elimination": 4,
+          "eliminations": 16,
+          "max_boundary": 4,
+          "compositions": 0,
+          "entries": 66,
+          "discarded_before_allocation": 0,
+          "isolated_guard_objects_discarded": 0,
+          "unpruned_prefix_stages": 4,
+          "skipped_old_edge_smoothings": 0,
+          "max_unfiltered_expansion_of_retained_prefix": 11,
+          "window_profile": [
+            {
+              "processed": 1,
+              "remaining": 7,
+              "retained_lower": -3,
+              "retained_upper": 6,
+              "unfiltered_expansion_of_retained_prefix": 2,
+              "objects_before_elimination": 2,
+              "objects_after_elimination": 2,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 1
+            },
+            {
+              "processed": 2,
+              "remaining": 6,
+              "retained_lower": -2,
+              "retained_upper": 6,
+              "unfiltered_expansion_of_retained_prefix": 5,
+              "objects_before_elimination": 5,
+              "objects_after_elimination": 3,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 6
+            },
+            {
+              "processed": 3,
+              "remaining": 5,
+              "retained_lower": -1,
+              "retained_upper": 6,
+              "unfiltered_expansion_of_retained_prefix": 8,
+              "objects_before_elimination": 8,
+              "objects_after_elimination": 4,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 12
+            },
+            {
+              "processed": 4,
+              "remaining": 4,
+              "retained_lower": 0,
+              "retained_upper": 6,
+              "unfiltered_expansion_of_retained_prefix": 11,
+              "objects_before_elimination": 11,
+              "objects_after_elimination": 3,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 18
+            },
+            {
+              "processed": 5,
+              "remaining": 3,
+              "retained_lower": 1,
+              "retained_upper": 6,
+              "unfiltered_expansion_of_retained_prefix": 7,
+              "objects_before_elimination": 7,
+              "objects_after_elimination": 3,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 8
+            },
+            {
+              "processed": 6,
+              "remaining": 2,
+              "retained_lower": 2,
+              "retained_upper": 6,
+              "unfiltered_expansion_of_retained_prefix": 8,
+              "objects_before_elimination": 8,
+              "objects_after_elimination": 2,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 12
+            },
+            {
+              "processed": 7,
+              "remaining": 1,
+              "retained_lower": 3,
+              "retained_upper": 6,
+              "unfiltered_expansion_of_retained_prefix": 5,
+              "objects_before_elimination": 5,
+              "objects_after_elimination": 1,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 6
+            },
+            {
+              "processed": 8,
+              "remaining": 0,
+              "retained_lower": 4,
+              "retained_upper": 6,
+              "unfiltered_expansion_of_retained_prefix": 6,
+              "objects_before_elimination": 6,
+              "objects_after_elimination": 2,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 3
+            }
+          ],
+          "plans": 34,
+          "shape_hits": 0,
+          "result_hits": 0
+        }
+      },
+      "window_without_isolated_guard_pruning": {
+        "by_degree": {
+          "5": 2
+        },
+        "stats": {
+          "max_objects_before_elimination": 11,
+          "max_objects_after_elimination": 4,
+          "eliminations": 16,
+          "max_boundary": 4,
+          "compositions": 0,
+          "entries": 66,
+          "discarded_before_allocation": 0,
+          "isolated_guard_objects_discarded": 0,
+          "unpruned_prefix_stages": 4,
+          "skipped_old_edge_smoothings": 0,
+          "max_unfiltered_expansion_of_retained_prefix": 11,
+          "window_profile": [
+            {
+              "processed": 1,
+              "remaining": 7,
+              "retained_lower": -3,
+              "retained_upper": 6,
+              "unfiltered_expansion_of_retained_prefix": 2,
+              "objects_before_elimination": 2,
+              "objects_after_elimination": 2,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 1
+            },
+            {
+              "processed": 2,
+              "remaining": 6,
+              "retained_lower": -2,
+              "retained_upper": 6,
+              "unfiltered_expansion_of_retained_prefix": 5,
+              "objects_before_elimination": 5,
+              "objects_after_elimination": 3,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 6
+            },
+            {
+              "processed": 3,
+              "remaining": 5,
+              "retained_lower": -1,
+              "retained_upper": 6,
+              "unfiltered_expansion_of_retained_prefix": 8,
+              "objects_before_elimination": 8,
+              "objects_after_elimination": 4,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 12
+            },
+            {
+              "processed": 4,
+              "remaining": 4,
+              "retained_lower": 0,
+              "retained_upper": 6,
+              "unfiltered_expansion_of_retained_prefix": 11,
+              "objects_before_elimination": 11,
+              "objects_after_elimination": 3,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 18
+            },
+            {
+              "processed": 5,
+              "remaining": 3,
+              "retained_lower": 1,
+              "retained_upper": 6,
+              "unfiltered_expansion_of_retained_prefix": 7,
+              "objects_before_elimination": 7,
+              "objects_after_elimination": 3,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 8
+            },
+            {
+              "processed": 6,
+              "remaining": 2,
+              "retained_lower": 2,
+              "retained_upper": 6,
+              "unfiltered_expansion_of_retained_prefix": 8,
+              "objects_before_elimination": 8,
+              "objects_after_elimination": 2,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 12
+            },
+            {
+              "processed": 7,
+              "remaining": 1,
+              "retained_lower": 3,
+              "retained_upper": 6,
+              "unfiltered_expansion_of_retained_prefix": 5,
+              "objects_before_elimination": 5,
+              "objects_after_elimination": 1,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 6
+            },
+            {
+              "processed": 8,
+              "remaining": 0,
+              "retained_lower": 4,
+              "retained_upper": 6,
+              "unfiltered_expansion_of_retained_prefix": 6,
+              "objects_before_elimination": 6,
+              "objects_after_elimination": 2,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 3
+            }
+          ],
+          "plans": 34,
+          "shape_hits": 0,
+          "result_hits": 0
+        },
+        "timed": false
+      }
+    },
+    {
+      "name": "grid_determinant_one_knot",
+      "crossings": 10,
+      "target_raw_degree": 10,
+      "target_normalized_degree": 0,
+      "input_mirrored": false,
+      "pd": [
+        [
+          6,
+          19,
+          7,
+          0
+        ],
+        [
+          13,
+          0,
+          14,
+          1
+        ],
+        [
+          1,
+          8,
+          2,
+          9
+        ],
+        [
+          2,
+          15,
+          3,
+          16
+        ],
+        [
+          10,
+          3,
+          11,
+          4
+        ],
+        [
+          4,
+          11,
+          5,
+          12
+        ],
+        [
+          18,
+          5,
+          19,
+          6
+        ],
+        [
+          14,
+          7,
+          15,
+          8
+        ],
+        [
+          9,
+          16,
+          10,
+          17
+        ],
+        [
+          17,
+          12,
+          18,
+          13
+        ]
+      ],
+      "pd_sha256": "4fcca98678247cef9e87d56084bc4545654f216d0353b6ca00b73ffd904372f1",
+      "order": [
+        0,
+        6,
+        1,
+        7,
+        2,
+        3,
+        8,
+        9,
+        4,
+        5
+      ],
+      "full_rank": 14,
+      "window_rank": 2,
+      "is_nontriviality_certificate": false,
+      "median_full_over_window": 3.316329614625986,
+      "full": {
+        "samples_seconds": [
+          0.003584218997275457,
+          0.0060824209976999555,
+          0.004230062000715407,
+          0.004826480002520839,
+          0.004966884000168648,
+          0.005332994998752838,
+          0.0036293689990998246
+        ],
+        "median_seconds": 0.004826480002520839,
+        "q1_seconds": 0.003929715499907616,
+        "q3_seconds": 0.005149939499460743,
+        "minimum_seconds": 0.003584218997275457,
+        "maximum_seconds": 0.0060824209976999555,
+        "by_degree": {
+          "3": 2,
+          "4": 2,
+          "5": 2,
+          "6": 2,
+          "7": 2,
+          "8": 2,
+          "10": 2
+        },
+        "stats": {
+          "max_objects_before_elimination": 54,
+          "max_objects_after_elimination": 14,
+          "eliminations": 55,
+          "max_boundary": 6,
+          "compositions": 20,
+          "entries": 326,
+          "plans": 171,
+          "shape_hits": 0,
+          "result_hits": 0
+        }
+      },
+      "window": {
+        "samples_seconds": [
+          0.00299053299750085,
+          0.0021264030001475476,
+          0.0014553680011886172,
+          0.0009225180001521949,
+          0.0013701759999094065,
+          0.0011507490016811062,
+          0.0024581440011388622
+        ],
+        "median_seconds": 0.0014553680011886172,
+        "q1_seconds": 0.0012604625007952563,
+        "q3_seconds": 0.002292273500643205,
+        "minimum_seconds": 0.0009225180001521949,
+        "maximum_seconds": 0.00299053299750085,
+        "by_degree": {
+          "10": 2
+        },
+        "stats": {
+          "max_objects_before_elimination": 24,
+          "max_objects_after_elimination": 10,
+          "eliminations": 3,
+          "max_boundary": 6,
+          "compositions": 4,
+          "entries": 75,
+          "discarded_before_allocation": 92,
+          "isolated_guard_objects_discarded": 21,
+          "unpruned_prefix_stages": 1,
+          "skipped_old_edge_smoothings": 45,
+          "max_unfiltered_expansion_of_retained_prefix": 60,
+          "window_profile": [
+            {
+              "processed": 1,
+              "remaining": 9,
+              "retained_lower": 0,
+              "retained_upper": 11,
+              "unfiltered_expansion_of_retained_prefix": 2,
+              "objects_before_elimination": 2,
+              "objects_after_elimination": 2,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 1
+            },
+            {
+              "processed": 2,
+              "remaining": 8,
+              "retained_lower": 1,
+              "retained_upper": 11,
+              "unfiltered_expansion_of_retained_prefix": 5,
+              "objects_before_elimination": 3,
+              "objects_after_elimination": 3,
+              "discarded_before_allocation": 2,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 2
+            },
+            {
+              "processed": 3,
+              "remaining": 7,
+              "retained_lower": 2,
+              "retained_upper": 11,
+              "unfiltered_expansion_of_retained_prefix": 6,
+              "objects_before_elimination": 4,
+              "objects_after_elimination": 4,
+              "discarded_before_allocation": 2,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 3
+            },
+            {
+              "processed": 4,
+              "remaining": 6,
+              "retained_lower": 3,
+              "retained_upper": 11,
+              "unfiltered_expansion_of_retained_prefix": 10,
+              "objects_before_elimination": 5,
+              "objects_after_elimination": 5,
+              "discarded_before_allocation": 5,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 4
+            },
+            {
+              "processed": 5,
+              "remaining": 5,
+              "retained_lower": 4,
+              "retained_upper": 11,
+              "unfiltered_expansion_of_retained_prefix": 11,
+              "objects_before_elimination": 6,
+              "objects_after_elimination": 6,
+              "discarded_before_allocation": 5,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 5
+            },
+            {
+              "processed": 6,
+              "remaining": 4,
+              "retained_lower": 5,
+              "retained_upper": 11,
+              "unfiltered_expansion_of_retained_prefix": 15,
+              "objects_before_elimination": 7,
+              "objects_after_elimination": 7,
+              "discarded_before_allocation": 8,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 6
+            },
+            {
+              "processed": 7,
+              "remaining": 3,
+              "retained_lower": 6,
+              "retained_upper": 11,
+              "unfiltered_expansion_of_retained_prefix": 16,
+              "objects_before_elimination": 8,
+              "objects_after_elimination": 8,
+              "discarded_before_allocation": 8,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 7
+            },
+            {
+              "processed": 8,
+              "remaining": 2,
+              "retained_lower": 7,
+              "retained_upper": 11,
+              "unfiltered_expansion_of_retained_prefix": 24,
+              "objects_before_elimination": 14,
+              "objects_after_elimination": 9,
+              "discarded_before_allocation": 10,
+              "isolated_guard_objects_discarded": 3,
+              "entries_before_elimination": 16
+            },
+            {
+              "processed": 9,
+              "remaining": 1,
+              "retained_lower": 8,
+              "retained_upper": 11,
+              "unfiltered_expansion_of_retained_prefix": 26,
+              "objects_before_elimination": 10,
+              "objects_after_elimination": 10,
+              "discarded_before_allocation": 16,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 9
+            },
+            {
+              "processed": 10,
+              "remaining": 0,
+              "retained_lower": 9,
+              "retained_upper": 11,
+              "unfiltered_expansion_of_retained_prefix": 60,
+              "objects_before_elimination": 24,
+              "objects_after_elimination": 2,
+              "discarded_before_allocation": 36,
+              "isolated_guard_objects_discarded": 18,
+              "entries_before_elimination": 22
+            }
+          ],
+          "plans": 25,
+          "shape_hits": 0,
+          "result_hits": 0
+        }
+      },
+      "window_without_isolated_guard_pruning": {
+        "by_degree": {
+          "10": 2
+        },
+        "stats": {
+          "max_objects_before_elimination": 36,
+          "max_objects_after_elimination": 32,
+          "eliminations": 3,
+          "max_boundary": 6,
+          "compositions": 4,
+          "entries": 75,
+          "discarded_before_allocation": 101,
+          "isolated_guard_objects_discarded": 0,
+          "unpruned_prefix_stages": 1,
+          "skipped_old_edge_smoothings": 45,
+          "max_unfiltered_expansion_of_retained_prefix": 78,
+          "window_profile": [
+            {
+              "processed": 1,
+              "remaining": 9,
+              "retained_lower": 0,
+              "retained_upper": 11,
+              "unfiltered_expansion_of_retained_prefix": 2,
+              "objects_before_elimination": 2,
+              "objects_after_elimination": 2,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 1
+            },
+            {
+              "processed": 2,
+              "remaining": 8,
+              "retained_lower": 1,
+              "retained_upper": 11,
+              "unfiltered_expansion_of_retained_prefix": 5,
+              "objects_before_elimination": 3,
+              "objects_after_elimination": 3,
+              "discarded_before_allocation": 2,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 2
+            },
+            {
+              "processed": 3,
+              "remaining": 7,
+              "retained_lower": 2,
+              "retained_upper": 11,
+              "unfiltered_expansion_of_retained_prefix": 6,
+              "objects_before_elimination": 4,
+              "objects_after_elimination": 4,
+              "discarded_before_allocation": 2,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 3
+            },
+            {
+              "processed": 4,
+              "remaining": 6,
+              "retained_lower": 3,
+              "retained_upper": 11,
+              "unfiltered_expansion_of_retained_prefix": 10,
+              "objects_before_elimination": 5,
+              "objects_after_elimination": 5,
+              "discarded_before_allocation": 5,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 4
+            },
+            {
+              "processed": 5,
+              "remaining": 5,
+              "retained_lower": 4,
+              "retained_upper": 11,
+              "unfiltered_expansion_of_retained_prefix": 11,
+              "objects_before_elimination": 6,
+              "objects_after_elimination": 6,
+              "discarded_before_allocation": 5,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 5
+            },
+            {
+              "processed": 6,
+              "remaining": 4,
+              "retained_lower": 5,
+              "retained_upper": 11,
+              "unfiltered_expansion_of_retained_prefix": 15,
+              "objects_before_elimination": 7,
+              "objects_after_elimination": 7,
+              "discarded_before_allocation": 8,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 6
+            },
+            {
+              "processed": 7,
+              "remaining": 3,
+              "retained_lower": 6,
+              "retained_upper": 11,
+              "unfiltered_expansion_of_retained_prefix": 16,
+              "objects_before_elimination": 8,
+              "objects_after_elimination": 8,
+              "discarded_before_allocation": 8,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 7
+            },
+            {
+              "processed": 8,
+              "remaining": 2,
+              "retained_lower": 7,
+              "retained_upper": 11,
+              "unfiltered_expansion_of_retained_prefix": 24,
+              "objects_before_elimination": 14,
+              "objects_after_elimination": 12,
+              "discarded_before_allocation": 10,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 16
+            },
+            {
+              "processed": 9,
+              "remaining": 1,
+              "retained_lower": 8,
+              "retained_upper": 11,
+              "unfiltered_expansion_of_retained_prefix": 32,
+              "objects_before_elimination": 13,
+              "objects_after_elimination": 13,
+              "discarded_before_allocation": 19,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 9
+            },
+            {
+              "processed": 10,
+              "remaining": 0,
+              "retained_lower": 9,
+              "retained_upper": 11,
+              "unfiltered_expansion_of_retained_prefix": 78,
+              "objects_before_elimination": 36,
+              "objects_after_elimination": 32,
+              "discarded_before_allocation": 42,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 22
+            }
+          ],
+          "plans": 25,
+          "shape_hits": 0,
+          "result_hits": 0
+        },
+        "timed": false
+      }
+    },
+    {
+      "name": "stress_braid5_36",
+      "crossings": 36,
+      "target_raw_degree": 16,
+      "target_normalized_degree": 0,
+      "input_mirrored": false,
+      "pd": [
+        [
+          68,
+          0,
+          1,
+          69
+        ],
+        [
+          71,
+          2,
+          3,
+          0
+        ],
+        [
+          1,
+          3,
+          4,
+          5
+        ],
+        [
+          5,
+          4,
+          6,
+          7
+        ],
+        [
+          2,
+          8,
+          9,
+          6
+        ],
+        [
+          8,
+          70,
+          10,
+          11
+        ],
+        [
+          10,
+          52,
+          12,
+          13
+        ],
+        [
+          13,
+          12,
+          14,
+          15
+        ],
+        [
+          14,
+          16,
+          17,
+          15
+        ],
+        [
+          16,
+          18,
+          19,
+          17
+        ],
+        [
+          9,
+          11,
+          20,
+          21
+        ],
+        [
+          21,
+          22,
+          23,
+          7
+        ],
+        [
+          18,
+          24,
+          25,
+          19
+        ],
+        [
+          22,
+          20,
+          26,
+          27
+        ],
+        [
+          26,
+          25,
+          28,
+          29
+        ],
+        [
+          29,
+          28,
+          30,
+          31
+        ],
+        [
+          30,
+          32,
+          33,
+          31
+        ],
+        [
+          24,
+          34,
+          35,
+          32
+        ],
+        [
+          33,
+          36,
+          37,
+          27
+        ],
+        [
+          36,
+          35,
+          38,
+          39
+        ],
+        [
+          37,
+          39,
+          40,
+          41
+        ],
+        [
+          40,
+          42,
+          43,
+          41
+        ],
+        [
+          43,
+          44,
+          45,
+          23
+        ],
+        [
+          44,
+          46,
+          47,
+          45
+        ],
+        [
+          42,
+          48,
+          49,
+          46
+        ],
+        [
+          49,
+          48,
+          50,
+          51
+        ],
+        [
+          38,
+          34,
+          52,
+          53
+        ],
+        [
+          51,
+          50,
+          54,
+          55
+        ],
+        [
+          53,
+          56,
+          57,
+          54
+        ],
+        [
+          55,
+          58,
+          59,
+          47
+        ],
+        [
+          58,
+          60,
+          61,
+          59
+        ],
+        [
+          60,
+          57,
+          62,
+          63
+        ],
+        [
+          62,
+          64,
+          65,
+          63
+        ],
+        [
+          65,
+          64,
+          66,
+          67
+        ],
+        [
+          67,
+          68,
+          69,
+          61
+        ],
+        [
+          56,
+          70,
+          71,
+          66
+        ]
+      ],
+      "pd_sha256": "6eaaf1e39c541cb95996a839404023dd2892013628458918c516a6c28e23214e",
+      "order": [
+        15,
+        14,
+        16,
+        12,
+        9,
+        8,
+        7,
+        6,
+        17,
+        26,
+        19,
+        18,
+        13,
+        20,
+        21,
+        5,
+        10,
+        4,
+        11,
+        3,
+        2,
+        1,
+        0,
+        22,
+        23,
+        24,
+        25,
+        27,
+        28,
+        35,
+        29,
+        30,
+        34,
+        31,
+        32,
+        33
+      ],
+      "full_rank": 5898,
+      "window_rank": 698,
+      "is_nontriviality_certificate": true,
+      "median_full_over_window": 1.5548717382600725,
+      "full": {
+        "samples_seconds": [
+          0.9423559580027359,
+          0.9487684630003059,
+          0.7954607700012275,
+          0.8218713739988743,
+          0.8214415149996057,
+          0.9042537129971606,
+          0.9527411579983891
+        ],
+        "median_seconds": 0.9042537129971606,
+        "q1_seconds": 0.82165644449924,
+        "q3_seconds": 0.9455622105015209,
+        "minimum_seconds": 0.7954607700012275,
+        "maximum_seconds": 0.9527411579983891,
+        "by_degree": {
+          "10": 8,
+          "11": 40,
+          "12": 112,
+          "13": 230,
+          "14": 386,
+          "15": 552,
+          "16": 698,
+          "17": 784,
+          "18": 792,
+          "19": 722,
+          "20": 588,
+          "21": 428,
+          "22": 278,
+          "23": 158,
+          "24": 78,
+          "25": 32,
+          "26": 10,
+          "27": 2
+        },
+        "stats": {
+          "max_objects_before_elimination": 17694,
+          "max_objects_after_elimination": 5898,
+          "eliminations": 16884,
+          "max_boundary": 8,
+          "compositions": 23710,
+          "entries": 251455,
+          "plans": 2840,
+          "shape_hits": 0,
+          "result_hits": 0
+        }
+      },
+      "window": {
+        "samples_seconds": [
+          0.6800303669988352,
+          0.6802400269989448,
+          0.5696459140017396,
+          0.5555315550009254,
+          0.5051317620018381,
+          0.5815616109975963,
+          0.6064488740012166
+        ],
+        "median_seconds": 0.5815616109975963,
+        "q1_seconds": 0.5625887345013325,
+        "q3_seconds": 0.6432396205000259,
+        "minimum_seconds": 0.5051317620018381,
+        "maximum_seconds": 0.6802400269989448,
+        "by_degree": {
+          "16": 698
+        },
+        "stats": {
+          "max_objects_before_elimination": 7692,
+          "max_objects_after_elimination": 2651,
+          "eliminations": 7605,
+          "max_boundary": 8,
+          "compositions": 22233,
+          "entries": 155216,
+          "discarded_before_allocation": 7952,
+          "isolated_guard_objects_discarded": 5537,
+          "unpruned_prefix_stages": 17,
+          "skipped_old_edge_smoothings": 24127,
+          "max_unfiltered_expansion_of_retained_prefix": 10902,
+          "window_profile": [
+            {
+              "processed": 1,
+              "remaining": 35,
+              "retained_lower": -20,
+              "retained_upper": 17,
+              "unfiltered_expansion_of_retained_prefix": 2,
+              "objects_before_elimination": 2,
+              "objects_after_elimination": 2,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 1
+            },
+            {
+              "processed": 2,
+              "remaining": 34,
+              "retained_lower": -19,
+              "retained_upper": 17,
+              "unfiltered_expansion_of_retained_prefix": 5,
+              "objects_before_elimination": 5,
+              "objects_after_elimination": 3,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 6
+            },
+            {
+              "processed": 3,
+              "remaining": 33,
+              "retained_lower": -18,
+              "retained_upper": 17,
+              "unfiltered_expansion_of_retained_prefix": 8,
+              "objects_before_elimination": 8,
+              "objects_after_elimination": 2,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 12
+            },
+            {
+              "processed": 4,
+              "remaining": 32,
+              "retained_lower": -17,
+              "retained_upper": 17,
+              "unfiltered_expansion_of_retained_prefix": 4,
+              "objects_before_elimination": 4,
+              "objects_after_elimination": 4,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 4
+            },
+            {
+              "processed": 5,
+              "remaining": 31,
+              "retained_lower": -16,
+              "retained_upper": 17,
+              "unfiltered_expansion_of_retained_prefix": 10,
+              "objects_before_elimination": 10,
+              "objects_after_elimination": 6,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 17
+            },
+            {
+              "processed": 6,
+              "remaining": 30,
+              "retained_lower": -15,
+              "retained_upper": 17,
+              "unfiltered_expansion_of_retained_prefix": 16,
+              "objects_before_elimination": 16,
+              "objects_after_elimination": 8,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 32
+            },
+            {
+              "processed": 7,
+              "remaining": 29,
+              "retained_lower": -14,
+              "retained_upper": 17,
+              "unfiltered_expansion_of_retained_prefix": 22,
+              "objects_before_elimination": 22,
+              "objects_after_elimination": 6,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 47
+            },
+            {
+              "processed": 8,
+              "remaining": 28,
+              "retained_lower": -13,
+              "retained_upper": 17,
+              "unfiltered_expansion_of_retained_prefix": 16,
+              "objects_before_elimination": 16,
+              "objects_after_elimination": 4,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 32
+            },
+            {
+              "processed": 9,
+              "remaining": 27,
+              "retained_lower": -12,
+              "retained_upper": 17,
+              "unfiltered_expansion_of_retained_prefix": 9,
+              "objects_before_elimination": 9,
+              "objects_after_elimination": 7,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 15
+            },
+            {
+              "processed": 10,
+              "remaining": 26,
+              "retained_lower": -11,
+              "retained_upper": 17,
+              "unfiltered_expansion_of_retained_prefix": 16,
+              "objects_before_elimination": 16,
+              "objects_after_elimination": 8,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 30
+            },
+            {
+              "processed": 11,
+              "remaining": 25,
+              "retained_lower": -10,
+              "retained_upper": 17,
+              "unfiltered_expansion_of_retained_prefix": 20,
+              "objects_before_elimination": 20,
+              "objects_after_elimination": 6,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 44
+            },
+            {
+              "processed": 12,
+              "remaining": 24,
+              "retained_lower": -9,
+              "retained_upper": 17,
+              "unfiltered_expansion_of_retained_prefix": 14,
+              "objects_before_elimination": 14,
+              "objects_after_elimination": 10,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 23
+            },
+            {
+              "processed": 13,
+              "remaining": 23,
+              "retained_lower": -8,
+              "retained_upper": 17,
+              "unfiltered_expansion_of_retained_prefix": 24,
+              "objects_before_elimination": 24,
+              "objects_after_elimination": 8,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 48
+            },
+            {
+              "processed": 14,
+              "remaining": 22,
+              "retained_lower": -7,
+              "retained_upper": 17,
+              "unfiltered_expansion_of_retained_prefix": 17,
+              "objects_before_elimination": 17,
+              "objects_after_elimination": 15,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 29
+            },
+            {
+              "processed": 15,
+              "remaining": 21,
+              "retained_lower": -6,
+              "retained_upper": 17,
+              "unfiltered_expansion_of_retained_prefix": 38,
+              "objects_before_elimination": 38,
+              "objects_after_elimination": 8,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 83
+            },
+            {
+              "processed": 16,
+              "remaining": 20,
+              "retained_lower": -5,
+              "retained_upper": 17,
+              "unfiltered_expansion_of_retained_prefix": 16,
+              "objects_before_elimination": 16,
+              "objects_after_elimination": 16,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 28
+            },
+            {
+              "processed": 17,
+              "remaining": 19,
+              "retained_lower": -4,
+              "retained_upper": 17,
+              "unfiltered_expansion_of_retained_prefix": 35,
+              "objects_before_elimination": 35,
+              "objects_after_elimination": 23,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 86
+            },
+            {
+              "processed": 18,
+              "remaining": 18,
+              "retained_lower": -3,
+              "retained_upper": 17,
+              "unfiltered_expansion_of_retained_prefix": 54,
+              "objects_before_elimination": 54,
+              "objects_after_elimination": 28,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 157
+            },
+            {
+              "processed": 19,
+              "remaining": 17,
+              "retained_lower": -2,
+              "retained_upper": 17,
+              "unfiltered_expansion_of_retained_prefix": 60,
+              "objects_before_elimination": 60,
+              "objects_after_elimination": 52,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 164
+            },
+            {
+              "processed": 20,
+              "remaining": 16,
+              "retained_lower": -1,
+              "retained_upper": 17,
+              "unfiltered_expansion_of_retained_prefix": 114,
+              "objects_before_elimination": 114,
+              "objects_after_elimination": 74,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 368
+            },
+            {
+              "processed": 21,
+              "remaining": 15,
+              "retained_lower": 0,
+              "retained_upper": 17,
+              "unfiltered_expansion_of_retained_prefix": 180,
+              "objects_before_elimination": 180,
+              "objects_after_elimination": 106,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 667
+            },
+            {
+              "processed": 22,
+              "remaining": 14,
+              "retained_lower": 1,
+              "retained_upper": 17,
+              "unfiltered_expansion_of_retained_prefix": 238,
+              "objects_before_elimination": 238,
+              "objects_after_elimination": 180,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 908
+            },
+            {
+              "processed": 23,
+              "remaining": 13,
+              "retained_lower": 2,
+              "retained_upper": 17,
+              "unfiltered_expansion_of_retained_prefix": 424,
+              "objects_before_elimination": 424,
+              "objects_after_elimination": 168,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 1813
+            },
+            {
+              "processed": 24,
+              "remaining": 12,
+              "retained_lower": 3,
+              "retained_upper": 17,
+              "unfiltered_expansion_of_retained_prefix": 403,
+              "objects_before_elimination": 403,
+              "objects_after_elimination": 243,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 1806
+            },
+            {
+              "processed": 25,
+              "remaining": 11,
+              "retained_lower": 4,
+              "retained_upper": 17,
+              "unfiltered_expansion_of_retained_prefix": 628,
+              "objects_before_elimination": 626,
+              "objects_after_elimination": 318,
+              "discarded_before_allocation": 2,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 3052
+            },
+            {
+              "processed": 26,
+              "remaining": 10,
+              "retained_lower": 5,
+              "retained_upper": 17,
+              "unfiltered_expansion_of_retained_prefix": 684,
+              "objects_before_elimination": 679,
+              "objects_after_elimination": 487,
+              "discarded_before_allocation": 5,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 2968
+            },
+            {
+              "processed": 27,
+              "remaining": 9,
+              "retained_lower": 6,
+              "retained_upper": 17,
+              "unfiltered_expansion_of_retained_prefix": 1191,
+              "objects_before_elimination": 1176,
+              "objects_after_elimination": 323,
+              "discarded_before_allocation": 15,
+              "isolated_guard_objects_discarded": 5,
+              "entries_before_elimination": 5539
+            },
+            {
+              "processed": 28,
+              "remaining": 8,
+              "retained_lower": 7,
+              "retained_upper": 17,
+              "unfiltered_expansion_of_retained_prefix": 704,
+              "objects_before_elimination": 684,
+              "objects_after_elimination": 588,
+              "discarded_before_allocation": 20,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 2934
+            },
+            {
+              "processed": 29,
+              "remaining": 7,
+              "retained_lower": 8,
+              "retained_upper": 17,
+              "unfiltered_expansion_of_retained_prefix": 1332,
+              "objects_before_elimination": 1265,
+              "objects_after_elimination": 933,
+              "discarded_before_allocation": 67,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 6096
+            },
+            {
+              "processed": 30,
+              "remaining": 6,
+              "retained_lower": 9,
+              "retained_upper": 17,
+              "unfiltered_expansion_of_retained_prefix": 2319,
+              "objects_before_elimination": 2175,
+              "objects_after_elimination": 1043,
+              "discarded_before_allocation": 144,
+              "isolated_guard_objects_discarded": 14,
+              "entries_before_elimination": 11264
+            },
+            {
+              "processed": 31,
+              "remaining": 5,
+              "retained_lower": 10,
+              "retained_upper": 17,
+              "unfiltered_expansion_of_retained_prefix": 2546,
+              "objects_before_elimination": 2240,
+              "objects_after_elimination": 1528,
+              "discarded_before_allocation": 306,
+              "isolated_guard_objects_discarded": 2,
+              "entries_before_elimination": 12012
+            },
+            {
+              "processed": 32,
+              "remaining": 4,
+              "retained_lower": 11,
+              "retained_upper": 17,
+              "unfiltered_expansion_of_retained_prefix": 4012,
+              "objects_before_elimination": 3366,
+              "objects_after_elimination": 2027,
+              "discarded_before_allocation": 646,
+              "isolated_guard_objects_discarded": 1,
+              "entries_before_elimination": 19824
+            },
+            {
+              "processed": 33,
+              "remaining": 3,
+              "retained_lower": 12,
+              "retained_upper": 17,
+              "unfiltered_expansion_of_retained_prefix": 5341,
+              "objects_before_elimination": 4252,
+              "objects_after_elimination": 2432,
+              "discarded_before_allocation": 1089,
+              "isolated_guard_objects_discarded": 128,
+              "entries_before_elimination": 23728
+            },
+            {
+              "processed": 34,
+              "remaining": 2,
+              "retained_lower": 13,
+              "retained_upper": 17,
+              "unfiltered_expansion_of_retained_prefix": 5922,
+              "objects_before_elimination": 4784,
+              "objects_after_elimination": 2651,
+              "discarded_before_allocation": 1138,
+              "isolated_guard_objects_discarded": 663,
+              "entries_before_elimination": 21651
+            },
+            {
+              "processed": 35,
+              "remaining": 1,
+              "retained_lower": 14,
+              "retained_upper": 17,
+              "unfiltered_expansion_of_retained_prefix": 7205,
+              "objects_before_elimination": 5895,
+              "objects_after_elimination": 1817,
+              "discarded_before_allocation": 1310,
+              "isolated_guard_objects_discarded": 782,
+              "entries_before_elimination": 21128
+            },
+            {
+              "processed": 36,
+              "remaining": 0,
+              "retained_lower": 15,
+              "retained_upper": 17,
+              "unfiltered_expansion_of_retained_prefix": 10902,
+              "objects_before_elimination": 7692,
+              "objects_after_elimination": 698,
+              "discarded_before_allocation": 3210,
+              "isolated_guard_objects_discarded": 3942,
+              "entries_before_elimination": 18600
+            }
+          ],
+          "plans": 2850,
+          "shape_hits": 0,
+          "result_hits": 0
+        }
+      },
+      "window_without_isolated_guard_pruning": {
+        "by_degree": {
+          "16": 698
+        },
+        "stats": {
+          "max_objects_before_elimination": 13642,
+          "max_objects_after_elimination": 10590,
+          "eliminations": 7605,
+          "max_boundary": 8,
+          "compositions": 22931,
+          "entries": 155282,
+          "discarded_before_allocation": 14560,
+          "isolated_guard_objects_discarded": 0,
+          "unpruned_prefix_stages": 17,
+          "skipped_old_edge_smoothings": 23776,
+          "max_unfiltered_expansion_of_retained_prefix": 21294,
+          "window_profile": [
+            {
+              "processed": 1,
+              "remaining": 35,
+              "retained_lower": -20,
+              "retained_upper": 17,
+              "unfiltered_expansion_of_retained_prefix": 2,
+              "objects_before_elimination": 2,
+              "objects_after_elimination": 2,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 1
+            },
+            {
+              "processed": 2,
+              "remaining": 34,
+              "retained_lower": -19,
+              "retained_upper": 17,
+              "unfiltered_expansion_of_retained_prefix": 5,
+              "objects_before_elimination": 5,
+              "objects_after_elimination": 3,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 6
+            },
+            {
+              "processed": 3,
+              "remaining": 33,
+              "retained_lower": -18,
+              "retained_upper": 17,
+              "unfiltered_expansion_of_retained_prefix": 8,
+              "objects_before_elimination": 8,
+              "objects_after_elimination": 2,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 12
+            },
+            {
+              "processed": 4,
+              "remaining": 32,
+              "retained_lower": -17,
+              "retained_upper": 17,
+              "unfiltered_expansion_of_retained_prefix": 4,
+              "objects_before_elimination": 4,
+              "objects_after_elimination": 4,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 4
+            },
+            {
+              "processed": 5,
+              "remaining": 31,
+              "retained_lower": -16,
+              "retained_upper": 17,
+              "unfiltered_expansion_of_retained_prefix": 10,
+              "objects_before_elimination": 10,
+              "objects_after_elimination": 6,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 17
+            },
+            {
+              "processed": 6,
+              "remaining": 30,
+              "retained_lower": -15,
+              "retained_upper": 17,
+              "unfiltered_expansion_of_retained_prefix": 16,
+              "objects_before_elimination": 16,
+              "objects_after_elimination": 8,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 32
+            },
+            {
+              "processed": 7,
+              "remaining": 29,
+              "retained_lower": -14,
+              "retained_upper": 17,
+              "unfiltered_expansion_of_retained_prefix": 22,
+              "objects_before_elimination": 22,
+              "objects_after_elimination": 6,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 47
+            },
+            {
+              "processed": 8,
+              "remaining": 28,
+              "retained_lower": -13,
+              "retained_upper": 17,
+              "unfiltered_expansion_of_retained_prefix": 16,
+              "objects_before_elimination": 16,
+              "objects_after_elimination": 4,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 32
+            },
+            {
+              "processed": 9,
+              "remaining": 27,
+              "retained_lower": -12,
+              "retained_upper": 17,
+              "unfiltered_expansion_of_retained_prefix": 9,
+              "objects_before_elimination": 9,
+              "objects_after_elimination": 7,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 15
+            },
+            {
+              "processed": 10,
+              "remaining": 26,
+              "retained_lower": -11,
+              "retained_upper": 17,
+              "unfiltered_expansion_of_retained_prefix": 16,
+              "objects_before_elimination": 16,
+              "objects_after_elimination": 8,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 30
+            },
+            {
+              "processed": 11,
+              "remaining": 25,
+              "retained_lower": -10,
+              "retained_upper": 17,
+              "unfiltered_expansion_of_retained_prefix": 20,
+              "objects_before_elimination": 20,
+              "objects_after_elimination": 6,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 44
+            },
+            {
+              "processed": 12,
+              "remaining": 24,
+              "retained_lower": -9,
+              "retained_upper": 17,
+              "unfiltered_expansion_of_retained_prefix": 14,
+              "objects_before_elimination": 14,
+              "objects_after_elimination": 10,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 23
+            },
+            {
+              "processed": 13,
+              "remaining": 23,
+              "retained_lower": -8,
+              "retained_upper": 17,
+              "unfiltered_expansion_of_retained_prefix": 24,
+              "objects_before_elimination": 24,
+              "objects_after_elimination": 8,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 48
+            },
+            {
+              "processed": 14,
+              "remaining": 22,
+              "retained_lower": -7,
+              "retained_upper": 17,
+              "unfiltered_expansion_of_retained_prefix": 17,
+              "objects_before_elimination": 17,
+              "objects_after_elimination": 15,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 29
+            },
+            {
+              "processed": 15,
+              "remaining": 21,
+              "retained_lower": -6,
+              "retained_upper": 17,
+              "unfiltered_expansion_of_retained_prefix": 38,
+              "objects_before_elimination": 38,
+              "objects_after_elimination": 8,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 83
+            },
+            {
+              "processed": 16,
+              "remaining": 20,
+              "retained_lower": -5,
+              "retained_upper": 17,
+              "unfiltered_expansion_of_retained_prefix": 16,
+              "objects_before_elimination": 16,
+              "objects_after_elimination": 16,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 28
+            },
+            {
+              "processed": 17,
+              "remaining": 19,
+              "retained_lower": -4,
+              "retained_upper": 17,
+              "unfiltered_expansion_of_retained_prefix": 35,
+              "objects_before_elimination": 35,
+              "objects_after_elimination": 23,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 86
+            },
+            {
+              "processed": 18,
+              "remaining": 18,
+              "retained_lower": -3,
+              "retained_upper": 17,
+              "unfiltered_expansion_of_retained_prefix": 54,
+              "objects_before_elimination": 54,
+              "objects_after_elimination": 28,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 157
+            },
+            {
+              "processed": 19,
+              "remaining": 17,
+              "retained_lower": -2,
+              "retained_upper": 17,
+              "unfiltered_expansion_of_retained_prefix": 60,
+              "objects_before_elimination": 60,
+              "objects_after_elimination": 52,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 164
+            },
+            {
+              "processed": 20,
+              "remaining": 16,
+              "retained_lower": -1,
+              "retained_upper": 17,
+              "unfiltered_expansion_of_retained_prefix": 114,
+              "objects_before_elimination": 114,
+              "objects_after_elimination": 74,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 368
+            },
+            {
+              "processed": 21,
+              "remaining": 15,
+              "retained_lower": 0,
+              "retained_upper": 17,
+              "unfiltered_expansion_of_retained_prefix": 180,
+              "objects_before_elimination": 180,
+              "objects_after_elimination": 106,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 667
+            },
+            {
+              "processed": 22,
+              "remaining": 14,
+              "retained_lower": 1,
+              "retained_upper": 17,
+              "unfiltered_expansion_of_retained_prefix": 238,
+              "objects_before_elimination": 238,
+              "objects_after_elimination": 180,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 908
+            },
+            {
+              "processed": 23,
+              "remaining": 13,
+              "retained_lower": 2,
+              "retained_upper": 17,
+              "unfiltered_expansion_of_retained_prefix": 424,
+              "objects_before_elimination": 424,
+              "objects_after_elimination": 168,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 1813
+            },
+            {
+              "processed": 24,
+              "remaining": 12,
+              "retained_lower": 3,
+              "retained_upper": 17,
+              "unfiltered_expansion_of_retained_prefix": 403,
+              "objects_before_elimination": 403,
+              "objects_after_elimination": 243,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 1806
+            },
+            {
+              "processed": 25,
+              "remaining": 11,
+              "retained_lower": 4,
+              "retained_upper": 17,
+              "unfiltered_expansion_of_retained_prefix": 628,
+              "objects_before_elimination": 626,
+              "objects_after_elimination": 318,
+              "discarded_before_allocation": 2,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 3052
+            },
+            {
+              "processed": 26,
+              "remaining": 10,
+              "retained_lower": 5,
+              "retained_upper": 17,
+              "unfiltered_expansion_of_retained_prefix": 684,
+              "objects_before_elimination": 679,
+              "objects_after_elimination": 487,
+              "discarded_before_allocation": 5,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 2968
+            },
+            {
+              "processed": 27,
+              "remaining": 9,
+              "retained_lower": 6,
+              "retained_upper": 17,
+              "unfiltered_expansion_of_retained_prefix": 1191,
+              "objects_before_elimination": 1176,
+              "objects_after_elimination": 328,
+              "discarded_before_allocation": 15,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 5539
+            },
+            {
+              "processed": 28,
+              "remaining": 8,
+              "retained_lower": 7,
+              "retained_upper": 17,
+              "unfiltered_expansion_of_retained_prefix": 719,
+              "objects_before_elimination": 694,
+              "objects_after_elimination": 598,
+              "discarded_before_allocation": 25,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 2934
+            },
+            {
+              "processed": 29,
+              "remaining": 7,
+              "retained_lower": 8,
+              "retained_upper": 17,
+              "unfiltered_expansion_of_retained_prefix": 1352,
+              "objects_before_elimination": 1275,
+              "objects_after_elimination": 943,
+              "discarded_before_allocation": 77,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 6096
+            },
+            {
+              "processed": 30,
+              "remaining": 6,
+              "retained_lower": 9,
+              "retained_upper": 17,
+              "unfiltered_expansion_of_retained_prefix": 2347,
+              "objects_before_elimination": 2185,
+              "objects_after_elimination": 1067,
+              "discarded_before_allocation": 162,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 11264
+            },
+            {
+              "processed": 31,
+              "remaining": 5,
+              "retained_lower": 10,
+              "retained_upper": 17,
+              "unfiltered_expansion_of_retained_prefix": 2595,
+              "objects_before_elimination": 2264,
+              "objects_after_elimination": 1554,
+              "discarded_before_allocation": 331,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 12048
+            },
+            {
+              "processed": 32,
+              "remaining": 4,
+              "retained_lower": 11,
+              "retained_upper": 17,
+              "unfiltered_expansion_of_retained_prefix": 4067,
+              "objects_before_elimination": 3394,
+              "objects_after_elimination": 2056,
+              "discarded_before_allocation": 673,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 19946
+            },
+            {
+              "processed": 33,
+              "remaining": 3,
+              "retained_lower": 12,
+              "retained_upper": 17,
+              "unfiltered_expansion_of_retained_prefix": 5426,
+              "objects_before_elimination": 4288,
+              "objects_after_elimination": 2596,
+              "discarded_before_allocation": 1138,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 23619
+            },
+            {
+              "processed": 34,
+              "remaining": 2,
+              "retained_lower": 13,
+              "retained_upper": 17,
+              "unfiltered_expansion_of_retained_prefix": 6373,
+              "objects_before_elimination": 5071,
+              "objects_after_elimination": 3601,
+              "discarded_before_allocation": 1302,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 21933
+            },
+            {
+              "processed": 35,
+              "remaining": 1,
+              "retained_lower": 14,
+              "retained_upper": 17,
+              "unfiltered_expansion_of_retained_prefix": 10023,
+              "objects_before_elimination": 6845,
+              "objects_after_elimination": 3549,
+              "discarded_before_allocation": 3178,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 21003
+            },
+            {
+              "processed": 36,
+              "remaining": 0,
+              "retained_lower": 15,
+              "retained_upper": 17,
+              "unfiltered_expansion_of_retained_prefix": 21294,
+              "objects_before_elimination": 13642,
+              "objects_after_elimination": 10590,
+              "discarded_before_allocation": 7652,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 18460
+            }
+          ],
+          "plans": 2850,
+          "shape_hits": 0,
+          "result_hits": 0
+        },
+        "timed": false
+      }
+    },
+    {
+      "name": "conway_mirrored_h0",
+      "crossings": 11,
+      "target_raw_degree": 5,
+      "target_normalized_degree": 0,
+      "input_mirrored": true,
+      "pd": [
+        [
+          1,
+          4,
+          0,
+          3
+        ],
+        [
+          3,
+          8,
+          2,
+          7
+        ],
+        [
+          4,
+          12,
+          5,
+          11
+        ],
+        [
+          7,
+          2,
+          6,
+          1
+        ],
+        [
+          16,
+          9,
+          15,
+          8
+        ],
+        [
+          17,
+          11,
+          18,
+          10
+        ],
+        [
+          12,
+          6,
+          13,
+          5
+        ],
+        [
+          19,
+          15,
+          20,
+          14
+        ],
+        [
+          0,
+          17,
+          21,
+          16
+        ],
+        [
+          13,
+          19,
+          14,
+          18
+        ],
+        [
+          9,
+          21,
+          10,
+          20
+        ]
+      ],
+      "pd_sha256": "e5bd13d7d556efdd00fdcf2c6e804b900016c26d206c2009632d212a166a0c6a",
+      "order": [
+        1,
+        3,
+        0,
+        2,
+        6,
+        4,
+        8,
+        5,
+        10,
+        7,
+        9
+      ],
+      "full_rank": 66,
+      "window_rank": 10,
+      "is_nontriviality_certificate": true,
+      "median_full_over_window": 1.0272813439271269,
+      "full": {
+        "samples_seconds": [
+          0.011042307000025176,
+          0.015870643001107965,
+          0.013768280001386302,
+          0.013823068999045063,
+          0.01393617599751451,
+          0.021625249002681812,
+          0.013081430999591248
+        ],
+        "median_seconds": 0.013823068999045063,
+        "q1_seconds": 0.013424855500488775,
+        "q3_seconds": 0.014903409499311238,
+        "minimum_seconds": 0.011042307000025176,
+        "maximum_seconds": 0.021625249002681812,
+        "by_degree": {
+          "0": 2,
+          "1": 4,
+          "2": 4,
+          "3": 6,
+          "4": 8,
+          "5": 10,
+          "6": 8,
+          "7": 8,
+          "8": 6,
+          "9": 4,
+          "10": 4,
+          "11": 2
+        },
+        "stats": {
+          "max_objects_before_elimination": 246,
+          "max_objects_after_elimination": 66,
+          "eliminations": 196,
+          "max_boundary": 6,
+          "compositions": 117,
+          "entries": 1624,
+          "plans": 188,
+          "shape_hits": 0,
+          "result_hits": 0
+        }
+      },
+      "window": {
+        "samples_seconds": [
+          0.010758889002318028,
+          0.013455971999064786,
+          0.016098796000733273,
+          0.012973116998182377,
+          0.013845459998265142,
+          0.01947313100026804,
+          0.010302941002009902
+        ],
+        "median_seconds": 0.013455971999064786,
+        "q1_seconds": 0.011866003000250203,
+        "q3_seconds": 0.014972127999499207,
+        "minimum_seconds": 0.010302941002009902,
+        "maximum_seconds": 0.01947313100026804,
+        "by_degree": {
+          "5": 10
+        },
+        "stats": {
+          "max_objects_before_elimination": 128,
+          "max_objects_after_elimination": 34,
+          "eliminations": 116,
+          "max_boundary": 6,
+          "compositions": 156,
+          "entries": 1172,
+          "discarded_before_allocation": 76,
+          "isolated_guard_objects_discarded": 65,
+          "unpruned_prefix_stages": 6,
+          "skipped_old_edge_smoothings": 100,
+          "max_unfiltered_expansion_of_retained_prefix": 174,
+          "window_profile": [
+            {
+              "processed": 1,
+              "remaining": 10,
+              "retained_lower": -6,
+              "retained_upper": 6,
+              "unfiltered_expansion_of_retained_prefix": 2,
+              "objects_before_elimination": 2,
+              "objects_after_elimination": 2,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 1
+            },
+            {
+              "processed": 2,
+              "remaining": 9,
+              "retained_lower": -5,
+              "retained_upper": 6,
+              "unfiltered_expansion_of_retained_prefix": 5,
+              "objects_before_elimination": 5,
+              "objects_after_elimination": 3,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 6
+            },
+            {
+              "processed": 3,
+              "remaining": 8,
+              "retained_lower": -4,
+              "retained_upper": 6,
+              "unfiltered_expansion_of_retained_prefix": 7,
+              "objects_before_elimination": 7,
+              "objects_after_elimination": 5,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 8
+            },
+            {
+              "processed": 4,
+              "remaining": 7,
+              "retained_lower": -3,
+              "retained_upper": 6,
+              "unfiltered_expansion_of_retained_prefix": 10,
+              "objects_before_elimination": 10,
+              "objects_after_elimination": 10,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 13
+            },
+            {
+              "processed": 5,
+              "remaining": 6,
+              "retained_lower": -2,
+              "retained_upper": 6,
+              "unfiltered_expansion_of_retained_prefix": 27,
+              "objects_before_elimination": 27,
+              "objects_after_elimination": 13,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 57
+            },
+            {
+              "processed": 6,
+              "remaining": 5,
+              "retained_lower": -1,
+              "retained_upper": 6,
+              "unfiltered_expansion_of_retained_prefix": 26,
+              "objects_before_elimination": 26,
+              "objects_after_elimination": 26,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 41
+            },
+            {
+              "processed": 7,
+              "remaining": 4,
+              "retained_lower": 0,
+              "retained_upper": 6,
+              "unfiltered_expansion_of_retained_prefix": 59,
+              "objects_before_elimination": 58,
+              "objects_after_elimination": 34,
+              "discarded_before_allocation": 1,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 127
+            },
+            {
+              "processed": 8,
+              "remaining": 3,
+              "retained_lower": 1,
+              "retained_upper": 6,
+              "unfiltered_expansion_of_retained_prefix": 80,
+              "objects_before_elimination": 77,
+              "objects_after_elimination": 34,
+              "discarded_before_allocation": 3,
+              "isolated_guard_objects_discarded": 1,
+              "entries_before_elimination": 208
+            },
+            {
+              "processed": 9,
+              "remaining": 2,
+              "retained_lower": 2,
+              "retained_upper": 6,
+              "unfiltered_expansion_of_retained_prefix": 97,
+              "objects_before_elimination": 86,
+              "objects_after_elimination": 32,
+              "discarded_before_allocation": 11,
+              "isolated_guard_objects_discarded": 2,
+              "entries_before_elimination": 307
+            },
+            {
+              "processed": 10,
+              "remaining": 1,
+              "retained_lower": 3,
+              "retained_upper": 6,
+              "unfiltered_expansion_of_retained_prefix": 84,
+              "objects_before_elimination": 69,
+              "objects_after_elimination": 29,
+              "discarded_before_allocation": 15,
+              "isolated_guard_objects_discarded": 4,
+              "entries_before_elimination": 206
+            },
+            {
+              "processed": 11,
+              "remaining": 0,
+              "retained_lower": 4,
+              "retained_upper": 6,
+              "unfiltered_expansion_of_retained_prefix": 174,
+              "objects_before_elimination": 128,
+              "objects_after_elimination": 10,
+              "discarded_before_allocation": 46,
+              "isolated_guard_objects_discarded": 58,
+              "entries_before_elimination": 198
+            }
+          ],
+          "plans": 177,
+          "shape_hits": 0,
+          "result_hits": 0
+        }
+      },
+      "window_without_isolated_guard_pruning": {
+        "by_degree": {
+          "5": 10
+        },
+        "stats": {
+          "max_objects_before_elimination": 156,
+          "max_objects_after_elimination": 96,
+          "eliminations": 116,
+          "max_boundary": 6,
+          "compositions": 156,
+          "entries": 1172,
+          "discarded_before_allocation": 94,
+          "isolated_guard_objects_discarded": 0,
+          "unpruned_prefix_stages": 6,
+          "skipped_old_edge_smoothings": 100,
+          "max_unfiltered_expansion_of_retained_prefix": 216,
+          "window_profile": [
+            {
+              "processed": 1,
+              "remaining": 10,
+              "retained_lower": -6,
+              "retained_upper": 6,
+              "unfiltered_expansion_of_retained_prefix": 2,
+              "objects_before_elimination": 2,
+              "objects_after_elimination": 2,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 1
+            },
+            {
+              "processed": 2,
+              "remaining": 9,
+              "retained_lower": -5,
+              "retained_upper": 6,
+              "unfiltered_expansion_of_retained_prefix": 5,
+              "objects_before_elimination": 5,
+              "objects_after_elimination": 3,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 6
+            },
+            {
+              "processed": 3,
+              "remaining": 8,
+              "retained_lower": -4,
+              "retained_upper": 6,
+              "unfiltered_expansion_of_retained_prefix": 7,
+              "objects_before_elimination": 7,
+              "objects_after_elimination": 5,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 8
+            },
+            {
+              "processed": 4,
+              "remaining": 7,
+              "retained_lower": -3,
+              "retained_upper": 6,
+              "unfiltered_expansion_of_retained_prefix": 10,
+              "objects_before_elimination": 10,
+              "objects_after_elimination": 10,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 13
+            },
+            {
+              "processed": 5,
+              "remaining": 6,
+              "retained_lower": -2,
+              "retained_upper": 6,
+              "unfiltered_expansion_of_retained_prefix": 27,
+              "objects_before_elimination": 27,
+              "objects_after_elimination": 13,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 57
+            },
+            {
+              "processed": 6,
+              "remaining": 5,
+              "retained_lower": -1,
+              "retained_upper": 6,
+              "unfiltered_expansion_of_retained_prefix": 26,
+              "objects_before_elimination": 26,
+              "objects_after_elimination": 26,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 41
+            },
+            {
+              "processed": 7,
+              "remaining": 4,
+              "retained_lower": 0,
+              "retained_upper": 6,
+              "unfiltered_expansion_of_retained_prefix": 59,
+              "objects_before_elimination": 58,
+              "objects_after_elimination": 34,
+              "discarded_before_allocation": 1,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 127
+            },
+            {
+              "processed": 8,
+              "remaining": 3,
+              "retained_lower": 1,
+              "retained_upper": 6,
+              "unfiltered_expansion_of_retained_prefix": 80,
+              "objects_before_elimination": 77,
+              "objects_after_elimination": 35,
+              "discarded_before_allocation": 3,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 208
+            },
+            {
+              "processed": 9,
+              "remaining": 2,
+              "retained_lower": 2,
+              "retained_upper": 6,
+              "unfiltered_expansion_of_retained_prefix": 99,
+              "objects_before_elimination": 87,
+              "objects_after_elimination": 35,
+              "discarded_before_allocation": 12,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 307
+            },
+            {
+              "processed": 10,
+              "remaining": 1,
+              "retained_lower": 3,
+              "retained_upper": 6,
+              "unfiltered_expansion_of_retained_prefix": 90,
+              "objects_before_elimination": 72,
+              "objects_after_elimination": 36,
+              "discarded_before_allocation": 18,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 206
+            },
+            {
+              "processed": 11,
+              "remaining": 0,
+              "retained_lower": 4,
+              "retained_upper": 6,
+              "unfiltered_expansion_of_retained_prefix": 216,
+              "objects_before_elimination": 156,
+              "objects_after_elimination": 96,
+              "discarded_before_allocation": 60,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 198
+            }
+          ],
+          "plans": 177,
+          "shape_hits": 0,
+          "result_hits": 0
+        },
+        "timed": false
+      }
+    },
+    {
+      "name": "kinoshita_terasaka_mirrored_h0",
+      "crossings": 11,
+      "target_raw_degree": 5,
+      "target_normalized_degree": 0,
+      "input_mirrored": true,
+      "pd": [
+        [
+          1,
+          4,
+          0,
+          3
+        ],
+        [
+          3,
+          8,
+          2,
+          7
+        ],
+        [
+          4,
+          12,
+          5,
+          11
+        ],
+        [
+          7,
+          2,
+          6,
+          1
+        ],
+        [
+          17,
+          9,
+          18,
+          8
+        ],
+        [
+          20,
+          11,
+          19,
+          10
+        ],
+        [
+          12,
+          6,
+          13,
+          5
+        ],
+        [
+          9,
+          15,
+          10,
+          14
+        ],
+        [
+          21,
+          17,
+          0,
+          16
+        ],
+        [
+          14,
+          19,
+          13,
+          18
+        ],
+        [
+          15,
+          21,
+          16,
+          20
+        ]
+      ],
+      "pd_sha256": "29a759dcb4da0327ba7ff286850d4497afb25fbfbf8c0f520a1250529979fbab",
+      "order": [
+        1,
+        3,
+        0,
+        2,
+        6,
+        4,
+        8,
+        9,
+        5,
+        7,
+        10
+      ],
+      "full_rank": 66,
+      "window_rank": 10,
+      "is_nontriviality_certificate": true,
+      "median_full_over_window": 0.9249341852654076,
+      "full": {
+        "samples_seconds": [
+          0.028578888999618357,
+          0.018513549999624956,
+          0.01318407199869398,
+          0.02458797000144841,
+          0.012976596000953577,
+          0.011969643997872481,
+          0.01217995299884933
+        ],
+        "median_seconds": 0.01318407199869398,
+        "q1_seconds": 0.012578274499901454,
+        "q3_seconds": 0.021550760000536684,
+        "minimum_seconds": 0.011969643997872481,
+        "maximum_seconds": 0.028578888999618357,
+        "by_degree": {
+          "0": 2,
+          "1": 4,
+          "2": 4,
+          "3": 6,
+          "4": 8,
+          "5": 10,
+          "6": 8,
+          "7": 8,
+          "8": 6,
+          "9": 4,
+          "10": 4,
+          "11": 2
+        },
+        "stats": {
+          "max_objects_before_elimination": 246,
+          "max_objects_after_elimination": 66,
+          "eliminations": 195,
+          "max_boundary": 6,
+          "compositions": 123,
+          "entries": 1588,
+          "plans": 226,
+          "shape_hits": 0,
+          "result_hits": 0
+        }
+      },
+      "window": {
+        "samples_seconds": [
+          0.011143840998556698,
+          0.012263610999070806,
+          0.016305375000229105,
+          0.014254065001296112,
+          0.010892086000239942,
+          0.0178962979989592,
+          0.015897186000074726
+        ],
+        "median_seconds": 0.014254065001296112,
+        "q1_seconds": 0.011703725998813752,
+        "q3_seconds": 0.016101280500151915,
+        "minimum_seconds": 0.010892086000239942,
+        "maximum_seconds": 0.0178962979989592,
+        "by_degree": {
+          "5": 10
+        },
+        "stats": {
+          "max_objects_before_elimination": 122,
+          "max_objects_after_elimination": 34,
+          "eliminations": 113,
+          "max_boundary": 6,
+          "compositions": 154,
+          "entries": 1093,
+          "discarded_before_allocation": 63,
+          "isolated_guard_objects_discarded": 60,
+          "unpruned_prefix_stages": 6,
+          "skipped_old_edge_smoothings": 93,
+          "max_unfiltered_expansion_of_retained_prefix": 156,
+          "window_profile": [
+            {
+              "processed": 1,
+              "remaining": 10,
+              "retained_lower": -6,
+              "retained_upper": 6,
+              "unfiltered_expansion_of_retained_prefix": 2,
+              "objects_before_elimination": 2,
+              "objects_after_elimination": 2,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 1
+            },
+            {
+              "processed": 2,
+              "remaining": 9,
+              "retained_lower": -5,
+              "retained_upper": 6,
+              "unfiltered_expansion_of_retained_prefix": 5,
+              "objects_before_elimination": 5,
+              "objects_after_elimination": 3,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 6
+            },
+            {
+              "processed": 3,
+              "remaining": 8,
+              "retained_lower": -4,
+              "retained_upper": 6,
+              "unfiltered_expansion_of_retained_prefix": 7,
+              "objects_before_elimination": 7,
+              "objects_after_elimination": 5,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 8
+            },
+            {
+              "processed": 4,
+              "remaining": 7,
+              "retained_lower": -3,
+              "retained_upper": 6,
+              "unfiltered_expansion_of_retained_prefix": 10,
+              "objects_before_elimination": 10,
+              "objects_after_elimination": 10,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 13
+            },
+            {
+              "processed": 5,
+              "remaining": 6,
+              "retained_lower": -2,
+              "retained_upper": 6,
+              "unfiltered_expansion_of_retained_prefix": 27,
+              "objects_before_elimination": 27,
+              "objects_after_elimination": 13,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 57
+            },
+            {
+              "processed": 6,
+              "remaining": 5,
+              "retained_lower": -1,
+              "retained_upper": 6,
+              "unfiltered_expansion_of_retained_prefix": 26,
+              "objects_before_elimination": 26,
+              "objects_after_elimination": 26,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 41
+            },
+            {
+              "processed": 7,
+              "remaining": 4,
+              "retained_lower": 0,
+              "retained_upper": 6,
+              "unfiltered_expansion_of_retained_prefix": 59,
+              "objects_before_elimination": 58,
+              "objects_after_elimination": 34,
+              "discarded_before_allocation": 1,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 127
+            },
+            {
+              "processed": 8,
+              "remaining": 3,
+              "retained_lower": 1,
+              "retained_upper": 6,
+              "unfiltered_expansion_of_retained_prefix": 80,
+              "objects_before_elimination": 77,
+              "objects_after_elimination": 34,
+              "discarded_before_allocation": 3,
+              "isolated_guard_objects_discarded": 1,
+              "entries_before_elimination": 203
+            },
+            {
+              "processed": 9,
+              "remaining": 2,
+              "retained_lower": 2,
+              "retained_upper": 6,
+              "unfiltered_expansion_of_retained_prefix": 84,
+              "objects_before_elimination": 77,
+              "objects_after_elimination": 30,
+              "discarded_before_allocation": 7,
+              "isolated_guard_objects_discarded": 1,
+              "entries_before_elimination": 245
+            },
+            {
+              "processed": 10,
+              "remaining": 1,
+              "retained_lower": 3,
+              "retained_upper": 6,
+              "unfiltered_expansion_of_retained_prefix": 86,
+              "objects_before_elimination": 68,
+              "objects_after_elimination": 26,
+              "discarded_before_allocation": 18,
+              "isolated_guard_objects_discarded": 6,
+              "entries_before_elimination": 222
+            },
+            {
+              "processed": 11,
+              "remaining": 0,
+              "retained_lower": 4,
+              "retained_upper": 6,
+              "unfiltered_expansion_of_retained_prefix": 156,
+              "objects_before_elimination": 122,
+              "objects_after_elimination": 10,
+              "discarded_before_allocation": 34,
+              "isolated_guard_objects_discarded": 52,
+              "entries_before_elimination": 170
+            }
+          ],
+          "plans": 217,
+          "shape_hits": 0,
+          "result_hits": 0
+        }
+      },
+      "window_without_isolated_guard_pruning": {
+        "by_degree": {
+          "5": 10
+        },
+        "stats": {
+          "max_objects_before_elimination": 148,
+          "max_objects_after_elimination": 88,
+          "eliminations": 113,
+          "max_boundary": 6,
+          "compositions": 154,
+          "entries": 1093,
+          "discarded_before_allocation": 94,
+          "isolated_guard_objects_discarded": 0,
+          "unpruned_prefix_stages": 6,
+          "skipped_old_edge_smoothings": 93,
+          "max_unfiltered_expansion_of_retained_prefix": 210,
+          "window_profile": [
+            {
+              "processed": 1,
+              "remaining": 10,
+              "retained_lower": -6,
+              "retained_upper": 6,
+              "unfiltered_expansion_of_retained_prefix": 2,
+              "objects_before_elimination": 2,
+              "objects_after_elimination": 2,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 1
+            },
+            {
+              "processed": 2,
+              "remaining": 9,
+              "retained_lower": -5,
+              "retained_upper": 6,
+              "unfiltered_expansion_of_retained_prefix": 5,
+              "objects_before_elimination": 5,
+              "objects_after_elimination": 3,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 6
+            },
+            {
+              "processed": 3,
+              "remaining": 8,
+              "retained_lower": -4,
+              "retained_upper": 6,
+              "unfiltered_expansion_of_retained_prefix": 7,
+              "objects_before_elimination": 7,
+              "objects_after_elimination": 5,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 8
+            },
+            {
+              "processed": 4,
+              "remaining": 7,
+              "retained_lower": -3,
+              "retained_upper": 6,
+              "unfiltered_expansion_of_retained_prefix": 10,
+              "objects_before_elimination": 10,
+              "objects_after_elimination": 10,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 13
+            },
+            {
+              "processed": 5,
+              "remaining": 6,
+              "retained_lower": -2,
+              "retained_upper": 6,
+              "unfiltered_expansion_of_retained_prefix": 27,
+              "objects_before_elimination": 27,
+              "objects_after_elimination": 13,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 57
+            },
+            {
+              "processed": 6,
+              "remaining": 5,
+              "retained_lower": -1,
+              "retained_upper": 6,
+              "unfiltered_expansion_of_retained_prefix": 26,
+              "objects_before_elimination": 26,
+              "objects_after_elimination": 26,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 41
+            },
+            {
+              "processed": 7,
+              "remaining": 4,
+              "retained_lower": 0,
+              "retained_upper": 6,
+              "unfiltered_expansion_of_retained_prefix": 59,
+              "objects_before_elimination": 58,
+              "objects_after_elimination": 34,
+              "discarded_before_allocation": 1,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 127
+            },
+            {
+              "processed": 8,
+              "remaining": 3,
+              "retained_lower": 1,
+              "retained_upper": 6,
+              "unfiltered_expansion_of_retained_prefix": 80,
+              "objects_before_elimination": 77,
+              "objects_after_elimination": 35,
+              "discarded_before_allocation": 3,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 203
+            },
+            {
+              "processed": 9,
+              "remaining": 2,
+              "retained_lower": 2,
+              "retained_upper": 6,
+              "unfiltered_expansion_of_retained_prefix": 86,
+              "objects_before_elimination": 78,
+              "objects_after_elimination": 32,
+              "discarded_before_allocation": 8,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 245
+            },
+            {
+              "processed": 10,
+              "remaining": 1,
+              "retained_lower": 3,
+              "retained_upper": 6,
+              "unfiltered_expansion_of_retained_prefix": 91,
+              "objects_before_elimination": 71,
+              "objects_after_elimination": 35,
+              "discarded_before_allocation": 20,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 222
+            },
+            {
+              "processed": 11,
+              "remaining": 0,
+              "retained_lower": 4,
+              "retained_upper": 6,
+              "unfiltered_expansion_of_retained_prefix": 210,
+              "objects_before_elimination": 148,
+              "objects_after_elimination": 88,
+              "discarded_before_allocation": 62,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 170
+            }
+          ],
+          "plans": 217,
+          "shape_hits": 0,
+          "result_hits": 0
+        },
+        "timed": false
+      }
+    },
+    {
+      "name": "torus_4_7_filter_control",
+      "crossings": 21,
+      "target_raw_degree": 0,
+      "target_normalized_degree": 0,
+      "input_mirrored": false,
+      "pd": [
+        [
+          36,
+          0,
+          1,
+          38
+        ],
+        [
+          1,
+          2,
+          3,
+          40
+        ],
+        [
+          3,
+          4,
+          5,
+          41
+        ],
+        [
+          0,
+          6,
+          7,
+          2
+        ],
+        [
+          7,
+          8,
+          9,
+          4
+        ],
+        [
+          9,
+          10,
+          11,
+          5
+        ],
+        [
+          6,
+          12,
+          13,
+          8
+        ],
+        [
+          13,
+          14,
+          15,
+          10
+        ],
+        [
+          15,
+          16,
+          17,
+          11
+        ],
+        [
+          12,
+          18,
+          19,
+          14
+        ],
+        [
+          19,
+          20,
+          21,
+          16
+        ],
+        [
+          21,
+          22,
+          23,
+          17
+        ],
+        [
+          18,
+          24,
+          25,
+          20
+        ],
+        [
+          25,
+          26,
+          27,
+          22
+        ],
+        [
+          27,
+          28,
+          29,
+          23
+        ],
+        [
+          24,
+          30,
+          31,
+          26
+        ],
+        [
+          31,
+          32,
+          33,
+          28
+        ],
+        [
+          33,
+          34,
+          35,
+          29
+        ],
+        [
+          30,
+          36,
+          37,
+          32
+        ],
+        [
+          37,
+          38,
+          39,
+          34
+        ],
+        [
+          39,
+          40,
+          41,
+          35
+        ]
+      ],
+      "pd_sha256": "4ce27a16c73e1c389eebdb21878ebf0980d22ceebc68e59062d95ccf6ae34dba",
+      "order": [
+        0,
+        1,
+        3,
+        2,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        18,
+        17,
+        19,
+        20
+      ],
+      "full_rank": 50,
+      "window_rank": 2,
+      "is_nontriviality_certificate": false,
+      "median_full_over_window": 8.302779425955789,
+      "full": {
+        "samples_seconds": [
+          0.08555109799999627,
+          0.07704745999944862,
+          0.08856143999946653,
+          0.07568121000076644,
+          0.07955256900095264,
+          0.07428817999971216,
+          0.06518226000116556
+        ],
+        "median_seconds": 0.07704745999944862,
+        "q1_seconds": 0.0749846950002393,
+        "q3_seconds": 0.08255183350047446,
+        "minimum_seconds": 0.06518226000116556,
+        "maximum_seconds": 0.08856143999946653,
+        "by_degree": {
+          "0": 2,
+          "2": 2,
+          "3": 2,
+          "4": 2,
+          "5": 2,
+          "6": 4,
+          "7": 4,
+          "8": 4,
+          "9": 6,
+          "10": 6,
+          "11": 6,
+          "12": 4,
+          "13": 4,
+          "14": 2
+        },
+        "stats": {
+          "max_objects_before_elimination": 210,
+          "max_objects_after_elimination": 66,
+          "eliminations": 475,
+          "max_boundary": 8,
+          "compositions": 861,
+          "entries": 5364,
+          "plans": 1071,
+          "shape_hits": 278,
+          "result_hits": 707
+        }
+      },
+      "window": {
+        "samples_seconds": [
+          0.008481879001919879,
+          0.009279719000915065,
+          0.005465852998895571,
+          0.010017070999310818,
+          0.007570883997686906,
+          0.01025872399986838,
+          0.01388735200089286
+        ],
+        "median_seconds": 0.009279719000915065,
+        "q1_seconds": 0.008026381499803392,
+        "q3_seconds": 0.010137897499589599,
+        "minimum_seconds": 0.005465852998895571,
+        "maximum_seconds": 0.01388735200089286,
+        "by_degree": {
+          "0": 2
+        },
+        "stats": {
+          "max_objects_before_elimination": 40,
+          "max_objects_after_elimination": 24,
+          "eliminations": 4,
+          "max_boundary": 8,
+          "compositions": 28,
+          "entries": 281,
+          "discarded_before_allocation": 334,
+          "isolated_guard_objects_discarded": 57,
+          "unpruned_prefix_stages": 1,
+          "skipped_old_edge_smoothings": 215,
+          "max_unfiltered_expansion_of_retained_prefix": 108,
+          "window_profile": [
+            {
+              "processed": 1,
+              "remaining": 20,
+              "retained_lower": -21,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 2,
+              "objects_before_elimination": 2,
+              "objects_after_elimination": 2,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 1
+            },
+            {
+              "processed": 2,
+              "remaining": 19,
+              "retained_lower": -20,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 4,
+              "objects_before_elimination": 3,
+              "objects_after_elimination": 3,
+              "discarded_before_allocation": 1,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 2
+            },
+            {
+              "processed": 3,
+              "remaining": 18,
+              "retained_lower": -19,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 7,
+              "objects_before_elimination": 4,
+              "objects_after_elimination": 4,
+              "discarded_before_allocation": 3,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 3
+            },
+            {
+              "processed": 4,
+              "remaining": 17,
+              "retained_lower": -18,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 8,
+              "objects_before_elimination": 5,
+              "objects_after_elimination": 5,
+              "discarded_before_allocation": 3,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 4
+            },
+            {
+              "processed": 5,
+              "remaining": 16,
+              "retained_lower": -17,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 11,
+              "objects_before_elimination": 6,
+              "objects_after_elimination": 6,
+              "discarded_before_allocation": 5,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 5
+            },
+            {
+              "processed": 6,
+              "remaining": 15,
+              "retained_lower": -16,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 13,
+              "objects_before_elimination": 7,
+              "objects_after_elimination": 7,
+              "discarded_before_allocation": 6,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 6
+            },
+            {
+              "processed": 7,
+              "remaining": 14,
+              "retained_lower": -15,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 16,
+              "objects_before_elimination": 8,
+              "objects_after_elimination": 8,
+              "discarded_before_allocation": 8,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 7
+            },
+            {
+              "processed": 8,
+              "remaining": 13,
+              "retained_lower": -14,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 18,
+              "objects_before_elimination": 9,
+              "objects_after_elimination": 9,
+              "discarded_before_allocation": 9,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 8
+            },
+            {
+              "processed": 9,
+              "remaining": 12,
+              "retained_lower": -13,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 20,
+              "objects_before_elimination": 10,
+              "objects_after_elimination": 10,
+              "discarded_before_allocation": 10,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 9
+            },
+            {
+              "processed": 10,
+              "remaining": 11,
+              "retained_lower": -12,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 23,
+              "objects_before_elimination": 11,
+              "objects_after_elimination": 11,
+              "discarded_before_allocation": 12,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 10
+            },
+            {
+              "processed": 11,
+              "remaining": 10,
+              "retained_lower": -11,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 25,
+              "objects_before_elimination": 12,
+              "objects_after_elimination": 12,
+              "discarded_before_allocation": 13,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 11
+            },
+            {
+              "processed": 12,
+              "remaining": 9,
+              "retained_lower": -10,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 27,
+              "objects_before_elimination": 13,
+              "objects_after_elimination": 13,
+              "discarded_before_allocation": 14,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 12
+            },
+            {
+              "processed": 13,
+              "remaining": 8,
+              "retained_lower": -9,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 30,
+              "objects_before_elimination": 14,
+              "objects_after_elimination": 14,
+              "discarded_before_allocation": 16,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 13
+            },
+            {
+              "processed": 14,
+              "remaining": 7,
+              "retained_lower": -8,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 32,
+              "objects_before_elimination": 15,
+              "objects_after_elimination": 15,
+              "discarded_before_allocation": 17,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 14
+            },
+            {
+              "processed": 15,
+              "remaining": 6,
+              "retained_lower": -7,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 34,
+              "objects_before_elimination": 16,
+              "objects_after_elimination": 16,
+              "discarded_before_allocation": 18,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 15
+            },
+            {
+              "processed": 16,
+              "remaining": 5,
+              "retained_lower": -6,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 37,
+              "objects_before_elimination": 17,
+              "objects_after_elimination": 17,
+              "discarded_before_allocation": 20,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 16
+            },
+            {
+              "processed": 17,
+              "remaining": 4,
+              "retained_lower": -5,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 39,
+              "objects_before_elimination": 18,
+              "objects_after_elimination": 18,
+              "discarded_before_allocation": 21,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 17
+            },
+            {
+              "processed": 18,
+              "remaining": 3,
+              "retained_lower": -4,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 54,
+              "objects_before_elimination": 31,
+              "objects_after_elimination": 23,
+              "discarded_before_allocation": 23,
+              "isolated_guard_objects_discarded": 6,
+              "entries_before_elimination": 36
+            },
+            {
+              "processed": 19,
+              "remaining": 2,
+              "retained_lower": -3,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 56,
+              "objects_before_elimination": 24,
+              "objects_after_elimination": 24,
+              "discarded_before_allocation": 32,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 23
+            },
+            {
+              "processed": 20,
+              "remaining": 1,
+              "retained_lower": -2,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 72,
+              "objects_before_elimination": 37,
+              "objects_after_elimination": 18,
+              "discarded_before_allocation": 35,
+              "isolated_guard_objects_discarded": 17,
+              "entries_before_elimination": 37
+            },
+            {
+              "processed": 21,
+              "remaining": 0,
+              "retained_lower": -1,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 108,
+              "objects_before_elimination": 40,
+              "objects_after_elimination": 2,
+              "discarded_before_allocation": 68,
+              "isolated_guard_objects_discarded": 34,
+              "entries_before_elimination": 32
+            }
+          ],
+          "plans": 37,
+          "shape_hits": 22,
+          "result_hits": 18
+        }
+      },
+      "window_without_isolated_guard_pruning": {
+        "by_degree": {
+          "0": 2
+        },
+        "stats": {
+          "max_objects_before_elimination": 146,
+          "max_objects_after_elimination": 142,
+          "eliminations": 4,
+          "max_boundary": 8,
+          "compositions": 28,
+          "entries": 281,
+          "discarded_before_allocation": 414,
+          "isolated_guard_objects_discarded": 0,
+          "unpruned_prefix_stages": 1,
+          "skipped_old_edge_smoothings": 215,
+          "max_unfiltered_expansion_of_retained_prefix": 282,
+          "window_profile": [
+            {
+              "processed": 1,
+              "remaining": 20,
+              "retained_lower": -21,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 2,
+              "objects_before_elimination": 2,
+              "objects_after_elimination": 2,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 1
+            },
+            {
+              "processed": 2,
+              "remaining": 19,
+              "retained_lower": -20,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 4,
+              "objects_before_elimination": 3,
+              "objects_after_elimination": 3,
+              "discarded_before_allocation": 1,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 2
+            },
+            {
+              "processed": 3,
+              "remaining": 18,
+              "retained_lower": -19,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 7,
+              "objects_before_elimination": 4,
+              "objects_after_elimination": 4,
+              "discarded_before_allocation": 3,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 3
+            },
+            {
+              "processed": 4,
+              "remaining": 17,
+              "retained_lower": -18,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 8,
+              "objects_before_elimination": 5,
+              "objects_after_elimination": 5,
+              "discarded_before_allocation": 3,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 4
+            },
+            {
+              "processed": 5,
+              "remaining": 16,
+              "retained_lower": -17,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 11,
+              "objects_before_elimination": 6,
+              "objects_after_elimination": 6,
+              "discarded_before_allocation": 5,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 5
+            },
+            {
+              "processed": 6,
+              "remaining": 15,
+              "retained_lower": -16,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 13,
+              "objects_before_elimination": 7,
+              "objects_after_elimination": 7,
+              "discarded_before_allocation": 6,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 6
+            },
+            {
+              "processed": 7,
+              "remaining": 14,
+              "retained_lower": -15,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 16,
+              "objects_before_elimination": 8,
+              "objects_after_elimination": 8,
+              "discarded_before_allocation": 8,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 7
+            },
+            {
+              "processed": 8,
+              "remaining": 13,
+              "retained_lower": -14,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 18,
+              "objects_before_elimination": 9,
+              "objects_after_elimination": 9,
+              "discarded_before_allocation": 9,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 8
+            },
+            {
+              "processed": 9,
+              "remaining": 12,
+              "retained_lower": -13,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 20,
+              "objects_before_elimination": 10,
+              "objects_after_elimination": 10,
+              "discarded_before_allocation": 10,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 9
+            },
+            {
+              "processed": 10,
+              "remaining": 11,
+              "retained_lower": -12,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 23,
+              "objects_before_elimination": 11,
+              "objects_after_elimination": 11,
+              "discarded_before_allocation": 12,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 10
+            },
+            {
+              "processed": 11,
+              "remaining": 10,
+              "retained_lower": -11,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 25,
+              "objects_before_elimination": 12,
+              "objects_after_elimination": 12,
+              "discarded_before_allocation": 13,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 11
+            },
+            {
+              "processed": 12,
+              "remaining": 9,
+              "retained_lower": -10,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 27,
+              "objects_before_elimination": 13,
+              "objects_after_elimination": 13,
+              "discarded_before_allocation": 14,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 12
+            },
+            {
+              "processed": 13,
+              "remaining": 8,
+              "retained_lower": -9,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 30,
+              "objects_before_elimination": 14,
+              "objects_after_elimination": 14,
+              "discarded_before_allocation": 16,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 13
+            },
+            {
+              "processed": 14,
+              "remaining": 7,
+              "retained_lower": -8,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 32,
+              "objects_before_elimination": 15,
+              "objects_after_elimination": 15,
+              "discarded_before_allocation": 17,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 14
+            },
+            {
+              "processed": 15,
+              "remaining": 6,
+              "retained_lower": -7,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 34,
+              "objects_before_elimination": 16,
+              "objects_after_elimination": 16,
+              "discarded_before_allocation": 18,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 15
+            },
+            {
+              "processed": 16,
+              "remaining": 5,
+              "retained_lower": -6,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 37,
+              "objects_before_elimination": 17,
+              "objects_after_elimination": 17,
+              "discarded_before_allocation": 20,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 16
+            },
+            {
+              "processed": 17,
+              "remaining": 4,
+              "retained_lower": -5,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 39,
+              "objects_before_elimination": 18,
+              "objects_after_elimination": 18,
+              "discarded_before_allocation": 21,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 17
+            },
+            {
+              "processed": 18,
+              "remaining": 3,
+              "retained_lower": -4,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 54,
+              "objects_before_elimination": 31,
+              "objects_after_elimination": 29,
+              "discarded_before_allocation": 23,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 36
+            },
+            {
+              "processed": 19,
+              "remaining": 2,
+              "retained_lower": -3,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 68,
+              "objects_before_elimination": 30,
+              "objects_after_elimination": 30,
+              "discarded_before_allocation": 38,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 23
+            },
+            {
+              "processed": 20,
+              "remaining": 1,
+              "retained_lower": -2,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 90,
+              "objects_before_elimination": 49,
+              "objects_after_elimination": 47,
+              "discarded_before_allocation": 41,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 37
+            },
+            {
+              "processed": 21,
+              "remaining": 0,
+              "retained_lower": -1,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 282,
+              "objects_before_elimination": 146,
+              "objects_after_elimination": 142,
+              "discarded_before_allocation": 136,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 32
+            }
+          ],
+          "plans": 37,
+          "shape_hits": 22,
+          "result_hits": 18
+        },
+        "timed": false
+      }
+    },
+    {
+      "name": "torus_2_31_peak_control",
+      "crossings": 31,
+      "target_raw_degree": 0,
+      "target_normalized_degree": 0,
+      "input_mirrored": false,
+      "pd": [
+        [
+          60,
+          0,
+          1,
+          61
+        ],
+        [
+          0,
+          2,
+          3,
+          1
+        ],
+        [
+          2,
+          4,
+          5,
+          3
+        ],
+        [
+          4,
+          6,
+          7,
+          5
+        ],
+        [
+          6,
+          8,
+          9,
+          7
+        ],
+        [
+          8,
+          10,
+          11,
+          9
+        ],
+        [
+          10,
+          12,
+          13,
+          11
+        ],
+        [
+          12,
+          14,
+          15,
+          13
+        ],
+        [
+          14,
+          16,
+          17,
+          15
+        ],
+        [
+          16,
+          18,
+          19,
+          17
+        ],
+        [
+          18,
+          20,
+          21,
+          19
+        ],
+        [
+          20,
+          22,
+          23,
+          21
+        ],
+        [
+          22,
+          24,
+          25,
+          23
+        ],
+        [
+          24,
+          26,
+          27,
+          25
+        ],
+        [
+          26,
+          28,
+          29,
+          27
+        ],
+        [
+          28,
+          30,
+          31,
+          29
+        ],
+        [
+          30,
+          32,
+          33,
+          31
+        ],
+        [
+          32,
+          34,
+          35,
+          33
+        ],
+        [
+          34,
+          36,
+          37,
+          35
+        ],
+        [
+          36,
+          38,
+          39,
+          37
+        ],
+        [
+          38,
+          40,
+          41,
+          39
+        ],
+        [
+          40,
+          42,
+          43,
+          41
+        ],
+        [
+          42,
+          44,
+          45,
+          43
+        ],
+        [
+          44,
+          46,
+          47,
+          45
+        ],
+        [
+          46,
+          48,
+          49,
+          47
+        ],
+        [
+          48,
+          50,
+          51,
+          49
+        ],
+        [
+          50,
+          52,
+          53,
+          51
+        ],
+        [
+          52,
+          54,
+          55,
+          53
+        ],
+        [
+          54,
+          56,
+          57,
+          55
+        ],
+        [
+          56,
+          58,
+          59,
+          57
+        ],
+        [
+          58,
+          60,
+          61,
+          59
+        ]
+      ],
+      "pd_sha256": "70575ad8dad6015be4cadcf478a56f99dc56eeed08ec0fa577be4fac9e5d6a79",
+      "order": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30
+      ],
+      "full_rank": 62,
+      "window_rank": 2,
+      "is_nontriviality_certificate": false,
+      "median_full_over_window": 1.7907279499846047,
+      "full": {
+        "samples_seconds": [
+          0.008289409001008607,
+          0.011580455000512302,
+          0.00915974700183142,
+          0.010314211998775136,
+          0.015998394999769516,
+          0.012981613999727415,
+          0.013263515000289772
+        ],
+        "median_seconds": 0.011580455000512302,
+        "q1_seconds": 0.009736979500303278,
+        "q3_seconds": 0.013122564500008593,
+        "minimum_seconds": 0.008289409001008607,
+        "maximum_seconds": 0.015998394999769516,
+        "by_degree": {
+          "0": 2,
+          "2": 2,
+          "3": 2,
+          "4": 2,
+          "5": 2,
+          "6": 2,
+          "7": 2,
+          "8": 2,
+          "9": 2,
+          "10": 2,
+          "11": 2,
+          "12": 2,
+          "13": 2,
+          "14": 2,
+          "15": 2,
+          "16": 2,
+          "17": 2,
+          "18": 2,
+          "19": 2,
+          "20": 2,
+          "21": 2,
+          "22": 2,
+          "23": 2,
+          "24": 2,
+          "25": 2,
+          "26": 2,
+          "27": 2,
+          "28": 2,
+          "29": 2,
+          "30": 2,
+          "31": 2
+        },
+        "stats": {
+          "max_objects_before_elimination": 186,
+          "max_objects_after_elimination": 62,
+          "eliminations": 497,
+          "max_boundary": 4,
+          "compositions": 53,
+          "entries": 2826,
+          "plans": 15,
+          "shape_hits": 62,
+          "result_hits": 103
+        }
+      },
+      "window": {
+        "samples_seconds": [
+          0.007941584000946023,
+          0.006906755003001308,
+          0.004145360999245895,
+          0.004959847999998601,
+          0.006466898001235677,
+          0.0045365209989540745,
+          0.007256529999722261
+        ],
+        "median_seconds": 0.006466898001235677,
+        "q1_seconds": 0.004748184499476338,
+        "q3_seconds": 0.0070816425013617845,
+        "minimum_seconds": 0.004145360999245895,
+        "maximum_seconds": 0.007941584000946023,
+        "by_degree": {
+          "0": 2
+        },
+        "stats": {
+          "max_objects_before_elimination": 66,
+          "max_objects_after_elimination": 31,
+          "eliminations": 2,
+          "max_boundary": 4,
+          "compositions": 0,
+          "entries": 558,
+          "discarded_before_allocation": 990,
+          "isolated_guard_objects_discarded": 60,
+          "unpruned_prefix_stages": 1,
+          "skipped_old_edge_smoothings": 465,
+          "max_unfiltered_expansion_of_retained_prefix": 186,
+          "window_profile": [
+            {
+              "processed": 1,
+              "remaining": 30,
+              "retained_lower": -31,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 2,
+              "objects_before_elimination": 2,
+              "objects_after_elimination": 2,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 1
+            },
+            {
+              "processed": 2,
+              "remaining": 29,
+              "retained_lower": -30,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 5,
+              "objects_before_elimination": 3,
+              "objects_after_elimination": 3,
+              "discarded_before_allocation": 2,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 2
+            },
+            {
+              "processed": 3,
+              "remaining": 28,
+              "retained_lower": -29,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 8,
+              "objects_before_elimination": 4,
+              "objects_after_elimination": 4,
+              "discarded_before_allocation": 4,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 3
+            },
+            {
+              "processed": 4,
+              "remaining": 27,
+              "retained_lower": -28,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 11,
+              "objects_before_elimination": 5,
+              "objects_after_elimination": 5,
+              "discarded_before_allocation": 6,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 4
+            },
+            {
+              "processed": 5,
+              "remaining": 26,
+              "retained_lower": -27,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 14,
+              "objects_before_elimination": 6,
+              "objects_after_elimination": 6,
+              "discarded_before_allocation": 8,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 5
+            },
+            {
+              "processed": 6,
+              "remaining": 25,
+              "retained_lower": -26,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 17,
+              "objects_before_elimination": 7,
+              "objects_after_elimination": 7,
+              "discarded_before_allocation": 10,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 6
+            },
+            {
+              "processed": 7,
+              "remaining": 24,
+              "retained_lower": -25,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 20,
+              "objects_before_elimination": 8,
+              "objects_after_elimination": 8,
+              "discarded_before_allocation": 12,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 7
+            },
+            {
+              "processed": 8,
+              "remaining": 23,
+              "retained_lower": -24,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 23,
+              "objects_before_elimination": 9,
+              "objects_after_elimination": 9,
+              "discarded_before_allocation": 14,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 8
+            },
+            {
+              "processed": 9,
+              "remaining": 22,
+              "retained_lower": -23,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 26,
+              "objects_before_elimination": 10,
+              "objects_after_elimination": 10,
+              "discarded_before_allocation": 16,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 9
+            },
+            {
+              "processed": 10,
+              "remaining": 21,
+              "retained_lower": -22,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 29,
+              "objects_before_elimination": 11,
+              "objects_after_elimination": 11,
+              "discarded_before_allocation": 18,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 10
+            },
+            {
+              "processed": 11,
+              "remaining": 20,
+              "retained_lower": -21,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 32,
+              "objects_before_elimination": 12,
+              "objects_after_elimination": 12,
+              "discarded_before_allocation": 20,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 11
+            },
+            {
+              "processed": 12,
+              "remaining": 19,
+              "retained_lower": -20,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 35,
+              "objects_before_elimination": 13,
+              "objects_after_elimination": 13,
+              "discarded_before_allocation": 22,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 12
+            },
+            {
+              "processed": 13,
+              "remaining": 18,
+              "retained_lower": -19,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 38,
+              "objects_before_elimination": 14,
+              "objects_after_elimination": 14,
+              "discarded_before_allocation": 24,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 13
+            },
+            {
+              "processed": 14,
+              "remaining": 17,
+              "retained_lower": -18,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 41,
+              "objects_before_elimination": 15,
+              "objects_after_elimination": 15,
+              "discarded_before_allocation": 26,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 14
+            },
+            {
+              "processed": 15,
+              "remaining": 16,
+              "retained_lower": -17,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 44,
+              "objects_before_elimination": 16,
+              "objects_after_elimination": 16,
+              "discarded_before_allocation": 28,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 15
+            },
+            {
+              "processed": 16,
+              "remaining": 15,
+              "retained_lower": -16,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 47,
+              "objects_before_elimination": 17,
+              "objects_after_elimination": 17,
+              "discarded_before_allocation": 30,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 16
+            },
+            {
+              "processed": 17,
+              "remaining": 14,
+              "retained_lower": -15,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 50,
+              "objects_before_elimination": 18,
+              "objects_after_elimination": 18,
+              "discarded_before_allocation": 32,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 17
+            },
+            {
+              "processed": 18,
+              "remaining": 13,
+              "retained_lower": -14,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 53,
+              "objects_before_elimination": 19,
+              "objects_after_elimination": 19,
+              "discarded_before_allocation": 34,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 18
+            },
+            {
+              "processed": 19,
+              "remaining": 12,
+              "retained_lower": -13,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 56,
+              "objects_before_elimination": 20,
+              "objects_after_elimination": 20,
+              "discarded_before_allocation": 36,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 19
+            },
+            {
+              "processed": 20,
+              "remaining": 11,
+              "retained_lower": -12,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 59,
+              "objects_before_elimination": 21,
+              "objects_after_elimination": 21,
+              "discarded_before_allocation": 38,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 20
+            },
+            {
+              "processed": 21,
+              "remaining": 10,
+              "retained_lower": -11,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 62,
+              "objects_before_elimination": 22,
+              "objects_after_elimination": 22,
+              "discarded_before_allocation": 40,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 21
+            },
+            {
+              "processed": 22,
+              "remaining": 9,
+              "retained_lower": -10,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 65,
+              "objects_before_elimination": 23,
+              "objects_after_elimination": 23,
+              "discarded_before_allocation": 42,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 22
+            },
+            {
+              "processed": 23,
+              "remaining": 8,
+              "retained_lower": -9,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 68,
+              "objects_before_elimination": 24,
+              "objects_after_elimination": 24,
+              "discarded_before_allocation": 44,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 23
+            },
+            {
+              "processed": 24,
+              "remaining": 7,
+              "retained_lower": -8,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 71,
+              "objects_before_elimination": 25,
+              "objects_after_elimination": 25,
+              "discarded_before_allocation": 46,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 24
+            },
+            {
+              "processed": 25,
+              "remaining": 6,
+              "retained_lower": -7,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 74,
+              "objects_before_elimination": 26,
+              "objects_after_elimination": 26,
+              "discarded_before_allocation": 48,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 25
+            },
+            {
+              "processed": 26,
+              "remaining": 5,
+              "retained_lower": -6,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 77,
+              "objects_before_elimination": 27,
+              "objects_after_elimination": 27,
+              "discarded_before_allocation": 50,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 26
+            },
+            {
+              "processed": 27,
+              "remaining": 4,
+              "retained_lower": -5,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 80,
+              "objects_before_elimination": 28,
+              "objects_after_elimination": 28,
+              "discarded_before_allocation": 52,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 27
+            },
+            {
+              "processed": 28,
+              "remaining": 3,
+              "retained_lower": -4,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 83,
+              "objects_before_elimination": 29,
+              "objects_after_elimination": 29,
+              "discarded_before_allocation": 54,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 28
+            },
+            {
+              "processed": 29,
+              "remaining": 2,
+              "retained_lower": -3,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 86,
+              "objects_before_elimination": 30,
+              "objects_after_elimination": 30,
+              "discarded_before_allocation": 56,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 29
+            },
+            {
+              "processed": 30,
+              "remaining": 1,
+              "retained_lower": -2,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 89,
+              "objects_before_elimination": 31,
+              "objects_after_elimination": 31,
+              "discarded_before_allocation": 58,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 30
+            },
+            {
+              "processed": 31,
+              "remaining": 0,
+              "retained_lower": -1,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 186,
+              "objects_before_elimination": 66,
+              "objects_after_elimination": 2,
+              "discarded_before_allocation": 120,
+              "isolated_guard_objects_discarded": 60,
+              "entries_before_elimination": 93
+            }
+          ],
+          "plans": 5,
+          "shape_hits": 30,
+          "result_hits": 26
+        }
+      },
+      "window_without_isolated_guard_pruning": {
+        "by_degree": {
+          "0": 2
+        },
+        "stats": {
+          "max_objects_before_elimination": 66,
+          "max_objects_after_elimination": 62,
+          "eliminations": 2,
+          "max_boundary": 4,
+          "compositions": 0,
+          "entries": 558,
+          "discarded_before_allocation": 990,
+          "isolated_guard_objects_discarded": 0,
+          "unpruned_prefix_stages": 1,
+          "skipped_old_edge_smoothings": 465,
+          "max_unfiltered_expansion_of_retained_prefix": 186,
+          "window_profile": [
+            {
+              "processed": 1,
+              "remaining": 30,
+              "retained_lower": -31,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 2,
+              "objects_before_elimination": 2,
+              "objects_after_elimination": 2,
+              "discarded_before_allocation": 0,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 1
+            },
+            {
+              "processed": 2,
+              "remaining": 29,
+              "retained_lower": -30,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 5,
+              "objects_before_elimination": 3,
+              "objects_after_elimination": 3,
+              "discarded_before_allocation": 2,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 2
+            },
+            {
+              "processed": 3,
+              "remaining": 28,
+              "retained_lower": -29,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 8,
+              "objects_before_elimination": 4,
+              "objects_after_elimination": 4,
+              "discarded_before_allocation": 4,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 3
+            },
+            {
+              "processed": 4,
+              "remaining": 27,
+              "retained_lower": -28,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 11,
+              "objects_before_elimination": 5,
+              "objects_after_elimination": 5,
+              "discarded_before_allocation": 6,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 4
+            },
+            {
+              "processed": 5,
+              "remaining": 26,
+              "retained_lower": -27,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 14,
+              "objects_before_elimination": 6,
+              "objects_after_elimination": 6,
+              "discarded_before_allocation": 8,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 5
+            },
+            {
+              "processed": 6,
+              "remaining": 25,
+              "retained_lower": -26,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 17,
+              "objects_before_elimination": 7,
+              "objects_after_elimination": 7,
+              "discarded_before_allocation": 10,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 6
+            },
+            {
+              "processed": 7,
+              "remaining": 24,
+              "retained_lower": -25,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 20,
+              "objects_before_elimination": 8,
+              "objects_after_elimination": 8,
+              "discarded_before_allocation": 12,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 7
+            },
+            {
+              "processed": 8,
+              "remaining": 23,
+              "retained_lower": -24,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 23,
+              "objects_before_elimination": 9,
+              "objects_after_elimination": 9,
+              "discarded_before_allocation": 14,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 8
+            },
+            {
+              "processed": 9,
+              "remaining": 22,
+              "retained_lower": -23,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 26,
+              "objects_before_elimination": 10,
+              "objects_after_elimination": 10,
+              "discarded_before_allocation": 16,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 9
+            },
+            {
+              "processed": 10,
+              "remaining": 21,
+              "retained_lower": -22,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 29,
+              "objects_before_elimination": 11,
+              "objects_after_elimination": 11,
+              "discarded_before_allocation": 18,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 10
+            },
+            {
+              "processed": 11,
+              "remaining": 20,
+              "retained_lower": -21,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 32,
+              "objects_before_elimination": 12,
+              "objects_after_elimination": 12,
+              "discarded_before_allocation": 20,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 11
+            },
+            {
+              "processed": 12,
+              "remaining": 19,
+              "retained_lower": -20,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 35,
+              "objects_before_elimination": 13,
+              "objects_after_elimination": 13,
+              "discarded_before_allocation": 22,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 12
+            },
+            {
+              "processed": 13,
+              "remaining": 18,
+              "retained_lower": -19,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 38,
+              "objects_before_elimination": 14,
+              "objects_after_elimination": 14,
+              "discarded_before_allocation": 24,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 13
+            },
+            {
+              "processed": 14,
+              "remaining": 17,
+              "retained_lower": -18,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 41,
+              "objects_before_elimination": 15,
+              "objects_after_elimination": 15,
+              "discarded_before_allocation": 26,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 14
+            },
+            {
+              "processed": 15,
+              "remaining": 16,
+              "retained_lower": -17,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 44,
+              "objects_before_elimination": 16,
+              "objects_after_elimination": 16,
+              "discarded_before_allocation": 28,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 15
+            },
+            {
+              "processed": 16,
+              "remaining": 15,
+              "retained_lower": -16,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 47,
+              "objects_before_elimination": 17,
+              "objects_after_elimination": 17,
+              "discarded_before_allocation": 30,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 16
+            },
+            {
+              "processed": 17,
+              "remaining": 14,
+              "retained_lower": -15,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 50,
+              "objects_before_elimination": 18,
+              "objects_after_elimination": 18,
+              "discarded_before_allocation": 32,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 17
+            },
+            {
+              "processed": 18,
+              "remaining": 13,
+              "retained_lower": -14,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 53,
+              "objects_before_elimination": 19,
+              "objects_after_elimination": 19,
+              "discarded_before_allocation": 34,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 18
+            },
+            {
+              "processed": 19,
+              "remaining": 12,
+              "retained_lower": -13,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 56,
+              "objects_before_elimination": 20,
+              "objects_after_elimination": 20,
+              "discarded_before_allocation": 36,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 19
+            },
+            {
+              "processed": 20,
+              "remaining": 11,
+              "retained_lower": -12,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 59,
+              "objects_before_elimination": 21,
+              "objects_after_elimination": 21,
+              "discarded_before_allocation": 38,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 20
+            },
+            {
+              "processed": 21,
+              "remaining": 10,
+              "retained_lower": -11,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 62,
+              "objects_before_elimination": 22,
+              "objects_after_elimination": 22,
+              "discarded_before_allocation": 40,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 21
+            },
+            {
+              "processed": 22,
+              "remaining": 9,
+              "retained_lower": -10,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 65,
+              "objects_before_elimination": 23,
+              "objects_after_elimination": 23,
+              "discarded_before_allocation": 42,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 22
+            },
+            {
+              "processed": 23,
+              "remaining": 8,
+              "retained_lower": -9,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 68,
+              "objects_before_elimination": 24,
+              "objects_after_elimination": 24,
+              "discarded_before_allocation": 44,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 23
+            },
+            {
+              "processed": 24,
+              "remaining": 7,
+              "retained_lower": -8,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 71,
+              "objects_before_elimination": 25,
+              "objects_after_elimination": 25,
+              "discarded_before_allocation": 46,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 24
+            },
+            {
+              "processed": 25,
+              "remaining": 6,
+              "retained_lower": -7,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 74,
+              "objects_before_elimination": 26,
+              "objects_after_elimination": 26,
+              "discarded_before_allocation": 48,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 25
+            },
+            {
+              "processed": 26,
+              "remaining": 5,
+              "retained_lower": -6,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 77,
+              "objects_before_elimination": 27,
+              "objects_after_elimination": 27,
+              "discarded_before_allocation": 50,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 26
+            },
+            {
+              "processed": 27,
+              "remaining": 4,
+              "retained_lower": -5,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 80,
+              "objects_before_elimination": 28,
+              "objects_after_elimination": 28,
+              "discarded_before_allocation": 52,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 27
+            },
+            {
+              "processed": 28,
+              "remaining": 3,
+              "retained_lower": -4,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 83,
+              "objects_before_elimination": 29,
+              "objects_after_elimination": 29,
+              "discarded_before_allocation": 54,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 28
+            },
+            {
+              "processed": 29,
+              "remaining": 2,
+              "retained_lower": -3,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 86,
+              "objects_before_elimination": 30,
+              "objects_after_elimination": 30,
+              "discarded_before_allocation": 56,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 29
+            },
+            {
+              "processed": 30,
+              "remaining": 1,
+              "retained_lower": -2,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 89,
+              "objects_before_elimination": 31,
+              "objects_after_elimination": 31,
+              "discarded_before_allocation": 58,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 30
+            },
+            {
+              "processed": 31,
+              "remaining": 0,
+              "retained_lower": -1,
+              "retained_upper": 1,
+              "unfiltered_expansion_of_retained_prefix": 186,
+              "objects_before_elimination": 66,
+              "objects_after_elimination": 62,
+              "discarded_before_allocation": 120,
+              "isolated_guard_objects_discarded": 0,
+              "entries_before_elimination": 93
+            }
+          ],
+          "plans": 5,
+          "shape_hits": 30,
+          "result_hits": 26
+        },
+        "timed": false
+      }
+    }
+  ],
+  "resource_comparison": {
+    "name": "stress_braid5_36",
+    "max_objects": 10000,
+    "order": [
+      15,
+      14,
+      16,
+      12,
+      9,
+      8,
+      7,
+      6,
+      17,
+      26,
+      19,
+      18,
+      13,
+      20,
+      21,
+      5,
+      10,
+      4,
+      11,
+      3,
+      2,
+      1,
+      0,
+      22,
+      23,
+      24,
+      25,
+      27,
+      28,
+      35,
+      29,
+      30,
+      34,
+      31,
+      32,
+      33
+    ],
+    "full": {
+      "outcome": "limit",
+      "reason": "12341 objects would exceed the ceiling 10000"
+    },
+    "window": {
+      "outcome": "completed",
+      "target_raw_degree": 16,
+      "window_rank": 698,
+      "peak_retained_objects": 7692,
+      "is_nontriviality_certificate": true
+    }
+  }
+}

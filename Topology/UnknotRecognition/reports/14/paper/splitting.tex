@@ -1,0 +1,134 @@
+\section{Certified scalar splitting of hidden summands}
+\label{sec:fitting}
+
+The interval condition is deliberately restrictive. A visible string of
+equal-matching objects may have additional maps to other objects, and those
+attachments cannot be dropped. On the initial named diagram sample, the
+whole-component interval test found no nontrivial eligible component. We
+therefore add an exact basis-change procedure that can expose a direct sum
+inside a connected differential graph. Its correctness is unconditional;
+its bounded search is not complete.
+
+\subsection{A finite linear endomorphism problem}
+Let $C$ be one connected component with $B$ basis objects. Partition them by
+the pair (homological degree, matching). A scalar map $Q$ may mix objects
+inside each part, with coefficients in $\F$, but may not mix different parts.
+Writing $Q_h$ for its degree-$h$ blocks, the chain-endomorphism equations are
+\begin{equation}\label{eq:scalar-endomorphism}
+ Q_{h+1}d_h=d_hQ_h.
+\end{equation}
+The cobordism entries have finite bit-packed bases. Equating each coefficient
+in~\eqref{eq:scalar-endomorphism} produces a homogeneous binary linear system.
+If the block sizes are $r_1,\ldots,r_t$, there are
+$v=\sum_i r_i^2\le B^2$ unknown scalar entries. Zero and the identity are
+always solutions.
+
+This restriction to scalar maps is useful. It makes the search an ordinary
+binary linear-algebra problem while still allowing nontrivial changes of
+basis. It is also a limitation: a decomposition requiring more general
+cobordism-valued endomorphisms can be missed.
+
+\begin{lemma}[A cheap exact skip]\label{lem:scalar-skip}
+If every (degree, matching) block contains one object and the differential
+graph is connected, every scalar chain endomorphism is a scalar multiple of
+the identity.
+\end{lemma}
+\begin{proof}
+Each object has one scalar $q_v\in\F$. A nonzero entry $f:v\to w$ in
+the differential gives $(q_w-q_v)f=0$. Since $f\ne0$ and the scalar field has
+two elements, $q_w=q_v$. Connectivity propagates this equality to all objects.
+\end{proof}
+This lemma avoids solving a linear system in a common case. It does not
+certify indecomposability with respect to every allowed categorical map.
+
+\subsection{From an endomorphism to an actual split}
+For a computed solution $Q$, choose a power $e$ at least the largest scalar
+block dimension. The implementation uses the next power of two and repeated
+squaring. In each block, form
+\[
+ U=\ker Q^e,\qquad V=\im Q^e.
+\]
+These are ordinary binary vector spaces. Assemble their bases separately in
+each (degree, matching) block.
+
+\begin{theorem}[Certified scalar Fitting split]\label{thm:fitting}
+The spaces $U$ and $V$ form complementary subcomplexes of $C$. If their total
+dimensions are both nonzero, changing to these bases gives a nontrivial
+direct-sum decomposition of $C$ by an exact chain isomorphism in the
+implemented cobordism category.
+\end{theorem}
+\begin{proof}
+For an endomorphism of an $r$-dimensional vector space, the increasing sequence
+of kernels and the decreasing sequence of images stabilize by exponent $r$.
+At a stabilizing exponent, $\ker Q^e\cap\im Q^e=0$: if $z=Q^ey$ and
+$Q^ez=0$, then $y\in\ker Q^{2e}=\ker Q^e$, so $z=0$. Rank-nullity gives
+their direct sum equal to the original space.
+
+Equation~\eqref{eq:scalar-endomorphism} also holds for $Q^e$. Thus the
+differential maps a kernel vector to a kernel vector and an image vector to
+an image vector, across every pair of matching blocks. Scalar changes of
+basis inside one matching are invertible matrices of identity cobordisms,
+so they are genuine isomorphisms of the additive category. Conjugating the
+whole differential therefore exposes the two subcomplexes. No map incident
+with the component is omitted: the component was a complete direct summand
+before the operation.
+\end{proof}
+
+The original individual candidate $Q$ need not be invertible, and is not
+used as the change of basis. The change-of-basis matrices $P_h$ have columns
+given by the kernel basis followed by the image basis. The transformed maps
+are
+\begin{equation}\label{eq:conjugation}
+ d'_h=P_{h+1}^{-1}d_hP_h.
+\end{equation}
+Every coefficient of every map crossing between the two selected sides must
+vanish. This is checked explicitly. Confusing $Q$ with $P$, transforming only
+one end of a differential, or ignoring an external attachment would each
+make the replacement unsound.
+
+\subsection{What is searched and what is verified}
+The default pass considers components with at most 48 objects and at most
+1,024 scalar variables. It inspects up to 64 nullspace-basis vectors and
+16 deterministically generated linear combinations, with fixed seed 7243.
+It accepts at most 16 splits in one stage. These are engineering limits, not
+theorems that larger components are indecomposable. An unexamined component
+is retained in full.
+
+For every accepted split, the implementation independently checks the
+coefficientwise commutator, the inverse of each basis matrix, and every
+cross-block coefficient after~\eqref{eq:conjugation}. Optional witnesses
+record the original matching and degree labels, the original and transformed
+differentials, $Q$, $P$, the kernel dimensions, and the exponent used.
+Independent tests reconstruct the conjugation using separate dense binary
+matrix operations and reject deliberately corrupted witnesses.
+
+Positive and negative search results can be cached. A key records complete
+scalar-quiver data: matching names are consistently replaced by first-occurrence
+indices, a uniform degree shift is removed, and every differential coefficient
+and target index is retained. This preserves the linear equation system.
+A cached positive result is still checked by recomputing commutation and the
+transformed cross terms. Cache equality is equality of full data; a hash
+collision alone cannot identify two complexes.
+
+After a split, graph components are recomputed, and the interval and literal
+sharing passes act on the exposed summands. Multiplicity ancestry is carried
+through every change: a summand arising from one weighted parent inherits
+that parent's weight. Basis transformations are never allowed to mix
+independent weighted parents without an explicit expansion of those weights.
+
+\subsection{Complexity and the present practical limit}
+With $R$ an upper bound on the number of coefficient coordinates of a
+morphism, the full scalar equations admit a conservative polynomial bound
+in $B$ and $R$; ordinary dense binary elimination, for example, gives a bound
+of order $RB^6$ elementary field operations. The bounded implementation is
+much smaller on the tested components, but this overhead is still material.
+The checkpoint theorem remains valid with this pass: scalar splitting does
+not increase object count, and its cost is polynomial in the stored complex
+and coefficient lengths.
+
+A successful split can reduce later differential entries and compositions
+without reducing the number of stored objects immediately. It may or may not
+expose repeated templates or common-$\theta$ intervals. Section~\ref{sec:experiments}
+reports all of these quantities separately. In particular, finding hidden
+summands in actual knot scans does not by itself demonstrate that the
+length-two quotient has been exercised on those scans.

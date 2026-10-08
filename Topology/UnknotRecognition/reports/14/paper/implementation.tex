@@ -1,0 +1,112 @@
+\section{Implementation and integration}
+\label{sec:implementation}
+
+\subsection{The order of operations}
+Version 0.4.0 retains the preceding front-end structural certificates and
+the existing simplification and invariant filters. Its inherited scanning
+architecture follows the established local-complex approach~\cite{bnfast}. The standard scanner
+remains the default. The new optional decision backend applies the following
+operations after each crossing:
+\begin{enumerate}
+\item Form the exact crossing extension and use the inherited Gaussian
+elimination to cancel unit maps.
+\item For the Fitting backend, inspect bounded connected components, verify
+candidate scalar splits, and transform the complete differential.
+\item Recognize whole common-$\theta$ components and compute their interval
+multiplicities from scalar product ranks.
+\item In decision mode, shorten intervals to length at most two; in exact
+mode, retain their lengths and absolute degree shifts.
+\item Share identical interval or residual-component serializations and
+update their nonnegative multiplicities. Decision multiplicities are capped
+at three.
+\end{enumerate}
+The stage log records whether every surviving component was a singleton or
+was actually recognized and normalized by the interval pass. A skipped
+nontrivial component does not count as a certified checkpoint. The log also
+records frontier size, unclassified object counts, and crossing distances
+between checkpoints.
+
+\subsection{Public interfaces}
+The command line obtains a validated \code{Diagram} through the inherited
+loader. The new complete decision routes are
+\begin{lstlisting}
+python -m fastunknot recognize examples/conway.json --backend barcode
+python -m fastunknot recognize examples/conway.json --backend fitting
+\end{lstlisting}
+The usual inexpensive front-end checks may decide these examples before the
+selected backend is needed. The reproduction scripts explicitly request raw
+backend calculations when measuring scanner work.
+
+\par\noindent\begin{minipage}{\linewidth}
+For exact homology ranks, the separate routes are
+\begin{lstlisting}
+python -m fastunknot khovanov examples/conway.json --barcode
+python -m fastunknot khovanov examples/conway.json --fitting
+\end{lstlisting}
+\end{minipage}\par
+These retain complete interval lengths. The Python APIs are
+\code{barcode\_khovanov\_rank}, \code{barcode\_khovanov\_decide},
+\code{fitting\_khovanov\_rank}, and \code{fitting\_khovanov\_decide}, in the
+corresponding modules. The Fitting exact-rank entry point rejects nontrivial
+decision caps. Its optional \code{record\_witnesses=True} argument includes
+split certificates in the result.
+
+The optional ordering pass is selected, for example, by
+\begin{lstlisting}
+python -m fastunknot recognize examples/conway.json \
+  --backend fitting --order-window 10 --order-passes 2
+\end{lstlisting}
+It optimizes overlapping windows using the frontier-mass objective. The
+planner's time is included in the recognition budget. Standalone calls to
+\code{improve\_scan\_order} expose both supported objectives and retain a
+complete valid order if their optimization budget expires.
+
+\subsection{Evidence and failure semantics}
+An exact result contains \code{rank}, \code{reduced\_rank}, and
+\code{by\_degree}. A default decision result contains \code{rank\_capped},
+\code{rank\_cap=3}, and \code{length\_cap=2}. The latter does not report
+the model's ordinary rank as the rank of the original knot.
+The Python decision APIs also permit retaining full interval lengths or using
+the universally safe length-three cutoff; these choices still return capped
+rank evidence rather than an exact-rank schema.
+
+Similarly, after length shortening, a weighted object count measures the
+decision model, not an isomorphic expansion of the original complex.
+The implementation changes the statistic name to
+\code{weighted\_decision\_model\_objects} and sets a
+\code{decision\_equivalence\_only} flag. This avoids incorrectly interpreting
+an altered model as a lower bound on the original chain dimension.
+
+The \code{max\_objects} ceiling is checked before constructing a crossing
+extension, so a normalization that would shrink an oversized temporary model
+is not performed if the ceiling would first be exceeded. Time budgets are
+cooperative. The low-level APIs raise \code{ScanLimit} on exhaustion; the
+recognition pipeline returns \UNKNOWN. Neither a large model nor a failed
+decomposition search is treated as evidence of knottedness.
+
+\subsection{Validation boundaries}
+Checking $d^2=0$ is valuable, but it cannot establish observational equivalence
+of two different complexes. The correctness of length shortening therefore
+rests on Theorem~\ref{thm:geometric-cutoff}, while the tests independently
+exercise its finite-matrix consequences. The optional \code{check\_d\_squared}
+mode checks that subsequent algebraic operations still produce a complex.
+
+The new normalization mixes quantum degrees because the inherited scanner
+has already forgotten them. It preserves homological degree in exact mode;
+its scalar Fitting blocks are explicitly restricted to matching and
+homological degree. A future bigraded implementation must impose compatible
+quantum shifts as an additional condition.
+
+\subsection{Repository integration}
+The package contains a complete runnable \code{fast/} tree, a reference copy
+of the pinned repository files, and the preceding 0.3.0 reference used for
+incremental comparison. One patch applies directly to the pinned
+\code{Topology/UnknotRecognition/fast} tree; the other applies after the
+structural-compression package. Both are generated from complete file bytes
+and independently applied to fresh reference copies during packaging.
+
+No remote repository modification is part of this deliverable. Integration
+into a tree that also contains the independent three-braid continuation must
+resolve shared front-end files and rerun the combined tests. The new algebra
+modules and ordering module are otherwise self-contained, use only the
+Python standard library, and retain the project's MIT-0 license.

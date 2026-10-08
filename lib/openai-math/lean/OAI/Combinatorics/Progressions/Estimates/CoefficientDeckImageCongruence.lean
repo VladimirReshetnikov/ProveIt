@@ -1,5 +1,6 @@
-/- Modified for ProveIt: import Lean 4.32 compatibility declarations.
-Statements and proofs are unchanged from the pinned upstream source. -/
+/- Modified for ProveIt: import Lean 4.32 compatibility declarations and
+supply explicit finite/sigma-finite product-measure instances for the
+older Mathlib instance search. Statements are unchanged. -/
 import OAI.Compat.Core
 import OAI.Combinatorics.Progressions.Geometry.CoefficientDeckCoordinates
 import OAI.Combinatorics.Progressions.Geometry.CoefficientJetCoordinates
@@ -280,6 +281,10 @@ theorem canonicalCoefficientDeckSample_law
     fun j => mixedScalarArrayLaw_probability _ _ (hw j) _
   let : IsProbabilityMeasure (Measure.pi (fun j => mixedScalarArrayLaw (c j) (w j) (p j))) :=
     Measure.pi.instIsProbabilityMeasure _
+  let : IsFiniteMeasure (Measure.pi (fun j => mixedScalarArrayLaw (c j) (w j) (p j))) :=
+    ⟨by simp [measure_univ]⟩
+  let : SigmaFinite (Measure.pi (fun j => mixedScalarArrayLaw (c j) (w j) (p j))) :=
+    IsFiniteMeasure.toSigmaFinite _
   exact (canonicalCoefficientDeckSample_relabel (K := K) U bW b hb o d
     (Measure.pi (fun j => mixedScalarArrayLaw (c j) (w j) (p j)))).trans
       (canonicalCoefficientCoverLaw (K := K) U b hb o μ ν c w p hw hs d hd)

@@ -1,0 +1,1341 @@
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/__main__.py b/Topology/UnknotRecognition/fast/fastunknot/__main__.py
+index ae6d6f2e4c94a7e52dac7f1f8049d75ae829959f..2c7e4c0c43ae6c8b4c131de0e97233c3cd41b1f8 100644
+--- a/Topology/UnknotRecognition/fast/fastunknot/__main__.py
++++ b/Topology/UnknotRecognition/fast/fastunknot/__main__.py
+@@ -14,7 +14,11 @@ EXIT = {"UNKNOT": 0, "KNOTTED": 0, "UNKNOWN": 3}
+ 
+ 
+ def load(path: str) -> Diagram:
+-    data = json.load(sys.stdin if path == "-" else open(path, encoding="utf-8"))
++    if path == "-":
++        data = json.load(sys.stdin)
++    else:
++        with open(path, encoding="utf-8") as handle:
++            data = json.load(handle)
+     return Diagram.from_json(data)
+ 
+ 
+@@ -49,6 +53,11 @@ OPTIONS = {
+         ("--algebra", str, "bits", ("bits", "sets"), None),
+         ("--tail", int, 0, None, None),
+         ("--check-d2", None, False, None, "verify d^2=0 after every crossing"),
++        ("--window", None, False, None, "try an exact homological-window obstruction before the full scan"),
++        ("--window-radius", int, 0, None, "normalized homological radius of the optional window"),
++        ("--window-no-mirror", None, False, None, "preserve orientation of the optional window computation"),
++        ("--window-max-objects", int, None, None, "optional window allocation ceiling"),
++        ("--window-seconds", float, None, None, "optional window time budget before full-scan fallback"),
+         ("--race", int, 1, None,
+          "scan N greedy orders in separate processes, first to finish wins (default 1: no race)"),
+         ("--race-after", float, 1.0, None, "seconds the default order runs alone before competitors are started"),
+@@ -65,10 +74,18 @@ OPTIONS = {
+     ],
+     "jones": [],
+     "alexander": [],
++    "window": [
++        ("--lower", int, 0, None, "first raw cube degree requested"),
++        ("--upper", int, 0, None, "last raw cube degree requested"),
++        ("--max-objects", int, None, None, "ceiling on retained allocations"),
++        ("--seconds", float, None, None, "cooperative time budget"),
++        ("--check-d2", None, False, None, "check the truncated differentials after every crossing"),
++    ],
+ }
+ COMMAND_HELP = {"recognize": "decide whether a knot diagram is the unknot",
+                 "khovanov": "total F2 Khovanov rank by scanning",
+-                "jones": "one-sided modular Kauffman bracket test", "alexander": "Alexander polynomial"}
++                "jones": "one-sided modular Kauffman bracket test", "alexander": "Alexander polynomial",
++                "window": "exact partial F2 homology in a raw degree interval"}
+ 
+ 
+ class _Namespace:
+@@ -158,13 +175,28 @@ def main(argv: list[str] | None = None) -> int:
+                            use_jones=not args.no_jones, use_factorization=not args.no_factor,
+                            jones_max_states=args.jones_max_states, pivot=args.pivot,
+                            algebra=args.algebra, tail=args.tail, max_objects=args.max_objects,
+-                           seconds=args.seconds, check_d_squared=args.check_d2).to_json()
++                           seconds=args.seconds, check_d_squared=args.check_d2,
++                           use_window=args.window, window_radius=args.window_radius,
++                           window_mirror=not args.window_no_mirror,
++                           window_max_objects=args.window_max_objects,
++                           window_seconds=args.window_seconds).to_json()
+         text = json.dumps(result, indent=1)
+         if args.output:
+             with open(args.output, "w", encoding="utf-8") as handle:
+                 handle.write(text + "\n")
+         print(text)
+         return EXIT[result["status"]]
++    if args.command == "window":
++        from .window_scan import khovanov_window
++        try:
++            result = khovanov_window(diagram.pd, args.lower, args.upper,
++                                      max_objects=args.max_objects, seconds=args.seconds,
++                                      check_d_squared=args.check_d2)
++        except ScanLimit as exc:
++            print(json.dumps({"status": "INCOMPLETE", "reason": str(exc)}))
++            return 3
++        print(json.dumps(result, indent=1))
++        return 0
+     if args.command == "khovanov":
+         options = dict(check_d_squared=args.check_d2, pivot=args.pivot, algebra=args.algebra, tail=args.tail,
+                        race=args.race, race_after=args.race_after)
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/perturbation.py b/Topology/UnknotRecognition/fast/fastunknot/perturbation.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..47eec3e94cc1d7b4484bc1c4acb877f36d4dd7b9
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/fastunknot/perturbation.py
+@@ -0,0 +1,366 @@
++"""Exact minimal models via a finite homological perturbation series.
++
++Research backend, not the default scanner.  First contract the constant-term
++differential over F2, then lift it through the positive-degree ideal of the
++matching category.  At a boundary of w endpoints that ideal has power w+1 zero.
++Optional certificates verify all deformation-retraction identities exactly.
++
++Maps store one dict per source object: target -> bit-packed cobordism.  Objects
++and coefficients use the same Planar instance as a FastScan snapshot.
++"""
++from __future__ import annotations
++
++from collections import defaultdict
++from dataclasses import dataclass
++from time import monotonic
++
++from .geometry import ScanLimit
++from .ordering import best_scan_order, validate_order
++from .scan_fast import CAP, FastScan
++
++
++@dataclass(frozen=True)
++class Space:
++    matching: tuple[int, ...]
++    degree: tuple[int, ...]
++
++    def __len__(self):
++        return len(self.matching)
++
++
++@dataclass
++class Map:
++    source: Space
++    target: Space
++    rows: list[dict[int, int]]
++
++    def __bool__(self):
++        return any(self.rows)
++
++
++def zero(source, target):
++    return Map(source, target, [{} for _ in source.matching])
++
++
++def identity(space):
++    return Map(space, space, [{i: 1} for i in range(len(space))])
++
++
++def add(first, second):
++    if first.source != second.source or first.target != second.target:
++        raise ValueError("incompatible map addition")
++    result = [row.copy() for row in first.rows]
++    for row, other in zip(result, second.rows):
++        for target, value in other.items():
++            value ^= row.get(target, 0)
++            if value:
++                row[target] = value
++            else:
++                row.pop(target, None)
++    return Map(first.source, first.target, result)
++
++
++class Arithmetic:
++    def __init__(self, algebra, deadline=None):
++        self.algebra, self.deadline = algebra, deadline
++        self.products = self.scalar_products = self.map_products = 0
++        self.cache = {}
++
++    def check(self):
++        if self.deadline is not None and monotonic() > self.deadline:
++            raise ScanLimit("time budget exhausted in perturbation reduction")
++
++    def compose(self, first, second):
++        """Return second after first, including all exact F2 cancellations."""
++        if first.target != second.source:
++            raise ValueError("incompatible map composition")
++        self.map_products += 1
++        result = zero(first.source, second.target)
++        source, middle, target = (first.source.matching,
++                                  first.target.matching, second.target.matching)
++        for a, row in enumerate(first.rows):
++            if not a & 127:
++                self.check()
++            accum = result.rows[a]
++            for b, f in row.items():
++                for c, g in second.rows[b].items():
++                    if f == 1 and source[a] == middle[b]:
++                        value = g
++                        self.scalar_products += 1
++                    elif g == 1 and middle[b] == target[c]:
++                        value = f
++                        self.scalar_products += 1
++                    else:
++                        self.products += 1
++                        key = (source[a], middle[b], target[c], f, g)
++                        value = self.cache.get(key)
++                        if value is None:
++                            value = self.cache[key] = self.algebra.compose(*key)
++                    if value:
++                        value ^= accum.get(c, 0)
++                        if value:
++                            accum[c] = value
++                        else:
++                            accum.pop(c, None)
++        return result
++
++
++def snapshot(scan):
++    live = [i for i, ma in enumerate(scan.mid) if ma is not None]
++    index = {old: new for new, old in enumerate(live)}
++    space = Space(tuple(scan.mid[i] for i in live),
++                  tuple(scan.deg[i] for i in live))
++    differential = Map(space, space, [
++        {index[j]: f for j, f in scan.out[i].items()} for i in live])
++    return space, differential
++
++
++def _bits(value):
++    while value:
++        low = value & -value
++        yield low.bit_length() - 1
++        value ^= low
++
++
++def _independent_add(pivots, vector):
++    while vector:
++        top = vector.bit_length() - 1
++        if top not in pivots:
++            pivots[top] = vector
++            return True
++        vector ^= pivots[top]
++    return False
++
++
++def _column_data(columns):
++    """Independent original columns, their indices, and a kernel basis."""
++    pivots, images, sources, kernel = {}, [], [], []
++    for j, column in enumerate(columns):
++        value, relation = column, 1 << j
++        while value:
++            top = value.bit_length() - 1
++            if top not in pivots:
++                pivots[top] = (value, relation)
++                images.append(column)
++                sources.append(j)
++                break
++            old, combination = pivots[top]
++            value ^= old
++            relation ^= combination
++        else:
++            kernel.append(relation)
++    return images, sources, kernel
++
++
++def _coordinate_solver(basis, dimension):
++    pivots = {}
++    for j, vector in enumerate(basis):
++        coordinates = 1 << j
++        while vector:
++            top = vector.bit_length() - 1
++            if top not in pivots:
++                pivots[top] = (vector, coordinates)
++                break
++            old, combination = pivots[top]
++            vector ^= old
++            coordinates ^= combination
++        else:
++            raise ArithmeticError("dependent contraction basis")
++    if len(pivots) != dimension:
++        raise ArithmeticError("incomplete contraction basis")
++
++    def solve(vector):
++        coordinates = 0
++        while vector:
++            top = vector.bit_length() - 1
++            old, combination = pivots[top]
++            vector ^= old
++            coordinates ^= combination
++        return coordinates
++
++    return solve
++
++
++def scalar_contraction(space, differential, check=lambda: None):
++    """Construct d0,i,p,h with d0*h+h*d0=1+i*p and side conditions.
++
++    Each (matching, homological degree) block is split as boundaries, homology,
++    and a complement to cycles.  All map entries are scalar identities.
++    """
++    groups = defaultdict(list)
++    for i, key in enumerate(zip(space.matching, space.degree)):
++        groups[key].append(i)
++    d0 = zero(space, space)
++    for a, row in enumerate(differential.rows):
++        for b, value in row.items():
++            if space.matching[a] == space.matching[b] and value & 1:
++                d0.rows[a][b] = 1
++    data = {}
++    for (matching, degree), objects in groups.items():
++        check()
++        targets = groups.get((matching, degree + 1), [])
++        positions = {obj: j for j, obj in enumerate(targets)}
++        columns = [sum(1 << positions[b] for b in d0.rows[a]) for a in objects]
++        data[matching, degree] = _column_data(columns)
++    hm, hd, inclusion_rows = [], [], []
++    projection_rows, homotopy_rows = ([{} for _ in space.matching],
++                                      [{} for _ in space.matching])
++    profile = []
++    for matching, degree in sorted(groups, key=lambda key: (key[1], key[0])):
++        check()
++        objects = groups[matching, degree]
++        boundaries, incoming_sources, _ = data.get((matching, degree - 1), ([], [], []))
++        _, outgoing_sources, kernel = data[matching, degree]
++        basis = list(boundaries)
++        independent = {}
++        for vector in boundaries:
++            if not _independent_add(independent, vector):
++                raise ArithmeticError("dependent boundary basis")
++        homology_vectors = []
++        for vector in kernel:
++            if _independent_add(independent, vector):
++                basis.append(vector)
++                homology_vectors.append(vector)
++        base = len(hm)
++        for vector in homology_vectors:
++            hm.append(matching)
++            hd.append(degree)
++            inclusion_rows.append({objects[j]: 1 for j in _bits(vector)})
++        basis.extend(1 << j for j in outgoing_sources)
++        solve = _coordinate_solver(basis, len(objects))
++        previous = groups.get((matching, degree - 1), [])
++        nb, nh = len(boundaries), len(homology_vectors)
++        for local, obj in enumerate(objects):
++            coefficients = solve(1 << local)
++            projection_rows[obj] = {
++                base + j: 1 for j in range(nh) if coefficients & (1 << (nb + j))}
++            homotopy_rows[obj] = {
++                previous[incoming_sources[j]]: 1
++                for j in range(nb) if coefficients & (1 << j)}
++        profile.append({"matching_id": matching, "degree": degree,
++                        "input_objects": len(objects), "incoming_rank": nb,
++                        "outgoing_rank": len(outgoing_sources), "minimal_objects": nh})
++    reduced = Space(tuple(hm), tuple(hd))
++    inclusion = Map(reduced, space, inclusion_rows)
++    projection = Map(space, reduced, projection_rows)
++    homotopy = Map(space, space, homotopy_rows)
++    return d0, inclusion, projection, homotopy, profile
++
++
++def _assert_zero(value, description):
++    if value:
++        raise ArithmeticError(description)
++
++
++def verify_contraction(differential, minimal, inclusion, projection, homotopy, arithmetic):
++    """All identities checked over the actual cobordism algebra, no rank oracle."""
++    compose = arithmetic.compose
++    _assert_zero(compose(differential, differential), "input differential does not square to zero")
++    _assert_zero(compose(minimal, minimal), "minimal differential does not square to zero")
++    _assert_zero(add(compose(inclusion, differential), compose(minimal, inclusion)),
++                 "inclusion is not a chain map")
++    _assert_zero(add(compose(differential, projection), compose(projection, minimal)),
++                 "projection is not a chain map")
++    _assert_zero(add(compose(inclusion, projection), identity(minimal.source)),
++                 "projection-inclusion is not identity")
++    _assert_zero(add(add(compose(homotopy, differential), compose(differential, homotopy)),
++                     add(identity(differential.source), compose(projection, inclusion))),
++                 "deformation-retraction identity failed")
++    _assert_zero(compose(inclusion, homotopy), "homotopy-inclusion is nonzero")
++    _assert_zero(compose(homotopy, projection), "projection-homotopy is nonzero")
++    _assert_zero(compose(homotopy, homotopy), "homotopy does not square to zero")
++    return True
++
++
++def minimal_model(scan, *, certificate=False):
++    """Return a minimal complex and, optionally, its checked contraction maps."""
++    space, differential = snapshot(scan)
++    arithmetic = Arithmetic(scan.algebra, scan.deadline)
++    d0, i0, p0, h0, profile = scalar_contraction(space, differential, arithmetic.check)
++    delta = add(differential, d0)
++    width = len(scan.points)
++    compose = arithmetic.compose
++    inclusion, term, depth = i0, i0, 0
++    for power in range(1, width + 1):
++        term = compose(compose(term, delta), h0)
++        if not term:
++            break
++        inclusion = add(inclusion, term)
++        depth = power
++    if certificate:
++        _assert_zero(compose(compose(term, delta), h0), "radical nilpotence bound failed")
++    minimal = compose(compose(inclusion, delta), p0)
++    for a, row in enumerate(minimal.rows):
++        for b, value in row.items():
++            if minimal.source.matching[a] == minimal.source.matching[b] and value & 1:
++                raise ArithmeticError("lifted model still has a scalar unit")
++    result = {"space": minimal.source, "differential": minimal, "profile": profile,
++              "stats": {"input_objects": len(space), "minimal_objects": len(minimal.source),
++                        "boundary": width, "perturbation_depth": depth,
++                        "algebra_products": arithmetic.products,
++                        "scalar_products": arithmetic.scalar_products,
++                        "map_products": arithmetic.map_products}, "certified": False}
++    if certificate:
++        right = compose(h0, delta)
++        projection, pterm = p0, p0
++        homotopy, hterm = h0, h0
++        for _ in range(width):
++            pterm = compose(right, pterm)
++            hterm = compose(right, hterm)
++            projection = add(projection, pterm)
++            homotopy = add(homotopy, hterm)
++            if not pterm and not hterm:
++                break
++        _assert_zero(compose(right, pterm), "projection series failed nilpotence")
++        _assert_zero(compose(right, hterm), "homotopy series failed nilpotence")
++        verify_contraction(differential, minimal, inclusion, projection, homotopy, arithmetic)
++        result.update(inclusion=inclusion, projection=projection, homotopy=homotopy, certified=True)
++    return result
++
++
++def install(scan, model):
++    """Continue the scan from the exact minimal model, retaining its Planar cache."""
++    space, differential = model["space"], model["differential"]
++    scan.mid, scan.deg = list(space.matching), list(space.degree)
++    scan.out = [row.copy() for row in differential.rows]
++    scan.inc = [set() for _ in scan.mid]
++    for a, row in enumerate(scan.out):
++        for b in row:
++            scan.inc[b].add(a)
++    removed = scan.live - len(space)
++    if removed < 0 or removed % 2:
++        raise ArithmeticError("invalid minimal-model dimension")
++    scan.stats["eliminations"] += removed // 2
++    scan.live = len(space)
++    scan.stats["max_objects_after_elimination"] = max(
++        scan.stats["max_objects_after_elimination"], scan.live)
++    scan.composed = {}
++    scan.small = [[] for _ in range(CAP)]
++
++
++def khovanov_perturbation(pd, *, order=None, max_objects=None, seconds=None, certificate=False):
++    """Full F2 rank through the research backend; not a speed recommendation."""
++    pd = [tuple(row) for row in pd]
++    if order is not None:
++        order = validate_order(len(pd), order)
++    if not pd:
++        return {"rank": 2, "reduced_rank": 1, "by_degree": {0: 2}, "stats": {}, "order": []}
++    deadline = None if seconds is None else monotonic() + seconds
++    if order is None:
++        order = best_scan_order(pd, tries=min(len(pd), 12))
++    scan = FastScan(max_objects=max_objects, deadline=deadline, shape_cache=False)
++    totals = {"algebra_products": 0, "scalar_products": 0, "map_products": 0,
++              "max_perturbation_depth": 0}
++    for crossing in order:
++        scan.add_crossing(pd[crossing], reduce_now=False)
++        model = minimal_model(scan, certificate=certificate)
++        for key in ("algebra_products", "scalar_products", "map_products"):
++            totals[key] += model["stats"][key]
++        totals["max_perturbation_depth"] = max(totals["max_perturbation_depth"],
++                                              model["stats"]["perturbation_depth"])
++        install(scan, model)
++    rank = scan.total_rank()
++    if rank % 2:
++        raise ArithmeticError("odd unreduced rank for a knot")
++    return {"rank": rank, "reduced_rank": rank // 2, "by_degree": scan.ranks_by_degree(),
++            "stats": dict(scan.stats, **totals), "order": order, "certified": certificate}
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/recognize.py b/Topology/UnknotRecognition/fast/fastunknot/recognize.py
+index bb6fbe8d36ce2580c67ba55ac9ea8ba335779242..bf602853408b0351cd765833ca530a4ba2f29ecf 100644
+--- a/Topology/UnknotRecognition/fast/fastunknot/recognize.py
++++ b/Topology/UnknotRecognition/fast/fastunknot/recognize.py
+@@ -106,7 +106,7 @@ def factored_khovanov_rank(diagram: Diagram, **options) -> dict[str, Any]:
+ def _decide_prime_looking(diagram: Diagram, evidence: dict, *, use_modular, use_jones, use_alexander,
+                           use_exact_alexander, use_r3, use_descending,
+                           jones_max_states, jones_max_transitions, max_objects, deadline,
+-                          check_d_squared, scan_options) -> tuple[str, str]:
++                          check_d_squared, scan_options, window_options) -> tuple[str, str]:
+     """Verdict and method for one summand (already simplified by the caller)."""
+     def check():
+         if deadline is not None and monotonic() > deadline:
+@@ -161,6 +161,45 @@ def _decide_prime_looking(diagram: Diagram, evidence: dict, *, use_modular, use_
+             if use_descending and descending_start(reduced) is not None:
+                 return "UNKNOT", "descending-diagram"
+             diagram, order = reduced, None
++    if window_options["enabled"]:
++        # This is only a one-sided obstruction.  Matching the unknot in a
++        # partial window never bypasses the complete recognizer below.
++        from .window_scan import khovanov_window
++        negative = diagram.signs().count(-1)
++        radius = window_options["radius"]
++        remaining = None if deadline is None else max(0.0, deadline - monotonic())
++        budget = window_options["seconds"]
++        if budget is not None:
++            remaining = budget if remaining is None else min(remaining, budget)
++        ceiling = window_options["max_objects"]
++        if ceiling is None:
++            ceiling = max_objects
++        try:
++            kwargs = dict(order=order, max_objects=ceiling, seconds=remaining,
++                          check_d_squared=check_d_squared)
++            if window_options["mirror"]:
++                from .window_bounds import khovanov_window_auto
++                window = khovanov_window_auto(diagram, negative - radius,
++                                               negative + radius, **kwargs)
++            else:
++                window = khovanov_window(diagram.pd, negative - radius,
++                                          negative + radius, **kwargs)
++        except ScanLimit as exc:
++            evidence["khovanov_window"] = {"status": "skipped", "reason": str(exc)}
++        else:
++            if order is None:
++                order = window["order"]
++            ranks = {h - negative: rank for h, rank in window["by_degree"].items()}
++            evidence["khovanov_window"] = {
++                "field": "F2", "normalized_lower": -radius, "normalized_upper": radius,
++                "mirrored": window.get("orientation", {}).get("mirrored", False),
++                "orientation_choice": window.get("orientation", {"selection": "original input"}),
++                "unreduced_rank_by_normalized_degree": ranks,
++                "scan_stats": window["stats"], "scan_order": window["order"],
++                "status": "inconclusive" if ranks == {0: 2} else "obstruction",
++            }
++            if ranks != {0: 2}:
++                return "KNOTTED", "khovanov-window-obstruction"
+     remaining = None if deadline is None else max(0.0, deadline - monotonic())
+     kh = khovanov_rank(diagram.pd, order=order, max_objects=max_objects, seconds=remaining,
+                        check_d_squared=check_d_squared, **scan_options)
+@@ -179,7 +218,15 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
+               jones_max_transitions: int | None = 200_000, max_objects: int | None = None,
+               seconds: float | None = None, check_d_squared: bool = False,
+               pivot: str = "minfill", algebra: str = "bits", tail: int = 0,
+-              race: int = 1, race_after: float = 1.0) -> Result:
++              race: int = 1, race_after: float = 1.0,
++              use_window: bool = False, window_radius: int = 0, window_mirror: bool = True,
++              window_max_objects: int | None = None, window_seconds: float | None = None) -> Result:
++    if type(window_radius) is not int or window_radius < 0:
++        raise ValueError("window_radius must be a nonnegative integer")
++    if window_max_objects is not None and (type(window_max_objects) is not int or window_max_objects < 0):
++        raise ValueError("window_max_objects must be a nonnegative integer")
++    if window_seconds is not None and window_seconds < 0:
++        raise ValueError("window_seconds must be nonnegative")
+     start = monotonic()
+     deadline = None if seconds is None else start + seconds
+     original = diagram
+@@ -205,7 +252,9 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
+                    use_descending=use_descending,
+                    jones_max_states=jones_max_states, jones_max_transitions=jones_max_transitions,
+                    max_objects=max_objects, deadline=deadline, check_d_squared=check_d_squared,
+-                   scan_options=dict(pivot=pivot, algebra=algebra, tail=tail, race=race, race_after=race_after))
++                   scan_options=dict(pivot=pivot, algebra=algebra, tail=tail, race=race, race_after=race_after),
++                   window_options=dict(enabled=use_window, radius=window_radius, mirror=window_mirror,
++                                       max_objects=window_max_objects, seconds=window_seconds))
+     method = "reduced-khovanov-F2-scan"
+     try:
+         if len(factors) == 1:
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/window_bounds.py b/Topology/UnknotRecognition/fast/fastunknot/window_bounds.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..2569a0bb48b6f3e478212f4790a9d7a9a88da753
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/fastunknot/window_bounds.py
+@@ -0,0 +1,68 @@
++"""A proved object bound and a deterministic choice of mirror for exact windows."""
++from __future__ import annotations
++from time import monotonic
++
++from .diagram import DisjointSet
++from .geometry import SMOOTHINGS
++from .window_scan import khovanov_window
++
++
++def state_circle_count(diagram, smoothing):
++    if smoothing not in (0, 1):
++        raise ValueError("smoothing must be zero or one")
++    if not diagram.pd:
++        return 1
++    dsu = DisjointSet(2 * diagram.crossings)
++    for row in diagram.pd:
++        for a, b in SMOOTHINGS[smoothing]:
++            dsu.union(row[a], row[b])
++    return len({dsu.find(e) for e in range(2 * diagram.crossings)})
++
++
++def weighted_binomial_sum(n, k):
++    """Return sum(2**j * binomial(n,j), j=0..k), with exact integer arithmetic."""
++    if not 0 <= k <= n:
++        raise ValueError("require 0 <= k <= n")
++    term = total = 1
++    for j in range(1, k + 1):
++        term = term * (n - j + 1) * 2 // j
++        total += term
++    return total
++
++
++def choose_mirror(diagram, lower, upper):
++    """Minimize the proved cube-object upper bound, not an empirical time predictor."""
++    n = diagram.crossings
++    if type(lower) is not int or type(upper) is not int or lower > upper:
++        raise ValueError("lower and upper must be integers with lower <= upper")
++    a, b = max(0, lower), min(n, upper)
++    if a > b:
++        return False, {"mirrored": False, "empty_target": True}
++    s0, s1 = state_circle_count(diagram, 0), state_circle_count(diagram, 1)
++    k0, k1 = min(n, b + 1), min(n, n - a + 1)
++    bound0 = (1 << s0) * weighted_binomial_sum(n, k0)
++    bound1 = (1 << s1) * weighted_binomial_sum(n, k1)
++    mirrored = bound1 < bound0
++    return mirrored, {"mirrored": mirrored, "empty_target": False,
++                       "all_zero_circles": s0, "all_one_circles": s1,
++                       "original_depth": k0, "mirror_depth": k1,
++                       "original_bound_bits": bound0.bit_length(),
++                       "mirror_bound_bits": bound1.bit_length(),
++                       "selection": "minimum exact proved object upper bound"}
++
++
++def khovanov_window_auto(diagram, lower, upper, **options):
++    """Compute a raw window, selecting a mirror and restoring original raw degrees."""
++    started = monotonic()
++    mirrored, choice = choose_mirror(diagram, lower, upper)
++    n = diagram.crossings
++    work = diagram.mirror() if mirrored else diagram
++    a, b = (n - upper, n - lower) if mirrored else (lower, upper)
++    if options.get('seconds') is not None:
++        options['seconds'] = max(0.0, options['seconds'] - (monotonic() - started))
++    result = khovanov_window(work.pd, a, b, **options)
++    if mirrored:
++        result['by_degree'] = dict(sorted((n - h, rank) for h, rank in result['by_degree'].items()))
++    result.update(raw_lower=lower, raw_upper=upper, orientation=choice,
++                  profile_degree_convention='mirror raw' if mirrored else 'original raw')
++    return result
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/window_scan.py b/Topology/UnknotRecognition/fast/fastunknot/window_scan.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..ade8795ed874970903479bf8b9675bee33ed5fe1
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/fastunknot/window_scan.py
+@@ -0,0 +1,311 @@
++"""Exact homological windows of the existing F2 Khovanov scanner.
++
++Degrees are the scanner's raw cube degrees, before subtracting the number of
++negative crossings.  To compute final degrees ``lower .. upper``, a prefix
++with ``remaining`` crossings retains only
++
++    lower - remaining - 1 <= degree <= upper + 1.
++
++The two end degrees are guards for the incoming and outgoing differentials.
++The suffix shifts degrees by an integer in ``0 .. remaining``.  Consequently
++discarded objects cannot contribute to any final chain group in
++``lower - 1 .. upper + 1``.  Subsequent unit cancellation is an actual chain
++homotopy equivalence, which the remaining planar extension preserves.
++
++Discarding takes place BEFORE allocation and transfer, not after an ordinary
++scan has constructed the objects.  A resource limit applies to the objects
++actually retained.  Only the requested final ranks are meaningful: guard
++degrees may contain artificial homology introduced by brutal truncation.
++"""
++from __future__ import annotations
++
++from time import monotonic
++
++from .geometry import ScanLimit
++from .ordering import best_scan_order, repeated_stages, validate_order
++from .scan_fast import FastScan
++
++
++class WindowScan(FastScan):
++    """``FastScan`` with suffix-aware support and pre-allocation pruning."""
++
++    def __init__(self, total_crossings: int, lower: int, upper: int,
++                 max_objects: int | None = None, deadline: float | None = None,
++                 shape_cache: bool = True, prune_isolated_guards: bool = True):
++        if type(total_crossings) is not int or total_crossings < 0:
++            raise ValueError("total_crossings must be a nonnegative integer")
++        if type(lower) is not int or type(upper) is not int or lower > upper:
++            raise ValueError("lower and upper must be integers with lower <= upper")
++        super().__init__(max_objects=max_objects, deadline=deadline,
++                         shape_cache=shape_cache)
++        self.total_crossings = total_crossings
++        self.lower, self.upper = lower, upper
++        self.processed = 0
++        self.prune_isolated_guards = prune_isolated_guards
++        self.stats.update({
++            "discarded_before_allocation": 0,
++            "isolated_guard_objects_discarded": 0,
++            "unpruned_prefix_stages": 0,
++            "skipped_old_edge_smoothings": 0,
++            "max_unfiltered_expansion_of_retained_prefix": 0,
++            "window_profile": [],
++        })
++        if not lower - total_crossings - 1 <= 0 <= upper + 1:
++            self.mid, self.deg, self.out, self.inc, self.live = [], [], [], [], 0
++
++    def add_crossing(self, slots: tuple, reduce_now: bool = True) -> None:
++        """Extend, brutally truncate, then optionally cancel unit entries."""
++        self._check()
++        if self.processed >= self.total_crossings:
++            raise ValueError("more crossings than the declared total")
++        remaining = self.total_crossings - self.processed - 1
++        low, high = self.lower - remaining - 1, self.upper + 1
++        # Every prefix object has raw degree in 0..processed+1.  When that
++        # entire interval fits, there is no allocation or transfer to skip;
++        # use the existing optimized kernel without per-edge window tests.
++        if low <= 0 and high >= self.processed + 1:
++            stats = self.stats
++            old_entries = stats["entries"]
++            old_max_after = stats["max_objects_after_elimination"]
++            super().add_crossing(slots, reduce_now=reduce_now)
++            self.processed += 1
++            count = len(self.mid)
++            guard_discarded = self._discard_isolated_guards(remaining)
++            stats["unpruned_prefix_stages"] += 1
++            stats["max_unfiltered_expansion_of_retained_prefix"] = max(
++                stats["max_unfiltered_expansion_of_retained_prefix"], count
++            )
++            if reduce_now:
++                stats["max_objects_after_elimination"] = max(old_max_after, self.live)
++            stats["window_profile"].append({
++                "processed": self.processed,
++                "remaining": remaining,
++                "retained_lower": low,
++                "retained_upper": high,
++                "unfiltered_expansion_of_retained_prefix": count,
++                "objects_before_elimination": count,
++                "objects_after_elimination": self.live,
++                "discarded_before_allocation": 0,
++                "isolated_guard_objects_discarded": guard_discarded,
++                "entries_before_elimination": stats["entries"] - old_entries,
++            })
++            return
++        alg = self.algebra
++        alg.stage(self.points, slots)
++        self.composed = {}
++        old_mid, old_deg, old_out = self.mid, self.deg, self.out
++        glued = {}
++        for ma in set(old_mid):
++            if ma is not None:
++                nm0, closed0, _ = alg.glue(ma, 0)
++                nm1, closed1, _ = alg.glue(ma, 1)
++                glued[ma] = (nm0, 1 << closed0, nm1, 1 << closed1)
++
++        # Test the retained object count before constructing object/edge arrays.
++        # ``unfiltered`` refers to this retained prefix, not a full-scan run.
++        count = unfiltered = 0
++        for o, ma in enumerate(old_mid):
++            if ma is None:
++                continue
++            _, k0, _, k1 = glued[ma]
++            unfiltered += k0 + k1
++            h = old_deg[o]
++            if low <= h <= high:
++                count += k0
++            if low <= h + 1 <= high:
++                count += k1
++        if self.max_objects is not None and count > self.max_objects:
++            raise ScanLimit(
++                f"{count} retained objects would exceed the ceiling {self.max_objects}"
++            )
++
++        mid, deg = [], []
++        base = [None] * len(old_mid)
++        for o, ma in enumerate(old_mid):
++            if ma is None:
++                continue
++            nm0, k0, nm1, k1 = glued[ma]
++            h = old_deg[o]
++            b0 = b1 = None
++            if low <= h <= high:
++                b0 = len(mid)
++                mid.extend([nm0] * k0)
++                deg.extend([h] * k0)
++            if low <= h + 1 <= high:
++                b1 = len(mid)
++                mid.extend([nm1] * k1)
++                deg.extend([h + 1] * k1)
++            base[o] = (b0, b1)
++        out = [{} for _ in range(count)]
++        inc = [set() for _ in range(count)]
++        saddles, transfers = {}, {}
++        shared = alg.shape_results if alg.stats["shape_hits"] else None
++        deadline = self.deadline if self.hook is None else 0.0
++        skipped = 0
++        for o, ma in enumerate(old_mid):
++            if ma is None:
++                continue
++            if deadline is not None and not o & 511:
++                self._check()
++            b0, b1 = base[o]
++            if b0 is not None and b1 is not None:
++                entries = saddles.get(ma)
++                if entries is None:
++                    entries = saddles[ma] = alg.transfer(ma, ma, 1, 0, 1)
++                for ls, lt, value in entries:
++                    out[b0 + ls][b1 + lt] = value
++                    inc[b1 + lt].add(b0 + ls)
++            for o2, f in old_out[o].items():
++                c0, c1 = base[o2]
++                needed0 = b0 is not None and c0 is not None
++                needed1 = b1 is not None and c1 is not None
++                skipped += 2 - needed0 - needed1
++                if not needed0 and not needed1:
++                    continue
++                mb = old_mid[o2]
++                for i, needed, source, target in (
++                    (0, needed0, b0, c0), (1, needed1, b1, c1)
++                ):
++                    if not needed:
++                        continue
++                    key = (ma, mb, f, i)
++                    entries = transfers.get(key)
++                    if entries is None:
++                        if shared is None:
++                            entries = alg.transfer(ma, mb, f, i, i)
++                        else:
++                            # Distinct tag: ordinary FastScan caches both
++                            # smoothings together under a different key shape.
++                            shape_key = (
++                                "window-transfer", alg.shape(ma), alg.shape(mb),
++                                alg.shape_slots, f, i,
++                            )
++                            entries = shared.get(shape_key)
++                            if entries is None:
++                                entries = shared[shape_key] = alg.transfer(
++                                    ma, mb, f, i, i
++                                )
++                            else:
++                                alg.stats["result_hits"] += 1
++                        transfers[key] = entries
++                    for ls, lt, value in entries:
++                        out[source + ls][target + lt] = value
++                        inc[target + lt].add(source + ls)
++
++        self.mid, self.deg, self.out, self.inc, self.live = mid, deg, out, inc, count
++        self.points = alg.new_points()
++        self.processed += 1
++        stats = self.stats
++        entries = sum(map(len, out))
++        stats["entries"] += entries
++        stats["discarded_before_allocation"] += unfiltered - count
++        stats["skipped_old_edge_smoothings"] += skipped
++        stats["max_unfiltered_expansion_of_retained_prefix"] = max(
++            stats["max_unfiltered_expansion_of_retained_prefix"], unfiltered
++        )
++        stats["max_objects_before_elimination"] = max(
++            stats["max_objects_before_elimination"], count
++        )
++        stats["max_boundary"] = max(stats["max_boundary"], len(self.points))
++        if reduce_now:
++            self.eliminate()
++        guard_discarded = self._discard_isolated_guards(remaining)
++        if reduce_now:
++            stats["max_objects_after_elimination"] = max(
++                stats["max_objects_after_elimination"], self.live
++            )
++        stats["window_profile"].append({
++            "processed": self.processed,
++            "remaining": remaining,
++            "retained_lower": low,
++            "retained_upper": high,
++            "unfiltered_expansion_of_retained_prefix": unfiltered,
++            "objects_before_elimination": count,
++            "objects_after_elimination": self.live,
++            "discarded_before_allocation": unfiltered - count,
++            "isolated_guard_objects_discarded": guard_discarded,
++            "entries_before_elimination": entries,
++        })
++
++    def _discard_isolated_guards(self, remaining: int) -> int:
++        """Drop independent summands whose continuation misses every target.
++
++        A nonisolated guard is needed for an incident differential and MUST
++        stay.  An isolated degree-h object is a direct summand; all of its
++        continued degrees lie in [h, h+remaining].  If this interval misses
++        [lower, upper], this summand cannot affect any requested homology.
++        """
++        if not self.prune_isolated_guards:
++            return 0
++        count = 0
++        for o, ma in enumerate(self.mid):
++            if ma is None or self.out[o] or self.inc[o]:
++                continue
++            h = self.deg[o]
++            if h > self.upper or h + remaining < self.lower:
++                self.mid[o] = self.out[o] = self.inc[o] = None
++                count += 1
++        self.live -= count
++        self.stats["isolated_guard_objects_discarded"] += count
++        return count
++
++    def requested_ranks(self) -> dict[int, int]:
++        """Return only target ranks; homology in guard degrees is artificial."""
++        if self.processed != self.total_crossings or self.points:
++            raise ValueError("the declared diagram is not closed yet")
++        if any(self.out):
++            raise ArithmeticError("requested_ranks requires complete elimination")
++        return {
++            h: dim for h, dim in self.ranks_by_degree().items()
++            if self.lower <= h <= self.upper
++        }
++
++
++def khovanov_window(pd, lower: int, upper: int, *, order=None, max_objects=None,
++                    seconds=None, check_d_squared=False, shape_cache=None,
++                    prune_isolated_guards=True) -> dict:
++    """Exact F2 unreduced ranks in requested raw degrees of a validated PD.
++
++    The returned ``window_rank`` is the sum of ONLY the requested ranks.  It
++    is not the total Khovanov rank.  In particular, a two-dimensional window
++    is not an unknot certificate unless it covers all raw degrees ``0..n``.
++    A resource limit raises ``ScanLimit`` instead of returning a verdict.
++    """
++    pd = [tuple(c) for c in pd]
++    if type(lower) is not int or type(upper) is not int or lower > upper:
++        raise ValueError("lower and upper must be integers with lower <= upper")
++    if order is not None:
++        order = validate_order(len(pd), order)
++    if max_objects is not None and (type(max_objects) is not int or max_objects < 0):
++        raise ValueError("max_objects must be a nonnegative integer")
++    if not pd:
++        by_degree = {0: 2} if lower <= 0 <= upper else {}
++        return {
++            "window_rank": sum(by_degree.values()), "by_degree": by_degree,
++            "raw_lower": lower, "raw_upper": upper,
++            "complete_rank": lower <= 0 <= upper,
++            "stats": {}, "order": [],
++        }
++    deadline = None if seconds is None else monotonic() + seconds
++    if order is None:
++        order = best_scan_order(pd, tries=min(len(pd), 12))
++    if shape_cache is None:
++        shape_cache = len(order) >= 16 and 8 * repeated_stages(pd, order) >= len(order)
++    complex_ = WindowScan(
++        len(pd), lower, upper, max_objects=max_objects,
++        deadline=deadline, shape_cache=shape_cache,
++        prune_isolated_guards=prune_isolated_guards,
++    )
++    for index in order:
++        complex_.add_crossing(pd[index])
++        if check_d_squared:
++            complex_.check_d_squared()
++    by_degree = complex_.requested_ranks()
++    stats = dict(complex_.stats)
++    stats.update(complex_.algebra.stats)
++    return {
++        "window_rank": sum(by_degree.values()), "by_degree": by_degree,
++        "raw_lower": lower, "raw_upper": upper,
++        "complete_rank": lower <= 0 and upper >= len(pd),
++        "stats": stats, "order": order,
++    }
+diff --git a/Topology/UnknotRecognition/fast/tests/test_perturbation.py b/Topology/UnknotRecognition/fast/tests/test_perturbation.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..4c1f236ff4e6de2a9591547a4f154ec679b0a14f
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/tests/test_perturbation.py
+@@ -0,0 +1,149 @@
++"""Exact algebraic tests for the research perturbation backend."""
++import copy
++from collections import Counter
++import itertools
++import random
++import unittest
++
++from fastunknot.diagram import Diagram, DiagramError
++from fastunknot.ordering import best_scan_order
++from fastunknot.perturbation import (
++    Arithmetic, Map, Space, add, identity, install, khovanov_perturbation,
++    minimal_model, scalar_contraction, verify_contraction,
++)
++from fastunknot.planar import Planar
++from fastunknot.scan import khovanov_rank
++from fastunknot.scan_fast import FastScan
++
++
++def catalan_matchings(points):
++    if not points:
++        yield ()
++        return
++    for j in range(1, len(points), 2):
++        for inside in catalan_matchings(points[1:j]):
++            for outside in catalan_matchings(points[j + 1:]):
++                yield tuple(sorted(((points[0], points[j]),) + inside + outside))
++
++
++def monomials(value):
++    while value:
++        low = value & -value
++        yield low.bit_length() - 1
++        value ^= low
++
++
++class PerturbationTests(unittest.TestCase):
++    def test_grading_on_non_catalan_bipartite_frontiers(self):
++        products = 0
++        for arcs in range(4):
++            alg = Planar(shape_cache=False)
++            ids = [alg.intern(tuple(zip(range(arcs), permutation)))
++                   for permutation in itertools.permutations(range(arcs, 2 * arcs))]
++            for a, b, c in itertools.product(ids, repeat=3):
++                ca, cb, cc = (alg.basis(a, b)[1], alg.basis(b, c)[1], alg.basis(a, c)[1])
++                for f in range(1 << ca):
++                    for g in range(1 << cb):
++                        value = alg.compose(a, b, c, 1 << f, 1 << g)
++                        degree = 2 * arcs - ca - cb + 2 * (f.bit_count() + g.bit_count())
++                        for out in monomials(value):
++                            self.assertEqual(arcs - cc + 2 * out.bit_count(), degree)
++                        products += 1
++        self.assertEqual(products, 3533)
++
++    def test_positive_grading_exhaustive(self):
++        products = 0
++        for arcs in range(4):
++            alg = Planar(shape_cache=False)
++            ids = [alg.intern(pairs) for pairs in catalan_matchings(tuple(range(2 * arcs)))]
++            for a, b, c in itertools.product(ids, repeat=3):
++                ca, cb, cc = (alg.basis(a, b)[1], alg.basis(b, c)[1], alg.basis(a, c)[1])
++                for f in range(1 << ca):
++                    for g in range(1 << cb):
++                        value = alg.compose(a, b, c, 1 << f, 1 << g)
++                        degree = 2 * arcs - ca - cb + 2 * (f.bit_count() + g.bit_count())
++                        for out in monomials(value):
++                            self.assertEqual(arcs - cc + 2 * out.bit_count(), degree)
++                            self.assertLessEqual(degree, 2 * arcs)
++                        products += 1
++        self.assertGreater(products, 1000)
++
++    def test_scalar_contraction_is_an_exact_strong_retraction(self):
++        space = Space((0,) * 8, (0, 0, 0, 1, 1, 1, 2, 2))
++        # Two consecutive maps, with their composite zero; not already diagonal.
++        differential = Map(space, space, [
++            {3: 1, 4: 1}, {3: 1, 4: 1}, {4: 1, 5: 1},
++            {6: 1}, {6: 1}, {6: 1}, {}, {}])
++        d0, inclusion, projection, homotopy, profile = scalar_contraction(space, differential)
++        minimal = Map(inclusion.source, inclusion.source,
++                      [{} for _ in inclusion.source.matching])
++        self.assertTrue(verify_contraction(d0, minimal, inclusion, projection, homotopy,
++                                          Arithmetic(Planar(shape_cache=False))))
++        self.assertEqual(len(minimal.source), 2)
++        self.assertEqual(sum(p['minimal_objects'] for p in profile), 2)
++
++    def test_scanner_prefixes_against_scalar_cancellation(self):
++        rng = random.Random(756)
++        cases = [(3, [1, 2] * 4), (3, [1, -2] * 4),
++                 (4, [1, 2, 3, -2, -1, 2, 3, 2, 1])]
++        accepted = 0
++        for strands in (2, 3, 4):
++            for _ in range(12):
++                word = [rng.choice((-1, 1)) * rng.randrange(1, strands)
++                        for _ in range(rng.randrange(2, 8))]
++                cases.append((strands, word))
++        for strands, word in cases:
++            try:
++                diagram = Diagram.from_braid(strands, word)
++            except DiagramError:
++                continue
++            order = list(range(diagram.crossings))
++            rng.shuffle(order)
++            scan = FastScan(shape_cache=False)
++            for index in order:
++                scan.add_crossing(diagram.pd[index], reduce_now=False)
++                scalar = copy.deepcopy(scan)
++                scalar.eliminate()
++                model = minimal_model(scan, certificate=True)
++                self.assertTrue(model['certified'])
++                expected = Counter((m, scalar.deg[i]) for i, m in enumerate(scalar.mid)
++                                   if m is not None)
++                actual = Counter(zip(model['space'].matching, model['space'].degree))
++                self.assertEqual(actual, expected)
++                install(scan, model)
++            self.assertEqual(scan.ranks_by_degree(), khovanov_rank(diagram.pd)['by_degree'])
++            accepted += 1
++        self.assertGreaterEqual(accepted, 10)
++
++    def test_nonzero_perturbation_depth(self):
++        diagram = Diagram.from_braid(3, [1, 2] * 4)
++        result = khovanov_perturbation(diagram.pd, certificate=True)
++        self.assertGreaterEqual(result['stats']['max_perturbation_depth'], 2)
++        self.assertEqual(result['by_degree'], khovanov_rank(diagram.pd)['by_degree'])
++
++    def test_rejects_noncomplex(self):
++        scan = FastScan(shape_cache=False)
++        scan.mid, scan.deg = [0, 0, 0], [0, 1, 2]
++        scan.out, scan.inc, scan.live = [{1: 1}, {2: 1}, {}], [set(), {0}, {1}], 3
++        with self.assertRaises(ArithmeticError):
++            minimal_model(scan, certificate=True)
++
++    def test_certificate_detects_mutation(self):
++        diagram = Diagram.from_braid(2, [1])
++        scan = FastScan(shape_cache=False)
++        scan.add_crossing(diagram.pd[0], reduce_now=False)
++        model = minimal_model(scan, certificate=True)
++        from fastunknot.perturbation import snapshot
++        _, original = snapshot(scan)
++        changed = copy.deepcopy(model['projection'])
++        for row in changed.rows:
++            if row:
++                row.clear()
++                break
++        with self.assertRaises(ArithmeticError):
++            verify_contraction(original, model['differential'], model['inclusion'], changed,
++                               model['homotopy'], Arithmetic(scan.algebra))
++
++
++if __name__ == '__main__':
++    unittest.main()
+diff --git a/Topology/UnknotRecognition/fast/tests/test_window_integration.py b/Topology/UnknotRecognition/fast/tests/test_window_integration.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..2e9ed3002823a83d391e72dd2c289e8597fea25c
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/tests/test_window_integration.py
+@@ -0,0 +1,95 @@
++"""Decision soundness and fallback behavior of the opt-in window stage."""
++import contextlib
++import importlib
++import io
++import json
++from pathlib import Path
++import unittest
++from unittest.mock import patch
++
++from fastunknot.diagram import Diagram
++from fastunknot.recognize import recognize
++from fastunknot.__main__ import main
++
++EXAMPLES = Path(__file__).resolve().parents[1] / 'examples'
++ONLY_KH = dict(use_reduction=False, use_descending=False, use_factorization=False,
++               use_modular=False, use_jones=False, use_alexander=False)
++
++
++class WindowIntegrationTests(unittest.TestCase):
++    def test_automatic_mirror_preserves_original_degree_labels(self):
++        from fastunknot.window_bounds import (khovanov_window_auto, state_circle_count,
++                                               weighted_binomial_sum)
++        from fastunknot.scan import khovanov_rank
++        from math import comb
++        for n in range(8):
++            for k in range(n + 1):
++                self.assertEqual(weighted_binomial_sum(n, k),
++                                 sum((1 << j) * comb(n, j) for j in range(k + 1)))
++        for word in ([1] * 3, [-1] * 3, [1, 1, -1], [1] * 7):
++            diagram = Diagram.from_braid(2, word)
++            full = khovanov_rank(diagram.pd)['by_degree']
++            self.assertEqual(state_circle_count(diagram, 0), state_circle_count(diagram.mirror(), 1))
++            for h in range(-1, len(word) + 2):
++                result = khovanov_window_auto(diagram, h, h)
++                self.assertEqual(result['by_degree'], {h: full[h]} if h in full else {})
++
++    def test_nontrivial_window_stops_before_full_homology(self):
++        diagram = Diagram.from_json(json.loads((EXAMPLES / 'conway.json').read_text()))
++        module = importlib.import_module('fastunknot.recognize')
++        with patch.object(module, 'khovanov_rank', side_effect=AssertionError('full scan called')):
++            result = recognize(diagram, use_window=True, **ONLY_KH)
++        self.assertEqual(result.status, 'KNOTTED')
++        self.assertEqual(result.method, 'khovanov-window-obstruction')
++        self.assertEqual(result.evidence['khovanov_window']
++                         ['unreduced_rank_by_normalized_degree'], {0: 10})
++
++    def test_rank_two_window_is_not_unknot_certificate(self):
++        diagram = Diagram.from_braid(2, [-1] * 3)
++        result = recognize(diagram, use_window=True, **ONLY_KH)
++        self.assertEqual(result.status, 'KNOTTED')
++        self.assertEqual(result.evidence['khovanov_window']['status'], 'inconclusive')
++        self.assertEqual(result.method, 'reduced-khovanov-F2-scan')
++        self.assertEqual(result.evidence['khovanov']['unreduced_rank'], 6)
++
++    def test_unknot_falls_through_to_full_certificate(self):
++        for diagram in (Diagram.from_braid(2, [1]), Diagram.from_braid(2, [-1]),
++                        Diagram.from_braid(3, [1, -2])):
++            result = recognize(diagram, use_window=True, **ONLY_KH)
++            self.assertEqual(result.status, 'UNKNOT')
++            self.assertEqual(result.evidence['khovanov_window']['status'], 'inconclusive')
++            self.assertIn('khovanov', result.evidence)
++
++    def test_window_limit_is_skipped_and_full_rank_still_decides(self):
++        diagram = Diagram.from_braid(2, [-1] * 3)
++        result = recognize(diagram, use_window=True, window_max_objects=0, **ONLY_KH)
++        self.assertEqual(result.status, 'KNOTTED')
++        self.assertEqual(result.evidence['khovanov_window']['status'], 'skipped')
++        self.assertEqual(result.method, 'reduced-khovanov-F2-scan')
++
++    def test_both_limits_give_unknown(self):
++        diagram = Diagram.from_braid(2, [-1] * 3)
++        result = recognize(diagram, use_window=True, max_objects=0, **ONLY_KH)
++        self.assertEqual(result.status, 'UNKNOWN')
++
++    def test_disabled_by_default_and_invalid_parameters(self):
++        diagram = Diagram.from_braid(2, [-1] * 3)
++        self.assertNotIn('khovanov_window', recognize(diagram, **ONLY_KH).evidence)
++        for options in ({'window_radius': -1}, {'window_radius': True},
++                        {'window_max_objects': -1}, {'window_seconds': -1}):
++            with self.assertRaises(ValueError):
++                recognize(diagram, **options)
++
++    def test_cli_partial_window_has_no_total_rank_claim(self):
++        output = io.StringIO()
++        with contextlib.redirect_stdout(output):
++            code = main(['window', str(EXAMPLES / 'conway.json'), '--lower', '6', '--upper', '6'])
++        data = json.loads(output.getvalue())
++        self.assertEqual(code, 0)
++        self.assertEqual(data['by_degree'], {'6': 10})
++        self.assertFalse(data['complete_rank'])
++        self.assertNotIn('rank', data)
++
++
++if __name__ == '__main__':
++    unittest.main()
+diff --git a/Topology/UnknotRecognition/fast/tests/test_window_scan.py b/Topology/UnknotRecognition/fast/tests/test_window_scan.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..4928bfad429d944ed2b240026c9e2a05b5f1a590
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/tests/test_window_scan.py
+@@ -0,0 +1,150 @@
++"""Semantic cross-checks of suffix-aware homological windows."""
++from __future__ import annotations
++
++import json
++from pathlib import Path
++import random
++import sys
++import unittest
++
++ROOT = Path(__file__).resolve().parents[1]
++sys.path.insert(0, str(ROOT))
++
++from fastunknot.diagram import Diagram, DiagramError
++from fastunknot.geometry import ScanLimit
++from fastunknot.scan import khovanov_rank
++from fastunknot.window_scan import WindowScan, khovanov_window
++
++
++def selected(ranks, lower, upper):
++    return {h: rank for h, rank in ranks.items() if lower <= h <= upper}
++
++
++class WindowScanTests(unittest.TestCase):
++    def test_empty_diagram_and_validation(self):
++        self.assertEqual(khovanov_window([], 0, 0)["by_degree"], {0: 2})
++        self.assertEqual(khovanov_window([], 1, 2)["by_degree"], {})
++        for lower, upper in ((2, 1), (True, 1), (0, 1.0)):
++            with self.assertRaises(ValueError):
++                khovanov_window([], lower, upper)
++        with self.assertRaises(ValueError):
++            khovanov_window([], 0, 0, max_objects=-1)
++        d = Diagram.from_braid(2, [1, 1, 1])
++        for order in ([0, 0, 1], [0, 1], [0, 1, 3]):
++            with self.assertRaises(ValueError):
++                khovanov_window(d.pd, 0, 1, order=order)
++        with self.assertRaises(ScanLimit):
++            khovanov_window(d.pd, 0, 1, seconds=0)
++
++    def test_curl_normalization_and_both_guards(self):
++        # The repository's signs() convention is authoritative; generator
++        # signs must not be substituted for these oriented crossing signs.
++        positive_word = Diagram.from_braid(2, [1])
++        negative_word = Diagram.from_braid(2, [-1])
++        self.assertEqual(positive_word.signs(), [-1])
++        self.assertEqual(negative_word.signs(), [1])
++        for d in (positive_word, negative_word):
++            shift = d.signs().count(-1)
++            self.assertEqual(khovanov_window(d.pd, shift, shift)["by_degree"],
++                             {shift: 2})
++        # The first zero needs the outgoing guard, the second the incoming
++        # guard: one cannot simply retain the queried chain group alone.
++        self.assertEqual(khovanov_window(positive_word.pd, 0, 0)["by_degree"], {})
++        self.assertEqual(khovanov_window(negative_word.pd, 1, 1)["by_degree"], {})
++
++    def test_every_window_and_mirror_of_small_diagrams(self):
++        diagrams = [
++            Diagram.from_braid(2, [1] * 5),
++            Diagram.from_braid(3, [1, -2] * 2),
++            Diagram.from_braid(3, [1, 2] * 4),
++        ]
++        for d in diagrams:
++            n = d.crossings
++            full = khovanov_rank(d.pd)["by_degree"]
++            mirror = d.mirror()
++            for h in range(-1, n + 2):
++                for upper in (h, h + 1):
++                    result = khovanov_window(d.pd, h, upper, check_d_squared=True)
++                    self.assertEqual(result["by_degree"], selected(full, h, upper))
++                reflected = khovanov_window(mirror.pd, n - h, n - h,
++                                            check_d_squared=True)
++                self.assertEqual(reflected["by_degree"],
++                                 {n - k: v for k, v in full.items() if k == h})
++
++    def test_random_orders_windows_and_cache_modes(self):
++        rng = random.Random(20261007)
++        checked = 0
++        while checked < 32:
++            strands = rng.choice((3, 4))
++            word = [rng.choice((-1, 1)) * rng.randrange(1, strands)
++                    for _ in range(rng.randrange(4, 10))]
++            try:
++                d = Diagram.from_braid(strands, word)
++            except DiagramError:
++                continue
++            full = khovanov_rank(d.pd)["by_degree"]
++            order = list(range(d.crossings))
++            rng.shuffle(order)
++            lower = rng.randrange(-1, d.crossings + 2)
++            upper = lower + rng.randrange(3)
++            for cached in (False, True):
++                result = khovanov_window(
++                    d.pd, lower, upper, order=order, check_d_squared=True,
++                    shape_cache=cached,
++                )
++                self.assertEqual(result["by_degree"], selected(full, lower, upper),
++                                 (word, order, lower, upper, cached))
++            checked += 1
++
++    def test_unreduced_cube_with_pruning_is_still_a_complex(self):
++        d = Diagram.from_braid(3, [1, -2] * 2)
++        full = khovanov_rank(d.pd)["by_degree"]
++        for lower, upper in ((0, 0), (1, 2), (4, 4)):
++            for order in (list(range(4)), [2, 0, 3, 1]):
++                state = WindowScan(4, lower, upper)
++                for i in order:
++                    state.add_crossing(d.pd[i], reduce_now=False)
++                    state.check_d_squared()
++                state.eliminate()
++                self.assertEqual(state.requested_ranks(), selected(full, lower, upper))
++
++    def test_named_alexander_trivial_knots_and_unknot(self):
++        for name, expected in (("conway", 10), ("kinoshita_terasaka", 10),
++                               ("hard_unknot_8", 2)):
++            d = Diagram.from_json(json.loads((ROOT / "examples" / f"{name}.json").read_text()))
++            h = d.signs().count(-1)
++            result = khovanov_window(d.pd, h, h, check_d_squared=True)
++            self.assertEqual(result["window_rank"], expected)
++            full = khovanov_rank(d.pd, order=result["order"])
++            self.assertEqual(result["by_degree"], selected(full["by_degree"], h, h))
++
++    def test_limits_apply_before_allocation(self):
++        d = Diagram.from_braid(2, [-1] * 31)
++        order = list(range(31))
++        unbounded = khovanov_window(d.pd, 0, 0, order=order)
++        ceiling = unbounded["stats"]["max_objects_before_elimination"]
++        self.assertLess(ceiling,
++                        unbounded["stats"]["max_unfiltered_expansion_of_retained_prefix"])
++        bounded = khovanov_window(d.pd, 0, 0, order=order, max_objects=ceiling)
++        self.assertEqual(bounded["by_degree"], {0: 2})
++        with self.assertRaises(ScanLimit):
++            khovanov_rank(d.pd, order=order, max_objects=ceiling)
++        with self.assertRaises(ScanLimit):
++            khovanov_window(d.pd, 0, 0, order=order, max_objects=ceiling - 1)
++
++    def test_guard_pruning_ablation_and_full_window(self):
++        d = Diagram.from_braid(3, [-1, -2] * 5)
++        for lower, upper in ((0, 0), (0, 2), (4, 7), (-2, 12)):
++            first = khovanov_window(d.pd, lower, upper, prune_isolated_guards=True)
++            second = khovanov_window(d.pd, lower, upper, prune_isolated_guards=False)
++            self.assertEqual(first["by_degree"], second["by_degree"])
++        full = khovanov_rank(d.pd)
++        wide = khovanov_window(d.pd, 0, d.crossings, order=full["order"])
++        self.assertEqual(wide["by_degree"], full["by_degree"])
++        self.assertTrue(wide["complete_rank"])
++        self.assertEqual(wide["window_rank"], full["rank"])
++        self.assertEqual(wide["stats"]["discarded_before_allocation"], 0)
++
++
++if __name__ == "__main__":
++    unittest.main()
