@@ -44,7 +44,7 @@ class NormalSurfaceTests(unittest.TestCase):
         original = subprocess.Popen
         def spawn(*args, **kwargs):
             child = original(*args, **kwargs)
-            created.append(child)
+            created.append((child, [kwargs[name] for name in ('stdin', 'stdout', 'stderr')]))
             return child
         command = [sys.executable, '-B', '-c', 'import sys,time;sys.stdin.read();time.sleep(10)']
         with patch('subprocess.Popen', side_effect=spawn):
@@ -58,9 +58,9 @@ class NormalSurfaceTests(unittest.TestCase):
             with self.assertRaises(ScanLimit):
                 _invoke(command, '{}', None, stop)
         self.assertEqual(len(created), 2)
-        for child in created:
+        for child, streams in created:
             self.assertIsNotNone(child.poll())
-            self.assertTrue(child.stdin.closed and child.stdout.closed and child.stderr.closed)
+            self.assertTrue(all(stream.closed for stream in streams))
 
     def test_communication_retains_input_across_polls(self):
         command = [sys.executable, '-B', '-c',
@@ -68,6 +68,15 @@ class NormalSurfaceTests(unittest.TestCase):
         payload = 'x'*500000
         code, out, err = _invoke(command, payload, monotonic()+3, lambda: None)
         self.assertEqual((code, out, err), (0, payload, 'note'))
+
+    def test_utf8_input_and_large_both_outputs(self):
+        command = [sys.executable, '-B', '-c',
+            'import sys;data=sys.stdin.buffer.read().decode("utf-8");'
+            'sys.stdout.buffer.write(data.encode("utf-8"));'
+            'sys.stderr.buffer.write(("é"*150000).encode("utf-8"))']
+        payload = 'λ🙂\n' * 50000
+        code, out, err = _invoke(command, payload, monotonic()+3, lambda: None)
+        self.assertEqual((code, out, err), (0, payload, 'é' * 150000))
 
     def test_missing_dependency_and_invalid_worker_cannot_decide(self):
         d = load('monster')
