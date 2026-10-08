@@ -1,0 +1,132 @@
+\section{Problem, baseline, and precise contributions}
+\label{sec:scope}
+
+The computational objective is to decide whether a planar diagram with
+$n$ crossings represents the unknot, with a proved running time of
+$n^{O(\log n)}$. The current project has a sound exact recognition
+pipeline with several polynomial or restricted-input front ends and
+a Bar--Natan scanning implementation of Khovanov homology over $\F$.
+The unrestricted Khovanov backend is complete; explicit resource limits
+may return \texttt{UNKNOWN}. Its unrestricted worst-case bound is
+exponential. This continuation
+studies representations that remove two specific kinds of unnecessary
+expansion: repeated geometric sheets and repeated algebraic transfer
+paths.
+
+\subsection{What was already established}
+
+The audit is anchored to the repository snapshot dated 8 October 2026
+at commit \texttt{9cec5275f2d2}, whose full identifier is on the title page
+\cite{ProveItSnapshot2026}. The maintained implementation and its tests
+are the software baseline. The
+following relevant developments precede this report.
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}p{0.17\textwidth}X@{}}
+\toprule
+Prior work & Result used or respected here \\
+\midrule
+Reports 07--09 & Structural certificates, exact component sharing,
+specialized braid recognition, certified factorization, and sparse
+algebraic filters. \\
+Reports 10--12 & Component cobordism contraction, restart accounting,
+twist compression, and succinct block cancellation. \\
+Report 13 & Exact prescribed homological windows with guard degrees and
+support-aware allocation. \\
+Reports 14--15 & Continuation quotients, scalar survivor profiles,
+nilpotent transfer, and precise geometric assumptions for a sharp
+arc-algebra radical bound. \\
+Report 16 and integration & Dense and homogeneous coefficient
+arithmetic, recovered quantum grading, and its production audit. \\
+Unintegrated draft & Complete quantum-triangular survivor transfer,
+a binary special contraction, and eight contraction identities. \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The last item was found during the continuation audit. Its frozen
+source is included as \path{reference/graded_transfer_v1.py}; its
+SHA-256 begins \texttt{8c264b87892289c2}. We explicitly treat its
+quantum-triangular transfer formula as inherited work
+\cite{TriangularDraft2026}. The new algebraic results concern relevant
+path support, direction choice, and a sparse scalar representation.
+This distinction prevents an independent rediscovery from being
+presented as a new project result.
+
+The supplied \texttt{openai/math} catalogue was also inspected
+\cite{OpenAIMath2026}. Its general example of releasing manuscripts
+together with explicit verification artifacts informs the presentation.
+No unverified headline theorem in that catalogue is used as a
+mathematical premise here. The arguments below are self-contained
+apart from standard covering-space classification, the established
+local Khovanov formalism, and the standard homological perturbation
+lemma, all cited where used.
+
+\subsection{The two new kernels}
+
+\paragraph{Geometric compression.}
+Given a valid dihedral covering presentation of a bordered surface, the
+first kernel constructs its complete connected-component topology in
+polynomial bit complexity, even if the number of sheets and components
+is exponential in the input length. It gives a sharp three-family
+classification, rather than returning one record per component.
+It also preserves the shared monodromy presentation and answers
+individual attachment queries. The result is a concrete special case
+of the kind of symbolic topology needed by compressed cutting.
+
+\paragraph{Algebraic compression.}
+Given an allocated graded partial complex, the second kernel first
+contracts its scalar differential. It then computes the directed graph
+of paths that can structurally connect scalar survivors, removes all
+other paths, and chooses forward or reverse accumulation for each
+remaining component. This preserves every coefficient of the induced
+minimal differential. The sparse scalar variant further prevents
+unrelated scalar components from being put into a common dense binary
+matrix merely because their matching and shifts agree.
+
+These results are new developments relative to the audited project
+state. A literature-wide priority claim is not made for standard
+covering theory, acyclic path evaluation, or the elementary dihedral
+orbit argument. Their relevance is the complete, explicit algorithmic
+specialization, its scope, the sharp examples, and the checked code.
+
+\subsection{What the paper does and does not establish}
+
+The mathematical statements distinguish four kinds of assertion:
+proved structural theorems, exact algorithmic identities, measured
+performance, and prospective applications. In particular, an operation
+count for a transfer kernel is not a total running-time bound unless
+scalar setup, graph construction, coefficient bit lengths, and output
+costs are included. An abstract surface cover is not automatically a
+normal surface embedded in a specified knot exterior. The proofs and
+interfaces retain these distinctions throughout.
+
+There are two independent routes toward the overall target. The
+scanner route needs a bound or a stronger representation for the
+surviving complex. The geometric route needs compressed hierarchy
+construction and a bound on its restarts. Faster arithmetic in either
+route is useful, but it cannot by itself supply the missing structural
+bound.
+
+\subsection{Primary topological context}
+
+Bar--Natan's local tangle formalism and cancellation method justify
+replacing a partial complex by a homotopy-equivalent complex relative
+to its frontier \cite{BarNatan2005,BarNatan2007}. The project's final
+Khovanov test relies on the established unknot-detection theorem of
+Kronheimer and Mrowka \cite{KronheimerMrowka2011}, with the coefficient
+and reduced/unreduced conventions documented in the existing project.
+We do not change that test or infer knottedness merely from the size of
+a partial complex.
+
+Lackenby's 2026 preprint gives a hierarchy algorithm for
+incompressibility and unknot recognition \cite{Lackenby2026}. Section 9
+bounds its number of iterations in terms of hierarchy length and
+surface pattern complexity. Theorem 14.4 supplies compressed cutting
+information, relying on Agol--Hass--Thurston orbit counting
+\cite{AHT2006}. The polynomial certificate statements later in the
+preprint concern efficiently encoded valid hierarchies; they are not a
+quasi-polynomial bound for discovering the needed hierarchy on every
+input. Section~\ref{sec:accounting} explains how the present kernels fit
+within that distinction.

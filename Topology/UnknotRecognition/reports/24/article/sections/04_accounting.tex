@@ -1,0 +1,230 @@
+\section{Complete cost accounting and the quasi-polynomial target}
+\label{sec:accounting}
+
+\subsection{A stage bound with every representation cost visible}
+
+Fix one allocated partial complex. Let $N$ be its number of allocated
+object slots, including slots made dead by previous cancellations,
+$E_0$ the number of scalar differential entries, and $E_\delta$ the
+number of radical entries between live objects. Put
+$E_{\rm in}=E_0+E_\delta$. Let $s_1,\ldots,s_t$ be the sizes of the
+weak components of the scalar graph. Write $M_{\rm sc}$ for the total
+number of nonzero scalar entries retained in the sparse inclusion,
+projection, and homotopy matrices. Object indices have
+$O(\log(N+2))$ bits; a bound using only the live count would not
+justify this assertion when many earlier slots are dead. Frontier
+labels, matching identifiers, and the stored shifts contribute their
+own input bit lengths.
+
+For bit accounting, dictionary operations may be implemented by
+deterministic ordered maps, with comparisons charged for their key
+lengths. The resulting bounds describe the underlying algorithm;
+the supplied Python implementation uses hash tables, whose timings
+are reported separately. Even a conservative polynomial bound for
+dictionary overhead leaves the conditional quasi-polynomial
+conclusion below unchanged. We do not treat operations on arbitrarily
+long Python integers as constant-time operations.
+
+The componentwise scalar construction uses local binary matrices.
+Classical elimination in a component of size $s$ has an
+$O(s^3)$ binary-operation bound. The separately handled singleton and
+one-edge components need constant local work each. Consequently a
+conservative setup bound is
+\begin{equation}
+ A_{\rm sc}=
+ \operatorname{poly}(\log(N+2)+\ell)\left(
+ N+E_{\rm in}+M_{\rm sc}+\sum_{j:\,s_j>2}s_j^3\right),
+ \label{eq:scalar-local-cost}
+\end{equation}
+where $\ell$ bounds the bit lengths of the non-index labels used by the
+implementation. The $E_{\rm in}$ term is necessary: the construction
+examines every differential entry to discover which ones are scalar.
+Only a separately supplied scalar-edge index would permit charging
+$E_0$ alone for that discovery. The displayed factor allows sorting
+and integer-index operations; it is not intended as a
+tight bit-level implementation model. The global predecessor can
+instead pay cubic work in a whole matching/shift block even when that
+block is disconnected, and stores global packed bit columns.
+
+Across all adjacent homological degrees, the transfer graphs have
+\[
+ V=O(N+\mu),\qquad E=O(E_\delta+M_{\rm sc}),
+\]
+where $\mu\leq N$ is the number of scalar survivors. Each original
+object appears in at most two adjacent-degree graphs, and each
+relevant scalar matrix entry appears a bounded number of times. This
+counts the graph representation, not only the retained corridors.
+
+For a retained weak component $G_j$, let $V_j,E_j$ be its numbers of
+vertices and edges, and let $a_j,b_j$ be its input and output counts.
+The inexpensive endpoint policy chooses
+\[
+ r_j=\min(a_j,b_j)
+\]
+and evaluates from the corresponding side. It uses Boolean
+reachability flags, not one packed endpoint set per vertex. Let
+$\Lambda=\operatorname{poly}(\log(N+2)+\ell)$ absorb index,
+dictionary, and ordering overhead. If $C(k,\ell)$ bounds the
+arithmetic bit cost of a coefficient addition or typed composition
+at a frontier of $2k$ endpoints, a full conservative stage bound is
+\begin{equation}
+ \begin{aligned}
+ T_{\rm stage}\ &\leq A_{\rm sc}+A_{\rm graph}
+   +\Lambda\sum_j V_jr_j\\
+ &\quad+\Lambda(1+C(k,\ell))\sum_j E_jr_j.
+ \end{aligned}
+ \label{eq:full-stage}
+\end{equation}
+Here $A_{\rm graph}$ includes reading all initial graph edges,
+topological ordering, pruning, and connected-component construction.
+For the Boolean endpoint policy they admit a bound polynomial in
+the index and label lengths times $N+V+E$. Initializing the $\mu$
+output rows is included; writing a nonzero output coefficient is
+charged to its terminal propagation, up to a constant factor. The
+$V_jr_j$ term is required because the implementation visits the
+component's ordered vertex list once for each chosen endpoint, even
+when a particular coefficient is zero.
+
+The finer reach-set policy replaces the edge sum by
+$\sum_j\min(F_j,B_j)$ with unit edge weights, as proved in the
+preceding section. In the vertex term, $r_j$ must then be the
+number of endpoints on the \emph{actually chosen side}: a smaller
+reach-set bound need not choose the side with fewer endpoints.
+It must additionally pay for the packed reachability sets, with
+a conservative $O((V+E)\mu)$ bit-operation term, apart from index
+and label overhead. In particular, an OR or a population count on
+a $\mu$-bit endpoint set is not one bit operation. This policy's
+tighter propagation count can be outweighed by its larger setup cost.
+
+With the existing dense coefficient engine, one may take
+$C(k,\ell)=\operatorname{poly}(k,\ell)2^{O(k)}$. A claim about a
+particular software configuration must use the coefficient engine
+actually selected; the sparse default may inspect more monomial
+pairs. Equation~\eqref{eq:full-stage} remains valid with the
+corresponding conservative composition bound.
+
+\subsection{Why the sparse refinement matters}
+
+Even a column containing a single bit at global position $j$ takes
+$j+1$ bits when stored as the integer $2^j$. Thus $R$ unrelated
+singleton inclusions stored at positions $0,\ldots,R-1$ use
+\[
+ \sum_{j=0}^{R-1}(j+1)=R(R+1)/2
+\]
+bits of packed integer payload. Their sparse index lists use
+$O(R\log(N+2))$ bits. This is a representation effect, independent
+of the mathematical sparsity of the contraction.
+
+On the shared-suffix family proved above, every scalar component is
+a singleton or one identity pair. The componentwise scalar setup has
+linear nonzero count, and the Boolean endpoint policy avoids the
+quadratic packed reach-set volume. Reverse transfer then has
+$R+2M$ radical-edge propagations, whereas the inherited forward
+transfer has $R(1+2M)$. Reading the input and writing the $R$ output
+coefficients are still required.
+
+More precisely, the complete-stage separation theorem applies to
+the explicitly constructed family with $M$ odd, the fixed
+eight-dimensional dot algebra on one three-arc matching, sparse
+scalar components, Boolean corridor flags, and the automatic
+endpoint-count policy. There are $R+2M+3$ objects and $O(R+M)$
+input entries, scalar supports, graph vertices, and graph edges.
+For $R>1$ its one output endpoint makes the policy choose reverse
+evaluation, which visits the graph once; for $R=1$ either direction
+has the same bound. With generic ordering, the complete reduction uses
+$O((R+M)\log(R+M+2))$ word operations and $O(R+M)$ words.
+Words here contain the object indices and labels of this family;
+their size is $O(\log(R+M+2))$ bits. A conservative bit implementation
+therefore has a near-linear bound with additional logarithmic
+factors, rather than a claimed linear bit cost.
+
+For $R=M$ odd, inherited forward propagation alone performs
+$\Omega(M^2)$ operations. The fixed coefficient algebra is essential
+to this comparison: coefficient sizes are constant in this family.
+This establishes the stated stage separation while including
+scalar setup, and does not imply a linear running time for arbitrary
+knot scans or superiority over ordinary minimum-fill cancellation.
+
+\subsection{What still prevents a general scanner bound}
+
+The current scanner explicitly allocates its objects before reducing
+them. Neither the number of matching types nor a small boundary
+alone bounds their multiplicities. The new reducer cannot avoid
+reading an explicitly supplied complex of size $N$, and its minimal
+output may itself contain exponentially many objects. Choosing better
+scalar bases may reduce fill and corridor sizes; it does not change
+the graded scalar homology dimensions of a fixed prefix.
+
+For example, consider diagrams with normalized edge labels, charging
+normalization of a longer external encoding at its actual input
+bit cost. Suppose an order is supplied or constructed within the
+target quasi-polynomial budget, and an execution satisfies
+$N_i\leq\exp(O(\log^2(n+2)))$ and
+$k_i=O(\log^2(n+2))$ at every stage, with label and shift bit lengths
+polynomial in $n$. Here $N_i$ bounds each allocated stage before
+reduction, including retained dead slots. Then $E_{{\rm in},i}$ and
+$M_{{\rm sc},i}$ are polynomial in $N_i$, as are all graph and
+endpoint counts. The setup bounds, coefficient envelope, and the
+ordinary polynomial-cost crossing-extension operations on these
+explicit tables make the complete $n$-stage scan quasi-polynomial.
+This is sufficient accounting under explicit execution and
+encoding hypotheses. There is no proof here that arbitrary diagrams
+admit orders satisfying those hypotheses. The remaining research task
+is to prove a structural bound or devise a representation that avoids
+the explicit-object lower bound.
+
+The same caution applies to the corridor support. Its form depends
+on the chosen scalar contraction, so it is not a knot invariant and
+is not canonical under arbitrary scalar basis changes. A dense basis
+change can enlarge inclusion, projection, and homotopy supports while
+leaving the homotopy type unchanged.
+
+\subsection{What the covering theorem supplies to a hierarchy}
+
+Suppose a compressed cutting step exposes a parallelity-bundle base
+as a valid dihedral cover of a smaller bordered surface. The
+three-family theorem then supplies the base topology, the orientation
+interval-bundle type, and marked boundary lookup in time polynomial
+in the presentation length and the bit length of its sheet count.
+This removes a possible dependence on the expanded number of sheets
+for that promised input class.
+
+The general compressed cutting theorem of Lackenby is broader and is
+already stated with logarithmic dependence on normal-surface weight
+\cite[Theorem 14.4]{Lackenby2026}. Our contribution is an explicit,
+small, checked kernel and classification for a restricted arithmetic
+presentation. It should not be described as a new proof of the
+general theorem. External attaching maps remain indispensable: two
+components with the same intrinsic topology can attach differently
+to the nonparallel part of a three-manifold.
+
+\subsection{Hierarchy depth, restarts, and conditional arithmetic}
+
+Lackenby's Section 9 yields the iteration bound
+\begin{equation}
+ L(g+1)^L,
+ \label{eq:lackenby-iterations}
+\end{equation}
+where $L$ bounds hierarchy length and $g$ bounds decomposing-surface
+pattern complexity \cite[Proposition 9.1]{Lackenby2026}. The integer
+potential responsible for the bound is a base-$(g+1)$ encoding of the
+successive complexities. A strict decrease proves termination; the
+size of the integer still determines the worst possible number of
+restarts. Section 10 obtains a linear bound on $L$ in the initial
+handle complexity after additional parallelity-bundle operations.
+Linear depth alone does not make \eqref{eq:lackenby-iterations}
+quasi-polynomial.
+
+The polynomial simplification statement of Proposition 14.2 assumes
+an irreducible manifold with essential boundary pattern. Its use
+inside a recognizer must respect that hypothesis. A short certificate
+for an essential hierarchy also does not give a deterministic search
+procedure with the same cost.
+
+A prospective complete algorithm would be quasi-polynomial if it
+visited at most $\exp(O(\log^2 n))$ compressed states, each state had
+polynomial or quasi-polynomial bit size, and each required transition
+had a correspondingly bounded verified implementation. The two
+kernels reduce specific transition or representation costs. They do
+not prove the state-count hypothesis. This is the exact remaining
+gap between the delivered results and the user's global objective.

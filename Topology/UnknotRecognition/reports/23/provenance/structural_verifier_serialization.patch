@@ -1,0 +1,24 @@
+--- measured/symbolic_braid.py
++++ final/symbolic_braid.py
+@@ -93,10 +93,20 @@
+ 
+ 
+ def verify_signed_run_certificate(strands, runs, certificate):
+-    """Replay permutation and signed graph counts with a separate routine."""
++    """Replay counts, accepting the numeric hex fields emitted by json_safe."""
+     if not isinstance(certificate, dict) or type(certificate.get("version")) is not int:
+         return False
+     try:
++        # Decode only the specified numeric fields. Text, version, and the
++        # exact schema are still checked below; booleans are not integers.
++        certificate = dict(certificate)
++        for key in ("crossings", "writhe", "seifert_circles", "positive_components",
++                    "negative_components", "homogeneity_defect", "canonical_genus"):
++            certificate[key] = encoded_integer(certificate.get(key))
++        interval = certificate.get("rasmussen_interval")
++        if not isinstance(interval, list) or len(interval) != 2:
++            return False
++        certificate["rasmussen_interval"] = [encoded_integer(value) for value in interval]
+         runs = validate_runs(strands, runs)
+         # A knot must use every adjacent generator: avoid a huge allocation.
+         if strands > len(runs) + 1:
