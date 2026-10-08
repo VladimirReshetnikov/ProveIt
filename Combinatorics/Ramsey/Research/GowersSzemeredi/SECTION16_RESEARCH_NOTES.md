@@ -990,13 +990,58 @@ on the input.**
      coordinates matches them. C is a coset progression rather than a Bohr
      set; for G = ℤ/N with N prime the two are interchangeable at
      quasi-polynomial cost.
+- **Deep agreement removes the θ-budget altogether (2026-10-08,
+  kernel-checked).** Let Γ be the graph of Φ over S = V(ρ/2). Call a cell
+  *good* if it misses S or lies inside V(ρ). On a good cell, one
+  multilinear map covers Γ:
+  - if the cell misses S, it carries no graph points;
+  - if the cell lies inside V(ρ), Φ is bi-affine there, hence multilinear
+    in the coordinates. This uses `multilinearOn_box_of_subset`, which works
+    for every cell length, width-one cells included; for a zero common
+    difference the box is a single point.
 
-So off-origin covers of V's graph reduce to two inputs: the peer's
-Lemma 16.1 (polynomial exponent), and Bohr-set regularity for the
-variety's frequencies, with radius losses polynomial in the rank. Both
-are standard. Composing them into `CubicStackableClass` members is
-bookkeeping-heavy but has no new mathematics left in it, apart from the
-pre-extension hypothesis.
+  So `multiplyLinearWith_of_good_partitions` (`Proofs16GoodPartition`)
+  proves `MultiplyLinearWith` with q = 1 and loss set H = P. No θ is spent,
+  and no regularity of V is used. The regular-step lemmas stay proved, but
+  this route no longer needs them.
+
+  A cell that meets V(ρ/2) and has pairwise oscillation at most ρN/2 in
+  every variety condition lies in V(ρ) (`subset_variety_of_small_oscillation`,
+  `Proofs16CellOscillation`). Hence `deep_structure_multiplyLinear`: if Φ is
+  a Freiman bihomomorphism on V(ρ), and `OscillationPartitionsExist Eb Γ Ψ L ρ`
+  holds, then Φ's graph over V(ρ/2) is multiply linear.
+  `OscillationPartitionsExist` asks for partitions of every proper box into
+  cells of width ≥ P.width^Eb(θ). Each cell must miss V(ρ/2) or oscillate by
+  at most ρN/2. All of this is kernel-checked, with axioms propext,
+  Classical.choice, Quot.sound.
+
+**Correction (2026-10-08) to the paragraph that stood here.** It said
+off-origin covers reduce to the peer's Lemma 16.1 plus Bohr regularity, and
+that the rest is "bookkeeping with no new mathematics". Both halves were
+too quick.
+- Regularity is not needed, by the previous item.
+- The remaining input, `OscillationPartitionsExist`, is **not** a direct
+  instance of the peer's Lemma 16.1. Its conditions L_k(y)·x are only
+  *Freiman*-bilinear, because L_k is Freiman-linear on B(Ψ;ρ), not linear
+  on ℤ/N. On a cell (x₀ + i·c) × (y₀ + j·c), the variation terms are
+  i·L_k(y₀)·c, j·Δ_k(c)·x₀ and ij·Δ_k(c)·c, where Δ_k(c) = L_k(c) − L_k(0).
+  The middle term is not multilinear in (x₀, y₀, c), because
+  Δ_k is Freiman-linear in c, not linear. Lemma 16.1 makes genuinely
+  multilinear forms small, so it does not apply as stated.
+- `Box` has one common difference c for both axes, so one step must
+  satisfy all conditions at once. The nested-Dirichlet construction of
+  `bilinearBohrVariety_contains_box_at` adapts to a single step
+  (c = t·e₁ with e₁ chosen over Ψ ∪ Γ ∪ {L_k(y₀)}). That gives one box per
+  deep point; it does not give a partition of an arbitrary box.
+
+So what remains on the variety route is exactly two things:
+1. A **partition** version of the deep-point box construction: Lemma 16.1
+   for Freiman-bilinear forms on a Bohr set. Through Milićević's equation
+   (9), Freiman-linear maps are coordinate-affine on a coset progression. In
+   those coordinates the forms are genuinely bilinear, so the peer's lemma
+   applies there. The remaining obstruction is transporting cells between
+   GAP coordinates and boxes of ℤ/N.
+2. The translation from Φ's graph to φ's, by the shift (s, t).
 The bracket route above (steps 1–4) stays as a self-contained alternative
 for the one-variable core, with step 3 formalized. With quasi-polynomial
 t, a poly(1/t) exponent gives widths N^(exp(−polylog)), inside the

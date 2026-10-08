@@ -328,6 +328,8 @@ import GowersSzemeredi.Proofs16BohrRowIntervals
 import GowersSzemeredi.Proofs16BohrLowerBound
 import GowersSzemeredi.Proofs16VarietyRegularStep
 import GowersSzemeredi.Proofs16DeepAgreement
+import GowersSzemeredi.Proofs16GoodPartition
+import GowersSzemeredi.Proofs16CellOscillation
 import GowersSzemeredi.Proofs16StructuredExtraction
 import GowersSzemeredi.Proofs16BaseCaseZero
 import GowersSzemeredi.Proofs05ProgressionMoments
