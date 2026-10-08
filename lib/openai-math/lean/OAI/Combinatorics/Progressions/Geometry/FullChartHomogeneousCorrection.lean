@@ -1,3 +1,6 @@
+/- Modified for ProveIt: give the full-chart grade quotient conversion a
+finite local checking budget on Lean 4.32. All upstream theorem statements
+and mathematical proof bodies are unchanged. -/
 import OAI.Combinatorics.Progressions.Estimates.RestrictedMajorCorrectionOnSet
 import OAI.Combinatorics.Progressions.Geometry.FullTaggedChartCoefficientRange
 
@@ -604,6 +607,7 @@ def CertifiedFullChartDetectedDecomposition : Prop :=
 
 omit [Fintype η] in
 
+set_option maxHeartbeats 400000 in
 theorem fullChart_grade_quotient_of_low_value
     (c : Fin (Fintype.card (LowTaggedIndex J k)) → ℝ)
     (K : η → Submodule ℝ (Fin (Fintype.card (LowTaggedIndex J k)) → ℝ))
