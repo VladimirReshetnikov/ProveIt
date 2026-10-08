@@ -707,6 +707,19 @@ bilinear forms β_j. §12 gives the reverse direction.
   simultaneous polynomial partitions).
 
 So **(R) reduces to (D) plus Milićević §§5–12**, with no bracket analysis.
+
+**Direction check (from the paper's proof overview, pp. 8–11).** In
+Milićević's proof, the Freiman bihomomorphism on a bilinear Bohr variety is
+an intermediate object. Only his final step *extends* it, with controlled
+errors, to the E-bihomomorphism on a product of Bohr sets that Theorem 1.4
+states. So the natural input for (R) is the pre-extension statement.
+`Proofs16BilinearBohrVariety` states it as `MilicevicVarietyStructure D`;
+it is a hypothesis, extracted from the overview and not quoted from a
+numbered theorem. The module also proves `freiman_on_variety_biaffine`:
+on any product of progressions satisfying the variety's conditions, the map
+is bi-affine. Those conditions are Bohr membership in each coordinate and
+every L_i(y)·x small, i.e. simultaneously small bilinear-type quantities,
+item (D).
 The bracket route above (steps 1–4) stays as a self-contained alternative
 for the one-variable core, with step 3 formalized. With quasi-polynomial
 t, a poly(1/t) exponent gives widths N^(exp(−polylog)), inside the
