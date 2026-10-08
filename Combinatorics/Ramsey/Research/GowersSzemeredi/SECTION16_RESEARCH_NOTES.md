@@ -1498,5 +1498,14 @@ slice exponent `a`, every `b < e*a/2` gives cell width at least `m^b` once
 `section16RoundedExponentThreshold z e a b <= m`. Its candidate budget is
 at most `9*R^4*q^2`, independently of the graph count chosen in the line
 cover. The full production source and transitive axiom check pass. The
-combined facade audit is queued behind the density-port build. The same
+combined facade audit passes. The same
 structural hypotheses remain; no catalogue statement closes.
+
+`Proofs16PolynomialLineExponentComparison` proves that, for fixed positive
+controls and dimension, the improved all-scale Lemma 16.9 exponent
+strictly exceeds `lemma9WidthWithExponent` for all sufficiently large
+spectrum counts. Apply the earlier geometric-versus-polynomial comparison
+with exponent constant `2*p` to absorb the additional factor-two loss.
+The production module and full facade axiom audit pass. This is a comparison
+of exponents; it does not assert superiority at every small box scale or
+improve the final all-length Szemeredi threshold.
