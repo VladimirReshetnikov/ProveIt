@@ -653,14 +653,30 @@ polynomial in q. But it is a one-dimensional statement about order-8
 homomorphisms on a progression; it does not make multilinear forms small on
 boxes.
 
-**A lead (unverified).** Along a progression x₀ + t·d, smallness of
-μ_i(x)·d is a question of simultaneous small fractional parts of q
-polynomials in d of degree k+1. As recalled here, not yet checked against
-the source, W. M. Schmidt's theorem (*Small fractional parts of
-polynomials*, CBMS 32, 1977) has, for fixed degree, exponents polynomial in
-the number of polynomials. If so, a simultaneous-smallness lemma for q
-multilinear forms with width exponent poly(1/q) would be available. That
-is exactly (D).
+**The lead (checked 2026-10-08).** Along a progression x₀ + t·d,
+smallness of μ_i(x)·d is a question of simultaneous small fractional parts
+of polynomials in d of degree k+1. That problem has exponents polynomial in
+the number of polynomials:
+- Schmidt (*Small fractional parts of polynomials*, CBMS 32, 1977):
+  exponent c_d/K² for K polynomials of degree d.
+- Maynard (arXiv:2011.12275): c_d/K, essentially optimal in K.
+- Lau (arXiv:2407.01611): fully explicit. Some n < x has
+  ‖f_i(n)‖ ≪ x^(−1/(10.5·K·d(d−1)) + o(1)) for all i.
+
+Gowers's per-form iteration (K^(−2^(k+1)·q)) is therefore not forced. A
+multilinear-forms version of Lemma 16.1 with width exponent poly(1/q)
+should follow from these bounds. Lau's explicit exponent is the natural
+input for a formalization.
+
+**Two caveats.**
+1. Lemma 16.1 needs a *partition* of a box into cells. Each cell needs
+   smallness uniformly over its points. The reduction to one-variable
+   polynomials in the common difference must keep the number of polynomials
+   polynomial in q. Expanding a k-linear μ_i on a k-dimensional cell gives
+   O(2^k) coefficient polynomials per form, so K = O(2^k·q). That is still
+   polynomial in q.
+2. The o(1) in Lau's bound, and the size of x relative to the cell width,
+   must be made explicit.
 
 **Consequences if (D) holds.**
 - The lift's recurrence factor would become poly(1/n) instead of 576^(−24n).
@@ -669,10 +685,10 @@ is exactly (D).
 - Theorem 16.2 in dimension three would then be conditional on a
   quasi-polynomial stackable structure, plus the readout (R) of J.2.
 
-**Effort.** Formalizing Schmidt-type bounds is a major project; Weyl
-differencing and van der Corput in several variables are the core. Before
-that, check the exact exponent dependence in Schmidt, and its later
-improvements by Baker.
+**Effort.** Formalizing a Schmidt/Maynard/Lau-type bound is a major
+project: Weyl differencing, van der Corput and geometry of numbers. Its
+quadratic case (d = 2), the one dimension three needs, is the place to
+start.
 
 ## K. Where every route to Theorems 18.2 and 18.7 meets (2026-10-08)
 
