@@ -127,6 +127,10 @@ write recomputed them at 50 digits (pentagonal series, `|m| ≤ 60`):
   towards `c_4/c_1 = 16.61…`; the forward residual after `d_1`, `d_2`, times
   `n^{3/2}`, is `38.2…, 41.7…, 44.1…` at `n = 250, 500, 1000`. Numerical
   observations, not proofs.
+- Precision by the independent check (7 October 2026): the four values
+  `12.57…` to `15.06…` divide the error by the leading term `c_1 τ³` (times
+  the common prefactor), which is what tends to `c_4/c_1`; divided by the
+  `R = 3` approximation itself they are `13.57…, 14.80…, 15.32…, 15.60…`.
 
 ## What is not claimed
 
@@ -180,6 +184,46 @@ than truncated.
 - Sources read by the write: the OEIS entry and b-file; the transseries
   volume (labels above). Not read: Mutafchiev, Goh–Schmutz, Hwang,
   Ralaivaosaona, Grabner–Knopfmacher–Wagner.
+
+## Independent check of the write (7 October 2026)
+
+An adversarial check made by the intake after the write (`4b5cfc9b1`), with
+its own code, after fetching again A239964 (#17) and its b-file (same
+SHA-256).
+
+- **Remark 1.4.** Revision, dates, name, Manyama's formula line, b-file
+  credit, Kimberling's (unsigned) Mathematica line and the example
+  confirmed. Brute force over all partitions for `n ≤ 60`, and the diagonal
+  transform (3.5) expanded through the positive products `B_S` to degree 150
+  (6819 subsets, own code), both equal to the b-file. 333 subsets with
+  `|S| ΣS ≤ 55`.
+- **Recomputations.** `ℓ_1, ℓ_2, ℓ_3` of `L_S` and the fourth jet (4.24) by
+  series expansion of the definition (4.7) on eight concrete sets; `Q_0..Q_2`,
+  the probability coefficients (1.12), the recurrence and trigonometric form
+  of (6.5). The constants `c_1..c_4`, `C`, `d_1`, `d_2` by numerical
+  derivatives of `H(z) = (e^{−z}; e^{−z})_∞` and, independently, by subset
+  sums grouped by `s` (signed counts and signed `J_2` sums from exact
+  products): every rounding and truncation statement of the decimals note
+  holds. `d_1`, `d_2` also from the large-`n` expansion of (1.8) with `R = 3`
+  (to `n = 10¹²`). The residuals reproduce; a precision on their
+  normalization is recorded in a dated note after Corollary 1.2 and in the
+  decimals section above.
+- **Remark 8.2.** (a)–(e) re-derived against the volume's statements,
+  including the Bell recurrence for `c_{1..3,vol}`, the three forms of (8.6)
+  and the flattening coefficient `P_1 = 9 log(L − K) − B d_1`. Two
+  precisions, in a dated note after the remark: the remark's `γ_n` are the
+  volume's `c_n` (its recurrence writes them `γ_{n+1}`, with `γ_1 := 0`); and
+  `p0:thm:staircase`(1) needs `X ≥ a(n_0)` as well (true for all large `X`).
+  `δ_0`, `δ_1` and the diagnostic (0.09088 at `n = 300`) reproduce.
+- **Provenance.** Archive bytes, SHA-256, 14 files, 943 lines, 22 delivered
+  pages, manifests 13 and 7 entries, the not-shipped sizes, the staged files
+  (byte-identical), the 105 delivered labels and 62 references (numbers
+  unchanged against a rebuild of the delivered text), the file list, the
+  neighbours, `Fabius.staircase_ceil`, and the Route B rerun (`--full1000`,
+  outputs byte-identical) confirmed.
+- The check read the source's proofs as well and found no error.
+
+The check is recorded at the end of Section 10.
 
 ## Relation to the repository
 
@@ -304,6 +348,7 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
 The committed PDF was built this way with MiKTeX on 7 October 2026 (26
+pages; rebuilt the same day after the independent check's notes, still 26
 pages): no errors or warnings, no undefined references or citations, no
 multiply defined labels, no duplicate PDF destinations, no overfull or
 underfull boxes (the delivered text also builds without any, 22 pages).

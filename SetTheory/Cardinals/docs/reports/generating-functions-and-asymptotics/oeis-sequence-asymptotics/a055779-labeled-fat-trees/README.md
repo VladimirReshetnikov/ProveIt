@@ -66,7 +66,7 @@ bounded; numerical output is diagnostic.
   against all 360 of its b-file terms (`n ≥ 1`), and A162695's logarithm
   relation for `n ≤ 60`; the attributions of Section 2 match. **False
   readings recorded:** the "r" of A055779's limit formula is Kotěšovec's
-  `p = 1/(1 + r_1) = 0.6925…`, and the "r" of A162695's formula is the
+  `p = 1/(1 + r_1) = 0.6924…`, and the "r" of A162695's formula is the
   report's `ρ`. No OEIS conjecture exists here.
 - **Two decimals corrected** (note at the end of Section 8.1): `q(1)` and
   `c_1(r_1)` are printed rounded where "…" asks for truncation; the
@@ -189,6 +189,49 @@ equalled the recorded ones, in normal and `-O` mode. The delivered runner
 bytes and the programs' output there carries carriage returns (the intake
 recorded the same). The builder and the guard tests were not run.
 
+## Independent check of the write (7 October 2026)
+
+An independent adversarial check of the write (`b76f517a4`) read A055779
+(#42), A295623 (#15) and A162695 (#19) again. Every quotation and attribution
+in Remark 1.2 is verbatim. The check recomputed the write's numbers with its
+own code, by other methods wherever it could. It is recorded in a dated note
+at the end of Appendix C.
+
+- **OEIS data.** All 100 A055779 b-file terms agree. `A295623(n) =
+  n² A055779(n)` for all 360 terms with `n ≥ 1`. The A162695 logarithm
+  relation holds for `n ≤ 120`, by an exact power-series logarithm.
+- **Enumeration.** A brute-force count over set partitions and cross-block
+  edge sets for `n ≤ 6` reproduces `A_n(M)` and the OEIS comment's
+  polynomials. (7.1) holds coefficientwise for `n < 60`.
+- **Symbolic.** `κ_0…κ_4` by direct differentiation of `Mz e^z`; from them
+  `s_1`, `s_2`, (1.6), (4.9), `d_2` and `c_j(0) = 0`.
+- **Numerical, independent of the coefficient formulas.** Richardson
+  extrapolation of exact `A_n(1)`, `300 ≤ n ≤ 1800`, gives `c_1(r_1)` and
+  `c_2(r_1)` to 45 digits; at `M = 4` it gives `c_1` to 37 digits.
+- **The inverse.** A numerical solve of `F_2(x) = Y` for `Y = 10⁴…10¹⁰`
+  leaves `(x − X_2) t³ L` between 2.1 and 3.3, consistent with (7.4)–(7.6).
+  (7.7) is an identity, and the engine (7.3) was re-derived by hand.
+- **Decimals, diagnostics and the appendix.** All decimals were recomputed
+  to 40 digits. The eight diagnostic entries are correct roundings. In the
+  appendix, `E A(Z)`, `E A(Z)²`, `e_2` and the second coefficient of (A.11)
+  are confirmed.
+- **Remark 7.2.** Re-read against `p0:prop:factorial-core` and
+  `p0:thm:core-reversion`: confirmed.
+- **Provenance, manifests, byte identity and numbering.** All confirmed:
+  20 files, 688 lines, 19 pp.; manifests 19/17; 16 staged files
+  byte-identical; 70 labels unchanged, 3 added.
+- **Delivered programs.** All four (`coefficients`, `exact_checks`,
+  `symbolic_checks`, `numerical_diagnostics`) reproduce their expected
+  outputs up to carriage returns.
+
+**Corrected by a dated note (Section 8.1).** The write's own note printed
+Kotěšovec's `p` rounded, as `0.6924583254616546081…`; the truncation is
+`…6080…` (`p = 0.692458325461654608095939…`). The reading-conventions table
+has the same slip as `0.6925…`, which should be `0.6924…`. This README's
+"false readings" bullet is corrected accordingly.
+
+Rebuilt: 22 pages (unchanged), label numbers unchanged.
+
 ## Build
 
 pdfLaTeX (lmodern, microtype, geometry, amsmath, amssymb, amsthm, mathtools,
@@ -199,8 +242,8 @@ B=$(mktemp -d); cp article.tex "$B/"; cd "$B"
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The committed PDF was built this way with MiKTeX pdfLaTeX (7 October 2026):
-22 pages; no errors or warnings, no undefined references, no multiply defined
+The committed PDF was built this way with MiKTeX pdfLaTeX (7 October 2026;
+rebuilt after the independent check, three passes): 22 pages; no errors or warnings, no undefined references, no multiply defined
 labels, no duplicate destinations, no overfull or underfull boxes. The
 delivered text, built the same way, gives 19 pages with no warnings.
 

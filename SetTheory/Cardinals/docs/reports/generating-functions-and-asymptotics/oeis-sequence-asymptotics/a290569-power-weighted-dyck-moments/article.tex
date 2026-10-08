@@ -288,6 +288,32 @@ no global priority. \emph{The write adds:} its checks are floating, finite or
 hand computations; the numerical agreement of $C_3$ is evidence, not a
 proof; the transseries remarks claim no novelty for any inversion.
 \end{writenote}
+\begin{writenote}[Independent check of the write, 7 October 2026]
+An independent adversarial check re-derived every [write] statement of this
+Guide and of the four Parts with its own code, after fetching the six OEIS
+entries and their b-files again. Confirmed: the provenance figures (archive
+bytes and SHA-256, 21, 12, 18 and 16 files, 1382, 773, 1088 and 652 lines,
+35, 22, 27 and 16 delivered pages, the author lines and fields, the sizes of
+the two regenerable data files); the proof of A338634's parity conjecture and
+its b-file; the agreement of $d_p$, $\mathcal C_p$ with Kot\v e\v sovec's
+formula and of~\eqref{pwd:hm:eq:polynomial-absolute} with A218221's
+constants; A218221 and A291333 against their b-files; every entry of Part~II's
+diagnostic table and $r=8\sqrt\pi/\Gamma(1/4)^2=r_4$; Part~III's $J_2=0$,
+$J_4=-\pi/4$, $J_3$, $C_3$ and the $p=3$ evidence (the check's three-point
+extrapolation $(8e(400)-6e(200)+e(100))/3=-0.19798885\ldots$ agrees with
+$C_3=-0.1979888535\ldots$ to about nine digits; still evidence, not a proof
+of the conditional premise); Part~IV's $Q(1)$, $E_0(10)$, $E_0(20)$,
+$E_0(40)$, the total-variation constant, and $c_1$ to about five digits by
+extrapolating exact $E_0(n)$, $n\le160$; the label tables (shifts 0, 18, 33,
+43, appendix letters kept; 431 delivered and 14 added labels, 445 in all;
+126, 65, 92, 66 references); the duplication notes; the merged bibliography;
+the transseries classifications (factorial cores with $\kappa_\vol=p,4,\tfrac12$
+and the first core-reversion coefficients). Corrected or made precise by the
+dated notes after Remarks~\ref{pwd:hm:rem:oeis} and~\ref{pwd:qt:rem:oeis}:
+A216966 and A227887 have no b-file beyond their displayed terms; the parity
+line is unsigned, hence by convention Hanna's. No other claim of the write or
+of the sources was found wrong or unproved.
+\end{writenote}
 \medskip
 \begingroup\small
 \noindent\emph{Reading conventions} (letters the Parts use differently, with
@@ -499,6 +525,20 @@ $\kappa r_3^3=0.24182181693786732206\ldots$ and amplitude
 $0.60382458700655692263\ldots$, A218221's posted constants. Nothing was
 submitted to the OEIS.
 \end{remark}
+\begin{writenote}[Independent check, a correction, 7 October 2026]
+A216966 and A227887 have no b-file: their entries carry no b-file link, and
+the OEIS synthesizes a ``b-file'' from the displayed data (the 15 terms
+$n=0,\dots,14$ of A216966 and the 14 terms $n=0,\dots,13$ of A227887). ``All
+b-file terms of A216966 \dots\ and A227887 agree'' therefore means agreement
+with those displayed terms only; the write's own moments to $n=400$ and
+$n=500$ have no external comparison beyond them (the check recomputed them
+by its own height-state walk, with the same values). A218221's b-file
+($0\le n\le198$, Kot\v e\v sovec) is a real one, and all its terms agree. The
+check also confirmed $d_p$, $\mathcal C_p$ against Kot\v e\v sovec's $d(s)$,
+$c(s)$ at $p=3,4$, and that~\eqref{pwd:hm:eq:polynomial-absolute} reproduces
+A218221's closed forms $32\sqrt3\pi^3/\Gamma(1/3)^9$ and
+$2^{15/2}3^{11/4}\pi^4/\Gamma(1/3)^{27/2}$ to 50 digits.
+\end{writenote}
 
 \section{Moment ratios and exact excursion deletion}\label{pwd:hm:sec:ratios}
 For the rest of this section assume \eqref{pwd:hm:eq:powerclass}. Write
@@ -1835,6 +1875,20 @@ $m_n$, found all 131 terms equal, and found the odd terms for $1\le n\le130$
 exactly at $n=1,2,4,8,16,32,64,128$. The moments $m_n$ are A227887, whose
 b-file also agrees. Nothing was submitted to the OEIS.
 \end{remark}
+\begin{writenote}[Independent check, two precisions, 7 October 2026]
+(i) ``Unattributed'' should read ``unsigned'': by OEIS convention an
+unsigned line of an entry is its author's, so the parity conjecture is Paul
+D.~Hanna's (the entry's only signed formula lines are Kot\v e\v sovec's). (ii) A227887
+has no b-file of its own (see the note after Remark~\ref{pwd:hm:rem:oeis}):
+``whose b-file also agrees'' means agreement with its 14 displayed terms.
+The check recomputed A338634 for $n\le130$ by Lagrange inversion of
+$x=uM(u)^2$, derived directly from the defining relation ($A=M(x/A^2)$), from
+its own $m_n$; all 131 terms of Hanna's b-file agree, the odd terms for
+$1\le n\le130$ are exactly at the powers of two, and the truncated defining
+continued fraction returns $1$ through $x^{40}$. The reduction modulo~2 in
+the proof of Theorem~\ref{pwd:qt:thm:parity} (the relation becomes
+$1=A-x/A$, so $A^2+A=x$, solved by $A=1+\sum_{j\ge0}x^{2^j}$) was re-derived.
+\end{writenote}
 
 \section{Matching quadruples and noncrossing closure}\label{pwd:qt:sec:combinatorics}
 A perfect matching on $[2n]=\{1,\ldots,2n\}$ has an \emph{opener} at the smaller endpoint of each edge and a closer at the larger endpoint. Consider ordered quadruples of perfect matchings with the same opener set. Scanning the vertices gives a common Dyck path: an opener raises the number of unmatched openers and a closer lowers it. At a closer of current height $h$, each matching independently chooses one of its $h$ unmatched earlier openers. Thus a fixed path has exactly $\prod_hh^{4N_h}$ decorations. This proves that $m_n$ counts all such quadruples.
