@@ -290,6 +290,7 @@ import GowersSzemeredi.Proofs16ExplicitFaces
 import GowersSzemeredi.Proofs16ExplicitBaseCase
 import GowersSzemeredi.Proofs16ExplicitDimensionTwo
 import GowersSzemeredi.Proofs18ExplicitQuarticInverse
+import GowersSzemeredi.Proofs16CorollaryLowDimensions
 import GowersSzemeredi.Proofs16StructuredExtraction
 import GowersSzemeredi.Proofs16BaseCaseZero
 import GowersSzemeredi.Proofs05ProgressionMoments
