@@ -1,3 +1,8 @@
+/-
+Modified for ProveIt: give common_coefficient_derivative_system a local
+400000-heartbeat budget for dependent quotient reduction on Lean 4.32.
+The upstream theorem statements and proof text are unchanged.
+-/
 /- Modified for ProveIt: import Lean 4.32 compatibility declarations.
 Statements and proofs are unchanged from the pinned upstream source. -/
 import OAI.Compat.Core
@@ -318,6 +323,7 @@ namespace Erdos3.NilpotentLieFiltration
 open Module
 open scoped Matrix TensorProduct
 
+set_option maxHeartbeats 400000 in
 theorem common_coefficient_derivative_system
     {σ ι L : Type*} [Fintype σ] [DecidableEq σ] {d : ℕ}
     [LieRing L] [LieAlgebra ℚ L] {s : ℕ}
