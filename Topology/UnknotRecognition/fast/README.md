@@ -11,8 +11,36 @@ the pipeline repeats the structural check before matrix filters. Cancelling
 pairs can expose homogeneity. Evidence under `seifert_after_reduction` describes
 the reduced diagram: replay `reidemeister_trace` with `fastunknot.simplify.replay`
 before passing that certificate to `verify_seifert_certificate`. An unchanged
-diagram is not checked twice. The integrated suite now has 626 passing tests
+diagram is not checked twice. The integrated suite now has 631 passing tests
 with the optional Regina dependency installed.
+
+`--group-relators` adds exact relator-overlap substitutions to the group
+certificate stage and enables it. It uses suffix automata to avoid expanding
+all cyclic rotations. The search chooses Whitehead moves first at six or
+fewer surviving generators and overlaps first at larger rank, with safe
+fallback when either search stalls. This empirical dispatch rule preserves
+all twelve original survivor traces and also certifies the two previously
+stalled mirrors.
+
+The 141-crossing Gordian example now has a **native, independently checked**
+certificate with 140 generator eliminations and one overlap substitution.
+In five paired runs it finishes at a median 1.212 seconds including replay,
+versus 1.708 seconds through Regina. Older controls time out at four seconds.
+It needs larger allowances than the default short probe:
+
+```sh
+python -B -m fastunknot recognize normal_research/gordian.json \
+  --group-relators --group-seconds 2 --group-max-work 10000000 --seconds 4
+```
+
+Python callers use `use_group=True, group_relators=True, group_seconds=2,
+group_max_work=10000000`. Replay a saved version-two certificate with
+`verify_group_certificate(diagram, certificate, max_work=10000000)`.
+Version-one certificates remain supported. This stage has no Regina dependency.
+See [`relator_overlap.tex`](../synthesis/relator_overlap.tex) for the
+normal-closure proof, suffix-automaton algorithm and conditional complexity
+bound. The mode remains optional and does not establish general
+sub-exponential recognition.
 
 `--group` (Python: `use_group=True`) tries a bounded knot-group certificate
 search after invariant filters. Exact generator eliminations and Whitehead

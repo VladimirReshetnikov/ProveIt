@@ -2,6 +2,25 @@
 
 The synthesized report on the six archives and on the new recognizer.
 
+`relator_overlap.tex` extends the native group certificate with a verified
+normal-closure-preserving relator substitution, found by suffix automata.
+The Gordian fixture now has a native certificate with 140 generator
+eliminations and one overlap move. The search adapts to surviving rank:
+Whitehead moves first through rank six, overlaps first above six, then the
+other search when needed. All twelve original survivor traces are preserved,
+and both formerly stalled mirror diagrams acquire group certificates.
+
+Two 580-query experiments record the initial overlap-first regression and
+the revised policy. In the adaptive run, Gordian completes 5/5 times at a
+median 1.212 seconds including independent replay, versus Regina's 1.708
+seconds; both older controls exhaust their four-second cap 5/5 times.
+On 24 survivor/mirror inputs, the sum of medians is 84.86 ms versus 84.17 ms
+for the prior group stage. The feature remains opt-in and establishes no
+general sub-exponential bound. The article also records why a new generic
+group-isomorphism preprint does not supply the missing knot-specific bound.
+All 631 maintained tests pass in 122.185 seconds with Regina installed; see
+`data/relator-adaptive-integrated-tests.txt`. The rebuilt article has 157 pages.
+
 `group_certificates.tex` adds a bounded, independently replayed positive
 recognizer based on reducing the complete Wirtinger presentation to one free
 generator. It derives the Whitehead minimum-cut search and its conditional

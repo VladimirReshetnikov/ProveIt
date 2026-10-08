@@ -137,13 +137,16 @@ def _image(x, a, subset):
     return ((-a,) if -x in subset else ()) + (x,) + ((a,) if x in subset else ())
 
 
-def group_certificate(diagram, *, check=lambda: None, max_letters=200000, max_work=2000000):
+def group_certificate(diagram, *, check=lambda: None, max_letters=200000, max_work=2000000,
+                      relator_moves=False):
     """Find a positive certificate, or None on a stalled search.
 
     Local size/work exhaustion raises GroupLimit. Caller cancellation is
     propagated. No relator is dropped except a verified defining relation.
     """
     budget = _Budget(check, max_letters, max_work)
+    if type(relator_moves) is not bool:
+        raise ValueError('relator_moves must be boolean')
     alive, words = _presentation(diagram, budget)
     moves = []
     while len(alive) > 1:
@@ -172,7 +175,22 @@ def group_certificate(diagram, *, check=lambda: None, max_letters=200000, max_wo
             alive.remove(g)
             moves.append(dict(kind='eliminate', relation=index, generator=g))
         else:
-            change, a, subset = _whitehead_move(words, budget)
+            # Small-rank cuts are cheap, and preserve the earlier successful
+            # paths. At larger rank, try linear-space overlap matching before
+            # paying for one flow per signed generator. Six is an empirical
+            # dispatch threshold, not a theorem about presentation complexity.
+            whitehead = (_whitehead_move(words, budget)
+                         if not relator_moves or len(alive) <= 6 else None)
+            if relator_moves and (whitehead is None or whitehead[0] >= 0):
+                from .relator_overlap import overlap_move, apply_overlap
+                move = overlap_move(words, budget)
+                if move is not None:
+                    apply_overlap(words, move, budget, _reduce)
+                    moves.append(move)
+                    continue
+            if whitehead is None:
+                whitehead = _whitehead_move(words, budget)
+            change, a, subset = whitehead
             if change >= 0:
                 return None
             before = sum(map(len, words))
@@ -185,7 +203,8 @@ def group_certificate(diagram, *, check=lambda: None, max_letters=200000, max_wo
     budget.tick()
     if any(words):
         return None
-    return dict(version=1, method='wirtinger-cyclic-group', status='UNKNOT',
+    return dict(version=2 if any(m['kind'] == 'relator' for m in moves) else 1,
+                method='wirtinger-cyclic-group', status='UNKNOT',
                 input_pd=[list(row) for row in diagram.pd], moves=moves,
                 remaining_generator=next(iter(alive)))
 
@@ -203,7 +222,7 @@ def verify_group_certificate(diagram, certificate, *, check=lambda: None,
     budget.tick()
     if (type(certificate) is not dict or set(certificate) != {
             'version', 'method', 'status', 'input_pd', 'moves', 'remaining_generator'}
-            or type(certificate['version']) is not int or certificate['version'] != 1
+            or type(certificate['version']) is not int or certificate['version'] not in (1, 2)
             or certificate['method'] != 'wirtinger-cyclic-group'
             or certificate['status'] != 'UNKNOT'
             or certificate['input_pd'] != [list(row) for row in diagram.pd]
@@ -304,6 +323,38 @@ def verify_group_certificate(diagram, certificate, *, check=lambda: None,
             images = {g: value, -g: [-x for x in reversed(value)]}
             words[index] = []
             alive.remove(g)
+        elif kind == 'relator':
+            if certificate['version'] != 2:
+                return False
+            if set(move) != {'kind', 'target', 'donor', 'target_rotation',
+                             'donor_rotation', 'inverse', 'overlap'}:
+                return False
+            target, donor = move['target'], move['donor']
+            if (type(target) is not int or type(donor) is not int or target == donor
+                    or not 0 <= target < len(words) or not 0 <= donor < len(words)
+                    or not words[target] or not words[donor]
+                    or type(move['inverse']) is not bool):
+                return False
+            offset, start, overlap = move['target_rotation'], move['donor_rotation'], move['overlap']
+            if (type(offset) is not int or not 0 <= offset < len(words[target])
+                    or type(start) is not int or not 0 <= start < len(words[donor])
+                    or type(overlap) is not int or not 0 < overlap <= min(len(words[target]), len(words[donor]))):
+                return False
+            # Read both cyclic words via indices, independent of the producer's
+            # automaton, rotations and application helper. A donor must remain.
+            left = [words[target][(offset+k) % len(words[target])] for k in range(len(words[target]))]
+            size = len(words[donor])
+            if move['inverse']:
+                right = [-words[donor][size-1-(start+k) % size] for k in range(size)]
+            else:
+                right = [words[donor][(start+k) % size] for k in range(size)]
+            budget.tick(len(left)+len(right))
+            if any(left[k] != right[k] for k in range(overlap)):
+                return False
+            budget.size(sum(map(len, words))+len(right)-2*overlap)
+            words[target] = normalize([-right[k] for k in range(len(right)-1, overlap-1, -1)]
+                                      + left[overlap:])
+            continue
         elif kind == 'whitehead':
             if set(move) != {'kind', 'multiplier', 'subset'}:
                 return False
@@ -338,7 +389,7 @@ def verify_group_certificate(diagram, certificate, *, check=lambda: None,
 
 
 def group_decide(diagram, *, seconds=0.05, max_letters=200000, max_work=2000000,
-                 check=lambda: None):
+                 relator_moves=False, check=lambda: None):
     """Bounded search AND independent verification sharing one wall allowance."""
     from math import isfinite
     start = monotonic()
@@ -353,7 +404,8 @@ def group_decide(diagram, *, seconds=0.05, max_letters=200000, max_work=2000000,
             raise GroupLimit('group local time allowance exhausted')
 
     try:
-        certificate = group_certificate(diagram, check=tick, max_letters=max_letters, max_work=max_work)
+        certificate = group_certificate(diagram, check=tick, max_letters=max_letters, max_work=max_work,
+                                        relator_moves=relator_moves)
         if certificate is not None:
             valid = verify_group_certificate(diagram, certificate, check=tick,
                                               max_letters=max_letters, max_work=max_work)
