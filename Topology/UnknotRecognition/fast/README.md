@@ -1,5 +1,27 @@
 # fastunknot 0.3.0: braid and structural certificates with optional shared backends
 
+`fastunknot.interval_orbits.count_orbits` now counts equivalence classes of
+binary-encoded interval pairings without expanding their points. The default
+uses the sharp Fine–Wilf periodic merger; `periodic_rule='aht'` retains the
+classical threshold. `max_cycles` counts begun cycles, and exhaustion returns
+no count. Optional callbacks provide cooperative cancellation.
+
+`fastunknot.normal_surface_orbits.normal_surface_topology` validates a supplied
+finite, compact, connected, orientable triangulation with one torus boundary
+and admissible seven-coordinate normal surfaces. It returns component and
+orientation counts, boundary count, total Euler characteristic, and whether a
+connected supplied disc has essential boundary. All three orbit queries share
+one allowance. It does not certify correspondence with an input knot diagram.
+Ordinary recognition does not dispatch this interface. The theory and remaining
+geometry obligations are in [`interval_orbits.tex`](../synthesis/interval_orbits.tex).
+All 805 maintained tests pass with Regina. Reproduce the component measurements
+with `python -B benchmark_orbits.py --output results/orbits.json`; the committed
+run is `results/orbits_20261008.json`, with shuffled classical/sharp/A/A arms.
+
+The existing normal-surface worker also stages UTF-8 request and result streams
+in temporary files. This avoids losing partially written pipe input after a
+timeout, while preserving cooperative deadlines and child/stream cleanup.
+
 Explicit overlap search now skips donors whose lengths cannot exceed the
 best guaranteed shortening already found, and stops a donor scan when its
 upper bound is attained. This preserves the complete selected witness and

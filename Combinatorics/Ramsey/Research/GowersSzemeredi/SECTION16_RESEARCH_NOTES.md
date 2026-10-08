@@ -601,6 +601,130 @@ Theorem 1.4, is not absorbed. Two things therefore remain open:
 - the bridge from bihomomorphisms on dense pieces to
   `CubicStackableClass` members.
 
+## K. Where every route to Theorems 18.2 and 18.7 meets (2026-10-08)
+
+The user's goal changed on 2026-10-08: proofs of the final results, by any
+formalization path. This part records where the available paths stand. It
+draws on `PORT_CONSTANTS_SURVEY.md`.
+
+### K.1 The openai/math port cannot reach them (proved by inspection)
+
+The port's descent increments only sets of density below about κ²/2 < 1/2.
+Its relative lift needs `2a ≤ mean` and target `≤ 1`, and its amplified
+levels need `H²a ≤ 1`. Its dense case is a black-box Szemerédi theorem
+(hypergraph removal, tower/Ackermann constants).
+
+Explicitizing the port therefore reduces 18.2 and 18.7 to a **quantitative
+dense Szemerédi theorem**. For example, sets of density 1/2 in [N] contain
+k-APs once N ≥ 2^2^2^2^2^(k+9). That statement is Gowers's.
+
+### K.2 The paper's own chain does not supply polynomial bounds (transcription-based)
+
+**(γ, r)-multiple multilinearity** (§16 definition, transcription line 3342)
+asks for boxes of width m^(c(θ/r,γ,k)^r) and at most q(θ/r,γ,k)^r functions.
+
+- The exponent r is forced. Lemma 16.8 (r sets of parameter s give
+  parameter rs) refines partitions sequentially, so the exponents compound.
+- Theorem 16.2 gives r = γ⁻²·s(θ,γ,k) = poly(1/θ).
+- So Corollary 16.11's density and width exponent are
+  c_* = (α/8)·c(α/(8r), α/2, k)^r = exp(−poly(1/α)).
+- The printed (α/2)^(2^2^(k+8)) would need r = O(1). That is, it would need
+  one (γ,1)-multiply multilinear piece of polynomial mass, which is what
+  printed Lemma 16.10 asserts. That encoding is formally refuted
+  (`lemma_16_10_printed_unit_encoding`, at k = θ = γ = 1).
+- The transcription's editorial note at Corollary 16.11 already records
+  that the printed comparison runs the wrong way.
+
+Consequences:
+- With c_* = exp(−poly), the density iteration needs n = exp(poly(1/δ))
+  steps, and the threshold is triple exponential (Part I).
+- So as far as this project can reconstruct it, the paper does not
+  establish Theorem 18.1 at degree ≥ 3 with its printed exponent. Nor does it
+  establish Theorems 18.2 and 18.7 at k ≥ 6 with their printed thresholds.
+  Lengths up to 5 avoid §16 in higher dimensions and are proved
+  (`theorem_18_2_le_five`).
+
+**Caveat.** The original was not consulted. Gowers's page offers only
+`sz898.dvi` and `gafasz.ps`. The ^r reading rests on the transcription and
+on its forced role in Lemma 16.8. No published erratum was found
+(web search, 2026-10-08).
+
+### K.3 What would close 18.2 and 18.7 for every k
+
+- **Polynomial Corollary 16.11 in every dimension.** For φ with the γ-product
+  property on a set of density α in Z_N^d, one needs a box of width
+  N^(poly(α)) and a multilinear map agreeing with φ on poly(α) of it. This is
+  a polynomial-bound inverse theorem for Freiman multi-homomorphisms
+  over Z_N.
+- **Known bounds.**
+  - d = 1: polynomial; this is Gowers's §7.
+  - d ≥ 2: iterated exponential (Gowers–Milićević 2020).
+  - d = 2: quasi-polynomial (Milićević 2026).
+- **Quasi-polynomial is not enough for 18.2.** It gives n = exp(polylog(1/δ))
+  iterations. The threshold exp exp exp(polylog(1/δ)) exceeds 2^2^(δ^(−M))
+  as δ → 0 whenever the polylog exponent exceeds 1.
+- **Corollary 18.7 is different:** it is the single density 1/2, so for each
+  fixed k it is a numerical comparison of constants with no asymptotics in
+  δ. K.4 settles k = 6: the proved structure does not fit, and the input
+  that would fit is a trilinear inverse theorem that is not available.
+
+### K.4 Corollary 18.7 at k = 6 from the proved dimension-two structure: no (proved by definitions)
+
+Route: `quartic_function_inverse_explicit`, then
+`theorem_18_2_of_function_discrepancy_budget`'s mechanism at δ = 1/2, then
+`corollary_18_7_at_of_half_density`.
+
+**The discrepancy parameter.**
+- The input is α = `intervalUniformityParameter (1/2) 6`
+  = (2⁻⁶/(512·216))^32 ≈ 2^(−728).
+- The parameter is β = `jointStructuralInverseParameter 2 α`. It is at most
+  `section16JointFrequencyDensity α' 2` = (α'/8)/G with α' ≤ α
+  (`jointPowerLocalizationParameter`; the other factors are ≤ 1).
+- G ≥ `section16UniformLiftGraphBudget` ≥ multipleQ(x, γ, 2)^(r·s), where
+  r ≥ 1, γx ≤ 1/2, so multipleQ ≥ 2^(2^1024).
+- Here s = `section16PowerSliceBudget (α/4) (α/2) 2`
+  = (4/α²)·multipleS(α/64, α/2, 2) ≥ (256/α²)^(2^256).
+- Hence log₂(1/β) ≥ 2^1024·s ≥ 2^(1464·2^256).
+
+**The comparison.**
+- `intervalDiscrepancyClosedThreshold` ≥ exp(2^n) with n = ⌈8/β⌉, so its
+  log₂ log₂ is at least 8/β, i.e. about 2^(2^(1464·2^256)).
+- `szemerediThreshold (1/2) 6` = 2^2^2^M with M = 2^32768, so its
+  log₂ log₂ is 2^M = 2^(2^32768).
+- The shortfall is at the third exponential level. No adjustment of
+  constants closes it.
+
+**What would close it.** G is the budget of the *joint* frequency box.
+
+- `section16_joint_frequency_box` at k = 2 takes degree-4 non-uniformity
+  to a box in Z_N^3. The frequency function there has **three** variables.
+  It is built from dimension-≤ 2 structure (Theorem 16.2 at dimensions 1
+  and 2) by the lift, which is where exp(poly) enters (Parts B and H).
+- The needed input is therefore a structure theorem for three-variable
+  (Freiman trihomomorphism-type) frequency functions. A single dense
+  multilinear piece of density c(α) is enough; it does not have to be lifted
+  from dimension two.
+- **Polynomial** c(α) = α^D fits whenever D ≲ 2^32768/728.
+- **Quasi-polynomial** c(α) = exp(−C·log^A(1/α)) fits whenever A ≲ 3400,
+  with moderate C.
+
+**Correction (same day).** An earlier version of this paragraph proposed
+Milićević's 2026 theorem as that input. It is not. That theorem
+(arXiv:2601.01682) is a quasi-polynomial **U⁴** inverse theorem, built on a
+structure result for two-variable Freiman **bi**homomorphisms. Two
+variables correspond to degree 3, i.e. five-term progressions, which are
+already proved here (`theorem_18_2_le_five`). Six-term progressions need
+the trilinear case, and no quasi-polynomial bound is known for it
+(Gowers–Milićević 2020: iterated exponential).
+
+Feeding a quasi-polynomial two-variable count into the lift does not
+help either. Lemma 16.1's width exponent is exponential in the graph count
+(Part B). Then log₂(1/β) ≈ exp(728^A) ≫ 2^32768 for every A ≥ 2.
+
+So **Corollary 18.7 at k = 6, like the all-k statements, needs a
+quasi-polynomial (or better) trilinear inverse input that the literature
+does not provide.**
+
 ## F. Routes
 
 1. **Quantitative repair (research).**

@@ -47,6 +47,12 @@ modification times.
 | `39/` | `unknot_su2_degree_budget_20261008.zip` | `su2budget` package (`39/code/`) | degree-budgeted SU(2) feasibility reduction; polynomial two-meridian traceless test on compressed presentations | — | not run |
 | `40/` | `unknot_port_register_20261008.zip` | research backend (`40/src/`, `40/integration/`) | singular-safe port compression: exact F_2 homology of template-plus-low-rank differentials with finite-state multiplicity registers | — | not run |
 | `41/` | `unknot_integral_shears_20261008.zip` | `shear_kernel` package with integration material (`41/shear_kernel/`, `41/integration/`) | integral tension kernels: exact minimum-length integral shears by capacity-scaling circulation, with an independent primal-dual verifier | — | not run |
+| `42/` | `unknot_affine_families_20261008.zip` | source changes and patches (`42/source/`, `42/patches/`) | affine families and inherited structure: three exact improvements with a claim ledger | — | not run |
+| `43/` | `unknot_whitehead_exposure_20261008.zip` | opt-in package with integration notes (`43/src/`, `43/integration/`) | certified Whitehead exposure beyond length descent | — | not run |
+| `44/` | `unknot_dynamic_terminal_20261008.zip` | terminal-update code (`44/terminal_updates/`, `44/integration/`) | rank-two terminal contractions of anchored partitions; singularity-safe modular observers | — | not run |
+| `45/` | `unknot_christoffel_20261008.zip` | code with integration material (`45/code/`, `45/integration/`) | compressed Christoffel width; exact compressed primitive-power test and torsion-free elimination | — | 22 test methods and both saved examples reproduced; native terminal integration pending |
+| `46/` | `ProveIt_Unknot_Quotient_Kernels_20261008.zip` | repository overlay and `integration.patch` (`46/repo_overlay/`) | exact quotient kernels: three local improvements with whole-query measurements | — | orbit/topology and worker subset integrated; 805 maintained tests pass; full overlay not rerun |
+| `47/` | `unknot_native_orbits_20261008.zip` | source snapshot and integration patch (`47/snapshot/`) | native normal-orbit research with an article, raw data and representative certificates | — | not run |
 
 Archives `01/`–`06/` each contain a README, a LaTeX report with PDF under
 `docs/`, examples, recorded results, and a standard-library-only Python package.
@@ -74,12 +80,14 @@ ship a patch against `../fast/` and a pinned copy of the project under
 `research/twist-continuation-20261008/` as its home; it is kept here as
 delivered.
 
-`35/`–`41/` were placed the same way on 8 October 2026, numbered by arrival
+`35/`–`47/` were placed the same way on 8 October 2026, numbered by arrival
 commit (`36/` before `37/` within one commit, by member times). Their
 checksum files are dropped; the delivered self-check scripts that read them
 (`35/scripts/reproduce.py`, `36/verify_release.py`,
-`37/code/check_manifest.py`, `40/scripts/checksums.py`) therefore report the
-manifest absent.
+`37/code/check_manifest.py`, `40/scripts/checksums.py`,
+`42/scripts/check_hashes.py`, `44/scripts/verify_manifest.py`,
+`45/verify_manifest.py`, `46/verify_package.py`, `47/verify_bundle.py`)
+therefore report the manifest absent.
 `37/results/benchmark_medians.csv` is stored with LF. Each delivery states
 that it does not prove general quasi-polynomial recognition.
 

@@ -1,0 +1,641 @@
+{
+  "schema": "research_source_hash_audit_v1",
+  "baseline_commit": "58ee11a97d5fd7f21647c57eefaf3ecc007931d6",
+  "paths_relative_to": "Topology/UnknotRecognition",
+  "scope": "Static AST/path inspection, recorded digest comparison and pinned Git dependency checks; no benchmarks or tests executed.",
+  "status": "PASS_WITH_NOTES",
+  "counts": {
+    "recorded_digest_checks": 26,
+    "matching_recorded_digests": 26,
+    "source_mismatches": 0,
+    "static_python_files": 11,
+    "critical_dependencies": 24
+  },
+  "benchmarks": [
+    {
+      "name": "coefficient",
+      "script": "fast/benchmark_coefficient_span.py",
+      "evidence": "fast/coefficient_research/results.json",
+      "evidence_sha256": "4ad2fedfbf8a4c79d21c5ab5c1cb3d45a21d8a534bc70d61f305956c7cf74c52",
+      "source_hash_semantics": "Relevant modules compared before and after timing; benchmark script digest stored at end.",
+      "raw_data": {
+        "cases": 11,
+        "measured_round_records": 128,
+        "retains_arm_order": true,
+        "retains_elapsed_samples": true,
+        "warmup_elapsed_samples_retained": false,
+        "note": "Warmups are executed and excluded; their raw elapsed times are not stored."
+      }
+    },
+    {
+      "name": "cyclic_overlap",
+      "script": "fast/cyclic_overlap_research/benchmark.py",
+      "evidence": "fast/cyclic_overlap_research/results.json",
+      "evidence_sha256": "ed7ae3116c89a294e0bcf716cf027f4c80b6bcf48523e6a0bb0e4ecb97d7e89b",
+      "source_hash_semantics": "Listed modules and benchmark script frozen before timing and compared afterward.",
+      "raw_data": {
+        "actual_diagrams": 19,
+        "kernel_cases": 5,
+        "measured_whole_queries": 760,
+        "measured_kernel_queries": 60,
+        "retains_arm_order": true,
+        "retains_elapsed_samples": true,
+        "retains_excluded_warmups": true,
+        "complete_certificates": 15
+      }
+    },
+    {
+      "name": "interval",
+      "script": "fast/interval_research/benchmark.py",
+      "evidence": "fast/interval_research/results.json",
+      "evidence_sha256": "39f4cfa678240b8e36dad30c3f580b9f7905b58847de7ffe7107b908eecaf8b4",
+      "source_hash_semantics": "Kernel and benchmark script frozen before timing and compared afterward.",
+      "raw_data": {
+        "cases": 49,
+        "elapsed_samples": 147,
+        "retains_elapsed_samples": true,
+        "randomized_arm_order": false,
+        "warmup_exclusion": false,
+        "note": "Sequential structural scaling experiment; explicit DSU controls have one sample."
+      }
+    },
+    {
+      "name": "normal_surface",
+      "script": "fast/normal_orbit_research/benchmark.py",
+      "evidence": "fast/normal_orbit_research/results.json",
+      "evidence_sha256": "b7fd3306693f44b91affebc1ec8092c1d9726ca3258ec50affd74a8c12311f7c",
+      "source_hash_semantics": "Listed module and script digests stored after timing; no automatic before/after assertion.",
+      "raw_data": {
+        "normal_cases": 8,
+        "scaling_cases": 5,
+        "retains_elapsed_samples": true,
+        "randomized_arm_order": true,
+        "explicit_order_arrays_retained": false,
+        "order_reconstructible_from_seed_and_script": true,
+        "excluded_warmup_elapsed_samples_retained": false,
+        "note": "Per-arm lists preserve round indices; the seeded arm order is reconstructible, not explicitly stored."
+      }
+    }
+  ],
+  "source_checks": [
+    {
+      "evidence": "fast/coefficient_research/results.json",
+      "source": "fast/fastunknot/scalar_split.py",
+      "recorded_sha256": "60352efa795851b7935c1898e3d959c28007ef1e6035d34e676b5c50878ab84e",
+      "observed_sha256": "60352efa795851b7935c1898e3d959c28007ef1e6035d34e676b5c50878ab84e",
+      "matches": true,
+      "basis": "recorded source digest",
+      "field": "source_hashes"
+    },
+    {
+      "evidence": "fast/coefficient_research/results.json",
+      "source": "fast/fastunknot/coefficient_span.py",
+      "recorded_sha256": "be0261428c73c54eb38e384995d9af0b4ef480282a3c62e19937bc735c7fdae6",
+      "observed_sha256": "be0261428c73c54eb38e384995d9af0b4ef480282a3c62e19937bc735c7fdae6",
+      "matches": true,
+      "basis": "recorded source digest",
+      "field": "source_hashes"
+    },
+    {
+      "evidence": "fast/coefficient_research/results.json",
+      "source": "fast/fastunknot/corner_split.py",
+      "recorded_sha256": "672678111de1c3e0682bc9665c07ceb4e58e6dc8ff9a3402e7b8b815d7346cb7",
+      "observed_sha256": "672678111de1c3e0682bc9665c07ceb4e58e6dc8ff9a3402e7b8b815d7346cb7",
+      "matches": true,
+      "basis": "recorded source digest",
+      "field": "source_hashes"
+    },
+    {
+      "evidence": "fast/coefficient_research/results.json",
+      "source": "fast/fastunknot/primary_split.py",
+      "recorded_sha256": "95bfa9d6a33f8b63d0893319e08e0f59d2a17d376ae6bde2f30f85b83d7da1df",
+      "observed_sha256": "95bfa9d6a33f8b63d0893319e08e0f59d2a17d376ae6bde2f30f85b83d7da1df",
+      "matches": true,
+      "basis": "recorded source digest",
+      "field": "source_hashes"
+    },
+    {
+      "evidence": "fast/coefficient_research/results.json",
+      "source": "fast/fastunknot/recovered_grading.py",
+      "recorded_sha256": "3b6cbd631925f4b1fecf0b582307de68b3967c4d85dea502c24143418c6aa96d",
+      "observed_sha256": "3b6cbd631925f4b1fecf0b582307de68b3967c4d85dea502c24143418c6aa96d",
+      "matches": true,
+      "basis": "recorded source digest",
+      "field": "source_hashes"
+    },
+    {
+      "evidence": "fast/coefficient_research/results.json",
+      "source": "fast/primary_research/families.py",
+      "recorded_sha256": "dce86dd56a3351e5f07d5e8e92df8fe3dfa8d99df0c5742dbcefaa87b38b11ec",
+      "observed_sha256": "dce86dd56a3351e5f07d5e8e92df8fe3dfa8d99df0c5742dbcefaa87b38b11ec",
+      "matches": true,
+      "basis": "recorded source digest",
+      "field": "source_hashes"
+    },
+    {
+      "evidence": "fast/coefficient_research/results.json",
+      "source": "fast/benchmark_coefficient_span.py",
+      "recorded_sha256": "4fd33b2b31d6186e7c8880408909378e75b63dab2f2a0a10b15e032258052982",
+      "observed_sha256": "4fd33b2b31d6186e7c8880408909378e75b63dab2f2a0a10b15e032258052982",
+      "matches": true,
+      "basis": "recorded source digest",
+      "field": "benchmark_sha256"
+    },
+    {
+      "evidence": "fast/cyclic_overlap_research/results.json",
+      "source": "fast/fastunknot/relator_overlap.py",
+      "recorded_sha256": "560e3f5518a2ae923f48d1fb38eee960c2424235d4f28a4418cd0668b39cec4e",
+      "observed_sha256": "560e3f5518a2ae923f48d1fb38eee960c2424235d4f28a4418cd0668b39cec4e",
+      "matches": true,
+      "basis": "recorded source digest",
+      "field": "source_sha256"
+    },
+    {
+      "evidence": "fast/cyclic_overlap_research/results.json",
+      "source": "fast/fastunknot/cyclic_overlap_index.py",
+      "recorded_sha256": "2b2f4dfa043383726963863de24545adbbc41875d4d16c4171c252521808afc5",
+      "observed_sha256": "2b2f4dfa043383726963863de24545adbbc41875d4d16c4171c252521808afc5",
+      "matches": true,
+      "basis": "recorded source digest",
+      "field": "source_sha256"
+    },
+    {
+      "evidence": "fast/cyclic_overlap_research/results.json",
+      "source": "fast/fastunknot/group_certificate.py",
+      "recorded_sha256": "f170c807b06d754859dd2455616256340e4edbb3a544542115d36e67d9e28c30",
+      "observed_sha256": "f170c807b06d754859dd2455616256340e4edbb3a544542115d36e67d9e28c30",
+      "matches": true,
+      "basis": "recorded source digest",
+      "field": "source_sha256"
+    },
+    {
+      "evidence": "fast/cyclic_overlap_research/results.json",
+      "source": "fast/fastunknot/compressed_search.py",
+      "recorded_sha256": "8d8b8ec12b8d1bab817e1e6e5cd2eedfd9eec4d071567974fd51a536b616f20a",
+      "observed_sha256": "8d8b8ec12b8d1bab817e1e6e5cd2eedfd9eec4d071567974fd51a536b616f20a",
+      "matches": true,
+      "basis": "recorded source digest",
+      "field": "source_sha256"
+    },
+    {
+      "evidence": "fast/cyclic_overlap_research/results.json",
+      "source": "fast/fastunknot/compressed_group.py",
+      "recorded_sha256": "ac4d8bb76532ace7e27340ec4d0e89df72dcf479f85ca69a8172dcb09220cbac",
+      "observed_sha256": "ac4d8bb76532ace7e27340ec4d0e89df72dcf479f85ca69a8172dcb09220cbac",
+      "matches": true,
+      "basis": "recorded source digest",
+      "field": "source_sha256"
+    },
+    {
+      "evidence": "fast/cyclic_overlap_research/results.json",
+      "source": "fast/fastunknot/diagram.py",
+      "recorded_sha256": "729c74dcad9e5df72a5533ae8386ccfcfa6e968305ff4f0f5b504d8e27c04511",
+      "observed_sha256": "729c74dcad9e5df72a5533ae8386ccfcfa6e968305ff4f0f5b504d8e27c04511",
+      "matches": true,
+      "basis": "recorded source digest",
+      "field": "source_sha256"
+    },
+    {
+      "evidence": "fast/cyclic_overlap_research/results.json",
+      "source": "fast/fastunknot/recognize.py",
+      "recorded_sha256": "00819607f85cdd28477f8f9a4ab2bb77b3edd22aa68e5685b9cc156323e75441",
+      "observed_sha256": "00819607f85cdd28477f8f9a4ab2bb77b3edd22aa68e5685b9cc156323e75441",
+      "matches": true,
+      "basis": "recorded source digest",
+      "field": "source_sha256"
+    },
+    {
+      "evidence": "fast/cyclic_overlap_research/results.json",
+      "source": "fast/benchmark_compressed_words.py",
+      "recorded_sha256": "4e6bf90201dc3d175c1643eac86c4cfd79fabed621d5fbfb3e557a52b4993e1a",
+      "observed_sha256": "4e6bf90201dc3d175c1643eac86c4cfd79fabed621d5fbfb3e557a52b4993e1a",
+      "matches": true,
+      "basis": "recorded source digest",
+      "field": "source_sha256"
+    },
+    {
+      "evidence": "fast/cyclic_overlap_research/results.json",
+      "source": "fast/hard_unknots.py",
+      "recorded_sha256": "c545ca197c0b3aea53394f742340c9d29b3097dc6a6f07efa0c08f83ab41b722",
+      "observed_sha256": "c545ca197c0b3aea53394f742340c9d29b3097dc6a6f07efa0c08f83ab41b722",
+      "matches": true,
+      "basis": "recorded source digest",
+      "field": "source_sha256"
+    },
+    {
+      "evidence": "fast/cyclic_overlap_research/results.json",
+      "source": "fast/normal_research/gordian.json",
+      "recorded_sha256": "e60c094abb3542dfa607ce37868b8c176654421f27ceb513a34cccd1b51d47d5",
+      "observed_sha256": "e60c094abb3542dfa607ce37868b8c176654421f27ceb513a34cccd1b51d47d5",
+      "matches": true,
+      "basis": "recorded source digest",
+      "field": "source_sha256"
+    },
+    {
+      "evidence": "fast/cyclic_overlap_research/results.json",
+      "source": "fast/cyclic_overlap_research/benchmark.py",
+      "recorded_sha256": "3f6ce58d11cc1b1cacce1a5bf1178671f35ecd65e229e674287d90c70d517b68",
+      "observed_sha256": "3f6ce58d11cc1b1cacce1a5bf1178671f35ecd65e229e674287d90c70d517b68",
+      "matches": true,
+      "basis": "recorded source digest",
+      "field": "source_sha256"
+    },
+    {
+      "evidence": "fast/interval_research/results.json",
+      "source": "fast/fastunknot/interval_orbits.py",
+      "recorded_sha256": "a4e8bf07b921851965322b9193c1eacb243aebbaaddeaff581fb04ae9e68a822",
+      "observed_sha256": "a4e8bf07b921851965322b9193c1eacb243aebbaaddeaff581fb04ae9e68a822",
+      "matches": true,
+      "basis": "recorded source digest",
+      "field": "source_sha256"
+    },
+    {
+      "evidence": "fast/interval_research/results.json",
+      "source": "fast/interval_research/benchmark.py",
+      "recorded_sha256": "39bc7b35bf655b0578006c12f2c14ce93191c418ea0cbe8cf2e559a73f4a8d1b",
+      "observed_sha256": "39bc7b35bf655b0578006c12f2c14ce93191c418ea0cbe8cf2e559a73f4a8d1b",
+      "matches": true,
+      "basis": "recorded source digest",
+      "field": "source_sha256"
+    },
+    {
+      "evidence": "fast/normal_orbit_research/results.json",
+      "source": "fast/fastunknot/normal_surface_orbits.py",
+      "recorded_sha256": "e8850027af9604226330e4fbf8fe93379f91a1c590c33c1411d498b91fe97cad",
+      "observed_sha256": "e8850027af9604226330e4fbf8fe93379f91a1c590c33c1411d498b91fe97cad",
+      "matches": true,
+      "basis": "recorded source digest",
+      "field": "source_sha256"
+    },
+    {
+      "evidence": "fast/normal_orbit_research/results.json",
+      "source": "fast/fastunknot/interval_orbits.py",
+      "recorded_sha256": "a4e8bf07b921851965322b9193c1eacb243aebbaaddeaff581fb04ae9e68a822",
+      "observed_sha256": "a4e8bf07b921851965322b9193c1eacb243aebbaaddeaff581fb04ae9e68a822",
+      "matches": true,
+      "basis": "recorded source digest",
+      "field": "source_sha256"
+    },
+    {
+      "evidence": "fast/normal_orbit_research/results.json",
+      "source": "fast/normal_orbit_research/benchmark.py",
+      "recorded_sha256": "1ab83bcd17cd3ba4457e1b77268b6084b67d66545bb3a4d2c7e022977ca64d93",
+      "observed_sha256": "1ab83bcd17cd3ba4457e1b77268b6084b67d66545bb3a4d2c7e022977ca64d93",
+      "matches": true,
+      "basis": "recorded source digest",
+      "field": "source_sha256"
+    },
+    {
+      "evidence": "fast/normal_orbit_research/results.json",
+      "source": "fast/normal_orbit_research/fixtures.py",
+      "recorded_sha256": "df8852c65edc8c56feb3f973214acf21ec1d16921b599d8f4b70fd3a71266f3f",
+      "observed_sha256": "df8852c65edc8c56feb3f973214acf21ec1d16921b599d8f4b70fd3a71266f3f",
+      "matches": true,
+      "basis": "recorded source digest",
+      "field": "source_sha256"
+    },
+    {
+      "evidence": "fast/cyclic_overlap_research/results.json",
+      "source": "58ee11a97d5fd7f21647c57eefaf3ecc007931d6:Topology/UnknotRecognition/fast/fastunknot/relator_overlap.py",
+      "recorded_sha256": "3a3cb9b278f4461ee86ec08a20887c1cf7cfb44915209de2c50e0b2b5bb81273",
+      "observed_sha256": "3a3cb9b278f4461ee86ec08a20887c1cf7cfb44915209de2c50e0b2b5bb81273",
+      "matches": true,
+      "basis": "pinned Git object"
+    },
+    {
+      "evidence": "fast/cyclic_overlap_research/calibration_results.json",
+      "source": "fast/cyclic_overlap_research/calibration_index.py",
+      "recorded_sha256": "e61e16ef7b934a2a6161a6de940cf719f1cd53ecaa649d529bcfd1912dd5e5eb",
+      "observed_sha256": "e61e16ef7b934a2a6161a6de940cf719f1cd53ecaa649d529bcfd1912dd5e5eb",
+      "matches": true,
+      "basis": "archived calibration variant",
+      "recorded_source": "fastunknot/cyclic_overlap_index.py"
+    }
+  ],
+  "static_python_checks": [
+    {
+      "source": "fast/benchmark_coefficient_span.py",
+      "sha256": "4fd33b2b31d6186e7c8880408909378e75b63dab2f2a0a10b15e032258052982",
+      "ast_parses": true,
+      "personal_absolute_path_hits": []
+    },
+    {
+      "source": "fast/cyclic_overlap_research/benchmark.py",
+      "sha256": "3f6ce58d11cc1b1cacce1a5bf1178671f35ecd65e229e674287d90c70d517b68",
+      "ast_parses": true,
+      "personal_absolute_path_hits": []
+    },
+    {
+      "source": "fast/interval_research/benchmark.py",
+      "sha256": "39bc7b35bf655b0578006c12f2c14ce93191c418ea0cbe8cf2e559a73f4a8d1b",
+      "ast_parses": true,
+      "personal_absolute_path_hits": []
+    },
+    {
+      "source": "fast/normal_orbit_research/benchmark.py",
+      "sha256": "1ab83bcd17cd3ba4457e1b77268b6084b67d66545bb3a4d2c7e022977ca64d93",
+      "ast_parses": true,
+      "personal_absolute_path_hits": []
+    },
+    {
+      "source": "fast/tests/test_coefficient_span.py",
+      "sha256": "e344149d8ba75aa87d2a5cac6db67f2ed4724dd76b988a4a2b8dbf8438cbd683",
+      "ast_parses": true,
+      "personal_absolute_path_hits": []
+    },
+    {
+      "source": "fast/tests/test_cyclic_overlap_index.py",
+      "sha256": "32f098ac9ddd61562b6990ed40a0326f143c00af3f37ee6a4e3a439f6caeacc3",
+      "ast_parses": true,
+      "personal_absolute_path_hits": []
+    },
+    {
+      "source": "fast/tests/test_interval_orbits.py",
+      "sha256": "e9c55c3e1e16a036e4e30e0024cb6cc12ed0761b6000b6754f1f2620ded97dd1",
+      "ast_parses": true,
+      "personal_absolute_path_hits": []
+    },
+    {
+      "source": "fast/tests/test_normal_surface_orbits.py",
+      "sha256": "d3a5d5be4ba28a569f0ad5afcf8d2ca93fb0849cdd9a85b02d4e8b6d4651dbc7",
+      "ast_parses": true,
+      "personal_absolute_path_hits": []
+    },
+    {
+      "source": "fast/normal_orbit_research/fixtures.py",
+      "sha256": "df8852c65edc8c56feb3f973214acf21ec1d16921b599d8f4b70fd3a71266f3f",
+      "ast_parses": true,
+      "personal_absolute_path_hits": []
+    },
+    {
+      "source": "fast/cyclic_overlap_research/make_summary.py",
+      "sha256": "e0452e6d703c2a5f64904e6b72faaba30063bc336280972493326f2839ef33c2",
+      "ast_parses": true,
+      "personal_absolute_path_hits": []
+    },
+    {
+      "source": "research/20261008_quotient_kernels/render_results.py",
+      "sha256": "cd89842e84e10da6e1194448d8baa60056b32f53c2afa5cec77e032c3edab44c",
+      "ast_parses": true,
+      "personal_absolute_path_hits": []
+    }
+  ],
+  "repository_dependencies": [
+    {
+      "path": "fast/primary_research/families.py",
+      "exists": true,
+      "current_sha256": "dce86dd56a3351e5f07d5e8e92df8fe3dfa8d99df0c5742dbcefaa87b38b11ec",
+      "present_at_pinned_commit": true,
+      "delivery": "inherited from pinned checkout",
+      "baseline_sha256": "dce86dd56a3351e5f07d5e8e92df8fe3dfa8d99df0c5742dbcefaa87b38b11ec",
+      "matches_pinned_bytes": true
+    },
+    {
+      "path": "fast/benchmark_compressed_words.py",
+      "exists": true,
+      "current_sha256": "4e6bf90201dc3d175c1643eac86c4cfd79fabed621d5fbfb3e557a52b4993e1a",
+      "present_at_pinned_commit": true,
+      "delivery": "inherited from pinned checkout",
+      "baseline_sha256": "4e6bf90201dc3d175c1643eac86c4cfd79fabed621d5fbfb3e557a52b4993e1a",
+      "matches_pinned_bytes": true
+    },
+    {
+      "path": "fast/hard_unknots.py",
+      "exists": true,
+      "current_sha256": "c545ca197c0b3aea53394f742340c9d29b3097dc6a6f07efa0c08f83ab41b722",
+      "present_at_pinned_commit": true,
+      "delivery": "inherited from pinned checkout",
+      "baseline_sha256": "c545ca197c0b3aea53394f742340c9d29b3097dc6a6f07efa0c08f83ab41b722",
+      "matches_pinned_bytes": true
+    },
+    {
+      "path": "fast/tests/test_compressed_words.py",
+      "exists": true,
+      "current_sha256": "75ce4baee90c2617fe8e977ff0bcf6d7a71c8bd7d5387133fbc4a95002e5d9ad",
+      "present_at_pinned_commit": true,
+      "delivery": "inherited from pinned checkout",
+      "baseline_sha256": "75ce4baee90c2617fe8e977ff0bcf6d7a71c8bd7d5387133fbc4a95002e5d9ad",
+      "matches_pinned_bytes": true
+    },
+    {
+      "path": "fast/tests/test_relator_overlap.py",
+      "exists": true,
+      "current_sha256": "fb408e793a9bb5ec436ac934f8f703cda50c91c6b5a332daaa7550ae45cc72da",
+      "present_at_pinned_commit": true,
+      "delivery": "inherited from pinned checkout",
+      "baseline_sha256": "fb408e793a9bb5ec436ac934f8f703cda50c91c6b5a332daaa7550ae45cc72da",
+      "matches_pinned_bytes": true
+    },
+    {
+      "path": "fast/tests/test_fastunknot.py",
+      "exists": true,
+      "current_sha256": "d41746f4da0e26cce39f8e48d3be1d734e88b0fa84b7a006f253d8ff557c84fe",
+      "present_at_pinned_commit": true,
+      "delivery": "inherited from pinned checkout",
+      "baseline_sha256": "d41746f4da0e26cce39f8e48d3be1d734e88b0fa84b7a006f253d8ff557c84fe",
+      "matches_pinned_bytes": true
+    },
+    {
+      "path": "fast/normal_research/gordian.json",
+      "exists": true,
+      "current_sha256": "e60c094abb3542dfa607ce37868b8c176654421f27ceb513a34cccd1b51d47d5",
+      "present_at_pinned_commit": true,
+      "delivery": "inherited from pinned checkout",
+      "baseline_sha256": "e60c094abb3542dfa607ce37868b8c176654421f27ceb513a34cccd1b51d47d5",
+      "matches_pinned_bytes": true
+    },
+    {
+      "path": "fast/tests/fixtures/gordian_relator_power.json",
+      "exists": true,
+      "current_sha256": "ea50fa10d528a824c7c659d1b97681bd053b8d35becaf8802053c344ad3c16df",
+      "present_at_pinned_commit": true,
+      "delivery": "inherited from pinned checkout",
+      "baseline_sha256": "ea50fa10d528a824c7c659d1b97681bd053b8d35becaf8802053c344ad3c16df",
+      "matches_pinned_bytes": true
+    },
+    {
+      "path": "fast/normal_orbit_research/fixtures.py",
+      "exists": true,
+      "current_sha256": "df8852c65edc8c56feb3f973214acf21ec1d16921b599d8f4b70fd3a71266f3f",
+      "present_at_pinned_commit": false,
+      "delivery": "required in overlay"
+    },
+    {
+      "path": "fast/fastunknot/coefficient_span.py",
+      "exists": true,
+      "current_sha256": "be0261428c73c54eb38e384995d9af0b4ef480282a3c62e19937bc735c7fdae6",
+      "present_at_pinned_commit": false,
+      "delivery": "required in overlay"
+    },
+    {
+      "path": "fast/fastunknot/cyclic_overlap_index.py",
+      "exists": true,
+      "current_sha256": "2b2f4dfa043383726963863de24545adbbc41875d4d16c4171c252521808afc5",
+      "present_at_pinned_commit": false,
+      "delivery": "required in overlay"
+    },
+    {
+      "path": "fast/fastunknot/interval_orbits.py",
+      "exists": true,
+      "current_sha256": "a4e8bf07b921851965322b9193c1eacb243aebbaaddeaff581fb04ae9e68a822",
+      "present_at_pinned_commit": false,
+      "delivery": "required in overlay"
+    },
+    {
+      "path": "fast/fastunknot/normal_surface_orbits.py",
+      "exists": true,
+      "current_sha256": "e8850027af9604226330e4fbf8fe93379f91a1c590c33c1411d498b91fe97cad",
+      "present_at_pinned_commit": false,
+      "delivery": "required in overlay"
+    },
+    {
+      "path": "fast/fastunknot/integer_codec.py",
+      "exists": true,
+      "current_sha256": "1602e40df0cfde534e73195f46edfdba74aa72c087d65ad0370153e45789e97a",
+      "present_at_pinned_commit": true,
+      "delivery": "inherited from pinned checkout",
+      "baseline_sha256": "1602e40df0cfde534e73195f46edfdba74aa72c087d65ad0370153e45789e97a",
+      "matches_pinned_bytes": true
+    },
+    {
+      "path": "fast/examples/conway.json",
+      "exists": true,
+      "current_sha256": "93da13548e1185d2b2ff3bfdb4cbcdaf32bcf508993d9878ee33292d32626256",
+      "present_at_pinned_commit": true,
+      "delivery": "inherited from pinned checkout",
+      "baseline_sha256": "93da13548e1185d2b2ff3bfdb4cbcdaf32bcf508993d9878ee33292d32626256",
+      "matches_pinned_bytes": true
+    },
+    {
+      "path": "fast/examples/kinoshita_terasaka.json",
+      "exists": true,
+      "current_sha256": "858250a8f855a7d6d4ce0006230038b1e2ffb5c8d1dccce31863622288a7c27e",
+      "present_at_pinned_commit": true,
+      "delivery": "inherited from pinned checkout",
+      "baseline_sha256": "858250a8f855a7d6d4ce0006230038b1e2ffb5c8d1dccce31863622288a7c27e",
+      "matches_pinned_bytes": true
+    },
+    {
+      "path": "fast/examples/hard_unknot_8.json",
+      "exists": true,
+      "current_sha256": "c9a64ce0ce0bbe61938dc162e3ca2b7d6445ace14390d8e29cb2d94e96b48bcb",
+      "present_at_pinned_commit": true,
+      "delivery": "inherited from pinned checkout",
+      "baseline_sha256": "c9a64ce0ce0bbe61938dc162e3ca2b7d6445ace14390d8e29cb2d94e96b48bcb",
+      "matches_pinned_bytes": true
+    },
+    {
+      "path": "fast/examples/stress_braid5_36.json",
+      "exists": true,
+      "current_sha256": "0552f180b958bcf23979862d40027a129c266dc6b810676849fb5448f9a9fb97",
+      "present_at_pinned_commit": true,
+      "delivery": "inherited from pinned checkout",
+      "baseline_sha256": "0552f180b958bcf23979862d40027a129c266dc6b810676849fb5448f9a9fb97",
+      "matches_pinned_bytes": true
+    },
+    {
+      "path": "fast/examples/torus_3_5.json",
+      "exists": true,
+      "current_sha256": "2bfc11deb28444ecf3ef5101d728859fbcbf1b04b3c9e9daddc5b7b85095b069",
+      "present_at_pinned_commit": true,
+      "delivery": "inherited from pinned checkout",
+      "baseline_sha256": "2bfc11deb28444ecf3ef5101d728859fbcbf1b04b3c9e9daddc5b7b85095b069",
+      "matches_pinned_bytes": true
+    },
+    {
+      "path": "fast/examples/trefoil.json",
+      "exists": true,
+      "current_sha256": "79bead0b7b11644c0da61d2ab2801447e30fef039bb6b1d2bc771729dd34304a",
+      "present_at_pinned_commit": true,
+      "delivery": "inherited from pinned checkout",
+      "baseline_sha256": "79bead0b7b11644c0da61d2ab2801447e30fef039bb6b1d2bc771729dd34304a",
+      "matches_pinned_bytes": true
+    },
+    {
+      "path": "fast/examples/figure_eight.json",
+      "exists": true,
+      "current_sha256": "efe3cc0793e37a26815a555b946ec03d454d1e8af9a2fa45787e5a4ff2c46057",
+      "present_at_pinned_commit": true,
+      "delivery": "inherited from pinned checkout",
+      "baseline_sha256": "efe3cc0793e37a26815a555b946ec03d454d1e8af9a2fa45787e5a4ff2c46057",
+      "matches_pinned_bytes": true
+    },
+    {
+      "path": "fast/examples/unknot.json",
+      "exists": true,
+      "current_sha256": "26f3cac1b3d45da39895f101714f1540f6b5e5ae4f6b0d8a95a5a62ba2db2a28",
+      "present_at_pinned_commit": true,
+      "delivery": "inherited from pinned checkout",
+      "baseline_sha256": "26f3cac1b3d45da39895f101714f1540f6b5e5ae4f6b0d8a95a5a62ba2db2a28",
+      "matches_pinned_bytes": true
+    },
+    {
+      "path": "fast/examples/grid_scrambled_unknot.json",
+      "exists": true,
+      "current_sha256": "3da2ad6ded0b4d1a8121cca102077003cdd4135c4a5db052b2bcff412ea6bb2e",
+      "present_at_pinned_commit": true,
+      "delivery": "inherited from pinned checkout",
+      "baseline_sha256": "3da2ad6ded0b4d1a8121cca102077003cdd4135c4a5db052b2bcff412ea6bb2e",
+      "matches_pinned_bytes": true
+    },
+    {
+      "path": "fast/examples/grid_determinant_one_knot.json",
+      "exists": true,
+      "current_sha256": "896469f82ff2ba80d2ab5844b748acab56b145f5b18b30aa4894de2d6047470f",
+      "present_at_pinned_commit": true,
+      "delivery": "inherited from pinned checkout",
+      "baseline_sha256": "896469f82ff2ba80d2ab5844b748acab56b145f5b18b30aa4894de2d6047470f",
+      "matches_pinned_bytes": true
+    }
+  ],
+  "test_execution": {
+    "cwd": "Topology/UnknotRecognition/fast",
+    "command": "PYTHONPATH=tests:. python -B -m unittest test_coefficient_span test_cyclic_overlap_index test_interval_orbits test_normal_surface_orbits -v",
+    "optional_dependency": "Regina only for explicitly skipped independent normal-surface oracle tests; no benchmark requires it.",
+    "plot_regeneration_dependency": "Matplotlib only for render_results.py, separate from the four benchmarks."
+  },
+  "raw_log_inventory": [
+    {
+      "path": "fast/coefficient_research/tests.txt",
+      "sha256": "032e93df89c891e0a3eedf9a4f8230c570f98155e2a14f6578b633be2a0d1888",
+      "gitignored": false,
+      "packaging": "ordinary inclusion"
+    },
+    {
+      "path": "fast/cyclic_overlap_research/benchmark.log",
+      "sha256": "626ad34122ef6adc49583d8695517f1fbe14cb96930be0e0fab098e91add3449",
+      "gitignored": true,
+      "packaging": "explicit inclusion or git add -f required"
+    },
+    {
+      "path": "fast/cyclic_overlap_research/calibration_benchmark.log",
+      "sha256": "5725cfa6ecb3dbbb8f3d765e5fa938f3c3c73a07e810b66fd6b22f02689eb8c1",
+      "gitignored": true,
+      "packaging": "explicit inclusion or git add -f required"
+    },
+    {
+      "path": "fast/cyclic_overlap_research/index_tests.log",
+      "sha256": "62afa54343162b2965a54a1b24ca660e08b5e0b843605ba454eea003f728373e",
+      "gitignored": true,
+      "packaging": "explicit inclusion or git add -f required"
+    },
+    {
+      "path": "fast/cyclic_overlap_research/related_tests.log",
+      "sha256": "10c0acf0a98666a252a243b78bc87a2ae79e980e9d91498545bf8c0dcd0acba7",
+      "gitignored": true,
+      "packaging": "explicit inclusion or git add -f required"
+    }
+  ],
+  "warnings": [
+    {
+      "kind": "normal timing order retention",
+      "evidence": "fast/normal_orbit_research/results.json",
+      "detail": "Raw per-arm timings and seed are retained, but shuffled-order arrays and warmup elapsed samples are not. Describe this accurately rather than claiming every experiment stores explicit order arrays."
+    },
+    {
+      "kind": "overlay application requirement",
+      "detail": "All four benchmarks are portable after applying to the pinned repository. Existing imports/fixtures are intentionally inherited; an overlay-only directory is not a standalone checkout."
+    }
+  ],
+  "failures": []
+}

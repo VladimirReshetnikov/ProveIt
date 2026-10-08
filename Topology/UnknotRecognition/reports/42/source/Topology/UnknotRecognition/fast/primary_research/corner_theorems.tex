@@ -1,0 +1,262 @@
+% A self-contained theorem/proof fragment for the October 8 continuation.
+% Uses only ordinary LaTeX mathematical notation and amssymb's \mathbb.
+\subsection{The full scalar commutant and its inherited corners}
+
+Work over $k=\mathbb F_2$. Partition the objects of a finite open complex $C$
+by their matching, homological degree, and recovered relative quantum shift.
+An allowed scalar change of basis is block diagonal for this partition.
+Write $b_1,\ldots,b_t$ for the block sizes and
+\[
+ N=\sum_a b_a,\qquad V=\sum_a b_a^2,\qquad
+ A=\operatorname{End}_{\mathrm{sc}}(C)
+   \subseteq\bigoplus_a M_{b_a}(k).
+\]
+The subscript is essential: these are coefficientwise commuting scalar
+endomorphisms. They need not be all endomorphisms in the cobordism category.
+Every morphism coefficient contributes its own homogeneous linear
+commutation equations. The maintained solver computes a complete basis of
+$A$ whenever its configured variable cap permits a computation.
+
+\paragraph{Corner theorem.}
+Let $S$ be an allowed invertible change of basis, and suppose the transformed
+complex has an actual direct-sum decomposition
+$S^{-1}CS=C_1\oplus\cdots\oplus C_s$, with each $C_i$ a whole connected
+component of its differential graph. Scalar blocks on a child carry the
+inherited parent labels; fresh relative quantum-shift recovery gives the
+same blocks on a connected child. Let $e_i$ be the corresponding
+coordinate projection. Then
+\[
+ \operatorname{End}_{\mathrm{sc}}(C_i)
+    \cong e_i(S^{-1}AS)e_i.
+\]
+In particular, restricting the transported members of any complete vector
+space basis of $A$ spans the full scalar endomorphism algebra of $C_i$.
+This assertion does not require $e_i$ to be central.
+
+\emph{Proof.}
+The coordinate inclusion $j_i$ and projection $p_i$ commute with the
+transformed differential, and $p_i j_i=1_{C_i}$. Restriction sends a
+parent endomorphism $a$ to $p_iS^{-1}aSj_i$. Conversely, if
+$u\in\operatorname{End}_{\mathrm{sc}}(C_i)$, then $j_iup_i$, extended by
+zero on all other summands, is a typed scalar endomorphism of the transformed
+parent. Thus the restriction map is a surjective linear map, and its image
+is precisely the displayed corner algebra. Conjugating back by $S$ proves
+the assertion about a basis. All changes preserve the parent quantum
+labels. On each connected child the recovered quantum labels differ from
+these inherited labels by a constant, so the permitted blocks agree.
+\hfill$\square$
+
+\paragraph{A necessary algebraic distinction.}
+The linear map $a\mapsto e_i a e_i$ from the whole parent algebra to its
+corner is not in general an algebra homomorphism. For example, in
+$M_2(k)$, with $e=E_{11}$, $a=E_{12}$, and $b=E_{21}$, one has
+$eabe=e$ while $eae=ebe=0$. Multiplication on the corner itself is
+unambiguous; the algorithm needs the surjective linear map, not a quotient
+homomorphism assertion about the entire parent algebra.
+
+\paragraph{Canonical-basis compatibility.}
+The existing nullspace solver eliminates equations with their most
+significant nonzero coordinates as pivots and lists its free variables in
+increasing order. Its output is exactly the unique reduced basis of the
+solution space whose pivots are least significant nonzero coordinates.
+Therefore reducing the restricted spanning vectors to this latter form
+produces the same ordered basis as a fresh child commutation solve.
+
+\emph{Proof.}
+Each nullspace basis vector has one free coordinate equal to one and all
+other free coordinates zero. The equation pivots determined by that free
+coordinate occur only at larger indices. Hence the free coordinate is its
+least significant nonzero coordinate, and no such pivot coordinate occurs
+in another basis vector. These properties characterize reduced row-echelon
+form for the reversed choice of pivot direction and determine the basis
+uniquely.\hfill$\square$
+
+This compatibility matters operationally: the bounded basis-prefix search
+and the fixed-seed random combinations then inspect exactly the same
+candidates, in the same order. General corner inheritance changes the
+construction of the search space, not the search policy. With exact
+arithmetic and absent an intervening resource interruption, it preserves
+the accepted split witnesses and the resulting recursive component order.
+
+\paragraph{Computational scope.}
+On a cold recursion tree, general inheritance computes the full scalar
+commutant once at the root and derives every subsequently examined child
+space by linear algebra, without constructing another commutator system.
+An accepted split loaded from an older cache entry need not have a retained
+commutant basis; ordinary inheritance can then resume at a descendant.
+The cache retains the previous witness format rather than storing large
+algebra bases indefinitely.
+
+The implementation has two exact transport kernels. For a low-dimensional
+algebra it directly forms $S^{-1}aS$ for its few basis matrices. For a larger
+algebra it constructs one packed linear map on matrix variables. The image
+of a matrix unit is obtained from
+\[
+ S^{-1}E_{uv}S=(S^{-1}e_u)(e_v^{\mathsf T}S),
+\]
+then restricted to all selected children. One application of this packed
+linear map transports each parent basis vector. Both kernels give identical
+canonical child bases. Their selection affects performance only.
+
+For reference, direct dense transport of a $D$-dimensional algebra costs
+$O(D\sum_a b_a^3)$ elementary field operations before child basis
+reduction. If child $i$ has $V_i$ scalar variables, reducing $D$ projected
+generators costs at most $O(DV_i\min(D,V_i))$ elementary field operations;
+packed binary arithmetic improves the corresponding word-operation bound.
+These bounds do not imply that transport always beats resolving a sparse
+child commutator. The saved quantity is the number of commutator-system
+constructions and solves, while the replacement algebra computations have
+their own cost. Moreover, cache keys, grading recovery, accepted-witness
+verification, and transformation of the differential still inspect
+morphism data; the whole recursive scanner is not coefficient independent.
+
+\subsection{A conclusive scalar-locality certificate from dimension saturation}
+
+\paragraph{Saturation theorem.}
+Let $A$ be the complete scalar endomorphism algebra, of dimension $D$, and
+let $Q\in A$ have actual minimal polynomial $m_Q(t)$. If
+\[
+ \deg m_Q=D,
+\]
+then $A=k[Q]\cong k[t]/(m_Q)$. If in addition
+\[
+ \dim_k\{p\in k[t]/(m_Q):p^2=p\}=1,
+\]
+then $C$ has no nontrivial scalar direct-sum decomposition.
+
+\emph{Proof.}
+The elements $1,Q,\ldots,Q^{D-1}$ are independent by the definition of the
+minimal polynomial. They lie in the $D$-dimensional space $A$ and hence form
+a basis. Evaluation therefore identifies the whole algebra $A$ with the
+displayed polynomial quotient. In characteristic two, squaring is linear
+on this commutative quotient. A one-dimensional fixed space contains exactly
+$0$ and $1$, so these are its only idempotents. A nontrivial scalar direct
+sum would supply a nonzero nonidentity scalar coordinate idempotent, a
+contradiction.\hfill$\square$
+
+Equivalently, $m_Q$ has one distinct irreducible factor and the polynomial
+quotient is local, including when that factor is repeated. A certificate
+does not require that the algebra be a field. The tests include both
+$\mathbb F_8$ and $\mathbb F_2[t]/((t^2+t+1)^2)$, exhaustively checking that
+their displayed commutants have exactly two idempotents.
+
+Both hypotheses are indispensable operationally. The dimension must be that
+of the complete commutant, and the polynomial must be the actual minimal
+polynomial, not merely an annihilating polynomial. A primary candidate in a
+proper subalgebra proves nothing about idempotents elsewhere in $A$.
+For example, the identity of a decomposable complex has primary minimal
+polynomial $t+1$ while its full commutant has dimension greater than one.
+An explicit negative control verifies that this case is rejected.
+
+The implementation reuses the earlier polynomial-projector routine's exact
+minimal polynomial and Berlekamp fixed-space computation. When a projector
+search fails and its minimal degree equals the full commutant dimension,
+the optional locality flag terminates the otherwise bounded candidate
+search with a certificate. This shortcut cannot suppress a possible scalar
+split: the certificate establishes that none exists. It makes no assertion
+about non-scalar cobordism endomorphisms.
+
+The separate verifier recomputes the entire commutant, verifies commutation
+of the proposed generator, recomputes its minimal polynomial, and checks
+the fixed-space dimension. It deliberately incurs the full cost again;
+certificate auditing is outside benchmark timing. Recorded certificates
+include all differential rows, matchings, frontier points, and degrees,
+and survive JSON round trips.
+
+\subsection{One-generator inheritance on saturated branches}
+
+\paragraph{Monogenic corner corollary.}
+Suppose $A=k[Q]$ has been certified by dimension saturation. For any actual
+child coordinate idempotent $e_i$ after an allowed change of basis, its full
+endomorphism algebra is generated by the restricted $Q_i$ and its own
+identity:
+\[
+ \operatorname{End}_{\mathrm{sc}}(C_i)=k[Q_i].
+\]
+Consequently its dimension is $\deg m_{Q_i}$; if $m_{Q_i}$ is primary, the
+child is scalar indecomposable without any new commutator solve.
+
+\emph{Proof.}
+Conjugation preserves the polynomial-algebra identity. The parent algebra
+is commutative, so its child selectors are central. Its corner consists of
+the elements $e_ip(Q)e_i=p(Q_i)$, with constants interpreted as multiples
+of the corner identity. The corner theorem identifies this with the full
+child algebra. Minimal-polynomial dimension and the saturation theorem
+now apply.\hfill$\square$
+
+Thus only one generator needs to be transported, rather than a full parent
+basis. The implemented optional path recognizes saturation on an accepted
+polynomial-projector witness, transports its original generator, and checks
+each examined child's minimal polynomial. A local child is finished
+immediately. For a nonlocal child, the powers of the restricted generator
+are reduced to the same canonical commutant basis as an independent solve,
+and the existing bounded splitter resumes.
+
+There is a stronger algorithmic consequence, which should be distinguished
+from the implementation just described. Factoring $m_Q$ into its primary
+factors, or recursively using the available polynomial projectors, yields a
+complete scalar direct-sum decomposition of a saturated monogenic algebra
+when split budgets permit. The current implementation completely finishes
+the measured two-field branches; it does not replace every nonlocal child's
+bounded search by an unlimited recursive factor-decomposition procedure.
+
+\subsection{Controlled families and precise performance claims}
+
+For the existing attached-copy family with $r\geq2$ copies, the commutant is
+$M_r(k)$, there are $3r^2$ scalar variables, and each size-$r$ solve builds
+$2r^2$ nonzero coefficient equations. With sufficiently large split budget,
+the original deterministic policy splits off one copy at each step. Its
+total equation construction count is therefore
+\[
+ 2\sum_{j=2}^r j^2
+   =\frac{r(r+1)(2r+1)}3-2,
+\]
+whereas inheritance builds exactly $2r^2$ such equations at the root. This
+is an exact cubic-to-quadratic reduction in the number of constructed
+commutator equations, not a claim of a corresponding total runtime bound.
+The basis candidates and accepted witnesses remain identical. Both the
+formula and the witness identity are regression tested through $r=16$.
+
+The separately inherited two-field fixtures have a homogeneous two-term
+differential $d=xI+yB$ over a two-dot algebra, where $B$ is conjugate to
+companion matrices for two distinct irreducibles of degree $r$. Comparing
+the independent $x$ and $y$ coefficients shows that a scalar endomorphism
+is a common matrix commuting with $B$. Thus
+\[
+ \operatorname{End}_{\mathrm{sc}}(C)
+  \cong k[t]/(fg)\cong\mathbb F_{2^r}\times\mathbb F_{2^r}.
+\]
+These are legitimate graded algebraic complexes, without a claimed
+realization as knot-scan prefixes. Their root has $8r^2$ scalar variables.
+For the recorded dense fixtures at $r=8,10,12$, the accepted generator
+saturates the algebra. One root commutant solve, two candidate tests, and
+two inherited scalar-locality certificates complete the decomposition.
+The earlier primary policy used respectively $46,52,58$ candidates over
+the whole recursive compression and three commutant computations.
+
+Natural-knot scans, attached-copy tests, and field-algebra tests have separate
+timing scopes. The benchmark retains randomized paired samples and A/A
+controls. It compares general inheritance alone, local stopping alone,
+their ordinary combination, and one-generator inheritance independently.
+No controlled-family speedup establishes a worst-case bound for arbitrary
+knot diagrams. In particular, nothing here bounds the number of objects,
+matching types, algebra variables, or scalar-indecomposable summands of a
+general scan by a quasipolynomial function of its crossing number.
+
+\paragraph{Provenance and proposed follow-up questions.}
+The polynomial-projector module and the two-field fixtures are reproduced
+unchanged from the earlier October 8 projectors package, with their hashes
+recorded separately. Their algorithm is prior work, not a new contribution
+of this continuation. The additions are complete-corner transport,
+canonical basis preservation, dimension-saturation stopping and verification,
+and one-generator inheritance on certified saturated branches.
+
+The next questions are whether to replace the residual bounded scalar search
+by constructive finite-algebra radical and semisimple-quotient algorithms;
+whether an exact cost model can select transport versus resolving a sparse
+commutator; whether additional natural knot families produce saturated or
+otherwise tractable scalar algebras; and which structural bounds control
+the number and size of scalar-indecomposable components. Extending reuse
+across the addition of a crossing is a different problem: a child corner
+of the same complex inherits all endomorphisms by extension by zero, while
+a newly glued complex can gain endomorphisms that have no ancestor.

@@ -1,0 +1,24 @@
+test_actual_cli_external_verdict (test_normal_surface.NormalSurfaceTests.test_actual_cli_external_verdict) ... ok
+test_actual_global_deadline (test_normal_surface.NormalSurfaceTests.test_actual_global_deadline) ... ok
+test_actual_worker_exact_verdicts (test_normal_surface.NormalSurfaceTests.test_actual_worker_exact_verdicts) ... ok
+test_communication_retains_input_across_polls (test_normal_surface.NormalSurfaceTests.test_communication_retains_input_across_polls) ... ERROR
+test_missing_dependency_and_invalid_worker_cannot_decide (test_normal_surface.NormalSurfaceTests.test_missing_dependency_and_invalid_worker_cannot_decide) ... ok
+test_pd_conversion_preserves_every_crossing (test_normal_surface.NormalSurfaceTests.test_pd_conversion_preserves_every_crossing) ... ok
+test_pipeline_dispatch_and_fallback (test_normal_surface.NormalSurfaceTests.test_pipeline_dispatch_and_fallback) ... ok
+test_worker_is_reaped_on_local_and_global_cancellation (test_normal_surface.NormalSurfaceTests.test_worker_is_reaped_on_local_and_global_cancellation) ... ok
+
+======================================================================
+ERROR: test_communication_retains_input_across_polls (test_normal_surface.NormalSurfaceTests.test_communication_retains_input_across_polls)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/8c3b469cb3a3/baseline/Topology/UnknotRecognition/fast/tests/test_normal_surface.py", line 69, in test_communication_retains_input_across_polls
+    code, out, err = _invoke(command, payload, monotonic()+3, lambda: None)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/8c3b469cb3a3/baseline/Topology/UnknotRecognition/fast/fastunknot/normal_surface.py", line 54, in _invoke
+    raise NormalTimeout('normal-surface local time allowance exhausted')
+fastunknot.normal_surface.NormalTimeout: normal-surface local time allowance exhausted
+
+----------------------------------------------------------------------
+Ran 8 tests in 5.513s
+
+FAILED (errors=1)

@@ -1,0 +1,727 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=25mm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,tabularx,array,enumitem,xcolor,graphicx}
+\usepackage{fancyhdr,hyperref,xurl,listings}
+\definecolor{ink}{HTML}{15354B}
+\definecolor{accent}{HTML}{176B87}
+\definecolor{soft}{HTML}{EDF4F7}
+\hypersetup{colorlinks=true,linkcolor=accent,citecolor=accent,urlcolor=accent,
+ pdftitle={Exact Quotient Kernels for Unknot Recognition},
+ pdfauthor={ProveIt research continuation}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\color{ink}Exact quotient kernels for unknot recognition}
+\fancyhead[R]{\small ProveIt / 2026-10-08}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\emergencystretch}{2em}
+\setlist{itemsep=3pt,topsep=5pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\F}{\mathbb F_2}
+\newcommand{\End}{\operatorname{End}}
+\newcommand{\Span}{\operatorname{span}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\im}{\operatorname{im}}
+\newcommand{\id}{\operatorname{id}}
+\newcommand{\poly}{\operatorname{poly}}
+\newcommand{\code}[1]{\texttt{#1}}
+\lstset{basicstyle=\ttfamily\footnotesize,breaklines=true,
+ backgroundcolor=\color{soft},frame=single,rulecolor=\color{soft},
+ columns=fullflexible,keepspaces=true,showstringspaces=false,upquote=true}
+
+\begin{document}
+\begin{titlepage}
+\color{ink}
+\vspace*{13mm}
+{\large\sffamily PROVEIT RESEARCH CONTINUATION\par}
+\vspace{12mm}
+{\huge\bfseries Exact Quotient Kernels\\[3mm]for Unknot Recognition\par}
+\vspace{8mm}
+{\Large Sharp interval mergers, scalar gauges,\\and simultaneous cyclic overlap search\par}
+\vspace{12mm}
+{\large 8 October 2026\par}
+\vspace{12mm}
+\noindent\begin{minipage}{0.94\textwidth}
+\textbf{Research status.} This report supplies exact local algorithms, proofs,
+native implementations, independent correctness comparisons and measured
+performance evidence. It does not establish a general quasi-polynomial
+unknot-recognition bound. The strongest unconditional complexity improvements
+apply to explicitly specified subproblems; the complete recognizer retains
+its previous general complexity status.
+\end{minipage}
+\vfill
+\noindent\textbf{Pinned baseline}\par
+\small\path{VladimirReshetnikov/ProveIt}\par
+\path{58ee11a97d5fd7f21647c57eefaf3ecc007931d6}\par
+\path{Topology/UnknotRecognition/fast}\par
+\vspace{5mm}
+\noindent The accompanying archive contains the maintained source overlay,
+an integration patch, the full article source, reproducible experiments,
+raw results, tests, provenance and checksums.
+\end{titlepage}
+
+\begin{abstract}
+Three sources of repeated work remain visible in the maintained unknot
+recognizer and its geometric research components: periodic interval regions
+are processed separately, scalar endomorphism solvers expand dependent
+morphism coefficients, and explicit group simplification searches the same
+relator collection once for each donor. We develop exact quotients for these
+three situations. First, a Fine--Wilf argument gives the necessary and
+sufficient overlap threshold $p+q-\gcd(p,q)$ for replacing two periodic
+interval relations by their gcd relation. An independent
+Agol--Hass--Thurston implementation uses this rule, and a native adapter
+counts components, boundary curves and orientability directly from binary
+normal coordinates in a validated finite torus-boundary triangulation.
+Second, typed differential blocks are factored through their actual
+coefficient spans. Invertible coefficient matrices then eliminate redundant
+endomorphism unknowns along a forest without identifying distinct chain
+objects. The complete commutant is reconstructed in canonical coordinates,
+so bounded candidate selection is preserved. Third, a shared index solves
+the explicit all-pairs cyclic relator-overlap problem; a bounded incumbent
+search exploits the elementary donor-length bound before invoking that
+index. The report distinguishes proof, implementation, observed activation
+and the missing global representation-size bounds throughout. Classical
+ingredients are attributed explicitly; no priority claim is made for the
+underlying orbit-counting, periodicity, suffix-automaton or linear-algebra
+theorems.
+\end{abstract}
+\tableofcontents
+\newpage
+
+\section{The baseline and the research objective}
+
+The requested target is an exact unknot recognizer with running time
+$n^{O(\log n)}$, where $n$ is the size of an ordinary knot diagram. The
+repository already contains a substantial exact pipeline: diagram
+simplification, structural certificates, polynomial and group-theoretic
+filters, specialized braid routes, and scanning Khovanov backends. It also
+contains separate research kernels for compressed geometric operations.
+Our baseline is the Git commit printed on the title page, committed on
+8 October 2026 at 19:17:11 UTC. All integration comparisons refer to that
+snapshot; reports created against earlier snapshots are not silently treated
+as the incumbent implementation.
+
+The present work concerns three concrete computational tasks. The first is
+geometric connectivity for a normal surface whose coordinate sum may be
+exponential in the triangulation size. The second is the exact scalar
+commutant of a typed differential, which is used to discover direct-sum
+splittings. The third is maximum guaranteed shortening by a single cyclic
+relator replacement. Each task has a finite, independently checkable
+specification. Improvements to them can be verified without assuming the
+desired global recognition theorem.
+
+Lackenby's 2026 hierarchy paper gives new incompressibility and unknot
+algorithms, while explicitly leaving a running-time specification for
+several operations incomplete. Its Proposition 9.1 bounds repeated steps
+by $L(g+1)^L$ in terms of hierarchy length and pattern complexity. The
+refined construction supplies a linear bound on hierarchy length in the
+initial $q$-complexity. These are significant structural facts, but neither
+is by itself a quasi-polynomial bound for the encoded implementation
+\cite{lackenby2026}. The 2021 lecture announces the intended accelerated
+framework \cite{lackenbytalk}. We use these as motivation and as a precise
+list of remaining obligations, rather than interpreting efficient local
+arithmetic as a proof of the complete algorithm.
+
+\subsection{What the report contributes}
+
+\begin{enumerate}
+\item An exact two-period merger criterion, with a necessity argument and
+an explicit family showing a linear reduction in the number of orbit
+algorithm cycles. This is a sharpened application of the classical
+Fine--Wilf theorem within the AHT algorithm.
+\item A native, coordinate-compressed topology query for arbitrary
+admissible normal vectors in its stated class of finite triangulations.
+It supports disconnected and one-sided surfaces and does not require an
+extreme-ray witness.
+\item Exact coefficient-span and forest substitutions in the scalar
+endomorphism equations, including reconstruction of the entire original
+solution space and preservation of its canonical basis.
+\item A simultaneous index and a bounded adaptive policy for explicit
+cyclic relator overlaps, replacing an all-donor repeated scan with a
+near-linear local query in the specified computational model.
+\item Reproducible comparisons against the pinned code and independent
+small oracles, together with corrections, negative measurements and a
+concrete research agenda.
+\end{enumerate}
+
+The full general recognition bound remains unproved. In particular, this
+work does not bound intermediate Khovanov multiplicities, the total length
+of explicit group presentations, the number of relator moves, the complete
+encoding of a cut manifold, or the number of hierarchy repairs. Those
+quantities cannot be omitted from the complexity accounting.
+
+\section{Representations and cost parameters}
+
+It is useful to distinguish an expanded object from its stored description.
+The relevant parameters are summarized below. A parameter belonging to one
+subproblem is never substituted for diagram size without a separate proof.
+
+\begin{center}\small
+\begin{tabularx}{\textwidth}{@{}lX@{}}
+\toprule
+Parameter & Meaning\\\midrule
+$n$ & Number of crossings, together with the ordinary diagram encoding.\\
+$t,W$ & Tetrahedron count and sum of the seven normal coordinates per tetrahedron.\\
+$N,k$ & Number of integer points and number of interval pairings in an orbit query.\\
+$b$ & Bit length $\lceil\log_2(N+1)\rceil$ of interval endpoints.\\
+$s_v$ & Dimension of one scalar type in a differential component.\\
+$V$ & Number $\sum_v s_v^2$ of original scalar endomorphism variables.\\
+$\rho_{uv}$ & Dimension of the span of coefficient values in differential block $D_{vu}$.\\
+$V_F$ & Number of remaining matrix variables after the chosen invertible forest.\\
+$m,\ell$ & Number of nonempty explicit relators and their total expanded letter length.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+An interval pairing stores a constant number of $b$-bit integers. A normal
+vector stores $7t$ integers; $W$ may be exponentially larger than that input.
+The new orbit algorithms operate on endpoints, never on a list of $N$
+points. Conversely, the new relator index takes explicit words. It does not
+turn a straight-line grammar of exponentially long words into a polynomial
+explicit string. The existing compressed-word route remains a different
+algorithm with its own contracts.
+
+For binary linear algebra we count bit operations conservatively. A Python
+integer containing a packed coefficient is not a unit-cost scalar of
+unlimited size. Its XOR, shift and bit-count costs depend on its length.
+For the string index, dictionary-operation bounds and bit-complexity bounds
+are distinguished. These distinctions matter when comparing an apparent
+constant-size formula with the actual stored input.
+
+\section{An exact merger theorem for periodic interval relations}
+\label{sec:merger}
+
+Let $R=[a,z]\cap\mathbb Z$ and let $p>0$. A periodic pairing of period $p$
+identifies $x$ and $x+p$ whenever both lie in $R$. In the implementation it
+is represented by $[a,z-p]\to[a+p,z]$. We call it periodic only when its
+domain width is at least $p$, equivalently $|R|\ge2p$. Its orbits in $R$
+are exactly the $p$ residue classes modulo $p$.
+
+Suppose two such relations have supports $R_1,R_2$, periods $p,q$, and
+overlap of size $h=|R_1\cap R_2|$. Write $d=\gcd(p,q)$. The original AHT
+periodic merger uses the sufficient condition $h\ge p+q$
+\cite{aht}. The following criterion removes the unnecessary $d$ points.
+
+\begin{theorem}[Exact two-period merger]
+\label{thm:sharpmerge}
+For two periodic pairings as above, their generated equivalence relation
+on $R_1\cup R_2$ is the residue relation modulo $d$ if and only if
+\[
+                         h\ge p+q-d.
+\]
+Thus, under this condition, they may be replaced by a single periodic
+pairing of period $d$ on the union. The equivalence remains valid in the
+presence of any additional pairings.
+\end{theorem}
+
+\begin{proof}
+Every old identification preserves residue modulo $d$, so it cannot
+identify points of different $d$-classes. Color each point of the
+intersection by its orbit under the two old relations. This finite color
+sequence has periods $p$ and $q$: two intersection points separated by
+either period already lie in one of the periodic supports. If
+$h\ge p+q-d$, the Fine--Wilf theorem \cite{finewilf} says that the color
+sequence has period $d$. Moreover $p+q-d\ge\max(p,q)$, so the intersection
+contains a representative of every residue class of both original
+supports. Every point outside the intersection is therefore linked to an
+intersection point of the same $d$-class. This proves sufficiency.
+
+For necessity, contract the first support to its $p$ residue classes and
+the second to its $q$ residue classes. Before identifying their common
+points there are $p+q$ vertices. Each of the $h$ common points contributes
+one edge between the corresponding two residue vertices, allowing parallel edges but no further identifications. A graph with
+$p+q$ vertices and $h$ edges has at least $p+q-h$ connected components.
+If $h<p+q-d$, this exceeds $d$. The residue relation modulo $d$ has exactly
+$d$ classes on the union, so replacement would change the equivalence
+relation. Finally, equality of the two generated relations is preserved
+when a common collection of additional generators is adjoined.
+\end{proof}
+
+The necessity statement concerns these two generators alone. Other
+pairings can create extra connections and can justify mergers below this
+threshold. The implementation never infers that a failed two-generator
+test proves global disconnectedness.
+
+\begin{example}[The endpoint matters]
+The pairings $[0,3]\to[2,5]$ and $[2,4]\to[5,7]$ have periods $2,3$
+and an overlap of four points. They generate a connected relation and
+can be replaced by a period-one relation. The original five-point
+condition misses this merger. Moving the second support one point to
+the right leaves only three common points and produces two orbits;
+the period-one replacement would then be incorrect.
+\end{example}
+
+\subsection{A family with a linear reduction in orbit cycles}
+
+\begin{proposition}[Adjacent periodic blocks]
+\label{prop:chain}
+For $r\ge1$ and $p\ge1$, consider $r$ pairings
+\[
+ [ip,(i+1)p-1]\longrightarrow[(i+1)p,(i+2)p-1],
+ \qquad 0\le i<r,
+\]
+on $N=(r+1)p$ points. Both orbit algorithms return $p$. With the stated
+maximal-transmission and suffix-truncation policy, the original AHT merger
+requires $r+1$ cycles, while the sharp merger requires two.
+\end{proposition}
+
+\begin{proof}
+Each pairing joins equal positions in two consecutive blocks. Therefore
+the $p$ positions within a block label the complete orbits. Neighboring
+supports overlap in $p$ points, below the old $2p$ threshold, and
+nonneighbors overlap in fewer points. The rightmost pairing is the only
+one meeting the last block. No other range is contained in its range,
+so one suffix truncation deletes this block and this pairing. Induction
+leaves one block after $r$ cycles; a final static contraction counts its
+$p$ points.
+
+Under Theorem~\ref{thm:sharpmerge}, neighboring period-$p$ supports meet
+the exact threshold $p$. Repeated merging combines all pairings in the
+first cycle. The resulting single pairing sends $[0,rp-1]$ to
+$[p,(r+1)p-1]$. Suffix truncation removes its entire range, leaving
+$[0,p-1]$; the second cycle counts these $p$ static points.
+\end{proof}
+
+This is a cycle-count theorem for an explicit interval family, not a
+family of knot diagrams. The straightforward implementation additionally
+spends time scanning candidate pairs. The benchmark records both cycles
+and candidate tests rather than using cycle count as a proxy for elapsed
+time.
+
+\section{Native orbit counting and signed components}
+
+The implementation \path{fastunknot/interval_orbits.py} follows the
+classical unweighted AHT reduction. Identity relations are removed,
+uncovered intervals are counted and contracted, overlapping reflections
+are trimmed, valid periodic pairs are merged, other ranges are transmitted
+through a maximal rightmost pairing, and its exclusive suffix is removed.
+Powers of a translation are evaluated by integer division, avoiding an
+iteration per translated point. These transformations and the polynomial
+termination theorem are classical \cite{aht}; the sharp merger is the
+specific change analyzed in Section~\ref{sec:merger}.
+
+\subsection{Why the stronger rule retains polynomial termination}
+
+The AHT analysis uses a multiplicative quantity of the form
+$X=4^k\prod_i w_i$, where $w_i$ are pairing widths. It is not necessary
+for every individual cycle to halve $X$. The classical proof bounds the
+number of cycles between sufficient reductions of this quantity.
+
+For a sharp merger, the two old widths are $w_1,w_2$ and the new width is
+\[
+ w'=w_1+w_2+p+q-h-d\le w_1+w_2\le2w_1w_2.
+\]
+Thus $k$ decreases by one and the contribution to $X$ drops by at least
+a factor of two. A state with no sharp merger also has no original AHT
+merger, so the hypotheses needed by the remaining classical progress
+argument still hold. The strengthened reduction therefore keeps a
+polynomial bound in $k$ and $\log(N+1)$. The implementation uses simple
+lists and pair scans; it is not claimed to attain the smallest possible
+polynomial exponent.
+
+The stored number of pairings never increases in a count query. All
+endpoints remain within the original interval. Arithmetic has bounded
+bit length, and the largest translation powers are handled in one division.
+The number of represented points is allowed to be vastly larger than
+memory because it is never used as an iteration bound.
+
+\subsection{Signed gluing and orientation consistency}
+
+An order-reversing map of a sheet interval need not reverse surface
+orientation. These are distinct pieces of data. For a pairing $g_i$,
+let $\epsilon_i\in\F$ be a separately specified parity. A component is
+consistent when the parity sum around every closed walk is zero.
+
+\begin{proposition}[Two-sheeted count]
+\label{prop:signed}
+Let $C$ be the number of original orbits and $\widehat C$ the number of
+orbits of
+\[
+ (x,e)\sim(g_i(x),e+\epsilon_i),\qquad e\in\F.
+\]
+Then the numbers of consistent and inconsistent components are
+\[
+                    C_{+}=\widehat C-C,\qquad
+                    C_{-}=2C-\widehat C.
+\]
+The lifted system is represented by $2k$ interval pairings on $2N$
+points, so both counts have polynomial bit complexity in the original
+description length.
+\end{proposition}
+
+\begin{proof}
+Fix a base component and one lift of a chosen point. If all closed
+walks have parity zero, continuation of this lift determines one sheet
+at every point; the two choices of initial sheet give two disjoint lifted
+components. If some closed walk has odd parity, the two initial sheets
+are connected and the lift is connected. Thus
+$C=C_++C_-$ and $\widehat C=2C_++C_-$. Solving the two equations gives
+the formulas. Two consecutive blocks of $N$ integers encode the sheets;
+each old interval pairing gives one map from each sheet to its prescribed
+target sheet.
+\end{proof}
+
+\begin{proposition}[Point membership without extraction]
+Two supplied points $x,y$ belong to the same orbit if and only if
+adjoining the singleton relation $x\sim y$ leaves the number of orbits
+unchanged. If they were in distinct orbits, this addition reduces the
+number by exactly one.
+\end{proposition}
+
+This gives an exact membership query using two counts. It does not
+extract the normal coordinates or attachment data of a chosen component.
+Weighted AHT, which is a classical extension, remains a separate
+implementation task.
+
+\section{Binary normal-surface topology in a supplied triangulation}
+\label{sec:normal}
+
+The new adapter accepts a nonempty finite tetrahedral face-pairing
+description of a connected compact orientable 3-manifold with exactly
+one torus boundary. Its native validator checks reciprocal face gluings,
+edge orientations, edge links, vertex links, orientability, connectedness
+and boundary topology. This validator is adapted, with attribution, from
+the earlier report 36 normal-disc certificate. The current extension
+accepts every nonnegative admissible normal vector in that ambient class;
+it does not impose primitivity or an extreme-ray rank condition.
+
+Normal coordinates in each tetrahedron are
+\[
+ (T_0,T_1,T_2,T_3,Q_{01|23},Q_{02|13},Q_{03|12}).
+\]
+All matching equations and the condition of at most one nonzero
+quadrilateral type per tetrahedron are checked using exact integers.
+Hexadecimal integer input is supported. The empty surface is represented
+by the zero vector and has no components.
+
+\subsection{The arc-pairing construction}
+
+Give each global triangulation edge a fixed direction. A parity
+union-find transports local edge directions through face gluings; using
+vertex labels alone would be wrong in a one-vertex triangulation. If a
+global edge meets the normal surface $w_e$ times, allocate an interval
+of $w_e$ points ordered along this direction. The disjoint union of
+these intervals has
+\[
+                            N=\sum_e w_e
+\]
+points. Each tetrahedral normal disc meets at most four edges, so
+$N\le4W$.
+
+In a triangular face opposite vertex $f$, the normal arcs cutting off
+a vertex $v$ occur with multiplicity
+\[
+                       a_{fv}=T_v+Q_{fv},
+\]
+where $Q_{fv}$ denotes the quadrilateral type disjoint from the edge
+$\{f,v\}$. These arcs join the $a_{fv}$ endpoints nearest $v$ on its
+two incident face edges, in their common order from $v$. Consequently
+the whole parallel family is one interval isometry, possibly reversing
+the globally chosen edge orders. One copy of every glued face and every
+boundary face suffices. There are at most three pairings per face,
+and therefore $O(t)$ pairings overall.
+
+\begin{theorem}[Normal-surface topology query]
+\label{thm:normal}
+For an admissible normal surface $S$ in the supported triangulation
+class, the adapter and unbounded orbit kernel compute the following in
+time polynomial in $t$ and $\log(W+1)$:
+\begin{enumerate}
+\item the number of components of $S$;
+\item the numbers of orientable and nonorientable components;
+\item the number of boundary curves of $S$;
+\item the total Euler characteristic of $S$.
+\end{enumerate}
+When $S$ is connected these data determine its genus or crosscap number.
+No normal disc or edge intersection point is expanded.
+\end{theorem}
+
+\begin{proof}
+The constructed graph is the one-skeleton of the normal cell structure,
+with each parallel arc family encoded as an interval pairing. Every
+normal disc is attached along a connected polygonal boundary. Attaching
+such discs does not merge different components of the one-skeleton.
+Conversely, every point of a disc can be joined inside the disc to its
+boundary. Thus graph components and surface components are identical.
+This is the classical normal-surface reduction to AHT connectivity
+\cite{aht}, now made explicit in the native coordinate adapter.
+
+For the boundary count, retain only boundary faces and boundary edge
+intervals. Every vertex of this normal boundary graph has degree two,
+so its components are precisely the boundary circles. Interior edge
+points must be removed from this query; leaving them as isolated
+vertices would falsely increase the boundary count.
+
+The normal surface with coordinates $2S$ is the horizontal boundary
+of the normal interval bundle of $S$. In an orientable ambient
+3-manifold this is the orientation double cover. If its component
+count is $C_2$, then $C_2-C$ original components are orientable and
+$2C-C_2$ are nonorientable, by the same covering argument as
+Proposition~\ref{prop:signed}. The vertical annuli over $\partial S$
+are not included in this statement.
+
+Finally, the cell counts are obtained arithmetically: vertices are
+$\sum_e w_e$, edges are the sums of normal-arc multiplicities over
+each face taken once, and faces are the $W$ discs. Hence
+\[
+             \chi(S)=\sum_e w_e-
+                 \sum_{\text{global faces }F}\#(S\cap F)+W.
+\]
+For a connected orientable surface of genus $g$ with $b$ boundary
+curves, $2g=2-b-\chi(S)$; for a connected nonorientable surface the
+crosscap number is $2-b-\chi(S)$. Construction and validation use
+$O(t)$ combinatorial records and binary arithmetic. The three orbit
+systems have $O(t)$ pairings and endpoint lengths
+$O(1+\log(W+1))$, completing the complexity claim.
+\end{proof}
+
+\subsection{Compressing discs and the correspondence still needed}
+
+If $S$ is connected, has Euler characteristic one and one boundary
+curve, it is a disc. On a torus, an embedded simple closed curve is
+essential exactly when its mod-two homology class is nonzero. The
+adapter computes the dual boundary cocycle by taking $w_e\bmod2$ on
+each boundary edge. It tests whether this cocycle is a vertex
+coboundary by parity propagation. A nonzero class therefore proves
+that the disc compresses the supplied boundary torus.
+
+The output is a relative statement about this triangulation. It is
+not a PD-level unknot certificate: the triangulation-to-knot
+correspondence is not established by this module. Nor does the module
+search for the normal vector. A successful topology calculation must
+not be substituted for a missing exterior-construction certificate.
+
+\subsection{Large multiplicities and one-sided surfaces}
+
+For a two-sided normal disc $D$, the vector $aD$ represents $a$
+parallel discs. The output component count may therefore be a
+500-bit integer while the description uses only a fixed number of
+coordinates. For a one-sided normal M\"obius band $M$, the vector
+$aM$ has $\lfloor a/2\rfloor$ annuli and, when $a$ is odd, one
+M\"obius band. In particular,
+\[
+ C(aM)=\lceil a/2\rceil,\quad
+ C_+(aM)=\lfloor a/2\rfloor,\quad
+ C_-(aM)=a\bmod2.
+\]
+These formulas are independent checks of the doubling calculation.
+The tests include multiplicities exceeding $2^{500}$.
+
+The inherited Fibonacci layered-torus family has $t$ tetrahedra and
+a normal meridian containing $F_{t+5}-5$ discs. It gives a concrete
+geometric separation between the coordinate encoding and expansion.
+The article reports this constructor as inherited, not as a new
+topological family. The new computation is its general component and
+orientation analysis.
+
+\section{Factoring scalar equations through coefficient spans}
+\label{sec:span}
+
+Consider one finite differential component in the scanner. The scalar
+types are the triples of homological degree, boundary matching and
+recovered quantum shift. If type $v$ occurs $s_v$ times, an allowed
+scalar endomorphism is a matrix $Q_v\in M_{s_v}(\F)$. Distinct types
+remain distinct objects. Commutation means
+\[
+                     Q_vD_{vu}=D_{vu}Q_u
+\]
+for every typed differential block. The coefficients of $D_{vu}$ are
+packed morphisms in a fixed binary vector space for that ordered
+pair of types. The original solver expands separate equations for
+individual nonzero basis coefficients.
+
+\begin{theorem}[Coefficient-span reduction]
+\label{thm:span}
+Choose a basis $g_1,\ldots,g_\rho$ of the $\F$-linear span of the
+entries of $D_{vu}$. Write uniquely
+\[
+                       D_{vu}=\sum_{i=1}^{\rho}g_iA_i,
+               \qquad A_i\in M_{s_v\times s_u}(\F).
+\]
+Then the scalar commutation equation is equivalent to
+\[
+                       Q_vA_i=A_iQ_u
+                         \quad(1\le i\le\rho).
+\]
+In particular, the complete scalar endomorphism space is unchanged.
+\end{theorem}
+
+\begin{proof}
+Expand the difference as
+\[
+ Q_vD_{vu}-D_{vu}Q_u
+             =\sum_i g_i(Q_vA_i-A_iQ_u).
+\]
+For each matrix position this is a linear combination of independent
+$g_i$, so it vanishes if and only if each scalar coefficient vanishes.
+No multiplication of two morphism coefficients is used here; ordinary
+linear independence suffices. Applying the argument independently to
+every ordered type pair proves equality of the global solution spaces.
+\end{proof}
+
+If $e_{vu}$ is the number of nonzero entries in this block, then
+\[
+       \rho_{vu}\le\min(e_{vu},\dim\operatorname{Hom}(u,v)).
+\]
+The number of generated matrix-entry equations is at most
+\[
+                  P_{\mathrm{span}}=
+                     \sum_{u,v}\rho_{vu}s_us_v.
+\]
+Many equations may be zero or dependent, but this bound holds before
+binary elimination. This coefficient count is optimal among scalar-matrix
+expansions of the block: if $D_{vu}=\sum_{j=1}^{r}h_jB_j$, every entry
+lies in $\Span(h_1,\ldots,h_r)$, so $r\ge\rho_{vu}$. The span
+construction attains this lower bound. This is a statement about the
+number of coefficient factors, not about the fastest way to solve all
+resulting equations.
+
+In comparison, expansion through a large ambient
+monomial basis can create many redundant equations even when all
+entry values lie in a one- or two-dimensional span.
+
+The implementation performs Gaussian reduction on the packed
+morphism values themselves, recording coordinates in the newly
+discovered independent residuals. It then constructs each $A_i$
+directly as a binary matrix. It does not enumerate all set monomial
+bits to build the span. A separate reconstruction test verifies that
+the factorization reproduces every original matrix entry.
+
+\subsection{What this does and does not improve asymptotically}
+
+Let $B$ bound the packed bit length of the coefficient values in a
+block. A direct factorization uses at most $e\rho$ reductions of
+$B$-bit values, costing $O(e\rho B)$ bit operations up to ordinary
+indexing factors. The implementation also builds the coordinate
+matrices as packed target columns: setting a bit in a column can
+cost $O(s_v)$ bit operations. Including this construction, a
+conservative bound is
+$O\bigl(e\rho(B+s_v)+\rho s_us_v\bigr)$ bit operations up to
+indexing factors; the final term also accounts for the possible
+coordinate-matrix output size.
+Binary elimination on $P$ rows in $V$ variables has the elementary
+upper bound $O(PV^2+V^3)$ bit operations. Substituting
+$P_{\mathrm{span}}$ can remove a large dependent-equation factor.
+
+The ambient packed bit length $B$ is still an input cost. This result
+does not prove polynomial time in frontier width when individual
+morphisms themselves have exponentially large supports. It also does
+not reduce the number of chain objects before the scalar splitter is
+called. Its exact benefit is to replace an ambient coefficient
+description in a linear constraint system by its observed rank.
+
+\section{Eliminating matrix unknowns along an invertible forest}
+\label{sec:forest}
+
+An invertible coefficient matrix carries more information than its
+individual commutation equations. If $s_u=s_v=s$ and $A$ is invertible,
+then
+\[
+                       Q_vA=AQ_u
+       \quad\Longleftrightarrow\quad Q_v=AQ_uA^{-1}.
+\]
+This eliminates one entire $s\times s$ unknown. The operation is a
+substitution in the endomorphism equations. It is not a change of
+the chain-complex type or an identification of different matchings.
+
+\begin{theorem}[Forest gauge for the complete commutant]
+\label{thm:forest}
+Form a graph on scalar types using selected invertible coefficient
+matrices between equal-dimensional types, and choose a forest $F$.
+Root each tree. Let $P_v$ be the product of the chosen matrices and
+their inverses along the root-to-$v$ path, with $P_r=I$ at its root.
+Then the full original commutant is in bijection with the solutions
+in root matrices $X_r$ of
+\[
+                  X_{r(v)}\widetilde A_i
+                       =\widetilde A_iX_{r(u)},
+   \qquad \widetilde A_i=P_v^{-1}A_iP_u,
+\]
+over every original coefficient matrix, through the reconstruction
+\[
+                            Q_v=P_vX_{r(v)}P_v^{-1}.
+\]
+The reduced number of variables is
+\[
+                   V_F=\sum_{r\text{ a root}}s_r^2\le V.
+\]
+\end{theorem}
+
+\begin{proof}
+Each selected forest edge determines its target endomorphism
+uniquely from its source. Since a tree has a unique path from its
+root, induction along this path proves the reconstruction formula
+for every original solution. Substituting that formula into an
+arbitrary original equation and multiplying by $P_v^{-1}$ on the
+left and $P_u$ on the right yields precisely the displayed root
+equation. Conversely, root matrices satisfying all these equations
+reconstruct matrices satisfying every original equation. The two
+maps are inverse because each root has $P_r=I$.
+\end{proof}
+
+The reconstruction also preserves addition, multiplication and identity,
+because each component is conjugation by $P_v$. It is therefore an
+isomorphism of endomorphism algebras, not only of vector spaces.
+Idempotents and their orthogonality are preserved under this map.
+
+Selected tree equations transform to identities. Non-tree edges,
+including cycles, still impose constraints; they must not be
+discarded. Rectangular blocks between different-dimensional trees
+also remain as intertwiners. The implementation tests candidate
+coefficient matrices for invertibility, keeps a forest, and
+transports all remaining equations. It is not claimed to find every
+invertible linear combination in a coefficient matrix space.
+
+\subsection{Canonical reconstruction preserves bounded search}
+
+The maintained splitter does not exhaust the whole endomorphism
+algebra. It examines a deterministic bounded sequence derived from
+a canonical nullspace basis, then verifies candidate decompositions
+against the typed differential and all transformed attachments.
+Returning merely some basis of the same space could change this
+sequence and hence change what the bounded search discovers.
+
+After forest elimination, each reduced basis vector is lifted to
+the original row-major variable order. The lifted span is reduced
+to the same canonical binary basis used by the original nullspace
+solver. Uniqueness of reduced echelon form implies equality of the
+ordered basis, not merely equality of its dimension. Consequently
+the downstream candidate sequence and accepted witnesses are
+preserved whenever the original scalar-type and connected-component
+preconditions hold.
+
+The reconstruction itself costs time. The implementation precomputes
+the rank-one images of root matrix units when useful, then combines
+them to lift basis vectors. Complete-solve timings include this
+step. A reduction in $V$ is not reported as a runtime improvement
+unless the transport and canonicalization costs are also included.
+
+\subsection{Interactions with previous commutant reuse}
+
+The previous optional child-commutant reuse restricts a complete
+parent algebra after a verified direct-sum split. Coefficient-span
+and forest reduction accelerate a fresh solve; they do not justify
+using a stale algebra after a differential change. These operations
+can be combined within a static compression pass, but a scan step,
+cancellation or other differential mutation requires the existing
+invalidation discipline.
+
+The original object and variable caps are applied before the new
+solve. Thus a small $V_F$ does not currently allow an otherwise
+oversized component to bypass the caller's cap. This conservative
+resource contract simplifies integration, and is explicitly
+separated from a possible future reduced-variable admission policy.
+
+\input{overlap.tex}
+\input{experiments.tex}
+\input{integration_and_research.tex}
+\input{references.tex}
+\end{document}
