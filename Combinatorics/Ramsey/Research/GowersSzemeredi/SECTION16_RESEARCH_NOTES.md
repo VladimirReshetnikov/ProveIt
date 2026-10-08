@@ -767,8 +767,12 @@ where Δ_k = L_k(e) − L_k(0) (L_k is affine along the column).
   is inside V, outside V, or straddles its boundary. Straddling cells are
   the loss. Bounding their mass by θ is Bourgain's regular-Bohr-set
   argument: choose ρ so that B(ρ(1+κ)) ∖ B(ρ(1−κ)) has relative size
-  O(κ·rank). The corpus has Gowers's Lemmas 10.10 and 10.11, not
-  regularity in this form.
+  O(κ·rank). The port has it, in the audited prefix (manifest entry 780):
+  `CyclicBohr.Set.IsRankRegular` puts the annulus at relative size
+  ≤ 100·d·κ with d = 2·max(rank, 1), and `exists_rankRegular_ndilate`
+  finds a regular dilate at some radius in [1/2, 1]
+  (`OAI/.../Fourier/BohrTorusApproximation.lean`). Its `CyclicBohr.Set`
+  must be matched to the corpus's `bohr K ρ`.
 
 So off-origin covers of V's graph reduce to two inputs: the peer's
 Lemma 16.1 (polynomial exponent), and Bohr-set regularity for the
