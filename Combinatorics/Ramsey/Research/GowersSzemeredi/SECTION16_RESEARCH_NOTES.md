@@ -643,6 +643,36 @@ statement about the joint geometry of E and B₁, B₂. It is not in the paper
 as a black box. It is the next research step on this route; it is not a
 formalization step.
 
+**A route for (R), one-variable core (proposal, 2026-10-08).**
+
+1. **Cocycle.** Let φ be an E-homomorphism on a progression. Then
+   c(x, y) = φ(x+y) − φ(x) − φ(y) + φ(0) lies in E (take the quadruple
+   (x+y, 0, x, y)). So c takes at most 2^r values.
+2. **Bracket structure.** Suppose E's generators a₁..a_r are in general
+   position, meaning their small integer combinations are distinct. Then
+   reading c in those coordinates gives r integer-valued quasimorphisms with
+   bounded defect. By the Ulam/homogenization argument each is ⌊α_i x + β_i⌋
+   + O(1), so φ(x) = λx + Σ_i (⌊α_i x + β_i⌋ + O(1))·a_i is bracket-linear.
+   In general the generators are not in general position. Reducing to that
+   case is the research content.
+3. **Linearization.** Take u ≤ M^r with every ‖u·α_i‖ ≤ 1/M; this is
+   simultaneous Dirichlet, `simultaneous_small_multiplier` with exponent
+   1/r. Along x₀ + j·u the brackets have no carries, except at most r·O(1)
+   break points per window of length M. So φ is exactly affine on
+   sub-progressions of length about M/(r+2), with step u. Relative to a
+   length L ≥ M^(r+1), pieces have length about L^(1/(r+1)), an exponent
+   polynomial in r. Milićević's r is quasi-polynomial, so this is
+   exp(−polylog), within the dimension-three budget of Part H.5.
+4. **Two variables.** Fix y and apply step 3 in x. The step u can be chosen
+   uniformly over y in a sub-Bohr set, because the α_i come from E and not
+   from y. Then repeat in y. This needs the frequencies α_i to depend
+   bilinearly on (x, y). That is the E-bilinear-map setting of Milićević
+   §1.1, so it should be checked against his Sections 5–11 before any
+   formalization.
+
+Effort: step 3 is formalizable now on top of
+`Proofs05SimultaneousDirichlet`. Steps 2 and 4 are research.
+
 **Is the detour worth it?** It feeds only Theorem 16.2 in dimension three
 (Part J). By Part K it does not touch 18.2 or 18.7. Those need a trilinear
 input that is polynomially or quasi-polynomially bounded, and none exists.
