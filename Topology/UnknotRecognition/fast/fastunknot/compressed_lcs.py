@@ -221,6 +221,19 @@ class CommonSubstring:
         a.stats['lcs_endpoint_hits'] = a.stats.get('lcs_endpoint_hits', 0)+1
         return result
 
+    def anchor_overlaps(self, x, y):
+        """Certify an endpoint pattern and clip its candidate progression.
+
+        The earlier two-largest test stays first. This continuation handles
+        dense endpoint letters and progressions with a rejected upper tail.
+        Structural failure leaves the general matcher; resource limits
+        propagate and never become an empty overlap result.
+        """
+        if min(self.arena.lengths[x], self.arena.lengths[y]) < 128:
+            return None
+        from .compressed_endpoint import endpoint_overlaps
+        return endpoint_overlaps(self.arena, x, y)
+
     def overlaps(self, x, y):
         """Disjoint APs of positive k with suffix_k(x) == prefix_k(y)."""
         a = self.arena
@@ -248,6 +261,8 @@ class CommonSubstring:
             result = sparse
         elif (progression := self.progression_overlaps(x, y)) is not None:
             result = progression
+        elif (anchored := self.anchor_overlaps(x, y)) is not None:
+            result = anchored
         else:
             low = 1
             while low <= limit:

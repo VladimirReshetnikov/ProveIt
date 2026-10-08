@@ -64,7 +64,10 @@ class SparseOverlapTests(unittest.TestCase):
         root = parsed(arena, word, rng)
         matcher = CommonSubstring(arena)
         self.assertIsNone(matcher.sparse_overlaps(root, root))
-        aps = matcher.overlaps(root, root)
+        # Keep an explicit general-fallback check even when the new q-gram
+        # continuation can settle this formerly unresolved dense input.
+        with patch.object(matcher, 'anchor_overlaps', return_value=None):
+            aps = matcher.overlaps(root, root)
         self.assertEqual({p+i*d for p, d, n in aps for i in range(n)},
                          {k for k in range(1, len(word)+1) if word[-k:] == word[:k]})
         self.assertGreater(arena.stats.get('match_cells', 0), 0)

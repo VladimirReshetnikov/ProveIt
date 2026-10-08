@@ -73,13 +73,18 @@ class EndpointProgressionTests(unittest.TestCase):
             aps = matcher.overlaps(x, y)
             self.assertEqual({p+i*d for p, d, n in aps for i in range(n)},
                              {k for k in range(1, len(left)+1) if left[-k:] == right[:k]})
-            self.assertGreater(arena.stats.get('match_cells', 0), 0)
+            # The new continuation can clip against the unchanged periodic
+            # operand; the doubly damaged pair still needs the general table.
+            counter = 'lcs_anchor_hits' if left != right else 'match_cells'
+            self.assertGreater(arena.stats.get(counter, 0), 0)
 
     def test_exponential_block_and_exponential_multiplicity(self):
         arena, n, copies = WordArena(max_work=100000), 2**500, 2**500
         block = arena.concat(arena.power(arena.from_word([1, 2]), n), arena.letter(3))
         root = arena.power(block, copies)
         with patch.object(arena, 'expand', side_effect=AssertionError('must not expand')), \
+             patch('fastunknot.compressed_endpoint.endpoint_overlaps',
+                   side_effect=AssertionError('old shortcut must remain first')), \
              patch('fastunknot.compressed_lcs.MatchTable',
                    side_effect=AssertionError('must not build table')):
             self.assertEqual(CommonSubstring(arena).overlaps(root, root),
