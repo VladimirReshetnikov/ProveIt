@@ -601,6 +601,76 @@ Theorem 1.4, is not absorbed. Two things therefore remain open:
 - the bridge from bihomomorphisms on dense pieces to
   `CubicStackableClass` members.
 
+## K. Where every route to Theorems 18.2 and 18.7 meets (2026-10-08)
+
+The user's goal changed on 2026-10-08: proofs of the final results, by any
+formalization path. This part records where the available paths stand. It
+draws on `PORT_CONSTANTS_SURVEY.md`.
+
+### K.1 The openai/math port cannot reach them (proved by inspection)
+
+The port's descent increments only sets of density below about κ²/2 < 1/2.
+Its relative lift needs `2a ≤ mean` and target `≤ 1`, and its amplified
+levels need `H²a ≤ 1`. Its dense case is a black-box Szemerédi theorem
+(hypergraph removal, tower/Ackermann constants).
+
+Explicitizing the port therefore reduces 18.2 and 18.7 to a **quantitative
+dense Szemerédi theorem**. For example, sets of density 1/2 in [N] contain
+k-APs once N ≥ 2^2^2^2^2^(k+9). That statement is Gowers's.
+
+### K.2 The paper's own chain does not supply polynomial bounds (transcription-based)
+
+**(γ, r)-multiple multilinearity** (§16 definition, transcription line 3342)
+asks for boxes of width m^(c(θ/r,γ,k)^r) and at most q(θ/r,γ,k)^r functions.
+
+- The exponent r is forced. Lemma 16.8 (r sets of parameter s give
+  parameter rs) refines partitions sequentially, so the exponents compound.
+- Theorem 16.2 gives r = γ⁻²·s(θ,γ,k) = poly(1/θ).
+- So Corollary 16.11's density and width exponent are
+  c_* = (α/8)·c(α/(8r), α/2, k)^r = exp(−poly(1/α)).
+- The printed (α/2)^(2^2^(k+8)) would need r = O(1). That is, it would need
+  one (γ,1)-multiply multilinear piece of polynomial mass, which is what
+  printed Lemma 16.10 asserts. That encoding is formally refuted
+  (`lemma_16_10_printed_unit_encoding`, at k = θ = γ = 1).
+- The transcription's editorial note at Corollary 16.11 already records
+  that the printed comparison runs the wrong way.
+
+Consequences:
+- With c_* = exp(−poly), the density iteration needs n = exp(poly(1/δ))
+  steps, and the threshold is triple exponential (Part I).
+- So as far as this project can reconstruct it, the paper does not
+  establish Theorem 18.1 at degree ≥ 3 with its printed exponent. Nor does it
+  establish Theorems 18.2 and 18.7 at k ≥ 6 with their printed thresholds.
+  Lengths up to 5 avoid §16 in higher dimensions and are proved
+  (`theorem_18_2_le_five`).
+
+**Caveat.** The original was not consulted. Gowers's page offers only
+`sz898.dvi` and `gafasz.ps`. The ^r reading rests on the transcription and
+on its forced role in Lemma 16.8. No published erratum was found
+(web search, 2026-10-08).
+
+### K.3 What would close 18.2 and 18.7 for every k
+
+- **Polynomial Corollary 16.11 in every dimension.** For φ with the γ-product
+  property on a set of density α in Z_N^d, one needs a box of width
+  N^(poly(α)) and a multilinear map agreeing with φ on poly(α) of it. This is
+  a polynomial-bound inverse theorem for Freiman multi-homomorphisms
+  over Z_N.
+- **Known bounds.**
+  - d = 1: polynomial; this is Gowers's §7.
+  - d ≥ 2: iterated exponential (Gowers–Milićević 2020).
+  - d = 2: quasi-polynomial (Milićević 2026).
+- **Quasi-polynomial is not enough for 18.2.** It gives n = exp(polylog(1/δ))
+  iterations. The threshold exp exp exp(polylog(1/δ)) exceeds 2^2^(δ^(−M))
+  as δ → 0 whenever the polylog exponent exceeds 1.
+- **Corollary 18.7 is different:** it is the single density 1/2. For each
+  fixed k it is a numerical comparison of constants with no asymptotics in
+  δ. In particular, k = 6 uses only dimension-two structure, which is
+  proved (`theorem_16_2_at_two_bounded`, `quartic_function_inverse_explicit`).
+  Whether the resulting six-term threshold at density 1/2 fits under
+  `twoColorThreshold 6 = 2^2^2^2^2^15` is an open numerical question. It is
+  the next concrete step: K.4.
+
 ## F. Routes
 
 1. **Quantitative repair (research).**
