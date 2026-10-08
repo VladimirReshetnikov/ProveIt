@@ -1,0 +1,1824 @@
+diff --git a/Topology/UnknotRecognition/fast/README.md b/Topology/UnknotRecognition/fast/README.md
+--- a/Topology/UnknotRecognition/fast/README.md
++++ b/Topology/UnknotRecognition/fast/README.md
+@@ -616,3 +616,190 @@
+ dense method. None of the six ordinary scan cases selected an adaptive factored
+ call. Those results justify the explicit option, not a default switch. The raw
+ samples and A/A controls are in `results/component_algebra_20261007.json`.
++
++## Arithmetic continuation and checked Montesinos tangles
++
++This continuation adds complete exact recognition for a **supplied Montesinos
++presentation**, plus an **opt-in local obstruction search** for ordinary PDs.
++The source-based decision uses rational-tangle arithmetic and the topology of
++the associated Seifert-fibred double cover. The local test uses
++[Nogueira--Salgueiro, Theorem 4.9](https://arxiv.org/abs/2110.15645).
++The general recognizer still has an exponential worst-case bound; recognizing
++or finding an unrestricted Montesinos decomposition in an arbitrary PD is not
++implemented. The existing Khovanov backends are unchanged.
++
++### Supplied rational tangles and exact source recognition
++
++The new JSON key describes the numerator closure of an integer tangle `e`
++followed by a horizontal sum of rational tangles. Each inner list is an
++ordinary continued fraction `a0 + 1/(a1 + 1/(...))`. Negative coefficients and
++zero intermediate denominators are supported using projective arithmetic;
++each final tangle slope must be finite.
++
++```json
++{"montesinos":{"e":0,"tangles":[[2,3],[-2,-2,-1,-2]]}}
++```
++
++This example is a 12-crossing unknot that the inherited RI/RII simplifier leaves
++unchanged. Run a file containing it with `python -m fastunknot recognize FILE`.
++The Python interface constructs the same validated planar diagram:
++
++```python
++from fastunknot import Diagram, recognize
++
++diagram = Diagram.from_rational(0, [[2, 3], [-2, -2, -1, -2]])
++result = recognize(diagram)
++assert (result.status, result.method) == (
++    "UNKNOT", "montesinos-two-bridge-determinant")
++
++# Compare the inherited pipeline on this exact PD.
++baseline = recognize(diagram, use_rational=False)
++assert baseline.status == "UNKNOT"
++```
++
++`Diagram.from_montesinos` is an alias of `Diagram.from_rational`.
++`--no-rational` is the CLI equivalent of `use_rational=False`. In JSON, `e`
++defaults to zero and `tangles` is required. Mixed PD/braid/grid/Montesinos
++sources, extra source fields, empty continued fractions, booleans, floats,
++infinite final slopes and multi-component closures are rejected.
++
++For primitive slopes `p_i/q_i` with positive denominators, integer parts are
++absorbed into `e`, leaving `0 < beta_i < alpha_i` for each nonintegral summand.
++If `r` is the number of these summands, the exact determinant is
++
++```text
++abs(e' * product(alpha_i) + sum_i beta_i * product_{j != i}(alpha_j)).
++```
++
++The numerator is **not reduced across different summands**. For example,
++`1/2 + 1/2` reduces as a number to one, but this tangle closure has determinant
++four and is a link. Collapsing the sum to one reduced fraction would invalidate
++the recognition criterion. For a knot with `r <= 2`, determinant one is
++equivalent to the unknot. For `r >= 3`, the orbifold group quotient of the
++branched-cover group proves nontriviality, including determinant-one examples
++such as `Diagram.from_rational(-1, [[0, 2], [0, 3], [0, 5]])`.
++
++### Compressed arithmetic and the PD expansion boundary
++
++The direct API performs arithmetic without constructing crossing objects:
++
++```python
++from fastunknot import montesinos_certificate, verify_montesinos_certificate
++
++coefficient = (1 << 20000) + 1
++source = [[0, coefficient]]
++witness = montesinos_certificate(0, source)
++assert witness["status"] == "UNKNOT"
++assert verify_montesinos_certificate(0, source, witness)
++```
++
++Here a 20,001-bit coefficient describes an exponentially long twist region.
++Certificate integers larger than 1,024 bits use exact hexadecimal records, so
++JSON serialization avoids Python's decimal-digit conversion limit. The
++certificate includes the exact expanded crossing tally and arithmetic sizes.
++The verifier evaluates the continued fractions using forward matrices and
++recomputes the determinant using a denominator-product sum, independently of
++the production recurrences. It checks the cited sufficient conditions; it is
++not a formal verification of the topological theorems.
++
++`Diagram.from_rational` instead constructs every crossing. Its default
++`max_crossings=100000` limit is checked before crossing allocation; pass an
++explicit larger limit or `None` to request a larger expansion. The ordinary
++CLI reads a Diagram and uses this cap. Huge compressed inputs belong in the
++direct `montesinos_certificate` API; the CLI does not silently change to a
++different compressed input/output mode.
++
++### Strict source provenance
++
++The constructor realizes actual boundary twists, reciprocals, horizontal
++gluing and numerator caps, then validates the resulting PD and records an
++immutable `rational_source`. An unrelated PD plus a claimed slope or source
++does not authorize this decision. Ordinary `Diagram.from_pd` does not attach
++provenance, even when its PD equals a sourced diagram.
++
++`diagram.to_json(preserve_rational=True)` retains the source explicitly;
++default JSON output remains PD. Mirrors retain the mirrored source. Pickle
++loading reconstructs the supplied source and requires its PD to match, up to
++the choice of starting under-port in each row. Reinitializing an existing
++Diagram is rejected. These safeguards define the public immutable-record
++contract; they do not claim to defend against arbitrary hostile Python code
++mutating `__dict__` or calling `object.__setattr__`.
++
++### Opt-in local obstruction in an arbitrary PD
++
++`fastunknot.tangle_obstruction` checks an actual connected four-port disk
++subdiagram against a generated Montesinos pattern. It verifies crossing
++slots, internal edges, an injective crossing map, four actual cut edges,
++boundary order and exactly two open strings. A graph cut or a supplied
++fraction by itself is insufficient. A successful check proves `KNOTTED`;
++failure to find a pattern is inconclusive and the wrapper continues ordinary
++recognition.
++
++```python
++import json
++from pathlib import Path
++from fastunknot import Diagram
++from fastunknot.tangle_obstruction import (
++    recognize_with_subtangles, verify_subtangle_certificate,
++)
++
++diagram = Diagram.from_json(json.loads(
++    Path("examples/conway_double_three.json").read_text()))
++result = recognize_with_subtangles(diagram)
++assert (result.status, result.method) == ("KNOTTED", "montesinos-subtangle")
++
++certificate = json.loads(
++    Path("certificates/conway_double_three_certificate.json").read_text())
++assert verify_subtangle_certificate(diagram, certificate)["status"] == "KNOTTED"
++```
++
++The default six-pattern catalogue is intentionally small. Custom patterns
++use records such as `{"e":0,"tangles":[[0,-3],[0,5],[0,7]]}`:
++
++```python
++from fastunknot.tangle_obstruction import find_subtangle_obstruction
++
++diagram = Diagram.from_json(json.loads(
++    Path("examples/conway_forbidden_pretzel.json").read_text()))
++pattern = {"e": 0, "tangles": [[0, -3], [0, 5], [0, 7]]}
++certificate, evidence, stats = find_subtangle_obstruction(diagram, [pattern])
++assert evidence["status"] == "KNOTTED"
++```
++
++Current patterns require `e=0`, at least two nonintegral finite summands, a
++connected crossing shadow, four distinct boundary labels and no closed tangle
++components. They must satisfy the imported non-embeddability criterion;
++invalid or inapplicable supplied patterns raise `PatternError`. For each
++fixed `k`-crossing pattern, its rooted rotation-system map propagates through
++the internal edges in `O(n*k)` word operations over an `n`-crossing input.
++The pattern is an exact diagram pattern: general tangle isotopy or arbitrary
++rational-decomposition discovery is outside this search.
++
++Local search is not enabled in default `recognize`. Benchmarks include
++regressions when existing Seifert or invariant filters already decide the
++input cheaply, so the explicit wrapper preserves the user's control over this
++cost. `recognize_with_subtangles(..., seconds=...)` shares the remaining
++cooperative time budget with the inherited recognizer and returns `UNKNOWN`
++on exhaustion.
++
++### Validation and integration
++
++The combined suite has 152 test methods: the inherited 134 plus 12 arithmetic
++and construction tests and six local-pattern tests. The new tests include
++independent Khovanov cubes, exact Alexander comparisons, large binary inputs,
++the continuation identity family, determinant-one nontrivial knots,
++provenance and certificate tampering, reordered crossings and local-search
++controls. All required local examples and certificates are under this `fast/`
++directory; the tests do not depend on report or experiment directories.
++
++```bash
++python -m unittest discover -s tests -p test_rational.py -v
++python -m unittest discover -s tests -p test_tangle_obstruction.py -v
++python -m unittest discover -s tests -v
++```
++
++The accompanying research package provides the exact baseline patch, its
++application/replay log, the full test log and raw paired benchmarks. Performance
++claims distinguish recognition time from diagram construction, retain failed
++baseline runs as censored entries and make no universal quasi-polynomial
++claim.
+diff --git a/Topology/UnknotRecognition/fast/certificates/conway_double_three_certificate.json b/Topology/UnknotRecognition/fast/certificates/conway_double_three_certificate.json
+new file mode 100644
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/certificates/conway_double_three_certificate.json
+@@ -0,0 +1,32 @@
++{
++  "version": 1,
++  "pattern": {
++    "e": 0,
++    "tangles": [
++      [
++        0,
++        3
++      ],
++      [
++        0,
++        3
++      ]
++    ]
++  },
++  "crossings": [
++    10,
++    11,
++    12,
++    13,
++    14,
++    15
++  ],
++  "rotations": [
++    0,
++    0,
++    0,
++    0,
++    0,
++    0
++  ]
++}
+diff --git a/Topology/UnknotRecognition/fast/certificates/conway_forbidden_pretzel_certificate.json b/Topology/UnknotRecognition/fast/certificates/conway_forbidden_pretzel_certificate.json
+new file mode 100644
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/certificates/conway_forbidden_pretzel_certificate.json
+@@ -0,0 +1,54 @@
++{
++  "version": 1,
++  "pattern": {
++    "e": 0,
++    "tangles": [
++      [
++        0,
++        -3
++      ],
++      [
++        0,
++        5
++      ],
++      [
++        0,
++        7
++      ]
++    ]
++  },
++  "crossings": [
++    10,
++    11,
++    12,
++    13,
++    14,
++    15,
++    16,
++    17,
++    18,
++    19,
++    20,
++    21,
++    22,
++    23,
++    24
++  ],
++  "rotations": [
++    0,
++    0,
++    0,
++    0,
++    0,
++    0,
++    0,
++    0,
++    0,
++    0,
++    0,
++    0,
++    0,
++    0,
++    0
++  ]
++}
+diff --git a/Topology/UnknotRecognition/fast/examples/conway_double_three.json b/Topology/UnknotRecognition/fast/examples/conway_double_three.json
+new file mode 100644
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/examples/conway_double_three.json
+@@ -0,0 +1,101 @@
++{
++  "name": "conway_double_three",
++  "pd": [
++    [
++      7,
++      3,
++      8,
++      2
++    ],
++    [
++      11,
++      4,
++      12,
++      5
++    ],
++    [
++      1,
++      7,
++      2,
++      6
++    ],
++    [
++      8,
++      16,
++      9,
++      15
++    ],
++    [
++      10,
++      17,
++      11,
++      18
++    ],
++    [
++      5,
++      12,
++      6,
++      13
++    ],
++    [
++      14,
++      19,
++      15,
++      20
++    ],
++    [
++      16,
++      0,
++      17,
++      21
++    ],
++    [
++      18,
++      13,
++      19,
++      14
++    ],
++    [
++      20,
++      9,
++      21,
++      10
++    ],
++    [
++      3,
++      22,
++      23,
++      26
++    ],
++    [
++      22,
++      24,
++      25,
++      23
++    ],
++    [
++      24,
++      1,
++      31,
++      25
++    ],
++    [
++      26,
++      27,
++      28,
++      0
++    ],
++    [
++      27,
++      29,
++      30,
++      28
++    ],
++    [
++      29,
++      31,
++      4,
++      30
++    ]
++  ]
++}
+diff --git a/Topology/UnknotRecognition/fast/examples/conway_forbidden_pretzel.json b/Topology/UnknotRecognition/fast/examples/conway_forbidden_pretzel.json
+new file mode 100644
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/examples/conway_forbidden_pretzel.json
+@@ -0,0 +1,155 @@
++{
++  "name": "conway_forbidden_pretzel",
++  "pd": [
++    [
++      7,
++      3,
++      8,
++      2
++    ],
++    [
++      11,
++      4,
++      12,
++      5
++    ],
++    [
++      1,
++      7,
++      2,
++      6
++    ],
++    [
++      8,
++      16,
++      9,
++      15
++    ],
++    [
++      10,
++      17,
++      11,
++      18
++    ],
++    [
++      5,
++      12,
++      6,
++      13
++    ],
++    [
++      14,
++      19,
++      15,
++      20
++    ],
++    [
++      16,
++      0,
++      17,
++      21
++    ],
++    [
++      18,
++      13,
++      19,
++      14
++    ],
++    [
++      20,
++      9,
++      21,
++      10
++    ],
++    [
++      26,
++      3,
++      22,
++      23
++    ],
++    [
++      23,
++      22,
++      24,
++      25
++    ],
++    [
++      25,
++      24,
++      1,
++      35
++    ],
++    [
++      26,
++      27,
++      28,
++      36
++    ],
++    [
++      27,
++      29,
++      30,
++      28
++    ],
++    [
++      29,
++      31,
++      32,
++      30
++    ],
++    [
++      31,
++      33,
++      34,
++      32
++    ],
++    [
++      33,
++      35,
++      49,
++      34
++    ],
++    [
++      36,
++      37,
++      38,
++      0
++    ],
++    [
++      37,
++      39,
++      40,
++      38
++    ],
++    [
++      39,
++      41,
++      42,
++      40
++    ],
++    [
++      41,
++      43,
++      44,
++      42
++    ],
++    [
++      43,
++      45,
++      46,
++      44
++    ],
++    [
++      45,
++      47,
++      48,
++      46
++    ],
++    [
++      47,
++      49,
++      4,
++      48
++    ]
++  ]
++}
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/__init__.py b/Topology/UnknotRecognition/fast/fastunknot/__init__.py
+--- a/Topology/UnknotRecognition/fast/fastunknot/__init__.py
++++ b/Topology/UnknotRecognition/fast/fastunknot/__init__.py
+@@ -7,6 +7,7 @@
+ from .filters import alexander_obstruction, jones_obstruction
+ from .interlace import visible_factors_interlacement, verify_interlacement_certificate
+ from .recognize import Result, factored_khovanov_rank, recognize
++from .rational import continued_fraction, montesinos_certificate, verify_montesinos_certificate
+ from .scan import ScanLimit, khovanov_rank
+ from .seifert import seifert_certificate, seifert_data, verify_seifert_certificate
+ 
+@@ -14,5 +15,6 @@
+            "alexander_polynomial", "factored_khovanov_rank", "jones_obstruction", "khovanov_rank",
+            "recognize", "visible_factors", "seifert_certificate", "seifert_data",
+            "verify_seifert_certificate", "visible_factors_interlacement",
+-           "verify_interlacement_certificate", "braid_certificate"]
++           "verify_interlacement_certificate", "braid_certificate", "continued_fraction",
++           "montesinos_certificate", "verify_montesinos_certificate"]
+ __version__ = "0.3.0"
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/__main__.py b/Topology/UnknotRecognition/fast/fastunknot/__main__.py
+--- a/Topology/UnknotRecognition/fast/fastunknot/__main__.py
++++ b/Topology/UnknotRecognition/fast/fastunknot/__main__.py
+@@ -41,6 +41,7 @@
+          "opt-in component contraction for the standard scanner"),
+         ("--composition-max-variables", int, 18, None, "component/output variable allocation limit"),
+         ("--no-braid", None, False, None, "disable source-braid certificates"),
++        ("--no-rational", None, False, None, "disable checked Montesinos source certificates"),
+         ("--braid-backend", str, "free-product", ("free-product", "matrix"),
+          "exact decision backend for a source braid on at most three strands"),
+         ("--no-braid-reduction", None, False, None, "disable singleton endpoint destabilization"),
+@@ -190,6 +191,7 @@
+                            use_seifert=not args.no_seifert, backend=args.backend,
+                            composition=args.composition, composition_max_variables=args.composition_max_variables,
+                            use_braid=not args.no_braid, braid_backend=args.braid_backend,
++                           use_rational=not args.no_rational,
+                            use_braid_reduction=not args.no_braid_reduction,
+                            euler_max_states=args.euler_max_states,
+                            use_descending=not args.no_descending,
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/diagram.py b/Topology/UnknotRecognition/fast/fastunknot/diagram.py
+--- a/Topology/UnknotRecognition/fast/fastunknot/diagram.py
++++ b/Topology/UnknotRecognition/fast/fastunknot/diagram.py
+@@ -60,6 +60,8 @@
+     """
+ 
+     def __init__(self, pd: tuple[tuple[int, int, int, int], ...]):
++        if "pd" in self.__dict__:
++            raise AttributeError("cannot reinitialize an immutable Diagram")
+         object.__setattr__(self, "pd", pd)
+ 
+     def __setattr__(self, name, value):
+@@ -90,6 +92,15 @@
+         unchecked second argument to the public Diagram constructor.
+         """
+         return self.__dict__.get("_braid_source")
++
++    @property
++    def rational_source(self):
++        """Checked ``(e, continued_fractions)`` Montesinos source, or None.
++
++        Attached only by actual tangle construction.  Equality and hashing
++        still depend solely on PD, and a bare PD never acquires this promise.
++        """
++        return self.__dict__.get("_rational_source")
+ 
+     @classmethod
+     def from_pd(cls, data: Iterable[Iterable[int]]) -> "Diagram":
+@@ -228,14 +239,32 @@
+         return cls.from_pd(pd)
+ 
+     @classmethod
++    def from_rational(cls, e: int, tangles, *, max_crossings=100_000) -> "Diagram":
++        """Numerator closure of integer e plus supplied rational tangles.
++
++        Every tangle is an ordinary continued fraction.  Actual planar
++        twists, reciprocals and horizontal gluing create the PD.  Its
++        immutable source authorizes the Montesinos recognition theorem.
++        The default crossing-expansion cap is independent of the arithmetic
++        certificate API, which supports arbitrarily large binary coefficients.
++        """
++        from .rational import montesinos_pd
++        pd, source = montesinos_pd(e, tangles, max_crossings=max_crossings)
++        result = cls.from_pd(pd)
++        object.__setattr__(result, "_rational_source", source)
++        return result
++
++    from_montesinos = from_rational
++
++    @classmethod
+     def from_json(cls, value: Any) -> "Diagram":
+         if isinstance(value, list):
+             return cls.from_pd(value)
+         if not isinstance(value, dict):
+             raise DiagramError("input must be a JSON object or a PD array")
+-        keys = [k for k in ("pd", "braid", "rows", "x") if k in value]
++        keys = [k for k in ("pd", "braid", "rows", "x", "montesinos") if k in value]
+         if len(keys) != 1:
+-            raise DiagramError("specify exactly one of pd, braid, rows, or x/o")
++            raise DiagramError("specify exactly one of pd, braid, rows, x/o, or montesinos")
+         key = keys[0]
+         if key == "pd":
+             return cls.from_pd(value["pd"])
+@@ -246,6 +275,12 @@
+             return cls.from_braid(braid["strands"], braid["word"])
+         if key == "rows":
+             return cls.from_grid(value["rows"])
++        if key == "montesinos":
++            source = value["montesinos"]
++            if (not isinstance(source, dict) or "tangles" not in source
++                    or set(source) - {"e", "tangles"}):
++                raise DiagramError("montesinos must have tangles and an optional integer e")
++            return cls.from_rational(source.get("e", 0), source["tangles"])
+         x, o = value["x"], value.get("o")
+         if not isinstance(x, list) or not isinstance(o, list) or len(x) != len(o):
+             raise DiagramError("x and o must be equal-length arrays")
+@@ -265,6 +300,8 @@
+         state = {"pd": self.pd}
+         if self.braid_source is not None:
+             state["braid_source"] = self.braid_source
++        if self.rational_source is not None:
++            state["rational_source"] = self.rational_source
+         return state
+ 
+     def __setstate__(self, state):
+@@ -273,6 +310,8 @@
+         if "pd" in self.__dict__:
+             raise AttributeError("cannot reinitialize an immutable Diagram")
+         restored = Diagram.from_pd(state["pd"])
++        if "braid_source" in state and "rational_source" in state:
++            raise DiagramError("serialized diagram has multiple source presentations")
+         source = state.get("braid_source")
+         if source is not None:
+             try:
+@@ -288,6 +327,13 @@
+                 raise DiagramError("serialized braid provenance does not match PD")
+             source = braid.braid_source
+         object.__setattr__(self, "_braid_source", source)
++        rational_source = state.get("rational_source")
++        if rational_source is not None:
++            from .rational import source_matches_pd
++            rational_source = source_matches_pd(restored, rational_source)
++            if rational_source is None:
++                raise DiagramError("serialized Montesinos provenance does not match PD")
++            object.__setattr__(self, "_rational_source", rational_source)
+         object.__setattr__(self, "pd", restored.pd)
+ 
+     def alpha(self) -> list[int]:
+@@ -359,10 +405,17 @@
+         if self.braid_source is not None:
+             strands, word = self.braid_source
+             object.__setattr__(result, "_braid_source", (strands, tuple(-g for g in word)))
++        if self.rational_source is not None:
++            e, tangles = self.rational_source
++            object.__setattr__(result, "_rational_source",
++                               (-e, tuple(tuple(-a for a in cf) for cf in tangles)))
+         return result
+ 
+-    def to_json(self, *, preserve_braid: bool = False) -> dict[str, Any]:
++    def to_json(self, *, preserve_braid: bool = False, preserve_rational: bool = False) -> dict[str, Any]:
+         if preserve_braid and self.braid_source is not None:
+             strands, word = self.braid_source
+             return {"braid": {"strands": strands, "word": list(word)}}
++        if preserve_rational and self.rational_source is not None:
++            e, tangles = self.rational_source
++            return {"montesinos": {"e": e, "tangles": [list(cf) for cf in tangles]}}
+         return {"pd": [list(row) for row in self.pd]}
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/rational.py b/Topology/UnknotRecognition/fast/fastunknot/rational.py
+new file mode 100644
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/fastunknot/rational.py
+@@ -0,0 +1,373 @@
++"""Exact recognition for checked Montesinos presentations.
++
++Input is the numerator closure of an integer tangle ``e`` followed by a
++horizontal sum of finite rational tangles.  Each tangle is specified by an
++ordinary continued fraction ``[a0, ..., ak] = a0 + 1/(a1 + ...)``.  Zero
++intermediate denominators are interpreted projectively; a final infinite
++tangle is outside this interface.  Coefficients must be literal integers.
++
++The rational tangles are kept separate.  In particular, the determinant is
++the UNREDUCED common-denominator numerator, not the numerator of the reduced
++sum of their fractions.  Normalizing each tangle gives Seifert data
++``(e; beta_i/alpha_i)`` with ``0 < beta_i < alpha_i``.  At most two exceptional
++fibres gives a two-bridge link; for a knot its determinant is one exactly
++when it is the unknot.  At least three exceptional fibres has nontrivial
++orbifold fundamental-group quotient and cannot be the double cover of the
++unknot.  The mathematical foundations are classical Montesinos/Seifert
++theory; the accompanying article states the precise imported results.
++
++``montesinos_certificate`` is arithmetic-only and handles binary coefficients
++without expanding crossings.  ``montesinos_pd`` really builds the tangles,
++their horizontal gluing, and the numerator closure; it does not infer a PD
++from the final slope.  Diagram's checked constructor uses this function and
++retains an immutable source record.  Arbitrary PDs carry no such promise.
++"""
++from __future__ import annotations
++
++
++DEFAULT_MAX_CROSSINGS = 100_000
++
++
++def canonical_source(e, tangles):
++    """Validate and detach the source as ``(e, tuple(tuple(coeffs), ...))``."""
++    from .diagram import DiagramError
++    if type(e) is not int:
++        raise DiagramError("the Montesinos integer tangle e must be an integer")
++    if isinstance(tangles, (str, bytes, dict)):
++        raise DiagramError("Montesinos tangles must be a list of continued fractions")
++    try:
++        entries = tuple(tangles)
++        if any(isinstance(cf, (str, bytes, dict)) for cf in entries):
++            raise TypeError("continued fractions must be integer sequences")
++        values = tuple(tuple(coefficients) for coefficients in entries)
++    except TypeError as exc:
++        raise DiagramError("Montesinos tangles must be a list of continued fractions") from exc
++    for coefficients in values:
++        if not coefficients or any(type(a) is not int for a in coefficients):
++            raise DiagramError("each continued fraction must contain one or more integers")
++    return e, values
++
++
++def _primitive(p, q):
++    # A continued-fraction matrix is unimodular, so gcd(p,q)=1 already.
++    return (-p, -q) if q < 0 or (q == 0 and p < 0) else (p, q)
++
++
++def _evaluate_cf(coefficients, check=None):
++    p, q = 1, 0
++    max_bits = 1
++    for a in reversed(coefficients):
++        if check is not None:
++            check()
++        p, q = a * p + q, p
++        max_bits = max(max_bits, abs(p).bit_length(), abs(q).bit_length())
++    return (*_primitive(p, q), max_bits)
++
++
++def continued_fraction(coefficients, *, check=None):
++    """Return the primitive projective pair ``(p,q)`` of an ordinary CF."""
++    _, (coefficients,) = canonical_source(0, [coefficients])
++    p, q, _ = _evaluate_cf(coefficients, check)
++    return p, q
++
++
++def _data(e, tangles, *, check=None):
++    from .diagram import DiagramError
++    e, tangles = canonical_source(e, tangles)
++    normalized_e = e
++    slopes, exceptional = [], []
++    max_bits = abs(e).bit_length()
++    for coefficients in tangles:
++        p, q, peak = _evaluate_cf(coefficients, check)
++        if q == 0:
++            raise DiagramError("a Montesinos summand must have finite final slope")
++        a, beta = divmod(p, q)
++        normalized_e += a
++        slopes.append((p, q))
++        if beta:
++            exceptional.append((beta, q))
++        max_bits = max(max_bits, peak, abs(p).bit_length(), q.bit_length(),
++                       abs(normalized_e).bit_length())
++    numerator, denominator = normalized_e, 1
++    for beta, alpha in exceptional:
++        if check is not None:
++            check()
++        numerator, denominator = numerator * alpha + beta * denominator, denominator * alpha
++        max_bits = max(max_bits, abs(numerator).bit_length(), denominator.bit_length())
++    return {
++        "source": (e, tangles), "slopes": slopes, "normalized_e": normalized_e,
++        "exceptional": exceptional, "signed_determinant": numerator,
++        "denominator_product": denominator, "max_entry_bits": max_bits,
++        "expanded_crossings": abs(e) + sum(abs(a) for cf in tangles for a in cf),
++        "coefficient_count": 1 + sum(len(cf) for cf in tangles),
++    }
++
++
++def _encoded_integer(value):
++    """Keep certificates JSON-safe beyond Python's decimal-digit ceiling."""
++    return value if abs(value).bit_length() <= 1024 else {
++        "hex": format(value, "x"), "bits": abs(value).bit_length()}
++
++
++def _certificate(data):
++    from .diagram import DiagramError
++    determinant = abs(data["signed_determinant"])
++    if determinant % 2 == 0:
++        raise DiagramError("the Montesinos numerator closure is a link, not a knot")
++    count = len(data["exceptional"])
++    status = "UNKNOT" if count <= 2 and determinant == 1 else "KNOTTED"
++    criterion = ("montesinos-orbifold-quotient" if count >= 3
++                 else "montesinos-two-bridge-determinant")
++    return {
++        "version": 1, "status": status, "method": criterion,
++        "input_scope": "numerator closure of an integer plus finite rational tangles",
++        "normalized_e": _encoded_integer(data["normalized_e"]),
++        "primitive_slopes": [[_encoded_integer(p), _encoded_integer(q)]
++                             for p, q in data["slopes"]],
++        "exceptional_fibres": [[_encoded_integer(beta), _encoded_integer(alpha)]
++                               for beta, alpha in data["exceptional"]],
++        "exceptional_count": count,
++        "signed_determinant": _encoded_integer(data["signed_determinant"]),
++        "determinant": _encoded_integer(determinant),
++        "denominator_product": _encoded_integer(data["denominator_product"]),
++        "expanded_crossings": _encoded_integer(data["expanded_crossings"]),
++        "coefficient_count": data["coefficient_count"],
++        "max_entry_bits": data["max_entry_bits"],
++        "knot_component_test": "odd determinant",
++    }
++
++
++def montesinos_certificate(e, tangles, *, check=None):
++    """Decide a supplied Montesinos knot without creating its crossing set.
++
++    Invalid sources, infinite summands, and multi-component closures raise
++    ``DiagramError``.  This is a complete test on its stated input class;
++    it does not recognize whether an arbitrary PD is Montesinos.
++    """
++    return _certificate(_data(e, tangles, check=check))
++
++
++def verify_montesinos_certificate(e, tangles, certificate):
++    """Replay exact arithmetic using forward matrices and a product sum.
++
++    This implementation does not reuse the production backwards-CF recurrence
++    or its common-denominator accumulator.  It verifies the stated sufficient
++    conditions, not the imported topological theorems.  No PD is authorized by
++    this function alone; a Diagram source is separately checked by construction.
++    """
++    from .diagram import DiagramError
++    if not isinstance(certificate, dict):
++        return False
++    try:
++        e, tangles = canonical_source(e, tangles)
++        slopes, exceptional, normalized_e = [], [], e
++        # Reconstruct the same deterministic bit statistic from independently
++        # evaluated slopes; it is not itself an input to the decision.
++        max_bits = abs(e).bit_length()
++        for cf in tangles:
++            a, b, c, d = 1, 0, 0, 1
++            for coefficient in cf:
++                a, b, c, d = a * coefficient + b, a, c * coefficient + d, c
++            p, q = _primitive(a, c)
++            if q == 0:
++                return False
++            integer, beta = divmod(p, q)
++            normalized_e += integer
++            slopes.append((p, q))
++            if beta:
++                exceptional.append((beta, q))
++            max_bits = max(max_bits, abs(p).bit_length(), q.bit_length(),
++                           abs(normalized_e).bit_length())
++            # Only the cost statistic uses the production evaluation order.
++            # The slope and decision above use a separate forward matrix product.
++            back_p, back_q = 1, 0
++            max_bits = max(max_bits, 1)
++            for coefficient in reversed(cf):
++                back_p, back_q = coefficient * back_p + back_q, back_p
++                max_bits = max(max_bits, abs(back_p).bit_length(), abs(back_q).bit_length())
++        denominator = 1
++        for _, alpha in exceptional:
++            denominator *= alpha
++        numerator = normalized_e * denominator
++        for beta, alpha in exceptional:
++            numerator += beta * (denominator // alpha)
++        # Replay only the reported maximal intermediate bit size.  Correctness
++        # above uses the independent full-product formula.
++        partial_denominator = 1
++        for index, (_, alpha) in enumerate(exceptional):
++            partial_denominator *= alpha
++            partial_numerator = normalized_e * partial_denominator
++            for beta, divisor in exceptional[:index + 1]:
++                partial_numerator += beta * (partial_denominator // divisor)
++            max_bits = max(max_bits, abs(partial_numerator).bit_length(),
++                           partial_denominator.bit_length())
++        data = {
++            "slopes": slopes, "normalized_e": normalized_e,
++            "exceptional": exceptional, "signed_determinant": numerator,
++            "denominator_product": denominator, "max_entry_bits": max_bits,
++            "expanded_crossings": abs(e) + sum(abs(a) for cf in tangles for a in cf),
++            "coefficient_count": 1 + sum(len(cf) for cf in tangles),
++        }
++        # Exact types reject booleans in integer fields as well as extra fields.
++        def same(actual, expected):
++            if type(actual) is not type(expected):
++                return False
++            if isinstance(expected, dict):
++                return actual.keys() == expected.keys() and all(
++                    same(actual[key], value) for key, value in expected.items())
++            if isinstance(expected, list):
++                return len(actual) == len(expected) and all(
++                    same(left, right) for left, right in zip(actual, expected))
++            return actual == expected
++        return same(certificate, _certificate(data))
++    except (DiagramError, TypeError, ValueError, ArithmeticError):
++        return False
++
++
++class _Builder:
++    """Four-terminal tangle graph with an exact crossing-switch flag."""
++
++    def __init__(self):
++        self.rows = []
++        self.parent = []
++
++    def edge(self):
++        result = len(self.parent)
++        self.parent.append(result)
++        return result
++
++    def find(self, item):
++        while self.parent[item] != item:
++            self.parent[item] = self.parent[self.parent[item]]
++            item = self.parent[item]
++        return item
++
++    def join(self, left, right):
++        self.parent[self.find(left)] = self.find(right)
++
++    def rational(self, coefficients):
++        """Return terminals in NW,NE,SE,SW order, constructing actual twists."""
++        upper, lower = self.edge(), self.edge()
++        boundary = [upper, upper, lower, lower]
++        switched = False
++        # Each row stores a choice of which diagonal is under.  A global mirror
++        # toggles that bit, avoiding quadratic repeated changes of old crossings.
++        local_rows = []
++        for index, coefficient in enumerate(reversed(coefficients)):
++            if index:
++                # A clockwise quarter turn sends F to -1/F; switching crossings
++                # then negates it, producing the ordinary reciprocal 1/F.
++                boundary = [boundary[3], boundary[0], boundary[1], boundary[2]]
++                switched = not switched
++            for _ in range(abs(coefficient)):
++                out_lower, out_upper = self.edge(), self.edge()
++                row = (boundary[1], boundary[2], out_lower, out_upper)
++                local_rows.append((row, (coefficient < 0) ^ switched))
++                boundary[1], boundary[2] = out_upper, out_lower
++        for row, flip in local_rows:
++            self.rows.append(row[1:] + row[:1] if flip ^ switched else row)
++        return boundary
++
++    def horizontal(self, left, right):
++        self.join(left[1], right[0])
++        self.join(left[2], right[3])
++        return [left[0], right[1], right[2], left[3]]
++
++    def numerator(self, boundary):
++        self.join(boundary[0], boundary[1])
++        self.join(boundary[3], boundary[2])
++        pd = [tuple(self.find(label) for label in row) for row in self.rows]
++        # Count components before discarding crossing-free wires.  PD validation
++        # alone would not see an extra crossing-free component omitted from rows.
++        strand_parent = list(range(len(self.parent)))
++
++        def find(item):
++            while strand_parent[item] != item:
++                strand_parent[item] = strand_parent[strand_parent[item]]
++                item = strand_parent[item]
++            return item
++
++        def join(left, right):
++            strand_parent[find(left)] = find(right)
++
++        for label in range(len(self.parent)):
++            join(label, self.find(label))
++        for row in self.rows:
++            join(row[0], row[2])
++            join(row[1], row[3])
++        components = len({find(label) for label in range(len(self.parent))})
++        return pd, components
++
++
++def montesinos_pd(e, tangles, *, max_crossings=DEFAULT_MAX_CROSSINGS):
++    """Build the actual closed PD and detached source, under an expansion cap.
++
++    Use ``max_crossings=None`` to request an uncapped expansion.  The arithmetic
++    API has no crossing expansion and is the appropriate path for huge binary
++    coefficients.  The cap is checked before allocating any crossing objects.
++    """
++    from .diagram import DiagramError
++    data = _data(e, tangles)
++    _certificate(data)  # Reject links and unsupported infinite summands first.
++    if max_crossings is not None and (type(max_crossings) is not int or max_crossings < 0):
++        raise ValueError("max_crossings must be a nonnegative integer or None")
++    if max_crossings is not None and data["expanded_crossings"] > max_crossings:
++        raise DiagramError("Montesinos PD expansion exceeds max_crossings; "
++                           "use the arithmetic montesinos_certificate API")
++    e, tangles = data["source"]
++    builder = _Builder()
++    boundary = builder.rational((e,))
++    for cf in tangles:
++        boundary = builder.horizontal(boundary, builder.rational(cf))
++    pd, components = builder.numerator(boundary)
++    if components != 1:
++        raise ArithmeticError("Montesinos arithmetic and constructed component count disagree")
++    return pd, data["source"]
++
++
++def build_montesinos_tangle(e, tangles, *, max_crossings=DEFAULT_MAX_CROSSINGS):
++    """Return actual crossing rows and four boundary labels before closure.
++
++    ``boundary`` is in NW, NE, SE, SW cyclic order.  Its labels, together with
++    all ``pd`` occurrences, each occur exactly twice.  A crossing-free boundary
++    arc therefore repeats one label in ``boundary``.  Source CFs have finite
++    final slopes, but this routine does not require the numerator closure to
++    be a knot.  A caller embedding a two-string tangle must additionally rule
++    out closed components, since some sums can contain them.
++    """
++    from .diagram import DiagramError
++    data = _data(e, tangles)
++    if max_crossings is not None and (type(max_crossings) is not int or max_crossings < 0):
++        raise ValueError("max_crossings must be a nonnegative integer or None")
++    if max_crossings is not None and data["expanded_crossings"] > max_crossings:
++        raise DiagramError("Montesinos tangle expansion exceeds max_crossings")
++    e, tangles = data["source"]
++    builder = _Builder()
++    boundary = builder.rational((e,))
++    for cf in tangles:
++        boundary = builder.horizontal(boundary, builder.rational(cf))
++    rows = [tuple(builder.find(label) for label in row) for row in builder.rows]
++    boundary = tuple(builder.find(label) for label in boundary)
++    labels = sorted({label for row in rows for label in row} | set(boundary))
++    relabel = {label: index for index, label in enumerate(labels)}
++    return {
++        "pd": tuple(tuple(relabel[label] for label in row) for row in rows),
++        "boundary": tuple(relabel[label] for label in boundary),
++        "source": data["source"],
++        "boundary_order": "NW,NE,SE,SW",
++    }
++
++
++def source_matches_pd(diagram, source):
++    """Independently reconstruct a source before accepting serialized provenance."""
++    from .diagram import Diagram, DiagramError
++    try:
++        e, tangles = source
++        pd, normalized_source = montesinos_pd(e, tangles, max_crossings=diagram.crossings)
++        rebuilt = Diagram.from_pd(pd)
++    except (TypeError, ValueError, DiagramError):
++        return None
++    if len(rebuilt.pd) != len(diagram.pd) or any(
++            a != b and a[2:] + a[:2] != b for a, b in zip(rebuilt.pd, diagram.pd)):
++        return None
++    return normalized_source
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/recognize.py b/Topology/UnknotRecognition/fast/fastunknot/recognize.py
+--- a/Topology/UnknotRecognition/fast/fastunknot/recognize.py
++++ b/Topology/UnknotRecognition/fast/fastunknot/recognize.py
+@@ -207,6 +207,7 @@
+ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: bool = True,
+               use_seifert: bool = True, backend: str = "standard",
+               use_braid: bool = True, braid_backend: str = "free-product",
++              use_rational: bool = True,
+               use_braid_reduction: bool = True,
+               euler_max_states: int | None = 4096,
+               use_factorization: bool = True, use_modular: bool = True, use_jones: bool = True,
+@@ -244,6 +245,14 @@
+ 
+     try:
+         check()
++        if use_rational and original.rational_source is not None:
++            from .rational import montesinos_certificate
++            e, tangles = original.rational_source
++            witness = montesinos_certificate(e, tangles, check=check)
++            check()
++            evidence["montesinos"] = witness
++            return Result(witness["status"], witness["method"], original.crossings,
++                          diagram.crossings, monotonic() - start, evidence)
+         if use_braid and original.braid_source is not None:
+             strands, word = original.braid_source
+             witness = braid_certificate(strands, word, backend=braid_backend,
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/tangle_obstruction.py b/Topology/UnknotRecognition/fast/fastunknot/tangle_obstruction.py
+new file mode 100644
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/fastunknot/tangle_obstruction.py
+@@ -0,0 +1,317 @@
++"""Checked local Montesinos obstructions in otherwise arbitrary knot PDs.
++
++The imported topology is Nogueira--Salgueiro, arXiv:2110.15645, Theorem 4.9.
++This module verifies an actual four-port disk subdiagram, not just a graph
++cut or an unchecked fraction.  The initial implementation requires a
++connected shadow, no closed tangle components, four distinct cut edges,
++and source e=0 with at least two nonintegral finite summands.  A missed
++pattern is inconclusive.  It never authorizes an UNKNOT verdict.
++
++An exact occurrence is forced by the image and even rotation of one root
++crossing.  Therefore a fixed k-crossing pattern can be searched in O(n*k)
++word operations, rather than by general subgraph-isomorphism search.
++"""
++from __future__ import annotations
++
++from collections import Counter
++from functools import lru_cache
++from time import monotonic
++
++from .diagram import Diagram, DiagramError
++from .rational import build_montesinos_tangle, canonical_source, continued_fraction
++
++
++class PatternError(ValueError):
++    """The source or claimed embedding does not meet the certificate contract."""
++
++
++def _cycles(permutation):
++    seen = bytearray(len(permutation))
++    result = []
++    for start in range(len(permutation)):
++        if seen[start]:
++            continue
++        cycle, current = [], start
++        while not seen[current]:
++            seen[current] = 1
++            cycle.append(current)
++            current = permutation[current]
++        result.append(cycle)
++    return result
++
++
++def _template_topology(rows, boundary):
++    """Check a connected plane four-port diagram and its two open strands."""
++    k = len(rows)
++    if not k or len(boundary) != 4 or len(set(boundary)) != 4:
++        raise PatternError("the template must have crossings and four distinct ports")
++    labels = [label for row in rows for label in row] + list(boundary)
++    count = Counter(labels)
++    if any(multiplicity != 2 for multiplicity in count.values()):
++        raise PatternError("template edge incidence is not two")
++    where = [[] for _ in range(max(labels) + 1)]
++    for dart, label in enumerate(labels):
++        where[label].append(dart)
++    alpha = [0] * (4 * k + 4)
++    for occurrence in where:
++        if occurrence:
++            a, b = occurrence
++            alpha[a], alpha[b] = b, a
++
++    # Connectivity of the crossing shadow through internal edges.
++    reached, pending = {0}, [0]
++    while pending:
++        crossing = pending.pop()
++        for slot in range(4):
++            partner = alpha[4 * crossing + slot]
++            if partner < 4 * k and partner // 4 not in reached:
++                reached.add(partner // 4)
++                pending.append(partner // 4)
++    if len(reached) != k:
++        raise PatternError("the tangle crossing shadow is disconnected")
++
++    sigma = [(4 * (d // 4) + (d + 1) % 4) if d < 4 * k else d
++             for d in range(4 * k + 4)]
++    faces = _cycles([sigma[alpha[d]] for d in range(4 * k + 4)])
++    port_faces = [[d - 4 * k for d in face if d >= 4 * k] for face in faces]
++    port_faces = [ports for ports in port_faces if ports]
++    # V=k+4, E=2k+2, so a connected spherical rotation system has k faces.
++    if len(faces) != k or len(port_faces) != 1 or len(port_faces[0]) != 4:
++        raise PatternError("ports must lie on one face of a plane tangle")
++    ports = port_faces[0]
++    zero = ports.index(0)
++    if ports[zero:] + ports[:zero] != [0, 3, 2, 1]:
++        raise PatternError("the declared NW,NE,SE,SW port order is inconsistent")
++
++    # Follow strings, rather than the shadow, to rule out closed components.
++    parent = list(range(4 * k + 4))
++
++    def find(item):
++        while parent[item] != item:
++            parent[item] = parent[parent[item]]
++            item = parent[item]
++        return item
++
++    def join(a, b):
++        parent[find(a)] = find(b)
++
++    for d, partner in enumerate(alpha):
++        join(d, partner)
++    for i in range(k):
++        join(4 * i, 4 * i + 2)
++        join(4 * i + 1, 4 * i + 3)
++    roots = {find(d) for d in range(4 * k + 4)}
++    port_counts = Counter(find(4 * k + p) for p in range(4))
++    if roots != set(port_counts) or sorted(port_counts.values()) != [2, 2]:
++        raise PatternError("the source is not exactly two open strings")
++    return tuple(alpha)
++
++
++@lru_cache(maxsize=64)
++def _compile(source):
++    e, tangles = source
++    if e != 0:
++        raise PatternError("local patterns currently require e=0")
++    slopes = tuple(continued_fraction(cf) for cf in tangles)
++    if len(slopes) < 2 or any(q <= 1 for _, q in slopes):
++        raise PatternError("local patterns need at least two nonintegral finite summands")
++    if len(slopes) >= 3:
++        arithmetic = {"criterion": "three-or-more-nonintegral-summands",
++                      "summands": len(slopes)}
++    else:
++        (p, q), (r, s) = slopes
++        residue = (p * s + r * q) % (q * s)
++        if residue in (1, q * s - 1):
++            raise PatternError("this Montesinos tangle admits an unknot closure")
++        arithmetic = {"criterion": "two-summand-congruence-obstruction",
++                      "residue": residue, "modulus": q * s}
++    template = build_montesinos_tangle(e, tangles)
++    alpha = _template_topology(template["pd"], template["boundary"])
++    return template, alpha, arithmetic
++
++
++def _source(certificate, n):
++    if not isinstance(certificate, dict) or set(certificate) != {
++            "version", "pattern", "crossings", "rotations"}:
++        raise PatternError("invalid certificate fields")
++    if type(certificate["version"]) is not int or certificate["version"] != 1:
++        raise PatternError("unsupported certificate version")
++    pattern = certificate["pattern"]
++    if not isinstance(pattern, dict) or set(pattern) != {"e", "tangles"}:
++        raise PatternError("pattern must contain exactly e and tangles")
++    source = canonical_source(pattern["e"], pattern["tangles"])
++    crossings = abs(source[0]) + sum(abs(a) for cf in source[1] for a in cf)
++    if crossings > n:
++        raise PatternError("pattern is larger than the diagram")
++    return source
++
++
++def _check_embedding(diagram, template, alpha, images, rotations, target_alpha=None):
++    k, n = len(template["pd"]), diagram.crossings
++    if not isinstance(images, (list, tuple)) or not isinstance(rotations, (list, tuple)):
++        raise PatternError("crossings and rotations must be arrays")
++    if len(images) != k or len(rotations) != k:
++        raise PatternError("embedding length does not match the source")
++    if any(type(x) is not int or not 0 <= x < n for x in images) or len(set(images)) != k:
++        raise PatternError("crossing map must be injective and in range")
++    if any(type(r) is not int or r not in (0, 2) for r in rotations):
++        raise PatternError("rotations must preserve both cyclic order and the under-pair")
++    selected = set(images)
++    if target_alpha is None:
++        target_alpha = diagram.alpha()
++    ports = []
++    for i in range(k):
++        for j in range(4):
++            source_partner = alpha[4 * i + j]
++            target_dart = 4 * images[i] + (j + rotations[i]) % 4
++            target_partner = target_alpha[target_dart]
++            if source_partner < 4 * k:
++                other, slot = divmod(source_partner, 4)
++                expected = 4 * images[other] + (slot + rotations[other]) % 4
++                if target_partner != expected:
++                    raise PatternError("an internal edge or crossing slot does not match")
++            else:
++                if target_partner // 4 in selected:
++                    raise PatternError("each of the four ports must be an actual cut edge")
++                ports.append((source_partner - 4 * k, target_dart))
++    if len(ports) != 4:
++        raise PatternError("the occurrence has no four-port boundary")
++    return [dart for _, dart in sorted(ports)]
++
++
++def verify_subtangle_certificate(diagram, certificate):
++    """Return rejection evidence only after checking source, topology and map.
++
++    Invalid or inapplicable certificates raise PatternError (or DiagramError
++    for an invalid whole PD).  Verification rebuilds the whole PD's validity
++    independently of auxiliary provenance.  It does not trust input slopes,
++    determinants, statuses, or a claimed boundary disk.
++    """
++    if not isinstance(diagram, Diagram):
++        raise DiagramError("expected a Diagram")
++    checked = Diagram.from_pd(diagram.pd)
++    source = _source(certificate, checked.crossings)
++    template, alpha, arithmetic = _compile(source)
++    ports = _check_embedding(checked, template, alpha,
++                             certificate["crossings"], certificate["rotations"])
++    return {"status": "KNOTTED", "method": "certified-montesinos-subtangle",
++            "theorem": "Nogueira-Salgueiro, Theorem 4.9",
++            "pattern_crossings": len(template["pd"]),
++            "diagram_crossings": checked.crossings,
++            "cut_darts": ports, "arithmetic": dict(arithmetic)}
++
++
++def _forced_embedding(target_alpha, alpha, k, root, root_rotation, stats, check):
++    """Propagate one rooted rotation-system embedding through internal edges."""
++    images, rotations = [-1] * k, [0] * k
++    images[0], rotations[0] = root, root_rotation
++    inverse = {root: 0}
++    pending = [0]
++    while pending:
++        if check is not None:
++            check()
++        i = pending.pop()
++        stats["crossings_visited"] += 1
++        for j in range(4):
++            partner = alpha[4 * i + j]
++            if partner >= 4 * k:
++                continue
++            source_other, source_slot = divmod(partner, 4)
++            target_dart = 4 * images[i] + (j + rotations[i]) % 4
++            target_partner = target_alpha[target_dart]
++            target_other, target_slot = divmod(target_partner, 4)
++            rotation = (target_slot - source_slot) % 4
++            if rotation not in (0, 2):
++                return None
++            if images[source_other] >= 0:
++                if images[source_other] != target_other or rotations[source_other] != rotation:
++                    return None
++            else:
++                if target_other in inverse:
++                    return None
++                images[source_other], rotations[source_other] = target_other, rotation
++                inverse[target_other] = source_other
++                pending.append(source_other)
++    return images, rotations
++
++
++DEFAULT_PATTERNS = (
++    ((0, 3), (0, 3)),
++    ((0, -3), (0, -3)),
++    ((0, 2), (0, 5)),
++    ((0, -2), (0, -5)),
++    ((0, 3), (0, 4)),
++    ((0, -3), (0, -4)),
++)
++
++
++def find_subtangle_obstruction(diagram, patterns=None, *, check=None):
++    """Search exact disk occurrences; return (certificate, evidence, stats).
++
++    `patterns` is a sequence of {e:0,tangles:[CF,...]} source records.  The
++    default six-pattern catalogue is fixed and small.  No match returns
++    (None, None, stats), not a knot verdict.  Pattern discovery for arbitrary
++    rational decompositions is a separate, unsolved integration problem.
++    """
++    if not isinstance(diagram, Diagram):
++        raise DiagramError("expected a Diagram")
++    diagram = Diagram.from_pd(diagram.pd)
++    target_alpha = diagram.alpha()
++    if patterns is None:
++        patterns = [{"e": 0, "tangles": tangles} for tangles in DEFAULT_PATTERNS]
++    stats = {"patterns": 0, "root_trials": 0, "crossings_visited": 0}
++    for pattern in patterns:
++        if check is not None:
++            check()
++        if not isinstance(pattern, dict) or set(pattern) != {"e", "tangles"}:
++            raise PatternError("pattern must contain exactly e and tangles")
++        source = canonical_source(pattern["e"], pattern["tangles"])
++        k = abs(source[0]) + sum(abs(a) for cf in source[1] for a in cf)
++        if k > diagram.crossings:
++            continue
++        template, alpha, _ = _compile(source)
++        stats["patterns"] += 1
++        for root in range(diagram.crossings):
++            for rotation in (0, 2):
++                stats["root_trials"] += 1
++                found = _forced_embedding(target_alpha, alpha, k, root, rotation, stats, check)
++                if found is None:
++                    continue
++                images, rotations = found
++                try:
++                    _check_embedding(diagram, template, alpha, images, rotations, target_alpha)
++                except PatternError:
++                    continue
++                certificate = {"version": 1,
++                               "pattern": {"e": source[0], "tangles": [list(cf) for cf in source[1]]},
++                               "crossings": images, "rotations": rotations}
++                evidence = verify_subtangle_certificate(diagram, certificate)
++                return certificate, evidence, stats
++    return None, None, stats
++
++
++def recognize_with_subtangles(diagram, *, patterns=None, seconds=None, **options):
++    """Opt-in local search followed by the ordinary exact recognizer."""
++    from .geometry import ScanLimit
++    from .recognize import Result, recognize
++    start = monotonic()
++    deadline = None if seconds is None else start + seconds
++
++    def check():
++        if deadline is not None and monotonic() > deadline:
++            raise ScanLimit("time budget exhausted during subtangle search")
++
++    try:
++        certificate, evidence, stats = find_subtangle_obstruction(diagram, patterns, check=check)
++    except ScanLimit as exc:
++        return Result("UNKNOWN", "resource-limit", diagram.crossings, diagram.crossings,
++                      monotonic() - start, {"subtangle_search": str(exc)})
++    if certificate is not None:
++        return Result("KNOTTED", "montesinos-subtangle", diagram.crossings, diagram.crossings,
++                      monotonic() - start,
++                      {"certificate": certificate, "verification": evidence, "search": stats})
++    remaining = None if deadline is None else max(0.0, deadline - monotonic())
++    result = recognize(diagram, seconds=remaining, **options)
++    result.seconds = monotonic() - start
++    result.evidence["subtangle_search"] = stats
++    return result
+diff --git a/Topology/UnknotRecognition/fast/tests/test_rational.py b/Topology/UnknotRecognition/fast/tests/test_rational.py
+new file mode 100644
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/tests/test_rational.py
+@@ -0,0 +1,259 @@
++"""Independent checks of exact Montesinos arithmetic, PDs and provenance."""
++from __future__ import annotations
++
++import copy
++import itertools
++import json
++import os
++import pickle
++import random
++import sys
++import unittest
++from collections import Counter
++from unittest.mock import patch
++
++ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
++sys.path.insert(0, ROOT)
++
++from fastunknot import (Diagram, DiagramError, continued_fraction,
++                       montesinos_certificate, recognize, verify_montesinos_certificate)
++from fastunknot.alexander import alexander_polynomial, evaluate
++from fastunknot.rational import build_montesinos_tangle
++from fastunknot.simplify import simplify
++from test_fastunknot import reference_reduced_rank
++
++
++def euclidean_cf(p, q):
++    result = []
++    while q:
++        quotient, remainder = divmod(p, q)
++        result.append(quotient)
++        p, q = q, remainder
++    return result
++
++
++def binary_slope(word, p, q):
++    for letter in reversed(word):
++        if letter == "A":
++            p += 2 * q
++        else:
++            q += 2 * p
++    return p, q
++
++
++def identity_source(left, right):
++    p, q = binary_slope(left, 1, 1)
++    r, s = binary_slope(right, 3, 2)
++    return [euclidean_cf(p, q), [-a for a in euclidean_cf(r, s)]]
++
++
++class RationalArithmeticTests(unittest.TestCase):
++    def test_projective_cf_zero_denominators_and_mirrors(self):
++        cases = { (3,): (3, 1), (1, 2): (3, 2), (0, 3): (1, 3),
++                  (1, 0, 2): (3, 1), (0, 0): (1, 0),
++                  (1, 0, 0): (1, 1), (-2, 3): (-5, 3) }
++        for cf, expected in cases.items():
++            self.assertEqual(continued_fraction(cf), expected)
++            p, q = expected
++            mirrored = continued_fraction([-a for a in cf])
++            self.assertEqual(mirrored, (-p, q) if q else (1, 0))
++        with self.assertRaises(DiagramError):
++            montesinos_certificate(0, [[0, 0]])
++
++    def test_integer_normalization_preserves_the_full_product(self):
++        first = montesinos_certificate(0, [[2, 2], [-2, 3], [4]])
++        second = montesinos_certificate(4, [[0, 2], [0, 3]])
++        self.assertEqual(first["normalized_e"], second["normalized_e"])
++        self.assertEqual(first["exceptional_fibres"], second["exceptional_fibres"])
++        self.assertEqual(first["determinant"], second["determinant"])
++        # 1/2+1/2 reduces as a number to 1, but its closure determinant is 4.
++        # It is a link and must never acquire a rank-one/unknot verdict.
++        with self.assertRaises(DiagramError):
++            montesinos_certificate(0, [[0, 2], [0, 2]])
++        with self.assertRaises(DiagramError):
++            Diagram.from_rational(0, [[0, 2], [0, 2]])
++
++    def test_three_exceptional_fibres_detect_determinant_one_knots(self):
++        for alpha in (5, 7):
++            source = [[0, 2], [0, 3], [0, alpha]]
++            certificate = montesinos_certificate(-1, source)
++            self.assertEqual(certificate["determinant"], 1)
++            self.assertEqual(certificate["exceptional_count"], 3)
++            self.assertEqual(certificate["status"], "KNOTTED")
++            self.assertEqual(certificate["method"], "montesinos-orbifold-quotient")
++            diagram = Diagram.from_rational(-1, source)
++            self.assertEqual(abs(evaluate(alexander_polynomial(diagram), -1)), 1)
++            self.assertEqual(recognize(diagram, use_rational=False).status, "KNOTTED")
++
++    def test_binary_coefficient_arithmetic_does_not_expand(self):
++        huge = (1 << 20000) + 1
++        certificate = montesinos_certificate(0, [[0, huge]])
++        self.assertEqual(certificate["status"], "UNKNOT")
++        self.assertIsInstance(certificate["expanded_crossings"], dict)
++        self.assertEqual(json.loads(json.dumps(certificate)), certificate)
++        self.assertTrue(verify_montesinos_certificate(0, [[0, huge]], certificate))
++        with self.assertRaises(DiagramError):
++            Diagram.from_rational(0, [[0, huge]])
++        with self.assertRaises(DiagramError):
++            Diagram.from_rational(0, [[0, 11]], max_crossings=10)
++        self.assertEqual(Diagram.from_rational(0, [[0, 11]], max_crossings=11).crossings, 11)
++        for cap in (-1, True, 2.5):
++            with self.assertRaises(ValueError):
++                Diagram.from_rational(0, [[1]], max_crossings=cap)
++
++    def test_certificate_replay_and_tampering(self):
++        source = (-1, [[0, 2], [0, 3], [0, 5]])
++        certificate = montesinos_certificate(*source)
++        self.assertTrue(verify_montesinos_certificate(*source, certificate))
++        for key, replacement in (("status", "UNKNOT"), ("determinant", 3),
++                                 ("version", True), ("exceptional_count", 2),
++                                 ("normalized_e", 0), ("max_entry_bits", 1)):
++            changed = dict(certificate)
++            changed[key] = replacement
++            self.assertFalse(verify_montesinos_certificate(*source, changed), key)
++        changed = copy.deepcopy(certificate)
++        changed["primitive_slopes"][0][1] = 3
++        self.assertFalse(verify_montesinos_certificate(*source, changed))
++        changed = dict(certificate, extra="not a verified field")
++        self.assertFalse(verify_montesinos_certificate(*source, changed))
++
++    def test_invalid_source_inputs(self):
++        for e, tangles in ((True, [[1]]), (0, [[]]), (0, [[True]]), (0, [[1.0]]),
++                           (0, ["123"]), (0, [{1: 2}]), (0, "123"), (0, None)):
++            with self.assertRaises(DiagramError):
++                montesinos_certificate(e, tangles)
++        for value in ({"pd": [], "montesinos": {"tangles": [[1]]}},
++                      {"montesinos": {"tangles": [[1]], "fraction": [1, 1]}},
++                      {"montesinos": {"e": 1}}, {"montesinos": []}):
++            with self.assertRaises(DiagramError):
++                Diagram.from_json(value)
++        with self.assertRaises(DiagramError):
++            montesinos_certificate(0, [])
++        self.assertEqual(montesinos_certificate(1, [])["status"], "UNKNOT")
++
++
++class RationalDiagramTests(unittest.TestCase):
++    def test_small_cf_corpus_against_independent_khovanov_cube(self):
++        count = 0
++        for length in (1, 2, 3):
++            for cf in itertools.product((-2, -1, 0, 1, 2), repeat=length):
++                p, q = continued_fraction(cf)
++                if not q or not p % 2 or sum(abs(a) for a in cf) > 5:
++                    continue
++                diagram = Diagram.from_rational(0, [cf])
++                expected = "UNKNOT" if reference_reduced_rank(diagram) == 1 else "KNOTTED"
++                certificate = montesinos_certificate(0, [cf])
++                self.assertEqual(certificate["status"], expected, cf)
++                self.assertTrue(verify_montesinos_certificate(0, [cf], certificate))
++                count += 1
++        self.assertGreater(count, 50)
++
++    def test_random_montesinos_determinants_against_exact_alexander(self):
++        rng = random.Random(20261008)
++        count = 0
++        while count < 160:
++            e = rng.randrange(-2, 3)
++            tangles = [[rng.randrange(-2, 3) for _ in range(rng.randrange(1, 4))]
++                       for _ in range(rng.randrange(1, 5))]
++            try:
++                certificate = montesinos_certificate(e, tangles)
++            except DiagramError:
++                continue
++            diagram = Diagram.from_rational(e, tangles)
++            self.assertEqual(diagram.crossings, abs(e) + sum(abs(a) for cf in tangles for a in cf))
++            self.assertEqual(abs(evaluate(alexander_polynomial(diagram), -1)),
++                             certificate["determinant"], (e, tangles))
++            self.assertTrue(verify_montesinos_certificate(e, tangles, certificate))
++            count += 1
++
++    def test_small_two_tangle_corpus_against_independent_cube(self):
++        choices = ([0, 2], [0, -2], [0, 3], [0, -3], [1, 2], [-1, -2])
++        count = 0
++        for e in (-1, 0, 1):
++            for left, right in itertools.product(choices, repeat=2):
++                try:
++                    certificate = montesinos_certificate(e, [left, right])
++                except DiagramError:
++                    continue
++                diagram = Diagram.from_rational(e, [left, right])
++                rank = reference_reduced_rank(diagram)
++                self.assertEqual(certificate["status"], "UNKNOT" if rank == 1 else "KNOTTED",
++                                 (e, left, right))
++                count += 1
++        self.assertGreater(count, 30)
++
++    def test_four_terminal_graph_contract(self):
++        for source in ((0, [[0, 2], [0, 3]]), (-1, [[0, 2], [0, 3], [0, 5]]),
++                       (0, [[1, 0, 0]]), (0, [[0, 2], [0, 2]])):
++            tangle = build_montesinos_tangle(*source)
++            occurrences = Counter(tangle["boundary"])
++            occurrences.update(label for row in tangle["pd"] for label in row)
++            self.assertTrue(all(count == 2 for count in occurrences.values()), source)
++            self.assertEqual(tangle["boundary_order"], "NW,NE,SE,SW")
++            self.assertEqual(len(tangle["boundary"]), 4)
++
++    def test_checked_provenance_serialization_and_mirror(self):
++        cf = [[3, 2], [-3, -3]]
++        diagram = Diagram.from_rational(0, cf)
++        source = diagram.rational_source
++        cf[0].append(2)
++        self.assertEqual(diagram.rational_source, source)
++        with self.assertRaises(AttributeError):
++            diagram.rational_source = (0, ((1,),))
++        with self.assertRaises(TypeError):
++            Diagram(diagram.pd, rational_source=(0, ((1,),)))
++        # Reinvoking __init__ must not replace a certified unknot's PD while
++        # leaving its old source record attached.
++        trefoil = Diagram.from_braid(2, [1, 1, 1])
++        with self.assertRaises(AttributeError):
++            diagram.__init__(trefoil.pd)
++        self.assertEqual(recognize(diagram).status, "UNKNOT")
++        bare = Diagram.from_pd(diagram.pd)
++        self.assertEqual(bare, diagram)
++        self.assertEqual(hash(bare), hash(diagram))
++        self.assertIsNone(bare.rational_source)
++        for candidate in (diagram, diagram.mirror(), bare):
++            restored = pickle.loads(pickle.dumps(candidate))
++            self.assertEqual(restored, candidate)
++            self.assertEqual(restored.rational_source, candidate.rational_source)
++        saved = Diagram.from_json(diagram.to_json(preserve_rational=True))
++        self.assertEqual(saved.rational_source, source)
++        self.assertIsNone(Diagram.from_json(diagram.to_json()).rational_source)
++        corrupted = diagram.__getstate__()
++        corrupted["rational_source"] = (0, ((1,),))
++        with self.assertRaises(DiagramError):
++            object.__new__(Diagram).__setstate__(corrupted)
++        corrupted = diagram.__getstate__()
++        corrupted["braid_source"] = (2, (1,))
++        with self.assertRaises(DiagramError):
++            object.__new__(Diagram).__setstate__(corrupted)
++        with self.assertRaises(AttributeError):
++            diagram.__setstate__(bare.__getstate__())
++
++    def test_identity_continuation_matrix_and_cancellation_hard_unknot(self):
++        words = list(itertools.product("AB", repeat=3))
++        for left, right in itertools.product(words, repeat=2):
++            tangles = identity_source(left, right)
++            certificate = montesinos_certificate(0, tangles)
++            self.assertEqual(certificate["status"], "UNKNOT" if left == right else "KNOTTED")
++            diagram = Diagram.from_rational(0, tangles)
++            self.assertEqual(diagram.crossings, 16)
++            self.assertEqual(abs(evaluate(alexander_polynomial(diagram), -1)),
++                             certificate["determinant"])
++        hard = Diagram.from_rational(0, identity_source("AB", "AB"))
++        # At least one two-letter identity word is irreducible by current RI/RII.
++        hard_candidates = [Diagram.from_rational(0, identity_source(w, w))
++                           for w in itertools.product("AB", repeat=2)]
++        hard = next(d for d in hard_candidates if simplify(d, r3=False)[0].crossings == d.crossings)
++        self.assertEqual(hard.crossings, 12)
++        self.assertEqual(recognize(hard, use_rational=False).method, "reduced-khovanov-F2-scan")
++        with patch("fastunknot.recognize.khovanov_rank", side_effect=AssertionError("scan called")):
++            with patch("fastunknot.recognize.simplify", side_effect=AssertionError("reducer called")):
++                result = recognize(hard)
++        self.assertEqual((result.status, result.method), ("UNKNOT", "montesinos-two-bridge-determinant"))
++        self.assertEqual(recognize(hard, seconds=0).status, "UNKNOWN")
++        self.assertFalse(result.to_json()["quasipolynomial_guarantee"])
++
++
++if __name__ == "__main__":
++    unittest.main()
+diff --git a/Topology/UnknotRecognition/fast/tests/test_tangle_obstruction.py b/Topology/UnknotRecognition/fast/tests/test_tangle_obstruction.py
+new file mode 100644
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/tests/test_tangle_obstruction.py
+@@ -0,0 +1,108 @@
++import copy
++import json
++import unittest
++from itertools import product
++from pathlib import Path
++
++from fastunknot.diagram import Diagram, DiagramError
++from fastunknot.tangle_obstruction import (
++    PatternError, _compile, _template_topology, find_subtangle_obstruction,
++    recognize_with_subtangles, verify_subtangle_certificate,
++)
++
++EXAMPLES = Path(__file__).resolve().parents[1] / "examples"
++CERTIFICATES = Path(__file__).resolve().parents[1] / "certificates"
++
++
++class SubtangleTests(unittest.TestCase):
++    def setUp(self):
++        self.pattern = {"e": 0, "tangles": [[0, -3], [0, 5], [0, 7]]}
++        self.diagram = Diagram.from_json(json.loads(
++            (EXAMPLES / "conway_forbidden_pretzel.json").read_text()))
++        self.certificate = json.loads(
++            (CERTIFICATES / "conway_forbidden_pretzel_certificate.json").read_text())
++
++    def test_local_certificate_and_automatic_discovery(self):
++        evidence = verify_subtangle_certificate(self.diagram, self.certificate)
++        self.assertEqual(evidence["status"], "KNOTTED")
++        self.assertEqual(evidence["pattern_crossings"], 15)
++        cert, evidence, stats = find_subtangle_obstruction(self.diagram, [self.pattern])
++        self.assertIsNotNone(cert)
++        self.assertEqual(evidence["status"], "KNOTTED")
++        self.assertLessEqual(stats["root_trials"], 2 * self.diagram.crossings)
++        self.assertLessEqual(stats["crossings_visited"],
++                             2 * self.diagram.crossings * 15)
++
++    def test_reordered_crossings_and_even_rotations(self):
++        rows = list(reversed(self.diagram.pd))
++        rows = [row[2:] + row[:2] if i % 2 else row for i, row in enumerate(rows)]
++        changed = Diagram.from_pd(rows)
++        cert, evidence, _ = find_subtangle_obstruction(changed, [self.pattern])
++        self.assertIsNotNone(cert)
++        self.assertEqual(verify_subtangle_certificate(changed, cert), evidence)
++
++    def test_tampering_rejected(self):
++        cases = []
++        bad = copy.deepcopy(self.certificate); bad["crossings"][1] = bad["crossings"][0]; cases.append(bad)
++        bad = copy.deepcopy(self.certificate); bad["rotations"][0] = 1; cases.append(bad)
++        bad = copy.deepcopy(self.certificate); bad["crossings"][0] = -1; cases.append(bad)
++        bad = copy.deepcopy(self.certificate); bad["pattern"]["tangles"][0] = [0, 3]; cases.append(bad)
++        bad = copy.deepcopy(self.certificate); bad["version"] = True; cases.append(bad)
++        bad = copy.deepcopy(self.certificate); bad["status"] = "KNOTTED"; cases.append(bad)
++        bad = copy.deepcopy(self.certificate); bad["pattern"]["tangles"][0] = [0, 10**100]; cases.append(bad)
++        for certificate in cases:
++            with self.subTest(certificate=str(certificate)[:60]):
++                with self.assertRaises((PatternError, DiagramError)):
++                    verify_subtangle_certificate(self.diagram, certificate)
++        trefoil = Diagram.from_braid(2, [1, 1, 1])
++        with self.assertRaises(PatternError):
++            verify_subtangle_certificate(trefoil, self.certificate)
++
++    def test_ports_and_closed_strings(self):
++        source = (0, ((0, 3), (0, 3)))
++        template, _, arithmetic = _compile(source)
++        self.assertEqual(arithmetic["residue"], 6)
++        bad_boundary = list(template["boundary"])
++        bad_boundary[0], bad_boundary[1] = bad_boundary[1], bad_boundary[0]
++        with self.assertRaises(PatternError):
++            _template_topology(template["pd"], tuple(bad_boundary))
++        with self.assertRaises(PatternError):
++            _compile((0, ((0, 2), (0, 2))))
++        with self.assertRaises(PatternError):
++            _compile((0, ((0, 2), (0, 3))))
++
++    def test_default_catalogue_and_fallback(self):
++        diagram = Diagram.from_json(json.loads(
++            (EXAMPLES / "conway_double_three.json").read_text()))
++        cert, evidence, _ = find_subtangle_obstruction(diagram)
++        self.assertIsNotNone(cert)
++        self.assertEqual(evidence["arithmetic"]["criterion"],
++                         "two-summand-congruence-obstruction")
++        result = recognize_with_subtangles(diagram)
++        self.assertEqual((result.status, result.method), ("KNOTTED", "montesinos-subtangle"))
++        result = recognize_with_subtangles(Diagram.from_pd([]))
++        self.assertEqual(result.status, "UNKNOT")
++        result = recognize_with_subtangles(diagram, seconds=0)
++        self.assertEqual(result.status, "UNKNOWN")
++
++    def test_no_false_rejection_on_short_closed_braids(self):
++        from fastunknot.recognize import recognize
++        checked, hits = 0, 0
++        for length in (2, 4, 6):
++            for word in product((1, -1, 2, -2), repeat=length):
++                if length == 6 and word[0:2] not in ((1, 2), (-1, -2)):
++                    continue
++                try:
++                    diagram = Diagram.from_braid(3, word)
++                except DiagramError:
++                    continue
++                cert, _, _ = find_subtangle_obstruction(diagram)
++                checked += 1
++                if cert is not None:
++                    hits += 1
++                    self.assertEqual(recognize(diagram).status, "KNOTTED")
++        self.assertGreater(checked, 100)
++
++
++if __name__ == "__main__":
++    unittest.main()

@@ -1,0 +1,264 @@
+% Research fragment: independently derived 2026-10-08.
+% Theorem environments and amsmath/amssymb are supplied by the parent article.
+% Citations are supplied in sources.bib in this directory.
+
+\section{Four-ended rational tangles have exponentially many decision profiles}
+\label{sec:rational-continuation-rank}
+
+The following construction separates three different size measures: the
+number of exact continuation-equivalence classes, the dimension of a
+linear representation of the final Boolean answer, and the number of bits
+needed for an arithmetic representation.  The first two are exponential
+even at a fixed four-point boundary.  The third is linear on the same
+family, and the resulting decision procedure has polynomial bit complexity.
+
+\subsection{Rational tangle conventions and the gluing test}
+
+Write $T(p/q)$ for a rational two-string tangle with reduced fraction $p/q$,
+and write $N(T)$ for numerator closure.  All four boundary points are
+marked.  A minus sign on a tangle denotes its mirror image.  We use
+\[
+ F(T+[k])=F(T)+k,
+ \qquad F(T^{\rm rot})=-\frac1{F(T)}.
+\]
+Horizontal addition of two crossings and vertical addition of two crossings
+therefore act on a primitive fraction column by
+\begin{equation}
+ A\binom pq=\binom{p+2q}{q},\qquad
+ B\binom pq=\binom p{2p+q},\qquad
+ A=\begin{pmatrix}1&2\\0&1\end{pmatrix},\quad
+ B=\begin{pmatrix}1&0\\2&1\end{pmatrix}.
+ \label{eq:rational-two-twist-generators}
+\end{equation}
+Here the vertical operation is
+$T\mapsto T*1/[2]=1/([2]+1/T)$.
+Each operation adds two crossings and preserves the pairing of the four
+marked endpoints.  These fraction and tangle operations are reviewed in
+\cite[Section~2]{KauffmanLambropoulouHard}.
+
+We use the following classical, exact rational-tangle gluing criterion:
+\begin{equation}
+ N\bigl(T(p/q)-T(r/s)\bigr)\text{ is the unknot}
+ \quad\Longleftrightarrow\quad |ps-qr|=1.
+ \label{eq:rational-unknot-gluing}
+\end{equation}
+This is \cite[Theorem~5]{KauffmanLambropoulouHard}, with the second fraction
+negated.  The two input fraction pairs must be primitive separately.
+The integer $ps-qr$ is computed before any cancellation in the sum of the
+fractions.  For example, $1/2+1/2=1$ as a rational number, whereas the
+numerator closure of $T(1/2)+T(1/2)$ is not an unknot: the integer in the
+sum version of the criterion is $1\cdot2+2\cdot1=4$.
+This distinction is necessary because a sum of rational tangles need not
+itself be a rational tangle.
+
+\subsection{A family of disjoint positive cones}
+
+Let $\mathcal C=\mathbb R_{>0}^{2}$.  For a word
+$w=w_1\cdots w_m\in\{A,B\}^m$, let
+\[
+ G_w=w_1\cdots w_m\in\operatorname{SL}_2(\mathbb Z),
+ \qquad \mathcal C_w=G_w\mathcal C.
+\]
+The product convention is literal matrix multiplication.  To construct
+the corresponding tangle from its base tangle, apply the letters of $w$
+from right to left.
+
+\begin{lemma}[Disjoint cones]
+\label{lem:rational-disjoint-cones}
+If $u,w\in\{A,B\}^m$ are distinct, then
+$\mathcal C_u\cap\mathcal C_w=\varnothing$.
+Moreover, if $z\in\mathcal C_u$ and
+$y=G_w^{-1}z\in\mathbb Z^2$, then at least one coordinate of $y$ is
+nonpositive and at least one coordinate is strictly positive.
+\end{lemma}
+
+\begin{proof}
+Every generator preserves $\mathcal C$, and
+\[
+ A\mathcal C=\{(x,y):y>0,\ x>2y\},\qquad
+ B\mathcal C=\{(x,y):x>0,\ y>2x\}.
+\]
+These two sets are disjoint.  Remove the longest common prefix of $u,w$;
+its matrix is invertible.  The remaining two words start with different
+generators, and their tail matrices preserve $\mathcal C$.  Their cone
+images are therefore contained in the two disjoint sets above.  Applying
+the common prefix back proves disjointness.
+
+If both coordinates of $y$ were positive, then $z\in\mathcal C_w$,
+contradicting disjointness.  If both were nonpositive, the nonnegative
+matrix $G_w$ would send $y$ to a vector with both coordinates nonpositive,
+contradicting $z\in\mathcal C_u\subset\mathcal C$.  This proves the
+asserted sign pattern.  It also handles a zero coordinate explicitly:
+the other coordinate must then be a positive integer.
+\end{proof}
+
+\begin{theorem}[An exponential identity submatrix using knots only]
+\label{thm:rational-boolean-identity}
+For every integer $m\ge0$, there are $2^m$ rational prefix tangles $P_w$
+and $2^m$ rational continuation tangles $Q_w$, each with the same four
+marked boundary points, such that:
+\begin{enumerate}
+ \item $P_w$ has a diagram with at most $2m+1$ crossings, and $Q_w$
+       has a diagram with at most $2m+3$ crossings;
+ \item every closure $K_{u,w}=N(P_u+Q_w)$ is a one-component knot;
+ \item $K_{u,w}$ is the unknot if and only if $u=w$.
+\end{enumerate}
+In particular, the matrix
+\[
+ H_m(u,w)=\mathbf 1\{N(P_u+Q_w)\text{ is the unknot}\}
+\]
+is the $2^m\times2^m$ identity matrix and has rank $2^m$ over every field.
+Every displayed closed diagram has at most $4m+4$ crossings.
+\end{theorem}
+
+\begin{proof}
+Define primitive columns
+\[
+ v_w=\binom{p_w}{q_w}=G_w\binom11,
+ \qquad
+ x_w=\binom{r_w}{s_w}=G_w\binom32.
+\]
+All coordinates are positive integers.  Primitivity follows because the
+base columns are primitive and $G_w$ is unimodular.  Let
+\[
+ P_w=T(p_w/q_w),\qquad Q_w=-T(r_w/s_w),
+\]
+using the diagrams obtained from base tangles $T(1)$ and $T(3/2)$ by the
+two-crossing operations in \eqref{eq:rational-two-twist-generators}.
+The bases have one and three crossings, respectively; the latter is
+$[1,2]=[1]+1/[2]$.  Taking a mirror image preserves the crossing count.
+The asserted size bounds follow.
+
+Each generator adds an even number of twists to an adjacent pair of
+boundary endpoints, so it preserves the endpoint pairing.  Thus every
+$P_w$ has the pairing of $T(1)$, and every $Q_w$ has that of $-T(3/2)$.
+Rational tangles have two arcs and no closed components.  Joining these
+two fixed endpoint pairings and adding the two numerator caps produces
+one circle; equivalently, the base closure $N(T(1)-T(3/2))$ is an unknot
+by \eqref{eq:rational-unknot-gluing} and all subsequent two-twist changes
+preserve its component count.  Hence every cross closure is a knot.
+As an independent parity check, $G_w\equiv I\pmod2$, so
+\[
+ v_w\equiv(1,1)^t,\qquad x_w\equiv(1,0)^t\pmod2,
+ \qquad \det(v_u,x_w)\equiv1\pmod2.
+\]
+
+For the diagonal entries, unimodularity gives
+\[
+ \det(v_w,x_w)=\det\left(\binom11,\binom32\right)=-1.
+\]
+For $u\ne w$, let $y=(a,b)^t=G_w^{-1}v_u$.  By
+Lemma~\ref{lem:rational-disjoint-cones}, $a,b$ are integers with one
+nonpositive coordinate and one positive coordinate.  Therefore
+\[
+ \det(v_u,x_w)=\det\left(\binom ab,\binom32\right)=2a-3b.
+\]
+If $a\le0<b$, this is at most $-3$; if $b\le0<a$, it is at least $2$.
+Consequently its absolute value is at least two.  The parity calculation
+in fact makes it at least three.  Criterion
+\eqref{eq:rational-unknot-gluing} proves the precise diagonal acceptance
+pattern.  The rank assertion follows from the identity matrix.
+\end{proof}
+
+\begin{remark}[A direct numerical gap]
+The generators above give the stronger off-diagonal bound
+$|\det(v_u,x_w)|\ge19$.  Remove the longest common prefix.  If the first
+different letters are $A$ on the row side and $B$ on the column side,
+write the remaining positive columns as $(a,b)^t$ and $(c,d)^t$.
+Here $a,b\ge1$, $c\ge3$, $d\ge2$.  Then
+\[
+ \det\left(A\binom ab,B\binom cd\right)
+ =2ac+ad+3bc+2bd\ge21.
+\]
+In the opposite order the determinant is
+$-(2ac+3ad+bc+2bd)\le-19$.
+This gap is useful as a simple exact-arithmetic diagnostic; the cone
+argument alone already proves the theorem.
+\end{remark}
+
+\subsection{Consequences for continuation summaries}
+
+\begin{corollary}[Finite-state and linear-summary obstructions]
+\label{cor:rational-summary-obstructions}
+Consider an exact summary $\sigma(P)$ of a four-ended prefix tangle from
+which the unknot decision can be recovered for every admitted continuation,
+and suppose the admitted continuations include the $Q_w$ above.
+On prefixes with at most $2m+1$ crossings, $\sigma$ needs at least $2^m$
+distinct values.  Any fixed-length binary representation of these values
+needs at least $m$ bits.
+
+If, more specifically, there are vectors $f(P)\in\mathbb F^d$ and
+linear functionals $\lambda_Q$ satisfying
+\[
+ \lambda_Q(f(P))=\mathbf 1\{N(P+Q)\text{ is the unknot}\}
+\]
+for every such prefix and continuation, then $d\ge2^m$.
+The same conclusion holds for a bilinear factorization of the Boolean
+connection matrix through a $d$-dimensional vector space.
+\end{corollary}
+
+\begin{proof}
+The continuation $Q_w$ accepts $P_w$ and rejects every other $P_u$ in the
+family, so their summaries must all be distinct.  The bit lower bound is
+$\log_2(2^m)=m$.  In the linear case the restricted matrix $H_m$ factors
+through a vector space of dimension $d$, so its rank is at most $d$.
+Apply Theorem~\ref{thm:rational-boolean-identity}.
+\end{proof}
+
+This argument concerns exact representations of \emph{all} continuation
+answers.  It does not give a running-time lower bound for unknot recognition.
+In particular, $2^m$ different states can be represented by $O(m)$ bits.
+The four-ended interface is fixed throughout.  Each tangle is built by
+twisting two of four boundary strands, and a collar decomposition gives
+constant-size intermediate boundaries.  Any use of this observation for a
+particular PD sweep convention should state that convention explicitly.
+
+\begin{theorem}[A rank-two arithmetic representation with a nonlinear readout]
+\label{thm:rational-arithmetic-representation}
+For rational tangles supplied by explicit two-twist words as above,
+the pair of integers $(p,q)$ is an exact tangle summary using $O(m)$ bits.
+Two such summaries decide the closure unknot question in $O(m^2)$ bit
+operations using schoolbook arithmetic and $O(m)$ working bits.
+
+For the family in Theorem~\ref{thm:rational-boolean-identity}, the signed
+gluing-value matrix
+\[
+ D_m(u,w)=p_u s_w-q_u r_w
+\]
+has rank at most two over $\mathbb Q$, whereas
+$H_m(u,w)=\mathbf1\{|D_m(u,w)|=1\}$ has rank $2^m$.
+\end{theorem}
+
+\begin{proof}
+Both generators have infinity-operator norm at most three.  Thus
+\[
+ \|v_w\|_\infty\le3^m,\qquad
+ \|x_w\|_\infty\le3^{m+1}.
+\]
+Their coordinates have $O(m)$ binary digits.  Each generator update is one
+doubling and one addition of integers having $O(m)$ bits.  Performing all
+$m$ updates uses $O(m^2)$ bit operations and $O(m)$ working bits.
+The final two multiplications, subtraction and comparison with $\pm1$
+also fit these bounds by schoolbook integer multiplication.
+
+Conway's classification of rational tangles by their fraction
+\cite[Theorem~1]{kauffman-lambropoulou-tangles} makes $(p,q)$, normalized up
+to simultaneous sign, an exact summary of the rational tangle with marked
+boundary.  Efficient evaluation of a gluing is supplied here for rational
+continuations by \eqref{eq:rational-unknot-gluing}.
+
+Finally, if $p,q,r,s$ denote the column vectors of the corresponding
+coordinates across the finite family, then
+\[
+ D_m=ps^t-qr^t.
+\]
+This is a sum of two rank-one matrices, so its rank is at most two.
+The Boolean-rank assertion is Theorem~\ref{thm:rational-boolean-identity}.
+\end{proof}
+
+The new obstruction therefore identifies a limitation of one specific
+compression target: linear factorization of the final exact Boolean
+predicate.  Keeping the signed arithmetic gluing value before applying
+its nonlinear readout avoids that obstruction on rational tangles.
+Extending this arithmetic representation beyond certified rational pieces
+requires additional topological structure and remains a research question.

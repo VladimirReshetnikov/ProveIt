@@ -1,0 +1,107 @@
+{
+  "status": "PASSED",
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "package_root": "/workspace/scratch/d4a797eef8dc/unknot_arithmetic_continuations",
+  "execution_workspace": "/workspace/scratch/d4a797eef8dc/verification_portable_quick/workspace",
+  "bundled_results_modified": false,
+  "modes": {
+    "quick": true,
+    "full_tests": false,
+    "identity": false,
+    "benchmarks": false,
+    "all": false
+  },
+  "options": {
+    "max_m": 10,
+    "repeats": 7,
+    "seconds": 3.0,
+    "max_objects": 20000
+  },
+  "jobs": [
+    {
+      "name": "test_rational",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_rational.py",
+        "-v"
+      ],
+      "cwd": "/workspace/scratch/d4a797eef8dc/verification_portable_quick/workspace/fast",
+      "log": "/workspace/scratch/d4a797eef8dc/verification_portable_quick/logs/01_test_rational.txt",
+      "exit_code": 0,
+      "seconds": 1.073256946998299
+    },
+    {
+      "name": "test_tangle_obstruction",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_tangle_obstruction.py",
+        "-v"
+      ],
+      "cwd": "/workspace/scratch/d4a797eef8dc/verification_portable_quick/workspace/fast",
+      "log": "/workspace/scratch/d4a797eef8dc/verification_portable_quick/logs/02_test_tangle_obstruction.txt",
+      "exit_code": 0,
+      "seconds": 0.7501345049968222
+    },
+    {
+      "name": "audit_montesinos",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/scratch/d4a797eef8dc/verification_portable_quick/workspace/experiments/audit_montesinos.py"
+      ],
+      "cwd": "/workspace/scratch/d4a797eef8dc/verification_portable_quick/workspace",
+      "log": "/workspace/scratch/d4a797eef8dc/verification_portable_quick/logs/03_audit_montesinos.txt",
+      "exit_code": 0,
+      "seconds": 1.0562289669978782
+    },
+    {
+      "name": "audit_subtangles",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/scratch/d4a797eef8dc/verification_portable_quick/workspace/experiments/audit_subtangles.py"
+      ],
+      "cwd": "/workspace/scratch/d4a797eef8dc/verification_portable_quick/workspace",
+      "log": "/workspace/scratch/d4a797eef8dc/verification_portable_quick/logs/04_audit_subtangles.txt",
+      "exit_code": 0,
+      "seconds": 0.3245388599971193
+    },
+    {
+      "name": "verify_checkpoint_family",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/scratch/d4a797eef8dc/verification_portable_quick/workspace/experiments/verify_checkpoint_family.py"
+      ],
+      "cwd": "/workspace/scratch/d4a797eef8dc/verification_portable_quick/workspace",
+      "log": "/workspace/scratch/d4a797eef8dc/verification_portable_quick/logs/05_verify_checkpoint_family.txt",
+      "exit_code": 0,
+      "seconds": 0.6138986320002005
+    },
+    {
+      "name": "verify_identity_family",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/scratch/d4a797eef8dc/verification_portable_quick/workspace/experiments/verify_identity_family.py",
+        "--max-m",
+        "4",
+        "--output",
+        "/workspace/scratch/d4a797eef8dc/verification_portable_quick/workspace/results/identity_quick.json"
+      ],
+      "cwd": "/workspace/scratch/d4a797eef8dc/verification_portable_quick/workspace",
+      "log": "/workspace/scratch/d4a797eef8dc/verification_portable_quick/logs/06_verify_identity_family.txt",
+      "exit_code": 0,
+      "seconds": 0.1223633690024144
+    }
+  ],
+  "total_seconds": 3.944481208003708
+}

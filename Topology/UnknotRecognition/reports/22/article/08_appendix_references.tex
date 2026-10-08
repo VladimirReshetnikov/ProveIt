@@ -1,0 +1,269 @@
+\appendix
+\section{Algorithm summaries and size accounting}
+\label{sec:appendix}
+
+The following pseudocode fixes the arithmetic decisions independently of
+the language-specific implementation. Fractions remain primitive because
+each recurrence is unimodular. The integer accumulator is deliberately
+not reduced as a rational number.
+
+\begin{lstlisting}
+PrimitiveFraction([a0, ..., ak]):
+    (p, q) := (1, 0)
+    for a in [ak, ..., a0]:
+        (p, q) := (a*p + q, p)
+    reject unsupported final infinity if q = 0
+    if q < 0: (p, q) := (-p, -q)
+    return (p, q)
+
+MontesinosDecision(e, source_blocks):
+    exceptional := []
+    for block in source_blocks:
+        (p, q) := PrimitiveFraction(block)
+        (a, beta) := EuclideanDivmod(p, q)
+        e := e + a
+        if q > 1:
+            append (beta, q) to exceptional
+    (D, Q) := (e, 1)
+    for (beta, alpha) in exceptional:
+        (D, Q) := (D*alpha + beta*Q, Q*alpha)
+    reject input outside the knot domain if D is even
+    if len(exceptional) >= 3:
+        return KNOTTED, exceptional-fiber certificate
+    if abs(D) = 1:
+        return UNKNOT, two-bridge certificate
+    return KNOTTED, determinant certificate
+\end{lstlisting}
+
+The local obstruction checker uses the unnormalized primitive slopes as
+well:
+\begin{lstlisting}
+ForbiddenLocalSource(source):
+    require integer term e = 0
+    require at least two finite nonintegral rational summands
+    compute primitive (pi, qi), with qi > 1
+    require two open strands and no closed component
+    if number_of_summands >= 3: return FORBIDDEN
+    Q := q1*q2
+    F := p1*q2 + p2*q1
+    return (F mod Q) not in {1, Q - 1}
+
+FindLiteralWitness(host, source):
+    compile and verify connected plane pattern with four ports
+    require ForbiddenLocalSource(source)
+    for target_root in crossings(host):
+        for offset in {0, 2}:
+            propagate the unique possible map over internal edges
+            reject collisions, inconsistent rotations, or overpair errors
+            check every remaining dart and four distinct outgoing edges
+            if all source and separating-disk checks pass:
+                return source, crossing map, rotations
+    return UNKNOWN
+\end{lstlisting}
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabularx}{\textwidth}{L{0.30\textwidth}L{0.25\textwidth}X}
+\toprule
+Operation & Bound & Input and scope\\
+\midrule
+Two-twist rational summary and gluing &
+\(O(m^2)\) bits of time &
+Words of length \(m\); \(O(m)\) bits of arithmetic data\\
+\addlinespace
+Montesinos production arithmetic &
+\(O(B^2)\) bits of time &
+Complete compressed source length \(B\), including delimiters\\
+\addlinespace
+Independent branch verification &
+\(O(B^3)\) bits of time &
+Valid \(O(B)\)-size certificates; parse purported input as well\\
+\addlinespace
+Literal PD construction &
+Polynomial in \(B+C\) &
+Must charge \(C\) expanded crossings; cap checked before allocation\\
+\addlinespace
+One compiled pattern search &
+\(O(nm)\) word operations &
+Connected \(m\)-crossing pattern, indexed target already validated\\
+\addlinespace
+Public finite-catalogue wrapper &
+\(O(n\log(n+2)+nM)\) word operations &
+Total expanded pattern size \(M\), plus all source/compilation costs\\
+\addlinespace
+Bounded-description discovery &
+\((n+2)^{O(h)}\) bit operations &
+Literal admissible sources with at most \(h\) coefficients\\
+\bottomrule
+\end{tabularx}
+\caption{Complexity statements and the input sizes they actually charge.
+The abstract matching word bounds have indexed-array realizations.
+The Python implementation's table operations use the usual table model.}
+\label{tab:complexity}
+\end{table}
+
+For the expansion row, even a conservative implementation that revisits
+the current explicit graph at each construction step performs polynomially
+many operations in \(B+C\). The delivered compiler avoids unnecessary
+whole-graph mirroring, but this report makes no finer worst-case compiler
+claim than is needed. The production arithmetic bound applies before
+any expansion and is the bound relevant to exponentially large twist
+coefficients.
+
+\section{Artifact map and reproducibility}
+
+The main article driver is
+\code{article/unknot_arithmetic_continuations.tex}. It is assembled from
+numbered editable sections by \code{article/build_article.py}; all prose,
+theorems, tables, and bibliography are included directly in the combined
+driver. The optional plotted figure is used when its file exists, so
+the standalone combined source can also compile without the figure assets.
+The archive contains both the assets and a portable plotting script.
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabularx}{\textwidth}{L{0.41\textwidth}X}
+\toprule
+Path in the archive & Purpose\\
+\midrule
+\code{article/} & Combined and section TeX, PDF, build script,
+supplementary BibTeX, and figure assets\\
+\code{fast/} & Runnable updated recognizer, standard-library implementation,
+tests, examples, certificates, and preserved license\\
+\code{integration/} & Reviewable patch, application instructions, source
+manifest, and patch byte-verification manifest\\
+\code{experiments/} & Corpus generator, paired benchmark,
+independent arithmetic and topology diagnostics, reproduction launcher\\
+\code{examples/} & Complete structured and planted plain-PD inputs\\
+\code{certificates/} & Complete local source-plus-map certificates\\
+\code{results/} & Raw timings, finite verification outputs, full-suite
+and patch-application logs\\
+\code{RESEARCH_PROVENANCE.md} & Baseline, imported results,
+independently derived claims, and limited inspiration attribution\\
+\bottomrule
+\end{tabularx}
+\caption{Files supplied for review and later integration into ProveIt.}
+\end{table}
+
+The reproduction launcher accepts an explicit output directory and creates
+an isolated replay workspace, leaving the bundled measurement record
+unchanged. From any working directory, invoke its absolute path with
+\code{--quick} for the added suites and finite diagnostics,
+\code{--full-tests} for the full suite, \code{--identity} for all identity
+matrices through \(m=10\), or \code{--benchmarks} for a fresh seven-round
+timing run. The \code{--all} mode intentionally performs the expensive
+reproductions as well. Exact examples are in the top-level README.
+
+The repository patch was created for the pinned baseline, not for an
+unseen future revision. Its manifest permits a reviewer to compare the
+expected bytes before application. Subsequent repository changes may
+require a normal patch merge and another targeted validation; that is
+an integration issue rather than a change in any theorem above.
+
+\begin{thebibliography}{99}
+\small\raggedright
+
+\bibitem{proveit-baseline}
+V. Reshetnikov and contributors.
+\emph{ProveIt: Topology/UnknotRecognition}.
+Repository source and research reports, commit
+\code{86f23490006c880cd01db9bec10761d39c6395c8},
+inspected 8 October 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/86f23490006c880cd01db9bec10761d39c6395c8/Topology/UnknotRecognition}.
+
+\bibitem{kronheimer-mrowka}
+P. B. Kronheimer and T. S. Mrowka.
+\emph{Khovanov homology is an unknot-detector}.
+arXiv:1005.4346, 2010.
+\url{https://arxiv.org/abs/1005.4346}.
+
+\bibitem{lackenby-2021}
+M. Lackenby.
+\emph{Unknot recognition in quasi-polynomial time}.
+Oxford lecture slides, March 2021, especially slides 7 and 25--34.
+The displayed announced bound is \(2^{O((\log n)^3)}\).
+\url{https://people.maths.ox.ac.uk/lackenby/quasipolynomial-talk-oxford-compressed.pdf}.
+
+\bibitem{lackenby-2026}
+M. Lackenby.
+\emph{Incompressible surfaces, hierarchies and unknot recognition}.
+arXiv:2607.23350v1, 25 July 2026, especially Sections 9--10.
+\url{https://arxiv.org/abs/2607.23350}.
+
+\bibitem{kauffman-lambropoulou-tangles}
+L. H. Kauffman and S. Lambropoulou.
+On the classification of rational tangles.
+\emph{Advances in Applied Mathematics} 33 (2004), 199--237.
+arXiv:math/0311499.
+\url{https://arxiv.org/abs/math/0311499}.
+
+\bibitem{kauffman-lambropoulou-knots}
+L. H. Kauffman and S. Lambropoulou.
+On the classification of rational knots.
+\emph{L'Enseignement Math\'ematique} 49 (2003), 357--410.
+arXiv:math/0212011.
+\url{https://arxiv.org/abs/math/0212011}.
+
+\bibitem{KauffmanLambropoulouHard}
+L. H. Kauffman and S. Lambropoulou.
+\emph{Hard unknots and collapsing tangles}.
+arXiv:math/0601525v5, 26 July 2014; original preprint 2006.
+Especially Theorems 4--5 and the rational fraction conventions.
+\url{https://arxiv.org/abs/math/0601525}.
+
+\bibitem{KauffmanLambropoulouFractions}
+L. H. Kauffman and S. Lambropoulou.
+\emph{From tangle fractions to DNA}.
+arXiv:math/0311511, 2003, especially Theorem 1 and Section 4.1.
+\url{https://arxiv.org/abs/math/0311511}.
+
+\bibitem{nogueira-salgueiro}
+J. M. Nogueira and A. Salgueiro.
+On embeddings of 2-string tangles into the unknot, the unlink and split links.
+\emph{Topology and its Applications} 305 (2022), 107866.
+arXiv:2110.15645v1, especially Proposition 4.4 and Theorem 4.9.
+\url{https://arxiv.org/abs/2110.15645}.
+
+\bibitem{belousov-pretzel}
+Y. Belousov.
+\emph{Explicit formulas for the Alexander polynomial of pretzel knots}.
+arXiv:2502.10370v4, 9 March 2026.
+\emph{Bulletin of the Australian Mathematical Society},
+doi:10.1017/S0004972726101439.
+Especially Theorem 1(3) and Section 2.3.
+\url{https://arxiv.org/abs/2502.10370}.
+
+\bibitem{BarNatanTangles}
+D. Bar--Natan.
+Khovanov's homology for tangles and cobordisms.
+\emph{Geometry \& Topology} 9 (2005), 1443--1499.
+arXiv:math/0410495, especially Theorem 2 and Section 7.
+\url{https://arxiv.org/abs/math/0410495}.
+
+\bibitem{KhovanovPatterns}
+M. Khovanov.
+Patterns in knot cohomology I.
+\emph{Experimental Mathematics} 12 (2003), no.~3, 365--374.
+arXiv:math/0201306, especially Section 3.
+\url{https://arxiv.org/abs/math/0201306}.
+
+\bibitem{ShumakovitchTorsion}
+A. N. Shumakovitch.
+Torsion of the Khovanov homology.
+\emph{Fundamenta Mathematicae} 225 (2014), 343--364.
+arXiv:math/0405474v2, 19 June 2018, Corollary 3.2.C.
+\url{https://arxiv.org/abs/math/0405474}.
+
+\bibitem{OpenAIMathContextSeparation}
+OpenAI.
+\emph{An exponential two-way deterministic state lower bound for one-way
+liveness}, inspected source section on relation products and context
+distinguishability. In the \code{openai/math} repository, commit
+\code{adc7f1241b42e322a6451854ab7e4b4c146bf78a}, 2026.
+Used only as inspiration for the standard context-separation argument;
+no headline automata theorem is assumed here.
+\url{https://github.com/openai/math/tree/adc7f1241b42e322a6451854ab7e4b4c146bf78a}.
+The precise source path and blob hash are in the accompanying provenance.
+
+\end{thebibliography}
+\end{document}

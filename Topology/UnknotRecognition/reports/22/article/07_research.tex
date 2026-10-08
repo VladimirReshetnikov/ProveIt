@@ -1,0 +1,361 @@
+\section{A precise route toward quasi-polynomial complexity}
+\label{sec:roadmap}
+
+The new arithmetic stage is polynomial on its supplied input class.
+The bounded-description search is quasi-polynomial on a restricted
+one-sided discovery problem. Neither result bounds the cost of the
+remaining general instances. The objective now is to identify an interface
+and a discovery theorem that can survive those instances without
+materializing the exponential objects isolated above.
+
+\subsection{Which compression target should be changed}
+
+There are at least four different mathematical contracts for a tangle
+summary:
+\begin{enumerate}
+\item \emph{Relative-boundary isotopy information.}
+A rational slope determines a rational tangle up to isotopy fixing its
+marked boundary. This is exact topological information, compactly encoded.
+\item \emph{Full homotopy information.}
+A Bar--Natan complex retains enough data to compute the homology of every
+planar composition. Explicit representatives can be exponentially large
+at the prescribed checkpoints of Section~\ref{sec:unknot-checkpoint-lower-bound}.
+\item \emph{All Boolean continuation answers.}
+The relation \(P\sim P'\) means that every allowed continuation produces
+the same unknot decision. Section~\ref{sec:rational-continuation-rank}
+shows exponentially many classes even for a fixed four-point boundary.
+It also rules out a small linear factorization of that final Boolean
+predicate on the constructed family.
+\item \emph{A certificate for the actual input.}
+A Montesinos arithmetic proof or a forbidden local disk can decide
+one input without constructing all continuation answers. This is the
+contract used by the delivered early exits.
+\end{enumerate}
+
+These contracts should be reflected in types and function boundaries.
+A local nontriviality witness cannot be inserted as a substitute for a
+full chain complex at an arbitrary internal node. A rational slope can
+represent the topology of a rational piece, but this alone does not provide
+a fast operation for gluing it to an arbitrary nonrational complex.
+The required operation must either have its own theorem or retain the
+original diagram for an exact fallback.
+
+The rank-two identity
+\[
+ D_m=ps^{\mathsf T}-qr^{\mathsf T},
+ \qquad H_m=\mathbf1\{|D_m|=1\}
+\]
+illustrates a productive distinction. A low-dimensional arithmetic value
+can encode an exact answer after a nonlinear readout even when the
+Boolean connection matrix has full rank. State-count and Boolean-rank
+obstructions should therefore be used to reject an unsuitable
+representation contract, not to reject all arithmetic approaches.
+
+\subsection{What the proved restricted discovery theorem actually buys}
+
+Proposition~\ref{prop:mon:bounded-discovery} removes the need for a
+supplied occurrence map on a specified family. It is a genuine algorithm:
+enumerate bounded sources, reject arithmetic or component failures,
+compile a literal plane pattern, and propagate each possible root image.
+When \(h=O(\log n)\), its running time is \(n^{O(\log n)}\), including
+bit arithmetic and the polynomial work per candidate.
+
+The quantifiers are the important part. Completeness holds for forbidden
+tangles that already appear as literal admissible diagrams with the
+specified source bound, orientation, and four distinct external edges.
+The algorithm does not search arbitrary isotopies. It does not prove
+that every nontrivial diagram contains a short witness of this kind.
+It also never certifies an unknot merely because no forbidden template
+was found.
+
+The hypothesis is substantial. A continued fraction with a long sequence
+of coefficients equal to two can have \(h=\Theta(n)\); storing its slope
+still takes only \(O(n)\) bits, but the enumeration theorem's logarithmic
+coefficient-count hypothesis need not hold. Conversely, a large twist
+coefficient can contribute many displayed crossings while occupying one
+coefficient slot. This explains why coefficient count is useful and why
+it is not a universal measure of diagram difficulty.
+
+The fixed catalogue already gives a concrete scalable rejection family
+with arbitrary exteriors: every accepted literal occurrence of
+\(R(1/3)+R(1/4)\), for example, proves nontriviality regardless of the
+number or complexity of exterior crossings. A useful next theorem would
+enlarge this family through certified local rewrites or a rational-region
+extractor while preserving a proved total discovery bound.
+
+\subsection{A hierarchy accounting criterion}
+
+The geometric hierarchy route is complementary to the arithmetic tangle
+route. It should be audited using the iteration count and operation cost
+as separate parameters.
+
+\begin{proposition}[Conditional accounting, not a new hierarchy theorem]
+\label{prop:hierarchy-accounting}
+Suppose a fully specified implementation has at most \(L(g+1)^L\)
+elementary hierarchy events, as in the iteration estimate of
+\cite[Proposition~9.1]{lackenby-2026}. Suppose additionally that
+\[
+ g\le n^a,\qquad L\le b(\log(n+2))^c
+\]
+for fixed constants \(a,b,c>0\), and that all encoding growth and
+bit operations at each event are bounded by
+\(\exp(O((\log(n+2))^{c+1}))\).
+Then its total bit time has the same form
+\[
+ \exp(O((\log(n+2))^{c+1})).
+\]
+In particular, \(c=1\) yields \(n^{O(\log n)}\), whereas \(c=2\)
+yields \(n^{O((\log n)^2)}\).
+\end{proposition}
+
+\begin{proof}
+Taking logarithms of the event bound gives
+\[
+ \log L+L\log(g+1)
+ =O((\log(n+2))^{c+1}).
+\]
+Multiplying the number of events by the assumed per-event bound adds
+two quantities of that order in the exponent. This accounts for both
+iteration count and operation cost. It proves no one of the hypotheses.
+\end{proof}
+
+This accounting is useful precisely because each hypothesis can fail
+independently. A short hierarchy does not ensure short coordinate
+descriptions. A combinatorially decreasing potential does not bound the
+cost of finding the next compression. Replacing a surface by a compressed
+description does not make intersection and update operations efficient
+without an explicit algorithm. These obligations are central to turning
+the hierarchy programme into a reviewed implementation.
+
+The present tangle lower bounds do not refute such a geometric approach.
+They concern specific algebraic summaries. Their practical lesson is
+that geometric events should not be forced through an explicit full
+complex merely to preserve an interface whose information is richer
+than the decision requires.
+
+\section{Further research questions and concrete milestones}
+\label{sec:questions}
+
+The following questions are ordered roughly from immediately actionable
+implementation work to broader mathematical objectives. Each specifies
+what would count as progress. They are research proposals, not assumptions
+used to justify the existing code.
+
+\begin{researchquestion}[Certified extraction of visible rational regions]
+Can a validated PD be reduced to maximal visible rational regions in
+\(O(n\log n)\) or another explicit polynomial time, while returning
+relative-boundary isotopy certificates and exact slopes?
+\end{researchquestion}
+Start with bigon chains and the inverse operations of the rational compiler,
+retaining cyclic port order, crossing signs, and a replayable contraction
+tree. A useful first result would recognize the supplied diagonal family
+after source metadata is removed and after arbitrary relabeling and
+crossing reordering. A stronger result would admit carefully specified
+flypes or local isotopies. The theorem should define which diagrams
+the extractor is complete on, and charge each graph update rather than
+assuming repeated scans are free.
+
+\begin{researchquestion}[Choosing the placement of local search]
+Can local obstruction search run after all cheaper certificates and before
+the expensive fallback with a small, provable overhead bound?
+\end{researchquestion}
+The current negative controls already demonstrate why this matters.
+Measure construction, validation, compilation, discovery, and fallback
+separately, using held-out hosts as well as planted patterns. Share target
+dart arrays and precompiled templates. A useful release gate is an
+end-to-end improvement on difficult plain PDs while bounding overhead on
+trefoils, descending diagrams, and homogeneous examples. A benchmark
+selected only from successful local witnesses would not answer the question.
+
+\begin{researchquestion}[Practical bounded-description enumeration]
+Can the \(n^{O(h)}\) enumeration be pruned substantially without losing
+completeness for its stated literal class?
+\end{researchquestion}
+Possible exact pruning keys include expansion size, endpoint pairing,
+crossing-sign counts, rooted ribbon neighborhoods, and arithmetic residues.
+Canonicalization must respect the difference between two isotopic rational
+sources and two different literal diagrams: equality of slopes is enough
+for isotopy, but not necessarily enough for an unmodified dart match.
+An implementation should return the same existence answer as the exhaustive
+small-\(h\) reference enumerator before any asymptotic speed claim is made.
+
+\begin{researchquestion}[A larger certified local-tangle language]
+Which arborescent or graph-manifold tangle classes admit compact peripheral
+data and complete tests for whether an unknotting complement can exist?
+\end{researchquestion}
+The Montesinos criterion uses more than homology order: its congruence
+condition excludes \(R(1/3)+R(1/4)\) even though the numerator and denominator
+determinants are coprime. An extension should retain the exact boundary
+slopes, exceptional-fiber information, and marking needed for gluing.
+It should classify rational and product degeneracies explicitly. Merely
+recording the first homology group of each piece loses the peripheral
+information that makes the current obstruction effective.
+
+\begin{researchquestion}[Typed arithmetic composition with an arbitrary exterior]
+What exact interface permits a rational slope or a compact Seifert piece
+to interact with a nonrational remainder without expanding its full complex?
+\end{researchquestion}
+A first milestone could support one rational piece glued to a small explicit
+remainder with a polynomial cost in its bit description and the remainder's
+actual size. The correctness theorem must specify which topological or
+homological answer the interface preserves. There should be explicit
+conversion and fallback rules. A compact slope object is not automatically
+an object of the pre-existing chain-complex category.
+
+\begin{researchquestion}[Continuation-dependent processing of the Pell family]
+Can a general PD strategy detect and exploit the relationship between
+prefix and actual suffix before it reaches the exponential checkpoint?
+\end{researchquestion}
+On the diagonal family, the decisive relation is the unimodular pairing
+\(p_ks_k-q_kr_k=-1\). An algorithm that deliberately constructs the
+full prefix complex pays for information that the suffix immediately
+collapses. A useful experiment would compare symmetric gluing,
+look-ahead, and arithmetic extraction on source-erased diagrams with
+controlled perturbations. A useful theorem would bound the size of all
+intermediate representations for that algorithm, rather than only
+bounding the final unknot rank.
+
+\begin{researchquestion}[Compact homological data beyond multiplicities]
+Can differentials and extension data for structured tangle complexes be
+stored in an arithmetic circuit, recurrence, or other succinct form on
+which the needed closure operations remain efficient?
+\end{researchquestion}
+The lower bound permits such representations because it counts expanded
+summands. It does not prove they exist with efficient operations.
+A scalar multiplicity alone omits differential data; capping a multiplicity
+can be unsound if later maps interact with its copies. The target should
+include composition, cancellation, restriction to a justified homological
+window, and exact rank decisions on the permitted output, with explicit
+bit-growth bounds. Symbolic expression size must be analyzed alongside
+the number of graph nodes in the representation.
+
+\begin{researchquestion}[Useful arithmetic values before a nonlinear readout]
+Which intermediate arithmetic invariants have a low-dimensional gluing
+law but a sufficiently strong exact terminal predicate?
+\end{researchquestion}
+The signed determinant pairing is a complete example on rational
+continuations. It converts a rank-two arithmetic matrix into a full-rank
+Boolean matrix by testing membership in \(\{1,-1\}\).
+For more general pieces, one might study peripheral matrices, presentations
+with controlled relations, or exact equations for distinguished fillings.
+An arithmetic invariant that is not complete should remain a one-sided
+filter. In particular, a compact Jones or Euler calculation should not be
+promoted to a general unknot detector without an additional theorem.
+
+\begin{researchquestion}[Generalized representation lower bounds]
+Can the continuation construction distinguish other proposed summary
+models, including bounded-degree nonlinear readouts, compressed modules,
+or restricted arithmetic circuits?
+\end{researchquestion}
+Any proposed lower bound must specify the model and its input encoding.
+The current identity matrix already implies that a representative-subfamily
+scheme preserving the existence of an accepting prefix for every displayed
+suffix must retain all \(2^m\) prefixes: suffix \(Q_w\) accepts only \(P_w\).
+This does not prevent a symbolic set representation. A stronger useful
+result would identify exactly which operations force expansion and which
+ones preserve compactness, rather than claiming a general complexity
+separation from a state count.
+
+\begin{researchquestion}[Sharper, simpler independent verification]
+Can the separate Montesinos verifier be reduced from the conservative
+cubic bound to \(O(B^2)\), or better with fast arithmetic, without merely
+reusing the production implementation?
+\end{researchquestion}
+The nested replay exists to check tracked prefix statistics, not to decide
+the topology. One option is to remove nonessential statistics from the
+mathematical certificate and verify them separately. Another is to maintain
+independent prefix products or use a product tree. The important outcome is
+an independent small checker with a transparent source-to-fraction and
+fraction-to-verdict proof, not a second function that trusts the producer.
+
+\begin{researchquestion}[Short positive certificates and formal proof kernels]
+Can a determinant-one arithmetic decision be turned into a compact,
+replayable topological certificate and formalized in the ProveIt setting?
+\end{researchquestion}
+For compressed sources, a fully expanded Reidemeister movie may be longer
+than the source by an exponential factor. A suitable certificate should
+instead record rational-tangle identities, Euclidean arithmetic, and
+boundary-preserving gluing steps in compressed form. Its checker must
+verify all signs and primitive pairs. For local negative certificates,
+the disk lemma can be formalized as a statement about finite dart
+permutations and a plane embedding, with the imported topological theorem
+kept explicit. Formalizing the disjoint-cone and triangle-representation
+lemmas would give smaller initial proof-assistant milestones.
+
+\begin{researchquestion}[Extending the local certificate geometry]
+Can the implementation safely admit two ports on a single exterior edge,
+disconnected crossing shadows with simple arcs, or additional boundary
+marking conventions?
+\end{researchquestion}
+The initial four-distinct-edge contract avoids these cases and is sound.
+An extension needs a new explicit cut-point representation and a proof
+that the accepted common face still bounds the intended disk with no
+hidden components. Disconnected shadows require more than simply
+reusing root propagation from one component. Separate topology lemmas
+and adversarial tests should precede any expansion of the accepted class.
+
+\begin{researchquestion}[A useful structural completeness theorem]
+Can every diagram in a broad, explicitly specified class be transformed
+or decomposed so that arithmetic classification or a short forbidden
+local certificate becomes available within quasi-polynomial cost?
+\end{researchquestion}
+Candidate classes should be defined by their diagrams and allowed moves,
+not retrospectively by whether the implementation succeeds.
+One could begin with a controlled arborescent grammar or diagrams with
+a supplied decomposition tree and then study discovery.
+Both the transformation count and the size of each intermediate diagram
+or compressed source must be bounded. The current results provide
+neither a universal \(O(\log n)\) coefficient bound nor a theorem that
+local forbidden tangles cover all nontrivial knots.
+
+\begin{researchquestion}[Hierarchy operation costs and the logarithmic exponent]
+Can the geometric hierarchy programme supply executable bounds for
+compression discovery, parallelity-bundle updates, boundary-pattern
+simplification, and terminal checks, with controlled coordinate growth?
+\end{researchquestion}
+The accounting in Proposition~\ref{prop:hierarchy-accounting} identifies
+the necessary parameters. An implementation audit should attach an
+explicit representation and cost to each operation from the mathematical
+algorithm. It should separately establish whether the needed hierarchy
+length is \(O(\log n)\) or \(O((\log n)^2)\), since those produce
+different quasi-polynomial exponents under polynomial pattern complexity.
+A declining hierarchy potential alone is insufficient.
+
+\begin{researchquestion}[Adversarial families and fair backend comparisons]
+Which examples remain hard after provenance is removed, cheap certificates
+are applied, and the best supported existing backend is selected?
+\end{researchquestion}
+The current diagonal family isolates a real expanded-complex problem;
+the Alexander-one family isolates the failure of a common invariant;
+the planted local hosts test certificate discovery. A broader study should
+separate these purposes and include source-erased rational diagrams,
+hidden local patterns, examples with no matches, and alternate compositions.
+Keep resource exits censored, use fresh caches, report process startup
+when relevant, and compare end-to-end time as well as inner kernels.
+This would guide algorithm design without confusing favourable source
+metadata with a general discovery improvement.
+
+\subsection{Recommended sequence of follow-up contributions}
+
+The next contribution should implement and certify visible rational-region
+extraction, then benchmark the present arithmetic decision on ordinary
+source-erased PDs. That would remove the largest practical qualification
+from the supplied-source speedups on an explicit class.
+
+A second contribution should move or schedule local search using the
+measured pipeline costs, add an exact small-\(h\) reference enumerator,
+and develop completeness-preserving pruning. Its claim should remain a
+local-witness discovery bound until a wider structural theorem is proved.
+
+A third contribution should implement one typed arithmetic/exterior
+composition operation with a full correctness proof and a proved bound on
+all intermediate representations. The Pell checkpoint family gives a sharp
+test: success should avoid the expanded \(p_k+q_k\) cost, not simply hide
+it in a later conversion step.
+
+The broad quasi-polynomial objective then requires a coverage or hierarchy
+theorem together with executable operation costs. The delivered arithmetic
+and local certificate stages are exact components available for that
+programme. The lower bounds identify a representation choice that can
+defeat the programme even on unknots, while the arithmetic construction
+demonstrates a concrete way around it in a mathematically complete case.

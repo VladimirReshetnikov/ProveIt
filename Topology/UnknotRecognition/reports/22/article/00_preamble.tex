@@ -1,0 +1,136 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=27mm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype}
+\DisableLigatures{encoding=*,family=lmtt}
+\usepackage{booktabs,longtable,tabularx,array}
+\usepackage{graphicx,xcolor}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\definecolor{ink}{HTML}{16324F}
+\definecolor{accent}{HTML}{006B70}
+\definecolor{light}{HTML}{F3F6F8}
+\hypersetup{colorlinks=true,linkcolor=ink,citecolor=accent,urlcolor=accent,
+  pdftitle={Arithmetic Continuations and Local Certificates for Unknot Recognition},
+  pdfauthor={ProveIt research contribution prepared with ChatGPT},
+  pdfsubject={Exact algorithms, rational tangles, Montesinos certificates, and complexity barriers}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{researchquestion}{Research question}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\F}{\mathbb F}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Kh}{\operatorname{Kh}}
+\newcommand{\unk}{\texttt{UNKNOT}}
+\newcommand{\knot}{\texttt{KNOTTED}}
+\newcommand{\unknown}{\texttt{UNKNOWN}}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\setlist{itemsep=3pt,topsep=5pt,leftmargin=*}
+\setlength{\emergencystretch}{2em}
+\setlength{\parskip}{3pt}
+\lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible,
+  keepspaces=true,showstringspaces=false,frame=single,rulecolor=\color{black!15},
+  backgroundcolor=\color{light},xleftmargin=4pt,xrightmargin=4pt,
+  aboveskip=10pt,belowskip=10pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{ink}Arithmetic continuations and unknot recognition}
+\fancyhead[R]{\small ProveIt}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\numberwithin{equation}{section}
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\centering
+\vspace*{17mm}
+{\large\color{accent}\textsc{ProveIt research report}\par}
+\vspace{12mm}
+{\huge\bfseries\color{ink}Arithmetic Continuations\\[4pt]
+and Local Certificates\\[4pt]
+for Unknot Recognition\par}
+\vspace{9mm}
+{\Large An implementation, obstruction theorems,\\
+and a route toward quasi-polynomial complexity\par}
+\vspace{16mm}
+{\large 8 October 2026\par}
+\vspace{8mm}
+{\normalsize Prepared for the ProveIt project with ChatGPT\\
+GPT-6 Astra Pro\par}
+\vspace{16mm}
+\begin{minipage}{0.89\textwidth}
+\small
+\textbf{Scope.}
+This report contributes checked arithmetic recognition for supplied Montesinos
+presentations, verified local obstructions in ordinary planar diagrams,
+explicit continuation and chain-complex lower bounds, reproducible software,
+and a restricted quasi-polynomial witness-discovery theorem.
+It does not establish a general quasi-polynomial running-time bound for the
+ProveIt recognizer.
+\par\medskip
+\textbf{Repository baseline.}
+\url{https://github.com/VladimirReshetnikov/ProveIt}\\
+\code{Topology/UnknotRecognition}\\
+Commit \code{86f23490006c880cd01db9bec10761d39c6395c8}.
+\par\medskip
+\textbf{Research status.}
+Classical results are attributed explicitly. New statements below are
+derivations for this project, with complete mathematical arguments and
+independent computational checks. They are not asserted to be
+first-in-literature results or machine-checked formal proofs.
+\end{minipage}
+\vfill
+{\small Source, software patch, certificates, tests, and raw measurements\\
+are distributed together with this report.\par}
+\end{titlepage}
+\hypersetup{pageanchor=true}
+
+\begin{abstract}
+We develop an arithmetic alternative to expanding every intermediate
+tangle complex in exact unknot recognition. A four-ended family of rational
+prefixes and rational continuations has a Boolean unknot-recognition
+connection matrix equal to an identity matrix of order \(2^m\), although
+the signed gluing-value matrix has rank at most two and is represented by
+integers with \(O(m)\) bits. Thus exponentially many exact continuation
+profiles coexist with polynomial-time arithmetic evaluation. On a related
+family of actual unknot diagrams, preserving a complete explicit
+four-ended Bar--Natan complex at a specified prefix requires exponentially
+many summands. These statements identify precise limitations of finite
+profile tables and full-complex expansion; neither is a lower bound for
+general unknot decision time.
+
+We implement a complete classifier for supplied finite-slope Montesinos
+presentations using exact continued-fraction arithmetic, component checks,
+and a nontrivial triangle-group quotient of the branched cover. The production
+arithmetic has quadratic schoolbook bit complexity in the compressed source
+length. A separate verifier and checked diagram compiler make the input
+contract explicit. A second implementation searches ordinary planar diagrams
+for small Montesinos tangles that cannot embed in any unknot, using the
+Nogueira--Salgueiro criterion and a verified separating-disk certificate.
+Enumerating all such literal templates with \(O(\log n)\) coefficients
+gives a proved \(n^{O(\log n)}\) algorithm for that restricted discovery
+problem. This exhaustive enumerator is specified and proved, while the
+delivered implementation searches a fixed or supplied finite catalogue.
+
+Paired measurements on the supplied-presentation family show large
+recognition-stage improvements and resolve examples that exceed an explicit
+complex-object cap in the old path. Local catalogue search also has measured
+regressions and remains optional. We give a claim ledger, reproducible tests
+and timings, and a prioritized research programme addressing discovery,
+mixed arithmetic interfaces, homological information, and geometric
+hierarchy operation costs.
+\end{abstract}
+\tableofcontents
+\clearpage
