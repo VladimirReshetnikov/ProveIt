@@ -288,8 +288,8 @@ def khovanov_window(pd, lower: int, upper: int, *, order=None, max_objects=None,
     def check():
         if deadline is not None and monotonic() > deadline:
             raise ScanLimit("time budget exhausted")
-    if reduction not in ("standard", "residue", "adaptive"):
-        raise ValueError("reduction must be standard, residue, or adaptive")
+    if reduction not in ("standard", "residue", "adaptive", "disk-adaptive"):
+        raise ValueError("reduction must be standard, residue, adaptive, or disk-adaptive")
     if composition not in ("standard", "component", "component-dense"):
         raise ValueError("composition must be standard, component, or component-dense")
     if type(composition_max_variables) is not int or composition_max_variables < 0:
@@ -316,11 +316,14 @@ def khovanov_window(pd, lower: int, upper: int, *, order=None, max_objects=None,
         shape_cache = len(order) >= 16 and 8 * repeated_stages(pd, order) >= len(order)
     scan_type = WindowScan
     if reduction != "standard":
-        from .residue import AdaptiveScan, ResidueScan
-        reducer = AdaptiveScan if reduction == "adaptive" else ResidueScan
+        from .residue import reduction_scanner
+        reducer = reduction_scanner(reduction)
         # WindowScan supplies pruning; the reducer supplies cancellation and
         # its counters. Cooperative super() calls initialize one FastScan.
-        scan_type = type("ReducedWindowScan", (WindowScan, reducer), {})
+        # Disk prefix recording must wrap both the ordinary and pruned
+        # extension paths, so that reducer precedes WindowScan in its MRO.
+        bases = (reducer, WindowScan) if reduction == "disk-adaptive" else (WindowScan, reducer)
+        scan_type = type("ReducedWindowScan", bases, {})
     complex_ = scan_type(
         len(pd), lower, upper, max_objects=max_objects,
         deadline=deadline, shape_cache=shape_cache,

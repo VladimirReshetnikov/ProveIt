@@ -304,8 +304,8 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
         from math import isfinite
         if type(window_seconds) not in (int, float) or not isfinite(window_seconds) or window_seconds < 0:
             raise ValueError("window_seconds must be finite and nonnegative, or None")
-    if reduction not in ("standard", "residue", "adaptive"):
-        raise ValueError("reduction must be standard, residue, or adaptive")
+    if reduction not in ("standard", "residue", "adaptive", "disk-adaptive"):
+        raise ValueError("reduction must be standard, residue, adaptive, or disk-adaptive")
     if reduction != "standard" and (backend != "standard" or pivot != "minfill" or algebra != "bits" or race != 1):
         raise ValueError("residue/adaptive reduction requires standard backend, minfill, bits, and race=1")
     if type(twist_max_basis) is not int or twist_max_basis < 0:

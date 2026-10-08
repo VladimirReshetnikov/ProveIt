@@ -26,7 +26,7 @@ modification times.
 | `18/` | `unknot_twist_research_2026-10-08.zip` | additive continuation of `fastunknot` (`18/fast/`, `integration.patch`) | exact long-twist recurrence for reduced F2 Khovanov homology, streamed homology backend, direct braid-profile structural evaluation | — | not run |
 | `19/` | `unknot_rank_two_kernels_20261007.zip` | standard-library rank-two braid kernel (`19/src/`) | optimal one-pass disjoint rank-two substitutions in `O(n log n)`, linear replay verifier | quasi-polynomial bound for flat rank-two inflations of `O(log² n)`-crossing cores only | 33 archive tests and 16 real-upstream cases pass; bounded preprocessing integrated |
 | `20/` | `ProveIt_Unknot_Extremal_Windows_2026-10-07.zip` | standard-library `unknot_windows` with an upstream adapter (`20/integration/`) | exact low-degree and mirror Khovanov windows with a one-degree halo, three-outcome probes, nice-order certificates | `n^O(log n)` for windows of depth `O(log n)` at girth `O(log² n)` | 14 archive tests and 393-window audit pass; optional minimal windows integrated |
-| `21/` | `unknot_disk_frontier_research.zip` | standard-library disk-frontier kernel (`21/src/`) with a guarded `FastScan` adapter | common-disk certificates from the rotation system, ear-insertion orders, minimal complex with adjacent-degree maps | `poly(n,1+R)·2^O(B)` for certified explicit scans | not run |
+| `21/` | `unknot_disk_frontier_research.zip` | standard-library disk-frontier kernel (`21/src/`) with a guarded `FastScan` adapter | common-disk certificates from the rotation system, ear-insertion orders, minimal complex with adjacent-degree maps | `poly(n,1+R)·2^O(B)` for certified explicit scans | 52 archive tests, pinned-source audit and 14,658-state geometry audit pass; optional adaptive full transfer integrated |
 | `22/` | `unknot_arithmetic_continuations.zip` | `fastunknot` continuation (`22/fast/`, integration patch under `22/integration/`) | supplied-Montesinos `UNKNOT`/`KNOTTED` classifier, checked local obstructions from non-embeddable Montesinos disk tangles, linear-bit slope arithmetic | — | not run |
 
 Archives `01/`–`06/` each contain a README, a LaTeX report with PDF under
@@ -36,7 +36,7 @@ Archives `01/`–`06/` each contain a README, a LaTeX report with PDF under
 this project, and all but `10/` extend or patch `../fast/`. Report `07/` and the factorization, sparse elimination, and resource handling
 from `09/`, plus the braid specialization from `08/` and opt-in component contraction
 from `12/`, and twist compression from `11/` are integrated
-(315 current production tests pass). Local reruns of
+(344 current production tests pass). Local reruns of
 `08/`, `09/`, `10/`, and `11/` passed 59, 69, 15, and 62 test methods respectively.
 They were originally placed as delivered under the intake rule; this later
 algorithm-improvement task performs review and integration separately. The
@@ -129,8 +129,8 @@ and independent audit (393 windows, 1772 certified stages, 15 padding cases)
 pass. The production integration targets current `FastScan`, rather than the
 archive's untested older adapter. The new optional minimal-window strategy,
 geometric certificate, stronger conditional bounds, and negative timings are
-in `../synthesis/extremal.tex`; all 277 production tests pass. The recently
-arrived disk-frontier report remains unreviewed.
+in `../synthesis/extremal.tex`; that checkpoint passed all 277 production tests.
+The subsequent disk-frontier review is documented below.
 
 Reports `19/` and `20/` were reviewed in scratch extractions before their
 numbered placement reached this branch. Their placed Python sources match
@@ -143,3 +143,10 @@ smoothing-cube audit passed against the integrated code. Its optional Potts
 filters and exact component transfer are integrated into `../fast/`; the
 ring-valued Fitting proposals remain research material. This later review
 is separate from the original as-delivered placement.
+
+Report `21/` was subsequently reviewed separately from placement. Its 52 tests
+pass unchanged, and the previously unperformed scoped AST audit agrees with
+the three pinned Git blobs. Production now has an optional disk-certified full
+transfer after adaptive sparse/residue shortcuts, with transactional fallback.
+The independent geometric and chain-certificate rerun is in `../synthesis/data/`;
+performance scope and the raw-width obstruction are in `../synthesis/disk_transfer.tex`.
