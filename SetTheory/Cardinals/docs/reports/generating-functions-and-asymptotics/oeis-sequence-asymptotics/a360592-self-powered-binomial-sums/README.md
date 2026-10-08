@@ -122,6 +122,48 @@ the OEIS comparison was made from snapshots without revision numbers.
   `C_1`; 49, 60 and 46 words) are printed once, in Part I, with dated notes;
   Part II's other restatements carry labels it cites and are kept with notes.
 
+## Independent check of the write (7 October 2026)
+
+An independent adversarial check of the write (`a0bec1539`) recomputed every
+number the write added, with its own code and, where one exists, by a
+different method. It is recorded in a dated note at the end of Section 16.
+
+- **The OEIS refutation, from the live entries.** A360592 #28, A360479 #40
+  and A360747 #22 are unchanged. The check typed the three formula lines
+  afresh and used them directly (SymPy: leading factors `M_p(n)`,
+  multipliers as displayed in Section 7.4). It evaluated `a_p(n)/M_p(n)` to
+  `n = 10^{24}` by a route the write did not use (one log-gamma anchor, then
+  the exact ratio of consecutive summands). `(entry − a_p(n))/(M_p(n) t)`
+  converges to `1/(8c_p)`: 0.109664 … 0.10722073 for `n = 10⁶ … 10^{14}`
+  (`p = 1`; limit 0.10722048562…), 0.046842 … 0.04752092 for
+  `n = 10⁹ … 10^{18}` (`p = 2`; 0.04752160739…), 0.018632110 … 0.01863213
+  for `n = 10^{12} … 10^{24}` (`p = 3`; 0.01863212660…). Leading equivalents
+  right, first corrections wrong, as the write says.
+- **Coefficients by an own generator** (SymPy series of the exact defect
+  (2.4), Touchard averages): every printed `C_{2,1..4}`, `C_{3,1..6}`, `U_1`
+  for `p = 2..5`, the vanishing for `p = 4, 5` with first nonzero
+  `−81c²/10`, `−151c²/12`, and Table 1 with its truncations. Residuals after
+  the printed coefficients are stable (24.192 for `p = 1`, the write's
+  `C_{1,5}`; 12876.7 for `p = 2`); with the write's `C_{1,5}`, `C_{1,6}` the
+  order-`t⁷` ratio is −5.50, −10.74, −11.30, −11.35, −11.36 at
+  `n = 10⁴ … 10^{12}`.
+- **Decimals:** the critical values, the four marked ratios at `n = 10⁹`,
+  Part II's twelve table ratios and its three constants agree in every digit,
+  and every truncation in the write's notes is correct.
+- Also confirmed: the provenance figures, both manifests, the byte identity of
+  the 23 staged code, data and guide files, the word counts of the three
+  passages printed once, Remark 6.7 against the volume's statements, the label
+  numbering (229 delivered labels unchanged up to the shift of eight) and the
+  file listing.
+- **One build defect fixed:** the Guide's reading-conventions table and Table 1
+  both received the PDF destination `table.1` (the write's `\addtocounter`
+  reset), so links to Table 1 led to the Guide; the write's log had two
+  "duplicate ignored" warnings that this README reported as absent. The
+  Guide's table now has its own anchor name (a commented line in
+  `article.tex`); no number changed. Rebuilt: 62 pages (61).
+
+No mathematical claim of the write was found wrong.
+
 ## Further questions, and the standing rule
 
 Part I's Section 8 (effective inverse constants, moderate-size resummation,
@@ -188,7 +230,7 @@ are neutral). Everything else is delivered text.
 ```text
 README.md                                   this guide (replaces Report 230's delivered README.md)
 article.tex                                 the report: preamble, Guide, Part headers, merged bibliography; inputs sections/
-article.pdf                                 compiled report, 61 pages
+article.pdf                                 compiled report, 62 pages
 230-endpoint-SOURCES.md                     Report 230's public source guide
 230-endpoint-code-README.md                 Report 230's code guide (delivered code/README.md)
 235-binomial-COMPUTATION.md                 Report 235's computation guide
@@ -295,12 +337,14 @@ B=$(mktemp -d); cp -r article.tex sections "$B/"; cd "$B"
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The committed PDF was built from these files with MiKTeX pdfLaTeX (three
-passes, 7 October 2026): 61 pages; no errors or warnings, no undefined
-references, no multiply defined labels, no duplicate destinations, no overfull
-or underfull boxes (the log's "duplicates ignored" lines are font-map notices
-from the delivered `\pdfmapfile` lines, also in the delivered builds). The
-delivered texts give 30 and 23 pages with no warnings.
+The committed PDF was rebuilt at the independent check from these files with
+MiKTeX pdfLaTeX (three passes, 7 October 2026): 62 pages; no errors or
+warnings, no undefined references, no multiply defined labels, no duplicate
+destinations, no overfull or underfull boxes (the log's "duplicates ignored"
+lines are font-map notices from the delivered `\pdfmapfile` lines, also in the
+delivered builds). The write's build (61 pages) had two duplicate-destination
+warnings for `table.1`, fixed at the check (see below). The delivered texts
+give 30 and 23 pages with no warnings.
 
 ## Provenance
 
