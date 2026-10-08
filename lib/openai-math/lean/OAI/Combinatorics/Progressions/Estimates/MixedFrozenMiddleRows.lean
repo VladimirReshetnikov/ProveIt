@@ -1,5 +1,6 @@
 /- Modified for ProveIt: import Lean 4.32 compatibility declarations.
-Statements and proofs are unchanged from the pinned upstream source. -/
+Use an explicit dependent-cardinality rewrite and normalize natural-number
+indices in mixedHigherTensor_split on Lean 4.32; statements unchanged. -/
 import OAI.Compat.Core
 import OAI.Compat.BigOperators
 import OAI.Combinatorics.Progressions.Estimates.MixedRootLosses
@@ -336,7 +337,9 @@ theorem mixedHigherTensor_split (b : MixedMiddleCorner s → Fin W.outputDim)
     exact (Fintype.prod_sigma (fun z : MixedMiddleCorner s =>
       W.eval (b z) (mixedSampledInput (mixedWeightSample s z.1.castSucc.succ) x))).symm
   · simp only [Fin.val_last, mixedSplitHigherMerge_last, mixedWeightSample_last_input,
-      Finset.prod_const, Finset.card_univ, mixedWeightCorner_card, Nat.choose_self, pow_one]
+      Finset.prod_const, Finset.card_univ]
+    erw [mixedWeightCorner_card]
+    simp only [Nat.add_assoc, Nat.reduceAdd, Nat.choose_self, pow_one]
 
 theorem mixedCanonicalTensor_split_merge (a : Fin (s + 3) → Fin W.outputDim)
     (b : MixedMiddleCorner s → Fin W.outputDim) (c : Fin W.outputDim) (x : Fin 2 → ℤ) :
