@@ -2,16 +2,157 @@
 \label{sec:incoming}
 
 \subsection{Intake status and provenance}
-Reports 08--11 arrived during the October continuation and were merged
+Reports 08--12 arrived during the October continuation and were merged
 from the shared main branch before further integration. Their delivered
 contents remain unchanged. Local reruns passed 59 test methods for report
 08, 69 for report 09, 15 for report 10's numerical kernels, and 62 for
 report 11. These are separate suites and their counts must not be added
 as though they were independent mathematical cases. Logs and local
 cross-checks are retained under \code{synthesis/data/}. The current
-production suite, after the selected report 09 integrations below,
-passes 98 tests. Reports 08, 10, and 11 and report 09's pointed backend
-remain under integration review at this checkpoint.
+production suite, after the selected report 08 and 09 integrations below,
+passes 113 tests. Report 12's 29 test methods also pass locally. Reports
+10--12 and report 09's pointed backend remain under integration review
+at this checkpoint.
+
+\subsection{Complete recognition for checked short-strand braids}
+Report 08 contributes a complete decision procedure for the closure of
+an explicit braid on at most three strands. This is a restricted input
+class, not a method for reducing every diagram to three strands. The
+public raw-word entry point is \code{braid\_certificate(m, word)}. It checks
+integer generators, strand bounds, and that the strand permutation is
+one cycle before issuing a knot verdict. If the word has $n$ letters,
+one-component closure requires $m\le n+1$, so even permutation validation
+uses linear space and word operations.
+
+Write $e$ for the exponent sum. Bennequin's inequality applied to a
+braid and its mirror gives $|e|\le m-1$ for an unknot closure. A violation
+therefore proves knottedness on any number of strands. For one or two
+strands, this test leaves only the trivial closure classes, so it already
+gives a complete answer. Its converse is not asserted for arbitrary $m$.
+
+For three strands put $a=\sigma_1$, $b=\sigma_2$, $x=aba$, $y=ab$,
+and $z=x^2=y^3$. The central quotient is
+\[
+ B_3/\langle z\rangle\cong C_2*C_3
+   =\langle x,y\mid x^2=y^3=1\rangle.
+\]
+The Birman--Menasco classification says that the three conjugacy classes
+with unknot closure are represented by $ab$, $(ab)^{-1}$, and $ab^{-1}$;
+see Theorem 4.1(i) of
+\href{https://arxiv.org/abs/2204.13660}{Datta's account of the classification}.
+Only this specific classification result is needed here. The implementation
+maps letters to at most two quotient tokens:
+\[
+ a\mapsto y^2x,\quad a^{-1}\mapsto xy,\quad
+ b\mapsto xy^2,\quad b^{-1}\mapsto yx.
+\]
+A stack multiplies adjacent tokens in the same cyclic factor. A deque
+then removes or combines equal-factor end tokens until the word is
+cyclically reduced. Each push, pop, and end operation can be charged to
+an input token, so the total is $O(n)$ symbol operations. Cyclic words
+are compared up to rotation, not by an expensive conjugator search.
+
+The exact test accepts the following exponent/quotient pairs:
+\[
+ (e,\text{cyclic class})=(2,[y]),\quad(-2,[y^2]),
+ \quad(0,[xyxy^2]).
+\]
+For the last case the implementation counts two $x$ tokens, one $y$,
+and one $y^2$ in a reduced word of length four. Alternation forces
+precisely the desired cyclic class. To justify lifting the quotient
+test, lift a quotient conjugator to $B_3$. The remaining difference
+from the target is $z^k$; since $e(z)=6$, equality of exponent sums
+forces $k=0$. Thus forgetting the center has not lost information
+needed by the classifier. A conservative bit bound, including counters
+and indices, is $O((n+m)\log(n+m+2))$.
+
+An optional independent backend multiplies the integral matrices
+\[
+ A=\begin{pmatrix}1&1\\0&1\end{pmatrix},\qquad
+ B=\begin{pmatrix}1&0\\-1&1\end{pmatrix}.
+\]
+The map $B_3\to\mathrm{SL}_2(\mathbb Z)$ has kernel
+$\langle z^2\rangle$, whose exponent sum is a multiple of twelve.
+Trace one has two conjugacy classes, lifted from the order-three
+elements of $C_2*C_3$; exponent residue distinguishes them. Trace three
+has the single class of $AB^{-1}$. One way to see the latter claim is
+to express a hyperbolic projective conjugacy class as a positive word
+in $L=A$ and $R=B^{-1}$. A mixed word can be rotated to start with
+$L^rR^s$, $r,s\ge1$, of trace $2+rs$. Each additional letter increases
+the trace of this strictly positive matrix. Trace three forces $r=s=1$
+and no further letters. Lifting and matching exponent sums again
+eliminates the central ambiguity.
+
+Consequently the exact trace/exponent pairs for the unknot are
+$(2,1),(-2,1),(0,3)$. After the writhe bound and knot-permutation
+validation, this is equivalently $|2-\operatorname{tr}(M)|=1$.
+Without the writhe condition the determinant test is unsound as a
+recognizer: $(ab)^5$ has determinant one but is the nontrivial torus
+knot $T(3,5)$. Matrix entries can have $\Theta(n)$ bits and the
+addition-only implementation uses $O(n^2)$ bit time. The symbolic
+backend is therefore the default; matrix witnesses use hexadecimal
+strings to avoid decimal serialization limits.
+
+For more strands, an optional sufficient simplification freely and
+cyclically cancels inverse letters, then looks for an endpoint generator
+$\sigma_1^{\pm1}$ or $\sigma_{m-1}^{\pm1}$ occurring exactly once.
+Cyclic rotation exposes an elementary Markov destabilization. Deleting
+that letter and relabeling the remaining strands preserves the closure.
+There are at most $m-3$ steps, each using $O(n)$ work. The accompanying
+verifier replays the supplied choices and validates every singleton,
+rather than trusting the asserted final word. This $O(nm)$ procedure
+does not find every destabilization: Morton's four-strand unknot remains
+inconclusive and exercises the existing exact diagram fallback.
+
+\paragraph{Integration and provenance.}
+Only \code{Diagram.from\_braid} attaches checked braid provenance.
+PD and grid input acquire none; a reduced factor also does not inherit
+the original word. Mirrors negate the word's letters, while serialized
+provenance is reconstructed and compared to the stored PD, allowing a
+half-turn of an individual crossing row. Equality and hashing continue
+to depend only on the PD. Standard JSON output remains PD; the explicit
+\code{preserve\_braid=True} option retains the source word.
+
+Recognition now tries the linear braid test before the Seifert stage.
+For $m>3$, the potentially quadratic endpoint descent waits until the
+Seifert, Reidemeister I/II, repeated Seifert, and descending tests have
+failed. Resource handling surrounds both braid stages. The evidence
+records which representation made the decision, and any Markov trace.
+\code{--no-braid}, \code{--braid-backend matrix}, and
+\code{--no-braid-reduction} expose ablations. Existing structural and
+scanner tests explicitly disable earlier braid dispatch where needed
+to keep testing their intended code paths.
+
+\paragraph{Validation and measurement scope.}
+The integrated tests exhaust all 46,376 one-component three-braid words
+of lengths two, four, six, and eight against both representations.
+For the 2,856 words through length six they also compare the verdict
+to an independent dense Khovanov cube. Separate checks cover Alexander
+determinants, Artin relations, conjugation, mirror and pickle behavior,
+invalid inputs, endpoint replay, resource limits, and the four-strand
+fallback. The raw symbolic counter records exactly two token operations
+per input letter; timings do not substitute for its amortized proof.
+\code{fast/benchmark\_braid.py} compares fresh diagram construction plus
+recognition to the current \code{use\_braid=False} ablation, including
+the already-integrated Seifert shortcut. Python startup and JSON parsing
+are excluded. Its raw-word scaling experiment separately avoids PD
+construction. The raw samples are
+\code{fast/results/braid\_integration\_20261007.json}.
+
+\paragraph{Local braid results.}
+Nine paired rounds, rerun after correctness tests completed, measured
+baseline/new ratios 3.30--4.89 on the five scrambled three-braid unknots
+with default Reidemeister III enabled, and 9.73--41.12 when that optional
+search was disabled in both arms. Positive three-braid cases improved
+1.23--1.35 times, and the hard eight-crossing braid fixture 6.14 times.
+Conway, Kinoshita--Terasaka, grid input, and the four-strand fallback
+support no timing claim under the recorded paired/A--A rule. The
+256-strand stabilized unknot was about 2.8\% slower: the additional
+linear provenance check has a real constant cost when a different
+cheap certificate would already finish. These are finite local results,
+not a uniform speedup claim. The symbolic raw-word test took 0.112 seconds at 128,000
+letters in the committed run, with exactly 256,000 token operations.
+
 
 \subsection{Canonical visible factors from interlacement}
 Traverse the validated spherical knot diagram and record the crossing
@@ -124,3 +265,32 @@ modular matching states, exceeding the third Catalan number five.
 The data are in \code{synthesis/data/frontier-counterexamples-integration.json}.
 The earlier proposition and user documentation have been corrected;
 the exact bracket calculation and all verdicts are unchanged.
+
+\subsection{Later algebra and twist reports: production cross-checks}
+Report 10's component-contraction kernel completed 453,611 matching
+comparisons against the current production algebra, with all completed
+comparisons equal. Both inspected source hashes match, and Conway and
+Kinoshita--Terasaka scans agree in every raw homological degree. Their
+adaptive runs selected no compressed calls, so those checks establish
+compatibility but no ordinary-diagram speedup. Report 11's twist backend
+agreed on 200 production reduced-rank comparisons. Report 12's source
+hash checks also pass; baseline, adaptive, and forced contraction agree
+on each degree for six production fixtures, with $d^2=0$ checked after
+every crossing. The 29 standalone tests pass. These results are saved
+as the corresponding \code{report10}, \code{report11}, and
+\code{report12-production-crosscheck.json} files under
+\code{synthesis/data/}; the delivered reports themselves are unchanged.
+
+The scope of the later claims matters. A faster dense cobordism product
+reduces one algebra operation, while the number of objects and calls can
+still be exponential. Twist compression requires a supplied braid-block
+presentation and measures size in expanded crossings. Report 12's
+succinct Schur cancellation assumes that tensor factors for a
+same-matching block and its interfaces have already been supplied.
+Its trillion-generator example verifies an algebraic identity and is
+not a knot decision. General extraction of these descriptions and
+control of their size under all crossing and cancellation operations
+remain unresolved. In particular, a scalar unit in a square-free
+characteristic-two algebra is its own inverse, but a matrix unit need
+not be: radical corrections require a finite matrix geometric series.
+That distinction must survive any future block integration.

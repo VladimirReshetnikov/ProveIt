@@ -14,7 +14,7 @@ from fastunknot.simplify import replay
 
 
 EXAMPLES = Path(__file__).resolve().parents[1] / "examples"
-SCAN_ONLY = dict(use_seifert=False, use_reduction=False, use_descending=False,
+SCAN_ONLY = dict(use_braid=False, use_seifert=False, use_reduction=False, use_descending=False,
                  use_factorization=False, use_modular=False, use_jones=False,
                  use_alexander=False, use_r3=False)
 
@@ -34,7 +34,7 @@ class IntegrationTests(unittest.TestCase):
                 self.assertIsNone(seifert_certificate(diagram))
                 with patch("fastunknot.recognize.alexander_obstruction",
                            side_effect=AssertionError("matrix filter must be bypassed")):
-                    result = recognize(diagram)
+                    result = recognize(diagram, use_braid=False)
                 self.assertEqual(result.status, "KNOTTED")
                 self.assertEqual(result.method, "reduced-homogeneous-seifert-genus")
                 reduced = replay(diagram, result.evidence["reidemeister_trace"])
@@ -44,9 +44,9 @@ class IntegrationTests(unittest.TestCase):
                 self.assertTrue(verify_seifert_certificate(reduced, certificate))
                 self.assertFalse(verify_seifert_certificate(diagram, certificate))
                 self.assertNotIn("seifert_certificate", result.evidence)
-                self.assertEqual(recognize(diagram, use_seifert=False).status, result.status)
+                self.assertEqual(recognize(diagram, use_braid=False, use_seifert=False).status, result.status)
                 self.assertNotIn("seifert_after_reduction",
-                                 recognize(diagram, use_reduction=False).evidence)
+                                 recognize(diagram, use_braid=False, use_reduction=False).evidence)
 
     def test_unchanged_diagram_does_not_repeat_structural_scan(self):
         with patch("fastunknot.recognize.seifert_certificate", wraps=seifert_certificate) as check:
@@ -60,11 +60,11 @@ class IntegrationTests(unittest.TestCase):
                  (Diagram.from_braid(3, [1, -2] * 20), "KNOTTED"),
                  (Diagram.from_braid(5, [1, 2, 3, 4] * 7), "KNOTTED")]
         for diagram, status in cases:
-            result = recognize(diagram)
+            result = recognize(diagram, use_braid=False)
             self.assertEqual(result.status, status)
             self.assertTrue(verify_seifert_certificate(
                 diagram, result.evidence["seifert_certificate"]))
-            self.assertEqual(recognize(diagram, use_seifert=False).status, status)
+            self.assertEqual(recognize(diagram, use_braid=False, use_seifert=False).status, status)
             self.assertFalse(result.to_json()["quasipolynomial_guarantee"])
 
     def test_backends_preserve_verdicts_and_evidence_semantics(self):
@@ -98,8 +98,8 @@ class IntegrationTests(unittest.TestCase):
                 diagram = Diagram.from_braid(strands, word)
             except ValueError:
                 continue
-            new = recognize(diagram)
-            old = recognize(diagram, use_seifert=False)
+            new = recognize(diagram, use_braid=False)
+            old = recognize(diagram, use_braid=False, use_seifert=False)
             self.assertEqual(new.status, old.status, word)
             if "seifert_certificate" in new.evidence:
                 self.assertTrue(verify_seifert_certificate(

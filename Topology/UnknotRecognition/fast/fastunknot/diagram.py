@@ -81,6 +81,16 @@ class Diagram:
     def crossings(self) -> int:
         return len(self.pd)
 
+    @property
+    def braid_source(self):
+        """Validated original braid, or None for a diagram supplied as PD/grid.
+
+        This provenance is auxiliary: equality and hashing still depend only
+        on PD.  It is attached only by checked conversion, never accepted as an
+        unchecked second argument to the public Diagram constructor.
+        """
+        return self.__dict__.get("_braid_source")
+
     @classmethod
     def from_pd(cls, data: Iterable[Iterable[int]]) -> "Diagram":
         try:
@@ -136,7 +146,9 @@ class Diagram:
         if len(cycles(permutation)) != 1:
             raise DiagramError("the braid closure is a link, not a knot")
         if not word:
-            return cls(())
+            result = cls(())
+            object.__setattr__(result, "_braid_source", (strands, tuple(word)))
+            return result
         current = list(range(strands))
         next_label = strands
         rows = []
@@ -151,7 +163,9 @@ class Diagram:
         closure = DisjointSet(next_label)
         for top, bottom in enumerate(current):
             closure.union(top, bottom)
-        return cls.from_pd([[closure.find(x) for x in row] for row in rows])
+        result = cls.from_pd([[closure.find(x) for x in row] for row in rows])
+        object.__setattr__(result, "_braid_source", (strands, tuple(word)))
+        return result
 
     @classmethod
     def from_grid(cls, rows: Sequence[Sequence[int]]) -> "Diagram":
@@ -248,7 +262,33 @@ class Diagram:
         return found
 
     def __getstate__(self):
-        return {"pd": self.pd}
+        state = {"pd": self.pd}
+        if self.braid_source is not None:
+            state["braid_source"] = self.braid_source
+        return state
+
+    def __setstate__(self, state):
+        # Preserve checked provenance across process/cache serialization.  A
+        # mismatched PD/word pair must never authorize a specialized verdict.
+        if "pd" in self.__dict__:
+            raise AttributeError("cannot reinitialize an immutable Diagram")
+        restored = Diagram.from_pd(state["pd"])
+        source = state.get("braid_source")
+        if source is not None:
+            try:
+                strands, word = source
+            except (TypeError, ValueError) as exc:
+                raise DiagramError("invalid serialized braid provenance") from exc
+            braid = Diagram.from_braid(strands, word)
+            # Mirroring a crossing can change the choice of its first under
+            # port.  A half-turn of one PD row leaves that crossing unchanged.
+            if (len(braid.pd) != len(restored.pd)
+                    or any(a != b and a[2:] + a[:2] != b
+                           for a, b in zip(braid.pd, restored.pd))):
+                raise DiagramError("serialized braid provenance does not match PD")
+            source = braid.braid_source
+        object.__setattr__(self, "_braid_source", source)
+        object.__setattr__(self, "pd", restored.pd)
 
     def alpha(self) -> list[int]:
         """The dart involution; a fresh list on every call, because callers modify it."""
@@ -315,7 +355,14 @@ class Diagram:
         return sum(self.signs())
 
     def mirror(self) -> "Diagram":
-        return Diagram.from_pd([row[1:] + row[:1] for row in self.pd])
+        result = Diagram.from_pd([row[1:] + row[:1] for row in self.pd])
+        if self.braid_source is not None:
+            strands, word = self.braid_source
+            object.__setattr__(result, "_braid_source", (strands, tuple(-g for g in word)))
+        return result
 
-    def to_json(self) -> dict[str, Any]:
+    def to_json(self, *, preserve_braid: bool = False) -> dict[str, Any]:
+        if preserve_braid and self.braid_source is not None:
+            strands, word = self.braid_source
+            return {"braid": {"strands": strands, "word": list(word)}}
         return {"pd": [list(row) for row in self.pd]}

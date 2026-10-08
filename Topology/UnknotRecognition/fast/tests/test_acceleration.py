@@ -25,6 +25,7 @@ EXAMPLES = os.path.join(ROOT, "examples")
 _baseline_recognize = recognize
 def recognize(diagram, **options):
     options.setdefault("use_seifert", False)
+    options.setdefault("use_braid", False)
     return _baseline_recognize(diagram, **options)
 
 
