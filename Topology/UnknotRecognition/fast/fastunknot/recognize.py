@@ -16,6 +16,9 @@ only a capped rank or a certified lower bound, as named in their evidence.
 One-sided filters never interpret agreement with the unknot invariant as
 triviality. The optional treewidth-two stage first certifies its restricted
 diagram class, where an exact determinant of one is a complete test.
+The optional two-meridian stage checks a seed derivation in the original
+Wirtinger presentation and completely decides that restricted class by exact
+traceless SU(2) arithmetic. Its local exhaustion resumes the exact pipeline.
 The optional group stage searches for an independently replayed reduction of
 the whole Wirtinger presentation to one free generator, after the filters.
 Its local timeout or stalled search resumes the remaining exact pipeline.
@@ -207,7 +210,8 @@ def _decide_prime_looking(diagram: Diagram, evidence: dict, *, use_modular, use_
                           max_objects, deadline,
                           check_d_squared, scan_options, window_options=None,
                           twist_source=None, defer_twist=False, checked_modular=False,
-                          r3_options=None, normal_options=None, group_options=None) -> tuple[str, str]:
+                          r3_options=None, normal_options=None, group_options=None,
+                          two_meridian_options=None) -> tuple[str, str]:
     """Verdict and method for one summand (already simplified by the caller)."""
     def check():
         if deadline is not None and monotonic() > deadline:
@@ -221,6 +225,13 @@ def _decide_prime_looking(diagram: Diagram, evidence: dict, *, use_modular, use_
         check=check)
     if method is not None:
         return "KNOTTED", method
+    if two_meridian_options is not None:
+        from .two_meridian import two_meridian_decide
+        witness = two_meridian_decide(diagram, check=check, **two_meridian_options)
+        check()
+        evidence["two_meridian"] = witness
+        if witness["status"] in ("UNKNOT", "KNOTTED"):
+            return witness["status"], "wirtinger-two-seed"
     if group_options is not None:
         from .group_certificate import group_decide
         witness = group_decide(diagram, check=check, **group_options)
@@ -370,6 +381,9 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
               group_relators: bool = False, group_max_work: int = 2000000,
               group_compressed: bool = False, group_compressed_search: bool = False,
               group_adaptive: bool = False, group_switch_letters: int | None = None,
+              use_two_meridian: bool = False, two_meridian_seconds: float | None = 0.05,
+              two_meridian_max_work: int | None = 2_000_000,
+              two_meridian_max_attempts: int | None = 10_000,
               use_braid_reduction: bool = True, use_braid_profile: bool = False,
               euler_max_states: int | None = 4096,
               shadow_max_work: int | None = 1_000_000,
@@ -409,6 +423,17 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
         raise ValueError("use_regina must be boolean")
     if type(use_group) is not bool:
         raise ValueError("use_group must be boolean")
+    if type(use_two_meridian) is not bool:
+        raise ValueError("use_two_meridian must be boolean")
+    for name, value in (("two_meridian_max_work", two_meridian_max_work),
+                        ("two_meridian_max_attempts", two_meridian_max_attempts)):
+        if value is not None and (type(value) is not int or value < 0):
+            raise ValueError(name + " must be a nonnegative integer or None")
+    if two_meridian_seconds is not None:
+        from math import isfinite
+        if (type(two_meridian_seconds) not in (int, float)
+                or not isfinite(two_meridian_seconds) or two_meridian_seconds < 0):
+            raise ValueError("two_meridian_seconds must be finite and nonnegative, or None")
     if type(group_relators) is not bool:
         raise ValueError("group_relators must be boolean")
     if type(group_compressed) is not bool:
@@ -679,6 +704,9 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
                        jones_max_states=jones_max_states, jones_max_transitions=jones_max_transitions,
                        max_objects=max_objects, deadline=deadline, check_d_squared=check_d_squared,
                        normal_options=dict(seconds=regina_seconds) if use_regina else None,
+                       two_meridian_options=dict(seconds=two_meridian_seconds,
+                           max_work=two_meridian_max_work,
+                           max_attempts=two_meridian_max_attempts) if use_two_meridian else None,
                        group_options=dict(seconds=group_seconds, relator_moves=group_relators,
                                           compressed_verification=group_compressed,
                                           compressed_search=group_compressed_search,

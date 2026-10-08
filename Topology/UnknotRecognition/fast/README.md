@@ -1727,3 +1727,47 @@ fixtures, but the five tested knot scans never invoke the primary path. The
 main default backend is unchanged, and no general quasi-polynomial recognition
 bound is claimed. Source-pinned measurements, negative results, proofs and the
 748-test validation are in `../synthesis/primary_continuation.tex` and the PDF.
+
+### Checked two-meridian recognition
+
+`--two-meridian` enables a bounded exact stage after the invariant filters and
+before optional group search or Khovanov. It derives all Wirtinger arcs from
+one or two original meridians using signed crossing relations, then checks
+**every original relation** by exact integer SU(2) arithmetic. Both `UNKNOT`
+and `KNOTTED` answers include a replayed certificate. A failed seed search or
+local limit is inconclusive and resumes the existing pipeline.
+
+```sh
+python -B -m fastunknot recognize examples/hard_unknot_8.json --two-meridian
+python -B benchmark_two_meridian.py --output results/two_meridian_local.json
+```
+
+Python callers can use `recognize(diagram, use_two_meridian=True)` or the
+standalone `two_meridian_decide` and `verify_two_meridian_certificate` from
+`fastunknot.two_meridian`. The standalone function returns a dictionary;
+pass its `certificate` to the verifier together with the same validated PD.
+The certificate includes the PD hash, seed arcs, acyclic derivation, all
+relator normal forms and the final gcd/parity calculation. Replay does not
+repeat seed search; it shares the parser and integer arithmetic with the
+producer. It cannot verify a factor's certificate against the original whole
+connected sum.
+
+The pipeline controls are `two_meridian_seconds=0.05`,
+`two_meridian_max_work=2_000_000`, and `two_meridian_max_attempts=10_000`, with
+corresponding hyphenated CLI options. In the standalone API those names are
+`seconds`, `max_work`, and `max_attempts`. Preparation, all failed seed attempts,
+arithmetic and replay share one local allowance. Global cancellation still
+propagates. Weighted work is a cooperative metric, not a hard bit-time or
+memory limit. Python callers can set all three caps to `None` for exhaustive
+search over the at-most-two-seed class.
+
+Uncapped, the standalone stage is a complete polynomial algorithm for **diagrams admitting
+such a seed derivation**; the conservative bound is `O(n^4 log(n+2))`. It gives
+no general quasi-polynomial recognition guarantee. The full pipeline must
+also pay for its earlier invariant filters, including Jones; those costs are
+outside this standalone bound. The report's multi-seed
+formula compiler and minimum-degree propagation are not part of this stage.
+The theory, proof obligations, validation and full-pipeline comparison with
+the existing compressed-group incumbent are in
+[`two_meridian.tex`](../synthesis/two_meridian.tex) and the updated article PDF.
+The stage remains opt-in.
