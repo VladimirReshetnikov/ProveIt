@@ -1,0 +1,194 @@
+{
+  "arrival_commit": "58ee11a97d5fd7f21647c57eefaf3ecc007931d6",
+  "archive_path": "docs/incoming/unknot_affine_families_20261008.zip",
+  "archive_sha256": "6993c799ec2b952169647ccaf4ae9c786765c8ccb6a6dcafe467287ac8d5d9cf",
+  "manifest_entries": 466,
+  "targeted_tests": {
+    "affine_modular": 13,
+    "cyclic_cover_family": 19,
+    "normal_interval_extraction": 8,
+    "primary_split": 12,
+    "scalar_inheritance": 13
+  },
+  "total_targeted_tests": 65,
+  "quick_summary": {
+    "mode": "quick",
+    "python": "3.13.14",
+    "runs": [
+      {
+        "name": "affine_modular",
+        "seconds": 2.057339623570442,
+        "exit_code": 0,
+        "log": "reproduction/affine_modular.log"
+      },
+      {
+        "name": "cyclic_cover_family",
+        "seconds": 0.24346924107521772,
+        "exit_code": 0,
+        "log": "reproduction/cyclic_cover_family.log"
+      },
+      {
+        "name": "normal_interval_extraction",
+        "seconds": 0.2569804769009352,
+        "exit_code": 0,
+        "log": "reproduction/normal_interval_extraction.log"
+      },
+      {
+        "name": "scalar_inheritance",
+        "seconds": 1.3408841527998447,
+        "exit_code": 0,
+        "log": "reproduction/scalar_inheritance.log"
+      },
+      {
+        "name": "primary_split",
+        "seconds": 0.5020125387236476,
+        "exit_code": 0,
+        "log": "reproduction/primary_split.log"
+      },
+      {
+        "name": "geometry_small",
+        "seconds": 0.8555805897340178,
+        "exit_code": 0,
+        "log": "reproduction/geometry_small.log"
+      },
+      {
+        "name": "family_examples",
+        "seconds": 0.14468125347048044,
+        "exit_code": 0,
+        "log": "reproduction/family_examples.log"
+      },
+      {
+        "name": "peripheral_reduction",
+        "seconds": 0.11674657184630632,
+        "exit_code": 0,
+        "log": "reproduction/peripheral_reduction.log"
+      }
+    ],
+    "all_passed": true
+  },
+  "native_geometry_summary": {
+    "validation": {
+      "cases": 11,
+      "checks": [
+        "bad_permutation",
+        "bad_tetrahedron",
+        "nonreciprocal",
+        "boolean_coordinate",
+        "negative_coordinate",
+        "float_coordinate",
+        "bad_hex",
+        "conflicting_quadrilaterals",
+        "matching_failure",
+        "cancellation_propagates",
+        "empty_surface_supported"
+      ]
+    },
+    "regina": {
+      "version": "7.4",
+      "surface_cases": 807,
+      "components_compared": 1537,
+      "nonorientable_components_compared": 92,
+      "closed_components_compared": 274,
+      "triangulations": [
+        {
+          "name": "ball",
+          "tetrahedra": 1,
+          "vertex_surfaces": 7
+        },
+        {
+          "name": "sphere",
+          "tetrahedra": 2,
+          "vertex_surfaces": 7
+        },
+        {
+          "name": "lens_2_1",
+          "tetrahedra": 2,
+          "vertex_surfaces": 4
+        },
+        {
+          "name": "lens_5_2",
+          "tetrahedra": 1,
+          "vertex_surfaces": 1
+        },
+        {
+          "name": "S2_times_S1",
+          "tetrahedra": 2,
+          "vertex_surfaces": 4
+        },
+        {
+          "name": "RP2_times_S1",
+          "tetrahedra": 3,
+          "vertex_surfaces": 6
+        },
+        {
+          "name": "solid_Klein_bottle",
+          "tetrahedra": 2,
+          "vertex_surfaces": 9
+        },
+        {
+          "name": "three_torus",
+          "tetrahedra": 6,
+          "vertex_surfaces": 11
+        },
+        {
+          "name": "layered_torus_1",
+          "tetrahedra": 1,
+          "vertex_surfaces": 4
+        },
+        {
+          "name": "layered_torus_2",
+          "tetrahedra": 2,
+          "vertex_surfaces": 5
+        },
+        {
+          "name": "layered_torus_3",
+          "tetrahedra": 3,
+          "vertex_surfaces": 7
+        },
+        {
+          "name": "layered_torus_4",
+          "tetrahedra": 4,
+          "vertex_surfaces": 11
+        },
+        {
+          "name": "layered_torus_5",
+          "tetrahedra": 5,
+          "vertex_surfaces": 16
+        },
+        {
+          "name": "layered_torus_6",
+          "tetrahedra": 6,
+          "vertex_surfaces": 23
+        },
+        {
+          "name": "layered_torus_7",
+          "tetrahedra": 7,
+          "vertex_surfaces": 34
+        },
+        {
+          "name": "layered_torus_8",
+          "tetrahedra": 8,
+          "vertex_surfaces": 50
+        }
+      ],
+      "comparison": "full component normal-coordinate multisets, Euler characteristic, orientability, and boundary counts"
+    },
+    "elapsed_seconds": 2.5015365360304713,
+    "status": "all checks passed"
+  },
+  "assessment": [
+    "Factor-free minimum-content theorem and primal/dual certificate are sound under the explicit-variable cyclic-translation contract.",
+    "Normal extraction gives actual local interval data, but not a complete cut manifold or a general interval orbit solver.",
+    "Full static scalar corner inheritance and dimension saturation overlap maintained work; packed transport and one-generator propagation warrant separate benchmarks.",
+    "Simultaneous designated peripheral connectedness reduction distinguishes one global gcd query from a harder correlated query."
+  ],
+  "disposition": "Reproduced and documented; no wholesale patch applied. New geometric and family interfaces need a checked native consumer. Scalar performance must be compared to the current backend rather than the older bundled baseline.",
+  "not_rerun": [
+    "790-test historical full suite",
+    "delivered comparative benchmarks"
+  ],
+  "reproduction": [
+    "PYTHONDONTWRITEBYTECODE=1 python -B scripts/reproduce.py quick",
+    "python -B experiments/geometry/verify_normal_intervals.py --skip-scaling --output /tmp/geometry.json"
+  ]
+}

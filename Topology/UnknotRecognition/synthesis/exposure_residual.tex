@@ -1,0 +1,127 @@
+\section{Escaping the exposure residual and pruning overlap queries}
+\label{sec:exposure-residual}
+
+The stalled native presentation in Section~\ref{sec:whitehead-exposure-review}
+does admit an inexpensive algebraic next step, although the resulting search
+policy is slower than our incumbent on this example. This distinction matters:
+escaping a restricted policy's obstruction is evidence about which operations
+are needed, not evidence of an improved recognition complexity bound.
+
+\subsection{A full-source certified continuation}
+
+The offline driver \path{../fast/exposure_research/residual_bridge.py} loads
+the immutable exposure delivery from its arrival commit, checks its archive
+digest and all 44 manifest entries, and constructs the maintained Wirtinger
+presentation of the 141-crossing Gordian fixture. It reconstructs all 131
+recorded prefix moves, preserving generator names and relation slots. The
+result has rank 11 and 97,684 letters, with neither a singleton occurrence
+nor a unit bridge in any relator graph.
+
+One maintained overlap query selects donor slot 32 and target slot 54,
+with donor rotation 294, target rotation 2, positive donor sign and overlap
+length 14,722. Applying its normal-closure-preserving replacement leaves
+84,400 letters: a decrease of 13,284. There are now two singleton occurrences
+and four unit bridges. The maintained compressed continuation reaches rank
+one; the full certificate contains 142 moves. Independent explicit and
+compressed verifiers both replay it from the original PD. The certificate
+is saved in \path{../fast/results/gordian_exposure_overlap_certificate.json}.
+The bridges are diagnostics of the new opportunity; the proof of the unknot
+is the independently replayed complete group certificate.
+
+This experiment answers the concrete residual question left open by the
+delivery. It does not establish that a rank-first prefix is necessary or
+beneficial. Existing overlap-enabled group search already solves the fixture,
+and uses 141 moves. Nor is the offline reconstruction a hardened public
+interface: it accepts the fixed, checked delivery's move format and relies
+on final independent replay. It is not used by runtime dispatch.
+
+\subsection{The policy comparison includes reconstruction and replay}
+
+At checkpoint \texttt{875c8565d}, before the pruning below, we compared five
+arms on fresh PD input: explicit search, an identical explicit control,
+compressed search, adaptive search with a 20,000-letter switch, and the
+exposure--overlap handoff. Each search has 20 million charged work units;
+each of the two independent verifiers has its own 20 million. One shared
+15-second wall allowance covers input construction, search and both replays.
+All arms allow 600,000 replay letters. The exposure producer permits its
+specified $3M$ temporary Whitehead workspace, while the incumbent explicit
+producer retains its existing $M=200,000$ search-letter limit. Thus this is
+a comparison of the stated policies, not identical intermediate storage.
+Archive import and result serialization are excluded. Reconstruction and
+the before/after bridge audits are included in the exposure arm.
+
+One excluded warmup per arm and five shuffled measured rounds, with seed
+261008113, give 25 completed positives and no capped observations. Median
+times in seconds are 0.866 for explicit, 0.851 for its identical control,
+1.326 for compressed, 1.031 for adaptive, and 4.478 for exposure--overlap.
+The median paired explicit/control ratio is 1.018; the paired explicit/handoff
+ratio is 0.193. The handoff is approximately 5.2 times slower and gains no
+recognition coverage here. Its charged search work is 8,857,800, including
+prefix reconstruction and graph audits. These results support retaining the
+existing dispatch. Raw samples and frozen source hashes are in
+\path{../fast/results/exposure_residual_20261008.json}; the production source
+hashes refer to that checkpoint, not to the subsequent optimization.
+
+\subsection{An exact upper bound on further overlap improvements}
+
+For a donor of length $d$ and a cyclic match of length $u$, the overlap
+producer guarantees shortening
+\[
+ g=2u-d,\qquad u\le d,\qquad g\le d.
+\]
+If the best already selected gain is $G$, a donor with $d\le G$ cannot
+improve it. The producer replaces its current witness only on a strict
+improvement, so such a donor cannot change tie breaking either. If a scan
+attains $g=d$, its remaining positions, targets and inverse sign can all be
+skipped. A later longer donor is still searched. These bounds are applied
+before constructing a suffix automaton and inside the existing loops;
+donor, sign, target and scan order are otherwise unchanged.
+
+Consequently, with adequate resources the complete selected witness,
+including rotations, is identical to the earlier producer's. Independent
+certificate replay is unchanged. Under a work cap the new producer may
+finish when the old one exhausts its allowance. Each skipped donor still
+charges a work unit and polls cancellation. The general bound remains
+$O(n+mL)$ dictionary operations for $n$ slots, $m$ nonempty relators and
+total stored length $L$. For $m$ equal length-$d$ donors whose first pair
+fully matches, this particular query now uses $O(n+d)$ operations on the
+already stored words: one automaton, one successful scan, and slot traversal.
+The earlier implementation still built both signed automata for every donor,
+costing $\Omega(md)$ even after the optimum was known. No general
+quasi-polynomial recognition bound follows from this local pruning.
+
+\input{tables/overlap_bounds.tex}
+
+The pruning audit swaps only the overlap query against its source pinned at
+\texttt{875c8565d}; its identical old-function control detects measurement
+drift. It first compares 2,000 complete randomly generated witnesses,
+including signs, tie choices and cyclic positions. Six workloads then use
+one excluded warmup and five measured shuffled rounds per arm (seed
+261008114). The repeated-donor cases exercise the new early stop, disjoint
+alphabets exercise an unsuccessful full search, and a short mixed-length
+case ensures that an early winner does not suppress a later longer donor.
+The two native workloads include fresh PD construction and both independent
+replay modes; their full certificate hashes must agree across all arms and
+rounds. Their resource limits match the earlier policy comparison. The raw
+record is \path{../fast/results/overlap_bounds_20261008.json}.
+
+All 90 measured operations and 18 warmups complete, with identical witnesses
+or full certificate hashes across arms. For 128 repeated 128-letter donors,
+charged query work falls from 179,840 to 1,022 and the median paired speedup
+is 159.06. The 16-donor version improves by 22.15. The disjoint control has
+unchanged charged work and a paired ratio of 0.986; it provides no evidence
+of a speedup on unsuccessful scans. On the actual Gordian explicit search,
+including both replayers, median elapsed time falls from 0.856 to 0.572
+seconds, with paired speedup 1.51. The exposure handoff falls from 4.338 to
+2.892 seconds, also 1.51 times faster, and charged search work decreases from
+8,857,800 to 6,455,975. It remains substantially slower than the incumbent.
+Identical-control paired ratios range from 0.991 to 1.040. These are local
+same-machine observations on the stated workloads, not a universal speedup.
+
+All 778 maintained tests pass with Regina enabled in 185.977 seconds.
+New regressions require the repeated-donor query to fit a linear work
+allowance, preserve a later longer winner, and honor cancellation and work
+limits while skipping donors. Existing overlap tests independently check
+maximum gains and forged certificates; the pinned audit additionally checks
+the entire deterministic witness. The resulting native improvement changes
+neither the recognized input class nor the general worst-case guarantee.

@@ -1,5 +1,16 @@
 # fastunknot 0.3.0: braid and structural certificates with optional shared backends
 
+Explicit overlap search now skips donors whose lengths cannot exceed the
+best guaranteed shortening already found, and stops a donor scan when its
+upper bound is attained. This preserves the complete selected witness and
+independent replay, while reducing work for repeated long donors. See
+[`exposure_residual.tex`](../synthesis/exposure_residual.tex) for the proof,
+controlled measurements, and an independently verified continuation of the
+Whitehead report's stalled Gordian residual. The exposure handoff remains an
+offline experiment: the existing search already recognizes that input faster.
+Reproduce the pruning audit with
+`python -B exposure_research/benchmark_bounds.py`.
+
 Compressed substring queries also bound matches by the directed signed-letter
 pairs shared by both words. This handles some expensive cases with identical
 alphabets. Whole-donor search rejects impossible pair sets, including the
@@ -1794,3 +1805,22 @@ This improves a restricted class of exact compressed-word queries. It does not
 bound the number of relator moves needed to recognize arbitrary knots. See
 [`endpoint_clipping.tex`](../synthesis/endpoint_clipping.tex) for the proof,
 validation and comparison against the previous maintained matcher.
+
+Endpoint Markov descent now uses the original-position linked-list kernel from
+report 34 for sufficiently large, connected-closure-sized inputs (at least 64
+strands and 128 letters). Small inputs retain the version-1 path. Both paths
+perform the same elementary moves; the new version-2 certificate records local
+inverse cancellations and singleton endpoint deletions using original letter
+indices. Its independent verifier replays those choices without endpoint search.
+Old version-1 certificates remain supported.
+
+On an explicit one-component braid with `n` letters and `m` strands, adaptive
+descent takes `O(n+m)` word operations, including generation and replay of new
+certificates. A deletion queues at most one newly exposed seam, every original
+letter is removed at most once, and left renumbering uses a single offset.
+Small-path work is also linear on this domain because its rank or length is
+bounded by fixed dispatch thresholds. Sparse standalone link inputs retain the
+legacy behavior and its `O(n*m)` upper bound. This changes neither the sufficient
+endpoint criterion nor the general unknot complexity bound. The separate matrix
+three-braid backend retains its quadratic bit-arithmetic term. See
+[`braid_descent.tex`](../synthesis/braid_descent.tex) for proof and measurements.

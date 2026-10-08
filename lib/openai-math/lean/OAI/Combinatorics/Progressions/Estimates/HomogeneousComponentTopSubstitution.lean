@@ -1,3 +1,5 @@
+/- Modified for ProveIt: use MvPolynomial.coeff_zero in the top-component
+substitution proof on Lean 4.32. The upstream theorem statement is unchanged. -/
 import OAI.Combinatorics.Progressions.Geometry.GlobalChartNativeFactorization
 
 namespace OAI
@@ -30,7 +32,7 @@ theorem weightedTop_aeval (w : σ → ℕ) (v : τ → ℕ)
       simpa only [aeval_X, top] using weightedTopPart_remainder_lt v (hβ i)
   have hzero : weightedHomogeneousComponent v n (aeval β p - aeval top p) = 0 := by
     ext α
-    rw [coeff_weightedHomogeneousComponent, AddMonoidAlgebra.coeff_zero]
+    rw [coeff_weightedHomogeneousComponent, MvPolynomial.coeff_zero]
     split_ifs with hα
     · by_contra hc
       have hlt := hdiff (mem_support_iff.mpr hc)

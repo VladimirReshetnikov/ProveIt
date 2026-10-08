@@ -2,6 +2,41 @@
 
 The synthesized report on the six archives and on the new recognizer.
 
+`integer_terminal.tex` derives the fraction-free terminal kernel's common-scale
+quotient formula, including singular interiors and the empty border, and
+describes its independent rational replay. It becomes the boundary research
+observer's default while ordinary recognition dispatch remains unchanged.
+Controlled observer measurements show 1.229 times improvement on the original
+native corpus and 19.223 times on a larger 73-vertex stage. A four-query adaptive
+candidate is slower than eager preparation on repeated large queries and is
+not promoted. The source, tests, native audit and measured samples are linked
+from `../fast/determinant_research/README.md`.
+
+`dynamic_terminal_review.tex` reviews the fixed-size determinant representation,
+rank-two terminal contractions, singular-safe rank updates and signed CRT in
+the dynamic-terminal delivery. Its native adapter agrees on 4,503 completion
+queries from 78 diagrams, with independent geometry and certificate checks.
+The new research traversal prunes zero descendant cones and passes 15,840
+independent random field-plan comparisons. It saves only 77 native field-edge
+updates and has no aggregate timing gain. Seven-arm measurements favor direct
+integer quotients on this small corpus; eager dynamic modular evaluation is
+about 3.6 times slower than the rational observer. Production dispatch remains
+unchanged. The article has 262 pages, with no new overfull boxes or unresolved
+references. Reproduction and frozen initial snapshots are described in
+`../fast/determinant_research/README.md`.
+
+`exposure_residual.tex` records a certified continuation of the Whitehead
+exposure report's stalled native Gordian presentation. One maintained relator
+overlap creates two singleton occurrences and four unit bridges; compressed
+continuation succeeds, and both independent full-source replayers accept the
+142-move certificate. The exposure prefix adds no coverage and is slower than
+the incumbent, so it remains an offline experiment. The associated production
+change skips explicit overlap donors that cannot exceed the best attained
+gain, preserving the complete selected witness. The article gives the proof
+and separates query measurements from whole-search timings. Raw samples and
+scripts are in `../fast/results/{exposure_residual,overlap_bounds}_20261008.json`
+and `../fast/exposure_research/`. All 778 maintained tests pass with Regina.
+
 `lcs_transitions.tex` strengthens the compressed substring bound with shared
 directed signed-letter pairs. It proves exact pair extraction and constrained
 run summaries, and adds a necessary pair filter before whole-donor matching.

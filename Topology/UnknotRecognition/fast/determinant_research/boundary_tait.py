@@ -1,7 +1,7 @@
 """Checked boundary-sized Tait quotient queries for a fixed classical suffix.
 
-Research interface: report 26's exact rational terminal kernel supplies the
-linear algebra. Cut-face fragments, rather than whole original regions, are
+Research interface: fraction-free terminal kernels supply the linear algebra,
+with report 26's rational kernel retained as a reference option. Cut-face fragments, rather than whole original regions, are
 the common graph vertices. Query checks use only boundary identifications.
 Production does not dispatch to this kernel until its setup cost is justified.
 """
@@ -40,7 +40,10 @@ def coloring(pd):
 
 
 class BoundaryTait:
-    def __init__(self, pd, order, stage, palette=None):
+    def __init__(self, pd, order, stage, palette=None, *, arithmetic='integer'):
+        if arithmetic not in ('rational', 'integer'):
+            raise ValueError('terminal arithmetic must be rational or integer')
+        self.arithmetic = arithmetic
         if not 0 <= stage < len(order):
             raise ValueError('nonempty suffix required')
         palette = coloring(pd) if palette is None else palette
@@ -114,8 +117,14 @@ class BoundaryTait:
 
     def prepare_kernel(self, verify=False):
         if self.kernel is None:
-            kernel = TerminalKernel.build(self.laplacian, self.terminals)
-            if verify and not verify_kernel(self.laplacian, kernel):
+            if self.arithmetic == 'integer':
+                from fastunknot.terminal_determinant import IntegerTerminalKernel, verify_integer_terminal_kernel
+                kernel = IntegerTerminalKernel.build(self.laplacian, self.terminals)
+                valid = not verify or verify_integer_terminal_kernel(self.laplacian, kernel)
+            else:
+                kernel = TerminalKernel.build(self.laplacian, self.terminals)
+                valid = not verify or verify_kernel(self.laplacian, kernel)
+            if not valid:
                 raise ArithmeticError('terminal kernel certificate failed')
             self.kernel = kernel
 

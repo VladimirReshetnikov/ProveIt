@@ -179,13 +179,13 @@ def braid_certificate(strands, word, *, backend="free-product", use_braid_reduct
                     method="braid-destabilization:" + following["method"],
                     after_reduction=following,
                     complexity={"domain": "explicit m-strand braid of n letters with endpoint descent",
-                                "word_ram_time": "O(n*m)",
-                                "conservative_bit_time": "O(n*m*log(n + m + 2))"},
+                                "word_ram_time": "O(n + m)",
+                                "conservative_bit_time": "O((n + m)*log(n + m + 2))"},
                 )
                 if backend == "matrix":
                     result["complexity"] = {
                         "domain": "explicit m-strand braid of n letters with endpoint descent",
-                        "bit_time": "O(n*m*log(n + m + 2) + n^2)",
+                        "bit_time": "O((n + m)*log(n + m + 2) + n^2)",
                     }
         return result
     if backend == "free-product":

@@ -1092,3 +1092,74 @@ if endpoint_clipping:
                 '@{}lrrrr@{}' if scope=='rows' else '@{}lrrrrr@{}',rows)+r'\end{center}'+'\n'+
                 'Median milliseconds; ratios are medians of complete paired before/clipping times. '
                 'Censored runs are shown as limits and excluded from ratios.\n')
+
+braid_descent = load('../fast/results/braid_descent_20261008.json')
+if braid_descent:
+    rows=[]
+    for item in braid_descent['summary']:
+        cells=[esc(item['case'])]
+        cells.extend(f"{1000*item['median_seconds'][arm]:.3f}" for arm in ('baseline','control','adaptive'))
+        cells.append(f"{item['paired_ratios']['adaptive']:.2f}" if item['complete'] else '--')
+        rows.append(' & '.join(cells)+r' \\')
+    with open('tables/braid_descent.tex','w') as handle:
+        handle.write(r'\begin{center}\small'+'\n'+table(
+            'Case & Before & A/A & Adaptive & Ratio','@{}lrrrr@{}',rows)+r'\end{center}'+'\n'+
+            'Median milliseconds; ratios are medians of paired before/adaptive times.\n')
+
+overlap_bounds = load('../fast/results/overlap_bounds_20261008.json')
+if overlap_bounds:
+    names = {'repeated_16x128': 'Repeated 16 by 128',
+             'repeated_128x128': 'Repeated 128 by 128',
+             'disjoint_16x128': 'Disjoint 16 by 128',
+             'later_longer': 'Later longer donor',
+             'native_explicit': 'Gordian explicit',
+             'native_exposure_overlap': 'Gordian exposure handoff'}
+    rows=[]
+    for name, arms in overlap_bounds['summary'].items():
+        cells=[names[name]]
+        cells.extend(f"{1000*arms[arm]['median_seconds']:.3f}" for arm in ('baseline','control','pruned'))
+        cells.append(f"{arms['pruned']['paired_baseline_ratio']:.2f}")
+        rows.append(' & '.join(cells)+r' \\')
+    with open('tables/overlap_bounds.tex','w') as handle:
+        handle.write(r'\begin{center}\small'+'\n'+table(
+            'Query or complete search & Before & A/A & Pruned & Ratio','@{}lrrrr@{}',rows)+r'\end{center}'+'\n'+
+            'Median milliseconds; ratios are medians of paired before/pruned times. '
+            'Native rows include two independent full certificate replays.\n')
+
+dynamic_terminal = load('../fast/results/dynamic_terminal_20261008.json')
+if dynamic_terminal:
+    rows=[]
+    cases=('native_all','native_widest','native_many_queries','native_singular')
+    names={'rational':'Rational','control':'Identical control','integer':'Integer quotient',
+           'static':'Static modular','static_cached':'Cached static modular',
+           'dynamic':'Delivered dynamic','pruned':'Pruned field traversal'}
+    for arm,name in names.items():
+        cells=[name]
+        cells.extend(f"{1000*dynamic_terminal['summary'][case]['arms'][arm]['median_seconds']:.3f}" for case in cases)
+        cells.append(f"{dynamic_terminal['summary']['native_all']['arms'][arm]['paired_rational_ratio']:.2f}")
+        rows.append(' & '.join(cells)+r' \\')
+    with open('tables/dynamic_terminal.tex','w') as handle:
+        handle.write(r'\begin{center}\small'+'\n'+table(
+            'Observer & All stages & Widest & Most queries & Singular & Ratio',
+            '@{}lrrrrr@{}',rows)+r'\end{center}'+'\n'+
+            'Median milliseconds per fresh replay; the final column is the median paired '
+            'rational/arm ratio for all 582 stages. These are observer timings.\n')
+
+integer_terminal = load('../fast/results/integer_terminal_20261008.json')
+if integer_terminal:
+    rows=[]
+    names={'native_all':'Native corpus','padding_4_one':'17 vertices, one',
+           'padding_4_all':'17 vertices, stream','padding_16_one':'41 vertices, one',
+           'padding_16_all':'41 vertices, stream','padding_32_one':'73 vertices, one',
+           'padding_32_all':'73 vertices, stream','padding_32_repeated':'73 vertices, repeats'}
+    for name,arms in integer_terminal['summary'].items():
+        cells=[names[name]]
+        cells.extend(f"{1000*arms[arm]['median_seconds']:.3f}" for arm in
+                     ('rational','control','direct','integer_kernel','adaptive_four'))
+        cells.append(f"{arms['integer_kernel']['paired_rational_ratio']:.2f}")
+        rows.append(' & '.join(cells)+r' \\')
+    with open('tables/integer_terminal.tex','w') as handle:
+        handle.write(r'\begin{center}\small'+'\n'+table(
+            'Stage & Rational & A/A & Direct & Kernel & Switch & Ratio','@{}lrrrrrr@{}',rows)+
+            r'\end{center}'+'\n'+'Median milliseconds; final column is the median paired '
+            'rational/integer-kernel ratio. These are complete observer-stage timings.\n')
