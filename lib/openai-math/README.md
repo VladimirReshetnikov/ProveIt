@@ -79,10 +79,10 @@ hashes and compatibility adaptations. Run
 `python3 Combinatorics/Ramsey/scripts/check_gowers_port_scope.py` to check the
 closure; pass a module name to show an import path explaining its inclusion.
 
-The first 2,000 manifest entries have compiled (2,016 modules including their
+The first 2,100 manifest entries have compiled (2,116 modules including their
 compatibility dependencies). The incremental `OAI.QuantitativePortAudit`
 imports this batch and the added compatibility modules. Its axiom scan
-checks 33,429 public OAI theorems and reports only `propext`,
+checks 35,302 public OAI theorems and reports only `propext`,
 `Classical.choice`, and `Quot.sound`; the separately listed compatibility declarations
 also pass, with explicit rejection of any unapproved axiom. This checkpoint
 does not certify `Results.Conclusions`.
@@ -160,7 +160,7 @@ above intentionally omit unrelated declarations; their proof status remains pend
   coexist with the originals in `NativeProperAffineRecovery.lean`.
   `GowersSzemeredi.PortImportAudit` imports the Gowers audit alongside that
   full upstream module and checks that the extracted propositions match
-  their originals. The combined 2,548-module build passes; this is not an
+  their originals. The combined 2,551-module build passes; this is not an
   audit of the still-pending full quantitative-density conclusion.
 
 ## Trust
