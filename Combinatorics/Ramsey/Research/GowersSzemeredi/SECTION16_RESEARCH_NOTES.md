@@ -1200,6 +1200,22 @@ graph-count bound, and good mass at least `1-sigma`. The production source
 passes Lean. Spectrum structure, induced selection, and the remainder
 cover are explicit premises; the combined facade audit is queued.
 
+**An all-scale Lemma 16.6 bound is now proved.**
+`Proofs16PolynomialAllScaleParameters` absorbs the recurrence threshold
+by setting `x=m^(a/(4*E))`, rounding `H=ceil(x)`, and taking `n=H^(2*E)`.
+If `(zeta/(4*b))*x > 1`, then `x > 16`, so this integer scale lies between
+`b^E` and `(m/8)^a` and its retiled width dominates the target. Here
+`b=C*(q+1)` and `E=2*p*(q+1)^(2^(k+2))`.
+
+`Proofs16PolynomialAllScaleLemma6` combines that arithmetic with the
+large-scale theorem and singleton partitions. For `0<a=Eb(sigma)<=1`,
+it yields minimum width `(zeta/(4*b))*m^(a/(4*E))` for **every input
+width**, without an additional threshold premise. The prefactor and
+reciprocal exponent have polynomial dependence on the spectrum-count
+bound `q=floor(Qb(sigma))`. The production sources pass Lean; the next
+combined audit is queued. Spectrum structure and induced selection remain
+explicit inputs.
+
 The remaining work is integration into the higher-dimensional lift and
 its structure hypotheses, together with explicit dimension constants where
 the printed thresholds require them. The printed final all-length threshold
