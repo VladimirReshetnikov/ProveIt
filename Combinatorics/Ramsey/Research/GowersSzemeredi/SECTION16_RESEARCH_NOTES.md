@@ -873,10 +873,23 @@ composition.
   `bilinearBohrVariety_contains_box_at`. That would avoid shifted-family
   regularity. Not yet checked in detail.
 
-**Formalized (same day).** `BohrBohrIsBohr D` (Prop. 2.37, d = 1, as a
-hypothesis) and `variety_full_section_contains_bohr`: for every
-x ∈ B(Γ;ρ), {x} × B(Ψ″;ρ″) ⊆ V with |Ψ″| ≤ |Ψ| + r(1 + loss^D) and
+**Formalized (same day, normalized interface).** `BohrBohrIsBohr D` is a
+one-coordinate hypothesis motivated by Proposition 2.37, with `phi(0)=0`
+explicit. Under this hypothesis and `L_k(0)=0` for every k,
+`variety_full_section_contains_bohr` gives, for every x ∈ B(Γ;ρ),
+{x} × B(Ψ″;ρ″) ⊆ V with |Ψ″| ≤ |Ψ| + r(1 + loss^D) and
 ρ″ ≥ ρ/loss^D (`Proofs16BohrBohrSections`).
+
+**Normalization correction.** The corpus's four-point
+`IsFreimanLinearOn` identity also admits constant nonzero maps. Since every
+centered Bohr set of nonnegative radius contains zero, an unnormalized
+all-sublevels hypothesis would force every such map to vanish at zero and
+would therefore be false. `bohr_sublevels_require_zero` proves the necessary
+normalization in Lean. The conditional section lemmas now state it, rather
+than silently accepting a vacuous premise. Applying this route to affine
+frequency families with nonzero intercepts requires an additional centering
+or translated-sublevel argument. No existence proof for the normalized
+interface is asserted.
 
 **Two observations from attempting the packing.**
 1. **x-fibres need no hypothesis.** For fixed y, the x-section of V is
@@ -1121,7 +1134,7 @@ the zero-width case. Its uniform spectrum assembly has minimum width
 `(zeta/2)*sqrt(n^epsilon(floor(Qb sigma)))`, so the bound depends only on
 the supplied spectrum controls and can be shared across further partition
 refinements. The production source and all three transitive axiom checks
-pass. Its facade import awaits completion of the running audit.
+pass. Its facade import is included in the next combined audit.
 
 `Proofs16PolynomialLemma6.exists_polynomial_lemma_16_6` specializes the
 uniform assembly to the exact induced-function inputs used by Lemma 16.6.
@@ -1130,7 +1143,7 @@ and above the recurrence threshold, it gives proper product cells with
 the uniform polynomial width bound and linear induced restrictions on
 the good base set. Spectrum coverage and the induced selection are still
 premises. Its production source and transitive axiom check pass; the
-facade import awaits the current audit's completion.
+facade import is included in the next combined audit.
 
 The remaining work is integration into the higher-dimensional lift and
 its structure hypotheses, together with explicit dimension constants where
