@@ -1,3 +1,6 @@
+/- Modified for ProveIt: supply the proved EuclideanJetLayers Borel structure
+explicitly as OpensMeasurableSpace in the profile-error integrable-mass proof,
+avoiding a Lean 4.32 instance-search timeout. Theorem statements are unchanged. -/
 import OAI.Combinatorics.Progressions.Estimates.AllocatedProfileErrorMajorant
 import OAI.Combinatorics.Progressions.Fourier.AllocatedProfileErrorStandardFourier
 
@@ -115,6 +118,8 @@ theorem allocatedProfileErrorMajorant_integrable_mass (A : ℝ≥0) (f g : (outp
     Integrable (allocatedProfileErrorMajorant B U b S o hR hσ x u v rows A f g d) haar ∧
     (∫ y, allocatedProfileErrorMajorant B U b S o hR hσ x u v rows A f g d y ∂haar) ≤
       (A : ℝ) * ∫ z, allocatedUnmaskedLongProfileDensity B U b S (fun v => |f v - g v|) z ∂reference := by
+  let : OpensMeasurableSpace (EuclideanJetLayers U O) :=
+    @BorelSpace.opensMeasurable _ _ _ (euclideanJetLayers_borel U)
   let majorant := allocatedProfileErrorMajorant B U b S o hR hσ x u v rows A f g d
   have hp := allocatedProfileErrorTorusKernel_bounds B U b S o hR hσ x u v rows A f g hf hg hfb hgb C V hC hV
   have hm0 (y) : 0 ≤ majorant y := (hp.1 (coveredJetAmbientTorus U d y)).1
