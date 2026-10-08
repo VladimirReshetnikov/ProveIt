@@ -1,3 +1,6 @@
+/- Modified for ProveIt: give exists_native_marked_common_direction_coordinates
+ a finite local elaboration budget on Lean 4.32. Statements and proof text
+ are unchanged from the pinned upstream source. -/
 import OAI.Combinatorics.Progressions.Estimates.ControlledMarkedDirectionModel
 
 namespace OAI
@@ -15,6 +18,7 @@ attribute [local instance] NativeDegreeRankFamily.lie NativeDegreeRankFamily.alg
   NativeIntegerExpansion.topology NativeIntegerExpansion.topologicalAdd
   NativeIntegerExpansion.continuousSMul NativeIntegerExpansion.hausdorff
 
+set_option maxHeartbeats 400000 in
 theorem exists_native_marked_common_direction_coordinates (s : ℕ) (hs : 1 ≤ s) :
     ∃ C : ℕ, 2 ≤ C ∧ ∀ {r N : ℕ} [NeZero N] {b p q P M : ℝ}
       {W : NativeDegreeRankFamily s r (ZMod N) b} {out : Fin W.outputDim}

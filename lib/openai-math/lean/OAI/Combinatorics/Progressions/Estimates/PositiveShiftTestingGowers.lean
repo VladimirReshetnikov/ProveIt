@@ -1,3 +1,5 @@
+/- Modified for ProveIt: evaluate the empty-family shift-testing seminorm
+using an explicit empty indexed supremum on Lean 4.32; statements unchanged. -/
 import OAI.Combinatorics.Progressions.Nilpotent.CyclicPairNiltestDetection
 import OAI.Combinatorics.Progressions.Nilpotent.PositiveShiftTestingNiltests
 
@@ -242,8 +244,8 @@ universe u
 theorem shiftTestingSeminorm_eq_zero_of_isEmpty {G ι : Type*}
     [AddCommGroup G] [Fintype G] [IsEmpty ι] (B : G → ℂ) (T : ι → G → ℂ) (v : G → ℂ) :
     shiftTestingSeminorm B T v = 0 := by
-  simp [shiftTestingSeminorm, shiftTestSeminormAt, Seminorm.sSup_empty]
-  rfl
+  change (Finset.univ.expect fun h => shiftTestSeminormAt B T h v) = 0
+  simp [shiftTestSeminormAt, iSup_of_empty', Seminorm.sSup_empty]
 
 namespace PositiveShiftBasis
 
