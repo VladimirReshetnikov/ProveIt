@@ -1,0 +1,220 @@
+\section{Relator overlaps: a native certificate for Gordian}
+\label{sec:relator-overlap}
+
+\subsection{Preserving a normal closure while shortening a relator}
+
+The first group-certificate stage could stall after exhausting generator
+elimination and length-reducing Whitehead moves.  An additional exact move
+now changes the relators themselves.  Suppose two distinct relator slots,
+after cyclic rotation and optional inversion of the donor, read
+\[
+ R_i=UW,\qquad R_j^{\epsilon}\sim UV,
+ \qquad i\ne j,\quad \epsilon\in\{1,-1\}.
+\]
+Replace the target by $V^{-1}W$ and retain the donor.  This preserves the
+normal closure of the relator list, because
+\[
+ (UV)^{-1}(UW)=V^{-1}W,\qquad
+ (UV)(V^{-1}W)=UW.
+\]
+Both the old and new target therefore lie in the normal closure of the
+other presentation.  Cyclic conjugation and inversion preserve a relator's
+normal closure, so undoing the displayed rotations does not change the
+argument.  The quotient group, and hence the positive unknot conclusion
+at terminal rank one, is unchanged.
+
+Requiring different target and donor slots is essential.  A relator cannot
+be deleted by using itself as the donor: that would remove a relation
+rather than replace it by an equivalent one.  Distinct slots containing
+equal relators can legitimately reduce to one copy.  The independent
+checker enforces this distinction.
+
+If $u=|U|$ and $d=|R_j|$, the literal target length decreases by
+$2u-d$.  The producer proposes only moves with $2u>d$; free and cyclic
+cancellation can shorten further.  Among these moves it maximizes the
+guaranteed decrease, not the decrease after all incidental cancellations.
+This is a Dehn-style presentation simplification.  Regina documents a
+related use of relator substitutions and generator elimination
+\cite{regina-group-simplify}.  We implement and replay our own individual
+moves; a declared external isomorphism is not used as proof evidence.
+
+No small-cancellation hypothesis is required for the correctness of an
+individual substitution.  Such hypotheses enter completeness theorems
+for Dehn algorithms.  We do not assume that arbitrary knot presentations
+satisfy them, and failure to find an overlap has no negative meaning.
+
+\subsection{Finding the best cyclic overlap without listing rotations}
+
+A direct search that builds a long tuple key for each rotation can spend
+quadratic space or work on a single long relator.  Small fixed-length
+seeds avoid that copying but can still produce many candidates on
+repetitive words.  The implementation instead uses an exact suffix
+automaton, following the classical linear-size subword-automaton
+framework \cite{blumer-subwords}.
+
+For each nonempty donor $v$, and separately for $v^{-1}$, build the
+suffix automaton of $v$ followed by all but its last letter.  This word of
+length $2|v|-1$ contains every cyclic rotation and every cyclic segment of
+length at most $|v|$.  An automaton state stores its maximum represented
+length, suffix link, exact letter transitions, and the end position of
+one occurrence.  Online extension creates a new state, follows suffix
+links to add missing transitions, and splits a state when a transition
+would otherwise identify incompatible maximum lengths.  The clone copies
+transitions and the occurrence position, while redirecting the necessary
+suffix-link transitions.
+
+Scan each other doubled target word through this automaton.  On a missing
+transition, follow suffix links and shorten the currently matched suffix.
+For a match of length $\ell$ against target $w$, use
+\[
+ u=\min(\ell,|v|,|w|).
+\]
+The caps forbid a match from wrapping around either cyclic word more than
+once.  The target scan position and stored donor occurrence position give
+the two rotation offsets modulo their respective lengths.  Compare
+$2u-|v|$ with the best positive decrease found so far.  A target whose
+upper bound $2|w|-|v|$ cannot improve the current best can be skipped.
+No probabilistic fingerprints or collision assumptions enter equality:
+letters are signed generator integers, and a literal prefix comparison
+checks the selected witness before application.
+
+Let $m$ be the number of nonempty relators and $L$ their total explicit
+length.  Building each automaton and scanning every target costs
+$O(mL)$ dictionary operations overall, plus traversal of the original
+relator slots.  The auxiliary automaton occupies $O(L)$ space, since only
+one donor orientation is indexed at a time.  With the usual amortized
+hash-table costs this is the corresponding expected word-operation bound;
+the correctness is deterministic.  Even replacing dictionary lookup by a
+linear scan over the at most $2n$ letters gives a polynomial worst-case
+bound.  The implementation charges construction, clone copies, suffix
+links and target scanning against its cooperative work allowance.
+
+The five new tests compare the optimized search with an independent
+exhaustive search over all rotations and both donor signs on 2,141 word
+lists.  These include every pair of cyclically reduced rank-two words of
+length at most three, random signed lists, empty slots and periodic words.
+The test checks the maximum guaranteed decrease and the literal selected
+substitution, not only whether some move was returned.
+
+\subsection{Certificate format and independent verification}
+
+A trace containing an overlap uses certificate version~2.  The previous
+elimination/Whitehead-only traces remain version~1 and are still accepted.
+The new move records target and donor indices, their cyclic offsets, the
+donor inversion flag, and overlap length.  The checker validates types,
+indices, distinct slots, offsets, overlap bounds and letter equality.
+It reconstructs the two cyclic words by modular indexing rather than by
+the producer's suffix automaton or rotation helper, then directly replaces
+the target by the inverse donor remainder followed by the target remainder.
+The unchanged donor remains available throughout.
+
+The checker does not require a maximum overlap or even positive length
+gain: the normal-closure identity is valid without those search-policy
+properties.  Its expansion ceiling and operation allowance still apply.
+Forged self-donors, false matching prefixes, invalid offsets, incorrect
+versions and malformed fields are rejected.  Acceptance still requires
+one surviving generator and every remaining relator empty.  Tests replay
+the Gordian trace with the search and application helpers disabled, and
+cross-check another 80 random small knot inputs against the full Khovanov
+cube whenever a positive certificate is produced.
+
+\subsection{What the larger search establishes}
+
+On the supplied 141-crossing Gordian PD, the native producer finds a trace
+with 140 generator eliminations and one relator-overlap move.  Independent
+replay proves its full knot group infinite cyclic.  This replaces the
+previously missing native positive certificate for this example; it does
+not need Regina at runtime.  The two mirrored survivor diagrams that
+stalled under the original group search also acquire positive certificates.
+The input itself remains the numeric PD fixture documented with the
+normal-surface experiments; no claim based on its filename or provenance
+is used by the verifier.
+
+The same conditional complexity obstacle remains.  Between generator
+eliminations, both overlap moves and chosen Whitehead moves strictly
+reduce total relator length.  If every expanded list has length at most
+$B$, there are at most $O(n(B+1))$ moves.  Adding a polynomial-time overlap
+search to each step preserves a polynomial bound in $n$ and $B$.
+Neither a quasi-polynomial bound on $B$ nor completeness of these greedy
+moves is proved.  The existing work, wall and expansion caps yield safe
+fallback rather than a new general asymptotic guarantee.
+
+Kapovich's August 2026 preprint \cite{kapovich-generic} studies generic
+small-cancellation stability and isomorphism rigidity for fixed generator
+and relator counts.  Its stated generic quadratic isomorphism algorithm
+is for its random-presentation model, not for all finitely presented
+groups.  Our Wirtinger generators and relations grow with the crossing
+number and are strongly constrained by topology.  Thus its generic
+conclusions do not establish an average-case or worst-case bound for this
+knot recognizer.  We use exact normal-closure identities for soundness and
+measured search behaviour for scheduling, rather than importing that
+unverified distributional transfer.
+
+\subsection{Adaptive scheduling rather than unconditional overlap search}
+
+The first implementation tried overlaps whenever direct generator
+elimination stalled, before trying Whitehead moves.  A paired 29-input
+experiment showed why that order should not be universal.  Although it
+certified Gordian, the sum of median query costs on the twelve survivors
+and twelve mirrors increased from $113.14$ ms with the previous group
+stage to $191.77$ ms with overlaps first.  These are sums of individual
+medians, not end-to-end batch timings.  The code and all 580 measured
+queries at this checkpoint remain in commit \code{772b24bca} and
+\code{results/relator\_overlap\_20261008.json}.
+
+The revised policy observes the surviving generator count after each
+elimination.  At rank at most six, it tries a shortening Whitehead move
+first and searches for relator overlaps only if none exists.  Above six,
+it tries overlaps first, then Whitehead moves.  It reuses the result of
+an already completed cut search, rather than performing it twice.
+Six is an empirical dispatch threshold: it reflects the different costs
+of small graphs and many signed-multiplier flow problems, not a theorem
+that low-rank presentations are easy.  The regression test verifies that
+all twelve original survivors retain exactly their prior successful
+certificate traces, without invoking overlap search.  The stalled
+mirrors still gain the new move when they need it.
+
+The new mode is selected by \code{--group-relators}, which also enables
+the optional group stage.  Python callers use
+\code{use\_group=True, group\_relators=True}.  The previous \code{--group}
+behaviour remains available.  Time and work caps are explicit: the Gordian
+experiment uses a two-second shared search-and-replay allowance and ten
+million work units per producer/checker, while the default group settings
+remain 0.05 seconds and two million units.  Python callers set
+\code{group\_seconds} and \code{group\_max\_work}; the standalone producer
+and checker expose \code{max\_work}.  Raising the time allowance alone
+need not overcome the separate work ceiling.
+
+The benchmark uses fresh validated PD inputs, strips braid-source
+provenance, randomizes the order of default, previous group, overlap and
+Regina arms, and excludes one warmup before five measured rounds.  All
+arms share a four-second global cap and a 50,000-object Khovanov ceiling;
+both group arms use the same two-second and ten-million-work allowances.
+Regina also has a two-second local allowance including process startup.
+Certificates are independently replayed inside the measured query.
+The initial overlap-first checkpoint completed Gordian in all five rounds
+at median $1.452$ seconds, versus $1.957$ seconds for Regina.  Both the
+default and previous group arms timed out in every round.  No ratio
+against these censored control times is reported as a completion speedup.
+
+A fresh 580-query experiment of the revised dispatcher is stored in
+\path{results/relator_adaptive_20261008.json}.  Its 24 survivor/mirror
+inputs all finish with independently checked group certificates in every
+round.  Their summed median query costs are $120.28$ ms for the default,
+$84.17$ ms for the previous group search, $84.86$ ms for adaptive overlap
+search, and $120.00$ ms for the Regina arm, which bypasses native startup
+on these small inputs.  Thus the additional reach costs less than one
+percent against the previous group-stage aggregate in this experiment.
+Absolute timings vary between experiments; compare arms within the same
+randomized run rather than attributing the entire change between the two
+archived runs to scheduling.
+
+Gordian completes in all five adaptive runs at median $1.212$ seconds,
+including validation, all prior pipeline work, search and independent
+replay.  Regina completes all five at median $1.708$ seconds in the same
+run.  The default and previous group arms remain censored at four seconds.
+The two formerly stalled mirrors receive group certificates, but are not
+faster than the default Khovanov route; this is greater certificate reach,
+not universal acceleration.  These observations keep the group extensions
+opt-in.  They do not show that relator-overlap search dominates normal
+surfaces or Khovanov on other knot families.
