@@ -526,6 +526,56 @@ file, "degree by degree"). The source's polynomial discrepancy rests on the
 unsupported estimate of Corollary 16.11. A structure theorem whose graph
 count is polynomial in `1/theta` and `1/gamma` (H.3, H.5) would repair both.
 
+## J. What dimension three needs, input by input (plan)
+
+Written 2026-10-08, with `theorem_16_2_at_two` proved. The general-k cubic
+lift (`Section16AllBoxLineCoversWith.cubic_multiplyLinearWith`, k = 2 for
+`B ⊆ Z_N³`) consumes two inputs. In dimension three, both inherit
+non-polynomial counts from the proved dimension-two theorem.
+
+1. **Line covers (Lemmas 16.6 and 16.9, `…With` forms).** They take the
+   spectrum relation's cover. In dimension three that relation is
+   two-dimensional, and its graph count `q` comes from Theorem 16.2 in
+   dimension two, which is `exp(poly)`. Lemma 16.1's width exponent
+   `K^(−2^(k+1)·q)` is then doubly exponential: break B, now one dimension
+   up (H.3a).
+2. **Slice provider.** Stacked two-dimensional slices need controls
+   polynomial in the number of slices. That is the stacking gap (H.3).
+
+**Inputs that would close both:**
+
+- (S) A Bohr-structured, loss-free description of two-dimensional
+  product-property functions after an outer removal: finitely many maps,
+  each multilinear in Bohr coordinates on translates of a product Bohr
+  set, with total rank and count at most `exp(poly(1/(θγ)))` (H.5 budget).
+  - Milićević's Theorem 1.4 supplies this for Freiman bihomomorphisms on
+    dense sets, with quasipolynomial bounds.
+  - The bridge needed is that the dimension-three structured pair's
+    two-dimensional slices, and the spectrum relation, are covered by
+    bihomomorphisms on dense pieces. Section 13 already produces such
+    data for frequency functions (`SeparatelyFreimanEight`,
+    `MostlyRespectsEight`), and Gowers's weak version is Theorem 13.12.
+- (R) A Bohr readout: an E-bihomomorphism on `B₁×B₂` is multilinear on
+  every product of short progressions inside the Bohr sets, with width
+  exponent about `1/rank`.
+- (D) A replacement for Lemma 16.1 when the forms come from (S): their
+  simultaneous smallness holds on a common Bohr set whose rank is the sum
+  of the ranks. That gives a width exponent polynomial in the rank instead
+  of `K^(−q)`.
+
+Given (S), (R) and (D), the existing lift and regime splitting (E) would
+give `Theorem162At 3` within the budget, plausibly. Every higher dimension
+repeats this with the (k+1)-linear analogue of (S), which is unknown over
+`Z_N`.
+
+**Formalization order, if pursued.** First state (S) as a `Prop` over
+`ZMod N`, with Milićević's bounds as explicit functions. Then prove (R)
+and (D), which are elementary Bohr-set arguments. Then build the
+dimension-three slice and spectrum providers conditionally on (S), and run
+the budget comparison. The result would be `Theorem162At 3` and
+`Corollary1611At 3`, conditional on one published theorem. Neither Theorem
+18.1 nor 18.2 would follow; they need polynomial discrepancy (Part I).
+
 ## F. Routes
 
 1. **Quantitative repair (research).**
