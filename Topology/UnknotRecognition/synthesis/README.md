@@ -5,10 +5,17 @@ The synthesized report on the six archives and on the new recognizer.
 `causal_r3.tex` reviews report 27's parameterized search, reproduces its
 5,000-system and 608,400-instance abstract audits, and gives a four-site
 counterexample to immediate-inverse pruning when accumulated support controls
-the birth budget. The production change at this checkpoint fixes RIII trace
-ambiguity by recording input face darts; the clustered search is not yet
-enabled. `data/causal_inverse_audit.py` reproduces the new counterexample.
+the birth budget. The production changes fix RIII trace ambiguity by recording
+input face darts and add opt-in clustered/adaptive search with guarded inverse
+pruning, exception-safe rollback and global deadline checks. The default
+search also stops deepening when no legal first RIII move exists.
+`data/causal_inverse_audit.py` reproduces the counterexample.
 `data/reidemeister-trace-integrated-tests.txt` records 539 passing integrated tests.
+The later search integration passes 550 tests, recorded in
+`data/causal-r3-integrated-tests.txt`.
+`../fast/benchmark_causal_r3.py` reproduces the paired end-to-end and isolated
+timings; `--discovery` reproduces the random search, the negative findings,
+and exact trace comparisons against the pinned default implementation.
 The opening source review also distinguishes Lackenby's announced
 `2^O((log n)^3)` bound from this project's stronger `n^O(log n)` target and
 explains why the hierarchy strategy is plausible without claiming a verified
