@@ -671,6 +671,53 @@ on its forced role in Lemma 16.8. No published erratum was found
   `twoColorThreshold 6 = 2^2^2^2^2^15` is an open numerical question. It is
   the next concrete step: K.4.
 
+### K.4 Corollary 18.7 at k = 6 from the proved dimension-two structure: no (proved by definitions)
+
+Route: `quartic_function_inverse_explicit`, then
+`theorem_18_2_of_function_discrepancy_budget`'s mechanism at δ = 1/2, then
+`corollary_18_7_at_of_half_density`.
+
+**The discrepancy parameter.**
+- The input is α = `intervalUniformityParameter (1/2) 6`
+  = (2⁻⁶/(512·216))^32 ≈ 2^(−728).
+- The parameter is β = `jointStructuralInverseParameter 2 α`. It is at most
+  `section16JointFrequencyDensity α' 2` = (α'/8)/G with α' ≤ α
+  (`jointPowerLocalizationParameter`; the other factors are ≤ 1).
+- G ≥ `section16UniformLiftGraphBudget` ≥ multipleQ(x, γ, 2)^(r·s), where
+  r ≥ 1, γx ≤ 1/2, so multipleQ ≥ 2^(2^1024).
+- Here s = `section16PowerSliceBudget (α/4) (α/2) 2`
+  = (4/α²)·multipleS(α/64, α/2, 2) ≥ (256/α²)^(2^256).
+- Hence log₂(1/β) ≥ 2^1024·s ≥ 2^(1464·2^256).
+
+**The comparison.**
+- `intervalDiscrepancyClosedThreshold` ≥ exp(2^n) with n = ⌈8/β⌉, so its
+  log₂ log₂ is at least 8/β, i.e. about 2^(2^(1464·2^256)).
+- `szemerediThreshold (1/2) 6` = 2^2^2^M with M = 2^32768, so its
+  log₂ log₂ is 2^M = 2^(2^32768).
+- The shortfall is at the third exponential level. No adjustment of
+  constants closes it.
+
+**What would close it.** Replace G = exp(poly(1/α)) by a count from a
+dimension-two inverse theorem:
+- **Polynomial** count G = α^(−D): log₂(1/β) ≈ 728·D, which fits whenever
+  D ≲ 2^32768 / 728. Gowers's intended D = 2^(2^10)-scale fits easily.
+- **Quasi-polynomial** count G = exp(C·log^A(1/α)): log₂(1/β) ≈ C·728^A,
+  which fits whenever A ≲ 3400 (for moderate C). Milićević's 2026
+  structure theorem for Freiman bihomomorphisms (arXiv:2601.01682,
+  Theorem 1.4) is quasi-polynomial and is in exactly the dimension-two
+  setting.
+
+So **18.7 at k = 6 is plausibly within reach of Milićević's theorem**, at
+this single density. Two inputs are still unchecked:
+- its quasi-polynomial exponent, which must be explicit;
+- the bridge from bihomomorphisms on dense pieces to the frequency function
+  of §16 (Part J, (S)).
+
+This would extend `corollary_18_7_le_five` to k ≤ 6. It would not close
+Corollary 18.7, which quantifies over all k. Length seven needs the
+three-dimensional (trilinear) analogue, which has no known quasi-polynomial
+bound.
+
 ## F. Routes
 
 1. **Quantitative repair (research).**
