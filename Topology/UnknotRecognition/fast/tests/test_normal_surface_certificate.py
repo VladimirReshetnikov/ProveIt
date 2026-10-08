@@ -72,7 +72,8 @@ class NormalSurfaceCertificateTests(unittest.TestCase):
         forged['input_sha256'] = _fingerprint(self.tri, analysed, lambda: None)
         self.assertFalse(verify_normal_surface_certificate(self.tri, other, forged))
         # A fresh valid orbit proof for another supplied vector cannot be substituted.
-        foreign = normal_surface_topology(self.tri, other, record_certificate=True)['certificate']
+        foreign = normal_surface_topology(self.tri, other, record_certificate=True,
+                                         reduce_multiplicity=False)['certificate']
         forged = deepcopy(self.proof)
         forged['queries']['surface'] = foreign['queries']['surface']
         self.assertFalse(self.verify(forged))
