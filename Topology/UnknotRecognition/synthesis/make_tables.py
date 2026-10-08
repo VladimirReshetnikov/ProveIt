@@ -593,3 +593,85 @@ if whitehead_power:
             table('$h$ in $N=2^h$ & Before & A/A & Powers & Moves & Nodes', '@{}rrrrrr@{}', rows) +
             r'\end{center}' + '\nMedian milliseconds including grammar construction. '
             'Limits are censored; moves and nodes describe the new search.\n')
+
+compressed_match = load('../fast/results/compressed_match_20261008.json')
+if compressed_match:
+    from statistics import median
+    arms = ('baseline', 'control', 'matching')
+    rows = ['Small 14, summed medians & ' + ' & '.join(
+        f"{1000*sum(r['median_seconds'][a] for r in compressed_match['rows'] if r['name'] != 'gordian'):.3f}"
+        for a in arms) + r' \\']
+    gordian = next(r for r in compressed_match['rows'] if r['name'] == 'gordian')
+    rows.append('Gordian, full query & ' + ' & '.join(
+        f"{1000*gordian['median_seconds'][a]:.3f}" for a in arms) + r' \\')
+    for row in compressed_match['capacity']:
+        rows.append(f"Gordian group, cap {row['max_letters']} & " + ' & '.join(
+            f"{1000*median(s['measurements'][a]['seconds'] for s in row['samples']):.3f}"
+            for a in arms) + r' \\')
+    with open('tables/compressed_match_queries.tex', 'w') as handle:
+        handle.write(r'\begin{center}\small' + '\n' +
+            table('Scope & Before & A/A & Matching', '@{}lrrr@{}', rows) +
+            r'\end{center}' + '\nMedian milliseconds; all knot queries and group probes complete.\n')
+    rows = []
+    for row in compressed_match['presentations']:
+        assert all(not s['measurements'][a]['success'] and s['measurements'][a]['reason'] == 'stalled'
+                   for s in row['samples'] for a in ('baseline', 'control'))
+        assert all(s['measurements']['matching']['success'] for s in row['samples'])
+        new = row['samples'][0]['measurements']['matching']
+        rows.append(f"{row['bits']} & stalled & " +
+            f"{1000*median(s['measurements']['matching']['seconds'] for s in row['samples']):.3f} & " +
+            f"{new['moves']} & {new['nodes']}" + r' \\')
+    with open('tables/compressed_match_presentations.tex', 'w') as handle:
+        handle.write(r'\begin{center}\small' + '\n' +
+            table('$h$ in $N=2^h$ & Before/A/A & New (ms) & Moves & Nodes', '@{}rlrrr@{}', rows) +
+            r'\end{center}' + '\nFull construction and search on abstract presentations; '
+            'stalls are incomplete searches, not completed recognition times.\n')
+    rows = []
+    names = {'first-hit': 'First candidate matches', 'later-hit': 'Later candidate matches', 'absent': 'No occurrence'}
+    for row in compressed_match['matching']:
+        cells = [names[row['kind']], str(row['bits'])]
+        for arm in ('table', 'adaptive', 'control'):
+            complete = all(s['measurements'][arm]['status'] == 'COMPLETE' for s in row['samples'])
+            cells.append(f"{1000*median(s['measurements'][arm]['seconds'] for s in row['samples']):.3f}"
+                         if complete else 'limit')
+        rows.append(' & '.join(cells) + r' \\')
+    with open('tables/compressed_match_primitive.tex', 'w') as handle:
+        handle.write(r'\begin{center}\small' + '\n' +
+            table('Substring query & $h$ & Full table & Adaptive & A/A', '@{}lrrrr@{}', rows) +
+            r'\end{center}' + '\nMedian milliseconds including grammar construction. '
+            'A/A repeats the adaptive query; both positive and negative results are exact.\n')
+
+relator_power = load('../fast/results/relator_power_20261008.json')
+if relator_power:
+    from statistics import median
+    arms = ('baseline', 'control', 'full')
+    rows = ['Small 14, summed medians & ' + ' & '.join(
+        f"{1000*sum(r['median_seconds'][a] for r in relator_power['rows'] if r['name'] != 'gordian'):.3f}"
+        for a in arms) + r' \\']
+    gordian = next(r for r in relator_power['rows'] if r['name'] == 'gordian')
+    rows.append('Gordian, full query & ' + ' & '.join(
+        f"{1000*gordian['median_seconds'][a]:.3f}" for a in arms) + r' \\')
+    for row in relator_power['capacity']:
+        rows.append(f"Gordian group, cap {row['max_letters']} & " + ' & '.join(
+            f"{1000*median(s['measurements'][a]['seconds'] for s in row['samples']):.3f}"
+            for a in arms) + r' \\')
+    with open('tables/relator_power_queries.tex', 'w') as handle:
+        handle.write(r'\begin{center}\small' + '\n' +
+            table('Scope & Before & A/A & Both changes', '@{}lrrr@{}', rows) +
+            r'\end{center}' + '\nMedian milliseconds; all knot queries and group probes complete.\n')
+    rows = []
+    for row in relator_power['kernels']:
+        cells = [str(row['bits']) if row['family'] == 'quotient' else 'Allocation, 500']
+        for arm in ('baseline', 'control', 'quotient-prune', 'uniform', 'full'):
+            complete = all(s['measurements'][arm]['success'] for s in row['samples'])
+            cells.append(f"{1000*median(s['measurements'][arm]['seconds'] for s in row['samples']):.3f}"
+                         if complete else 'limit/stall')
+        full = row['samples'][0]['measurements']['full']
+        cells.extend(str(full[k]) for k in ('moves', 'nodes'))
+        rows.append(' & '.join(cells) + r' \\')
+    with open('tables/relator_power_kernels.tex', 'w') as handle:
+        handle.write(r'\begin{center}\footnotesize' + '\n' +
+            table('$h$ & Before & A/A & Quotient & Uniform & Both & Moves & Nodes',
+                  '@{}lrrrrrrr@{}', rows) + r'\end{center}' + '\n' +
+            'Median milliseconds including grammar construction; Quotient also includes pair pruning. '
+            'Moves and nodes describe both changes. Limits/stalls are incomplete searches.\n')

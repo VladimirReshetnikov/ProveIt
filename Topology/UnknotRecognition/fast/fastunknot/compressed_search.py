@@ -1,4 +1,4 @@
-"""Optional SLP elimination/Whitehead search with bounded explicit overlaps.
+"""Optional SLP search with explicit overlaps and compressed donor deletion.
 
 Only the wrapper reconstructs a knot presentation. Internal search success is
 not a knot verdict: group_decide independently rebuilds and checks the trace.
@@ -59,6 +59,19 @@ def _search(arena, roots, alive, moves, *, relator_moves=False, max_letters=2000
                     continue
             else:
                 arena.stats['overlap_skips'] = arena.stats.get('overlap_skips', 0)+1
+                # Keep ordinary shortening paths cheap. When they would stall,
+                # search for whole donors without expanding either relator.
+                if cut is None:
+                    cut = whitehead()
+                if cut[0] >= 0:
+                    from .compressed_overlap import whole_donor_move, apply_whole_donor
+                    arena.stats['compressed_overlap_attempts'] = arena.stats.get('compressed_overlap_attempts', 0)+1
+                    move = whole_donor_move(arena, roots)
+                    if move is not None:
+                        apply_whole_donor(arena, roots, move)
+                        arena.stats['compressed_overlap_moves'] = arena.stats.get('compressed_overlap_moves', 0)+1
+                        moves.append(move)
+                        continue
         if cut is None:
             cut = whitehead()
         change, a, subset = cut

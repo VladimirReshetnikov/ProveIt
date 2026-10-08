@@ -252,6 +252,8 @@ def group_certificate(diagram, *, check=lambda: None, max_letters=200000, max_wo
 
 
 def _certificate_version(moves):
+    if any(m['kind'] == 'relator_power' for m in moves):
+        return 4
     if any(m['kind'] == 'whitehead_power' for m in moves):
         return 3
     return 2 if any(m['kind'] == 'relator' for m in moves) else 1
@@ -282,7 +284,7 @@ def verify_group_certificate(diagram, certificate, *, check=lambda: None,
     budget.tick()
     if (type(certificate) is not dict or set(certificate) != {
             'version', 'method', 'status', 'input_pd', 'moves', 'remaining_generator'}
-            or type(certificate['version']) is not int or certificate['version'] not in (1, 2, 3)
+            or type(certificate['version']) is not int or certificate['version'] not in (1, 2, 3, 4)
             or certificate['method'] != 'wirtinger-cyclic-group'
             or certificate['status'] != 'UNKNOT'
             or certificate['input_pd'] != [list(row) for row in diagram.pd]
@@ -391,11 +393,16 @@ def verify_group_certificate(diagram, certificate, *, check=lambda: None,
             images = {g: value, -g: [-x for x in reversed(value)]}
             words[index] = []
             alive.remove(g)
-        elif kind == 'relator':
+        elif kind in ('relator', 'relator_power'):
             if certificate['version'] < 2:
                 return False
-            if set(move) != {'kind', 'target', 'donor', 'target_rotation',
-                             'donor_rotation', 'inverse', 'overlap'}:
+            fields = {'kind', 'target', 'donor', 'target_rotation', 'donor_rotation', 'inverse', 'overlap'}
+            if kind == 'relator_power':
+                fields.add('copies')
+                if (certificate['version'] < 4 or type(move.get('copies')) is not int
+                        or move['copies'] < 2):
+                    return False
+            if set(move) != fields:
                 return False
             target, donor = move['target'], move['donor']
             if (type(target) is not int or type(donor) is not int or target == donor
@@ -417,6 +424,16 @@ def verify_group_certificate(diagram, certificate, *, check=lambda: None,
             else:
                 right = [words[donor][(start+k) % size] for k in range(size)]
             budget.tick(len(left)+len(right))
+            if kind == 'relator_power':
+                copies = move['copies']
+                if overlap != size or copies > len(left)//size:
+                    return False
+                removed = copies*size
+                budget.tick(removed)
+                if any(left[k] != right[k % size] for k in range(removed)):
+                    return False
+                words[target] = normalize(left[removed:])
+                continue
             if any(left[k] != right[k] for k in range(overlap)):
                 return False
             budget.size(sum(map(len, words))+len(right)-2*overlap)
@@ -427,7 +444,7 @@ def verify_group_certificate(diagram, certificate, *, check=lambda: None,
             fields = {'kind', 'multiplier', 'subset'}
             if kind == 'whitehead_power':
                 fields.add('exponent')
-                if (certificate['version'] != 3 or type(move.get('exponent')) is not int
+                if (certificate['version'] < 3 or type(move.get('exponent')) is not int
                         or move['exponent'] < 2):
                     return False
                 repetitions = move['exponent']

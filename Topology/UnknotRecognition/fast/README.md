@@ -1,5 +1,32 @@
 # fastunknot 0.3.0: braid and structural certificates with optional shared backends
 
+Compressed whole-donor search now batches consecutive copies in a version-4
+`relator_power` certificate. Both literal and compressed verifiers independently
+check the entire removed prefix. Exact uniform-letter summaries make equality
+and prefix queries on pure powers constant work, and ineligible donor pairs are
+pruned before allocating inverses. On supplied pure-power presentations this
+turns repeated subtraction into Euclidean division; the general recognition
+bound remains unproved. The integrated suite has 672 passing tests with Regina,
+including a genuine Gordian trace accepted by both verifiers, forged macro
+rejection, and a compressed `2^500` replay without expansion.
+The proof and limits are in [`relator_powers.tex`](../synthesis/relator_powers.tex).
+Reproduce the component-controlled audit with
+`python -B benchmark_relator_power.py --output results/relator_power_local.json`.
+
+When compressed group search would stall above the explicit-letter cap,
+`--group-relators` now enables exact whole-donor deletion without expansion.
+A fully compressed substring matcher uses arithmetic-progression occurrence
+tables and a safe first-letter probe. It searches every cyclic target position
+for the donor's recorded spelling or inverse; arbitrary donor rotations and
+partial overlaps remain outside this fallback. Accepted moves use the existing
+independent relator certificate replay. Work and storage limits remain
+inconclusive, and no general subexponential bound is claimed.
+See [`compressed_matching.tex`](../synthesis/compressed_matching.tex) for the
+proof and boundaries. Reproduce the matched measurements with
+`python -B benchmark_compressed_match.py --output results/compressed_match_local.json`.
+The supplied exponential presentation family now completes in two moves;
+existing knot-corpus paths and timings remain essentially unchanged.
+
 Compressed group search now batches powers of a selected Whitehead automorphism
 when the move repeats or expanded length exceeds four times allocated grammar
 size. An exact weighted-median gap profile chooses the first minimizing power
@@ -26,7 +53,7 @@ the pipeline repeats the structural check before matrix filters. Cancelling
 pairs can expose homogeneity. Evidence under `seifert_after_reduction` describes
 the reduced diagram: replay `reidemeister_trace` with `fastunknot.simplify.replay`
 before passing that certificate to `verify_seifert_certificate`. An unchanged
-diagram is not checked twice. The integrated suite now has 658 passing tests
+diagram is not checked twice. The integrated suite now has 672 passing tests
 with the optional Regina dependency installed.
 
 `--group-adaptive` starts the optional group search with explicit words, then

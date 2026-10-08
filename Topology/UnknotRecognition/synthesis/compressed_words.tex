@@ -454,7 +454,9 @@ search work allowance. If the length exceeds the cap, it skips overlap
 matching and continues to the compressed Whitehead test. It does not
 report that no overlap exists. Consequently the new backend is a hybrid,
 and its search paths need not cover all paths available with a larger
-explicit overlap allowance.
+explicit overlap allowance. Section~\ref{sec:compressed-matching} adds a
+later exact whole-donor fallback when this initial policy would stall above
+the cap; the explicit suffix-automaton path remains unchanged.
 
 The CLI flag \code{--group-compressed-search} enables compressed discovery
 and compressed replay; Python callers combine

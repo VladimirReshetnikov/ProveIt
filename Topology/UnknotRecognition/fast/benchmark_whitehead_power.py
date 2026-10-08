@@ -19,12 +19,12 @@ from fastunknot.compressed_words import WordArena, CompressedLimit
 BASELINE = '6773a9b6e2ab50cdae07a627397054ce4a522b6d'
 
 
-def historical(name):
+def historical(name, revision=BASELINE):
     path = f'Topology/UnknotRecognition/fast/fastunknot/{name}.py'
-    source = subprocess.check_output(['git', 'show', f'{BASELINE}:{path}'], text=True)
+    source = subprocess.check_output(['git', 'show', f'{revision}:{path}'], text=True)
     module = ModuleType(f'fastunknot.recorded_{name}')
     module.__package__ = 'fastunknot'
-    exec(compile(source, f'{BASELINE}:{path}', 'exec'), module.__dict__)
+    exec(compile(source, f'{revision}:{path}', 'exec'), module.__dict__)
     return module
 
 

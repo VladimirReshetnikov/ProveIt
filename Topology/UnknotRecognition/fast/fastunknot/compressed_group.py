@@ -41,7 +41,7 @@ def verify_moves(words, alive, certificate, budget, max_nodes, stats):
                 fields, exponent = {'kind', 'multiplier', 'subset'}, 1
                 if kind == 'whitehead_power':
                     fields.add('exponent')
-                    if (certificate['version'] != 3 or type(move.get('exponent')) is not int
+                    if (certificate['version'] < 3 or type(move.get('exponent')) is not int
                             or move['exponent'] < 2):
                         return False
                     exponent = move['exponent']
@@ -66,9 +66,14 @@ def verify_moves(words, alive, certificate, budget, max_nodes, stats):
                     images[g] = value
                     images[-g] = arena.inverse(images[g])
                 roots = [arena.cyclic_reduce(x) for x in arena.substitute(roots, images)]
-            elif kind == 'relator':
-                if certificate['version'] < 2 or set(move) != {
-                        'kind', 'target', 'donor', 'target_rotation', 'donor_rotation', 'inverse', 'overlap'}:
+            elif kind in ('relator', 'relator_power'):
+                fields = {'kind', 'target', 'donor', 'target_rotation', 'donor_rotation', 'inverse', 'overlap'}
+                if kind == 'relator_power':
+                    fields.add('copies')
+                    if (certificate['version'] < 4 or type(move.get('copies')) is not int
+                            or move['copies'] < 2):
+                        return False
+                if certificate['version'] < 2 or set(move) != fields:
                     return False
                 target, donor = move['target'], move['donor']
                 if (type(target) is not int or type(donor) is not int or target == donor
@@ -86,6 +91,15 @@ def verify_moves(words, alive, certificate, budget, max_nodes, stats):
                 if move['inverse']:
                     right = arena.inverse(right)
                 right = arena.concat(arena.slice(right, start, rr), arena.slice(right, 0, start))
+                if kind == 'relator_power':
+                    copies = move['copies']
+                    if overlap != rr or copies > ll//rr:
+                        return False
+                    removed = copies*rr
+                    if not arena.equal(arena.slice(left, 0, removed), arena.power(right, copies)):
+                        return False
+                    roots[target] = arena.cyclic_reduce(arena.slice(left, removed, ll))
+                    continue
                 if not arena.equal(arena.slice(left, 0, overlap), arena.slice(right, 0, overlap)):
                     return False
                 roots[target] = arena.cyclic_reduce(arena.concat(
