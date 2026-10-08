@@ -1,5 +1,6 @@
-/- Modified for ProveIt: import Lean 4.32 compatibility declarations.
-Statements and proofs are unchanged from the pinned upstream source. -/
+/- Modified for ProveIt: import Lean 4.32 compatibility declarations and
+compare the full absolute-value expressions when changing coordinate singleton
+instances in the polynomial mass estimate. All upstream statements and bounds are unchanged. -/
 import OAI.Compat.Core
 import OAI.Combinatorics.Progressions.Estimates.LinearRestrictionDenominatorSize
 import OAI.Combinatorics.Progressions.Estimates.LinearRestrictionHeight
@@ -132,7 +133,7 @@ theorem linearCoordinatePolynomial_realMass_le
       rw [realPolynomialMass_X, mul_one]
       convert (hA i j).abs_real_le using 1
       congr 3
-      apply congrArg (fun coordinates : τ → ℚ => A coordinates i)
+      apply congrArg (fun coordinates : τ → ℚ => |((A coordinates i : ℚ) : ℝ)|)
       ext index
       simp [Pi.single_apply]
     _ = _ := by simp
