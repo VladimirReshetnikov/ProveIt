@@ -97,6 +97,16 @@ Caveats:
   hypothesis to polynomial graph counts, or prove a simultaneous multilinear
   recurrence whose exponent is polynomial in q, as Dirichlet's theorem gives
   for linear forms. Either is a research problem.
+- **Update (2026-10-08, J.3).** The second repair is supported by the
+  literature on simultaneous small fractional parts:
+  - for K polynomials of fixed degree, exponent c/K² (Schmidt) and c/K
+    (Maynard), and explicitly 1/(10.5·K·d(d−1)) (Lau);
+  - with K = O(2^k·q), the width exponent becomes 1/poly(q). With
+    q = exp(poly(1/θ)) that is exp(−poly(1/θ)), the same order as
+    Theorem 16.2's own c(θ'/r, γ, k)^r.
+  So Break B would be removed by a multilinear Lemma 16.1 built on those
+  bounds. Break A (Lemma 16.10's inner-loss uniformity) is independent and
+  unaffected. The bounds have not been formalized.
 
 ## C. The unit-parameter selected lift is θ-dependent (heuristic)
 
