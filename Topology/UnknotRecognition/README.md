@@ -86,7 +86,7 @@ PDFs in `docs/arXiv-2607.23350v1/`.
 
 ## Current integration (7 October 2026)
 
-The maintained Python suite now passes 245 tests. The latest work adds
+The maintained Python suite now passes 267 tests. The latest work adds
 twist-compressed homology with a quasi-polynomial bound for braid presentations
 having logarithmically many signed runs, plus optional adaptive cancellation
 (`--reduction adaptive`). The latter preserves sparse cancellation progress,
@@ -173,3 +173,13 @@ also slow down recognition, so it remains opt-in. See
 [`synthesis/windows.tex`](synthesis/windows.tex) for proofs, measured tradeoffs,
 and conditional quasi-polynomial query bounds. General quasi-polynomial unknot
 recognition remains an open implementation goal.
+
+Report 14's optional `barcode` and `fitting` backends now normalize whole
+square-zero interval components, with verified scalar changes of basis restricted
+to recovered quantum shifts by default. Exact mode preserves full homology;
+decision mode uses a proved length-two quotient and reports capped rank only.
+The theory gives a stronger conditional size bound independent of original
+component size, but the measured knot corpus shows overhead and no interval
+shortening. Both remain opt-in. The [updated theory](synthesis/continuations.tex)
+includes proofs, 267-test validation, independent continuation algebra checks,
+and paired measurements with negative results.
