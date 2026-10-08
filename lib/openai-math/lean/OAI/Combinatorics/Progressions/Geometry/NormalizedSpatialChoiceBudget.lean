@@ -1,3 +1,6 @@
+/- Modified for ProveIt: restrict the final arithmetic steps in
+normalizedSpatial_error_choices to their required hypotheses, avoiding a
+Lean 4.32 tactic heartbeat timeout. Theorem statements are unchanged. -/
 import OAI.Combinatorics.Progressions.Dynamics.VectorSiteBudget
 
 namespace OAI
@@ -92,13 +95,13 @@ theorem normalizedSpatial_error_choices (n : ℕ) {G C K V E threshold A B movem
     apply (div_le_iff₀ hden).mpr
     change normalizedSpatialShare E * V ≤ _
     dsimp only [share]
-    nlinarith [Real.exp_pos (-(E + 2))]
+    nlinarith only [show 0 ≤ normalizedSpatialShare E from hshare.le]
   have hb : boundary / rho / Z ≤ share := by
     apply (div_le_iff₀ hZpos).mpr
-    nlinarith
+    nlinarith only [hbhalf, mul_le_mul_of_nonneg_left hZ hshare.le]
   have hs : Esite * volume / Z ≤ share := by
     apply (div_le_iff₀ hZpos).mpr
-    nlinarith
+    nlinarith only [hsiteVolume, mul_le_mul_of_nonneg_left hZ hshare.le]
   have hthree : 3 * share ≤ Real.exp (-E) := by
     calc
       _ ≤ Real.exp 2 * share := mul_le_mul_of_nonneg_right
@@ -108,7 +111,7 @@ theorem normalizedSpatial_error_choices (n : ℕ) {G C K V E threshold A B movem
         rw [← Real.exp_add]
         congr 1
         ring
-  linarith
+  linarith only [hb, hs, hthree]
 
 end Erdos3
 
