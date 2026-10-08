@@ -49,13 +49,24 @@ reproduced by `../fast/benchmark_euler_setup.py`.
 `research_updates.tex` covers the later report 08–12 intake and reviewed
 integrations: complete short-strand braid recognition, interlacement factors,
 sparse Alexander elimination, and the corrected general-frontier matching bound.
-The current full production suite passes 209 tests. Local report 10–12 production
+The current full production suite passes 222 tests. Local report 10–12 production
 cross-checks are retained in `data/`. Report 12's exact component contraction
 is integrated as an opt-in API/CLI option. Report 11's twist backend is now
 integrated too; report 12's structured block cancellation remains under review. The braid benchmark includes PD construction and keeps the current
 Seifert shortcut enabled in its baseline. Reproduce it with
 `../fast/benchmark_braid.py`; raw data are in
 `../fast/results/braid_integration_20261007.json`.
+
+`radical.tex` reviews the incoming radical-transfer archive and proves the
+production survivor-profile and degree-gap shortcut. Its adaptive variant
+preserves completed sparse pivots and switches implementations after a Schur
+update allowance. A failed shortcut resumes the same complex. It remains an
+opt-in strategy: ordinary scans show little change, while dense synthetic
+two-term complexes improve substantially. The full 222-test log is
+`data/radical-integrated-tests.txt`; archive reruns and validation summaries
+are the other `data/radical-*` files. Reproduce paired standard/eager/adaptive
+timings with `../fast/benchmark_residue.py`. The table generator reads its
+recorded `../fast/results/residue_integration_20261007.json`.
 
 ## Historical experiment status (18 September 2026)
 

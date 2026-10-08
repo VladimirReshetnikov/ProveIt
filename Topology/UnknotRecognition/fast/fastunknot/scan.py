@@ -411,7 +411,8 @@ def khovanov_rank(pd: Iterable[Iterable[int]], *, order: list[int] | None = None
                   check_d_squared: bool = False, pivot: str = "minfill", algebra: str = "bits",
                   self_inverse: bool = True, tail: int = 0, shape_cache: bool | None = None,
                   race: int = 1, race_after: float = 1.0,
-                  composition: str = "standard", composition_max_variables: int = 18) -> dict[str, Any]:
+                  composition: str = "standard", composition_max_variables: int = 18,
+                  reduction: str = "standard") -> dict[str, Any]:
     """Total unreduced F2 Khovanov rank of a validated PD code by scanning.
 
     ``tail`` crossings at the end are added without cancellation and the closed
@@ -433,7 +434,21 @@ def khovanov_rank(pd: Iterable[Iterable[int]], *, order: list[int] | None = None
     component/output allocation limit is ``composition_max_variables``;
     MemoryError/ScanLimit propagate from this raw API. Counts are returned in
     ``composition_stats``. The standard engine remains the default.
+
+    ``reduction="residue"`` predicts minimal matching/degree multiplicities
+    using binary residue homology. When those survivors have no consecutive
+    degrees, or the boundary is closed, it constructs their zero differential
+    directly; otherwise it runs ordinary cancellation. This opt-in mode needs
+    minfill, bits, self_inverse=True, and race=1.
+
+    ``reduction="adaptive"`` starts ordinary cancellation and switches to
+    the residue shortcut only after its per-stage Schur update allowance is
+    exceeded. A declined shortcut resumes the partially reduced complex.
     """
+    if reduction not in ("standard", "residue", "adaptive"):
+        raise ValueError("reduction must be standard, residue, or adaptive")
+    if reduction != "standard" and (pivot != "minfill" or algebra != "bits" or not self_inverse or race != 1):
+        raise ValueError("residue reduction requires minfill, bits, self_inverse=True, and race=1")
     if composition not in ("standard", "component", "component-dense"):
         raise ValueError("composition must be standard, component, or component-dense")
     if type(composition_max_variables) is not int or composition_max_variables < 0:
@@ -454,7 +469,11 @@ def khovanov_rank(pd: Iterable[Iterable[int]], *, order: list[int] | None = None
         if shape_cache is None:
             # below 16 crossings there is too little to reuse to repay even this count
             shape_cache = len(order) >= 16 and 8 * repeated_stages(pd, order) >= len(order)
-        complex_ = FastScan(max_objects=max_objects, deadline=deadline, shape_cache=shape_cache)
+        scan_type = FastScan
+        if reduction != "standard":
+            from .residue import AdaptiveScan, ResidueScan
+            scan_type = AdaptiveScan if reduction == "adaptive" else ResidueScan
+        complex_ = scan_type(max_objects=max_objects, deadline=deadline, shape_cache=shape_cache)
     else:                         # ablation configurations
         complex_ = ScanComplex(max_objects=max_objects, deadline=deadline, pivot=pivot,
                                algebra=algebra, self_inverse=self_inverse)
@@ -498,6 +517,8 @@ def khovanov_rank(pd: Iterable[Iterable[int]], *, order: list[int] | None = None
     stats.update({k: v for k, v in complex_.algebra.stats.items()})
     result = {"rank": rank, "reduced_rank": rank // 2, "by_degree": by_degree, "stats": stats,
               "order": order, "pivot": pivot, "algebra": algebra, "tail": tail}
+    if reduction != "standard":
+        result["reduction"] = reduction
     if composition != "standard":
         result["composition"] = composition
         result["composition_stats"] = dict(complex_.algebra.kernel_stats)

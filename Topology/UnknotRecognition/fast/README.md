@@ -11,7 +11,27 @@ the pipeline repeats the structural check before matrix filters. Cancelling
 pairs can expose homogeneity. Evidence under `seifert_after_reduction` describes
 the reduced diagram: replay `reidemeister_trace` with `fastunknot.simplify.replay`
 before passing that certificate to `verify_seifert_certificate`. An unchanged
-diagram is not checked twice. The integrated suite now has 209 passing tests.
+diagram is not checked twice. The integrated suite now has 222 passing tests.
+
+The incoming radical-transfer report contributes exact binary prediction of
+the objects surviving cancellation. `--reduction adaptive` (Python:
+`reduction="adaptive"`) starts sparse cancellation and switches to that
+prediction after its per-stage Schur-update allowance is exceeded. If the
+survivors have no adjacent degrees, or the boundary is closed, their zero
+differential is constructed directly. Otherwise cancellation resumes from
+the saved partial complex. This works in both recognition and raw homology;
+it requires the standard backend, minfill, bits, and race=1. It is distinct
+from `--no-reduction`, which disables Reidemeister simplification.
+
+`--reduction residue` predicts eagerly and is retained for comparison;
+`--reduction standard` remains the default. The switch counters and ordinary
+work counters are recorded in scan evidence. Dense two-term test complexes
+benefit greatly, but eager prediction slows ordinary diagram scans, and no
+general recognition or complexity improvement is claimed. See
+[`../synthesis/radical.tex`](../synthesis/radical.tex) for the correctness proof,
+the adaptive policy, and the incoming report's stronger hypotheses.
+Run `python benchmark_residue.py --output results/residue_local.json` to
+compare standard, eager, and adaptive modes with paired controls.
 
 Report 08 adds complete recognition for checked source braids on at most three
 strands. `Diagram.from_braid` and braid JSON retain validated provenance, so the

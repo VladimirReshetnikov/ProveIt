@@ -170,4 +170,20 @@ if rust:
             rows.append(f"{esc(r['case'])} & {esc(' '.join(r['options'][:2]))} & {ms(r)} \\\\")
     open('tables/rust_ablation.tex', 'w').write(table("Input & option & ms", "@{}llr@{}", rows))
 
+residue = load('../fast/results/residue_integration_20261007.json')
+if residue:
+    rows = []
+    for r in residue['cases']:
+        rows.append(f"{esc(r['name'])} & {r['median_speedup']:.3f} & "
+                    f"{r['median_adaptive_speedup']:.3f} & {r['median_aa']:.3f}" + r" \\")
+    rows.append(r"\midrule")
+    for r in residue['kernels']:
+        rows.append(f"Synthetic, {2*r['size']+1} objects & {r['median_speedup']:.2f} & "
+                    f"{r['median_adaptive_speedup']:.2f} & {r['median_aa']:.3f}" + r" \\")
+    with open('tables/residue-integration.tex', 'w') as handle:
+        handle.write(r"\begin{center}" + "\n" +
+                     table("Input & Eager ratio & Adaptive ratio & A/A", "@{}lrrr@{}", rows) +
+                     r"\end{center}" + "\n" +
+                     "Ratios are median paired standard/new times; values above one are faster.\n")
+
 print('tables written:', sorted(os.listdir('tables')))

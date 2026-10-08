@@ -47,7 +47,8 @@ class FastScan:
         self.composed: dict = {}
         self.small: list = [[] for _ in range(CAP)]   # bucket queue of eliminate(), empty between calls
         self.stats = {"max_objects_before_elimination": 0, "max_objects_after_elimination": 0,
-                      "eliminations": 0, "max_boundary": 0, "compositions": 0, "entries": 0}
+                      "eliminations": 0, "max_boundary": 0, "compositions": 0, "entries": 0,
+                      "schur_update_pairs": 0}
 
     def _check(self) -> None:
         if self.hook is not None:
@@ -160,8 +161,16 @@ class FastScan:
         return result
 
     # ----- Gaussian elimination -------------------------------------------
-    def eliminate(self) -> None:
-        """Cancel unit entries between equal matchings, cheapest (Markowitz) first."""
+    def eliminate(self, *, update_budget: int | None = None) -> bool:
+        """Cancel units, returning False if a requested update budget interrupts.
+
+        Interruption occurs only between complete pivots. All live objects,
+        maps, counters, and composition caches remain usable; candidate queues
+        are emptied so another implementation can continue the same complex.
+        The budget counts candidate Schur update pairs, not wall-clock time.
+        """
+        if update_budget is not None and (type(update_budget) is not int or update_budget < 0):
+            raise ValueError("update_budget must be a nonnegative integer")
         mid, out, inc, composed = self.mid, self.out, self.inc, self.composed
         miss = self._compose
         # Bucket queue: most Markowitz costs are tiny, and most candidates die
@@ -183,7 +192,8 @@ class FastScan:
                             large.append((cost, a, b))
         heapify(large)
         lo = 0
-        eliminations = compositions = 0
+        eliminations = compositions = updates = 0
+        stopped = False
         deadline = self.deadline if self.hook is None else 0.0        # not None: look at the clock
         while True:
             while lo < CAP and not small[lo]:
@@ -209,6 +219,10 @@ class FastScan:
                 else:
                     heappush(large, (actual, b, c))
                 continue
+            if update_budget is not None and updates + actual > update_budget:
+                stopped = True
+                break
+            updates += actual
             eliminations += 1
             if deadline is not None and not eliminations & 255:
                 self._check()
@@ -272,6 +286,11 @@ class FastScan:
         self.live -= 2 * eliminations
         self.stats["eliminations"] += eliminations
         self.stats["compositions"] += compositions
+        self.stats["schur_update_pairs"] += updates
+        if stopped:
+            for bucket in small:
+                bucket.clear()
+        return not stopped
 
     # ----- closing ---------------------------------------------------------
     def linear_ranks(self) -> dict[int, int]:
