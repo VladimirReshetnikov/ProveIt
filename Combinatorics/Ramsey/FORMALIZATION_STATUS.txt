@@ -20,11 +20,13 @@ Scope
   checkpoints; the current catalogue count is stated here and in the ledger.
 
 New work after the last full audit
-  Proofs16PolynomialCubicPowerCover passes its production-source check
-  and transitive axiom check. It converts the improved rounded width into
-  m^b for any b below half the product of the line and cubic slice exponents,
-  above an explicit size threshold. Its uniform candidate budget is
-  9*R^4*q^2. The combined facade audit is queued behind the port build.
+  The polynomial common-base cover, structured graph piece, and relation
+  decomposition pass production-source checks and transitive axiom checks.
+  In dimension two the spectrum and slice inputs are constructed from the
+  existing base case. The new pieces preserve the earlier mass and family
+  count. Constants C and p remain existential and uniform in the density
+  parameters, modulus, and relation. The next full facade audit, also
+  including incoming good-partition and oscillation lemmas, is queued.
 
 Verification at this checkpoint
   The completed facade audit includes the simultaneous recurrence and
@@ -76,9 +78,16 @@ Verification at this checkpoint
   its candidate budget and a final good-set mass at least 1-rho. A slice
   provider remains a premise. Incoming deep-agreement monotonicity and
   regular-step lemmas are included; the deep structure itself is still
-  a hypothesis. These additions close no numbered catalogue statement.
-  All 1,391 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 5,718 public Gowers theorems and found only propext,
+  a hypothesis. Proofs16PolynomialCubicPowerCover and the direct line-exponent
+  comparison also pass the combined audit. Above an explicit threshold,
+  cubic slice controls yield pure-power cell widths and a uniform quartic
+  candidate budget. For fixed positive controls, the new all-scale line
+  exponent eventually strictly exceeds the old one as the spectrum count
+  grows, including the extra factor-two exponent loss. This compares local
+  line exponents, not final all-length Szemeredi thresholds. These additions
+  close no numbered catalogue statement.
+  All 1,393 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 5,726 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 114 exact
   companion proofs and 6 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -100,11 +109,11 @@ Verification at this checkpoint
   dimension-two, and quartic inverse thresholds, the low-dimensional
   Corollary 16.11 companions, the stackable-slice reductions, and the
   conditional dimension-three results, the
-  1,391-module Gowers audit checks 5,718 theorems and the same 114/6
+  1,393-module Gowers audit checks 5,726 theorems and the same 114/6
   catalogue split.
   GowersSzemeredi.PortImportAudit additionally
   compiles the facade and full affine-recovery module together as a
-  2,627-module closure and checks equality of the extracted propositions
+  2,629-module closure and checks equality of the extracted propositions
   with their originals. This does not certify the remaining density port.
 
 Conditional stackable structure and slice reduction
@@ -402,8 +411,8 @@ Conditional quantitative density bridge and dependency port
   manifest and can show a dependency path from the density target.
   The facade now imports the recurrence input and its needed dependencies;
   the quantitative density conclusion remains outside it and unverified.
-  The first 3,500 pinned manifest entries compile as a 3,516-module closure.
-  OAI.QuantitativePortAudit checks 53,607 public OAI theorems in this prefix
+  The first 3,600 pinned manifest entries compile as a 3,616-module closure.
+  OAI.QuantitativePortAudit checks 55,287 public OAI theorems in this prefix
   using only the three standard axioms, and checks the added compatibility
   lemmas. This partial dependency audit is separate from the Gowers audit
   above and does not certify Results.Conclusions.

@@ -50,7 +50,7 @@ polynomial targets once N is large.
 So the sampling lift cannot be repaired by special-casing small boxes. The
 lift itself must have controls polynomial in `1/θ′`.
 
-## B. A second, independent break: Lemma 16.1 is exponential in the graph count
+## B. The original Lemma 16.1 route loses exponentially in the graph count
 
 Lemma 16.1 (Corollary 5.11) refines a box so that q multilinear forms are
 simultaneously small. Its cell-width exponent is `K^(−2^(k+1)·q)`, with
@@ -990,13 +990,69 @@ on the input.**
      coordinates matches them. C is a coset progression rather than a Bohr
      set; for G = ℤ/N with N prime the two are interchangeable at
      quasi-polynomial cost.
+- **Deep agreement removes the θ-budget altogether (2026-10-08,
+  kernel-checked).** Let Γ be the graph of Φ over S = V(ρ/2). Call a cell
+  *good* if it misses S or lies inside V(ρ). On a good cell, one
+  multilinear map covers Γ:
+  - if the cell misses S, it carries no graph points;
+  - if the cell lies inside V(ρ), Φ is bi-affine there, hence multilinear
+    in the coordinates. This uses `multilinearOn_box_of_subset`, which works
+    for every cell length, width-one cells included; for a zero common
+    difference the box is a single point.
 
-So off-origin covers of V's graph reduce to two inputs: the peer's
-Lemma 16.1 (polynomial exponent), and Bohr-set regularity for the
-variety's frequencies, with radius losses polynomial in the rank. Both
-are standard. Composing them into `CubicStackableClass` members is
-bookkeeping-heavy but has no new mathematics left in it, apart from the
-pre-extension hypothesis.
+  So `multiplyLinearWith_of_good_partitions` (`Proofs16GoodPartition`)
+  proves `MultiplyLinearWith` with q = 1 and loss set H = P. No θ is spent,
+  and no regularity of V is used. The regular-step lemmas stay proved, but
+  this route no longer needs them.
+
+  A cell that meets V(ρ/2) and has pairwise oscillation at most ρN/2 in
+  every variety condition lies in V(ρ) (`subset_variety_of_small_oscillation`,
+  `Proofs16CellOscillation`). Hence `deep_structure_multiplyLinear`: if Φ is
+  a Freiman bihomomorphism on V(ρ), and `OscillationPartitionsExist Eb Γ Ψ L ρ`
+  holds, then Φ's graph over V(ρ/2) is multiply linear.
+  `OscillationPartitionsExist` asks for partitions of every proper box into
+  cells of width ≥ P.width^Eb(θ). Each cell must miss V(ρ/2) or oscillate by
+  at most ρN/2. All of this is kernel-checked, with axioms propext,
+  Classical.choice, Quot.sound.
+
+**Correction (2026-10-08) to the paragraph that stood here.** It said
+off-origin covers reduce to the peer's Lemma 16.1 plus Bohr regularity, and
+that the rest is "bookkeeping with no new mathematics". Both halves were
+too quick.
+- Regularity is not needed, by the previous item.
+- The remaining input, `OscillationPartitionsExist`, is **not** a direct
+  instance of the peer's Lemma 16.1. Its conditions L_k(y)·x are only
+  *Freiman*-bilinear, because L_k is Freiman-linear on B(Ψ;ρ), not linear
+  on ℤ/N. On a cell (x₀ + i·c) × (y₀ + j·c), the variation terms are
+  i·L_k(y₀)·c, j·Δ_k(c)·x₀ and ij·Δ_k(c)·c, where Δ_k(c) = L_k(c) − L_k(0).
+  The middle term is not multilinear in (x₀, y₀, c), because
+  Δ_k is Freiman-linear in c, not linear. Lemma 16.1 makes genuinely
+  multilinear forms small, so it does not apply as stated.
+- `Box` has one common difference c for both axes, so one step must
+  satisfy all conditions at once. The nested-Dirichlet construction of
+  `bilinearBohrVariety_contains_box_at` adapts to a single step
+  (c = t·e₁ with e₁ chosen over Ψ ∪ Γ ∪ {L_k(y₀)}). That gives one box per
+  deep point; it does not give a partition of an arbitrary box.
+
+So what remains on the variety route is exactly two things:
+1. A **partition** version of the deep-point box construction: Lemma 16.1
+   for Freiman-bilinear forms on a Bohr set. Through Milićević's equation
+   (9), Freiman-linear maps are coordinate-affine on a coset progression. In
+   those coordinates the forms are genuinely bilinear, so the peer's lemma
+   applies there. The remaining obstruction is transporting cells between
+   GAP coordinates and boxes of ℤ/N.
+2. ~~The translation from Φ's graph to φ's, by the shift (s, t).~~
+   **Done** (`Proofs16VarietyTranslate`, kernel-checked):
+   `deep_structure_multiplyLinear_phi` takes any part Γ_φ of φ's graph
+   whose points, shifted back by (s, t), are deep agreement points
+   (`varietyAgreement` at radius ρ/2). Given a Freiman bihomomorphism Φ on
+   V(ρ) and `OscillationPartitionsExist` for the unshifted variety, Γ_φ is
+   `MultiplyLinearWith` with one map per cell. It reuses the box and
+   partition translation API of `Proofs16Translations`.
+
+So, conditionally on `MilicevicDeepVarietyStructure`, the variety route's
+only open input is item 1. That is `OscillationPartitionsExist`: Lemma 16.1
+for Freiman-bilinear forms on a Bohr set.
 The bracket route above (steps 1–4) stays as a self-contained alternative
 for the one-variable core, with step 3 formalized. With quasi-polynomial
 t, a poly(1/t) exponent gives widths N^(exp(−polylog)), inside the
@@ -1414,13 +1470,18 @@ already proved here (`theorem_18_2_le_five`). Six-term progressions need
 the trilinear case, and no quasi-polynomial bound is known for it
 (Gowers–Milićević 2020: iterated exponential).
 
-Feeding a quasi-polynomial two-variable count into the lift does not
-help either. Lemma 16.1's width exponent is exponential in the graph count
-(Part B). Then log₂(1/β) ≈ exp(728^A) ≫ 2^32768 for every A ≥ 2.
+The original lift used in the gap calculation loses exponentially in
+the graph count (Part B). That calculation does not apply unchanged to
+the subsequently proved polynomial recurrence route. Its new all-scale
+line exponent eventually improves the old exponent, and the improvement
+now propagates through actual two-dimensional graph pieces and relation
+decomposition. The dimension constants remain existential, so this does
+not yet certify the printed six-term threshold.
 
-So **Corollary 18.7 at k = 6, like the all-k statements, needs a
-quasi-polynomial (or better) trilinear inverse input that the literature
-does not provide.**
+**Corollary 18.7 at k = 6 and the all-k statements remain open in this
+development.** The existing gap theorems rule out the encoded earlier
+parameter choices; they do not prove that every alternative route needs
+a particular external inverse theorem.
 
 ## F. Routes
 
@@ -1446,7 +1507,7 @@ does not provide.**
    unless their constants were migrated. It touches about 46 modules
    (about 18k lines of `Proofs16*`).
 3. **Theorem 1.3 independently.** Port the openai/math headline:
-   4,136-module closure, of which 128 are already vendored.
+   4,134-module scoped closure, including the 128 earlier modules.
 4. **Bohr-structured induction (H.4).** Carry Bohr-multilinearity rather
    than `Theorem162At` through the induction.
    - Steps (i) and (ii) are formalizable now. Step (ii) generalizes
@@ -1458,7 +1519,7 @@ does not provide.**
      dimension.
    - The dimension-two route alone cannot reach dimension three (H.3).
 5. **Theorems 18.2 and 18.7 from openai-math with explicit constants.**
-   *Proved arithmetic; the port is infeasible for now.*
+   *Proved arithmetic; explicit upstream constants remain unformalized.*
    - Theorem 18.2 assumes δ ≤ 1/2 and
      `N ≥ 2^(2^X)` with `X = δ^(−2^(2^(k+9)))`, so `log log N ≥ X·log 2 − 1`.
      The openai-math bound
@@ -1498,5 +1559,29 @@ slice exponent `a`, every `b < e*a/2` gives cell width at least `m^b` once
 `section16RoundedExponentThreshold z e a b <= m`. Its candidate budget is
 at most `9*R^4*q^2`, independently of the graph count chosen in the line
 cover. The full production source and transitive axiom check pass. The
-combined facade audit is queued behind the density-port build. The same
+combined facade audit passes. The same
 structural hypotheses remain; no catalogue statement closes.
+
+`Proofs16PolynomialLineExponentComparison` proves that, for fixed positive
+controls and dimension, the improved all-scale Lemma 16.9 exponent
+strictly exceeds `lemma9WidthWithExponent` for all sufficiently large
+spectrum counts. Apply the earlier geometric-versus-polynomial comparison
+with exponent constant `2*p` to absorb the additional factor-two loss.
+The production module and full facade axiom audit pass. This is a comparison
+of exponents; it does not assert superiority at every small box scale or
+improve the final all-length Szemeredi threshold.
+
+### Actual pieces from the polynomial recurrence
+
+`Proofs16PolynomialCommonBaseCover` supplies the geometric inputs from
+`Section16CommonBaseDataWith` and caps the cubic lift exponent to obtain
+`MultiplyLinearWith` on every proper box. `Proofs16PolynomialStructuredPiece`
+constructs both the spectrum cover and the slice provider in dimension two,
+then translates the selected graph into the original product-property graph.
+`Proofs16PolynomialRelationDecomposition` uses graph selection and greedy
+removal to cover a large base domain by a bounded family of these pieces.
+The previous piece mass and family count are retained. Constants `C,p` are
+independent of the density parameters, modulus, and relation, but remain
+existential. All three production modules and their transitive axiom checks
+pass; the full facade audit is queued. No new upstream module is imported,
+and no remaining all-dimension structure statement is claimed.
