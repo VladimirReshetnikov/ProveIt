@@ -80,3 +80,32 @@ def export_surface(surface):
     return [[int(str(surface.triangles(tetrahedron, vertex))) for vertex in range(4)] +
             [int(str(surface.quads(tetrahedron, quadrilateral))) for quadrilateral in range(3)]
             for tetrahedron in range(surface.triangulation().size())]
+
+
+def boundary_cap(raw, coordinates):
+    """Attach one tetrahedron along a boundary face and extend normal triangles.
+
+    The attached ball preserves the manifold and adds a boundary vertex.
+    Triangle stacks extend every old normal arc across the attached ball;
+    their new boundary arcs replace its former boundary arcs.
+    """
+    from copy import deepcopy
+    from fastunknot.normal_surface_geometry import _quad
+    faces = deepcopy(raw['tetrahedra'])
+    rows = deepcopy(coordinates)
+    t, f = next((t, f) for t, row in enumerate(faces)
+                for f, record in enumerate(row) if record is None)
+    permutation = [0] * 4
+    permutation[f] = 3
+    for image, vertex in enumerate(v for v in range(4) if v != f):
+        permutation[vertex] = image
+    index = len(faces)
+    faces[t][f] = dict(tetrahedron=index, permutation=permutation)
+    faces.append([None, None, None, dict(tetrahedron=t,
+        permutation=[permutation.index(v) for v in range(4)])])
+    extension = [0] * 7
+    for v in range(4):
+        if v != f:
+            extension[permutation[v]] = rows[t][v] + rows[t][4 + _quad(f, v)]
+    rows.append(extension)
+    return {'tetrahedra': faces}, rows
