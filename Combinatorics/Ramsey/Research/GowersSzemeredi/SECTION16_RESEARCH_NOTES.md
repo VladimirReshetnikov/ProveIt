@@ -952,6 +952,44 @@ on the input.**
   Prop as stated does not. Strengthening the hypothesis accordingly, or
   showing that agreement transfers to V(ρ_j) by averaging, is the
   remaining check on this route.
+- **Source check and resolution (2026-10-08).** I read arXiv:2601.01682:
+  Proposition 11.1 (pp. 73–74), Lemma 11.2 (p. 74), and the proof of
+  Theorem 1.4 (§13, pp. 92–93). The paper never relates the structured map
+  pointwise to φ before the very last step. Instead:
+  - Proposition 11.1 gives a Freiman-bilinear ψ on a variety V′ (radius
+    ρ′ ≥ Ω(ρ), base C′ ⊆ C dense). For **every** (x, y) ∈ V′, at least
+    c′|C|^29|G₂|^6 of the (4,3,3)-arrangements of lengths (x, y) have all
+    their arguments in V and satisfy ψ(x,y) = Σ_{i∈[36]} ν_i φ(a_i, b_i).
+  - Lemma 11.2 (gap filling) gives ψ = φ̃ on a (1 − ε^{1/8}(2/ρ)^{O(r+d)})
+    fraction of a shrunk domain (C/20000 × G₂) ∩ V_{ρ/20000}. Here φ̃ is an
+    intermediate map, not the original φ.
+  - §13 ends with an arrangement identity on C₁ × B₁ and says "the result
+    follows by averaging and Theorem 2.26". Pointwise agreement
+    Φ(x,y) = φ(x+s, y+t) is produced only there.
+
+  Because the arrangement identity holds at every point of the domain, the
+  final averaging can run over any sub-domain of comparable size, for
+  example V(ρ/2). The loss is |V(ρ)|/|V(ρ/2)| ≤ M^dim (`variety_card_lower`),
+  which the quasi-polynomial bound absorbs. **So the deep form is the right
+  hypothesis:** `MilicevicDeepVarietyStructure` (`Proofs16DeepAgreement`)
+  counts agreement points in V(ρ/2). Every regular-step radius
+  ρ_j = ρ(1 − j/(2m)), with j ≤ m, is at least ρ/2 (`regular_radius_ge_half`).
+  So `deep_regular_step` yields a step j with the ratio bound and the full
+  agreement mass in **both** V(ρ_j) and V(ρ_{j+1}). The deep form implies the
+  shallow one (`MilicevicDeepVarietyStructure.toShallow`). All of these are
+  kernel-checked, with axioms propext, Classical.choice, Quot.sound.
+
+  Two honest residues:
+  1. Theorem 2.26 linearizes the leftover arrangement terms on a coset
+     progression, which can shrink the domain once more. The paper states
+     its conclusion only after extension, on B₁ × B₂, so neither variety form
+     is a quoted theorem. Both remain hypotheses, and the deep one is no less
+     faithful than the shallow one.
+  2. The paper's varieties are transposed relative to ours: x lies in a coset
+     progression C, and the y-conditions B(Θ_i(x); ρ) depend on x. Swapping
+     coordinates matches them. C is a coset progression rather than a Bohr
+     set; for G = ℤ/N with N prime the two are interchangeable at
+     quasi-polynomial cost.
 
 So off-origin covers of V's graph reduce to two inputs: the peer's
 Lemma 16.1 (polynomial exponent), and Bohr-set regularity for the
