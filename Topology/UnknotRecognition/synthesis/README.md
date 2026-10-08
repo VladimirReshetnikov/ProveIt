@@ -49,7 +49,7 @@ reproduced by `../fast/benchmark_euler_setup.py`.
 `research_updates.tex` covers the later report 08–12 intake and reviewed
 integrations: complete short-strand braid recognition, interlacement factors,
 sparse Alexander elimination, and the corrected general-frontier matching bound.
-The current full production suite passes 277 tests. Local report 10–12 production
+The current full production suite passes 315 tests. Local report 10–12 production
 cross-checks are retained in `data/`. Report 12's exact component contraction
 is integrated as an opt-in API/CLI option. Report 11's twist backend is now
 integrated too; report 12's structured block cancellation remains under review. The braid benchmark includes PD construction and keeps the current
@@ -166,7 +166,17 @@ Its nice-order certificate and minimal-truncation domination proof transfer the
 primary paper's binomial object bounds to arbitrary exhaustive pivots. The
 section distinguishes this from the faster allocation-pruned strategy, includes
 the raw-depth padding obstruction, and accounts for bounded composition caches.
-`data/minimal-window-integrated-tests.txt` records 277 passing tests; independent
+`data/minimal-window-integrated-tests.txt` records 315 passing tests; independent
 archive tests and the 393-window audit have separate logs. Reproduce paired
 query measurements using `../fast/benchmark_minimal_windows.py --output FILE`;
 raw results are `../fast/results/minimal_windows_20261008.json`.
+
+`potts.tex` integrates report 17's exact quadratic Jones specializations,
+equality-pattern transfer and processed-component factoring. It proves the
+half-frontier and component-frontier bounds, explains the exact five-color
+collision family, and documents resource-safe optional API/CLI dispatch.
+The archive passed 172 tests and the production checkpoint passed 315.
+`data/potts-independent.json` records 4,464 independent cube comparisons per
+exact backend and 45 larger weaving checks. The paired benchmark in
+`../fast/results/potts_20261008.json` separates equal-specialization kernels
+from normal recognition and includes regressions; defaults remain unchanged.
