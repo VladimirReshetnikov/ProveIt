@@ -1,5 +1,6 @@
 /- Modified for ProveIt: import Lean 4.32 compatibility declarations.
-Statements and proofs are unchanged from the pinned upstream source. -/
+Use MvPolynomial.coeff_add for the correction coefficient identity.
+All upstream theorem statements are unchanged. -/
 import OAI.Compat.BigOperators
 import OAI.Combinatorics.Progressions.Estimates.FiniteEnumerationFilter
 import OAI.Combinatorics.Progressions.Linear.FiniteRankTriangularFinset
@@ -223,7 +224,7 @@ private theorem normalizedChartCorrectionSolutions_coefficients
   refine ⟨fun α => hbound α.val, fun α => hgrid α.val, ?_⟩
   intro β
   have heq := congrArg (fun polynomial : MvPolynomial (U ⊕ V) ℝ => polynomial.coeff β.val) hidentity
-  rw [AddMonoidAlgebra.coeff_add, Finsupp.add_apply, coeff_map,
+  rw [MvPolynomial.coeff_add, coeff_map,
     normalizedChartCoefficientMatrix_coeff_aeval H A S sr.1 hslow β] at heq
   exact heq
 
