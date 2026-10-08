@@ -104,7 +104,7 @@ def project(data, low, high, *, check=lambda: None):
 
 
 def recognize_forest(data, *, fallback_max_crossings=0, fallback_reserve=lambda size: None,
-                     **arena_options):
+                     use_fallback_reduction=True, **arena_options):
     check = arena_options.get('check', lambda: None)
     s = summarize(data, check=check)
     certificate = dict(version='compressed-singleton-forest-v1', input=deepcopy(data))
@@ -113,14 +113,21 @@ def recognize_forest(data, *, fallback_max_crossings=0, fallback_reserve=lambda 
         return dict(status='LINK', certificate=certificate)
     cuts = sorted(i for i, count in s['counts'].items() if count == 1)
     boundaries = [0] + cuts + [data['strands']]
-    leaves = []
-    for lo, hi in zip(boundaries, boundaries[1:]):
+    prepared = []
+    for index, (lo, hi) in enumerate(zip(boundaries, boundaries[1:])):
         check()
         leaf = project(data, lo + 1, hi, check=check)
-        m = leaf['strands']
         ls = summarize(leaf, check=check)
         if not ls['knot']:
             raise RuntimeError('singleton split of a knot produced a link')
+        m = leaf['strands']
+        priority = 0 if m <= 2 or abs(ls['exponent']) > m-1 else 1 if m == 3 else 2
+        prepared.append((priority, len(leaf['rules']), index, lo, hi, leaf, ls))
+    leaves, order = [None] * len(prepared), []
+    for _, _, index, lo, hi, leaf, ls in sorted(prepared):
+        check()
+        order.append(index)
+        m = leaf['strands']
         if m <= 2:
             status = 'UNKNOT' if m == 1 or abs(ls['exponent']) == 1 else 'KNOTTED'
             child = dict(version='at-most-two-v1', exponent_hex=hex(ls['exponent']), status=status)
@@ -131,20 +138,34 @@ def recognize_forest(data, *, fallback_max_crossings=0, fallback_reserve=lambda 
             status = 'KNOTTED'
             child = dict(version='bennequin-v1', exponent_hex=hex(ls['exponent']), status=status)
         elif ls['length'] <= fallback_max_crossings:
-            from .cube import produce
-            child = produce(leaf, ls, max_crossings=fallback_max_crossings,
-                            check=check, reserve=fallback_reserve)
+            if use_fallback_reduction:
+                from .exceptional import produce
+                child = produce(leaf, ls, max_crossings=fallback_max_crossings,
+                                reserve=fallback_reserve, **arena_options)
+            else:
+                from .cube import produce
+                child = produce(leaf, ls, max_crossings=fallback_max_crossings,
+                                check=check, reserve=fallback_reserve)
             status = child['status']
-            certificate['version'] = 'compressed-singleton-forest-v2'
+            if child['version'] == 'exceptional-reduction-v1':
+                certificate['version'] = 'compressed-singleton-forest-v3'
+            elif certificate['version'] != 'compressed-singleton-forest-v3':
+                certificate['version'] = 'compressed-singleton-forest-v2'
         else:
             status, child = 'INCONCLUSIVE', None
-        leaves.append(dict(low=lo + 1, high=hi, grammar=leaf, status=status,
-                           certificate=child, length_hex=hex(ls['length'])))
-    statuses = [leaf['status'] for leaf in leaves]
-    status = ('KNOTTED' if 'KNOTTED' in statuses else
-              'UNKNOT' if all(x == 'UNKNOT' for x in statuses) else 'INCONCLUSIVE')
+        item = dict(low=lo + 1, high=hi, grammar=leaf, status=status,
+                    certificate=child, length_hex=hex(ls['length']))
+        if status == 'KNOTTED':
+            # One nontrivial summand proves the whole knot nontrivial. Discard
+            # earlier trivial or unsupported factors; their proofs are not needed.
+            certificate.update(version='compressed-singleton-forest-v3',
+                               phase='knotted-factor', status='KNOTTED', cuts=cuts,
+                               factor_index=index, leaves=[item])
+            return dict(status='KNOTTED', certificate=certificate, factor_order=order)
+        leaves[index] = item
+    status = 'UNKNOT' if all(leaf['status'] == 'UNKNOT' for leaf in leaves) else 'INCONCLUSIVE'
     certificate.update(phase='split', status=status, cuts=cuts, leaves=leaves)
-    return dict(status=status, certificate=certificate)
+    return dict(status=status, certificate=certificate, factor_order=order)
 
 
 def verify_forest(data, certificate, *, fallback_max_crossings=0,
@@ -152,7 +173,8 @@ def verify_forest(data, certificate, *, fallback_max_crossings=0,
     check = arena_options.get('check', lambda: None)
     c, s = certificate, summarize(data, check=check)
     require(isinstance(c, dict) and c.get('version') in
-            ('compressed-singleton-forest-v1', 'compressed-singleton-forest-v2'), 'wrong version')
+            ('compressed-singleton-forest-v1', 'compressed-singleton-forest-v2',
+             'compressed-singleton-forest-v3'), 'wrong version')
     require(json.dumps(c.get('input'), sort_keys=True, separators=(',', ':')) ==
             json.dumps(data, sort_keys=True, separators=(',', ':')), 'wrong source grammar')
     if c.get('phase') == 'components':
@@ -160,15 +182,22 @@ def verify_forest(data, certificate, *, fallback_max_crossings=0,
         require(json.dumps([c.get('gap'), c.get('permutation')]) ==
                 json.dumps([s['gap'], s['permutation']]), 'wrong component witness')
         return 'LINK'
-    require(c.get('phase') == 'split' and s['knot'], 'invalid split phase')
+    selected = c.get('phase') == 'knotted-factor'
+    require(s['knot'] and (c.get('phase') == 'split' or
+            selected and c['version'] == 'compressed-singleton-forest-v3'), 'invalid split phase')
     cuts = sorted(i for i, count in s['counts'].items() if count == 1)
     require(isinstance(c.get('cuts'), list) and all(type(v) is int for v in c['cuts'])
             and c['cuts'] == cuts, 'inexact singleton cuts')
     boundaries = [0] + cuts + [data['strands']]
+    intervals = list(zip(boundaries, boundaries[1:]))
+    if selected:
+        index = c.get('factor_index')
+        require(type(index) is int and 0 <= index < len(intervals), 'invalid selected factor')
+        intervals = [intervals[index]]
     leaves = c.get('leaves')
-    require(isinstance(leaves, list) and len(leaves) == len(boundaries) - 1, 'wrong leaf count')
+    require(isinstance(leaves, list) and len(leaves) == len(intervals), 'wrong leaf count')
     statuses = []
-    for item, (lo, hi) in zip(leaves, zip(boundaries, boundaries[1:])):
+    for item, (lo, hi) in zip(leaves, intervals):
         check()
         require(isinstance(item, dict), 'invalid leaf record')
         require(type(item.get('low')) is int and type(item.get('high')) is int
@@ -190,15 +219,26 @@ def verify_forest(data, certificate, *, fallback_max_crossings=0,
             status = 'KNOTTED'
             require(child == dict(version='bennequin-v1', exponent_hex=hex(ls['exponent']), status=status),
                     'invalid Bennequin certificate')
-        elif child is not None and c['version'] == 'compressed-singleton-forest-v2':
-            from .cube_verify import verify
-            status = verify(leaf, ls, child, max_crossings=fallback_max_crossings,
-                            check=check, reserve=fallback_reserve)
+        elif child is not None and c['version'] in ('compressed-singleton-forest-v2',
+                                                   'compressed-singleton-forest-v3'):
+            if isinstance(child, dict) and child.get('version') == 'exceptional-reduction-v1':
+                require(c['version'] == 'compressed-singleton-forest-v3', 'reduction requires v3')
+                from .exceptional import verify
+                status = verify(leaf, ls, child, max_crossings=fallback_max_crossings,
+                                reserve=fallback_reserve, **arena_options)
+            else:
+                from .cube_verify import verify
+                status = verify(leaf, ls, child, max_crossings=fallback_max_crossings,
+                                check=check, reserve=fallback_reserve)
         else:
             status = 'INCONCLUSIVE'
             require(child is None, 'unsupported leaf assertion')
         require(item.get('status') == status, 'wrong leaf verdict')
         statuses.append(status)
+    if selected:
+        require(statuses == ['KNOTTED'] and c.get('status') == 'KNOTTED',
+                'selected factor must prove nontriviality')
+        return 'KNOTTED'
     status = ('KNOTTED' if 'KNOTTED' in statuses else
               'UNKNOT' if all(x == 'UNKNOT' for x in statuses) else 'INCONCLUSIVE')
     require(c.get('status') == status, 'incorrect connected-sum verdict')

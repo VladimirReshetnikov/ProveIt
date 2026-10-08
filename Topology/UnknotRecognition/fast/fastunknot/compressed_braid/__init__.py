@@ -110,7 +110,8 @@ def _replay(data, certificate, options, fallback_options):
     version = certificate.get('version')
     if version == 'compressed-three-braid-v1':
         return _verify_three(data, certificate, **options)
-    if version in ('compressed-singleton-forest-v1', 'compressed-singleton-forest-v2'):
+    if version in ('compressed-singleton-forest-v1', 'compressed-singleton-forest-v2',
+                   'compressed-singleton-forest-v3'):
         return _verify_forest(data, certificate, **options, **fallback_options)
     raise InvalidCertificate('unknown compressed-braid certificate version')
 
@@ -119,7 +120,7 @@ def recognize(data, *, max_nodes=100000, max_work=10000000, max_input_rules=1000
               max_input_bytes=16000000, max_certificate_bytes=64000000,
               seconds=None, check=lambda: None, equality_probe_steps=64,
               prefix_probe_steps=64, fallback_max_crossings=12,
-              fallback_max_generators=200000):
+              fallback_max_generators=200000, use_fallback_reduction=True):
     """Produce and independently replay a compressed braid-closure certificate.
 
     The work and allocated-node ceilings are shared across producer and verifier
@@ -129,6 +130,8 @@ def recognize(data, *, max_nodes=100000, max_work=10000000, max_input_rules=1000
     Invalid input and implementation errors propagate. Only known resource limits
     yield INCONCLUSIVE, with no partial certificate. External cancellation propagates.
     """
+    if type(use_fallback_reduction) is not bool:
+        raise ValueError('use_fallback_reduction must be Boolean')
     for label, value in (('max_input_rules', max_input_rules), ('max_input_bytes', max_input_bytes),
                          ('max_certificate_bytes', max_certificate_bytes),
                          ('equality_probe_steps', equality_probe_steps), ('prefix_probe_steps', prefix_probe_steps),
@@ -143,7 +146,8 @@ def recognize(data, *, max_nodes=100000, max_work=10000000, max_input_rules=1000
     try:
         _source(data, max_input_rules, max_input_bytes, budget)
         result = (_produce_three(data, **options) if data.get('strands') == 3 else
-                  _produce_forest(data, **options, **fallback_options))
+                  _produce_forest(data, **options, **fallback_options,
+                                  use_fallback_reduction=use_fallback_reduction))
         certificate = result['certificate']
         size = _encoded_size(certificate, max_certificate_bytes, budget)
         verdict = _replay(data, certificate, options, fallback_options)
