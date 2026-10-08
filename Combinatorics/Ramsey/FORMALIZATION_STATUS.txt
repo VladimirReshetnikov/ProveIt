@@ -20,8 +20,8 @@ Scope
   checkpoints; the current catalogue count is stated here and in the ledger.
 
 Verification at this checkpoint
-  All 805 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 5,144 public Gowers theorems and found only propext,
+  All 807 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 5,170 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 114 exact
   companion proofs and 6 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -266,6 +266,19 @@ Exact two-dimensional structural theorem
   This is an unconditional dimension-two result, not the general theorem.
   The catalogue still has 114 companions and six open statements. The
   higher-dimensional simultaneous slice-cover problem remains unresolved.
+
+Quartic inverse and six-term density iteration
+  Proofs18QuarticIteration applies theorem_16_2_at_two to the joint inverse
+  induction, proving quartic_function_discrepancy_bound unconditionally.
+  Its parameter and exponent are jointStructuralInverseParameter 2 alpha
+  and jointStructuralInverseExponent 2 alpha. The remaining threshold T
+  depends only on alpha and is existential.
+  natural_six_term_via_quartic_inverse feeds this bound into the closed
+  interval density iteration: sufficiently large dense subsets of [1,N]
+  contain a six-term arithmetic progression, with no structural premise.
+  This route does not yet give an explicit six-term numerical improvement.
+  The new consequences and the incoming Proofs16WithUnion pass the full
+  combined axiom audit; the catalogue remains 114/6.
 
 Conditional quantitative density bridge and dependency port
   Proofs01QuantitativeDensityBridge proves the exact Theorem 1.3 from
