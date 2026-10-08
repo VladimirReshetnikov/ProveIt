@@ -1,5 +1,25 @@
 # fastunknot 0.3.0: braid and structural certificates with optional shared backends
 
+Orbit queries can now return independent local proofs with
+`count_orbits(..., record_certificate=True)`. Replay with
+`fastunknot.interval_orbit_verify.verify_orbit_certificate(size, pairs, proof)`.
+Version one preserves classical merging; version two permits the exact
+Fine–Wilf threshold. Use `integer_codec.json_safe` for huge binary integers.
+Incomplete queries return no count or certificate.
+
+`fastunknot.interval_incidence.analyze_port_incidence` counts components meeting
+each subset of supplied half-open marked intervals. It shares repeated unions
+and stores each orbit proof once. All orbit queries share one `max_cycles`
+allowance; the explicit default cap of 12 ports controls the dense `2**r`
+histogram. Its independent verifier checks source binding, every distinct orbit
+proof and forward subset sums. These signatures record set incidence, without
+cyclic order, slopes or attaching maps. All 831 maintained tests pass with Regina.
+Theory and measured gains/regressions are in
+[`orbit_certificates.tex`](../synthesis/orbit_certificates.tex). Reproduce with
+`python -B benchmark_orbit_certificates.py --output FILE`,
+`python -B normal_orbit_research/benchmark_trace_cost.py --output FILE`, and
+`python -B normal_orbit_research/audit_certificates.py --output FILE`.
+
 `fastunknot.interval_orbits.count_orbits` now counts equivalence classes of
 binary-encoded interval pairings without expanding their points. The default
 uses the sharp Fine–Wilf periodic merger; `periodic_rule='aht'` retains the

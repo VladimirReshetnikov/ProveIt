@@ -601,6 +601,42 @@ Theorem 1.4, is not absorbed. Two things therefore remain open:
 - the bridge from bihomomorphisms on dense pieces to
   `CubicStackableClass` members.
 
+### J.2 Input (S) stated; the readout (R) is not elementary (2026-10-08)
+
+`Proofs16MilicevicStructure` states Milićević's Theorem 1.4
+(arXiv:2601.01682), read from the paper, as `MilicevicBihomStructure D`
+over `ZMod N`. Every bound is replaced by (2 + 2 log c⁻¹)^D. Since the base
+is at least 2, the printed theorem, with its unspecified O(1), implies
+`∃ D, MilicevicBihomStructure D`. That existence is not asserted.
+`MilicevicBihomStructure.mono` records that only existence matters.
+
+**The plan above treated (R) as elementary. It is not.**
+- Theorem 1.4 outputs an **E-bihomomorphism** Φ on B₁ × B₂ with E of rank
+  r = quasi-poly. In each variable, Φ respects additive quadruples only up
+  to errors in E.
+- Along a progression a + jd inside B₁, the second differences of Φ lie in
+  E, not at 0. So Φ(a + jd) = Φ(a) + jΔ + Σᵢ nᵢ(j)·aᵢ, where a₁..a_r generate
+  E and the integers nᵢ(j) are not controlled.
+- Few linear functions cannot cover such a sequence.
+- `CubicStackableClass` (Part J) needs covers by genuinely multilinear
+  graphs on subboxes. So an E-bihomomorphism is not a stackable-class member
+  as it stands.
+- For cyclic groups Milićević's own description of the obstructions is
+  *generalized* (bracket) trilinear polynomials (his Theorem C.3), not
+  multilinear ones.
+
+**What (R) needs.** A local linearization of E-bihomomorphisms. The
+generators aᵢ of E carry Bohr-type structure: they arise as almost-periods.
+Restricting to sub-Bohr sets on which the nᵢ(j) are forced to be affine in
+j may give genuinely bilinear pieces of width N^(1/quasi-poly). That is a
+statement about the joint geometry of E and B₁, B₂. It is not in the paper
+as a black box. It is the next research step on this route; it is not a
+formalization step.
+
+**Is the detour worth it?** It feeds only Theorem 16.2 in dimension three
+(Part J). By Part K it does not touch 18.2 or 18.7. Those need a trilinear
+input that is polynomially or quasi-polynomially bounded, and none exists.
+
 ## K. Where every route to Theorems 18.2 and 18.7 meets (2026-10-08)
 
 The user's goal changed on 2026-10-08: proofs of the final results, by any

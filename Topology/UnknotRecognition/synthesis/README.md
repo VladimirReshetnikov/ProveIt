@@ -2,6 +2,16 @@
 
 The synthesized report on the six archives and on the new recognizer.
 
+`orbit_certificates.tex` adds independent local replay for both classical and
+sharp AHT traces, and exact component-incidence histograms with shared marked
+unions and one total cycle budget. All 831 maintained tests pass with Regina;
+1,000 systems also cross-replay against the unchanged report-47 implementation.
+Controlled native marked queries improve by factors of about 33 and 62 when
+marks coincide; disjoint marks gain little and can pay extra cache overhead.
+The dense histogram still has `2**r` entries and omits attachment order and
+maps. Raw component timings, a batched trace-cost follow-up and reproduction
+commands are linked from `../fast/README.md`. No whole-knot speedup is asserted.
+
 `interval_orbits.tex` integrates binary AHT orbit counting with the exact
 Fine–Wilf periodic merger and native aggregate topology of supplied normal
 surfaces. It explains the orientation double, boundary essentiality test,
