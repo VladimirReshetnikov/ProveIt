@@ -53,6 +53,7 @@ import GowersSzemeredi.Proofs16PolynomialRetiledLinearity
 import GowersSzemeredi.Proofs16PolynomialProductAssembly
 import GowersSzemeredi.Proofs16PolynomialUniformWidth
 import GowersSzemeredi.Proofs16PolynomialLemma6
+import GowersSzemeredi.Proofs16PolynomialLemma9
 import GowersSzemeredi.Proofs16Lemma5
 import GowersSzemeredi.Proofs16InducedSelection
 import GowersSzemeredi.Proofs16ShortProduct
