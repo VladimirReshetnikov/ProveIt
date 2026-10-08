@@ -1,9 +1,10 @@
 """Exact straight-line-program words and compressed free-group reduction.
 
-Equality uses split/periodicity-compaction assertions (Plandowski, as exposed
-in Schleimer, arXiv:math/0608563, Section 8). No hashes or expanded-string
-comparisons decide equality. Slicing and boundary cancellation implement the
-compressed free-group reduction of the same paper. Resource caps interrupt;
+Equality uses a bounded exact DAG walk and indexed split/periodicity-compaction
+assertions (Plandowski, as exposed in Schleimer, arXiv:math/0608563, Section 8).
+No fingerprints or expanded-word allocations decide equality. Slicing and
+boundary cancellation implement the compressed free-group reduction of the
+same paper. Resource caps interrupt;
 they never substitute a probabilistic or incomplete equality answer.
 """
 from collections import defaultdict

@@ -111,6 +111,77 @@ words and on a same-length interior mutation with identical endpoints.
 The latter exercises rejection through the actual equality procedure,
 rather than through an endpoint or length shortcut.
 
+\subsection{Indexed assertions and a bounded adaptive equality probe}
+\label{sec:indexed-equality}
+
+The initial checker rebuilt the entire assertion set after every split,
+including comparisons that did not mention the chosen symbol. Profiling
+compressed discovery identified these repeated scans as a major practical
+cost. The revised implementation retains the same logical assertions and
+split rule, but stores four associated structures: the assertion set;
+incidence sets indexed by each mentioned tagged symbol; overlap offsets
+indexed by ordered symbol pair; and a priority queue of nonterminals by
+decreasing expanded length. This adds only a constant number of stored
+references per assertion, plus $O(N)$ symbol-queue metadata.
+
+After choosing a symbol, remove its incident assertions and insert their
+split consequences. All other assertions remain untouched. A selected
+symbol cannot return: subsequent splits introduce only strictly shorter
+children, and periodicity compaction introduces no symbols. Each tagged
+nonterminal therefore needs at most one queue entry. A stale entry whose
+assertions have already been discharged can be skipped. Every remaining
+assertion mentions a nonterminal, since comparisons between terminals are
+checked immediately, so the queue cannot run out before the conjunction
+has been resolved.
+
+Only overlap buckets that receive an insertion need another compaction
+pass. Deleting offsets cannot create a triple satisfying the compaction
+inequality: any such triple would already have been present. Buckets
+untouched since their last compaction are therefore still fully compact.
+The incidence and overlap indices are updated on both insertion and
+removal. Thus the implementation preserves exactly the same conjunction
+and the same polynomial assertion-count argument as before; it avoids
+repeated work on unrelated comparisons. The maximum-length queue adds a
+logarithmic scheduling cost per entry. The cooperative work counter is an
+implementation allowance, not a count of machine instructions or integer
+bit operations.
+
+Before allocating these structures, the current checker tries a direct
+synchronized walk of the two grammar derivations for at most $B=64$
+steps. Each side is a stack of unconsumed chunks. If the leading chunks
+are the same interned node, remove both, skipping their entire represented
+word. If their first letters differ, reject. Otherwise split the longer
+leading chunk into its two children. A terminal cannot require splitting:
+two terminals with the same letter have the same interned node.
+
+The invariant is that equal-length prefixes have been consumed on both
+sides, with every consumed pair proved identical. Hence a differing next
+letter is an exact mismatch. If one stack empties, equal original lengths
+and positive chunk lengths force the other to empty too, proving equality.
+If the step cap is reached, the walk returns no answer and invokes the
+indexed polynomial checker on the original roots. It neither guesses nor
+treats the compared prefix as a certificate for the unvisited suffix.
+No expanded word list is allocated.
+
+This is an introspective choice of implementation: inexpensive direct
+progress is attempted first, with a bounded cost before switching to the
+algorithm with the proven polynomial bound. For default fixed $B$, an
+unresolved probe adds $O(B)$ abstract work to the fallback. It cannot turn
+the compressed equality procedure into a scan of an exponentially long
+expanded word. The low-level option \code{equality\_probe\_steps=0}
+disables this probe for comparison and testing; a custom nonnegative cap
+is charged to the same work allowance. This is adaptivity inside equality,
+not a new worst-case theorem for the surrounding group search.
+
+Two hundred additional random pairs of differently parsed words exercise
+the indexed engine with the probe disabled, including interior mutations
+that preserve both endpoints. Separate tests force compaction, verify both
+truth values after a full 64-step probe on words longer than $2^{100}$,
+and interrupt a comparison by work exhaustion and caller cancellation.
+Repeating an interrupted comparison succeeds: no partial answer is placed
+in the equality cache. The finite tests supplement the invariants above;
+they do not replace them.
+
 \subsection{Free reduction from exact longest-prefix queries}
 
 Binary search on the prefix length, using SLP substring construction and
@@ -419,3 +490,99 @@ checkpoint. The upstream \code{openai/math} head remains
 update manuscripts and Lean formalizations and provide no new
 unknot-specific bound for this integration. No general sub-exponential or
 quasi-polynomial recognition theorem is claimed.
+
+\subsection{Controlled measurements of indexed and adaptive equality}
+
+The follow-up audit loads the previous word kernel directly from the
+recorded repository commit
+\code{e4f471c971359b74d30d5f85284850d462a74dfd}, without changing the
+checkout. It patches only the arena constructors used by compressed search
+and compressed replay. This permits five interleaved arms on the same
+fifteen input diagrams: previous kernel, identical previous-kernel control,
+indexed assertions with the probe disabled, indexed assertions with the
+64-step probe, and the established explicit search/replay. Each arm includes
+fresh PD validation and the complete recognition query. Five measured
+rounds follow one excluded warm-up, giving 375 measured queries. The local
+group allowance is fifteen seconds, the global allowance eighteen seconds,
+and search and replay each receive twenty million abstract work units.
+The reported repeat ran without concurrent local tests.
+
+All 375 queries finish with UNKNOT and group evidence. The fourteen small
+cases and Gordian give the following results:
+\begin{center}
+\begin{tabular}{lrr}
+\toprule
+Equality/search arm & Small cases (ms) & Gordian (s)\\
+\midrule
+Previous compressed kernel & 265.32 & 6.764\\
+Previous-kernel control & 266.16 & 6.760\\
+Indexed assertions & 265.05 & 2.514\\
+Indexed plus bounded probe & 248.40 & 2.403\\
+Explicit search and replay & 51.46 & 1.241\\
+\bottomrule
+\end{tabular}
+\end{center}
+The adaptive compressed arm improves Gordian by about $2.81\times$
+relative to the previous compressed kernel. The bounded probe additionally
+reduces the small-case aggregate by about $6.3\%$ relative to that baseline.
+The explicit backend remains faster on this corpus and stays the default;
+these improvements do not justify automatically moving small presentations
+to compressed search.
+
+Gordian's previous producer charges 8,804,494 abstract work units. Indexing
+reduces this to 2,200,397 while preserving its 31,088 split rounds; the
+bounded probe lowers the counts to 2,165,522 and 25,130 respectively.
+The latter resolves 394 uncached comparisons directly and falls back on
+203, after 22,060 total probe steps. All variants allocate 11,529 grammar
+nodes and perform one explicit overlap expansion. These figures explain
+the reduction in repeated assertion processing; work units remain specific
+to the implementation and are not used as portable CPU timing predictions.
+
+The separate noncanonical periodic kernel builds
+$(ab)^{2^k}a$ and $a(ba)^{2^k}$, checks equality, and freely cancels their
+quotient. Five measurements after warm-up give the following median seconds:
+\begin{center}
+\begin{tabular}{rrrrr}
+\toprule
+$k$ & previous & control & indexed & adaptive\\
+\midrule
+8 & 0.005065 & 0.005044 & 0.005205 & 0.005497\\
+32 & 0.071208 & 0.072552 & 0.068555 & 0.070064\\
+100 & 0.656635 & 0.675381 & 0.650547 & 0.650003\\
+\bottomrule
+\end{tabular}
+\end{center}
+These examples have only six peak assertions, so indexing brings little
+timing benefit. Every probe here exhausts its 64 steps and falls back;
+at $k=8$ the adaptive version is slower. Thus the experiment does not
+support a uniform speedup for all compressed words. It supports removing
+unrelated-assertion scans when a comparison has a substantial live set,
+and bounding the cost of an unsuccessful direct walk.
+
+The reproducible script is \path{fast/benchmark_indexed_equality.py}; raw
+samples, execution orders, caps, version identifiers and per-query statistics
+are in \path{fast/results/indexed_equality_20261008.json}.
+All 645 integrated tests pass with the optional Regina dependency installed
+in 123.169 seconds; \path{data/indexed-equality-integrated-tests.txt}
+preserves the output.
+All finite examples continue to rely on the same exact mathematical
+decision criteria. Neither faster word equality nor the adaptive probe
+bounds the length or grammar growth of the full knot-group search.
+
+\subsection{A further literature route for cancellation queries}
+
+Tomohiro I's deterministic recompression result \cite{i-recompression-lce}
+builds a longest-common-extension index from a supplied SLP. For grammar
+size $s$ and represented length $M$, Theorem 2 gives
+$O(s\log(M/s))$ construction time and $O(\log M)$ query time, with
+logarithms bounded below by one, in its
+word-RAM model, whose words have $\Omega(\log M)$ bits and whose alphabet
+is integer encoded. The introduction explicitly leaves efficient
+dynamization unresolved. This is a promising route to replacing repeated
+substring-equality searches, but construction and updates must be charged
+when our substitutions change the strings. We have not implemented that
+index, and its query bound supplies no bound on the number of group moves.
+The current incidence index stores equality assertions, not a recompressed
+text index. This source review therefore identifies a further concrete
+research direction without attributing its stronger query bound to the
+present code.

@@ -2,7 +2,25 @@
 
 The synthesized report on the six archives and on the new recognizer.
 
-The latest extension in `compressed_words.tex` adds optional compressed group
+The latest revision of `compressed_words.tex` explains indexed equality
+assertions and a 64-step adaptive DAG probe with exact polynomial fallback.
+The 375-query comparison loads the prior kernel from its recorded Git commit:
+Gordian improves from 6.764 to 2.403 seconds, including replay, and fourteen
+small cases total 248.40 versus 265.32 ms in summed medians. Explicit search is
+still faster at 1.241 seconds and 51.46 ms respectively, so it remains the
+default. Small periodic kernels show probe overhead; no uniform speedup or
+general sub-exponential recognition bound is claimed. Raw samples are in
+`../fast/results/indexed_equality_20261008.json`.
+All 645 tests pass with optional Regina installed in 123.169 seconds; see
+`data/indexed-equality-integrated-tests.txt`. The rebuilt article has 166 pages,
+with build output in `data/indexed-equality-article-build.txt`.
+
+The article also reviews Tomohiro I's deterministic recompression LCE index
+as a further route for cancellation queries, recording its word-RAM assumptions
+and the unresolved cost of changing the indexed text during our search.
+That stronger query algorithm is not claimed as implemented.
+
+The initial extension in `compressed_words.tex` adds optional compressed group
 discovery. A shared DAG pass computes exact generator counts and weighted
 Whitehead edges; presence/repetition masks identify unique generators.
 Elimination and Whitehead transformations stay compressed, while relator

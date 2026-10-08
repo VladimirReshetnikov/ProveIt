@@ -11,7 +11,7 @@ the pipeline repeats the structural check before matrix filters. Cancelling
 pairs can expose homogeneity. Evidence under `seifert_after_reduction` describes
 the reduced diagram: replay `reidemeister_trace` with `fastunknot.simplify.replay`
 before passing that certificate to `verify_seifert_certificate`. An unchanged
-diagram is not checked twice. The integrated suite now has 642 passing tests
+diagram is not checked twice. The integrated suite now has 645 passing tests
 with the optional Regina dependency installed.
 
 `--group-compressed-search` enables optional compressed group discovery and
@@ -23,10 +23,18 @@ and failure to finish remains inconclusive. Python callers use
 `use_group=True, group_compressed_search=True`; the standalone producer is
 `fastunknot.compressed_search.compressed_certificate`.
 
-This is a capacity extension, currently slower on the knot corpus. In 225
-whole-query measurements, Gordian's compressed-search median is 7.076 seconds
-versus 1.247 seconds explicit; fourteen smaller cases total 391.33 versus
-73.52 ms in summed medians. All complete with independent replay. Synthetic
+The compressed word checker now indexes assertions by the symbols they mention.
+It first tries a bounded 64-step DAG walk, then switches to the polynomial
+split-and-compaction algorithm if unresolved. The cap preserves the polynomial
+equality bound even when the represented words are exponentially long.
+Standalone `WordArena(equality_probe_steps=0)` disables the direct probe.
+
+In the latest 375-query comparison, Gordian's compressed-search median drops
+from 6.764 to 2.403 seconds with this change, including independent replay.
+Fourteen smaller cases total 248.40 versus 265.32 ms in summed medians.
+Explicit search remains faster at 1.241 seconds and 51.46 ms respectively.
+The probe also adds overhead on some periodic kernels, so this is not a
+uniform speedup. All measured queries complete successfully. Synthetic
 summary and elimination operations handle lengths above 2^1024 with 3,077
 allocated nodes, but this is not a hard-knot benchmark or a search-step bound.
 Explicit search remains the default. To reproduce the optional experiment:
@@ -38,8 +46,13 @@ python -B -m fastunknot recognize normal_research/gordian.json \
 python -B benchmark_compressed_search.py --output results/compressed_search_local.json
 ```
 
-See [`results/compressed_search_20261008.json`](results/compressed_search_20261008.json)
-for raw A/A/B samples and the article for the DAG multiplicity proof and limits.
+See [`results/indexed_equality_20261008.json`](results/indexed_equality_20261008.json)
+for the current five-arm comparison and
+[`results/compressed_search_20261008.json`](results/compressed_search_20261008.json)
+for the initial capacity experiment. The article gives the equality scheduling
+and fallback invariants, DAG multiplicity proof and remaining global limits.
+`python -B benchmark_indexed_equality.py --output results/indexed_local.json`
+reproduces the comparison using the recorded pre-change kernel from Git history.
 
 `--group-compressed` enables only exact SLP-based replay of group certificates.
 Its deterministic word kernel supports equality, slicing, inversion and free
