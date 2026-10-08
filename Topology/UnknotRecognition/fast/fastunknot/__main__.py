@@ -6,7 +6,8 @@ import sys
 
 from .alexander import alexander_polynomial, format_polynomial
 from .diagram import Diagram, DiagramError
-from .filters import FilterLimit, jones_obstruction
+from .filters import FilterLimit
+from .jones_filter import JONES_BACKENDS, select_jones_filter, validate_jones_options
 from .recognize import factored_khovanov_rank, recognize
 from .scan import ScanLimit, khovanov_rank
 
@@ -69,6 +70,9 @@ OPTIONS = {
         ("--no-jones", None, False, None, None),
         ("--no-factor", None, False, None, "do not split visible connected sums"),
         ("--legacy-factor", None, False, None, "use the historical recursive two-edge-cut factorizer"),
+        ("--jones-backend", str, "matching", JONES_BACKENDS, "one-sided Jones obstruction implementation"),
+        ("--potts-colors", int, 6, None, "integer color count for exact Potts filters (at least 5)"),
+        ("--jones-max-transitions", int, 200000, None, "local Jones transition budget"),
         ("--jones-max-states", int, 4096, None, None),
         ("--pivot", str, "minfill", ("minfill", "lifo"), None),
         ("--algebra", str, "bits", ("bits", "sets"), None),
@@ -111,13 +115,18 @@ OPTIONS = {
         ("--composition", str, "standard", ("standard", "component", "component-dense"), "coefficient engine"),
         ("--composition-max-variables", int, 18, None, "component allocation limit"),
     ],
-    "jones": [],
+    "jones": [
+        ("--backend", str, "matching", JONES_BACKENDS, "Jones obstruction implementation"),
+        ("--potts-colors", int, 6, None, "integer color count for exact Potts filters (at least 5)"),
+        ("--max-states", int, None, None, "represented-state budget"),
+        ("--max-transitions", int, None, None, "transition budget"),
+    ],
     "alexander": [],
 }
 COMMAND_HELP = {"recognize": "decide whether a knot diagram is the unknot",
                 "khovanov": "total F2 Khovanov rank by scanning",
                 "window": "exact partial F2 homology; raw degrees unless --normalized",
-                "jones": "one-sided modular Kauffman bracket test", "alexander": "Alexander polynomial"}
+                "jones": "one-sided Jones obstruction", "alexander": "Alexander polynomial"}
 
 
 class _Namespace:
@@ -198,6 +207,16 @@ def main(argv: list[str] | None = None) -> int:
     except (DiagramError, ValueError, OSError) as exc:
         print(f"invalid input: {exc}", file=sys.stderr)
         return 2
+    if args.command in ("recognize", "jones"):
+        try:
+            validate_jones_options(
+                args.jones_backend if args.command == "recognize" else args.backend,
+                args.potts_colors,
+                args.jones_max_states if args.command == "recognize" else args.max_states,
+                args.jones_max_transitions if args.command == "recognize" else args.max_transitions)
+        except ValueError as exc:
+            print(f"invalid Jones options: {exc}", file=sys.stderr)
+            return 2
     if args.command in ("recognize", "khovanov"):
         if args.reduction != "standard" and (
                 args.pivot != "minfill" or args.algebra != "bits" or args.race != 1
@@ -257,6 +276,8 @@ def main(argv: list[str] | None = None) -> int:
                            race=args.race, race_after=args.race_after,
                            use_jones=not args.no_jones, use_factorization=not args.no_factor,
                            factor_backend="legacy" if args.legacy_factor else "interlacement",
+                           jones_backend=args.jones_backend, potts_colors=args.potts_colors,
+                           jones_max_transitions=args.jones_max_transitions,
                            jones_max_states=args.jones_max_states, pivot=args.pivot,
                            algebra=args.algebra, tail=args.tail, max_objects=args.max_objects,
                            seconds=args.seconds, check_d_squared=args.check_d2).to_json()
@@ -352,9 +373,13 @@ def main(argv: list[str] | None = None) -> int:
         return 0
     if args.command == "jones":
         try:
-            witness = jones_obstruction(diagram, max_states=None, max_transitions=None)
-        except FilterLimit as exc:
-            witness = {"skipped": str(exc)}
+            test, _, extra = select_jones_filter(args.backend, args.potts_colors)
+            witness = test(diagram, max_states=args.max_states,
+                           max_transitions=args.max_transitions, **extra)
+        except (FilterLimit, MemoryError) as exc:
+            print(json.dumps({"verdict": "INCONCLUSIVE", "witness": None,
+                              "reason": str(exc) or "memory allocation failed"}))
+            return 3
         print(json.dumps({"verdict": "KNOTTED" if witness else "INCONCLUSIVE", "witness": witness}, indent=1))
         return 0
     poly = alexander_polynomial(diagram)

@@ -34,7 +34,8 @@ from .alexander import alexander_polynomial, evaluate, format_polynomial
 from .braid import braid_certificate
 from .diagram import Diagram
 from .factor import convolve, visible_factors
-from .filters import FilterLimit, alexander_obstruction, jones_obstruction
+from .filters import FilterLimit, alexander_obstruction
+from .jones_filter import select_jones_filter, validate_jones_options
 from .interlace import visible_factors_interlacement
 from .ordering import best_scan_order
 from .scan import ScanLimit, khovanov_rank
@@ -130,7 +131,8 @@ def _decide_twist(source: Diagram, evidence: dict, *, max_basis, deadline, check
 
 def _decide_prime_looking(diagram: Diagram, evidence: dict, *, use_modular, use_jones, use_alexander,
                           use_exact_alexander, use_r3, use_descending,
-                          jones_max_states, jones_max_transitions, max_objects, deadline,
+                          jones_backend, potts_colors, jones_max_states, jones_max_transitions,
+                          max_objects, deadline,
                           check_d_squared, scan_options, window_options=None,
                           twist_source=None, defer_twist=False) -> tuple[str, str]:
     """Verdict and method for one summand (already simplified by the caller)."""
@@ -148,14 +150,15 @@ def _decide_prime_looking(diagram: Diagram, evidence: dict, *, use_modular, use_
         # the Jones scan and the Khovanov scan use the same greedy order: compute it once
         order = best_scan_order(diagram.pd, tries=min(diagram.crossings, 12), check=check)
         try:
-            witness = jones_obstruction(diagram, max_states=jones_max_states,
-                                        max_transitions=jones_max_transitions, order=order, check=check)
+            test, method, extra = select_jones_filter(jones_backend, potts_colors)
+            witness = test(diagram, max_states=jones_max_states,
+                           max_transitions=jones_max_transitions, order=order, check=check, **extra)
         except FilterLimit as exc:
             evidence["jones"] = f"skipped: {exc}"
         else:
             if witness is not None:
                 evidence["jones"] = witness
-                return "KNOTTED", "jones-modular"
+                return "KNOTTED", method
             evidence["jones"] = "inconclusive"
     # The exact polynomial over Z[t] can only say KNOTTED, and only if the polynomial is not a
     # unit, which the modular test has just failed to see at t = -1 and at a generic point of
@@ -270,6 +273,7 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
               euler_max_states: int | None = 4096,
               use_factorization: bool = True, use_modular: bool = True, use_jones: bool = True,
               use_alexander: bool = True, use_exact_alexander: bool | None = None, use_r3: bool = True,
+              jones_backend: str = "matching", potts_colors: int = 6,
               jones_max_states: int | None = 4096,
               jones_max_transitions: int | None = 200_000, max_objects: int | None = None,
               seconds: float | None = None, check_d_squared: bool = False,
@@ -283,6 +287,7 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
               window_strategy: str = "support") -> Result:
     restart_options = locals().copy() if use_ranktwo else None
     start = monotonic()
+    validate_jones_options(jones_backend, potts_colors, jones_max_states, jones_max_transitions)
     if window_strategy not in ("support", "minimal"):
         raise ValueError("window_strategy must be support or minimal")
     if type(use_ranktwo) is not bool:
@@ -432,6 +437,7 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
         options = dict(use_modular=use_modular and use_alexander, use_jones=use_jones, use_alexander=use_alexander,
                        use_exact_alexander=use_exact_alexander, use_r3=use_r3 and use_reduction,
                        use_descending=use_descending,
+                       jones_backend=jones_backend, potts_colors=potts_colors,
                        jones_max_states=jones_max_states, jones_max_transitions=jones_max_transitions,
                        max_objects=max_objects, deadline=deadline, check_d_squared=check_d_squared,
                        window_options=None if window_radius is None else dict(
