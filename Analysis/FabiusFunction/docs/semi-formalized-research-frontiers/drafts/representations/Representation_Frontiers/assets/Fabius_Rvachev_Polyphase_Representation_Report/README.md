@@ -48,8 +48,8 @@ The report develops, among other things:
 - `polyphase_fourier_factors.png` and `.pdf` - product-factor visualization.
 - `thue_morse_jump_comb.png` and `.pdf` - derivative-jump/atomic-comb visualization.
 - `verification_log.txt` - concise execution log.
-- `MANIFEST.sha256` - submitted purpose-specific SHA-256 record for the other
-  bundle files; it is not a package-local `SHA256SUMS` ledger.
+- `MANIFEST.sha256` (the submitted SHA-256 record) was removed on 2026-10-07
+  at Vladimir's direction (imported reports keep no SHA-256 records; the files they listed are unchanged, and the bytes remain in Git history); six of its fourteen entries no longer matched.
 
 ## Numerical verification summary
 

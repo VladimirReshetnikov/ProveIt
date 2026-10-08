@@ -76,6 +76,8 @@ already in the collection are kept as marked second presentations.
 
 ## Files
 
+Dated note (2026-10-07): `data/70-two-scale-audit-r2-original-sha256-after.txt` (delivered as `Report70/audits/fresh-audit-radius2/original-sha256-after.txt`) was removed at Vladimir's direction (imported reports keep no SHA-256 records; the files they listed are unchanged, and the bytes remain in Git history).
+
 ```
 README.md                                       this guide
 article.tex                                     the report: standalone LaTeX, internal bibliography
@@ -561,7 +563,6 @@ data/70-two-scale-audit-r2-audit-result.json
 data/70-two-scale-audit-r2-independent-graph-potentials.json
 data/70-two-scale-audit-r2-independently-enumerated-tables.txt
 data/70-two-scale-audit-r2-original-metadata-after.tsv
-data/70-two-scale-audit-r2-original-sha256-after.txt
 data/70-two-scale-audit-static-AUDIT_MANIFEST.json
 data/70-two-scale-audit-static-authentication-receipt.json
 data/70-two-scale-audit-static-authentication-run.txt
@@ -1999,7 +2000,6 @@ Report70/audits/fresh-audit-radius2/check_radius2_graph.py  ->  code/70-two-scal
 Report70/audits/fresh-audit-radius2/independent-graph-potentials.json  ->  data/70-two-scale-audit-r2-independent-graph-potentials.json
 Report70/audits/fresh-audit-radius2/independently-enumerated-tables.txt  ->  data/70-two-scale-audit-r2-independently-enumerated-tables.txt
 Report70/audits/fresh-audit-radius2/original-metadata-after.tsv  ->  data/70-two-scale-audit-r2-original-metadata-after.tsv
-Report70/audits/fresh-audit-radius2/original-sha256-after.txt  ->  data/70-two-scale-audit-r2-original-sha256-after.txt
 Report70/audits/fresh-audit-static/AUDIT_MANIFEST.json  ->  data/70-two-scale-audit-static-AUDIT_MANIFEST.json
 Report70/audits/fresh-audit-static/FRESH_AUDIT.md  ->  70-two-scale-audit-static-FRESH_AUDIT.md
 Report70/audits/fresh-audit-static/authenticate_static.py  ->  code/70-two-scale-audit-static-authenticate_static.py

@@ -1,5 +1,6 @@
 /- Modified for ProveIt: import Lean 4.32 compatibility declarations.
-Statements and proofs are unchanged from the pinned upstream source. -/
+Specify the product-integral measure family and its sigma-finiteness on Lean 4.32.
+Mathematical statements are unchanged. -/
 import OAI.Compat.Measurable
 import OAI.Combinatorics.Progressions.Fourier.EuclideanCoefficientTorus
 import OAI.Combinatorics.Progressions.Geometry.MixedArraySourceSupport
@@ -103,7 +104,8 @@ theorem canonicalArrayDensity_mass
   have hslot (j) := canonicalMixedDensity_mass W b hb o μ _ _ (fun i => hw i j) _ (hs j)
   refine ⟨Integrable.fintype_prod_dep (fun j => (hslot j).1), ?_⟩
   unfold canonicalArrayDensity
-  rw [integral_fintype_prod_eq_prod]
+  rw [@integral_fintype_prod_eq_prod ℝ J _ _ _ _ _ (fun _ : J => μ)
+    (fun _ => IsFiniteMeasure.toSigmaFinite μ)]
   exact Finset.prod_eq_one (fun j _ => (hslot j).2)
 
 theorem canonicalArrayDensity_law

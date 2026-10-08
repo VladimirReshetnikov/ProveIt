@@ -104,7 +104,7 @@ source of the same-machine ratios above.
 - `results/`: actual logs and machine-readable results.
 - `changes.patch`: reviewable diff against the supplied code.
 - `PROVENANCE.json`: input archive/doc hashes and baseline identity checks.
-- `MANIFEST.sha256`: hashes of the deliverable files.
+- `MANIFEST.sha256` (hashes of the deliverable files) was removed on 2026-10-07 at Vladimir's direction (imported reports keep no SHA-256 records; the files they listed are unchanged, and the bytes remain in Git history).
 
 The preserved top-level license is MIT No Attribution (MIT-0). The implementation
 does not call external topology services, install packages at runtime, or depend

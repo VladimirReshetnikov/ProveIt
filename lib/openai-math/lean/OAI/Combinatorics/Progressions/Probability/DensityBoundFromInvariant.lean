@@ -1,5 +1,9 @@
+/-
+Modified for ProveIt: import the basic extremal-set results directly, without
+the unrelated reciprocal-sum theorem formerly imported through Statements.
+-/
 import OAI.Combinatorics.Progressions.Estimates.ZeroBasedExtremalSet
-import OAI.Combinatorics.Progressions.Results.Statements
+import OAI.Combinatorics.Progressions.Results.Basic
 
 namespace OAI
 

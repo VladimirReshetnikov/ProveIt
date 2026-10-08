@@ -118,3 +118,5 @@ The accepted current inverse source/PDF receipt is recorded in the
 authoritative register linked above. All earlier 134- and 137-page tuples and
 closure-file identities remain explicit history; retired package-ledger
 receipts remain Git-recoverable and are not live validation artifacts.
+
+Dated note (2026-10-07): `SOURCE_CLOSURE.sha256` was removed at Vladimir's direction (imported reports keep no SHA-256 records; the files they listed are unchanged, and the bytes remain in Git history). The rows above that name it record its historical digests; `audit/build_source_closure.py` regenerates it.

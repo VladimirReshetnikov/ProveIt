@@ -20,8 +20,8 @@ Scope
   checkpoints; the current catalogue count is stated here and in the ledger.
 
 Verification at this checkpoint
-  All 771 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 4,931 public Gowers theorems and found only propext,
+  All 777 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 4,990 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 114 exact
   companion proofs and 6 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -58,6 +58,62 @@ One-dimensional cover with graph count independent of the loss
   This supplies a stronger base case for the dimension-two approach.
   The higher-dimensional lift and Theorem 16.2 remain unproved.
 
+Parametric spectrum controls for Lemmas 16.6 and 16.9
+  The merged Proofs16WithLemma6 and Proofs16WithLemma9 pass the full audit.
+  Their proper_lemma_16_6_with and proper_lemma_16_9_with accept arbitrary
+  MultiplyLinearWith spectrum controls Qb and Eb, with explicit positivity
+  and upper-bound assumptions on the width exponent. The derived width
+  retains the actual spectrum graph count in the recurrence exponent,
+  and section16_all_box_line_covers_with makes the construction uniform
+  over proper boxes. This permits a loss-independent spectrum count to
+  be supplied. It does not establish the missing higher-dimensional lift
+  or discharge any of the six open catalogue statements.
+
+Parametric affine lift with an abstract slice provider
+  Proofs16WithLift passes the full merged audit. Section16SliceProvider
+  states the lower-dimensional cover needed for each stack of sampled
+  slices, with explicit graph-count and width-exponent ranges. The local,
+  all-scale, and global affine lifts propagate these controls. The final
+  explicit_multilinear_cover_with combines parametric line covers with a
+  slice provider to produce a proper-box partition and multilinear cover.
+  The slice provider remains a premise; this does not establish Theorem
+  16.2 or close any of the six open catalogue statements.
+
+Concrete Freiman-family slice provider in dimension two
+  Proofs16FreimanSliceProvider passes the full audit. If each final-coordinate
+  section is covered by q > 0 order-eight Freiman graphs, all r sampled
+  sections are covered simultaneously by at most 3*max(1,r)*q graphs,
+  with exponent polyBaseExponent(max(1,r)*q, sigma). The graph count is
+  independent of the requested loss sigma. The proof pads the sample to
+  max(1,r), flattens the sampled graph families, and uses the proved
+  one-dimensional simultaneous cover. The controls satisfy all range
+  hypotheses of Section16SliceProviderRanges. The derived two-dimensional
+  affine-cover theorem discharges the abstract slice-provider premise;
+  line covers and the individual Freiman-family covers remain assumptions.
+  This does not close Theorem 16.2 or a new catalogue entry.
+
+Explicit cubic lower bound for the simultaneous width exponent
+  Proofs16PolynomialBaseExponent proves, for q > 0 and 0 < sigma <= 1,
+    2^(-27) * sigma^3 / q^4 <= polyBaseExponent(q, sigma).
+  It uses log(1024*pi*q/sigma) <= 4096*q/sigma and log(2) >= 1/2.
+  Thus the simultaneous Freiman-family width exponent has an explicit
+  polynomial lower bound, also after substituting max(1,r)*q in the slice
+  provider. This is a bound on the already proved local cover controls;
+  it does not establish the missing general Section 16 induction or improve
+  an all-length Szemeredi threshold. The theorem passes the full audit.
+
+Cubic controls for the actual Freiman-family covers
+  Proofs16CubicCoverControls transfers the exponent comparison into the
+  box-cover predicates. MultiplyLinearWith.weaken increases the graph bound
+  and decreases a positive width exponent, with an explicit treatment of
+  width-zero boxes. The simultaneous one-dimensional Freiman-family cover
+  therefore holds with graph bound 3*q and exponent 2^(-27)*sigma^3/q^4.
+  The sampled-slice provider has the same cubic exponent with q replaced
+  by max(1,r)*q; its graph bound and numerical ranges are proved. These
+  concrete controls can be passed directly to the parametric affine lift.
+  The individual section-cover inputs remain hypotheses, so the six open
+  catalogue statements remain open. The full audit includes these results.
+
 Conditional quantitative density bridge and dependency port
   Proofs01QuantitativeDensityBridge proves the exact Theorem 1.3 from
   OAI.Erdos3.QuantitativeDensityTheorem. An elementary exponential estimate
@@ -65,12 +121,17 @@ Conditional quantitative density bridge and dependency port
   This implication is checked in the full audit, but its quantitative
   premise is not yet proved by the compiled vendored subset. No exact
   companion is added and the six open catalogue statements remain open.
-  The pinned Results.Conclusions import closure is being backported:
-  4,136 upstream modules, including 128 previously present, add 4,008 files.
+  Only the quantitative-density conclusion needed by Theorem 1.3 is being
+  backported. Density-only extracts omit the reciprocal-sum conclusion and
+  its dedicated Results.Reciprocal and Results.Statements modules. The
+  remaining import closure has 4,134 upstream modules, including 128
+  previously present, adding 4,006 files. This is not a claim of minimal
+  theorem-level dependencies. check_gowers_port_scope.py verifies the
+  manifest and can show a dependency path from the density target.
   These new sources are outside the current Gowers import closure, and
   the complete quantitative dependency build has not yet passed.
-  The first 900 pinned manifest entries compile as a 913-module closure.
-  OAI.QuantitativePortAudit checks 17,747 public OAI theorems in this prefix
+  The first 1,100 pinned manifest entries compile as a 1,115-module closure.
+  OAI.QuantitativePortAudit checks 20,812 public OAI theorems in this prefix
   using only the three standard axioms, and checks the added compatibility
   lemmas. This partial dependency audit is separate from the Gowers audit
   above and does not certify Results.Conclusions.

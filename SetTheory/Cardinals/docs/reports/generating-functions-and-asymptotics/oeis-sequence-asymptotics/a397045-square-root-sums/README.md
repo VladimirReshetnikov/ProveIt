@@ -314,6 +314,8 @@ statement.
 
 ## Files
 
+Dated note (2026-10-07): `data/fixtures-SHA256.json` (one fixture hash) was removed at Vladimir's direction (imported reports keep no SHA-256 records; the files they listed are unchanged, and the bytes remain in Git history). The companion does not read it: `code/companion.py` carries the same digest as `FIXTURE_SHA256`.
+
 ```text
 README.md                                 this guide (replaces the delivery README)
 article.tex                               the report (delivered Report172.tex; labels prefixed, [write] additions)
@@ -326,7 +328,6 @@ code/test_build.py                        build-guard tests; POSIX (delivered co
 code/build.py                             clean-tree PDF and ZIP builder, TeX Live (delivered at the root)
 data/BUILD-INFO.json                      toolchain and reproducibility scope (delivered at the root)
 data/requirements.txt                     no pip dependencies, with comments (delivered at the root)
-data/fixtures-SHA256.json                 fixture hash, read by the companion (delivered fixtures/)
 data/fixtures-oeis_35_historical.json     the 35 OEIS terms and a(0) = 1, verified run of n <= 35 (same)
 data/fixtures-provenance.json             historical versus fresh coverage (same)
 data/sources-source_provenance.json       primary sources and access (delivered sources/)

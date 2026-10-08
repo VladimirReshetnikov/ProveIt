@@ -349,6 +349,8 @@ intake too (`review_timed_four_mass_source18_intake.md`, commit `39f398985`,
 after the batch-82 write: "PASS on the conditional chart/compiler argument").
 None of these reviews this write.
 
+Dated note (2026-10-07): the three review-binding SHA-256 records `data/21-planar-shuttle-audit-reviewed-{audit-code,main-files,supplement-files}.sha256` were removed at Vladimir's direction (imported reports keep no SHA-256 records; the files they listed are unchanged, and the bytes remain in Git history). The final review and the prose below that cite them are unchanged.
+
 ```
 article.tex                                                     the report, standalone LaTeX with an internal bibliography
 article.pdf                                                     the compiled report, 673 pages (unnumbered title page, then pages 1–672)
@@ -1109,9 +1111,6 @@ data/21-planar-shuttle-audit-quartic-reconstruction-optimized.txt  quartic-recon
 data/21-planar-shuttle-audit-quartic-reconstruction-results.json  quartic-reconstruction results
 data/21-planar-shuttle-audit-review_parent_code.normal.txt      parent-code-review receipt
 data/21-planar-shuttle-audit-review_parent_code.optimized.txt   parent-code-review receipt under -O
-data/21-planar-shuttle-audit-reviewed-audit-code.sha256         review binding: hashes of the reviewed audit code (cited by the final review)
-data/21-planar-shuttle-audit-reviewed-main-files.sha256         review binding: hashes of the reviewed main files
-data/21-planar-shuttle-audit-reviewed-supplement-files.sha256   review binding: hashes of the reviewed supplement files
 data/21-planar-shuttle-expected-cross-implementation.txt        expected receipt (cross-implementation)
 data/21-planar-shuttle-expected-drift.txt                       expected drift receipt
 data/21-planar-shuttle-expected-essentiality.txt                expected essentiality receipt
