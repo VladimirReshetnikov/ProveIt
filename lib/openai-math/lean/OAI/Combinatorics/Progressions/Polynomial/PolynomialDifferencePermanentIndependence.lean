@@ -1,5 +1,6 @@
-/- Modified for ProveIt: import Lean 4.32 compatibility declarations.
-Statements and proofs are unchanged from the pinned upstream source. -/
+/- Modified for ProveIt: import Lean 4.32 compatibility declarations and
+use MvPolynomial coefficient lemmas for zero and addition. All upstream
+theorem statements are unchanged. -/
 import OAI.Compat.BigOperators
 import Mathlib.Algebra.MvPolynomial.PDeriv
 import OAI.Combinatorics.Progressions.Estimates.IndependentProductMeans
@@ -102,7 +103,7 @@ theorem polynomialIterDifference_prod_X_linearCoeff_zero (S : Finset I) (i : I)
     (polynomialIterDifference n (∏ j ∈ S, X j : MvPolynomial I R) u).coeff
       (Finsupp.single i 1) = 0 := by
   rw [polynomialIterDifference_linearCoeff, pderiv_prod_X_of_notMem S i hi,
-    polynomialIterDifference_zero, AddMonoidAlgebra.coeff_zero, Finsupp.zero_apply]
+    polynomialIterDifference_zero, MvPolynomial.coeff_zero]
 
 theorem totalDegree_prod_X_le (S : Finset I) :
     (∏ j ∈ S, X j : MvPolynomial I R).totalDegree ≤ S.card := by
@@ -210,7 +211,7 @@ theorem polynomialIterDifference_designated_linearCoeff {A : Type*} (J : Finset 
       (Finsupp.single i 1) =
       (polynomialIterDifference n Q u).coeff (Finsupp.single i 1) +
         c b * squarefreePermanent n ((S b).erase i) u := by
-  rw [polynomialIterDifference_add, AddMonoidAlgebra.coeff_add, Finsupp.add_apply,
+  rw [polynomialIterDifference_add, MvPolynomial.coeff_add,
     polynomialIterDifference_sum]
   congr 1
   simp only [coeff_sum, polynomialIterDifference_smul, coeff_smul, smul_eq_mul]
