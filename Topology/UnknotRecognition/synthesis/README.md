@@ -2,6 +2,36 @@
 
 The synthesized report on the six archives and on the new recognizer.
 
+`group_certificates.tex` adds a bounded, independently replayed positive
+recognizer based on reducing the complete Wirtinger presentation to one free
+generator. It derives the Whitehead minimum-cut search and its conditional
+expanded-word bound, and records a concrete convention mismatch in equations
+(10)--(12) of Kapovich's arXiv:2607.21499v1 without treating that mismatch as a
+refutation of the main results. The implementation retains the complete
+fallback when group search stalls or exhausts its local allowance.
+
+The 21-input A/A/B audit contains 441 timed queries. Group certificates decide
+all twelve Khovanov-only survivors and improve ten of their median query
+costs; the sum of medians drops from 60.8 to 39.2 ms including independent
+verification. Regressions on some survivors and cheap RIII examples keep this
+stage opt-in. All 626 tests pass with Regina installed in 126.707 seconds
+(`data/group-integrated-tests.txt`). The rebuilt article has 154 pages;
+`data/group-article-build.txt` records its build. These results do not provide
+a general sub-exponential recognition bound.
+
+`normal_surface.tex` explains an optional isolated Regina solid-torus
+recognition stage after the cheap filters on undecided diagrams of at least
+32 crossings. Local exhaustion falls back and global exhaustion propagates;
+every interrupted child is killed and reaped. Results explicitly identify
+external-engine trust rather than claiming an independently checked geometric
+certificate. In five measured runs the portfolio decided the 141-crossing
+Gordian unknot every time (median 1.788 seconds); both default controls
+exhausted their four-second allowance every time. Other benchmark inputs
+retain the existing fast paths. All 619 tests pass with Regina installed in
+114.547 seconds (`data/normal-surface-integrated-tests.txt`); the focused
+dependency-free run passes with three explicit optional-test skips. The
+rebuilt article has 149 pages.
+
 `treewidth_two.tex` adds a complete polynomial recognition procedure on
 certified K4-minor-free projections. The structural classification reduces
 this input class to connected sums of two-strand torus knots, so exact
@@ -12,8 +42,8 @@ capped form does not confer the standalone polynomial bound on Khovanov.
 Fourteen paired whole-query benchmarks show 1.085–1.142x gains on three
 mixed-sign two-strand unknot cases and regressions on several already cheap
 Seifert cases. The stage remains optional. All 611 integrated tests pass in
-126.455 seconds (`data/treewidth-two-integrated-tests.txt`). The rebuilt
-article has 147 pages.
+126.455 seconds (`data/treewidth-two-integrated-tests.txt`). That checkpoint's
+article had 147 pages.
 
 `jones_detection_audit.tex` checks the combined residual-degree and geometric
 realization claims in Carmi–Cohen arXiv:2606.22410v1. An explicit nine-crossing

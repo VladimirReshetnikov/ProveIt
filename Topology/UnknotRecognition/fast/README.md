@@ -11,7 +11,74 @@ the pipeline repeats the structural check before matrix filters. Cancelling
 pairs can expose homogeneity. Evidence under `seifert_after_reduction` describes
 the reduced diagram: replay `reidemeister_trace` with `fastunknot.simplify.replay`
 before passing that certificate to `verify_seifert_certificate`. An unchanged
-diagram is not checked twice. The integrated suite now has 611 passing tests.
+diagram is not checked twice. The integrated suite now has 626 passing tests
+with the optional Regina dependency installed.
+
+`--group` (Python: `use_group=True`) tries a bounded knot-group certificate
+search after invariant filters. Exact generator eliminations and Whitehead
+changes of basis reduce a full Wirtinger presentation; an independent checker
+reconstructs and replays the trace before accepting a one-generator,
+relation-free presentation. For a validated classical knot this proves
+unknottedness. Stalling or local exhaustion falls back to the remaining
+recognizers, and a global deadline still yields `UNKNOWN`.
+
+```sh
+python -B -m fastunknot recognize examples/hard_unknot_8.json --group
+python -B benchmark_group.py --output results/group_local.json
+```
+
+Search and replay share `--group-seconds 0.05` per attempt. The standalone
+`fastunknot.group_certificate.group_decide` also accepts `max_letters` (default
+200,000) and `max_work` (default 2,000,000 per search/replay); `seconds=None`
+removes only the wall cap. `group_certificate` produces a trace, and
+`verify_group_certificate(diagram, certificate)` independently checks it.
+Certificates contain the actual normalized PD used by that stage; when the
+pipeline has reduced or factored the input, its earlier evidence supplies
+the connection to the original diagram.
+
+In seven paired whole-query rounds this stage certified all twelve maintained
+Khovanov-only survivors. Ten improved, with the largest gains about 2.3x and
+3.3x. The sum of their median costs fell from 60.8 to 39.2 ms, including replay.
+Two survivors and the already cheap RIII examples regressed, so the stage is
+**disabled by default**. No general sub-exponential bound is established:
+word expansion and stalled searches remain obstacles. See
+[`group_certificates.tex`](../synthesis/group_certificates.tex) for the theory,
+new-preprint convention audit, benchmarks and limitations, and
+[`results/group_20261008.json`](results/group_20261008.json) for raw measurements.
+
+`--regina` (Python: `use_regina=True`) adds an optional complete external
+normal-surface recognizer after cheap invariant filters, on undecided diagrams
+with at least 32 crossings. Install the extra in the interpreter running the
+recognizer:
+
+```sh
+python -m pip install '.[normal]'
+python -B -m fastunknot recognize normal_research/gordian.json --regina --seconds 4
+```
+
+Each attempt runs in a fresh subprocess, with a default two-second local
+allowance including native import and startup (`--regina-seconds`). Missing
+dependencies, native failures and local timeouts are inconclusive and continue
+the existing RIII/Khovanov pipeline. A global deadline yields `UNKNOWN`; every
+interrupted worker is killed and reaped. `max_objects` bounds Khovanov, not
+Regina's memory. Python's `regina_seconds=None` disables the local cap.
+`fastunknot.normal_surface.regina_decide` offers the standalone query without
+the pipeline's crossing threshold.
+
+This is explicitly an **external-engine verdict**, not an independently
+verified normal-surface certificate. Evidence records input digest, engine and
+distribution versions, simplification and triangulation sizes, and elapsed
+time. Serialized external verdicts do not inherit the built-in runtime bound.
+The default remains dependency-free and does not call Regina.
+
+In five paired runs, the portfolio decided Haken's 141-crossing Gordian unknot
+every time (median 1.788 seconds including validation and child startup); both
+default controls exhausted their four-second allowance every time. GST,
+Monster and Conway stayed on the existing fast paths. These are censored
+completion comparisons, not a general speedup or asymptotic theorem. See
+[`normal_research/README.md`](normal_research/README.md),
+[`normal_surface.tex`](../synthesis/normal_surface.tex), and
+[`results/normal_surface_20261008.json`](results/normal_surface_20261008.json).
 
 An optional complete test for **projection graphs of treewidth at most two**
 is enabled by `--treewidth-two` or `use_treewidth_two=True`. It first certifies
