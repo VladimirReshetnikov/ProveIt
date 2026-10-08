@@ -1,3 +1,5 @@
+/- Modified for ProveIt: transport the dependent root-degree statement explicitly
+with a motive that reconstructs its finite instances on Lean 4.32. Statements unchanged. -/
 import OAI.Combinatorics.Progressions.Estimates.NativeMultidegreeDilation
 import OAI.Combinatorics.Progressions.Estimates.TensorSquarePairComparison
 
@@ -237,8 +239,15 @@ theorem exists_bounded_root_degree_equivalence (s Q : ℕ) :
           V.eval (tensorVector R.eval (i.val + 1)) :=
     (Classical.choose_spec
       (exists_uniform_root_degree_equivalence.{0} s (i.val + 1) (by omega))).2
-  rw [hi] at hroot
-  obtain ⟨R, hdim, hE⟩ := hroot bound hs W
+  let RootStatement (n : ℕ) : Prop := ∀ {τ : Type} [Fintype τ] [DecidableEq τ]
+      (b : τ → ℕ), (∑ j, b j) = s + 1 →
+      ∀ {r : ℝ} (V : NativeMultidegreeNilcharacter b r),
+      ∃ R : NativeMultidegreeNilcharacter b ((r + a i) ^ a i),
+        R.dim = V.dim ∧ NativeIntegerVectorEquivalence s ((r + a i) ^ a i)
+          V.eval (tensorVector R.eval n)
+  have hrootQ : RootStatement q :=
+    @Eq.mp (RootStatement (i.val + 1)) (RootStatement q) (congrArg RootStatement hi) @hroot
+  obtain ⟨R, hdim, hE⟩ := hrootQ bound hs W
   have hsum : a i ≤ ∑ j, a j :=
     Finset.single_le_sum (fun j _ => Nat.zero_le (a j)) (Finset.mem_univ i)
   have haC : a i ≤ C := by dsimp [C]; omega
