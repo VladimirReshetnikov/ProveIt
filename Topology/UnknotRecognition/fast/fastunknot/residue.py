@@ -129,7 +129,10 @@ class AdaptiveScan(ResidueScan):
 
 
 def reduction_scanner(reduction):
-    """Select an explicit cancellation policy; full disk transfer stays lazy."""
+    """Select an explicit cancellation policy with lazy full-transfer imports."""
+    if reduction in ("graded", "graded-adaptive"):
+        from .graded_transfer import GradedAdaptiveScan, GradedTransferScan
+        return GradedAdaptiveScan if reduction == "graded-adaptive" else GradedTransferScan
     if reduction == "disk-adaptive":
         from .disk_scan import DiskAdaptiveScan
         return DiskAdaptiveScan

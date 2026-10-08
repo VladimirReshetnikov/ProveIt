@@ -11,7 +11,7 @@ the pipeline repeats the structural check before matrix filters. Cancelling
 pairs can expose homogeneity. Evidence under `seifert_after_reduction` describes
 the reduced diagram: replay `reidemeister_trace` with `fastunknot.simplify.replay`
 before passing that certificate to `verify_seifert_certificate`. An unchanged
-diagram is not checked twice. The integrated suite now has 411 passing tests.
+diagram is not checked twice. The integrated suite now has 426 passing tests.
 
 The incoming radical-transfer report contributes exact binary prediction of
 the objects surviving cancellation. `--reduction adaptive` (Python:
@@ -996,3 +996,29 @@ checks, and [the theory](../synthesis/rational.tex) for arithmetic bounds,
 full-complex barriers and performance scope. These are polynomial procedures
 on supplied presentations or fixed local patterns; general quasi-polynomial
 recognition remains unproved.
+
+
+## Quantum-ordered full transfer
+
+`--reduction graded` and `--reduction graded-adaptive` are optional exact
+policies for the standard scanner. The first computes the full differential
+between scalar survivors using quantum-ordered transfer. The second retains
+completed sparse pivots and switches only when the per-stage Schur-update
+allowance is exhausted. Unlike a survivor-count shortcut, both retain nonzero
+maps between adjacent surviving degrees. They do not require a common-disk
+certificate. The standard policy remains the default.
+
+The Python `khovanov_rank` and `recognize` APIs accept the same reduction names.
+Bit coefficients, minimum-fill pivots, self-inverse cancellation and one scan
+order are required. Component coefficient composition and tail finishing are
+supported; homological windows and alternative scanners are rejected before
+early recognition certificates. Global resource failure remains `UNKNOWN`
+in recognition. The replacement graph is fully prepared before installation,
+so transfer failure preserves the current differential.
+
+See [graded_research/README.md](graded_research/README.md) for reproducible
+checks and measurements and [the theory](../synthesis/graded_transfer.tex)
+for the finite-transfer proof, cost accounting and unresolved multiplicity
+bounds. The new full suite has 426 passing tests. The report's separate
+symbolic CLI, earlier tail-rank threshold and repair-DAG proposals remain
+under review.

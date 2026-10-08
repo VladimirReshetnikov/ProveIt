@@ -44,7 +44,7 @@ OPTIONS = {
         ("--window-radius", int, None, None, "enable bounded window probes, widening up to this normalized radius"),
         ("--window-max-objects", int, 20000, None, "retained-object ceiling for optional window probes"),
         ("--window-seconds", float, 0.1, None, "one shared time allowance for all window probes per factor"),
-        ("--reduction", str, "standard", ("standard", "residue", "adaptive", "disk-adaptive"),
+        ("--reduction", str, "standard", ("standard", "residue", "adaptive", "disk-adaptive", "graded", "graded-adaptive"),
          "chain cancellation strategy (distinct from Reidemeister --no-reduction)"),
         ("--twist-max-basis", int, 1_000_000, None, "reduced basis ceiling for the optional twist backend"),
         ("--composition", str, "standard", ("standard", "component", "component-dense"),
@@ -86,8 +86,8 @@ OPTIONS = {
         ("--output", str, None, None, "write the JSON result to this file"),
     ],
     "khovanov": [
-        ("--reduction", str, "standard", ("standard", "residue", "adaptive", "disk-adaptive"),
-         "opt-in binary survivor prediction and degree-gap cancellation shortcut"),
+        ("--reduction", str, "standard", ("standard", "residue", "adaptive", "disk-adaptive", "graded", "graded-adaptive"),
+         "chain cancellation strategy, including optional survivor and full-transfer policies"),
         ("--twist", None, False, None, "compute a checked source braid through twist blocks"),
         ("--twist-max-basis", int, 1_000_000, None, "reduced basis ceiling for the optional twist backend"),
         ("--composition", str, "standard", ("standard", "component", "component-dense"),
@@ -220,6 +220,9 @@ def main(argv: list[str] | None = None) -> int:
             print(f"invalid Jones options: {exc}", file=sys.stderr)
             return 2
     if args.command in ("recognize", "khovanov"):
+        if args.reduction in ("graded", "graded-adaptive") and getattr(args, "window_radius", None) is not None:
+            print("graded reduction cannot be combined with --window-radius", file=sys.stderr)
+            return 2
         if args.reduction != "standard" and (
                 args.pivot != "minfill" or args.algebra != "bits" or args.race != 1
                 or getattr(args, "backend", "standard") != "standard"

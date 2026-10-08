@@ -1,0 +1,26 @@
+\begin{center}\small
+\begin{tabular}{lrrrr}
+\toprule
+Case & Old/eager & Old/adaptive & A/A & Adaptive switches\\
+\midrule
+hard\_unknot\_8 & 0.689 & 0.957 & 0.998 & 0\\
+conway & 0.557 & 0.920 & 0.929 & 0\\
+kinoshita\_terasaka & 0.616 & 0.980 & 1.019 & 0\\
+unknot\_braid40 & 0.633 & 0.886 & 0.984 & 0\\
+stress\_braid5\_36 & 0.260 & 0.942 & 1.021 & 0\\
+synthetic 16 & 0.888 & 0.741 & 0.999 & 1\\
+synthetic 32 & 1.909 & 1.582 & 0.992 & 1\\
+synthetic 64 & 4.968 & 4.174 & 1.008 & 1\\
+synthetic 128 & 13.180 & 11.266 & 1.015 & 1\\
+\bottomrule
+\end{tabular}
+\end{center}
+Ratios above one favor the new policy. Each is a median of paired ratios.
+The five actual diagrams invoke zero adaptive transfers. Eager transfer slows
+all five raw scans; tracking the grading also adds overhead to adaptive scans.
+The largest synthetic case gains $13.18\times$ eagerly and $11.27\times$
+adaptively, retaining a nonzero dotted minimal differential. The smallest
+synthetic case regresses. A/A ratios range from 0.929 to 1.021 across all
+cases, so small changes should not be treated as reliable improvements.
+No end-to-end recognition gain on the actual-diagram controls is established.
+The raw measurements are in \code{fast/results/graded\_transfer\_20261008.json}.
