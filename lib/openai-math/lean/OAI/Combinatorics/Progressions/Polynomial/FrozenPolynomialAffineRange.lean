@@ -1,5 +1,8 @@
-/- Modified for ProveIt: import Lean 4.32 compatibility declarations.
-Statements and proofs are unchanged from the pinned upstream source. -/
+/-
+Modified for ProveIt: import Lean 4.32 compatibility declarations and use
+zero_mul for the zero coefficient on the left in polynomialFamily_eval_mem.
+All theorem statements are unchanged from the pinned upstream source.
+-/
 import OAI.Compat.Core
 import OAI.Combinatorics.Progressions.Lattices.IntegerFrozenChart
 import OAI.Combinatorics.Progressions.Linear.AllocatedModularRankCongruenceOutput
@@ -63,7 +66,7 @@ theorem polynomialFamily_eval_mem {J τ R : Type*} [Fintype J] [CommRing R]
     · intro α _ hα
       have hz : (P j).coeff α = 0 := by
         simpa only [mem_support_iff, not_not] using hα
-      rw [hz, mul_zero]
+      rw [hz, zero_mul]
   have he' : (fun j => MvPolynomial.eval x (P j)) =
       ∑ α ∈ S, (α.prod fun i n => x i ^ n) • (fun j => (P j).coeff α) := by
     funext j

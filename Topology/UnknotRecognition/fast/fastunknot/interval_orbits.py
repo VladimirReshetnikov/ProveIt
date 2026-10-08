@@ -95,6 +95,7 @@ class OrbitResult:
     orbits: int | None
     cycles: int
     stats: dict[str, int]
+    certificate: dict | None = None
 
 
 def _validate(n, pairings, max_cycles, periodic_rule):
@@ -195,7 +196,8 @@ def _transmit(pair, carrier):
 
 def count_orbits(n: int, pairings: Iterable[IntervalPairing], *,
                  max_cycles: int | None = None,
-                 periodic_rule: str = 'fine_wilf', check=None) -> OrbitResult:
+                 periodic_rule: str = 'fine_wilf', check=None,
+                 record_certificate: bool = False) -> OrbitResult:
     """Count components of an interval equivalence relation, without expansion.
 
     On budget exhaustion, ``complete`` is false and ``orbits`` is None.
@@ -204,11 +206,21 @@ def count_orbits(n: int, pairings: Iterable[IntervalPairing], *,
     An optional ``check()`` callback is called on entry, at each cycle, and
     during scans.  Its exceptions propagate, permitting cooperative deadlines
     or cancellation without disguising either as an ordinary resource result.
+    Optional local-reduction certificates replay independently with
+    interval_orbit_verify.verify_orbit_certificate. Version 2 admits the sharp
+    merger; version 1 retains the classical threshold. Use integer_codec.json_safe
+    when serializing binary integers beyond Python's decimal conversion limit.
+    Incomplete runs never return a certificate or a partial orbit count.
     """
     checkpoint = check if check is not None else lambda: None
     checkpoint()
+    if type(record_certificate) is not bool:
+        raise ValueError('record_certificate must be bool')
     pairs = _validate(n, pairings, max_cycles, periodic_rule)
     initial_n, initial_k = n, len(pairs)
+    initial_rows = [[p.a, p.b, p.c, p.d, -1 if p.reverse else 1]
+                    for p in pairs] if record_certificate else None
+    operations = [] if record_certificate else None
     stats = {'initial_pairings': initial_k, 'input_bits': n.bit_length(),
              'identity_deletions': 0, 'static_points': 0, 'contractions': 0,
              'trims': 0, 'mergers': 0, 'pair_tests': 0, 'transmissions': 0,
@@ -219,15 +231,34 @@ def count_orbits(n: int, pairings: Iterable[IntervalPairing], *,
         if max_cycles is not None and cycles >= max_cycles:
             return OrbitResult(False, None, cycles, stats)
         cycles += 1
+        if operations is not None:
+            operations.extend({'op': 'delete', 'index': i}
+                              for i in range(len(pairs) - 1, -1, -1)
+                              if pairs[i].identity)
         retained = [p for p in pairs if not p.identity]
         stats['identity_deletions'] += len(pairs) - len(retained)
         pairs = retained
         if not pairs:
+            if operations is not None:
+                operations.append({'op': 'contract', 'gaps': [[0, n - 1]]})
             total += n
             stats['static_points'] += n
             stats['contractions'] += 1
             n = 0
             break
+        if operations is not None:
+            # Record the original gaps; replay computes them independently.
+            gaps, end = [], 0
+            for lo, hi in sorted((lo, hi) for p in pairs
+                                 for lo, hi in ((p.a, p.b), (p.c, p.d))):
+                checkpoint()
+                if lo > end:
+                    gaps.append([end, lo - 1])
+                end = max(end, hi + 1)
+            if end < n:
+                gaps.append([end, n - 1])
+            if gaps:
+                operations.append({'op': 'contract', 'gaps': gaps})
         n, pairs, removed = _contract(n, pairs)
         total += removed
         if removed:
@@ -236,6 +267,8 @@ def count_orbits(n: int, pairings: Iterable[IntervalPairing], *,
         for i, pair in enumerate(pairs):
             checkpoint()
             if pair.reverse and pair.b >= pair.c:
+                if operations is not None:
+                    operations.append({'op': 'trim', 'index': i})
                 pairs[i] = _trim(pair)
                 stats['trims'] += 1
         while True:
@@ -252,6 +285,8 @@ def count_orbits(n: int, pairings: Iterable[IntervalPairing], *,
                     merged = periodic_merge(pairs[i], pairs[j],
                                             periodic_rule=periodic_rule)
                     if merged is not None:
+                        if operations is not None:
+                            operations.append({'op': 'merge', 'left': i, 'right': j})
                         pairs[i] = merged
                         pairs.pop(j)
                         stats['mergers'] += 1
@@ -268,6 +303,18 @@ def count_orbits(n: int, pairings: Iterable[IntervalPairing], *,
         for i, pair in enumerate(pairs):
             checkpoint()
             if i != index and carrier.c <= pair.c and pair.d <= carrier.d:
+                if operations is not None:
+                    domain_moves = carrier.c <= pair.a <= pair.b <= carrier.d
+                    if carrier.reverse:
+                        source_power, target_power = int(domain_moves), 1
+                    else:
+                        period = carrier.c - carrier.a
+                        target_power = (pair.c - carrier.c) // period + 1
+                        source_power = ((pair.a - carrier.c) // period + 1
+                                        if domain_moves else 0)
+                    operations.append({'op': 'transmit', 'transmitter': index,
+                                       'target': i, 'source_power': source_power,
+                                       'target_power': target_power})
                 pairs[i] = _transmit(pair, carrier)
                 stats['transmissions'] += 1
         # Canonical ranges contain each pairing's rightmost endpoint.  The
@@ -278,6 +325,8 @@ def count_orbits(n: int, pairings: Iterable[IntervalPairing], *,
         if not carrier.c <= cut < n or carrier.d != n - 1:
             raise AssertionError('AHT transmission did not expose a suffix')
         removed = n - cut
+        if operations is not None:
+            operations.append({'op': 'truncate', 'index': index, 'new_size': cut})
         if cut == carrier.c:
             pairs.pop(index)
         elif carrier.reverse:
@@ -291,7 +340,10 @@ def count_orbits(n: int, pairings: Iterable[IntervalPairing], *,
         stats['truncated_points'] += removed
     if stats['static_points'] + stats['truncated_points'] != initial_n:
         raise AssertionError('interval accounting failed')
-    return OrbitResult(True, total, cycles, stats)
+    certificate = (dict(version=2 if periodic_rule == 'fine_wilf' else 1,
+                        size=initial_n, pairings=initial_rows, orbit_count=total,
+                        operations=operations) if record_certificate else None)
+    return OrbitResult(True, total, cycles, stats, certificate)
 
 
 @dataclass(frozen=True, slots=True)

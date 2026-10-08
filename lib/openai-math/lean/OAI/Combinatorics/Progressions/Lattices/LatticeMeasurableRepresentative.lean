@@ -1,3 +1,8 @@
+/-
+Modified for ProveIt: use Set.restrict, the Mathlib 4.32 name for the
+domain restriction in the measurable fundamental-domain representative.
+All theorem statements are unchanged from the pinned upstream source.
+-/
 import Mathlib.Algebra.Module.ZLattice.Basic
 import Mathlib.MeasureTheory.Constructions.Polish.Basic
 
@@ -32,7 +37,7 @@ theorem exists_measurable_representative_zspan (b : Basis I ℝ E) :
       simpa only [hsymm] using hxy
     exact congrArg Subtype.val (e.symm.injective he)
   have hfun : (e.symm : ZSpan.fundamentalDomain b → _) =
-      (ZSpan.fundamentalDomain b).domRestrict
+      (ZSpan.fundamentalDomain b).restrict
         (QuotientAddGroup.mk' (Submodule.span ℤ (Set.range b)).toAddSubgroup) :=
     funext hsymm
   have hem : MeasurableEmbedding (e.symm : ZSpan.fundamentalDomain b → _) := by

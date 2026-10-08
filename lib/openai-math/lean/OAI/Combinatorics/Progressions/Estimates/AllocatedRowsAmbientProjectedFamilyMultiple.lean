@@ -1,5 +1,9 @@
-/- Modified for ProveIt: import Lean 4.32 compatibility declarations.
-Statements and proofs are unchanged from the pinned upstream source. -/
+/-
+Modified for ProveIt: import Lean 4.32 compatibility declarations and supply
+the Euclidean jet-layer opens-measurable instance explicitly in
+physicalRowsProjectedMean_measurable to avoid a typeclass-search timeout.
+All theorem statements are unchanged from the pinned upstream source.
+-/
 import OAI.Compat.Isometry
 import OAI.Combinatorics.Progressions.Fourier.NormalizedTwistSingleSiteFourierHaar
 import OAI.Combinatorics.Progressions.Probability.AllocatedAmbientProjectedDensityMultiple
@@ -66,6 +70,8 @@ noncomputable def physicalRowsProjectedMean (law : FiniteProbabilityWeights Y) (
 
 theorem physicalRowsProjectedMean_measurable (hg : ∀ a, Measurable (g a)) :
     Measurable (physicalRowsProjectedMean U law g) := by
+  let : OpensMeasurableSpace (EuclideanJetLayers U Row) :=
+    @BorelSpace.opensMeasurable _ _ _ (euclideanJetLayers_borel U)
   unfold physicalRowsProjectedMean FiniteProbabilityWeights.complexMean
   exact Finset.measurable_sum Finset.univ (fun a _ =>
     ((hg a).comp (physicalRowsToStandard_continuous U).measurable).complex_ofReal.const_mul _)
