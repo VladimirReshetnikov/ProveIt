@@ -1,5 +1,7 @@
 /- Modified for ProveIt: import Lean 4.32 compatibility declarations.
-Statements and proofs are unchanged from the pinned upstream source. -/
+Use weightedHomogeneousSubmodule.sub_mem for chart homogeneity because
+the newer IsWeightedHomogeneous.sub lemma is unavailable.
+All upstream theorem statements are unchanged. -/
 import OAI.Compat.Core
 import Mathlib.Algebra.MvPolynomial.Funext
 import OAI.Combinatorics.Progressions.Estimates.RationalTaggedConstraintHistory
@@ -364,7 +366,8 @@ theorem fullTaggedMajorChart_homogeneous
   | inl x =>
     exact (isWeightedHomogeneous_X (R := ℝ) (fullTaggedVariableWeight J) (Sum.inl x)).C_mul _
   | inr a =>
-    apply (isWeightedHomogeneous_X (R := ℝ) (fullTaggedVariableWeight J) (Sum.inr a)).sub
+    apply (weightedHomogeneousSubmodule ℝ (fullTaggedVariableWeight J) (a.1.val + 1)).sub_mem
+      (isWeightedHomogeneous_X (R := ℝ) (fullTaggedVariableWeight J) (Sum.inr a))
     apply majorParameterRename_homogeneous (fun _ : X => 1)
       (fun a : Σ j, J j => a.1.val + 1)
     exact weightedHomogeneousComponent_isWeightedHomogeneous _ _

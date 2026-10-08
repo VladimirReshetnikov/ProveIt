@@ -1,3 +1,7 @@
+/-
+Modified for ProveIt: use MvPolynomial.coeff_add in the denominator-grid
+addition proof on Lean 4.32. Both upstream theorem statements are unchanged.
+-/
 import Mathlib.Algebra.MvPolynomial.CommRing
 import OAI.Combinatorics.Progressions.Sampling.RationalSpanGrid
 
@@ -26,7 +30,7 @@ theorem add_integerPolynomial_coefficientGrid (R : MvPolynomial σ ℚ)
   refine ⟨fun α => z α + (q : ℤ) * I.coeff α, fun α => ?_⟩
   change (q : ℚ) * (R + map (Int.castRingHom ℚ) I).coeff α = _
   have hα : (q : ℚ) * R.coeff α = (z α : ℚ) := hz α
-  simp only [AddMonoidAlgebra.coeff_add, Finsupp.add_apply, coeff_map, Int.cast_add,
+  simp only [MvPolynomial.coeff_add, coeff_map, Int.cast_add,
     Int.cast_mul, Int.cast_natCast, mul_add, hα]
   rfl
 
