@@ -1,0 +1,119 @@
+{
+  "schema": "proveit-research-claims-v1",
+  "title": "Exact Cobordism Contraction and Succinct Block Cancellation",
+  "date": "2026-10-07",
+  "status": "research draft with mathematical proofs and executable checks",
+  "general_quasipolynomial_unknot_recognition_established": false,
+  "literature_wide_priority_claim": false,
+  "formal_proof_assistant_verification": false,
+  "claims": [
+    {
+      "id": "component-factorization",
+      "statement": "Every compiled genus-zero plan factors through the square-free component algebra.",
+      "status": "proved and implemented",
+      "article": "Theorem 3.1",
+      "code": "src/unknot_frobenius/kernel.py"
+    },
+    {
+      "id": "linearized-rank",
+      "statement": "Exact rank formula including fixed-dot and closed-component zero cases.",
+      "status": "proved and implemented",
+      "article": "Proposition 3.2"
+    },
+    {
+      "id": "minimal-quotient",
+      "statement": "For ordinary nonzero composition plans, observational equivalence is exactly equality under component projection; worst-case encoding requires 2^c bits.",
+      "status": "proved",
+      "article": "Theorem 3.3",
+      "scope": "Fixed plan; not a universal compressed morphism representation."
+    },
+    {
+      "id": "dense-composition",
+      "statement": "Contraction costs poly(b)*2^b bit operations instead of the current dense Cartesian-pair enumeration.",
+      "status": "proved and implemented",
+      "article": "Theorem 4.2",
+      "attribution": "Fast subset convolution is the established Bjoerklund-Husfeldt-Kaski-Koivisto algorithm.",
+      "scope": "The asymptotic algorithmic family is uncapped; implementation has declared allocation limits."
+    },
+    {
+      "id": "matrix-inverse",
+      "statement": "A matrix over R_b is invertible iff its augmentation is; radical correction nilpotence exponent is at most b+1 and sharp.",
+      "status": "proved and implemented",
+      "article": "Theorem 5.1",
+      "warning": "Scalar self-inverse units do not imply self-inverse matrix units."
+    },
+    {
+      "id": "interface-schur",
+      "statement": "A small radical interface determines the Schur update via four exact contractions.",
+      "status": "proved and implemented",
+      "article": "Theorem 6.2",
+      "attribution": "Specialization of standard low-rank inverse and Schur identities."
+    },
+    {
+      "id": "succinct-cancellation",
+      "statement": "Supplied product-tensor interface maps permit exact cancellation without enumerating 2^m hidden generators.",
+      "status": "proved and implemented",
+      "article": "Theorem 7.2 and Corollary 7.3",
+      "scope": "Same-matching structured algebraic input; no general conversion from a knot diagram supplied."
+    },
+    {
+      "id": "separable-background",
+      "statement": "A tensor product of invertible local backgrounds preserves product-tensor term counts under inverse application.",
+      "status": "proved and implemented",
+      "article": "Corollary 7.4"
+    },
+    {
+      "id": "cp-obstruction",
+      "statement": "An explicit equality tensor requires exponentially many product terms under the specified flattening.",
+      "status": "proved",
+      "article": "Proposition 8.1",
+      "scope": "Representation obstruction; not exhibited as a knot-complex family or lower bound for arbitrary representations."
+    },
+    {
+      "id": "bonded-extension",
+      "statement": "Common-order bounded-bond tensors admit polynomial-size exact pairings.",
+      "status": "proved but not implemented",
+      "article": "Proposition 8.2"
+    },
+    {
+      "id": "global-accounting",
+      "statement": "Quasi-polynomial recognition follows only after bounded descriptions, transitions, schedule construction, and decision certificates are supplied.",
+      "status": "conditional accounting theorem",
+      "article": "Theorem 9.2",
+      "missing_hypotheses_established": false
+    },
+    {
+      "id": "benchmarks",
+      "statement": "Paired finite measurements show dense-kernel improvements and sparse regressions. Ordinary diagram scans did not enter the dense path.",
+      "status": "measured",
+      "artifacts": [
+        "results/micro.json",
+        "results/scans.json",
+        "results/interfaces.json",
+        "results/succinct.json"
+      ],
+      "scope": "Source-derived current-engine fixtures, shared environment; not a production speedup guarantee."
+    },
+    {
+      "id": "validation",
+      "statement": "29 test methods passed, including exhaustive ring products, independent composition/scan checks, matrix and tensor checks.",
+      "status": "executed",
+      "artifact": "results/tests.log",
+      "complete_current_repository_suite_run": false
+    },
+    {
+      "id": "large-example",
+      "statement": "The 2^40-dimensional structured algebraic certificate verifies via a 3-by-3 core.",
+      "status": "executed",
+      "artifact": "results/certificate_verification.json",
+      "unknot_verdict": null
+    }
+  ],
+  "integration": {
+    "suggested_path": "Topology/UnknotRecognition/research/frobenius-contraction/",
+    "default_switch_recommended": false,
+    "external_checkout_test_command": "python integration/check_checkout.py --fast-dir PATH_TO_FAST",
+    "external_checkout_command_executed": false
+  },
+  "further_research": "Twelve explicit questions and milestones in Section 12 of docs/article.pdf."
+}
