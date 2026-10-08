@@ -46,7 +46,7 @@ def _automaton(word, budget):
 def overlap_move(words, budget):
     """Return a largest guaranteed shortening, or None; no substring expansion.
 
-    O(m L) dictionary operations for m nonempty relators of total length L,
+    O(n + m L) dictionary operations for n slots, m nonempty relators and total length L,
     and O(L) auxiliary space. Signed letters are exact Python integers.
     Matches are capped at both cyclic word lengths; multiple wraps cannot
     masquerade as occurrences. Ties follow donor, sign, target, scan order.

@@ -1,4 +1,8 @@
-"""Paired full-query comparison of Whitehead, overlap and normal-surface search."""
+"""Paired full-query comparison of Whitehead, adaptive overlap and normal search.
+
+The overlap-first checkpoint and its original results are preserved at
+772b24bca. Current runs use the rank-adaptive dispatcher.
+"""
 import argparse
 from importlib.metadata import version
 import json
@@ -57,6 +61,7 @@ def main():
     args.output.write_text(json.dumps(dict(python=sys.version, platform=platform.platform(),
         regina_distribution=version('regina'), seed=2673, measured_rounds=5, excluded_warmups=1,
         global_seconds=4, group_seconds=2, group_max_work=10000000, normal_seconds=2, max_objects=50000,
+        overlap_policy='Whitehead first at <=6 surviving generators; overlaps first above six',
         timing='fresh validated PD plus entire query, including independent group replay or native startup',
         censoring='UNKNOWN means the query did not finish under its resource limits', rows=rows), indent=2)+'\n')
 

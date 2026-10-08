@@ -175,14 +175,22 @@ def group_certificate(diagram, *, check=lambda: None, max_letters=200000, max_wo
             alive.remove(g)
             moves.append(dict(kind='eliminate', relation=index, generator=g))
         else:
-            if relator_moves:
+            # Small-rank cuts are cheap, and preserve the earlier successful
+            # paths. At larger rank, try linear-space overlap matching before
+            # paying for one flow per signed generator. Six is an empirical
+            # dispatch threshold, not a theorem about presentation complexity.
+            whitehead = (_whitehead_move(words, budget)
+                         if not relator_moves or len(alive) <= 6 else None)
+            if relator_moves and (whitehead is None or whitehead[0] >= 0):
                 from .relator_overlap import overlap_move, apply_overlap
                 move = overlap_move(words, budget)
                 if move is not None:
                     apply_overlap(words, move, budget, _reduce)
                     moves.append(move)
                     continue
-            change, a, subset = _whitehead_move(words, budget)
+            if whitehead is None:
+                whitehead = _whitehead_move(words, budget)
+            change, a, subset = whitehead
             if change >= 0:
                 return None
             before = sum(map(len, words))

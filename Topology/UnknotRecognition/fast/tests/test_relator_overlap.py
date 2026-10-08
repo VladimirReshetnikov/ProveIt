@@ -82,6 +82,13 @@ class RelatorOverlapTests(unittest.TestCase):
             self.assertTrue(verify_group_certificate(d, c, max_work=10000000))
 
     def test_stalled_mirrors_and_small_knots(self):
+        # Existing successful small-rank paths keep their exact old traces;
+        # overlap matching is deferred until Whitehead search actually stalls.
+        for _, strands, word in SURVIVORS:
+            d, _ = simplify(Diagram.from_braid(strands, word), r3=True)
+            with patch('fastunknot.relator_overlap.overlap_move', side_effect=AssertionError):
+                c = group_certificate(d, relator_moves=True)
+            self.assertEqual(c, group_certificate(d))
         for i in (3, 8):
             d = mirror(i)
             self.assertIsNone(group_certificate(d))
