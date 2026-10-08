@@ -1,9 +1,9 @@
-\section{The model and the classical component input}\label{sec:model}
+\section{The model and the classical component input}\label{sfh:sec:model}
 An admissible hypergraph is a set of distinct $3$-subsets of $[n]$ such that any two distinct hyperedges have intersection of size $0$ or $2$. Labels are distinguished; no quotient by vertex permutations is taken. Isolated vertices are allowed in $A_n$ and forbidden in $B_n$, with $A_0=B_0=1$. We use the uniform probability measure on the $A_n$ objects and write $\PP_n,\E_n$ for its probability and expectation.
 
 Andrew Howroyd's comments of 18 August 2019 in OEIS A323296 and A323297 give the component decomposition and the exponential generating functions used here \cite{oeis296,oeis297}. The connected count is the related sequence A323294, whose eventual formula is credited to Gus Wiseman \cite{oeis294}. We include the short classification to fix every small-size multiplicity.
 
-\begin{proposition}[Component classification]\label{prop:class}
+\begin{proposition}[Component classification]\label{sfh:prop:class}
 Every nontrivial connected component is a single edge, a pair-star consisting of all triples formed by adjoining one of its other vertices to a common pair, or a three- or four-edge hypergraph on four vertices. On a fixed labelled $m$-set the connected counts are
 \[
  c_1=1,\qquad c_2=0,\qquad c_3=1,\qquad c_4=11,\qquad
@@ -21,8 +21,8 @@ Let $\De=z\,\dd/\dd z$ and set
 \begin{align}
  C(z)&=\sum_{m\ge1}c_m\frac{z^m}{m!}
  =z-\frac{z^2}{2}-\frac{z^3}{3}+\frac{5z^4}{24}
-       +\frac{z^2e^z}{2},\label{eq:C}\\
- A_n&=n![z^n]e^{C(z)},\qquad B_n=n![z^n]e^{C(z)-z}.\label{eq:AB}
+       +\frac{z^2e^z}{2},\label{sfh:eq:C}\\
+ A_n&=n![z^n]e^{C(z)},\qquad B_n=n![z^n]e^{C(z)-z}.\label{sfh:eq:AB}
 \end{align}
 Although the last expression for $C$ includes negative polynomial terms, its power-series coefficients are nonnegative. This distinction matters when using characteristic-function domination. Write
 \[
@@ -30,7 +30,7 @@ Although the last expression for $C$ includes negative polynomial terms, its pow
  U(z)=z-\frac{z^2}{2}-\frac{z^3}{3}+\frac{5z^4}{24}.
 \]
 The exact positive saddle $r=r_n$ is defined by
-\begin{equation}\label{eq:saddle}
+\begin{equation}\label{sfh:eq:saddle}
  \De C(r)=n,\qquad \kappa_j=\De^j C(r),\qquad b=\kappa_2,
  \qquad \eps=\frac rn.
 \end{equation}
@@ -40,7 +40,7 @@ It exists uniquely for $n>0$, since $\De C$ is strictly increasing from zero to 
 Let $K$ be the number of components, including isolates, and $E$ the number of hyperedges. Let $S,T_3,T_4$ count, respectively, isolated vertices, three-edge tetrahedral components, and complete four-edge tetrahedral components. Put $X=(S,T_3,T_4)$. The components counted by $T_3,T_4$ will be called nonsunflower components: all other nontrivial components have a common pair, with the single-edge case interpreted separately.
 
 The contribution of a component with $m$ vertices and $e$ edges to $E+2K-n$ is $e+2-m$. It is zero on every single edge and pair-star, one on an isolate or a three-edge tetrahedron, and two on a complete tetrahedron. Hence the exact identity is
-\begin{equation}\label{eq:defect}
+\begin{equation}\label{sfh:eq:defect}
  \defect:=E+2K-n=S+T_3+2T_4.
 \end{equation}
 For example, the connected EGF marked by its number of edges is
@@ -48,7 +48,131 @@ For example, the connected EGF marked by its number of edges is
  z+\frac{vz^3}{6}+\frac{z^2}{2}(e^{vz}-1-vz)
       +\frac{(4v^3+v^4)z^4}{24}.
 \]
-Multiplying this connected series by a component marker and exponentiating yields the joint edge/component EGF. The simpler identity \eqref{eq:defect} explains why treating the raw pair $(K,E)$ as a nondegenerate bivariate Gaussian would miss an entire fluctuation scale.
+Multiplying this connected series by a component marker and exponentiating yields the joint edge/component EGF. The simpler identity \eqref{sfh:eq:defect} explains why treating the raw pair $(K,E)$ as a nondegenerate bivariate Gaussian would miss an entire fluctuation scale.
 
 \subsection{Scope and attribution}
 Hayman's method and its complete-expansion refinements, notably Harris--Schoenfeld and Odlyzko--Richmond, supply the established analytic setting \cite{odlyzko}. Refined independent Poisson conditioning and exact total-variation likelihood identities are likewise prior tools of Arratia--Tavar\'e \cite{arratia}. The results below specialize these frameworks with explicit coefficients and remainders, a sharp exceptional-vector constant, rare-deletion corrections, and projected marked laws. The forbidden-intersection extremal literature studies a different question, the maximum number of edges \cite{keevash}. A bounded source review did not identify this exact package of refinements, but no exhaustive novelty or priority assertion is intended.
+
+\subsection{Provenance, sources and reading conventions}\label{sfh:sec:provenance}
+\begin{writenote}[Added 7 October 2026, batch~113]\raggedright
+\emph{Provenance.} This report is Report~240 of the session bundle that
+ProveIt's \file{docs/incoming} intake processed as batch~113: the archive
+\file{Report240.zip} ($601{,}277$ bytes, 30 files, wrapper directory
+\file{Report240/}), arrival commit \file{60f54ea06}, placed in
+\file{a4186a946}. The text is the delivered \file{article.tex} (52 lines)
+with its twelve \verb|\input| files under \file{sections/} (21 pages, dated
+5~October 2026), shipped under the same names. The programs are shipped under
+\file{code/} (the delivered root \file{build.py} as \file{code/build.py}); the
+four receipts, delivered in \file{code/}, and the requirements under
+\file{data/}; \file{COMPUTATION.md} and \file{SOURCES.md} as delivered. Not
+shipped, and retrievable from the arrival commit: the delivered
+\file{Report240.pdf}, the checksum manifest \file{MANIFEST.sha256} (29
+entries, all verified at the write) and the delivered \file{README.md}, which
+the report README replaces. The package records no ProveIt commit; it carries
+no ``prepared for private review'' line and no personal data. It is a
+single-source report, so no merge choice was made. The write prefixed the
+83 delivered labels with \file{sfh:} and updated the references to them
+(71 \verb|\eqref|, 15 \verb|\ref|); it added this subsection, the notes marked [write] and
+Remarks~\ref{sfh:rem:transseries} and~\ref{sfh:rem:oeis}, each the last
+statement of its section, and inserted no numbered display, so every section,
+theorem and equation of the source keeps its delivered number.
+
+\emph{The sources, as the write read them} (7~October 2026): OEIS A323297,
+A323296 and A323294 in the internal format, with their b-files
+(Remark~\ref{sfh:rem:oeis}); the transseries volume
+\path{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex}
+(\file{p0:def:model}, \file{p0:def:three-inverses}, \file{p0:thm:staircase},
+\file{plt:def:lw-monomial-log-datum}, \file{plt:thm:lw-template}). Not read by
+the write: Odlyzko--Richmond, Arratia--Tavar\'e and Keevash--Mubayi--Wilson;
+the source's account of them (Section~\ref{sfh:sec:model} and
+\file{SOURCES.md}) is reported, not confirmed.
+
+\emph{What was checked at intake.} The batch-113 dossier read the manuscript,
+found no demonstrably wrong claim and reran the delivered suite on a copy (it
+reproduces apart from Windows path tests). \emph{What the write checked.} It
+read every proof and found no error. With its own code (Python 3.14.4, exact
+integers and fractions; SymPy 1.14.0; mpmath 1.3.0 at 30--50 digits), not
+importing the delivered programs, it
+\begin{itemize}\raggedright
+\item computed $A_n$, $B_n$ by~\eqref{sfh:eq:recurrence} for $n\le1200$, equal
+to all 201 terms of the b-files of A323297 and A323296, and the connected
+counts $c_m$, equal to all 1001 terms of A323294; $A_n$ again by the second
+route of Section~\ref{sfh:sec:computation} for $n\le60$; the series
+identity~\eqref{sfh:eq:C}; and, by enumerating every admissible edge set for
+$n\le8$, $A_n$, $B_n$, the connected counts and the defect
+identity~\eqref{sfh:eq:defect} on every object;
+\item derived~\eqref{sfh:eq:E1}, \eqref{sfh:eq:E2} and $\De E_1$ from the
+contraction rule~\eqref{sfh:eq:Eell} symbolically, with the odd orders
+vanishing; the recurrence~\eqref{sfh:eq:P}; the identity for $V$ before
+\eqref{sfh:eq:schurscales}; the expansion of $g$ and, by its own series
+reversal of~\eqref{sfh:eq:logreversal}, both corrections
+in~\eqref{sfh:eq:rinverse} and all three in~\eqref{sfh:eq:reverse};
+\item evaluated, at the exact saddle and for $n=100$ to $1200$ with exact
+$A_n$, the remainders of~\eqref{sfh:eq:coeff} for $J=0,1,2$ divided by
+$(r/n)^{J+1}$ (bounded: at most $0.19$, $0.0043$, $0.024$, decreasing), the
+deletion formulas~\eqref{sfh:eq:BA} and~\eqref{sfh:eq:nonsunflower} against
+exact $B_n/A_n$ and exact counts without tetrahedral components (remainders
+times $n^2/r^2$ and $n^2/r^{11}$ between $0.14$ and $0.21$, and between
+$-0.08$ and $-0.05$), and $\log A_n-n\,g(r)=O(r^5)$;
+\item recomputed the table of Section~\ref{sfh:sec:computation} from the exact
+conditioning formula~\eqref{sfh:eq:exacth} and exact moments of~$K$ (note
+there), and checked $\E|1-Z^2|=4\phi(1)$ by quadrature; the component sums
+behind~\eqref{sfh:eq:means}, \eqref{sfh:eq:W}, \eqref{sfh:eq:dmeans} and the
+deletion coefficients of~\eqref{sfh:eq:nonsunflower}, \eqref{sfh:eq:BA} by
+hand.
+\end{itemize}
+It reran, on a fresh copy of the delivered layout, \file{exact_counts.py},
+\file{symbolic_coefficients.py} and \file{diagnostics.py} (normal and
+\texttt{-O}): the receipts equal the shipped ones as JSON. The guard suite
+stops on Windows with ``backslash output components are forbidden'', a path
+test, not a mathematical failure. The PDF and ZIP builder and
+\file{reproduce_zip.py} were not run. Floating computations are observations,
+not certificates.
+
+\emph{Relation to the repository.} Before batch~113 no file of the repository
+named A323297, A323296 or A323294, and no report of the collection treats
+intersection-restricted hypergraphs; no result is shared and no reciprocal
+note is proposed. No Lean or Rocq file treats these sequences; no statement of
+this report is formalized, and its place in the collection confers no formal
+status. The inverse is compared with the transseries volume in
+Remark~\ref{sfh:rem:transseries}.
+\end{writenote}
+\begin{writenote}[What is not claimed, collected from the source]
+The component classification and the generating functions are prior
+(Howroyd, 2019; Wiseman's formula for the connected counts); Hayman's method
+with the Harris--Schoenfeld and Odlyzko--Richmond refinements and the
+conditioned Poisson and likelihood tools of Arratia--Tavar\'e are prior
+frameworks; the extremal question of Keevash--Mubayi--Wilson is different.
+No exhaustive novelty or priority claim. Not claimed: convergence of the
+expansion as $J\to\infty$; numerical values of $K_J$ or an onset; that
+rounding a computed inverse certifies a threshold; a canonical smooth
+interpolation of the sequence; relative accuracy from the coarse logarithmic
+inverse; total-variation convergence of a discrete count to a continuous
+law; growing deletions or growing Fourier parameters; any coupling across
+$n$ or almost-sure statement; that the diagnostics are certified.
+\emph{The write adds:} its checks are exact or floating computations; its
+transseries remark claims no novelty for any inversion.
+\end{writenote}
+\medskip
+\begingroup\small
+\noindent\emph{Reading conventions} (letters the source uses in more than one
+sense, with the tempting false readings; no symbol was renamed).\par\smallskip
+\renewcommand{\arraystretch}{1.1}
+\noindent\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.95in}>{\raggedright\arraybackslash}p{5.3in}@{}}
+\toprule
+Symbol & Meanings\\
+\midrule
+$A$, $B$, $b$ & $A_n$, $B_n$ the counts; $A_1(G)$ the first local correction in Lemma~\ref{sfh:lem:local}; $b=\kappa_2$ and $b_G$, $b_0$, $b_x$ its versions. \emph{False reading:} $A_1(G)$ is not the count $A_1$.\\
+$C$, $c$ & $C(z)$ the connected EGF, $C_0$, $C_B$ its deletions; $c_m$ connected counts; $c=\log2$ in Section~\ref{sfh:sec:inverse}; $c$, $c_0$, $C$ constants; $c_*=\frac{10}3\phi(1)$ in Section~\ref{sfh:sec:computation}.\\
+$E$, $\E$ & $E$ the number of hyperedges; $E_\ell$ the saddle corrections~\eqref{sfh:eq:Eell}; $\E$ expectation. \emph{False reading:} $E_1$ is a coefficient, not an edge count.\\
+$K$, $L$, $M$ & $K$ the number of components, $K_0$ in the hybrid proof, and $K_J$ the remainder constant of Theorem~\ref{sfh:thm:inverse}; $L=\log y$, $L_X=S+T_3+T_4$; $M$ the threshold in Theorem~\ref{sfh:thm:inverse} and $M=\sum jk_j$ in~\eqref{sfh:eq:Eell}.\\
+$N$ & $N$, $N_G$, $N_0$ Boltzmann total sizes; $N(M)$ the integer threshold.\\
+$P$, $Q$ & $P_j$ the polynomials~\eqref{sfh:eq:P}; $P(z)=z+5z^4/24$ in Section~\ref{sfh:sec:likelihood} and a general deleted polynomial in Section~\ref{sfh:sec:deletion} (the source says so); $Q$ a polynomial perturbation in Section~\ref{sfh:sec:fourier}, the product Poisson law~\eqref{sfh:eq:means}, and $Q_*$ a projected sum. \emph{False reading:} the law $Q$ is not the polynomial $Q$.\\
+$R$, $r$ & $R(X)$, $R_G$ remainders, $R_m$ the shift ratios~\eqref{sfh:eq:fixedshift}; $r$ the saddle, $r_x$, $r_W$, $r_B$ its versions.\\
+$S$, $T$ & $S$ the isolates and $S_J$ the partial sums; $T_3$, $T_4$ tetrahedral counts, $T$ the Schur complement~\eqref{sfh:eq:schur} and $T_0$ a parameter bound. \emph{False reading:} $T$ is not $T_3+T_4$.\\
+$V$, $v$, $W$ & $V$ the Schur variance~\eqref{sfh:eq:schur}, $V_W$, and $V_j$ phase terms; $v=\Var_QW$ and $v$ the edge marker in Section~1.1; $W$ the exceptional mass~\eqref{sfh:eq:W}.\\
+$d$, $\delta$, $\rho$ & $d$ the defect mean~\eqref{sfh:eq:dmeans}, the degree of $P$ in Theorem~\ref{sfh:thm:deletion}, $d_\alpha$ component defects; $\delta=W-\mu$ and the target displacement in Lemma~\ref{sfh:lem:local}; $\rho$ the correlation~\eqref{sfh:eq:schur} and the shifted saddle in Section~\ref{sfh:sec:deletion}.\\
+$\kappa_j$, $k_j$, $\eps$ & $\kappa_j=\De^jC(r)$; $k_j=\De^jG(r)$ for $G=C$ or $C_0$; $\eps=r/n$.\\
+\bottomrule
+\end{longtable}
+\endgroup

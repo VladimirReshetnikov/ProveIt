@@ -18,6 +18,11 @@
 \theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
 \theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
 \newcommand{\E}{\mathbb E}\newcommand{\PP}{\mathbb P}\newcommand{\R}{\mathbb R}\newcommand{\N}{\mathbb N}\newcommand{\ii}{\mathrm i}\newcommand{\dd}{\mathrm d}\newcommand{\eps}{\varepsilon}\newcommand{\ceil}[1]{\left\lceil #1\right\rceil}\newcommand{\TV}{d_{\mathrm{TV}}}\newcommand{\Pois}{\operatorname{Pois}}\newcommand{\Var}{\operatorname{Var}}\newcommand{\Cov}{\operatorname{Cov}}\newcommand{\Law}{\operatorname{Law}}\newcommand{\De}{\mathcal D}\newcommand{\defect}{\Delta}
+% Added in the write (batch 113, 7 October 2026).
+\newcommand{\file}[1]{\nolinkurl{#1}}
+\newenvironment{writenote}[1][]{\par\smallskip\begingroup\small
+ \noindent\textbf{[write]}\if\relax\detokenize{#1}\relax\else~\textbf{#1.}\fi\ }%
+ {\par\endgroup\smallskip}
 \begin{document}
 \begin{center}
 {\large Report \ReportNumber}\par\vspace{8pt}
@@ -32,6 +37,27 @@ Let $A_n$ count simple $3$-uniform hypergraphs on the labelled set $[n]$ in whic
 \]
 Separate saddle-shift estimates give relative probabilities of rare component-deletion events. Projecting away total vertex count resolves the nearly singular edge/component covariance: the component count has scale $\sqrt n/r$, while its edge-defect residual has the independent scale $r^2/\sqrt3$. A quantitative mixed Gaussian--Poisson test bound retains the entire exceptional vector without normalizing it. All results transfer to $B_n$ at its own saddle. Complete coefficient expansions and conditioned Poisson representations are classical frameworks; no priority claim, effective numerical onset, or discrete-to-continuous total-variation claim is made. Exact bounded checks, noncertified numerical diagnostics, and a reproducible source archive accompany the proofs.
 \end{abstract}
+\begin{writenote}[Status and trust boundary, added 7 October 2026, batch~113]
+This is bundle Report~240 of an external AI-assisted research session, filed
+in ProveIt as the single-source research report
+\file{a323297-singleton-free-hypergraphs} (provenance, the sources as the
+write read them, what was checked, relation to the repository, the collected
+non-claims and the reading conventions are in
+Section~\ref{sfh:sec:provenance}). It is unrefereed and not formalized. Its
+title page and PDF author field read ``Report 240'': it names no person or
+tool. \emph{What rests on what.} The component classification
+(Proposition~\ref{sfh:prop:class}) is proved in the text and agrees with
+Howroyd's generating functions in the OEIS; the conditioned Poisson
+representation and the likelihood reduction are Arratia--Tavar\'e's,
+correctly applied. Every asymptotic statement has a conventional proof:
+full-arc Fourier domination, saddle-point expansion with integrated Taylor
+remainders, local limit estimates, saddle shifts, Schur-complement
+projection, and the mean value theorem. No proof uses a computation; the
+exact checks corroborate finite identities and the floating diagnostics are
+illustrations. The write adds Remarks~\ref{sfh:rem:transseries}
+and~\ref{sfh:rem:oeis} and dated notes; no statement, proof or number of the
+source was changed.
+\end{writenote}
 \setcounter{tocdepth}{1}
 \begingroup\small\setlength{\parskip}{0pt}
 \makeatletter\renewcommand\l@section[2]{\@dottedtocline{1}{0em}{2em}{#1}{#2}}\makeatother

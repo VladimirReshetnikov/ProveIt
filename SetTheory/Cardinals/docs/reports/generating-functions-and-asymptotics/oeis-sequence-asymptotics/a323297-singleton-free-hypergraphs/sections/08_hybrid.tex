@@ -1,9 +1,9 @@
-\section{Hybrid independence and moment refinements}\label{sec:hybrid}
+\section{Hybrid independence and moment refinements}\label{sfh:sec:hybrid}
 A joint Gaussian limit for normalized exceptional counts would lose their discrete structure. The next statement keeps the entire growing-mean Poisson vector $X$ and tests it against every bounded function.
 
-\begin{theorem}[Mixed Gaussian--Poisson test bound]\label{thm:hybrid}
+\begin{theorem}[Mixed Gaussian--Poisson test bound]\label{sfh:thm:hybrid}
 For every fixed $T_0$ and every complex function $g$ on $\N_0^3$ with $|g|\le1$,
-\begin{align}\label{eq:hybrid}
+\begin{align}\label{sfh:eq:hybrid}
  \sup_{|t|\le T_0}\left|
  \E_n\!\left[e^{\ii t(K-C(r))/\sqrt V}g(X)\right]
       -e^{-t^2/2}\E_Qg(X)\right|
@@ -14,51 +14,51 @@ with a constant uniform over $g$.
 This is a mixed characteristic-function/total-variation test class. It does not assert total-variation convergence of a discrete component count to a continuous Gaussian, which would be false.
 
 \begin{proof}
-On $|W-\mu|\le r^3$, condition on $X$. The remaining assembly has EGF $e^{C_0}$ and size $n-W$; let $r_W$ be its own saddle. The monotonic bracketing and Taylor argument used in \eqref{eq:shift}, now allowing either sign, gives uniformly
-\begin{equation}\label{eq:rW}
+On $|W-\mu|\le r^3$, condition on $X$. The remaining assembly has EGF $e^{C_0}$ and size $n-W$; let $r_W$ be its own saddle. The monotonic bracketing and Taylor argument used in \eqref{sfh:eq:shift}, now allowing either sign, gives uniformly
+\begin{equation}\label{sfh:eq:rW}
  \log(r_W/r)=-\frac{W-\mu}{b_0}
        +O\left(\frac{r(W-\mu)^2}{b_0^2}\right),
  \qquad b_0=\De^2C_0(r).
 \end{equation}
-In particular $r_W/r\to1$ and $n-W\sim n$ uniformly. The one-dimensional projected Fourier proof from Section~\ref{sec:gaussian}, with $q_\alpha$ omitted, applies to this remaining assembly with uniform constants. Its component count $K_0$ has a Gaussian characteristic approximation centered at $C_0(r_W)$, with variance
+In particular $r_W/r\to1$ and $n-W\sim n$ uniformly. The one-dimensional projected Fourier proof from Section~\ref{sfh:sec:gaussian}, with $q_\alpha$ omitted, applies to this remaining assembly with uniform constants. Its component count $K_0$ has a Gaussian characteristic approximation centered at $C_0(r_W)$, with variance
 \[
  V_W=C_0(r_W)-\frac{[\De C_0(r_W)]^2}{\De^2C_0(r_W)}
 \]
 and error $O_{T_0}(\sqrt{r/n})$.
 
-Write $L_X=S+T_3+T_4$ and $\Lambda=\E_QL_X=r+5r^4/24$. Taylor expansion using \eqref{eq:rW} gives
-\begin{align}\label{eq:meanshift}
+Write $L_X=S+T_3+T_4$ and $\Lambda=\E_QL_X=r+5r^4/24$. Taylor expansion using \eqref{sfh:eq:rW} gives
+\begin{align}\label{sfh:eq:meanshift}
  L_X+C_0(r_W)-C(r)
  ={}&L_X-\Lambda-\frac{n-\mu}{b_0}(W-\mu)\nonumber\\
  &+O\left(\frac{(W-\mu)^2}{nr}\right),
 \end{align}
 and uniformly on this window,
-\begin{equation}\label{eq:VW}
+\begin{equation}\label{sfh:eq:VW}
  \frac{V_W}{V}=1+O(r^6/n).
 \end{equation}
-For \eqref{eq:VW}, deleting the fixed polynomial changes the Schur variance by $O(r^4)$, while $\De V=O(n/r)$ and the saddle shift changes it by $O(|W-\mu|/r^2)$. Dividing by $V\asymp n/r^2$ proves the displayed bound.
+For \eqref{sfh:eq:VW}, deleting the fixed polynomial changes the Schur variance by $O(r^4)$, while $\De V=O(n/r)$ and the saddle shift changes it by $O(|W-\mu|/r^2)$. Dividing by $V\asymp n/r^2$ proves the displayed bound.
 
-Under $Q$ the expected absolute value of the linear part of \eqref{eq:meanshift} is $O(r^2)$: both centered variables have standard deviations $O(r^2)$ and $(n-\mu)/b_0=O(1/r)$. Its quadratic remainder has expectation $O(r^3/n)$. After division by $\sqrt V$, the expected centering change is $O(r^3/\sqrt n)$. The inequality $|e^{\ii u}-1|\le|u|$ and \eqref{eq:VW} therefore replace the conditional Gaussian by $e^{-t^2/2}$ with this error after averaging. Its changed Fourier parameter is $t\sqrt{V_W/V}$, still in a fixed bounded interval.
+Under $Q$ the expected absolute value of the linear part of \eqref{sfh:eq:meanshift} is $O(r^2)$: both centered variables have standard deviations $O(r^2)$ and $(n-\mu)/b_0=O(1/r)$. Its quadratic remainder has expectation $O(r^3/n)$. After division by $\sqrt V$, the expected centering change is $O(r^3/\sqrt n)$. The inequality $|e^{\ii u}-1|\le|u|$ and \eqref{sfh:eq:VW} therefore replace the conditional Gaussian by $e^{-t^2/2}$ with this error after averaging. Its changed Fourier parameter is $t\sqrt{V_W/V}$, still in a fixed bounded interval.
 
-To justify the averaging measure, first replace the true marginal of $X$ by $Q$ while the exact conditional integrand remains bounded by one. Theorem~\ref{thm:TV} makes this cost $O(r^3/n)$, uniformly over all $|g|\le1$. Then estimate the centering changes under $Q$ as above. Both marginals' probabilities outside the window are $e^{-cr^2+O(r)}$ by \eqref{eq:tail}. Finally $r^6/n=o(r^3/\sqrt n)$, so all errors fit in \eqref{eq:hybrid}.
+To justify the averaging measure, first replace the true marginal of $X$ by $Q$ while the exact conditional integrand remains bounded by one. Theorem~\ref{sfh:thm:TV} makes this cost $O(r^3/n)$, uniformly over all $|g|\le1$. Then estimate the centering changes under $Q$ as above. Both marginals' probabilities outside the window are $e^{-cr^2+O(r)}$ by \eqref{sfh:eq:tail}. Finally $r^6/n=o(r^3/\sqrt n)$, so all errors fit in \eqref{sfh:eq:hybrid}.
 \end{proof}
 
 \subsection{Fixed-target cancellation and defect moments}
 For a fixed nonnegative integer $m$ define $R_m=\PP(N=n-m)/\PP(N=n)$, where $N$ is the unconditioned Boltzmann total at $r$. A finer cancellation than the global local bound gives
-\begin{equation}\label{eq:fixedshift}
+\begin{equation}\label{sfh:eq:fixedshift}
  R_m=1+\frac{m\kappa_3}{2b^2}-\frac{m^2}{2b}+O_m(r/n^2).
 \end{equation}
-Here one must not subtract unrelated $O(\eps^2)$ errors. Subtract the Fourier integrals at shifts $m$ and zero before estimating. Their common central remainder from \eqref{eq:weighted3} has $L^1(|t|\dd t)$ norm $O(\eps^2)$, by the same Gaussian-polynomial bound used in Lemma~\ref{lem:local}. Multiplication by $e^{\ii mt/\sqrt b}-1$ gives an extra factor $m/\sqrt b$, so this contribution is $O(\eps^2m/\sqrt b)=o(r/n^2)$. The retained odd weight-three terms cost $O(\eps^{3/2}m/\sqrt b)=O(r/n^2)$, and the change of even weight-two terms costs $O(\eps m^2/b)=O(n^{-2})$. Gaussian Taylor terms and denominator division are no larger. The full-arc tails remain negligible. This proves \eqref{eq:fixedshift} with its improved remainder.
+Here one must not subtract unrelated $O(\eps^2)$ errors. Subtract the Fourier integrals at shifts $m$ and zero before estimating. Their common central remainder from \eqref{sfh:eq:weighted3} has $L^1(|t|\dd t)$ norm $O(\eps^2)$, by the same Gaussian-polynomial bound used in Lemma~\ref{sfh:lem:local}. Multiplication by $e^{\ii mt/\sqrt b}-1$ gives an extra factor $m/\sqrt b$, so this contribution is $O(\eps^2m/\sqrt b)=o(r/n^2)$. The retained odd weight-three terms cost $O(\eps^{3/2}m/\sqrt b)=O(r/n^2)$, and the change of even weight-two terms costs $O(\eps m^2/b)=O(n^{-2})$. Gaussian Taylor terms and denominator division are no larger. The full-arc tails remain negligible. This proves \eqref{sfh:eq:fixedshift} with its improved remainder.
 
-\begin{corollary}[Conditioning corrections to defect moments]\label{cor:moments}
+\begin{corollary}[Conditioning corrections to defect moments]\label{sfh:cor:moments}
 At the original saddle,
 \begin{align}
  \E_n\defect
  &=d+\frac{\eta\kappa_3}{2b^2}
-       -\frac{r+4r^4}{2b}+O(r^5/n^2),\label{eq:defectmean}\\
+       -\frac{r+4r^4}{2b}+O(r^5/n^2),\label{sfh:eq:defectmean}\\
  \Var_n\defect
  &=\tau^2-\frac{\eta^2}{b}+O(r^4/n+r^9/n^2)
-  =T+O(r^4/n).\label{eq:defectvar}
+  =T+O(r^4/n).\label{sfh:eq:defectvar}
 \end{align}
 \end{corollary}
 \begin{proof}
@@ -68,17 +68,17 @@ For each exceptional type $\alpha$, the Poisson factorial-moment identity gives
  \E_n(Z_\alpha Z_\beta-\mathbf1_{\alpha=\beta}Z_\alpha)
    =\lambda_\alpha\lambda_\beta R_{m_\alpha+m_\beta}.
 \]
-All sizes here are one or four, so \eqref{eq:fixedshift} is uniform over the finitely many required targets. The weighted sums are
+All sizes here are one or four, so \eqref{sfh:eq:fixedshift} is uniform over the finitely many required targets. The weighted sums are
 \[
  \sum d_\alpha\lambda_\alpha=d,\quad
  \sum d_\alpha m_\alpha\lambda_\alpha=\eta,\quad
  \sum d_\alpha m_\alpha^2\lambda_\alpha=r+4r^4.
 \]
-These give \eqref{eq:defectmean}. For the variance, writing the denominator variance as $b$,
+These give \eqref{sfh:eq:defectmean}. For the variance, writing the denominator variance as $b$,
 \[
  R_{a+c}-R_aR_c=-\frac{ac}{b}+O(r/n^2)
 \]
-for fixed $a,c$. Summing weighted pairs gives $-\eta^2/b+O(r^9/n^2)$; the diagonal contribution is $\tau^2+O(r^4/n)$. Since $r^5/n\to0$, the last simplification in \eqref{eq:defectvar} follows.
+for fixed $a,c$. Summing weighted pairs gives $-\eta^2/b+O(r^9/n^2)$; the diagonal contribution is $\tau^2+O(r^4/n)$. Since $r^5/n\to0$, the last simplification in \eqref{sfh:eq:defectvar} follows.
 \end{proof}
 
-The use of Boltzmann centers and Schur variances in Theorem~\ref{thm:gauss} is therefore consistent with the actual conditional moments at the stated scales. Also $K\sim n/r$ in probability, while $S+T_3+T_4=O_{\PP_n}(r^4)$ by Theorem~\ref{thm:TV}. Thus exceptional components form a vanishing fraction of all components in probability. No coupling across different $n$, and no almost-sure assertion, is being made.
+The use of Boltzmann centers and Schur variances in Theorem~\ref{sfh:thm:gauss} is therefore consistent with the actual conditional moments at the stated scales. Also $K\sim n/r$ in probability, while $S+T_3+T_4=O_{\PP_n}(r^4)$ by Theorem~\ref{sfh:thm:TV}. Thus exceptional components form a vanishing fraction of all components in probability. No coupling across different $n$, and no almost-sure assertion, is being made.
