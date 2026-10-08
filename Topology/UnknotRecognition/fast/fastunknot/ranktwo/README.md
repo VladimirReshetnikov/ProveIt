@@ -2,6 +2,7 @@
 
 Ported from the MIT-0 research bundle `unknot_rank_two_kernels_20261007.zip`,
 reviewed from `docs/incoming/` at repository commit `d569a29de`.
+The complete source bundle is now preserved as `reports/19/`.
 Only the optimizer, dictionaries, shared input utilities, and independent
 verifier are included here. The source reference cube is not a production
 backend. Existing package licensing applies.
