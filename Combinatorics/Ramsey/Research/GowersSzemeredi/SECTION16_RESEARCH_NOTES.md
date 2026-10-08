@@ -140,6 +140,11 @@ bound analogue, and no published erratum for §16 of Gowers (2001). As
 encoded, Theorem 16.2's quantitative content appears to be beyond current
 published methods, although the statement may well be true.
 
+This concerns polynomial bounds. H.5 records Milićević's 2026 quasipolynomial
+structure theorem for Freiman bihomomorphisms in general finite abelian
+groups. Through simultaneous Bohr unions, quasipolynomial bounds appear to
+fit the exact budget.
+
 ## E. A positive reduction (proved; formalized in `Proofs16RegimeSplitting`)
 
 The Lean version, `multiplyLinear_of_powerLossCover`, is kernel-checked. Its
@@ -423,6 +428,72 @@ inverse theorem for Freiman multi-homomorphisms in Bohr form.
   - They are far outside the polynomial budget of the exact statement.
   - I have not found a `Z_N` version with polynomial rank. It would be a
     bilinear (more generally multilinear) polynomial Bogolyubov theorem.
+
+### H.5 Literature for the open step, and the budget it allows
+
+**What is now available.** Milićević,
+[*A bilinear Bogolyubov argument in abelian groups*](https://arxiv.org/abs/2109.03093)
+(v3 December 2024), extends bilinear Bogolyubov from `F_p^n` to arbitrary
+finite abelian groups with codimension `log^O(1)(1/δ)`. His
+[*General inverse theory for the U⁴ norm*](https://arxiv.org/abs/2601.01682)
+(January 2026), Theorem 1.4, proves the structure theorem H.4 needs in
+dimension two. Let `φ: A → H` be a Freiman bihomomorphism on
+`A ⊆ G₁×G₂` with `|A| = c|G₁||G₂|`. Then there are:
+
+- Bohr sets `B₁, B₂` of codimension `(2 log c⁻¹)^O(1)` and radius
+  `exp(−(2 log c⁻¹)^O(1))`;
+- a set E of rank `(2 log c⁻¹)^O(1)`;
+- shifts s, t and an E-bihomomorphism Φ on `B₁×B₂` that agrees with
+  `φ(x+s, y+t)` on at least `exp(−(2 log c⁻¹)^O(1))·|G₁||G₂|` points.
+
+The groups are arbitrary, so `Z_N` is included. For the U⁴ application the
+paper assumes `(|G|, 6) = 1`, which holds for primes N > 3.
+
+**Why quasipolynomial bounds fit the exact budget.** Simultaneous unions
+(H.4 (i)) change what the budget constrains. Theorem 16.2's targets are
+`q(θ′/R)^R` and `c(θ′/R)^R` with `R = γ⁻²·s(θ,γ,k)`. For fixed θ′ these are
+`exp(poly(1/θγ))` and `exp(−poly(1/θγ))`. In the Bohr route:
+
+- the count is the number of maps;
+- the exponent is about `1/(k·rank)`;
+- the inner loss enters only through a threshold handled by regime
+  splitting (E).
+
+So the total rank and count may be as large as `exp(poly(1/θγ))`. Covering
+by `1/mass = exp(polylog)` pieces of polylog rank each gives total rank
+`exp(polylog)`, well inside that budget. By contrast, the sequential route
+H.2 needs piece masses polynomial in θγ, because R appears in the exponent.
+
+**What it would unlock, and what remains (heuristic assessment).**
+
+1. *Dimension three.* If the two-dimensional slices of a structured pair
+   in `Z_N³` are Freiman bihomomorphisms on dense sets, then Theorem 1.4
+   makes them Bohr-structured. The stacked-slice provider of H.1 would then
+   come from H.4 (i)–(ii), and the proved general-k lift would give
+   `Theorem162At 3`.
+   - Lemma 16.4 supplies arrangement-respecting restrictions. Whether they
+     are bihomomorphisms on dense sets, with density polynomial in θγ, has
+     to be checked.
+   - E-bihomomorphisms rather than bihomomorphisms also need care. On a
+     product of short progressions inside the Bohr sets, the rank-r error
+     set E should contribute only bracket terms that do not wrap. That would
+     make Φ bilinear in the progression coordinates, hence multilinear in
+     the `Z_N` coordinates, since N is prime.
+2. *Every dimension.* Each step from k to k+1 needs the same theorem for
+   Freiman (k+1)-homomorphisms over `Z_N`, with bounds at most
+   `exp(poly)`. Gowers–Milićević prove the multilinear version only over
+   `F_p^n`, with iterated-exponential bounds (D). Theorem 1.4 is the case
+   k+1 = 2. I know of no version for k+1 ≥ 3 over cyclic groups.
+   Formalizing Theorem 1.4 itself (a paper of about 100 pages) would be a
+   campaign of its own.
+
+**Decision (2026-10-07).** Keep the printed statements of 16.2, 16.11,
+18.1, 18.2 and 18.7 exact; do not restate them. The precedent for
+restating, Lemma 16.10, rested on a formal refutation of the printed
+encoding. Theorem 16.2 has no refutation, and the evidence above is that it
+holds but needs mathematics newer than Gowers (2001). Restating it would
+replace the source's quantitative theorems by weaker ones. Theorem 1.3 is
+being closed as stated by the openai-math port.
 
 ## F. Routes
 
