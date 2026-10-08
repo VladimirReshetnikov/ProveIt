@@ -253,6 +253,33 @@ groupoid & the older word for magma used by OEIS, not a category-theoretic group
 \end{tabular}
 \endgroup
 
+\begin{writenote}[Independent check of the write, 7 October 2026]
+An independent adversarial check of the batch-112 write, with its own code,
+confirmed every claim of the write and added one precision to
+Remark~\ref{cmg:rem:oeis} (a dated note after it). It read A001425 (\#43) and
+its b-file again: the name, attributions, asymptotic line and b-file range are
+as quoted, and the entry holds no conjecture. It computed $U_n$ for
+$n\le36$ by a literal walk over the unordered-pair orbits of a representative
+of every cycle type, without the grouped product: all 37 b-file terms and the
+25 delivered counts agree. The same walk gives the five fixed counts of
+Section~\ref{cmg:sec:exact}.1, the sector table of
+Section~\ref{cmg:sec:first}, $\sum_{n\le24}p(n)=7337$, the ratios
+$T_{22}/T_3=6.789890195\ldots$, $1.304041955\ldots$, $0.2078537627\ldots$, and
+$0\le R_D(n)\le B_D(n)$ in all 62 cases (28 with odd $n$; largest ratio
+$1.786\times10^{-4}$). A direct enumeration of the 729 laws with $n=3$
+reproduces every printed statistic, $P_3=11/243$ and $Q_3=13/129$. The
+amplitude coefficients of~\eqref{cmg:eq:T2exp}, \eqref{cmg:eq:T3exp}
+and~\eqref{cmg:eq:T22exp} and $L_1,\ldots,L_5$ of $T_2$ agree both from the
+exact logarithms and from formula~\eqref{cmg:eq:Lr}. Solving $F(\theta)=L$
+gives $u(\theta-u-\frac12+5/(4\log u+2))=0.716$, $0.674$, $0.652$, $0.642$ at
+$L=10^3,10^5,10^8,10^{12}$. Remark~\ref{cmg:rem:transseries} was compared
+again with the volume's statements: outside the model, an analogue, and the
+square root of an exact factorial-core instance ($\kappa=\frac14$, $d=0$), as
+stated. The provenance, the manifests ($11$, $24$, $10$ entries), the 19 staged
+files, the label numbers and the reruns of \file{code/check.py} and
+\file{code/test_guards.py} were confirmed as well.
+\end{writenote}
+
 \section{Exact enumeration by equivariant maps}\label{cmg:sec:exact}
 \subsection{The orbit formula}
 The automorphism condition is
@@ -734,6 +761,12 @@ Exact values through $n=24$ are supplied as decimal integer strings, together wi
 \begin{remark}[{[write]} The OEIS entry, 7~October 2026]\label{cmg:rem:oeis}
 The write read A001425 in the internal format on 7~October 2026: revision \#43 (10 December 2025), ``Number of commutative groupoids with n elements.'', author N.~J.~A. Sloane, more terms by Christian G. Bower (1998), the cycle-type formula (dated 3 December 2003 in the entry's history), the asymptotic ``a(n) asymptotic to (n\textasciicircum binomial(n+1, 2))/n! = A023813(n)/A000142(n) \textasciitilde{} e\textasciicircum n*n\textasciicircum binomial(n, 2) / sqrt(2*pi*n)'' (unattributed), and a PARI program by Andrew Howroyd (10 December 2025), as Section~\ref{cmg:sec:sources} says. The entry links a b-file by Howroyd, ``Table of n, a(n) for n = 0..36'', which the source did not retrieve. \emph{Checks.} All 37 b-file terms equal the write's own Burnside sum, and the delivered counts for $n\le24$ (\file{data/counts.json}) equal the b-file; so the source's ``locally computed'' values agree with the official b-file. The entry contains no conjecture, so none is settled here; no OEIS edit is part of this work.
 \end{remark}
+\begin{writenote}[Precision from the independent check, 7 October 2026]
+The date of the cycle-type formula is printed in the entry itself, on its
+Extensions line: ``More terms from Christian G. Bower Feb 15 1998 and May 15
+1998. Formula Dec 03 2003.'' The entry has a third formula line,
+``a(n) = A001329(n) - A079183(n).'', which the remark does not list.
+\end{writenote}
 
 For all $7{,}337$ positive-order partition types with $n\le24$, the exact checker constructs a representative permutation and compares its fixed-law count by a literal input-pair orbit walk with the trace/M\"obius method \eqref{cmg:eq:mobius} and the support product \eqref{cmg:eq:Fmu}. The same types test the orbit-loss inequalities, including fixed-point-free and zero-count examples. Summing with exact conjugacy-class multiplicities yields the Burnside integer; divisibility by $n!$ is checked explicitly.
 
