@@ -5,8 +5,10 @@ import OAI.Combinatorics.Progressions.Polynomial.PolynomialCoordinatePartition
 centered modular norm used in Gowers's Section 16. For each fixed degree,
 the exponent is quadratic in the number of simultaneous coefficients.
 Combining degrees 1 through k gives exponent p*(d+1)^(2*k), with one
-common multiplier for all d coefficient families. The degree constants are existential. This supplies a recurrence input;
-the minimum-width multilinear-box partition still requires a bridge. -/
+common multiplier for all d coefficient families. The degree constants are
+existential. Proofs05SimultaneousMultiaffinePartition and
+Proofs16SimultaneousRecurrence use these inputs to construct proper box
+partitions; the final all-length threshold remains a separate obligation. -/
 set_option autoImplicit false
 noncomputable section
 namespace LeanProofs.GowersSzemeredi

@@ -757,7 +757,7 @@ degrees `1,...,k` smaller than `N/H`, provided `H >= K*(d+1)`.
 The induction first makes the highest degree sufficiently small to survive
 a bounded multiplier chosen for all lower degrees. Its exponent estimate
 is checked in `schmidt_mixed_exponent_bound`. This strengthens the available
-recurrence input, while leaving the box-partition obligation below open.
+recurrence input. The box-partition construction is now proved below.
 **Minimum cell length now proved in one dimension.**
 `Proofs05MinimumPolynomialPartition.exists_minimum_polynomial_partition_bound`
 strengthens the polynomial partition: for constants `K >= 2`, `p > 0`,
@@ -797,14 +797,37 @@ is bounded by `2^k`, independently of family size.
 constants for all degrees from 1 through `k`, retaining the quadratic
 family-size exponent. The multiplier may depend on the selected degree;
 this is sufficient when removing one common maximal monomial. The production
-module passed Lean. A new scale/exponent induction is still needed before
-these ingredients yield the required quantitative box bound.
+module passed Lean.
 
-The remaining work is the bridge to a simultaneous multilinear **box**
-partition satisfying Lemma 16.1's minimum-width and uniform-smallness
-requirements, and adequate degree constants. The constants above are
-existential; neither the bridge nor the printed final threshold follows
-merely by importing the module.
+**Polynomial family-size box bound now proved.**
+`Proofs05SimultaneousMultiaffinePartition` discharges the scale and exponent
+induction. For a downward-closed family of `h` monomials, constants `K,p`
+give one proper box partition with minimum width `H` and each phase's
+modular diameter at most `h*N/H`, provided `H >= K*(q+1)` and the input
+width is at least `H^(p*(q+1)^(2*h))`. Removing one common maximal monomial
+increases the family-size exponent by two; taking `h = 2^k` treats all
+multilinear phases in dimension `k`. Rounded coarse widths are `T` or
+`T+1`, so every lower-height input meets its threshold.
+
+`Proofs16SimultaneousRecurrence.exists_simultaneous_commonDiff_partition_two_bound`
+then performs the lift and slice from Lemma 16.1. For every dimension `k`
+there are `K >= 2`, `p > 0`, independent of family size `q`, such that
+
+```
+H >= K*(q+1),  width(P) >= H^(p*(q+1)^(2^(k+2)))
+```
+
+give a common proper box partition with **every width at least `H`** and
+`centeredAbs(mu_i(x)*cell.commonDiff) <= 2*N/H` at every point of every
+cell. Rescaling by `2^k` and increasing `p` absorb the diameter coefficient.
+Both production modules passed Lean; the combined facade audit is queued.
+
+This supplies polynomial dependence on `q` in the input-width exponent
+in the stated large-width regime. It does not give explicit dimension
+constants or a pointwise improvement of every previous threshold. The
+remaining work is root-width parameterization and integration into the
+higher-dimensional lift and its structure hypotheses. The printed final
+all-length threshold does not follow from this recurrence theorem alone.
 
 ## K. Where every route to Theorems 18.2 and 18.7 meets (2026-10-08)
 
