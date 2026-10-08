@@ -91,7 +91,9 @@ The already audited `PolynomialCoordinatePartition` module also supplies
 `simultaneous_monomial_recurrence`. The Gowers consumer
 `Proofs05SchmidtRecurrence.simultaneous_modular_monomial_recurrence`
 transfers it to centered norms in `ZMod N`, with a fixed-degree exponent
-quadratic in the number of coefficients. This reuses the existing port;
+quadratic in the number of coefficients. Its mixed-degree extension uses
+one multiplier for all degrees through `k`, with search exponent
+`p*(d+1)^(2*k)` for `d` coefficient families. These reuse the existing port;
 the minimum-width box-partition bridge for Section 16 remains open.
 
 The quantitative statement has existential positive constants `C`, `c`, and
