@@ -1,5 +1,6 @@
 /- Modified for ProveIt: import Lean 4.32 compatibility declarations.
-Statements and proofs are unchanged from the pinned upstream source. -/
+Use MvPolynomial.coeff_sum explicitly for coefficient sums in the older
+Mathlib API. The statements are unchanged. -/
 import OAI.Compat.Core
 import OAI.Combinatorics.Progressions.Estimates.UniformControlledNativeExternalNetsOfRecovery
 import OAI.Combinatorics.Progressions.Nilpotent.RealPolynomialBCH
@@ -162,7 +163,7 @@ theorem exists_rational_polynomial_of_grid {σ : Type*} (P : MvPolynomial σ ℝ
   choose a ha using hP
   let Q : MvPolynomial σ ℚ := ∑ α ∈ P.support, monomial α ((a α : ℚ) / q)
   have hcoeff (α : σ →₀ ℕ) : Q.coeff α = if α ∈ P.support then (a α : ℚ) / q else 0 := by
-    simp [Q, coeff_monomial]
+    simp [Q, MvPolynomial.coeff_sum, coeff_monomial]
   have hcast (α : σ →₀ ℕ) : (((a α : ℚ) / q : ℚ) : ℝ) = P.coeff α := by
     push_cast
     apply (div_eq_iff (show (q : ℝ) ≠ 0 from Nat.cast_ne_zero.mpr hq.ne')).mpr
