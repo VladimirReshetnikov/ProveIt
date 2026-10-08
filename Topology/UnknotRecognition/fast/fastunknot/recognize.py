@@ -214,6 +214,15 @@ def _decide_prime_looking(diagram: Diagram, evidence: dict, *, use_modular, use_
         else:
             return _decide_twist(twist_source, evidence, max_basis=scan_options["twist_max_basis"],
                                  deadline=deadline, check_d_squared=check_d_squared)
+    if backend in ("barcode", "fitting"):
+        if backend == "barcode":
+            from .barcode_scan import barcode_khovanov_decide as decide
+        else:
+            from .scalar_split import fitting_khovanov_decide as decide
+        kh = decide(diagram.pd, order=order, max_objects=max_objects,
+                    seconds=remaining, check_d_squared=check_d_squared)
+        evidence["khovanov"] = {"field": "F2", **kh}
+        return kh["status"], "khovanov-" + backend + "-saturated"
     if backend == "euler":
         from .euler_scan import euler_compressed_khovanov_decide
         kh = euler_compressed_khovanov_decide(
@@ -294,8 +303,8 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
         raise ValueError("braid_backend must be free-product or matrix")
     if factor_backend not in ("interlacement", "legacy"):
         raise ValueError("factor_backend must be interlacement or legacy")
-    if backend not in ("standard", "shared", "saturated", "euler", "twist"):
-        raise ValueError("backend must be standard, shared, saturated, euler, or twist")
+    if backend not in ("standard", "shared", "saturated", "euler", "twist", "barcode", "fitting"):
+        raise ValueError("backend must be standard, shared, saturated, euler, twist, barcode, or fitting")
     if euler_max_states is not None and (type(euler_max_states) is not int or euler_max_states < 0):
         raise ValueError("euler_max_states must be a nonnegative integer or None")
     if backend != "standard" and (pivot != "minfill" or algebra != "bits" or tail != 0 or race != 1):
