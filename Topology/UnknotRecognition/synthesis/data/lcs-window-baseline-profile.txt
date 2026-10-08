@@ -1,0 +1,29 @@
+h=500, x=(ab)^N cT, y=(ab)^N aT, T=aabbccacbabc; expected LCS=2*N
+LIMIT compressed-word work allowance exhausted
+stats {'work': 2000001, 'equality_calls': 0, 'splits': 0, 'compact_triples': 0, 'peak_assertions': 0, 'probe_steps': 0, 'probe_resolved': 0, 'probe_fallbacks': 0, 'lcp_calls': 3, 'lcp_probe_steps': 4, 'lcp_probe_resolved': 1, 'lcp_probe_fallbacks': 0, 'adjacency_rules': 1034, 'lcs_cut_pairs': 1, 'lcs_extensions': 1, 'match_cells': 1502} nodes 1022
+         11497147 function calls in 5.323 seconds
+
+   Ordered by: cumulative time
+   List reduced from 43 to 18 due to restriction <18>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.000    0.000    5.323    5.323 compressed_lcs.py:162(longest)
+        2    0.000    0.000    5.316    2.658 compressed_lcs.py:152(extensions)
+        1    0.000    0.000    5.311    5.311 compressed_lcs.py:31(overlaps)
+        2    0.003    0.001    5.305    2.653 compressed_match.py:91(__init__)
+     1503    0.010    0.000    5.298    0.004 compressed_match.py:140(_cell)
+     1489    2.590    0.002    5.286    0.004 compressed_match.py:106(local)
+  1998449    0.969    0.000    1.165    0.000 compressed_words.py:47(tick)
+     4474    0.239    0.000    0.741    0.000 compressed_match.py:57(_one_ap)
+  1990601    0.315    0.000    0.315    0.000 {method 'append' of 'list' objects}
+  1494631    0.246    0.000    0.246    0.000 compressed_match.py:15(_clip)
+  1998449    0.196    0.000    0.196    0.000 compressed_words.py:31(<lambda>)
+   998872    0.180    0.000    0.180    0.000 {method 'pop' of 'list' objects}
+   991401    0.169    0.000    0.169    0.000 {built-in method builtins.min}
+   989324    0.155    0.000    0.155    0.000 {built-in method builtins.max}
+   501462    0.119    0.000    0.119    0.000 {method 'get' of 'dict' objects}
+   498871    0.119    0.000    0.119    0.000 compressed_match.py:29(_shift)
+        7    0.004    0.001    0.008    0.001 compressed_words.py:110(_reachable)
+        2    0.001    0.001    0.006    0.003 compressed_lcs.py:113(offsets)
+
+
