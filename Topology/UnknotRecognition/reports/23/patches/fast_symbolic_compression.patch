@@ -1,0 +1,1794 @@
+--- a/Topology/UnknotRecognition/fast/README.md
++++ b/Topology/UnknotRecognition/fast/README.md
+@@ -752,3 +752,71 @@
+ fallback comparisons; the raw-window arm computes less than full homology.
+ The integrated suite passes 245 tests. Proofs, conditional query bounds, and
+ negative results are in [`../synthesis/windows.tex`](../synthesis/windows.tex).
++
++### Proposed extension: graded transfer and symbolic signed runs
++
++This research extension adds two optional exact reduction modes:
++
++```sh
++python -m fastunknot khovanov examples/conway.json --reduction graded
++python -m fastunknot recognize examples/conway.json --reduction graded-adaptive
++```
++
++`graded` contracts the scalar differential by packed binary linear algebra and
++recovers the complete remaining cobordism differential by quantum-graded
++homological perturbation. `graded-adaptive` first uses ordinary sparse
++cancellation, then transfers the actual partially reduced complex if its
++stage update allowance is exceeded. Both preserve quantum shifts and nonzero
++maps between survivors. The Python `khovanov_rank` and `recognize` APIs accept
++the same `reduction` strings. The default remains `standard`.
++
++The new modes require the standard scanner, minimum-fill pivots, bit
++coefficients, self-inverse cancellation, and `race=1`. Ordinary `component`
++and `component-dense` coefficient composition and the existing `tail` finishing
++option remain supported. Shared component scanning and homological windows
++need different quantum-label adapters and are rejected with these modes.
++
++The transfer is a useful kernel on dense valid complexes with few survivors.
++It was slower on the ordinary diagram controls in the accompanying study;
++the adaptive path did not switch on those controls. This is not a demonstrated
++general speedup, and there is no global quasi-polynomial complexity theorem.
++
++A separate entry point accepts binary signed runs without expanding them:
++
++```sh
++python -m fastunknot.symbolic_braid braid_runs.json --mode recognize
++python -m fastunknot.symbolic_braid braid_runs.json --mode homology --check-d2
++python -m fastunknot.symbolic_braid braid_runs.json --mode certificate
++```
++
++Input is `{"strands": 4, "runs": [[1, 101], [2, -101], [3, 101]]}`,
++optionally nested under `braid`. A `word` may replace `runs`. Integer fields
++accept JSON integers or signed hexadecimal strings; large outputs use
++hexadecimal strings without disabling Python's decimal conversion safeguards.
++The input path `-` reads standard input.
++
++Recognition first evaluates the maintained Seifert criteria on the signed
++braid path graph. The source braid signs are reversed by the existing PD
++convention, and the returned writhe and Rasmussen interval use that production
++convention. `verify_signed_run_certificate` independently replays the counts
++and accepts the emitted hexadecimal fields after a JSON round trip.
++
++The exact homology fallback uses `fastunknot.twist.long_tail.tail_homology`.
++For a selected run of magnitude `m` with `L` crossings in the other runs,
++the full homological-degree profile is determined by the cap `L+2` once
++`m >= L+2`. Total rank is already affine from `L+1`. Output uses finite points
++and a constant interval; `degree_dimension` queries one coefficient and
++`materialize_profile` has an output-size guard. Quantum grading is forgotten
++by this twist backend. The original closure must have one component for an
++unknot verdict even when the capped closure is a link.
++
++Every dominant-run knot in that tail regime already satisfies the existing
++Seifert interval obstruction. Its raw homology speedups do not add detection
++coverage on expanded diagrams. The succinct structural interface can also
++decide homogeneous inputs with several balanced huge runs.
++
++The accompanying article, patch, tests, paired data, independent verifiers,
++and exact reproduction commands are in the symbolic-compression research
++bundle. The baseline snapshot is commit
++`d54009df0ea3751b8662bb76549d3c1bb0eec19c`; historical benchmark results above
++refer to that snapshot and are distinct from the new study.
+--- a/Topology/UnknotRecognition/fast/fastunknot/__main__.py
++++ b/Topology/UnknotRecognition/fast/fastunknot/__main__.py
+@@ -40,7 +40,7 @@
+         ("--window-radius", int, None, None, "enable bounded window probes, widening up to this normalized radius"),
+         ("--window-max-objects", int, 20000, None, "retained-object ceiling for optional window probes"),
+         ("--window-seconds", float, 0.1, None, "one shared time allowance for all window probes per factor"),
+-        ("--reduction", str, "standard", ("standard", "residue", "adaptive"),
++        ("--reduction", str, "standard", ("standard", "residue", "adaptive", "graded", "graded-adaptive"),
+          "chain cancellation strategy (distinct from Reidemeister --no-reduction)"),
+         ("--twist-max-basis", int, 1_000_000, None, "reduced basis ceiling for the optional twist backend"),
+         ("--composition", str, "standard", ("standard", "component", "component-dense"),
+@@ -77,8 +77,8 @@
+         ("--output", str, None, None, "write the JSON result to this file"),
+     ],
+     "khovanov": [
+-        ("--reduction", str, "standard", ("standard", "residue", "adaptive"),
+-         "opt-in binary survivor prediction and degree-gap cancellation shortcut"),
++        ("--reduction", str, "standard", ("standard", "residue", "adaptive", "graded", "graded-adaptive"),
++         "chain cancellation: sparse, residue shortcut, or full quantum-ordered transfer"),
+         ("--twist", None, False, None, "compute a checked source braid through twist blocks"),
+         ("--twist-max-basis", int, 1_000_000, None, "reduced basis ceiling for the optional twist backend"),
+         ("--composition", str, "standard", ("standard", "component", "component-dense"),
+@@ -197,8 +197,12 @@
+                 args.pivot != "minfill" or args.algebra != "bits" or args.race != 1
+                 or getattr(args, "backend", "standard") != "standard"
+                 or getattr(args, "shared", False) or getattr(args, "twist", False)):
+-            print("residue/adaptive reduction requires standard backend, no --shared/--twist, minfill, bits, and race=1",
++            print("nonstandard reduction requires standard backend, no --shared/--twist, minfill, bits, and race=1",
+                   file=sys.stderr)
++            return 2
++        if (args.reduction in ("graded", "graded-adaptive")
++                and getattr(args, "window_radius", None) is not None):
++            print("graded reduction cannot be combined with --window-radius", file=sys.stderr)
+             return 2
+         if args.twist_max_basis < 0:
+             print("--twist-max-basis must be nonnegative", file=sys.stderr)
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/fastunknot/graded_transfer.py
+@@ -0,0 +1,435 @@
++"""Quantum triangular contraction for the production F2 tangle scanner.
++
++This prototype uses a binary special contraction of the scalar differential,
++then evaluates the full homological perturbation transfer in increasing quantum
++shift.  It retains the radical differential; consecutive surviving degrees are
++allowed.  The production source is imported, never patched.
++"""
++from __future__ import annotations
++
++from collections import defaultdict
++
++from fastunknot.scan_fast import FastScan
++
++
++def bits(value):
++    while value:
++        low = value & -value
++        yield low.bit_length() - 1
++        value ^= low
++
++
++class BinaryBasis:
++    def __init__(self, check=None):
++        self.pivots = {}
++        self.check = check
++
++    def add(self, vector, coordinates=0):
++        iterations = 0
++        while vector:
++            top = vector.bit_length() - 1
++            old = self.pivots.get(top)
++            if old is None:
++                self.pivots[top] = vector, coordinates
++                return True
++            vector ^= old[0]
++            coordinates ^= old[1]
++            iterations += 1
++            if not iterations & 255 and self.check is not None:
++                self.check()
++        return False
++
++    def solve(self, vector):
++        coordinates = 0
++        iterations = 0
++        while vector:
++            top = vector.bit_length() - 1
++            old = self.pivots.get(top)
++            if old is None:
++                raise ArithmeticError("incomplete scalar basis")
++            vector ^= old[0]
++            coordinates ^= old[1]
++            iterations += 1
++            if not iterations & 255 and self.check is not None:
++                self.check()
++        return coordinates
++
++
++def xor_entry(row, target, value):
++    if value:
++        new = row.get(target, 0) ^ value
++        if new:
++            row[target] = new
++        else:
++            row.pop(target, None)
++
++
++def binary_contraction(scan):
++    """Return a special contraction of d0, using group-local bit matrices.
++
++    I columns are bit masks on old objects. P and H columns are bit masks on
++    survivors and old objects respectively. All coefficients are typed scalar
++    identities; H lowers homological degree and preserves matching and q.
++    """
++    groups = defaultdict(list)
++    for a, matching in enumerate(scan.mid):
++        if matching is not None:
++            groups[matching, scan.qshift[a], scan.deg[a]].append(a)
++    keys = sorted(groups)
++    images, lifts, kernels = {}, {}, {}
++    for key in keys:
++        scan._check()
++        matching, quantum, degree = key
++        sources = groups[key]
++        targets = groups.get((matching, quantum, degree + 1), ())
++        target_index = {v: i for i, v in enumerate(targets)}
++        basis = BinaryBasis(scan._check)
++        nullspace = []
++        for i, a in enumerate(sources):
++            if not i & 255:
++                scan._check()
++            vector = 0
++            for b, value in scan.out[a].items():
++                if scan.qshift[b] == quantum:
++                    if scan.mid[b] != matching or value != 1:
++                        raise ArithmeticError("weight-zero map is not a typed identity")
++                    vector ^= 1 << target_index[b]
++            coordinates = 1 << i
++            iterations = 0
++            while vector:
++                top = vector.bit_length() - 1
++                old = basis.pivots.get(top)
++                if old is None:
++                    basis.pivots[top] = vector, coordinates
++                    break
++                vector ^= old[0]
++                coordinates ^= old[1]
++                iterations += 1
++                if not iterations & 255:
++                    scan._check()
++            if not vector:
++                nullspace.append(coordinates)
++        ordered = [basis.pivots[top] for top in sorted(basis.pivots)]
++        images[key] = [pair[0] for pair in ordered]
++        lifts[key] = [pair[1] for pair in ordered]
++        kernels[key] = nullspace
++
++    size = len(scan.mid)
++    i_cols, p_cols, h_cols = [], [0] * size, [0] * size
++    survivor_mid, survivor_deg, survivor_q = [], [], []
++    for key in keys:
++        scan._check()
++        matching, quantum, degree = key
++        vertices = groups[key]
++        prev = matching, quantum, degree - 1
++        boundaries = images.get(prev, [])
++        independent = BinaryBasis(scan._check)
++        for v in boundaries:
++            if not independent.add(v):
++                raise ArithmeticError("dependent boundary basis")
++        reps = []
++        for v in kernels[key]:
++            if independent.add(v):
++                reps.append(v)
++        basis_vectors = boundaries + reps + lifts[key]
++        if len(basis_vectors) != len(vertices):
++            raise ArithmeticError("d0 is not a chain differential")
++        inverse = BinaryBasis(scan._check)
++        for i, v in enumerate(basis_vectors):
++            if not inverse.add(v, 1 << i):
++                raise ArithmeticError("scalar chain decomposition is singular")
++        offset = len(i_cols)
++        for v in reps:
++            i_cols.append(sum(1 << vertices[j] for j in bits(v)))
++            survivor_mid.append(matching)
++            survivor_deg.append(degree)
++            survivor_q.append(quantum)
++        prev_vertices = groups.get(prev, ())
++        prev_lifts = lifts.get(prev, ())
++        bcount, rcount = len(boundaries), len(reps)
++        for j, a in enumerate(vertices):
++            if not j & 255:
++                scan._check()
++            coordinates = inverse.solve(1 << j)
++            p_cols[a] = ((coordinates >> bcount) & ((1 << rcount) - 1)) << offset
++            local_h = 0
++            for b in bits(coordinates & ((1 << bcount) - 1)):
++                local_h ^= prev_lifts[b]
++            h_cols[a] = sum(1 << prev_vertices[b] for b in bits(local_h))
++    return dict(i=i_cols, p=p_cols, h=h_cols, mid=survivor_mid,
++                deg=survivor_deg, q=survivor_q)
++
++
++def scalar_survivors(scan):
++    """Quantum-resolved profile when the entire differential is scalar."""
++    groups = defaultdict(list)
++    for a, matching in enumerate(scan.mid):
++        if matching is not None:
++            groups[matching, scan.qshift[a], scan.deg[a]].append(a)
++    ranks = {}
++    for key, sources in groups.items():
++        scan._check()
++        matching, quantum, degree = key
++        targets = groups.get((matching, quantum, degree + 1), ())
++        index = {v: i for i, v in enumerate(targets)}
++        basis = BinaryBasis(scan._check)
++        for i, a in enumerate(sources):
++            if not i & 255:
++                scan._check()
++            vector = 0
++            for b, value in scan.out[a].items():
++                if value != 1 or scan.mid[b] != matching or scan.qshift[b] != quantum:
++                    raise ArithmeticError('non-scalar map in scalar-only profile')
++                vector ^= 1 << index[b]
++            basis.add(vector)
++        ranks[key] = len(basis.pivots)
++    mid, deg, quantum_shifts = [], [], []
++    for key in sorted(groups):
++        matching, quantum, degree = key
++        count = len(groups[key]) - ranks[key] - ranks.get((matching, quantum, degree-1), 0)
++        if count < 0:
++            raise ArithmeticError('negative scalar homology dimension')
++        mid.extend([matching]*count)
++        deg.extend([degree]*count)
++        quantum_shifts.extend([quantum]*count)
++    return mid, deg, quantum_shifts
++
++
++def transfer(scan, *, certificates=False):
++    """Compute the full minimal complex and optional special contraction.
++
++    q strictly increases on every radical map. Processing q once solves
++    Z = I + H delta Z exactly, with no guessed perturbation truncation.
++    """
++    quanta = sorted({scan.qshift[a] for a, m in enumerate(scan.mid) if m is not None})
++    quantum_index = {q: j for j, q in enumerate(quanta)}
++    weight_limit = len(scan.points)
++    radical = [[] for _ in scan.mid]
++    edges = 0
++    for a, row in enumerate(scan.out):
++        if not row:
++            continue
++        for b, value in row.items():
++            if scan.qshift[b] < scan.qshift[a]:
++                raise ArithmeticError("negative intrinsic weight in graded input")
++            if scan.qshift[b] > scan.qshift[a]:
++                radical[a].append((b, value))
++                edges += 1
++    if not edges and not certificates:
++        mid, deg, quantum_shifts = scalar_survivors(scan)
++        return dict(mid=mid, deg=deg, q=quantum_shifts, out=[{} for _ in mid],
++                    scalar=None, radical_edges=0, compositions=0, coefficient_xors=0,
++                    cache_misses=0, identity_shortcuts=0, scalar_only=True)
++    scalar = binary_contraction(scan)
++    i_cols, p_cols, h_cols = scalar['i'], scalar['p'], scalar['h']
++    alg = scan.algebra
++    cache = scan.composed
++    output = [{} for _ in i_cols]
++    inclusion = []
++    compositions = xor_updates = 0
++    cache_misses = identity_shortcuts = 0
++    for source, initial in enumerate(i_cols):
++        scan._check()
++        source_matching = scalar['mid'][source]
++        source_quantum = scalar['q'][source]
++        pending = defaultdict(dict)
++        lifted = {}
++        for quantum_position in range(quantum_index[source_quantum], len(quanta)):
++            quantum = quanta[quantum_position]
++            if quantum > source_quantum + weight_limit:
++                break
++            w = pending.pop(quantum, {})
++            z = {a: 1 for a in bits(initial)} if quantum == source_quantum else {}
++            for a, value in w.items():
++                for target in bits(p_cols[a]):
++                    xor_entry(output[source], target, value)
++                    xor_updates += 1
++                for target in bits(h_cols[a]):
++                    xor_entry(z, target, value)
++                    xor_updates += 1
++            if certificates:
++                lifted.update(z)
++            for a, value in z.items():
++                for b, delta in radical[a]:
++                    if scan.qshift[b] > source_quantum + weight_limit:
++                        continue
++                    compositions += 1
++                    if value == 1 and source_matching == scan.mid[a]:
++                        product = delta
++                        identity_shortcuts += 1
++                    else:
++                        key = source_matching, scan.mid[a], scan.mid[b], value, delta
++                        product = cache.get(key)
++                        if product is None:
++                            product = cache[key] = alg.compose(*key)
++                            cache_misses += 1
++                    xor_entry(pending[scan.qshift[b]], b, product)
++                    xor_updates += 1
++            scan._check()
++        if certificates:
++            inclusion.append(lifted)
++    result = dict(mid=scalar['mid'], deg=scalar['deg'], q=scalar['q'], out=output,
++                  scalar=scalar, radical_edges=edges, compositions=compositions,
++                  coefficient_xors=xor_updates, cache_misses=cache_misses,
++                  identity_shortcuts=identity_shortcuts, scalar_only=False)
++    if not certificates:
++        return result
++
++    # The optional reverse transfer constructs P' and H' for independent
++    # full identities. It is excluded from production-mode timings.
++    projection, homotopy = [], []
++    for source, matching in enumerate(scan.mid):
++        if matching is None:
++            projection.append({})
++            homotopy.append({})
++            continue
++        pending = defaultdict(dict)
++        pending[scan.qshift[source]][source] = 1
++        proj, hom = {}, {}
++        for quantum_position in range(quantum_index[scan.qshift[source]], len(quanta)):
++            quantum = quanta[quantum_position]
++            if quantum > scan.qshift[source] + weight_limit:
++                break
++            y = pending.pop(quantum, {})
++            hy = {}
++            for a, value in y.items():
++                for target in bits(p_cols[a]):
++                    xor_entry(proj, target, value)
++                for target in bits(h_cols[a]):
++                    xor_entry(hy, target, value)
++            hom.update(hy)
++            for a, value in hy.items():
++                for b, delta in radical[a]:
++                    if scan.qshift[b] > scan.qshift[source] + weight_limit:
++                        continue
++                    product = alg.compose(matching, scan.mid[a], scan.mid[b], value, delta)
++                    xor_entry(pending[scan.qshift[b]], b, product)
++        projection.append(proj)
++        homotopy.append(hom)
++    result.update(inclusion=inclusion, projection=projection, homotopy=homotopy)
++    return result
++
++
++def matrix_compose(alg, source_mid, middle_mid, target_mid, first, second):
++    result = [{} for _ in first]
++    for a, row in enumerate(first):
++        for b, f in row.items():
++            for c, g in second[b].items():
++                xor_entry(result[a], c, alg.compose(source_mid[a], middle_mid[b], target_mid[c], f, g))
++    return result
++
++
++def matrix_add(*matrices):
++    result = [{} for _ in matrices[0]]
++    for matrix in matrices:
++        for a, row in enumerate(matrix):
++            for b, value in row.items():
++                xor_entry(result[a], b, value)
++    return result
++
++
++def check_certificate(scan, result):
++    """Check all special contraction identities in the actual cobordism ring."""
++    alg, old, new = scan.algebra, scan.mid, result['mid']
++    differential = [row or {} for row in scan.out]
++    reduced = result['out']
++    inc, proj, hom = result['inclusion'], result['projection'], result['homotopy']
++    comp = lambda a,b,c,f,g: matrix_compose(alg,a,b,c,f,g)
++    old_identity = [{a: 1} if matching is not None else {} for a, matching in enumerate(old)]
++    new_identity = [{a: 1} for a in range(len(new))]
++    checks = {
++        'dI=ID': (comp(new,old,old,inc,differential), comp(new,new,old,reduced,inc)),
++        'Pd=DP': (comp(old,old,new,differential,proj), comp(old,new,new,proj,reduced)),
++        'PI=1': (comp(new,old,new,inc,proj), new_identity),
++        'dH+Hd=1+IP': (matrix_add(comp(old,old,old,differential,hom),
++                                     comp(old,old,old,hom,differential)),
++                             matrix_add(old_identity,comp(old,new,old,proj,inc))),
++        'H^2=0': (comp(old,old,old,hom,hom), [{} for _ in old]),
++        'HI=0': (comp(new,old,old,inc,hom), [{} for _ in new]),
++        'PH=0': (comp(old,old,new,hom,proj), [{} for _ in old]),
++        'D^2=0': (comp(new,new,new,reduced,reduced), [{} for _ in new]),
++    }
++    for name, (left, right) in checks.items():
++        if left != right:
++            raise ArithmeticError(f"contraction identity failed: {name}")
++    return tuple(checks)
++
++
++class GradedTransferScan(FastScan):
++    """Opt-in scanning prototype; no implicit recognition-filter changes."""
++    def __init__(self, *args, certificates=False, transfer_minimum=0,
++                 max_transfer_objects=None, **kwargs):
++        super().__init__(*args, **kwargs)
++        if type(transfer_minimum) is not int or transfer_minimum < 0:
++            raise ValueError('transfer_minimum must be a nonnegative integer')
++        if max_transfer_objects is not None and (type(max_transfer_objects) is not int or max_transfer_objects < 0):
++            raise ValueError('max_transfer_objects must be a nonnegative integer or None')
++        self.qshift = [0]
++        self.certificates = certificates
++        self.transfer_minimum = transfer_minimum
++        self.max_transfer_objects = max_transfer_objects
++        self.stats.update(graded_transfer_stages=0, graded_transfer_radical_edges=0,
++                          graded_transfer_compositions=0, graded_transfer_coefficient_xors=0,
++                          graded_transfer_peak_survivors=0, graded_transfer_cache_misses=0,
++                          graded_transfer_identity_shortcuts=0, graded_transfer_scalar_only=0,
++                          graded_transfer_capacity_fallbacks=0)
++        self.history = []
++
++    def add_crossing(self, slots, reduce_now=True):
++        old_mid, old_q = self.mid, self.qshift
++        super().add_crossing(slots, reduce_now=False)
++        self.qshift = [old_q[a] + smoothing + circles - 2 * label.bit_count()
++                       for a, matching in enumerate(old_mid) if matching is not None
++                       for smoothing in (0, 1)
++                       for circles in (self.algebra.glue(matching, smoothing)[1],)
++                       for label in range(1 << circles)]
++        if reduce_now:
++            self.eliminate()
++            self.stats['max_objects_after_elimination'] = max(
++                self.stats['max_objects_after_elimination'], self.live)
++
++    def eliminate(self):
++        if self.live < self.transfer_minimum:
++            return super().eliminate()
++        if self.max_transfer_objects is not None and self.live > self.max_transfer_objects:
++            self.stats['graded_transfer_capacity_fallbacks'] += 1
++            return FastScan.eliminate(self)
++        before = self.live
++        result = transfer(self, certificates=self.certificates)
++        if self.certificates:
++            check_certificate(self, result)
++        self.mid, self.deg, self.qshift, self.out = (
++            result['mid'], result['deg'], result['q'], result['out'])
++        self.live = len(self.mid)
++        self.inc = [set() for _ in self.mid]
++        for a, row in enumerate(self.out):
++            for b in row:
++                self.inc[b].add(a)
++        self.composed = {}
++        stats = self.stats
++        stats['eliminations'] += (before - self.live) // 2
++        stats['graded_transfer_stages'] += 1
++        stats['graded_transfer_radical_edges'] += result['radical_edges']
++        stats['graded_transfer_compositions'] += result['compositions']
++        stats['graded_transfer_coefficient_xors'] += result['coefficient_xors']
++        stats['graded_transfer_cache_misses'] += result['cache_misses']
++        stats['graded_transfer_identity_shortcuts'] += result['identity_shortcuts']
++        stats['graded_transfer_scalar_only'] += int(result['scalar_only'])
++        stats['graded_transfer_peak_survivors'] = max(stats['graded_transfer_peak_survivors'], self.live)
++        self.history.append(dict(before=before, survivors=self.live,
++                                 radical_edges=result['radical_edges'],
++                                 compositions=result['compositions'],
++                                 coefficient_xors=result['coefficient_xors']))
++
++
++class GradedAdaptiveScan(GradedTransferScan):
++    """Use the existing sparse-work allowance before the general transfer.
++
++    Completed sparse cancellations are retained. The fallback computes the
++    surviving radical maps even when the earlier degree-gap shortcut cannot
++    apply. This remains a cost heuristic, without a competitive-time claim.
++    """
++    def eliminate(self):
++        if FastScan.eliminate(self, update_budget=max(256, 4 * self.live)):
++            return
++        GradedTransferScan.eliminate(self)
+--- a/Topology/UnknotRecognition/fast/fastunknot/recognize.py
++++ b/Topology/UnknotRecognition/fast/fastunknot/recognize.py
+@@ -278,10 +278,12 @@
+         from math import isfinite
+         if type(window_seconds) not in (int, float) or not isfinite(window_seconds) or window_seconds < 0:
+             raise ValueError("window_seconds must be finite and nonnegative, or None")
+-    if reduction not in ("standard", "residue", "adaptive"):
+-        raise ValueError("reduction must be standard, residue, or adaptive")
++    if reduction not in ("standard", "residue", "adaptive", "graded", "graded-adaptive"):
++        raise ValueError("reduction must be standard, residue, adaptive, graded, or graded-adaptive")
+     if reduction != "standard" and (backend != "standard" or pivot != "minfill" or algebra != "bits" or race != 1):
+-        raise ValueError("residue/adaptive reduction requires standard backend, minfill, bits, and race=1")
++        raise ValueError("nonstandard reduction requires standard backend, minfill, bits, and race=1")
++    if reduction in ("graded", "graded-adaptive") and window_radius is not None:
++        raise ValueError("graded reduction cannot be combined with window_radius")
+     if type(twist_max_basis) is not int or twist_max_basis < 0:
+         raise ValueError("twist_max_basis must be nonnegative")
+     if composition not in ("standard", "component", "component-dense"):
+--- a/Topology/UnknotRecognition/fast/fastunknot/scan.py
++++ b/Topology/UnknotRecognition/fast/fastunknot/scan.py
+@@ -444,11 +444,19 @@
+     ``reduction="adaptive"`` starts ordinary cancellation and switches to
+     the residue shortcut only after its per-stage Schur update allowance is
+     exceeded. A declined shortcut resumes the partially reduced complex.
++
++    ``reduction="graded"`` computes the complete minimal differential by
++    a quantum-ordered transfer of the typed binary scalar contraction.
++    ``graded-adaptive`` starts sparse cancellation and transfers only after
++    the same Schur update allowance is exceeded. These modes preserve the
++    nonzero radical maps between surviving objects and require minfill,
++    bits, self_inverse=True, and race=1. They support the ordinary coefficient
++    composition adapters and tail mode, not component sharing or windows.
+     """
+-    if reduction not in ("standard", "residue", "adaptive"):
+-        raise ValueError("reduction must be standard, residue, or adaptive")
++    if reduction not in ("standard", "residue", "adaptive", "graded", "graded-adaptive"):
++        raise ValueError("reduction must be standard, residue, adaptive, graded, or graded-adaptive")
+     if reduction != "standard" and (pivot != "minfill" or algebra != "bits" or not self_inverse or race != 1):
+-        raise ValueError("residue reduction requires minfill, bits, self_inverse=True, and race=1")
++        raise ValueError("nonstandard reduction requires minfill, bits, self_inverse=True, and race=1")
+     if composition not in ("standard", "component", "component-dense"):
+         raise ValueError("composition must be standard, component, or component-dense")
+     if type(composition_max_variables) is not int or composition_max_variables < 0:
+@@ -470,7 +478,10 @@
+             # below 16 crossings there is too little to reuse to repay even this count
+             shape_cache = len(order) >= 16 and 8 * repeated_stages(pd, order) >= len(order)
+         scan_type = FastScan
+-        if reduction != "standard":
++        if reduction in ("graded", "graded-adaptive"):
++            from .graded_transfer import GradedAdaptiveScan, GradedTransferScan
++            scan_type = GradedAdaptiveScan if reduction == "graded-adaptive" else GradedTransferScan
++        elif reduction != "standard":
+             from .residue import AdaptiveScan, ResidueScan
+             scan_type = AdaptiveScan if reduction == "adaptive" else ResidueScan
+         complex_ = scan_type(max_objects=max_objects, deadline=deadline, shape_cache=shape_cache)
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/fastunknot/symbolic_braid.py
+@@ -0,0 +1,246 @@
++"""Exact certificates and finite-tail homology on binary signed braid runs.
++
++This entry point never expands run exponents or constructs a PD diagram.
++The signed Seifert tests are the maintained criteria evaluated on the braid
++path graph. Remaining cases use the exact finite-tail macro homology backend.
++"""
++from __future__ import annotations
++
++import argparse
++from dataclasses import replace
++import json
++from pathlib import Path
++import re
++import sys
++from time import monotonic
++
++from .seifert import _summary
++from .twist.core import Budget, ResourceLimit, Run, components, runs_from_word, validate_runs
++from .twist.long_tail import tail_homology
++
++
++def encoded_integer(value):
++    """Read a JSON integer or an explicitly signed hexadecimal integer."""
++    if type(value) is int:
++        return value
++    if isinstance(value, str) and re.fullmatch(r"[+-]?0[xX][0-9a-fA-F]+", value):
++        return int(value, 16)
++    raise ValueError("integer fields require integers or signed hexadecimal strings")
++
++
++def load_braid(value):
++    """Parse word/run JSON without converting a run to individual crossings."""
++    if not isinstance(value, dict):
++        raise ValueError("input must be a JSON object")
++    data = value.get("braid", value)
++    if not isinstance(data, dict) or "strands" not in data:
++        raise ValueError("expected braid.strands; PD and grid inputs are not supported")
++    strands = encoded_integer(data["strands"])
++    if ("word" in data) == ("runs" in data):
++        raise ValueError("provide exactly one of word or runs")
++    if "word" in data:
++        if not isinstance(data["word"], list):
++            raise ValueError("word must be a list of signed generator indices")
++        return strands, runs_from_word(strands, (encoded_integer(x) for x in data["word"]))
++    if not isinstance(data["runs"], list) or any(
++            not isinstance(run, list) or len(run) != 2 for run in data["runs"]):
++        raise ValueError("runs must be [generator, signed_exponent] pairs")
++    return strands, validate_runs(strands, (
++        Run(encoded_integer(generator), encoded_integer(exponent))
++        for generator, exponent in data["runs"]))
++
++
++def json_safe(value):
++    """Serialize very large integers in hex without relaxing Python safeguards."""
++    if type(value) is int and value.bit_length() > 4096:
++        return hex(value)
++    if isinstance(value, dict):
++        return {key: json_safe(item) for key, item in value.items()}
++    if isinstance(value, (list, tuple)):
++        return [json_safe(item) for item in value]
++    return value
++
++
++def signed_run_seifert_data(strands, runs):
++    """Compute production-convention Seifert counts without expanding runs."""
++    runs = validate_runs(strands, runs)
++    if components(strands, runs) != 1:
++        raise ValueError("unknot recognition requires a one-component braid closure")
++    positive = {run.generator for run in runs if run.exponent < 0}
++    negative = {run.generator for run in runs if run.exponent > 0}
++    # The maintained PD conversion reverses raw braid-generator signs.
++    return _summary(sum(abs(run.exponent) for run in runs),
++                    -sum(run.exponent for run in runs), strands,
++                    strands - len(positive), strands - len(negative))
++
++
++def signed_run_certificate(strands, runs):
++    """Return an exact structural certificate or None when inconclusive."""
++    data = signed_run_seifert_data(strands, runs)
++    lower, upper = data["rasmussen_interval"]
++    if data["canonical_genus"] == 0:
++        status, criterion = "UNKNOT", "seifert-genus-zero"
++    elif data["homogeneity_defect"] == 0:
++        status, criterion = "KNOTTED", "homogeneous-seifert-genus"
++    elif lower > 0 or upper < 0:
++        status, criterion = "KNOTTED", "rasmussen-interval"
++    else:
++        return None
++    return {"version": 1, "status": status, "criterion": criterion,
++            "representation": "binary signed braid runs",
++            "sign_convention": "production PD: writhe = -sum(run exponents)",
++            **data}
++
++
++def verify_signed_run_certificate(strands, runs, certificate):
++    """Replay counts, accepting the numeric hex fields emitted by json_safe."""
++    if not isinstance(certificate, dict) or type(certificate.get("version")) is not int:
++        return False
++    try:
++        # Decode only the specified numeric fields. Text, version, and the
++        # exact schema are still checked below; booleans are not integers.
++        certificate = dict(certificate)
++        for key in ("crossings", "writhe", "seifert_circles", "positive_components",
++                    "negative_components", "homogeneity_defect", "canonical_genus"):
++            certificate[key] = encoded_integer(certificate.get(key))
++        interval = certificate.get("rasmussen_interval")
++        if not isinstance(interval, list) or len(interval) != 2:
++            return False
++        certificate["rasmussen_interval"] = [encoded_integer(value) for value in interval]
++        runs = validate_runs(strands, runs)
++        # A knot must use every adjacent generator: avoid a huge allocation.
++        if strands > len(runs) + 1:
++            return False
++        permutation = list(range(strands))
++        occurrences = {}
++        n = exponent = 0
++        for run in runs:
++            n += abs(run.exponent)
++            exponent += run.exponent
++            signs = occurrences.setdefault(run.generator, [False, False])
++            signs[run.exponent > 0] = True
++            if run.exponent & 1:
++                i = run.generator - 1
++                permutation[i], permutation[i + 1] = permutation[i + 1], permutation[i]
++        visited = set()
++        vertex = 0
++        while vertex not in visited:
++            visited.add(vertex)
++            vertex = permutation[vertex]
++        if len(visited) != strands:
++            return False
++        positive = strands - sum(values[0] for values in occurrences.values())
++        negative = strands - sum(values[1] for values in occurrences.values())
++        genus2 = n - strands + 1
++        defect = strands + 1 - positive - negative
++        lower = -exponent - strands + 2 * positive - 1
++        upper = -exponent + strands - 2 * negative + 1
++        if genus2 < 0 or genus2 & 1 or defect < 0:
++            return False
++        if genus2 == 0:
++            status, criterion = "UNKNOT", "seifert-genus-zero"
++        elif defect == 0:
++            status, criterion = "KNOTTED", "homogeneous-seifert-genus"
++        elif lower > 0 or upper < 0:
++            status, criterion = "KNOTTED", "rasmussen-interval"
++        else:
++            return False
++        expected = {
++            "version": 1, "status": status, "criterion": criterion,
++            "representation": "binary signed braid runs",
++            "sign_convention": "production PD: writhe = -sum(run exponents)",
++            "crossings": n, "writhe": -exponent, "seifert_circles": strands,
++            "positive_components": positive, "negative_components": negative,
++            "homogeneity_defect": defect, "canonical_genus": genus2 // 2,
++            "rasmussen_interval": [lower, upper],
++        }
++        for key, value in expected.items():
++            if type(value) is int and type(certificate.get(key)) is not int:
++                return False
++        interval = certificate.get("rasmussen_interval")
++        if not isinstance(interval, list) or any(type(x) is not int for x in interval):
++            return False
++        return certificate == expected
++    except (ValueError, TypeError, ArithmeticError, KeyError):
++        return False
++
++
++def recognize_runs(strands, runs, *, budget=None, check_d2=False,
++                   use_structural=True, selected=None):
++    """Exact run-input recognition, with UNKNOWN on a computational limit."""
++    runs = validate_runs(strands, runs)
++    if components(strands, runs) != 1:
++        raise ValueError("unknot recognition requires a one-component braid closure")
++    cap = replace(Budget() if budget is None else budget)
++    if selected is not None and (type(selected) is not int or not 0 <= selected < len(runs)):
++        raise ValueError("selected must be a valid zero-based run index")
++    start = monotonic()
++    deadline = None if cap.seconds is None else start + cap.seconds
++    try:
++        if deadline is not None and monotonic() >= deadline:
++            raise ResourceLimit("time budget exhausted")
++        if use_structural:
++            certificate = signed_run_certificate(strands, runs)
++            if deadline is not None and monotonic() >= deadline:
++                raise ResourceLimit("time budget exhausted")
++            if certificate is not None:
++                return {"status": certificate["status"], "method": "signed-run-structural",
++                        "certificate": certificate, "seconds": monotonic() - start}
++        remaining = None if deadline is None else max(0.0, deadline - monotonic())
++        result = tail_homology(strands, runs, selected=selected,
++                               budget=replace(cap, seconds=remaining), check_d2=check_d2)
++        return {"status": "UNKNOT" if result["reduced_rank"] == 1 else "KNOTTED",
++                "method": "symbolic-twist-khovanov-F2", "homology": result,
++                "seconds": monotonic() - start}
++    except (ResourceLimit, MemoryError) as exc:
++        return {"status": "UNKNOWN", "method": "resource-limit", "reason": str(exc),
++                "seconds": monotonic() - start}
++
++
++def main(argv=None):
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument("input", help="JSON file, or - for standard input")
++    parser.add_argument("--mode", choices=("recognize", "homology", "certificate"),
++                        default="recognize")
++    parser.add_argument("--selected-run", type=int)
++    parser.add_argument("--no-structural", action="store_true")
++    parser.add_argument("--check-d2", action="store_true")
++    parser.add_argument("--seconds", type=float)
++    for name, default in (("max-states", 250000), ("max-basis", 1000000),
++                          ("max-matrix-bits", 1000000000), ("max-xors", 20000000)):
++        parser.add_argument("--" + name, type=int, default=default)
++    args = parser.parse_args(argv)
++    try:
++        value = json.load(sys.stdin) if args.input == "-" else json.loads(Path(args.input).read_text())
++        strands, runs = load_braid(value)
++        cap = Budget(args.max_states, args.max_basis, args.max_matrix_bits,
++                     args.max_xors, args.seconds)
++        if args.mode == "homology":
++            result = tail_homology(strands, runs, selected=args.selected_run,
++                                   budget=cap, check_d2=args.check_d2)
++        elif args.mode == "certificate":
++            if args.selected_run is not None or args.no_structural:
++                raise ValueError("certificate mode does not accept tail selection or --no-structural")
++            start = monotonic()
++            if cap.seconds == 0:
++                raise ResourceLimit("time budget exhausted")
++            certificate = signed_run_certificate(strands, runs)
++            if cap.seconds is not None and monotonic() - start >= cap.seconds:
++                raise ResourceLimit("time budget exhausted")
++            result = {"status": "INCONCLUSIVE" if certificate is None else certificate["status"],
++                      "certificate": certificate}
++        else:
++            result = recognize_runs(strands, runs, selected=args.selected_run, budget=cap,
++                                    check_d2=args.check_d2, use_structural=not args.no_structural)
++    except (ValueError, TypeError, OSError) as exc:
++        print(json.dumps({"status": "INVALID", "reason": str(exc)}))
++        return 2
++    except (ResourceLimit, MemoryError) as exc:
++        print(json.dumps({"status": "UNKNOWN", "reason": str(exc)}))
++        return 3
++    print(json.dumps(json_safe(result), indent=2, sort_keys=True))
++    return 3 if result.get("status") in ("UNKNOWN", "INCONCLUSIVE") else 0
++
++
++if __name__ == "__main__":
++    raise SystemExit(main())
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/fastunknot/twist/long_tail.py
+@@ -0,0 +1,269 @@
++"""Exact finite-cap evaluation of one long twist over F_2.
++
++This layer uses the verified twist macro complex already in fastunknot.  It
++forgets the quantum grading, exactly as that backend does.  It does not replace
++a long twist by a short braid: its output is the homology of the ORIGINAL
++exponent, reconstructed from two boundary pieces and a constant interior.
++
++For a chosen exponent of absolute value m, let L be the expanded crossing
++count outside that run.  Once m >= L+2, one computation at m0=L+2 suffices.
++All intervals in the compact profile have inclusive integer endpoints.
++"""
++from __future__ import annotations
++
++from time import monotonic
++
++from fastunknot.twist.core import (
++    Budget, ResourceLimit, Run, _Meter, _rank, build_complex, components,
++    validate_runs, verify_d_squared,
++)
++
++
++def _matrix_square_is_zero(columns, meter):
++    """Check A^2=0 on the exact, canonically identified full slices."""
++    size = len(columns)
++    for column in columns:
++        meter.check()
++        if column.bit_length() > size:
++            raise ArithmeticError("interior differential is not square")
++        image = 0
++        rest = column
++        while rest:
++            low = rest & -rest
++            image ^= columns[low.bit_length() - 1]
++            rest ^= low
++            meter.xor()
++        if image:
++            raise ArithmeticError("interior differential does not square to zero")
++
++
++def profile_rank(profile):
++    return sum(dim for _, dim in profile["points"]) + sum(
++        (piece["last"] - piece["first"] + 1) * piece["dimension"]
++        for piece in profile["constant_intervals"]
++    )
++
++
++def degree_dimension(profile, degree):
++    """Query a possibly enormous graded profile without expanding its tail."""
++    if type(degree) is not int:
++        raise ValueError("degree must be an integer")
++    answer = sum(dim for h, dim in profile["points"] if h == degree)
++    for piece in profile["constant_intervals"]:
++        if piece["first"] <= degree <= piece["last"]:
++            answer += piece["dimension"]
++    return answer
++
++
++def materialize_profile(profile, *, max_degrees=10000):
++    """Return the ordinary nonzero degree dictionary, with an output guard."""
++    if type(max_degrees) is not int or max_degrees < 0:
++        raise ValueError("max_degrees must be a nonnegative integer")
++    count = len(profile["points"]) + sum(
++        piece["last"] - piece["first"] + 1
++        for piece in profile["constant_intervals"]
++    )
++    if count > max_degrees:
++        raise ResourceLimit("expanded homology output exceeds max_degrees")
++    answer = dict(profile["points"])
++    for piece in profile["constant_intervals"]:
++        for h in range(piece["first"], piece["last"] + 1):
++            if h in answer:
++                raise ArithmeticError("compact profile pieces overlap")
++            answer[h] = piece["dimension"]
++    return dict(sorted(answer.items()))
++
++
++def tail_homology(strands, runs, *, selected=None, budget=None, check_d2=False,
++                  check_interior_square=True):
++    """Exact reduced homology, with a finite-cap long-twist optimization.
++
++    The selected run is zero-based.  The default chooses a longest run;
++    no eligible run means the ordinary finite macro computation.  Resource
++    ceilings apply to the capped computation and shared verification/rank
++    work.  They do not reject the original exponent merely because it is
++    large.  Bit complexity still depends on the original input/output sizes.
++    """
++    start = monotonic()
++    runs = validate_runs(strands, runs)
++    if selected is None:
++        selected = max(range(len(runs)), key=lambda j: abs(runs[j].exponent),
++                       default=None)
++    elif type(selected) is not int or not 0 <= selected < len(runs):
++        raise ValueError("selected must be a valid zero-based run index")
++    meter = _Meter(budget or Budget())
++    meter.check()
++    crossing_count = sum(abs(run.exponent) for run in runs)
++    magnitude = 0 if selected is None else abs(runs[selected].exponent)
++    context_crossings = crossing_count - magnitude
++    cap = context_crossings + 2
++    eligible = selected is not None and magnitude >= cap
++    sign = 1 if selected is None or runs[selected].exponent > 0 else -1
++    capped_runs = list(runs)
++    if eligible:
++        capped_runs[selected] = Run(runs[selected].generator, sign * cap)
++    complex_ = build_complex(strands, capped_runs, meter=meter)
++    if check_d2:
++        verify_d_squared(complex_, meter)
++    ranks = {h: _rank(columns, meter)
++             for h, columns in complex_.columns.items()}
++    betti = {h: dim - ranks.get(h - 1, 0) - ranks.get(h, 0)
++             for h, dim in complex_.dimensions.items()}
++    if any(dim < 0 for dim in betti.values()):
++        raise ArithmeticError("negative homology dimension")
++    betti = {h: dim for h, dim in sorted(betti.items()) if dim}
++    profile = {"points": [[h, dim] for h, dim in betti.items()],
++               "constant_intervals": []}
++    calibration = None
++    if eligible:
++        # Oriented coordinate q=sign*h makes the selected contribution +k.
++        alpha = sum(min(0, sign * run.exponent)
++                    for j, run in enumerate(runs) if j != selected)
++        beta = sum(max(0, sign * run.exponent)
++                   for j, run in enumerate(runs) if j != selected)
++        if beta - alpha != context_crossings:
++            raise ArithmeticError("context degree span mismatch")
++        # At cap=L+2 the two full q-slices are beta+1 and beta+2.
++        # The cochain differential increases h, including when sign=-1.
++        source_degree = beta + 1 if sign > 0 else -(beta + 2)
++        target_degree = source_degree + 1
++        width = complex_.dimensions[source_degree]
++        if width != complex_.dimensions[target_degree]:
++            raise ArithmeticError("interior slices differ in dimension")
++        if check_interior_square:
++            _matrix_square_is_zero(complex_.columns[source_degree], meter)
++        interior_rank = ranks[source_degree]
++        interior_betti = width - 2 * interior_rank
++        if interior_betti < 0:
++            raise ArithmeticError("negative interior homology dimension")
++        one_slice_rank = sum(betti.values()) - interior_betti
++        if one_slice_rank < 1:
++            raise ArithmeticError("one-full-slice rank violates the nonzero Euler bound")
++        extra = magnitude - cap
++        profile["points"] = sorted(
++            [h if sign * h <= beta + 1 else h + sign * extra, dim]
++            for h, dim in betti.items()
++        )
++        if extra and interior_betti:
++            first_q, last_q = beta + 2, magnitude + alpha - 1
++            first_h, last_h = sorted((sign * first_q, sign * last_q))
++            profile["constant_intervals"] = [{
++                "first": first_h, "last": last_h,
++                "dimension": interior_betti,
++            }]
++        calibration = {
++            "selected_run": selected, "sign": sign,
++            "context_crossings": context_crossings,
++            "context_oriented_degree_min": alpha,
++            "context_oriented_degree_max": beta,
++            "cap_magnitude": cap, "original_magnitude": magnitude,
++            "interior_source_degree": source_degree,
++            "interior_dimension": width, "interior_boundary_rank": interior_rank,
++            "interior_betti": interior_betti, "inserted_slices": extra,
++            "cap_reduced_rank": sum(betti.values()),
++            "one_full_slice_magnitude": cap - 1,
++            "one_full_slice_reduced_rank": one_slice_rank,
++            "cap_by_degree": betti,
++            "interior_square_checked": bool(check_interior_square),
++        }
++        expected_rank = sum(betti.values()) + extra * interior_betti
++        if profile_rank(profile) != expected_rank:
++            raise ArithmeticError("compact profile and affine rank disagree")
++    meter.check()
++    return {
++        "reduced_rank": profile_rank(profile), "compact_by_degree": profile,
++        "components": components(strands, runs),
++        "method": "finite-cap-twist-khovanov-F2",
++        "grading": "normalized macro homological degree; quantum grading forgotten",
++        "tail_eligible": eligible,
++        "tail_compressed": bool(eligible and magnitude > cap),
++        "calibration": calibration,
++        "stats": {**complex_.stats,
++                  "original_crossings": crossing_count,
++                  "built_crossings": sum(abs(run.exponent) for run in capped_runs),
++                  "elimination_and_check_xors": meter.xors},
++        "seconds": monotonic() - start,
++        "d_squared_checked": bool(check_d2),
++        "unrestricted_quasipolynomial_guarantee": False,
++    }
++
++
++def tail_recognize(strands, runs, **kwargs):
++    """Decide one-component closures only, with explicit resource semantics."""
++    runs = validate_runs(strands, runs)
++    if components(strands, runs) != 1:
++        raise ValueError("unknot recognition requires a one-component closure")
++    try:
++        result = tail_homology(strands, runs, **kwargs)
++    except (ResourceLimit, MemoryError) as exc:
++        return {"status": "UNKNOWN", "method": "finite-cap-twist-khovanov-F2",
++                "reason": str(exc) or "memory allocation failed",
++                "unrestricted_quasipolynomial_guarantee": False}
++    return {"status": "UNKNOT" if result["reduced_rank"] == 1 else "KNOTTED",
++            "method": result["method"], "homology": result,
++            "unrestricted_quasipolynomial_guarantee": False}
++
++
++def dominant_run_obstruction(strands, runs, *, selected=None):
++    """Return a replayable KNOTTED certificate if m >= L+2, otherwise None.
++
++    This is a consequence of the finite-cap theorem, not an experimental
++    extrapolation.  For a context admitting a knot closure, the affine slope
++    is a positive odd integer.  The affine TOTAL-rank law begins already at
++    L+1, whose single full slice is sufficient for the rank sum argument.
++    The two-sided graded profile still uses the L+2 cap.
++    """
++    runs = validate_runs(strands, runs)
++    if selected is None:
++        selected = max(range(len(runs)), key=lambda j: abs(runs[j].exponent),
++                       default=None)
++    elif type(selected) is not int or not 0 <= selected < len(runs):
++        raise ValueError("selected must be a valid zero-based run index")
++    if selected is None or components(strands, runs) != 1:
++        return None
++    magnitude = abs(runs[selected].exponent)
++    context_crossings = sum(abs(run.exponent)
++                            for j, run in enumerate(runs) if j != selected)
++    if magnitude < context_crossings + 2:
++        return None
++    extra = magnitude - context_crossings - 1
++    lower_bound = extra + 1 + (extra & 1)
++    return {
++        "status": "KNOTTED", "method": "dominant-twist-run",
++        "certificate": {
++            "kind": "dominant-twist-run-v1", "strands": strands,
++            "run_count": len(runs), "selected_run": selected,
++            "generator": runs[selected].generator,
++            "signed_exponent": runs[selected].exponent,
++            "context_crossings": context_crossings,
++            "one_component_checked": True,
++            "reduced_F2_rank_lower_bound": lower_bound,
++        },
++        "unrestricted_quasipolynomial_guarantee": False,
++    }
++
++
++def verify_dominant_run_certificate(strands, runs, certificate):
++    """Replay the local numeric and permutation premises; reject tampering."""
++    if not isinstance(certificate, dict):
++        raise ValueError("certificate must be a dictionary")
++    if certificate.get("kind") != "dominant-twist-run-v1":
++        raise ValueError("unknown dominance certificate")
++    for key in ("strands", "run_count", "selected_run", "generator",
++                "signed_exponent", "context_crossings", "reduced_F2_rank_lower_bound"):
++        if type(certificate.get(key)) is not int:
++            raise ValueError("certificate numeric fields must be integers")
++    if certificate.get("one_component_checked") is not True:
++        raise ValueError("certificate must assert the verified knot premise")
++    selected = certificate.get("selected_run")
++    if type(selected) is not int:
++        raise ValueError("certificate has no valid selected run")
++    actual = dominant_run_obstruction(strands, runs, selected=selected)
++    if actual is None or actual["certificate"] != certificate:
++        raise ValueError("dominance certificate does not replay")
++    return True
++
++
++# Descriptive aliases used by the integration adapter.
++dominant_twist_certificate = dominant_run_obstruction
++verify_dominant_twist_certificate = verify_dominant_run_certificate
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/tests/test_graded_transfer_integration.py
+@@ -0,0 +1,260 @@
++"""Exact transfer identities and the supported production API boundaries."""
++from collections import Counter
++from contextlib import redirect_stderr, redirect_stdout
++import copy
++import io
++import json
++from pathlib import Path
++import random
++import tempfile
++import unittest
++from unittest.mock import patch
++
++from fastunknot import Diagram, factored_khovanov_rank, khovanov_rank, recognize
++from fastunknot import __main__ as cli
++from fastunknot.component_algebra import install_on_empty_scan
++from fastunknot.diagram import DiagramError
++from fastunknot.geometry import ScanLimit
++from fastunknot.graded_transfer import (
++    GradedAdaptiveScan, GradedTransferScan, check_certificate, transfer,
++)
++from fastunknot.ordering import best_scan_order
++from fastunknot.scan_fast import FastScan
++
++
++EXAMPLES = Path(__file__).resolve().parents[1] / 'examples'
++MODES = ('graded', 'graded-adaptive')
++SCAN_OPTIONS = dict(use_braid=False, use_seifert=False, use_reduction=False,
++                    use_descending=False, use_alexander=False, use_jones=False,
++                    use_factorization=False)
++
++
++def example(name):
++    return Diagram.from_json(json.loads((EXAMPLES / (name + '.json')).read_text()))
++
++
++def quantum_counts(scan):
++    return Counter((scan.deg[v], scan.qshift[v])
++                   for v, matching in enumerate(scan.mid) if matching is not None)
++
++
++def small_complex(scan_type, degrees, quantum, rows, arcs=1):
++    scan = scan_type(shape_cache=False)
++    matching = scan.algebra.intern(tuple((2*j, 2*j+1) for j in range(arcs)))
++    scan.points = frozenset(range(2*arcs))
++    scan.mid = [matching] * len(degrees)
++    scan.deg = list(degrees)
++    scan.qshift = list(quantum)
++    scan.out = copy.deepcopy(rows)
++    scan.inc = [set() for _ in degrees]
++    scan.live = len(degrees)
++    for a, row in enumerate(scan.out):
++        for b in row:
++            scan.inc[b].add(a)
++    return scan
++
++
++class GradedTransferIntegrationTests(unittest.TestCase):
++    def test_full_nonzero_transfer_and_relative_continuation(self):
++        rows = [{2: 1, 3: 2}, {2: 1}, {}, {}]
++        old = small_complex(FastScan, [0,0,1,1], [0,0,0,2], rows)
++        changed = small_complex(GradedTransferScan, [0,0,1,1], [0,0,0,2], rows)
++        result = transfer(changed, certificates=True)
++        self.assertEqual(len(check_certificate(changed, result)), 8)
++        self.assertEqual(result['out'], [{1: 2}, {}])
++        changed.certificates = True
++        changed.eliminate()
++        old.eliminate()
++        old.add_crossing((0,1,2,2))
++        changed.add_crossing((0,1,2,2))
++        self.assertEqual(changed.ranks_by_degree(), old.ranks_by_degree())
++
++    def test_higher_correction_and_source_quantum_band(self):
++        # A two-step correction x1*x2 survives at the top possible weight.
++        scan = small_complex(GradedTransferScan, [0,1,0,1], [0,2,2,4],
++                             [{1:2}, {}, {1:1,3:4}, {}], arcs=2)
++        result = transfer(scan, certificates=True)
++        self.assertEqual(result['out'], [{1:8}, {}])
++        check_certificate(scan, result)
++        # On one arc the same two-step path becomes x*x=0 beyond its band.
++        scan = small_complex(GradedTransferScan, [0,1,0,1], [0,2,2,4],
++                             [{1:2}, {}, {1:1,3:2}, {}])
++        result = transfer(scan, certificates=True)
++        self.assertEqual(result['out'], [{}, {}])
++        check_certificate(scan, result)
++
++    def test_quantum_ranks_and_exact_certificates_with_composition(self):
++        from audit_grading import GradingAuditScan
++        for name in ('trefoil', 'hard_unknot_8', 'conway'):
++            diagram = example(name)
++            order = best_scan_order(diagram.pd)
++            baseline = GradingAuditScan(shape_cache=False)
++            changed = GradedTransferScan(shape_cache=False, certificates=True)
++            install_on_empty_scan(changed, minimum_pairs=0, method='fast')
++            for crossing in order:
++                baseline.add_crossing(diagram.pd[crossing])
++                changed.add_crossing(diagram.pd[crossing])
++            self.assertEqual(quantum_counts(changed), quantum_counts(baseline))
++            self.assertEqual(changed.ranks_by_degree(), baseline.ranks_by_degree())
++
++    def test_public_ranks_tail_and_coefficient_adapters(self):
++        for name in ('trefoil', 'hard_unknot_8', 'conway'):
++            diagram = example(name)
++            expected = khovanov_rank(diagram.pd)['by_degree']
++            for mode in MODES:
++                for composition in ('standard', 'component', 'component-dense'):
++                    for tail in (0,2):
++                        result = khovanov_rank(diagram.pd, reduction=mode,
++                                               composition=composition, tail=tail,
++                                               check_d_squared=True)
++                        self.assertEqual(result['by_degree'], expected)
++                        self.assertEqual(result['reduction'], mode)
++                        self.assertIn('graded_transfer_stages', result['stats'])
++
++    def test_random_diagrams_against_the_set_coefficient_oracle(self):
++        rng = random.Random(2026100817)
++        accepted = 0
++        while accepted < 18:
++            strands = rng.randrange(2,5)
++            word = [rng.choice((-1,1))*rng.randrange(1,strands)
++                    for _ in range(rng.randrange(1,10))]
++            try:
++                diagram = Diagram.from_braid(strands, word)
++            except DiagramError:
++                continue
++            order = list(range(diagram.crossings))
++            rng.shuffle(order)
++            expected = khovanov_rank(diagram.pd, order=order,
++                                     algebra='sets', pivot='lifo')['by_degree']
++            for mode in MODES:
++                result = khovanov_rank(diagram.pd, order=order, reduction=mode,
++                                       composition='component-dense', check_d_squared=True)
++                self.assertEqual(result['by_degree'], expected, (strands, word, order))
++            accepted += 1
++
++    def test_adaptive_fallback_preserves_a_nonzero_radical_map(self):
++        from benchmark_residue import dense_two_term
++        scan = dense_two_term(GradedAdaptiveScan, 32, graded=True)
++        scan.qshift = [0] * len(scan.mid)
++        a = len(scan.mid)
++        scan.mid.extend([scan.mid[0], scan.mid[0]])
++        scan.deg.extend([0,1])
++        scan.qshift.extend([0,2])
++        scan.out.extend([{a+1:2}, {}])
++        scan.inc.extend([set(), {a}])
++        scan.live += 2
++        scan.certificates = True
++        scan.eliminate()
++        self.assertEqual(scan.live, 3)
++        self.assertGreater(scan.stats['schur_update_pairs'], 0)
++        self.assertEqual(scan.stats['graded_transfer_stages'], 1)
++        self.assertEqual([value for row in scan.out for value in row.values()], [2])
++        scan.check_d_squared()
++
++    def test_transfer_capacity_and_deadlines(self):
++        for scan_type in (GradedTransferScan, GradedAdaptiveScan):
++            scan = small_complex(scan_type, [0,0,1,1], [0,0,0,2],
++                                 [{2:1,3:2},{2:1},{},{}])
++            scan.max_transfer_objects = 0
++            scan.eliminate()
++            self.assertEqual(scan.live, 2)
++            self.assertEqual([v for row in scan.out if row for v in row.values()], [2])
++        for mode in MODES:
++            with self.assertRaises(ScanLimit):
++                khovanov_rank(example('trefoil').pd, reduction=mode, max_objects=1)
++            with self.assertRaises(ScanLimit):
++                khovanov_rank(example('trefoil').pd, reduction=mode, seconds=0)
++        scan = GradedTransferScan(deadline=0)
++        with self.assertRaises(ScanLimit):
++            scan.eliminate()
++        for options in ({'max_transfer_objects': -1}, {'transfer_minimum': -1}):
++            with self.assertRaises(ValueError):
++                GradedTransferScan(**options)
++
++    def test_recognition_evidence_and_resource_verdicts(self):
++        diagram = example('trefoil')
++        for mode in MODES:
++            result = recognize(diagram, reduction=mode, **SCAN_OPTIONS)
++            self.assertEqual(result.status, 'KNOTTED')
++            self.assertEqual(result.evidence['khovanov']['reduction'], mode)
++            self.assertEqual(recognize(diagram, reduction=mode, max_objects=1,
++                                       **SCAN_OPTIONS).status, 'UNKNOWN')
++            self.assertEqual(recognize(diagram, reduction=mode, seconds=0,
++                                       **SCAN_OPTIONS).status, 'UNKNOWN')
++
++    def test_raw_option_guards_even_for_an_empty_diagram(self):
++        for mode in MODES:
++            for options in ({'pivot':'lifo'}, {'algebra':'sets'},
++                            {'self_inverse':False}, {'race':2}):
++                with self.assertRaises(ValueError):
++                    khovanov_rank([], reduction=mode, **options)
++
++    def test_incompatible_recognition_options_precede_early_certificates(self):
++        diagram = Diagram.from_braid(2, [1,1,1])
++        for mode in MODES:
++            for options in ({'backend':'shared'}, {'backend':'saturated'},
++                            {'backend':'euler'}, {'backend':'twist'},
++                            {'pivot':'lifo'}, {'algebra':'sets'}, {'race':2},
++                            {'window_radius':0}, {'window_radius':2}):
++                with self.assertRaises(ValueError):
++                    recognize(diagram, reduction=mode, **options)
++
++    def test_factored_api_and_unchanged_defaults(self):
++        diagram = example('conway_sum_2')
++        expected = factored_khovanov_rank(diagram)['by_degree']
++        for mode in MODES:
++            self.assertEqual(factored_khovanov_rank(diagram, reduction=mode)['by_degree'], expected)
++        default = khovanov_rank(example('trefoil').pd)
++        self.assertNotIn('reduction', default)
++        self.assertNotIn('graded_transfer_stages', default['stats'])
++        for command in ('recognize','khovanov','window'):
++            option = next(row for row in cli.OPTIONS[command] if row[0] == '--reduction')
++            self.assertEqual(option[2], 'standard')
++        window = next(row for row in cli.OPTIONS['window'] if row[0] == '--reduction')
++        self.assertEqual(window[3], ('standard','residue','adaptive'))
++
++    def test_both_cli_parsers_and_supported_commands(self):
++        with tempfile.TemporaryDirectory() as directory:
++            path = Path(directory) / 'trefoil.json'
++            path.write_text(json.dumps({'braid':{'strands':2,'word':[1,1,1]}}))
++            for mode in MODES:
++                fast_args = ['khovanov', str(path), '--reduction', mode]
++                self.assertEqual(cli._fast_parse(fast_args).reduction, mode)
++                output = io.StringIO()
++                with patch.object(cli, '_parser', side_effect=AssertionError('fast parse declined')):
++                    with redirect_stdout(output):
++                        self.assertEqual(cli.main(fast_args), 0)
++                self.assertEqual(json.loads(output.getvalue())['rank'], 6)
++                full_args = ['khovanov', str(path), '--reduction='+mode]
++                self.assertIsNone(cli._fast_parse(full_args))
++                output = io.StringIO()
++                with redirect_stdout(output):
++                    self.assertEqual(cli.main(full_args), 0)
++                self.assertEqual(json.loads(output.getvalue())['reduction'], mode)
++                args = ['recognize', str(path), '--reduction', mode,
++                        '--no-braid','--no-seifert','--no-reduction','--no-descending',
++                        '--no-alexander','--no-jones','--no-factor']
++                output = io.StringIO()
++                with redirect_stdout(output):
++                    self.assertEqual(cli.main(args), 0)
++                self.assertEqual(json.loads(output.getvalue())['evidence']['khovanov']['reduction'], mode)
++
++    def test_cli_rejects_unsafe_combinations(self):
++        with tempfile.TemporaryDirectory() as directory:
++            path = Path(directory) / 'trefoil.json'
++            path.write_text(json.dumps({'braid':{'strands':2,'word':[1,1,1]}}))
++            for mode in MODES:
++                for flag in ('--shared','--twist'):
++                    with redirect_stderr(io.StringIO()):
++                        self.assertEqual(cli.main(['khovanov',str(path),'--reduction',mode,flag]), 2)
++                with redirect_stderr(io.StringIO()):
++                    self.assertEqual(cli.main(['recognize',str(path),'--reduction',mode,
++                                               '--window-radius','0']), 2)
++                with redirect_stderr(io.StringIO()):
++                    with self.assertRaises(SystemExit) as raised:
++                        cli._parser().parse_args(['window',str(path),'--reduction',mode])
++                    self.assertEqual(raised.exception.code, 2)
++
++
++if __name__ == '__main__':
++    unittest.main()
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/tests/test_long_tail.py
+@@ -0,0 +1,214 @@
++"""Finite-cap correctness, threshold, interface, and resource regressions."""
++import copy
++import random
++import unittest
++
++from fastunknot.twist.core import (
++    Budget, ResourceLimit, Run, build_complex, homology,
++)
++from fastunknot.twist.reference import cube_homology
++from fastunknot.twist.long_tail import (
++    degree_dimension, dominant_run_obstruction, materialize_profile,
++    profile_rank, tail_homology, tail_recognize,
++    verify_dominant_run_certificate,
++)
++
++
++def _word(runs):
++    return [run.generator * (1 if run.exponent > 0 else -1)
++            for run in runs for _ in range(abs(run.exponent))]
++
++
++class FiniteCapTests(unittest.TestCase):
++    def test_complete_profiles_random_contexts(self):
++        """240 full-degree comparisons, including cap-1 and both endpoints."""
++        rng = random.Random(1082026)
++        comparisons = 0
++        for _ in range(60):
++            b = rng.randrange(2, 6)
++            t = rng.randrange(1, 6)
++            selected = rng.randrange(t)
++            runs = [Run(rng.randrange(1, b), rng.choice((-2, -1, 1, 2)))
++                    for _ in range(t)]
++            sign = rng.choice((-1, 1))
++            length = sum(abs(r.exponent) for j, r in enumerate(runs) if j != selected)
++            for magnitude in (length + 1, length + 2, length + 3, length + 6):
++                runs[selected] = Run(runs[selected].generator, sign * magnitude)
++                exact = homology(b, runs, check_d2=True)
++                capped = tail_homology(b, runs, selected=selected, check_d2=True)
++                self.assertEqual(materialize_profile(capped['compact_by_degree']),
++                                 exact['by_degree'])
++                self.assertEqual(capped['reduced_rank'], exact['reduced_rank'])
++                self.assertEqual(capped['components'], exact['components'])
++                for h in range(-sum(abs(r.exponent) for r in runs) - 1,
++                               sum(abs(r.exponent) for r in runs) + 2):
++                    self.assertEqual(degree_dimension(capped['compact_by_degree'], h),
++                                     exact['by_degree'].get(h, 0))
++                comparisons += 1
++        self.assertEqual(comparisons, 240)
++
++    def test_single_full_slice_rank_threshold(self):
++        """The total-rank affine law starts one step before the profile cap."""
++        rng = random.Random(11082026)
++        for _ in range(80):
++            b = rng.randrange(2, 6)
++            t = rng.randrange(1, 6)
++            selected = rng.randrange(t)
++            runs = [Run(rng.randrange(1, b), rng.choice((-2, -1, 1, 2)))
++                    for _ in range(t)]
++            sign = rng.choice((-1, 1))
++            length = sum(abs(r.exponent) for j, r in enumerate(runs) if j != selected)
++            runs[selected] = Run(runs[selected].generator, sign * (length + 2))
++            cap = tail_homology(b, runs, selected=selected, check_d2=True)
++            runs[selected] = Run(runs[selected].generator, sign * (length + 1))
++            one = homology(b, runs, check_d2=True)
++            self.assertEqual(cap['reduced_rank'], one['reduced_rank'] +
++                             cap['calibration']['interior_betti'])
++
++    def test_exact_interior_matrix_identification(self):
++        rng = random.Random(12082026)
++        for _ in range(32):
++            b = rng.randrange(2, 6)
++            t = rng.randrange(1, 6)
++            selected = rng.randrange(t)
++            runs = [Run(rng.randrange(1, b), rng.choice((-2, -1, 1, 2)))
++                    for _ in range(t)]
++            sign = rng.choice((-1, 1))
++            length = sum(abs(r.exponent) for j, r in enumerate(runs) if j != selected)
++            beta = sum(max(0, sign * r.exponent)
++                       for j, r in enumerate(runs) if j != selected)
++            runs[selected] = Run(runs[selected].generator, sign * (length + 2))
++            cap = build_complex(b, runs)
++            source = beta + 1 if sign > 0 else -(beta + 2)
++            runs[selected] = Run(runs[selected].generator, sign * (length + 3))
++            extended = build_complex(b, runs)
++            self.assertEqual(cap.columns[source], extended.columns[source])
++            self.assertEqual(cap.columns[source], extended.columns[source + sign])
++
++    def test_independent_crossing_cube(self):
++        rng = random.Random(13082026)
++        for _ in range(24):
++            b = rng.randrange(2, 5)
++            t = rng.randrange(1, 5)
++            selected = rng.randrange(t)
++            runs = [Run(rng.randrange(1, b), rng.choice((-1, 1))) for _ in range(t)]
++            length = t - 1
++            sign = rng.choice((-1, 1))
++            runs[selected] = Run(runs[selected].generator, sign * (length + 3))
++            capped = tail_homology(b, runs, selected=selected, check_d2=True)
++            cube = cube_homology(b, _word(runs), max_crossings=9, check_d2=True)
++            self.assertEqual(materialize_profile(capped['compact_by_degree']),
++                             cube['by_degree'])
++
++    def test_huge_signed_input_no_materialization(self):
++        magnitude = (1 << 20000) + 1
++        for sign in (-1, 1):
++            result = tail_homology(2, [Run(1, sign * magnitude)], check_d2=True)
++            self.assertEqual(result['reduced_rank'], magnitude)
++            self.assertEqual(result['stats']['built_crossings'], 2)
++            self.assertEqual(result['stats']['basis'], 4)
++            profile = result['compact_by_degree']
++            self.assertEqual(degree_dimension(profile, 0), 1)
++            self.assertEqual(degree_dimension(profile, sign), 0)
++            self.assertEqual(degree_dimension(profile, sign * 2), 1)
++            self.assertEqual(degree_dimension(profile, sign * magnitude), 1)
++            self.assertEqual(degree_dimension(profile, sign * (magnitude + 1)), 0)
++            with self.assertRaises(ResourceLimit):
++                materialize_profile(profile, max_degrees=100)
++
++    def test_automatic_selection_and_short_fallback(self):
++        runs = [Run(1, 1), Run(2, -11), Run(3, 1)]
++        result = tail_homology(4, runs)
++        self.assertEqual(result['calibration']['selected_run'], 1)
++        self.assertTrue(result['tail_compressed'])
++        short = tail_homology(4, runs, selected=0)
++        self.assertFalse(short['tail_eligible'])
++        self.assertEqual(short['reduced_rank'], result['reduced_rank'])
++        self.assertEqual(materialize_profile(short['compact_by_degree']),
++                         materialize_profile(result['compact_by_degree']))
++
++    def test_empty_unknot(self):
++        result = tail_homology(1, [])
++        self.assertEqual(result['reduced_rank'], 1)
++        self.assertEqual(materialize_profile(result['compact_by_degree']), {0: 1})
++
++    def test_original_components_not_cap_components(self):
++        result = tail_homology(2, [Run(1, 101)])
++        self.assertEqual(result['components'], 1)
++        self.assertEqual(result['calibration']['cap_magnitude'], 2)
++        self.assertEqual(tail_recognize(2, [Run(1, 101)])['status'], 'KNOTTED')
++        with self.assertRaises(ValueError):
++            tail_recognize(2, [Run(1, 100)])
++
++    def test_budgets_and_invalid_parameters(self):
++        with self.assertRaises(ResourceLimit):
++            tail_homology(2, [Run(1, 101)], budget=Budget(max_basis=0))
++        with self.assertRaises(ResourceLimit):
++            tail_homology(2, [Run(1, 101)], budget=Budget(seconds=0))
++        self.assertEqual(tail_recognize(2, [Run(1, 101)],
++                                      budget=Budget(max_states=0))['status'], 'UNKNOWN')
++        for selected in (-1, 1, False, 0.0, '0'):
++            with self.assertRaises(ValueError):
++                tail_homology(2, [Run(1, 3)], selected=selected)
++        with self.assertRaises(ValueError):
++            materialize_profile({'points': [], 'constant_intervals': []}, max_degrees=-1)
++        with self.assertRaises(ValueError):
++            degree_dimension({'points': [], 'constant_intervals': []}, True)
++
++
++class DominanceTests(unittest.TestCase):
++    def test_sharp_unknot_threshold(self):
++        for length in (1, 2, 3, 5):
++            for sign in (-1, 1):
++                runs = [Run(1, sign * (length + 1)), Run(1, -sign * length)]
++                self.assertIsNone(dominant_run_obstruction(2, runs, selected=0))
++                self.assertEqual(homology(2, runs)['reduced_rank'], 1)
++
++    def test_knot_certificates_and_rank_lower_bounds(self):
++        rng = random.Random(14082026)
++        certified = 0
++        for _ in range(120):
++            b = rng.randrange(2, 6)
++            t = rng.randrange(1, 6)
++            selected = rng.randrange(t)
++            runs = [Run(rng.randrange(1, b), rng.choice((-2, -1, 1, 2)))
++                    for _ in range(t)]
++            length = sum(abs(r.exponent) for j, r in enumerate(runs) if j != selected)
++            runs[selected] = Run(runs[selected].generator,
++                                 rng.choice((-1, 1)) * (length + rng.randrange(2, 7)))
++            result = tail_homology(b, runs, selected=selected)
++            witness = dominant_run_obstruction(b, runs, selected=selected)
++            if result['components'] != 1:
++                self.assertIsNone(witness)
++                continue
++            certified += 1
++            self.assertIsNotNone(witness)
++            cert = witness['certificate']
++            self.assertEqual(witness['status'], 'KNOTTED')
++            self.assertTrue(verify_dominant_run_certificate(b, runs, cert))
++            self.assertGreaterEqual(result['reduced_rank'], cert['reduced_F2_rank_lower_bound'])
++            self.assertGreaterEqual(cert['reduced_F2_rank_lower_bound'], 3)
++            self.assertEqual(result['calibration']['interior_betti'] % 2, 1)
++        self.assertGreater(certified, 10)
++
++    def test_replay_rejects_tampering_and_boolean_integers(self):
++        runs = [Run(1, 11)]
++        certificate = dominant_run_obstruction(2, runs)['certificate']
++        for key in certificate:
++            altered = copy.deepcopy(certificate)
++            value = altered[key]
++            if type(value) is int:
++                altered[key] += 1
++            elif type(value) is bool:
++                altered[key] = False
++            else:
++                altered[key] = 'invalid'
++            with self.assertRaises(ValueError):
++                verify_dominant_run_certificate(2, runs, altered)
++        altered = dict(certificate, generator=True)
++        with self.assertRaises(ValueError):
++            verify_dominant_run_certificate(2, runs, altered)
++
++
++if __name__ == '__main__':
++    unittest.main(verbosity=2)
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/tests/test_symbolic_braid.py
+@@ -0,0 +1,187 @@
++"""Independent expanded-diagram and exact-homology checks of run certificates."""
++from copy import deepcopy
++import json
++from pathlib import Path
++import random
++import subprocess
++import sys
++import unittest
++
++from fastunknot import Diagram, khovanov_rank
++from fastunknot.seifert import seifert_certificate, seifert_data
++from fastunknot.symbolic_braid import (
++    encoded_integer, json_safe, load_braid, recognize_runs,
++    signed_run_certificate, signed_run_seifert_data,
++    verify_signed_run_certificate,
++)
++from fastunknot.twist.core import Budget, Run, components, runs_from_word
++
++
++class SymbolicBraidTests(unittest.TestCase):
++    def test_signed_graph_counts_against_expanded_pd(self):
++        rng = random.Random(2026100817)
++        checked = 0
++        while checked < 180:
++            strands = rng.randrange(2, 7)
++            word = [rng.choice((-1, 1)) * rng.randrange(1, strands)
++                    for _ in range(rng.randrange(strands - 1, 26))]
++            runs = runs_from_word(strands, word)
++            if components(strands, runs) != 1:
++                continue
++            diagram = Diagram.from_braid(strands, word)
++            self.assertEqual(signed_run_seifert_data(strands, runs), seifert_data(diagram))
++            observed = signed_run_certificate(strands, runs)
++            expanded = seifert_certificate(diagram)
++            if expanded is None:
++                self.assertIsNone(observed)
++            else:
++                self.assertEqual((observed["status"], observed["criterion"]),
++                                 (expanded["status"], expanded["criterion"]))
++                self.assertTrue(verify_signed_run_certificate(strands, runs, observed))
++            checked += 1
++
++    def test_structural_verdicts_against_exact_khovanov(self):
++        rng = random.Random(2026100818)
++        checked = fired = 0
++        while checked < 40:
++            strands = rng.randrange(2, 5)
++            word = [rng.choice((-1, 1)) * rng.randrange(1, strands)
++                    for _ in range(rng.randrange(strands - 1, 10))]
++            runs = runs_from_word(strands, word)
++            if components(strands, runs) != 1:
++                continue
++            cert = signed_run_certificate(strands, runs)
++            if cert is not None:
++                exact = khovanov_rank(Diagram.from_braid(strands, word).pd)
++                self.assertEqual(cert["status"] == "UNKNOT", exact["reduced_rank"] == 1)
++                fired += 1
++            checked += 1
++        self.assertGreater(fired, 0)
++
++    def test_empty_and_all_structural_criteria(self):
++        cases = [(1, [], "UNKNOT", "seifert-genus-zero"),
++                 (4, [1, -2, 3], "UNKNOT", "seifert-genus-zero"),
++                 (3, [1, -2] * 2, "KNOTTED", "homogeneous-seifert-genus"),
++                 (3, [1, 1, 1, 1, -1, 2], "KNOTTED", "rasmussen-interval")]
++        for strands, word, status, criterion in cases:
++            runs = runs_from_word(strands, word)
++            cert = signed_run_certificate(strands, runs)
++            self.assertEqual((cert["status"], cert["criterion"]), (status, criterion))
++            self.assertTrue(verify_signed_run_certificate(strands, runs, cert))
++
++    def test_twenty_thousand_bit_balanced_runs_never_expand(self):
++        exponent = (1 << 20000) + 1
++        # Each generator has only one sign, but no selected run dominates its context.
++        runs = (Run(1, exponent), Run(2, -exponent), Run(3, exponent))
++        result = recognize_runs(4, runs, budget=Budget(max_states=0, max_basis=0))
++        self.assertEqual(result["status"], "KNOTTED")
++        self.assertEqual(result["method"], "signed-run-structural")
++        self.assertEqual(result["certificate"]["crossings"], 3 * exponent)
++        self.assertTrue(verify_signed_run_certificate(4, runs, result["certificate"]))
++        encoded = json.dumps(json_safe(result))
++        decoded = json.loads(encoded)
++        self.assertEqual(encoded_integer(decoded["certificate"]["crossings"]), 3 * exponent)
++
++    def test_inconclusive_unknot_uses_exact_fallback(self):
++        runs = (Run(1, 5), Run(1, -4))
++        self.assertIsNone(signed_run_certificate(2, runs))
++        result = recognize_runs(2, runs, check_d2=True)
++        self.assertEqual(result["status"], "UNKNOT")
++        self.assertEqual(result["method"], "symbolic-twist-khovanov-F2")
++        self.assertEqual(result["homology"]["reduced_rank"], 1)
++
++    def test_resource_limits_are_unknown(self):
++        runs = (Run(1, 5), Run(1, -4))
++        for budget in (Budget(max_basis=0), Budget(seconds=0), Budget(max_xors=0)):
++            result = recognize_runs(2, runs, budget=budget, check_d2=True)
++            self.assertEqual(result["status"], "UNKNOWN")
++        self.assertEqual(recognize_runs(2, (Run(1, 3),), budget=Budget(seconds=0))["status"],
++                         "UNKNOWN")
++
++    def test_invalid_inputs_and_options_are_not_early_verdicts(self):
++        for strands, runs in ((0, ()), (True, ()), (2, (Run(1, 0),)),
++                              (2, (Run(2, 1),)), (2, (Run(1, True),)),
++                              (2, (Run(1, 2),)), (10**100, ())):
++            with self.assertRaises(ValueError):
++                recognize_runs(strands, runs)
++        for selected in (-1, 1, True, "0"):
++            with self.assertRaises(ValueError):
++                recognize_runs(2, (Run(1, 3),), selected=selected)
++        cap = Budget()
++        cap.max_basis = -1
++        with self.assertRaises(ValueError):
++            recognize_runs(2, (Run(1, 3),), budget=cap)
++
++    def test_tampered_certificates_fail_independent_replay(self):
++        runs = (Run(1, 11), Run(2, -7), Run(3, 9))
++        original = signed_run_certificate(4, runs)
++        self.assertTrue(verify_signed_run_certificate(4, runs, original))
++        for key, value in original.items():
++            changed = deepcopy(original)
++            if type(value) is int:
++                changed[key] += 1
++            elif isinstance(value, list):
++                changed[key][0] += 1
++            else:
++                changed[key] += " corrupt"
++            self.assertFalse(verify_signed_run_certificate(4, runs, changed), key)
++        for key in ("version", "crossings", "canonical_genus"):
++            self.assertFalse(verify_signed_run_certificate(4, runs, {**original, key: True}))
++        self.assertFalse(verify_signed_run_certificate(4, runs, {**original, "extra": 0}))
++        self.assertFalse(verify_signed_run_certificate(4, runs, None))
++        self.assertFalse(verify_signed_run_certificate(10**100, (), original))
++
++    def test_complete_huge_certificate_json_round_trip(self):
++        magnitude = (1 << 20000) + 1
++        for sign in (-1, 1):
++            runs = (Run(1, sign * magnitude),)
++            original = signed_run_certificate(2, runs)
++            transported = json.loads(json.dumps(json_safe(original)))
++            self.assertIsInstance(transported["rasmussen_interval"][0], str)
++            self.assertTrue(verify_signed_run_certificate(2, runs, transported))
++            for key, value in (("crossings", "0x0"), ("crossings", True),
++                               ("writhe", "0x"), ("canonical_genus", "123"),
++                               ("version", "0x1"), ("rasmussen_interval", ["0x0", "0x0"])):
++                self.assertFalse(verify_signed_run_certificate(2, runs, {**transported, key: value}))
++            self.assertFalse(verify_signed_run_certificate(2, runs, {**transported, "extra": "0x1"}))
++
++    def test_json_validation_and_arbitrary_size_hex(self):
++        exponent = (1 << 20000) + 1
++        strands, runs = load_braid({"braid": {"strands": 2, "runs": [[1, hex(exponent)]]}})
++        self.assertEqual((strands, runs), (2, (Run(1, exponent),)))
++        self.assertEqual(load_braid({"strands": "0x2", "word": [1, "-0x1", 1]})[1],
++                         (Run(1, 1), Run(1, -1), Run(1, 1)))
++        for value in (None, [], {}, {"strands": 2}, {"strands": 2, "runs": [[1]]},
++                      {"strands": 2, "runs": [[1, "123"]]},
++                      {"strands": True, "runs": []},
++                      {"strands": 2, "runs": [], "word": []}):
++            with self.assertRaises((ValueError, TypeError)):
++                load_braid(value)
++        for value in (True, 1.5, "1", "0x", "__import__('os')"):
++            with self.assertRaises(ValueError):
++                encoded_integer(value)
++
++    def test_cli_modes_exit_codes_and_hex_output(self):
++        def invoke(data, *arguments):
++            process = subprocess.run([sys.executable, "-m", "fastunknot.symbolic_braid", "-",
++                                      *arguments], input=json.dumps(data), text=True,
++                                     capture_output=True, check=False, timeout=20)
++            return process.returncode, json.loads(process.stdout)
++        huge = (1 << 20000) + 1
++        data = {"strands": 2, "runs": [[1, hex(huge)]]}
++        code, result = invoke(data)
++        self.assertEqual((code, result["status"]), (0, "KNOTTED"))
++        self.assertEqual(encoded_integer(result["certificate"]["crossings"]), huge)
++        code, result = invoke(data, "--mode", "homology", "--check-d2")
++        self.assertEqual(code, 0)
++        self.assertEqual(encoded_integer(result["reduced_rank"]), huge)
++        code, result = invoke(data, "--mode", "certificate", "--seconds", "0")
++        self.assertEqual((code, result["status"]), (3, "UNKNOWN"))
++        code, result = invoke(data, "--selected-run", "1")
++        self.assertEqual((code, result["status"]), (2, "INVALID"))
++        code, result = invoke({"strands": 2, "runs": [[1, 5], [1, -4]]}, "--mode", "certificate")
++        self.assertEqual((code, result["status"]), (3, "INCONCLUSIVE"))
++
++
++if __name__ == "__main__":
++    unittest.main()

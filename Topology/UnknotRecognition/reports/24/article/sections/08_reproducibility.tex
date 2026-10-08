@@ -1,0 +1,155 @@
+\section{Reproducibility, provenance, and integration artifacts}
+\label{sec:reproducibility}
+
+\subsection{What the archive contains}
+
+The archive is self-contained for the Python checks and the manuscript
+build. Its top-level structure is shown below; the included provenance
+and hash manifests identify the exact source snapshot and additions.
+The scanner requires Python 3.10 or later and has no third-party runtime
+dependencies. The article uses a conventional pdf\LaTeX/Bib\TeX build.
+Matplotlib is needed only to regenerate the optional static figure, whose
+rendered PDF is already included.
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}p{0.30\textwidth}X@{}}
+\toprule
+Path & Contents and purpose \\
+\midrule
+\path{article/} & This PDF, modular \LaTeX{} sources, bibliography,
+figure source, and build script. \\
+\path{fast/} & The pinned scanner snapshot plus the new graded,
+corridor, and scalar-component modules, public integration, tests,
+and benchmark drivers. \\
+\path{dihedral_covers/} & Standalone arithmetic covering kernel,
+independent expanded-sheet tests, examples, and its mathematical
+input/output contract. \\
+\path{reference/} & Frozen preceding forward-transfer prototype and
+the initial corridor implementation used by the primary timing run. \\
+\path{verification/} & Independent contraction audit, recorded results,
+full test logs, and experiment interpretations. \\
+\path{integration/} & Patch against the pinned repository baseline
+and review instructions. \\
+\path{verify.py} & Runs the production suite and independent audits in
+a temporary copy, preserving the archived measurements. \\
+\path{reproduce_benchmarks.py} & Replays either timing experiment in
+an isolated copy with the intended implementation version. \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The complete scanner copy makes the package runnable before repository
+integration. The patch makes the precise production changes separately
+reviewable. Prior research reports remain authoritative for inherited
+features; this package does not silently replace their proofs or
+renumber the repository's report series.
+
+\subsection{Running the checks}
+
+From the unpacked package root:
+\begin{lstlisting}
+python verify.py
+\end{lstlisting}
+The script first verifies the archived file hashes, then runs the scanner
+tests, the dihedral tests, the independent contraction comparison, the
+graded-support audit, and the scalar-representation audit. Temporary
+results are compared with the deterministic counts in the recorded
+reports. Elapsed times are intentionally not required to match.
+
+The principal recorded correctness checks are:
+\begin{itemize}
+\item The complete scanner suite: 268 tests passed, including the 245
+baseline tests and 23 new tests for grading, corridor transfer, scalar
+components, and integration behavior.
+\item The covering kernel: 10 test groups passed, including 13,846
+expanded-sheet topology comparisons. Separate checks test conjugation,
+explicit generic-cover equivariance, exhaustive exceptional-fibre
+bijections, degenerate one- and two-sheet actions, and binary sheet
+counts as large as $2^{10000}$.
+\item The independent contraction audit: 80 actual diagrams, 555 prefix
+stages, and 3,885 entrywise comparisons across seven configurations.
+Every stage checks the eight special-contraction identities of the
+frozen reference; 185 stages have already undergone partial scalar
+cancellation, and 377 have nonzero minimal differentials.
+\item The support audit: 72 diagrams and 639 stages; both the existing
+degree-gap certificate and the stronger full support certificate
+accept the same 196 stages in this experiment.
+\item The scalar-representation audit: exact equality of $i,p,h$ with
+the frozen reference on five shared-suffix sizes, together with the
+proved packed-bit and sparse-support formulas.
+\end{itemize}
+
+The independent oracles are deliberately different from the optimized
+representations. Cover topology is obtained by enumerating small sheet
+actions, tracing boundary cycles, and propagating orientation parity.
+The transfer comparison uses the preceding complete forward formula
+and verifies its actual coefficient matrices. Additional scanner tests
+compare with the separate set-coefficient, LIFO-pivot backend. These
+checks are strong finite evidence of implementation correctness; the
+general claims rest on the written proofs.
+
+\subsection{Replaying the timing experiments}
+
+The two recorded timing datasets have different scopes and should not be
+pooled. To rerun them without altering archived source or result files:
+\begin{lstlisting}
+python reproduce_benchmarks.py --experiment baseline \
+  --output baseline_rerun.json
+python reproduce_benchmarks.py --experiment compressed \
+  --output compressed_rerun.json
+\end{lstlisting}
+
+The baseline replay restores the frozen first corridor version in a
+temporary copy before invoking the original nine-arm benchmark. The
+compressed replay uses the current source and the frozen version as
+its explicit comparison arm. Both default to seven shuffled paired
+rounds and a 20 ms pilot batch target. Original raw samples, repetitions,
+operation counters, Python/platform information, random seeds, and
+implementation hashes are included in the recorded JSON files.
+
+Run the benchmarks with other CPU-intensive work paused. Timing ratios
+are observations on the recorded environment, not portable complexity
+theorems. The unchanged standard/control arms provide an internal
+measure of drift; the exact planted-output and operation-count checks
+should agree even when measured times do not. The benchmark target is
+the full scanner for actual diagrams and the complete reduction stage
+for the explicitly constructed algebraic examples. The latter does not
+include creation of the synthetic input.
+
+\subsection{Building the paper and reviewing the patch}
+
+The manuscript can be rebuilt with:
+\begin{lstlisting}
+cd article
+sh build.sh
+\end{lstlisting}
+The build requires pdf\LaTeX{}, Bib\TeX{}, and the standard packages
+listed in the preamble. The bibliography supplies primary literature
+and explicit provenance for the earlier local prototype. The
+manuscript was compiled to PDF, inspected through rendered pages,
+and checked for unresolved references and content overflow before
+packaging.
+
+At the pinned repository commit, inspect the supplied patch and run
+\begin{lstlisting}
+git apply --check /path/to/scanner_changes.patch
+\end{lstlisting}
+from the repository root. The integration guide explains how to retain
+the frozen test reference next to the scanner copy or adapt its test
+location consistently. The article and standalone geometric kernel
+can then be placed in the repository's chosen research-report
+directory. No report number is assumed, and no remote commit or
+publication is performed by this package.
+
+\subsection{Limits of the evidence}
+
+The reported tests do not amount to exhaustive verification of all
+knot diagrams or a proof-assistant formalization. The synthetic
+separation families are valid graded complexes in the implemented
+coefficient category; their realization as knot prefixes is a stated
+open question. The ordinary fixture timings do not support replacing
+the default sparse reducer. The geometric kernel requires its explicit
+covering promise and external attachment data for use in a hierarchy.
+These qualifications identify the boundaries of the delivered results
+and the concrete work still required for a global complexity claim.

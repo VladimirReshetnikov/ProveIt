@@ -1,0 +1,118 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,booktabs,longtable,tabularx,array}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{graphicx,float,fancyhdr,enumitem,listings}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage{xurl}
+\usepackage{hyperref}
+\definecolor{ink}{HTML}{17324D}
+\definecolor{accent}{HTML}{167D9A}
+\definecolor{light}{HTML}{F2F5F8}
+\hypersetup{colorlinks=true,linkcolor=ink,citecolor=accent,urlcolor=accent,
+ pdftitle={Topology in Three Records and Bidirectional Survivor Transfer},
+ pdfauthor={Research continuation prepared for Vladimir Reshetnikov}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{ink}Exact compression for unknot recognition}
+\fancyhead[R]{\small\color{ink}Research continuation}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{0.35em}
+\setlength{\parindent}{1.3em}
+\setlist{topsep=4pt,itemsep=3pt}
+\setcounter{tocdepth}{2}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{researchquestion}{Research question}[section]
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\F}{\mathbb F_2}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\im}{\operatorname{im}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\lstset{basicstyle=\ttfamily\small,columns=fullflexible,breaklines=true,
+ backgroundcolor=\color{light},frame=single,rulecolor=\color{light},
+ keepspaces=true,showstringspaces=false,xleftmargin=5pt,xrightmargin=5pt}
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\vspace*{0.6in}
+{\large\color{accent}\sffamily PROVEIT / TOPOLOGY / RESEARCH CONTINUATION\par}
+\vspace{0.32in}
+{\Huge\bfseries\color{ink}Topology in Three Records\par}
+\vspace{0.1in}
+{\LARGE\bfseries\color{ink}and Bidirectional Survivor Transfer\par}
+\vspace{0.27in}
+{\Large Two exact compression kernels for unknot recognition\par}
+\vspace{0.4in}
+{\large Prepared for Vladimir Reshetnikov\par}
+{\large 8 October 2026\par}
+\vspace{0.35in}
+\noindent\textcolor{accent}{\rule{\textwidth}{1.2pt}}
+\vspace{0.2in}
+\begin{abstract}
+We develop two exact compression results motivated by the current
+\emph{ProveIt} unknot-recognition implementation. First, a finite covering
+of a connected bordered surface whose fibre monodromy has the form
+$x\mapsto\pm x+a\pmod W$ has at most three families of connected
+components, isomorphic as covers within each family. We give explicit
+formulas for their multiplicities, orientability, genera, and every
+boundary covering degree; the bound is sharp even for orientable bases.
+The arithmetic depends polynomially on $\log W$ and supports marked
+component and boundary queries without expanding the sheets.
+
+Second, we express a quantum-graded scalar contraction's transferred
+differential as a typed acyclic path sum. We prove that only paths between
+surviving objects need be retained, and that each resulting component may
+be evaluated from either end. This gives exact direction-sensitive work
+bounds and graded families with quadratic versus linear transfer work.
+A further implementation contracts the scalar graph component by
+component and uses sparse index columns, avoiding artificial quadratic
+bit storage on disconnected scalar blocks. Combined with Boolean
+reachability, it gives a complete near-linear reduction stage on a fixed
+coefficient algebra where inherited forward transfer alone takes
+quadratic work.
+
+The package supplies complete proofs, optional scanner integration,
+independent contraction and topology checks, source snapshots, and paired
+benchmarks including negative results. The unrestricted
+$n^{O(\log n)}$ goal remains unresolved: the geometric kernel requires a
+certified covering presentation, and the scanner still lacks a universal
+bound on intermediate object multiplicities. These limitations are stated
+as precise remaining mathematical obligations.
+\end{abstract}
+\vfill
+\noindent\small Repository baseline:
+\href{https://github.com/VladimirReshetnikov/ProveIt/commit/9cec5275f2d2113d0a784cedf156460829b61489}{\texttt{9cec5275f2d2113d0a784cedf156460829b61489}}.\\
+The mathematical proofs are written out; the computational checks are
+finite verification, not a Lean formalization or a claim of general
+quasi-polynomial recognition.
+\end{titlepage}
+\pagenumbering{roman}
+\hypersetup{pageanchor=true}
+\tableofcontents
+\clearpage
+\pagenumbering{arabic}
+\input{sections/01_scope}
+\input{sections/02_dihedral}
+\input{sections/03_corridor}
+\input{sections/04_accounting}
+\input{sections/05_experiments}
+\input{sections/06_integration}
+\input{sections/07_research}
+\appendix
+\input{sections/08_reproducibility}
+\clearpage
+\addcontentsline{toc}{section}{References}
+\bibliographystyle{plainnat}
+\bibliography{references}
+\end{document}

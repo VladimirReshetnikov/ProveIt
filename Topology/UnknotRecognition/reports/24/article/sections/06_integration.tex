@@ -1,0 +1,304 @@
+\section{Software integration and exact interfaces}
+\label{sec:integration}
+
+The supplied scanner changes are optional. The public default remains
+\code{reduction="standard"}, which selects the existing sparse
+minimum-fill cancellation. Earlier structural tests and recognition
+decisions retain their existing order. Selecting a new reducer changes
+the chain-complex calculation only if execution reaches that stage.
+The dihedral-cover classifier is a separate topology kernel; it is not
+silently substituted for a normal-surface or knot-recognition routine.
+
+\subsection{Scanner modules and their responsibilities}
+
+The new scanner code is organized by mathematical responsibility.
+The following filenames are relative to \path{fast/fastunknot/}.
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}p{0.31\textwidth}X@{}}
+\toprule
+Module & Contract\\
+\midrule
+\code{graded.py} &
+Retains raw quantum shifts, checks homogeneous degrees, predicts the
+full scalar survivor profile, and supplies support-only reference
+reducers.\\
+\code{binary_contraction.py} &
+Preserves the inherited scalar-contraction basis and its global
+packed-column representation.\\
+\code{scalar_components.py} &
+Splits the scalar graph into components, handles isolated objects
+and identity pairs directly, and returns sparse index columns in
+the same survivor basis.\\
+\code{corridor.py} &
+Constructs the typed transfer graph, prunes irrelevant paths,
+evaluates either direction, and installs the full minimal
+differential through scanner-compatible classes.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The quantum array is aligned with the scanner's object slots.
+Ordinary cancellation can leave dead slots, and the grading code
+preserves that convention. Crossing expansion installs the new shifts
+before dispatching to the chosen reducer. The shifts are the raw
+scanning shifts of equation~\eqref{eq:corridor-q-recurrence}; no
+diagram-wide orientation normalization is silently applied.
+
+The direct kernel \code{corridor_transfer(scan)} requires a valid
+homogeneous chain complex in the scanner category. It returns the
+surviving matching, homological-degree, and quantum-shift arrays, the
+full output differential, the scalar contraction, component details,
+and work counters. The original object and differential arrays are
+not replaced by this function, although coefficient caches can be
+populated. \code{CorridorScan} performs the replacement after the
+kernel completes.
+
+\subsection{Public recognition and raw-homology options}
+
+Two reduction names are added to \code{khovanov_rank},
+\code{recognize}, and their corresponding command-line commands:
+\begin{description}
+\item[\code{corridor}]
+Compute the full survivor differential by scalar contraction and
+automatic bidirectional transfer through the retained corridors at
+every reduction stage.
+\item[\code{corridor-adaptive}]
+Start with the existing sparse reducer and permit
+\(\max(256,4N)\) candidate Schur-update pairs at the beginning of
+the stage, where \(N\) is the current live object count. If the
+allowance is exceeded, retain completed pivots and transfer the
+partially reduced complex.
+\end{description}
+
+The allowance is a heuristic for when to pay for another
+representation. It has no competitive-time guarantee. It also
+differs from the older \code{adaptive} reducer: that method tries a
+zero-differential survivor-profile certificate and resumes ordinary
+cancellation when the certificate is inconclusive. The new adaptive
+method can finish with a nonzero radical differential.
+
+A raw-homology call bypasses the recognition front ends and therefore
+provides a direct way to exercise the selected reducer:
+
+\begin{lstlisting}[language=Python]
+from fastunknot import Diagram, khovanov_rank
+
+diagram = Diagram.from_braid(3, [1, -2] * 4)
+result = khovanov_rank(
+    diagram.pd,
+    reduction="corridor-adaptive",
+    max_objects=50000,
+    seconds=30,
+    check_d_squared=True,
+)
+print(result["rank"], result["by_degree"])
+\end{lstlisting}
+
+The returned public quantities retain their prior conventions:
+\code{rank} is the unreduced \(\F\)-rank,
+\code{reduced_rank} is half of it for a knot, and
+\code{by_degree} uses the raw homological degrees.
+The result records the nonstandard reduction name and its counters.
+The direct graded scanner additionally exposes
+\code{ranks_by_bidegree()}; its live-object counts are homology
+dimensions only once the differential has been shown to vanish,
+as on a closed minimal complex.
+
+The corresponding command-line examples, run inside \path{fast/},
+are:
+
+\begin{lstlisting}
+python -m fastunknot khovanov examples/conway.json \
+  --reduction corridor --check-d2
+
+python -m fastunknot recognize examples/conway.json \
+  --reduction corridor-adaptive \
+  --seconds 30 --max-objects 50000
+\end{lstlisting}
+
+The recognition command can finish in an earlier certified stage,
+so a chosen reduction option does not imply that a scan occurred.
+Inspect the returned method and scan evidence when measuring it.
+The option \code{--no-reduction} retains its previous meaning:
+it disables Reidemeister preprocessing. It is unrelated to the
+\code{--reduction} chain-cancellation selector.
+
+\subsection{Research controls for direction and scalar setup}
+
+The public reduction names use
+\code{mode="auto"}, \code{prune=True},
+\code{direction_policy="reach"}, and
+\code{scalar_engine="global"}. The sparse scalar variant is exposed
+through the direct scanner/kernel API, allowing the additional setup
+choices to remain independently measurable:
+
+\begin{lstlisting}[language=Python]
+from time import monotonic
+from fastunknot.corridor import CorridorScan
+from fastunknot.ordering import best_scan_order
+
+scan = CorridorScan(
+    mode="auto",
+    prune=True,
+    direction_policy="ports",
+    scalar_engine="components",
+    max_objects=50000,
+    deadline=monotonic() + 30,
+)
+for index in best_scan_order(diagram.pd):
+    scan.add_crossing(diagram.pd[index])
+print(scan.total_rank())
+\end{lstlisting}
+
+This example continues with the validated nonempty diagram above.
+For ordinary use, the public raw-homology API also handles its
+established zero-crossing convention and other dispatch details.
+
+The \code{mode} values are \code{forward}, \code{reverse}, and
+\code{auto}. Disabling pruning supplies an ablation rather than a
+different homotopy invariant. The \code{reach} policy constructs
+packed endpoint sets and minimizes the finer structural propagation
+bound separately in each weak component. The \code{ports} policy
+uses Boolean reachability and compares the component's numbers of
+input and output ports. It avoids endpoint-mask setup but can choose
+a direction with a worse fine-grained bound. Neither policy is
+described as an oracle for elapsed time.
+
+The \code{global} scalar engine retains the frozen construction.
+The \code{components} engine uses the sparse direct-sum construction
+proved above. These controls can also be passed to
+\code{AdaptiveCorridorScan}. There is no additional public
+\code{corridor-compressed} reduction name in this release.
+
+\subsection{Compatibility and resource semantics}
+
+The supported combinations are explicit:
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}p{0.28\textwidth}X@{}}
+\toprule
+Option or interface & Corridor requirement or behavior\\
+\midrule
+Scanner backend &
+The standard scanner backend; the shared, saturated, Euler, and
+twist backends are outside this integration.\\
+Pivot and algebra &
+\code{pivot="minfill"}, \code{algebra="bits"}, and
+\code{self_inverse=True} in the raw API.\\
+Racing &
+\code{race=1}; competing scan processes are not combined with these
+reducers.\\
+Coefficient composition &
+The standard, component, and forced component-dense coefficient
+engines remain selectable subject to their existing limits.\\
+Tail contraction &
+Permitted. The requested final crossings are added without
+cancellation, then the closed scalar complex is finished by the
+existing binary rank calculation.\\
+Homological windows &
+The public corridor recognition options require
+\code{window_radius=None}. The separate window command retains
+its existing reduction choices.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+Incompatible raw-API combinations raise \code{ValueError}. The CLI
+rejects incompatible backend, algebra, pivot, racing, sharing, twist,
+and corridor/window combinations as option errors. These guards
+prevent a requested reducer from being silently replaced by an
+unsupported implementation.
+
+The object ceiling is checked before crossing expansion allocates
+the predicted number of objects. It is a ceiling on that count,
+not a limit on total Python memory or on all auxiliary scalar
+matrices. Time limits are cooperative: scalar setup, graph
+construction, reachability, and propagation poll the ordinary
+resource checks. They are not operating-system hard deadlines.
+
+The transfer computes its replacement before installing new object
+and map arrays. A resource failure during that calculation therefore
+does not install an incomplete minimal differential. Adaptive
+reduction retains any complete sparse pivots already performed.
+This statement concerns the reducer; it does not assert that every
+allocation or entire crossing-expansion operation is reversible.
+
+The raw \code{khovanov_rank} API propagates \code{ScanLimit} and
+\code{MemoryError}. The recognition pipeline catches both and
+returns \code{UNKNOWN} with resource evidence. The raw CLI likewise
+reports a resource failure rather than a knot verdict. Exhausting
+an object or time allowance never means that a knot has been found,
+and an empty set of usable shortcuts never means that a diagram is
+an unknot.
+
+\subsection{Counters and reproducible comparisons}
+
+The \code{corridor_} counters expose original and retained graph
+sizes, component counts, selected directions, structural forward
+and reverse bounds, actual edge propagations, radical-edge
+propagations, coefficient xors, and nontrivial compositions.
+\code{corridor_switches}, when present, records adaptive transitions
+from sparse cancellation. Stage histories retain the input and
+survivor counts.
+
+The structural-bound assertion checks that the counted
+propagations do not exceed the chosen bound. That assertion does
+not count all execution costs: the component's ordered vertices
+must still be visited, and scalar/graph setup remains necessary.
+The distinction is reflected in
+equation~\eqref{eq:full-stage} and in the negative timings.
+
+The package keeps both frozen predecessors, the measured source
+hashes, full input descriptions and crossing orders, raw timing
+batches, and exact matrix digests. The reproduction wrapper restores
+the required frozen corridor in a temporary copy when replaying the
+nine-arm experiment, so historical measurements can be reproduced
+without overwriting the delivered implementation. The separate
+compressed-setup experiment uses the frozen corridor as an explicit
+baseline. The ordinary test suite and the two inexpensive support
+audits can be run independently of the timing campaigns.
+
+\subsection{The covering classifier is an explicit separate contract}
+
+The geometric implementation is
+\path{dihedral_covers/dihedral_cover.py}. Its input schema specifies
+an orientable bordered surface by genus and boundary count, or a
+nonorientable bordered surface by crosscap and boundary counts,
+together with a positive sheet count and one affine permutation for
+each canonical free generator. Shifts are reduced modulo the sheet
+count. The canonical schema supplies the boundary words and
+orientation character, so accepted data do not depend on checking
+an omitted closed-surface relation.
+
+\begin{lstlisting}
+python dihedral_covers/dihedral_cover.py \
+  dihedral_covers/examples/three_types.json
+\end{lstlisting}
+
+The Python entry points are \code{classify_cover},
+\code{component_key}, and \code{boundary_lift_key}. The first returns
+at most three component-family records, their multiplicities,
+covering degrees, surface topology, complete boundary-degree
+profiles, and cover-isomorphism type identifiers. Distinct
+exceptional residue records can share a type identifier while
+remaining separately queryable. The two marked-query functions
+identify the component and lifted boundary circle containing a
+specified fibre point without expanding the sheets.
+
+The field \code{orientation_interval_bundle} describes the
+canonical interval bundle with orientable total space. It does not
+specify an arbitrary extra twisting character. Unknown fields,
+incorrect generator counts, invalid signs, inappropriate surface
+parameters, and booleans supplied in place of integers are rejected.
+
+This schema certifies an abstract finite surface cover. Extracting
+that schema from a normal surface, certifying an embedding in a
+three-manifold, and retaining arbitrary external attaching maps
+are separate tasks. No current scanner or recognizer dispatches to
+this classifier merely because a large integer weight appears.
+The integration point for a future compressed cutting backend must
+supply the covering presentation and its attachment data
+explicitly, as required in Section~\ref{sec:accounting}.

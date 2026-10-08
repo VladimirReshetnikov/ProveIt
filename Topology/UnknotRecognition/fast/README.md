@@ -11,7 +11,7 @@ the pipeline repeats the structural check before matrix filters. Cancelling
 pairs can expose homogeneity. Evidence under `seifert_after_reduction` describes
 the reduced diagram: replay `reidemeister_trace` with `fastunknot.simplify.replay`
 before passing that certificate to `verify_seifert_certificate`. An unchanged
-diagram is not checked twice. The integrated suite now has 344 passing tests.
+diagram is not checked twice. The integrated suite now has 426 passing tests.
 
 The incoming radical-transfer report contributes exact binary prediction of
 the objects surviving cancellation. `--reduction adaptive` (Python:
@@ -937,3 +937,88 @@ The [theory section](../synthesis/disk_transfer.tex) covers certificates, finite
 perturbation, rollback, cost accounting, and explicit unknot diagrams whose raw
 frontier is Ω(√n) in every order. The latter limit an order-only approach, not
 recognition with simplification and structural certificates.
+
+## Exact long-twist profiles and streamed homology
+
+The additive RLE frontend `python -m fastunknot.twist.continuation input.json`
+accepts `{"strands": 3, "runs": [[1, 1001], [2, -1], [1, 1], [2, -1]]}`.
+It checks the original knot component count and evaluates structural
+certificates directly on run counts. `--mode homology --method tail` computes
+an exact reduced homological profile using a finite reference at run length
+`W+2`, where `W` counts the fixed context crossings. Longer exponents produce
+a constant interval plus finite exceptional degrees, without expansion.
+The returned degrees are macro degrees; quantum grading is forgotten.
+
+`--method streaming` instead retains two adjacent state layers and feeds
+columns directly into elimination. It reduces storage but was slower in all
+eight measured full-homology cases. In recognition it may stop when finalized
+reduced homology already exceeds one, explicitly reporting an incomplete
+homology and a rank lower bound. A partial rank-one result never proves UNKNOT.
+`--method macro` retains full assembly. The existing main CLI and production
+`backend="twist"` defaults are unchanged.
+
+The ordinary recognizer has a separate opt-in `--braid-profile` flag
+(`use_braid_profile=True`) for a checked source word. It specializes the
+existing Seifert graph criteria, with the established PD/Artin sign conversion.
+The original source remains distinct from any connected-sum factors.
+
+The largest measured tail gain was 58.6× for exact homology; dominant-run knots
+were already structurally decidable, so this is not a new recognition family.
+The profile option gained 2.30–3.33× on selected fresh prebuilt homogeneous braid
+diagrams. See [TWIST_CONTINUATION.md](TWIST_CONTINUATION.md) for schemas,
+budgets and examples, and [the theory section](../synthesis/twist_continuation.tex)
+for proofs, output-size limits, independent audits and timing scope.
+
+
+## Checked rational and Montesinos presentations
+
+`Diagram.from_rational(e, tangles)` now builds and validates a Montesinos
+numerator closure, retaining checked source provenance. The recognizer uses
+an exact arithmetic decision before the general diagram pipeline; disable it
+with `use_rational=False` or `--no-rational`. JSON uses
+`{"montesinos":{"e":0,"tangles":[[2,3],[-2,-2,-1,-2]]}}`.
+The decision preserves each rational summand's denominator and handles
+nontrivial determinant-one knots. Arbitrary PDs have no inferred source.
+
+For binary coefficients too large to expand, `montesinos_certificate(e,tangles)`
+provides a separate arithmetic-only API. The ordinary constructor and CLI
+still build the actual PD, with a default 100,000-crossing expansion ceiling.
+
+`recognize_with_subtangles` in `fastunknot.tangle_obstruction` optionally
+searches a small literal-pattern catalogue in an arbitrary validated PD.
+Each rejection verifies a four-port disk occurrence and its non-embeddability
+in an unknot. No match falls back to the ordinary recognizer. This wrapper
+was slower in all five measured cases and remains explicit.
+
+See [RATIONAL.md](RATIONAL.md) for APIs, provenance and certificates,
+[rational_research/README.md](rational_research/README.md) for reproducible
+checks, and [the theory](../synthesis/rational.tex) for arithmetic bounds,
+full-complex barriers and performance scope. These are polynomial procedures
+on supplied presentations or fixed local patterns; general quasi-polynomial
+recognition remains unproved.
+
+
+## Quantum-ordered full transfer
+
+`--reduction graded` and `--reduction graded-adaptive` are optional exact
+policies for the standard scanner. The first computes the full differential
+between scalar survivors using quantum-ordered transfer. The second retains
+completed sparse pivots and switches only when the per-stage Schur-update
+allowance is exhausted. Unlike a survivor-count shortcut, both retain nonzero
+maps between adjacent surviving degrees. They do not require a common-disk
+certificate. The standard policy remains the default.
+
+The Python `khovanov_rank` and `recognize` APIs accept the same reduction names.
+Bit coefficients, minimum-fill pivots, self-inverse cancellation and one scan
+order are required. Component coefficient composition and tail finishing are
+supported; homological windows and alternative scanners are rejected before
+early recognition certificates. Global resource failure remains `UNKNOWN`
+in recognition. The replacement graph is fully prepared before installation,
+so transfer failure preserves the current differential.
+
+See [graded_research/README.md](graded_research/README.md) for reproducible
+checks and measurements and [the theory](../synthesis/graded_transfer.tex)
+for the finite-transfer proof, cost accounting and unresolved multiplicity
+bounds. The new full suite has 426 passing tests. The report's separate
+symbolic CLI, earlier tail-rank threshold and repair-DAG proposals remain
+under review.

@@ -23,11 +23,13 @@ modification times.
 | `15/` | `unknot_radical_transfer_20261007.zip` | survivor-first compression code | sharp radical nilpotence index 2k of the characteristic-two arc category, two-pass transfer | — | 18 archive tests and independent certificates pass; survivor prediction and adaptive shortcut integrated |
 | `16/` | `unknot_recognition_dense_algebra_20261008.zip` | dense cobordism-algebra code | `poly(m)·2^m` dense coefficient algorithm by ranked subset convolution, certified finite-quotient filters | — | 74 archive tests and independent algebra checks pass; homogeneous coefficient path integrated |
 | `17/` | `unknot_potts_frontiers.zip` | `fastunknot` with opt-in Potts backends (`17/fast/`, `integration/changes.patch`) | fixed-color Potts transfer for an exact Jones specialization, single-exponential in a Tait-graph frontier at most half the cut-edge frontier; component-factored transfer | — | 172 archive tests and independent cube audit pass; exact Potts options integrated |
-| `18/` | `unknot_twist_research_2026-10-08.zip` | additive continuation of `fastunknot` (`18/fast/`, `integration.patch`) | exact long-twist recurrence for reduced F2 Khovanov homology, streamed homology backend, direct braid-profile structural evaluation | — | not run |
+| `18/` | `unknot_twist_research_2026-10-08.zip` | additive continuation of `fastunknot` (`18/fast/`, `integration.patch`) | exact long-twist recurrence for reduced F2 Khovanov homology, streamed homology backend, direct braid-profile structural evaluation | — | 254 archive tests and independent recurrence/slope audits pass; additive RLE frontend and optional source profile integrated |
 | `19/` | `unknot_rank_two_kernels_20261007.zip` | standard-library rank-two braid kernel (`19/src/`) | optimal one-pass disjoint rank-two substitutions in `O(n log n)`, linear replay verifier | quasi-polynomial bound for flat rank-two inflations of `O(log² n)`-crossing cores only | 33 archive tests and 16 real-upstream cases pass; bounded preprocessing integrated |
 | `20/` | `ProveIt_Unknot_Extremal_Windows_2026-10-07.zip` | standard-library `unknot_windows` with an upstream adapter (`20/integration/`) | exact low-degree and mirror Khovanov windows with a one-degree halo, three-outcome probes, nice-order certificates | `n^O(log n)` for windows of depth `O(log n)` at girth `O(log² n)` | 14 archive tests and 393-window audit pass; optional minimal windows integrated |
 | `21/` | `unknot_disk_frontier_research.zip` | standard-library disk-frontier kernel (`21/src/`) with a guarded `FastScan` adapter | common-disk certificates from the rotation system, ear-insertion orders, minimal complex with adjacent-degree maps | `poly(n,1+R)·2^O(B)` for certified explicit scans | 52 archive tests, pinned-source audit and 14,658-state geometry audit pass; optional adaptive full transfer integrated |
-| `22/` | `unknot_arithmetic_continuations.zip` | `fastunknot` continuation (`22/fast/`, integration patch under `22/integration/`) | supplied-Montesinos `UNKNOT`/`KNOTTED` classifier, checked local obstructions from non-embeddable Montesinos disk tangles, linear-bit slope arithmetic | — | not run |
+| `22/` | `unknot_arithmetic_continuations.zip` | `fastunknot` continuation (`22/fast/`, integration patch under `22/integration/`) | supplied-Montesinos `UNKNOT`/`KNOTTED` classifier, checked local obstructions from non-embeddable Montesinos disk tangles, linear-bit slope arithmetic | — | 152 archive tests and independent arithmetic/local audits pass; checked-source classifier and opt-in local wrapper integrated |
+| `23/` | `ProveIt_UnknotRecognition_SymbolicCompression_2026-10-08.zip` | implementation and patch for `fastunknot` (`23/implementation/`, `23/patches/`) | exact graded transfer, exact finite twist tails from the cap `L+2`, succinct structural certificates on binary run input | quasi-polynomial event count under a conditional dependency-graph hypothesis | 281 archive tests pass; graded full transfer integrated, other proposals under review |
+| `24/` | `unknot_compression_kernels_2026-10-08.zip` | `fastunknot` with scanner patch (`24/fast/`, `24/integration/`) and `dihedral_covers` | three-record classification of dihedral surface covers, bidirectional survivor transfer with exact pruning | — | not run |
 
 Archives `01/`–`06/` each contain a README, a LaTeX report with PDF under
 `docs/`, examples, recorded results, and a standard-library-only Python package.
@@ -36,7 +38,7 @@ Archives `01/`–`06/` each contain a README, a LaTeX report with PDF under
 this project, and all but `10/` extend or patch `../fast/`. Report `07/` and the factorization, sparse elimination, and resource handling
 from `09/`, plus the braid specialization from `08/` and opt-in component contraction
 from `12/`, and twist compression from `11/` are integrated
-(344 current production tests pass). Local reruns of
+(426 current production tests pass). Local reruns of
 `08/`, `09/`, `10/`, and `11/` passed 59, 69, 15, and 62 test methods respectively.
 They were originally placed as delivered under the intake rule; this later
 algorithm-improvement task performs review and integration separately. The
@@ -49,7 +51,7 @@ directories as delivered.
 no test runs, no patch application, no review. Text files are stored with LF,
 and checksum files are dropped. Their recorded results are the authors' own.
 
-`17/`–`22/` were placed the same way on 7 October 2026. `17/` and `18/` each
+`17/`–`24/` were placed the same way on 7 October 2026. `17/` and `18/` each
 ship a patch against `../fast/` and a pinned copy of the project under
 `reference/`; neither patch is applied. `18/` suggests
 `research/twist-continuation-20261008/` as its home; it is kept here as
@@ -121,7 +123,7 @@ optimizer and independent verifier with an optional bounded recognition stage;
 272 integrated tests pass. The source archive is preserved unchanged. Proofs,
 conditional complexity, barriers, and end-to-end measurements are maintained in
 `../synthesis/ranktwo.tex`. The simultaneously received Potts-frontier and newer
-twist archives remain queued for mathematical and integration review.
+twist archives were queued at that checkpoint; their subsequent reviews appear below.
 
 The later `docs/incoming/ProveIt_Unknot_Extremal_Windows_2026-10-07.zip` was
 reviewed in a scratch extraction, preserving the delivered archive. Its 14 tests
@@ -150,3 +152,33 @@ the three pinned Git blobs. Production now has an optional disk-certified full
 transfer after adaptive sparse/residue shortcuts, with transactional fallback.
 The independent geometric and chain-certificate rerun is in `../synthesis/data/`;
 performance scope and the raw-width obstruction are in `../synthesis/disk_transfer.tex`.
+
+Report `18/` has now been reviewed under the continuing algorithm task. Its
+254 tests pass unchanged; the production macro core differs from the pinned
+copy only by a trailing blank line. The additive recurrence/streaming APIs,
+RLE frontend and optional source-word profile are integrated, with additional
+shared-deadline and mutable-budget checks. Independent recurrence, cube and
+turnback audits were rerun against production; article and measurement scope
+are in `../synthesis/twist_continuation.tex`. The delivered report is unchanged.
+
+
+Report `22/` has now been reviewed under the continuing algorithm task.
+All 152 delivered tests pass unchanged; production adds its checked Montesinos
+source classifier and separate local-obstruction wrapper, with final-verification
+deadline and option validation regressions. All 411 maintained tests pass.
+The 1,200-source, local-map, 21-checkpoint and 1,398,101-entry identity audits
+were rerun against production. Scope, proofs and paired measurements are
+maintained in `../synthesis/rational.tex`; the delivered archive is unchanged.
+The patch and all 81 patched-file hashes match the delivered manifest, and
+82 source Git blobs match the pinned commit. The package-wide checksum script
+cannot run because this delivered tree lacks its `SHA256SUMS`; this narrower
+validation scope is retained in `../synthesis/data/rational-source-audit.json`.
+
+
+Report `23/` is partially integrated: the full quantum-ordered transfer and
+adaptive scanner policies are now in production, with transactional installation
+and additional deadline checks. All 281 archive and 426 maintained tests pass;
+1,812 full stage contractions and 114 pinned-source blobs were checked.
+The symbolic signed-run frontend, earlier tail-rank threshold and repair-DAG
+proposals retain separate review obligations. Theory and measurement scope are
+in `../synthesis/graded_transfer.tex`; the delivered report is unchanged.

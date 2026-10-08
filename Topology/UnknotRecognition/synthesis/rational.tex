@@ -1,0 +1,331 @@
+\section{Arithmetic continuations and checked Montesinos sources}
+\label{sec:rational-arithmetic}
+
+Report 22 supplies a useful change of representation: some prefixes whose
+explicit homotopy complexes are necessarily large have short arithmetic
+descriptions sufficient for the actual closure decision.  Production now
+implements its supplied-Montesinos classifier and a separate optional local
+obstruction.  This is a complete polynomial decision on a specified source
+grammar, not an algorithm discovering that grammar in every PD.  The incoming
+archive remains unchanged; this section describes the maintained integration.
+
+\subsection{What the source describes}
+An input consists of an integer $e$ and separate finite rational tangles
+with ordinary continued fractions.  Its knot is
+\[
+ N\bigl([e]+T(p_1/q_1)+\cdots+T(p_s/q_s)\bigr),
+ \qquad \gcd(p_i,q_i)=1,\quad q_i>0.
+\]
+The summands remain separate throughout.  Reducing their numerical sum
+would lose topological information: two $1/2$ summands give uncancelled
+numerator $4$, whereas the numerical sum is $1$.  A quarter rotation
+sends a slope to $-1/x$; a rotation followed by crossing reversal gives
+$1/x$.  These conventions agree with the rational-tangle operations in
+\cite{rational-tangles}.  The compiler performs those operations on actual
+four-terminal crossing graphs, joins adjacent terminal pairs, and adds the
+numerator caps.  A lazy crossing-switch bit avoids repeatedly mirroring
+earlier crossings during continued-fraction construction.
+
+For each continued fraction, read coefficients backwards from $(p,q)=(1,0)$:
+\[
+ (p,q)\longmapsto(ap+q,p).
+\]
+Every update matrix is unimodular.  Hence no gcd computation is required,
+intermediate infinity is harmless, and the final pair is primitive.
+A final infinite slope is rejected.  Write $p_i=a_iq_i+\beta_i$ with
+$0\le\beta_i<q_i$, add all $a_i$ to $e$, and discard integral summands.
+The remaining $r$ pairs $(\beta_i,\alpha_i)$ have
+$0<\beta_i<\alpha_i$ and $\alpha_i\ge2$.  Integral-twist transfer through
+rational summands preserves the numerator closure.  Set
+\begin{equation}
+ Q=\prod_{i=1}^{r}\alpha_i,\qquad
+ D=eQ+\sum_{i=1}^{r}\beta_i Q/\alpha_i.
+ \label{eq:rational-determinant}
+\end{equation}
+The implemented accumulator starts at $(D,Q)=(e,1)$ and updates
+$(D,Q)\mapsto(D\alpha+\beta Q,Q\alpha)$, without cancellation.
+
+\begin{lemma}[Component gate]
+The numerator closure in this grammar is a knot exactly when $D$ is odd.
+\end{lemma}
+\begin{proof}
+A primitive rational column modulo two specifies one of the horizontal,
+vertical, and crossed endpoint pairings, respectively $(0,1)$, $(1,0)$,
+and $(1,1)$.  Twisting and reciprocal operations preserve this correspondence.
+If $k>0$ denominators are even, the open horizontal sum has $k-1$ internal
+closed strings and its numerator closure has $k$ components.  If $k=0$,
+the number of components is one or two according as
+$e+\sum_i\beta_i$ is odd or even.  Formula
+\eqref{eq:rational-determinant} has odd parity exactly for $k=1$, or for
+$k=0$ with the stated odd sum.  For $k\ge2$ every term is even.
+This also covers the empty exceptional list.
+\end{proof}
+
+\begin{proposition}[Decision on supplied Montesinos knots]
+After the component gate, the answer is UNKNOT precisely when
+$r\le2$ and $|D|=1$; otherwise it is KNOTTED.
+\end{proposition}
+\begin{proof}
+Use the classical double-cover construction: the cover is a Seifert
+manifold whose group, in this convention, is
+\[
+ \langle h,x_1,\ldots,x_r\mid [h,x_i]=1,
+ x_i^{\alpha_i}h^{\beta_i}=1,\ x_1\cdots x_r=h^e\rangle.
+\]
+Rational tangle balls lift to solid tori; their meridians have slopes
+$\alpha_i x_i+\beta_i h$.  Abelianizing this presentation gives homology
+order $|D|$ when $D\ne0$.  If $r\ge3$, kill $h$ and all but three of the
+$x_i$.  The resulting triangle group with orders $a,b,c\ge2$ is nontrivial.
+Here is an explicit verification avoiding an algorithm for triangle groups.
+Put $\lambda=e^{\pi i/a}$, $t=2\cos(\pi/b)$, $s=2\cos(\pi/c)$,
+\[
+ u=\frac{s-\lambda^{-1}t}{\lambda-\lambda^{-1}},\quad
+ v=\frac{\lambda t-s}{\lambda-\lambda^{-1}},\quad
+ X=\begin{pmatrix}\lambda&0\\0&\lambda^{-1}\end{pmatrix},\quad
+ Y=\begin{pmatrix}u&1\\uv-1&v\end{pmatrix}.
+\]
+Both determinants are one and the traces of $Y,XY$ are $t,s$.
+Their distinct eigenvalues give $X^a=Y^b=(XY)^c=-I$.
+Thus $X,Y,(XY)^{-1}$ define a nontrivial projective representation;
+$X$ has projective order $a$.  The cover cannot be $S^3$ and the knot
+cannot be the unknot.  This is a symbolic proof, not a numerical subroutine.
+
+For at most two exceptional summands the closure is two-bridge, even though
+the open sum need not be rational.  The rational-link classification gives
+the unknot exactly when its numerator parameter $|D|$ equals one.
+In the two-summand case this is also the rational gluing criterion of
+\cite[Theorem 5]{rational-hard}.  The Seifert-cover and local-closure
+foundations are discussed in \cite[Theorem 4.9]{rational-local}.
+\end{proof}
+
+This detects determinant-one nontrivial knots.  For example, for every odd
+$a\ge3$ take slopes $-1/a,1/(a+2),1/r$ with
+$r=(a^2+2a-1)/2$.  The signed pretzel expression is
+$-a(a+2)+2r=-1$, so the normalized positive-denominator determinant has
+absolute value one.  All three denominators exceed one, proving nontriviality.
+The usual genus-one Seifert matrix for odd pretzel parameters $(p,q,r)$ is
+\[
+ \frac12\begin{pmatrix}p+q&q+1\\q-1&q+r\end{pmatrix}.
+\]
+Its determinant is $(pq+pr+qr+1)/4=0$ here; its Alexander polynomial is
+a unit and its symmetrization has signature zero.  Thus these easy arithmetic
+decisions include a family on which those two obstructions are inconclusive.
+
+\paragraph{Bit cost and output.}
+Let $B$ include all binary coefficients, signs, and list delimiters.  Each
+continued-fraction column has bit length bounded by the sum of
+$1+\lceil\log_2(1+|a|)\rceil$ along its block.  All final columns together
+have $O(B)$ bits.  Multiplying an $s$-bit partial entry by a $b$-bit coefficient
+costs $O(sb+s)$ with schoolbook arithmetic; summing over the input costs
+$O(B^2)$.  The divisions producing $(a_i,\beta_i)$ and the uncancelled
+accumulator have the same bound, by charging products to both operand lengths.
+The classifier therefore uses $O(B^2)$ bit operations and $O(B)$ bits of
+integer/source data.  This statement does not count Python object overhead
+as a single bit.  The certificate has $O(B)$ encoded bits; integers exceeding
+1024 bits use exact hexadecimal records.  The independent replay uses forward
+matrix products and full denominator-product sums, with a conservative
+$O(B^3)$ bound because it also replays prefix size statistics.  The reported
+maximum entry size concerns tracked states, not every temporary or peak memory.
+
+\subsection{Provenance, budgets, and integration}
+The compressed API is \code{montesinos\_certificate}, taking $e$ and the tangle list.
+The Diagram constructor \code{from\_rational} (also \code{from\_montesinos}) builds
+all crossings and validates the resulting spherical, one-component PD.
+Its default expansion ceiling is 100000 crossings, checked before allocating
+crossings.  Input parsing and construction precede the ordinary recognition
+timer.  The ordinary JSON grammar uses a \code{montesinos} object with
+\code{e} and \code{tangles}; its CLI expands that input, rather than silently
+switching to the compressed interface.
+
+Only the checked constructor attaches a detached immutable source.  Bare
+PD input has no such assertion.  Mirroring negates all coefficients;
+serialized sources are reconstructed and must match the stored PD up to
+half-turns of individual rows.  Multiple serialized source types are rejected.
+An initialized Diagram cannot be reinitialized with a different PD while
+retaining old provenance.  Equality and hashing still depend solely on PD.
+These are supported API invariants, not protection against arbitrary mutation
+of interpreter internals.
+
+The recognizer checks this source before other certificates;
+\code{use\_rational=False} or \code{--no-rational} disables that stage.
+Arithmetic polls the same cooperative deadline and the recognizer checks
+again after certificate construction.  The source is used only for the
+original whole diagram, before factorization.  The rank-two restart option
+continues to carry all recognition settings.  PDs without this new source
+retain the previous pipeline.  The general quasi-polynomial flag stays false.
+
+\subsection{Literal local obstructions with a checked disk}
+For a genuine two-string tangle with $r\ge2$ finite nonintegral summands,
+Nogueira--Salgueiro's criterion says it embeds in some unknot exactly when
+$r=2$ and
+\[
+ p_1q_2+p_2q_1\equiv\pm1\pmod{q_1q_2}.
+\]
+We use only its negative direction.  A verified occurrence failing this
+criterion proves the entire host knot nontrivial, regardless of the exterior.
+An allowed complement gives no positive verdict for the actual host.
+The implemented templates require initial $e=0$, connected crossing shadow,
+four distinct ports, and no closed strand component.
+
+The source compiler recomputes fractions and builds the literal crossing
+pattern.  Its rotation system must be spherical with every port on one
+facial boundary in the declared order.  Opposite-dart tracing must produce
+exactly two open strings.  An occurrence maps crossings injectively into
+a freshly validated host PD.  Offsets zero and two preserve the cyclic
+order and under-pair.  Every internal edge must match and every other dart
+must lead outside the selected set, yielding four distinct cut edges.
+
+These checks prove the needed disk condition.  Take a regular neighborhood
+of the connected selected graph, ending halfway along its outgoing edges.
+Every remaining graph component attaches at a port, since the entire knot
+shadow is connected.  All ports lie in one face, so the remaining graph lies
+there too.  Fill the other neighborhood boundary components with their empty
+complementary disks.  The result is a disk meeting precisely the four cut
+edges; thickening it gives a tangle ball.  An abstract four-edge cut alone
+would not justify this argument.
+
+Fixing one root image and its half-turn forces the image and rotation of
+every neighbor through internal edges.  Connectedness leaves only $2n$
+root trials, each costing $O(k)$ for a $k$-crossing template.  The matching
+core thus costs $O(nk)$ word operations.  Public host validation also sorts
+labels, adding $O(n\log(n+2))$; source reading and compilation must be charged
+separately.  A huge zero-coefficient description is not free just because
+it expands to few crossings.  Python dictionaries use the usual table-cost
+model in this count; indexed arrays give the corresponding deterministic
+algorithmic bound.  The six default patterns have slopes $(1/3,1/3)$,
+$(1/2,1/5)$, $(1/3,1/4)$ and their mirrors.
+
+\code{recognize\_with\_subtangles} is a separate opt-in wrapper.  No match
+continues ordinary recognition with the remaining time; exhaustion yields
+UNKNOWN.  The production integration also checks time after successful final
+verification, closing a gap in the delivered wrapper.  Time values must be
+finite and nonnegative.  Template compilation and PD validation are cooperative
+operations, not interruptible real-time allocations.
+
+An abstract extension enumerating at most $h$ coefficients and all separators,
+with coefficients in $[-n,n]$ and total expanded size at most $n$, has at most
+$\sum_{\ell\le h}(2n+1)^\ell2^{\ell-1}=(n+2)^{O(h)}$ candidates.
+Compiling and checking them gives quasi-polynomial discovery when
+$h=O(\log n)$.  This is a restricted literal-witness theorem from report 22,
+not the implemented fixed catalogue and not a bound for every knot diagram.
+
+\subsection{Why arithmetic helps when a small linear summary cannot}
+Let
+\[
+ A=\begin{pmatrix}1&2\\0&1\end{pmatrix},\quad
+ B=\begin{pmatrix}1&0\\2&1\end{pmatrix},\quad
+ v_w=G_w(1,1)^t,\quad x_w=G_w(3,2)^t
+\]
+for words $w\in\{A,B\}^m$ and their literal matrix products $G_w$.
+Two twists realize each letter on rational tangles.  The associated
+prefix and mirrored continuation have at most $2m+1$ and $2m+3$ crossings.
+All cross closures are knots: the two columns have parity $(1,1)$ and
+$(1,0)$.  The rational gluing test is $|\det(v_u,x_w)|=1$.
+
+For $u=w$ the determinant is $-1$.  For distinct words, their positive-cone
+images are disjoint: $A$ sends a positive column into $x>2y$, while $B$ sends
+it into $y>2x$; remove the common prefix to prove the assertion inductively.
+Consequently $G_w^{-1}v_u=(a,b)^t$ has one nonpositive and one positive
+integer coordinate.  The determinant $2a-3b$ has absolute value at least
+two, and odd parity raises this to at least three.  Thus the Boolean
+continuation matrix is the $2^m$-dimensional identity over every field.
+Distinct exact continuation states require at least $m$ bits; a linear
+representation of all Boolean answers needs dimension at least $2^m$.
+Neither statement is a general running-time lower bound.  The signed
+determinant matrix has rank at most two, and its nonlinear absolute-value-one
+readout decides the same family using $O(m)$ bits and $O(m^2)$ bit operations.
+
+There is also an explicit full-complex obstruction inside unknots.  Put
+$G_k=(AB)^k$, $v_k=(p_k,q_k)^t=G_k(1,1)^t$, and
+$x_k=G_k(3,2)^t$.  The whole closure is an unknot with $N_k=8k+4$ displayed
+crossings.  Its designated rational prefix has $4k+1$ crossings and
+\[
+ p_0=1,\quad p_1=7,\quad p_{k+2}=6p_{k+1}-p_k,\quad
+ p_k\ge(3+2\sqrt2)^k.
+\]
+Any full, explicitly delooped four-ended complex homotopy equivalent to that
+prefix needs at least $p_k/2$ summands.  Indeed, closing each matching and
+reducing on a fixed exterior marked arc yields at most two scalar generators
+per summand.  Closing and applying the marked TQFT is additive and preserves
+chain-homotopy equations.  Homology dimension is therefore at most twice
+the summand count, whereas its graded Euler characteristic at quantum
+parameter $i$ gives $\dim\Kh\ge\det=p_k$.
+
+If the quantum grading is preserved, the stronger bound is $p_k+q_k$.
+At $i$, a reduced closure with more than one circle contributes zero because
+$i+i^{-1}=0$; a one-circle closure contributes absolute value one.
+Numerator closure bounds one matching's multiplicity below by $p_k$ and
+denominator closure bounds the other by $q_k$.  Both are knots since $p_k,q_k$
+are odd.  Orientations may be chosen separately: the orientation-free bracket
+complex changes only by global grading shifts, which do not change these
+absolute-value estimates.  This obstruction concerns that specified prefix,
+full homotopy type, and expanded summands.  It does not cover every order,
+binary multiplicity encodings, or the actual arithmetic decision procedure.
+
+For adaptive recognition the consequence is concrete: bounding geometric
+frontier alone does not bound full surviving object count.  When checked
+arithmetic structure is available, its decision stage should precede a full
+complex.  For general PDs, discovering and composing such structures without
+expansion remains a research obligation; switching between existing complex
+representations alone does not prove the missing bound.
+
+\subsection{Production validation and measured scope}
+All 152 delivered tests pass unchanged.  The maintained suite has 411 tests,
+including two additional resource/option regressions.  The patch hash and all
+81 delivered patched-file hashes agree with the patch manifest; all 82 source
+Git blobs agree with the pinned commit.  The package-wide checksum launcher
+cannot run because the delivered tree lacks its \code{SHA256SUMS} file;
+the narrower checks are recorded explicitly in \code{rational-source-audit.json}.
+Independent reruns
+against production check 1200 sources: 718 knot-PD Alexander comparisons,
+482 link component comparisons, and 1436 mirrored pickle checks.  The local
+audit rejects 12 forged certificates and a crossing switch, checks 40
+reorder/half-turn/relabel/mirror instances, and finds no false rejection on
+31 known unknots.  The identity diagnostic checks 1398101 matrix entries
+through $m=10$.  The checkpoint audit constructs 21 whole diagrams and adds
+14 Alexander and six independent cube comparisons.  These are finite
+implementation checks; the proofs above supply asymptotic conclusions.
+
+\code{fast/rational\_research/benchmark.py} retains seven paired rounds
+with fresh prebuilt Diagrams, one-second recognition budgets, and a 20000-object
+cap.  Each round measures baseline, five source-enabled samples, then baseline.
+The after/before ratio is a drift control, not a separate randomized A/A trial.
+Construction plus new recognition is recorded separately; recognition-only
+speedups must not be read as construction-inclusive speedups.  Local patterns
+use the same before/new/after protocol, with the template cache warm.
+Raw data and exact source hashes are in
+\code{fast/results/rational\_20261008.json}.
+
+\begin{center}\small
+\begin{tabular}{lrrrl}
+\toprule
+Input & Crossings & Old ms & New ms & Old/new or censoring\\
+\midrule
+Diagonal $m=2$ &12&2.953&0.0300&$96.8\times$\\
+Diagonal $m=4$ &20&6.157&0.0302&$203.2\times$\\
+Diagonal $m=6$ &28&15.494&0.0333&$454.3\times$\\
+Diagonal $m=8$ &36&121.454&0.0658&$1896.4\times$\\
+Diagonal $m=10$ &44&133.061&0.0673&object limit, no ratio\\
+Diagonal $m=12$ &52&94.483&0.0394&object limit, no ratio\\
+Off-diagonal $m=8$ &36&0.102&0.0282&$3.64\times$\\
+Pretzel $a=3$ &15&1.154&0.0286&$41.4\times$\\
+Pretzel $a=7$ &47&3.446&0.0317&$109.0\times$\\
+Pretzel $a=31$ &575&52.195&0.0527&$992.6\times$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Ratios are medians of paired ratios, not ratios of displayed medians.
+The 44- and 52-crossing baselines stop at the object cap; they are not
+completed solves.  Source-enabled construction plus recognition ranges from
+0.175 to 0.700 ms on these diagonal cases, and is 5.37 ms for the
+575-crossing pretzel.  The largest compressed pretzel input uses a
+65537-bit parameter and takes 1.46 ms median for arithmetic only; no PD is
+built.  These compressed times describe a different input contract.
+
+Local search loses on all five measured cases: old/new ratios are
+0.682 (Conway), 0.634 (eight-crossing unknot), 0.256 (trefoil), 0.876
+(planted two-summand pattern), and 0.160 (planted three-summand pattern).
+In the planted cases the old modular Alexander or Rasmussen stage is already
+cheaper.  This is why local search remains explicit.  Its proven rejection
+family permits arbitrarily complicated exteriors, but these measurements
+do not establish an end-to-end gain on that family.

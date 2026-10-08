@@ -1,0 +1,36 @@
+--- measured_driver.py
++++ benchmarks/benchmark_long_tail.py
+@@ -13,17 +13,18 @@
+ import json
+ import platform
+ import random
++import sys
+ from pathlib import Path
+ from statistics import median
+ from time import perf_counter
+ 
++BUNDLE_ROOT = Path(__file__).resolve().parents[1]
++sys.path.insert(0, str(BUNDLE_ROOT / "implementation" / "fast"))
++
+ from fastunknot.twist.core import Budget, Run, homology
+-try:
+-    from fastunknot.twist.long_tail import (
+-        materialize_profile, tail_homology, dominant_run_obstruction,
+-    )
+-except ModuleNotFoundError:
+-    from long_twist import materialize_profile, tail_homology, dominant_run_obstruction
++from fastunknot.twist.long_tail import (
++    materialize_profile, tail_homology, dominant_run_obstruction,
++)
+ 
+ 
+ def budget():
+@@ -53,7 +54,7 @@
+ def main():
+     parser = argparse.ArgumentParser()
+     parser.add_argument('--rounds', type=int, default=7)
+-    parser.add_argument('--output', default='agent_twist/long_twist_benchmark.json')
++    parser.add_argument('--output', default=str(Path(__file__).with_name('long_tail_benchmark.json')))
+     args = parser.parse_args()
+     if args.rounds < 1:
+         parser.error('--rounds must be positive')

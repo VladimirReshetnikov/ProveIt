@@ -1,0 +1,504 @@
+{
+  "python": "3.12.14",
+  "platform": "Linux-6.18.44-x86_64-with-glibc2.39",
+  "seed": 2026100802,
+  "rounds": 7,
+  "direct_batch": 100,
+  "script_sha256": "35f891c2823d7ea147e77b49d308a3caf605137c965825be29118ca3ccf60794",
+  "diagram_sha256": "683778b3964dd8772327ae5811ed17235e6d5c92e6c3c5aece5b61162eea1c13",
+  "seifert_sha256": "1a9c9be5ee8af84001587e1988ace007d1a1016847a6d53ece9f1433af166df1",
+  "symbolic_braid_sha256": "4c5b8743de17891eb2752c52839c35aa1672846939c21820b192def25b6cf6e5",
+  "shared_input": "already parsed tuple of four signed Run objects, strands=5",
+  "arm_A": "word expansion + fresh Diagram.from_braid construction/validation + seifert_certificate",
+  "arm_AA": "second independent invocation of exactly arm A",
+  "arm_B": "batch of fresh signed_run_certificate calls; batch elapsed time divided by batch size",
+  "B_batch_overhead": "loop and output-list append included in the measured batch",
+  "excluded": "JSON parsing, construction of the shared run tuple, comparison, independent verification, and serialization",
+  "caveat": "noisy shared virtual environment; certificate interface only, not full recognition portfolio or hard-unknot performance",
+  "records": [
+    {
+      "magnitude": 101,
+      "strands": 5,
+      "runs": [
+        [
+          1,
+          101
+        ],
+        [
+          2,
+          -101
+        ],
+        [
+          3,
+          101
+        ],
+        [
+          4,
+          -101
+        ]
+      ],
+      "certificate": {
+        "version": 1,
+        "status": "KNOTTED",
+        "criterion": "homogeneous-seifert-genus",
+        "representation": "binary signed braid runs",
+        "sign_convention": "production PD: writhe = -sum(run exponents)",
+        "crossings": 404,
+        "writhe": 0,
+        "seifert_circles": 5,
+        "positive_components": 3,
+        "negative_components": 3,
+        "homogeneity_defect": 0,
+        "canonical_genus": 200,
+        "rasmussen_interval": [
+          0,
+          0
+        ]
+      },
+      "common_fields_compared": [
+        "canonical_genus",
+        "criterion",
+        "crossings",
+        "homogeneity_defect",
+        "negative_components",
+        "positive_components",
+        "rasmussen_interval",
+        "seifert_circles",
+        "status",
+        "version",
+        "writhe"
+      ],
+      "all_common_fields_equal": true,
+      "independent_verifier_calls": 700,
+      "all_independent_verifications_passed": true,
+      "rounds": [
+        {
+          "round": 0,
+          "arm_order": [
+            "expanded",
+            "expanded_AA",
+            "direct_runs"
+          ],
+          "expanded_seconds": 0.0048362860034103505,
+          "expanded_AA_seconds": 0.004189933999441564,
+          "direct_batch_seconds": 0.0006524940035887994,
+          "direct_seconds_per_call": 6.524940035887994e-06,
+          "paired_speedup": 741.2000687837998,
+          "AA_ratio": 1.154263051412011
+        },
+        {
+          "round": 1,
+          "arm_order": [
+            "direct_runs",
+            "expanded_AA",
+            "expanded"
+          ],
+          "expanded_seconds": 0.0033796190036810003,
+          "expanded_AA_seconds": 0.006263962997763883,
+          "direct_batch_seconds": 0.0016270599953713827,
+          "direct_seconds_per_call": 1.6270599953713827e-05,
+          "paired_speedup": 207.71323819006375,
+          "AA_ratio": 0.5395336793795654
+        },
+        {
+          "round": 2,
+          "arm_order": [
+            "expanded_AA",
+            "direct_runs",
+            "expanded"
+          ],
+          "expanded_seconds": 0.005776664998847991,
+          "expanded_AA_seconds": 0.004999882999982219,
+          "direct_batch_seconds": 0.00044496099872048944,
+          "direct_seconds_per_call": 4.449609987204894e-06,
+          "paired_speedup": 1298.2407481687426,
+          "AA_ratio": 1.1553600351985305
+        },
+        {
+          "round": 3,
+          "arm_order": [
+            "direct_runs",
+            "expanded",
+            "expanded_AA"
+          ],
+          "expanded_seconds": 0.0047870339985820465,
+          "expanded_AA_seconds": 0.007288404005521443,
+          "direct_batch_seconds": 0.0003822720027528703,
+          "direct_seconds_per_call": 3.822720027528703e-06,
+          "paired_speedup": 1252.2585918165576,
+          "AA_ratio": 0.6568014060356088
+        },
+        {
+          "round": 4,
+          "arm_order": [
+            "expanded",
+            "expanded_AA",
+            "direct_runs"
+          ],
+          "expanded_seconds": 0.009817204998398665,
+          "expanded_AA_seconds": 0.0049010750008164905,
+          "direct_batch_seconds": 0.00041945799603126943,
+          "direct_seconds_per_call": 4.194579960312695e-06,
+          "paired_speedup": 2340.4500787408565,
+          "AA_ratio": 2.0030717744093236
+        },
+        {
+          "round": 5,
+          "arm_order": [
+            "expanded_AA",
+            "expanded",
+            "direct_runs"
+          ],
+          "expanded_seconds": 0.004638534002879169,
+          "expanded_AA_seconds": 0.004405039995617699,
+          "direct_batch_seconds": 0.0007796950012561865,
+          "direct_seconds_per_call": 7.796950012561864e-06,
+          "paired_speedup": 594.9164731601343,
+          "AA_ratio": 1.053006103802408
+        },
+        {
+          "round": 6,
+          "arm_order": [
+            "expanded_AA",
+            "direct_runs",
+            "expanded"
+          ],
+          "expanded_seconds": 0.00434530500206165,
+          "expanded_AA_seconds": 0.005229121001320891,
+          "direct_batch_seconds": 0.0005970840065856464,
+          "direct_seconds_per_call": 5.970840065856464e-06,
+          "paired_speedup": 727.7543786358904,
+          "AA_ratio": 0.8309819185603113
+        }
+      ],
+      "median_expanded_seconds": 0.0047870339985820465,
+      "median_direct_batch_seconds": 0.0005970840065856464,
+      "median_direct_seconds_per_call": 5.970840065856464e-06,
+      "median_paired_speedup": 741.2000687837998,
+      "median_AA_ratio": 1.053006103802408
+    },
+    {
+      "magnitude": 1001,
+      "strands": 5,
+      "runs": [
+        [
+          1,
+          1001
+        ],
+        [
+          2,
+          -1001
+        ],
+        [
+          3,
+          1001
+        ],
+        [
+          4,
+          -1001
+        ]
+      ],
+      "certificate": {
+        "version": 1,
+        "status": "KNOTTED",
+        "criterion": "homogeneous-seifert-genus",
+        "representation": "binary signed braid runs",
+        "sign_convention": "production PD: writhe = -sum(run exponents)",
+        "crossings": 4004,
+        "writhe": 0,
+        "seifert_circles": 5,
+        "positive_components": 3,
+        "negative_components": 3,
+        "homogeneity_defect": 0,
+        "canonical_genus": 2000,
+        "rasmussen_interval": [
+          0,
+          0
+        ]
+      },
+      "common_fields_compared": [
+        "canonical_genus",
+        "criterion",
+        "crossings",
+        "homogeneity_defect",
+        "negative_components",
+        "positive_components",
+        "rasmussen_interval",
+        "seifert_circles",
+        "status",
+        "version",
+        "writhe"
+      ],
+      "all_common_fields_equal": true,
+      "independent_verifier_calls": 700,
+      "all_independent_verifications_passed": true,
+      "rounds": [
+        {
+          "round": 0,
+          "arm_order": [
+            "expanded",
+            "direct_runs",
+            "expanded_AA"
+          ],
+          "expanded_seconds": 0.05042182499892078,
+          "expanded_AA_seconds": 0.05003955199936172,
+          "direct_batch_seconds": 0.0006933879994903691,
+          "direct_seconds_per_call": 6.933879994903691e-06,
+          "paired_speedup": 7271.805257082637,
+          "AA_ratio": 1.0076394169069287
+        },
+        {
+          "round": 1,
+          "arm_order": [
+            "direct_runs",
+            "expanded",
+            "expanded_AA"
+          ],
+          "expanded_seconds": 0.04716508000274189,
+          "expanded_AA_seconds": 0.04237768999882974,
+          "direct_batch_seconds": 0.0004800950046046637,
+          "direct_seconds_per_call": 4.800950046046637e-06,
+          "paired_speedup": 9824.113883788517,
+          "AA_ratio": 1.1129695838551925
+        },
+        {
+          "round": 2,
+          "arm_order": [
+            "expanded",
+            "expanded_AA",
+            "direct_runs"
+          ],
+          "expanded_seconds": 0.05328081299376208,
+          "expanded_AA_seconds": 0.0386096459988039,
+          "direct_batch_seconds": 0.0005038729941588826,
+          "direct_seconds_per_call": 5.038729941588827e-06,
+          "paired_speedup": 10574.254546565642,
+          "AA_ratio": 1.379987089117903
+        },
+        {
+          "round": 3,
+          "arm_order": [
+            "expanded",
+            "expanded_AA",
+            "direct_runs"
+          ],
+          "expanded_seconds": 0.04808341299940366,
+          "expanded_AA_seconds": 0.04629593300342094,
+          "direct_batch_seconds": 0.0004090630027349107,
+          "direct_seconds_per_call": 4.090630027349107e-06,
+          "paired_speedup": 11754.525018866996,
+          "AA_ratio": 1.0386098708897527
+        },
+        {
+          "round": 4,
+          "arm_order": [
+            "direct_runs",
+            "expanded_AA",
+            "expanded"
+          ],
+          "expanded_seconds": 0.04945686599967303,
+          "expanded_AA_seconds": 0.04480016000161413,
+          "direct_batch_seconds": 0.0012961439933860675,
+          "direct_seconds_per_call": 1.2961439933860674e-05,
+          "paired_speedup": 3815.692257344889,
+          "AA_ratio": 1.1039439590816442
+        },
+        {
+          "round": 5,
+          "arm_order": [
+            "direct_runs",
+            "expanded",
+            "expanded_AA"
+          ],
+          "expanded_seconds": 0.03721867899730569,
+          "expanded_AA_seconds": 0.038015493999409955,
+          "direct_batch_seconds": 0.00047143699339358136,
+          "direct_seconds_per_call": 4.714369933935813e-06,
+          "paired_speedup": 7894.73026488473,
+          "AA_ratio": 0.97903973042895
+        },
+        {
+          "round": 6,
+          "arm_order": [
+            "expanded",
+            "expanded_AA",
+            "direct_runs"
+          ],
+          "expanded_seconds": 0.03884558699792251,
+          "expanded_AA_seconds": 0.04039014499721816,
+          "direct_batch_seconds": 0.0008080609986791387,
+          "direct_seconds_per_call": 8.080609986791388e-06,
+          "paired_speedup": 4807.259236792734,
+          "AA_ratio": 0.9617590380177633
+        }
+      ],
+      "median_expanded_seconds": 0.04808341299940366,
+      "median_direct_batch_seconds": 0.0005038729941588826,
+      "median_direct_seconds_per_call": 5.038729941588827e-06,
+      "median_paired_speedup": 7894.73026488473,
+      "median_AA_ratio": 1.0386098708897527
+    },
+    {
+      "magnitude": 10001,
+      "strands": 5,
+      "runs": [
+        [
+          1,
+          10001
+        ],
+        [
+          2,
+          -10001
+        ],
+        [
+          3,
+          10001
+        ],
+        [
+          4,
+          -10001
+        ]
+      ],
+      "certificate": {
+        "version": 1,
+        "status": "KNOTTED",
+        "criterion": "homogeneous-seifert-genus",
+        "representation": "binary signed braid runs",
+        "sign_convention": "production PD: writhe = -sum(run exponents)",
+        "crossings": 40004,
+        "writhe": 0,
+        "seifert_circles": 5,
+        "positive_components": 3,
+        "negative_components": 3,
+        "homogeneity_defect": 0,
+        "canonical_genus": 20000,
+        "rasmussen_interval": [
+          0,
+          0
+        ]
+      },
+      "common_fields_compared": [
+        "canonical_genus",
+        "criterion",
+        "crossings",
+        "homogeneity_defect",
+        "negative_components",
+        "positive_components",
+        "rasmussen_interval",
+        "seifert_circles",
+        "status",
+        "version",
+        "writhe"
+      ],
+      "all_common_fields_equal": true,
+      "independent_verifier_calls": 700,
+      "all_independent_verifications_passed": true,
+      "rounds": [
+        {
+          "round": 0,
+          "arm_order": [
+            "expanded_AA",
+            "expanded",
+            "direct_runs"
+          ],
+          "expanded_seconds": 0.4840676620005979,
+          "expanded_AA_seconds": 0.5054573149973294,
+          "direct_batch_seconds": 0.00045067099563311785,
+          "direct_seconds_per_call": 4.5067099563311785e-06,
+          "paired_speedup": 107410.43170984706,
+          "AA_ratio": 0.957682573063871
+        },
+        {
+          "round": 1,
+          "arm_order": [
+            "expanded",
+            "direct_runs",
+            "expanded_AA"
+          ],
+          "expanded_seconds": 0.451519094996911,
+          "expanded_AA_seconds": 0.4986399670015089,
+          "direct_batch_seconds": 0.0004220379996695556,
+          "direct_seconds_per_call": 4.220379996695556e-06,
+          "paired_speedup": 106985.4125340463,
+          "AA_ratio": 0.9055012130536754
+        },
+        {
+          "round": 2,
+          "arm_order": [
+            "expanded",
+            "expanded_AA",
+            "direct_runs"
+          ],
+          "expanded_seconds": 0.44201009799871827,
+          "expanded_AA_seconds": 0.45718965700507397,
+          "direct_batch_seconds": 0.00041690299985930324,
+          "direct_seconds_per_call": 4.169029998593032e-06,
+          "paired_speedup": 106022.28771390184,
+          "AA_ratio": 0.9667981137066991
+        },
+        {
+          "round": 3,
+          "arm_order": [
+            "expanded",
+            "direct_runs",
+            "expanded_AA"
+          ],
+          "expanded_seconds": 0.5857284610028728,
+          "expanded_AA_seconds": 0.7739812410000013,
+          "direct_batch_seconds": 0.00044817000161856413,
+          "direct_seconds_per_call": 4.4817000161856415e-06,
+          "paired_speedup": 130693.36610828855,
+          "AA_ratio": 0.7567734590648455
+        },
+        {
+          "round": 4,
+          "arm_order": [
+            "expanded",
+            "expanded_AA",
+            "direct_runs"
+          ],
+          "expanded_seconds": 0.5190249049992417,
+          "expanded_AA_seconds": 0.4391009570026654,
+          "direct_batch_seconds": 0.0006409440029528923,
+          "direct_seconds_per_call": 6.409440029528923e-06,
+          "paired_speedup": 80978.19819017616,
+          "AA_ratio": 1.1820172484754825
+        },
+        {
+          "round": 5,
+          "arm_order": [
+            "expanded_AA",
+            "direct_runs",
+            "expanded"
+          ],
+          "expanded_seconds": 0.4781039680019603,
+          "expanded_AA_seconds": 0.48986591499851784,
+          "direct_batch_seconds": 0.0004483400043682195,
+          "direct_seconds_per_call": 4.483400043682196e-06,
+          "paired_speedup": 106638.70351602524,
+          "AA_ratio": 0.9759894562237645
+        },
+        {
+          "round": 6,
+          "arm_order": [
+            "direct_runs",
+            "expanded_AA",
+            "expanded"
+          ],
+          "expanded_seconds": 0.490287709995755,
+          "expanded_AA_seconds": 0.5170581269994727,
+          "direct_batch_seconds": 0.000426598999183625,
+          "direct_seconds_per_call": 4.2659899918362495e-06,
+          "paired_speedup": 114929.4093361705,
+          "AA_ratio": 0.9482255173918869
+        }
+      ],
+      "median_expanded_seconds": 0.4840676620005979,
+      "median_direct_batch_seconds": 0.00044817000161856413,
+      "median_direct_seconds_per_call": 4.4817000161856415e-06,
+      "median_paired_speedup": 106985.4125340463,
+      "median_AA_ratio": 0.957682573063871
+    }
+  ],
+  "post_run_environment_note": "The parent reported the full integration regression suite running concurrently in this shared environment. Load was neither isolated nor measured. The benchmark was not rerun."
+}

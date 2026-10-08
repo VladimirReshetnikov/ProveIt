@@ -1,0 +1,22 @@
+A focused interface benchmark uses this same four-run family with magnitudes
+101, 1,001, and 10,001. Each arm starts with the identical already parsed run
+tuple. The expanded arm includes letter expansion, fresh PD construction and
+validation, and the maintained Seifert certificate; the direct arm evaluates
+the signed-run certificate. The latter batches 100 fresh calls per sample.
+Seven shuffled paired rounds include an expanded A/A arm. Every common
+certificate field agrees, and all 2,100 direct certificates pass independent
+verification outside the timers.
+\begin{table}[htbp]
+\centering\small
+\input{tables/structural_times.tex}
+\caption{Structural certificate evaluation from the same run input. Note the
+different time units. These timings include the representation conversion
+required by the expanded route and do not measure the full recognition portfolio.}
+\label{tab:structural}
+\end{table}
+The direct call takes roughly five microseconds at these sizes while the
+expanded route grows from about five to 484 milliseconds. The input has four
+runs throughout; this measures the work avoided by the representation change.
+The shared environment included a concurrent regression run, recorded in the
+raw JSON. The exact timings and especially very large ratios should therefore
+be read as interface measurements, not transferable hardware constants.

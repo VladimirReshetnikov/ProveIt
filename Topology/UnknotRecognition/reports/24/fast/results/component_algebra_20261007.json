@@ -1,0 +1,1571 @@
+{
+  "python": "3.13.14",
+  "seed": 2026100716,
+  "rounds": 7,
+  "timing_scope": "Paired production scans and isolated dense/sparse composition kernels.\n\nScans include order selection and fresh scanner construction, but no earlier\nrecognition filters or input loading. Kernel timings include a cold first\ncomposition; interning the matching is outside the timing boundary. Every\ncomparison asserts exact equality, with a separate standard/standard control.\n",
+  "scans": [
+    {
+      "name": "conway",
+      "samples": [
+        {
+          "order": [
+            "standard",
+            "component",
+            "component-dense",
+            "control"
+          ],
+          "standard": 0.01439728680998087,
+          "component": 0.006573984399437904,
+          "component-dense": 0.007126091979444027,
+          "control": 0.01068353746086359
+        },
+        {
+          "order": [
+            "standard",
+            "component-dense",
+            "component",
+            "control"
+          ],
+          "standard": 0.014539687894284725,
+          "component-dense": 0.011594749987125397,
+          "component": 0.010386134497821331,
+          "control": 0.013413974083960056
+        },
+        {
+          "order": [
+            "component-dense",
+            "standard",
+            "component",
+            "control"
+          ],
+          "component-dense": 0.015073894523084164,
+          "standard": 0.011476547457277775,
+          "component": 0.010441635735332966,
+          "control": 0.01053103618323803
+        },
+        {
+          "order": [
+            "control",
+            "component",
+            "component-dense",
+            "standard"
+          ],
+          "control": 0.010092130862176418,
+          "component": 0.010310832411050797,
+          "component-dense": 0.011581949889659882,
+          "standard": 0.010662638582289219
+        },
+        {
+          "order": [
+            "control",
+            "component-dense",
+            "standard",
+            "component"
+          ],
+          "control": 0.010037429630756378,
+          "component-dense": 0.013725277967751026,
+          "standard": 0.005948876962065697,
+          "component": 0.006141278892755508
+        },
+        {
+          "order": [
+            "standard",
+            "component",
+            "component-dense",
+            "control"
+          ],
+          "standard": 0.005900276824831963,
+          "component": 0.006246880628168583,
+          "component-dense": 0.006893288344144821,
+          "control": 0.006781387142837048
+        },
+        {
+          "order": [
+            "control",
+            "component",
+            "component-dense",
+            "standard"
+          ],
+          "control": 0.005837875418365002,
+          "component": 0.005881776101887226,
+          "component-dense": 0.0065445853397250175,
+          "standard": 0.006121879443526268
+        }
+      ],
+      "median_aa": 1.0565299566468134,
+      "median_speedup": {
+        "component": 1.0408215711512723,
+        "component-dense": 0.9206255150359954
+      },
+      "metrics": {
+        "standard": {},
+        "component": {
+          "calls": 32,
+          "reference_calls": 29,
+          "factored_calls": 0,
+          "scalar_shortcuts": 3,
+          "maximum_pairs": 2,
+          "maximum_components": 0
+        },
+        "component-dense": {
+          "calls": 32,
+          "reference_calls": 0,
+          "factored_calls": 29,
+          "scalar_shortcuts": 3,
+          "maximum_pairs": 2,
+          "maximum_components": 2
+        }
+      }
+    },
+    {
+      "name": "kinoshita_terasaka",
+      "samples": [
+        {
+          "order": [
+            "component",
+            "component-dense",
+            "standard",
+            "control"
+          ],
+          "component": 0.006737786345183849,
+          "component-dense": 0.007739700376987457,
+          "standard": 0.007007691077888012,
+          "control": 0.006605585105717182
+        },
+        {
+          "order": [
+            "component-dense",
+            "standard",
+            "component",
+            "control"
+          ],
+          "component-dense": 0.007811401039361954,
+          "standard": 0.006605885922908783,
+          "component": 0.006854687817394733,
+          "control": 0.006973989307880402
+        },
+        {
+          "order": [
+            "control",
+            "standard",
+            "component-dense",
+            "component"
+          ],
+          "control": 0.006628786213696003,
+          "standard": 0.006616984494030476,
+          "component-dense": 0.0078369015827775,
+          "component": 0.006768886931240559
+        },
+        {
+          "order": [
+            "component",
+            "standard",
+            "control",
+            "component-dense"
+          ],
+          "component": 0.007092592306435108,
+          "standard": 0.007247693836688995,
+          "control": 0.006671985611319542,
+          "component-dense": 0.00782720185816288
+        },
+        {
+          "order": [
+            "component-dense",
+            "control",
+            "component",
+            "standard"
+          ],
+          "component-dense": 0.0080745043233037,
+          "control": 0.006689286790788174,
+          "component": 0.007138391956686974,
+          "standard": 0.006809888407588005
+        },
+        {
+          "order": [
+            "component",
+            "component-dense",
+            "control",
+            "standard"
+          ],
+          "component": 0.006764588877558708,
+          "component-dense": 0.008430909365415573,
+          "control": 0.006626785732805729,
+          "standard": 0.006592985242605209
+        },
+        {
+          "order": [
+            "control",
+            "component",
+            "standard",
+            "component-dense"
+          ],
+          "control": 0.0065684849396348,
+          "component": 0.0067844875156879425,
+          "standard": 0.0066697858273983,
+          "component-dense": 0.007920702919363976
+        }
+      ],
+      "median_aa": 1.0154222607944554,
+      "median_speedup": {
+        "component": 0.9775587273427474,
+        "component-dense": 0.8443368114475326
+      },
+      "metrics": {
+        "component": {
+          "calls": 45,
+          "reference_calls": 43,
+          "factored_calls": 0,
+          "scalar_shortcuts": 2,
+          "maximum_pairs": 2,
+          "maximum_components": 0
+        },
+        "component-dense": {
+          "calls": 45,
+          "reference_calls": 0,
+          "factored_calls": 43,
+          "scalar_shortcuts": 2,
+          "maximum_pairs": 2,
+          "maximum_components": 3
+        },
+        "standard": {}
+      }
+    },
+    {
+      "name": "conway_sum_2",
+      "samples": [
+        {
+          "order": [
+            "standard",
+            "control",
+            "component",
+            "component-dense"
+          ],
+          "standard": 0.09015976544469595,
+          "control": 0.08712552674114704,
+          "component": 0.09308550506830215,
+          "component-dense": 0.09991189185529947
+        },
+        {
+          "order": [
+            "component",
+            "control",
+            "component-dense",
+            "standard"
+          ],
+          "component": 0.08778593596071005,
+          "control": 0.08996796421706676,
+          "component-dense": 0.12216167990118265,
+          "standard": 0.09207719191908836
+        },
+        {
+          "order": [
+            "standard",
+            "control",
+            "component-dense",
+            "component"
+          ],
+          "standard": 0.09305500332266092,
+          "control": 0.08199355937540531,
+          "component-dense": 0.08263366855680943,
+          "component": 0.08741963095963001
+        },
+        {
+          "order": [
+            "control",
+            "component",
+            "component-dense",
+            "standard"
+          ],
+          "control": 0.09456592332571745,
+          "component": 0.10976941976696253,
+          "component-dense": 0.09757486265152693,
+          "standard": 0.09576273895800114
+        },
+        {
+          "order": [
+            "component",
+            "component-dense",
+            "standard",
+            "control"
+          ],
+          "component": 0.0868452237918973,
+          "component-dense": 0.08555480651557446,
+          "standard": 0.09054407104849815,
+          "control": 0.07993693463504314
+        },
+        {
+          "order": [
+            "control",
+            "component",
+            "standard",
+            "component-dense"
+          ],
+          "control": 0.07963682990521193,
+          "component": 0.0790318213403225,
+          "standard": 0.0892422553151846,
+          "component-dense": 0.07971793133765459
+        },
+        {
+          "order": [
+            "control",
+            "component",
+            "standard",
+            "component-dense"
+          ],
+          "control": 0.09285190142691135,
+          "component": 0.09083827491849661,
+          "standard": 0.08616971503943205,
+          "component-dense": 0.0923435939475894
+        }
+      ],
+      "median_aa": 1.0348260586425346,
+      "median_speedup": {
+        "component": 1.0425912571250229,
+        "component-dense": 0.9814283756668201
+      },
+      "metrics": {
+        "standard": {},
+        "component": {
+          "calls": 50,
+          "reference_calls": 46,
+          "factored_calls": 0,
+          "scalar_shortcuts": 4,
+          "maximum_pairs": 2,
+          "maximum_components": 0
+        },
+        "component-dense": {
+          "calls": 50,
+          "reference_calls": 0,
+          "factored_calls": 46,
+          "scalar_shortcuts": 4,
+          "maximum_pairs": 2,
+          "maximum_components": 3
+        }
+      }
+    },
+    {
+      "name": "hard_unknot_8",
+      "samples": [
+        {
+          "order": [
+            "component",
+            "component-dense",
+            "control",
+            "standard"
+          ],
+          "component": 0.0013684183359146118,
+          "component-dense": 0.0012165158987045288,
+          "control": 0.0012155156582593918,
+          "standard": 0.001176116056740284
+        },
+        {
+          "order": [
+            "component-dense",
+            "component",
+            "standard",
+            "control"
+          ],
+          "component-dense": 0.0011906148865818977,
+          "component": 0.0012107156217098236,
+          "standard": 0.0018366239964962006,
+          "control": 0.0013034176081418991
+        },
+        {
+          "order": [
+            "control",
+            "standard",
+            "component-dense",
+            "component"
+          ],
+          "control": 0.0012061158195137978,
+          "standard": 0.001171814277768135,
+          "component-dense": 0.0013863183557987213,
+          "component": 0.0012655174359679222
+        },
+        {
+          "order": [
+            "component",
+            "control",
+            "component-dense",
+            "standard"
+          ],
+          "component": 0.0012127161026000977,
+          "control": 0.0012244144454598427,
+          "component-dense": 0.001217816025018692,
+          "standard": 0.001137714833021164
+        },
+        {
+          "order": [
+            "standard",
+            "control",
+            "component",
+            "component-dense"
+          ],
+          "standard": 0.001309816725552082,
+          "control": 0.0011439146474003792,
+          "component": 0.0012332163751125336,
+          "component-dense": 0.0011976156383752823
+        },
+        {
+          "order": [
+            "component",
+            "control",
+            "standard",
+            "component-dense"
+          ],
+          "component": 0.0011871159076690674,
+          "control": 0.001168014481663704,
+          "standard": 0.0011417148634791374,
+          "component-dense": 0.0012227166444063187
+        },
+        {
+          "order": [
+            "standard",
+            "component-dense",
+            "control",
+            "component"
+          ],
+          "standard": 0.0011592153459787369,
+          "component-dense": 0.0011892151087522507,
+          "control": 0.0014036176726222038,
+          "component": 0.001257317140698433
+        }
+      ],
+      "median_aa": 0.9715603251439898,
+      "median_speedup": {
+        "component": 0.9381543055145974,
+        "component-dense": 0.9667905351608912
+      },
+      "metrics": {
+        "component": {
+          "calls": 0,
+          "reference_calls": 0,
+          "factored_calls": 0,
+          "scalar_shortcuts": 0,
+          "maximum_pairs": 0,
+          "maximum_components": 0
+        },
+        "component-dense": {
+          "calls": 0,
+          "reference_calls": 0,
+          "factored_calls": 0,
+          "scalar_shortcuts": 0,
+          "maximum_pairs": 0,
+          "maximum_components": 0
+        },
+        "standard": {}
+      }
+    },
+    {
+      "name": "torus_3_5",
+      "samples": [
+        {
+          "order": [
+            "component",
+            "control",
+            "standard",
+            "component-dense"
+          ],
+          "component": 0.005223666317760944,
+          "control": 0.005110966041684151,
+          "standard": 0.00537336990237236,
+          "component-dense": 0.005966576747596264
+        },
+        {
+          "order": [
+            "component-dense",
+            "component",
+            "control",
+            "standard"
+          ],
+          "component-dense": 0.006075178273022175,
+          "component": 0.005423270165920258,
+          "control": 0.005106566473841667,
+          "standard": 0.005044564604759216
+        },
+        {
+          "order": [
+            "control",
+            "standard",
+            "component-dense",
+            "component"
+          ],
+          "control": 0.005148066207766533,
+          "standard": 0.005064366385340691,
+          "component-dense": 0.005918275564908981,
+          "component": 0.005388369783759117
+        },
+        {
+          "order": [
+            "standard",
+            "component",
+            "control",
+            "component-dense"
+          ],
+          "standard": 0.005128967575728893,
+          "component": 0.005202067084610462,
+          "control": 0.005267668515443802,
+          "component-dense": 0.0057802749797701836
+        },
+        {
+          "order": [
+            "standard",
+            "control",
+            "component-dense",
+            "component"
+          ],
+          "standard": 0.0051276665180921555,
+          "control": 0.005384770222008228,
+          "component-dense": 0.005769675597548485,
+          "component": 0.0065828850492835045
+        },
+        {
+          "order": [
+            "component",
+            "standard",
+            "control",
+            "component-dense"
+          ],
+          "component": 0.005893075838685036,
+          "standard": 0.005502571351826191,
+          "control": 0.005094065330922604,
+          "component-dense": 0.005758974701166153
+        },
+        {
+          "order": [
+            "standard",
+            "component-dense",
+            "component",
+            "control"
+          ],
+          "standard": 0.005196366459131241,
+          "component-dense": 0.005798574537038803,
+          "component": 0.005218967795372009,
+          "control": 0.00545377004891634
+        }
+      ],
+      "median_aa": 0.9837415023335228,
+      "median_speedup": {
+        "component": 0.9398698657625553,
+        "component-dense": 0.8887270057732333
+      },
+      "metrics": {
+        "component": {
+          "calls": 23,
+          "reference_calls": 23,
+          "factored_calls": 0,
+          "scalar_shortcuts": 0,
+          "maximum_pairs": 1,
+          "maximum_components": 0
+        },
+        "standard": {},
+        "component-dense": {
+          "calls": 23,
+          "reference_calls": 0,
+          "factored_calls": 23,
+          "scalar_shortcuts": 0,
+          "maximum_pairs": 1,
+          "maximum_components": 2
+        }
+      }
+    },
+    {
+      "name": "unknot_braid40",
+      "samples": [
+        {
+          "order": [
+            "standard",
+            "component",
+            "control",
+            "component-dense"
+          ],
+          "standard": 0.002349630929529667,
+          "component": 0.0023726308718323708,
+          "control": 0.0023171287029981613,
+          "component-dense": 0.002336530014872551
+        },
+        {
+          "order": [
+            "component",
+            "control",
+            "component-dense",
+            "standard"
+          ],
+          "component": 0.002539033070206642,
+          "control": 0.002313130535185337,
+          "component-dense": 0.002448330633342266,
+          "standard": 0.0024060308933258057
+        },
+        {
+          "order": [
+            "component",
+            "control",
+            "standard",
+            "component-dense"
+          ],
+          "component": 0.0023767296224832535,
+          "control": 0.0023234300315380096,
+          "standard": 0.0022855298593640327,
+          "component-dense": 0.002392430789768696
+        },
+        {
+          "order": [
+            "component-dense",
+            "standard",
+            "control",
+            "component"
+          ],
+          "component-dense": 0.0026812348514795303,
+          "standard": 0.002691335044801235,
+          "control": 0.002369629219174385,
+          "component": 0.002743735909461975
+        },
+        {
+          "order": [
+            "control",
+            "component-dense",
+            "standard",
+            "component"
+          ],
+          "control": 0.0022624293342232704,
+          "component-dense": 0.0023473314940929413,
+          "standard": 0.0023735305294394493,
+          "component": 0.0023040305823087692
+        },
+        {
+          "order": [
+            "standard",
+            "component",
+            "control",
+            "component-dense"
+          ],
+          "standard": 0.0024084309116005898,
+          "component": 0.0023846300318837166,
+          "control": 0.0025783339515328407,
+          "component-dense": 0.0023811301216483116
+        },
+        {
+          "order": [
+            "component",
+            "control",
+            "standard",
+            "component-dense"
+          ],
+          "component": 0.0023683300241827965,
+          "control": 0.0023015309125185013,
+          "standard": 0.002273930236697197,
+          "component-dense": 0.0023836297914385796
+        }
+      ],
+      "median_aa": 1.0140269405361257,
+      "median_speedup": {
+        "component": 0.980901636895872,
+        "component-dense": 1.0037669931509847
+      },
+      "metrics": {
+        "standard": {},
+        "component": {
+          "calls": 0,
+          "reference_calls": 0,
+          "factored_calls": 0,
+          "scalar_shortcuts": 0,
+          "maximum_pairs": 0,
+          "maximum_components": 0
+        },
+        "component-dense": {
+          "calls": 0,
+          "reference_calls": 0,
+          "factored_calls": 0,
+          "scalar_shortcuts": 0,
+          "maximum_pairs": 0,
+          "maximum_components": 0
+        }
+      }
+    }
+  ],
+  "kernels": [
+    {
+      "kind": "dense",
+      "arcs": 6,
+      "left_hex": "0x569d9a2c1cfe5f41",
+      "right_hex": "0x6c4a5b0a587ef0ca",
+      "monomial_pairs": 1054,
+      "samples": [
+        {
+          "order": [
+            "component",
+            "standard",
+            "component-dense",
+            "control"
+          ],
+          "component": 0.0003435034304857254,
+          "standard": 0.0008711116388440132,
+          "component-dense": 0.0003601051867008209,
+          "control": 0.0008715121075510979
+        },
+        {
+          "order": [
+            "control",
+            "standard",
+            "component",
+            "component-dense"
+          ],
+          "control": 0.0008452115580439568,
+          "standard": 0.0008143093436956406,
+          "component": 0.0003309044986963272,
+          "component-dense": 0.00032440386712551117
+        },
+        {
+          "order": [
+            "component",
+            "component-dense",
+            "control",
+            "standard"
+          ],
+          "component": 0.00028940290212631226,
+          "component-dense": 0.0003481050953269005,
+          "control": 0.0008656112477183342,
+          "standard": 0.0008422108367085457
+        },
+        {
+          "order": [
+            "standard",
+            "control",
+            "component",
+            "component-dense"
+          ],
+          "standard": 0.0008140113204717636,
+          "control": 0.0008376110345125198,
+          "component": 0.0003236047923564911,
+          "component-dense": 0.00032580364495515823
+        },
+        {
+          "order": [
+            "control",
+            "component-dense",
+            "standard",
+            "component"
+          ],
+          "control": 0.0008616102859377861,
+          "component-dense": 0.00032970402389764786,
+          "standard": 0.0008674124255776405,
+          "component": 0.0002959035336971283
+        },
+        {
+          "order": [
+            "component-dense",
+            "control",
+            "component",
+            "standard"
+          ],
+          "component-dense": 0.00034060515463352203,
+          "control": 0.0008484106510877609,
+          "component": 0.0002943035215139389,
+          "standard": 0.0008614109829068184
+        },
+        {
+          "order": [
+            "control",
+            "component",
+            "standard",
+            "component-dense"
+          ],
+          "control": 0.0008430108428001404,
+          "component": 0.00029550399631261826,
+          "standard": 0.0008493103086948395,
+          "component-dense": 0.00032920390367507935
+        }
+      ],
+      "median_aa": 0.9995404897951332,
+      "median_speedup": {
+        "component": 2.8741076915803907,
+        "component-dense": 2.510171506002997
+      }
+    },
+    {
+      "kind": "dense",
+      "arcs": 8,
+      "left_hex": "0xe1b04592f2c8fcf8d8f68edb73f1975506c766e874ca1bdf7786df7f144698d4",
+      "right_hex": "0x7ea1332fd9b4d5c73af9000297429a7df0d818728b1ec29774e659ccb494ca41",
+      "monomial_pairs": 17500,
+      "samples": [
+        {
+          "order": [
+            "control",
+            "standard",
+            "component",
+            "component-dense"
+          ],
+          "control": 0.01699822023510933,
+          "standard": 0.016305911354720592,
+          "component": 0.0015796199440956116,
+          "component-dense": 0.0015660207718610764
+        },
+        {
+          "order": [
+            "standard",
+            "control",
+            "component",
+            "component-dense"
+          ],
+          "standard": 0.015833505429327488,
+          "control": 0.0159846069291234,
+          "component": 0.0015873201191425323,
+          "component-dense": 0.0015251198783516884
+        },
+        {
+          "order": [
+            "standard",
+            "component",
+            "component-dense",
+            "control"
+          ],
+          "standard": 0.016030208207666874,
+          "component": 0.0015456201508641243,
+          "component-dense": 0.0015757204964756966,
+          "control": 0.01585340593010187
+        },
+        {
+          "order": [
+            "component-dense",
+            "standard",
+            "component",
+            "control"
+          ],
+          "component-dense": 0.0015780199319124222,
+          "standard": 0.016040507704019547,
+          "component": 0.0015946216881275177,
+          "control": 0.015822305344045162
+        },
+        {
+          "order": [
+            "control",
+            "standard",
+            "component-dense",
+            "component"
+          ],
+          "control": 0.01599940750747919,
+          "standard": 0.015918506309390068,
+          "component-dense": 0.0016099214553833008,
+          "component": 0.0015547201037406921
+        },
+        {
+          "order": [
+            "component-dense",
+            "component",
+            "standard",
+            "control"
+          ],
+          "component-dense": 0.001552320085465908,
+          "component": 0.0015680203214287758,
+          "standard": 0.01607600785791874,
+          "control": 0.016432711854577065
+        },
+        {
+          "order": [
+            "control",
+            "component-dense",
+            "component",
+            "standard"
+          ],
+          "control": 0.01592160575091839,
+          "component-dense": 0.0015958203002810478,
+          "component": 0.0015351185575127602,
+          "standard": 0.01596570573747158
+        }
+      ],
+      "median_aa": 0.9949434878728288,
+      "median_speedup": {
+        "component": 10.252423159459008,
+        "component-dense": 10.173256134904962
+      }
+    },
+    {
+      "kind": "dense",
+      "arcs": 10,
+      "left_hex": "0xf76b0f37156be6ca101cdaa0e89f38d36c67f6f823703b8842f5e6f28cd82ea544869bf480b9d3cc809ac6a5828dd40466d40fd07ec7ec187b0303bfd67ce246213a33799d0e312ed06da43e6d74ce03374dccf7c3abd2b3ee33f9c712cc474bff941df728df911642917d58807e37273c6f6b26bd3c9732e7202ee90bffd1a0",
+      "right_hex": "0xe98c277e8e3fc7621b119819c7440089c549052a9a7518a56175f5528920cf8a3fdeedaccd39fcb70e535eec830cc4d08f6007156e134bf76f341559db1617a1d286164a9c3e0b5bc1772c4f574e652602c54a0d6a30edc6409e1a0a667d1dce874939c7310a54d81de698a3be7432d2e649a570be33541ff65eea7066782fcc",
+      "monomial_pairs": 262500,
+      "samples": [
+        {
+          "order": [
+            "component-dense",
+            "component",
+            "control",
+            "standard"
+          ],
+          "component-dense": 0.007553896866738796,
+          "component": 0.0076133981347084045,
+          "control": 0.30164130218327045,
+          "standard": 0.289663047529757
+        },
+        {
+          "order": [
+            "component-dense",
+            "standard",
+            "control",
+            "component"
+          ],
+          "component-dense": 0.0076403990387916565,
+          "standard": 0.2855477947741747,
+          "control": 0.2979677552357316,
+          "component": 0.0090895164757967
+        },
+        {
+          "order": [
+            "standard",
+            "component-dense",
+            "control",
+            "component"
+          ],
+          "standard": 0.28971084766089916,
+          "component-dense": 0.00789050292223692,
+          "control": 0.2934695966541767,
+          "component": 0.007643499411642551
+        },
+        {
+          "order": [
+            "component",
+            "standard",
+            "control",
+            "component-dense"
+          ],
+          "component": 0.007627997547388077,
+          "standard": 0.2865324066951871,
+          "control": 0.30615306086838245,
+          "component-dense": 0.007511597126722336
+        },
+        {
+          "order": [
+            "standard",
+            "component",
+            "control",
+            "component-dense"
+          ],
+          "standard": 0.2892634430900216,
+          "component": 0.007550397887825966,
+          "control": 0.28508638869971037,
+          "component-dense": 0.007559898309409618
+        },
+        {
+          "order": [
+            "component-dense",
+            "component",
+            "standard",
+            "control"
+          ],
+          "component-dense": 0.007593098096549511,
+          "component": 0.007575398311018944,
+          "standard": 0.299040368758142,
+          "control": 0.2918345741927624
+        },
+        {
+          "order": [
+            "standard",
+            "control",
+            "component-dense",
+            "component"
+          ],
+          "standard": 0.28401897475123405,
+          "control": 0.34833770617842674,
+          "component-dense": 0.012358760461211205,
+          "component": 0.007517597638070583
+        }
+      ],
+      "median_aa": 0.9602897396118661,
+      "median_speedup": {
+        "component": 37.90290704014612,
+        "component-dense": 38.14533738448972
+      }
+    },
+    {
+      "kind": "near_equal",
+      "arcs": 6,
+      "left_hex": "0x27f025dc5d74ae83",
+      "right_hex": "0x27f025dc5d742e83",
+      "monomial_pairs": 1056,
+      "samples": [
+        {
+          "order": [
+            "component",
+            "standard",
+            "component-dense",
+            "control"
+          ],
+          "component": 0.00013900082558393478,
+          "standard": 0.000972311943769455,
+          "component-dense": 0.00022730324417352676,
+          "control": 0.0008732117712497711
+        },
+        {
+          "order": [
+            "component",
+            "control",
+            "component-dense",
+            "standard"
+          ],
+          "component": 0.0001443019136786461,
+          "control": 0.000868811272084713,
+          "component-dense": 0.00021650176495313644,
+          "standard": 0.0008772118017077446
+        },
+        {
+          "order": [
+            "component",
+            "component-dense",
+            "control",
+            "standard"
+          ],
+          "component": 0.0001343023031949997,
+          "component-dense": 0.0002098027616739273,
+          "control": 0.0009125126525759697,
+          "standard": 0.0008738115429878235
+        },
+        {
+          "order": [
+            "standard",
+            "component",
+            "component-dense",
+            "control"
+          ],
+          "standard": 0.0008940128609538078,
+          "component": 0.0001356014981865883,
+          "component-dense": 0.00021100323647260666,
+          "control": 0.0008759107440710068
+        },
+        {
+          "order": [
+            "component-dense",
+            "control",
+            "component",
+            "standard"
+          ],
+          "component-dense": 0.00022890325635671616,
+          "control": 0.0008769109845161438,
+          "component": 0.0001345016062259674,
+          "standard": 0.0008726110681891441
+        },
+        {
+          "order": [
+            "component",
+            "control",
+            "standard",
+            "component-dense"
+          ],
+          "component": 0.0001356014981865883,
+          "control": 0.0008748117834329605,
+          "standard": 0.0008809119462966919,
+          "component-dense": 0.000223502516746521
+        },
+        {
+          "order": [
+            "component",
+            "control",
+            "standard",
+            "component-dense"
+          ],
+          "component": 0.00012950226664543152,
+          "control": 0.0008753109723329544,
+          "standard": 0.0008647115901112556,
+          "component-dense": 0.00022130180150270462
+        }
+      ],
+      "median_aa": 1.00697311465078,
+      "median_speedup": {
+        "component": 6.506303482518065,
+        "component-dense": 4.0517535822288755
+      }
+    },
+    {
+      "kind": "near_equal",
+      "arcs": 8,
+      "left_hex": "0x28d82afc835285983ec70e4cb5c22229a78335baea5d6ff98299c59a8465ae0a",
+      "right_hex": "0x28d82afc8352859c3ec70e4cb5c22229a78335baea5d6ff98299c59a8465ae0a",
+      "monomial_pairs": 15006,
+      "samples": [
+        {
+          "order": [
+            "component",
+            "control",
+            "standard",
+            "component-dense"
+          ],
+          "component": 0.0003757057711482048,
+          "control": 0.013328371569514275,
+          "standard": 0.013386374339461327,
+          "component-dense": 0.0007590102031826973
+        },
+        {
+          "order": [
+            "control",
+            "component",
+            "component-dense",
+            "standard"
+          ],
+          "control": 0.020469263195991516,
+          "component": 0.0007498105987906456,
+          "component-dense": 0.0014502191916108131,
+          "standard": 0.025790033861994743
+        },
+        {
+          "order": [
+            "component-dense",
+            "component",
+            "standard",
+            "control"
+          ],
+          "component-dense": 0.0014539184048771858,
+          "component": 0.0007356088608503342,
+          "standard": 0.025819034315645695,
+          "control": 0.025614031590521336
+        },
+        {
+          "order": [
+            "standard",
+            "component-dense",
+            "control",
+            "component"
+          ],
+          "standard": 0.02473141998052597,
+          "component-dense": 0.0013937177136540413,
+          "control": 0.024618718773126602,
+          "component": 0.0007311096414923668
+        },
+        {
+          "order": [
+            "control",
+            "standard",
+            "component",
+            "component-dense"
+          ],
+          "control": 0.024861921556293964,
+          "standard": 0.025342827662825584,
+          "component": 0.0007607098668813705,
+          "component-dense": 0.0014224173501133919
+        },
+        {
+          "order": [
+            "component",
+            "control",
+            "standard",
+            "component-dense"
+          ],
+          "component": 0.0007204096764326096,
+          "control": 0.025122725404798985,
+          "standard": 0.025760933756828308,
+          "component-dense": 0.0014602188020944595
+        },
+        {
+          "order": [
+            "component",
+            "control",
+            "standard",
+            "component-dense"
+          ],
+          "component": 0.0007278099656105042,
+          "control": 0.025903535075485706,
+          "standard": 0.025752033106982708,
+          "component-dense": 0.0014044176787137985
+        }
+      ],
+      "median_aa": 1.0080035321421335,
+      "median_speedup": {
+        "component": 35.09886257460239,
+        "component-dense": 17.758241610420125
+      }
+    },
+    {
+      "kind": "near_equal",
+      "arcs": 10,
+      "left_hex": "0x6dfee172529147bdbf7784946b6d08e0e906c84217ca179181d445a840f0609def4e413e7e008db637e6ae14d90c46826257ed90a0f887449e0441938ef40574f025e486f16cf242b1afcad0e46890c720dd2f1a30085ba5ae835dad6d82776d95477bd19b8dde4355289c754e7488fabcf515a22c2a3fb2404cc494ad32b71f",
+      "right_hex": "0x6dfee172529147bdbf7784946b6d0ae0e906c84217ca179181d445a840f0609def4e413e7e008db637e6ae14d90c46826257ed90a0f887449e0441938ef40574f025e486f16cf242b1afcad0e46890c720dd2f1a30085ba5ae835dad6d82776d95477bd19b8dde4355289c754e7488fabcf515a22c2a3fb2404cc494ad32b71f",
+      "monomial_pairs": 240590,
+      "samples": [
+        {
+          "order": [
+            "standard",
+            "control",
+            "component-dense",
+            "component"
+          ],
+          "standard": 0.4753700504079461,
+          "control": 0.4216216551139951,
+          "component-dense": 0.006809688173234463,
+          "component": 0.0025999341160058975
+        },
+        {
+          "order": [
+            "component-dense",
+            "control",
+            "standard",
+            "component"
+          ],
+          "component-dense": 0.0067889876663684845,
+          "control": 0.472060807980597,
+          "standard": 0.40087068639695644,
+          "component": 0.0026271333917975426
+        },
+        {
+          "order": [
+            "control",
+            "standard",
+            "component-dense",
+            "component"
+          ],
+          "control": 0.4761087615042925,
+          "standard": 0.5138438493013382,
+          "component-dense": 0.007433096878230572,
+          "component": 0.00279343593865633
+        },
+        {
+          "order": [
+            "component",
+            "component-dense",
+            "standard",
+            "control"
+          ],
+          "component": 0.002730035223066807,
+          "component-dense": 0.007370196282863617,
+          "standard": 0.470944594591856,
+          "control": 0.322794777341187
+        },
+        {
+          "order": [
+            "control",
+            "component-dense",
+            "component",
+            "standard"
+          ],
+          "control": 0.26290290243923664,
+          "component-dense": 0.003774348646402359,
+          "component": 0.001416918821632862,
+          "standard": 0.2585349455475807
+        },
+        {
+          "order": [
+            "control",
+            "component",
+            "standard",
+            "component-dense"
+          ],
+          "control": 0.2982803601771593,
+          "component": 0.0014950195327401161,
+          "standard": 0.29029485769569874,
+          "component-dense": 0.035439059138298035
+        },
+        {
+          "order": [
+            "standard",
+            "component",
+            "component-dense",
+            "control"
+          ],
+          "standard": 0.26095847599208355,
+          "component": 0.0014057178050279617,
+          "component-dense": 0.003633047454059124,
+          "control": 0.25153395533561707
+        }
+      ],
+      "median_aa": 1.0374681845395048,
+      "median_speedup": {
+        "component": 182.8392679189213,
+        "component-dense": 68.49789719188013
+      }
+    },
+    {
+      "kind": "sparse",
+      "arcs": 6,
+      "left_hex": "0x80108000000",
+      "right_hex": "0x810800000000000",
+      "monomial_pairs": 9,
+      "samples": [
+        {
+          "order": [
+            "component",
+            "component-dense",
+            "control",
+            "standard"
+          ],
+          "component": 4.220101982355118e-05,
+          "component-dense": 0.00016490183770656586,
+          "control": 5.1901675760746e-05,
+          "standard": 3.2600946724414825e-05
+        },
+        {
+          "order": [
+            "component",
+            "control",
+            "standard",
+            "component-dense"
+          ],
+          "component": 2.930033951997757e-05,
+          "control": 2.650078386068344e-05,
+          "standard": 2.6300549507141113e-05,
+          "component-dense": 0.00012470223009586334
+        },
+        {
+          "order": [
+            "standard",
+            "control",
+            "component",
+            "component-dense"
+          ],
+          "standard": 2.720113843679428e-05,
+          "control": 2.5900080800056458e-05,
+          "component": 2.7300789952278137e-05,
+          "component-dense": 0.00012010149657726288
+        },
+        {
+          "order": [
+            "component-dense",
+            "standard",
+            "component",
+            "control"
+          ],
+          "component-dense": 0.00011820066720247269,
+          "standard": 2.6901252567768097e-05,
+          "component": 2.7300789952278137e-05,
+          "control": 2.540089190006256e-05
+        },
+        {
+          "order": [
+            "standard",
+            "component",
+            "control",
+            "component-dense"
+          ],
+          "standard": 3.550015389919281e-05,
+          "component": 2.740137279033661e-05,
+          "control": 2.5200657546520233e-05,
+          "component-dense": 0.00012040231376886368
+        },
+        {
+          "order": [
+            "component-dense",
+            "standard",
+            "component",
+            "control"
+          ],
+          "component-dense": 0.00016250181943178177,
+          "standard": 2.6901252567768097e-05,
+          "component": 2.6899389922618866e-05,
+          "control": 2.540089190006256e-05
+        },
+        {
+          "order": [
+            "component-dense",
+            "component",
+            "standard",
+            "control"
+          ],
+          "component-dense": 0.00011790264397859573,
+          "component": 2.7400441467761993e-05,
+          "standard": 2.58004292845726e-05,
+          "control": 2.510007470846176e-05
+        }
+      ],
+      "median_aa": 1.0502337288745056,
+      "median_speedup": {
+        "component": 0.9853653544381524,
+        "component-dense": 0.21882825027449307
+      }
+    },
+    {
+      "kind": "sparse",
+      "arcs": 8,
+      "left_hex": "0x400000000000000000000800000000001000000000000000000000000",
+      "right_hex": "0x8000000000000001000000000000000000000800000000000000000000",
+      "monomial_pairs": 9,
+      "samples": [
+        {
+          "order": [
+            "component-dense",
+            "control",
+            "standard",
+            "component"
+          ],
+          "component-dense": 0.0005365069955587387,
+          "control": 3.8100406527519226e-05,
+          "standard": 3.8401223719120026e-05,
+          "component": 8.600112050771713e-05
+        },
+        {
+          "order": [
+            "standard",
+            "component-dense",
+            "component",
+            "control"
+          ],
+          "standard": 3.1501054763793945e-05,
+          "component-dense": 0.00037970487028360367,
+          "component": 5.570054054260254e-05,
+          "control": 3.27015295624733e-05
+        },
+        {
+          "order": [
+            "component",
+            "standard",
+            "control",
+            "component-dense"
+          ],
+          "component": 3.2300129532814026e-05,
+          "standard": 3.050081431865692e-05,
+          "control": 2.9399991035461426e-05,
+          "component-dense": 0.00034080352634191513
+        },
+        {
+          "order": [
+            "standard",
+            "control",
+            "component-dense",
+            "component"
+          ],
+          "standard": 3.3200718462467194e-05,
+          "control": 3.0499882996082306e-05,
+          "component-dense": 0.0003483043983578682,
+          "component": 3.490038216114044e-05
+        },
+        {
+          "order": [
+            "component-dense",
+            "component",
+            "control",
+            "standard"
+          ],
+          "component-dense": 0.00033710431307554245,
+          "component": 3.380142152309418e-05,
+          "control": 3.1800009310245514e-05,
+          "standard": 2.969987690448761e-05
+        },
+        {
+          "order": [
+            "control",
+            "component-dense",
+            "component",
+            "standard"
+          ],
+          "control": 2.9700808227062225e-05,
+          "component-dense": 0.0003480035811662674,
+          "component": 3.5000964999198914e-05,
+          "standard": 3.1200237572193146e-05
+        },
+        {
+          "order": [
+            "component-dense",
+            "control",
+            "component",
+            "standard"
+          ],
+          "component-dense": 0.0003740042448043823,
+          "control": 3.270059823989868e-05,
+          "component": 3.1900592148303986e-05,
+          "standard": 2.9900111258029938e-05
+        }
+      ],
+      "median_aa": 1.0078953801026644,
+      "median_speedup": {
+        "component": 0.8914107817572242,
+        "component-dense": 0.08810292764730096
+      }
+    },
+    {
+      "kind": "sparse",
+      "arcs": 10,
+      "left_hex": "0x400000000080000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "right_hex": "0x40000000000000000000000000000000000000000000000000400000000000000000000000100000000000000000000000000000000000000000000",
+      "monomial_pairs": 9,
+      "samples": [
+        {
+          "order": [
+            "standard",
+            "component-dense",
+            "control",
+            "component"
+          ],
+          "standard": 4.0500424802303314e-05,
+          "component-dense": 0.0016376227140426636,
+          "control": 4.099961370229721e-05,
+          "component": 3.920122981071472e-05
+        },
+        {
+          "order": [
+            "component",
+            "control",
+            "component-dense",
+            "standard"
+          ],
+          "component": 3.7400983273983e-05,
+          "control": 3.4700147807598114e-05,
+          "component-dense": 0.0016726208850741386,
+          "standard": 4.1901133954524994e-05
+        },
+        {
+          "order": [
+            "standard",
+            "control",
+            "component-dense",
+            "component"
+          ],
+          "standard": 3.730040043592453e-05,
+          "control": 3.50000336766243e-05,
+          "component-dense": 0.001635921187698841,
+          "component": 4.200078547000885e-05
+        },
+        {
+          "order": [
+            "control",
+            "component",
+            "component-dense",
+            "standard"
+          ],
+          "control": 3.780052065849304e-05,
+          "component": 3.6801211535930634e-05,
+          "component-dense": 0.0016420213505625725,
+          "standard": 4.1299499571323395e-05
+        },
+        {
+          "order": [
+            "control",
+            "component-dense",
+            "component",
+            "standard"
+          ],
+          "control": 3.690086305141449e-05,
+          "component-dense": 0.0016681216657161713,
+          "component": 4.3101608753204346e-05,
+          "standard": 3.699958324432373e-05
+        },
+        {
+          "order": [
+            "component-dense",
+            "component",
+            "control",
+            "standard"
+          ],
+          "component-dense": 0.0016806209459900856,
+          "component": 4.389975219964981e-05,
+          "control": 3.7200748920440674e-05,
+          "standard": 3.5000964999198914e-05
+        },
+        {
+          "order": [
+            "component-dense",
+            "component",
+            "standard",
+            "control"
+          ],
+          "component-dense": 0.0016694208607077599,
+          "component": 4.220008850097656e-05,
+          "standard": 3.690086305141449e-05,
+          "control": 3.510061651468277e-05
+        }
+      ],
+      "median_aa": 1.0512881742683542,
+      "median_speedup": {
+        "component": 0.8880881635549248,
+        "component-dense": 0.022800854170971965
+      }
+    }
+  ]
+}
+

@@ -269,7 +269,8 @@ def _decide_prime_looking(diagram: Diagram, evidence: dict, *, use_modular, use_
 def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: bool = True,
               use_seifert: bool = True, backend: str = "standard",
               use_braid: bool = True, braid_backend: str = "free-product",
-              use_braid_reduction: bool = True,
+              use_rational: bool = True,
+              use_braid_reduction: bool = True, use_braid_profile: bool = False,
               euler_max_states: int | None = 4096,
               use_factorization: bool = True, use_modular: bool = True, use_jones: bool = True,
               use_alexander: bool = True, use_exact_alexander: bool | None = None, use_r3: bool = True,
@@ -290,6 +291,10 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
     validate_jones_options(jones_backend, potts_colors, jones_max_states, jones_max_transitions)
     if window_strategy not in ("support", "minimal"):
         raise ValueError("window_strategy must be support or minimal")
+    if type(use_braid_profile) is not bool:
+        raise ValueError("use_braid_profile must be boolean")
+    if type(use_rational) is not bool:
+        raise ValueError("use_rational must be boolean")
     if type(use_ranktwo) is not bool:
         raise ValueError("use_ranktwo must be boolean")
     if ranktwo_seconds is not None:
@@ -304,10 +309,12 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
         from math import isfinite
         if type(window_seconds) not in (int, float) or not isfinite(window_seconds) or window_seconds < 0:
             raise ValueError("window_seconds must be finite and nonnegative, or None")
-    if reduction not in ("standard", "residue", "adaptive", "disk-adaptive"):
-        raise ValueError("reduction must be standard, residue, adaptive, or disk-adaptive")
+    if reduction not in ("standard", "residue", "adaptive", "disk-adaptive", "graded", "graded-adaptive"):
+        raise ValueError("reduction must be standard, residue, adaptive, disk-adaptive, graded, or graded-adaptive")
     if reduction != "standard" and (backend != "standard" or pivot != "minfill" or algebra != "bits" or race != 1):
         raise ValueError("residue/adaptive reduction requires standard backend, minfill, bits, and race=1")
+    if reduction in ("graded", "graded-adaptive") and window_radius is not None:
+        raise ValueError("graded reduction cannot be combined with window_radius")
     if type(twist_max_basis) is not int or twist_max_basis < 0:
         raise ValueError("twist_max_basis must be nonnegative")
     if composition not in ("standard", "component", "component-dense"):
@@ -335,6 +342,14 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
 
     try:
         check()
+        if use_rational and original.rational_source is not None:
+            from .rational import montesinos_certificate
+            e, tangles = original.rational_source
+            witness = montesinos_certificate(e, tangles, check=check)
+            check()
+            evidence["montesinos"] = witness
+            return Result(witness["status"], witness["method"], original.crossings,
+                          diagram.crossings, monotonic() - start, evidence)
         if use_braid and original.braid_source is not None:
             strands, word = original.braid_source
             witness = braid_certificate(strands, word, backend=braid_backend,
@@ -344,6 +359,15 @@ def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: b
             if witness["status"] != "INCONCLUSIVE":
                 return Result(witness["status"], witness["method"], original.crossings,
                               diagram.crossings, monotonic() - start, evidence)
+        if use_braid_profile and original.braid_source is not None:
+            from .braid_profile import structural_word_certificate
+            strands, word = original.braid_source
+            witness = structural_word_certificate(strands, word, check=check)
+            evidence["source_braid_structural"] = witness
+            if witness["status"] != "INCONCLUSIVE":
+                return Result(witness["status"], "source-" + witness["criterion"],
+                              original.crossings, diagram.crossings,
+                              monotonic() - start, evidence)
         if use_seifert:
             certificate = seifert_certificate(diagram)
             check()

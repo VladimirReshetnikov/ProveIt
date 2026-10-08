@@ -449,9 +449,14 @@ def khovanov_rank(pd: Iterable[Iterable[int]], *, order: list[int] | None = None
     transfer when adjacent degrees defeat that shortcut. Its rotation-system
     certificate and local work gate must both succeed before installation;
     otherwise sparse cancellation resumes on the saved partial complex.
+
+    ``reduction="graded"`` computes full transfer ordered by quantum shifts;
+    ``graded-adaptive`` first spends the sparse Schur-update allowance. Both
+    preserve nonzero maps between survivors without a common-disk certificate.
+    These optional policies have no competitive-time or state-volume guarantee.
     """
-    if reduction not in ("standard", "residue", "adaptive", "disk-adaptive"):
-        raise ValueError("reduction must be standard, residue, adaptive, or disk-adaptive")
+    if reduction not in ("standard", "residue", "adaptive", "disk-adaptive", "graded", "graded-adaptive"):
+        raise ValueError("reduction must be standard, residue, adaptive, disk-adaptive, graded, or graded-adaptive")
     if reduction != "standard" and (pivot != "minfill" or algebra != "bits" or not self_inverse or race != 1):
         raise ValueError("residue reduction requires minfill, bits, self_inverse=True, and race=1")
     if composition not in ("standard", "component", "component-dense"):
