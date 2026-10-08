@@ -20,8 +20,8 @@ Scope
   checkpoints; the current catalogue count is stated here and in the ledger.
 
 Verification at this checkpoint
-  All 794 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 5,087 public Gowers theorems and found only propext,
+  All 798 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 5,108 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 114 exact
   companion proofs and 6 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -229,6 +229,21 @@ Cubic decomposition of arbitrary two-dimensional product relations
   when Q>=1, and propagates this to the quartic graph budget and the
   inverse-fourth-power slice exponent. Both modules pass the full audit.
   The exact source budget comparison and general induction remain open.
+
+Cubic source-scale numerical budgets
+  Proofs16CubicPieceParameterBudget proves that the retained mass eta can
+  pay for the concrete nonunit piece parameter s(theta,gamma,1)^8 within
+  the total s(theta,gamma,2) budget. The cover comparison at this parameter
+  remains to be proved.
+  Proofs16CubicOuterScaleBudget rewrites log(32/zeta) exactly and bounds
+  the width denominator by 10*s(theta,gamma,1), giving a positive algebraic
+  width control for the already constructed pieces.
+  Proofs16BaseFamilyPowerBound bounds the fixed family count by
+  (2/(gamma*theta))^10002. Proofs16CubicSpectrumBudget propagates this
+  sharper count to the actual spectrum: its count is at most
+  s(theta,gamma,1), independent of the inner cover loss.
+  All four modules pass the full audit. These discharge specific numerical
+  substeps; the general structural theorem and six catalogue gaps remain.
 
 Conditional quantitative density bridge and dependency port
   Proofs01QuantitativeDensityBridge proves the exact Theorem 1.3 from
@@ -3038,6 +3053,20 @@ Regime splitting: loss-independent covers suffice for MultiplyLinear
   do not depend on the requested loss and decay as a power of the box
   width. It proves no catalogue statement, so the count stays 114/6. See
   Research/GowersSzemeredi/SECTION16_RESEARCH_NOTES.md.
+
+Higher-dimensional stackability gap (research notes, Part H)
+  The general-k cubic lift (Section16AllBoxLineCoversWith.
+  cubic_multiplyLinearWith) needs a slice provider on stacked k-dimensional
+  slices whose count (3*r*q) and exponent (cubicBaseExponent(r*q)) are
+  polynomial in the number r of stacked slices. Only dimension one supplies
+  it, through Corollary 7.11. The proved dimension-two theorem does not
+  supply it for dimension three. Covering the stack piece by piece makes the
+  exponent at most 4^-(number of pieces). Covering it at once at gamma/sqrt(r)
+  makes the count exponential in a power of r. Both are exponential in a
+  power of 1/sigma. The notes propose Bohr-structured multilinearity as a
+  stackable invariant: ranks add under unions. They isolate its open step,
+  preservation under the lift, which is a multilinear Bogolyubov-type
+  inverse theorem over Z_N. Research only: the count stays 114/6.
 
 Reproducible checks (from repository root)
   python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.Audit

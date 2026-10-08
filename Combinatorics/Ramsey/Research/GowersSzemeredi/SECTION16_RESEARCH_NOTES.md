@@ -239,6 +239,148 @@ exceed the target `≈ log W` by a factor `exp((log W)^ε)`. Any all-dimension
 induction built on the proved lift must therefore replace `MultiplyLinear` by
 a predicate with general control functions (route 2 below).
 
+## H. The dimension-two route and the stackability gap in dimension three
+
+Written 2026-10-07 against main at `14e18f4db`. The peer's unconditional
+dimension-two route ends in `section16_cubic_relation_decomposition`
+(`Proofs16CubicRelationDecomposition.lean`). It covers `Γ` restricted to a set
+`J` of mass `(1−θ)N²` by at most `γ⁻²/m₂(θ,γ)` pieces, where
+`m₂ = section16CubicPieceMass` is a polynomial in θγ. Each piece satisfies
+`MultiplyLinearWith` with explicit "cubic" controls. This part asks what
+the same route needs from dimension k in order to reach dimension k+1 ≥ 3.
+
+### H.1 What is dimension-specific
+
+The lift is already proved for every k; see
+`Section16AllBoxLineCoversWith.cubic_multiplyLinearWith`. It consumes two
+inputs:
+
+- the line covers, from Lemmas 16.6 and 16.9 in their `…With` forms;
+- a **slice provider** (`Section16SliceProvider`).
+
+For every sample `t₁,…,t_r` of final coordinates, the provider covers the
+stacked slices, that is the union of the r graphs `x ↦ φ(x,t_i)` on
+`Z_N^k`. The proved lift takes a provider with these controls:
+
+- graph count `3·r·q`, and
+- exponent `cubicBaseExponent(r·q, σ) = 2^(−27)·σ³/(r·q)⁴`.
+
+Both are **polynomial in r**. This matters because the lift samples
+`r = section16UniformSampleCount ≈ 6·Q₉/σ` anchors, a polynomial in 1/σ.
+
+In dimension two the slices are one-dimensional, and two facts supply the
+provider:
+
+1. **Loss-free slices.** After an outer θ-removal, every slice is covered
+   *exactly* by at most q Freiman 8-homomorphisms on α-dense sets
+   (`Section16FinalFreimanFamilies`). Here `α = 2^(−2000)·(γθ)^10000` and
+   `q ≤ γ⁻²/α`, so all parameters are polynomial in γθ.
+2. **Simultaneous linearization.** Corollary 7.11 linearizes any number n
+   of Freiman homomorphisms on one common partition into APs with a common
+   step. Its exponent is `2^(−14)·α²/n`, and the inner loss enters only
+   through a threshold. Stacking r slices just replaces n = q by n = r·q.
+
+These are the only places where the route uses `Point N 1`
+(`section16_freiman_family_cubic_cover` and
+`section16_cubic_slice_provider_of_freiman_families`).
+
+### H.2 Sequential unions are exponential in the number of pieces
+
+*Proved (elementary; not formalized).* Suppose `Γ₁,…,Γ_m` each satisfy
+`MultiplyLinearWith Q E`. Then their union satisfies `MultiplyLinearWith`
+with count `m·Q(ρ/m)` and exponent `E(ρ/m)^m`.
+
+*Proof.* Fix a box P. Cover P for `Γ₁` at loss ρ/m. Then cover every cell
+for `Γ₂` at loss ρ/m, and so on through `Γ_m`.
+
+- Each stage loses at most a ρ/m fraction of every cell, hence of P.
+- Each stage raises the cell widths to the power `E(ρ/m)`.
+- The graphs from the m stages are pooled on every final cell. ∎
+
+The interface `MultiplyLinearWith` says nothing about how the partitions of
+different pieces relate, so this is the only bound it certifies.
+Heuristically it is also the truth for unrelated partitions. Two partitions
+into APs with large coprime steps have a common refinement only into much
+shorter APs.
+
+### H.3 Why the dimension-two theorem cannot serve as the provider for dimension three
+
+Take `B ⊆ Z_N³` and stack r two-dimensional slices, with `r ≳ 1/σ` as in
+H.1. There are two ways to cover the stack using what is proved in
+dimension two. Both give certified controls that are exponential in a
+power of 1/σ.
+
+- **Piecewise.** Decompose each slice with
+  `section16_cubic_relation_decomposition`. That gives `m = r·γ⁻²/m₂`
+  pieces in total. Every piece exponent is at most 1/4, because
+  `section16CubicLiftExponent` carries a factor 1/4 and its other factors
+  are at most 1. By H.2 the stacked exponent is at most `4^(−m)`, that is
+  `exp(−Ω(1/σ))`. The provider needs an exponent polynomial in σ.
+- **All at once.** The union of r graphs with the product property at γ has
+  it at `γ/√r` (pigeonholing the branch vector along each line; see G).
+  The dimension-two count, `section16CubicLiftGraphBound`, is about
+  `9·(6/σ)⁴·(2R/(γσ))^(4·A₂·R)·q²`. Here `R = γ⁻²·s(θ/8,γ,1)` comes from
+  `section16Lemma9QBound` and `section16Lemma9R`. Replacing γ by `γ/√r`
+  multiplies R by about `r^(1+2^127)`. The count is then at least
+  `exp(c·r^(1+2^127))` for some c > 0 depending on θ and γ, which is
+  exponential in a power of 1/σ.
+
+So the dimension-two controls are polynomial in the inner loss only for
+fixed (θ,γ). In θ and γ they are exponential in a polynomial, through R, the
+Bohr radius `ζ = 2^(−s(θ,γ,1))`, and the Lemma 16.1 exponent
+`K^(−4q)`. Dimension one is polynomial in **every** parameter, and that is
+what made it stackable. Neither computation is an impossibility proof. They
+show only that the dimension-two theorem, as stated and proved, does not
+supply the dimension-three slice provider.
+
+### H.4 A stackable invariant: Bohr-structured multilinearity (proposal)
+
+The induction needs a class of k-dimensional structures that (a) is closed
+under finite unions at a cost polynomial in the number of members, and (b)
+implies `MultiplyLinearWith` with a count independent of ρ and an exponent
+polynomial in ρ. Dimension one shows the right shape. A Freiman
+homomorphism on a dense set is, by Bogolyubov and Freiman, a homomorphism
+of a Bohr set. Corollary 7.11's exponent `α²/n` is the reciprocal of the rank
+`n·α⁻²` of a common Bohr set.
+
+**Definition (proposal).** `Γ` is *Bohr-multilinear on J with data
+(D, ζ, q)* if `Γ` restricted to J is covered by q maps. Each map
+must agree, on every translate of a product Bohr set `∏_j B(Λ_j, ζ)` with
+`|Λ_j| ≤ D`, with a function multilinear in the Bohr coordinates.
+
+- **(i) Stackable.** *Proved (trivial).* `B(Λ,ζ) ∩ B(Λ′,ζ) = B(Λ ∪ Λ′,ζ)`.
+  So a union of r structures with data `(D,ζ,q)` has data `(rD, ζ, rq)`:
+  ranks add, and nothing is raised to a power.
+- **(ii) Readout.** *Heuristic, by the proof of Corollary 7.11.* Boxes have
+  one common difference for all axes (`Box.commonDiff`). Simultaneous
+  Dirichlet approximation of the kD frequencies along that difference
+  partitions most of a box of width W into proper sub-boxes of width about
+  `ζ·W^(1/(kD))`. Every map is multilinear on each of them. The inner loss ρ
+  enters only through a threshold `W ≥ (1/(ρζ))^(O(kD))`, and the
+  regime splitting of E handles the boxes below it.
+- **(iii) Anchors become an outer loss.** *Heuristic.* The random-domain obstruction of
+  G concerned losses that must decay with W. Under this invariant the
+  anchors only have to fix each map on each Bohr translate, which is
+  loss-free structure. A fixed fraction of missed fibres can be charged to
+  the outer θ by taking `r ≈ log(1/θ)/α` anchors, independent of ρ.
+
+With (i)–(iii), an induction that preserves Bohr-multilinearity would supply
+the slice provider in every dimension. The exact Theorem 16.2 would then
+reduce to a budget comparison: `D` and `log(1/ζ)` must be bounded by
+polynomials in `1/(θγ)` of degree below that of `s(θ,γ,k)`.
+
+**The open step.** The step that is genuinely open is preservation: lifting
+from dimension k to k+1 must again produce Bohr-multilinear maps. That is an
+inverse theorem for Freiman multi-homomorphisms in Bohr form.
+
+- Dimension one: Bogolyubov–Freiman gives it with polynomial rank.
+- Higher dimensions: the structure theorem of Gowers and Milićević (D) has
+  this form over finite fields, with iterated-exponential bounds.
+  - Those bounds would be enough for the qualitative route 2.
+  - They are far outside the polynomial budget of the exact statement.
+  - I have not found a `Z_N` version with polynomial rank. It would be a
+    bilinear (more generally multilinear) polynomial Bogolyubov theorem.
+
 ## F. Routes
 
 1. **Quantitative repair (research).**
@@ -264,3 +406,13 @@ a predicate with general control functions (route 2 below).
    (about 18k lines of `Proofs16*`).
 3. **Theorem 1.3 independently.** Port the openai/math headline:
    4,136-module closure, of which 128 are already vendored.
+4. **Bohr-structured induction (H.4).** Carry Bohr-multilinearity rather
+   than `Theorem162At` through the induction.
+   - Steps (i) and (ii) are formalizable now. Step (ii) generalizes
+     Corollary 7.11 from one AP to a box with common difference.
+   - Preservation under the lift is the research problem.
+   - With any bounds, this would give route 2's qualitative all-dimension
+     theorem.
+   - With polynomial rank, it would give the exact Theorem 16.2 in every
+     dimension.
+   - The dimension-two route alone cannot reach dimension three (H.3).
