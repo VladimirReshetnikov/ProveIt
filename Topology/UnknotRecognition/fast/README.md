@@ -11,7 +11,7 @@ the pipeline repeats the structural check before matrix filters. Cancelling
 pairs can expose homogeneity. Evidence under `seifert_after_reduction` describes
 the reduced diagram: replay `reidemeister_trace` with `fastunknot.simplify.replay`
 before passing that certificate to `verify_seifert_certificate`. An unchanged
-diagram is not checked twice. The integrated suite now has 391 passing tests.
+diagram is not checked twice. The integrated suite now has 411 passing tests.
 
 The incoming radical-transfer report contributes exact binary prediction of
 the objects surviving cancellation. `--reduction adaptive` (Python:
@@ -968,3 +968,31 @@ The profile option gained 2.30–3.33× on selected fresh prebuilt homogeneous b
 diagrams. See [TWIST_CONTINUATION.md](TWIST_CONTINUATION.md) for schemas,
 budgets and examples, and [the theory section](../synthesis/twist_continuation.tex)
 for proofs, output-size limits, independent audits and timing scope.
+
+
+## Checked rational and Montesinos presentations
+
+`Diagram.from_rational(e, tangles)` now builds and validates a Montesinos
+numerator closure, retaining checked source provenance. The recognizer uses
+an exact arithmetic decision before the general diagram pipeline; disable it
+with `use_rational=False` or `--no-rational`. JSON uses
+`{"montesinos":{"e":0,"tangles":[[2,3],[-2,-2,-1,-2]]}}`.
+The decision preserves each rational summand's denominator and handles
+nontrivial determinant-one knots. Arbitrary PDs have no inferred source.
+
+For binary coefficients too large to expand, `montesinos_certificate(e,tangles)`
+provides a separate arithmetic-only API. The ordinary constructor and CLI
+still build the actual PD, with a default 100,000-crossing expansion ceiling.
+
+`recognize_with_subtangles` in `fastunknot.tangle_obstruction` optionally
+searches a small literal-pattern catalogue in an arbitrary validated PD.
+Each rejection verifies a four-port disk occurrence and its non-embeddability
+in an unknot. No match falls back to the ordinary recognizer. This wrapper
+was slower in all five measured cases and remains explicit.
+
+See [RATIONAL.md](RATIONAL.md) for APIs, provenance and certificates,
+[rational_research/README.md](rational_research/README.md) for reproducible
+checks, and [the theory](../synthesis/rational.tex) for arithmetic bounds,
+full-complex barriers and performance scope. These are polynomial procedures
+on supplied presentations or fixed local patterns; general quasi-polynomial
+recognition remains unproved.

@@ -49,7 +49,7 @@ reproduced by `../fast/benchmark_euler_setup.py`.
 `research_updates.tex` covers the later report 08–12 intake and reviewed
 integrations: complete short-strand braid recognition, interlacement factors,
 sparse Alexander elimination, and the corrected general-frontier matching bound.
-The current full production suite passes 391 tests. Local report 10–12 production
+The current full production suite passes 411 tests. Local report 10–12 production
 cross-checks are retained in `data/`. Report 12's exact component contraction
 is integrated as an opt-in API/CLI option. Report 11's twist backend is now
 integrated too; report 12's structured block cancellation remains under review. The braid benchmark includes PD construction and keeps the current
@@ -193,10 +193,23 @@ synthetic gains from four ordinary scans with zero full-transfer calls.
 `twist_continuation.tex` reviews report 18 and documents the exact one-run
 recurrence, positive turnback slope, compact output, streamed storage and
 source-braid structural specialization. It distinguishes exact homology gains
-from the already-decidable dominant-run recognition family. All 254 archive
-and 391 current production tests pass; separate audits checked 832 recurrence
+from the already-decidable dominant-run recognition family. At that integration checkpoint, all 254 archive
+and 391 production tests passed; separate audits checked 832 recurrence
 comparisons, 220 independent cubes and 500 slope identities. Data are in
 `data/twist-*-audit.json`; paired measurements are in
 `../fast/results/twist_tail_20261008.json`, `twist_streaming_20261008.json`,
 and `braid_profile_20261008.json`. The streaming regressions and differing
 input/output contracts are stated explicitly; defaults remain unchanged.
+
+
+`rational.tex` reviews report 22 and documents the complete arithmetic
+Montesinos classifier, checked-source integration and optional literal local
+obstructions. It proves the bit bounds and separates the four-ended Boolean
+continuation-rank and explicit-full-complex barriers from general running-time
+claims. The full production suite has 411 passing tests; the unchanged archive
+has 152. Independent results in `data/rational-*` cover 1,200 sources,
+1,398,101 identity entries, 21 checkpoint diagrams and adversarial local maps.
+Raw paired measurements are in `../fast/results/rational_20261008.json`.
+Object-capped baselines are censored; local regressions and construction versus
+recognition scope are retained explicitly. Reproduction commands are in
+`../fast/rational_research/README.md`.

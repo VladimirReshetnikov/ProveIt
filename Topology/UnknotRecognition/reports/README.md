@@ -27,7 +27,7 @@ modification times.
 | `19/` | `unknot_rank_two_kernels_20261007.zip` | standard-library rank-two braid kernel (`19/src/`) | optimal one-pass disjoint rank-two substitutions in `O(n log n)`, linear replay verifier | quasi-polynomial bound for flat rank-two inflations of `O(log² n)`-crossing cores only | 33 archive tests and 16 real-upstream cases pass; bounded preprocessing integrated |
 | `20/` | `ProveIt_Unknot_Extremal_Windows_2026-10-07.zip` | standard-library `unknot_windows` with an upstream adapter (`20/integration/`) | exact low-degree and mirror Khovanov windows with a one-degree halo, three-outcome probes, nice-order certificates | `n^O(log n)` for windows of depth `O(log n)` at girth `O(log² n)` | 14 archive tests and 393-window audit pass; optional minimal windows integrated |
 | `21/` | `unknot_disk_frontier_research.zip` | standard-library disk-frontier kernel (`21/src/`) with a guarded `FastScan` adapter | common-disk certificates from the rotation system, ear-insertion orders, minimal complex with adjacent-degree maps | `poly(n,1+R)·2^O(B)` for certified explicit scans | 52 archive tests, pinned-source audit and 14,658-state geometry audit pass; optional adaptive full transfer integrated |
-| `22/` | `unknot_arithmetic_continuations.zip` | `fastunknot` continuation (`22/fast/`, integration patch under `22/integration/`) | supplied-Montesinos `UNKNOT`/`KNOTTED` classifier, checked local obstructions from non-embeddable Montesinos disk tangles, linear-bit slope arithmetic | — | not run |
+| `22/` | `unknot_arithmetic_continuations.zip` | `fastunknot` continuation (`22/fast/`, integration patch under `22/integration/`) | supplied-Montesinos `UNKNOT`/`KNOTTED` classifier, checked local obstructions from non-embeddable Montesinos disk tangles, linear-bit slope arithmetic | — | 152 archive tests and independent arithmetic/local audits pass; checked-source classifier and opt-in local wrapper integrated |
 | `23/` | `ProveIt_UnknotRecognition_SymbolicCompression_2026-10-08.zip` | implementation and patch for `fastunknot` (`23/implementation/`, `23/patches/`) | exact graded transfer, exact finite twist tails from the cap `L+2`, succinct structural certificates on binary run input | quasi-polynomial event count under a conditional dependency-graph hypothesis | not run |
 | `24/` | `unknot_compression_kernels_2026-10-08.zip` | `fastunknot` with scanner patch (`24/fast/`, `24/integration/`) and `dihedral_covers` | three-record classification of dihedral surface covers, bidirectional survivor transfer with exact pruning | — | not run |
 
@@ -38,7 +38,7 @@ Archives `01/`–`06/` each contain a README, a LaTeX report with PDF under
 this project, and all but `10/` extend or patch `../fast/`. Report `07/` and the factorization, sparse elimination, and resource handling
 from `09/`, plus the braid specialization from `08/` and opt-in component contraction
 from `12/`, and twist compression from `11/` are integrated
-(391 current production tests pass). Local reruns of
+(411 current production tests pass). Local reruns of
 `08/`, `09/`, `10/`, and `11/` passed 59, 69, 15, and 62 test methods respectively.
 They were originally placed as delivered under the intake rule; this later
 algorithm-improvement task performs review and integration separately. The
@@ -160,3 +160,16 @@ RLE frontend and optional source-word profile are integrated, with additional
 shared-deadline and mutable-budget checks. Independent recurrence, cube and
 turnback audits were rerun against production; article and measurement scope
 are in `../synthesis/twist_continuation.tex`. The delivered report is unchanged.
+
+
+Report `22/` has now been reviewed under the continuing algorithm task.
+All 152 delivered tests pass unchanged; production adds its checked Montesinos
+source classifier and separate local-obstruction wrapper, with final-verification
+deadline and option validation regressions. All 411 maintained tests pass.
+The 1,200-source, local-map, 21-checkpoint and 1,398,101-entry identity audits
+were rerun against production. Scope, proofs and paired measurements are
+maintained in `../synthesis/rational.tex`; the delivered archive is unchanged.
+The patch and all 81 patched-file hashes match the delivered manifest, and
+82 source Git blobs match the pinned commit. The package-wide checksum script
+cannot run because this delivered tree lacks its `SHA256SUMS`; this narrower
+validation scope is retained in `../synthesis/data/rational-source-audit.json`.
