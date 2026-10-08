@@ -49,7 +49,7 @@ reproduced by `../fast/benchmark_euler_setup.py`.
 `research_updates.tex` covers the later report 08–12 intake and reviewed
 integrations: complete short-strand braid recognition, interlacement factors,
 sparse Alexander elimination, and the corrected general-frontier matching bound.
-The current full production suite passes 431 tests. Local report 10–12 production
+That production checkpoint passed 431 tests. Local report 10–12 production
 cross-checks are retained in `data/`. Report 12's exact component contraction
 is integrated as an opt-in API/CLI option. Report 11's twist backend is now
 integrated too; report 12's structured block cancellation remains under review. The braid benchmark includes PD construction and keeps the current
@@ -252,3 +252,21 @@ and the sparse/packed scalar-map representation audit. Evidence is in
 268 scanner tests and separate cover suite pass in a temporary copy. Its 20
 integration hashes match; its advertised package-wide hash manifest is missing.
 The separate cover kernel is not yet integrated into the maintained theory.
+
+
+`cyclic_garside.tex` reviews and integrates report 25's exact classical Garside
+normal forms, shared cyclic interval optimizer, independent local replay and
+bounded source-braid portfolio. It gives explicit word-operation and storage
+bounds, a restricted inflated-core quasi-polynomial theorem, and two limitations
+of equality-based shortening. Production puts modular Alexander
+first, reuses that inconclusive check if the probe declines, and runs Jones after
+the probe so that compression can avoid work on the larger diagram. The maintained suite
+passes 517 tests, including 60 small-closure homology comparisons and resource,
+restart and certificate regressions. Logs and the 45-hash/six-blob source audit
+are in `data/cyclic-garside-*`. Reproduce the separate mechanism and complete
+recognition experiments with `../fast/garside_research/benchmark_kernel.py` and
+`benchmark_pipeline.py`, each with `--output FILE`. Their paired raw results in
+`../fast/results/cyclic_garside_*_20261008.json` generate the article tables.
+The `before_filter_order` and `after_all_filters` files retain the diagnostic
+regressions that motivated placing the probe between modular Alexander and Jones.
+They are explicitly not measurements of the final implementation.
