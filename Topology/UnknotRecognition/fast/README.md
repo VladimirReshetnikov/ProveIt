@@ -11,10 +11,85 @@ the pipeline repeats the structural check before matrix filters. Cancelling
 pairs can expose homogeneity. Evidence under `seifert_after_reduction` describes
 the reduced diagram: replay `reidemeister_trace` with `fastunknot.simplify.replay`
 before passing that certificate to `verify_seifert_certificate`. An unchanged
-diagram is not checked twice. The integrated suite now has 637 passing tests
+diagram is not checked twice. The integrated suite now has 653 passing tests
 with the optional Regina dependency installed.
 
-`--group-compressed` enables exact SLP-based replay of group certificates.
+`--group-adaptive` starts the optional group search with explicit words, then
+switches once to SLPs before a substitution would exceed its letter allowance.
+The switch preserves the current presentation, completed moves and remaining
+work/time budget. It automatically uses compressed replay after a handoff;
+without a handoff, replay stays explicit. `--group-switch-letters 4096` enables
+an earlier optional threshold; Python callers use `use_group=True,
+group_adaptive=True, group_switch_letters=4096`. Always-compressed search and
+adaptive search are mutually exclusive.
+
+The default switch threshold equals the hard letter cap. It preserves all
+fifteen current corpus traces and their explicit representation. In 375 whole
+queries its timing is near the explicit controls; earlier switching on Gordian
+costs 1.641 seconds versus the explicit control's 1.251 seconds. With hard caps
+of 64/60 letters on two small cases and 4096/8192 on Gordian, the adaptive stage
+instead recovers verified certificates in all twenty measured probes where
+explicit search exhausts the cap. Those exhaustion times are not speedups.
+See [`results/adaptive_group_20261008.json`](results/adaptive_group_20261008.json)
+and [`adaptive_group.tex`](../synthesis/adaptive_group.tex) for complete scopes,
+the bounded explicit-prelude argument and the unresolved asymptotic limits.
+
+```sh
+python -B -m fastunknot recognize normal_research/gordian.json \
+  --group-adaptive --group-relators --group-seconds 3 \
+  --group-max-work 10000000 --seconds 5
+python -B benchmark_adaptive_group.py --output results/adaptive_group_local.json
+```
+
+`--group-compressed-search` enables optional compressed group discovery and
+replay. Exact generator counts, unique-occurrence masks and weighted Whitehead
+graphs are computed from shared word grammars. Elimination and Whitehead moves
+stay compressed; optional relator-overlap matching expands only when the total
+length fits its 200,000-letter cap. Above that cap the overlap probe is skipped,
+and failure to finish remains inconclusive. Python callers use
+`use_group=True, group_compressed_search=True`; the standalone producer is
+`fastunknot.compressed_search.compressed_certificate`.
+
+The compressed word checker now indexes assertions by the symbols they mention.
+It first tries a bounded 64-step DAG walk, then switches to the polynomial
+split-and-compaction algorithm if unresolved. The cap preserves the polynomial
+equality bound even when the represented words are exponentially long.
+Standalone `WordArena(equality_probe_steps=0)` disables the direct probe.
+
+Cancellation now uses a separate bounded prefix walk and reuses its proved
+prefix in the polynomial fallback. Bisection compares only the still-unproved
+interval. `WordArena(prefix_probe_steps=0)` disables this direct walk while
+retaining the improved bisection rule; the default cap is 64 steps.
+
+In the latest 375-query comparison, Gordian's compressed-search median drops
+from 2.461 to 1.922 seconds with the prefix changes, including independent replay.
+Fourteen smaller cases total 185.27 versus 245.18 ms in summed medians.
+Explicit search remains faster at 1.259 seconds and 51.50 ms respectively.
+The direct walk resolves 895 of Gordian's 971 prefix queries; equality calls
+fall from 3,035 to 271. Some synthetic kernels still favor suffix-only bisection,
+so this is not a uniform speedup. All measured queries complete successfully. Synthetic
+summary and elimination operations handle lengths above 2^1024 with 3,077
+allocated nodes, but this is not a hard-knot benchmark or a search-step bound.
+Explicit search remains the default. To reproduce the optional experiment:
+
+```sh
+python -B -m fastunknot recognize normal_research/gordian.json \
+  --group-relators --group-compressed-search --group-seconds 10 \
+  --group-max-work 10000000 --seconds 12
+python -B benchmark_compressed_search.py --output results/compressed_search_local.json
+```
+
+See [`results/compressed_prefix_20261008.json`](results/compressed_prefix_20261008.json)
+for the current prefix comparison,
+[`results/indexed_equality_20261008.json`](results/indexed_equality_20261008.json)
+for the previous equality improvement, and
+[`results/compressed_search_20261008.json`](results/compressed_search_20261008.json)
+for the initial capacity experiment. The article gives the equality scheduling
+and fallback invariants, DAG multiplicity proof and remaining global limits.
+`python -B benchmark_compressed_prefix.py --output results/prefix_local.json`
+reproduces the latest comparison using the recorded pre-change kernel from Git history.
+
+`--group-compressed` enables only exact SLP-based replay of group certificates.
 Its deterministic word kernel supports equality, slicing, inversion and free
 reduction without expanding the represented strings. Recognition still searches
 with explicit relators. The existing certificate formats remain unchanged;

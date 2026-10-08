@@ -119,7 +119,10 @@ def _mincut(graph, source, target, budget):
 
 
 def _whitehead_move(words, budget):
-    graph = _whitehead_graph(words, budget)
+    return _whitehead_cut(_whitehead_graph(words, budget), budget)
+
+
+def _whitehead_cut(graph, budget):
     best = (0, None, None)
     for a in sorted(graph):
         subset = _mincut(graph, a, -a, budget)
@@ -138,17 +141,44 @@ def _image(x, a, subset):
 
 
 def group_certificate(diagram, *, check=lambda: None, max_letters=200000, max_work=2000000,
-                      relator_moves=False):
+                      relator_moves=False, adaptive=False, switch_letters=None,
+                      max_nodes=100000, stats=None):
     """Find a positive certificate, or None on a stalled search.
 
     Local size/work exhaustion raises GroupLimit. Caller cancellation is
     propagated. No relator is dropped except a verified defining relation.
+    Adaptive mode switches once, before a predicted substitution allocation
+    exceeds switch_letters (default max_letters). This does not reset budgets.
     """
     budget = _Budget(check, max_letters, max_work)
     if type(relator_moves) is not bool:
         raise ValueError('relator_moves must be boolean')
+    if type(adaptive) is not bool:
+        raise ValueError('adaptive must be boolean')
+    if switch_letters is not None and (type(switch_letters) is not int or switch_letters < 0):
+        raise ValueError('switch_letters must be a nonnegative integer or None')
+    if switch_letters is not None and not adaptive:
+        raise ValueError('switch_letters requires adaptive search')
+    if type(max_nodes) is not int or max_nodes < 0:
+        raise ValueError('max_nodes must be a nonnegative integer')
+    if stats is not None and type(stats) is not dict:
+        raise ValueError('stats must be a dictionary or None')
+    threshold = max_letters if switch_letters is None else min(switch_letters, max_letters)
+    if stats is not None:
+        stats.update(representation='explicit', switched=False)
     alive, words = _presentation(diagram, budget)
     moves = []
+
+    def handoff(kind, projected):
+        from .compressed_search import _continue_compressed
+        if stats is not None:
+            stats.update(representation='compressed-slp', switched=True,
+                switch=dict(kind=kind, before_move=len(moves), generators=len(alive),
+                            current_letters=sum(map(len, words)), projected_letters=projected,
+                            threshold=threshold, explicit_work=max_work-budget.left,
+                            remaining_work=budget.left))
+        return _continue_compressed(words, alive, moves, budget, max_nodes, relator_moves, stats)
+
     while len(alive) > 1:
         counts, candidates = Counter(), []
         for word in words:
@@ -162,13 +192,18 @@ def group_certificate(diagram, *, check=lambda: None, max_letters=200000, max_wo
         if candidates:
             _, _, index, g = min(candidates)
             word = words[index]
+            expanded = sum(map(len, words))-len(word)+(counts[g]-1)*(len(word)-2)
+            if adaptive and expanded > threshold:
+                if not handoff('eliminate', expanded):
+                    return None
+                words = []  # Continuation proved all relators empty and rank one.
+                break
+            budget.size(expanded)
             position = next(i for i, x in enumerate(word) if abs(x) == g)
             rest = word[position+1:] + word[:position]
             replacement = [-x for x in reversed(rest)] if word[position] > 0 else rest
             inverse = [-x for x in reversed(replacement)]
             words[index] = []
-            expanded = sum(map(len, words))+(counts[g]-1)*(len(replacement)-1)
-            budget.size(expanded)
             words = [_reduce((x for h in w for x in
                      (replacement if h == g else inverse if h == -g else (h,))), budget)
                      for w in words]
@@ -195,12 +230,19 @@ def group_certificate(diagram, *, check=lambda: None, max_letters=200000, max_wo
                 return None
             before = sum(map(len, words))
             # Conservative allocation bound before even constructing images.
+            if adaptive and 3*before > threshold:
+                if not handoff('whitehead', 3*before):
+                    return None
+                words = []
+                break
             budget.size(3*before)
             words = [_reduce((y for x in w for y in _image(x, a, subset)), budget) for w in words]
             if sum(map(len, words))-before != change:
                 raise ArithmeticError('Whitehead cut and literal substitution disagree')
             moves.append(dict(kind='whitehead', multiplier=a, subset=sorted(subset)))
     budget.tick()
+    if stats is not None:
+        stats.update(work=max_work-budget.left, moves=len(moves))
     if any(words):
         return None
     return dict(version=2 if any(m['kind'] == 'relator' for m in moves) else 1,
@@ -222,7 +264,7 @@ def verify_group_certificate(diagram, certificate, *, check=lambda: None,
     With compressed=True, reconstruct the same initial presentation but
     replay it as exact straight-line-program words. max_letters then bounds
     only the initial presentation; max_nodes bounds compressed storage and
-    equality assertions. Search remains explicit. No speedup is promised.
+    equality assertions. The search backend is selected separately.
     """
     if type(compressed) is not bool:
         raise ValueError('compressed must be boolean')
@@ -409,12 +451,24 @@ def verify_group_certificate(diagram, certificate, *, check=lambda: None,
 
 def group_decide(diagram, *, seconds=0.05, max_letters=200000, max_work=2000000,
                  relator_moves=False, compressed_verification=False,
+                 compressed_search=False, adaptive_search=False, switch_letters=None,
                  max_nodes=100000, check=lambda: None):
     """Bounded search AND independent verification sharing one wall allowance."""
     from math import isfinite
     start = monotonic()
     if type(compressed_verification) is not bool:
         raise ValueError('compressed_verification must be boolean')
+    if type(compressed_search) is not bool:
+        raise ValueError('compressed_search must be boolean')
+    if type(adaptive_search) is not bool:
+        raise ValueError('adaptive_search must be boolean')
+    if compressed_search and adaptive_search:
+        raise ValueError('compressed_search and adaptive_search are mutually exclusive')
+    if switch_letters is not None and (type(switch_letters) is not int or switch_letters < 0):
+        raise ValueError('switch_letters must be a nonnegative integer or None')
+    if switch_letters is not None and not adaptive_search:
+        raise ValueError('switch_letters requires adaptive search')
+    compressed_verification = compressed_verification or compressed_search
     if type(max_nodes) is not int or max_nodes < 0:
         raise ValueError('max_nodes must be a nonnegative integer')
     if seconds is not None and (type(seconds) not in (int, float)
@@ -428,8 +482,18 @@ def group_decide(diagram, *, seconds=0.05, max_letters=200000, max_work=2000000,
             raise GroupLimit('group local time allowance exhausted')
 
     try:
-        certificate = group_certificate(diagram, check=tick, max_letters=max_letters, max_work=max_work,
-                                        relator_moves=relator_moves)
+        search_stats = {}
+        search_backend = ('adaptive' if adaptive_search else
+                          'compressed-slp' if compressed_search else 'explicit-letters')
+        if compressed_search:
+            from .compressed_search import compressed_certificate
+            certificate = compressed_certificate(diagram, check=tick, max_letters=max_letters,
+                max_work=max_work, max_nodes=max_nodes, relator_moves=relator_moves, stats=search_stats)
+        else:
+            certificate = group_certificate(diagram, check=tick, max_letters=max_letters, max_work=max_work,
+                relator_moves=relator_moves, adaptive=adaptive_search, switch_letters=switch_letters,
+                max_nodes=max_nodes, stats=search_stats if adaptive_search else None)
+        compressed_verification = compressed_verification or search_stats.get('switched', False)
         if certificate is not None:
             valid = verify_group_certificate(diagram, certificate, check=tick,
                                               max_letters=max_letters, max_work=max_work,
@@ -438,6 +502,8 @@ def group_decide(diagram, *, seconds=0.05, max_letters=200000, max_work=2000000,
             if not valid:
                 raise ArithmeticError('produced group certificate failed independent replay')
             return dict(status='UNKNOT', certificate=certificate,
+                        search_backend=search_backend,
+                        search_stats=search_stats,
                         verification_backend='compressed-slp' if compressed_verification else 'explicit-letters',
                         seconds=monotonic()-start)
         reason = 'group simplification stalled'
@@ -445,4 +511,6 @@ def group_decide(diagram, *, seconds=0.05, max_letters=200000, max_work=2000000,
         check()  # A simultaneous global cancellation must still propagate.
         reason = str(exc)
     check()
-    return dict(status='INCONCLUSIVE', reason=reason, seconds=monotonic()-start)
+    return dict(status='INCONCLUSIVE', reason=reason, seconds=monotonic()-start,
+                search_backend=search_backend,
+                search_stats=search_stats)

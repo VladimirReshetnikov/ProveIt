@@ -2,6 +2,79 @@
 
 The synthesized report on the six archives and on the new recognizer.
 
+`adaptive_group.tex` adds one-way continuation from explicit to compressed
+group search before a predicted substitution exceeds the letter allowance.
+It preserves generator names, relator slots, completed moves and remaining
+resources. No-switch traces retain explicit replay; switched traces undergo
+independent compressed replay from the original PD. The article proves a
+polynomial bound on the explicit prelude when the threshold is polynomially
+bounded, while retaining the compressed search's completeness and complexity
+gaps.
+
+The 375-query audit preserves all fifteen default traces and records timings
+near the explicit controls. Switching earlier at 4096 letters is slower on
+Gordian, so the default threshold stays at the hard cap. In a separate
+80-probe matched-cap audit, adaptive and always-compressed search verify all
+forty of their probes while both explicit arms exhaust all forty. Caps affect
+overlap availability and can substantially change the move sequence; these are
+capacity results, not ratios against completed explicit recognition times.
+Raw measurements are in `../fast/results/adaptive_group_20261008.json`.
+All 653 tests pass with optional Regina installed in 126.251 seconds; see
+`data/adaptive-group-integrated-tests.txt`. The rebuilt article has 171 pages,
+with build output in `data/adaptive-group-article-build.txt`.
+
+The latest prefix revision in `compressed_words.tex` adds bounded direct
+cancellation walks and bisection beyond the prefix already proved equal.
+In 375 measured queries, Gordian improves from 2.461 to 1.922 seconds including
+replay; fourteen smaller cases total 185.27 versus 245.18 ms in summed medians.
+All queries complete. Explicit search still wins at 1.259 seconds and 51.50 ms,
+so it remains the default. The article proves the interval invariant and
+records kernel regressions as well as gains. Raw samples are in
+`../fast/results/compressed_prefix_20261008.json`; the benchmark separately
+measures the direct walk and suffix-only bisection. No general sub-exponential
+recognition theorem follows.
+All 648 tests pass with optional Regina installed in 124.837 seconds; see
+`data/compressed-prefix-integrated-tests.txt`. The rebuilt article has 168
+pages, with build output in `data/compressed-prefix-article-build.txt`.
+
+The preceding revision of `compressed_words.tex` explains indexed equality
+assertions and a 64-step adaptive DAG probe with exact polynomial fallback.
+The 375-query comparison loads the prior kernel from its recorded Git commit:
+Gordian improves from 6.764 to 2.403 seconds, including replay, and fourteen
+small cases total 248.40 versus 265.32 ms in summed medians. Explicit search is
+still faster at 1.241 seconds and 51.46 ms respectively, so it remains the
+default. Small periodic kernels show probe overhead; no uniform speedup or
+general sub-exponential recognition bound is claimed. Raw samples are in
+`../fast/results/indexed_equality_20261008.json`.
+All 645 tests pass with optional Regina installed in 123.169 seconds; see
+`data/indexed-equality-integrated-tests.txt`. The rebuilt article has 166 pages,
+with build output in `data/indexed-equality-article-build.txt`.
+
+The article also reviews Tomohiro I's deterministic recompression LCE index
+as a further route for cancellation queries, recording its word-RAM assumptions
+and the unresolved cost of changing the indexed text during our search.
+That stronger query algorithm is not claimed as implemented.
+
+The initial extension in `compressed_words.tex` adds optional compressed group
+discovery. A shared DAG pass computes exact generator counts and weighted
+Whitehead edges; presence/repetition masks identify unique generators.
+Elimination and Whitehead transformations stay compressed, while relator
+overlap discovery uses a bounded explicit bridge. All fifteen real knot
+certificates pass both replayers, and random grammar tests check the summaries
+against literal calculations.
+
+The 225-query A/A/B audit records a regression: Gordian takes 7.076 seconds
+with compressed search versus 1.247 seconds explicit, while fourteen small
+cases total 391.33 versus 73.52 ms in summed medians. Defaults remain explicit.
+Synthetic summaries and elimination handle lengths above 2^1024 with 3,077
+nodes; that is a capacity result on supplied presentations, not a hard-knot
+recognition bound. See `data/compressed-search-benchmark.txt` and
+`../fast/results/compressed_search_20261008.json`. The detailed article states
+the remaining search-length and grammar-growth obligations explicitly.
+All 642 tests pass with optional Regina installed in 166.446 seconds
+(`data/compressed-search-integrated-tests.txt`). The rebuilt article has 163
+pages; its build log is `data/compressed-search-article-build.txt`.
+
 `compressed_words.tex` describes the deterministic SLP word kernel and its
 optional integration into independent group-certificate replay. Equality uses
 split assertions and periodicity compaction; longest-prefix queries provide
@@ -13,7 +86,7 @@ intermediate word length, beyond the explicit checker's letter allowance.
 Whole-query measurements show overhead on the current knot corpus: fourteen
 small cases total 137.53 ms in summed medians versus 51.02 ms explicit, and
 Gordian costs 1.417 versus 1.236 seconds. The extension remains opt-in; search
-is still explicit and no general sub-exponential recognition theorem follows.
+defaults to explicit and no general sub-exponential recognition theorem follows.
 All 637 tests pass with Regina installed in 121.284 seconds
 (`data/compressed-words-integrated-tests.txt`). Timing scopes, synthetic traces
 and kernel counts are preserved in the raw benchmark artifact. The rebuilt

@@ -45,6 +45,73 @@ def inflated_certificate(iterations):
 
 
 class CompressedWordsTests(unittest.TestCase):
+    def test_adaptive_probe_and_exact_fallback(self):
+        arena = WordArena()
+        a = arena.from_word([1, 2, 3, 4])
+        b = arena.concat(arena.letter(1), arena.from_word([2, 3, 4]))
+        self.assertTrue(arena.equal(a, b))
+        self.assertEqual(arena.stats['probe_resolved'], 1)
+        self.assertEqual(arena.stats['splits'], 0)
+        self.assertFalse(arena.equal(a, arena.from_word([1, 5, 3, 4])))
+        self.assertEqual(arena.stats['probe_resolved'], 2)
+        n = 2**100
+        a = arena.concat(arena.power(arena.from_word([1, 2]), n), arena.letter(1))
+        b = arena.concat(arena.letter(1), arena.power(arena.from_word([2, 1]), n))
+        for expected, node in ((True, b), (False, arena.concat(
+                arena.concat(arena.slice(b, 0, n), arena.letter(3)),
+                arena.slice(b, n+1, arena.lengths[b])))):
+            steps, fallbacks = arena.stats['probe_steps'], arena.stats['probe_fallbacks']
+            with patch.object(arena, 'expand', side_effect=AssertionError):
+                self.assertEqual(arena.equal(a, node), expected)
+            self.assertEqual(arena.stats['probe_steps']-steps, 64)
+            self.assertEqual(arena.stats['probe_fallbacks']-fallbacks, 1)
+        with self.assertRaises(ValueError):
+            WordArena(equality_probe_steps=-1)
+        with self.assertRaises(ValueError):
+            WordArena(equality_probe_steps=True)
+
+    def test_indexed_only_random_parse_pairs(self):
+        # Force the indexed engine even on short words: equal endpoint labels
+        # and shifted parse boundaries create unrelated live assertion groups.
+        rng = random.Random(2689)
+        for _ in range(200):
+            arena = WordArena(equality_probe_steps=0)
+            word = [rng.choice([1, 2, 3]) for _ in range(rng.randrange(6, 100))]
+            def parse(letters):
+                nodes = [arena.letter(x) for x in letters]
+                while len(nodes) > 1:
+                    i = rng.randrange(len(nodes)-1)
+                    nodes[i:i+2] = [arena.concat(nodes[i], nodes[i+1])]
+                return nodes[0]
+            a, b = parse(word), parse(word)
+            self.assertTrue(arena.equal(a, b))
+            bad = word.copy()
+            bad[rng.randrange(1, len(word)-1)] = 4
+            self.assertFalse(arena.equal(a, parse(bad)))
+            self.assertEqual(arena.stats['probe_steps'], 0)
+
+    def test_interrupted_equality_does_not_cache_a_partial_answer(self):
+        calls, stop = 0, None
+        def check():
+            nonlocal calls
+            calls += 1
+            if stop is not None and calls >= stop:
+                raise ScanLimit('interrupted indexed equality')
+        arena = WordArena(check=check, equality_probe_steps=2)
+        n = 2**80
+        a = arena.concat(arena.power(arena.from_word([1, 2]), n), arena.letter(1))
+        b = arena.concat(arena.letter(1), arena.power(arena.from_word([2, 1]), n))
+        arena.left = 40
+        with self.assertRaises(CompressedLimit):
+            arena.equal(a, b)
+        arena.left = 10000000
+        stop = calls+40
+        with self.assertRaises(ScanLimit):
+            arena.equal(a, b)
+        stop = None
+        self.assertTrue(arena.equal(a, b))
+        self.assertGreater(arena.stats['splits'], 0)
+
     def test_random_grammars_against_explicit_words(self):
         rng = random.Random(2685)
         for _ in range(400):
@@ -82,7 +149,7 @@ class CompressedWordsTests(unittest.TestCase):
         # Noncanonical periodic parses exercise compaction on both equal and
         # unequal words, beyond structural-identity and endpoint shortcuts.
         rng = random.Random(2683)
-        arena = WordArena()
+        arena = WordArena(equality_probe_steps=0)
         atom, nodes = arena.from_word([1, 2]), []
         nodes.append(atom)
         for _ in range(70):

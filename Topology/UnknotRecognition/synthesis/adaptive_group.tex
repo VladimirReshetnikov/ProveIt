@@ -1,0 +1,230 @@
+\section{Continuing group search across word representations}
+\label{sec:adaptive-group}
+
+\subsection{Why the representation should depend on progress}
+
+The preceding measurements show two distinct regimes. Explicit relators
+are faster on the current finite knot corpus, while compressed words can
+represent intermediate strings beyond an explicit-letter allowance.
+The new optional adaptive stage starts with the explicit producer and
+changes representation once when the next substitution would exceed a
+chosen threshold. It continues the existing search state, preserving the
+certificate prefix and remaining resources. This implements a form of
+introspective search without requiring compressed arithmetic on every
+small initial relation.
+
+Let $C$ be the hard explicit-letter allowance and $T\le C$ the switching
+threshold. By default $T=C$. A caller may request an earlier nonnegative
+threshold; values above $C$ are clamped to $C$. Initial presentation
+construction must still satisfy the hard allowance, including the
+$4n$-letter bound before crossing relations are simplified. Adaptivity
+does not bypass that check.
+
+\subsection{Predicting an allocation before changing state}
+
+Suppose the selected defining relator $w$ has length $\ell$ and contains
+the eliminated generator $g$ exactly once. Let $L$ be the total relator
+length and $c_g$ the total number of occurrences of $g^{\pm1}$. The
+replacement for $g$ has length $\ell-1$. Removing $w$ and substituting
+into the remaining words would allocate
+\[
+ E=L-\ell+(c_g-1)(\ell-2)
+\]
+letters before free reduction. This is an exact raw substitution length,
+including the case $\ell=1$, where all remaining occurrences of $g$ are
+deleted. If $E>T$, the producer switches before deleting $w$, constructing
+the replacement, changing the generator set or recording the pending move.
+Otherwise the existing explicit substitution and reduction proceed.
+
+A Whitehead image has length at most three, so $3L$ is a conservative
+allocation bound. A selected shortening Whitehead move triggers conversion
+if $3L>T$, again before applying or recording it. Its final reduced length
+may be much smaller: the trigger controls the raw allocation allowance,
+not a theorem that the move necessarily expands the presentation. Relator
+overlap moves strictly decrease total length and retain their existing
+explicit implementation during this phase.
+
+The producer converts each current relator to an SLP root while preserving
+its slot, including empty slots. Generator names and the surviving set are
+unchanged. It passes the same move list to the compressed continuation;
+there is no second reconstruction of the initial presentation and no
+replay of the producer's completed moves. The continuation may recompute
+the pending search choice, which is charged normally. This duplication
+can occur at only one handoff. Once compressed, the producer never returns
+to explicit search, avoiding repeated conversion near the threshold.
+
+\subsection{Soundness and the resource boundary}
+
+Conversion changes only representation, so the group presented by the
+current relators is unchanged. Every subsequent move uses the same Tietze,
+Whitehead or relator-overlap justification as before. The resulting
+certificate format is unchanged and remains bound to the original input
+PD. Acceptance still uses the cyclic-knot-group criterion of
+Section~\ref{sec:group-certificates}.
+
+If no conversion occurred, independent replay remains explicit unless the
+caller separately requested compressed verification. If conversion did
+occur, compressed replay is selected automatically: literal replay might
+exhaust the very allowance that prompted the producer to switch. In both
+cases the checker independently reconstructs the full original Wirtinger
+presentation and verifies every recorded move from the beginning. It does
+not accept the handoff state as evidence. The two implementations still
+share the underlying compressed-word kernel when compressed replay is
+selected, as described in the previous section.
+
+The explicit prefix consumes part of the original work allowance. The
+SLP arena receives exactly the remainder, and conversion itself is charged
+to it. The continuation does not obtain a fresh work budget or a new wall
+deadline. Its node allowance is the usual compressed node/assertion cap.
+Independent replay retains its separately specified work allowance, while
+search and verification share the local wall deadline. A depleted work
+allowance, node-limited conversion, local timeout or stalled continuation remains
+inconclusive; global caller cancellation propagates.
+
+Evidence reports whether conversion occurred and records its trigger,
+the number of preceding moves, surviving rank, current and projected
+lengths, threshold, work already spent and work remaining. These are
+diagnostics, not additional certificate axioms. A regression test leaves
+exactly one work unit at handoff and checks that conversion exhausts it
+rather than silently refilling the budget.
+
+\subsection{A bound on the explicit prelude}
+
+Although no quasi-polynomial bound for the full recognizer is established,
+the explicit portion has a useful conditional bound. Let $r$ be the initial
+generator rank, let $L_0$ be its initial reduced total relator length, and
+put $M=\max\{L_0,T\}$. There are at most $r-1$ generator eliminations.
+Between eliminations, each accepted Whitehead or overlap move decreases
+the nonnegative integer total length by at least one. An elimination
+performed explicitly has raw output length at most $T$, and free reduction
+cannot increase that length. Every interval between eliminations therefore
+starts at length at most $M$ and contains at most $M$ shortening moves.
+Including eliminations and the possible final switch decision gives
+\[
+ O\bigl(r(M+1)\bigr)
+\]
+explicit move iterations. Counts, suffix-automaton overlap searches,
+minimum cuts and literal substitutions are polynomial in the current
+explicit input size and rank. Conversion is polynomial in the current
+length too, and occurs once. Thus a polynomially bounded threshold gives
+a polynomially bounded explicit prelude on inputs admitted by its initial
+resource checks.
+
+This does not establish a polynomial or quasi-polynomial recognizer. The
+compressed continuation still needs a completeness argument and bounds on
+both grammar growth and the number of moves for the reachable knot
+presentations. Moreover, finding
+positive cyclic-group certificates quickly would not itself supply a fast
+conclusive route on nontrivial knots. The surrounding recognizer retains
+its previous complete exponential fallback. The policy preserves progress
+and limits representation overhead; it does not manufacture a stronger
+worst-case guarantee from its current backends.
+
+\subsection{Interface and validation}
+
+The CLI flag \code{--group-adaptive} enables this group stage with $T=C$.
+\code{--group-switch-letters T} also enables it and selects an earlier
+threshold. Python recognition accepts:
+\begin{verbatim}
+recognize(diagram, use_group=True, group_adaptive=True,
+          group_switch_letters=T)
+\end{verbatim}
+For standalone group calls, enable \code{adaptive\_search}.
+Always-compressed search and
+adaptive search are mutually exclusive. Replay-only compression may be
+combined with either policy. The default recognition pipeline is unchanged.
+
+Tests show that the default adaptive policy preserves all fifteen corpus
+certificates exactly and never constructs a search arena on those paths.
+Earlier-switch traces pass both independent replayers. Tests force both
+elimination and Whitehead handoffs, verify the preserved trace prefix,
+prohibit reconstruction at conversion, check resource and cancellation
+behavior, reject invalid option combinations and exercise CLI routing.
+Known nontrivial knots remain inconclusive at this positive-certificate
+stage. These finite checks support the invariants above without implying
+completeness of the group heuristic.
+
+The full integrated suite passes all 653 tests with the optional Regina
+dependency installed in 126.251 seconds. Its output is preserved in
+\path{data/adaptive-group-integrated-tests.txt}.
+
+\subsection{Whole-query and matched-cap measurements}
+
+The 8 October 2026 audit runs five interleaved whole-query arms on the same
+fifteen real diagrams: explicit search, an identical explicit control,
+adaptive search with $T=C=200{,}000$, adaptive search with $T=4{,}096$ and
+$C=200{,}000$, and always-compressed search. Every arm includes fresh PD
+validation, all recognition stages and independent group-certificate replay.
+There are five measured rounds after a warm-up, giving 375 whole queries.
+Search and replay each have twenty million work units; the local group
+allowance is fifteen seconds, the global allowance eighteen seconds,
+and the node allowance 100,000. Local tests do not run concurrently.
+
+All queries finish with UNKNOT and group evidence. The default adaptive
+policy does not switch on any of these inputs. The earlier threshold
+switches only on Gordian; its fourteen small-case paths stay explicit.
+The small-case column is the sum of the fourteen per-input medians:
+\begin{center}
+\begin{tabular}{lrr}
+\toprule
+Search policy & Small cases (ms) & Gordian (s)\\
+\midrule
+Explicit & 52.54 & 1.291\\
+Explicit control & 52.18 & 1.251\\
+Adaptive, $T=C$ & 52.00 & 1.242\\
+Adaptive, $T=4{,}096$ & 52.05 & 1.641\\
+Always compressed & 190.37 & 1.970\\
+\bottomrule
+\end{tabular}
+\end{center}
+The no-switch adaptive results are near the explicit controls; these small
+differences are not presented as an algorithmic speedup. Early conversion
+costs more on Gordian than letting its explicit path finish. Accordingly,
+the default trigger remains the hard letter ceiling, not the earlier
+threshold tested here. The optional policy is primarily a capacity
+extension that retains the faster representation while it fits.
+
+A second experiment lowers the hard letter cap on four real-input cases.
+It measures fresh PD validation and the group stage alone, including
+independent replay, without the surrounding recognition filters or fallback.
+The four arms are explicit, its control, adaptive with $T=C$, and
+always compressed. Five measured rounds after a warm-up give 80 probes.
+The explicit arms exhaust the letter allowance in all forty measured
+probes. Both adaptive and always-compressed search produce independently
+verified certificates in all forty of their probes:
+\begin{center}
+\begin{tabular}{lrrr}
+\toprule
+Input & $C$ & Adaptive median (s) & Compressed median (s)\\
+\midrule
+Survivor 00 & 64 & 0.01093 & 0.01380\\
+Survivor 02 & 60 & 0.01102 & 0.01285\\
+Gordian & 4,096 & 3.72104 & 3.41667\\
+Gordian & 8,192 & 1.15899 & 1.23270\\
+\bottomrule
+\end{tabular}
+\end{center}
+The explicit exhaustion times are recorded in the raw artifact, but are
+not completed recognition times and are not used in speedup ratios. This
+experiment establishes additional certificate capacity under matched caps,
+not newly decidable knots: the overall recognizer already has its complete
+fallback, and sufficiently generous explicit limits certify these examples.
+
+Hard and soft thresholds have different effects. With $T=4{,}096$ but
+$C=200{,}000$, Gordian switches after 127 completed moves from 3,228 current
+letters before an 8,098-letter raw substitution. The continuation still
+has the large overlap allowance and finishes with 141 total moves and
+7,270 allocated nodes. When the hard cap is also 4,096, the switch point
+is the same, but the compressed continuation skips 75 oversized overlap
+probes. It follows a longer path of 220 moves and allocates 76,758 nodes.
+At hard cap 8,192, conversion occurs after 128 moves; the continuation
+skips five overlap probes and finishes with 149 moves and 21,279 nodes.
+The cap therefore changes more than memory use: it can change the chosen
+sequence of valid transformations and its cost. No threshold is claimed
+uniformly optimal.
+
+The reproducible driver is \path{fast/benchmark_adaptive_group.py} and the
+raw artifact is \path{fast/results/adaptive_group_20261008.json}.
+The evidence supports a correct one-way continuation mechanism and measured
+capacity gains. It leaves the general sub-exponential recognition question
+open.
