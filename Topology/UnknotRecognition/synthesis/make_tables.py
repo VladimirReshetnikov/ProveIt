@@ -541,3 +541,22 @@ if faithful_jones:
                            '@{}lrrrr@{}', rows) + r'\end{center}' + '\n' +
                      'Median milliseconds including setup; distinct output guarantees. '
                      'A limit is a censored query.\n')
+
+jones_shortcut = load('../fast/results/jones_identity_shortcut_20261008.json')
+if jones_shortcut:
+    names = {'trefoil': 'Trefoil', 'conway': 'Conway', 'hard_unknot_8': 'Hard unknot 8',
+             'tree-6': 'Tree medial 126', 'tree-7': 'Tree medial 254',
+             'grid-10': 'Grid 100', 'grid-8-random': 'Grid 64, shuffled'}
+    rows = []
+    for row in jones_shortcut['rows']:
+        cells = [names[row['name']]]
+        cells.extend(f"{1000*row['median_seconds'][arm]:.3f}"
+                     for arm in ('before', 'control', 'after'))
+        cells.append(f"{row['median_paired_speedup']:.3f}")
+        rows.append(' & '.join(cells) + r' \\')
+    with open('tables/jones_identity_shortcut.tex', 'w') as handle:
+        handle.write(r'\begin{center}\small' + '\n' +
+                     table('Full polynomial query & Before & A/A & After & Paired speedup',
+                           '@{}lrrrr@{}', rows) + r'\end{center}' + '\n' +
+                     'Median milliseconds including setup. Ratios are medians of paired '
+                     'before/after times for identical complete results.\n')

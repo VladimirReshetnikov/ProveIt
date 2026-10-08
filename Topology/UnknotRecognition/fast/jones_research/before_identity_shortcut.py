@@ -47,13 +47,6 @@ Substituting M=x+x^-1 recovers V(x^-1); negating exponents returns V(t).
         raise ValueError('reconstruction requires the faithful input-sized color count')
     base = colors-2
     c, d = result['unknot_partition']
-    if not (c or d):
-        raise ArithmeticError('zero Jones normalization')
-    if result['partition_function'] == result['unknot_partition']:
-        # The input-sized specialization already proves W=1. Avoid forming
-        # its potentially enormous normalization norm merely to divide U/U.
-        check()
-        return {0: 1}
     norm = c*c+base*c*d+d*d
     if not norm:
         raise ArithmeticError('zero Jones normalization')

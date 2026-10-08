@@ -25,6 +25,28 @@ def coefficients(result):
 
 
 class FaithfulJonesTests(unittest.TestCase):
+    def test_identity_shortcut_requires_faithful_base_and_nonzero_normalization(self):
+        result = dict(crossing_count=254, q=faithful_colors(254),
+                      partition_function=[1 << 20000, -(1 << 19000)],
+                      unknot_partition=[1 << 20000, -(1 << 19000)])
+        with patch('fastunknot.faithful_jones.multiply',
+                   side_effect=AssertionError('identity computed the normalization product')):
+            self.assertEqual(reconstruct_jones(result), {0: 1})
+        with self.assertRaises(ValueError):
+            reconstruct_jones(dict(result, q=6))
+        with self.assertRaises(ArithmeticError):
+            reconstruct_jones(dict(result, partition_function=[0, 0], unknot_partition=[0, 0]))
+        calls = 0
+
+        def stop_on_publication():
+            nonlocal calls
+            calls += 1
+            if calls == 2:
+                raise ScanLimit('deadline before identity publication')
+
+        with self.assertRaises(ScanLimit):
+            reconstruct_jones(result, check=stop_on_publication)
+
     def test_independent_full_polynomial_both_shades_and_mirrors(self):
         cases = list(diagrams(35, 2628))
         root = Path(__file__).resolve().parents[1] / 'examples'
