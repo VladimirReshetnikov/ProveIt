@@ -184,8 +184,10 @@ they do not replace them.
 
 \subsection{Free reduction from exact longest-prefix queries}
 
-Binary search on the prefix length, using SLP substring construction and
-exact equality, computes the longest common prefix.  It uses
+An exact bounded grammar walk first attempts to compute the common prefix
+directly. If it remains unresolved, binary search beyond the prefix already
+proved equal, using SLP substring construction and exact equality, finishes
+the computation. This fallback uses at most
 $O(\log L)$ equality calls for expanded length $L$; since the SLP length is
 binary-encoded, this number is polynomial in the grammar size.
 
@@ -221,6 +223,70 @@ One exact test compares the two differently parsed words
 and freely reduces their quotient to the empty word.  Neither word is
 expanded.  Another test uses a 1,500-level repeated-power grammar to check
 substring and inversion operations without recursive-stack overflow.
+
+\subsection{Adaptive cancellation and certified-prefix reuse}
+\label{sec:compressed-prefix}
+
+The initial prefix implementation tested candidate lengths by comparing
+both words from position zero. Although this has a polynomial bound, it
+repeated comparisons over prefixes already known equal. In addition,
+many cancellation boundaries in group traces are easily resolved by
+skipping shared grammar nodes. The current kernel therefore uses the
+synchronized walk for prefix queries as well as full equality.
+
+Let $H=\min\{|a|,|b|,c\}$ when a cap $c$ is supplied, or
+$H=\min\{|a|,|b|\}$ otherwise. The desired answer is
+$\min\{\operatorname{lcp}(a,b),H\}$. Maintain two stacks of unconsumed
+chunks and the length $p$ of a proved common prefix. Matching node
+identities allow an entire chunk to be skipped and its length added to
+$p$. If this reaches $H$, return $H$, even when the cap lies inside the
+skipped chunk. If the next letters differ, return $p$. Otherwise split
+the longer leading chunk and continue. The same invariant as for equality
+proves these answers: both stacks begin at the same original position,
+and the consumed prefixes are exactly equal. Reaching the end of the
+shorter word necessarily reaches $H$, so neither stack is accessed after
+exhaustion. Empty inputs and identical roots are handled before the walk.
+
+The low-level option \code{prefix\_probe\_steps}, independent of
+\code{equality\_probe\_steps}, bounds this traversal and defaults to 64.
+If the walk exhausts its allowance, $p$ is only a lower bound on the
+answer. The checker retains that certified progress and starts bisection
+with $\ell=p$ and $h=H$. Its invariant is
+\[
+ a[0:\ell]=b[0:\ell],\qquad
+ \ell\le\min\{\operatorname{lcp}(a,b),H\}\le h.
+\]
+For $m=\lceil(\ell+h)/2\rceil$, compare only
+\[
+ a[\ell:m]\quad\hbox{and}\quad b[\ell:m].
+\]
+An equality proves the larger prefix and permits $\ell\gets m$.
+A mismatch proves the answer is below $m$ and permits $h\gets m-1$.
+Previously proved letters are not included in either substring query.
+This remains valid when $\ell$ was obtained from earlier positive
+bisection queries rather than the direct walk. Setting the probe allowance
+to zero therefore still uses the improved bisection rule.
+
+Each iteration strictly shrinks the integer interval. There are at most
+$O(\log(H-p+1))$ exact equality queries after the bounded walk, and
+substring construction retains its polynomial grammar-size bound. The
+direct walk adds only its fixed allowance of abstract steps, with the
+usual bit cost for encoded lengths. Thus this adaptation preserves the
+previous polynomial bound for each compressed word operation. It does not
+bound how often the recognizer needs such an operation.
+
+For a concrete capacity example, let $P=(ab)^{2^{500}}$ and compare $Pc$
+with $Pd$, where $c\ne d$. Their shared root can be skipped in one step
+after exposing it; the answer $|P|=2^{501}$ requires no equality query or
+expanded allocation. Caps strictly inside $P$ are equally exact. Tests
+also attach differently parsed exponential periodic tails to a shared
+prefix, force the direct walk to exhaust all 64 steps, and check that
+fallback slices never start before the proved prefix. An interior mutation
+far beyond that prefix tests a negative comparison without an endpoint
+shortcut. Eight hundred random word pairs check capped prefix results
+against literal strings using probe allowances 0, 1, 7 and 64. Work
+exhaustion and caller cancellation raise rather than returning the current
+lower bound as a completed answer.
 
 \subsection{Replaying the existing knot certificates}
 
@@ -568,6 +634,98 @@ preserves the output.
 All finite examples continue to rely on the same exact mathematical
 decision criteria. Neither faster word equality nor the adaptive probe
 bounds the length or grammar growth of the full knot-group search.
+
+\subsection{Measured effects of adaptive prefix cancellation}
+
+The prefix follow-up loads the preceding word kernel from repository commit
+\code{97587b366} (the full identifier is recorded in the raw artifact).
+Its five randomized arms
+are that baseline, an identical control, the new bisection rule with direct
+prefix walks disabled, the complete adaptive prefix implementation, and
+explicit search/replay. The previous 64-step equality probe remains enabled
+in every compressed arm, so the experiment isolates the prefix changes.
+Each whole query includes fresh PD validation, discovery and independent
+replay. There are five measured rounds after a warm-up on each of the same
+fifteen diagrams: 375 measured queries. Caps remain fifteen local seconds,
+eighteen global seconds, twenty million search/replay work units each,
+100,000 grammar nodes and 200,000 explicit letters. No local tests run
+concurrently with these measurements.
+
+All queries complete with UNKNOT and group evidence. In the small-case
+column below, the number is the sum of medians over fourteen diagrams:
+\begin{center}
+\begin{tabular}{lrr}
+\toprule
+Prefix/search arm & Small cases (ms) & Gordian (s)\\
+\midrule
+Previous compressed kernel & 245.18 & 2.461\\
+Previous-kernel control & 246.33 & 2.450\\
+Suffix-only bisection & 248.09 & 2.110\\
+Adaptive prefix walk & 185.27 & 1.922\\
+Explicit search and replay & 51.50 & 1.259\\
+\bottomrule
+\end{tabular}
+\end{center}
+The adaptive prefix implementation reduces Gordian's observed median by
+about $21.9\%$ and the small-case aggregate by about $24.4\%$ relative
+to the immediately preceding compressed kernel. Explicit search still wins
+on this corpus and remains the default. The suffix-only arm by itself
+does not improve the small-case aggregate.
+
+On Gordian, the producer's equality calls fall from 3,035 to 271 and its
+allocated nodes from 11,529 to 9,025. Of 971 prefix queries, 895 finish
+through the direct walk, 41 enter bisection, and the remaining 35 finish
+through identity, empty-length or first-letter shortcuts. The walks take
+11,248 total steps. The suffix-only arm still makes 3,035 equality calls,
+but reduces split rounds from 25,130 to 4,264; the adaptive arm uses 3,113
+split rounds. These counters support the distinction between rechecking
+fewer letters and avoiding an equality query altogether.
+
+Two synthetic kernel families separate these mechanisms. The first builds
+$P=(ab)^{2^k}$ and computes the common prefix of $Pc$ and $Pd$ for distinct
+letters $c,d$. The second checks equality of $(ab)^{2^k}a$ and
+$a(ba)^{2^k}$ and freely cancels their quotient. Each measurement includes
+fresh grammar construction, with five measured repetitions after a warm-up:
+\begin{center}
+\begin{tabular}{llrrr}
+\toprule
+Kernel & $k$ & Previous (s) & Suffix-only (s) & Adaptive (s)\\
+\midrule
+Shared prefix & 16 & 0.001902 & 0.002300 & 0.000054\\
+Shared prefix & 64 & 0.026006 & 0.033483 & 0.000111\\
+Shared prefix & 128 & 0.103473 & 0.134563 & 0.000637\\
+Periodic cancellation & 16 & 0.019466 & 0.009441 & 0.011670\\
+Periodic cancellation & 64 & 0.273239 & 0.143347 & 0.143935\\
+Periodic cancellation & 128 & 1.091430 & 0.578284 & 0.595711\\
+\bottomrule
+\end{tabular}
+\end{center}
+In the shared-prefix family the adaptive walk uses four steps and zero
+equality queries for every tested $k$, excluding grammar construction and
+the bit cost of length arithmetic. At $k=128$ it allocates 135 nodes,
+compared with 8,391 for the previous kernel. The suffix-only method
+allocates fewer nodes too, but takes longer because its nonzero-offset
+slices require more traversal work. In the periodic family the walk
+exhausts its 64 steps; bisection still runs. At $k=128$, both new arms
+allocate 779 nodes rather than 17,166. The probe does not beat the
+suffix-only arm on these examples. At $k=16$ its partial progress also
+changes the later slice boundaries and increases allocation from 107 to
+224 nodes. Retaining a proved prefix therefore preserves correctness and
+the polynomial bound, but does not guarantee a monotone timing or storage
+improvement on every input.
+
+Raw samples and controls are in
+\path{fast/results/compressed_prefix_20261008.json}; the reproducible driver
+is \path{fast/benchmark_compressed_prefix.py}. These are improvements to
+word operations and finite measured recognition queries. The global
+search-length and grammar-growth obligations remain open. The incoming
+directory still contains no new report, and rechecking upstream
+\code{openai/math} again returns the previously reviewed head
+\code{fd4aeeb2e}.
+
+All 648 integrated tests pass with the optional Regina dependency installed
+in 124.837 seconds. The output is preserved in
+\path{data/compressed-prefix-integrated-tests.txt}.
 
 \subsection{A further literature route for cancellation queries}
 

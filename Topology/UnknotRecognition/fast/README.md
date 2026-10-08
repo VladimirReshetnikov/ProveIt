@@ -11,7 +11,7 @@ the pipeline repeats the structural check before matrix filters. Cancelling
 pairs can expose homogeneity. Evidence under `seifert_after_reduction` describes
 the reduced diagram: replay `reidemeister_trace` with `fastunknot.simplify.replay`
 before passing that certificate to `verify_seifert_certificate`. An unchanged
-diagram is not checked twice. The integrated suite now has 645 passing tests
+diagram is not checked twice. The integrated suite now has 648 passing tests
 with the optional Regina dependency installed.
 
 `--group-compressed-search` enables optional compressed group discovery and
@@ -29,12 +29,18 @@ split-and-compaction algorithm if unresolved. The cap preserves the polynomial
 equality bound even when the represented words are exponentially long.
 Standalone `WordArena(equality_probe_steps=0)` disables the direct probe.
 
+Cancellation now uses a separate bounded prefix walk and reuses its proved
+prefix in the polynomial fallback. Bisection compares only the still-unproved
+interval. `WordArena(prefix_probe_steps=0)` disables this direct walk while
+retaining the improved bisection rule; the default cap is 64 steps.
+
 In the latest 375-query comparison, Gordian's compressed-search median drops
-from 6.764 to 2.403 seconds with this change, including independent replay.
-Fourteen smaller cases total 248.40 versus 265.32 ms in summed medians.
-Explicit search remains faster at 1.241 seconds and 51.46 ms respectively.
-The probe also adds overhead on some periodic kernels, so this is not a
-uniform speedup. All measured queries complete successfully. Synthetic
+from 2.461 to 1.922 seconds with the prefix changes, including independent replay.
+Fourteen smaller cases total 185.27 versus 245.18 ms in summed medians.
+Explicit search remains faster at 1.259 seconds and 51.50 ms respectively.
+The direct walk resolves 895 of Gordian's 971 prefix queries; equality calls
+fall from 3,035 to 271. Some synthetic kernels still favor suffix-only bisection,
+so this is not a uniform speedup. All measured queries complete successfully. Synthetic
 summary and elimination operations handle lengths above 2^1024 with 3,077
 allocated nodes, but this is not a hard-knot benchmark or a search-step bound.
 Explicit search remains the default. To reproduce the optional experiment:
@@ -46,13 +52,15 @@ python -B -m fastunknot recognize normal_research/gordian.json \
 python -B benchmark_compressed_search.py --output results/compressed_search_local.json
 ```
 
-See [`results/indexed_equality_20261008.json`](results/indexed_equality_20261008.json)
-for the current five-arm comparison and
+See [`results/compressed_prefix_20261008.json`](results/compressed_prefix_20261008.json)
+for the current prefix comparison,
+[`results/indexed_equality_20261008.json`](results/indexed_equality_20261008.json)
+for the previous equality improvement, and
 [`results/compressed_search_20261008.json`](results/compressed_search_20261008.json)
 for the initial capacity experiment. The article gives the equality scheduling
 and fallback invariants, DAG multiplicity proof and remaining global limits.
-`python -B benchmark_indexed_equality.py --output results/indexed_local.json`
-reproduces the comparison using the recorded pre-change kernel from Git history.
+`python -B benchmark_compressed_prefix.py --output results/prefix_local.json`
+reproduces the latest comparison using the recorded pre-change kernel from Git history.
 
 `--group-compressed` enables only exact SLP-based replay of group certificates.
 Its deterministic word kernel supports equality, slicing, inversion and free

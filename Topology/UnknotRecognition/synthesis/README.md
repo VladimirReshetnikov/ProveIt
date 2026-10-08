@@ -2,7 +2,21 @@
 
 The synthesized report on the six archives and on the new recognizer.
 
-The latest revision of `compressed_words.tex` explains indexed equality
+The latest prefix revision in `compressed_words.tex` adds bounded direct
+cancellation walks and bisection beyond the prefix already proved equal.
+In 375 measured queries, Gordian improves from 2.461 to 1.922 seconds including
+replay; fourteen smaller cases total 185.27 versus 245.18 ms in summed medians.
+All queries complete. Explicit search still wins at 1.259 seconds and 51.50 ms,
+so it remains the default. The article proves the interval invariant and
+records kernel regressions as well as gains. Raw samples are in
+`../fast/results/compressed_prefix_20261008.json`; the benchmark separately
+measures the direct walk and suffix-only bisection. No general sub-exponential
+recognition theorem follows.
+All 648 tests pass with optional Regina installed in 124.837 seconds; see
+`data/compressed-prefix-integrated-tests.txt`. The rebuilt article has 168
+pages, with build output in `data/compressed-prefix-article-build.txt`.
+
+The preceding revision of `compressed_words.tex` explains indexed equality
 assertions and a 64-step adaptive DAG probe with exact polynomial fallback.
 The 375-query comparison loads the prior kernel from its recorded Git commit:
 Gordian improves from 6.764 to 2.403 seconds, including replay, and fourteen
