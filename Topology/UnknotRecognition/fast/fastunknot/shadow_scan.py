@@ -56,7 +56,10 @@ class ClosureShadow(ClosureEuler):
         self.max_work = max_work
         self.shadow_cache = {}
         self.stats.update(engine="marked-residue-four", work_units=0, determinants=0,
-                          max_cofactor_size=0, shadow_evaluations=0)
+                          max_cofactor_size=0, shadow_evaluations=0,
+                          max_unsplit_cofactor_size=0, tait_blocks=0,
+                          tait_bridge_factors=0, tait_block_determinants=0,
+                          tait_disconnected=0, tait_zero_factors=0)
 
     def _tick(self, amount=1):
         self._check()
@@ -141,8 +144,12 @@ class ClosureShadow(ClosureEuler):
             black = {f: i for i, f in enumerate(f for f in range(count)
                                                 if color[f] == black_color)}
             size = len(black) - 1
-            self._tick(size * size)
-            matrix = [[0] * size for _ in range(size)]
+            # Small cofactors avoid graph-decomposition overhead. Larger
+            # graphs factor at articulation vertices before dense allocation.
+            factor_blocks = size > 8
+            self._tick(0 if factor_blocks else size * size)
+            matrix = None if factor_blocks else [[0] * size for _ in range(size)]
+            edges = []
             b_total = 0
             for base in range(0, len(alpha), 4):
                 self._tick()
@@ -153,7 +160,9 @@ class ClosureShadow(ClosureEuler):
                 b_total += b
                 u, v = (black[face[base + j]] for j in slots)
                 weight = -1 if b else 1
-                if u != v:
+                if factor_blocks:
+                    edges.append((u, v, weight))
+                elif u != v:
                     if u:
                         matrix[u - 1][u - 1] += weight
                     if v:
@@ -161,9 +170,14 @@ class ClosureShadow(ClosureEuler):
                     if u and v:
                         matrix[u - 1][v - 1] -= weight
                         matrix[v - 1][u - 1] -= weight
-            self.stats["max_cofactor_size"] = max(self.stats["max_cofactor_size"], size)
+            self.stats["max_unsplit_cofactor_size"] = max(self.stats["max_unsplit_cofactor_size"], size)
             self.stats["determinants"] += 1
-            determinant = _bareiss(matrix, self._tick)
+            if factor_blocks:
+                from .tait_blocks import spanning_tree_product
+                determinant = spanning_tree_product(len(black), edges, self._tick, _bareiss, self.stats)
+            else:
+                self.stats["max_cofactor_size"] = max(self.stats["max_cofactor_size"], size)
+                determinant = _bareiss(matrix, self._tick)
             unit = ((1, 0), (0, -1), (-1, 0), (0, 1))[(b_total + size) % 4]
             real, imaginary = determinant * unit[0], determinant * unit[1]
         if (real, imaginary)[1 - parity]:
