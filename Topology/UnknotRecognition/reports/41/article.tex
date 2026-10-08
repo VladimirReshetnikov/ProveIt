@@ -1,0 +1,1658 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=0.96in,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array,longtable}
+\usepackage{enumitem}
+\usepackage{xurl}
+\usepackage[hidelinks,pdfauthor={Research draft for ProveIt},pdftitle={Integral Tension Kernels for Compressed Unknot Certificates}]{hyperref}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}\fancyhead[L]{\small Integral tension kernels}\fancyhead[R]{\small ProveIt research draft}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{0.35em}
+\setlength{\parindent}{1.2em}
+\setlist{itemsep=0.25em,topsep=0.45em}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\F}{\mathbb F}
+\newcommand{\N}{\mathbb N}
+\newcommand{\calW}{\mathcal W}
+\newcommand{\calG}{\mathcal G}
+\newcommand{\calP}{\mathcal P}
+\newcommand{\calQ}{\mathcal Q}
+\newcommand{\calS}{\mathcal S}
+\newcommand{\bl}{\operatorname{bl}}
+\newcommand{\cyc}{\operatorname{cyc}}
+\newcommand{\Aut}{\operatorname{Aut}}
+\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\poly}{\operatorname{poly}}
+\newcommand{\divg}{\operatorname{div}}
+\newcommand{\id}{\operatorname{id}}
+\newcommand{\len}[1]{\left|#1\right|_{\mathrm{cyc}}}
+\newcommand{\code}[1]{\texttt{#1}}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\title{\textbf{Integral Tension Kernels for\\Compressed Unknot Certificates}\\[0.6em]
+\large Simultaneous multiplier shears, exact flow witnesses,\\and a bounded-phase complexity theorem}
+\author{Research draft for the ProveIt project}
+\date{8 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We develop a compressed local optimization kernel for the group-certificate
+branch of the ProveIt unknot recognizer. The existing producer chooses a
+length-reducing Whitehead direction and then minimizes along its powers.
+We instead optimize simultaneously over every integral left and right power
+of a fixed multiplier. The non-multiplier letters cannot cancel, so total
+cyclic length is an exact weighted integer $L^1$ tension objective on a graph
+with only linearly many compressed gap records. Its dual is a capacitated
+circulation. We give a bit-polynomial solver, a small integer primal--dual
+witness, exact balanced-graph and forest shortcuts, and an independent verifier.
+
+A direct reduced-image construction is the key representation result: retaining
+binary-encoded repetition rules, each phase increases grammar size by at most
+a constant factor, without general compressed free reduction. Thus $q$
+strictly shortening phases, including certificates and replay, cost
+$\poly(\sigma)2^{O(q)}$ for initial encoded size $\sigma$. This yields a
+quasi-polynomial bound when a polynomial-size knot presentation reaches a
+verified terminal class in $O(\log^2 n)$ phases. Neither that phase bound nor
+terminal completeness is established for arbitrary diagrams; an infinite
+family of already automorphically minimal infinite-cyclic presentations
+exposes the latter obstruction.
+
+The package includes 51 passing tests, 1,200 independently checked flow
+instances, 360 braid-derived algebraic stages, and reproducible paired
+measurements. Synthetic multi-run presentations improve, whereas all 21
+one-step advantages on the small raw braid corpus disappear after singleton
+elimination, and the ordinary-stage aggregate shows overhead. These are
+research-kernel results, not a measured improvement to the complete maintained
+recognizer.
+\end{abstract}
+\vspace{0.5em}
+\noindent\textbf{Delivery status.} The mathematical arguments and local code are
+supplied for independent review. No repository writes, upstream test-suite run,
+or end-to-end production benchmark were performed. A source-pinned integration
+gateway is included but was not executed. The claim is not a general
+quasi-polynomial unknot-recognition algorithm.
+\clearpage
+\tableofcontents
+\clearpage
+
+\section{Problem, baseline, and precise contribution}
+\label{sec:context}
+
+\subsection{Why another compressed group kernel?}
+
+The maintained ProveIt code has already addressed several distinct costs:
+explicit word expansion, unit Whitehead descent, long relator powers, and
+compressed overlap discovery. In particular, its power optimizer does not
+naively repeat an automorphism $N$ times on a word containing $a^N$.
+For a selected type-II Whitehead automorphism it computes the exact first
+minimum by a weighted-median formula on a shared straight-line program.
+The relevant source is \path{fast/fastunknot/whitehead_power.py}; the
+producer chooses its direction earlier, in \path{compressed_search.py}.
+The maintained proof is \path{synthesis/whitehead_powers.tex}
+\cite{proveit,powerrepo}.
+
+These observations rule out claiming the selected-direction median or simple
+power batching as a new contribution. The remaining local issue is that a
+single cut chooses a common exponent for many different oriented generators.
+Different gaps may want different exponents. Profiling one chosen direction
+does not optimize that larger family, even if the profile itself is exact.
+
+Our replacement query is: for each multiplier $a$, choose all integral
+left/right exponents jointly, then choose the best multiplier. This is a
+well-defined infinite search space. It admits a finite, bit-polynomial
+optimization and a separately checkable optimality proof. The resulting
+operation strictly contains a powered Whitehead move, but is still only a
+local family inside the full automorphism group.
+
+\subsection{Relation to existing complexity results}
+
+Roig, Ventura, and Weil give polynomial-time Whitehead minimization in the
+\emph{expanded} input length and the free-group rank \cite{rvw}. Their
+cut-based approach is part of the background here, not a new result of this
+article. Expanded length can be exponential in compressed description size.
+Schleimer's exposition supplies polynomial compressed word and reduction
+algorithms \cite{schleimer}; the direct constructor below avoids needing
+those more general routines for this particular family.
+
+Kapovich's July 2026 preprint establishes fixed-rank compressed primitivity
+results, including a polynomial rank-two algorithm, and distinguishes testing
+compressed automorphic minimality from constructing a minimum. Its Open
+Problem 1.5 explicitly retains the latter distinction \cite{kapovich}.
+We do not resolve that general minimization problem. We optimize over a
+single commuting shear family at a time and leave the number of changes of
+multiplier uncontrolled.
+
+Polynomial min-cost circulation is classical; for example, Goldberg and
+Tarjan develop a cost-scaling approach \cite{goldberg}. Our capacity-bit
+implementation is described and proved directly so that its iteration bound
+does not silently depend on a large capacity's numeric value. We make no
+claim that integer tension duality or scaling algorithms themselves are new.
+
+Finally, Lackenby's July 2026 paper treats incompressible surfaces and
+hierarchies but states in Section 9 that the implementation detail supplied
+there is insufficient for a running-time estimate \cite{lackenby}. The
+present algebraic kernel neither fills in that geometric algorithm nor
+imports an unverified quasi-polynomial cost assertion from it.
+
+\subsection{Results and their scope}
+
+The principal results proved here are the following.
+\begin{enumerate}[label=(\roman*)]
+\item An exact compressed tension formula and a polynomial-size primal--dual
+certificate for the best integral shear, uniformly in rank.
+\item A direct, literally reduced output grammar of at most constant-factor
+larger size, together with an independently implemented decorated-word replay.
+\item A $\poly(\sigma)2^{O(q)}$ bound for $q$ successful phases, and the
+corresponding restricted quasi-polynomial recognition corollary.
+\item Explicit separating and obstructing families: a one-step gain ratio
+unbounded in expanded length, and infinite-cyclic presentations on which no
+strict automorphic shortening is possible.
+\end{enumerate}
+
+These are extensions of the inspected repository mechanisms and are fully
+proved in this draft. Establishing priority over every related algebraic or
+optimization formulation would require a separate literature investigation.
+The experimental conclusions are deliberately narrower than the mathematical
+ones: a stronger local query need not be a faster default recognition stage.
+
+\section{Encoding, contracts, and notation}
+\label{sec:encoding}
+
+Let $F(X)$ be the free group on $X=\{x_1,\ldots,x_r\}$. We represent a signed
+letter by a nonzero integer $x$, with $-x$ denoting its inverse. The set of
+\emph{alive generators} is supplied explicitly; a generator absent from all
+current relators must not be silently deleted. Such a generator contributes
+a free factor to the presented group.
+
+The input is a tuple $\calW=(w_1,\ldots,w_m)$ of literally freely and cyclically
+reduced words, including possible empty words and duplicate roots. Relator
+slots are retained. Write
+\[
+ N=\sum_{i=1}^m |w_i|,\qquad
+ \calP=\langle X\mid w_1,\ldots,w_m\rangle.
+\]
+For reduced cyclic words, $|w_i|=\len{w_i}$. A cyclic rotation of a relator
+preserves its normal closure, but can change the meaning of a later
+\emph{positional} overlap record. This distinction is important in
+Section~\ref{sec:integration}.
+
+\begin{definition}[Repetition grammar]
+A repetition grammar is a topologically ordered acyclic list of rules of the
+forms
+\[
+ 0\to\epsilon,\qquad T\to x,\qquad C\to UV,
+ \qquad P\to U^k,
+\]
+where $k\geq 0$ is written in binary. Empty, zero-power, and unit-power rules
+are simplified by the supplied implementation. A root list specifies the
+relators. A binary SLP is the special case without repetition rules.
+\end{definition}
+
+Repetition rules do not add a stronger compression model for polynomial-time
+purposes: binary powering replaces $U^k$ with $O(\bl(k))$ concatenation rules.
+They do matter for the sharper \emph{per-phase} representation bound. Expanding
+all of them after every phase introduces a bit-length factor that our direct
+bound intentionally avoids.
+
+A bottom-up pass stores literal length, first letter, last letter, and a flag
+for free reduction. A concatenation is freely reduced precisely when its
+children are and its seam does not contain inverse letters. A nontrivial
+power is freely reduced precisely when its base is and its cyclic seam is
+reduced. Thus the input contract is checked without expansion. Since each
+reachable nonempty rule produces a literal subword of a root, reduced roots
+also ensure reduced reachable subwords.
+
+Let $s$ be the number of nonempty rules in the supplied representation,
+$G=s+m+r+2$, and $\sigma$ its complete binary encoding size, including root
+indices, exponent encodings, and generator identifiers. A convenient
+arithmetic bit bound is
+\begin{equation}
+ B=2+\lceil\log_2(N+m+2)\rceil+\lceil\log_2(G+2)\rceil
+       +\max_{x\in X}\bl(x),
+ \label{eq:bits}
+\end{equation}
+where a maximum over an empty set is zero. Products of multiplicities and
+lengths may need a constant multiple of $B$ bits, which does not change the
+bounds. Initially $\log(N+2)=O(\sigma)$: concatenation adds at most one bit
+along a path, and repetition adds at most the encoded exponent length.
+
+We use ordinary binary integer arithmetic and charge its bit costs. The
+conservative global bounds permit quadratic-cost multiplication and
+comparison-based dictionaries. The Python implementation uses dictionaries;
+even worst-case quadratic collision overhead is absorbed in the stated
+polynomial global bound. Faster balanced/forest counts stated in comparison
+operations refer to standard comparison-map implementations, not a claim of
+constant-time arithmetic on arbitrarily large integers.
+
+\section{The commuting integral shear family}
+\label{sec:shear}
+
+Fix a positive generator $a\in X$. For every signed letter $x$ with
+$|x|\ne a$, choose an independent integer $z_x$. Define
+\begin{equation}
+ \Phi_{a,z}(a)=a,\qquad
+ \Phi_{a,z}(x)=a^{-z_{-x}}x a^{z_x} \quad (|x|\ne a).
+ \label{eq:shear}
+\end{equation}
+The formula on inverse letters agrees with inversion, so it defines an
+endomorphism of the free group.
+
+\begin{lemma}[Commuting automorphisms]
+For fixed $a$,
+\[
+ \Phi_{a,z}\Phi_{a,t}=\Phi_{a,z+t},\qquad
+ \Phi_{a,z}^{-1}=\Phi_{a,-z}.
+\]
+In particular every integral potential vector defines an automorphism.
+\end{lemma}
+\begin{proof}
+The multiplier and all its powers are fixed. Substituting the image of $x$
+into $a^{-t_{-x}}x a^{t_x}$ adds the left exponents and the right exponents.
+This gives the first identity on each generator, and the second follows by
+setting $t=-z$.
+\end{proof}
+
+The family includes powers of the repository's type-II Whitehead convention.
+For $a\in A$, $-a\notin A$, put $z_x=k[x\in A]$ for all other signed letters.
+Equation~\eqref{eq:shear} is precisely the $k$th power of that Whitehead
+map. Conversely, any $z$ factors into at most $2(r-1)$ powered singleton
+Whitehead maps. If $z_x>0$, use multiplier $a$, subset $\{a,x\}$, and power
+$z_x$. If $z_x<0$, use multiplier $-a$, subset $\{-a,x\}$, and power $-z_x$.
+All factors commute. The factors need not each decrease length.
+
+Allowing signed $z$ makes negative multipliers redundant for the joint query:
+$\Phi_{-a,z}=\Phi_{a,-z}$. In cyclic length calculations, adding the same
+constant to every potential is also irrelevant; it changes only a common
+conjugation. Additional independent gauge shifts can occur in disconnected
+gap graphs.
+
+\subsection{Why retained letters never cancel}
+
+For a non-pure cyclic word retain its cyclic sequence of letters different
+from $a^{\pm1}$. Between two successive retained letters $u,y$ is a signed
+run $a^e$, possibly empty. Set $v=-y$. Applying the shear changes that gap to
+\begin{equation}
+ e+z_u-z_v.
+ \label{eq:gapchange}
+\end{equation}
+
+\begin{lemma}[Skeleton invariance]
+After applying any integral shear and taking cyclic free reduction, the
+cyclic sequence of retained non-multiplier letters is unchanged.
+\end{lemma}
+\begin{proof}
+Suppose a first cancellation of retained letters were to occur. The two
+letters would have to be inverse, so $y=-u$ and $v=u$. Their intervening
+exponent in \eqref{eq:gapchange} is then exactly $e$, independently of $z$.
+Since the original cyclic word is reduced, this exponent was nonzero.
+Those letters cannot become adjacent and cancel, a contradiction. The same
+argument applies at the cyclic seam. A word containing no retained letter
+is a pure multiplier power and is fixed.
+\end{proof}
+
+The proof does not require nonnegative exponents, a common power, small rank,
+or any special property of a knot presentation. It is the reason a direct
+reduced-image constructor is possible rather than merely a length estimate.
+
+\subsection{The exact objective}
+
+Aggregate equal gap records $(u,v,e)$ over every relator, with positive integer
+multiplicity $w_{uve}$. Let $C_a$ be the number of retained letters, counted
+with multiplicity, plus the total lengths of all pure multiplier roots.
+Then skeleton invariance gives
+\begin{equation}
+ L_a(z)=C_a+\sum_{(u,v,e)}w_{uve}|e+z_u-z_v|.
+ \label{eq:objective}
+\end{equation}
+Self-loops $u=v$ are allowed. Their cost is a constant $w|e|$, not a constraint
+to be discarded. Empty roots contribute nothing, and a duplicate root
+contributes a duplicate seam and all its multiplicities.
+
+\begin{corollary}[Domination and idempotence]
+The minimum of \eqref{eq:objective}, followed by minimization over positive
+multipliers $a$, is no worse in total cyclic length than any selected-direction
+power step. Once an exact $a$-shear minimum has been reached, a second
+$a$-shear cannot strictly improve it.
+\end{corollary}
+\begin{proof}
+Every selected-direction power is in the feasible family. For idempotence,
+the orbit of a point under the fixed-$a$ family is unchanged after applying
+one member, by the additive composition law. Its minimum has already been
+attained.
+\end{proof}
+
+Idempotence concerns exact local minima, not equality of returned encodings
+or uniqueness of potentials. Every successful later shear phase must change
+multiplier, but this fact alone does not bound how often multipliers alternate.
+
+\section{Extracting all gaps without expanding the words}
+\label{sec:histogram}
+
+For each reachable node $U$ store four values
+\[
+ (f_U,\ell_U,p_U,s_U):
+ \quad\text{first/last retained letter and signed prefix/suffix $a$-run.}
+\]
+When $U$ is a pure multiplier word, $f_U=\ell_U=0$ and
+$p_U=s_U$ is its signed exponent. For a non-pure word, the prefix and suffix
+runs lie outside its first and last retained letters.
+
+A terminal supplies this information immediately. For $U=VW$,
+\begin{align*}
+ f_U&=f_V\text{ if }f_V\ne0,\text{ and }f_W\text{ otherwise},\\
+ \ell_U&=\ell_W\text{ if }\ell_W\ne0,\text{ and }\ell_V\text{ otherwise},\\
+ p_U&=p_V\text{ if }f_V\ne0,\text{ and }p_V+p_W\text{ otherwise},\\
+ s_U&=s_W\text{ if }\ell_W\ne0,\text{ and }s_V+s_W\text{ otherwise}.
+\end{align*}
+If both children contain retained letters, this concatenation introduces the
+single internal record
+\[
+ (\ell_V,-f_W,s_V+p_W).
+\]
+For $U=V^k$ with non-pure $V$, the four endpoint values are unchanged and there
+are $k-1$ additional copies of the seam record
+$(\ell_V,-f_V,s_V+p_V)$. For pure $V$, multiply its exponent by $k$.
+
+Initialize a node multiplicity for each root occurrence, including duplicate
+roots. Traverse reachable rules in reverse topological order. A concatenation
+passes its multiplicity to both children, even when the children coincide.
+A repetition passes $k$ times its multiplicity to its base and contributes
+$k-1$ times its multiplicity at the seam. Finally, add one cyclic seam for each
+non-pure root. Retained terminals give $C_a$ through their propagated counts;
+pure roots contribute their original lengths separately.
+
+\begin{theorem}[Compressed gap extraction]
+The resulting histogram is exactly the multiset of expanded cyclic gaps.
+There are at most $s+m$ distinct gap events before equal keys are combined.
+Metadata, reverse multiplicities, and histogram construction require
+polynomial bit time and $O(s+m)$ integer records, apart from the input.
+With comparison dictionaries a bound of
+$O((s+m)\log(G+2)B^2)$ bit operations is sufficient.
+\end{theorem}
+\begin{proof}
+Every internal gap of an expanded parse is created either at a concatenation
+of two non-pure subwords or at one boundary between copies of a repeated
+non-pure subword. Such a creation belongs to a unique occurrence of a grammar
+rule. Reverse multiplicities count those occurrences exactly. Gaps not
+internal to a root are exactly its one cyclic seam. Pure roots have no such
+gaps, and their length is included separately.
+
+There is at most one event key per concatenation rule, one per repetition
+rule, and one per root. Counts can be large, but a nonempty node's occurrences
+are disjoint in the expanded parse for that node, so their number is at most
+$N$; the bounds in \eqref{eq:bits} cover their binary encodings. Each metadata
+or multiplicity update uses a bounded number of additions or multiplications
+on $O(B)$-bit integers. Dictionary and sorting costs give the stated bound.
+\end{proof}
+
+The certificate verifier does not call this reverse propagation routine.
+It independently builds a bottom-up histogram for each node: concatenate
+child histograms and add one seam; multiply a repeated child's histogram by
+$k$ and add $k-1$ seams. This costs at most $O(s(s+m))$ histogram records in
+the straightforward implementation. The extra polynomial factor is useful
+for implementation independence and does not affect the bounded-phase class.
+
+\section{Integer tension duality and exact witnesses}
+\label{sec:dual}
+
+Write $E$ for the gap records and $w_e$ for their weights. The nonconstant
+primal objective is
+\[
+ P=\min_{z\in\Z^V}\sum_{e=(u,v,\eta)\in E}
+                 w_e|\eta+z_u-z_v|.
+\]
+Here $\eta$ denotes a gap's offset; the notation separates it from its record
+index. A dual witness assigns an integer $f_e$ to each record, with
+\begin{equation}
+ |f_e|\le w_e,\qquad
+ \divg f(v)=\sum_{e:\,\text{tail}=v}f_e-
+            \sum_{e:\,\text{head}=v}f_e=0.
+ \label{eq:dualfeasible}
+\end{equation}
+A self-loop contributes once with each sign and hence zero divergence.
+
+\begin{lemma}[Weak duality with an exact certificate]
+For every integer potential $z$ and every feasible $f$,
+\begin{equation}
+ \sum_e w_e|\eta_e+z_{u_e}-z_{v_e}|
+       \ \ge\ \sum_e \eta_e f_e.
+ \label{eq:weakdual}
+\end{equation}
+If equality holds, $z$ is a global integer minimum and $f$ is a matching
+optimal lower-bound witness.
+\end{lemma}
+\begin{proof}
+Termwise, $w|t|\ge ft$ whenever $|f|\le w$. Summing and collecting potential
+coefficients gives
+\[
+ \sum_e f_e(\eta_e+z_{u_e}-z_{v_e})
+   =\sum_e \eta_e f_e+\sum_v z_v\divg f(v)
+   =\sum_e \eta_e f_e.
+\]
+The right side is a lower bound for every feasible $z$, so equality proves
+optimality.
+\end{proof}
+
+This is the complete logical check performed by the small dual verifier.
+It checks integer types, exact record support, capacity bounds, divergence,
+and equality of the two integer objectives. It does not trust a floating-point
+solver, an approximate residual, a fingerprint equality, or a claimed optimal
+cut. In particular, a nonzero optimal objective is perfectly compatible with
+a zero \emph{primal--dual gap}.
+
+\subsection{Reduction to min-cost circulation}
+
+For each record $e=(u,v,\eta)$ introduce two directed arcs:
+\[
+ u\longrightarrow v\text{ with capacity }w_e\text{ and cost }-\eta,
+ \qquad
+ v\longrightarrow u\text{ with capacity }w_e\text{ and cost }\eta.
+\]
+Let their flows be $g_e^+,g_e^-$ and set $f_e=g_e^+-g_e^-$. Every feasible
+circulation gives \eqref{eq:dualfeasible}. Its cost is $-\sum_e\eta f_e$.
+Conversely any feasible $f$ is realized by its positive and negative parts,
+so there is no relaxation gap from this transformation.
+
+For an arc of cost $c$, use the reduced-cost convention
+\[
+ c^\pi(u,v)=c+\pi_u-\pi_v.
+\]
+Suppose a feasible circulation has potentials making all residual reduced
+costs nonnegative. Put $z_v=-\pi_v$. For the forward arc associated with a gap,
+its reduced cost is
+$-\eta+\pi_u-\pi_v=-(\eta+z_u-z_v)$.
+If the gap value is positive, that forward arc is saturated and the opposing
+original arc carries no flow; hence $f_e=w_e$. If it is negative,
+$f_e=-w_e$. If it is zero, every allowed $f_e$ satisfies the equality for that
+term. Thus the circulation and its potential give equality in
+\eqref{eq:weakdual}.
+
+\begin{theorem}[Integral optimum and bounded potentials]
+Every integer gap instance has an integer optimum and an integer dual witness.
+One can choose the potential of every component so that
+\[
+ |z_v|\le (V-1)\max_e|\eta_e|
+\]
+when $V\ge1$, with the zero instance interpreted separately.
+\end{theorem}
+\begin{proof}
+The solver in Section~\ref{sec:flow} constructs an integral feasible circulation
+and residual-feasible potentials. At termination choose distances from an
+auxiliary source with zero-cost arcs to every vertex. There is no negative
+residual cycle. A shortest path may be taken simple, so its cost lies between
+$-(V-1)\max|\eta|$ and zero. The distance inequalities give nonnegative
+residual reduced costs. Their negatives are the required integral potentials,
+and the preceding complementary-slackness argument supplies equality.
+\end{proof}
+
+The bound depends on the \emph{bit length} of the offsets, not a search through
+all integer vectors in this coordinate box. Enumerating the box would undo
+the compression advantage.
+
+\section{A bit-polynomial circulation implementation}
+\label{sec:flow}
+
+The reference implementation is \path{shear_kernel/flow.py}. This section
+proves the invariants of the actual algorithm rather than appealing to
+unit-capacity augmentation. Let $A$ be the number of original directed arcs,
+$V$ the number of vertices, and
+\[
+ \beta=\max_i\bl(U_i),\qquad
+ \gamma=1+\max_i\bl(c_i),
+\]
+for capacities $U_i$ and costs $c_i$. Zero-arc instances return immediately.
+A constant offset in these bit-length definitions is harmless.
+
+\subsection{Capacity bits, saturation, and imbalance repair}
+
+Initially all partial capacities and all flows are zero, and all vertex
+potentials are zero. Read capacity bits from most significant to least
+significant. At a new phase replace each partial capacity and flow by
+\[
+ U_i'\leftarrow 2U_i'+\text{next bit of }U_i,
+ \qquad g_i\leftarrow 2g_i.
+\]
+Before the new bit, doubling preserves feasibility and the support of every
+residual arc. The potential therefore still certifies their nonnegative
+reduced costs.
+
+If a newly available forward residual arc has negative reduced cost, saturate
+it. The extra residual capacity is at most one: a negative reduced cost meant
+that its predecessor was saturated, so only the newly read bit can open it.
+Its reverse residual arc has positive reduced cost. After all such saturations
+every residual reduced cost is nonnegative, but flow conservation may fail.
+Let
+\[
+ b(v)=\text{inflow}(v)-\text{outflow}(v)
+\]
+be the resulting imbalance. The total positive imbalance is at most $A$.
+Self-loop saturations create no imbalance.
+
+To repair conservation, run multisource Dijkstra from all vertices with
+$b(v)>0$, on nonnegative residual reduced costs. Choose a reachable deficit
+vertex $t$, $b(t)<0$, of minimum distance $D$. Let $d(v)$ be its computed
+distance, with infinity for unreachable vertices. Update
+\begin{equation}
+ \pi_v\leftarrow\pi_v+\min\{d(v),D\},
+ \qquad \min\{\infty,D\}=D.
+ \label{eq:truncateddistance}
+\end{equation}
+Augment along the shortest path to $t$ by the minimum of its residual
+capacities, its source surplus, and its target deficit magnitude. Repeat
+until all imbalances vanish.
+
+\begin{lemma}[Every repair exists and reduces the imbalance]
+If some positive imbalance remains, a positive vertex has a residual path to
+a negative vertex. Every repair reduces the total positive imbalance by a
+positive integer. Hence a capacity phase uses at most $A$ repairs.
+\end{lemma}
+\begin{proof}
+The doubled old circulation is a feasible circulation under the new capacities.
+Subtract the current capacity-feasible pseudoflow from that circulation.
+Positive and negative differences are residual arcs. Their divergence corrects
+the current imbalance, so decomposition into paths and cycles gives a path
+from some surplus to some deficit. Every path capacity and nonzero endpoint
+imbalance is integral and positive. The augmentation changes only its two
+endpoint imbalances and reduces their magnitudes without reversing their
+signs. Thus the total positive imbalance falls by at least one.
+\end{proof}
+
+\begin{lemma}[Residual-potential invariant]
+After \eqref{eq:truncateddistance}, all residual reduced costs are nonnegative
+and each edge on the selected path has zero reduced cost. Augmenting along
+that path preserves residual nonnegativity.
+\end{lemma}
+\begin{proof}
+Let $\widehat d(v)=\min\{d(v),D\}$. For a residual arc with nonnegative reduced
+cost $c^\pi(u,v)$, shortest-path inequalities imply
+\[
+ \widehat d(v)\le\widehat d(u)+c^\pi(u,v).
+\]
+This also holds when a distance is infinite: a reachable vertex cannot point
+to an unreachable vertex along a residual arc, and the other cases follow
+from truncation and nonnegativity. The new reduced cost is
+$c^\pi(u,v)+\widehat d(u)-\widehat d(v)\ge0$.
+Every prefix distance on the chosen shortest path is at most $D$, so those
+edges have equality. Augmentation can only create reverse edges of that
+path; their reduced cost is also zero.
+\end{proof}
+
+At the end of every repair the code recalibrates the potential by
+Bellman--Ford from a zero-edge auxiliary source. The invariant proves there
+is no negative residual cycle. Recalibration is not required for correctness,
+but gives a direct bit-size bound rather than accumulating unconstrained
+potential shifts across many phases.
+
+\subsection{Correctness and bit complexity}
+
+\begin{theorem}[Certified circulation solver]
+The capacity-bit algorithm terminates after $\beta$ phases and at most
+$\beta A$ repairs. It returns an integral feasible circulation and integral
+residual-feasible potentials, and hence an optimum tension witness. A
+conservative bit-time bound is
+\begin{equation}
+ O\!\left((\beta+1)(V+1)(A+1)^2
+       \bigl(\beta+\gamma+\log(A+V+2)\bigr)\right),
+ \label{eq:flowbound}
+\end{equation}
+with a polynomial space bound. In particular the iteration count is not
+proportional to a capacity or an offset's numeric value.
+\end{theorem}
+\begin{proof}
+The initialization satisfies the invariant. Doubling, negative-arc saturation,
+and the preceding lemmas establish it phase by phase. At the last phase the
+partial capacities equal the supplied capacities, all imbalances are zero,
+and residual potentials are feasible. Section~\ref{sec:dual} then proves
+optimality and constructs the integer tension solution.
+
+Residual graph construction uses $O(A)$ operations. One Dijkstra run uses
+$O((A+V)\log(V+2))$ comparisons and additions. Recalibration uses $O(VA)$
+relaxations. The latter bound, with harmless degenerate-instance adjustments,
+absorbs the former for a graph whose vertices are incident to input arcs.
+There are at most $A$ repairs per phase and $\beta$ phases. Saturations and
+capacity doubling are lower-order scans.
+
+Capacities and flows have $O(\beta)$ bits. Recalibrated potentials have
+$O(\gamma+\log(V+2))$ bits because shortest paths are simple. Dijkstra
+reduced costs and distances obey the same kind of bound. The indicated
+additions, comparisons, shifts, and residual updates therefore have the
+bit cost in \eqref{eq:flowbound}. Computing the final primal and dual
+objectives adds polynomially many integer products; in the gap application
+these are absorbed by the common $B^2$ bound below.
+\end{proof}
+
+The proof also explains two tempting incorrect implementations. Repeatedly
+sending one unit of flow can take exponentially many iterations on a binary
+capacity. Repeatedly canceling an arbitrary negative cycle does not inherit
+the repair count above. Neither is the implementation supplied here.
+
+\begin{corollary}[Complete local shear query]
+Given the repetition grammar and alive generators, one can find the best
+integral shear over every multiplier, construct its reduced image, and produce
+and verify witnesses for every multiplier in
+\begin{equation}
+ O\bigl((r+1)^2G^2B^2\bigr)
+ \label{eq:globalbound}
+\end{equation}
+bit operations, up to harmless logarithmic factors from the chosen dictionary
+and bit model. The certificate has $O((r+1)GB)$ bits. The computation is
+polynomial in compressed input size even when rank is part of the input.
+\end{corollary}
+\begin{proof}
+For one multiplier, $V\le2(r-1)$ and $A\le2(s+m)$. Gap multiplicities and
+offsets have $O(B)$ bits, so substitute these bounds into
+\eqref{eq:flowbound} and solve at most $r$ instances. Histogram construction,
+objective products, the independent quadratic histogram verifier, and the
+direct image construction of Section~\ref{sec:output} are absorbed in the
+same conservative polynomial bound. Each multiplier contributes linearly
+many record and vertex witnesses of $O(B)$ bits.
+\end{proof}
+
+We deliberately use a conservative bound rather than asserting that every
+Python dictionary access or large integer operation costs one step. The
+main asymptotic point is polynomial dependence on encoded size, not an
+optimized exponent for this reference solver.
+The bounds describe completed computations with resource allowances chosen
+large enough; a configured work cap may instead interrupt the implementation,
+which returns no recognition conclusion from such an interruption.
+
+\section{Exact shortcuts: balanced graphs and median forests}
+\label{sec:shortcuts}
+
+\subsection{Balanced offset graphs}
+
+A weighted gap graph is \emph{balanced} when there exist integers $z$ such that
+\[
+ z_v-z_u=\eta \qquad\text{for every record }(u,v,\eta).
+\]
+A depth-first traversal chooses a root potential zero in each component,
+propagates the required differences, and checks every already visited edge.
+This also checks parallel-record consistency and self-loop offsets.
+
+\begin{proposition}[Balanced fast path]
+The graph is balanced if and only if the signed sum of offsets around every
+undirected closed walk is zero. In that case the primal optimum is zero,
+$L_a^{\min}=C_a$, and $f=0$ is an exact dual certificate. A spanning-forest
+traversal and edge checks decide this using linearly many integer operations
+apart from dictionary access.
+\end{proposition}
+\begin{proof}
+A potential telescopes around any closed walk, proving necessity. Conversely,
+assign potentials by path sums along a spanning forest. Every other edge
+closes a walk, so its zero offset sum makes it consistent with the assignment.
+The objective is nonnegative and the assignment makes each term zero.
+The all-zero dual then has the same value.
+\end{proof}
+
+Large multiplicities do not affect this test. Thus binary exponents with
+hundreds of bits need not trigger hundreds of circulation phases when the
+underlying offset constraints are exactly compatible.
+
+\subsection{Forests of parallel-edge bundles}
+
+A self-loop contributes a fixed objective $w|\eta|$ and the independent dual
+value $f=w\sgn(\eta)$. Remove those loops temporarily. Group all remaining
+records by their unordered endpoint pair. Suppose the resulting simple graph
+is a forest. Orient each bundle from a chosen endpoint $u$ to $v$ and put
+$d=z_v-z_u$. Its objective is
+\[
+ \sum_j w_j|d-t_j|,
+\]
+where $t_j=\eta_j$ for a record oriented $u\to v$, and
+$t_j=-\eta_j$ for a record oriented $v\to u$.
+
+\begin{theorem}[Forest median solution]
+Choose a lower weighted median $d_{uv}$ of the $t_j$ in every bundle.
+Because the simple graph is a forest, all equations
+$z_v-z_u=d_{uv}$ can be satisfied simultaneously. The resulting potential is
+a global integer optimum. It has a dual certificate obtained independently
+inside each bundle, and can be found with $O((s+m)\log(G+2))$ comparison-map
+operations on the gap data, plus integer arithmetic.
+\end{theorem}
+\begin{proof}
+Each bundle's weighted absolute-deviation sum is minimized by a weighted
+median. On a forest its independently optimal differences integrate to a
+potential, so the sum of all separate lower bounds is attained.
+
+For the dual, orient net flow $g_j$ in the common bundle direction. When
+$t_j\ne d$, set $g_j=w_j\sgn(t_j-d)$. At $t_j=d$ choose
+$g_j\in[-w_j,w_j]\cap\Z$ so that $\sum_jg_j=0$. This is possible because a
+weighted median has at most half the weight strictly on either side, so the
+absolute required correction is no greater than the total median weight.
+Distribute the integer correction greedily within those capacities. Convert
+$g_j$ back to each record's orientation. Every bundle has zero net divergence
+at each endpoint, and every term satisfies complementary equality. Restore
+the self-loop witnesses. Weak duality proves global optimality.
+\end{proof}
+
+Every rank-two multiplier problem has at most two port vertices, so this
+shortcut solves it after self-loops are separated. Higher-rank forest instances
+are also covered. A graph can fail the balanced test because two parallel
+records demand incompatible offsets while still be solved immediately by
+medians. Conversely, a balanced graph with cycles is handled by the first
+shortcut even though it is not a forest. Only the remaining instances need
+the general circulation solver.
+
+These shortcuts change the implementation cost, not the optimization problem
+or the certificate checker. The benchmark's \emph{forced-flow} arm disables
+both and therefore offers a same-objective control.
+
+\section{Direct reduced images and independent replay}
+\label{sec:output}
+
+A length optimizer alone would not settle the representation problem: generic
+substitution followed by compressed free reduction might repeatedly multiply
+grammar size by a polynomial factor. Skeleton invariance yields something
+more specific and stronger for the present maps.
+
+\subsection{Producer construction}
+
+For a non-pure node $U$ build a core $M_U$ starting at its first retained
+letter and ending at its last. The core contains exactly its transformed
+internal gaps, but not the prefix or suffix multiplier runs. A pure node has
+empty core. For a terminal different from the multiplier, the core is that
+terminal.
+
+For $U=VW$ with both children non-pure, set
+\begin{equation}
+ M_U=M_V\,a^{s_V+p_W+z_{\ell_V}-z_{-f_W}}\,M_W.
+ \label{eq:coreconcat}
+\end{equation}
+If just one child is non-pure, use that child's core; if neither is, use the
+empty core. For $U=V^k$ with non-pure $V$, put
+\begin{equation}
+ h=s_V+p_V+z_{\ell_V}-z_{-f_V},\qquad
+ M_U=(M_Va^h)^{k-1}M_V.
+ \label{eq:corepower}
+\end{equation}
+For a non-pure root $R$, output
+\begin{equation}
+ M_R a^{s_R+p_R+z_{\ell_R}-z_{-f_R}}.
+ \label{eq:rootimage}
+\end{equation}
+For a pure root, output its unchanged signed multiplier power. A negative
+power $a^h$ is encoded as a nonnegative repetition of $a^{-1}$.
+
+\begin{theorem}[Direct image theorem]
+Equations~\eqref{eq:coreconcat}--\eqref{eq:rootimage} give a cyclically reduced
+representative of every $\Phi_{a,z}(w_i)$. They use no general word-equality,
+prefix, free-reduction, or expansion query. If $G=s+m+r+2$, the fresh output
+representation satisfies
+\begin{equation}
+ G'\le 8G.
+ \label{eq:linear-growth}
+\end{equation}
+The construction takes polynomial bit time, and its output cyclic length is
+exactly \eqref{eq:objective}.
+\end{theorem}
+\begin{proof}
+Induct over the grammar. Concatenation joins the two retained cores through
+exactly the gap in \eqref{eq:gapchange}. A repeated non-pure core has $k-1$
+internal copy seams, giving \eqref{eq:corepower}. At a root, moving its
+initial multiplier run to its end produces \eqref{eq:rootimage}. Thus every
+output has the correct cyclic sequence of retained letters and all the exact
+transformed gap exponents.
+
+Only opposite retained letters could cancel after a gap becomes zero.
+Skeleton invariance rules this out, including at the last-to-first seam.
+Hence the displayed output is already freely and cyclically reduced.
+Counting retained letters and runs gives exactly \eqref{eq:objective}.
+
+For the rule count, a terminal creates at most one terminal. A non-pure
+concatenation creates at most one run-power and two concatenations, apart
+from the two shared multiplier-sign terminals. A repetition creates at most
+one run-power, one block concatenation, one repetition, and one final
+concatenation. A root creates at most one run-power and one concatenation.
+Consequently $s'\le4s+2m+2$ is a sufficient count for the fresh constructor;
+the looser \eqref{eq:linear-growth} also covers the fixed root/generator
+bookkeeping and empty cases. Each exponent calculation uses a bounded number
+of operations on the bounded integers.
+\end{proof}
+
+The representative is not promised to be the same literal cyclic rotation as
+an unrelated reduction routine would return. The theorem proves the exact
+cyclic word and normal closure, not equality of all positional encodings.
+
+\subsection{A distinct verifier recurrence}
+
+The independent replay module \path{shear_kernel/replay.py} does not call the
+producer's core constructor or endpoint summaries. It stores a decorated
+reduced image
+\[
+ \Phi(U)=a^{P_U}\,H_U\,a^{S_U},
+\]
+where $H_U$ starts and ends in a retained letter; a pure node is represented
+by its single signed exponent. For a retained terminal $x$,
+\[
+ (P,H,S)=(-z_{-x},x,z_x).
+\]
+For two non-pure children, the decorated concatenation is
+\[
+ (P_V,\ H_Va^{S_V+P_W}H_W,\ S_W).
+\]
+Pure children add to the appropriate outer exponent. For a non-pure repeated
+child the middle is constructed in the \emph{other} association
+\[
+ H_V\bigl(a^{S_V+P_V}H_V\bigr)^{k-1},
+\]
+with outer exponents $P_V,S_V$. Finally a root becomes
+$H_Ra^{S_R+P_R}$. This gives the same literal cyclic representative as the
+producer's formulas, but can produce a different DAG shape.
+
+Each recurrence follows by substitution and multiplier-run combination.
+The same non-cancellation proof makes it a valid independent replay without
+compressed free reduction. Its rule count is again bounded by a constant
+factor. The tests compare both constructors with each other and with literal
+substitution where expansion is small.
+
+\subsection{Source binding without hash-based mathematics}
+
+A standalone optimization certificate stores a SHA256 value of the canonical
+source DAG serialization. This field detects accidental source mixups; it
+is not a word-equality oracle. The verifier rebuilds the actual source's
+histograms and checks every primal--dual witness exactly.
+
+For a multi-phase trace, the first source binding is checked. Later producer
+hashes refer to a DAG shape different from the independent decorated replay,
+so they are advisory there. Each later certificate is instead checked against
+the histograms of the \emph{actual independently replayed words}; its
+potentials define the next exact automorphism image. Thus no hash collision
+or unverified serialized intermediate word is used to establish the terminal
+group claim.
+
+\section{A bounded-phase complexity theorem}
+\label{sec:phases}
+
+A successful phase means: solve all multiplier queries exactly, choose a
+minimum with deterministic tie-breaking, and apply it only when total cyclic
+length strictly decreases. The generator and relator lists remain fixed
+during the phase sequence. Any preprocessing or interleaved relator operation
+must be charged separately.
+
+\begin{lemma}[Bit lengths during monotone phases]
+Let the initial total expanded length be $N_0$. During a sequence of successful
+phases, all current root lengths are at most $N_0$, all reachable nonempty
+rule lengths are at most $N_0$, and a chosen potential has magnitude
+$O(rN_0)$. At phase $j$, all relevant integers have
+$O(\sigma+j)$ bits, including growing rule indices.
+\end{lemma}
+\begin{proof}
+Total cyclic length decreases, and all roots and reachable subwords are
+literal reduced words, so none is longer than $N_0$. Gap offsets and
+multiplicities are bounded by this length, up to root bookkeeping. The
+bounded-potential theorem gives the factor $O(r)$.
+
+The direct output has no hidden cancellation. Its nonempty constituent cores,
+runs, and repeated blocks occur as subwords of a root, apart from at most
+constant unused multiplier terminals; their encoded lengths are therefore
+bounded as well. Since $\log(N_0+2)=O(\sigma)$ and
+$G_j\le8^jG_0$, rule indices add at most $O(j+\log G_0)$ bits. The same
+argument applies to the independent replay representation.
+\end{proof}
+
+\begin{theorem}[Bounded-phase search and replay]
+\label{thm:phase}
+For initial encoding size $\sigma$, at most $q$ successful integral-shear
+phases, their complete local optimality certificates, and independent replay
+can be computed in
+\begin{equation}
+ \poly(\sigma)\,2^{O(q)}
+ \label{eq:phasebound}
+\end{equation}
+bit time and space. A final unsuccessful local query and a polynomial-time
+terminal predicate on the compressed state obey the same bound.
+\end{theorem}
+\begin{proof}
+The direct theorem gives $G_j\le8^jG_0$. The rank is unchanged, and the bit
+lemma gives $B_j=O(\sigma+j)$. Substitute these into the polynomial local
+bound and sum over $j\le q$:
+\[
+ \sum_{j=0}^{q} O\!\left((r+1)^2G_0^2\,64^j(\sigma+j)^2\right)
+   \le \poly(\sigma+q)\,2^{O(q)}.
+\]
+Polynomial factors in $q$ are absorbed into $2^{O(q)}$; when $q=0$ the bound
+is simply polynomial in $\sigma$. Source serialization, all multiplier
+witnesses, and the independent histogram and decorated-word replay have the
+same type of polynomial dependence on $G_j$ and $B_j$. Summing their costs
+and output sizes proves \eqref{eq:phasebound}.
+\end{proof}
+
+This is a representation-sensitive theorem. Merely knowing that each
+individual generic reduction is polynomial would not suffice: recursively
+applying an unspecified polynomial-size transformation can give a bound like
+$\sigma^{d^q}$. The constant-factor direct rule construction avoids that
+problem for this sequence of operations.
+
+\begin{corollary}[Quasi-polynomial bounded-phase class]
+Suppose an input with size parameter $n$ yields, with independently checked
+provenance, a presentation of encoding size $\sigma\le n^{O(1)}$. If the
+specified shear descent reaches a sound, complete terminal decision for that
+input after $q=O(\log^2(n+2))$ successful phases, the algebraic computation and
+its replay take
+\[
+ 2^{O(\log^2(n+2))}=n^{O(\log(n+2))}
+\]
+bit time. With $q=O(\log(n+2))$ the same part is polynomial-time.
+\end{corollary}
+
+This corollary is a theorem about the class satisfying its explicit
+hypotheses. It does not assert that arbitrary unknot diagrams have such
+presentations, phase counts, or terminal states. The next section gives one
+concrete terminal predicate and proves an obstruction to its universality.
+
+\section{Terminal recognition and a genuine completeness obstruction}
+\label{sec:terminal}
+
+\subsection{Pure-power presentations}
+
+Suppose every nonempty root is a pure signed power of one generator.
+For each alive generator $x_j$ let $d_j$ be the gcd of all its nonzero
+relator exponents in absolute value, or $d_j=0$ if it has no such relator.
+Then
+\begin{equation}
+ \calP\cong \mathop{*}_{j=1}^r C_{d_j},
+ \qquad C_0=\Z,\quad C_1=\{1\}.
+ \label{eq:freeproduct}
+\end{equation}
+A bottom-up uniform-letter test recognizes the roots, and binary Euclidean
+arithmetic computes the $d_j$ without expanding their powers.
+
+\begin{proposition}[Complete pure-power terminal test]
+The group in \eqref{eq:freeproduct} is infinite cyclic if and only if exactly
+one $d_j$ is zero and every other $d_j$ is one. This is decidable in polynomial
+bit time in the compressed state.
+\end{proposition}
+\begin{proof}
+Relations involving only one generator present its cyclic factor; the
+universal property of free products gives \eqref{eq:freeproduct}. If the
+stated condition holds, the only nontrivial factor is $\Z$. With no
+nontrivial factor the group is trivial. With one finite nontrivial factor
+it is finite cyclic. With two or more nontrivial factors, reduced free-product
+normal forms show that nonidentity elements from distinct factors do not
+commute, so the group is not $\Z$. These cases exhaust the possibilities.
+Uniform-letter metadata and gcd arithmetic have polynomial bit cost.
+\end{proof}
+
+For a validated classical knot in $S^3$, the full knot group is infinite
+cyclic exactly when the knot is the unknot. To recall the topological input:
+if the group is $\Z$, the longitude is null-homotopic. Dehn's lemma gives an
+embedded compressing disk with that boundary, and an annulus in the tubular
+neighborhood extends it to a spanning disk for the knot. The converse follows
+from the solid-torus exterior of the unknot. This is the classical
+Dehn-lemma/loop-theorem consequence used by the repository's group verifier
+\cite{papa,proveit}.
+
+Thus the phase theorem and this terminal predicate give a sound two-sided
+recognition algorithm \emph{on the class of sourced knot presentations that
+reach this terminal predicate within the stated phase budget}. The artifact's
+standalone CLI deliberately reports only an abstract presentation result:
+it does not itself prove that a user-supplied presentation is the full group
+of the claimed diagram. A quotient, an omitted relator, or a mislabeled
+multi-component link cannot be substituted for that provenance contract.
+
+\subsection{Why unlimited strict shear descent is not complete}
+
+\begin{theorem}[Automorphically minimal infinite-cyclic plateau]
+\label{thm:plateau}
+For every $N\ge2$, the presentation
+\begin{equation}
+ \calQ_N=\langle a,b\mid a^N,a^{N+1},[a,b]\rangle,
+ \qquad [a,b]=aba^{-1}b^{-1},
+ \label{eq:plateau}
+\end{equation}
+presents $\Z$, has no generator occurring exactly once in any relator,
+and is already globally minimum in total cyclic length under \emph{all}
+free-group automorphisms. Its minimum is $2N+5$. It is not a pure-power
+terminal state.
+\end{theorem}
+\begin{proof}
+The first two relations imply $a=1$, and the commutator then becomes redundant;
+$b$ is unconstrained. This proves the group is $\Z$. The occurrence assertion
+is immediate for $N\ge2$.
+
+For any automorphism $\psi$, a nontrivial element $\psi(a)$ has positive
+cyclic length. Cyclic lengths of its powers therefore give
+\[
+ \len{\psi(a^N)}+\len{\psi(a^{N+1})}
+    =(2N+1)\len{\psi(a)}\ge2N+1.
+\]
+The element $\psi([a,b])$ is nontrivial and belongs to the commutator subgroup.
+A nontrivial cyclically reduced word with zero abelianization has length at
+least four: length one or three cannot have every exponent sum zero, and a
+length-two zero-sum word cancels. Hence its cyclic length is at least four.
+The initial tuple has total length $2N+5$, so it attains this universal lower
+bound. Its commutator root is not a pure power.
+\end{proof}
+
+This is a completeness obstruction to \emph{strict automorphic shortening
+alone}, not a lower bound for unknot recognition. It does not obstruct
+relator combination, quotient deletion, or Tietze elimination. Indeed the
+repository's existing relator-power mechanisms are precisely relevant to
+such an example. It also is not a family of hard knot diagrams: it is a
+transparent family of supplied presentations of an infinite-cyclic group.
+
+At $N=2^{500}$ the implementation confirms the exact local minimum and returns
+an inconclusive stall, not a knottedness verdict. The example shows why
+proving only a phase bound would still not establish terminal completeness.
+One must understand how non-automorphic presentation operations interact with
+the representation and search bounds.
+
+\section{Separating families and exact phase compression}
+\label{sec:families}
+
+\subsection{Unbounded one-step gain over a selected direction}
+
+\begin{proposition}[A selected median can choose the wrong scale]
+For $N\ge3$, consider the tuple
+\[
+ \calW_N=((ba^N)^2,(ca)^3),\qquad L_0=2N+8.
+\]
+The best unit Whitehead direction has gain five. Exact line minimization
+along any such best direction uses exponent one and leaves length $2N+3$.
+An integral $a$-shear reaches length five in one step. Thus the ratio of
+one-step gains is $(2N+3)/5$, unbounded in expanded length.
+\end{proposition}
+\begin{proof}
+For multiplier $a$, the gap objective is
+\[
+ 5+2|N+z_b-z_{-b}|+3|1+z_c-z_{-c}|.
+\]
+A unit direction can decrease each positive gap by at most one; choosing both
+differences $-1$ realizes gain $2+3=5$. A unit map with multiplier $b$ can
+remove at most the two occurrences of $b$, and one with multiplier $c$ can
+remove at most the three occurrences of $c$. Words without that multiplier
+cannot shorten because all their corresponding initial gaps are zero.
+Hence $a$, or its equivalent signed direction, is best.
+
+Along a best direction the length is $5+2|N-k|+3|1-k|$. Its first minimum is
+$k=1$, the lower weighted median. Independently setting the two differences
+to $-N$ and $-1$ gives length five. Finally every automorphic image of these
+two nontrivial powers has length at least two plus three, so five is even a
+minimum over the full automorphism group for this tuple.
+\end{proof}
+
+The example does \emph{not} give an exponential running-time advantage over
+the already batched repository method. A subsequent selected-direction power
+can remove the remaining long run; this simple fixture separates one step
+from two, not one step from $N$ unbatched steps. Its purpose is to establish
+strictly stronger local optimization without mischaracterizing the baseline.
+
+\subsection{Many independently weighted scales}
+
+For $k,h\ge1$ put
+\begin{equation}
+ N_j=j2^h,\qquad w_j=2^{h+2(k-j+1)},\qquad
+ u_j=b_ja^{N_j}\quad(1\le j\le k),
+ \label{eq:starparameters}
+\end{equation}
+and consider
+\begin{equation}
+ \calS_{k,h}=\langle a,b_1,\ldots,b_k\mid
+       u_j^{w_j},u_j^{w_j+1}\ (1\le j\le k)\rangle.
+ \label{eq:star}
+\end{equation}
+There are only $O(k)$ repetition rules, with encoding size
+$O(k(h+k+\log(k+2)))$. The combined weight at the $j$th scale is
+$v_j=2w_j+1$, and these weights satisfy
+\[
+ v_j>\sum_{\ell>j}v_\ell.
+\]
+
+\begin{theorem}[One phase versus $k$ selected-line phases]
+The group \eqref{eq:star} is infinite cyclic. Joint integral-shear optimization
+reaches a pure-power terminal state in one phase, at the globally smallest
+possible total cyclic length $\sum_jv_j$. A greedy best-unit direction
+followed by an eager first line minimum takes exactly $k$ positive phases,
+with multiplier $a$ preferred in ties.
+\end{theorem}
+\begin{proof}
+Setting $z_{b_j}-z_{-b_j}=-N_j$ maps every $u_j$ to the cyclic word $b_j$.
+The pair of resulting exponents $w_j,w_j+1$ has gcd one, so all $b_j$ are
+killed and $a$ is free. Each original nontrivial power has every automorphic
+cyclic image at least as long as its exponent; consequently
+$\sum_j(2w_j+1)$ is also the global automorphic lower bound, attained here.
+
+At an intermediate selected-line state, each unfinished scale has a positive
+$a$-run, whereas finished scales have zero run. The best unit $a$-direction
+reduces every unfinished gap by one and changes no finished gap, gaining the
+sum of the unfinished $v_j$. A unit direction with any other multiplier
+$b_j$ can remove at most its own $v_j$ occurrences; all other roots have no
+$b_j$ and cannot shorten. If its scale is finished, its own roots are pure
+$b_j$ powers and are fixed. Thus $a$ is a best unit multiplier, strictly so
+when at least two scales remain.
+
+Along the selected direction, the least unfinished run has weight greater
+than all later weights combined. Its length is the unique weighted-median
+scale. The first line minimum therefore removes exactly this least run and
+subtracts the same amount from all later runs. Repeating removes the scales
+in increasing order, one per phase. There are exactly $k$ of them.
+\end{proof}
+
+This is an exact, rank-dependent phase compression, not a hard-diagram
+construction. It provides a useful capacity and scaling test for the kernel
+and explains why the synthetic benchmark can show larger gains than the
+ordinary braid-stage corpus. The theorem also holds for many other increasing
+run sequences and superincreasing combined weights.
+
+\section{Implementation, validation, and measured tradeoffs}
+\label{sec:experiments}
+
+\subsection{What was actually executed}
+
+The delivered implementation is standard-library Python, executed on
+CPython 3.13.5 under Linux. It contains separate modules for literal repetition
+grammars, reverse gap extraction, min-cost circulation, forest medians, joint
+optimization, decorated replay, terminal arithmetic, a CLI, and a proposed
+WordArena bridge. There is no dependency on an LP package or floating-point
+arithmetic.
+
+The retained unit-test log records 51 passing tests. Tests exercise malformed
+rules and certificates, reducedness preconditions, signed multipliers,
+inverse-neighbor gaps, duplicate roots, huge powers, small exhaustive
+potential searches, random exact witnesses, literal substitution and inverse
+checks, forest-versus-flow comparisons, and multi-phase independent replay.
+The gateway-shaped fixture is not a substitute for executing the actual
+upstream module.
+
+The separate deterministic audit uses seed 20261008 and records:
+\begin{center}
+\begin{tabular}{lr}
+\toprule
+Audit item & Completed count\\
+\midrule
+General circulation instances, fast paths disabled & 1,200\\
+Capacity phases across those instances & 37,563\\
+Imbalance repairs across those instances & 12,119\\
+Connected braid closures retained & 180\\
+Raw and post-elimination algebraic stages & 360\\
+Individual relator-image comparisons & 1,012\\
+Serialized large abstract-presentation traces & 3\\
+Failures in the completed audit & 0\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The circulation audit includes hundreds-bit capacities and offsets. Every
+result is checked by the independent primal--dual equality; small cases in
+the unit tests are also compared with exhaustive bounded-potential searches.
+There are an additional 120 randomized forest-versus-circulation comparisons
+in the unit tests. Such tests supplement, rather than replace, the solver
+proof and the no-cancellation theorem.
+
+\subsection{Braid-derived stages, and why the negative result matters}
+
+For a braid generator $\sigma_i$, the independent Artin convention sends
+\[
+ (x_i,x_{i+1})\longmapsto
+ (x_ix_{i+1}x_i^{-1},x_i),
+\]
+with its explicitly implemented inverse. Composing the braid word gives
+closure relators $\beta(x_i)x_i^{-1}$. The induced permutation checks that
+the closure has one component. Inverse-pair and braid-relation tests check
+the convention. This constructs a separate source corpus; it does not call
+the production PD-to-Wirtinger constructor.
+
+The audit retains 180 connected closures on two through five strands with
+one through twelve input crossings, obtained in 627 generation attempts.
+For each it checks the raw presentation and the presentation after exact
+singleton Tietze elimination. Both tuples, all elimination records, and
+length results are retained. These two stages of the same input are not
+statistically independent samples.
+
+A stronger joint query is never worse in resulting length, as the theorem
+predicts. It is strictly better on 21 raw stages, but on \emph{zero}
+post-singleton-elimination stages. For example, the four-braid
+$(-3,1,3,2,3)$ has raw length $12$; a selected-line step leaves $10$, whereas
+a joint step leaves $6$. The singleton prelude already eliminates all
+relators on this example. Reporting its raw gain as a production recognition
+speedup would therefore be misleading.
+
+\subsection{Paired kernel timings}
+
+\path{experiments/benchmark.py} uses one excluded warm-up for each arm,
+then five measured rounds with shuffled arm order for each case. Inputs are
+preconstructed and immutable; output construction is timed. Joint arms
+include the independent optimality witness check. The selected-line arm
+independently checks its output-length formula, but does not produce a
+certificate of global joint optimality. It is a mathematical same-harness
+baseline, not the repository's adaptive trigger policy or its measured runtime.
+
+The two joint arms have the \emph{same optimization contract}. The structured
+arm uses balanced and forest shortcuts, and the forced-flow arm disables
+both. The table sums per-case medians in milliseconds; it is not a single
+wall-clock run of the complete recognizer.
+\begin{center}
+\small
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+Stage corpus & \shortstack{Strict length\\gains} & \shortstack{Selected\\line} & \shortstack{Joint\\structured} & \shortstack{Joint\\flow}\\
+\midrule
+% BEGIN GENERATED BRAID TABLE
+Raw presentations & 21/180 & 33.717 & 107.619 & 114.320\\
+After singleton elimination & 0/180 & 12.643 & 27.723 & 35.657\\
+% END GENERATED BRAID TABLE
+\bottomrule
+\end{tabular}
+\end{center}
+% BEGIN GENERATED BRAID SUMMARY
+There are 5,400 measured calls in this part. Across both stages the sums are
+$46.360$ ms for the selected-line baseline, $135.342$ ms for structured joint
+optimization, and $149.977$ ms for forced flow. Thus the more powerful query
+has substantial overhead on these ordinary small inputs. The shortcuts reduce
+that overhead, but the corpus does not support replacing the default policy.
+% END GENERATED BRAID SUMMARY
+
+\subsection{Same-terminal synthetic descent}
+
+The synthetic experiment measures \emph{complete descent to the same
+pure-power infinite-cyclic terminal}, using \eqref{eq:star}. Both methods
+check their output data; the joint method also supplies its stronger local
+optimality witnesses. No measured baseline in this table is capped or
+incomplete. All samples are retained, including execution order.
+\begin{center}
+\small
+\begin{tabular}{@{}rrrrrrr@{}}
+\toprule
+$k$ & $h$ & Line (ms) & Joint (ms) & Flow (ms) & Phases line/joint & Line/joint\\
+\midrule
+% BEGIN GENERATED SYNTHETIC TABLE
+3 & 20 & 1.139 & 0.583 & 1.796 & 3/1 & 1.95\\
+6 & 20 & 7.114 & 1.608 & 6.345 & 6/1 & 4.42\\
+12 & 20 & 62.703 & 5.116 & 25.118 & 12/1 & 12.26\\
+3 & 100 & 1.012 & 0.589 & 5.190 & 3/1 & 1.72\\
+6 & 100 & 6.728 & 1.700 & 18.019 & 6/1 & 3.96\\
+3 & 500 & 1.055 & 0.672 & 22.107 & 3/1 & 1.57\\
+6 & 500 & 7.033 & 1.691 & 77.832 & 6/1 & 4.16\\
+% END GENERATED SYNTHETIC TABLE
+\bottomrule
+\end{tabular}
+\end{center}
+% BEGIN GENERATED SYNTHETIC SUMMARY
+There are 105 measured calls. The observed phase counts agree with the
+exact theorem: $k$ versus one. At $(k,h)=(12,20)$, medians are $62.703$ ms
+and $5.116$ ms, approximately $12.26$ times apart. At $(6,500)$ they are
+$7.033$ ms and $1.691$ ms, approximately $4.16$ times apart. These are
+completed synthetic-presentation measurements, not ratios against censored
+runs and not unknot-diagram benchmarks.
+
+For the identical joint query at $(6,500)$, disabling the shortcuts raises
+the median from $1.691$ ms to $77.832$ ms. This isolates the cost of processing
+many capacity bits unnecessarily on structured graphs. The large integer
+sizes remain encoded throughout; no $2^{500}$-letter materialization occurs.
+% END GENERATED SYNTHETIC SUMMARY
+
+Five repetitions do not justify fine-grained confidence claims. Host load,
+interpreter effects, different source grammars, and verification contracts
+can change timings. The robust evidence is the exact phase difference and
+the clearly separated completed measurements on these fixtures; no universal
+speedup is inferred.
+
+\subsection{Certificates and reproducibility artifacts}
+
+The three supplied JSON traces use exponent bit parameters $20$, $100$, and
+$500$ on six-branch infinite-cyclic presentations with consecutive pure-power
+exponents. Each trace is independently replayed from its original compressed
+presentation. The CLI prints \emph{abstract presentation only; no knot verdict}.
+The gap witnesses, raw timing samples, and source corpus can be
+inspected without a production installation.
+
+The local test suite and the audit were executed. The complete maintained
+suite, real upstream gateway, PD-based pipeline benchmark, and any Rust or
+Lean integration were not executed. Their absence is recorded in
+\path{integration/STATUS.json}, not concealed by reporting the repository's
+own historical passing-test counts as ours.
+
+\section{Integration into the maintained recognizer}
+\label{sec:integration}
+
+\subsection{The inspected source contract}
+
+The inspected Python source snapshot is commit
+\begin{center}
+\small\texttt{81a387aada56bb180649a98c21c078cb89efcfde}.
+\end{center}
+The source-manifest appendix records exact blob identities and which ranges
+were read. The maintained selected-direction implementation uses t/c SLP rules,
+separate free/cyclic reduction, a min-cut direction, and an adaptive decision
+about whether to profile the selected power. Our baseline timing does not
+emulate that complete scheduler.
+
+The delivery is additive. A suitable initial destination is
+\path{Topology/UnknotRecognition/research/integral_shears_20261008/}.
+No production file should be replaced automatically on the evidence here.
+
+\subsection{Legacy and atomic integration are different projects}
+
+The bridge supplies \code{prepare\_step}, which imports the arena's current
+roots and prepares a checked joint solution without replacing the source-root
+list. It can translate the solution into the existing
+\code{whitehead}/\code{whitehead\_power} records using singleton factors.
+
+For legacy certificates, \code{replay\_in\_arena} applies those factors using
+the host's own substitution and cyclic reduction. This preserves the host's
+representative convention. Its returned roots and move records must be
+committed together only after complete success and independent full-source
+replay. This route does not inherit the direct rule-growth bound, and its
+intermediate steps can increase length.
+
+In contrast, \code{install\_prepared} imports the direct core output. It is
+reserved for a \emph{new atomic-shear protocol}. Installing these roots while
+recording only legacy positional moves can make a later overlap certificate
+refer to the wrong positions. A new protocol must specify the cyclic root
+convention, signed potential map, source identities, replay recurrence,
+resource handling, and schema version explicitly.
+
+The source-pinned gateway checks blob hashes, imports the real WordArena,
+compares legacy replay with the joint result on small inputs, and checks the
+existing power-profile formula. It is supplied for maintainer execution and
+is explicitly marked \textbf{not executed} in this delivery. Passing it would
+still not be an end-to-end integration benchmark.
+
+\subsection{Resources, failure, and a conservative scheduler}
+
+The circulation \code{Budget} counts cooperative flow work. It is not a
+whole-operation wall-time or memory limit. Histogram extraction, structured
+shortcuts, serialization, large integer operations, and host allocations
+need a shared outer deadline and allocation accounting before service use.
+Arena allocations made before a failed tentative step are not rolled back;
+a scratch arena or explicit accounting of abandoned nodes is required.
+
+A budget failure, a non-pure terminal, or a shear stall is inconclusive.
+The existing complete exact backend must remain available. The current
+small-corpus evidence supports an opt-in probe for highly compressed or
+multi-scale states, not a new default. Even a perfect local optimizer can
+choose a different long-term path than a less aggressive heuristic.
+
+A production comparison should measure original PD construction, unchanged
+filters, search, independent source replay, resource exhaustion, and the final
+verdict in paired shuffled runs. It should retain no-change controls and
+negative results. A smaller algebraic state or a better local length objective
+is not by itself a completed recognition speedup.
+
+\section{Further research questions and concrete next targets}
+\label{sec:future}
+
+\subsection{Control changes of multiplier, not only powers}
+
+The fixed-multiplier orbit is solved exactly and is idempotent. The next
+structural question is whether a natural class of knot-derived presentations
+admits a bound on the number of successful \emph{changes} of multiplier.
+A useful target is $O(\log^2 n)$ phases with a polynomial-size certified
+prelude. An initial theorem could restrict rank, a graph decomposition, or a
+geometric presentation parameter. Any claimed bound must permit arbitrarily
+large encoded gap exponents rather than reducing to a bound in expanded
+length.
+
+A concrete experimental target is to retain the whole sequence of optimizing
+multipliers, dual circulations, state sizes, and length gains on adversarial
+rather than only random presentations. Seek either a monotone potential
+controlling changes of multiplier or an explicit long alternating family.
+The mere fact that each step shortens length is not enough.
+
+\subsection{Compress the genuinely frustrated part of the gap graph}
+
+Balanced graphs and forests are solved without general flow. In a general
+graph, bridges connect otherwise independent blocks and should be removable
+by compatible one-variable optimizations. Can one formulate a certified
+block decomposition whose expensive part depends only on the size of the
+cyclic, offset-inconsistent core? A useful theorem would bound the cost by a
+small frustration parameter plus near-linear processing of the remaining
+records, still with binary capacities.
+
+A further target is incremental optimization: after a local relator operation,
+reuse an existing dual circulation and repair only the changed gap records.
+The reused witness is valuable because exact primal--dual equality can certify
+success without trusting the incremental search procedure.
+
+\subsection{Interleave relator moves without losing the phase theorem}
+
+The plateau family proves that automorphisms alone are insufficient for the
+pure-power terminal strategy. The repository already has useful compressed
+relator-power and overlap operations. The key next theorem is not merely
+soundness of one more move; it is a combined representation bound for a
+sequence mixing shear phases, generator elimination, quotient deletion, and
+partial relator replacement.
+
+One precise goal is an additive or constant-factor grammar bound for a
+certified round consisting of one shear phase and a maximal batch of a
+restricted relator operation. A phase potential must then count both rounds
+and their effect on rank and root identities. An unrestricted appeal to a
+polynomial compressed reduction primitive does not establish the desired
+end-to-end bound.
+
+\subsection{Broaden terminal states with explicit verification}
+
+Pure powers are a deliberately transparent terminal class. A more useful
+terminal could recognize signed generator identifications, free-product
+splittings, or a bounded number of residual mixed relators after gcd
+elimination. Each extension should return its own replayable proof that the
+full presented group is, or is not, infinite cyclic.
+
+On sourced knot inputs, topology may rule out some abstract free-product
+possibilities. Such facts should sharpen a verified decision rule rather than
+justify silently deleting relations or inferring a knot verdict from an
+unsourced group. A complete diagram-to-presentation chain remains essential.
+
+\subsection{Find geometric instances where the local advantage survives}
+
+All observed raw-stage gains in the current small braid corpus are preempted
+by singleton elimination. The next meaningful corpus should therefore
+condition on surviving the existing cheap stages, include larger source
+braids and difficult PD diagrams, and retain the source construction and all
+censored runs. This is a concrete test of relevance, not an invitation to
+inflate arbitrary group presentations and call them difficult knots.
+
+The synthetic families establish encoded capacity and phase compression. A
+separate mathematical target is an explicit diagram family for which the
+maintained preprocessing produces a comparable multi-scale tension structure
+with polynomial overhead. Such a family would connect the local theorem to
+an actual recognition-performance class.
+
+\subsection{A proof-carrying atomic protocol and formalization}
+
+The direct constructor is where the strongest representation theorem lives.
+Formalize its signed-letter, seam, repetition, and normal-closure semantics,
+then specify an atomic certificate version that does not confuse cyclic
+representatives with positional records. The independent decorated recurrence
+provides a small, tractable formalization target.
+
+The arithmetic certificate is another suitable target: formalize the identity
+\[
+ \sum_e f_e(z_{u_e}-z_{v_e})=\sum_vz_v\divg f(v)
+\]
+and deduce integer optimality from primal--dual equality. This verification
+lemma is considerably smaller than formalizing the optimizer. Afterwards,
+formalizing the scaling invariant and bounded-phase recurrence would connect
+executable witnesses to a machine-checked cost argument.
+
+\section{Conclusion}
+
+This work replaces a selected powered Whitehead direction with an exact
+optimization over a whole commuting family of integral multiplier shears.
+The important local fact is that non-multiplier letters never cancel; the
+important algorithmic fact is that the resulting integer tension has an exact
+circulation witness; the important representation fact is that the reduced
+output is constructed with constant-factor rule growth.
+
+Together these give an unconditional polynomial compressed local query and
+a $\poly(\sigma)2^{O(q)}$ theorem for bounded numbers of successful phases.
+They do not supply the missing geometric phase bound or a complete global
+presentation strategy. The explicit plateau and the negative post-preprocessing
+benchmark result make those boundaries concrete. The delivered code, proofs,
+independent checks, and integration safeguards provide a basis for the next
+step without upgrading a local improvement into an unsupported general
+quasi-polynomial claim.
+
+\appendix
+\section{Reproduction and file map}
+\label{app:files}
+
+From the unpacked directory, run:
+\begin{verbatim}
+python -B -m unittest discover -s tests -v
+python -B experiments/audit.py
+python -B experiments/benchmark.py
+python -B experiments/make_tables.py
+python -B -m shear_kernel verify certificates/star_Z_500.json
+sh build.sh
+\end{verbatim}
+
+The CLI also generates an independently replayed example:
+\begin{verbatim}
+python -B -m shear_kernel demo --bits 500 --branches 6 \
+  --output demo.json
+\end{verbatim}
+The result is an abstract-presentation certificate, not a diagram certificate.
+To run the unexecuted real-source gateway in a full checkout:
+\begin{verbatim}
+python -B integration/check_upstream.py \
+  --fast-root /path/to/ProveIt/Topology/UnknotRecognition/fast \
+  --output results/upstream_gateway.json
+\end{verbatim}
+
+\begin{longtable}{@{}p{0.35\textwidth}p{0.60\textwidth}@{}}
+\toprule
+File or directory & Purpose\\
+\midrule
+\endhead
+\path{article.tex}, \path{article.pdf} & This source and compiled article.\\
+\path{shear_kernel/slp.py} & Literal repetition grammar and reducedness checks.\\
+\path{shear_kernel/histogram.py} & Producer gap extraction, independent histogram recurrence, direct core output.\\
+\path{shear_kernel/flow.py} & Capacity-bit circulation, balanced shortcut, primal--dual verifier.\\
+\path{shear_kernel/forest.py} & Exact parallel-bundle median forests.\\
+\path{shear_kernel/optimize.py} & All-multiplier optimization, certificates, legacy factorization.\\
+\path{shear_kernel/replay.py} & Independent decorated-word image recurrence.\\
+\path{shear_kernel/presentation.py} & Bounded descent and pure-power arithmetic terminal.\\
+\path{shear_kernel/reference.py} & Literal checks, Artin presentations, selected-line baseline.\\
+\path{shear_kernel/adapter.py} & Proposed, non-default WordArena bridge.\\
+\path{tests/} & Executed local unit tests.\\
+\path{experiments/} & Deterministic audit, paired benchmarks, table generator.\\
+\path{results/} & Test/build logs, raw samples, audit summaries, source corpus.\\
+\path{certificates/} & Three large compressed abstract-presentation traces.\\
+\path{integration/} & Source pin, execution status, instructions, unexecuted gateway.\\
+\path{SHA256SUMS} & Integrity hashes for the delivered files other than the manifest itself.\\
+\bottomrule
+\end{longtable}
+
+No third-party article PDF or upstream implementation source is redistributed.
+The package is licensed MIT-0. The Python source and numerical output
+are inspectable without
+compiling the PDF.
+
+\section{Source provenance and non-execution ledger}
+
+The following blob identities were returned during GitHub source inspection.
+A full checkout was not available to execute in the working environment.
+The first four files below were explicitly fetched at the pinned commit; the
+maintained theory file was fetched from \code{main} during the same inspection.
+
+\begin{longtable}{@{}p{0.37\textwidth}p{0.58\textwidth}@{}}
+\toprule
+File and inspected range & Git blob identifier\\
+\midrule\endhead
+\path{whitehead_power.py}, complete &
+\small\texttt{d235def0cf042e9e6407c89512b023127d811ec4}\\
+\path{compressed_search.py}, 1--110 &
+\small\texttt{ff33437267d37bc874b00cb4e087f083b94e1a7b}\\
+\path{group_certificate.py}, 1--150 &
+\small\texttt{922510eda5b7e6731de43e639c7dafcb47a56361}\\
+\path{compressed_words.py}, 1--110 &
+\small\texttt{bd68418e226813a7fa50dc87405c214970ddf50e}\\
+\path{synthesis/whitehead_powers.tex}, complete &
+\small\texttt{4948b50375b641aa2389782b0d4589bd75bd0156}\\
+\bottomrule
+\end{longtable}
+
+The machine-readable ledger distinguishes executed local tests from
+unexecuted integration. In particular, no claim is made that the new
+\code{adapter.py} has passed the actual maintained suite, that the current
+recognizer has changed defaults, or that repository-reported historical test
+counts were rerun here. The source-pinned gateway validates file blobs before
+its limited cross-check, and refuses changed sources unless explicitly
+overridden after inspection.
+
+\section{Certificate checks and failure semantics}
+
+An optimization certificate contains the alive generator list, initial and
+optimal total lengths, selected multiplier, a source binding, and one solution
+record per positive multiplier. Every solution record contains integer
+potentials and signed bounded flows on the reconstructed gap records.
+Omitting a multiplier prevents certification of the all-multiplier minimum.
+Duplicate witness entries, non-integer objective data, invalid supports,
+capacity violations, nonzero divergence, and nonzero primal--dual gap are
+rejected. Solver diagnostics such as repair counts are not mathematical proof
+premises.
+
+The standalone verifier reconstructs the source histogram independently and
+checks all witnesses. A trace verifier then uses the separate decorated-word
+recurrence for each selected automorphism, preserving generator and relator
+identities. A terminal positive or negative group result is accepted only
+when recomputation of the terminal predicate agrees. An inconclusive record
+certifies no knot verdict, regardless of whether its diagnostic reason was
+a stall or a phase cap.
+
+This is research code, not a hardened remote certificate service. External
+callers must enforce whole-input, integer-size, elapsed-time, and allocation
+budgets. Those requirements are implementation-safety obligations distinct
+from the asymptotic theorem for valid encoded inputs.
+
+\begin{thebibliography}{9}
+
+\bibitem{proveit}
+Vladimir Reshetnikov, \emph{ProveIt: Topology/UnknotRecognition}, repository
+source snapshot \texttt{81a387aa\ldots}, inspected 8 October 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/81a387aada56bb180649a98c21c078cb89efcfde/Topology/UnknotRecognition}.
+
+\bibitem{powerrepo}
+ProveIt contributors, \emph{Whitehead-power optimization} (maintained proof section),
+maintained research section \path{synthesis/whitehead_powers.tex}; corresponding
+implementation \path{fast/fastunknot/whitehead_power.py}, inspected 8 October 2026.
+The blob identities are recorded in Appendix B.
+
+\bibitem{rvw}
+Abd\'o Roig, Enric Ventura, and Pascal Weil,
+\emph{On the complexity of the Whitehead minimization problem},
+International Journal of Algebra and Computation \textbf{17} (2007),
+1611--1634. \url{https://arxiv.org/abs/math/0608779}.
+
+\bibitem{schleimer}
+Saul Schleimer, \emph{Polynomial-time word problems},
+Commentarii Mathematici Helvetici \textbf{83} (2008), 741--765.
+\url{https://arxiv.org/abs/math/0608563}.
+
+\bibitem{kapovich}
+Ilya Kapovich, \emph{Compressed primitivity problem in free groups},
+arXiv:2607.21499v1, 23 July 2026.
+\url{https://arxiv.org/abs/2607.21499}.
+
+\bibitem{goldberg}
+Andrew V. Goldberg and Robert E. Tarjan,
+\emph{Finding minimum-cost circulations by successive approximation},
+Mathematics of Operations Research \textbf{15} (1990), 430--466.
+\url{https://doi.org/10.1287/moor.15.3.430}.
+
+\bibitem{lackenby}
+Marc Lackenby, \emph{Incompressible surfaces, hierarchies and unknot recognition},
+arXiv:2607.23350v1, July 2026, especially Section 9.
+\url{https://arxiv.org/abs/2607.23350}.
+
+\bibitem{papa}
+C. D. Papakyriakopoulos, \emph{On Dehn's lemma and the asphericity of knots},
+Proceedings of the National Academy of Sciences \textbf{43} (1957), 169--172;
+expanded account, Annals of Mathematics \textbf{66} (1957), 1--26.
+\url{https://doi.org/10.1073/pnas.43.1.169}.
+
+\end{thebibliography}
+\end{document}

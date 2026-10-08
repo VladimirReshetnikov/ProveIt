@@ -1,3 +1,6 @@
+/- Modified for ProveIt: remove the trailing congr step after simplification
+already closes referenceInputLaw_eq_step on Lean 4.32. Both upstream
+theorem statements are unchanged. -/
 import OAI.Combinatorics.Progressions.Geometry.ActualFixedSpatialSlicedTargetReal
 
 namespace OAI
@@ -59,7 +62,6 @@ theorem referenceInputLaw_eq_step : slice.path.referenceInputLaw = slice.stepInp
         ZMod (p.val ^ slice.path.exponent p.val))) :=
     funext fun p => funext fun v => slice.origin_eq p v
   simp only [ActualFixedSpatialForecastPath.referenceInputLaw, stepInputLaw, hp, ho]
-  congr 1
 
 omit [Fintype Tsp] in
 theorem referencePolynomial_eq_sample : slice.path.referencePolynomial =
