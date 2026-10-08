@@ -20,8 +20,8 @@ Scope
   checkpoints; the current catalogue count is stated here and in the ledger.
 
 Verification at this checkpoint
-  All 798 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 5,108 public Gowers theorems and found only propext,
+  All 800 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 5,117 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 114 exact
   companion proofs and 6 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -242,8 +242,11 @@ Cubic source-scale numerical budgets
   (2/(gamma*theta))^10002. Proofs16CubicSpectrumBudget propagates this
   sharper count to the actual spectrum: its count is at most
   s(theta,gamma,1), independent of the inner cover loss.
-  All four modules pass the full audit. These discharge specific numerical
-  substeps; the general structural theorem and six catalogue gaps remain.
+  Proofs16CubicSourceScale bounds the halved-density remainder count by
+  U^6, the spectrum count by U^2, and the slice family count by U, where
+  U=s(theta,gamma,1). Proofs16CubicPowerAbsorption proves that the source
+  power at U^8 pays for the scalar recurrence and polynomial losses.
+  These six modules pass the full audit and discharge numerical substeps; the general structural theorem and six catalogue gaps remain.
 
 Conditional quantitative density bridge and dependency port
   Proofs01QuantitativeDensityBridge proves the exact Theorem 1.3 from
