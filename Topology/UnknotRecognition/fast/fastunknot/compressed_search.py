@@ -5,7 +5,8 @@ not a knot verdict: group_decide independently rebuilds and checks the trace.
 Individual compressed operations do not bound search length or grammar growth.
 """
 from .compressed_words import WordArena, CompressedLimit
-from .group_certificate import _Budget, _presentation, _whitehead_cut, _image, _reduce, GroupLimit
+from .group_certificate import _Budget, _presentation, _whitehead_cut, _image, _reduce, _certificate_version, GroupLimit
+from .whitehead_power import power_profile, powered_images
 
 
 def _search(arena, roots, alive, moves, *, relator_moves=False, max_letters=200000):
@@ -64,12 +65,31 @@ def _search(arena, roots, alive, moves, *, relator_moves=False, max_letters=2000
         if change >= 0:
             return False
         before = sum(arena.lengths[x] for x in roots)
-        images = {x: arena.from_word(_image(x, a, subset))
-                  for g in alive for x in (g, -g)}
+        previous = moves[-1] if moves else {}
+        repeated = (previous.get('kind') in ('whitehead', 'whitehead_power')
+                    and previous['multiplier'] == a and set(previous['subset']) == subset)
+        exponent, gain = 1, change
+        # Small incompressible states rarely benefit from scanning a gap
+        # profile. Repetition or large expansion justifies that extra work.
+        if repeated or before > 4*len(arena.rules):
+            arena.stats['power_profiles'] = arena.stats.get('power_profiles', 0)+1
+            exponent, gain, unit = power_profile(arena, roots, a, subset)
+            if unit != change or exponent < 1 or gain > change:
+                raise ArithmeticError('Whitehead cut and power profile disagree')
+        if exponent == 1:
+            images = {x: arena.from_word(_image(x, a, subset))
+                      for g in alive for x in (g, -g)}
+        else:
+            images = powered_images(arena, alive, a, subset, exponent)
         roots[:] = [arena.cyclic_reduce(x) for x in arena.substitute(roots, images)]
-        if sum(arena.lengths[x] for x in roots)-before != change:
-            raise ArithmeticError('Whitehead cut and compressed substitution disagree')
-        moves.append(dict(kind='whitehead', multiplier=a, subset=sorted(subset)))
+        if sum(arena.lengths[x] for x in roots)-before != gain:
+            raise ArithmeticError('Whitehead power and compressed substitution disagree')
+        move = dict(kind='whitehead', multiplier=a, subset=sorted(subset))
+        if exponent > 1:
+            move.update(kind='whitehead_power', exponent=exponent)
+            arena.stats['power_moves'] = arena.stats.get('power_moves', 0)+1
+            arena.stats['max_power_bits'] = max(arena.stats.get('max_power_bits', 0), exponent.bit_length())
+        moves.append(move)
     arena.tick()
     return len(alive) == 1 and not any(roots)
 
@@ -95,7 +115,7 @@ def compressed_certificate(diagram, *, check=lambda: None, max_letters=200000,
         moves = []
         if not _search(arena, roots, alive, moves, relator_moves=relator_moves, max_letters=max_letters):
             return None
-        return dict(version=2 if any(m['kind'] == 'relator' for m in moves) else 1,
+        return dict(version=_certificate_version(moves),
                     method='wirtinger-cyclic-group', status='UNKNOT',
                     input_pd=[list(row) for row in diagram.pd], moves=moves,
                     remaining_generator=next(iter(alive)))

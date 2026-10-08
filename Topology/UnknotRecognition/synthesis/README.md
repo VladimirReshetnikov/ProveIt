@@ -2,6 +2,25 @@
 
 The synthesized report on the six archives and on the new recognizer.
 
+`whitehead_powers.tex` proves an exact weighted-median formula for cyclic length
+along powers of a selected Whitehead automorphism. The compressed producer
+uses it on repeated directions or strongly compressed states. Version-3
+certificates receive independent compressed or elementary replay. A compact
+abstract presentation family that previously required exponentially many unit
+moves now finishes in three moves, including the case with exponent `2^500`.
+This is a local improvement, not a general subexponential knot-recognition bound.
+
+The audit contains 225 full knot queries, 30 matched-cap Gordian group probes,
+and 75 synthetic presentation runs, with shuffled historical A/A controls.
+There is no material Gordian timing change and no power greater than one on the
+knot corpus. A noisy small-case slowdown did not reproduce in 126 additional
+queries retained separately. All 658 tests pass with Regina in 130.885 seconds;
+the targeted follow-up also checks the repetition trigger after historical
+allocations suppress the size trigger. Results are in
+`../fast/results/whitehead_power*_20261008.json`, with logs in
+`data/whitehead-power-*`. The rebuilt article has 176 pages, with no new layout
+warnings. Regenerate the measurement tables with `make_tables.py`.
+
 `adaptive_group.tex` adds one-way continuation from explicit to compressed
 group search before a predicted substitution exceeds the letter allowance.
 It preserves generator names, relator slots, completed moves and remaining

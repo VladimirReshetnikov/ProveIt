@@ -560,3 +560,36 @@ if jones_shortcut:
                            '@{}lrrrr@{}', rows) + r'\end{center}' + '\n' +
                      'Median milliseconds including setup. Ratios are medians of paired '
                      'before/after times for identical complete results.\n')
+
+whitehead_power = load('../fast/results/whitehead_power_20261008.json')
+if whitehead_power:
+    from statistics import median
+    arms = ('baseline', 'control', 'powers')
+    rows = ['Small 14, summed medians & ' + ' & '.join(
+        f"{1000*sum(r['median_seconds'][a] for r in whitehead_power['rows'] if r['name'] != 'gordian'):.3f}"
+        for a in arms) + r' \\']
+    gordian = next(r for r in whitehead_power['rows'] if r['name'] == 'gordian')
+    rows.append('Gordian, full query & ' + ' & '.join(
+        f"{1000*gordian['median_seconds'][a]:.3f}" for a in arms) + r' \\')
+    for row in whitehead_power['capacity']:
+        rows.append(f"Gordian group, cap {row['max_letters']} & " + ' & '.join(
+            f"{1000*median(s['measurements'][a]['seconds'] for s in row['samples']):.3f}"
+            for a in arms) + r' \\')
+    with open('tables/whitehead_power_queries.tex', 'w') as handle:
+        handle.write(r'\begin{center}\small' + '\n' +
+            table('Scope & Before & A/A & Powers', '@{}lrrr@{}', rows) +
+            r'\end{center}' + '\nMedian milliseconds; all queries and group probes complete.\n')
+    rows = []
+    for row in whitehead_power['kernels']:
+        cells = [str(row['bits'])]
+        for arm in arms:
+            complete = all(s['measurements'][arm]['success'] for s in row['samples'])
+            cells.append(f"{1000*median(s['measurements'][arm]['seconds'] for s in row['samples']):.3f}"
+                         if complete else 'limit')
+        cells.extend(str(row['samples'][0]['measurements']['powers'][k]) for k in ('moves', 'nodes'))
+        rows.append(' & '.join(cells) + r' \\')
+    with open('tables/whitehead_power_kernels.tex', 'w') as handle:
+        handle.write(r'\begin{center}\small' + '\n' +
+            table('$h$ in $N=2^h$ & Before & A/A & Powers & Moves & Nodes', '@{}rrrrrr@{}', rows) +
+            r'\end{center}' + '\nMedian milliseconds including grammar construction. '
+            'Limits are censored; moves and nodes describe the new search.\n')
