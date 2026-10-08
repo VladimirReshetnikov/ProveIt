@@ -909,6 +909,50 @@ interface is asserted.
 
    Either is a genuine lemma, not bookkeeping.
 
+**Linking option formalized (same day).**
+- `biaffine_coeffs_eq_of_square`, `biaffine_glue`,
+  `freiman_bihom_biaffine_on_chain` (`Proofs16BiaffineGluing`): one
+  bi-affine function on any chain of boxes whose consecutive members share
+  a 2 × 2 square.
+- `bohr_row_convex` (`Proofs16BohrRowIntervals`): in a slow cell each
+  row's Bohr section is an interval. It uses the no-wrap lemma
+  `valMinAbs_add_of_small`.
+- `freiman_bihom_biaffine_on_staircase`: height-3 boxes chained along row
+  intervals whose consecutive triples and quadruples overlap in at least
+  two columns. Height-2 boxes provably cannot be glued, since they share
+  one row.
+
+**Where it bottoms out.** With cell steps making every variation term
+≤ εN (the peer's polynomial Lemma 16.1 supplies this):
+- cells with all variety conditions ≤ (ρ − 3ε)N lie inside V;
+- cells with some condition > (ρ + 3ε)N miss V;
+- only boundary cells are partial. The staircase lemma covers their
+  interiors.
+
+The θ-loss budget still needs **the total mass of boundary cells** to be
+small. That is a regularity statement for V: the mass of V(ρ + 3ε) ∖ V(ρ − 3ε)
+relative to V(ρ), with the shifted-family issue above. So the packing
+reduces exactly to variety regularity (Milićević §3), and every other
+ingredient is now proved here or in the peer's lane.
+
+**Update and audit (same day): variety regularity is proved, with a caveat
+on the input.**
+- `variety_exists_regular_step` (`Proofs16VarietyRegularStep`) needs no
+  algebraic regularity. The telescoping argument only uses a global ratio
+  bound, |V(ρ)| ≤ N² ≤ M^dim·|V(ρ/2)|, from `variety_card_lower` (Bohr lower
+  bounds summed over fibres: `bohr_card_lower`, `variety_card_eq_sum`).
+  The boundary-cell mass is thereby controlled: restrict to V(ρ_j) and
+  take 3ε ≤ ρ/(2m). The domain points in boundary cells then lie in
+  V(ρ_j) ∖ V(ρ_{j+1}), a θ-fraction of V(ρ_j).
+- **Audit caveat.** `MilicevicVarietyStructure` guarantees agreement
+  Φ = φ (after shifts) on many points of V(ρ), not of V(ρ_j). Those
+  points could all lie in V(ρ) ∖ V(ρ_j). The packing therefore needs the
+  input with agreement inside a regular sub-radius. Milićević's own proofs
+  plausibly supply this, since they pick regular radii throughout, but the
+  Prop as stated does not. Strengthening the hypothesis accordingly, or
+  showing that agreement transfers to V(ρ_j) by averaging, is the
+  remaining check on this route.
+
 So off-origin covers of V's graph reduce to two inputs: the peer's
 Lemma 16.1 (polynomial exponent), and Bohr-set regularity for the
 variety's frequencies, with radius losses polynomial in the rank. Both

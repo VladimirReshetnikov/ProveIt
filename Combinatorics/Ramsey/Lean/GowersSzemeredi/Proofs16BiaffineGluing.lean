@@ -174,4 +174,79 @@ theorem freiman_bihom_biaffine_on_chain {N : Nat} {V : Finset (ZMod N × ZMod N)
   · exact ⟨0, 0, 0, 0, fun t ht => by omega⟩
   · exact hind T le_rfl hT
 
+/-- The left end and right end of three consecutive row intervals. -/
+def lo3 (l : Nat → Nat) (t : Nat) : Nat := max (max (l t) (l (t + 1))) (l (t + 2))
+def hi3 (r : Nat → Nat) (t : Nat) : Nat := min (min (r t) (r (t + 1))) (r (t + 2))
+
+theorem le_lo3 (l : Nat → Nat) (t : Nat) :
+    l t ≤ lo3 l t ∧ l (t + 1) ≤ lo3 l t ∧ l (t + 2) ≤ lo3 l t := by
+  unfold lo3; omega
+
+theorem hi3_le (r : Nat → Nat) (t : Nat) :
+    hi3 r t ≤ r t ∧ hi3 r t ≤ r (t + 1) ∧ hi3 r t ≤ r (t + 2) := by
+  unfold hi3; omega
+
+theorem lo3_succ_le (l : Nat → Nat) (t : Nat) : lo3 l (t + 1) ≤ max (lo3 l t) (l (t + 3)) := by
+  unfold lo3
+  rw [show t + 1 + 1 = t + 2 by omega, show t + 1 + 2 = t + 3 by omega]
+  omega
+
+theorem min_le_hi3_succ (r : Nat → Nat) (t : Nat) : min (hi3 r t) (r (t + 3)) ≤ hi3 r (t + 1) := by
+  unfold hi3
+  rw [show t + 1 + 1 = t + 2 by omega, show t + 1 + 2 = t + 3 by omega]
+  omega
+
+/-- **Staircases.** Suppose rows `j < M` of an index grid meet `V` in
+intervals `[l j, r j)`. Suppose every three consecutive intervals share at
+least two columns, and every four consecutive ones also share at least
+two. Then the height-3 boxes `[lo3 t, hi3 t) × {t, t+1, t+2}` form a chain
+whose consecutive members share a `2 × 2` square, and one bi-affine
+function describes the Freiman bihomomorphism on their union. -/
+theorem freiman_bihom_biaffine_on_staircase {N : Nat} {V : Finset (ZMod N × ZMod N)}
+    {Φ : ZMod N × ZMod N → ZMod N} (hΦ : IsEBihomomorphism V Φ {0}) (a d b e : ZMod N)
+    (M : Nat) (l r : Nat → Nat)
+    (hrow : ∀ j, j < M → ∀ i, l j ≤ i → i < r j →
+      (a + (i : ZMod N) * d, b + (j : ZMod N) * e) ∈ V)
+    (htri : ∀ t, t + 2 < M → lo3 l t + 2 ≤ hi3 r t)
+    (hquad : ∀ t, t + 3 < M → max (lo3 l t) (l (t + 3)) + 2 ≤ min (hi3 r t) (r (t + 3))) :
+    ∃ A B C D : ZMod N, ∀ t, t + 2 < M → ∀ i, lo3 l t ≤ i → i < hi3 r t → ∀ k, k ≤ 2 →
+      Φ (a + (i : ZMod N) * d, b + ((t + k : Nat) : ZMod N) * e) = biaffineAt A B C D i (t + k) := by
+  have hT : ∀ t, t + 2 < M → lo3 l t + (hi3 r t - lo3 l t) = hi3 r t := by
+    intro t ht; have := htri t ht; omega
+  obtain ⟨A, B, C, D, hchain⟩ := freiman_bihom_biaffine_on_chain hΦ a d b e (M - 2) (lo3 l) id
+    (fun t => max 2 (hi3 r t - lo3 l t)) (fun _ => 3) (fun t => le_max_left _ _) (fun _ => by norm_num)
+    (by
+      intro t ht i j h1 h2 h3 h4
+      have hbt := htri t (by omega)
+      simp only [id] at h3 h4
+      have hmax : max 2 (hi3 r t - lo3 l t) = hi3 r t - lo3 l t := by omega
+      rw [hmax] at h2
+      have hl := le_lo3 l t
+      have hr := hi3_le r t
+      have hj : j = t ∨ j = t + 1 ∨ j = t + 2 := by omega
+      rcases hj with rfl | rfl | rfl
+      · exact hrow j (by omega) i (by omega) (by omega)
+      · exact hrow (t + 1) (by omega) i (by omega) (by omega)
+      · exact hrow (t + 2) (by omega) i (by omega) (by omega))
+    (fun t => (max (lo3 l t) (l (t + 3)), t + 1))
+    (by
+      intro t ht x y hx hy
+      have hq := hquad t (by omega)
+      have hb0 := htri t (by omega)
+      have hb1 := htri (t + 1) (by omega)
+      have hm0 : max 2 (hi3 r t - lo3 l t) = hi3 r t - lo3 l t := by omega
+      have hm1 : max 2 (hi3 r (t + 1) - lo3 l (t + 1)) = hi3 r (t + 1) - lo3 l (t + 1) := by omega
+      simp only [id]
+      rw [hm0, hm1]
+      have hs1 := lo3_succ_le l t
+      have hs2 := min_le_hi3_succ r t
+      have hl0 := le_lo3 l t
+      have hl1 := le_lo3 l (t + 1)
+      refine ⟨⟨by omega, by omega, by omega, by omega⟩, ⟨by omega, by omega, by omega, by omega⟩⟩)
+  refine ⟨A, B, C, D, fun t ht i hi1 hi2 k hk => ?_⟩
+  have hb := htri t ht
+  have hm : max 2 (hi3 r t - lo3 l t) = hi3 r t - lo3 l t := by omega
+  exact hchain t (by omega) i (t + k) hi1 (by rw [hm]; omega) (by simp only [id]; omega)
+    (by simp only [id]; omega)
+
 end LeanProofs.GowersSzemeredi
