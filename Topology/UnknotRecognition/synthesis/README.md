@@ -765,3 +765,12 @@ The public interface defaults to a 12-crossing fallback preflight and a shared
 remain supported. The 897-test checkpoint and cross-oracle evidence are in
 `data/exceptional-cube-*`; the paired splitting ablation is reproduced by
 `../fast/compressed_braid_research/exceptional.py benchmark --output FILE`.
+
+
+`adaptive_forest.tex` adds structural factor scheduling, early nontriviality
+certificates, and verified endpoint reduction before exceptional cubes. It
+preserves the complete fallback and its previous asymptotic bound, and keeps
+versions one and two replayable. Evidence is in `data/adaptive-forest-*`;
+`../fast/compressed_braid_research/adaptive.py` provides `audit` and `benchmark`
+modes, each taking `--output FILE`, against the maintained baseline at
+`666a62f6a`. All timing arms include proof construction and independent replay.
