@@ -20,8 +20,8 @@ Scope
   checkpoints; the current catalogue count is stated here and in the ledger.
 
 Verification at this checkpoint
-  All 790 modules reachable from GowersSzemeredi.Audit compiled successfully.
-  The axiom audit checked 5,069 public Gowers theorems and found only propext,
+  All 792 modules reachable from GowersSzemeredi.Audit compiled successfully.
+  The axiom audit checked 5,079 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 114 exact
   companion proofs and 6 open catalogue statements from Lean's theorem types.
   Existing dependency modules emit linter/deprecation warnings; no proof
@@ -204,6 +204,18 @@ Unconditional dimension-two cubic graph piece
   is unconditional for sufficiently large odd primes. Comparing its
   controls to the exact manuscript budget and extending the structural
   induction beyond dimension two remain open. Both modules pass the audit.
+
+Explicit lower bound for the all-scale cubic exponent
+  Proofs16CubicCapBound takes logarithms of the rounding threshold and
+  proves that its capped exponent is at least
+    e*a/(16+4*log(16/z))
+  for 0<z,e,a<=1. Proofs16CubicExplicitExponent verifies those ranges for
+  the dimension-two construction and replaces its capped width control by
+    section16CubicLiftExponent/(4+log(32/section16Zeta)).
+  The denominator depends only on the outer parameters, not the inner
+  cover loss. The simpler exponent is positive and yields a proved
+  MultiplyLinearWith consequence. Both modules pass the full audit; this
+  simplifies local controls without closing an exact catalogue statement.
 
 Conditional quantitative density bridge and dependency port
   Proofs01QuantitativeDensityBridge proves the exact Theorem 1.3 from
