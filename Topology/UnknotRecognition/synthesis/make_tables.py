@@ -945,3 +945,39 @@ if lcs_endpoint:
                 r'\end{center}' + '\nMedian milliseconds including construction; limits are censored. '
                 + ('Full overlap enumerates all lengths in compressed progressions, not all occurrences.\n'
                    if key == 'kernels' else 'Local operations do not produce knot verdicts.\n'))
+
+spin_integrated = load('../fast/results/spin_jones_integrated_20261008.json')
+if spin_integrated:
+    arms = ('potts', 'potts-control', 'spin', 'matched-potts', 'matched-spin')
+    rows = []
+    names = {'kinoshita_terasaka': 'KT', 'hard_unknot_8': 'Hard 8',
+             'stress_braid5_36': 'Braid5 36', 'grid-8-shuffled': 'Grid 8 shuffled'}
+    for row in spin_integrated['rows']:
+        cells = [names.get(row['name'], row['name'].replace('-', ' ').capitalize()),
+                 str(row['crossings'])]
+        for arm in arms:
+            cells.append(f"{1000*row['median_seconds'][arm]:.3f}"
+                         if row['complete_queries'][arm] == spin_integrated['rounds'] else 'limit')
+        rows.append(' & '.join(cells) + r' \\')
+    with open('tables/spin_integrated.tex', 'w') as handle:
+        handle.write(r'\begin{center}\small' + '\n' +
+            table('Input & $n$ & Potts & A/A & Spin & Fixed P & Fixed S', '@{}llrrrrr@{}', rows) +
+            r'\end{center}' + '\nMedian milliseconds for full Jones queries. '
+            'Fixed P/S share an externally prepared order; other columns include ordering. '
+            'Limits are censored, not completed-query times.\n')
+
+tensor_candidates = load('../fast/results/tensor_candidates_20261008.json')
+if tensor_candidates:
+    rows = []
+    arms = ('spin', 'spin-control', 'valuation', 'global-shift')
+    for row in tensor_candidates['rows']:
+        cells = [row['name'].replace('-', ' ').capitalize()]
+        for arm in arms:
+            cells.append(f"{1000*row['median_seconds'][arm]:.3f}"
+                if all(s['measurements'][arm]['status'] == 'COMPLETE' for s in row['samples']) else 'limit')
+        rows.append(' & '.join(cells) + r' \\')
+    with open('tables/tensor_candidates.tex', 'w') as handle:
+        handle.write(r'\begin{center}\small' + '\n' +
+            table('Input & Spin & A/A & Valuation & Global shift', '@{}lrrrr@{}', rows) +
+            r'\end{center}' + '\nMedian milliseconds on a common prepared order. '
+            'The last two arms load the delivered research module directly.\n')

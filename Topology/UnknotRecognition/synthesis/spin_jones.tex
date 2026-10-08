@@ -1,0 +1,225 @@
+\section{Binary boundary tensors for faithful Jones computation}
+\label{sec:spin-jones}
+
+\subsection{The two incoming reports and the integration decision}
+Commit \code{1be2abc8c} supplies two research archives dated 8 October 2026.
+The binary-tensor report develops a complete Jones evaluator, a near-prefix
+compressed matcher, and dihedral boundary transport. The modular-boundary
+report develops finite-field reuse of the marked Euler observer. Both target
+upstream \code{8a9583494}; neither snapshot includes our subsequent window,
+phase, sparse-endpoint, or endpoint-progression refinements. Their patches
+must therefore be integrated by component, preserving those later changes.
+The supplied manifests verify all 480 binary-package files and all 380
+modular-package files. These integrity checks establish source identity,
+not mathematical correctness.
+
+This section integrates the binary Jones component, its three test files,
+benchmark driver and historical policy sources. The other components remain
+under review. In particular, the modular report reports improved repeated
+boundary queries but slower whole raw scans on all seven measured examples;
+its fixed prime palette can be inconclusive. The new near-prefix branch
+must be compared with the current matcher, since its archived baseline
+predates our window optimization. No speedup from either unintegrated
+component is attributed to the maintained recognizer here.
+
+The new optional \code{spin-faithful} backend improves the maintained full
+Jones bound from the faithful Potts implementation's
+$\operatorname{poly}(n)2^{O(\sqrt n\log n)}$ to
+$\operatorname{poly}(n)2^{O(\sqrt n)}$. Comparable general bounds are known
+in the literature, including Maria~\cite{quantum-width}; this is an
+implementation improvement, not a claim of a new complexity class result.
+Jones polynomial one remains inconclusive for unknot recognition.
+
+\subsection{An integral turning certificate from the PD rotation system}
+For a validated nonempty classical knot diagram, let $\alpha$ exchange the
+two darts on an edge and let $\sigma$ advance one slot counterclockwise at
+a crossing. The cycles of $\phi=\sigma\alpha$ are the $n+2$ faces. Pick an
+outer face $f_\infty$. An antisymmetric integral cochain $b$ on directed edges
+must satisfy
+\[
+ b_{\alpha(d)}=-b_d,\qquad
+ \sum_{d\in f}b_d=|f|-4+8\mathbf1_{f=f_\infty}.
+\]
+A face corner turns by $-1$ quarter-turn, so these are the edge contributions
+to the total turning $-4$ of a bounded face and $+4$ of the outer face.
+The demands sum to zero, since the face lengths sum to $4n$.
+
+Root a dual spanning tree at the outer face. On each child face's parent
+edge, assign the total demand of its subtree, with opposite sign on the
+reverse dart; assign zero to the other edges. At each face, the parent
+subtree total minus its children's totals equals its demand. The root
+follows from total demand zero. Each edge value has magnitude at most
+$4n+4$, and the sum $L_b=\sum_e|b_e|$ is at most $4(n+1)^2$.
+The certificate therefore has $O(n)$ integers of $O(\log n)$ bits.
+An independent verifier reconstructs the PD faces and checks the displayed
+equations directly, without repeating the tree solver.
+
+Why do these equations suffice for all smoothing circles? In any smooth
+planar realization with cardinal crossing tangents, geometric edge turns
+satisfy the same equations. The difference from $b$ integrates to zero
+around every face. On the sphere, face boundaries span the cycle space,
+so that difference integrates to zero around every closed graph walk.
+Replacing geometric edge turns by $b$ therefore leaves each oriented
+smoothing circle's total turning unchanged: it is $+4$ or $-4$.
+This proof permits loops, repeated face vertices, and a smoothing circle
+visiting the same crossing twice. It does not apply unchanged to virtual
+diagrams on surfaces of positive genus.
+
+\subsection{Two orientations replace boundary connectivity}
+Write the unnormalized bracket as
+\[
+ \mathcal B_D(A)=\sum_{s\in\{0,1\}^n}A^{n-2|s|}\delta^{c(s)},
+ \qquad \delta=-A^2-A^{-2}.
+\]
+Introduce $\rho$ with $\rho^4=-A^2$. Orient every smoothing circle.
+Its two orientations contribute $\rho^4+\rho^{-4}=\delta$ by the turning
+certificate. Thus the same state sum can be expressed with one binary
+arrow variable on each diagram edge. At a crossing, retain only smoothings
+whose pairs have one incoming and one outgoing arrow; multiply by their
+usual $A$ weight and by $\rho$ to the sum of their local turns. On an edge,
+multiply by $\rho^{\epsilon b_e}$, where $\epsilon$ is its chosen arrow.
+Expanding this tensor product gives precisely all oriented smoothing
+states and recovers the bracket.
+
+A crossing order with $w$ cut edges now has at most $2^w$ tensor keys.
+There is no connected-prefix or common-disk assumption: a key records
+arrows, not a pairing of boundary points. The local tensor has bounded
+arity, and self-loop arrows are summed at their crossing. This exact
+summary preserves the bracket under every remaining tensor contraction.
+It does not preserve the relative Khovanov complex; cancellations in a
+polynomial may erase data needed for homology.
+
+\subsection{One phase and one integer per key}
+Set $A=B^2$ and $\rho=\zeta B$, where $\zeta^4=-1$. Initially this suggests
+four integer coordinates per tensor key. In fact the phase modulo four
+is determined by the boundary arrows. To see this, for an edge from slot
+$j$ at $v$ to slot $k$ at $u$, the cochain
+$b_d+j-k-2$ has zero face integrals modulo four. It is therefore a vertex
+potential difference $\nu(u)-\nu(v)$. At a crossing the local turning is
+$\sum_d\epsilon_d j$ modulo four, and $\sum_d\epsilon_d=0$.
+After adding the vanishing potential terms, each internal edge contributes
+$2\epsilon_d=2$ modulo four, independent of its arrow. The remaining terms
+are determined by the boundary. Hence one phase $r\in\{0,1,2,3\}$ and one
+signed integer suffice. The implementation checks phase agreement whenever
+terms merge, and checks phase zero for the final scalar.
+
+Multiply each crossing tensor by $B^4$ and each edge tensor by $B^{|b_e|}$.
+Every local exponent is then nonnegative. Local multiplication requires
+only shifts and additions of signed integers, with phase/sign updates.
+If $K_0=4n+L_b$ and $K=\max(K_0,6n+4)$, the final padded scalar is
+\[
+ S=B^K\mathcal B_D(B^2).
+\]
+All expanded shifted monomials have $B$-degree at most $8n+2L_b$ before
+final padding. There are at most $2^{3n}$ smoothing--arrow assignments.
+The triangle inequality consequently bounds every intermediate integer
+by $O(n^3)$ bits for the base chosen next; large cancellation does not
+invalidate this upper bound.
+
+\subsection{Faithful evaluation and coefficient recovery}
+For a knot with $n$ crossings, the normalized Jones polynomial
+$V_D(t)=\sum_jc_jt^j$ obeys
+\[
+ \sum_j|c_j|\le4^n,\qquad |j|\le2n\quad(c_j\ne0).
+\]
+The first follows from $2^n$ states, each with at most $n+1$ circles and
+coefficient norm at most $2^n$ after reduction. Smoothing degrees and the
+writhe correction give the second, deliberately loose, degree bound.
+Choose
+\[
+ \beta=\left\lceil(2n+2)/8\right\rceil,\quad B=2^\beta,\quad X=B^8.
+\]
+Then $X\ge4\cdot4^n$. Balanced base-$X$ digits uniquely recover every
+coefficient after multiplying the Laurent polynomial by a known monomial.
+This is an injective exact encoding, not a random evaluation.
+
+If $a$ is the writhe, the expected scaled unknot bracket is
+\[
+ U=(-1)^{a+1}(B^8+1)B^{K+6a-4}.
+\]
+Its exponent is nonnegative. Equality $S=U$ proves $V_D=1$; inequality
+proves knottedness. For the full polynomial, form the exact integer
+\[
+ X^{2n}V_D(X^{-1})
+   =\frac{(-1)^{a+1}S B^{16n+4-K-6a}}{X+1},
+\]
+moving a negative power to the denominator. Check divisibility, then
+recover balanced digits $d_i$ and set $c_j=d_{2n-j}$. The decoder checks
+normalization, degree and coefficient bounds, including before its identity
+shortcut. These checks validate the decoding interface; they are not an
+independent certificate of a supplied scalar's contraction. The empty PD
+represents one unknot circle and receives its explicit special case.
+
+\subsection{Complexity and recognition semantics}
+Each crossing has a bounded number of transitions per binary frontier key,
+and all keys and integer coefficients have polynomial bit length. A fixed
+width-$w$ order therefore costs $\operatorname{poly}(n)2^{O(w)}$
+deterministic bit operations. Even charging linear scans for worst-case
+Python dictionary collisions only squares the exponential factor and
+preserves this bound. Our existing verified separator order has
+$w=O(\sqrt n)$. The default spin query considers a greedy candidate even
+when the caller supplies an order, and retains an order within the
+separator certificate's bound. With local caps and deadlines disabled,
+full Jones computation thus has the stated square-root exponential bound.
+For supplied orders of width $O(\log^2 n)$ the corresponding fixed-order
+query is quasi-polynomial.
+
+The production default remains unchanged: the report exhibits regressions
+as well as improvements. Users can select \code{spin-faithful} in either
+the Jones command or the recognizer's Jones-filter option. Local state or
+transition exhaustion publishes no unfinished scalar or identity claim;
+a completed separator certificate may still be reused. Caller cancellation
+propagates. Large evidence integers are serialized in hexadecimal without
+changing global decimal conversion settings. A polynomial-one result
+continues to the independent exact recognizer. Consequently this backend
+does not establish a general subexponential unknot-recognition algorithm.
+
+\subsection{Independent validation and controlled experiments}
+The imported tests perform 140 full-polynomial comparisons with the
+independent whole-cube Laurent oracle, covering mirrors, crossing orders
+and outer faces. They verify oriented-circle turning directly, test
+20 vertex gauges, exercise 180 bounded signed polynomial decodes, reject
+forged normalization, check budget/cancellation behavior, and verify CLI
+and recognition fallback behavior. A shuffled 64-crossing grid guards
+against the report's earlier supplied-order policy defect.
+
+All 714 maintained tests pass in 164.627 seconds with Regina 7.4.1.
+The integrated benchmark uses the delivered final source, including the
+normalization check added after the report's historical timing runs.
+It records 490 measurements and 70 excluded warmups over fourteen inputs,
+five arms and seven shuffled rounds (seed 26100860). There are 469 complete
+measurements and 21 local-cap outcomes. Default queries include fresh PD
+validation and order preparation; the fixed-order scope uses the same
+externally prepared certified order and includes all tensor and cochain setup.
+Each query requests the full polynomial, with 4096 states, 200000 transitions
+and a three-second cooperative deadline. Completed arms agree; small inputs
+use an independent cube oracle, and grids have checked descending certificates.
+
+\input{tables/spin_integrated.tex}
+
+On the 144-crossing grid, ordinary Potts/A/A/spin medians are
+380.542/459.847/306.520 milliseconds. On the common order they are
+369.836/224.954 milliseconds for Potts/spin. Median within-round ratios are
+1.638 and 1.648 respectively; they need not equal ratios of the displayed
+medians. Potts stores 877 peak states and performs 48386 transitions;
+spin stores 240 and performs 32098. On the 196-crossing grid, every Potts
+arm reaches the state cap, while all spin queries complete with 480 peak
+states and 89122 transitions. This is a capacity result, with no
+completed-time ratio against the capped arms.
+
+Regressions remain substantial. The 254-crossing tree medial has ordinary
+Potts/spin medians 73.257/394.441 milliseconds and fixed-order medians
+68.170/352.804. The Potts cancellation pattern leaves only one state on
+that input, while spin reaches 272. On the shuffled 64-crossing grid,
+ordinary medians favor spin, 29.152/22.882 milliseconds, but fixed-order
+medians favor Potts, 6.043/17.528. The ordinary gain on this case comes
+from ordering rather than a faster contraction. These full invariant
+queries do not measure completed recognition on a hard-knot corpus.
+
+Raw maintained measurements are in
+\path{results/spin_jones_integrated_20261008.json}, with per-file source hashes.
+Its inherited \code{baseline\_commit} field identifies the report's integration
+base \code{8a9583494}; the actual compared source is identified by the hashes.
+The original \path{spin_jones_20261008.json}, initial-policy results and ordering
+follow-up remain separate historical records. The report's previous performance
+numbers are not relabeled as results of this integrated run.

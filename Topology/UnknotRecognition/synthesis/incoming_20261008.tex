@@ -1,0 +1,108 @@
+\section{Review queue for the six new October research packages}
+\label{sec:incoming-oct8}
+
+The user identified commits \code{1be2abc8c} and \code{bc5b91385} on
+\code{origin/main}. Both have been merged. They add six research archives,
+whose supplied manifests all verify. The first two contain 480 and 380
+manifested files; the later braid, causal, certified-primitives and graded-torus
+packages contain 47, 38, 507 and 42 respectively. Archive and manifest hashes
+are recorded in \path{data/incoming-20261008-review.json}. The suggested
+\code{openai/math} head remains \code{fd4aeeb2ee}. No result below is inferred
+merely from integrity checks or a supplied test log.
+
+\begin{center}\small
+\begin{tabularx}{\textwidth}{@{}p{0.24\textwidth}X@{}}
+\toprule
+Package & Current assessment and next integration check\\
+\midrule
+Binary tensors & Jones component integrated in Section~\ref{sec:spin-jones}.
+Near-prefix matching and boundary transport require separate comparisons
+and review against the updated code.\\
+Modular boundary & The reviewed modular norm and completion arguments are
+consistent with a sound one-sided observer. Production geometry, singular
+response handling, replay and fallback remain to be audited before promotion.\\
+Braid kernel & Claims a certified minority-sign kernel and linear endpoint
+Markov descent. Review the connected-sum topology and independent replay;
+compare producer plus replay with the current braid prefilter.\\
+Causal kernels & Claims complete fixed-parameter bounded RIII unlocking.
+Review the initial connected-core and full-footprint arguments and adapt
+transactional replay. Its own genuine-diagram timings show no speedup.\\
+Certified primitives & Supplies a second binary Jones implementation,
+valuation arithmetic, minimum-disc cocycle seeds and an optional majority
+word-overlap policy. Compare both tensor implementations, and audit each
+geometric or group primitive independently.\\
+Graded torus & Claims graded occupancy bounds and a polynomial four-strand
+torus scanner using an external Morse-model theorem. Review that dependency
+and transfer the grading conventions to the maintained representation.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+These are component-level integration decisions, not blanket acceptance or
+rejection of the reports. Their prototypes target different snapshots and
+internal representations. The current work preserves the later compressed
+matcher refinements rather than replacing them with an older bundled tree.
+
+The second tensor implementation is particularly relevant to adaptive
+selection. It represents a scalar as a signed mantissa with a separate
+valuation, removing large powers from the integer payload. Its report gives
+a tree254 comparison of 130177 bits for the shifted scalar versus 1536 bits
+for the mantissa. This is supplied experimental evidence, not yet a
+measurement of the maintained spin backend. It motivates a direct comparison
+and possibly transferring that arithmetic, rather than adding an unexamined
+second default path.
+
+The braid and causal reports provide parameterized complete subproblems.
+The graded-torus report provides a claimed complete recognition bound for a
+syntactically restricted class. None proves that arbitrary diagrams enter
+those favorable parameter regimes. The modular observer can miss existing
+obstructions with a finite prime palette, and even its completed threshold
+comparison does not detect every knot. The complete general recognition
+bound therefore remains open after these deliveries.
+
+\subsection{A direct comparison of the two tensor implementations}
+The maintained \path{benchmark_tensor_candidates.py} loads the second report's
+\path{tensor_jones.py} directly from its original ZIP member, recording both
+archive and source hashes. This is a research comparison, not a second
+production backend. Four cases use one common certified order per case,
+prepared outside timing. Each arm includes fresh PD construction, tensor
+preparation, contraction and full polynomial decoding. The four arms are
+maintained spin, an identical A/A spin control, and the report's valuation
+and global-shift arithmetic. Seed 26100862 shuffles five measured rounds
+after one excluded warmup. All 80 measured queries and 16 warmups complete
+under the common 4096-state, 200000-transition and three-second allowances.
+Every completed polynomial agrees. The weaving case uses the independent
+whole-cube oracle; grids have independently checked descending certificates;
+the tree case uses agreement between completed arms.
+
+\input{tables/tensor_candidates.tex}
+
+On the 254-crossing tree, the four arm medians are 365.409, 365.028,
+68.833 and 278.227 milliseconds respectively. The median paired spin/valuation
+ratio is 5.134; within the report's own implementation, the global-shift/
+valuation ratio is 4.039. On the 144-crossing grid, spin/valuation medians
+are 209.727/118.829 milliseconds; on the 196-crossing grid they are
+714.712/338.190, with paired ratios 1.765 and 2.113. The ten-crossing weaving
+case slightly favors the report's global-shift mode over its valuation mode,
+1.146 versus 1.232 milliseconds, retaining a useful small-input control.
+
+The tree's maintained spin counter includes its large final normalization
+integer and reaches 195585 bits. The report's global-shift contraction
+counter reaches 130177 bits; its valuation mantissa reaches 1536 bits.
+Those are differently represented quantities and not total memory usage.
+The two report modes have identical transition counts, so their direct
+comparison isolates the arithmetic choice. Spin and the report use different
+local tensor aggregation and turn/sign conventions: for example the tree
+has 12589 spin transitions versus 15931 in either report mode. Their timing
+ratio must not be attributed solely to valuation normalization.
+
+These results justify reviewing and transferring valuation arithmetic next.
+They do not yet change the maintained spin implementation. The exact
+representation is $z^v m$, with nonzero $m$ not divisible by the power-of-two
+base $z$. Addition aligns the smaller valuation, adds signed mantissas, and
+removes all common factors of $z$; exact cancellation has its own zero
+representation. This can remove large intermediate monomial padding while
+preserving the exact evaluated number, including cancellation and carries.
+A production transfer must retain the spin backend's phase convention,
+normalization checks, budgets and independently tested polynomial output.
+Raw measurements are in \path{results/tensor_candidates_20261008.json}.
