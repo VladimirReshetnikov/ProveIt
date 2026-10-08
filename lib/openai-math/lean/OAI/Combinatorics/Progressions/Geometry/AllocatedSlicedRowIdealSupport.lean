@@ -1,3 +1,6 @@
+/- Modified for ProveIt: supply the proved covered-chart measurable-open
+instance explicitly in allocatedCoveredProfile_raw_integral on Lean 4.32.
+All upstream theorem statements are unchanged. -/
 import OAI.Combinatorics.Progressions.Estimates.AllocatedSlicedProductPrefactorCap
 
 namespace OAI
@@ -221,6 +224,8 @@ theorem allocatedCoveredProfile_raw_integral
       ∂longRef ∂allocatedFrozenCoefficientSource B U b hR hσ S) =
     ∫ z, (allocatedGridlessWeightedKernel B U b S x u v₀ rows (Q := Q) d fg f z : ℂ) *
       F (chart z) ∂raw := by
+  let : OpensMeasurableSpace (CoveredJetChartSource U O Q n d) :=
+    @BorelSpace.opensMeasurable _ _ _ (coveredJetChartSource_borel U d)
   let φ := fun t : ∀ j, (I j → O j → ℝ) × (Fin (n j) → O j → ℤ) =>
     ∫ r, F (chart (t, coefficientDeckJetMap root dirs rows d r)) ∂(deck).toMeasure
   have hchart : Measurable chart :=
