@@ -37,6 +37,9 @@ def _scan_worker() -> int:
 # One table for both parsers.  (flag, type or None for a switch, default, choices, help)
 OPTIONS = {
     "recognize": [
+        ("--window-strategy", str, "support", ("support", "minimal"), "allocation-pruned or cancel-before-truncate window strategy"),
+        ("--ranktwo", None, False, None, "try one verified rank-two shortening pass on a retained source braid"),
+        ("--ranktwo-seconds", float, 0.1, None, "local allowance for optional braid compression and replay"),
         ("--window-radius", int, None, None, "enable bounded window probes, widening up to this normalized radius"),
         ("--window-max-objects", int, 20000, None, "retained-object ceiling for optional window probes"),
         ("--window-seconds", float, 0.1, None, "one shared time allowance for all window probes per factor"),
@@ -96,6 +99,7 @@ OPTIONS = {
         ("--race-after", float, 1.0, None, "head start of the default order in seconds"),
     ],
     "window": [
+        ("--minimal", None, False, None, "cancel before truncating; certify nice-order binomial bounds"),
         ("--lower", int, 0, None, "first queried homological degree"),
         ("--upper", int, 0, None, "last queried homological degree"),
         ("--normalized", None, False, None, "interpret endpoints after subtracting the PD negative-crossing count"),
@@ -218,6 +222,8 @@ def main(argv: list[str] | None = None) -> int:
             return 2
     if args.command == "recognize":
         try:
+            if args.ranktwo_seconds < 0 or not args.ranktwo_seconds < float("inf"):
+                raise ValueError("--ranktwo-seconds must be finite and nonnegative")
             if args.window_seconds < 0 or not args.window_seconds < float("inf"):
                 raise ValueError("--window-seconds must be finite and nonnegative")
             if args.window_radius is not None and args.window_radius < 0:
@@ -235,7 +241,8 @@ def main(argv: list[str] | None = None) -> int:
             print("alternate backends require minfill, bits, tail=0, and race=1", file=sys.stderr)
             return 2
         result = recognize(diagram, use_reduction=not args.no_reduction,
-                           window_radius=args.window_radius, window_max_objects=args.window_max_objects,
+                           use_ranktwo=args.ranktwo, ranktwo_seconds=args.ranktwo_seconds,
+                           window_radius=args.window_radius, window_strategy=args.window_strategy, window_max_objects=args.window_max_objects,
                            window_seconds=args.window_seconds,
                            use_seifert=not args.no_seifert, backend=args.backend,
                            twist_max_basis=args.twist_max_basis,
@@ -267,7 +274,11 @@ def main(argv: list[str] | None = None) -> int:
                        check_d_squared=args.check_d2, reduction=args.reduction,
                        composition=args.composition, composition_max_variables=args.composition_max_variables)
         try:
-            if args.auto_mirror:
+            if args.minimal:
+                from .minimal_window import khovanov_minimal_window_auto
+                result = khovanov_minimal_window_auto(diagram, args.lower + shift, args.upper + shift,
+                                                       mirror=args.auto_mirror, **options)
+            elif args.auto_mirror:
                 result = khovanov_window_auto(diagram, args.lower + shift, args.upper + shift, **options)
             else:
                 result = khovanov_window(diagram.pd, args.lower + shift, args.upper + shift, **options)

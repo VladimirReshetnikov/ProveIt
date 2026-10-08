@@ -1,0 +1,128 @@
+\section{Outcome, scope, and the audited baseline}\label{sec:scope}
+
+The immediate outcome is a new family of exact Jones obstruction backends,
+together with a component factorization that improves their dependence on
+the geometry of a supplied crossing order. These are useful pieces of a
+complete recognizer. They are not, by themselves, complete recognition
+algorithms: inequality with the unknot's Jones value proves knottedness,
+whereas equality requires another method.
+
+This distinction determines both the software interface and the mathematical
+claims. In the implementation, a successful obstruction returns
+\code{KNOTTED}. Equality returns an inconclusive result. Exhausting a local
+filter budget also returns an inconclusive result, with its reason recorded;
+it does not produce a topological verdict. The enclosing recognizer retains
+its existing complete Khovanov fallback, subject to the user's global resource
+limits. Thus a bounded execution can still return \code{UNKNOWN}.
+
+\subsection{What was inspected and preserved}
+
+The baseline is ProveIt commit
+\code{86f23490006c880cd01db9bec10761d39c6395c8}, dated
+8 October 2026 \cite{proveit2026}. The source snapshot includes the Python
+\code{fastunknot} package, its fixtures and tests, the synthesis sources, and
+the report summaries. Downloaded source blobs were checked against their
+Git object identifiers. The included reference implementation is immutable
+within the experiment package. The baseline test suite passed all 134 tests.
+
+The baseline already contains substantial work: short-braid certificates,
+Seifert and descending-diagram tests, Reidemeister simplification,
+connected-sum handling, modular Alexander and Jones obstructions,
+optional exact Alexander computation, and several exact Khovanov scanner
+representations. Earlier research also introduced canonical multiplicities,
+shared morphisms, radical perturbation inverses, saturated or Euler-assisted
+terminal decisions, homological windows, and scalar Fitting decompositions
+\cite{report07,report08,report09,report10,report11,report12}.
+Those ideas remain predecessors, rather than contributions claimed here.
+The immediately preceding continuation's scalar splitting and
+common-nilpotent decision shortening were inspected separately; the
+ring-valued extension in Section~\ref{sec:residue} is carefully distinguished
+from them.
+
+The current Jones filter stores boundary smoothing matchings and their
+scalar coefficients. For an arbitrary cut with $w$ endpoints, a universal
+matching count is $(w-1)!!$, not a Catalan number. A Catalan bound requires
+additional boundary-order geometry that an arbitrary crossing prefix need
+not possess. This creates an opportunity to change the scalar representation
+without making an invalid noncrossing assumption.
+
+\subsection{Claims and their evidential status}
+
+\begingroup\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.28\textwidth}p{0.67\textwidth}@{}}
+\toprule
+Claim & Status and limit\\
+\midrule
+\endfirsthead
+\toprule Claim & Status and limit\\ \midrule
+\endhead
+Signed Tait/Potts expression for Jones values &
+Classical; derived in the repository's normalization and checked against an
+independent smoothing cube.\\
+At most $w/2$ active Tait vertices &
+Proved here by a direct boundary-transition count for every crossing order
+of a connected plane knot shadow.\\
+Fixed-$q$ equality-pattern transfer &
+Implemented and verified; costs $\poly(n,w)q^{w/2}$, with linear-in-$n$
+coefficient bit lengths for fixed $q$.\\
+Independent-component transfer &
+Implemented; a relative-color merge restores precisely the information
+needed when components first interact.\\
+$q=5$ blind weaving family &
+Proved by specializing the classical three-braid trace formula; preserved as
+an adversarial regression family.\\
+$q\ge6$ detects that family &
+Proved; says nothing universal about other knot families.\\
+Residue-polynomial Fitting certificates &
+Proved for matrices over specified commutative truncated rings; verified by
+a separate algebraic oracle.\\
+Quasi-polynomial full recognition &
+Conditional research goal. No complete complexity proof or complete
+quasi-polynomial implementation is supplied.\\
+\bottomrule
+\caption{The claim ledger. A proof supplied in this article is not a claim
+of literature-wide priority.}
+\label{tab:claims}\\
+\end{longtable}
+\endgroup
+
+\subsection{Prior literature and the nature of the improvement}
+
+The Potts formulation of the Jones polynomial belongs to the classical
+state-model literature \cite{kauffman1987,sokal2005,moffatt2011}.
+Meichanetzidis and Kourtis explicitly used the same integer-color
+specializations, including $q=5$, in tensor-network evaluation
+\cite{meichanetzidis2019}. Makowsky established bounded-treewidth
+tractability for signed Tutte and Kauffman computations
+\cite{makowsky2005}. Maria gave single-exponential width dependence for
+general quantum link invariants \cite{maria2021}. The broad statement
+that Jones evaluation is single exponential in a suitable width is therefore
+not a new result.
+
+The contribution appropriate to this continuation is more concrete. We
+derive a bound directly in the crossing-order parameter used by ProveIt,
+make equality-pattern aggregation and normalization explicit, implement exact
+quadratic arithmetic, retain resource-safe recognition semantics, identify a
+structural failure of the $q=5$ point, and supply measurements including
+regressions. The component factorization and residue-algebra sections give
+additional, independently checkable improvements whose exact applicability
+is stated.
+
+The public \code{openai/math} collection was inspected as suggested by the
+user \cite{openaimath2026}. It did not supply a missing unknot-recognition
+theorem. Its useful role here is methodological: formulate explicit lemmas,
+test a proposed general claim on adversarial families, and preserve enough
+artifacts that independent readers can reproduce the calculation. None of
+the results in this article is attributed to that collection without a
+specific mathematical dependency.
+
+\subsection{Complexity terminology}
+
+Throughout, $n$ is the number of crossings in the supplied diagram, $w$ is a
+maximum cut-edge count for a crossing order, and $q$ is an integer color
+count. A statement for fixed $q$ does not hide a growing input parameter.
+We use \emph{quasi-polynomial} in the broad sense
+$\exp((\log(n+2))^{O(1)})$, and state the stronger bound
+$n^{O(\log n)}$ explicitly when it is obtained. Arithmetic-operation bounds
+and bit-operation bounds are separated. Timing improvements on a finite
+corpus are not asymptotic evidence by themselves.

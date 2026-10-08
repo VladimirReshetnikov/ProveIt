@@ -1,0 +1,204 @@
+\section{An exact finite-threshold recurrence}\label{sec:recurrence}
+
+Select one run position in \eqref{eq:input}, and keep its generator,
+its sign \(\varepsilon\), and every other run fixed. Only its absolute
+exponent \(m\ge1\) varies. Define
+\begin{equation}\label{eq:context-span}
+a=-\sum_{\substack{j\ne *\\e_j<0}}|e_j|,\qquad
+c=\sum_{\substack{j\ne *\\e_j>0}}|e_j|,\qquad
+W=c-a,\qquad m_0=W+2.
+\end{equation}
+The letter \(c\) here is a degree endpoint, not a circle count or the
+number \(b\) of braid strands. Empty sums are zero.
+
+\subsection{The fixed context and its repeated differential}
+
+For each context degree \(q\), let \(I^q\) be the direct sum of reduced
+resolution spaces when the distinguished box contains \(I\), and let
+\(E^q\) be the corresponding sum with \(E\) in that box. Both vanish
+outside \([a,c]\). All other run differentials define \(D_I\) and \(D_E\).
+The chosen saddle maps between the two sectors in the direction determined
+by \(\varepsilon\). Write
+\begin{equation}\label{eq:context-space}
+V=\bigoplus_{q=a}^{c}E^q,\quad M=\dim V,\quad
+L=X_p+X_q,\quad F=D_E+L,\quad
+r=\rank F,\quad \eta=M-2r.
+\end{equation}
+In \(X_p+X_q\), the subscripts designate the two exterior arc points,
+independently of the context degree index.
+The operator \(D_E\) raises context degree, while \(L\) preserves it.
+Consequently \(F\) is initially an endomorphism of the \emph{ungraded}
+space \(V\).
+
+\begin{lemma}\label{lem:square-zero}
+The operator \(F\) satisfies \(F^2=0\), and
+\(\eta=\dim H(V,F)\ge0\).
+\end{lemma}
+
+\begin{proof}
+The context is a chain complex, so \(D_E^2=0\). Each dot squares to zero,
+and distinct dots commute; hence \(L^2=0\) in characteristic two.
+Multiplication and comultiplication commute with a dot on an unchanged
+arc:
+\[
+m(X\otimes1)=Xm=m(1\otimes X),\qquad
+(X\otimes1)\Delta=\Delta X=(1\otimes X)\Delta.
+\]
+These are direct identities in \(A\), including on the marked-\(X\)
+subcomplex. Thus \(D_EL=LD_E\), and the mixed terms in \(F^2\) cancel.
+Finally, \(\operatorname{im}F\subseteq\ker F\); rank--nullity gives
+\(\dim\ker F-\dim\operatorname{im}F=M-2r\).
+\end{proof}
+
+The identity \(F^2=0\) is stronger than a numerical observation about
+consecutive ranks. Its use is specific to the characteristic-two normal
+form just specified. An integral or odd-characteristic version needs its
+own signs, gradings, and differential analysis.
+
+\subsection{Where complete context groups occur}
+
+For a positive distinguished run, the summand \(E^q\) lies in total degree
+\(h=q+k\), with \(1\le k\le m\). Therefore
+\begin{equation}\label{eq:positive-central}
+C_m^h=V\quad\text{throughout}\quad c+1\le h\le a+m.
+\end{equation}
+Indeed, these inequalities are exactly the conditions that every
+\(q\in[a,c]\) has \(1\le h-q\le m\). The \(I\) sector is absent in
+this interval because \(h>c\).
+Between two adjacent groups satisfying \eqref{eq:positive-central},
+the other-run maps give \(D_E\) and the distinguished internal maps give
+\(L\). Under the canonical identification by context state and circle
+label, the differential is exactly \(F\).
+
+For a negative distinguished run, \(h=q-k\) instead. Complete groups and
+their internal differentials occur in
+\begin{equation}\label{eq:negative-central}
+c-m\le h\le a-1,\qquad
+\partial_h=F\quad(c-m\le h\le a-2).
+\end{equation}
+Here the \(I\) sector is absent because \(h<a\).
+These descriptions keep the mixed signs in the context; no assumption
+that the braid is positive, alternating, or homogeneous has entered.
+
+At \(m=m_0\), there are exactly two consecutive complete groups. In the
+positive case they are in degrees \(c+1,c+2\); in the negative case they
+are in degrees \(a-2,a-1\). The single map between them is \(F\).
+The two-group threshold is deliberate. One complete group alone does not
+expose a complete central differential, and its Betti number can still
+depend on both boundary regions.
+
+\subsection{The two signed profile formulas}
+
+Let
+\[
+P_m(z)=\sum_h\dim_{\F}H^h(C_m)\,z^h
+\]
+be the reduced homological Laurent polynomial, with quantum grading
+forgotten and the macro grading fixed as in \cref{prop:normal}.
+
+\begin{theorem}[One-reference recurrence]\label{thm:recurrence}
+Set \(m_0=W+2\), \(\delta=m-m_0\), and compute \(P_{m_0}\).
+For a positive distinguished run, split it into
+\[
+P_{\rm low}=\sum_{h\le c+1}\beta_h(m_0)z^h,\qquad
+P_{\rm high}=\sum_{h\ge c+2}\beta_h(m_0)z^h.
+\]
+Then for every \(m\ge m_0\),
+\begin{equation}\label{eq:positive-profile}
+\boxed{\displaystyle
+P_m(z)=P_{\rm low}(z)+z^\delta P_{\rm high}(z)
+       +\eta\sum_{h=c+2}^{a+m-1}z^h.}
+\end{equation}
+For a negative distinguished run, put
+\[
+Q_{\rm low}=\sum_{h\le a-2}\beta_h(m_0)z^h,\qquad
+Q_{\rm high}=\sum_{h\ge a-1}\beta_h(m_0)z^h.
+\]
+Then
+\begin{equation}\label{eq:negative-profile}
+\boxed{\displaystyle
+P_m(z)=z^{-\delta}Q_{\rm low}(z)+Q_{\rm high}(z)
+       +\eta\sum_{h=c-m+1}^{a-2}z^h.}
+\end{equation}
+An interval sum with lower endpoint above its upper endpoint is empty.
+In either case the total reduced rank obeys
+\begin{equation}\label{eq:rank-recurrence}
+R(m)=R(m_0)+(m-m_0)\eta.
+\end{equation}
+The statement permits links and any fixed exterior reduction point.
+\end{theorem}
+
+\begin{proof}
+First suppose the distinguished run is positive. Near the lower end,
+the condition \(k\le m\) is inactive once \(m\ge m_0\).
+Every chain group in degrees at most \(c+1\), its incoming map, and its
+outgoing map are therefore the same as at \(m_0\).
+At the top, writing \(k'=k-\delta\) identifies all groups in degrees at
+least \(c+2+\delta\), together with both incident maps, with the reference
+upper region translated by \(\delta\). This can also be read directly
+from \(1\le h-q\le m\): near that end the lower bound is inactive.
+The saddle into the first \(E\) sector remains in the fixed lower region.
+
+The degrees strictly between these two regions are
+\(c+2,\ldots,a+m-1\). Each has chain space \(V\), incoming map \(F\),
+and outgoing map \(F\). Its Betti number is \(M-r-r=\eta\).
+There are \(m-m_0\) such degrees. Applying \eqref{eq:betti} in the fixed
+and translated boundary regions proves \eqref{eq:positive-profile}.
+
+For a negative run, use \(1\le q-h\le m\). The lower region now
+translates downward by \(\delta\), while the upper region, including
+the saddle into \(I\), remains fixed. Its separating complete groups
+are \eqref{eq:negative-central}. The inserted degrees are precisely
+\(c-m+1,\ldots,a-2\), again with both maps \(F\).
+This proves \eqref{eq:negative-profile}. Evaluating at \(z=1\) gives
+\eqref{eq:rank-recurrence}.
+\end{proof}
+
+This proof identifies the boundary maps as well as the central chain
+groups. Without that step, shifting observed Betti numbers would be an
+unjustified extrapolation. It also explains why the reference can be a
+link of different component count: the argument is a statement about
+marked complexes, not an isotopy between the original and reference
+closures.
+
+\begin{corollary}[Extraction from existing output]\label{cor:extraction}
+The ordinary macro output at \(m_0\), which reports chain dimensions
+and boundary ranks, determines \(\eta\) without a second homology
+computation. Use
+\[
+h_*=\begin{cases}c+1&\varepsilon=+1,\\a-2&\varepsilon=-1,\end{cases}
+\qquad
+M=d_{h_*}=d_{h_*+1},\quad r=r_{h_*},\quad \eta=M-2r.
+\]
+\end{corollary}
+
+The threshold Betti numbers at \(h_*\) and \(h_*+1\) need not equal
+\(\eta\). They are boundary-region values. This distinction is covered
+by tests comparing the extracted slope with the newly interior degree
+at \(m_0+1\), in addition to tests of total ranks.
+
+\subsection{Chain savings and a concrete family}
+
+Let \(A_0=\sum_q\dim I^q\), \(B_0=\sum_q\dim E^q=M\).
+The original and reference chain dimensions are exactly
+\begin{equation}\label{eq:chain-saving}
+\N(m)=A_0+mB_0,\qquad
+\N_0=A_0+(W+2)B_0.
+\end{equation}
+The coefficient \(B_0\) counts repeated chain generators.
+The coefficient \(\eta=B_0-2\rank F\) counts repeated homology.
+They are usually different.
+
+For example, take
+\[
+\beta_m=\sigma_1^m\sigma_2^{-1}\sigma_1\sigma_2^{-1}
+\quad\text{on three strands},\qquad m\ge5.
+\]
+Here \((a,c,W,m_0)=(-2,1,3,5)\). The reference computation gives
+\(\N_0=93\), \(B_0=15\), \(r=6\), and \(\eta=3\), while
+\(\N(m)=15m+18\) and \(R(m)=3m+2\).
+The result applies to every integer \(m\ge5\), including link parities;
+odd \(m\) gives a knot. The figure included with the experiments plots
+the full degree profile and its translated upper boundary.
+This is a useful exact test family, not a hard recognition family:
+the baseline already has structural and three-strand certificates.

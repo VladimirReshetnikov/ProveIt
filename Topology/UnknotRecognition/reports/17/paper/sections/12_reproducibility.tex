@@ -1,0 +1,129 @@
+\section{Reproducibility, integration, and the final research position}
+\label{sec:reproduction}
+
+\subsection{Contents of the archive}
+
+\begin{longtable}{@{}p{0.27\textwidth}p{0.67\textwidth}@{}}
+\toprule
+Location & Contents\\
+\midrule
+\endfirsthead
+\toprule Location & Contents\\ \midrule
+\endhead
+\code{paper/} &
+This PDF, the main LaTeX source, all section sources, BibTeX references,
+generated tables, vector figures and preview PNGs.\\
+\code{fast/} &
+The modified implementation, all existing fixtures and tests, four Potts
+modules, integration tests and the new backend guide.\\
+\code{reference/} &
+The selected pinned repository snapshot, including the baseline
+implementation and research notes used for the audit.\\
+\code{integration/} &
+The patch against the pinned tree, a list of changed files, source
+provenance and Git blob identifiers.\\
+\code{research/} &
+Independent smoothing-cube, finite-menu and truncated-ring oracles;
+proof-audit notes; certificate replayer; saved verification records and
+baseline/modified test logs.\\
+\code{benchmarks/} &
+Kernel and normal-pipeline scripts, all raw samples, CSV summaries,
+source-hash audits, measured module versions and figure-generation code.\\
+\code{certificates/} &
+Example exact $q=6$ obstruction certificates, the $W_5$ collision record,
+and saved replay results.\\
+\code{tools/} &
+Manifest and patch verification, certificate regeneration, and a
+reproduction driver that writes to a fresh run directory.\\
+\code{SHA256SUMS} &
+SHA-256 digest list for distributed files.\\
+\bottomrule
+\end{longtable}
+
+The source snapshot contains 98 selected text files whose Git blob hashes
+were checked at retrieval. It is not represented as a complete clone of the
+entire ProveIt repository. The integration patch affects only the
+\code{Topology/UnknotRecognition/fast/} subtree.
+It adds the new modules and tests, changes the Jones dispatch and CLI budget
+handling, and documents the options. It leaves the categorical fallback
+implementations intact.
+
+\subsection{Reproducing the mathematical and software checks}
+
+From the root of the extracted archive:
+\begin{lstlisting}
+python tools/verify_manifest.py
+python tools/verify_integration.py
+python tools/reproduce.py
+\end{lstlisting}
+The manifest checker verifies both archive digests and pinned Git object
+hashes. The integration checker applies the patch to a disposable copy and
+compares the resulting source bytes with the delivered implementation.
+The reproduction driver runs the integrated unit suite, independent
+oracles, replay self-tests and supplied certificates in a new directory.
+It preserves the distributed result records and writes commands, durations,
+exit codes and logs for the new run.
+
+To repeat the timings, the large-integer check and the PDF build as well:
+\begin{lstlisting}
+python tools/reproduce.py --all
+\end{lstlisting}
+Timing outputs should not be expected to match the distributed nanosecond
+samples. Exact values, deterministic work counters, test results and
+certificate verdicts should match. Differences in Python version,
+machine load and platform are recorded by the scripts.
+
+Core algorithms and validation use the Python standard library.
+The implementation requires Python 3.10 or later; the recorded environment
+used 3.12.14. Regenerating the figures requires Matplotlib.
+The paper uses pdflatex, BibTeX, latexmk and the packages listed in its
+preamble. The complete source is included so that layout, notation,
+references and integration conventions can be revised in the repository.
+
+The independent oracles are intentionally small-instance tools.
+The smoothing cube is exponential in crossing number. The truncated-ring
+oracle uses explicit monomials and small matrix characteristic polynomials.
+They test the optimized algorithms through a different representation;
+they are not proposed as scalable alternatives.
+
+\subsection{Integration procedure}
+
+At a checkout of the pinned ProveIt revision, run:
+\begin{lstlisting}
+git apply --check /path/to/package/integration/changes.patch
+git apply /path/to/package/integration/changes.patch
+\end{lstlisting}
+The patch has been checked by applying it to the included reference copy
+and comparing all resulting implementation files. A later repository
+revision may require an ordinary merge. The article and its associated
+research artifacts can be placed in a new report directory using the
+project's preferred numbering.
+
+The package retains the source's MIT No Attribution license and supplies
+the continuation code and documentation under the same license.
+Scholarly sources are cited through their primary papers and author or
+publisher pages; the archive does not redistribute copies of those papers.
+This is a mathematical research draft with reproducible experiments,
+not a proof-assistant formalization.
+
+\subsection{What the continuation establishes}
+
+There is a concrete, verified scalar improvement: fixed-color equality
+patterns and component independence give a smaller, precisely bounded
+representation for a Jones obstruction. Exact quadratic arithmetic makes
+its bit cost and equality semantics explicit. The five-color weaving family
+shows why exact arithmetic alone is insufficient, while the six-color
+calculation gives a proved repair of that family. The growing menu gives a
+separate quasi-polynomial Jones-triviality decision on logarithmic-width
+orders.
+
+There is also a precise local algebraic advance: residue characteristic
+polynomials give bounded-degree annihilators, sharp radical cutoffs and
+constructive Fitting certificates for supplied commutative endomorphism
+blocks. These results extend the available tools without assuming that the
+entire categorical computation remains small.
+
+The next general recognition theorem must still connect an exact complete
+criterion to a globally bounded representation and a fully costed search.
+The archive is intended to make the present increments usable while keeping
+that larger obligation visible and mathematically testable.

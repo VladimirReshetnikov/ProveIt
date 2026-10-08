@@ -1,0 +1,1962 @@
+diff --git a/Topology/UnknotRecognition/fast/POTTS.md b/Topology/UnknotRecognition/fast/POTTS.md
+new file mode 100644
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/POTTS.md
+@@ -0,0 +1,93 @@
++# Exact Potts Jones filters
++
++This research extension adds opt-in Jones obstruction backends to the
++8 October 2026 ProveIt snapshot. The existing matching backend remains the
++default.
++
++## Commands
++
++From this directory:
++
++    python -m fastunknot jones examples/conway.json --backend potts-exact
++    python -m fastunknot recognize examples/conway.json --jones-backend potts-exact-factorized
++    python -m fastunknot jones examples/conway.json --backend potts-exact --potts-colors 7
++
++The exact backends default to six colors. They compute with integer pairs
++in Z[x]/(x² − (q−2)x + 1), with no floating point. The factored version keeps
++separate tensors for connected components of the processed Tait graph and
++joins their color orbits only when an edge connects them.
++
++An unequal Jones value proves KNOTTED. Equality is INCONCLUSIVE and the
++recognizer retains its existing fallback. Local filter budget exhaustion
++also remains inconclusive; a global resource limit gives UNKNOWN.
++The standalone Jones command exits 3 on a resource limit, 2 on invalid
++input/options, and 0 on a completed computation.
++
++## Available Jones backend selectors
++
++| Selector | Description |
++|---|---|
++| matching | Existing modular matching transfer; unchanged default. |
++| potts5 | Modular five-color equality-pattern transfer. |
++| potts-exact | Exact quadratic one-tensor transfer, q=6 by default. |
++| potts-exact-factorized | Exact quadratic transfer factored over processed components, q=6 by default. |
++
++Use --jones-backend with recognize and --backend with jones. The existing
++--backend on recognize still selects a Khovanov implementation.
++The recognize flags --jones-max-states and --jones-max-transitions bound
++local filter work. The jones command uses --max-states and --max-transitions.
++State budgets count represented keys, not total process memory.
++
++## Mathematical guarantees and limitations
++
++For any crossing order of a validated connected plane knot diagram,
++2f ≤ w, where f counts active vertices of either fixed Tait graph and w
++counts cut diagram edges. Equality patterns have at most q^f states.
++The one-tensor algorithm therefore has poly(n,w) q^(w/2) complexity for
++fixed q. Exact coefficient lengths are O(n log q) bits.
++
++The factored algorithm has poly(n,g) q! q^(g+2) arithmetic work, where g is
++the largest active frontier of one processed component. Its aggregate
++color-orbit divisions are exact integer divisions checked coordinatewise.
++
++These are bounds for a scalar filter. They do not establish a complete
++quasi-polynomial unknot recognizer or guarantee small width on every input.
++The classical Potts/Jones correspondence and bounded-width algorithms have
++substantial prior literature; see the accompanying research article.
++
++Five colors have a proved infinite blind family:
++closure((sigma1 sigma2^-1)^m) for odd m≥5 with 3 not dividing m.
++Its exact q=5 Jones value is 1. Every exact q≥6 detects every nontrivial
++knot in that weaving family. Equality at q=6 is still inconclusive in
++general.
++
++## Evidence and APIs
++
++Raw evaluators return integer pairs and exact counters:
++
++    from fastunknot.potts_exact import potts_exact
++    from fastunknot.potts_factorized_exact import factorized_potts_exact
++
++Both accept colors, order, shade, max_states, max_transitions, and check.
++Obstruction wrappers return None on equality. Otherwise their JSON-safe
++evidence uses partition_function_hex and unknot_partition_hex, each a
++two-element list of canonical signed hexadecimal strings. This avoids
++Python's decimal digit ceiling on long narrow inputs.
++
++The research package includes a q=6 certificate replayer, a separate
++full-smoothing Jones oracle, raw benchmarks, and a detailed article.
++The replayer recomputes the selected exact backend and is explicitly not
++an independent algorithm or a signature verifier.
++
++## Validation and measured scope
++
++The integrated suite passed 172 tests. Independent cube enumeration checked
++4,464 cases per exact backend over q=5,6,7, two shadings, and three orders;
++the expected values were constructed independently of Tait graphs.
++
++The 29-input kernel benchmark includes gains and regressions. On one fixed
++poor order, factorization reduced exact q=6 peak keys from 4,111 to 205
++and transitions from 30,197 to 1,558. Its median speed ratio against the
++one-tensor exact backend was 23.843 on that input. Several other orders favor
++the existing matching backend. A separate normal-pipeline run supports no
++overall speedup claim. Keep the new backends opt-in pending broader evidence.
+diff --git a/Topology/UnknotRecognition/fast/README.md b/Topology/UnknotRecognition/fast/README.md
+--- a/Topology/UnknotRecognition/fast/README.md
++++ b/Topology/UnknotRecognition/fast/README.md
+@@ -616,3 +616,11 @@
+ dense method. None of the six ordinary scan cases selected an adaptive factored
+ call. Those results justify the explicit option, not a default switch. The raw
+ samples and A/A controls are in `results/component_algebra_20261007.json`.
++
++
++## Exact Potts filter continuation (8 October 2026)
++
++Opt-in exact quadratic and component-factored Jones backends are documented in
++[POTTS.md](POTTS.md). The existing matching filter remains the default.
++The accompanying research package contains proofs, independent checks, raw
++benchmarks, and explicit limits on the quasi-polynomial objective.
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/__main__.py b/Topology/UnknotRecognition/fast/fastunknot/__main__.py
+--- a/Topology/UnknotRecognition/fast/fastunknot/__main__.py
++++ b/Topology/UnknotRecognition/fast/fastunknot/__main__.py
+@@ -58,9 +58,13 @@
+          "also compute the exact Alexander polynomial after the modular test passed"),
+         ("--no-modular", None, False, None, "disable only the modular Alexander stage"),
+         ("--no-jones", None, False, None, None),
++        ("--jones-backend", str, "matching", ("matching", "potts5", "potts-exact", "potts-exact-factorized"),
++         "Jones obstruction: matching scan, modular Potts, or exact quadratic Potts"),
++        ("--potts-colors", int, 6, None, "number of colors for exact Potts (at least 5)"),
+         ("--no-factor", None, False, None, "do not split visible connected sums"),
+         ("--legacy-factor", None, False, None, "use the historical recursive two-edge-cut factorizer"),
+         ("--jones-max-states", int, 4096, None, None),
++        ("--jones-max-transitions", int, 200000, None, "transition budget for the Jones filter"),
+         ("--pivot", str, "minfill", ("minfill", "lifo"), None),
+         ("--algebra", str, "bits", ("bits", "sets"), None),
+         ("--tail", int, 0, None, None),
+@@ -83,12 +87,19 @@
+         ("--race", int, 1, None, "scan N greedy orders in separate processes"),
+         ("--race-after", float, 1.0, None, "head start of the default order in seconds"),
+     ],
+-    "jones": [],
++    "jones": [
++        ("--backend", str, "matching", ("matching", "potts5", "potts-exact", "potts-exact-factorized"),
++         "Jones obstruction backend"),
++        ("--potts-colors", int, 6, None, "number of colors for exact Potts (at least 5)"),
++        ("--max-states", int, None, None, "frontier state budget"),
++        ("--max-transitions", int, None, None, "transition budget"),
++        ("--seconds", float, None, None, "cooperative time budget"),
++    ],
+     "alexander": [],
+ }
+ COMMAND_HELP = {"recognize": "decide whether a knot diagram is the unknot",
+                 "khovanov": "total F2 Khovanov rank by scanning",
+-                "jones": "one-sided modular Kauffman bracket test", "alexander": "Alexander polynomial"}
++                "jones": "one-sided Jones obstruction test", "alexander": "Alexander polynomial"}
+ 
+ 
+ class _Namespace:
+@@ -179,6 +190,12 @@
+             print("component composition requires standard backend, minfill, bits, and race=1", file=sys.stderr)
+             return 2
+     if args.command == "recognize":
++        if args.potts_colors < 5:
++            print("--potts-colors must be at least 5", file=sys.stderr)
++            return 2
++        if args.jones_max_states < 0 or args.jones_max_transitions < 0:
++            print("Jones budgets must be nonnegative", file=sys.stderr)
++            return 2
+         if args.euler_max_states < 0:
+             print("--euler-max-states must be nonnegative", file=sys.stderr)
+             return 2
+@@ -198,7 +215,9 @@
+                            race=args.race, race_after=args.race_after,
+                            use_jones=not args.no_jones, use_factorization=not args.no_factor,
+                            factor_backend="legacy" if args.legacy_factor else "interlacement",
+-                           jones_max_states=args.jones_max_states, pivot=args.pivot,
++                           jones_backend=args.jones_backend, potts_colors=args.potts_colors,
++                           jones_max_states=args.jones_max_states,
++                           jones_max_transitions=args.jones_max_transitions, pivot=args.pivot,
+                            algebra=args.algebra, tail=args.tail, max_objects=args.max_objects,
+                            seconds=args.seconds, check_d_squared=args.check_d2).to_json()
+         text = json.dumps(result, indent=1)
+@@ -228,10 +247,39 @@
+         print(json.dumps(result, indent=1))
+         return 0
+     if args.command == "jones":
++        from time import monotonic
++        if args.potts_colors < 5:
++            print("--potts-colors must be at least 5", file=sys.stderr)
++            return 2
++        for value in (args.max_states, args.max_transitions):
++            if value is not None and value < 0:
++                print("Jones budgets must be nonnegative", file=sys.stderr)
++                return 2
++        deadline = None if args.seconds is None else monotonic() + args.seconds
++        def check():
++            if deadline is not None and monotonic() > deadline:
++                raise ScanLimit("time budget exhausted")
++        jones_test = jones_obstruction
++        jones_options = {}
++        if args.backend == "potts5":
++            from .potts import potts_obstruction
++            jones_test = potts_obstruction
++        elif args.backend == "potts-exact":
++            from .potts_exact import potts_exact_obstruction
++            jones_test = potts_exact_obstruction
++            jones_options["colors"] = args.potts_colors
++        elif args.backend == "potts-exact-factorized":
++            from .potts_factorized_exact import factorized_potts_exact_obstruction
++            jones_test = factorized_potts_exact_obstruction
++            jones_options["colors"] = args.potts_colors
+         try:
+-            witness = jones_obstruction(diagram, max_states=None, max_transitions=None)
+-        except FilterLimit as exc:
+-            witness = {"skipped": str(exc)}
++            check()
++            witness = jones_test(diagram, max_states=args.max_states,
++                                 max_transitions=args.max_transitions, check=check, **jones_options)
++        except (FilterLimit, ScanLimit, MemoryError) as exc:
++            print(json.dumps({"verdict": "INCONCLUSIVE", "witness": None,
++                              "reason": str(exc) or "memory allocation failed"}, indent=1))
++            return 3
+         print(json.dumps({"verdict": "KNOTTED" if witness else "INCONCLUSIVE", "witness": witness}, indent=1))
+         return 0
+     poly = alexander_polynomial(diagram)
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/potts.py b/Topology/UnknotRecognition/fast/fastunknot/potts.py
+new file mode 100644
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/fastunknot/potts.py
+@@ -0,0 +1,272 @@
++"""Exact five-state Potts specialization of the Jones obstruction.
++
++The signed checkerboard graph turns the bracket into a Potts partition
++function at q=5.  At any supplied crossing order its active black regions
++number at most half the diagram's cut edges.  A state records the equality
++pattern of their spins, with at most five classes.  Simultaneous permutation
++of the five spin names is quotiented exactly; coefficients are AGGREGATED
++over all labeled assignments in a class, not per-assignment coefficients.
++
++This is an optional one-sided filter.  Equality with the unknot value is
++inconclusive, and FilterLimit is a resource outcome, never a knot verdict.
++The polynomial specialization differs from the original generic Jones
++evaluation, so neither filter subsumes the other.
++"""
++from __future__ import annotations
++
++from .filters import FilterLimit, PRIME
++from .ordering import best_scan_order, validate_order
++
++
++COLORS = 5
++# p = 2^61-1 is 3 modulo 4 and 1 modulo 5.  x=(3+sqrt(5))/2 is a
++# square, and the squares have odd order 2^60-1; 4^(-1) in that
++# subgroup is 2^58.  Thus A^4=x and (-A^2-A^(-2))^2=5.
++ROOT_FIVE = pow(5, (PRIME + 1) // 4, PRIME)
++POTTS_X = (3 + ROOT_FIVE) * ((PRIME + 1) // 2) % PRIME
++POTTS_A = pow(POTTS_X, 1 << 58, PRIME)
++_INVERSE_A = pow(POTTS_A, -1, PRIME)
++POTTS_DELTA = (-POTTS_A * POTTS_A - _INVERSE_A * _INVERSE_A) % PRIME
++if (ROOT_FIVE * ROOT_FIVE % PRIME != 5 or pow(POTTS_A, 4, PRIME) != POTTS_X
++        or POTTS_DELTA * POTTS_DELTA % PRIME != COLORS):
++    raise ArithmeticError("invalid five-state Potts specialization")
++
++
++def _budget(value, name):
++    if value is not None and (type(value) is not int or value < 0):
++        raise ValueError(name + " must be a nonnegative integer or None")
++
++
++def _checkerboard(diagram, check):
++    """Face IDs of outgoing darts and the two colors of the dual graph."""
++    faces = diagram.faces()
++    alpha = diagram.alpha()
++    dart_face = [0] * len(alpha)
++    for number, face in enumerate(faces):
++        for dart in face:
++            dart_face[dart] = number
++    colors = [-1] * len(faces)
++    if not faces:
++        return dart_face, colors
++    colors[0] = 0
++    queue = [0]
++    while queue:
++        face = queue.pop()
++        check()
++        opposite = 1 - colors[face]
++        for dart in faces[face]:
++            other = dart_face[alpha[dart]]
++            if colors[other] == -1:
++                colors[other] = opposite
++                queue.append(other)
++            elif colors[other] != opposite:
++                raise ValueError("diagram faces are not checkerboard colorable")
++    if any(color == -1 for color in colors):
++        raise ValueError("the projection must be connected")
++    return dart_face, colors
++
++
++def _tait_from_faces(n, dart_face, colors, shade):
++    names = {face: i for i, face in enumerate(
++        face for face, color in enumerate(colors) if color == shade)}
++    edges = []
++    for crossing in range(n):
++        base = 4 * crossing
++        # The face walk is sigma o alpha.  Hence corner (j,j+1)
++        # is the face of outgoing dart j+1, rather than dart j.
++        corners = [dart_face[base + (j + 1) % 4] for j in range(4)]
++        if colors[corners[0]] == shade:
++            # Smoothing 0 caps both black corners and omits the Tait edge.
++            u, v, exponent = corners[0], corners[2], 1
++        else:
++            # Smoothing 1 caps both black corners and omits the Tait edge.
++            u, v, exponent = corners[1], corners[3], -1
++        edges.append((names[u], names[v], exponent))
++    return len(names), tuple(edges)
++
++
++def tait_graph(diagram, *, shade=0, check=lambda: None):
++    """Return (vertex_count, edges) of the signed Tait multigraph.
++
++    Edge i is (u,v,e), where omitting that edge uses smoothing exponent
++    e in {+1,-1}.  Loops and parallel edges are retained.  ``diagram``
++    must be a validated classical one-component Diagram, as for the
++    original scanner APIs.  The crossing-free input has one black vertex.
++    """
++    if type(shade) is not int or shade not in (0, 1):
++        raise ValueError("shade must be 0 or 1")
++    check()
++    if not diagram.pd:
++        return 1, ()
++    dart_face, colors = _checkerboard(diagram, check)
++    return _tait_from_faces(diagram.crossings, dart_face, colors, shade)
++
++
++def _schedule(vertices, edges, order):
++    first, last = [len(order)] * vertices, [-1] * vertices
++    for position, index in enumerate(order):
++        u, v, _ = edges[index]
++        for vertex in (u,) if u == v else (u, v):
++            if first[vertex] == len(order):
++                first[vertex] = position
++            last[vertex] = position
++    changes = [0] * len(order)
++    for vertex in range(vertices):
++        if last[vertex] < 0:
++            raise ArithmeticError("an isolated Tait vertex was not accounted for")
++        changes[first[vertex]] += 1
++        changes[last[vertex]] -= 1
++    active = peak = total = 0
++    for change in changes:
++        active += change
++        peak = max(peak, active)
++        total += active
++    return first, last, (peak, total)
++
++
++def _canonical(values):
++    names = {}
++    result = []
++    for value in values:
++        if value not in names:
++            names[value] = len(names)
++        result.append(names[value])
++    return tuple(result)
++
++
++def _extensions(state, introduced, colors=COLORS):
++    """(extended equality pattern, multiplicity of new labeled choices)."""
++    patterns = [(state, 1, max(state, default=-1) + 1)]
++    for _ in range(introduced):
++        following = []
++        for values, multiplicity, used in patterns:
++            for color in range(used):
++                following.append((values + (color,), multiplicity, used))
++            if used < colors:
++                following.append((values + (used,), multiplicity * (colors - used),
++                                  used + 1))
++        patterns = following
++    return patterns
++
++
++def potts_bracket(diagram, *, max_states=4096, max_transitions=200_000,
++                  order=None, check=lambda: None, statistics=None, shade=None):
++    """Compute an exact modular bracket evaluation and its work counters.
++
++    shade=None selects between the two checkerboard graphs by the
++    (maximum, total) active-vertex profile in this SAME crossing order.
++    Passing shade=0 or shade=1 forces a graph for independent checks.
++    Only the current frontier is stored; preparation uses O(n) space.
++    The optional ``statistics`` dictionary is updated on successful return.
++    A zero state or transition budget skips every nonempty diagram.
++    """
++    _budget(max_states, "max_states")
++    _budget(max_transitions, "max_transitions")
++    if shade is not None and (type(shade) is not int or shade not in (0, 1)):
++        raise ValueError("shade must be 0, 1, or None")
++    check()
++    n = diagram.crossings
++    if order is not None:
++        order = validate_order(n, order)
++    if n and (max_states == 0 or max_transitions == 0):
++        raise FilterLimit("Potts filter budget is zero")
++    if n == 0:
++        result = dict(prime=PRIME, q=COLORS, A=POTTS_A, x=POTTS_X,
++                      delta=POTTS_DELTA, writhe=0, bracket=POTTS_DELTA,
++                      unknot_bracket=POTTS_DELTA, partition_function=COLORS,
++                      tait_vertices=1, shade=0 if shade is None else shade,
++                      peak_states=1, transitions=0, max_spin_frontier=0,
++                      max_boundary=0, crossing_count=0)
++        if statistics is not None:
++            statistics.update(result)
++        return result
++    if order is None:
++        order = best_scan_order(diagram.pd, tries=min(n, 12), check=check)
++    check()
++    dart_face, colors = _checkerboard(diagram, check)
++    choices = (0, 1) if shade is None else (shade,)
++    selected = None
++    for candidate in choices:
++        vertices, edges = _tait_from_faces(n, dart_face, colors, candidate)
++        first, last, profile = _schedule(vertices, edges, order)
++        choice = (profile, candidate, vertices, edges, first, last)
++        if selected is None or choice[:2] < selected[:2]:
++            selected = choice
++    profile, shade, vertices, edges, first, last = selected
++    check()
++
++    states, active = {(): 1}, []
++    peak, transitions, max_boundary = 1, 0, 0
++    boundary = set()
++    # For omitted smoothing exponent e, v_e=delta*A^(-2e).
++    # Their equal-spin factors are 1+v_e=-x^(-e).
++    equal_weights = {1: (-pow(POTTS_X, -1, PRIME)) % PRIME,
++                     -1: (-POTTS_X) % PRIME}
++    for position, index in enumerate(order):
++        check()
++        u, v, exponent = edges[index]
++        new_vertices = sorted(vertex for vertex in {u, v} if first[vertex] == position)
++        extended = active + new_vertices
++        iu, iv = extended.index(u), extended.index(v)
++        keep = tuple(i for i, vertex in enumerate(extended) if last[vertex] > position)
++        following = {}
++        equal = equal_weights[exponent]
++        introduced = len(new_vertices)
++        for state, coefficient in states.items():
++            for values, multiplicity, _ in _extensions(state, introduced):
++                if max_transitions is not None and transitions >= max_transitions:
++                    raise FilterLimit("Potts transition budget exhausted")
++                transitions += 1
++                if not transitions & 1023:
++                    check()
++                weight = equal if values[iu] == values[iv] else 1
++                target = _canonical(values[i] for i in keep)
++                value = (following.get(target, 0) + coefficient * multiplicity * weight) % PRIME
++                if value:
++                    following[target] = value
++                    peak = max(peak, len(following))
++                else:
++                    following.pop(target, None)
++                if max_states is not None and len(following) > max_states:
++                    raise FilterLimit("Potts frontier budget exhausted")
++        active = [extended[i] for i in keep]
++        states = following
++        peak = max(peak, len(states))
++        for label in diagram.pd[index]:
++            if label in boundary:
++                boundary.remove(label)
++            else:
++                boundary.add(label)
++        max_boundary = max(max_boundary, len(boundary))
++        if 2 * len(active) > len(boundary):
++            raise ArithmeticError("checkerboard frontier violates the cut-edge bound")
++    if active or boundary or any(states):
++        raise ArithmeticError("Potts scan ended with an open frontier")
++    check()
++    partition = states.get((), 0)
++    omitted_exponent = sum(edge[2] for edge in edges)
++    prefactor = (pow(POTTS_A, omitted_exponent, PRIME)
++                 * pow(POTTS_DELTA, -vertices, PRIME)) % PRIME
++    bracket = partition * prefactor % PRIME
++    writhe = diagram.writhe()
++    expected = POTTS_DELTA * pow((-pow(POTTS_A, 3, PRIME)) % PRIME,
++                                writhe % (PRIME - 1), PRIME) % PRIME
++    result = dict(prime=PRIME, q=COLORS, A=POTTS_A, x=POTTS_X,
++                  delta=POTTS_DELTA, writhe=writhe, bracket=bracket,
++                  unknot_bracket=expected, partition_function=partition,
++                  tait_vertices=vertices, shade=shade, peak_states=peak,
++                  transitions=transitions, max_spin_frontier=profile[0],
++                  max_boundary=max_boundary, crossing_count=n)
++    if statistics is not None:
++        statistics.update(result)
++    return result
++
++
++def potts_obstruction(diagram, *, max_states=4096, max_transitions=200_000,
++                      order=None, check=lambda: None, statistics=None, shade=None):
++    """Return an exact knottedness witness or None; never certify an unknot."""
++    result = potts_bracket(diagram, max_states=max_states, max_transitions=max_transitions,
++                           order=order, check=check, statistics=statistics, shade=shade)
++    if result["bracket"] == result["unknot_bracket"]:
++        return None
++    return dict(kind="potts-jones-differs-from-unknot", **result)
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/potts_exact.py b/Topology/UnknotRecognition/fast/fastunknot/potts_exact.py
+new file mode 100644
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/fastunknot/potts_exact.py
+@@ -0,0 +1,196 @@
++"""Exact quadratic-integer Potts obstruction for any fixed q >= 5.
++
++Compute in Z[x]/(x^2-(q-2)x+1), storing a+b*x as the integer pair (a,b).
++The spin edge weight is 1 for different colors and -x**(-e) for equal
++colors, where e is the omitted smoothing exponent.  No floating point,
++prime choice, or division is used.  Agreement still means INCONCLUSIVE.
++The default is q=6; q=5 misses every odd member of an infinite weaving
++knot family, including closure((sigma1 sigma2^-1)^5).
++"""
++from __future__ import annotations
++
++from .filters import FilterLimit
++from .ordering import best_scan_order, validate_order
++from .potts import (_budget, _canonical, _checkerboard, _extensions,
++                    _schedule, _tait_from_faces)
++
++
++def multiply(left, right, colors=6):
++    """Exact quadratic-ring multiplication; x^2=(colors-2)*x-1."""
++    a, b = left
++    c, d = right
++    bd = b * d
++    return a * c - bd, a * d + b * c + (colors - 2) * bd
++
++
++def power(value, exponent, colors=6):
++    """Nonnegative integral powers in the quadratic ring."""
++    if type(exponent) is not int or exponent < 0:
++        raise ValueError("exponent must be a nonnegative integer")
++    result = (1, 0)
++    while exponent:
++        if exponent & 1:
++            result = multiply(result, value, colors)
++        exponent >>= 1
++        if exponent:
++            value = multiply(value, value, colors)
++    return result
++
++
++def x_power(exponent, colors=6):
++    if type(exponent) is not int:
++        raise ValueError("exponent must be an integer")
++    return power((0, 1) if exponent >= 0 else (colors - 2, -1), abs(exponent), colors)
++
++
++def equal_spin(value, omitted_exponent, colors=6):
++    """Multiply by -x**(-omitted_exponent) with additions only."""
++    a, b = value
++    if omitted_exponent == 1:
++        return -(colors - 2) * a - b, a
++    if omitted_exponent == -1:
++        return b, -a - (colors - 2) * b
++    raise ValueError("omitted smoothing exponent must be +1 or -1")
++
++
++def potts_exact(diagram, *, colors=6, max_states=4096, max_transitions=200_000,
++                order=None, check=lambda: None, statistics=None, shade=None):
++    """Return the exact partition function and its unknot comparison.
++
++    For a nonempty classical knot diagram let v be the Tait vertex count,
++    s the sum of omitted smoothing exponents, and w the writhe. Then
++
++      E = s - 3*w + 2*(v+1) is a multiple of 4,
++      V(A^-4) = (-1)**(w+v+1) * x**(E/4) * Z / (x+1)**(v+1).
++
++    We compare Z with (-1)**(w+v+1)*x**(-E/4)*(x+1)**(v+1).
++    The quadratic polynomial is irreducible over Q for every integer q>=5,
++    so pair inequality certifies exact inequality. Intermediate coefficients
++    have O(n log q) bits. The number of colors is a parameter, not a field.
++    """
++    _budget(max_states, "max_states")
++    _budget(max_transitions, "max_transitions")
++    if type(colors) is not int or colors < 5:
++        raise ValueError("colors must be an integer at least 5")
++    if shade is not None and (type(shade) is not int or shade not in (0, 1)):
++        raise ValueError("shade must be 0, 1, or None")
++    check()
++    n = diagram.crossings
++    if order is not None:
++        order = validate_order(n, order)
++    if n and (max_states == 0 or max_transitions == 0):
++        raise FilterLimit("exact Potts filter budget is zero")
++    if n == 0:
++        result = dict(q=colors, ring=f"Z[x]/(x^2-{colors - 2}*x+1)", writhe=0,
++                      partition_function=[colors, 0], unknot_partition=[colors, 0],
++                      differs=False, tait_vertices=1, shade=0 if shade is None else shade,
++                      peak_states=1, transitions=0, max_spin_frontier=0,
++                      max_boundary=0, crossing_count=0,
++                      max_coefficient_bits=colors.bit_length(),
++                      normalization_exponent=None, omitted_exponent=None)
++        if statistics is not None:
++            statistics.update(result)
++        return result
++    if order is None:
++        order = best_scan_order(diagram.pd, tries=min(n, 12), check=check)
++    dart_face, face_colors = _checkerboard(diagram, check)
++    selected = None
++    for candidate in ((0, 1) if shade is None else (shade,)):
++        check()
++        vertices, edges = _tait_from_faces(n, dart_face, face_colors, candidate)
++        first, last, profile = _schedule(vertices, edges, order)
++        choice = (profile, candidate, vertices, edges, first, last)
++        if selected is None or choice[:2] < selected[:2]:
++            selected = choice
++    profile, shade, vertices, edges, first, last = selected
++    states, active = {(): (1, 0)}, []
++    peak, transitions, max_boundary, coefficient_bits = 1, 0, 0, 1
++    boundary = set()
++    for position, index in enumerate(order):
++        check()
++        u, v, exponent = edges[index]
++        new_vertices = sorted(vertex for vertex in {u, v} if first[vertex] == position)
++        extended = active + new_vertices
++        iu, iv = extended.index(u), extended.index(v)
++        keep = tuple(i for i, vertex in enumerate(extended) if last[vertex] > position)
++        following = {}
++        for state, coefficient in states.items():
++            for values, multiplicity, _ in _extensions(state, len(new_vertices), colors):
++                if max_transitions is not None and transitions >= max_transitions:
++                    raise FilterLimit("exact Potts transition budget exhausted")
++                transitions += 1
++                if not transitions & 1023:
++                    check()
++                a, b = (equal_spin(coefficient, exponent, colors)
++                        if values[iu] == values[iv] else coefficient)
++                target = _canonical(values[i] for i in keep)
++                old_a, old_b = following.get(target, (0, 0))
++                value = old_a + multiplicity * a, old_b + multiplicity * b
++                if value != (0, 0):
++                    following[target] = value
++                    peak = max(peak, len(following))
++                    coefficient_bits = max(coefficient_bits, abs(value[0]).bit_length(),
++                                           abs(value[1]).bit_length())
++                else:
++                    following.pop(target, None)
++                if max_states is not None and len(following) > max_states:
++                    raise FilterLimit("exact Potts frontier budget exhausted")
++        active = [extended[i] for i in keep]
++        states = following
++        peak = max(peak, len(states))
++        for label in diagram.pd[index]:
++            if label in boundary:
++                boundary.remove(label)
++            else:
++                boundary.add(label)
++        max_boundary = max(max_boundary, len(boundary))
++        if 2 * len(active) > len(boundary):
++            raise ArithmeticError("checkerboard frontier violates the cut-edge bound")
++    if active or boundary or any(states):
++        raise ArithmeticError("exact Potts scan ended with an open frontier")
++    check()
++    partition = states.get((), (0, 0))
++    omitted_exponent = sum(edge[2] for edge in edges)
++    writhe = diagram.writhe()
++    exponent = omitted_exponent - 3 * writhe + 2 * (vertices + 1)
++    if exponent % 4:
++        raise ArithmeticError("normalization requires an odd-component classical link")
++    exponent //= 4
++    expected = multiply(x_power(-exponent, colors),
++                        power((1, 1), vertices + 1, colors), colors)
++    if (writhe + vertices + 1) % 2:
++        expected = -expected[0], -expected[1]
++    check()
++    result = dict(q=colors, ring=f"Z[x]/(x^2-{colors - 2}*x+1)", writhe=writhe,
++                  partition_function=list(partition), unknot_partition=list(expected),
++                  differs=partition != expected, tait_vertices=vertices, shade=shade,
++                  peak_states=peak, transitions=transitions,
++                  max_spin_frontier=profile[0], max_boundary=max_boundary,
++                  crossing_count=n, max_coefficient_bits=coefficient_bits,
++                  normalization_exponent=exponent, omitted_exponent=omitted_exponent)
++    if statistics is not None:
++        statistics.update(result)
++    return result
++
++
++def witness_from_exact(result, *, kind="potts-jones-exact-differs-from-unknot"):
++    """JSON-safe exact witness, or None; raw evaluators retain integer pairs.
++
++    Signed hexadecimal strings avoid Python's decimal integer digit limit
++    for long bounded-width inputs without altering a process-global setting.
++    The equality test uses the actual pairs, not a supplied truthy flag.
++    """
++    partition = result["partition_function"]
++    expected = result["unknot_partition"]
++    if partition == expected:
++        return None
++    witness = dict(kind=kind, **result)
++    witness["differs"] = True
++    for name in ("partition_function", "unknot_partition"):
++        witness[name + "_hex"] = [hex(value) for value in witness.pop(name)]
++    return witness
++
++
++def potts_exact_obstruction(diagram, **options):
++    """An exact nontrivial-Jones-value witness, or None (inconclusive)."""
++    return witness_from_exact(potts_exact(diagram, **options))
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/potts_factorized.py b/Topology/UnknotRecognition/fast/fastunknot/potts_factorized.py
+new file mode 100644
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/fastunknot/potts_factorized.py
+@@ -0,0 +1,272 @@
++"""Potts spin tensors factored over components of the processed Tait graph.
++
++Independent processed components have independent spin-name symmetries.
++Keeping them separate avoids storing their currently irrelevant relative
++color equalities.  When an edge joins components, exact relative color
++alignments restore those equalities.  This is an optional modular backend;
++the ordinary one-tensor Potts implementation remains an independent oracle.
++"""
++from __future__ import annotations
++
++from .filters import FilterLimit, PRIME
++from .ordering import best_scan_order, validate_order
++from .potts import (COLORS, POTTS_A, POTTS_DELTA, POTTS_X, _budget,
++                    _canonical, _checkerboard, _schedule, _tait_from_faces,
++                    potts_bracket)
++
++
++_ALIGNMENTS = {}
++
++
++def relative_alignments(left_colors, right_colors, colors=COLORS):
++    """Yield (right-label map, total used colors), without duplicate orbits.
++
++    A right label is identified with one unused left label or becomes the
++    next fresh label.  This enumerates partial bijections of color classes.
++    At q=5 there are at most 120, and at q=6 at most 720, alignments per
++    pair of states.  Larger q is supported by the uncached lazy generator.
++    """
++    if (type(colors) is not int or colors < 1 or type(left_colors) is not int
++            or type(right_colors) is not int
++            or not 0 <= left_colors <= colors or not 0 <= right_colors <= colors):
++        raise ValueError("invalid color-class counts")
++    key = (left_colors, right_colors, colors)
++    cached = _ALIGNMENTS.get(key)
++    if cached is not None:
++        yield from cached
++        return
++
++    def generate(prefix, used_left, fresh):
++        if len(prefix) == right_colors:
++            yield prefix, left_colors + fresh
++            return
++        for value in range(left_colors):
++            if not used_left >> value & 1:
++                yield from generate(prefix + (value,), used_left | (1 << value), fresh)
++        if left_colors + fresh < colors:
++            yield from generate(prefix + (left_colors + fresh,), used_left, fresh + 1)
++
++    if colors <= 6:
++        cached = tuple(generate((), 0, 0))
++        _ALIGNMENTS[key] = cached
++        yield from cached
++    else:
++        yield from generate((), 0, 0)
++
++
++def factorized_partition(vertices, edges, order, *, colors=COLORS,
++                          equal_weights=None, max_states=4096,
++                          max_transitions=200_000, check=lambda: None):
++    """Partition function of a signed graph, with component spin tensors.
++
++    Coefficients are reduced modulo PRIME.  ``colors`` may be any positive
++    integer below PRIME; the kernel's asymptotic claim fixes that integer.
++    ``equal_weights[e]`` is the multiplier for equal endpoint spins at an
++    edge with label e; unequal spins have multiplier one.  Default weights
++    implement the same q=5 Jones specialization as potts_bracket.
++
++    A state limit bounds the SUM of represented table keys, including
++    independent components.  Inputs to a merge remain allocated while its
++    replacement is constructed, so this is not a process-memory ceiling.
++    Transition work counts resulting relative-color orbits, or one update
++    per state for an edge inside one component.  Isolated vertices and
++    closed components contribute scalar factors.
++    """
++    _budget(max_states, "max_states")
++    _budget(max_transitions, "max_transitions")
++    if type(colors) is not int or not 1 <= colors < PRIME:
++        raise ValueError("colors must be a positive integer below PRIME")
++    if type(vertices) is not int or vertices < 0:
++        raise ValueError("vertices must be a nonnegative integer")
++    edges = tuple(edges)
++    order = validate_order(len(edges), order)
++    if equal_weights is None:
++        if colors != COLORS:
++            raise ValueError("nondefault colors require explicit equal_weights")
++        equal_weights = {1: -pow(POTTS_X, -1, PRIME), -1: -POTTS_X}
++    for u, v, exponent in edges:
++        if (type(u) is not int or type(v) is not int or not 0 <= u < vertices
++                or not 0 <= v < vertices or exponent not in equal_weights
++                or type(equal_weights[exponent]) is not int):
++            raise ValueError("invalid signed graph edge")
++    if edges and (max_states == 0 or max_transitions == 0):
++        raise FilterLimit("factorized Potts filter budget is zero")
++    check()
++    first, last = [len(edges)] * vertices, [-1] * vertices
++    for position, index in enumerate(order):
++        u, v, _ = edges[index]
++        for vertex in (u,) if u == v else (u, v):
++            first[vertex] = min(first[vertex], position)
++            last[vertex] = position
++    scalar = pow(colors, sum(position == -1 for position in last), PRIME)
++    falling = [1]
++    for k in range(1, min(colors, vertices) + 1):
++        falling.append(falling[-1] * (colors - k + 1) % PRIME)
++    inverse_falling = [pow(value, -1, PRIME) for value in falling]
++    parent = [-1] * vertices
++    components = {}
++    stored = transitions = merges = 0
++    peak = peak_component = 1
++    max_components = max_frontier = max_component_frontier = frontier = 0
++
++    def find(vertex):
++        while parent[vertex] != vertex:
++            parent[vertex] = parent[parent[vertex]]
++            vertex = parent[vertex]
++        return vertex
++
++    def update(row, target, value, unaffected):
++        nonlocal peak, peak_component, transitions
++        if max_transitions is not None and transitions >= max_transitions:
++            raise FilterLimit("factorized Potts transition budget exhausted")
++        transitions += 1
++        if not transitions & 1023:
++            check()
++        value = (row.get(target, 0) + value) % PRIME
++        if value:
++            row[target] = value
++        else:
++            row.pop(target, None)
++        represented = unaffected + len(row)
++        peak = max(peak, represented)
++        peak_component = max(peak_component, len(row))
++        if max_states is not None and represented > max_states:
++            raise FilterLimit("factorized Potts frontier budget exhausted")
++
++    for position, index in enumerate(order):
++        check()
++        u, v, exponent = edges[index]
++        for vertex in sorted({u, v}):
++            if first[vertex] == position:
++                parent[vertex] = vertex
++                components[vertex] = ([vertex], {(0,): colors})
++                stored += 1
++                frontier += 1
++        peak = max(peak, stored)
++        max_components = max(max_components, len(components))
++        if max_states is not None and stored > max_states:
++            raise FilterLimit("factorized Potts frontier budget exhausted")
++        left_root, right_root = find(u), find(v)
++        left_active, left_states = components[left_root]
++        equal = equal_weights[exponent] % PRIME
++        row = {}
++        if left_root == right_root:
++            active = left_active
++            iu, iv = active.index(u), active.index(v)
++            keep = tuple(i for i, vertex in enumerate(active) if last[vertex] > position)
++            unaffected = stored - len(left_states)
++            for state, coefficient in left_states.items():
++                target = _canonical(state[i] for i in keep)
++                weight = equal if state[iu] == state[iv] else 1
++                update(row, target, coefficient * weight, unaffected)
++        else:
++            merges += 1
++            right_active, right_states = components[right_root]
++            active = left_active + right_active
++            iu, iv = left_active.index(u), right_active.index(v)
++            keep = tuple(i for i, vertex in enumerate(active) if last[vertex] > position)
++            unaffected = stored - len(left_states) - len(right_states)
++            # Divide each aggregate by its orbit size before combining
++            # independent label symmetries.  The denominators are units.
++            normalized_left = [(state, coefficient * inverse_falling[max(state) + 1] % PRIME,
++                                max(state) + 1) for state, coefficient in left_states.items()]
++            normalized_right = [(state, coefficient * inverse_falling[max(state) + 1] % PRIME,
++                                 max(state) + 1) for state, coefficient in right_states.items()]
++            for a, ca, ka in normalized_left:
++                for b, cb, kb in normalized_right:
++                    coefficient = ca * cb % PRIME
++                    for alignment, used in relative_alignments(ka, kb, colors):
++                        combined = a + tuple(alignment[color] for color in b)
++                        target = _canonical(combined[i] for i in keep)
++                        weight = equal if a[iu] == alignment[b[iv]] else 1
++                        update(row, target, coefficient * falling[used] * weight, unaffected)
++            del components[right_root]
++            parent[right_root] = left_root
++        remaining = [active[i] for i in keep]
++        if remaining:
++            components[left_root] = (remaining, row)
++            stored = unaffected + len(row)
++        else:
++            scalar = scalar * row.get((), 0) % PRIME
++            del components[left_root]
++            stored = unaffected
++        frontier -= len(active) - len(remaining)
++        max_frontier = max(max_frontier, frontier)
++        max_component_frontier = max(max_component_frontier, len(remaining))
++    if components:
++        raise ArithmeticError("factorized Potts scan ended with active components")
++    check()
++    return dict(partition_function=scalar, peak_states=peak,
++                peak_component_states=peak_component, transitions=transitions,
++                tensor_merges=merges, max_active_components=max_components,
++                max_spin_frontier=max_frontier,
++                max_component_frontier=max_component_frontier)
++
++
++def factorized_potts_bracket(diagram, *, max_states=4096, max_transitions=200_000,
++                             order=None, check=lambda: None, statistics=None, shade=None):
++    """Five-state Jones evaluation with processed-component spin factorization."""
++    _budget(max_states, "max_states")
++    _budget(max_transitions, "max_transitions")
++    if shade is not None and (type(shade) is not int or shade not in (0, 1)):
++        raise ValueError("shade must be 0, 1, or None")
++    n = diagram.crossings
++    if order is not None:
++        order = validate_order(n, order)
++    if n == 0:
++        result = potts_bracket(diagram, max_states=max_states, max_transitions=max_transitions,
++                               order=order, check=check, shade=shade)
++        result.update(peak_component_states=1, tensor_merges=0,
++                      max_active_components=0, max_component_frontier=0)
++        if statistics is not None:
++            statistics.update(result)
++        return result
++    if max_states == 0 or max_transitions == 0:
++        raise FilterLimit("factorized Potts filter budget is zero")
++    check()
++    if order is None:
++        order = best_scan_order(diagram.pd, tries=min(n, 12), check=check)
++    dart_face, colors = _checkerboard(diagram, check)
++    choices = (0, 1) if shade is None else (shade,)
++    selected = None
++    for candidate in choices:
++        vertices, edges = _tait_from_faces(n, dart_face, colors, candidate)
++        first, last, profile = _schedule(vertices, edges, order)
++        choice = (profile, candidate, vertices, edges)
++        if selected is None or choice[:2] < selected[:2]:
++            selected = choice
++    profile, shade, vertices, edges = selected
++    result = factorized_partition(vertices, edges, order, max_states=max_states,
++                                   max_transitions=max_transitions, check=check)
++    boundary = set()
++    max_boundary = 0
++    for index in order:
++        for label in diagram.pd[index]:
++            if label in boundary:
++                boundary.remove(label)
++            else:
++                boundary.add(label)
++        max_boundary = max(max_boundary, len(boundary))
++    exponent = sum(edge[2] for edge in edges)
++    bracket = (result["partition_function"] * pow(POTTS_A, exponent, PRIME)
++               * pow(POTTS_DELTA, -vertices, PRIME)) % PRIME
++    writhe = diagram.writhe()
++    expected = POTTS_DELTA * pow((-pow(POTTS_A, 3, PRIME)) % PRIME,
++                                writhe % (PRIME - 1), PRIME) % PRIME
++    result.update(prime=PRIME, q=COLORS, A=POTTS_A, x=POTTS_X, delta=POTTS_DELTA,
++                  writhe=writhe, bracket=bracket, unknot_bracket=expected,
++                  tait_vertices=vertices, shade=shade, max_boundary=max_boundary,
++                  crossing_count=n)
++    if result["max_spin_frontier"] != profile[0]:
++        raise ArithmeticError("factorized frontier differs from the graph schedule")
++    if statistics is not None:
++        statistics.update(result)
++    return result
++
++
++def factorized_potts_obstruction(diagram, **options):
++    """Exact one-sided witness at the same specialization as potts_obstruction."""
++    result = factorized_potts_bracket(diagram, **options)
++    if result["bracket"] == result["unknot_bracket"]:
++        return None
++    return dict(kind="factorized-potts-jones-differs-from-unknot", **result)
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/potts_factorized_exact.py b/Topology/UnknotRecognition/fast/fastunknot/potts_factorized_exact.py
+new file mode 100644
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/fastunknot/potts_factorized_exact.py
+@@ -0,0 +1,236 @@
++"""Exact quadratic-integer Potts tensors with processed-component factoring.
++
++This module uses the scalar-ring helpers of potts_exact and the color-orbit
++alignment enumeration of potts_factorized.  Its transfer loop is separate
++from both independent scalar implementations.  Orbit aggregates are divided
++by their integer orbit sizes with an explicit remainder check.
++"""
++from __future__ import annotations
++
++from .filters import FilterLimit
++from .ordering import best_scan_order, validate_order
++from .potts import _budget, _canonical, _checkerboard, _schedule, _tait_from_faces
++from .potts_exact import equal_spin, multiply, potts_exact, power, x_power
++from .potts_factorized import relative_alignments
++
++
++def factorized_exact_partition(vertices, edges, order, *, colors=6,
++                                max_states=4096, max_transitions=200_000,
++                                check=lambda: None):
++    """Exact signed-graph partition function in Z[x]/(x²-(q-2)x+1).
++
++    Edge labels ±1 are omitted smoothing exponents.  Equal-spin weights
++    are -x^(-exponent).  q=colors is an integer at least five.
++    Limits have the same represented-key and orbit-update meanings as
++    factorized_partition; no finite-prime arithmetic is used here.
++    """
++    _budget(max_states, "max_states")
++    _budget(max_transitions, "max_transitions")
++    if type(colors) is not int or colors < 5:
++        raise ValueError("colors must be an integer at least five")
++    if type(vertices) is not int or vertices < 0:
++        raise ValueError("vertices must be a nonnegative integer")
++    edges = tuple(edges)
++    order = validate_order(len(edges), order)
++    for u, v, exponent in edges:
++        if (type(u) is not int or type(v) is not int or not 0 <= u < vertices
++                or not 0 <= v < vertices or type(exponent) is not int
++                or exponent not in (-1, 1)):
++            raise ValueError("invalid signed graph edge")
++    if edges and (max_states == 0 or max_transitions == 0):
++        raise FilterLimit("factorized exact Potts filter budget is zero")
++    check()
++    first, last = [len(edges)] * vertices, [-1] * vertices
++    for position, index in enumerate(order):
++        u, v, _ = edges[index]
++        for vertex in (u,) if u == v else (u, v):
++            first[vertex] = min(first[vertex], position)
++            last[vertex] = position
++    scalar = colors ** sum(position == -1 for position in last), 0
++    falling = [1]
++    for k in range(1, min(colors, vertices) + 1):
++        falling.append(falling[-1] * (colors - k + 1))
++    parent = [-1] * vertices
++    components = {}
++    stored = transitions = merges = 0
++    peak = peak_component = 1
++    max_components = max_frontier = max_component_frontier = frontier = 0
++    coefficient_bits = max(1, scalar[0].bit_length())
++
++    def find(vertex):
++        while parent[vertex] != vertex:
++            parent[vertex] = parent[parent[vertex]]
++            vertex = parent[vertex]
++        return vertex
++
++    def normalize(state, value):
++        used = max(state) + 1
++        size = falling[used]
++        if value[0] % size or value[1] % size:
++            raise ArithmeticError("a component aggregate is not divisible by its color orbit")
++        return state, (value[0] // size, value[1] // size), used
++
++    def update(row, target, value, unaffected):
++        nonlocal peak, peak_component, transitions, coefficient_bits
++        if max_transitions is not None and transitions >= max_transitions:
++            raise FilterLimit("factorized exact Potts transition budget exhausted")
++        transitions += 1
++        if not transitions & 1023:
++            check()
++        old = row.get(target, (0, 0))
++        value = old[0] + value[0], old[1] + value[1]
++        if value != (0, 0):
++            row[target] = value
++            coefficient_bits = max(coefficient_bits, abs(value[0]).bit_length(),
++                                   abs(value[1]).bit_length())
++        else:
++            row.pop(target, None)
++        represented = unaffected + len(row)
++        peak = max(peak, represented)
++        peak_component = max(peak_component, len(row))
++        if max_states is not None and represented > max_states:
++            raise FilterLimit("factorized exact Potts frontier budget exhausted")
++
++    for position, index in enumerate(order):
++        check()
++        u, v, exponent = edges[index]
++        for vertex in sorted({u, v}):
++            if first[vertex] == position:
++                parent[vertex] = vertex
++                components[vertex] = ([vertex], {(0,): (colors, 0)})
++                stored += 1
++                frontier += 1
++        peak = max(peak, stored)
++        max_components = max(max_components, len(components))
++        if max_states is not None and stored > max_states:
++            raise FilterLimit("factorized exact Potts frontier budget exhausted")
++        left_root, right_root = find(u), find(v)
++        left_active, left_states = components[left_root]
++        row = {}
++        if left_root == right_root:
++            active = left_active
++            iu, iv = active.index(u), active.index(v)
++            keep = tuple(i for i, vertex in enumerate(active) if last[vertex] > position)
++            unaffected = stored - len(left_states)
++            for state, coefficient in left_states.items():
++                target = _canonical(state[i] for i in keep)
++                value = equal_spin(coefficient, exponent, colors) if state[iu] == state[iv] else coefficient
++                update(row, target, value, unaffected)
++        else:
++            merges += 1
++            right_active, right_states = components[right_root]
++            active = left_active + right_active
++            iu, iv = left_active.index(u), right_active.index(v)
++            keep = tuple(i for i, vertex in enumerate(active) if last[vertex] > position)
++            unaffected = stored - len(left_states) - len(right_states)
++            normalized_left = [normalize(state, value) for state, value in left_states.items()]
++            normalized_right = [normalize(state, value) for state, value in right_states.items()]
++            for a, ca, ka in normalized_left:
++                for b, cb, kb in normalized_right:
++                    coefficient = multiply(ca, cb, colors)
++                    for alignment, used in relative_alignments(ka, kb, colors):
++                        combined = a + tuple(alignment[color] for color in b)
++                        target = _canonical(combined[i] for i in keep)
++                        value = (equal_spin(coefficient, exponent, colors)
++                                 if a[iu] == alignment[b[iv]] else coefficient)
++                        size = falling[used]
++                        update(row, target, (size * value[0], size * value[1]), unaffected)
++            del components[right_root]
++            parent[right_root] = left_root
++        remaining = [active[i] for i in keep]
++        if remaining:
++            components[left_root] = (remaining, row)
++            stored = unaffected + len(row)
++        else:
++            scalar = multiply(scalar, row.get((), (0, 0)), colors)
++            coefficient_bits = max(coefficient_bits, abs(scalar[0]).bit_length(),
++                                   abs(scalar[1]).bit_length())
++            del components[left_root]
++            stored = unaffected
++        frontier -= len(active) - len(remaining)
++        max_frontier = max(max_frontier, frontier)
++        max_component_frontier = max(max_component_frontier, len(remaining))
++    if components:
++        raise ArithmeticError("factorized exact Potts scan ended with active components")
++    check()
++    return dict(partition_function=list(scalar), peak_states=peak,
++                peak_component_states=peak_component, transitions=transitions,
++                tensor_merges=merges, max_active_components=max_components,
++                max_spin_frontier=max_frontier,
++                max_component_frontier=max_component_frontier,
++                max_coefficient_bits=coefficient_bits)
++
++
++def factorized_potts_exact(diagram, *, colors=6, max_states=4096,
++                            max_transitions=200_000, order=None,
++                            check=lambda: None, statistics=None, shade=None):
++    """Exact Jones specialization with independent processed-component tensors."""
++    _budget(max_states, "max_states")
++    _budget(max_transitions, "max_transitions")
++    if type(colors) is not int or colors < 5:
++        raise ValueError("colors must be an integer at least five")
++    if shade is not None and (type(shade) is not int or shade not in (0, 1)):
++        raise ValueError("shade must be 0, 1, or None")
++    n = diagram.crossings
++    if order is not None:
++        order = validate_order(n, order)
++    if n == 0:
++        result = potts_exact(diagram, colors=colors, max_states=max_states,
++                             max_transitions=max_transitions, order=order, check=check, shade=shade)
++        result.update(peak_component_states=1, tensor_merges=0,
++                      max_active_components=0, max_component_frontier=0)
++        if statistics is not None:
++            statistics.update(result)
++        return result
++    if max_states == 0 or max_transitions == 0:
++        raise FilterLimit("factorized exact Potts filter budget is zero")
++    check()
++    if order is None:
++        order = best_scan_order(diagram.pd, tries=min(n, 12), check=check)
++    dart_face, face_colors = _checkerboard(diagram, check)
++    selected = None
++    for candidate in ((0, 1) if shade is None else (shade,)):
++        vertices, edges = _tait_from_faces(n, dart_face, face_colors, candidate)
++        _, _, profile = _schedule(vertices, edges, order)
++        choice = (profile, candidate, vertices, edges)
++        if selected is None or choice[:2] < selected[:2]:
++            selected = choice
++    profile, shade, vertices, edges = selected
++    result = factorized_exact_partition(vertices, edges, order, colors=colors,
++                                         max_states=max_states, max_transitions=max_transitions,
++                                         check=check)
++    boundary = set()
++    max_boundary = 0
++    for index in order:
++        for label in diagram.pd[index]:
++            if label in boundary:
++                boundary.remove(label)
++            else:
++                boundary.add(label)
++        max_boundary = max(max_boundary, len(boundary))
++    omitted_exponent = sum(edge[2] for edge in edges)
++    writhe = diagram.writhe()
++    exponent = omitted_exponent - 3 * writhe + 2 * (vertices + 1)
++    if exponent % 4:
++        raise ArithmeticError("normalization requires an odd-component classical link")
++    exponent //= 4
++    expected = multiply(x_power(-exponent, colors), power((1, 1), vertices + 1, colors), colors)
++    if (writhe + vertices + 1) % 2:
++        expected = -expected[0], -expected[1]
++    result.update(q=colors, ring=f"Z[x]/(x^2-{colors - 2}*x+1)", writhe=writhe,
++                  unknot_partition=list(expected), differs=result["partition_function"] != list(expected),
++                  tait_vertices=vertices, shade=shade, max_boundary=max_boundary,
++                  crossing_count=n, normalization_exponent=exponent,
++                  omitted_exponent=omitted_exponent)
++    if result["max_spin_frontier"] != profile[0]:
++        raise ArithmeticError("factorized frontier differs from the graph schedule")
++    if statistics is not None:
++        statistics.update(result)
++    return result
++
++
++def factorized_potts_exact_obstruction(diagram, **options):
++    """A one-sided witness, with no finite-field collisions or unknot assertion."""
++    from .potts_exact import witness_from_exact
++    result = factorized_potts_exact(diagram, **options)
++    return witness_from_exact(result, kind="factorized-potts-jones-exact-differs-from-unknot")
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/recognize.py b/Topology/UnknotRecognition/fast/fastunknot/recognize.py
+--- a/Topology/UnknotRecognition/fast/fastunknot/recognize.py
++++ b/Topology/UnknotRecognition/fast/fastunknot/recognize.py
+@@ -109,7 +109,8 @@
+ 
+ def _decide_prime_looking(diagram: Diagram, evidence: dict, *, use_modular, use_jones, use_alexander,
+                           use_exact_alexander, use_r3, use_descending,
+-                          jones_max_states, jones_max_transitions, max_objects, deadline,
++                          jones_backend, potts_colors, jones_max_states, jones_max_transitions,
++                          max_objects, deadline,
+                           check_d_squared, scan_options) -> tuple[str, str]:
+     """Verdict and method for one summand (already simplified by the caller)."""
+     def check():
+@@ -125,15 +126,32 @@
+     if use_jones:
+         # the Jones scan and the Khovanov scan use the same greedy order: compute it once
+         order = best_scan_order(diagram.pd, tries=min(diagram.crossings, 12), check=check)
++        jones_test = jones_obstruction
++        jones_options = {}
++        if jones_backend == "potts5":
++            from .potts import potts_obstruction
++            jones_test = potts_obstruction
++        elif jones_backend == "potts-exact":
++            from .potts_exact import potts_exact_obstruction
++            jones_test = potts_exact_obstruction
++            jones_options["colors"] = potts_colors
++        elif jones_backend == "potts-exact-factorized":
++            from .potts_factorized_exact import factorized_potts_exact_obstruction
++            jones_test = factorized_potts_exact_obstruction
++            jones_options["colors"] = potts_colors
+         try:
+-            witness = jones_obstruction(diagram, max_states=jones_max_states,
+-                                        max_transitions=jones_max_transitions, order=order, check=check)
++            witness = jones_test(diagram, max_states=jones_max_states,
++                                 max_transitions=jones_max_transitions, order=order, check=check,
++                                 **jones_options)
+         except FilterLimit as exc:
+             evidence["jones"] = f"skipped: {exc}"
+         else:
+             if witness is not None:
+                 evidence["jones"] = witness
+-                return "KNOTTED", "jones-modular"
++                method = {"matching": "jones-modular", "potts5": "jones-potts5-modular",
++                          "potts-exact": "jones-potts-exact",
++                          "potts-exact-factorized": "jones-potts-exact-factorized"}[jones_backend]
++                return "KNOTTED", method
+             evidence["jones"] = "inconclusive"
+     # The exact polynomial over Z[t] can only say KNOTTED, and only if the polynomial is not a
+     # unit, which the modular test has just failed to see at t = -1 and at a generic point of
+@@ -211,6 +229,7 @@
+               euler_max_states: int | None = 4096,
+               use_factorization: bool = True, use_modular: bool = True, use_jones: bool = True,
+               use_alexander: bool = True, use_exact_alexander: bool | None = None, use_r3: bool = True,
++              jones_backend: str = "matching", potts_colors: int = 6,
+               jones_max_states: int | None = 4096,
+               jones_max_transitions: int | None = 200_000, max_objects: int | None = None,
+               seconds: float | None = None, check_d_squared: bool = False,
+@@ -219,6 +238,14 @@
+               factor_backend: str = "interlacement", composition: str = "standard",
+               composition_max_variables: int = 18) -> Result:
+     start = monotonic()
++    if jones_backend not in ("matching", "potts5", "potts-exact", "potts-exact-factorized"):
++        raise ValueError("unknown Jones backend")
++    if type(potts_colors) is not int or potts_colors < 5:
++        raise ValueError("potts_colors must be an integer at least 5")
++    for name, value in (("jones_max_states", jones_max_states),
++                        ("jones_max_transitions", jones_max_transitions)):
++        if value is not None and (type(value) is not int or value < 0):
++            raise ValueError(name + " must be a nonnegative integer or None")
+     if composition not in ("standard", "component", "component-dense"):
+         raise ValueError("composition must be standard, component, or component-dense")
+     if type(composition_max_variables) is not int or composition_max_variables < 0:
+@@ -311,6 +338,7 @@
+         options = dict(use_modular=use_modular and use_alexander, use_jones=use_jones, use_alexander=use_alexander,
+                        use_exact_alexander=use_exact_alexander, use_r3=use_r3 and use_reduction,
+                        use_descending=use_descending,
++                       jones_backend=jones_backend, potts_colors=potts_colors,
+                        jones_max_states=jones_max_states, jones_max_transitions=jones_max_transitions,
+                        max_objects=max_objects, deadline=deadline, check_d_squared=check_d_squared,
+                        scan_options=dict(pivot=pivot, algebra=algebra, tail=tail, race=race,
+diff --git a/Topology/UnknotRecognition/fast/tests/test_potts.py b/Topology/UnknotRecognition/fast/tests/test_potts.py
+new file mode 100644
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/tests/test_potts.py
+@@ -0,0 +1,237 @@
++"""Independent checks for the signed-Tait five-spin Jones specialization."""
++import itertools
++import json
++from pathlib import Path
++import random
++import unittest
++from unittest.mock import patch
++
++from fastunknot.diagram import Diagram, DiagramError
++from fastunknot.filters import FilterLimit, PRIME, jones_obstruction
++from fastunknot.geometry import SMOOTHINGS
++from fastunknot.ordering import best_scan_order
++from fastunknot.potts import (COLORS, POTTS_A, POTTS_DELTA, POTTS_X,
++                             _extensions, _schedule, potts_bracket,
++                             potts_obstruction, tait_graph)
++
++
++EXAMPLES = Path(__file__).resolve().parents[1] / "examples"
++
++
++def brute_bracket(diagram):
++    """The complete smoothing cube, without Tait graphs or frontier code."""
++    if not diagram.pd:
++        return POTTS_DELTA
++    n = diagram.crossings
++    answer = 0
++    for smoothing in itertools.product((0, 1), repeat=n):
++        parent = list(range(2 * n))
++
++        def find(x):
++            while parent[x] != x:
++                x = parent[x]
++            return x
++
++        for row, choice in zip(diagram.pd, smoothing):
++            for a, b in SMOOTHINGS[choice]:
++                ra, rb = find(row[a]), find(row[b])
++                parent[ra] = rb
++        circles = len({find(x) for x in range(2 * n)})
++        answer += pow(POTTS_A, n - 2 * sum(smoothing), PRIME) * pow(
++            POTTS_DELTA, circles, PRIME)
++    return answer % PRIME
++
++
++def brute_labeled_spins(vertices, edges):
++    """All 5^v assignments, independent of equality-pattern aggregation."""
++    weights = {1: (-pow(POTTS_X, -1, PRIME)) % PRIME,
++               -1: (-POTTS_X) % PRIME}
++    total = 0
++    for colors in itertools.product(range(COLORS), repeat=vertices):
++        term = 1
++        for u, v, exponent in edges:
++            if colors[u] == colors[v]:
++                term = term * weights[exponent] % PRIME
++        total += term
++    return total % PRIME
++
++
++def brute_fk(vertices, edges):
++    """All edge subsets in the multivariate random-cluster expansion."""
++    activities = {1: (-1 - pow(POTTS_X, -1, PRIME)) % PRIME,
++                  -1: (-1 - POTTS_X) % PRIME}
++    total = 0
++    for subset in range(1 << len(edges)):
++        parent = list(range(vertices))
++
++        def find(x):
++            while parent[x] != x:
++                x = parent[x]
++            return x
++
++        term = 1
++        for i, (u, v, exponent) in enumerate(edges):
++            if subset >> i & 1:
++                parent[find(u)] = find(v)
++                term = term * activities[exponent] % PRIME
++        components = len({find(v) for v in range(vertices)})
++        total += term * pow(COLORS, components, PRIME)
++    return total % PRIME
++
++
++def random_knots(count, seed=251007, max_crossings=10):
++    rng = random.Random(seed)
++    result = []
++    while len(result) < count:
++        strands = rng.randrange(2, 6)
++        length = rng.randrange(1, max_crossings + 1)
++        word = [rng.choice((-1, 1)) * rng.randrange(1, strands)
++                for _ in range(length)]
++        try:
++            result.append(Diagram.from_braid(strands, word))
++        except DiagramError:
++            pass
++    return result
++
++
++class PottsTests(unittest.TestCase):
++    def test_specialization(self):
++        self.assertEqual(pow(POTTS_A, 4, PRIME), POTTS_X)
++        self.assertEqual((POTTS_X * POTTS_X - 3 * POTTS_X + 1) % PRIME, 0)
++        self.assertEqual(POTTS_DELTA * POTTS_DELTA % PRIME, COLORS)
++
++    def test_empty_circle_and_zero_budgets(self):
++        diagram = Diagram.from_pd([])
++        self.assertIsNone(potts_obstruction(diagram, max_states=0, max_transitions=0))
++        self.assertEqual(potts_bracket(diagram)["partition_function"], 5)
++        self.assertEqual(tait_graph(diagram), (1, ()))
++        for keyword in ("max_states", "max_transitions"):
++            with self.assertRaises(FilterLimit):
++                potts_obstruction(Diagram.from_braid(2, [1]), **{keyword: 0})
++
++    def test_invalid_budgets_orders_and_shades(self):
++        diagram = Diagram.from_braid(2, [1, 1, 1])
++        for keyword in ("max_states", "max_transitions"):
++            for value in (-1, 0.5, True):
++                with self.assertRaises(ValueError):
++                    potts_bracket(diagram, **{keyword: value})
++        for order in ([0], [0, 0, 1], [0, 1, 3], [False, 1, 2]):
++            with self.assertRaises(ValueError):
++                potts_bracket(diagram, order=order)
++        for shade in (-1, 2, True, "auto"):
++            with self.assertRaises(ValueError):
++                potts_bracket(diagram, shade=shade)
++
++    def test_cooperative_resource_exception_propagates(self):
++        class Stop(Exception):
++            pass
++
++        def check():
++            raise Stop("caller deadline")
++
++        with self.assertRaises(Stop):
++            potts_obstruction(Diagram.from_braid(2, [1]), check=check)
++
++    def test_color_orbit_extension_multiplicities(self):
++        for used in range(6):
++            state = tuple(range(used))
++            for introduced in range(3):
++                patterns = _extensions(state, introduced)
++                self.assertEqual(sum(m for _, m, _ in patterns), 5 ** introduced)
++                self.assertEqual(len({p for p, _, _ in patterns}), len(patterns))
++                self.assertTrue(all(max(p, default=-1) < 5 for p, _, _ in patterns))
++
++    def test_loops_parallel_edges_and_raw_spins(self):
++        cases = [Diagram.from_braid(2, [1]), Diagram.from_braid(2, [-1]),
++                 Diagram.from_braid(2, [1, 1, 1]),
++                 Diagram.from_braid(2, [1, -1, 1]),
++                 Diagram.from_braid(3, [1, -2, 1, -2])]
++        saw_loop = saw_parallel = False
++        for diagram in cases:
++            for shade in (0, 1):
++                vertices, edges = tait_graph(diagram, shade=shade)
++                saw_loop |= any(u == v for u, v, _ in edges)
++                pairs = [tuple(sorted((u, v))) for u, v, _ in edges]
++                saw_parallel |= len(pairs) != len(set(pairs))
++                result = potts_bracket(diagram, shade=shade,
++                                       order=list(reversed(range(diagram.crossings))))
++                self.assertEqual(result["partition_function"],
++                                 brute_labeled_spins(vertices, edges))
++                self.assertEqual(result["partition_function"], brute_fk(vertices, edges))
++                self.assertEqual(result["bracket"], brute_bracket(diagram))
++        self.assertTrue(saw_loop)
++        self.assertTrue(saw_parallel)
++
++    def test_random_cube_fk_and_checkerboard_duality(self):
++        rng = random.Random(4821)
++        for diagram in random_knots(160):
++            expected = brute_bracket(diagram)
++            order = list(range(diagram.crossings))
++            rng.shuffle(order)
++            for shade in (0, 1):
++                vertices, edges = tait_graph(diagram, shade=shade)
++                result = potts_bracket(diagram, shade=shade, order=order,
++                                       max_states=None, max_transitions=None)
++                self.assertEqual(result["bracket"], expected)
++                self.assertEqual(result["partition_function"], brute_fk(vertices, edges))
++                self.assertLessEqual(2 * result["max_spin_frontier"],
++                                     result["max_boundary"])
++
++    def test_all_crossing_orders_on_figure_eight(self):
++        diagram = Diagram.from_braid(3, [1, -2, 1, -2])
++        expected = brute_bracket(diagram)
++        for order in itertools.permutations(range(4)):
++            for shade in (None, 0, 1):
++                self.assertEqual(potts_bracket(diagram, order=order, shade=shade)["bracket"],
++                                 expected)
++
++    def test_mirrors_and_arbitrary_under_port_choices(self):
++        rng = random.Random(1013)
++        for diagram in random_knots(60, seed=721301, max_crossings=9):
++            changed = Diagram.from_pd([row[2:] + row[:2] if rng.randrange(2) else row
++                                       for row in diagram.pd])
++            self.assertEqual(potts_bracket(changed)["bracket"],
++                             potts_bracket(diagram)["bracket"])
++            self.assertEqual(potts_bracket(diagram.mirror())["bracket"],
++                             brute_bracket(diagram.mirror()))
++
++    def test_named_corpus_against_original_jones_geometry(self):
++        with patch("fastunknot.filters.JONES_A", POTTS_A):
++            for path in sorted(EXAMPLES.glob("*.json")):
++                diagram = Diagram.from_json(json.loads(path.read_text()))
++                stats = {}
++                result = potts_bracket(diagram, statistics=stats)
++                self.assertEqual(stats, result)
++                legacy = jones_obstruction(diagram)
++                expected = legacy["bracket"] if legacy else result["unknot_bracket"]
++                self.assertEqual(result["bracket"], expected, path.name)
++                witness = potts_obstruction(diagram)
++                self.assertEqual(witness is not None, legacy is not None, path.name)
++                if witness is not None:
++                    self.assertEqual(witness["kind"], "potts-jones-differs-from-unknot")
++
++    def test_budget_boundary_is_replayable(self):
++        diagram = Diagram.from_braid(3, [1, -2, 1, -2])
++        result = potts_bracket(diagram)
++        self.assertEqual(potts_bracket(diagram, max_transitions=result["transitions"]),
++                         result)
++        with self.assertRaises(FilterLimit):
++            potts_bracket(diagram, max_transitions=result["transitions"] - 1)
++        with self.assertRaises(FilterLimit):
++            potts_bracket(diagram, max_states=1)
++
++    def test_auto_shade_uses_same_order_profile(self):
++        for diagram in random_knots(80, seed=33179, max_crossings=20):
++            order = best_scan_order(diagram.pd)
++            profiles = []
++            for shade in (0, 1):
++                vertices, edges = tait_graph(diagram, shade=shade)
++                profiles.append(_schedule(vertices, edges, order)[2])
++            result = potts_bracket(diagram, order=order)
++            chosen = min(range(2), key=lambda shade: (profiles[shade], shade))
++            self.assertEqual(result["shade"], chosen)
++            self.assertEqual(result["max_spin_frontier"], profiles[chosen][0])
++
++
++if __name__ == "__main__":
++    unittest.main()
+diff --git a/Topology/UnknotRecognition/fast/tests/test_potts_exact.py b/Topology/UnknotRecognition/fast/tests/test_potts_exact.py
+new file mode 100644
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/tests/test_potts_exact.py
+@@ -0,0 +1,170 @@
++"""Exact arithmetic and end-to-end soundness of the Potts filter options."""
++import contextlib
++import importlib
++import io
++import json
++from pathlib import Path
++import random
++import unittest
++from unittest.mock import patch
++
++from fastunknot import Diagram
++from fastunknot.__main__ import main
++from fastunknot.filters import FilterLimit, PRIME
++from fastunknot.potts import POTTS_X, potts_bracket
++from fastunknot.potts_exact import (equal_spin, multiply, potts_exact,
++                                   potts_exact_obstruction, power, x_power, witness_from_exact)
++from fastunknot.scan import ScanLimit
++
++
++PIPELINE = importlib.import_module("fastunknot.recognize")
++EXAMPLES = Path(__file__).resolve().parents[1] / "examples"
++FORCE_FILTER = dict(use_braid=False, use_seifert=False, use_reduction=False,
++                    use_descending=False, use_factorization=False, use_alexander=False)
++
++
++class ExactPottsTests(unittest.TestCase):
++    def test_ring_identities_and_equal_spin_shortcuts(self):
++        rng = random.Random(7113)
++        for q in range(5, 10):
++            self.assertEqual(multiply((0, 1), (q - 2, -1), q), (1, 0))
++            self.assertEqual(power((1, 1), 2, q), (0, q))
++            for _ in range(40):
++                value = (rng.randrange(-100, 101), rng.randrange(-100, 101))
++                for e in (-1, 1):
++                    x = x_power(-e, q)
++                    self.assertEqual(equal_spin(value, e, q),
++                                     multiply(value, (-x[0], -x[1]), q))
++
++    def test_quadratic_modular_reduction_on_named_examples(self):
++        for path in sorted(EXAMPLES.glob("*.json")):
++            diagram = Diagram.from_json(json.loads(path.read_text()))
++            for shade in (0, 1):
++                exact = potts_exact(diagram, colors=5, shade=shade,
++                                    max_states=None, max_transitions=None)
++                modular = potts_bracket(diagram, shade=shade,
++                                        max_states=None, max_transitions=None)
++                a, b = exact["partition_function"]
++                self.assertEqual((a + b * POTTS_X) % PRIME,
++                                 modular["partition_function"], path.name)
++                self.assertEqual(exact["differs"],
++                                 modular["bracket"] != modular["unknot_bracket"], path.name)
++
++    def test_exact_five_color_blind_family_and_six_color_repair(self):
++        for m in (1, 2, 4, 5, 7, 8, 11, 13, 17):
++            diagram = Diagram.from_braid(3, [1, -2] * m)
++            five = potts_exact(diagram, colors=5, order=list(range(2 * m)))
++            six = potts_exact(diagram, colors=6, order=list(range(2 * m)))
++            self.assertEqual(five["differs"], m % 2 == 0)
++            self.assertEqual(six["differs"], m != 1)
++            self.assertEqual(six["peak_states"], five["peak_states"])
++
++    def test_mirrors_shading_and_unknot_examples(self):
++        for name in ("hard_unknot_8", "grid_scrambled_unknot", "unknot_braid40", "unknot"):
++            diagram = Diagram.from_json(json.loads((EXAMPLES / (name + ".json")).read_text()))
++            for q in (5, 6, 7):
++                for d in (diagram, diagram.mirror()):
++                    for shade in (0, 1):
++                        self.assertIsNone(potts_exact_obstruction(d, colors=q, shade=shade))
++
++    def test_invalid_options(self):
++        diagram = Diagram.from_braid(2, [1])
++        for q in (4, -1, 5.0, True):
++            with self.assertRaises(ValueError):
++                potts_exact(diagram, colors=q)
++        for name in ("max_states", "max_transitions"):
++            for value in (-1, True, 0.25):
++                with self.assertRaises(ValueError):
++                    potts_exact(diagram, **{name: value})
++            with self.assertRaises(FilterLimit):
++                potts_exact(diagram, **{name: 0})
++        self.assertFalse(potts_exact(Diagram.from_pd([]), max_states=0)["differs"])
++
++    def test_exact_budget_boundary_and_callback(self):
++        diagram = Diagram.from_braid(3, [1, -2] * 5)
++        expected = potts_exact(diagram)
++        self.assertEqual(potts_exact(diagram, max_transitions=expected["transitions"]), expected)
++        with self.assertRaises(FilterLimit):
++            potts_exact(diagram, max_transitions=expected["transitions"] - 1)
++        with self.assertRaises(ScanLimit):
++            potts_exact(diagram, check=lambda: (_ for _ in ()).throw(ScanLimit("test")))
++
++    def test_pipeline_reports_witnesses_and_preserves_fallback(self):
++        knotted = Diagram.from_pd(Diagram.from_braid(3, [1, -2] * 5).pd)
++        result = PIPELINE.recognize(knotted, jones_backend="potts-exact", **FORCE_FILTER)
++        self.assertEqual((result.status, result.method), ("KNOTTED", "jones-potts-exact"))
++        self.assertEqual(result.evidence["jones"]["q"], 6)
++        # Exact equality is never an unknot certificate: this q=5 blind case
++        # proceeds to the independently retained Khovanov backend.
++        result = PIPELINE.recognize(knotted, jones_backend="potts-exact",
++                                    potts_colors=5, **FORCE_FILTER)
++        self.assertEqual(result.status, "KNOTTED")
++        self.assertIn("khovanov", result.evidence)
++        self.assertEqual(result.evidence["jones"], "inconclusive")
++
++    def test_filter_exhaustion_is_not_a_knot_verdict(self):
++        unknot = Diagram.from_json(json.loads((EXAMPLES / "hard_unknot_8.json").read_text()))
++        for backend in ("potts5", "potts-exact", "potts-exact-factorized"):
++            result = PIPELINE.recognize(unknot, jones_backend=backend,
++                                        jones_max_states=0, **FORCE_FILTER)
++            self.assertEqual(result.status, "UNKNOT")
++            self.assertIn("skipped", result.evidence["jones"])
++            self.assertIn("khovanov", result.evidence)
++
++    def test_global_resource_limit_returns_unknown(self):
++        diagram = Diagram.from_braid(2, [1, 1, 1])
++        for backend in ("potts5", "potts-exact", "potts-exact-factorized"):
++            result = PIPELINE.recognize(diagram, jones_backend=backend, seconds=0)
++            self.assertEqual((result.status, result.method), ("UNKNOWN", "resource-limit"))
++
++    def test_cli_budget_is_inconclusive_and_exact_q_is_honored(self):
++        path = str(EXAMPLES / "trefoil.json")
++        for backend in ("matching", "potts5", "potts-exact", "potts-exact-factorized"):
++            stream = io.StringIO()
++            with contextlib.redirect_stdout(stream):
++                code = main(["jones", path, "--backend", backend, "--max-transitions", "0"])
++            self.assertEqual(code, 3)
++            self.assertEqual(json.loads(stream.getvalue())["verdict"], "INCONCLUSIVE")
++        stream = io.StringIO()
++        with contextlib.redirect_stdout(stream):
++            code = main(["jones", path, "--backend", "potts-exact", "--potts-colors", "7"])
++        self.assertEqual(code, 0)
++        self.assertEqual(json.loads(stream.getvalue())["witness"]["q"], 7)
++
++    def test_pipeline_invalid_backend_and_color_count(self):
++        for options in ({"jones_backend": "wrong"}, {"potts_colors": 4},
++                        {"jones_max_states": -1}, {"jones_max_transitions": True}):
++            with self.assertRaises(ValueError):
++                PIPELINE.recognize(Diagram.from_pd([]), **options)
++
++    def test_large_integer_witness_is_json_safe_and_uses_pair_inequality(self):
++        huge = 1 << 20000
++        raw = dict(partition_function=[huge, -huge], unknot_partition=[1, 0], differs=False)
++        witness = witness_from_exact(raw)
++        encoded = json.loads(json.dumps(witness))
++        self.assertTrue(encoded["differs"])
++        self.assertEqual([int(x, 16) for x in encoded["partition_function_hex"]], [huge, -huge])
++        self.assertEqual(raw["partition_function"], [huge, -huge])
++        self.assertIsNone(witness_from_exact(dict(partition_function=[1, 0],
++                                                 unknot_partition=[1, 0], differs=True)))
++
++    def test_factorized_exact_pipeline_and_cli(self):
++        diagram = Diagram.from_pd(Diagram.from_braid(3, [1, -2] * 5).pd)
++        result = PIPELINE.recognize(diagram, jones_backend="potts-exact-factorized", **FORCE_FILTER)
++        self.assertEqual((result.status, result.method), ("KNOTTED", "jones-potts-exact-factorized"))
++        evidence = json.loads(json.dumps(result.evidence))["jones"]
++        self.assertNotEqual(evidence["partition_function_hex"], evidence["unknot_partition_hex"])
++        result = PIPELINE.recognize(diagram, jones_backend="potts-exact-factorized",
++                                    potts_colors=5, **FORCE_FILTER)
++        self.assertEqual(result.status, "KNOTTED")
++        self.assertIn("khovanov", result.evidence)
++        stream = io.StringIO()
++        with contextlib.redirect_stdout(stream):
++            code = main(["jones", str(EXAMPLES / "trefoil.json"), "--backend",
++                         "potts-exact-factorized"])
++        self.assertEqual(code, 0)
++        self.assertEqual(json.loads(stream.getvalue())["witness"]["q"], 6)
++
++
++if __name__ == "__main__":
++    unittest.main()
+diff --git a/Topology/UnknotRecognition/fast/tests/test_potts_factorized.py b/Topology/UnknotRecognition/fast/tests/test_potts_factorized.py
+new file mode 100644
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/tests/test_potts_factorized.py
+@@ -0,0 +1,127 @@
++"""Exact orbit-alignment and processed-component tensor tests."""
++import itertools
++import math
++import random
++import unittest
++
++from fastunknot.diagram import Diagram
++from fastunknot.filters import FilterLimit, PRIME, jones_obstruction
++from fastunknot.potts import potts_bracket, potts_obstruction
++from fastunknot.potts_factorized import (factorized_partition,
++                                        factorized_potts_bracket,
++                                        factorized_potts_obstruction,
++                                        relative_alignments)
++from test_potts import random_knots
++
++
++def brute_spins(vertices, edges, colors, weights):
++    answer = 0
++    for assignment in itertools.product(range(colors), repeat=vertices):
++        term = 1
++        for u, v, exponent in edges:
++            if assignment[u] == assignment[v]:
++                term = term * weights[exponent] % PRIME
++        answer += term
++    return answer % PRIME
++
++
++class FactorizedPottsTests(unittest.TestCase):
++    def test_all_relative_orbit_cardinalities(self):
++        for colors in range(1, 7):
++            falling = [math.factorial(colors) // math.factorial(colors - k)
++                       for k in range(colors + 1)]
++            for left in range(colors + 1):
++                for right in range(colors + 1):
++                    alignments = list(relative_alignments(left, right, colors))
++                    self.assertEqual(len(set(alignments)), len(alignments))
++                    self.assertEqual(sum(falling[used] for _, used in alignments),
++                                     falling[left] * falling[right])
++                    self.assertLessEqual(len(alignments), math.factorial(colors))
++                    for alignment, used in alignments:
++                        self.assertEqual(len(set(alignment)), right)
++                        self.assertLessEqual(used, colors)
++                    if left and right:
++                        self.assertEqual(sum(falling[used] for mapping, used in alignments
++                                             if mapping[0] == 0) * colors,
++                                         falling[left] * falling[right])
++
++    def test_random_graphs_against_all_labeled_spins(self):
++        rng = random.Random(49317)
++        for case in range(100):
++            vertices = rng.randrange(1, 7)
++            colors = rng.randrange(1, 7)
++            edges = [(rng.randrange(vertices), rng.randrange(vertices), rng.choice((-1, 1)))
++                     for _ in range(rng.randrange(0, 10))]
++            order = list(range(len(edges)))
++            rng.shuffle(order)
++            weights = {-1: rng.randrange(1, 20), 1: rng.randrange(1, 20)}
++            result = factorized_partition(vertices, edges, order, colors=colors,
++                                           equal_weights=weights, max_states=None,
++                                           max_transitions=None)
++            self.assertEqual(result["partition_function"],
++                             brute_spins(vertices, edges, colors, weights), case)
++
++    def test_disconnected_products_loops_and_isolated_vertices(self):
++        edges = [(0, 1, 1), (2, 3, -1), (0, 0, -1), (2, 3, 1)]
++        weights = {1: 7, -1: 13}
++        for order in itertools.permutations(range(4)):
++            result = factorized_partition(5, edges, order, colors=5,
++                                           equal_weights=weights)
++            self.assertEqual(result["partition_function"],
++                             brute_spins(5, edges, 5, weights))
++
++    def test_knot_random_orders_against_global_spin_tensor(self):
++        rng = random.Random(72497)
++        for diagram in random_knots(160, seed=46424, max_crossings=16):
++            order = list(range(diagram.crossings))
++            rng.shuffle(order)
++            for shade in (None, 0, 1):
++                global_result = potts_bracket(diagram, order=order, shade=shade,
++                                              max_states=None, max_transitions=None)
++                factored = factorized_potts_bracket(diagram, order=order, shade=shade,
++                                                    max_states=None, max_transitions=None)
++                for field in ("partition_function", "bracket", "unknot_bracket",
++                              "max_spin_frontier", "max_boundary", "shade"):
++                    self.assertEqual(global_result[field], factored[field])
++
++    def test_fixed_negative_control_is_compressed(self):
++        word = [-2, -3, 4, -4, 4, -4, -3, 2, -4, 1, 3, 4, 1, 1, 2, 3]
++        order = [6, 12, 15, 0, 2, 10, 8, 4, 3, 5, 11, 13, 7, 14, 1, 9]
++        diagram = Diagram.from_braid(5, word)
++        global_result = potts_bracket(diagram, order=order)
++        factored = factorized_potts_bracket(diagram, order=order)
++        self.assertEqual(global_result["bracket"], factored["bracket"])
++        self.assertEqual(global_result["peak_states"], 3845)
++        self.assertEqual(factored["peak_component_states"], 202)
++        self.assertLess(factored["transitions"], global_result["transitions"])
++
++    def test_q5_blind_weaving_family_is_inconclusive(self):
++        for exponent in (5, 7, 11):
++            diagram = Diagram.from_braid(3, [1, -2] * exponent)
++            self.assertIsNone(potts_obstruction(diagram))
++            self.assertIsNone(factorized_potts_obstruction(diagram))
++            self.assertIsNotNone(jones_obstruction(diagram))
++
++    def test_resource_and_empty_contracts(self):
++        diagram = Diagram.from_braid(3, [1, -2, 1, -2])
++        result = factorized_potts_bracket(diagram)
++        self.assertEqual(factorized_potts_bracket(
++            diagram, max_transitions=result["transitions"])["bracket"], result["bracket"])
++        with self.assertRaises(FilterLimit):
++            factorized_potts_bracket(diagram, max_transitions=result["transitions"] - 1)
++        for keyword in ("max_states", "max_transitions"):
++            with self.assertRaises(FilterLimit):
++                factorized_potts_bracket(diagram, **{keyword: 0})
++        self.assertIsNone(factorized_potts_obstruction(Diagram.from_pd([]),
++                                                      max_states=0, max_transitions=0))
++        with self.assertRaises(ValueError):
++            factorized_partition(2, [(0, 2, 1)], [0])
++        with self.assertRaises(ValueError):
++            factorized_partition(2, [(0, 1, 1)], [0], colors=4)
++        for invalid in (1.5, True, "7"):
++            with self.assertRaises(ValueError):
++                factorized_partition(2, [(0, 1, 1)], [0], equal_weights={1: invalid})
++
++
++if __name__ == "__main__":
++    unittest.main()
+diff --git a/Topology/UnknotRecognition/fast/tests/test_potts_factorized_exact.py b/Topology/UnknotRecognition/fast/tests/test_potts_factorized_exact.py
+new file mode 100644
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/tests/test_potts_factorized_exact.py
+@@ -0,0 +1,113 @@
++"""Exact component tensors against independent monolithic and spin sums."""
++import itertools
++import random
++import unittest
++
++from fastunknot.diagram import Diagram
++from fastunknot.filters import FilterLimit, PRIME
++from fastunknot.potts import POTTS_X
++from fastunknot.potts_exact import potts_exact
++from fastunknot.potts_factorized import factorized_partition
++from fastunknot.potts_factorized_exact import (factorized_exact_partition,
++                                              factorized_potts_exact,
++                                              factorized_potts_exact_obstruction)
++from test_potts import random_knots
++
++
++def brute_integer_spins(vertices, edges, colors):
++    total_a = total_b = 0
++    for assignment in itertools.product(range(colors), repeat=vertices):
++        a, b = 1, 0
++        for u, v, exponent in edges:
++            if assignment[u] == assignment[v]:
++                if exponent == 1:
++                    a, b = -(colors - 2) * a - b, a
++                else:
++                    a, b = b, -a - (colors - 2) * b
++        total_a += a
++        total_b += b
++    return [total_a, total_b]
++
++
++class FactorizedExactPottsTests(unittest.TestCase):
++    def test_integer_spin_sum_with_loops_isolated_and_disconnected_parts(self):
++        rng = random.Random(509021)
++        for case in range(80):
++            vertices = rng.randrange(1, 6)
++            colors = rng.randrange(5, 8)
++            edges = [(rng.randrange(vertices), rng.randrange(vertices), rng.choice((-1, 1)))
++                     for _ in range(rng.randrange(0, 9))]
++            order = list(range(len(edges)))
++            rng.shuffle(order)
++            result = factorized_exact_partition(vertices, edges, order, colors=colors,
++                                                 max_states=None, max_transitions=None)
++            self.assertEqual(result["partition_function"],
++                             brute_integer_spins(vertices, edges, colors), case)
++
++    def test_q5_modular_reduction(self):
++        rng = random.Random(542039)
++        for _ in range(100):
++            vertices = rng.randrange(1, 9)
++            edges = [(rng.randrange(vertices), rng.randrange(vertices), rng.choice((-1, 1)))
++                     for _ in range(rng.randrange(0, 13))]
++            order = list(range(len(edges)))
++            rng.shuffle(order)
++            exact = factorized_exact_partition(vertices, edges, order, colors=5)
++            modular = factorized_partition(vertices, edges, order)
++            a, b = exact["partition_function"]
++            self.assertEqual((a + b * POTTS_X) % PRIME, modular["partition_function"])
++
++    def test_random_knots_and_shades_against_monolithic_exact(self):
++        rng = random.Random(510786)
++        for diagram in random_knots(80, seed=936732, max_crossings=14):
++            order = list(range(diagram.crossings))
++            rng.shuffle(order)
++            for colors in (5, 6, 7):
++                shade = rng.choice((0, 1))
++                expected = potts_exact(diagram, order=order, colors=colors, shade=shade,
++                                       max_states=None, max_transitions=None)
++                result = factorized_potts_exact(diagram, order=order, colors=colors,
++                                                 shade=shade, max_states=None,
++                                                 max_transitions=None)
++                for field in ("partition_function", "unknot_partition", "differs", "shade",
++                              "max_spin_frontier", "max_boundary"):
++                    self.assertEqual(result[field], expected[field])
++
++    def test_fixed_negative_control_q6(self):
++        diagram = Diagram.from_braid(5, [-2, -3, 4, -4, 4, -4, -3, 2,
++                                          -4, 1, 3, 4, 1, 1, 2, 3])
++        order = [6, 12, 15, 0, 2, 10, 8, 4, 3, 5, 11, 13, 7, 14, 1, 9]
++        global_result = potts_exact(diagram, order=order, max_states=None)
++        result = factorized_potts_exact(diagram, order=order, max_states=None)
++        self.assertEqual(result["partition_function"], global_result["partition_function"])
++        self.assertLess(result["peak_component_states"], global_result["peak_states"])
++        self.assertLess(result["transitions"], global_result["transitions"])
++
++    def test_weaving_collision_q5_and_q6_resolution(self):
++        for exponent in (5, 7, 11):
++            diagram = Diagram.from_braid(3, [1, -2] * exponent)
++            self.assertIsNone(factorized_potts_exact_obstruction(diagram, colors=5))
++            self.assertIsNotNone(factorized_potts_exact_obstruction(diagram, colors=6))
++
++    def test_budgets_empty_and_invalid_values(self):
++        diagram = Diagram.from_braid(3, [1, -2, 1, -2])
++        result = factorized_potts_exact(diagram)
++        self.assertEqual(factorized_potts_exact(
++            diagram, max_transitions=result["transitions"])["partition_function"],
++            result["partition_function"])
++        with self.assertRaises(FilterLimit):
++            factorized_potts_exact(diagram, max_transitions=result["transitions"] - 1)
++        for keyword in ("max_states", "max_transitions"):
++            with self.assertRaises(FilterLimit):
++                factorized_potts_exact(diagram, **{keyword: 0})
++        self.assertIsNone(factorized_potts_exact_obstruction(Diagram.from_pd([]),
++                                                           max_states=0, max_transitions=0))
++        for invalid in (0, 4, True, 6.0):
++            with self.assertRaises(ValueError):
++                factorized_exact_partition(1, [(0, 0, 1)], [0], colors=invalid)
++        with self.assertRaises(ValueError):
++            factorized_exact_partition(2, [(0, 1, True)], [0])
++
++
++if __name__ == "__main__":
++    unittest.main()

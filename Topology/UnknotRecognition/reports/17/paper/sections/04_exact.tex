@@ -1,0 +1,123 @@
+\section{Division-free quadratic arithmetic and bit complexity}
+\label{sec:exact}
+
+\subsection{An exact ring for each integer color count}
+
+Fix an integer $q\ge5$ and put
+\[
+ R_q=\Z[x]/(x^2-(q-2)x+1).
+\]
+The discriminant $(q-2)^2-4$ lies strictly between the consecutive squares
+$(q-3)^2$ and $(q-2)^2$, so the polynomial is irreducible over $\Q$.
+In either real embedding,
+\[
+ x+x^{-1}=q-2,\qquad x^{-1}=q-2-x,\qquad (x+1)^2=qx.
+\]
+In particular $x$ is a unit. Each element has a unique representation
+$a+bx$ with $a,b\in\Z$. Pair inequality is exact inequality of the algebraic
+numbers; it is not a numerical tolerance test.
+
+For $q=6$, the positive roots are $2+\sqrt3$ and $2-\sqrt3$.
+The Jones variable in our derivation is $t=A^{-4}=x^{-1}$.
+Changing embeddings interchanges these reciprocal values; equality to $1$
+is preserved because the coefficients are rational integers.
+The code works in the ring and need not select a real embedding.
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{@{}ll@{}}
+\toprule
+Operation & Pair formula\\
+\midrule
+Addition & $(a,b)+(c,d)=(a+c,b+d)$\\
+Multiplication & $(a,b)(c,d)=(ac-bd,\ ad+bc+(q-2)bd)$\\
+Multiply by $-x$ & $(a,b)\mapsto(b,\ -a-(q-2)b)$\\
+Multiply by $-x^{-1}$ & $(a,b)\mapsto(-(q-2)a-b,\ a)$\\
+Inverse of $x$ & $x^{-1}=(q-2,-1)$\\
+\bottomrule
+\end{tabular}
+\caption{Exact arithmetic used by the transfer. Full pair multiplication
+is needed for normalization and component merges; a single-edge transfer
+uses only additions and small integer multiples.}
+\label{tab:pairs}
+\end{table}
+
+Equations~\eqref{eq:interaction} and \eqref{eq:unknot-partition} now define a
+division-free one-tensor algorithm. Negative powers in normalization are
+powers of the explicit unit $x^{-1}$. Fast powering is exact. No prime choice,
+probability-of-error estimate, or floating-point precision policy is required.
+
+\begin{proposition}[Sound exact obstruction]\label{prop:obstruction}
+If the partition function and $Z_U$ are unequal as pairs in $R_q$, then
+$D$ is a nontrivial knot. If they are equal, the computation gives no
+unknot certificate.
+\end{proposition}
+\begin{proof}
+The nonzero normalization factor in \eqref{eq:normalize-E} identifies
+partition equality with equality of the selected normalized Jones value to
+$1$. Every unknot has normalized Jones polynomial $1$, so inequality rules
+it out. The converse would require an additional detection theorem that
+is not available here. Section~\ref{sec:blind} gives explicit failures at
+$q=5$.
+\end{proof}
+
+\subsection{Coefficient lengths}
+
+Let $\|a+bx\|_1=|a|+|b|$. The two equal-spin multiplication maps in
+Table~\ref{tab:pairs} have induced $\ell^1$ norm at most $q-1$.
+
+\begin{theorem}[Linear coefficient bit lengths]\label{thm:bits}
+After $i$ edges and $I$ introduced vertices, every aggregate table
+coefficient, including every partial sum inserted into the next table,
+satisfies
+\[
+ \|a+bx\|_1\le q^I(q-1)^i\le q^v(q-1)^n.
+\]
+Its magnitude coefficients therefore have at most
+\[
+ \left\lfloor v\log_2q+n\log_2(q-1)\right\rfloor+1
+\]
+bits. For fixed $q$ this is $O(n)$, and for $q=6$ the simpler upper bound
+$5n+4$ is valid.
+\end{theorem}
+\begin{proof}
+Every labeled assignment of the introduced vertices contributes a product
+of $i$ edge weights. Its norm is at most $(q-1)^i$.
+An aggregate coefficient is a sum over a subset of at most $q^I$
+assignments, so the triangle inequality proves the first bound. Partial
+insertions are sums over subsets of the same histories and obey the same
+bound. The connected Tait graph has $v\le n+1$, giving the stated bit length.
+For $q=6$, $\log_2 6+\log_2 5=\log_2 30<5$ and
+$\log_2 6<3$, proving the convenient integer bound.
+\end{proof}
+
+The normalization pair is also polynomial in bit length:
+\[
+ \|Z_U\|_1\le(q-1)^{|h|}q^{v+1},\qquad
+ |h|\le n+(v+1)/2.
+\]
+Thus no hidden exponential coefficient size invalidates the transfer's
+width bound. At fixed $q$, a single-edge update costs $O(n)$ elementary bit
+operations apart from key management. Ordinary multiplication of
+$O(n)$-bit integers suffices for powering and component merges; faster
+integer multiplication can be used without changing the width dependence.
+
+The coefficient-length bound is a worst-case upper bound, not an assertion
+that every table entry reaches it. The experiment record reports the
+largest coefficient actually inserted. It does not treat Python object
+overhead as coefficient bits, and neither number is a process-memory limit.
+
+\subsection{The modular comparison backend}
+
+For a second implementation path the package includes a modular $q=5$
+backend over $p=2^{61}-1$, with a root of $x^2-3x+1$ and a compatible fourth
+root $A$. It compares the full bracket at precisely that $A$ with
+$\delta(-A^3)^{\wr(D)}$. The constants are checked algebraically on import.
+The old matching transfer can be evaluated at the same $A$, making an
+apples-to-apples scalar comparison possible.
+
+A modular mismatch is also a sound obstruction. A modular match may arise
+from reduction modulo $p$ or from a genuine specialization collision.
+Increasing the number of primes can address the former but cannot repair
+the latter. In particular it cannot repair the family in
+Section~\ref{sec:blind}. The exact backend makes this distinction observable.

@@ -1,0 +1,134 @@
+\section{An infinite exact failure at five colors and its six-color repair}
+\label{sec:blind}
+
+\subsection{The weaving family as an adversarial test}
+
+Let
+\[
+ W_m=\widehat{(\sigma_1\sigma_2^{-1})^m}.
+\]
+The strand permutation is a power of a three-cycle, so $W_m$ is a knot
+exactly when $\gcd(m,3)=1$. Its displayed diagram has $2m$ crossings and
+writhe zero. A familiar three-braid identity expresses its Jones polynomial
+using reduced Burau matrices \cite{birman1985,alsukaiti2024}:
+\begin{equation}
+ V_{W_m}(t)=t+t^{-1}+\tr(M(t)^m),\qquad
+ M(t)=
+ \begin{pmatrix}
+  1-t&-t^{-1}\\
+  1&-t^{-1}
+ \end{pmatrix}.
+ \label{eq:weaving-jones}
+\end{equation}
+Direct calculation gives
+\[
+ \det M(t)=1,\qquad \tr M(t)=1-t-t^{-1}.
+\]
+Thus $T_m=\tr(M(t)^m)$ obeys
+\[
+ T_0=2,\quad T_1=1-t-t^{-1},\quad
+ T_{m+1}=(1-t-t^{-1})T_m-T_{m-1}.
+\]
+Only this elementary recurrence is needed for the specialization audit.
+
+\begin{theorem}[An exact five-color blind family]\label{thm:blind}
+At either root of $t^2-3t+1=0$,
+\[
+ V_{W_m}(t)=3+2(-1)^m.
+\]
+In particular every odd $m\ge5$ with $3\nmid m$ gives a nontrivial knot
+whose exact five-color Jones value equals the unknot value.
+\end{theorem}
+\begin{proof}
+At this specialization, $t+t^{-1}=3$ and $\tr M=-2$.
+The trace recurrence has solution $T_m=2(-1)^m$.
+Equation~\eqref{eq:weaving-jones} gives the displayed value.
+Nontriviality follows either from Theorem~\ref{thm:six} below or from
+the determinant formula
+\[
+ \det(W_m)=L_{2m}-2
+   =\left(\frac{3+\sqrt5}{2}\right)^m
+    +\left(\frac{3-\sqrt5}{2}\right)^m-2>1
+\]
+for $m\ge2$ \cite{alsukaiti2024}. Here $L_j$ denotes the Lucas sequence.
+For example $W_5$ has determinant $121$.
+\end{proof}
+
+This is a collision in a characteristic-zero number field. Both embeddings
+have the same value, and every finite-field image in which the specialization
+is defined inherits the equality. More precision, a conjugate root, or more
+primes at the same $q=5$ point cannot solve it.
+The statement is a direct consequence of a classical trace identity; we
+make no claim that this particular consequence has not appeared elsewhere.
+Its role here is to disprove an overly optimistic completeness inference and
+to supply an infinite regression family.
+
+\subsection{Why six colors changes this family}
+
+\begin{theorem}[Every exact $q\ge6$ detects the nontrivial weaving members]
+\label{thm:six}
+Let $q\ge6$ be an integer and let $t+t^{-1}=q-2$.
+For every $m\ge2$ such that $W_m$ is a knot,
+$V_{W_m}(t)\ne1$.
+\end{theorem}
+\begin{proof}
+Put $a=q-3\ge3$ and define
+\[
+ U_0=2,\qquad U_1=a,\qquad U_{m+1}=aU_m-U_{m-1}.
+\]
+The trace recurrence gives $T_m=(-1)^mU_m$, hence
+\begin{equation}
+ V_{W_m}(t)=a+1+(-1)^mU_m.
+ \label{eq:qweaving}
+\end{equation}
+We have $U_2=a^2-2>a$. If $U_m>U_{m-1}>0$, then
+$U_{m+1}>(a-1)U_m\ge2U_m$. Thus $U_m$ is positive and strictly
+increasing for $m\ge1$.
+For even $m\ge2$, \eqref{eq:qweaving} is greater than $1$.
+For odd $m\ge3$, $U_m>a$ and the expression is less than $1$.
+The remaining member $W_1$ has value $1$ and is the unknot.
+\end{proof}
+
+At $q=6$, the recurrence starts $2,3,7,18,47,123,\ldots$.
+Thus $V_{W_5}=4-123=-119$ and $V_{W_7}=4-843=-839$.
+These integer values in a quadratic specialization provide especially simple
+independent checks of normalization and color count.
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{@{}rrrrr@{}}
+\toprule
+$m$ & Crossings & Knot? & Exact $q=5$ value & Exact $q=6$ value\\
+\midrule
+1&2&yes&1&1\\
+2&4&yes&5&11\\
+4&8&yes&5&51\\
+5&10&yes&1&$-119$\\
+7&14&yes&1&$-839$\\
+8&16&yes&5&2211\\
+\bottomrule
+\end{tabular}
+\caption{Weaving specialization values, computed from the displayed trace
+recurrence and independently checked by the transfer routines.}
+\label{tab:weaving}
+\end{table}
+
+The equality-pattern spaces for $q=5$ and $q=6$ are identical for $f\le5$.
+At $f=6$ their sizes are $202$ and $203$, respectively. On small frontiers,
+changing the specialization can therefore improve detection with little
+change in represented state count. Its worst-case exponential base does
+increase, so this observation is not a universal runtime comparison.
+
+\subsection{What this result does and does not decide}
+
+The exact backend defaults to $q=6$ because the $q=5$ family is a proved
+structural weakness. A fixed $q=6$ equality is still inconclusive.
+Proving that $V_K(2+\sqrt3)=1$ forces the unknot for all knots would imply
+the usual Jones unknot-detection conjecture; no such theorem is supplied or
+assumed.
+
+Moreover, the baseline's short-braid stage already decides these weaving
+examples from their braid representation. Their value here is an adversarial
+test of a \emph{filter}, not a newly solved class for end-to-end recognition.
+In isolated filter benchmarks that earlier stage is deliberately bypassed
+and the bypass is reported. Normal-pipeline benchmarks retain it.

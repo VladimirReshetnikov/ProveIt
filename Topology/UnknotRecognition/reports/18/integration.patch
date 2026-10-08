@@ -1,0 +1,2081 @@
+diff --git a/TWIST_CONTINUATION.md b/TWIST_CONTINUATION.md
+new file mode 100644
+--- /dev/null
++++ b/TWIST_CONTINUATION.md
+@@ -0,0 +1,110 @@
++# Run-encoded twist continuation frontend
++
++This is an additive research interface. The existing `fastunknot` and
++`fastunknot.twist` commands keep their established defaults.
++
++Run from the `fast` directory using Python 3.10 or later:
++
++```sh
++python -m fastunknot.twist.continuation input.json
++python -m fastunknot.twist.continuation input.json --mode homology --method tail --check-d2
++python -m fastunknot.twist.continuation input.json --mode homology --method streaming
++python -m fastunknot.twist.continuation input.json --mode profile
++```
++
++The input is a JSON object with integer strand count and signed run pairs:
++
++```json
++{"strands": 3, "runs": [[1, 1001], [2, -1], [1, 1], [2, -1]]}
++```
++
++Generator indices are unsigned, one-based, and less than the strand count.
++Exponents are nonzero signed integers. An optional outer `braid` object is
++accepted. `-` as the input filename reads standard input. This command accepts
++run-encoded braids; it does not convert PD codes, grids, or words.
++
++## Modes and defaults
++
++The default is `--mode recognize --method tail`.
++
++| Mode | Behavior |
++|---|---|
++| `recognize` | Check that the original closure has one component. Apply the established Seifert/Rasmussen structural certificate directly to the run counts. If it is inconclusive, use the selected exact backend. |
++| `homology` | Compute the full reduced homological profile using the selected backend, even when a cheaper structural certificate would already decide whether the input knot is trivial. Links are supported. |
++| `profile` | Return only the original one-component braid's structural certificate. `INCONCLUSIVE` means the criterion did not decide the knot. |
++
++The available methods are:
++
++| Method | Exact calculation |
++|---|---|
++| `tail` | For a selected run longer than its context, compute a finite reference complex and apply the proved exact degree recurrence. Otherwise use the ordinary macro backend. The largest run is selected by default; `--run-index j` selects a zero-based index explicitly. |
++| `streaming` | Enumerate successive degree layers and send columns directly into exact elimination. Homology mode computes all degrees. Recognition may stop once finalized homology dimensions already sum to more than one; such an output explicitly reports a lower bound and `homology_complete: false`. |
++| `macro` | Assemble the original twist macro complex and compute its full homology. |
++
++The tail result stores its exact profile as a `points` dictionary and at most
++one constant interval. Both `start` and `end` are **inclusive**. The points and
++interval are disjoint. Quantum grading is forgotten throughout. The degrees
++use the existing twist macro convention.
++
++A shortened reference may be a link even when the original braid is a knot.
++Recognition always uses the original exponent parity and component count.
++`--check-d2` in tail mode checks the finite reference complex; the returned
++scope says so explicitly.
++
++## Resource ceilings and exit codes
++
++Common default ceilings are 250,000 macro states, 1,000,000 total basis elements,
++and 20,000,000 rank/check XORs. Tail applies these algebraic ceilings to its
++finite reference calculation. `--seconds` is an optional cooperative deadline
++that includes structural checking and the chosen backend.
++
++`--max-matrix-bits` defaults to 1,000,000,000 and applies to the assembled matrix
++envelope of tail/macro. The streaming method has its own live-storage options:
++
++| Flag | Default |
++|---|---:|
++| `--max-live-matrix-bits` | 1,000,000,000 |
++| `--max-live-states` | 250,000 |
++| `--max-layer-basis` | 1,000,000 |
++| `--max-live-columns` | 2,000,000 |
++
++The streaming Python API exposes its additional geometry and map-cache caps.
++These are mathematical storage envelopes, not process RSS guarantees. Exhaustion
++returns `UNKNOWN`; it is never interpreted as a knot verdict. Structural
++certificates may settle recognition without allocating a macro complex, even
++when the algebraic state or basis ceiling is zero.
++
++Exit status is 0 for a completed calculation or profile, 2 for invalid input or
++configuration, and 3 for `UNKNOWN`. JSON input and output obey Python's decimal
++integer digit limit. The direct Python APIs can accept much larger integers;
++their optional output-expansion cap prevents accidental enumeration of a long
++homology interval.
++
++## Python API
++
++```python
++from fastunknot.twist.continuation import compute
++from fastunknot.twist.core import Budget, Run
++from fastunknot.twist.streaming import StreamBudget
++from fastunknot.twist.tail import profile_dimension, expand_profile
++
++runs = [Run(1, 10**100 + 1)]
++answer = compute(2, runs, mode="homology", method="tail", budget=Budget())
++profile = answer["homology"]["degree_profile"]
++assert profile_dimension(profile, 0) == 1
++# expand_profile(profile, max_terms=1000) would raise ResourceLimit.
++
++streamed = compute(2, [Run(1, 3)], mode="homology", method="streaming",
++                   budget=StreamBudget(), check_d2=True)
++```
++
++Use the in-memory Python profile for `profile_dimension` and `expand_profile`.
++As with ordinary degree dictionaries, JSON serialization converts integer
++dictionary keys to strings; convert `points` keys back to integers after a JSON
++round trip before using those Python helpers.
++
++Run `python -m unittest discover -s tests -p 'test_twist_tail.py' -v` and
++`python -m unittest discover -s tests -p 'test_twist_continuation.py' -v` from
++`fast` for the recurrence and frontend suites. The portable audit and benchmark
++scripts are `tools/audit_slope.py` and `tools/benchmark_tail.py` at package root.
++They write their raw results under `results/`, replacing the corresponding files.
+diff --git a/fastunknot/__main__.py b/fastunknot/__main__.py
+--- a/fastunknot/__main__.py
++++ b/fastunknot/__main__.py
+@@ -42,6 +42,7 @@
+          "opt-in component contraction for the standard scanner"),
+         ("--composition-max-variables", int, 18, None, "component/output variable allocation limit"),
+         ("--no-braid", None, False, None, "disable source-braid certificates"),
++        ("--braid-profile", None, False, None, "compute structural certificates directly from the checked source braid"),
+         ("--braid-backend", str, "free-product", ("free-product", "matrix"),
+          "exact decision backend for a source braid on at most three strands"),
+         ("--no-braid-reduction", None, False, None, "disable singleton endpoint destabilization"),
+@@ -198,6 +199,7 @@
+                            composition=args.composition, composition_max_variables=args.composition_max_variables,
+                            use_braid=not args.no_braid, braid_backend=args.braid_backend,
+                            use_braid_reduction=not args.no_braid_reduction,
++                           use_braid_profile=args.braid_profile,
+                            euler_max_states=args.euler_max_states,
+                            use_descending=not args.no_descending,
+                            use_alexander=not args.no_alexander, use_modular=not args.no_modular,
+diff --git a/fastunknot/braid_profile.py b/fastunknot/braid_profile.py
+new file mode 100644
+--- /dev/null
++++ b/fastunknot/braid_profile.py
+@@ -0,0 +1,233 @@
++"""Structural certificates directly from explicit or run-encoded braids.
++
++This specializes the existing Seifert/Rasmussen criteria to the path
++multigraph of a braid.  It avoids planar-diagram expansion for binary run
++exponents.  The optional signature experiment below is rigorously dominated
++by this Rasmussen interval, so it is not used in recognition.
++"""
++from __future__ import annotations
++
++
++def _counts(strands, runs, check=None):
++    if type(strands) is not int or strands < 1:
++        raise ValueError('strands must be a positive integer')
++    counts = {}
++    permutation = {}
++    crossings = exponent = 0
++    for position, item in enumerate(runs):
++        if check is not None and position % 1024 == 0:
++            check()
++        try:
++            generator, power = item
++        except (TypeError, ValueError) as exc:
++            raise ValueError('runs must be pairs (generator, exponent)') from exc
++        if (type(generator) is not int or type(power) is not int
++                or not 1 <= generator < strands or power == 0):
++            raise ValueError('invalid generator or zero/noninteger exponent')
++        pair = counts.setdefault(generator, [0, 0])
++        pair[0 if power > 0 else 1] += abs(power)
++        crossings += abs(power)
++        exponent += power
++        if power & 1:
++            i = generator - 1
++            permutation[i], permutation[i + 1] = (
++                permutation.get(i + 1, i + 1), permutation.get(i, i))
++    if len(counts) != strands - 1:
++        raise ValueError('the braid closure is not a knot: unused strand separator')
++    seen = set()
++    components = strands - len(permutation)
++    for start in permutation:
++        if start in seen:
++            continue
++        components += 1
++        current = start
++        while current not in seen:
++            seen.add(current)
++            current = permutation[current]
++    if components != 1:
++        raise ValueError('the braid closure is a link, not a knot')
++    if check is not None:
++        check()
++    return counts, crossings, exponent
++
++
++def _pack(weights, check=None):
++    """Maximum-weight independent set of the generator-index path."""
++    best = [0] * (len(weights) + 1)
++    take = [False] * len(weights)
++    for index, weight in enumerate(weights):
++        if check is not None and index % 1024 == 0:
++            check()
++        used = weight + (best[index - 1] if index else 0)
++        if used > best[index]:
++            best[index + 1] = used
++            take[index] = True
++        else:
++            best[index + 1] = best[index]
++    chosen = []
++    index = len(weights) - 1
++    while index >= 0:
++        if take[index]:
++            chosen.append(index + 1)
++            index -= 2
++        else:
++            index -= 1
++    return best[-1], tuple(reversed(chosen))
++
++
++def structural_runs_certificate(strands, runs, *, check=None):
++    """Apply established structural criteria without expanding signed runs.
++
++    Each run is a pair (positive generator index, nonzero signed exponent).
++    The original permutation is checked. INCONCLUSIVE is not a knot verdict.
++    """
++    counts, n, exponent = _counts(strands, runs, check)
++    positive_support = sum(pair[0] != 0 for pair in counts.values())
++    negative_support = sum(pair[1] != 0 for pair in counts.values())
++    mixed = sum(bool(pair[0] and pair[1]) for pair in counts.values())
++    twice_genus = n - strands + 1
++    artin_lower = exponent + strands - 2 * positive_support - 1
++    artin_upper = exponent - strands + 2 * negative_support + 1
++    # The production PD Seifert evaluator assigns a negative crossing sign
++    # to Diagram.from_braid's positive Artin generator. Match those existing
++    # output fields; retain the explicit Artin convention separately.
++    lower, upper = -artin_upper, -artin_lower
++    if twice_genus < 0 or twice_genus % 2 or upper - lower != 2 * mixed:
++        raise ArithmeticError('inconsistent one-component braid profile')
++    if twice_genus == 0:
++        status, criterion = 'UNKNOT', 'seifert-genus-zero'
++    elif mixed == 0:
++        status, criterion = 'KNOTTED', 'homogeneous-seifert-genus'
++    elif lower > 0 or upper < 0:
++        status, criterion = 'KNOTTED', 'rasmussen-interval'
++    else:
++        status, criterion = 'INCONCLUSIVE', 'structural-braid-inconclusive'
++    return {
++        'schema': 'source-braid-structural-v1', 'status': status,
++        'criterion': criterion, 'strands': strands, 'crossings': n,
++        'writhe': -exponent, 'seifert_circles': strands,
++        'positive_components': strands - negative_support,
++        'negative_components': strands - positive_support,
++        'homogeneity_defect': mixed, 'canonical_genus': twice_genus // 2,
++        'rasmussen_interval': [lower, upper],
++        'artin_exponent_sum': exponent,
++        'artin_rasmussen_interval': [artin_lower, artin_upper],
++        'source': 'original checked braid',
++    }
++
++
++def structural_word_certificate(strands, word, *, check=None):
++    def runs():
++        for letter in word:
++            if type(letter) is not int or letter == 0:
++                raise ValueError('braid letters must be nonzero integers')
++            yield abs(letter), 1 if letter > 0 else -1
++    return structural_runs_certificate(strands, runs(), check=check)
++
++
++def verify_structural_runs_certificate(strands, runs, certificate):
++    """Replay the exact source calculation; this is not a theorem prover."""
++    try:
++        return certificate == structural_runs_certificate(strands, runs)
++    except (TypeError, ValueError, ArithmeticError):
++        return False
++
++
++def signature_runs_certificate(strands, runs, *, check=None):
++    """One-sided signature certificate from integer run pairs, without expansion.
++
++    The input must have a one-component closure.  Invalid input raises
++    ValueError.  ``INCONCLUSIVE`` means that this particular subform bound
++    does not exclude zero signature, never that the knot is trivial.
++    """
++    counts, crossings, exponent = _counts(strands, runs, check)
++    choices = []
++    for column, sign in enumerate((1, -1)):
++        weights = [max(0, counts[i][column] - 1) for i in range(1, strands)]
++        score, selected = _pack(weights, check)
++        choices.append((score, sign, column, selected))
++    score, sign, column, selected = max(choices, key=lambda value: value[0])
++    form_dimension = crossings - strands + 1
++    bound = max(0, 2 * score - form_dimension)
++    return {
++        'schema': 'seifert-definite-subform-v1',
++        'status': 'KNOTTED' if bound else 'INCONCLUSIVE',
++        'method': 'braid-signature-subform',
++        'strands': strands, 'crossings': crossings, 'exponent_sum': exponent,
++        'seifert_form_dimension': form_dimension,
++        'sign': sign,
++        'selected_generators': [
++            {'generator': i, 'occurrences': counts[i][column]}
++            for i in selected
++        ],
++        'definite_subspace_dimension': score,
++        'signature_abs_lower_bound': bound,
++        'positive_packing_weight': choices[0][0],
++        'negative_packing_weight': choices[1][0],
++    }
++
++
++def signature_certificate(strands, word, *, check=None):
++    """The same certificate from an explicit signed Artin word."""
++    def runs():
++        for letter in word:
++            if type(letter) is not int or letter == 0:
++                raise ValueError('braid letters must be nonzero integers')
++            yield abs(letter), 1 if letter > 0 else -1
++    return signature_runs_certificate(strands, runs(), check=check)
++
++
++def verify_signature_runs_certificate(strands, runs, certificate):
++    """Recheck a positive witness without running the optimization algorithm.
++
++    Optimality is unnecessary for soundness.  This verifier recomputes input
++    counts and the original permutation, checks disjoint strand pairs and
++    retained multiplicities, and checks the strict inertia inequality.
++    """
++    try:
++        counts, n, exponent = _counts(strands, runs)
++        if not isinstance(certificate, dict):
++            return False
++        if certificate.get('schema') != 'seifert-definite-subform-v1':
++            return False
++        if certificate.get('status') != 'KNOTTED':
++            return False
++        sign = certificate['sign']
++        if type(sign) is not int or sign not in (-1, 1):
++            return False
++        column = 0 if sign > 0 else 1
++        selected = certificate['selected_generators']
++        if not isinstance(selected, list):
++            return False
++        score = 0
++        previous = -1
++        for item in selected:
++            index, occurrence = item['generator'], item['occurrences']
++            if (type(index) is not int or type(occurrence) is not int
++                    or not 1 <= index < strands or index <= previous + 1
++                    or occurrence < 2 or counts[index][column] != occurrence):
++                return False
++            previous = index
++            score += occurrence - 1
++        d = n - strands + 1
++        expected = {
++            'method': 'braid-signature-subform', 'strands': strands,
++            'crossings': n, 'exponent_sum': exponent,
++            'seifert_form_dimension': d,
++            'definite_subspace_dimension': score,
++            'signature_abs_lower_bound': 2 * score - d,
++        }
++        return 2 * score > d and all(certificate.get(k) == v for k, v in expected.items())
++    except (KeyError, TypeError, ValueError, OverflowError):
++        return False
++
++
++def verify_signature_certificate(strands, word, certificate):
++    try:
++        word = tuple(word)
++        if any(type(letter) is not int or letter == 0 for letter in word):
++            return False
++        return verify_signature_runs_certificate(
++            strands, [(abs(x), 1 if x > 0 else -1) for x in word], certificate)
++    except (TypeError, ValueError):
++        return False
+diff --git a/fastunknot/recognize.py b/fastunknot/recognize.py
+--- a/fastunknot/recognize.py
++++ b/fastunknot/recognize.py
+@@ -239,6 +239,7 @@
+               use_seifert: bool = True, backend: str = "standard",
+               use_braid: bool = True, braid_backend: str = "free-product",
+               use_braid_reduction: bool = True,
++              use_braid_profile: bool = False,
+               euler_max_states: int | None = 4096,
+               use_factorization: bool = True, use_modular: bool = True, use_jones: bool = True,
+               use_alexander: bool = True, use_exact_alexander: bool | None = None, use_r3: bool = True,
+@@ -286,6 +287,15 @@
+             if witness["status"] != "INCONCLUSIVE":
+                 return Result(witness["status"], witness["method"], original.crossings,
+                               diagram.crossings, monotonic() - start, evidence)
++        if use_braid_profile and original.braid_source is not None:
++            from .braid_profile import structural_word_certificate
++            strands, word = original.braid_source
++            witness = structural_word_certificate(strands, word, check=check)
++            evidence["source_braid_structural"] = witness
++            if witness["status"] != "INCONCLUSIVE":
++                return Result(witness["status"], "source-" + witness["criterion"],
++                              original.crossings, diagram.crossings,
++                              monotonic() - start, evidence)
+         if use_seifert:
+             certificate = seifert_certificate(diagram)
+             check()
+diff --git a/fastunknot/twist/continuation.py b/fastunknot/twist/continuation.py
+new file mode 100644
+--- /dev/null
++++ b/fastunknot/twist/continuation.py
+@@ -0,0 +1,203 @@
++"""Opt-in run-encoded braid research frontend.
++
++Usage: python -m fastunknot.twist.continuation input.json
++
++Input is {"strands": b, "runs": [[generator, signed_exponent], ...]}.
++The default is recognition with structural certificates first and the tail
++backend after an inconclusive certificate. Homology mode always computes the
++selected exact homology, even if a cheaper certificate would decide the knot.
++Profile mode returns only the original braid's structural certificate.
++Existing production entrypoints and their defaults are unchanged.
++"""
++from __future__ import annotations
++
++import argparse
++from dataclasses import replace
++import json
++from pathlib import Path
++import sys
++from time import monotonic
++from typing import Iterable
++
++from ..braid_profile import structural_runs_certificate
++from . import core, streaming
++from .core import Budget, ResourceLimit, Run, components, validate_runs
++from .streaming import StreamBudget
++from .tail import tail_homology, tail_recognize
++
++
++def load_runs(value: dict) -> tuple[int, tuple[Run, ...]]:
++    """Validate the explicit RLE schema without expanding any exponent."""
++    if not isinstance(value, dict):
++        raise ValueError('input must be a JSON object')
++    data = value.get('braid', value)
++    if not isinstance(data, dict) or 'strands' not in data or 'runs' not in data:
++        raise ValueError('expected strands and runs; PD, grid, and word inputs are not supported')
++    if 'word' in data:
++        raise ValueError('provide runs without a word field')
++    pairs = data['runs']
++    if not isinstance(pairs, list) or any(
++        not isinstance(pair, list) or len(pair) != 2 for pair in pairs
++    ):
++        raise ValueError('runs must be [positive_generator, nonzero_signed_exponent] pairs')
++    strands = data['strands']
++    return strands, validate_runs(strands, (Run(*pair) for pair in pairs))
++
++
++def compute(strands: int, runs: Iterable[Run], *, mode: str = 'recognize',
++            method: str = 'tail', budget: Budget | StreamBudget | None = None,
++            run_index: int | None = None, check_d2: bool = False) -> dict:
++    """Run one exact workflow, with UNKNOWN reserved for resource exhaustion.
++
++    ``budget`` is Budget for tail/macro or StreamBudget for streaming. The
++    seconds ceiling covers the structural check and the chosen backend.
++    Recognition permits streamed early rejection once finalized homology
++    dimensions sum to more than one. Its returned homology then explicitly
++    reports a lower bound and ``homology_complete=False``.
++    """
++    if mode not in {'recognize', 'homology', 'profile'}:
++        raise ValueError('mode must be recognize, homology, or profile')
++    if method not in {'tail', 'streaming', 'macro'}:
++        raise ValueError('method must be tail, streaming, or macro')
++    runs = validate_runs(strands, runs)
++    if run_index is not None:
++        if method != 'tail':
++            raise ValueError('run_index is only used by the tail backend')
++        if type(run_index) is not int or not 0 <= run_index < len(runs):
++            raise ValueError('run_index must index one of the supplied runs')
++    budget_class = StreamBudget if method == 'streaming' else Budget
++    if budget is not None and not isinstance(budget, budget_class):
++        raise ValueError(f'{method} requires {budget_class.__name__}')
++    cap = budget_class() if budget is None else replace(budget)
++    start = monotonic()
++    deadline = None if cap.seconds is None else start + cap.seconds
++
++    def check():
++        if deadline is not None and monotonic() >= deadline:
++            raise ResourceLimit('time budget exhausted')
++
++    certificate = None
++    try:
++        check()
++        if mode != 'homology':
++            if components(strands, runs) != 1:
++                raise ValueError('recognition and structural profiles require a one-component closure')
++            certificate = structural_runs_certificate(
++                strands, ((r.generator, r.exponent) for r in runs), check=check)
++            if mode == 'profile':
++                return {
++                    'mode': 'profile', 'status': certificate['status'],
++                    'certificate': certificate, 'seconds': monotonic()-start,
++                }
++            if certificate['status'] in {'UNKNOT', 'KNOTTED'}:
++                return {
++                    'status': certificate['status'], 'method': 'structural-braid',
++                    'requested_backend': method, 'certificate': certificate,
++                    'seconds': monotonic()-start,
++                    'unrestricted_quasipolynomial_guarantee': False,
++                }
++        check()
++        if deadline is not None:
++            cap = replace(cap, seconds=max(0.0, deadline-monotonic()))
++        if mode == 'homology':
++            if method == 'tail':
++                result = tail_homology(strands, runs, run_index=run_index,
++                                       budget=cap, check_d2=check_d2)
++            elif method == 'streaming':
++                result = streaming.homology(strands, runs, budget=cap,
++                                             check_d2=check_d2)
++            else:
++                result = core.homology(strands, runs, budget=cap,
++                                       check_d2=check_d2)
++            check()
++            return {
++                'status': 'COMPUTED', 'mode': 'homology', 'method': method,
++                'homology_complete': True, 'homology': result,
++                'seconds': monotonic()-start,
++                'unrestricted_quasipolynomial_guarantee': False,
++            }
++        if method == 'tail':
++            result = tail_recognize(strands, runs, run_index=run_index,
++                                    budget=cap, check_d2=check_d2)
++        elif method == 'streaming':
++            result = streaming.recognize(strands, runs, budget=cap,
++                                          check_d2=check_d2)
++        else:
++            result = core.recognize(strands, runs, budget=cap,
++                                    check_d2=check_d2)
++        check()
++        result['certificate'] = certificate
++        result['requested_backend'] = method
++        result['seconds'] = monotonic()-start
++        return result
++    except (ResourceLimit, MemoryError) as exc:
++        result = {
++            'status': 'UNKNOWN', 'method': method, 'mode': mode,
++            'reason': str(exc) or 'memory allocation failed',
++            'seconds': monotonic()-start,
++            'unrestricted_quasipolynomial_guarantee': False,
++        }
++        if certificate is not None:
++            result['certificate'] = certificate
++        return result
++
++
++def _parser() -> argparse.ArgumentParser:
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument('input', help='JSON file, or - to read standard input')
++    parser.add_argument('--mode', choices=('recognize', 'homology', 'profile'),
++                        default='recognize')
++    parser.add_argument('--method', choices=('tail', 'streaming', 'macro'),
++                        default='tail')
++    parser.add_argument('--run-index', type=int,
++                        help='zero-based selected tail run; default chooses the largest')
++    parser.add_argument('--check-d2', action='store_true',
++                        help='check d squared; tail checks its finite reference complex')
++    parser.add_argument('--seconds', type=float,
++                        help='cooperative wall-clock ceiling including structural checking')
++    for flag, default in (('max-states', 250_000), ('max-basis', 1_000_000),
++                          ('max-xors', 20_000_000)):
++        parser.add_argument('--'+flag, type=int, default=default)
++    parser.add_argument('--max-matrix-bits', type=int, default=1_000_000_000,
++                        help='assembled-matrix envelope for tail/macro only')
++    for flag, default in (('max-live-matrix-bits', 1_000_000_000),
++                          ('max-live-states', 250_000),
++                          ('max-layer-basis', 1_000_000),
++                          ('max-live-columns', 2_000_000)):
++        parser.add_argument('--'+flag, type=int, default=default,
++                            help='streaming backend only')
++    return parser
++
++
++def main(argv: list[str] | None = None) -> int:
++    args = _parser().parse_args(argv)
++    try:
++        raw = sys.stdin.read() if args.input == '-' else Path(args.input).read_text(encoding='utf-8')
++        strands, runs = load_runs(json.loads(raw))
++        common = dict(max_states=args.max_states, max_basis=args.max_basis,
++                      max_xors=args.max_xors, seconds=args.seconds)
++        if args.method == 'streaming':
++            budget = StreamBudget(
++                **common, max_live_matrix_bits=args.max_live_matrix_bits,
++                max_live_states=args.max_live_states,
++                max_layer_basis=args.max_layer_basis,
++                max_live_columns=args.max_live_columns,
++            )
++        else:
++            budget = Budget(**common, max_matrix_bits=args.max_matrix_bits)
++        result = compute(strands, runs, mode=args.mode, method=args.method,
++                         budget=budget, run_index=args.run_index,
++                         check_d2=args.check_d2)
++        encoded = json.dumps(result, indent=2, sort_keys=True)
++    except (OSError, ValueError, TypeError) as exc:
++        print(json.dumps({'status': 'INVALID', 'reason': str(exc)}))
++        return 2
++    except (ResourceLimit, MemoryError) as exc:
++        print(json.dumps({'status': 'UNKNOWN', 'reason': str(exc) or 'memory allocation failed'}))
++        return 3
++    print(encoded)
++    return 3 if result.get('status') == 'UNKNOWN' else 0
++
++
++if __name__ == '__main__':
++    sys.exit(main())
+diff --git a/fastunknot/twist/streaming.py b/fastunknot/twist/streaming.py
+new file mode 100644
+--- /dev/null
++++ b/fastunknot/twist/streaming.py
+@@ -0,0 +1,597 @@
++"""Degree-streamed exact twist-macro homology over F_2.
++
++This is an additive backend for the same complex as ``twist.core``.  It
++changes storage and enumeration, not the underlying topological algorithm.
++Two adjacent state indexes suffice.  Columns go straight into elimination;
++optional d-squared checking additionally retains two adjacent matrices.
++
++Budgets bound mathematical storage units, not Python allocator/RSS bytes.
++In particular ``max_live_matrix_bits`` bounds a conservative live bit-payload
++envelope (including four temporary row vectors), and ``max_live_columns``
++bounds retained matrix/pivot references plus temporary vectors.  Geometry
++and compact map caches have independent, explicit caps.  ResourceLimit is
++never an unknot verdict.  See STREAMING_NOTES.md for all counting conventions.
++"""
++from __future__ import annotations
++
++from collections import OrderedDict
++from dataclasses import dataclass
++from math import isfinite
++from time import monotonic
++from typing import Iterable, Iterator
++
++from .core import Geometry, ResourceLimit, Run, _geometry, components, validate_runs
++
++
++@dataclass
++class StreamBudget:
++    """Structural limits; zero cache capacity disables that cache."""
++
++    max_states: int = 250_000
++    max_basis: int = 1_000_000
++    max_live_states: int = 250_000
++    max_layer_basis: int = 1_000_000
++    max_live_matrix_bits: int = 1_000_000_000
++    max_live_columns: int = 2_000_000
++    max_grid_vertices: int = 1_000_000
++    max_geometry_cache_entries: int = 128
++    max_geometry_cache_vertices: int = 1_000_000
++    max_map_cache_entries: int = 1_024
++    max_map_cache_slots: int = 100_000
++    max_active_map_slots: int = 1_000_000
++    max_xors: int = 20_000_000
++    seconds: float | None = None
++
++    def __post_init__(self):
++        for name in self.__dataclass_fields__:
++            if name == 'seconds':
++                continue
++            value = getattr(self, name)
++            if type(value) is not int or value < 0:
++                raise ValueError(f'{name} must be a nonnegative integer')
++        if self.seconds is not None and (
++            type(self.seconds) not in (int, float)
++            or not isfinite(self.seconds) or self.seconds < 0
++        ):
++            raise ValueError('seconds must be a finite nonnegative number')
++
++
++class _Meter:
++    def __init__(self, budget: StreamBudget):
++        self.budget = budget
++        self.deadline = None if budget.seconds is None else monotonic() + budget.seconds
++        self.xors = 0
++        self.live_states = 0
++        self.live_layers = 0
++        self.materialized_bits = 0
++        self.materialized_columns = 0
++        self.pivots = 0
++        self.pivot_bits = 0
++        self.rank_width = 0
++        self.stats: dict[str, int] = {
++            'enumerated_macro_states': 0,
++            'basis': 0,
++            'peak_live_states': 0,
++            'peak_live_layers': 0,
++            'peak_chain_dimension': 0,
++            'geometry_builds': 0,
++            'geometry_cache_hits': 0,
++            'geometry_cache_entries_peak': 0,
++            'geometry_cache_vertices_peak': 0,
++            'map_compilations': 0,
++            'map_cache_hits': 0,
++            'map_cache_entries_peak': 0,
++            'map_cache_slots_peak': 0,
++            'active_map_slots_peak': 0,
++            'active_edges_peak': 0,
++            'differential_entries': 0,
++            'matrix_bit_upper_bound': 0,
++            'rank_xor_bit_upper_bound': 0,
++            'peak_pivot_count': 0,
++            'peak_pivot_bit_length_sum': 0,
++            'peak_live_matrix_bit_upper_bound': 0,
++            'peak_live_columns': 0,
++            'peak_materialized_matrix_columns': 0,
++            'peak_materialized_matrix_bit_upper_bound': 0,
++        }
++
++    def peak(self, name: str, value: int):
++        self.stats[name] = max(self.stats[name], value)
++
++    def check(self):
++        if self.deadline is not None and monotonic() >= self.deadline:
++            raise ResourceLimit('time budget exhausted')
++
++    def xor(self):
++        self.xors += 1
++        if self.xors > self.budget.max_xors:
++            raise ResourceLimit('rank/d-squared XOR budget exhausted')
++        if self.xors & 1023 == 0:
++            self.check()
++
++    def algebra_check(self, *, extra_bits: int | None = None,
++                      extra_columns: int = 4):
++        # Four vectors cover the yielded generator value, an evolving reduced
++        # column, a shifted unit vector, and an allocated XOR result.  Several
++        # of these are usually absent or aliases, so this is conservative.
++        extra_bits = 4 * self.rank_width if extra_bits is None else extra_bits
++        bits = self.materialized_bits + self.pivots * self.rank_width + extra_bits
++        cols = self.materialized_columns + self.pivots + extra_columns
++        if bits > self.budget.max_live_matrix_bits:
++            raise ResourceLimit('live matrix-bit envelope exceeded')
++        if cols > self.budget.max_live_columns:
++            raise ResourceLimit('live matrix/pivot column limit exceeded')
++        self.peak('peak_live_matrix_bit_upper_bound', bits)
++        self.peak('peak_live_columns', cols)
++
++
++def bounded_compositions(caps: tuple[int, ...], total: int,
++                         suffix: tuple[int, ...] | None = None) -> Iterator[tuple[int, ...]]:
++    """Enumerate 0 <= a_j <= caps[j], sum(a_j)=total, without product rescans.
++
++    Iterative depth-first search avoids dependence on Python's recursion limit.
++    Every visited prefix extends to an output: suffix capacities prune before
++    descent.  Across all totals the output work is O(t prod_j(caps[j]+1)).
++    The optional suffix vector is internal reuse; callers must supply its exact
++    suffix sums.  ``caps`` and ``total`` are nonnegative integers.
++    """
++    t = len(caps)
++    if suffix is None:
++        values = [0] * (t + 1)
++        for j in range(t - 1, -1, -1):
++            values[j] = values[j + 1] + caps[j]
++        suffix = tuple(values)
++    if total < 0 or total > suffix[0]:
++        return
++    if not t:
++        if total == 0:
++            yield ()
++        return
++    state = [0] * t
++    remaining = [0] * (t + 1)
++    remaining[0] = total
++    next_value = [0] * t
++    high = [0] * t
++    depth = 0
++    next_value[0] = max(0, total - suffix[1])
++    high[0] = min(caps[0], total)
++    while depth >= 0:
++        if next_value[depth] > high[depth]:
++            depth -= 1
++            continue
++        value = next_value[depth]
++        next_value[depth] += 1
++        state[depth] = value
++        rest = remaining[depth] - value
++        if depth == t - 1:
++            # The suffix bound at the last coordinate makes rest exactly zero.
++            yield tuple(state)
++            continue
++        depth += 1
++        remaining[depth] = rest
++        next_value[depth] = max(0, rest - suffix[depth + 1])
++        high[depth] = min(caps[depth], rest)
++
++
++class _Cache:
++    """Weighted LRU; no unbounded support or map-key history is retained."""
++
++    def __init__(self, entries: int, slots: int, meter: _Meter, prefix: str,
++                 slot_name: str):
++        self.entries = entries
++        self.capacity = slots
++        self.meter = meter
++        self.prefix = prefix
++        self.slot_name = slot_name
++        self.items: OrderedDict = OrderedDict()
++        self.slots = 0
++
++    def get(self, key):
++        if key not in self.items:
++            return None
++        value, size = self.items.pop(key)
++        self.items[key] = (value, size)
++        self.meter.stats[self.prefix + '_cache_hits'] += 1
++        return value
++
++    def put(self, key, value, size: int):
++        if not self.entries or size > self.capacity:
++            return
++        while self.items and (len(self.items) >= self.entries
++                              or self.slots + size > self.capacity):
++            _, (_, old_size) = self.items.popitem(last=False)
++            self.slots -= old_size
++        self.items[key] = (value, size)
++        self.slots += size
++        self.meter.peak(self.prefix + '_cache_entries_peak', len(self.items))
++        self.meter.peak(self.prefix + '_cache_' + self.slot_name + '_peak', self.slots)
++
++
++@dataclass(frozen=True)
++class _Map:
++    # kind: 0=zero, 1=dot, 2=merge, 3=split.  Store circle indexes rather than
++    # exponentially sized relabel tables or one-hot integers in the cache.
++    kind: int
++    relabel: tuple[int, ...] = ()
++    first: int = -1
++    second: int = -1
++    split: int = -1
++
++    @property
++    def slots(self) -> int:
++        # Counts the four scalar fields and the relabel integer slots.
++        return 4 + len(self.relabel)
++
++    def images(self, label: int) -> tuple[int, ...]:
++        if self.kind == 0:
++            return ()
++        if self.kind == 1:
++            bits = tuple(1 << (circle - 1) for circle in (self.first, self.second)
++                         if circle > 0)
++            return tuple(label | bit for bit in bits if not label & bit)
++        xmask = (label << 1) | 1
++        y = 0
++        rest = xmask
++        while rest:
++            low = rest & -rest
++            circle = self.relabel[low.bit_length() - 1]
++            bit = 0 if circle < 0 else 1 << circle
++            if self.kind == 2 and y & bit:
++                return ()
++            y |= bit
++            rest ^= low
++        if self.kind == 2:
++            return (y >> 1,)
++        first, second = 1 << self.first, 1 << self.second
++        if xmask & (1 << self.split):
++            return ((y | first | second) >> 1,)
++        return ((y | first) >> 1, (y | second) >> 1)
++
++
++def _compile_saddle(source: Geometry, target: Geometry) -> _Map:
++    relation = [{target.owner[v] for v in c} for c in source.circles]
++    nc, nd = len(source.circles), len(target.circles)
++    if nc == nd + 1:
++        if any(len(targets) != 1 for targets in relation):
++            raise ArithmeticError('invalid merge relation')
++        return _Map(2, tuple(next(iter(x)) for x in relation))
++    if nd == nc + 1:
++        split = [j for j, targets in enumerate(relation) if len(targets) == 2]
++        if len(split) != 1:
++            raise ArithmeticError('invalid split relation')
++        j = split[0]
++        if any(len(targets) != 1 for k, targets in enumerate(relation) if k != j):
++            raise ArithmeticError('invalid unaffected circle')
++        a, b = sorted(relation[j])
++        relabel = tuple(-1 if k == j else next(iter(targets))
++                        for k, targets in enumerate(relation))
++        return _Map(3, relabel, a, b, j)
++    raise ArithmeticError('a classical saddle must merge or split one circle')
++
++
++def _compile_dot(geometry: Geometry, a: int, b: int) -> _Map:
++    ca, cb = geometry.owner[a], geometry.owner[b]
++    if ca == cb:
++        return _Map(0)
++    return _Map(1, first=ca, second=cb)
++
++
++@dataclass(frozen=True)
++class _State:
++    offset: int
++    support: int
++    dimension: int
++
++
++@dataclass
++class _Layer:
++    degree: int
++    states: dict[tuple[int, ...], _State]
++    dimension: int
++
++
++class _Engine:
++    def __init__(self, strands: int, runs: tuple[Run, ...], meter: _Meter):
++        self.strands = strands
++        self.runs = runs
++        self.meter = meter
++        self.caps = tuple(abs(r.exponent) for r in runs)
++        suffix = [0] * (len(runs) + 1)
++        for j in range(len(runs) - 1, -1, -1):
++            suffix[j] = suffix[j + 1] + self.caps[j]
++        self.suffix = tuple(suffix)
++        self.negative = sum(m for m, r in zip(self.caps, runs) if r.exponent < 0)
++        cap = meter.budget
++        count = 1
++        if count > cap.max_states:
++            raise ResourceLimit('macro state limit exceeded')
++        for m in self.caps:
++            meter.check()
++            # Saturating comparison precedes multiplication or decimal output.
++            if m + 1 > cap.max_states // count:
++                raise ResourceLimit('macro state limit exceeded')
++            count *= m + 1
++        self.vertices = (len(runs) + 1) * strands
++        if self.vertices > cap.max_grid_vertices:
++            raise ResourceLimit('topology grid vertex limit exceeded')
++        self.geometries = _Cache(cap.max_geometry_cache_entries,
++                                 cap.max_geometry_cache_vertices, meter,
++                                 'geometry', 'vertices')
++        self.maps = _Cache(cap.max_map_cache_entries, cap.max_map_cache_slots,
++                           meter, 'map', 'slots')
++        meter.stats.update(crossings=self.suffix[0], runs=len(runs),
++                           macro_states=count, topology_grid_vertices=self.vertices)
++
++    def geometry(self, support: int) -> Geometry:
++        geometry = self.geometries.get(support)
++        if geometry is None:
++            self.meter.check()
++            geometry = _geometry(self.strands, self.runs, support)
++            self.meter.stats['geometry_builds'] += 1
++            self.geometries.put(support, geometry, self.vertices)
++        return geometry
++
++    def layer(self, total: int) -> _Layer:
++        meter, cap = self.meter, self.meter.budget
++        layer = _Layer(total - self.negative, {}, 0)
++        meter.live_layers += 1
++        meter.peak('peak_live_layers', meter.live_layers)
++        for state in bounded_compositions(self.caps, total, self.suffix):
++            meter.check()
++            if meter.live_states >= cap.max_live_states:
++                raise ResourceLimit('live state-index limit exceeded')
++            support = sum(1 << j for j, (a, m, r) in enumerate(
++                zip(state, self.caps, self.runs)) if (a if r.exponent > 0 else m - a))
++            geometry = self.geometry(support)
++            exponent = len(geometry.circles) - 1
++            # Guard a potentially huge shift before constructing the dimension.
++            if exponent >= min(cap.max_basis, cap.max_layer_basis).bit_length():
++                raise ResourceLimit('single-state basis dimension exceeds budget')
++            dimension = 1 << exponent
++            if layer.dimension + dimension > cap.max_layer_basis:
++                raise ResourceLimit('layer basis limit exceeded')
++            if meter.stats['basis'] + dimension > cap.max_basis:
++                raise ResourceLimit('total enumerated basis limit exceeded')
++            layer.states[state] = _State(layer.dimension, support, dimension)
++            layer.dimension += dimension
++            meter.live_states += 1
++            meter.stats['enumerated_macro_states'] += 1
++            meter.stats['basis'] += dimension
++            meter.peak('peak_live_states', meter.live_states)
++        meter.peak('peak_chain_dimension', layer.dimension)
++        return layer
++
++    def release(self, layer: _Layer):
++        self.meter.live_states -= len(layer.states)
++        self.meter.live_layers -= 1
++        # Clear eagerly: generator frames or local aliases cannot retain states.
++        layer.states.clear()
++
++    def edge_map(self, support: int, j: int, saddle: bool,
++                 source: Geometry, target_support: int) -> _Map:
++        key = (support, j, saddle)
++        compiled = self.maps.get(key)
++        if compiled is None:
++            if saddle:
++                compiled = _compile_saddle(source, self.geometry(target_support))
++            else:
++                i = self.runs[j].generator - 1
++                compiled = _compile_dot(source, j * self.strands + i,
++                                        (j + 1) * self.strands + i)
++            self.meter.stats['map_compilations'] += 1
++            self.maps.put(key, compiled, compiled.slots)
++        return compiled
++
++    def columns(self, source: _Layer, target: _Layer | None) -> Iterator[int]:
++        meter = self.meter
++        if target is None:
++            for _ in range(source.dimension):
++                meter.check()
++                yield 0
++            return
++        for state, info in source.states.items():
++            meter.check()
++            geometry = self.geometry(info.support)
++            edges: list[tuple[int, _Map]] = []
++            active_slots = 0
++            for j, (a, m, run) in enumerate(zip(state, self.caps, self.runs)):
++                if a == m:
++                    continue
++                target_state = state[:j] + (a + 1,) + state[j + 1:]
++                target_info = target.states[target_state]
++                k = a if run.exponent > 0 else m - a
++                kk = k + 1 if run.exponent > 0 else k - 1
++                compiled = self.edge_map(info.support, j, not k or not kk,
++                                         geometry, target_info.support)
++                if compiled.kind == 0:
++                    continue
++                if active_slots + compiled.slots > meter.budget.max_active_map_slots:
++                    raise ResourceLimit('active compact-map slot limit exceeded')
++                active_slots += compiled.slots
++                edges.append((target_info.offset, compiled))
++            meter.peak('active_map_slots_peak', active_slots)
++            meter.peak('active_edges_peak', len(edges))
++            for label in range(info.dimension):
++                meter.check()
++                meter.algebra_check()
++                column = 0
++                for offset, compiled in edges:
++                    for q in compiled.images(label):
++                        column ^= 1 << (offset + q)
++                        meter.stats['differential_entries'] += 1
++                yield column
++
++
++def _rank(columns: Iterable[int], rows: int, meter: _Meter) -> int:
++    pivots: dict[int, int] = {}
++    meter.rank_width = rows
++    meter.algebra_check()
++    for column in columns:
++        meter.check()
++        while column:
++            p = column.bit_length() - 1
++            if p >= rows:
++                raise ArithmeticError('differential column exceeds its row dimension')
++            if p not in pivots:
++                meter.pivots += 1
++                meter.algebra_check()
++                pivots[p] = column
++                meter.pivot_bits += column.bit_length()
++                meter.peak('peak_pivot_count', meter.pivots)
++                meter.peak('peak_pivot_bit_length_sum', meter.pivot_bits)
++                break
++            column ^= pivots[p]
++            meter.xor()
++    result = len(pivots)
++    meter.pivots = 0
++    meter.pivot_bits = 0
++    meter.rank_width = 0
++    return result
++
++
++def _record(columns: Iterable[int], result: list[int], rows: int,
++            meter: _Meter) -> Iterator[int]:
++    for column in columns:
++        meter.materialized_columns += 1
++        meter.materialized_bits += rows
++        meter.algebra_check()
++        result.append(column)
++        meter.peak('peak_materialized_matrix_columns', meter.materialized_columns)
++        meter.peak('peak_materialized_matrix_bit_upper_bound', meter.materialized_bits)
++        yield column
++
++
++def _verify_pair(previous: list[int], current: list[int], middle_dimension: int,
++                 target_dimension: int, meter: _Meter, degree: int):
++    # Include traversal/low-bit arithmetic and output temporaries in addition
++    # to retained matrices.  This intentionally overcounts aliasing integers.
++    meter.algebra_check(extra_bits=4 * middle_dimension + 3 * target_dimension,
++                        extra_columns=7)
++    for original in previous:
++        meter.check()
++        column, image = original, 0
++        while column:
++            low = column & -column
++            j = low.bit_length() - 1
++            if j >= len(current):
++                raise ArithmeticError('d-squared matrix shape mismatch')
++            image ^= current[j]
++            column ^= low
++            meter.xor()
++        if image:
++            raise ArithmeticError(f'd^2 != 0 in degree {degree}')
++
++
++def _compute(strands: int, runs: tuple[Run, ...], budget: StreamBudget,
++             check_d2: bool, stop_after_rank: int | None) -> dict:
++    started = monotonic()
++    meter = _Meter(budget)
++    meter.check()
++    engine = _Engine(strands, runs, meter)
++    maximum_total = engine.suffix[0]
++    source = engine.layer(0)
++    dimensions: dict[int, int] = {source.degree: source.dimension}
++    ranks: dict[int, int] = {}
++    homology_degrees: dict[int, int] = {}
++    cumulative = 0
++    previous_rank = 0
++    previous_columns: list[int] | None = None
++    previous_rows = 0
++    complete = True
++    checked_through: int | None = None
++    finalized_through = source.degree - 1
++    for total in range(maximum_total + 1):
++        target = engine.layer(total + 1) if total < maximum_total else None
++        rows = target.dimension if target is not None else 0
++        if target is not None:
++            dimensions[target.degree] = rows
++        meter.stats['matrix_bit_upper_bound'] += source.dimension * rows
++        meter.stats['rank_xor_bit_upper_bound'] += (
++            source.dimension * rows * min(source.dimension, rows))
++        columns = engine.columns(source, target)
++        current_columns: list[int] | None = [] if check_d2 else None
++        if current_columns is not None:
++            columns = _record(columns, current_columns, rows, meter)
++        rank = _rank(columns, rows, meter)
++        ranks[source.degree] = rank
++        if previous_columns is not None:
++            _verify_pair(previous_columns, current_columns, source.dimension,
++                         rows, meter, source.degree - 1)
++            checked_through = source.degree - 1
++            meter.materialized_bits -= len(previous_columns) * previous_rows
++            meter.materialized_columns -= len(previous_columns)
++            previous_columns.clear()
++        beta = source.dimension - previous_rank - rank
++        if beta < 0:
++            raise ArithmeticError('negative homology dimension')
++        if beta:
++            homology_degrees[source.degree] = beta
++        cumulative += beta
++        finalized_through = source.degree
++        previous_rank = rank
++        previous_columns = current_columns
++        previous_rows = rows
++        engine.release(source)
++        if stop_after_rank is not None and cumulative > stop_after_rank and target is not None:
++            complete = False
++            engine.release(target)
++            break
++        if target is not None:
++            source = target
++    meter.check()
++    stats = dict(meter.stats)
++    stats['elimination_and_check_xors'] = meter.xors
++    stats['peak_state_tuple_slots'] = stats['peak_live_states'] * len(runs)
++    # Cache geometries plus a source/target or a new construction in flight.
++    stats['geometry_vertex_live_bound'] = (
++        stats['geometry_cache_vertices_peak'] + 2 * engine.vertices)
++    stats['compact_map_slot_live_bound'] = (
++        stats['map_cache_slots_peak'] + stats['active_map_slots_peak']
++        + 2 * (engine.vertices + 4))
++    return {
++        'reduced_rank': cumulative if complete else None,
++        'reduced_rank_lower_bound': cumulative,
++        'by_degree': homology_degrees,
++        'chain_dimensions': dimensions,
++        'boundary_ranks': ranks,
++        'components': components(strands, runs),
++        'homology_complete': complete,
++        'finalized_through_degree': finalized_through,
++        'stats': stats,
++        'seconds': monotonic() - started,
++        'd_squared_checked': bool(check_d2 and complete),
++        'd_squared_checked_through_degree': checked_through,
++    }
++
++
++def homology(strands: int, runs: Iterable[Run], *, budget: StreamBudget | None = None,
++             check_d2: bool = False) -> dict:
++    """Compute every homological degree exactly, with bounded live storage."""
++    runs = validate_runs(strands, runs)
++    return _compute(strands, runs, budget or StreamBudget(), check_d2, None)
++
++
++def recognize(strands: int, runs: Iterable[Run], *, budget: StreamBudget | None = None,
++              check_d2: bool = False, early_exit: bool = True) -> dict:
++    """One-component recognition; finalized homology >1 certifies KNOTTED.
++
++    An early result has ``reduced_rank=None`` and reports a rigorous lower
++    bound.  ``early_exit=False`` computes the same full homology as homology().
++    """
++    runs = validate_runs(strands, runs)
++    if components(strands, runs) != 1:
++        raise ValueError('unknot recognition requires a one-component braid closure')
++    try:
++        result = _compute(strands, runs, budget or StreamBudget(), check_d2,
++                          1 if early_exit else None)
++    except (ResourceLimit, MemoryError) as exc:
++        return {
++            'status': 'UNKNOWN', 'method': 'twist-khovanov-F2-streaming',
++            'reason': str(exc) or 'memory allocation failed',
++            'unrestricted_quasipolynomial_guarantee': False,
++        }
++    return {
++        'status': 'UNKNOT' if result['reduced_rank'] == 1 else 'KNOTTED',
++        'method': 'twist-khovanov-F2-streaming', 'homology': result,
++        'unrestricted_quasipolynomial_guarantee': False,
++    }
+diff --git a/fastunknot/twist/tail.py b/fastunknot/twist/tail.py
+new file mode 100644
+--- /dev/null
++++ b/fastunknot/twist/tail.py
+@@ -0,0 +1,201 @@
++"""Exact long-run extrapolation for the F2 twist macro complex.
++
++This module depends on ``fastunknot.twist.core`` from the pinned ProveIt
++checkout. It changes no global state and leaves the production scanner alone.
++The output stores finite exceptional degrees plus at most one constant interval.
++No step enumerates the selected exponent when it exceeds the proven threshold.
++"""
++from __future__ import annotations
++
++from dataclasses import replace
++from time import monotonic
++from typing import Iterable
++
++from fastunknot.twist.core import (
++    Budget, ResourceLimit, Run, components, homology, validate_runs,
++)
++
++
++def _index(runs: tuple[Run, ...], run_index: int | None) -> int | None:
++    if run_index is not None:
++        if type(run_index) is not int or not 0 <= run_index < len(runs):
++            raise ValueError('run_index must index one of the supplied runs')
++        return run_index
++    return max(range(len(runs)), key=lambda j: abs(runs[j].exponent),
++               default=None)
++
++
++def _validated_budget(budget: Budget | None) -> Budget:
++    if budget is not None and not isinstance(budget, Budget):
++        raise ValueError('budget must be a twist Budget')
++    # Budget is mutable, so copy and revalidate its current fields.
++    return Budget() if budget is None else replace(budget)
++
++
++def expand_profile(profile: dict, *, max_terms: int = 100_000) -> dict[int, int]:
++    """Expand the exact compressed profile, subject to an explicit term cap.
++
++    An interval includes both endpoints. Exceptions must be disjoint from it.
++    This function expands output only; homology computation never calls it.
++    """
++    if type(max_terms) is not int or max_terms < 0:
++        raise ValueError('max_terms must be a nonnegative integer')
++    points = profile['points']
++    intervals = profile['intervals']
++    count = len(points) + sum(v['end'] - v['start'] + 1 for v in intervals)
++    if count > max_terms:
++        raise ResourceLimit('expanded degree-profile term limit exceeded')
++    result = dict(points)
++    for interval in intervals:
++        for h in range(interval['start'], interval['end'] + 1):
++            if h in result:
++                raise ArithmeticError('compressed profile contains overlapping pieces')
++            result[h] = interval['dimension']
++    return dict(sorted(result.items()))
++
++
++def profile_dimension(profile: dict, degree: int) -> int:
++    """Query one homological degree without expanding a plateau."""
++    if type(degree) is not int:
++        raise ValueError('degree must be an integer')
++    answer = profile['points'].get(degree, 0)
++    for interval in profile['intervals']:
++        if interval['start'] <= degree <= interval['end']:
++            answer += interval['dimension']
++    return answer
++
++
++def profile_rank(profile: dict) -> int:
++    """Sum homology dimensions by integer arithmetic on compressed pieces."""
++    return sum(profile['points'].values()) + sum(
++        (v['end'] - v['start'] + 1) * v['dimension']
++        for v in profile['intervals']
++    )
++
++
++def tail_homology(strands: int, runs: Iterable[Run], *,
++                  run_index: int | None = None, budget: Budget | None = None,
++                  check_d2: bool = False) -> dict:
++    """Compute exact reduced homology with one unbounded twist run.
++
++    Freeze all runs except the selected one. If their signed degree range is
++    [a,b], write w=b-a and m0=w+2. Exponents of magnitude at most m0 are passed
++    directly to the exact macro backend. For a longer exponent m, only m0 is
++    assembled. In its central differential the domain and codomain both have
++    dimension M, and eta=M-2*rank(F) is the repeated homology dimension.
++
++    Returned degrees follow the existing macro backend's convention. Quantum
++    grading is forgotten. Original component count is computed before returning;
++    the shorter reference closure is allowed to have a different component count.
++    ResourceLimit is propagated and is never a knot verdict.
++    """
++    start = monotonic()
++    runs = validate_runs(strands, runs)
++    cap = _validated_budget(budget)
++    index = _index(runs, run_index)
++    original_components = components(strands, runs)
++    if index is None:
++        baseline = homology(strands, runs, budget=cap, check_d2=check_d2)
++        return {
++            'reduced_rank': baseline['reduced_rank'],
++            'degree_profile': {'points': baseline['by_degree'], 'intervals': []},
++            'components': original_components,
++            'method': 'direct-macro', 'tail_certificate': None,
++            'reference': baseline,
++            'seconds': monotonic() - start,
++            'd_squared_checked': check_d2,
++        }
++
++    chosen = runs[index]
++    m = abs(chosen.exponent)
++    a = sum(r.exponent for j, r in enumerate(runs)
++            if j != index and r.exponent < 0)
++    b = sum(r.exponent for j, r in enumerate(runs)
++            if j != index and r.exponent > 0)
++    threshold = b - a + 2
++    if m <= threshold:
++        baseline = homology(strands, runs, budget=cap, check_d2=check_d2)
++        return {
++            'reduced_rank': baseline['reduced_rank'],
++            'degree_profile': {'points': baseline['by_degree'], 'intervals': []},
++            'components': original_components,
++            'method': 'direct-macro', 'tail_certificate': None,
++            'reference': baseline,
++            'seconds': monotonic() - start,
++            'd_squared_checked': check_d2,
++        }
++
++    sign = 1 if chosen.exponent > 0 else -1
++    shortened = runs[:index] + (Run(chosen.generator, sign * threshold),) + runs[index + 1:]
++    baseline = homology(strands, shortened, budget=cap, check_d2=check_d2)
++    center = b + 1 if sign > 0 else a - 2
++    dimension = baseline['chain_dimensions'][center]
++    if baseline['chain_dimensions'][center + 1] != dimension:
++        raise ArithmeticError('central chain dimensions disagree')
++    matrix_rank = baseline['boundary_ranks'][center]
++    slope = dimension - 2 * matrix_rank
++    if slope < 0:
++        raise ArithmeticError('central square-zero homology dimension is negative')
++    delta = m - threshold
++    points = {}
++    if sign > 0:
++        for h, d in baseline['by_degree'].items():
++            points[h if h <= b + 1 else h + delta] = d
++        plateau_start, plateau_end = b + 2, a + m - 1
++    else:
++        for h, d in baseline['by_degree'].items():
++            points[h - delta if h <= a - 2 else h] = d
++        plateau_start, plateau_end = b - m + 1, a - 2
++    intervals = [] if not slope else [{
++        'start': plateau_start, 'end': plateau_end, 'dimension': slope,
++    }]
++    profile = {'points': dict(sorted(points.items())), 'intervals': intervals}
++    if plateau_end - plateau_start + 1 != delta:
++        raise ArithmeticError('plateau length does not equal exponent increment')
++    answer = profile_rank(profile)
++    if answer != baseline['reduced_rank'] + delta * slope:
++        raise ArithmeticError('affine-rank consistency check failed')
++    certificate = {
++        'run_index': index, 'generator': chosen.generator, 'sign': sign,
++        'original_magnitude': m, 'reference_magnitude': threshold,
++        'other_degree_min': a, 'other_degree_max': b,
++        'central_map_degree': center, 'central_dimension': dimension,
++        'central_map_rank': matrix_rank, 'plateau_dimension': slope,
++        'plateau_start': plateau_start, 'plateau_end': plateau_end,
++        'plateau_length': delta,
++        'reference_components': baseline['components'],
++        'original_components': original_components,
++    }
++    return {
++        'reduced_rank': answer, 'degree_profile': profile,
++        'components': original_components, 'method': 'exact-one-run-recurrence',
++        'tail_certificate': certificate, 'reference': baseline,
++        'seconds': monotonic() - start,
++        # This refers to the finite reference complex. The recurrence is proved
++        # algebraically; no unbuilt, enormous differential is explicitly checked.
++        'd_squared_checked': check_d2,
++        'd_squared_check_scope': 'finite reference complex',
++    }
++
++
++def tail_recognize(strands: int, runs: Iterable[Run], *,
++                   run_index: int | None = None, budget: Budget | None = None,
++                   check_d2: bool = False) -> dict:
++    """Recognize the original one-component closure using exact reduced rank."""
++    runs = validate_runs(strands, runs)
++    if components(strands, runs) != 1:
++        raise ValueError('unknot recognition requires a one-component braid closure')
++    try:
++        result = tail_homology(strands, runs, run_index=run_index,
++                               budget=budget, check_d2=check_d2)
++    except (ResourceLimit, MemoryError) as exc:
++        return {
++            'status': 'UNKNOWN', 'method': 'twist-tail-khovanov-F2',
++            'reason': str(exc) or 'memory allocation failed',
++            'unrestricted_quasipolynomial_guarantee': False,
++        }
++    return {
++        'status': 'UNKNOT' if result['reduced_rank'] == 1 else 'KNOTTED',
++        'method': 'twist-tail-khovanov-F2', 'homology': result,
++        'unrestricted_quasipolynomial_guarantee': False,
++    }
+diff --git a/tests/test_braid_profile.py b/tests/test_braid_profile.py
+new file mode 100644
+--- /dev/null
++++ b/tests/test_braid_profile.py
+@@ -0,0 +1,124 @@
++import copy
++import itertools
++import random
++import unittest
++
++from fastunknot.braid_profile import (
++    _pack, structural_runs_certificate, structural_word_certificate,
++    verify_structural_runs_certificate, signature_certificate,
++    verify_signature_certificate,
++)
++from fastunknot.diagram import Diagram, DiagramError
++from fastunknot.recognize import recognize
++from fastunknot.seifert import seifert_data, seifert_certificate
++
++
++class BraidProfileTests(unittest.TestCase):
++    def test_exhaustive_against_independent_pd_graph(self):
++        checked = 0
++        keys = ('crossings', 'writhe', 'seifert_circles', 'positive_components',
++                'negative_components', 'homogeneity_defect', 'canonical_genus',
++                'rasmussen_interval')
++        for strands, max_length in ((2, 7), (3, 6)):
++            alphabet = tuple(range(1, strands)) + tuple(range(-1, -strands, -1))
++            for length in range(max_length + 1):
++                for word in itertools.product(alphabet, repeat=length):
++                    try:
++                        diagram = Diagram.from_braid(strands, word)
++                    except DiagramError:
++                        continue
++                    answer = structural_word_certificate(strands, word)
++                    data = seifert_data(diagram)
++                    self.assertEqual({k: answer[k] for k in keys}, data)
++                    certificate = seifert_certificate(diagram)
++                    expected = 'INCONCLUSIVE' if certificate is None else certificate['status']
++                    self.assertEqual(answer['status'], expected)
++                    checked += 1
++        self.assertEqual(checked, 3026)
++
++    def test_random_higher_braids_and_pipeline(self):
++        rng = random.Random(835701)
++        tested = 0
++        while tested < 240:
++            b = rng.randrange(4, 7)
++            n = rng.randrange(b - 1, 17)
++            word = [rng.choice((-1, 1)) * rng.randrange(1, b) for _ in range(n)]
++            try:
++                diagram = Diagram.from_braid(b, word)
++            except DiagramError:
++                continue
++            direct = structural_word_certificate(b, word)
++            graph = seifert_certificate(diagram)
++            self.assertEqual(direct['status'], 'INCONCLUSIVE' if graph is None else graph['status'])
++            old = recognize(diagram)
++            new = recognize(diagram, use_braid_profile=True)
++            self.assertEqual(old.status, new.status)
++            tested += 1
++
++    def test_binary_exponents_without_expansion(self):
++        m = (1 << 100000) + 1
++        runs = [(1, m), (2, -(2 * m - 1)), (3, m)]
++        answer = structural_runs_certificate(4, runs)
++        self.assertEqual(answer['status'], 'KNOTTED')
++        self.assertEqual(answer['homogeneity_defect'], 0)
++        self.assertEqual(answer['artin_exponent_sum'], 1)
++        self.assertTrue(verify_structural_runs_certificate(4, runs, answer))
++
++    def test_invalid_original_permutation_and_malformed_inputs(self):
++        for b, runs in ((2, [(1, 2)]), (10**100, [(1, 1)]),
++                        (3, [(1, 1)]), (2, [(1, 0)]), (2, [(True, 1)]),
++                        (2, [(1, 1.0)]), (0, [])):
++            with self.assertRaises(ValueError):
++                structural_runs_certificate(b, runs)
++
++    def test_signature_domination(self):
++        rng = random.Random(112358)
++        tested = 0
++        while tested < 500:
++            b = rng.randrange(2, 8)
++            word = [rng.choice((-1, 1)) * rng.randrange(1, b)
++                    for _ in range(rng.randrange(b - 1, 25))]
++            try:
++                structural = structural_word_certificate(b, word)
++            except ValueError:
++                continue
++            signature = signature_certificate(b, word)
++            low, high = structural['rasmussen_interval']
++            self.assertLessEqual(signature['signature_abs_lower_bound'], max(0, low, -high))
++            if signature['status'] == 'KNOTTED':
++                self.assertEqual(structural['status'], 'KNOTTED')
++                self.assertTrue(verify_signature_certificate(b, word, signature))
++                forged = copy.deepcopy(signature)
++                forged['definite_subspace_dimension'] += 1
++                self.assertFalse(verify_signature_certificate(b, word, forged))
++            tested += 1
++
++    def test_path_optimizer_against_all_subsets(self):
++        for size in range(7):
++            for weights in itertools.product(range(3), repeat=size):
++                exact = max(sum(weights[i] for i in range(size) if mask >> i & 1)
++                            for mask in range(1 << size) if not mask & (mask << 1))
++                result, indices = _pack(weights)
++                self.assertEqual(result, exact)
++                self.assertEqual(result, sum(weights[i - 1] for i in indices))
++                self.assertTrue(all(y - x >= 2 for x, y in zip(indices, indices[1:])))
++
++    def test_profile_replay_and_inconclusive(self):
++        self.assertEqual(structural_runs_certificate(1, [])['status'], 'UNKNOT')
++        runs = [(1, 1), (2, -1), (1, -1), (2, 1)]
++        answer = structural_runs_certificate(3, runs)
++        self.assertEqual(answer['status'], 'INCONCLUSIVE')
++        answer['canonical_genus'] += 1
++        self.assertFalse(verify_structural_runs_certificate(3, runs, answer))
++
++    def test_checked_source_option(self):
++        source = Diagram.from_braid(4, [1]*3 + [-2]*5 + [3]*3)
++        answer = recognize(source, use_braid_profile=True)
++        self.assertEqual(answer.status, 'KNOTTED')
++        self.assertIn('source_braid_structural', answer.evidence)
++        pd_only = Diagram.from_pd(source.pd)
++        self.assertNotIn('source_braid_structural', recognize(pd_only, use_braid_profile=True).evidence)
++
++
++if __name__ == '__main__':
++    unittest.main()
+diff --git a/tests/test_twist_continuation.py b/tests/test_twist_continuation.py
+new file mode 100644
+--- /dev/null
++++ b/tests/test_twist_continuation.py
+@@ -0,0 +1,133 @@
++"""Public CLI/API checks for the additive run-encoded research frontend."""
++from __future__ import annotations
++
++from contextlib import redirect_stdout
++import io
++import json
++import unittest
++from unittest.mock import patch
++
++from fastunknot.twist.continuation import compute, load_runs, main
++from fastunknot.twist.core import Budget, Run, homology
++from fastunknot.twist.streaming import StreamBudget
++from fastunknot.twist.tail import expand_profile
++
++
++class ContinuationInterface(unittest.TestCase):
++    def test_validated_rle_schema(self):
++        value = {'strands': 3, 'runs': [[1, 3], [2, -1]]}
++        expected = (3, (Run(1, 3), Run(2, -1)))
++        self.assertEqual(load_runs(value), expected)
++        self.assertEqual(load_runs({'braid': value}), expected)
++        for bad in ([], {}, {'strands': 2, 'word': [1]},
++                    {'strands': 2, 'runs': [[1, 0]]},
++                    {'strands': 2, 'runs': [[1, True]]},
++                    {'strands': 2, 'runs': [[2, 1]]},
++                    {'strands': 2, 'runs': [1]},
++                    {'strands': 2, 'runs': [], 'word': []}):
++            with self.subTest(value=bad), self.assertRaises(ValueError):
++                load_runs(bad)
++
++    def test_recognition_uses_structural_certificate_first(self):
++        magnitude = 10**100 + 1
++        for method in ('tail', 'macro', 'streaming'):
++            budget = StreamBudget(max_states=0) if method == 'streaming' else Budget(max_states=0)
++            answer = compute(2, [Run(1, magnitude)], method=method, budget=budget)
++            self.assertEqual(answer['status'], 'KNOTTED')
++            self.assertEqual(answer['method'], 'structural-braid')
++            self.assertNotIn('homology', answer)
++            self.assertEqual(answer['certificate']['crossings'], magnitude)
++
++    def test_original_parity_and_link_homology(self):
++        odd = compute(2, [Run(1, 101)], mode='homology', check_d2=True)
++        self.assertEqual(odd['homology']['components'], 1)
++        self.assertEqual(odd['homology']['reference']['components'], 2)
++        even = compute(2, [Run(1, 100)], mode='homology')
++        self.assertEqual(even['homology']['components'], 2)
++        self.assertEqual(even['homology']['reduced_rank'], 100)
++        for mode in ('recognize', 'profile'):
++            with self.subTest(mode=mode), self.assertRaises(ValueError):
++                compute(2, [Run(1, 100)], mode=mode)
++
++    def test_homology_bypasses_structural_decisions_and_is_complete(self):
++        runs = [Run(1, 1), Run(2, -1), Run(1, 1), Run(2, -1)]
++        expected = homology(3, runs, check_d2=True)
++        for method in ('tail', 'streaming', 'macro'):
++            answer = compute(3, runs, mode='homology', method=method, check_d2=True)
++            self.assertEqual(answer['status'], 'COMPUTED')
++            self.assertTrue(answer['homology_complete'])
++            self.assertEqual(answer['homology']['reduced_rank'], expected['reduced_rank'])
++            got = answer['homology']
++            by_degree = expand_profile(got['degree_profile']) if method == 'tail' else got['by_degree']
++            self.assertEqual(by_degree, expected['by_degree'])
++            self.assertNotIn('certificate', answer)
++
++    def test_inconclusive_structure_reaches_each_exact_backend(self):
++        # sigma_1^3 sigma_1^-2 is an unknot with a positive-genus, mixed-sign
++        # supplied Seifert surface. Structural bounds include zero.
++        runs = [Run(1, 3), Run(1, -2)]
++        for method in ('tail', 'streaming', 'macro'):
++            answer = compute(2, runs, method=method, check_d2=True)
++            self.assertEqual(answer['status'], 'UNKNOT')
++            self.assertEqual(answer['certificate']['status'], 'INCONCLUSIVE')
++            self.assertEqual(answer['homology']['reduced_rank'], 1)
++
++    def test_resource_exhaustion_stays_unknown(self):
++        runs = [Run(1, 3), Run(1, -2)]
++        for method in ('tail', 'streaming', 'macro'):
++            budget = StreamBudget(max_states=0) if method == 'streaming' else Budget(max_states=0)
++            answer = compute(2, runs, method=method, budget=budget)
++            self.assertEqual(answer['status'], 'UNKNOWN')
++            self.assertEqual(answer['certificate']['status'], 'INCONCLUSIVE')
++        # A structural decision must not replace requested exact homology.
++        answer = compute(2, [Run(1, 101)], mode='homology', budget=Budget(max_states=2))
++        self.assertEqual(answer['status'], 'UNKNOWN')
++        self.assertEqual(compute(2, [Run(1, 3)], budget=Budget(seconds=0))['status'], 'UNKNOWN')
++
++    def test_profile_returns_only_original_structural_certificate(self):
++        answer = compute(2, [Run(1, 3), Run(1, -2)], mode='profile')
++        self.assertEqual(answer['status'], 'INCONCLUSIVE')
++        self.assertNotIn('homology', answer)
++        self.assertEqual(answer['certificate']['source'], 'original checked braid')
++        self.assertEqual(answer['certificate']['crossings'], 5)
++
++    def test_configuration_validation(self):
++        runs = [Run(1, 3)]
++        for kwargs in ({'mode': 'guess'}, {'method': 'guess'},
++                       {'run_index': True}, {'run_index': 1},
++                       {'method': 'macro', 'run_index': 0},
++                       {'method': 'streaming', 'budget': Budget()},
++                       {'method': 'tail', 'budget': StreamBudget()}):
++            with self.subTest(kwargs=kwargs), self.assertRaises(ValueError):
++                compute(2, runs, **kwargs)
++        bad = StreamBudget()
++        bad.max_states = -1
++        with self.assertRaises(ValueError):
++            compute(2, runs, method='streaming', budget=bad)
++
++    def test_cli_json_stdin_exit_codes_and_exact_profile(self):
++        def invoke(value, *flags):
++            source = value if isinstance(value, str) else json.dumps(value)
++            output = io.StringIO()
++            with patch('sys.stdin', io.StringIO(source)), redirect_stdout(output):
++                code = main(['-', *flags])
++            return code, json.loads(output.getvalue())
++
++        code, result = invoke({'strands': 2, 'runs': [[1, 101]]}, '--mode', 'homology')
++        self.assertEqual(code, 0)
++        self.assertEqual(result['homology']['reduced_rank'], 101)
++        self.assertEqual(len(result['homology']['degree_profile']['intervals']), 1)
++        code, result = invoke({'strands': 2, 'runs': [[1, 3], [1, -2]]}, '--max-states', '0')
++        self.assertEqual((code, result['status']), (3, 'UNKNOWN'))
++        code, result = invoke({'strands': 2, 'runs': [[1, 100]]})
++        self.assertEqual((code, result['status']), (2, 'INVALID'))
++        code, result = invoke('{ malformed')
++        self.assertEqual((code, result['status']), (2, 'INVALID'))
++        code, result = invoke({'strands': 2, 'runs': [[1, 3]]},
++                              '--mode', 'homology', '--method', 'streaming', '--check-d2')
++        self.assertEqual((code, result['status']), (0, 'COMPUTED'))
++        self.assertTrue(result['homology']['homology_complete'])
++
++
++if __name__ == '__main__':
++    unittest.main(verbosity=2)
+diff --git a/tests/test_twist_streaming.py b/tests/test_twist_streaming.py
+new file mode 100644
+--- /dev/null
++++ b/tests/test_twist_streaming.py
+@@ -0,0 +1,234 @@
++"""Cross-checks of the additive streamed backend, including independent cubes."""
++import json
++import random
++import unittest
++from itertools import product
++
++from fastunknot.twist import Run, ResourceLimit, components, runs_from_word
++from fastunknot.twist.core import (
++    _dot_map, _geometry, _saddle_map, homology as original_homology,
++)
++from fastunknot.twist.reference import cube_homology
++from fastunknot.twist.streaming import (
++    StreamBudget, _Meter, _compile_dot, _compile_saddle, _verify_pair,
++    bounded_compositions, homology, recognize,
++)
++
++
++class BoundedCompositionTests(unittest.TestCase):
++    def test_complete_partition_and_no_duplicates(self):
++        for caps in ((), (0,), (5,), (2, 3, 1), (1, 1, 1, 1, 1), (0, 2, 0, 1)):
++            actual = []
++            for total in range(sum(caps) + 1):
++                layer = list(bounded_compositions(caps, total))
++                self.assertTrue(all(sum(a) == total for a in layer))
++                self.assertEqual(layer, sorted(set(layer)))
++                actual.extend(layer)
++            expected = list(product(*(range(m + 1) for m in caps)))
++            self.assertEqual(sorted(actual), expected)
++
++    def test_out_of_range_and_long_nonrecursive_input(self):
++        self.assertEqual(list(bounded_compositions((2, 3), -1)), [])
++        self.assertEqual(list(bounded_compositions((2, 3), 6)), [])
++        caps = (0,) * 1500
++        self.assertEqual(list(bounded_compositions(caps, 0)), [(0,) * 1500])
++
++
++class CompactAlgebraTests(unittest.TestCase):
++    def test_all_edge_maps_against_original_tables(self):
++        cases = (
++            (2, (Run(1, 3), Run(1, -2))),
++            (3, (Run(1, 2), Run(2, -2), Run(1, -2))),
++            (4, (Run(1, 2), Run(3, -2), Run(2, 2), Run(1, -1))),
++        )
++        kinds = set()
++        for strands, runs in cases:
++            for state in product(*(range(abs(r.exponent) + 1) for r in runs)):
++                support = sum(1 << j for j, k in enumerate(state) if k)
++                source = _geometry(strands, runs, support)
++                for j, (k, run) in enumerate(zip(state, runs)):
++                    if (run.exponent > 0 and k == run.exponent) or (
++                        run.exponent < 0 and k == 0
++                    ):
++                        continue
++                    kk = k + 1 if run.exponent > 0 else k - 1
++                    if not k or not kk:
++                        target_support = support ^ (1 << j)
++                        target = _geometry(strands, runs, target_support)
++                        compact = _compile_saddle(source, target)
++                        table = _saddle_map(source, target)
++                    else:
++                        a = j * strands + run.generator - 1
++                        b = (j + 1) * strands + run.generator - 1
++                        compact = _compile_dot(source, a, b)
++                        table = _dot_map(source, a, b)
++                    kinds.add(compact.kind)
++                    actual = tuple(tuple(sorted(compact.images(label)))
++                                   for label in range(source.dimension))
++                    self.assertEqual(actual, table)
++        self.assertEqual(kinds, {0, 1, 2, 3})
++
++    def test_d_squared_detects_corruption(self):
++        with self.assertRaisesRegex(ArithmeticError, r'd\^2 != 0'):
++            _verify_pair([1], [1], 1, 1, _Meter(StreamBudget()), -2)
++
++
++class ExactHomologyTests(unittest.TestCase):
++    def assert_same_macro(self, strands, runs, *, budget=None):
++        expected = original_homology(strands, runs, check_d2=True)
++        for check in (False, True):
++            actual = homology(strands, runs, check_d2=check, budget=budget)
++            for key in ('reduced_rank', 'by_degree', 'chain_dimensions', 'boundary_ranks'):
++                self.assertEqual(actual[key], expected[key], (strands, runs, check, key))
++            self.assertTrue(actual['homology_complete'])
++            self.assertEqual(actual['d_squared_checked'], check)
++            self.assertLessEqual(actual['stats']['peak_live_layers'], 2)
++            self.assertEqual(actual['stats']['enumerated_macro_states'],
++                             actual['stats']['macro_states'])
++            if not check:
++                self.assertEqual(actual['stats']['peak_materialized_matrix_columns'], 0)
++            for key in ('basis', 'differential_entries', 'matrix_bit_upper_bound',
++                        'rank_xor_bit_upper_bound', 'peak_chain_dimension'):
++                self.assertEqual(actual['stats'][key], expected['stats'][key], key)
++        return actual
++
++    def test_empty_unlinks_and_both_gradings(self):
++        for strands in (1, 2, 4):
++            self.assert_same_macro(strands, ())
++        for exponent in (1, -1, 3, -3, 21, -21):
++            actual = self.assert_same_macro(2, (Run(1, exponent),))
++            if abs(exponent) > 1:
++                self.assertEqual(actual['reduced_rank'], abs(exponent))
++        self.assertEqual(homology(2, [Run(1, -3)])['by_degree'], {-3: 1, -2: 1, 0: 1})
++
++    def test_signed_actual_braid_closures(self):
++        cases = (
++            (3, [1, -2, 1, -2]),
++            (3, [1, 1, -2, -2, 1, -2]),
++            (3, [-2, -2, 1, 1, -2]),
++            (4, [1, 1, -2, 3, -2, -2, 1]),
++            (3, [1] * 4 + [2] + [-1] * 3),
++            (4, [-3, -3, 2, -3, 2, 1, 1, 1, -2, 1, -2]),
++        )
++        for strands, word in cases:
++            actual = self.assert_same_macro(strands, runs_from_word(strands, word))
++            reference = cube_homology(strands, word)
++            self.assertEqual(actual['by_degree'], reference['by_degree'])
++
++    def test_exhaustive_independent_cubes(self):
++        # 127 two-strand words + 341 three-strand words; empty cases included.
++        count = 0
++        for strands, alphabet, maximum in ((2, (1, -1), 6), (3, (1, -1, 2, -2), 4)):
++            for length in range(maximum + 1):
++                for word in product(alphabet, repeat=length):
++                    actual = homology(strands, runs_from_word(strands, word), check_d2=True)
++                    reference = cube_homology(strands, list(word))
++                    self.assertEqual(actual['by_degree'], reference['by_degree'], word)
++                    count += 1
++        self.assertEqual(count, 468)
++
++    def test_bounded_and_disabled_caches(self):
++        runs = (Run(1, 2), Run(2, -2), Run(1, 2), Run(2, -1))
++        for entries in (0, 1, 2):
++            budget = StreamBudget(max_geometry_cache_entries=entries,
++                                  max_map_cache_entries=entries,
++                                  max_geometry_cache_vertices=100,
++                                  max_map_cache_slots=20)
++            result = self.assert_same_macro(3, runs, budget=budget)
++            stats = result['stats']
++            self.assertLessEqual(stats['geometry_cache_entries_peak'], entries)
++            self.assertLessEqual(stats['map_cache_entries_peak'], entries)
++            self.assertLessEqual(stats['geometry_cache_vertices_peak'], 100)
++            self.assertLessEqual(stats['map_cache_slots_peak'], 20)
++        result = homology(3, runs, budget=StreamBudget(
++            max_geometry_cache_vertices=0, max_map_cache_slots=0))
++        self.assertEqual(result['stats']['geometry_cache_entries_peak'], 0)
++        self.assertEqual(result['stats']['map_cache_entries_peak'], 0)
++
++    def test_peak_state_count_is_adjacent_layer_sum(self):
++        runs = (Run(1, -3), Run(2, 4), Run(1, -2))
++        caps = tuple(abs(r.exponent) for r in runs)
++        counts = [len(list(bounded_compositions(caps, h))) for h in range(sum(caps) + 1)]
++        expected = max(a + b for a, b in zip(counts, counts[1:]))
++        for check in (False, True):
++            result = homology(3, runs, check_d2=check)
++            self.assertEqual(result['stats']['peak_live_states'], expected)
++
++
++class DecisionsAndBudgets(unittest.TestCase):
++    def test_early_decision_reports_only_finalized_lower_bound(self):
++        for exponent in (1001, -1001):
++            result = recognize(2, [Run(1, exponent)], check_d2=True)
++            self.assertEqual(result['status'], 'KNOTTED')
++            hom = result['homology']
++            self.assertFalse(hom['homology_complete'])
++            self.assertFalse(hom['d_squared_checked'])
++            self.assertIsNone(hom['reduced_rank'])
++            self.assertEqual(hom['reduced_rank_lower_bound'], 2)
++            self.assertLessEqual(hom['stats']['enumerated_macro_states'], 4)
++            self.assertEqual(sum(hom['by_degree'].values()), 2)
++        full = recognize(2, [Run(1, 101)], early_exit=False)['homology']
++        self.assertTrue(full['homology_complete'])
++        self.assertEqual(full['reduced_rank'], 101)
++
++    def test_unknot_requires_complete_computation(self):
++        for strands, runs in (
++            (1, ()), (2, (Run(1, -1),)),
++            (3, (Run(1, 9), Run(2, 1), Run(1, -8))),
++        ):
++            result = recognize(strands, runs, check_d2=True)
++            self.assertEqual(result['status'], 'UNKNOT')
++            self.assertTrue(result['homology']['homology_complete'])
++            self.assertTrue(result['homology']['d_squared_checked'])
++            self.assertEqual(result['homology']['reduced_rank'], 1)
++
++    def test_links_rejected(self):
++        with self.assertRaises(ValueError):
++            recognize(2, [Run(1, 2)])
++
++    def test_resource_limits_never_become_verdicts(self):
++        small = (
++            {'max_states': 1}, {'max_basis': 1}, {'max_live_states': 1},
++            {'max_layer_basis': 1}, {'max_live_matrix_bits': 0},
++            {'max_live_columns': 0}, {'max_grid_vertices': 1},
++            {'max_active_map_slots': 0}, {'seconds': 0},
++        )
++        for limits in small:
++            result = recognize(2, [Run(1, 3)], budget=StreamBudget(**limits))
++            self.assertEqual(result['status'], 'UNKNOWN', limits)
++        result = recognize(3, runs_from_word(3, [1, -2, 1, -2]),
++                           budget=StreamBudget(max_xors=0), check_d2=True)
++        self.assertEqual(result['status'], 'UNKNOWN')
++
++    def test_huge_encoded_inputs_refused_before_allocation_or_formatting(self):
++        result = recognize(2, [Run(1, (1 << 20_000) + 1)],
++                           budget=StreamBudget(max_states=10))
++        self.assertEqual(result['status'], 'UNKNOWN')
++        self.assertEqual(result['reason'], 'macro state limit exceeded')
++        with self.assertRaisesRegex(ResourceLimit, 'grid vertex'):
++            homology(10**100, [Run(1, 1)])
++        with self.assertRaisesRegex(ResourceLimit, 'single-state basis'):
++            homology(10000, [], budget=StreamBudget(max_grid_vertices=20000))
++
++    def test_streaming_budget_permits_large_total_but_small_live_storage(self):
++        result = homology(2, [Run(1, 1001)], budget=StreamBudget(
++            max_live_states=2, max_layer_basis=2,
++            max_live_matrix_bits=5, max_live_columns=5))
++        self.assertEqual(result['reduced_rank'], 1001)
++        self.assertEqual(result['stats']['peak_live_matrix_bit_upper_bound'], 5)
++        self.assertGreater(result['stats']['matrix_bit_upper_bound'], 1000)
++
++    def test_bad_budget_values(self):
++        for limits in ({'max_live_states': -1}, {'max_map_cache_entries': True},
++                       {'max_live_matrix_bits': 1.5}, {'seconds': float('nan')},
++                       {'seconds': float('inf')}, {'seconds': True}):
++            with self.assertRaises(ValueError):
++                StreamBudget(**limits)
++
++    def test_json_output(self):
++        result = recognize(2, [Run(1, 3)])
++        self.assertEqual(json.loads(json.dumps(result))['status'], 'KNOTTED')
++
++
++if __name__ == '__main__':
++    unittest.main()
+diff --git a/tests/test_twist_tail.py b/tests/test_twist_tail.py
+new file mode 100644
+--- /dev/null
++++ b/tests/test_twist_tail.py
+@@ -0,0 +1,155 @@
++"""Independent and same-kernel validation of exact one-run extrapolation."""
++from __future__ import annotations
++
++import unittest
++from random import Random
++
++from fastunknot.twist.core import (
++    Budget, ResourceLimit, Run, components, homology,
++)
++from fastunknot.twist.reference import cube_homology
++from fastunknot.twist.tail import (
++    expand_profile, profile_dimension, profile_rank, tail_homology,
++    tail_recognize,
++)
++
++
++def expand_word(runs):
++    return [r.generator * (1 if r.exponent > 0 else -1)
++            for r in runs for _ in range(abs(r.exponent))]
++
++
++class ExactRecurrence(unittest.TestCase):
++    def compare_macro(self, strands, runs, index=None):
++        answer = tail_homology(strands, runs, run_index=index, check_d2=True)
++        reference = homology(strands, runs, check_d2=True)
++        self.assertEqual(expand_profile(answer['degree_profile']),
++                         reference['by_degree'])
++        self.assertEqual(answer['reduced_rank'], reference['reduced_rank'])
++        self.assertEqual(answer['components'], reference['components'])
++        self.assertEqual(profile_rank(answer['degree_profile']),
++                         reference['reduced_rank'])
++        return answer
++
++    def test_both_signs_at_and_after_threshold(self):
++        for sign in (-1, 1):
++            for m in range(1, 11):
++                with self.subTest(sign=sign, magnitude=m):
++                    self.compare_macro(2, [Run(1, sign*m)])
++
++    def test_arbitrary_run_positions_and_signs(self):
++        others = [Run(1, 2), Run(2, -1), Run(3, 1)]
++        for index in range(len(others) + 1):
++            for sign in (-1, 1):
++                for delta in (0, 1, 2, 5):
++                    runs = others[:index] + [Run(2, sign*(6+delta))] + others[index:]
++                    with self.subTest(index=index, sign=sign, delta=delta):
++                        self.compare_macro(4, runs, index)
++
++    def test_seeded_400_macro_comparisons(self):
++        rng = Random(0x7A112026)
++        for case in range(400):
++            strands = rng.randrange(2, 5)
++            others = [Run(rng.randrange(1, strands), rng.choice((-2, -1, 1, 2)))
++                      for _ in range(rng.randrange(4))]
++            index = rng.randrange(len(others) + 1)
++            w = sum(abs(r.exponent) for r in others)
++            magnitude = w + 2 + rng.randrange(1, 8)
++            run = Run(rng.randrange(1, strands), rng.choice((-1, 1))*magnitude)
++            runs = others[:index] + [run] + others[index:]
++            with self.subTest(case=case, strands=strands, runs=runs):
++                self.compare_macro(strands, runs, index)
++
++    def test_seeded_80_independent_cube_comparisons(self):
++        rng = Random(0xC0BE2026)
++        for case in range(80):
++            strands = rng.randrange(2, 5)
++            others = [Run(rng.randrange(1, strands), rng.choice((-1, 1)))
++                      for _ in range(rng.randrange(3))]
++            index = rng.randrange(len(others) + 1)
++            magnitude = len(others) + rng.randrange(3, 5)
++            run = Run(rng.randrange(1, strands), rng.choice((-1, 1))*magnitude)
++            runs = others[:index] + [run] + others[index:]
++            answer = tail_homology(strands, runs, run_index=index, check_d2=True)
++            independent = cube_homology(strands, expand_word(runs),
++                                       max_crossings=8, check_d2=True)
++            with self.subTest(case=case, strands=strands, runs=runs):
++                self.assertEqual(expand_profile(answer['degree_profile']),
++                                 independent['by_degree'])
++                self.assertEqual(answer['reduced_rank'], independent['reduced_rank'])
++
++    def test_central_slope_equals_first_inserted_homology(self):
++        for sign in (-1, 1):
++            for others in ([Run(2, -1)], [Run(1, 1), Run(2, -2)],
++                           [Run(1, 2), Run(3, -1), Run(2, -1)]):
++                w = sum(abs(r.exponent) for r in others)
++                runs = [Run(1, sign*(w+3))] + others
++                answer = self.compare_macro(4, runs, 0)
++                certificate = answer['tail_certificate']
++                degree = certificate['plateau_start']
++                self.assertEqual(degree, certificate['plateau_end'])
++                self.assertEqual(profile_dimension(answer['degree_profile'], degree),
++                                 certificate['plateau_dimension'])
++
++    def test_huge_binary_exponents_and_bounded_reference(self):
++        magnitude = (1 << 100_000) + 1
++        for sign in (-1, 1):
++            answer = tail_homology(2, [Run(1, sign*magnitude)], check_d2=True)
++            self.assertEqual(answer['reduced_rank'], magnitude)
++            self.assertEqual(answer['reference']['stats']['basis'], 4)
++            self.assertEqual(answer['reference']['stats']['macro_states'], 3)
++            self.assertEqual(len(answer['degree_profile']['points']), 2)
++            self.assertEqual(len(answer['degree_profile']['intervals']), 1)
++            self.assertEqual(profile_dimension(answer['degree_profile'], 0), 1)
++            self.assertEqual(profile_dimension(answer['degree_profile'], sign*magnitude), 1)
++            self.assertEqual(profile_dimension(answer['degree_profile'], sign), 0)
++            self.assertEqual(profile_dimension(answer['degree_profile'], sign*(magnitude+1)), 0)
++            with self.assertRaises(ResourceLimit):
++                expand_profile(answer['degree_profile'], max_terms=1000)
++
++    def test_huge_context_rank_not_just_two_strands(self):
++        magnitude = 10**100 + 1
++        runs = [Run(1, 3), Run(2, -3), Run(3, magnitude)]
++        answer = tail_homology(4, runs, check_d2=True)
++        self.assertEqual(answer['reduced_rank'], 9*magnitude)
++        self.assertEqual(answer['tail_certificate']['plateau_dimension'], 9)
++        self.assertEqual(answer['components'], 1)
++        self.assertLess(answer['reference']['stats']['basis'], 1000)
++
++    def test_parity_uses_original_not_shorter_closure(self):
++        answer = tail_recognize(2, [Run(1, 101)], check_d2=True)
++        self.assertEqual(answer['status'], 'KNOTTED')
++        self.assertEqual(answer['homology']['components'], 1)
++        self.assertEqual(answer['homology']['reference']['components'], 2)
++        with self.assertRaises(ValueError):
++            tail_recognize(2, [Run(1, 100)])
++
++    def test_direct_empty_and_nondominating_inputs(self):
++        for strands, runs in ((1, []), (4, []),
++                              (3, [Run(1, 2), Run(2, -2)])):
++            answer = self.compare_macro(strands, runs)
++            self.assertEqual(answer['method'], 'direct-macro')
++            self.assertIsNone(answer['tail_certificate'])
++
++    def test_resource_failures_remain_unknown(self):
++        runs = [Run(1, 101)]
++        for budget in (Budget(max_states=2), Budget(max_basis=3),
++                       Budget(max_matrix_bits=0), Budget(seconds=0)):
++            with self.subTest(budget=budget):
++                answer = tail_recognize(2, runs, budget=budget, check_d2=True)
++                self.assertEqual(answer['status'], 'UNKNOWN')
++
++    def test_budget_and_index_validation(self):
++        for index in (-1, 1, True, 0.0):
++            with self.subTest(index=index), self.assertRaises(ValueError):
++                tail_homology(2, [Run(1, 3)], run_index=index)
++        with self.assertRaises(ValueError):
++            tail_homology(2, [Run(1, 3)], budget={})
++        bad = Budget()
++        bad.max_states = -1
++        with self.assertRaises(ValueError):
++            tail_homology(2, [Run(1, 3)], budget=bad)
++
++
++if __name__ == '__main__':
++    unittest.main(verbosity=2)

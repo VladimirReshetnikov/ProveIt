@@ -1,0 +1,148 @@
+\section{The signed Tait partition function in the repository convention}
+\label{sec:potts}
+
+\subsection{Input, embedding, and signs}
+
+Let $D$ be a classical one-component knot diagram with $n>0$ crossings.
+Its shadow is a connected plane four-valent multigraph. The public input
+validator checks that the supplied planar-diagram code has the required
+edge incidences, one link component, and spherical rotation system.
+The following construction uses that embedding, not an abstract graph
+with its rotation data discarded.
+
+Choose one checkerboard color. The Tait graph $G=(V,E)$ has one vertex for
+each region of that color and one edge for each crossing. It can contain
+loops and parallel edges. Write $v=|V|$. At a crossing $e$, designate as the
+\emph{omitted} smoothing the one that leaves the two selected-color
+corners disconnected across that crossing. Its bracket coefficient is
+$A^{\epsilon_e}$, where $\epsilon_e\in\{1,-1\}$.
+The included smoothing has coefficient $A^{-\epsilon_e}$.
+This convention, which is checked from the local darts in the implementation,
+avoids assuming that an alternating-diagram sign rule applies to all
+diagrams. Put
+\[
+ s=\sum_{e\in E}\epsilon_e,\qquad \delta=-A^2-A^{-2}.
+\]
+We use the \emph{full} bracket $B_D(A)$, for which an isolated circle has
+value $\delta$. The normalized Jones polynomial is
+\begin{equation}
+ V_D(A^{-4})=\frac{B_D(A)}{\delta(-A^3)^{\wr(D)}}.
+ \label{eq:jones-normalization}
+\end{equation}
+Consequently the full bracket of an unknot diagram with writhe $\wr(D)$ is
+$\delta(-A^3)^{\wr(D)}$. Losing the initial circle factor would invalidate the
+obstruction.
+
+\begin{lemma}[State circles]\label{lem:circles}
+For $S\subseteq E$, let $k(S)$ be the number of components of the spanning
+subgraph $(V,S)$, including isolated vertices. The associated smoothing state
+has $c(S)=2k(S)-v+|S|$ circles.
+\end{lemma}
+\begin{proof}
+A regular neighborhood of $(V,S)$ in the sphere retracts to that subgraph,
+so its Euler characteristic is $v-|S|$. Its $k(S)$ components are planar
+surfaces. If their total number of boundary components is $c$, their Euler
+characteristic is $2k(S)-c$. Those boundary components are the smoothing
+circles. Equating the two expressions proves the formula. An isolated vertex
+has a disk neighborhood and contributes one circle, as required. Loops and
+parallel edges are included in the same argument.
+\end{proof}
+
+\subsection{From smoothing states to spins}
+
+The multivariate random-cluster partition function is
+\[
+ Z_G(Q,\{z_e\})=\sum_{S\subseteq E}Q^{k(S)}\prod_{e\in S}z_e.
+\]
+At a positive integer $Q=q$, the Fortuin--Kasteleyn identity is
+\begin{equation}
+ Z_G(q,\{z_e\})
+ =\sum_{\sigma:V\to[q]}
+   \prod_{e=uv}\bigl(1+z_e[\sigma(u)=\sigma(v)]\bigr).
+ \label{eq:fk}
+\end{equation}
+To verify it, expand the product on the right. For each selected subset
+$S$, the spin assignment must be constant on each component of $(V,S)$,
+giving exactly $q^{k(S)}$ choices. This also proves the identity for loops,
+parallel edges and isolated vertices \cite{sokal2005}.
+
+\begin{proposition}[Signed partition-function formula]\label{prop:potts}
+In the rational-function field, or after localizing at $\delta$, with
+$Q=\delta^2$ and $z_e=\delta A^{-2\epsilon_e}$,
+\begin{equation}
+ B_D(A)=\delta^{-v}A^s Z_G(Q,\{z_e\}).
+ \label{eq:full-bracket}
+\end{equation}
+\end{proposition}
+\begin{proof}
+The smoothing indexed by $S$ contributes
+\[
+ A^s\prod_{e\in S}A^{-2\epsilon_e}\,
+ \delta^{2k(S)-v+|S|}.
+\]
+Factor out $\delta^{-v}A^s$ and sum. The remaining term for $S$ is
+$(\delta^2)^{k(S)}\prod_{e\in S}(\delta A^{-2\epsilon_e})$.
+\end{proof}
+
+Set $x=A^4$. Then
+\[
+ Q=x+2+x^{-1},\qquad z_e=-1-x^{-\epsilon_e}.
+\]
+Thus the spin interaction has the especially simple form
+\begin{equation}
+ h_e(a,b)=
+ \begin{cases}
+  -x^{-\epsilon_e},&a=b,\\
+  1,&a\ne b.
+ \end{cases}
+ \label{eq:interaction}
+\end{equation}
+This is the signed interaction used in the earlier tensor-network
+formulation \cite{meichanetzidis2019}. It allows all crossings to be processed
+as local equality tests, without tracking smoothing connectivity.
+
+\subsection{Eliminating fourth roots from normalization}
+
+Since $\delta=-(x+1)A^{-2}$, substituting
+\eqref{eq:full-bracket} into \eqref{eq:jones-normalization} gives
+\begin{equation}
+ V_D(A^{-4})
+ =(-1)^{\wr(D)+v+1}A^E
+   \frac{Z_G}{(x+1)^{v+1}},
+ \qquad E=s-3\wr(D)+2(v+1).
+ \label{eq:normalize-E}
+\end{equation}
+
+\begin{lemma}[Integral normalization exponent]\label{lem:parity}
+For a knot, $E$ is divisible by four.
+\end{lemma}
+\begin{proof}
+For a smoothing state with coefficient exponent $s_\sigma$ and circle
+count $c_\sigma$, the residue
+\[
+ s_\sigma-3\wr(D)+2(c_\sigma-1)\pmod4
+\]
+is unchanged when one smoothing is flipped: the exponent changes by
+$\pm2$ and the circle count by $\pm1$. In the oriented Seifert state,
+$s_\sigma=\wr(D)$. The genus formula for a one-component Seifert surface
+gives $c_\sigma-1\equiv n\equiv\wr(D)\pmod2$, so the residue is zero.
+In the all-omitted state, $s_\sigma=s$ and $c_\sigma=v$.
+Its expression differs from $E$ by four.
+\end{proof}
+
+Writing $h=E/4$, the exact equality test can therefore be performed as
+\begin{equation}
+ Z_G\stackrel{?}{=}Z_U,\qquad
+ Z_U=(-1)^{\wr(D)+v+1}x^{-h}(x+1)^{v+1}.
+ \label{eq:unknot-partition}
+\end{equation}
+No fourth root of $x$ is needed. This is an equality of algebraic integers in
+the ring introduced in Section~\ref{sec:exact}. The comparison is obtained by
+multiplying through the nonzero normalization factor; the implementation
+never needs to divide by $x+1$.
+
+The empty crossing diagram is handled separately as a single circle, with
+$Z_G=Z_U=q$. For a link with $\ell$ components the parity residue in the lemma
+would instead be $2(\ell-1)\pmod4$. This article and the public recognizer
+require a knot; accepting all links without revisiting normalization would
+be an unsupported generalization.

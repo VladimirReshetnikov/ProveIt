@@ -1,0 +1,506 @@
+"""Khovanov homology over F2 by scanning (Bar-Natan's local algorithm), version 0.2.
+
+The mathematics is unchanged from 0.1 (see ``scan_reference``): the diagram is
+processed crossing by crossing, closed circles are delooped, invertible entries
+are cancelled, and the closed minimal complex has zero differential, so its
+size is the unreduced rank.  What changed, following the nine acceleration
+proposals and measured in the synthesis report:
+
+* min-fill (Markowitz) pivot choice through a lazy heap instead of LIFO;
+* every unit of End(m) over F2 is its own inverse, so no geometric series;
+* bit-packed morphisms with compiled gluing plans (``algebra.BitAlgebra``);
+* heap-based greedy ordering (``ordering``);
+* optionally, no cancellation during the last ``tail`` crossings and one F2
+  linear-algebra rank computation on the closed complex instead.
+
+``algebra="sets"`` and ``pivot="lifo"`` reproduce the 0.1 behaviour for
+ablation.  The worst case remains exponential.
+"""
+from __future__ import annotations
+
+import os
+import sys
+from collections import defaultdict
+from heapq import heappop, heappush
+from itertools import product
+from time import monotonic
+TYPE_CHECKING = False            # annotations only: importing typing costs 4.6 ms at start-up
+if TYPE_CHECKING:
+    from typing import Any, Iterable
+
+from .algebra import BitAlgebra
+from .geometry import Matching, ScanLimit
+from .ordering import TIE_RULES, best_scan_order, order_profile, repeated_stages, scan_order, validate_order
+from .scan_fast import FastScan
+
+# set-based helpers kept for compatibility and tests
+
+
+def _reference():
+    """The unchanged 0.1 scanner, needed only by the ablation configurations and as a test oracle.
+    Imported on demand: it pulls in ``dataclasses``, 25 of the 56 ms that ``import fastunknot`` took."""
+    from . import scan_reference
+    return scan_reference
+
+
+def __getattr__(name):                      # compose, identity, is_unit: the set-based helpers of 0.1
+    if name in ("compose", "identity", "is_unit"):
+        return getattr(_reference(), name)
+    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
+
+
+def inverse(f, m: Matching):
+    """Set-based inverse of a unit of End(m): over F2 a unit is an involution."""
+    if not _reference().is_unit(f):
+        raise ValueError("not a unit")
+    return set(f)
+
+
+class SetAlgebra:
+    """Adapter exposing the 0.1 set-based algebra through the BitAlgebra interface."""
+
+    zero = frozenset()
+    one = frozenset({frozenset()})
+
+    def __init__(self, check=lambda: None, self_inverse: bool = True):
+        self.self_inverse = self_inverse
+        self.stats = {"compose_calls": 0}
+
+    def clear(self) -> None:
+        pass
+
+    def is_unit(self, f) -> bool:
+        return frozenset() in f
+
+    def compose(self, f, g, a, b, c):
+        self.stats["compose_calls"] += 1
+        return _reference().compose(f, g, a, b, c)
+
+    def inverse(self, f, m):
+        return set(f) if self.self_inverse else _reference().inverse(set(f), m)
+
+    def gluing(self, m, i, points, slots):
+        return _reference().glue(m, i, points, slots)
+
+    def crossing_entries(self, a, b, f, i_src, i_tgt, points, slots):
+        gs, gt, entries = _reference().crossing_entries(a, b, set(f), i_src, i_tgt, points, slots)
+        return gs, gt, tuple((ls, lt, value) for (ls, lt), value in entries.items())
+
+
+class ScanComplex:
+    """The partial Khovanov complex of the processed part of a diagram."""
+
+    def __init__(self, max_objects: int | None = None, deadline: float | None = None,
+                 pivot: str = "minfill", algebra: str = "bits", self_inverse: bool = True):
+        if pivot not in ("minfill", "lifo"):
+            raise ValueError("pivot must be 'minfill' or 'lifo'")
+        if algebra not in ("bits", "sets"):
+            raise ValueError("algebra must be 'bits' or 'sets'")
+        if max_objects is not None and (type(max_objects) is not int or max_objects < 0):
+            raise ValueError("max_objects must be a nonnegative integer")
+        self.objects: dict[int, tuple[Matching, int]] = {}
+        self.out: dict[int, dict[int, Any]] = defaultdict(dict)
+        self.inc: dict[int, set[int]] = defaultdict(set)
+        self.points: frozenset = frozenset()
+        self.next_id = 0
+        self.max_objects, self.deadline, self.pivot = max_objects, deadline, pivot
+        self.algebra = (BitAlgebra(self._check, self_inverse=self_inverse) if algebra == "bits"
+                        else SetAlgebra(self._check, self_inverse=self_inverse))
+        self.stats = {"max_objects_before_elimination": 0, "max_objects_after_elimination": 0,
+                      "eliminations": 0, "max_boundary": 0, "compositions": 0}
+        self.objects[self._new_id()] = (frozenset(), 0)
+
+    def _new_id(self) -> int:
+        self.next_id += 1
+        return self.next_id - 1
+
+    def _check(self) -> None:
+        if self.deadline is not None and monotonic() > self.deadline:
+            raise ScanLimit("time budget exhausted")
+
+    def _set(self, a: int, b: int, value) -> None:
+        if value:
+            self.out[a][b] = value
+            self.inc[b].add(a)
+        else:
+            self.out[a].pop(b, None)
+            self.inc[b].discard(a)
+
+    # ----- one crossing --------------------------------------------------
+    def add_crossing(self, slots: tuple, reduce_now: bool = True) -> None:
+        self._check()
+        alg = self.algebra
+        alg.clear()
+        points, old, old_out = self.points, self.objects, self.out
+        new_id: dict = {}
+        glued: dict = {}
+        count = 0
+        for o, (matching, h) in old.items():
+            for i in (0, 1):
+                g = alg.gluing(matching, i, points, slots)
+                glued[o, i] = g
+                count += 1 << g.closed
+        if self.max_objects is not None and count > self.max_objects:
+            raise ScanLimit(f"{count} objects would exceed the ceiling {self.max_objects}")
+        self.objects = {}
+        for (o, i), g in glued.items():
+            for labels in product((0, 1), repeat=g.closed):
+                ident = self._new_id()
+                new_id[o, i, labels] = ident
+                self.objects[ident] = (g.matching, old[o][1] + i)
+        self.out, self.inc = defaultdict(dict), defaultdict(set)
+        one = alg.one
+        for o, (matching, _) in old.items():
+            self._check()
+            for ls, lt, value in alg.crossing_entries(matching, matching, one, 0, 1, points, slots)[2]:
+                self._set(new_id[o, 0, ls], new_id[o, 1, lt], value)
+            for o2, f in old_out.get(o, {}).items():
+                m2 = old[o2][0]
+                for i in (0, 1):
+                    for ls, lt, value in alg.crossing_entries(matching, m2, f, i, i, points, slots)[2]:
+                        self._set(new_id[o, i, ls], new_id[o2, i, lt], value)
+        self.points = next(iter(glued.values())).points if glued else frozenset()
+        stats = self.stats
+        stats["max_objects_before_elimination"] = max(stats["max_objects_before_elimination"], len(self.objects))
+        stats["max_boundary"] = max(stats["max_boundary"], len(self.points))
+        if reduce_now:
+            self.eliminate()
+            stats["max_objects_after_elimination"] = max(stats["max_objects_after_elimination"], len(self.objects))
+
+    # ----- Gaussian elimination -------------------------------------------
+    def _invertible(self, a: int, b: int) -> bool:
+        f = self.out.get(a, {}).get(b)
+        return f is not None and self.algebra.is_unit(f) and self.objects[a][0] == self.objects[b][0]
+
+    def _cost(self, a: int, b: int) -> int:
+        """Markowitz count: number of differential entries the cancellation can touch."""
+        return (len(self.out[a]) - 1) * (len(self.inc[b]) - 1)
+
+    def eliminate(self) -> None:
+        """Cancel invertible entries until none is left (Bar-Natan's lemma).
+
+        With ``pivot='minfill'`` the cheapest pivot is taken first.  Priorities
+        can be stale; a popped entry whose cost changed is pushed back.  The
+        order only affects speed: every unit entry is eventually considered.
+        """
+        lifo = self.pivot == "lifo"
+        alg, objects, out, inc = self.algebra, self.objects, self.out, self.inc
+        queue: list = []
+        for a in list(out):
+            for b in out[a]:
+                if self._invertible(a, b):
+                    if lifo:
+                        queue.append((a, b))
+                    else:
+                        heappush(queue, (self._cost(a, b), a, b))
+        while queue:
+            self._check()
+            if lifo:
+                b, c = queue.pop()
+            else:
+                cost, b, c = heappop(queue)
+            if b not in objects or c not in objects or not self._invertible(b, c):
+                continue
+            if not lifo and cost != self._cost(b, c):
+                heappush(queue, (self._cost(b, c), b, c))
+                continue
+            m = objects[b][0]
+            phi_inv = alg.inverse(out[b][c], m)
+            ins = [(a, out[a][c]) for a in inc[c] if a != b]
+            outs = [(f, value) for f, value in out[b].items() if f != c]
+            for a, delta in ins:
+                ma = objects[a][0]
+                half = alg.compose(delta, phi_inv, ma, m, m)
+                self.stats["compositions"] += 1
+                if not half:
+                    continue
+                row = out[a]
+                for f, gamma in outs:
+                    term = alg.compose(half, gamma, ma, m, objects[f][0])
+                    self.stats["compositions"] += 1
+                    if term:
+                        current = row.get(f, alg.zero) ^ term
+                        self._set(a, f, current)
+                        if current and self._invertible(a, f):
+                            if lifo:
+                                queue.append((a, f))
+                            else:
+                                heappush(queue, (self._cost(a, f), a, f))
+            for x in (b, c):
+                for y in list(out[x]):
+                    self._set(x, y, alg.zero)
+                for y in list(inc[x]):
+                    self._set(y, x, alg.zero)
+                del objects[x]
+                out.pop(x, None)
+                inc.pop(x, None)
+            self.stats["eliminations"] += 1
+
+    # ----- closing ---------------------------------------------------------
+    def linear_ranks(self) -> dict[int, int]:
+        """Homology dimensions of the closed complex by F2 linear algebra.
+
+        Used when the last crossings were added without cancellation.  Entries
+        of a closed complex are scalars, so each differential is a 0/1 matrix.
+        """
+        if self.points:
+            raise ValueError("the diagram is not closed yet")
+        by_degree: dict[int, list[int]] = defaultdict(list)
+        for ident, (_, h) in self.objects.items():
+            by_degree[h].append(ident)
+        rank: dict[int, int] = {}
+        for h, sources in by_degree.items():
+            index = {ident: k for k, ident in enumerate(by_degree.get(h + 1, []))}
+            pivots: dict[int, int] = {}
+            for a in sources:
+                self._check()
+                column = 0
+                for b, value in self.out.get(a, {}).items():
+                    if value:
+                        column |= 1 << index[b]
+                while column:
+                    top = column.bit_length() - 1
+                    if top not in pivots:
+                        pivots[top] = column
+                        break
+                    column ^= pivots[top]
+            rank[h] = len(pivots)
+        result = {}
+        for h, sources in by_degree.items():
+            dimension = len(sources) - rank.get(h, 0) - rank.get(h - 1, 0)
+            if dimension < 0:
+                raise ArithmeticError("negative homology dimension")
+            if dimension:
+                result[h] = dimension
+        return dict(sorted(result.items()))
+
+    def total_rank(self) -> int:
+        if self.points:
+            raise ValueError("the diagram is not closed yet")
+        if any(self.out[a] for a in list(self.out)):
+            raise ArithmeticError("minimal closed complex still has a nonzero differential")
+        return len(self.objects)
+
+    def ranks_by_degree(self) -> dict[int, int]:
+        counts: dict[int, int] = defaultdict(int)
+        for _, h in self.objects.values():
+            counts[h] += 1
+        return dict(sorted(counts.items()))
+
+    def check_d_squared(self) -> None:
+        alg = self.algebra
+        for a in list(self.out):
+            acc: dict = {}
+            ma = self.objects[a][0]
+            for b, f in self.out[a].items():
+                mb = self.objects[b][0]
+                for c, g in self.out.get(b, {}).items():
+                    acc[c] = acc.get(c, alg.zero) ^ alg.compose(f, g, ma, mb, self.objects[c][0])
+            for c, value in acc.items():
+                if value:
+                    raise ArithmeticError(f"d^2 != 0 between objects {a} and {c}")
+
+
+class _RaceWon(Exception):
+    """Raised inside the scan of the default order when a competitor has finished first."""
+
+    def __init__(self, result: dict):
+        super().__init__("a competing scan order finished first")
+        self.result = result
+
+
+class _Race:
+    """Competing scans of other greedy orders in separate processes.
+
+    The scan is sequential, its cost varies wildly with the order (work ratios of 0.01 to 28
+    between tie rules that no cheap score can rank), and rank and ranks by degree do not depend on
+    the order.  So other orders can be raced against the default one and the first to finish
+    wins.  In Python a competitor must be a process, which costs about 0.1 s to start; therefore
+    nothing is started before the default order has run for ``after`` seconds.  Short scans, the
+    vast majority, never notice the race, and long ones get insurance against a bad order.
+    Competitors run ``python -m fastunknot _scan`` with JSON over pipes (no multiprocessing: on
+    Windows that would import the caller's main module again).
+    """
+
+    def __init__(self, pd, order, competitors: int, after: float, deadline, options: dict):
+        self.pd, self.order, self.count, self.after = pd, order, competitors, after
+        self.deadline, self.options = deadline, options
+        self.started = monotonic()
+        self.launched = False
+        self.running: list = []                 # (rule, process)
+
+    def poll(self) -> None:
+        if not self.launched:
+            if monotonic() - self.started >= self.after:
+                self.launch()
+            return
+        for item in list(self.running):
+            rule, process = item
+            if process.poll() is None:
+                continue
+            self.running.remove(item)
+            result = self._collect(rule, process)
+            if result is not None:
+                raise _RaceWon(result)
+
+    def launch(self) -> None:
+        import json                       # with subprocess, 12 ms of import time that only a race needs
+        import subprocess
+        self.launched = True
+        package_parent = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        environment = dict(os.environ)
+        environment["PYTHONPATH"] = package_parent + os.pathsep + environment.get("PYTHONPATH", "")
+        seen = [self.order]
+        for rule in [r for r in TIE_RULES if r != "index"][:self.count]:
+            order = best_scan_order(self.pd, tries=min(len(self.pd), 12), ties=rule)
+            if order in seen:
+                continue
+            seen.append(order)
+            job = dict(self.options, pd=self.pd, order=order,
+                       seconds=None if self.deadline is None else max(0.0, self.deadline - monotonic()))
+            process = subprocess.Popen([sys.executable, "-m", "fastunknot", "_scan"], stdin=subprocess.PIPE,
+                                       stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, env=environment)
+            try:
+                process.stdin.write(json.dumps(job).encode())
+                process.stdin.close()
+            except OSError:
+                process.kill()
+                continue
+            self.running.append((rule, process))
+
+    @staticmethod
+    def _collect(rule: str, process):
+        import json
+        try:
+            data = process.stdout.read()
+            process.stdout.close()
+            if process.returncode != 0:
+                return None
+            result = json.loads(data)
+        except (OSError, ValueError):
+            return None
+        result["by_degree"] = {int(h): v for h, v in result["by_degree"].items()}
+        result["race_winner"] = rule
+        return result
+
+    def wait(self):
+        """After the default order has hit a limit: a competitor may still succeed."""
+        for rule, process in list(self.running):
+            timeout = None if self.deadline is None else max(0.0, self.deadline - monotonic()) + 1.0
+            import subprocess
+            try:
+                process.wait(timeout)
+            except subprocess.TimeoutExpired:
+                continue
+            self.running.remove((rule, process))
+            result = self._collect(rule, process)
+            if result is not None:
+                return result
+        return None
+
+    def close(self) -> None:
+        for _, process in self.running:
+            process.kill()
+            process.wait()
+            process.stdout.close()
+        self.running = []
+
+
+def khovanov_rank(pd: Iterable[Iterable[int]], *, order: list[int] | None = None,
+                  max_objects: int | None = None, seconds: float | None = None,
+                  check_d_squared: bool = False, pivot: str = "minfill", algebra: str = "bits",
+                  self_inverse: bool = True, tail: int = 0, shape_cache: bool | None = None,
+                  race: int = 1, race_after: float = 1.0,
+                  composition: str = "standard", composition_max_variables: int = 18) -> dict[str, Any]:
+    """Total unreduced F2 Khovanov rank of a validated PD code by scanning.
+
+    ``tail`` crossings at the end are added without cancellation and the closed
+    complex is finished by linear algebra.  An explicit ``order`` must be a
+    permutation of the crossings.  ``shape_cache`` (default scanner only) reuses
+    transfer plans and results across crossings by label-independent shape: much
+    faster on periodic diagrams such as torus braids, about 5% slower on small
+    diagrams without repeats; results are identical.  ``None`` decides from the
+    scan order: on when the diagram has at least 16 crossings and at least n/8 of
+    them are met in a picture seen before (``ordering.repeated_stages``), which
+    is necessary for any reuse.  ``race`` > 1 starts ``race - 1`` competing scans of
+    other greedy orders in separate processes once the default order has run for
+    ``race_after`` seconds; the first to finish wins (``race_winner`` in the
+    result).  Rank and ranks by degree are the same whoever wins.
+
+    ``composition`` optionally selects report 12 component contraction:
+    ``component`` adapts to support size, ``component-dense`` forces the dense
+    ranked transform. Both require the standard scanner and race=1. The
+    component/output allocation limit is ``composition_max_variables``;
+    MemoryError/ScanLimit propagate from this raw API. Counts are returned in
+    ``composition_stats``. The standard engine remains the default.
+    """
+    if composition not in ("standard", "component", "component-dense"):
+        raise ValueError("composition must be standard, component, or component-dense")
+    if type(composition_max_variables) is not int or composition_max_variables < 0:
+        raise ValueError("composition_max_variables must be nonnegative")
+    if composition != "standard" and (pivot != "minfill" or algebra != "bits" or not self_inverse or race != 1):
+        raise ValueError("component composition requires minfill, bits, self_inverse=True, and race=1")
+    pd = [tuple(c) for c in pd]
+    if type(tail) is not int or tail < 0:
+        raise ValueError("tail must be a nonnegative integer")
+    if order is not None:
+        order = validate_order(len(pd), order)
+    if not pd:
+        return {"rank": 2, "reduced_rank": 1, "by_degree": {0: 2}, "stats": {}, "order": []}
+    deadline = None if seconds is None else monotonic() + seconds
+    if order is None:
+        order = best_scan_order(pd, tries=min(len(pd), 12))
+    if pivot == "minfill" and algebra == "bits" and self_inverse:
+        if shape_cache is None:
+            # below 16 crossings there is too little to reuse to repay even this count
+            shape_cache = len(order) >= 16 and 8 * repeated_stages(pd, order) >= len(order)
+        complex_ = FastScan(max_objects=max_objects, deadline=deadline, shape_cache=shape_cache)
+    else:                         # ablation configurations
+        complex_ = ScanComplex(max_objects=max_objects, deadline=deadline, pivot=pivot,
+                               algebra=algebra, self_inverse=self_inverse)
+    if composition != "standard":
+        from .component_algebra import install_on_empty_scan
+        install_on_empty_scan(complex_, minimum_pairs=0 if composition == "component-dense" else 64,
+                              method="fast" if composition == "component-dense" else "auto",
+                              dense_limit=composition_max_variables)
+    if type(race) is not int or race < 1 or race_after < 0:
+        raise ValueError("race must be a positive integer and race_after nonnegative")
+    runner = None
+    if race > 1 and isinstance(complex_, FastScan):
+        runner = _Race(pd, order, race - 1, race_after, deadline, dict(max_objects=max_objects, tail=tail))
+        complex_.hook = runner.poll
+    n = len(order)
+    try:
+        for position, index in enumerate(order):
+            reduce_now = position < n - tail
+            complex_.add_crossing(pd[index], reduce_now=reduce_now)
+            if check_d_squared:
+                complex_.check_d_squared()
+    except _RaceWon as won:
+        return dict(won.result, pivot=pivot, algebra=algebra, tail=tail)
+    except ScanLimit:
+        result = runner.wait() if runner is not None else None
+        if result is None:
+            raise
+        return dict(result, pivot=pivot, algebra=algebra, tail=tail)
+    finally:
+        if runner is not None:
+            runner.close()
+    if tail:
+        by_degree = complex_.linear_ranks()
+        rank = sum(by_degree.values())
+    else:
+        rank = complex_.total_rank()
+        by_degree = complex_.ranks_by_degree()
+    if rank % 2:
+        raise ArithmeticError("odd unreduced F2 rank for a knot")
+    stats = dict(complex_.stats)
+    stats.update({k: v for k, v in complex_.algebra.stats.items()})
+    result = {"rank": rank, "reduced_rank": rank // 2, "by_degree": by_degree, "stats": stats,
+              "order": order, "pivot": pivot, "algebra": algebra, "tail": tail}
+    if composition != "standard":
+        result["composition"] = composition
+        result["composition_stats"] = dict(complex_.algebra.kernel_stats)
+    if runner is not None:
+        result["race_winner"] = "index"
+    return result

@@ -1,0 +1,146 @@
+\section{Arbitrary crossing orders and equality-pattern states}
+\label{sec:frontiers}
+
+\subsection{A local half-frontier theorem}
+
+Fix a permutation of the $n$ crossings, and let $P_i$ be its first $i$
+crossings. Define $w_i$ to be the number of diagram edges with one endpoint
+in $P_i$ and the other outside $P_i$. A loop at one crossing is never counted.
+The scan width is $w=\max_i w_i$.
+
+In the selected Tait graph, let $f_i$ be the number of vertices incident with
+both a processed and an unprocessed Tait edge. These are precisely the spin
+variables that must survive after step $i$. A vertex is introduced at its
+first incident edge and forgotten after its last.
+
+\begin{theorem}[Half-frontier bound]\label{thm:half}
+For every crossing order of a connected plane knot shadow and either fixed
+checkerboard color, $2f_i\le w_i$ for every $i$.
+\end{theorem}
+\begin{proof}
+The boundary of each face of a connected plane graph is a single cyclic
+dart walk. This remains true when a boundary repeats vertices or edges.
+On the walk around a selected-color region, mark each crossing incidence
+according as that crossing belongs to $P_i$ or its complement.
+An active Tait vertex corresponds to a walk containing both marks.
+A cyclic binary word with both symbols has at least two transitions.
+
+Each transition traverses a shadow edge with endpoints of opposite status.
+Conversely each such cut edge occurs on exactly one selected-color face
+boundary. Count the transitions over all active selected-color regions.
+There are at least $2f_i$ of them and at most $w_i$. This proves the claim.
+\end{proof}
+
+The result does not assume that the processed diagram is a disk tangle.
+Repeated face incidences, Tait loops, parallel edges and articulation points
+do not invalidate the proof. Connectedness matters: a face of a disconnected
+plane graph can have several boundary walks, each monochromatic in status,
+while their union contains both statuses. The one-knot input condition
+avoids that case. Classical relations between a plane graph and its medial
+graph provide broader width context \cite{seymour1994}; the direct proof
+above supplies the exact inequality used by this implementation.
+
+Both checkerboard colors satisfy the theorem. The code computes their
+profiles and chooses a single color minimizing the pair
+$(\max_i f_i,\sum_i f_i)$, with a deterministic tie break.
+It does not switch colors at individual steps. A pointwise minimum of two
+profiles would require a tensor conversion that has not been constructed.
+
+\subsection{Quotienting names of colors}
+
+The Potts interaction depends only on equality of spins. The symmetric group
+$S_q$ acts on every spin assignment by relabeling colors and preserves every
+weight. On an ordered active set of $f$ vertices, an orbit is a set partition
+into at most $q$ blocks. Encode it by its restricted-growth word, for example
+$0102$ for a pattern whose first and third vertices have equal spins and
+whose other two spins are distinct from those and from each other.
+
+Let
+\begin{equation}
+ B_q(f)=\sum_{k=0}^{\min(q,f)}
+             \left\{\begin{matrix}f\\k\end{matrix}\right\}
+ \le q^f,\qquad B_q(0)=1.
+ \label{eq:orbitcount}
+\end{equation}
+For fixed $q$ and large $f$, $B_q(f)\sim q^f/q!$.
+These are partitions by \emph{color equality}, not partitions by graph
+connectivity and not planar noncrossing partitions.
+
+\begin{definition}[Aggregate coefficient]
+The coefficient of an equality pattern is the sum of the partial Potts
+weights over all labeled spin assignments on the introduced vertices whose
+restriction to the active set has that pattern. Spins on forgotten vertices
+have already been summed out.
+\end{definition}
+The word \emph{sum} is essential. A per-representative value and an
+orbit-aggregate value obey different introduction rules.
+
+\begin{proposition}[Exact transfer rules]\label{prop:orbit}
+The following operations maintain the aggregate-coefficient invariant over
+any commutative coefficient ring with a specified unit $x$.
+\begin{enumerate}
+\item To introduce a vertex when $k$ color classes are active, create one
+extension for each existing class with multiplier $1$, and, if $k<q$, one
+new-class extension with multiplier $q-k$.
+\item To process an edge, multiply by $-x^{-\epsilon_e}$ if its endpoint
+classes agree and by $1$ otherwise.
+\item To forget vertices, delete their positions, canonically relabel the
+remaining word, and add coefficients with the same resulting word.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+For each labeled active assignment, a new spin has exactly one choice for
+each currently used color and $q-k$ choices among unused colors. This proves
+the first rule. The edge weight is constant on an equality orbit, proving
+the second. The last rule is the pushforward of a finite sum under restriction
+to a smaller active set. Once a vertex is forgotten, no future edge is
+incident with it, so its color name imposes no further condition.
+\end{proof}
+
+At a crossing at most two Tait vertices are introduced. The implementation
+combines introduction, multiplication and forgetting, inserting results
+directly into the following table. It records transient insertions as well
+as completed tables when reporting its maximum state count. A scalar
+coefficient that is exactly zero is removed. Cancellation changes actual
+state counts but is not used to justify the worst-case bound.
+
+\begin{theorem}[Fixed-color transfer complexity]\label{thm:transfer}
+For a supplied crossing order of width $w$ and fixed integer $q$, the
+one-tensor Potts transfer computes the partition function in
+\[
+ n\,\poly(w,\log n)\,q^{\lfloor w/2\rfloor+2}
+\]
+coefficient-ring operations and key-management work, and uses
+$\poly(w,\log n)q^{\lfloor w/2\rfloor}$ coefficient slots and key storage.
+Preparation also uses $O(n)$ storage; coefficient bit memory is treated
+separately below. This replaces the general factorial state-count envelope
+by a single-exponential upper bound, without asserting that the baseline
+always realizes its larger envelope.
+\end{theorem}
+\begin{proof}
+After a step there are at most $B_q(f_i)\le q^{w/2}$ keys.
+Introducing at most two vertices has at most $q^2$ labeled choices per
+state; orbit aggregation cannot increase that count. Edge multiplication
+and forgetting use polynomial work in the key length. Sum over $n$ edges.
+Two successive tables and a bounded extension list suffice.
+A deterministic comparison-based dictionary adds a polynomial factor in
+$w$ and $\log n$; it does not change the exponential term.
+\end{proof}
+
+The actual Python implementation uses dictionaries. Its timings concern
+that implementation, while the deterministic bound above can be realized
+with balanced search structures or sorted merging. Order construction is
+separate: the repository's heuristic is polynomial work and is timed
+explicitly in end-to-end measurements. No optimal-width order is assumed
+to be available for free.
+
+\begin{corollary}\label{cor:widthclasses}
+For fixed $q$, the scalar filter is polynomial time on supplied orders with
+$w=O(\log n)$ and runs in $n^{O(\log n)}$ time on supplied orders with
+$w=O((\log n)^2)$, including the bit costs of Section~\ref{sec:exact}.
+\end{corollary}
+The preceding matching count gives $2^{O(w\log w)}$ as a general envelope.
+At $w=O((\log n)^2)$ that is still quasi-polynomial in the broad definition,
+but contains an additional $\log\log n$ in the exponent.
+The sharper Potts bound should not be described as having changed a
+non-quasi-polynomial class into a quasi-polynomial one at that same width.

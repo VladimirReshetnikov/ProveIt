@@ -1,0 +1,252 @@
+\section{Residue characteristic polynomials and short algebraic certificates}
+\label{sec:residue}
+
+The Potts improvements act on a scalar obstruction. A separate line of
+progress concerns the local rings that occur in exact categorical
+Khovanov computation. Earlier ProveIt work already uses nilpotent radical
+perturbations and finite geometric-series inverses
+\cite{report08,report12}. The immediately preceding continuation constructs
+Fitting decompositions of supplied \emph{scalar} binary endomorphisms.
+We now extend the algebraic certificate mechanism to supplied ring-valued,
+same-matching blocks.
+
+The ingredients are standard Cayley--Hamilton, scalar Frobenius, polynomial
+Chinese remainders, and Fitting decomposition. The theorem is stated with a
+complete elementary proof because the applicable ring and matrix hypotheses
+matter. This is not a literature-wide novelty claim about matrix nil indices.
+No production scanner speedup from this supplemental result is claimed.
+
+\subsection{A residue-only annihilator}
+
+Fix a prime $p$ and positive integers $b,r$. Set
+\[
+ R_{b,p}=\F_p[x_1,\ldots,x_b]/(x_1^p,\ldots,x_b^p),\qquad
+ J=(x_1,\ldots,x_b),\qquad B=b(p-1).
+\]
+Let $\rho:R_{b,p}\to\F_p$ take the constant coefficient.
+The monomial basis has exponents $0\le\alpha_i<p$, so
+$J^{B+1}=0$ and $J^B\ne0$. Scalar Frobenius gives
+\begin{equation}
+ a^p=\rho(a)\qquad(a\in R_{b,p}).
+ \label{eq:scalar-frobenius}
+\end{equation}
+This identity concerns scalar elements of a commutative ring. The map
+$A\mapsto A^p$ on matrices is not entrywise Frobenius and need not be additive.
+
+\begin{theorem}[Residue characteristic-polynomial certificate]
+\label{thm:residue}
+For $A\in M_r(R_{b,p})$, put $A_0=\rho(A)$ entrywise and
+$\chi_0(t)=\det(tI-A_0)\in\F_p[t]$. Then
+\[
+ \boxed{\chi_0(A)^p=0.}
+\]
+Thus $A$ has an explicitly computable annihilating polynomial
+$\chi_0(t)^p$ of degree $pr$, independent of $b$.
+\end{theorem}
+\begin{proof}
+Write $\chi_A(t)=\sum_{i=0}^r c_it^i$ over $R_{b,p}$, with $c_r=1$.
+Taking constant coefficients commutes with the determinant, so
+$\chi_0(t)=\sum_i\rho(c_i)t^i$.
+Cayley--Hamilton over a commutative ring gives $\sum_i c_iA^i=0$.
+These summands commute with each other: each is a scalar multiple of a
+power of the same matrix. Consequently raising their sum to its $p$th power
+is legitimate and yields
+\[
+ 0=\sum_i c_i^p A^{pi}
+   =\sum_i\rho(c_i)A^{pi}
+   =(\chi_0(t)^p)(A)=\chi_0(A)^p.
+\]
+No Frobenius identity for arbitrary noncommuting matrix summands was used.
+\end{proof}
+
+The practical case here is $p=2$, where the dot algebra of a same-matching
+block has square-zero variables. Its annihilator degree is at most $2r$,
+even if the scalar coefficient space has dimension $2^b$.
+
+\subsection{A sharp radical-matrix bound}
+
+\begin{theorem}[Sharp universal radical cutoff]\label{thm:radical}
+Every $N\in M_r(J)$ satisfies
+\[
+ N^L=0,\qquad L=\min\{b(p-1)+1,pr\}.
+\]
+For every $b,r\ge1$ and prime $p$, there is such an $N$ with
+$N^{L-1}\ne0$.
+\end{theorem}
+\begin{proof}
+The ideal bound gives $N^{B+1}=0$. Since $N_0=0$,
+$\chi_0(t)=t^r$, and Theorem~\ref{thm:residue} gives $N^{pr}=0$.
+
+For sharpness, let $s=\min(b,r)$. Use an $s\times s$ upper-bidiagonal block
+with distinct variables $x_1,\ldots,x_s$ on the diagonal. Of its $s-1$
+superdiagonal positions, label
+\[
+ e=\min\{s-1,(b-s)(p-1)\}
+\]
+with variables among $x_{s+1},\ldots,x_b$, each used at most $p-1$ times.
+Label the remaining positions with diagonal variables, again with each
+used at most $p-1$ times. There is enough capacity since
+$s-1\le s(p-1)$. Let $a_i$ be the number of superdiagonal entries labeled
+$x_i$ for $i\le s$.
+
+In a power of this bidiagonal matrix, a path from row $1$ to column $s$
+traverses every superdiagonal position in its forced order and can wait
+at vertex $i$ by using the diagonal $x_i$. Choose exactly $p-1-a_i$ waits
+at that vertex. The resulting monomial has degree
+\[
+ D=(s-1)+\sum_{i=1}^s(p-1-a_i)
+  =s(p-1)+e
+  =\min\{b(p-1),pr-1\}=L-1.
+\]
+Every variable exponent is below $p$. Its coefficient is one: the
+superdiagonal order is forced and the distinct diagonal variables specify
+the waiting counts uniquely. Hence it survives in the $(1,s)$ entry of
+$N^D$. Embed the block into an $r\times r$ zero matrix when $s<r$.
+\end{proof}
+
+For $p=2$ the cutoff is $\min(b+1,2r)$.
+When $b\ge2r-1$, a particularly transparent witness has $r$ distinct
+diagonal variables and $r-1$ further distinct superdiagonal variables.
+The $(1,r)$ entry of $N^{2r-1}$ is their product.
+This shows that replacing $2r$ by $r$, based on a scalar square-zero
+intuition, would be wrong.
+
+If instead $A_0$ is nilpotent of index $s$, then $A^s\in M_r(J)$.
+Combining the ideal bound with Theorem~\ref{thm:residue} yields
+\begin{equation}
+ A^{\min\{pr,\ s[b(p-1)+1]\}}=0.
+ \label{eq:nilpotent-residue}
+\end{equation}
+The $pr$ term can be attained already with one variable: the companion
+matrix of $t^r-x_1$ has $A^r=x_1I$ and nilpotence index $pr$.
+We do not claim simultaneous sharpness of \eqref{eq:nilpotent-residue}
+for every prescribed triple $(b,r,s)$.
+
+\subsection{Inverses without a determinant over the large ring}
+
+\begin{corollary}\label{cor:inverse}
+For $N\in M_r(J)$,
+\[
+ (I+N)^{-1}=\sum_{j=0}^{L-1}(-N)^j,\qquad
+ L=\min\{b(p-1)+1,pr\}.
+\]
+More generally, if $A_0$ is invertible and
+$\chi_0(t)=\sum_{i=0}^r c_it^i$, then
+\[
+ A^{-1}=-c_0^{-1}\sum_{i=1}^r c_iA^{pi-1}.
+\]
+\end{corollary}
+\begin{proof}
+The first formula telescopes using $N^L=0$.
+For the second, Theorem~\ref{thm:residue} says
+$c_0I+\sum_{i=1}^r c_iA^{pi}=0$.
+Multiplying the proposed inverse on either side by $A$ gives $I$.
+\end{proof}
+
+At $p=2$, the minus signs disappear and $c_0=1$.
+The characteristic polynomial is computed over the small base field, not
+by expanding a determinant with $2^b$ coefficients in each entry.
+The powers of $A$ still require actual ring arithmetic.
+If a geometric series is evaluated by doubling a power-and-partial-sum
+pair, it takes $O(\log L)$ matrix products. The comparison with earlier
+methods must acknowledge this: reducing a cutoff from $b+1$ to $2r$
+does not automatically save $b/r$ matrix products in an already doubled
+implementation.
+
+\subsection{Constructive Fitting and Drazin data}
+
+Factor the residue characteristic polynomial as
+\[
+ \chi_0(t)=t^a q_0(t),\qquad q_0(0)\ne0.
+\]
+The notation $q_0$ here is a polynomial and is unrelated to a Potts color
+count. Polynomial CRT gives a residue class $e(t)$ modulo
+$t^{pa}q_0(t)^p$ satisfying
+\[
+ e(t)\equiv0\pmod{t^{pa}},\qquad
+ e(t)\equiv1\pmod{q_0(t)^p}.
+\]
+Choose its representative of degree below $pr$ and set $E=e(A)$.
+
+\begin{theorem}[Explicit Fitting projectors]\label{thm:fitting}
+The operators above satisfy
+\[
+ E^2=E,\quad AE=EA,\quad A^{pa}(I-E)=0,\quad q_0(A)^pE=0.
+\]
+There is a polynomially specified $D$ with
+$AD=DA=E$ and $DE=ED=D$.
+The modules $\ker E$ and $\im E$ are free of ranks $a$ and $r-a$,
+and a concrete basis change can be lifted from residue projector columns.
+\end{theorem}
+\begin{proof}
+All displayed identities for $E$ follow from polynomial divisibility by
+$t^{pa}q_0^p$ and Theorem~\ref{thm:residue}.
+Choose $z(t)$ by CRT with $z=0$ modulo $t^{pa}$ and
+$z=t^{-1}$ modulo $q_0^p$, and let $D=z(A)$.
+The claimed identities follow by the same argument.
+In particular $A$ is nilpotent on $\ker E$ and invertible on $\im E$.
+The limiting cases $a=0$ and $a=r$ use $E=I$ and $E=0$ respectively.
+
+Choose columns of $E_0$ spanning $\im E_0$ over $\F_p$, and columns of
+$I-E_0$ spanning $\ker E_0$. Take the corresponding columns of $E$ and
+$I-E$ and arrange the kernel columns first in a matrix $P$.
+Its residue $P_0$ is invertible. Since $R_{b,p}$ is local with maximal
+ideal $J$, $\det P$ is a unit, so $P$ is invertible.
+The column identities give
+$EP=P\operatorname{diag}(0_a,I_{r-a})$, proving the rank and basis claims.
+\end{proof}
+
+The resulting $D$ is the Fitting/Drazin inverse:
+$DAD=D$ and $A^{pa+1}D=A^{pa}$.
+The method constructs the decomposition inside matrices over $R_{b,p}$.
+It need not first expand the module to dimension $rp^b$ over the base field.
+It nevertheless must represent and manipulate its ring coefficients.
+
+\subsection{Intertwining across categorical blocks}
+
+Suppose a finite additive $\F_p$-linear category contains same-matching
+objects $X_i$ with $\End(X_i)=R_{b_i,p}$, and a degree-preserving chain
+endomorphism $Q$ is block diagonal by degree and matching.
+Write $A_i$ for its block on $X_i^{r_i}$. A differential component $T$
+satisfies $A_jT=TA_i$ under actual categorical composition.
+
+Construct the respective $E_i,D_i$ and $E_j,D_j$ by the preceding theorem.
+Their projector polynomials need not be the same.
+For $N$ large enough to kill both nilpotent restrictions,
+\[
+ (I-E_j)TE_i
+  =(I-E_j)TA_i^ND_i^N
+  =(I-E_j)A_j^NTD_i^N=0.
+\]
+Similarly,
+\[
+ E_jT(I-E_i)
+  =D_j^NA_j^NT(I-E_i)
+  =D_j^NTA_i^N(I-E_i)=0.
+\]
+Hence $E_jT=TE_i$, and the nilpotent and invertible images form
+complementary subcomplexes. The lifted bases exhibit a genuine chain
+isomorphism when every inverse and categorical cross term is evaluated.
+
+The characteristic-polynomial theorem is used only inside the commutative
+same-matching endomorphism blocks. Applying it directly to an arbitrary
+mixed-matching matrix with noncommutative cobordism entries would be invalid.
+Finding useful $Q$, keeping it small, and exploiting the resulting summands
+are separate algorithmic problems.
+
+\subsection{How this advances the previous continuation}
+
+The previous scalar Fitting procedure already stabilizes in at most its
+matrix dimension over $\F_2$. The $2r$ annihilator does not accelerate that
+scalar computation. Its contribution is a ring-valued certificate whose
+polynomial degree is controlled by block multiplicity rather than only by
+the number of dot variables. The sharpness theorem prevents an unjustified
+further truncation.
+
+The supplied oracle represents monomials by exponent tuples and checks the
+identities independently of the production dot algebra. Its characteristic
+polynomial routines are intended for small exhaustive experiments, not as a
+scalable implementation. The exact counts are reported in
+Section~\ref{sec:experiments}. No bound on all scanner multiplicities,
+all block sizes, or closure of a succinct representation follows from
+these local theorems.
