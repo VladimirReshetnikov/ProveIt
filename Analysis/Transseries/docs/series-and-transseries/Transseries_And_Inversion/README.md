@@ -22,7 +22,11 @@ weight by a different argument. Both defects were found by Report 220
 (`a173217-ordered-tuple-relations` in the research-report collection). The PDF
 was rebuilt in three `pdflatex` passes with the same page and overfull counts
 (720, 110) and no undefined references; pages 681 and 683 were visually
-checked.
+checked. A third box (2026-10-07), after the proof of `q2:thm:weighted`,
+records the same Mittag-Leffler defect there: the entire part is
+1/(2(1+x)), and the theorem for n >= 1 stands. The independent check of
+the a173217 write found it. Rebuilt in three passes: 721 pages, 110 overfull
+boxes, no undefined references; page 683 was checked visually.
 
 ## Status
 

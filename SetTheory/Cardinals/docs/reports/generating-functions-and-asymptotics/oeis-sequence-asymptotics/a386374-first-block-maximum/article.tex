@@ -224,6 +224,12 @@ treats these sequences; no statement of this report is formalized, and its
 place in the collection confers no formal status. The inverse is compared
 with the transseries volume in Remark~\ref{fbm:rem:transseries}.
 \end{writenote}
+\begin{writenote}[Correction at the independent check, 7 October 2026]
+The deviation bound $0.05$ for~\eqref{fbm:eq:Bellpole} holds for
+$1\le n\le60$ (maximum $0.0406\ldots$). At $n=0$ the deviation is
+$1-1/(2\rho)=0.2786\ldots$, still inside $10$; the two other bounds concern
+$n\ge1$ and $n\ge2$, as their theorems do.
+\end{writenote}
 \begin{writenote}[What is not claimed, collected from the source]
 The moving-pole method, the factorial maximum-size scale, the pole
 perturbation and bounded variance of the maximum, and the shrinking transition
@@ -766,6 +772,13 @@ $0.987$ (peaks) and $0.857$, $0.920$, $0.957$, $0.978$ (troughs), consistent
 with the $1+O(1/m)$ of~\eqref{fbm:eq:strictphase}; along the exact sequence
 ($n\le425$, phases $m\le3$) the same product is still only $0.48$--$0.68$.
 \end{writenote}
+\begin{writenote}[Correction at the independent check, 7 October 2026]
+The range $0.48$--$0.68$ is that of the write's samples $n=50,100,200,300,425$
+($0.479\ldots$ to $0.677\ldots$). Over every $n$ with $50\le n\le425$ (phases
+$m=2,3$), $(u_n/a_n)\,m/\rho$ runs from $0.4697\ldots$ at $n=124$, the last
+index of phase~2, to $0.7041\ldots$ at $n=125$, the first of phase~3: the
+factor $m$ jumps at the phase boundary. The conclusion is unchanged.
+\end{writenote}
 
 \subsection{Reproduction commands and deterministic packaging}
 From the extracted archive, run
@@ -829,6 +842,35 @@ the non-claims a theorem-level comparison with Bender--Gao's full text (only
 its abstract was read) and interval-certified values for the diagnostic
 tables. No claim of the source was found false, and the OEIS entries contain
 no conjecture.
+\end{writenote}
+\begin{writenote}[Independent check of the write, 7 October 2026]
+An independent adversarial check of the write read A386374 (\#16), A386375
+(\#12) and A308876 (\#15) again and recomputed every number the write added,
+with its own code.
+\begin{itemize}
+\item The counts equal both b-files (426 terms each). They also equal the
+coefficients of the two OEIS e.g.f.s, expanded as exact rational series to
+degree $60$, a route that does not use~\eqref{fbm:eq:exactrec}. A brute
+force over all initial-alphabet words with $n\le7$ gives $a_n$, $u_n$ and
+$P_n=\E[J/K]$ exactly, and $a_{n+1}>a_n$ holds for $1\le n<425$.
+\item The numerical constants of the proofs and the two rational checks
+hold. A SymPy reversion of its own gives the coefficients
+\eqref{fbm:eq:ellcoeff} and~\eqref{fbm:eq:Q12}. The factorization
+$c_m(\rho/r_m)^n=T_m(n)G_{m,nD_m}(1/n)$ is an exact identity, since $d_m(D_m)=r_m-\rho$.
+\item Tables~\ref{fbm:tab:diagnostic} and~\ref{fbm:tab:phase} agree in every
+printed digit, with $D_m$ summed as a tail and the roots taken at 100 and 320
+digits; every truncation in the write's note is correct. The phase minima
+($5.929$, $7.319$, $8.734$, $10.099$) and the strict/weak ratios at the
+peaks and troughs agree too.
+\end{itemize}
+It also confirmed the provenance figures (470,406 bytes, 13 files, 551 lines,
+15 pages), the byte identity of the ten staged files, the identity of the three inlined tables with
+the shipped table files, Remark~\ref{fbm:rem:transseries}, the label numbering
+(68 delivered labels unchanged, 71 in all) and the README listing. Two
+statements of the write needed precision, given in dated notes: the Bell-pole
+deviation bound (after the provenance note) and the range of the strict/weak
+product along the exact sequence (after the tables' note). No claim was found
+wrong in substance.
 \end{writenote}
 
 \begin{thebibliography}{99}

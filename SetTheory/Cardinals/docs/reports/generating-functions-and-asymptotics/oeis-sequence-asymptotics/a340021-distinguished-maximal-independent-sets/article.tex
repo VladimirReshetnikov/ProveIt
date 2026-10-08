@@ -192,6 +192,34 @@ $\rho_R$, $\nu$, $x$, $z$ & $\rho_R$ the root of $F_R=T$; $\nu(Y)$ the integer t
 \end{tabular}
 \endgroup
 
+\begin{writenote}[Independent check of the write, 7 October 2026]
+An independent adversarial check of the batch-112 write, with its own code,
+confirmed every claim of the write and adds one precision. It read A340021
+(\#15) and its b-file again: the name, the comment, the attributions, the
+twenty displayed terms and the b-file range are as Remark~\ref{mis:rem:oeis}
+says, and the entry has no formula line and no conjecture. Its own evaluation
+of~\eqref{mis:eq:burnside} equals all 41 b-file terms; a literal Burnside sum
+over actual permutations (pair orbits walked, inclusion--exclusion over white
+cycles) gives $U_0,\ldots,U_9$, and a brute-force canonical count gives
+$1,1,2,5,16,66$. It confirmed the identity sum~\eqref{mis:eq:identity} for
+$n\le8$, the printed $C_1,C_2,C_3,P_2,P_3$, the coefficients
+of~\eqref{mis:eq:logexpand} at a test point, $p_1(j)$, and
+\eqref{mis:eq:poisson} and~\eqref{mis:eq:charlier} at $t=7$ and $t=50$ to
+$10^{-109}$. With its own carrier code at 110 digits it recomputed every entry
+of Tables~\ref{mis:tab:orders}--\ref{mis:tab:inverse}: all are correct
+six-digit roundings, including the close cases $1.232124998\ldots$,
+$3.655745247\ldots$ and $1.613545413\ldots$, and
+$q_{k+1}=0.0878674903\ldots$ as the write says; $(z_*-n)x^2/(\log x)^3$ is
+$-0.253$, $-0.131$, $-0.082$, $-0.042$. Remark~\ref{mis:rem:transseries} was
+compared again with the volume's statements (the centre $z_0$ in fact agrees
+with $X+q_0$ up to $O(1/x)$, inside the stated $O(\log x/x)$; $r_k(t_k)=1$
+to $10^{-110}$). \emph{Precision:} besides \texttt{xurl}, the write added a
+second preamble package, \texttt{array}, for the reading-conventions table (the
+README lists both); a build of the delivered text with \texttt{array} added
+gives the same 16 pages and the same text layout, so it changes no delivered
+typesetting.
+\end{writenote}
+
 \section{Exact enumeration and the identity contribution}
 Fix $k\ge1$ and $m=n-k$. On fixed black and white label sets there are
 \[

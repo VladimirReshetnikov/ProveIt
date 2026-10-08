@@ -20,6 +20,12 @@ Mathlib `v4.32.0` workspace.
   (`OAI.Combinatorics.Progressions.*`). The declarations keep their upstream
   namespaces (`OAI.Erdos3.*`).
 
+With a local checkout of the pinned upstream revision, run
+`python3 Combinatorics/Ramsey/scripts/check_gowers_port_provenance.py /path/to/math`
+from the workspace root to check original-source hashes, modification notices,
+the unchanged upstream license, and retained copyright notices. This command
+does not verify Lean proofs or the separately recorded Mathlib source hashes.
+
 ## Verified subset and quantitative backport
 
 The previously verified 137 modules are two import closures (128 upstream modules), one extract
@@ -70,10 +76,10 @@ hashes and compatibility adaptations. Run
 `python3 Combinatorics/Ramsey/scripts/check_gowers_port_scope.py` to check the
 closure; pass a module name to show an import path explaining its inclusion.
 
-The first 1,600 manifest entries have compiled (1,615 modules including their
+The first 1,800 manifest entries have compiled (1,816 modules including their
 compatibility dependencies). The incremental `OAI.QuantitativePortAudit`
 imports this batch and the added compatibility modules. Its axiom scan
-checks 27,696 public OAI theorems and reports only `propext`,
+checks 30,296 public OAI theorems and reports only `propext`,
 `Classical.choice`, and `Quot.sound`; the separately listed compatibility declarations
 also pass, with explicit rejection of any unapproved axiom. This checkpoint
 does not certify `Results.Conclusions`.
