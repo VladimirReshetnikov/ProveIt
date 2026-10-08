@@ -1,4 +1,5 @@
 import GowersSzemeredi.Proofs16FreimanBilinearReadout
+import GowersSzemeredi.Proofs16VarietyBoxes
 
 /-! The readout in the corpus's vocabulary: `MultilinearOn` product boxes.
 
@@ -62,5 +63,38 @@ theorem freiman_bihom_multilinearOn_product {N : Nat} {V : Finset (ZMod N × ZMo
   -- use `di * d = 1`, `ei * e = 1`
   linear_combination (-(B * (i : ZMod N)) - D * (i : ZMod N) * (j : ZMod N)) * hdi +
     (-(C * (j : ZMod N)) - D * (i : ZMod N) * (j : ZMod N) * (di * d)) * hei
+
+/-- A positive natural number below a prime `N` is a unit of `ZMod N`. -/
+theorem isUnit_natCast_of_lt_prime {N : Nat} [Fact N.Prime] {u : Nat} (hu : 0 < u) (huN : u < N) :
+    IsUnit (u : ZMod N) := by
+  apply IsUnit.mk0
+  intro h
+  rw [ZMod.natCast_eq_zero_iff] at h
+  exact absurd (Nat.le_of_dvd hu h) (by omega)
+
+/-- **Readout at the origin, in multilinear form.** For prime `N`, a Freiman
+bihomomorphism on a bilinear Bohr variety is `MultilinearOn` a product
+progression through the origin, of the sizes of
+`bilinearBohrVariety_contains_product`, once the step bounds are below `N`. -/
+theorem freiman_on_variety_multilinearOn_at_origin {N : Nat} [NeZero N] [Fact N.Prime]
+    {Γ Ψ : Finset (ZMod N)} {r : Nat} {L : Fin r → ZMod N → ZMod N} {ρ : Real}
+    {Φ : ZMod N × ZMod N → ZMod N}
+    (hL : ∀ k, IsFreimanLinearOn (bohr Ψ ρ) (L k))
+    (hΦ : IsEBihomomorphism (bilinearBohrVariety Γ Ψ L ρ) Φ {0})
+    (M₁ M₂ : Nat) [NeZero M₁] [NeZero M₂] (L₁ L₂ : Nat) (hL₁ : 2 ≤ L₁) (hL₂ : 2 ≤ L₂)
+    (h₂ : (L₂ : Real) ≤ ρ * M₂) (h₁ : (L₁ : Real) * (1 + L₂) ≤ ρ * M₁)
+    (hM₁ : M₁ ^ (Γ.card + (r + r)) < N) (hM₂ : M₂ ^ Ψ.card < N) :
+    ∃ u v : Nat, 0 < u ∧ u < N ∧ 0 < v ∧ v < N ∧
+      MultilinearOn ((Finset.range L₁ ×ˢ Finset.range L₂).image fun ij =>
+          (![0 + (ij.1 : ZMod N) * (u : ZMod N), 0 + (ij.2 : ZMod N) * (v : ZMod N)] : Point N 2))
+        (fun x => Φ (x 0, x 1)) := by
+  obtain ⟨u, v, hu, huM, hv, hvM, hmem⟩ :=
+    bilinearBohrVariety_contains_product hL M₁ M₂ L₁ L₂ h₂ h₁
+  have huN : u < N := lt_of_le_of_lt huM hM₁
+  have hvN : v < N := lt_of_le_of_lt hvM hM₂
+  refine ⟨u, v, hu, huN, hv, hvN, ?_⟩
+  exact freiman_bihom_multilinearOn_product hΦ 0 (u : ZMod N) 0 (v : ZMod N)
+    (isUnit_natCast_of_lt_prime hu huN) (isUnit_natCast_of_lt_prime hv hvN) L₁ L₂ hL₁ hL₂
+    (fun i j hi hj => by simpa using hmem i j hi hj)
 
 end LeanProofs.GowersSzemeredi
