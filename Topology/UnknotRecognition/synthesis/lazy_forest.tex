@@ -119,7 +119,7 @@ summary cost before recognition could stop. The new producer retains only
 visited projections and their required evidence, rather than materializing
 all factors first.
 
-The global root's dense-permutation pass still costs $O(sm)$ word operations and may dominate a large forest. That work is intentionally
+At the checkpoint measured in this section, the global root's dense-permutation pass costs $O(sm)$ word operations and may dominate a large forest. That work is intentionally
 included in every complete-call measurement. This optimization therefore
 does not claim to remove the root permutation cost or improve the overall
 worst-case asymptotic bound merely by reducing factor preparation. If all
@@ -229,7 +229,7 @@ the best discovery order.
 The complete recognizer now avoids unused factor projections. Its input is
 still a supplied grammar. It neither constructs such a
 grammar of controlled size from every knot diagram nor bounds the exceptional
-parameter for every input. The dense root permutation pass is an explicit
-remaining cost even on favorable negative forests. Improving that pass and
-reconciling incoming overlap-search ideas with the maintained group backend
-are separate next steps toward the general recognition objective.
+parameter for every input. Section~\ref{sec:compact-permutations} subsequently reduces permutation
+storage and evaluation work on local forest nodes while preserving the full
+component check. Reconciling incoming overlap-search ideas with the maintained
+group backend remains a separate next step toward the general objective.

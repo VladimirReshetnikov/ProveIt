@@ -1,0 +1,200 @@
+\section{Compact permutations for braid component checks}
+\label{sec:compact-permutations}
+
+The lazy factor preparation of Section~\ref{sec:lazy-forest} exposes a
+remaining cost: computing a strand permutation for every supplied grammar
+rule. A local three-strand subword in a large forest previously occupied a
+full $m$-entry tuple. This cost was paid in production and again in independent
+replay, even when one finite factor settled the knot verdict. The maintained
+implementation now stores local permutations compactly and evaluates only
+root-reachable permutation nodes. It still validates every supplied rule.
+
+\subsection{Exact composition with adaptive storage}
+
+Use zero-based strand indices. A generator of either sign exchanges two
+adjacent indices. If a concatenation has child permutations $p,q$, the
+established convention is
+\[
+ (p\circ q)(i)=p(q(i)).
+\]
+A sparse representation stores exactly the pairs $i\mapsto p(i)$ for which
+$p(i)\ne i$. An absent key means a fixed point, and the empty map represents
+the identity. To compose two sparse operands, start with a copy of $p$.
+For every stored pair $i\mapsto j$ of $q$, set its image to $p(j)$, using
+$j$ when that key is absent in $p$. Delete the result entry if its image is
+$i$. For indices outside the support of $q$, $q(i)=i$, so the initial copy
+already has the correct image. This proves the formula for every strand,
+including overlapping supports and products that cancel to the identity.
+
+When the resulting map moves more than half the strands, it is converted to
+a dense tuple. Dense--dense composition indexes the first tuple by the
+second. Dense--sparse composition copies the dense tuple and updates just
+the sparse operand's domain. Sparse--dense composition performs one sparse
+lookup for each image in the dense tuple. These are the same formula in
+three storage cases. A dense descendant remains dense even if its permutation
+later becomes sparse or the identity; there is no claim that storage always
+tracks minimal support.
+
+All operands are treated as immutable. An identity product can therefore
+reuse its nonidentity operand without copying, including when a grammar node
+has several parents. Strands counts at most eight retain the simple dense
+path to avoid representation dispatch overhead. The half-density and
+small-strand thresholds are implementation heuristics, not topological facts
+or claims of an optimal policy. The internal dense ablation retains the new
+reachability check while disabling compact storage.
+
+\subsection{Reachability, source validation and proof compatibility}
+
+The existing reverse root-weight pass already assigns zero to unreachable
+nodes. A live concatenation has two live children because both child weights
+receive a positive contribution, including twice the contribution if the
+children coincide. Thus a forward pass can skip every zero-weight permutation
+without losing any dependency of the root. Unreachable rules still undergo
+full syntax, index, generator and metadata validation. They remain part of
+the exact source grammar and serialized-byte accounting; this is not source
+pruning or a change in certificate identity.
+
+Before allocating any strand-sized representation, the validator checks for
+a missing generator label in the root's unsigned occurrence counts. A missing
+label separates the strand intervals and proves that the closure is a link.
+This guard works with a binary strand count far larger than the supplied
+rule count. If there is no gap, every one of the $m-1$ labels occurs in some
+terminal, so $m\le s+1$ for $s$ supplied rules. The strand-sized allocations
+are made only after this bound is established.
+
+Finally the root is materialized as the same full permutation list as before.
+Its orbit from strand zero must contain all $m$ strands to establish a knot.
+This check remains before factor scheduling or any selected negative-factor
+proof. A link containing a nontrivial component cannot acquire a nontrivial
+\emph{knot} verdict from that component. Producer and replay use the same
+validated permutation arithmetic but replay still reconstructs it afresh
+from the exact source, without trusting a claimed component count.
+
+No public option or certificate schema changes. Exact summary fields,
+canonical proofs, factor ordering, verdicts and charged abstract work remain
+unchanged on the differential audit. The callback still runs at each supplied
+rule in the permutation pass, even when its permutation is skipped. The work
+counter counts cooperative operations, not every tuple entry or hash probe;
+a faster or smaller representation need not reduce that counter. Work and
+time limits still yield no partial certificate, and external cancellation
+propagates.
+
+\subsection{Cost and remaining asymptotic limitations}
+
+Let $s$ be the supplied rule count and $m$ the number of strands. For a live
+node $v$, write $r_v$ for its representation size: the moved-point count for
+a sparse map, and $m$ for a dense tuple. A sparse--sparse composition performs
+$O(r_u+r_w)$ dictionary operations before any dense conversion. A conversion
+costs $O(m)$ operations but occurs only after more than $m/2$ output entries
+have been constructed. A composition with a dense operand costs $O(m)$,
+which is also $O(r_u+r_w)$. Live terminals use two entries in the compact path;
+identity aliases allocate no permutation entries.
+
+Thus, with constant-cost dictionary operations, the permutation pass uses
+\[
+ O\!\left(s+m+\sum_{v=(u,w)\text{ live}}(r_u+r_w)\right)
+\]
+word operations and at most $O(s+m+\sum_{v\text{ live}}r_v)$ stored entries.
+The sums bound storage even when aliases share objects. The ordinary dense
+bound $O(sm)$ remains the worst case in this model, while local forest nodes
+can have representation size independent of the total strand count.
+The current implementation retains node representations until the root has
+been evaluated; it does not claim optimal lifetime management.
+
+These are representation and dictionary-operation bounds, not an unconditional
+bit-cost theorem for Python hash tables. Python's conventional amortized
+hash-table cost model gives the stated elapsed-work interpretation. Charging
+up to $O(m)$ probes per lookup instead gives a conservative polynomial
+$O(sm^2)$ probe bound. Strand keys and images have $O(\log m)$ bits; the
+separate validated lengths, exponents and root weights must still be charged
+at their own binary lengths. No deterministic subexponential or
+quasi-polynomial theorem is inferred from a hash-table timing result.
+
+In particular, a large dense descendant need not become compact again after
+cancellation. All-factor positive recognition still pays every required
+projection and leaf proof. The input remains a supplied braid grammar; this
+change neither constructs one of controlled size from an arbitrary knot
+diagram nor bounds the exceptional-factor parameter on every diagram. The
+restricted recognition theorems of the preceding sections are unchanged.
+
+\subsection{Native differential validation and measurements}
+
+Eight focused tests pass in 0.196 seconds. They exhaust all 576 ordered pairs
+of four-strand permutations in each of the four sparse/dense representation
+combinations, checking results and operand immutability. A separate oracle
+expands 400 bounded random shared grammars and applies adjacent swaps directly.
+Other cases check repeated child references, a $2^{256}$-power grammar,
+cancellation, dead-rule validation, a strand count of $10^{100}$, complete
+component checks on links, exact public work ceilings and proof equality with
+the dense ablation. The small-strand path is tested with compact composition
+disabled.
+
+The native compatibility audit loads the actual previous compressed-braid
+package at commit \texttt{d0f0e37761b5}. It combines 240 prior cases, twelve
+benchmark sources and 150 additional seeded sources with shared reachable
+and unreachable powers. With the exponential fallback disabled equally in
+both versions, the 402 cases give 103 unknot, 132 nontrivial-knot, 148 link
+and nineteen inconclusive results. All public result fields and root summaries
+agree exactly, and every old and new certificate replays in both versions.
+The 4.117-second audit retains its complete sources and hashes in
+\path{data/compact-permutations-audit.json}.
+
+The full maintained suite passes 948 tests with Regina in 222.385 seconds.
+
+The benchmark has twelve fixtures, five arms, one shuffled excluded warmup
+and seven shuffled measured rounds per fixture: 420 measured calls and sixty
+warmups. The arms are the pinned old package, an identical old control,
+current defaults, an identical current control, and current code with dense
+permutation storage forced internally. Policy binding for this last arm is
+outside the timer; all source validation, permutation construction, factor
+recognition, proof transport accounting and mandatory replay are inside.
+Every arm produces the same complete public result. Separate untimed
+\texttt{tracemalloc} calls measure peak traced allocations of a complete root
+summary, including its validation and metadata. These are not whole-process
+resident-memory measurements or enforced memory ceilings.
+
+\input{tables/compact_permutations.tex}
+
+The ratio is the median paired old/new time. The dense column still skips
+unreachable permutation nodes, so it separates compact storage from that
+optimization. Raw source grammars, sample orders and times, resource counts,
+proof sizes and source hashes are retained in
+\path{../fast/results/compact_permutations_20261008.json}. The complete run,
+including separate memory measurements, takes 27.469 seconds. Identical-old
+paired ratios range from 0.972 to 1.017; identical-current ratios range from
+0.989 to 1.021. Small changes near this range are not evidence of a gain.
+
+On the 64-positive-factor forest followed by a finite negative factor,
+complete recognition falls from 188.472 to 89.181 ms, with paired ratio
+2.103. The dense ablation takes 178.327 ms, locating most of the gain in
+compact representations. Root-summary peak traced allocation falls from
+8,194,752 to 1,714,252 bytes, a factor of 4.780. Both public calls still charge
+98,011 abstract work steps and produce the same proof. The eight- and
+24-positive-factor cases have paired ratios 1.072 and 1.310 respectively;
+the smaller case also has a smaller memory reduction.
+
+The positive sixteen-factor forest needs all leaf work and has paired ratio
+1.023, close to the control range; no systematic whole-call improvement is
+claimed. Its root-summary allocation nevertheless falls from 623,728 to
+383,220 bytes. The early compressed-negative case has paired ratio 1.115;
+the singleton chain has ratio 1.103. The small wider-factor and direct
+three-braid controls have ratios 0.977 and 0.994, so the compact policy is
+not presented as universally faster.
+
+The dense random-link control improves from 49.501 to 34.507 ms, with ratio
+1.432. Although long prefixes become dense, their terminal operands remain
+sparse, permitting copy-and-update composition. The repeated dense-power
+control has ratio 1.139 but only a 1.107-fold memory reduction, illustrating
+that dense descendants remain dense after cancellation. In the unreachable
+rule control, old/new medians are 43.521/32.854 ms and the dense ablation is
+33.371 ms: here skipping dead permutations explains most of the gain. Its
+root-summary peak allocation falls from 1,265,744 to 140,368 bytes. The enormous
+strand-count gap control remains constant-size and has no timing gain.
+
+\paragraph{Scope of the advance.}
+Local permutation support now reduces a measured preparation bottleneck in
+both proof production and replay. The finite obstruction, three-braid and
+exceptional-cube mathematics is unchanged. Establishing a complete source-bound
+conversion and controlling its size for arbitrary knot diagrams remains
+necessary before these restricted algorithms can imply a general
+quasi-polynomial recognition theorem.
