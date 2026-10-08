@@ -33,9 +33,13 @@ Verification at this checkpoint
   and common-difference error at most 2*N/H under
     H >= K*(q+1), width(P) >= H^(p*(q+1)^(2^(k+2))).
   The constants K >= 2 and p > 0 depend only on dimension. Both production
-  modules pass isolated Lean checks. Root-width parameterization, explicit
-  degree constants, and the remaining structure hypotheses are separate
-  obligations. These additions close no numbered catalogue statement.
+  modules pass isolated Lean checks. Proofs16PolynomialRecurrenceProfile
+  now gives the root-width form with epsilon = 1/(2*p*(q+1)^(2^(k+2)))
+  and integer threshold (K*(q+1))^(2*p*(q+1)^(2^(k+2))). It preserves minimum
+  width m^epsilon and error 2*m^(-epsilon)*N, including ceiling rounding.
+  Its production module and transitive axiom check pass. Explicit degree
+  constants and the remaining structure hypotheses are separate obligations.
+  These additions close no numbered catalogue statement.
   All 823 modules reachable from GowersSzemeredi.Audit compiled successfully.
   The axiom audit checked 5,365 public Gowers theorems and found only propext,
   Classical.choice, and Quot.sound. The audit independently counted 114 exact

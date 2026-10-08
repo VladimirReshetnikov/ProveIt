@@ -47,6 +47,7 @@ import GowersSzemeredi.Proofs05BoxTransport
 import GowersSzemeredi.Proofs05MultilinearIteration
 import GowersSzemeredi.Proofs16Lemma1
 import GowersSzemeredi.Proofs16SimultaneousRecurrence
+import GowersSzemeredi.Proofs16PolynomialRecurrenceProfile
 import GowersSzemeredi.Proofs16Lemma5
 import GowersSzemeredi.Proofs16InducedSelection
 import GowersSzemeredi.Proofs16ShortProduct
@@ -305,6 +306,9 @@ import GowersSzemeredi.Proofs18CubicExponentGap
 import GowersSzemeredi.Proofs16BracketWindow
 import GowersSzemeredi.Proofs16FreimanBilinearReadout
 import GowersSzemeredi.Proofs16BilinearBohrVariety
+import GowersSzemeredi.Proofs16VarietyBoxes
+import GowersSzemeredi.Proofs16VarietyUnions
+import GowersSzemeredi.Proofs16ReadoutMultilinear
 import GowersSzemeredi.Proofs16StructuredExtraction
 import GowersSzemeredi.Proofs16BaseCaseZero
 import GowersSzemeredi.Proofs05ProgressionMoments

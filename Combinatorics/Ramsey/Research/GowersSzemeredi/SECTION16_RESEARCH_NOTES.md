@@ -720,6 +720,85 @@ on any product of progressions satisfying the variety's conditions, the map
 is bi-affine. Those conditions are Bohr membership in each coordinate and
 every L_i(y)·x small, i.e. simultaneously small bilinear-type quantities,
 item (D).
+
+**Progress (2026-10-08, kernel-checked).**
+- `bilinearBohrVariety_contains_product` (`Proofs16VarietyBoxes`): if the
+  L_k are Freiman-linear, the variety contains
+  {i·u : i < L₁} × {j·v : j < L₂} with u ≤ M₁^(|Γ|+2r) and v ≤ M₂^|Ψ|,
+  whenever L₂ ≤ ρM₂ and L₁(1 + L₂) ≤ ρM₁. Simultaneous Dirichlet is used
+  twice; the L_k are affine along the column. Exponents are linear in
+  codimension and rank.
+- `freiman_on_variety_biaffine_at_origin`: any Freiman bihomomorphism on
+  the variety is bi-affine on that box. This is the readout at the origin.
+
+**Remaining gap for (R) → Part J.**
+1. **Off-origin cells.** `MultiplyLinear` asks for partitions of
+   *arbitrary* boxes. The variety is not translation-invariant: x ranges
+   over B({L_k(y)}; ρ), which moves with y. Covering a box far from the
+   origin needs the variety conditions relative to a base point. The
+   L_k(y₀ + j·e)·(x₀ + i·d) expansion adds the constant terms
+   L_k(y₀)·x₀, which are not small in general. So cells exist only near
+   points of V, and covers must be built from V's own geometry. Gowers's
+   multiply-linear framework does not ask for covers off the domain, so
+   the restriction to V may suffice. The bookkeeping of
+   `CubicStackableClass` against V's geometry has not been worked out.
+2. **Unions (stackability).** n pieces give n varieties. Common boxes need
+   the union of all their Γ, Ψ and L-families, which is still linear in
+   the total rank by the exponents above. That is the (D)-type win.
+3. **The pre-extension hypothesis** `MilicevicVarietyStructure D`, from
+   the paper, not proved here.
+
+Item 2 is done: `varieties_common_product` (`Proofs16VarietyUnions`)
+gives one box common to n varieties, with step exponents
+|⋃Γ| + 2Σr and |⋃Ψ|, linear in the total codimension and rank.
+
+**Item 1 decomposed.** On a cell (x₀ + i·d) × (y₀ + j·e),
+
+  L_k(y₀ + je)·(x₀ + id) = L_k(y₀)x₀ + i·L_k(y₀)d + j·Δ_k x₀ + ij·Δ_k d,
+
+where Δ_k = L_k(e) − L_k(0) (L_k is affine along the column).
+- **Variation terms** (the last three) must be ≤ εN on the cell. They are
+  common-difference products of linear forms with the cell's steps. That is
+  exactly the form of the peer's polynomial-exponent Lemma 16.1
+  (`exists_simultaneous_commonDiff_partition_two_bound`, exponent
+  p·(q+1)^(2^(k+2))), applied to the forms y ↦ L_k(y) and x ↦ Δ_k·x. The
+  same holds for the Bohr frequencies Γ, Ψ.
+- **The constant term** L_k(y₀)x₀, and γx₀, ψy₀, decides whether the cell
+  is inside V, outside V, or straddles its boundary. Straddling cells are
+  the loss. Bounding their mass by θ is Bourgain's regular-Bohr-set
+  argument: choose ρ so that B(ρ(1+κ)) ∖ B(ρ(1−κ)) has relative size
+  O(κ·rank). The port has it, in the audited prefix (manifest entry 780):
+  `CyclicBohr.Set.IsRankRegular` puts the annulus at relative size
+  ≤ 100·d·κ with d = 2·max(rank, 1), and `exists_rankRegular_ndilate`
+  finds a regular dilate at some radius in [1/2, 1]
+  (`OAI/.../Fourier/BohrTorusApproximation.lean`). Its `CyclicBohr.Set`
+  must be matched to the corpus's `bohr K ρ`.
+
+**A subtlety at base points away from the origin (2026-10-08).**
+- At (x₀, y₀), the cross term j·(L_k(e) − L_k(0))·x₀ must be small. The
+  step e must therefore make a *Freiman-linear* function of e small, not a
+  linear one.
+- At the origin this term is absent (x₀ = 0). That is why
+  `bilinearBohrVariety_contains_product` works with Dirichlet alone.
+- Off the origin, Dirichlet handles it only if L_k is affine
+  (y ↦ λy + c) on the Bohr set. In Z_N a Bohr set is essentially a proper
+  generalized arithmetic progression, and a Freiman-linear map on it is
+  affine in the progression's *coordinates*: L(a + Σ n_i g_i) = c + Σ n_i λ_i.
+  It is not affine in y.
+- So off-origin cells need Bohr sets presented as generalized progressions
+  (Milićević Prop. 2.13 / Thm. 2.26, Gowers §7), with Dirichlet applied per
+  coordinate.
+- The coordinate statement itself, that Freiman-linear maps on a proper
+  GAP are coordinate-affine, is elementary: the second-difference argument
+  in each coordinate, as in `affine_of_second_difference`. It is the next
+  formalizable piece.
+
+So off-origin covers of V's graph reduce to two inputs: the peer's
+Lemma 16.1 (polynomial exponent), and Bohr-set regularity for the
+variety's frequencies, with radius losses polynomial in the rank. Both
+are standard. Composing them into `CubicStackableClass` members is
+bookkeeping-heavy but has no new mathematics left in it, apart from the
+pre-extension hypothesis.
 The bracket route above (steps 1–4) stays as a self-contained alternative
 for the one-variable core, with step 3 formalized. With quasi-polynomial
 t, a poly(1/t) exponent gives widths N^(exp(−polylog)), inside the
@@ -877,9 +956,26 @@ Both production modules passed Lean; the combined facade audit is queued.
 This supplies polynomial dependence on `q` in the input-width exponent
 in the stated large-width regime. It does not give explicit dimension
 constants or a pointwise improvement of every previous threshold. The
-remaining work is root-width parameterization and integration into the
-higher-dimensional lift and its structure hypotheses. The printed final
-all-length threshold does not follow from this recurrence theorem alone.
+root-width form is now proved in
+`Proofs16PolynomialRecurrenceProfile.exists_polynomial_section16_recurrence_profile`.
+For integer constants `K >= 2`, `p > 0`, set
+
+```
+epsilon(q) = 1 / (2*p*(q+1)^(2^(k+2)))
+threshold(q) = (K*(q+1))^(2*p*(q+1)^(2^(k+2))).
+```
+
+For `threshold(q) <= m <= width(P)`, the partition has every width at least
+`m^epsilon(q)` and common-difference error at most `2*m^(-epsilon(q))*N`.
+The proof takes the ceiling of the real root; doubling the exponent
+denominator covers its cost without losing the target width. The production
+module and its transitive axiom check pass, with only `propext`,
+`Classical.choice`, and `Quot.sound`.
+
+The remaining work is integration into the higher-dimensional lift and
+its structure hypotheses, together with explicit dimension constants where
+the printed thresholds require them. The printed final all-length threshold
+does not follow from this recurrence theorem alone.
 
 ## K. Where every route to Theorems 18.2 and 18.7 meets (2026-10-08)
 
