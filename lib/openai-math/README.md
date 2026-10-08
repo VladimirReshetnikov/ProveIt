@@ -113,6 +113,11 @@ The recurrence comparison also proves an eventual strict improvement of
 that exponent under the old rounding-safe threshold. Its module and the
 follow-up full facade axiom audit pass. Dimension constants and the
 crossover family size are existential.
+The completed facade audit also includes the recurrence-to-tiling and
+localized spectrum-assembly consumers: they preserve proper cells,
+linearity restrictions, and the stated mass and graph-count bounds above
+an explicit localized input threshold. Spectrum structure and local Bohr
+linearity remain hypotheses.
 This reuses the audited Schmidt input without any new upstream module.
 Explicit degree constants and the final all-length threshold remain open.
 

@@ -1018,7 +1018,7 @@ recurrence partition, so the existing recurrence API is preserved.
 `exists_eventually_stronger_retiled_linearity` gives this conclusion under
 the old integer threshold for all sufficiently large `q`, with a strictly
 larger exponent. Integer rounding and the length-minus-one margin are
-included. The next full facade audit is pending.
+included. The combined facade audit passes.
 
 `Proofs16PolynomialProductAssembly` also passes Lean. It applies this
 profile to a `MultiplyLinearWith Qb Eb` spectrum cover on short parent
@@ -1029,7 +1029,7 @@ width `(zeta/2)*sqrt(n^epsilon(q))`, where the actual cover count satisfies
 Monotonicity in the family size justifies testing the threshold at the
 known count bound. This makes the recurrence usable in the localized
 spectrum assembly; the threshold, spectrum structure, and local Bohr
-linearity remain explicit. The next combined audit is pending.
+linearity remain explicit. The combined facade audit passes.
 
 `Proofs16PolynomialUniformWidth` proves antitonicity of the recurrence
 exponent and resulting product width in the phase-family size, including
